@@ -23,11 +23,9 @@ noncomputable section
 namespace GlobalTheory.HeightCounting.FirstFacts
 
 /- English proof (translation)
-Establish `e` using `(GlobalTheory.PlacePair.comap_eq_iff D P P').2 (Or.inr hc)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩ ⟨v', rfl⟩`. Take `rfl : v = v'` from `HeightOneSpectrum.ext ((hPq v).symm.trans (e.trans (hPq v')))`. Conclude with `hne rfl`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Set `v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))` to `P.under _`. Establish `hv : NG.OverPl P v` using `rfl`. Break down `(GlobalTheory.PlacePair.comap_eq_iff D P (Pq v)).1 (hv.trans (hPq v).symm) with e1 | e1` into its components or cases. Conclude with `⟨v, e1.symm⟩`.
-
-Conclude with `absurd ⟨v, GlobalTheory.GalChar.isConjPl_unique e1 hc⟩ h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pair_of_over (D : D7) {Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host}
     (hPq : ∀ v, NG.OverPl (Pq v) v) (P P' : PlE D.host) (hc : IsConjPl D.host P P') (hne : P ≠ P') :
@@ -45,11 +43,11 @@ theorem pair_of_over (D : D7) {Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield
     · exact absurd ⟨v, GlobalTheory.GalChar.isConjPl_unique e1 hc⟩ h
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hVf, -⟩` from `GlobalTheory.Mem.HostFrames.frames_of_over K X hX`. Take `⟨h1, h2⟩` from `hVf i`. Rewrite using `[GlobalTheory.StdFrameCounterexample.vstd_iff]`. Use `⟨Matrix.ext fun a b => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[HSpace.gram, h1, Matrix.one_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Module.Basis.mem_span_iff_repr_mem, Module.Basis.repr_sum_self]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[← hy]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `y.2`. Introduce `h`. Conclude with `⟨⟨x a, h⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vstd_of_over {K : GlobalTheory.Mem.Top.Ctx} (X : GlobalTheory.Mem.Stages) (hX : K.Over X.B.toPre) (i : Fin X.toD7.R.m) :
     FWT.VStd X.toD7 i := by
@@ -67,9 +65,7 @@ theorem vstd_of_over {K : GlobalTheory.Mem.Top.Ctx} (X : GlobalTheory.Mem.Stages
       exact ⟨⟨x a, h⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `ξ h`. Unfold `Col.QE at h`. Use `split_ifs at h`. Take `⟨v, -, e⟩` from `Finset.mem_image.1 h`. Conclude with `⟨v, e⟩`.
-
-Conclude with `absurd h (Finset.notMem_empty _)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_of_mem_QE {X : Col.Fields} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
     {Q : HeightOneSpectrum (𝓞 X.E)} : ∀ {ξ}, Q ∈ Col.QE sel ξ → Q ∈ Set.range sel := by
@@ -82,13 +78,13 @@ theorem mem_range_of_mem_QE {X : Col.Fields} {sel : HeightOneSpectrum (𝓞 X.F)
   · exact absurd h (Finset.notMem_empty _)
 
 /- English proof (translation)
-Introduce `hL K B f T w hK hS P x l`. Take `⟨⟨c⟩, -⟩` from `hS`. Use `⟨⟨pair_of_over _ l.Pq_over, ?_⟩, ?_, vstd_of_over (w.st x.o.Z) hK, x.m.z.lev.C, fun k z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[l.sel]`. Introduce and unpack `_ ⟨v, rfl⟩ _ ⟨v', rfl⟩ ⟨p, hp, h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `key : ∀ u : HeightOneSpectrum (𝓞 B.host.F), (p : 𝓞 B.host.E) ∈ (w.I.sel u).asIdeal → (p : 𝓞 B.host.F) ∈ u.asIdeal`. Introduce `u hu`. Establish `e : (w.I.sel u).asIdeal.under (𝓞 B.host.F) = u.asIdeal` using `w.ok.sel_ok u`. Rewrite using `[← e, Ideal.mem_comap, map_natCast]`. Conclude with `hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg HeightOneSpectrum.asIdeal (c.half v v' p hp (key v h1) (key v' h2))`. Introduce `t Q hQ`. Rewrite `hQ` using `[x.m.z.lev.Q]`. Rewrite using `[l.sel]`. Conclude with `mem_range_of_mem_QE hQ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Establish `h0 : B.host.g k * (B.host.g k - 1) ≠ 0` using `mul_ne_zero (B.host.g_prime k).ne_zero (by have := (B.host.g_prime k).two_le; omega)`. Apply the tactic sequence `obtain ⟨y, hy, e⟩ := B.roots_Ks (B.host.g k * (B.host.g k - 1)) (by fin_cases k <;> simp)`. Take `⟨u, hu⟩` from `GlobalTheory.Mem.Col2.InEx.root_mem (embLL0 (GlobalTheory.HeightCounting.Up.Dof x)) h0 ⟨⟨y, B.Ks_le hy⟩, e⟩ hz`. Conclude with `⟨u, hu⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem facts : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) {K : GlobalTheory.Mem.Top.Ctx} {B : GlobalTheory.Mem.Base} {f : GlobalTheory.Mem.Top.Fr B.toPre} {T : GlobalTheory.Mem.Top.TwDat B} {w : GlobalTheory.Mem.Top.Bl.ColW B f T}, K.Over B.toPre → GlobalTheory.Mem.Top.Bl.Start K B f T w → ∀ {P : GlobalTheory.Mem.R3.Rw.Pre2 K w} (x : GlobalTheory.Mem.R3.Rw.St P) (l : GlobalTheory.HeightCounting.Up.LA hL x), IsChoice (D := GlobalTheory.HeightCounting.Up.Dof x) (Set.range l.Pq) ∧ (∀ t, ∀ Q ∈ x.m.z.R.Q t, Q ∈ Set.range l.Pq) ∧ (∀ j, FWT.VStd (GlobalTheory.HeightCounting.Up.Dof x) j) ∧ x.m.z.R.C = GlobalTheory.HeightCounting.Up.cfOf x ∧ ∀ (k : Fin 2) (z : ℂ), z ^ ((GlobalTheory.HeightCounting.Up.Dof x).host.g k * ((GlobalTheory.HeightCounting.Up.Dof x).host.g k - 1)) = 1 → z ∈ (embLL0 (GlobalTheory.HeightCounting.Up.Dof x)).fieldRange := by
   intro hL K B f T w hK hS P x l

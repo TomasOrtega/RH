@@ -11,11 +11,9 @@ set_option autoImplicit false
 namespace GlobalTheory.LogDR
 
 /- English proof (translation)
-Proceed by induction on `hη using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, v, hv, rfl⟩` from `hx`. Rewrite using `[smul_smul]`. Conclude with `AddSubgroup.subset_closure ⟨g * c, hg c hc, v, hv, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_spanForms_of_mul_mem {K : Type} [Field K] {M M' : Set K} {H : Set Ω[K⁄ℤ]} {a : ℕ} (g : K)
     (hg : ∀ c ∈ M, g * c ∈ M') {η : abelian₂ K} (hη : η ∈ spanForms M H a) :
@@ -30,13 +28,13 @@ theorem smul_mem_spanForms_of_mul_mem {K : Type} [Field K] {M M' : Set K} {H : S
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Take `⟨e, hG⟩` from `G.exists_isEqn y`. Establish `hGD` using `hG.add hD`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `smul_mem_spanForms_of_mul_mem _ (fun c hc => ?_) h` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `G.RegularAt y _`. Express the relevant statement in the definitionally equal form `(G + D).RegularAt y c at hc`. Rewrite using `[hG.regularAt_iff]`. Rewrite `hc` using `[hGD.regularAt_iff, Units.val_mul]`. Use `hc using 1` and compare the differences between its conclusion and the goal.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Establish `h'` using `smul_mem_spanForms_of_mul_mem (M' := {c | (G + D).RegularAt y c}) (g : X.functionField)⁻¹ (fun c hc => ?_) h`. Rewrite `h'` using `[inv_smul_smul₀ g.ne_zero]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `(G + D).RegularAt y _`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `G.RegularAt y c at hc`. Rewrite using `[hGD.regularAt_iff, Units.val_mul]`. Rewrite `hc` using `[hG.regularAt_iff]`. Use `hc using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts.
 -/
 theorem mem_logAt_add_iff {X : Scheme.{0}} [IsIntegral X] (Z : Set X) (G D : CartierDiv X) (a : ℕ)
     (y : X) (g : X.functionFieldˣ) (η : abelian₂ X.functionField) (hD : D.IsEqn y g) :
@@ -64,7 +62,7 @@ theorem mem_logAt_add_iff {X : Scheme.{0}} [IsIntegral X] (Z : Set X) (G D : Car
       field_simp
 
 /- English proof (translation)
-Introduce `X _ Z G D a y g η hD` and use `mem_logAt_add_iff Z G D a y g η hD`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem logtwist : ∀ (X : Scheme.{0}) [IsIntegral X] (Z : Set X) (G D : CartierDiv X) (a : ℕ) (y : X)
     (g : X.functionFieldˣ) (η : abelian₂ X.functionField), D.IsEqn y g →

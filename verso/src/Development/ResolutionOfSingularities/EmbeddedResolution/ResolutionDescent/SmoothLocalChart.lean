@@ -57,7 +57,7 @@ instance instIsClosedImmersionImm (C : SmoothLocalChart G H u y) :
     AlgebraicGeometry.IsClosedImmersion C.imm := C.isClosedImmersion_imm
 
 /- English proof (translation)
-Use `show AlgebraicGeometry.IsAffineOpen (H.emb ⁻¹ᵁ H.ambient.basicOpen C.func)`. Establish `h : (H.emb ⁻¹ᵁ H.ambient.basicOpen C.func) = V.basicOpen (H.emb.app ⊤ C.func)` using `Scheme.preimage_basicOpen H.emb C.func`. Rewrite using `[h]`. Conclude with `(isAffineOpen_top V).basicOpen _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffineOpen_chartDomain [AlgebraicGeometry.IsAffine V]
     (C : SmoothLocalChart G H u y) :
@@ -69,7 +69,7 @@ theorem isAffineOpen_chartDomain [AlgebraicGeometry.IsAffine V]
   exact (isAffineOpen_top V).basicOpen _
 
 /- English proof (translation)
-The claim follows from `AlgebraicGeometry.isPullback_morphismRestrict H.emb (H.ambient.basicOpen C.func)`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_morphismRestrict_basicOpen (C : SmoothLocalChart G H u y) :
     CategoryTheory.IsPullback

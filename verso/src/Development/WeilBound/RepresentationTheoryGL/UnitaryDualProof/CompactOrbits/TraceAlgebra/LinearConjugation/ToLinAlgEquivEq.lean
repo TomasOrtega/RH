@@ -18,7 +18,7 @@ Both sides reduce to the same expression.
 theorem toLinAlgEquiv'_eq (a : Matrix (Fin n) (Fin n) k) : Matrix.toLinAlgEquiv' a = Matrix.toLin' a := rfl
 
 /- English proof (translation)
-Unfold `SS`. Rewrite using `[← toLinAlgEquiv'_eq, map_add]`. Conclude with `Module.End.IsSemisimple.add_of_commute (h.map Matrix.toLinAlgEquiv') ha hb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ss_add {a b : Matrix (Fin n) (Fin n) k} (h : Commute a b) (ha : SS a) (hb : SS b) : SS (a + b) := by
   unfold SS
@@ -26,7 +26,7 @@ theorem ss_add {a b : Matrix (Fin n) (Fin n) k} (h : Commute a b) (ha : SS a) (h
   exact Module.End.IsSemisimple.add_of_commute (h.map Matrix.toLinAlgEquiv') ha hb
 
 /- English proof (translation)
-Unfold `SS`. Rewrite using `[← toLinAlgEquiv'_eq, map_mul]`. Conclude with `Module.End.IsSemisimple.mul_of_commute (h.map Matrix.toLinAlgEquiv') ha hb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ss_mul {a b : Matrix (Fin n) (Fin n) k} (h : Commute a b) (ha : SS a) (hb : SS b) : SS (a * b) := by
   unfold SS
@@ -34,7 +34,7 @@ theorem ss_mul {a b : Matrix (Fin n) (Fin n) k} (h : Commute a b) (ha : SS a) (h
   exact Module.End.IsSemisimple.mul_of_commute (h.map Matrix.toLinAlgEquiv') ha hb
 
 /- English proof (translation)
-Unfold `SS`. Rewrite using `[← toLinAlgEquiv'_eq, AlgEquiv.commutes]`. Use `Module.End.isSemisimple_of_squarefree_aeval_eq_zero (p := X - C c) (Polynomial.irreducible_X_sub_C c).squarefree ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ss_algebraMap (c : k) : SS (algebraMap k (Matrix (Fin n) (Fin n) k) c) := by
   unfold SS
@@ -44,15 +44,15 @@ theorem ss_algebraMap (c : k) : SS (algebraMap k (Matrix (Fin n) (Fin n) k) c) :
   simp
 
 /- English proof (translation)
-Take `⟨nn, hnn, ss, -, hnil, hsss, hsum⟩` from `Module.End.exists_isNilpotent_isSemisimple (K := k) (f := Matrix.toLin' z)`. Establish `hmap : Algebra.adjoin k {Matrix.toLin' z} = (Algebra.adjoin k {z}).map (Matrix.toLinAlgEquiv' (R` using `k) (n := Fin n)).toAlgHom := by`. Rewrite using `[← Algebra.adjoin_image, Set.image_singleton]`. Both sides reduce to the same expression. Rewrite `hnn` using `[hmap]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, hm, hmn⟩` from `Subalgebra.mem_map.1 hnn`. Establish `hmZ : m ∈ Z` using `Algebra.adjoin_le (Set.singleton_subset_iff.2 hz) hm`. Establish `hmnil : IsNilpotent m`. Establish `: IsNilpotent ((Matrix.toLinAlgEquiv' (R` using `k) (n := Fin n)).symm nn) := hnil.map _`. Rewrite `this` using `[← hmn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `hm0 : m = 0`. Establish `h1 : IsNilpotent (⟨m, hmZ⟩ : Z)`. Take `⟨e, he⟩` from `hmnil`. Conclude with `⟨e, Subtype.ext (by simpa using he)⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `hZ.2.eq_zero _ h1` as an intermediate fact. Simplify using `using congrArg Subtype.val this`. Establish `hnn0 : nn = 0` using `by rw [← hmn, hm0]; simp`. Unfold `SS`. Rewrite using `[hsum, hnn0, zero_add]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsss`.
+A detailed English derivation is pending.
 -/
 theorem ss_of_mem {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) {z : Matrix (Fin n) (Fin n) k}
     (hz : z ∈ Z) : SS z := by
@@ -80,51 +80,47 @@ theorem ss_of_mem {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) {z :
   exact hsss
 
 /- English proof (translation)
-Introduce `n Z hZ s s' hs hs' hss hss' htr`. Use `set S : Set (Matrix (Fin n) (Fin n) k × Matrix (Fin n) (Fin n) k) := (fun z => (z, z)) '' (Z : Set (Matrix (Fin n) (Fin n) k)) ∪ {(s, s')} with hSdef`. Establish `hcomm : ∀ a ∈ S, ∀ b ∈ S, a * b = b * a`. Introduce and unpack `a (⟨z, hz, rfl⟩ | ha) b (⟨w, hw, rfl⟩ | hb)`. Simplify using `[hZ.1 z hz w hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[Set.mem_singleton_iff]`. Substitute `hb` using the available equality. Simplify using `[hs z hz, hs' z hz]`. Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hs w hw, hs' w hw]`. Rewrite `ha`, `hb` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality. Substitute `hb` using the available equality. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression. Equip the data with the indicated structure.
 
-Use `set R := Algebra.adjoin k S with hRdef`. Use `letI : CommRing R := Algebra.adjoinCommRingOfComm k hcomm`. Establish `hRc : ∀ x ∈ R, ∀ y ∈ R, Commute x y` using `fun x hx y hy => Algebra.commute_of_mem_adjoin_of_forall_mem_commute hy fun b hb => (Algebra.commute_of_mem_adjoin_of_forall_mem_commute hx fun a ha => hcomm b hb a ha).symm`. Establish `hRss : ∀ x ∈ R, SS x.1 ∧ SS x.2`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨z, hz, rfl⟩ | hx` into its components or cases. Conclude with `⟨ss_of_mem hZ hz, ss_of_mem hZ hz⟩`. Rewrite `hx` using `[Set.mem_singleton_iff]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `hx` using the available equality. Conclude with `⟨hss, hss'⟩`. Consider the case `algebraMap c => exact ⟨ss_algebraMap c, ss_algebraMap c⟩`. Consider the case `add x y hx hy ihx ihy`. Establish `h` using `hRc x hx y hy`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨ss_add (h.map (RingHom.fst _ _)) ihx.1 ihy.1, ss_add (h.map (RingHom.snd _ _)) ihx.2 ihy.2⟩`. Consider the case `mul x y hx hy ihx ihy`. Establish `h` using `hRc x hx y hy`. Conclude with `⟨ss_mul (h.map (RingHom.fst _ _)) ihx.1 ihy.1, ss_mul (h.map (RingHom.snd _ _)) ihx.2 ihy.2⟩`. Set `f : Z →+* Matrix (Fin n) (Fin n) k` to `Z.val.toRingHom`.
+Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hform : ∀ x ∈ R, ∃ P : Z[X], x = (P.eval₂ f s, P.eval₂ f s')`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨z, hz, rfl⟩ | hx` into its components or cases.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨C ⟨z, hz⟩, by simp [f]⟩`. Rewrite using `[Set.mem_singleton_iff] at hx; subst hx; exact ⟨X, by simp⟩`. Consider the case `algebraMap c`. Use `⟨C (algebraMap k Z c), ?_⟩` and prove the remaining obligations. Simplify using `[f, Prod.algebraMap_apply]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y hx hy ihx ihy`. Take `⟨P, rfl⟩` from `ihx`. Take `⟨Q, rfl⟩` from `ihy`. Conclude with `⟨P + Q, by simp [eval₂_add]⟩`. Consider the case `mul x y hx hy ihx ihy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, rfl⟩` from `ihx`. Take `⟨Q, rfl⟩` from `ihy`. Use `⟨P * Q, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_mul_noncomm _ _ fun j => ?_, eval₂_mul_noncomm _ _ fun j => ?_]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hs' (f (Q.coeff j)) (Q.coeff j).2`. Conclude with `hs (f (Q.coeff j)) (Q.coeff j).2`. Establish `htrP : ∀ P : Z[X], trace (P.eval₂ f s) = trace (P.eval₂ f s')`. Introduce `P`. Rewrite using `[eval₂_eq_sum, eval₂_eq_sum, Polynomial.sum_def, Polynomial.sum_def, trace_sum, trace_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun e _ => htr _ (P.coeff e).2 e`. Use `haveI : IsReduced R := ⟨fun x hx => by`. Establish `h1 : IsNilpotent (x : Matrix (Fin n) (Fin n) k × Matrix (Fin n) (Fin n) k)` using `hx.map R.val`. Establish `hs1` using `hRss x x.2`. Establish `e1 : (x : Matrix (Fin n) (Fin n) k × Matrix (Fin n) (Fin n) k).1 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hn1` using `(h1.map (RingHom.fst (Matrix (Fin n) (Fin n) k) (Matrix (Fin n) (Fin n) k))).map (Matrix.toLinAlgEquiv' (R := k) (n := Fin n))`. Use `Module.End.eq_zero_of_isNilpotent_isSemisimple hn1 (by exact hs1.1)` as an intermediate fact. Conclude with `(Matrix.toLinAlgEquiv' (R := k) (n := Fin n)).injective (this.trans (map_zero _).symm)`. Establish `e2 : (x : Matrix (Fin n) (Fin n) k × Matrix (Fin n) (Fin n) k).2 = 0`. Establish `hn2` using `(h1.map (RingHom.snd (Matrix (Fin n) (Fin n) k) (Matrix (Fin n) (Fin n) k))).map (Matrix.toLinAlgEquiv' (R := k) (n := Fin n))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Module.End.eq_zero_of_isNilpotent_isSemisimple hn2 (by exact hs1.2)` as an intermediate fact. Conclude with `(Matrix.toLinAlgEquiv' (R := k) (n := Fin n)).injective (this.trans (map_zero _).symm)`. Conclude with `Subtype.ext (Prod.ext e1 e2)⟩`. Set `ρ : R →ₐ[k] Module.End k (Fin n → k)` to `(Matrix.toLinAlgEquiv' (R := k) (n := Fin n)).toAlgHom.comp ((AlgHom.fst k _ _).comp R.val)`. Set `ρ' : R →ₐ[k] Module.End k (Fin n → k)` to `(Matrix.toLinAlgEquiv' (R := k) (n := Fin n)).toAlgHom.comp ((AlgHom.snd k _ _).comp R.val)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hρ : ∀ r : R, ρ r = Matrix.toLin' (r : Matrix (Fin n) (Fin n) k × Matrix (Fin n) (Fin n) k).1` using `fun r => rfl`. Establish `hρ' : ∀ r : R, ρ' r = Matrix.toLin' (r : Matrix (Fin n) (Fin n) k × Matrix (Fin n) (Fin n) k).2` using `fun r => rfl`. Establish `htrace : ∀ r, LinearMap.trace k _ (ρ r) = LinearMap.trace k _ (ρ' r)`. Introduce `r`. Rewrite using `[hρ, hρ', Matrix.trace_toLin'_eq, Matrix.trace_toLin'_eq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Take `⟨P, hP⟩` from `hform r r.2`. Rewrite using `[hP]`. Conclude with `htrP P`. Take `⟨φ, hφ⟩` from `hiso n R ρ ρ' htrace`. Set `A : Matrix (Fin n) (Fin n) k` to `LinearMap.toMatrix' (φ : (Fin n → k) →ₗ[k] (Fin n → k))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Set `B : Matrix (Fin n) (Fin n) k` to `LinearMap.toMatrix' (φ.symm : (Fin n → k) →ₗ[k] (Fin n → k))`. Establish `hAB : A * B = 1`. Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Use extensionality with `v : 1`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hBA : B * A = 1`. Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Use extensionality with `v : 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Set `g : GL (Fin n) k` to `⟨A, B, hAB, hBA⟩`. Establish `hint : ∀ x ∈ R, A * x.1 = x.2 * A`. Introduce `x hx`. Establish `hc : (φ : (Fin n → k) →ₗ[k] (Fin n → k)).comp (Matrix.toLin' x.1) = (Matrix.toLin' x.2).comp (φ : (Fin n → k) →ₗ[k] (Fin n → k))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `hφ ⟨x, hx⟩ v` as an intermediate fact. Rewrite `this` using `[hρ, hρ']`. Simplify using `using this`. Use `congrArg LinearMap.toMatrix' hc` as an intermediate fact.
-
-Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_toLin']`. Conclude with `this`. Use `⟨g, fun a ha => ?_, ?_⟩` and prove the remaining obligations. Use `hint (a, a) (Algebra.subset_adjoin (Or.inl ⟨a, ha, rfl⟩))` as an intermediate fact. Conclude with `this.symm`.
-
-Establish `h1` using `hint (s, s') (Algebra.subset_adjoin (Or.inr rfl)) show A * s * B = s'`. Rewrite using `[h1, Matrix.mul_assoc, hAB, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem conj_of (hiso : IsoOfTrace k) : Conj k := by
   intro n Z hZ s s' hs hs' hss hss' htr

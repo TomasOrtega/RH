@@ -16,11 +16,11 @@ open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 
 /- English proof (translation)
-Introduce `F _ _ _ y`. Establish `h` using `trace_eq_sum_embeddings (K := ℚ) (L := F) ℂ (x := y)`. Rewrite using `[show ((Algebra.trace ℚ F y : ℚ) : ℂ) = algebraMap ℚ ℂ (Algebra.trace ℚ F y) from rfl, h]`. Use `Fintype.sum_bijective (fun i : F →+* ℝ ↦ (Complex.ofRealHom.comp i).toRatAlgHom) ⟨?_, ?_⟩ _ _ ?_` and prove the remaining obligations. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `z`. Use `congrArg (fun σ : F →ₐ[ℚ] ℂ ↦ σ z) hij` as an intermediate fact. Simplify using `using this`. Introduce `σ`. Establish `hσ` using `IsTotallyReal.complexEmbedding_isReal (K := F) σ.toRingHom`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨ComplexEmbedding.IsReal.embedding hσ, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Simplify using `[ComplexEmbedding.IsReal.coe_embedding_apply]`. Introduce `i`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.HilbFam.sum_realEmb_eq_trace : ∀ (F : Type) [Field F] [NumberField F]
     [IsTotallyReal F] (y : F),

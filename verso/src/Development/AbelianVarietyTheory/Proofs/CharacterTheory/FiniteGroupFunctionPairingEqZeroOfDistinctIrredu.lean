@@ -5,13 +5,13 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.BI
 
 /- English proof (translation)
-Introduce `G _ _ a b ha hb hab`. Take `⟨n, ρ, hρ, ha⟩` from `ha`. Take `⟨m, σ, hσ, hb⟩` from `hb`. Use `hρ` as an intermediate fact. Use `hσ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Fintype.ofFinite G` as an intermediate fact. Establish `: Invertible (Nat.card G : ℂ)` using `invertibleOfNonzero (Nat.cast_ne_zero.mpr Nat.card_pos.ne')`. Establish `ha' : a = ρ.character` using `funext fun g => by simp [ha]`. Establish `hb' : b = σ.character` using `funext fun g => by simp [hb]`. Establish `hne : ¬ Nonempty (Representation.Equiv σ ρ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨φ⟩`. Conclude with `hab (by rw [ha', hb', Representation.char_iso φ])`. Establish `h` using `Representation.char_orthonormal ρ σ`. Rewrite `h` using `[if_neg hne]`. Unfold `pair`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_sum_of_fintype, ha', hb']`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pair_eq_zero_of_isIrrChar_ne : ∀ (G : Type) [Group G] [Finite G] (a b : G → ℂ),
     IsIrrChar ℂ ℂ a → IsIrrChar ℂ ℂ b → a ≠ b → pair a b = 0 := by

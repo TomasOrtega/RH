@@ -15,9 +15,9 @@ private theorem box_apply (ρ : Representation ℂ G W) (τ : Representation ℂ
     box ρ τ (g, h) = TensorProduct.map (ρ g) (τ h) := rfl
 
 /- English proof (translation)
-Use `haveI := h`. Break down `eq_bot_or_eq_top (⟨S, fun g _ hx => hS g _ hx⟩ : Subrepresentation ρ) with h1 | h1` into its components or cases. It suffices to derive a contradiction. Apply `h0` to reduce the goal to its premises. Establish `h2 : S = ⊥` using `congrArg Subrepresentation.toSubmodule h1`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[h2]`. Simplify using `using hv`. Conclude with `congrArg Subrepresentation.toSubmodule h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem irr_eq {ρ : Representation ℂ G W} (h : ρ.IsIrreducible) (S : Submodule ℂ W)
     (hS : ∀ g, ∀ v ∈ S, ρ g v ∈ S) {v : W} (hv : v ∈ S) (h0 : v ≠ 0) : S = ⊤ := by
@@ -31,9 +31,9 @@ private theorem irr_eq {ρ : Representation ℂ G W} (h : ρ.IsIrreducible) (S :
   · exact congrArg Subrepresentation.toSubmodule h1
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `haveI := h`. Apply `bot_ne_top (α := Subrepresentation ρ)` to reduce the goal to its premises. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `x`. Establish `hx` using `hc x`. Substitute `hx` using the available equality. Conclude with `⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩`.
+Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_ne {ρ : Representation ℂ G W} (h : ρ.IsIrreducible) : ∃ v : W, v ≠ 0 := by
   by_contra hc
@@ -47,11 +47,11 @@ private theorem exists_ne {ρ : Representation ℂ G W} (h : ρ.IsIrreducible) :
   exact ⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩
 
 /- English proof (translation)
-Use `irr_eq h _ (fun g x hx => ?_) (Submodule.subset_span ⟨1, by simp⟩) hv` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g', rfl⟩` from `hx`. Use `Submodule.subset_span ⟨g * g', ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ρ (g * g') v = _`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem span_orbit {ρ : Representation ℂ G W} (h : ρ.IsIrreducible) {v : W} (hv : v ≠ 0) :
     Submodule.span ℂ (Set.range fun g => ρ g v) = ⊤ := by
@@ -72,17 +72,15 @@ private theorem span_orbit {ρ : Representation ℂ G W} (h : ρ.IsIrreducible) 
     exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Set `e : W → (MonoidAlgebra ℂ G →ₗ[ℂ] W)` to `fun v => (LinearMap.applyₗ v).comp ρ.asAlgebraHom.toLinearMap`. Establish `he : ∀ v a, e v a = ρ.asAlgebraHom a v` using `fun _ _ => rfl`. Establish `hs : Function.Surjective (e v₁)`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← span_orbit h.1 h1, Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨MonoidAlgebra.single g 1, by simp [he]⟩`. Take `⟨s, hsr⟩` from `(e v₁).exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hs)`. Establish `hsr' : ∀ w, e v₁ (s w) = w` using `fun w => LinearMap.congr_fun hsr w`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ : W →ₗ[ℂ] W` to `(e v₂).comp s`. Establish `hφ : ∀ a, φ (e v₁ a) = e v₂ a` using `fun a => by`. Establish `h0 : e v₁ (s (e v₁ a) - a) = 0` using `by rw [map_sub, hsr', sub_self]`. Establish `h2` using `hc _ h0`. Rewrite `h2` using `[← he, map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `key : ∀ g u a, e u (MonoidAlgebra.single g 1 * a) = ρ g (e u a)` using `fun g u a => by`. Simplify using `[he, map_mul]`. Establish `hI : Intw ρ ρ φ` using `fun g v => by`. Take `⟨a, rfl⟩` from `hs v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← key, hφ, hφ, key]`. Take `⟨c, hc'⟩` from `h.2 φ hI`. Apply `hn c` to reduce the goal to its premises. Establish `h3` using `hφ 1`. Rewrite `h3` using `[hc']`.
-
-Simplify `h3.symm` using `[he]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem sep {ρ : Representation ℂ G W} (h : AbsIrr ρ) {v₁ v₂ : W} (h1 : v₁ ≠ 0)
     (hn : ∀ c : ℂ, v₂ ≠ c • v₁) :
@@ -122,7 +120,7 @@ private theorem E_tmul {ι : Type} [DecidableEq ι] (b : Module.Basis ι ℂ W')
   simp
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v u => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem E_map {ι : Type} [DecidableEq ι] (b : Module.Basis ι ℂ W') (T : Module.End ℂ W) (x : W ⊗[ℂ] W') (j : ι) :
     TensorProduct.equivFinsuppOfBasisRight (M := W) b (TensorProduct.map T LinearMap.id x) j =
@@ -133,23 +131,19 @@ private theorem E_map {ι : Type} [DecidableEq ι] (b : Module.Basis ι ℂ W') 
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace ℂ W'`. Set `E` to `TensorProduct.equivFinsuppOfBasisRight (M := W) b`. Establish `hE : ∀ (T : Module.End ℂ W) x j, E (TensorProduct.map T LinearMap.id x) j = T (E x j)` using `fun T x j => E_map b T x j`. Take `⟨x₀, hx₀, hx₀0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Set `P : ℕ → Prop` to `fun n => ∃ x ∈ U, x ≠ 0 ∧ (E x).support.card = n`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hP : ∃ n, P n` using `⟨_, x₀, hx₀, hx₀0, rfl⟩`. Take `⟨x, hxU, hx0, hxc⟩` from `Nat.find_spec hP`. Establish `hmin : ∀ y ∈ U, y ≠ 0 → (E x).support.card ≤ (E y).support.card` using `fun y hy hy0 => by`. Rewrite using `[hxc]`. Conclude with `Nat.find_min' hP ⟨y, hy, hy0, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hEx : E x ≠ 0` using `fun h0 => hx0 (E.map_eq_zero_iff.1 h0)`. Take `⟨j₀, hj₀⟩` from `Finsupp.support_nonempty_iff.2 hEx`. Establish `hv : E x j₀ ≠ 0` using `Finsupp.mem_support_iff.1 hj₀`. Establish `hline : ∀ j, ∃ c : ℂ, E x j = c • E x j₀`. Introduce `j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Take `⟨a, ha1, ha2⟩` from `sep h hv hc`. Establish `hyU` using `hU a x hxU`. Establish `hy0 : TensorProduct.map (ρ.asAlgebraHom a) LinearMap.id x ≠ 0` using `fun h0 => ha2 (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hE, h0]`. Use the proof step `simp)`. Establish `hsub : (E (TensorProduct.map (ρ.asAlgebraHom a) LinearMap.id x)).support ⊂ (E x).support`. Use `(Finset.ssubset_iff_of_subset ?_).2 ⟨j₀, hj₀, ?_⟩` and prove the remaining obligations. Introduce `i hi`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hi`, the goal using `[Finsupp.mem_support_iff]`. Introduce `h0`. Apply `hi` to reduce the goal to its premises. Rewrite using `[hE, h0, map_zero]`. Rewrite using `[Finsupp.mem_support_iff, not_not, hE]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ha1`. Conclude with `absurd (hmin _ hyU hy0) (not_le.2 (Finset.card_lt_card hsub))`. Use `choose c hc using hline`. Set `cf : _ →₀ ℂ` to `Finsupp.onFinset (E x).support c (fun j hj => by`. Rewrite using `[Finsupp.mem_support_iff, hc j]`.
-
-Conclude with `smul_ne_zero hj hv)`. Establish `hx : E x j₀ ⊗ₜ[ℂ] b.repr.symm cf = x`. Apply `E.injective` to reduce the goal to its premises. Use `ext1 j`. Rewrite using `[show E (E x j₀ ⊗ₜ[ℂ] b.repr.symm cf) j = cf j • E x j₀ from E_tmul b _ cf j]`.
-
-Conclude with `(hc j).symm`. Use `⟨E x j₀, b.repr.symm cf, hv, fun h0 => hx0 ?_, by rw [hx]; exact hxU⟩` and prove the remaining obligations. Rewrite using `[← hx, h0, TensorProduct.tmul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_pure {ρ : Representation ℂ G W} (h : AbsIrr ρ) (U : Submodule ℂ (W ⊗[ℂ] W'))
     (hU : ∀ a : MonoidAlgebra ℂ G, ∀ x ∈ U, TensorProduct.map (ρ.asAlgebraHom a) LinearMap.id x ∈ U)
@@ -201,13 +195,11 @@ private theorem exists_pure {ρ : Representation ℂ G W} (h : AbsIrr ρ) (U : S
   rw [← hx, h0, TensorProduct.tmul_zero]
 
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace ℂ W'`. Set `E` to `TensorProduct.equivFinsuppOfBasisRight (M := W) b`. Establish `hE : ∀ (T : Module.End ℂ W) x j, E (TensorProduct.map T LinearMap.id x) j = T (E x j)` using `fun T x j => E_map b T x j`. Establish `hc : ∀ j, ∃ c : ℂ, ∀ w, E (Φ w) j = c • w`. Introduce `j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `h.2 ((Finsupp.lapply j).comp (E.toLinearMap.comp Φ)) (fun g v => by show E (Φ (ρ g v)) j = ρ g (E (Φ v) j)`. Rewrite using `[hΦ, hE])`. Conclude with `⟨c, fun w => LinearMap.congr_fun hc w⟩`. Use `choose c hc using hc`. Take `⟨w₀, hw₀⟩` from `exists_ne h.1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `cf : _ →₀ ℂ` to `Finsupp.onFinset (E (Φ w₀)).support c (fun j hj => by`. Rewrite using `[Finsupp.mem_support_iff, hc j]`. Conclude with `smul_ne_zero hj hw₀)`. Use `⟨b.repr.symm cf, fun w => E.injective ?_⟩` and prove the remaining obligations. Use `ext1 j`.
-
-Rewrite using `[show E (w ⊗ₜ[ℂ] b.repr.symm cf) j = cf j • w from E_tmul b _ cf j]`. Conclude with `hc j w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem line_of {ρ : Representation ℂ G W} (h : AbsIrr ρ) (Φ : W →ₗ[ℂ] W ⊗[ℂ] W')
     (hΦ : ∀ g w, Φ (ρ g w) = TensorProduct.map (ρ g) LinearMap.id (Φ w)) :
@@ -236,37 +228,33 @@ private theorem line_of {ρ : Representation ℂ G W} (h : AbsIrr ρ) (Φ : W �
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `G H W W' _ _ _ _ _ _ ρ τ hρ hτ`. Take `⟨w₀, hw₀⟩` from `exists_ne hρ.1`. Take `⟨u₀, hu₀⟩` from `exists_ne hτ.1`. Choose the witnesses or unpack the hypotheses as in `⟨φ₀, hφ₀⟩ : ∃ φ₀ : W →ₗ[ℂ] ℂ, φ₀ w₀ = 1 := by`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ W, φ w₀ ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hw₀ ((Module.forall_dual_apply_eq_zero_iff ℂ w₀).1 hc)`. Conclude with `⟨(φ w₀)⁻¹ • φ, by simp [hφ]⟩`. Set `ct : W ⊗[ℂ] W' →ₗ[ℂ] W'` to `(TensorProduct.lid ℂ W').toLinearMap.comp (TensorProduct.map φ₀ LinearMap.id)`.
+Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hct : ∀ v u, ct (v ⊗ₜ[ℂ] u) = φ₀ v • u` using `fun v u => by simp [ct]`. Establish `hct₀ : ∀ u, ct (w₀ ⊗ₜ[ℂ] u) = u` using `fun u => by rw [hct, hφ₀, one_smul]`. Establish `hne : w₀ ⊗ₜ[ℂ] u₀ ≠ 0` using `fun h0 => hu₀ (by rw [← hct₀ u₀, h0, map_zero])`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI : Nontrivial (Subrepresentation (box ρ τ)) := ⟨⊥, ⊤, fun h => hne (by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (⊥ : Submodule ℂ (W ⊗[ℂ] W')) = ⊤` using `congrArg Subrepresentation.toSubmodule h`. Establish `h2 : w₀ ⊗ₜ[ℂ] u₀ ∈ (⊥ : Submodule ℂ (W ⊗[ℂ] W'))`. Rewrite using `[h1]`. Conclude with `Submodule.mem_top`. Conclude with `(Submodule.mem_bot ℂ).1 h2)⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `{ eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Distinguish the cases in `hS : S.toSubmodule = ⊥`. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective hS)`. Use `Or.inr (Subrepresentation.toSubmodule_injective ?_)` and prove the remaining obligations. Establish `hU : ∀ a : MonoidAlgebra ℂ G, ∀ x ∈ S.toSubmodule, TensorProduct.map (ρ.asAlgebraHom a) LinearMap.id x ∈ S.toSubmodule`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a`. Proceed by induction on `a using MonoidAlgebra.induction_linear with`. Consider the case `zero`. Introduce `x _`. Simplify using the standard rewrite rules.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add p q hp hq`. Introduce `x hx`. Rewrite using `[map_add, TensorProduct.map_add_left]`. Conclude with `add_mem (hp x hx) (hq x hx)`. Consider the case `single g c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `h1` using `S.apply_mem_toSubmodule (g, 1) hx`. Rewrite `h1` using `[box_apply, map_one]`. Rewrite using `[Representation.asAlgebraHom_single, TensorProduct.map_smul_left]`. Conclude with `S.toSubmodule.smul_mem c h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨v, u, hv, hu, hm⟩` from `exists_pure hρ S.toSubmodule hU hS`. Establish `h1 : ∀ w, w ⊗ₜ[ℂ] u ∈ S.toSubmodule` using `fun w => by`. Establish `h2 : (⊤ : Submodule ℂ W) ≤ S.toSubmodule.comap ((TensorProduct.mk ℂ W W').flip u)`. Rewrite using `[← span_orbit hρ.1 hv, Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h3` using `S.apply_mem_toSubmodule (g, 1) hm`. Simplify `h3` using `[box_apply]`. Conclude with `h2 Submodule.mem_top`. Establish `h4 : ∀ w u', w ⊗ₜ[ℂ] u' ∈ S.toSubmodule` using `fun w u' => by`. Establish `h2 : (⊤ : Submodule ℂ W') ≤ S.toSubmodule.comap (TensorProduct.mk ℂ W W' w)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← span_orbit hτ.1 hu, Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Establish `h3` using `S.apply_mem_toSubmodule (1, g) (h1 w)`. Simplify `h3` using `[box_apply]`. Conclude with `h2 Submodule.mem_top`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `eq_top_iff.2 ?_` and prove the remaining obligations. Rewrite using `[← TensorProduct.span_tmul_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨w, u', rfl⟩`. Conclude with `h4 w u'`. Introduce `f hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hf₁ : ∀ u, ∃ u' : W', ∀ w, f (w ⊗ₜ[ℂ] u) = w ⊗ₜ[ℂ] u'` using `fun u => by`. Use `line_of hρ (f.comp ((TensorProduct.mk ℂ W W').flip u)) fun g w => ?_` and prove the remaining obligations. Establish `h1` using `hf (g, 1) (w ⊗ₜ[ℂ] u)`. Simplify using `only [box_apply, map_one, TensorProduct.map_tmul, Module.End.one_apply] at h1`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose k hk using hf₁`. Set `γ : W' →ₗ[ℂ] W'` to `ct.comp (f.comp (TensorProduct.mk ℂ W W' w₀))`. Establish `hγ : ∀ u, γ u = k u` using `fun u => by show ct (f (w₀ ⊗ₜ[ℂ] u)) = k u`. Rewrite using `[hk, hct₀]`. Establish `hI : Intw τ τ γ` using `fun h u => by`.
-
-Establish `h1` using `hf (1, h) (w₀ ⊗ₜ[ℂ] u)`. Simplify using `only [box_apply, map_one, TensorProduct.map_tmul, Module.End.one_apply, hk] at h1`. Rewrite using `[hγ, hγ]`. Establish `h2` using `congrArg ct h1`. Simplify `h2` using `[hct₀]`.
-
-Take `⟨a, ha⟩` from `hτ.2 γ hI`. Use `⟨a, TensorProduct.ext' fun w u => ?_⟩` and prove the remaining obligations. Rewrite using `[hk, ← hγ, ha]`. Simplify using `[TensorProduct.tmul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem boxIrr : BoxIrr := by
   intro G H W W' _ _ _ _ _ _ ρ τ hρ hτ

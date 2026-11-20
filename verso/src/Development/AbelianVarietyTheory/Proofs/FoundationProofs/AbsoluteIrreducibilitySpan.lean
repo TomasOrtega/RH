@@ -8,29 +8,27 @@ namespace GlobalTheory.Proof.AbsoluteIrreducibilitySpan
 open Formalism.MainNotions.N in
 
 /- English proof (translation)
-Use `set K := AlgebraicClosure k`. Establish `htop : Submodule.span K ((fun v : Fin a → k => (algebraMap k K) ∘ v) '' ((⊤ : Submodule k (Fin a → k)) : Set (Fin a → k))) = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun K (Fin a)).span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨j, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Pi.single j 1, trivial, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Distinguish the cases in `hx : x = j`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hx]`. Unfold `AbsIrrSub`. Rewrite using `[htop]`. Establish `: Nonempty (Fin a)` using `⟨⟨0, ha⟩⟩`. Use `⟨top_ne_bot, fun _ _ _ => trivial, fun W' _ hW => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ X : Matrix (Fin a) (Fin a) k, ∀ v ∈ W', (X.map (algebraMap k K)).mulVec v ∈ W'`. Introduce `X`. Establish `hX : X ∈ Submodule.span k (Set.range M)` using `h ▸ Submodule.mem_top`. Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `hx`. Introduce `v hv`. Establish `h1 : (M g).map (algebraMap k K) = algebraMap k K (c g) • ((mapRep (algebraMap k K) ρ g : GL (Fin a) K) : Matrix (Fin a) (Fin a) K)`. Use extensionality with `p q`. Simplify using `[hM, mapRep]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Matrix.smul_mulVec]`. Conclude with `W'.smul_mem _ (hW g v hv)`. Consider the case `zero => intro v hv`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.add_mulVec]`. Conclude with `W'.add_mem (hx v hv) (hy v hv)`. Consider the case `smul r x _ hx`. Introduce `v hv`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h1 : (r • x).map (algebraMap k K) = algebraMap k K r • x.map (algebraMap k K)`. Use extensionality with `p q`. Simplify using the standard rewrite rules. Rewrite using `[h1, Matrix.smul_mulVec]`. Conclude with `W'.smul_mem _ (hx v hv)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hb : W' = ⊥`. Conclude with `Or.inl hb`. Use `right`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`. Take `⟨b, hb'⟩` from `Function.ne_iff.mp hv0`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff, ← (Pi.basisFun K (Fin a)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `h2` using `W'.smul_mem (v b)⁻¹ (key (Matrix.single j b 1) v hv)`. Establish `hb2 : v b ≠ 0` using `hb'`. Establish `h3 : (v b)⁻¹ • ((Matrix.single j b (1 : k)).map (algebraMap k K)).mulVec v = Pi.basisFun K (Fin a) j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.map_single, map_one, Matrix.single_mulVec]`. Use extensionality with `x`. Distinguish the cases in `hx : x = j`. Substitute `hx` using the available equality. Simplify using `[hb2]`.
-
-Simplify using `[hx]`. Rewrite `h2` using `[h3]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absIrr_of_span {Γ k : Type} [Group Γ] [Field k] {a : ℕ} (ha : 0 < a) (ρ : Γ →* GL (Fin a) k)
     (M : Γ → Matrix (Fin a) (Fin a) k) (c : Γ → k)

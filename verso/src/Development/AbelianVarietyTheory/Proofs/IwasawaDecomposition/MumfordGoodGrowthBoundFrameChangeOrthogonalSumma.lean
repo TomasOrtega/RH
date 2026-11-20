@@ -18,7 +18,7 @@ namespace GlobalTheory.FrameGood
 open ReciprocityTheory.L2DbarEstimates (V)
 
 /- English proof (translation)
-The claim follows from `h.entry (e i) (e j) det := by simpa [det_submatrix_equiv_self] using h.det form a i j := by simpa [GlobalTheory.HermFrame.conn_submatrix_equiv] using h.form a (e i) (e j) dbar a b i j := by simpa [GlobalTheory.HermFrame.curv_submatrix_equiv] using h.dbar a b (e i) (e j) del a b i …`.
+A detailed English derivation is pending.
 -/
 theorem goodBound_submatrix {n : ℕ} {K L : Type} [Fintype K] [DecidableEq K] [Fintype L] [DecidableEq L]
     (e : K ≃ L) {S : Finset (Fin n)} {c : ℝ} {N : ℕ} {G : V n → Matrix L L ℂ} {v : V n}
@@ -35,27 +35,23 @@ theorem goodBound_submatrix {n : ℕ} {K L : Type} [Fintype K] [DecidableEq K] [
     exact h.del a b (e i) (e j)
 
 /- English proof (translation)
-Introduce `n g S W G₀ c N ι _ _ m Q r hW hr hQ hcard hind hG₀ horth`. Set `K` to `Σ τ, Fin (m τ)`. Set `e : K ≃ Fin g` to `Fintype.equivFinOfCardEq hcard`. Set `P : V n → Matrix K K ℂ` to `fun u => Matrix.of fun p k => Q p.1 u p.2 (e k)`. Set `G₁ : V n → Matrix K K ℂ` to `fun u => (G₀ u).submatrix e e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hP : ∀ i k, DifferentiableOn ℂ (fun u => P u i k) (Metric.ball 0 r)` using `fun i k => hQ i.1 i.2 (e k)`. Establish `hP0 : IsUnit (P 0).det`. Rewrite using `[← isUnit_iff_isUnit_det, ← linearIndependent_rows_iff_isUnit]`. Establish `h2` using `hind.map' _ (LinearEquiv.ker (LinearEquiv.funCongrLeft ℂ ℂ e))`. Establish `h3 : (P 0).row = ⇑(LinearEquiv.funCongrLeft ℂ ℂ e) ∘ fun p => Q p.1 0 p.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p k`. Both sides reduce to the same expression. Rewrite using `[h3]`. Conclude with `h2`. Establish `hG₁ : ∀ v ∈ W, (G₁ v).det ≠ 0 ∧ (∀ i k, ContDiffAt ℝ 2 (fun u => G₁ u i k) v) ∧ GoodBound S c N G₁ v`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Take `⟨h1, h2, h3⟩` from `hG₀ v hv`. Conclude with `⟨by simpa [G₁, det_submatrix_equiv_self] using h1, fun i k => h2 (e i) (e k), goodBound_submatrix e h3⟩`. Take `⟨r₁, hr₁, -, B, hB⟩` from `GlobalTheory.T.holomorphicFrameChange_local_bounds n K P r hr hP hP0`. Take `⟨c₁, hc₁⟩` from `GlobalTheory.T.mumfordGoodGrowthBound_holomorphic_frameChange n K S c N B`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Gb : V n → Matrix K K ℂ` to `fun u => blockDiagonal' fun τ => Q τ u * G₀ u * (Q τ u)ᴴ`. Take `⟨c', N', h3⟩` from `GlobalTheory.T.mumfordGoodGrowthBound_blocks_of_blockDiagonal n S ι m (fun τ u => Q τ u * G₀ u * (Q τ u)ᴴ) c₁ N`. Use `⟨min r₁ (1 / 2), by positivity, c', N', fun v hv hvr τ => ?_⟩` and prove the remaining obligations. Establish `hv1 : ‖v‖ < r₁` using `hvr.trans_le (min_le_left _ _)`. Establish `hv2 : ‖v‖ < 1 / 2` using `hvr.trans_le (min_le_right _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hPu, hPc, hPd, hPb, hPib, hPdb, hPddb⟩` from `hB v hv1`. Take `⟨hdet, hC, hgb⟩` from `hG₁ v hv`. Take `⟨d1, c1, g1⟩` from `hc₁ G₁ P v (by linarith) hdet hC hPc hPd hPu hPb hPib hPdb hPddb hgb`. Establish `heq : ∀ u ∈ W, P u * G₁ u * (P u)ᴴ = Gb u`. Introduce `u hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `⟨τ, i⟩ ⟨τ', j⟩`. Establish `key : (P u * G₁ u * (P u)ᴴ) ⟨τ, i⟩ ⟨τ', j⟩ = (Q τ u * G₀ u * (Q τ' u)ᴴ) i j`. Simplify using `only [P, G₁, mul_apply, conjTranspose_apply, of_apply, submatrix_apply]`. Conclude with `Fintype.sum_equiv e _ _ fun l => by`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `Fintype.sum_equiv e _ _ fun k => rfl`. Distinguish the cases in `hτ : τ = τ'`. Substitute `hτ` using the available equality. Rewrite using `[key]`. Simplify using `only [Gb, blockDiagonal'_apply_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[key, horth u hu τ τ' hτ]`. Simplify using `only [Gb, blockDiagonal'_apply_ne _ _ _ hτ, Matrix.zero_apply]`. Establish `hev : (fun u => P u * G₁ u * (P u)ᴴ) =ᶠ[𝓝 v] Gb` using `Filter.eventually_of_mem (hW.mem_nhds hv) heq`. Use `h3 v (fun a _ => (PiLp.norm_apply_le v a).trans_lt hv2) ?_ ?_ ?_ τ` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Gb v).det ≠ 0`.
-
-Rewrite using `[← heq v hv]`. Conclude with `d1`. Introduce `p q`. Conclude with `(c1 p q).congr_of_eventuallyEq (hev.mono fun u hu => by`. Conclude with `(congrFun (congrFun hu p) q).symm)`.
-
-Conclude with `GlobalTheory.T.mumfordGoodGrowthBound_congr_germ_gram n K S c₁ N _ Gb v hev g1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem frame_summands_goodBound : ∀ (n g : ℕ) (S : Finset (Fin n)) (W : Set (ReciprocityTheory.L2DbarEstimates.V n)) (G₀ : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin g) (Fin g) ℂ) (c : ℝ) (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (m : ι → ℕ) (Q : ∀ τ : ι, ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin (m τ)) (Fin g) ℂ) (r : ℝ), IsOpen W → 0 < r → (∀ τ i k, DifferentiableOn ℂ (fun u => Q τ u i k) (Metric.ball 0 r)) → Fintype.card (Σ τ, Fin (m τ)) = g → LinearIndependent ℂ (fun p : Σ τ, Fin (m τ) => Q p.1 0 p.2) → (∀ v ∈ W, (G₀ v).det ≠ 0 ∧ (∀ i k, ContDiffAt ℝ 2 (fun u => G₀ u i k) v) ∧ GlobalTheory.GoodMetric.GoodBound S c N G₀ v) → (∀ v ∈ W, ∀ τ τ', τ ≠ τ' → Q τ v * G₀ v * (Q τ' v)ᴴ = 0) → ∃ r' : ℝ, 0 < r' ∧ ∃ (c' : ℝ) (N' : ℕ), ∀ v ∈ W, ‖v‖ < r' → ∀ τ, GlobalTheory.GoodMetric.GoodBound S c' N' (fun u => Q τ u * G₀ u * (Q τ u)ᴴ) v := by
   intro n g S W G₀ c N ι _ _ m Q r hW hr hQ hcard hind hG₀ horth

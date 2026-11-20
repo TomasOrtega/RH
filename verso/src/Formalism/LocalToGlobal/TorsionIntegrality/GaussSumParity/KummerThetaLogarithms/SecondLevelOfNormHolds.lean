@@ -21,14 +21,14 @@ section Alg
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, lgF, PowerSeries.coeff_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem lgF_zero_lemma (l : ℕ) : PowerSeries.constantCoeff (lgF K l) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, lgF, PowerSeries.coeff_mk]
   simp
 
 /- English proof (translation)
-Establish `h1 : l ^ 2 ≠ 1` using `by nlinarith`. Rewrite using `[lgF, PowerSeries.coeff_mk]`. Simplify using `[Finset.sum_range_succ, h1, h1.symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem lgF_one_lemma_2 {l : ℕ} (hl : 2 ≤ l) : PowerSeries.coeff 1 (lgF K l) = 1 := by
   have h1 : l ^ 2 ≠ 1 := by nlinarith
@@ -36,11 +36,9 @@ private theorem lgF_one_lemma_2 {l : ℕ} (hl : 2 ≤ l) : PowerSeries.coeff 1 (
   simp [Finset.sum_range_succ, h1, h1.symm]
 
 /- English proof (translation)
-Establish `h0` using `lgF_zero_lemma (K := K) l`. Establish `h1` using `lgF_one_lemma_2 (K := K) hl`. Establish `hu : IsUnit (PowerSeries.coeff 1 (lgF K l))` using `by rw [h1]; exact isUnit_one`. Establish `he : expF K l = (lgF K l).substInvOfIsUnit hu` using `by rw [expF, dif_pos hu]`. Use `⟨h0, h1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he]`. Conclude with `PowerSeries.constantCoeff_substInvOfIsUnit _ _`. Rewrite using `[he]`. Conclude with `PowerSeries.subst_substInvOfIsUnit_left _ h0 hu`. Rewrite using `[he]`.
-
-Conclude with `PowerSeries.subst_substInvOfIsUnit_right _ h0 hu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logPair {l : ℕ} (hl : 2 ≤ l) : C.IsLogPair (lgF K l) (expF K l) := by
   have h0 := lgF_zero_lemma (K := K) l
@@ -59,9 +57,9 @@ section Cont
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Apply `MvPowerSeries.coeff_of_lt_order` to reduce the goal to its premises. Establish `hi` using `MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero i hx`. Establish `hj` using `MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero j hy`. Establish `hm` using `MvPowerSeries.le_order_mul (f := x ^ i) (g := y ^ j)`. Break down `h with h | h` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem coeff_mul_pow_zero {τ : Type} {x y : MvPowerSeries τ K}
     (hx : MvPowerSeries.constantCoeff x = 0) (hy : MvPowerSeries.constantCoeff y = 0)
@@ -82,15 +80,15 @@ theorem coeff_mul_pow_zero {τ : Type} {x y : MvPowerSeries τ K}
       _ ≤ _ := hm
 
 /- English proof (translation)
-Introduce `n`. Establish `key : ∀ t, MvPowerSeries.coeff n (MvPowerSeries.subst ![a t, b t] f) = ∑ d ∈ (Finset.range (n.degree + 1) ×ˢ Finset.range (n.degree + 1)).image (fun p : ℕ × ℕ => Finsupp.equivFunOnFinite.symm ![p.1, p.2]), MvPowerSeries.coeff d f • MvPowerSeries.coeff n (a t ^ d 0 * b t ^ d 1)`. Introduce `t`. Apply the tactic sequence `have hS : MvPowerSeries.HasSubst ![a t, b t] := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by fin_cases s <;> simp [ha0, hb0])`. Rewrite using `[MvPowerSeries.coeff_subst hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : ∀ d : Fin 2 →₀ ℕ, (d.prod fun s e => (![a t, b t] s) ^ e) = a t ^ d 0 * b t ^ d 1`. Introduce `d`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fin.prod_univ_two]`. Both sides reduce to the same expression. Simplify using `only [hp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`. Rewrite using `[Finset.mem_coe]`. Assume the negation of the conclusion as `hne`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hd` to reduce the goal to its premises. Establish `hlt : n.degree < d 0 ∨ n.degree < d 1`. Assume the negation of the conclusion as `h'`. Use `push_neg at h'`. Apply the tactic sequence `exact hne (Finset.mem_image.2 ⟨(d 0, d 1), Finset.mem_product.2 ⟨Finset.mem_range.2 (Nat.lt_succ_of_le h'.1), Finset.mem_range.2 (Nat.lt_succ_of_le h'.2)⟩, by ext i; fin_cases i <;> rfl⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_mul_pow_zero (ha0 t) (hb0 t) hlt, smul_zero]`. Rewrite using `[show (fun t => MvPowerSeries.coeff n (MvPowerSeries.subst ![a t, b t] f)) = _ from funext key]`. Use `continuous_finset_sum _ fun d _ => ?_` and prove the remaining obligations. Conclude with `(((ha.pow (d 0)).mul (hb.pow (d 1))) n).const_smul (MvPowerSeries.coeff d f)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coeffCont_subst2 [TopologicalSpace K] [IsTopologicalRing K] {T : Type} [TopologicalSpace T]
     {τ : Type} {a b : T → MvPowerSeries τ K} (ha : C.Clo.CoeffCont a) (hb : C.Clo.CoeffCont b)
@@ -136,7 +134,7 @@ def Osub (σ : K →+* K) : Subring K :=
   Formalism.G.unitBall K ⊓ (σ.comp σ).eqLocus (RingHom.id K)
 
 /- English proof (translation)
-Simplify using `only [Osub, Subring.mem_inf, RingHom.mem_eqLocus, RingHom.comp_apply, RingHom.id_apply]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Osub {σ : K →+* K} {a : K} : a ∈ Osub σ ↔ ‖a‖ ≤ 1 ∧ σ (σ a) = a := by
   simp only [Osub, Subring.mem_inf, RingHom.mem_eqLocus, RingHom.comp_apply, RingHom.id_apply]
@@ -151,7 +149,7 @@ theorem mem_Osub {σ : K →+* K} {a : K} : a ∈ Osub σ ↔ ‖a‖ ≤ 1 ∧ 
   star_add a b := Subtype.ext (map_add σ a.1 b.1)
 
 /- English proof (translation)
-Introduce `h`. Rewrite `ha` using `[h, norm_zero]`. Conclude with `zero_ne_one ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_norm {a : K} (ha : ‖a‖ = 1) : a ≠ 0 := by
   intro h
@@ -159,7 +157,7 @@ theorem ne_zero_of_norm {a : K} (ha : ‖a‖ = 1) : a ≠ 0 := by
   exact zero_ne_one ha
 
 /- English proof (translation)
-Simplify `IsUltrametricDist.norm_add_le_max x (-y)` using `[sub_eq_add_neg, norm_neg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_sub_le (x y : K) : ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
   simpa [sub_eq_add_neg, norm_neg] using IsUltrametricDist.norm_add_le_max x (-y)
@@ -171,9 +169,9 @@ def unitO {σ : K →+* K} {a : K} (ha : ‖a‖ = 1) (hs : σ (σ a) = a) : (Os
   inv_val := Subtype.ext (inv_mul_cancel₀ (ne_zero_of_norm ha))
 
 /- English proof (translation)
-Establish `h1 : ‖((u : Osub σ) : K)‖ ≤ 1` using `(mem_Osub.1 (u : Osub σ).2).1`. Establish `h2 : ‖(((u⁻¹ : (Osub σ)ˣ) : Osub σ) : K)‖ ≤ 1` using `(mem_Osub.1 ((u⁻¹ : (Osub σ)ˣ) : Osub σ).2).1`. Establish `h3 : ((u : Osub σ) : K) * (((u⁻¹ : (Osub σ)ˣ) : Osub σ) : K) = 1`. Conclude with `congrArg Subtype.val u.mul_inv`. Establish `h4` using `congrArg norm h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[norm_mul, norm_one]`. Establish `h5` using `mul_le_mul_of_nonneg_left h2 (norm_nonneg ((u : Osub σ) : K))`. Rewrite `h5` using `[h4, mul_one]`. Conclude with `le_antisymm h1 h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_unitO {σ : K →+* K} (u : (Osub σ)ˣ) : ‖((u : Osub σ) : K)‖ = 1 := by
   have h1 : ‖((u : Osub σ) : K)‖ ≤ 1 := (mem_Osub.1 (u : Osub σ).2).1
@@ -189,11 +187,11 @@ theorem norm_unitO {σ : K →+* K} (u : (Osub σ)ˣ) : ‖((u : Osub σ) : K)�
 variable [CharZero K]
 
 /- English proof (translation)
-Take `⟨hp, h2p, hpn, -, -⟩` from `hU`. Establish `hle : ‖(2 : K)‖ ≤ 1` using `by exact_mod_cast IsUltrametricDist.norm_natCast_le_one K 2`. Take `⟨m, hm⟩ : Odd l` from `hp.odd_of_ne_two (by omega)`. Establish `h1 : (1 : K) = (l : K) - 2 * (m : K)` using `by rw [hm]; push_cast; ring`. Establish `h3 : (1 : ℝ) ≤ max ‖(l : K)‖ ‖2 * (m : K)‖`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[hpn, norm_mul]`. Establish `hm1 : ‖(m : K)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one K m`. Establish `hl : ((l : ℕ) : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast (by omega : 1 < l))`. Establish `h4` using `mul_le_of_le_one_right (norm_nonneg (2 : K)) hm1`.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `le_max_iff.1 h3 with h | h` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_two {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) : ‖(2 : K)‖ = 1 := by
   obtain ⟨hp, h2p, hpn, -, -⟩ := hU
@@ -213,9 +211,9 @@ theorem norm_two {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) : ‖(2 : K)‖ 
   · linarith
 
 /- English proof (translation)
-Rewrite using `[Metric.mem_closure_iff]`. Introduce `ε hε`. Establish `h1 : (1 : ℝ) < l` using `by exact_mod_cast (by have := hU.2.1; omega : 1 < l)`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one hε (inv_lt_one_of_one_lt₀ h1)`. Take `⟨n, hn⟩` from `fixed_is_limit K l σ hU x hx hs k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n, ⟨n, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`. Rewrite `hk` using `[inv_pow]`. Conclude with `lt_of_le_of_lt hn hk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_closure_nat {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) {x : K} (hx : ‖x‖ ≤ 1)
     (hs : σ x = x) : x ∈ closure (Set.range fun n : ℕ => (n : K)) := by
@@ -230,7 +228,7 @@ theorem mem_closure_nat {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) {x : K} (
   exact lt_of_le_of_lt hn hk
 
 /- English proof (translation)
-Conclude with `closure_minimal (Set.range_subset_iff.2 hi) hc (mem_closure_nat hU hx hs)`.
+A detailed English derivation is pending.
 -/
 theorem of_closed_nat {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) {P : K → Prop}
     (hc : IsClosed {z : K | P z}) (hi : ∀ n : ℕ, P (n : K)) {x : K} (hx : ‖x‖ ≤ 1)
@@ -238,7 +236,7 @@ theorem of_closed_nat {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) {P : K → 
   exact closure_minimal (Set.range_subset_iff.2 hi) hc (mem_closure_nat hU hx hs)
 
 /- English proof (translation)
-Conclude with `of_closed_nat hU hc (fun n => by simpa using hi n) hx hs`.
+A detailed English derivation is pending.
 -/
 theorem of_closed_int {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) {P : K → Prop}
     (hc : IsClosed {z : K | P z}) (hi : ∀ n : ℤ, P (n : K)) {x : K} (hx : ‖x‖ ≤ 1)
@@ -246,20 +244,20 @@ theorem of_closed_int {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) {P : K → 
   exact of_closed_nat hU hc (fun n => by simpa using hi n) hx hs
 
 /- English proof (translation)
-Conclude with `⟨hF.1, hF.2.1, lgF_zero_lemma l, lgF_one_lemma_2 hl, hF.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem lawLog {l : ℕ} (hl : 2 ≤ l) {F : MvPowerSeries (Fin 2) K} (hF : IsLawOfLog l F) :
     Formalism.L2.Th1.B.LawLog F (lgF K l) := by
   exact ⟨hF.1, hF.2.1, lgF_zero_lemma l, lgF_one_lemma_2 hl, hF.2.2⟩
 
 /- English proof (translation)
-Establish `hl : 2 ≤ l` using `by have := hU.2.1; omega`. Take `⟨hLP0, -, hLP2, -, hLP4⟩` from `logPair (K := K) hl`. Establish `hgc : MvPowerSeries.constantCoeff (PowerSeries.C α * lgF K l) = 0`. Express the relevant statement in the definitionally equal form `PowerSeries.constantCoeff _ = 0`. Simplify using `[hLP0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `hg : PowerSeries.HasSubst (PowerSeries.C α * lgF K l)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hgc`. Establish `he : PowerSeries.HasSubst (expF K l)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hLP2`. Establish `hmul : IsMul l α (mulS K l α)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPowerSeries.constantCoeff (PowerSeries.subst (PowerSeries.C α * lgF K l) (expF K l)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[PowerSeries.constantCoeff_subst hg]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `d`. Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Simplify using `[hLP2]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[map_pow, hgc, hd.ne']`. Rewrite using `[mulS, ← PowerSeries.subst_comp_subst_apply he hg, hLP4, PowerSeries.subst_X hg]`. Introduce `n`. Conclude with `(mulSpec K l σ hU α).2.2 hα hs _ hmul n`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem endInt {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) {α : K} (hα : ‖α‖ ≤ 1)
     (hs : σ (σ α) = α) : C.EndInt (Formalism.G.unitBall K) (lgF K l) (expF K l) α := by
@@ -285,7 +283,7 @@ theorem endInt {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) {α : K} (hα : �
   exact (mulSpec K l σ hU α).2.2 hα hs _ hmul n
 
 /- English proof (translation)
-Unfold `C.PhNormAt NormRel`. Rewrite using `[Formalism.L2.Th1.C.simeq_iff_congruence K Unit, PowerSeries.smul_eq_C_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phNorm_iff {l : ℕ} {σ : K →+* K} (ph : PowerSeries K) (α : K) :
     C.PhNormAt (Formalism.G.unitBall K) (lgF K l) (expF K l) ph α (σ α) ↔ NormRel l σ ph α := by
@@ -294,11 +292,11 @@ theorem phNorm_iff {l : ℕ} {σ : K →+* K} (ph : PowerSeries K) (α : K) :
   rfl
 
 /- English proof (translation)
-Establish `hα` using `mem_Osub.1 α.2`. Establish `h2` using `norm_two hU`. Break down `lt_or_eq_of_le hα.1 with h | h` into its components or cases. Establish `hn : ‖(α : K) + 1‖ = 1`. Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_one]; exact h.ne), norm_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `max_eq_right h.le`. Use `⟨unitO hn (by simp [hα.2]), unitO (a := -1) (by simp) (by simp), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (α : K) = ((α : K) + 1) + -1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨unitO (a := 2 * (α : K)) (by rw [norm_mul, h2, h, one_mul]) (by simp [hα.2, map_ofNat]), unitO (a := -(α : K)) (by rw [norm_neg, h]) (by simp [hα.2]), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (α : K) = 2 * (α : K) + -(α : K)`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem two_units {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) (α : Osub σ) :
     ∃ u v : (Osub σ)ˣ, α = u + v := by
@@ -319,17 +317,17 @@ theorem two_units {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) (α : Osub σ) 
     ring
 
 /- English proof (translation)
-Establish `hl : 2 ≤ l` using `by have := hU.2.1; omega`. Establish `hLP` using `logPair (K := K) hl`. Establish `hLL` using `lawLog hl hF`. Take `⟨hFeq, hFG, hF1C⟩` from `Formalism.L2.Th1.C.first_level_from_universal_holds K F (lgF K l) (expF K l) ph hLP hLL hph hF1.2.1`. Establish `hFrame : C.Frame (Formalism.G.unitBall K) (lgF K l) (expF K l) ph` using `⟨hLP, hFG, hph⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hFrame, hF1C, hFeq, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have hiso := sigma_isometry K l σ hU`. Establish `hσ1 : ∀ a : K, ‖a‖ ≤ 1 → ‖σ a‖ ≤ 1` using `fun a ha => by rw [hiso a]; exact ha`. Use `letI : StarRing (Osub σ) := starO hσ1`. Establish `hσc : Continuous σ` using `(AddMonoidHomClass.isometry_of_norm σ hiso).continuous`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hcs : Continuous (star : Osub σ → Osub σ)` using `(hσc.comp continuous_subtype_val).subtype_mk _`. Establish `hfix : ∀ z : Osub σ, star z = z → (Osub σ).subtype z ∈ closure (Set.range (fun n : ℤ => (n : K)))` using `fun z hz => by`. Establish `h1 : σ (z : K) = z` using `congrArg Subtype.val hz`. Use `closure_mono (fun y hy => ?_) (mem_closure_nat hU (mem_Osub.1 z.2).1 h1)` and prove the remaining obligations. Take `⟨n, rfl⟩` from `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, by simp⟩`. Establish `hinv2 : (2 : K)⁻¹ ∈ Formalism.G.unitBall K` using `by show ‖(2 : K)⁻¹‖ ≤ 1`. Rewrite using `[norm_inv, norm_two hU, inv_one]`. Apply the tactic sequence `have hu2 : IsUnit (2 : Osub σ) := ⟨unitO (a := 2) (norm_two hU) (by simp [map_ofNat]), Subtype.ext (by show (2 : K) = _; first | rfl | norm_num | push_cast; rfl)⟩`. Establish `hDn : ∀ a ∈ Set.range (fun u : (Osub σ)ˣ => (u : Osub σ)), C.EndInt (Formalism.G.unitBall K) (lgF K l) (expF K l) ((Osub σ).subtype a) ∧ C.PhNormAt (Formalism.G.unitBall K) (lgF K l) (expF K l) ph ((Osub σ).subtype a) ((Osub σ).subtype (star a))`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `a ⟨u, rfl⟩`. Establish `hn` using `norm_unitO u`. Establish `hs` using `(mem_Osub.1 (u : Osub σ).2).2`. Conclude with `⟨endInt hU hn.le hs, (phNorm_iff (l := l) (σ := σ) ph _).2 (hN _ hn hs)⟩`. Establish `key` using `Formalism.L2.Th1.C.endoAll K (Formalism.G.unitBall K) (Formalism.L2.Th1.C.unit_ball_closed K) (lgF K l) (expF K l) ph hFrame hF1C (Osub σ) (Osub σ).subtype continuous_subtype_val hcs hfix hinv2 hu2 (two_units hU) (Set.range (fun u : (Osub σ)ˣ => (u : Osub σ))) (fun u => subset_cl …`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `α hα hs`. Take `⟨-, h2, h3⟩` from `key ⟨α, mem_Osub.2 ⟨hα, hs⟩⟩`. Conclude with `⟨h2, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem all {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) {F : MvPowerSeries (Fin 2) K}
     (hF : IsLawOfLog l F) {ph : PowerSeries K} (hph : PowerSeries.constantCoeff ph = 0)
@@ -385,17 +383,17 @@ end BrC
 
 open BrC in
 /- English proof (translation)
-Introduce `K _ _ _ l σ hU F hF ph hph hF1 hN`. Establish `hl : 2 ≤ l` using `hU.1.two_le`. Establish `hP` using `logPair (K := K) hl`. Establish `hσ : ∀ a : K, ‖a‖ ≤ 1 → ‖σ a‖ ≤ 1` using `(frobSq K l σ hU).2`. Take `⟨hFr, hC1, hFe, hall⟩` from `all hU hF hph hF1 hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, fun α hα hs => (phNorm_iff ph α).1 (hall α hα hs).1, ?_⟩` and prove the remaining obligations. Introduce `α hα hs e e' he he'`. Establish `e1 : e = mulS K l α` using `(mulSpec K l σ hU α).2.1 _ _ he (Pair.isMul_mulF expSpec hl α)`. Establish `e2 : e' = mulS K l (σ α)` using `(mulSpec K l σ hU (σ α)).2.1 _ _ he' (Pair.isMul_mulF expSpec hl (σ α))`. Rewrite using `[e1, e2]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `C.adjoint_universal_form K F _ _ ph α (σ α) hP (lawLog hl hF) hph (endInt hU hα hs) (endInt hU (hσ _ hα) (congrArg σ hs)) (hall α hα hs).2`. Establish `hX : MvPowerSeries.constantCoeff (PowerSeries.X : MvPowerSeries Unit K) = 0` using `PowerSeries.constantCoeff_X`. Establish `h2` using `(hall 2 (norm_two hU).le (by rw [map_ofNat, map_ofNat])).1`. Establish `ev : (fun _ : Fin 2 => (PowerSeries.X : PowerSeries K)) = ![(PowerSeries.X : MvPowerSeries Unit K), PowerSeries.X]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> rfl`. Establish `e3 : C.fadd (lgF K l) (expF K l) (PowerSeries.X : MvPowerSeries Unit K) PowerSeries.X = C.mulBy (lgF K l) (expF K l) 2`. Rewrite using `[C.Pts.mulBy_eq_fmul, ← one_add_one_eq_two, C.Pts.fmul_add hP 1 1 hX, C.Pts.fmul_one hP hX]`. Rewrite using `[ev, hFe, C.Dict.subst_cob hP ph hX hX, C.be0, e3, PowerSeries.X_subst]`. Establish `hsym` using `InverseCommuting.sim_symm ((phNorm_iff ph 2).1 h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Simeq at hsym ⊢`. Rewrite `hsym` using `[map_ofNat]`. Establish `e4 : MvPowerSeries.C (2 : K) * ph - (PowerSeries.subst (C.mulBy (lgF K l) (expF K l) 2) ph - ph - ph) = MvPowerSeries.C ((2 : K) * 2) * ph - PowerSeries.subst (mulS K l 2) ph`. Rewrite using `[map_mul]`. Use `show _ = MvPowerSeries.C (2 : K) * MvPowerSeries.C (2 : K) * ph - PowerSeries.subst (C.mulBy (lgF K l) (expF K l) 2) ph`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e4]`. Conclude with `hsym`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem second_level_of_norm_holds : SecondLevelOfNorm := by
   intro K _ _ _ l σ hU F hF ph hph hF1 hN
@@ -438,17 +436,17 @@ theorem second_level_of_norm_holds : SecondLevelOfNorm := by
 
 open BrC in
 /- English proof (translation)
-Introduce `K _ _ _ l σ hU F hF ph hph hF1 hN κ E _ _ _ c hc hG`. Establish `hl : 2 ≤ l` using `hU.1.two_le`. Establish `hP` using `logPair (K := K) hl`. Establish `hσ : ∀ a : K, ‖a‖ ≤ 1 → ‖σ a‖ ≤ 1` using `(frobSq K l σ hU).2`. Take `⟨hFr, hC1, hFe, hall⟩` from `all hU hF hph hF1 hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcl` using `C.unit_ball_closed K`. Set `_ : StarRing (Osub σ)` to `starO hσ`. Establish `gram : ∀ x x' : Bool × E, ∑ i, star (⟨c i x, mem_Osub.2 (hc i x)⟩ : Osub σ) * (⟨c i x', mem_Osub.2 (hc i x')⟩ : Osub σ) = if x'.1 ≠ x.1 ∧ x'.2 = x.2 then 1 else 0`. Introduce `x x'`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `have e : ((if x'.1 ≠ x.1 ∧ x'.2 = x.2 then 1 else 0 : Osub σ) : K) = if x'.1 ≠ x.1 ∧ x'.2 = x.2 then 1 else 0 := by split_ifs <;> rfl`. Rewrite using `[e, ← hG x' x, AddSubmonoidClass.coe_finsetSum]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `key` using `C.hyperbolicSum K (Formalism.G.unitBall K) _ _ ph hFr (Osub σ) (Osub σ).subtype (fun α => endInt hU α.2.1 α.2.2) (fun z hz => of_closed_int hU (C.binomClosed K _ hcl) (C.intBinomScalar K _) z.2.1 (congrArg Subtype.val hz)) hC1 (fun α => (hall α.1 α.2.1 α.2.2).1) (fun α => (hall α …`. Establish `e1 : ∀ k, combS l (c k) = C.flin (lgF K l) (expF K l) (Sum.elim (fun e => (Osub σ).subtype ⟨c k (false, e), mem_Osub.2 (hc k _)⟩) (fun e => (Osub σ).subtype ⟨c k (true, e), mem_Osub.2 (hc k _)⟩)) (Sum.elim (fun e => (MvPowerSeries.X (false, e) : MvPowerSeries (Bool × E) K)) (fun …`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Unfold `combS C.flin`. Use `congr 1`. Rewrite using `[Fintype.sum_sum_type, Fintype.sum_prod_type, Fintype.sum_bool, add_comm]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e2 : ∀ e : E, MvPowerSeries.subst (fun a : Fin 2 => (MvPowerSeries.X (if a = 0 then (false, e) else (true, e)) : MvPowerSeries (Bool × E) K)) (cob F ph) = C.be0 (lgF K l) (expF K l) ph (MvPowerSeries.X (false, e)) (MvPowerSeries.X (true, e))`. Introduce `e`. Establish `ev : (fun a : Fin 2 => (MvPowerSeries.X (if a = 0 then (false, e) else (true, e)) : MvPowerSeries (Bool × E) K)) = ![MvPowerSeries.X (false, e), MvPowerSeries.X (true, e)]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ev, hFe, C.Dict.subst_cob hP ph (MvPowerSeries.constantCoeff_X _) (MvPowerSeries.constantCoeff_X _)]`. Simplify using `only [e1, e2]`. Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem split_phi : SplitPh := by
   intro K _ _ _ l σ hU F hF ph hph hF1 hN κ E _ _ _ c hc hG
@@ -507,11 +505,11 @@ theorem split_phi : SplitPh := by
 
 open BrC in
 /- English proof (translation)
-Introduce `K _ _ _ l σ hU ph hph S hS α hα`. Establish `hl : 2 ≤ l` using `by have := hU.2.1; omega`. Take `⟨hL0, -, hE0, -, -⟩` from `BrC.logPair (K := K) hl`. Apply the tactic sequence `have hσc : Continuous σ := (AddMonoidHomClass.isometry_of_norm σ (sigma_isometry K l σ hU)).continuous`. Establish `hC` using `Formalism.L2.Th1.C.phNormClosed K (Formalism.G.unitBall K) (Formalism.L2.Th1.C.unit_ball_closed K) (lgF K l) (expF K l) ph hL0 hE0 hph`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC' : IsClosed {a : K | NormRel l σ ph a}`. Establish `h2` using `hC.preimage (continuous_id.prodMk hσc)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Conclude with `(BrC.phNorm_iff (l := l) (σ := σ) ph a).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `closure_minimal (fun a ha => hS a ha) hC'` to reduce the goal to its premises. Rewrite using `[Metric.mem_closure_iff]`. Introduce `ε hε`. Take `⟨a, ha, h⟩` from `hα ε hε`. Conclude with `⟨a, ha, by rw [dist_eq_norm, norm_sub_rev]; exact h⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem norm_units_alt : NormUnits := by
   intro K _ _ _ l σ hU ph hph S hS α hα
@@ -533,29 +531,25 @@ theorem norm_units_alt : NormUnits := by
 
 open BrC in
 /- English proof (translation)
-Introduce `K _ _ _ l σ hU F hF be0 hF1 n hn hs`. Establish `hl : 2 ≤ l` using `hU.1.two_le`. Establish `hP` using `logPair (K := K) hl`. Establish `hFe` using `C.Dict.law_eq hP hF.1 hF.2.2`. Establish `hFG : C.FGInt (Formalism.G.unitBall K) (lgF K l) (expF K l)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[C.FGInt, ← hFe]`. Conclude with `hF.2.1`. Establish `hX0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) = 0` using `MvPowerSeries.constantCoeff_X 0`. Establish `hX1 : MvPowerSeries.constantCoeff (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) = 0` using `MvPowerSeries.constantCoeff_X 1`. Establish `permutedRowProductSplitSum : C.IsPt (Formalism.G.unitBall K) (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)` using `⟨hX1, C.Pts.intMv_X 1⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbe : MvPowerSeries.constantCoeff be0 = 0`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `hF1.1 0 (Or.inl rfl)`. Establish `hadd : ∀ y y' : MvPowerSeries (Fin 2) K, C.IsPt (Formalism.G.unitBall K) y → C.IsPt (Formalism.G.unitBall K) y' → Simeq (MvPowerSeries.subst ![MvPowerSeries.X 0, C.fadd (lgF K l) (expF K l) y y'] be0) (MvPowerSeries.subst ![MvPowerSeries.X 0, y] be0 + MvPowerSeries.subst ![MvPowe …`. Introduce `y y' hy hy'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `TraceNormBounds.sim_subst0 (φ := ![y, y', MvPowerSeries.X 0]) (C.Dict.constantCoeff_vec_three_eq_zero hy.1 hy'.1 hX0) (by`. Introduce `i`. Use `fin_cases i`. Conclude with `hy.2`. Conclude with `hy'.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `C.Pts.intMv_X (R := Formalism.G.unitBall K) 0) hF1.2.2`. Establish `hc : MvPowerSeries.constantCoeff (MvPowerSeries.subst ![y, y'] F) = 0`. Rewrite using `[hFe, ← C.Pts.fadd_eq_substMv hP hy.1 hy'.1]`. Conclude with `C.Pts.constantCoeff_fadd hP hy.1 hy'.1`. Rewrite `h` using `[Pair.subst_first_coboundary_three hF.1 hy.1 hy'.1 hX0, Pair.subst_swap2 hc hX0, Pair.subst_swap2 hy.1 hX0, Pair.subst_swap2 hy'.1 hX0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[C.Pts.fadd_eq_substMv hP hy.1 hy'.1, ← hFe]`. Conclude with `Pair.simeq_of_sub h`. Establish `hid : MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), MvPowerSeries.X 1] be0 = be0`. Establish `ev : ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), MvPowerSeries.X 1] = MvPowerSeries.X`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[ev, MvPowerSeries.subst_self]`. Both sides reduce to the same expression. Establish `hnat : ∀ m : ℕ, Simeq (MvPowerSeries.subst ![MvPowerSeries.X 0, C.fmul (lgF K l) (expF K l) (m : K) (MvPowerSeries.X 1)] be0) (MvPowerSeries.C (m : K) * be0)`. Introduce `m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Proceed by induction on `m with`. Consider the case `zero`. Establish `p0 : C.IsPt (Formalism.G.unitBall K) (0 : MvPowerSeries (Fin 2) K)` using `⟨map_zero _, fun _ => by rw [map_zero]; exact Subring.zero_mem _⟩`. Establish `h` using `hadd 0 0 p0 p0`. Rewrite `h` using `[C.Pts.fadd_zero hP (map_zero _)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Nat.cast_zero, C.Pts.fmul_zero_left hP, map_zero, zero_mul]`. Use `InverseCommuting.sim_symm ?_` and prove the remaining obligations. Unfold `Simeq at h ⊢`. Rewrite `h` using `[sub_add_cancel_left, ← zero_sub]`. Then use the resulting hypothesis. Consider the case `succ m ih`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `pm : C.IsPt (Formalism.G.unitBall K) (C.fmul (lgF K l) (expF K l) (m : K) (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K))` using `C.Pts.isPt_fmul hP (C.Clo.endInt_natCast hP hFG m) permutedRowProductSplitSum`. Establish `h` using `hadd _ _ pm permutedRowProductSplitSum`. Rewrite `h` using `[hid]`. Rewrite using `[Nat.cast_succ, C.Pts.fmul_add hP _ _ hX1, C.Pts.fmul_one hP hX1, map_add, map_one, add_mul, one_mul]`. Conclude with `InverseCommuting.sim_trans h (InverseCommuting.sim_add ih (InverseCommuting.sim_refl _))`.
-
-Establish `hcc : ∀ z : K, MvPowerSeries.constantCoeff (C.fmul (lgF K l) (expF K l) z (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)) = 0` using `fun z => C.Pts.constantCoeff_fmul hP z hX1`. Establish `hclosed : IsClosed {z : K | Simeq (MvPowerSeries.subst ![MvPowerSeries.X 0, C.fmul (lgF K l) (expF K l) z (MvPowerSeries.X 1)] be0) (MvPowerSeries.C z * be0)}`. Use `C.Clo.isClosed_LG (C.unit_ball_closed K) (f := fun z : K => MvPowerSeries.subst ![MvPowerSeries.X 0, C.fmul (lgF K l) (expF K l) z (MvPowerSeries.X 1)] be0 - MvPowerSeries.C z * be0) ((coeffCont_subst2 (C.Clo.CoeffCont.const _) (C.Clo.coeffCont_fmul hP.1 _ continuous_id hX1) (fun …` and prove the remaining obligations. Introduce `z`. Rewrite using `[map_sub, map_mul, hbe, mul_zero, sub_zero]`.
-
-Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (Pair.hs2 hX0 (hcc z)) (C.Dict.constantCoeff_vecCons_pair_eq_zero hX0 (hcc z)) hbe`. Establish `hfin` using `of_closed_nat hU hclosed hnat hn hs`. Rewrite `hfin` using `[C.Pts.fmul_eq_subst_mulBy hP n hX1]`. Conclude with `hfin`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_linear : FixedLinear := by
   intro K _ _ _ l σ hU F hF be0 hF1 n hn hs

@@ -8,7 +8,7 @@ open scoped Classical ENNReal nonZeroDivisors
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheory.V.Fb in
 /- English proof (translation)
-Establish `hD' : IsAddFundamentalDomain (unipLattice E a r) D (unipMeasure E a r)` using `hD.mono (Measure.absolutelyContinuous_isAddHaarMeasure _ _)`. Rewrite `h` using `[constantTerm_eq_setIntegral hl hD']`. Rewrite using `[Measure.isAddLeftInvariant_eq_smul ν (unipMeasure E a r), Measure.restrict_smul, integral_smul_nnreal_measure, h, smul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem setIntegral_haar {E : Type} [Field E] [NumberField E] {a r : ℕ} {φ : GA E a → ℂ}
     (hl : IsLeftInvariant φ) (g : GA E a) (h : constantTerm r φ g = 0) (ν : Measure (UPos a r → Ad E))
@@ -29,7 +29,7 @@ private def ixEq (a r : ℕ) : UPos a r ≃ BlockIx a r where
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheory.V.Fb in
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Apply the tactic sequence `change 1 + blockEntry (fun p => x (ixEq a r p)) = 1 + nilM x`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem unipGL_ixEq {R : Type} [CommRing R] {a r : ℕ} (x : BlockIx a r → R) :
     unipGL (fun p => x (ixEq a r p)) = unip x := by
@@ -39,15 +39,13 @@ private theorem unipGL_ixEq {R : Type} [CommRing R] {a r : ℕ} (x : BlockIx a r
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheory.V.Fb in
 /- English proof (translation)
-Introduce `r h0 h1 i1 i2 μ 𝓕 hμ hF g`. Take `rfl : i1 = MeasurableSpace.pi` from `(@BorelSpace.measurable_eq _ _ i1 i2).trans (@BorelSpace.measurable_eq _ _ _ Pi.borelSpace).symm`. Set `β : (BlockIx a r → Ad E) ≃ₜ+ (UPos a r → Ad E)` to `{ toFun := fun x p => x (ixEq a r p) invFun := fun x p => x ((ixEq a r).symm p) left_inv := fun x => rfl right_inv := fun x => rfl map_add' := fun x y => rfl continuous_toFun := continuous_pi fun p => continuous_apply _ continuous_invFun := continuous_pi fun p => continuous_apply …`. Set `e : unipLattice E a r ≃ ratN E a r` to `{ toFun := fun y => ⟨β.symm y, by`. Take `⟨_, y, rfl⟩` from `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun p => y ((ixEq a r).symm p), rfl⟩⟩`. Use `invFun := fun x => ⟨β x, by`. Take `⟨_, y, rfl⟩` from `x`. Conclude with `⟨fun p => y (ixEq a r p), rfl⟩⟩`. Use `left_inv := fun y => Subtype.ext (β.apply_symm_apply y)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `right_inv := fun x => Subtype.ext (β.symm_apply_apply x) }`. Set `m` to `β.toHomeomorph.toMeasurableEquiv`. Use `haveI : (μ.map m).IsAddHaarMeasure := β.isAddHaarMeasure_map μ`. Establish `h2` using `setIntegral_haar hl g (hφ r h0 h1 g) (μ.map m) (D := m '' 𝓕) (hF.image_of_equiv m.toEquiv (MeasurePreserving.symm m ⟨m.measurable, rfl⟩).quasiMeasurePreserving e fun y x => by`. Express the relevant statement in the definitionally equal form `β (β.symm y + x) = y + β x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_add, β.apply_symm_apply])`. Rewrite `h2` using `[m.measurableEmbedding.setIntegral_map, m.injective.preimage_image]`. Rewrite using `[← h2]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
-
-Conclude with `congrArg (fun u => φ (u * g)) (unipGL_ixEq x).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem cusp_of {E : Type} [Field E] [NumberField E] {a : ℕ} {φ : GA E a → ℂ}
     (hl : IsLeftInvariant φ) (hφ : AutomorphicForm.IsCuspidal φ) : GlobalTheory.CuspRep.IsCuspidal φ := by
@@ -85,11 +83,11 @@ private theorem cusp_of {E : Type} [Field E] [NumberField E] {a : ℕ} {φ : GA 
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheory.ConvolutionTheory.R2.Pp in
 /- English proof (translation)
-Introduce `r hr hr2 g`. Take `rfl : r = 1` from `by omega`. Use `letI : Unique (UPos 2 1) := ⟨⟨⟨(0, 1), by decide⟩⟩, by decide⟩`. Rewrite using `[← h0 g, ← int_one (ι := UPos 2 1)]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: gl (nU (x default)) = unipGL x`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(nU (x default)).1 = unipMatrix x`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nU, unipMatrix, blockEntry_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Both sides reduce to the same expression. Simplify using `only [this]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 private theorem found_cusp {E : Type} [Field E] [NumberField E] {Φ : GL (Fin 2) (A E) → ℂ}
     (h0 : ∀ h, ∫ b in fundamentalSet E, Φ (gl (nU b) * h) ∂(adeleMeasure E) = 0) :
@@ -108,7 +106,7 @@ private theorem found_cusp {E : Type} [Field E] [NumberField E] {Φ : GL (Fin 2)
   simp only [this]
 
 /- English proof (translation)
-Introduce `E _ _ Φ hl h0`. Conclude with `cusp_of hl (found_cusp h0)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.cuspOf :
     ∀ (E : Type) [Field E] [NumberField E] (Φ : GL (Fin 2) (A E) → ℂ), (∀ γ h, Φ (ratGL E 2 γ * h) = Φ h) →

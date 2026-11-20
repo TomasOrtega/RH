@@ -9,9 +9,9 @@ namespace Formalism.MainNotions.Gaps.T0
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
 /- English proof (translation)
-Take `⟨aP, aM, _, _, n, _⟩` from `w`. Take `⟨aP', aM', _, _, n', _⟩` from `w'`. Establish `e1 : aP = aP'` using `funext fun τ => funext fun i => h1 τ i`. Establish `e2 : aM = aM'` using `funext fun τ => funext fun i => h2 τ i`. Establish `e3 : n = n'` using `h3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `e1 e2 e3` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem wt_ext {w w' : WeightFamilies.Wt D j} (h1 : ∀ τ i, w.aP τ i = w'.aP τ i) (h2 : ∀ τ i, w.aM τ i = w'.aM τ i)
     (h3 : w.n = w'.n) : w = w' := by
@@ -24,27 +24,27 @@ theorem wt_ext {w w' : WeightFamilies.Wt D j} (h1 : ∀ τ i, w.aP τ i = w'.aP 
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `apply wt_ext <;> intros <;> simp [wadd, wsmul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wadd_wsmul_zero (wL w : WeightFamilies.Wt D j) : wadd (wsmul 0 wL) w = w := by
   apply wt_ext <;> intros <;> simp [wadd, wsmul]
 
 /- English proof (translation)
-Apply the tactic sequence `apply wt_ext <;> intros <;> simp only [wadd, wsmul] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wadd_wsmul_succ (n : ℕ) (wL w : WeightFamilies.Wt D j) :
     wadd (wsmul n wL) (wadd wL w) = wadd (wsmul (n + 1) wL) w := by
   apply wt_ext <;> intros <;> simp only [wadd, wsmul] <;> ring
 
 /- English proof (translation)
-The claim follows from `Submodule.map_mono h`.
+A detailed English derivation is pending.
 -/
 theorem emb_mono (X : PJ D B P j) (w : WeightFamilies.Wt D j) {N N' : Submodule (𝓞 B.KO) (B.Cusp j w)} (h : N ≤ N') :
     X.emb w N ≤ X.emb w N' :=
   Submodule.map_mono h
 
 /- English proof (translation)
-Take `⟨H, hH⟩` from `X.inc_mul w w' F G`. Use `⟨H, (X.Mlat_eq _ H).2 fun la y => ?_, hH⟩` and prove the remaining obligations. Rewrite using `[← hH, X.vAt_mul]`. Conclude with `add_nonneg ((X.Mlat_eq w F).1 hF la y) ((X.Mlat_eq w' G).1 hG la y)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mlat_mul (X : PJ D B P j) (w w' : WeightFamilies.Wt D j) {F : B.Cusp j w} {G : B.Cusp j w'}
     (hF : F ∈ B.Mlat j w) (hG : G ∈ B.Mlat j w') :
@@ -55,7 +55,7 @@ theorem mlat_mul (X : PJ D B P j) (w w' : WeightFamilies.Wt D j) {F : B.Cusp j w
   exact add_nonneg ((X.Mlat_eq w F).1 hF la y) ((X.Mlat_eq w' G).1 hG la y)
 
 /- English proof (translation)
-Rewrite using `[Submodule.mul_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩ _ ⟨G, hG, rfl⟩`. Take `⟨H, hH, e⟩` from `mlat_mul X w w' hF hG`. Conclude with `⟨H, hH, e.symm⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem msup_mul_le (X : PJ D B P j) (w w' : WeightFamilies.Wt D j) :
     X.Msup w * X.Msup w' ≤ X.Msup (wadd w w') := by
@@ -65,16 +65,16 @@ theorem msup_mul_le (X : PJ D B P j) (w w' : WeightFamilies.Wt D j) :
   exact ⟨H, hH, e.symm⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.mul_le.2 fun _ hm _ hn => Submodule.mul_mem_mul (h1 hm) (h2 hn)`.
+A detailed English derivation is pending.
 -/
 private lemma smul_le_lemma_2 {R A : Type*} [CommSemiring R] [Semiring A] [Algebra R A]
     {M N P Q : Submodule R A} (h1 : M ≤ P) (h2 : N ≤ Q) : M * N ≤ P * Q :=
   Submodule.mul_le.2 fun _ hm _ hn => Submodule.mul_mem_mul (h1 hm) (h2 hn)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro w`. Rewrite using `[pow_zero, one_mul, wadd_wsmul_zero]`. Consider the case `succ n ih`. Introduce `w`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, mul_assoc, ← wadd_wsmul_succ]`. Conclude with `(smul_le_lemma_2 le_rfl (msup_mul_le X wL w)).trans (ih _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem msup_pow_mul_le (X : PJ D B P j) (wL : WeightFamilies.Wt D j) (n : ℕ) :
     ∀ w : WeightFamilies.Wt D j, X.Msup wL ^ n * X.Msup w ≤ X.Msup (wadd (wsmul n wL) w) := by
@@ -86,7 +86,7 @@ theorem msup_pow_mul_le (X : PJ D B P j) (wL : WeightFamilies.Wt D j) (n : ℕ) 
     exact (smul_le_lemma_2 le_rfl (msup_mul_le X wL w)).trans (ih _)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact le_rfl`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `smul_le_lemma_2 ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma spow_le_lemma {R A : Type*} [CommSemiring R] [Semiring A] [Algebra R A]
     {M N : Submodule R A} (h : M ≤ N) (n : ℕ) : M ^ n ≤ N ^ n := by
@@ -97,7 +97,7 @@ private lemma spow_le_lemma {R A : Type*} [CommSemiring R] [Semiring A] [Algebra
     exact smul_le_lemma_2 ih h
 
 /- English proof (translation)
-The claim follows from `(smul_le_lemma_2 (spow_le_lemma (emb_mono X wL hL) n) (emb_mono X w hN)).trans (msup_pow_mul_le X wL n w)`.
+A detailed English derivation is pending.
 -/
 theorem emb_pow_mul_le (X : PJ D B P j) (wL w : WeightFamilies.Wt D j) (n : ℕ)
     {NL : Submodule (𝓞 B.KO) (B.Cusp j wL)} {N : Submodule (𝓞 B.KO) (B.Cusp j w)}
@@ -107,11 +107,11 @@ theorem emb_pow_mul_le (X : PJ D B P j) (wL w : WeightFamilies.Wt D j) (n : ℕ)
     (msup_pow_mul_le X wL n w)
 
 /- English proof (translation)
-Take `⟨e1, e2, e3⟩` from `hF`. Apply `wt_ext` to reduce the goal to its premises. Introduce `τ i`. Use `e2 τ i` as an intermediate fact. Simplify using `only [wadd, wsmul]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `zify`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `τ i`. Use `e3 τ i` as an intermediate fact. Simplify using `only [wadd, wsmul]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `zify`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [wadd, wsmul]`. Rewrite using `[e1, hL, hn]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wt_first {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} (hF : IsF' ka wL wF T nP) (hL : wL.n = nW)
     (hn : ka.n = nP + T * nW) : wadd (wsmul T wL) wF = ka := by
@@ -132,7 +132,7 @@ theorem wt_first {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} (hF : IsF' k
     ring
 
 /- English proof (translation)
-Rewrite using `[← wt_first hF hL hn]`. Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_le hD`. Apply the tactic sequence `apply wt_ext <;> intros <;> simp only [PJ.wF0, wadd, wsmul, hc, Nat.add_sub_cancel_left] <;> ring`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wt_second (X : PJ D B P j) {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} (hF : IsF' ka wL wF T nP)
     (hL : wL.n = nW) (hn : ka.n = nP + T * nW) (hD : WeightFamilies.dimY D j ≤ T) :
@@ -142,7 +142,7 @@ theorem wt_second (X : PJ D B P j) {ka wL wF : WeightFamilies.Wt D j} {T nP nW :
   apply wt_ext <;> intros <;> simp only [PJ.wF0, wadd, wsmul, hc, Nat.add_sub_cancel_left] <;> ring
 
 /- English proof (translation)
-Establish `h` using `emb_pow_mul_le X wL wF T hW hT`. Rewrite `h` using `[wt_first hF hL hn]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem theta_first_le (X : PJ D B P j) (S : Scal B) {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ}
     (hW : X.WWc S.sW wL ≤ B.Mlat j wL) (hT : X.Thc S.sF wF ≤ B.Mlat j wF)
@@ -152,7 +152,7 @@ theorem theta_first_le (X : PJ D B P j) (S : Scal B) {ka wL wF : WeightFamilies.
   rwa [wt_first hF hL hn] at h
 
 /- English proof (translation)
-Establish `h` using `emb_pow_mul_le X wL (X.wF0 wL wF) (T - WeightFamilies.dimY D j) hW hT`. Rewrite `h` using `[wt_second X hF hL hn hD]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem theta_second_le (X : PJ D B P j) (S : Scal B) {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ}
     (hW : X.WWc S.sW wL ≤ B.Mlat j wL) (hT : X.Thc S.s0 (X.wF0 wL wF) ≤ B.Mlat j (X.wF0 wL wF))
@@ -163,14 +163,14 @@ theorem theta_second_le (X : PJ D B P j) (S : Scal B) {ka wL wF : WeightFamilies
   rwa [wt_second X hF hL hn hD] at h
 
 /- English proof (translation)
-The claim follows from `emb_mono X ka hT`.
+A detailed English derivation is pending.
 -/
 theorem theta_third_le (X : PJ D B P j) (S : Scal B) {ka : WeightFamilies.Wt D j}
     (hT : X.Thc S.sK ka ≤ B.Mlat j ka) : X.emb ka (X.Thc S.sK ka) ≤ X.Msup ka :=
   emb_mono X ka hT
 
 /- English proof (translation)
-Unfold `PJ.Theta`. Conclude with `sup_le (sup_le (theta_first_le X S h2.1 h2.2.1 hF hL hn) (theta_second_le X S h2.1 h2.2.2.1 hF hL hn hD)) (theta_third_le X S h2.2.2.2)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem theta_le_msup (X : PJ D B P j) (S : Scal B) {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ}
     (h2 : H2 X S ka wL wF) (hF : IsF' ka wL wF T nP) (hL : wL.n = nW) (hn : ka.n = nP + T * nW)
@@ -180,7 +180,7 @@ theorem theta_le_msup (X : PJ D B P j) (S : Scal B) {ka wL wF : WeightFamilies.W
     (theta_second_le X S h2.1 h2.2.2.1 hF hL hn hD)) (theta_third_le X S h2.2.2.2)
 
 /- English proof (translation)
-Take `⟨c0, -, -, -, -, -, -, -, -, -, -, -, -, c13, c14, c15, -, -, c18, -⟩` from `hC`. Conclude with `theta_le_msup X S h2 c15 c14.1 (c0.trans c13) c18`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem theta_le_msup_of_setC {large₂ : SizeData₂ D} (X : PJ D B P j) (S : Scal B) {CK C1 A1 : ℝ}
     {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ} (h2 : H2 X S ka wL wF)
@@ -189,7 +189,7 @@ theorem theta_le_msup_of_setC {large₂ : SizeData₂ D} (X : PJ D B P j) (S : S
   exact theta_le_msup X S h2 c15 c14.1 (c0.trans c13) c18
 
 /- English proof (translation)
-The claim follows from `theta_le_msup_of_setC X S h.2.2.2.2.1 h.2.1`.
+A detailed English derivation is pending.
 -/
 theorem theta_le_msup_of_hyp {large₂ : SizeData₂ D} (X : PJ D B P j) {H : KHyp} {C2 A2 CR Bx CT : ℝ} (S : Scal B)
     {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}

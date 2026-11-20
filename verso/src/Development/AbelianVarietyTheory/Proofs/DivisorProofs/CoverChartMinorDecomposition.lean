@@ -12,11 +12,9 @@ noncomputable section
 namespace GlobalTheory.ConstLat
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Use `choose S hS using hM`. Use `set φ := algebraMap (Z.presheaf.stalk (yt (IsLocalRing.closedPoint O))) Z.functionField with hφ`. Use `set ψ : Z.presheaf.stalk (yt (IsLocalRing.closedPoint O)) →+* K := O.subtype.comp (Scheme.stalkClosedPointTo yt).hom with hψ`. Establish `hval : ∀ s, valAt (spMap O.subtype ≫ yt) (φ s) = ψ s` using `fun s => GlobalTheory.HalfGlue.val_stalk O yt s`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun i k => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hS, hval]`. Conclude with `((Scheme.stalkClosedPointTo yt).hom (S i k)).2`. Establish `e1 : (M.transpose * J.map (Int.castRingHom Z.functionField) * M) i j = φ (∑ r, S r i * ∑ s, (J r s : Z.presheaf.stalk (yt (IsLocalRing.closedPoint O))) * S s j)`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply]`.
-
-Simplify using `only [map_sum, map_mul, map_intCast, hS, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, eq_intCast]`. Rewrite using `[e1, hval]`. Simplify using `only [map_sum, map_mul, map_intCast, ← hS, hval, dotProduct, Matrix.mulVec, Matrix.map_apply, eq_intCast]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valAt_form {K : Type} [Field K] (O : ValuationSubring K) {Z : Scheme.{0}} [IsIntegral Z] (yt : Sp O ⟶ Z)
     (y : Sp K ⟶ Z) (hy : spMap O.subtype ≫ yt = y) {n g : ℕ} (M : Matrix (Fin n) (Fin g) Z.functionField)
@@ -41,19 +39,17 @@ theorem valAt_form {K : Type} [Field K] (O : ValuationSubring K) {Z : Scheme.{0}
     simp only [map_sum, map_mul, map_intCast, ← hS, hval, dotProduct, Matrix.mulVec, Matrix.map_apply, eq_intCast]
 
 /- English proof (translation)
-Introduce `F _ _ Y C g A p k _ V W ι U0 H0 d T J a U Um Lf c hU hfr hiso v hv e y hy z yt hz hyt ha i j`. Take `⟨-, hreg, -, hB⟩` from `hfr`. Take `⟨-, B, -, -, hB⟩` from `hB v hv e y hy z yt hz hyt ha`. Establish `hpv : ((p : 𝓞 F)) ∈ v.asIdeal`. Establish `h0 : ((p : ℕ) : 𝓞 F ⧸ v.asIdeal) = 0` using `(ringChar.spec _ p).2 (by rw [← hv]; rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[← map_natCast (Ideal.Quotient.mk v.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h0`. Establish `hwp : e.w (p : AlgebraicClosure F) < 1`. Establish `h` using `e.w_alg (p : F)`. Rewrite `h` using `[map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, ← map_natCast (algebraMap (𝓞 F) F) p, ← FinitePlace.norm_embedding]`. Conclude with `(FinitePlace.norm_lt_one_iff_mem F v _).2 hpv`. Establish `hpO : ¬ IsUnit ((p : ℕ) : e.O)`. Establish `h1` using `(GlobalTheory.HalfGlue.lt_one_iff e.w e.O e.mem_O (p : e.O)).1 (by simpa using hwp)`. Rewrite `h1` using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpx : ¬ IsUnit ((p : ℕ) : V.X.presheaf.stalk (yt (IsLocalRing.closedPoint e.O)))`. Introduce `h`. Apply `hpO` to reduce the goal to its premises. Use `h.map (Scheme.stalkClosedPointTo yt).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `valAt_form e.O yt (z ≫ V.j) hyt Um J fun i k => (hreg _ (ha trivial) hpx i k).1`. Establish `hcol : ∀ l, (valMat V (H0 a) (T (below y.1)) z).mulVec (fun r => B r l) = fun r => valAt (z ≫ V.j) (Um r l)`. Introduce `l`. Use function extensionality and compare the values at `r`. Conclude with `(congrFun (congrFun hB r) l).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ∀ l, supN e.w ((valMat V (H0 a) (T (below y.1)) z).mulVec (fun r => B r l)) ≤ 1`. Introduce `l`. Rewrite using `[hcol]`. Conclude with `supN_le e.w zero_le_one fun r => (e.mem_O _).1 (h1 r l)`. Establish `h3` using `(hiso v hv e y hy z yt hz hyt a (fun x hx => hU (ha hx))).1 _ _ (hle i) (hle j)`.
-
-Rewrite `h3` using `[hcol, hcol]`. Rewrite using `[h2]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_frame_small : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ} (A : Fin g → Adl C Y) (p k : ℕ), p.Prime →
     ∀ (V : Cover Y) (W : Y.X.Opens) {ι : Type} (U0 : ι → V.X.Opens)

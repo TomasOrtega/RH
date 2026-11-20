@@ -9,13 +9,13 @@ namespace PI.VolSemiDirect.W
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub NumberField IsDedekindDomain MeasureTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ hJ' r P T hr hP μN hμN μH hμH`. Establish `: BorelSpace (HA (AF F) σ J)` using `⟨rfl⟩`. Establish `hX` using `hLC F E σ hCM M J hJ`. Take `⟨hcnt, hdisc⟩` from `hD F E σ hCM M J hJ`. Take `⟨cS, cN, cH⟩` from `hCl F E σ hCM M J hJ r P T hr hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hsemi, hrat⟩` from `hSe F E σ hCM M J hJ r P T hr hP`. Establish `hconj` using `hCo F E σ hCM M J hJ r P T hr hP`. Take `⟨lS, dS⟩` from `hSub (HA (AF F) σ J) (HFinIn (AF F) σ J) _ hX cS hcnt hdisc`. Take `⟨lN, dN⟩` from `hSub (HA (AF F) σ J) (HFinIn (AF F) σ J) _ hX cN hcnt hdisc`. Take `⟨lH, dH⟩` from `hSub (HA (AF F) σ J) (HFinIn (AF F) σ J) _ hX cH hcnt hdisc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨μ0, hμ0, hp0⟩` from `hPr (HA (AF F) σ J) _ _ _ hsemi lS lN lH hconj μN hμN μH hμH`. Take `⟨𝓕0, -, h𝓕0⟩` from `hFD (HA (AF F) σ J) (HFinIn (AF F) σ J) _ lS dS`. Take `⟨𝓕N0, -, h𝓕N0⟩` from `hFD (HA (AF F) σ J) (HFinIn (AF F) σ J) _ lN dN`. Take `⟨𝓕H0, -, h𝓕H0⟩` from `hFD (HA (AF F) σ J) (HFinIn (AF F) σ J) _ lH dH`. Unfold `AllSome`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Use `⟨⟨μ0, hμ0, hp0⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `μS ⟨hμS, hpS⟩`. Use `⟨⟨𝓕0, h𝓕0 μS⟩, fun 𝓕 h𝓕 => ⟨⟨𝓕N0, h𝓕N0 μN⟩, fun 𝓕N h𝓕N => ⟨⟨𝓕H0, h𝓕H0 μH⟩, fun 𝓕H h𝓕H => ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `hV (HA (AF F) σ J) _ _ _ _ hsemi hrat lS lN lH dS dN dH μS μN μH hμS hμN hμH hpS 𝓕 𝓕N 𝓕H h𝓕 h𝓕N h𝓕H`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem volume_unipotent_of_steps (hSub : SubLCSC) (hFD : FDExG) (hPr : ProdHaarG) (hV : VolG)
     (hLC : LcscHA) (hD : DiscHA) (hCl : ClosedStep) (hSe : SemiStep) (hCo : ConjStep) :

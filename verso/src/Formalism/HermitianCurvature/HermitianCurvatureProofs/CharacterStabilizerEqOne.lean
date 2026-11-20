@@ -21,7 +21,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Use `⟨hn0.1, fun a i _ => ?_, fun i j h1 h2 h3 => hn0.2.2.2.1 i j h1 h2 h3⟩` and prove the remaining obligations. Establish `h` using `congrFun (hn0.2.1 a) i`. Rewrite `h` using `[show (n0 *ᵥ bvec (eI k r a)) i = n0 i (eI k r a) by simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]]`. Rewrite using `[h]`. Simplify using `[bvec, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stabilizer_mem_unipotent {z' : Fin (2 * r + k + 1) → ℂ} {n0 : B.Mat k r} (hn0 : n0 ∈ C3.N0set k r z') :
     n0 ∈ Formalism.QuantumDeterminants.Nset k r := by
@@ -32,13 +32,13 @@ theorem stabilizer_mem_unipotent {z' : Fin (2 * r + k + 1) → ℂ} {n0 : B.Mat 
   simp [bvec, Pi.single_apply]
 
 /- English proof (translation)
-Establish `hcol : ∀ (a : Fin r) (i : Fin (2 * r + k + 1)), n0 i (eI k r a) = if i = eI k r a then 1 else 0`. Introduce `a i`. Establish `h` using `congrFun (hn0.2.1 a) i`. Rewrite `h` using `[show (n0 *ᵥ bvec (eI k r a)) i = n0 i (eI k r a) by simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]]`. Rewrite using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[bvec, Pi.single_apply]`. Establish `hell : ell k r z' n0 = 0`. Unfold `ell`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcol]`. Rewrite using `[if_neg]`. Introduce `he`. Use `congrArg Fin.val he` as an intermediate fact. Simplify using `[eI] at this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn0.2.2.1]`. Conclude with `hz' _ (Or.inl (by simp [eI]))`. Unfold `psi`. Rewrite using `[hell, mul_zero]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem character_stabilizer_eq_one {z' : Fin (2 * r + k + 1) → ℂ} (hz' : inWb k r z') (c : ℂ) {n0 : B.Mat k r}
     (hn0 : n0 ∈ C3.N0set k r z') : psi k r z' c n0 = 1 := by
@@ -64,7 +64,7 @@ theorem character_stabilizer_eq_one {z' : Fin (2 * r + k + 1) → ℂ} (hz' : in
   simp
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', hfe⟩` from `hf g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hf', fun g hg hgG => hfe g hg hgG⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smoothOnH_of_ckOn {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : B.Mat k r → E}
     (hf : B.CkOn ⊤ (B.GV k r) f) : SmoothOnH (Hpk k r) f := by
@@ -73,7 +73,7 @@ theorem smoothOnH_of_ckOn {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] 
   exact ⟨U, f', hU, hgU, hf', fun g hg hgG => hfe g hg hgG⟩
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', hfe⟩` from `hf g₀ ((Formalism.FourierDecayAlt.P.CapelliUnderIntegral.glev0 g₀).1 hg₀.1)`. Conclude with `⟨U, f', hU, hgU, hf', fun g hg hgl => hfe g hg ((Formalism.FourierDecayAlt.P.CapelliUnderIntegral.glev0 g).1 hgl)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smoothLev_of_loc {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : B.Mat k r → E}
     (hf : ∀ x ∈ B.GV k r, Formalism.FourierDecayAlt.P.CapelliWordSumExpansion.Loc ⊤ f x) : Q.SmoothLev k r 0 Set.univ f := by
@@ -82,9 +82,9 @@ theorem smoothLev_of_loc {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {
   exact ⟨U, f', hU, hgU, hf', fun g hg hgl => hfe g hg ((Formalism.FourierDecayAlt.P.CapelliUnderIntegral.glev0 g).1 hgl)⟩
 
 /- English proof (translation)
-Unfold `PBG.Kr`. Use `congr 1`. Use function extensionality and compare the values at `p`. Establish `e : σ * (x * Matrix.of p.2 * Matrix.of p.1) = σ * x * Matrix.of p.2 * Matrix.of p.1`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show star (psi k r Bs.z' cStd (Matrix.of p.2)) • (F (σ * (x * Matrix.of p.2 * Matrix.of p.1))).comp (Bs.π' (Matrix.of p.1)⁻¹) = _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kr_left (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (σ x : B.Mat k r) :
     PBG.Kr Bs (fun g => F (σ * g)) x = PBG.Kr Bs F (σ * x) := by
@@ -98,7 +98,7 @@ theorem kr_left (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ
   rw [e]
 
 /- English proof (translation)
-Unfold `PBG.Kr`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [PBG.ae_inR Bs] with ξ hξ`. Rewrite using `[h _ (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hx hξ.2.1) hξ.1.1)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kr_congr (Bs : B.RealPlaceData k r Wp Wq) {F₁ F₂ : B.Mat k r → (Wq →L[ℂ] Wp)}
     (h : ∀ g ∈ B.GV k r, F₁ g = F₂ g) {x : B.Mat k r} (hx : x ∈ B.GV k r) : PBG.Kr Bs F₁ x = PBG.Kr Bs F₂ x := by
@@ -108,9 +108,7 @@ theorem kr_congr (Bs : B.RealPlaceData k r Wp Wq) {F₁ F₂ : B.Mat k r → (Wq
   rw [h _ (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hx hξ.2.1) hξ.1.1)]
 
 /- English proof (translation)
-Unfold `PBG.Kr`. Rewrite using `[← integral_smul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [PBG.ae_inR Bs] with ξ hξ`. Use `show star (psi k r Bs.z' cStd (Matrix.of ξ.2)) • ((Dmin k r Bs.z Bs.z' (x * Matrix.of ξ.2 * Matrix.of ξ.1) l)⁻¹ • H (x * Matrix.of ξ.2 * Matrix.of ξ.1)).comp (Bs.π' (Matrix.of ξ.1)⁻¹) = (Dmin k r Bs.z Bs.z' x l)⁻¹ • (star (psi k r Bs.z' cStd (Matrix.of ξ.2)) • (H (x * Matrix.of ξ …`.
-
-Rewrite using `[PBG.dmin_pR Bs hξ x l, ContinuousLinearMap.smul_comp, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kr_dmin [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) (H : B.Mat k r → (Wq →L[ℂ] Wp)) (l : Fin (r + 2)) (x : B.Mat k r) :
     PBG.Kr Bs (fun g => (Dmin k r Bs.z Bs.z' g l)⁻¹ • H g) x = (Dmin k r Bs.z Bs.z' x l)⁻¹ • PBG.Kr Bs H x := by
@@ -127,7 +125,7 @@ theorem kr_dmin [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (Bs : B.Re
 def pL (x : Mt k r × Mt k r) : B.SS k r := (x, (Matrix.of.symm 1, Matrix.of.symm 1))
 
 /- English proof (translation)
-Use `⟨hx.1, hx.2, ?_, ?_⟩` and prove the remaining obligations. Simplify `Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw (k := k) (r := r) Bs.z'` using `[pL]`. Simplify `(Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_one : (1 : B.Mat k r) ∈ Formalism.QuantumDeterminants.Nset k r)` using `[pL]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inSS_pL (Bs : B.RealPlaceData k r Wp Wq) {x : Mt k r × Mt k r}
     (hx : (Matrix.of x.1 : B.Mat k r) ∈ UWset k r Bs.z ∧ (Matrix.of x.2 : B.Mat k r) ∈ Formalism.QuantumDeterminants.Nset k r) :
@@ -137,14 +135,14 @@ theorem inSS_pL (Bs : B.RealPlaceData k r Wp Wq) {x : Mt k r × Mt k r}
   · simpa [pL] using (Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_one : (1 : B.Mat k r) ∈ Formalism.QuantumDeterminants.Nset k r)
 
 /- English proof (translation)
-Simplify using `[B.sgs, pL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sgs_pL (x : Mt k r × Mt k r) (g : B.Mat k r) :
     B.sgs (pL x) g = (Matrix.of x.1 : B.Mat k r)⁻¹ * (Matrix.of x.2 : B.Mat k r)⁻¹ * g := by
   simp [B.sgs, pL]
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiff.sum fun l _ => contDiff_const.mul ((contDiff_apply ℝ ℂ j).comp (contDiff_apply ℝ _ l))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_lmul (σ : B.Mat k r) : ContDiff ℝ (⊤ : ℕ∞) (fun g : B.Mat k r => σ * g) := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
@@ -152,15 +150,15 @@ theorem contDiff_lmul (σ : B.Mat k r) : ContDiff ℝ (⊤ : ℕ∞) (fun g : B.
   exact ContDiff.sum fun l _ => contDiff_const.mul ((contDiff_apply ℝ ℂ j).comp (contDiff_apply ℝ _ l))
 
 /- English proof (translation)
-Use `set σ : B.Mat k r := (Matrix.of x.1 : B.Mat k r)⁻¹ * (Matrix.of x.2 : B.Mat k r)⁻¹ with hσ`. Establish `hp` using `inSS_pL Bs hx`. Establish `hmem : ∀ g ∈ B.GV k r, σ * g ∈ B.GV k r` using `fun g hg => by`. Use `Formalism.FourierDecayAlt.P.B7.sgs_mem Bs hp hg` as an intermediate fact. Rewrite `this` using `[sgs_pL]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hgf : ∀ g, Gf k r Bs.z Bs.z' (σ * g) = Gf k r Bs.z Bs.z' g` using `fun g => by`. Use `Formalism.FourierDecayAlt.P.JCx1.needs.gf_sgs Bs hp g` as an intermediate fact. Rewrite `this` using `[sgs_pL]`. Then use the resulting hypothesis. Take `⟨hs, ⟨R, hR⟩, ⟨ε, hε, hGf⟩⟩` from `hG`. Use `⟨fun g₀ hg₀ => ?_, ⟨B.gN (Matrix.of x.2 : B.Mat k r) * B.gN (Matrix.of x.1 : B.Mat k r) * max R 0, fun g hg hne => ?_⟩, ⟨ε, hε, fun g hg hne => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨U, f', hU, hgU, hf', hfe⟩` from `hs (σ * g₀) (hmem g₀ hg₀)`. Establish `hc : Continuous (fun g : B.Mat k r => σ * g)` using `(contDiff_lmul σ).continuous`. Use `⟨(fun g => σ * g) ⁻¹' U, fun g => f' (σ * g), hU.preimage hc, hgU, ?_, fun g hg hgG => hfe _ hg (hmem g hgG)⟩` and prove the remaining obligations. Conclude with `hf'.comp (contDiff_lmul σ).contDiffOn (fun g hg => hg)`. Establish `h1` using `hR _ (hmem g hg) hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1 : IsUnit (Matrix.of x.1 : B.Mat k r).det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hx.1.1`. Establish `hu2 : IsUnit (Matrix.of x.2 : B.Mat k r).det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hx.2.1`. Establish `e : g = (Matrix.of x.2 : B.Mat k r) * (Matrix.of x.1 : B.Mat k r) * (σ * g)`. Rewrite using `[hσ, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc (Matrix.of x.2 : B.Mat k r), Matrix.mul_nonsing_inv _ hu1, Matrix.mul_one, Matrix.mul_nonsing_inv _ hu2, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hGf _ (hmem g hg) hne` as an intermediate fact. Rewrite `this` using `[hgf]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem cpt_left (Bs : B.RealPlaceData k r Wp Wq) {G : B.Mat k r → (Wq →L[ℂ] Wp)} (hG : KB.CptCoef Bs G)
     {x : Mt k r × Mt k r}
@@ -197,7 +195,7 @@ theorem cpt_left (Bs : B.RealPlaceData k r Wp Wq) {G : B.Mat k r → (Wq →L[�
     rwa [hgf] at this
 
 /- English proof (translation)
-Take `⟨hs, ⟨R, hR⟩, -⟩` from `hF`. Use `PBG.kr_loc_cpt Bs hs (Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le k r R) fun g hg hgC => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hgC (hR g hg hne)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem loc_kr [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : KB.CptCoef Bs F) :
     ∀ x0 ∈ B.GV k r, Formalism.FourierDecayAlt.P.CapelliWordSumExpansion.Loc ⊤ (PBG.Kr Bs F) x0 := by

@@ -130,9 +130,7 @@ structure IsVerticalDivisorAt (P : Ideal (MRing ι)) (p : ℕ) (b : K → ℤ) (
 
 omit [Fintype K] in
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[mem_support_iff, coeff_C]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Conclude with `absurd rfl hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_C_zero (a : ℤ) : IsMultiHomog (C a : MRing ι) 0 := by
   classical
@@ -144,7 +142,7 @@ theorem isMultiHomog_C_zero (a : ℤ) : IsMultiHomog (C a : MRing ι) 0 := by
   · exact absurd rfl hm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 0, isMultiHomog_C_zero _, by simpa using isMultiHomog_C_zero (ι := ι) 1, by funext k; simp⟩ num_not_mem := fun h => by have : (p : ℤ) ∈ P.comap (C : ℤ →+* MRing ι) := h rw [hP, Ideal.mem_bot] at this exact hp (by exact_mod_cast this) den_not_mem := fun h => by have : (1 : ℤ) …`.
+Supply the required witnesses or components.
 -/
 theorem IsVerticalDivisorAt.ofPrime {P : Ideal (MRing ι)} (hP : IsHorizontal P) {p : ℕ}
     (hp : p ≠ 0) : IsVerticalDivisorAt P p 0 (C (p : ℤ)) 1 where

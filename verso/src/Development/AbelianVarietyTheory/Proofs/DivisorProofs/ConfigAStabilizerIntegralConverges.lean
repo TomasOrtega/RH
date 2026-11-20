@@ -21,11 +21,11 @@ namespace GlobalTheory.ConeExch
 open scoped Classical in
 
 /- English proof (translation)
-Use `choose g hg hL using fun j => GlobalTheory.SchwartzPettis.exists_integral (f j) (hm j) (hb j)`. Establish `hi : ∀ j y, Integrable (fun t => f j t y) μ` using `fun j y => (hL j ((BoundedContinuousFunction.evalCLM ℂ y).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ))).1`. Establish `e : (fun y => ∫ t, D t y ∂μ) = ∑ j, pureA F (g j) (φ j)`. Use function extensionality and compare the values at `y`. Simplify using `only [hD, Finset.sum_apply, pureA]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_finset_sum _ fun j _ => (hi j _).mul_const _]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [integral_mul_const, hg]`. Rewrite using `[e]`. Use `⟨Submodule.sum_mem _ fun j _ => Submodule.subset_span ⟨g j, φ j, hφ j, rfl⟩, fun l hl => ?_⟩` and prove the remaining obligations. Use `choose L hLl using fun j => hl (φ j) (hφ j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hD, map_sum, hLl]`. Use `⟨integrable_finset_sum _ fun j _ => (hL j _).1, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun j _ => (hL j _).1]`. Conclude with `Finset.sum_congr rfl fun j _ => (hL j _).2`.
+A detailed English derivation is pending.
 -/
 theorem admissible_integral_exchange {F : Type} [Field F] [NumberField F] {κ T : Type} [Fintype κ] [MeasurableSpace T] (μ : Measure T) {m : ℕ}
     (φ : Fin m → (κ → Af F) → ℂ) (hφ : ∀ j, φ j ∈ SB _) (f : Fin m → T → SInf F κ)
@@ -53,7 +53,7 @@ theorem admissible_integral_exchange {F : Type} [Field F] [NumberField F] {κ T 
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `g _` and use `⟨g (fun i => (y i).2) • (BoundedContinuousFunction.evalCLM ℂ fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (y i).1).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ), fun f => mul_comm _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem proj_mem_adm {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (y : κ → AF F) :
     (LinearMap.proj y : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := fun g _ =>
@@ -61,7 +61,7 @@ theorem proj_mem_adm {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype �
     (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ), fun f => mul_comm _ _⟩
 
 /- English proof (translation)
-Establish `h1 : AEStronglyMeasurable (fun p : (A × C) × Y => D p.1 p.2) ((μ.prod ν).prod ρ)` using `hm.comp_measurePreserving (measurePreserving_prodAssoc μ ν ρ)`. Establish `h2 : ∀ᵐ y ∂ρ, AEStronglyMeasurable (fun t => D t y) (μ.prod ν)` using `h1.prodMk_right`. Take `⟨u, hu, hy⟩` from `mem_closure_iff_seq_limit.1 (Measure.dense_of_ae h2 y)`. Conclude with `aestronglyMeasurable_of_tendsto_ae atTop hu (Eventually.of_forall fun t => ((hc t).tendsto y).comp hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem aesm_slice {A C Y : Type} [MeasurableSpace A] [MeasurableSpace C] [MeasurableSpace Y] [TopologicalSpace Y]
     [FirstCountableTopology Y] (μ : Measure A) (ν : Measure C) (ρ : Measure Y) [SFinite μ] [SFinite ν] [SFinite ρ]
@@ -75,24 +75,22 @@ theorem aesm_slice {A C Y : Type} [MeasurableSpace A] [MeasurableSpace C] [Measu
   exact aestronglyMeasurable_of_tendsto_ae atTop hu (Eventually.of_forall fun t => ((hc t).tendsto y).comp hy)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem sfinite_of_finite {A : Type} [MeasurableSpace A] (μ : Measure A) [IsFiniteMeasure μ] : SFinite μ := inferInstance
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem sfinite_of_haar {A : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A] [LocallyCompactSpace A]
     [SecondCountableTopology A] [MeasurableSpace A] (μ : Measure A) [μ.IsHaarMeasure] : SFinite μ := inferInstance
 
 /- English proof (translation)
-Establish `hs : (1 : ℝ) < z` using `by exact_mod_cast hz`. Take `⟨N, k, L, C, hk, hb⟩` from `GlobalTheory.TateConv.bound F E hs hU`. Use `⟨N, ?_⟩` and prove the remaining obligations. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : T2Space (Af F) := (Topology.IsEmbedding.of_comp (f := fun x : Af F => ((0, x) : AF F)) (by fun_prop) continuous_snd Topology.IsEmbedding.id).t2Space`. Establish `hc : Continuous fun l : (AE F E)ˣ => GlobalTheory.XTermMaj.crd F E (l : AE F E)` using `(IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).equivFun.toLinearMap).comp Units.continuous_val`. Establish `hm : Measurable fun l : (AE F E)ˣ => GlobalTheory.XTermMaj.maj F E N U (l : AE F E)`. Use `Measurable.indicator (s := {l : (AE F E)ˣ | (fun i => (GlobalTheory.XTermMaj.crd F E (l : AE F E) i).2) ∈ U}) (f := fun l : (AE F E)ˣ => ENNReal.ofReal ((1 + ∑ i, ∑ v : InfinitePlace F, ‖(GlobalTheory.XTermMaj.crd F E (l : AE F E) i).1 v‖) ^ (-(N : ℝ)))) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Continuous.measurable ?_).pow_const _ |>.ennreal_ofReal` and prove the remaining obligations. Conclude with `continuous_const.add (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun v _ => ((continuous_apply v).comp (continuous_fst.comp ((continuous_apply i).comp hc))).norm)`. Conclude with `(hU.isClosed.preimage (continuous_pi fun i => continuous_snd.comp ((continuous_apply i).comp hc))).measurableSet`. Establish `ha : Continuous fun l : (AE F E)ˣ => (absE F E l : ℝ)` using `NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE`. Use `⟨(hm.ennreal_toReal.mul (ha.pow z).measurable).aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
-
-Use `lt_of_le_of_lt (lintegral_mono fun l => le_trans ?_ (hb l)) (GlobalTheory.TateConv.lintegral_bound_lt_top F E μ hs hk L C)` and prove the remaining obligations. Rewrite using `[Real.enorm_of_nonneg (by positivity), ENNReal.ofReal_mul ENNReal.toReal_nonneg, Real.rpow_natCast]`. Use `gcongr`. Conclude with `ENNReal.ofReal_toReal_le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integrable_maj (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (μ : Measure (AE F E)ˣ) [μ.IsHaarMeasure] {z : ℕ} (hz : 2 ≤ z) {U : Set (Fin (Module.finrank F E) → Af F)}
@@ -125,35 +123,29 @@ theorem exists_integrable_maj (F E : Type) [Field F] [NumberField F] [Field E] [
   exact ENNReal.ofReal_toReal_le
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e he X om om' om₁ om₁' hT hT₁ Ψ hΨ`. Establish `hKeq : K = GlobalTheory.StabHaar.stabK (σ` using `σ) B G.V := Subgroup.ext fun g => (hK g).trans (GlobalTheory.StabHaar.isStab_stabK (σ := σ) B G.V g).symm`. Establish `hKc : IsCompact (K : Set (UA σ G.V.J))`. Establish `hX` using `hT.geo.hV`. Take `⟨C, hCc, hsub⟩` from `GlobalTheory.T.relatively_compact_stabilizer F E σ B (b + 2) G.V _ _ hT.base hX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hKeq]`. Conclude with `hCc.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B G.V (GlobalTheory.T.isClosed_adelic_lattice_closure F E (b + 2) G.V hX.lat)) hsub`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hKc`. Use `haveI : IsFiniteMeasure μK := ⟨isCompact_univ.measure_lt_top⟩`. Take `⟨v1, v2, v3, v4⟩` from `GlobalTheory.IwInt.ideleTop (F := F) (E := E)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Use `haveI := sfinite_of_finite μK`. Use `haveI := sfinite_of_haar μ`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `letI : MeasurableSpace (Fin b × Fin (b + a') → AF F) := borel _`. Use `haveI : BorelSpace (Fin b × Fin (b + a') → AF F) := ⟨rfl⟩`. Establish `hz : 2 ≤ (b + 2 - a') / 2` using `by have := hT.geo.eBig; omega`. Establish `hS` using `IsUWeilPair.isUSplitting hT.weil`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set z := (b + 2 - a') / 2 with hzdef`. Set `D₀ : K × (AE F E)ˣ → Fn F b (b + a')` to `fun t => e (G.M.co.rho B.ψ (shiftA H H' t.2) (om (t.1.1, 1) Ψ))`. Set `w : K × (AE F E)ˣ → ℂ` to `fun t => (X.ν t.2 : ℂ) * ((absE F E t.2 : ℝ) : ℂ) ^ z`. Establish `hD₀ : ∀ t, D₀ t ∈ schA F (Fin b × Fin (b + a'))` using `fun t => he.maps _ (GlobalTheory.HeisSchA.rho_mem_schA _ _ hT.base.std _ _ (hS.pres _ _ hΨ))`. Establish `hmeas : ∀ y, AEStronglyMeasurable (fun t => (w t • D₀ t) y) (μK.prod μ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `aesm_slice μK μ Measure.addHaar (fun t => w t • D₀ t) (fun t => (GlobalTheory.ThKOp.continuous_of_mem_schA (hD₀ t)).const_smul (w t)) ?_` and prove the remaining obligations. Use `(GlobalTheory.T.config_a_evaluation_stabilizer_vanishing hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ Measure.addHaar inferInstance).congr (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [D₀, w, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨m, c, φ, hφ, hfin⟩` from `GlobalTheory.ConeData.finite_parts hKP F E σ B b a' G G₁ H H' hC K hK e he X om om' hT Ψ hΨ 1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hsupp⟩` from `GlobalTheory.ConeData.finsupp hKP F E σ B b a' G G₁ H H' hC K hK e he X om om' hT Ψ hΨ 1`. Establish `hdec` using `GlobalTheory.ConeData.arch_decay hKP F E σ B b a' G G₁ H H' hC K hK e he X om om' hT Ψ hΨ 1 U hU`. Take `⟨N, hN⟩` from `exists_integrable_maj F E μ hz hU`. Establish `hsl : ∀ j (t : K × (AE F E)ˣ), ∃ f : SInf F (Fin b × Fin (b + a')), ∀ y, f y = D₀ t fun q => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y q), c j q)` using `fun j t => by`. Distinguish the cases in `hl : (fun i => (GlobalTheory.XTermMaj.crd F E (t.2 : AE F E) i).2) ∈ U`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hCb⟩` from `hdec (c j) 0 ∅`. Take `⟨f, hf, -⟩` from `hCb t.1.1 t.1.2 t.2 hl`. Conclude with `⟨f, hf⟩`. Conclude with `⟨0, fun y => (congrFun (hsupp t.1.1 t.1.2 t.2 hl) _).symm⟩`. Use `choose f hf using hsl`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ∀ j k n, ∃ β : K × (AE F E)ˣ → ℝ, Integrable β (μK.prod μ) ∧ ∀ t, SchwartzMap.seminorm ℂ k n (w t • f j t) ≤ β t` using `fun j k n => by`. Take `⟨C, hCb⟩` from `hdec (c j) N {(k, n)}`. Use `⟨fun t => C * ((GlobalTheory.XTermMaj.maj F E N U (t.2 : AE F E)).toReal * (absE F E t.2 : ℝ) ^ z), (hN.const_mul C).comp_snd μK, fun t => ?_⟩` and prove the remaining obligations. Establish `hw : ‖w t‖ = (absE F E t.2 : ℝ) ^ z`. Simplify using `only [w, norm_mul, Circle.norm_coe, one_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, NNReal.abs_eq]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `beta_reduce`. Rewrite using `[map_smul_eq_mul, hw, mul_comm, ← mul_assoc]`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Distinguish the cases in `hl : (fun i => (GlobalTheory.XTermMaj.crd F E (t.2 : AE F E) i).2) ∈ U`. Take `⟨f', hf', hle⟩` from `hCb t.1.1 t.1.2 t.2 hl`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[show f j t = f' from SchwartzMap.ext fun y => (hf j t y).trans (hf' y).symm, GlobalTheory.XTermMaj.maj, Set.indicator_of_mem hl, ENNReal.toReal_ofReal (Real.rpow_nonneg (by positivity) _)]`. Rewrite `hle` using `[Finset.sup_singleton]`. Then use the resulting hypothesis. Rewrite using `[show f j t = 0 from SchwartzMap.ext fun y => (hf j t y).trans (congrFun (hsupp t.1.1 t.1.2 t.2 hl) _), GlobalTheory.XTermMaj.maj, Set.indicator_of_notMem hl, map_zero, ENNReal.toReal_zero, mul_zero]`. Establish `key` using `admissible_integral_exchange (μK.prod μ) φ hφ (fun j t => w t • f j t) (fun j y => (hmeas _).congr (Eventually.of_forall fun t => congrArg (w t * ·) (hf j t y).symm)) hb (fun t => w t • D₀ t) (fun t => by`. Use function extensionality and compare the values at `y`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, show D₀ t y = _ from hfin t.1.1 t.1.2 t.2 y, Finset.mul_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [pureA, SchwartzMap.smul_apply, smul_eq_mul, hf, RingEquiv.symm_apply_apply, mul_assoc]`. Use the proof step `rfl)`. Establish `hcone : cone B G.M om e K μK μ (shiftA H H') X.ν z Ψ = fun y => ∫ t, (w t • D₀ t) y ∂(μK.prod μ)`.
-
-Use function extensionality and compare the values at `y`. Use `Eq.trans ?_ (integral_prod _ (key.2 _ (proj_mem_adm y)).1).symm` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun k => integral_congr_ae (Eventually.of_forall fun l => ?_))` and prove the remaining obligations. Simplify using `only [D₀, w, LinearMap.proj_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hcone]`. Use `⟨key.1, fun L hL => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `key.2 L hL`. Establish `h3 : ∀ t, L (w t • D₀ t) = L (D₀ t) * (X.ν t.2 : ℂ) * ((absE F E t.2 : ℝ) : ℂ) ^ z` using `fun t => by`. Rewrite using `[map_smul, smul_eq_mul, mul_comm, mul_assoc]`.
-
-Simplify using `only [h3] at h1`. Use `⟨h1, h2.trans ?_⟩` and prove the remaining obligations. Simplify using `only [h3]`. Conclude with `integral_prod _ h1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cone_adm : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →
@@ -253,7 +245,7 @@ theorem cone_adm : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberFie
   exact integral_prod _ h1
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e he X om om' om₁ om₁' hT hT₁ Ψ hΨ x`. Use function extensionality and compare the values at `y`. Conclude with `((cone_adm hKP F E σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e he X om om' om₁ om₁' hT hT₁ Ψ hΨ).2 _ ((IsUWeilPair.isUSplitting hT₁.weil).adm x _ (proj_mem_adm y))).2`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem weilOp_cone : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →
@@ -267,7 +259,7 @@ theorem weilOp_cone : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [Number
     ((IsUWeilPair.isUSplitting hT₁.weil).adm x _ (proj_mem_adm y))).2
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e he X om om' om₁ om₁' hT hT₁ Ψ hΨ x μY _`. Rewrite using `[weilOp_cone hKP F E σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e he X om om' om₁ om₁' hT hT₁ Ψ hΨ x]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem weilOp_cone_ae : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

@@ -4,19 +4,19 @@ import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.HoloWeakStatement
 namespace Bl.SecondBlockLemmaG
 
 /- English proof (translation)
-Introduce `n Ω K u hΩ hu hK hKΩ v`. Take `⟨δ, hδ, hδΩ⟩` from `hK.exists_cthickening_subset_open hΩ hKΩ`. Take `⟨M, hM⟩` from `(hK.cthickening (r := δ)).exists_bound_of_continuousOn (hu.continuousOn.mono hδΩ)`. Distinguish the cases in `hv : v = 0`. Use `⟨0, fun x _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hv]`. Establish `hvpos : 0 < ‖v‖` using `norm_pos_iff.mpr hv`. Use `⟨M / (δ / ‖v‖), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hr : 0 < δ / ‖v‖` using `div_pos hδ hvpos`. Establish `hux : DifferentiableAt ℂ u x` using `(hu x (hKΩ hx)).differentiableAt (hΩ.mem_nhds (hKΩ hx))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : fderiv ℝ u x v = fderiv ℂ u x v`. Rewrite using `[(hux.hasFDerivAt.restrictScalars ℝ).fderiv]`. Both sides reduce to the same expression. Establish `hmem : ∀ z : ℂ, z ∈ Metric.closedBall (0 : ℂ) (δ / ‖v‖) → x + z • v ∈ Metric.cthickening δ K`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Metric.closedBall_subset_cthickening hx` to reduce the goal to its premises. Rewrite using `[Metric.mem_closedBall, dist_eq_norm, add_sub_cancel_left, norm_smul]`. Rewrite `hz` using `[Metric.mem_closedBall, dist_zero_right]`. Combine the equalities or inequalities in the displayed calculation. Establish `hgd : DifferentiableOn ℂ (fun z : ℂ => u (x + z • v)) (Metric.closedBall (0 : ℂ) (δ / ‖v‖))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `h1 : DifferentiableAt ℂ u (x + z • v)` using `(hu _ (hδΩ (hmem z hz))).differentiableAt (hΩ.mem_nhds (hδΩ (hmem z hz)))`. Establish `h2 : DifferentiableAt ℂ (fun w : ℂ => x + w • v) z` using `(differentiableAt_id.smul_const v).const_add x`. Conclude with `(h1.comp z h2).differentiableWithinAt`. Establish `hdc` using `hgd.diffContOnCl_ball subset_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hest` using `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hr hdc (fun z hz => hM _ (hmem z (Metric.sphere_subset_closedBall hz)))`. Establish `hderiv : HasDerivAt (fun z : ℂ => u (x + z • v)) (fderiv ℂ u x v) 0`. Establish `h2 : HasDerivAt (fun w : ℂ => x + w • v) v 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const v).const_add x`. Establish `h1 : HasFDerivAt u (fderiv ℂ u x) (x + (0 : ℂ) • v)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hux.hasFDerivAt`. Conclude with `h1.comp_hasDerivAt 0 h2`. Rewrite using `[hR, ← hderiv.deriv]`. Conclude with `hest`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {n : Nat} {Ω K : Set.{0} (ReciprocityTheory.L2DbarEstimates.C.V n)} {u : ReciprocityTheory.L2DbarEstimates.C.V n → Complex},

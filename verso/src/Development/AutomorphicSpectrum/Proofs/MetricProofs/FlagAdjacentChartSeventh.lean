@@ -16,9 +16,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ}
 
 /- English proof (translation)
-Use `⟨Option.some_injective _, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, i⟩ ⟨k', i'⟩ h`. Simplify using `only [v₀, Sigma.mk.injEq, Option.some.injEq] at h`. Take `⟨rfl, h⟩` from `h`. Simplify using `only [Option.getD_some, heq_eq_eq] at h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Both sides reduce to the same expression. Introduce and unpack `⟨o, i⟩ ⟨k, hk⟩`. Take `rfl : o = some k` from `hk.symm`. Conclude with `⟨⟨k, i⟩, rfl⟩`.
+Substitute using the available equality. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem blockMap_fst (k₀ : K) : IsBlockMap (ι := ι) (ι' := fun o : Option K => ι (o.getD k₀)) some (v₀ k₀) := by
   refine ⟨Option.some_injective _, ?_, fun _ => rfl, ?_⟩
@@ -33,7 +33,7 @@ theorem blockMap_fst (k₀ : K) : IsBlockMap (ι := ι) (ι' := fun o : Option K
     exact ⟨⟨k, i⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `CPts.base_mem M (CPts.comp_mem_mcPts (blockMap_fst k₀) (algebraMap Φ (RatFunc Φ)) (funext fun _ => rfl) hz)`.
+A detailed English derivation is pending.
 -/
 theorem baseOf_mem (M : FlagModel y Ψ N j) {τ : Ψ} {a : Fin N} {k₀ : K} {ca cb : Fin N}
     {z : (Σ o : Option K, ι (o.getD k₀)) → ℂ} (hz : z ∈ mcPts (wP M τ a k₀ ca cb)) :
@@ -41,9 +41,9 @@ theorem baseOf_mem (M : FlagModel y Ψ N j) {τ : Ψ} {a : Fin N} {k₀ : K} {ca
   CPts.base_mem M (CPts.comp_mem_mcPts (blockMap_fst k₀) (algebraMap Φ (RatFunc Φ)) (funext fun _ => rfl) hz)
 
 /- English proof (translation)
-Establish `hp : ∀ I, pluck M F zb' k u' I = t * pluck M F zb k u I` using `fun I => by`. Unfold `pluck`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hv, hu]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `twMinor`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[hp]`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -64,7 +64,7 @@ theorem twMinor_scale (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk
   ring
 
 /- English proof (translation)
-Rewrite using `[twMinor_scale M F hv i k g hu J, twMinor_scale M F hv i k g hu J']`. Conclude with `mul_div_mul_left _ _ ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lr_key (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) {zb zb' : (Σ k, baseIdx ι M.blk k) → ℂ}
     (hv : ∀ s, valAt M.x s zb' = valAt M.x s zb) (g : Matrix (Fin N) (Fin N) ℂ) (i : Fin N) (k : K)
@@ -74,7 +74,7 @@ theorem lr_key (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) {zb z
   exact mul_div_mul_left _ _ ht
 
 /- English proof (translation)
-Unfold `lowRead`. Conclude with `congrArg (Option.elim (M.blk (τ', stepOf N j b')) 0) (funext fun k => lr_key M F hv _ _ k (hc k) (hu k) _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lowRead_scale (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) {zb zb' : (Σ k, baseIdx ι M.blk k) → ℂ}
     (hv : ∀ s, valAt M.x s zb' = valAt M.x s zb) (h : Ψ → Matrix (Fin N) (Fin N) ℂ)
@@ -86,25 +86,21 @@ theorem lowRead_scale (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk
 end
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε ctx z hz z' hz' ho`. Take `⟨-, -, -, -, -, -, -, -, hr, -, -⟩` from `ctx`. Take `⟨hzP, hs, hV, hm₁, hm₂⟩` from `hz`. Take `⟨c, hc, rfl⟩` from `ho`. Use `set z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ := fun p => c p.1 * z p with hz'def`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb` using `baseOf_mem M hzP`. Establish `hb'` using `baseOf_mem M hz'`. Establish `eb : baseOf M k₀ z' = fun q => c (some q.1.1) * baseOf M k₀ z q` using `rfl`. Establish `hob : SameOrbit (baseOf M k₀ z') (baseOf M k₀ z)` using `⟨fun k => c (some k.1), fun k => hc _, eb⟩`. Establish `hnot : ∀ x : Rb.X, Rb.lift x x ∉ mcPts (⊤ : Ideal (MRing (baseIdx ι M.blk)))` using `fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hx.2 1 Submodule.mem_top` as an intermediate fact. Simplify using `at this`. Establish `hrr : r (baseOf M k₀ z') = r (baseOf M k₀ z)` using `Rb.inj _ _ (hnot _) (orbit_trans (hr _ hb') (orbit_trans hob (orbit_symm (hr _ hb))))`. Establish `hv : ∀ s, valAt M.x s (baseOf M k₀ z') = valAt M.x s (baseOf M k₀ z)` using `fun s => by`. Use `StepW.TorusAct.valAt_torus (x := M.x) (fun k => c (some k.1)) (fun k => hc _) hb (eb ▸ hb') s` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eb]`. Conclude with `this`. Establish `h₁ : ∀ k (m : ι k), fstPt k₀ z' ⟨k, m⟩ = c (some k) * fstPt k₀ z ⟨k, m⟩` using `fun _ _ => rfl`. Set `c₂ : K → ℂ` to `fun k => if k = k₀ then c none else c (some k)`. Establish `hc₂ : ∀ k, c₂ k ≠ 0` using `fun k => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [c₂]`. Use `split_ifs`. Use `exacts [hc _, hc _]`. Establish `h₂ : ∀ k (m : ι k), sndPt k₀ z' ⟨k, m⟩ = c₂ k * sndPt k₀ z ⟨k, m⟩` using `fun k m => by`. Distinguish the cases in `hk : k = k₀`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hk` using the available equality. Simplify using `only [sndPt, Function.comp, v₁_self, c₂, if_true, hz'def]`. Simplify using `only [sndPt, Function.comp, v₁_ne (p := ⟨k, m⟩) hk, c₂, if_neg hk, hz'def]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show z' ∈ mcPts _ ∧ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hz', ?_, ?_, fun p k hp => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hrr]`. Conclude with `hs`. Rewrite using `[hrr]`. Conclude with `hV`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[twMinor_scale M F hv _ k _ (h₁ k)]`. Conclude with `mul_ne_zero (hc _) (hm₁ p k hp)`. Rewrite using `[twMinor_scale M F hv _ k₀ _ (h₂ k₀)]`. Conclude with `mul_ne_zero (hc₂ _) hm₂`. Use function extensionality and compare the values at `i`.
-
-Unfold `wRho`. Break down `ε.symm i with l | q | u` into its components or cases. Use `show Rb.A.chart kb (r (baseOf M k₀ z')) l = Rb.A.chart kb (r (baseOf M k₀ z)) l`. Rewrite using `[hrr]`. Conclude with `lowRead_scale M F hv h (fun k => hc (some k)) h₁ _ _ _`.
-
-Use `show lowRead M F _ h (sndPt k₀ z') τ cb ca - lowRead M F _ h (fstPt k₀ z') τ cb ca = _ - _`. Rewrite using `[lowRead_scale M F hv h hc₂ h₂, lowRead_scale M F hv h (fun k => hc (some k)) h₁]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ LowIdx Ψ N j ⊕ Unit ≃ Fin (d + 2)), IsWCtx M Rb τ a b k₀ ca cb d F kb V bl r h → ∀ z ∈ wO M Rb τ a k₀ ca cb F kb V r h, ∀ z' ∈ mcPts (wP M τ a k₀ ca cb), SameOrbit z' z → z' ∈ wO M Rb τ a k₀ ca cb F kb V r h ∧ wRho M Rb τ k₀ ca cb F kb r h ε z' = wRho M Rb τ k₀ ca cb F kb r h ε z := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε ctx z hz z' hz' ho

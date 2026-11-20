@@ -8,7 +8,7 @@ open MeasureTheory Metric
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `: Nontrivial (EuclideanSpace ℂ (Fin n))` using `⟨⟨EuclideanSpace.single (⟨0, hn⟩ : Fin n) (1 : ℂ), 0, fun h => by`. Simplify using `using congrArg norm h⟩⟩`. Rewrite using `[Measure.toSphere_apply_univ]`. Use `mul_ne_zero ?_ (measure_ball_pos _ _ one_pos).ne'` and prove the remaining obligations. Conclude with `(Module.finrank_pos (R := ℝ) (M := EuclideanSpace ℂ (Fin n))).ne'` after adjusting the coercions.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem toSphere_univ_ne_zero_of_pos {n : ℕ} (hn : 0 < n) :
     (volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere Set.univ ≠ 0 := by
@@ -20,14 +20,14 @@ private theorem toSphere_univ_ne_zero_of_pos {n : ℕ} (hn : 0 < n) :
   exact_mod_cast (Module.finrank_pos (R := ℝ) (M := EuclideanSpace ℂ (Fin n))).ne'
 
 /- English proof (translation)
-Conclude with `measure_ne_top _ _`.
+A detailed English derivation is pending.
 -/
 private theorem toSphere_univ_ne_top' {n : ℕ} :
     (volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere Set.univ ≠ ⊤ := by
   exact measure_ne_top _ _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Simplify using `only [sphereProb, ProbabilityTheory.cond, Measure.smul_apply, Measure.restrict_univ, smul_eq_mul]`. Conclude with `ENNReal.inv_mul_cancel (toSphere_univ_ne_zero_of_pos hn) toSphere_univ_ne_top'`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isProbabilityMeasure_sphereProb {n : ℕ} (hn : 0 < n) :
     IsProbabilityMeasure (sphereProb n) := by
@@ -37,7 +37,7 @@ theorem isProbabilityMeasure_sphereProb {n : ℕ} (hn : 0 < n) :
   exact ENNReal.inv_mul_cancel (toSphere_univ_ne_zero_of_pos hn) toSphere_univ_ne_top'
 
 /- English proof (translation)
-The claim follows from `A.measurePreserving.measure_preimage_emb A.toHomeomorph.measurableEmbedding X`.
+A detailed English derivation is pending.
 -/
 private theorem volume_preimage_linearIsometryEquiv {n : ℕ}
     (A : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℝ] EuclideanSpace ℂ (Fin n))
@@ -45,11 +45,9 @@ private theorem volume_preimage_linearIsometryEquiv {n : ℕ}
   A.measurePreserving.measure_preimage_emb A.toHomeomorph.measurableEmbedding X
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_smul, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, _, ⟨z, hz, rfl⟩, rfl⟩`. Use `⟨r, hr, _, ⟨⟨A z, by simp⟩, hz, rfl⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(map_smul A r (z : EuclideanSpace ℂ (Fin n))).symm`. Introduce and unpack `⟨r, hr, _, ⟨w, hw, rfl⟩, hx⟩`. Use `⟨r, hr, _, ⟨⟨A.symm w, by simp⟩, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hw' : (⟨A (A.symm (w : EuclideanSpace ℂ (Fin n))), by simp⟩ : UnitSphereC n) = w` using `Subtype.ext (by simp)`. Conclude with `(congrArg (· ∈ s) hw').mpr hw`.
-
-Use `show r • A.symm (w : EuclideanSpace ℂ (Fin n)) = x`. Combine the equalities or inequalities in the displayed calculation.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem Ioo_smul_image_preimage_sphere_eq_preimage {n : ℕ}
     (A : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℝ] EuclideanSpace ℂ (Fin n)) (s : Set (UnitSphereC n)) :
@@ -74,7 +72,7 @@ private theorem Ioo_smul_image_preimage_sphere_eq_preimage {n : ℕ}
         _ = x := by rw [hx, LinearIsometryEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Establish `hcont : Continuous (fun z : UnitSphereC n => (⟨A z, by simp⟩ : UnitSphereC n))` using `(A.continuous.comp continuous_subtype_val).subtype_mk _`. Use `⟨hcont.measurable, ?_⟩` and prove the remaining obligations. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hcont.measurable hs, Measure.toSphere_apply' (μ := volume) (hcont.measurable hs), Measure.toSphere_apply' (μ := volume) hs, Ioo_smul_image_preimage_sphere_eq_preimage A s, volume_preimage_linearIsometryEquiv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem measurePreserving_toSphere_isometry {n : ℕ}
     (A : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℝ] EuclideanSpace ℂ (Fin n)) :
@@ -103,7 +101,7 @@ def sphereRot {n : ℕ} (u : Fin n → Circle) (z : UnitSphereC n) : UnitSphereC
   ⟨rotLIE u z, by simp⟩
 
 /- English proof (translation)
-Use `⟨hf.measurable, ?_⟩` and prove the remaining obligations. Simplify using `only [sphereProb, ProbabilityTheory.cond, Measure.restrict_univ]`. Rewrite using `[Measure.map_smul, hf.map_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem measurePreserving_sphereProb_of_toSphere {n : ℕ} {f : UnitSphereC n → UnitSphereC n}
     (hf : MeasurePreserving f (volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere
@@ -114,7 +112,7 @@ private theorem measurePreserving_sphereProb_of_toSphere {n : ℕ} {f : UnitSphe
   rw [Measure.map_smul, hf.map_eq]
 
 /- English proof (translation)
-The claim follows from `measurePreserving_sphereProb_of_toSphere (f := sphereRot u) (measurePreserving_toSphere_isometry (rotLIE u))`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_sphereRot {n : ℕ} (u : Fin n → Circle) :
     MeasurePreserving (sphereRot u) (sphereProb n) (sphereProb n) :=
@@ -125,7 +123,7 @@ def blockRot {B n : ℕ} (θ : Fin B × Fin n → ℝ) (z : BlockSphere B n) : B
   fun b => sphereRot (fun j => Circle.exp (2 * Real.pi * θ (b, j))) (z b)
 
 /- English proof (translation)
-Rewrite using `[Circle.coe_exp]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem coe_circle_exp_two_pi_mul (t : ℝ) :
     ((Circle.exp (2 * Real.pi * t) : Circle) : ℂ) = Complex.exp (2 * Real.pi * Complex.I * (t : ℂ)) := by
@@ -135,9 +133,9 @@ private theorem coe_circle_exp_two_pi_mul (t : ℝ) :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨b, j⟩` from `p`. Use `show WithLp.ofLp (rotLIE (fun j' => Circle.exp (2 * Real.pi * θ (b, j'))) (z b : EuclideanSpace ℂ (Fin n))) j = WithLp.ofLp (z b : EuclideanSpace ℂ (Fin n)) j * torusPoint θ (b, j)`. Rewrite using `[rotLIE_apply]`. Simplify using `only [coe_circle_exp_two_pi_mul, torusPoint]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem blockPoint_blockRot {B n : ℕ} (θ : Fin B × Fin n → ℝ) (z : BlockSphere B n) :
     blockPoint (blockRot θ z) = fun p => blockPoint z p * torusPoint θ p := by
@@ -151,7 +149,7 @@ theorem blockPoint_blockRot {B n : ℕ} (θ : Fin B × Fin n → ℝ) (z : Block
   ring
 
 /- English proof (translation)
-Establish `h : ∀ b : Fin B, MeasurePreserving (sphereRot (fun j => Circle.exp (2 * Real.pi * θ (b, j)))) (sphereProb n) (sphereProb n)` using `fun b => measurePreserving_sphereRot _`. Use `show MeasurePreserving (fun (z : BlockSphere B n) (b : Fin B) => sphereRot (fun j => Circle.exp (2 * Real.pi * θ (b, j))) (z b)) (Measure.pi fun _ => sphereProb n) (Measure.pi fun _ => sphereProb n)`. Conclude with `measurePreserving_pi (hf := h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurePreserving_blockRot {B n : ℕ} (θ : Fin B × Fin n → ℝ) :
     MeasurePreserving (blockRot θ) (blockSphereProb B n) (blockSphereProb B n) := by
@@ -164,15 +162,13 @@ theorem measurePreserving_blockRot {B n : ℕ} (θ : Fin B × Fin n → ℝ) :
   exact measurePreserving_pi (hf := h)
 
 /- English proof (translation)
-Set `W : Submodule ℝ (EuclideanSpace ℂ (Fin n))` to `LinearMap.ker ((EuclideanSpace.proj j : EuclideanSpace ℂ (Fin n) →L[ℂ] ℂ).restrictScalars ℝ).toLinearMap`. Establish `hW : W ≠ ⊤`. Introduce `h`. Establish `hmem : EuclideanSpace.single j (1 : ℂ) ∈ W` using `h ▸ Submodule.mem_top`. Rewrite `hmem` using `[LinearMap.mem_ker]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `WithLp.ofLp (EuclideanSpace.single j (1 : ℂ)) j = 0 at hmem`. Simplify using `at hmem`. Establish `hW0 : (volume : Measure (EuclideanSpace ℂ (Fin n))) (W : Set (EuclideanSpace ℂ (Fin n))) = 0` using `Measure.addHaar_submodule _ W hW`. Establish `hmeas : MeasurableSet {z : UnitSphereC n | spherePoint z j = 0}`. Establish `hc : Continuous fun z : UnitSphereC n => spherePoint z j`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(continuous_apply j).comp ((EuclideanSpace.equiv (Fin n) ℂ).continuous.comp continuous_subtype_val)`. Conclude with `(isClosed_singleton.preimage hc).measurableSet`. Establish `hS : (volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere {z : UnitSphereC n | spherePoint z j = 0} = 0`. Rewrite using `[Measure.toSphere_apply' (μ := volume) hmeas]`. Use `mul_eq_zero_of_right _ (measure_mono_null ?_ hW0)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `x ⟨r, -, _, ⟨z, hz, rfl⟩, rfl⟩`. Simplify using `only [Set.mem_ofPred_eq, spherePoint] at hz`. Use `show ((EuclideanSpace.proj j : EuclideanSpace ℂ (Fin n) →L[ℂ] ℂ).restrictScalars ℝ) (r • (z : EuclideanSpace ℂ (Fin n))) = 0`. Rewrite using `[map_smul]`. Use `show r • WithLp.ofLp (z : EuclideanSpace ℂ (Fin n)) j = 0`.
-
-Rewrite using `[hz, smul_zero]`. Simplify using `only [sphereProb, ProbabilityTheory.cond, Measure.restrict_univ, Measure.smul_apply, smul_eq_mul, hS, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sphereProb_coord_zero {n : ℕ} (j : Fin n) :
     sphereProb n {z | spherePoint z j = 0} = 0 := by
@@ -206,7 +202,7 @@ theorem sphereProb_coord_zero {n : ℕ} (j : Fin n) :
     smul_eq_mul, hS, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Set.ofPred_exists]`. Use `measure_iUnion_null fun p => ?_` and prove the remaining obligations. Use `show (Measure.pi fun _ : Fin B => sphereProb n) (Function.eval p.1 ⁻¹' {w : UnitSphereC n | spherePoint w p.2 = 0}) = 0`. Conclude with `Measure.pi_eval_preimage_null _ (sphereProb_coord_zero p.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem blockSphereProb_coord_zero {B n : ℕ} :
     blockSphereProb B n {z | ∃ p : Fin B × Fin n, blockPoint z p = 0} = 0 := by
@@ -217,9 +213,9 @@ theorem blockSphereProb_coord_zero {B n : ℕ} :
   exact Measure.pi_eval_preimage_null _ (sphereProb_coord_zero p.2)
 
 /- English proof (translation)
-Establish `h1 : ‖((z p.1 : UnitSphereC n) : EuclideanSpace ℂ (Fin n))‖ = 1` using `norm_eq_of_mem_sphere _`. Establish `h2` using `EuclideanSpace.norm_eq ((z p.1 : UnitSphereC n) : EuclideanSpace ℂ (Fin n))`. Rewrite `h2` using `[h1]`. Establish `h3 : ‖WithLp.ofLp ((z p.1 : UnitSphereC n) : EuclideanSpace ℂ (Fin n)) p.2‖ ^ 2 ≤ ∑ i, ‖WithLp.ofLp ((z p.1 : UnitSphereC n) : EuclideanSpace ℂ (Fin n)) i‖ ^ 2` using `Finset.single_le_sum (f := fun i => ‖WithLp.ofLp ((z p.1 : UnitSphereC n) : EuclideanSpace ℂ (Fin n)) i‖ ^ 2) (fun i _ => by positivity) (Finset.mem_univ _)`. Establish `h4` using `Real.sqrt_le_sqrt h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[← h2, Real.sqrt_sq (norm_nonneg _)]`. Conclude with `h4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_blockPoint_le {B n : ℕ} (z : BlockSphere B n) (p : Fin B × Fin n) :
     ‖blockPoint z p‖ ≤ 1 := by

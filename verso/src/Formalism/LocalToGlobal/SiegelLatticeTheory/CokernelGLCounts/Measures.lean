@@ -19,9 +19,9 @@ def tensMap {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'
   (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom
 
 /- English proof (translation)
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [tensMap, sigR]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem tensMap_sigR {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R']
     (φ : R →ₐ[F] R') (σ : E →ₐ[F] E) :
@@ -34,7 +34,7 @@ theorem tensMap_sigR {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Alg
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[tensMap, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensMap_inclR {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R']
     (φ : R →ₐ[F] R') (x : E) : tensMap (E := E) φ (inclR R x) = inclR R' x := by

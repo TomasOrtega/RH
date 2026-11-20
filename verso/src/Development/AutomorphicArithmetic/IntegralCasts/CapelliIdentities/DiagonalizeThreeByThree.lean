@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K _ d hd M hM`. Establish `hev : ∀ a, Module.End.HasEigenvalue (Matrix.toLin' M) (d a)`. Introduce `a`. Rewrite using `[Module.End.hasEigenvalue_iff_isRoot_charpoly, Matrix.charpoly_toLin', hM, Polynomial.IsRoot.def, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ a) (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose v hv using fun a => (hev a).exists_hasEigenvector`. Establish `hli : LinearIndependent K v` using `Module.End.eigenvectors_linearIndependent' (Matrix.toLin' M) d hd v hv`. Set `P : Matrix (Fin 3) (Fin 3) K` to `Matrix.of fun i j => v j i`. Establish `hP : IsUnit P` using `Matrix.linearIndependent_cols_iff_isUnit.mp hli`. Establish `hMP : M * P = P * Matrix.diagonal d`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Establish `h` using `congrFun (hv j).apply_eq_smul i`. Rewrite `h` using `[Matrix.toLin'_apply]`. Rewrite using `[Matrix.mul_diagonal, mul_comm]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `hP`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hu, hMP, ← hu, ← Matrix.mul_assoc]`. Rewrite using `[Units.inv_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DiagonalizeThreeByThree.diagonalize_three_by_three_split :
     ∀ {K : Type} [inst : Field K] (d : Fin (3 : ℕ) → K),

@@ -8,7 +8,7 @@ open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨T, hT, φ, hφ, rfl⟩`. Conclude with `h T hT φ hφ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem hull_le {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     {S U : Submodule ℂ (Sm E a)} (h : ∀ T ∈ Comm E a, ∀ φ ∈ S, T φ ∈ U) : hull S ≤ U := by
@@ -17,9 +17,9 @@ private theorem hull_le {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
   exact h T hT φ hφ
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.add_apply, hp, hq]`. Consider the case `monomial n c`. Simplify using `only [Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, ih, UpperTheory.V.Cm.smEq_uTC]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem smEq_aeval {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     (z : GroundTheory.Automorphic.AutomorphicForm.UEnv E a) (p : Polynomial ℂ) (φ : Sm E a) :
@@ -35,9 +35,7 @@ private theorem smEq_aeval {E : Type} [Field E] [NumberField E] [IsTotallyComple
     | succ n ih => rw [pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, ih, UpperTheory.V.Cm.smEq_uTC]
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `hp.add_right hq`. Consider the case `monomial n c`. Rewrite using `[Polynomial.aeval_monomial]`.
-
-Conclude with `(Algebra.commute_algebraMap_right c T).mul_right (h.pow_right n)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem commute_aeval {A : Type} [Ring A] [Algebra ℂ A] {T z : A} (h : Commute T z) (p : Polynomial ℂ) :
     Commute T (Polynomial.aeval z p) := by
@@ -48,15 +46,15 @@ private theorem commute_aeval {A : Type} [Ring A] [Algebra ℂ A] {T z : A} (h :
     exact (Algebra.commute_algebraMap_right c T).mul_right (h.pow_right n)
 
 /- English proof (translation)
-Introduce `hTC E _ _ _ a S hS L hL`. Establish `haut : ∀ φ ∈ hull S, GroundTheory.Automorphic.AutomorphicForm.IsAutomorphicForm φ.1` using `fun φ hφ => (Cm.isAutForm_iff φ).1 (Cm.mem_range_ofAut.1 (hull_le (U := LinearMap.range (Cm.ofAut E a)) (fun T hT ψ hψ => Cm.mem_range_ofAut.2 (hT.2.2 ψ ((Cm.isAutForm_iff ψ).2 (UpperTheory.isAutomorphicForm_of_bdd_submodule E a _ hS _ ⟨ψ, hψ, rfl⟩)))) hφ))`. Use `⟨?_, ?_, ⟨L, hL, ?_⟩, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Conclude with `(haut φ hφ.1).isLeftInvariant`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Conclude with `(haut φ hφ.1).hasModerateGrowth`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩ u hu g`. Rewrite using `[Fb.finEmb_eq]`. Establish `h1 : finRep E a u φ = φ` using `(hφ.2 ⟨u, hu⟩).trans (by simp)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun (congrArg Subtype.val h1) g`. Take `⟨V, hV, hst, hm⟩` from `hS.types`. Use `⟨V, hV, hst, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩ g`. Set `U : Submodule ℂ (Sm E a)` to `{ carrier := {ψ | (fun k : archCompact E a => ψ.1 (g * infEmb E a k.1)) ∈ V} zero_mem' := V.zero_mem add_mem' := fun hx hy => V.add_mem hx hy smul_mem' := fun c _ hx => V.smul_mem c hx }`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hull_le (U := U) (fun T hT ψ hψ => hTC E a V hV T hT.1 ψ (hm _ ⟨ψ, hψ, rfl⟩) g) hφ.1`. Take `⟨p, hp, hm⟩` from `hS.centre z hz`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Establish `h0 : φ ∈ LinearMap.ker (Polynomial.aeval (Cm.uTC E a z) p)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hull_le (fun T hT ψ hψ => ?_) hφ.1` and prove the remaining obligations. Establish `h1` using `hm _ ⟨ψ, hψ, rfl⟩`. Rewrite `h1` using `[Submodule.mem_bot, LinearEquiv.coe_coe, smEq_aeval, LinearEquiv.map_eq_zero_iff]`. Rewrite using `[LinearMap.mem_ker, ← Module.End.mul_apply, ← (commute_aeval (hT.2.1 z hz) p).eq, Module.End.mul_apply, h1, map_zero]`. Rewrite using `[Submodule.mem_bot, LinearEquiv.coe_coe, smEq_aeval, LinearMap.mem_ker.1 h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.S.hullBdd :
     UpperTheory.V.Cj.S.TypesComm → UpperTheory.V.Cj.S.HullBdd := by

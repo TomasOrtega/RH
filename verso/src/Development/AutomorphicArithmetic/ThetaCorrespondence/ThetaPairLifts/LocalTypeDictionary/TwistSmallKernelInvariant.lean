@@ -24,23 +24,21 @@ end GlobalTheory.SmallKerInv
 namespace GlobalTheory.SmallKerInv
 open GlobalTheory.FinPl
 /- English proof (translation)
-Introduce `_ _ _ _ _`. Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS => ?_⟩⟩` and prove the remaining obligations. Introduce `G W hW B ρ hρ t i j Θ Θ' hΘ g g₁`. Establish `hL : R.toLevCh.Is A.μ0` using `hS.core.lev`. Take `⟨a, b, τ, τ', n, Φ, -, -, ⟨e, he, ⟨φ₁, φ₂, h1, -⟩, -⟩, -, rfl⟩` from `hΘ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm` using `W.om_is (.mu t i j) ⟨i.2.le, j.2⟩`. Establish `hc` using `W.om_is (.chi (i : ℕ) j) ⟨i.2, j.2.le⟩`. Establish `s0` using `(node_isV G hL (X := .grid (i : ℕ) (j : ℕ)) ⟨i.2.le, j.2.le⟩).sd`. Establish `s1` using `(node_isV G hL (X := .grid (i : ℕ) ((j : ℕ) + 1)) ⟨i.2.le, j.2⟩).sd`. Establish `s2` using `(node_isV G hL (X := .grid ((i : ℕ) + 1) (j : ℕ)) ⟨i.2, j.2.le⟩).sd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set good : Pl D → Prop := fun v => Tame D v ∧ GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (G.chrS (.mu t i j)) v ∧ GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (G.chrT (.mu t i j)) v ∧ GlobalTheory.IndefiniteRowSideFullHe …`. Establish `hev : ∀ᶠ v : Pl D in Filter.cofinite, good v` using `by filter_upwards [GlobalTheory.FinPl.eventually_extUnram_two_notMem D, GlobalTheory.FinPl.ShapeSecond.ae_charUnramAt _ hm.hecS.1, GlobalTheory.FinPl.ShapeSecond.ae_charUnramAt _ hm.hecT.1, GlobalTheory.FinPl.ShapeSecond.ae_charUnramAt _ hc.hecS.1, GlobalTheory.FinPl.ShapeSecond. …`. Conclude with `⟨⟨h0.1, Or.inl h0.2⟩, h1, h2, h3, h4⟩`. Establish `hfin : {v | ¬ good v}.Finite` using `Filter.eventually_cofinite.1 hev`. Use `⟨G.Λ (.grid i j), hfin.toFinset ∪ (locPl G t).image (fun PP => PP.under (𝓞 D.host.F)), s0.1.fg, s0.1.span_eq_top, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `κ hκ u`. Establish `hgd : ∀ v, v ∉ hfin.toFinset ∪ (locPl G t).image (fun PP => PP.under (𝓞 D.host.F)) → good v`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_left _ (hfin.mem_toFinset.2 h))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hoff : ∀ PP ∈ locPl G t, ¬ (PP.under (𝓞 D.host.F) ∉ hfin.toFinset ∪ (locPl G t).image (fun PP => PP.under (𝓞 D.host.F)))` using `fun PP hPP h => h (Finset.mem_union_right _ (Finset.mem_image_of_mem _ hPP))`. Unfold `kerSmall`. Use `Finsupp.sum_congr fun d hd => ?_` and prove the remaining obligations. Take `⟨P, -, hP⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hd)`. Take `⟨d', hd', hd''⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hP)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdd` using `Finsupp.support_single_subset hd''`. Rewrite `hdd` using `[Finset.mem_singleton]`. Substitute `hdd` using the available equality. Take `⟨⟨hsb1, hth1⟩, ⟨hsb2, hth2⟩⟩` from `h1 d' hd'`. Establish `hv1` using `ρ.vT_is t i j i.2.le j.2`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hv2` using `ρ.vX_is i j i.2 j.2.le`. Use `congr 1`. Use `congr 1`. Use `show thetaKO (W.om (.mu t i j)) (u * κ) g _ = thetaKO (W.om (.mu t i j)) u g _`. Unfold `thetaKO`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ((u * κ, g) : GA D (G.pS (.mu t i j)) × GA D (G.pT (.mu t i j))) = (u, g) * (κ, 1)` using `by simp`. Rewrite using `[e1, map_mul, Module.End.mul_apply]`. Use `congrArg (fun x => W.om (.mu t i j) (u, g) x 0) ?_` and prove the remaining obligations. Conclude with `om_fock_fix _ _ _ _ _ _ _ hm W.θ_is _ _ _ (fun v hv => ⟨s0, s1, (hgd v hv).1, (hgd v hv).2.1, (hgd v hv).2.2.1⟩) e _ he hoff _ _ _ hv1.2.theta hv1.2.lat hth1 _ _ _ _ _ κ 1 hκ (inK_one _ _ _)`. Use `show thetaKO (W.om (.chi (i : ℕ) j)) (negGA _ g₁) (u * κ) _ = thetaKO (W.om (.chi (i : ℕ) j)) (negGA _ g₁) u _`.
-
-Unfold `thetaKO`. Establish `e2 : ((negGA _ g₁, u * κ) : GA D (G.pS (.chi (i : ℕ) j)) × GA D (G.pT (.chi (i : ℕ) j))) = (negGA _ g₁, u) * (1, κ)` using `by simp`. Rewrite using `[e2, map_mul, Module.End.mul_apply]`. Use `congrArg (fun x => W.om (.chi (i : ℕ) j) (negGA _ g₁, u) x 0) ?_` and prove the remaining obligations. Conclude with `om_fock_fix _ _ _ _ _ _ _ hc W.θ_is _ _ _ (fun v hv => ⟨isSelfDualC_neg s2, s0, (hgd v hv).1, (hgd v hv).2.2.2.1, (hgd v hv).2.2.2.2⟩) e _ he hoff _ _ _ hv2.2.theta hv2.2.lat hth2 _ _ _ _ _ 1 κ (inK_one _ _ _) hκ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem small_kernel_invariant : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → BigR fun {D} _ _ _ _ T _ _ _ _ _ R sc => ∀ (G : GridData R.toLevCh sc) (W : G.Weil), W.Over R → ∀ (B : Frames G)
   (ρ : RealMatch W), ρ.Over R → ∀ (t : T) (i j : Fin D.R.m) Θ Θ', IsMatched B t ρ i j Θ Θ' → ∀ g g₁,
@@ -123,7 +121,7 @@ open MeasureTheory GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.St
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SmallKerInv.small_kernel_invariant | exact _root_.GlobalTheory.SmallKerInv.small_kernel_invariant | (intros; apply _root_.GlobalTheory.SmallKerInv.small_kernel_invariant <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twist_small_kernel_invariant : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → BigR fun {D} _ _ _ _ T _ _ _ _ _ R sc => ∀ (G : GridData R.toLevCh sc) (W : G.Weil), W.Over R → ∀ (B : Frames G)
   (ρ : RealMatch W), ρ.Over R → ∀ (t : T) (i j : Fin D.R.m) Θ Θ', IsMatched B t ρ i j Θ Θ' → ∀ g g₁,

@@ -27,11 +27,11 @@ open Matrix
 variable {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
 
 /- English proof (translation)
-Establish `h2` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn v.asIdeal (𝓞 M) Gal(M/K)`. Rewrite `h2` using `[IsGalois.card_aut_eq_finrank, Ideal.ramificationIdxIn_eq_ramificationIdx v.asIdeal u.asIdeal Gal(M/K), Ideal.inertiaDegIn_eq_inertiaDeg v.asIdeal u.asIdeal Gal(M/K)]`. Establish `hp'` using `hp`. Rewrite `hp'` using `[← h2]`. Break down `Nat.prime_mul_iff.1 hp' with ⟨-, h⟩ | ⟨-, h⟩` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inr (mul_eq_one.1 h)`. Use `left`. Take `⟨a, ha⟩` from `Set.ncard_eq_one.1 h`. Establish `hu : u.under (𝓞 K) = v` using `HeightOneSpectrum.ext (Ideal.LiesOver.over (P := u.asIdeal) (p := v.asIdeal)).symm`. Use `⟨inferInstance, hp, hu, fun u' hu' => ?_⟩` and prove the remaining obligations.
+Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: u'.asIdeal.LiesOver v.asIdeal` using `⟨by rw [← hu']; rfl⟩`. Establish `m1 : u.asIdeal ∈ v.asIdeal.primesOver (𝓞 M)` using `⟨u.isPrime, inferInstance⟩`. Establish `m2 : u'.asIdeal ∈ v.asIdeal.primesOver (𝓞 M)` using `⟨u'.isPrime, inferInstance⟩`. Rewrite `m1`, `m2` using `[ha, Set.mem_singleton_iff]`. Conclude with `HeightOneSpectrum.ext (m2.trans m1.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycAt_or_split [IsGalois K M] (hp : (Module.finrank K M).Prime) (v : HeightOneSpectrum (𝓞 K))
     (u : HeightOneSpectrum (𝓞 M)) [u.asIdeal.LiesOver v.asIdeal] :
@@ -59,9 +59,9 @@ section Split
 variable (v : HeightOneSpectrum (𝓞 K)) (u : HeightOneSpectrum (𝓞 M)) [u.asIdeal.LiesOver v.asIdeal]
 
 /- English proof (translation)
-Use `letI : Algebra (v.adicCompletion K) (u.adicCompletion M) := (GroundTheory.Global.adicCompletionMap v u).toAlgebra`. Establish `: ContinuousSMul (v.adicCompletion K) (u.adicCompletion M)` using `continuousSMul_of_algebraMap _ _ (GroundTheory.Global.continuous_adicCompletionMap v u)`. Establish `: IsScalarTower K (v.adicCompletion K) (u.adicCompletion M)` using `.of_algebraMap_eq fun x => by show _ = GroundTheory.Global.adicCompletionMap v u _`. Rewrite using `[GroundTheory.Global.adicCompletionMap_algebraMap, IsScalarTower.algebraMap_apply K M (u.adicCompletion M)]`. Establish `h1 : Module.finrank (v.adicCompletion K) (u.adicCompletion M) = 1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GroundTheory.Global.finrank_adicCompletion v u, he, hf]`. Use `⟨(GroundTheory.Global.adicCompletionMap v u).injective, fun y => ?_⟩` and prove the remaining obligations. Establish `hy : y ∈ (⊥ : Subalgebra (v.adicCompletion K) (u.adicCompletion M))` using `(Subalgebra.bot_eq_top_of_finrank_eq_one h1) ▸ Algebra.mem_top`. Take `⟨x, hx⟩` from `Algebra.mem_bot.1 hy`. Conclude with `⟨x, hx⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bijective_of_split (he : u.asIdeal.ramificationIdx (𝓞 K) = 1) (hf : u.asIdeal.inertiaDeg (𝓞 K) = 1) :
     Function.Bijective (GroundTheory.Global.adicCompletionMap v u) := by
@@ -81,13 +81,13 @@ theorem bijective_of_split (he : u.asIdeal.ramificationIdx (𝓞 K) = 1) (hf : u
   exact ⟨x, hx⟩
 
 /- English proof (translation)
-Use `set i := RingEquiv.ofBijective _ (bijective_of_split v u he hf)`. Use `letI : Algebra (v.adicCompletion K) (u.adicCompletion M) := (GroundTheory.Global.adicCompletionMap v u).toAlgebra`. Establish `: ContinuousSMul (v.adicCompletion K) (u.adicCompletion M)` using `continuousSMul_of_algebraMap _ _ (GroundTheory.Global.continuous_adicCompletionMap v u)`. Establish `: IsScalarTower K (v.adicCompletion K) (u.adicCompletion M)` using `.of_algebraMap_eq fun x => by show _ = GroundTheory.Global.adicCompletionMap v u _`. Rewrite using `[GroundTheory.Global.adicCompletionMap_algebraMap, IsScalarTower.algebraMap_apply K M (u.adicCompletion M)]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Module.finrank (v.adicCompletion K) (u.adicCompletion M) = 1`. Rewrite using `[GroundTheory.Global.finrank_adicCompletion v u, he, hf]`. Establish `hfd : FiniteDimensional (v.adicCompletion K) (u.adicCompletion M)` using `GroundTheory.Global.finite_adicCompletion v u`. Establish `hc` using `(GlobalTheory.adicCompletion_trace_norm_continuous K M v u _ (GroundTheory.Global.continuous_adicCompletionMap v u) hfd).2`. Establish `key : ∀ y : u.adicCompletion M, Algebra.norm (v.adicCompletion K) y = i.symm y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Use `conv_lhs => rw [← i.apply_symm_apply y]`. Use `show Algebra.norm (v.adicCompletion K) (algebraMap (v.adicCompletion K) (u.adicCompletion M) (i.symm y)) = _`. Rewrite using `[Algebra.norm_algebraMap, h1, pow_one]`. Use `⟨?_, fun y => key y⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (i.symm : u.adicCompletion M → v.adicCompletion K) = fun y => Algebra.norm (v.adicCompletion K) y`. Use function extensionality and compare the values at `fun y => (key y).symm`. Rewrite using `[e]`. Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem normU_of_split (he : u.asIdeal.ramificationIdx (𝓞 K) = 1) (hf : u.asIdeal.inertiaDeg (𝓞 K) = 1) :
     Continuous (RingEquiv.ofBijective _ (bijective_of_split v u he hf)).symm ∧
@@ -124,11 +124,11 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
   [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
 
 /- English proof (translation)
-Use `congrArg (Sigma.mk 1) (IrrRep.cl_eq_iff.2 ?_)` and prove the remaining obligations. Take `⟨φ⟩` from `IrrRep.nonempty_equiv_rep (IrrRep.det (Fin 1) χ hχ)`. Use `⟨Representation.Equiv.mk φ.toLinearEquiv fun g => ?_⟩` and prove the remaining obligations. Establish `H` using `φ.toIntertwiningMap.isIntertwining' (Matrix.GeneralLinearGroup.map (n := Fin 1) i.symm.toRingHom g)`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `Hx` using `LinearMap.congr_fun H x`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply] at Hx ⊢`. Express the relevant statement in the definitionally equal form `φ.toLinearEquiv _ = _`. Use `Hx.trans ?_` and prove the remaining obligations. Use `erw [Function.comp_apply, LinearMap.comp_apply, SmGL.twist_apply, SmGL.twist_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : ∀ g' : GL (Fin 1) k', (detChar (Fin 1) χ') g' = (detChar (Fin 1) χ) (GeneralLinearGroup.map i.symm.toRingHom g')` using `fun g' => by`. Rewrite using `[detChar_apply, detChar_apply, Matrix.GeneralLinearGroup.map_det]`. Conclude with `h _`. Use `erw [e1 g]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trGL_ofChar (i : k ≃+* k') (hi' : Continuous i.symm) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ)
     (χ' : k'ˣ →* ℂˣ) (hχ' : IsSmoothChar χ')

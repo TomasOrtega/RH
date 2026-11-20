@@ -11,11 +11,11 @@ section General
 variable {A' B : Type} [CommRing A'] [CommRing B] {ι : A' →+* B} {s : A'}
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, x, by simp⟩`. Consider the case `succ m ih`. Take `⟨g, h, rfl⟩` from `ih`. Take `⟨g', h', rfl⟩` from `div h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g + s ^ m * g', h', by simp only [map_add, map_mul, map_pow]; ring⟩`. Use `dvd m := by`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`.
+Supply the required witnesses or components. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g h hg`. Take `⟨g', rfl⟩` from `dvd g (ι s ^ m * h) (by rw [hg]; ring)`. Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih g' h (hreg _ _ (by rw [← map_mul, hg]; ring)))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameJets_of_one (hreg : ∀ a b, ι s * a = ι s * b → a = b)
     (div : ∀ x, ∃ g h, x = ι g + ι s * h) (dvd : ∀ g h, ι g = ι s * h → s ∣ g) :
@@ -46,14 +46,14 @@ def quotMap (ι : A' →+* B) (ht : ι s = t) (m : ℕ) :
     exact Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Rewrite using `[(H.jet_eq_iff m x g).2 h, quotMap, Ideal.quotientMap_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quotMap_jet (ht : ι s = t) (H : SameJets φ s) {m : ℕ} {x : T} {g : A'}
     (h : φ s ^ m ∣ x - φ g) : quotMap ι ht m (H.jet m x) = Ideal.Quotient.mk _ (ι g) := by
   rw [(H.jet_eq_iff m x g).2 h, quotMap, Ideal.quotientMap_mk]
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨g, h, hx⟩` from `H.div n x`. Establish `h1 : φ s ^ n ∣ x - φ g` using `⟨h, by rw [hx]; ring⟩`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[quotMap_jet ht H h1, quotMap_jet ht H ((pow_dvd_pow _ hle).trans h1)]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -72,7 +72,7 @@ def theta (ι : A' →+* B) (ht : ι s = t) (H : SameJets φ s) :
   AdicCompletion.liftRingHom _ (fun m => (quotMap ι ht m).comp (H.jet m)) (quotMap_compat ht H)
 
 /- English proof (translation)
-Rewrite using `[← quotMap_jet ht H h]`. Conclude with `AdicCompletion.evalₐ_liftRingHom _ (fun m => (quotMap ι ht m).comp (H.jet m)) (quotMap_compat ht H) m x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalₐ_theta (ht : ι s = t) (H : SameJets φ s) {m : ℕ} {x : T} {g : A'}
     (h : φ s ^ m ∣ x - φ g) :
@@ -82,7 +82,7 @@ theorem evalₐ_theta (ht : ι s = t) (H : SameJets φ s) {m : ℕ} {x : T} {g :
     (quotMap_compat ht H) m x
 
 /- English proof (translation)
-Use `AdicCompletion.ext_evalₐ fun m => ?_` and prove the remaining obligations. Rewrite using `[evalₐ_theta ht H (g := g) (by simp), AlgHom.commutes]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem theta_map (ht : ι s = t) (H : SameJets φ s) (g : A') :
     theta ι ht H (φ g) = algebraMap B _ (ι g) := by
@@ -91,7 +91,7 @@ theorem theta_map (ht : ι s = t) (H : SameJets φ s) (g : A') :
   rfl
 
 /- English proof (translation)
-Rewrite `h` using `[Ideal.Quotient.eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← map_sub, ← ht]`. Take `⟨c, hc⟩` from `h`. Conclude with `H'.dvd m _ c hc`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dvd_of_mk_eq (ht : ι s = t) (H' : SameJets ι s) {m : ℕ} {g g' : A'}
     (h : Ideal.Quotient.mk (Ideal.span {t} ^ m) (ι g) = Ideal.Quotient.mk _ (ι g')) :
@@ -101,7 +101,7 @@ theorem dvd_of_mk_eq (ht : ι s = t) (H' : SameJets ι s) {m : ℕ} {g g' : A'}
   exact H'.dvd m _ c hc
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ _ m y)`. Take `⟨g, h, rfl⟩` from `H'.div m b`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[← hb, Ideal.Quotient.eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← ht]`. Conclude with `⟨h, by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_evalₐ_eq (ht : ι s = t) (H' : SameJets ι s)
     (y : AdicCompletion (Ideal.span {t}) B) (m : ℕ) :
@@ -113,7 +113,7 @@ theorem exists_evalₐ_eq (ht : ι s = t) (H' : SameJets ι s)
   exact ⟨h, by ring⟩
 
 /- English proof (translation)
-Proceed by induction on `hle with`. Consider the case `refl => exact h`. Consider the case `step _ ih => exact ih (evalₐ_of_succ I h)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem evalₐ_of_le (I : Ideal B) {x : AdicCompletion I B} {m n : ℕ} (hle : m ≤ n) {r : B}
     (h : AdicCompletion.evalₐ I n x = Ideal.Quotient.mk _ r) :
@@ -123,15 +123,15 @@ theorem evalₐ_of_le (I : Ideal B) {x : AdicCompletion I B} {m n : ℕ} (hle : 
   | step _ ih => exact ih (evalₐ_of_succ I h)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use extensionality with `n`. Take `⟨g, h, hg⟩` from `H.div (n + 1) x`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `evalₐ_theta ht H (m := n + 1) (x := x) (g := g) ⟨h, by rw [hg]; ring⟩`. Rewrite `h1` using `[hx, map_zero]`. Establish `h2 : s ^ (n + 1) ∣ g`. Simplify using `using dvd_of_mk_eq ht H' (g := g) (g' := 0) (by rw [← h1]; simp)`. Establish `h3 : φ s ^ (n + 1) ∣ x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hg]`. Conclude with `dvd_add (map_pow φ s _ ▸ map_dvd φ h2) (dvd_mul_right _ _)`. Establish `h4` using `(hX.pow_pow (n := n + 1)).symm.dvd.trans h3`. Simplify using `using X_pow_dvd_iff.1 h4 n n.lt_succ_self`. Introduce `y choose g hg using exists_evalₐ_eq ht H' y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨PowerSeries.mk fun n => coeff n (φ (g (n + 1))), AdicCompletion.ext_evalₐ fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[hg m]`. Use `evalₐ_theta ht H ((hX.pow_pow (n := m)).dvd.trans (X_pow_dvd_iff.2 fun n hn => ?_))` and prove the remaining obligations. Establish `h1 : s ^ (n + 1) ∣ g (n + 1) - g m` using `dvd_of_mk_eq ht H' ((hg (n + 1)).symm.trans (evalₐ_of_le _ hn (hg m)))`. Establish `h2` using `(hX.pow_pow (n := n + 1)).symm.dvd.trans (map_pow φ s _ ▸ map_dvd φ h1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `X_pow_dvd_iff.1 h2 n n.lt_succ_self`. Rewrite `h3` using `[map_sub, map_sub]`. Rewrite using `[map_sub, coeff_mk, h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_bijective {R : Type} [CommRing R] {φ : A' →+* R⟦X⟧} (ht : ι s = t)
     (H' : SameJets ι s) (H : SameJets φ s) (hX : Associated (φ s) X) :
@@ -173,7 +173,7 @@ def taylor : Polynomial K →ₐ[K] (AdjoinRoot P)⟦X⟧ :=
   Polynomial.aeval (C (AdjoinRoot.root P) + X)
 
 /- English proof (translation)
-Proceed by induction on `g using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `monomial n a`. Rewrite using `[← Polynomial.C_mul_X_pow_eq_monomial]`. Simplify using `[taylor, PowerSeries.algebraMap_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_taylor (g : Polynomial K) :
     constantCoeff (taylor P g) = AdjoinRoot.mk P g := by
@@ -184,7 +184,7 @@ theorem constantCoeff_taylor (g : Polynomial K) :
     simp [taylor, PowerSeries.algebraMap_apply]
 
 /- English proof (translation)
-Use `((PowerSeries.derivative (AdjoinRoot P)).restrictScalars K).map_aeval g (C (AdjoinRoot.root P) + X)` as an intermediate fact. Rewrite `this` using `[Derivation.restrictScalars_apply, Derivation.restrictScalars_apply, map_add, derivative_C, derivative_X, zero_add, smul_eq_mul, mul_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivative_taylor (g : Polynomial K) :
     PowerSeries.derivative _ (taylor P g) = taylor P (Polynomial.derivative g) := by
@@ -197,11 +197,11 @@ theorem derivative_taylor (g : Polynomial K) :
 variable {P}
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : X ∣ taylor P P := by`. Rewrite using `[X_dvd_iff, constantCoeff_taylor, AdjoinRoot.mk_self]`. Establish `h1` using `congrArg constantCoeff (derivative_taylor P P)`. Rewrite `h1` using `[hw, constantCoeff_taylor, Derivation.leibniz]`. Establish `h2 : constantCoeff w = AdjoinRoot.mk P (Polynomial.derivative P)` using `by simpa using h1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : IsUnit w`. Rewrite using `[isUnit_iff_constantCoeff, h2]`. Take `⟨a, b, hab⟩` from `hP`. Use `congrArg (AdjoinRoot.mk P) hab` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, map_mul, AdjoinRoot.mk_self, mul_zero, zero_add, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `IsUnit.of_mul_eq_one _ ((mul_comm _ _).trans this)`. Rewrite using `[hw]`. Conclude with `associated_mul_unit_left _ _ h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem associated_taylor (hP : P.Separable) : Associated (taylor P P) X := by
   obtain ⟨w, hw⟩ : X ∣ taylor P P := by
@@ -219,11 +219,11 @@ theorem associated_taylor (hP : P.Separable) : Associated (taylor P P) X := by
   exact associated_mul_unit_left _ _ h3
 
 /- English proof (translation)
-Establish `hX` using `associated_taylor hP`. Use `sameJets_of_one (fun a b h => ?_) (fun x => ?_) (fun g h hg => ?_)` and prove the remaining obligations. Take `⟨u, hu⟩` from `hX`. Use `X_mul_cancel ?_` and prove the remaining obligations. Rewrite using `[← hu, mul_right_comm, mul_right_comm _ _ b]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· * _) h`. Take `⟨g, hg⟩` from `AdjoinRoot.mk_surjective (constantCoeff x)`. Take `⟨h, hh⟩ : taylor P P ∣ x - taylor P g` from `hX.dvd.trans (by rw [X_dvd_iff, map_sub, constantCoeff_taylor, hg, sub_self])`. Conclude with `⟨g, h, by simpa [sub_eq_iff_eq_add'] using hh⟩`. Establish `h1 : X ∣ taylor P g` using `hX.symm.dvd.trans ⟨h, hg⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[X_dvd_iff, constantCoeff_taylor, AdjoinRoot.mk_eq_zero]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem sameJets_taylor (hP : P.Separable) : SameJets (taylor P).toRingHom P := by
   have hX := associated_taylor hP
@@ -240,7 +240,7 @@ theorem sameJets_taylor (hP : P.Separable) : SameJets (taylor P).toRingHom P := 
     rwa [X_dvd_iff, constantCoeff_taylor, AdjoinRoot.mk_eq_zero] at h1
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[X_pow_dvd_iff]`. Introduce `n hn`. Rewrite using `[coeff_derivative, h _ (by omega), zero_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_dvd_derivative {R : Type} [CommRing R] {m : ℕ} {x : R⟦X⟧} (h : X ^ (m + 1) ∣ x) :
     X ^ m ∣ PowerSeries.derivative R x := by
@@ -258,7 +258,7 @@ variable (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
 def incl : Polynomial K →ₐ[K] invL l (A O K) := Polynomial.aeval (uIn _)
 
 /- English proof (translation)
-Proceed by induction on `g using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `monomial n a`. Rewrite using `[← Polynomial.C_mul_X_pow_eq_monomial]`. Simplify using `[incl]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coe_incl (g : Polynomial K) : (incl O K l g : K⟦X⟧) = g := by
   induction g using Polynomial.induction_on' with
@@ -268,7 +268,7 @@ theorem coe_incl (g : Polynomial K) : (incl O K l g : K⟦X⟧) = g := by
     simp [incl]
 
 /- English proof (translation)
-Use `Subtype.ext ((coe_incl O K l _).trans ?_)` and prove the remaining obligations. Rewrite using `[Polynomial.coe_add, Polynomial.coe_pow, Polynomial.coe_X, Polynomial.coe_C, map_natCast]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem incl_E : (incl O K l).toRingHom (Polynomial.X ^ e + Polynomial.C (l : K)) = EIn l e _ := by
   refine Subtype.ext ((coe_incl O K l _).trans ?_)
@@ -276,7 +276,7 @@ theorem incl_E : (incl O K l).toRingHom (Polynomial.X ^ e + Polynomial.C (l : K)
   rfl
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_derAl, coe_incl, coe_incl, PowerSeries.derivative_coe]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem derAl_incl (g : Polynomial K) :
     derAl O K l (incl O K l g) = incl O K l (Polynomial.derivative g) := by
@@ -286,7 +286,7 @@ theorem derAl_incl (g : Polynomial K) :
 variable [NeZero e]
 
 /- English proof (translation)
-Use `Polynomial.separable_X_pow_sub_C (n := e) (-(l : K)) (natCast_ne_zero' l (NeZero.ne e)) (neg_ne_zero.2 (l_ne_zero l))` as an intermediate fact. Rewrite `this` using `[map_neg, sub_neg_eq_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem separable_E : (Polynomial.X ^ e + Polynomial.C (l : K)).Separable := by
   have := Polynomial.separable_X_pow_sub_C (n := e) (-(l : K))
@@ -296,17 +296,15 @@ theorem separable_E : (Polynomial.X ^ e + Polynomial.C (l : K)).Separable := by
 variable [CompleteSpace K]
 
 /- English proof (translation)
-Use `sameJets_of_one (fun a b h => ?_) (fun x => ?_) (fun g h hg => ?_)` and prove the remaining obligations. Rewrite `h` using `[incl_E]`. Conclude with `Subtype.ext ((isUnit_E l e).mul_left_cancel (congrArg Subtype.val h))`. Rewrite using `[incl_E]`. Use `⟨trunc e ((x : K⟦X⟧) - E K l e * quotE l e x), ⟨quotE l e x, quotE_mem_invL_A l e x.2⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(x : K⟦X⟧) = (incl O K l _ : K⟦X⟧) + E K l e * quotE l e (x : K⟦X⟧)`. Rewrite using `[coe_incl, ← sub_eq_iff_eq_add]`. Use extensionality with `n`. Rewrite using `[Polynomial.coeff_coe, coeff_trunc]`. Use `split_ifs with hn`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le' (not_lt.1 hn)`. Conclude with `coeff_sub_E_mul_quotE l e (invL_A_le_Rpi l e x.2) m`. Use `set P : Polynomial K := Polynomial.X ^ e + Polynomial.C (l : K) with hP`. Establish `hm : P.Monic` using `Polynomial.monic_X_pow_add_C _ (NeZero.ne e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hd : P.degree = e` using `Polynomial.degree_X_pow_add_C (NeZero.pos e) _`. Establish `h1 : incl O K l (g %ₘ P) = EIn l e _ * (h - incl O K l (g /ₘ P))`. Rewrite using `[← incl_E O K l e, mul_sub, ← hg, Polynomial.modByMonic_eq_sub_mul_div, map_sub, map_mul]`. Both sides reduce to the same expression. Establish `h2 : ((g %ₘ P : Polynomial K) : K⟦X⟧) = E K l e * ((h - incl O K l (g /ₘ P) : invL l (A O K)) : K⟦X⟧)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coe_incl O K l, h1]`. Both sides reduce to the same expression. Establish `h3` using `eq_zero_of_E_mul l e (invL_A_le_Rpi l e (h - incl O K l (g /ₘ P)).2) fun n => by`. Rewrite using `[← h2, Polynomial.coeff_coe]`. Use `Polynomial.coeff_eq_zero_of_degree_lt ((Polynomial.degree_modByMonic_lt g hm).trans_le ?_)` and prove the remaining obligations.
-
-Rewrite using `[hd]`. Conclude with `Nat.le_add_left _ _` after adjusting the coercions. Rewrite `h2` using `[h3, mul_zero, Polynomial.coe_eq_zero_iff]`. Conclude with `(Polynomial.modByMonic_eq_zero_iff_dvd hm).1 h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameJets_incl :
     SameJets (incl O K l).toRingHom (Polynomial.X ^ e + Polynomial.C (l : K)) := by
@@ -346,24 +344,24 @@ def toAhat : (AdjoinRoot (Polynomial.X ^ e + Polynomial.C (l : K)))⟦X⟧ →+*
   theta _ (incl_E O K l e) (sameJets_taylor (separable_E K l e))
 
 /- English proof (translation)
-The claim follows from `theta_map (incl_E O K l e) (sameJets_taylor (separable_E K l e)) g`.
+A detailed English derivation is pending.
 -/
 theorem toAhat_taylor (g : Polynomial K) :
     toAhat O K l e (taylor _ g) = ofAl O K l e (incl O K l g) :=
   theta_map (incl_E O K l e) (sameJets_taylor (separable_E K l e)) g
 
 /- English proof (translation)
-The claim follows from `theta_bijective _ (sameJets_incl O K l e) _ (associated_taylor (separable_E K l e))`.
+A detailed English derivation is pending.
 -/
 theorem toAhat_bijective : Function.Bijective (toAhat O K l e) :=
   theta_bijective _ (sameJets_incl O K l e) _ (associated_taylor (separable_E K l e))
 
 /- English proof (translation)
-Use `AdicCompletion.ext_evalₐ fun m => ?_` and prove the remaining obligations. Establish `H` using `sameJets_taylor (separable_E K l e)`. Establish `hX` using `associated_taylor (separable_E K l e)`. Take `⟨g, h, hg⟩` from `H.div (m + 1) x`. Establish `h1` using `Dvd.intro h (sub_eq_iff_eq_add'.2 hg).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `evalₐ_complDer _ (derAl O K l) (evalₐ_theta (incl_E O K l e) H h1)`. Use `Eq.trans ?_ h2.symm` and prove the remaining obligations. Establish `h3` using `pow_dvd_derivative ((hX.pow_pow (n := m + 1)).symm.dvd.trans h1)`. Rewrite `h3` using `[map_sub]`. Establish `h4` using `evalₐ_theta (incl_E O K l e) H (m := m) (x := PowerSeries.derivative _ x) (g := Polynomial.derivative g) ((hX.pow_pow (n := m)).dvd.trans (by convert h3 using 2; exact (derivative_taylor _ g).symm))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h4.trans (congrArg _ (derAl_incl O K l g).symm)`.
+A detailed English derivation is pending.
 -/
 theorem toAhat_derivative (x : (AdjoinRoot (Polynomial.X ^ e + Polynomial.C (l : K)))⟦X⟧) :
     toAhat O K l e (PowerSeries.derivative _ x) = dHat O K l e (toAhat O K l e x) := by

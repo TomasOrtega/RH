@@ -5,7 +5,7 @@ open GroundTheory.PAdicHodge
 variable (l : ℕ) [Fact l.Prime]
 set_option maxHeartbeats 200000 in
 /- English proof (translation)
-Simplify using `only [Cmp6.zeroEquiv, AlgEquiv.coe_ringEquiv, Subalgebra.equivOfEq_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zt1 (y : Reformulated.AutPerF.AcrisZero l (NC l)) :
     ((Cmp6.zeroEquiv l y : ACris.ACrisZero ℂ_[l] l) : Localization.Away ((l : ℕ) : AInf ℂ_[l] l)) =

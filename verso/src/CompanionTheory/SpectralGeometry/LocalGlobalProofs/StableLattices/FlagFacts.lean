@@ -16,7 +16,7 @@ def pM (A : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ := (1 / 2 :
 def qM (A : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ := (1 / 2 : ℂ) • (A * A + A)
 
 /- English proof (translation)
-Take `⟨hg, hH, -, -⟩` from `h`. Establish `h0 : Aᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * A = 0` using `hg`. Rewrite `h0` using `[hH]`. Conclude with `eq_neg_of_add_eq_zero_right h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem J_mul (h : IsGrad ε A) : Formalism.REAL.Jm ε * A = -(A * Formalism.REAL.Jm ε) := by
   obtain ⟨hg, hH, -, -⟩ := h
@@ -25,12 +25,12 @@ theorem J_mul (h : IsGrad ε A) : Formalism.REAL.Jm ε * A = -(A * Formalism.REA
   exact eq_neg_of_add_eq_zero_right h0
 
 /- English proof (translation)
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem A4 (h : A * A * A = A) : A * A * A * A = A * A := by rw [h]
 
 /- English proof (translation)
-Establish `h4` using `A4 h`. Unfold `pM`. Simplify using `only [smul_mul_assoc, mul_smul_comm, smul_smul, sub_mul, mul_sub, ← mul_assoc, h4, h]`. Use `module`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pM_idem (h : A * A * A = A) : pM A * pM A = pM A := by
   have h4 := A4 h
@@ -39,7 +39,7 @@ theorem pM_idem (h : A * A * A = A) : pM A * pM A = pM A := by
   module
 
 /- English proof (translation)
-Establish `h4` using `A4 h`. Unfold `pM qM`. Simplify using `only [smul_mul_assoc, mul_smul_comm, smul_smul, sub_mul, mul_add, add_mul, mul_sub, ← mul_assoc, h4, h]`. Use `module`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pM_mul_qM (h : A * A * A = A) : pM A * qM A = 0 := by
   have h4 := A4 h
@@ -48,7 +48,7 @@ theorem pM_mul_qM (h : A * A * A = A) : pM A * qM A = 0 := by
   module
 
 /- English proof (translation)
-Establish `hJ` using `J_mul h`. Establish `h2 : Formalism.REAL.Jm ε * (A * A) = A * A * Formalism.REAL.Jm ε`. Rewrite using `[← mul_assoc, hJ, neg_mul, mul_assoc, hJ, mul_neg, neg_neg, mul_assoc]`. Unfold `pM qM`. Rewrite using `[mul_smul_comm, smul_mul_assoc, mul_sub, add_mul, h2, hJ, sub_neg_eq_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem J_mul_pM (h : IsGrad ε A) : Formalism.REAL.Jm ε * pM A = qM A * Formalism.REAL.Jm ε := by
   have hJ := J_mul h
@@ -58,7 +58,7 @@ theorem J_mul_pM (h : IsGrad ε A) : Formalism.REAL.Jm ε * pM A = qM A * Formal
   rw [mul_smul_comm, smul_mul_assoc, mul_sub, add_mul, h2, hJ, sub_neg_eq_add]
 
 /- English proof (translation)
-Establish `hJJ` using `Formalism.REAL.Jm_mul_self ε`. Establish `: qM A = Formalism.REAL.Jm ε * pM A * Formalism.REAL.Jm ε`. Rewrite using `[J_mul_pM h, mul_assoc, hJJ, mul_one]`. Rewrite using `[this, Matrix.trace_mul_comm, ← mul_assoc, hJJ, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_qM (h : IsGrad ε A) : Matrix.trace (qM A) = Matrix.trace (pM A) := by
   have hJJ := Formalism.REAL.Jm_mul_self ε
@@ -67,14 +67,14 @@ theorem trace_qM (h : IsGrad ε A) : Matrix.trace (qM A) = Matrix.trace (pM A) :
   rw [this, Matrix.trace_mul_comm, ← mul_assoc, hJJ, one_mul]
 
 /- English proof (translation)
-Unfold `pM`. Simplify using `[conjTranspose_smul, conjTranspose_sub, conjTranspose_mul, h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pM_conjTranspose (h : Aᴴ = A) : (pM A)ᴴ = pM A := by
   unfold pM
   simp [conjTranspose_smul, conjTranspose_sub, conjTranspose_mul, h]
 
 /- English proof (translation)
-Use `⟨fun x => ⟨x, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Express the relevant statement in the definitionally equal form `Matrix.toLin' (pM A) (Matrix.toLin' (pM A) y) = Matrix.toLin' (pM A) y`. Rewrite using `[← LinearMap.comp_apply, ← Matrix.toLin'_mul, pM_idem h]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isProj (h : A * A * A = A) : LinearMap.IsProj (Vm A) (Matrix.toLin' (pM A)) := by
   refine ⟨fun x => ⟨x, rfl⟩, ?_⟩
@@ -83,7 +83,7 @@ theorem isProj (h : A * A * A = A) : LinearMap.IsProj (Vm A) (Matrix.toLin' (pM 
   rw [← LinearMap.comp_apply, ← Matrix.toLin'_mul, pM_idem h]
 
 /- English proof (translation)
-Use `(isProj h).trace` as an intermediate fact. Rewrite `this` using `[Matrix.trace_toLin'_eq]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_pM (h : A * A * A = A) : Matrix.trace (pM A) = (rk A : ℂ) := by
   have := (isProj h).trace
@@ -91,13 +91,13 @@ theorem trace_pM (h : A * A * A = A) : Matrix.trace (pM A) = (rk A : ℂ) := by
   exact this
 
 /- English proof (translation)
-Take `⟨-, -, h3, hA⟩` from `id h`. Assume the negation of the conclusion as `hc`. Establish `h0 : rk A = 0` using `by omega`. Establish `hb : Vm A = ⊥` using `Submodule.finrank_eq_zero.mp h0`. Establish `hP : pM A = 0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Matrix.toLin' (pM A) = 0` using `LinearMap.range_eq_bot.mp hb`. Simplify using `using this`. Establish `hQ : qM A = 0`. Establish `hJJ` using `Formalism.REAL.Jm_mul_self ε`. Establish `: qM A = Formalism.REAL.Jm ε * pM A * Formalism.REAL.Jm ε`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[J_mul_pM h, mul_assoc, hJJ, mul_one]`. Rewrite using `[this, hP]`. Simplify using the standard rewrite rules. Apply `hA` to reduce the goal to its premises. Establish `: A = qM A - pM A` using `by unfold pM qM; module`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[this, hP, hQ, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_le_rk (h : IsGrad ε A) : 1 ≤ rk A := by
   obtain ⟨-, -, h3, hA⟩ := id h
@@ -117,9 +117,9 @@ theorem one_le_rk (h : IsGrad ε A) : 1 ≤ rk A := by
   rw [this, hP, hQ, sub_zero]
 
 /- English proof (translation)
-Take `⟨-, hH, h3, -⟩` from `id h`. Take `⟨u, rfl⟩` from `hx`. Take `⟨v, rfl⟩` from `hy`. Express the relevant statement in the definitionally equal form `star (pM A *ᵥ u) ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ (pM A *ᵥ v)) = 0`. Establish `hz : pM A * (Formalism.REAL.Jm ε * pM A) = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[J_mul_pM h, ← mul_assoc, pM_mul_qM h3, zero_mul]`. Rewrite using `[star_mulVec, pM_conjTranspose hH, mulVec_mulVec, dotProduct_mulVec, vecMul_vecMul, hz]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isotropic (h : IsGrad ε A) {x y : Fin n → ℂ} (hx : x ∈ Vm A) (hy : y ∈ Vm A) :
     star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ y) = 0 := by
@@ -133,13 +133,13 @@ theorem isotropic (h : IsGrad ε A) {x y : Fin n → ℂ} (hx : x ∈ Vm A) (hy 
   simp
 
 /- English proof (translation)
-Introduce `n ε A h`. Take `⟨-, -, h3, -⟩` from `id h`. Use `⟨one_le_rk h, ⟨rfl, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro i j hij fin_cases i <;> fin_cases j <;> simp_all [W]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Establish `h0 : W A 0 = ⊥` using `rfl`. Establish `h1 : W A 1 = Vm A` using `rfl`. Express the relevant statement in the definitionally equal form `Module.finrank ℂ (W A 1) = Module.finrank ℂ (W A 0) + rk A`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h0, h1, finrank_bot, zero_add]`. Both sides reduce to the same expression. Introduce `x hx y hy`. Conclude with `isotropic h hx hy`. Establish `hj : (Matrix.trace ((1 / 2 : ℂ) • (A * A + A))).re = (rk A : ℝ)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(Matrix.trace (qM A)).re = _`. Rewrite using `[trace_qM h, trace_pM h3]`. Simplify using the standard rewrite rules. Unfold `rhoA`. Simplify using `only [hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flagFacts : FlagFacts := by
   intro n ε A h

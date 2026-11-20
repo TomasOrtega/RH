@@ -9,23 +9,19 @@ open scoped Topology
 namespace GlobalTheory.UnramifiedDegree
 
 /- English proof (translation)
-Introduce `l hl h1 h2`. Establish `hpos : ∀ k : ℕ, 0 < l ^ k` using `fun k => pow_pos hl.out.pos k`. Use `choose a ha using fun (σ : GQ l) (k : ℕ) => h1 (l ^ k) (hpos k) σ`. Establish `hdv : ∀ (σ : GQ l) (k : ℕ), (l : ℤ) ^ k ∣ (a σ (k + 1) : ℤ) - (a σ k : ℤ)`. Introduce `σ k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `h2 (l ^ k) (a σ k) (a σ (k + 1)) (hpos k) fun x hx => by`. Rewrite using `[← ha σ k x hx, ← ha σ (k + 1) x (by`. Rewrite using `[pow_succ l k]`. Conclude with `GlobalTheory.UnramifiedCrys.pow_pow_mul hx l)]`. Conclude with `h.dvd` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : GQ l → ℤ_[l], ∀ σ k, PadicInt.toZModPow k (z σ) = (a σ k : ZMod (l ^ k)) := by`. Use `⟨fun σ => PadicInt.ofIntSeq _ (PadicInt.isCauSeq_padicNorm_of_pow_dvd_sub (fun k => (a σ k : ℤ)) l (hdv σ)), fun σ k => ?_⟩` and prove the remaining obligations. Rewrite using `[PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub (fun k => (a σ k : ℤ)) l (hdv σ) k, Int.cast_natCast]`. Establish `key : ∀ (σ : GQ l) (k b : ℕ), (∀ x : Om l, x ^ l ^ l ^ k = x → σ x = x ^ l ^ b) → PadicInt.toZModPow k (z σ) = (b : ZMod (l ^ k))`. Introduce `σ k b hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, ZMod.natCast_eq_natCast_iff]`. Conclude with `h2 _ _ _ (hpos k) fun x hx => by rw [← ha σ k x hx, hb x hx]`. Use `⟨z, ?_, fun σ τ => ?_, fun σ b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[continuous_iff_continuousAt]`. Introduce `σ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨k, hk⟩` from `PadicInt.exists_pow_neg_lt l hε`. Establish `hev : ∀ᶠ σ in 𝓝 σ₀, ∀ x ∈ {y : Om l | y ^ l ^ l ^ k = y}, σ x = σ₀ x`. Use `(GlobalTheory.UnramifiedCrys.finite_fixedPow (p := l) (R := Om l) (hpos k)).eventually_all.2 fun x _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `ho` using `(stabilizer_isOpen_of_isIntegral (K := ℚ_[l]) x).preimage (continuous_mul_left σ₀⁻¹)`. Use `filter_upwards [ho.mem_nhds (show σ₀ ∈ _ by simp)] with σ hσ`. Establish `h : σ₀⁻¹ (σ x) = x` using `hσ`. Establish `h'` using `congrArg σ₀ h`. Rewrite `h'` using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hev] with σ hσ`. Use `lt_of_le_of_lt ?_ hk` and prove the remaining obligations. Rewrite using `[dist_eq_norm, PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, sub_eq_zero, hz σ₀]`. Conclude with `key σ k _ fun x hx => by rw [hσ x hx, ha σ₀ k x hx]`. Use `PadicInt.ext_of_toZModPow.mp fun k => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_add, hz σ, hz τ, ← Nat.cast_add]`. Use `key _ k _ fun x hx => ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, ha τ k x hx, map_pow, ha σ k x hx, ← pow_mul, ← pow_add]`. Use `PadicInt.ext_of_toZModPow.mp fun k => ?_` and prove the remaining obligations. Rewrite using `[map_natCast]`.
-
-Conclude with `key σ k b (hb _ (hpos k))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_degree : ∀ (l : ℕ) [Fact l.Prime],
     (∀ n : ℕ, 0 < n → ∀ σ : GQ l, ∃ a : ℕ, ∀ x : Om l, x ^ l ^ n = x → σ x = x ^ l ^ a) →

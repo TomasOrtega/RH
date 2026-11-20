@@ -25,7 +25,7 @@ def Triv (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → �
   ∃ t : LB.Gen (LB.LinComb L φ ε), t.IsGen
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Take `⟨s', hs'⟩` from `h'`. Conclude with `⟨LB.mulGen L _ _ _ _ s s', DVR.mulGen_isGen _ _ _ _ _ _ _ hs hs'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Triv.mul {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     (h : Triv L φ ε) (h' : Triv L φ' ε') : Triv L (Sum.elim φ φ') (Sum.elim ε ε') := by
@@ -34,14 +34,14 @@ theorem Triv.mul {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)
   exact ⟨LB.mulGen L _ _ _ _ s s', DVR.mulGen_isGen _ _ _ _ _ _ _ hs hs'⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Conclude with `⟨LB.invGen L _ _ s, DVR.invGen_isGen _ _ _ _ hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Triv.inv {φ : K → (Y ⟶ X)} {ε : K → ℤ} (h : Triv L φ ε) : Triv L φ (fun k => - ε k) := by
   obtain ⟨s, hs⟩ := h
   exact ⟨LB.invGen L _ _ s, DVR.invGen_isGen _ _ _ _ hs⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Take `⟨s', hs', -⟩` from `exists_gen hL hf s hs`. Conclude with `⟨s', hs'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Triv.congr (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     (hf : FormEq φ ε φ' ε') (h : Triv L φ ε) : Triv L φ' ε' := by
@@ -50,7 +50,7 @@ theorem Triv.congr (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : 
   exact ⟨s', hs'⟩
 
 /- English proof (translation)
-Establish `hu : ∀ j, IsUnit (s.f j)` using `fun j => Y.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by`. Take `⟨J, hJ, e⟩` from `sval_trans hL s y j hy`. Conclude with `(congrArg IsUnit ((gs_eq (𝟙 Y) y (LB.wchart L φ j) hy _).symm.trans e)).mpr ((Units.isUnit _).mul (hs y J hJ))`. Conclude with `⟨⟨fun j => (hu j).unit⟩, fun i j => Units.ext (s.compat i j)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem triv_of_sec (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε))
     (hs : ∀ y J, Good L y J → IsUnit (sval s (𝟙 Y) y J)) : Triv L φ ε := by
@@ -61,9 +61,9 @@ theorem triv_of_sec (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : L
   exact ⟨⟨fun j => (hu j).unit⟩, fun i j => Units.ext (s.compat i j)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 h`. Conclude with `isUnit_sval s r z hJ k hk`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm` using `hJ.mem φ r`. Establish `hu` using `(congrArg IsUnit (gs_eq r z _ hm (s.f (fun k => J (r ≫ φ k))))).mp h`. Establish `hz` using `(Z.mem_basicOpen _ z hm).2 hu`. Conclude with `Opens.mem_iSup.2 ⟨fun k => J (r ≫ φ k), (SetLike.ext_iff.1 (Scheme.preimage_basicOpen r (s.f (fun k => J (r ≫ φ k)))) z).2 hz⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_iff {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y)
     (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -80,7 +80,7 @@ theorem mem_nonzeroLocus_iff {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec
       (SetLike.ext_iff.1 (Scheme.preimage_basicOpen r (s.f (fun k => J (r ≫ φ k)))) z).2 hz⟩
 
 /- English proof (translation)
-The claim follows from `(congrArg (gs r z _) (h _)).trans ((gs_eq r z _ (hJ.mem φ r) _).trans ((congrArg _ (map_zero _)).trans (map_zero _)))`.
+A detailed English derivation is pending.
 -/
 theorem sval_eq_zero {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (h : ∀ j, s.f j = 0)
     (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) : sval s r z J = 0 :=
@@ -94,11 +94,11 @@ section Square
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Take `⟨V, hpV, c, hc⟩` from `hsq (Sp k) P (baseOver (Sp k)) x₁ x₂ (IsLocalRing.closedPoint k)`. Establish `hV : V = ⊤` using `eq_top_iff.2 fun q _ => by rw [spec_pt_eq q (IsLocalRing.closedPoint k)]; exact hpV`. Substitute `hV` using the available equality. Take `⟨s, hs⟩` from `exists_sec_of_pullGen (Z := (baseOver (Sp k) ⊗ P.A).left) ((fst (baseOver (Sp k)) P.A).left ⁻¹ᵁ ⊤).ι c hc`. Set `e` to `IsOpenImmersion.lift ((fst (baseOver (Sp k)) P.A).left ⁻¹ᵁ ⊤).ι (𝟙 _) (by rintro _ ⟨q, rfl⟩; rw [Scheme.Opens.range_ι]; trivial)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `he : e ≫ ((fst (baseOver (Sp k)) P.A).left ⁻¹ᵁ ⊤).ι = 𝟙 _` using `IsOpenImmersion.lift_fac _ _ _`. Use `Triv.congr P.isLB ?_ (triv_of_sec P.isLB (pullSec s e) fun y J hJ => ?_)` and prove the remaining obligations. Use `formEq_of_add fun U _ hh => ?_` and prove the remaining obligations. Simplify using `only [← Category.assoc, he, Category.id_comp]`. Rewrite using `[sval_pullSec s e (𝟙 _) y hJ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs _ y J hJ`.
+A detailed English derivation is pending.
 -/
 theorem triv_square (hsq : SquareSt) (P : PolAV (Sp k)) (x₁ x₂ : baseOver (Sp k) ⟶ P.A) :
     Triv P.L ![(translPt P.A (x₁ * x₂)).left, (snd (baseOver (Sp k)) P.A).left,
@@ -119,7 +119,7 @@ theorem triv_square (hsq : SquareSt) (P : PolAV (Sp k)) (x₁ x₂ : baseOver (S
     exact hs _ y J hJ
 
 /- English proof (translation)
-The claim follows from `| 0 => by refine Triv.congr P.isLB (formEq_of_add fun U _ hh => ?_) (triv_square hsq P b b) simp [Fin.sum_univ_succ, pow_two] module | n + 1 => by refine Triv.congr P.isLB (formEq_of_add fun U _ hh => ?_) ((triv_iter hsq P b n).mul (triv_square hsq P (b ^ (n + 2)) b)) have e : b …`.
+A detailed English derivation is pending.
 -/
 theorem triv_iter (hsq : SquareSt) (P : PolAV (Sp k)) (b : baseOver (Sp k) ⟶ P.A) :
     ∀ n : ℕ, Triv P.L ![(translPt P.A (b ^ (n + 2))).left, (snd (baseOver (Sp k)) P.A).left,
@@ -142,7 +142,7 @@ section Translate
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h1` using `Over.w f`. Establish `h2` using `Over.w g`. Simplify using `only [Over.mk_hom, Over.mk_left] at h1 h2`. Conclude with `(Category.comp_id _).symm.trans (h1.trans (h2.symm.trans (Category.comp_id _)))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hom_base_ext {T : Over S} (f g : T ⟶ baseOver S) : f = g := by
   apply Over.OverMorphism.ext
@@ -152,7 +152,7 @@ theorem hom_base_ext {T : Over S} (f g : T ⟶ baseOver S) : f = g := by
   exact (Category.comp_id _).symm.trans (h1.trans (h2.symm.trans (Category.comp_id _)))
 
 /- English proof (translation)
-Rewrite using `[translPt, ← Hom.mul_def, MonObj.comp_mul, ← Category.assoc, lift_fst, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_translPt {T W : Over S} (b : T ⟶ A) (u : W ⟶ T) (v : W ⟶ A) :
     lift u v ≫ translPt A b = (u ≫ b) * v := by
@@ -163,13 +163,13 @@ def untransl (b : baseOver S ⟶ A) : A ⟶ baseOver S ⊗ A :=
     (((Over.homMk A.hom (Category.comp_id _) : A ⟶ baseOver S) ≫ b)⁻¹ * 𝟙 A)
 
 /- English proof (translation)
-Rewrite using `[untransl, lift_translPt, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem untransl_translPt (b : baseOver S ⟶ A) : untransl A b ≫ translPt A b = 𝟙 A := by
   rw [untransl, lift_translPt, mul_inv_cancel_left]
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Conclude with `hom_base_ext _ _`. Rewrite using `[untransl, Category.assoc, lift_snd, MonObj.comp_mul, GrpObj.comp_inv, Category.comp_id, Category.id_comp, ← Category.assoc, hom_base_ext (translPt A b ≫ _) (fst _ _), translPt, ← Hom.mul_def, inv_mul_cancel_left]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translPt_untransl (b : baseOver S ⟶ A) : translPt A b ≫ untransl A b = 𝟙 _ := by
   apply CartesianMonoidalCategory.hom_ext
@@ -179,7 +179,7 @@ theorem translPt_untransl (b : baseOver S ⟶ A) : translPt A b ≫ untransl A b
       ← Hom.mul_def, inv_mul_cancel_left]
 
 /- English proof (translation)
-Rewrite using `[ptSecT, lift_translPt, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptSecT_translPt {T : Over S} (b x : T ⟶ A) : ptSecT A x ≫ translPt A b = b * x := by
   rw [ptSecT, lift_translPt, Category.id_comp]
@@ -187,11 +187,11 @@ theorem ptSecT_translPt {T : Over S} (b x : T ⟶ A) : ptSecT A x ≫ translPt A
 end Translate
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, q = n + 2` from `⟨q - 2, by omega⟩`. Take `⟨t, ht⟩` from `(triv_iter hsq P b n).inv`. Establish `e1 : (untransl P.A b).left ≫ (translPt P.A b).left = 𝟙 _`. Rewrite using `[← Over.comp_left, untransl_translPt]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : (translPt P.A b).left ≫ (untransl P.A b).left = 𝟙 _`. Rewrite using `[← Over.comp_left, translPt_untransl]`. Both sides reduce to the same expression. Take `⟨s', hs'⟩` from `exists_sec P.isLB (K' := PUnit) (φ' := fun _ => 𝟙 P.A.left) (ε' := fun _ => ((n + 2 : ℕ) : ℤ)) (formEq_of_add fun U _ hh => by`. Simplify using `[Fintype.sum_sum_type, Fin.sum_univ_succ, e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use the proof step `module)`. Use the proof step `(pullSec (mulSec (φ := ![(snd (baseOver (Sp k)) P.A).left, (translPt P.A (b ^ (n + 2))).left]) (ε := ![((n + 2 : ℕ) : ℤ) - 1, 1]) s (genSec t ht)) (untransl P.A b).left)`. Use `⟨s', fun Z r z J hJ => ⟨val t r z J, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hs' Z _ z J hJ, sval_pullSec _ _ _ z hJ, Category.assoc, e2, Category.comp_id]`. Conclude with `(sval_mulSec _ _ _ z hJ).trans (congrArg (_ * ·) (sval_genSec t ht r z hJ))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_untwist {k : Type} [Field k] (hsq : SquareSt) (P : PolAV (Sp k)) (q : ℕ) (hq : 2 ≤ q)
     (b : baseOver (Sp k) ⟶ P.A) (s : LB.Sec (twistLB P.A P.L q (b ^ q))) :
@@ -225,13 +225,13 @@ open Complex Matrix Filter Topology
 open scoped BigOperators Real
 
 /- English proof (translation)
-Introduce `hmul hsq hZ K _ _ P N d k c hg hN hd hk s hs`. Establish `hq : 2 ≤ N * d` using `le_trans (by omega) (Nat.mul_le_mul hN hd)`. Take `⟨b, rfl⟩` from `SectionDivision.exists_div hmul P c (N * d) (by omega)`. Take `⟨s', hs'⟩` from `TwistZero.exists_untwist hsq P (N * d) hq b s`. Establish `hs0 : ∃ j, s'.f j ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨j, hj⟩` from `hs`. Use `hj (sec_ext_val P.isLB (s := s) (s' := secZero _) (fun y J hJ => ?_) j)` and prove the remaining obligations. Take `⟨u, hu⟩` from `hs' _ (𝟙 _) y J hJ`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `((Units.mul_left_eq_zero u).1 (hu.symm.trans (TwistZero.sval_eq_zero s' hcon _ y hJ))).trans (TwistZero.sval_eq_zero (secZero _) (fun _ => rfl) _ y hJ).symm`. Establish `loc : ∀ x : baseOver (Sp K) ⟶ P.A, (ptSecT P.A x).left ⁻¹ᵁ nonzeroLocus s = (b * x).left ⁻¹ᵁ nonzeroLocus s'`. Introduce `x`. Use extensionality with `z`. Use `choose J hJ using fun ψ : (baseOver (Sp K)).left ⟶ P.A.left => exists_chart P.isLB (ψ z)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu⟩` from `hs' _ (ptSecT P.A x).left z J hJ`. Rewrite `hu` using `[← Over.comp_left, TwistZero.ptSecT_translPt]`. Conclude with `(TwistZero.mem_nonzeroLocus_iff s _ z hJ).trans ((Units.isUnit_mul_units _ u).symm.trans ((congrArg IsUnit hu).symm.to_iff.trans (TwistZero.mem_nonzeroLocus_iff s' _ z hJ).symm))`. Use `le_of_eq_of_le (Nat.card_congr ((Equiv.mulLeft b).subtypeEquiv fun x => ?_)) (hZ K P N d k (b ^ k) hg hN hk s' hs0)` and prove the remaining obligations. Rewrite using `[Equiv.coe_mulLeft, loc x, mul_pow, mul_eq_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_zero_count_twist : Out.MulNSt → Out.SquareSt → (∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (N d k : ℕ) (b : Out.baseOver (Sp K) ⟶ P.A), 1 ≤ P.g → 4 ≤ N → (k : K) ≠ 0 → ∀ s : (lbPow P.L (N * d)).Sec, (∃ j, s.f j ≠ 0) → Nat.card {x : Out.baseOver (Sp K) ⟶ P.A // x ^ k = b ∧ ¬ ⊤ ≤ x.left ⁻¹ᵁ Out.nonzeroLocus s} ≤ N ^ P.g * P.g.factorial * d * k ^ (2 * P.g - 2)) → (∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (N d k : ℕ) (c : Out.baseOver (Sp K) ⟶ P.A), 1 ≤ P.g → 4 ≤ N → 1 ≤ d → (k : K) ≠ 0 → ∀ s : LB.Sec (Out.twistLB P.A P.L (N * d) c), (∃ j, s.f j ≠ 0) → Nat.card {x : Out.baseOver (Sp K) ⟶ P.A // x ^ k = 1 ∧ ¬ ⊤ ≤ (Out.ptSecT P.A x).left ⁻¹ᵁ Out.nonzeroLocus s} ≤ N ^ P.g * P.g.factorial * d * k ^ (2 * P.g - 2)) := by
   intro hmul hsq hZ K _ _ P N d k c hg hN hd hk s hs

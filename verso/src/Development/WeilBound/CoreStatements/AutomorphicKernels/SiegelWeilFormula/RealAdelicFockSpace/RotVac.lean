@@ -17,7 +17,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def sb (n : ℕ) (a b c e : ℂ) : M2 n := fromBlocks (a • 1) (b • 1) (c • 1) (e • 1)
 
 /- English proof (translation)
-Simplify using `only [sb, fromBlocks_multiply, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, ← add_smul]`. Apply the tactic sequence `congr 1 <;> congr 1 <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sb_mul (n : ℕ) (a b c e a' b' c' e' : ℂ) :
     sb n a b c e * sb n a' b' c' e' = sb n (a * a' + b * c') (a * b' + b * e') (c * a' + e * c') (c * b' + e * e') := by
@@ -25,26 +25,26 @@ theorem sb_mul (n : ℕ) (a b c e a' b' c' e' : ℂ) :
   congr 1 <;> congr 1 <;> ring
 
 /- English proof (translation)
-Simplify using `only [sb, fromBlocks_conjTranspose, conjTranspose_smul, conjTranspose_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sb_ct (n : ℕ) (a b c e : ℂ) : (sb n a b c e)ᴴ = sb n (star a) (star c) (star b) (star e) := by
   simp only [sb, fromBlocks_conjTranspose, conjTranspose_smul, conjTranspose_one]
 
 /- English proof (translation)
-Substitute `h1 h2 h3 h4` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sb_congr (n : ℕ) {a b c e a' b' c' e' : ℂ} (h1 : a = a') (h2 : b = b') (h3 : c = c') (h4 : e = e') :
     sb n a b c e = sb n a' b' c' e' := by
   subst h1 h2 h3 h4; rfl
 
 /- English proof (translation)
-Simplify using `[sb, fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sb_one (n : ℕ) : (1 : M2 n) = sb n 1 0 0 1 := by
   simp [sb, fromBlocks_one]
 
 /- English proof (translation)
-Simplify using `[sb, JJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sb_JJ (n : ℕ) : JJ n = sb n 0 1 (-1) 0 := by
   simp [sb, JJ]
@@ -56,14 +56,14 @@ theorem yrotM_sb (n : ℕ) (s : ℤˣ) (t : ℝ) :
     yrotM n s t = sb n (Real.cos t) (((s : ℤ) : ℂ) * Real.sin t) (-(((s : ℤ) : ℂ) * Real.sin t)) (Real.cos t) := rfl
 
 /- English proof (translation)
-Use `Real.cos_sq_add_sin_sq t` as an intermediate fact. Conclude with `(by nlinarith [this] : Real.cos t * Real.cos t + Real.sin t * Real.sin t = 1)` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cs1 (t : ℝ) : (Real.cos t : ℂ) * Real.cos t + (Real.sin t : ℂ) * Real.sin t = 1 := by
   have := Real.cos_sq_add_sin_sq t
   exact_mod_cast (by nlinarith [this] : Real.cos t * Real.cos t + Real.sin t * Real.sin t = 1)
 
 /- English proof (translation)
-Rewrite using `[yrotM_sb, yrotM_sb, yrotM_sb, sb_mul]`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;>`. Apply the tactic sequence `apply sb_congr <;> push_cast [Real.cos_add, Real.sin_add] <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem yrotM_mul' (n : ℕ) (s : ℤˣ) (t t' : ℝ) : yrotM n s t * yrotM n s t' = yrotM n s (t + t') := by
   rw [yrotM_sb, yrotM_sb, yrotM_sb, sb_mul]
@@ -71,20 +71,20 @@ theorem yrotM_mul' (n : ℕ) (s : ℤˣ) (t t' : ℝ) : yrotM n s t * yrotM n s 
     apply sb_congr <;> push_cast [Real.cos_add, Real.sin_add] <;> ring
 
 /- English proof (translation)
-Rewrite using `[yrotM_sb, sb_one]`. Apply the tactic sequence `apply sb_congr <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem yrotM_zero' (n : ℕ) (s : ℤˣ) : yrotM n s 0 = 1 := by
   rw [yrotM_sb, sb_one]
   apply sb_congr <;> simp
 
 /- English proof (translation)
-Establish `h1` using `cs1 t`. Establish `e1 : star (Real.cos t : ℂ) = Real.cos t` using `Complex.conj_ofReal _`. Establish `e2 : star (Real.sin t : ℂ) = Real.sin t` using `Complex.conj_ofReal _`. Establish `hs : ((s : ℤ) : ℂ) * ((s : ℤ) : ℂ) = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or s with h | h <;> simp [h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `es : star ((s : ℤ) : ℂ) = ((s : ℤ) : ℂ)` using `by simp`. Rewrite using `[yrotM_sb]`. Generalize the expression as in `(Real.cos t : ℂ) = c at h1 e1 e2 ⊢`. Generalize the expression as in `(Real.sin t : ℂ) = sn at h1 e1 e2 ⊢`. Generalize the expression as in `((s : ℤ) : ℂ) = z at hs es ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [InG]`. Rewrite using `[sb_ct, sb_JJ, sb_mul, sb_mul]`. Apply the tactic sequence `apply sb_congr <;> simp only [star_mul', star_neg, e1, e2, es] <;> first | ring1 | linear_combination h1 + sn * sn * hs | linear_combination -(h1 + sn * sn * hs)`. Rewrite using `[sb_ct, sb_mul, sb_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `apply sb_congr <;> simp only [star_mul', star_neg, e1, e2, es] <;> first | ring1 | linear_combination h1 + sn * sn * hs | linear_combination -(h1 + sn * sn * hs)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inK_yrotM' (n : ℕ) (s : ℤˣ) (t : ℝ) : InK (yrotM n s t) := by
   have h1 := cs1 t
@@ -107,13 +107,13 @@ theorem inK_yrotM' (n : ℕ) (s : ℤˣ) (t : ℝ) : InK (yrotM n s t) := by
       first | ring1 | linear_combination h1 + sn * sn * hs | linear_combination -(h1 + sn * sn * hs)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or s with h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_sq (s : ℤˣ) : ((s : ℤ) : ℂ) * ((s : ℤ) : ℂ) = 1 := by
   rcases Int.units_eq_one_or s with h | h <;> simp [h]
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det (yrotM_mul' n s t (-t))`. Rewrite `h` using `[add_neg_cancel, yrotM_zero', det_mul, det_one]`. Conclude with `left_ne_zero_of_mul_eq_one h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_yrotM_ne (n : ℕ) (s : ℤˣ) (t : ℝ) : (yrotM n s t).det ≠ 0 := by
   have h := congrArg Matrix.det (yrotM_mul' n s t (-t))
@@ -121,9 +121,9 @@ theorem det_yrotM_ne (n : ℕ) (s : ℤˣ) (t : ℝ) : (yrotM n s t).det ≠ 0 :
   exact left_ne_zero_of_mul_eq_one h
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `cs1 t`. Establish `hs` using `sgn_sq s`. Apply the tactic sequence `have ha2 : a * a = 1 := by rcases ha with rfl | rfl <;> ring`. Establish `hp : ((Real.cos t : ℂ) + a * Complex.I * (((s : ℤ) : ℂ) * Real.sin t)) * ((Real.cos t : ℂ) - a * Complex.I * (((s : ℤ) : ℂ) * Real.sin t)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Take the linear combination `h1 + (Real.sin t : ℂ) * Real.sin t * hs - ((s : ℤ) : ℂ) * ((s : ℤ) : ℂ) * (Real.sin t : ℂ) * Real.sin t * Complex.I_mul_I + ((s : ℤ) : ℂ) * ((s : ℤ) : ℂ) * (Real.sin t : ℂ) * Real.sin t * Complex.I * Complex.I * ha2 * (-1)`. Rewrite `hp` using `[h0, zero_mul]`. Conclude with `zero_ne_one hp`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rot_unit (s : ℤˣ) (t : ℝ) (a : ℂ) (ha : a = 1 ∨ a = -1) :
     ((Real.cos t : ℂ) + a * Complex.I * (((s : ℤ) : ℂ) * Real.sin t)) ≠ 0 := by
@@ -140,11 +140,11 @@ theorem rot_unit (s : ℤˣ) (t : ℝ) (a : ℂ) (ha : a = 1 ∨ a = -1) :
   exact zero_ne_one hp
 
 /- English proof (translation)
-Establish `hu1 : u1 (yrotM n s t) = ((Real.cos t : ℂ) + (-1) * Complex.I * (((s : ℤ) : ℂ) * Real.sin t)) • 1`. Rewrite using `[u1, yrotM, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, smul_smul, ← add_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hu2 : u2 (yrotM n s t) = ((Real.cos t : ℂ) + 1 * Complex.I * (((s : ℤ) : ℂ) * Real.sin t)) • 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[u2, yrotM, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, smul_smul, ← neg_smul, ← add_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [F0, f0, mR_yrot]`. Use `mul_ne_zero (zpow_ne_zero _ (det_yrotM_ne n s t)) (mul_ne_zero (zpow_ne_zero _ ?_) (zpow_ne_zero _ ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hu1, det_smul, det_one, mul_one]`. Conclude with `pow_ne_zero _ (rot_unit s t _ (Or.inr rfl))`. Rewrite using `[hu2, det_smul, det_one, mul_one]`. Conclude with `pow_ne_zero _ (rot_unit s t _ (Or.inl rfl))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_factor_rotation_ne_zero (p q : ℕ) (e : ℤ) (n : ℕ) (s : ℤˣ) (t : ℝ) : F0 p q e (yrot n s t) ≠ 0 := by
   have hu1 : u1 (yrotM n s t) = ((Real.cos t : ℂ) + (-1) * Complex.I * (((s : ℤ) : ℂ) * Real.sin t)) • 1 := by
@@ -165,15 +165,15 @@ theorem weight_factor_rotation_ne_zero (p q : ℕ) (e : ℤ) (n : ℕ) (s : ℤ�
 variable {d : SD σ}
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `hLO F E σ d R w`. Take `⟨sL, ρ, p, q, e, -, hLD, -, hLk⟩` from `hLI F E σ d R w L hL`. Use `⟨p, q, e, fun y hy g hg Ω hΩ hTΩ => ?_⟩` and prove the remaining obligations. Set `Ψ : Mx F E d.m d.n → ℂ` to `fun X => (∏ w' ∈ Finset.univ.erase w, fP (1 : PX d.m d.n) (R.loc w' X)) * g (fun k => (d.crd X k).2)`. Establish `hΨ : Ψ ∈ R.away w` using `Submodule.subset_span ⟨fun _ => 1, g, hg, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hvt : d.T Ω = R.tens w (fP (1 : PX d.m d.n)) Ψ`. Rewrite using `[hTΩ]`. Use function extensionality and compare the values at `X`. Simplify using `only [vac, gau, RD.tens, fin, Ψ]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun w' => fP (1 : PX d.m d.n) (R.loc w' X)) (Finset.mem_univ w), mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h1` using `(hL y (fP (1 : PX d.m d.n)) (KFock.isSw_fP 1)).2 Ψ (KFock.away_inv R w Ψ hΨ) Ω hΩ hvt`. Rewrite `h1` using `[hLk y 1 hy, hLD.kvac y hy]`. Establish `hfP : fP (F0 p q e y • (1 : PX d.m d.n)) = F0 p q e y • fP (1 : PX d.m d.n)`. Use function extensionality and compare the values at `u`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [fP, evX, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.eval_C, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `htens : R.tens w (F0 p q e y • fP (1 : PX d.m d.n)) Ψ = F0 p q e y • R.tens w (fP (1 : PX d.m d.n)) Ψ`. Use function extensionality and compare the values at `X`. Simplify using `only [RD.tens, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[hfP, htens, ← hvt, ← KFock.T_smul]`. Establish `hS` using `d.ok.dbl.weil.2.1.toIsSplitting`. Conclude with `KFock.T_inj hT.1 d (hS.pres _ Ω hΩ) (d.sch.smul_mem _ hΩ) h1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem om_place (hT : TAll) (hLO : LocOpEx) (hLI : LocInst) (R : RD d) (w : InfinitePlace F) :
     ∃ (p q : ℕ) (e : ℤ), ∀ y : GR d.n, InK (mR y) → ∀ g ∈ SB (Yf d), ∀ Ω ∈ d.sch, d.T Ω = vac R g →
@@ -205,11 +205,11 @@ theorem om_place (hT : TAll) (hLO : LocOpEx) (hLI : LocInst) (R : RD d) (w : Inf
   exact KFock.T_inj hT.1 d (hS.pres _ Ω hΩ) (d.sch.smul_mem _ hΩ) h1
 
 /- English proof (translation)
-Establish `key : ∀ l : List (InfinitePlace F), ∃ χ : ℂ, χ ≠ 0 ∧ ∀ g ∈ SB (Yf d), ∀ Ω ∈ d.sch, d.T Ω = vac R g → d.om ((l.map fun w => R.ι w (yrot d.n (R.sg w) t)).prod) Ω = χ • Ω`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨1, one_ne_zero, fun g _ Ω _ _ => by simp⟩`. Consider the case `cons w l ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨χ, hχ, h⟩` from `ih`. Take `⟨p, q, e, hw⟩` from `om_place hT hLO hLI R w`. Use `⟨F0 p q e (yrot d.n (R.sg w) t) * χ, mul_ne_zero (weight_factor_rotation_ne_zero p q e d.n (R.sg w) t) hχ, fun g hg Ω hΩ hTΩ => ?_⟩` and prove the remaining obligations. Establish `hK : InK (mR (yrot d.n (R.sg w) t))` using `by rw [mR_yrot]; exact inK_yrotM' _ _ _`. Rewrite using `[List.map_cons, List.prod_cons, map_mul, Module.End.mul_apply, h g hg Ω hΩ hTΩ, map_smul, hw _ hK g hg Ω hΩ hTΩ, smul_smul, mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key _`.
+A detailed English derivation is pending.
 -/
 theorem om_rot_vac' (hT : TAll) (hLO : LocOpEx) (hLI : LocInst) (R : RD d) (t : ℝ) :
     ∃ χ : ℂ, χ ≠ 0 ∧ ∀ g ∈ SB (Yf d), ∀ Ω ∈ d.sch, d.T Ω = vac R g → d.om (rot R t) Ω = χ • Ω := by

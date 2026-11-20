@@ -10,7 +10,7 @@ namespace GroundTheory.Global
 namespace Elliptic
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(hf a).add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem meromorphicAt_fun_sum {ι : Type*} (s : Finset ι) {f : ι → ℂ → ℂ} {x : ℂ}
     (hf : ∀ i, MeromorphicAt (f i) x) : MeromorphicAt (fun z ↦ ∑ i ∈ s, f i z) x := by
@@ -22,9 +22,9 @@ theorem meromorphicAt_fun_sum {ι : Type*} (s : Finset ι) {f : ι → ℂ → �
     exact (hf a).add ih
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Rewrite using `[germ_const, map_zero]`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `only [Finset.sum_insert ha]`. Establish `hs : Meromorphic fun z ↦ ∑ i ∈ s, f i z` using `fun x ↦ meromorphicAt_fun_sum s fun i ↦ hf i x`. Rewrite using `[← ih]`. Conclude with `germ_add (hf a) hs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_sum {ι : Type*} (s : Finset ι) {f : ι → ℂ → ℂ} (hf : ∀ i, Meromorphic (f i)) :
     germ (fun z ↦ ∑ i ∈ s, f i z) = ∑ i ∈ s, germ (f i) := by
@@ -41,11 +41,9 @@ theorem germ_sum {ι : Type*} (s : Finset ι) {f : ι → ℂ → ℂ} (hf : ∀
     exact germ_add (hf a) hs
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Rewrite using `[meromorphicOrderAt_eq_top_iff.2 (Eventually.of_forall fun _ ↦ rfl)]`. Conclude with `WithTop.coe_lt_top c`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Establish `hs : MeromorphicAt (fun z ↦ ∑ i ∈ s, f i z) x` using `meromorphicAt_fun_sum s hf`. Establish `h1` using `hc a (Finset.mem_insert_self a s)`. Establish `h2` using `ih fun i hi ↦ hc i (Finset.mem_insert_of_mem hi)`.
-
-Conclude with `lt_of_lt_of_le (lt_min h1 h2) (meromorphicOrderAt_add (hf a) hs)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lt_meromorphicOrderAt_sum {ι : Type*} (s : Finset ι) {f : ι → ℂ → ℂ} {x : ℂ}
     (hf : ∀ i, MeromorphicAt (f i) x) {c : ℤ}
@@ -65,7 +63,7 @@ theorem lt_meromorphicOrderAt_sum {ι : Type*} (s : Finset ι) {f : ι → ℂ �
     exact lt_of_lt_of_le (lt_min h1 h2) (meromorphicOrderAt_add (hf a) hs)
 
 /- English proof (translation)
-Take `⟨m, n, e⟩` from `PeriodPair.mem_lattice.1 h`. Use `LinearIndependent.pair_iff.mp L.indep ((m : ℝ) - r) (n : ℝ) (by` as an intermediate fact. Simplify using `only [Complex.real_smul, Complex.ofReal_sub, Complex.ofReal_intCast]`. Take the linear combination `e)`. Conclude with `⟨m, (sub_eq_zero.1 this.1).symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components.
 -/
 theorem exists_int_of_real_mul_mem (L : PeriodPair) {r : ℝ} (h : (r : ℂ) * L.ω₁ ∈ L.lattice) :
     ∃ a : ℤ, r = a := by
@@ -76,20 +74,20 @@ theorem exists_int_of_real_mul_mem (L : PeriodPair) {r : ℝ} (h : (r : ℂ) * L
   exact ⟨m, (sub_eq_zero.1 this.1).symm⟩
 
 /- English proof (translation)
-Rewrite using `[ne_eq, Complex.ofReal_eq_zero]`. Conclude with `(Real.sqrt_pos.2 two_pos).ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqrt_two_ne_zero : (Real.sqrt 2 : ℂ) ≠ 0 := by
   rw [ne_eq, Complex.ofReal_eq_zero]
   exact (Real.sqrt_pos.2 two_pos).ne'
 
 /- English proof (translation)
-Introduce `m m' hm`. Simplify using `only at hm`. Rewrite `hm` using `[Torus.mk_eq_mk_iff]`. Establish `e : (m : ℂ) * L.ω₁ / (Real.sqrt 2 : ℂ) - (m' : ℂ) * L.ω₁ / (Real.sqrt 2 : ℂ) = ((((m : ℝ) - m') / Real.sqrt 2 : ℝ) : ℂ) * L.ω₁`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hm` using `[e]`. Take `⟨a, ha⟩` from `exists_int_of_real_mul_mem L hm`. Assume the negation of the conclusion as `hne`. Establish `hd : ((m : ℝ) - m') ≠ 0` using `sub_ne_zero.2 (by exact_mod_cast hne)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `ha0 : (a : ℝ) ≠ 0`. Introduce `h0`. Rewrite `ha` using `[h0]`. Conclude with `hd ((div_eq_zero_iff.1 ha).resolve_right (Real.sqrt_pos.2 two_pos).ne')`. Establish `hs2 : Real.sqrt 2 ≠ 0` using `(Real.sqrt_pos.2 two_pos).ne'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Real.sqrt 2 = ((m : ℝ) - m') / a`. Rewrite using `[eq_div_iff ha0]`. Rewrite `ha` using `[div_eq_iff hs2]`. Take the linear combination `(-1 : ℝ) * ha`. Conclude with `irrational_sqrt_two ⟨((m : ℚ) - m') / a, by push_cast; exact hs.symm⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem injective_mk_div_sqrt_two (L : PeriodPair) :
     Function.Injective fun m : ℕ ↦ Torus.mk L ((m : ℂ) * L.ω₁ / (Real.sqrt 2 : ℂ)) := by
@@ -116,9 +114,9 @@ theorem injective_mk_div_sqrt_two (L : PeriodPair) :
   exact irrational_sqrt_two ⟨((m : ℚ) - m') / a, by push_cast; exact hs.symm⟩
 
 /- English proof (translation)
-Establish `hg : AnalyticAt ℂ (fun z : ℂ ↦ (Real.sqrt 2 : ℂ) * z + 0) z₀` using `by fun_prop`. Establish `hd : deriv (fun z : ℂ ↦ (Real.sqrt 2 : ℂ) * z + 0) z₀ ≠ 0`. Establish `h1` using `((hasDerivAt_id' z₀).const_mul (Real.sqrt 2 : ℂ)).add_const 0`. Rewrite using `[h1.deriv, mul_one]`. Conclude with `sqrt_two_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `meromorphicOrderAt_comp_of_deriv_ne_zero (f := ℘[L]) hg hd` as an intermediate fact. Rewrite `this` using `[Function.comp_def]`. Rewrite using `[this, L.order_weierstrassP _ hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meromorphicOrderAt_weierstrassP_sqrt_two (L : PeriodPair) {z₀ : ℂ}
     (hz : (Real.sqrt 2 : ℂ) * z₀ + 0 ∈ L.lattice) :
@@ -133,41 +131,35 @@ theorem meromorphicOrderAt_weierstrassP_sqrt_two (L : PeriodPair) {z₀ : ℂ}
   rw [this, L.order_weierstrassP _ hz]
 
 /- English proof (translation)
-Use `set t : ℂ := (Real.sqrt 2 : ℂ)`. Use `set h : ℂ → ℂ := fun z ↦ ℘[L] (t * z + 0)`. Establish `mh : Meromorphic h` using `meromorphic_weierstrassP_affine L t 0`. Use `choose f hf hfe using fun i ↦ exists_isEllipticFunction_ellEval_eq L (p.coeff i)`. Use `set n := p.natDegree`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `mt : ∀ i, Meromorphic fun z ↦ f i z * h z ^ i` using `fun i x ↦ ((hf i).1 x).mul ((mh x).pow i)`. Establish `heval : (p.map (ellEval L).toRingHom).eval (germ h) = germ fun z ↦ ∑ i ∈ Finset.range (n + 1), f i z * h z ^ i`. Rewrite using `[eval_eq_sum_range, natDegree_map_eq_of_injective (ellEval_injective L), germ_sum _ mt]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[coeff_map, show (fun z ↦ f i z * h z ^ i) = f i * h ^ i from rfl, germ_mul (hf i).1 (mh.pow (n := i)), germ_pow mh]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `hfe i`. Introduce `h0`. Rewrite `h0` using `[heval, germ_eq_zero_iff (fun x ↦ meromorphicAt_fun_sum _ fun i ↦ mt i x)]`. Establish `hfn : ¬ f n =ᶠ[codiscrete ℂ] 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `hz`. Establish `h1 : ellEval L (p.coeff n) = 0`. Rewrite using `[hfe n, ← germ_zero]`. Conclude with `germ_congr (hf n).1 hz`. Rewrite `h1` using `[map_eq_zero_iff _ (ellEval_injective L)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hp (leadingCoeff_eq_zero.1 h1)`. Use `set bad : Set ℂ := (⋃ i ∈ Finset.range (n + 1), singularSet (f i)) ∪ singularSet (f n)⁻¹`. Establish `hbad : (Torus.mk L '' bad).Finite`. Rewrite using `[image_union, image_iUnion₂]`. Use `Finite.union (Finite.biUnion (Finset.finite_toSet _) fun i _ ↦ finite_image_singularSet L (hf i).1 (hf i).2) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finite_image_singularSet L (hf n).1.inv fun z l hl ↦ by`. Simplify using `only [Pi.inv_apply, (hf n).2 z l hl]`. Take `⟨m, hm⟩` from `(hbad.preimage (injective_mk_div_sqrt_two L).injOn).infinite_compl.nonempty`. Use `set z₀ : ℂ := (m : ℂ) * L.ω₁ / t`. Establish `hz₀ : z₀ ∉ bad` using `fun hb ↦ hm ⟨z₀, hb, rfl⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hpole : t * z₀ + 0 ∈ L.lattice`. Establish `: t * z₀ + 0 = (m : ℤ) • L.ω₁`. Simplify using `only [z₀, t, add_zero, zsmul_eq_mul, Int.cast_natCast]`. Clear denominators, using `[sqrt_two_ne_zero]` for the nonvanishing conditions. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `L.lattice.smul_mem (m : ℤ) L.ω₁_mem_lattice`. Establish `han : ∀ i ∈ Finset.range (n + 1), AnalyticAt ℂ (f i) z₀` using `fun i hi ↦ by`. Assume the negation of the conclusion as `hna`. Conclude with `hz₀ (Or.inl (mem_iUnion₂.2 ⟨i, hi, hna⟩))`. Establish `haninv : AnalyticAt ℂ (f n)⁻¹ z₀`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hna`. Conclude with `hz₀ (Or.inr hna)`. Establish `hoh : meromorphicOrderAt h z₀ = -2` using `meromorphicOrderAt_weierstrassP_sqrt_two L hpole`. Establish `hon : meromorphicOrderAt (f n) z₀ = 0`. Establish `h1` using `(han n (Finset.self_mem_range_succ n)).meromorphicOrderAt_nonneg`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2` using `haninv.meromorphicOrderAt_nonneg`. Rewrite `h2` using `[meromorphicOrderAt_inv]`. Establish `hne : meromorphicOrderAt (f n) z₀ ≠ ⊤` using `fun ht ↦ hfn (eventuallyEq_zero_codiscrete_of_nhdsNE (hf n).1 (meromorphicOrderAt_eq_top_iff.1 ht))`. Take `⟨k, hk⟩` from `WithTop.ne_top_iff_exists.1 hne`. Rewrite `h1`, `h2`, the goal using `[← hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `: (0 : ℤ) ≤ k` using `by exact_mod_cast h1`. Establish `: (0 : ℤ) ≤ -k` using `by exact_mod_cast h2`. Establish `: k = 0` using `by omega`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : ∀ i, meromorphicOrderAt (fun z ↦ f i z * h z ^ i) z₀ = meromorphicOrderAt (f i) z₀ + ((i * (-2) : ℤ) : WithTop ℤ)` using `fun i ↦ by`. Rewrite using `[show (fun z ↦ f i z * h z ^ i) = f i * h ^ i from rfl, meromorphicOrderAt_mul ((hf i).1 z₀) ((mh z₀).pow i), meromorphicOrderAt_pow (mh z₀), hoh]`. Use `congr 1`. Establish `htop : meromorphicOrderAt (fun z ↦ f n z * h z ^ n) z₀ = ((-2 * n : ℤ) : WithTop ℤ)`. Rewrite using `[hterm, hon, zero_add]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hrest : ((-2 * n : ℤ) : WithTop ℤ) < meromorphicOrderAt (fun z ↦ ∑ i ∈ Finset.range n, f i z * h z ^ i) z₀`. Apply `lt_meromorphicOrderAt_sum _ (fun i ↦ mt i z₀)` to reduce the goal to its premises. Introduce `i hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hterm]`. Establish `hi' : i < n` using `Finset.mem_range.1 hi`. Establish `h0` using `(han i (Finset.mem_range.2 (by omega))).meromorphicOrderAt_nonneg`. Consider the cases of `hc : meromorphicOrderAt (f i) z₀ with`. Consider the case `top`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[top_add]`. Conclude with `WithTop.coe_lt_top _`. Consider the case `coe k`. Rewrite `h0` using `[hc]`. Establish `: (0 : ℤ) ≤ k` using `by exact_mod_cast h0`.
-
-Rewrite using `[← WithTop.coe_add, WithTop.coe_lt_coe]`. Use linear arithmetic over natural numbers and integers. Establish `hsum : meromorphicOrderAt (fun z ↦ ∑ i ∈ Finset.range (n + 1), f i z * h z ^ i) z₀ = ((-2 * n : ℤ) : WithTop ℤ)`. Establish `e : (fun z ↦ ∑ i ∈ Finset.range (n + 1), f i z * h z ^ i) = (fun z ↦ f n z * h z ^ n) + fun z ↦ ∑ i ∈ Finset.range n, f i z * h z ^ i`. Use function extensionality and compare the values at `z`.
-
-Simplify using `only [Finset.sum_range_succ, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, meromorphicOrderAt_add_eq_left_of_lt (meromorphicAt_fun_sum _ fun i ↦ mt i z₀) (htop ▸ hrest), htop]`. Establish `hzero : meromorphicOrderAt (fun z ↦ ∑ i ∈ Finset.range (n + 1), f i z * h z ^ i) z₀ = ⊤` using `meromorphicOrderAt_eq_top_iff.2 (eventuallyEq_zero_codiscrete_iff.1 h0 z₀)`. Rewrite `hzero` using `[hsum]`.
-
-Conclude with `WithTop.coe_ne_top hzero`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ellEval_indep (L : PeriodPair) (p : (weierstrassCurve L).toAffine.FunctionField[X])
     (hp : p ≠ 0) :

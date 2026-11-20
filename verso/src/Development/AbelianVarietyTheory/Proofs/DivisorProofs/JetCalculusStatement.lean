@@ -19,7 +19,7 @@ open scoped Classical
 namespace GlobalTheory.JetCalcPf
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.jet_ring_prod_eq_factorial_smul J l hc`.
+A detailed English derivation is pending.
 -/
 theorem prod_t_list {R : Type} [CommRing R] {I : Type} [Fintype I] {n : ℕ} (J : JetRing R I n) (l : List I)
     (hc : ∑ i, l.count i ≤ n + 1) :
@@ -27,14 +27,14 @@ theorem prod_t_list {R : Type} [CommRing R] {I : Type} [Fintype I] {n : ℕ} (J 
   GlobalTheory.T.jet_ring_prod_eq_factorial_smul J l hc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.jet_ring_prod_eq_zero_of_long J l hl`.
+A detailed English derivation is pending.
 -/
 theorem prod_t_list_eq_zero {R : Type} [CommRing R] {I : Type} [Fintype I] {n : ℕ} (J : JetRing R I n) (l : List I)
     (hl : n + 1 < l.length) : (l.map J.t).prod = 0 :=
   GlobalTheory.T.jet_ring_prod_eq_zero_of_long J l hl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.card_multiset_words_mul_factorial k ν hν`.
+A detailed English derivation is pending.
 -/
 theorem card_count_mul {I : Type} [Fintype I] (k : ℕ) (ν : I → ℕ) (hν : ∑ i, ν i = k) :
     (Finset.univ.filter (fun s : Fin k → I => ∀ i, (List.ofFn s).count i = ν i)).card * ∏ i, (ν i).factorial
@@ -42,7 +42,7 @@ theorem card_count_mul {I : Type} [Fintype I] (k : ℕ) (ν : I → ℕ) (hν : 
   GlobalTheory.T.card_multiset_words_mul_factorial k ν hν
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.jet_ring_repr_mul_power_series J F G x y hx hy ν`.
+A detailed English derivation is pending.
 -/
 theorem repr_mul_of_coeff {I : Type} [Fintype I] {n : ℕ} (J : JetRing ℂ I n) (F G : MvPowerSeries I ℂ) (x y : J.B)
     (hx : ∀ ν : Idx I n, J.b.repr x ν =
@@ -54,7 +54,7 @@ theorem repr_mul_of_coeff {I : Type} [Fintype I] {n : ℕ} (J : JetRing ℂ I n)
   GlobalTheory.T.jet_ring_repr_mul_power_series J F G x y hx hy ν
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => simp only [iterD, List.foldr_cons, List.map_cons, GlobalTheory.lineDerivList_cons] at ih ⊢`. Rewrite using `[← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iterD_eq {I : Type} [Fintype I] (l : List I) (g : (I → ℂ) → ℂ) :
     iterD l g = GlobalTheory.lineDerivList ℂ (l.map fun i => (Pi.single i 1 : I → ℂ)) g := by
@@ -69,7 +69,7 @@ namespace GlobalTheory.JetCalcPf
 variable {I : Type} [Fintype I] {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Simplify using `only [List.count_cons, Finset.sum_add_distrib, ih, List.length_cons, beq_iff_eq]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_count (l : List I) : ∑ i, l.count i = l.length := by
   induction l with
@@ -79,13 +79,13 @@ theorem sum_count (l : List I) : ∑ i, l.count i = l.length := by
     simp
 
 /- English proof (translation)
-Establish `e : ∏ a, J.t (s a) = ((List.ofFn s).map J.t).prod`. Rewrite using `[List.map_ofFn, List.prod_ofFn]`. Both sides reduce to the same expression. Rewrite using `[e]`. Distinguish the cases in `hk : k ≤ n + 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hc : ∑ i, (List.ofFn s).count i ≤ n + 1` using `by rw [sum_count, List.length_ofFn]; exact hk`. Rewrite using `[prod_t_list J _ hc, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply]`. Distinguish the cases in `hP : ∀ i, (List.ofFn s).count i = ν.1 i`. Establish `hν : (⟨fun i => (List.ofFn s).count i, hc⟩ : Idx I n) = ν` using `Subtype.ext (funext hP)`. Rewrite using `[if_pos hν, if_pos hP, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hP]`. Rewrite using `[if_neg hP, if_neg]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `hP fun i => congrFun (congrArg Subtype.val h) i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_t_list_eq_zero J _ (by rw [List.length_ofFn]; omega), map_zero, Finsupp.zero_apply, if_neg]`. Introduce `hP`. Establish `h1` using `ν.2`. Establish `h2 : ∑ i, ν.1 i = k` using `by simp only [← hP]; rw [sum_count, List.length_ofFn]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem repr_prod_t_eq_ite_factorial (J : JetRing ℂ I n) (ν : Idx I n) {k : ℕ} (s : Fin k → I) :
     J.b.repr (∏ a, J.t (s a)) ν =
@@ -110,9 +110,9 @@ theorem repr_prod_t_eq_ite_factorial (J : JetRing ℂ I n) (ν : Idx I n) {k : �
     omega
 
 /- English proof (translation)
-Rewrite using `[iterD_eq, ← GlobalTheory.lineDerivList_ofFn hf]`. Establish `hp : (List.ofFn s).Perm u` using `List.perm_iff_count.2 fun i => h i`. Establish `e : List.ofFn (fun a => (Pi.single (s a) 1 : I → ℂ)) = (List.ofFn s).map fun i => (Pi.single i 1 : I → ℂ)`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `GlobalTheory.lineDerivList_perm hf (hp.map _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iFD_eq_iterD {f : (I → ℂ) → ℂ} (hf : AnalyticAt ℂ f 0) {k : ℕ} (s : Fin k → I) (u : List I)
     (h : ∀ i, (List.ofFn s).count i = u.count i) :
@@ -125,15 +125,15 @@ theorem iFD_eq_iterD {f : (I → ℂ) → ℂ} (hf : AnalyticAt ℂ f 0) {k : �
   exact GlobalTheory.lineDerivList_perm hf (hp.map _)
 
 /- English proof (translation)
-Use `set K := ∑ i, ν.1 i with hK`. Establish `hKn : K ≤ n + 1` using `ν.2`. Simplify using `only [jet, GlobalTheory.PeriodFamily.taylor, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, repr_prod_t_eq_ite_factorial]`. Rewrite using `[Finset.sum_eq_single_of_mem K (Finset.mem_range.2 (by omega))]`. Establish `step : ∀ s : Fin K → I, ((K.factorial : ℂ)⁻¹ * iteratedFDeriv ℂ K f 0 (fun a => (Pi.single (s a) 1 : I → ℂ))) * (if (∀ i, (List.ofFn s).count i = ν.1 i) then ((∏ i, (ν.1 i).factorial : ℕ) : ℂ) else 0) = if (∀ i, (List.ofFn s).count i = ν.1 i) then (K.factorial : ℂ)⁻¹ * iterD u f …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Use `split_ifs with hP`. Rewrite using `[iFD_eq_iterD hf s u fun i => (hP i).trans (hu i).symm]`. Rewrite using `[mul_zero]`. Simplify using `only [step]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul]`. Establish `hc` using `card_count_mul K ν.1 rfl`. Establish `hc' : ((Finset.univ.filter (fun s : Fin K → I => ∀ i, (List.ofFn s).count i = ν.1 i)).card : ℂ) * ((∏ i, (ν.1 i).factorial : ℕ) : ℂ) = (K.factorial : ℂ)` using `by exact_mod_cast hc`. Establish `hK0 : (K.factorial : ℂ) ≠ 0` using `by exact_mod_cast K.factorial_ne_zero`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k _ hk`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg, mul_zero]`. Introduce `hP`. Apply `hk` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `sum_count (List.ofFn s)` as an intermediate fact. Rewrite `this` using `[List.length_ofFn]`. Rewrite using `[← this, hK]`. Simplify using `only [hP]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_jet (J : JetRing ℂ I n) {f : (I → ℂ) → ℂ} (hf : AnalyticAt ℂ f 0) (ν : Idx I n) (u : List I)
     (hu : ∀ i, u.count i = ν.1 i) : J.b.repr (jet J f) ν = iterD u f 0 := by
@@ -169,9 +169,9 @@ theorem coeff_jet (J : JetRing ℂ I n) {f : (I → ℂ) → ℂ} (hf : Analytic
     rw [← this, hK]; simp only [hP]
 
 /- English proof (translation)
-Use `set m : I →₀ ℕ := Finsupp.equivFunOnFinite.symm ν.1 with hm`. Establish `hmi : ∀ i, m i = ν.1 i` using `fun i => by simp [hm]`. Use `set l := (Finsupp.toMultiset m).toList`. Establish `hl : (l : Multiset I) = Finsupp.toMultiset m` using `Multiset.coe_toList _`. Establish `hcount : ∀ i, l.count i = ν.1 i` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmi, ← Finsupp.count_toMultiset, ← hl, Multiset.coe_count]`. Rewrite using `[GlobalTheory.taylor_eq_taylorDir, GlobalTheory.coeff_taylorDir_eq_lineDerivList _ hf hl, ← iterD_eq, ← coeff_jet J hf ν l hcount]`. Establish `h0 : ((∏ i, (m i).factorial : ℕ) : ℂ) ≠ 0` using `GlobalTheory.cast_prod_factorial_ne_zero m`. Simplify using `only [hmi] at h0 ⊢`. Rewrite using `[mul_inv_cancel_left₀ h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_jet_eq_coeff (J : JetRing ℂ I n) {f : (I → ℂ) → ℂ} (hf : AnalyticAt ℂ f 0) (ν : Idx I n) :
     J.b.repr (jet J f) ν =
@@ -188,25 +188,25 @@ theorem repr_jet_eq_coeff (J : JetRing ℂ I n) {f : (I → ℂ) → ℂ} (hf : 
   rw [mul_inv_cancel_left₀ h0]
 
 /- English proof (translation)
-Introduce `I _ n J`. Use `⟨fun f hf ν u hu => coeff_jet J hf ν u hu, fun f g hf hg => ⟨?_, ?_⟩, fun f g h => ?_, fun a => ?_, fun i => ?_, fun i => ?_, fun s => ?_⟩` and prove the remaining obligations. Use `J.b.ext_elem fun ν => ?_` and prove the remaining obligations. Rewrite using `[repr_mul_of_coeff J _ _ _ _ (repr_jet_eq_coeff J hf) (repr_jet_eq_coeff J hg) ν, repr_jet_eq_coeff J (hf.mul hg), GlobalTheory.taylor_mul hf hg]`. Use `J.b.ext_elem fun ν => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, Finsupp.add_apply, repr_jet_eq_coeff J hf, repr_jet_eq_coeff J hg, repr_jet_eq_coeff J (hf.add hg), GlobalTheory.taylor_add hf hg, map_add, mul_add]`. Establish `e : ∀ k, iteratedFDeriv ℂ k f 0 = iteratedFDeriv ℂ k g 0` using `fun k => (h.iteratedFDeriv ℂ k).eq_of_nhds`. Simplify using `only [jet, GlobalTheory.PeriodFamily.taylor, e]`. Use `J.b.ext_elem fun ν => ?_` and prove the remaining obligations. Rewrite using `[repr_jet_eq_coeff J analyticAt_const, GlobalTheory.taylor_const, MvPowerSeries.coeff_C, Algebra.algebraMap_eq_smul_one, ← J.one, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hν : ν = ⟨0, by simp⟩`. Substitute `hν` using the available equality. Establish `h0 : Finsupp.equivFunOnFinite.symm (0 : I → ℕ) = 0` using `by ext; simp`. Simplify using `[h0]`. Rewrite using `[if_neg (Ne.symm hν), if_neg, mul_zero, smul_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hν` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrArg (fun m : I →₀ ℕ => m i) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `ha : AnalyticAt ℂ (fun z : I → ℂ => z i) 0` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : I => ℂ) i).analyticAt 0`. Use `J.b.ext_elem fun ν => ?_` and prove the remaining obligations. Rewrite using `[repr_jet_eq_coeff J ha, GlobalTheory.taylor_coord, MvPowerSeries.coeff_X, JetRing.t, Module.Basis.repr_self, Finsupp.single_apply]`. Distinguish the cases in `hν : ν.1 = Pi.single i 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : (⟨Pi.single i 1, by simp⟩ : Idx I n) = ν` using `Subtype.ext hν.symm`. Establish `h2 : Finsupp.equivFunOnFinite.symm ν.1 = Finsupp.single i 1`. Use extensionality with `j`. Simplify using `[hν, Pi.single_apply, Finsupp.single_apply, eq_comm]`. Rewrite using `[if_pos h1, if_pos h2, hν, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ j, (Pi.single i 1 : I → ℕ) j = 0 ∨ (Pi.single i 1 : I → ℕ) j = 1` using `fun j => by`. Apply the tactic sequence `by_cases hj : j = i <;> simp [hj]`. Simplify using `only [Nat.cast_eq_one]`. Apply the tactic sequence `exact Finset.prod_eq_one fun j _ => by rcases this j with h | h <;> rw [h] <;> rfl`. Establish `h1 : (⟨Pi.single i 1, by simp⟩ : Idx I n) ≠ ν` using `fun h => hν (congrArg Subtype.val h).symm`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h2 : Finsupp.equivFunOnFinite.symm ν.1 ≠ Finsupp.single i 1` using `fun h => hν (by`. Use function extensionality and compare the values at `j`. Use `congrArg (fun m : I →₀ ℕ => m j) h` as an intermediate fact. Simplify `this)` using `[Pi.single_apply, Finsupp.single_apply, eq_comm]`. Rewrite using `[if_neg h1, if_neg h2, mul_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[J.π_eq, JetRing.t, Module.Basis.repr_self, Finsupp.single_apply, if_neg]`. Introduce `h`. Use `congrFun (congrArg Subtype.val h) i` as an intermediate fact. Simplify using `at this`. Establish `e : ∏ a, J.t (s a) = ((List.ofFn s).map J.t).prod`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[List.map_ofFn, List.prod_ofFn]`. Both sides reduce to the same expression. Rewrite using `[e, prod_t_list_eq_zero J _ (by rw [List.length_ofFn]; omega)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetCalc : JetCalc := by
   intro I _ n J

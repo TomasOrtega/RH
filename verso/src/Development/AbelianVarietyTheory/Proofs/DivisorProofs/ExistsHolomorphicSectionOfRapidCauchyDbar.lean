@@ -14,9 +14,9 @@ open scoped ENNReal ContDiff
 namespace GlobalTheory.OTY
 
 /- English proof (translation)
-Establish `h1 : ‖x - y‖ ≤ ‖z - x‖ + ‖z - y‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖x - y‖ ^ 2 ≤ 2 * ‖z - x‖ ^ 2 + 2 * ‖z - y‖ ^ 2`. Use polynomial arithmetic with `[norm_nonneg (x - y), norm_nonneg (z - x), norm_nonneg (z - y), sq_nonneg (‖z - x‖ - ‖z - y‖)]`. Establish `h3 : ‖x - y‖ ^ 2 * ρ ≤ 2 * (‖z - x‖ ^ 2 * ρ) + 2 * (‖z - y‖ ^ 2 * ρ)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_right h2 hρ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_add (by positivity) (by positivity), ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_mul (by norm_num)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ofReal_sq_sub_mul_le (x y z : ℂ) (ρ : ℝ) (hρ : 0 ≤ ρ) :
     ENNReal.ofReal (‖x - y‖ ^ 2 * ρ) ≤
@@ -39,31 +39,25 @@ theorem ofReal_sq_sub_mul_le (x y z : ℂ) (ρ : ℝ) (hρ : 0 ≤ ρ) :
       simp
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ ι La _ A C la t K F ht hcurv hK hF hcau hn1`. Take `⟨f, hfc, hfm, hfn⟩` from `GlobalTheory.T.geometric_series_sections_l2_limit n Y ι La A la F K hK hF hcau`. Establish `hWsub : ∀ a, ball (C.c a) (C.r a) ⊆ (A.chart (C.idx a)).target` using `fun a => ball_subset_closedBall.trans (C.sub a)`. Establish `hH : ∀ m a, ∃ u : V n → ℂ, DifferentiableOn ℂ u (ball (C.c a) (C.r a)) ∧ ∫⁻ v in ball (C.c a) (C.r a), ENNReal.ofReal (‖F m (C.idx a) ((A.chart (C.idx a)).symm v) - u v‖ ^ 2 * Real.exp (-A.ph la (C.idx a) ((A.chart (C.idx a)).symm v))) ≤ ENNReal.ofReal t⁻¹ * n1 C la (F m)`. Introduce `m a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, hle⟩` from `GlobalTheory.T.hormander_estimate_on_ball_const_levi_bound n (C.c a) (C.r a) t (fun w => A.ph la (C.idx a) ((A.chart (C.idx a)).symm w)) (F m (C.idx a) ∘ (A.chart (C.idx a)).symm) ht ((A.smooth_ph la (C.idx a)).mono (hWsub a)) (((hF m).1 (C.idx a)).mono (hWsub a)) (by`. Introduce `v hv ξ`. Use `hcurv a v hv ξ` as an intermediate fact. Simplify using `only [WeightedAtlas.leviAt] at this`. Rewrite using `[(A.chart (C.idx a)).right_inv (hWsub a hv)] at this)` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨u, hu, hle.trans ?_⟩` and prove the remaining obligations. Use `gcongr`. Unfold `n1`. Conclude with `Finset.single_le_sum (f := fun a => ∫⁻ v in ball (C.c a) (C.r a), ENNReal.ofReal ((∑ j, ‖wdb n j (F m (C.idx a) ∘ (A.chart (C.idx a)).symm) v‖ ^ 2) * Real.exp (-A.ph la (C.idx a) ((A.chart (C.idx a)).symm v)))) (fun _ _ => bot_le) (Finset.mem_univ a)`. Use `choose u hu hule using hH`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hD : ∀ m a, ∫⁻ v in ball (C.c a) (C.r a), ENNReal.ofReal (‖F m (C.idx a) ((A.chart (C.idx a)).symm v) - f (C.idx a) ((A.chart (C.idx a)).symm v)‖ ^ 2 * Real.exp (-A.ph la (C.idx a) ((A.chart (C.idx a)).symm v))) ≤ ENNReal.ofReal (4 * K / 4 ^ m)`. Introduce `m a`. Establish `e` using `GlobalTheory.T.lintegral_nsq_canonical_add_chart_part n Y ι La A la (C.idx a) (ball (C.c a) (C.r a)) (F m - f) measurableSet_ball (hWsub a) (by`. Introduce `y hy _`. Simplify using `only [Pi.sub_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[(hF m).2 _ _ _ (A.mem_pick y) hy, hfc _ _ _ (A.mem_pick y) hy]`. Use the proof step `ring)`. Use the proof step `(((((hF m).1 (C.idx a)).continuousOn.aemeasurable (A.chart (C.idx a)).open_target.measurableSet).sub (hfm (C.idx a))).mono_measure (Measure.restrict_mono (hWsub a) le_rfl))`. Use `le_trans (le_of_eq e.symm) ?_` and prove the remaining obligations. Conclude with `(setLIntegral_le_lintegral _ _).trans (hfn m)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hT : Tendsto (fun m : ℕ => 2 * ENNReal.ofReal (4 * K / 4 ^ m) + 2 * (ENNReal.ofReal t⁻¹ * n1 C la (F m))) atTop (𝓝 0)`. Establish `h1 : Tendsto (fun m : ℕ => ENNReal.ofReal (4 * K / 4 ^ m)) atTop (𝓝 0)`. Rewrite using `[← ENNReal.ofReal_zero]`. Conclude with `ENNReal.tendsto_ofReal (tendsto_const_nhds.div_atTop (tendsto_pow_atTop_atTop_of_one_lt (by norm_num)))`. Establish `h2 : Tendsto (fun m => ENNReal.ofReal t⁻¹ * n1 C la (F m)) atTop (𝓝 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using ENNReal.Tendsto.const_mul hn1 (Or.inr ENNReal.ofReal_ne_top)`. Simplify using `using (ENNReal.Tendsto.const_mul h1 (Or.inr ENNReal.ofNat_ne_top)).add (ENNReal.Tendsto.const_mul h2 (Or.inr ENNReal.ofNat_ne_top))`. Establish `hG : ∀ a, ∃ g : V n → ℂ, DifferentiableOn ℂ g (ball (C.c a) (C.r a)) ∧ g =ᵐ[volume.restrict (ball (C.c a) (C.r a))] f (C.idx a) ∘ (A.chart (C.idx a)).symm`. Introduce `a`. Establish `hρ : ContinuousOn (fun v => Real.exp (-A.ph la (C.idx a) ((A.chart (C.idx a)).symm v))) (ball (C.c a) (C.r a))` using `Real.continuous_exp.comp_continuousOn (((A.smooth_ph la (C.idx a)).continuousOn.mono (hWsub a)).neg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.exists_differentiableOn_ae_eq_of_weighted_L2_limit n (ball (C.c a) (C.r a)) _ (fun m => u m a) (f (C.idx a) ∘ (A.chart (C.idx a)).symm) isOpen_ball hρ (fun v _ => Real.exp_pos _) (fun m => hu m a) ((hfm (C.idx a)).mono_measure (Measure.restrict_mono (hWsub a) le_rf …` and prove the remaining obligations. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hT (fun _ => bot_le) ?_` and prove the remaining obligations. Introduce `m`. Establish `hY : AEMeasurable (fun v => 2 * ENNReal.ofReal (‖F m (C.idx a) ((A.chart (C.idx a)).symm v) - u m a v‖ ^ 2 * Real.exp (-A.ph la (C.idx a) ((A.chart (C.idx a)).symm v)))) (volume.restrict (ball (C.c a) (C.r a)))`. Use `AEMeasurable.const_mul ?_ _` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `ContinuousOn.aemeasurable ?_ measurableSet_ball` and prove the remaining obligations. Use `ENNReal.continuous_ofReal.comp_continuousOn ?_` and prove the remaining obligations. Use `ContinuousOn.mul ?_ hρ` and prove the remaining obligations. Use `ContinuousOn.pow ?_ 2` and prove the remaining obligations. Use `ContinuousOn.norm ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `((((hF m).1 (C.idx a)).continuousOn.mono (hWsub a))).sub (hu m a).continuousOn`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_right' _ hY, lintegral_const_mul' _ _ ENNReal.ofNat_ne_top, lintegral_const_mul' _ _ ENNReal.ofNat_ne_top]`. Use `_ ≤ 2 * ENNReal.ofReal (4 * K / 4 ^ m) + 2 * (ENNReal.ofReal t⁻¹ * n1 C la (F m)) := by gcongr`. Conclude with `hD m a`.
-
-Conclude with `hule m a`. Use `choose g hg hgae using hG`. Take `⟨G, hGs, hGae⟩` from `GlobalTheory.T.exists_holo_section_ae_eq_of_ball_cover n Y ι La A C (A.kap + la) f g hfc hg hgae`. Use `⟨G, hGs, ?_⟩` and prove the remaining obligations. Establish `e : n0 A la (F 0 - G) = n0 A la (F 0 - f)`.
-
-Unfold `n0`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hGae] with y hy`. Simplify using `only [WeightedAtlas.nsq, Pi.sub_apply, hy]`. Rewrite using `[e]`.
-
-Simplify using `using hfn 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isSec_of_rapid_cauchy : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (C : Cover A) (la : La) (t K : ℝ) (F : ℕ → ι → Y → ℂ), 0 < t → CurvGe C la t → 0 ≤ K → (∀ m, A.IsSSec (A.kap + la) (F m)) → (∀ m, n0 A la (F m - F (m + 1)) ≤ ENNReal.ofReal (K / 4 ^ m)) → Tendsto (fun m => n1 C la (F m)) atTop (𝓝 0) → ∃ G : ι → Y → ℂ, A.IsSec (A.kap + la) G ∧ n0 A la (F 0 - G) ≤ ENNReal.ofReal (4 * K) := by
   intro n Y _ _ _ _ _ ι La _ A C la t K F ht hcurv hK hF hcau hn1

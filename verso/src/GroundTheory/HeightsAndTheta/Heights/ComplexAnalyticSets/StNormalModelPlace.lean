@@ -27,7 +27,7 @@ instance (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ) : Algebra (MvPolynom
     I.map (algebraMap (MvPolynomial σ ℂ) (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial σ ℂ →+* ℂ))))))
 
 /- English proof (translation)
-Establish `hu : IsUnit (algebraMap (MvPolynomial σ ℂ) (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial σ ℂ →+* ℂ))) f)` using `IsLocalization.map_units _ (⟨f, fun h ↦ hf (RingHom.mem_ker.1 h)⟩ : (RingHom.ker (eval w : MvPolynomial σ ℂ →+* ℂ)).primeCompl)`. Conclude with `hu.map (Ideal.Quotient.mk _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_algebraMap_pointLocalRing (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ) (f : MvPolynomial σ ℂ)
     (hf : eval w f ≠ 0) : IsUnit (algebraMap (MvPolynomial σ ℂ) (pointLocalRing I w) f) := by
@@ -38,9 +38,9 @@ theorem isUnit_algebraMap_pointLocalRing (I : Ideal (MvPolynomial σ ℂ)) (w : 
   exact hu.map (Ideal.Quotient.mk _)
 
 /- English proof (translation)
-Unfold `pointLocalRing`. Rewrite using `[Ideal.Quotient.nontrivial_iff]`. Introduce `htop`. Establish `hle : I.map (algebraMap (MvPolynomial σ ℂ) (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial σ ℂ →+* ℂ)))) ≤ IsLocalRing.maximalIdeal (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial σ ℂ →+* ℂ)))`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Rewrite using `[Ideal.mem_comap]`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff _ _ g).2 (RingHom.mem_ker.2 (hw g hg))`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top (top_le_iff.1 (htop ▸ hle))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pointLocalRing_nontrivial (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ)
     (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn I) : Nontrivial (pointLocalRing I w) := by
@@ -57,7 +57,7 @@ theorem pointLocalRing_nontrivial (I : Ideal (MvPolynomial σ ℂ)) (w : σ → 
   exact (IsLocalRing.maximalIdeal.isMaximal _).ne_top (top_le_iff.1 (htop ▸ hle))
 
 /- English proof (translation)
-Simplify using `only [IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn, Set.mem_ofPred_eq, not_forall] at hw`. Take `⟨g, hg, hgw⟩` from `hw`. Unfold `pointLocalRing`. Rewrite using `[Ideal.Quotient.subsingleton_iff]`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ hg) (IsLocalization.map_units _ (⟨g, fun h ↦ hgw (RingHom.mem_ker.1 h)⟩ : (RingHom.ker (eval w : MvPolynomial σ ℂ →+* ℂ)).primeCompl))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pointLocalRing_subsingleton (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ)
     (hw : w ∉ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn I) : Subsingleton (pointLocalRing I w) := by
@@ -82,7 +82,7 @@ def NormalModelPlace.Statement : Prop :=
             (algebraMap (MvPolynomial (Fin n ⊕ Fin M.m) ℂ) (pointLocalRing M.ideal w) (rename Sum.inl f))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Ideal.isPrime_bot, IndefiniteRowSideFullHecke.ComplexSets.const_mem_zeroSetIn_lineDiagonal 0, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem NormalModelPlace.hypotheses_inhabited :
     (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)).IsPrime ∧
@@ -92,7 +92,7 @@ theorem NormalModelPlace.hypotheses_inhabited :
   ⟨Ideal.isPrime_bot, IndefiniteRowSideFullHecke.ComplexSets.const_mem_zeroSetIn_lineDiagonal 0, rfl⟩
 
 /- English proof (translation)
-The claim follows from `pointLocalRing_nontrivial _ _ NormalModelPlace.hypotheses_inhabited.2.1`.
+A detailed English derivation is pending.
 -/
 theorem NormalModelPlace.pointLocalRing_inhabitant_nontrivial :
     Nontrivial (pointLocalRing IndefiniteRowSideFullHecke.ComplexSets.lineDiagonalModel.ideal

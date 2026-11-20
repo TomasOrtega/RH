@@ -20,9 +20,9 @@ def cramerTri (H : Matrix (Fin (g + g)) (Fin g) K) (σ : ∀ k : ℕ, Fin k → 
   Matrix.of fun l k => ∑ j : Fin ((k : ℕ) + 1), if Fin.castLE k.2 j = l then cramerCoef H σ k j else 0
 
 /- English proof (translation)
-Unfold `minorAt`. Rewrite using `[Matrix.det_succ_row _ (Fin.last k)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.val_last, Matrix.of_apply, Fin.snoc_last]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a b`. Simplify using `[Fin.succAbove_last, Fin.snoc_castSucc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem minorAt_snoc_expand (H : Matrix (Fin (g + g)) (Fin g) K) (σ : ∀ k : ℕ, Fin k → Fin (g + g)) (k : Fin g)
     (r : Fin (g + g)) :
@@ -38,9 +38,9 @@ theorem minorAt_snoc_expand (H : Matrix (Fin (g + g)) (Fin g) K) (σ : ∀ k : �
   simp [Fin.succAbove_last, Fin.snoc_castSucc]
 
 /- English proof (translation)
-Use extensionality with `r k`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [cramerCol, cramerTri, Matrix.of_apply, minorAt_snoc_expand, Finset.mul_sum, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_div]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_univ, if_true, cramerCoef]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cramerCol_eq_mul (H : Matrix (Fin (g + g)) (Fin g) K) (σ : ∀ k : ℕ, Fin k → Fin (g + g)) :
     cramerCol H σ = H * cramerTri H σ := by
@@ -55,9 +55,9 @@ theorem cramerCol_eq_mul (H : Matrix (Fin (g + g)) (Fin g) K) (σ : ∀ k : ℕ,
   ring
 
 /- English proof (translation)
-Introduce `l k hkl`. Simplify using `only [cramerTri, Matrix.of_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `j.2` as an intermediate fact. Establish `h2 : ((Fin.castLE k.2 j : Fin g) : ℕ) = l` using `by rw [h]`. Simplify using `only [Fin.coe_castLE] at h2`. Simplify using `only [id] at hkl`. Establish `: (k : ℕ) < l` using `hkl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -76,15 +76,15 @@ theorem cramerTri_blockTriangular (H : Matrix (Fin (g + g)) (Fin g) K) (σ : ∀
   omega
 
 /- English proof (translation)
-Simplify using `only [cramerTri, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single (Fin.last k)]`. Rewrite using `[if_pos (by ext; simp), cramerCoef]`. Establish `hs : ((-1 : K)) ^ ((k : ℕ) + ((Fin.last (k : ℕ)) : ℕ)) = 1`. Rewrite using `[Fin.val_last, ← two_mul, pow_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hs, one_mul]`. Use `congr 1`. Unfold `minorAt`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Fin.succAbove_last]`. Use `congr 1`. Introduce `j _ hj`. Rewrite using `[if_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hj` to reduce the goal to its premises. Establish `h2 : ((Fin.castLE k.2 j : Fin g) : ℕ) = k` using `by rw [h]`. Simplify using `only [Fin.coe_castLE] at h2`. Use `ext`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[h2]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cramerTri_diag (H : Matrix (Fin (g + g)) (Fin g) K) (σ : ∀ k : ℕ, Fin k → Fin (g + g)) (k : Fin g) :
     cramerTri H σ k k = minorAt H k k.2.le (σ k) / minorAt H ((k : ℕ) + 1) k.2 (σ ((k : ℕ) + 1)) := by
@@ -114,9 +114,9 @@ end GlobalTheory.WholeFlag.Glue
 namespace GlobalTheory.WholeFlag.Glue
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro _`. Simplify using `[div_self (hf 0 (Nat.zero_le _))]`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hn`. Rewrite using `[Finset.prod_range_succ, ih (by omega)]`. Establish `h1` using `hf n (by omega)`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem prod_range_telescope {K : Type} [Field K] (f : ℕ → K) (g : ℕ) (hf : ∀ k, k ≤ g → f k ≠ 0) :
     ∀ n, n ≤ g → ∏ k ∈ Finset.range n, f k / f (k + 1) = f 0 / f n := by
@@ -130,7 +130,7 @@ theorem prod_range_telescope {K : Type} [Field K] (f : ℕ → K) (g : ℕ) (hf 
     field_simp
 
 /- English proof (translation)
-Unfold `minorAt`. Use `congr 1`. Use extensionality with `l k`. Rewrite using `[Matrix.mul_apply]`. Simplify using `[rowSel]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rowSel_mul_det {K : Type} [Field K] {g : ℕ} (H : Matrix (Fin (g + g)) (Fin g) K) (τ : Fin g → Fin (g + g)) :
     Matrix.det ((rowSel τ : Matrix (Fin g) (Fin (g + g)) K) * H) = minorAt H g le_rfl τ := by
@@ -141,11 +141,11 @@ theorem rowSel_mul_det {K : Type} [Field K] {g : ℕ} (H : Matrix (Fin (g + g)) 
   simp [rowSel]
 
 /- English proof (translation)
-Introduce `K _ g H σ hne`. Use `⟨cramerTri H σ, cramerTri_blockTriangular H σ, cramerTri_diag H σ, cramerCol_eq_mul H σ, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.det ((rowSel (σ g) : Matrix (Fin g) (Fin (g + g)) K) * cramerCol H σ) = 1`. Rewrite using `[cramerCol_eq_mul, ← Matrix.mul_assoc, Matrix.det_mul, Matrix.det_of_upperTriangular (cramerTri_blockTriangular H σ), rowSel_mul_det]`. Repeatedly rewrite using `[cramerTri_diag]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `set f : ℕ → K := fun k => if h : k ≤ g then minorAt H k h (σ k) else 1 with hfdef`. Establish `hf : ∀ k, k ≤ g → f k ≠ 0` using `fun k hk => by simp only [hfdef, dif_pos hk]; exact hne k hk`. Establish `hterm : ∀ k : Fin g, minorAt H k k.2.le (σ k) / minorAt H ((k : ℕ) + 1) k.2 (σ ((k : ℕ) + 1)) = f k / f ((k : ℕ) + 1)` using `fun k => by`. Simplify using `only [hfdef, dif_pos k.2.le, dif_pos (show (k : ℕ) + 1 ≤ g from k.2)]`. Repeatedly rewrite using `[hterm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.prod_univ_eq_prod_range (fun k => f k / f (k + 1)) g, prod_range_telescope f g hf g le_rfl]`. Establish `hg : minorAt H g le_rfl (σ g) = f g` using `by simp only [hfdef, dif_pos (le_refl g)]`. Establish `h0 : f 0 = 1` using `by simp only [hfdef, dif_pos (Nat.zero_le g)]; exact minorAt_zero H (σ 0)`. Rewrite using `[hg, h0, mul_one_div_cancel (hf g le_rfl)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cramerCol_tri_det :
     ∀ {K : Type} [Field K] {g : ℕ} (H : Matrix (Fin (g + g)) (Fin g) K) (σ : ∀ k : ℕ, Fin k → Fin (g + g)),

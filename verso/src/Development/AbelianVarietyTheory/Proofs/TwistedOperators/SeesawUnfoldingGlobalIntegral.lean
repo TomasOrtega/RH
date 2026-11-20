@@ -25,15 +25,15 @@ noncomputable section
 namespace GlobalTheory.LineKerW
 
 /- English proof (translation)
-Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm γ hγ ΦD hΦD Φ₁D hΦ₁D hder Φ Φ₁ hD hD₁ hp`. Take `⟨l, hl, hγl⟩` from `GlobalTheory.T.oneParamSubgroup_transposeGramUnitary_decomposes D θ X e Γ.W hO.JX hθ γ hγ`. Establish `hder' : ∀ x, HasDerivAt (fun t : ℝ => om (1, kapX X e hO.JX ((l.map fun q => oneP θ X q.1 q.2 t).prod)) ΦD x) (Φ₁D x) 0`. Introduce `x`. Use `hder x` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [hγl] at this`. Conclude with `this`. Take `⟨Ψ, hΨ, hsum⟩` from `GlobalTheory.T.seesaw_doubling_hermitian_form hP D θ X e Bs Γ Xc om om' hO.JX hθ hT' l hl ΦD hΦD Φ₁D hder'`. Establish `hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hO.psi ▸ hT'.base.std`. Establish `hΦF : Φ ∈ algF ψ θ true A B`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ', hΦ', hD'⟩` from `hO.algA' ΦD hΦD`. Rewrite using `[IsDatum.fun_eq Γ.M ψ cA cA.surjective hD hD']` and apply the resulting hypothesis. Use `choose Φ' hΦ'F hΦ'D using fun i => hO.algA' (Ψ i) (hΨ i).1`. Establish `hsumD : ∀ s : Finset (Fin l.length), IsDatum Γ.M ψ cA (∑ i ∈ s, Ψ i) (∑ i ∈ s, Φ' i)`. Introduce `s`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (CoinvPass.isDatum_zero (M := Γ.M) (ψ := ψ) (crd := cA))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `CoinvPass.isDatum_add hψ (hΦ'D a) ih`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΦ₁ : Φ₁ = ∑ i, Φ' i` using `IsDatum.fun_eq Γ.M ψ cA cA.surjective hD₁ (hsum ▸ hsumD Finset.univ)`. Rewrite using `[hΦ₁, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `hi` using `hl _ (List.get_mem l i)`. Rewrite using `[hm.mapA.eql _ _ hi Φ hΦF (Φ' i) (hΦ'F i) (GlobalTheory.T.seesaw_unfolding_mellin hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' _ _ hi ΦD hΦD (Ψ i) (hΨ i).1 (hΨ i).2 Φ (Φ' i) hD (hΦ'D i)), hp, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_p_line : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

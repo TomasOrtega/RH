@@ -19,17 +19,15 @@ open GlobalTheory.Poinc.ThetaOne GlobalTheory.Poinc.Sep GlobalTheory.FieldBaseCh
 namespace GlobalTheory.USep.FrameRoot
 
 /- English proof (translation)
-Establish `hL` using `D.P.isLB`. Set `p` to `LB.pullGen D.P.L (fun _ : PUnit => eSec D.P.A) (fun _ => 1) ρ D.P.A.hom`. Establish `hp : p.IsGen` using `DVR.pullGen_isGen _ _ _ _ hρ _`. Set `u` to `LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ α p) (LB.invGen D.P.L _ _ (GeneratorPullback.powGen D.P.L _ _ p (n ^ 2)))`. Establish `hu : u.IsGen` using `DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ hα hp) (DVR.invGen_isGen _ _ _ _ (DVR.SectionScalarValuation.powGen_isGen' _ _ _ _ hp _))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : (1 : D.P.A ⟶ D.P.A).left = D.P.A.hom ≫ eSec D.P.A` using `rfl`. Take `⟨κ, hκ, hv⟩` from `exists_gen hL (φ' := (![𝟙 _, (𝟙 D.P.A ^ n).left, (1 : D.P.A ⟶ D.P.A).left] : Fin 3 → (D.P.A.left ⟶ D.P.A.left))) (ε' := ![((n ^ 2 : ℕ) : ℤ), -((1 : ℕ) : ℤ), ((1 : ℕ) : ℤ) - ((n ^ 2 : ℕ) : ℤ)]) (by`. Introduce `U _ h`. Rewrite using `[h1]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[Fin.prod_univ_succ, Fintype.prod_sum_type, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Use the proof step `module) u hu`. Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ D.P.A.left) (z : Z) (J), Good D.P.L z J → val κ r z J = val α r z J * val ρ (r ≫ D.P.A.hom) z J * (val ρ (r ≫ D.P.A.hom) z J ^ (n ^ 2))⁻¹` using `fun Z r z J hJ => by`. Establish `a : val p r z J = val ρ (r ≫ D.P.A.hom) z J` using `val_pull hJ _ _ _`. Use `(hv Z r z J hJ).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg _ a)) ((val_inv _ _).trans (congrArg (·⁻¹) ?_))))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.RatioVal.val_powGen _ _ _ _ _).trans (congrArg (· ^ (n ^ 2)) a)`. Use `⟨κ, ⟨hκ, corr_of_val hL fun y J hJ => ?_⟩, key⟩` and prove the remaining obligations. Establish `a₃ : val (rigPow D.P.A D.P.L ρ ((n : ℤ) ^ 2)) (𝟙 _) y J = val ρ (𝟙 _) y J ^ ((n : ℤ) ^ 2)` using `map_zpow _ _ _`. Establish `e₁ : (𝟙 _ ≫ eSec D.P.A) ≫ D.P.A.hom = 𝟙 _`. Rewrite using `[Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Over.w η[D.P.A]`. Establish `b` using `(val_pull hJ α (eSec D.P.A) (𝟙 _)).symm.trans ((val_corr hJ hn (𝟙 _)).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) a₃ (val_inv ρ (𝟙 _)))))`. Use `(val_pull hJ κ _ _).trans ((key _ _ y J hJ).trans (Eq.trans ?_ (val_one _).symm))` and prove the remaining obligations. Rewrite using `[b]`. Use `(congrArg (fun q => val ρ (𝟙 _) y J ^ ((n : ℤ) ^ 2) * (val ρ (𝟙 _) y J)⁻¹ * val ρ q y J * (val ρ q y J ^ (n ^ 2))⁻¹) e₁).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[← Nat.cast_pow, zpow_natCast, inv_mul_cancel_right, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normd {V : Type} [CommRing V] [IsDomain V] (D : DegPre V) (ρ : LB.Gen (D.P.L.pull (eSec D.P.A)))
     (hρ : ρ.IsGen) (n : ℕ)
@@ -73,7 +71,7 @@ theorem exists_normd {V : Type} [CommRing V] [IsDomain V] (D : DegPre V) (ρ : L
   rw [← Nat.cast_pow, zpow_natCast, inv_mul_cancel_right, mul_inv_cancel]
 
 /- English proof (translation)
-Rewrite using `[val_of rig (r ≫ T.hom) z J (fun _ => J (r ≫ T.hom ≫ eSec P.A)) (fun _ => by rw [Category.assoc])]`. Establish `hm` using `hJ.mem (fun _ : Fin 1 => T.hom ≫ eSec P.A) r`. Use `(map_zpow _ _ _).trans (congrArg (· ^ k) ?_)` and prove the remaining obligations. Conclude with `(gm_res r z _ hm _).trans (gm_pull r T.hom z (LB.wchart P.L (fun _ : PUnit => eSec P.A) (fun _ => J (r ≫ T.hom ≫ eSec P.A))) (Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hm 0) _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_rigT {S : Scheme.{0}} (P : PolAV S) (rig : LB.Gen (P.L.pull (eSec P.A))) (T : Over S) (k : ℤ) {Z : Scheme.{0}}
     (r : Z ⟶ T.left) {z : Z} {J : (Z ⟶ P.A.left) → P.L.ι} (hJ : Good P.L z J) :
@@ -87,21 +85,19 @@ theorem val_rigT {S : Scheme.{0}} (P : PolAV S) (rig : LB.Gen (P.L.pull (eSec P.
     (Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hm 0) _)
 
 /- English proof (translation)
-Establish `hL` using `D.P.isLB`. Take `⟨-, hτg, α, hα, hn, hc⟩` from `hτ`. Take `⟨κ, hκ, hv⟩` from `exists_normd D ρ hρ n α hα hn`. Establish `hx : (toUnit T ≫ b).left = T.hom ≫ b.left` using `rfl`. Set `p` to `LB.pullGen D.P.L (fun _ : PUnit => eSec D.P.A) (fun _ => 1) ρ T.hom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hp : p.IsGen` using `DVR.pullGen_isGen _ _ _ _ hρ _`. Set `q` to `LB.pullGen D.P.L _ _ t T.hom`. Establish `hq : q.IsGen` using `DVR.pullGen_isGen _ _ _ _ ht _`. Take `⟨u, hu, hw⟩` from `exists_gen hL (φ' := fun _ : PUnit => T.hom ≫ eSec D.P.A) (ε' := fun _ => 1) (by`. Introduce `U _ h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hx]`. Simplify using `[Fin.prod_univ_succ, Fintype.prod_sum_type, DegPre.lineε, eSec, mul_comm, mul_left_comm])`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ τ q) (DVR.mulGen_isGen _ _ _ _ _ _ _ hτg hq)`. Take `⟨c, hcv⟩` from `GlobalTheory.CoordSep.exists_ratio_base hL (𝟙 T.left) (𝟙 T.left) (Category.comp_id _) (fun a => ⟨a, rfl⟩) hu hp`. Establish `key : ∀ (z : T.left) J, Good D.P.L z J → val τ (𝟙 _) z J * val t T.hom z J = gm (𝟙 T.left) z ⊤ c * val ρ T.hom z J` using `fun z J hJ => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a : val p (𝟙 _) z J = val ρ T.hom z J` using `(val_pull hJ _ _ _).trans (by rw [Category.id_comp])`. Establish `a' : val q (𝟙 _) z J = val t T.hom z J` using `(val_pull hJ _ _ _).trans (by rw [Category.id_comp])`. Establish `e` using `hcv _ (𝟙 _) z J hJ`. Rewrite `e` using `[hw _ _ z J hJ, val_mul hJ, a, a', Category.id_comp, mul_comm (val ρ T.hom z J)]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨c, unit_ext fun z _ => ?_, key⟩` and prove the remaining obligations. Use `choose J hJ using fun χ : T.left ⟶ D.P.A.left => exists_chart hL (χ z)`. Use `replace hJ : Good D.P.L z J := hJ`. Establish `e₁ : (T.hom ≫ b.left) ≫ D.P.A.hom = T.hom` using `Over.w (toUnit T ≫ b)`. Establish `h₁` using `H κ hκ z J hJ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h₁` using `[hv _ _ z J hJ, e₁]`. Establish `a₃ : val (powFrame D.P.A D.P.L _ τ ((n : ℤ) ^ 2)) (𝟙 _) z J = val τ (𝟙 _) z J ^ ((n : ℤ) ^ 2)` using `map_zpow _ _ _`. Establish `h₂` using `a₃.symm.trans ((val_corr hJ hc (𝟙 _)).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull hJ α _ _) (val_rigT D.P ρ T 1 _ hJ))))`. Use `replace h₂ : val τ (𝟙 _) z J ^ (n ^ 2) = val α (T.hom ≫ b.left) z J * val ρ T.hom z J := by`. Rewrite using `[← zpow_natCast, Nat.cast_pow, h₂, zpow_one, Category.id_comp, Category.id_comp, hx]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h₃` using `congrArg (· ^ (n ^ 2)) (key z J hJ)`. Simplify using `only [mul_pow] at h₃`. Rewrite using `[map_pow, map_one]`. Establish `aux : ∀ {U : Type} [CommGroup U] (a s g r r' w : U), s * (w * r' * r⁻¹) = 1 → a = w * r' → a * s = g * r → g = 1`. Introduce and unpack `U _ a s g r r' w h rfl h'`.
-
-Rewrite using `[← h, ← _root_.mul_assoc, mul_comm s, h', mul_inv_cancel_right]`. Conclude with `aux _ _ _ _ _ _ h₁ h₂ h₃`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root {V : Type} [CommRing V] [IsDomain V] (D : DegPre V) (T : Over (Sp V))
     (ρ : LB.Gen (D.P.L.pull (eSec D.P.A))) (hρ : ρ.IsGen) (n : ℕ) (b : 𝟙_ (Over (Sp V)) ⟶ D.P.A)
@@ -155,9 +151,9 @@ theorem exists_root {V : Type} [CommRing V] [IsDomain V] (D : DegPre V) (T : Ove
   exact aux _ _ _ _ _ _ h₁ h₂ h₃
 
 /- English proof (translation)
-Introduce `V₁ _ _ D K _ ev ρ₀ hρ n _ b τ hτ t ht H`. Take `⟨c, hc, hv⟩` from `exists_root D (Over.mk (spMap ev)) ρ₀ hρ n b τ hτ t ht H`. Set `e : Γ((Over.mk (spMap ev)).left, ⊤) ≃+* K` to `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv`. Establish `he : ∀ a : K, GlobalTheory.Ex.fnOf a = e.symm a` using `fun _ => rfl`. Use `⟨e c.val, ?_, fun z J hJ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hc, Units.val_one, map_one]`. Rewrite using `[he, e.symm_apply_apply, gs_unit _ _ ⊤ trivial, ← Units.val_mul, ← Units.val_mul]`. Conclude with `congrArg Units.val (hv z J hJ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_mul_eq_root : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] (D : DegPre V₁) (K : Type) [Field K] (ev : V₁ →+* K) (ρ₀ : LB.Gen (D.P.L.pull (eSec D.P.A))), ρ₀.IsGen → ∀ (n : ℕ), 1 ≤ n → ∀ (b : 𝟙_ (Over (Sp V₁)) ⟶ D.P.A) (τ : LB.Gen (LB.LinComb D.P.L (Y := (Over.mk (spMap ev)).left) (K := Fin 1) (fun _ => (toUnit (Over.mk (spMap ev)) ≫ b).left) (fun _ => 1))), IsTorsFrame D.P ρ₀ n (toUnit (Over.mk (spMap ev)) ≫ b) τ → ∀ (t : LB.Gen (LB.LinComb D.P.L ![(η[D.P.A]).left, b.left] (DegPre.lineε 1))), t.IsGen → (∀ κ : LB.Gen (kapLB D (𝟙 D.P.A ^ n) (n ^ 2) 1), Normd κ → ∀ (z : (Over.mk (spMap ev)).left) J, Good D.P.L z J → val t (Over.mk (spMap ev)).hom z J ^ (n ^ 2) * val κ ((Over.mk (spMap ev)).hom ≫ b.left) z J = 1) → ∃ ζ : K, ζ ^ (n ^ 2) = 1 ∧ ∀ (z : (Over.mk (spMap ev)).left) J, Good D.P.L z J → (val τ (𝟙 _) z J).val * (val t (Over.mk (spMap ev)).hom z J).val = gs (𝟙 (Over.mk (spMap ev)).left) z ⊤ (GlobalTheory.Ex.fnOf ζ) * (val ρ₀ (Over.mk (spMap ev)).hom z J).val := by
   intro V₁ _ _ D K _ ev ρ₀ hρ n _ b τ hτ t ht H

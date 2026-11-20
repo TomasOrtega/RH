@@ -12,7 +12,7 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory.CompanionTheory.MatInt
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `e : Valued.v (algebraMap F (Fv F v) a) = v.valuation F a` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v a`. Rewrite using `[e]`. Simplify `h` using `[HeightOneSpectrum.Support]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem algebraMap_mem_integers_of_not_mem_support (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (a : F) (h : v ∉ HeightOneSpectrum.Support (𝓞 F) a) :
@@ -24,7 +24,7 @@ theorem algebraMap_mem_integers_of_not_mem_support (F : Type) [Field F] [NumberF
   simpa [HeightOneSpectrum.Support] using h
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `sum_mem fun j _ => mul_mem (hB i j) (hy j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_integers (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι]
     (v : HeightOneSpectrum (𝓞 F)) (B : Matrix ι ι (Fv F v)) (y : ι → Fv F v)
@@ -35,15 +35,13 @@ theorem mulVec_mem_integers (F : Type) [Field F] [NumberField F] (ι : Type) [Fi
   exact sum_mem fun j _ => mul_mem (hB i j) (hy j)
 
 /- English proof (translation)
-Introduce `F _ _ ι _ _ A hA`. Establish `hfin : ∀ a : F, (HeightOneSpectrum.Support (𝓞 F) a).Finite` using `HeightOneSpectrum.Support.finite (𝓞 F)`. Use `⟨Finset.univ.biUnion fun p : ι × ι => (hfin (A p.1 p.2)).toFinset ∪ (hfin (A⁻¹ p.1 p.2)).toFinset, fun v hv x => ?_⟩` and prove the remaining obligations. Establish `hout : ∀ i j, v ∉ HeightOneSpectrum.Support (𝓞 F) (A i j) ∧ v ∉ HeightOneSpectrum.Support (𝓞 F) (A⁻¹ i j)`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `hv (Finset.mem_biUnion.2 ⟨(i, j), Finset.mem_univ _, Finset.mem_union_left _ ((hfin _).mem_toFinset.2 h)⟩)`. Introduce `h`. Conclude with `hv (Finset.mem_biUnion.2 ⟨(i, j), Finset.mem_univ _, Finset.mem_union_right _ ((hfin _).mem_toFinset.2 h)⟩)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : (A⁻¹.map (algebraMap F (Fv F v))) * (A.map (algebraMap F (Fv F v))) = 1`. Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.2 hA`. Establish `h1` using `congrArg (fun M : Matrix ι ι F => M.map (algebraMap F (Fv F v))) (Matrix.nonsing_inv_mul A hu)`. Simplify `h1` using `[Matrix.map_mul]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h i`. Establish `e : (A⁻¹.map (algebraMap F (Fv F v))).mulVec ((A.map (algebraMap F (Fv F v))).mulVec x) = x`. Rewrite using `[Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Rewrite using `[← e]`. Conclude with `mulVec_mem_integers F ι v _ _ (fun i j => algebraMap_mem_integers_of_not_mem_support F v _ (hout i j).2) h i`.
-
-Introduce `h i`. Conclude with `mulVec_mem_integers F ι v _ _ (fun i j => algebraMap_mem_integers_of_not_mem_support F v _ (hout i j).1) h i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_finset_mulVec_integral_iff : ∀ (F : Type) [Field F] [NumberField F] (ι : Type)
     [Fintype ι] [DecidableEq ι] (A : Matrix ι ι F), A.det ≠ 0 →

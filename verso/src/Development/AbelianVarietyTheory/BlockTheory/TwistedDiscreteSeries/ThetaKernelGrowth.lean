@@ -28,15 +28,15 @@ def ThetaGrowthUnif : Prop :=
     KernelBound V W A d
 
 /- English proof (translation)
-Introduce `m n` and use `(H _ (m * n)).imp fun _ h => h.imp fun _ h V W hV hW => h D V W rfl (by rw [hV, hW])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ThetaGrowthUnif.thetaGrowth (H : ThetaGrowthUnif) (D : D7) : ThetaGrowth D := fun m n =>
   (H _ (m * n)).imp fun _ h => h.imp fun _ h V W hV hW => h D V W rfl (by rw [hV, hW])
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `H ψ θ hθ U hU`. Use `⟨C, C.2, fun χS χT ω hω μ 𝓕 hμ f hf => ?_⟩` and prove the remaining obligations. Establish `hs` using `sobO_ne_top hω.std hθ hμ.1 hμ.2.1 hf.1 d`. Use `⟨hs, fun g h => ?_⟩` and prove the remaining obligations. Use `ENNReal.toReal_mono (ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.coe_ne_top hs) ENNReal.ofReal_ne_top) (hC χS χT ω hω μ 𝓕 hμ f hf g h)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[toReal_enorm, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.coe_toReal, ENNReal.toReal_ofReal (pow_nonneg (mul_pos (height_pos V g) (height_pos W h)).le A)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem KernelBound.real {D : D7} {V W : HSp D} {A d : ℕ} (H : KernelBound V W A d)
     (ψ : AddChar (AF D.host.F) ℂ) {θ : InfFam D} (hθ : IsInfFam θ) {U : AddSubgroup (WO V W)}
@@ -56,7 +56,7 @@ theorem KernelBound.real {D : D7} {V W : HSp D} {A d : ℕ} (H : KernelBound V W
     ENNReal.toReal_ofReal (pow_nonneg (mul_pos (height_pos V g) (height_pos W h)).le A)] at this
 
 /- English proof (translation)
-Take `⟨U, hU, hl⟩` from `isTheta_iff_level.1 hf`. Take `⟨μ, 𝓕, hμ⟩` from `exists_isCovolOne V W`. Take `⟨C, -, hC⟩` from `H.real ψ hθ hU`. Conclude with `⟨_, (hC χS χT ω hω μ 𝓕 hμ f hl).2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example {D : D7} {V W : HSp D} {A d : ℕ} (H : KernelBound V W A d) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     (hθ : IsInfFam θ) {χS χT : (AE D)ˣ →* Circle} {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)}

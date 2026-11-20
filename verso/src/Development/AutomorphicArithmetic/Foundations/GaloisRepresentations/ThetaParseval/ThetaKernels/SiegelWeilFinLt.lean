@@ -12,7 +12,7 @@ section
 open GlobalTheory.ThK.Dbl
 namespace PositivityTheory.SiegelWeilFormula.Fin
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.Fin.siegelWeilStd_pre_k _root_.PositivityTheory.SiegelWeilFormula.TW.Twp.poisson_k hCT`.
+A detailed English derivation is pending.
 -/
 theorem siegelWeilStd_of_ct_k (hCT : _root_.PositivityTheory.SiegelWeilFormula.CTSplit_k) : _root_.GlobalTheory.ThK.Dbl.SiegelWeilStd_k := _root_.PositivityTheory.SiegelWeilFormula.Fin.siegelWeilStd_pre_k _root_.PositivityTheory.SiegelWeilFormula.TW.Twp.poisson_k hCT
 end PositivityTheory.SiegelWeilFormula.Fin

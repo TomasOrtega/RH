@@ -15,9 +15,9 @@ namespace ThmIUnique
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Unfold `recR`. Use `congr 1`. Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations. Distinguish the cases in `hh : IsHorizontal W`. Rewrite using `[if_pos hh, if_pos hh, h W hW hh]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hh, if_neg hh]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem recR_congr {I J : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} (P : Ideal (MRing ι))
     {n : ℕ} (L : Fin n → HermLine ι) (A : HermLine ι) (s : MRing ι)
@@ -32,7 +32,7 @@ theorem recR_congr {I J : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine
   · rw [if_neg hh, if_neg hh]
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_one' : IsMultiHomog (1 : MRing ι) 0 := by
   classical
@@ -42,7 +42,7 @@ theorem isMultiHomog_one' : IsMultiHomog (1 : MRing ι) 0 := by
   simp
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨m1, hm1, m2, hm2, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul f g hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf m1 hm1 k, hg m2 hm2 k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_mul' {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a)
     (hg : IsMultiHomog g b) : IsMultiHomog (f * g) (a + b) := by
@@ -54,9 +54,9 @@ theorem isMultiHomog_mul' {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog 
 open Classical in
 
 /- English proof (translation)
-Introduce `m hm k'`. Rewrite `hm` using `[MvPolynomial.support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Finsupp.single_apply]`. Establish `: ∀ j : ι k', (⟨k, i⟩ : Σ k, ι k) ≠ ⟨k', j⟩` using `fun j e => h (congrArg Sigma.fst e).symm`. Simplify using `[Finsupp.single_apply, this, h, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_X' (k : K) (i : ι k) :
     IsMultiHomog (X ⟨k, i⟩ : MRing ι) (Pi.single k 1) := by
@@ -71,7 +71,7 @@ theorem isMultiHomog_X' (k : K) (i : ι k) :
     simp [Finsupp.single_apply, this, h, Pi.single_apply]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using (isMultiHomog_one' (ι := ι))`. Consider the case `succ n ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `isMultiHomog_mul' ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_pow' {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (n : ℕ) :
     IsMultiHomog (f ^ n) (n • a) := by
@@ -82,11 +82,11 @@ theorem isMultiHomog_pow' {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a)
     exact isMultiHomog_mul' ih hf
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset K, IsMultiHomog (∏ k ∈ s, (X ⟨k, c k⟩ : MRing ι) ^ d k) (∑ k ∈ s, d k • Pi.single k 1)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (isMultiHomog_one' (ι := ι))`. Consider the case `insert k s hk ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert hk, Finset.sum_insert hk]`. Conclude with `isMultiHomog_mul' (isMultiHomog_pow' (isMultiHomog_X' k (c k)) _) ih`. Establish `e : (∑ k, d k • (Pi.single k 1 : K → ℕ)) = d`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `key Finset.univ` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_coordMonomial (c : ∀ k, ι k) (d : K → ℕ) :
     IsMultiHomog (∏ k, (X ⟨k, c k⟩ : MRing ι) ^ d k) d := by
@@ -106,7 +106,7 @@ theorem isMultiHomog_coordMonomial (c : ∀ k, ι k) (d : K → ℕ) :
   rwa [e] at this
 
 /- English proof (translation)
-Introduce `h`. Take `⟨k, -, hk⟩` from `(hP.prod_mem_iff).mp h`. Conclude with `hc k (hP.mem_of_pow_mem _ hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coordMonomial_not_mem {P : Ideal (MRing ι)} (hP : P.IsPrime) (c : ∀ k, ι k)
     (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ P) (d : K → ℕ) :
@@ -116,17 +116,17 @@ theorem coordMonomial_not_mem {P : Ideal (MRing ι)} (hP : P.IsPrime) (c : ∀ k
   exact hc k (hP.mem_of_pow_mem _ hk)
 
 /- English proof (translation)
-Establish `hPp : P.IsPrime` using `hP.2.1.1`. Use `choose c hc using hP.2.1.2.2`. Set `b : K → ℕ` to `fun k => (-A.a k).toNat`. Set `e : K → ℕ` to `fun k => (A.a k + (b k : ℤ)).toNat`. Set `B : HermLine ι` to `HermLine.sqMetric b`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : IsSmoothHerm B` using `isSmoothHerm_sqMetric b`. Establish `hC : IsSmoothHerm (A.tensor B)` using `isSmoothHerm_tensor hA hB`. Establish `hBa : ∀ k, B.a k = (b k : ℤ)` using `fun k => rfl`. Establish `hCa : ∀ k, (A.tensor B).a k = (e k : ℤ)`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : (0 : ℤ) ≤ A.a k + ((-A.a k).toNat : ℤ)`. Rewrite using `[Int.toNat_eq_max]`. Use linear arithmetic over natural numbers and integers. Conclude with `(Int.toNat_of_nonneg h0).symm`. Set `sB : MRing ι` to `∏ k, (X ⟨k, c k⟩ : MRing ι) ^ b k`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `sC : MRing ι` to `∏ k, (X ⟨k, c k⟩ : MRing ι) ^ e k`. Establish `hsB : IsMultiHomog sB b` using `isMultiHomog_coordMonomial c b`. Establish `hsC : IsMultiHomog sC e` using `isMultiHomog_coordMonomial c e`. Establish `hsBP : sB ∉ P` using `coordMonomial_not_mem hPp c hc b`. Establish `hsCP : sC ∉ P` using `coordMonomial_not_mem hPp c hc e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `diff : ∀ F : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ, IsRFamily F → F P (m + 1) (Fin.snoc L A) = recR F P L (A.tensor B) sC - recR F P L B sB`. Introduce `F hF`. Establish `h1` using `hF.1 P m L A B hP hL hA hB`. Rewrite `h1` using `[hF.2 P m L (A.tensor B) sC e hP hL hC hCa hsC hsCP, hF.2 P m L B sB b hP hL hB hBa hsB hsBP]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hor : ∀ (X' : HermLine ι) (s : MRing ι), IsSectionOn P X' s → ∀ W ∈ divSupp P s, IsHorizontal W → I W m L = J W m L` using `fun X' s hs W hW hh => hlow W ((divSuppArith K ι P m X' s W hP hs hW).1 hh)`. Rewrite using `[diff I hI, diff J hJ, recR_congr P L (A.tensor B) sC (hor _ sC ⟨e, hCa, hsC, hsCP⟩), recR_congr P L B sB (hor _ sB ⟨b, hBa, hsB, hsBP⟩)]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_lower {I J : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ}
     (hI : IsRFamily I) (hJ : IsRFamily J) {P : Ideal (MRing ι)} {m : ℕ}
@@ -174,13 +174,11 @@ theorem eq_of_lower {I J : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLin
 end ThmIUnique
 
 /- English proof (translation)
-Unfold `ThmIUnique.Statement UniqueStatement`. Introduce `K _ ι _ I J hI hJ`. Establish `key : ∀ (m : ℕ) (P : Ideal (MRing ι)) (L : Fin (m + 1) → HermLine ι), IsArithVar P (m + 1) → (∀ j, IsSmoothHerm (L j)) → I P (m + 1) L = J P (m + 1) L`. Introduce `m`. Proceed by induction on `m with`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `P L hP hL`. Rewrite using `[← Fin.snoc_init_self L]`. Conclude with `ThmIUnique.eq_of_lower hI hJ _ _ hP (fun j => hL j.castSucc) (hL _) fun W hW => absurd hW (h₀ K ι W)`. Consider the case `succ m ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P L hP hL`. Rewrite using `[← Fin.snoc_init_self L]`. Conclude with `ThmIUnique.eq_of_lower hI hJ _ _ hP (fun j => hL j.castSucc) (hL _) fun W hW => ih W _ hW fun j => hL j.castSucc`. Introduce `P n L hn hP hL`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`.
-
-Conclude with `key m P L hP hL`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ThmIUnique.proof (h₀ : ArithVarZeroStatement) : ThmIUnique.Statement := by
   unfold ThmIUnique.Statement UniqueStatement

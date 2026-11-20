@@ -14,9 +14,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Use `open scoped Matrix.Norms.Operator in`. Establish `h1 : ContDiff ℝ ∞ fun t : ℝ => (NormedSpace.exp (t • Z) : Matrix (Fin n) (Fin n) ℂ)`. Establish `: ContDiff ℝ ∞ (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ)` using `contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt`. Conclude with `this.comp (contDiff_id.smul contDiff_const)`. Use `open scoped Matrix.Norms.Operator in`.
-
-Conclude with `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)).contDiff.comp h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exp_entry (Z : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     ContDiff ℝ ∞ fun t : ℝ => (NormedSpace.exp (t • Z)) i j := by
@@ -29,17 +27,15 @@ theorem exp_entry (Z : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
   exact (LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)).contDiff.comp h1
 
 /- English proof (translation)
-Take `⟨w, τ, Z, -, hZ⟩` from `hb`. Use `choose y hy hyZ using hZ`. Use `contDiff_pi.2 fun u => contDiff_pi.2 fun τ' => contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Establish `e0 : ∀ t, infCoord σ J (projInf σ J (b t)) u τ' i j = archMat σ J τ' (projArch σ J u (embArch σ J w (y t))) i j` using `fun t => by rw [← hy t, ← projInfArch_projInf]; rfl`. Simplify using `only [e0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality. Simplify using `only [projArch_embArch_self]`. Establish `e1 : ∀ t, infEmb τ ((matHom _ σ J (y t)).1 i j) = (NormedSpace.exp (t • Z)) i j` using `fun t => by`. Rewrite using `[← hyZ t]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Break down `infEmb_eq_or_conj h τ τ' with e | e` into its components or cases. Establish `: ∀ t, archMat σ J τ' (y t) i j = (NormedSpace.exp (t • Z)) i j` using `fun t => by`. Rewrite using `[← e1 t, ← e]`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [this]`. Apply the tactic sequence `exact exp_entry Z i j`. Establish `: ∀ t, archMat σ J τ' (y t) i j = conj ((NormedSpace.exp (t • Z)) i j)` using `fun t => by`. Rewrite using `[← e1 t]`. Express the relevant statement in the definitionally equal form `infEmb τ' _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Both sides reduce to the same expression. Simplify using `only [this]`. Apply the tactic sequence `exact Complex.conjCLE.contDiff.comp (exp_entry Z i j)`. Simplify using `only [projArch_embArch_ne σ J hu]`.
-
-Conclude with `contDiff_const`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lineSm (h : IsCMExt F E σ) {b : ℝ → GAd σ J} (hb : IsRealLine σ J b) :
     ContDiff ℝ ∞ fun t => infCoord σ J (projInf σ J (b t)) := by
@@ -68,23 +64,21 @@ theorem lineSm (h : IsCMExt F E σ) {b : ℝ → GAd σ J} (hb : IsRealLine σ J
     exact contDiff_const
 
 /- English proof (translation)
-Establish `hβ` using `lineSm h hb`. Establish `hfin : ∀ t, projFin σ J (b t) = 1` using `fun t => mem_infPts.1 (GlobalTheory.RealLineInf.realLine_mem_infPts F E σ n J b hb t)`. Establish `hbc : Continuous b` using `GlobalTheory.RealLineCont.continuous_of_isRealLine F E σ h n J b hb`. Establish `hb0 : b 0 = 1` using `GlobalTheory.UAut.ConstAut.realLine_zero h hb`. Take `⟨-, ⟨m, hm, em⟩, -⟩` from `isGroupCoord_infCoord σ J`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨a, ⟨hac, Φ, hΦ, ea⟩, c, hc, rfl⟩` from `hf`. Use `set G := fun p : _ × ℝ => Φ (m (p.1, infCoord σ J (projInf σ J (b p.2)))) with hG`. Establish `hGs : ContDiff ℝ ∞ G` using `hΦ.comp (hm.comp (contDiff_fst.prodMk (hβ.comp contDiff_snd)))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ x, HasDerivAt (fun t : ℝ => G (x, t)) (fderiv ℝ G (x, 0) (0, 1)) 0` using `fun x => ((hGs.differentiable (by simp)) (x, (0 : ℝ))).hasFDerivAt.comp_hasDerivAt (0 : ℝ) ((hasDerivAt_const (0 : ℝ) x).prodMk (hasDerivAt_id (0 : ℝ)))`. Establish `ea' : ∀ (g : GInf σ J) t, a (g * projInf σ J (b t)) = G (infCoord σ J g, t)` using `fun g t => by`. Rewrite using `[ea, em]`. Establish `e1 : ∀ g, (fun t => infFin σ J a c (g * b t)) = fun t => G (infCoord σ J (projInf σ J g), t) * c (projFin σ J g)` using `fun g => funext fun t => by`. Simplify using `only [infFin, map_mul, hfin, mul_one, ea']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun g => by rw [e1]; exact ((hd _).mul_const _).differentiableAt, ?_⟩` and prove the remaining obligations. Establish `e2 : lineDer b (infFin σ J a c) = infFin σ J (fun g => fderiv ℝ G (infCoord σ J g, 0) (0, 1)) c` using `funext fun g => by`. Rewrite using `[lineDer, e1, ((hd _).mul_const _).deriv]`. Both sides reduce to the same expression. Rewrite using `[e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `infFin_mem_ccAd ⟨HasCompactSupport.intro hac.isCompact fun g hg => ?_, fun x => fderiv ℝ G (x, 0) (0, 1), ?_, fun _ => rfl⟩ hc` and prove the remaining obligations. Rewrite using `[← (hd _).deriv]`. Establish `hc1 : Continuous fun t => g * projInf σ J (b t)` using `continuous_const.mul ((continuous_projInf σ J).comp hbc)`. Establish `: ∀ᶠ t in 𝓝 (0 : ℝ), g * projInf σ J (b t) ∈ (tsupport a)ᶜ` using `hc1.continuousAt.eventually_mem ((isClosed_tsupport a).isOpen_compl.mem_nhds (by simpa [hb0] using hg))`. Establish `e3 : (fun t : ℝ => G (infCoord σ J g, t)) =ᶠ[𝓝 0] fun _ => 0` using `this.mono fun t ht => (ea' g t).symm.trans (image_eq_zero_of_notMem_tsupport ht)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3.deriv_eq, deriv_const]`. Conclude with `((hGs.fderiv_right (m := ∞) (by simp)).comp (contDiff_id.prodMk contDiff_const)).clm_apply contDiff_const`. Consider the case `zero => exact ⟨fun g => differentiableAt_const _, by`. Establish `: lineDer b (0 : GAd σ J → ℂ) = 0` using `funext fun g => by simp [lineDer]`. Rewrite using `[this]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_mem _⟩`. Consider the case `add f f' _ _ h1 h2`. Use `⟨fun g => (h1.1 g).add (h2.1 g), ?_⟩` and prove the remaining obligations. Establish `: lineDer b (f + f') = lineDer b f + lineDer b f'` using `funext fun g => deriv_add (h1.1 g) (h2.1 g)`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `add_mem h1.2 h2.2`. Consider the case `smul a f _ h1`. Use `⟨fun g => (h1.1 g).const_smul a, ?_⟩` and prove the remaining obligations. Establish `: lineDer b (a • f) = a • lineDer b f` using `funext fun g => deriv_const_smul a (h1.1 g)`. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ a h1.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (h : IsCMExt F E σ) {b : ℝ → GAd σ J} (hb : IsRealLine σ J b) {f : GAd σ J → ℂ} (hf : f ∈ CcAd σ J) :
     (∀ g, DifferentiableAt ℝ (fun t => f (g * b t)) 0) ∧ lineDer b f ∈ CcAd σ J := by
@@ -138,7 +132,7 @@ theorem main (h : IsCMExt F E σ) {b : ℝ → GAd σ J} (hb : IsRealLine σ J b
 end MainStatements.WeightKernel.Dec.DDerMemc
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ h _ _ _ _ hf _ hb` and use `(MainStatements.WeightKernel.Dec.DDerMemc.main h hb hf).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MainStatements.WeightKernel.Dec.derMem : MainStatements.WeightKernel.Dec.DerMem :=
   fun _ _ _ _ _ _ _ _ h _ _ _ _ hf _ hb => (MainStatements.WeightKernel.Dec.DDerMemc.main h hb hf).2

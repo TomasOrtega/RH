@@ -18,17 +18,15 @@ open scoped TensorProduct nonZeroDivisors
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D v 𝔞 h𝔞`. Take `⟨x, hx0, hx⟩` from `GlobalTheory.T.fractionalIdealCompletion_locally_principal D v 𝔞 h𝔞`. Take `⟨ε, hεε, -, hεint, hεid, -⟩` from `(GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)).1`. Establish `hεI : ε ∈ idAt D (· = v)` using `hεint.1`. Establish `hxx : incA D x⁻¹ * incA D x = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, inv_mul_cancel₀ hx0, map_one]`. Use `⟨incA D x * ε, ?_, incA D x⁻¹ * ε, Ideal.mul_mem_left _ _ hεI, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Use `⟨?_, Ideal.mul_mem_left _ _ hεI⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hxx, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hεint`. Introduce `s hs`. Establish `: incA D x⁻¹ * ε * (incA D x * ε) = ε * ε`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, hεε]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hεid s).1 hs`. Introduce `s`. Rewrite using `[hx]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h2, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, (hεid s).1 h2]`. Conclude with `h1`. Introduce and unpack `⟨h2, h1⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations.
-
-Rewrite `h1` using `[mul_assoc, (hεid s).1 h2]`. Conclude with `h1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinPl.idV_principal_at : ∀ (D : D7) (v : Pl D) (𝔞 : FI D), 𝔞 ≠ 0 → ∃ g ∈ idV 𝔞 v, ∃ g' ∈ idAt D (· = v), (∀ s ∈ idAt D (· = v), g' * g * s = s) ∧ ∀ s, s ∈ idV 𝔞 v ↔ s ∈ idAt D (· = v) ∧ g' * s ∈ intAt D (· = v) := by
   intro D v 𝔞 h𝔞

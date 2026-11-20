@@ -24,18 +24,16 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TraitSemi
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp'' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'') (g : R →+* R') :
     spMap f ≫ spMap g = spMap (f.comp g) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Establish `hint : ∀ a : 𝓞 F, ∃ r : V, algebraMap V (FractionRing V) r = g a` using `fun a => by`. Establish `h2 : IsIntegral V (g a)`. Take `⟨p, hp, h0⟩` from `RingOfIntegers.isIntegral_coe a`. Use `⟨p.map (Int.castRingHom V), hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, RingHom.ext_int ((algebraMap V (FractionRing V)).comp (Int.castRingHom V)) (g.comp (algebraMap ℤ F)), ← Polynomial.hom_eval₂, h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsIntegrallyClosed.isIntegral_iff.1 h2`. Use `choose f hf using hint`. Establish `hi` using `IsFractionRing.injective V (FractionRing V)`. Set `b : 𝓞 F →+* V` to `{ toFun := f map_one' := hi (by simp [hf]) map_mul' := fun _ _ => hi (by simp [hf]) map_zero' := hi (by simp [hf]) map_add' := fun _ _ => hi (by simp [hf]) }`. Use `⟨b, ?_⟩` and prove the remaining obligations.
-
-Use extensionality with `a`. Conclude with `hf a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_int_map (F : Type) [Field F] [NumberField F] (V : Type) [CommRing V] [IsDomain V] [IsIntegrallyClosed V]
     (g : F →+* FractionRing V) :
@@ -64,11 +62,11 @@ end GlobalTheory.TraitSemi
 namespace GlobalTheory.TraitSemi
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `GlobalTheory.Models.RankZero.exists_spMap (y ≫ pullback.snd _ _)`. Take `⟨oV, hoV⟩` from `exists_int_map c.F V g`. Take `⟨⟨yt, ⟨-, hyt⟩, -⟩, hG⟩` from `GlobalTheory.ValuativeExtension.valuation_extension E H Dw l Xo c (𝓞 c.F) _ Y V (FractionRing V) oV g y hoV hg`. Take `⟨G, ⟨m⟩⟩` from `hG yt`. Take `⟨PP₁, cub₁, sym₁, adj₁, prim₁, n₁, -⟩` from `sabPull Out.CubePf.cubePull y Y.oF.t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Y.m n₁`. Establish `hy' : y ≫ Y.jQ ≫ pullback.fst _ _ = jK V ≫ yt` using `hyt.symm`. Rewrite `b` using `[hy']`. Take `⟨mK, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m b`. Take `⟨mx, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Y.m0.toSABMap n₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨G, _, ⟨mK⟩, ⟨mx⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_genOf_of_model {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} (Y : Model Xo c (algebraMap (𝓞 c.F) c.F))
@@ -92,13 +90,11 @@ end GlobalTheory.TraitSemi
 namespace GlobalTheory.TraitSemi
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hx`. Use `haveI : IsAffine (pullback π x) := isAffine_of_isAffineHom (pullback.snd π x)`. Take `⟨S, e, -⟩ : ∃ (S : CommRingCat.{0}) (_ : Spec S ≅ pullback π x), True` from `⟨_, (pullback π x).isoSpec.symm, trivial⟩`. Take `⟨f, hf⟩` from `Spec.map_surjective (R := CommRingCat.of K) (S := S) (e.hom ≫ pullback.snd π x)`. Use `letI : Algebra K S := f.hom.toAlgebra`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hsp : spMap (algebraMap K S) = e.hom ≫ pullback.snd π x` using `hf`. Establish `hfin : Module.Finite K S`. Establish `h1 : IsFinite (Spec.map f)` using `by rw [hf]; infer_instance`. Conclude with `(IsFinite.SpecMap_iff f).1 h1`. Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := π) (g := x) p (closedPoint K) hp`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : Nontrivial S := (e.inv z).nontrivial`. Take `⟨m, hm⟩` from `Ideal.exists_maximal S`. Use `letI : Field (S ⧸ m) := Ideal.Quotient.field m`. Use `haveI : FiniteDimensional K (S ⧸ m) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ K m).toLinearMap Ideal.Quotient.mk_surjective`. Use `⟨S ⧸ m, inferInstance, inferInstance, inferInstance, spMap (Ideal.Quotient.mk m) ≫ e.hom ≫ pullback.fst π x, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc e.hom, ← hsp, ← Category.assoc, spMap_comp'']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_point' {X Y : Scheme.{0}} (π : X ⟶ Y) [IsFinite π] (K : Type) [Field K] (x : Sp K ⟶ Y)
     (hx : x (closedPoint K) ∈ Set.range π) :
@@ -124,11 +120,9 @@ theorem exists_finite_point' {X Y : Scheme.{0}} (π : X ⟶ Y) [IsFinite π] (K 
   rw [Category.assoc, Category.assoc, pullback.condition, ← Category.assoc e.hom, ← hsp, ← Category.assoc, spMap_comp'']
 
 /- English proof (translation)
-Use `letI : Algebra V L := ((algebraMap (FractionRing V) L).comp (algebraMap V (FractionRing V))).toAlgebra`. Use `haveI : IsScalarTower V (FractionRing V) L := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Module.Finite V (integralClosure V L) := GlobalTheory.FormalIsogeny.finite_integralClosure V (FractionRing V) L`. Use `haveI := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_faithful V (FractionRing V) L`. Use `haveI hloc : IsLocalRing (integralClosure V L) := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_isLocalRing V L`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hdvr : IsDiscreteValuationRing (integralClosure V L) := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_dvr V (FractionRing V) L`. Use `haveI : IsFractionRing (integralClosure V L) L := integralClosure.isFractionRing_of_finite_extension (FractionRing V) L`. Establish `hj` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_inj V L`. Use `haveI : CharZero (integralClosure V L) := charZero_of_injective_algebraMap hj`. Use `⟨integralClosure V L, inferInstance, inferInstance, hloc, algebraMap V (integralClosure V L), (FractionRing.algEquiv (integralClosure V L) L).symm.toRingEquiv.toRingHom, ⟨⟨inferInstance, inferInstance, inferInstance, GlobalTheory.CompleteFiniteExtension.isAdicComplete_of_finite_l …` and prove the remaining obligations.
-
-Establish `h1 : algebraMap (FractionRing V) L (algebraMap V (FractionRing V) a) = algebraMap (integralClosure V L) L (algebraMap V (integralClosure V L) a)` using `rfl`. Rewrite using `[h1]`. Conclude with `(FractionRing.algEquiv (integralClosure V L) L).symm.commutes _`.
+A detailed English derivation is pending.
 -/
 theorem exists_closure_finite (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V]
     [IsAdicComplete (maximalIdeal V) V] (L : Type) [Field L] [Algebra (FractionRing V) L]
@@ -157,7 +151,7 @@ theorem exists_closure_finite (V : Type) [CommRing V] [IsDomain V] [IsDiscreteVa
   exact (FractionRing.algEquiv (integralClosure V L) L).symm.commutes _
 
 /- English proof (translation)
-Establish `hq : (algebraMap ℚ F').Finite` using `RingHom.finite_algebraMap.2 inferInstance`. Establish `he : algebraMap ℚ F' = (IntermediateField.inclusion h).toRingHom.comp (algebraMap ℚ F)` using `Subsingleton.elim _ _`. Rewrite `hq` using `[he]`. Use `⟨(IsFinite.SpecMap_iff _).2 (RingHom.Finite.of_comp_finite hq), ⟨fun x => ?_⟩⟩` and prove the remaining obligations. Use `⟨closedPoint F', Subsingleton.elim _ _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem finite_surjective_spMap {F F' : IntermediateField ℚ ℂ} [FiniteDimensional ℚ F'] (h : F ≤ F') :
     IsFinite (spMap (IntermediateField.inclusion h).toRingHom) ∧
@@ -173,7 +167,7 @@ end GlobalTheory.TraitSemi
 namespace GlobalTheory.TraitSemi
 
 /- English proof (translation)
-Establish `hz` using `(GlobalTheory.Models.RankZero.isIso_moduli GlobalTheory.card_torsion_abelianVariety hD Xo).2`. Use `⟨V, inferInstance, inferInstance, inferInstance, RingHom.id V, RingHom.id _, ⟨hV, hB.1.2.2.2, hB.2⟩, Function.injective_id, inferInstance, RingHom.Finite.id V, fun a => rfl, Inhab.zeroTriple H _, Inhab.zeroTriple H _, GlobalTheory.Models.RankZero.nonempty_sabMap (GlobalTheory.Mod …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_rankZero {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (hD : Dw.p + Dw.q = 0) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : Type) [CommRing V] [IsDomain V]
@@ -189,15 +183,13 @@ theorem exists_rankZero {E : Type} [Field E] [NumberField E] [IsCMField E] (H : 
     GlobalTheory.Models.RankZero.nonempty_sabMap (GlobalTheory.Models.RankZero.isIso_zeroTriple _) hz _⟩
 
 /- English proof (translation)
-Use `haveI := c.fin`. Take `⟨l₂, hdvd, -, hgood⟩` from `GlobalTheory.GoodMultipleLevel.exists_good_multiple E H l`. Take `⟨c₂, hle⟩` from `GlobalTheory.TupleCover.exists_coeff_ge l₂ c.F`. Use `haveI := c₂.fin`. Set `Xf : ∀ l' : Geo.Tor.Level H, Moduli Dw l'` to `fun l' => (GlobalTheory.moduliScheme_levelMaps_heckePoints.1 E H Dw l' hD).some`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `GlobalTheory.GlobalAllLevels.exists_sys_global_models E H Dw hD Xf`. Take `⟨Ygl, -⟩` from `hs l₂ c₂ hgood`. Take `⟨r, h, r₀, m, hr, hfin, -, hsurj⟩` from `GlobalTheory.LevelMapBase.levelMap_coeff_le E H Dw l l₂ Xo (Xf l₂) c c₂ hle hD hdvd`. Take `⟨hF, hS⟩` from `finite_surjective_spMap hle`. Establish `hrl : pullback.lift r _ h ≫ pullback.fst _ _ = r` using `pullback.lift_fst _ _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsFinite r := hrl ▸ inferInstance`. Establish `hrs : Surjective r` using `hrl ▸ inferInstance`. Take `⟨L, _, _, _, η, hη⟩` from `exists_finite_point' r (FractionRing V) y (hrs.surj _)`. Use `haveI : IsAdicComplete (maximalIdeal V) V := hB.1.2.2.2`. Use `haveI : CharZero V := hB.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨V₁, _, _, _, j, e, hB₁, hD₁, hj, hjl, hjf, he⟩` from `exists_closure_finite V L`. Take `⟨t, tK, ⟨mK⟩, ⟨mx⟩⟩` from `exists_genOf_of_model Ygl V₁ (spMap e ≫ η)`. Take `⟨mx', -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m mx`. Establish `key : ((spMap e ≫ η) ≫ pullback.fst _ _) ≫ r₀ = (spMap (e.comp (algebraMap (FractionRing V) L)) ≫ y) ≫ pullback.fst _ _`. Rewrite using `[Category.assoc, Category.assoc, ← hr, ← Category.assoc η, hη, ← spMap_comp'']`.
-
-Simplify using `only [Category.assoc]`. Use `⟨V₁, inferInstance, inferInstance, inferInstance, j, e.comp (algebraMap (FractionRing V) L), ⟨hD₁, hB₁.1.2.2.2, hB₁.2⟩, hj, hjl, hjf, fun a => he a, t, tK, ⟨mK⟩, ⟨?_⟩⟩` and prove the remaining obligations. Rewrite `mx'` using `[key]`. Conclude with `mx'`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pos {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (hD : 1 ≤ Dw.p + Dw.q) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : Type) [CommRing V] [IsDomain V]
@@ -238,7 +230,7 @@ end GlobalTheory.TraitSemi
 namespace GlobalTheory.TraitSemi
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c V _ _ _ hB hV y`. Break down `Nat.eq_zero_or_pos (Dw.p + Dw.q) with hD | hD` into its components or cases. Conclude with `exists_rankZero H Dw hD l Xo c V hB hV y`. Conclude with `exists_pos H Dw hD l Xo c V hB hV y`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_ext_semi : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V],

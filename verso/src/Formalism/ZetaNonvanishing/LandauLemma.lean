@@ -12,16 +12,16 @@ def Good (H : ℝ → ℝ) (σ : ℝ) : Prop :=
   IntegrableOn (fun x : ℝ => H x * x ^ (-σ - 1)) (Ioi 1)
 
 /- English proof (translation)
-The claim follows from `hH.mul (by fun_prop : Measurable fun x : ℝ => x ^ (-σ - 1)).aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 lemma meas_rpow (H : ℝ → ℝ) (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1))) (σ : ℝ) :
     AEStronglyMeasurable (fun x : ℝ => H x * x ^ (-σ - 1)) (volume.restrict (Ioi 1)) :=
   hH.mul (by fun_prop : Measurable fun x : ℝ => x ^ (-σ - 1)).aestronglyMeasurable
 
 /- English proof (translation)
-Use `Integrable.mono h (meas_rpow H hH σ') ?_` and prove the remaining obligations. Use `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun x hx => ?_)` and prove the remaining obligations. Establish `hx1 : (1 : ℝ) ≤ x` using `le_of_lt hx`. Establish `hx0 : (0 : ℝ) < x` using `lt_trans one_pos hx`. Rewrite using `[norm_mul, norm_mul, Real.norm_of_nonneg (Real.rpow_nonneg hx0.le _), Real.norm_of_nonneg (Real.rpow_nonneg hx0.le _)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 lemma good_mono {H : ℝ → ℝ} (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1)))
     {σ σ' : ℝ} (h : Good H σ) (hle : σ ≤ σ') : Good H σ' := by
@@ -35,13 +35,13 @@ lemma good_mono {H : ℝ → ℝ} (hH : AEStronglyMeasurable H (volume.restrict 
     (norm_nonneg _)
 
 /- English proof (translation)
-Establish `hx0 : (0 : ℝ) ≤ x` using `by linarith`. Use `set η : ℝ := ε / ((n : ℝ) + 1) with hη`. Establish `hn1 : (0 : ℝ) < (n : ℝ) + 1` using `by positivity`. Establish `hηpos : 0 < η` using `div_pos hε hn1`. Establish `hlog0 : 0 ≤ Real.log x` using `Real.log_nonneg hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Real.log x ≤ x ^ η / η` using `Real.log_le_rpow_div hx0 hηpos`. Establish `h2 : Real.log x ^ n ≤ (x ^ η / η) ^ n` using `pow_le_pow_left₀ hlog0 h1 n`. Establish `h3 : (x ^ η / η) ^ n = (1 / η) ^ n * x ^ (η * n)`. Rewrite using `[Real.rpow_mul_natCast hx0, div_pow, one_div_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h4 : x ^ (η * n) ≤ x ^ ε`. Apply `Real.rpow_le_rpow_of_exponent_le hx` to reduce the goal to its premises. Rewrite using `[hη, div_mul_eq_mul_div, div_le_iff₀ hn1]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h5 : 1 / η = ((n : ℝ) + 1) / ε` using `by rw [hη]; field_simp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma logpow_le (n : ℕ) {ε : ℝ} (hε : 0 < ε) {x : ℝ} (hx : 1 ≤ x) :
     Real.log x ^ n ≤ (((n : ℝ) + 1) / ε) ^ n * x ^ ε := by
@@ -65,13 +65,13 @@ lemma logpow_le (n : ℕ) {ε : ℝ} (hε : 0 < ε) {x : ℝ} (hx : 1 ≤ x) :
     _ = (((n : ℝ) + 1) / ε) ^ n * x ^ ε := by rw [h5]
 
 /- English proof (translation)
-Use `set K : ℝ := (((n : ℝ) + 1) / (σ - τ)) ^ n`. Establish `hK : 0 ≤ K`. Establish `: 0 < σ - τ` using `by linarith`. Check the signs of the components of the expression. Use `Integrable.mono' (hτ.norm.const_mul K) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(by fun_prop : Measurable fun x : ℝ => Real.log x ^ n).aestronglyMeasurable.mul (meas_rpow H hH σ)`. Use `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun x hx => ?_)` and prove the remaining obligations. Establish `hx1 : (1 : ℝ) ≤ x` using `le_of_lt hx`. Establish `hx0 : (0 : ℝ) < x` using `lt_trans one_pos hx`. Establish `hlog0 : 0 ≤ Real.log x` using `Real.log_nonneg hx1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `logpow_le n (sub_pos.2 hlt) hx1`. Rewrite using `[norm_mul, norm_mul, norm_mul, Real.norm_of_nonneg (pow_nonneg hlog0 n), Real.norm_of_nonneg (Real.rpow_nonneg hx0.le _), Real.norm_of_nonneg (Real.rpow_nonneg hx0.le _)]`. Establish `hsplit : x ^ (-τ - 1) = x ^ (σ - τ) * x ^ (-σ - 1)`. Rewrite using `[← Real.rpow_add hx0]`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma good_logpow {H : ℝ → ℝ} (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1)))
     {τ σ : ℝ} (hτ : Good H τ) (hlt : τ < σ) (n : ℕ) :
@@ -103,11 +103,11 @@ def J (H : ℝ → ℝ) (n : ℕ) (z : ℂ) : ℂ :=
   ∫ x in Ioi (1:ℝ), (((-Real.log x) ^ n * H x : ℝ) : ℂ) * (x : ℂ) ^ (-z - 1)
 
 /- English proof (translation)
-Establish `hmeas : AEStronglyMeasurable (fun x : ℝ => (((-Real.log x) ^ n * H x : ℝ) : ℂ)) (volume.restrict (Ioi 1))` using `Complex.continuous_ofReal.comp_aestronglyMeasurable (((by fun_prop : Measurable fun x : ℝ => (-Real.log x) ^ n).aestronglyMeasurable).mul hH)`. Establish `hint : ∀ σ : ℝ, σc < σ → IntegrableOn (fun x : ℝ => ‖(((-Real.log x) ^ n * H x : ℝ) : ℂ)‖ * x ^ (-σ - 1)) (Ioi 1)`. Introduce `σ hσ`. Use `good_logpow hH (hgood ((σc + σ) / 2) (by linarith)) (show (σc + σ) / 2 < σ by linarith) n` as an intermediate fact. Use `this.congr_fun (fun x hx => ?_) measurableSet_Ioi` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx1 : (1 : ℝ) ≤ x` using `le_of_lt hx`. Simplify using `only`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_pow, abs_neg, abs_of_nonneg (Real.log_nonneg hx1), abs_of_nonneg (hpos x hx)]`. Expand and normalize the polynomial expressions, which then agree. Use `hMD _ σc hmeas hint z hz` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Unfold `J`. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma hasDerivAt_J (hMD : MellinDeriv) {H : ℝ → ℝ}
     (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1))) (hpos : ∀ x : ℝ, 1 < x → 0 ≤ H x)
@@ -136,9 +136,9 @@ lemma hasDerivAt_J (hMD : MellinDeriv) {H : ℝ → ℝ}
   ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro z _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `z hz`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[iteratedDeriv_succ]`. Establish `hev : iteratedDeriv n (J H 0) =ᶠ[𝓝 z] J H n` using `by filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds hz] with w hw`. Conclude with `ih w hw`. Rewrite using `[hev.deriv_eq]`. Conclude with `(hasDerivAt_J hMD hH hpos hgood n hz).deriv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma iteratedDeriv_J (hMD : MellinDeriv) {H : ℝ → ℝ}
     (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1))) (hpos : ∀ x : ℝ, 1 < x → 0 ≤ H x)
@@ -156,9 +156,9 @@ lemma iteratedDeriv_J (hMD : MellinDeriv) {H : ℝ → ℝ}
     exact (hasDerivAt_J hMD hH hpos hgood n hz).deriv
 
 /- English proof (translation)
-Rewrite using `[← integral_complex_ofReal]`. Unfold `J`. Use `setIntegral_congr_fun measurableSet_Ioi (fun x hx => ?_)` and prove the remaining obligations. Establish `hx0 : (0 : ℝ) ≤ x` using `le_of_lt (lt_trans one_pos hx)`. Rewrite using `[Complex.ofReal_mul _ (x ^ (-cr - 1)), Complex.ofReal_cpow hx0]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma J_real (H : ℝ → ℝ) (cr : ℝ) (n : ℕ) :
     J H n (cr : ℂ) = ((∫ x in Ioi (1:ℝ), (-Real.log x) ^ n * H x * x ^ (-cr - 1) : ℝ) : ℂ) := by
@@ -171,11 +171,11 @@ lemma J_real (H : ℝ → ℝ) (cr : ℝ) (n : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `hI : (∫ x in Ioi (1:ℝ), t ^ n / n.factorial * (Real.log x ^ n * (H x * x ^ (-cr - 1)))) = (-t) ^ n / n.factorial * ∫ x in Ioi (1:ℝ), (-Real.log x) ^ n * H x * x ^ (-cr - 1)`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `hp : (-t) ^ n * (-Real.log x) ^ n = t ^ n * Real.log x ^ n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[← mul_pow, ← mul_pow, neg_mul_neg]`. Establish `e1 : t ^ n / n.factorial * (Real.log x ^ n * (H x * x ^ (-cr - 1))) = (t ^ n * Real.log x ^ n) * (H x * x ^ (-cr - 1)) / n.factorial` using `by ring`. Rewrite using `[e1, ← hp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hI, J_real]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma term_eq (H : ℝ → ℝ) (cr t : ℝ) (n : ℕ) :
     (n.factorial : ℂ)⁻¹ • ((-(t : ℂ)) ^ n • J H n (cr : ℂ)) =
@@ -197,21 +197,19 @@ lemma term_eq (H : ℝ → ℝ) (cr t : ℝ) (n : ℕ) :
   ring
 
 /- English proof (translation)
-Use `set f : ℕ → ℝ → ℝ := fun n x => t ^ n / n.factorial * (Real.log x ^ n * (H x * x ^ (-cr - 1))) with hf`. Establish `hfi : ∀ n, Integrable (f n) (volume.restrict (Ioi 1))` using `fun n => (hint n).const_mul _`. Establish `hf0 : ∀ n, ∀ x ∈ Ioi (1:ℝ), 0 ≤ f n x`. Introduce `n x hx`. Establish `hx1 : (1 : ℝ) ≤ x` using `le_of_lt hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : (0 : ℝ) ≤ x` using `by linarith`. Use `hpos x hx` as an intermediate fact. Use `Real.log_nonneg hx1` as an intermediate fact. Use `Real.rpow_nonneg hx0 (-cr - 1)` as an intermediate fact. Simplify using `only [hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `hsumx : ∀ x ∈ Ioi (1:ℝ), HasSum (fun n => f n x) (H x * x ^ (-(cr - t) - 1))`. Introduce `x hx`. Establish `hx0 : (0 : ℝ) < x` using `lt_trans one_pos hx`. Establish `he` using `NormedSpace.expSeries_div_hasSum_exp (t * Real.log x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[← Real.exp_eq_exp_ℝ]`. Use `he.mul_left (H x * x ^ (-cr - 1))` as an intermediate fact. Establish `e1 : (fun n => f n x) = fun i => H x * x ^ (-cr - 1) * ((t * Real.log x) ^ i / i.factorial)`. Use function extensionality and compare the values at `n`. Simplify using `only [hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : H x * x ^ (-(cr - t) - 1) = H x * x ^ (-cr - 1) * Real.exp (t * Real.log x)`. Rewrite using `[show Real.exp (t * Real.log x) = x ^ t by rw [Real.rpow_def_of_pos hx0]; ring_nf, mul_assoc, ← Real.rpow_add hx0]`. Put the polynomial expressions in normal form.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Conclude with `this`. Unfold `Good IntegrableOn`. Rewrite using `[← lintegral_ofReal_ne_top_iff_integrable (meas_rpow H hH _) ((ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun x hx => (hsumx x hx).nonneg (fun n => hf0 n x hx)))]`. Establish `h1 : ∫⁻ x in Ioi (1:ℝ), ENNReal.ofReal (H x * x ^ (-(cr - t) - 1)) = ∫⁻ x in Ioi (1:ℝ), ∑' n, ENNReal.ofReal (f n x)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `setLIntegral_congr_fun measurableSet_Ioi (fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[← (hsumx x hx).tsum_eq, ENNReal.ofReal_tsum_of_nonneg (fun n => hf0 n x hx) (hsumx x hx).summable]`. Rewrite using `[h1, lintegral_tsum (fun n => (hfi n).aemeasurable.ennreal_ofReal)]`. Establish `h2 : ∀ n, ∫⁻ x in Ioi (1:ℝ), ENNReal.ofReal (f n x) = ENNReal.ofReal (∫ x in Ioi (1:ℝ), f n x)` using `fun n => (ofReal_integral_eq_lintegral_ofReal (hfi n) ((ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall (hf0 n)))).symm`. Rewrite using `[tsum_congr h2, ← ENNReal.ofReal_tsum_of_nonneg (fun n => setIntegral_nonneg measurableSet_Ioi (hf0 n)) hsum]`.
-
-Conclude with `ENNReal.ofReal_ne_top`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma integrable_of_series {H : ℝ → ℝ} (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1)))
     (hpos : ∀ x : ℝ, 1 < x → 0 ≤ H x) {cr t : ℝ} (ht : 0 ≤ t)
@@ -268,44 +266,40 @@ lemma integrable_of_series {H : ℝ → ℝ} (hH : AEStronglyMeasurable H (volum
   exact ENNReal.ofReal_ne_top
 
 /- English proof (translation)
-Rewrite using `[Complex.dist_eq, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma dist_ofReal' (x y : ℝ) : dist (x : ℂ) (y : ℂ) = |x - y| := by
   rw [Complex.dist_eq, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]
 
 /- English proof (translation)
-Rewrite using `[Complex.dist_eq_re_im, Complex.ofReal_re, Complex.ofReal_im, sub_self, sub_zero, show (0 : ℝ) ^ 2 + z.im ^ 2 = z.im ^ 2 by ring, Real.sqrt_sq_eq_abs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma dist_re (z : ℂ) : dist z (z.re : ℂ) = |z.im| := by
   rw [Complex.dist_eq_re_im, Complex.ofReal_re, Complex.ofReal_im, sub_self, sub_zero,
     show (0 : ℝ) ^ 2 + z.im ^ 2 = z.im ^ 2 by ring, Real.sqrt_sq_eq_abs]
 
 /- English proof (translation)
-Take `⟨δ, hδ, hthick⟩` from `(isCompact_Icc.image continuous_ofReal : IsCompact ((fun σ : ℝ => (σ : ℂ)) '' Icc σc b)).exists_thickening_subset_open (isOpen_analyticAt ℂ Φ) (by rintro _ ⟨σ, ⟨h1, h2⟩, rfl⟩; exact hΦ2 σ h1 h2)`. Establish `hA : ∀ z : ℂ, (b < z.re ∨ ∃ σ : ℝ, σc ≤ σ ∧ σ ≤ b ∧ dist z σ < δ) → AnalyticAt ℂ Φ z`. Introduce and unpack `z (h | ⟨σ, h1, h2, h3⟩)`. Conclude with `hΦ1 z h`. Conclude with `hthick (Metric.mem_thickening_iff.2 ⟨σ, ⟨σ, ⟨h1, h2⟩, rfl⟩, h3⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set R : Set ℂ := {z : ℂ | σc < z.re} ∩ {z : ℂ | z.im < δ} ∩ {z : ℂ | -δ < z.im} with hR`. Establish `hRopen : IsOpen R` using `((isOpen_lt continuous_const continuous_re).inter (isOpen_lt continuous_im continuous_const)).inter (isOpen_lt continuous_const continuous_im)`. Establish `hRconv : Convex ℝ R` using `((convex_halfSpace_re_gt σc).inter (convex_halfSpace_im_lt δ)).inter (convex_halfSpace_im_gt (-δ))`. Establish `hΦR : AnalyticOnNhd ℂ Φ R`. Introduce and unpack `z ⟨⟨h1, h2⟩, h3⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Apply `hA` to reduce the goal to its premises. Distinguish the cases in `hb : b < z.re`. Conclude with `Or.inl hb`. Use `Or.inr ⟨z.re, le_of_lt h1, not_lt.1 hb, ?_⟩` and prove the remaining obligations. Rewrite using `[dist_re]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `abs_lt.2 ⟨h3, h2⟩`. Establish `hJan : AnalyticOnNhd ℂ (J H 0) {z : ℂ | σc < z.re}` using `DifferentiableOn.analyticOnNhd (fun z hz => (hasDerivAt_J hMD hH hpos hgood 0 hz).differentiableAt.differentiableWithinAt) (isOpen_lt continuous_const continuous_re)`. Establish `hEq : EqOn Φ (J H 0) R`. Establish `hz0 : ((b + 1 : ℝ) : ℂ) ∈ R`. Apply the tactic sequence `refine ⟨⟨?_, ?_⟩, ?_⟩ <;> simp <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `hΦR.eqOn_of_preconnected_of_eventuallyEq (hJan.mono (fun z hz => hz.1.1)) hRconv.isPreconnected hz0 ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_lt continuous_const continuous_re).mem_nhds (show b < (((b + 1 : ℝ) : ℂ)).re by simp)] with w hw`. Conclude with `hΦeq w hw`. Use `set cr : ℝ := σc + δ / 4 with hcr`. Establish `hcR : (cr : ℂ) ∈ R`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `refine ⟨⟨?_, ?_⟩, ?_⟩ <;> simp [hcr] <;> linarith`. Establish `hev : Φ =ᶠ[𝓝 (cr : ℂ)] J H 0` using `by filter_upwards [hRopen.mem_nhds hcR] with w hw`. Conclude with `hEq hw`. Establish `hder : ∀ n : ℕ, iteratedDeriv n Φ (cr : ℂ) = J H n (cr : ℂ)` using `fun n => (hev.iteratedDeriv_eq n).trans (iteratedDeriv_J hMD hH hpos hgood n (cr : ℂ) (by simp [hcr]; linarith))`. Establish `hdiff : DifferentiableOn ℂ Φ (Metric.ball (cr : ℂ) (δ / 2))`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `z hz`. Use `(hA z ?_).differentiableAt.differentiableWithinAt` and prove the remaining obligations. Rewrite `hz` using `[Metric.mem_ball]`. Distinguish the cases in `hb : b < z.re`. Conclude with `Or.inl hb`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Establish `him : |z.im| < δ / 2`. Use `Complex.abs_im_le_norm (z - cr)` as an intermediate fact. Rewrite `this` using `[← dist_eq_norm]`. Simplify using `only [Complex.sub_im, Complex.ofReal_im, sub_zero] at this`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hs : σc ≤ z.re`. Use `⟨z.re, hs, not_lt.1 hb, ?_⟩` and prove the remaining obligations. Rewrite using `[dist_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `⟨σc, le_rfl, hσcb, ?_⟩` and prove the remaining obligations. Establish `h1 : dist (cr : ℂ) (σc : ℂ) = δ / 4`. Rewrite using `[dist_ofReal', hcr, show σc + δ / 4 - σc = δ / 4 by ring, abs_of_pos (by linarith)]`. Combine the linear relations using `[dist_triangle z (cr : ℂ) (σc : ℂ)]`. Use `set t : ℝ := 3 * δ / 8 with ht`.
+Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzmem : ((cr - t : ℝ) : ℂ) ∈ Metric.ball (cr : ℂ) (δ / 2)`. Rewrite using `[Metric.mem_ball, dist_ofReal', show cr - t - cr = -t by ring, abs_neg, abs_of_pos (by rw [ht]; linarith)]`. Rewrite using `[ht]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs` using `Complex.hasSum_taylorSeries_on_ball hdiff hzmem`.
-
-Establish `hsub : ((cr - t : ℝ) : ℂ) - (cr : ℂ) = -(t : ℂ)` using `by push_cast; ring`. Rewrite `hs` using `[hsub, hder, term_eq]`. Establish `hsum` using `Complex.summable_ofReal.1 hs.summable`. Establish `hint : ∀ n : ℕ, IntegrableOn (fun x : ℝ => Real.log x ^ n * (H x * x ^ (-cr - 1))) (Ioi 1)` using `fun n => good_logpow hH (hgood (σc + δ / 8) (by linarith)) (by rw [hcr]; linarith) n`. Use `⟨cr - t, by rw [hcr, ht]; linarith, ?_⟩` and prove the remaining obligations.
-
-Conclude with `integrable_of_series hH hpos (by rw [ht]; positivity) hint hsum`.
+A detailed English derivation is pending.
 -/
 lemma key (hMD : MellinDeriv) {H : ℝ → ℝ}
     (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1))) (hpos : ∀ x : ℝ, 1 < x → 0 ≤ H x)
@@ -393,17 +387,15 @@ end landauIteratedDerivatives
 
 open landauIteratedDerivatives in
 /- English proof (translation)
-Introduce `H a b hab hH hpos hb Φ hΦ1 hΦ2 hΦeq σ hσ`. Assume the negation of the conclusion as `hbad`. Use `set T : Set ℝ := {τ | a < τ ∧ ¬ Good H τ} with hT`. Establish `hσT : σ ∈ T` using `⟨hσ, hbad⟩`. Establish `hbdd : BddAbove T` using `⟨b, fun τ hτ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hτ.2 (hb τ (lt_of_not_ge h))⟩`. Use `set σc := sSup T with hσc`. Establish `hσσc : σ ≤ σc` using `le_csSup hbdd hσT`. Establish `hσcb : σc ≤ b` using `csSup_le ⟨σ, hσT⟩ (fun τ hτ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Conclude with `hτ.2 (hb τ (lt_of_not_ge h)))`. Establish `hgood : ∀ τ, σc < τ → Good H τ`. Introduce `τ hτ`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: τ ≤ σc` using `le_csSup hbdd ⟨by linarith, h⟩`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hJ0 : ∀ s : ℂ, b < s.re → Φ s = J H 0 s`. Introduce `s hs`. Rewrite using `[hΦeq s hs]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `J`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Take `⟨σ', hσ'lt, hσ'⟩` from `key hMD hH hpos hσcb hgood hΦ1 (fun τ h1 h2 => hΦ2 τ (by linarith) h2) hJ0`.
-
-Establish `: σc ≤ σ'` using `csSup_le ⟨σ, hσT⟩ (fun τ hτ => by`. Assume the negation of the conclusion as `h`. Conclude with `hτ.2 (good_mono hH hσ' (le_of_lt (lt_of_not_ge h))))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem landauLemma_of (hMD : MellinDeriv) : LandauLemma := by
   intro H a b hab hH hpos hb Φ hΦ1 hΦ2 hΦeq σ hσ

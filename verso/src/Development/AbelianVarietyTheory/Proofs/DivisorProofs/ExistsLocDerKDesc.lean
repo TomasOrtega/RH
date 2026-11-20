@@ -28,17 +28,15 @@ variable {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRin
   {oa : Q.OAct O} (Y : Ray oa) {n : ℕ} {dd : Fin n → Fld Y.H.left} {D : R → R} (h : Heat Y.H Y.q.left Q.P.L dd D)
 
 /- English proof (translation)
-Use `Y.smooth_q` as an intermediate fact. Establish `hs` using `(surjective_q Y).1`. Set `a` to `pullback.fst Y.q.left m`. Set `b` to `pullback.snd Y.q.left m`. Establish `w : a ≫ Y.q.left = b ≫ m` using `pullback.condition`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : b ⁻¹ᵁ (m ⁻¹ᵁ W) ≤ a ⁻¹ᵁ (Y.q.left ⁻¹ᵁ W)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, w]`. Set `π` to `(a.appLE _ _ hle).hom`. Establish `key : ∀ x, (b.app _).hom ((m.app W).hom x) = π ((Y.q.left.app W).hom x)` using `fun x => by`. Establish `k : ∀ (c : pullback Y.q.left m ⟶ Q.P.A.left) (_ : c = b ≫ m) (hc : b ⁻¹ᵁ (m ⁻¹ᵁ W) ≤ c ⁻¹ᵁ W), (b.app _).hom ((m.app W).hom x) = (c.appLE W _ hc).hom x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ rfl hc`. Rewrite using `[Scheme.Hom.comp_appLE, Scheme.Hom.app_eq_appLE b]`. Both sides reduce to the same expression. Rewrite using `[k _ w hle]`. Conclude with `congrArg (fun ψ => ψ.hom x) (Scheme.Hom.comp_appLE a Y.q.left W _ hle)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ r, π (constFn Y.H.hom _ r) = constFn (b ≫ p) _ (φ r)` using `fun r => by`. Rewrite using `[← res_const (b ≫ p) hle, ← app_const φ Y.H.hom (b ≫ p) a (by`. Rewrite using `[← Over.w Y.q, reassoc_of% w, hm, Category.assoc])]`. Both sides reduce to the same expression. Use `FunDescent.app_injective b _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (b.app _).hom ((m.app W).hom _) = (b.app _).hom ((m.app W).hom _)`. Rewrite using `[key, key, hq i W (hW.trans inf_le_left), hq i' W (hW.trans inf_le_right)]`. Use `lift_agree h hdd i i' _ (le_inf ((pre_mono _ (hW.trans inf_le_left)).trans (hV i).ge) ((pre_mono _ (hW.trans inf_le_right)).trans (hV i').ge)) π ?_ (fun a b => ?_) _` and prove the remaining obligations. Use `(two_ne_zero (α := K)).isUnit.map ((((b ≫ p).appLE ⊤ (b ⁻¹ᵁ (m ⁻¹ᵁ W)) (fun _ _ => trivial)).hom).comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
-
-Rewrite using `[hc, hΘ, constFn, map_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem desc_agree (hdd : ∀ a, IsField ⊤ (dd a)) {K : Type} [Field K] [CharZero K] (φ : R →+* K)
     (hΘ : ∀ a b, φ (h.Θ a b) = 0) {Z : Scheme.{0}} (p : Z ⟶ Sp K) (m : Z ⟶ Q.P.A.left)
@@ -80,21 +78,19 @@ theorem desc_agree (hdd : ∀ a, IsField ⊤ (dd a)) {K : Type} [Field K] [CharZ
 end Ray
 
 /- English proof (translation)
-Introduce `R _ _ Q O _ _ _ oa Y n dd D h hdd hB K _ _ φ hΘ Z p m hm`. Use `Y.smooth_q` as an intermediate fact. Establish `hs` using `(surjective_q Y).1`. Use `choose V hV using fun i => (hB i).1`. Use `choose e he hq using fun i => exists_desc Y (V i) (h.d i) D (hV i ▸ h.lift i) fun V' hV' => (hB i).2.2.2 0 V' ((pre_mono _ hV').trans (hV i).ge)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `fun i i' W hW f => desc_agree Y h hdd φ hΘ p m hm V hV e hq i i' W hW f`. Establish `hcov : ∀ y, ∃ i, m y ∈ V i` using `fun y => by`. Take `⟨x, hx⟩` from `Y.q.left.surjective (m y)`. Establish `hx' : x ∈ ⨆ i, h.W i` using `by rw [h.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hi` using `[hV]`. Conclude with `⟨i, hx ▸ hi⟩`. Establish `hloc : ∀ i, KS.LocDerK p Q.P.A.hom m (fun r => φ (D r)) (V i) (fun W f => (m.app W).hom (e i W f))`. Introduce `i`. Use `⟨fun W hW f f' => ?_, fun W hW f f' => ?_, fun W W' h' hW f => ?_, fun W hW r => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(he i).1.1 W hW, map_add]`. Rewrite using `[(he i).1.2.1 W hW, map_add, map_mul, map_mul]`. Rewrite using `[(he i).1.2.2 W W' h' hW, rsT_eq (pre_mono m h'), res_app m h']`. Rewrite using `[(he i).2 W hW, app_const φ _ p m hm]`. Take `⟨dl, hdl, hu⟩` from `InteriorKS.glue_along p Q.P.A.hom m _ V hcov (fun i W f => (m.app W).hom (e i W f)) hloc hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨dl, hdl, fun Z' a b w i W hWi f => ?_⟩` and prove the remaining obligations. Establish `hWV : W ≤ V i` using `fun x hx => by`. Take `⟨y, rfl⟩` from `Y.q.left.surjective x`. Conclude with `(hWi.trans (hV i).le) hx`. Establish `e1 : dl W f = (m.app W).hom (e i W f)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hu W f _ fun j => ?_` and prove the remaining obligations. Rewrite using `[res_app m inf_le_left, ← (he i).1.2.2 W (W ⊓ V j) inf_le_left hWV f]`. Conclude with `hc i j _ (le_inf (inf_le_left.trans hWV) inf_le_right) _`. Establish `hle : b ⁻¹ᵁ (m ⁻¹ᵁ W) ≤ a ⁻¹ᵁ (Y.q.left ⁻¹ᵁ W)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, w]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, pbT, pbT, dif_pos (le_refl _), dif_pos hle, ← hq i W hWV]`. Establish `k : ∀ (c : Z' ⟶ Q.P.A.left) (_ : c = b ≫ m) (hc : b ⁻¹ᵁ (m ⁻¹ᵁ W) ≤ c ⁻¹ᵁ W) x, (b.appLE (m ⁻¹ᵁ W) (b ⁻¹ᵁ (m ⁻¹ᵁ W)) (le_refl _)).hom ((m.app W).hom x) = (c.appLE W _ hc).hom x`. Introduce and unpack `_ rfl hc x`. Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
-
-Rewrite using `[k (a ≫ Y.q.left) w (by rw [Scheme.Hom.comp_preimage]; exact hle)]`. Conclude with `congrArg (fun ψ => ψ.hom (e i W f)) (Scheme.Hom.comp_appLE a Y.q.left W _ hle)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locDerK_desc : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa) {n : ℕ} {dd : Fin n → Fld Y.H.left} {D : R → R} (h : Heat Y.H Y.q.left Q.P.L dd D), (∀ a, IsField ⊤ (dd a)) → IsBasic Y h → ∀ {K : Type} [Field K] [CharZero K] (φ : R →+* K), (∀ a b, φ (h.Θ a b) = 0) → ∀ {Z : Scheme.{0}} (p : Z ⟶ Sp K) (m : Z ⟶ Q.P.A.left), m ≫ Q.P.A.hom = p ≫ spMap φ → ∃ dl : ∀ W : Q.P.A.left.Opens, Γ(Q.P.A.left, W) → Γ(Z, m ⁻¹ᵁ W), GlobalTheory.KS.LocDerK p Q.P.A.hom m (fun r => φ (D r)) ⊤ dl ∧ (∀ (Z' : Scheme.{0}) (a : Z' ⟶ Y.H.left) (b : Z' ⟶ Z), a ≫ Y.q.left = b ≫ m → ∀ (i : h.J) (W : Q.P.A.left.Opens), Y.q.left ⁻¹ᵁ W ≤ h.W i → ∀ f, pbT b (dl W f) (b ⁻¹ᵁ (m ⁻¹ᵁ W)) = pbT a (h.d i _ ((Y.q.left.app W).hom f)) (b ⁻¹ᵁ (m ⁻¹ᵁ W))) := by
   intro R _ _ Q O _ _ _ oa Y n dd D h hdd hB K _ _ φ hΘ Z p m hm

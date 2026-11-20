@@ -12,11 +12,9 @@ namespace GroundTheory.Arith.SchemeCoh
 section Algebra
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty (PrimeSpectrum A) with hA | hA` into its components or cases. Rewrite using `[ringKrullDim, Order.krullDim_eq_bot]`. Conclude with `bot_le`. Rewrite using `[ringKrullDim, Order.krullDim_eq_iSup_length]`. Rewrite using `[WithBot.coe_iSup (OrderTop.bddAbove _)]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun l => ?_` and prove the remaining obligations. Take `⟨P, -, hP, hPl⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral l.head.asIdeal (⊥ : Ideal R) (by rw [← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 h]; exact bot_le)`. Establish `: P.LiesOver l.head.asIdeal` using `⟨hPl.symm⟩`. Take `⟨L, hL, -, -⟩` from `Ideal.exists_ltSeries_of_hasGoingUp l P`. Rewrite using `[← hL]`.
-
-Conclude with `LTSeries.length_le_krullDim L`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_le_of_isIntegral {A R : Type*} [CommRing A] [CommRing R] [Algebra A R]
     [Algebra.IsIntegral A R] (h : Function.Injective (algebraMap A R)) :
@@ -39,17 +37,17 @@ variable (k R K : Type u) [Field k] [CommRing R] [IsDomain R] [Algebra k R]
   [IsScalarTower k R K]
 
 /- English proof (translation)
-Take `⟨s, g, hg, hfin⟩` from `exists_finite_inj_algHom_of_fg k R`. Set `: Algebra (MvPolynomial (Fin s) k) R` to `g.toRingHom.toAlgebra`. Establish `: IsScalarTower k (MvPolynomial (Fin s) k) R` using `IsScalarTower.of_algebraMap_eq fun c => (g.commutes c).symm`. Establish `: Module.Finite (MvPolynomial (Fin s) k) R` using `hfin`. Establish `hdim : ringKrullDim (MvPolynomial (Fin s) k) = s`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules. Establish `hle` using `ringKrullDim_le_of_isIntegral (A := MvPolynomial (Fin s) k) (R := R) hg`. Rewrite `hle` using `[hdim, hR]`. Establish `hs1 : s ≤ 1` using `by exact_mod_cast hle`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: FaithfulSMul (MvPolynomial (Fin s) k) R` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hg`. Establish `: FaithfulSMul R K` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (IsFractionRing.injective R K)`. Establish `h1 : Algebra.trdeg k R = s`. Rewrite using `[← trdeg_add_eq k (MvPolynomial (Fin s) k) (A := R), MvPolynomial.trdeg_of_isDomain, trdeg_eq_zero (R := MvPolynomial (Fin s) k) (A := R)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : Algebra.trdeg k K = s`. Establish `: Algebra.IsAlgebraic R K` using `IsLocalization.isAlgebraic K (nonZeroDivisors R)`. Rewrite using `[← trdeg_add_eq k R (A := K), h1, trdeg_eq_zero (R := R) (A := K), add_zero]`. Break down `Nat.lt_or_ge s 1 with h0 | h1'` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `hs0 : s = 0` using `by omega`. Substitute `hs0` using the available equality. Establish `: Algebra.IsIntegral k (MvPolynomial (Fin 0) k)` using `Algebra.IsIntegral.of_surjective (Algebra.ofId k (MvPolynomial (Fin 0) k)) (MvPolynomial.C_surjective (Fin 0))`. Establish `: Algebra.IsIntegral k R` using `Algebra.IsIntegral.trans (MvPolynomial (Fin 0) k)`. Establish `hfield : IsField R` using `(Algebra.IsIntegral.isField_iff_isField (algebraMap k R).injective).1 (Field.toIsField k)`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hR` using `[ringKrullDim_eq_zero_of_isField hfield]`. Conclude with `zero_ne_one hR`. Rewrite using `[h2, le_antisymm hs1 h1']`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trdeg_eq_one_of_ringKrullDim_eq_one (hR : ringKrullDim R = 1) : Algebra.trdeg k K = 1 := by
   obtain ⟨s, g, hg, hfin⟩ := exists_finite_inj_algHom_of_fg k R
@@ -90,11 +88,11 @@ theorem trdeg_eq_one_of_ringKrullDim_eq_one (hR : ringKrullDim R = 1) : Algebra.
     simp
 
 /- English proof (translation)
-Establish `htr` using `trdeg_eq_one_of_ringKrullDim_eq_one k R K hR`. Establish `: Algebra.Transcendental k K`. Rewrite using `[← trdeg_ne_zero_iff, htr]`. Conclude with `one_ne_zero`. Take `⟨x, hx⟩` from `Algebra.Transcendental.transcendental (R := k) (A := K)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Establish `hbx : IsTranscendenceBasis k ((↑) : ({x} : Set K) → K)` using `AlgebraicIndependent.isTranscendenceBasis_of_trdeg_le_of_finite ((algebraicIndependent_singleton_iff (⟨x, rfl⟩ : ({x} : Set K))).2 hx) (by rw [htr, Cardinal.mk_singleton])`. Establish `halg` using `hbx.isAlgebraic_field`. Rewrite `halg` using `[Subtype.range_coe]`. Establish `: Algebra.EssFiniteType R K` using `Algebra.EssFiniteType.of_isLocalization K (nonZeroDivisors R)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.EssFiniteType k K` using `Algebra.EssFiniteType.comp k R K`. Establish `: Algebra.EssFiniteType (IntermediateField.adjoin k {x}) K` using `Algebra.EssFiniteType.of_comp k _ K`. Conclude with `Algebra.finite_of_essFiniteType_of_isAlgebraic`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFunctionField_of_ringKrullDim_eq_one (hR : ringKrullDim R = 1) :
     GroundTheory.FunctionField.IsFunctionField k K := by
@@ -124,9 +122,9 @@ section Scheme
 variable {k : Type u} [Field k] (X : Scheme.{u}) [X.Over (Spec (.of k))] [IsIntegral X]
 
 /- English proof (translation)
-Use `by_contra! h`. Establish `: Subsingleton X` using `⟨fun a b => (h a).trans (h b).symm⟩`. Set `` to `specializationOrder X`. Establish `h0 : topologicalKrullDim X ≤ 0`. Unfold `topologicalKrullDim`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Order.krullDim_eq_of_orderIso irreducibleSetEquivPoints]`. Conclude with `Order.krullDim_nonpos_of_subsingleton`. Rewrite `h0` using `[hX]`. Conclude with `absurd h0 (by decide)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_ne_genericPoint (hX : topologicalKrullDim X = 1) : ∃ x : X, x ≠ genericPoint X := by
   by_contra! h
@@ -140,23 +138,21 @@ lemma exists_ne_genericPoint (hX : topologicalKrullDim X = 1) : ∃ x : X, x ≠
   exact absurd h0 (by decide)
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_ne_genericPoint X hX`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `: Nonempty U` using `⟨⟨x, hxU⟩⟩`. Set `: Algebra k Γ(X, U)` to `((X.presheaf.map (homOfLE le_top : U ⟶ ⊤).op).hom.comp (scalarRingHom X)).toAlgebra`. Establish `: Algebra.FiniteType k Γ(X, U)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `(X ↘ Spec (.of k)).finiteType_appLE (isAffineOpen_top (Spec (.of k))) hU le_top`. Establish `e : algebraMap k Γ(X, U) = ((X ↘ Spec (.of k)).appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (.of k)).inv.hom` using `rfl`. Rewrite using `[← RingHom.finiteType_algebraMap, e]`. Use `h.comp (RingHom.FiniteType.of_surjective _ fun y => ⟨(Scheme.ΓSpecIso (.of k)).hom y, ?_⟩)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `: IsFractionRing Γ(X, U) X.functionField` using `functionField_isFractionRing_of_isAffineOpen X U hU`. Establish `: IsScalarTower k Γ(X, U) X.functionField`. Use `IsScalarTower.of_algebraMap_eq fun c => ?_` and prove the remaining obligations. Rewrite using `[algebraMap_functionField]`. Express the relevant statement in the definitionally equal form `X.germToFunctionField ⊤ (scalarRingHom X c) = X.germToFunctionField U (X.presheaf.map (homOfLE le_top : U ⟶ ⊤).op (scalarRingHom X c))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Scheme.germToFunctionField, TopCat.Presheaf.germ_res_apply]`. Establish `hdim : ringKrullDim Γ(X, U) = 1`. Establish `hle : ringKrullDim Γ(X, U) ≤ 1`. Rewrite using `[← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim Γ(X, U)]`. Express the relevant statement in the definitionally equal form `topologicalKrullDim (Spec Γ(X, U)) ≤ 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← IsHomeomorph.topologicalKrullDim_eq _ hU.isoSpec.hom.homeomorph.isHomeomorph]`. Conclude with `(topologicalKrullDim_subspace_le X U).trans hX.le`. Establish `hηU : genericPoint X ∈ U` using `((genericPoint_spec X).mem_open_set_iff U.isOpen).mpr (by simpa using ‹Nonempty U›)`. Establish `hnf : ¬ IsField Γ(X, U)`. Introduce `hF`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `` to `hF.toField`. Establish `h2` using `hU.isoSpec.hom.homeomorph.injective (Subsingleton.elim (α := PrimeSpectrum Γ(X, U)) (hU.isoSpec.hom.homeomorph ⟨x, hxU⟩) (hU.isoSpec.hom.homeomorph ⟨genericPoint X, hηU⟩))`. Conclude with `hx (congrArg Subtype.val h2)`. Establish `h0 : ringKrullDim Γ(X, U) ≠ 0` using `fun h => hnf (by`. Establish `: Ring.KrullDimLE 0 Γ(X, U)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Ring.krullDimLE_iff, h]`. Both sides reduce to the same expression. Conclude with `Ring.KrullDimLE.isField_of_isDomain)`. Establish `hnn : 0 ≤ ringKrullDim Γ(X, U)` using `ringKrullDim_nonneg_of_nontrivial`. Generalize the expression as in `ringKrullDim Γ(X, U) = d at hle h0 hnn ⊢`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => exact absurd hnn (by simp)`. Consider the case `coe n`. Establish `h1 : n ≤ 1` using `by exact_mod_cast hle`. Establish `h2 : n ≠ 0` using `by exact_mod_cast h0`.
-
-Rewrite using `[le_antisymm h1 (Order.one_le_iff_ne_zero.mpr h2)]`. Both sides reduce to the same expression. Conclude with `isFunctionField_of_ringKrullDim_eq_one k Γ(X, U) X.functionField hdim`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isFunctionField [LocallyOfFiniteType (X ↘ Spec (.of k))]
     (hX : topologicalKrullDim X = 1) :

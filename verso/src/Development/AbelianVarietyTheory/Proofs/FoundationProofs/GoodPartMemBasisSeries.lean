@@ -17,7 +17,7 @@ section Index
 variable {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.IntegralHeckeForms.sIdx, Formalism.MainNotions.IntegralHeckeForms.lenR, signedLength, relLength_eq_length_quotient_comap]`. Use `push_cast`. Rewrite using `[sub_div]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sIdx_eq {W : Type} [AddCommGroup W] [Module R W] (l : ℕ) (M N : Submodule R W) :
     Formalism.MainNotions.IntegralHeckeForms.sIdx l M N =
@@ -27,7 +27,7 @@ theorem sIdx_eq {W : Type} [AddCommGroup W] [Module R W] (l : ℕ) (M N : Submod
   rw [sub_div]
 
 /- English proof (translation)
-Simplify using `only [sIdx_eq, signedLength, relLength_map_of_injective f hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sIdx_map {W W' : Type} [AddCommGroup W] [Module R W] [AddCommGroup W'] [Module R W']
     (f : W →ₗ[R] W') (hf : Function.Injective f) (l : ℕ) (M N : Submodule R W) :
@@ -35,13 +35,13 @@ theorem sIdx_map {W W' : Type} [AddCommGroup W] [Module R W] [AddCommGroup W'] [
   simp only [sIdx_eq, signedLength, relLength_map_of_injective f hf]
 
 /- English proof (translation)
-Establish `h` using `(IsLocalization.surj (nonZeroDivisors R) x).choose_spec`. Simplify using `only [vK, nval]`. Use `set p := (IsLocalization.surj (nonZeroDivisors R) x).choose`. Establish `inj` using `IsFractionRing.injective R (FractionRing R)`. Establish `h2 : (p.2 : R) ≠ 0` using `nonZeroDivisors.coe_ne_zero _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : p.1 ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, map_zero]`. Conclude with `mul_ne_zero hx ((map_ne_zero_iff _ inj).2 h2) h`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.mp (mt (IsDiscreteValuationRing.addVal_eq_top_iff (R := R)).mp h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp (mt (IsDiscreteValuationRing.addVal_eq_top_iff (R := R)).mp h2)`. Establish `h3` using `congrArg (Ring.ordFrac R) h`. Rewrite `h3` using `[map_mul, ordFrac_algebraMap_eq_exp hm.symm, ordFrac_algebraMap_eq_exp hn.symm]`. Establish `h4 : Ring.ordFrac R x = WithZero.exp ((m : ℤ) - n)`. Rewrite using `[WithZero.exp_sub, ← h3, mul_div_cancel_right₀ _ WithZero.exp_ne_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h4, WithZero.log_exp, ← hm, ← hn, ← sub_div]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem vK_eq (l : ℕ) (x : FractionRing R) (hx : x ≠ 0) :
     vK R l x = (WithZero.log (Ring.ordFrac R x) : ℤ) /
@@ -68,11 +68,11 @@ variable {W : Type} [AddCommGroup W] [Module (FractionRing R) W] [Module R W]
   [IsScalarTower R (FractionRing R) W]
 
 /- English proof (translation)
-Use `and_congr_right fun _ => ⟨fun h => ⟨fun x hx => ?_, fun x hx => ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `Submodule.subset_span hx`. Rewrite `hx` using `[← h, Submodule.restrictScalars_mem]`. Take `⟨c, hc⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors R) (FractionRing R) (L : Set W) x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[Submodule.span_eq]`. Conclude with `⟨c, nonZeroDivisors.coe_ne_zero c, hc⟩`. Use `le_antisymm (Submodule.span_le.2 h.1) fun x hx => ?_` and prove the remaining obligations. Take `⟨c, hc, hx⟩` from `h.2 x hx`. Establish `hc' : algebraMap R (FractionRing R) c ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R _)).2 hc`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: x = (algebraMap R (FractionRing R) c)⁻¹ • (c • x)`. Rewrite using `[← algebraMap_smul (FractionRing R) c x, inv_smul_smul₀ hc']`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hx)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLatIn_iff (V : Submodule (FractionRing R) W) (L : Submodule R W) :
     ToricLatticeDenominators.IsLatIn V L ↔ Formalism.MainNotions.IntegralHeckeForms.IsLatIn L (V.restrictScalars R) := by
@@ -96,7 +96,7 @@ def inside (V : Submodule (FractionRing R) W) (L : Submodule R W) : Submodule R 
   L.comap (V.subtype.restrictScalars R)
 
 /- English proof (translation)
-Use `Submodule.map_comap_eq_self fun x hx => ⟨⟨x, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← h.2]`. Conclude with `Submodule.subset_span hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_inside {V : Submodule (FractionRing R) W} {L : Submodule R W} (h : ToricLatticeDenominators.IsLatIn V L) :
     (inside V L).map (V.subtype.restrictScalars R) = L := by
@@ -104,9 +104,9 @@ theorem map_inside {V : Submodule (FractionRing R) W} {L : Submodule R W} (h : T
   rw [← h.2]; exact Submodule.subset_span hx
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (V.subtype.restrictScalars R)` using `V.injective_subtype`. Prove the components needed by the constructor for the conclusion. Apply `Submodule.fg_of_fg_map_injective _ hinj` to reduce the goal to its premises. Rewrite using `[map_inside h]`. Conclude with `h.1`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.map_injective_of_injective V.injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_subtype_top]`. Establish `: V.subtype '' (inside V L : Set V) = L` using `by conv_rhs => rw [← map_inside h]`. Both sides reduce to the same expression. Rewrite using `[this, h.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_inside {V : Submodule (FractionRing R) W} {L : Submodule R W} (h : ToricLatticeDenominators.IsLatIn V L) :
     Submodule.IsLattice (FractionRing R) (inside V L) := by
@@ -122,11 +122,11 @@ theorem isLattice_inside {V : Submodule (FractionRing R) W} {L : Submodule R W} 
     rw [this, h.2]
 
 /- English proof (translation)
-Take `⟨h₁, h₂, g, hg, rfl⟩` from `h`. Use `isLattice_inside h₁` as an intermediate fact. Establish `e₂ : (inside V L₁).map ((g : V →ₗ[FractionRing R] V).restrictScalars R) = inside V L₂`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `(hg w).1 hw`. Introduce `hv`. Use `⟨g.symm v, (hg _).2 ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[g.apply_symm_apply]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv`. Rewrite using `[← map_inside h₁, ← map_inside h₂, sIdx_map _ (by exact V.injective_subtype), sIdx_eq, vK_eq _ _ (LinearEquiv.isUnit_det' g).ne_zero, (signedLength_eq_log_ordFrac_det_of_map_eq g e₂).2]`.
+A detailed English derivation is pending.
 -/
 theorem eq_sIdx_of_isIdx {l : ℕ} {V : Submodule (FractionRing R) W} {L₁ L₂ : Submodule R W} {x : ℝ}
     (h : ToricLatticeDenominators.IsIdx l V L₁ L₂ x) : x = Formalism.MainNotions.IntegralHeckeForms.sIdx l L₁ L₂ := by
@@ -144,13 +144,11 @@ theorem eq_sIdx_of_isIdx {l : ℕ} {V : Submodule (FractionRing R) W} {L₁ L₂
     vK_eq _ _ (LinearEquiv.isUnit_det' g).ne_zero, (signedLength_eq_log_ordFrac_det_of_map_eq g e₂).2]
 
 /- English proof (translation)
-It suffices to establish `h : ∃ x, ToricLatticeDenominators.IsIdx l V L₁ L₂ x by`. Take `⟨x, hx⟩` from `h`. Rewrite using `[← eq_sIdx_of_isIdx hx]`. Conclude with `hx`. Use `isLattice_inside h₁` as an intermediate fact.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isLattice_inside h₂` as an intermediate fact. Take `⟨g, e₃⟩` from `exists_linearEquiv_map_eq_of_isLattice (FractionRing R) (inside V L₁) (inside V L₂)`. Use `⟨_, h₁, h₂, g, fun v => ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `v ∈ inside V L₁ ↔ g v ∈ inside V L₂`. Rewrite using `[← e₃]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Conclude with `⟨v, hv, rfl⟩`. Introduce and unpack `⟨w, hw, e⟩`. Establish `: w = v` using `g.injective e`.
-
-Conclude with `this ▸ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIdx_sIdx (l : ℕ) {V : Submodule (FractionRing R) W} {L₁ L₂ : Submodule R W}
     (h₁ : ToricLatticeDenominators.IsLatIn V L₁) (h₂ : ToricLatticeDenominators.IsLatIn V L₂) :
@@ -175,9 +173,9 @@ end Index
 section Transport
 
 /- English proof (translation)
-Use `⟨fun h => ⟨Submodule.fg_of_fg_map_injective f hf h.1, (Submodule.map_le_map_iff_of_injective hf _ _).1 h.2.1, fun x hx => ?_⟩, fun h => ⟨h.1.map f, Submodule.map_mono h.2.1, ?_⟩⟩` and prove the remaining obligations. Take `⟨c, hc, y, hy, e⟩` from `h.2.2 (f x) ⟨x, hx, rfl⟩`. Rewrite `e` using `[← map_smul]`. Conclude with `⟨c, hc, hf e ▸ hy⟩`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc, hy⟩` from `h.2.2 x hx`. Conclude with `⟨c, hc, c • x, hy, map_smul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isLatIn_map_iff {R W W' : Type} [CommRing R] [AddCommGroup W] [Module R W] [AddCommGroup W']
     [Module R W'] (f : W →ₗ[R] W') (hf : Function.Injective f) (M V : Submodule R W) :
@@ -193,15 +191,15 @@ theorem isLatIn_map_iff {R W W' : Type} [CommRing R] [AddCommGroup W] [Module R 
     exact ⟨c, hc, c • x, hy, map_smul _ _ _⟩
 
 /- English proof (translation)
-Use `⟨?_, Submodule.span_mono (Set.image_mono h.2.1), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `h.1.map r`. Rewrite using `[← Submodule.map_coe, ← hs, Submodule.span_span_of_tower]`. Conclude with `Submodule.fg_span s.finite_toSet`. Proceed by induction on `hx using Submodule.span_induction with`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Take `⟨c, hc, hy⟩` from `h.2.2 y hy`. Use `⟨algebraMap R S c, (map_ne_zero_iff _ hi).2 hc, Submodule.subset_span ⟨_, hy, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_smul, algebraMap_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, hc, hx⟩` from `hx`. Take `⟨d, hd, hy⟩` from `hy`. Use `⟨c * d, mul_ne_zero hc hd, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.smul_mem _ _ hy`. Consider the case `smul a x _ hx`. Take `⟨c, hc, hx⟩` from `hx`. Conclude with `⟨c, hc, by rw [smul_comm]; exact Submodule.smul_mem _ _ hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLatIn_span {R S W W' : Type} [CommRing R] [CommRing S] [IsDomain S] [Algebra R S]
     (hi : Function.Injective (algebraMap R S)) [AddCommGroup W] [Module R W] [AddCommGroup W']
@@ -245,11 +243,9 @@ theorem toFrac_tmul (a : O') (x : F) :
     toFrac O F O' (a ⊗ₜ x) = algebraMap O' (FractionRing O') a ⊗ₜ x := rfl
 
 /- English proof (translation)
-Use `haveI : Module.Flat O (FractionRing O) := IsLocalization.flat _ (nonZeroDivisors O)`. Use `haveI : Module.Flat O F := Module.Flat.trans O (FractionRing O) F`. Establish `h` using `Module.Flat.rTensor_preserves_injective_linearMap (M := F) ((Algebra.linearMap O' (FractionRing O')).restrictScalars O) (IsFractionRing.injective O' _)`. Establish `e : ∀ x, toFrac O F O' x = ((Algebra.linearMap O' (FractionRing O')).restrictScalars O).rTensor F x`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Introduce `x y hxy`.
-
-Conclude with `h (by rw [← e, ← e, hxy])`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem toFrac_injective : Function.Injective (toFrac O F O') := by
   haveI : Module.Flat O (FractionRing O) := IsLocalization.flat _ (nonZeroDivisors O)
@@ -267,11 +263,11 @@ theorem toFrac_injective : Function.Injective (toFrac O F O') := by
   exact h (by rw [← e, ← e, hxy])
 
 /- English proof (translation)
-Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := O') k`. Take `⟨a, ha, q', hq'⟩` from `(Algebra.IsIntegral.isIntegral (R := O) q).isAlgebraic.exists_nonzero_dvd hq`. Establish `ha' : algebraMap O (FractionRing O) a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O _)).2 ha`. Establish `hq0 : algebraMap O' (FractionRing O') q ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O' _)).2 (nonZeroDivisors.ne_zero hq)`. Use `⟨(p * q') ⊗ₜ ((algebraMap O (FractionRing O) a)⁻¹ • x), Submodule.tmul_mem_baseChange_of_mem _ (V.smul_mem _ hx), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx' : x = a • ((algebraMap O (FractionRing O) a)⁻¹ • x)`. Rewrite using `[← algebraMap_smul (FractionRing O) a, smul_inv_smul₀ ha']`. Use `conv_rhs => rw [hx', ← TensorProduct.smul_tmul]`. Rewrite using `[toFrac_tmul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul O' a, Algebra.smul_def, hq', map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem toFrac_smul_mem (hi : Function.Injective (algebraMap O O')) [Module.Finite O O']
     (V : Submodule (FractionRing O) F) (k : FractionRing O') (x : F) (hx : x ∈ V) :
@@ -292,9 +288,9 @@ theorem toFrac_smul_mem (hi : Function.Injective (algebraMap O O')) [Module.Fini
   field_simp
 
 /- English proof (translation)
-Introduce `y`. Proceed by induction on `y with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul k x`. Take `⟨z, -, hz⟩` from `toFrac_smul_mem O F O' hi ⊤ k x trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, hz⟩`. Consider the case `add x y hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, map_add _ _ _⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toFrac_surjective (hi : Function.Injective (algebraMap O O')) [Module.Finite O O'] :
     Function.Surjective (toFrac O F O') := by
@@ -310,15 +306,15 @@ theorem toFrac_surjective (hi : Function.Injective (algebraMap O O')) [Module.Fi
     exact ⟨a + b, map_add _ _ _⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[Submodule.restrictScalars_mem]`. Establish `: ∀ k : FractionRing O', k • y ∈ ((V.restrictScalars O).baseChange O').map (toFrac O F O')`. Proceed by induction on `hy using Submodule.span_induction with`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Introduce `k`. Rewrite using `[TensorProduct.smul_tmul']`. Conclude with `toFrac_smul_mem O F O' hi V _ x hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => intro k`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro k`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ (hx k) (hy k)`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul a x _ hx => intro k`. Rewrite using `[smul_smul]`. Conclude with `hx _`. Simplify using `using this 1`. Rewrite using `[Submodule.baseChange_eq_span, Submodule.map_span, Submodule.span_le]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Use `Submodule.subset_span ⟨x, hx, ?_⟩` and prove the remaining obligations. Simplify using `[toFrac_tmul]`.
+A detailed English derivation is pending.
 -/
 theorem span_frac_eq (hi : Function.Injective (algebraMap O O')) [Module.Finite O O']
     (V : Submodule (FractionRing O) F) :
@@ -355,20 +351,20 @@ Both sides reduce to the same expression.
 theorem eOp_eq : ToricLatticeDenominators.eOp Y i j b = Formalism.MainNotions.IntegralHeckeForms.eG Y i j b := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[ToricLatticeDenominators.typePart, Formalism.MainNotions.IntegralHeckeForms.Fm0, Submodule.mem_iInf, sub_eq_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem typePart_eq : ToricLatticeDenominators.typePart Y i j b = Formalism.MainNotions.IntegralHeckeForms.Fm0 Y i j b := by
   ext x
   simp [ToricLatticeDenominators.typePart, Formalism.MainNotions.IntegralHeckeForms.Fm0, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ToricLatticeDenominators.eOp, ← map_mul, Y.eAlg_idem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eOp_idem (x : Y.Fm i j b) : ToricLatticeDenominators.eOp Y i j b (ToricLatticeDenominators.eOp Y i j b x) = ToricLatticeDenominators.eOp Y i j b x := by
   rw [← Module.End.mul_apply, ToricLatticeDenominators.eOp, ← map_mul, Y.eAlg_idem]
 
 /- English proof (translation)
-Establish `h` using `congrArg (MonoidAlgebra.lift (FractionRing (X.O i)) (Module.End (FractionRing (X.O i)) (Y.Fm i j b)) (G0g N) (LinearEquiv.automorphismGroup.toLinearMapMonoidHom.comp (Y.actG i j b))) (Y.eAlg_central i b (MonoidAlgebra.of _ _ g))`. Rewrite `h` using `[map_mul, map_mul, MonoidAlgebra.lift_of]`. Conclude with `LinearMap.congr_fun h x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eOp_comm (g : G0g N) (x : Y.Fm i j b) :
     ToricLatticeDenominators.eOp Y i j b (Y.actG i j b g x) = Y.actG i j b g (ToricLatticeDenominators.eOp Y i j b x) := by
@@ -380,16 +376,16 @@ theorem eOp_comm (g : G0g N) (x : Y.Fm i j b) :
   exact LinearMap.congr_fun h x
 
 /- English proof (translation)
-Simplify using `[ToricLatticeDenominators.typePart, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_typePart (x : Y.Fm i j b) : x ∈ ToricLatticeDenominators.typePart Y i j b ↔
     ∀ u : Y.U, Y.actG i j b u x = ((Y.psiU i b u : (FractionRing (X.O i))ˣ) : FractionRing (X.O i)) • x := by
   simp [ToricLatticeDenominators.typePart, Submodule.mem_iInf]
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.IntegralHeckeForms.V0, ← typePart_eq, ← eOp_eq]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨⟨y, rfl⟩, hx⟩`. Conclude with `⟨_, hx, eOp_idem Y i j b y⟩`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨x, rfl⟩, (mem_typePart Y i j b _).2 fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[← eOp_comm, (mem_typePart Y i j b x).1 hx u, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem jointSpan_eq : ToricLatticeDenominators.V0 Y i j b = Formalism.MainNotions.IntegralHeckeForms.V0 Y i j b := by
   rw [Formalism.MainNotions.IntegralHeckeForms.V0, ← typePart_eq, ← eOp_eq]
@@ -414,7 +410,7 @@ section Ext
 variable (O' : Type) [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra (X.O i) O']
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eExt_toFrac (y : O' ⊗[X.O i] Y.Fm i j b) :
     ToricLatticeDenominators.eExt Y i j b O' (toFrac _ _ O' y) =
@@ -425,7 +421,7 @@ theorem eExt_toFrac (y : O' ⊗[X.O i] Y.Fm i j b) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[← Submodule.map_comp, ← Submodule.map_comp]`. Use `congr 1`. Conclude with `LinearMap.ext (eExt_toFrac Y i j b O')`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem map_eExt (L : Submodule O' (O' ⊗[X.O i] Y.Fm i j b)) :
     (L.map (toFrac _ _ O')).map (ToricLatticeDenominators.eExt Y i j b O') =
@@ -435,9 +431,9 @@ theorem map_eExt (L : Submodule O' (O' ⊗[X.O i] Y.Fm i j b)) :
   exact LinearMap.ext (eExt_toFrac Y i j b O')
 
 /- English proof (translation)
-Establish `h1 : ToricLatticeDenominators.ThetaExt Y i j b O' = ((Formalism.MainNotions.IntegralHeckeForms.Th Y i j b Set.univ).baseChange O').map (toFrac _ _ O')`. Rewrite using `[Submodule.baseChange_eq_span, Submodule.map_span, ToricLatticeDenominators.ThetaExt, Submodule.map_coe, Set.image_image, Formalism.MainNotions.IntegralHeckeForms.Th, Set.image_univ]`. Use `congr 1`. Conclude with `Set.image_congr fun x _ => by simp [toFrac_tmul]`. Rewrite using `[h1, map_eExt, Formalism.MainNotions.IntegralHeckeForms.eTh]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Submodule.baseChange_eq_span, Submodule.baseChange_eq_span, Submodule.map_span, Submodule.map_coe, Submodule.map_coe, Submodule.map_coe, Set.image_image, Set.image_image]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thetaExt_eq : (ToricLatticeDenominators.ThetaExt Y i j b O').map (ToricLatticeDenominators.eExt Y i j b O') =
     ((Formalism.MainNotions.IntegralHeckeForms.eTh Y i j b Set.univ).baseChange O').map (toFrac _ _ O') := by
@@ -459,7 +455,7 @@ def up : X.Ok i k ⊗[X.O i] Y.Fm i j b →ₗ[X.Ok i k] O' ⊗[X.O i] Y.Fm i j 
   TensorProduct.AlgebraTensorModule.map (Algebra.linearMap (X.Ok i k) O') LinearMap.id
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem up_eq (y : X.Ok i k ⊗[X.O i] Y.Fm i j b) : up Y i j b O' k y =
     LinearMap.rTensor (Y.Fm i j b) (IsScalarTower.toAlgHom (X.O i) (X.Ok i k) O').toLinearMap y := by
@@ -469,7 +465,7 @@ theorem up_eq (y : X.Ok i k ⊗[X.O i] Y.Fm i j b) : up Y i j b O' k y =
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem incl_eq (y : X.Ok i k ⊗[X.O i] Y.Fm i j b) :
     ToricLatticeDenominators.incl Y i j b O' k y = toFrac _ _ O' (up Y i j b O' k y) := by
@@ -479,7 +475,7 @@ theorem incl_eq (y : X.Ok i k ⊗[X.O i] Y.Fm i j b) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem up_e (y : X.Ok i k ⊗[X.O i] Y.Fm i j b) :
     up Y i j b O' k ((Formalism.MainNotions.IntegralHeckeForms.eO Y i j b).baseChange (X.Ok i k) y) =
@@ -493,16 +489,16 @@ def ext (L : Submodule (X.Ok i k) (X.Ok i k ⊗[X.O i] Y.Fm i j b)) : Submodule 
   Submodule.span O' (up Y i j b O' k '' L)
 
 /- English proof (translation)
-Rewrite using `[ext, ← Submodule.map_coe, Submodule.map_span, Submodule.span_span_of_tower]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_span (S : Set (X.Ok i k ⊗[X.O i] Y.Fm i j b)) :
     ext Y i j b O' k (Submodule.span _ S) = Submodule.span O' (up Y i j b O' k '' S) := by
   rw [ext, ← Submodule.map_coe, Submodule.map_span, Submodule.span_span_of_tower]
 
 /- English proof (translation)
-Establish `: Submodule.span O' (ToricLatticeDenominators.incl Y i j b O' k '' S) = (Submodule.span O' (up Y i j b O' k '' S)).map (toFrac _ _ O')`. Rewrite using `[Submodule.map_span, Set.image_image]`. Use `congr 1`. Conclude with `Set.image_congr fun x _ => incl_eq Y i j b O' k x`. Rewrite using `[this, map_eExt, Submodule.map_span, Submodule.map_span (R₂ := X.Ok i k), ext_span, Set.image_image, Set.image_image]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Conclude with `Set.image_congr fun x _ => (up_e Y i j b O' k x).symm`.
+A detailed English derivation is pending.
 -/
 theorem span_incl_map (S : Set (X.Ok i k ⊗[X.O i] Y.Fm i j b)) :
     (Submodule.span O' (ToricLatticeDenominators.incl Y i j b O' k '' S)).map (ToricLatticeDenominators.eExt Y i j b O') =
@@ -519,7 +515,7 @@ theorem span_incl_map (S : Set (X.Ok i k ⊗[X.O i] Y.Fm i j b)) :
   exact Set.image_congr fun x _ => (up_e Y i j b O' k x).symm
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.IntegralHeckeForms.eThPsi, Formalism.MainNotions.IntegralHeckeForms.ThPsi, ← span_incl_map, Set.image_iUnion₂]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem thetaPsi_eq (Q : Finset (PlE D.host)) (ψ : GE N →* (X.Ok i k)ˣ) :
     (ToricLatticeDenominators.ThetaPsi Y i j b O' k Q ψ).map (ToricLatticeDenominators.eExt Y i j b O') =
@@ -528,7 +524,7 @@ theorem thetaPsi_eq (Q : Finset (PlE D.host)) (ψ : GE N →* (X.Ok i k)ˣ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.IntegralHeckeForms.eThPMt, ← Submodule.span_eq ((Y.MtLat i j b k Q ψ).map (Y.thP i j b k Q ψ)), ← span_incl_map, Submodule.map_coe, Set.image_image]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem thetaMt_eq (Q : Finset (PlE D.host)) (ψ : GE N →* (X.Ok i k)ˣ) :
     (ToricLatticeDenominators.ThetaMt Y i j b O' k Q ψ).map (ToricLatticeDenominators.eExt Y i j b O') =
@@ -538,7 +534,7 @@ theorem thetaMt_eq (Q : Finset (PlE D.host)) (ψ : GE N →* (X.Ok i k)ˣ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Submodule.baseChange_eq_span, ext_span, Submodule.baseChange_eq_span, Submodule.map_coe, Submodule.map_coe, Set.image_image]`. Use `congr 1`. Conclude with `Set.image_congr fun x _ => by simp [up]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ext_baseChange (V : Submodule (X.O i) (Y.Fm i j b)) :
     ext Y i j b O' k (V.baseChange (X.Ok i k)) = V.baseChange O' := by
@@ -548,9 +544,9 @@ theorem ext_baseChange (V : Submodule (X.O i) (Y.Fm i j b)) :
   exact Set.image_congr fun x _ => by simp [up]
 
 /- English proof (translation)
-Use `X.Ok_fin i k` as an intermediate fact. Establish `: Module.Finite (X.O i) O'` using `Module.Finite.trans (X.Ok i k) O'`. Establish `hi' : Function.Injective (algebraMap (X.O i) O')`. Rewrite using `[IsScalarTower.algebraMap_eq (X.O i) (X.Ok i k) O']`. Conclude with `hi.comp (X.Ok_inj i k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isLatIn_iff, ToricLatticeDenominators.invariantSpanBaseChange, span_frac_eq _ _ _ hi', jointSpan_eq, isLatIn_map_iff _ (toFrac_injective _ _ _)]`.
+A detailed English derivation is pending.
 -/
 theorem isLatIn_toFrac (hi : Function.Injective (algebraMap (X.Ok i k) O')) [Module.Finite (X.Ok i k) O']
     (M : Submodule O' (O' ⊗[X.O i] Y.Fm i j b)) :
@@ -567,9 +563,9 @@ theorem isLatIn_toFrac (hi : Function.Injective (algebraMap (X.Ok i k) O')) [Mod
 end Ext
 
 /- English proof (translation)
-Establish `: ∀ y, up Y i j b (X.Ok i k) k y = y`. Introduce `y`. Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[ext, Set.image_congr fun y _ => this y, Set.image_id', Submodule.span_eq]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_self (k : ℕ) (L : Submodule (X.Ok i k) (X.Ok i k ⊗[X.O i] Y.Fm i j b)) :
     ext Y i j b (X.Ok i k) k L = L := by
@@ -582,21 +578,19 @@ theorem ext_self (k : ℕ) (L : Submodule (X.Ok i k) (X.Ok i k ⊗[X.O i] Y.Fm i
   rw [ext, Set.image_congr fun y _ => this y, Set.image_id', Submodule.span_eq]
 
 /- English proof (translation)
-Establish `hQ' : Formalism.MainNotions.IntegralHeckeForms.eThPsi Y i j b k Q ψ (away Y i j b Q) = Formalism.MainNotions.IntegralHeckeForms.eThPsi Y i j b k Q ψ Set.univ`. Rewrite using `[Formalism.MainNotions.IntegralHeckeForms.eThPsi, hQ]`. Both sides reduce to the same expression. Establish `hup : ∀ (O' : Type) [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra (X.O i) O'] [Algebra (X.Ok i k) O'] [IsScalarTower (X.O i) (X.Ok i k) O'] (L : Submodule (X.Ok i k) (X.Ok i k ⊗[X.O i] Y.Fm i j b)), Submodule.span O' ((LinearMap.rTensor (Y.Fm i j b) (IsScalarT …`. Introduce `O' _ _ _ _ _ _ L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ext, Set.image_congr fun y _ => up_eq Y i j b O' k y]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun O' _ _ _ _ _ _ hi hf M hM => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, y, hx, hy, hxy⟩` from `(h O' hi).2.2 _ ((isLatIn_toFrac Y i j b O' k hi M).2 hM)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hxy` using `[eq_sIdx_of_isIdx hx, eq_sIdx_of_isIdx hy, thetaPsi_eq, thetaExt_eq, sIdx_map _ (toFrac_injective _ _ _), sIdx_map _ (toFrac_injective _ _ _), hQ']`. Rewrite using `[hup]`. Conclude with `hxy`. Establish `h1` using `(h (X.Ok i k) Function.injective_id).1`. Rewrite `h1` using `[thetaPsi_eq, isLatIn_toFrac Y i j b _ k Function.injective_id, ext_self, hQ']`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1` using `(h (X.Ok i k) Function.injective_id).2.1`. Rewrite `h1` using `[thetaPsi_eq, thetaMt_eq, Submodule.map_le_map_iff_of_injective (toFrac_injective _ _ _), ext_self, ext_self, hQ']`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2, h3⟩ O' _ _ _ _ _ _ hf hi`. Use `X.Ok_fin i k` as an intermediate fact. Establish `: Module.Finite (X.O i) O'` using `Module.Finite.trans (X.Ok i k) O'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : Function.Injective (algebraMap (X.O i) O')`. Rewrite using `[IsScalarTower.algebraMap_eq (X.O i) (X.Ok i k) O']`. Conclude with `hi.comp (X.Ok_inj i k)`. Establish `l1 : ToricLatticeDenominators.IsLatIn (ToricLatticeDenominators.invariantSpanBaseChange Y i j b O') ((ToricLatticeDenominators.ThetaPsi Y i j b O' k Q ψ).map (ToricLatticeDenominators.eExt Y i j b O'))`. Rewrite using `[thetaPsi_eq, isLatIn_toFrac Y i j b O' k hi, hQ', ← ext_baseChange Y i j b O' k]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isLatIn_span hi _ h2`. Establish `l2 : ToricLatticeDenominators.IsLatIn (ToricLatticeDenominators.invariantSpanBaseChange Y i j b O') ((ToricLatticeDenominators.ThetaExt Y i j b O').map (ToricLatticeDenominators.eExt Y i j b O'))`. Rewrite using `[thetaExt_eq, isLatIn_toFrac Y i j b O' k hi, Submodule.baseChange_eq_span, Submodule.baseChange_eq_span]`. Conclude with `isLatIn_span hi' _ hΘ`. Use `⟨l1, ?_, fun M hM => ⟨_, _, isIdx_sIdx _ hM l1, isIdx_sIdx _ hM l2, ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[thetaPsi_eq, thetaMt_eq, hQ']`. Conclude with `Submodule.map_mono (Submodule.span_mono (Set.image_mono h3))`. Take `⟨M, rfl⟩ : ∃ M', M = Submodule.map (toFrac _ _ O') M'` from `⟨_, (Submodule.map_comap_eq_of_surjective (toFrac_surjective _ _ O' hi') M).symm⟩`. Use `h1 O' hi hf M ((isLatIn_toFrac Y i j b O' k hi M).1 hM)` as an intermediate fact. Rewrite using `[thetaPsi_eq, thetaExt_eq, sIdx_map _ (toFrac_injective _ _ _), sIdx_map _ (toFrac_injective _ _ _), hQ', ← hup]`.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem partBAt_iff (k : ℕ) (Q : Finset (PlE D.host)) (ψ : GE N →* (X.Ok i k)ˣ) (ε : ℝ)
     (hΘ : Formalism.MainNotions.IntegralHeckeForms.IsLatIn (Formalism.MainNotions.IntegralHeckeForms.eTh Y i j b Set.univ)
@@ -660,7 +654,7 @@ variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : N
   (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (j : ℕ) (b : Bool)
 
 /- English proof (translation)
-Establish `: ∀ k, NeZero (D.host.g k)` using `fun k => ⟨(D.host.g_prime k).ne_zero⟩`. Rewrite using `[N.restN_card_levelGroup_eq, Nat.card_pi, Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ∏ _y : N.PlG k, Nat.card (GL (Fin D.R.r) (ZMod (D.host.g k)))`. Rewrite using `[Finset.prod_const, Finset.card_univ, N.card_PlG k]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_eq : D.what₂.restRowsFiniteGroupCard = Nat.card (G0g N) := by
   have : ∀ k, NeZero (D.host.g k) := fun k => ⟨(D.host.g_prime k).ne_zero⟩
@@ -670,14 +664,14 @@ theorem card_eq : D.what₂.restRowsFiniteGroupCard = Nat.card (G0g N) := by
   rw [Finset.prod_const, Finset.card_univ, N.card_PlG k]
 
 /- English proof (translation)
-Simplify using `only [ToricLatticeDenominators.AOp, Formalism.MainNotions.IntegralHeckeForms.AO, LinearMap.smul_apply, card_eq (N := N), Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem AOp_apply (x : Y.Fm i j b) : ToricLatticeDenominators.AOp Y i j b x = Formalism.MainNotions.IntegralHeckeForms.AO Y i j b x := by
   simp only [ToricLatticeDenominators.AOp, Formalism.MainNotions.IntegralHeckeForms.AO, LinearMap.smul_apply, card_eq (N := N), Nat.cast_smul_eq_nsmul]
   rfl
 
 /- English proof (translation)
-Rewrite using `[ToricLatticeDenominators.ATheta, Formalism.MainNotions.IntegralHeckeForms.Th, Set.image_univ]`. Use `congr 1`. Conclude with `LinearMap.ext (AOp_apply Y i j b)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ATheta_eq : ToricLatticeDenominators.ATheta Y i j b =
     (Formalism.MainNotions.IntegralHeckeForms.Th Y i j b Set.univ).map (Formalism.MainNotions.IntegralHeckeForms.AO Y i j b) := by
@@ -686,7 +680,7 @@ theorem ATheta_eq : ToricLatticeDenominators.ATheta Y i j b =
   exact LinearMap.ext (AOp_apply Y i j b)
 
 /- English proof (translation)
-Use `haveI : CharZero (FractionRing (X.O0 i)) := charZero_of_injective_ringHom (X.emb0 i).injective`. Use `haveI : CharZero (X.O0 i) := (algebraMap (X.O0 i) (FractionRing (X.O0 i))).charZero`. Use `haveI : CharZero (X.O i) := charZero_of_injective_ringHom (X.O_inj i)`. Conclude with `Nat.cast_ne_zero.2 D.what₂.restRowsFiniteGroupCard_pos.ne'`.
+A detailed English derivation is pending.
 -/
 theorem card_ne_zero : ((D.what₂.restRowsFiniteGroupCard : ℕ) : X.O i) ≠ 0 := by
   haveI : CharZero (FractionRing (X.O0 i)) := charZero_of_injective_ringHom (X.emb0 i).injective
@@ -695,13 +689,13 @@ theorem card_ne_zero : ((D.what₂.restRowsFiniteGroupCard : ℕ) : X.O i) ≠ 0
   exact Nat.cast_ne_zero.2 D.what₂.restRowsFiniteGroupCard_pos.ne'
 
 /- English proof (translation)
-Use `set n : X.O i := ((D.what₂.restRowsFiniteGroupCard : ℕ) : X.O i) with hn`. Establish `hn0 : algebraMap (X.O i) (FractionRing (X.O i)) n ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 (card_ne_zero i)`. Establish `hinj : Function.Injective (n • LinearMap.id : Y.Fm i j b →ₗ[X.O i] Y.Fm i j b)`. Introduce `x y hxy`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply] at hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hxy` using `[← algebraMap_smul (FractionRing (X.O i)) n x, ← algebraMap_smul (FractionRing (X.O i)) n y]`. Conclude with `smul_right_injective _ hn0 hxy`. Establish `e1 : (Formalism.MainNotions.IntegralHeckeForms.eTh Y i j b Sg).map (n • LinearMap.id) = (Formalism.MainNotions.IntegralHeckeForms.Th Y i j b Sg).map (Formalism.MainNotions.IntegralHeckeForms.AO Y i j b)`. Rewrite using `[Formalism.MainNotions.IntegralHeckeForms.eTh, ← Submodule.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e2 : ((Formalism.MainNotions.IntegralHeckeForms.V0 Y i j b).restrictScalars (X.O i)).map (n • LinearMap.id) = (Formalism.MainNotions.IntegralHeckeForms.V0 Y i j b).restrictScalars (X.O i)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `Submodule.smul_mem _ n hx`. Introduce `x hx`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(algebraMap (X.O i) (FractionRing (X.O i)) n)⁻¹ • x, Submodule.smul_mem (Formalism.MainNotions.IntegralHeckeForms.V0 Y i j b) _ hx, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[← algebraMap_smul (FractionRing (X.O i)) n, smul_inv_smul₀ hn0]`. Rewrite using `[← isLatIn_map_iff _ hinj, e1, e2, ← isLatIn_iff]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eTh_isLatIn (Sg : Set (Y.Dat i j b))
     (h : ToricLatticeDenominators.IsLatIn (Formalism.MainNotions.IntegralHeckeForms.V0 Y i j b) ((Formalism.MainNotions.IntegralHeckeForms.Th Y i j b Sg).map (Formalism.MainNotions.IntegralHeckeForms.AO Y i j b))) :
@@ -732,13 +726,11 @@ theorem eTh_isLatIn (Sg : Set (Y.Dat i j b))
 variable (E : Formalism.MainNotions.IntegralHeckeForms.ExpDat Y)
 
 /- English proof (translation)
-Rewrite `h1`, `h2` using `[Formalism.MainNotions.IntegralHeckeForms.SgJ, hE]`. Establish `hr : (Set.range fun a : Fin S.card => ToricLatticeDenominators.AOp Y i j b (Y.th i j b (S.equivFin.symm a))) = (fun a => Formalism.MainNotions.IntegralHeckeForms.AO Y i j b (Y.th i j b a)) '' ↑S`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, (S.equivFin.symm a).2, (AOp_apply Y i j b _).symm⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨S.equivFin ⟨a, ha⟩, by simp [AOp_apply]⟩`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ATheta_eq, ← h2.2.2]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.fg_span (S.finite_toSet.image _)`. Rewrite using `[ATheta_eq, jointSpan_eq]`. Conclude with `h1.2.2`. Simplify using `only [AOp_apply]`. Conclude with `h2.2.1.comp _ S.equivFin.symm.injective`.
-
-Rewrite using `[hr, ATheta_eq, h2.2.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBasisSeries_of_basisOf (hE : E.Dat0 i j b = Set.univ) (S : Finset (Y.Dat i j b))
     (h1 : Formalism.MainNotions.IntegralHeckeForms.FullRk Y E i j b (Formalism.MainNotions.IntegralHeckeForms.SgJ Y E i j b))
@@ -764,13 +756,13 @@ theorem isBasisSeries_of_basisOf (hE : E.Dat0 i j b = Set.univ) (S : Finset (Y.D
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.IntegralHeckeForms.SgJ, hE]`. Take `⟨⟨-, h1⟩, h2, h3⟩` from `h`. Rewrite `h1` using `[ATheta_eq, jointSpan_eq]`. Rewrite `h3` using `[ATheta_eq]`. Simplify using `only [AOp_apply] at h2 h3`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨⟨by rw [hE], fun x hx => ?_, h1⟩, Set.subset_univ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1]`. Conclude with `Submodule.subset_span hx`. Establish `hc : ∀ a : ↥(Finset.univ.image d), ∃ t, d t = a` using `fun a => by`. Take `⟨t, -, ht⟩` from `Finset.mem_image.1 a.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨t, ht⟩`. Use `choose t ht using hc`. Use `h2.comp t (fun a a' e => Subtype.ext (by rw [← ht a, ← ht a', e]))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ht]`. Rewrite using `[← h3, Finset.coe_image, Finset.coe_univ, Set.image_univ, ← Set.range_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem basisOf_of_isBasisSeries (hE : E.Dat0 i j b = Set.univ) {n : ℕ} (d : Fin n → Y.Dat i j b)
     (h : ToricLatticeDenominators.IsBasisSeries Y i j b d) :
@@ -795,7 +787,7 @@ theorem basisOf_of_isBasisSeries (hE : E.Dat0 i j b = Set.univ) {n : ℕ} (d : F
     rfl
 
 /- English proof (translation)
-Rewrite using `[← h.1.2]`. Conclude with `Submodule.subset_span ⟨_, Submodule.subset_span ⟨a, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_part_mem_basis_series {n : ℕ} (d : Fin n → Y.Dat i j b) (h : ToricLatticeDenominators.IsBasisSeries Y i j b d) (a : Y.Dat i j b) :
     ToricLatticeDenominators.AOp Y i j b (Y.th i j b a) ∈ ToricLatticeDenominators.V0 Y i j b := by
@@ -803,11 +795,11 @@ theorem good_part_mem_basis_series {n : ℕ} (d : Fin n → Y.Dat i j b) (h : To
   exact Submodule.subset_span ⟨_, Submodule.subset_span ⟨a, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ a, ToricLatticeDenominators.AOp Y i j b (Y.th i j b a) = 0`. Introduce `a`. Take `⟨a', ha'⟩` from `hg a`. Establish `h1` using `(mem_typePart Y i j b _).1 (good_part_mem_basis_series Y i j b d h a).2 u`. Establish `h2` using `(mem_typePart Y i j b _).1 (good_part_mem_basis_series Y i j b d h a').2 u'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ToricLatticeDenominators.AOp Y i j b (Y.th i j b a') = Y.actG i j b g (ToricLatticeDenominators.AOp Y i j b (Y.th i j b a))`. Rewrite using `[ha']`. Simplify using `only [ToricLatticeDenominators.AOp, LinearMap.smul_apply, eOp_comm, map_smul]`. Use `set x := ToricLatticeDenominators.AOp Y i j b (Y.th i j b a)`. Rewrite `h2` using `[h3, ← LinearEquiv.mul_apply, ← map_mul, hu, map_mul, LinearEquiv.mul_apply, h1, map_smul, ← sub_eq_zero, ← sub_smul, smul_eq_zero, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `h2 with h2 | h2` into its components or cases. Conclude with `absurd (Units.ext h2).symm hψ`. Conclude with `(Y.actG i j b g).map_eq_zero_iff.1 h2`. Rewrite using `[← h.1.2, ← h.2.2]`. Simplify using `[key]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_part_bot_of_translate {n : ℕ} (d : Fin n → Y.Dat i j b) (h : ToricLatticeDenominators.IsBasisSeries Y i j b d)
     (g : G0g N) (hg : ∀ a, ∃ a', Y.th i j b a' = Y.actG i j b g (Y.th i j b a))
@@ -830,9 +822,9 @@ theorem good_part_bot_of_translate {n : ℕ} (d : Fin n → Y.Dat i j b) (h : To
   simp [key]
 
 /- English proof (translation)
-Establish `: ToricLatticeDenominators.ATheta Y i j b = ⊥`. Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal (X.O i)) _ h.1.1 ?_ (IsLocalRing.maximalIdeal_le_jacobson _)` and prove the remaining obligations. Rewrite using `[ToricLatticeDenominators.ATheta, ToricLatticeDenominators.Theta, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨a, rfl⟩, rfl⟩`. Take `⟨a', ha'⟩` from `hd a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← ha', map_smul]`. Conclude with `Submodule.smul_mem_smul hc (Submodule.subset_span ⟨_, ⟨a', rfl⟩, rfl⟩)`. Rewrite using `[← h.1.2, this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_part_bot_of_divisible {n : ℕ} (d : Fin n → Y.Dat i j b) (h : ToricLatticeDenominators.IsBasisSeries Y i j b d)
     (c : X.O i) (hc : c ∈ IsLocalRing.maximalIdeal (X.O i))
@@ -856,9 +848,9 @@ variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : N
   (bkP : BKPh X)
 
 /- English proof (translation)
-Take `⟨e, h0, h1, h2⟩` from `h`. Establish `hi : (0 : ℝ) ≤ (nu X i : ℝ)` using `Nat.cast_nonneg _`. Use `(Finset.sum_le_sum fun s hs => h2 s ((mem_SigG bkP i s).1 hs)).trans ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_sum_of_nonneg fun s _ => add_nonneg hi (h0 s)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem partA_of_partAT {i : X.Tw} {Q : Finset (PlE D.host)} {k' : ℕ} {ψ' : X.RCG i Q →* (X.Ok i k')ˣ} {eps' : ℝ}
     (h : partAT bkP i Q k' ψ' eps') : partA bkP i Q k' ψ' eps' := by
@@ -901,7 +893,7 @@ def RankAt (i : X.Tw) : Prop :=
       Formalism.MainNotions.IntegralHeckeForms.BasisOf Y i j b (Formalism.MainNotions.IntegralHeckeForms.SgJ Y E i j b) (S j b)
 
 /- English proof (translation)
-Take `⟨h1, -, e, h0, hs, h⟩` from `h`. Establish `h` using `h 1 isCoprime_one_left`. Rewrite `h` using `[zpow_one]`. Conclude with `⟨h1, ⟨e, h0, hs, fun j hj b => (h.1 j hj b).1⟩, fun j hj b => (h.1 j hj b).2, h.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem goodTw_of_goodAll {N0 : X.Tw → ℕ} {i : X.Tw} {eps' : ℝ} {S : ∀ (j : ℕ) (b : Bool), Finset (Y.Dat i j b)}
     {A Q : Finset (PlE D.host)} {k' : ℕ} {ψ' : X.RCG i Q →* (X.Ok i k')ˣ}
@@ -912,7 +904,7 @@ theorem goodTw_of_goodAll {N0 : X.Tw → ℕ} {i : X.Tw} {eps' : ℝ} {S : ∀ (
   exact ⟨h1, ⟨e, h0, hs, fun j hj b => (h.1 j hj b).1⟩, fun j hj b => (h.1 j hj b).2, h.2⟩
 
 /- English proof (translation)
-Introduce `hs eps' he hr S hS A`. Take `⟨Q, k', ψ', h⟩` from `h hs eps' he hr S hS A`. Conclude with `⟨Q, k', ψ', goodTw_of_goodAll bkP Y E h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem first_typing_of_export_all (N0 : X.Tw → ℕ) (i : X.Tw) (h : exportAll bkP Y E N0 i) :
     Formalism.MainNotions.IntegralHeckeForms.TwistTheoremAtIndex Y bkP E N0 i := by
@@ -922,7 +914,7 @@ theorem first_typing_of_export_all (N0 : X.Tw → ℕ) (i : X.Tw) (h : exportAll
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [PsiOk, Finset.disjoint_union_right, disjoint_comm (a := B)]`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem psiOk_union_iff {i : X.Tw} (B A Q : Finset (PlE D.host)) (k' : ℕ) (ψ' : X.RCG i Q →* (X.Ok i k')ˣ) :
     PsiOk i (B ∪ A) Q k' ψ' ↔ PsiOk i A Q k' ψ' ∧ Disjoint B Q := by
@@ -930,7 +922,7 @@ theorem psiOk_union_iff {i : X.Tw} (B A Q : Finset (PlE D.host)) (k' : ℕ) (ψ'
   tauto
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.IntegralHeckeForms.levs, Finset.disjoint_biUnion_left, Finset.mem_univ, true_imp_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem disjoint_levs_iff (i : X.Tw) (S : ∀ (j : ℕ) (b : Bool), Finset (Y.Dat i j b)) (Q : Finset (PlE D.host)) :
     Disjoint (Formalism.MainNotions.IntegralHeckeForms.levs Y i S) Q ↔
@@ -945,15 +937,15 @@ def AwaySpans (i : X.Tw) : Prop :=
 open Classical in
 
 /- English proof (translation)
-Establish `key : ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b, ∀ {n : ℕ} (d : Fin n → bkP.ex.Dat i j b), ToricLatticeDenominators.IsBasisSeries bkP.ex i j b d → ∀ {A Q : Finset (PlE D.host)} {k' : ℕ} {ψ' : X.RCG i Q →* (X.Ok i k')ˣ}, PsiOk i A Q k' ψ' → ∀ (ψ : GE N →* (X.Ok i k')ˣ) (ε : ℝ), (ToricLatticeD …`. Introduce `j hj b n d hd A Q k' ψ' hψ ψ ε`. Rewrite using `[Formalism.MainNotions.IntegralHeckeForms.SgJ, hE j hj b]`. Use `partBAt_iff _ i j b k' Q ψ ε (eTh_isLatIn _ i j b _ ?_) (hQ j hj b k' Q ψ (fun P hP => (hψ.1 P hP).1) (Finset.disjoint_union_right.1 hψ.2.1).1)` and prove the remaining obligations. Rewrite using `[← ATheta_eq, ← jointSpan_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd.1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun hs => ?_, fun hs eps' he _ S _ A => ?_⟩` and prove the remaining obligations. Take `⟨n, d, hd, -⟩` from `h hs`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨fun j b => Finset.univ.image (d j b), fun j hj b => basisOf_of_isBasisSeries _ i j b E (hE j hj b) _ (hd j hj b)⟩`. Take `⟨n, d, hd, H⟩` from `h hs`. Take `⟨Q, k', ψ', e, h1, -, h2, h3, h4, h5⟩` from `H eps' he (Formalism.MainNotions.IntegralHeckeForms.levs bkP.ex i S ∪ A)`. Use `⟨Q, k', ψ', h1, h2, e, h3, h4, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨-, g2, g3, g4⟩` from `h5 a ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨fun j hj b => (key j hj b _ (hd j hj b) h1 _ _).1 (g3 j hj b), g2, g4⟩`. Introduce and unpack `⟨h1, h2⟩ hs`. Take `⟨S, hS⟩` from `h1 hs`. Establish `hd` using `fun j hj b => isBasisSeries_of_basisOf _ i j b E (hE j hj b) (S j b) (hS j hj b).1 (hS j hj b).2`. Use `⟨fun j b => (S j b).card, fun j b a => (S j b).equivFin.symm a, hd, fun eps' he A => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, k', ψ', g1, g2, e, g3, g4, g5⟩` from `h2 hs eps' he (fun j hj b => (hS j hj b).1) S (fun j hj b => (hS j hj b).2) A`. Take `⟨g0, g1'⟩` from `(psiOk_union_iff _ _ _ _ _).1 g1`. Use `⟨Q, k', ψ', e, g0, fun j hj b a => (disjoint_levs_iff _ i S Q).1 g1' j hj b _ ((S j b).equivFin.symm a).2, g2, g3, g4, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨f1, f2, f3⟩` from `g5 a ha`. Conclude with `⟨partA_of_partAT bkP f2, f2, fun j hj b => (key j hj b _ (hd j hj b) g0 _ _).2 (f1 j hj b), f3⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exportAt_iff (E : Formalism.MainNotions.IntegralHeckeForms.ExpDat bkP.ex) (N0 : X.Tw → ℕ) (i : X.Tw)
     (hE : ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b, E.Dat0 i j b = Set.univ) (hQ : AwaySpans bkP.ex i) :
@@ -1000,14 +992,14 @@ def ExportAllConjugates (D : Formalism.BasicNotions.D7) (bkP : Formalism.MainNot
   ∀ i, D.ntw.NonzeroIndexPlace i → exportAll (Formalism.MainNotions.BlochKatoReduction.pin bkP) D.nexp E N0 i
 
 /- English proof (translation)
-Introduce `i hi` and use `first_typing_of_export_all _ _ _ N0 i (h i hi)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem export_of_all_conjugates {D : Formalism.BasicNotions.D7} {bkP : Formalism.MainNotions.BlochKatoReduction.BK D} {E : Formalism.MainNotions.IntegralHeckeForms.XD D} {N0 : D.ntw.Tw → ℕ}
     (h : ExportAllConjugates D bkP E N0) : Formalism.MainNotions.IntegralHeckeForms.aux₃ D bkP E N0 :=
   fun i hi => first_typing_of_export_all _ _ _ N0 i (h i hi)
 
 /- English proof (translation)
-Establish `h : ToricLatticeDenominators.aux₃ D bkP N0 ↔ (∀ i, D.ntw.NonzeroIndexPlace i → SetHyp (Formalism.MainNotions.BlochKatoReduction.pin bkP) i → RankAt D.nexp E i) ∧ ExportAllConjugates D bkP E N0`. Use `fun i hi => exportAt_iff (Formalism.MainNotions.BlochKatoReduction.pin bkP) E N0 i (hE i hi) (hQ i hi)` as an intermediate fact. Conclude with `⟨fun h => ⟨fun i hi => ((this i hi).1 (h i hi)).1, fun i hi => ((this i hi).1 (h i hi)).2⟩, fun h i hi => (this i hi).2 ⟨h.1 i hi, h.2 i hi⟩⟩`. Conclude with `⟨h, fun h' => export_of_all_conjugates (h.1 h').2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem compare (D : Formalism.BasicNotions.D7) (bkP : Formalism.MainNotions.BlochKatoReduction.BK D) (E : Formalism.MainNotions.IntegralHeckeForms.XD D) (N0 : D.ntw.Tw → ℕ)
     (hE : ∀ i, D.ntw.NonzeroIndexPlace i → ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b, E.Dat0 i j b = Set.univ)

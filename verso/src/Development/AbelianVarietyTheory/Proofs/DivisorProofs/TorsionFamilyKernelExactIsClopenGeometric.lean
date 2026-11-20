@@ -15,7 +15,7 @@ namespace GlobalTheory.KerClopen
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Set `φ : Multiplicative L →* (T' ⟶ G)` to `MonoidHom.mk' (fun x => h ≫ e x.toAdd) fun x y => by`. Express the relevant statement in the definitionally equal form `h ≫ e (x.toAdd + y.toAdd) = _`. Rewrite using `[he, MonObj.comp_mul]`. Conclude with `map_zpow φ (Multiplicative.ofAdd a) n`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_zsmul {L : Type} [AddCommGroup L] {G T T' : Over S} [GrpObj G] (e : L → (T ⟶ G))
     (he : ∀ a c, e (a + c) = e a * e c) (h : T' ⟶ T) (n : ℤ) (a : L) : h ≫ e (n • a) = (h ≫ e a) ^ n := by
@@ -26,11 +26,11 @@ theorem comp_zsmul {L : Type} [AddCommGroup L] {G T T' : Over S} [GrpObj G] (e :
   exact map_zpow φ (Multiplicative.ofAdd a) n
 
 /- English proof (translation)
-Take `⟨Z₁, et, R⟩` from `GlobalTheory.exists_finiteEtale_latticeTorsionHom S G M ℤ hG hM`. Establish `hx : ∀ n m : ℤ, e ((n + m) • a) = e (n • a) * e (m • a)` using `fun n m => by rw [add_smul, he]`. Establish `hx' : ∀ n : ℤ, e (n • a) ^ M = 1` using `fun n => hM' _`. Establish `R' : GlobalTheory.LevCover.RepTors G M ℤ Z₁ et` using `R`. Establish `C` using `GlobalTheory.LevCover.RepTors.clopenCond (T := Z) R' (fun n : ℤ => e (n • a)) (fun _ => 1) hx hx' (fun _ _ => (_root_.mul_one _).symm) (fun _ => one_pow _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, hU, H⟩` from `C`. Use `⟨(U : Set Z.left), ⟨hU, U.isOpen⟩, fun k _ _ x => ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.HkClopen.range_subset_iff x]`. Use `(H (Over.mk (x ≫ Z.hom)) (Over.homMk x rfl)).symm` as an intermediate fact. Use `this.trans ⟨fun h1 => ?_, fun h1 n => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1 1` as an intermediate fact. Rewrite `this` using `[one_smul, MonObj.comp_one]`. Then use the resulting hypothesis. Rewrite using `[MonObj.comp_one, comp_zsmul e he, h1, one_zpow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_one (G : Over S) [GrpObj G] [IsCommMonObj G] (hG : IsAbelianScheme G) (M : ℕ)
     (hM : IsUnit (M : Γ(S, ⊤))) {L : Type} [AddCommGroup L] (Z : Over S) (e : L → (Z ⟶ G))
@@ -56,13 +56,13 @@ end GlobalTheory.KerClopen
 
 open GlobalTheory.KerClopen in
 /- English proof (translation)
-Introduce `S G _ _ hG M h hM0 hM Z e he hM'`. Set `L` to `Fin h ⊕ Fin h → ℤ`. Take `⟨κ, _, q, hq⟩` from `GlobalTheory.LevCover.exists_finite_mod L hM0`. Set `I₀` to `Set.range q`. Set `r : I₀ → L` to `fun i => i.2.choose`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hr : ∀ i : I₀, q (r i) = i.1` using `fun i => i.2.choose_spec`. Establish `hP : ∀ a c : L, e (a + M • c) = e a` using `fun a c => by`. Rewrite using `[he, GlobalTheory.LevCover.add_map_nsmul he, hM', _root_.mul_one]`. Establish `hQ : ∀ a c : L, (∃ d, a + M • c = M • d) ↔ ∃ d, a = M • d` using `fun a c => ⟨fun ⟨d, hd⟩ => ⟨d - c, by rw [smul_sub, ← hd, add_sub_cancel_right]⟩, fun ⟨d, hd⟩ => ⟨d + c, by rw [hd, smul_add]⟩⟩`. Establish `Lc` using `GlobalTheory.HkClopen.Loc.comb (I₀ := I₀) (fun i => loc_one G hG M hM Z e he hM' (r i)) fun f => ∀ i, (f i ↔ ∃ c, r i = M • c)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Lc.congr fun k _ _ x => ⟨fun H a => ?_, fun H i => H (r i)⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hq (r ⟨q a, a, rfl⟩) a (hr _)`. Use `H ⟨q a, a, rfl⟩` as an intermediate fact. Use `beta_reduce at this`. Use `revert this hc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses.
 
-Generalize the expression as in `r ⟨q a, a, rfl⟩ = a₀`. Introduce `hc this`. Substitute `hc` using the available equality. Rewrite using `[hP, hQ]`. Conclude with `this`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.kerClopen_geom : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G], IsAbelianScheme G → ∀ (M h : ℕ), 0 < M → IsUnit (M : Γ(S, ⊤)) → ∀ (Z : Over S) (e : (Fin h ⊕ Fin h → ℤ) → (Z ⟶ G)), (∀ a c, e (a + c) = e a * e c) → (∀ a, e a ^ M = 1) → GlobalTheory.HkClopen.Loc (S := Z.left) (fun k _ _ x => ∀ a, (Over.homMk x rfl : Over.mk (x ≫ Z.hom) ⟶ Z) ≫ e a = 1 ↔ ∃ c, a = M • c) := by
   intro S G _ _ hG M h hM0 hM Z e he hM'

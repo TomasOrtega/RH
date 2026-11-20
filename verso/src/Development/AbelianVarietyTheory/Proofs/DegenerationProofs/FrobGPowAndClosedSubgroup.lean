@@ -15,7 +15,7 @@ def Raises {X : Scheme.{0}} (φ : X ⟶ X) (n : ℕ) (U : X.Opens) (f : Γ(X, U)
   ∃ h : U = φ ⁻¹ᵁ U, (φ.appLE U U h.le).hom f = f ^ n
 
 /- English proof (translation)
-Take `⟨e₁, p₁⟩` from `h₁`. Take `⟨e₂, p₂⟩` from `h₂`. Use `⟨by rw [Scheme.Hom.comp_preimage, ← e₂, ← e₁], ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.appLE_comp_appLE φ ψ U U U e₂.le e₁.le, CommRingCat.hom_comp, RingHom.comp_apply, p₂, map_pow, p₁, ← pow_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Raises.comp {X : Scheme.{0}} {φ ψ : X ⟶ X} {a b : ℕ} {U : X.Opens} {f : Γ(X, U)}
     (h₁ : Raises φ a U f) (h₂ : Raises ψ b U f) : Raises (φ ≫ ψ) (a * b) U f := by
@@ -26,9 +26,9 @@ theorem Raises.comp {X : Scheme.{0}} {φ ψ : X ⟶ X} {a b : ℕ} {U : X.Opens}
     map_pow, p₁, ← pow_mul]
 
 /- English proof (translation)
-Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base => rwa [Nat.mul_one]`. Consider the case `succ n hn ih`. Use `h.comp ih` as an intermediate fact. Rewrite using `[Nat.mul_succ, pow_add, pow_add, mul_comm (q ^ (m * n))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem Raises.mul {S : Scheme.{0}} {G : Over S} (F : End G) (q m : ℕ) {U : G.left.Opens} {f : Γ(G.left, U)}
     (h : Raises (show G ⟶ G from F ^ m).left (q ^ m) U f) (n : ℕ) (hn : 1 ≤ n) :
@@ -41,11 +41,11 @@ theorem Raises.mul {S : Scheme.{0}} {G : Over S} (F : End G) (q m : ℕ) {U : G.
     exact this
 
 /- English proof (translation)
-Take `⟨e, p⟩` from `h`. Establish `e' : ν ⁻¹ᵁ V = ψ ⁻¹ᵁ ν ⁻¹ᵁ V`. Rewrite using `[← Scheme.Hom.comp_preimage, hc, Scheme.Hom.comp_preimage, ← e]`. Use `⟨e', ?_⟩` and prove the remaining obligations. Establish `k : ∀ (θ θ' : Y ⟶ X) (_ : θ = θ') h h', θ.appLE V (ν ⁻¹ᵁ V) h = θ'.appLE V (ν ⁻¹ᵁ V) h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `_ _ rfl _ _`. Both sides reduce to the same expression. Establish `k2 : ν.appLE V (ν ⁻¹ᵁ V) le_rfl ≫ ψ.appLE _ _ e'.le = φ.appLE V V e.le ≫ ν.appLE V (ν ⁻¹ᵁ V) le_rfl`. Rewrite using `[Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `k _ _ hc _ _`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.app_eq_appLE]`. Use `congrArg (fun t => t.hom g) k2` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Rewrite using `[this, p, map_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Raises.pull {X Y : Scheme.{0}} (ν : Y ⟶ X) {φ : X ⟶ X} {ψ : Y ⟶ Y} (hc : ψ ≫ ν = ν ≫ φ) {a : ℕ}
     {V : X.Opens} {g : Γ(X, V)} (h : Raises φ a V g) : Raises ψ a (ν ⁻¹ᵁ V) ((ν.app V).hom g) := by
@@ -65,11 +65,11 @@ theorem Raises.pull {X Y : Scheme.{0}} (ν : Y ⟶ X) {φ : X ⟶ X} {ψ : Y ⟶
   rw [this, p, map_pow]
 
 /- English proof (translation)
-Establish `hU' : U = iSup V` using `le_antisymm hU (iSup_le hV)`. Establish `e : U = φ ⁻¹ᵁ U`. Rewrite using `[hU', Scheme.Hom.preimage_iSup]`. Conclude with `iSup_congr fun i => (h i).1`. Use `⟨e, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `X.sheaf.eq_of_locally_eq' V U (fun i => homOfLE (hV i)) hU _ _ fun i => ?_` and prove the remaining obligations. Take `⟨e', p⟩` from `h i`. Establish `k2 : φ.appLE U U e.le ≫ X.presheaf.map (homOfLE (hV i)).op = X.presheaf.map (homOfLE (hV i)).op ≫ φ.appLE _ _ e'.le`. Rewrite using `[Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`. Use `congrArg (fun t => t.hom f) k2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Conclude with `this.trans (p.trans (map_pow _ _ _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem Raises.of_cover {X : Scheme.{0}} {φ : X ⟶ X} {a : ℕ} {U : X.Opens} {f : Γ(X, U)} {I : Type}
     (V : I → X.Opens) (hV : ∀ i, V i ≤ U) (hU : U ≤ iSup V)
@@ -89,7 +89,7 @@ theorem Raises.of_cover {X : Scheme.{0}} {φ : X ⟶ X} {a : ℕ} {U : X.Opens} 
   exact this.trans (p.trans (map_pow _ _ _).symm)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Simplify using `only [pow_succ, End.mul_def, Category.assoc] at *`. Rewrite using `[ih, reassoc_of% h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_comm_hom {C : Type*} [Category C] {N G : C} (ν : N ⟶ G) (F : End G) (F' : End N)
     (h : (show N ⟶ N from F') ≫ ν = ν ≫ (show G ⟶ G from F)) (m : ℕ) :
@@ -101,7 +101,7 @@ theorem pow_comm_hom {C : Type*} [Category C] {N G : C} (ν : N ⟶ G) (F : End 
     rw [ih, reassoc_of% h]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact inferInstanceAs (IsMonHom (𝟙 G))`. Consider the case `succ m ih`. Rewrite using `[pow_succ]`. Conclude with `inferInstanceAs (IsMonHom ((show G ⟶ G from F) ≫ (show G ⟶ G from F ^ m)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonHom_pow {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] (F : End G)
     (h : IsMonHom (show G ⟶ G from F)) (m : ℕ) : IsMonHom (show G ⟶ G from F ^ m) := by
@@ -116,19 +116,17 @@ end GlobalTheory.SS.FrobSub
 open GlobalTheory.SS.FrobSub in
 
 /- English proof (translation)
-Introduce `k _ G _ _ F q hF`. Use `⟨fun m hm => ⟨isMonHom_pow G F hF.1 m, fun U hU f => ?_⟩, fun N _ ν F' _ hν hF' hc => ⟨hF', fun U hU f => ?_⟩⟩` and prove the remaining obligations. Take `⟨n, hn, h⟩` from `hF.2 U hU f`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Use `Raises.mul F q n h m hm` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_comm, pow_mul, pow_mul]`. Conclude with `this`. Establish `key : ∀ x : U, ∃ (W : N.left.Opens) (hW : W ≤ U) (m : ℕ), x.1 ∈ W ∧ 1 ≤ m ∧ Raises (show N ⟶ N from F' ^ m).left (q ^ m) W ((N.left.presheaf.map (homOfLE hW).op).hom f)`. Introduce `x`. Take `⟨W, hW, hWU⟩` from `ν.left.isClosedEmbedding.isInducing.isOpen_iff.1 U.isOpen`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : ν.left x.1 ∈ (⟨W, hW⟩ : G.left.Opens)` using `by show x.1 ∈ ν.left ⁻¹' W`. Rewrite using `[hWU]`. Conclude with `x.2`. Take `⟨V, hV, hxV, hVW⟩` from `exists_isAffineOpen_mem_and_subset hx`. Establish `hle : ν.left ⁻¹ᵁ V ≤ U` using `fun y hy => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `: y ∈ ν.left ⁻¹' W` using `hVW hy`. Rewrite `this` using `[hWU]`. Then use the resulting hypothesis. Take `⟨g, hg⟩` from `ν.left.app_surjective V hV ((N.left.presheaf.map (homOfLE hle).op).hom f)`. Take `⟨m, hm, h⟩` from `hF.2 V hV g`. Use `⟨_, hle, m, hxV, hm, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hg]`. Use `Raises.pull ν.left ?_ h` and prove the remaining obligations. Conclude with `congrArg (fun t => t.left) (pow_comm_hom ν F F' hc m)`. Use `choose W hW m hxW hm hR using key`. Take `⟨t, ht⟩` from `hU.isCompact.elim_finite_subcover (fun x => (W x : Set N.left)) (fun x => (W x).isOpen) (fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, hxW ⟨y, hy⟩⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hpos : 1 ≤ ∏ x ∈ t, m x` using `Finset.one_le_prod' fun x _ => hm x`. Use `⟨∏ x ∈ t, m x, hpos, ?_⟩` and prove the remaining obligations. Use `Raises.of_cover (fun x : t => W x.1) (fun x => hW x.1) (fun y hy => ?_) fun x => ?_` and prove the remaining obligations. Take `⟨x, hx, hy'⟩` from `Set.mem_iUnion₂.1 (ht hy)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hx⟩, hy'⟩`.
-
-Take `⟨n, hn⟩` from `Finset.dvd_prod_of_mem m x.2`. Establish `hn1 : 1 ≤ n` using `Nat.pos_of_ne_zero fun h0 => by rw [hn, h0] at hpos; simp at hpos`. Rewrite using `[hn]`. Conclude with `Raises.mul F' q _ (hR x.1) n hn1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SS.frobG_pow_and_closed_subgroup : ∀ (k : Type) [Field k] (G : Over (Sp k)) [GrpObj G], SmConn G → ∀ (F : End G) (q : ℕ), FrobG G F q → (∀ m, 1 ≤ m → FrobG G (F ^ m) (q ^ m)) ∧ ∀ (N : Over (Sp k)) [GrpObj N] (ν : N ⟶ G) (F' : End N), IsMonHom ν → IsClosedImmersion ν.left → IsMonHom (show N ⟶ N from F') → (show N ⟶ N from F') ≫ ν = ν ≫ (show G ⟶ G from F) → FrobG N F' q := by
   intro k _ G _ _ F q hF

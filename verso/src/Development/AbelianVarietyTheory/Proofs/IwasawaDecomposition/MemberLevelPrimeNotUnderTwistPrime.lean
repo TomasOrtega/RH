@@ -8,7 +8,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.ChEx
 
 /- English proof (translation)
-Introduce `B X I hI _ u a P`. Establish `hP : P.1 ∈ uSG (B.primes X).vGs I.SQ` using `Finset.mem_union.2 (Or.inr (I.mem_SQ.2 ⟨a, P.2⟩))`. Conclude with `GlobalTheory.Mem.LevTwist.T_notMem_under_uSG B X I hI u P.1 hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem T_notMem_qv : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → (B.primes X).Ok → ∀ (u : B.Word) (a : I.ι) (P : I.Q a), (B.T u : 𝓞 B.host.F) ∉ (qv B.host.F P.1).asIdeal := by
   classical

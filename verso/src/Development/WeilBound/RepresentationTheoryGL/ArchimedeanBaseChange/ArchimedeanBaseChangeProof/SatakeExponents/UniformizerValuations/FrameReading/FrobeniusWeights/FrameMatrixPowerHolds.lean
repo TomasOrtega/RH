@@ -14,30 +14,30 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.F.FG
 
 /- English proof (translation)
-The claim follows from `FA.fmOne_of intHint slots BlockFiniteConvolution.finConv'`.
+A detailed English derivation is pending.
 -/
 theorem frame_matrix_one_holds : Tail.FmOne := FA.fmOne_of intHint slots BlockFiniteConvolution.finConv'
 
 /- English proof (translation)
-The claim follows from `goodLOf_holds RS.reading_split_holds frame_matrix_one_holds Tail.actHecke_holds BlockFiniteConvolution.locOk₀ conjFix_holds (uSatOf_holds Eig.CSD.splitDict) ctHecke_holds`.
+A detailed English derivation is pending.
 -/
 theorem good_level_holds : GoodL :=
   goodLOf_holds RS.reading_split_holds frame_matrix_one_holds Tail.actHecke_holds BlockFiniteConvolution.locOk₀ conjFix_holds
     (uSatOf_holds Eig.CSD.splitDict) ctHecke_holds
 
 /- English proof (translation)
-The claim follows from `weightLOf_holds SpectralAccumulation.Trees.infTree gamma_zeta_nabla_cancel.regDom RS.joinInf_holds RS.treeInf_holds RS.weightJoin_holds`.
+A detailed English derivation is pending.
 -/
 theorem weight_limit_holds : WeightL :=
   weightLOf_holds SpectralAccumulation.Trees.infTree gamma_zeta_nabla_cancel.regDom RS.joinInf_holds RS.treeInf_holds RS.weightJoin_holds
 
 /- English proof (translation)
-The claim follows from `frGoodOf_holds good_level_holds h`.
+A detailed English derivation is pending.
 -/
 theorem frGood_of (h : LevRead) : FRGood := frGoodOf_holds good_level_holds h
 
 /- English proof (translation)
-The claim follows from `frWeightOf_holds weight_limit_holds`.
+A detailed English derivation is pending.
 -/
 theorem frame_weight_holds : FRWeight := frWeightOf_holds weight_limit_holds
 

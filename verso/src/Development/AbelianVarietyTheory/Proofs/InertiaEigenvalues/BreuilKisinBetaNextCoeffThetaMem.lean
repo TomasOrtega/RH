@@ -18,19 +18,19 @@ namespace GlobalTheory.BKLim.BetaStep
 variable {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K)
 
 /- English proof (translation)
-Introduce `h` and use `bk.E_ne_zero (bk.ev_injective (by rw [h, map_zero]))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem evE_ne_zero : bk.ev bk.E ≠ 0 := fun h =>
   bk.E_ne_zero (bk.ev_injective (by rw [h, map_zero]))
 
 /- English proof (translation)
-Rewrite using `[← RingHom.mem_ker, ← bk.span_ev, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_eq_zero_iff (a : Ainf l) : Per.θ l a = 0 ↔ bk.ev bk.E ∣ a := by
   rw [← RingHom.mem_ker, ← bk.span_ev, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← theta_eq_zero_iff]`. Rewrite `h` using `[map_mul, map_pow, map_natCast]`. Establish `hne : ((l : OC l)) ^ n ≠ 0` using `pow_ne_zero _ (fun h0 => GlobalTheory.RingBasics.p_ne_zero (p := l) (by simpa using congrArg Subtype.val h0))`. Conclude with `(mul_eq_zero.mp h).resolve_left hne`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dvd_of_dvd_lpow_mul (n : ℕ) (c : Ainf l) (h : bk.ev bk.E ∣ (l : Ainf l) ^ n * c) :
     bk.ev bk.E ∣ c := by
@@ -41,11 +41,11 @@ theorem dvd_of_dvd_lpow_mul (n : ℕ) (c : Ainf l) (h : bk.ev bk.E ∣ (l : Ainf
   exact (mul_eq_zero.mp h).resolve_left hne
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => intro a _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `a h`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : bk.ev bk.E ∣ (l : Ainf l) ^ 1 * a`. Rewrite using `[pow_one]`. Conclude with `dvd_trans (dvd_pow_self _ (Nat.succ_ne_zero m)) h`. Take `⟨a', rfl⟩` from `dvd_of_dvd_lpow_mul bk 1 a h1`. Rewrite using `[pow_succ']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_dvd_mul_left` to reduce the goal to its premises. Apply `ih` to reduce the goal to its premises. Rewrite `h` using `[pow_succ', mul_left_comm]`. Conclude with `(mul_dvd_mul_iff_left (evE_ne_zero bk)).mp h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_dvd_of_l_mul (m : ℕ) : ∀ a : Ainf l,
     bk.ev bk.E ^ m ∣ (l : Ainf l) * a → bk.ev bk.E ^ m ∣ a := by
@@ -63,9 +63,9 @@ theorem pow_dvd_of_l_mul (m : ℕ) : ∀ a : Ainf l,
     exact (mul_dvd_mul_iff_left (evE_ne_zero bk)).mp h
 
 /- English proof (translation)
-Proceed by induction on `n generalizing a with`. Consider the case `zero => simpa using h`. Consider the case `succ n ih`. Apply `ih` to reduce the goal to its premises. Apply `pow_dvd_of_l_mul bk i` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← mul_assoc, ← pow_succ']`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_dvd_of_lpow (i n : ℕ) (a : Ainf l) (h : bk.ev bk.E ^ i ∣ (l : Ainf l) ^ n * a) :
     bk.ev bk.E ^ i ∣ a := by
@@ -82,31 +82,27 @@ end GlobalTheory.BKLim.BetaStep
 open GlobalTheory.BKLim.BetaStep in
 
 /- English proof (translation)
-Introduce `l _ K bk N d ρ F g w hw m k β hβ i n him γ hγ`. Use `haveI : IsDomain (Ainf l) := inclW_injective.isDomain (inclW l)`. Use `choose δ hδ using hγ`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul] at hδ`. Use `⟨Matrix.of δ, fun p q => ?_, fun p q => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Matrix.sub_apply, Matrix.smul_apply, hδ]`. Use `set P : Fin d → Fin d → Ainf l := fun a c => WittVector.frobenius (F.ε g a c) with hPdef`. Use `set σ := Per.σA (g : GQ l)`. Establish `hent : ∀ a b, bk.ev bk.E ^ m ∣ ∑ c, P a c * σ (bk.ev (β c b)) - bk.ev (β a b)`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hβ.2 g a b` as an intermediate fact. Simplify `this` using `[Matrix.sub_apply, Matrix.mul_apply, Matrix.map_apply, hPdef]`. Establish `hm : 0 < m` using `by omega`. Establish `hθβ : ∀ c b, Per.θ l (bk.ev (β c b)) = (l : OC l) ^ k * (if c = b then 1 else 0)`. Introduce `c b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2 : Per.θ l (bk.ev ((β - (l : bk.S) ^ k • (1 : Matrix (Fin d) (Fin d) bk.S)) c b)) = 0` using `(theta_eq_zero_iff bk _).2 (map_dvd bk.ev (hβ.1 c b))`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, map_sub, map_mul, map_pow, map_natCast] at h2`. Rewrite `h2` using `[sub_eq_zero]`. Apply the tactic sequence `rw [h2]; split_ifs <;> simp`. Establish `hlOC : ((l : ℕ) : OC l) ≠ 0` using `fun h => GlobalTheory.RingBasics.p_ne_zero (p := l) (by simpa using congrArg Subtype.val h)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hP : ∀ a c, Per.θ l (P a c) = if a = c then 1 else 0`. Introduce `a b`. Establish `h` using `(theta_eq_zero_iff bk _).2 ((dvd_pow_self _ hm.ne').trans (hent a b))`. Simplify using `only [σ, map_sub, map_sum, map_mul, GlobalTheory.BKLim.BetaBd.θ_σA_ev, hθβ, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Rewrite `h` using `[sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hl` using `pow_ne_zero k hlOC`. Apply `mul_right_cancel₀ hl` to reduce the goal to its premises. Apply the tactic sequence `rw [h]; split_ifs <;> simp`. Establish `hβe : ∀ c b, β c b = (l : bk.S) ^ n * γ c b + bk.E ^ i * δ c b` using `fun c b => by`. Rewrite using `[← hδ c b]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hσE : σ (bk.ev bk.E) ^ i = bk.ev bk.E ^ i * w ^ i` using `by rw [hw, mul_pow]`. Establish `hD : ∀ a b, ∑ c, P a c * σ (bk.ev (β c b)) - bk.ev (β a b) = (l : Ainf l) ^ n * (∑ c, P a c * σ (bk.ev (γ c b)) - bk.ev (γ a b)) + bk.ev bk.E ^ i * (w ^ i * ∑ c, P a c * σ (bk.ev (δ c b)) - bk.ev (δ a b))`. Introduce `a b`. Establish `e1 : ∀ c, P a c * σ (bk.ev (β c b)) = (l : Ainf l) ^ n * (P a c * σ (bk.ev (γ c b))) + bk.ev bk.E ^ i * (w ^ i * (P a c * σ (bk.ev (δ c b))))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `c`. Rewrite using `[hβe]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast, hσE]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun c _ => e1 c), Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, hβe a b]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDγ : ∀ a b, bk.ev bk.E ^ i ∣ ∑ c, P a c * σ (bk.ev (γ c b)) - bk.ev (γ a b)`. Introduce `a b`. Apply `pow_dvd_of_lpow bk i n` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : bk.ev bk.E ^ i ∣ ∑ c, P a c * σ (bk.ev (β c b)) - bk.ev (β a b)` using `(pow_dvd_pow _ (by omega)).trans (hent a b)`. Rewrite `h1` using `[hD]`. Conclude with `(dvd_add_left (dvd_mul_right _ _)).1 h1`. Use `choose η hη using hDγ`. Establish `hX : bk.ev bk.E ∣ (l : Ainf l) ^ n * η p q + (w ^ i * ∑ c, P p c * σ (bk.ev (δ c q)) - bk.ev (δ p q))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : bk.ev bk.E ^ i * ((l : Ainf l) ^ n * η p q + (w ^ i * ∑ c, P p c * σ (bk.ev (δ c q)) - bk.ev (δ p q))) = ∑ c, P p c * σ (bk.ev (β c q)) - bk.ev (β p q)`. Rewrite using `[hD, hη]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : bk.ev bk.E ^ i * bk.ev bk.E ∣ bk.ev bk.E ^ i * ((l : Ainf l) ^ n * η p q + (w ^ i * ∑ c, P p c * σ (bk.ev (δ c q)) - bk.ev (δ p q)))`. Rewrite using `[e, ← pow_succ]`.
-
-Conclude with `(pow_dvd_pow _ him).trans (hent p q)`. Conclude with `(mul_dvd_mul_iff_left (pow_ne_zero i (evE_ne_zero bk))).1 h1`. Rewrite `hX` using `[← theta_eq_zero_iff]`. Simplify using `only [σ, map_add, map_sub, map_mul, map_pow, map_natCast, map_sum, GlobalTheory.BKLim.BetaBd.θ_σA_ev, hP, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true] at hX`. Use `⟨-Per.θ l (η p q), ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [Matrix.of_apply]`. Take the linear combination `hX`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BKLim.beta_step : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (N d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (F : Frame bk N d ρ) (g : ↥(GK K)) (w : Ainf l), Per.σA (g : GQ l) (bk.ev bk.E) = bk.ev bk.E * w → ∀ (m k : ℕ) (β : Matrix (Fin d) (Fin d) bk.S), F.IsBeta m k β → ∀ (i n : ℕ), i + 1 ≤ m → ∀ γ : Matrix (Fin d) (Fin d) bk.S, (∀ p q, bk.E ^ i ∣ (β - (l : bk.S) ^ n • γ) p q) → ∃ δ : Matrix (Fin d) (Fin d) bk.S, (∀ p q, bk.E ^ (i + 1) ∣ (β - (l : bk.S) ^ n • γ - bk.E ^ i • δ) p q) ∧ ∀ p q, ∃ y : OC l, Per.θ l (bk.ev (δ p q)) * (Per.θ l w ^ i - 1) = (l : OC l) ^ n * y := by
   intro l _ K bk N d ρ F g w hw m k β hβ i n him γ hγ

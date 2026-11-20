@@ -20,11 +20,11 @@ open Filter Topology GlobalTheory.TangentOrigin GlobalTheory.HolLieFrame
 namespace GlobalTheory.HolFrameMatrix
 
 /- English proof (translation)
-Use `differentiableAt_pi.1 (differentiableAt_of_forms (fun b => G b i) b₀ fun w hw => ?_) j` and prove the remaining obligations. Establish `h0 : w ᵥ* A b₀ = 0`. Use function extensionality and compare the values at `i'`. Use `hw (fun b => ∑ j, A b j i' • ContinuousLinearMap.proj j) (DifferentiableAt.fun_sum fun j _ => (hA j i').smul_const _) ?_` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(differentiableAt_const ((1 : Matrix (Fin n) (Fin n) ℂ) i i')).congr_of_eventuallyEq ?_ filter_upwards [h] with b hb` and prove the remaining obligations. Rewrite using `[← hb]`. Simplify using `[Matrix.mul_apply, mul_comm]`. Establish `h1 : A b₀ * G b₀ = 1` using `mul_eq_one_comm.1 h.self_of_nhds`. Use `congrArg (· ᵥ* G b₀) h0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.vecMul_vecMul, h1]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem differentiableAt_of_mul_eq_one {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {n : ℕ}
     (G A : V → Matrix (Fin n) (Fin n) ℂ) (b₀ : V) (hA : ∀ i j, DifferentiableAt ℂ (fun b => A b i j) b₀)
@@ -44,11 +44,11 @@ theorem differentiableAt_of_mul_eq_one {V : Type} [NormedAddCommGroup V] [Normed
   simpa [Matrix.vecMul_vecMul, h1] using this
 
 /- English proof (translation)
-Take `⟨hol₁, hol₂⟩` from `U.hol i m B P hB hP`. Use `differentiableAt_of_forms _ b₀ fun w hw => ?_` and prove the remaining obligations. Establish `hw' : ∀ (O : Xo.univ.t.G.left.Opens) (f : Γ(Xo.univ.t.G.left, O)), ⊤ ≤ (U.ex i (P b₀) 0).left ⁻¹ᵁ O → fderiv ℂ (fun z => valAt' (U.ex i (P b₀) z).left O f) 0 w = 0`. Introduce `O f hO`. Use `hw (fun b => fderiv ℂ (fun z => valAt' (U.ex i (P b) z).left O f) 0) (differentiableAt_fderiv (e := fun b z => (U.ex i (P b) z).left) hol₂ hb₀ O f hO) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨F, hF, hF'⟩` from `exists_hol_snd v ev b₀ hev O f ((top_le_preimage_iff _ O).2 (by rw [(hW b₀ hb₀).1]; exact hO))`. Use `hF.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hF', hB.mem_nhds hb₀] with b ⟨h, e⟩ hb`. Conclude with `((hW b hb).2 O h f).symm.trans e`. Establish `d₁` using `LocalLift.isDerivAt0_const (fun z => (U.ex i (P b₀) z).left) w hw'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `d₀` using `LocalLift.isDerivAt0_const (fun z => (U.ex i (P b₀) z).left) 0 fun _ _ _ => map_zero _`. Set `v₀ : epsPt (U.u i (P b₀)) ⟶ Xo.univ.t.G` to `Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ (U.ex i (P b₀) 0).left) ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) (Over.w (U.ex i (P b₀) 0))))`. Conclude with `((U.ex_diff i _ (hP.1 b₀ hb₀)).2 v₀ d₁.1).unique d₁ d₀`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_coord {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ}
@@ -79,24 +79,22 @@ theorem differentiableAt_coord {E : Type} [Field E] [NumberField E] [IsCMField E
   exact ((U.ex_diff i _ (hP.1 b₀ hb₀)).2 v₀ d₁.1).unique d₁ d₀
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, Chart.dualMapR]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_eq {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) : dualMap φ = Chart.dualMapR φ := by
   refine RingHom.ext fun x => ?_
   ext <;> simp [dualMap, Chart.dualMapR]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ g e F r M k T R _ _ y₀ B ψ κ z y G a hB hsub hψ h τ i j`. Establish `hP : IsHolPeriods (F.Di k) (fun j => relab c σ (e j).1) B (fun b => T.Pf (T.co b))` using `⟨fun b hb => T.holPer.1 b (hsub hb), fun x => (T.holPer.2 x).mono hsub⟩`. Establish `hx : ∀ b ∈ B, (z b).x = F.u k (T.Pf (T.co b))` using `fun b hb => (h b hb).2.1.1.symm.trans (h b hb).2.2.1`. Establish `hI` using `fun b hb => GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ F k _ (hP.1 b hb)`. Establish `htan : ∀ b ∈ B, ∀ j, IsTanAt (S` using `ℂ) (F.u k (T.Pf (T.co b))) ((z b).u τ j) := fun b hb j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hx b hb]`. Conclude with `(z b).tan τ j`. Use `choose! W hW using fun b hb j => ((hI b hb).2.2 _ (htan b hb j)).exists`. Set `ev : (Fin T.m → ℂ) → (R →+* ℂ)` to `fun b => (ψ b).toRingHom`. Introduce `b₀ hb₀`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations. Use `differentiableAt_of_mul_eq_one (fun b => Matrix.of fun i j => toC (G b τ i j)) (fun b => Matrix.of fun j i' => W b j (e.symm ⟨τ, i'⟩)) b₀ (fun j i' => ?_) ?_ i j` and prove the remaining obligations. Use `differentiableAt_pi.1 (differentiableAt_coord F k (y₀.u τ j) ev hB hP (fun b => W b j) (fun b hb => ?_) hb₀ fun t => (hψ t).differentiableAt (hB.mem_nhds hb₀)) _` and prove the remaining obligations. Use `hW b hb j` as an intermediate fact. Rewrite `this` using `[(h b hb).1.2.1 τ j]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← dualMap_eq]`. Conclude with `this`. Use `filter_upwards [hB.mem_nhds hb₀] with b hb`. Use extensionality with `i i'`. Establish `hc : IsCombAt (S` using `ℂ) (F.u k (T.Pf (T.co b))) ((z b).u τ) (fun j => toC (G b τ i j)) ((y b).u τ i) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hx b hb]`. Conclude with `(h b hb).2.1.2.1 τ i`. Establish `hd` using `(GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ F k _ (hP.1 b hb) _ _ _ (hW b hb) _ _).1 hc`. Establish `hd'` using `(h b hb).2.2.2.1 τ i`. Use `congrFun (((hI b hb).2.2 _ ((hI b hb).1 _ _ hd)).unique hd hd') (e.symm ⟨τ, i'⟩)` as an intermediate fact.
-
-Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify `this` using `[Pi.single_apply, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem differentiableOn_frameMatrix : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r) (k : Fin F.n) (T : ThetaData e F M k) (R : Type) [CommRing R] [Algebra c.F R] (y₀ : FrPt Xo c R) (B : Set (Fin T.m → ℂ)) (ψ : (Fin T.m → ℂ) → (R →ₐ[c.F] CAt σ)) (κ : (Fin T.m → ℂ) → ℂ) (z y : (Fin T.m → ℂ) → FrPt Xo c (CAt σ)) (G : (Fin T.m → ℂ) → (∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (CAt σ))) (a : (Fin T.m → ℂ) → CAt σ), IsOpen B → B ⊆ T.co ⁻¹' (M.X k).dom → (∀ t : R, DifferentiableOn ℂ (fun b => toC (ψ b t)) B) → (∀ b ∈ B, FrMap (ψ b) y₀ (z b) ∧ FrChg (G b) (a b) (z b) (y b) ∧ IsThetaPt T b (κ b) (y b)) → ∀ τ i j, DifferentiableOn ℂ (fun b => toC (G b τ i j)) B := by
   intro E _ _ _ H Dw l Xo c σ g e F r M k T R _ _ y₀ B ψ κ z y G a hB hsub hψ h τ i j

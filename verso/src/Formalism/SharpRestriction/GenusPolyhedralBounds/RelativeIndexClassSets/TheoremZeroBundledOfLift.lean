@@ -7,14 +7,14 @@ open Formalism.MainNotions.WeightAlgebra Formalism.BasicNotions
 namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 
 /- English proof (translation)
-Introduce `_ _ _ _ _` and use `length_base_t0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lenBase_all {D : D7} {B : Formalism.MainNotions.WeightFamilies.Prov D} {P : Formalism.MainNotions.ModuliIntegralCharts.Prov D} :
     ∀ (j : ℕ) (X : PJ D B P j) (ka wL wF : Formalism.MainNotions.WeightFamilies.Wt D j), LenBase (X := X) (ka := ka) (wL := wL) (wF := wF) :=
   fun _ _ _ _ _ => length_base_t0
 
 /- English proof (translation)
-Introduce `j X ka wL wF G la Q S CRm T e c hOk hLift hW`. Conclude with `length_pole_t0 G la Q S CRm T e c hOk hW hLift`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lenPoleL_all {D : D7} {B : Formalism.MainNotions.WeightFamilies.Prov D} {P : Formalism.MainNotions.ModuliIntegralCharts.Prov D} :
     ∀ (j : ℕ) (X : PJ D B P j) (ka wL wF : Formalism.MainNotions.WeightFamilies.Wt D j), LenPoleL (X := X) (ka := ka) (wL := wL) (wF := wF) := by
@@ -22,13 +22,13 @@ theorem lenPoleL_all {D : D7} {B : Formalism.MainNotions.WeightFamilies.Prov D} 
   exact length_pole_t0 G la Q S CRm T e c hOk hW hLift
 
 /- English proof (translation)
-The claim follows from `theorem_zero_split_of_lengths lenBase_all lenPoleL_all`.
+A detailed English derivation is pending.
 -/
 theorem theorem_zero_of_named_inputs {D : D7} {B : Formalism.MainNotions.WeightFamilies.Prov D} {P : Formalism.MainNotions.ModuliIntegralCharts.Prov D} : Conclusion1OfComb (D := D) (B := B) (P := P) :=
   theorem_zero_split_of_lengths lenBase_all lenPoleL_all
 
 /- English proof (translation)
-The claim follows from `theorem_zero_bundled_of_split hL theorem_zero_of_named_inputs`.
+A detailed English derivation is pending.
 -/
 theorem theorem_zero_bundled_of_lift {D : D7} {B : Formalism.MainNotions.WeightFamilies.Prov D} {P : Formalism.MainNotions.ModuliIntegralCharts.Prov D} (hL : LiftAll D B P) :
     Conclusion1Of2 (D := D) (B := B) (P := P) :=

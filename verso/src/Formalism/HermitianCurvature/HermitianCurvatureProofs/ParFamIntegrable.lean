@@ -13,7 +13,7 @@ variable {k ρ : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {Par
   [NormedSpace ℝ Par] {U₀ : Set (Par × Mt k ρ)}
 
 /- English proof (translation)
-Introduce `q₀ hq hG`. Take `⟨U, F, hU, hqU, hF, hfF⟩` from `hf q₀ hq hG`. Take `⟨U', F', hU', hqU', hF', hgF⟩` from `hg q₀ hq hG`. Conclude with `⟨U ∩ U', fun q => F q + F' q, hU.inter hU', ⟨hqU, hqU'⟩, (hF.mono Set.inter_subset_left).add (hF'.mono Set.inter_subset_right), fun q hq hG => by show f q + g q = F q + F' q; rw [hfF q hq.1 hG, hgF q hq.2 hG]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem parFam_add {f g : Par × Mt k ρ → E} (hf : PBI.ParFam k ρ U₀ f) (hg : PBI.ParFam k ρ U₀ g) :
     PBI.ParFam k ρ U₀ (fun q => f q + g q) := by
@@ -25,7 +25,7 @@ theorem parFam_add {f g : Par × Mt k ρ → E} (hf : PBI.ParFam k ρ U₀ f) (h
     fun q hq hG => by show f q + g q = F q + F' q; rw [hfF q hq.1 hG, hgF q hq.2 hG]⟩
 
 /- English proof (translation)
-Introduce `q₀ hq hG`. Take `⟨U, F, hU, hqU, hF, hfF⟩` from `hf q₀ hq hG`. Conclude with `⟨U, fun q => a • F q, hU, hqU, hF.const_smul a, fun q hq hG => by show a • f q = a • F q; rw [hfF q hq hG]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem parFam_smul (a : ℂ) {f : Par × Mt k ρ → E} (hf : PBI.ParFam k ρ U₀ f) :
     PBI.ParFam k ρ U₀ (fun q => a • f q) := by
@@ -34,15 +34,15 @@ theorem parFam_smul (a : ℂ) {f : Par × Mt k ρ → E} (hf : PBI.ParFam k ρ U
   exact ⟨U, fun q => a • F q, hU, hqU, hF.const_smul a, fun q hq hG => by show a • f q = a • F q; rw [hfF q hq hG]⟩
 
 /- English proof (translation)
-Introduce `q₀ _ _` and use `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem parFam_zero : PBI.ParFam k ρ U₀ (fun _ => (0 : E)) := fun q₀ _ _ =>
   ⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (parFam_zero (E := E) (U₀ := U₀))`. Consider the case `insert a s ha ih`. Establish `h1` using `hf a (Finset.mem_insert_self a s)`. Establish `h2` using `ih (fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `parFam_add h1 h2` as an intermediate fact. Simplify `this` using `[Finset.sum_insert ha]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem parFam_sum {ι : Type} (s : Finset ι) {f : ι → Par × Mt k ρ → E}
     (hf : ∀ i ∈ s, PBI.ParFam k ρ U₀ (f i)) : PBI.ParFam k ρ U₀ (fun q => ∑ i ∈ s, f i q) := by
@@ -56,9 +56,9 @@ theorem parFam_sum {ι : Type} (s : Finset ι) {f : ι → Par × Mt k ρ → E}
     simpa [Finset.sum_insert ha] using this
 
 /- English proof (translation)
-Take `⟨U, F, hU, hqU, hF, hfF⟩` from `hf (Z, y) hq hy`. Establish `hci : Continuous fun Z' : Par => ((Z', y) : Par × Mt k ρ)` using `continuous_id.prodMk continuous_const`. Establish `hm : {Z' | (Z', y) ∈ U} ∈ 𝓝 Z` using `hci.continuousAt.preimage_mem_nhds (hU.mem_nhds hqU)`. Establish `hcF : ContinuousAt (fun Z' => F (Z', y)) Z` using `ContinuousAt.comp (g := F) (f := fun Z' : Par => ((Z', y) : Par × Mt k ρ)) (x := Z) (hF.continuousOn.continuousAt (hU.mem_nhds hqU)) hci.continuousAt`. Use `hcF.congr ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hm] with Z' hZ'`. Conclude with `(hfF (Z', y) hZ' hy).symm`.
+A detailed English derivation is pending.
 -/
 theorem parFam_contAt {f : Par × Mt k ρ → E} (hf : PBI.ParFam k ρ U₀ f) {Z : Par} {y : Mt k ρ} (hq : (Z, y) ∈ U₀)
     (hy : Matrix.of y ∈ Q.Glev k ρ (Fin.last ρ)) : ContinuousAt (fun Z' => f (Z', y)) Z := by
@@ -73,9 +73,9 @@ theorem parFam_contAt {f : Par × Mt k ρ → E} (hf : PBI.ParFam k ρ U₀ f) {
   exact (hfF (Z', y) hZ' hy).symm
 
 /- English proof (translation)
-Establish `hc : ContinuousOn (fun Z => f (Z, y)) Kp` using `fun Z hZ => (parFam_contAt hf (hKU Z hZ) hy).continuousWithinAt`. Establish `hI : IntegrableOn (fun Z => f (Z, y)) Kp ν` using `hc.integrableOn_compact hK`. Establish `hae : ∀ᵐ Z ∂ν, Z ∈ Kp`. Rewrite using `[ae_iff]`. Simplify `hν` using `[Set.compl_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hI` using `[IntegrableOn, Measure.restrict_eq_self_of_ae_mem hae]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem parFam_integrable [MeasurableSpace Par] [BorelSpace Par] {f : Par × Mt k ρ → E}
     (hf : PBI.ParFam k ρ U₀ f) {ν : Measure Par} [IsFiniteMeasure ν] {Kp : Set Par} (hK : IsCompact Kp)
@@ -120,7 +120,7 @@ def Good (A : Module.End ℂ (Q.RadSp k ρ z z' π π')) : Prop :=
       ∀ c, (A Ψi : Q.Fn k ρ (Wq →L[ℂ] Wp)) c (Matrix.of y) = ∫ Z, Φf Z y ∂ν
 
 /- English proof (translation)
-Introduce `Par _ _ _ _ _ U₀ _ _ Ψ Ψf hR hF`. Use `⟨Ψf, fun Z c y hy => hR Z c y hy, hF, fun K hK q _ hG hq => hK q hG (fun h => hq (subset_closure h)), fun ν _ Kp _ _ Ψi y V _ hyV hyG _ hi c => hi c y hyV hyG⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem good_id : Good z z' π π' (LinearMap.id : Module.End ℂ (Q.RadSp k ρ z z' π π')) := by
   intro Par _ _ _ _ _ U₀ _ _ Ψ Ψf hR hF
@@ -128,11 +128,11 @@ theorem good_id : Good z z' π π' (LinearMap.id : Module.End ℂ (Q.RadSp k ρ 
     fun ν _ Kp _ _ Ψi y V _ hyV hyG _ hi c => hi c y hyV hyG⟩
 
 /- English proof (translation)
-Introduce `Par _ _ _ _ _ U₀ hU₀ hUpos Ψ Ψf hR hF`. Take `⟨Φ₁, hR₁, hF₁, hS₁, hW₁⟩` from `hB Par U₀ hU₀ hUpos Ψ Ψf hR hF`. Take `⟨Φ₂, hR₂, hF₂, hS₂, hW₂⟩` from `hA Par U₀ hU₀ hUpos (fun Z => B (Ψ Z)) Φ₁ hR₁ hF₁`. Use `⟨Φ₂, fun Z c y hy => hR₂ Z c y hy, hF₂, fun K hK q hq hG hqK => ?_, ?_⟩` and prove the remaining obligations. Establish `hK' : ∀ q', Matrix.of q'.2 ∈ Q.Glev k ρ (Fin.last ρ) → q' ∉ closure K ∪ U₀ᶜ → Φ₁ q'.1 q'.2 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `q' hG' hq'`. Simplify using `only [Set.mem_union, Set.mem_compl_iff, not_or, not_not] at hq'`. Conclude with `hS₁ K hK q' hq'.2 hG' hq'.1`. Use `hS₂ _ hK' q hq hG ?_` and prove the remaining obligations. Rewrite using `[closure_union, hU₀.isClosed_compl.closure_eq, closure_closure]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_union, Set.mem_compl_iff, not_or, not_not]`. Conclude with `⟨hqK, hq⟩`. Introduce `ν _ Kp hKp hν Ψi y V hV hyV hyG hKV hi c`. Establish `hi' : ∀ c y', y' ∈ V → Matrix.of y' ∈ Q.Glev k ρ (Fin.last ρ) → (B Ψi : Q.Fn k ρ (Wq →L[ℂ] Wp)) c (Matrix.of y') = ∫ Z, Φ₁ Z y' ∂ν` using `fun c y' hy' hG' => hW₁ ν Kp hKp hν Ψi y' V hV hy' hG' hKV hi c`. Conclude with `hW₂ ν Kp hKp hν (B Ψi) y V hV hyV hyG hKV hi' c`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem good_comp {A B : Module.End ℂ (Q.RadSp k ρ z z' π π')} (hA : Good z z' π π' A) (hB : Good z z' π π' B) :
     Good z z' π π' (A * B) := by
@@ -155,11 +155,11 @@ theorem good_comp {A B : Module.End ℂ (Q.RadSp k ρ z z' π π')} (hA : Good z
     exact hW₂ ν Kp hKp hν (B Ψi) y V hV hyV hyG hKV hi' c
 
 /- English proof (translation)
-Introduce `Par _ _ _ _ _ U₀ hU₀ hUpos Ψ Ψf hR hF`. Take `⟨Φ₁, hR₁, hF₁, hS₁, hW₁⟩` from `hA Par U₀ hU₀ hUpos Ψ Ψf hR hF`. Take `⟨Φ₂, hR₂, hF₂, hS₂, hW₂⟩` from `hB Par U₀ hU₀ hUpos Ψ Ψf hR hF`. Use `⟨fun Z y => Φ₁ Z y + Φ₂ Z y, fun Z c y hy => ?_, parFam_add hF₁ hF₂, fun K hK q hq hG hqK => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hR₁ Z c y hy, hR₂ Z c y hy]`. Simplify using `only [hS₁ K hK q hq hG hqK, hS₂ K hK q hq hG hqK, add_zero]`. Introduce `ν _ Kp hKp hν Ψi y V hV hyV hyG hKV hi c`. Establish `hKU : ∀ Z ∈ Kp, (Z, y) ∈ U₀` using `fun Z hZ => hKV ⟨hZ, hyV⟩`. Simplify using `only [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hW₁ ν Kp hKp hν Ψi y V hV hyV hyG hKV hi c, hW₂ ν Kp hKp hν Ψi y V hV hyV hyG hKV hi c, ← integral_add (parFam_integrable hF₁ hKp hν hyG hKU) (parFam_integrable hF₂ hKp hν hyG hKU)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem good_add {A B : Module.End ℂ (Q.RadSp k ρ z z' π π')} (hA : Good z z' π π' A) (hB : Good z z' π π' B) :
     Good z z' π π' (A + B) := by
@@ -177,9 +177,9 @@ theorem good_add {A B : Module.End ℂ (Q.RadSp k ρ z z' π π')} (hA : Good z 
       ← integral_add (parFam_integrable hF₁ hKp hν hyG hKU) (parFam_integrable hF₂ hKp hν hyG hKU)]
 
 /- English proof (translation)
-Introduce `Par _ _ _ _ _ U₀ hU₀ hUpos Ψ Ψf hR hF`. Take `⟨Φ₁, hR₁, hF₁, hS₁, hW₁⟩` from `hA Par U₀ hU₀ hUpos Ψ Ψf hR hF`. Use `⟨fun Z y => a • Φ₁ Z y, fun Z c y hy => ?_, parFam_smul a hF₁, fun K hK q hq hG hqK => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[hR₁ Z c y hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hS₁ K hK q hq hG hqK, smul_zero]`. Introduce `ν _ Kp hKp hν Ψi y V hV hyV hyG hKV hi c`. Simplify using `only [LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[hW₁ ν Kp hKp hν Ψi y V hV hyV hyG hKV hi c, integral_smul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_smul (a : ℂ) {A : Module.End ℂ (Q.RadSp k ρ z z' π π')} (hA : Good z z' π π' A) :
     Good z z' π π' (a • A) := by
@@ -225,13 +225,13 @@ def goodAlg : StarSubalgebra ℂ (Q.Pr (Q.RadSp k ρ z z' π π')) where
     exact ⟨hx2, hx1⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_goodAlg {x : Q.Pr (Q.RadSp k ρ z z' π π')} :
     x ∈ goodAlg z z' π π' ↔ Good z z' π π' x.1 ∧ Good z z' π π' x.2.unop := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_mkP {X Xs : Module.End ℂ (Q.RadSp k ρ z z' π π')} (h1 : Good z z' π π' X) (h2 : Good z z' π π' Xs) :
     Q.mkP X Xs ∈ goodAlg z z' π π' := ⟨h1, h2⟩

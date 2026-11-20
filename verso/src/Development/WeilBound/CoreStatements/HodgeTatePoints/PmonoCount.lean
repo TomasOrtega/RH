@@ -6,13 +6,13 @@ open Matrix
 namespace PositivityTheory.HtPt.Pmono
 
 /- English proof (translation)
-Establish `hrev : ∏ d : Fin f → Fin p, ∏ n, y n ^ ((Fin.rev (d n) : Fin p) : ℕ) = ∏ d : Fin f → Fin p, ∏ n, y n ^ (d n : ℕ)` using `Fintype.prod_equiv (Equiv.piCongrRight fun _ => Fin.revPerm) _ _ (fun d => rfl)`. Rewrite using `[sq]`. Use `nth_rewrite 2 [← hrev]`. Rewrite using `[← Finset.prod_mul_distrib]`. Establish `hterm : ∀ d : Fin f → Fin p, (∏ n, y n ^ (d n : ℕ)) * ∏ n, y n ^ ((Fin.rev (d n) : Fin p) : ℕ) = P ^ f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d`. Rewrite using `[← Finset.prod_mul_distrib]`. Establish `h : ∀ n, y n ^ (d n : ℕ) * y n ^ ((Fin.rev (d n) : Fin p) : ℕ) = P`. Introduce `n`. Rewrite using `[← pow_add, Fin.val_rev, ← hy n]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `(d n).isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_congr rfl (fun n _ => h n)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl (fun d _ => hterm d)]`. Simplify using `[← pow_mul, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma prod_digits_sq (p f : ℕ) (P : NNReal) (y : Fin f → NNReal) (hy : ∀ n, y n ^ (p - 1) = P) :
     (∏ d : Fin f → Fin p, ∏ n, y n ^ (d n : ℕ)) ^ 2 = P ^ (f * p ^ f) := by
@@ -38,9 +38,9 @@ lemma prod_digits_sq (p f : ℕ) (P : NNReal) (y : Fin f → NNReal) (hy : ∀ n
   simp [← pow_mul, mul_comm]
 
 /- English proof (translation)
-Use `le_antisymm ?_ (hab i)` and prove the remaining obligations. Establish `hQ : 0 < ∏ j ∈ Finset.univ.erase i, a j` using `Finset.prod_pos (fun j _ => ha j)`. Establish `h1 : ∏ j ∈ Finset.univ.erase i, a j ≤ ∏ j ∈ Finset.univ.erase i, b j` using `Finset.prod_le_prod' (fun j _ => hab j)`. Establish `h2 : b i * ∏ j ∈ Finset.univ.erase i, a j ≤ a i * ∏ j ∈ Finset.univ.erase i, a j`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `le_of_mul_le_mul_right h2 hQ`.
+A detailed English derivation is pending.
 -/
 lemma eq_of_prod_eq {ι : Type} [Fintype ι] [DecidableEq ι] (a b : ι → NNReal) (ha : ∀ i, 0 < a i)
     (hab : ∀ i, a i ≤ b i) (h : ∏ i, b i = ∏ i, a i) (i : ι) : b i = a i := by
@@ -57,17 +57,15 @@ lemma eq_of_prod_eq {ι : Type} [Fintype ι] [DecidableEq ι] (a b : ι → NNRe
   exact le_of_mul_le_mul_right h2 hQ
 
 /- English proof (translation)
-Introduce `p f hp P hP x xD X XD hxy hX hXD hprod d`. Establish `hne : ∀ n, x n ≠ 0 ∧ xD n ≠ 0`. Introduce `n`. Establish `hmul : x n * xD n ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hxy n`. Rewrite `h` using `[h0, zero_pow (by omega)]`. Conclude with `hP h.symm`. Conclude with `⟨left_ne_zero_of_mul hmul, right_ne_zero_of_mul hmul⟩`. Establish `hApos : ∀ d : Fin f → Fin p, 0 < ∏ n, x n ^ (d n : ℕ)` using `fun d => Finset.prod_pos (fun n _ => pow_pos (pos_iff_ne_zero.mpr (hne n).1) _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBpos : ∀ d : Fin f → Fin p, 0 < ∏ n, xD n ^ (d n : ℕ)` using `fun d => Finset.prod_pos (fun n _ => pow_pos (pos_iff_ne_zero.mpr (hne n).2) _)`. Establish `hsq : (∏ d : Fin f → Fin p, (∏ n, x n ^ (d n : ℕ)) * ∏ n, xD n ^ (d n : ℕ)) ^ 2 = P ^ (f * p ^ f)`. Rewrite using `[← PositivityTheory.HtPt.Pmono.prod_digits_sq p f P (fun n => x n * xD n) hxy]`. Use `congr 1`. Use `Finset.prod_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun n _ => (mul_pow _ _ _).symm`. Establish `heq : ∏ d, X d * XD d = ∏ d : Fin f → Fin p, (∏ n, x n ^ (d n : ℕ)) * ∏ n, xD n ^ (d n : ℕ)` using `(pow_left_inj₀ (by positivity) (by positivity) two_ne_zero).mp (hprod.trans hsq.symm)`. Establish `hd` using `PositivityTheory.HtPt.Pmono.eq_of_prod_eq (fun d : Fin f → Fin p => (∏ n, x n ^ (d n : ℕ)) * ∏ n, xD n ^ (d n : ℕ)) (fun d => X d * XD d) (fun d => mul_pos (hApos d) (hBpos d)) (fun d => mul_le_mul' (hX d) (hXD d)) heq d`. Establish `hXDpos : 0 < XD d` using `lt_of_lt_of_le (hBpos d) (hXD d)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hXpos : 0 < X d` using `lt_of_lt_of_le (hApos d) (hX d)`. Prove the components needed by the constructor for the conclusion. Use `le_antisymm ?_ (hX d)` and prove the remaining obligations. Establish `h1 : X d * XD d ≤ (∏ n, x n ^ (d n : ℕ)) * XD d` using `hd.le.trans (mul_le_mul' le_rfl (hXD d))`. Conclude with `le_of_mul_le_mul_right h1 hXDpos`.
-
-Use `le_antisymm ?_ (hXD d)` and prove the remaining obligations. Establish `h1 : X d * XD d ≤ X d * ∏ n, xD n ^ (d n : ℕ)` using `hd.le.trans (mul_le_mul' (hX d) le_rfl)`. Conclude with `le_of_mul_le_mul_left h1 hXpos`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem count : ∀ (p f : ℕ), 2 ≤ p → ∀ (P : NNReal), P ≠ 0 → ∀ (x xD : Fin f → NNReal) (X XD : (Fin f → Fin p) → NNReal), (∀ n, (x n * xD n) ^ (p - 1) = P) → (∀ d, ∏ n, x n ^ (d n : ℕ) ≤ X d) → (∀ d, ∏ n, xD n ^ (d n : ℕ) ≤ XD d) → (∏ d, X d * XD d) ^ 2 = P ^ (f * p ^ f) → ∀ d, X d = ∏ n, x n ^ (d n : ℕ) ∧ XD d = ∏ n, xD n ^ (d n : ℕ) := by
   intro p f hp P hP x xD X XD hxy hX hXD hprod d

@@ -20,7 +20,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Generic
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [Algebra.TensorProduct.basis_repr_tmul]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem repr_map {F E A B ι : Type} [Field F] [Field E] [Algebra F E] [CommRing A] [CommRing B] [Algebra F A] [Algebra F B]
     (b : Module.Basis ι F E) (φ : A →ₐ[F] B) (z : A ⊗[F] E) (i : ι) :
@@ -32,7 +32,7 @@ theorem repr_map {F E A B ι : Type} [Field F] [Field E] [Algebra F E] [CommRing
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[← repr_map, h, map_zero, Finsupp.zero_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_eq_zero {F E A B ι : Type} [Field F] [Field E] [Algebra F E] [CommRing A] [CommRing B] [Algebra F A] [Algebra F B]
     (b : Module.Basis ι F E) (φ : A →ₐ[F] B) (z : A ⊗[F] E) (h : Algebra.TensorProduct.map φ (AlgHom.id F E) z = 0) (i : ι) :
@@ -40,7 +40,7 @@ theorem coord_eq_zero {F E A B ι : Type} [Field F] [Field E] [Algebra F E] [Com
   rw [← repr_map, h, map_zero, Finsupp.zero_apply]
 
 /- English proof (translation)
-Rewrite using `[← repr_map, coord_eq_zero b ψ _ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_eq_zero₂ {F E A B C ι : Type} [Field F] [Field E] [Algebra F E] [CommRing A] [CommRing B] [CommRing C] [Algebra F A]
     [Algebra F B] [Algebra F C] (b : Module.Basis ι F E) (φ : A →ₐ[F] B) (ψ : B →ₐ[F] C) (z : A ⊗[F] E)
@@ -49,7 +49,7 @@ theorem coord_eq_zero₂ {F E A B C ι : Type} [Field F] [Field E] [Algebra F E]
   rw [← repr_map, coord_eq_zero b ψ _ h]
 
 /- English proof (translation)
-Rewrite using `[← Algebra.smul_def]`. Use `(Algebra.TensorProduct.basis A b).ext_elem fun i => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_eq_of_coord {F E A ι : Type} [Field F] [Field E] [Algebra F E] [CommRing A] [Algebra F A]
     (b : Module.Basis ι F E) (ε : A) (z : A ⊗[F] E)
@@ -60,9 +60,9 @@ theorem mul_eq_of_coord {F E A ι : Type} [Field F] [Field E] [Algebra F E] [Com
   rw [map_smul, Finsupp.smul_apply, smul_eq_mul, h]
 
 /- English proof (translation)
-Use `Prod.ext ((zero_mul (fstA F a)).trans e0.symm) (FiniteAdeleRing.ext _ fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV F w (α * sndA F a) = evalV F w (sndA F a)`. Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[a1, one_mul]`. Rewrite using `[e1 w hw, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_mul_eq {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} {α : Af F} (a1 : evalV F v α = 1)
     (a : AF F) (e0 : fstA F a = 0) (e1 : ∀ v', v' ≠ v → evalV F v' (sndA F a) = 0) : pairA F 0 α * a = a := by
@@ -75,7 +75,7 @@ theorem pair_mul_eq {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum 
   · rw [e1 w hw, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.ext_iff]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, map_sub, sub_eq_zero, Matrix.map_apply, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_eq_one_iff {R S : Type} [CommRing R] [CommRing S] (π : R →+* S) {n : ℕ} (m : Matrix (Fin n) (Fin n) R) :
     m.map π = 1 ↔ ∀ i j, π ((m - 1) i j) = 0 := by
@@ -85,15 +85,15 @@ theorem map_eq_one_iff {R S : Type} [CommRing R] [CommRing S] (π : R →+* S) {
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_, ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, rfl⟩` from `Finset.mem_image.1 ha`. Take `⟨-, k₁, h₁, k₂, h₂, rfl⟩` from `hR1 γ hγ`. Conclude with `⟨⟨φ k₁, hKJ _ h₁⟩, ⟨φ k₂, hKJ _ h₂⟩, by simp only [map_mul]⟩`. Introduce and unpack `_ ⟨k₁, k₂, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨a₁, ha₁, b₁, hb₁, haL, e₁, c₁⟩` from `hs k₁ k₁.2`. Take `⟨κ, hκ, rfl⟩` from `hJK a₁ ha₁ haL`. Take `⟨γ, ⟨hγ, hγK⟩, -⟩` from `hR2 (κ * g) ⟨κ, hκ, 1, h1, (mul_one _).symm⟩`. Establish `hmem : (φ γ)⁻¹ * (k₁ * φ g * k₂) ∈ J`. Establish `: (φ γ)⁻¹ * ((k₁ : G) * φ g * k₂) = φ (γ⁻¹ * (κ * g)) * (b₁ * k₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e₁, mul_assoc (φ κ) b₁, (c₁ _ hg).eq]`. Simplify using `only [map_mul, map_inv, mul_assoc]`. Rewrite using `[this]`. Conclude with `J.mul_mem (hKJ _ hγK) (J.mul_mem hb₁ k₂.2)`. Use `⟨φ γ, ⟨Finset.mem_image_of_mem _ hγ, hmem⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a' ⟨ha', hmem'⟩`. Take `⟨γ', hγ', rfl⟩` from `Finset.mem_image.1 ha'`. Establish `h2 : (φ γ)⁻¹ * φ γ' ∈ J`. Establish `: (φ γ)⁻¹ * φ γ' = ((φ γ)⁻¹ * ((k₁ : G) * φ g * k₂)) * ((φ γ')⁻¹ * (k₁ * φ g * k₂))⁻¹` using `by group`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `J.mul_mem hmem (J.inv_mem hmem')`. Take `⟨κ', hκ', e'⟩` from `hJK _ h2 (L.mul_mem (L.inv_mem (hL γ hγ)) (hL γ' hγ'))`. Establish `h3 : κ'⁻¹ * (γ⁻¹ * γ') = 1` using `hi _ (N.mul_mem (N.inv_mem (hKN _ hκ')) (N.mul_mem (N.inv_mem (hR1 γ hγ).1) (hR1 γ' hγ').1)) (by rw [map_mul, map_inv, e', map_mul, map_inv, inv_mul_cancel])`. Establish `h4 : γ⁻¹ * γ' ∈ K` using `inv_mul_eq_one.1 h3 ▸ hκ'`. Rewrite using `[(hR2 γ' (hR1 γ' hγ').2).unique ⟨hγ', by rw [inv_mul_cancel]; exact h1⟩ ⟨hγ, h4⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDC_image {H G : Type} [Group H] [Group G] [DecidableEq G] (φ : H →* G) (N : Subgroup H) {J L : Subgroup G}
     (hs : GlobalTheory.HkB.LocSplit J L) (K : Set H) (hi : ∀ g ∈ N, φ g = 1 → g = 1) (hKN : ∀ k ∈ K, k ∈ N) (h1 : (1 : H) ∈ K)
@@ -130,16 +130,16 @@ theorem isDC_image {H G : Type} [Group H] [Group G] [DecidableEq G] (φ : H →*
     rw [(hR2 γ' (hR1 γ' hγ').2).unique ⟨hγ', by rw [inv_mul_cancel]; exact h1⟩ ⟨hγ, h4⟩]
 
 /- English proof (translation)
-Rewrite using `[h.2.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_iff_range {X : Type} [AddCommGroup X] [Module ℂ X] {M : HMod X} {V : Submodule ℂ X} {ip : X → X → ℂ}
     (h : M.Is V ip) {x : X} : x ∈ V ↔ x ∈ LinearMap.range M.e := by
   rw [h.2.1]
 
 /- English proof (translation)
-Use `choose u hu using h`. Use `⟨⟨⟨u, fun f g => hM ?_⟩, fun c f => hM ?_⟩, hu⟩` and prove the remaining obligations. Rewrite using `[map_add, hu, hu, hu, map_add]`. Use function extensionality and compare the values at `x`. Simplify using `[Bridge.dcOp, Finset.sum_add_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.id_apply, map_smul, hu, hu, map_smul]`. Use function extensionality and compare the values at `x`. Simplify using `[Bridge.dcOp, Finset.smul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_op {G W : Type} [Group G] [NormedAddCommGroup W] [InnerProductSpace ℂ W] (M : HMod (G → W))
     (hM : Function.Injective M.e) (B : Finset G) (h : ∀ f, Bridge.dcOp B (M.e f) ∈ LinearMap.range M.e) :
@@ -162,16 +162,16 @@ section Inert
 variable {v : HeightOneSpectrum (𝓞 D.host.F)} {P : Pl D.host.E}
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext (v.isMaximal.eq_of_le (P.under (𝓞 D.host.F)).isPrime.ne_top (Ideal.map_le_iff_le_comap.1 (le_of_eq h))).symm`.
+A detailed English derivation is pending.
 -/
 theorem under_eq (h : IndefiniteRowSideFullHecke.InertLocalIndices.InertOver v P) : P.under (𝓞 D.host.F) = v :=
   HeightOneSpectrum.ext (v.isMaximal.eq_of_le (P.under (𝓞 D.host.F)).isPrime.ne_top
     (Ideal.map_le_iff_le_comap.1 (le_of_eq h))).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `rfl` from `under_eq h`. Conclude with `⟨h, rfl⟩`. Introduce and unpack `⟨h, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem inertOver_iff : IndefiniteRowSideFullHecke.InertLocalIndices.InertOver v P ↔ IndefiniteRowSideFullHecke.HeckeIntertwinersInert.IsInertPl P ∧ IndefiniteRowSideFullHecke.HeckeIntertwinersInert.plF P = v := by
   constructor
@@ -182,7 +182,7 @@ theorem inertOver_iff : IndefiniteRowSideFullHecke.InertLocalIndices.InertOver v
     exact h
 
 /- English proof (translation)
-Use `(GlobalTheory.IdemSupport.eq_of_le ?_).symm` and prove the remaining obligations. Rewrite using `[← (h : _ = P.asIdeal), Ideal.map_le_iff_le_comap, ← hQ]`. Conclude with `le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_under (h : IndefiniteRowSideFullHecke.InertLocalIndices.InertOver v P) {Q : Pl D.host.E} (hQ : Q.under (𝓞 D.host.F) = v) : Q = P := by
   refine (GlobalTheory.IdemSupport.eq_of_le ?_).symm
@@ -190,7 +190,7 @@ theorem eq_of_under (h : IndefiniteRowSideFullHecke.InertLocalIndices.InertOver 
   exact le_rfl
 
 /- English proof (translation)
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Establish `h1 : D.host.φ₀ (D.host.conj x) = starRingEnd ℂ (D.host.φ₀ x)` using `Formalism.HC.HostAx.conjE_apply _ _ _`. Rewrite using `[h1]`. Use `haveI := D.host.isCMField_hostE`. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj D.host.E D.host.φ₀ x`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_eq_conj (x : D.host.E) : star x = D.host.conj x := by
   apply D.host.φ₀.injective
@@ -200,9 +200,9 @@ theorem star_eq_conj (x : D.host.E) : star x = D.host.conj x := by
   exact NumberField.IsCMField.complexEmbedding_complexConj D.host.E D.host.φ₀ x
 
 /- English proof (translation)
-Establish `key : ∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `fun k hk => by`. Establish `h1` using `(GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) P hk).2.2.1`. Establish `h2 : GlobalTheory.IdemSupport.cP P = P` using `eq_of_under h ((GlobalTheory.IdemSupport.under_cP P).trans (under_eq h))`. Take `⟨x, hx, hy⟩` from `h1`. Rewrite `hx` using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hy _ ((GlobalTheory.IdemSupport.cO_coe x).trans (star_eq_conj (x : D.host.E))) ((GlobalTheory.IdemSupport.mem_cP P x).1 hx)`. Introduce `hg`. Rewrite `hg` using `[Nat.cast_mul]`. Conclude with `(P.isPrime.mem_or_mem hg).elim (key 0) (key 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem offG_of_inert (h : IndefiniteRowSideFullHecke.InertLocalIndices.InertOver v P) : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := by
   have key : ∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := fun k hk => by
@@ -216,9 +216,9 @@ theorem offG_of_inert (h : IndefiniteRowSideFullHecke.InertLocalIndices.InertOve
   exact (P.isPrime.mem_or_mem hg).elim (key 0) (key 1)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `h1 : P.asIdeal ≤ P.asIdeal ^ 2` using `by conv_lhs => rw [← (h : _ = P.asIdeal)]`. Use `Ideal.map_le_iff_le_comap.2 fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h2`. Conclude with `hn ⟨x, algebraMap _ _ x, rfl, (h : _ = P.asIdeal) ▸ Ideal.mem_map_of_mem _ hx, h2⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2` using `Ideal.pow_succ_lt_pow P.ne_bot 1 (P := P.asIdeal)`. Rewrite `h2` using `[pow_one]`. Conclude with `h2.not_ge h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unif (h : IndefiniteRowSideFullHecke.InertLocalIndices.InertOver v P) : ∃ x : 𝓞 D.host.F, ∃ y : 𝓞 D.host.E,
     (y : D.host.E) = algebraMap D.host.F D.host.E (x : D.host.F) ∧ y ∈ P.asIdeal ∧ y ∉ P.asIdeal ^ 2 := by
@@ -233,7 +233,7 @@ theorem exists_unif (h : IndefiniteRowSideFullHecke.InertLocalIndices.InertOver 
   exact h2.not_ge h1
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨h0, h1, h2⟩` from `GlobalTheory.IdemSupport.place_comp hΦ hε`. Conclude with `Or.inr ⟨rfl, ⟨v, ε, hε, rfl⟩, (GlobalTheory.IdemSupport.tie_iff hΦ (GlobalTheory.IdemSupport.place_idem hΦ hε) h0 P).2 ⟨h0, h1 P (under_eq h), fun Q hQ => h2 Q fun e => hQ (eq_of_under h e)⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the second alternative.
 -/
 theorem isPrimeIdem_of_inert (h : IndefiniteRowSideFullHecke.InertLocalIndices.InertOver v P) {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) :
     IsPrimeIdem P (algebraMap _ (Formalism.L2.Theta.AE D) ε) (algebraMap _ _ ε) := by
@@ -249,7 +249,7 @@ section Local
 variable (V : HSp D)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem locAt_iff (v : HeightOneSpectrum (𝓞 D.host.F)) (x : Bridge.Gf V) :
     IndefiniteRowSideFullHecke.HeckeIntertwinersInert.LocAt V v x ↔ IndefiniteRowSideFullHecke.InertLocalIndices.LocAt V v x := Iff.rfl
@@ -262,7 +262,7 @@ def locGrp (v : HeightOneSpectrum (𝓞 D.host.F)) : Subgroup (Bridge.Gf V) :=
   ⨅ (v') (_ : v' ≠ v), ((Formalism.UG.bc (cmp D v')).comp (finHom V).range.subtype).ker
 
 /- English proof (translation)
-Simplify using `only [locGrp, Subgroup.mem_iInf]`. Conclude with `forall₂_congr fun v' _ => ⟨fun h => congrArg Units.val h, fun h => Units.ext h⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_locGrp {v : HeightOneSpectrum (𝓞 D.host.F)} {x : Bridge.Gf V} : x ∈ locGrp V v ↔ IndefiniteRowSideFullHecke.InertLocalIndices.LocAt V v x := by
   simp only [locGrp, Subgroup.mem_iInf]
@@ -271,7 +271,7 @@ theorem mem_locGrp {v : HeightOneSpectrum (𝓞 D.host.F)} {x : Bridge.Gf V} : x
 abbrev fin : GA D V →* Bridge.Gf V := (finHom V).rangeRestrict
 
 /- English proof (translation)
-Take `⟨α, rfl, a1, -⟩` from `hε`. Conclude with `mul_eq_of_coord (Module.finBasis D.host.F D.host.E) _ z fun i => pair_mul_eq a1 _ (coord_eq_zero _ (fstA D.host.F) z h0 i) fun v' hv => coord_eq_zero₂ _ (sndA D.host.F) (evalV D.host.F v') z (h1 v' hv) i`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem idem_mul_eq {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) (z : Formalism.L2.Theta.AE D)
     (h0 : infPart D z = 0) (h1 : ∀ v', v' ≠ v → cmp D v' (finPart D z) = 0) : algebraMap _ (Formalism.L2.Theta.AE D) ε * z = z := by
@@ -280,11 +280,11 @@ theorem idem_mul_eq {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (
     (coord_eq_zero _ (fstA D.host.F) z h0 i) fun v' hv => coord_eq_zero₂ _ (sndA D.host.F) (evalV D.host.F v') z (h1 v' hv) i
 
 /- English proof (translation)
-Establish `key : ∀ v', (Units.val (finHom V g)).map (cmp D v') = (Formalism.L2.Theta.mt V g).map ((cmp D v').comp (finPart D))` using `fun _ => rfl`. Rewrite using `[mem_locGrp]`. Prove the components needed by the constructor for the conclusion. Introduce `h v' hv`. Use `(key v').trans ((map_eq_one_iff _ _).2 fun i j => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨α, rfl, -, a0⟩` from `hε`. Establish `h2 : (cmp D v').comp (finPart D) (algebraMap _ (Formalism.L2.Theta.AE D) (pairA D.host.F 0 α)) = 0`. Express the relevant statement in the definitionally equal form `evalV D.host.F v' α ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Rewrite using `[a0 v' hv, TensorProduct.zero_tmul]`. Rewrite using `[← h i j, RingHom.map_mul, h2, zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h i j`. Establish `h0 : (Formalism.L2.Theta.mt V g).map (infPart D) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hg)`. Conclude with `idem_mul_eq hε _ ((map_eq_one_iff _ _).1 h0 i j) fun v' hv => (map_eq_one_iff _ _).1 ((key v').symm.trans (h v' hv)) i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem suppF_iff {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) {g : GA D V}
     (hg : g ∈ GfC V) : SuppF V (algebraMap _ _ ε) g ↔ fin V g ∈ locGrp V v := by
@@ -305,9 +305,9 @@ theorem suppF_iff {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h�
       fun v' hv => (map_eq_one_iff _ _).1 ((key v').symm.trans (h v' hv)) i j
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `h0 : (Formalism.L2.Theta.mt V g).map (infPart D) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hg)`. Establish `h1 : (Formalism.L2.Theta.mt V g).map (finPart D) = 1` using `congrArg Units.val (congrArg Subtype.val h)`. Use `GlobalTheory.IdemSupport.mt_inj V ((GlobalTheory.IdemSupport.mt_one V).symm ▸ sub_eq_zero.1 (Matrix.ext fun i j => e.injective ?_))` and prove the remaining obligations. Rewrite using `[Matrix.zero_apply, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Prod.ext ((he _).1.trans ((map_eq_one_iff _ _).1 h0 i j)) ((he _).2.trans ((map_eq_one_iff _ _).1 h1 i j))`.
+A detailed English derivation is pending.
 -/
 theorem fin_inj (g : GA D V) (hg : g ∈ GfC V) (h : fin V g = 1) : g = 1 := by
   obtain ⟨e, he, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E
@@ -318,11 +318,11 @@ theorem fin_inj (g : GA D V) (hg : g ∈ GfC V) (h : fin V g = 1) : g = 1 := by
   exact Prod.ext ((he _).1.trans ((map_eq_one_iff _ _).1 h0 i j)) ((he _).2.trans ((map_eq_one_iff _ _).1 h1 i j))
 
 /- English proof (translation)
-Take `⟨x, g, rfl⟩` from `x`. Set `f : Formalism.L2.Theta.AE D` to `algebraMap _ _ (pairA D.host.F 0 1)`. Establish `hp : pairA D.host.F 0 1 * pairA D.host.F 0 1 = pairA D.host.F 0 1` using `Prod.ext (mul_zero (0 : Ainf D.host.F)) (mul_one (1 : Af D.host.F))`. Establish `hff : f * f = f` using `by rw [← RingHom.map_mul, hp]`. Take `⟨g₁, g₂, h₁, h₂, rfl⟩` from `GlobalTheory.IdemSupport.exists_split V hff (GlobalTheory.IdemSupport.cA_algebraMap _) g`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `b : finHom V g₂ = 1`. Use `Units.ext ((map_eq_one_iff (finPart D) _).2 fun i j => ?_)` and prove the remaining obligations. Establish `h3 : finPart D (1 - f) = 0`. Rewrite using `[RingHom.map_sub, RingHom.map_one, sub_eq_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `(congrArg (finPart D) (h₂ i j)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, h3, zero_mul]`. Use `⟨g₁, GlobalTheory.IdemSupport.mem_GfC_of_suppF V (TensorProduct.zero_tmul _ _) h₁, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show finHom V g₁ = finHom V (g₁ * g₂)`. Rewrite using `[map_mul, b, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_lift (x : Bridge.Gf V) : ∃ g ∈ GfC V, fin V g = x := by
   obtain ⟨x, g, rfl⟩ := x
@@ -345,21 +345,19 @@ theorem fin_lift (x : Bridge.Gf V) : ∃ g ∈ GfC V, fin V g = x := by
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `(GlobalTheory.IdemSupport.exists_placeIdem (D := D) v).elim fun ε hε => ?_` and prove the remaining obligations. Establish `hP` using `isPrimeIdem_of_inert h hε`. Establish `h01` using `(GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V).2.2.1 P _ _ hP`. Establish `hoff : ∀ PP, PP ∈ (flag1L L).Pg ∨ PP ∈ (flag1L L).Q → PP ≠ P ∧ ¬ IsConjPl PP P` using `fun PP hPP => by`. Establish `h1 : PP ≠ P` using `fun e => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Conclude with `hPP.elim hg hq`. Use `⟨h1, fun hc => h1 (eq_of_under h ?_)⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.IdemSupport.under_cP, ← (GlobalTheory.IdemSupport.isConjPl_iff PP P).1 hc]`. Conclude with `under_eq h`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Rewrite using `[Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 P.isPrime.ne_top`. Establish `h03` using `(GlobalTheory.LevSplit.lev_split V β Λ 1 (flag1L L) hβ).2 P _ _ hP h1 hoff`. Establish `hK` using `h03.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ` using `h03.2.1`. Establish `hsp` using `h03.2.2`. Establish `hJ : ∀ g ∈ GfC V, fin V g ∈ (levEnv V β L).J ↔ g ∈ levG V β (flag1L L)` using `fun g hg => ⟨fun h => ⟨hg, h⟩, fun h => h.2⟩`. Establish `hlift : ∀ x ∈ locGrp V v, ∃ g, SuppF V (algebraMap _ _ ε) g ∧ fin V g = x` using `fun x hx => by`. Take `⟨g, hg, rfl⟩` from `fin_lift V x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨g, (suppF_iff V hε hg).2 hx, rfl⟩`. Establish `hloc : ∀ g, SuppF V (algebraMap _ _ ε) g → fin V g ∈ locGrp V v` using `fun g hg => (suppF_iff V hε (h01.2.2.1 g hg)).1 hg`. Establish `hs : GlobalTheory.HkB.LocSplit (levEnv V β L).J (locGrp V v)`. Introduce `k hk`. Take `⟨g, hg, rfl⟩` from `fin_lift V k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k₁, h₁, k₂, h₂, s₁, s₂, rfl⟩` from `hsp g ((hJ g hg).1 hk)`. Use `⟨fin V k₁, (hJ _ h₁.1).2 h₁, fin V k₂, (hJ _ h₂.1).2 h₂, hloc _ s₁, map_mul _ _ _, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨l', hl', rfl⟩` from `hlift l hl`. Conclude with `(GlobalTheory.IdemSupport.commute_of_suppF V (by rw [mul_sub, mul_one, h01.1, sub_self]) hl' s₂).symm.map (fin V)`. Use `⟨hs, ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨k, hk⟩ hl`. Take `⟨g, hg, rfl⟩` from `hlift k hl`. Conclude with `Units.ext (hχ g ((hJ g (h01.2.2.1 g hg)).1 hk) hg)`. Take `⟨g, hg, rfl⟩` from `hlift x hx`. Take `⟨R, hR, hc⟩` from `(GlobalTheory.InertDoubleCoset.inert_double_cosets V P _ hP (exists_unif h) g hg).2.1`.
-
-Use `⟨R.image (fin V), isDC_image (fin V) (GfC V) hs {k | k ∈ KsphC V ∅ ∧ SuppF V (algebraMap _ _ ε) k} (fin_inj V) (fun k hk => h01.2.2.1 k hk.2) ⟨GlobalTheory.InertDoubleCoset.one_mem_KsphC V, (GlobalTheory.IdemSupport.suppGroup V _).one_mem⟩ (fun k hk => (hJ k (h01.2.2.1 k hk.2)).2 …` and prove the remaining obligations. Take `⟨k, hk, rfl⟩` from `hlift y hl`. Conclude with `⟨k, ⟨(hK k hk).1 ((hJ k (h01.2.2.1 k hk)).1 hy), hk⟩, rfl⟩`. Take `⟨γ, hγ, rfl⟩` from `Finset.mem_image.1 hb`. Conclude with `hloc γ (hR γ hγ)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem local_data (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (L : LevDat D.host.E ℂ V.rank) (hβ : IsBaseFrame V β Λ 1) {v : HeightOneSpectrum (𝓞 D.host.F)} {P : Pl D.host.E}
@@ -429,7 +427,7 @@ def withReps {t : T} (i : IndefiniteRowSideFullHecke.InertLocalIndices.InertIx R
     (inertOver_iff.1 i.inert).2.symm ▸ h2, h1⟩
 
 /- English proof (translation)
-Take `⟨v, P, h, _, _, _, x, _⟩` from `i`. Take `rfl` from `under_eq h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem forget_withReps {t : T} (i : IndefiniteRowSideFullHecke.InertLocalIndices.InertIx R t) (B : Finset (Bridge.Gf D.sp.X'))
     (h1 : Bridge.IsDC (IndefiniteRowSideFullHecke.InertLocalIndices.levX R t) i.x B) (h2 : ∀ a ∈ B, IndefiniteRowSideFullHecke.InertLocalIndices.LocAt D.sp.X' i.v a) :
@@ -439,7 +437,7 @@ theorem forget_withReps {t : T} (i : IndefiniteRowSideFullHecke.InertLocalIndice
   rfl
 
 /- English proof (translation)
-The claim follows from `hC.lev.βX.elim fun _ hc => local_data D.sp.X' R.βX R.ΛX (R.datXt t) (by rwa [one_pow] at hc) i.inert (fun h => i.offS (hC.fam.Sb h)) i.offQ`.
+A detailed English derivation is pending.
 -/
 theorem local_at (hC : R.Char F) {t : T} (i : IndefiniteRowSideFullHecke.InertLocalIndices.InertIx R t) :
     GlobalTheory.HkB.LocSplit (IndefiniteRowSideFullHecke.InertLocalIndices.levX R t) (locGrp D.sp.X' i.v) ∧
@@ -451,7 +449,7 @@ theorem local_at (hC : R.Char F) {t : T} (i : IndefiniteRowSideFullHecke.InertLo
     local_data D.sp.X' R.βX R.ΛX (R.datXt t) (by rwa [one_pow] at hc) i.inert (fun h => i.offS (hC.fam.Sb h)) i.offQ
 
 /- English proof (translation)
-The claim follows from `(mem_iff_range (hC.models.HX t)).2 (LinearMap.mem_range_self _ f)`.
+A detailed English derivation is pending.
 -/
 theorem e_mem (hC : R.Char F) (t : T) (f : (R.HX t).H) :
     (R.HX t).e f ∈ Bridge.AdForms (Bridge.ratF D.sp.X') R.cX.coef.ρ (levEnv _ R.βX (R.datXt t)).J
@@ -459,14 +457,14 @@ theorem e_mem (hC : R.Char F) (t : T) (f : (R.HX t).H) :
   (mem_iff_range (hC.models.HX t)).2 (LinearMap.mem_range_self _ f)
 
 /- English proof (translation)
-Introduce `i` and use `((local_at hC i).2.2 i.x ((mem_locGrp _).2 i.loc)).elim fun B h => ⟨_, forget_withReps i B h.1 fun a ha => (mem_locGrp _).1 (h.2 a ha)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem forget_surjective (hC : R.Char F) (t : T) : Function.Surjective (forget (R := R) (t := t)) := fun i =>
   ((local_at hC i).2.2 i.x ((mem_locGrp _).2 i.loc)).elim fun B h =>
     ⟨_, forget_withReps i B h.1 fun a ha => (mem_locGrp _).1 (h.2 a ha)⟩
 
 /- English proof (translation)
-The claim follows from `exists_op (R.HX t) (hC.models.HX t).1 i.1.2.2 fun f => by have h := local_at hC (forget i) exact (mem_iff_range (hC.models.HX t)).1 (GlobalTheory.HkB.LocSplit.dcOp_mem _ _ h.1 h.2.1 i.2.2.2.2.2.2 (fun a ha => (mem_locGrp _).2 (i.2.2.2.2.2.1 a ha)) (e_mem hC t f))`.
+A detailed English derivation is pending.
 -/
 theorem exists_isInertOp (hC : R.Char F) {t : T} (i : IndefiniteRowSideFullHecke.HeckeIntertwinersInert.InertIx R t) : ∃ U, IndefiniteRowSideFullHecke.HeckeIntertwinersInert.IsInertOp R t i U :=
   exists_op (R.HX t) (hC.models.HX t).1 i.1.2.2 fun f => by
@@ -475,9 +473,9 @@ theorem exists_isInertOp (hC : R.Char F) {t : T} (i : IndefiniteRowSideFullHecke
       (fun a ha => (mem_locGrp _).2 (i.2.2.2.2.2.1 a ha)) (e_mem hC t f))
 
 /- English proof (translation)
-Use `choose s hs using forget_surjective hC`. Use `choose U hU using fun t i => exists_isInertOp hC (s t i)`. Use `⟨U, fun t i => ⟨(s t i).1.2.2, ?_, ?_, hU t i⟩⟩` and prove the remaining obligations. Use `(s t i).2.2.2.2.2.2` as an intermediate fact. Rewrite `this` using `[show (s t i).1.2.1 = i.x from congrArg IndefiniteRowSideFullHecke.InertLocalIndices.InertIx.x (hs t i)]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(s t i).2.2.2.2.2.1` as an intermediate fact. Rewrite `this` using `[show IndefiniteRowSideFullHecke.HeckeIntertwinersInert.plF (s t i).1.1 = i.v from congrArg IndefiniteRowSideFullHecke.InertLocalIndices.InertIx.v (hs t i)]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_inertTie (hC : R.Char F) : ∃ TI, IndefiniteRowSideFullHecke.InertLocalIndices.InertTie R TI := by
   choose s hs using forget_surjective hC

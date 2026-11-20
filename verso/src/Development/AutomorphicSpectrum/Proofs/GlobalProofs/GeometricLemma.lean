@@ -6,11 +6,11 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.JacquetOfInducedFiltr
 namespace GlobalTheory.CompanionTheory.GeoLink
 
 /- English proof (translation)
-Introduce `k _ _ _ _`. Establish `h` using `GlobalTheory.T.induced_cell_semisimplification k`. Establish `hloc` using `GlobalTheory.T.jacquetOfInducedFiltration' k`. Use `first`. Consider the case `exact h hloc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact h.mpr hloc`. Consider the case `exact ⟨h, hloc⟩`. Consider the case `exact ⟨hloc, h⟩`. Consider the case `exact hloc.mpr h`. Consider the case `exact hloc h`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hloc`.
+A detailed English derivation is pending.
 -/
 theorem geometricLemma : GlobalTheory.Published.GeometricLemma := by
   intro k _ _ _ _

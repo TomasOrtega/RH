@@ -19,13 +19,13 @@ noncomputable section
 namespace GlobalTheory.VMetric
 
 /- English proof (translation)
-Introduce `k _ X p E h H fl`. Establish `H₀ : (h.stepMet fl 0).IsCInf` using `H.restrict _ _`. Establish `H₁ : (h.stepMet fl 1).IsCInf` using `H.restrict _ _`. Establish `hS₀` using `VMetric.stepSeq_shortExact fl 0`. Establish `hS₁` using `VMetric.stepSeq_shortExact fl 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i₂ : IsIso (VMetric.stepSeq fl 0).g` using `hS₀.isIso_g_iff.2 (VB.isVB_zero_iff.1 (fl.isVB (Fin.castSucc 0)))`. Apply the tactic sequence `have e₂ : (VMetric.det H₀).Isometric (VMetric.grLB fl 0 H) := CurveDens.det_isometric_of_isIsometry k X p _ _ 1 (h.stepMet fl 0) (h.grMet fl 0) H₀ (H.grMet fl 0) (asIso (VMetric.stepSeq fl 0).g) ((VMetric.isIsometry_iff _).2 (VMetric.ext (funext fun σ => ChTwoModel.quot_eq_map (( …`. Establish `hf : VB.IsSubbundle (VMetric.stepSeq fl 1).f` using `⟨inferInstance, 1, fl.isVB_gr 1⟩`. Establish `e₁` using `VMetric.isometric_det_tens_det k X p (VMetric.stepSeq fl 1) 1 1 (h.stepMet fl 1) H₁ hS₁ (fl.isVB (Fin.castSucc 1)) (fl.isVB_gr 1) hf`. Apply the tactic sequence `have e₀ : (VMetric.det (H₁.restrict hf (fl.isVB (Fin.castSucc 1)))).Isometric (VMetric.det H₀) := CurveDens.det_isometric_of_isIsometry k X p _ _ 1 _ (h.stepMet fl 0) _ H₀ (Iso.refl _) fun σ V s t y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((h.met σ).form_restrict (fl.isSubbundle _) _ s t hy).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((((h.met σ).restrict (fl.isSubbundle _) (fl.isVB _)).form_restrict hf (fl.isVB (Fin.castSucc 1)) s t hy).trans ((h.met σ).form_restrict (fl.isSubbundle _) _ _ _ hy)).symm` and prove the remaining obligations. Use `congr 1`. Conclude with `congr(($(fl.step_ι 1)).app V s).symm`. Conclude with `congr(($(fl.step_ι 1)).app V t).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i₁ : IsIso (fl.ι (Fin.succ 1))` using `fl.isIso_last`. Apply the tactic sequence `have e₃ : (VMetric.det H₁).Isometric (VMetric.det H) := CurveDens.det_isometric_of_isIsometry k X p _ _ 2 (h.stepMet fl 1) h H₁ H (asIso (fl.ι (Fin.succ 1))) fun σ V s t y hy => ((h.met σ).form_restrict (fl.isSubbundle _) _ s t hy).symm`. Conclude with `((((e₀.trans e₂).symm).tens_right _).trans e₁).trans e₃`.
+A detailed English derivation is pending.
 -/
 theorem isometric_grLB_tens_grLB_det : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (E : X.Modules)
     (h : VMetric p E 2) (H : h.IsCInf) (fl : Vert.Flag E 2),

@@ -21,9 +21,9 @@ namespace GlobalTheory.RSNonvan
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Distinguish the cases in `h : x = ξ`. Substitute `h` using the available equality. Take `⟨p, hp⟩` from `hx`. Conclude with `⟨_, hp.has_fpower_series_dslope_fslope⟩`. Establish `h1 : AnalyticAt ℂ (fun t => (t - ξ)⁻¹ * (f t - f ξ)) x` using `((analyticAt_id.sub analyticAt_const).inv (sub_ne_zero.2 h)).mul (hx.sub analyticAt_const)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [dslope_eventuallyEq_slope_of_ne f h] with t ht`. Rewrite using `[ht, slope_def_module, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticAt_dslope' {f : ℂ → ℂ} {ξ x : ℂ} (hx : AnalyticAt ℂ f x) : AnalyticAt ℂ (dslope f ξ) x := by
   by_cases h : x = ξ
@@ -37,9 +37,9 @@ theorem analyticAt_dslope' {f : ℂ → ℂ} {ξ x : ℂ} (hx : AnalyticAt ℂ f
     rw [ht, slope_def_module, smul_eq_mul]
 
 /- English proof (translation)
-Set `s : Set {w // w ∉ T}` to `{w | w.1 ∈ T'}`. Set `e1 : (↑(T' \ T) : Set ι) ≃ s` to `{ toFun := fun w => ⟨⟨w.1, (Finset.mem_sdiff.1 (Finset.mem_coe.1 w.2)).2⟩, (Finset.mem_sdiff.1 (Finset.mem_coe.1 w.2)).1⟩ invFun := fun w => ⟨w.1.1, Finset.mem_coe.2 (Finset.mem_sdiff.2 ⟨w.2, w.1.2⟩)⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Set `e2 : {w // w ∉ T'} ≃ (sᶜ : Set {w // w ∉ T})` to `{ toFun := fun w => ⟨⟨w.1, fun hw => w.2 (h hw)⟩, w.2⟩ invFun := fun w => ⟨w.1.1, w.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `h1 : HasProd ((fun w : {w // w ∉ T} => f w.1) ∘ ((↑) : s → {w // w ∉ T})) (∏ w ∈ T' \ T, f w)` using `(e1.hasProd_iff).1 (Finset.hasProd (T' \ T) f)`. Establish `h2 : HasProd ((fun w : {w // w ∉ T} => f w.1) ∘ ((↑) : (sᶜ : Set {w // w ∉ T}) → {w // w ∉ T})) b` using `(e2.hasProd_iff).1 hb`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.mul_compl h2`.
+A detailed English derivation is pending.
 -/
 theorem hasProd_of_subset {ι : Type} [DecidableEq ι] (f : ι → ℂ) {T T' : Finset ι} (h : T ⊆ T') {b : ℂ}
     (hb : HasProd (fun w : {w // w ∉ T'} => f w.1) b) :
@@ -63,7 +63,7 @@ theorem hasProd_of_subset {ι : Type} [DecidableEq ι] (f : ι → ℂ) {T T' : 
   exact h1.mul_compl h2
 
 /- English proof (translation)
-Unfold `sat`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sat_spec {a : ℕ} {π : CG E a} {w : HeightOneSpectrum (𝓞 E)} (h : ∃ B, π.HasSat w B) :
     π.HasSat w (sat π w) := by
@@ -72,7 +72,7 @@ theorem sat_spec {a : ℕ} {π : CG E a} {w : HeightOneSpectrum (𝓞 E)} (h : �
   exact h.choose_spec
 
 /- English proof (translation)
-Proceed by induction on `B using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons b B ih => simp [ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_map_val (B : Multiset ℂˣ) : (B.map (fun α : ℂˣ => (α : ℂ))).prod = ((B.prod : ℂˣ) : ℂ) := by
   induction B using Multiset.induction_on with
@@ -80,21 +80,19 @@ theorem prod_map_val (B : Multiset ℂˣ) : (B.map (fun α : ℂˣ => (α : ℂ)
   | cons b B ih => simp [ih]
 
 /- English proof (translation)
-Introduce `E _ _ _ a b σ σ' ha hb hσ hσ' hne T hgood hU hU'`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Take `⟨F, H, hF, hH, hHpos, hFH⟩` from `GlobalTheory.T.rankinSelberg_GLn_GLm_partialL_eq_div_entire E b a σ' σ ha hab hσ' hσ T hgood.2 hU' hU`. Use `⟨fun z => starRingEnd ℂ (F (starRingEnd ℂ z) / H (starRingEnd ℂ z)), ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hopen : IsOpen {z : ℂ | H (starRingEnd ℂ z) ≠ 0}` using `isOpen_ne_fun (hH.continuous.comp Complex.continuous_conj) continuous_const`. Establish `hxmem : (x : ℂ) ∈ {z : ℂ | H (starRingEnd ℂ z) ≠ 0}`. Simplify using `only [Set.mem_setOf_eq, Complex.conj_ofReal]`. Introduce `h0`. Use `(hHpos x).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, Complex.zero_re]`. Conclude with `lt_irrefl 0 this`. Use `DifferentiableOn.analyticAt (fun z hz => ?_) (hopen.mem_nhds hxmem)` and prove the remaining obligations. Establish `hd : DifferentiableAt ℂ (fun u => F u / H u) (starRingEnd ℂ z)` using `(hF _).div (hH _) hz`. Use `hd.conj_conj` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Complex.conj_conj]`. Conclude with `this.differentiableWithinAt`. Introduce `x hx`. Establish `hp` using `(GlobalTheory.T.localRankinSelberg_logarithm_formula.2 E a b σ σ' hσ hσ' T hU hU' x hx).2`. Establish `e` using `GlobalTheory.T.partial_rankinSelberg_product_conj_swap_real E b a σ' σ hσ' hσ T hU' hU x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∏' w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T}, lfac σ' σ (x : ℂ) w.1 = F x / H x` using `(hFH x hx).tprod_eq`. Establish `h3 : ∏' w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T}, lfac σ σ' (x : ℂ) w.1 = starRingEnd ℂ (F (starRingEnd ℂ (x : ℂ)) / H (starRingEnd ℂ (x : ℂ)))`. Rewrite using `[e, h2, Complex.conj_ofReal]`. Use `beta_reduce`. Rewrite using `[← h3]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hp.multipliable.hasProd`. Establish `hne' : σ ≠ σ'` using `fun h => hne (by rw [h])`. Take `⟨F, hFa, hF1, hF⟩` from `GlobalTheory.T.rankinSelberg_sameDegree_meromorphic_continuation E a σ σ' ha hσ hσ' T hgood hU hU'`. Use `⟨dslope F 1, fun x hx => analyticAt_dslope' (hFa x hx), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx1 : (x : ℂ) ≠ 1` using `by exact_mod_cast hx.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : dslope F 1 (x : ℂ) = F x / ((x : ℂ) - 1)`. Rewrite using `[dslope_of_ne _ hx1, slope_def_module, hF1 hne', sub_zero, smul_eq_mul, inv_mul_eq_div]`. Rewrite using `[e]`. Conclude with `hF x hx`. Take `⟨F, H, hF, hH, hHpos, hFH⟩` from `GlobalTheory.T.rankinSelberg_GLn_GLm_partialL_eq_div_entire E a b σ σ' hb hab hσ hσ' T hgood.2 hU hU'`.
-
-Use `⟨fun z => F z / H z, fun x hx => (hF.analyticAt _).div (hH.analyticAt _) ?_, fun x hx => hFH x hx⟩` and prove the remaining obligations. Introduce `h0`. Use `(hHpos x).1` as an intermediate fact. Rewrite `this` using `[h0, Complex.zero_re]`. Conclude with `lt_irrefl 0 this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem offDiag : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a b : ℕ) (σ : CG E a) (σ' : CG E b), 1 ≤ a → 1 ≤ b → σ.IsUnitary → σ'.IsUnitary → (⟨a, σ⟩ : Σ a, CG E a) ≠ ⟨b, σ'⟩ → ∀ T : Finset (HeightOneSpectrum (𝓞 E)), IsGood T → UnrOutside T σ → UnrOutside T σ' → ∃ G : ℂ → ℂ, (∀ x : ℝ, 0 < x → AnalyticAt ℂ G (x : ℂ)) ∧ ∀ x : ℝ, 1 < x → HasProd (fun w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} => lfac σ σ' (x : ℂ) w.1) (G x) := by
   intro E _ _ _ a b σ σ' ha hb hσ hσ' hne T hgood hU hU'
@@ -141,7 +139,7 @@ theorem offDiag : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] 
     exact lt_irrefl 0 this
 
 /- English proof (translation)
-Establish `h` using `hG.continuousAt.comp (x := (1 : ℝ)) (by simpa using Complex.continuous_ofReal.continuousAt)`. Establish `h2` using `h.tendsto.mono_left (nhdsWithin_le_nhds (s := Set.Ioi (1 : ℝ)))`. Simplify using `only [Function.comp_def, Complex.ofReal_one] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_of_analyticAt {G : ℂ → ℂ} (hG : AnalyticAt ℂ G 1) :
     Tendsto (fun x : ℝ => G x) (𝓝[>] 1) (𝓝 (G 1)) := by
@@ -151,33 +149,33 @@ theorem tendsto_of_analyticAt {G : ℂ → ℂ} (hG : AnalyticAt ℂ G 1) :
   exact h2
 
 /- English proof (translation)
-Introduce `E _ _ _ a b σ σ' ha hb hσ hσ' hne T hT hT'`. Take `⟨T', hTT', hgood⟩` from `GlobalTheory.T.exists_goodRankinSelbergPlaceSet_superset_totallyComplex E T`. Establish `hU : UnrOutside T' σ` using `fun w hw => hT w fun h => hw (hTT' h)`. Establish `hU' : UnrOutside T' σ'` using `fun w hw => hT' w fun h => hw (hTT' h)`. Take `⟨G, hGa, hG⟩` from `offDiag E a b σ σ' ha hb hσ hσ' hne T' hgood hU hU'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨G', hG'a, hG'⟩` from `offDiag E b a σ' σ hb ha hσ' hσ (Ne.symm hne) T' hgood hU' hU`. Take `⟨D, hDa, -, hD⟩` from `GlobalTheory.T.rankinSelberg_sameDegree_meromorphic_continuation E a σ σ ha hσ hσ T' hgood hU hU`. Take `⟨D', hD'a, -, hD'⟩` from `GlobalTheory.T.rankinSelberg_sameDegree_meromorphic_continuation E b σ' σ' hb hσ' hσ' T' hgood hU' hU'`. Establish `hGa1 : AnalyticAt ℂ G 1` using `by simpa using hGa 1 one_pos`. Establish `hG'a1 : AnalyticAt ℂ G' 1` using `by simpa using hG'a 1 one_pos`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlim : Tendsto (fun x : ℝ => ∏' w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T'}, lfac σ σ' (x : ℂ) w.1) (𝓝[>] 1) (𝓝 (G 1))` using `(tendsto_of_analyticAt hGa1).congr' (eventually_nhdsWithin_of_forall fun x hx => ((hG x hx).tprod_eq).symm)`. Establish `hG1 : G 1 ≠ 0`. Introduce `h0`. Establish `hG'1 : G' 1 = 0`. Establish `hlimc : Tendsto (fun x : ℝ => G' x) (𝓝[>] 1) (𝓝 (starRingEnd ℂ (G 1)))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((Complex.continuous_conj.tendsto _).comp (tendsto_of_analyticAt hGa1)).congr' (eventually_nhdsWithin_of_forall fun x hx => ?_)` and prove the remaining obligations. Establish `e` using `GlobalTheory.T.partial_rankinSelberg_product_conj_swap_real E a b σ σ' hσ hσ' T' hU hU' x hx`. Simplify using `only [Function.comp]`. Rewrite using `[← (hG x hx).tprod_eq, ← (hG' x hx).tprod_eq, e]`. Rewrite using `[tendsto_nhds_unique (tendsto_of_analyticAt hG'a1) hlimc, h0, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `P : ℂ → ℂ` to `fun z => D z * D' z * dslope G 1 z * dslope G' 1 z`. Establish `hPa : ∀ x : ℝ, 0 < x → AnalyticAt ℂ P (x : ℂ)` using `fun x hx => (((hDa x hx).mul (hD'a x hx)).mul (analyticAt_dslope' (hGa x hx))).mul (analyticAt_dslope' (hG'a x hx))`. Establish `hP : ∀ x : ℝ, 1 < x → ∃ g : ℂ, HasSum (fun p : {w : HeightOneSpectrum (𝓞 E) // w ∉ T'} × ℕ => ((dcoef σ σ' p.1.1 p.2 : ℝ) : ℂ) * Complex.exp (-((dexp p.1.1 p.2 : ℝ) : ℂ) * (x : ℂ))) g ∧ P x = Complex.exp g`. Introduce `x hx`. Take `⟨g, hg, he⟩` from `GlobalTheory.T.dirichlet_series_exponential_sum_converges E a b σ σ' hσ hσ' T' hU hU' x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[← he, (hD x hx).tprod_eq, (hD' x hx).tprod_eq, (hG x hx).tprod_eq, (hG' x hx).tprod_eq]`. Establish `hx1 : (x : ℂ) ≠ 1` using `by exact_mod_cast hx.ne'`. Establish `hx1' : (x : ℂ) - 1 ≠ 0` using `sub_ne_zero.2 hx1`. Establish `e1 : dslope G 1 (x : ℂ) = G x / ((x : ℂ) - 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dslope_of_ne _ hx1, slope_def_module, h0, sub_zero, smul_eq_mul, inv_mul_eq_div]`. Establish `e2 : dslope G' 1 (x : ℂ) = G' x / ((x : ℂ) - 1)`. Rewrite using `[dslope_of_ne _ hx1, slope_def_module, hG'1, sub_zero, smul_eq_mul, inv_mul_eq_div]`. Simplify using `only [P, e1, e2]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `hN : (0 : ℝ) < 1 / ((a + b : ℕ) : ℝ)`. Establish `: (0 : ℝ) < ((a + b : ℕ) : ℝ)` using `by exact_mod_cast (show 0 < a + b by omega)`. Check the signs of the components of the expression. Take `⟨g, hg, -⟩` from `GlobalTheory.landau_exp_hasSum_of_analyticAt ({w : HeightOneSpectrum (𝓞 E) // w ∉ T'} × ℕ) (fun p => dcoef σ σ' p.1.1 p.2) (fun p => dexp p.1.1 p.2) 0 1 P (fun p => dcoef_nonneg _ _ _ _) (fun p => dexp_nonneg _ _) one_pos hPa hP _ hN`. Use `set y : ℝ := 1 / ((a + b : ℕ) : ℝ) with hy`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : Summable (fun p : {w : HeightOneSpectrum (𝓞 E) // w ∉ T'} × ℕ => dcoef σ σ' p.1.1 p.2 * Real.exp (-(dexp p.1.1 p.2) * y))`. Rewrite using `[← Complex.summable_ofReal]`. Use `hg.summable.congr fun p => ?_` and prove the remaining obligations. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.PowerSumDiv.not_summable_psum_sq (a + b) (by omega) T' (fun w => (sat σ w).map (fun α : ℂˣ => (α : ℂ)) + (sat σ' w).map (fun α : ℂˣ => (α : ℂ))) ?_ ?_ (le_of_eq hy) ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[Multiset.card_add, Multiset.card_map, Multiset.card_map, (sat_spec (hU w hw)).card, (sat_spec (hU' w hw)).card]`. Introduce `w hw`. Rewrite using `[Multiset.prod_add, norm_mul, prod_map_val, prod_map_val, GlobalTheory.T.norm_prod_satakeParameters_unitary_eq_one E a σ w _ hσ (sat_spec (hU w hw)), GlobalTheory.T.norm_prod_satakeParameters_unitary_eq_one E b σ' w _ hσ' (sat_spec (hU' w hw)), one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hs.congr fun p => ?_` and prove the remaining obligations. Establish `hq : (0 : ℝ) < (Ideal.absNorm p.1.1.asIdeal : ℝ)`. Use `NumberField.HeightOneSpectrum.one_lt_absNorm p.1.1` as an intermediate fact. Establish `: (0 : ℝ) < ((Ideal.absNorm p.1.1.asIdeal : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 0 < Ideal.absNorm p.1.1.asIdeal)`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dcoef, dexp]`. Rewrite using `[Real.rpow_def_of_pos hq]`. Establish `: -(((p.2 : ℝ) + 1) * Real.log (Ideal.absNorm p.1.1.asIdeal : ℝ)) * y = Real.log (Ideal.absNorm p.1.1.asIdeal : ℝ) * -(((p.2 : ℝ) + 1) * y)` using `by ring`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfac : ∀ w ∈ T' \ T, Tendsto (fun x : ℝ => lfac σ σ' (x : ℂ) w) (𝓝[>] 1) (𝓝 (lfac σ σ' 1 w)) ∧ lfac σ σ' 1 w ≠ 0`. Introduce `w hw`. Establish `hw2` using `(Finset.mem_sdiff.1 hw).2`. Conclude with `GlobalTheory.T.localRankinSelbergFactor_conj_tendsto_one_ne_zero (Ideal.absNorm w.asIdeal) (sat σ w) (sat σ' w) (NumberField.HeightOneSpectrum.one_lt_absNorm w) (GlobalTheory.T.satakeParameter_normSq_lt_absNorm_unitaryCusp E a σ ha hσ T hT w hw2) (GlobalTheory.T.satakeParameter_n …`. Use `⟨(∏ w ∈ T' \ T, lfac σ σ' 1 w) * G 1, mul_ne_zero (Finset.prod_ne_zero_iff.2 fun w hw => (hfac w hw).2) hG1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hprodlim : Tendsto (fun x : ℝ => ∏ w ∈ T' \ T, lfac σ σ' (x : ℂ) w) (𝓝[>] 1) (𝓝 (∏ w ∈ T' \ T, lfac σ σ' 1 w))` using `tendsto_finset_prod _ fun w hw => (hfac w hw).1`. Use `(hprodlim.mul hlim).congr' (eventually_nhdsWithin_of_forall fun x hx => ?_)` and prove the remaining obligations. Establish `hp` using `(GlobalTheory.T.localRankinSelberg_logarithm_formula.2 E a b σ σ' hσ hσ' T' hU hU' x hx).2`. Establish `h1` using `hasProd_of_subset (fun w => lfac σ σ' (x : ℂ) w) hTT' hp.multipliable.hasProd`. Conclude with `h1.tprod_eq.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_partialL_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a b : ℕ) (σ : CG E a) (σ' : CG E b), 1 ≤ a → 1 ≤ b → σ.IsUnitary → σ'.IsUnitary → (⟨a, σ⟩ : Σ a, CG E a) ≠ ⟨b, σ'⟩ → ∀ T : Finset (HeightOneSpectrum (𝓞 E)), UnrOutside T σ → UnrOutside T σ' → ∃ z : ℂ, z ≠ 0 ∧ Tendsto (fun x : ℝ => ∏' w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T}, locL (Ideal.absNorm w.1.asIdeal) (sat σ w.1) ((sat σ' w.1).map (Units.map (starRingEnd ℂ).toMonoidHom)) (x : ℂ)) (𝓝[>] 1) (𝓝 z) := by
   intro E _ _ _ a b σ σ' ha hb hσ hσ' hne T hT hT'

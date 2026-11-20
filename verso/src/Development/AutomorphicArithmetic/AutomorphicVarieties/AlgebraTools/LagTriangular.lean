@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.LagCo
 open Polynomial Matrix IsLocalRing TensorProduct UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact ⟨1, isUnit_one, by simp⟩`. Consider the case `cons x L ih`. Take `⟨u, hu, e⟩` from `h x (by simp)`. Take `⟨v, hv, e'⟩` from `ih (fun y hy => h y (by simp [hy]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u * v, hu.mul hv, by`. Rewrite using `[List.prod_cons, ← mul_assoc, e, smul_mul_assoc, e', smul_smul]⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem left_unit {R E : Type} [CommRing R] [Ring E] [Algebra R E] (f : E) (L : List E)
     (h : ∀ x ∈ L, ∃ u : R, IsUnit u ∧ f * x = u • f) :
@@ -20,9 +20,9 @@ private theorem left_unit {R E : Type} [CommRing R] [Ring E] [Algebra R E] (f : 
       rw [List.prod_cons, ← mul_assoc, e, smul_mul_assoc, e', smul_smul]⟩
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact ⟨1, isUnit_one, by simp⟩`. Consider the case `cons x L ih`. Take `⟨u, hu, e⟩` from `h x (by simp)`. Take `⟨v, hv, e'⟩` from `ih (fun y hy => h y (by simp [hy]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v * u, hv.mul hu, by`. Rewrite using `[List.prod_cons, mul_assoc, e', mul_smul_comm, e, smul_smul]⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem right_unit {R E : Type} [CommRing R] [Ring E] [Algebra R E] (f : E) (L : List E)
     (h : ∀ x ∈ L, ∃ u : R, IsUnit u ∧ x * f = u • f) :
@@ -36,17 +36,15 @@ private theorem right_unit {R E : Type} [CommRing R] [Ring E] [Algebra R E] (f :
       rw [List.prod_cons, mul_assoc, e', mul_smul_comm, e, smul_smul]⟩
 
 /- English proof (translation)
-Establish `hlen : (List.ofFn F).length = n` using `List.length_ofFn`. Establish `hsplit : List.ofFn F = (List.ofFn F).take i ++ F i :: (List.ofFn F).drop (i + 1)` using `by conv_lhs => rw [← List.take_append_drop i (List.ofFn F)]`. Use `congr 1`. Rewrite using `[List.drop_eq_getElem_cons (by rw [hlen]; exact i.2)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hT : ∀ x ∈ (List.ofFn F).take i, ∃ u : R, IsUnit u ∧ f * x = u • f`. Introduce `x hx`. Take `⟨k, hk, rfl⟩` from `List.mem_iff_getElem.1 hx`. Simplify using `only [List.length_take, hlen] at hk`. Rewrite using `[List.getElem_take, List.getElem_ofFn]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf ⟨k, by omega⟩ (by rw [Fin.lt_def]; simp; omega)`. Establish `hD : ∀ x ∈ (List.ofFn F).drop (i + 1), ∃ u : R, IsUnit u ∧ x * g = u • g`. Introduce `x hx`. Take `⟨k, hk, rfl⟩` from `List.mem_iff_getElem.1 hx`. Simplify using `only [List.length_drop, hlen] at hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.getElem_drop, List.getElem_ofFn]`. Conclude with `hg ⟨i + 1 + k, by omega⟩ (by rw [Fin.lt_def]; simp; omega)`. Take `⟨u, hu, hA⟩` from `left_unit (R := R) f _ hT`. Take `⟨v, hv, hB⟩` from `right_unit (R := R) g _ hD`. Establish `key : f * (List.ofFn F).prod * g = (u * v) • (f * F i * g)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hsplit, List.prod_append, List.prod_cons]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = (u • f) * F i * (v • g) := by rw [hA, hB]`. Use `_ = (u * v) • (f * F i * g) := by`.
-
-Rewrite using `[smul_mul_assoc, smul_mul_assoc, mul_smul_comm, smul_smul]`. Rewrite `key` using `[h0, mul_zero, zero_mul]`. Conclude with `((hu.mul hv).smul_eq_zero).1 key.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mid_zero {R E : Type} [CommRing R] [Ring E] [Algebra R E] {n : ℕ} (f g : E)
     (F : Fin n → E) (i : Fin n)
@@ -85,19 +83,19 @@ private theorem mid_zero {R E : Type} [CommRing R] [Ring E] [Algebra R E] {n : �
   exact ((hu.mul hv).smul_eq_zero).1 key.symm
 
 /- English proof (translation)
-Introduce `R Λ E _ _ _ _ _ n ρ χ z hprod hu`. Establish `hzero : aeval (ρ z) (∏ i, (X - C ((fun i => χ i z) i))) = 0`. Rewrite using `[← List.prod_ofFn, map_list_prod, List.map_ofFn]`. Simplify `hprod (fun _ => z)` using `[Function.comp_def]`. Take `⟨hcoi, hP, -, hcomm⟩` from `lag_coi (fun i => χ i z) (ρ z) hu hzero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hl : ∀ c j, lag (fun i => χ i z) (ρ z) c * (ρ z - algebraMap R E (χ j z)) = (χ c z - χ j z) • lag (fun i => χ i z) (ρ z) c`. Introduce `c j`. Rewrite using `[mul_sub, ← (hcomm (ρ z) c (Commute.refl _)).eq, hP, ← Algebra.commutes, ← Algebra.smul_def, sub_smul]`. Establish `hr : ∀ c j, (ρ z - algebraMap R E (χ j z)) * lag (fun i => χ i z) (ρ z) c = (χ c z - χ j z) • lag (fun i => χ i z) (ρ z) c`. Introduce `c j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[sub_mul, hP, ← Algebra.smul_def, sub_smul]`. Establish `key : ∀ (y : Λ) (c d i : Fin n), (∀ j, j < i → j ≠ c) → (∀ j, i < j → j ≠ d) → lag (fun i => χ i z) (ρ z) c * (ρ y - algebraMap R E (χ i y)) * lag (fun i => χ i z) (ρ z) d = 0`. Introduce `y c d i h1 h2`. Establish `h` using `mid_zero (R := R) (lag (fun i => χ i z) (ρ z) c) (lag (fun i => χ i z) (ρ z) d) (fun j => ρ (Function.update (fun _ => z) i y j) - algebraMap R E (χ j (Function.update (fun _ => z) i y j))) i ?_ ?_ (hprod _)`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `j hj`. Use `⟨_, hu c j (h1 j hj).symm, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.update_apply, if_neg (ne_of_lt hj)]`. Conclude with `hl c j`. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hu d j (h2 j hj).symm, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.update_apply, if_neg (ne_of_gt hj)]`. Conclude with `hr d j`. Establish `hmid : ∀ (r : R) (c d : Fin n), lag (fun i => χ i z) (ρ z) c * algebraMap R E r * lag (fun i => χ i z) (ρ z) d = r • (lag (fun i => χ i z) (ρ z) c * lag (fun i => χ i z) (ρ z) d)`. Introduce `r c d`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Algebra.commutes, ← Algebra.smul_def, smul_mul_assoc]`. Use `⟨hcoi, ?_, ?_⟩` and prove the remaining obligations. Introduce `y a b hba`. Establish `h` using `key y a b a (fun j hj => ne_of_lt hj) (fun j hj => ne_of_gt (hba.trans hj))`. Rewrite `h` using `[mul_sub, sub_mul, hmid, hcoi.ortho (ne_of_gt hba), smul_zero, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h`. Introduce `y i`. Establish `h` using `key y i i i (fun j hj => ne_of_lt hj) (fun j hj => ne_of_gt hj)`. Rewrite `h` using `[mul_sub, sub_mul, hmid, (hcoi.idem i).eq, sub_eq_zero]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.lag_triangular :
     ∀ {R Λ E : Type} [CommRing R] [Ring Λ] [Algebra R Λ] [Ring E] [Algebra R E] {n : ℕ} (ρ : Λ →ₐ[R] E) (χ : Fin n → Λ →ₐ[R] R) (z : Λ), (∀ y : Fin n → Λ, (List.ofFn fun i => ρ (y i) - algebraMap R E (χ i (y i))).prod = 0) → (∀ i j, i ≠ j → IsUnit (χ i z - χ j z)) → CompleteOrthogonalIdempotents (lag (fun i => χ i z) (ρ z)) ∧ (∀ (y : Λ) (a b : Fin n), b < a → lag (fun i => χ i z) (ρ z) a * ρ y * lag (fun i => χ i z) (ρ z) b = 0) ∧ ∀ (y : Λ) (i : Fin n), lag (fun i => χ i z) (ρ z) i * ρ y * lag (fun i => χ i z) (ρ z) i = χ i y • lag (fun i => χ i z) (ρ z) i := by

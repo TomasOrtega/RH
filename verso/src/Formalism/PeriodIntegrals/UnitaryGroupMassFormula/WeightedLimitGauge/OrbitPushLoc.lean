@@ -32,13 +32,13 @@ def PhiDiff : Prop :=
     ContDiffAt ℝ 1 (phiT k r T') 0 ∧ (fderiv ℝ (phiT k r T') 0).det = (T' / 2) ^ k
 
 /- English proof (translation)
-Introduce `k r T' hk hT`. Take `⟨hcd, hdet⟩` from `hD k r T' hk hT`. Take `⟨ε, hε, hV⟩` from `hC k r T' hk hT`. Establish `hdet0 : (fderiv ℝ (phiT k r T') 0).det ≠ 0`. Rewrite using `[hdet]; exact pow_ne_zero _ (by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlim` using `hJ (TrE k) (phiT k r T') volume (fun _ => 1) hcd hdet0 continuousAt_const ENNReal.one_ne_top ⟨Set.univ, Filter.univ_mem, fun A _ _ => by simp⟩`. Establish `key` using `hlim.const_mul (1 / 2 : ℝ)`. Establish `hval : (1 / 2 : ℝ) * ((1 : ℝ≥0∞).toReal * |(fderiv ℝ (phiT k r T') 0).det|) = T' ^ k / 2 ^ (k + 1)`. Rewrite using `[hdet, ENNReal.toReal_one, one_mul, abs_of_pos (by positivity), div_pow, pow_succ]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Apply the tactic sequence `try ring`. Rewrite `key` using `[hval]`. Use `key.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (Iio_mem_nhds hε)] with ρ hρ0 hρε`. Rewrite using `[hV ρ hρ0 hρε, tVol, ENNReal.toReal_mul, mul_div_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem hypLocal_of (hJ : ChartJac) (hC : HypChart) (hD : PhiDiff) : HypLocal := by
   intro k r T' hk hT

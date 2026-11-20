@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.CharacterGerms.ValuationChoiceHypothesis
 open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.UnitaryBoundIntegral
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlowProgrammeFacts.main | exact GlobalTheory.FlowProgrammeFacts.main | (intros; apply GlobalTheory.FlowProgrammeFacts.main <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.flow_programme_bounds_and_low_level_optimum : ∀ (l d : ℕ) [NeZero d] (D : ZMod d → ℝ), 2 ≤ l → (∀ a, 0 ≤ D a) →
   rho l * ∑ a, D a ≤ Fnum l d D ∧ (∀ t : ℝ, 0 ≤ t → Fnum l d (fun a => t * D a) = t * Fnum l d D) ∧ Formalism.BasicNotions.lpF l d D = Fnum l d D ∧

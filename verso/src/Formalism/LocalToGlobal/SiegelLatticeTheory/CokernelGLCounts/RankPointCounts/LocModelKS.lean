@@ -20,7 +20,7 @@ namespace Formalism.L2.SG.Pf.LMK
 section Lists
 
 /- English proof (translation)
-The claim follows from `| b, [], l2 => by simp [signAux, TB.level] | b, (s, t) :: rest, l2 => by rw [List.cons_append, signAux, signAux, signFlip_append r (b + s) rest l2] simp [TB.level, add_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem signFlip_append {K : Type} [Field K] (r : ℕ) : ∀ (b : ℕ) (l1 l2 : TB.Pt K),
     signAux r b (l1 ++ l2) = signAux r b l1 ++ signAux r (b + TB.level l1) l2
@@ -30,7 +30,7 @@ theorem signFlip_append {K : Type} [Field K] (r : ℕ) : ∀ (b : ℕ) (l1 l2 : 
     simp [TB.level, add_assoc]
 
 /- English proof (translation)
-Unfold `signPt TB.join`. Rewrite using `[signFlip_append]`. Simplify using `[signAux]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem signPt_join {K : Type} [Field K] (r : ℕ) (h : TB.Pt K) (s : ℕ) (t : K) :
     signPt r (TB.join h s t) = signPt r h ++ [(s, (-1) ^ (r + 1 - (1 + TB.level h + s - 1)) * t)] := by
@@ -39,11 +39,11 @@ theorem signPt_join {K : Type} [Field K] (r : ℕ) (h : TB.Pt K) (s : ℕ) (t : 
   simp [signAux]
 
 /- English proof (translation)
-Unfold `Formalism.L2.S.IsPtL`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2⟩`. Conclude with `⟨⟨hl, fun b hb => h2 b (List.mem_append_left _ hb)⟩, (h2 (s, t) (by simp)).1, (h2 (s, t) (by simp)).2⟩`. Introduce and unpack `⟨⟨-, h2⟩, hs, ht⟩`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨by simp [hl], fun b hb => ?_⟩` and prove the remaining obligations. Break down `List.mem_append.1 hb with hb | hb` into its components or cases. Conclude with `h2 b hb`. Simplify using `only [List.mem_singleton] at hb`. Substitute `hb` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨hs, ht⟩`.
+A detailed English derivation is pending.
 -/
 theorem isPtL_append {K : Type} [Field K] (l : List (ℕ × K)) (s : ℕ) (t : K) (m : ℕ)
     (hl : (l.map Prod.fst).sum = m) :
@@ -63,7 +63,7 @@ theorem isPtL_append {K : Type} [Field K] (l : List (ℕ × K)) (s : ℕ) (t : K
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Unfold `ptOfList at h`. Use `split_ifs at h with hx`. Simplify using `only [Option.some.injEq] at h`. Substitute `h` using the available equality. Conclude with `⟨hx, rfl⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ptOfList_some {i : ℕ} {x : TB.Pt D.host.E} {w : Point D.host.E i} (h : ptOfList i x = some w) :
     Formalism.L2.S.IsPtL (signPt D.R.rS x) i ∧ w.1 = (signPt D.R.rS x).map Prod.swap := by
@@ -74,7 +74,7 @@ theorem ptOfList_some {i : ℕ} {x : TB.Pt D.host.E} {w : Point D.host.E i} (h :
   exact ⟨hx, rfl⟩
 
 /- English proof (translation)
-Use `⟨(Formalism.L2.S.ptEquiv D.host.E i).symm ⟨signPt D.R.rS x, hx⟩, ?_, rfl⟩` and prove the remaining obligations. Unfold `ptOfList`. Rewrite using `[dif_pos hx]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptOfList_of {i : ℕ} {x : TB.Pt D.host.E} (hx : Formalism.L2.S.IsPtL (signPt D.R.rS x) i) :
     ∃ w, ptOfList i x = some w ∧ w.1 = (signPt D.R.rS x).map Prod.swap := by
@@ -83,7 +83,7 @@ theorem ptOfList_of {i : ℕ} {x : TB.Pt D.host.E} (hx : Formalism.L2.S.IsPtL (s
   rw [dif_pos hx]
 
 /- English proof (translation)
-Unfold `ptOfList`. Rewrite using `[dif_neg hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptOfList_none {i : ℕ} {x : TB.Pt D.host.E} (hx : ¬ Formalism.L2.S.IsPtL (signPt D.R.rS x) i) :
     ptOfList i x = none := by
@@ -93,16 +93,16 @@ theorem ptOfList_none {i : ℕ} {x : TB.Pt D.host.E} (hx : ¬ Formalism.L2.S.IsP
 def sgn (D : Formalism.BasicNotions.D7) (i : ℕ) : D.host.E := (-1) ^ (D.R.rS + 1 - i)
 
 /- English proof (translation)
-The claim follows from `pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem sgn_ne (i : ℕ) : sgn D i ≠ 0 := pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)
 
 /- English proof (translation)
-Take `⟨hp, hw1⟩` from `ptOfList_some hw`. Establish `hfst : ((signPt D.R.rS h).map Prod.fst).sum = m`. Unfold `signPt`. Rewrite using `[sign_list_fst]`. Conclude with `hl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsg : sgn D (m + s) * t ≠ 0` using `mul_ne_zero (sgn_ne _) ht`. Establish `e1 : D.R.rS + 1 - (1 + TB.level h + s - 1) = D.R.rS + 1 - (m + s)` using `by rw [hl]; congr 1; omega`. Establish `hP : Formalism.L2.S.IsPtL (signPt D.R.rS (TB.join h s t)) (m + s)`. Rewrite using `[signPt_join, e1]`. Conclude with `(isPtL_append _ s _ m hfst).2 ⟨hp, hs, hsg⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨W, hW, hW1⟩` from `ptOfList_of hP`. Use `⟨W, hW, ?_⟩` and prove the remaining obligations. Rewrite using `[hW1, signPt_join, e1, List.map_append, ← hw1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptOfList_join {m s : ℕ} {h : TB.Pt D.host.E} (hl : TB.level h = m) {w : Point D.host.E m}
     (hw : ptOfList m h = some w) (hs : 1 ≤ s) {t : D.host.E} (ht : t ≠ 0) :
@@ -122,11 +122,11 @@ theorem ptOfList_join {m s : ℕ} {h : TB.Pt D.host.E} (hl : TB.level h = m) {w 
   rfl
 
 /- English proof (translation)
-Apply `ptOfList_none` to reduce the goal to its premises. Introduce `hP`. Establish `hfst : ((signPt D.R.rS h).map Prod.fst).sum = m`. Unfold `signPt`. Rewrite using `[sign_list_fst]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl`. Establish `e1 : D.R.rS + 1 - (1 + TB.level h + s - 1) = D.R.rS + 1 - (m + s)` using `by rw [hl]; congr 1; omega`. Rewrite `hP` using `[signPt_join, e1]`. Take `⟨w, hw', -⟩` from `ptOfList_of ((isPtL_append _ s _ m hfst).1 hP).1`. Rewrite `hw'` using `[hw]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hw'`.
+A detailed English derivation is pending.
 -/
 theorem ptOfList_join_none {m s : ℕ} {h : TB.Pt D.host.E} (hl : TB.level h = m)
     (hw : ptOfList m h = none) (t : D.host.E) : ptOfList (m + s) (TB.join h s t) = none := by
@@ -141,7 +141,7 @@ theorem ptOfList_join_none {m s : ℕ} {h : TB.Pt D.host.E} (hl : TB.level h = m
   cases hw'
 
 /- English proof (translation)
-The claim follows from `| b, [], l2 => by simp [blockWeightPhi, TB.level] | b, (s, t) :: rest, l2 => by rw [List.cons_append, blockWeightPhi, blockWeightPhi, blockProduct_append i (b + s) rest l2] simp only [TB.level, List.map_cons, List.sum_cons, add_assoc, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem blockProduct_append (i : ℕ) : ∀ (b : ℕ) (l1 l2 : TB.Pt D.host.E),
     blockWeightPhi (D := D) i b (l1 ++ l2) = blockWeightPhi i b l1 * blockWeightPhi i (b + TB.level l1) l2
@@ -155,7 +155,7 @@ def blkN (D : Formalism.BasicNotions.D7) : ℕ → TB.Pt D.host.E → ℝ
   | b, (s, t) :: rest => nrm (D := D) (nu D.R.rS b (b + s - 1)) t ^ s * blkN D (b + s) rest
 
 /- English proof (translation)
-The claim follows from `| b, [], _ => by simp [blockWeightPhi, blkN] | b, (s, t) :: rest, hle => by simp only [TB.level, List.map_cons, List.sum_cons] at hle have ih := blockProduct_shift m k (b + s) rest (by simp only [TB.level]; omega) rw [blockWeightPhi, blockWeightPhi, blkN, ih] have hj : m + k - (b …`.
+A detailed English derivation is pending.
 -/
 theorem blockProduct_shift (m k : ℕ) : ∀ (b : ℕ) (l : TB.Pt D.host.E), b + TB.level l ≤ m + 1 →
     blockWeightPhi (D := D) (m + k) b l = blockWeightPhi m b l * blkN D b l ^ k
@@ -172,7 +172,7 @@ theorem blockProduct_shift (m k : ℕ) : ∀ (b : ℕ) (l : TB.Pt D.host.E), b +
     ring
 
 /- English proof (translation)
-The claim follows from `| a, [], l2 => by simp [modBlocks] | a, (t, s) :: rest, l2 => by simp only [List.cons_append, modBlocks] split_ifs with h · rw [modBlocks_append f (a + s) rest l2] simp only [List.map_cons, List.sum_cons, ← add_assoc] cases h2 : modBlocks f (a + s) rest with | none => simp | some …`.
+A detailed English derivation is pending.
 -/
 theorem modBlocks_append {A B : Type} [Monoid B] (f : ℕ → ℕ → A → B) : ∀ (a : ℕ) (l1 l2 : List (A × ℕ)),
     modBlocks f a (l1 ++ l2) =
@@ -192,9 +192,9 @@ theorem modBlocks_append {A B : Type} [Monoid B] (f : ℕ → ℕ → A → B) :
     · simp
 
 /- English proof (translation)
-Unfold `modPt at ha`. Break down `hm : modBlocks (blkTop δ T T' p) 1 w.1 with _ | l` into its components or cases. Rewrite `ha` using `[hm]`. Simplify using `at ha`. Rewrite `ha` using `[hm]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only at ha`. Use `split_ifs at ha with hs`. Simplify using `only [Option.some.injEq] at ha`. Substitute `ha` using the available equality. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem modPt_blocks {δ : ∀ p : PlF D, (D.s.atP p).Fp} {T T' : ℕ} {p : PlF D} {n : ℕ} {w : Point D.host.E n}
     {a : Loc.Pt (D.s.atP p).Ep n} (ha : modPt δ T T' p w = some a) :
@@ -210,7 +210,7 @@ theorem modPt_blocks {δ : ∀ p : PlF D, (D.s.atP p).Fp} {T T' : ℕ} {p : PlF 
     rfl
 
 /- English proof (translation)
-Unfold `modPt`. Rewrite using `[hl]`. Simplify using `only`. Rewrite using `[dif_pos hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem modPt_of_blocks {δ : ∀ p : PlF D, (D.s.atP p).Fp} {T T' : ℕ} {p : PlF D} {n : ℕ} {w : Point D.host.E n}
     {l : List ((D.s.atP p).Epˣ × ℕ+)} (hl : modBlocks (blkTop δ T T' p) 1 w.1 = some l)
@@ -221,9 +221,9 @@ theorem modPt_of_blocks {δ : ∀ p : PlF D, (D.s.atP p).Fp} {T T' : ℕ} {p : P
   rw [dif_pos hs]
 
 /- English proof (translation)
-Establish `hb` using `modPt_blocks ha`. Establish `hsum : (w.1.map Prod.snd).sum = m` using `w.2.2`. Establish `hl : modBlocks (blkTop δ T T' p) 1 W.1 = some (a.blocks ++ [(hu.unit, ⟨s, hs⟩)])`. Rewrite using `[hW, modBlocks_append, hb, hsum]`. Simplify using `only [Option.bind_some, modBlocks]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_comm 1 m, dif_pos ⟨hu, hs⟩]`. Simplify using the standard rewrite rules. Conclude with `modPt_of_blocks hl _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modPt_snoc {δ : ∀ p : PlF D, (D.s.atP p).Fp} {T T' : ℕ} {p : PlF D} {m s : ℕ}
     {w : Point D.host.E m} {W : Point D.host.E (m + s)} {x : D.host.E} (hW : W.1 = w.1 ++ [(x, s)]) (hs : 0 < s)
@@ -240,7 +240,7 @@ theorem modPt_snoc {δ : ∀ p : PlF D, (D.s.atP p).Fp} {T T' : ℕ} {p : PlF D}
   exact modPt_of_blocks hl _
 
 /- English proof (translation)
-Unfold `tMod PI.SupportDatumW.hF`. Rewrite using `[PI.SupportDatumW.twist_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tMod_eq (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) (a s : ℕ) (x : D.host.E) :
     tMod δ p (nu D.R.rS a (a + s - 1)) s x = (D.s.atP p).ιE x * PI.SupportDatumW.hF D δ p a s := by
@@ -249,7 +249,7 @@ theorem tMod_eq (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) (a s : ℕ) (x 
   ring
 
 /- English proof (translation)
-Unfold `blkTop blkMod`. Rewrite using `[if_neg h, if_neg h, sub_zero, tMod_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem blkTop_nonTop (δ : ∀ p : PlF D, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) {a s : ℕ}
     (h : ¬ (a + s - 1 = D.R.rS + 1 ∧ s = 1)) (x : D.host.E) :
@@ -264,7 +264,7 @@ section Local
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hx`. Rewrite using `[Ring.inverse_unit]`. Conclude with `Units.isUnit _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_rinv {B : Type} [CommRing B] {x : B} (hx : IsUnit x) : IsUnit (Ring.inverse x) := by
   obtain ⟨u, rfl⟩ := hx
@@ -272,7 +272,7 @@ theorem isUnit_rinv {B : Type} [CommRing B] {x : B} (hx : IsUnit x) : IsUnit (Ri
   exact Units.isUnit _
 
 /- English proof (translation)
-Rewrite using `[PI.SupportDatumW.twist_one_pow]`. Use `IsUnit.pow _ (IsUnit.of_mul_eq_one (twist p 1 (1 : (D.s.atP p).Ep)) ?_)` and prove the remaining obligations. Rewrite using `[← sq]`. Conclude with `PI.SupportDatumW.twist_sq p`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_twist (p : PlF D) (s : ℕ) : IsUnit (twist p s (1 : (D.s.atP p).Ep)) := by
   rw [PI.SupportDatumW.twist_one_pow]
@@ -281,9 +281,7 @@ theorem isUnit_twist (p : PlF D) (s : ℕ) : IsUnit (twist p s (1 : (D.s.atP p).
   exact PI.SupportDatumW.twist_sq p
 
 /- English proof (translation)
-Unfold `qE`. Use `split`. Name the introduced variables `sg _`. Establish `hq : ((sg.q : 𝒪[(D.s.atP p).Fp]) : (D.s.atP p).Fp) ≠ 0`. Introduce `h0`.
-
-Conclude with `sg.q_irr.ne_zero (Subtype.ext h0)`. Conclude with `(isUnit_iff_ne_zero.2 hq).map _`. Conclude with `isUnit_one`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnit_qE (p : PlF D) : IsUnit (qE p) := by
   unfold qE
@@ -296,7 +294,7 @@ theorem isUnit_qE (p : PlF D) : IsUnit (qE p) := by
   · exact isUnit_one
 
 /- English proof (translation)
-Establish `h0` using `(D.host.g_prime 0).ne_zero`. Establish `h1` using `(D.host.g_prime 1).ne_zero`. Establish `hg : (Lat.gS D : ℚ) ≠ 0` using `by exact_mod_cast (Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D).ne'`. Unfold `uP gpart`. Apply the tactic sequence `split_ifs <;> simp [hg, h0, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unitAt_ne (p : PlF D) : uP p ≠ 0 := by
   have h0 := (D.host.g_prime 0).ne_zero
@@ -306,13 +304,13 @@ theorem unitAt_ne (p : PlF D) : uP p ≠ 0 := by
   split_ifs <;> simp [hg, h0, h1]
 
 /- English proof (translation)
-The claim follows from `(isUnit_iff_ne_zero.2 hx).map _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_ιE (p : PlF D) {x : D.host.E} (hx : x ≠ 0) : IsUnit ((D.s.atP p).ιE x) :=
   (isUnit_iff_ne_zero.2 hx).map _
 
 /- English proof (translation)
-Unfold `PI.SupportDatumW.hF`. Use `((isUnit_rinv (IsUnit.pow _ ?_)).mul (isUnit_twist p s)).mul (isUnit_rinv (isUnit_qE p))` and prove the remaining obligations. Conclude with `((isUnit_iff_ne_zero.2 hδ).map _).mul (isUnit_ιE p (by exact_mod_cast unitAt_ne p))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isUnit_hF {δ : ∀ p : PlF D, (D.s.atP p).Fp} (p : PlF D) (hδ : δ p ≠ 0) (a s : ℕ) :
     IsUnit (PI.SupportDatumW.hF D δ p a s) := by
@@ -324,16 +322,16 @@ def uS (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) (i s : ℕ) : (D.s.atP p
   (D.s.atP p).ιE (sgn D i) * PI.SupportDatumW.hF D δ p (i - s + 1) s
 
 /- English proof (translation)
-The claim follows from `(isUnit_ιE p (sgn_ne i)).mul (isUnit_hF p hδ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_uS {δ : ∀ p : PlF D, (D.s.atP p).Fp} (p : PlF D) (hδ : δ p ≠ 0) (i s : ℕ) :
     IsUnit (uS δ p i s) :=
   (isUnit_ιE p (sgn_ne i)).mul (isUnit_hF p hδ _ _)
 
 /- English proof (translation)
-Establish `h : ¬ (m + 1 + s - 1 = D.R.rS + 1 ∧ s = 1)`. Introduce `h`. Apply `hnt` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `h.2`. Rewrite using `[blkTop_nonTop δ T T' p h, uS, map_mul]`. Establish `e : m + s - s + 1 = m + 1` using `by omega`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem blkTop_join (δ : ∀ p : PlF D, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) {m s : ℕ}
     (hnt : ¬ (m + s = D.R.rS + 1 ∧ s = 1)) (t : D.host.E) :
@@ -352,18 +350,18 @@ def uT (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) (hδ : δ p ≠ 0) (i s 
   (isUnit_uS p hδ i s).unit * Units.map ((D.s.atP p).ιE : D.host.E →* (D.s.atP p).Ep) (Units.mk0 t ht)
 
 /- English proof (translation)
-Simplify using `[uT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uT_val (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) (hδ : δ p ≠ 0) (i s : ℕ) (t : D.host.E)
     (ht : t ≠ 0) : ((uT δ p hδ i s t ht : (D.s.atP p).Epˣ) : (D.s.atP p).Ep) = uS δ p i s * (D.s.atP p).ιE t := by
   simp [uT]
 
 /- English proof (translation)
-Establish `hu : IsUnit (blkTop δ T T' p (m + 1) s (sgn D (m + s) * t))`. Rewrite using `[blkTop_join δ T T' p hnt t, ← uT_val δ p (hA p).2.1 _ _ t ht]`. Conclude with `Units.isUnit _`. Establish `hu' : IsUnit (blkTop δ T T' p (m + 1) s (sgn D (m + s) * t'))`. Rewrite using `[blkTop_join δ T T' p hnt t', ← uT_val δ p (hA p).2.1 _ _ t' ht']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Units.isUnit _`. Establish `e1 : hu.unit = uT δ p (hA p).2.1 (m + s) s t ht` using `by ext; rw [IsUnit.unit_spec, uT_val, blkTop_join δ T T' p hnt t]`. Establish `e2 : hu'.unit = uT δ p (hA p).2.1 (m + s) s t' ht'` using `by ext; rw [IsUnit.unit_spec, uT_val, blkTop_join δ T T' p hnt t']`. Unfold `locK`. Rewrite using `[modPt_snoc hW (by omega) ha hu, modPt_snoc hW' (by omega) ha' hu']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Use `(Formalism.MainNotions.LocalOrbitGerms.KKAll_proved _ _ (M p) (hA p).1 _ _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (A5.Kp (M p).R (M p).psiR) ((Formalism.MainNotions.LocalModelPeriodLattices.tr_snoc a hu.unit _).trans (by rw [e1]; rfl)) ((Formalism.MainNotions.LocalModelPeriodLattices.tr_snoc a' hu'.unit _).trans (by rw [e2]; rfl))`.
+A detailed English derivation is pending.
 -/
 theorem locK_join {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) (T T' : ℕ) (p : PlF D) {m s : ℕ} (hs : 1 ≤ s)
@@ -407,7 +405,7 @@ def onesPt (D : Formalism.BasicNotions.D7) (m : ℕ) : Point D.host.E m :=
 def hpt (D : Formalism.BasicNotions.D7) (m : ℕ) (h : TB.Pt D.host.E) : Point D.host.E m := (ptOfList m h).getD (onesPt D m)
 
 /- English proof (translation)
-Simplify using `[hpt, hw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hpt_of {m : ℕ} {h : TB.Pt D.host.E} {w : Point D.host.E m} (hw : ptOfList m h = some w) : hpt D m h = w := by
   simp [hpt, hw]
@@ -419,7 +417,7 @@ def etaW (δ : ∀ p : PlF D, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) {n : ℕ}
   | none => LocModel.ePt _
 
 /- English proof (translation)
-Simplify using `[etaW, ha]`.
+Simplify using the standard rewrite rules.
 -/
 theorem etaW_of {δ : ∀ p : PlF D, (D.s.atP p).Fp} {T T' : ℕ} {p : PlF D} {n : ℕ} {w : Point D.host.E n}
     {a : Loc.Pt (D.s.atP p).Ep n} (ha : modPt δ T T' p w = some a) : etaW δ T T' p w = Formalism.MainNotions.LocalModelPeriodLattices.tr a := by
@@ -436,7 +434,7 @@ def Gd (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.a
         (D.s.atP p).ιE ((t + ((k : ℕ) : D.host.E))⁻¹) ∈ (D.s.atP p).O
 
 /- English proof (translation)
-Establish `h` using `LocModel.good_cofinite δ M hA X`. Rewrite `h` using `[Filter.eventually_cofinite]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gd_finite (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) (X : Finset D.host.E) : {p | ¬ Gd δ M p X}.Finite := by
@@ -445,7 +443,7 @@ theorem gd_finite (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.M
   exact h
 
 /- English proof (translation)
-The claim follows from `LocModel.good_place T T' w p (hA p) h.1 h.2.1.1 h.2.1.2 h.2.2.1 fun b hb k hk => h.2.2.2 b.1 (hw (List.mem_toFinset.2 (List.mem_map.2 ⟨b, hb, rfl⟩))) k hk`.
+A detailed English derivation is pending.
 -/
 theorem gd_place {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) (T T' : ℕ) {p : PlF D} {X : Finset D.host.E} (h : Gd δ M p X) {n : ℕ}
@@ -455,7 +453,7 @@ theorem gd_place {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Mo
     h.2.2.2 b.1 (hw (List.mem_toFinset.2 (List.mem_map.2 ⟨b, hb, rfl⟩))) k hk
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.SG.DataCut.badSet, Set.mem_ofPred_eq, not_not]`. Conclude with `⟨h.1, gd_place hA T T' h w hw⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem gd_notBad {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) (T T' : ℕ) {p : PlF D} {X : Finset D.host.E} (h : Gd δ M p X) {n : ℕ}
@@ -464,7 +462,7 @@ theorem gd_notBad {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.M
   exact ⟨h.1, gd_place hA T T' h w hw⟩
 
 /- English proof (translation)
-Establish `hRL : (M p).R = (M p).L.O` using `by simp only [Loc.Model.R, hs]`. Conclude with `hRL.trans hA.2.2.2.1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem R_eq_O {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     {p : PlF D} (hA : Agree δ M p) (hs : (M p).split = none) : (M p).R = (D.s.atP p).O := by
@@ -472,11 +470,11 @@ theorem R_eq_O {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Mode
   exact hRL.trans hA.2.2.2.1
 
 /- English proof (translation)
-Establish `hsD : (D.s.atP p).split = none` using `LocModel.split_none_of_agree (hA p) h.1`. Use `set w0 : (D.s.atP p).Ep := algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p) * (D.s.atP p).ιE (uP p : D.host.E) with hw0`. Use `set w1 : (D.s.atP p).Ep := algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p)⁻¹ * (D.s.atP p).ιE ((uP p : D.host.E)⁻¹) with hw1`. Establish `hw01 : w0 * w1 = 1`. Rewrite using `[hw0, hw1, mul_mul_mul_comm, ← map_mul, ← map_mul, mul_inv_cancel₀ (hA p).2.1, mul_inv_cancel₀ (by exact_mod_cast unitAt_ne p), map_one, map_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0O : w0 ∈ (D.s.atP p).O` using `Subring.mul_mem _ (LocModel.LM.algebraMap_mem_O p h.2.1.1) h.2.2.1.1`. Establish `hw1O : w1 ∈ (D.s.atP p).O` using `Subring.mul_mem _ (LocModel.LM.algebraMap_mem_O p h.2.1.2) h.2.2.1.2`. Establish `e : PI.SupportDatumW.hF D δ p a s = w1 ^ nu D.R.rS a (a + s - 1)`. Simplify using `only [PI.SupportDatumW.hF, twist, qE, hsD, Ring.inverse_one, mul_one]`. Rewrite using `[LocModel.ring_inverse_pow_eq hw01]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `⟨Subring.pow_mem _ hw1O _, w0 ^ nu D.R.rS a (a + s - 1), Subring.pow_mem _ hw0O _, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_pow, mul_comm, hw01, one_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hF_good {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) {p : PlF D} {X : Finset D.host.E} (h : Gd δ M p X) (a s : ℕ) :
@@ -499,7 +497,7 @@ theorem hF_good {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Mod
   rw [← mul_pow, mul_comm, hw01, one_pow]
 
 /- English proof (translation)
-Take `⟨hx1, x', hx2, hx3⟩` from `hx`. Take `⟨hy1, y', hy2, hy3⟩` from `hy`. Conclude with `⟨O.mul_mem hx1 hy1, x' * y', O.mul_mem hx2 hy2, by`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation.
 -/
 theorem unitIn_mul {B : Type} [CommRing B] {O : Subring B} {x y : B} (hx : LocModel.UnitIn O x)
     (hy : LocModel.UnitIn O y) : LocModel.UnitIn O (x * y) := by
@@ -510,7 +508,7 @@ theorem unitIn_mul {B : Type} [CommRing B] {O : Subring B} {x y : B} (hx : LocMo
       _ = 1 := by rw [hx3, hy3, one_mul]⟩
 
 /- English proof (translation)
-Establish `h1` using `h.2.2.2 x hx 0 (by simpa using h0)`. Simplify using `only [Fin.val_zero, Nat.cast_zero, add_zero] at h1`. Conclude with `⟨h1.1, _, h1.2, by rw [← map_mul, mul_inv_cancel₀ h0, map_one]⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem gd_elt {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     {p : PlF D} {X : Finset D.host.E} (h : Gd δ M p X) {x : D.host.E} (hx : x ∈ X) (h0 : x ≠ 0) :
@@ -520,7 +518,7 @@ theorem gd_elt {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Mode
   exact ⟨h1.1, _, h1.2, by rw [← map_mul, mul_inv_cancel₀ h0, map_one]⟩
 
 /- English proof (translation)
-The claim follows from `| a, [], _, _ => ⟨[], rfl⟩ | a, (t, s) :: rest, hle, hb => by simp only [List.map_cons, List.sum_cons] at hle have h1 := hb (t, s) List.mem_cons_self have hnt : ¬ (a + s - 1 = D.R.rS + 1 ∧ s = 1) := by omega have hu : IsUnit (blkTop δ T T' p a s t) := by rw [blkTop_nonTop δ T T' …`.
+A detailed English derivation is pending.
 -/
 theorem modBlocks_low {δ : ∀ p : PlF D, (D.s.atP p).Fp} (T T' : ℕ) (p : PlF D) (hδ : δ p ≠ 0) :
     ∀ (a : ℕ) (l : List (D.host.E × ℕ)), a + (l.map Prod.snd).sum ≤ D.R.rS + 1 →
@@ -542,9 +540,9 @@ theorem modBlocks_low {δ : ∀ p : PlF D, (D.s.atP p).Fp} (T T' : ℕ) (p : PlF
     exact ⟨_, e⟩
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `modBlocks_low T T' p hδ 1 w.1 (by rw [w.2.2]; omega) w.2.1`. Establish `hs : (l.map (fun b => (b.2 : ℕ))).sum = n`. Establish `h1` using `PI.SupportDatumW.modBlocks_some _ _ _ _ hl`. Establish `h2 : l.map (fun b => (b.2 : ℕ)) = (l.map (fun x => ((x.1 : (D.s.atP p).Ep), (x.2 : ℕ)))).map Prod.snd`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, h1, PI.SupportDatumW.mapBlocks_snd]`. Conclude with `w.2.2`. Conclude with `⟨_, modPt_of_blocks hl hs⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem modPt_low {δ : ∀ p : PlF D, (D.s.atP p).Fp} (T T' : ℕ) (p : PlF D) (hδ : δ p ≠ 0) {n : ℕ}
     (hn : n ≤ D.R.rS) (w : Point D.host.E n) : ∃ a, modPt δ T T' p w = some a := by
@@ -564,7 +562,7 @@ section PF
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-The claim follows from `|Algebra.norm ℚ ((-1 : D.host.E) ^ k * t)| = |Algebra.norm ℚ t| := by have h1 : (Algebra.norm ℚ (-1 : D.host.E)) ^ 2 = 1 := by rw [← map_pow]; simp have h2 : |Algebra.norm ℚ (-1 : D.host.E)| = 1 := by have h3 : |Algebra.norm ℚ (-1 : D.host.E)| ^ 2 = 1 := by rw [sq_abs]; exact h1 …`.
+A detailed English derivation is pending.
 -/
 theorem absNorm_negOnePow (k : ℕ) (t : D.host.E) :
     |Algebra.norm ℚ ((-1 : D.host.E) ^ k * t)| = |Algebra.norm ℚ t| := by
@@ -576,14 +574,14 @@ theorem absNorm_negOnePow (k : ℕ) (t : D.host.E) :
   rw [map_mul, map_pow, abs_mul, abs_pow, h2, one_pow, one_mul]
 
 /- English proof (translation)
-Unfold `nrm`. Rewrite using `[absNorm_negOnePow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_negOnePow (ν k : ℕ) (t : D.host.E) : nrm (D := D) ν ((-1) ^ k * t) = nrm (D := D) ν t := by
   unfold nrm
   rw [absNorm_negOnePow]
 
 /- English proof (translation)
-Break down `neg_one_pow_eq_or K k with h | h` into its components or cases. Rewrite using `[h, one_mul]`. Rewrite using `[h, neg_one_mul, Formalism.FourierDecayAlt.P.A5x5.modK_neg]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem modK_negOnePow {K : Type} [CommRing K] (R : Subring K) (k : ℕ) (x : K) :
     A5.modK R ((-1) ^ k * x) = A5.modK R x := by
@@ -592,7 +590,7 @@ theorem modK_negOnePow {K : Type} [CommRing K] (R : Subring K) (k : ℕ) (x : K)
   · rw [h, neg_one_mul, Formalism.FourierDecayAlt.P.A5x5.modK_neg]
 
 /- English proof (translation)
-Simplify using `[sgn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ιE_sgn (p : PlF D) (i : ℕ) : (D.s.atP p).ιE (sgn D i) = (-1) ^ (D.R.rS + 1 - i) := by
   simp [sgn]
@@ -604,7 +602,7 @@ def ModNorm (D : Formalism.BasicNotions.D7) : Prop :=
       ∏ᶠ p, A5.modK (M p).R (tMod δ p ν s t) = (nrm (D := D) ν t)⁻¹
 
 /- English proof (translation)
-Establish `h` using `hMN δ M hA (nu D.R.rS a (a + s - 1)) s x hx`. Simplify using `only [tMod_eq] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pf_blk (hMN : ModNorm D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p) (a s : ℕ)
@@ -617,14 +615,14 @@ theorem pf_blk (hMN : ModNorm D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   exact h
 
 /- English proof (translation)
-Unfold `uS`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem uS_mul (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) (i s : ℕ) (t : D.host.E) :
     uS δ p i s * (D.s.atP p).ιE t = (D.s.atP p).ιE (sgn D i * t) * PI.SupportDatumW.hF D δ p (i - s + 1) s := by
   unfold uS; rw [map_mul]; ring
 
 /- English proof (translation)
-Establish `h` using `pf_blk hMN hA (i - s + 1) s (mul_ne_zero (sgn_ne i) ht)`. Simplify using `only [← uS_mul] at h`. Rewrite `h` using `[sgn, nrm_negOnePow]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pf_uS (hMN : ModNorm D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p) (i s : ℕ)
@@ -642,7 +640,7 @@ def blkNr (D : Formalism.BasicNotions.D7) : ℕ → List (D.host.E × ℕ) → �
   | b, (t, s) :: rest => nrm (D := D) (nu D.R.rS b (b + s - 1)) t ^ s * blkNr D (b + s) rest
 
 /- English proof (translation)
-The claim follows from `| _, [] => by simp [signAux, blkNr, blkN] | b, (s, t) :: rest => by simp only [signAux, List.map_cons, Prod.swap_prod_mk, blkNr, blkN, blkN_sign (b + s) rest, nrm_negOnePow]`.
+A detailed English derivation is pending.
 -/
 theorem blkN_sign : ∀ (b : ℕ) (l : TB.Pt D.host.E),
     blkNr D b ((signAux D.R.rS b l).map Prod.swap) = blkN D b l
@@ -651,7 +649,7 @@ theorem blkN_sign : ∀ (b : ℕ) (l : TB.Pt D.host.E),
     simp only [signAux, List.map_cons, Prod.swap_prod_mk, blkNr, blkN, blkN_sign (b + s) rest, nrm_negOnePow]
 
 /- English proof (translation)
-Rewrite using `[(ptOfList_some hw).2]`. Conclude with `blkN_sign 1 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blkN_hpt {m : ℕ} {h : TB.Pt D.host.E} {w : Point D.host.E m} (hw : ptOfList m h = some w) :
     blkNr D 1 w.1 = blkN D 1 h := by
@@ -659,7 +657,7 @@ theorem blkN_hpt {m : ℕ} {h : TB.Pt D.host.E} {w : Point D.host.E m} (hw : ptO
   exact blkN_sign 1 h
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp [Formalism.FourierDecayAlt.P.A5x5.modK_one] | n + 1 => by rw [pow_succ, Formalism.FourierDecayAlt.P.A5x5.modK_mul' hd (hx.pow n) hx, modK_pow hd hx n, pow_succ]`.
+A detailed English derivation is pending.
 -/
 theorem modK_pow {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {R : Subring K}
     {ψ : AddChar K ℂ} (hd : A5.LocalDatum K R ψ) {x : K} (hx : IsUnit x) : ∀ n : ℕ,
@@ -669,13 +667,13 @@ theorem modK_pow {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing
     rw [pow_succ, Formalism.FourierDecayAlt.P.A5x5.modK_mul' hd (hx.pow n) hx, modK_pow hd hx n, pow_succ]
 
 /- English proof (translation)
-Unfold `modPt at ha`. Break down `hm : modBlocks (blkTop δ T T' p) 1 w.1 with _ | l` into its components or cases. Rewrite `ha` using `[hm]`. Simplify using `at ha`. Rewrite `ha` using `[hm]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only at ha`. Use `split_ifs at ha with hs`. Simplify using `only [Option.some.injEq] at ha`. Substitute `ha` using the available equality. Establish `hl` using `PI.SupportDatumW.modBlocks_some _ _ _ _ hm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ((mapBlocks (blkTop δ T T' p) 1 w.1).map Prod.snd).sum = n`. Rewrite using `[PI.SupportDatumW.mapBlocks_snd]`. Conclude with `w.2.2`. Rewrite using `[← PI.SupportDatumW.ptEntry_det _ _ hsum, ← hl]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[Loc.Pt.mat, PI.SupportDatumW.ptEntryL_eq]`.
+A detailed English derivation is pending.
 -/
 theorem det_modPt {δ : ∀ p : PlF D, (D.s.atP p).Fp} {T T' : ℕ} {p : PlF D} {n : ℕ} (w : Point D.host.E n)
     (a : Loc.Pt (D.s.atP p).Ep n) (ha : modPt δ T T' p w = some a) :
@@ -699,7 +697,7 @@ theorem det_modPt {δ : ∀ p : PlF D, (D.s.atP p).Fp} {T T' : ℕ} {p : PlF D} 
     simp [Loc.Pt.mat, PI.SupportDatumW.ptEntryL_eq]
 
 /- English proof (translation)
-The claim follows from `| b, [], _, _ => by simp [mapBlocks, PI.SupportDatumW.blkDet, blkNr, Formalism.FourierDecayAlt.P.A5x5.modK_one] | b, (t, s) :: rest, hle, hb => by simp only [List.map_cons, List.sum_cons] at hle have h1 := hb (t, s) List.mem_cons_self obtain ⟨hu, hf, hp⟩ := pf_det hMN hA T T' (b …`.
+A detailed English derivation is pending.
 -/
 theorem pf_det (hMN : ModNorm D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p) (T T' : ℕ) :
@@ -753,7 +751,7 @@ def uU (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) (i s : ℕ) : (D.s.atP p
   if h : IsUnit (uS δ p i s) then h.unit else 1
 
 /- English proof (translation)
-Rewrite using `[uU, dif_pos (isUnit_uS p hδ i s)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem uU_val {δ : ∀ p : PlF D, (D.s.atP p).Fp} {p : PlF D} (hδ : δ p ≠ 0) (i s : ℕ) :
     ((uU δ p i s : (D.s.atP p).Epˣ) : (D.s.atP p).Ep) = uS δ p i s := by
@@ -761,7 +759,7 @@ theorem uU_val {δ : ∀ p : PlF D, (D.s.atP p).Fp} {p : PlF D} (hδ : δ p ≠ 
   rfl
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[uT_val, Units.val_mul, uU_val hδ]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem uT_eq {δ : ∀ p : PlF D, (D.s.atP p).Fp} {p : PlF D} (hδ : δ p ≠ 0) (i s : ℕ) (t : D.host.E) (ht : t ≠ 0) :
     uT δ p hδ i s t ht = uU δ p i s * Units.map ((D.s.atP p).ιE : D.host.E →* (D.s.atP p).Ep) (Units.mk0 t ht) := by
@@ -778,7 +776,7 @@ def dph (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p
   else 1
 
 /- English proof (translation)
-Establish `hsD` using `LocModel.split_none_of_agree hA hs`. Unfold `dph`. Use `split_ifs`. Rewrite using `[hsD]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dph_none {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {p : PlF D} (hA : Agree δ M p) (hs : (M p).split = none) (T T' i s : ℕ) (t : D.host.E) :
@@ -790,11 +788,11 @@ theorem dph_none {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {�
   · rfl
 
 /- English proof (translation)
-Unfold `dph`. Use `split_ifs`. Use `split`. Use `Formalism.MainNotions.LocalModelPeriodLattices.top_of_OK (M p) hA.1` as an intermediate fact. Establish `hd` using `Formalism.MainNotions.LocalModelPeriodLattices.datum_of_OK (M p) hA.1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set x := tau0 p T T' * Ring.inverse (blkMod δ T T' p D.R.rS 2 (sgn D i * t))`. Establish `h1 : (M p).psiR x * (starRingEnd ℂ) ((M p).psiR x) = 1`. Rewrite using `[hd.unitary, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Establish `h2 : Complex.normSq ((M p).psiR x) = 1`. Rewrite `h1` using `[Complex.mul_conj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h1` after adjusting the coercions. Establish `h3 : ‖(M p).psiR x‖ ^ 2 = 1` using `by rw [← Complex.normSq_eq_norm_sq]; exact h2`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h3`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem norm_dph {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {p : PlF D} (hA : Agree δ M p) (T T' i s : ℕ) (t : D.host.E) : ‖dph M δ T T' i s p t‖ = 1 := by
@@ -823,13 +821,13 @@ def pullS (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀
     (J.pullSys (M p).R (M p).psiR s (D.s.atP p).ιE (uU δ p i s) (etaH δ T T' (i - s) p) fun _ _ _ => 0)
 
 /- English proof (translation)
-Establish `hmr : m ≤ D.R.rS` using `by omega`. Take `⟨a, ha⟩` from `modPt_low T T' p (hA p).2.1 hmr w`. Take `⟨a', ha'⟩` from `modPt_low T T' p (hA p).2.1 hmr w'`. Use `Formalism.MainNotions.LocalModelPeriodLattices.top_of_OK (M p) (hA p).1` as an intermediate fact. Establish `hd` using `Formalism.MainNotions.LocalModelPeriodLattices.datum_of_OK (M p) (hA p).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : etaH δ T T' (m + s - s) p h = Formalism.MainNotions.LocalModelPeriodLattices.tr a`. Rewrite using `[Nat.add_sub_cancel, etaH, hpt_of hw, etaW_of ha]`. Establish `e2 : etaH δ T T' (m + s - s) p h' = Formalism.MainNotions.LocalModelPeriodLattices.tr a'`. Rewrite using `[Nat.add_sub_cancel, etaH, hpt_of hw', etaW_of ha']`. Rewrite using `[locK_join hA T T' p hs hnt ht ht' hW hW' ha ha', uT_eq, uT_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pullS, J.phaseSys, J.pullSys, dif_pos (And.intro ht ht'), A5.Ns, e1, e2]`. Establish `hu1 : IsUnit (uS δ p (m + s) s * (D.s.atP p).ιE t)` using `(isUnit_uS p (hA p).2.1 _ _).mul (isUnit_ιE p ht)`. Establish `hu2 : IsUnit (uS δ p (m + s) s * (D.s.atP p).ιE t')` using `(isUnit_uS p (hA p).2.1 _ _).mul (isUnit_ιE p ht')`. Establish `ev : ∀ x (hx : x ≠ 0), ((uU δ p (m + s) s * Units.map ((D.s.atP p).ιE : D.host.E →* (D.s.atP p).Ep) (Units.mk0 x hx) : (D.s.atP p).Epˣ) : (D.s.atP p).Ep) = uS δ p (m + s) s * (D.s.atP p).ιE x`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Units.val_mul, uU_val (hA p).2.1]`. Both sides reduce to the same expression. Rewrite using `[ev t ht, ev t' ht', Formalism.FourierDecayAlt.P.A5x5.modK_mul' hd hu1 hu2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pullS_N {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     (hA : ∀ p, Agree δ M p) (T T' : ℕ) (p : PlF D) {m s : ℕ} (hs : 1 ≤ s) (hm : m + s ≤ D.R.rS + 1)
@@ -865,13 +863,13 @@ theorem pullS_N {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {δ
   ring
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_val {n n' : ℕ} (h : n = n') (W : Point D.host.E n) : (h ▸ W).1 = W.1 := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem locK_cast (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (T T' : ℕ) (p : PlF D) {n n' : ℕ} (h : n = n') (W W' : Point D.host.E n) :
@@ -879,11 +877,11 @@ theorem locK_cast (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (
   subst h; rfl
 
 /- English proof (translation)
-Establish `hl : V.1.getLast? = some (sgn D (m + s) * x, s)`. Rewrite using `[hV, List.getLast?_append_of_ne_nil _ (List.cons_ne_nil _ _)]`. Both sides reduce to the same expression. Unfold `dfac dph`. Rewrite using `[hl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.lt_or_ge s 3 with h3 | h3` into its components or cases. Take `rfl : s = 2` from `by omega`. Rewrite using `[if_pos (show m + 2 = D.R.rS + 1 ∧ 2 = 2 from ⟨hi, rfl⟩)]`. Break down `(D.s.atP p).split with _ | sg` into its components or cases. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨k, rfl⟩ : ∃ k, s = k + 3` from `⟨s - 3, by omega⟩`. Rewrite using `[if_neg (show ¬ (m + (k + 3) = D.R.rS + 1 ∧ k + 3 = 2) by omega)]`. Break down `(D.s.atP p).split with _ | sg` into its components or cases. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
 Both sides reduce to the same expression.
 -/
@@ -909,15 +907,15 @@ theorem dfac_join (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (
     · rfl
 
 /- English proof (translation)
-Unfold `Kglob`. Distinguish the cases in `hi : m + s = D.R.rS + 1`. Rewrite using `[dif_pos hi]`. Establish `hs2 : 2 ≤ s`. Break down `Nat.lt_or_ge s 2 with h | h` into its components or cases.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd ⟨hi, by omega⟩ hnt`. Conclude with `h`. Establish `hc : (hi ▸ W).1 = w.1 ++ [(sgn D (m + s) * t, s)]` using `(cast_val hi W).trans hW`. Establish `hc' : (hi ▸ W').1 = w'.1 ++ [(sgn D (m + s) * t', s)]` using `(cast_val hi W').trans hW'`. Establish `hk : kind (hi ▸ W) = none`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `kind`. Rewrite using `[if_pos (PI.SupportDatumW.dmin_last_big D _ _ _ _ hc hs2)]`. Establish `hk' : kind (hi ▸ W') = none`. Unfold `kind`. Rewrite using `[if_pos (PI.SupportDatumW.dmin_last_big D _ _ _ _ hc' hs2)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `KtopG`. Rewrite using `[if_pos (hk.trans hk'.symm)]`. Use `finprod_congr fun p => ?_` and prove the remaining obligations. Unfold `KtopP`. Rewrite using `[locK_cast M δ T T' p hi W W']`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[dfac_join M δ T T' p hi hs2 _ w.1 t hc, dfac_join M δ T T' p hi hs2 _ w'.1 t' hc']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg hi]`. Use `finprod_congr fun p => ?_` and prove the remaining obligations. Simplify using `only [dph, show ¬ (m + s = D.R.rS + 1 ∧ s = 2) from fun h => hi h.1, if_false, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kglob_join {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     (T T' : ℕ) {m s : ℕ} (hs : 1 ≤ s) (hnt : ¬ (m + s = D.R.rS + 1 ∧ s = 1)) {w w' : Point D.host.E m}
@@ -959,13 +957,13 @@ section Kern
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Take `⟨-, -, hp⟩` from `pf_det hMN hA T T' 1 w.1 (by rw [w.2.2]; omega) w.2.1`. Establish `key : ∀ p, A5.cSize (M p).R (etaW δ T T' p w) = (A5.modK (M p).R (PI.SupportDatumW.blkDet (mapBlocks (blkTop δ T T' p) 1 w.1)))⁻¹`. Introduce `p`. Take `⟨a, ha⟩` from `modPt_low T T' p (hA p).2.1 hm w`. Rewrite using `[etaW_of ha, A5.cSize, ← Formalism.MainNotions.LocalModelPeriodLattices.det_eq, det_modPt w a ha]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : (Function.mulSupport fun p => (A5.modK (M p).R (PI.SupportDatumW.blkDet (mapBlocks (blkTop δ T T' p) 1 w.1)))⁻¹) ⊆ (P0 : Set (PlF D))`. Introduce `p hp`. Assume the negation of the conclusion as `hpP`. Apply `hp` to reduce the goal to its premises. Use `Formalism.MainNotions.LocalModelPeriodLattices.top_of_OK (M p) (hA p).1` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨-, a, ha, hG⟩` from `gd_place hA T T' (hP0 p hpP) w hX`. Use `show (A5.modK _ _)⁻¹ = 1`. Rewrite using `[← det_modPt w a ha]`. Take `⟨hent, v, hv, hdv⟩` from `hG`. Rewrite using `[Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.modK_unitR (LocModel.det_mem_of _ _ hent) hv hdv, inv_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl (fun p _ => key p), ← finprod_eq_prod_of_mulSupport_subset _ hsub, finprod_inv_distrib, hp, inv_inv]`.
+A detailed English derivation is pending.
 -/
 theorem head_prod (hMN : ModNorm D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p) (T T' : ℕ) {m : ℕ}
@@ -993,7 +991,7 @@ theorem head_prod (hMN : ModNorm D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     finprod_inv_distrib, hp, inv_inv]
 
 /- English proof (translation)
-Unfold `scal`. Rewrite using `[hW]`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem scal_join {m s : ℕ} {w : Point D.host.E m} {W : Point D.host.E (m + s)} {x : D.host.E}
     (hW : W.1 = w.1 ++ [(x, s)]) : scal W = scal w ∪ {x} := by
@@ -1003,7 +1001,7 @@ theorem scal_join {m s : ℕ} {w : Point D.host.E m} {W : Point D.host.E (m + s)
   simp
 
 /- English proof (translation)
-The claim follows from `| _, [], _ => by simp [blkN] | b, (s, t) :: rest, h => by simp only [blkN] exact mul_pos (pow_pos (nrm_pos (h (s, t) List.mem_cons_self) _) _) (blkN_pos (b + s) rest fun c hc => h c (List.mem_cons_of_mem _ hc))`.
+A detailed English derivation is pending.
 -/
 theorem blkN_pos : ∀ (b : ℕ) (l : TB.Pt D.host.E), (∀ c ∈ l, c.2 ≠ 0) → 0 < blkN D b l
   | _, [], _ => by simp [blkN]
@@ -1013,7 +1011,7 @@ theorem blkN_pos : ∀ (b : ℕ) (l : TB.Pt D.host.E), (∀ c ∈ l, c.2 ≠ 0) 
       (blkN_pos (b + s) rest fun c hc => h c (List.mem_cons_of_mem _ hc))
 
 /- English proof (translation)
-The claim follows from `(isPtL_signPt D.R.rS h m).1 (ptOfList_some hw).1`.
+A detailed English derivation is pending.
 -/
 theorem isPtL_of_ptOfList {m : ℕ} {h : TB.Pt D.host.E} {w : Point D.host.E m} (hw : ptOfList m h = some w) :
     Formalism.L2.S.IsPtL h m :=
@@ -1025,31 +1023,31 @@ def wt (D : Formalism.BasicNotions.D7) (m s : ℕ) (h : TB.Pt D.host.E) : ℝ :=
   | none => 0
 
 /- English proof (translation)
-Take `⟨W, hWo, hW⟩` from `ptOfList_join hl hw hs ht`. Take `⟨W', hWo', hW'⟩` from `ptOfList_join hl' hw' hs ht'`. Establish `hK : KrOf δ M T T' (m + s) (TB.join h s t) (TB.join h' s t') = Kglob δ M T T' (m + s) W W' / ((phi (m + s) (TB.join h s t) : ℂ) * (phi (m + s) (TB.join h' s t') : ℂ))`. Unfold `KrOf`. Rewrite using `[if_neg (by omega), if_neg (by omega), hWo, hWo']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hphi : ∀ (g : TB.Pt D.host.E) (x : D.host.E), TB.level g = m → phi (m + s) (TB.join g s x) = phi m g * blkN D 1 g ^ s * nrm (D` using `D) (nu D.R.rS (m + 1) (m + s)) x ^ (s * (s - 1) / 2) := by`. Introduce `g x hg`. Unfold `phi TB.join`. Rewrite using `[blockProduct_append, blockProduct_shift m s 1 g (by omega), hg]`. Simplify using `only [blockWeightPhi]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : 1 + m = m + 1` using `by ring`. Establish `e2 : m + 1 + s - 1 = m + s` using `by omega`. Establish `e3 : m + s - (m + s) = 0` using `by omega`. Rewrite using `[e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hWX : scal W ⊆ X` using `by rw [scal_join hW]; exact Finset.union_subset hX (by simpa using htX)`. Establish `hWX' : scal W' ⊆ X` using `by rw [scal_join hW']; exact Finset.union_subset hX' (by simpa using htX')`. Establish `hC : ∀ x ∈ X, x ≠ 0 → ∀ p, p ∉ P → A5.modK (M p).R (uS δ p (m + s) s * (D.s.atP p).ιE ((sgn D (m + s))⁻¹ * x)) = 1`. Introduce `x hx hx0 p hp`. Use `Formalism.MainNotions.LocalModelPeriodLattices.top_of_OK (M p) (hA p).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hG` using `hP p hp`. Establish `e : uS δ p (m + s) s * (D.s.atP p).ιE ((sgn D (m + s))⁻¹ * x) = (D.s.atP p).ιE x * PI.SupportDatumW.hF D δ p (m + s - s + 1) s`. Rewrite using `[uS_mul, ← mul_assoc, mul_inv_cancel₀ (sgn_ne _), one_mul]`. Rewrite using `[e]`. Take `⟨h1, v, h2, h3⟩` from `unitIn_mul (gd_elt hG hx hx0) (hF_good hA hG _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `*` using `[R_eq_O (hA p) hG.1]`. Conclude with `Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.modK_unitR h1 h2 h3`. Establish `hinv : ∀ x : D.host.E, (sgn D (m + s))⁻¹ * (sgn D (m + s) * x) = x` using `fun x => by`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (sgn_ne _), one_mul]`. Establish `hCt : ∀ p, p ∉ P → A5.modK (M p).R (uS δ p (m + s) s * (D.s.atP p).ιE t) = 1` using `fun p hp => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hC _ htX (mul_ne_zero (sgn_ne _) ht) p hp` using `[hinv]`. Establish `hCt' : ∀ p, p ∉ P → A5.modK (M p).R (uS δ p (m + s) s * (D.s.atP p).ιE t') = 1` using `fun p hp => by`. Simplify `hC _ htX' (mul_ne_zero (sgn_ne _) ht') p hp` using `[hinv]`. Establish `hGp : ∀ p, p ∉ P → dph M δ T T' (m + s) s p t * (starRingEnd ℂ) (dph M δ T T' (m + s) s p t') * locK M δ T T' p (m + s) W W' = 1`. Introduce `p hp`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hG` using `hP p hp`. Rewrite using `[dph_none (hA p) hG.1, dph_none (hA p) hG.1, Formalism.L2.SG.DataCut.locK_eq_one Formalism.MainNotions.LocalOrbitGerms.KKAll_proved hA (gd_notBad hA T T' hG W hWX) (gd_notBad hA T T' hG W' hWX')]`. Simplify using the standard rewrite rules. Establish `pf1` using `pf_uS hMN hA (m + s) s ht`. Establish `pf2` using `pf_uS hMN hA (m + s) s ht'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : m + s - s + 1 = m + 1` using `by omega`. Establish `e5 : m + 1 + s - 1 = m + s` using `by omega`. Rewrite `pf1`, `pf2` using `[e4, e5]`. Establish `f1 : ∏ p ∈ P, A5.modK (M p).R (uS δ p (m + s) s * (D.s.atP p).ιE t) = (nrm (D` using `D) (nu D.R.rS (m + 1) (m + s)) t)⁻¹ := by`. Rewrite using `[← pf1.2, finprod_eq_prod_of_mulSupport_subset]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Assume the negation of the conclusion as `hpP`. Conclude with `hp (hCt p hpP)`. Establish `f2 : ∏ p ∈ P, A5.modK (M p).R (uS δ p (m + s) s * (D.s.atP p).ιE t') = (nrm (D` using `D) (nu D.R.rS (m + 1) (m + s)) t')⁻¹ := by`. Rewrite using `[← pf2.2, finprod_eq_prod_of_mulSupport_subset]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `p hp`. Assume the negation of the conclusion as `hpP`. Conclude with `hp (hCt' p hpP)`. Establish `f3 : ∏ p ∈ P, dph M δ T T' (m + s) s p t * (starRingEnd ℂ) (dph M δ T T' (m + s) s p t') * locK M δ T T' p (m + s) W W' = Kglob δ M T T' (m + s) W W'`. Rewrite using `[kglob_join T T' hs hnt t t' hW hW', finprod_eq_prod_of_mulSupport_subset]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Introduce `p hp`. Assume the negation of the conclusion as `hpP`. Conclude with `hp (hGp p hpP)`. Rewrite using `[Finset.prod_congr rfl (fun p _ => pullS_N hA T T' p hs hm hnt hw hw' ht ht' hW hW'), Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_mul_distrib]`. Establish `f1c : ∏ p ∈ P, ((A5.modK (M p).R (uS δ p (m + s) s * (D.s.atP p).ιE t) : ℝ) : ℂ) = (((nrm (D` using `D) (nu D.R.rS (m + 1) (m + s)) t)⁻¹ : ℝ) : ℂ) := by rw [← f1]; push_cast; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `f2c : ∏ p ∈ P, ((A5.modK (M p).R (uS δ p (m + s) s * (D.s.atP p).ιE t') : ℝ) : ℂ) = (((nrm (D` using `D) (nu D.R.rS (m + 1) (m + s)) t')⁻¹ : ℝ) : ℂ) := by rw [← f2]; push_cast; rfl`. Rewrite using `[f1c, f2c, f3, hK, hphi h t hl, hphi h' t' hl']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem krOf_join (hMN : ModNorm D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p) (T T' : ℕ) {m s : ℕ}
@@ -1137,23 +1135,21 @@ theorem krOf_join (hMN : ModNorm D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   ring
 
 /- English proof (translation)
-Establish `hloc : ∀ p, locK M δ T T' p m w w' = A5.Kp (M p).R (M p).psiR (etaW δ T T' p w) (etaW δ T T' p w')`. Introduce `p`. Take `⟨a, ha⟩` from `modPt_low T T' p (hA p).2.1 hm w`. Take `⟨a', ha'⟩` from `modPt_low T T' p (hA p).2.1 hm w'`. Unfold `locK`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite using `[ha, ha', etaW_of ha, etaW_of ha']`. Conclude with `Formalism.MainNotions.LocalOrbitGerms.KKAll_proved _ _ (M p) (hA p).1 m a a'`. Establish `hsub : (Function.mulSupport fun p => locK M δ T T' p m w w') ⊆ (P : Set (PlF D))`. Introduce `p hp`. Assume the negation of the conclusion as `hpP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp (Formalism.L2.SG.DataCut.locK_eq_one Formalism.MainNotions.LocalOrbitGerms.KKAll_proved hA (gd_notBad hA T T' (hP p hpP) w hX) (gd_notBad hA T T' (hP p hpP) w' hX'))`. Rewrite using `[← Finset.prod_congr rfl (fun p _ => hloc p), ← finprod_eq_prod_of_mulSupport_subset _ hsub]`. Break down `Nat.eq_zero_or_pos m with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Establish `hh : ∀ {g : TB.Pt D.host.E} {v : Point D.host.E 0}, ptOfList 0 g = some v → g = []`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g v hv`. Establish `h1` using `isPtL_of_ptOfList hv`. Break down `g with _ | ⟨c, g⟩` into its components or cases. Both sides reduce to the same expression. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `h1.1`. Establish `h3` using `(h1.2 c List.mem_cons_self).1`. Simplify using `only [List.map_cons, List.sum_cons] at h2`. Use linear arithmetic over natural numbers and integers. Take `rfl` from `hh hw`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl` from `hh hw'`. Establish `h1 : ∀ p, locK M δ T T' p 0 w w' = 1`. Introduce `p`. Unfold `locK`. Take `⟨a, ha⟩` from `modPt_low T T' p (hA p).2.1 (Nat.zero_le _) w`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a', ha'⟩` from `modPt_low T T' p (hA p).2.1 (Nat.zero_le _) w'`. Rewrite using `[ha, ha']`. Both sides reduce to the same expression. Simplify using `[h1, KrOf, phi, blockWeightPhi]`. Establish `hK : KrOf δ M T T' m h h' = Kglob δ M T T' m w w' / ((phi m h : ℂ) * (phi m h' : ℂ))`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `KrOf`. Rewrite using `[if_neg (by omega), if_neg (by omega), hw, hw']`. Establish `hpos : ((phi m h : ℂ) * (phi m h' : ℂ)) ≠ 0`. Establish `a1` using `phi_pos (isPtL_of_ptOfList hw)`. Establish `a2` using `phi_pos (isPtL_of_ptOfList hw')`.
-
-Conclude with `mul_ne_zero (by exact_mod_cast a1.ne') (by exact_mod_cast a2.ne')`. Rewrite using `[hK, div_mul_cancel₀ _ hpos, Kglob, dif_neg (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem krOf_head {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p) (T T' : ℕ) {m : ℕ}
@@ -1219,7 +1215,7 @@ def Qf (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.a
   (gd_finite δ M hA (X1 X0 c t t')).toFinset \ P
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Conclude with `hq (Finset.mem_sdiff.2 ⟨(Set.Finite.mem_toFinset _).2 hn, hp⟩)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem qf_gd {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) (X0 : Finset D.host.E) (c : D.host.E) (P : Finset (PlF D)) (t t' : D.host.E)
@@ -1243,7 +1239,7 @@ def sysP (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ 
   | some p => pullS M δ T T' i s p.1
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `modPt_low T T' p hδ hm (hpt D m h)`. Rewrite using `[etaH, etaW_of ha, Formalism.MainNotions.LocalModelPeriodLattices.tr_sum]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem etaH_sum {δ : ∀ p : PlF D, (D.s.atP p).Fp} (T T' : ℕ) (p : PlF D) (hδ : δ p ≠ 0) {m : ℕ} (hm : m ≤ D.R.rS)
     (h : TB.Pt D.host.E) : (etaH δ T T' m p h).1.sum = m := by
@@ -1251,7 +1247,7 @@ theorem etaH_sum {δ : ∀ p : PlF D, (D.s.atP p).Fp} (T T' : ℕ) (p : PlF D) (
   rw [etaH, etaW_of ha, Formalism.MainNotions.LocalModelPeriodLattices.tr_sum]
 
 /- English proof (translation)
-Take `⟨-, a, ha, hGa⟩` from `gd_place hA T T' hG (hpt D m h) hX`. Rewrite using `[etaH, etaW_of ha]`. Conclude with `Formalism.MainNotions.LocalModelPeriodLattices.inGLR_tr a hGa`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaH_glr {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) (T T' : ℕ) {p : PlF D} {X : Finset D.host.E} (hG : Gd δ M p X) {m : ℕ}
@@ -1261,7 +1257,7 @@ theorem etaH_glr {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Mo
   exact Formalism.MainNotions.LocalModelPeriodLattices.inGLR_tr a hGa
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LocModel.placeOf M (fun q => (hA q).1) p, uU δ p i s, etaH δ T T' (i - s) p, i - s, dph M δ T T' i s p, fun h _ => etaH_sum T T' p (hA p).2.1 hm h, fun t => norm_dph (hA p) T T' i s t, hun, ⟨fun _ _ _ _ _ _ _ _ => rfl, fun _ _ _ _ => rfl, rfl, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPull_pullS {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) (T T' i s : ℕ) (hm : i - s ≤ D.R.rS) (p : PlF D) (Y : Finset (TB.Pt D.host.E))
@@ -1272,7 +1268,7 @@ theorem isPull_pullS {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Lo
     ⟨fun _ _ _ _ _ _ _ _ => rfl, fun _ _ _ _ => rfl, rfl, rfl⟩⟩
 
 /- English proof (translation)
-Rewrite using `[ιE_sgn]`. Use `⟨Subring.pow_mem _ (Subring.neg_mem _ (Subring.one_mem _)) _, (-1) ^ (D.R.rS + 1 - i), Subring.pow_mem _ (Subring.neg_mem _ (Subring.one_mem _)) _, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_pow, neg_one_mul, neg_neg, one_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitIn_sgn (p : PlF D) (i : ℕ) : LocModel.UnitIn (D.s.atP p).O ((D.s.atP p).ιE (sgn D i)) := by
   rw [ιE_sgn]
@@ -1281,7 +1277,7 @@ theorem unitIn_sgn (p : PlF D) (i : ℕ) : LocModel.UnitIn (D.s.atP p).O ((D.s.a
   rw [← mul_pow, neg_one_mul, neg_neg, one_pow]
 
 /- English proof (translation)
-The claim follows from `unitIn_mul (unitIn_sgn p i) (hF_good hA hG _ _)`.
+A detailed English derivation is pending.
 -/
 theorem uS_good {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) {p : PlF D} {X : Finset D.host.E} (hG : Gd δ M p X) (i s : ℕ) :
@@ -1289,7 +1285,7 @@ theorem uS_good {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Mod
   unitIn_mul (unitIn_sgn p i) (hF_good hA hG _ _)
 
 /- English proof (translation)
-Simplify using `only [pullS, J.phaseSys, J.pullSys, AddSubgroup.mem_comap, AddMonoidHom.coe_comp, Function.comp_apply, AddMonoidHom.coe_mulLeft, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, Subring.mem_toAddSubgroup]`. Rewrite using `[uU_val (hA p).2.1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_pullL {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     (hA : ∀ p, Agree δ M p) (T T' i s : ℕ) (p : PlF D) (t : D.host.E) :
@@ -1300,7 +1296,7 @@ theorem mem_pullL {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {
   rw [uU_val (hA p).2.1]
 
 /- English proof (translation)
-Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[uU_val hδ]`. Conclude with `hv`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uU_inv {δ : ∀ p : PlF D, (D.s.atP p).Fp} {p : PlF D} (hδ : δ p ≠ 0) (i s : ℕ) {v : (D.s.atP p).Ep}
     (hv : uS δ p i s * v = 1) : (((uU δ p i s)⁻¹ : (D.s.atP p).Epˣ) : (D.s.atP p).Ep) = v := by
@@ -1309,7 +1305,7 @@ theorem uU_inv {δ : ∀ p : PlF D, (D.s.atP p).Fp} {p : PlF D} (hδ : δ p ≠ 
   exact hv
 
 /- English proof (translation)
-Simplify using `only [pullS, J.phaseSys, J.pullSys, AddSubgroup.mem_comap, AddMonoidHom.coe_comp, Function.comp_apply, AddMonoidHom.coe_mulLeft, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, Subring.mem_toAddSubgroup]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_pullL' {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     (T T' i s : ℕ) (p : PlF D) (x : D.host.E) :
@@ -1320,17 +1316,13 @@ theorem mem_pullL' {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} 
     Subring.mem_toAddSubgroup]
 
 /- English proof (translation)
-Establish `hms : m + s - s = m` using `Nat.add_sub_cancel _ _`. Use `⟨fun _ _ _ _ => rfl, fun t t' ht ht' => ⟨{q // q ∈ Qf δ M hA X0 (sgn D (m + s)) P t t'}, inferInstance, fun q => pullS M δ T T' (m + s) s q.1, fun q => Or.inr ⟨htp, ?_⟩, fun h _ h' _ => ?_, fun hq => ?_, fun hq => ?_⟩⟩` and prove the remaining obligations. Use `isPull_pullS hA T T' (m + s) s (by omega) q.1 Y true fun _ h hh => ?_` and prove the remaining obligations. Establish `hqP : q.1 ∉ P` using `(Finset.mem_sdiff.1 q.2).2`. Rewrite using `[hms]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `etaH_glr hA T T' (hP q.1 hqP) h (hX0 h hh)`. Conclude with `(Finset.prod_coe_sort _ (fun q => (pullS M δ T T' (m + s) s q).N t t' h h')).symm`. Use `show t ∈ ⨅ p : {p // p ∉ P}, (pullS M δ T T' (m + s) s p.1).L`. Rewrite using `[AddSubgroup.mem_iInf]`. Introduce `p`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hpq : p.1 ∈ Qf δ M hA X0 (sgn D (m + s)) P t t'`. Conclude with `hq ⟨p.1, hpq⟩`. Establish `hG` using `qf_gd hA X0 _ P t t' p.1 p.2 hpq`. Rewrite using `[mem_pullL hA, uS_mul, R_eq_O (hA _) hG.1]`. Conclude with `(unitIn_mul (gd_elt hG (by simp [X1]) (mul_ne_zero (sgn_ne _) ht)) (hF_good hA hG _ _)).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show t⁻¹ - t'⁻¹ ∈ ⨅ p : {p // p ∉ P}, (pullS M δ T T' (m + s) s p.1).L'`. Rewrite using `[AddSubgroup.mem_iInf]`. Introduce `p`. Distinguish the cases in `hpq : p.1 ∈ Qf δ M hA X0 (sgn D (m + s)) P t t'`. Conclude with `hq ⟨p.1, hpq⟩`.
-
-Establish `hG` using `qf_gd hA X0 _ P t t' p.1 p.2 hpq`. Rewrite using `[mem_pullL', R_eq_O (hA _) hG.1]`. Take `⟨-, v, hv, huv⟩` from `uS_good hA hG (m + s) s`. Rewrite using `[uU_inv (hA _).2.1 _ _ huv]`. Distinguish the cases in `hy : t⁻¹ - t'⁻¹ = 0`.
-
-Rewrite using `[hy, map_zero, mul_zero]`. Conclude with `Subring.zero_mem _`. Conclude with `Subring.mul_mem _ hv (gd_elt hG (by simp [X1]) hy).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOut_outS {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) (T T' : ℕ) {m s : ℕ} (hm : m ≤ D.R.rS) (Y : Finset (TB.Pt D.host.E))
@@ -1373,13 +1365,13 @@ section Lat
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-The claim follows from `product_formula_e _ _ _ (Formalism.BasicNotions.Examples₂.finrank_FE D.host) D.s.atP`.
+A detailed English derivation is pending.
 -/
 theorem explicit_formula_bound_holds (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.JointEigenvalueBoundsFromAnyDatum.adm7 D :=
   product_formula_e _ _ _ (Formalism.BasicNotions.Examples₂.finrank_FE D.host) D.s.atP
 
 /- English proof (translation)
-Break down `neg_one_pow_eq_or B k with h | h` into its components or cases. Rewrite using `[h, one_mul]`. Rewrite using `[h, neg_one_mul, neg_mem_iff]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem negOnePow_mem {B : Type} [CommRing B] (R : Subring B) (k : ℕ) (x : B) :
     (-1) ^ k * x ∈ R ↔ x ∈ R := by
@@ -1388,9 +1380,9 @@ theorem negOnePow_mem {B : Type} [CommRing B] (R : Subring B) (k : ℕ) (x : B) 
   · rw [h, neg_one_mul, neg_mem_iff]
 
 /- English proof (translation)
-Establish `e1 : m + s - s + 1 = m + 1` using `by omega`. Establish `e2 : nu r (m + 1) (m + s) + (m + 1) + (m + s) = 2 * (r + 1)` using `by unfold nu; omega`. Rewrite using `[e1, Formalism.FourierDecayAlt.S6.nuBlock]`. Establish `e3 : ((nu r (m + 1) (m + s) : ℕ) : ℤ) = 2 * ((r : ℤ) + 1) - ((m : ℤ) + 1) - ((m : ℤ) + s)`. Establish `: ((nu r (m + 1) (m + s) + (m + 1) + (m + s) : ℕ) : ℤ) = ((2 * (r + 1) : ℕ) : ℤ)` using `by rw [e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e3]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nuB_eq (r m s : ℕ) (hs : 1 ≤ s) (hm : m + s ≤ r + 1) :
     Formalism.FourierDecayAlt.S6.nuBlock (r : ℤ) ((m + s - s + 1 : ℕ) : ℤ) (s : ℤ) = ((nu r (m + 1) (m + s) : ℕ) : ℤ) := by
@@ -1406,11 +1398,11 @@ theorem nuB_eq (r m s : ℕ) (hs : 1 ≤ s) (hm : m + s ≤ r + 1) :
   ring
 
 /- English proof (translation)
-Rewrite using `[AddSubgroup.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce `h p`. Distinguish the cases in `hp : p ∈ P0`. Rewrite using `[← hs ⟨p, hp⟩]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h (some ⟨p, hp⟩)`. Use `h none` as an intermediate fact. Rewrite `this` using `[hn, AddSubgroup.mem_iInf]`. Conclude with `this ⟨p, hp⟩`. Introduce `h j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `j with`. Consider the case `none => rw [hn, AddSubgroup.mem_iInf]`. Conclude with `fun p => h p.1`. Consider the case `some p => rw [hs]`. Conclude with `h p.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem all_of_sysP {E ι : Type} [Field E] {P0 : Finset ι} {f : Option {p // p ∈ P0} → AddSubgroup E}
     {g : ι → AddSubgroup E} (hn : f none = ⨅ p : {p // p ∉ P0}, g p.1) (hs : ∀ p, f (some p) = g p.1)
@@ -1432,13 +1424,13 @@ variable {Wp Wq : InfinitePlace D.host.E → Type} [∀ x, NormedAddCommGroup (W
     [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
 
 /- English proof (translation)
-Establish `e : ∀ p, uS δ p (m + s) s * (D.s.atP p).ιE t = (-1) ^ (D.R.rS + 1 - (m + s)) * tMod δ p (nu D.R.rS (m + 1) (m + s)) s t`. Introduce `p`. Establish `h1` using `tMod_eq δ p (m + 1) s t`. Establish `e5 : m + 1 + s - 1 = m + s` using `by omega`. Rewrite `h1` using `[e5]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, uS_mul, map_mul, ιE_sgn]`. Establish `e4 : m + s - s + 1 = m + 1` using `by omega`. Rewrite using `[e4]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (∀ p, t ∈ (pullS M δ T T' (m + s) s p).L) ↔ t ∈ La M δ (nu D.R.rS (m + 1) (m + s)) s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [mem_pullL hA, e, negOnePow_mem]`. Both sides reduce to the same expression. Establish `h2` using `Formalism.MainNotions.LocalModelPeriodLattices.mem_perLat_iff δ M (nu D.R.rS (m + 1) (m + s)) s (Formalism.MainNotions.BridgeLemma.laIsPeriod_of_adm δ M hA (UpperTheory.Prune.fundamentalExactSequence_continuity_all_theories D) (explicit_formula_bound_holds D) _ s) t`. Use `Iff.trans ?_ (h2.trans h1.symm)` and prove the remaining obligations. Unfold `J.LaB`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[hg, hr, nuB_eq _ _ _ hs hm]`. Conclude with `Submodule.mem_toAddSubgroup _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_L_mem {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) (S : C.HidaSetting D.host.E Wp Wq) (hr : S.G.r = D.R.rS) (hg : S.g = Lat.gS D)
@@ -1465,17 +1457,17 @@ theorem lat_L_mem {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.M
   exact Submodule.mem_toAddSubgroup _
 
 /- English proof (translation)
-Use `set ν := nu D.R.rS (m + 1) (m + s) with hν`. Establish `h2 : ∀ p, Formalism.MainNotions.BridgeLemma.tModInv δ p ν s x ∈ (M p).R`. Introduce `p`. Establish `h1` using `(mem_pullL' T T' (m + s) s p x).1 (hx p)`. Establish `hδ` using `(hA p).2.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htm` using `tMod_eq δ p (m + 1) s 1`. Establish `e5 : m + 1 + s - 1 = m + s` using `by omega`. Rewrite `htm` using `[e5, map_one, one_mul]`. Establish `hmi` using `Formalism.MainNotions.BridgeLemma.tMod_mul_tModInv δ p hδ ν s 1 one_ne_zero`. Rewrite `hmi` using `[inv_one, htm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : uS δ p (m + s) s * ((D.s.atP p).ιE (sgn D (m + s)) * Formalism.MainNotions.BridgeLemma.tModInv δ p ν s 1) = 1`. Establish `e4 : m + s - s + 1 = m + 1` using `by omega`. Unfold `uS`. Rewrite using `[e4]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[uU_inv hδ _ _ hinv]`. Establish `htmi : Formalism.MainNotions.BridgeLemma.tModInv δ p ν s x = Formalism.MainNotions.BridgeLemma.tModInv δ p ν s 1 * (D.s.atP p).ιE x`. Unfold `Formalism.MainNotions.BridgeLemma.tModInv`. Rewrite using `[PI.SupportDatumW.twist_mul p s ((D.s.atP p).ιE x), map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htmi]`. Rewrite `h1` using `[mul_assoc, ιE_sgn, negOnePow_mem]`. Conclude with `h1`. Establish `h3` using `(Formalism.MainNotions.BridgeLemma.localCondition_iff δ M hA (Formalism.MainNotions.BridgeLemma.isDiffGen_of_agree δ M hA (UpperTheory.Prune.fundamentalExactSequence_continuity_all_theories D) (explicit_formula_bound_holds D)) ν s x).2 h2`. Use `Formalism.MainNotions.LocalModelPeriodLattices.cmE D` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `J.LapB`. Rewrite using `[hg, hr, nuB_eq _ _ _ hs hm]`. Use `(Submodule.mem_toAddSubgroup _).2 ?_` and prove the remaining obligations. Rewrite using `[Formalism.FourierDecayAlt.S6.liftLat, Formalism.FourierDecayAlt.P.S6x1.mem_twLat, ← Formalism.MainNotions.LocalModelPeriodLattices.gdd_eq_idl, ← Formalism.MainNotions.LocalModelPeriodLattices.gdd_eq_idl, ← Formalism.MainNotions.LocalModelPeriodLattices.conjF_eq_complexConj]`. Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_L'_mem {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) (S : C.HidaSetting D.host.E Wp Wq) (hr : S.G.r = D.R.rS) (hg : S.g = Lat.gS D)
@@ -1527,9 +1519,9 @@ variable {D : Formalism.BasicNotions.D7} {Wp Wq : InfinitePlace D.host.E → Typ
     [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
 
 /- English proof (translation)
-Unfold `KrOf`. Rewrite using `[if_neg hi]`. Use `split_ifs`. Both sides reduce to the same expression. Break down `h with h | h` into its components or cases.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Apply the tactic sequence `rw [h]; rcases ptOfList i x <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem krOf_none {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (T T' : ℕ) {i : ℕ} (hi : i ≠ 0) {x y : TB.Pt D.host.E} (h : ptOfList i x = none ∨ ptOfList i y = none) :
@@ -1543,9 +1535,9 @@ theorem krOf_none {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.M
     · rw [h]; rcases ptOfList i x <;> rfl
 
 /- English proof (translation)
-Establish `hn : ptOfList (D` using `D) 0 [] ≠ none := by`. Take `⟨w, hw, -⟩` from `ptOfList_of (D := D) (i := 0) (x := []) ⟨by simp [signPt, signAux], by simp [signPt, signAux]⟩`. Rewrite using `[hw]`. Conclude with `Option.some_ne_none _`. Unfold `KrOf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Apply the tactic sequence `rcases h with h | h <;> exact hn h`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem krOf_zero_none {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (T T' : ℕ) {x y : TB.Pt D.host.E} (h : ptOfList 0 x = none ∨ ptOfList 0 y = none) :
@@ -1559,7 +1551,7 @@ theorem krOf_zero_none {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, 
   rcases h with h | h <;> exact hn h
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos m with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Conclude with `krOf_zero_none T T' h`. Conclude with `krOf_none T T' (by omega) h`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem krOf_head_none {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (T T' m : ℕ) {x y : TB.Pt D.host.E}
@@ -1569,59 +1561,55 @@ theorem krOf_head_none {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   · exact krOf_none T T' (by omega) h
 
 /- English proof (translation)
-Simplify using `[wt, hw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wt_none {m s : ℕ} {h : TB.Pt D.host.E} (hw : ptOfList m h = none) : wt D m s h = 0 := by
   simp [wt, hw]
 
 /- English proof (translation)
-Simplify using `[wt, hw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wt_some {m s : ℕ} {h : TB.Pt D.host.E} {w : Point D.host.E m} (hw : ptOfList m h = some w) :
     wt D m s h = (phi m h * blkN D 1 h ^ s)⁻¹ := by
   simp [wt, hw]
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_coe_sort P f, Finset.prod_union hQ.symm, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_P_Q {P Q : Finset (PlF D)} (hQ : Disjoint Q P) (f : PlF D → ℂ) :
     (∏ q ∈ Q, f q) * ∏ x : {p // p ∈ P}, f x.1 = ∏ p ∈ P ∪ Q, f p := by
   rw [Finset.prod_coe_sort P f, Finset.prod_union hQ.symm, mul_comm]
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, i = m + s` from `⟨i - s, by omega⟩`. Establish `hms : m + s - s = m` using `Nat.add_sub_cancel m s`. Establish `hmr : m ≤ D.R.rS` using `by omega`. Establish `hY' : ∀ h ∈ Y, TB.level h = m` using `fun h hh => (hY h hh).trans hms`. Use `set T := (D.mem u).A.T with hT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T' := (D.mem u').A.T with hT'`. Use `set X0 : Finset D.host.E := Y.biUnion fun h => scal (hpt D m h) with hX0`. Establish `hX0' : ∀ h ∈ Y, scal (hpt D m h) ⊆ X0` using `fun h hh => Finset.subset_biUnion_of_mem (fun h => scal (hpt D m h)) hh`. Take `⟨p0⟩` from `LocModel.plF_nonempty D`. Use `set P : Finset (PlF D) := insert p0 (gd_finite δ M hA X0).toFinset with hPdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : ∀ p, p ∉ P → Gd δ M p X0` using `fun p hp => by`. Assume the negation of the conclusion as `hn`. Conclude with `hp (Finset.mem_insert_of_mem ((Set.Finite.mem_toFinset _).2 hn))`. Use `set Q := Qf δ M hA X0 (sgn D (m + s)) P with hQ`. Establish `hQP : ∀ t t', Disjoint (Q t t') P` using `fun t t' => Finset.sdiff_disjoint`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPQ : ∀ t t' p, p ∉ P ∪ Q t t' → Gd δ M p (X1 X0 (sgn D (m + s)) t t')`. Introduce `t t' p hp`. Rewrite `hp` using `[Finset.mem_union, not_or]`. Conclude with `qf_gd hA X0 _ P t t' p hp.1 hp.2`. Establish `hX1 : ∀ t t', X0 ⊆ X1 X0 (sgn D (m + s)) t t'` using `fun t t' => Finset.subset_union_left`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Option {p // p ∈ P}, inferInstance, sysP M δ T T' (m + s) s P Q, wt D m s, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Consider the cases of `j with`. Consider the case `none => exact Or.inr (Or.inr (isOut_outS hA T T' hmr Y X0 hX0' P hP _ hnt))`. Consider the case `some p`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inr (Or.inl ⟨hnt, isPull_pullS hA T T' (m + s) s (by omega) p.1 Y false (fun h => by simp at h)⟩)`. Introduce `t t' ht ht' h hh h' hh'`. Simplify using `only [J.sysOf, J.scaleSys, J.prodSys, Fintype.prod_option, dOf_Kr]`. Express the relevant statement in the definitionally equal form `KrOf δ M T T' (m + s) (TB.join h s t) (TB.join h' s t') = (wt D m s h : ℂ) * (wt D m s h' : ℂ) * ((∏ q ∈ Q t t', (pullS M δ T T' (m + s) s q).N t t' h h') * ∏ x : {p // p ∈ P}, (pullS M δ T T' (m + s) s x.1).N t t' h h')`. Rewrite using `[prod_P_Q (hQP t t')]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `hw : ptOfList m h with _ | w` into its components or cases. Rewrite using `[wt_none hw, krOf_none T T' (by omega) (Or.inl (ptOfList_join_none (hY' h hh) hw t))]`. Simplify using the standard rewrite rules. Break down `hw' : ptOfList m h' with _ | w'` into its components or cases. Rewrite using `[wt_none hw', krOf_none T T' (by omega) (Or.inr (ptOfList_join_none (hY' h' hh') hw' t'))]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using the standard rewrite rules. Establish `hXw : scal w ⊆ X1 X0 (sgn D (m + s)) t t'`. Rewrite using `[← hpt_of hw]`. Conclude with `(hX0' h hh).trans (hX1 t t')`. Establish `hXw' : scal w' ⊆ X1 X0 (sgn D (m + s)) t t'`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpt_of hw']`. Conclude with `(hX0' h' hh').trans (hX1 t t')`. Rewrite using `[krOf_join hMN hA T T' hs1 (by omega) hnt (hY' h hh) (hY' h' hh') hw hw' ht ht' (P ∪ Q t t') hXw hXw' (by simp [X1]) (by simp [X1]) (hPQ t t'), wt_some hw, wt_some hw']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `h hh h' hh'`. Simplify using `only [J.sysOf, J.scaleSys, J.prodSys, Fintype.prod_option, dOf_Kr, dOf_e]`. Express the relevant statement in the definitionally equal form `(1 + ((0 : ℝ) : ℂ)) * KrOf δ M T T' (m + s - s) h h' = (wt D m s h : ℂ) * (wt D m s h' : ℂ) * (1 * ∏ x : {p // p ∈ P}, (pullS M δ T T' (m + s) s x.1).B h h')`. Rewrite using `[hms, Finset.prod_coe_sort P (fun p => (pullS M δ T T' (m + s) s p).B h h')]`. Break down `hw : ptOfList m h with _ | w` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[wt_none hw, krOf_head_none T T' m (Or.inl hw)]`. Simplify using the standard rewrite rules. Break down `hw' : ptOfList m h' with _ | w'` into its components or cases. Rewrite using `[wt_none hw', krOf_head_none T T' m (Or.inr hw')]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXw : scal w ⊆ X0` using `by rw [← hpt_of hw]; exact hX0' h hh`. Establish `hXw' : scal w' ⊆ X0` using `by rw [← hpt_of hw']; exact hX0' h' hh'`. Establish `hB : ∀ p, (pullS M δ T T' (m + s) s p).B h h' = ((A5.cSize (M p).R (etaW δ T T' p w) ^ s * A5.cSize (M p).R (etaW δ T T' p w') ^ s : ℝ) : ℂ) * A5.Kp (M p).R (M p).psiR (etaW δ T T' p w) (etaW δ T T' p w')`. Introduce `p`. Simplify using `only [pullS, J.phaseSys, J.pullSys, etaH, A5.N0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hms, hpt_of hw, hpt_of hw']`. Rewrite using `[Finset.prod_congr rfl (fun p _ => hB p), Finset.prod_mul_distrib, ← krOf_head hA T T' hmr hw hw' P hXw hXw' hP]`. Establish `hc : ∏ p ∈ P, ((A5.cSize (M p).R (etaW δ T T' p w) ^ s * A5.cSize (M p).R (etaW δ T T' p w') ^ s : ℝ) : ℂ) = (((blkN D 1 h) ^ s * (blkN D 1 h') ^ s : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_prod, Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_pow, head_prod hMN hA T T' hmr w P hXw hP, head_prod hMN hA T T' hmr w' P hXw' hP, blkN_hpt hw, blkN_hpt hw']`. Rewrite using `[hc, wt_some hw, wt_some hw']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `p1` using `phi_pos (isPtL_of_ptOfList hw)`. Establish `p2` using `phi_pos (isPtL_of_ptOfList hw')`. Establish `b1` using `blkN_pos (D := D) 1 h (fun c hc => ((isPtL_of_ptOfList hw).2 c hc).2)`. Establish `b2` using `blkN_pos (D := D) 1 h' (fun c hc => ((isPtL_of_ptOfList hw').2 c hc).2)`. Establish `q1 : ((phi m h : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast p1.ne'`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `q2 : ((phi m h' : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast p2.ne'`. Establish `q3 : ((blkN D 1 h : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast b1.ne'`. Establish `q4 : ((blkN D 1 h' : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast b2.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `eL : (J.sysOf (dOf S δ M u u') (m + s) s).L = J.LaB D.host.E S.g S.G.r (m + s - s + 1) s` using `rfl`. Rewrite using `[eL]`. Use `AddSubgroup.ext fun t => ?_` and prove the remaining obligations. Conclude with `(lat_L_mem hA S hr hg T T' hs1 (by omega) t).trans (all_of_sysP (f := fun j => (sysP M δ T T' (m + s) s P Q j).L) (g := fun p => (pullS M δ T T' (m + s) s p).L) rfl (fun _ => rfl) t).symm`.
-
-Establish `eL' : (J.sysOf (dOf S δ M u u') (m + s) s).L' = J.LapB D.host.E S.g S.G.r (m + s - s + 1) s` using `rfl`. Rewrite using `[eL']`. Introduce `x hx0`. Establish `hx` using `(all_of_sysP (f := fun j => (sysP M δ T T' (m + s) s P Q j).L') (g := fun p => (pullS M δ T T' (m + s) s p).L') rfl (fun _ => rfl) x).1 hx0`. Conclude with `lat_L'_mem hA S hr hg T T' hs1 (by omega) x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem clS_pull (hMN : ModNorm D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p)
@@ -1738,7 +1726,7 @@ section Top
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Unfold `nSh`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nSh_unit {A : Type} [CommRing A] {c : A} (h : ∃ n : Fin 3, IsUnit (c + (((n : Fin 3) : ℕ) : A))) :
     IsUnit (c + ((nSh c : ℕ) : A)) := by
@@ -1747,21 +1735,21 @@ theorem nSh_unit {A : Type} [CommRing A] {c : A} (h : ∃ n : Fin 3, IsUnit (c +
   exact h.choose_spec
 
 /- English proof (translation)
-Simplify using `[tau0, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tauZero_of_not_split {p : PlF D} (h : (D.s.atP p).split = none) (T T' : ℕ) : tau0 p T T' = 0 := by
   simp [tau0, h]
 
 /- English proof (translation)
-Break down `hs : (D.s.atP p).split with _ | sg` into its components or cases. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[tauZero_of_not_split hs]`. Simplify using `using (isUnit_uS p hδ i s).mul (isUnit_ιE p ht)`. Use `(D.s.atP p).char0 set c := uS δ p i s * (D.s.atP p).ιE t - tau0 p T T'` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `H`. Use `push Not at H`. Establish `key : ∀ n : ℕ, n < 3 → (sg.e c).1 + n = 0 ∨ (sg.e c).2 + n = 0`. Introduce `n hn`. Establish `h1` using `H ⟨n, hn⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at h1`. Rewrite `h1` using `[← MulEquiv.isUnit_map sg.e.toRingEquiv.toMulEquiv]`. Simplify using `only [RingEquiv.toMulEquiv_eq_coe, RingEquiv.coe_toMulEquiv, AlgEquiv.coe_ringEquiv, map_add, map_natCast, Prod.isUnit_iff, Prod.fst_add, Prod.snd_add, Prod.fst_natCast, Prod.snd_natCast, isUnit_iff_ne_zero, not_and_or, not_not] at h1`. Conclude with `h1`. Establish `h0` using `key 0 (by norm_num)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `key 1 (by norm_num)`. Establish `h2` using `key 2 (by norm_num)`. Move the coercions through the operations in `at h0 h1 h2`. Establish `o1 : (1 : (D.s.atP p).Fp) ≠ 0` using `one_ne_zero`. Establish `o2 : (2 : (D.s.atP p).Fp) ≠ 0` using `two_ne_zero`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Apply the tactic sequence `rcases h0 with h0 | h0 <;> rcases h1 with h1 | h1 <;> rcases h2 with h2 | h2`. Apply the tactic sequence `all_goals first`. Consider the case `exact o1 (by linear_combination h1 - h0)`. Consider the case `exact o2 (by linear_combination h2 - h0)`. Consider the case `exact o1 (by linear_combination h2 - h1)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_shift {δ : ∀ p : PlF D, (D.s.atP p).Fp} (p : PlF D) (hδ : δ p ≠ 0) (T T' i s : ℕ) {t : D.host.E}
     (ht : t ≠ 0) : ∃ n : Fin 3, IsUnit ((uS δ p i s * (D.s.atP p).ιE t - tau0 p T T') +
@@ -1809,9 +1797,7 @@ theorem topS_L (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ 
     (T T' : ℕ) (p : PlF D) : (topS M δ T T' p).L = (pullS M δ T T' (D.R.rS + 1) 1 p).L := rfl
 
 /- English proof (translation)
-Simplify using `only [J.topSys]`. Use `split_ifs with htt`. Establish `hu` using `nSh_unit (hex t ht)`. Rewrite using `[thetaT, dif_pos hu, ← hper _ _ (natCast_mem R _)]`. Use `conv_rhs => rw [← IsUnit.unit_spec hu]`.
-
-Conclude with `(hag _ _ _ (hη h) (hη h')).symm`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem top_same {E K α : Type} [Field E] [CommRing K] (R : Subring K) (ψ : AddChar K ℂ) (σ : E →+* K) (u : Kˣ)
     (τ₀ : K) (η : α → A5.Point K) (m : ℕ) (hη : ∀ h, (η h).1.sum = m) (Θ : K → A5.Point K → A5.Point K → ℂ)
@@ -1829,7 +1815,7 @@ theorem top_same {E K α : Type} [Field E] [CommRing K] (R : Subring K) (ψ : Ad
   · rfl
 
 /- English proof (translation)
-Establish `hm : D.R.rS + 1 - 1 ≤ D.R.rS` using `by omega`. Use `⟨LocModel.placeOf M (fun q => (hA q).1) p, uU δ p (D.R.rS + 1) 1, tau0 p T T', etaH δ T T' (D.R.rS + 1 - 1) p, D.R.rS + 1 - 1, fun h _ => etaH_sum T T' p (hA p).2.1 hm h, hun, fun Θ hper hag => ⟨fun t t' ht _ h _ h' _ => top_same (M p).R (M p).psiR (D.s.atP p).ιE (uU δ p (D.R.rS …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isTopSys_topS {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) (T T' : ℕ) (p : PlF D) (Y : Finset (TB.Pt D.host.E)) (un : Bool)
@@ -1859,13 +1845,11 @@ def sysT (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ 
   | some p => topS M δ T T' p.1
 
 /- English proof (translation)
-Establish `hr1 : D.R.rS + 1 - 1 = D.R.rS` using `Nat.add_sub_cancel _ _`. Use `⟨fun _ _ _ _ => rfl, fun t t' ht ht' => ⟨{q // q ∈ Qf δ M hA X0 (sgn D (D.R.rS + 1)) P t t'}, Finset.fintypeCoeSort _, fun q => topS M δ T T' q.1, fun q => Or.inl ⟨⟨rfl, rfl⟩, ?_⟩, fun h _ h' _ => ?_, fun hq => ?_, fun _ => trivial⟩⟩` and prove the remaining obligations. Establish `hqP : q.1 ∉ P` using `(Finset.mem_sdiff.1 q.2).2`. Establish `hG` using `hP q.1 hqP`. Use `isTopSys_topS hA T T' q.1 Y true fun _ => ⟨fun h hh => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hr1]`. Conclude with `etaH_glr hA T T' hG h (hX0 h hh)`. Rewrite using `[tauZero_of_not_split (LocModel.split_none_of_agree (hA _) hG.1)]`. Conclude with `Subring.zero_mem _`. Conclude with `(Finset.prod_coe_sort _ (fun q => (topS M δ T T' q).N t t' h h')).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `show t ∈ ⨅ p : {p // p ∉ P}, (topS M δ T T' p.1).L`. Rewrite using `[AddSubgroup.mem_iInf]`. Introduce `p`. Distinguish the cases in `hpq : p.1 ∈ Qf δ M hA X0 (sgn D (D.R.rS + 1)) P t t'`. Conclude with `hq ⟨p.1, hpq⟩`.
-
-Establish `hG` using `qf_gd hA X0 _ P t t' p.1 p.2 hpq`. Rewrite using `[topS_L, mem_pullL hA, uS_mul, R_eq_O (hA _) hG.1]`. Conclude with `(unitIn_mul (gd_elt hG (by simp [X1]) (mul_ne_zero (sgn_ne _) ht)) (hF_good hA hG _ _)).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOut_outT {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) (T T' : ℕ) (Y : Finset (TB.Pt D.host.E))
@@ -1900,9 +1884,9 @@ variable {D : Formalism.BasicNotions.D7} {Wp Wq : InfinitePlace D.host.E → Typ
     [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
 
 /- English proof (translation)
-Unfold `phi TB.join`. Rewrite using `[blockProduct_append, blockProduct_shift m s 1 g (by omega), hg]`. Simplify using `only [blockWeightPhi]`. Establish `e1 : 1 + m = m + 1` using `by ring`. Establish `e2 : m + 1 + s - 1 = m + s` using `by omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : m + s - (m + s) = 0` using `by omega`. Rewrite using `[e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem phi_join {m s : ℕ} (g : TB.Pt D.host.E) (x : D.host.E) (hg : TB.level g = m) :
     phi (m + s) (TB.join g s x) = phi m g * blkN D 1 g ^ s *
@@ -1917,7 +1901,7 @@ theorem phi_join {m s : ℕ} (g : TB.Pt D.host.E) (x : D.host.E) (hg : TB.level 
   ring
 
 /- English proof (translation)
-Establish `h1` using `PI.SupportDatumW.dmin_last_one D W w.1 x hW`. Establish `h2 : PI.SupportDatumW.blkDet w.1 ≠ 0` using `PI.SupportDatumW.blkDet_ne_zero w.1 fun b hb => (w.2.1 b hb).1`. Unfold `kind zetaOf`. Rewrite using `[if_neg (by rw [h1]; exact h2), h1, PI.SupportDatumW.dmin_top, hW, PI.SupportDatumW.blkDet_append]`. Simplify using `[PI.SupportDatumW.blkDet, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kind_top {w : Point D.host.E D.R.rS} {W : Point D.host.E (D.R.rS + 1)} {x : D.host.E}
     (hW : W.1 = w.1 ++ [(x, 1)]) : kind W = some x := by
@@ -1928,9 +1912,9 @@ theorem kind_top {w : Point D.host.E D.R.rS} {W : Point D.host.E (D.R.rS + 1)} {
   simp [PI.SupportDatumW.blkDet, h2]
 
 /- English proof (translation)
-Establish `hl : W.1.getLast? = some (x, 1)`. Rewrite using `[hW, List.getLast?_append_of_ne_nil _ (List.cons_ne_nil _ _)]`. Both sides reduce to the same expression. Unfold `dfac`. Rewrite using `[hl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases (D.s.atP p).split with _ | sg <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dfac_top (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (T T' : ℕ) (p : PlF D) {w : Point D.host.E D.R.rS} {W : Point D.host.E (D.R.rS + 1)} {x : D.host.E}
@@ -1943,13 +1927,13 @@ theorem dfac_top (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (�
   rcases (D.s.atP p).split with _ | sg <;> rfl
 
 /- English proof (translation)
-Establish `hc : blkTop δ T T' p (D.R.rS + 1) 1 (sgn D (D.R.rS + 1) * t) = (uS δ p (D.R.rS + 1) 1 * (D.s.atP p).ιE t - tau0 p T T') + ((nSh (uS δ p (D.R.rS + 1) 1 * (D.s.atP p).ιE t - tau0 p T T') : ℕ) : (D.s.atP p).Ep)`. Establish `htop : D.R.rS + 1 + 1 - 1 = D.R.rS + 1 ∧ 1 = 1` using `⟨by omega, rfl⟩`. Establish `hm : blkMod δ T T' p (D.R.rS + 1) 1 (sgn D (D.R.rS + 1) * t) = uS δ p (D.R.rS + 1) 1 * (D.s.atP p).ιE t - tau0 p T T'`. Unfold `blkMod`. Rewrite using `[if_pos htop, tMod_eq, uS_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `blkTop`. Rewrite using `[if_pos htop, hm]`. Establish `hu` using `nSh_unit (exists_shift p (hA p).2.1 T T' (D.R.rS + 1) 1 ht)`. Establish `hu' : IsUnit (blkTop δ T T' p (D.R.rS + 1) 1 (sgn D (D.R.rS + 1) * t))` using `by rw [hc]; exact hu`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : hu'.unit = hu.unit` using `by ext; rw [IsUnit.unit_spec, IsUnit.unit_spec, hc]`. Unfold `locK`. Rewrite using `[modPt_snoc hW (by omega) ha hu', modPt_snoc hW' (by omega) ha' hu']`. Simplify using `only`. Use `(Formalism.MainNotions.LocalOrbitGerms.KKAll_proved _ _ (M p) (hA p).1 _ _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[thetaT, dif_pos hu, A5.Ns]`. Simplify using `only [Nat.sub_self, mul_zero, Nat.zero_div, pow_zero, Complex.ofReal_one, one_mul]`. Conclude with `congrArg₂ (A5.Kp (M p).R (M p).psiR) ((Formalism.MainNotions.LocalModelPeriodLattices.tr_snoc a hu'.unit _).trans (by rw [e1]; rfl)) ((Formalism.MainNotions.LocalModelPeriodLattices.tr_snoc a' hu'.unit _).trans (by rw [e1]; rfl))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locK_top {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) (T T' : ℕ) (p : PlF D) {w w' : Point D.host.E D.R.rS}
@@ -1984,7 +1968,7 @@ theorem locK_top {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Mo
     ((Formalism.MainNotions.LocalModelPeriodLattices.tr_snoc a' hu'.unit _).trans (by rw [e1]; rfl))
 
 /- English proof (translation)
-Simplify using `only [topS, J.topSys]`. Rewrite using `[if_pos trivial, uU_val (hA p).2.1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem topS_N {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (hA : ∀ p, Agree δ M p) (T T' : ℕ) (p : PlF D) (t : D.host.E) (h h' : TB.Pt D.host.E) :
@@ -1994,19 +1978,19 @@ theorem topS_N {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Mode
   rw [if_pos trivial, uU_val (hA p).2.1]
 
 /- English proof (translation)
-Take `⟨W, hWo, hW⟩` from `ptOfList_join hl hw (le_refl 1) ht`. Take `⟨W', hWo', hW'⟩` from `ptOfList_join hl' hw' (le_refl 1) ht`. Establish `hK : KrOf δ M T T' (D.R.rS + 1) (TB.join h 1 t) (TB.join h' 1 t) = KtopG M δ T T' W W' / ((phi (D.R.rS + 1) (TB.join h 1 t) : ℂ) * (phi (D.R.rS + 1) (TB.join h' 1 t) : ℂ))`. Unfold `KrOf`. Rewrite using `[if_neg (by omega), if_neg (by omega), hWo, hWo']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Kglob]`. Establish `hloc : ∀ p, locK M δ T T' p (D.R.rS + 1) W W' = (topS M δ T T' p).N t t h h'`. Introduce `p`. Take `⟨a, ha⟩` from `modPt_low T T' p (hA p).2.1 (le_refl _) w`. Take `⟨a', ha'⟩` from `modPt_low T T' p (hA p).2.1 (le_refl _) w'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[locK_top hA T T' p ht hW hW' ha ha', topS_N hA]`. Establish `e : D.R.rS + 1 - 1 = D.R.rS` using `rfl`. Unfold `etaH`. Rewrite using `[e, hpt_of hw, hpt_of hw', etaW_of ha, etaW_of ha']`. Establish `hWX : scal W ⊆ X` using `by rw [scal_join hW]; exact Finset.union_subset hX (by simpa using htX)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hWX' : scal W' ⊆ X` using `by rw [scal_join hW']; exact Finset.union_subset hX' (by simpa using htX)`. Establish `hG : KtopG M δ T T' W W' = ∏ p ∈ P, locK M δ T T' p (D.R.rS + 1) W W'`. Unfold `KtopG`. Rewrite using `[if_pos ((kind_top hW).trans (kind_top hW').symm)]`. Establish `e : ∀ p, KtopP M δ T T' p W W' = locK M δ T T' p (D.R.rS + 1) W W'`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p`. Unfold `KtopP`. Rewrite using `[dfac_top M δ T T' p hW, dfac_top M δ T T' p hW']`. Simplify using the standard rewrite rules. Simplify using `only [e]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `finprod_eq_prod_of_mulSupport_subset _ fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hpP`. Conclude with `hp (Formalism.L2.SG.DataCut.locK_eq_one Formalism.MainNotions.LocalOrbitGerms.KKAll_proved hA (gd_notBad hA T T' (hP p hpP) W hWX) (gd_notBad hA T T' (hP p hpP) W' hWX'))`. Rewrite using `[hK, hG, Finset.prod_congr rfl (fun p _ => hloc p), phi_join h t hl, phi_join h' t hl']`. Simplify using `only [Nat.sub_self, mul_zero, Nat.zero_div, pow_zero, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem krOf_top {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p) (T T' : ℕ)
@@ -2053,19 +2037,19 @@ theorem krOf_top {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   ring
 
 /- English proof (translation)
-Establish `hms : m + s - s = m` using `Nat.add_sub_cancel m s`. Use `set T := (D.mem u).A.T`. Use `set T' := (D.mem u').A.T`. Introduce `h hh h' hh'`. Simplify using `only [J.sysOf, J.scaleSys, J.prodSys, Fintype.prod_option, dOf_Kr, dOf_e, hn, hsm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(1 + ((0 : ℝ) : ℂ)) * KrOf δ M T T' (m + s - s) h h' = (wt D m s h : ℂ) * (wt D m s h' : ℂ) * (1 * ∏ x : {p // p ∈ P}, (pullS M δ T T' (m + s) s x.1).B h h')`. Rewrite using `[hms, Finset.prod_coe_sort P (fun p => (pullS M δ T T' (m + s) s p).B h h')]`. Break down `hw : ptOfList m h with _ | w` into its components or cases. Rewrite using `[wt_none hw, krOf_head_none T T' m (Or.inl hw)]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `hw' : ptOfList m h' with _ | w'` into its components or cases. Rewrite using `[wt_none hw', krOf_head_none T T' m (Or.inr hw')]`. Simplify using the standard rewrite rules. Establish `hXw : scal w ⊆ X0` using `by rw [← hpt_of hw]; exact hX0' h hh`. Establish `hXw' : scal w' ⊆ X0` using `by rw [← hpt_of hw']; exact hX0' h' hh'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : ∀ p, (pullS M δ T T' (m + s) s p).B h h' = ((A5.cSize (M p).R (etaW δ T T' p w) ^ s * A5.cSize (M p).R (etaW δ T T' p w') ^ s : ℝ) : ℂ) * A5.Kp (M p).R (M p).psiR (etaW δ T T' p w) (etaW δ T T' p w')`. Introduce `p`. Simplify using `only [pullS, J.phaseSys, J.pullSys, etaH, A5.N0]`. Rewrite using `[hms, hpt_of hw, hpt_of hw']`. Rewrite using `[Finset.prod_congr rfl (fun p _ => hB p), Finset.prod_mul_distrib, ← krOf_head hA T T' hmr hw hw' P hXw hXw' hP]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∏ p ∈ P, ((A5.cSize (M p).R (etaW δ T T' p w) ^ s * A5.cSize (M p).R (etaW δ T T' p w') ^ s : ℝ) : ℂ) = (((blkN D 1 h) ^ s * (blkN D 1 h') ^ s : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_prod, Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_pow, head_prod hMN hA T T' hmr w P hXw hP, head_prod hMN hA T T' hmr w' P hXw' hP, blkN_hpt hw, blkN_hpt hw']`. Rewrite using `[hc, wt_some hw, wt_some hw']`. Establish `p1` using `phi_pos (isPtL_of_ptOfList hw)`. Establish `p2` using `phi_pos (isPtL_of_ptOfList hw')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1` using `blkN_pos (D := D) 1 h (fun c hc => ((isPtL_of_ptOfList hw).2 c hc).2)`. Establish `b2` using `blkN_pos (D := D) 1 h' (fun c hc => ((isPtL_of_ptOfList hw').2 c hc).2)`. Establish `q1 : ((phi m h : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast p1.ne'`. Establish `q2 : ((phi m h' : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast p2.ne'`. Establish `q3 : ((blkN D 1 h : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast b1.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `q4 : ((blkN D 1 h' : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast b2.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem B_eq (hMN : ModNorm D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p)
@@ -2116,33 +2100,27 @@ theorem B_eq (hMN : ModNorm D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   ring
 
 /- English proof (translation)
-Establish `hY' : ∀ h ∈ Y, TB.level h = D.R.rS` using `fun h hh => hY h hh`. Use `set T := (D.mem u).A.T with hT`. Use `set T' := (D.mem u').A.T with hT'`. Use `set X0 : Finset D.host.E := Y.biUnion fun h => scal (hpt D D.R.rS h) with hX0`. Establish `hX0' : ∀ h ∈ Y, scal (hpt D D.R.rS h) ⊆ X0` using `fun h hh => Finset.subset_biUnion_of_mem (fun h => scal (hpt D D.R.rS h)) hh`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p0⟩` from `LocModel.plF_nonempty D`. Use `set P : Finset (PlF D) := insert p0 (gd_finite δ M hA X0).toFinset with hPdef`. Establish `hp0 : p0 ∈ P` using `Finset.mem_insert_self _ _`. Establish `hP : ∀ p, p ∉ P → Gd δ M p X0` using `fun p hp => by`. Assume the negation of the conclusion as `hn`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hp (Finset.mem_insert_of_mem ((Set.Finite.mem_toFinset _).2 hn))`. Use `set Q := Qf δ M hA X0 (sgn D (D.R.rS + 1)) P with hQ`. Establish `hQP : ∀ t t', Disjoint (Q t t') P` using `fun t t' => Finset.sdiff_disjoint`. Establish `hPQ : ∀ t t' p, p ∉ P ∪ Q t t' → Gd δ M p (X1 X0 (sgn D (D.R.rS + 1)) t t')`. Introduce `t t' p hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite `hp` using `[Finset.mem_union, not_or]`. Conclude with `qf_gd hA X0 _ P t t' p hp.1 hp.2`. Establish `hX1 : ∀ t t', X0 ⊆ X1 X0 (sgn D (D.R.rS + 1)) t t'` using `fun t t' => Finset.subset_union_left`. Use `⟨Option {p // p ∈ P}, inferInstance, sysT M δ T T' P Q, wt D D.R.rS 1, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `j with`. Consider the case `none => exact Or.inr (Or.inr (isOut_outT hA T T' Y X0 hX0' P hP))`. Consider the case `some p => exact Or.inl ⟨⟨rfl, rfl⟩, isTopSys_topS hA T T' p.1 Y false (fun h => by simp at h)⟩`. Introduce `t t' ht ht' h hh h' hh'`. Simplify using `only [J.sysOf, J.scaleSys, J.prodSys, Fintype.prod_option, dOf_Kr]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `KrOf δ M T T' (D.R.rS + 1) (TB.join h 1 t) (TB.join h' 1 t') = (wt D D.R.rS 1 h : ℂ) * (wt D D.R.rS 1 h' : ℂ) * ((∏ q ∈ Q t t', (topS M δ T T' q).N t t' h h') * ∏ x : {p // p ∈ P}, (topS M δ T T' x.1).N t t' h h')`. Rewrite using `[prod_P_Q (hQP t t')]`. Break down `hw : ptOfList D.R.rS h with _ | w` into its components or cases. Rewrite using `[wt_none hw, krOf_none T T' (by omega) (Or.inl (ptOfList_join_none (hY' h hh) hw t))]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `hw' : ptOfList D.R.rS h' with _ | w'` into its components or cases. Rewrite using `[wt_none hw', krOf_none T T' (by omega) (Or.inr (ptOfList_join_none (hY' h' hh') hw' t'))]`. Simplify using the standard rewrite rules. Distinguish the cases in `htt : t = t'`. Substitute `htt` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hXw : scal w ⊆ X1 X0 (sgn D (D.R.rS + 1)) t t`. Rewrite using `[← hpt_of hw]`. Conclude with `(hX0' h hh).trans (hX1 t t)`. Establish `hXw' : scal w' ⊆ X1 X0 (sgn D (D.R.rS + 1)) t t`. Rewrite using `[← hpt_of hw']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(hX0' h' hh').trans (hX1 t t)`. Rewrite using `[krOf_top hA T T' (hY' h hh) (hY' h' hh') hw hw' ht (P ∪ Q t t) hXw hXw' (by simp [X1]) (hPQ t t), wt_some hw, wt_some hw']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : ∏ p ∈ P ∪ Q t t', (topS M δ T T' p).N t t' h h' = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `Finset.prod_eq_zero (Finset.mem_union_left _ hp0) ?_` and prove the remaining obligations. Simplify using `only [topS, J.topSys, if_neg htt]`. Take `⟨W, hWo, hW⟩` from `ptOfList_join (hY' h hh) hw (le_refl 1) ht`. Take `⟨W', hWo', hW'⟩` from `ptOfList_join (hY' h' hh') hw' (le_refl 1) ht'`. Establish `hk : kind W ≠ kind W'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kind_top hW, kind_top hW']`. Introduce `he`. Apply `htt` to reduce the goal to its premises. Use `Option.some.inj he` as an intermediate fact. Conclude with `mul_left_cancel₀ (sgn_ne _) this`.
-
-Establish `hK : KrOf δ M T T' (D.R.rS + 1) (TB.join h 1 t) (TB.join h' 1 t') = 0`. Unfold `KrOf`. Rewrite using `[if_neg (by omega), if_neg (by omega), hWo, hWo']`. Simplify using `[Kglob, KtopG, hk]`. Rewrite using `[hK, hz, mul_zero]`.
-
-Conclude with `B_eq hMN hA S u u' (le_refl _) Y X0 hX0' P hP _ (fun _ _ => rfl) (fun _ _ _ => rfl)`. Establish `eL : (J.sysOf (dOf S δ M u u') (D.R.rS + 1) 1).L = J.LaB D.host.E S.g S.G.r (D.R.rS + 1 - 1 + 1) 1` using `rfl`. Rewrite using `[eL]`. Use `AddSubgroup.ext fun t => ?_` and prove the remaining obligations. Conclude with `(lat_L_mem (m := D.R.rS) (s := 1) hA S hr hg T T' (le_refl 1) (le_refl _) t).trans (all_of_sysP (f := fun j => (sysT M δ T T' P Q j).L) (g := fun p => (pullS M δ T T' (D.R.rS + 1) 1 p).L) rfl (fun _ => rfl) t).symm`.
-
-Conclude with `le_trans (iInf_le _ (some ⟨p0, hp0⟩)) bot_le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem clS_top (hMN : ModNorm D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p)
@@ -2237,9 +2215,9 @@ namespace Formalism.L2.SG.Pf
 open Formalism.L2.SG.Pf.LMK
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ S δ M hA u u' hC i s hs1 hsi hir Y hY`. Establish `hr : S.G.r = D.R.rS` using `hC.1`. Establish `hg : S.g = Lat.gS D` using `by show S.G.g1 * S.G.g2 = D.host.g 0 * D.host.g 1`. Rewrite using `[hC.2.2.1, hC.2.2.2.1]`. Establish `hDr : (dOf S δ M u u').r = D.R.rS` using `hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hir`, the goal using `[hDr]`. Distinguish the cases in `htop : i = D.R.rS + 1 ∧ s = 1`. Take `⟨rfl, rfl⟩` from `htop`. Conclude with `LMK.clS_top hMN hA S u u' hr hg Y hY`. Conclude with `LMK.clS_pull hMN hA S u u' hr hg hs1 hsi hir htop Y hY`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem localModelS_of {D : Formalism.BasicNotions.D7} (hMN : ModNorm D) : Formalism.L2.SG.DataCut.LocalModelS D := by
   intro Wp Wq _ _ _ _ S δ M hA u u' hC i s hs1 hsi hir Y hY

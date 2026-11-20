@@ -34,7 +34,7 @@ def ratFix {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) : Subgroup
       _ = incV F x := by rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `γ ⟨hγ, hx⟩` and use `⟨hγ, 1, by rw [hx, Units.val_one, one_smul]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ratFix_le_ratStab {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) :
     ratFix σ J x ≤ ratStab σ J x := fun γ ⟨hγ, hx⟩ => ⟨hγ, 1, by rw [hx, Units.val_one, one_smul]⟩
@@ -43,7 +43,7 @@ def NonProp {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (R : Set (IsoV σ J)) : Pro
   ∀ w ∈ R, ∀ w' ∈ R, ∀ ξ : Eˣ, w.1 = (ξ : E) • w'.1 → w = w'
 
 /- English proof (translation)
-Introduce and unpack `a rfl b rfl _ _`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 -/
 example {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (w : IsoV σ J) : NonProp ({w} : Set (IsoV σ J)) := by
   rintro a rfl b rfl _ _; rfl

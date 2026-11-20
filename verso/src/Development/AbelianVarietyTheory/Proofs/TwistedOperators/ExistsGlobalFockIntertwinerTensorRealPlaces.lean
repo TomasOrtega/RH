@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.Chain.RealIt.TensorGlob
 
 /- English proof (translation)
-Establish `he : e ∈ Submodule.span ℂ s` using `hs ▸ Submodule.mem_top`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero`. Establish `h0 : (fun t => f t 0) = fun _ => (0 : ℂ)` using `funext fun t => map_zero (f t)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[h0, map_zero]`. Conclude with `hasDerivAt_const _ _`. Consider the case `add x y _ _ hx hy`. Establish `h0 : (fun t => f t (x + y)) = fun t => f t x + f t y` using `funext fun t => map_add (f t) x y`. Rewrite using `[h0, map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `hx.add hy`. Consider the case `smul a x _ hx`. Establish `h0 : (fun t => f t (a • x)) = fun t => a * f t x` using `funext fun t => map_smul (f t) a x`. Rewrite using `[h0, map_smul, smul_eq_mul]`. Conclude with `hx.const_mul a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem der_span {E : Type*} [AddCommGroup E] [Module ℂ E] {s : Set E} (hs : Submodule.span ℂ s = ⊤)
     (f : ℝ → E →ₗ[ℂ] ℂ) (g : E →ₗ[ℂ] ℂ) (h : ∀ e ∈ s, HasDerivAt (fun t => f t e) (g e) 0) (e : E) :
@@ -36,7 +36,7 @@ theorem der_span {E : Type*} [AddCommGroup E] [Module ℂ E] {s : Set E} (hs : S
     exact hx.const_mul a
 
 /- English proof (translation)
-Establish `h1 : ∀ x ∈ s', ∀ e', HasDerivAt (fun t => f t e' x) (g e' x) 0` using `fun x hx e' => der_span hs (fun t => (f t).flip x) (g.flip x) (fun e'' he'' => h e'' he'' x hx) e'`. Conclude with `der_span hs' (fun t => f t e) (g e) (fun x hx => h1 x hx e) x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem der_span₂ {E F : Type*} [AddCommGroup E] [Module ℂ E] [AddCommGroup F] [Module ℂ F]
     {s : Set E} (hs : Submodule.span ℂ s = ⊤) {s' : Set F} (hs' : Submodule.span ℂ s' = ⊤)
@@ -51,7 +51,7 @@ variable {D : D7}
 
 open Classical in
 /- English proof (translation)
-Unfold `glue`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ)]`. Use `congr 1`. Simplify using the standard rewrite rules. Conclude with `Finset.prod_congr rfl fun ρ hρ => by simp [Finset.ne_of_mem_erase hρ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glue_update {a b : ℕ} (P : D.what₂.Tau → LPol b a) (τ : D.what₂.Tau) (p : LPol b a) :
     glue (Function.update P τ p) = MvPolynomial.rename (fun s => (τ, s)) p *
@@ -64,7 +64,7 @@ theorem glue_update {a b : ℕ} (P : D.what₂.Tau → LPol b a) (τ : D.what₂
 
 open Classical in
 /- English proof (translation)
-Establish `h0 : glue P = glue (Function.update P τ (P τ))` using `by rw [Function.update_eq_self]`. Rewrite using `[h0, glue_update, glue_update, glue_update, map_add, map_smul, add_mul, smul_mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem glue_update_add_smul {a b : ℕ} (P : D.what₂.Tau → LPol b a) (τ : D.what₂.Tau) (p : LPol b a) (c : ℂ) :
     glue (Function.update P τ p) + c • glue P = glue (Function.update P τ (p + c • P τ)) := by
@@ -74,7 +74,7 @@ theorem glue_update_add_smul {a b : ℕ} (P : D.what₂.Tau → LPol b a) (τ : 
 variable {V : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Unfold `ellT`. Rewrite using `[PiTensorProduct.lift.tprod]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ellT_tprod' (M : DSModel V S) (w v : ∀ τ, M.H τ) :
     ellT M w (PiTensorProduct.tprod ℂ v) = ∏ τ, ⟪w τ, v τ⟫_ℂ := by
@@ -84,7 +84,7 @@ theorem ellT_tprod' (M : DSModel V S) (w v : ∀ τ, M.H τ) :
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[ellT_tprod', ← Finset.mul_prod_erase _ _ (Finset.mem_univ τ)]`. Use `congr 1`. Simplify using the standard rewrite rules. Conclude with `Finset.prod_congr rfl fun ρ hρ => by simp [Finset.ne_of_mem_erase hρ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ellT_update (M : DSModel V S) (w v : ∀ τ, M.H τ) (τ : D.what₂.Tau) (u : M.H τ) :
     ellT M w (PiTensorProduct.tprod ℂ (Function.update v τ u)) =
@@ -96,9 +96,9 @@ theorem ellT_update (M : DSModel V S) (w v : ∀ τ, M.H τ) (τ : D.what₂.Tau
 
 open Classical in
 /- English proof (translation)
-Unfold `actT`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `hρ : ρ = τ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hρ` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hρ]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem actT_tprod (M : DSModel V S) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (v : ∀ τ, M.H τ) :
     actT M τ g (PiTensorProduct.tprod ℂ v) = PiTensorProduct.tprod ℂ (Function.update v τ (M.rep τ g (v τ))) := by
@@ -111,7 +111,7 @@ theorem actT_tprod (M : DSModel V S) (τ : D.what₂.Tau) (g : Matrix (Fin V.ran
   · simp [Function.update_of_ne hρ]
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun t => ⟪w, c t⟫_ℂ) ⟪w, y⟫_ℂ 0`. Simplify `((innerSL ℂ w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h` using `[Function.comp_def]`. Conclude with `h1.mul_const k`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem der_inner {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {c : ℝ → H} {y : H}
     (h : HasDerivAt c y 0) (w : H) (k : ℂ) : HasDerivAt (fun t => ⟪w, c t⟫_ℂ * k) (⟪w, y⟫_ℂ * k) 0 := by
@@ -122,35 +122,33 @@ theorem der_inner {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {c
 open Classical in
 
 /- English proof (translation)
-Introduce `D V W S S' M M' aS aT A hC hG hL`. Establish `hs` using `hG.1`. Establish `hs' : Submodule.span ℂ (Set.range (PiTensorProduct.tprod ℂ : (∀ τ, M'.H τ) → ⨂[ℂ] τ, M'.H τ)) = ⊤` using `PiTensorProduct.span_tprod_eq_top`. Take `⟨I, hI, -⟩` from `hC D.what₂.Tau (fun _ => Fin W.rank × Fin V.rank) (FVar D W.rank V.rank) (Equiv.sigmaEquivProd D.what₂.Tau (Fin W.rank × Fin V.rank) : (Σ _ : D.what₂.Tau, Fin W.rank × Fin V.rank) ≃ FVar D W.rank V.rank) (fun τ => M'.H τ) (fun τ => M.H τ) A`. Establish `hIg : ∀ (P : D.what₂.Tau → LPol W.rank V.rank) (v : ∀ τ, M'.H τ), I (glue P) (PiTensorProduct.tprod ℂ v) = PiTensorProduct.tprod ℂ fun ρ => A ρ (P ρ) (v ρ)` using `fun P v => hI P v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `Itl : ∀ τ, LPol W.rank V.rank →ₗ[ℂ] M'.sm τ →ₗ[ℂ] M.sm τ` to `fun τ => LinearMap.mk₂ ℂ (fun P y => (⟨A τ P (y : M'.H τ), (hL τ).sm P (y : M'.H τ)⟩ : M.sm τ)) (fun P Q y => Subtype.ext (by simp)) (fun c P y => Subtype.ext (by simp)) (fun P y z => Subtype.ext (by simp)) (fun c P y => Subtype.ext (by simp))`. Establish `hItl : ∀ τ P y, ((Itl τ P y : M.sm τ) : M.H τ) = A τ P (y : M'.H τ)` using `fun _ _ _ => rfl`. Take `⟨It, hIt, hItne⟩` from `hC D.what₂.Tau (fun _ => Fin W.rank × Fin V.rank) (FVar D W.rank V.rank) (Equiv.sigmaEquivProd D.what₂.Tau (Fin W.rank × Fin V.rank) : (Σ _ : D.what₂.Tau, Fin W.rank × Fin V.rank) ≃ FVar D W.rank V.rank) (fun τ => ↥(M'.sm τ)) (fun τ => ↥(M.sm τ)) Itl`. Establish `hItg : ∀ (P : D.what₂.Tau → LPol W.rank V.rank) (v : ∀ τ, M'.sm τ), It (glue P) (PiTensorProduct.tprod ℂ v) = PiTensorProduct.tprod ℂ fun ρ => Itl ρ (P ρ) (v ρ)` using `fun P v => hIt P v`. Establish `hupdP : ∀ (P : D.what₂.Tau → LPol W.rank V.rank) (τ : D.what₂.Tau) (Q : LPol W.rank V.rank) (v : ∀ τ, M'.H τ), (PiTensorProduct.tprod ℂ fun ρ => A ρ (Function.update P τ Q ρ) (v ρ)) = PiTensorProduct.tprod ℂ (Function.update (fun ρ => A ρ (P ρ) (v ρ)) τ (A τ Q (v τ)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `P τ Q v`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hρ]`. Establish `hupdV : ∀ (P : D.what₂.Tau → LPol W.rank V.rank) (τ : D.what₂.Tau) (v : ∀ τ, M'.H τ) (y : M'.H τ), (PiTensorProduct.tprod ℂ fun ρ => A ρ (P ρ) (Function.update v τ y ρ)) = PiTensorProduct.tprod ℂ (Function.update (fun ρ => A ρ (P ρ) (v ρ)) τ (A τ (P τ) y))`. Introduce `P τ v y`. Use `congr 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `ρ`. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hρ]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨It, I, ⟨?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `φ v`. Establish `h1 : It.compr₂ (inclT M) = I.compl₂ (inclT M')`. Use `LinearMap.ext_on hs ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `PiTensorProduct.ext (MultilinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.compr₂_apply, LinearMap.compl₂_apply, hItg]`. Unfold `inclT`. Simplify using `only [PiTensorProduct.map_tprod, Submodule.subtype_apply, hItl, hIg]`. Conclude with `DFunLike.congr_fun (DFunLike.congr_fun h1 φ) v`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hItne` to reduce the goal to its premises. Introduce `τ h0`. Take `⟨P, y, hy, hne⟩` from `(hL τ).ne`. Apply `hne` to reduce the goal to its premises. Establish `h2` using `congrArg (fun B : LPol W.rank V.rank →ₗ[ℂ] M'.sm τ →ₗ[ℂ] M.sm τ => ((B P ⟨y, hy⟩ : M.sm τ) : M.H τ)) h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2` using `[hItl]`. Introduce `φ w`. Establish `hφ : φ ∈ Submodule.span ℂ (Set.range (glue : (D.what₂.Tau → LPol W.rank V.rank) → PolF D W.rank V.rank))` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨P, rfl⟩` from `hx`. Use `choose w' hw' using fun τ => (hL τ).adj (P τ) (w τ)`. Use `Submodule.subset_span ⟨w', ?_⟩` and prove the remaining obligations. Use `PiTensorProduct.ext (MultilinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, hIg, ellT_tprod', hw']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, LinearMap.comp_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_smul, LinearMap.comp_smul]`. Conclude with `Submodule.smul_mem _ a hx`. Introduce `τ X hX φ x w`. Establish `key` using `der_span₂ hs hs' (fun t => I.compr₂ (ellT M w ∘ₗ actT M τ (NormedSpace.exp (t • X)))) ((I ∘ₗ srcOp M M' τ (aT τ) X).compr₂ (ellT M w)) ?hyp φ x`. Simplify `key` using `only [LinearMap.compr₂_apply, LinearMap.comp_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `case hyp =>`. Introduce and unpack `_ ⟨P, rfl⟩ _ ⟨v, rfl⟩`. Simplify using `only [LinearMap.compr₂_apply, LinearMap.comp_apply, srcOp, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, (hG.2 τ (M.ε τ) (M'.ε τ) P).1, glue_update_add_smul, hIg, hupdP, actT_tprod, ellT_update]`. Rewrite using `[neg_smul, ← sub_eq_add_neg]`. Conclude with `der_inner ((hL τ).src X hX (P τ) (v τ)) (w τ) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Assume the hypotheses and unpack their components.
 
-Introduce `τ Y hY φ x w`. Establish `key` using `der_span₂ hs hs' (fun t => (I.compl₂ (actT M' τ (NormedSpace.exp (t • Y)))).compr₂ (ellT M w)) (-((I ∘ₗ tgtOp M M' τ (aS τ) Y).compr₂ (ellT M w))) ?hyp φ x`. Simplify `key` using `only [LinearMap.compr₂_apply, LinearMap.compl₂_apply, LinearMap.comp_apply, LinearMap.neg_apply]`. Use `case hyp =>`. Introduce and unpack `_ ⟨P, rfl⟩ _ ⟨v, rfl⟩`.
-
-Simplify using `only [LinearMap.compr₂_apply, LinearMap.compl₂_apply, LinearMap.comp_apply, LinearMap.neg_apply, tgtOp, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, (hG.2 τ (M.ε τ) (M'.ε τ) P).2, glue_update_add_smul, hIg, hupdP, hupdV, actT_tprod, ellT_update]`. Rewrite using `[← neg_mul, ← inner_neg_right]`. Conclude with `der_inner ((hL τ).tgt Y hY (P τ) (v τ)) (w τ) _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_globIt : ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (aS aT : D.what₂.Tau → ℚ) (A : ∀ τ, LPol W.rank V.rank →ₗ[ℂ] M'.H τ →ₗ[ℂ] M.H τ), GlobalTheory.IndefiniteRowSideFullHecke.ContractionTensorModels.ContrTensor → GlueLaw D V.rank W.rank → (∀ τ, LocIt M M' τ (aS τ) (aT τ) (A τ)) → ∃ It I, GlobIt M M' aS aT It I := by
   intro D V W S S' M M' aS aT A hC hG hL

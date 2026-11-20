@@ -7,17 +7,17 @@ attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toI
 open IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.Alg
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`.
+A detailed English derivation is pending.
 -/
 private theorem l_ne {l : ℕ} [Fact l.Prime] : ((l : ℕ) : PadicAlgCl l) ≠ 0 :=
   Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero
 
 /- English proof (translation)
-Introduce `N`. Establish `hl : ((l : ℕ) : c.O) ∈ maximalIdeal c.O`. Rewrite using `[← residue_eq_zero_iff, map_natCast]`. Conclude with `CharP.cast_eq_zero _ l`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Establish `hpos : 0 < ‖((l : ℕ) : PadicAlgCl l) ^ N‖` using `norm_pos_iff.2 (pow_ne_zero _ l_ne)`. Establish `hc : Continuous fun t => ‖(f t).1 - (f s).1‖` using `(hf.sub continuous_const).norm`. Establish `hev : ∀ᶠ t in nhds s, ‖(f t).1 - (f s).1‖ < ‖((l : ℕ) : PadicAlgCl l) ^ N‖` using `hc.continuousAt.eventually_lt continuousAt_const (by simpa using hpos)`. Use `filter_upwards [hev] with t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz⟩` from `GlobalTheory.CoefCoord.exists_eq_pow_mul c N (f t - f s) ht.le`. Rewrite using `[Ideal.Quotient.eq, hz]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hl N)`.
+A detailed English derivation is pending.
 -/
 private theorem adic_of_cont {l : ℕ} [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] {D : Type} [TopologicalSpace D]
     (f : D → c.O) (hf : Continuous fun s => (f s).1) : AdicCont (maximalIdeal c.O) f := by
@@ -37,13 +37,13 @@ private theorem adic_of_cont {l : ℕ} [Fact l.Prime] (c : Coef l) [Fr.IsCoef l 
   exact Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hl N)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hu.continuousOn`. Establish `hC1 : (0 : ℝ) < max C 1` using `lt_max_of_lt_right one_pos`. Take `⟨M, hM⟩` from `exists_pow_lt_of_lt_one (inv_pos.2 hC1) (GlobalTheory.CoefCoord.norm_natCast_lt_one (l := l))`. Use `⟨M, fun s => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖(l : PadicAlgCl l) ^ M * u s‖ ≤ 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨k, a, ha⟩` from `h s`. Establish `h2 : (((l : c.O) ^ M * a : c.O) : PadicAlgCl l) = (l : PadicAlgCl l) ^ k * ((l : PadicAlgCl l) ^ M * u s)`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← ha]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨z, hz⟩` from `GlobalTheory.CoefCoord.exists_eq_pow_mul c k ((l : c.O) ^ M * a) (by`. Rewrite using `[h2, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) h1)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hz]`. Move the coercions through the operations in `at h2`. Rewrite using `[← mul_left_cancel₀ (pow_ne_zero k l_ne) h2]`. Conclude with `z.2`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem clear_one {l : ℕ} [Fact l.Prime] (c : Coef l) {D : Type} [TopologicalSpace D] [CompactSpace D]
     (u : D → PadicAlgCl l) (hu : Continuous u)
@@ -72,11 +72,9 @@ private theorem clear_one {l : ℕ} [Fact l.Prime] (c : Coef l) {D : Type} [Topo
   exact z.2
 
 /- English proof (translation)
-Introduce `l _ c _ D _ _ u β hu hβ h1 h2`. Take `⟨M, hM⟩` from `clear_one c u hu h1`. Take `⟨N, hN⟩` from `clear_one c β hβ h2`. Establish `hl : ∀ k : ℕ, (l : PadicAlgCl l) ^ k ∈ c.O` using `fun k => pow_mem (natCast_mem c.O l) k`. Establish `a1 : ∀ s, (l : PadicAlgCl l) ^ (M + N) * u s ∈ c.O` using `fun s => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[add_comm, pow_add, mul_assoc]`. Conclude with `mul_mem (hl N) (hM s)`. Establish `a2 : ∀ s, (l : PadicAlgCl l) ^ (M + N) * β s ∈ c.O` using `fun s => by`. Rewrite using `[pow_add, mul_assoc]`. Conclude with `mul_mem (hl M) (hN s)`.
-
-Conclude with `⟨M + N, fun s => ⟨_, a1 s⟩, fun s => ⟨_, a2 s⟩, adic_of_cont c _ (continuous_const.mul hu), adic_of_cont c _ (continuous_const.mul hβ), fun _ => rfl, fun _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.clearDen :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] {D : Type} [TopologicalSpace D] [CompactSpace D] (u β : D → PadicAlgCl l), Continuous u → Continuous β → (∀ s, ∃ (m : ℕ) (a : c.O), (l : PadicAlgCl l) ^ m * u s = a.1) → (∀ s, ∃ (m : ℕ) (a : c.O), (l : PadicAlgCl l) ^ m * β s = a.1) → ∃ (m : ℕ) (u' β' : D → c.O), AdicCont (IsLocalRing.maximalIdeal ↥c.O) u' ∧ AdicCont (IsLocalRing.maximalIdeal ↥c.O) β' ∧ (∀ s, (u' s).1 = (l : PadicAlgCl l) ^ m * u s) ∧ ∀ s, (β' s).1 = (l : PadicAlgCl l) ^ m * β s := by

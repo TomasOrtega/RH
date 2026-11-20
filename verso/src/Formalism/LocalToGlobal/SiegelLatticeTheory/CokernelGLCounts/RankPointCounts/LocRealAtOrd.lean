@@ -30,13 +30,13 @@ def LocRealAt (p : PlF D) : Prop :=
 variable {M δ}
 
 /- English proof (translation)
-Introduce `w O hO` and use `locReal_ord hA u u' w p hM O hO`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locRealAt_ord (hA : ∀ p, Agree δ M p) (p : PlF D) (hM : (M p).split = none) : LocRealAt M δ u u' p :=
   fun w O hO => locReal_ord hA u u' w p hM O hO
 
 /- English proof (translation)
-Set `lR : Matrix (Fin n) (Fin n) S` to `fun a b => ⟨l a b, hl a b⟩`. Establish `h1 : lR.map S.subtype = l` using `by ext a b; rfl`. Establish `h2` using `congrFun (congrFun (RingHom.map_adjugate S.subtype lR) a) b`. Rewrite using `[← h1, show lR.map S.subtype = S.subtype.mapMatrix lR from rfl, ← h2]`. Conclude with `(lR.adjugate a b).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_mem {R : Type*} [CommRing R] (S : Subring R) {n : ℕ} {l : Matrix (Fin n) (Fin n) R}
     (hl : ∀ a b, l a b ∈ S) (a b : Fin n) : l.adjugate a b ∈ S := by
@@ -47,7 +47,7 @@ theorem adj_mem {R : Type*} [CommRing R] (S : Subring R) {n : ℕ} {l : Matrix (
   exact (lR.adjugate a b).2
 
 /- English proof (translation)
-Take `⟨o, ho, rfl⟩` from `h`. Use `⟨algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιF (algebraMap (𝓞 D.host.F) D.host.F r)) * o, Subring.mul_mem _ (alg_mem_O (fun q => D.s.atP q) p (iotaF_int_mem (fun q => D.s.atP q) p r)) ho, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, map_mul, map_mul, map_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem congr_dvd {p : PlF D} {y : (D.s.atP p).Ep} {c c' r : 𝓞 D.host.F} (hc : c = c' * r)
     (h : ∃ o ∈ (D.s.atP p).O, y =
@@ -60,23 +60,19 @@ theorem congr_dvd {p : PlF D} {y : (D.s.atP p).Ep} {c c' r : 𝓞 D.host.F} (hc 
   rw [hc, map_mul, map_mul, map_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `w' _ x hx`. Establish `hLR : ∀ p, LocRealAt M δ u u' p` using `fun p => by`. Distinguish the cases in `h : (M p).split = none`. Conclude with `locRealAt_ord u u' hA p h`. Conclude with `hTy p h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc` using `fun p => hLR p w' (x.1 p) (hx p)`. Use `choose Lp Up cp hcp0 hLp hUp hreal using hloc`. Establish `hgood` using `Formalism.L2.SG.Pf.LocModel.good_cofinite δ M hA ∅`. Establish `hBad` using `Filter.eventually_cofinite.1 hgood`. Use `set S : Finset (PlF D) := x.2.toFinset ∪ hBad.toFinset with hS`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set c : 𝓞 D.host.F := ∏ p ∈ S, cp p with hcdef`. Establish `hc0 : c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun p _ => hcp0 p`. Take `⟨L, hL1, hL0, hLS, hLO⟩` from `approx_lo (fun q => D.s.atP q) S c hc0 (fun p => Lp p) (fun p _ a => (hLp p).1 a) (fun p _ a b hab => (hLp p).2 a b hab)`. Take `⟨U, hU1, hU0, hUS, hUO⟩` from `approx_up (fun q => D.s.atP q) S c hc0 (fun p => Up p) (fun p _ a => (hUp p).1 a) (fun p _ a b hab => (hUp p).2 b a hab)`. Establish `hLlo : IsLo L` using `⟨hL1, hL0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hUup : IsUp U` using `⟨hU1, fun a b hab => hU0 b a hab⟩`. Establish `hZ : (L * ptMat w' * U * Sg D.host.E D.R.rS) * Sg D.host.E D.R.rS = L * ptMat w' * U`. Rewrite using `[Matrix.mul_assoc, sg_sq, Matrix.mul_one]`. Use `⟨L * ptMat w' * U * Sg D.host.E D.R.rS, ⟨L, U, fun i j => ⟨hL0 i j, fun h => h ▸ hL1 i⟩, fun i j => ⟨hU0 i j, fun h => h ▸ hU1 i⟩, by rw [zhatOM_eq]; exact hZ⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Distinguish the cases in `hp : p ∈ S`. Establish `hsplit : c = cp p * ∏ q ∈ S.erase p, cp q` using `(Finset.mul_prod_erase S cp hp).symm`. Conclude with `hreal p L U hLlo hUup (fun a b => congr_dvd hsplit (hLS p hp a b)) (fun a b => congr_dvd hsplit (hUS p hp a b))`. Establish `hpx : x.1 p = x0L M δ (D.mem u).A.T (D.mem u').A.T p w'`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hp (Finset.mem_union_left _ (x.2.mem_toFinset.2 h))`. Establish `hpg : (M p).split = none ∧ (δ p ∈ 𝒪[(D.s.atP p).Fp] ∧ (δ p)⁻¹ ∈ 𝒪[(D.s.atP p).Fp]) ∧ ((D.s.atP p).ιE (uP p : D.host.E) ∈ (D.s.atP p).O ∧ (D.s.atP p).ιE ((uP p : D.host.E)⁻¹) ∈ (D.s.atP p).O) ∧ ∀ t ∈ (∅ : Finset D.host.E), ∀ k : Fin 3, t + ((k : ℕ) : D.host.E) ≠ 0 → (D.s.atP p).ιE …`. Assume the negation of the conclusion as `h`. Conclude with `hp (Finset.mem_union_right _ (hBad.mem_toFinset.2 h))`. Establish `hentL : ∀ a b, (D.s.atP p).ιE (L a b) ∈ (D.s.atP p).O` using `hLO p hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hentU : ∀ a b, (D.s.atP p).ιE (U a b) ∈ (D.s.atP p).O` using `hUO p hp`. Establish `hLd : L.det = 1` using `det_lo' hLlo`. Establish `hUd : U.det = 1` using `det_up' hUup`. Establish `hinv : ∀ (X : PairVal.MatR D), X.det = 1 → (∀ a b, (D.s.atP p).ιE (X a b) ∈ (D.s.atP p).O) → ∀ a b, (D.s.atP p).ιE (X⁻¹ a b) ∈ (D.s.atP p).O`. Introduce `X hX hXe a b`.
-
-Rewrite using `[Matrix.inv_def, hX, Ring.inverse_one, one_smul]`. Establish `h2` using `congrFun (congrFun (RingHom.map_adjugate (D.s.atP p).ιE X) a) b`. Rewrite `h2` using `[show ((D.s.atP p).ιE.mapMatrix X.adjugate) a b = (D.s.atP p).ιE (X.adjugate a b) from rfl]`. Rewrite using `[h2]`. Conclude with `adj_mem (D.s.atP p).O (fun a b => hXe a b) a b`.
-
-Rewrite using `[hpx]`. Conclude with `tupZ_eq_x0L_at hA u u' hLlo hUup hZ p hpg.1 hpg.2.1.1 hpg.2.1.2 hpg.2.2.1.1 hpg.2.2.1.2 (fun a b => ⟨hentL a b, hentU a b, hinv L hLd hentL a b, hinv U hUd hentU a b⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exist_of (hA : ∀ p, Agree δ M p) (hTy : ∀ p, (M p).split ≠ none → LocRealAt M δ u u' p) :
     Exist M δ u u' := by

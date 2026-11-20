@@ -13,9 +13,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem.Top GlobalTheory.Fc
 namespace GlobalTheory.Fc.Ind
 /- English proof (translation)
-Introduce `hDS hHC hCR hCW 𝒜 τ hPA hDiv hG hPin`. Take `⟨hF, hRB, -, hFr⟩` from `_root_.GlobalTheory.T.fire_realBound_thR_frames_at_all hDS hHC hCR hCW 𝒜 τ`. Use `Formalism.MainNotions.Closed.imp hG ?_` and prove the remaining obligations. Introduce `eps Fm CH _ h hc`. Take `⟨x0, hx0⟩` from `h hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨x0, fun x hx h0 i => ?_⟩` and prove the remaining obligations. Establish `ha` using `w3_a hc`. Establish `hp` using `hPin Fm ha x hx i`. Conclude with `_root_.GlobalTheory.T.bundle_lines_of_primitive_frames_div_nmj _ _ _ _ (hF Fm ha x hx i) (hRB Fm ha x hx i) (hPA Fm ha x hx i) (hFr Fm ha x hx i) (hDiv Fm ha x hx i) (_root_.GlobalTheory.T.pNmj_of_pDiv_classSumPin _ _ _ _ (hDiv Fm ha x hx i) hp.1) (hx0 x hx h0 i) hp.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evW_pRows_of_rows_alt : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → ∀ (𝒜 : FamClass) (τ : RawSel _root_.GlobalTheory.Fc.Ind.PointSummands 𝒜), AtAll _root_.GlobalTheory.Fc.Ind.summandPrimitive 𝒜 τ → AtAll _root_.GlobalTheory.Fc.Ind.DivisorPointSummands 𝒜 τ → Ind.EvW (fun D _ _ _ => Formalism.BasicNotions.GoodFTAll D) 𝒜 τ → AtAll (fun D O c (b : _root_.GlobalTheory.Fc.Ind.PointSummands D O c) => GlobalTheory.ExportPin.ClassSumPin b.pt ∧ b.pt.CompatibilityConditions) 𝒜 τ → Ind.EvW _root_.GlobalTheory.Fc.Ind.RowPointSummands 𝒜 τ := by
   intro hDS hHC hCR hCW 𝒜 τ hPA hDiv hG hPin

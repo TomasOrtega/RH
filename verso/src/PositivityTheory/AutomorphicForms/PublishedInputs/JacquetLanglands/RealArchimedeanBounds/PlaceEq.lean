@@ -11,20 +11,18 @@ namespace UpperTheory.Esk.BoxMapsToLemmas
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Rewrite using `[← Real.norm_eq_abs]`. Conclude with `(InfinitePlace.norm_embedding_of_isReal _ t).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma place_eq (v : InfinitePlace F) (t : F) : v t = |sg v t| := by
   rw [← Real.norm_eq_abs]
   exact (InfinitePlace.norm_embedding_of_isReal _ t).symm
 
 /- English proof (translation)
-Introduce `t ht t' ht' h`. Assume the negation of the conclusion as `hne`. Set `a : 𝓞 F` to `⟨t - t', ht.1.sub ht'.1⟩`. Establish `ha : a ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hne` to reduce the goal to its premises. Establish `h1 : ((a : 𝓞 F) : F) = 0` using `by rw [h0]; rfl`. Conclude with `sub_eq_zero.1 h1`. Establish `hlt : ∀ v : InfinitePlace F, v (a : F) < 1`. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv` using `congrFun h v`. Simplify using `only at hv`. Rewrite using `[place_eq]`. Use `show |sg v (t - t')| < 1`. Rewrite using `[map_sub]`.
-
-Conclude with `Int.abs_sub_lt_one_of_floor_eq_floor hv`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Conclude with `absurd (InfinitePlace.one_le_of_lt_one (w := w) ha fun z _ => hlt z) (not_le.2 (hlt w))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma injOn (R : ℝ) : Set.InjOn (fun t : F => fun v : InfinitePlace F => ⌊sg v t⌋)
     {t : F | IsIntegral ℤ t ∧ ∀ v : InfinitePlace F, v t ≤ R} := by
@@ -49,11 +47,11 @@ lemma injOn (R : ℝ) : Set.InjOn (fun t : F => fun v : InfinitePlace F => ⌊sg
 
 open Classical in
 /- English proof (translation)
-Introduce `t ht`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc]`. Introduce `v`. Establish `h1` using `ht.2 v`. Rewrite `h1` using `[place_eq, abs_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : R ≤ (⌈R⌉₊ : ℝ)` using `Nat.le_ceil R`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Int.le_floor]`. Use `push_cast`. Combine the linear relations using `[h1.1]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2 : ((⌊sg v t⌋ : ℤ) : ℝ) ≤ ((⌈R⌉₊ : ℤ) : ℝ)`. Use `push_cast`. Combine the linear relations using `[Int.floor_le (sg v t), h1.2]`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma mapsTo (R : ℝ) : Set.MapsTo (fun t : F => fun v : InfinitePlace F => ⌊sg v t⌋)
     {t : F | IsIntegral ℤ t ∧ ∀ v : InfinitePlace F, v t ≤ R}
@@ -77,15 +75,15 @@ end UpperTheory.Esk.BoxMapsToLemmas
 
 open Classical in
 /- English proof (translation)
-Introduce `F _ _ _`. Use `⟨5 ^ Fintype.card (InfinitePlace F), fun R hR => ?_⟩` and prove the remaining obligations. Use `set d := Fintype.card (InfinitePlace F)`. Use `set T := (Fintype.piFinset fun _ : InfinitePlace F => Finset.Icc (-(⌈R⌉₊ : ℤ)) ⌈R⌉₊)`. Use `⟨Set.Finite.of_injOn (BoxMapsToLemmas.mapsTo R) (BoxMapsToLemmas.injOn R) T.finite_toSet, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Set.ncard_le_ncard_of_injOn _ (BoxMapsToLemmas.mapsTo R) (BoxMapsToLemmas.injOn R) T.finite_toSet`. Rewrite `h1` using `[Set.ncard_coe_finset]`. Establish `h2 : T.card = (2 * ⌈R⌉₊ + 1) ^ d`. Simplify using `only [T, Fintype.card_piFinset, Int.card_Icc, Finset.prod_const, Finset.card_univ]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h3 : ((2 * ⌈R⌉₊ + 1 : ℕ) : ℝ) ≤ 5 * max 1 R`. Use `Nat.ceil_lt_add_one hR` as an intermediate fact. Establish `hm1 : (1 : ℝ) ≤ max 1 R` using `le_max_left _ _`. Establish `hmR : R ≤ max 1 R` using `le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : (max 1 R) ^ d ≤ 1 + R ^ d`. Break down `le_total R 1 with h | h` into its components or cases. Rewrite using `[max_eq_left h, one_pow]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[pow_nonneg hR d]`. Rewrite using `[max_eq_right h]`. Combine the linear relations using `[zero_le_one' ℝ]`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.dBox : UpperTheory.Esk.DBox := by
   intro F _ _ _

@@ -10,7 +10,7 @@ namespace GlobalTheory.LipschitzTR
 open Set Filter Topology
 
 /- English proof (translation)
-Rewrite using `[norm_mul, norm_pow, Complex.norm_exp, Complex.norm_real, Real.norm_of_nonneg ht.le, Real.rpow_natCast, Real.rpow_one]`. Use `congr 2`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem norm_pow_mul_cexp_neg (n : ℕ) (r : ℂ) {t : ℝ} (ht : 0 < t) :
     ‖(t : ℂ) ^ n * Complex.exp (-(r * t))‖ = t ^ (n : ℝ) * Real.exp (-r.re * t ^ (1 : ℝ)) := by
@@ -20,7 +20,7 @@ theorem norm_pow_mul_cexp_neg (n : ℕ) (r : ℂ) {t : ℝ} (ht : 0 < t) :
   simp
 
 /- English proof (translation)
-Establish `h` using `integrableOn_rpow_mul_exp_neg_mul_rpow (s := (n : ℝ)) (p := 1) (b := r.re) (by have := n.cast_nonneg (α := ℝ); linarith) one_pos hr`. Use `h.mono' ?_ ?_` and prove the remaining obligations. Conclude with `(Continuous.aestronglyMeasurable (by fun_prop))`. Use `filter_upwards [ae_restrict_mem measurableSet_Ioi] with t ht`. Rewrite using `[norm_pow_mul_cexp_neg n r ht]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_pow_mul_cexp_neg (n : ℕ) {r : ℂ} (hr : 0 < r.re) :
     IntegrableOn (fun t : ℝ => (t : ℂ) ^ n * Complex.exp (-(r * t))) (Ioi 0) := by
@@ -32,7 +32,7 @@ theorem integrableOn_pow_mul_cexp_neg (n : ℕ) {r : ℂ} (hr : 0 < r.re) :
     rw [norm_pow_mul_cexp_neg n r ht]
 
 /- English proof (translation)
-Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `h` using `tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero (n : ℝ) r.re hr`. Use `h.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with t ht`. Rewrite using `[norm_pow_mul_cexp_neg n r ht, Real.rpow_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_pow_mul_cexp_neg (n : ℕ) {r : ℂ} (hr : 0 < r.re) :
     Tendsto (fun t : ℝ => (t : ℂ) ^ n * Complex.exp (-(r * t))) atTop (𝓝 0) := by
@@ -43,23 +43,21 @@ theorem tendsto_pow_mul_cexp_neg (n : ℕ) {r : ℂ} (hr : 0 < r.re) :
   rw [norm_pow_mul_cexp_neg n r ht, Real.rpow_one]
 
 /- English proof (translation)
-Establish `hr0 : r ≠ 0` using `by rintro rfl; simp at hr`. Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `integral_exp_mul_complex_Ioi (a := -r) (by simpa using hr) 0`. Simplify using `only [pow_zero, one_mul, Nat.factorial_zero, Nat.cast_one, zero_add, pow_one]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[← neg_mul]`. Rewrite using `[h]`. Simplify using `[hr0]`. Consider the case `succ n ih`. Establish `h1 : ∀ t : ℝ, HasDerivAt (fun t : ℝ => (t : ℂ)) 1 t` using `fun t => (hasDerivAt_id t).ofReal_comp`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hv : ∀ t ∈ Ioi (0 : ℝ), HasDerivAt (fun t : ℝ => Complex.exp (-(r * t)) / (-r)) (Complex.exp (-(r * t))) t`. Introduce `t _`. Establish `h2 : HasDerivAt (fun t : ℝ => -(r * (t : ℂ))) (-r) t`. Simplify using `using ((h1 t).const_mul (-r))`. Establish `hv'` using `h2.cexp.div_const (-r)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `hv'` using `[mul_div_assoc, div_self (neg_ne_zero.mpr hr0), mul_one]`. Then use the resulting hypothesis. Establish `hu : ∀ t ∈ Ioi (0 : ℝ), HasDerivAt (fun t : ℝ => (t : ℂ) ^ (n + 1)) (((n : ℂ) + 1) * (t : ℂ) ^ n) t`. Introduce `t _`. Use `(hasDerivAt_pow (n + 1) (t : ℂ)).comp_ofReal using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Establish `hint` using `integrableOn_pow_mul_cexp_neg n hr`. Establish `hibp` using `integral_Ioi_mul_deriv_eq_deriv_mul (a := 0) (a' := 0) (b' := 0) hu hv (integrableOn_pow_mul_cexp_neg (n + 1) hr) (by`. Use `IntegrableOn.congr_fun (hint.const_mul (-((n : ℂ) + 1) / r)) (fun t _ => ?_) measurableSet_Ioi` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Use the proof step `field_simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `(by`. Establish `hc : Continuous (fun t : ℝ => (t : ℂ) ^ (n + 1) * (Complex.exp (-(r * t)) / (-r)))` using `by fun_prop`. Use `(hc.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Ioi (0 : ℝ)))` as an intermediate fact. Apply the tactic sequence `convert this using 2 <;> simp)`. Use the proof step `(by`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(tendsto_pow_mul_cexp_neg (n + 1) hr).const_mul (-1 / r)` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Use `this.congr (fun t => ?_)` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Use the proof step `field_simp)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hibp]`. Establish `e : (fun t : ℝ => ((n : ℂ) + 1) * (t : ℂ) ^ n * (Complex.exp (-(r * t)) / (-r))) = fun t : ℝ => (-((n : ℂ) + 1) / r) * ((t : ℂ) ^ n * Complex.exp (-(r * t)))`. Use function extensionality and compare the values at `t`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, integral_const_mul, ih, Nat.factorial_succ]`.
-
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_pow_mul_cexp_neg (n : ℕ) {r : ℂ} (hr : 0 < r.re) :
     ∫ t in Ioi (0 : ℝ), (t : ℂ) ^ n * Complex.exp (-(r * t)) = (n.factorial : ℂ) / r ^ (n + 1) := by
@@ -110,25 +108,23 @@ theorem integral_pow_mul_cexp_neg (n : ℕ) {r : ℂ} (hr : 0 < r.re) :
     ring
 
 /- English proof (translation)
-Introduce `k hk hke w hw x`. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Establish `hwx : w - (x : ℂ) ≠ 0`. Introduce `h`. Apply `hw` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg Complex.im h` as an intermediate fact. Simplify using `using this`. Establish `h2pi : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Simplify using `only [Nat.add_sub_cancel]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Real.fourier_real_eq_integral_exp_smul]`. Break down `hw.lt_or_gt with hneg | hpos` into its components or cases. Use `set r : ℂ := 2 * Real.pi * Complex.I * (w - x) with hrdef`. Establish `hr : 0 < r.re`. Simplify using `[hrdef, Complex.mul_re, Complex.mul_im]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[Real.pi_pos]`. Establish `e : (fun v : ℝ => Complex.exp (↑(-2 * Real.pi * (-v) * x) * Complex.I) • phi1 (m + 1) w (-v)) = (Ioi (0 : ℝ)).indicator (fun t : ℝ => (t : ℂ) ^ m * Complex.exp (-(r * t)))`. Use function extensionality and compare the values at `v`. Simplify using `only [phi1, smul_eq_mul, Set.indicator, Set.mem_Ioi, sign_neg hneg, SignType.coe_neg, SignType.coe_one, Nat.add_sub_cancel]`. Distinguish the cases in `hv : 0 < v`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (by linarith), if_pos hv, abs_neg, abs_of_pos hv]`. Use `push_cast`. Rewrite using `[← mul_assoc, mul_comm _ ((v : ℂ) ^ m), mul_assoc, ← Complex.exp_add]`. Use `congr 2`. Rewrite using `[hrdef]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (by linarith), if_neg hv, mul_zero]`. Rewrite using `[← integral_neg_eq_self, e, integral_indicator measurableSet_Ioi, integral_pow_mul_cexp_neg m hr, hrdef, mul_pow, zpow_neg, zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Use `set r : ℂ := -(2 * Real.pi * Complex.I * (w - x)) with hrdef`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hr : 0 < r.re`. Simplify using `[hrdef, Complex.mul_re, Complex.mul_im]`. Use polynomial arithmetic with `[Real.pi_pos]`. Establish `e : (fun v : ℝ => Complex.exp (↑(-2 * Real.pi * v * x) * Complex.I) • phi1 (m + 1) w v) = (Ioi (0 : ℝ)).indicator (fun t : ℝ => (t : ℂ) ^ m * Complex.exp (-(r * t)))`. Use function extensionality and compare the values at `v`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [phi1, smul_eq_mul, Set.indicator, Set.mem_Ioi, sign_pos hpos, SignType.coe_one, one_mul, Nat.add_sub_cancel]`. Distinguish the cases in `hv : 0 < v`. Rewrite using `[if_pos hv, if_pos hv, abs_of_pos hv]`. Use `push_cast`. Rewrite using `[← mul_assoc, mul_comm _ ((v : ℂ) ^ m), mul_assoc, ← Complex.exp_add]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[hrdef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hv, if_neg hv, mul_zero]`. Rewrite using `[e, integral_indicator measurableSet_Ioi, integral_pow_mul_cexp_neg m hr, hrdef, hke.neg_pow, mul_pow, zpow_neg, zpow_natCast]`.
-
-Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fourier_phi1_eq_factorial_mul_zpow : ∀ (k : ℕ), 2 ≤ k → Even k → ∀ (w : ℂ), w.im ≠ 0 → ∀ (x : ℝ),
     𝓕 (phi1 k w) x = ((k - 1).factorial : ℂ) / (2 * Real.pi * Complex.I) ^ k * (w - x) ^ (-(k : ℤ)) := by

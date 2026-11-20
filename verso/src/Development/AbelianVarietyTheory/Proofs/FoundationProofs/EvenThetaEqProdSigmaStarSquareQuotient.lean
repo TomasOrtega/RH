@@ -15,7 +15,7 @@ open Polynomial
 variable {Λ : AddSubgroup ℂ}
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `GlobalTheory.OddTheta.exists_periodPair Λ h`. Rewrite using `[GlobalTheory.OddTheta.wpF_eq L Λ hL, GlobalTheory.OddTheta.wpF_eq L Λ hL]`. Conclude with `L.weierstrassP_add_coe z ⟨ω, (hL ω).1 hω⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLat.wpF_add_of_mem (h : IsLat Λ) {ω : ℂ} (hω : ω ∈ Λ) (z : ℂ) :
     wpF Λ (z + ω) = wpF Λ z := by
@@ -24,7 +24,7 @@ theorem IsLat.wpF_add_of_mem (h : IsLat Λ) {ω : ℂ} (hω : ω ∈ Λ) (z : �
   exact L.weierstrassP_add_coe z ⟨ω, (hL ω).1 hω⟩
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `GlobalTheory.OddTheta.exists_periodPair Λ h`. Conclude with `hF.apply_eq_apply_of_bounded (IsZLattice.isCompact_range_of_periodic L.lattice _ hF.continuous fun z w hw => hper w ((hL w).2 hw) z).isBounded z 0`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsLat.entire_eq_of_periodic (h : IsLat Λ) {F : ℂ → ℂ} (hF : Differentiable ℂ F)
     (hper : ∀ ω ∈ Λ, ∀ z, F (z + ω) = F z) (z : ℂ) : F z = F 0 := by
@@ -34,7 +34,7 @@ theorem IsLat.entire_eq_of_periodic (h : IsLat Λ) {F : ℂ → ℂ} (hF : Diffe
       fun z w hw => hper w ((hL w).2 hw) z).isBounded z 0
 
 /- English proof (translation)
-Distinguish the cases in `hz : z ∈ Λ`. Rewrite using `[(h.sg_eq_zero z).2 hz, (h.sg_eq_zero _).2 (add_mem hz hω)]`. Simplify using the standard rewrite rules. Establish `hz' : z + ω ∉ Λ` using `fun h' => hz (by simpa using sub_mem h' hω)`. Rewrite using `[h.sqTh_eq hv hz, h.sqTh_eq hv hz', h.wpF_add_of_mem hω]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -48,17 +48,17 @@ theorem IsLat.sqTh_law (h : IsLat Λ) {v : ℂ} (hv : v ∉ Λ) {ω : ℂ} (hω 
     ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `F hF _ hlaw`. Use `⟨C (F 0), by simp, by simp, fun z _ => ?_⟩` and prove the remaining obligations. Simplify `hlaw ω hω z) z` using `using h.entire_eq_of_periodic hF (fun ω hω z => by simpa`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ k ih`. Introduce `F hF he hlaw`. Take `⟨v, hv⟩` from `h.dense_compl.nonempty`. Establish `hv : v ∉ Λ` using `hv`. Establish `hd` using `h.differentiable_sqTh v`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨G, hG, hGe, hFG, hGl⟩` from `GlobalTheory.EvenTheta.exists_eq_sg_sq_mul Λ h k (fun z => F z - F 0 * sqTh Λ v z ^ (k + 1)) (by fun_prop) (fun z => by simp only [he, sqTh_neg]) (by simp [h.sqTh_zero hv]) (fun ω hω z => by`. Establish `h1` using `congrArg (· ^ (k + 1)) (h.sqTh_law hv hω z)`. Simplify using `only [mul_pow, ← pow_mul] at h1`. Take the linear combination `hlaw ω hω z - F 0 * h1)`. Take `⟨P, hP, -, hPG⟩` from `ih G hG hGe hGl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hm : ((X - C (wpF Λ v)) ^ (k + 1) : ℂ[X]).Monic` using `(monic_X_sub_C _).pow _`. Establish `hdeg : ((X - C (wpF Λ v)) ^ (k + 1) : ℂ[X]).natDegree = k + 1`. Rewrite using `[(monic_X_sub_C _).natDegree_pow, natDegree_X_sub_C, mul_one]`. Use `⟨C (F 0) * (X - C (wpF Λ v)) ^ (k + 1) + P, ?_, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `natDegree_add_le_of_degree_le ((natDegree_C_mul_le _ _).trans hdeg.le) (by omega)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hm.coeff_natDegree`. Rewrite `h1` using `[hdeg]`. Rewrite using `[coeff_add, coeff_C_mul, h1, coeff_eq_zero_of_natDegree_lt (by omega : P.natDegree < k + 1)]`. Simplify using the standard rewrite rules. Establish `h1` using `hFG z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hPG z hz, h.sqTh_eq hv hz, mul_pow, ← pow_mul] at h1`. Simplify using `only [eval_add, eval_mul, eval_C, eval_pow, eval_sub, eval_X]`. Take the linear combination `h1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem IsLat.exists_poly_wp (h : IsLat Λ) (k : ℕ) : ∀ F : ℂ → ℂ, Differentiable ℂ F →
     (∀ z, F (-z) = F z) →
@@ -98,11 +98,11 @@ theorem IsLat.exists_poly_wp (h : IsLat Λ) (k : ℕ) : ∀ F : ℂ → ℂ, Dif
       linear_combination h1
 
 /- English proof (translation)
-Establish `hdeg : P.natDegree = k` using `natDegree_eq_of_le_of_coeff_ne_zero hP (by rw [h1]; exact one_ne_zero)`. Establish `hm : P.Monic` using `by rw [Monic, leadingCoeff, hdeg, h1]`. Establish `hs : P.Splits` using `IsAlgClosed.splits P`. Establish `he` using `hs.eq_prod_roots_of_monic hm`. Establish `hc` using `hs.natDegree_eq_card_roots`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l, hl⟩` from `Quotient.exists_rep P.roots`. Establish `hl : (l : Multiset ℂ) = P.roots` using `hl`. Rewrite `he`, `hc` using `[← hl]`. Rewrite `hc` using `[hdeg, Multiset.coe_card]`. Substitute `hc` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `⟨fun i => l[i.1]'i.2, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[he, eval_multiset_prod, Multiset.map_map, Multiset.map_coe, Multiset.prod_coe]`. Simplify using `only [Function.comp_def, eval_sub, eval_X, eval_C]`. Conclude with `(Fin.prod_univ_fun_getElem l fun a => x - a).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eval_eq_prod_fin {k : ℕ} {P : ℂ[X]} (hP : P.natDegree ≤ k) (h1 : P.coeff k = 1) :
     ∃ r : Fin k → ℂ, ∀ x, P.eval x = ∏ i, (x - r i) := by
@@ -122,9 +122,9 @@ theorem exists_eval_eq_prod_fin {k : ℕ} {P : ℂ[X]} (hP : P.natDegree ≤ k) 
   exact (Fin.prod_univ_fun_getElem l fun a => x - a).symm
 
 /- English proof (translation)
-Introduce `Λ h k F hF he h0 hlaw`. Take `⟨P, hP, hc, hPF⟩` from `h.exists_poly_wp k F hF he hlaw`. Take `⟨r, hr⟩` from `exists_eval_eq_prod_fin hP (hc.trans h0)`. Use `choose Q hQ hQr using fun i => GlobalTheory.EvenTheta.exists_wpF_eq Λ h (r i)`. Use `⟨Q, hQ, fun z => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun (Continuous.ext_on h.dense_compl hF.continuous (g := fun z => ∏ i, sqTh Λ (Q i) z) (continuous_finsetProd _ fun i _ => (h.differentiable_sqTh (Q i)).continuous) fun z hz => ?_) z` and prove the remaining obligations. Establish `hz : z ∉ Λ` using `hz`. Use `beta_reduce`. Simplify using `only [h.sqTh_eq (hQ _) hz, hQr, hPF z hz, hr, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eq_prod_sqTh : ∀ Λ : AddSubgroup ℂ, IsLat Λ → ∀ (k : ℕ) (F : ℂ → ℂ), Differentiable ℂ F → (∀ z, F (-z) = F z) → F 0 = 1 → (∀ ω ∈ Λ, ∀ z, F (z + ω) * sgStar Λ z ^ (2 * k) = F z * sgStar Λ (z + ω) ^ (2 * k)) → ∃ Q : Fin k → ℂ, (∀ i, Q i ∉ Λ) ∧ ∀ z, F z = ∏ i, sqTh Λ (Q i) z := by
   intro Λ h k F hF he h0 hlaw

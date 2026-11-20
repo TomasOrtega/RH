@@ -31,7 +31,7 @@ open MeasureTheory Matrix Formalism.REAL GlobalTheory.TypeSum
 variable {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hφ`. Consider the case `cons X l ih`. Establish `h` using `(GlobalTheory.T.contDiff_matrixRightInvariantDerivative ε d _ (ih fun Y hY => hl Y (List.mem_cons_of_mem _ hY)) X (hl X List.mem_cons_self)).1`. Conclude with `h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rder_mem (ε : Fin n → Bool) (d : ℕ) (φ : KG ε → ℂ) (hφ : φ ∈ polyV ε d) (l : List (Mx n))
     (hl : ∀ X ∈ l, inK ε X) : rder ε l φ ∈ polyV ε d := by
@@ -42,20 +42,20 @@ theorem rder_mem (ε : Fin n → Bool) (d : ℕ) (φ : KG ε → ℂ) (hφ : φ 
     exact h
 
 /- English proof (translation)
-The claim follows from `((hermitian_small_ball n ε).2 y _ k.2).1`.
+A detailed English derivation is pending.
 -/
 theorem hs_mul_toMK (ε : Fin n → Bool) (y : Mx n) (k : KG ε) : hs (y * toMK k) = hs y :=
   ((hermitian_small_ball n ε).2 y _ k.2).1
 
 /- English proof (translation)
-Rewrite using `[toMK_mul, toMK_expK hK, Complex.coe_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toMK_expK_mul (ε : Fin n → Bool) (X : Mx n) (hK : inK ε X) (t : ℝ) (x : KG ε) :
     toMK (expK ε X t * x) = NormedSpace.exp (t • X) * toMK x := by
   rw [toMK_mul, toMK_expK hK, Complex.coe_smul]
 
 /- English proof (translation)
-Proceed by induction on `U with`. Consider the case `nil => simpa using (summable_zero : Summable fun _ : ℕ => (0 : ℝ))`. Consider the case `cons u U ih`. Simplify using `only [List.map_cons, List.sum_cons]`. Conclude with `(hb u List.mem_cons_self).add (ih fun v hv => hb v (List.mem_cons_of_mem _ hv))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem summable_listSum {ι : Type} (U : List ι) (b : ι → ℕ → ℝ) (hb : ∀ u ∈ U, Summable (b u)) :
     Summable fun i => (U.map fun u => b u i).sum := by
@@ -66,27 +66,25 @@ theorem summable_listSum {ι : Type} (U : List ι) (b : ι → ℕ → ℝ) (hb 
     exact (hb u List.mem_cons_self).add (ih fun v hv => hb v (List.mem_cons_of_mem _ hv))
 
 /- English proof (translation)
-Introduce `n ε`. Establish `hker : ∀ i, IsKer ε i (kerE ε i)` using `fun i => isKer_kerE (GlobalTheory.T.exists_compactUnitary_fourierKernel ε i)`. Use `⟨kerE ε, fun i => continuous_of_mem (hker i).1, fun i => kFinFun_of_mem (hker i).1, ?_⟩` and prove the remaining obligations. Introduce `f hf hU`. Take `⟨N, F, hF0, hFd, hFg⟩` from `hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcF : ContinuousOn (F []) (UJset ε)` using `hf.congr fun g hg => hF0 g hg`. Establish `hdec : ∀ u : List (Mx n), ∃ b : ℕ → ℝ, Summable b ∧ ((∀ X ∈ u, inK ε X) → ∀ i, ∀ y ∈ UJset ε, ‖∫ k, kerE ε i k * F u (y * toMK k) ∂(muK ε)‖ ≤ b i * (1 + hs y) ^ N)`. Introduce `u`. Distinguish the cases in `hu : ∀ X ∈ u, inK ε X`. Take `⟨b, hb, hb'⟩` from `GlobalTheory.T.kFourier_coefficient_rapid_decay ε N F hFd hFg hcF (kerE ε) hker u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, hb, fun _ => hb'⟩`. Conclude with `⟨0, summable_zero, fun h => absurd h hu⟩`. Use `choose b hbs hbb using hdec`. Use `choose U C hC0 hUK hC using GlobalTheory.T.rightDeriv_norm_le_finite_words_bound ε`. Establish `hQ : ∀ i, ∀ y ∈ UJset ε, avgK ε (kerE ε i) f y ∈ polyV ε i` using `fun i y hy => GlobalTheory.T.compactUnitaryAverage_mem_polyV ε i _ (hker i).1 f hf y hy`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbound : ∀ i m (w : List (Mx n)), w.length ≤ m → (∀ X ∈ w, X ∈ GlobalTheory.SmoothGlob.lieSet ε ∧ Xᴴ = -X ∧ hs X ≤ 1) → ∀ y ∈ UJset ε, ‖rder ε w (avgK ε (kerE ε i) f y) 1‖ ≤ C m * ((U m).map fun u => b u i).sum * (1 + hs y) ^ N`. Introduce `i m w hw hwX y hy`. Establish `hwK : ∀ X ∈ w, inK ε X ∧ hs X ≤ 1` using `fun X hX => ⟨inK_of_skew (hwX X hX).1 (hwX X hX).2.1, (hwX X hX).2.2⟩`. Establish `h1` using `hC m i _ (hQ i y hy) w hw hwK`. Establish `h2 : ((U m).map fun u => ‖rder ε u (avgK ε (kerE ε i) f y) 1‖).sum ≤ ((U m).map fun u => b u i * (1 + hs y) ^ N).sum`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `List.sum_le_sum fun u hu => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.compactUnitaryRightDeriv_conjInvariantAverage_eq ε N F hFd hFg f hf hF0 _ (continuous_of_mem (hker i).1) (GlobalTheory.T.compactUnitary_fourierKernel_conj_invariant ε i _ (hker i)) u (hUK m u hu) y hy]`. Conclude with `hbb u (hUK m u hu) i y hy`. Rewrite `h2` using `[List.sum_map_mul_right]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨N, fun i l y => rder ε l (avgK ε (kerE ε i) f y) 1, fun i m => C m * ((U m).map fun u => b u i).sum, ?_, ?_, hbound, ?_, ?_⟩` and prove the remaining obligations. Introduce `i y hy`. Simplify using `[avgK, toMK_one]`. Introduce `i l hl X hX hXs y hy`. Establish `hK` using `inK_of_skew hX hXs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlK : ∀ Y ∈ l, inK ε Y` using `fun Y hY => inK_of_skew (hl Y hY).1 (hl Y hY).2`. Establish `hR` using `rder_mem ε i _ (hQ i y hy) l hlK`. Establish `e1 : (fun t : ℝ => rder ε l (avgK ε (kerE ε i) f (y * NormedSpace.exp (t • X))) 1) = fun t : ℝ => rder ε l (avgK ε (kerE ε i) f y) (1 * expK ε X t)`. Use function extensionality and compare the values at `t`. Rewrite using `[one_mul, ← mul_one (expK ε X t), ← rder_left ε l _ (expK ε X t) 1]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [avgK]`. Rewrite using `[toMK_expK_mul ε X hK t x]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show HasDerivAt (fun t : ℝ => rder ε l (avgK ε (kerE ε i) f (y * NormedSpace.exp (t • X))) 1) (rder ε [X] (rder ε l (avgK ε (kerE ε i) f y)) 1) 0`. Rewrite using `[e1]`. Conclude with `(GlobalTheory.T.contDiff_matrixRightInvariantDerivative ε i _ hR X hK).2 1`. Introduce `m`. Conclude with `(summable_listSum (U m) b fun u _ => hbs u).mul_left (C m)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `key` using `GlobalTheory.T.hasSum_compactUnitaryFourier_value_one ε (kerE ε) hker (fun k => f (y * toMK k)) ?_ (fun i => C 0 * ((U 0).map fun u => b u i).sum * (1 + hs y) ^ N) (((summable_listSum (U 0) b fun u _ => hbs u).mul_left (C 0)).mul_right _) ?_`. Simplify `key` using `[toMK_one]`. Conclude with `hf.comp_continuous ((continuous_const.mul (continuous_toMK ε))) fun k => mul_mem_UJ hy (K_le_UJ k.2)`. Introduce `i k'`.
-
-Establish `hyk : y * toMK k' ∈ UJset ε` using `mul_mem_UJ hy (K_le_UJ k'.2)`. Use `hbound i 0 [] le_rfl (by simp) _ hyk` as an intermediate fact. Rewrite `this` using `[hs_mul_toMK]`. Simplify `this` using `[avgK, toMK_one, toMK_mul, Matrix.mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_rightKFourier : ∀ (n : ℕ) (ε : Fin n → Bool), ∃ e : ℕ → (Formalism.REAL.KG ε → ℂ), (∀ i, Continuous (e i)) ∧
     (∀ i, KFinFun ε (e i)) ∧ ∀ f : Mx n → ℂ, ContinuousOn f (UJset ε) → UMG ε f →

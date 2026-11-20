@@ -13,17 +13,15 @@ open GlobalTheory.Poinc.FibLat GlobalTheory.Poinc.Eq8
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hfin : (irreducibleComponents (q ⁻¹' {z})).Finite` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents`. Establish `key : ∀ C : irreducibleComponents (q ⁻¹' {z}), ∃ e : Y, q e = z ∧ ∀ c ∈ C.1, e ⤳ (c : Y)`. Introduce `C`. Establish `hC : IsIrreducible C.1` using `C.2.1`. Establish `hCi : IsIrreducible (((↑) : q ⁻¹' {z} → Y) '' C.1)` using `hC.image _ continuous_subtype_val.continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen` using `hCi.isGenericPoint_genericPoint_closure`. Use `⟨hCi.genericPoint, ?_, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hC.nonempty`. Establish `hcz : q c = z` using `c.2`. Establish `h1 : hCi.genericPoint ⤳ (c : Y)` using `hgen.specializes (subset_closure ⟨c, hc, rfl⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : hCi.genericPoint ∈ closure (((↑) : q ⁻¹' {z} → Y) '' C.1)` using `hgen.mem`. Establish `h3 : closure (((↑) : q ⁻¹' {z} → Y) '' C.1) ⊆ q ⁻¹' closure {z}` using `(closure_mono (by rintro _ ⟨d, -, rfl⟩; exact d.2)).trans (hq.closure_preimage_subset _)`. Establish `h4 : z ⤳ q hCi.genericPoint` using `specializes_iff_mem_closure.2 (h3 h2)`. Establish `h5 : q hCi.genericPoint ⤳ z`. Use `h1.map hq` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hcz]`. Then use the resulting hypothesis. Conclude with `(h5.antisymm h4).eq`. Introduce `c hc`. Conclude with `hgen.specializes (subset_closure ⟨c, hc, rfl⟩)`. Use `choose f hf using key`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Finite (irreducibleComponents (q ⁻¹' {z})) := hfin.to_subtype`. Use `⟨Set.range f, Set.finite_range f, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨C, rfl⟩`. Conclude with `(hf C).1`. Introduce `w hw`.
-
-Set `w' : q ⁻¹' {z}` to `⟨w, hw⟩`. Use `⟨f ⟨_, irreducibleComponent_mem_irreducibleComponents w'⟩, ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `(hf _).2 w' mem_irreducibleComponent`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fibre_exists_finite_generizing {Y Z : Type} [TopologicalSpace Y] [TopologicalSpace Z]
     [TopologicalSpace.NoetherianSpace Y] [QuasiSober Y] [T0Space Z] (q : Y → Z)
@@ -63,17 +61,15 @@ theorem fibre_exists_finite_generizing {Y Z : Type} [TopologicalSpace Y] [Topolo
     exact (hf _).2 w' mem_irreducibleComponent
 
 /- English proof (translation)
-Introduce `Y Z _ _ _ _ _ q hq z hpc P hP a b ha hb hPa`. Take `⟨T, hTf, hTz, hTs⟩` from `fibre_exists_finite_generizing q hq z`. Assume the negation of the conclusion as `hPb`. Establish `closed : ∀ R : Y → Prop, IsClosed (⋃ e ∈ {e ∈ T | R e}, closure ({e} : Set Y))` using `fun R => (hTf.subset (fun _ h => h.1)).isClosed_biUnion (fun _ _ => isClosed_closure)`. Establish `mem : ∀ (R : Y → Prop) (e w : Y), e ∈ T → R e → e ⤳ w → w ∈ ⋃ e ∈ {e ∈ T | R e}, closure ({e} : Set Y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `R e w he hR hs`. Conclude with `Set.mem_biUnion ⟨he, hR⟩ (specializes_iff_mem_closure.1 hs)`. Establish `mem' : ∀ (R : Y → Prop) (w : Y), w ∈ ⋃ e ∈ {e ∈ T | R e}, closure ({e} : Set Y) → ∃ e, e ∈ T ∧ R e ∧ e ⤳ w`. Introduce `R w hw`. Take `⟨e, ⟨he, hR⟩, hc⟩` from `Set.mem_iUnion₂.1 hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨e, he, hR, specializes_iff_mem_closure.2 hc⟩`. Take `⟨w, hwS, hwt, hwt'⟩` from `isPreconnected_closed_iff.1 hpc _ _ (closed P) (closed (fun e => ¬ P e)) (by`. Introduce `w hw`. Take `⟨e, he, hs⟩` from `hTs w hw`. Distinguish the cases in `h : P e`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inl (mem P e w he h hs)`. Conclude with `Or.inr (mem _ e w he h hs))`. Use the proof step `(by`. Take `⟨e, he, hs⟩` from `hTs a ha`. Conclude with `⟨a, ha, mem P e a he ((hP e a (hTz e he) ha hs).2 hPa) hs⟩)`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(by`. Take `⟨e, he, hs⟩` from `hTs b hb`. Conclude with `⟨b, hb, mem (fun e => ¬ P e) e b he (fun h => hPb ((hP e b (hTz e he) hb hs).1 h)) hs⟩)`. Establish `hwz : q w = z` using `hwS`. Take `⟨e₁, h₁, hP₁, hs₁⟩` from `mem' P w hwt`.
-
-Take `⟨e₂, h₂, hP₂, hs₂⟩` from `mem' _ w hwt'`. Conclude with `hP₂ ((hP e₂ w (hTz e₂ h₂) hwz hs₂).2 ((hP e₁ w (hTz e₁ h₁) hwz hs₁).1 hP₁))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fibre_const_of_specializes_invariant : ∀ (Y Z : Type) [TopologicalSpace Y] [TopologicalSpace Z] [TopologicalSpace.NoetherianSpace Y] [QuasiSober Y] [T0Space Z] (q : Y → Z), Continuous q → ∀ z : Z, _root_.IsPreconnected (q ⁻¹' {z}) → ∀ P : Y → Prop, (∀ a b, q a = z → q b = z → a ⤳ b → (P a ↔ P b)) → ∀ a b, q a = z → q b = z → P a → P b := by
   intro Y Z _ _ _ _ _ q hq z hpc P hP a b ha hb hPa

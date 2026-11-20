@@ -19,32 +19,32 @@ namespace GlobalTheory.FrameMeasureClosed
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.UnitriJac.kapGG_of_det GlobalTheory.det_conj_strictLower GlobalTheory.det_mul_strictLower_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem kapGG_holds : KapGGStatement (E := E) :=
   GlobalTheory.UnitriJac.kapGG_of_det GlobalTheory.det_conj_strictLower GlobalTheory.det_mul_strictLower_eq_one
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.measInv_of_jacobian kapGG_holds GlobalTheory.NormFactor.nfac_transform`.
+A detailed English derivation is pending.
 -/
 theorem measInv_holds : MeasInvStatement (E := E) :=
   GlobalTheory.measInv_of_jacobian kapGG_holds GlobalTheory.NormFactor.nfac_transform
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FrameMeas.frameMeas_of_local measInv_holds (GlobalTheory.frame_measure_local GlobalTheory.FrameSplit.frameSplit)`.
+A detailed English derivation is pending.
 -/
 theorem frameMeas_holds : FrameMeasStatement (E := E) :=
   GlobalTheory.FrameMeas.frameMeas_of_local measInv_holds
     (GlobalTheory.frame_measure_local GlobalTheory.FrameSplit.frameSplit)
 
 /- English proof (translation)
-The claim follows from `extF_of lu_holds frameMeas_holds`.
+A detailed English derivation is pending.
 -/
 theorem extF_holds : ExtFStatement (E := E) :=
   extF_of lu_holds frameMeas_holds
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨kapGG_holds, measInv_holds, frameMeas_holds, extF_holds⟩`.
+Supply the required witnesses or components.
 -/
 theorem measure_statements :
     (KapGGStatement (E := E)) ∧ (MeasInvStatement (E := E)) ∧ (FrameMeasStatement (E := E)) ∧

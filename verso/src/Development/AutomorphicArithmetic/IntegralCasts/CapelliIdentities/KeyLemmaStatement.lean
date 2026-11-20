@@ -3,15 +3,13 @@ import Mathlib
 namespace CoprimeTimesDvdPowFactorization
 
 /- English proof (translation)
-Use `set d := Nat.gcd m (g ^ m) with hd`. Establish `hdpos : 0 < d` using `Nat.gcd_pos_of_pos_left _ hm`. Establish `hcop : (m / d).Coprime (g ^ m / d)` using `Nat.coprime_div_gcd_div_gcd hdpos`. Apply `Nat.coprime_of_dvd` to reduce the goal to its premises. Introduce `p hp hpc hpg`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpn : ¬ p ∣ g ^ m / d`. Introduce `h`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hp).1 (Nat.Coprime.coprime_dvd_left hpc hcop) h`. Establish `hdg : d ∣ g ^ m` using `Nat.gcd_dvd_right _ _`. Establish `hdm : d ∣ m` using `Nat.gcd_dvd_left _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpm : p ^ m ∣ d * (g ^ m / d)`. Rewrite using `[Nat.mul_div_cancel' hdg]`. Conclude with `pow_dvd_pow_of_dvd hpg m`. Establish `hcp : Nat.Coprime (p ^ m) (g ^ m / d)` using `Nat.Coprime.pow_left m ((Nat.Prime.coprime_iff_not_dvd hp).2 hpn)`. Establish `hpd : p ^ m ∣ d` using `hcp.dvd_of_dvd_mul_right hpm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hall : p ^ m * p ∣ d * (m / d)` using `Nat.mul_dvd_mul hpd hpc`. Rewrite `hall` using `[Nat.mul_div_cancel' hdm, ← pow_succ]`. Establish `hle : p ^ (m + 1) ≤ m` using `Nat.le_of_dvd hm hall`. Establish `h1 : m < 2 ^ m` using `Nat.lt_two_pow_self`. Establish `h2 : 2 ^ m ≤ p ^ m` using `Nat.pow_le_pow_left hp.two_le m`.
-
-Establish `h3 : p ^ m ≤ p ^ (m + 1)` using `Nat.pow_le_pow_right hp.pos (Nat.le_succ m)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem key (g m : ℕ) (hm : 0 < m) :
     (m / Nat.gcd m (g ^ m)).Coprime g := by
@@ -42,7 +40,7 @@ private theorem key (g m : ℕ) (hm : 0 < m) :
 end CoprimeTimesDvdPowFactorization
 
 /- English proof (translation)
-Introduce `g m hm`. Use `⟨m / Nat.gcd m (g ^ m), Nat.gcd m (g ^ m), ?_, CoprimeTimesDvdPowFactorization.key g m hm, Nat.gcd_dvd_right _ _⟩` and prove the remaining obligations. Conclude with `(Nat.div_mul_cancel (Nat.gcd_dvd_left _ _)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ExistsCoprimeMulDvdPow.main :
     ∀ (g m : ℕ),

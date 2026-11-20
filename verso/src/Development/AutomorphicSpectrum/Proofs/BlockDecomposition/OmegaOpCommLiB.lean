@@ -26,7 +26,7 @@ def smL (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) :
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (congrArg (fun ψ : AutomorphicForm.archSmooth E a => ψ.1) h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smL_injective : Function.Injective (smL E a) := fun _ _ h =>
   Subtype.ext (congrArg (fun ψ : AutomorphicForm.archSmooth E a => ψ.1) h)
@@ -42,13 +42,13 @@ def omegaOp {d : ℕ} (b : Fin d → (isExpLieAlgebra E a).lieSubalgebra) (ε : 
   ∑ i, (ε i : ℂ) • (liB (b i) * liB (b i))
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[uAction_ι_apply]`. Express the relevant statement in the definitionally equal form `lieD (mMap E a (X : ArchMatrix E a)) ψ.1 g = _`. Establish `h1` using `(isExpLieAlgebra E a).hasDerivAt_rightDeriv (sm_mem_archSmooth E a ψ g) ((isExpLieAlgebra E a).ofLie X) 1`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Set `L : ArchMatrix E a →L[ℝ] Lie E a` to `LinearMap.toContinuousLinearMap (mMap E a)`. Establish `hc : HasDerivAt (fun t : ℝ => toL (toGL E a ((isExpLieAlgebra E a).expG (t • (isExpLieAlgebra E a).ofLie X))).val) (mMap E a (X : ArchMatrix E a)) 0`. Establish `h3 : HasDerivAt (fun t : ℝ => NormedSpace.exp (t • (X : ArchMatrix E a))) (NormedSpace.exp ((0 : ℝ) • (X : ArchMatrix E a)) * (X : ArchMatrix E a)) 0` using `hasDerivAt_exp_smul_const (X : ArchMatrix E a) (0 : ℝ)`. Rewrite `h3` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Establish `h4` using `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h3`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `h4.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Conclude with `toL_toGL E a _`. Establish `h0 : toGL E a ((isExpLieAlgebra E a).expG ((0 : ℝ) • (isExpLieAlgebra E a).ofLie X)) = 1`. Simplify using `[toGL]`. Establish `h2` using `hasDerivAt_curve ψ g (fun t => toGL E a ((isExpLieAlgebra E a).expG (t • (isExpLieAlgebra E a).ofLie X))) (mMap E a (X : ArchMatrix E a)) h0 hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.unique (h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_))` and prove the remaining obligations. Simplify using `only [archSlice_apply, one_mul, infEmb_eq]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smL_liB (X : (isExpLieAlgebra E a).lieSubalgebra) (ψ : Sm E a) :
     smL E a (liB X ψ) = uAction (UniversalEnvelopingAlgebra.ι ℝ X) (smL E a ψ) := by
@@ -76,7 +76,7 @@ theorem smL_liB (X : (isExpLieAlgebra E a).lieSubalgebra) (ψ : Sm E a) :
   simp only [archSlice_apply, one_mul, infEmb_eq]
 
 /- English proof (translation)
-Simplify using `only [lapOp, LinearMap.sum_apply, map_sum, Module.End.mul_apply, smL_liB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smL_lapOp {d : ℕ} (b : Fin d → (isExpLieAlgebra E a).lieSubalgebra) (ψ : Sm E a) :
     smL E a (lapOp b ψ) = ∑ i, uAction (UniversalEnvelopingAlgebra.ι ℝ (b i))
@@ -84,7 +84,7 @@ theorem smL_lapOp {d : ℕ} (b : Fin d → (isExpLieAlgebra E a).lieSubalgebra) 
   simp only [lapOp, LinearMap.sum_apply, map_sum, Module.End.mul_apply, smL_liB]
 
 /- English proof (translation)
-Simplify using `only [omegaOp, casimir, LinearMap.sum_apply, map_sum, LinearMap.smul_apply, map_smul, Module.End.mul_apply, smL_liB, map_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use extensionality with `g`. Simplify using `[Complex.real_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smL_omegaOp {d : ℕ} (b : Module.Basis (Fin d) ℝ (isExpLieAlgebra E a).lieSubalgebra) (ε : Fin d → ℝ)
     (ψ : Sm E a) : smL E a (omegaOp b ε ψ) = uAction (casimir b ε) (smL E a ψ) := by
@@ -95,7 +95,7 @@ theorem smL_omegaOp {d : ℕ} (b : Module.Basis (Fin d) ℝ (isExpLieAlgebra E a
   simp [Complex.real_smul]
 
 /- English proof (translation)
-Apply the tactic sequence `have hε2 : ∀ i, ε i * ε i = 1 := fun i => by rcases hε i with e | e <;> rw [e] <;> norm_num`. Establish `hz : casimir b ε ∈ (isExpLieAlgebra E a).centerU` using `casimir_mem_center hε2 horth archTraceForm_symm archTraceForm_lie`. Establish `hc` using `Subalgebra.mem_center_iff.1 hz (UniversalEnvelopingAlgebra.ι ℝ X)`. Use `LinearMap.ext fun ψ => smL_injective ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, smL_omegaOp, smL_liB, smL_liB, smL_omegaOp, ← Module.End.mul_apply, ← map_mul, ← hc, map_mul, Module.End.mul_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem omegaOp_comm_liB {d : ℕ} (b : Module.Basis (Fin d) ℝ (isExpLieAlgebra E a).lieSubalgebra) (ε : Fin d → ℝ)
     (hε : ∀ i, ε i = 1 ∨ ε i = -1)

@@ -6,9 +6,9 @@ open scoped InnerProductSpace Topology
 namespace GlobalTheory.ClosableSchur
 
 /- English proof (translation)
-Introduce `w hw w' hw'`. Establish `h1` using `h (w + w') (D.add_mem hw hw')`. Establish `h2` using `h (w + Complex.I • w') (D.add_mem hw (D.smul_mem _ hw'))`. Establish `h3` using `h w hw`. Establish `h4` using `h w' hw'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_smul, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, Complex.conj_I] at h1 h2`. Establish `hI : Complex.I * Complex.I = -1` using `Complex.I_mul_I`. Take the linear combination `(1 / 2 : ℂ) * h1 - (Complex.I / 2) * h2 - (1 / 2 - Complex.I / 2) * h3 - (1 / 2 - Complex.I / 2) * h4 + (1 / 2 : ℂ) * (⟪A w, A' w'⟫_ℂ - c * ⟪w, w'⟫_ℂ - ⟪A w', A' w⟫_ℂ + c * ⟪w', w⟫_ℂ - Complex.I * (⟪A w', A' w'⟫_ℂ - c * ⟪w', w'⟫_ℂ)) * hI`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem inner_eq_of_diag {H E : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup E] [InnerProductSpace ℂ E] (D : Submodule ℂ H) (A A' : H →ₗ[ℂ] E) (c : ℂ)
@@ -28,9 +28,9 @@ theorem inner_eq_of_diag {H E : Type} [NormedAddCommGroup H] [InnerProductSpace 
       - Complex.I * (⟪A w', A' w'⟫_ℂ - c * ⟪w', w'⟫_ℂ)) * hI
 
 /- English proof (translation)
-Rewrite `h0`, the goal using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `h1 : Tendsto (fun i => a * ‖u i‖ ^ 2) atTop (𝓝 0)`. Simplify using `using (h0.pow 2).const_mul a`. Establish `h2` using `h1.sqrt`. Rewrite `h2` using `[Real.sqrt_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h2.congr fun i => ?_` and prove the remaining obligations. Rewrite using `[← h _ (hu i), Real.sqrt_sq (norm_nonneg _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tendsto_zero_of_norm_sq {H E : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup E] [InnerProductSpace ℂ E] (D : Submodule ℂ H) (A : H →ₗ[ℂ] E) (a : ℝ)
@@ -45,19 +45,19 @@ theorem tendsto_zero_of_norm_sq {H E : Type} [NormedAddCommGroup H] [InnerProduc
   rw [← h _ (hu i), Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Introduce `ι H E _ _ _ _ _ _ ρ D hn hinv hirr hD A A' hA hA' hAA' hc hc'`. Take `⟨a, ha⟩` from `norm_sq_eq ι H E ρ D hn hinv hirr hD A hA hc`. Take `⟨a', ha'⟩` from `norm_sq_eq ι H E ρ D hn hinv hirr hD A' hA' hc'`. Establish `hexp : ∀ (z : ℂ) (w : H), ‖(z • A + A') w‖ ^ 2 = ‖z‖ ^ 2 * ‖A w‖ ^ 2 + 2 * ((starRingEnd ℂ) z * ⟪A w, A' w⟫_ℂ).re + ‖A' w‖ ^ 2`. Introduce `z w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, @norm_add_sq ℂ, inner_smul_left, norm_smul, mul_pow]`. Both sides reduce to the same expression. Establish `key : ∀ z : ℂ, ∃ b : ℝ, ∀ w ∈ D, ‖(z • A + A') w‖ ^ 2 = b * ‖w‖ ^ 2`. Introduce `z`. Use `norm_sq_eq ι H E ρ D hn hinv hirr hD (z • A + A') ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i w hw`. Rewrite using `[← sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _), hexp, hexp, hA i w hw, hA' i w hw, hAA' i w hw]`. Introduce `u f hu h0 hf`. Establish `h1` using `tendsto_zero_of_norm_sq D A a ha u hu h0`. Establish `h2` using `tendsto_zero_of_norm_sq D A' a' ha' u hu h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(h1.const_smul z).add h2`. Rewrite `h3` using `[smul_zero, add_zero]`. Conclude with `tendsto_nhds_unique hf h3`. Take `⟨b, hb⟩` from `key 1`. Take `⟨b', hb'⟩` from `key Complex.I`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨(b - a - a') / 2, (b' - a - a') / 2⟩, inner_eq_of_diag D A A' _ fun w hw => ?_⟩` and prove the remaining obligations. Establish `e1` using `hb w hw`. Establish `e2` using `hb' w hw`. Rewrite `e1`, `e2` using `[hexp, ha w hw, ha' w hw]`. Establish `e3 : ⟪w, w⟫_ℂ = ((‖w‖ ^ 2 : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules. Rewrite using `[e3]`. Simplify using `only [map_one, one_mul, norm_one, one_pow, Complex.norm_I, Complex.conj_I, Complex.mul_re, Complex.neg_re, Complex.neg_im, Complex.I_re, Complex.I_im] at e1 e2`. Apply `Complex.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem inner_eq_pair : ∀ (ι H E : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E] (ρ : ι → (H →L[ℂ] H)) (D : Submodule ℂ H), (∀ i v, ‖ρ i v‖ = ‖v‖) → (∀ i, ∃ j, (∀ v, ρ j (ρ i v) = v) ∧ ∀ v, ρ i (ρ j v) = v) → (∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ i, ∀ v ∈ S, ρ i v ∈ S) → S = ⊥ ∨ S = ⊤) → (∀ i, ∀ v ∈ D, ρ i v ∈ D) → ∀ A A' : H →ₗ[ℂ] E, (∀ i, ∀ w ∈ D, ‖A (ρ i w)‖ = ‖A w‖) → (∀ i, ∀ w ∈ D, ‖A' (ρ i w)‖ = ‖A' w‖) → (∀ i, ∀ w ∈ D, ⟪A (ρ i w), A' (ρ i w)⟫_ℂ = ⟪A w, A' w⟫_ℂ) → (∀ (u : ℕ → H) (f : E), (∀ i, u i ∈ D) → Tendsto u atTop (𝓝 0) → Tendsto (fun i => A (u i)) atTop (𝓝 f) → f = 0) → (∀ (u : ℕ → H) (f : E), (∀ i, u i ∈ D) → Tendsto u atTop (𝓝 0) → Tendsto (fun i => A' (u i)) atTop (𝓝 f) → f = 0) → ∃ c : ℂ, ∀ w ∈ D, ∀ w' ∈ D, ⟪A w, A' w'⟫_ℂ = c * ⟪w, w'⟫_ℂ := by
   intro ι H E _ _ _ _ _ _ ρ D hn hinv hirr hD A A' hA hA' hAA' hc hc'

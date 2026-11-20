@@ -62,17 +62,15 @@ namespace GlobalTheory.CovTop.VolUp.FrameBox
 open Matrix
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hI (σ.symm τ)`. Rewrite `h1`, `h2` using `[Equiv.apply_symm_apply]`. Use `set P := permM (e (σ.symm τ)) with hP`. Use `set J := Formalism.UG.Jpq (p (σ.symm τ)) (q (σ.symm τ)) with hJdef`. Use `set M := mat x τ with hMdef`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set B := A (σ.symm τ) with hBdef`. Establish `hPA : (Pᵀ * B) * M = 1` using `by rw [Matrix.mul_assoc, h2, transpose_mul_permM]`. Establish `hdetM : M.det ≠ 0`. Introduce `h`. Use `congrArg Matrix.det hPA` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[det_mul, h, mul_zero, det_one]`. Conclude with `zero_ne_one this`. Use `⟨hdetM, fun h => ?_⟩` and prove the remaining obligations. Establish `hJ : J * J = 1` using `by simp [hJdef, Formalism.UG.Jpq, fromBlocks_multiply]`. Establish `hPc : Pᴴ = Pᵀ`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i j; simp only [hP, permM, conjTranspose_apply, transpose_apply, of_apply]; split_ifs <;> simp`. Establish `hX : Mᴴ * (Bᴴ * J * B) * M = Pᵀ * J * P`. Rewrite using `[← hPc, ← h2, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hsq : (Pᵀ * J * P) * (Pᵀ * J * P) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (Pᵀ * J * P) * (Pᵀ * J * P) = Pᵀ * J * (P * Pᵀ) * J * P` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[e1, permM_mul_transpose, Matrix.mul_one, Matrix.mul_assoc Pᵀ J J, hJ, Matrix.mul_one, transpose_mul_permM]`. Establish `hd0 : (Bᴴ * J * B).det = 0`. Rewrite using `[h1, det_neg, det_transpose, h, mul_zero]`. Use `congrArg Matrix.det hsq` as an intermediate fact.
-
-Rewrite `this` using `[← hX, det_mul, det_mul, det_mul, hd0]`. Simplify using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_isIdent {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {κ : Type} {p q : κ → ℕ}
     {Ψ : Finset (E →+* ℂ)} {G : Matrix (Fin r) (Fin r) E} {x : Frame Ψ r} {σ : κ ≃ Ψ}

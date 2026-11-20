@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.DualUniv
 
 /- English proof (translation)
-Establish `: IsAffine Z` using `isAffine_of_isAffineHom f`. Establish `h₁ : f.appTop.hom.FaithfullyFlat` using `(Flat.flat_and_surjective_iff_faithfullyFlat_of_isAffine f).1 ⟨inferInstance, inferInstance⟩`. Establish `h₂ : Function.Surjective f.appTop.hom` using `(IsClosedImmersion.isAffine_surjective_of_isAffine f).2`. Establish `h₃ : Function.Bijective f.appTop.hom` using `⟨h₁.injective, h₂⟩`. Establish `: IsIso f.appTop` using `(ConcreteCategory.isIso_iff_bijective _).2 h₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(MorphismProperty.arrow_mk_iso_iff (MorphismProperty.isomorphisms Scheme) (arrowIsoSpecΓOfIsAffine f)).2 (inferInstanceAs (IsIso (Spec.map f.appTop)))`.
+A detailed English derivation is pending.
 -/
 theorem isIso_of_closedImmersion {R : Type} [CommRing R] {Z : Scheme.{0}} (f : Z ⟶ Sp R) [IsClosedImmersion f]
     [Flat f] [Surjective f] : IsIso f := by
@@ -38,9 +38,9 @@ def IsAddCls (A : Over S) [GrpObj A] (m : Pic A.left) : Prop :=
     CechPic.pull (a * a').left m = CechPic.pull a.left m + CechPic.pull a'.left m
 
 /- English proof (translation)
-Take `⟨a₁, a₂⟩` from `GlobalTheory.BirigidLift.additive_pull hf hg h₁ h₂ hd.isLB hP' e hd.add₁ hd.add₂`. Use `⟨hP', a₁, a₂, fun T y hy ↦ ?_, fun k _ _ t ↦ ?_⟩` and prove the remaining obligations. Establish `h0` using `hd.right _ (pushP hg (s := T.hom) rfl y) ((triv_ev_iff hd.isLB _ _).2 (by`. Rewrite using `[← evc_trR hf hg h₁ h₂ hd.isLB hP' e, (triv_ev_iff hP' _ _).1 hy, map_zero]))`. Conclude with `pt_ext hg ((congrArg (fun z ↦ z.left) h0).trans (one_left_comp hg (s := T.hom) rfl).symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.Finite.of_injOn (f := pushP hf (s := t) rfl) (fun x hx ↦ ?_) (fun x _ y _ e ↦ pt_ext hf (congrArg (fun z ↦ z.left) e)) (hd.left k (t ≫ b))` and prove the remaining obligations. Use `(triv_ev_iff hd.isLB _ _).2 ?_` and prove the remaining obligations. Use `evc_trL hf hg h₁ h₂ hd.isLB hP' e (Over.mk t) x` as an intermediate fact. Rewrite `this` using `[(triv_ev_iff hP' _ _).1 hx, map_zero]`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preDual_baseChange {S' : Scheme.{0}} {b : S' ⟶ S} {A B : Over S} [GrpObj A] [GrpObj B] {A' B' : Over S'}
     [GrpObj A'] [GrpObj B'] {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left} {h : (A' ⊗ B').left ⟶ (A ⊗ B).left}
@@ -61,17 +61,15 @@ theorem preDual_baseChange {S' : Scheme.{0}} {b : S' ⟶ S} {A B : Over S} [GrpO
     exact this.symm
 
 /- English proof (translation)
-Establish `hf` using `isGrpPullback_pullback A s`. Establish `hg` using `isGrpPullback_pullback B s`. Take `⟨h, h₁, h₂⟩` from `exists_prod_pullback hf hg`. Establish `hP' : (P.pull h).IsLB` using `pull_isLB hP.isLB h`. Establish `e : LBIso (P.pull h) (P.pull h)` using `(cls_eq_iff hP' hP').1 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `preDual_baseChange hf hg h₁ h₂ hP' e hP`. Establish `hA'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA hf`. Establish `hB'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hB hg`. Take `⟨M, hM, eM⟩` from `cls_surj (CechPic.pull ((fst ((Over.pullback s).obj A) (𝟙_ (Over (Sp k)))).left ≫ pullback.fst A.hom s) m)`. Establish `hadd : IsAdditive M` using `(isAdditive_iff hM).2 fun Y a a' t ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [evc, eM, ← pull_comp, lift_left_fst_assoc]`. Rewrite using `[mul_left_comp hf (s₀ := Y.hom ≫ s) rfl (x := a) (y := a') (x₀ := pushP hf (s := Y.hom) rfl a) (y₀ := pushP hf (s := Y.hom) rfl a') rfl rfl]`. Conclude with `hm _ _ _`. Establish `fin : Set.Finite {x : 𝟙_ (Over (Sp k)) ⟶ (Over.pullback s).obj A | Triv (ev (P.pull h) (toUnit ((Over.pullback s).obj B) ≫ x) (𝟙 ((Over.pullback s).obj B)))}`. Use `(hd.left k (𝟙 _)).subset fun x hx ↦ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(triv_ev_iff hP' _ _).2 ?_` and prove the remaining obligations. Establish `e₂` using `congrArg (CechPic.pull (snd (𝟙_ (Over (Sp k))) ((Over.pullback s).obj B)).left) ((triv_ev_iff hP' _ _).1 hx)`. Rewrite `e₂` using `[pull_evc, map_zero, Category.comp_id, ← Category.assoc, toUnit_unique (snd (𝟙_ (Over (Sp k))) ((Over.pullback s).obj B) ≫ toUnit _) (fst _ _)]`. Conclude with `e₂`. Take `⟨y, hy⟩` from `H3 k _ _ hA' hB' (P.pull h) hP' hd.add₁ hd.add₂ fin M hM hadd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨pushP hg (s := (𝟙_ (Over (Sp k))).hom) rfl y, ?_⟩` and prove the remaining obligations. Establish `c` using `(cls_eq_iff hM (pull_isLB hP' _)).2 hy`. Rewrite using `[← evc_trR hf hg h₁ h₂ hP.isLB hP' e]`. Establish `c' : evc hP' (fst _ _) (snd _ _ ≫ y) = _` using `c.symm.trans eM`. Rewrite using `[c', ← pull_comp]`.
-
-Conclude with `congrArg (fun q ↦ CechPic.pull q m) (trR_fst hf _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point_fibre (H3 : PointSurj) {A B : Over S} [GrpObj A] [GrpObj B] (hA : IsAbelianScheme A)
     (hB : IsAbelianScheme B) {P : LB (A ⊗ B).left} (hP : PreDual A B P) {m : Pic A.left} (hm : IsAddCls A m)
@@ -113,29 +111,27 @@ theorem exists_point_fibre (H3 : PointSurj) {A B : Over S} [GrpObj A] [GrpObj B]
   exact congrArg (fun q ↦ CechPic.pull q m) (trR_fst hf _)
 
 /- English proof (translation)
-Take `⟨N, hN, eN⟩` from `cls_surj (cls P hP.isLB - CechPic.pull (fst A B).left m)`. Establish `ecl : ∀ {Y : Over (Sp C)} (a : Y ⟶ A) (t : Y ⟶ B), evc hN a t = evc hP.isLB a t - CechPic.pull a.left m`. Introduce `Y a t`. Rewrite using `[evc, eN, map_sub, ← pull_comp, lift_left_fst]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `rep : ∀ (T : Over (Sp C)) (y : T ⟶ B), Triv (ev N (fst A T) (snd A T ≫ y)) ↔ evc hP.isLB (fst A T) (snd A T ≫ y) = CechPic.pull (fst A T).left m` using `fun T y ↦ by`. Rewrite using `[triv_ev_iff hN, ecl, sub_eq_zero]`. Establish `h0 : Triv (ev N (1 : B ⟶ A) (𝟙 B))`. Establish `z : CechPic.pull (1 : B ⟶ A).left m = 0`. Use `hm B 1 1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_add.1 this`. Rewrite using `[triv_ev_iff hN, ecl, hP.add₁.evc_one hP.isLB, z, sub_zero]`. Establish `tr` using `GlobalTheory.BirigidLift.triv_right hP.isLB hP.add₂`. Establish `uniq : ∀ (T : Over (Sp C)) (y y' : T ⟶ B), evc hP.isLB (fst A T) (snd A T ≫ y) = CechPic.pull (fst A T).left m → evc hP.isLB (fst A T) (snd A T ≫ y') = CechPic.pull (fst A T).left m → y = y'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T y y' e e'`. Establish `a2` using `(GlobalTheory.BirigidLift.isAdditive_swap_iff hP.isLB).1 hP.add₂`. Establish `k1` using `a2 _ (fst A T) (snd A T ≫ y) (snd A T ≫ y'⁻¹)`. Establish `k2` using `a2 _ (fst A T) (snd A T ≫ y') (snd A T ≫ y'⁻¹)`. Rewrite `k1`, `k2` using `[← MonObj.comp_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `k2` using `[_root_.mul_inv_cancel, MonObj.comp_one, evc_one_right hP.isLB tr]`. Establish `z` using `hP.right T (y * y'⁻¹) ((triv_ev_iff hP.isLB _ _).2 (by rw [k1, e, ← e', ← k2]))`. Conclude with `mul_inv_eq_one.1 z`. Establish `: LocallyOfFiniteType B.hom`. Use `hB.smooth` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `infer_instance`. Establish `: IsLocallyNoetherian B.left` using `LocallyOfFiniteType.isLocallyNoetherian B.hom`. Take `⟨Z, i, hci, hiff⟩` from `H1 _ A B hA ‹_› N hN h0`. Establish `: IsClosedImmersion i.left` using `hci`. Establish `hw : i.left ≫ B.hom = Z.hom` using `Over.w i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hmono : Mono Z.hom` using `⟨fun {W} u v e ↦ by`. Set `u' : Over.mk (u ≫ Z.hom) ⟶ Z` to `Over.homMk u rfl`. Set `v' : Over.mk (u ≫ Z.hom) ⟶ Z` to `Over.homMk v e.symm`. Establish `e₁` using `uniq _ (u' ≫ i) (v' ≫ i) ((rep _ _).1 ((hiff _ _).2 ⟨u', rfl⟩)) ((rep _ _).1 ((hiff _ _).2 ⟨v', rfl⟩))`. Conclude with `(cancel_mono i.left).1 (congrArg (fun q ↦ q.left) e₁)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hprop : IsProper Z.hom`. Use `hB.proper` as an intermediate fact. Rewrite using `[← hw]`. Use `infer_instance`. Establish `hcl : IsClosedImmersion Z.hom` using `(IsClosedImmersion.iff_isProper_and_mono _).2 ⟨hprop, hmono⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hfl : Flat Z.hom` using `H2 _ A B Z g hA gA gB N hN i ⟨hci, hiff⟩ inferInstance`. Establish `hsu : Surjective Z.hom` using `⟨fun c ↦ by`. Set `κ` to `(Sp C).residueField c`. Set `k` to `AlgebraicClosure κ`. Set `s : Sp k ⟶ Sp C` to `Spec.map (CommRingCat.ofHom (algebraMap κ k)) ≫ (Sp C).fromSpecResidueField c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `exists_point_fibre H3 hA hB hP hm k s`. Take `⟨z, rfl⟩` from `(hiff _ y).1 ((rep _ _).2 hy)`. Take `⟨p⟩ : Nonempty (Sp k)` from `inferInstance`. Use `⟨z.left p, ?_⟩` and prove the remaining obligations. Establish `e : z.left ≫ Z.hom = (𝟙_ (Over (Sp k))).hom ≫ s` using `Over.w z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Establish `e' : z.left ≫ Z.hom = s` using `e.trans (Category.id_comp s)`. Rewrite using `[← Scheme.Hom.comp_apply, e']`. Conclude with `(Scheme.Hom.comp_apply _ _ p).trans (Scheme.fromSpecResidueField_apply c _)⟩`. Establish `: IsIso Z.hom` using `isIso_of_closedImmersion Z.hom`. Set `z : Over.mk (𝟙 (Sp C)) ⟶ Z` to `Over.homMk (inv Z.hom) (by simp)`.
-
-Conclude with `⟨z ≫ i, (rep _ _).1 ((hiff _ _).2 ⟨z, rfl⟩)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_section (H1 : TrivLocus) (H2 : TrivLocusFlat) (H3 : PointSurj) {C : Type} [CommRing C]
     [IsNoetherianRing C] (A B : Over (Sp C)) [GrpObj A] [GrpObj B] (g : ℕ) (hA : IsAbelianScheme A)
@@ -206,23 +202,21 @@ theorem exists_section (H1 : TrivLocus) (H2 : TrivLocusFlat) (H3 : PointSurj) {C
   exact ⟨z ≫ i, (rep _ _).1 ((hiff _ _).2 ⟨z, rfl⟩)⟩
 
 /- English proof (translation)
-Introduce `H1 H2 H3 R _ _ A B _ _ g hA hB gA gB P hP C _ _ t M hM hadd`. Establish `hf` using `isGrpPullback_pullback A t`. Establish `hg` using `isGrpPullback_pullback B t`. Take `⟨h, h₁, h₂⟩` from `exists_prod_pullback hf hg`. Establish `hP' : (P.pull h).IsLB` using `pull_isLB hP.isLB h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : LBIso (P.pull h) (P.pull h)` using `(cls_eq_iff hP' hP').1 rfl`. Establish `hd` using `preDual_baseChange hf hg h₁ h₂ hP' e hP`. Establish `hA'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA hf`. Establish `hB'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hB hg`. Establish `gA' : SmoothOfRelativeDimension g ((Over.pullback t).obj A).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hf.1 gA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gB' : SmoothOfRelativeDimension g ((Over.pullback t).obj B).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hg.1 gB`. Set `r : ((Over.pullback t).obj A).left ⟶ (A ⊗ Over.mk t).left` to `Limits.pullback.lift (pullback.fst A.hom t) ((Over.pullback t).obj A).hom hf.1.w`. Establish `r₁ : r ≫ (fst A (Over.mk t)).left = pullback.fst A.hom t` using `Limits.pullback.lift_fst _ _ _`. Establish `r₂ : r ≫ (snd A (Over.mk t)).left = ((Over.pullback t).obj A).hom` using `Limits.pullback.lift_snd _ _ _`. Establish `key : ∀ (Y : Over (Sp C)) (a : Y ⟶ (Over.pullback t).obj A) (a₀ : Over.mk (Y.hom ≫ t) ⟶ A), a.left ≫ pullback.fst A.hom t = a₀.left → CechPic.pull a.left (CechPic.pull r (cls M hM)) = evc hM a₀ (Over.homMk Y.hom rfl : Over.mk (Y.hom ≫ t) ⟶ Over.mk t)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Y a a₀ ea`. Rewrite using `[← pull_comp, evc]`. Use `congrArg (fun q ↦ CechPic.pull q (cls M hM)) (left_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, r₁, lift_left_fst, ea]`. Rewrite using `[Category.assoc, r₂, lift_left_snd]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Over.w a`. Establish `hm : IsAddCls ((Over.pullback t).obj A) (CechPic.pull r (cls M hM))` using `fun Y a a' ↦ by`. Rewrite using `[key Y (a * a') (pushP hf (s := Y.hom) rfl a * pushP hf (s := Y.hom) rfl a') (mul_left_comp hf rfl rfl rfl), key Y a (pushP hf (s := Y.hom) rfl a) rfl, key Y a' (pushP hf (s := Y.hom) rfl a') rfl]`. Conclude with `(isAdditive_iff hM).1 hadd _ _ _ _`. Take `⟨x', hx⟩` from `exists_section H1 H2 H3 _ _ g hA' hB' gA' gB' hd hm`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `wx : x'.left ≫ ((Over.pullback t).obj B).hom = 𝟙 (Sp C)` using `Over.w x'`. Set `x : Over.mk t ⟶ B` to `Over.homMk (x'.left ≫ pullback.fst B.hom t) (by show (x'.left ≫ pullback.fst B.hom t) ≫ B.hom = t`. Rewrite using `[Category.assoc, hg.1.w, ← Category.assoc, wx]`. Conclude with `Category.id_comp t)`. Use `⟨x, (cls_eq_iff hM (pull_isLB hP.isLB _)).1 ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `w : (fst A (Over.mk t)).left ≫ A.hom = (snd A (Over.mk t)).left ≫ t` using `(Over.w (fst A (Over.mk t))).trans (Over.w (snd A (Over.mk t))).symm`. Set `a` to `liftPt hf (snd A (Over.mk t)).left (fst A (Over.mk t)).left w`. Set `τ : Over.mk (snd A (Over.mk t)).left ⟶ Over.mk (𝟙 (Sp C))` to `Over.homMk (snd A (Over.mk t)).left (by simp)`. Establish `ar : a.left ≫ r = 𝟙 _`. Apply `left_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, r₁, Category.id_comp]`. Conclude with `liftPt_left _ _ _ _`. Rewrite using `[Category.assoc, r₂, Category.id_comp]`. Conclude with `Over.w a`. Establish `c` using `congrArg (CechPic.pull (lift a τ).left) hx`.
-
-Rewrite `c` using `[pull_evc, ← pull_comp, lift_left_fst, lift_fst, lift_snd_assoc, evc_eq h₁ h₂ hP.isLB hP' e a (τ ≫ x') (fst A (Over.mk t)) (snd A (Over.mk t) ≫ x) (liftPt_left _ _ _ _) rfl, ← pull_comp, ar]`. Conclude with `(c.trans (pull_id _)).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univNoeth : TrivLocus → TrivLocusFlat → PointSurj → ∀ (R : Type) [CommRing R] [IsNoetherianRing R]
     (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B →

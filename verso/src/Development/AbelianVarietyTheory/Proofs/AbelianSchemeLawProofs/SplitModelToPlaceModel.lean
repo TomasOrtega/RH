@@ -22,20 +22,20 @@ section Ample
 variable {X : Scheme.{0}} {L : LB X}
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.powLB AbLaw.pw`. Simplify using `only [zpow_natCast]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem powLB_eq_pw (L : LB X) (n : ℕ) : IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.powLB L n = AbLaw.pw L n := by
   unfold IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.powLB AbLaw.pw
   simp only [zpow_natCast]
 
 /- English proof (translation)
-The claim follows from `powLB_eq_pw L n ▸ AbLaw.isLB_pw hL n`.
+A detailed English derivation is pending.
 -/
 theorem isLB_powLB (hL : L.IsLB) (n : ℕ) : (IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.powLB L n).IsLB :=
   powLB_eq_pw L n ▸ AbLaw.isLB_pw hL n
 
 /- English proof (translation)
-Use `(cls_eq_iff (isLB_powLB hL n) (isLB_lbPow hL n)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_lbPow hL, ← natCast_zsmul, ← AmpleStabFinite.cls_pw hL]`. Simplify using `only [powLB_eq_pw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lbIso_powLB (hL : L.IsLB) (n : ℕ) : LBIso (IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.powLB L n) (lbPow L n) := by
   refine (cls_eq_iff (isLB_powLB hL n) (isLB_lbPow hL n)).1 ?_
@@ -43,9 +43,9 @@ theorem lbIso_powLB (hL : L.IsLB) (n : ℕ) : LBIso (IndefiniteRowSideFullHecke.
   simp only [powLB_eq_pw]
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.compactSpace, fun x => ?_⟩, fun h => ⟨hL, h.1, fun x => ?_⟩⟩` and prove the remaining obligations. Take `⟨n, hn, s, hs, ha⟩` from `h.exists_affine x`. Take `⟨t, ht⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso (isLB_powLB hL n) (isLB_lbPow hL n) (lbIso_powLB hL n) s`. Conclude with `⟨n, hn, t, ht.ge hs, (congrArg IsAffineOpen ht).mpr ha⟩`. Take `⟨n, hn, s, hs, ha⟩` from `h.2 x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso (isLB_lbPow hL n) (isLB_powLB hL n) (lbIso_powLB hL n).symm s`. Conclude with `⟨n, hn, t, ht.ge hs, ht ▸ ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isAmpleLB_iff (hL : L.IsLB) : GlobalTheory.IsAmpleLB L ↔ IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.IsAmpleLB L := by
   refine ⟨fun h => ⟨h.compactSpace, fun x => ?_⟩, fun h => ⟨hL, h.1, fun x => ?_⟩⟩
@@ -64,12 +64,12 @@ section Conditions
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A] {L : LB A.left}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem rigidified_iff (L : LB A.left) : Out.Rigidified A L ↔ IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.IsRigidified A L := Iff.rfl
 
 /- English proof (translation)
-Use `forall_congr' fun _ => exists_congr fun U => and_congr_right fun _ => ?_` and prove the remaining obligations. Use `(cls_eq_zero_iff (LB.isLB_linComb hL _ _)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[cls_linComb hL, Fin.sum_univ_two]`. Use `show (1 : ℤ) • pull ((A.hom ⁻¹ᵁ U).ι ≫ (GrpObj.inv : A ⟶ A).left) (cls L hL) + (-1 : ℤ) • pull (A.hom ⁻¹ᵁ U).ι (cls L hL) = 0 ↔ _`. Rewrite using `[one_zsmul, neg_one_zsmul, map_sub, sub_eq_add_neg, pull_comp]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sym_iff_locZero (hL : L.IsLB) :
     Out.Sym A L ↔ ∀ s : S, ∃ U : S.Opens, s ∈ U ∧
@@ -82,20 +82,20 @@ theorem sym_iff_locZero (hL : L.IsLB) :
   rw [one_zsmul, neg_one_zsmul, map_sub, sub_eq_add_neg, pull_comp]
 
 /- English proof (translation)
-The claim follows from `(cls_eq_iff (pull_isLB hL _) hL).symm.trans sub_eq_zero.symm`.
+A detailed English derivation is pending.
 -/
 theorem isSymmetric_iff_cls (hL : L.IsLB) :
     IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.IsSymmetric A L ↔ pull (GrpObj.inv : A ⟶ A).left (cls L hL) - cls L hL = 0 :=
   (cls_eq_iff (pull_isLB hL _) hL).symm.trans sub_eq_zero.symm
 
 /- English proof (translation)
-The claim follows from `(sym_iff_locZero A hL).2 fun _ => ⟨⊤, trivial, by rw [(isSymmetric_iff_cls A hL).1 h, map_zero]⟩`.
+A detailed English derivation is pending.
 -/
 theorem sym_of_isSymmetric (hL : L.IsLB) (h : IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.IsSymmetric A L) : Out.Sym A L :=
   (sym_iff_locZero A hL).2 fun _ => ⟨⊤, trivial, by rw [(isSymmetric_iff_cls A hL).1 h, map_zero]⟩
 
 /- English proof (translation)
-Use `⟨fun h => (isSymmetric_iff_cls A hL).2 ?_, sym_of_isSymmetric A hL⟩` and prove the remaining obligations. Establish `e : eSec A ≫ (GrpObj.inv : A ⟶ A).left = eSec A` using `congrArg (fun q => q.left) (GrpObj.one_inv (G := A))`. Establish `key` using `AmpleStabFinite.eq_pull_of_local A.hom (eSec A) (Over.w η[A]) (fun V => AmpleStabFinite.surj_of_isPullback globalFns_holds hA (IsPullback.of_hasPullback _ _)) _ ((sym_iff_locZero A hL).1 h)`. Rewrite using `[key, pull_comp, map_sub, ← pull_comp (eSec A), e, sub_self, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sym_iff (hA : IsAbelianScheme A) (hL : L.IsLB) : Out.Sym A L ↔ IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.IsSymmetric A L := by
   refine ⟨fun h => (isSymmetric_iff_cls A hL).2 ?_, sym_of_isSymmetric A hL⟩
@@ -106,9 +106,9 @@ theorem sym_iff (hA : IsAbelianScheme A) (hL : L.IsLB) : Out.Sym A L ↔ Indefin
   rw [key, pull_comp, map_sub, ← pull_comp (eSec A), e, sub_self, map_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `ZH.isProper_hom_of_relAmple h` as an intermediate fact. Conclude with `⟨this, inferInstance, fun V hV => (isAmpleLB_iff (LB.isLB_pull hL _)).1 (isAmpleLB_of_relAmple A hL h V hV)⟩`. Introduce and unpack `⟨_, -, h⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `relAmple_of_isAmpleLB A hL fun V hV => (isAmpleLB_iff (LB.isLB_pull hL _)).2 (h V hV)`.
+A detailed English derivation is pending.
 -/
 theorem relAmple_iff_isProper_and (hL : L.IsLB) :
     Out.RelAmple A L ↔ IsProper A.hom ∧ IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.IsRelAmple A L := by
@@ -121,13 +121,13 @@ theorem relAmple_iff_isProper_and (hL : L.IsLB) :
     exact relAmple_of_isAmpleLB A hL fun V hV => (isAmpleLB_iff (LB.isLB_pull hL _)).2 (h V hV)
 
 /- English proof (translation)
-The claim follows from `(relAmple_iff_isProper_and A hL).trans (and_iff_right hA)`.
+A detailed English derivation is pending.
 -/
 theorem relAmple_iff (hA : IsProper A.hom) (hL : L.IsLB) : Out.RelAmple A L ↔ IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.IsRelAmple A L :=
   (relAmple_iff_isProper_and A hL).trans (and_iff_right hA)
 
 /- English proof (translation)
-Establish `hΛ : (abelian₂ A L).IsLB` using `LB.isLB_linComb hL _ _`. Use `(cls_eq_zero_iff (pull_isLB hΛ _)).symm.trans ?_` and prove the remaining obligations. Establish `e : cls _ hΛ = lam (cls L hL) (fst A A) (snd A A)` using `cls_cube_two hL _ _ hΛ`. Rewrite using `[cls_pull hΛ, e, pull_lam, whiskerRight_fst, whiskerRight_snd]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem memK_iff_cls (hL : L.IsLB) {T : Over S} (x : T ⟶ A) :
     IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.MemK A L x ↔ lam (cls L hL) (fst T A ≫ x) (snd T A) = 0 := by
@@ -137,15 +137,15 @@ theorem memK_iff_cls (hL : L.IsLB) {T : Over S} (x : T ⟶ A) :
   rw [cls_pull hΛ, e, pull_lam, whiskerRight_fst, whiskerRight_snd]
 
 /- English proof (translation)
-The claim follows from `(translDiff_iff hL x).2 fun _ => ⟨⊤, trivial, fun _ _ _ => by rw [(memK_iff_cls A hL x).1 h, map_zero]⟩`.
+A detailed English derivation is pending.
 -/
 theorem inK_of_memK (hL : L.IsLB) {T : Over S} {x : T ⟶ A} (h : IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.MemK A L x) : UU.InK A L x :=
   (translDiff_iff hL x).2 fun _ => ⟨⊤, trivial, fun _ _ _ => by rw [(memK_iff_cls A hL x).1 h, map_zero]⟩
 
 /- English proof (translation)
-Take `⟨V, hV, H⟩` from `(translDiff_iff hL x).1 h p`. Use `⟨V, hV, (memK_iff_cls A hL _).2 ?_⟩` and prove the remaining obligations. Set `i : Over.mk (V.ι ≫ T.hom) ⟶ T` to `Over.homMk V.ι rfl`. Establish `H'` using `H _ (i ▷ A).left fun y => by`. Establish `e` using `congrArg (fun q => q.left y) (whiskerRight_fst i A)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrArg (· ∈ V) e).mpr ((fst _ A).left y).2`. Rewrite `H'` using `[pull_lam, whiskerRight_fst_assoc, whiskerRight_snd]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_memK_of_inK (hL : L.IsLB) {T : Over S} {x : T ⟶ A} (h : UU.InK A L x) (p : T.left) :
     ∃ V : T.left.Opens, p ∈ V ∧
@@ -159,7 +159,7 @@ theorem exists_memK_of_inK (hL : L.IsLB) {T : Over S} {x : T ⟶ A} (h : UU.InK 
   rwa [pull_lam, whiskerRight_fst_assoc, whiskerRight_snd] at H'
 
 /- English proof (translation)
-Rewrite using `[UU.kTriv_iff_forall]`. Use `⟨fun h T x hx => h T x (inK_of_memK A hL hx), fun h T x hx => ?_⟩` and prove the remaining obligations. Use `Over.OverMorphism.ext (Scheme.hom_ext_of_forall x.left (1 : T ⟶ A).left fun p => ?_)` and prove the remaining obligations. Take `⟨V, hV, H⟩` from `exists_memK_of_inK A hL hx p`. Conclude with `⟨V, hV, congrArg (fun q => q.left) ((h _ _ H).trans (MonObj.comp_one (Over.homMk V.ι rfl : Over.mk (V.ι ≫ T.hom) ⟶ T)).symm)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem kTriv_iff (hL : L.IsLB) : Out.KTriv A L ↔ IndefiniteRowSideFullHecke.PolarizedAbelianVarieties.KTrivial A L := by
   rw [UU.kTriv_iff_forall]

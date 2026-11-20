@@ -9,15 +9,15 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `Function.ne_iff.1 hx`. Establish `hj' : x j ≠ 0` using `hj`. Set `p₀ : Fin n → K` to `Pi.single j (x j)⁻¹`. Establish `hp₀ : p₀ ⬝ᵥ x = 1` using `by simp [p₀, hj']`. Set `p : Fin n → K` to `p₀ - (p₀ ⬝ᵥ y) • φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hpx : p ⬝ᵥ x = 1` using `by simp [p, sub_dotProduct, smul_dotProduct, h0, hp₀]`. Establish `hpy : p ⬝ᵥ y = 0` using `by simp [p, sub_dotProduct, smul_dotProduct, h1]`. Set `f : (Fin n → K) →ₗ[K] K × K` to `((dotProductBilin K K p).prod (dotProductBilin K K φ))`. Establish `hf : ∀ z, f z = (p ⬝ᵥ z, φ ⬝ᵥ z)` using `fun _ => rfl`. Establish `hs : LinearMap.range f = ⊤` using `LinearMap.range_eq_top.2 fun ⟨a, b⟩ => ⟨a • x + b • y, by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hf, dotProduct_add, dotProduct_smul, hpx, hpy, h0, h1]⟩`. Establish `hr` using `LinearMap.finrank_range_add_finrank_ker f`. Rewrite `hr` using `[hs]`. Simplify using `only [finrank_top, Module.finrank_prod, Module.finrank_self, Module.finrank_fin_fun] at hr`. Set `b` to `Module.finBasis K (LinearMap.ker f)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `P : (Fin n → K) →ₗ[K] LinearMap.ker f` to `LinearMap.codRestrict _ (LinearMap.id - (dotProductBilin K K p).smulRight x - (dotProductBilin K K φ).smulRight y) fun z => by`. Simplify using `[LinearMap.mem_ker, hf, dotProduct_sub, dotProduct_smul, hpx, hpy, h0, h1]`. Use `⟨_, Matrix.of fun r k => (b k).1 r, Matrix.of fun k c => b.repr (P (Pi.single c 1)) k, p, by omega, hpx, ?_⟩` and prove the remaining obligations. Use extensionality with `r c`. Establish `e` using `congrArg (fun z : LinearMap.ker f => z.1 r) (b.sum_repr (P (Pi.single c 1)))`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e2 : (P (Pi.single c 1)).1 r = (Pi.single c 1 : Fin n → K) r - p c * x r - φ c * y r`. Simplify using `[P]`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, Finset.sum_apply, SetLike.val_smul, Pi.smul_apply, smul_eq_mul] at e`. Simplify using `only [Matrix.add_apply, Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.of_apply, mul_comm ((b _).1 r), e, e2, Matrix.one_apply, Pi.single_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_frame {K : Type} [Field K] {n : ℕ} (x y : Fin n → K) (φ : Fin n → K) (hx : x ≠ 0) (h0 : φ ⬝ᵥ x = 0)
     (h1 : φ ⬝ᵥ y = 1) : ∃ (m : ℕ) (i : Matrix (Fin n) (Fin m) K) (q : Matrix (Fin m) (Fin n) K) (p : Fin n → K),
@@ -69,7 +69,7 @@ def lineStab (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (x : Fin n → 
     exact this.symm
 
 /- English proof (translation)
-Use `⟨Matrix.GeneralLinearGroup.det β, funext fun i => ?_⟩` and prove the remaining obligations. Establish `: (matHom _ σ J g).1 i ⬝ᵥ (fun j => inclR (AF F) (x j)) = ∑ k : Fin 1, inclR (AF F) (x i) * β.1 k 0` using `congrFun (congrFun h i) 0`. Rewrite `this` using `[Fin.sum_univ_one]`. Rewrite using `[Pi.smul_apply, smul_eq_mul, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_one, mul_comm]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_lineStab {x : Fin n → E} {g : GAd σ J} (β : GL (Fin 1) (AF F ⊗[F] E))
     (h : (matHom _ σ J g).1 * (Matrix.replicateCol (Fin 1) x).map (inclR (AF F)) =
@@ -82,21 +82,19 @@ theorem mem_lineStab {x : Fin n → E} {g : GAd σ J} (β : GL (Fin 1) (AF F ⊗
   exact this
 
 /- English proof (translation)
-Establish `hφ : (fun i => σ (x i)) ᵥ* J ≠ 0` using `fun h => hx (funext fun i => σ.injective (by`. Use `Matrix.eq_zero_of_vecMul_eq_zero hJ.2 h` as an intermediate fact. Simplify using `using congrFun this i))`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hφ`. Establish `hj' : ((fun i => σ (x i)) ᵥ* J) j ≠ 0` using `hj`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, i, q, p, hn, hp, hsum⟩` from `exists_frame x (Pi.single j (((fun i => σ (x i)) ᵥ* J) j)⁻¹) _ hx h0 (by simp [hj'])`. Use `set y : Fin n → E := Pi.single j (((fun i => σ (x i)) ᵥ* J) j)⁻¹ with hy`. Establish `hp' : Matrix.replicateRow (Fin 1) p * Matrix.replicateCol (Fin 1) x = 1`. Use extensionality with `a b`. Rewrite using `[Subsingleton.elim a b, Matrix.one_apply_eq, ← hp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hrow : ((Matrix.replicateCol (Fin 1) x).map σ)ᵀ * J = Matrix.replicateRow (Fin 1) ((fun i => σ (x i)) ᵥ* J)`. Use extensionality with `a b`. Both sides reduce to the same expression. Break down `hsi with ⟨⟨τ⟩⟩ | ⟨w, hw⟩` into its components or cases.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨B, lv, hB⟩` from `GlobalTheory.Core.Rk.IwFlagSplit.exists_flag_basis (v := v) τ hJ (e := Matrix.replicateCol (Fin 1) x) (e' := Matrix.replicateCol (Fin 1) y) (i := i) (p := Matrix.replicateRow (Fin 1) p) (q := q) (Fintype.equivOfCardEq (by simp; omega)) (by rw [hrow, ← hsum]; ext a b; simp [Matrix …`. Express the relevant statement in the definitionally equal form `_ ⬝ᵥ y = 1`. Simplify using `[hy, hj'])`. Use `GlobalTheory.Core.Rk.IwFlagSplit.iwasawa_of_triangular hσ hJ τ L hL ((lineStab σ J x).comap (emb σ J v)) B lv (fun g hg => ?_) g` and prove the remaining obligations. Take `⟨⟨a, ha⟩, a', ha'⟩` from `hB g hg`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpA : (Matrix.replicateRow (Fin 1) p).map (inclR (F` using `F) (AF F)) * (Matrix.replicateCol (Fin 1) x).map (inclR (F := F) (AF F)) = 1 := by`. Rewrite using `[← Matrix.map_mul, hp', Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h1` using `GlobalTheory.Core.Rk.IwFlagSplit.emb_keeps hσ τ g hpA rfl ha ha'`. Rewrite using `[Subgroup.mem_comap]`. Generalize the expression as in `emb σ J v g = z at h1 ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Use `set X := (Matrix.replicateCol (Fin 1) x).map (inclR (F := F) (AF F))`. Use `set P := (Matrix.replicateRow (Fin 1) p).map (inclR (F := F) (AF F))`. Establish `h2 : (P * ((matHom _ σ J z⁻¹).1 * X)) * (P * ((matHom _ σ J z).1 * X)) = 1`. Rewrite using `[Matrix.mul_assoc P, Matrix.mul_assoc (matHom _ σ J z⁻¹).1, ← h1, ← Matrix.mul_assoc (matHom _ σ J z⁻¹).1, map_inv, Units.inv_mul, Matrix.one_mul, hpA]`. Conclude with `mem_lineStab ⟨_, _, mul_eq_one_comm.1 h2, h2⟩ h1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Take `⟨q', k, ⟨β, hβ⟩, hk, e⟩` from `GlobalTheory.InertIwasawaIso.exists_of_inert hσ hc hJ hw hv hL hp' (by`. Express the relevant statement in the definitionally equal form `((Matrix.replicateCol (Fin 1) x).map σ)ᵀ * J * _ = 0`. Rewrite using `[hrow]`. Use extensionality with `a b`. Conclude with `h0) g`.
-
-Conclude with `⟨q', k, mem_lineStab β hβ, hk, e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem core (hσ : IsCMExt F E σ) {c : 𝓞 E} (hc : (c : E) + σ c = 1) (hJ : IsHermND σ J)
     (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] (hv : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal.UnramAt F E v)

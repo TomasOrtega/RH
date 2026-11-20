@@ -28,7 +28,7 @@ noncomputable def shapiroCochainsHomotopyEquiv (B : Rep.{u} k S) :
         (HomotopyEquiv.ofIso (inhomogeneousCochainsIso (coind S.subtype B)).symm)))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(freeLiftLEquiv k G (Fin n → G) (coind S.subtype B) (resCoindHomEquiv.{u} S.subtype _ B ((barHomotopyEquiv (k := k) S).inv.f n ≫ (freeLiftLEquiv k S (Fin n → S) B).symm x)) v).1 g = _`. Use `erw [resCoindToHom_hom_apply_coe]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma shapiroCochains_hom_f_apply (B : Rep.{u} k S) (n : ℕ) (x : (Fin n → S) → B)
     (v : Fin n → G) (g : G) :
@@ -46,7 +46,7 @@ noncomputable def trivialToInvariant (B : Rep.{u} k S) (c : B) (hc : ∀ s : S, 
   Rep.ofHom ⟨LinearMap.toSpanSingleton k B c, fun s => by ext; simp [hc]⟩
 
 /- English proof (translation)
-Use `free_ext _ _ _ _ _ fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (trivialToInvariant S B c hc).hom (((barResolution k S).π.f 0).hom (Finsupp.single i (MonoidAlgebra.single 1 1)))`. Rewrite using `[barResolution_π_f_zero_single]`. Simplify using `[trivialToInvariant]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma freeLift_const_eq (B : Rep.{u} k S) (c : B) (hc : ∀ s : S, B.ρ s c = c) :
     freeLift k S B (fun _ : Fin 0 → S => c) =
@@ -58,9 +58,9 @@ lemma freeLift_const_eq (B : Rep.{u} k S) (c : B) (hc : ∀ s : S, B.ρ s c = c)
   simp [trivialToInvariant]
 
 /- English proof (translation)
-Rewrite using `[shapiroCochains_hom_f_apply, freeLift_const_eq S B c hc]`. Establish `h` using `ProjectiveResolution.lift_commutes_zero (𝟙 (Rep.trivial k S k)) (resBarResolution (k := k) S) (barResolution k S)`. Establish `h3` using `congrArg (fun φ => φ.hom (Finsupp.single v (MonoidAlgebra.single g (1 : k)))) h`. Simplify using `at h3`. Express the relevant statement in the definitionally equal form `(trivialToInvariant S B c hc).hom (((barResolution k S).π.f 0).hom (((barHomotopyEquiv (k := k) S).inv.f 0).hom (Finsupp.single v (MonoidAlgebra.single g 1)))) = c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Use `erw [h3]`. Simplify using `only [trivialToInvariant]`. Establish `h4` using `barResolution_π_f_zero_single (k := k) v g 1`. Express the relevant statement in the definitionally equal form `(show k from ((barResolution k G).π.f 0).hom (Finsupp.single v (MonoidAlgebra.single g 1))) • c = c`. Rewrite using `[h4, one_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma shapiroCochains_hom_f_zero_const (B : Rep.{u} k S) (c : B) (hc : ∀ s : S, B.ρ s c = c)
     (v : Fin 0 → G) (g : G) :
@@ -117,7 +117,7 @@ noncomputable def toResCoind (B : Rep.{u} k S) : B ⟶ res S.subtype (coind S.su
 open scoped Classical in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(if h : x ∈ S then B.ρ ⟨x, h⟩ else 0) b = _`. Apply the tactic sequence `split_ifs <;> rfl`.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma toResCoind_apply (B : Rep.{u} k S) (b : B) (x : G) :
     ((toResCoind S B).hom b).1 x = if h : x ∈ S then B.ρ ⟨x, h⟩ b else 0 := by
@@ -129,9 +129,9 @@ variable [Fintype G] [Fintype S]
 open scoped Classical in
 
 /- English proof (translation)
-Rewrite using `[show (∑ h : G, ((toResCoind S B).hom b).1 (g * h)) = ∑ h : G, ((toResCoind S B).hom b).1 h from Fintype.sum_equiv (Equiv.mulLeft g) _ _ fun h => rfl]`. Use `(Finset.sum_congr rfl fun h _ => toResCoind_apply S B b h).trans ?_` and prove the remaining obligations. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun h : G => h ∈ S)]`. Establish `h0 : ∑ h : {x // ¬ x ∈ S}, (if hh : (h : G) ∈ S then B.ρ ⟨h, hh⟩ b else 0) = 0` using `Finset.sum_eq_zero fun h _ => dif_neg h.2`. Rewrite using `[h0, add_zero, Representation.norm, LinearMap.sum_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr (by convert rfl) fun h _ => dif_pos h.2`.
+A detailed English derivation is pending.
 -/
 lemma sum_toResCoind (B : Rep.{u} k S) (b : B) (g : G) :
     ∑ h : G, ((toResCoind S B).hom b).1 (g * h) = B.ρ.norm b := by
@@ -146,11 +146,11 @@ lemma sum_toResCoind (B : Rep.{u} k S) (b : B) (g : G) :
   exact Finset.sum_congr (by convert rfl) fun h _ => dif_pos h.2
 
 /- English proof (translation)
-Use `ModuleCat.hom_ext (Finsupp.lhom_ext fun v b => ?_)` and prove the remaining obligations. Use `funext fun w => Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `e1 : ((tateComplexConnectData B).d₀).hom (Finsupp.single v b) = fun _ => B.ρ.norm b`. Simplify using `[Rep.tateNorm_eq]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `e2 : ((tateComplexConnectData (coind S.subtype B)).d₀).hom (((chainsMap S.subtype (toResCoind S B)).f 0).hom (Finsupp.single v b)) = fun _ => (coind S.subtype B).ρ.norm ((toResCoind S B).hom b)`. Rewrite using `[chainsMap_f_single]`. Simplify using `[Rep.tateNorm_eq]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(((tateComplexConnectData (coind S.subtype B)).d₀).hom (((chainsMap S.subtype (toResCoind S B)).f 0).hom (Finsupp.single v b)) w).1 g = (((shapiroCochainsHomotopyEquiv S B).hom.f 0).hom (((tateComplexConnectData B).d₀).hom (Finsupp.single v b)) w).1 g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e1, e2, shapiroCochains_hom_f_zero_const S B _ (fun s => ρ_apply_norm B b s), Representation.norm, LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]`. Conclude with `sum_toResCoind S B b g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma shapiro_comm_zero (B : Rep.{u} k S) :
     (chainsMap S.subtype (toResCoind S B)).f 0 ≫ (tateComplexConnectData (coind S.subtype B)).d₀ =
@@ -188,9 +188,7 @@ noncomputable def tateShapiroMap (B : Rep.{u} k S) :
 omit [Fintype G] [Fintype S] in
 
 /- English proof (translation)
-Use extensionality with `b : 3`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(φ.hom (((toResCoind S B).hom b).1 x)) = ((toResCoind S B').hom (φ.hom b)).1 x`. Rewrite using `[toResCoind_apply, toResCoind_apply]`. Use `split_ifs with hx`.
-
-Conclude with `hom_comm_apply φ _ _`. Conclude with `map_zero _`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma toResCoind_naturality {B B' : Rep.{u} k S} (φ : B ⟶ B') :
     toResCoind S B ≫ (resFunctor S.subtype).map (coindMap S.subtype φ) = φ ≫ toResCoind S B' := by
@@ -206,7 +204,7 @@ lemma toResCoind_naturality {B B' : Rep.{u} k S} (φ : B ⟶ B') :
 omit [Fintype G] [Fintype S] in
 
 /- English proof (translation)
-The claim follows from `free_ext _ _ _ _ _ fun i => by simp`.
+A detailed English derivation is pending.
 -/
 lemma freeLift_comp_hom {H : Type u} [Group H] {B B' : Rep.{u} k H} (φ : B ⟶ B') {α : Type u}
     (x : α → B) : freeLift k H B x ≫ φ = freeLift k H B' (fun a => φ.hom (x a)) :=
@@ -215,7 +213,7 @@ lemma freeLift_comp_hom {H : Type u} [Group H] {B B' : Rep.{u} k H} (φ : B ⟶ 
 omit [Fintype G] [Fintype S] in
 
 /- English proof (translation)
-Use extensionality with `n x : 3`. Use `funext fun v => Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.hom ((((shapiroCochainsHomotopyEquiv S B).hom.f n).hom x v).1 g) = (((shapiroCochainsHomotopyEquiv S B').hom.f n).hom (fun a => φ.hom (x a)) v).1 g`. Rewrite using `[shapiroCochains_hom_f_apply, shapiroCochains_hom_f_apply, ← freeLift_comp_hom]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma shapiroCochains_naturality {B B' : Rep.{u} k S} (φ : B ⟶ B') :
     (shapiroCochainsHomotopyEquiv S B).hom ≫ cochainsMap (MonoidHom.id G) (coindMap S.subtype φ) =
@@ -228,9 +226,7 @@ lemma shapiroCochains_naturality {B B' : Rep.{u} k S} (φ : B ⟶ B') :
   rfl
 
 /- English proof (translation)
-Use extensionality with `(m | m) : 1`. Conclude with `congrArg (fun f => f.f m) (shapiroCochains_naturality S φ)`. Express the relevant statement in the definitionally equal form `(chainsMap S.subtype (toResCoind S B) ≫ chainsMap (MonoidHom.id G) (coindMap S.subtype φ)).f m = (chainsMap (MonoidHom.id S) φ ≫ chainsMap S.subtype (toResCoind S B')).f m`. Rewrite using `[← chainsMap_comp, ← chainsMap_comp]`. Establish `h1 : (MonoidHom.id G).comp S.subtype = S.subtype.comp (MonoidHom.id S)` using `by ext; rfl`.
-
-Conclude with `congrArg (fun f => f.f m) (chainsMap_congr h1 (congrArg (fun f => f.hom.toLinearMap) (toResCoind_naturality S φ)))`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma tateShapiroMap_naturality {B B' : Rep.{u} k S} (φ : B ⟶ B') :
     tateShapiroMap S B ≫ tateComplex.map (coindMap S.subtype φ) =
@@ -253,7 +249,7 @@ section Homology
 variable {k G : Type u} [CommRing k] [Group G] (S : Subgroup G) [Fintype G] [Fintype S]
 
 /- English proof (translation)
-Rewrite using `[tateShapiroMap, CochainComplex.ConnectData.homologyMap_map_of_eq_succ _ _ _ _ _ n (n : ℤ) rfl]`. Establish `: IsIso (HomologicalComplex.homologyMap (shapiroCochainsHomotopyEquiv S B).hom n)` using `(inferInstance : IsIso ((shapiroCochainsHomotopyEquiv S B).toHomologyIso n).hom)`. Use `infer_instance`. Use the proof step `@[simps]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma isIso_homologyMap_tateShapiroMap_of_pos (B : Rep.{u} k S) (n : ℕ) [NeZero n] :
     IsIso (HomologicalComplex.homologyMap (tateShapiroMap S B) (n : ℤ)) := by
@@ -276,7 +272,7 @@ noncomputable def tateShapiroMapShortComplex (X : ShortComplex (Rep.{u} k S)) :
 omit [Fintype S] in
 
 /- English proof (translation)
-Establish `: (coindFunctor k S.subtype).IsRightAdjoint` using `(Rep.resCoindAdjunction.{u, u} k S.subtype).isRightAdjoint`. Establish `: (coindFunctor k S.subtype).IsLeftAdjoint` using `(Rep.coindResAdjunction k S).isLeftAdjoint`. Use `hX.mono_f` as an intermediate fact. Use `hX.epi_g` as an intermediate fact. Conclude with `hX.map (coindFunctor k S.subtype)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma shortExact_map_coindFunctor {X : ShortComplex (Rep.{u} k S)} (hX : X.ShortExact) :
     (X.map (coindFunctor k S.subtype)).ShortExact := by
@@ -289,7 +285,7 @@ lemma shortExact_map_coindFunctor {X : ShortComplex (Rep.{u} k S)} (hX : X.Short
   exact hX.map (coindFunctor k S.subtype)
 
 /- English proof (translation)
-The claim follows from `HomologicalComplex.HomologySequence.δ_naturality (tateShapiroMapShortComplex S X) (TateCohomology.map_tateComplexFunctor_shortExact hX) (TateCohomology.map_tateComplexFunctor_shortExact (shortExact_map_coindFunctor S hX)) n (n + 1) rfl`.
+A detailed English derivation is pending.
 -/
 lemma tateShapiroMap_δ {X : ShortComplex (Rep.{u} k S)} (hX : X.ShortExact) (n : ℤ) :
     TateCohomology.δ hX n ≫ HomologicalComplex.homologyMap (tateShapiroMap S X.X₁) (n + 1) =
@@ -312,13 +308,13 @@ noncomputable def coindNormLift (M : Rep.{u} k S) (φ : M.V →ₗ[k] M.V) :
     (LinearMap.proj (1 : G) ∘ₗ (Representation.coindV S.subtype M.ρ).subtype)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Express the relevant statement in the definitionally equal form `∑ g : G, ((toResCoind S M).hom (φ (f.1 (1 * g⁻¹)))).1 (x * g) = f.1 x`. Establish `step : ∀ g : G, ((toResCoind S M).hom (φ (f.1 (1 * g⁻¹)))).1 (x * g) = if h : x * g ∈ S then M.ρ ⟨x * g, h⟩ (φ (f.1 g⁻¹)) else 0` using `fun g => by`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[toResCoind_apply, one_mul]`. Rewrite using `[Finset.sum_congr rfl fun g _ => step g]`. Rewrite using `[show (∑ g : G, if h : x * g ∈ S then M.ρ ⟨x * g, h⟩ (φ (f.1 g⁻¹)) else 0) = ∑ h : G, if hh : h ∈ S then M.ρ ⟨h, hh⟩ (φ (f.1 (h⁻¹ * x))) else 0 from Fintype.sum_equiv (Equiv.mulLeft x) _ _ fun g => by`. Simplify using `only [Equiv.coe_mulLeft, mul_inv_rev, inv_mul_cancel_right]]`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun h : G => h ∈ S)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∑ h : {y // ¬ y ∈ S}, (if hh : (h : G) ∈ S then M.ρ ⟨h, hh⟩ (φ (f.1 ((h : G)⁻¹ * x))) else 0) = 0` using `Finset.sum_eq_zero fun h _ => dif_neg h.2`. Rewrite using `[h0, add_zero]`. Use `conv_rhs => rw [← hφ (f.1 x)]`. Use `Finset.sum_congr (by convert rfl) fun s _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos s.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Conclude with `f.2 s⁻¹ x`.
+A detailed English derivation is pending.
 -/
 lemma sum_coindNormLift (M : Rep.{u} k S) (φ : M.V →ₗ[k] M.V)
     (hφ : ∀ m : M, ∑ s : S, M.ρ s (φ (M.ρ s⁻¹ m)) = m) (f : coind S.subtype M) :
@@ -348,7 +344,7 @@ lemma sum_coindNormLift (M : Rep.{u} k S) (φ : M.V →ₗ[k] M.V)
   exact f.2 s⁻¹ x
 
 /- English proof (translation)
-The claim follows from `tateAcyclic_of_sum_eq _ (coindNormLift S M φ) (sum_coindNormLift S M φ hφ)`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_coind_of_sum_eq (M : Rep.{u} k S) (φ : M.V →ₗ[k] M.V)
     (hφ : ∀ m : M, ∑ s : S, M.ρ s (φ (M.ρ s⁻¹ m)) = m) : TateAcyclic (coind S.subtype M) :=
@@ -357,9 +353,9 @@ theorem tateAcyclic_coind_of_sum_eq (M : Rep.{u} k S) (φ : M.V →ₗ[k] M.V)
 omit [Fintype G] in
 
 /- English proof (translation)
-Introduce `b`. Use `⟨⟨Pi.single (1 : S) b, fun t y => ?_⟩, ?_⟩` and prove the remaining obligations. Take `rfl : t = 1` from `Subsingleton.elim _ _`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(fromCoindRes B LinearMap.id).hom.toLinearMap ⟨Pi.single (1 : S) b, _⟩ = b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [fromCoindRes, Rep.hom_ofHom, LinearMap.sum_apply, LinearMap.comp_apply]`. Express the relevant statement in the definitionally equal form `∑ x : S, B.ρ x⁻¹ ((Pi.single (1 : S) b : S → (B : Type u)) x) = b`. Rewrite using `[Fintype.sum_eq_single 1 fun x hx => by simp [hx]]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma fromCoindRes_id_surjective (B : Rep.{u} k S) :
     Function.Surjective (fromCoindRes B LinearMap.id).hom := by
@@ -381,7 +377,7 @@ noncomputable abbrev coindBotShiftShortComplex (B : Rep.{u} k S) : ShortComplex 
 omit [Fintype G] in
 
 /- English proof (translation)
-Establish `: Epi (fromCoindRes B LinearMap.id)` using `(Rep.epi_iff_surjective _).2 (fromCoindRes_id_surjective S B)`. Conclude with `{ exact := ShortComplex.exact_of_f_is_kernel _ (kernelIsKernel _) }`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma coindBotShiftShortComplex_shortExact (B : Rep.{u} k S) :
     (coindBotShiftShortComplex S B).ShortExact := by
@@ -390,15 +386,15 @@ lemma coindBotShiftShortComplex_shortExact (B : Rep.{u} k S) :
   exact { exact := ShortComplex.exact_of_f_is_kernel _ (kernelIsKernel _) }
 
 /- English proof (translation)
-It suffices to establish `h : ∀ m : ℕ, ∀ B : Rep.{u} k S, IsIso (HomologicalComplex.homologyMap (tateShapiroMap S B) (1 - m)) by`. Break down `le_or_gt n 1 with hn | hn` into its components or cases. Take `⟨m, rfl⟩ : ∃ m : ℕ, n = 1 - m` from `⟨(1 - n).toNat, by omega⟩`. Conclude with `h m B`. Take `⟨m, rfl⟩ : ∃ m : ℕ, n = ((m + 1 : ℕ) : ℤ)` from `⟨(n - 1).toNat, by omega⟩`.
+Reduce the argument to an intermediate assertion. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isIso_homologyMap_tateShapiroMap_of_pos S B (m + 1)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `B`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify using `using isIso_homologyMap_tateShapiroMap_of_pos S B 1`. Consider the case `succ m ih`. Introduce `B`. Establish `hX` using `coindBotShiftShortComplex_shortExact S B`. Establish `e : (1 - ((m + 1 : ℕ) : ℤ)) + 1 = 1 - (m : ℤ)` using `by push_cast; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : IsIso (HomologicalComplex.homologyMap (tateShapiroMap S (coindBotShiftShortComplex S B).X₁) ((1 - ((m + 1 : ℕ) : ℤ)) + 1))`. Rewrite using `[e]`. Conclude with `ih _`. Establish `hδ1` using `isIso_δ_of_tateAcyclic hX (tateAcyclic_coind_bot _) (1 - ((m + 1 : ℕ) : ℤ))`. Establish `hδ2` using `isIso_δ_of_tateAcyclic (shortExact_map_coindFunctor S hX) (tateAcyclic_coind_of_sum_eq S _ _ (sum_coindBotProj _)) (1 - ((m + 1 : ℕ) : ℤ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `tateShapiroMap_δ S hX (1 - ((m + 1 : ℕ) : ℤ))`. Establish `h4 : IsIso (TateCohomology.δ hX (1 - ((m + 1 : ℕ) : ℤ)) ≫ HomologicalComplex.homologyMap (tateShapiroMap S (coindBotShiftShortComplex S B).X₁) ((1 - ((m + 1 : ℕ) : ℤ)) + 1))` using `@IsIso.comp_isIso _ _ _ _ _ _ _ hδ1 h1`. Rewrite `h4` using `[key]`. Conclude with `@IsIso.of_isIso_comp_right _ _ _ _ _ _ _ hδ2 h4`.
+A detailed English derivation is pending.
 -/
 theorem isIso_homologyMap_tateShapiroMap (B : Rep.{u} k S) (n : ℤ) :
     IsIso (HomologicalComplex.homologyMap (tateShapiroMap S B) n) := by
@@ -464,14 +460,14 @@ noncomputable def tateCoindIso (B : Rep.{u} k S) (n : ℤ) :
   (tateCoindNatIso S n).app B
 
 /- English proof (translation)
-The claim follows from `(asIso (HomologicalComplex.homologyMap (tateShapiroMap S B) n)).hom_inv_id`.
+A detailed English derivation is pending.
 -/
 lemma homologyMap_tateShapiroMap_comp_tateCoindIso_hom (B : Rep.{u} k S) (n : ℤ) :
     HomologicalComplex.homologyMap (tateShapiroMap S B) n ≫ (tateCoindIso S B n).hom = 𝟙 _ :=
   (asIso (HomologicalComplex.homologyMap (tateShapiroMap S B) n)).hom_inv_id
 
 /- English proof (translation)
-The claim follows from `(tateCoindNatIso S n).hom.naturality f`.
+A detailed English derivation is pending.
 -/
 theorem tateCoindIso_naturality {B B' : Rep.{u} k S} (f : B ⟶ B') (n : ℤ) :
     (tateCohomologyFunctor n).map (coindMap S.subtype f) ≫ (tateCoindIso S B' n).hom =
@@ -479,9 +475,9 @@ theorem tateCoindIso_naturality {B B' : Rep.{u} k S} (f : B ⟶ B') (n : ℤ) :
   (tateCoindNatIso S n).hom.naturality f
 
 /- English proof (translation)
-Establish `key` using `tateShapiroMap_δ S hX n`. Use `(cancel_epi (HomologicalComplex.homologyMap (tateShapiroMap S X.X₃) n)).1 ?_` and prove the remaining obligations. Use `((Category.assoc _ _ _).symm.trans ?_).trans (Category.assoc _ _ _)` and prove the remaining obligations. Use `(congrArg (· ≫ (tateCoindIso S X.X₁ (n + 1)).hom) key.symm).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (TateCohomology.δ hX n ≫ ·) (homologyMap_tateShapiroMap_comp_tateCoindIso_hom S X.X₁ (n + 1))).trans ?_` and prove the remaining obligations. Use `(Category.comp_id _).trans ?_` and prove the remaining obligations. Conclude with `((congrArg (· ≫ TateCohomology.δ hX n) (homologyMap_tateShapiroMap_comp_tateCoindIso_hom S X.X₃ n)).trans (Category.id_comp _)).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tateCoindIso_δ {X : ShortComplex (Rep.{u} k S)} (hX : X.ShortExact) (n : ℤ) :
     TateCohomology.δ (shortExact_map_coindFunctor S hX) n ≫ (tateCoindIso S X.X₁ (n + 1)).hom =
@@ -515,7 +511,7 @@ noncomputable def tateIndIso (B : Rep.{u} k S) (n : ℤ) :
   (tateIndNatIso S n).app B
 
 /- English proof (translation)
-The claim follows from `(tateIndNatIso S n).hom.naturality f`.
+A detailed English derivation is pending.
 -/
 theorem tateIndIso_naturality {B B' : Rep.{u} k S} (f : B ⟶ B') (n : ℤ) :
     (tateCohomologyFunctor n).map ((indFunctor k S.subtype).map f) ≫ (tateIndIso S B' n).hom =
@@ -525,7 +521,7 @@ theorem tateIndIso_naturality {B B' : Rep.{u} k S} (f : B ⟶ B') (n : ℤ) :
 omit [Fintype S] in
 
 /- English proof (translation)
-Establish `: (indFunctor k S.subtype).IsLeftAdjoint` using `(Rep.indResAdjunction k S.subtype).isLeftAdjoint`. Establish `: (indFunctor k S.subtype).IsRightAdjoint` using `(Rep.resIndAdjunction k S).isRightAdjoint`. Use `hX.mono_f` as an intermediate fact. Use `hX.epi_g` as an intermediate fact. Conclude with `hX.map (indFunctor k S.subtype)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma shortExact_map_indFunctor {X : ShortComplex (Rep.{u} k S)} (hX : X.ShortExact) :
     (X.map (indFunctor k S.subtype)).ShortExact := by
@@ -538,9 +534,9 @@ lemma shortExact_map_indFunctor {X : ShortComplex (Rep.{u} k S)} (hX : X.ShortEx
   exact hX.map (indFunctor k S.subtype)
 
 /- English proof (translation)
-Establish `h1` using `TateCohomology.δ_naturality (shortExact_map_indFunctor S hX) (shortExact_map_coindFunctor S hX) (X.mapNatTrans (indCoindNatIso k S).hom) n`. Establish `h2` using `tateCoindIso_δ S hX n`. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (· ≫ (tateCoindIso S X.X₁ (n + 1)).hom) h1).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (_ ≫ ·) h2).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tateIndIso_δ {X : ShortComplex (Rep.{u} k S)} (hX : X.ShortExact) (n : ℤ) :
     TateCohomology.δ (shortExact_map_indFunctor S hX) n ≫ (tateIndIso S X.X₁ (n + 1)).hom =

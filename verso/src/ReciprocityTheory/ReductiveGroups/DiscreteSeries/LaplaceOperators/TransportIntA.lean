@@ -19,7 +19,7 @@ def extL {n : ℕ} (p : Fin n → Prop) [DecidablePred p] : ({i // p i} → ℂ)
     by_cases h : p i <;> simp [h]
 
 /- English proof (translation)
-Introduce `v w h`. Use function extensionality and compare the values at `j`. Establish `hj` using `congrFun h j.1`. Simplify `hj` using `[extL, j.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem extL_injective {n : ℕ} (p : Fin n → Prop) [DecidablePred p] : Function.Injective (extL p) := by
   intro v w h
@@ -28,14 +28,14 @@ theorem extL_injective {n : ℕ} (p : Fin n → Prop) [DecidablePred p] : Functi
   simpa [extL, j.2] using hj
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_conj {n : ℕ} (Q J : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ) :
     star (Q *ᵥ x) ⬝ᵥ (J *ᵥ (Q *ᵥ x)) = star x ⬝ᵥ ((Qᴴ * J * Q) *ᵥ x) := by
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Formalism.REAL.Jm, Matrix.mulVec_diagonal]`. Apply the tactic sequence `by_cases h : ε i = true <;> simp [extL, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_ext_pos {n : ℕ} (ε : Fin n → Bool) (v : {i // ε i = true} → ℂ) :
     Formalism.REAL.Jm ε *ᵥ extL (fun i => ε i = true) v = extL (fun i => ε i = true) v := by
@@ -44,7 +44,7 @@ theorem jm_ext_pos {n : ℕ} (ε : Fin n → Bool) (v : {i // ε i = true} → �
   by_cases h : ε i = true <;> simp [extL, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Formalism.REAL.Jm, Matrix.mulVec_diagonal]`. Apply the tactic sequence `by_cases h : ε i = false <;> simp [extL, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_ext_neg {n : ℕ} (ε : Fin n → Bool) (v : {i // ε i = false} → ℂ) :
     Formalism.REAL.Jm ε *ᵥ extL (fun i => ε i = false) v = -extL (fun i => ε i = false) v := by
@@ -53,9 +53,9 @@ theorem jm_ext_neg {n : ℕ} (ε : Fin n → Bool) (v : {i // ε i = false} → 
   by_cases h : ε i = false <;> simp [extL, h]
 
 /- English proof (translation)
-Unfold `pOf qOf`. Rewrite using `[← Finset.card_union_of_disjoint (Finset.disjoint_filter.2 fun a _ h1 h2 => by simp_all)]`. Establish `hu : (Finset.univ.filter fun a => η a = true) ∪ (Finset.univ.filter fun a => η a = false) = Finset.univ`. Use extensionality with `a`. Apply the tactic sequence `cases h : η a <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hu, Finset.card_univ, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pq_lemma {n : ℕ} (η : Fin n → Bool) : pOf η + qOf η = n := by
   classical
@@ -68,25 +68,25 @@ private theorem pq_lemma {n : ℕ} (η : Fin n → Bool) : pOf η + qOf η = n :
   rw [hu, Finset.card_univ, Fintype.card_fin]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Set `f1 : ({i // ε' i = true} → ℂ) →ₗ[ℂ] (Fin n → ℂ)` to `Q.mulVecLin ∘ₗ extL (fun i => ε' i = true)`. Set `f2` to `extL (fun i : Fin n => ε i = false)`. Establish `hpos : ∀ u, extL (fun i => ε' i = true) u ≠ 0 → 0 < star (Q *ᵥ extL (fun i => ε' i = true) u) ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ (Q *ᵥ extL (fun i => ε' i = true) u))`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Rewrite using `[form_conj, hQ, jm_ext_pos]`. Conclude with `Matrix.dotProduct_star_self_pos_iff.2 hu`. Establish `hf1 : Function.Injective f1`. Rewrite using `[injective_iff_map_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `u hu`. Assume the negation of the conclusion as `hne`. Establish `hz : extL (fun i => ε' i = true) u ≠ 0` using `fun h => hne (extL_injective _ (by rw [h, map_zero]))`. Establish `h` using `hpos u hz`. Establish `hu' : Q *ᵥ extL (fun i => ε' i = true) u = 0` using `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hu']`. Simplify using `at h`. Establish `hf2 : Function.Injective f2` using `extL_injective _`. Establish `hr1 : Module.finrank ℂ (LinearMap.range f1) = pOf ε'`. Rewrite using `[LinearMap.finrank_range_of_inj hf1, Module.finrank_fintype_fun_eq_card, Fintype.card_subtype]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hr2 : Module.finrank ℂ (LinearMap.range f2) = qOf ε`. Rewrite using `[LinearMap.finrank_range_of_inj hf2, Module.finrank_fintype_fun_eq_card, Fintype.card_subtype]`. Both sides reduce to the same expression. Establish `hpq` using `pq_lemma ε`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum` using `Submodule.finrank_sup_add_finrank_inf_eq (LinearMap.range f1) (LinearMap.range f2)`. Rewrite `hsum` using `[hr1, hr2]`. Establish `hle : Module.finrank ℂ ↥(LinearMap.range f1 ⊔ LinearMap.range f2) ≤ n`. Establish `h` using `Submodule.finrank_le (LinearMap.range f1 ⊔ LinearMap.range f2)`. Rewrite `h` using `[Module.finrank_fin_fun]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : LinearMap.range f1 ⊓ LinearMap.range f2 ≠ ⊥`. Introduce `hbot`. Rewrite `hsum` using `[hbot]`. Simplify using `at hsum`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨hy1, hy2⟩` from `Submodule.mem_inf.1 hy`. Take `⟨u, hu⟩` from `LinearMap.mem_range.1 hy1`. Take `⟨w, hw⟩` from `LinearMap.mem_range.1 hy2`. Establish `hu' : Q *ᵥ extL (fun i => ε' i = true) u = y` using `hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw' : extL (fun i => ε i = false) w = y` using `hw`. Establish `hz : extL (fun i => ε' i = true) u ≠ 0` using `fun h => by`. Rewrite `hu'` using `[h, Matrix.mulVec_zero]`. Conclude with `hy0 hu'.symm`. Establish `h1` using `hpos u hz`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hu', ← hw', jm_ext_neg, hw', dotProduct_neg]`. Establish `h2 : 0 < star y ⬝ᵥ y` using `Matrix.dotProduct_star_self_pos_iff.2 hy0`. Establish `h3` using `add_pos h2 h1`. Rewrite `h3` using `[add_neg_cancel]`. Conclude with `lt_irrefl _ h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pOf_le_of_conj {n : ℕ} (ε ε' : Fin n → Bool) (Q : Matrix (Fin n) (Fin n) ℂ)
     (hQ : Qᴴ * Formalism.REAL.Jm ε * Q = Formalism.REAL.Jm ε') : pOf ε' ≤ pOf ε := by
@@ -147,9 +147,9 @@ theorem pOf_le_of_conj {n : ℕ} (ε ε' : Fin n → Bool) (Q : Matrix (Fin n) (
   exact lt_irrefl _ h3
 
 /- English proof (translation)
-Apply `pOf_le_of_conj ε ε' (P * P₀⁻¹)` to reduce the goal to its premises. Establish `h1 : P₀ * P₀⁻¹ = 1` using `Matrix.mul_nonsing_inv _ h0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = (P₀⁻¹)ᴴ * (P₀ᴴ * Formalism.REAL.Jm ε' * P₀) * P₀⁻¹ := by rw [hP, hP₀]`. Use `_ = (P₀ * P₀⁻¹)ᴴ * Formalism.REAL.Jm ε' * (P₀ * P₀⁻¹) := by`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [mul_assoc]`. Use `_ = Formalism.REAL.Jm ε' := by rw [h1, Matrix.conjTranspose_one, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pOf_le_of_two {n : ℕ} (ε ε' : Fin n → Bool) (H P P₀ : Matrix (Fin n) (Fin n) ℂ)
     (hP : Pᴴ * Formalism.REAL.Jm ε * P = H) (hP₀ : P₀ᴴ * Formalism.REAL.Jm ε' * P₀ = H) (h0 : IsUnit P₀.det) :
@@ -166,9 +166,9 @@ theorem pOf_le_of_two {n : ℕ} (ε ε' : Fin n → Bool) (H P P₀ : Matrix (Fi
     _ = Formalism.REAL.Jm ε' := by rw [h1, Matrix.conjTranspose_one, one_mul, mul_one]
 
 /- English proof (translation)
-Take `⟨-, -, -, ε0, hε0, P0, hP0det, hP0⟩` from `Formalism.QuantumDeterminants.hermitian_pos_facts_hold k r`. Establish `h1 : pOf ε0 ≤ pOf ε` using `pOf_le_of_two ε ε0 _ P P0 hP.2 hP0 hP0det`. Establish `h2 : pOf ε ≤ pOf ε0` using `pOf_le_of_two ε0 ε _ P0 P hP0 hP.2 ((Matrix.isUnit_iff_isUnit_det P).1 hP.1)`. Establish `h0 : pOf ε0 = k + r` using `hε0`. Establish `hpq` using `pq_lemma ε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cayley_signature' {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
     {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}

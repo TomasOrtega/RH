@@ -31,7 +31,7 @@ def stab {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representa
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite `hx` using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Conclude with `lt_of_le_of_ne x.2 hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_lt_one_of_residue {x : 𝒪[k]} (hx : IsLocalRing.residue 𝒪[k] x = 0) :
     valuation k (algebraMap 𝒪[k] k x) < 1 := by
@@ -40,11 +40,11 @@ theorem val_lt_one_of_residue {x : 𝒪[k]} (hx : IsLocalRing.residue 𝒪[k] x 
   exact lt_of_le_of_ne x.2 hx
 
 /- English proof (translation)
-Take `⟨h, hh, rfl⟩` from `hg`. Establish `h1 : Matrix.GeneralLinearGroup.map (n` using `Fin n) (IsLocalRing.residue 𝒪[k]) h = 1 := hh`. Establish `h2 : IsLocalRing.residue 𝒪[k] (h.val i j) = (1 : Matrix (Fin n) (Fin n) _) i j`. Use `congrArg (fun u : GL (Fin n) _ => u.val i j) h1` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3 : IsLocalRing.residue 𝒪[k] (h.val i j - (1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j) = 0`. Rewrite using `[map_sub, h2]`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.one_apply, e]`. Establish `h4` using `val_lt_one_of_residue h3`. Rewrite `h4` using `[map_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : algebraMap 𝒪[k] k ((1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j) = (1 : Matrix (Fin n) (Fin n) k) i j`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.one_apply, e]`. Rewrite `h4` using `[h5]`. Conclude with `h4`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_of_mem_KOne {n : ℕ} {g : GL (Fin n) k} (hg : g ∈ KOne k (Fin n)) (i j : Fin n) :
     valuation k (g.val i j - (1 : Matrix (Fin n) (Fin n) k) i j) < 1 := by
@@ -66,19 +66,19 @@ theorem entry_of_mem_KOne {n : ℕ} {g : GL (Fin n) k} (hg : g ∈ KOne k (Fin n
 def pts (n : ℕ) : (Σ _ : Fin n, Fin 1) ≃ Fin n := Equiv.sigmaUnique (Fin n) fun _ => Fin 1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SmGL.EmptyBlocks.unipRad_eq k (pts n) (fun _ _ h => h)`.
+A detailed English derivation is pending.
 -/
 theorem unipRad_pts (n : ℕ) : unipRad k (pts n) = unipB k (Fin n) :=
   GlobalTheory.SmGL.EmptyBlocks.unipRad_eq k (pts n) (fun _ _ h => h)
 
 /- English proof (translation)
-Introduce `h0`. Establish `hle : KOne k (Fin n) ⊔ (unipRad k (pts n) ⊓ KO k (Fin n)) ≤ stab π.π v`. Use `sup_le (fun g hg => ?_) (fun g hg => ?_)` and prove the remaining obligations. Use `hI.1 g (iwahori_le_KO k (Fin n) (KOne_le_iwahori k (Fin n) hg)) (fun i j hij => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify `entry_of_mem_KOne hg i j` using `[Matrix.one_apply_ne hij.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using entry_of_mem_KOne hg i i`. Establish `hu` using `(mem_unipB k).1 (unipRad_pts (k := k) n ▸ hg.1)`. Use `hI.1 g hg.2 (fun i j hij => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[hu.1 i j hij]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu.2 i]`. Simplify using the standard rewrite rules. Use `hv (H k n n (fun _ => 1) (pts n) π v (fun g => ?_) ?_)` and prove the remaining obligations. Establish `: π.π g v = v` using `hle g.2`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h0`, the goal using `[Submodule.Quotient.mk_eq_zero]`. Rewrite using `[unipRad_pts]`. Conclude with `h0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_ne_zero (H : GlobalTheory.Published.DepthZeroJacquetInjective) (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (π : GlobalTheory.SplitRead.Irr k n) (v : π.V)

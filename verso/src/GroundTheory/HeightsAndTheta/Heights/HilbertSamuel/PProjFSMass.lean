@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ x e m hfr hFS`. Conclude with `⟨gbPsi e, gb_isGoodProj hfr, gb_ptsIntegralAt hfr hFS⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ProjFSMass.proof : ProjFSMass.Statement := by
   intro D Ω _ _ κ _ x e m hfr hFS

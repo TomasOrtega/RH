@@ -21,7 +21,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace UpperTheory.DividedPowerChartLift
 
 /- English proof (translation)
-Use `UpperTheory.isIso_stackProductMap_of_bijective E (incl Q) (fun A => ⟨?_, ?_⟩) (fun _ => Function.bijective_id)` and prove the remaining obligations. Introduce `x y hxy`. Conclude with `Subtype.ext hxy`. Introduce `y`. Conclude with `⟨⟨y, h A y⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem iso_incl (E : Spc) {a : Act} (Q : Pred a) (h : ∀ A x, Q.P A x) : IsIso (Sp.map E (incl Q)) := by
   refine UpperTheory.isIso_stackProductMap_of_bijective E (incl Q) (fun A => ⟨?_, ?_⟩) (fun _ => Function.bijective_id)
@@ -31,7 +31,7 @@ private theorem iso_incl (E : Spc) {a : Act} (Q : Pred a) (h : ∀ A x, Q.P A x)
     exact ⟨⟨y, h A y⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `A x hx`. Establish `h1` using `h A x hx`. Simplify using `only [UpperTheory.Blow.spanOn, Finset.coe_singleton, Set.image_singleton] at h1`. Conclude with `Ideal.span_singleton_eq_top.mp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem le_unit {N : ℕ} (i : Fin N) {Q : Pred (XC N)} (h : Q.Le (spanOn ((({i} : Finset (Fin N))) : Set (Fin N)))) :
     Q.Le (unitAt i) := by
@@ -41,15 +41,13 @@ private theorem le_unit {N : ℕ} (i : Fin N) {Q : Pred (XC N)} (h : Q.Le (spanO
   exact Ideal.span_singleton_eq_top.mp h1
 
 /- English proof (translation)
-Establish `hs` using `hQ _ x hx`. Simplify using `only [UpperTheory.Blow.spanOn, Finset.coe_cons, Set.image_insert_eq] at hs`. Rewrite `hs` using `[Ideal.eq_top_iff_one, Ideal.mem_span_insert]`. Take `⟨a, s, hsF, h1⟩` from `hs`. Set `w : Fin 2 → Γ(T, ⊤)` to `![x.1 i, s]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hw : Ideal.span (Set.range w) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, h1]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ a (Ideal.subset_span ⟨0, rfl⟩)) (Ideal.subset_span ⟨1, rfl⟩)`. Take `⟨S, hS, hSP⟩` from `UpperTheory.locally_exists_isUnit_of_span_range_eq_top T w hw`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `hSP V g hg`. Establish `hQx : Q.P _ ((XC N).D.map g.appTop x)` using `Q.map _ _ hx`. Use `fin_cases k`. Use `right`. Conclude with `⟨hQx, hk⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `left`. Use `⟨hQx, ?_⟩` and prove the remaining obligations. Apply `Ideal.eq_top_of_isUnit_mem _ _ hk` to reduce the goal to its premises. Establish `hm` using `Ideal.mem_map_of_mem g.appTop.hom hsF`. Rewrite `hm` using `[Ideal.map_span, ← Set.image_comp]`.
-
-Conclude with `hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem loc_step {N : ℕ} (i : Fin N) (F' : Finset (Fin N)) (hi : i ∉ F') (Q : Pred (XC N))
     (hQ : Q.Le (spanOn ((Finset.cons i F' hi : Finset (Fin N)) : Set (Fin N))))
@@ -79,11 +77,9 @@ private theorem loc_step {N : ℕ} (i : Fin N) (F' : Finset (Fin N)) (hi : i ∉
     exact hm
 
 /- English proof (translation)
-Proceed by induction on `hF using Finset.Nonempty.cons_induction with`. Consider the case `singleton j`. Introduce `Q hQ`. Conclude with `H j Q (le_unit j hQ)`. Consider the case `cons j F' hj hF' ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Q hQ`. Use `UpperTheory.leraHirsch_of_local_cover_of_inf q E hE π d e cl Q (Q.inf (spanOn (F' : Set (Fin N)))) (Q.inf (unitAt j)) (fun A x hx => hx.1) (fun A x hx => hx.1) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `T x hx`. Conclude with `loc_step j F' hj Q hQ T x hx`. Conclude with `ih _ (fun A x hx => hx.2)`.
-
-Conclude with `H j _ (fun A x hx => hx.2)`. Conclude with `H j _ (fun A x hx => hx.2.2)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem all_of_units (q : ℕ) [NeZero q] (N : ℕ) (E : Spc) (hE : Inv q E) {c : Act} (π : Act.Hom c (XC N)) {m : ℕ}
     (d e : Fin m → ℤ) (cl : ∀ j, Ht q (Sp E c) (d j) (e j))
@@ -107,11 +103,9 @@ private theorem all_of_units (q : ℕ) [NeZero q] (N : ℕ) (E : Spc) (hE : Inv 
 end UpperTheory.DividedPowerChartLift
 
 /- English proof (translation)
-Introduce `q _ N E hN hE c π m d e cl H`. Establish `hne : (Finset.univ : Finset (Fin N)).Nonempty` using `Finset.univ_nonempty_iff.mpr ⟨⟨0, hN⟩⟩`. Establish `hT` using `UpperTheory.DividedPowerChartLift.all_of_units q N E hE π d e cl H hne (Pred.top _) (fun A x _ => by show Ideal.span _ = ⊤`. Rewrite using `[Finset.coe_univ, Set.image_univ]`. Conclude with `x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsq : Sp.map E (π.sub (Pred.top _)) ≫ Sp.map E (incl (Pred.top (XC N))) = Sp.map E (incl (Pred.comap π (Pred.top _))) ≫ Sp.map E π` using `rfl`. Use `haveI : IsIso (Sp.map E (incl (Pred.comap π (Pred.top (XC N))))) := UpperTheory.DividedPowerChartLift.iso_incl E _ (fun _ _ => trivial)`. Use `haveI : IsIso (Sp.map E (incl (Pred.top (XC N)))) := UpperTheory.DividedPowerChartLift.iso_incl E _ (fun _ _ => trivial)`. Establish `h2` using `UpperTheory.lerayHirsch_of_iso_square q (Sp.map E (π.sub (Pred.top _))) (Sp.map E π) (inv (Sp.map E (incl (Pred.comap π (Pred.top (XC N)))))) (inv (Sp.map E (incl (Pred.top (XC N))))) (by rw [IsIso.inv_comp_eq, ← Category.assoc, IsIso.eq_comp_inv, hsq]) d e _ hT`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `j`. Rewrite using `[← GlobalTheory.EtC.pull_comp, IsIso.inv_hom_id, GlobalTheory.EtC.pull_id]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cohomology_lift_of_lift_on_unit_cube_faces :
     ∀ (q : ℕ) [NeZero q] (N : ℕ) (E : Spc), 1 ≤ N → Inv q E → ∀ {c : Act} (π : Act.Hom c (XC N)) {m : ℕ} (d e : Fin m → ℤ)

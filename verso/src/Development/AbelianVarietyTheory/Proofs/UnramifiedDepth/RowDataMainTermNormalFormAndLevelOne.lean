@@ -26,22 +26,20 @@ variable {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → T
   [∀ g, Fintype (I g)] [∀ g, Fintype (J g)]
 
 /- English proof (translation)
-Unfold `VF.MM`. Rewrite using `[V.v.map_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mm_neg_iff {x : C} : V.MM (-x) ↔ V.MM x := by
   unfold VF.MM
   rw [V.v.map_neg]
 
 /- English proof (translation)
-Use `haveI := X.algClosed`. Proceed by induction on `s with`. Consider the case `zero`. Use `⟨N, Function.Embedding.refl _, by omega, fun co _ hco ν => ?_⟩` and prove the remaining obligations. Use `hco (em ν)` as an intermediate fact.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[hem, chainMat_zero]`. Consider the case `succ s ih`. Take `⟨m, cc, hm, hI⟩` from `ih (by omega)`. Establish `hsK : s < Kn D.i` using `by rw [h.2.2.1]; omega`. Take `⟨m', cc', hm', hI'⟩` from `GlobalTheory.T.powerSemilinear_rank_nullity_mod_maxIdeal C V (I g) m X.j' (V.l ^ 2) (Nat.one_le_pow _ _ V.l_prime.pos) (fun δ c => if D.lev c = s + 1 then chainMat D (s + 1) c (em (cc δ)) else 0) (by`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `δ c`. Use `split_ifs`. Conclude with `h.chainMat_int _ _ _`. Conclude with `VF.Ge.zero 0)`. Use the proof step `(by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `N' x hx hxI hxM`. Use `GlobalTheory.T.chainStep_kernel_rank_le_mod_maxIdeal C V d I J X hA g a hb i S Z D h s hs m (fun δ c => chainMat D s c (em (cc δ))) (fun δ c => h.chainMat_int _ _ _) hI N' x hx hxI ?_` and prove the remaining obligations. Introduce `ν e he`. Use `hxM ν e` as an intermediate fact. Simplify `this)` using `[he, chainMat_succ, hsK, h.2.1]`.
-
-Conclude with `⟨m', cc'.trans cc, by rw [Nat.succ_mul]; omega, hI'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chain_rank (X : RowData C V d I J) (hA : X.Alt) (g : Fin 2) (a : ZMod d) (hb : X.big g a)
     (i : ℕ) (S : Sys (X.G g)) {Z : Type} (D : Data C Z (I g)) (h : Adapted S D a i)
@@ -75,11 +73,11 @@ theorem chain_rank (X : RowData C V d I J) (hA : X.Alt) (g : Fin 2) (a : ZMod d)
     exact ⟨m', cc'.trans cc, by rw [Nat.succ_mul]; omega, hI'⟩
 
 /- English proof (translation)
-Establish `hi : Odd i` using `h.2.2.1 ▸ D.i_odd`. Take `⟨m, cc, hm, hI⟩` from `chain_rank X hA g a hb i S D h N em hem (s0 i) (chainStartIndex_lt_chainLength_of_odd hi)`. Use `⟨m, cc, hm, fun co hco hM => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.independentMod_firstCoeff_chainLastStep C V d I J X hA g a hb i S Z D h (s0 i) (chainStartIndex_lt_chainLength_of_odd hi) m (fun δ c => chainMat D (s0 i) c (em (cc δ))) (fun δ c => h.chainMat_int _ _ _) hI co hco ?_` and prove the remaining obligations. Introduce `κ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hM κ`. Simplify using `only [mainVec, h.2.2.1, h.2.1, chainStartIndex_lt_chainLength_of_odd hi, and_true] at h1`. Break down `neg_one_pow_eq_or C (s0 i + 1) with h2 | h2` into its components or cases. Simplify `h1` using `[h2]`. Rewrite using `[← mm_neg_iff]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `h1` using `[h2]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mainVec_rank (X : RowData C V d I J) (hA : X.Alt) (g : Fin 2) (a : ZMod d) (hb : X.big g a)
     (i : ℕ) (S : Sys (X.G g)) {Z : Type} (D : Data C Z (I g)) (h : Adapted S D a i)
@@ -100,11 +98,11 @@ theorem mainVec_rank (X : RowData C V d I J) (hA : X.Alt) (g : Fin 2) (a : ZMod 
     simpa [h2] using h1
 
 /- English proof (translation)
-Establish `hpar : Even (a + (i : ZMod d)).val ↔ ¬ Even a.val`. Take `⟨e, he⟩` from `hA.1`. Establish `h2 : 2 ∣ d` using `⟨e, by omega⟩`. Establish `h3 : (a + (i : ZMod d)).val % 2 = (a.val + i) % 2`. Rewrite using `[ZMod.val_add, ZMod.val_natCast, Nat.mod_mod_of_dvd _ h2, Nat.add_mod, Nat.mod_mod_of_dvd _ h2, ← Nat.add_mod]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, rfl⟩` from `hi`. Simplify using `only [Nat.even_iff]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ∀ b, X.big 1 b ↔ ¬ X.big 0 b` using `fun b => by simpa using X.big_compl 0 b`. Establish `hg : g = 0 ∨ g = 1` using `by omega`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hg with rfl | rfl` into its components or cases. Rewrite using `[hA.2, hpar, not_not]`. Conclude with `(hA.2 a).1 hb`. Rewrite using `[h1, not_not, hA.2, hpar, ← hA.2]`. Conclude with `(h1 a).1 hb`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_big_add_odd (X : RowData C V d I J) (hA : X.Alt) (g : Fin 2) (a : ZMod d)
     (hb : X.big g a) {i : ℕ} (hi : Odd i) : ¬ X.big g (a + (i : ZMod d)) := by
@@ -124,33 +122,29 @@ theorem not_big_add_odd (X : RowData C V d I J) (hA : X.Alt) (g : Fin 2) (a : ZM
   · rw [h1, not_not, hA.2, hpar, ← hA.2]; exact (h1 a).1 hb
 
 /- English proof (translation)
-Use `haveI := X.algClosed`. Use `haveI := X.charZero`. Take `⟨S, N1, D, hv, hl, hDi, hal, hty, hN1, A, hAint, hAeq⟩` from `GlobalTheory.T.rowData_adaptedChainData C V d I J X hA g a hb i hi hid U hU`. Establish `h : Adapted S D a i` using `⟨hv, hl, hDi, hal, hty⟩`. Take `⟨m, c1, hm, hI1⟩` from `mainVec_rank X hA g a hb i S D h N1 ⟨D.ι, D.ι_inj⟩ D.ι_lev`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hΨint : ∀ c0 (u : I (1 - g) → C), (∀ k, V.Ge 0 (u k)) → V.Ge 0 (∑ κ : J g, ∑ k : I (1 - g), mainVec S D c0 κ * X.pair g κ k * u k)` using `fun c0 u hu => VF.Ge.sum fun κ _ => VF.Ge.sum fun k _ => ((h.mainVec_int c0 κ).mul_int (X.pair_int g κ k)).mul_int (hu k)`. Take `⟨n0, c2, hn0, hI2⟩` from `GlobalTheory.T.powerSemilinear_rank_nullity_mod_maxIdeal C V (Fin X.n) m X.j 1 le_rfl (fun δ b => ∑ κ : J g, ∑ k : I (1 - g), mainVec S D (D.ι (c1 δ)) κ * X.pair g κ k * U' b k) (fun δ b => hΨint _ _ (hU'.1.1 b)) (by`. Introduce `N x hx hxI hxM`. Use `GlobalTheory.T.pairing_kernel_le_of_saturated_submodule C V d I J X g _ (not_big_add_odd X hA g a hb hi) U' hU' N (fun ν κ => ∑ δ, x ν δ * mainVec S D (D.ι (c1 δ)) κ) (fun ν κ => VF.Ge.sum fun δ _ => (hx ν δ).mul_int (h.mainVec_int _ _)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `ν κ hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h.mainVec_pure _ κ hκ]`. Introduce `co hco hM`. Use `hxI co hco (hI1 (fun δ => ∑ ν, co ν * x ν δ) (fun δ => VF.Ge.sum fun ν _ => (hco ν).mul_int (hx ν δ)) fun κ => ?_)` and prove the remaining obligations. Use `hM κ using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Finset.sum_mul, Finset.mul_sum, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `Finset.sum_comm`. Introduce `ν b`. Use `hxM ν b using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Finset.sum_mul, Finset.mul_sum, mul_assoc, pow_one]`. Rewrite using `[Finset.sum_comm (s := Finset.univ (α := Fin m))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun κ _ => Finset.sum_comm)` and prove the remaining obligations. Set `em : Fin n0 ↪ I g` to `(c2.trans c1).trans ⟨D.ι, D.ι_inj⟩`. Establish `hem : ∀ δ, D.lev (em δ) = 0` using `fun δ => D.ι_lev _`. Establish `hK : 0 < Kn i` using `by rw [Kn_eq hi]; omega`. Establish `hemty : ∀ δ, (X.G g).ty (Sum.inl (em δ)) = a` using `fun δ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hty _ (by rw [hem]; exact hK), hem]; simp`. Establish `hemal : ∀ δ x, S.al (em δ) 1 x = 0` using `fun δ x => h.al_one (D.pure_good _ (by rw [hem, hDi]; exact hK)) x`. Take `⟨hn0n, Y, hYint, hYdet, hYΦ⟩` from `GlobalTheory.T.exists_unimodular_mul_eq_neg_of_independent_mod_maximal C V X.n n0 (fun b c => ∑ κ : J g, ∑ k : I (1 - g), mainVec S D (em c) κ * X.pair g κ k * U' b k) (fun b c => hΨint _ _ (hU'.1.1 b)) hI2`. Set `v' : Fin X.n → I (1 - g) → C` to `fun b x => ∑ b', Y b b' * U' b' x`. Establish `hv'int : ∀ b k, V.Ge 0 (v' b k)` using `fun b k => VF.Ge.sum fun b' _ => (hYint b b').mul_int (hU'.1.1 b' k)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv'ty : ∀ b k, (X.G (1 - g)).ty (Sum.inl k) ≠ a + (i : ZMod d) → v' b k = 0` using `fun b k hk => by simp [v', hU'.2 _ k hk]`. Establish `hety : ∀ c x, (X.G g).ty (Sum.inl x) ≠ a → S.tan (em c) x = 0` using `fun c x hx => tan_pure S _ x (by rw [hemty]; exact hx)`. Establish `hS0 : ∀ g', Nonempty (Sys (X.G g'))` using `fun g' => by`. Take `⟨S', -⟩` from `sysExists (X.G g') (fun c x => if c = x then 1 else 0) (by intro c x; split_ifs; exacts [VF.Ge.one, VF.Ge.zero 0]) (by`. Introduce `c x hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Conclude with `hx rfl)`. Use the proof step `(by`. Establish `: (Matrix.of fun c x : I g' => if c = x then (1 : C) else 0) = 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `c x`. Simplify using `[Matrix.one_apply]`. Rewrite using `[this, Matrix.det_one, V.v.map_one])`. Conclude with `⟨S'⟩`. Take `⟨SS, rfl⟩ : ∃ SS : ∀ g', Sys (X.G g'), SS g = S` from `⟨Function.update (fun g' => (hS0 g').some) g S, by simp⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `choose t ht using fun g' => (tExistsUnique (X.G g') (SS g')).exists`. Establish `hζ` using `GlobalTheory.T.zetaSeries_leaf_mainTerm_curveSystem C V d (I g) (J g) (X.G g) (SS g) _ D a i h hid (t g) (ht g) n0 em hem`. Use `⟨n0, fun δ => (SS g).tan (em δ), v', fun b c => ∑ κ : J g, ∑ k : I (1 - g), mainVec (SS g) D (em c) κ * X.pair g κ k * v' b k, ⟨⟨?_, hn0n⟩, isSat_tan _ em, ⟨fun c => A (c1 (c2 c)), fun c b => hAint _ b, fun c x => ?_⟩, ⟨Y, hYint, hYdet, fun b x => rfl⟩, fun b c => hΨint _ _ (hv'i …` and prove the remaining obligations. Establish `h1` using `two_mul_chainStartIndex_add_one_of_odd hi`. Rewrite `hN1` using `[Kn_eq hi]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (i + 1) * X.j' = (s0 i + 1 + 1) * X.j' + s0 i * X.j'`. Rewrite using `[← Nat.add_mul]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `((SS g).cur_zero_inl _ x).symm.trans (hAeq _ x)`. Rewrite using `[← hYΦ b c hb]`. Simplify using `only [v', Finset.mul_sum]`. Rewrite using `[Finset.sum_comm (s := Finset.univ (α := Fin X.n))]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Conclude with `GlobalTheory.T.weight_gauge_sub_mainTerm_leaf C V d I J X hA h5 g a i hi hid SS t ht n0 X.n _ v' (fun c => mainVec (SS g) D (em c)) hety hv'int hv'ty (GlobalTheory.T.leafCoordinate_weight_nonneg_of_adaptedChainData C V d (I g) (J g) (X.G g) (SS g) _ D a i h (t g) (ht g) n0 em hem …`. Introduce and unpack `rfl`. Simplify using `only [fun c => funext (h.mainVec_level_one (hem c))]`.
-
-Conclude with `GlobalTheory.T.gauge_sub_mainTerm_integral_lowBidegree C V d I J X hA hid g a SS t ht n0 em v' hemty hemal hv'int hv'ty`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem both (X : RowData C V d I J) (hA : X.Alt) (h5 : 5 ≤ V.l) (g : Fin 2) (a : ZMod d)
     (hb : X.big g a) (i : ℕ) (hi : Odd i) (hid : i < d) (U : Fin X.n → I g → C)
@@ -251,9 +245,9 @@ theorem both (X : RowData C V d I J) (hA : X.Alt) (h5 : 5 ≤ V.l) (g : Fin 2) (
     exact GlobalTheory.T.gauge_sub_mainTerm_integral_lowBidegree C V d I J X hA hid g a SS t ht n0 em v' hemty hemal hv'int hv'ty
 
 /- English proof (translation)
-Introduce `C _ V d _ I J _ _ X`. Prove the components needed by the constructor for the conclusion. Introduce `hA h5 g a hb i hi hid U U' hU hU'`. Take `⟨n0, e, v', Φ, h1, h2, -⟩` from `both X hA h5 g a hb i hi hid U U' hU hU'`. Conclude with `⟨n0, e, v', Φ, h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `hA h5 hd g a hb U U' hU hU'`. Take `⟨n0, e, v', Φ, h1, h2, h3⟩` from `both X hA h5 g a hb 1 odd_one hd U U' hU hU'`. Conclude with `⟨n0, e, v', Φ, h1, h2, h3 rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I J : Fin 2 → Type) [∀ g, Fintype (I g)] [∀ g, Fintype (J g)] (X : RowData C V d I J), X.LemmaM ∧ X.LemmaMPlus := by
   intro C _ V d _ I J _ _ X

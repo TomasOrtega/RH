@@ -15,7 +15,7 @@ namespace GlobalTheory.TangentPow
 variable {O : Type} [CommRing O] {R : Type} [CommRing R] [Algebra O R]
 
 /- English proof (translation)
-Use `ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptMap_comp_ptMap {A B C : Type} [CommRing A] [Algebra O A] [CommRing B] [Algebra O B]
     [CommRing C] [Algebra O C] (φ : A →ₐ[O] B) (ψ : B →ₐ[O] C) :
@@ -26,7 +26,7 @@ theorem ptMap_comp_ptMap {A B C : Type} [CommRing A] [Algebra O A] [CommRing B] 
   rfl
 
 /- English proof (translation)
-Use `ext1`. Conclude with `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem ptMap_id' (A : Type) [CommRing A] [Algebra O A] : ptMap (AlgHom.id O A) = 𝟙 _ := by
   ext1
@@ -38,7 +38,7 @@ noncomputable abbrev scale (a : R) : specO O (DualNumber R) ⟶ specO O (DualNum
   ptMap ((TrivSqZeroExt.map (a • (LinearMap.id : R →ₗ[R] R))).restrictScalars O)
 
 /- English proof (translation)
-Rewrite using `[← ptMap_id', scale]`. Use `congr 1`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scale_one : scale O (1 : R) = 𝟙 _ := by
   rw [← ptMap_id', scale]
@@ -47,7 +47,7 @@ theorem scale_one : scale O (1 : R) = 𝟙 _ := by
   ext <;> simp
 
 /- English proof (translation)
-Rewrite using `[ptMap_comp_ptMap, scale]`. Use `congr 1`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scale_zero : scale O (0 : R) =
     ptMap (TrivSqZeroExt.inlAlgHom O R R) ≫ ptMap (TrivSqZeroExt.fstHom O R R) := by
@@ -69,9 +69,9 @@ noncomputable abbrev ofTwo (l : R × R →ₗ[R] R) :
   ptMap ((TrivSqZeroExt.map l).restrictScalars O)
 
 /- English proof (translation)
-Rewrite using `[ofTwo, toTwo, ptMap_comp_ptMap, scale]`. Use `congr 1`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Establish `: l' (l x.snd) = l' (l 1) * x.snd`. Rewrite using `[mul_comm, ← smul_eq_mul, ← map_smul, ← map_smul, smul_eq_mul, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [this]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ofTwo_toTwo (l : R →ₗ[R] R × R) (l' : R × R →ₗ[R] R) :
     ofTwo O l' ≫ toTwo O l = scale O (l' (l 1)) := by
@@ -85,26 +85,26 @@ theorem ofTwo_toTwo (l : R →ₗ[R] R × R) (l' : R × R →ₗ[R] R) :
 variable {G : Over (Spec (CommRingCat.of O))} [GrpObj G] {y : specO O (DualNumber R) ⟶ G}
 
 /- English proof (translation)
-Rewrite using `[scale_zero, Category.assoc, hy, comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_zero_comp (hy : ptMap (TrivSqZeroExt.fstHom O R R) ≫ y = 1) :
     scale O (0 : R) ≫ y = 1 := by
   rw [scale_zero, Category.assoc, hy, comp_one]
 
 /- English proof (translation)
-Set `i₁` to `LinearMap.inl R R R`. Set `i₂` to `LinearMap.inr R R R`. Establish `key : toTwo O (i₁ + i₂) ≫ y = (toTwo O i₁ ≫ y) * (toTwo O i₂ ≫ y)` using `by ext1`. Use `GlobalTheory.TangentCrit.hom_ext_of_ker_inf (CommRingCat.ofHom (TrivSqZeroExt.map (LinearMap.fst R R R)).toRingHom) (CommRingCat.ofHom (TrivSqZeroExt.map (LinearMap.snd R R R)).toRingHom) ?_ ?_ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `refine (PrimeSpectrum.isHomeomorph_comap (TrivSqZeroExt.map (LinearMap.fst R R R)).toRingHom (fun x => ⟨1, one_pos, TrivSqZeroExt.map i₁ x, by ext <;> simp [i₁]⟩) fun d hd => ?_).surjective`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h : d.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst hd`. Apply the tactic sequence `exact ⟨2, by ext1 <;> simp [pow_two, h]⟩`. Introduce `d h₁ h₂`. Establish `h₃ : d.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst h₁`. Establish `h₄ : d.snd.1 = 0` using `by simpa using congrArg TrivSqZeroExt.snd h₁`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₅ : d.snd.2 = 0` using `by simpa using congrArg TrivSqZeroExt.snd h₂`. Conclude with `TrivSqZeroExt.ext h₃ (Prod.ext h₄ h₅)`. Use `congrArg Over.Hom.left (?_ : ofTwo O (LinearMap.fst R R R) ≫ _ = ofTwo O (LinearMap.fst R R R) ≫ _)` and prove the remaining obligations. Rewrite using `[comp_mul]`. Simplify using `only [← Category.assoc, ofTwo_toTwo]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e₁ : LinearMap.fst R R R ((i₁ + i₂) 1) = 1` using `by simp [i₁, i₂]`. Establish `e₂ : LinearMap.fst R R R (i₁ 1) = 1` using `rfl`. Establish `e₃ : LinearMap.fst R R R (i₂ 1) = 0` using `rfl`. Rewrite using `[e₁, e₂, e₃, scale_zero_comp hy, _root_.mul_one]`. Use `congrArg Over.Hom.left (?_ : ofTwo O (LinearMap.snd R R R) ≫ _ = ofTwo O (LinearMap.snd R R R) ≫ _)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_mul]`. Simplify using `only [← Category.assoc, ofTwo_toTwo]`. Establish `e₁ : LinearMap.snd R R R ((i₁ + i₂) 1) = 1` using `by simp [i₁, i₂]`. Establish `e₂ : LinearMap.snd R R R (i₁ 1) = 0` using `rfl`. Establish `e₃ : LinearMap.snd R R R (i₂ 1) = 1` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, e₂, e₃, scale_zero_comp hy, _root_.one_mul]`. Set `l` to `a • LinearMap.fst R R R + b • LinearMap.snd R R R`. Use `congrArg (ofTwo O l ≫ ·) key` as an intermediate fact. Simplify using `only [comp_mul, ← Category.assoc, ofTwo_toTwo] at this`. Establish `e₁ : l ((i₁ + i₂) 1) = a + b` using `by simp [l, i₁, i₂]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : l (i₁ 1) = a` using `by simp [l, i₁]`. Establish `e₃ : l (i₂ 1) = b` using `by simp [l, i₂]`. Rewrite `this` using `[e₁, e₂, e₃]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem scale_add_comp (hy : ptMap (TrivSqZeroExt.fstHom O R R) ≫ y = 1) (a b : R) :
     scale O (a + b) ≫ y = (scale O a ≫ y) * (scale O b ≫ y) := by
@@ -150,7 +150,7 @@ theorem scale_add_comp (hy : ptMap (TrivSqZeroExt.fstHom O R R) ≫ y = 1) (a b 
   rwa [e₁, e₂, e₃] at this
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => rw [pow_zero, Nat.cast_zero, scale_zero_comp hy]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, Nat.cast_succ, scale_add_comp hy, ih, scale_one, Category.id_comp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_scale_comp (hy : ptMap (TrivSqZeroExt.fstHom O R R) ≫ y = 1) (N : ℕ) :
     y ^ N = scale O (N : R) ≫ y := by
@@ -160,7 +160,7 @@ theorem pow_eq_scale_comp (hy : ptMap (TrivSqZeroExt.fstHom O R R) ≫ y = 1) (N
     rw [pow_succ, Nat.cast_succ, scale_add_comp hy, ih, scale_one, Category.id_comp]
 
 /- English proof (translation)
-Introduce `O _ G _ R _ _ N y hy`. Use `⟨pow_eq_scale_comp hy N, fun hN => ?_⟩` and prove the remaining obligations. Establish `h : y ^ N = 1` using `by rw [pow_eq_scale_comp hy, hN, scale_zero_comp hy]`. Conclude with `⟨KernelNoTorsion.torsionLift y h, KernelNoTorsion.torsionLift_ι y h, fun w hw => KernelNoTorsion.torsion_hom_ext (hw.trans (KernelNoTorsion.torsionLift_ι y h).symm)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pow_eq_scale_and_existsUnique_torsion :
     ∀ (O : Type) [CommRing O] (G : Over (Spec (CommRingCat.of O))) [GrpObj G] (R : Type)

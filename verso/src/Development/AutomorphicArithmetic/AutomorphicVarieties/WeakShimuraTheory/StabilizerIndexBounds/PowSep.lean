@@ -4,17 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 open IsLocalRing Polynomial Matrix UpperTheory.V
 
 /- English proof (translation)
-Introduce `K _ n M a hM ha d hd`. Establish `hinj : Function.Injective (fun i => (a i : K) ^ d)`. Introduce `i j hij`. Assume the negation of the conclusion as `hne`. Apply `ha i j hne` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[isOfFinOrder_iff_pow_eq_one]`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Rewrite using `[div_pow, div_eq_one]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `using hij`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hroot : ∀ i, (M ^ d).charpoly.IsRoot ((a i : K) ^ d)`. Introduce `i`. Rewrite using `[← Matrix.mem_spectrum_iff_isRoot_charpoly]`. Apply `spectrum.pow_mem_pow` to reduce the goal to its premises. Rewrite using `[Matrix.mem_spectrum_iff_isRoot_charpoly, hM, Polynomial.IsRoot, Polynomial.eval_prod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`. Establish `hdvd : (∏ i, (X - C ((a i : K) ^ d))) ∣ (M ^ d).charpoly`. Apply `Finset.prod_dvd_of_coprime` to reduce the goal to its premises. Introduce `i _ j _ hij`. Conclude with `Polynomial.pairwise_coprime_X_sub_C hinj hij`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i _`. Conclude with `Polynomial.dvd_iff_isRoot.2 (hroot i)`. Establish `hmon : (∏ i, (X - C ((a i : K) ^ d))).Monic` using `Polynomial.monic_prod_of_monic _ _ (fun i _ => Polynomial.monic_X_sub_C _)`. Establish `heq : (M ^ d).charpoly = ∏ i, (X - C ((a i : K) ^ d))`. Apply `Polynomial.eq_of_monic_of_dvd_of_natDegree_le hmon (Matrix.charpoly_monic _) hdvd` to reduce the goal to its premises.
-
-Rewrite using `[Matrix.charpoly_natDegree_eq_dim, Polynomial.natDegree_finset_prod_X_sub_C_eq_card, Finset.card_univ]`. Rewrite using `[heq]`. Conclude with `Polynomial.separable_prod_X_sub_C_iff.2 hinj`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.charpoly_pow_separable_of_eigenvalue_ratios_not_finOrder :
     ∀ (K : Type) [Field K] (n : ℕ) (M : Matrix (Fin n) (Fin n) K) (a : Fin n → Kˣ), M.charpoly = ∏ i, (X - C (a i : K)) →

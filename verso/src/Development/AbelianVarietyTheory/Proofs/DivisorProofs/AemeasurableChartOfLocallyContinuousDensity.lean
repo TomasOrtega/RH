@@ -7,9 +7,9 @@ open scoped ContDiff Matrix
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Establish `hO : IsOpen (e.target ∩ e.symm ⁻¹' S)` using `e.isOpen_inter_preimage_symm hS`. Use `ContinuousOn.aemeasurable (fun v hv => ContinuousAt.continuousWithinAt ?_) hO.measurableSet` and prove the remaining obligations. Take `⟨hvt, hvS⟩` from `hv`. Take `⟨g, hg, hev⟩` from `h _ hvS (e.map_target hvt)`. Rewrite `hg` using `[e.right_inv hvt]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hg.congr ?_` and prove the remaining obligations. Establish `h1` using `(e.continuousAt_symm hvt).eventually hev`. Use `filter_upwards [h1, e.open_target.mem_nhds hvt] with w hw hwt`. Rewrite using `[hw, e.right_inv hwt]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aemeasurable_chart_of_locally_continuous {n : ℕ} {Y : Type} [TopologicalSpace Y]
     (e : OpenPartialHomeomorph Y (V n)) {S : Set Y} {d : Y → ℝ} (hS : IsOpen S)

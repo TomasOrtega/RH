@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published.Kato
 
 /- English proof (translation)
-Introduce `l _ F Ω _ _ _ _ C V _ _ _ _ _ _ _ _ _ C' V' _ _ _ _ _ _ _ _ _ ρ ρ' f hf c hfc hc`. Use `⟨fun w hw => ?_, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨A, hA, x, hx⟩` from `hc.away w hw`. Conclude with `⟨A, hA, f x, fun s hs => by rw [hx s hs, map_sub, hf]⟩`. Take `⟨j, hj, ⟨_, hcc⟩, x, hx⟩` from `hc.above τ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨j, hj, ⟨?_, fun g h => ?_⟩, LinearMap.rTensor (UpperTheory.V.Loc.Bcr l) f x, fun g => ?_⟩` and prove the remaining obligations. Conclude with `hfc.comp (continuous_fst.comp continuous_subtype_val)`. Establish `h1` using `congrArg f (hcc g h)`. Simplify `h1` using `only [map_add, hf, MonoidHom.comp_apply]`. Establish `key : ∀ y : TensorProduct ℚ_[l] V (UpperTheory.V.Loc.Bcr l), LinearMap.rTensor (UpperTheory.V.Loc.Bcr l) f (UpperTheory.V.Loc.actC ((MonoidHom.snd _ _).comp (decJ F j).subtype) (ρ.comp ((MonoidHom.fst _ _).comp (decJ F j).subtype)) g y) = UpperTheory.V.Loc.actC ((MonoidHom.snd _ …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [UpperTheory.V.Loc.actC, hf]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key, ← map_sub, ← hx g, LinearMap.rTensor_tmul]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.Kato.bkMap :
     ∀ (l : ℕ) [Fact l.Prime] (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (C V : Type) [CommRing C] [Algebra ℚ_[l] C] [AddCommGroup V] [Module C V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] C V] [TopologicalSpace V] [IsTopologicalAddGroup V] [ContinuousConstSMul C V] (C' V' : Type) [CommRing C'] [Algebra ℚ_[l] C'] [AddCommGroup V'] [Module C' V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] C' V'] [TopologicalSpace V'] [IsTopologicalAddGroup V'] [ContinuousConstSMul C' V'] (ρ : Representation C (G F Ω) V) (ρ' : Representation C' (G F Ω) V') (f : V →ₗ[ℚ_[l]] V'), (∀ g x, f (ρ g x) = ρ' g (f x)) → ∀ c : G F Ω → V, Continuous (fun g => f (c g)) → IsBK l ρ c → IsBK l ρ' (fun g => f (c g)) := by

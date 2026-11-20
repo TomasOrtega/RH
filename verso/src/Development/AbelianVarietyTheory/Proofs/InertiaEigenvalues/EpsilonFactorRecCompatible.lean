@@ -33,7 +33,7 @@ def consEquiv (n : ℕ) : ((Fin 1 → ℂ) × (Fin n → ℂ)) ≃ₗ[ℂ] (Fin 
   right_inv f := funext fun i => by refine Fin.cases ?_ (fun j => ?_) i <;> simp [Fin.tail]
 
 /- English proof (translation)
-Use `⟨consEquiv n, fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp [consEquiv]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp [consEquiv]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diag_sum_iso {n : ℕ} (c : Fin (n + 1) → ℂˣ) :
     ((WDRep.diag h fun _ : Fin 1 => c 0).sum (WDRep.diag h fun i : Fin n => c i.succ)).Iso (WDRep.diag h c) := by
@@ -49,7 +49,7 @@ Both sides reduce to the same expression.
 theorem sumList_cons (x : WD h) (l : List (WD h)) : sumList (x :: l) = x.lpSum (sumList l) := rfl
 
 /- English proof (translation)
-The claim follows from `| 0, c => by rw [List.ofFn_zero] show WD.lpZero h = _ unfold WD.lpZero congr 2 funext i exact i.elim0 | n + 1, c => by rw [List.ofFn_succ] rw [sumList_cons] rw [sumList_ofFn_diag n (fun i => c i.succ), WD.lpSum_mk] exact WD.sound (diag_sum_iso c)`.
+A detailed English derivation is pending.
 -/
 theorem sumList_ofFn_diag : ∀ (n : ℕ) (c : Fin n → ℂˣ),
     sumList (List.ofFn fun i => WD.mk (WDRep.diag h fun _ : Fin 1 => c i)) = WD.mk (WDRep.diag h c)
@@ -71,9 +71,9 @@ end GlobalTheory.LocLanglands.SatakeLaw
 namespace GlobalTheory.LocLanglands.SatakeLaw
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 E Ω _ _ _ _ _ A w h a ha e rc H x α hα`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Establish `hL` using `GlobalTheory.T.spherical_satake_eq_langlandsQuotient_unramified h1 h2 h3 h4 h5 h6 (w.adicCompletion E) x α hα`. Rewrite `hL` using `[Fin.univ_val_map]`. Rewrite using `[H.langlands _ x hL, segSum, List.map_ofFn, ← sumList_ofFn_diag]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `List.ofFn_inj.mpr (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Segment.single, Segment.first_ofFirst, Segment.len_ofFirst, Nat.cast_one, sub_self, zero_div, WD.lpTw_zero, Test.lpChar_lpSp_one, H.one]`. Conclude with `Test.lpOfChar_unrChar ha (α i) _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sat_of_lawsLit : LanglandsExhaustionGL → LanglandsMultisegments → StandardCosocleGL → ZelevinskyPolynomialRing →
     GeometricLemma → BernsteinZelevinskyFiniteness → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]

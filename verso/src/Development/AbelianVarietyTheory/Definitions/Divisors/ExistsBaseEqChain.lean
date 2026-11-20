@@ -19,7 +19,7 @@ def LocFreeMod {X : Scheme.{0}} (g : Γ(X, ⊤)) (F : X.Modules) : Prop :=
     (Scheme.Modules.pullback U.ι).obj (cokernel (smulHom (freeModule X (Fin r)) g)))
 
 /- English proof (translation)
-Introduce `_` and use `⟨⊤, r, trivial, ⟨Iso.refl _⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example {X : Scheme.{0}} (g : Γ(X, ⊤)) (r : ℕ) : LocFreeMod g (cokernel (smulHom (freeModule X (Fin r)) g)) :=
   fun _ => ⟨⊤, r, trivial, ⟨Iso.refl _⟩⟩
@@ -44,7 +44,7 @@ def frobFun (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) : B.X.Modules ⥤ B.X.
 def frobA (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) (M : AM B Λ) : AM B Λ := ((frobFun p h).mapAction Λ).obj M
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, ⟨Iso.refl _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFrob_frobA (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) (M : AM B Λ) : IsFrob p M.V (frobA p h M).V :=
   ⟨h, ⟨Iso.refl _⟩⟩
@@ -108,7 +108,7 @@ def Sc (M : AM B Λ) : Prop := ∀ c, (M.ρ c : M.V ⟶ M.V) = χ c • 𝟙 M.V
 def mkA (F : B.X.Modules) : AM B Λ := ⟨F, ((Int.castRingHom (End F)).comp χ).toMonoidHom⟩
 
 /- English proof (translation)
-Introduce `c` and use `by change ((χ c : ℤ) : End F) = χ c • (1 : End F) simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sc_mkA (F : B.X.Modules) : Sc χ (mkA χ F) := fun c => by
   change ((χ c : ℤ) : End F) = χ c • (1 : End F)
@@ -117,7 +117,7 @@ theorem sc_mkA (F : B.X.Modules) : Sc χ (mkA χ F) := fun c => by
 variable {χ}
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [h, h, h, map_add, add_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sc.isAdd {M : AM B Λ} (h : Sc χ M) : IsAdd M := fun a b => by
   rw [h, h, h, map_add, add_smul]
@@ -131,7 +131,7 @@ def cokV {M N : AM B Λ} (f : M ⟶ N) : (cokernel f).V ≅ cokernel f.hom :=
   PreservesCokernel.iso (Action.forget B.X.Modules Λ) f
 
 /- English proof (translation)
-Introduce `c` and use `by have : Epi (cokernel.π f).hom := inferInstanceAs (Epi ((Action.forget B.X.Modules Λ).map (cokernel.π f))) have h : (N.ρ c : N.V ⟶ N.V) ≫ (cokernel.π f).hom = (cokernel.π f).hom ≫ ((cokernel f).ρ c : (cokernel f).V ⟶ _) := (cokernel.π f).comm c rw [← cancel_epi (cokernel.π f).h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sc.coker {M N : AM B Λ} (f : M ⟶ N) (hN : Sc χ N) : Sc χ (cokernel f) := fun c => by
   have : Epi (cokernel.π f).hom := inferInstanceAs (Epi ((Action.forget B.X.Modules Λ).map (cokernel.π f)))
@@ -142,14 +142,14 @@ theorem Sc.coker {M N : AM B Λ} (f : M ⟶ N) (hN : Sc χ N) : Sc χ (cokernel 
 variable (p : ℕ) [Fact p.Prime]
 
 /- English proof (translation)
-Unfold `frobFun`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem additive_frobFun (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) : (frobFun p h).Additive := by
   unfold frobFun
   infer_instance
 
 /- English proof (translation)
-Introduce `c` and use `by haveI := additive_frobFun p h change (frobFun p h).map (M.ρ c : M.V ⟶ M.V) = χ c • 𝟙 ((frobFun p h).obj M.V) rw [hM, Functor.map_zsmul, CategoryTheory.Functor.map_id]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sc.frob (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) {M : AM B Λ} (hM : Sc χ M) : Sc χ (frobA p h M) := fun c => by
   haveI := additive_frobFun p h
@@ -157,7 +157,7 @@ theorem Sc.frob (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) {M : AM B Λ} (hM 
   rw [hM, Functor.map_zsmul, CategoryTheory.Functor.map_id]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(frobFun p h).map (M.ρ c : M.V ⟶ M.V) = _`. Rewrite using `[hM]`. Unfold `frobFun`. Rewrite using `[Functor.comp_map, VB.pullback_map_smulHom, GlobalTheory.MixedLocalChains.FrobQuot.appTop_absFrob_comp p B h g, ← map_pow]`. Conclude with `pushforward_map_smulHom _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_act (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) {M : AM B Λ} (c : Λ) (g : Γ(B.X, ⊤))
     (hM : (M.ρ c : M.V ⟶ M.V) = smulHom M.V g) :
@@ -188,7 +188,7 @@ def eMul {a : O} (ha : a ≠ 0) : EPres (Model.base O) Λ where
   iso := Model.isIso_genRes_map_smulHom (Z := Model.base O) (sO O) ha
 
 /- English proof (translation)
-Apply `Action.Hom.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `smulHom (sO O) _ ≫ smulHom (sO O) _ = smulHom (sO O) _`. Rewrite using `[← smulHom_mul, ← map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem smulA_mul (a b : O) : smulA (sA χ O) (cst O a) ≫ smulA (sA χ O) (cst O b) = smulA (sA χ O) (cst O (b * a)) := by
   apply Action.Hom.ext
@@ -196,7 +196,7 @@ theorem smulA_mul (a b : O) : smulA (sA χ O) (cst O a) ≫ smulA (sA χ O) (cst
   rw [← smulHom_mul, ← map_mul]
 
 /- English proof (translation)
-Use `haveI : Mono (smulA (sA χ O) (cst O b)) := (Action.forget _ Λ).mono_of_mono_map (mono_smulHom_const hb)`. Conclude with `⟨_, shortExact_cokernel_comp (smulA (sA χ O) (cst O a)) (smulA (sA χ O) (cst O b)), ⟨Iso.refl _⟩, ⟨cokernelIsoOfEq (by rw [smulA_mul, h])⟩, ⟨Iso.refl _⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isExtA_mul {a b c : O} (hb : b ≠ 0) (h : b * a = c) :
     IsExtA (cokernel (smulA (sA χ O) (cst O a))) (cokernel (smulA (sA χ O) (cst O c))) (cokernel (smulA (sA χ O) (cst O b))) := by
@@ -211,7 +211,7 @@ def freeOne (X : Scheme.{0}) : freeModule X (Fin 1) ≅ structureModule X :=
 variable (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p]
 
 /- English proof (translation)
-Take `⟨h', ⟨e'⟩⟩` from `GlobalTheory.MixedLocalChains.isFrob_cokernel_smulHom_pow O p (Model.base O) (cst O a) (by rw [← map_pow, ← map_natCast (cst O) p]; exact map_dvd _ ha)`. Rewrite using `[map_pow]`. Conclude with `⟨(frobFun p h).mapIso e ≪≫ e'.symm⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem frob_cok (h : (p : Γ((fibI p (Model.base O)).subscheme, ⊤)) = 0) {M : AM (Model.base O) Λ} (a : O)
     (ha : a ^ p ∣ (p : O)) (e : M.V ≅ cokernel (smulHom (sO O) (cst O a))) :
@@ -222,9 +222,9 @@ theorem frob_cok (h : (p : Γ((fibI p (Model.base O)).subscheme, ⊤)) = 0) {M :
   exact ⟨(frobFun p h).mapIso e ≪≫ e'.symm⟩
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => exact ⟨hM, ⟨by rw [pow_zero, pow_one]; exact e⟩⟩`. Consider the case `succ i ih`. Establish `hp : 0 < p` using `(Fact.out : p.Prime).pos`. Take `⟨h1, ⟨e1⟩⟩` from `ih ((pow_dvd_pow a (Nat.pow_le_pow_right hp (Nat.le_succ i))).trans ha)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Function.iterate_succ_apply']`. Rewrite `ha`, the goal using `[pow_succ, pow_mul]`. Conclude with `⟨h1.frob p h, frob_cok p h _ ha e1⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem frob_iter (h : (p : Γ((fibI p (Model.base O)).subscheme, ⊤)) = 0) {M : AM (Model.base O) Λ} (hM : Sc χ M) (a : O)
     (e : M.V ≅ cokernel (smulHom (sO O) (cst O a))) (i : ℕ) (ha : a ^ p ^ i ∣ (p : O)) :
@@ -239,23 +239,21 @@ theorem frob_iter (h : (p : Γ((fibI p (Model.base O)).subscheme, ⊤)) = 0) {M 
     exact ⟨h1.frob p h, frob_cok p h _ ha e1⟩
 
 /- English proof (translation)
-Establish `hp2 : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `hpos : ∀ k, 0 < p ^ k * (p - 1)` using `fun k => Nat.mul_pos (pow_pos (by omega) _) (by omega)`. Establish `h0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hu` using `[zero_pow (hpos _).ne', eq_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `GlobalTheory.Vert.natCast_ne_zero O p ((Units.mul_right_eq_zero u).1 hu)`. Establish `hnu : ¬ IsUnit ϖ` using `fun h => by`. Establish `: IsUnit ((u : O) * p)` using `by rw [← hu]; exact h.pow _`. Conclude with `(mem_maximalIdeal _).1 (GlobalTheory.Vert.natCast_mem_maximalIdeal O p) (isUnit_of_mul_isUnit_right this)`. Establish `hn : ∀ k, ϖ ^ k ≠ 0` using `fun k => pow_ne_zero _ h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `root : ∀ k a, k * a = p ^ (o + 1) * (p - 1) → IsRootOfP p (B` using `Model.base O) (cst O (ϖ ^ k)) a := fun k a h => ⟨Units.map (cst O).toMonoidHom u, by`. Apply the tactic sequence `rw [Units.coe_map, ← map_pow, ← pow_mul, h, hu, map_mul, map_natCast] <;> rfl⟩`. Establish `dvdp : ∀ k, k ≤ p ^ (o + 1) * (p - 1) → ϖ ^ k ∣ (p : O)` using `fun k hk => (pow_dvd_pow ϖ hk).trans ⟨↑u⁻¹, by rw [hu, mul_comm (u : O), mul_assoc, Units.mul_inv, mul_one]⟩`. Establish `hp` using `GlobalTheory.MixedLocalChains.FrobQuot.natCast_eq_zero_fibI p (Model.base O)`. Establish `sc : ∀ a : Γ((Model.base O).X, ⊤), Sc χ (cokernel (smulA (sA χ O) a))` using `fun a => Sc.coker _ (sc_mkA χ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ev : ∀ a : Γ((Model.base O).X, ⊤), (cokernel (smulA (sA χ O) a)).V ≅ cokernel (smulHom (sO O) a)` using `fun a => cokV _`. Establish `hγ : ∀ n < o, p ^ (o - n) * (p - 1) * p ^ (n + 1) = p ^ (o + 1) * (p - 1)` using `fun n h => by`. Rewrite using `[mul_right_comm, ← pow_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ∀ k ≤ o + 1, p ^ k ≤ p ^ (o + 1) * (p - 1)` using `fun k hk => (Nat.pow_le_pow_right (by omega) hk).trans (Nat.le_mul_of_pos_right _ (by omega))`. Use `haveI : IsIso (smulHom (sO O) ((cst O) ↑u)) := (isUnit_iff_isIso _).1 ((u.isUnit.map (cst O)).map (smulEnd (sO O)))`. Establish `eLast : cokernel (smulHom (sO O) ((cst O) (ϖ ^ (p ^ (o + 1) * (p - 1))))) ≅ cokernel (smulHom (sO O) (p : Γ((Model.base O).X, ⊤)))` using `cokernelIsoOfEq (by rw [hu, map_mul, map_natCast, smulHom_mul]) ≪≫ cokernelCompIsIso (smulHom (sO O) (p : Γ((Model.base O).X, ⊤))) (smulHom (sO O) ((cst O) ↑u))`. Use `⟨{ π := cst O (ϖ ^ p ^ (o + 1)), g := cst O (ϖ ^ (p ^ o * (p - 1))), γ := fun n => cst O (ϖ ^ (p ^ (o - n) * (p - 1))), π_root := root _ _ rfl, g_root := root _ _ (by ring), γ_root := fun n h => root _ _ (hγ n h), hp := hp, lw := eMul χ (one_ne_zero (α := O)), wl := smulA (sA χ O …` and prove the remaining obligations. Rewrite using `[← pow_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Rewrite using `[show o + 1 - (n + 1) = o - n by omega, show o + 1 - n = o - n + 1 by omega, pow_succ]`. Take `⟨q, rfl⟩ : ∃ q, p = q + 1` from `⟨p - 1, by omega⟩`. Simplify using `[mul_add]`. Take `⟨h1, ⟨e1⟩⟩` from `frob_iter χ p hp (sc _) (ϖ ^ (p ^ (o - n) * (p - 1))) (ev _) (n + 1) (by rw [← pow_mul, hγ n h]; exact dvdp _ le_rfl)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `e1` using `[← pow_mul, hγ n h]`. Conclude with `⟨liftIso h1 (sc _) (e1 ≪≫ eLast ≪≫ (ev _).symm)⟩`. Establish `k : Kills (cst O (ϖ ^ (p ^ o * (p - 1)))) (cokernel (smulHom (sO O) (cst O (ϖ ^ p ^ (o + 1 - (n + 1))))))` using `kills_cokernel (map_dvd _ (pow_dvd_pow _ ((Nat.pow_le_pow_right (by omega) (by omega)).trans (Nat.le_mul_of_pos_right (p ^ o) (by omega)))))`. Establish `e` using `ev (cst O (ϖ ^ p ^ (o + 1 - (n + 1))))`. Express the relevant statement in the definitionally equal form `smulHom (cokernel (smulA (sA χ O) (cst O (ϖ ^ p ^ (o + 1 - (n + 1)))))).V _ = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono e.hom, smulHom_comp, zero_comp]`. Unfold `Kills at k`. Rewrite using `[k, comp_zero]`. Take `⟨e1⟩` from `frob_cok p hp (ϖ ^ p ^ (o + 1 - (n + 1))) (by`. Rewrite using `[← pow_mul, ← pow_succ]; exact dvdp _ (hle _ (by omega))) (ev _)`.
-
-Rewrite `e1` using `[← pow_mul, ← pow_succ, show o + 1 - (n + 1) + 1 = o + 1 - n by omega]`. Conclude with `⟨liftIso (sc _) ((sc _).frob p hp) (ev _ ≪≫ e1.symm)⟩`. Conclude with `not_isZero_cokernel (a := ϖ ^ p ^ (o + 1 - n)) (by rw [isUnit_pow_iff (pow_pos (by omega) _).ne']; exact hnu) (h.of_iso (ev _).symm)`. Conclude with `not_isZero_cokernel (a := ϖ ^ (p ^ (o - n) * (p - 1))) (by rw [isUnit_pow_iff (hpos _).ne']; exact hnu) (h.of_iso (ev _).symm)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eqChain (o : ℕ) (ϖ : O) (u : Oˣ) (hu : ϖ ^ (p ^ (o + 1) * (p - 1)) = u * p) :
     ∃ Q : EqChain p (Model.base O) Λ o, Q.lw.r = 1 ∧ Sc χ Q.lw.E' ∧ (∀ n, ¬ IsZero (Q.q n).mod.V) ∧
@@ -337,7 +335,7 @@ theorem exists_eqChain (o : ℕ) (ϖ : O) (u : Oˣ) (hu : ϖ ^ (p ^ (o + 1) * (p
 end Base
 
 /- English proof (translation)
-Establish `hp2 : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Take `⟨O, _, _, _, _, _, ϖ, h⟩` from `GlobalTheory.RootDVR.exists_dvr_pow_eq_prime p (p ^ (o + 1) * (p - 1)) (Nat.mul_pos (pow_pos (by omega) _) (by omega))`. Conclude with `⟨O, _, _, _, inferInstance, inferInstance, exists_eqChain χ p o ϖ 1 (by simpa using h)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_base_eqChain (p : ℕ) [Fact p.Prime] (o : ℕ) (Λ : Type) [CommRing Λ] (χ : Λ →+* ℤ) :
     ∃ (O : Type) (_ : CommRing O) (_ : IsDomain O) (_ : IsDiscreteValuationRing O) (_ : CharZero O)
@@ -349,7 +347,7 @@ theorem exists_base_eqChain (p : ℕ) [Fact p.Prime] (o : ℕ) (Λ : Type) [Comm
   exact ⟨O, _, _, _, inferInstance, inferInstance, exists_eqChain χ p o ϖ 1 (by simpa using h)⟩
 
 /- English proof (translation)
-Take `⟨S, hS, ⟨e₁⟩, ⟨e₂⟩, ⟨e₃⟩⟩` from `h`. Conclude with `⟨S.map (Action.forget _ Λ), hS.map_of_exact _, ⟨(Action.forget _ Λ).mapIso e₁ ≪≫ cokV _⟩, ⟨(Action.forget _ Λ).mapIso e₂ ≪≫ cokV _⟩, ⟨(Action.forget _ Λ).mapIso e₃ ≪≫ cokV _⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isExt_of_isExtA {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Vert.Model O} {Λ : Type}
     [CommRing Λ] {P₁ P₂ P₃ : EPres B Λ} (h : IsExtA P₁.mod P₂.mod P₃.mod) :
@@ -373,7 +371,7 @@ def IsEqLatPres (Z : LocM.Mdl Y i₀) {O : Type} [CommRing O] [IsDomain O] [IsDi
       (h.app (Z.U a).1).hom (Z.alg a (embK Z.i.c (x i).1 (if d then H.bar c else c))) • s a i
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨k.1, k.2.imp fun _ k' => ⟨k'.1, k'.2.1⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsEqLatPres.isLatPres {Z : LocM.Mdl Y i₀} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {B : Vert.Model O} {h : B.X ⟶ Z.X} {r : ℕ} {x : Fin r → Letter Dw} {d : Bool} {P : EPres B (𝓞 E)}

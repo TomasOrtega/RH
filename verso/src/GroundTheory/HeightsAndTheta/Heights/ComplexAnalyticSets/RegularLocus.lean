@@ -15,15 +15,15 @@ def regLocus {σ : Type} [Fintype σ] (Y : Set (σ → ℂ)) : Set (σ → ℂ) 
   {x | IsRegularPointOf Y x}
 
 /- English proof (translation)
-Introduce `_ hx` and use `hx.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem regLocus_subset {σ : Type} [Fintype σ] (Y : Set (σ → ℂ)) : regLocus Y ⊆ Y :=
   fun _ hx => hx.1
 
 /- English proof (translation)
-Establish `hx' : IsRegularPointOf Y x` using `hx`. Take `⟨hxY, d, A, O, V, g, hO, hV, hxV, hg, hAg, hYV⟩` from `hx'`. Use `⟨hx, d, A, O, V, g, hO, hV, hxV, hg, hAg, ?_⟩` and prove the remaining obligations. Rewrite using `[← hYV]`. Use extensionality with `z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hzV⟩`. Conclude with `⟨regLocus_subset Y hz, hzV⟩`. Introduce and unpack `⟨hzY, hzV⟩`. Conclude with `⟨⟨hzY, d, A, O, V, g, hO, hV, hzV, hg, hAg, hYV⟩, hzV⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isRegularPointOf_regLocus {σ : Type} [Fintype σ] {Y : Set (σ → ℂ)} {x : σ → ℂ}
     (hx : x ∈ regLocus Y) : IsRegularPointOf (regLocus Y) x := by

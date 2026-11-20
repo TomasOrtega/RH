@@ -5,9 +5,7 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hd : Differentiable ℂ (fun x : Fin a → Fin a → T → ℂ => (fun i j => (A.val * Matrix.of x * B.val) i j : Fin a → Fin a → T → ℂ))`. Use `differentiable_pi.2 fun i => differentiable_pi.2 fun j => differentiable_pi.2 fun t => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Finset.sum_apply, Pi.mul_apply, Matrix.of_apply]`. Use `fun_prop`. Use `hΦ.comp hd.differentiableOn fun x hx => ?_` and prove the remaining obligations.
-
-Conclude with `(A.isUnit.mul hx).mul B.isUnit`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem diff_translate {T : Type} [Fintype T] {a : ℕ} (Φ : (Fin a → Fin a → T → ℂ) → ℂ)
     (hΦ : DifferentiableOn ℂ Φ {x | IsUnit (Matrix.of x)}) (A B : GL (Fin a) (T → ℂ)) :
@@ -22,17 +20,15 @@ private theorem diff_translate {T : Type} [Fintype T] {a : ℕ} (Φ : (Fin a →
   exact (A.isUnit.mul hx).mul B.isUnit
 
 /- English proof (translation)
-Introduce `E _ _ _ a`. Establish `hv : ∀ y : GL (Fin a) (Cinf E), (GeneralLinearGroup.map (emb E) y).val = Matrix.of (fun i j => emb E (y.val i j))` using `fun y => rfl`. Set `S : Submonoid (GL (Fin a) ((E →+* ℂ) → ℂ))` to `{ carrier := {g | ∀ Φ : (Fin a → Fin a → (E →+* ℂ) → ℂ) → ℂ, DifferentiableOn ℂ Φ {x | IsUnit (Matrix.of x)} → (∀ y : GL (Fin a) (Cinf E), Φ (fun i j => emb E (y.val i j)) = 0) → Φ (fun i j => g.val i j) = 0} one_mem' := fun Φ _ h0 => by`. Establish `h` using `h0 1`. Establish `e : (fun i j => emb E ((1 : GL (Fin a) (Cinf E)).val i j)) = fun i j => (1 : GL (Fin a) ((E →+* ℂ) → ℂ)).val i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hv 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Conclude with `this.symm`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Use the proof step `mul_mem' := fun {g h} hg hh Φ hΦ h0 => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ y : GL (Fin a) (Cinf E), Φ (fun i j => ((GeneralLinearGroup.map (emb E) y).val * h.val) i j) = 0` using `fun y => by`. Use `hh _ (diff_translate Φ hΦ (GeneralLinearGroup.map (emb E) y) 1) fun z => by` as an intermediate fact. Establish `h2` using `h0 (y * z)`. Establish `h3` using `hv (y * z)`. Rewrite `h3` using `[map_mul, Units.val_mul, hv z]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_one, mul_one, h3]`. Conclude with `h2`. Simplify using `only [Units.val_one, mul_one] at this`. Conclude with `this`. Use `hg _ (diff_translate Φ hΦ 1 h) fun z => by` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Units.val_one, one_mul]`. Conclude with `h1 z`. Simplify using `only [Units.val_one, one_mul] at this`. Conclude with `this }`. Introduce `Φ hΦ h0 g`.
-
-Use `expGenPi _ a S (fun X y hy Ψ hΨ h1 => ?_) g Φ hΦ h0` and prove the remaining obligations. Rewrite using `[hy]`. Conclude with `holIdExp E a Ψ hΨ h1 X`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Bor.holId :
     UpperTheory.V.Lit.Bor.HolId := by

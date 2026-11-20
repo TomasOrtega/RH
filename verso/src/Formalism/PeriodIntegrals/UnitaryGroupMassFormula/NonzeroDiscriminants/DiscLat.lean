@@ -8,11 +8,11 @@ noncomputable section
 namespace DiscrNeWork
 
 /- English proof (translation)
-Establish `him` using `congrArg Complex.im h`. Use `first`. Consider the case `simp only [Complex.add_im, Complex.mul_im, Complex.intCast_re, Complex.intCast_im] at him`. Consider the case `simp at him`. Establish `key : ((m : ℝ) - m') * (τ : ℂ).im = 0` using `by first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `linear_combination him`. Consider the case `linarith`. Establish `hpos : 0 < (τ : ℂ).im` using `τ.im_pos`. Establish `hsub : (m : ℝ) - m' = 0` using `(mul_eq_zero.mp key).resolve_right hpos.ne'`. Establish `hm : m = m'` using `by exact_mod_cast sub_eq_zero.mp hsub`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hm` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `hn : (n : ℂ) = n'` using `add_left_cancel h`. Conclude with `hn` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma lin_inj (τ : ℍ) {m n m' n' : ℤ} (h : (m : ℂ) * τ + n = (m' : ℂ) * τ + n') :
     m = m' ∧ n = n' := by
@@ -33,9 +33,9 @@ lemma lin_inj (τ : ℍ) {m n m' n' : ℤ} (h : (m : ℂ) * τ + n = (m' : ℂ) 
   exact_mod_cast hn
 
 /- English proof (translation)
-Introduce `h0`. Apply `hv` to reduce the goal to its premises. Establish `h' : ((v 0 : ℤ) : ℂ) * τ + ((v 1 : ℤ) : ℂ) = ((0 : ℤ) : ℂ) * τ + ((0 : ℤ) : ℂ)` using `by first`. Consider the case `(rw [h0]; simp)`. Consider the case `simpa using h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Take `⟨h1, h2⟩` from `lin_inj τ h'`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `h1`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma lin_ne (τ : ℍ) (v : Fin 2 → ℤ) (hv : v ≠ 0) : ((v 0 : ℂ) * τ + v 1) ≠ 0 := by
   intro h0
@@ -60,17 +60,15 @@ def toLat (a : ℂ) (ha : a ≠ 0) (τ : ℍ) (v : nz) :
     exact ⟨v.1 1, v.1 0, by simp only [zsmul_eq_mul]; ring⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `v v' hvv`. Establish `h1 : a * ((v.1 0 : ℂ) * τ + v.1 1) = a * ((v'.1 0 : ℂ) * τ + v'.1 1)` using `congrArg Subtype.val hvv`. Establish `h2` using `mul_left_cancel₀ ha h1`. Take `⟨e0, e1⟩` from `lin_inj τ h2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `e0`. Conclude with `e1`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨w, hw, hw0⟩`. Establish `hw'` using `hw`. Rewrite `hw'` using `[PI.lat2, AddSubgroup.mem_closure_pair]`. Take `⟨m, n, hmn⟩` from `hw'`. Establish `hv : (![n, m] : Fin 2 → ℤ) ∈ nz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `h`. Apply `hw0` to reduce the goal to its premises. Establish `hn : n = 0` using `congrFun h 0`. Establish `hm : m = 0` using `congrFun h 1`. Rewrite using `[← hmn, hn, hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Use `⟨⟨![n, m], hv⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show a * ((((![n, m] : Fin 2 → ℤ) 0 : ℤ) : ℂ) * (τ : ℂ) + (((![n, m] : Fin 2 → ℤ) 1 : ℤ) : ℂ)) = w`. Establish `e0 : (![n, m] : Fin 2 → ℤ) 0 = n` using `rfl`.
-
-Establish `e1 : (![n, m] : Fin 2 → ℤ) 1 = m` using `rfl`. Rewrite using `[e0, e1, ← hmn, zsmul_eq_mul, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma toLat_bij (a : ℂ) (ha : a ≠ 0) (τ : ℍ) : Function.Bijective (toLat a ha τ) := by
   constructor
@@ -104,15 +102,15 @@ lemma toLat_bij (a : ℂ) (ha : a ≠ 0) (τ : ℍ) : Function.Bijective (toLat 
     ring
 
 /- English proof (translation)
-Establish `hk2 : 2 * k ≠ 0` using `by omega`. Set `e` to `Equiv.ofBijective _ (toLat_bij a ha τ)`. Establish `hterm : ∀ v : nz, 1 / ((e v : ℂ)) ^ (2 * k) = (a ^ (2 * k))⁻¹ * eisSummand ((2 * k : ℕ) : ℤ) v.1 τ`. Introduce `v`. Establish `hX : eisSummand ((2 * k : ℕ) : ℤ) v.1 τ = 1 / ((v.1 0 : ℂ) * (τ : ℂ) + (v.1 1 : ℂ)) ^ (2 * k)` using `by first`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `((simp only [eisSummand, zpow_neg, zpow_natCast, one_div]) <;> rfl)`. Consider the case `(simp [eisSummand, zpow_natCast, one_div])`. Consider the case `(rw [eisSummand, zpow_neg, zpow_natCast, one_div])`. Consider the case `(unfold eisSummand; done)`. Use `show 1 / (a * ((v.1 0 : ℂ) * (τ : ℂ) + (v.1 1 : ℂ))) ^ (2 * k) = _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX]`. Use `first`. Consider the case `(rw [mul_pow, one_div, one_div, mul_inv])`. Consider the case `ring`. Establish `hsupp : Function.support (fun v : Fin 2 → ℤ => eisSummand ((2 * k : ℕ) : ℤ) v τ) ⊆ nz`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce `v hv`. Use `show v ≠ 0`. Introduce and unpack `rfl`. Apply `hv` to reduce the goal to its premises. Use `first`.
+Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Consider the case `(simp only [eisSummand, Pi.zero_apply, Int.cast_zero, zero_mul, add_zero, zpow_neg, zpow_natCast, zero_pow hk2, inv_zero, one_div])`. Consider the case `(simp [eisSummand, hk2])`. Consider the case `(unfold eisSummand; done)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tsum_subtype_eq_of_support_subset (f := fun v : Fin 2 → ℤ => eisSummand ((2 * k : ℕ) : ℤ) v τ) hsupp]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eisG_eq (a : ℂ) (ha : a ≠ 0) (τ : ℍ) (k : ℕ) (hk : 1 ≤ k) :
     PI.eisG (PI.lat2 a (a * τ)) k =

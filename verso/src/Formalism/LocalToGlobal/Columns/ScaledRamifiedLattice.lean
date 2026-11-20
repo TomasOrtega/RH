@@ -20,15 +20,15 @@ def Deco.IsDnA (P : ST) (q : 𝓞 E) (a : 𝓞 E ⧸ P.1.asIdeal) (d d' : Deco E
   d' = d.dn P (d'.f P) ∧ ∀ e ∈ d.N, d.f P e = 1 → d'.f P (q • e) = a
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem Deco.isDnA_one (P : ST) (q : 𝓞 E) (d d' : Deco E n ST SG) :
     Deco.IsDnA P q 1 d d' ↔ Deco.IsDn P q d d' := Iff.rfl
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hdd`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [h1]`. Conclude with `(d.dn_act hg h P (d'.f P)).symm`. Introduce `e he hfe`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `d'.f P (g.symm (q • e)) = a`. Rewrite using `[equiv_osmul]`. Conclude with `h2 _ ((mem_gmap _ _ _).1 he) hfe`.
+A detailed English derivation is pending.
 -/
 theorem Deco.IsDnA.act {P : ST} {q : 𝓞 E} {a : 𝓞 E ⧸ P.1.asIdeal} {d d' : Deco E n ST SG}
     (hdd : Deco.IsDnA P q a d d') {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n) (h : GLG E n SG) :
@@ -52,9 +52,9 @@ Both sides reduce to the same expression.
 theorem DecoSet.dnSetA_one (P : ST) (q : 𝓞 E) (d : DecoSet E n ST SG) : d.dnSetA P q 1 = d.dnSet P q := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Deco.IsDnA.act h (x⁻¹).1.2 (x⁻¹).2` as an intermediate fact. Establish `e1 : ((x • d).1.act (x⁻¹).1.1 (x⁻¹).2) = (x⁻¹ • x • d).1` using `rfl`. Establish `e2 : ((x • d').1.act (x⁻¹).1.1 (x⁻¹).2) = (x⁻¹ • x • d').1` using `rfl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e1, e2, inv_smul_smul, inv_smul_smul]`. Conclude with `this`. Introduce `h`. Conclude with `Deco.IsDnA.act h x.1.2 x.2`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DecoSet.smul_mem_dnSetA (x : UF E n × GLG E n SG) (P : ST) (q : 𝓞 E) (a : 𝓞 E ⧸ P.1.asIdeal)
     (d d' : DecoSet E n ST SG) : x • d' ∈ (x • d).dnSetA P q a ↔ d' ∈ d.dnSetA P q a := by
@@ -69,11 +69,11 @@ theorem DecoSet.smul_mem_dnSetA (x : UF E n × GLG E n SG) (P : ST) (q : 𝓞 E)
     exact Deco.IsDnA.act h x.1.2 x.2
 
 /- English proof (translation)
-Distinguish the cases in `h : (d.1.dnN P).FG`. Use `(DecoSet.finite_fibre (ST := ST) (SG := SG) (d.1.dnN P) h).subset ?_` and prove the remaining obligations. Introduce `d' hd'`. Use `congrArg Deco.N hd'.1` as an intermediate fact. Conclude with `this`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : d.dnSetA P q a = ∅`. Use extensionality with `d'`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `hd'`. Apply `h` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : d'.1.N = d.1.dnN P` using `congrArg Deco.N hd'.1`. Rewrite using `[← h1]`. Conclude with `d'.2.lat.fg`. Rewrite using `[he]`. Conclude with `Set.finite_empty`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DecoSet.dnSetA_finite (d : DecoSet E n ST SG) (P : ST) (q : 𝓞 E) (a : 𝓞 E ⧸ P.1.asIdeal) :
     (d.dnSetA P q a).Finite := by

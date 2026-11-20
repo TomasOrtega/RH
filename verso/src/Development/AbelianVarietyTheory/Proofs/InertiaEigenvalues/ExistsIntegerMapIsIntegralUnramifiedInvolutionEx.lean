@@ -9,13 +9,13 @@ namespace GlobalTheory.UnitLemma.Unr
 open GlobalTheory.UnitLemma Polynomial
 
 /- English proof (translation)
-Introduce `K K' d φ hU`. Take `⟨φO, hφO⟩` from `exists_intMap_of_unr hU`. Use `⟨φO, hφO, ?_⟩` and prove the remaining obligations. Use `letI : Algebra K.O K'.O := φO.toAlgebra`. Take `⟨u, hu⟩` from `exists_int_basis_of_unr K K' d φ hU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Establish `hspan : Submodule.span K.O (Set.range u) = ⊤`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hu y`. Establish `hy : y = ∑ i, a i • u i`. Apply `IsFractionRing.injective K'.O K'.E` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[ha, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul]`. Express the relevant statement in the definitionally equal form `φ (algebraMap K.O K.E (a i)) * _ = algebraMap K'.O K'.E (φO (a i)) * _`. Rewrite using `[hφO]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `haveI : Module.Finite K.O K'.O := ⟨Submodule.fg_def.2 ⟨_, Set.finite_range u, hspan⟩⟩`. Conclude with `Algebra.IsIntegral.of_finite K.O K'.O`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intMap_isIntegral_of_unr : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K' d φ →
     ∃ φO : K.O →+* K'.O, (∀ x, algebraMap K'.O K'.E (φO x) = φ (algebraMap K.O K.E x)) ∧

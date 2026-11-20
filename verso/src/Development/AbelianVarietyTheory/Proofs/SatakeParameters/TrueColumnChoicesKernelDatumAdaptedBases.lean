@@ -18,7 +18,7 @@ namespace GlobalTheory.Pdv.KerScale
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.G Formalism.L2.Ker Classical
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a j`. Unfold `GL3Columns.colsOf`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colsOf_smul {k : Type} [CommRing k] {N : ℕ} (t : k) (Y : Matrix (Fin N) (Fin N) k) :
     GL3Columns.colsOf (t • Y) = fun a j => t * GL3Columns.colsOf Y a j := by
@@ -27,9 +27,9 @@ theorem colsOf_smul {k : Type} [CommRing k] {N : ℕ} (t : k) (Y : Matrix (Fin N
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `GL3Columns.DeX`. Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.KerRescale.card_eq_sum_colLen, ← Finset.prod_pow_eq_pow_sum, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (Matrix.of fun i j : Fin ((nu s).colLen c) => ∑ a : Fin N, MvPolynomial.C (t s * y s a (j : ℕ)) * MvPolynomial.X (s, (i : ℕ), a)) = (MvPolynomial.C (t s) : MvPolynomial (Lt × ℕ × Fin N) k) • Matrix.of fun i j : Fin ((nu s).colLen c) => ∑ a : Fin N, MvPolynomial.C (y s a (j : …`. Use extensionality with `i j`. Simplify using `[Matrix.smul_apply, Finset.mul_sum, mul_assoc]`. Rewrite using `[e, Matrix.det_smul, Fintype.card_fin, map_pow]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem deX_smul {Lt k : Type} [Fintype Lt] [CommRing k] (N : ℕ) (nu : Lt → YoungDiagram) (t : Lt → k)
     (y : Lt → Fin N → ℕ → k) :
@@ -54,7 +54,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNoti
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨ph, rfl⟩` from `hF`. Use `show ph (GL3Columns.DeX N nu fun s => GL3Columns.colsOf (t (tauPl D s) • y (tauPl D s))) = _ * ph (GL3Columns.DeX N nu fun s => GL3Columns.colsOf (y (tauPl D s)))`. Simplify using `only [colsOf_smul]`. Establish `h` using `deX_smul N nu (fun s => t (tauPl D s)) (fun s => GL3Columns.colsOf (y (tauPl D s)))`. Rewrite using `[h, MvPolynomial.C_mul', map_smul, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem canM_scale (w : D.what₂.places.Pl) (N : ℕ) (nu : Bool × HH D → YoungDiagram) (t : D.what₂.Tau → Cw D w)
     {F : FrP D w N → Cw D w} (hF : F ∈ LinearMap.range (canM D w N nu)) (y : FrP D w N) :
@@ -66,7 +66,7 @@ theorem canM_scale (w : D.what₂.places.Pl) (N : ℕ) (nu : Bool × HH D → Yo
   rw [h, MvPolynomial.C_mul', map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [atBas, LinearMap.coe_mk, AddHom.coe_mk, Matrix.smul_mul, Matrix.mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem atBas_smul (P : Examples₂.EntPl D) (w : D.what₂.places.Pl) {N : ℕ} (t : D.what₂.Tau → Cw D w)
     (M : D.what₂.Tau → Matrix (Fin N) (Fin N) (Cw D w)) (Q : MvPolynomial (GL3Theta.FrV D N) D.what₂.LL) (y : FrP D w N) :
@@ -80,7 +80,7 @@ variable (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.LiftObj D (D.chTw u �
   (a : ∀ w : D.what₂.places.Pl, D.what₂.Word → D.what₂.Tup → D.what₂.Tau → Cw D w)
 
 /- English proof (translation)
-Simplify using `only [srcFun, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply, Pi.smul_apply, smul_eq_mul, scB]`. Rewrite using `[show scB a B u μ w i c = fun τ => a w u μ τ ^ i • B u μ w i c τ from rfl, atBas_smul P w (fun τ => a w u μ τ ^ i)]`. Simplify using `only [Matrix.det_smul, Fintype.card_fin, mul_zpow, Finset.prod_mul_distrib, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem srcFun_scB (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (i : ℕ) (c : (D.chTw u μ).cls i) (v : polV D u i)
     (y : FrP D w (D.R.N i)) :
@@ -91,7 +91,7 @@ theorem srcFun_scB (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.plac
   simp only [Matrix.det_smul, Fintype.card_fin, mul_zpow, Finset.prod_mul_distrib, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [tgtFun, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply, Pi.smul_apply, smul_eq_mul, scB]`. Rewrite using `[show scB a B u μ w (i + 1) c' = fun τ => a w u μ τ ^ (i + 1) • B u μ w (i + 1) c' τ from rfl, atBas_smul P w (fun τ => a w u μ τ ^ (i + 1))]`. Simplify using `only [Matrix.det_smul, Fintype.card_fin, mul_zpow, Finset.prod_mul_distrib, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tgtFun_scB (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (i : ℕ) (c' : (D.chTw u μ).cls (i + 1)) (v : polV D u (i + 1))
     (y : FrP D w (D.R.N (i + 1))) :
@@ -111,7 +111,7 @@ variable {D : D7} (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.LiftObj D (D
   (a : ∀ w : D.what₂.places.Pl, D.what₂.Word → D.what₂.Tup → D.what₂.Tau → Cw D w)
 
 /- English proof (translation)
-Establish `e : srcFun P (scB a B) u μ w i c (secC O u μ i v) = ((∏ τ, ((a w u μ τ ^ i) ^ D.R.N i) ^ (-(D.chTw u μ).sSharp i τ)) * ∏ z, (a w u μ (tauPl D z) ^ i) ^ (nuD D u i z).card) • srcFun P B u μ w i c (secC O u μ i v)`. Use function extensionality and compare the values at `y`. Rewrite using `[srcFun_scB, canM_scale w (D.R.N i) (nuD D u i) (fun τ => a w u μ τ ^ i) (canS_of P B hC u μ w i hi c _) y, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Use `show canInv D w (D.R.N i) (nuD D u i) (srcFun P (scB a B) u μ w i c (secC O u μ i v)) φ = _ * canInv D w (D.R.N i) (nuD D u i) (srcFun P B u μ w i c (secC O u μ i v)) φ`. Rewrite using `[e, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prSC_scB (hC : CanOnto P) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (i : ℕ) (hi : i < D.R.m)
     (c : (D.chTw u μ).cls i) (v : ValQ O u μ i) (φ : MvPolynomial ((Bool × HH D) × ℕ × Fin (D.R.N i)) (Cw D w)) :
@@ -127,7 +127,7 @@ theorem prSC_scB (hC : CanOnto P) (u : D.what₂.Word) (μ : D.what₂.Tup) (w :
   rw [e, map_smul, LinearMap.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `e : tgtFun P (scB a B) u μ w i c' (secC O u μ (i + 1) v') = ((∏ τ, ((a w u μ τ ^ (i + 1)) ^ D.R.N (i + 1)) ^ (-(D.chTw u μ).sDiv i τ)) * ∏ z, (a w u μ (tauPl D z) ^ (i + 1)) ^ (nuD D u i z).card) • tgtFun P B u μ w i c' (secC O u μ (i + 1) v')`. Use function extensionality and compare the values at `y`. Rewrite using `[tgtFun_scB, canM_scale w (D.R.N (i + 1)) (nuD D u i) (fun τ => a w u μ τ ^ (i + 1)) (canT_of P B hC u μ w i hi c' _) y, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Use `show onMin D w (D.R.N (i + 1)) (nuD D u i) (canInv D w (D.R.N (i + 1)) (nuD D u i) (tgtFun P (scB a B) u μ w i c' (secC O u μ (i + 1) v'))) I = _ * onMin D w (D.R.N (i + 1)) (nuD D u i) (canInv D w (D.R.N (i + 1)) (nuD D u i) (tgtFun P B u μ w i c' (secC O u μ (i + 1) v'))) I`. Rewrite using `[e, map_smul, map_smul, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prTC_scB (hC : CanOnto P) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (i : ℕ) (hi : i < D.R.m)
     (c' : (D.chTw u μ).cls (i + 1)) (v' : ValQ O u μ (i + 1)) (I : KM.ColChoice (D.R.N (i + 1)) (nuD D u i)) :
@@ -143,13 +143,11 @@ theorem prTC_scB (hC : CanOnto P) (u : D.what₂.Word) (μ : D.what₂.Tup) (w :
   rw [e, map_smul, map_smul, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `thAtW`. Rewrite using `[GlobalTheory.KerRescale.rescale_atLin]`. Use `congr 1`. Use function extensionality and compare the values at `k j`. Use `split_ifs with hk`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hs0 : a w u μ k.1 ≠ 0` using `norm_ne_zero_iff.1 (by rw [ha]; exact one_ne_zero)`. Establish `h0` using `(hB u μ w i hi.le c k.1).1`. Establish `e : (a w u μ k.1 ^ i • B u μ w i c k.1)⁻¹ = (a w u μ k.1 ^ i)⁻¹ • (B u μ w i c k.1)⁻¹`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ (pow_ne_zero _ hs0), one_smul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 h0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show 1 * lamC (P.lam w) ((O u μ).dgen k.1) * (a w u μ k.1 ^ (i + 1) • B u μ w (i + 1) c' k.1) k.2.1 j.2.2 * (a w u μ k.1 ^ i • B u μ w i c k.1)⁻¹ j.2.1 k.2.2 = _`. Rewrite using `[e, hk]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[pow_succ]`. Clear the denominators using the available nonvanishing facts.
-
-Conclude with `(mul_zero _).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem thAtW_scB (ha : ∀ w u μ τ, ‖a w u μ τ‖ = 1) (hB : BasOk P O B) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl)
     (i : ℕ) (hi : i < D.R.m) (c : (D.chTw u μ).cls i) (c' : (D.chTw u μ).cls (i + 1)) :
@@ -174,7 +172,7 @@ theorem thAtW_scB (ha : ∀ w u μ τ, ‖a w u μ τ‖ = 1) (hB : BasOk P O B)
   · exact (mul_zero _).symm
 
 /- English proof (translation)
-Unfold `unF scB`. Simplify using `only [Matrix.det_smul, Fintype.card_fin, mul_zpow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem unF_scB (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (i : ℕ) (c : (D.chTw u μ).cls i) (c' : (D.chTw u μ).cls (i + 1)) :
     unF P O (scB a B) u μ w i c c' = unF P O B u μ w i c c' * ((∏ τ, ((a w u μ τ ^ i) ^ D.R.N i) ^ ((D.chTw u μ).sSharp i τ)) *
@@ -193,29 +191,27 @@ variable {D : D7} (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.LiftObj D (D
   (a : ∀ w : D.what₂.places.Pl, D.what₂.Word → D.what₂.Tup → D.what₂.Tau → Cw D w)
 
 /- English proof (translation)
-Introduce `u μ w i hi c τ` and use `GlobalTheory.Mem.Col2.TC.AdaptedBases.basR_smul (hB u μ w i hi c τ) (by rw [norm_pow, ha, one_pow])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem basOk_scB (ha : ∀ w u μ τ, ‖a w u μ τ‖ = 1) (hB : BasOk P O B) : BasOk P O (scB a B) := fun u μ w i hi c τ =>
   GlobalTheory.Mem.Col2.TC.AdaptedBases.basR_smul (hB u μ w i hi c τ) (by rw [norm_pow, ha, one_pow])
 
 /- English proof (translation)
-Establish `hn : ∀ w u μ τ, a w u μ τ ≠ 0` using `fun w u μ τ => norm_ne_zero_iff.1 (by rw [ha]; exact one_ne_zero)`. Establish `nS : ∀ u μ w i, ‖(∏ τ, ((a w u μ τ ^ i) ^ D.R.N i) ^ (-(D.chTw u μ).sSharp i τ)) * ∏ z, (a w u μ (tauPl D z) ^ i) ^ (nuD D u i z).card‖ = 1` using `fun u μ w i => by`. Simplify using `[norm_prod, norm_zpow, norm_pow, ha]`. Establish `nT : ∀ u μ w i, ‖(∏ τ, ((a w u μ τ ^ (i + 1)) ^ D.R.N (i + 1)) ^ (-(D.chTw u μ).sDiv i τ)) * ∏ z, (a w u μ (tauPl D z) ^ (i + 1)) ^ (nuD D u i z).card‖ = 1` using `fun u μ w i => by`. Simplify using `[norm_prod, norm_zpow, norm_pow, ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun u μ w hw i hi c' v' I => ?_, fun u μ w hw i hi φ => ?_, fun u μ w hw i hi φ => ?_, fun u μ w hw i hi c c' v v' hK I => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `h.val u μ w hw i hi c' v' I`. Conclude with `⟨b, by rw [prTC_scB P O B a hC u μ w i hi, norm_mul, nT, one_mul, hb]⟩`. Establish `e : ∀ c v J, ‖prSC P O (scB a B) u μ w i c v J‖ = ‖prSC P O B u μ w i c v J‖` using `fun c v J => by`. Rewrite using `[prSC_scB P O B a hC u μ w i hi, norm_mul, nS, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e]`. Conclude with `h.latS u μ w hw i hi φ`. Establish `e : ∀ c' v' I, ‖prTC P O (scB a B) u μ w i c' v' I‖ = ‖prTC P O B u μ w i c' v' I‖` using `fun c' v' I => by`. Rewrite using `[prTC_scB P O B a hC u μ w i hi, norm_mul, nT, one_mul]`. Simplify using `only [e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h.latT u μ w hw i hi φ`. Establish `k0` using `h.kform u μ w hw i hi c c' v v' hK I`. Establish `hF` using `unF_ne P O B hB u μ (hR u μ) w i hi c c'`. Establish `hU0 : ((∏ τ, ((a w u μ τ ^ i) ^ D.R.N i) ^ ((D.chTw u μ).sSharp i τ)) * ∏ τ, ((a w u μ τ ^ (i + 1)) ^ D.R.N (i + 1)) ^ (-(D.chTw u μ).sDiv i τ)) ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (pow_ne_zero _ (pow_ne_zero _ (hn w u μ τ)))) (Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (pow_ne_zero _ (pow_ne_zero _ (hn w u μ τ))))`. Establish `hF' : unF P O (scB a B) u μ w i c c' ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[unF_scB]`. Conclude with `mul_ne_zero hF hU0`. Rewrite using `[prTC_scB P O B a hC u μ w i hi, k0, thAtW_scB P O B a ha hB u μ w i hi c c', GlobalTheory.KerRescale.applyAt0_rescale _ _ _ (fun s => a w u μ (tauPl D s)), map_smul, smul_eq_mul, prSC_scB P O B a hC u μ w i hi]`. Unfold `unC`. Rewrite using `[if_neg hF, if_neg hF', unF_scB]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : (∏ τ, ((a w u μ τ ^ i) ^ D.R.N i) ^ ((D.chTw u μ).sSharp i τ)) * (∏ τ, ((a w u μ τ ^ i) ^ D.R.N i) ^ (-(D.chTw u μ).sSharp i τ)) = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, mul_inv_cancel₀ (zpow_ne_zero _ (pow_ne_zero _ (pow_ne_zero _ (hn w u μ τ))))]`. Establish `key2 : (∏ z, (a w u μ (tauPl D z) ^ i) ^ (nuD D u i z).card) * (∏ z, a w u μ (tauPl D z) ^ (nuD D u i z).card) = ∏ z, (a w u μ (tauPl D z) ^ (i + 1)) ^ (nuD D u i z).card`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, ← pow_succ]`. Generalize the expression as in `(∏ τ, ((a w u μ τ ^ i) ^ D.R.N i) ^ ((D.chTw u μ).sSharp i τ)) = U1 at *`. Generalize the expression as in `(∏ τ, ((a w u μ τ ^ i) ^ D.R.N i) ^ (-(D.chTw u μ).sSharp i τ)) = S1 at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(∏ z, (a w u μ (tauPl D z) ^ i) ^ (nuD D u i z).card) = S2 at *`. Generalize the expression as in `(∏ z, a w u μ (tauPl D z) ^ (nuD D u i z).card) = G at *`. Generalize the expression as in `(∏ z, (a w u μ (tauPl D z) ^ (i + 1)) ^ (nuD D u i z).card) = T2 at *`. Generalize the expression as in `(∏ τ, ((a w u μ τ ^ (i + 1)) ^ D.R.N (i + 1)) ^ (-(D.chTw u μ).sDiv i τ)) = U2 at *`. Generalize the expression as in `unF P O B u μ w i c c' = F at *`.
-
-Generalize the expression as in `prSC P O B u μ w i c v _ = p`. Take the linear combination `(-(F * U2 * p * S2 * G)) * key + (-(F * U2 * p)) * key2`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem kerEntHyp_scB {Dx : DivX D} {Tw : TwForms D} (ha : ∀ w u μ τ, ‖a w u μ τ‖ = 1) (hB : BasOk P O B) (hC : CanOnto P)
     (hR : ∀ u μ, GL3Columns.RhoAlg (O u μ)) (h : KerEntHyp P O B Dx Tw) : KerEntHyp P O (scB a B) Dx Tw := by
@@ -277,11 +273,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `B X I hok hp l Z l0 Y O Pl hq hs hu hj`. Use `choose Pm h1 h2 h3 using GlobalTheory.Mem.Col2.TC.AdaptedBases.exists_sys Pl O`. Establish `hU` using `GlobalTheory.Mem.Col2.TC.AdaptedBases.dgenUnitAd Pl O`. Establish `hB : BasOk Pl O (fun u μ w i c τ => (Pm w u μ i c τ).map (Formalism.MainNotions.TaylorLogMetric.tauEmb _ (Pl.lam w) τ))` using `fun u μ w i hi c τ => h1 w u μ i hi c τ`. Establish `hC` using `GlobalTheory.T.toy_entPl_canOnto _ Pl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : ∀ u μ, GL3Columns.RhoAlg (O u μ)` using `fun u μ => KerEntTrue.rhoAlg_std I hok hp l Z hs u μ`. Establish `h0` using `GlobalTheory.T.kernelEntryHyp_of_trueColumnChoices I hok hp l Z l0 Y O Pl _ hq hs hB (fun u a w _ i _ c τ j k => GlobalTheory.KerRescale.tauEmb_mem Pl w τ (Pm w u a i c τ j k)) hu hj`. Establish `ha` using `GlobalTheory.KerRescale.norm_adUnit Pl O hU`. Establish `hBs` using `GlobalTheory.Pdv.KerScale.basOk_scB Pl O _ _ ha hB`. Establish `h` using `GlobalTheory.Pdv.KerScale.kerEntHyp_scB Pl O _ _ ha hB hC hR h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : AdaptedEnt Pl O (GlobalTheory.Pdv.KerScale.scB (GlobalTheory.KerRescale.adUnit Pl O) (fun u μ w i c τ => (Pm w u μ i c τ).map (Formalism.MainNotions.TaylorLogMetric.tauEmb _ (Pl.lam w) τ))) Y` using `fun w hw u μ _ => ⟨Pm w u μ, h1 w u μ, h2 w u μ, h3 w u μ, fun i _ c τ => by show GlobalTheory.KerRescale.adUnit Pl O w u μ τ ^ i • _ = _`. Unfold `GlobalTheory.KerRescale.adUnit`. Rewrite using `[if_pos hw]⟩`. Conclude with `⟨_, h, ⟨fun u μ w _ => kfTieOf Pl O _ hBs hC h u μ w, fun u μ w _ => kfTieOf_un Pl O _ hBs hC h u μ (hR u μ) w⟩, KerEntTrue.adaptedTh_kerEntC hBs hA h⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Pdv.kerEntC_true : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (l0 : I.Law0 l) (Y : DivX (I.rec7 l Z)) (O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)) (Pl : Examples₂.EntPl (I.rec7 l Z)), I.QpIs Y.Qp → I.StdO l Z Y.Qp O → (∀ u a i, i < B.R.m → UnfIsAll (O u a) i) → ColIn.JetsIn I → ∃ (Bs : PlaceMatrixFamily (I.rec7 l Z)) (h : KerEntHyp Pl O Bs Y (I.tw l l0 Z)), EntOk (kerEntC Pl O Bs h) O := by
   intro B X I hok hp l Z l0 Y O Pl hq hs hu hj

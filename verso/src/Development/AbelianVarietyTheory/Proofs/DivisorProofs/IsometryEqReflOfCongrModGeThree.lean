@@ -4,27 +4,25 @@ open IsLocalRing GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Glo
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `X _ _ _ β hpos e he N hN hc`. Use `choose u hu using hc`. Establish `hQ0 : ∀ x, 0 ≤ β x x` using `fun x => by`. Distinguish the cases in `h : x = 0`. Simplify using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(hpos x h).le`. Establish `hdec : ∀ x, x ≠ 0 → β (u x) (u x) < β x x`. Introduce `x hx`. Establish `h1 : 0 ≤ β (e x + x) (e x + x)` using `hQ0 _`. Establish `h2 : β (e x - x) (e x - x) = (N : ℤ) * ((N : ℤ) * β (u x) (u x))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show e x - x = N • u x by rw [hu x]; abel]`. Simplify using `only [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Simplify using `only [map_add, map_sub, LinearMap.add_apply, LinearMap.sub_apply, he x x] at h1 h2`. Establish `hc` using `hpos x hx`. Establish `hd` using `hQ0 (u x)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hN' : (3 : ℤ) ≤ N` using `by exact_mod_cast hN`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right (mul_le_mul hN' hN' (by norm_num) (by omega)) hd]`. Establish `hnil : ∀ n : ℕ, ∀ x, (β x x).toNat = n → ∃ k, u^[k] x = 0`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `_ n ih`. Introduce `x hn`. Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by simpa using hx⟩`. Establish `hlt` using `hdec x hx`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hd` using `hQ0 (u x)`. Take `⟨k, hk⟩` from `ih (β (u x) (u x)).toNat (by omega) (u x) rfl`. Conclude with `⟨k + 1, by rw [Function.iterate_succ_apply]; exact hk⟩`. Use extensionality with `y`. Assume the negation of the conclusion as `hne`.
+Supply the required witnesses or components. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huy : u y ≠ 0` using `fun h => hne (by rw [hu y, h]; simp)`. Establish `hex : ∃ k, u^[k] y = 0` using `hnil _ y rfl`. Establish `hk : u^[Nat.find hex] y = 0` using `Nat.find_spec hex`. Establish `hmin : ∀ j < Nat.find hex, u^[j] y ≠ 0` using `fun j hj => Nat.find_min hex hj`. Establish `hy0 : y ≠ 0` using `fun h => hne (by simp [h])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hk2 : 2 ≤ Nat.find hex`. Assume the negation of the conclusion as `h`. Use `interval_cases h' : Nat.find hex`. Conclude with `hy0 (by simpa using hk)`. Conclude with `huy (by simpa using hk)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hux : u (u^[Nat.find hex - 2] y) ≠ 0`. Rewrite using `[← Function.iterate_succ_apply' u]`. Conclude with `hmin _ (by omega)`. Establish `huux : u (u (u^[Nat.find hex - 2] y)) = 0`. Rewrite using `[← Function.iterate_succ_apply' u, ← Function.iterate_succ_apply' u]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (Nat.find hex - 2).succ.succ = Nat.find hex by omega]`. Conclude with `hk`. Use `set x := u^[Nat.find hex - 2] y`. Establish `key` using `he x (u x)`. Rewrite `key` using `[hu x, hu (u x), huux]`.
-
-Simplify using `only [smul_zero, add_zero, map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul] at key`. Establish `hp` using `hpos (u x) hux`. Establish `hN0 : (0 : ℤ) < N` using `by exact_mod_cast (show 0 < N by omega)`. Use polynomial arithmetic with `[mul_pos hN0 hp]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem eq_refl_of_isometry_congMod : ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     (β : LinearMap.BilinForm ℤ X), (∀ x, x ≠ 0 → 0 < β x x) → ∀ (e : X ≃ₗ[ℤ] X), (∀ x y, β (e x) (e y) = β x y) →

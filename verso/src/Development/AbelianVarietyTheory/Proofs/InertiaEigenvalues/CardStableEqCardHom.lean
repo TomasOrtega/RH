@@ -7,21 +7,21 @@ variable {O : Type} [CommRing O] {A₁ A₂ : Type} [CommRing A₁] [CommRing A�
   [Algebra O A₂] {M₁ : Submodule O A₁} {M₂ : Submodule O A₂}
 
 /- English proof (translation)
-Rewrite using `[← h]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_inl {M : Submodule O (A₁ × A₂)} (h : M.comap (LinearMap.inl O A₁ A₂) = M₁)
     {a : A₁} (ha : (a, (0 : A₂)) ∈ M) : a ∈ M₁ := by
   rw [← h]; exact ha
 
 /- English proof (translation)
-Rewrite using `[← h]`. Conclude with `Submodule.mem_map_of_mem (f := LinearMap.snd O A₁ A₂) hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_snd {M : Submodule O (A₁ × A₂)} (h : M.map (LinearMap.snd O A₁ A₂) = M₂)
     {a : A₁} {x : A₂} (hx : (a, x) ∈ M) : x ∈ M₂ := by
   rw [← h]; exact Submodule.mem_map_of_mem (f := LinearMap.snd O A₁ A₂) hx
 
 /- English proof (translation)
-Establish `hx : (x : A₂) ∈ M.map (LinearMap.snd O A₁ A₂)` using `h ▸ x.2`. Take `⟨p, hp, hpx⟩` from `Submodule.mem_map.1 hx`. Establish `hp' : p = (p.1, (x : A₂))` using `Prod.ext rfl hpx`. Conclude with `⟨p.1, hp' ▸ hp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_of_map {M : Submodule O (A₁ × A₂)} (h : M.map (LinearMap.snd O A₁ A₂) = M₂)
     (x : M₂) : ∃ a : A₁, (a, (x : A₂)) ∈ M := by
@@ -35,7 +35,7 @@ noncomputable def classOf {M : Submodule O (A₁ × A₂)} (h₂ : M.map (Linear
   Submodule.Quotient.mk (exists_of_map h₂ x).choose
 
 /- English proof (translation)
-Unfold `classOf`. Rewrite using `[Submodule.Quotient.eq]`. Apply `mem_of_inl h₁` to reduce the goal to its premises. Use `M.sub_mem (exists_of_map h₂ x).choose_spec hp` as an intermediate fact. Simplify using `using this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem classOf_eq {M : Submodule O (A₁ × A₂)} (h₁ : M.comap (LinearMap.inl O A₁ A₂) = M₁)
     (h₂ : M.map (LinearMap.snd O A₁ A₂) = M₂) {x : M₂} {a : A₁} (hp : (a, (x : A₂)) ∈ M) :
@@ -79,17 +79,17 @@ def graph (φ : M₂ →ₗ[O] A₁ ⧸ M₁) : Submodule O (A₁ × A₂) where
     rw [e, map_smul, Submodule.Quotient.mk_smul, ha]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_graph {φ : M₂ →ₗ[O] A₁ ⧸ M₁} {a : A₁} {x : A₂} :
     (a, x) ∈ graph φ ↔ ∃ h : x ∈ M₂, Submodule.Quotient.mk a = φ ⟨x, h⟩ := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [Submodule.mem_comap, LinearMap.inl_apply]`. Rewrite using `[mem_graph]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, e⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `e0 : (⟨0, h⟩ : M₂) = 0` using `rfl`. Rewrite `e` using `[e0, map_zero, Submodule.Quotient.mk_eq_zero]`. Conclude with `e`. Introduce `ha`. Use `⟨M₂.zero_mem, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e0 : (⟨0, M₂.zero_mem⟩ : M₂) = 0` using `rfl`. Rewrite using `[e0, map_zero, Submodule.Quotient.mk_eq_zero]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graph_comap (φ : M₂ →ₗ[O] A₁ ⧸ M₁) : (graph φ).comap (LinearMap.inl O A₁ A₂) = M₁ := by
     ext a
@@ -107,9 +107,9 @@ theorem graph_comap (φ : M₂ →ₗ[O] A₁ ⧸ M₁) : (graph φ).comap (Line
       exact ha
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, ⟨h, _⟩, rfl⟩`. Conclude with `h`. Introduce `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective M₁ (φ ⟨x, hx⟩)`. Conclude with `⟨(a, x), ⟨hx, ha⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem graph_map (φ : M₂ →ₗ[O] A₁ ⧸ M₁) : (graph φ).map (LinearMap.snd O A₁ A₂) = M₂ := by
     ext x
@@ -175,7 +175,7 @@ end GlobalTheory.StableGraph
 open GlobalTheory.StableGraph in
 
 /- English proof (translation)
-Introduce `O _ A₁ A₂ _ _ _ _ g₁ g₂ M₁ M₂ hM₂`. Conclude with `Nat.card_congr (stableEquiv g₁ g₂ hM₂)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.StableGraph.card_stable_eq_card_hom : ∀ (O : Type) [CommRing O] (A₁ A₂ : Type) [CommRing A₁] [CommRing A₂] [Algebra O A₁] [Algebra O A₂] (g₁ : A₁) (g₂ : A₂) (M₁ : Submodule O A₁) (M₂ : Submodule O A₂), (∀ y ∈ M₂, g₂ * y ∈ M₂) → Nat.card {M : Submodule O (A₁ × A₂) // (∀ y ∈ M, (g₁, g₂) * y ∈ M) ∧ M.comap (LinearMap.inl O A₁ A₂) = M₁ ∧ M.map (LinearMap.snd O A₁ A₂) = M₂} = Nat.card {φ : M₂ →ₗ[O] A₁ ⧸ M₁ // ∀ x y : M₂, (y : A₂) = g₂ * x → ∀ a : A₁, φ x = Submodule.Quotient.mk a → φ y = Submodule.Quotient.mk (g₁ * a)} := by
   intro O _ A₁ A₂ _ _ _ _ g₁ g₂ M₁ M₂ hM₂

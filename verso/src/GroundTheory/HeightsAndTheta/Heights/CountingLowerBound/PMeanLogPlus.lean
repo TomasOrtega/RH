@@ -11,9 +11,7 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Rewrite using `[lt_max_iff, lt_log_iff_exp_lt (div_pos hr hl), lt_div_iff₀ hl, exp_neg, ← div_eq_inv_mul, lt_div_iff₀ (exp_pos t), mul_comm l]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h)`. Conclude with `absurd h (not_lt.2 ht.le)`. Conclude with `h`.
-
-Conclude with `Or.inr`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lt_max_zero_log_div_iff {t r l : ℝ} (ht : 0 < t) (hr : 0 < r) (hl : 0 < l) :
     t < max 0 (log (r / l)) ↔ l < exp (-t) * r := by
@@ -26,11 +24,11 @@ theorem lt_max_zero_log_div_iff {t r l : ℝ} (ht : 0 < t) (hr : 0 < r) (hl : 0 
   · exact Or.inr
 
 /- English proof (translation)
-Establish `ha' : (1 : ℝ) ≤ a` using `by exact_mod_cast ha`. Establish `hk0 : 0 < k` using `by linarith`. Establish `h2 : log 2 < 1` using `by have := log_two_lt_d9; norm_num at this; linarith`. Establish `h36 : log 36 < 4`. Rewrite using `[log_lt_iff_lt_exp (by norm_num)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : exp 4 = exp 1 ^ 4` using `by rw [← exp_nat_mul]; norm_num`. Establish `h` using `pow_lt_pow_left₀ exp_one_gt_d9 (by norm_num) (by norm_num : (4 : ℕ) ≠ 0)`. Rewrite using `[he]`. Evaluate the numerical expressions using `at h ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hlog : log (2 * 36 ^ a) = log 2 + a * log 36`. Rewrite using `[log_mul (by norm_num) (by positivity), log_pow]`. Rewrite using `[← add_div, div_le_iff₀ hk0, hlog]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem log_two_mul_pow_div_add_le {a : ℕ} {k : ℝ} (ha : 1 ≤ a) (hk : 3 * (a : ℝ) ≤ k) :
     log (2 * 36 ^ a) / k + 1 / k ≤ 3 := by
@@ -48,25 +46,19 @@ theorem log_two_mul_pow_div_add_le {a : ℕ} {k : ℝ} (ha : 1 ≤ a) (hk : 3 * 
   nlinarith
 
 /- English proof (translation)
-Introduce `X _ μ lam cnt a ka r h`. Use `h.isProbability` as an intermediate fact. Establish `hk0 : 0 < ka`. Establish `: (1 : ℝ) ≤ a` using `by exact_mod_cast h.one_le_a`. Combine the linear relations using `[h.three_a_le_ka]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `set F : X → ℝ := fun z => max 0 (log (r / lam z)) with hF`. Establish `hFm : Measurable F` using `measurable_const.max (measurable_log.comp (measurable_const.div h.lam_meas))`. Establish `hF0 : ∀ z, 0 ≤ F z` using `fun z => le_max_left _ _`. Use `set C : ℝ := 2 * 36 ^ a with hC`. Establish `hC1 : 1 ≤ C` using `by rw [hC]; have : (1 : ℝ) ≤ 36 ^ a := one_le_pow₀ (by norm_num); linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x0 : ℝ := log C / ka with hx0`. Establish `hx00 : 0 ≤ x0` using `div_nonneg (log_nonneg hC1) hk0.le`. Use `set g : ℝ → ℝ := fun t => min 1 (C * exp (-ka * t)) with hg`. Establish `hpt : ∀ t ∈ Ioi (0 : ℝ), μ {z | t < F z} ≤ ENNReal.ofReal (g t)`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hset : {z | t < F z} = {z | lam z < exp (-t) * r}`. Use extensionality with `z`. Conclude with `lt_max_zero_log_div_iff ht h.r_pos (h.lam_pos z)`. Rewrite using `[hset, ← ofReal_measureReal]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h1 X μ lam cnt a ka r h t (le_of_lt ht)` as an intermediate fact. Simplify `this` using `[hg, neg_mul]`. Establish `hexp : IntegrableOn (fun t => C * exp (-ka * t)) (Ioi x0)` using `(exp_neg_integrableOn_Ioi x0 hk0).const_mul C`. Establish `hint : ∫ t in Ioi x0, C * exp (-ka * t) = 1 / ka`. Rewrite using `[integral_const_mul, integral_exp_mul_Ioi (by linarith) x0]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `: exp (-ka * x0) = C⁻¹`. Rewrite using `[hx0, show -ka * (log C / ka) = -log C by field_simp, exp_neg, exp_log (by linarith)]`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Establish `hL : ∫⁻ z, ENNReal.ofReal (F z) ∂μ ≤ ENNReal.ofReal 3`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lintegral_eq_lintegral_meas_lt μ (ae_of_all _ hF0) hFm.aemeasurable]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ioc_union_Ioi_eq_Ioi hx00]`. Use `_ ≤ (∫⁻ t in Ioc 0 x0, ENNReal.ofReal (g t)) + ∫⁻ t in Ioi x0, ENNReal.ofReal (g t) := lintegral_union_le _ _ _`. Use `_ ≤ (∫⁻ t in Ioc 0 x0, 1) + ∫⁻ t in Ioi x0, ENNReal.ofReal (C * exp (-ka * t)) := add_le_add (lintegral_mono fun t => ENNReal.ofReal_le_one.2 (min_le_left _ _)) (lintegral_mono fun t => ENNReal.ofReal_le_ofReal (min_le_right _ _))`.
-
-Use `_ = ENNReal.ofReal x0 + ENNReal.ofReal (1 / ka) := by`. Rewrite using `[setLIntegral_const, one_mul, Real.volume_Ioc, sub_zero, ← hint, ofReal_integral_eq_lintegral_ofReal hexp (ae_of_all _ fun t => by positivity)]`. Use `_ = ENNReal.ofReal (x0 + 1 / ka) := (ENNReal.ofReal_add hx00 (by positivity)).symm`. Use `_ ≤ ENNReal.ofReal 3 := ENNReal.ofReal_le_ofReal (log_two_mul_pow_div_add_le h.one_le_a h.three_a_le_ka)`. Establish `hInt : Integrable F μ`.
-
-Use `⟨hFm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (ae_of_all _ hF0)]`. Conclude with `lt_of_le_of_lt hL ENNReal.ofReal_lt_top`. Use `⟨hInt, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ hF0) hFm.aestronglyMeasurable]`.
-
-Conclude with `ENNReal.toReal_le_of_le_ofReal (by norm_num) hL`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MeanLogPlus.proof (h1 : TailBound.Statement.{u}) : MeanLogPlus.Statement.{u} := by
   intro X _ μ lam cnt a ka r h

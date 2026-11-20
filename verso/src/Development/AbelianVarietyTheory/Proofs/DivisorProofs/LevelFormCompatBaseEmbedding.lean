@@ -14,11 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdTh
 
 /- English proof (translation)
-Introduce `τ a ha`. Rewrite using `[(h i τ).1 a, show (Wc D i).sig (tauE D τ) = D.R.sigW ((i : ℕ) + 1) from D.sp.W_sigval _ (inR i).1 (inR i).2 _]`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hi` using `i.2`. Establish `hs : (D.R.sigW ((i : ℕ) + 1)).1 = D.R.k + ((i : ℕ) + 1) - 1` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ¬ (a : ℕ) < D.R.k - 1` using `by omega`. Establish `h2 : (a : ℕ) - (D.R.k - 1) < D.R.m` using `by omega`. Establish `h3 : (⟨(a : ℕ) - (D.R.k - 1), h2⟩ : Fin D.R.m) = i` using `Fin.ext (by show (a : ℕ) - (D.R.k - 1) = i; omega)`. Establish `h4 : (((D.R.sigW ((i : ℕ) + 1)).1 : ℕ) : ℚ) = (a : ℕ) + 1` using `by exact_mod_cast ha.symm`. Establish `h5` using `(D.hc τ).gap_be i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [aPl, if_pos a.2, Formalism.L2.NTheta.lamAt, dif_neg h1, dif_pos h2, h3, h4]`. Rewrite using `[Int.le_toNat (Int.floor_nonneg.2 (by linarith)), Int.le_floor]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lastPos_of_kapIs {D : D7} {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} (h : KapIs κ) (i : Fin D.R.m) :
     (κ i).LastPos := by
@@ -38,13 +38,13 @@ theorem lastPos_of_kapIs {D : D7} {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D (
   linarith
 
 /- English proof (translation)
-Introduce `τ hτ hm`. Take `⟨t, rfl⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.exists_tau_of_inPsi Q h.1 τ hτ`. Establish `hmult : (Q.Dw j).mult (DV.tauEmb D t) = (D.R.sigW j).1`. Unfold `Datum.mult`. Establish `hτ' : (DV.tauEmb D t) (Q.H.rt : D.host.E) = Q.H.rt0` using `hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[if_pos hτ']`. Conclude with `(h.2.2.2 j hj).1`. Rewrite `hm`, the goal using `[hmult]`. Establish `h1 : 1 ≤ w.aP t ⟨(D.R.sigW j).1 - 1, by omega⟩` using `hw t _ (by show (D.R.sigW j).1 - 1 + 1 = _; omega)`. Establish `h2 : ext0 (w.aP t) ((D.R.sigW j).1 - 1) = w.aP t ⟨(D.R.sigW j).1 - 1, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `ext0`. Rewrite using `[dif_pos (by omega)]`. Unfold `wtA`. Use `lt_of_lt_of_le ?_ (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ t))` and prove the remaining obligations. Simplify using `only [if_true]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem lastPos_wtA_of_pins {D : D7} (Q : Par D) (h : Q.Pins) {j : ℕ} (hj : InR D j) (w : WeightFamilies.Wt D j) (hw : w.LastPos) :
     Formalism.L2.Pj.LastPos (Q.Dw j) (wtA w) := by
@@ -71,9 +71,9 @@ variable {D : D7} {W : HSp D} {S : D.what₂.Tau → Finset (ℚ × Bool)} (M : 
   (X : Data D.host.E r) {x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ} {p : ℕ}
 
 /- English proof (translation)
-Introduce `ρ τ hτ`. Establish `hq : nNeg (M.ε ρ) = X.p0` using `(nNeg_shape (by omega) (hε ρ)).trans (by omega)`. Establish `e : mat (Ψ` using `X.Ψ) (fun τ => x₀ τ.1) τ = x₀ (tauE D ρ) := by rw [← hτ]; rfl`. Rewrite using `[e, hx.mul, cart, Formalism.REAL.Jm, torus_x0Mat, hx ρ]`. Use extensionality with `a c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hc` using `c.2`. Simplify using `only [sgnM, Matrix.neg_apply, mul_diagonal, reindex_apply, submatrix_apply, hε, hq, arr, sgn, finCongr_symm, finCongr_apply, Fin.val_cast]`. Use `split_ifs with h1 h2 h3`. Apply the tactic sequence `all_goals first | (simp at *; omega) | simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isInvOf_cart (hx : IsModelBaseFrameFamily M hr x₀) (hp : X.p0 + p = r) (hε : ∀ ρ a, M.ε ρ a = decide ((a : ℕ) < p)) :
     IsInvOf W hr X (fun τ => x₀ τ.1) (cart M) := by
@@ -89,15 +89,15 @@ theorem isInvOf_cart (hx : IsModelBaseFrameFamily M hr x₀) (hp : X.p0 + p = r)
   all_goals first | (simp at *; omega) | simp
 
 /- English proof (translation)
-Introduce `ρ τ hτ k i a hi`. Establish `hq : nNeg (M.ε ρ) = X.p0` using `(nNeg_shape (by omega) (hε ρ)).trans (by omega)`. Use `show _ = x₀ τ.1 _ _`. Rewrite using `[hτ, hx ρ]`. Simplify using `only [x0Mat, reindex_apply, submatrix_apply, hq, finCongr_symm, finCongr_apply, id, Fin.cast_cast, Fin.cast_eq_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[hi]`. Break down `k with k | k` into its components or cases. Establish `hk` using `k.2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((rowIdx hp (Sum.inl k) : Fin r) : ℕ) = X.p0 + k` using `by simp [rowIdx]`. Unfold `arr`. Use `split_ifs with h`. Simplify using `only [Fin.val_cast, h1] at h`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Fin.val_cast, h1, Sum.elim_inl]`. Use linear arithmetic over natural numbers and integers. Establish `hk` using `k.2`. Establish `h1 : ((rowIdx hp (Sum.inr k) : Fin r) : ℕ) = X.p0 - (k + 1)` using `by simp [rowIdx]`. Unfold `arr`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `split_ifs with h`. Simplify using `only [Fin.val_cast, h1, Sum.elim_inr]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Fin.val_cast, h1] at h`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isBasOf_onb (hx : IsModelBaseFrameFamily M hr x₀) (hp : X.p0 + p = r) (hε : ∀ ρ a, M.ε ρ a = decide ((a : ℕ) < p)) :
     IsBasOf W hr X hp (fun τ => x₀ τ.1) (onb M) := by
@@ -128,25 +128,25 @@ end Frame
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hC hT i σ hσ k`. Substitute `hσ` using the available equality. Establish `hj` using `inR i`. Establish `hL` using `hT.laws`. Establish `hg` using `T.toCore.good_σ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `hL.unf _ hj _ hg`. Establish `hP` using `hL.pins`. Establish `hr1 : 1 ≤ D.R.r`. Establish `h2` using `D.R.two_le_m`. Establish `h3` using `D.R.m_add_three_le_k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hdp : (T.Q.Dw ((i : ℕ) + 1)).p = (D.R.sigW ((i : ℕ) + 1)).1` using `(hP.2.2.2 _ hj).1`. Establish `hdq : (T.Q.Dw ((i : ℕ) + 1)).q = (D.R.sigW ((i : ℕ) + 1)).2` using `(hP.2.2.2 _ hj).2.1`. Establish `hp0` using `(hU.2.1 k).1`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΨ` using `(hU.2.1 k).2`. Establish `hres : res T (sg0 D A) = T.toCore.σ₀`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0, res_embLL T hT.alg hP.2.2.1]`. Establish `hx : IsModelBaseFrameFamily (R.MW i (sg0 D A)) (rank_Wc i) (T.x₀ ((i : ℕ) + 1) T.toCore.σ₀)` using `hres ▸ hT.x0 i (sg0 D A) (base_embedding_good T R hT.alg hP.2.2.1)`. Establish `hε : ∀ ρ a, (R.MW i (sg0 D A)).ε ρ a = decide ((a : ℕ) < (T.Q.Dw ((i : ℕ) + 1)).p)` using `fun ρ a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hC.models.order i ρ a, hdp, show (Wc D i).sig (tauE D ρ) = D.R.sigW ((i : ℕ) + 1) from D.sp.W_sigval _ hj.1 hj.2 _]`. Establish `hM : ModelW (Wc D i) (rank_Wc i) ((T.U ((i : ℕ) + 1) T.toCore.σ₀).X k)`. Take `⟨hr, hm⟩` from `hL.modelW _ hj _ hg`. Establish `hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i` using `hL.spaceW _ hj _ hg`. Establish `h1` using `hm k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `revert hr`. Rewrite using `[hV]`. Conclude with `fun _ _ h => h`. Establish `hn : (κ i).n = (Vc D i).rank`. Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨τ', hτ'⟩ : ∃ τ', τ' ∈ ((T.U ((i : ℕ) + 1) T.toCore.σ₀).X k).Ψ := by`. Distinguish the cases in `h : ComplexEmbedding.conjugate τ ∈ ((T.U ((i : ℕ) + 1) T.toCore.σ₀).X k).Ψ`. Conclude with `⟨_, h⟩`. Conclude with `⟨τ, (((T.U ((i : ℕ) + 1) T.toCore.σ₀).X k).cmType τ).2 h⟩`. Take `⟨t, -⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.exists_tau_of_inPsi T.Q hP.1 τ' ((hΨ τ').1 hτ')`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hT.kap i t).2.2, D.sp.V_rank _ hj.1 hj.2]`. Use `⟨⟨hM, fun τ => ?_, ?_⟩, fun τ => hL.familyUniformisationBasePointOrthogonal _ hj _ hg k τ.1 τ.2, ?_, hp0, hU.1, ?_, hr1, hP.1.2.1, hΨ, fun hq => isBasOf_onb _ _ _ hx hq hε, hn ▸ dom_wtA (κ i), hn, lastPos_wtA_of_pins T.Q hP hj _ (lastPos_of_kapIs hT.kap i)⟩` and prove the remaining obligations. Rewrite using `[hΨ]`. Conclude with `⟨ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.exists_tau_of_inPsi T.Q hP.1 τ, fun ⟨ρ, h⟩ => h ▸ hP.1.2.2.2 ρ⟩`. Establish `hU'` using `(Formalism.L2.PjFree.isUnf_ofPj _).2 hU`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w⟩` from `nonempty_uw hU'`. Establish `h1 : ((T.U ((i : ℕ) + 1) T.toCore.σ₀).X k).κ0 = 2 * ((T.U ((i : ℕ) + 1) T.toCore.σ₀).X k).ξ0` using `(GlobalTheory.Dict.uw_lattice _ _ _ _ _ _ _ _ _ ((Formalism.L2.PjFree.goodEmb_iff _).2 hg) hU' hr1 w k).1`. Rewrite using `[h1, hM.2, mul_neg]`. Conclude with `isInvOf_cart _ _ _ hx (by have := hU.1; omega) hε`. Rewrite using `[hdp, hdq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `D.R.m_add_three_le_k`. Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem models_at_record : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → TieIn T R κ v₀ → ∀ (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ), σ = T.toCore.σ₀ → ∀ k : (T.U ((i : ℕ) + 1) σ).Comp, IsMod (Wc D i) (rank_Wc i) ((T.U ((i : ℕ) + 1) σ).X k) ∧ IsONFr ((T.U ((i : ℕ) + 1) σ).X k) (fun τ => T.x₀ ((i : ℕ) + 1) σ τ.1) ∧ IsInvOf (Wc D i) (rank_Wc i) ((T.U ((i : ℕ) + 1) σ).X k) (fun τ => T.x₀ ((i : ℕ) + 1) σ τ.1) (cart (R.MW i (sg0 D A))) ∧ ((T.U ((i : ℕ) + 1) σ).X k).p0 = (T.Q.Dw ((i : ℕ) + 1)).q ∧ D.R.r = (T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q ∧ (T.Q.Dw ((i : ℕ) + 1)).p ≠ (T.Q.Dw ((i : ℕ) + 1)).q ∧ 1 ≤ D.R.r ∧ (T.Q.H.rt : D.host.E) = D.host.sqrtMinusD ∧ (∀ τ : D.host.E →+* ℂ, τ ∈ ((T.U ((i : ℕ) + 1) σ).X k).Ψ ↔ τ (T.Q.H.rt : D.host.E) = T.Q.H.rt0) ∧ (∀ hq : ((T.U ((i : ℕ) + 1) σ).X k).p0 + (T.Q.Dw ((i : ℕ) + 1)).p = D.R.r, IsBasOf (Wc D i) (rank_Wc i) ((T.U ((i : ℕ) + 1) σ).X k) hq (fun τ => T.x₀ ((i : ℕ) + 1) σ τ.1) (onb (R.MW i (sg0 D A)))) ∧ Dom (wtA (κ i)) (Vc D i).rank ∧ (κ i).n = (Vc D i).rank ∧ LastPos (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i)) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hC hT i σ hσ k

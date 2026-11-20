@@ -12,7 +12,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.affine_graded_cohomology_vanishing locGr_h locVan_h polyTf_h globSerreSt_h globVanSt_h`.
+A detailed English derivation is pending.
 -/
 theorem gr_aff_pf : KH.GrAff :=
   GlobalTheory.T.affine_graded_cohomology_vanishing locGr_h locVan_h polyTf_h globSerreSt_h globVanSt_h

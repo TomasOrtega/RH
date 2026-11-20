@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RowVal
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RowReal.big_mono (fun ch h => by obtain ⟨⟨⟨s, hP⟩, hC⟩, hL⟩ := h exact ⟨s, hL s hP hC⟩) (Big.and (Big.and GlobalTheory.T.exists_sign_flatDictionaryAtOnePlace_largeDepth GlobalTheory.T.unfoldedProduct_depends_on_dataProduct) GlobalTheory.T.flat_dictionary_relative_bas …`.
+A detailed English derivation is pending.
 -/
 theorem exists_locAt_big : Big fun ch => ∃ s, LocAt ch s :=
   GlobalTheory.RowReal.big_mono (fun ch h => by

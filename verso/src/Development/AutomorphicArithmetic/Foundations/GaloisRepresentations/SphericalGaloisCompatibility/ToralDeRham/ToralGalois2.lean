@@ -20,17 +20,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.RoadU
 
 /- English proof (translation)
-Introduce `hI hS E Ω _ _ _ _ _ _ l _ ι n hn π χ hπ r hr w hl A h σ hσ ξ hξ hsupp hunl a ha`. Establish `key : ∀ g : Weil h, deg g ≠ 0 → (wdOf h hl ι r).mono0 ∧ (wdOf h hl ι r).charPol g = ∏ j, (X - C ((ξ j (a g) : ℂˣ) : ℂ))`. Introduce `g hg`. Take `⟨M, _, _, _, _, _, _, _, u, h', P, χ', hP, hlift, hfix, B, hB, hchar⟩` from `GlobalTheory.T.frobenius_charpoly_of_unlinked_unramified_support hI Ω E l ι n hn π χ hπ r hr w A h σ hσ ξ hξ hsupp hunl a ha g hg`. Establish `hl' : ((l : ℕ) : 𝓞 M) ∉ u.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `hm`. Apply `hl` to reduce the goal to its premises. Rewrite using `[← h]`. Rewrite `hm` using `[← h']`. Simplify using `using hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hr' : Weak P ι (resTo M r)` using `GlobalTheory.GalCut.weak_comp_res E M Ω l ι n π P hlift r hr`. Establish `hF : UpperTheory.V.Af.FrobEig ι (resTo M r) u (UpperTheory.V.Af.algSat n (normV u) B)` using `hS M Ω l ι n hn P χ' hP (resTo M r) hr' u trivial B hB hl'`. Establish `hwd : wdOf h' hl' ι (resTo M r) = satWD h' n B` using `GlobalTheory.T.weilDeligneParam_eq_unramifiedSatake_of_frobenius Ω M l ι n (resTo M r) hr'.1 u hl' A h' B hF`. Establish `hres` using `GlobalTheory.AboveL.wdOf_restricts E M Ω A w u h h' l ι n r hl hl' hr.1`. Take `⟨-, hmono, hcp⟩` from `GlobalTheory.AboveL.restricts_lpDim_mono0_charPol E M Ω A w u h h' _ _ hres`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `g' : G M Ω` to `AlgEquiv.ofRingEquiv (f := (g : G E Ω).toRingEquiv) hfix`. Establish `hmem : g' ∈ Weil h'` using `GlobalTheory.AboveL.mem_weil_of_fix E M Ω A w u h h' g g' fun _ => rfl`. Use `⟨hmono.mp ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hwd]`. Simplify using `[satWD, WD.lpUnr]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hcp g ⟨g', hmem⟩ fun _ => rfl, hwd]`. Conclude with `hchar g ⟨g', hmem⟩ fun _ => rfl`. Establish `hy : ∀ g : Weil h, (WD.mk (WDRep.ofChars h (fun j : Fin n => (ξ j).comp a) fun j => ha.smooth (hξ j))).charPol g = ∏ j, (X - C ((ξ j (a g) : ℂˣ) : ℂ))`. Introduce `g`. Rewrite using `[WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨(key (frob h) (by rw [deg_frob]; exact one_ne_zero)).1, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hy g]`. Conclude with `GlobalTheory.AboveL.charPol_eq_of_deg_ne_zero E Ω A w h _ _ (fun g hg => (key g hg).2.trans (hy g).symm) g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toralGal_of_holds : UpperTheory.Gal.ToralGalois.Inq → SphericalLevelCondition .all .unr → ToralGal := by
   intro hI hS E Ω _ _ _ _ _ _ l _ ι n hn π χ hπ r hr w hl A h σ hσ ξ hξ hsupp hunl a ha

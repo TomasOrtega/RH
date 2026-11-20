@@ -23,33 +23,31 @@ open Formalism.L2.Forms Formalism.L2.Ker GlobalTheory.AdForm GlobalTheory.AdForm
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨hF, hann⟩` from `GlobalTheory.VacUnique.Ann.vacuum_annihilation D θ σ hσ ψ hψ S T (fun _ => 1) (fun _ => 1) f hf1 hf2`. Use `set F : RW T S → ℂ := fun z => f (iotaW σ T S z) with hFdef`. Use `set r : ℝ := sc / 2 with hr`. Set `L : RW T S →L[ℂ] RW T S` to `(-δ⁻¹) • ContinuousLinearMap.id ℂ (RW T S)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : ∀ Z τ i j, L Z τ i j = -(δ⁻¹ * Z τ i j)` using `fun Z τ i j => by simp [L]`. Use `set E : RW T S → ℂ := fun Z => Complex.exp ((Real.pi * r * ∑ τ, ∑ i, ∑ j, ‖Z τ i j‖ ^ 2 : ℝ) : ℂ) with hE`. Establish `hxi : xiN θ S T rfl rfl δ sc f = fun Z => F (L Z) * E Z`. Use function extensionality and compare the values at `Z`. Unfold `xiN`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hp : realPt θ (fun τ => Matrix.of fun i j => -(δ⁻¹ * Z τ (Fin.cast rfl i) (Fin.cast rfl j))) = iotaW σ T S (L Z)`. Use `realPt_eq hθ _ _ (by funext i j; exact hσ.fin _) fun τ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Use `show θ τ (infPart D (σ fun τ' => L Z τ' i j)) = _`. Rewrite using `[hσ.comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `[hL]`. Rewrite using `[hp, mul_comm]`. Use `congr 2`. Use `show (Real.pi : ℂ) / 2 * ((sc : ℂ) * ∑ τ, ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Z τ i j)) = _`. Repeatedly rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hxi]`. Establish `hdG : ∀ Z Y, fderiv ℝ (fun Z => F (L Z)) Z Y = fderiv ℝ F (L Z) (L Y)` using `fun Z Y => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h : HasFDerivAt (fun Z => F (L Z)) ((fderiv ℝ F (L Z)).comp (L.restrictScalars ℝ)) Z` using `(hF (L Z)).hasFDerivAt.comp Z (L.restrictScalars ℝ).hasFDerivAt`. Rewrite using `[h.fderiv]`. Both sides reduce to the same expression. Use `GlobalTheory.FockPos.differentiable_mul_of_cr (fun Z => F (L Z)) E (fun Z Y => (2 * Real.pi * r * ∑ τ, ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y τ i j) : ℂ)) (hF.comp (L.restrictScalars ℝ).differentiable) (GlobalTheory.FockPos.gauss_cr r).1 (fun Z Y => ?_) (GlobalTheory.FockPos.gauss_ …` and prove the remaining obligations. Rewrite using `[hdG, hdG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hj : GlobalTheory.VacUnique.jO S T (fun _ => 1) (fun _ => 1) (L Y) = L (Complex.I • Y)`. Rewrite using `[L.map_smul]`. Use function extensionality and compare the values at `τ`. Rewrite using `[GlobalTheory.VacUnique.jO_apply]`. Express the relevant statement in the definitionally equal form `Complex.I • ((1 : Matrix (Fin T.rank) (Fin T.rank) ℂ) * Matrix.of (L Y τ) * (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ)) = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.one_mul, Matrix.mul_one]`. Both sides reduce to the same expression. Establish `h` using `hann (L Z) (L Y)`. Rewrite `h` using `[hj]`. Establish `hdd : δ⁻¹ * starRingEnd ℂ δ⁻¹ = (((‖δ‖ ^ 2)⁻¹ : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_inv, Complex.normSq_eq_norm_sq]`. Establish `hom : ∀ Y' : RW T S, GlobalTheory.VacUnique.omO S T (L Z) (L Y') = ∑ τ, 2 * (Complex.I * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * (((‖δ‖ ^ 2)⁻¹ : ℝ) : ℂ) * ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y' τ i j)).re`. Introduce `Y'`. Rewrite using `[GlobalTheory.VacUnique.omO_apply]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show 2 * (tauE D τ D.host.xi0 * GlobalTheory.VacUnique.hAt S T τ (L Z τ) (L Y' τ)).re = _`. Rewrite using `[GlobalTheory.FockPos.xi_zero_eq_host τ]`. Use `erw [hAt_one S T hgS hgT τ (L Z τ) (L Y' τ)]`. Establish `hs : ∑ i, ∑ j, L Z τ i j * starRingEnd ℂ (L Y' τ i j) = (((‖δ‖ ^ 2)⁻¹ : ℝ) : ℂ) * ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y' τ i j)`. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hL, hL, ← hdd]`. Simplify using `only [map_neg, map_mul]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hom, hom]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hs2 : ∀ τ, (∑ i, ∑ j, Z τ i j * starRingEnd ℂ ((Complex.I • Y) τ i j)) = -Complex.I * ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y τ i j)` using `fun τ => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Complex.conj_I, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Simplify using `only [hs2] at h`. Establish `key` using `key_sum (Formalism.L2.Pj.xiR D) ((‖δ‖ ^ 2)⁻¹) fun τ => ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y τ i j)`.
-
-Establish `hrk : Formalism.L2.Pj.xiR D * (‖δ‖ ^ 2)⁻¹ = r` using `scale_eq _ _ _ (pow_ne_zero 2 (norm_ne_zero_iff.2 hδ)) hsc`. Rewrite `key` using `[hrk]`. Use `show _ = -((2 * Real.pi * r * ∑ τ, ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y τ i j) : ℂ) * F (L Z))`. Take the linear combination `h + Real.pi * Complex.I * F (L Z) * key + 2 * Real.pi * r * (∑ τ, ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y τ i j)) * F (L Z) * Complex.I_sq`.
+A detailed English derivation is pending.
 -/
 theorem xiN_differentiable (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (δ : ℂ) (sc : ℝ)
     (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (hgS : S.gram = 1) (hgT : T.gram = 1) (hδ : δ ≠ 0)
@@ -134,22 +132,22 @@ theorem xiN_differentiable (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T
     2 * Real.pi * r * (∑ τ, ∑ i, ∑ j, Z τ i j * starRingEnd ℂ (Y τ i j)) * F (L Z) * Complex.I_sq
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `[GlobalTheory.FockPos.frAt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem frAt_one {n : ℕ} : GlobalTheory.FockPos.frAt (1 : GL (Fin n) D.host.E) = fun _ => 1 := by
   funext τ
   simp [GlobalTheory.FockPos.frAt]
 
 /- English proof (translation)
-Establish `hz : ∀ τ, GlobalTheory.FockPos.zCo θ (1 : GL (Fin S.rank) D.host.E) (1 : GL (Fin T.rank) D.host.E) w τ = compAt θ τ w`. Introduce `τ`. Simplify using `only [GlobalTheory.FockPos.zCo, frAt_one, inv_one, Matrix.one_mul, Matrix.mul_one]`. Both sides reduce to the same expression. Use `set y := GlobalTheory.FockPos.zCo θ (1 : GL (Fin S.rank) D.host.E) (1 : GL (Fin T.rank) D.host.E) w with hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hp : realPt θ (fun τ => Matrix.of fun i j => -(δ⁻¹ * ((-δ) • y) τ (Fin.cast rfl i) (Fin.cast rfl j))) = w`. Use `realPt_eq hθ _ w hw fun τ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Rewrite using `[← hz τ]`. Simplify using `only [Matrix.of_apply, Fin.cast_eq_self, Pi.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Unfold `xiN`. Rewrite using `[hp, GlobalTheory.FockPos.gaussO, ← hy, ← mul_assoc, ← Complex.exp_add]`. Establish `hH : HV sc ((-δ) • y) ((-δ) • y) = (sc : ℂ) * (((‖δ‖ ^ 2 : ℝ) : ℂ) * ∑ τ, ∑ i, ∑ j, ((‖y τ i j‖ ^ 2 : ℝ) : ℂ))` using `by show (sc : ℂ) * (∑ τ, ∑ i, ∑ j, ((-δ) • y) τ i j * starRingEnd ℂ (((-δ) • y) τ i j)) = _`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mul_sum, Pi.smul_apply, smul_eq_mul, Complex.mul_conj, Complex.normSq_eq_norm_sq, norm_mul, norm_neg]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : (sc : ℂ) * ((‖δ‖ ^ 2 : ℝ) : ℂ) = 2 * (Formalism.L2.Pj.xiR D : ℂ)` using `by exact_mod_cast hsc`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : -((Real.pi * Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ∑ τ, ∑ i, ∑ j, ((‖y τ i j‖ ^ 2 : ℝ) : ℂ) + (Real.pi : ℂ) / 2 * HV sc ((-δ) • y) ((-δ) • y) = 0`. Rewrite using `[hH, ← mul_assoc (sc : ℂ), hc, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h0, Complex.exp_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_gauss_mul (θ : InfFam D) (hθ : IsInfFam θ) (S T : HSp D) (δ : ℂ) (sc : ℝ) (hδ : δ ≠ 0)
     (hsc : sc * ‖δ‖ ^ 2 = 2 * Formalism.L2.Pj.xiR D) (f : WO S T → ℂ) (w : WO S T) (hw : w.map (finPart D) = 0) :
@@ -181,9 +179,9 @@ theorem eq_gauss_mul (θ : InfFam D) (hθ : IsInfFam θ) (S T : HSp D) (δ : ℂ
   rw [h0, Complex.exp_zero, one_mul]
 
 /- English proof (translation)
-Use `conv_lhs => rw [(minorPol D U).as_sum]`. Rewrite using `[map_sum l, Formalism.MainNotions.GL3Theta.applyAt0, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Establish `hk` using `GlobalTheory.RotJets.card_of_mem_support U hα`. Rewrite `hk` using `[Finsupp.card_toMultiset]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (MvPolynomial.monomial α ((minorPol D U).coeff α) : MvPolynomial (Formalism.MainNotions.GL3Theta.Idx D a d) ℂ) = (minorPol D U).coeff α • MvPolynomial.monomial α 1`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Establish `hk' : (α.sum fun _ e => e) = a * ∑ τ, n τ` using `hk`. Rewrite using `[e, map_smul, h, GlobalTheory.FockPos.applyAt0_monomial', hk', smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem apply_minorPol {a d : ℕ} {n : D.what₂.Tau → ℕ} (U : Tup D a d n)
     (l : MvPolynomial (Formalism.MainNotions.GL3Theta.Idx D a d) ℂ →ₗ[ℂ] ℂ) (p : ℂ) (G : Formalism.MainNotions.TaylorLogMetric.VC D a d → ℂ)
@@ -203,19 +201,17 @@ theorem apply_minorPol {a d : ℕ} {n : D.what₂.Tau → ℕ} (U : Tup D a d n)
   ring
 
 /- English proof (translation)
-Introduce `D ψ θ A B a d hA hB n s sc hψ hθ hgA hgB hs hsc`. Substitute `hA hB` using the available equality. Take `⟨τ₀⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm (Classical.arbitrary _)⟩`. Establish `hsc' : sc * ‖s‖ ^ 2 = 2 * Formalism.L2.Pj.xiR D`. Rewrite using `[hsc τ₀, GlobalTheory.FockPos.norm_embedding_xi0_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : 0 < Formalism.L2.Pj.xiR D`. Unfold `Formalism.L2.Pj.xiR`. Conclude with `norm_pos_iff.2 ((map_ne_zero _).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D))`. Use `set p : ℂ := (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹) * -s with hp`. Establish `hp0 : p ≠ 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_ne_zero (inv_ne_zero ?_) (neg_ne_zero.2 hs)` and prove the remaining obligations. Conclude with `(Real.sqrt_pos.2 (by positivity)).ne'` after adjusting the coercions. Establish `hon : ∀ {V : HSp D}, V.gram = 1 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin V.rank) D.host.E).1 * V.gram * (1 : GL (Fin V.rank) D.host.E).1 = 1`. Introduce `V hV`. Rewrite using `[hV]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[Formalism.UG.cT]`. Use `⟨p ^ (A.rank * ∑ τ, n τ), pow_ne_zero _ hp0, fun f hf1 hf2 T => ?_⟩` and prove the remaining obligations. Establish `hG` using `xiN_differentiable ψ θ A B s sc hψ hθ hgA hgB hs hsc' f hf1 hf2`. Use `set G := xiN θ A B rfl rfl s sc f with hGdef`. Establish `hΦ : Differentiable ℂ (fun z : Formalism.MainNotions.TaylorLogMetric.VC D A.rank B.rank => G ((-s) • z))` using `hG.comp (differentiable_id.const_smul (-s))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hid : (fun k : Formalism.MainNotions.GL3Theta.Idx D A.rank B.rank => ((k.1, Fin.cast (rfl : B.rank = B.rank).symm k.2.1, Fin.cast (rfl : A.rank = A.rank).symm k.2.2) : FVar D B.rank A.rank)) = id`. Use function extensionality and compare the values at `v`. Both sides reduce to the same expression. Rewrite using `[hid, MvPolynomial.rename_id, AlgHom.id_apply]`. Use `apply_minorPol T ((LinearMap.proj (0 : WO A B)).comp (pureTensorO ψ θ A B (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) f)) p G fun k => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `GlobalTheory.FockPos.fock_monomial_zero_of_on ψ θ A B 1 1 hψ hθ (hon hgA) (hon hgB) f _ hΦ (fun w hw => eq_gauss_mul θ hθ A B s sc hs hsc' f w hw) k`. Rewrite `h` using `[frAt_one, frAt_one, GlobalTheory.FockPos.applyAt0_monomial', GlobalTheory.FockPos.taylor_comp_smul' D _ hG]`. Rewrite using `[GlobalTheory.FockPos.applyAt0_monomial']`. Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[hp, mul_pow]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fock_minorPol_zero : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A B : HSp D) {a d : ℕ} (hA : A.rank = a) (hB : B.rank = d) (n : D.what₂.Tau → ℕ) (s : ℂ) (sc : ℝ), IsStdChar D ψ (-1) → IsInfFam θ → A.gram = 1 → B.gram = 1 → s ≠ 0 → (∀ τ, sc * ‖s‖ ^ 2 = 2 * ‖tauE D τ D.host.xi0‖) → ∃ c₁ : ℂ, c₁ ≠ 0 ∧ ∀ f : WO A B → ℂ, IsThetaFunO ψ A B f → (∀ τ, IsFockVacAt (heisO ψ A B) θ τ (cplxO 1 1) f) → ∀ T : Tup D a d n, pureTensorL (aPlusAll (heisO ψ A B) θ (fun _ => cplxO 1 1) (fun _ => 1) (fun _ => 1)) f (MvPolynomial.rename (fun k : Formalism.MainNotions.GL3Theta.Idx D a d => ((k.1, Fin.cast hB.symm k.2.1, Fin.cast hA.symm k.2.2) : FVar D B.rank A.rank)) (minorPol D T)) 0 = c₁ * Formalism.MainNotions.GL3Theta.applyAt0 D (minorPol D T) (GlobalTheory.AdForm.xiN θ A B hA hB s sc f) := by
   intro D ψ θ A B a d hA hB n s sc hψ hθ hgA hgB hs hsc

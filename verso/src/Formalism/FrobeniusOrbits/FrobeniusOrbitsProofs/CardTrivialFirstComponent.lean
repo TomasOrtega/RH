@@ -16,15 +16,15 @@ open Formalism.TwoAdicCyclotomicDecomposition
 namespace EFG
 
 /- English proof (translation)
-Conclude with `(Ideal.span_singleton_prime (by norm_num)).mpr Int.prime_two`.
+A detailed English derivation is pending.
 -/
 theorem two_isPrime : (span {(2 : ℤ)}).IsPrime := by
   exact (Ideal.span_singleton_prime (by norm_num)).mpr Int.prime_two
 
 /- English proof (translation)
-Rewrite using `[← Group.card_H e]`. Conclude with `Nat.card_congr { toFun := fun g => g.1.2 invFun := fun h => ⟨(1, h), rfl⟩ left_inv := fun g => by`. Take `⟨⟨g1, g2⟩, hg⟩` from `g`. Simplify using `only at hg`. Substitute `hg` using the available equality.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `right_inv := fun _ => rfl }`.
+A detailed English derivation is pending.
 -/
 theorem card_trivial_first_component (e : ℕ) : Nat.card {g : GG e // g.1 = 1} = 2 ^ e := by
   rw [← Group.card_H e]
@@ -39,9 +39,9 @@ theorem card_trivial_first_component (e : ℕ) : Nat.card {g : GG e // g.1 = 1} 
       right_inv := fun _ => rfl }
 
 /- English proof (translation)
-Establish `hmem : ∀ g : GG e, g ∈ Psi e ↔ g.1.2 = 1` using `fun g => by`. Simplify using `[Psi, chD, MonoidHom.mem_ker]`. Establish `: Nat.card (Psi e) = Nat.card (ℤˣ × HGrp e)` using `Nat.card_congr { toFun := fun g => (g.1.1.1, g.1.2) invFun := fun x => ⟨((x.1, 1), x.2), (hmem _).2 rfl⟩ left_inv := fun g => by`. Take `⟨⟨⟨g1, g2⟩, g3⟩, hg⟩` from `g`. Establish `h2 : g2 = 1` using `(hmem _).1 hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `h2` using the available equality. Both sides reduce to the same expression. Use `right_inv := fun _ => rfl }`. Rewrite using `[this, Nat.card_prod, Group.card_H, Nat.card_eq_fintype_card, Fintype.card_units_int]`. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem card_Psi (e : ℕ) : Nat.card (Psi e) = 2 ^ (e + 1) := by
   have hmem : ∀ g : GG e, g ∈ Psi e ↔ g.1.2 = 1 := fun g => by
@@ -60,7 +60,7 @@ theorem card_Psi (e : ℕ) : Nat.card (Psi e) = 2 ^ (e + 1) := by
   ring
 
 /- English proof (translation)
-The claim follows from `Nat.Coprime.pow_right _ ((Nat.coprime_primes hp Nat.prime_two).mpr hp2)`.
+A detailed English derivation is pending.
 -/
 theorem coprime_two_pow {p : ℕ} (hp : p.Prime) (hp2 : p ≠ 2) (e : ℕ) :
     Nat.Coprime p (2 ^ (e + 2)) :=
@@ -71,45 +71,41 @@ end EFG
 open EFG
 
 /- English proof (translation)
-Introduce `e q d hh L _ _ ζ a b h`. Establish `hqd` using `hh.toHypOdd`. Take `⟨hEgal, hfin, hmulE, hbijE⟩` from `hostGalois e q d hqd L ζ a b h`. Use `hEgal` as an intermediate fact. Establish `: IsGaloisGroup Gal(hostE ζ a b/ℚ) ℤ (𝓞 (hostE ζ a b))` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ (hostE ζ a b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Formalism.FrobeniusOrbits.EFG.two_isPrime` as an intermediate fact. Take `⟨⟨P, hPp, hPl⟩⟩ : Nonempty ((span {(2 : ℤ)}).primesOver (𝓞 (hostE ζ a b)))` from `inferInstance`. Establish `hcardG : Nat.card Gal(hostE ζ a b/ℚ) = 2 ^ (e + 2)`. Rewrite using `[IsGalois.card_aut_eq_finrank, hfin]`. Establish `hIn : Nat.card (P.inertia Gal(hostE ζ a b/ℚ)) = 2 ^ e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← card_trivial_first_component e]`. Use `Nat.card_congr (Equiv.subtypeEquiv (Equiv.ofBijective _ hbijE) (fun σ => ?_))` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_inertia]`. Conclude with `(hI e q d hh L ζ a b h σ).1 P`. Establish `heE : (span {(2 : ℤ)}).ramificationIdxIn (𝓞 (hostE ζ a b)) = 2 ^ e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← card_inertia_eq_ramificationIdxIn (G := Gal(hostE ζ a b/ℚ)) (span {(2 : ℤ)}) P, hIn]`. Establish `hq2 : q ≠ 2` using `by have := hh.2.2.1; omega`. Establish `hd2 : d ≠ 2` using `by have := hh.2.2.2.1; omega`. Establish `hDec` using `fun σ => hD e q d hh L ζ a b h (ZMod.unitOfCoprime q (coprime_two_pow hh.1 hq2 e)) (ZMod.unitOfCoprime d (coprime_two_pow hh.2.1 hd2 e)) (ZMod.coe_unitOfCoprime _ _) (ZMod.coe_unitOfCoprime _ _) σ`. Establish `hStab : Nat.card (MulAction.stabilizer Gal(hostE ζ a b/ℚ) P) = 2 ^ (e + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← card_Psi e]`. Conclude with `Nat.card_congr (Equiv.subtypeEquiv (Equiv.ofBijective _ hbijE) (fun σ => (hDec σ).1 P))`. Establish `hfE : (span {(2 : ℤ)}).inertiaDegIn (𝓞 (hostE ζ a b)) = 2`. Use `card_stabilizer_eq (G := Gal(hostE ζ a b/ℚ)) (span {(2 : ℤ)}) P` as an intermediate fact. Rewrite `this` using `[hStab, heE, pow_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Nat.eq_of_mul_eq_mul_left (by positivity) this).symm`. Establish `hgE : (primesOver (span {(2 : ℤ)}) (𝓞 (hostE ζ a b))).ncard = 2`. Use `ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn (span {(2 : ℤ)}) (𝓞 (hostE ζ a b)) Gal(hostE ζ a b/ℚ)` as an intermediate fact. Rewrite `this` using `[heE, hfE, hcardG, show 2 ^ (e + 2) = 2 * (2 ^ e * 2) by ring]`. Conclude with `Nat.eq_of_mul_eq_mul_right (by positivity) this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : IsMulCommutative Gal(hostE ζ a b/ℚ)` using `⟨⟨fun σ τ => hbijE.1 (by rw [hmulE, hmulE, mul_comm])⟩⟩`. Establish `hAb : IsAbelianGalois ℚ (hostE ζ a b)` using `{}`. Establish `hFab : IsAbelianGalois ℚ (hostF ζ a b)` using `IsAbelianGalois.tower_bot ℚ (hostF ζ a b) (hostE ζ a b)`. Establish `: IsGaloisGroup Gal(hostF ζ a b/ℚ) ℤ (𝓞 (hostF ζ a b))` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ (hostF ζ a b)`. Take `⟨hFfin, hFmem⟩` from `hostReal_of hostGalois hostGalSpec (hostConj_of hostGalois hostGalSpec) e q d hqd L ζ a b h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcardF : Nat.card Gal(hostF ζ a b/ℚ) = 2 ^ (e + 1)`. Rewrite using `[IsGalois.card_aut_eq_finrank, hFfin]`. Take `⟨-, σc, -, -, hσc, -⟩` from `ConjReal.conj_main hostGalois hostGalSpec hqd h`. Establish `hσcP : σc • P ≠ P`. Introduce `heq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : σc ∈ MulAction.stabilizer Gal(hostE ζ a b/ℚ) P` using `heq`. Rewrite `hmem` using `[(hDec σc).1 P, hσc]`. Conclude with `(hostGroup e).2.2.1 hmem`. Establish `hfixF : ∀ x : 𝓞 (hostF ζ a b), σc • (algebraMap (𝓞 (hostF ζ a b)) (𝓞 (hostE ζ a b)) x) = algebraMap (𝓞 (hostF ζ a b)) (𝓞 (hostE ζ a b)) x`. Introduce `x`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Establish `hx : (((x : hostF ζ a b) : hostE ζ a b)) ∈ hostF ζ a b` using `(x : hostF ζ a b).2`. Conclude with `((hFmem _).1.1 hx) σc hσc`. Set `PF` to `P.under (𝓞 (hostF ζ a b))`. Establish `hσcPl : (σc • P).LiesOver PF`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Use extensionality with `x`. Use `show x ∈ P.under (𝓞 (hostF ζ a b)) ↔ _`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_smul_eq_iff.mpr (hfixF x).symm]`. Establish `hgF : (primesOver (span {(2 : ℤ)}) (𝓞 (hostF ζ a b))).ncard = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ht` using `ncard_primesOver_mul_ncard_primesOver (A := ℤ) (p := span {(2 : ℤ)}) PF Gal(hostF ζ a b/ℚ) (𝓞 (hostE ζ a b)) Gal(hostE ζ a b/ℚ)`. Rewrite `ht` using `[hgE]`. Establish `hne : (PF.primesOver (𝓞 (hostE ζ a b))).ncard ≠ 0`. Introduce `h0; rw [h0, mul_zero] at ht; exact absurd ht (by norm_num)`. Establish `h2le : 2 ≤ (PF.primesOver (𝓞 (hostE ζ a b))).ncard`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hsub : ({P, σc • P} : Set (Ideal (𝓞 (hostE ζ a b)))) ⊆ PF.primesOver (𝓞 (hostE ζ a b))`. Introduce `I hI`. Break down `hI with rfl | rfl` into its components or cases. Conclude with `⟨hPp, inferInstance⟩`. Conclude with `⟨inferInstance, hσcPl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hF0 : (primesOver (span {(2 : ℤ)}) (𝓞 (hostF ζ a b))).ncard ≠ 0`. Introduce `h0; rw [h0, zero_mul] at ht; exact absurd ht (by norm_num)`. Establish `hF1 : (primesOver (span {(2 : ℤ)}) (𝓞 (hostF ζ a b))).ncard ≤ 1`. Assume the negation of the conclusion as `hc`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc'` using `not_le.mp hc`. Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers. Establish `hte` using `Ideal.ramificationIdx_tower (R := ℤ) PF P`. Establish `htf` using `Ideal.inertiaDeg_tower (R := ℤ) PF P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `heF0` using `ramificationIdxIn_eq_ramificationIdx (span {(2 : ℤ)}) PF Gal(hostF ζ a b/ℚ)`. Establish `hfF0` using `inertiaDegIn_eq_inertiaDeg (span {(2 : ℤ)}) PF Gal(hostF ζ a b/ℚ)`. Establish `heE0` using `ramificationIdxIn_eq_ramificationIdx (span {(2 : ℤ)}) P Gal(hostE ζ a b/ℚ)`. Establish `hfE0` using `inertiaDegIn_eq_inertiaDeg (span {(2 : ℤ)}) P Gal(hostE ζ a b/ℚ)`. Establish `hfundF` using `ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn (span {(2 : ℤ)}) (𝓞 (hostF ζ a b)) Gal(hostF ζ a b/ℚ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Rewrite `hfundF` using `[hgF, hcardF, one_mul, heF0, hfF0]`. Rewrite `hte` using `[← heE0, heE]`. Rewrite `htf` using `[← hfE0, hfE]`. Establish `hpos : PF.ramificationIdx ℤ * PF.inertiaDeg ℤ ≠ 0`. Rewrite using `[hfundF]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hprod : P.ramificationIdx (𝓞 (hostF ζ a b)) * P.inertiaDeg (𝓞 (hostF ζ a b)) = 1`. Establish `: PF.ramificationIdx ℤ * PF.inertiaDeg ℤ * 1 = PF.ramificationIdx ℤ * PF.inertiaDeg ℤ * (P.ramificationIdx (𝓞 (hostF ζ a b)) * P.inertiaDeg (𝓞 (hostF ζ a b)))`. Rewrite using `[mul_one]`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `(Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hpos) this).symm`. Establish `he1` using `Nat.eq_one_of_mul_eq_one_right hprod`. Establish `hf1` using `Nat.eq_one_of_mul_eq_one_left hprod`. Rewrite `hte` using `[he1, mul_one]`. Rewrite `htf` using `[hf1, mul_one]`.
-
-Conclude with `⟨heE, hfE, hgE, hgF, heF0.trans hte.symm, hfF0.trans htf.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hostEFGTwo_of (hI : HostInertia) (hD : HostDecomp) : HostEFGTwo := by
   intro e q d hh L _ _ ζ a b h

@@ -22,9 +22,9 @@ noncomputable def fixedFieldGalHom :
     map_mul' := fun _ _ => AlgEquiv.ext fun _ => Subtype.ext rfl }
 
 /- English proof (translation)
-Set `` to `(IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra`. Establish `: IsScalarTower (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K))) Ksep` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: IsGalois (fixedField (U : Subgroup Gal(Ksep/K))) Ksep` using `IsGalois.tower_top_of_isGalois K (fixedField (U : Subgroup Gal(Ksep/K))) Ksep`. Introduce `σ`. Use `set τ := σ.liftNormal Ksep`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hτU : τ.restrictScalars K ∈ (U : Subgroup Gal(Ksep/K))` using `(fixingSubgroup_fixedField_openSubgroup U).le ((mem_fixingSubgroup_iff _ _).2 fun x hx => τ.commutes ⟨x, hx⟩)`. Conclude with `⟨⟨τ.restrictScalars K, hτU⟩, AlgEquiv.ext fun x => Subtype.ext (σ.liftNormal_commutes Ksep x)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fixedFieldGalHom_surjective : Function.Surjective (fixedFieldGalHom h) := by
   let := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
@@ -40,9 +40,9 @@ theorem fixedFieldGalHom_surjective : Function.Surjective (fixedFieldGalHom h) :
   exact ⟨⟨τ.restrictScalars K, hτU⟩, AlgEquiv.ext fun x => Subtype.ext (σ.liftNormal_commutes Ksep x)⟩
 
 /- English proof (translation)
-Set `` to `(IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra`. Use extensionality with `g`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(fixingSubgroup_fixedField_openSubgroup V).le ((mem_fixingSubgroup_iff _ _).2 fun x hx => congrArg Subtype.val (AlgEquiv.ext_iff.1 hg ⟨x, hx⟩))`. Introduce `hg`. Conclude with `AlgEquiv.ext fun x => Subtype.ext ((mem_fixedField_iff _ _).1 x.2 _ hg)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fixedFieldGalHom_ker :
     (fixedFieldGalHom h).ker = (V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K)) := by
@@ -75,7 +75,7 @@ theorem quotientFixedFieldGalEquiv_mk (g : (U : Subgroup Gal(Ksep/K))) :
   rfl
 
 /- English proof (translation)
-The claim follows from `cohomologyZeroRootsEquiv_cohomologyConj h l g x`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyZeroRootsEquiv_cohomologyConj_gal (l : ℕ) (g : (U : Subgroup Gal(Ksep/K)))
     (x : cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
@@ -90,7 +90,7 @@ theorem cohomologyZeroRootsEquiv_cohomologyConj_gal (l : ℕ) (g : (U : Subgroup
   cohomologyZeroRootsEquiv_cohomologyConj h l g x
 
 /- English proof (translation)
-Set `` to `(IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra`. Rewrite using `[cohomologyOneRootsEquiv_cohomologyConj]`. Take `⟨u, hu⟩` from `Submodule.mkQ_surjective _ (cohomologyOneRootsEquiv h hl x)`. Rewrite using `[← hu]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cohomologyOneRootsEquiv_cohomologyConj_gal {l : ℕ} (hl : (l : K) ≠ 0) (g : (U : Subgroup Gal(Ksep/K)))
     (x : cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype

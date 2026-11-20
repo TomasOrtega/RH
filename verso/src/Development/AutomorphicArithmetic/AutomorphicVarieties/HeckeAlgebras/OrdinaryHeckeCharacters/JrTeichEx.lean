@@ -26,9 +26,7 @@ section Abstract
 open UpperTheory.V.W
 
 /- English proof (translation)
-Use `haveI : CharP (O ⧸ maximalIdeal O) l := inferInstanceAs (CharP (ResidueField O) l)`. Use `haveI : PerfectRing (ResidueField O) l := inferInstance`. Set `j : ResidueField O →+* Perfection (O ⧸ maximalIdeal O) l` to `Perfection.lift l (ResidueField O) (O ⧸ maximalIdeal O) (RingHom.id (ResidueField O))`. Establish `hj : ∀ x, Perfection.coeff (O ⧸ maximalIdeal O) l 0 (j x) = x` using `fun x => by`. Use `(Perfection.lift l (ResidueField O) (O ⧸ maximalIdeal O)).symm_apply_apply (RingHom.id (ResidueField O))` as an intermediate fact.
-
-Conclude with `RingHom.congr_fun this x`. Use `⟨(Perfection.teichmuller l (maximalIdeal O)).comp j, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(Perfection.mk_teichmuller (j x)).trans (hj x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem jr_teich_ex (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLocalRing O]
     [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)] [CharP (ResidueField O) l] :
@@ -44,9 +42,9 @@ private theorem jr_teich_ex (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Is
   exact (Perfection.mk_teichmuller (j x)).trans (hj x)
 
 /- English proof (translation)
-Take `⟨hc, hfin, hlm, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `haveI : Finite (ResidueField c.O) := hfin`. Use `haveI : CharP (ResidueField c.O) l := by`. Use `(CharP.charP_iff_prime_eq_zero hl.out).2 ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (residue c.O), residue_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hlm`. Take `⟨τ, hτ⟩` from `jr_teich_ex l c.O`. Use `⟨fun i => (Units.map τ).comp (r.chib i), fun i g => ⟨hτ _, ?_⟩, fun i g h => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, ← map_pow, ← Nat.card_units, pow_card_eq_one', map_one]`. Rewrite using `[MonoidHom.comp_apply, h, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem jr_isTeich {l : ℕ} [hl : Fact l.Prime] {F : GFrame l} (c : Coef l) {n : ℕ} (r : Resid F c.O n) :
     ∃ t, r.IsTeich t ∧ ∀ i g, r.chib i g = 1 → t i g = 1 := by
@@ -62,35 +60,33 @@ private theorem jr_isTeich {l : ℕ} [hl : Fact l.Prime] {F : GFrame l} (c : Coe
   · rw [MonoidHom.comp_apply, h, map_one]
 
 /- English proof (translation)
-Set `f : ι → (B.B ⧸ J) →ₐ[O] K` to `fun i => Ideal.Quotient.liftₐ J (x i) (hJ i)`. Establish `hf : ∀ i, (f i : B.B ⧸ J →+* K).comp (Ideal.Quotient.mk J) = x i` using `fun i => rfl`. Establish `hinj : ∀ a, (∀ i, f i a = 0) → a = 0` using `fun a ha => by`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (sep b ha)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hD' : ∀ i, (B.DD J).map (f i : B.B ⧸ J →+* K) = GDet.ofRep (mat (ρ i))` using `fun i => by`. Rewrite using `[UniversalOrdinaryDeterminantRing.DD, (UpperTheory.V.AlgebraTools.Det.mapApi B.u.D _).2.2.2.2.2.2.1, hf, hD]`. Establish `hflag : ∀ i v, HasFlag ((ρ i).comp (F.φ v)) fun j => pushCh (f i : B.B ⧸ J →+* K) (B.psiT J v j)` using `flag`. Establish `hP : F.IsPolar O (B.DD J)` using `UpperTheory.V.AlgebraTools.Det.polarInj F O _ n _ (fun _ => K) f hinj fun i => by`. Take `⟨P, hP⟩` from `form i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD' i]`. Conclude with `(UpperTheory.V.AlgebraTools.Det.formRep F O K n (ρ i) P hP).2.2`. Establish `hker : ∀ g, (∀ i, ρ i g = 1) → (B.DD J).Kills (MonoidAlgebra.single g 1 - 1) ∧ (B.DD J).Kills (F.star O _ n (MonoidAlgebra.single g 1) - 1)` using `fun g hg => by`. Establish `hk : (B.DD J).Kills (MonoidAlgebra.single g 1 - 1)`. Use `UpperTheory.V.AlgebraTools.Det.kerTest (fun _ => K) (fun i => (f i : B.B ⧸ J →+* K)) (fun i => mat (ρ i)) _ hinj hD' _ fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, map_sub, map_one, map_one, MonoidAlgebra.mapRingHom_single, map_one]`. Simplify using `[GDet.repAlg, mat, hg i]`. Use `⟨hk, ?_⟩` and prove the remaining obligations. Establish `h1` using `UpperTheory.V.AlgebraTools.Det.killsStar F O _ n _ hP _ hk`. Establish `h2 : F.star O (B.B ⧸ J) n (MonoidAlgebra.single g 1 - 1) = F.star O _ n (MonoidAlgebra.single g 1) - 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `[GFrame.star]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Use `⟨fin, tf, hP, fun v g => ?_, fun v g => ?_, fun u g hg => hker g fun i => ?_, fun t ht u => ?_, fun h g hg => hker g fun i => unr h i g hg⟩` and prove the remaining obligations. Use extensionality with `k`. Rewrite using `[← sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hinj` to reduce the goal to its premises. Introduce `i`. Establish `h1` using `(UpperTheory.V.AlgebraTools.Det.mapApi (B.DD J) (f i : B.B ⧸ J →+* K)).1 (MonoidAlgebra.single (F.φ v g) 1)`. Rewrite `h1` using `[hD' i, MonoidAlgebra.mapRingHom_single, map_one, (UpperTheory.V.AlgebraTools.Det.repApi (mat (ρ i))).2.1]`. Establish `h2` using `(UpperTheory.V.AlgebraTools.Det.flagRel _ _ (hflag i v)).1 g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : mat ((ρ i).comp (F.φ v)) g = mat (ρ i) (F.φ v g)` using `rfl`. Rewrite `h2` using `[h3, h1]`. Establish `h4 : (∏ j, (X - C ((B.psiT J v j g : (B.B ⧸ J)ˣ) : B.B ⧸ J))).map (f i : B.B ⧸ J →+* K) = ∏ j, (X - C ((pushCh (f i : B.B ⧸ J →+* K) (B.psiT J v j) g : Kˣ) : K))`. Rewrite using `[Polynomial.map_prod]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h5` using `congrArg (fun p => p.coeff k) (h2.trans h4.symm)`. Simplify using `only [Polynomial.coeff_map] at h5`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `h5`. Establish `hk : (B.DD J).Kills (F.oEl v (B.psiT J v) g)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `UpperTheory.V.AlgebraTools.Det.kerTest (fun _ => K) (fun i => (f i : B.B ⧸ J →+* K)) (fun i => mat (ρ i)) _ hinj hD' _ fun i => ?_` and prove the remaining obligations. Establish `h1 : MonoidAlgebra.mapRingHom F.G₀ (f i : B.B ⧸ J →+* K) (F.oEl v (B.psiT J v) g) = F.oEl v (fun j => pushCh (f i : B.B ⧸ J →+* K) (B.psiT J v j)) g`. Unfold `GFrame.oEl`. Rewrite using `[map_list_prod, List.map_ofFn]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, map_sub, MonoidAlgebra.mapRingHom_single, map_one]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `UpperTheory.V.AlgebraTools.Det.oElRep F O K n (ρ i) v _ (hflag i v) g`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨hk, UpperTheory.V.AlgebraTools.Det.killsStar F O _ n _ hP _ hk⟩`. Take `⟨t, ht, ht1⟩` from `hT`. Take `⟨Q, hQ⟩` from `type i t ht u`. Establish `h1` using `hQ g hg.1`. Establish `h2 : ∀ j, t j g = 1` using `fun j => ht1 j g (Subgroup.mem_iInf.1 hg.2 j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [h2, Units.val_one, map_one, Matrix.diagonal_one] at h1`. Establish `h3 : Q * ρ i g * Q⁻¹ = 1` using `Units.ext h1`. Simplify using `using h3`. Use `(UpperTheory.V.AlgebraTools.Det.injTest (fun _ => K) (fun i => (f i : B.B ⧸ J →+* K)) hinj).1 _ _ fun i => ?_` and prove the remaining obligations. Take `⟨Q, hQ⟩` from `type i t ht u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ((B.DD J).comap (F.Iu u).subtype).map (f i : B.B ⧸ J →+* K) = ((B.DD J).map (f i : B.B ⧸ J →+* K)).comap (F.Iu u).subtype` using `rfl`. Rewrite using `[h1, hD', (UpperTheory.V.AlgebraTools.Det.repApi _).2.2.2.2.2.2.1, (UpperTheory.V.AlgebraTools.Det.repApi _).2.2.2.2.2.1]`. Use `(UpperTheory.V.AlgebraTools.Det.repApi _).2.2.2.2.2.2.2 _ Q fun y => ?_` and prove the remaining obligations. Establish `h2 : (RingHom.mapMatrix (f i : B.B ⧸ J →+* K)).toMonoidHom.comp (diagRep fun j => pushCh (algebraMap O (B.B ⧸ J)) ((t j).comp (F.Iu u).subtype)) y = Matrix.diagonal fun j => algebraMap O K (t j y)`. Express the relevant statement in the definitionally equal form `(Matrix.diagonal _).map (f i) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `(f i).commutes _`. Rewrite using `[h2, ← hQ y y.2, ← Units.val_mul, inv_mul_cancel_right]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem jr_abs {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ}
     {r : Resid F O n} (B : UniversalOrdinaryDeterminantRing r) (Λ : LamObj r) (J : Ideal B.B) {ι : Type} (K : Type) [CommRing K] [Algebra O K]
@@ -184,13 +180,11 @@ private theorem jr_abs {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommR
     rfl
 
 /- English proof (translation)
-Use `choose ρ hD hform hfl hty hun using fun x : {x // good x} => pt x.1 x.2`. Establish `hD' : ∀ x : {x // good x}, B.u.D.map (x.1.comp f : B.B →+* K) = GDet.ofRep (mat (ρ x))` using `fun x => by`. Rewrite using `[← hD x]`. Conclude with `((UpperTheory.V.AlgebraTools.Det.mapApi B.u.D f.toRingHom).2.2.2.2.2.2.1 x.1.toRingHom).symm`. Use `jr_abs B Λ _ K (fun x : {x // good x} => x.1.comp f) (fun x b hb => ?_) (fun b hb => ?_) ρ hD' hform hfl hty (fun h x => hun x h (hD' x)) hT ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[AlgHom.comp_apply, (RingHom.mem_ker).1 hb, map_zero]`. Conclude with `sep (f b) fun x hx => hb ⟨x, hx⟩`. Set `e` to `Ideal.quotientKerAlgEquivOfSurjective hsurj`. Establish `he : (Ideal.Quotient.mk (RingHom.ker f)).comp (Λ.toPair B.u : Λ.Λ →+* B.B) = (e.symm : T →+* B.B ⧸ RingHom.ker f).comp (algebraMap Λ.Λ T)`. Use `RingHom.ext fun b => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `_ = e.symm (algebraMap Λ.Λ T b)`. Rewrite using `[AlgEquiv.eq_symm_apply, ← hlam]`. Both sides reduce to the same expression. Rewrite using `[he]`. Conclude with `(RingHom.Finite.of_surjective _ e.symm.surjective).comp hfin`.
-
-Introduce `a ha b hb`. Use `htf a ha (f b) ?_` and prove the remaining obligations. Rewrite using `[← hlam, ← map_mul]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem jr_surj {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ}
     {r : Resid F O n} (B : UniversalOrdinaryDeterminantRing r) (Λ : LamObj r) {T : Type} [CommRing T] [Algebra O T] [Algebra Λ.Λ T] (f : B.B →ₐ[O] T)
@@ -230,11 +224,11 @@ end Abstract
 
 attribute [-instance] UpperTheory.V.GradeZeroInterpolatingElement.instIsLocalRingSubtypePadicAlgClMemSubalgebraPadicIntO in
 /- English proof (translation)
-Introduce `hP l _ L Ω _ _ _ _ _ _ s n hn V Q c r ι B Λ R K _ J hJ`. Break down `hJ with ⟨-, rfl⟩ | ⟨hcomm, hco, f, hne, hmap, hsurj, hlam, rfl⟩` into its components or cases. Use `jr_abs B Λ ⊤ (ι := Empty) (Qbar l) Empty.elim (fun i => i.elim) (fun _ _ => trivial) Empty.elim (fun i => i.elim) (fun i => i.elim) (fun i => i.elim) (fun i => i.elim) (fun _ i => i.elim) (jr_isTeich c r) ?_ fun _ _ _ _ => trivial` and prove the remaining obligations. Conclude with `RingHom.Finite.of_surjective _ fun b => ⟨0, Subsingleton.elim _ _⟩`. Establish `hAx` using `axU hP.litN l L Ω s n hn V Q c _ R.τ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hdom, hden⟩` from `denseU hP.litN l L Ω s n hn V Q c _ R.τ₀ r Λ R.θ R.theta`. Take `⟨-, hfin, htf, -⟩` from `hiAlg L Ω l n c _ hAx Λ.Λ R.θ R.isWt R.a K hne`. Set `lam : Wt L l n` to `fun _ => ⟨0, fun _ _ _ => le_rfl⟩`. Establish `hout` using `coreH hP.litN L Ω l n c _ hAx Λ.Λ R.θ R.isWt ι _ (autU hP l L Ω s n hn V Q c r ι _ R.τ₀ R.type) lam trivial (hden lam) R.a K _ _ hmap`. Use `jr_surj B Λ f hsurj hlam (Qbar l) _ (hout.sep lam trivial (hden lam)) (fun x hx => ?_) (jr_isTeich c r) hfin (htf hdom)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hc, -, hPU, hD, hfl⟩` from `hout.pt lam trivial x hx.2.1`. Conclude with `⟨ρ, hD, hPU.form, fun v => (hfl hx v).1, hPU.type, fun h h' => point_rep_unramified_at_auxiliary_place hn B h _ _ hc h'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.jRing :
     Af.HypothesesH → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

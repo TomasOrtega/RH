@@ -7,7 +7,7 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Unfold `hv`. Rewrite using `[Matrix.mulVec_sub, dotProduct_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma hv_sub_l {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (x y z : Fin n → ℂ) :
     hv M (x - y) z = hv M x z - hv M y z := by
@@ -15,7 +15,7 @@ private lemma hv_sub_l {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (x y z : Fin n
   rw [Matrix.mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Unfold `hv`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma hv_smul_l {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (x z : Fin n → ℂ) :
     hv M (c • x) z = c * hv M x z := by
@@ -23,7 +23,7 @@ private lemma hv_smul_l {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (x 
   rw [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `hv`. Rewrite using `[star_smul, smul_dotProduct, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma hv_smul_r {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (x z : Fin n → ℂ) :
     hv M x (c • z) = star c * hv M x z := by
@@ -31,7 +31,7 @@ private lemma hv_smul_r {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (x 
   rw [star_smul, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `hv`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma hv_J {n : ℕ} {M J : Matrix (Fin n) (Fin n) ℂ} (h : Jᴴ * M * J = M) (x y : Fin n → ℂ) :
     hv M (J *ᵥ x) (J *ᵥ y) = hv M x y := by
@@ -40,7 +40,7 @@ private lemma hv_J {n : ℕ} {M J : Matrix (Fin n) (Fin n) ℂ} (h : Jᴴ * M * 
     h]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hJ, Matrix.neg_mulVec, Matrix.one_mulVec]`. Use extensionality with `i`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul]`. Take the linear combination `(J *ᵥ x) i * ht`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma J_plus {n : ℕ} {J : Matrix (Fin n) (Fin n) ℂ} {t : ℂ} (ht : t * t = -1)
     (hJ : J * J = -1) (x : Fin n → ℂ) :
@@ -51,7 +51,7 @@ private lemma J_plus {n : ℕ} {J : Matrix (Fin n) (Fin n) ℂ} {t : ℂ} (ht : 
   linear_combination (J *ᵥ x) i * ht
 
 /- English proof (translation)
-Establish `hx : x = t • y` using `sub_eq_zero.mp h`. Rewrite using `[hx, smul_smul, neg_mul, ht, neg_neg, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma of_plus_zero {n : ℕ} {t : ℂ} (ht : t * t = -1) {x y : Fin n → ℂ}
     (h : x - t • y = 0) : y = (-t) • x := by
@@ -59,7 +59,7 @@ private lemma of_plus_zero {n : ℕ} {t : ℂ} (ht : t * t = -1) {x y : Fin n �
   rw [hx, smul_smul, neg_mul, ht, neg_neg, one_smul]
 
 /- English proof (translation)
-Establish `h1` using `hp z hz`. Rewrite `h1` using `[hJz, hv_smul_l, ← _root_.mul_assoc, neg_mul, ht, neg_neg, _root_.one_mul]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eig_pos {n : ℕ} {M J : Matrix (Fin n) (Fin n) ℂ} {t : ℂ} (ht : t * t = -1)
     (hp : ∀ x, x ≠ 0 → 0 < (-t * hv M (J *ᵥ x) x).re) {z : Fin n → ℂ} (hz : z ≠ 0)
@@ -69,31 +69,29 @@ private lemma eig_pos {n : ℕ} {M J : Matrix (Fin n) (Fin n) ℂ} {t : ℂ} (ht
   exact h1
 
 /- English proof (translation)
-Establish `hpos : ∀ z, z ≠ 0 → J *ᵥ z = t • z → 0 < (hv M z z).re` using `fun z hz hJz => eig_pos ht hp hz hJz`. Establish `hall : (∀ x, x - t • J *ᵥ x = 0) → J = (-t) • (1 : Matrix (Fin n) (Fin n) ℂ)`. Introduce `h0`. Establish `hx : ∀ x, J *ᵥ x = (-t) • x` using `fun x => of_plus_zero ht (h0 x)`. Apply `Matrix.ext_of_mulVec_single` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i`. Simplify using `only [hx]`. Use extensionality with `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Pi.single_apply, Matrix.one_apply]`. Simplify using `[Pi.single_apply, Matrix.one_apply, h]`. Use `⟨hpos, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hneg`. Apply `hall` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Assume the negation of the conclusion as `hv0`. Establish `h1` using `hpos _ hv0 (J_plus ht hJ x)`. Establish `h2` using `hneg _ hv0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce and unpack `⟨z, hz⟩`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `h0 : ∀ x, x - t • J *ᵥ x = 0`. Introduce `x`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hv0`. Conclude with `hno _ hv0 (J_plus ht hJ x)`. Establish `hx : ∀ x, J *ᵥ x = (-t) • x` using `fun x => of_plus_zero ht (h0 x)`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hv] at hz`. Establish `h1` using `hp z hz0`. Rewrite `h1` using `[hx, hv_smul_l, ← _root_.mul_assoc, neg_mul_neg, ht, neg_one_mul, Complex.neg_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `z hz hperp hJz x`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzz : hv M z z ≠ 0`. Introduce `h`. Rewrite `hz` using `[h]`. Simplify using `at hz`. Use `set c := hv M x z / hv M z z with hc`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set w := x - c • z with hw`. Establish `hwz : hv M w z = 0`. Rewrite using `[hw, hv_sub_l, hv_smul_l, hc, div_mul_cancel₀ _ hzz, sub_self]`. Establish `hJwz : hv M (J *ᵥ w) z = 0`. Establish `e1` using `hv_J hP w z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[hJz, hv_smul_r, hwz]`. Establish `ht0 : star t ≠ 0`. Introduce `h0`. Rewrite `h0` using `[star_eq_zero]`. Rewrite `ht` using `[h0, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Evaluate the numerical expressions using `at ht`. Conclude with `(mul_eq_zero.mp e1).resolve_left ht0`. Establish `hJw : J *ᵥ w = (-t) • w`. Apply `of_plus_zero ht` to reduce the goal to its premises. Assume the negation of the conclusion as `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hpos _ hu (J_plus ht hJ w)`. Establish `h2` using `hperp _ hu (by rw [hv_sub_l, hv_smul_l, hwz, hJwz, mul_zero, sub_zero])`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hxw : x = w + c • z` using `by rw [hw, sub_add_cancel]`. Rewrite using `[hxw, Matrix.mulVec_add, hJw, Matrix.mulVec_smul, hJz]`.
-
-Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma core {n : ℕ} (M J : Matrix (Fin n) (Fin n) ℂ) (t : ℂ) (ht : t * t = -1)
     (hJ : J * J = -1) (hP : Jᴴ * M * J = M)
@@ -168,9 +166,9 @@ private lemma core {n : ℕ} (M J : Matrix (Fin n) (Fin n) ℂ) (t : ℂ) (ht : 
     ring
 
 /- English proof (translation)
-Introduce `n M J s hM hs hPJ`. Take `⟨hJ, hP, hp⟩` from `hPJ`. Establish `ht : (s * Complex.I) * (s * Complex.I) = -1`. Apply the tactic sequence `rcases hs with rfl | rfl <;> simp`. Establish `hp' : ∀ x, x ≠ 0 → 0 < (-(s * Complex.I) * hv M (J *ᵥ x) x).re`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `h1` using `hp x hx`. Rewrite `h1` using `[neg_mul]`. Then use the resulting hypothesis. Conclude with `core M J (s * Complex.I) ht hJ hP hp'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.jLine_of :
     UpperTheory.Gal.W2.JLine := by

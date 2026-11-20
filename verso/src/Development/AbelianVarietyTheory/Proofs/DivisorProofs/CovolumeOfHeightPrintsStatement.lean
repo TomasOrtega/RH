@@ -14,7 +14,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
 import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
 open GlobalTheory.CovTop GlobalTheory.BigTop
 /- English proof (citation)
-Apply `GlobalTheory.CovTop.covolX_of_slim` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCovolumeOfHeightHyp.lean&line=22#L22)
 -/

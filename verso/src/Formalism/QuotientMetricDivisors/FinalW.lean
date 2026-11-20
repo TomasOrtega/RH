@@ -15,65 +15,65 @@ import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.WeightedPlaceLogS
 namespace Formalism.DivisionValues
 
 /- English proof (translation)
-The claim follows from `bounds_fourth_general`.
+A detailed English derivation is pending.
 -/
 theorem boundsIVal : BoundsIVal := bounds_fourth_general
 
 /- English proof (translation)
-The claim follows from `lattice_gluing`.
+A detailed English derivation is pending.
 -/
 theorem latticeGlue : LatticeGlue := lattice_gluing
 
 /- English proof (translation)
-The claim follows from `frobenius_norm_rational`.
+A detailed English derivation is pending.
 -/
 theorem fnormRat : FnormRat := frobenius_norm_rational
 /- English proof (translation)
-The claim follows from `quotient_metric_representation`.
+A detailed English derivation is pending.
 -/
 theorem quotMetricRep : QuotMetricRep := quotient_metric_representation
 /- English proof (translation)
-The claim follows from `chain_spectrum`.
+A detailed English derivation is pending.
 -/
 theorem chainSpec : ChainSpec := chain_spectrum
 /- English proof (translation)
-The claim follows from `composition_norm`.
+A detailed English derivation is pending.
 -/
 theorem compNorm : CompNorm := composition_norm
 /- English proof (translation)
-The claim follows from `height_constant_first`.
+A detailed English derivation is pending.
 -/
 theorem height_constant_bound : HeightBoundConstant := height_constant_first
 
 /- English proof (translation)
-The claim follows from `young_diagram_hook`.
+A detailed English derivation is pending.
 -/
 theorem rowsHook : RowsHook := young_diagram_hook
 
 /- English proof (translation)
-The claim follows from `young_diagram_step_origin`.
+A detailed English derivation is pending.
 -/
 theorem rowsStepEOrigin : RowsStepEOrigin := young_diagram_step_origin
 
 /- English proof (translation)
-The claim follows from `shift_slope_mu`.
+A detailed English derivation is pending.
 -/
 theorem shiftMu : ShiftMu := shift_slope_mu
 /- English proof (translation)
-The claim follows from `shift_existence`.
+A detailed English derivation is pending.
 -/
 theorem shiftEx : ShiftEx := shift_existence
 /- English proof (translation)
-The claim follows from `lattice_weight_sum_prime`.
+A detailed English derivation is pending.
 -/
 theorem lwSumPrime : LwSumPrime := lattice_weight_sum_prime
 /- English proof (translation)
-The claim follows from `divisor_into_dual_shift`.
+A detailed English derivation is pending.
 -/
 theorem divIntoDualShift : DivIntoDualShift := divisor_into_dual_shift
 
 /- English proof (translation)
-The claim follows from `prime_log_sum_bound`.
+A detailed English derivation is pending.
 -/
 theorem primeLogSum : PrimeLogSum := prime_log_sum_bound
 

@@ -16,9 +16,9 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Rewrite using `[integral_prod _ h]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h.prod_right_ae] with m₁ h1`. Rewrite using `[integral_prod _ h1]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [h1.prod_right_ae] with m₂ h2`. Rewrite using `[integral_prod _ h2]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h2.prod_right_ae] with t h3`. Rewrite using `[integral_prod _ h3]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem five {M₁ M₂ T Kc U : Type} [MeasurableSpace M₁] [MeasurableSpace M₂] [MeasurableSpace T] [MeasurableSpace Kc]
     [MeasurableSpace U] (a₁ : Measure M₁) (a₂ : Measure M₂) (τ : Measure T) (κ : Measure Kc) (ν : Measure U)
@@ -38,9 +38,9 @@ private theorem five {M₁ M₂ T Kc U : Type} [MeasurableSpace M₁] [Measurabl
   rw [integral_prod _ h3]
 
 /- English proof (translation)
-Establish `h0 : Integrable (fun p : (M × M) × Z => u p.2 * b p.1.1 p.1.2 p.2) ((a.prod a).prod ζ)` using `(hu.comp_snd (a.prod a)).mul_bdd hb.aestronglyMeasurable (Eventually.of_forall fun p => hC _ _ _)`. Establish `h1 : ∀ z, ∫ m : M × M, u z * b m.1 m.2 z ∂(a.prod a) = u z * ∫ x, ∫ y, b x y z ∂a ∂a`. Introduce `z`. Rewrite using `[integral_const_mul, integral_prod]`. Conclude with `Integrable.of_bound (hb.comp_measurable (measurable_id.prodMk measurable_const)).aestronglyMeasurable C (Eventually.of_forall fun p => hC _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x y => ?_, h0.integral_prod_left, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hu.mul_bdd (hb.comp_measurable (g := fun z => ((x, y), z)) (measurable_const.prodMk measurable_id)).aestronglyMeasurable (Eventually.of_forall fun p => hC _ _ _)`. Simplify `h0.integral_prod_right` using `only [h1]`. Rewrite using `[integral_integral_swap (f := fun (m : M × M) z => u z * b m.1 m.2 z) h0]`. Simplify using `only [h1]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem swap {M Z : Type} [MeasurableSpace M] [MeasurableSpace Z] (a : Measure M) (ζ : Measure Z) [IsFiniteMeasure a]
     [SFinite ζ] (u : Z → ℂ) (hu : Integrable u ζ) (b : M → M → Z → ℂ)
@@ -64,9 +64,9 @@ private theorem swap {M Z : Type} [MeasurableSpace M] [MeasurableSpace Z] (a : M
     simp only [h1]
 
 /- English proof (translation)
-Take `⟨p1, p2, p3, p4⟩` from `swap a _ u hu b hb C hC`. Take `⟨q1, q2, q3, q4⟩` from `swap a _ u' hu' b' hb' C' hC'`. Establish `h1 : ∀ x y, ∫ t, ∫ k, (u (t, k) * b x y (t, k) + ∫ X, u' ((t, k), X) * b' x y ((t, k), X) ∂ν) ∂κ ∂τ = ∫ z, u z * b x y z ∂(τ.prod κ) + ∫ z, u' z * b' x y z ∂((τ.prod κ).prod ν)`. Introduce `x y`. Rewrite using `[integral_prod _ (q1 x y), ← integral_add (p1 x y) (q1 x y).integral_prod_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(integral_prod _ ((p1 x y).add (q1 x y).integral_prod_left)).symm`. Simplify using `only [h1]`. Use `(integral_prod (fun m : M × M => ∫ z, u z * b m.1 m.2 z ∂(τ.prod κ) + ∫ z, u' z * b' m.1 m.2 z ∂((τ.prod κ).prod ν)) (p2.add q2)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[integral_add p2 q2, p4, q4, integral_prod _ p3, integral_prod _ q3, integral_prod _ q3.integral_prod_left]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem two {M T Kc U : Type} [MeasurableSpace M] [MeasurableSpace T] [MeasurableSpace Kc]
     [MeasurableSpace U] (a : Measure M) (τ : Measure T) (κ : Measure Kc) (ν : Measure U)
@@ -92,7 +92,7 @@ private theorem two {M T Kc U : Type} [MeasurableSpace M] [MeasurableSpace T] [M
     integral_prod _ q3.integral_prod_left]
 
 /- English proof (translation)
-Establish `h` using `two a volume κ ν (fun p => u p.1) ((hu.integrable_of_hasCompactSupport hus).comp_fst κ) (fun x y p => b x y p.2) (hb.comp (continuous_fst.prodMk continuous_snd.snd)).stronglyMeasurable C (fun _ _ _ => hC _ _ _) (fun p => u' p.1.1 p.1.2 p.2) (hu'.integrable_of_hasCompactSupport hu …`. Use `h.trans ?_` and prove the remaining obligations. Simplify using `only [integral_const_mul, integral_mul_const]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem twoC {M Kc U : Type} [MeasurableSpace M] [MeasurableSpace Kc] [MeasurableSpace U]
     [TopologicalSpace M] [TopologicalSpace Kc] [TopologicalSpace U] [BorelSpace M] [BorelSpace Kc] [BorelSpace U]
@@ -116,9 +116,9 @@ private theorem twoC {M Kc U : Type} [MeasurableSpace M] [MeasurableSpace Kc] [M
   simp only [integral_const_mul, integral_mul_const]
 
 /- English proof (translation)
-Establish `h1 : HP 2 2 (lv x y t * g) = t + HH g`. Use `(hpSpec (K := K)).1 0 x y t g` as an intermediate fact. Rewrite `this` using `[show nn (0 : UPos (2 + 2) 2 → 𝔸[K]) = 1 from unipOne_zero 2, one_mul]`. Then use the resulting hypothesis. Establish `h2 : f (lv x y t * g) = f (lv x y 0 * g)`. Rewrite using `[← hf.ray t (lv x y 0 * g), ← mul_assoc, (blkLaws (K := K)).2.1, one_mul, one_mul, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[bf, h1, h2]`. Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem bf_lv {K : Type} [Field K] [NumberField K] {f : G1 K (2 + 2) → ℂ} (hf : SFun f) (β : ℝ → ℂ) (x y : G1 K 2) (t : ℝ)
     (g : G1 K (2 + 2)) :
@@ -134,23 +134,23 @@ private theorem bf_lv {K : Type} [Field K] [NumberField K] {f : G1 K (2 + 2) →
   ring
 
 /- English proof (translation)
-Take `⟨hP', hB', -⟩` from `bfFun f' β' hf' hβ' hβs'`. Establish `hH : HH k = 0` using `((hpSpec (K := K)).2.1 k hk).1`. Establish `h1 : ∀ X, bf β f (nn X * lv x y t * k) = β t * Complex.exp (2 * (t : ℂ)) * f (lv x y 0 * k)`. Introduce `X`. Establish `h : bf β f (nn X * lv x y t * k) = bf β f (lv x y t * k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : HP 2 2 (nn X * lv x y t * k) = HP 2 2 (lv x y t * k)`. Use `(hpSpec (K := K)).1 X 1 1 0 (lv x y t * k)` as an intermediate fact. Rewrite `this` using `[(blkLaws (K := K)).2.2.1, mul_one, zero_add, ← mul_assoc]`. Then use the resulting hypothesis. Rewrite using `[bf, bf, h0, mul_assoc (nn X), hf.unip]`. Rewrite using `[h, bf_lv hf, hH]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨e, he, hm⟩` from `adMeas x y t`. Establish `h2 : ∫ X, bf β' f' (w0 K * nn X * (lv x y t * k)) ∂unipMeasure K (2 + 2) 2 = (Real.exp (4 * t) : ℂ) * ∫ X, bf β' f' (lv y x (-t) * (w0 K * nn X * k)) ∂unipMeasure K (2 + 2) 2`. Establish `h3` using `integral_map_equiv (μ := unipMeasure K (2 + 2) 2) e.toHomeomorph.toMeasurableEquiv (fun X => bf β' f' (lv y x (-t) * (w0 K * nn X * k)))`. Establish `h4 : (e.toHomeomorph.toMeasurableEquiv : _ → _) = e` using `rfl`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h4, hm, integral_smul_measure, ENNReal.toReal_ofReal (Real.exp_pos _).le, Complex.real_smul]`. Rewrite using `[h3]`. Use `integral_congr_ae (Eventually.of_forall fun X => congrArg (bf β' f') ?_)` and prove the remaining obligations. Use `show w0 K * nn X * (lv x y t * k) = lv y x (-t) * (w0 K * nn (e X) * k)`. Rewrite using `[← mul_assoc, mul_assoc (w0 K), he, ← mul_assoc, (blkLaws (K := K)).2.2.2.2.2.2.2.2.2.1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc]`. Simplify using `only [h1]`. Simplify using `only [mul_assoc (nn _)]`. Rewrite using `[integral_const_mul, (thCt _ hP' hB' (lv x y t * k)).2.2.2, h2, bf_lv hf', hH]`. Simplify using `only [bf_lv hf']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : conj (Complex.exp (2 * (t : ℂ))) = Complex.exp (2 * (t : ℂ))`. Rewrite using `[← Complex.exp_conj, map_mul, Complex.conj_ofReal, map_ofNat]`. Establish `e1 : (Real.exp (-4 * t) : ℂ) * Complex.exp (2 * (t : ℂ)) * Complex.exp (2 * (t : ℂ)) = 1`. Rewrite using `[Complex.ofReal_exp, ← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_zero]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ s : ℝ, (Real.exp (-4 * t) : ℂ) * Complex.exp (2 * (t : ℂ)) * (Real.exp (4 * t) : ℂ) * Complex.exp (2 * (((-t : ℝ) : ℂ) + s)) = Complex.exp (2 * (s : ℂ))`. Introduce `s`. Rewrite using `[Complex.ofReal_exp, Complex.ofReal_exp, ← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_add, mul_add, ← integral_const_mul, ← integral_const_mul, ← integral_const_mul]`. Simplify using `only [map_mul, hc, add_zero, Complex.ofReal_zero]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg₂ (· + ·) ?_ ?_` and prove the remaining obligations. Take the linear combination `(volN K * (conj (β t) * β' t)) * (conj (f (lv x y 0 * k)) * f' (lv x y 0 * k)) * e1`. Use `integral_congr_ae (Eventually.of_forall fun X => ?_) beta_reduce` and prove the remaining obligations. Rewrite using `[neg_add_eq_sub, ← e2 (HH (w0 K * nn X * k))]`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem inner_eq {K : Type} [Field K] [NumberField K] {f f' : G1 K (2 + 2) → ℂ} {β β' : ℝ → ℂ} (hf : SFun f) (hf' : SFun f')
     (hβ' : Continuous β') (hβs' : HasCompactSupport β') (x y : G1 K 2) (t : ℝ) (k : G1 K (2 + 2)) (hk : k ∈ KG K (2 + 2)) :
@@ -206,21 +206,21 @@ private theorem inner_eq {K : Type} [Field K] [NumberField K] {f f' : G1 K (2 + 
     ring
 
 /- English proof (translation)
-The claim follows from `(blkLaws (K := K)).2.2.2.1.comp (f := fun p : G1 K 2 × G1 K 2 => (p.1, p.2, (0 : ℝ))) (continuous_fst.prodMk (continuous_snd.prodMk continuous_const))`.
+A detailed English derivation is pending.
 -/
 private theorem cont_lv {K : Type} [Field K] [NumberField K] : Continuous fun p : G1 K 2 × G1 K 2 => lv p.1 p.2 0 :=
   (blkLaws (K := K)).2.2.2.1.comp (f := fun p : G1 K 2 × G1 K 2 => (p.1, p.2, (0 : ℝ)))
     (continuous_fst.prodMk (continuous_snd.prodMk continuous_const))
 
 /- English proof (translation)
-The claim follows from `(continuous_const.mul ((continuous_unipOne 2).comp continuous_snd)).mul (continuous_subtype_val.comp continuous_fst)`.
+A detailed English derivation is pending.
 -/
 private theorem cont_w {K : Type} [Field K] [NumberField K] :
     Continuous fun p : KG K (2 + 2) × (UPos (2 + 2) 2 → 𝔸[K]) => w0 K * nn p.2 * p.1.1 :=
   (continuous_const.mul ((continuous_unipOne 2).comp continuous_snd)).mul (continuous_subtype_val.comp continuous_fst)
 
 /- English proof (translation)
-Establish `h1 : Continuous fun p : (G1 K 2 × G1 K 2) × Z => lv p.1.1 p.1.2 0` using `cont_lv.comp continuous_fst`. Establish `h2 : Continuous fun p : (G1 K 2 × G1 K 2) × Z => lv p.1.2 p.1.1 0` using `cont_lv.comp (f := fun p : (G1 K 2 × G1 K 2) × Z => (p.1.2, p.1.1)) (continuous_fst.snd.prodMk continuous_fst.fst)`. Establish `h3` using `Complex.continuous_conj.comp' (hf.comp' (h1.mul (hi.comp' continuous_snd)))`. Conclude with `⟨h3.mul (hf'.comp' (h1.mul (hj.comp' continuous_snd))), h3.mul (hf'.comp' (h2.mul (hj.comp' continuous_snd)))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem cont_b {K Z : Type} [Field K] [NumberField K] [TopologicalSpace Z] {f f' : G1 K (2 + 2) → ℂ} (hf : Continuous f)
     (hf' : Continuous f') {i j : Z → G1 K (2 + 2)} (hi : Continuous i) (hj : Continuous j) :
@@ -233,11 +233,11 @@ private theorem cont_b {K Z : Type} [Field K] [NumberField K] [TopologicalSpace 
   exact ⟨h3.mul (hf'.comp' (h1.mul (hj.comp' continuous_snd))), h3.mul (hf'.comp' (h2.mul (hj.comp' continuous_snd)))⟩
 
 /- English proof (translation)
-Establish `hH : Continuous fun p : (ℝ × Z) × U => h p.1.2 p.2` using `hh.comp (continuous_fst.snd.prodMk continuous_snd)`. Establish `ht : Continuous fun p : (ℝ × Z) × U => p.1.1` using `continuous_fst.fst`. Use `⟨((Complex.continuous_conj.comp (hβ.comp ht)).mul (hβ'.comp (hH.sub ht))).mul (Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp hH))), ?_⟩` and prove the remaining obligations. Take `⟨R, hR⟩` from `hβs.isCompact.isBounded.subset_closedBall 0`. Take `⟨R', hR'⟩` from `hβs'.isCompact.isBounded.subset_closedBall 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, hS'⟩` from `hS (R + R')`. Use `HasCompactSupport.intro ((hβs.isCompact.prod isCompact_univ).prod hS) fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `h1 : p.1.1 ∈ tsupport β` using `subset_tsupport _ fun h1 => h0 (by simp only [h1, map_zero, zero_mul])`. Establish `h2 : h p.1.2 p.2 - p.1.1 ∈ tsupport β'` using `subset_tsupport _ fun h1 => h0 (by simp only [h1, mul_zero, zero_mul])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hR h1`. Establish `h4` using `hR' h2`. Rewrite `h3`, `h4` using `[mem_closedBall_zero_iff, Real.norm_eq_abs, abs_le]`. Conclude with `hp ⟨⟨h1, mem_univ _⟩, hS' _ _ (by linarith [h3.1, h4.1])⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cont_u {Z U : Type} [TopologicalSpace Z] [TopologicalSpace U] [T2Space Z] [T2Space U] [CompactSpace Z]
     {β β' : ℝ → ℂ} (hβ : Continuous β) (hβs : HasCompactSupport β) (hβ' : Continuous β') (hβs' : HasCompactSupport β')
@@ -262,19 +262,15 @@ private theorem cont_u {Z U : Type} [TopologicalSpace Z] [TopologicalSpace U] [T
   exact hp ⟨⟨h1, mem_univ _⟩, hS' _ _ (by linarith [h3.1, h4.1])⟩
 
 /- English proof (translation)
-Introduce `K _ _ μ _ μ₂ _ κ _ c hU f f' β β' hf hf' hβ hβs hβ' hβs' v v' hv hv'`. Take `⟨hP, hB, hD⟩` from `bfFun f β hf hβ hβs`. Take `⟨hP', hB', hD'⟩` from `bfFun f' β' hf' hβ' hβs'`. Take `⟨-, hc', hi', -⟩` from `thBasic μ _ hP'.cont hP'.rat hB'`. Take `⟨hI, hE⟩` from `(master μ μ₂ κ c hU _ hP.cont hP.rat hB hD v v' hv).2.2 _ hc' hi' hv'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := isFiniteMeasure_quotientMeasure μ₂`. Use `haveI : IsFiniteMeasure (fd μ₂) := isFiniteMeasure_restrict.2 (measure_fundamentalDomain_pos_lt_top (Gam K 2) μ₂).2.ne`. Use `haveI : CompactSpace (KG K (2 + 2)) := isCompact_iff_compactSpace.1 ((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 (2 + 2)).1`. Use `haveI : IsFiniteMeasure κ := CompactSpace.isFiniteMeasure`. Use `haveI : SecondCountableTopology (KG K (2 + 2)) := TopologicalSpace.Subtype.secondCountableTopology _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `hf.bdd`. Take `⟨C', hC'⟩` from `hf'.bdd`. Establish `hbd : ∀ g g', ‖conj (f g) * f' g'‖ ≤ C * C'` using `fun g g' => by`. Rewrite using `[norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul (hC _) (hC' _) (norm_nonneg _) ((norm_nonneg _).trans (hC g))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hu, hus⟩` from `cont_u hβ hβs hβ' hβs' (fun (k : KG K (2 + 2)) X => HH (w0 K * nn X * k.1)) ((hpSpec (K := K)).2.2.2.1.comp' cont_w) fun R => by`. Take `⟨S, hS, hS'⟩` from `(longCell (K := K)).2 R`. Conclude with `⟨S, hS, fun X k => hS' X k.1 k.2⟩`. Establish `hb` using `(cont_b hf.cont hf'.cont (Z := KG K (2 + 2)) continuous_subtype_val continuous_subtype_val).1`. Establish `hb'` using `(cont_b hf.cont hf'.cont (Z := KG K (2 + 2) × (UPos (2 + 2) 2 → 𝔸[K])) (continuous_subtype_val.comp' continuous_fst) cont_w).2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `twoC (fd μ₂) κ (unipMeasure K (2 + 2) 2) (fun t => volN K * (conj (β t) * β' t)) (continuous_const.mul ((Complex.continuous_conj.comp hβ).mul hβ')) hβs'.mul_left.mul_left (fun x y k => conj (f (lv x y 0 * k.1)) * f' (lv x y 0 * k.1)) hb (C * C') (fun _ _ _ => hbd _ _) (fun t k X …`. Rewrite `key` using `[integral_const_mul]`. Rewrite using `[hE, parM, five _ _ _ _ _ _ hI]`. Use `congrArg (fun z : ℂ => c * z) (Eq.trans ?_ key)` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun x => integral_congr_ae (Eventually.of_forall fun y => ?_))` and prove the remaining obligations.
-
-Use `beta_reduce`. Rewrite using `[integral_withDensity_eq_integral_toReal_smul (by fun_prop) (Eventually.of_forall fun _ => ENNReal.ofReal_lt_top)]`. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[ENNReal.toReal_ofReal (Real.exp_pos _).le, Complex.real_smul, ← integral_const_mul]`.
-
-Conclude with `integral_congr_ae (Eventually.of_forall fun k => inner_eq hf hf' hβ' hβs' x y t k.1 k.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.pairF :
     ∀ {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (κ : Measure (KG K (2 + 2))) [κ.IsHaarMeasure] (c : ℝ), Unf μ μ₂ κ c → ∀ (f f' : G1 K (2 + 2) → ℂ) (β β' : ℝ → ℂ), SFun f → SFun f' → Continuous β → HasCompactSupport β → Continuous β' → HasCompactSupport β' →

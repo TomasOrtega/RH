@@ -6,27 +6,25 @@ open scoped ENNReal NNReal Matrix Pointwise
 namespace GlobalTheory.CompanionTheory.SplitExtLat
 
 /- English proof (translation)
-Introduce `P G₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ι π hι hπ hπι Γ Γ₁ _ hΓ ν _ μ₁ _ D 𝓕₁ hD h𝓕 γ hγ`. Establish `hker : ∀ z : π.ker, π (z : P) = 1` using `fun z => MonoidHom.mem_ker.1 z.2`. Establish `hfa : ∀ z : π.ker × G₁, GlobalTheory.CompanionTheory.SplitExtLat.splitHomeo ι π hι hπ hπι z = (z.1 : P) * ι z.2` using `GlobalTheory.CompanionTheory.SplitExtLat.splitHomeo_apply ι π hι hπ hπι`. Use `set f := GlobalTheory.CompanionTheory.SplitExtLat.splitHomeo ι π hι hπ hπι with hf`. Establish `hπx : ∀ z : π.ker × G₁, π (f z) = z.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Rewrite using `[hfa, map_mul, hker, one_mul, hπι]`. Set `g : Γ₁` to `⟨π γ, hΓ γ γ.2⟩`. Establish `hsub : γ • (f '' (D ×ˢ 𝓕₁)) ∩ f '' (D ×ˢ 𝓕₁) ⊆ π ⁻¹' (g • 𝓕₁ ∩ 𝓕₁)`. Introduce and unpack `x ⟨⟨y, ⟨z, ⟨-, hz⟩, rfl⟩, rfl⟩, ⟨z', ⟨-, hz'⟩, hzx⟩⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify by unfolding definitions.
 
-Simplify using `only at hzx ⊢`. Establish `hγπ : π (γ • f z) = π γ * z.2`. Rewrite using `[Subgroup.smul_def, smul_eq_mul, map_mul, hπx]`. Use `⟨⟨z.2, hz, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγπ, Subgroup.smul_def, smul_eq_mul]`. Rewrite using `[← hzx, hπx]`. Conclude with `hz'`. Distinguish the cases in `hg : g = 1`. Establish `hγk : (γ : P) ∈ π.ker` using `MonoidHom.mem_ker.2 (congrArg Subtype.val hg)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-It suffices to establish `hempty : γ • (f '' (D ×ˢ 𝓕₁)) ∩ f '' (D ×ˢ 𝓕₁) = ∅ by show Measure.map f (ν.prod μ₁) _ = 0`. Rewrite using `[hempty, measure_empty]`. Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce and unpack `x ⟨⟨y, ⟨z, ⟨hz1, hz2⟩, rfl⟩, rfl⟩, ⟨z', ⟨hz1', hz2'⟩, hzx⟩⟩`. Simplify using `only at hzx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : z'.2 = z.2`. Use `congrArg π hzx` as an intermediate fact. Rewrite `this` using `[hπx, Subgroup.smul_def, smul_eq_mul, map_mul, hπx, MonoidHom.mem_ker.1 hγk, one_mul]`. Conclude with `this`. Establish `h1 : (z'.1 : P) = (γ : P) * z.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `hzx` as an intermediate fact. Rewrite `this` using `[hfa, Subgroup.smul_def, smul_eq_mul, hfa, h2, ← mul_assoc]`. Conclude with `mul_right_cancel this`. Set `γk : Γ.subgroupOf π.ker` to `⟨⟨γ, hγk⟩, Subgroup.mem_subgroupOf.2 γ.2⟩`. Take `⟨g₀, -, huniq⟩` from `hD z.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (1 : Γ.subgroupOf π.ker) = g₀` using `huniq 1 (by show (1 : Γ.subgroupOf π.ker) • z.1 ∈ D; rw [one_smul]; exact hz1)`. Establish `e2 : γk = g₀` using `huniq γk (by show γk • z.1 ∈ D`. Establish `: γk • z.1 = z'.1` using `Subtype.ext (by rw [Subgroup.smul_def, smul_eq_mul, Subgroup.coe_mul]; exact h1.symm)`. Rewrite using `[this]`. Conclude with `hz1')`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `hγ` to reduce the goal to its premises. Use `congrArg (fun t : Γ.subgroupOf π.ker => ((t : π.ker) : P)) (e2.trans e1.symm)` as an intermediate fact. Conclude with `Subtype.ext this`. Establish `hN : μ₁ (g • 𝓕₁ ∩ 𝓕₁) = 0`. Use `h𝓕.aedisjoint hg` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.onFun, one_smul] at this`. Conclude with `this`. Establish `hpre : f ⁻¹' (π ⁻¹' (g • 𝓕₁ ∩ 𝓕₁)) = Set.univ ×ˢ (g • 𝓕₁ ∩ 𝓕₁)`. Use extensionality with `z`. Simplify using `only [Set.mem_preimage, hπx, Set.mem_prod, Set.mem_univ, true_and]`.
-
-Establish `hmap : Measure.map f (ν.prod μ₁) (π ⁻¹' (g • 𝓕₁ ∩ 𝓕₁)) = 0`. Rewrite using `[show Measure.map f (ν.prod μ₁) (π ⁻¹' (g • 𝓕₁ ∩ 𝓕₁)) = (ν.prod μ₁) (f ⁻¹' (π ⁻¹' (g • 𝓕₁ ∩ 𝓕₁))) from f.toMeasurableEquiv.map_apply _, hpre, Measure.prod_prod, hN, mul_zero]`. Conclude with `measure_mono_null hsub hmap`.
+A detailed English derivation is pending.
 -/
 theorem aedisjoint_smul_image_prod : ∀ (P G₁ : Type) [Group P] [TopologicalSpace P] [IsTopologicalGroup P] [LocallyCompactSpace P] [SecondCountableTopology P] [T2Space P] [MeasurableSpace P] [BorelSpace P] [Group G₁] [TopologicalSpace G₁] [IsTopologicalGroup G₁] [LocallyCompactSpace G₁] [SecondCountableTopology G₁] [T2Space G₁] [MeasurableSpace G₁] [BorelSpace G₁] (ι : G₁ →* P) (π : P →* G₁) (hι : Continuous ι) (hπ : Continuous π) (hπι : ∀ u, π (ι u) = u) (Γ : Subgroup P) (Γ₁ : Subgroup G₁) [Countable Γ₁], (∀ γ ∈ Γ, π γ ∈ Γ₁) → ∀ (ν : Measure π.ker) [ν.IsHaarMeasure] (μ₁ : Measure G₁) [μ₁.IsHaarMeasure] (D : Set π.ker) (𝓕₁ : Set G₁), (∀ x : π.ker, ∃! g : Γ.subgroupOf π.ker, g • x ∈ D) → IsFundamentalDomain Γ₁ 𝓕₁ μ₁ → ∀ γ : Γ, γ ≠ 1 → AEDisjoint (Measure.map (GlobalTheory.CompanionTheory.SplitExtLat.splitHomeo ι π hι hπ hπι) (ν.prod μ₁)) (γ • (GlobalTheory.CompanionTheory.SplitExtLat.splitHomeo ι π hι hπ hπι '' (D ×ˢ 𝓕₁))) (GlobalTheory.CompanionTheory.SplitExtLat.splitHomeo ι π hι hπ hπι '' (D ×ˢ 𝓕₁)) := by
   intro P G₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ι π hι hπ hπι Γ Γ₁ _ hΓ ν _ μ₁ _ D 𝓕₁ hD h𝓕 γ hγ

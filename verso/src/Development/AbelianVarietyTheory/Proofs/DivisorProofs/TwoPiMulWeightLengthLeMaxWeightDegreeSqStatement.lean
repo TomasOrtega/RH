@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsPageRunRecord
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Cons
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TopDegLower.two_pi_nW_le_topDeg_sq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTwoPiMulWeightLengthLeMaxWeightDegreeSq.lean&line=49#L49)
 -/

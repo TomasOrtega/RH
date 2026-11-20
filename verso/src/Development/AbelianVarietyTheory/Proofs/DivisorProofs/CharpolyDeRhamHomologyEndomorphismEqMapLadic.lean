@@ -16,9 +16,7 @@ noncomputable section
 namespace GlobalTheory.DeRham
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `CharP.exists k`. Break down `CharP.char_is_prime_or_zero k p with h | h` into its components or cases. Use `haveI : Fact p.Prime := ⟨h⟩`. Conclude with `GlobalTheory.T.charpoly_deRhamHomology_abelianVariety_charP p k B f`. Substitute `h haveI : CharZero k := CharP.charP_to_charZero k` using the available equality.
-
-Conclude with `GlobalTheory.T.charpoly_deRhamHomology_abelianVariety_charZero k B f`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem charpoly_push_eq_map_charpoly (k : Type) [Field k] [IsAlgClosed k]
     (B : GlobalTheory.AV.AbVar k) (f : B ⟶ B) [Module.Finite k (HdR B.X)] :
@@ -32,9 +30,9 @@ theorem charpoly_push_eq_map_charpoly (k : Type) [Field k] [IsAlgClosed k]
     exact GlobalTheory.T.charpoly_deRhamHomology_abelianVariety_charZero k B f
 
 /- English proof (translation)
-Introduce `k _ _ A _ _ hA f _ L _ _ _ φ l hl hlk ev hadd hφ hker him _`. Take `⟨g, hg⟩` from `GlobalTheory.AV.exists_smoothOfRelativeDimension_of_isAbelianScheme k A hA`. Set `B : GlobalTheory.AV.AbVar k` to `⟨A, hA, g, hg⟩`. Set `f' : B ⟶ B` to `GlobalTheory.AV.AbVar.Hom.mk (A := B) (B := B) f`. Rewrite using `[GlobalTheory.T.l_power_torsion_endomorphism_evaluation k B f' L φ l hl hlk ev hadd hφ hker him]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `charpoly_push_eq_map_charpoly k B f'`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_push_eq : ∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A →
     ∀ (f : A ⟶ A) [IsMonHom f] (L : Type) [AddCommGroup L] [Module.Free ℤ L] [Module.Finite ℤ L]

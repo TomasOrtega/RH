@@ -16,17 +16,15 @@ namespace GlobalTheory.Mum.Two
 open GlobalTheory.EndData GlobalTheory.AbLaw in
 
 /- English proof (translation)
-Establish `w₁ : (fst Y Z).left ≫ Y.hom = (Y ⊗ Z).hom` using `Over.w _`. Establish `w₂ : (snd Y Z).left ≫ Z.hom = (Y ⊗ Z).hom` using `Over.w _`. Establish `sm : Smooth (Y ⊗ Z).hom` using `by show Smooth (pullback.fst Y.hom Z.hom ≫ Y.hom) infer_instance`. Set `p : ∀ e, (thickObj R I e (Y ⊗ Z)).left ⟶ (thickObj R I e Y).left` to `fun e => ((Over.pullback (thick R I e)).map (fst Y Z)).left`. Establish `hp : ∀ e, p e ≫ pullback.fst Y.hom (thick R I e) = pullback.fst (Y ⊗ Z).hom (thick R I e) ≫ (fst Y Z).left` using `fun e => map_fst e _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : ∀ e, (thickObj R I e (Y ⊗ Z)).left ⟶ pullback Y.hom Z.hom` to `fun e => pullback.lift (p e ≫ pullback.fst Y.hom (thick R I e)) (p e ≫ f e) (by`. Rewrite using `[Category.assoc, Category.assoc, hf])`. Establish `F₁ : ∀ e, F e ≫ pullback.fst _ _ = p e ≫ pullback.fst Y.hom (thick R I e)` using `fun e => pullback.lift_fst _ _ _`. Establish `F₂ : ∀ e, F e ≫ pullback.snd _ _ = p e ≫ f e` using `fun e => pullback.lift_snd _ _ _`. Establish `tp : ∀ e, thickMap R I e (Y ⊗ Z) ≫ p (e + 1) = p e ≫ thickMap R I e Y` using `fun e => trans_map e _`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `EndAlg.exists_end_of_thickenings R I hC (Y ⊗ Z) sm (isProjBy_tensor R Y Z pY pZ) F (fun e => by show F e ≫ pullback.fst Y.hom Z.hom ≫ Y.hom = _`. Rewrite using `[← Category.assoc, F₁, hp, Category.assoc, w₁])`. Use the proof step `(fun e => by show (thickMap R I e (Y ⊗ Z) ≫ F (e + 1) : _ ⟶ pullback Y.hom Z.hom) = F e`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, F₁, F₁, ← Category.assoc, tp, Category.assoc, trans_fst]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, F₂, F₂, ← Category.assoc, tp, Category.assoc, hc])`. Use `⟨lift (𝟙 Y) s ≫ g ≫ snd Y Z, fun e => ?_⟩` and prove the remaining obligations. Establish `hj : ((Over.pullback (thick R I e)).map (lift (𝟙 Y) s)).left ≫ p e = 𝟙 _` using `by show ((Over.pullback (thick R I e)).map (lift (𝟙 Y) s) ≫ (Over.pullback (thick R I e)).map (fst Y Z)).left = _`. Rewrite using `[← Functor.map_comp, lift_fst, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `k : F e ≫ (snd Y Z).left = p e ≫ f e` using `F₂ e`. Rewrite using `[Over.comp_left, Over.comp_left, ← Category.assoc, ← map_fst, Category.assoc, ← Category.assoc (pullback.fst _ _), hg]`. Use `erw [k]`. Rewrite using `[← Category.assoc]`. Use `erw [hj]`.
-
-Conclude with `Category.id_comp _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_levels {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] {I : Ideal R}
     (hC : IsAdicComplete I R) (Y Z : Over (Spec (CommRingCat.of R))) (sY : Smooth Y.hom) (sZ : Smooth Z.hom)
@@ -74,11 +72,11 @@ theorem exists_hom_of_levels {R : Type} [CommRing R] [IsDomain R] [IsNoetherianR
 open GlobalTheory.EndTorus in
 
 /- English proof (translation)
-Take `⟨hN, -, -, hC⟩` from `hR`. Use `g₁.q_hom` as an intermediate fact. Use `g₂.q_hom` as an intermediate fact. Use `g₁.i_hom` as an intermediate fact. Use `g₁.q_flat` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `g₁.q_surj` as an intermediate fact. Use `g₁.q_affine` as an intermediate fact. Establish `: IsProper D₂.P.A.hom` using `D₂.P.isAb.proper`. Establish `hB : IsAbelianScheme (thickObj R I e D₂.P.A)` using `{ comm := inferInstance smooth := by have := D₂.P.isAb.smooth; show Smooth (pullback.snd _ _); infer_instance proper := by show IsProper (pullback.snd _ _); infer_instance geomConnected := by`. Use `D₂.P.isAb.geomConnected` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show GeometricallyConnected (pullback.snd _ _)`. Use `infer_instance }`. Establish `h1 : g₁.i ≫ a ≫ g₂.q = toUnit _ ≫ η[thickObj R I e D₂.P.A]` using `(splitTorus_hom_abelian_eq_one _ D₁.X _ hB (g₁.i ≫ a ≫ g₂.q) inferInstance).trans (Hom.one_def)`. Conclude with `FlatQuotient.exists_desc g₁.q g₁.i (a ≫ g₂.q) g₁.isKernel h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_abelian_level {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (hR : AdmBase R I)
     {D₁ D₂ : DegPre R} {e : ℕ} {G₁ G₂ : Over (Spec (CommRingCat.of R))} [GrpObj G₁] [IsCommMonObj G₁]
@@ -108,13 +106,13 @@ theorem exists_abelian_level {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} 
 open GlobalTheory.EndData in
 
 /- English proof (translation)
-Introduce `R _ _ I hR D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ U₁ U₂ a ha`. Establish `hN` using `hR.1`. Establish `hC` using `hR.2.2.2`. Use `choose b hb hq using fun e => exists_abelian_level hR (U₁.gt e) (U₂.gt e) ((Over.pullback (thick R I e)).map a)`. Establish `hql : ∀ e, (U₁.gt e).q.left ≫ (b e).left = ((Over.pullback (thick R I e)).map a).left ≫ (U₂.gt e).q.left` using `fun e => congrArg (·.left) (hq e)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨aB, haB⟩` from `exists_hom_of_levels hC D₁.toPre.P.A D₂.toPre.P.A D₁.toPre.P.isAb.smooth D₂.toPre.P.isAb.smooth (AbProj.isProjBy_of_isPullback D₁.toPre.P (IsPullback.id_horiz _)) (AbProj.isProjBy_of_isPullback D₂.toPre.P (IsPullback.id_horiz _)) 1 (fun e => (b e).left ≫ pullback.fst D₂.toPre.P.A …`. Establish `w : (b e).left ≫ pullback.snd D₂.toPre.P.A.hom (thick R I e) = pullback.snd _ _` using `Over.w (b e)`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, w, pullback.condition])`. Use the proof step `(fun e => by`. Use `(U₁.gt e).q_flat` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(U₁.gt e).q_surj` as an intermediate fact. Establish `: Epi (U₁.gt e).q.left` using `Flat.epi_of_flat_of_surjective _`. Rewrite using `[← cancel_epi (U₁.gt e).q.left, ← Category.assoc, ← UnifCompare.trans_comp_q, Category.assoc, ← Category.assoc (U₁.gt (e + 1)).q.left, hql, ← Category.assoc (U₁.gt e).q.left, hql, ← Category.assoc, ← Category.assoc, trans_map, Category.assoc _ (thickMap R I e G₂), UnifCompare.tra …`. Establish `hm : ∀ e, (Over.pullback (thick R I e)).map aB = b e` using `fun e => Over.OverMorphism.ext (pullback.hom_ext ((map_fst e aB).trans (haB e)) ((Over.w _).trans (Over.w (b e)).symm))`. Use `⟨aB, AbelianPartIso.isMonHom_of_thickenings (IsAdicComplete.le_jacobson_bot I) D₂.toPre.P.isAb D₁.toPre.P.isAb aB fun e => ?_, fun e => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Conclude with `hb e`. Rewrite using `[hm]`. Conclude with `(hq e).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_abelian_hom : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D₁ D₂ : DegData R I) (A₁ A₂ : PolAV (Sp (FractionRing R))) (G₁ G₂ : Over (Sp R)) [GrpObj G₁] [IsCommMonObj G₁] [GrpObj G₂] [IsCommMonObj G₂] (U₁ : UnifPre I D₁ A₁ G₁) (U₂ : UnifPre I D₂ A₂ G₂) (a : G₁ ⟶ G₂), IsMonHom a → ∃ b : D₁.toPre.P.A ⟶ D₂.toPre.P.A, IsMonHom b ∧ Over₀ U₁ U₂ a b := by
   intro R _ _ I hR D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ U₁ U₂ a ha

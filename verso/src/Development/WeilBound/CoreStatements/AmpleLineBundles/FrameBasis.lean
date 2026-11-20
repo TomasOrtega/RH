@@ -14,27 +14,25 @@ namespace CoverDenseAlt.Met
 open GlobalTheory.CompanionTheory.Ar.RootHt
 
 /- English proof (translation)
-Introduce `hξ hs`. Take `⟨EA, _, _, ⟨MA⟩⟩` from `lieModel_exists X G (X.presheaf.stalk (centre z)) (X.fromSpecStalk (centre z))`. Take `⟨j, hj, hjs, hjb⟩` from `LieVal.exists_base (A := X.presheaf.stalk (centre z)) (Scheme.stalkClosedPointTo z).hom _ z (LieTangent.spec_centre z) MA MR`. Take `⟨i, hi, his, -⟩` from `LieVal.exists_base (genMap ξ ⟨centre z, h⟩) _ ξ (LieTangent.spec_genMap ξ ⟨centre z, h⟩) MA M`. Establish `hext : ∀ a, M.Extends ⟨centre z, h⟩ (i a) (MA.pt a)` using `fun a => ⟨MA.tan a, hi a⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ a, i a ∈ M.lat ⟨centre z, h⟩` using `fun a => (M.mem_lat_iff _ _).2 ⟨_, hext a⟩`. Establish `hinj : ∀ a b, i a = i b → a = b` using `fun a b hab => MA.inj ((hext a).unique (hξ.inj _) (hab ▸ hext b))`. Establish `hsurj : ∀ e v, M.Extends ⟨centre z, h⟩ e v → ∃ a, i a = e ∧ MA.pt a = v`. Introduce `e v hv`. Take `⟨a, rfl⟩` from `MA.onto v hv.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, M.inj (Over.OverMorphism.ext ((hi a).trans hv.2.symm)), rfl⟩`. Set `i' : EA →+ M.lat ⟨centre z, h⟩` to `{ toFun := fun a => ⟨i a, hmem a⟩ map_zero' := Subtype.ext (map_zero i) map_add' := fun a b => Subtype.ext (map_add i a b) }`. Establish `hbij : Function.Bijective i'`. Use `⟨fun a b hab => hinj a b (congrArg Subtype.val hab), fun e => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `(M.mem_lat_iff _ _).1 e.2`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, -⟩` from `hsurj _ _ hv`. Conclude with `⟨a, Subtype.ext ha⟩`. Set `q` to `AddEquiv.ofBijective i' hbij`. Establish `hq : ∀ a, q.symm ⟨i a, hmem a⟩ = a` using `fun a => q.symm_apply_apply a`. Use `⟨j.comp q.symm.toAddMonoidHom, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `e w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h', v, hv, hw⟩`. Take `⟨a, rfl, rfl⟩` from `hsurj _ _ hv`. Use `⟨hmem a, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `j (q.symm ⟨i a, hmem a⟩) = w`. Rewrite using `[hq]`. Conclude with `MR.inj (Over.OverMorphism.ext ((hj a).trans hw.symm))`. Introduce and unpack `⟨he, rfl⟩`. Take `⟨v, hv⟩` from `(M.mem_lat_iff _ _).1 he`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl, rfl⟩` from `hsurj _ _ hv`. Express the relevant statement in the definitionally equal form `M.ValAt z (i a) (MR.pt (j (q.symm ⟨i a, hmem a⟩)))`. Rewrite using `[hq]`. Conclude with `⟨h, _, hext a, hj a⟩`. Introduce and unpack `a r e ⟨_, s, hsa, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `q.surjective e`. Establish `: a • q b = q (s • b)` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(a : Ω) • i b = i (s • b)`. Rewrite using `[his, hsa])`. Express the relevant statement in the definitionally equal form `j (q.symm (a • q b)) = _ • j (q.symm (q b))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, q.symm_apply_apply, q.symm_apply_apply]`. Conclude with `hjs s b`. Take `⟨hfin, hproj, -⟩` from `GlobalTheory.T.lie_model_finite_base_change X G (X.presheaf.stalk (centre z)) (X.fromSpecStalk (centre z)) EA MA`. Establish `: Module.Free (X.presheaf.stalk (centre z)) EA` using `Module.free_of_flat_of_isLocalRing`. Set `n` to `Module.finrank (X.presheaf.stalk (centre z)) EA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `b : Module.Basis (Fin n) (X.presheaf.stalk (centre z)) EA` to `Module.finBasis _ EA`. Use `top_le_iff.1 ((hjb hs n b).symm.le.trans (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨q (b k), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `j (q.symm (q (b k))) = _`.
-
-Rewrite using `[q.symm_apply_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_val (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (Ω : Type) [Field Ω]
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (R : Type)
@@ -107,21 +105,19 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {G : Over X}
   {Li : Type} [AddCommGroup Li] [Module Ω Li] {r : ℕ}
 
 /- English proof (translation)
-Take `⟨ev, hev, hsm, hsp⟩` from `lat_val X G Ω ξ Li M ℂ z h V Mz hξ inferInstance`. Establish `hmem : ∀ i, B i ∈ M.lat ⟨centre z, h⟩` using `fun i => by`. Rewrite using `[hB.2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Set `b : Fin r → V` to `fun i => ev ⟨B i, hmem i⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ e (he : e ∈ M.lat ⟨centre z, h⟩), ∃ c : Fin r → ℂ, (∀ i, ValAt ξ z (B.repr e i) (c i)) ∧ ev ⟨e, he⟩ = ∑ i, c i • b i`. Introduce `e he`. Establish `hreg : ∀ i, B.repr e i ∈ regAt ξ ⟨centre z, h⟩` using `fun i => TieFrame.coords_mem (a := fun i => B.repr e i) hB.1 (by rw [B.sum_repr, ← hB.2]; exact he) i`. Use `choose c hc using fun i => ArchB.val_exists (R := ℂ) (hreg i)`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1 : (⟨e, he⟩ : M.lat ⟨centre z, h⟩) = ∑ i, (⟨B.repr e i, hreg i⟩ : regAt ξ ⟨centre z, h⟩) • (⟨B i, hmem i⟩ : M.lat ⟨centre z, h⟩)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Conclude with `(B.sum_repr e).symm`. Rewrite using `[e1, map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Finset.sum_congr rfl fun i _ => hsm _ _ _ (hc i)`. Establish `hspan : ⊤ ≤ Submodule.span ℂ (Set.range b)`. Rewrite using `[← hsp, Submodule.span_le]`. Introduce and unpack `_ ⟨⟨e, he⟩, rfl⟩`. Take `⟨c, -, hc⟩` from `key e he`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hc]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hfin : Fintype.card (Fin r) = Module.finrank ℂ V`. Rewrite using `[Fintype.card_fin, LieFrameIndep.finrank_eq_of_isFrameAt M h Mz B hξ hB]`. Set `β` to `basisOfTopLeSpanOfCardEqFinrank b hspan hfin`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hβ : ∀ i, β i = b i` using `fun i => congrFun (coe_basisOfTopLeSpanOfCardEqFinrank b hspan hfin) i`. Use `⟨β, fun i u => ?_, fun e u hu i => ?_⟩` and prove the remaining obligations. Rewrite using `[hev, hβ]`. Conclude with `⟨fun ⟨_, h⟩ => h.symm, fun h => ⟨hmem i, h.symm⟩⟩`. Take `⟨he, rfl⟩` from `(hev e u).1 hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc, hc'⟩` from `key e he`. Establish `: β.repr (ev ⟨e, he⟩) i = c i`. Rewrite using `[hc']`. Simplify using `only [← hβ]`. Conclude with `congrFun (β.repr_sum_self c) i`.
-
-Rewrite using `[this]`. Conclude with `hc i`.
+A detailed English derivation is pending.
 -/
 theorem frame_basis [IsCommMonObj G] [Smooth G.hom] (hξ : IsCptGen ξ) (M : LieModel G ξ Li)
     (B : Module.Basis (Fin r) Ω Li) (z : Sp ℂ ⟶ X) (h : genPt ξ ⤳ centre z)
@@ -173,7 +169,7 @@ def Co (M : LieModel G ξ Li) (B : Fin r → Li) (z : Sp ℂ ⟶ X) (v : epsAt z
     (∀ i, M.ValAt z (B i) (Mz.pt (b i))) ∧ v = Mz.pt (∑ i, c i • b i)
 
 /- English proof (translation)
-Use `choose F hF using fun e => M'.onto _ (M.tan e)`. Conclude with `⟨{ toFun := F map_add' := fun a b => M'.inj (by rw [M'.add, hF, hF, hF, M.add]) map_smul' := fun c a => M'.inj (Over.OverMorphism.ext (by`. Rewrite using `[RingHom.id_apply, M'.smul, hF, hF, M.smul])) }, hF⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lin {R : Type} [CommRing R] {x : Sp R ⟶ X} {L L' : Type}
     [AddCommGroup L] [Module R L] [AddCommGroup L'] [Module R L'] (M : LieModel G x L) (M' : LieModel G x L') :
@@ -185,11 +181,11 @@ theorem exists_lin {R : Type} [CommRing R] {x : Sp R ⟶ X} {L L' : Type}
               rw [RingHom.id_apply, M'.smul, hF, hF, M.smul])) }, hF⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨V', _, _, M', b, hb, hv⟩`. Take `⟨ψ, hψ⟩` from `exists_lin M' Mz`. Establish `h1 : ∀ i, ψ (b i) = β i` using `fun i => (hβ i _).1 (by rw [hψ]; exact hb i)`. Establish `h2 : u = ∑ i, c i • β i`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Mz.inj` to reduce the goal to its premises. Rewrite using `[hv, ← hψ, map_sum]`. Simplify using `only [map_smul, h1]`. Rewrite using `[h2]`. Conclude with `(β.repr_sum_self c).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `⟨V, inferInstance, inferInstance, Mz, β, fun i => (hβ i _).2 rfl, by rw [β.sum_repr]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem co_iff (M : LieModel G ξ Li) (B : Fin r → Li) (z : Sp ℂ ⟶ X) {V : Type} [AddCommGroup V] [Module ℂ V]
     (Mz : LieModel G z V) (β : Module.Basis (Fin r) ℂ V) (hβ : ∀ i u, M.ValAt z (B i) (Mz.pt u) ↔ u = β i)
@@ -213,7 +209,7 @@ def co (M : LieModel G ξ Li) (B : Fin r → Li) (z : Sp ℂ ⟶ X) (v : epsAt z
   if h : ∃ c, Co M B z v c then h.choose else 0
 
 /- English proof (translation)
-Establish `h : ∃ c, Co M B z (Mz.pt u) c` using `⟨_, (co_iff M B z Mz β hβ u _).2 rfl⟩`. Rewrite using `[co, dif_pos h]`. Conclude with `(co_iff M B z Mz β hβ u _).1 h.choose_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem co_eq (M : LieModel G ξ Li) (B : Fin r → Li) (z : Sp ℂ ⟶ X) {V : Type} [AddCommGroup V] [Module ℂ V]
     (Mz : LieModel G z V) (β : Module.Basis (Fin r) ℂ V) (hβ : ∀ i u, M.ValAt z (B i) (Mz.pt u) ↔ u = β i)
@@ -223,16 +219,16 @@ theorem co_eq (M : LieModel G ξ Li) (B : Fin r → Li) (z : Sp ℂ ⟶ X) {V : 
   exact (co_iff M B z Mz β hβ u _).1 h.choose_spec
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])`.
+A detailed English derivation is pending.
 -/
 theorem dual_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (φ : R →+* R') (ψ : R' →+* R'') :
     dualMap (ψ.comp φ) = (dualMap ψ).comp (dualMap φ) :=
   RingHom.ext fun a => TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Establish `h1 : Spec.map φ' = Spec.map (φ ≫ CommRingCat.ofHom τ)`. Rewrite using `[← cancel_mono (X.fromSpecStalk x), H, Spec.map_comp, Category.assoc]`. Establish `h2 : φ' = φ ≫ CommRingCat.ofHom τ` using `Spec.map_injective h1`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `h2` using the available equality. Establish `h3 : dualMap (φ ≫ CommRingCat.ofHom τ).hom = (dualMap τ).comp (dualMap φ.hom)` using `dual_comp _ _`. Rewrite using `[h3, CommRingCat.ofHom_comp, Spec.map_comp]`. Conclude with `Category.assoc _ _ _`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extends_map (τ : ℂ →+* ℂ) (M : LieModel G ξ Li) {x x' : X} (hx : x = x') (h : genPt ξ ⤳ x)
     (h' : genPt ξ ⤳ x') (e : Li)
@@ -253,7 +249,7 @@ theorem extends_map (τ : ℂ →+* ℂ) (M : LieModel G ξ Li) {x x' : X} (hx :
   exact Category.assoc _ _ _
 
 /- English proof (translation)
-Establish `h : (spMap τ) (IsLocalRing.closedPoint ℂ) = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Conclude with `congrArg (fun p => z p) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem centre_map (τ : ℂ →+* ℂ) (z : Sp ℂ ⟶ X) : centre (spMap τ ≫ z) = centre z := by
   have h : (spMap τ) (IsLocalRing.closedPoint ℂ) = IsLocalRing.closedPoint ℂ :=
@@ -261,9 +257,9 @@ theorem centre_map (τ : ℂ →+* ℂ) (z : Sp ℂ ⟶ X) : centre (spMap τ �
   exact congrArg (fun p => z p) h
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Take `⟨h, v, hv, hl⟩` from `hw`. Establish `hc` using `centre_map τ z`. Establish `h' : genPt ξ ⤳ centre (spMap τ ≫ z)` using `hc ▸ h`. Take `⟨v', hv', hl'⟩` from `extends_map τ M hc.symm h h' e v hv (Scheme.stalkClosedPointTo z) (Scheme.stalkClosedPointTo (spMap τ ≫ z)) (by`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(Scheme.Spec_stalkClosedPointTo_fromSpecStalk (spMap τ ≫ z)).trans ?_` and prove the remaining obligations. Conclude with `congrArg (spMap τ ≫ ·) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk z).symm)`. Use `⟨h', v', hv', ?_⟩` and prove the remaining obligations. Rewrite using `[hw', hl]`. Conclude with `hl'.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_map (τ : ℂ →+* ℂ) (M : LieModel G ξ Li) {z z' : Sp ℂ ⟶ X} (hz : spMap τ ≫ z = z') (e : Li)
     (w : epsAt z ⟶ G) (w' : epsAt z' ⟶ G) (hw' : w'.left = spMap (dualMap τ) ≫ w.left)
@@ -281,9 +277,9 @@ theorem valAt_map (τ : ℂ →+* ℂ) (M : LieModel G ξ Li) {z z' : Sp ℂ ⟶
   exact hl'.symm
 
 /- English proof (translation)
-Take `⟨V, _, _, Mz, b, hb, hv⟩` from `h`. Take `⟨V', _, _, ⟨M'⟩⟩` from `lieModel_exists X G ℂ z'`. Take `⟨j, hj, hjs, -⟩` from `LieVal.exists_base τ z z' hz Mz M'`. Use `⟨V', inferInstance, inferInstance, M', fun i => j (b i), fun i => valAt_map τ M hz _ _ _ (hj _) (hb i), Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Establish `: ∑ i, τ (c i) • j (b i) = j (∑ i, c i • b i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Simplify using `only [hjs]`. Rewrite using `[this, hj, hv', hv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem co_map [IsCommMonObj G] (τ : ℂ →+* ℂ) (M : LieModel G ξ Li) (B : Fin r → Li) {z z' : Sp ℂ ⟶ X}
     (hz : spMap τ ≫ z = z') (v : epsAt z ⟶ G) (v' : epsAt z' ⟶ G) (hv' : v'.left = spMap (dualMap τ) ≫ v.left)
@@ -299,7 +295,7 @@ theorem co_map [IsCommMonObj G] (τ : ℂ →+* ℂ) (M : LieModel G ξ Li) (B :
   rw [this, hj, hv', hv]
 
 /- English proof (translation)
-Establish `h₃` using `h₁`. Take `⟨V, _, _, Mz, b, -, hv⟩` from `h₃`. Take `⟨β, hβ, -⟩` from `frame_basis hξ M B z h hB Mz`. Rewrite `h₁`, `h₂` using `[hv]`. Conclude with `((co_iff M B z Mz β hβ _ _).1 h₁).trans ((co_iff M B z Mz β hβ _ _).1 h₂).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem co_unique [IsCommMonObj G] [Smooth G.hom] (hξ : IsCptGen ξ) (M : LieModel G ξ Li)
     (B : Module.Basis (Fin r) Ω Li) (z : Sp ℂ ⟶ X) (h : genPt ξ ⤳ centre z)
@@ -312,11 +308,11 @@ theorem co_unique [IsCommMonObj G] [Smooth G.hom] (hξ : IsCptGen ξ) (M : LieMo
   exact ((co_iff M B z Mz β hβ _ _).1 h₁).trans ((co_iff M B z Mz β hβ _ _).1 h₂).symm
 
 /- English proof (translation)
-Distinguish the cases in `hc : ∃ c, Co M B z v c`. Establish `h1` using `co_map (starRingEnd ℂ) M B rfl v v' hv' hc.choose_spec`. Establish `hc' : ∃ c, Co M B _ v' c` using `⟨_, h1⟩`. Rewrite using `[co, co, dif_pos hc, dif_pos hc', co_unique hξ M B _ h hB hc'.choose_spec h1]`. Establish `hcc : (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ` using `RingHom.ext fun a => Complex.conj_conj a`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : spMap (starRingEnd ℂ) ≫ spMap (starRingEnd ℂ) ≫ z = z`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hcc, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`. Establish `hd : dualMap (RingHom.id ℂ) = RingHom.id _` using `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])`. Establish `hv : v.left = spMap (dualMap (starRingEnd ℂ)) ≫ v'.left`. Rewrite using `[hv', ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← dual_comp, hcc, hd, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : ¬ ∃ c, Co M B _ v' c` using `fun ⟨c, h⟩ => hc ⟨_, co_map (starRingEnd ℂ) M B hz v' v hv h⟩`. Rewrite using `[co, co, dif_neg hc, dif_neg hc']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem co_conj [IsCommMonObj G] [Smooth G.hom] (hξ : IsCptGen ξ) (M : LieModel G ξ Li)
     (B : Module.Basis (Fin r) Ω Li) (z : Sp ℂ ⟶ X) (h : genPt ξ ⤳ centre (spMap (starRingEnd ℂ) ≫ z))
@@ -341,9 +337,9 @@ theorem co_conj [IsCommMonObj G] [Smooth G.hom] (hξ : IsCptGen ξ) (M : LieMode
     simp
 
 /- English proof (translation)
-Take `⟨V, _, _, ⟨Mz⟩⟩` from `lieModel_exists X G ℂ z`. Take `⟨β, hβ, hβ'⟩` from `frame_basis hξ M B z h hB Mz`. Take `⟨h0, v₀, hv₀, hl⟩` from `id hv`. Take `⟨V₀, _, _, ⟨M₀⟩⟩` from `lieModel_exists X G (X.presheaf.stalk (centre z)) (X.fromSpecStalk (centre z))`. Take `⟨j, hj, -, -⟩` from `LieVal.exists_base (A := X.presheaf.stalk (centre z)) (Scheme.stalkClosedPointTo z).hom _ z (LieTangent.spec_centre z) M₀ Mz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u₀, hu₀⟩` from `M₀.onto v₀ hv₀.1`. Establish `hu : v = Mz.pt (j u₀)` using `Over.OverMorphism.ext (by rw [hj, hu₀, hl])`. Rewrite `hv`, the goal using `[hu]`. Rewrite using `[co_eq M B z Mz β hβ]`. Conclude with `hβ' e _ hv i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem co_val [IsCommMonObj G] [Smooth G.hom] (hξ : IsCptGen ξ) (M : LieModel G ξ Li)
     (B : Module.Basis (Fin r) Ω Li) (z : Sp ℂ ⟶ X) (h : genPt ξ ⤳ centre z)
@@ -362,15 +358,13 @@ theorem co_val [IsCommMonObj G] [Smooth G.hom] (hξ : IsCptGen ξ) (M : LieModel
   exact hβ' e _ hv i
 
 /- English proof (translation)
-Establish `hre : ∀ a, ∑ l, (ρ l : ℂ) * ∑ i, starRingEnd ℂ (f l a i) * f l a i = ((∑ l, ρ l * ∑ i, Complex.normSq (f l a i) : ℝ) : ℂ)`. Introduce `a`. Use `push_cast`. Simplify using `only [Complex.normSq_eq_conj_mul_self]`. Establish `hnn : ∀ a l, 0 ≤ ρ l * ∑ i, Complex.normSq (f l a i)` using `fun a l => mul_nonneg (hρ l) (Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨{ inner := fun a b => ∑ l, (ρ l : ℂ) * ∑ i, starRingEnd ℂ (f l a i) * f l b i conj_inner_symm := fun a b => ?_ re_inner_nonneg := fun a => ?_ add_left := fun a b c => ?_ smul_left := fun a b c => ?_ definite := fun a ha => ?_ }, fun _ _ => rfl⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_mul, Complex.conj_ofReal, Complex.conj_conj, mul_comm]`. Use `show 0 ≤ (∑ l, (ρ l : ℂ) * ∑ i, starRingEnd ℂ (f l a i) * f l a i).re`. Rewrite using `[hre, Complex.ofReal_re]`. Conclude with `Finset.sum_nonneg fun l _ => hnn a l`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add]`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => by ring`. Establish `h1 : (∑ l, (ρ l : ℂ) * ∑ i, starRingEnd ℂ (f l a i) * f l a i) = 0` using `ha`. Rewrite `h1` using `[hre, Complex.ofReal_eq_zero, Finset.sum_eq_zero_iff_of_nonneg fun l _ => hnn a l]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2` using `(mul_eq_zero.1 (h1 l₀ (Finset.mem_univ _))).resolve_left h₀.ne'`. Rewrite `h2` using `[Finset.sum_eq_zero_iff_of_nonneg fun i _ => Complex.normSq_nonneg _]`. Apply `hf` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `i`.
-
-Conclude with `Complex.normSq_eq_zero.1 (h2 i (Finset.mem_univ _))`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_core {V : Type} [AddCommGroup V] [Module ℂ V] {Λ : Type} [Fintype Λ] (ρ : Λ → ℝ) (hρ : ∀ l, 0 ≤ ρ l)
     (f : Λ → V →ₗ[ℂ] (Fin r → ℂ)) (l₀ : Λ) (h₀ : 0 < ρ l₀) (hf : Function.Injective (f l₀)) :

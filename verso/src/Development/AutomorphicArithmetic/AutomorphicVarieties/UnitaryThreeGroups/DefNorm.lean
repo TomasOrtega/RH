@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 open Matrix UpperTheory.V.U3
 
 /- English proof (translation)
-Introduce `G C _ _ r r' γ c g₁ hn hd`. Establish `hc : (r' c).mat = 1 + γ c` using `by rw [(hd c).2, hn.atc, Matrix.mul_one]`. Establish `hz : zmat c g₁ r' = zmat c g₁ r + zvar c g₁ r γ`. Simplify using `only [zmat, zvar, (hd _).2, Matrix.add_mul, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `h12 : zmat c g₁ r' 0 1 = zvar c g₁ r γ 0 1`. Rewrite using `[hz, Matrix.add_apply, hn.z12, zero_add]`. Establish `h21 : zmat c g₁ r' 1 0 = zvar c g₁ r γ 1 0`. Rewrite using `[hz, Matrix.add_apply, hn.z21, zero_add]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `⟨?_, h12 ▸ h.z12, h21 ▸ h.z21⟩` and prove the remaining obligations. Use `h.atc` as an intermediate fact. Rewrite `this` using `[hc]`. Conclude with `add_eq_left.mp this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨by rw [hc, h.atc, add_zero], h12.trans h.z12, h21.trans h.z21⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.isDeform_normalised_iff :
     ∀ {G C : Type} [Group G] [CommRing C] (r r' : G →* GG 3 C) (γ : G → Matrix (Fin 3) (Fin 3) C) (c g₁ : G),

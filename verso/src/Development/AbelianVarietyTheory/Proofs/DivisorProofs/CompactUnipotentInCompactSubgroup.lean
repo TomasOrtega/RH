@@ -13,11 +13,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `key : ∀ x : GL n k, x ∈ unipOf k c → (∀ i j, GlobalTheory.IwahoriInj.Deep ((m : ℤ) * (c i - c j)) (x.val i j)) → ∀ i j, GlobalTheory.IwahoriInj.Deep ((M : ℤ) * (c i - c j)) (x.val i j)`. Introduce `x hx hd i j`. Distinguish the cases in `hij : c i < c j`. Use `(hd i j).mono ?_` and prove the remaining obligations. Establish `: (m : ℤ) ≤ M` using `by exact_mod_cast hmM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[mem_unipOf.1 hx i j hij]`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using `[GlobalTheory.IwahoriInj.deep_zero_iff]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[one_apply_ne e, GlobalTheory.IwahoriInj.deep_zero]`. Conclude with `⟨key g hg h.1, key g⁻¹ (inv_mem hg) h.2⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_grp_of_le {c : n → ℤ} {g : GL n k} (hg : g ∈ unipOf k c) {m M : ℕ} (hmM : m ≤ M)
     (h : g ∈ GlobalTheory.IwahoriInj.grp k (GlobalTheory.UnipCompact.conc_mul_sub c m)) :
@@ -37,9 +37,9 @@ theorem mem_grp_of_le {c : n → ℤ} {g : GL n k} (hg : g ∈ unipOf k c) {m M 
   exact ⟨key g hg h.1, key g⁻¹ (inv_mem hg) h.2⟩
 
 /- English proof (translation)
-Establish `e : (GlobalTheory.IwahoriInj.grp k (GlobalTheory.UnipCompact.conc_mul_sub c m) : Set (GL n k)) = (⋂ i, ⋂ j, {g : GL n k | GlobalTheory.IwahoriInj.Deep ((m : ℤ) * (c i - c j)) (g.val i j)}) ∩ ⋂ i, ⋂ j, {g : GL n k | GlobalTheory.IwahoriInj.Deep ((m : ℤ) * (c i - c j)) ((g⁻¹).val i …`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `IsOpen.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_) (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_)` and prove the remaining obligations. Conclude with `(GlobalTheory.SBUniform.isOpen_deep _).preimage (Units.continuous_val.matrix_elem i j)`. Conclude with `(GlobalTheory.SBUniform.isOpen_deep _).preimage (Units.continuous_coe_inv.matrix_elem i j)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_grp (c : n → ℤ) (m : ℕ) :
     IsOpen (GlobalTheory.IwahoriInj.grp k (GlobalTheory.UnipCompact.conc_mul_sub c m) : Set (GL n k)) := by
@@ -56,13 +56,13 @@ theorem isOpen_grp (c : n → ℤ) (m : ℕ) :
   · exact (GlobalTheory.SBUniform.isOpen_deep _).preimage (Units.continuous_coe_inv.matrix_elem i j)
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_unipB, mem_unipOf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j hij`. Establish `hji : j ≤ i`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `hij` using `[not_lt]`. Conclude with `Fin.le_def.2 (by exact_mod_cast hij)`. Break down `hji.lt_or_eq with h | h` into its components or cases. Rewrite using `[h1 i j h, one_apply_ne (ne_of_gt h)]`. Substitute `h` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2 j, one_apply_eq]`. Introduce `h`. Use `⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `: ¬ ((i : ℕ) : ℤ) < ((j : ℕ) : ℤ)`. Use `Fin.lt_def.1 hji` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[h i j this, one_apply_ne (ne_of_gt hji)]`. Rewrite using `[h i i (lt_irrefl _), one_apply_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipB_eq_unipOf (N : ℕ) :
     unipB k (Fin N) = unipOf k (fun i : Fin N => ((i : ℕ) : ℤ)) := by
@@ -85,13 +85,13 @@ theorem unipB_eq_unipOf (N : ℕ) :
     · rw [h i i (lt_irrefl _), one_apply_eq]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N Q hQ hQU`. Use `set c : Fin N → ℤ := fun i => ((i : ℕ) : ℤ)`. Rewrite `hQU` using `[unipB_eq_unipOf]`. Set `V : ℕ → Set (GL (Fin N) k)` to `fun m => (GlobalTheory.IwahoriInj.grp k (GlobalTheory.UnipCompact.conc_mul_sub c m) : Set (GL (Fin N) k)) ∪ (unipOf k c : Set _)ᶜ`. Establish `hVo : ∀ m, IsOpen (V m)` using `fun m => (isOpen_grp c m).union (GlobalTheory.UnipCompact.isClosed_unipOf c).isOpen_compl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVmono : Monotone V`. Introduce `m M hmM g hg`. Break down `hg with hg | hg` into its components or cases. Distinguish the cases in `hu : g ∈ unipOf k c`. Conclude with `Or.inl (mem_grp_of_le hu hmM hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr hu`. Conclude with `Or.inr hg`. Establish `hcov : Q ⊆ ⋃ m, V m` using `fun g hg => Set.mem_iUnion.2 (((GlobalTheory.UnipCompact.eventually_mem_grp (hQU hg)).exists).imp fun _ h => Or.inl h)`. Take `⟨M, hM⟩` from `hQ.elim_directed_cover V hVo hcov hVmono.directed_le`. Use `⟨GlobalTheory.IwahoriInj.grp k (GlobalTheory.UnipCompact.conc_mul_sub c M) ⊓ unipOf k c, ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+Prove the second alternative. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_inf]`. Conclude with `(GlobalTheory.IwahoriInj.isCompact_grp _).inter_right (GlobalTheory.UnipCompact.isClosed_unipOf c)`. Break down `hM hg with h | h` into its components or cases. Conclude with `⟨h, hQU hg⟩`. Conclude with `absurd (hQU hg) h`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_compact_subgroup_of_isCompact :
     ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {N : ℕ}

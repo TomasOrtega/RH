@@ -11,7 +11,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 open scoped Classical
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyConstantOpenPreimage.lc_of_open ψ h`.
+A detailed English derivation is pending.
 -/
 private theorem lc_of_open {Γ A : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group A] (ψ : Γ →* A)
     (h : IsOpen (ψ.ker : Set Γ)) : IsLocallyConstant ψ :=
@@ -23,25 +23,21 @@ private def scalRep {k Γ : Type} [Field k] [Group Γ] (γ : Γ →* kˣ) : Repr
   map_mul' g h := by ext; simp [mul_comm]
 
 /- English proof (translation)
-Introduce `P Ω _ _ _ l hl c D hD T g hg`. Use `haveI : IsAlgClosure T.F Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) T.F⟩`. Take `⟨pl, hinj, hpl⟩` from `exists_injective_places_above_l_of_tower D T`. Take `⟨-, hKo, -, -, hK1, hK2, ⟨h0, hlS⟩, -, -⟩` from `residualKernel_properties D hD T`. Establish `hfin : (plDvd T.F (prodS D)).Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : Ideal.span {((prodS D : ℕ) : 𝓞 T.F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `Nat.cast_ne_zero.2 h0`. Use `(Ideal.finite_factors hne).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ v, pl v ∈ plDvd T.F (prodS D)` using `fun v => by`. Take `⟨m, hm⟩` from `hlS`. Use `show ((prodS D : ℕ) : 𝓞 T.F) ∈ (pl v).asIdeal`. Rewrite using `[hm, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (hpl v).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcard : Nat.card T.ι ≤ g` using `by haveI := hfin.to_subtype`. Use `le_trans ?_ hg` and prove the remaining obligations. Rewrite using `[← Nat.card_coe_set_eq]`. Conclude with `Nat.card_le_card_of_injective (fun v => (⟨pl v, hmem v⟩ : plDvd T.F (prodS D))) fun a b h => hinj (congrArg Subtype.val h)`. Use `⟨hcard, fun w => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl0 : ((l : ℕ) : ResidueField c.O) = 0`. Take `⟨-, -, -, -, -, h0, -, hval, -⟩` from `dvrFacts l c.O`. Rewrite `h0` using `[hval, Ne, IsDiscreteValuationRing.addVal_eq_zero_iff]`. Rewrite using `[← map_natCast (residue c.O), residue_eq_zero_iff]`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : Finite (ResidueField c.O) := (UpperTheory.V.abelian₂.dvr_finite l c.O).2.1`. Establish `hlc : IsLocallyConstant (T.rbU w)` using `lc_of_open _ (Subgroup.isOpen_mono (fun x hx => hK2 w x (hK1 x hx)) hKo)`. Establish `hv : ∀ v : T.ι, CardLe ((T.fr ∅).Zloc (residue c.O) ((T.fr ∅).Gv v) w) (Nat.card (ResidueField c.O) ^ (2 + locDeg (pl v)))` using `fun v => by`. Establish `h` using `card_localCocycles_le_of_place_above_prime P.loc.lf P.loc.lt P.loc.le T.F Ω l (ResidueField c.O) (ResidueField c.O) (fun m => by rw [nsmul_eq_mul, hl0, zero_mul]) (T.pl v) (pl v) (scalRep ((T.rbU w).comp (Dec (F := T.F) (T.pl v)).subtype)) (hpl v).1 (hpl v).2 (fun m => (hlc.comp_ …`. Conclude with `h.of_injective (fun z => ⟨z.1, z.2.1, z.2.2, fun _ h => h.elim⟩) fun a b h => Subtype.ext (Subtype.mk.inj h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Fintype T.ι := Fintype.ofFinite _`. Use `haveI : Finite (T.fr ∅).ι := T.fin`. Establish `hsum : ∑ v : T.ι, (2 + locDeg (pl v)) ≤ T.d + 2 * g`. Establish `h1` using `sum_local_degree_above_l_le_finrank T.F l (Finset.univ.map ⟨pl, hinj⟩)`. Rewrite `h1` using `[Finset.sum_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Function.Embedding.coeFn_mk, (hpl _).2, if_true] at h1`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, smul_eq_mul]`. Establish `: T.d = Module.finrank ℚ T.F` using `rfl`. Use linear arithmetic over natural numbers and integers. Establish `hC : CardLe (∀ v : T.ι, (T.fr ∅).Zloc (residue c.O) ((T.fr ∅).Gv v) w) (Nat.card (ResidueField c.O) ^ (T.d + 2 * g))` using `by haveI := fun v => (hv v).1`.
-
-Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_pi]`. Use `(Finset.prod_le_prod' fun v _ => (hv v).2).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Conclude with `Nat.pow_le_pow_right Nat.card_pos hsum`.
-
-Use `rank_le_of_card_le_pow_card_field (ResidueField c.O) _ _ hC` as an intermediate fact. Rewrite `this` using `[Nat.cast_add]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.rank_localCocycleSpaces_le :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (T : Tower D) (g : ℕ), (plDvd T.F (prodS D)).ncard ≤ g → Nat.card T.ι ≤ g ∧ ∀ w, Module.rank (ResidueField c.O) (∀ v, (T.fr ∅).Zloc (residue c.O) ((T.fr ∅).Gv v) w) ≤ T.d + (2 * g : ℕ) := by

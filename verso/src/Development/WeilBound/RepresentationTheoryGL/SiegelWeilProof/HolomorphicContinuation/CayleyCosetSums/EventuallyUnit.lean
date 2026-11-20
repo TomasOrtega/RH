@@ -12,17 +12,15 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs
 variable {m n : ℕ}
 
 /- English proof (translation)
-Use `set C := y.toBlocks₂₁ with hC`. Use `set D := y.toBlocks₂₂ with hD`. Set `M : Matrix (Fin n) (Fin n) ℂ[X]` to `C.map Polynomial.C + (Polynomial.X : ℂ[X]) • D.map Polynomial.C`. Establish `hev : ∀ z : ℂ, (M.det).eval z = (C + z • D).det`. Introduce `z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[M]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : M.det ≠ 0`. Introduce `h0`. Establish `h1` using `hev (-Complex.I)`. Rewrite `h1` using `[h0, Polynomial.eval_zero]`. Establish `hu : u1 y = Complex.I • C + D` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmat : C + (-Complex.I) • D = (-Complex.I) • u1 y`. Rewrite using `[hu, smul_add, smul_smul]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hmat, Matrix.det_smul]`. Conclude with `(mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 Complex.I_ne_zero)) (det_first_cayley_block_ne_group y hy)) h1.symm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfin : {t : ℝ | (M.det).eval (t : ℂ) = 0}.Finite`. Use `((M.det.roots.toFinset.finite_toSet).preimage Complex.ofReal_injective.injOn).subset ?_` and prove the remaining obligations. Introduce `t ht`. Simplify using `only [Set.mem_preimage, Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_roots hp]`. Conclude with `ht`.
-
-Establish `hS : IsClosed ({t : ℝ | (M.det).eval (t : ℂ) = 0} \ {0})` using `(hfin.subset Set.diff_subset).isClosed`. Establish `hnhds : ({t : ℝ | (M.det).eval (t : ℂ) = 0} \ {0})ᶜ ∈ 𝓝 (0 : ℝ)` using `hS.isOpen_compl.mem_nhds (by simp)`. Use `filter_upwards [nhdsWithin_le_nhds hnhds, self_mem_nhdsWithin] with t ht ht0`. Rewrite using `[nbar_block, ← hev]`. Conclude with `isUnit_iff_ne_zero.2 (fun h => ht ⟨h, ht0⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_unit (y : M2 n) (hy : InG y) :
     ∀ᶠ t in 𝓝[≠] (0 : ℝ), IsUnit (y * nbar t).toBlocks₂₁.det := by
@@ -60,7 +58,7 @@ theorem eventually_unit (y : M2 n) (hy : InG y) :
   exact isUnit_iff_ne_zero.2 (fun h => ht ⟨h, ht0⟩)
 
 /- English proof (translation)
-Unfold `InG at *`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem inG_mul' {x y : M2 n} (hx : InG x) (hy : InG y) : InG (x * y) := by
   unfold InG at *
@@ -69,9 +67,9 @@ private theorem inG_mul' {x y : M2 n} (hx : InG x) (hy : InG y) : InG (x * y) :=
     _ = JJ n := by rw [hx, hy]
 
 /- English proof (translation)
-Establish `hh : (herm s)ᴴ = herm s`. Use extensionality with `i j`. Simplify using `only [herm, Matrix.conjTranspose_apply, Complex.star_def, map_add, map_div₀, map_mul, Complex.conj_ofReal, Complex.conj_I, map_ofNat]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[InG, nU, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hh]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem inG_nU_herm' (s : Fin n → Fin n → ℝ) : InG (nU (herm s)) := by
   have hh : (herm s)ᴴ = herm s := by
@@ -83,19 +81,17 @@ private theorem inG_nU_herm' (s : Fin n → Fin n → ℝ) : InG (nU (herm s)) :
   simp [InG, nU, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hh]
 
 /- English proof (translation)
-Set `G : ℝ → (Fin n → Fin n → ℝ) → ℂ` to `fun t s => fz m e 0 (y * nbar t * nU (herm s) * b) * ψ s`. Set `X : ℝ × (Fin n → Fin n → ℝ) → M2 n` to `fun p => y * nbar p.1 * nU (herm p.2) * b`. Establish `hIn : ∀ p, InG (X p)` using `fun p => inG_mul' (inG_mul' (inG_mul' hy (inG_nbar p.1)) (inG_nU_herm' p.2)) hb`. Establish `h1 : Continuous fun p : ℝ × (Fin n → Fin n → ℝ) => nbar (n` using `n) p.1 := by`. Unfold `nbar`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Continuous.matrix_fromBlocks continuous_const continuous_const ((Complex.continuous_ofReal.comp continuous_fst).smul continuous_const) continuous_const`. Establish `h2 : Continuous fun p : ℝ × (Fin n → Fin n → ℝ) => nU (herm p.2)`. Unfold `nU`. Use `Continuous.matrix_fromBlocks continuous_const ?_ continuous_const continuous_const` and prove the remaining obligations. Unfold `herm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `fun_prop`. Establish `hX : Continuous X` using `((continuous_const.matrix_mul h1).matrix_mul h2).matrix_mul continuous_const`. Establish `hU : Continuous fun p => u1 (X p)`. Unfold `u1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `refine (Continuous.const_smul ?_ Complex.I).add ?_ <;>`. Conclude with `continuous_pi fun i => continuous_pi fun j => hX.matrix_elem _ _`. Establish `hcont : Continuous (Function.uncurry G)`. Establish `hG : Function.uncurry G = fun p => (X p).det ^ e * (u1 (X p)).det ^ (-(m : ℤ)) * ψ p.2`. Use function extensionality and compare the values at `⟨t, s⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Function.uncurry_apply_pair, G, X, fz_zero]`. Rewrite using `[hG]`. Conclude with `((hX.matrix_det.zpow₀ e fun p => Or.inl (det_ne_of_inG _ (hIn p))).mul (hU.matrix_det.zpow₀ _ fun p => Or.inl (det_first_cayley_block_ne_group _ (hIn p)))).mul (hψ.1.comp continuous_snd)`. Establish `hK : IsCompact (tsupport ψ)` using `hψ.2.1`. Establish `hInt : ∀ t, ∫ s, G t s = ∫ s in tsupport ψ, G t s` using `fun t => (setIntegral_eq_integral_of_forall_compl_eq_zero (fun s hs => by simp [G, image_eq_zero_of_notMem_tsupport hs])).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : Continuous fun t => ∫ s in tsupport ψ, G t s` using `continuous_parametric_integral_of_continuous hcont hK`. Establish `hev : ∀ᶠ t in 𝓝[≠] (0 : ℝ), ∫ s in tsupport ψ, G t s = 0` using `by filter_upwards [eventually_unit y hy] with t ht`. Rewrite using `[← hInt]`. Conclude with `vanish_inv hmn e (y * nbar t) b (inG_mul' hy (inG_nbar t)) hb ht ψ hψ`. Establish `hlim : Tendsto (fun t => ∫ s in tsupport ψ, G t s) (𝓝[≠] 0) (𝓝 (∫ s in tsupport ψ, G 0 s))` using `(hc.tendsto 0).mono_left nhdsWithin_le_nhds`.
-
-Establish `h0 : ∫ s in tsupport ψ, G 0 s = 0` using `tendsto_nhds_unique hlim (tendsto_const_nhds.congr' (hev.mono fun t ht => ht.symm))`. Establish `hn0 : nbar (n` using `n) 0 = 1 := by simp [nbar]`. Use `(hInt 0).trans h0` as an intermediate fact. Simplify `this` using `[G, hn0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem vanish_all (hmn : m < n) (e : ℤ) (y b : M2 n) (hy : InG y) (hb : InG b)
     (ψ : (Fin n → Fin n → ℝ) → ℂ) (hψ : IsSingTest ψ) :

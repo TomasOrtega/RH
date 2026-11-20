@@ -15,21 +15,19 @@ noncomputable section
 namespace GlobalTheory.VacThetaInd
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W r s r' s' hB hX hW v θ θ' hθ hθ' γ hγ`. Establish `hσ : ∀ x : E, σ (σ x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ z, cA σ (cA σ z) = z` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [cA, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hi : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun e => rfl`. Establish `ht : cA σ (hTens (cA σ) (incM F X.J) (incM F W.J) γ γ) = -hTens (cA σ) (incM F X.J) (incM F W.J) γ γ` using `GlobalTheory.VacCocycle.conj_hTens (cA σ) hc (fun i j => by simp only [incM, Matrix.map_apply, hi, hX.herm]) (fun i j => by simp only [incM, Matrix.map_apply, hi, hW.skew, map_neg]) γ γ`. Use `set t := hTens (cA σ) (incM F X.J) (incM F W.J) γ γ with htdef`. Establish `htr : ∀ z, Algebra.trace (AF F) (AE F E) (cA σ z) = Algebra.trace (AF F) (AE F E) z` using `GlobalTheory.VacCocycle.trace_conj (cA σ) hc`. Use `set a := inclR (F := F) (AF F) (θ : E) with ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a' := inclR (F := F) (AF F) (θ' : E) with ha'`. Establish `hca : cA σ a = 1 - a`. Rewrite using `[ha, hi, eq_sub_of_add_eq' hθ, map_sub, map_one]`. Establish `hca' : cA σ a' = 1 - a'`. Rewrite using `[ha', hi, eq_sub_of_add_eq' hθ', map_sub, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set z := (a - a') * t with hz`. Establish `hcz : cA σ z = z`. Rewrite using `[hz, map_mul, map_sub, hca, hca', ht]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Algebra.trace (AF F) (AE F E) z = 2 * Algebra.trace (AF F) (AE F E) (a * z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e1 : Algebra.trace (AF F) (AE F E) (cA σ (a * z)) = Algebra.trace (AF F) (AE F E) (a * z)` using `htr _`. Rewrite `e1` using `[map_mul, hca, hcz, sub_mul, one_mul, map_sub]`. Take the linear combination `e1`. Establish `hmul : inclR (F` using `F) (AF F) (((θ * (θ - θ') : 𝓞 E)) : E) = a * (a - a') := by`. Rewrite using `[ha, ha', ← map_sub, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `key : symp (R` using `AF F) (cA σ) a (incM F X.J) (incM F W.J) γ γ = symp (R := AF F) (cA σ) a' (incM F X.J) (incM F W.J) γ γ + 2 * symp (R := AF F) (cA σ) (inclR (F := F) (AF F) (((θ * (θ - θ') : 𝓞 E)) : E)) (incM F X.J) (incM F W.J) γ γ := by`. Simplify using `only [symp, hmul]`. Rewrite using `[← htdef, mul_assoc, ← hz, ← h2, hz, sub_mul, map_sub]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `GlobalTheory.LatVacArith.psi_symp_latAtV σ B X W r s r' s' hB hX hW v (θ * (θ - θ')) 1 (by rw [map_one]; exact one_mem _) γ hγ γ hγ`. Rewrite using `[key, mul_add, ← mul_assoc, invOf_mul_self, one_mul, AddChar.map_add_eq_mul, ← one_mul (symp (R := AF F) (cA σ) (inclR (F := F) (AF F) (((θ * (θ - θ') : 𝓞 E)) : E)) (incM F X.J) (incM F W.J) γ γ), h1, mul_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_half_symp_theta_indep : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →

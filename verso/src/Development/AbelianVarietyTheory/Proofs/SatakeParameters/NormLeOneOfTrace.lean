@@ -17,25 +17,25 @@ open scoped ComplexConjugate
 namespace GlobalTheory.TraceNormCoordinates
 
 /- English proof (translation)
-Use `set s : ℂ := Complex.I * ((Real.sqrt d : ℝ) : ℂ) with hs_def`. Establish `hs : s * s = -(d : ℂ)`. Establish `h2 : ((Real.sqrt d : ℝ) : ℂ) * ((Real.sqrt d : ℝ) : ℂ) = (d : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg d)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs_def]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = -(d : ℂ) := by rw [Complex.I_mul_I, h2]; ring`. Establish `hdq : (0 : ℚ) < d` using `by exact_mod_cast hd`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Use `⟨(b : ℚ) / 2, 1 / 2, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [PI.UnitDetRootDefs.cmTheta, hs_def]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add x y _ _ ihx ihy`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, q, rfl⟩` from `ihx`. Take `⟨p', q', rfl⟩` from `ihy`. Conclude with `⟨p + p', q + q', by push_cast; ring⟩`. Consider the case `mul x y _ _ ihx ihy`. Take `⟨p, q, rfl⟩` from `ihx`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p', q', rfl⟩` from `ihy`. Use `⟨p * p' - d * q * q', p * q' + q * p', ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(q : ℂ) * q' * hs`. Consider the case `inv x _ ih`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨p, q, rfl⟩` from `ih`. Distinguish the cases in `h0 : p = 0 ∧ q = 0`. Take `⟨rfl, rfl⟩` from `h0`. Conclude with `⟨0, 0, by simp⟩`. Establish `hN : p ^ 2 + d * q ^ 2 ≠ 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hz`. Apply `h0` to reduce the goal to its premises. Establish `h1 : p ^ 2 = 0` using `by nlinarith [sq_nonneg p, mul_nonneg hdq.le (sq_nonneg q)]`. Establish `h2 : q ^ 2 = 0` using `by nlinarith [sq_nonneg p, sq_nonneg q, mul_nonneg hdq.le (sq_nonneg q)]`. Conclude with `⟨pow_eq_zero_iff (n := 2) (by norm_num) |>.mp h1, pow_eq_zero_iff (n := 2) (by norm_num) |>.mp h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hNc : ((p : ℂ) ^ 2 + (d : ℂ) * (q : ℂ) ^ 2) ≠ 0` using `by exact_mod_cast hN`. Use `⟨p / (p ^ 2 + d * q ^ 2), -q / (p ^ 2 + d * q ^ 2), ?_⟩` and prove the remaining obligations. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Use `clear_value s`. Establish `e : ((p : ℂ) + q * s) * (((p / (p ^ 2 + d * q ^ 2) : ℚ) : ℂ) + ((-q / (p ^ 2 + d * q ^ 2) : ℚ) : ℂ) * s) = ((p : ℂ) ^ 2 - (q : ℂ) ^ 2 * (s * s)) / ((p : ℂ) ^ 2 + (d : ℂ) * (q : ℂ) ^ 2)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hs, div_eq_one_iff_eq hNc]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_coords (b : ℤ) (d : ℕ) (hd : 0 < d) {x : ℂ} (hx : x ∈ PI.UnitaryGroupMassFormula.UnitDetRoot.KF b d) :
     ∃ p q : ℚ, x = (p : ℂ) + (q : ℂ) * (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) := by
@@ -90,9 +90,9 @@ theorem exists_coords (b : ℤ) (d : ℕ) (hd : 0 < d) {x : ℂ} (hx : x ∈ PI.
       ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hn : ‖y‖ * ‖y'‖ = 1` using `by rw [← norm_mul, h, norm_one]`. Establish `hy' : ‖y'‖ < ‖y‖` using `by nlinarith [norm_nonneg y', norm_nonneg y]`. Establish `hmax` using `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (ne_of_gt hy')`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[hmax, max_eq_left hy'.le]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_trace {F : Type*} [NormedField F] [IsUltrametricDist F] {y y' : F}
     (h : y * y' = 1) (ht : ‖y + y'‖ ≤ 1) : ‖y‖ ≤ 1 := by
@@ -105,21 +105,19 @@ theorem norm_le_one_of_trace {F : Type*} [NormedField F] [IsUltrametricDist F] {
   linarith
 
 /- English proof (translation)
-Establish `hd : 0 < d` using `hok.2.2.2.pos`. Take `⟨p, q, rfl⟩` from `exists_coords b d hd hx`. Use `set s : ℂ := Complex.I * ((Real.sqrt d : ℝ) : ℂ) with hs_def`. Establish `hs : s * s = -(d : ℂ)`. Establish `h2 : ((Real.sqrt d : ℝ) : ℂ) * ((Real.sqrt d : ℝ) : ℂ) = (d : ℂ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg d)]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs_def]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `_ = -(d : ℂ) := by rw [Complex.I_mul_I, h2]; ring`. Establish `hcs : conj s = -s` using `by simp [hs_def]`. Establish `hconj : conj ((p : ℂ) + (q : ℂ) * s) = (p : ℂ) - (q : ℂ) * s`. Rewrite using `[map_add, map_mul, hcs, map_ratCast, map_ratCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hconj]`. Establish `hpq : (p ^ 2 + d * q ^ 2 : ℚ) = 1`. Establish `: (((p ^ 2 + d * q ^ 2 : ℚ)) : ℂ) = 1`. Use `push_cast`. Take the linear combination `h1 + (q : ℂ) ^ 2 * hs`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `this` after adjusting the coercions. Establish `hT' : ‖((2 * p : ℚ) : ℚ_[l])‖ ≤ 1`. Apply `hT _ ((2 * q : ℚ) : ℚ_[l])` to reduce the goal to its premises. Establish `: ((2 * p) ^ 2 + d * (2 * q) ^ 2 : ℚ) = 4` using `by linear_combination 4 * hpq`. Conclude with `congrArg (fun r : ℚ => (r : ℚ_[l])) this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set y := ι ((p : ℂ) + (q : ℂ) * s)`. Use `set y' := ι ((p : ℂ) - (q : ℂ) * s)`. Establish `hyy : y * y' = 1` using `by rw [← map_mul, h1, map_one]`. Establish `hnr : ∀ r : ℚ, ‖(r : ℂ_[l])‖ = ‖(r : ℚ_[l])‖`. Introduce `r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← PadicComplex.norm_extends', map_ratCast, PadicComplex.coe_eq, map_ratCast]`. Establish `hsum : y + y' = ((2 * p : ℚ) : ℂ_[l])`. Rewrite using `[← map_add]`. Establish `: (p : ℂ) + (q : ℂ) * s + ((p : ℂ) - (q : ℂ) * s) = ((2 * p : ℚ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, map_ratCast]`.
-
-Establish `htr : ‖y + y'‖ ≤ 1` using `by rw [hsum, hnr]; exact hT'`. Establish `hle : ‖y‖ ≤ 1` using `norm_le_one_of_trace hyy htr`. Establish `hle' : ‖y'‖ ≤ 1` using `norm_le_one_of_trace (by rw [mul_comm]; exact hyy) (by rw [add_comm]; exact htr)`. Establish `hn : ‖y‖ * ‖y'‖ = 1` using `by rw [← norm_mul, hyy, norm_one]`. Use polynomial arithmetic with `[norm_nonneg y, norm_nonneg y']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_eq_one {a : ℕ} {b c : ℤ} {d : ℕ} (hok : PI.UnitDetRootDefs.CmOK a b c d) (l : ℕ)
     [inst : Fact (Nat.Prime l)]

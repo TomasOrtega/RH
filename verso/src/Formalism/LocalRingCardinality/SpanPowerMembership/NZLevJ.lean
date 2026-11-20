@@ -12,17 +12,15 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
   [CharZero Kf] (P : Places p O Kf) (hp : (p : Kf) ≠ 0)
 
 /- English proof (translation)
-Establish `key : ∀ v, ∃ A : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) (P.Qq v), ∃ n : Fin (P.m + 1) → ℤ, LowT A ∧ (∀ a, A a a = (p : P.Qq v) ^ (n a)) ∧ L v = colSpan (P.W v) A`. Introduce `v`. Use `haveI := (P.setting v).frac_alt`. Take `⟨A, n, h1, h2, h3⟩` from `hermite (Q := P.Qq v) (p : P.W v) (P.setting v).p_unif (L v) (hL v)`. Conclude with `⟨A, n, h1, fun a => by rw [h2 a, map_natCast], h3⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose A n hlow hdiag hLA using key`. Establish `hp0 : ∀ v, (p : P.Qq v) ≠ 0` using `fun v => by haveI := (P.setting v).frac_alt`. Rewrite using `[← map_natCast (algebraMap (P.W v) (P.Qq v))]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr (P.setting v).p_unif.ne_zero`. Establish `hdet : ∀ v, (A v).det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `v`. Rewrite using `[det_lowT _ (hlow v)]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun a _ => by rw [hdiag]; exact zpow_ne_zero _ (hp0 v)`. Set `Ag : ∀ v, GL (Fin (P.m + 1)) (P.Qq v)` to `fun v => Matrix.GeneralLinearGroup.mkOfDetNeZero (A v) (hdet v)`. Take `⟨c, ⟨z, rfl⟩, hc⟩` from `natAct_inv_lowT P (p : Kf) hp Ag hlow (fun v s a => ⟨n v a, by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gPos_diag]`. Use `show P.ι v ((P.σ v ^ s.val) (A v a a)) = _`. Rewrite using `[hdiag, map_zpow₀, map_zpow₀, map_natCast, map_natCast]⟩)`. Establish `hmem : (Ag⁻¹, (1 : Oˣ)) ∈ Γsub P hp` using `⟨z, by rw [hc]; simp⟩`. Establish `hmem' : (Ag, (1 : Oˣ)) ∈ Γsub P hp`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `(Γsub P hp).inv_mem hmem` as an intermediate fact. Simplify using `using this`. Use `⟨⟨(Ag, 1), hmem'⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Use `show (L0 P v).map ((Matrix.mulVecLin (A v)).restrictScalars (P.W v)) = L v`.
-
-Rewrite using `[hLA v]`. Unfold `L0`. Rewrite using `[Formalism.MainNotions.G.Inhab.map_colSpan', Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_trans (L : P.Tup) (hL : P.IsLatTup L) : ∃ γ : ↥(Γsub P hp), (levB P hp).smul γ (standardTuple P) = L := by
   classical
@@ -59,7 +57,7 @@ theorem exists_trans (L : P.Tup) (hL : P.IsLatTup L) : ∃ γ : ↥(Γsub P hp),
 def gOf (L : P.Tup) (hL : P.IsLatTup L) : (levB P hp).Γ := (exists_trans P hp L hL).choose
 
 /- English proof (translation)
-The claim follows from `(exists_trans P hp L hL).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem gOf_spec (L : P.Tup) (hL : P.IsLatTup L) : (levB P hp).smul (gOf P hp L hL) (standardTuple P) = L :=
   (exists_trans P hp L hL).choose_spec
@@ -68,7 +66,7 @@ variable (v0 : Fin P.nV)
 
 include v0 in
 /- English proof (translation)
-Establish `hk : (levB P hp).smul (g'⁻¹ * g) (standardTuple P) = standardTuple P`. Rewrite using `[jd_smul_mul, h, ← jd_smul_mul, inv_mul_cancel, jd_smul_one]`. Establish `hs` using `stab_EV P hp v0 (g'⁻¹ * g) hk`. Establish `hg : g = g' * (g'⁻¹ * g)` using `by group`. Use `conv_lhs => rw [hg, map_mul, Units.val_mul, jd_actX_mul, LinearMap.comp_apply, mul_smul, ← LinearMap.map_smul_of_tower, hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wd (g g' : (levB P hp).Γ) (h : (levB P hp).smul g (standardTuple P) = (levB P hp).smul g' (standardTuple P)) :
     ((levB P hp).χ g : O) • (levB P hp).actX g (EV P) = ((levB P hp).χ g' : O) • (levB P hp).actX g' (EV P) := by
@@ -86,7 +84,7 @@ def valE (L : P.Tup) : P.Xsp :=
 
 include v0 in
 /- English proof (translation)
-Unfold `valE`. Rewrite using `[dif_pos (standardTuple_isLattice P)]`. Use `wd P hp v0 (gOf P hp (standardTuple P) (standardTuple_isLattice P)) 1 (by rw [gOf_spec, jd_smul_one])` as an intermediate fact. Rewrite using `[this, map_one, Units.val_one, one_smul, jd_actX_one, LinearMap.id_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem value_standardTuple : valE P hp (standardTuple P) = EV P := by
   classical
@@ -97,9 +95,9 @@ theorem value_standardTuple : valE P hp (standardTuple P) = EV P := by
 
 include v0 in
 /- English proof (translation)
-Unfold `valE`. Distinguish the cases in `hL : P.IsLatTup L`. Establish `hL' : P.IsLatTup ((levB P hp).smul γ L)` using `(Formalism.MainNotions.G.Inhab.isLatTup_smul_iff P (levB P hp) γ L).mpr hL`. Rewrite using `[dif_pos hL', dif_pos hL]`. Rewrite using `[wd P hp v0 (gOf P hp _ hL') (γ * gOf P hp L hL) (by rw [gOf_spec, jd_smul_mul, gOf_spec])]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, Units.val_mul, jd_actX_mul, LinearMap.comp_apply, mul_smul, LinearMap.map_smul_of_tower]`. Establish `hL' : ¬ P.IsLatTup ((levB P hp).smul γ L)` using `fun h => hL ((Formalism.MainNotions.G.Inhab.isLatTup_smul_iff P (levB P hp) γ L).mp h)`. Rewrite using `[dif_neg hL', dif_neg hL, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valE_smul (γ : (levB P hp).Γ) (L : P.Tup) :
     valE P hp ((levB P hp).smul γ L) = ((levB P hp).χ γ : O) • (levB P hp).actX γ (valE P hp L) := by
@@ -115,9 +113,9 @@ theorem valE_smul (γ : (levB P hp).Γ) (L : P.Tup) :
     rw [dif_neg hL', dif_neg hL, map_zero, smul_zero]
 
 /- English proof (translation)
-Unfold `valE`. Rewrite using `[dif_pos hL]`. Establish `h1` using `Formalism.L2.G.Cmp.equivSys_HtupW (gatU P hp) () (gOf P hp L hL) (standardTuple P) (standardTuple_isLattice P) (EV P) (EV_mem P)`. Establish `h2 : (gatU P hp).P.HtupW (((gatU P hp).lev ()).smul (gOf P hp L hL) (standardTuple P)) = P.HtupW L` using `by show P.HtupW ((levB P hp).smul (gOf P hp L hL) (standardTuple P)) = _`. Rewrite using `[gOf_spec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valE_mem (L : P.Tup) (hL : P.IsLatTup L) : valE P hp L ∈ P.HtupW L := by
   classical

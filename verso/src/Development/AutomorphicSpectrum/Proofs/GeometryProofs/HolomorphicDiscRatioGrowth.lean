@@ -13,11 +13,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.PoleDisc
 open GlobalTheory.CompanionTheory.Ar.CptModel
 
 /- English proof (translation)
-Take `⟨hsp, s, hs, rfl⟩` from `hv`. Set `c : Cpt (pt φ₀)` to `⟨centre (pt φ), hsp⟩`. Establish `e : s * tS c.1 h = tS c.1 g`. Apply `hξ.inj c` to reduce the goal to its premises. Rewrite using `[map_mul, genMap_toStalk, genMap_toStalk]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (· * φ₀ h) hs).trans ?_` and prove the remaining obligations. Conclude with `div_mul_cancel₀ _ h0`. Establish `k : ∀ a : R, (Scheme.stalkClosedPointTo (pt φ)).hom (tS c.1 a) = φ a` using `fun a => by`. Use `genMap_toStalk φ (self (pt φ)) a` as an intermediate fact. Rewrite `this` using `[genMap_self]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[← k h, ← k g, ← e]`. Conclude with `(map_mul _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem val_mul_eq {R K : Type} [CommRing R] [Field K] {φ₀ : R →+* K} (hξ : IsCptGen (pt φ₀)) (φ : R →+* ℂ)
     {g h : R} (h0 : φ₀ h ≠ 0) {r : ℂ} (hv : ValAt (pt φ₀) (pt φ) (φ₀ g / φ₀ h) r) : r * φ h = φ g := by
@@ -36,7 +36,7 @@ theorem val_mul_eq {R K : Type} [CommRing R] [Field K] {φ₀ : R →+* K} (hξ 
   exact (map_mul _ _ _).symm
 
 /- English proof (translation)
-Establish `h1 : genPt (pt φ) ∈ (PrimeSpectrum.basicOpen f : (Spec (CommRingCat.of R)).Opens)` using `hW (show IsLocalRing.closedPoint K ∈ (⊤ : (Spec (CommRingCat.of K)).Opens) from trivial)`. Establish `h2 : f ∉ (genPt (pt φ)).asIdeal` using `h1`. Rewrite `h2` using `[genPt_asIdeal]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_top_le {R K : Type} [CommRing R] [Field K] (φ : R →+* K) (f : R)
     (hW : ⊤ ≤ (pt φ) ⁻¹ᵁ (PrimeSpectrum.basicOpen f : (Spec (CommRingCat.of R)).Opens)) : φ f ≠ 0 := by
@@ -47,7 +47,7 @@ theorem ne_zero_of_top_le {R K : Type} [CommRing R] [Field K] (φ : R →+* K) (
   exact h2
 
 /- English proof (translation)
-Use `haveI : (x.1 : PrimeSpectrum R).asIdeal.IsPrime := PrimeSpectrum.isPrime _`. Establish `hd` using `GlobalTheory.T.isDiscreteValuationRing_localization_of_height_eq_one' R x.1.asIdeal h1`. Establish `key : ∀ (q : PrimeSpectrum R), Nonempty (Localization.AtPrime q.asIdeal ≃+* (Spec.structureSheaf R).presheaf.stalk q)` using `fun q => ⟨(IsLocalization.algEquiv q.asIdeal.primeCompl _ _).toRingEquiv⟩`. Take `⟨e⟩` from `key x.1`. Conclude with `IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing (e.trans (CPoint.regAtEquivStalk hξ x))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isDVR_regAt {R K : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [Field K]
     {φ : R →+* K} (hξ : IsCptGen (pt φ)) (x : Cpt (pt φ)) (h1 : x.1.asIdeal.height = 1) :
@@ -66,11 +66,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.PoleDisc
 open GlobalTheory.CompanionTheory.Ar.CptModel
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Set `e : FractionRing R ≃ₐ[R] K` to `FractionRing.algEquiv R K`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_eq_algebraMap_of_integral_at_height_one_primes R (e.symm t) fun q hq h1 => by`. Take `⟨a, c, hc, hac⟩` from `hcon q hq h1`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, c, hc, e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, e.apply_symm_apply, e.commutes, e.commutes]`. Conclude with `hac`. Establish `h2 : e (algebraMap R (FractionRing R) a) = t` using `by rw [ha, e.apply_symm_apply]`. Rewrite `h2` using `[e.commutes]`.
-
-Conclude with `ht a h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pole_prime {R K : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [Field K]
     [Algebra R K] [IsFractionRing R K] (t : K) (ht : ∀ a : R, algebraMap R K a ≠ t) :
@@ -88,9 +86,7 @@ theorem exists_pole_prime {R K : Type} [CommRing R] [IsDomain R] [IsNoetherianRi
   exact ht a h2
 
 /- English proof (translation)
-Establish `hsp : genPt (pt φ) ⤳ ((⟨p, hp⟩ : PrimeSpectrum R) : Spec (CommRingCat.of R))`. Use `(PrimeSpectrum.le_iff_specializes (genPt (pt φ) : PrimeSpectrum R) ⟨p, hp⟩).1 ?_` and prove the remaining obligations. Use `show (genPt (pt φ)).asIdeal ≤ p`. Rewrite using `[genPt_asIdeal, (RingHom.injective_iff_ker_eq_bot φ).1 hφ]`. Conclude with `bot_le`.
-
-Conclude with `⟨⟨_, hsp⟩, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cpt {R K : Type} [CommRing R] [Field K] (φ : R →+* K) (hφ : Function.Injective φ) (p : Ideal R)
     (hp : p.IsPrime) : ∃ x : Cpt (pt φ), x.1.asIdeal = p := by
@@ -102,18 +98,18 @@ theorem exists_cpt {R K : Type} [CommRing R] [Field K] (φ : R →+* K) (hφ : F
   exact ⟨⟨_, hsp⟩, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage f).hom, Spec.map_preimage f⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ringHom {R S : Type} [CommRing R] [CommRing S]
     (f : Spec (CommRingCat.of S) ⟶ Spec (CommRingCat.of R)) : ∃ c : R →+* S, spMap c = f :=
   ⟨(Spec.preimage f).hom, Spec.map_preimage f⟩
 
 /- English proof (translation)
-Establish `hξ : IsCptGen (pt (algebraMap R K))` using `isCptGen_fractionRing`. Establish `hgW : genPt (pt (algebraMap R K)) ∈ (PrimeSpectrum.basicOpen f : (Spec (CommRingCat.of R)).Opens)` using `by show f ∉ (genPt (pt (algebraMap R K))).asIdeal`. Rewrite using `[genPt_asIdeal]`. Conclude with `hf`. Establish `hxW : x.1 ∉ (PrimeSpectrum.basicOpen f : (Spec (CommRingCat.of R)).Opens)` using `fun hm => (show f ∉ x.1.asIdeal from hm) hxf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlft : LocallyOfFiniteType (spMap (algebraMap ℚ R))` using `HasRingHomProperty.Spec_iff.2 (RingHom.finiteType_algebraMap.2 inferInstance)`. Take `⟨V, hV, ψ, r, C, -, hhol, -, hz⟩` from `GlobalTheory.T.dvr_point_analytic_disc ℚ (algebraMap ℚ ℂ) (Spec (CommRingCat.of R)) (spMap (algebraMap ℚ R)) K (pt (algebraMap R K)) (PrimeSpectrum.basicOpen f) x ⊤ t hlft hξ hgW hxW trivial (isDVR_regAt hξ x hx1) hxt`. Take `⟨c, hc⟩` from `exists_ringHom (S := Γ(Spec (CommRingCat.of R), V)) hV.fromSpec`. Establish `hy : ∀ w, spMap (ψ w) ≫ hV.fromSpec = pt ((ψ w).comp c)` using `fun w => by`. Rewrite using `[← hc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Spec.map_comp _ _).symm`. Use `⟨fun z => (ψ z).comp c, r, C, ⟨hhol.1, fun a => hhol.2 (c a)⟩, fun z hzp => ?_⟩` and prove the remaining obligations. Use `hz z hzp` as an intermediate fact. Rewrite `this` using `[hy]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_disc {R K : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [Field K]
     [Algebra ℚ R] [Algebra.FiniteType ℚ R] [Algebra R K] [IsFractionRing R K] (f : R) (hf : algebraMap R K f ≠ 0)
@@ -143,19 +139,17 @@ theorem exists_disc {R K : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] 
   rwa [hy] at this
 
 /- English proof (translation)
-Establish `hξ : IsCptGen (pt (algebraMap R K))` using `isCptGen_fractionRing`. Take `⟨p, hp, hp1, hpole⟩` from `exists_pole_prime _ ht`. Establish `hhp : h ∈ p`. Assume the negation of the conclusion as `hn`. Conclude with `hpole g h hn (div_mul_cancel₀ _ hh)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `exists_cpt (algebraMap R K) (IsFractionRing.injective R K) p hp`. Establish `hnt : algebraMap R K g / algebraMap R K h ∉ regAt (pt (algebraMap R K)) x`. Introduce `hm`. Take `⟨a, c, hc, -, e⟩` from `(mem_regAt_iff _ x _).1 hm`. Conclude with `hpole a c hc e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, r, C, hhol, hz⟩` from `exists_disc (K := K) (b * h) (by rw [map_mul]; exact mul_ne_zero hb hh) _ x (Ideal.mul_mem_left _ b hhp) hp1 hnt`. Establish `hd : ∀ z : ℂ, ‖(fun _ => z : Fin 1 → ℂ)‖ = ‖z‖` using `fun z => pi_norm_const z`. Use `⟨fun z => φ fun _ => z, C, fun a => ?_, fun z hz1 hz0 => ?_⟩` and prove the remaining obligations. Establish `h1 : DifferentiableOn ℂ (fun (z : ℂ) (_ : Fin 1) => z) (Metric.ball 0 1)` using `(differentiable_pi.2 fun _ => differentiable_id).differentiableOn`. Use `(hhol.2 a).comp h1 fun z hz1 => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite `hz1`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[hd]` and apply the resulting hypothesis. Establish `hmem : (fun _ => z : Fin 1 → ℂ) ∈ punct 1 1 1`. Use `⟨?_, fun _ _ => hz0⟩` and prove the remaining obligations. Rewrite `hz1`, the goal using `[mem_ball_zero_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hd]` and apply the resulting hypothesis. Take `⟨hW, hval, hr0, hbd⟩` from `hz _ hmem`. Establish `hbh` using `ne_zero_of_top_le _ _ hW`. Rewrite `hbh` using `[map_mul]`. Establish `e` using `val_mul_eq hξ _ hh hval`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz0'` using `right_ne_zero_of_mul hbh`. Use `⟨left_ne_zero_of_mul hbh, hz0', ?_⟩` and prove the remaining obligations. Establish `e2 : φ (fun _ => z) h = (r fun _ => z)⁻¹ * φ (fun _ => z) g`. Rewrite using `[← e]`. Clear the denominators using the available nonvanishing facts.
-
-Use `show ‖φ (fun _ => z) h‖ ≤ C * ‖z‖ * ‖φ (fun _ => z) g‖`. Rewrite using `[e2, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right hbd (norm_nonneg _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disc_of_pole {R K : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [Field K]
     [Algebra ℚ R] [Algebra.FiniteType ℚ R] [Algebra R K] [IsFractionRing R K] (g h b : R)
@@ -200,11 +194,9 @@ theorem disc_of_pole {R K : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R]
     exact mul_le_mul_of_nonneg_right hbd (norm_nonneg _)
 
 /- English proof (translation)
-Introduce `Ω _ _ A hFG hSm hfrac g h b hh hb ht`. Use `haveI : Algebra.FiniteType ℚ A := (Subalgebra.fg_iff_finiteType A).1 hFG`. Use `haveI : IsNoetherianRing A := Algebra.FiniteType.isNoetherianRing ℚ A`. Use `haveI : IsIntegrallyClosed A := GlobalTheory.isIntegrallyClosed_of_smooth ℚ A`. Use `haveI : IsFractionRing A Ω := IsFractionRing.of_field A Ω fun z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, c, hc, hc0, e⟩` from `hfrac z`. Establish `hc0' : algebraMap A Ω ⟨c, hc⟩ ≠ 0` using `hc0`. Conclude with `⟨⟨a, ha⟩, ⟨c, hc⟩, eq_div_of_mul_eq hc0' e⟩`. Use `disc_of_pole (K := Ω) g h b hh hb fun a e => ht ?_` and prove the remaining obligations. Establish `e' : (a : Ω) = (g : Ω) / h` using `e`.
-
-Rewrite using `[← e']`. Conclude with `a.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pole_disc : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (A : Subalgebra ℚ Ω), A.FG → Algebra.Smooth ℚ A → (∀ x : Ω, ∃ a ∈ A, ∃ b ∈ A, b ≠ 0 ∧ x * b = a) → ∀ g h b : A, (h : Ω) ≠ 0 → (b : Ω) ≠ 0 → (g : Ω) / h ∉ A → ∃ (ψ : ℂ → (A →+* ℂ)) (C : ℝ), (∀ a : A, DifferentiableOn ℂ (fun z => ψ z a) (Metric.ball 0 1)) ∧ ∀ z ∈ Metric.ball (0 : ℂ) 1, z ≠ 0 → ψ z b ≠ 0 ∧ ψ z h ≠ 0 ∧ ‖ψ z h‖ ≤ C * ‖z‖ * ‖ψ z g‖ := by
   intro Ω _ _ A hFG hSm hfrac g h b hh hb ht

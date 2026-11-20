@@ -13,9 +13,9 @@ variable {K V ι : Type*} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [
   [DecidableEq ι]
 
 /- English proof (translation)
-Establish `hm : (Matrix.of fun i j => h (u i) (w j)) = (b.toMatrix u).conjTranspose * (Matrix.of fun i j => h (b i) (b j)) * b.toMatrix w`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply]`. Use `conv_lhs => rw [← b.sum_repr (u i), ← b.sum_repr (w j)]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Basis.toMatrix_apply, Matrix.of_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, starRingEnd_apply, RingHom.id_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hm, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Basis.det_apply, Basis.det_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_det_eq (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis ι K V) (u w : ι → V) :
     (Matrix.of fun i j => h (u i) (w j)).det =
@@ -42,7 +42,7 @@ def gdet (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis (Fin (finrank K V)) K V) 
   (Matrix.of fun i j => h (b i) (b j)).det
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨x, hx, by rw [hz, gram_det_eq h b]; rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_discrIdeal {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     (b : Basis (Fin (finrank K V)) K V) {x : Fin (finrank K V) → V} (hx : ∀ i, x i ∈ L) {z : 𝓞 K}
@@ -50,7 +50,7 @@ theorem mem_discrIdeal {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K
   Ideal.subset_span ⟨x, hx, by rw [hz, gram_det_eq h b]; rfl⟩
 
 /- English proof (translation)
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨x, hx, hz⟩`. Conclude with `hI x hx z (by rw [hz, gram_det_eq h b]; rfl)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem discrIdeal_le {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     (b : Basis (Fin (finrank K V)) K V) {I : Ideal (𝓞 K)}
@@ -61,9 +61,7 @@ theorem discrIdeal_le {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K)
   exact hI x hx z (by rw [hz, gram_det_eq h b]; rfl)
 
 /- English proof (translation)
-Use `choose g hg using fun i j => Submodule.mem_one.mp (hLi (u i) (hu i) (w j) (hw j))`. Use `⟨(Matrix.of g).det, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det, gdet, ← gram_det_eq h b]`. Use `congr 1`. Use extensionality with `i j`.
-
-Conclude with `hg i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_mixed {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) (b : Basis (Fin (finrank K V)) K V)
@@ -77,9 +75,9 @@ theorem exists_mixed {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) 
   exact hg i j
 
 /- English proof (translation)
-Introduce `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx k hk`.
+A detailed English derivation is pending.
 -/
 theorem update_mem {L : Submodule (𝓞 K) V} {n : ℕ} {x : Fin n → V} {i : Fin n}
     (hx : ∀ k, k ≠ i → x k ∈ L) {y : V} (hy : y ∈ L) : ∀ k, Function.update x i y k ∈ L := by
@@ -95,13 +93,11 @@ theorem algebraMap_conjO (x : 𝓞 K) :
     algebraMap (𝓞 K) K (conjO K x) = star (algebraMap (𝓞 K) K x) := rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Set `J : Ideal (𝓞 K)` to `{ carrier := {c | c * z ∈ I} add_mem' := fun {a c} ha hc => by`. Express the relevant statement in the definitionally equal form `(a + c) * z ∈ I`. Rewrite using `[add_mul]`. Conclude with `I.add_mem ha hc`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use the proof step `zero_mem' := by change (0 : 𝓞 K) * z ∈ I; rw [zero_mul]; exact I.zero_mem`. Use the proof step `smul_mem' := fun c a ha => by`. Express the relevant statement in the definitionally equal form `(c • a) * z ∈ I`. Rewrite using `[smul_eq_mul, mul_assoc]`. Conclude with `I.mul_mem_left c ha }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : J ≠ ⊤`. Introduce `hJ`. Establish `h1 : (1 : 𝓞 K) ∈ J` using `hJ ▸ Submodule.mem_top`. Establish `h2 : (1 : 𝓞 K) * z ∈ I` using `h1`. Rewrite `h2` using `[one_mul]`.
-
-Conclude with `hn h2`. Take `⟨P, hP, hJP⟩` from `Ideal.exists_le_maximal J hJ`. Take `⟨θ, hθ⟩` from `exists_sub_conjO_notMem hK hP`. Conclude with `hθ (hJP (hz θ))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_unram (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {I : Ideal (𝓞 K)} {z : 𝓞 K}
     (hz : ∀ θ : 𝓞 K, (θ - conjO K θ) * z ∈ I) : z ∈ I := by
@@ -126,17 +122,15 @@ theorem mem_of_unram (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {I : I
   exact hθ (hJP (hz θ))
 
 /- English proof (translation)
-Establish `hu` using `update_mem hx hy`. Establish `hu'` using `update_mem hx hy'`. Take `⟨z11, h11⟩` from `exists_mixed hLi b hu hu`. Take `⟨z22, h22⟩` from `exists_mixed hLi b hu' hu'`. Take `⟨z21, h21⟩` from `exists_mixed hLi b hu' hu`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `m11` using `mem_discrIdeal b hu h11`. Establish `m22` using `mem_discrIdeal b hu' h22`. Establish `key : ∀ θ : 𝓞 K, θ * z + conjO K θ * z21 ∈ discrIdeal h L`. Introduce `θ`. Establish `hd : b.det (Function.update x i (y + θ • y')) = b.det (Function.update x i y) + algebraMap (𝓞 K) K θ * b.det (Function.update x i y')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul K θ y', AlternatingMap.map_update_add, AlternatingMap.map_update_smul, smul_eq_mul]`. Establish `hw : z11 + conjO K θ * θ * z22 + θ * z + conjO K θ * z21 ∈ discrIdeal h L`. Use `mem_discrIdeal b (update_mem hx (L.add_mem hy (L.smul_mem θ hy'))) ?_` and prove the remaining obligations. Rewrite using `[hd]`. Simplify using `only [map_add, map_mul, h11, h22, h21, hz, algebraMap_conjO, star_add, star_mul']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `he : θ * z + conjO K θ * z21 = (z11 + conjO K θ * θ * z22 + θ * z + conjO K θ * z21) - z11 - conjO K θ * θ * z22`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Conclude with `Ideal.sub_mem _ (Ideal.sub_mem _ hw m11) (Ideal.mul_mem_left _ _ m22)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_of_unram hK fun θ => ?_` and prove the remaining obligations. Establish `h1` using `key 1`. Rewrite `h1` using `[map_one, one_mul, one_mul]`. Establish `he : (θ - conjO K θ) * z = (θ * z + conjO K θ * z21) - conjO K θ * (z + z21)` using `by ring`. Rewrite using `[he]`.
-
-Conclude with `Ideal.sub_mem _ (key θ) (Ideal.mul_mem_left _ _ h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixed_mem (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) (b : Basis (Fin (finrank K V)) K V)
@@ -177,27 +171,21 @@ theorem mixed_mem (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V �
 omit [StarRing K] in
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 K)) a`. Use `choose e he using hN`. Establish `hN0 : algebraMap (𝓞 K) K (N : 𝓞 K) ≠ 0`. Rewrite using `[Ne, FaithfulSMul.algebraMap_eq_zero_iff]`. Conclude with `nonZeroDivisors.coe_ne_zero N`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he' : ∀ j, algebraMap (𝓞 K) K (e j) = algebraMap (𝓞 K) K (N : 𝓞 K) * a j`. Introduce `j`. Rewrite using `[he j, Algebra.smul_def]`. Establish `hβ : e j₀ ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `he' j₀` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `(mul_ne_zero hN0 ha) this.symm`. Establish `hβK : algebraMap (𝓞 K) K (e j₀) ≠ 0`. Rewrite using `[Ne, FaithfulSMul.algebraMap_eq_zero_iff]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨C, hC⟩ : Ideal.span (Set.range e) ∣ Ideal.span {e j₀}` from `Ideal.dvd_iff_le.2 (Ideal.span_le.2 (by`. Introduce and unpack `_ rfl`. Conclude with `Ideal.subset_span ⟨j₀, rfl⟩))`. Establish `hex : ∃ γ ∈ C, ∃ j, γ * e j ∉ P * Ideal.span {e j₀}`. Assume the negation of the conclusion as `hcon`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `push Not at hcon`. Establish `hle : Ideal.span {e j₀} ≤ P * Ideal.span {e j₀}` using `by conv_lhs => rw [hC]`. Rewrite using `[mul_comm, Ideal.mul_le]`. Introduce `γ hγ r hr`. Proceed by induction on `hr using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `mem r hr => obtain ⟨j, rfl⟩ := hr`. Conclude with `hcon γ hγ j`. Consider the case `zero => rw [mul_zero]`. Conclude with `Ideal.zero_mem _`. Consider the case `add r s _ _ hr hs => rw [mul_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Ideal.add_mem _ hr hs`. Consider the case `smul c r _ hr => rw [smul_eq_mul, mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ _ hr`. Establish `heq : P * Ideal.span {e j₀} = 1 * Ideal.span {e j₀}`. Rewrite using `[one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `le_antisymm Ideal.mul_le_right hle`. Establish `hs0 : Ideal.span {e j₀} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hβ`. Conclude with `hP (by rw [mul_right_cancel₀ hs0 heq, Ideal.one_eq_top])`.
-
-Take `⟨γ, hγ, j₁, hj₁⟩` from `hex`. Establish `hmem : ∀ j, γ * e j ∈ Ideal.span {e j₀}`. Introduce `j`. Rewrite using `[hC, mul_comm γ]`. Conclude with `Ideal.mul_mem_mul (Ideal.subset_span ⟨j, rfl⟩) hγ`.
-
-Use `choose c hc using fun j => Ideal.mem_span_singleton'.1 (hmem j)`. Use `⟨algebraMap (𝓞 K) K γ * algebraMap (𝓞 K) K (N : 𝓞 K) / algebraMap (𝓞 K) K (e j₀), c, fun j => ?_, j₁, fun hcP => hj₁ ?_⟩` and prove the remaining obligations. Use `congrArg (algebraMap (𝓞 K) K) (hc j)` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, he' j]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hc j₁]`. Conclude with `Ideal.mul_mem_mul hcP (Ideal.mem_span_singleton_self _)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prim {J : Type*} [Finite J] (a : J → K) {j₀ : J} (ha : a j₀ ≠ 0) {P : Ideal (𝓞 K)}
     (hP : P ≠ ⊤) :

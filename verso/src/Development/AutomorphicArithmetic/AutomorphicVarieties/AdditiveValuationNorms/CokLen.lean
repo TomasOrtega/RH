@@ -4,19 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 open UpperTheory.V UpperTheory.V.PropA
 
 /- English proof (translation)
-Introduce `l _ X _ _ R hgen`. Take `⟨π, hπ⟩` from `hgen`. Set `I : Submodule ℤ_[l] ℤ_[l]` to `IsLocalRing.maximalIdeal ℤ_[l]`. Establish `hsimple : IsSimpleModule ℤ_[l] (ℤ_[l] ⧸ I)` using `isSimpleModule_iff_isCoatom.2 (Ideal.isMaximal_def.1 (IsLocalRing.maximalIdeal.isMaximal ℤ_[l]))`. Set `P : Submodule ℤ_[l] (Fin R → ℤ_[l])` to `Submodule.pi Set.univ (fun _ => I)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `q : Submodule ℤ_[l] X` to `LinearMap.range ((l : ℤ_[l]) • (1 : Module.End ℤ_[l] X))`. Establish `hle : P ≤ q.comap π`. Introduce `v hv`. Rewrite `hv` using `[Submodule.mem_pi]`. Establish `hex : ∀ i, ∃ w : ℤ_[l], v i = (l : ℤ_[l]) * w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Establish `hi` using `hv i (Set.mem_univ i)`. Express the relevant statement in the definitionally equal form `v i ∈ IsLocalRing.maximalIdeal ℤ_[l] at hi`. Rewrite `hi` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, by rw [← ha, mul_comm]⟩`. Use `choose w hw using hex`. Establish `hv' : v = (l : ℤ_[l]) • w` using `funext fun i => by simp [hw i]`. Rewrite using `[Submodule.mem_comap, LinearMap.mem_range]`. Use `⟨π w, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply, Module.End.one_apply, hv', map_smul]`. Establish `hφ : Function.Surjective (P.mapQ q π hle)`. Introduce `z`. Use `Submodule.Quotient.induction_on _ z ?_` and prove the remaining obligations. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `hπ x`. Conclude with `⟨Submodule.Quotient.mk v, Submodule.mapQ_apply _ _ _ _⟩`. Establish `h1` using `Module.length_le_of_surjective (P.mapQ q π hle) hφ`. Establish `h2 : Module.length ℤ_[l] ((Fin R → ℤ_[l]) ⧸ P) = R`. Rewrite using `[(Submodule.quotientPi (fun _ : Fin R => I)).length_eq, Module.length_pi_of_fintype]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Module.length_eq_one]`. Conclude with `h1.trans h2.le`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.PropA.cokL :
     ∀ (l : ℕ) [Fact l.Prime] (X : Type) [AddCommGroup X] [Module ℤ_[l] X] (R : ℕ), GenBy l R X → cokLen ((l : ℤ_[l]) • (1 : Module.End ℤ_[l] X)) ≤ R := by

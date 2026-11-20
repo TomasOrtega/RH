@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights
 namespace PGaussDetFactor
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hd.le]`. Evaluate the numerical expressions. Conclude with `Real.rpow_neg_one d`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 lemma rpow_neg_half_sq {d : ℝ} (hd : 0 < d) : (d ^ (-(1 / 2 : ℝ))) ^ 2 = d⁻¹ := by
   rw [← Real.rpow_natCast, ← Real.rpow_mul hd.le]
@@ -19,11 +19,11 @@ end PGaussDetFactor
 open PGaussDetFactor in
 
 /- English proof (translation)
-Introduce `g Y B hY hBY`. Establish `hd : 0 < Y.det` using `hY.det_pos`. Establish `hsq : B.det ^ 2 = (1 / 2 : ℝ) ^ g * Y.det`. Use `congrArg Matrix.det hBY` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_smul, Fintype.card_fin]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[sq]`. Conclude with `this`. Establish `hB0 : 0 < |B.det|`. Establish `: B.det ^ 2 ≠ 0` using `by rw [hsq]; positivity`. Conclude with `abs_pos.mpr (fun h => this (by rw [h]; ring))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 0 ≤ |B.det|⁻¹` using `(inv_pos.mpr hB0).le`. Establish `hR : 0 ≤ √2 ^ g * Y.det ^ (-(1 / 2 : ℝ))` using `by positivity`. Use `(pow_left_inj₀ hL hR (two_ne_zero)).mp ?_` and prove the remaining obligations. Rewrite using `[inv_pow, sq_abs, hsq, mul_pow, rpow_neg_half_sq hd, ← pow_mul, mul_comm g 2, pow_mul, Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 2)]`. Rewrite using `[mul_inv, one_div, inv_pow, inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GaussDetFactor.proof : GaussDetFactor.Statement := by
   intro g Y B hY hBY

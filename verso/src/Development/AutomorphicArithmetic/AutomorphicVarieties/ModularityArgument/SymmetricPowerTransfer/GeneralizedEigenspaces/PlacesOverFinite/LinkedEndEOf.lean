@@ -61,7 +61,7 @@ def LinkedEndE : Prop :=
     Pr.FinPt c.O Φ 3 ∧ Pr.AutPt k 3 ι (cycBar L Ω l)⁻¹ ∧ ∃ ka, Sd.IsAlgChar ι ka ∧ Pr.AutPt k 2 ι ka
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ ι c _ N _ e ψ he _` and use `h Ω l ι c N e ψ he`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem linkedEndE_of (h : Pr.LinkedEnd) : LinkedEndE :=
   fun Ω _ _ _ l _ ι c _ N _ e ψ he _ => h Ω l ι c N e ψ he

@@ -24,7 +24,7 @@ def SchemeLevel : Prop := ∀ {Y X : Scheme.{0}} (g : Y ⟶ X) (O : X.Opens) {ι
     Arrow.mk (Limits.Sigma.map fun j : Fin (n + 1) → ι => g ∣_ (⨅ k, V (j k))))
 
 /- English proof (translation)
-Introduce `Y X g O ι V hV n`. Take `⟨e1⟩` from `hY (sqS g O V hV) n`. Take `⟨e2⟩` from `hS g O V hV n`. Conclude with `⟨e1 ≪≫ yoneda.mapArrow.mapIso e2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LevelIso_of (hY : CechYoneda) (hS : SchemeLevel) : LevelIso := by
   intro Y X g O ι V hV n
@@ -33,7 +33,7 @@ theorem LevelIso_of (hY : CechYoneda) (hS : SchemeLevel) : LevelIso := by
   exact ⟨e1 ≪≫ yoneda.mapArrow.mapIso e2⟩
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.CechSigmaProof.CechSigma_of (LevelIso_of hY hS)`.
+A detailed English derivation is pending.
 -/
 theorem CechSigma_of (hY : CechYoneda) (hS : SchemeLevel) : ZariskiLocalCech.CechSigma :=
   LateralTheory.E.CechSigmaProof.CechSigma_of (LevelIso_of hY hS)

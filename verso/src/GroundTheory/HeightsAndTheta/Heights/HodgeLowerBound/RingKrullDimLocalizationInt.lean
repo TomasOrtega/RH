@@ -12,17 +12,15 @@ open Algebra MvPolynomial TensorProduct
 open ReciprocityTheory.ChartRestriction.G.Geo (MRing IsArithVar)
 
 /- English proof (translation)
-Take `rfl : inst = Ring.toIntAlgebra B` from `Subsingleton.elim _ _`. Set `: Algebra B (ℚ ⊗[ℤ] B)` to `Algebra.TensorProduct.rightAlgebra`. Set `M` to `Algebra.algebraMapSubmonoid B (nonZeroDivisors ℤ)`. Establish `hM : M ≤ nonZeroDivisors B`. Introduce and unpack `_ ⟨m, hm, rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Introduce `h`. Conclude with `nonZeroDivisors.ne_zero hm (hinj (h.trans (map_zero _).symm))`. Establish `: IsLocalization M (ℚ ⊗[ℤ] B)` using `IsLocalization.tensorRight _ _`. Establish `: IsDomain (ℚ ⊗[ℤ] B)` using `IsLocalization.isDomain_of_le_nonZeroDivisors _ hM`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBL : Function.Injective (algebraMap B (ℚ ⊗[ℤ] B))` using `IsLocalization.injective _ hM`. Establish `: FaithfulSMul B (ℚ ⊗[ℤ] B)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hBL`. Establish `: FaithfulSMul ℤ B` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Establish `: FaithfulSMul ℤ ℚ` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap ℤ ℚ).injective_int`. Establish `: FaithfulSMul ℚ (ℚ ⊗[ℤ] B)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap ℚ (ℚ ⊗[ℤ] B)).injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsScalarTower.of_algebraMap_eq' (RingHom.ext_int (algebraMap ℤ (ℚ ⊗[ℤ] B)) ((algebraMap B (ℚ ⊗[ℤ] B)).comp (algebraMap ℤ B)))` as an intermediate fact. Use `IsScalarTower.of_algebraMap_eq' (RingHom.ext_int (algebraMap ℤ (ℚ ⊗[ℤ] B)) ((algebraMap ℚ (ℚ ⊗[ℤ] B)).comp (algebraMap ℤ ℚ)))` as an intermediate fact. Establish `: Algebra.IsAlgebraic B (ℚ ⊗[ℤ] B)` using `IsLocalization.isAlgebraic _ M`. Establish `: Algebra.IsAlgebraic ℤ ℚ` using `IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)`. Establish `h1` using `trdeg_add_eq ℤ B (A := ℚ ⊗[ℤ] B)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `trdeg_add_eq ℤ ℚ (A := ℚ ⊗[ℤ] B)`. Rewrite `h1` using `[trdeg_eq_zero (R := B) (A := ℚ ⊗[ℤ] B), add_zero]`. Rewrite `h2` using `[trdeg_eq_zero (R := ℤ) (A := ℚ), zero_add]`. Establish `htL : trdeg ℚ (ℚ ⊗[ℤ] B) = t` using `by rw [h2, ← h1, ht]`. Rewrite using `[← ReciprocityTheory.CA.ringKrullDim_eq_of_trdeg_eq_field (K := ℚ) (A := ℚ ⊗[ℤ] B) t htL]`.
-
-Conclude with `ringKrullDim_eq_of_ringEquiv (IsLocalization.algEquiv M (Localization M) (ℚ ⊗[ℤ] B)).toRingEquiv`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DimX.ringKrullDim_localization_int (B : Type) [CommRing B] [IsDomain B]
     [inst : Algebra ℤ B] [Algebra.FiniteType ℤ B] (hinj : Function.Injective (algebraMap ℤ B)) (t : ℕ)
@@ -63,15 +61,13 @@ theorem DimX.ringKrullDim_localization_int (B : Type) [CommRing B] [IsDomain B]
     (IsLocalization.algEquiv M (Localization M) (ℚ ⊗[ℤ] B)).toRingEquiv
 
 /- English proof (translation)
-Introduce `K _ ι _ P n hP`. Take `⟨-, ⟨hPp, -, -⟩, hhor, hdim⟩` from `hP`. Use `hPp` as an intermediate fact. Establish `hinj : Function.Injective (algebraMap ℤ (MRing ι ⧸ P))`. Rewrite using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Establish `hm' : m ∈ P.comap (C : ℤ →+* MRing ι)`. Rewrite using `[Ideal.mem_comap, ← Ideal.Quotient.eq_zero_iff_mem, ← hm]`. Conclude with `congrArg (fun f : ℤ →+* MRing ι ⧸ P => f m) (RingHom.ext_int ((Ideal.Quotient.mk P).comp C) (algebraMap ℤ (MRing ι ⧸ P)))`. Rewrite `hm'` using `[hhor, Ideal.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hm'`. Establish `: Algebra.FiniteType ℤ (MRing ι ⧸ P)` using `.of_surjective (Ideal.Quotient.mkₐ ℤ P) (Ideal.Quotient.mkₐ_surjective ℤ P)`. Establish `hfin : trdeg ℤ (MRing ι ⧸ P) < Cardinal.aleph0` using `trdeg_lt_aleph0_of_finiteType`. Take `⟨t, ht⟩` from `Cardinal.lt_aleph0.mp hfin`. Establish `hB` using `IntDomainDim.proof (MRing ι ⧸ P) hinj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hB` using `[ht, Cardinal.toENat_nat, hdim]`. Establish `htn : t = n + Fintype.card K`. Establish `h1 : ((n + 1 + Fintype.card K : ℕ) : WithBot ℕ∞) = ((t + 1 : ℕ) : WithBot ℕ∞)`. Conclude with `hB` after adjusting the coercions. Establish `h2 : n + 1 + Fintype.card K = t + 1` using `by exact_mod_cast h1`.
-
-Use linear arithmetic over natural numbers and integers. Rewrite using `[← htn]`. Conclude with `DimX.ringKrullDim_localization_int (MRing ι ⧸ P) hinj t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DimX.proof : DimX.Statement := by
   intro K _ ι _ P n hP

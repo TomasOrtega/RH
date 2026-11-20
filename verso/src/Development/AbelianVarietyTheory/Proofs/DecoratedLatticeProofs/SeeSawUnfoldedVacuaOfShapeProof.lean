@@ -18,22 +18,20 @@ open GlobalTheory.FinPl
 namespace GlobalTheory.SeeSaw.VacShape
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 D.host.F)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField D.host.F)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_pl (D : D7) : Nonempty (Pl D) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 D.host.F)
   exact ⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField D.host.F)⟩⟩
 
 /- English proof (translation)
-Introduce `D c v k _ _ _ _ ι o hc hv hs t`. Take `⟨x₀⟩` from `nonempty_pl D`. Establish `hFV` using `GlobalTheory.T.flatMapPreservesVacuum_proof D c.ψ (· ∉ v.tP)`. Establish `hCC` using `GlobalTheory.T.besselThetaContraction_extendByZero_vacuum_smooth D c.ψ hc.std`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j σ h Ψ₁ Ψ₂ h₁ h₂`. Establish `f₁` using `hFV.1 (σ + 1) (c.B j (σ + 1) h) (c.J j (σ + 1) h) (t.sBF j (σ + 1) h) (v.N j) (o.M j (σ + 1) h) (v.N (j + 1)) (c.x (j + 1)).L (fun x _ => (hs.good x).bf j (σ + 1) h) Ψ₁ h₁`. Establish `f₂` using `hFV.2.1 σ (c.J j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) (t.sFB j σ h) (v.N (j + 1)) (c.x (j + 1)).L (v.N (j + 1 + 1)) (o.M (j + 1 + 1) σ (idx_step h)) (fun x _ => (hs.good x).fb j σ h) Ψ₂ h₂`. Establish `hg0` using `(hs.good x₀).bf j (σ + 1) h`. Establish `hg1` using `(hs.good x₀).fb j σ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hor : ∀ x, x ∉ v.tP → (∃ LL, OrthAt (c.B j (σ + 1) h).o (o.M j (σ + 1) h) (c.x j).L LL x) ∧ ∃ LL, OrthAt (c.B (j + 1 + 1) σ (idx_step h)).o (o.M (j + 1 + 1) σ (idx_step h)) (c.x (j + 1 + 1)).L LL x`. Introduce `x hx`. Take `⟨LL, _, hLL⟩` from `(hs.split x hx).core j (σ + 1) h`. Take `⟨LL', _, hLL'⟩` from `(hs.split x hx).core (j + 1 + 1) σ (idx_step h)`. Conclude with `⟨⟨LL, hLL⟩, ⟨LL', hLL'⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(hCC (σ + 1) σ (c.B j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) (c.lnk j σ h) (c.X (j + 1)) (c.vL j σ h) _ _ f₁.1 f₂.1).2.2 (· ∉ v.tP) (c.x j).L (c.x (j + 1)).L (c.x (j + 1 + 1)).L (o.M j (σ + 1) h) (o.M (j + 1 + 1) σ (idx_step h)) (hc.x j (by omega)).sd (hc.x (j + 1) (by omega …`. Introduce `j h Ψ₁ Ψ₂ h₁ h₂`. Establish `f₁` using `hFV.1 0 (c.B j 0 h) (c.J j 0 h) (t.sBF j 0 h) (v.N j) (o.M j 0 h) (v.N (j + 1)) (c.x (j + 1)).L (fun x _ => (hs.good x).bf j 0 h) Ψ₁ h₁`. Establish `f₂` using `hFV.2.2 (c.V (j + 1)) (c.X (j + 1)) c.T (c.jac j 0 h).d (v.N (j + 1)) (c.x (j + 1)).L v.NT (hv.sd (j + 1) (by omega)) (hc.x (j + 1) (by omega)).sd hv.sdT (fun x _ => ((hs.good x).bf j 0 h).monoW) Ψ₂ h₂`. Establish `hg0` using `(hs.good x₀).bf j 0 h`.
-
-Conclude with `GlobalTheory.T.lastSeeSawDatum_of_vacua_is_vacuum_both D c.ψ hc.std _ (c.X j) _ (c.X (j + 1)) (c.X (j + 1 + 1)) c.T c.Lz (c.bes j 0 h).o (c.oT (j + 1 + 1) h) (v.τ j h) (c.bes j 0 h).line.1 hs.pre.line.1 (hs.pre.tau j h) (· ∉ v.tP) (o.M j 0 h) (c.x j).L (c.x (j + 1)).L (c.x (j + 1 …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vacOfShape : ∀ D : D7, GlobalTheory.SeeSaw.VacOfShape D := by
   intro D c v k _ _ _ _ ι o hc hv hs t

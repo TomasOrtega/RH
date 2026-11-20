@@ -36,15 +36,13 @@ theorem trCochain_apply (ι : G →* G') [Fintype (G' ⧸ ι.range)] (T : LocLat
     T.ρ (g • q).out (f (Function.invFun ι ((g • q).out⁻¹ * g * q.out))) := rfl
 
 /- English proof (translation)
-Take `⟨⟨hcont, hcoc⟩, hT⟩` from `hc`. Establish `hj : ∀ g, Function.invFun ι (ι g) = g` using `Function.leftInverse_invFun he.injective`. Use `haveI : ContinuousSMul LL T.V := IsModuleTopology.toContinuousSMul LL T.V`. Use `haveI : IsTopologicalAddGroup T.V := IsModuleTopology.topologicalAddGroup LL T.V`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.transfer_continuous_of_continuousOn LL G' T.V T.ρ ι.range ho (fun g => IsModuleTopology.continuous_of_linearMap (T.ρ g)) (fun g => c (Function.invFun ι g)) ?_` and prove the remaining obligations. Establish `h1 : (ι.range : Set G') = ι '' Set.univ`. Rewrite using `[Set.image_univ]`. Both sides reduce to the same expression. Rewrite using `[h1, he.isInducing.continuousOn_image_iff]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2 : ((fun g => c (Function.invFun ι g)) ∘ ι) = c`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, hj]`. Rewrite using `[h2]`. Conclude with `hcont.continuousOn`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.transfer_cocycle_formula LL G' T.V T.ρ ι.range).2.1 (fun g => c (Function.invFun ι g)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`. Rewrite using `[← map_mul, hj, hj, hj]`. Conclude with `hcoc a b`. Introduce `g _`.
-
-Rewrite using `[trCochain_apply]`. Conclude with `Submodule.sum_mem _ fun q _ => T.L.stable _ _ (hT _ (Set.mem_univ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trCochain_Z1T [IsTopologicalGroup G'] (ι : G →* G') (hι : Continuous ι)
     (he : Topology.IsEmbedding ι) (ho : IsOpen (ι.range : Set G')) [Fintype (G' ⧸ ι.range)]
@@ -75,9 +73,9 @@ theorem trCochain_Z1T [IsTopologicalGroup G'] (ι : G →* G') (hι : Continuous
     exact Submodule.sum_mem _ fun q _ => T.L.stable _ _ (hT _ (Set.mem_univ _))
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `hc`. Establish `hj : ∀ g, Function.invFun ι (ι g) = g` using `Function.leftInverse_invFun hinj`. Use `⟨∑ q : G' ⧸ ι.range, T.ρ q.out x, Submodule.sum_mem _ fun q _ => T.L.stable _ _ hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Use `symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Use symmetry to reverse the relation.
 
-Use `(GlobalTheory.transfer_cocycle_formula LL G' T.V T.ρ ι.range).2.2.1 (fun g => T.ρ (ι (Function.invFun ι g)) x - x) x ?_ g` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[hj]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem trCochain_B1T (ι : G →* G') (hι : Continuous ι) (hinj : Function.Injective ι)
     [Fintype (G' ⧸ ι.range)]
@@ -106,11 +104,11 @@ def corH1 [IsTopologicalGroup G'] (ι : G →* G') (hι : Continuous ι)
       exact trCochain_B1T ι hι he.injective T c hc)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ κ`. Rewrite using `[← Submodule.Quotient.mk_smul]`. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Take `⟨c, ⟨hcont, hcoc⟩, hT⟩` from `c`. Use `⟨∑ q : G' ⧸ ι.range, c q.out, Submodule.sum_mem _ fun q _ => hT _ (Set.mem_univ _), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `g`. Establish `H` using `GlobalTheory.transfer_cocycle_formula LL G' T.V T.ρ ι.range`. Establish `h4` using `H.2.2.2 c hcoc g`. Establish `hj : ∀ q : G' ⧸ ι.range, ι (Function.invFun ι ((g • q).out⁻¹ * g * q.out)) = (g • q).out⁻¹ * g * q.out` using `fun q => Function.invFun_eq (H.1 g q)`. Express the relevant statement in the definitionally equal form `T.ρ g (∑ q : G' ⧸ ι.range, c q.out) - ∑ q : G' ⧸ ι.range, c q.out = ∑ q : G' ⧸ ι.range, T.ρ (g • q).out (c (ι (Function.invFun ι ((g • q).out⁻¹ * g * q.out)))) - ((ι.range.index : ℕ) : O) • c g`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [hj]`. Simplify using `only at h4`. Rewrite using `[h4, Nat.cast_smul_eq_nsmul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem corH1_res [IsTopologicalGroup G'] (ι : G →* G') (hι : Continuous ι)
     (he : Topology.IsEmbedding ι) (ho : IsOpen (ι.range : Set G')) [Fintype (G' ⧸ ι.range)]
@@ -136,9 +134,9 @@ theorem corH1_res [IsTopologicalGroup G'] (ι : G →* G') (hι : Continuous ι)
   abel
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ κ`. Use `congrArg Submodule.Quotient.mk (Subtype.ext ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `∑ q : G' ⧸ ι.range, T₂.ρ (g • q).out (F.f (c.1 (Function.invFun ι ((g • q).out⁻¹ * g * q.out)))) = F.f (∑ q : G' ⧸ ι.range, T₁.ρ (g • q).out (c.1 (Function.invFun ι ((g • q).out⁻¹ * g * q.out))))`. Rewrite using `[map_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun q _ => (F.equiv _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem corH1_natural [IsTopologicalGroup G'] (ι : G →* G') (hι : Continuous ι)
     (he : Topology.IsEmbedding ι) (ho : IsOpen (ι.range : Set G')) [Fintype (G' ⧸ ι.range)]
@@ -176,14 +174,14 @@ def repVB (PD' : PeriodData G' Qp K₀' K' B BdR) (T : LocLat G' Qp LL O) :
     simp [actVB]
 
 /- English proof (translation)
-Simplify using `[actVB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actVB_tmul_one (PD' : PeriodData G' Qp K₀' K' B BdR) (T : LocLat G' Qp LL O) (g : G')
     (x : T.V) : actVB PD' T.ρ g (x ⊗ₜ[Qp] (1 : B)) = T.ρ g x ⊗ₜ[Qp] (1 : B) := by
   simp [actVB]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, hact]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem actVB_res (PD : PeriodData G Qp K₀ K B BdR) (PD' : PeriodData G' Qp K₀' K' B BdR)
     (ι : G →* G') (hι : Continuous ι) (hact : ∀ g b, PD.actB g b = PD'.actB (ι g) b)
@@ -195,15 +193,13 @@ theorem actVB_res (PD : PeriodData G Qp K₀ K B BdR) (PD' : PeriodData G' Qp K�
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `haveI : Fintype (G' ⧸ ι.range) := Fintype.ofFinite _`. Use `⟨?_, corH1 ι hι he ho, corH1_res ι hι he ho, ?_, corH1_natural ι hι he ho⟩` and prove the remaining obligations. Introduce and unpack `T _ ⟨c, ⟨hc, hc', x, hx⟩, rfl⟩`. Establish `hz` using `LiftingTheory.resFun_Z1T ι hι T c c.2`. Use `⟨⟨LiftingTheory.resFun ι T c, hz⟩, ⟨hz, hz.1, x, fun g => ?_⟩, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[actVB_res PD PD' ι hι hact]`. Conclude with `hx (ι g)`. Introduce and unpack `T _ ⟨c, ⟨hc, hc', x, hx⟩, rfl⟩`. Establish `hz` using `trCochain_Z1T ι hι he ho T c c.2`. Establish `hj : ∀ g, Function.invFun ι (ι g) = g` using `Function.leftInverse_invFun he.injective`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨trCochain ι T c, hz⟩, ⟨hz, hz.1, ∑ q : G' ⧸ ι.range, actVB PD' T.ρ q.out x, fun g => ?_⟩, rfl⟩` and prove the remaining obligations. Establish `h3` using `(GlobalTheory.transfer_cocycle_formula LL G' _ (repVB PD' T) ι.range).2.2.1 (fun g => c.1 (Function.invFun ι g) ⊗ₜ[Qp] (1 : B)) x (by`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `hx a` as an intermediate fact. Rewrite `this` using `[actVB_res PD PD' ι hι hact]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hj]`. Conclude with `this) g`. Use `Eq.trans ?_ h3` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `trCochain ι T c g ⊗ₜ[Qp] (1 : B) = _`. Rewrite using `[trCochain_apply, sum_tmul]`.
-
-Conclude with `Finset.sum_congr rfl fun q _ => (actVB_tmul_one PD' T _ _).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coreCor_of_isOpen [IsTopologicalGroup G'] (PD : PeriodData G Qp K₀ K B BdR)
     (PD' : PeriodData G' Qp K₀' K' B BdR) (ι : G →* G') (hι : Continuous ι)
@@ -239,14 +235,14 @@ end General
 open Formalism.BasicNotions.Loc
 
 /- English proof (translation)
-The claim follows from `(IntermediateField.finrank_eq_fixingSubgroup_index (Om l) K.1).symm`.
+A detailed English derivation is pending.
 -/
 theorem GK_index_eq_finrank {l : ℕ} [Fact l.Prime] (K : FinExt l) :
     (GK K).index = Module.finrank ℚ_[l] ↥K.1 :=
   (IntermediateField.finrank_eq_fixingSubgroup_index (Om l) K.1).symm
 
 /- English proof (translation)
-Rewrite using `[Subgroup.inclusion_range, ← GK_index_eq_finrank, ← GK_index_eq_finrank]`. Conclude with `Subgroup.relIndex_mul_index hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inclusion_GK_index {l : ℕ} [Fact l.Prime] (K K' : FinExt l) (hle : GK K ≤ GK K') :
     (Subgroup.inclusion hle).range.index * Module.finrank ℚ_[l] ↥K'.1
@@ -261,13 +257,11 @@ namespace GlobalTheory
 open Formalism.BasicNotions.Loc
 
 /- English proof (translation)
-Introduce `D HW F l _ K K' _ hle LL`. Use `haveI := K.2`. Use `haveI := K'.2`. Establish `hidx` using `InducedSectionsSpanStatement.inclusion_GK_index K K' hle`. Establish `hpos : 0 < Module.finrank ℚ_[l] ↥K.1` using `Module.finrank_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos' : 0 < Module.finrank ℚ_[l] ↥K'.1` using `Module.finrank_pos`. Establish `hg : Module.finrank ℚ_[l] ↥K.1 / Module.finrank ℚ_[l] ↥K'.1 = (Subgroup.inclusion hle).range.index`. Rewrite using `[← hidx, Nat.mul_div_cancel _ hpos']`. Use `haveI : (Subgroup.inclusion hle).range.FiniteIndex := ⟨fun h => by`. Rewrite `hidx` using `[h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `omega⟩`. Rewrite using `[hg]`. Use `InducedSectionsSpanStatement.coreCor_of_isOpen _ _ _ _ (Topology.IsEmbedding.inclusion hle) ?_ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.inclusion_range]`. Conclude with `(IntermediateField.fixingSubgroup_isOpen K.1).preimage continuous_subtype_val`.
-
-Introduce `g b`. Rewrite using `[(D.loc l).PD_actB, (D.loc l).PD_actB]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem res_cor_H1f : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW),
     LiftingTheory.adm20 D HW F := by

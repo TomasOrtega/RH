@@ -15,27 +15,25 @@ noncomputable section
 namespace GlobalTheory.SphBlock
 
 /- English proof (translation)
-Introduce `k _ _ _ _ α _ _ m _ _ n _ _ e X _ _ σ χ x hx hK`. Use `set f := x.1.1 with hf`. Establish `hval : ∀ {d : Type} [Fintype d] [DecidableEq d] {g : GL d k}, g ∈ KO k d → valuation k (GeneralLinearGroup.det g : k) = 1`. Introduce `d _ _ g hg`. Take `⟨g, rfl⟩` from `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ((GeneralLinearGroup.det (GeneralLinearGroup.map (algebraMap 𝒪[k] k) g) : kˣ) : k) = algebraMap 𝒪[k] k (GeneralLinearGroup.det g : 𝒪[k]ˣ)` using `((algebraMap 𝒪[k] k).map_det _).symm`. Rewrite using `[h1]`. Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit (Units.isUnit _)`. Establish `hfK : ∀ κ ∈ KO k n, f κ = (χ (GeneralLinearGroup.det κ) : ℂ) • f 1`. Introduce `κ hκ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun y : IndSp e (piTensor σ) => y.1.1 1) (hK κ hκ)`. Establish `h2 : (multiProd e σ κ x).1.1 1 = f (1 * κ)` using `parInd_apply e (piTensor σ) κ 1 x`. Rewrite `h` using `[h2, one_mul]`. Conclude with `h`. Use `⟨f 1, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hx` to reduce the goal to its premises. Establish `hall : ∀ g, f g = 0`. Introduce `g`. Take `⟨u, l, κ, hκ, rfl⟩` from `UnitInd.exists_iwasawa e g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Set `p : parab k e` to `⟨(u : GL n k) * leviEmb k e l, mul_mem (unipRad_le_parab k e u.2) (leviEmb_mem_parab k e l)⟩`. Use `parInd_law e (piTensor σ) x p κ` as an intermediate fact. Express the relevant statement in the definitionally equal form `f ((u : GL n k) * leviEmb k e l * κ) = _ at this`. Rewrite using `[this, show x.1.1 κ = f κ from rfl, hfK κ hκ, h0, smul_zero, map_zero, smul_zero]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `hall g`. Introduce `a h hh set l : Levi k m := Pi.mulSingle a h with hl`. Establish `hlK : ∀ b, l b ∈ KO k (m b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Introduce `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `[l, hh]`. Simplify using `[l, Pi.mulSingle_eq_of_ne hb, one_mem]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hemb : leviEmb k e l ∈ KO k n`. Use `(UnitInd.unip_mul_levi_mem_KO e (1 : unipRad k e) l).2 ⟨one_mem _, hlK⟩` as an intermediate fact. Simplify using `using this`. Establish `hdet : GeneralLinearGroup.det (leviEmb k e l) = GeneralLinearGroup.det h`. Rewrite using `[det_leviEmb, Finset.prod_eq_single a]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[l]`. Introduce `b _ hb`. Simplify using `[l, Pi.mulSingle_eq_of_ne hb]`. Simplify using the standard rewrite rules. Establish `hδ : deltaHalf k m l = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[deltaHalf_apply]`. Use `Finset.prod_eq_one fun b _ => isUnram_absPow k _ _ (hval (hlK b))` and prove the remaining obligations. Set `p : parab k e` to `⟨leviEmb k e l, leviEmb_mem_parab k e l⟩`. Establish `hlaw` using `parInd_law e (piTensor σ) x p 1`. Establish `hp : leviProj k e p = l` using `leviProj_leviEmb k e l`.
-
-Rewrite `hlaw` using `[mul_one, hp, hδ, Units.val_one, one_smul]`. Express the relevant statement in the definitionally equal form `f (leviEmb k e l) = piTensor σ l (f 1) at hlaw`. Rewrite `hlaw` using `[hfK _ hemb, hdet]`. Conclude with `hlaw.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eigen_at_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (α : Type) [Fintype α] [LinearOrder α] (m : α → Type) [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] (n : Type) [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) (X : α → Type) [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (σ : ∀ a, Representation ℂ (GL (m a) k) (X a)) (χ : kˣ →* ℂˣ) (x : IndSp e (piTensor σ)), x ≠ 0 → (∀ g ∈ KO k n, multiProd e σ g x = (χ (Matrix.GeneralLinearGroup.det g) : ℂ) • x) → ∃ w : PiTensorProduct ℂ X, w ≠ 0 ∧ ∀ a, ∀ h ∈ KO k (m a), piTensor σ (Pi.mulSingle a h) w = (χ (Matrix.GeneralLinearGroup.det h) : ℂ) • w := by
   intro k _ _ _ _ α _ _ m _ _ n _ _ e X _ _ σ χ x hx hK

@@ -13,35 +13,31 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {Ω : ι 
   [∀ c, Algebra (𝓞 K) (A c)]
 
 /- English proof (translation)
-Introduce `hd h la c`. Use `letI : Algebra (Op d.D d.N la) (KTf K d.D d.N) := (OpToKT d.D d.N la).toAlgebra`. Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `letI : Algebra (Op d.D d.N la) (OmS (Ω c) d.D d.N) := (d.OpToS h la c).toAlgebra`. Establish `: IsScalarTower (Op d.D d.N la) (KTf K d.D d.N) (OmS (Ω c) d.D d.N)` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `: IsDiscreteValuationRing (Op d.D d.N la)` using `gauss_dvr d.D d.N la`. Establish `: IsFractionRing (Op d.D d.N la) (KTf K d.D d.N)` using `gauss_frac d.D d.N la`. Take `⟨hfd, hrk⟩` from `d.omS_finite hd h c`. Establish `: FiniteDimensional (KTf K d.D d.N) (OmS (Ω c) d.D d.N)` using `hfd`. Establish `: Algebra.IsSeparable (KTf K d.D d.N) (OmS (Ω c) d.D d.N)` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : ∀ x : OT K d.D d.N, algebraMap (Op d.D d.N la) (OmS (Ω c) d.D d.N) (algebraMap (OT K d.D d.N) (Op d.D d.N la) x) = d.OTtoS c x`. Introduce `x`. Use `show d.KTtoS h c (OpToKT d.D d.N la (algebraMap _ _ x)) = _`. Rewrite using `[gauss_lift]`. Conclude with `IsFractionRing.lift_algebraMap _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hset : d.PlOver la c = PlacesOver (Op d.D d.N la) (OmS (Ω c) d.D d.N)`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hnd, hw⟩`. Use `⟨hnd, fun a => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨x, m⟩, rfl⟩` from `IsLocalization.mk'_surjective (laT d.D d.N la).primeCompl a`. Establish `hm0 : w (d.OTtoS c m) = 0` using `le_antisymm (not_lt.mp fun hp => m.2 ((hw m).2.mp hp)) (hw m).1`. Establish `hsp` using `congrArg (algebraMap (Op d.D d.N la) (OmS (Ω c) d.D d.N)) (IsLocalization.mk'_spec (Op d.D d.N la) x m)`. Rewrite `hsp` using `[map_mul, hcomp, hcomp]`. Establish `hv` using `congrArg w hsp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hv` using `[AddValuation.map_mul, hm0, add_zero]`. Rewrite using `[hv, IsLocalization.AtPrime.mk'_mem_maximal_iff (S := Op d.D d.N la) (I := laT d.D d.N la)]`. Conclude with `hw x`. Introduce and unpack `⟨hnd, hO⟩`. Use `⟨hnd, fun x => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hcomp x, ← IsLocalization.AtPrime.to_map_mem_maximal_iff (Op d.D d.N la) (laT d.D d.N la)]`. Conclude with `hO _`. Take `⟨π, hπ, hπ0, s, hs, hps⟩` from `gauss_unif la`. Establish `hmax` using `gauss_maximalIdeal d.D d.N la hπ hs hps`. Establish `hϖ : Irreducible (algebraMap (OT K d.D d.N) (Op d.D d.N la) (MvPolynomial.C π))` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).mpr hmax`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hWres : ∀ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (a : 𝓞 K), d.Wres c w (algebraMap K (Ω c) (a : K)) = w (d.OTtoS c (MvPolynomial.C a))`. Introduce `w a`. Use `show w (algebraMap (Ω c) (OmS (Ω c) d.D d.N) (algebraMap K (Ω c) (a : K))) = _`. Use `congr 1`. Use `show _ = d.sH c (MvPolynomial.map (algebraMap (𝓞 K) K) (MvPolynomial.C a))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.map_C, ← MvPolynomial.algebraMap_eq, AlgHom.commutes, ← IsScalarTower.algebraMap_apply]`. Establish `hne : d.OTtoS c (MvPolynomial.C π) ≠ 0`. Rewrite using `[← hcomp]`. Introduce `h0`. Establish `h1 : algebraMap (Op d.D d.N la) (KTf K d.D d.N) (algebraMap (OT K d.D d.N) (Op d.D d.N la) (MvPolynomial.C π)) = 0` using `(d.KTtoS h c).injective (by rw [map_zero]; exact h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2 : algebraMap (OT K d.D d.N) (Op d.D d.N la) (MvPolynomial.C π) = 0` using `(IsFractionRing.injective (Op d.D d.N la) (KTf K d.D d.N)) (by rw [h1, map_zero])`. Establish `h3 : (MvPolynomial.C π : OT K d.D d.N) = 0` using `gauss_inj d.D d.N la (by rw [map_zero]; exact h2)`. Conclude with `hπ0 (by simpa using h3)`. Establish `he : ∀ w ∈ PlacesOver (Op d.D d.N la) (OmS (Ω c) d.D d.N), ((ramIdx (d.Wres c w) la : ℤ) : WithTop ℤ) = w (algebraMap (Op d.D d.N la) (OmS (Ω c) d.D d.N) (algebraMap (OT K d.D d.N) (Op d.D d.N la) (MvPolynomial.C π)))`. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hcomp]`. Take `⟨n0, hn0⟩` from `WithTop.ne_top_iff_exists.mp (hw.1.1 _ hne)`. Rewrite using `[← hn0]`. It suffices to establish `hr : ramIdx (d.Wres c w) la = n0 by rw [hr]`. Apply `IsLeast.csInf_eq` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨π, hπ, hπ0, by rw [hWres, hn0]⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `n ⟨a, ha, -, hna⟩`. Rewrite `hna` using `[hWres]`. Establish `hmem : algebraMap (OT K d.D d.N) (Op d.D d.N la) (MvPolynomial.C a) ∈ maximalIdeal (Op d.D d.N la)`. Rewrite using `[IsLocalization.AtPrime.to_map_mem_maximal_iff (Op d.D d.N la) (laT d.D d.N la)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_map_of_mem _ ha`. Rewrite `hmem` using `[hmax, Ideal.mem_span_singleton']`. Take `⟨y, hy⟩` from `hmem`. Establish `hv` using `congrArg (fun t => w (algebraMap (Op d.D d.N la) (OmS (Ω c) d.D d.N) t)) hy`. Simplify using `only [map_mul, AddValuation.map_mul, hcomp] at hv`.
-
-Rewrite `hv` using `[← hn0, hna]`. Establish `hle : (n0 : WithTop ℤ) ≤ n`. Rewrite using `[← hv]`. Conclude with `le_add_of_nonneg_left (hw.2 y).1`. Conclude with `hle` after adjusting the coercions.
-
-Establish `key` using `valPl (Op d.D d.N la) (KTf K d.D d.N) (OmS (Ω c) d.D d.N) hϖ (fun w => ramIdx (d.Wres c w) la) he`. Rewrite using `[hset]`. Use `⟨key.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hrk]`. Conclude with `key.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem places_over_height_one_prime (𝒜 : (c : ι) → WT → Submodule (Ω c) (A c))
     (d : Data K ι Ω WT A) : LeafSt.places_over_la 𝒜 d := by

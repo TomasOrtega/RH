@@ -13,11 +13,11 @@ variable {F G H V W : Type} [Field F] [Group G] [Group H] [AddCommGroup V] [Modu
   [AddCommGroup W] [Module F W]
 
 /- English proof (translation)
-Establish `: ∀ r, OccursTimes (σ.comp φ : Representation F H W) (ρ.comp φ : Representation F H V) r ↔ OccursTimes σ ρ r` using `fun r => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, T, h1, h2, h3⟩`. Set `up : Subrepresentation (ρ.comp φ : Representation F H V) → Subrepresentation ρ` to `fun S => ⟨S.toSubmodule, fun g v hv => by`. Take `⟨h, rfl⟩` from `hφ g`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `S.apply_mem_toSubmodule h hv⟩`. Use `⟨fun i => up (S i), fun i => up (T i), h1, h2, fun i => (h3 i).map fun ψ => .mk ψ.toLinearEquiv fun g => ?_⟩` and prove the remaining obligations. Take `⟨h, rfl⟩` from `hφ g`. Conclude with `ψ.isIntertwining' h`. Introduce and unpack `⟨S, T, h1, h2, h3⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Set `down : Subrepresentation ρ → Subrepresentation (ρ.comp φ : Representation F H V)` to `fun S => ⟨S.toSubmodule, fun h v hv => S.apply_mem_toSubmodule (φ h) hv⟩`. Conclude with `⟨fun i => down (S i), fun i => down (T i), h1, h2, fun i => (h3 i).map fun ψ => .mk ψ.toLinearEquiv fun h => ψ.isIntertwining' (φ h)⟩`. Simplify using `only [jhMult, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jhMult_comp_surjective (φ : H →* G) (hφ : Function.Surjective φ) (σ : Representation F G W)
     (ρ : Representation F G V) :
@@ -55,7 +55,7 @@ def torusToLevi : (n → Rˣ) →* Levi R c :=
     exact lt_irrefl _ h)
 
 /- English proof (translation)
-Use extensionality with `x y`. Use `show (diagT R n t : Matrix n n R) (f ⟨j, x⟩) (f ⟨j, y⟩) = _`. Rewrite using `[val_diagT]`. Simplify using `[diagonal_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_torusToLevi (t : n → Rˣ) (j : β) :
     (torusToLevi R f t j : Matrix (c j) (c j) R) = diagonal fun x => (t (f ⟨j, x⟩) : R) := by
@@ -65,9 +65,9 @@ theorem val_torusToLevi (t : n → Rˣ) (j : β) :
   simp [diagonal_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `f.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `f.surjective j`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[leviEmb_apply_same]`. Both sides reduce to the same expression. Rewrite using `[leviEmb_apply_ne R f _ h, val_diagT, diagonal_apply_ne]`. Introduce `h'`. Conclude with `h (congrArg Sigma.fst (f.injective h'))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem leviEmb_torusToLevi (t : n → Rˣ) : leviEmb R f (torusToLevi R f t) = diagT R n t := by
   ext i j
@@ -82,7 +82,7 @@ theorem leviEmb_torusToLevi (t : n → Rˣ) : leviEmb R f (torusToLevi R f t) = 
     exact h (congrArg Sigma.fst (f.injective h'))
 
 /- English proof (translation)
-Use `ext`. Simplify using `[val_torusToLevi]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_torusToLevi (t : n → Rˣ) (j : β) :
     GeneralLinearGroup.det (torusToLevi R f t j) = ∏ x, t (f ⟨j, x⟩) := by
@@ -90,7 +90,7 @@ theorem det_torusToLevi (t : n → Rˣ) (j : β) :
   simp [val_torusToLevi]
 
 /- English proof (translation)
-Rewrite using `[← f.prod_comp, Fintype.prod_sigma]`. Simplify using `[det_torusToLevi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_det_torusToLevi (χ : β → Rˣ →* ℂˣ) (t : n → Rˣ) :
     ∏ j, χ j (GeneralLinearGroup.det (torusToLevi R f t j)) = ∏ i, χ (blk f i) (t i) := by
@@ -98,9 +98,9 @@ theorem prod_det_torusToLevi (χ : β → Rˣ →* ℂˣ) (t : n → Rˣ) :
   simp [det_torusToLevi]
 
 /- English proof (translation)
-Introduce `g`. Use `⟨fun i => GeneralLinearGroup.det (g (blk f i)), funext fun j => ?_⟩` and prove the remaining obligations. Use extensionality with `x y`. Establish `hs : ∀ u v : c j, u = v` using `fun u v => by`. Establish `: f ⟨j, u⟩ = f ⟨j, v⟩` using `hf (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Take `rfl` from `hs x y`. Use `haveI : Unique (c j) := ⟨⟨x⟩, fun u => hs _ _⟩`. Rewrite using `[val_torusToLevi, diagonal_apply_eq, blk_apply, GeneralLinearGroup.val_det_apply, det_unique, hs default x]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusToLevi_surjective (hf : Function.Injective (blk f)) :
     Function.Surjective (torusToLevi R f) := by
@@ -118,7 +118,7 @@ theorem torusToLevi_surjective (hf : Function.Injective (blk f)) :
 omit [LinearOrder β] [DecidableEq n] [∀ j, DecidableEq (c j)] in
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← f.sum_comp, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [blk_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_card_blocks (P : β → Prop) [DecidablePred P] :
     ∑ b with P b, (Fintype.card (c b) : ℤ) = ∑ i with P (blk f i), (1 : ℤ) := by
@@ -132,7 +132,7 @@ variable [LinearOrder n]
 omit [DecidableEq n] [∀ j, DecidableEq (c j)] in
 
 /- English proof (translation)
-Unfold `modExp`. Rewrite using `[sum_card_blocks f, sum_card_blocks f]`. Simplify using `[hf.lt_iff_lt]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem modExp_blk (hf : StrictMono (blk f)) (i : n) :
     modExp c (blk f i) = modExp (fun _ : n => Unit) i := by
@@ -141,9 +141,9 @@ theorem modExp_blk (hf : StrictMono (blk f)) (i : n) :
   simp [hf.lt_iff_lt]
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_unipRad, mem_unipB, mem_parab]`. Simplify using `only [hf.lt_iff_lt]`. Use `and_congr Iff.rfl ⟨fun h i => ?_, fun h a x y => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, x⟩, rfl⟩` from `f.surjective i`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `using h a x x`. Establish `: f ⟨a, x⟩ = f ⟨a, y⟩` using `hf.injective (by simp)`. Take `rfl : x = y` from `by simpa using this`. Simplify using `using h _`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unipRad_eq (hf : StrictMono (blk f)) : unipRad R f = unipB R n := by
   ext g
@@ -159,11 +159,11 @@ theorem unipRad_eq (hf : StrictMono (blk f)) : unipRad R f = unipB R n := by
 end Blocks
 
 /- English proof (translation)
-Establish `h1 : ((ofChar (leviChar c χ)).comp (torusToLevi k f) : Representation ℂ (n → kˣ) ℂ) = ofChar (torusChar fun i => χ (blk f i))`. Use `MonoidHom.ext fun t => LinearMap.ext fun y => ?_` and prove the remaining obligations. Use `show ofChar _ _ y = _`. Rewrite using `[ofChar_apply, ofChar_apply, leviChar_apply, torusChar_apply, prod_det_torusToLevi]`. Establish `h2 : ∀ t, deltaHalf k c (torusToLevi k f t) = deltaHalf k (fun _ : n => Unit) (leviTorus k n t)` using `fun t => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ i, GeneralLinearGroup.det (leviTorus k n t i) = t i` using `congrFun ((leviTorus k n).left_inv t)`. Rewrite using `[deltaHalf_apply, deltaHalf_apply, prod_det_torusToLevi k f fun a => absPow k ((modExp c a : ℂ) / 2)]`. Simplify using `only [hd, modExp_blk f hf]`. Establish `h3 : twKer π (unipRad k f) 1 = twKer π (unipB k n) 1` using `by rw [unipRad_eq k f hf]`. Rewrite using `[← jhMult_comp_surjective (torusToLevi k f) (torusToLevi_surjective k f hf.injective), h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `jhMult_congr_right _ (.mk (Submodule.quotEquivOfEq _ _ h3) fun t => ?_)` and prove the remaining obligations. Use `Submodule.linearMap_qext _ (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Use `show Submodule.quotEquivOfEq _ _ h3 (jac f π (torusToLevi k f t) (Submodule.Quotient.mk v)) = jac (points n) π (leviTorus k n t) (Submodule.Quotient.mk v)`. Rewrite using `[jac_mk, jac_mk, map_smul, h2, leviEmb_torusToLevi]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jhMult_jac_eq_jacB (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (β n : Type) [Fintype β] [LinearOrder β] [Fintype n]

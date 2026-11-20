@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.ProjComm
 
 /- English proof (translation)
-Establish `key` using `congrArg (fun w => w.coeff (g * h)) (hz (MonoidAlgebra.single g 1))`. Simplify using `only [MonoidAlgebra.coeff_mul_single_apply, MonoidAlgebra.coeff_single_mul_apply, mul_one, one_mul, inv_mul_cancel_left] at key`. Conclude with `key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_conj_of_central {H : Type} [Group H] (z : MonoidAlgebra ℂ H) (hz : ∀ a, z * a = a * z) (g h : H) :
     z.coeff (g * h * g⁻¹) = z.coeff h := by
@@ -19,9 +19,7 @@ theorem coeff_conj_of_central {H : Type} [Group H] (z : MonoidAlgebra ℂ H) (hz
   exact key
 
 /- English proof (translation)
-Unfold `NTypes.e0`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `Finset.prod_congr rfl fun kv _ => coeff_conj_of_central _ (D.ntypes.eSer_central kv.1 _) (g kv) (h kv)`.
-
-Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem goodProjector_coeff_classFunction (D : D7) (g h : G0g D.nd) : D.ntypes.e0.coeff (g * h * g⁻¹) = D.ntypes.e0.coeff h := by
   unfold NTypes.e0
@@ -35,9 +33,9 @@ theorem goodProjector_coeff_classFunction (D : D7) (g h : G0g D.nd) : D.ntypes.e
 variable {D : D7} {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank}
 
 /- English proof (translation)
-Unfold `IsLevelLift at hκ hκ' ⊢`. Take `⟨h1, h2, h3⟩` from `hκ`. Take `⟨h1', h2', h3'⟩` from `hκ'`. Use `⟨mul_mem h1 h1', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem h2 h2'`. Rewrite using `[map_mul, Formalism.L2.DIV.rTup_mul h2 h2', h3, h3']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLift_mul {g g' : G0 L.Pg L.r} {κ κ' : GA D V} (hκ : IsLevelLift V β L g κ) (hκ' : IsLevelLift V β L g' κ') :
     IsLevelLift V β L (g * g') (κ * κ') := by
@@ -50,9 +48,9 @@ theorem isLift_mul {g g' : G0 L.Pg L.r} {κ κ' : GA D V} (hκ : IsLevelLift V �
   · rw [map_mul, Formalism.L2.DIV.rTup_mul h2 h2', h3, h3']
 
 /- English proof (translation)
-Unfold `IsLevelLift at hκ ⊢`. Take `⟨h1, h2, h3⟩` from `hκ`. Use `⟨inv_mem h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv]`. Conclude with `inv_mem h2`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv, Formalism.L2.DIV.rTup_inv h2, h3]`.
+A detailed English derivation is pending.
 -/
 theorem isLift_inv {g : G0 L.Pg L.r} {κ : GA D V} (hκ : IsLevelLift V β L g κ) :
     IsLevelLift V β L g⁻¹ κ⁻¹ := by
@@ -64,7 +62,7 @@ theorem isLift_inv {g : G0 L.Pg L.r} {κ : GA D V} (hκ : IsLevelLift V β L g �
   · rw [map_inv, Formalism.L2.DIV.rTup_inv h2, h3]
 
 /- English proof (translation)
-Unfold `actG0`. Rewrite using `[dif_pos hex]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem actG0_apply_eq_levChi_inv_mul_choose {g : G0 L.Pg L.r} (hex : ∃ κ, IsLevelLift V β L g κ) (F : GA D V → ℂ) (x : GA D V) :
     actG0 V β L g F x = (levChi V β (flagL L) hex.choose)⁻¹ * F (x * hex.choose) := by
@@ -72,7 +70,7 @@ private theorem actG0_apply_eq_levChi_inv_mul_choose {g : G0 L.Pg L.r} (hex : �
   rw [dif_pos hex]
 
 /- English proof (translation)
-Unfold `levChi`. Rewrite using `[map_mul, levFn_flag_mul hκ hκ', Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem levChi_flagL_mul_of_mem_parLev {κ κ' : GA D V} (hκ : finE V κ ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β L)
     (hκ' : finE V κ' ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β L) :
@@ -81,11 +79,11 @@ private theorem levChi_flagL_mul_of_mem_parLev {κ κ' : GA D V} (hκ : finE V �
   rw [map_mul, levFn_flag_mul hκ hκ', Units.val_mul]
 
 /- English proof (translation)
-Establish `hex` using `hg`. Take `⟨κ', hκ'⟩` from `hg'`. Use function extensionality and compare the values at `x`. Establish `hc : IsLevelLift V β L g hex.choose` using `hex.choose_spec`. Establish `hm : IsLevelLift V β L (g * g') (hex.choose * κ')` using `isLift_mul hc hκ'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpar : finE V hex.choose ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β L`. Unfold `IsLevelLift at hc`. Conclude with `hc.2.1`. Establish `hpar' : finE V κ' ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β L`. Unfold `IsLevelLift at hκ'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hκ'.2.1`. Rewrite using `[actG0_apply_eq_levChi_inv_mul_choose hex, level_action_spec hF ⟨κ', hκ'⟩ κ' hκ' (x * hex.choose), level_action_spec hF ⟨_, hm⟩ _ hm x, levChi_flagL_mul_of_mem_parLev hpar hpar', mul_assoc x]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem levelGroupAction_mul_of_lifts {g g' : G0 L.Pg L.r} (hg : ∃ κ, IsLevelLift V β L g κ) (hg' : ∃ κ, IsLevelLift V β L g' κ)
     {F : GA D V → ℂ} (hF : HasType V β (flag1L L) F) :
@@ -106,7 +104,7 @@ theorem levelGroupAction_mul_of_lifts {g g' : G0 L.Pg L.r} (hg : ∃ κ, IsLevel
   ring
 
 /- English proof (translation)
-Unfold `actG0`. Conclude with `dif_neg hg`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem levelGroupAction_eq_zero_of_no_lift {g : G0 L.Pg L.r} (hg : ¬ ∃ κ, IsLevelLift V β L g κ) (F : GA D V → ℂ) :
     actG0 V β L g F = 0 := by
@@ -114,13 +112,11 @@ theorem levelGroupAction_eq_zero_of_no_lift {g : G0 L.Pg L.r} (hg : ¬ ∃ κ, I
   exact dif_neg hg
 
 /- English proof (translation)
-Use `show actG0 V β L (g * h * g⁻¹) (actG0 V β L g F) = actG0 V β L g (actG0 V β L h F)`. Distinguish the cases in `hg : ∃ κ, IsLevelLift V β L g κ`. Take `⟨κ, hκ⟩` from `hg`. Distinguish the cases in `hh : ∃ κ, IsLevelLift V β L h κ`. Take `⟨μ, hμ⟩` from `hh`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : ∃ κ, IsLevelLift V β L (g * h * g⁻¹) κ` using `⟨κ * μ * κ⁻¹, isLift_mul (isLift_mul hκ hμ) (isLift_inv hκ)⟩`. Rewrite using `[levelGroupAction_mul_of_lifts hc ⟨κ, hκ⟩ hF, levelGroupAction_mul_of_lifts ⟨κ, hκ⟩ ⟨μ, hμ⟩ hF, inv_mul_cancel_right]`. Establish `hc : ¬ ∃ κ, IsLevelLift V β L (g * h * g⁻¹) κ`. Introduce and unpack `⟨ν, hν⟩`. Apply `hh` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hl` using `isLift_mul (isLift_mul (isLift_inv hκ) hν) hκ`. Rewrite `hl` using `[show g⁻¹ * (g * h * g⁻¹) * g = h by group]`. Conclude with `⟨_, hl⟩`. Rewrite using `[levelGroupAction_eq_zero_of_no_lift hc, levelGroupAction_eq_zero_of_no_lift hh]`. Conclude with `(map_zero (actL V β L g)).symm`.
-
-Rewrite using `[levelGroupAction_eq_zero_of_no_lift hg F, levelGroupAction_eq_zero_of_no_lift hg (actG0 V β L h F)]`. Conclude with `map_zero (actL V β L (g * h * g⁻¹))`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actL_conj (g h : G0 L.Pg L.r) {F : GA D V → ℂ} (hF : HasType V β (flag1L L) F) :
     actL V β L (g * h * g⁻¹) (actL V β L g F) = actL V β L g (actL V β L h F) := by
@@ -144,7 +140,7 @@ theorem actL_conj (g h : G0 L.Pg L.r) {F : GA D V → ℂ} (hF : HasType V β (f
     exact map_zero (actL V β L (g * h * g⁻¹))
 
 /- English proof (translation)
-Unfold `gaL`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]`. Use `(Fintype.sum_equiv (MulAut.conj g).toEquiv _ _ fun y => ?_).symm` and prove the remaining obligations. Use `show c y • actL V β L (eG g) (actL V β L (eG y) F) = c (g * y * g⁻¹) • actL V β L (eG (g * y * g⁻¹)) (actL V β L (eG g) F)`. Rewrite using `[hc, map_mul, map_mul, map_inv, actL_conj _ _ hF]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaL_comm {G : Type} [Group G] [Fintype G] (eG : G ≃* G0 L.Pg L.r) (c : G → ℂ)
     (hc : ∀ g h, c (g * h * g⁻¹) = c h) (g : G) {F : GA D V → ℂ} (hF : HasType V β (flag1L L) F) :
@@ -157,9 +153,9 @@ theorem gaL_comm {G : Type} [Group G] [Fintype G] (eG : G ≃* G0 L.Pg L.r) (c :
   rw [hc, map_mul, map_mul, map_inv, actL_conj _ _ hF]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R _ hrec`. Take `⟨eR, plg, iso, he, -, -⟩` from `hrec`. Establish `hcls : ∀ a b : G, (idemOf A.X).coeff (a * b * a⁻¹) = (idemOf A.X).coeff b` using `fun a b => D.what₂.embLL.injective (by rw [he, he, map_mul eR, map_mul eR, map_inv eR, goodProjector_coeff_classFunction])`. Establish `hcl : ∀ (σ : D.what₂.LL →+* ℂ) (a b : G), RealDat.eC (A` using `A) σ (a * b * a⁻¹) = RealDat.eC (A := A) σ b := fun σ a b => by`. Unfold `RealDat.eC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hcls]`. Use `⟨fun g F hF => ?_, fun i σ g F hF => ?_⟩` and prove the remaining obligations. Conclude with `gaL_comm (L := R.dat0 R.triv) R.eG _ (hcl _) g hF`. Conclude with `gaL_comm (L := R.datWp i R.triv) R.eG _ (hcl σ) g hF`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem proj_comm : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.grp_record → (∀ g F, HasType (Yc D 0) (R.βY 0) (R.dat0 R.triv) F → R.e0 (actL _ (R.βY 0) (R.dat0 R.triv) (R.eG g) F) = actL _ (R.βY 0) (R.dat0 R.triv) (R.eG g) (R.e0 F)) ∧ ∀ i σ g F, HasType (Wc D i) (R.βW i) (R.datWp i R.triv) F → R.eWf i σ (actL _ (R.βW i) (R.datWp i R.triv) (R.eG g) F) = actL _ (R.βW i) (R.datWp i R.triv) (R.eG g) (R.eWf i σ F) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R _ hrec

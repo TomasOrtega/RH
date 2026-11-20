@@ -35,7 +35,7 @@ namespace GlobalTheory.RSCellEul
 open GlobalTheory.RSnmEul GlobalTheory.RSnmUnf
 
 /- English proof (translation)
-Use `split_ifs with hv`. Establish `hv'` using `padInt_valid h hv`. Rewrite using `[GlobalTheory.RSCell.locFac, if_pos ⟨hv'.2, hv'.1⟩, toNat_padInt h v, sum_padNat h]`. Conclude with `bot_le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_le_locFac {m k : ℕ} (h : m + 1 ≤ k) (q : ℕ) (a : Fin k → ℂ) (x : ℝ) (v : Fin (m + 1) → ℤ) :
     (if (∀ i, 0 ≤ v i) ∧ Antitone v then
@@ -48,7 +48,7 @@ theorem term_le_locFac {m k : ℕ} (h : m + 1 ≤ k) (q : ℕ) (a : Fin k → �
   · exact bot_le
 
 /- English proof (translation)
-Establish `h0 : (fun i : Fin (m + 1) => ((0 : Fin (m + 1) → ℤ) i).toNat) = 0` using `funext fun _ => rfl`. Rewrite using `[if_pos ⟨fun _ => le_rfl, fun _ _ _ => le_rfl⟩, h0, padNat_zero]`. Rewrite using `[show (0 : Fin k → ℕ) = fun _ => 0 from rfl, GlobalTheory.RSPole.EulerPole.schurAt_const_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem term_zero {m k : ℕ} (q : ℕ) (a : Fin k → ℂ) (x : ℝ) :
     (if (∀ i, 0 ≤ (0 : Fin (m + 1) → ℤ) i) ∧ Antitone (0 : Fin (m + 1) → ℤ) then
@@ -60,7 +60,7 @@ theorem term_zero {m k : ℕ} (q : ℕ) (a : Fin k → ℂ) (x : ℝ) :
   simp
 
 /- English proof (translation)
-Establish `hg : ∀ i, 1 ≤ g i` using `fun i => (hf i).trans (hfg i)`. Rewrite using `[(GlobalTheory.RSPole.EulerPole.hasProd_of_one_le f hf).tprod_eq, (GlobalTheory.RSPole.EulerPole.hasProd_of_one_le g hg).tprod_eq]`. Conclude with `iSup_mono fun s => Finset.prod_le_prod' fun i _ => hfg i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tprod_le_of_one_le {I : Type} (f g : I → ℝ≥0∞) (hf : ∀ i, 1 ≤ f i) (hfg : ∀ i, f i ≤ g i) :
     ∏' i, f i ≤ ∏' i, g i := by
@@ -69,13 +69,11 @@ theorem tprod_le_of_one_le {I : Type} (f g : I → ℝ≥0∞) (hf : ∀ i, 1 �
   exact iSup_mono fun s => Finset.prod_le_prod' fun i _ => hfg i
 
 /- English proof (translation)
-Introduce `E _ _ m k S hmk α x hfin`. Set `g : HeightOneSpectrum (𝓞 E) → (Fin (m + 1) → ℤ) → ℝ≥0∞` to `fun w v => if (∀ i, 0 ≤ v i) ∧ Antitone v then ENNReal.ofReal (‖GlobalTheory.JSW.schurAt (GlobalTheory.RSnmUnf.padNat (n := k) fun i => (v i).toNat) (α w)‖ ^ 2 * (Ideal.absNorm w.asIdeal : ℝ) ^ (-(((∑ i, (v i).toNat : ℕ) : ℝ) * x))) else 0`. Use `show ∑' l : GlobalTheory.CellDec.abelian₂ E (m + 1) S, l.1.prod g ≠ ⊤`. Establish `hg0 : ∀ w, g w 0 = 1` using `fun w => term_zero _ _ _`. Take `⟨e, he⟩` from `GlobalTheory.finsupp_vanishing_on_equiv_compl_prod S (m + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `f : {w : HeightOneSpectrum (𝓞 E) // w ∉ S} → (Fin (m + 1) → ℤ) → ℝ≥0∞` to `fun i v => g i.1 v`. Establish `h1 : ∑' l : GlobalTheory.CellDec.abelian₂ E (m + 1) S, l.1.prod g = ∑' l' : {w : HeightOneSpectrum (𝓞 E) // w ∉ S} →₀ (Fin (m + 1) → ℤ), l'.prod f`. Rewrite using `[← e.tsum_eq]`. Conclude with `tsum_congr fun l => (he ℝ≥0∞ g hg0 l).symm`. Rewrite using `[h1, (GlobalTheory.EulerSum.euler_product_intVec_ennreal (m + 1) f fun i => hg0 i.1).2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ne_top_of_le_ne_top hfin ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.RSPole.eulD]`. Use `tprod_le_of_one_le _ _ (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Conclude with `le_of_eq_of_le (hg0 i.1).symm (ENNReal.le_tsum (f := f i) 0)`. Rewrite using `[GlobalTheory.RSCellSum.schurDir_eq_tsum_locFac]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tsum_padTerm_ne_top : ∀ (E : Type) [Field E] [NumberField E] (m k : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))), m + 1 ≤ k →
     ∀ (α : HeightOneSpectrum (𝓞 E) → Fin k → ℂ) (x : ℝ),

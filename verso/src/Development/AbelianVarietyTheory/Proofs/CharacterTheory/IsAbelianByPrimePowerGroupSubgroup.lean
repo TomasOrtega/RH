@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfCo
 namespace GlobalTheory.BI
 
 /- English proof (translation)
-Introduce `G _ T h`. Unfold `_root_.GlobalTheory.BI.AbByP at h ⊢`. Take `⟨p, hp, A, hA, hcomm, hpow⟩` from `h`. Use `haveI := hA`. Use `⟨p, hp, A.subgroupOf T, Subgroup.normal_subgroupOf, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb`. Conclude with `Subtype.ext (hcomm _ ha _ hb)`. Introduce `g`. Take `⟨n, hn⟩` from `hpow g`. Conclude with `⟨n, by simpa [Subgroup.mem_subgroupOf] using hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BI.AbByP.subgroup :
     ∀ (G : Type) [Group G] (T : Subgroup G),

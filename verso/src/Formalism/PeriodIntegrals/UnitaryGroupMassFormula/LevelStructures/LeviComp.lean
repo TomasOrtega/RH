@@ -15,7 +15,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] 
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [sigR, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem conjTensor_involutive (hσ : ∀ x, σ (σ x) = x) (a : R ⊗[F] E) : sigR R σ (sigR R σ a) = a := by
   induction a using TensorProduct.induction_on with
@@ -24,9 +24,9 @@ theorem conjTensor_involutive (hσ : ∀ x, σ (σ x) = x) (a : R ⊗[F] E) : si
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Unfold `hR Formalism.UG.hform`. Simplify using `only [map_sum, map_mul, conjTensor_involutive hσ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hJ' : sigR R σ (JR R J j i) = JR R J i j`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [JR, Matrix.map_apply, conjTensor_incl, hJ]`. Rewrite using `[hJ']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermForm_conj_symm (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → R ⊗[F] E) :
     sigR R σ (hR R σ J x y) = hR R σ J y x := by
@@ -40,7 +40,7 @@ theorem hermForm_conj_symm (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i
   ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp [hR_zero_left]`. Consider the case `cons a s ha ih => rw [Finset.sum_cons, Finset.sum_cons, hR_add_left, hR_smul_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hR_sum_smul_left' {ι : Type} (s : Finset ι) (d : ι → R ⊗[F] E) (v : ι → Fin n → R ⊗[F] E)
     (y : Fin n → R ⊗[F] E) : hR R σ J (∑ i ∈ s, d i • v i) y = ∑ i ∈ s, sigR R σ (d i) * hR R σ J (v i) y := by
@@ -63,7 +63,7 @@ def piRest : (Fin n → R ⊗[F] E) →ₗ[R ⊗[F] E] (Fin n → R ⊗[F] E) :=
 def piW : (Fin n → R ⊗[F] E) →ₗ[R ⊗[F] E] (Fin n → R ⊗[F] E) := LinearMap.id - piRest (σ := σ) (J := J) P c
 
 /- English proof (translation)
-Simplify using `[piRest, hl, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piRest_apply (v : Fin n → R ⊗[F] E) : piRest (σ := σ) (J := J) P c v =
     (∑ a, hR R σ J (ratV (F := F) R (P.f a)) v • ratV (F := F) R (P.e a)) +
@@ -72,7 +72,7 @@ theorem piRest_apply (v : Fin n → R ⊗[F] E) : piRest (σ := σ) (J := J) P c
   simp [piRest, hl, smul_smul]
 
 /- English proof (translation)
-Simplify using `[piW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piW_add_rest (v : Fin n → R ⊗[F] E) :
     piW (σ := σ) (J := J) P c v + piRest (σ := σ) (J := J) P c v = v := by
@@ -98,9 +98,9 @@ def InW (v : Fin n → R ⊗[F] E) : Prop :=
 variable {P c} {T : F}
 
 /- English proof (translation)
-Establish `key : (∀ b, hR R σ J (ratV (F` using `F) R (P.e b)) (piRest (σ := σ) (J := J) P c v) = hR R σ J (ratV (F := F) R (P.e b)) v) ∧ (∀ b, hR R σ J (ratV (F := F) R (P.f b)) (piRest (σ := σ) (J := J) P c v) = hR R σ J (ratV (F := F) R (P.f b)) v) ∧ hR R σ J (ratV (F := F) R P.z) (piRest (σ := σ) (J := J) P c v) = hR R σ J …`. Apply the tactic sequence `refine ⟨fun b => ?_, fun b => ?_, ?_⟩ <;>`. Rewrite using `[piRest_apply, hermForm_add_right_bis, hermForm_add_right_bis, hermForm_sum_right_alt, hermForm_sum_right_alt, hermForm_smul_right_alt]`. Simplify using `[ht.ee, ht.ef, ht.ez]`. Simplify using `[ht.fe, ht.ff, ht.fz]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [ht.ze, ht.zf, mul_zero, Finset.sum_const_zero, zero_add]`. Take the linear combination `(hR R σ J (ratV (F := F) R P.z) v) * ht.zz`. Take `⟨h1, h2, h3⟩` from `key`. Apply the tactic sequence `refine ⟨fun a => ?_, fun a => ?_, ?_⟩ <;>`. Simplify using `only [piW, LinearMap.sub_apply, LinearMap.id_apply, hermForm_sub_right, h1, h2, h3, sub_self]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem piW_inW (ht : FrameTab (σ := σ) (J := J) P c T) (v : Fin n → R ⊗[F] E) :
     InW (σ := σ) (J := J) P (piW (σ := σ) (J := J) P c v) := by
@@ -122,7 +122,7 @@ theorem piW_inW (ht : FrameTab (σ := σ) (J := J) P c T) (v : Fin n → R ⊗[F
     simp only [piW, LinearMap.sub_apply, LinearMap.id_apply, hermForm_sub_right, h1, h2, h3, sub_self]
 
 /- English proof (translation)
-Rewrite using `[piRest_apply]`. Simplify using `[hv.1, hv.2.1, hv.2.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem piRest_inW (ht : FrameTab (σ := σ) (J := J) P c T) {v : Fin n → R ⊗[F] E}
     (hv : InW (σ := σ) (J := J) P v) : piRest (σ := σ) (J := J) P c v = 0 := by
@@ -130,14 +130,14 @@ theorem piRest_inW (ht : FrameTab (σ := σ) (J := J) P c T) {v : Fin n → R �
   simp [hv.1, hv.2.1, hv.2.2]
 
 /- English proof (translation)
-Simplify using `[piW, piRest_inW ht hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piW_inW_eq (ht : FrameTab (σ := σ) (J := J) P c T) {v : Fin n → R ⊗[F] E}
     (hv : InW (σ := σ) (J := J) P v) : piW (σ := σ) (J := J) P c v = v := by
   simp [piW, piRest_inW ht hv]
 
 /- English proof (translation)
-Rewrite using `[piRest_apply]`. Simplify using `[ht.fe, ht.ee, ht.ze]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem piRest_e (ht : FrameTab (σ := σ) (J := J) P c T) (b : Fin r) :
     piRest (σ := σ) (J := J) P c (ratV (F := F) R (P.e b)) = ratV (F := F) R (P.e b) := by
@@ -145,7 +145,7 @@ theorem piRest_e (ht : FrameTab (σ := σ) (J := J) P c T) (b : Fin r) :
   simp [ht.fe, ht.ee, ht.ze]
 
 /- English proof (translation)
-Rewrite using `[piRest_apply]`. Simplify using `[ht.ff, ht.ef, ht.zf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem piRest_f (ht : FrameTab (σ := σ) (J := J) P c T) (b : Fin r) :
     piRest (σ := σ) (J := J) P c (ratV (F := F) R (P.f b)) = ratV (F := F) R (P.f b) := by
@@ -153,7 +153,7 @@ theorem piRest_f (ht : FrameTab (σ := σ) (J := J) P c T) (b : Fin r) :
   simp [ht.ff, ht.ef, ht.zf]
 
 /- English proof (translation)
-Rewrite using `[piRest_apply]`. Simplify using `[ht.fz, ht.ez, ht.zz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem piRest_of_frameTab (ht : FrameTab (σ := σ) (J := J) P c T) :
     piRest (σ := σ) (J := J) P c (ratV (F := F) R P.z) = ratV (F := F) R P.z := by
@@ -161,7 +161,7 @@ theorem piRest_of_frameTab (ht : FrameTab (σ := σ) (J := J) P c T) :
   simp [ht.fz, ht.ez, ht.zz]
 
 /- English proof (translation)
-Establish `h : spanR (F` using `F) R P.e Set.univ ≤ LinearMap.ker (piW (σ := σ) (J := J) P c) := by`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, -, rfl⟩`. Simplify using `[piW, piRest_e ht b]`. Conclude with `h hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem piW_X (ht : FrameTab (σ := σ) (J := J) P c T) {x : Fin n → R ⊗[F] E}
     (hx : x ∈ spanR (F := F) R P.e Set.univ) : piW (σ := σ) (J := J) P c x = 0 := by
@@ -172,9 +172,9 @@ theorem piW_X (ht : FrameTab (σ := σ) (J := J) P c T) {x : Fin n → R ⊗[F] 
   exact h hx
 
 /- English proof (translation)
-Establish `h1 : ∀ i, hR R σ J a (ratV (F` using `F) R (P.e i)) = 0 := fun i => by`. Rewrite using `[← hermForm_conj_symm ht.hσ ht.hJ, ha.1 i, map_zero]`. Establish `h2 : ∀ i, hR R σ J a (ratV (F` using `F) R (P.f i)) = 0 := fun i => by`. Rewrite using `[← hermForm_conj_symm ht.hσ ht.hJ, ha.2.1 i, map_zero]`. Establish `h3 : hR R σ J a (ratV (F` using `F) R P.z) = 0 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hermForm_conj_symm ht.hσ ht.hJ, ha.2.2, map_zero]`. Rewrite using `[piRest_apply, hermForm_add_right_bis, hermForm_add_right_bis, hermForm_sum_right_alt, hermForm_sum_right_alt, hermForm_smul_right_alt]`. Simplify using `[h1, h2, h3]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inW_left (ht : FrameTab (σ := σ) (J := J) P c T) {a : Fin n → R ⊗[F] E}
     (ha : InW (σ := σ) (J := J) P a) (y : Fin n → R ⊗[F] E) :
@@ -190,7 +190,7 @@ theorem inW_left (ht : FrameTab (σ := σ) (J := J) P c T) {a : Fin n → R ⊗[
   simp [h1, h2, h3]
 
 /- English proof (translation)
-Rewrite using `[piRest_apply, hR_add_left, hR_add_left, hR_sum_smul_left', hR_sum_smul_left', hR_smul_left]`. Simplify using `[ha.1, ha.2.1, ha.2.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inW_right (ht : FrameTab (σ := σ) (J := J) P c T) {a : Fin n → R ⊗[F] E}
     (ha : InW (σ := σ) (J := J) P a) (y : Fin n → R ⊗[F] E) :
@@ -199,7 +199,7 @@ theorem inW_right (ht : FrameTab (σ := σ) (J := J) P c T) {a : Fin n → R ⊗
   simp [ha.1, ha.2.1, ha.2.2]
 
 /- English proof (translation)
-Conclude with `hR_span_perp (R := R) (σ := σ) (J := J) P a ha x hx`.
+A detailed English derivation is pending.
 -/
 theorem X_left {x : Fin n → R ⊗[F] E} (hx : x ∈ spanR (F := F) R P.e Set.univ) {a : Fin n → R ⊗[F] E}
     (ha : ∀ b, hR R σ J (ratV (F := F) R (P.e b)) a = 0) : hR R σ J x a = 0 := by

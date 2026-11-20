@@ -4,43 +4,41 @@ open IsLocalRing Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `c hc`. Set `g : S →+* FractionRing R × FractionRing S'` to `(RingHom.prodMap (algebraMap R (FractionRing R)) (algebraMap S' (FractionRing S'))).comp e.toRingHom`. Establish `hgx : ∀ x : S, g x = (algebraMap R (FractionRing R) (e x).1, algebraMap S' (FractionRing S') (e x).2)` using `fun x => rfl`. Establish `hg : ∀ y : nonZeroDivisors S, IsUnit (g y)`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hgx, Prod.isUnit_iff]`. Establish `h1 : (e y).1 ∈ nonZeroDivisors R`. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `z hz`. Establish `h0 : e.symm (z, 0) * (y : S) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, RingEquiv.apply_symm_apply, map_zero]`. Apply the tactic sequence `ext <;> simp [hz]`. Use `(mul_right_mem_nonZeroDivisors_eq_zero_iff y.2).mp h0` as an intermediate fact. Use `congrArg (fun w => (e w).1) this` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h2 : (e y).2 ∈ nonZeroDivisors S'`. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `z hz`. Establish `h0 : e.symm (0, z) * (y : S) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, RingEquiv.apply_symm_apply, map_zero]`. Apply the tactic sequence `ext <;> simp [hz]`. Use `(mul_right_mem_nonZeroDivisors_eq_zero_iff y.2).mp h0` as an intermediate fact. Use `congrArg (fun w => (e w).2) this` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `⟨IsLocalization.map_units (FractionRing R) (⟨_, h1⟩ : nonZeroDivisors R), IsLocalization.map_units (FractionRing S') (⟨_, h2⟩ : nonZeroDivisors S')⟩`. Set `Θ : FractionRing S →+* FractionRing R × FractionRing S'` to `IsLocalization.lift hg`. Establish `hΘ : ∀ x : S, Θ (algebraMap S (FractionRing S) x) = g x` using `fun x => IsLocalization.lift_eq hg x`. Establish `hΘinj : Function.Injective Θ`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[IsLocalization.lift_injective_iff]`. Introduce `x y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[(IsFractionRing.injective S (FractionRing S)) h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `h' : e x = e y`. Rewrite `h` using `[hgx, hgx]`. Use `ext`. Conclude with `IsFractionRing.injective R (FractionRing R) (congrArg Prod.fst h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsFractionRing.injective S' (FractionRing S') (congrArg Prod.snd h)`. Rewrite using `[e.injective h']`. Take `⟨⟨a, b⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors R) c`. Establish `hb' : e.symm ((b : R), (1 : S')) ∈ nonZeroDivisors S`. Rewrite using `[mem_nonZeroDivisors_iff_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `hz'` using `congrArg e hz`. Rewrite `hz'` using `[map_mul, RingEquiv.apply_symm_apply, map_zero]`. Establish `h1 : (e z).1 * b = 0` using `congrArg Prod.fst hz'`. Establish `h2 : (e z).2 * 1 = 0` using `congrArg Prod.snd hz'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[mul_right_mem_nonZeroDivisors_eq_zero_iff b.2]`. Rewrite `h2` using `[mul_one]`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply the tactic sequence `ext <;> simp [h1, h2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set c := IsLocalization.mk' (FractionRing R) a b with hcdef`. Set `b' : nonZeroDivisors S` to `⟨_, hb'⟩`. Set `c' : FractionRing S` to `IsLocalization.mk' (FractionRing S) (e.symm (a, 0)) b'`. Establish `hΘc : Θ c' = (c, 0)`. Establish `hs` using `IsLocalization.mk'_spec (FractionRing S) (e.symm (a, 0)) b'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs2` using `congrArg Θ hs`. Rewrite `hs2` using `[map_mul, hΘ, hΘ]`. Establish `hu` using `hg b'`. Establish `hcs` using `IsLocalization.mk'_spec (FractionRing R) a b`. Rewrite using `[← hu.mul_left_inj, hs2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgx, hgx]`. Simplify using `only [b', RingEquiv.apply_symm_apply, Prod.mk_mul_mk, map_zero, map_one, mul_one, zero_mul]`. Rewrite using `[hcs]`. Establish `hf : Function.Surjective ((RingHom.fst R S').comp e.toRingHom)`. Introduce `r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e.symm (r, 0), by simp⟩`. Establish `hc' : IsIntegral S c'`. Take `⟨p, hpm, hp⟩` from `hc`. Take `⟨q, hqmap, -, hqm⟩` from `lifts_and_natDegree_eq_and_monic (f := (RingHom.fst R S').comp e.toRingHom) (p := p) ((lifts_iff_coeff_lifts p).mpr (fun n => hf _)) hpm`. Use `⟨X * q, monic_X.mul hqm, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hΘinj` to reduce the goal to its premises. Rewrite using `[Polynomial.hom_eval₂, map_zero, hΘc, eval₂_mul, eval₂_X]`. Establish `hfst : (RingHom.fst (FractionRing R) (FractionRing S')).comp (Θ.comp (algebraMap S (FractionRing S))) = (algebraMap R (FractionRing R)).comp ((RingHom.fst R S').comp e.toRingHom)`. Use extensionality with `x`. Simplify using `[hΘ, hgx]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : (eval₂ (Θ.comp (algebraMap S (FractionRing S))) (c, 0) q).1 = 0`. Use `Polynomial.hom_eval₂ q (Θ.comp (algebraMap S (FractionRing S))) (RingHom.fst (FractionRing R) (FractionRing S')) (c, 0)` as an intermediate fact. Simplify using `only [RingHom.coe_fst] at this`. Rewrite using `[this, hfst, ← eval₂_map, hqmap]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `ext`. Simplify using `[h1]`. Simplify using the standard rewrite rules. Take `⟨s, hs⟩` from `hd c' hc'`. Use `⟨(e s).1, ?_⟩` and prove the remaining obligations.
-
-Establish `h` using `congrArg (fun z => (Θ z).1) hs`. Simplify using `only [map_mul, hΘ, hΘc, hgx, Prod.fst_mul] at h`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conductor_prod_fst (R S' S : Type) [CommRing R] [CommRing S'] [CommRing S]
     (e : S ≃+* R × S') (d : S)

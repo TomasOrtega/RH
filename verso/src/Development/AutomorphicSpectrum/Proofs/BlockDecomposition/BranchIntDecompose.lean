@@ -18,7 +18,7 @@ set_option maxSynthPendingDepth 1
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.BranchIntDecompose.proof GlobalTheory.T.branch_proper_at_point_holds (GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.proof (GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.proof GroundTheory.Heights₂.Heights. …`.
+A detailed English derivation is pending.
 -/
 theorem branchIntDecompose : GroundTheory.Heights₂.Heights.BranchIntDecompose.Statement :=
   GroundTheory.Heights₂.Heights.BranchIntDecompose.proof GlobalTheory.T.branch_proper_at_point_holds

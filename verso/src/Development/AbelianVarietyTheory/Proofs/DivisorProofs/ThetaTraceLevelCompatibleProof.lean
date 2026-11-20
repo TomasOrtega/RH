@@ -23,7 +23,7 @@ namespace GlobalTheory.TraceLevelPf
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Rewrite using `[series_apply, series_apply]`. Establish `e : ((h, g * κ) : GA D S × GA D T) = (h, g) * (1, κ)` using `Prod.ext (mul_one h).symm rfl`. Rewrite using `[e, map_mul, Module.End.mul_apply, Frame.fock, Frame.fock, GlobalTheory.OrientedHeis.om_fin_pureTensorO B.F.ψ S T χS χT ω hω B.F.θ hB.frame.vac.2.inf 1 (one_mem _) κ hκ _ _ _ _ f P hf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem series_om_fin {B : Base S T} (hB : B.Good) {χS χT : (AE D)ˣ →* Circle} {ω : PairRep S T}
     (hω : IsWeilDatumO B.F.ψ S T χS χT ω) {f : WO S T → ℂ} (hf : IsThetaFunO B.F.ψ S T f) (h : GA D S)
@@ -41,9 +41,9 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.L
   {B : Base (Vc D i) (Wc D i)}
 
 /- English proof (translation)
-Establish `rW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `hm : redFn (R.βW i) PP.1 x ∈ blockTri (blk2 (R.datWp i R.triv).r)`. Use `mem_blockTri.2 fun c d hcd => ?_` and prove the remaining obligations. Establish `hc : c.val < (R.datWp i R.triv).r` using `lt_of_lt_of_eq c.2 rW`. Establish `e : blk2 (R.datWp i R.triv).r c = 0` using `if_pos hc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (lt_of_lt_of_eq hcd e) (Nat.not_lt_zero _)`. Unfold `rTup`. Rewrite using `[upper_block_val_submatrix _ hm]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rTup_datWp_val (x : GL (Fin (Wc D i).rank) (EAf D)) (PP : ↥(R.datWp i R.triv).Pg) (a b : Fin (R.datWp i R.triv).r) :
     (rTup (R.βW i) (R.datWp i R.triv) x PP).val a b =
@@ -59,9 +59,9 @@ theorem rTup_datWp_val (x : GL (Fin (Wc D i).rank) (EAf D)) (PP : ↥(R.datWp i 
   rfl
 
 /- English proof (translation)
-Introduce `PP`. Establish `hP : PP.1 ∈ R.Pg` using `hB.Pg ▸ PP.2`. Use `Units.ext (Matrix.ext fun a c => ?_)` and prove the remaining obligations. Establish `h1` using `congrArg (fun y : G0 (R.datWp i R.triv).Pg (R.datWp i R.triv).r => (y ⟨PP.1, hP⟩).val (Fin.cast (rank_Wc i) a) (Fin.cast (rank_Wc i) c)) hx`. Simplify using `only at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[rTup_datWp_val]`. Rewrite using `[hent g PP.1 PP.2 hP a c]`. Conclude with `h1.symm.trans (by rw [hB.βT]; rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_of_rTup (hB : BaseOf R i B) (e : G ≃* G0 B.G.Pg (Wc D i).rank)
     (hent : ∀ (g : G) (P : Pl D.host.E) (h : P ∈ B.G.Pg) (h' : P ∈ R.Pg) (a c : Fin (Wc D i).rank),
@@ -78,9 +78,9 @@ theorem red_of_rTup (hB : BaseOf R i B) (e : G ≃* G0 B.G.Pg (Wc D i).rank)
   exact h1.symm.trans (by rw [hB.βT]; rfl)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `PP`. Establish `hP : PP.1 ∈ B.G.Pg` using `hB.Pg ▸ PP.2`. Use `Units.ext (Matrix.ext fun a c => ?_)` and prove the remaining obligations. Establish `h1` using `hent g PP.1 hP PP.2 (Fin.cast (rank_Wc i).symm a) (Fin.cast (rank_Wc i).symm c)`. Rewrite `h1` using `[hx ⟨PP.1, hP⟩, hB.βT]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[rTup_datWp_val]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rTup_of_red (hB : BaseOf R i B) (e : G ≃* G0 B.G.Pg (Wc D i).rank)
     (hent : ∀ (g : G) (P : Pl D.host.E) (h : P ∈ B.G.Pg) (h' : P ∈ R.Pg) (a c : Fin (Wc D i).rank),
@@ -95,7 +95,7 @@ theorem rTup_of_red (hB : BaseOf R i B) (e : G ≃* G0 B.G.Pg (Wc D i).rank)
   exact h1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hκ.1, hB.βT ▸ parLev_St hκ.2.1, red_of_rTup hB e hent g _ hκ.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem lifts_of_datWp (hB : BaseOf R i B) (e : G ≃* G0 B.G.Pg (Wc D i).rank)
     (hent : ∀ (g : G) (P : Pl D.host.E) (h : P ∈ B.G.Pg) (h' : P ∈ R.Pg) (a c : Fin (Wc D i).rank),
@@ -104,7 +104,7 @@ theorem lifts_of_datWp (hB : BaseOf R i B) (e : G ≃* G0 B.G.Pg (Wc D i).rank)
   ⟨hκ.1, hB.βT ▸ parLev_St hκ.2.1, red_of_rTup hB e hent g _ hκ.2.2⟩
 
 /- English proof (translation)
-Take `⟨κ, hκ, -⟩` from `GlobalTheory.TypeSupportLift.exists_lift_supp B hB0 (e g)`. Establish `h1` using `GlobalTheory.FlatVecSum.levelLift_isLift_principalLevelDatum_realisation hB hκ`. Rewrite `h1` using `[rTup_of_red hB e hent g _ (GlobalTheory.ExportType.lifts_of_isLiftG0 hκ).red]`. Conclude with `⟨κ, h1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_lift_datWp (hB0 : B.Good) (hB : BaseOf R i B) (e : G ≃* G0 B.G.Pg (Wc D i).rank)
     (hent : ∀ (g : G) (P : Pl D.host.E) (h : P ∈ B.G.Pg) (h' : P ∈ R.Pg) (a c : Fin (Wc D i).rank),
@@ -118,23 +118,19 @@ theorem exists_lift_datWp (hB0 : B.Good) (hB : BaseOf R i B) (e : G ≃* G0 B.G.
 end Real
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC i B hB hBo U ψ e hent hU hchi ω hω hh P`. Establish `hW : IsWeilDatumO B.F.ψ (Vc D i) (Wc D i) _ _ ω` using `hω`. Establish `hlift` using `fun g => exists_lift_datWp hB hBo e hent g`. Use `haveI : Fintype B.G.P.H := Fintype.ofFinite _`. Establish `hfθ : IsThetaFunO B.F.ψ (Vc D i) (Wc D i) (GlobalTheory.FlatVecSum.princ B).vecBase` using `GlobalTheory.GalLift.Vec.theta_of_thetaAt hB.frame.vac.1 hB.frame.vac.2.inf (Base.isThetaAt_vecAt (GlobalTheory.FlatVecSum.princ_good hB) (Base.admissible_empty_of_good (GlobalTheory.FlatVecSum.princ_good hB)) _) hB.frame.vac.2.theta`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : B.vecBase = ∑ p : B.G.P.H, (((B.G.P.chi p)⁻¹ : ℂˣ) : ℂ) • ω (1, (hlift (e.symm p)).choose) (GlobalTheory.FlatVecSum.princ B).vecBase`. Use `GlobalTheory.FlatVecSum.vecFlat_eq_sum_princ hB (D.sp.V_sig _) (Twist.triv_good splitSet_empty) (Base.admissible_empty_of_good hB) (ω := ω) hω (fun p => (hlift (e.symm p)).choose) (fun p => by` as an intermediate fact. Use `lifts_of_datWp hBo e hent (hlift (e.symm p)).choose_spec` as an intermediate fact. Rewrite using `[MulEquiv.apply_symm_apply] at this)` and apply the resulting hypothesis. Rewrite `this` using `[Base.vecFlat_triv, Base.vecFlat_triv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Establish `hL : levelTrace R i U ψ ((GlobalTheory.FlatVecSum.princ B).theta ω hh P) x = ∑ g, (if hg : g ∈ U then D.what₂.embLL (((ψ ⟨g, hg⟩)⁻¹ : D.what₂.LLˣ) : D.what₂.LL) else 0) * series B.F ω (GlobalTheory.FlatVecSum.princ B).vecBase hh P (x * (hlift g).choose)`. Unfold `levelTrace gaL`. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Use `show Lev.actG0 _ _ _ _ _ x = _`. Rewrite using `[Lev.actG0]`. Use `split_ifs with hk`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CuspMult.EqCut.levChi_flag rfl rfl, inv_one]`. Conclude with `one_mul _`. Conclude with `absurd (hlift g) hk`. Establish `hR : B.theta ω hh P x = ∑ p : B.G.P.H, (((B.G.P.chi p)⁻¹ : ℂˣ) : ℂ) * series B.F ω (GlobalTheory.FlatVecSum.princ B).vecBase hh P (x * (hlift (e.symm p)).choose)`. Rewrite using `[Base.theta, hsum, GlobalTheory.SpecFac.series_sum hB ω _ _ _ (fun p _ => hW.om_pres _ _ hfθ)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[series_om_fin hB hW hfθ hh P x (hlift (e.symm p)).choose_spec.1]`. Rewrite using `[hL, hR]`. Use `symm`. Use `Fintype.sum_of_injective (fun p : B.G.P.H => e.symm p) (fun p q hpq => Subtype.ext (e.symm.injective hpq)) _ _ (fun g hg => ?_) (fun p => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dif_neg, zero_mul]`. Introduce `hgU`. Conclude with `hg ⟨⟨e g, (hU g).2 hgU⟩, e.symm_apply_apply g⟩`. Establish `hp : e.symm p ∈ U` using `(hU _).1 (by rw [MulEquiv.apply_symm_apply]; exact p.2)`. Establish `key : ((B.G.P.chi p : ℂˣ) : ℂ) = D.what₂.embLL ((ψ ⟨e.symm p, hp⟩ : D.what₂.LLˣ) : D.what₂.LL)`.
-
-Establish `hp' : e (e.symm p) ∈ B.G.P.H` using `by rw [MulEquiv.apply_symm_apply]; exact p.2`. Use `hchi ⟨e.symm p, hp⟩ hp'` as an intermediate fact. Establish `hpe : (⟨e (e.symm p), hp'⟩ : B.G.P.H) = p` using `Subtype.ext (e.apply_symm_apply p)`. Rewrite `this` using `[hpe]`. Conclude with `this`.
-
-Rewrite using `[dif_pos hp, Units.val_inv_eq_inv_val, key, Units.val_inv_eq_inv_val, map_inv₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceLevel : GlobalTheory.BaseCmp.TraceLevel := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i B hB hBo U ψ e hent hU hchi ω hω hh P

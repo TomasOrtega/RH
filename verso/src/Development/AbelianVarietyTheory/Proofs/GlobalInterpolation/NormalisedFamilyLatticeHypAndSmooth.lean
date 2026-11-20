@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.ThetaMove.LatticeFacts
 
 /- English proof (translation)
-Establish `h : (Real.pi : ℂ) * Complex.I * ((b : ℝ) : ℂ) = -((Real.pi : ℂ) * Complex.I * ((b : ℝ) : ℂ)) + (b : ℂ) * (2 * (Real.pi : ℂ) * Complex.I)` using `by push_cast; ring`. Rewrite using `[h, Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, mul_one]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exp_pi_int (b : ℤ) : Complex.exp ((Real.pi : ℂ) * Complex.I * ((b : ℝ) : ℂ))
     = Complex.exp (-((Real.pi : ℂ) * Complex.I * ((b : ℝ) : ℂ))) := by
@@ -26,7 +26,7 @@ theorem exp_pi_int (b : ℤ) : Complex.exp ((Real.pi : ℂ) * Complex.I * ((b : 
   push_cast; ring
 
 /- English proof (translation)
-Unfold `TaylorLogMetric.al`. Break down `Int.even_or_odd (round (Real.sqrt D.host.d / 2 * (TaylorLogMetric.Hf D T x x).re)) with h | h` into its components or cases. Conclude with `Or.inl h.neg_one_zpow`. Conclude with `Or.inr h.neg_one_zpow`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem al_sign (D : D7) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (x : TaylorLogMetric.VC D N N') : TaylorLogMetric.al D T x = 1 ∨ TaylorLogMetric.al D T x = -1 := by
   unfold TaylorLogMetric.al
@@ -35,15 +35,13 @@ theorem al_sign (D : D7) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (x : TaylorLog
   · exact Or.inr h.neg_one_zpow
 
 /- English proof (translation)
-Establish `h0 : δ ≠ 0` using `delta_ne_zero B`. Use `⟨fun N N' L L' hA => ⟨?_, fun x _ => al_sign D _ x, ?_⟩, fun N N' L₁ L₁' L₂ L₂' h₁ h₂ => ⟨IO.La_index_ne_zero cc hcc δ L₁ L₂ L₁' L₂' h₁ h₂, IO.La_index_ne_zero cc hcc δ L₂ L₁ L₂' L₁' h₂ h₁⟩⟩` and prove the remaining obligations. Establish `hI` using `hermitian_form_integral_values D cc hcc δ hδ h0 N N' L L' hA`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `v hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `self_dual_lattice D cc hcc δ hδ h0 N N' L L' hA v (fun y hy => hv y hy)`. Introduce `v hv y hy`. Take `⟨a, b, -, hab⟩` from `hI v hv y hy`. Use `⟨b, ?_⟩` and prove the remaining obligations. Use `show (TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) v y).im = (b : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hab]`. Simplify using the standard rewrite rules. Introduce `x hx y hy`. Establish `hI` using `hermitian_form_integral_values D cc hcc δ hδ h0 N N' L L' hA`. Establish `hs` using `IO.semiChar_of_HfInt _ hI x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, b, -, hab⟩` from `hI x hx y hy`. Establish `him : (TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) x y).im = (b : ℝ)` using `by rw [hab]; simp`. Rewrite using `[hs]`. Use `congr 1`. Use `show Complex.exp (-((Real.pi : ℂ) * Complex.I * (((TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) x y).im : ℝ) : ℂ))) = Complex.exp ((Real.pi : ℂ) * Complex.I * (((TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) x y).im : ℝ) : ℂ))`.
-
-Rewrite using `[him]`. Conclude with `(exp_pi_int b).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAll {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (hcc : TaylorLogMetric.IsCurveIdeal D cc)
     (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) : B.LatAll := by
@@ -71,11 +69,11 @@ theorem latAll {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc �
     rw [him]; exact (exp_pi_int b).symm
 
 /- English proof (translation)
-Introduce `D X s cc δ B χ cD a b hX hs hcc hδ hV ha hb`. Establish `hL` using `latAll B hcc hδ`. Take `⟨hsd, hlam⟩` from `GlobalTheory.PeriodTransport.seam_lattices X D s cc δ B χ cD hs`. Establish `hq` using `qIntAll_of_latAll D cc δ B hL`. Establish `hadm : ∀ (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)), IsSdLat N → IsSdLat N' → TaylorLogMetric.admitted D a b (s.lat N) (s.lat N')` using `fun N N' h h' => ⟨ha, hb, hsd _ _ h, hsd _ _ h'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨delta_ne_zero B, Fintype.card_pos_iff.1 hX.f_pos, by simp, fun P hP => absurd hP (Finset.notMem_empty P), aa_fg s B χ cD, fun N N' h h' => ?_⟩, fun N N' h h' k => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `(Transport.inter_transport _ _ (reidx s a b) (Formalism.L2.Ker.HV (ambOf s B χ cD).sc) (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau a b) (alV (ambOf s B χ cD).d (ambOf s B χ cD).sc) (TaylorLogMetric.al D B.tor) (lam (ambOf s B χ cD) N N') (lam (ambOf s …`. Take `⟨m, hm⟩` from `hq a b _ _ (hadm N N' h h') (reidx s a b x) ((hlam a b N N' x).1 hx)`. Conclude with `alV_eq s B x hm)`. Use the proof step `(isHerm_formV _ _ _ _) (hL.1 a b _ _ (hadm N N' h h')).1 (hL.1 a b _ _ (hadm N N' h h')).2).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨h3 (B.eNat χ a b (s.lat N) (s.lat N')) (hV a b _ _ (hadm N N' h h')).1.2, h1, h2⟩`. Establish `hd : ContDiff ℂ (k : WithTop ℕ∞) (B.eNat χ a b (s.lat N) (s.lat N'))` using `GlobalTheory.SCV.contDiff_of_differentiable (hV a b _ _ (hadm N N' h h')).1.1 _`. Conclude with `hd.comp (reidx s a b).toLinearMap.toContinuousLinearMap.contDiff`.
+A detailed English derivation is pending.
 -/
 theorem laHyp_and_eSmooth : ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Formalism.L2.Ker.Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (a b : ℕ), X.Ok → s.Ok → TaylorLogMetric.IsCurveIdeal D cc → TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → B.VecP χ → Even a → Even b → (ambOf s B χ cD).LaHyp a b ∅ ∧ (ambOf s B χ cD).ESmooth a b := by
   intro D X s cc δ B χ cD a b hX hs hcc hδ hV ha hb

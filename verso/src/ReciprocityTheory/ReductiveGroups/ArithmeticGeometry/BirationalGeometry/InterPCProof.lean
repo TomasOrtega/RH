@@ -14,7 +14,7 @@ open MvPolynomial ReciprocityTheory.AnForm.R
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `p`. Rewrite using `[RingHom.comp_apply, MvPolynomial.map_map]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem map_int_comp :
     (MvPolynomial.map (algebraMap ℚ ℂ)).comp (MvPolynomial.map (Int.castRingHom ℚ)) =
@@ -25,7 +25,7 @@ theorem map_int_comp :
   congr 1
 
 /- English proof (translation)
-Unfold `pC extC extQ`. Rewrite using `[Ideal.map_map, map_int_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pC_eq_extC_extQ (P : Ideal (MRing ι)) : pC P = extC (extQ P) := by
   unfold pC extC extQ
@@ -33,7 +33,7 @@ theorem pC_eq_extC_extQ (P : Ideal (MRing ι)) : pC P = extC (extQ P) := by
   rfl
 
 /- English proof (translation)
-Introduce `m hm`. Establish `h1 : m ∈ P.comap (C : ℤ →+* MRing ι)` using `hm`. Unfold `IsHorizontal at h`. Rewrite `h1` using `[h]`. Conclude with `Ideal.mem_bot.mp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem horizontal_spec {P : Ideal (MRing ι)} (h : IsHorizontal P) :
     ∀ m : ℤ, (C m : MRing ι) ∈ P → m = 0 := by
@@ -44,11 +44,11 @@ theorem horizontal_spec {P : Ideal (MRing ι)} (h : IsHorizontal P) :
   exact Ideal.mem_bot.mp h1
 
 /- English proof (translation)
-Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot`. Rewrite `h` using `[WithBot.bot_add]`. Conclude with `absurd h.symm (by simp)`. Consider the case `coe b`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `b using ENat.recTopCoe with`. Consider the case `top`. Simplify using `at h`. Conclude with `absurd h.symm (fun h2 => ENat.coe_ne_top n (WithBot.coe_injective (show ((n : ℕ∞) : WithBot ℕ∞) = ((⊤ : ℕ∞) : WithBot ℕ∞) from h2)))`. Consider the case `coe k`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : ((k + 1 : ℕ) : WithBot ℕ∞) = ((n + 1 : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast h`. Establish `h2 : k + 1 = n + 1` using `by exact_mod_cast h'`. Establish `hk : k = n` using `by omega`. Substitute `hk` using the available equality. Use `norm_cast`.
+Establish an intermediate fact. Substitute using the available equality. Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem withBot_eq_of_add_one {a : WithBot ℕ∞} {n : ℕ}
     (h : a + 1 = ((n + 1 : ℕ) : WithBot ℕ∞)) : a = (n : WithBot ℕ∞) := by
@@ -70,9 +70,7 @@ theorem withBot_eq_of_add_one {a : WithBot ℕ∞} {n : ℕ}
       norm_cast
 
 /- English proof (translation)
-Introduce `K _ ι _ P e hP`. Take `⟨_, hMP, hH, _⟩` from `hP`. Use `haveI : P.IsPrime := hMP.1`. Take `⟨hpr, _, _⟩` from `extQ_spec P (horizontal_spec hH)`. Use `haveI := hpr`.
-
-Rewrite using `[pC_eq_extC_extQ]`. Conclude with `extC_isRadical (extQ P)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pcRadical : PCRadicalStatement := by
   intro K _ ι _ P e hP
@@ -84,9 +82,9 @@ theorem pcRadical : PCRadicalStatement := by
   exact extC_isRadical (extQ P)
 
 /- English proof (translation)
-Introduce `K _ ι _ P e hP Q hQ`. Take `⟨_, hMP, hH, hdim⟩` from `hP`. Use `haveI : P.IsPrime := hMP.1`. Take `⟨hpr, _, hd⟩` from `extQ_spec P (horizontal_spec hH)`. Use `haveI := hpr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hQ` using `[pC_eq_extC_extQ]`. Rewrite using `[ringKrullDim_of_mem_minimalPrimes_extC (extQ P) Q hQ]`. Apply `withBot_eq_of_add_one` to reduce the goal to its premises. Rewrite using `[hd, hdim, show e + 1 + Fintype.card K = e + Fintype.card K + 1 by omega]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pcEquidim : PCEquidimStatement := by
   intro K _ ι _ P e hP Q hQ
@@ -100,9 +98,9 @@ theorem pcEquidim : PCEquidimStatement := by
   rw [hd, hdim, show e + 1 + Fintype.card K = e + Fintype.card K + 1 by omega]
 
 /- English proof (translation)
-Introduce `K _ ι _ P e hP Q hQ`. Take `⟨_, hMP, hH, _⟩` from `hP`. Use `haveI : P.IsPrime := hMP.1`. Take `⟨hpr, hcomap, _⟩` from `extQ_spec P (horizontal_spec hH)`. Use `haveI := hpr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hQ` using `[pC_eq_extC_extQ]`. Rewrite using `[← map_int_comp, ← Ideal.comap_comap, comap_of_mem_minimalPrimes_extC (extQ P) Q hQ, hcomap]`.
+A detailed English derivation is pending.
 -/
 theorem pcMinContract : PCMinContractStatement := by
   intro K _ ι _ P e hP Q hQ
@@ -114,9 +112,9 @@ theorem pcMinContract : PCMinContractStatement := by
   rw [← map_int_comp, ← Ideal.comap_comap, comap_of_mem_minimalPrimes_extC (extQ P) Q hQ, hcomap]
 
 /- English proof (translation)
-Introduce `K _ ι _ P e hP f hf`. Take `⟨_, hMP, hH, _⟩` from `hP`. Use `haveI : P.IsPrime := hMP.1`. Take `⟨_, hcomap, _⟩` from `extQ_spec P (horizontal_spec hH)`. Rewrite `hf` using `[pC_eq_extC_extQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : f ∈ (extC (extQ P)).comap (MvPolynomial.map (Int.castRingHom ℂ) : MRing ι →+* MRingOver ℂ ι)` using `hf`. Rewrite `h1` using `[← map_int_comp, ← Ideal.comap_comap, comap_extC, hcomap]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pcContract : PCContractStatement := by
   intro K _ ι _ P e hP f hf
@@ -129,27 +127,23 @@ theorem pcContract : PCContractStatement := by
   exact h1
 
 /- English proof (translation)
-Introduce `K _ ι _ P e hP`. Take `⟨_, hMP, hH, hdim⟩` from `hP`. Use `haveI : P.IsPrime := hMP.1`. Take `⟨S, hShom, hSspan⟩` from `hMP.2.1`. Take `⟨hpr, _, hd⟩` from `extQ_spec P (horizontal_spec hH)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hpr`. Take `⟨F0, hF0⟩ : P.FG` from `IsNoetherian.noetherian P`. Establish `hfin : ∀ x ∈ F0, ∃ T : Finset (MRing ι), (↑T : Set (MRing ι)) ⊆ S ∧ x ∈ Submodule.span (MRing ι) (↑T : Set (MRing ι))`. Introduce `x hx`. Establish `hxP : x ∈ P` using `hF0 ▸ Submodule.subset_span hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `hxP` using `[hSspan]`. Conclude with `Submodule.mem_span_finite_of_mem_span hxP`. Use `choose T hTS hxT using hfin`. Set `T' : Finset (MRing ι)` to `F0.attach.biUnion fun x => T x.1 x.2`. Establish `hT'S : (↑T' : Set (MRing ι)) ⊆ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y hy`. Take `⟨x, _, hyx⟩` from `Finset.mem_biUnion.mp (Finset.mem_coe.mp hy)`. Conclude with `hTS x.1 x.2 hyx`. Establish `hspanT' : Ideal.span (↑T' : Set (MRing ι)) = P`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Rewrite using `[hSspan]`. Conclude with `Ideal.span_mono hT'S`. Rewrite using `[← hF0]`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce `x hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.span_mono (fun y hy => Finset.mem_coe.mpr (Finset.mem_biUnion.mpr ⟨⟨x, hx⟩, Finset.mem_attach _ _, hy⟩)) (hxT x hx)`. Set `G : Fin T'.card → MRing ι` to `fun i => (T'.equivFin.symm i : MRing ι)`. Establish `hrange : Set.range G = ↑T'`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce and unpack `⟨i, rfl⟩`. Conclude with `(T'.equivFin.symm i).2`. Introduce `hy`. Conclude with `⟨T'.equivFin ⟨y, hy⟩, by simp [G]⟩`. Use `⟨T'.card, G, fun i => hShom _ (hT'S (T'.equivFin.symm i).2), by rw [hrange, hspanT'], ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `Gq : Fin T'.card → MvPolynomial (Σ k, ι k) ℚ` to `fun i => MvPolynomial.map (Int.castRingHom ℚ) (G i)`. Establish `hGq : Ideal.span (Set.range Gq) = extQ P`. Unfold `extQ`. Rewrite using `[← hspanT', ← hrange, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdq : ringKrullDim (MvPolynomial (Σ k, ι k) ℚ ⧸ extQ P) = ((e + Fintype.card K : ℕ) : WithBot ℕ∞)`. Apply `withBot_eq_of_add_one` to reduce the goal to its premises. Rewrite using `[hd, hdim, show e + 1 + Fintype.card K = e + Fintype.card K + 1 by omega]`. Take `⟨a, b, hab⟩` from `exists_jacobian_minor_not_mem (extQ P) Gq hGq (e + Fintype.card K) hdq`. Introduce `hle`.
-
-Apply `hab` to reduce the goal to its premises. Establish `hmem : Matrix.det (Matrix.of fun i j => pderiv (b j) (G (a i))) ∈ P` using `hle (Submodule.subset_span ⟨a, b, rfl⟩)`. Establish `hmap : MvPolynomial.map (Int.castRingHom ℚ) (Matrix.det (Matrix.of fun i j => pderiv (b j) (G (a i)))) ∈ extQ P` using `Ideal.mem_map_of_mem _ hmem`. Rewrite `hmap` using `[RingHom.map_det]`. Use `hmap using 2` and compare the differences between its conclusion and the goal.
-
-Use extensionality with `i j`. Simplify using `[Gq, RingHom.mapMatrix_apply, MvPolynomial.pderiv_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jacNotInP : JacNotInPStatement := by
   classical

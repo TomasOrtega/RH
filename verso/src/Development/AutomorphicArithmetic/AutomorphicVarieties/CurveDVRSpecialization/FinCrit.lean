@@ -12,13 +12,13 @@ attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toI
   UpperTheory.V.Pr.IsCD.fin UpperTheory.V.Pr.IsCD.isLocalHom
 
 /- English proof (translation)
-Establish `hVn : IsNoetherianRing V` using `(GlobalTheory.krullAkizuki_of_birational (A := D) (B := V) hB).1`. Take `⟨t, ht, ht0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hm`. Establish `hle : (maximalIdeal D).map (algebraMap D V) ≤ maximalIdeal V` using `Ideal.map_le_iff_le_comap.2 fun a ha => map_nonunit (algebraMap D V) a ha`. Establish `h1` using `GlobalTheory.finite_quotient_span_of_birational hB ht0`. Establish `hs : Ideal.span {algebraMap D V t} ≤ (maximalIdeal D).map (algebraMap D V)` using `(Ideal.span_singleton_le_iff_mem _).mpr (Ideal.mem_map_of_mem _ ht)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Module.Finite D (V ⧸ (maximalIdeal D).map (algebraMap D V))` using `Module.Finite.of_surjective (Ideal.Quotient.factorₐ D hs).toLinearMap (Ideal.Quotient.factor_surjective hs)`. Establish `h3 : IsHausdorff ((maximalIdeal D).map (algebraMap D V)) V` using `IsHausdorff.of_isLocalRing _ _ (ne_top_of_le_ne_top (maximalIdeal.isMaximal V).ne_top hle)`. Establish `h4 : Module.Finite D V` using `GlobalTheory.FormalIsogeny.finite_of_finite_quotient_map (maximalIdeal D)`. Establish `hnf : ¬ IsField V`. Rewrite using `[isField_iff_maximalIdeal_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `hle (Ideal.mem_map_of_mem _ ht)` as an intermediate fact. Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `ht0 (FaithfulSMul.algebraMap_injective D V (this.trans (map_zero _).symm))`. Establish `hval : ValuationRing V` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((IsDiscreteValuationRing.TFAE V hnf).out 1 0).mp hval, GlobalTheory.FormalIsogeny.isAdicComplete_maximalIdeal_of_finite D V, ?_⟩` and prove the remaining obligations. Establish `: Module.Finite (ResidueField D) (ResidueField V)` using `inferInstance`. Conclude with `Module.finite_of_finite (ResidueField D)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fc_abs (D V : Type) [CommRing D] [IsDomain D] [IsNoetherianRing D] [IsLocalRing D]
     [IsAdicComplete (maximalIdeal D) D] [Finite (ResidueField D)] [Ring.DimensionLEOne D]
@@ -52,13 +52,13 @@ private theorem fc_abs (D V : Type) [CommRing D] [IsDomain D] [IsNoetherianRing 
   exact Module.finite_of_finite (ResidueField D)
 
 /- English proof (translation)
-Establish `hk : Ring.KrullDimLE 1 D`. Rewrite using `[Ring.krullDimLE_iff, hd]`. Conclude with `le_rfl`. Establish `: Ring.DimensionLEOne D` using `⟨fun {q} hq hq' => Ring.krullDimLE_one_iff_of_noZeroDivisors.mp hk q hq hq'⟩`. Establish `hm : maximalIdeal D ≠ ⊥` using `fun h => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[ringKrullDim_eq_zero_of_isField (isField_iff_maximalIdeal_eq.2 h)]`. Conclude with `absurd hd (by decide)`. Take `⟨V, hV, hloc⟩` from `IsLocalRing.exists_factor_valuationRing (algebraMap D (FractionRing D))`. Set `φ : D →+* V` to `(algebraMap D (FractionRing D)).codRestrict V.toSubring hV`. Establish `hφ : Function.Injective φ` using `fun a b h => IsFractionRing.injective D (FractionRing D) (congrArg Subtype.val h)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra D V := φ.toAlgebra`. Establish `: FaithfulSMul D V` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr hφ`. Establish `hl : IsLocalHom (algebraMap D V)` using `hloc`. Take `⟨h1, h2, h3⟩` from `fc_abs D V hm fun x => by`. Take `⟨⟨b, c⟩, h⟩` from `IsLocalization.surj (nonZeroDivisors D) (x : FractionRing D)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨c, nonZeroDivisors.coe_ne_zero c, b, Subtype.ext ((mul_comm _ _).trans h)⟩`. Conclude with `⟨V, inferInstance, inferInstance, h1, h2, h3, φ, hφ, hl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem fc_point (D : Type) [CommRing D] [IsDomain D] [IsNoetherianRing D] [IsLocalRing D]
     [IsAdicComplete (maximalIdeal D) D] [Finite (ResidueField D)] (hd : ringKrullDim D = 1) :
@@ -85,22 +85,20 @@ private theorem fc_point (D : Type) [CommRing D] [IsDomain D] [IsNoetherianRing 
   exact ⟨V, inferInstance, inferInstance, h1, h2, h3, φ, hφ, hl⟩
 
 /- English proof (translation)
-The claim follows from `Finite.of_surjective _ (resMap_bijective O R).2`.
+A detailed English derivation is pending.
 -/
 private theorem fc_finres (O R : Type) [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] [CommRing R]
     [Algebra O R] [IsCO O R] : Finite (ResidueField R) :=
   Finite.of_surjective _ (resMap_bijective O R).2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hne` using `Finsupp.support_nonempty_iff.2 hn`. Rewrite `hw` using `[Finsupp.weight_apply, Finsupp.sum]`. Break down `h with h | h` into its components or cases.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `absurd hw (ne_of_gt (Finset.sum_pos (fun i hi => ?_) hne))` and prove the remaining obligations. Establish `h1 : 0 < wt i`. Break down `lt_trichotomy (wt i) 0 with e | e | e` into its components or cases. Conclude with `absurd (h i e) (hc i hi)`. Conclude with `absurd (h0 i e) (hc i hi)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Conclude with `e`. Use `Nat.pos_of_ne_zero (Finsupp.mem_support_iff.1 hi)` as an intermediate fact. Rewrite using `[nsmul_eq_mul]`. Check the signs of the components of the expression. Use `absurd hw (ne_of_lt (Finset.sum_neg (fun i hi => ?_) hne))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : wt i < 0`. Break down `lt_trichotomy (wt i) 0 with e | e | e` into its components or cases. Conclude with `e`. Conclude with `absurd (h0 i e) (hc i hi)`. Conclude with `absurd (h i e) (hc i hi)`.
-
-Use `Nat.pos_of_ne_zero (Finsupp.mem_support_iff.1 hi)` as an intermediate fact. Rewrite using `[nsmul_eq_mul]`. Conclude with `mul_neg_of_pos_of_neg (by exact_mod_cast this) h1`.
+A detailed English derivation is pending.
 -/
 private theorem fc_sign {σ : Type} (wt : σ → ℤ) (n : σ →₀ ℕ) (hn : n ≠ 0) (hw : Finsupp.weight wt n = 0)
     (P : σ → Prop) (h0 : ∀ i, wt i = 0 → P i) (h : (∀ i, wt i < 0 → P i) ∨ ∀ i, 0 < wt i → P i) :
@@ -130,13 +128,13 @@ private theorem fc_sign {σ : Type} (wt : σ → ℤ) (n : σ →₀ ℕ) (hn : 
     exact mul_neg_of_pos_of_neg (by exact_mod_cast this) h1
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 hb`. Take `⟨g, rfl⟩` from `W.surj r`. Take `⟨f, hf, hfb⟩ : ((b : W.A) : R) ∈ W.part 0` from `b.2`. Establish `hfb' : W.π f = ((b : W.A) : R)` using `hfb`. Establish `h1 : ϖ • g - f ∈ RingHom.ker W.π`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, map_sub, map_smul, hfb', ← hr, Algebra.smul_def, mul_comm, sub_self]`. Establish `h2` using `W.homog _ h1 0`. Establish `h3 : wcomp O W.wt 0 f = f`. Use extensionality with `n`. Rewrite using `[coeff_wcomp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(hf n h).symm`. Rewrite `h2` using `[map_sub, map_smul, h3, RingHom.mem_ker, map_sub, map_smul, hfb', sub_eq_zero]`. Establish `hp : W.π (wcomp O W.wt 0 g) ∈ W.part 0` using `⟨_, wcomp_mem O W.wt 0 g, rfl⟩`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.mem_span_singleton'.2 ⟨⟨⟨_, W.part_le_A hp⟩, hp⟩, Subtype.ext (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[← h2, Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem fc_contract {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (W : WPres O ℤ R) (ϖ : O)
     (b : W.gr 0) (hb : ((b : W.A) : R) ∈ Ideal.span {algebraMap O R ϖ}) :
@@ -161,25 +159,21 @@ private theorem fc_contract {O R : Type} [CommRing O] [CommRing R] [Algebra O R]
   rfl
 
 /- English proof (translation)
-Introduce `O R _ _ _ _ _ _ _ _ W hz H`. Use `haveI hB : IsCO O (W.gr 0) := UpperTheory.V.Alg.wPres_gr_zero_isCO_of_mem_maximalIdeal O ℤ R W hz`. Take `⟨h1, u, hu, hmax⟩` from `UpperTheory.V.Alg.wPres_maximalIdeal_gr_zero_eq_sup_span_monomials O ℤ R W hz`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hmO` using `hϖ.maximalIdeal_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : (maximalIdeal O).map (algebraMap O (W.gr 0)) = Ideal.span {algebraMap O (W.gr 0) ϖ}`. Rewrite using `[hmO, Ideal.map_span, Set.image_singleton]`. Establish `hrad : ∀ b ∈ u, ((b : W.A) : R) ∈ (Ideal.span {algebraMap O R ϖ}).radical`. Introduce `b hb`. Rewrite using `[Ideal.radical_eq_sInf, Submodule.mem_sInf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `Q ⟨hQ, hQp⟩`. Assume the negation of the conclusion as `hbQ`. Establish `hbm : ((b : W.A) : R) ∈ maximalIdeal R` using `(h1 b).1 (hmax ▸ Ideal.mem_sup_right (Ideal.subset_span hb))`. Take `⟨p, hp, hQle, hbp, hd⟩` from `UpperTheory.V.Pr.npe_dim_one Q hbm hbQ`. Use `haveI : IsCO O (R ⧸ p) := UpperTheory.V.Alg.co_quot O R (R ⧸ p) (Ideal.Quotient.mkₐ O p) Ideal.Quotient.mk_surjective`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI := fc_finres O (R ⧸ p)`. Take `⟨A, _, _, _, hc, hf, φ, hφ, hl⟩` from `fc_point (R ⧸ p) hd`. Use `letI : Algebra O A := (φ.comp (algebraMap O (R ⧸ p))).toAlgebra`. Use `haveI : UpperTheory.V.Pr.IsCD O A := { complete := hc isLocalHom := inferInstanceAs (IsLocalHom (φ.comp (algebraMap O (R ⧸ p)))) fin := hf }`. Set `f : R →ₐ[O] A` to `{ φ.comp (Ideal.Quotient.mk p) with commutes' := fun _ => rfl }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hker : ∀ x, f x = 0 ↔ x ∈ p` using `fun x => by`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← map_eq_zero_iff φ hφ]`. Both sides reduce to the same expression. Use `haveI := IsLocalHom.of_surjective (Ideal.Quotient.mk p) Ideal.Quotient.mk_surjective`. Establish `hfl : IsLocalHom f` using `⟨fun a ha => IsLocalHom.map_nonunit (f := φ.comp (Ideal.Quotient.mk p)) a ha⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h0, hs⟩` from `H A f hfl fun a ha => by`. Rewrite using `[← f.commutes, hker]`. Rewrite `ha` using `[hmO]`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `p.mul_mem_left _ (hQle (hQ (Ideal.mem_span_singleton_self _)))`. Take `⟨n, hn, hw, hbn⟩` from `hu b hb`. Take `⟨i, hi, hi0⟩` from `fc_sign W.wt n hn hw _ h0 hs`. Apply `hbp` to reduce the goal to its premises. Rewrite using `[hbn]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.prod_mem _ hi (Ideal.pow_mem_of_mem _ ((hker _).1 hi0) _ (Nat.pos_of_ne_zero (Finsupp.mem_support_iff.1 hi)))`. Establish `hrad' : maximalIdeal (W.gr 0) ≤ ((maximalIdeal O).map (algebraMap O (W.gr 0))).radical`. Rewrite using `[hmax]`. Use `sup_le Ideal.le_radical (Ideal.span_le.2 fun b hb => ?_)` and prove the remaining obligations. Take `⟨N, hN⟩` from `hrad b hb`.
-
-Conclude with `⟨N, hJ ▸ fc_contract W ϖ (b ^ N) hN⟩`. Take `⟨N, hN⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad' (IsNoetherian.noetherian _)`. Use `haveI : Finite (W.gr 0 ⧸ maximalIdeal (W.gr 0)) := fc_finres O (W.gr 0)`. Use `haveI := Ideal.finite_quotient_pow (IsNoetherian.noetherian (maximalIdeal (W.gr 0))) N`. Use `haveI : Finite (W.gr 0 ⧸ (maximalIdeal O).map (algebraMap O (W.gr 0))) := Finite.of_surjective _ (Ideal.Quotient.factor_surjective hN)`.
-
-Use `haveI : IsHausdorff ((maximalIdeal O).map (algebraMap O (W.gr 0))) (W.gr 0) := IsHausdorff.of_isLocalRing _ _ (ne_top_of_le_ne_top (maximalIdeal.isMaximal (W.gr 0)).ne_top (le_sup_left.trans hmax.ge))`. Use `haveI : Module.Finite O (W.gr 0) := GlobalTheory.FormalIsogeny.finite_of_finite_quotient_map (maximalIdeal O)`. Set `e : W.gr 0 →ₗ[O] W.part 0` to `{ toFun := fun b => ⟨((b : W.A) : R), b.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `Module.Finite.of_surjective e fun x => ⟨⟨⟨x.1, W.part_le_A x.2⟩, x.2⟩, rfl⟩`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.finCrit :
     UpperTheory.V.Pr.FinCrit := by

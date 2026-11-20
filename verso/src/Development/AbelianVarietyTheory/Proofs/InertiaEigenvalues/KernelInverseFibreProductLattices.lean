@@ -40,20 +40,20 @@ variable {k : Type} [Field k] [Algebra O k]
 omit [Algebra O LL] in
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Algebra.smul_def, hk]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lam_smul {lam : O} (hk : algebraMap O k lam = 0) {m : ℕ} (t : Fin m → k) : lam • t = 0 := by
   ext i
   simp [Algebra.smul_def, hk]
 
 /- English proof (translation)
-Establish `hq2 : ∀ σ x, q (latRep T.L σ x) = A.ρ σ (q x)` using `hq.2`. Establish `hP : ∀ x, lam • x ∈ LinearMap.ker q` using `fun x => by`. Rewrite using `[LinearMap.mem_ker, map_smul, lam_smul hk]`. Establish `hg : ∀ σ, ∀ x ∈ LinearMap.ker q, latRep T.L σ x ∈ LinearMap.ker q` using `fun σ x hx => by`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hq2, hx, map_zero]`. Use `⟨{ T with L := subLattice T hl (LinearMap.ker q) hg hP }, ⟨LinearMap.id, fun _ _ => rfl, continuous_id, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `y.2`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨x, ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨z, hz, rfl⟩, h⟩`. Establish `hzx : z = x` using `Subtype.ext h`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hzx` using the available equality. Conclude with `hz`.
+A detailed English derivation is pending.
 -/
 theorem exists_ker [IsDomain O] [IsPrincipalIdealRing O] {lam : O} (hl : algebraMap O LL lam ≠ 0)
     (hk : algebraMap O k lam = 0) (T : LocLat G Qp LL O) (A : Ob k G) (q : ↥T.L.T →ₗ[O] (Fin A.m → k))
@@ -79,15 +79,15 @@ theorem exists_ker [IsDomain O] [IsPrincipalIdealRing O] {lam : O} (hl : algebra
       exact hz
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective f.f`. Establish `hle : Submodule.span LL (T.L.T : Set T.V) ≤ LinearMap.range f.f`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Take `⟨y, -, hy⟩` from `h x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨(algebraMap O LL lam)⁻¹ • y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hy, ← algebraMap_smul LL lam x, inv_smul_smul₀ hl]`. Rewrite `hle` using `[T.L.span]`. Conclude with `fun x => hle Submodule.mem_top`. Set `e` to `LinearEquiv.ofBijective f.f ⟨hf, hsurj⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression.
 
-Establish `h1 : ∀ z, f.f (e.symm z) = z` using `fun z => e.apply_symm_apply z`. Set `c` to `algebraMap O LL lam`. Use `⟨⟨c • (e.symm : T.V →ₗ[LL] T'.V), ?_, IsModuleTopology.continuous_of_linearMap _, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `σ x`. Apply `hf` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [LinearMap.smul_apply, LinearEquiv.coe_coe, map_smul, f.equiv, h1]`. Introduce `x hx`. Take `⟨y, hy, hfy⟩` from `h x hx`. Establish `hxy : (c • (e.symm : T.V →ₗ[LL] T'.V)) x = y`. Apply `hf` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[LinearMap.smul_apply, map_smul, LinearEquiv.coe_coe, h1, hfy, algebraMap_smul]`. Rewrite using `[hxy]`. Conclude with `hy`. Introduce `x show f.f ((c • (e.symm : T.V →ₗ[LL] T'.V)) x) = c • x`. Rewrite using `[LinearMap.smul_apply, map_smul, LinearEquiv.coe_coe, h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv {lam : O} (hl : algebraMap O LL lam ≠ 0) (T T' : LocLat G Qp LL O) (f : LatHom T'.L T.L)
     (hf : Function.Injective f.f) (h : ∀ x ∈ T.L.T, ∃ y ∈ T'.L.T, f.f y = lam • x) :
@@ -120,17 +120,15 @@ theorem exists_inv {lam : O} (hl : algebraMap O LL lam ≠ 0) (T T' : LocLat G Q
     rw [LinearMap.smul_apply, map_smul, LinearEquiv.coe_coe, h1]
 
 /- English proof (translation)
-Establish `hq2 : ∀ σ x, q (latRep T.L σ x) = A.ρ σ (q x)` using `hq.2`. Establish `hq2' : ∀ σ x, q' (latRep T'.L σ x) = A'.ρ σ (q' x)` using `hq'.2`. Establish `hg0 : ∀ σ x, g (A.ρ σ x) = A'.ρ σ (g x)` using `hg`. Set `φ : ↥(prodLat T T').L.T →ₗ[O] (Fin A'.m → k)` to `q' ∘ₗ (LinearMap.snd O _ _ ∘ₗ (prodLatEquiv T T').toLinearMap) - (g.restrictScalars O) ∘ₗ q ∘ₗ (LinearMap.fst O _ _ ∘ₗ (prodLatEquiv T T').toLinearMap)`. Establish `hφ : ∀ z, φ z = q' (prodLatEquiv T T' z).2 - g (q (prodLatEquiv T T' z).1)` using `fun z => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hP : ∀ z, lam • z ∈ LinearMap.ker φ` using `fun z => by`. Rewrite using `[LinearMap.mem_ker, map_smul, lam_smul hk]`. Establish `hst : ∀ σ, ∀ z ∈ LinearMap.ker φ, latRep (prodLat T T').L σ z ∈ LinearMap.ker φ`. Introduce `σ z hz`. Rewrite `hz`, the goal using `[LinearMap.mem_ker, hφ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [prodLatEquiv_act]`. Rewrite using `[hq2, hq2', hg0, ← map_sub, hz, map_zero]`. Use `⟨{ prodLat T T' with L := subLattice (prodLat T T') hl (LinearMap.ker φ) hst hP }, ⟨LinearMap.fst LL T.V T'.V, fun _ _ => rfl, continuous_fst, ?_⟩, ⟨LinearMap.snd LL T.V T'.V, fun _ _ => rfl, continuous_snd, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, -, rfl⟩`. Conclude with `z.2.1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨z, -, rfl⟩`. Conclude with `z.2.2`. Introduce `x hx`. Take `⟨x', hx'⟩` from `hq'.1 (g (q ⟨x, hx⟩))`. Set `w : ↥(prodLat T T').L.T` to `⟨(x, (x' : T'.V)), hx, x'.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(x, (x' : T'.V)), ⟨w, ?_, rfl⟩, rfl⟩` and prove the remaining obligations. Use `show φ w = 0`. Rewrite using `[hφ]`. Conclude with `sub_eq_zero.mpr hx'`. Introduce and unpack `⟨_, ⟨w, hw, rfl⟩⟩`.
-
-Establish `hw' : φ w = 0` using `hw`. Rewrite `hw'` using `[hφ, sub_eq_zero]`. Conclude with `hw'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fibre [IsDomain O] [IsPrincipalIdealRing O] {lam : O} (hl : algebraMap O LL lam ≠ 0)
     (hk : algebraMap O k lam = 0) (T : LocLat G Qp LL O) (A : Ob k G) (q : ↥T.L.T →ₗ[O] (Fin A.m → k))
@@ -173,7 +171,7 @@ theorem exists_fibre [IsDomain O] [IsPrincipalIdealRing O] {lam : O} (hl : algeb
     exact hw'
 
 /- English proof (translation)
-Introduce `G _ _ Qp LL O _ _ _ _ _ _ _ _ k _ _ lam hl hk`. Conclude with `⟨fun T A q hq => exists_ker hl hk T A q hq, fun T T' f hf h => exists_inv hl T T' f hf h, fun T A q T' A' q' g hq hq' hg => exists_fibre hl hk T A q T' A' q' g hq hq' hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ker_inv_fibre : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL] [Algebra Qp LL] [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [Algebra O LL] [TopologicalSpace LL] {k : Type} [Field k] [Algebra O k] (lam : O), algebraMap O LL lam ≠ 0 → algebraMap O k lam = 0 → (∀ (T : LocLat G Qp LL O) (A : Ob k G) (q : ↥T.L.T →ₗ[O] (Fin A.m → k)), Onto T A q → ∃ (T' : LocLat G Qp LL O) (f : LatHom T'.L T.L), ∀ x : ↥T.L.T, q x = 0 ↔ ∃ y ∈ T'.L.T, f.f y = x) ∧ (∀ (T T' : LocLat G Qp LL O) (f : LatHom T'.L T.L), Function.Injective f.f → (∀ x ∈ T.L.T, ∃ y ∈ T'.L.T, f.f y = lam • x) → ∃ h : LatHom T.L T'.L, ∀ x, f.f (h.f x) = algebraMap O LL lam • x) ∧ ∀ (T : LocLat G Qp LL O) (A : Ob k G) (q : ↥T.L.T →ₗ[O] (Fin A.m → k)) (T' : LocLat G Qp LL O) (A' : Ob k G) (q' : ↥T'.L.T →ₗ[O] (Fin A'.m → k)) (g : (Fin A.m → k) →ₗ[k] (Fin A'.m → k)), Onto T A q → Onto T' A' q' → IsHom A A' g → ∃ (T'' : LocLat G Qp LL O) (f : LatHom T''.L T.L) (f' : LatHom T''.L T'.L), (∀ x ∈ T.L.T, ∃ z ∈ T''.L.T, f.f z = x) ∧ ∀ z : ↥T''.L.T, q' (GlobalTheory.EtaleExact.latMap f' z) = g (q (GlobalTheory.EtaleExact.latMap f z)) := by
   intro G _ _ Qp LL O _ _ _ _ _ _ _ _ k _ _ lam hl hk

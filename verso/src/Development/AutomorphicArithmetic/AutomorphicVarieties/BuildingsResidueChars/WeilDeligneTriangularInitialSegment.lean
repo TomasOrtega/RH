@@ -3,27 +3,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.W
 open Module
 
 /- English proof (translation)
-Introduce `k W ι _ _ _ n T d hT`. Take `⟨b, hb⟩` from `hT`. Establish `hp : ∀ a x, b.coord (Fin.last n) (T a x) = d a (Fin.last n) * b.coord (Fin.last n) x`. Introduce `a x`. Establish `h : (b.coord (Fin.last n)) ∘ₗ (T a) = d a (Fin.last n) • b.coord (Fin.last n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `b.ext fun j => ?_` and prove the remaining obligations. Establish `h1` using `(hb a).1 (Fin.last n) j`. Establish `h2` using `(hb a).2 (Fin.last n)`. Rewrite `h1`, `h2` using `[LinearMap.toMatrix_apply]`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, Basis.coord_apply, Basis.repr_self, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hj : j = Fin.last n`. Substitute `hj` using the available equality. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Rewrite using `[h1 (lt_of_le_of_ne (Fin.le_last j) hj), Finsupp.single_apply, if_neg hj, mul_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using LinearMap.congr_fun h x`. Establish `hS : ∀ a, ∀ x ∈ LinearMap.ker (b.coord (Fin.last n)), T a x ∈ LinearMap.ker (b.coord (Fin.last n))`. Introduce `a x hx`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hp, hx, mul_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨LinearMap.ker (b.coord (Fin.last n)), hS, b.coord (Fin.last n), ?_, rfl, hp, ?_⟩` and prove the remaining obligations. Introduce `c`. Conclude with `⟨c • b (Fin.last n), by simp⟩`. Set `v : Fin n → LinearMap.ker (b.coord (Fin.last n))` to `fun i => ⟨b (Fin.castSucc i), by`. Rewrite using `[LinearMap.mem_ker, Basis.coord_apply, Basis.repr_self, Finsupp.single_apply, if_neg (Fin.castSucc_lt_last i).ne]⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : LinearIndependent k v`. Apply `LinearIndependent.of_comp (LinearMap.ker (b.coord (Fin.last n))).subtype` to reduce the goal to its premises. Conclude with `b.linearIndependent.comp Fin.castSucc (Fin.castSucc_injective n)`. Establish `key : ∀ x : LinearMap.ker (b.coord (Fin.last n)), x = ∑ i, b.repr (x : W) (Fin.castSucc i) • v i`. Introduce `x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hx : b.repr (x : W) (Fin.last n) = 0` using `x.2`. Establish `h` using `b.sum_repr (x : W)`. Rewrite `h` using `[Fin.sum_univ_castSucc, hx, zero_smul, add_zero]`. Rewrite using `[Submodule.coe_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.symm`. Establish `hsp : ⊤ ≤ Submodule.span k (Set.range v)`. Introduce `x _`. Rewrite using `[key x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b'` to `Basis.mk hv hsp`. Establish `hb' : ∀ i, b' i = v i` using `fun i => Basis.mk_apply hv hsp i`. Establish `hr : ∀ (x : LinearMap.ker (b.coord (Fin.last n))) i, b'.repr x i = b.repr (x : W) (Fin.castSucc i)`. Introduce `x i`. Establish `h` using `congrFun (b'.repr_sum_self fun i => b.repr (x : W) (Fin.castSucc i)) i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hb'] at h`. Rewrite `h` using `[← key x]`. Conclude with `h`. Establish `hm : ∀ a i j, LinearMap.toMatrix b' b' ((T a).restrict (hS a)) i j = LinearMap.toMatrix b b (T a) (Fin.castSucc i) (Fin.castSucc j)`. Introduce `a i j`.
-
-Rewrite using `[LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, hr, hb']`. Both sides reduce to the same expression. Use `⟨b', fun a => ⟨fun i j hij => ?_, fun i => ?_⟩⟩` and prove the remaining obligations. Conclude with `(hm a i j).trans ((hb a).1 _ _ (Fin.castSucc_lt_castSucc_iff.2 hij))`. Conclude with `(hm a i i).trans ((hb a).2 _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.weilDeligne_triangular_initial_segment :
     UpperTheory.V.Af.Wd.TriInit := by

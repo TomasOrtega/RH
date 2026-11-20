@@ -42,7 +42,7 @@ import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.Singul
 import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LResCore
 
 /- English proof (translation)
-The claim follows from `open PositivityTheory.Rg.Rsw in have i := PositivityTheory.Rg.Rsw.L.idemEx have ge := PositivityTheory.Rg.Rsw.L.goodEv i have be := PositivityTheory.Rg.Rsw.L.bumpEx i have wm := PositivityTheory.Rg.Rsw.L.wMaj have tp := PositivityTheory.Rg.Rsw.L.thProd wm have rt := PositivityThe …`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.Rsw.resCore : PositivityTheory.Rg.Rsw.ResCore :=
   open PositivityTheory.Rg.Rsw in

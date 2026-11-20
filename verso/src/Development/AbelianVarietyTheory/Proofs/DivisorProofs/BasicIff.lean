@@ -30,7 +30,7 @@ def coord {N : ℕ} (e : Module.Basis (Fin N) A B) (σ : Fin r ↪ Fin N)
   Fintype.linearCombination Γ(T, U) (fun k => gen A B y U (e (σ k)))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem basic_iff {N : ℕ} (e : Module.Basis (Fin N) A B) (σ : Fin r ↪ Fin N)
     (y : (functor A B r).obj (op T)) :

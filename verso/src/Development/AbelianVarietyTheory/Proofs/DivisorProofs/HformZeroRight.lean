@@ -34,14 +34,14 @@ noncomputable section
 namespace GlobalTheory.GramFrame
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_right {A : Type} [CommRing A] {n : Type} [Fintype n] (τ : A →+* A)
     (J : Matrix n n A) (x u v : n → A) : Formalism.UG.hform τ J x (u + v) = Formalism.UG.hform τ J x u + Formalism.UG.hform τ J x v := by
   simp only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_smul_right {A : Type} [CommRing A] {n : Type} [Fintype n] (τ : A →+* A)
     (J : Matrix n n A) (a : A) (x y : n → A) : Formalism.UG.hform τ J x (a • y) = a * Formalism.UG.hform τ J x y := by
@@ -49,7 +49,7 @@ theorem hform_smul_right {A : Type} [CommRing A] {n : Type} [Fintype n] (τ : A 
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_zero_right {A : Type} [CommRing A] {n : Type} [Fintype n] (τ : A →+* A)
     (J : Matrix n n A) (x : n → A) : Formalism.UG.hform τ J x 0 = 0 := by
@@ -58,7 +58,7 @@ theorem hform_zero_right {A : Type} [CommRing A] {n : Type} [Fintype n] (τ : A 
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.sigR, Formalism.UG.inclE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclE (x : D.host.E) :
     Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F) x) =
@@ -66,7 +66,7 @@ theorem sigR_inclE (x : D.host.E) :
   simp [Formalism.UG.sigR, Formalism.UG.inclE]
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inl ⟨⟨_, b, rfl⟩, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem inclE_int (b : 𝓞 D.host.E) :
     Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F) (algebraMap (𝓞 D.host.E) D.host.E b) ∈
@@ -74,7 +74,7 @@ theorem inclE_int (b : 𝓞 D.host.E) :
   Subring.subset_closure (Or.inl ⟨⟨_, b, rfl⟩, rfl⟩)
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, map_sum, map_mul, sigR_inclE, Matrix.map_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hform_inclE {n : ℕ} (J : Matrix (Fin n) (Fin n) D.host.E) (x y : Fin n → D.host.E) :
     Formalism.UG.hform (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F))
@@ -86,15 +86,13 @@ theorem hform_inclE {n : ℕ} (J : Matrix (Fin n) (Fin n) D.host.E) (x y : Fin n
   rfl
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨x0, hx0, rfl⟩` from `hx`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨y0, hy0, rfl⟩` from `hy`. Rewrite using `[hform_inclE]`. Take `⟨b, hb⟩` from `h x0 hx0 y0 hy0`. Rewrite using `[← hb]`. Conclude with `inclE_int b`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [hform_zero_right]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [hform_add_right]`. Conclude with `add_mem ha hb`. Consider the case `smul s a _ ha => rw [Subring.smul_def, hform_smul_right]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `mul_mem s.2 ha`. Consider the case `zero => rw [Formalism.UG.P.csDual_hform_zero_left]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [Formalism.UG.P.csDual_hform_add_left]`. Conclude with `add_mem ha hb`.
-
-Consider the case `smul s a _ ha`. Rewrite using `[Subring.smul_def, Formalism.UG.P.csDual_hform_smul_left]`. Conclude with `mul_mem (GlobalTheory.LevSplit.sigR_int s.2) ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_hatL {n : ℕ} (J : Matrix (Fin n) (Fin n) D.host.E) (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     (h : ∀ x ∈ Λ, ∀ y ∈ Λ, Formalism.UG.hform (D.sp.cm.sig : D.host.E →+* D.host.E) J x y ∈ (algebraMap (𝓞 D.host.E) D.host.E).range)
@@ -130,7 +128,7 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hs : ∀ z, Formalism.UG.prV (E` using `E) v (Formalism.UG.sigR σ (Formalism.L2.Herm.Af F) z) = Formalism.UG.sigR σ (v.adicCompletion F) (Formalism.UG.prV (E := E) v z) := fun z => RingHom.congr_fun (Formalism.UG.P.afsplit_prV_comp_sigR σ v) z`. Simplify using `only [Formalism.UG.hform, map_sum, map_mul, hs, Matrix.map_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem prV_hform' {n : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F))
     (x y : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) :
@@ -146,21 +144,17 @@ theorem prV_hform' {n : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
   rfl
 
 /- English proof (translation)
-Introduce `i j`. Establish `key : ∀ x ∈ Formalism.L2.Herm.hatL (F` using `F) Λ, Formalism.UG.hform (Formalism.UG.sigR σ (Formalism.L2.Herm.Af F)) (J.map (Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F))) x (β.val *ᵥ (G' *ᵥ Pi.single j 1)) ∈ Formalism.L2.Herm.intAf F E := by`. Introduce `x hx`. Establish `ha` using `(hfr x).1 hx`. Establish `e : x = β.val *ᵥ ((β⁻¹).val *ᵥ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[e, GlobalTheory.DualCompletion.hform_mulVec_left]`. Establish `e2 : (Formalism.UG.cT (Formalism.UG.sigR σ (Formalism.L2.Herm.Af F)) β.val * J.map (Formalism.UG.inclE (F` using `F) (Formalism.L2.Herm.Af F))) *ᵥ (β.val *ᵥ (G' *ᵥ Pi.single j 1)) = Pi.single j 1 := by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hG', Matrix.one_mulVec]`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hσ _ (ha k)) ?_` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 F), (fun k => Formalism.UG.prV (E` using `E) v ((β.val *ᵥ (G' *ᵥ Pi.single j 1)) k)) ∈ Formalism.UG.latS (F := F) (v.adicCompletion F) (Formalism.UG.tensInt (F := F) (v.adicCompletion F) (Formalism.UG.intOE E) (v.adicCompletionIntegers F).toSubring) Λ := by`. Introduce `v`. Establish `hm` using `(GlobalTheory.DualCompletion.mem_latS_dualL σ J hJ v Λ hlat (fun k => Formalism.UG.prV (E := E) v ((β.val *ᵥ (G' *ᵥ Pi.single j 1)) k))).2`. Use `Submodule.span_mono (Set.image_mono hd) (hm fun u hu => ?_)` and prove the remaining obligations. Proceed by induction on `hu using Submodule.span_induction with`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `mem u hu`. Take `⟨x0, hx0, rfl⟩` from `hu`. Establish `h3` using `key _ (Submodule.subset_span ⟨x0, hx0, rfl⟩)`. Establish `h4` using `Formalism.UG.P.afsplit_prV_int (E := E) v _ h3`. Rewrite `h4` using `[prV_hform']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `h4`. Consider the case `zero => rw [Formalism.UG.P.csDual_hform_zero_left]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [Formalism.UG.P.csDual_hform_add_left]`. Conclude with `add_mem ha hb`.
-
-Consider the case `smul s a _ ha`. Rewrite using `[Subring.smul_def, Formalism.UG.P.csDual_hform_smul_left]`. Conclude with `mul_mem (Formalism.L2.G.RelativeIndexFlags.sigR_mem v σ s.2) ha`. Establish `hc : β.val *ᵥ (G' *ᵥ Pi.single j 1) ∈ Formalism.L2.Herm.hatL (F` using `F) Λ := Formalism.L2.Geo.Def.PN.latS_of_loc Λ hlat.span_eq_top _ hloc`. Establish `h5` using `(hfr _).1 hc i`.
-
-Rewrite `h5` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec, Matrix.mulVec_single_one]`. Conclude with `h5`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_int {n : ℕ} (σ : E →ₐ[F] E)
     (hσ : ∀ s ∈ Formalism.L2.Herm.intAf F E, Formalism.UG.sigR σ (Formalism.L2.Herm.Af F) s ∈ Formalism.L2.Herm.intAf F E)
@@ -227,7 +221,7 @@ end GlobalTheory.GramFrame
 namespace GlobalTheory.GramFrame
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.DualCompletion.hform_col, map_one, one_mul, Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_entry {A : Type} [CommRing A] {n : ℕ} (τ : A →+* A) (J B : Matrix (Fin n) (Fin n) A) (i j : Fin n) :
     (Formalism.UG.cT τ B * J * B) i j = Formalism.UG.hform τ J (B *ᵥ Pi.single i 1) (B *ᵥ Pi.single j 1) := by

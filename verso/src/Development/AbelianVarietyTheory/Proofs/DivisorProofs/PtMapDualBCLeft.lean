@@ -26,7 +26,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
 def lo : Localization.Away P'.f →+* O := IsLocalization.Away.lift P'.f hu
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_comp _ _ @[nolint unusedArguments]`.
+A detailed English derivation is pending.
 -/
 theorem lo_comp : (lo P' x0 hu).comp (algebraMap R _) = x0 := IsLocalization.Away.lift_comp _ _
 
@@ -45,7 +45,7 @@ instance : SMulCommClass (Localization.Away P'.f) O (OL P' x0 hu) :=
 abbrev Bt : Type := OL P' x0 hu ⊗[Localization.Away P'.f] P'.B
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Algebra O (Bt P' x0 hu) := inferInstance
 
@@ -53,7 +53,7 @@ def inB : P'.B →+* Bt P' x0 hu :=
   (Algebra.TensorProduct.includeRight : P'.B →ₐ[Localization.Away P'.f] Bt P' x0 hu).toRingHom
 
 /- English proof (translation)
-Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.includeRight : P'.B →ₐ[Localization.Away P'.f] Bt P' x0 hu) (algebraMap (Localization.Away P'.f) P'.B (algebraMap R _ r)) = algebraMap O (Bt P' x0 hu) (x0 r)`. Rewrite using `[AlgHom.commutes, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply]`. Use `congr 1`. Conclude with `RingHom.congr_fun (lo_comp P' x0 hu) r`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem inB_str : (inB P' x0 hu).comp P'.str = (algebraMap O (Bt P' x0 hu)).comp x0 := by
   refine RingHom.ext fun r => ?_
@@ -66,7 +66,7 @@ theorem inB_str : (inB P' x0 hu).comp P'.str = (algebraMap O (Bt P' x0 hu)).comp
 abbrev Hs : Over (Sp O) := specO O (Bt P' x0 hu)
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, GlobalTheory.HTMap.over_w P'.u, GlobalTheory.HTMap.spc_assoc, GlobalTheory.HTMap.spc_assoc, GlobalTheory.HTMap.spc_assoc]`. Use `congr 1`. Rewrite using `[← inB_str P' x0 hu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sq : (spMap (inB P' x0 hu) ≫ P'.u.left) ≫ t.G.hom = spMap (algebraMap O (Bt P' x0 hu)) ≫ spMap x0 ≫ ξ := by
   rw [Category.assoc, GlobalTheory.HTMap.over_w P'.u, GlobalTheory.HTMap.spc_assoc, GlobalTheory.HTMap.spc_assoc, GlobalTheory.HTMap.spc_assoc]
@@ -80,7 +80,7 @@ def aH (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) : Hs P' x0 hu ⟶ 
   Over.homMk (hπ.lift _ _ (sq P' x0 hu)) (hπ.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `hπ.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem aH_left_π (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) :
     (aH P' x0 hu hπ).left ≫ π = spMap (inB P' x0 hu) ≫ P'.u.left := hπ.lift_fst _ _ _
@@ -90,7 +90,7 @@ def jH [GrpObj G'] (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) (h : a
   GlobalTheory.KernelNoTorsion.torsionLift _ h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.KernelNoTorsion.torsionLift_ι _ h`.
+A detailed English derivation is pending.
 -/
 theorem jH_ι [GrpObj G'] (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) (h : aH P' x0 hu hπ ^ q = 1) :
     jH P' x0 hu hπ h ≫ torsion.ι G' q = aH P' x0 hu hπ :=
@@ -100,7 +100,7 @@ def chi (b : P'.Bˣ) : Hs P' x0 hu ⟶ Gm (Sp O) :=
   (GlobalTheory.GmPoints.unitOf_bijective.2 (Units.map (inB P' x0 hu).toMonoidHom b)).choose
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.GmPoints.unitOf_bijective.2 (Units.map (inB P' x0 hu).toMonoidHom b)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem unitOf_chi (b : P'.Bˣ) : unitOf (chi P' x0 hu b) = Units.map (inB P' x0 hu).toMonoidHom b :=
   (GlobalTheory.GmPoints.unitOf_bijective.2 (Units.map (inB P' x0 hu).toMonoidHom b)).choose_spec
@@ -125,7 +125,7 @@ def liftB {D : Type} [CommRing D] [Algebra O D] (β : P'.B →+* D) (hβ : β.co
       rfl }
 
 /- English proof (translation)
-Simplify using `[liftB, inB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftB_inB {D : Type} [CommRing D] [Algebra O D] (β : P'.B →+* D)
     (hβ : β.comp P'.str = (algebraMap O D).comp x0) (z : P'.B) : liftB P' x0 hu β hβ (inB P' x0 hu z) = β z := by
@@ -136,7 +136,7 @@ def ptOf {D : Type} [CommRing D] [Algebra O D] (β : P'.B →+* D) (hβ : β.com
   ptMap (liftB P' x0 hu β hβ)
 
 /- English proof (translation)
-Rewrite using `[ptOf, GlobalTheory.GmPoints.unitOf_ptMap, unitOf_chi]`. Conclude with `liftB_inB P' x0 hu β hβ b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitOf_ptOf_chi {D : Type} [CommRing D] [Algebra O D] (β : P'.B →+* D)
     (hβ : β.comp P'.str = (algebraMap O D).comp x0) (b : P'.Bˣ) :
@@ -145,7 +145,7 @@ theorem unitOf_ptOf_chi {D : Type} [CommRing D] [Algebra O D] (β : P'.B →+* D
   exact liftB_inB P' x0 hu β hβ b
 
 /- English proof (translation)
-Rewrite using `[Over.comp_left, Category.assoc, aH_left_π, ← Category.assoc]`. Express the relevant statement in the definitionally equal form `spMap (liftB P' x0 hu β hβ).toRingHom ≫ spMap (inB P' x0 hu) ≫ P'.u.left = _`. Rewrite using `[GlobalTheory.HTMap.spc_assoc]`. Use `congr 2`. Conclude with `RingHom.ext fun z => liftB_inB P' x0 hu β hβ z`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ptOf_aH_π {D : Type} [CommRing D] [Algebra O D] (β : P'.B →+* D)
     (hβ : β.comp P'.str = (algebraMap O D).comp x0) (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) :
@@ -161,7 +161,7 @@ end GlobalTheory.FinPartAt
 namespace GlobalTheory.FinPartAt
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun r => TrivSqZeroExt.ext rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem alg_dual_mk {O : Type} [CommRing O] (I : Ideal O) :
     (algebraMap (O ⧸ I) (DualNumber (O ⧸ I))).comp (Ideal.Quotient.mk I) = algebraMap O (DualNumber (O ⧸ I)) :=
@@ -172,7 +172,7 @@ end GlobalTheory.FinPartAt
 namespace GlobalTheory.FinPartAt
 
 /- English proof (translation)
-Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← TrivSqZeroExt.inl_fst_add_inr_snd_eq z]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_add, dualBC, TrivSqZeroExt.lift_apply_inl, TrivSqZeroExt.lift_apply_inr]`. Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMap] <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dualBC_eq {O : Type} [CommRing O] (I : Ideal O) :
     (dualBC (Algebra.ofId O (O ⧸ I))).toRingHom = dualMap (Ideal.Quotient.mk I) := by
@@ -183,7 +183,7 @@ theorem dualBC_eq {O : Type} [CommRing O] (I : Ideal O) :
   refine TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMap] <;> rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (dualBC (Algebra.ofId O (O ⧸ I))).toRingHom) = _`. Rewrite using `[dualBC_eq]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptMap_dualBC_left {O : Type} [CommRing O] (I : Ideal O) :
     (ptMap (dualBC (Algebra.ofId O (O ⧸ I)))).left = spMap (dualMap (Ideal.Quotient.mk I)) := by
@@ -191,9 +191,9 @@ theorem ptMap_dualBC_left {O : Type} [CommRing O] (I : Ideal O) :
   rw [dualBC_eq]
 
 /- English proof (translation)
-Establish `hz : ∀ a ∈ Ideal.span {(p : DualNumber O) ^ n}, dualBC (Algebra.ofId O (O ⧸ Ideal.span {(p : O) ^ n})) a = 0`. Introduce `a ha`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[map_mul, map_pow, map_natCast]`. Establish `h0 : (p : DualNumber (O ⧸ Ideal.span {(p : O) ^ n})) ^ n = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (algebraMap (O ⧸ Ideal.span {(p : O) ^ n}) (DualNumber (O ⧸ Ideal.span {(p : O) ^ n}))), ← map_pow, ← map_natCast (Ideal.Quotient.mk _), ← map_pow, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _), map_zero]`. Rewrite using `[h0, MulZeroClass.mul_zero]`. Establish `e : (Ideal.Quotient.liftₐ _ _ hz).comp (redR p O (DualNumber O) n) = dualBC (Algebra.ofId O (O ⧸ Ideal.span {(p : O) ^ n}))` using `Ideal.Quotient.liftₐ_comp _ _ _`. Rewrite using `[← e, ← TangentPow.ptMap_comp_ptMap, Category.assoc, Category.assoc, h n, P.cmp_nat _ _ (nilpR n) hn]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmp_of_corr {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O]
     [Algebra O C] {Λ : Type} [CommRing Λ] [StarRing Λ] (P : GlobalTheory.HTLat.Point p v O Λ) (n : ℕ)

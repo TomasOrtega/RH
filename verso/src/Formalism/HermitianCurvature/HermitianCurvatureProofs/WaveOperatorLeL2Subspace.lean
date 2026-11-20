@@ -10,9 +10,9 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Fo
   Formalism.FourierDecayAlt.P5.HerD
 
 /- English proof (translation)
-Rewrite using `[OpClos, Submodule.span_le]`. Introduce and unpack `Φ ⟨js, Ψ, hΨ, rfl⟩`. Use `show (js.map (X.op l)).prod Ψ ∈ V`. Proceed by induction on `js with`. Consider the case `nil => simpa using hB hΨ`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cons j js ih`. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply]`. Conclude with `hV j _ ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opClos_le {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
@@ -34,9 +34,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr fun Ψ hΨ => ?_` and prove the remaining obligations. Take `⟨s, ε, G, Φ, Wv, -, hN, hlc, hΦ, hWv, rfl⟩` from `unwave P z z' π π' D l Ψ hΨ`. Use `unimodular_multiplier_preserves_L2 μ hμ hWv (fun _ _ => norm_fsv _ _) Φ ⟨hlc, fun c => ?_⟩` and prove the remaining obligations. Substitute `hz hz' hπ hπ'` using the available equality. Establish `h` using `level_zero_form_integrable_compact (S := Empty) D μ hμ (fun _ => G) (fun _ => G) (fun _ => Φ) (fun _ => Φ) (fun _ => hN.2.1) (fun _ => hN.2.1) (fun _ => hΦ) (fun _ => hΦ) c`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact.
 
-Unfold `LevelZeroSquareIntegrable`. Simplify `h` using `[wt0]`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wave_operator_le_l2_subspace (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (μ : Measure (Mt P.k P.r)) [SFinite μ]
@@ -53,7 +53,7 @@ theorem wave_operator_le_l2_subspace (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1)
   simpa [wt0] using h
 
 /- English proof (translation)
-Establish `hl0 : l.castSucc = (0 : Fin (P.r + 1))` using `Fin.ext (by simp [hl])`. Establish `hK` using `herKc0_le_waveJ (S := S) P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0`. Use `sup_le hK (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Introduce and unpack `Φ ⟨w, hw, a, b, Ψ, hΨ, rfl⟩`. Conclude with `rr_waveJ (S := S) P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0 w hw a b Ψ (hK hΨ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem base_le_wave_operator (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))

@@ -30,11 +30,11 @@ noncomputable section
 namespace GlobalTheory.TwBound
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.Doubling.t2Space_adeleRing' (F := D.host.F)`. Establish `hI` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D V (frameLat V) a (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat V) ha`. Rewrite using `[hgt, hI.hgtAd_eq (isCMExt_host D)]`. Establish `hf : ∀ v, hgtFin D.sp.cm.sig (dblSp V).gram (frameLat V) v (proj D.sp.cm.sig (dblSp V).gram v (io V (g, 1))) = 1`. Introduce `v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : proj D.sp.cm.sig (dblSp V).gram v (io V (g, 1)) = 1`. Rewrite using `[io, proj_ioH, mem_infPts_iff_forall.1 hg v, map_one, ioH_one]`. Rewrite using `[e]`. Conclude with `hgtH_of_mem (continuous_absEv v) (isCompact_KFin v) (one_mem _)`. Simplify using `only [hf, finprod_one, mul_one, NNReal.coe_prod]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[io, projArch_ioH, map_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hgt_io_eq_prod (D : D7) (V : HSp D) (a : GL (Fin V.rank) (AE D)) (ha : IsMaj V a) (g : GA D V) (hg : g ∈ GinfC V) :
     (hgt V a (io V (g, 1)) : ℝ) = ∏ w, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtW V a w (GlobalTheory.AdelicU.projArch D.sp.cm.sig V.gram w g) := by
@@ -53,17 +53,17 @@ theorem hgt_io_eq_prod (D : D7) (V : HSp D) (a : GL (Fin V.rank) (AE D)) (ha : I
   rfl
 
 /- English proof (translation)
-Introduce `D V W S S' M M' θ ψ χS χT ω hθ hω m X hm f hf a ha hmaj P Q`. Establish `hpr : GlobalTheory.Published.WeilRepresentationUnitaryPair` using `fun D ψ S T χS χT hψ hS hT rS rT => GlobalTheory.WeilExist.exists_isWeilDatumO D ψ hψ S T χS χT (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D) hS hT rS rT`. Take `⟨omh, homh⟩` from `GlobalTheory.T.exists_weilDatum_hermitianSpaceDoubled hpr D ψ V W χS χT ω hω`. Establish `hth` using `GlobalTheory.T.doublingMap_thetaIdentity_any_weilData D ψ V W χS χT ω omh hω homh`. Establish `hco` using `GlobalTheory.T.siegelWeilSection_doubling_eq_matrixCoefficient D ψ V W χS χT ω omh hω hth m X hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.T.isFockVec_ptOf_of_isVacVec D V W S S' M M' θ ψ hω.std hθ f hf P`. Establish `h2` using `GlobalTheory.T.isFockVec_ptOf_of_isVacVec D V W S S' M M' θ ψ hω.std hθ f hf Q`. Establish `hS` using `fun τ => GlobalTheory.FrameEquiv.isCartanInv_cart_model M τ`. Establish `hT` using `fun τ => GlobalTheory.FrameEquiv.isCartanInv_cart_model M' τ`. Establish `hc` using `GlobalTheory.T.doubled_cartanInvolution_commute_maximalCompact D θ V (cart M) a hθ hS hmaj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `GlobalTheory.T.doublingSeesawTensorMap_polynomial_fock_vector D ψ θ V W (cart M) (cart M') hω.std hθ _ _ h1 h2`. Establish `hk` using `GlobalTheory.T.fock_vector_finite_under_compact_commuting_cartan D ψ θ (dblSp V) W 1 χT omh _ (cart M') homh hθ hc.1 hT (Khat V a) (isCompact_Khat V a) hc.2 _ hb`. Establish `hmem` using `GlobalTheory.T.doublingSiegelWeilSection_mem_degeneratePrincipalSeries hpr D ψ V W χT omh homh m X hm _ (hth _ _ h1.1 h2.1).1 a hk`. Establish `hI` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D V (frameLat V) a (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat V) ha`. Use `haveI := GlobalTheory.Doubling.t2Space_adeleRing' (F := D.host.F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `GlobalTheory.Doubling.HasIwasawa.exists_norm_le continuous_absE (isCompact_Khat V a) hI hmem`. Use `⟨C, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e1` using `(hco _ _ h1.1 h2.1).2 g`. Establish `e2 : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X (ω (g, 1) (ptOf ψ θ M M' f P)) (ptOf ψ θ M M' f Q) = swSec V W omh m X (delta V W (ptOf ψ θ M M' f P) (ptOf ψ θ M M' f Q)) (io V (g, 1))`. Rewrite using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e2, ← hgt_io_eq_prod D V a ha g hg]`. Establish `ex : (sZero V W).re + (V.rank : ℝ) / 2 = (W.rank : ℝ) / 2`. Simplify using `only [sZero, Complex.div_ofNat_re, Complex.sub_re, Complex.natCast_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `hC (io V (g, 1))` as an intermediate fact. Rewrite `this` using `[ex]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_bound : ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : (GA D V × GA D W →* Module.End ℂ (WO V W → ℂ))), IsInfFam θ → IsWeilDatumO ψ V W χS χT ω → ∀ (m : Measure (WO V W)) (X : Set (WO V W)), IsCovolOne (ratL W V) m X → ∀ f, IsVacVec ψ θ M M' f → ∀ a : GL (Fin V.rank) (AE D), GlobalTheory.Doubling.IsMaj V a → (∀ τ, (compAt θ τ a.1)ᴴ * (gramAt D V τ * cart M τ) * compAt θ τ a.1 = 1) → ∀ P Q, ∃ C : ℝ, ∀ g ∈ GinfC V, ‖GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X (ω (g, 1) (ptOf ψ θ M M' f P)) (ptOf ψ θ M M' f Q)‖ ≤ C * (∏ w, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtW V a w (GlobalTheory.AdelicU.projArch D.sp.cm.sig V.gram w g)) ^ ((W.rank : ℝ) / 2) := by
   intro D V W S S' M M' θ ψ χS χT ω hθ hω m X hm f hf a ha hmaj P Q

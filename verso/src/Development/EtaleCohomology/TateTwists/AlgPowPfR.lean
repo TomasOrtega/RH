@@ -6,7 +6,7 @@ open Polynomial GlobalTheory.EtC
 namespace LateralTheory.EtaleFoundations.AlgPowPf
 
 /- English proof (translation)
-Establish `: NeZero (q : K)` using `⟨hq⟩`. Establish `h : (cyclotomic q K).IsRoot z`. Rewrite using `[IsRoot, ← map_cyclotomic_int, eval_map]`. Simplify `hz` using `[aeval_def]`. Conclude with `(isRoot_cyclotomic_iff).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem root_dom {K : Type} [CommRing K] [IsDomain K] (q : ℕ) [NeZero q] (hq : (q : K) ≠ 0) (z : K)
     (hz : aeval z (cyclotomic q ℤ) = 0) : IsPrimitiveRoot z q := by
@@ -17,7 +17,7 @@ theorem root_dom {K : Type} [CommRing K] [IsDomain K] (q : ℕ) [NeZero q] (hq :
   exact (isRoot_cyclotomic_iff).1 h
 
 /- English proof (translation)
-Take `⟨i, hi, hzi⟩` from `hz.eq_pow_of_pow_eq_one hx.pow_eq_one`. Establish `hc : i.Coprime q` using `(hz.pow_iff_coprime (Nat.pos_of_ne_zero (NeZero.ne q)) i).1 (hzi ▸ hx)`. Use `⟨ZMod.unitOfCoprime i hc, ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi, hzi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_pow_dom {K : Type} [CommRing K] [IsDomain K] (q : ℕ) [NeZero q] (z x : K)
     (hz : IsPrimitiveRoot z q) (hx : IsPrimitiveRoot x q) : ∃ b : (ZMod q)ˣ, x = z ^ (b : ZMod q).val := by
@@ -27,7 +27,7 @@ theorem eq_pow_dom {K : Type} [CommRing K] [IsDomain K] (q : ℕ) [NeZero q] (z 
   rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi, hzi]
 
 /- English proof (translation)
-Introduce `e`. Apply `h` to reduce the goal to its premises. Conclude with `Units.ext (ZMod.val_injective q (hz.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) e))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem pow_ne_dom {K : Type} [CommRing K] (q : ℕ) [NeZero q] (z : K)
     (hz : IsPrimitiveRoot z q) (a b : (ZMod q)ˣ) (h : a ≠ b) :
@@ -37,7 +37,7 @@ theorem pow_ne_dom {K : Type} [CommRing K] (q : ℕ) [NeZero q] (z : K)
   exact Units.ext (ZMod.val_injective q (hz.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) e))
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `cyclotomic.dvd_X_pow_sub_one q ℤ`. Use `congrArg (aeval z) hp` as an intermediate fact. Simplify using `[hz] at this`. Conclude with `sub_eq_zero.1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pow_q {A : Type} [CommRing A] (q : ℕ) (z : A) (hz : aeval z (cyclotomic q ℤ) = 0) : z ^ q = 1 := by
   obtain ⟨p, hp⟩ := cyclotomic.dvd_X_pow_sub_one q ℤ
@@ -46,15 +46,13 @@ theorem pow_q {A : Type} [CommRing A] (q : ℕ) (z : A) (hz : aeval z (cyclotomi
   exact sub_eq_zero.1 this
 
 /- English proof (translation)
-Use `set d := x - y`. Use `set u := ∑ i ∈ Finset.range q, x ^ i * y ^ (q - 1 - i)`. Establish `hdu : u * d = 0`. Use `geom_sum₂_mul x y q` as an intermediate fact. Rewrite `this` using `[hx, hy, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hyu : IsUnit y` using `isUnit_iff_exists_inv.2 ⟨y ^ (q - 1), by rw [← pow_succ', Nat.sub_add_cancel (Nat.pos_of_ne_zero (NeZero.ne q)), hy]⟩`. Use `set c : A := (q : A) * y ^ (q - 1)`. Establish `hc : IsUnit c` using `hq.mul (hyu.pow _)`. Establish `hmem : u - c ∈ Ideal.span {d}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `hxy : Ideal.Quotient.mk (Ideal.span {d}) x = Ideal.Quotient.mk (Ideal.span {d}) y`. Rewrite using `[Ideal.Quotient.eq]`. Conclude with `Ideal.subset_span rfl`. Simplify using `only [u, c, map_sub, map_sum, map_mul, map_pow, map_natCast, hxy]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[geom_sum₂_self, sub_self]`. Take `⟨w0, hw0⟩` from `Ideal.mem_span_singleton'.1 hmem`. Take `⟨cu, hcu⟩` from `hc`. Use `⟨-(w0 * ↑cu⁻¹), ?_⟩` and prove the remaining obligations. Establish `hdc : d * c = -(d ^ 2 * w0)`.
-
-Establish `: c = u - w0 * d` using `by rw [hw0]; ring`. Rewrite using `[this]`. Take the linear combination `hdu`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem self_sq {A : Type} [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A)) (x y : A)
     (hx : x ^ q = 1) (hy : y ^ q = 1) : ∃ w : A, x - y = (x - y) ^ 2 * w := by
@@ -83,7 +81,7 @@ theorem self_sq {A : Type} [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A
     _ = _ := by rw [hdc]; ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => calc d = d ^ (k + 1) * w ^ k := ih _ = d ^ k * d * w ^ k := by ring _ = d ^ k * (d ^ 2 * w) * w ^ k := by rw [← h] _ = _ := by ring`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem self_pow {A : Type} [CommRing A] (d w : A) (h : d = d ^ 2 * w) (k : ℕ) : d = d ^ (k + 1) * w ^ k := by
   induction k with
@@ -94,25 +92,23 @@ theorem self_pow {A : Type} [CommRing A] (d w : A) (h : d = d ^ 2 * w) (k : ℕ)
       _ = _ := by ring
 
 /- English proof (translation)
-Introduce `q _ A _ ζ ξ`. Take `⟨hqA, hζ⟩` from `ζ.2`. Take `⟨-, hξ⟩` from `ξ.2`. Set `f : (ZMod q)ˣ → A` to `fun a => ∏ b ∈ Finset.univ.erase a, (ξ.1 - ζ.1 ^ (b : ZMod q).val)`. Establish `hdom : ∀ p : Ideal A, p.IsPrime → IsPrimitiveRoot (Ideal.Quotient.mk p ζ.1) q ∧ IsPrimitiveRoot (Ideal.Quotient.mk p ξ.1) q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `p hp`. Establish `hq : ((q : ℕ) : A ⧸ p) ≠ 0`. Use `hqA.map (Ideal.Quotient.mk p)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ∀ z : A, aeval z (cyclotomic q ℤ) = 0 → aeval (Ideal.Quotient.mk p z) (cyclotomic q ℤ) = 0`. Introduce `z hz`. Use `Polynomial.aeval_algHom_apply (Ideal.Quotient.mkₐ ℤ p) z (cyclotomic q ℤ)` as an intermediate fact. Rewrite `this` using `[hz, map_zero]`. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Conclude with `⟨root_dom q hq _ (hm _ hζ), root_dom q hq _ (hm _ hξ)⟩`. Use `⟨Set.range f, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hsm⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨h1, h2⟩` from `hdom m hm.isPrime`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b0, hb0⟩` from `eq_pow_dom q _ _ h1 h2`. Establish `hin : f b0 ∈ m` using `hsm (Ideal.subset_span ⟨b0, rfl⟩)`. Rewrite `hin` using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [f, map_prod, map_sub, map_pow, hb0] at hin`. Rewrite `hin` using `[Finset.prod_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, e⟩` from `hin`. Conclude with `pow_ne_dom q _ h1 b0 b (Finset.ne_of_mem_erase hb).symm (sub_eq_zero.1 e)`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hnil : IsNilpotent (f a * (ξ.1 - ζ.1 ^ (a : ZMod q).val))`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← mem_nilradical, nilradical_eq_sInf, Ideal.mem_sInf]`. Introduce `p hp`. Establish `hp : p.IsPrime` using `hp`. Take `⟨h1, h2⟩` from `hdom p hp`. Take `⟨b0, hb0⟩` from `eq_pow_dom q _ _ h1 h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [f, map_mul, map_prod, map_sub, map_pow, hb0]`. Distinguish the cases in `hab : b0 = a`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Apply `mul_eq_zero_of_left` to reduce the goal to its premises. Conclude with `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨hab, Finset.mem_univ _⟩) (sub_self _)`. Take `⟨n, hn⟩` from `hnil`. Take `⟨w, hw⟩` from `self_sq q hqA ξ.1 (ζ.1 ^ (a : ZMod q).val) (pow_q q _ hξ) (by rw [← pow_mul, mul_comm, pow_mul, pow_q q _ hζ, one_pow])`. Use `⟨n, ?_⟩` and prove the remaining obligations.
-
-Rewrite `*` using `[self_pow _ w hw n, pow_succ, mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem AlgPow_of : LateralTheory.EtaleFoundations.TwSecLocPf.AlgPow := by
   classical

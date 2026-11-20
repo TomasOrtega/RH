@@ -16,23 +16,21 @@ namespace GlobalTheory.DefStab
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Set `f : InfinitePlace G.F → (Fin G.n → ℂ) → ℝ` to `fun w x => if sigPosH (G.gram_herm w) = 1 then (star x ⬝ᵥ GlobalTheory.LKCx.herm G w B.β *ᵥ x).re else -(star x ⬝ᵥ GlobalTheory.LKCx.herm G w B.β *ᵥ x).re`. Establish `hK : ∀ w, ∃ K : ℝ, ∀ (A : Matrix (Fin G.n) (Fin G.n) ℂ) (s : ℝ), 0 ≤ s → (∀ x, f w (A *ᵥ x) = s * f w x) → ∀ a b, ‖A a b‖ ≤ K * Real.sqrt s`. Introduce `w`. Apply `GlobalTheory.LKCx.PsiBound.bound_of_form` to reduce the goal to its premises. Distinguish the cases in `h : sigPosH (G.gram_herm w) = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [f, h, if_true]`. Use `fun_prop`. Simplify using `only [f, h, if_false]`. Use `fun_prop`. Introduce `t x`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : sigPosH (G.gram_herm w) = 1`. Simplify using `only [f, h, if_true]`. Rewrite using `[GlobalTheory.LKCx.PsiBound.form_smul, Complex.re_ofReal_mul]`. Simplify using `only [f, h, if_false]`. Rewrite using `[GlobalTheory.LKCx.PsiBound.form_smul, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Establish `hp` using `B.posR w x hx`. Distinguish the cases in `h : sigPosH (G.gram_herm w) = 1`. Simplify using `only [f, h, if_true]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hp.1 h`. Establish `h2 : (star x ⬝ᵥ GlobalTheory.LKCx.herm G w B.β *ᵥ x).re < 0` using `hp.2 h`. Simplify using `only [f, h, if_false]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `choose K hK using hK`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∑ w, |K w|, fun y w a b => ?_⟩` and prove the remaining obligations. Use `set s : ℝ := ((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) : ℝ) with hs`. Establish `hs0 : 0 < s` using `by rw [hs]; exact_mod_cast y.2.2`. Use `set A := G.psi w (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) with hA`. Establish `hsim : ∀ x : Fin G.n → ℂ, star (A *ᵥ x) ⬝ᵥ GlobalTheory.LKCx.herm G w B.β *ᵥ (A *ᵥ x) = (s : ℂ) * (star x ⬝ᵥ GlobalTheory.LKCx.herm G w B.β *ᵥ x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `h` using `GlobalTheory.LKCx.grp_similitude_herm p G w B.β y`. Establish `h' : Aᴴ * GlobalTheory.LKCx.herm G w B.β * A = (((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)) : ℂ) • GlobalTheory.LKCx.herm G w B.β` using `h`. Rewrite using `[← GlobalTheory.LKCx.PsiBound.form_conj, h', smul_mulVec, dotProduct_smul, smul_eq_mul, hs, Complex.ofReal_ratCast]`. Establish `hinv : ∀ x, f w (A *ᵥ x) = s * f w x`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Distinguish the cases in `h : sigPosH (G.gram_herm w) = 1`. Simplify using `only [f, h, if_true]`. Rewrite using `[hsim, Complex.re_ofReal_mul]`. Simplify using `only [f, h, if_false]`.
-
-Rewrite using `[hsim, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem psi_bound (G : HTGroup p) (B : GlobalTheory.LKDef.DForm G) : ∃ K : ℝ, ∀ y : GlobalTheory.LKCx.grp G B.β,
     ∀ (w : InfinitePlace G.F) (a b : Fin G.n), ‖G.psi w (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) a b‖ ≤
@@ -81,15 +79,15 @@ theorem psi_bound (G : HTGroup p) (B : GlobalTheory.LKDef.DForm G) : ∃ K : ℝ
         (Real.sqrt_nonneg _)
 
 /- English proof (translation)
-Establish `hθ : ∀ g, sigG G 1 g = g` using `GlobalTheory.LKCx.sigG_one G`. Use `⟨hK, ?_, fun k hk g => ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Rewrite using `[hθ]`. Conclude with `hk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hθ]`. Distinguish the cases in `hg : g ∈ K'`. Establish `h' : k⁻¹ * g * k ∈ K'` using `K'.mul_mem (K'.mul_mem (K'.inv_mem hk) hg) hk`. Simplify using `[Set.indicator_apply, hg, h']`. Establish `h' : k⁻¹ * g * k ∉ K'` using `fun h => hg (by`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : g = k * (k⁻¹ * g * k) * k⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `K'.mul_mem (K'.mul_mem hk h) (K'.inv_mem hk))`. Simplify using `[Set.indicator_apply, hg, h']`. Use `set K₀ := KHT p G.m G.n 1 G.Fw haveI : (K₀.subgroupOf K').FiniteIndex := ⟨hK.2⟩ haveI : Finite (K' ⧸ K₀.subgroupOf K') := Subgroup.finite_quotient_of_finiteIndex haveI : Fintype (K' ⧸ K₀.subgroupOf K') := Fintype.ofFinite _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨Finset.univ.image fun q : K' ⧸ K₀.subgroupOf K' => ((Quotient.out q : K') : Gr G 1), fun g hg => ?_⟩` and prove the remaining obligations. Establish `hgK : g ∈ K'`. Assume the negation of the conclusion as `hn; exact hg (by simp [Set.indicator_apply, hn])`. Use `set q : K' ⧸ K₀.subgroupOf K' := QuotientGroup.mk ⟨g, hgK⟩`. Establish `hq : (Quotient.out q)⁻¹ * (⟨g, hgK⟩ : K') ∈ K₀.subgroupOf K'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Rewrite `hq` using `[Subgroup.mem_subgroupOf]`. Use `⟨((Quotient.out q : K') : Gr G 1), Finset.mem_image_of_mem _ (Finset.mem_univ _), 1, K₀.one_mem, _, hq, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem isTest_indicator_comm (G : HTGroup p) (K' : Subgroup (Gr G 1))
     (hK : Subgroup.Commensurable K' (KHT p G.m G.n 1 G.Fw)) :
@@ -121,33 +119,31 @@ theorem isTest_indicator_comm (G : HTGroup p) (K' : Subgroup (Gr G 1))
     simp
 
 /- English proof (translation)
-Introduce `p _ G _ L K' hK B x`. Establish `hp : p.Prime` using `Fact.out`. Take `⟨xx, tt, hx, heq⟩ : ∃ (xx : (AfP p ⊗[ℚ] G.C)ˣ) (tt : (AfP p)ˣ) (hx : Triv G (AfP p) B.β xx tt), B.emb = B.embAt xx tt hx` from `⟨_, _, B.trivAf.choose_spec.choose_spec, rfl⟩`. Use `set fK : G.GAf → ℂ := Set.indicator (L.K.toSubgroup : Set G.GAf) 1 with hfK`. Use `set fK' : Gr G 1 → ℂ := Set.indicator (K' : Set (Gr G 1)) 1 with hfK'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup fK` using `isTest_indicator _ _ (by simp)`. Establish `hf' : IsTest (sigG G 1) (KHT p G.m G.n 1 G.Fw) K' fK'` using `isTest_indicator_comm G K' hK`. Use `set S : Set (GlobalTheory.LKCx.grp G B.β) := {y | fK (x.1⁻¹ * GlobalTheory.LKCx.toAfF G B.β xx tt hx y * x.1) ≠ 0 ∧ fK' (x.2⁻¹ * GlobalTheory.LKCx.toP1 G B.β y * x.2) ≠ 0} with hS`. Establish `hSfin : S.Finite`. Take `⟨D, hD, hAf⟩` from `GlobalTheory.LKCx.BoundedDen.main p G B.β xx tt hx L fK hf x.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hP⟩` from `GlobalTheory.AtP.main p G B.β K' fK' hf' x.2`. Take `⟨R, hR⟩` from `GlobalTheory.CoordArch.coord_bound p G`. Take `⟨Kb, hKb⟩` from `psi_bound G B`. Take `⟨N, hNdef⟩ : ∃ N : ℕ, N = D * p ^ k` from `⟨_, rfl⟩`. Establish `hN : 0 < N` using `hNdef ▸ Nat.mul_pos hD (pow_pos hp.pos k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨R', hR'⟩ : ∃ R' : ℝ, R' = |R| * (Fintype.card (InfinitePlace G.F) * G.n * G.n * (max Kb 0 * Real.sqrt N))` from `⟨_, rfl⟩`. Set `φ : GlobalTheory.LKCx.grp G B.β → (Fin (Module.finrank ℚ G.C) → ℚ)` to `fun y => (Module.finBasis ℚ G.C).repr (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)`. Establish `hφ : Function.Injective φ` using `fun y y' h => GlobalTheory.FinFix.grp_val_injective G B.β ((Module.finBasis ℚ G.C).repr.injective (Finsupp.ext fun i => congrFun h i))`. Use `Set.Finite.subset (Set.Finite.preimage hφ.injOn (Set.Finite.pi fun _ => GlobalTheory.FinFix.finite_den_bdd N hN R')) ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hf1, hf2⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : (0 : ℚ) < (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)` using `y.2.2`. Take `⟨m, hm⟩` from `GlobalTheory.FinFix.exists_int_of_den_le (p := p) D k hD ((((y : G.Cˣ × ℚˣ).2)⁻¹ : ℚˣ) : ℚ) (fun ℓ hℓ => (hAf y hf1 ℓ hℓ).2) (hP y hf2).2`. Establish `hsN : ((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) : ℝ) ≤ N`. Establish `hm' : ((N : ℚ)) * ((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ))⁻¹ = m`. Rewrite using `[hNdef, ← hm, Units.val_inv_eq_inv_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmpos : (0 : ℚ) < m`. Rewrite using `[← hm']; exact mul_pos (by exact_mod_cast hN) (inv_pos.2 hs)`. Establish `hm1 : (1 : ℚ) ≤ m` using `by exact_mod_cast (show (0 : ℤ) < m by exact_mod_cast hmpos)`. Establish `h2 : (1 : ℚ) ≤ (N : ℚ) * ((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ))⁻¹` using `hm' ▸ hm1`. Establish `h3 : (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) ≤ N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mul_le_mul_of_nonneg_right h2 hs.le` as an intermediate fact. Rewrite `this` using `[one_mul, mul_assoc, inv_mul_cancel₀ hs.ne', mul_one]`. Then use the resulting hypothesis. Conclude with `h3` after adjusting the coercions. Introduce `i _`. Take `⟨m2, hm2⟩` from `GlobalTheory.FinFix.exists_int_of_den_le (p := p) D k hD (φ y i) (fun ℓ hℓ => (hAf y hf1 ℓ hℓ).1 i) ((hP y hf2).1 i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨m2, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hNdef, mul_comm]`. Conclude with `hm2`. Use `show |((φ y i : ℚ) : ℝ)| ≤ R'`. Use `(hR _ i).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ∀ w a b, ‖G.psi w (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) a b‖ ≤ max Kb 0 * Real.sqrt N`. Introduce `w a b`. Conclude with `(hKb y w a b).trans (mul_le_mul (le_max_left _ _) (Real.sqrt_le_sqrt hsN) (Real.sqrt_nonneg _) (le_max_right _ _))`. Establish `hsum : ∑ w : InfinitePlace G.F, ∑ a : Fin G.n, ∑ b : Fin G.n, ‖G.psi w (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) a b‖ ≤ Fintype.card (InfinitePlace G.F) * G.n * G.n * (max Kb 0 * Real.sqrt N)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hnn : 0 ≤ ∑ w : InfinitePlace G.F, ∑ a : Fin G.n, ∑ b : Fin G.n, ‖G.psi w (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) a b‖` using `by positivity`. Rewrite using `[hR']`. Combine the equalities or inequalities in the displayed calculation. Establish `hsub : ((GlobalTheory.LKLoc.locPart B.emb.range (L.K.toSubgroup.prod K') x : Subgroup (G.GAf × Gr G 1)) : Set (G.GAf × Gr G 1)) ⊆ B.emb '' S`. Introduce `e he`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `he` using `[SetLike.mem_coe, GlobalTheory.LKLoc.locPart, Subgroup.mem_inf, MonoidHom.mem_range, Subgroup.mem_map]`. Take `⟨⟨y, rfl⟩, ⟨c, hc, hce⟩⟩` from `he`. Rewrite `hc` using `[Subgroup.mem_prod]`. Establish `hc' : x⁻¹ * B.emb y * x = c`. Rewrite using `[← hce]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `[MulAut.conj_apply, mul_assoc]`. Establish `he1 : (B.emb y).1 = GlobalTheory.LKCx.toAfF G B.β xx tt hx y` using `by rw [heq]; rfl`. Establish `he2 : (B.emb y).2 = GlobalTheory.LKCx.toP1 G B.β y` using `by rw [heq]; rfl`. Establish `h1 : x.1⁻¹ * GlobalTheory.LKCx.toAfF G B.β xx tt hx y * x.1 = c.1`. Rewrite using `[← he1, ← hc']`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : x.2⁻¹ * GlobalTheory.LKCx.toP1 G B.β y * x.2 = c.2`. Rewrite using `[← he2, ← hc']`. Both sides reduce to the same expression. Use `⟨y, ⟨?_, ?_⟩, rfl⟩` and prove the remaining obligations.
-
-Rewrite using `[hfK, h1, Set.indicator_of_mem hc.1]`. Conclude with `one_ne_zero`. Rewrite using `[hfK', h2, Set.indicator_of_mem hc.2]`. Conclude with `one_ne_zero`. Conclude with `((hSfin.image _).subset hsub).to_subtype`.
+A detailed English derivation is pending.
 -/
 theorem finite_locPart : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 → ∀ (L : G.Level) (K' : Subgroup (Gr G 1)),
     Subgroup.Commensurable K' (KHT p G.m G.n 1 G.Fw) → ∀ (B : GlobalTheory.LKDef.DForm G) (x : G.GAf × Gr G 1),

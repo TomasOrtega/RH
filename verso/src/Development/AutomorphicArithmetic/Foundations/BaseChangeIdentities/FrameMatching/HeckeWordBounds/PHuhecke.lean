@@ -19,7 +19,7 @@ open UpperTheory.BaseChangeIdentities.FrameWordIdentity
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ _ n d hd w hw k`. Establish `hU : UL n w = ⊤` using `if_pos hw.1`. Conclude with `GlobalTheory.CompanionTheory.MatchWord.isHecke_hU d hd hU k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.BaseChangeIdentities.FrameWordIdentity.huhecke_pf :
     HuHecke := by

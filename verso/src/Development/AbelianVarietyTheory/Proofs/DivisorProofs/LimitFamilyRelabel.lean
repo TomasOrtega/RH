@@ -11,27 +11,25 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.Basic
 namespace GlobalTheory.Mean4O.RelabelObj
 
 /- English proof (translation)
-Introduce `hP hH D O hc hf A T H hr Φ hlim τ τ'`. Take `⟨σ, hσ, hx⟩` from `GlobalTheory.T.arithmetic_degree_mets_root hP hH D O hc τ τ'`. Take `⟨x, P, hxP⟩` from `hc`. Take `⟨x', hx'⟩` from `hx x`. Use `⟨σ, hσ, fun B hB2 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL` using `hlim B hB2`. Establish `e : ∀ S R, O.Y.arDeg S R = (GlobalTheory.ShFam.Pad.arIn O.s O.Φ (GlobalTheory.ShFam.metsOf x O.Φ)).arDeg S R`. Introduce `S R`. Rewrite using `[← hxP.hm_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hzero : ∀ (P : Pol D.what₂.Tau O.Y.N) (d : ℕ), d ≠ Formalism.DegreeFormula.dimFl D.what₂.Tau O.Y.N + 1 → P.IsHomogeneous d → Φ B P = 0`. Introduce `P d hd hP`. Establish `h1` using `hL P`. Simplify using `only [O.Y.arDeg_homog _ _ P d hd hP] at h1`. Conclude with `tendsto_nhds_unique h1 tendsto_const_nhds`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpow : ∀ u : Wt O.Y, Φ B (linRoot (fun ρ i => u (σ ρ) i) ^ (Formalism.DegreeFormula.dimFl D.what₂.Tau O.Y.N + 1)) = Φ B (linRoot u ^ (Formalism.DegreeFormula.dimFl D.what₂.Tau O.Y.N + 1))`. Introduce `u`. Establish `h1` using `hL (linRoot (fun ρ i => u (σ ρ) i) ^ (Formalism.DegreeFormula.dimFl D.what₂.Tau O.Y.N + 1))`. Establish `h3` using `hL (linRoot u ^ (Formalism.DegreeFormula.dimFl D.what₂.Tau O.Y.N + 1))`. Establish `h2` using `GlobalTheory.T.arithmetic_degree_difference_tends_zero hP hH D O ⟨x, P, hxP⟩ hf A T H hr x' B hB2 u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `h3.sub h2`. Rewrite `h4` using `[sub_zero]`. Use `tendsto_nhds_unique h1 (h4.congr fun R => ?_)` and prove the remaining obligations. Use `Eq.trans (sub_sub_cancel (O.Y.arDeg (setB O.Y B) R (linRoot u ^ (dimFl D.what₂.Tau O.N + 1))) _) ?_` and prove the remaining obligations. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hx' B R u).symm`. Use `set Ψ : Pol D.what₂.Tau O.Y.N →ₗ[ℝ] ℝ := Φ B ∘ₗ (rename (Prod.map σ id) : Pol D.what₂.Tau O.Y.N →ₐ[ℝ] Pol D.what₂.Tau O.Y.N).toLinearMap - Φ B with hΨ`. Establish `hΨa : ∀ F, Ψ F = Φ B (rename (Prod.map σ id) F) - Φ B F` using `fun F => rfl`. Establish `hΨpow : ∀ u : D.what₂.Tau → Fin O.Y.N → ℝ, ev u (0 : Pol D.what₂.Tau O.Y.N) = Ψ (linRoot u ^ (Formalism.DegreeFormula.dimFl D.what₂.Tau O.Y.N + 1))`. Introduce `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hu : u = fun ρ i => (fun ρ i => u (σ.symm ρ) i) (σ ρ) i`. Use function extensionality and compare the values at `ρ i`. Simplify using the standard rewrite rules. Rewrite using `[hΨa, map_pow, hu, GlobalTheory.Mean4.rename_linRoot_perm σ (fun ρ i => u (σ.symm ρ) i), hpow (fun ρ i => u (σ.symm ρ) i)]`. Simplify using `[ev]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hmon : ∀ m, Ψ (monomial m 1) = 0`. Introduce `m`. Distinguish the cases in `hm : m.degree = Formalism.DegreeFormula.dimFl D.what₂.Tau O.Y.N + 1`. Use `(coeff_eq_of_polarisation _ _ _ Ψ 0 hΨpow m hm).2` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (monomial m (1 : ℝ) : Pol D.what₂.Tau O.Y.N).IsHomogeneous m.degree` using `isHomogeneous_monomial _ rfl`. Rewrite using `[hΨa, hzero _ _ hm h1, hzero _ _ hm h1.rename_isHomogeneous, sub_zero]`. Introduce `F`. Establish `hF : Ψ F = 0`. Proceed by induction on `F using MvPolynomial.induction_on' with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `monomial m a`. Establish `: (monomial m a : Pol D.what₂.Tau O.Y.N) = a • monomial m 1`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, hmon, smul_zero]`. Consider the case `add p q hp hq => rw [map_add, hp, hq, add_zero]`.
-
-Rewrite `hF` using `[hΨa]`. Conclude with `sub_eq_zero.mp hF`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relabel_onObj : Hypotheses2 → HypothesesH → OnObj fun _ O _ _ _ _ => ∀ Φ : ℝ → Fn O.Y, LimFam Φ → Relabel Φ := by
   intro hP hH D O hc hf A T H hr Φ hlim τ τ'

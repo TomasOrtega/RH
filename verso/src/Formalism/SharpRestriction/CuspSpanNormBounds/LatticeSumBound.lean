@@ -6,7 +6,7 @@ noncomputable section
 namespace Formalism.MainNotions.LatticeSumConvergence
 
 /- English proof (translation)
-Introduce `ι _ P R hR hsep` and use `Formalism.MainNotions.WeightedLatticeSum.latSum ι P R hR hsep`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LatSum_holds : Formalism.MainNotions.KTwoMinorIntegrality.LatSum :=
   fun ι _ P R hR hsep => Formalism.MainNotions.WeightedLatticeSum.latSum ι P R hR hsep

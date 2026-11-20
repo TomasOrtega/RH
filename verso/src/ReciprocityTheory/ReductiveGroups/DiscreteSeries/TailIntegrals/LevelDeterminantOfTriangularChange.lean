@@ -10,7 +10,7 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 namespace BL
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[Fin.le_zero_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Iic_zero (n : ℕ) : Finset.Iic (0 : Fin (n + 1)) = {0} := by
   ext a
@@ -27,7 +27,7 @@ Both sides reduce to the same expression.
 theorem su_val (a : Fin (r' + 1)) : (su a).val = a.val + 1 := rfl
 
 /- English proof (translation)
-Use `⟨⟨a.val - 1, by have := a.2; omega⟩, Fin.ext ?_⟩` and prove the remaining obligations. Use `show a.val = (a.val - 1) + 1`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_su (a : Fin (1 + r' + 1)) (ha : a.val ≠ 0) : ∃ b : Fin (r' + 1), a = su b := by
   refine ⟨⟨a.val - 1, by have := a.2; omega⟩, Fin.ext ?_⟩
@@ -35,7 +35,7 @@ theorem exists_su (a : Fin (1 + r' + 1)) (ha : a.val ≠ 0) : ∃ b : Fin (r' + 
   omega
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_succ]`. Use `congr 1`. Conclude with `(Fintype.prod_equiv (finCongr (by omega : r' + 1 = 1 + r')) (fun a => f (su a)) (fun b => f b.succ) fun a => congrArg f (Fin.ext (by simp [su]))).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem prod_su {M : Type} [CommMonoid M] (f : Fin (1 + r' + 1) → M) :
     ∏ l, f l = f 0 * ∏ a : Fin (r' + 1), f (su a) := by
@@ -45,7 +45,7 @@ theorem prod_su {M : Type} [CommMonoid M] (f : Fin (1 + r' + 1) → M) :
     (fun b => f b.succ) fun a => congrArg f (Fin.ext (by simp [su]))).symm
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_succ]`. Use `congr 1`. Conclude with `(Fintype.sum_equiv (finCongr (by omega : r' + 1 = 1 + r')) (fun a => f (su a)) (fun b => f b.succ) fun a => congrArg f (Fin.ext (by simp [su]))).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sum_su {M : Type} [AddCommMonoid M] (f : Fin (1 + r' + 1) → M) :
     ∑ l, f l = f 0 + ∑ a : Fin (r' + 1), f (su a) := by
@@ -55,7 +55,7 @@ theorem sum_su {M : Type} [AddCommMonoid M] (f : Fin (1 + r' + 1) → M) :
     (fun b => f b.succ) fun a => congrArg f (Fin.ext (by simp [su]))).symm
 
 /- English proof (translation)
-Use extensionality with `p`. Simplify using `only [liftVec, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lv_add (v w : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' (v + w) = liftVec k 1 r' v + liftVec k 1 r' w := by
   ext p
@@ -63,7 +63,7 @@ theorem lv_add (v w : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' (v + w) = l
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `p`. Simplify using `only [liftVec, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lv_smul (c : ℂ) (v : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' (c • v) = c • liftVec k 1 r' v := by
   ext p
@@ -71,7 +71,7 @@ theorem lv_smul (c : ℂ) (v : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' (c
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `e : liftVec k 1 r' (∑ i ∈ s, f i) = (AddMonoidHom.mk' (liftVec k 1 r') fun v w => lv_add v w) (∑ i ∈ s, f i)` using `rfl`. Rewrite using `[e, map_sum]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lv_sum {ι : Type} (s : Finset ι) (f : ι → Fin (2 * r' + k + 1) → ℂ) :
     liftVec k 1 r' (∑ i ∈ s, f i) = ∑ i ∈ s, liftVec k 1 r' (f i) := by
@@ -81,13 +81,13 @@ theorem lv_sum {ι : Type} (s : Finset ι) (f : ι → Fin (2 * r' + k + 1) → 
   rfl
 
 /- English proof (translation)
-Unfold `phiV`. Distinguish the cases in `h : a.val < r'`. Establish `h' : (su a).val < 1 + r'` using `by rw [su_val]; omega`. Rewrite using `[dif_pos h, dif_pos h', ← bvec_lv]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using `only [sh, esI, su_val, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers. Establish `h' : ¬ (su a).val < 1 + r'` using `by rw [su_val]; omega`. Rewrite using `[dif_neg h, dif_neg h']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `epsV`. Establish `e0 : sh (wI k r' 0) = wI k (1 + r') 0`. Use `ext`. Simplify using `only [sh, wI, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `e1 : sh (wI k r' (Fin.last k)) = wI k (1 + r') (Fin.last k)`. Use `ext`. Simplify using `only [sh, wI, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[lv_smul, lv_add, ← bvec_lv, ← bvec_lv, e0, e1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_lift (a : Fin (r' + 1)) : liftVec k 1 r' (phiV k r' a) = phiV k (1 + r') (su a) := by
   unfold phiV
@@ -112,7 +112,7 @@ theorem phi_lift (a : Fin (r' + 1)) : liftVec k 1 r' (phiV k r' a) = phiV k (1 +
     rw [lv_smul, lv_add, ← bvec_lv, ← bvec_lv, e0, e1]
 
 /- English proof (translation)
-Unfold `phiV`. Rewrite using `[dif_pos (by simp only [Fin.val_zero]; omega)]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem besselPhi_eq_reindexConj_rootCoords : phiV k (1 + r') 0 = bvec ⟨2 * (1 + r') + k, by omega⟩ := by
   unfold phiV
@@ -120,14 +120,14 @@ theorem besselPhi_eq_reindexConj_rootCoords : phiV k (1 + r') 0 = bvec ⟨2 * (1
   congr 1
 
 /- English proof (translation)
-Rewrite using `[besselPhi_eq_reindexConj_rootCoords]`. Conclude with `io_bvec_out g _ (Or.inr rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelEmbedding_fixes_firstVector (g : Mat k r') : ιLev k 1 r' g *ᵥ phiV k (1 + r') 0 = phiV k (1 + r') 0 := by
   rw [besselPhi_eq_reindexConj_rootCoords]
   exact io_bvec_out g _ (Or.inr rfl)
 
 /- English proof (translation)
-Rewrite using `[← phi_lift, io_lv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem io_phi_su (g : Mat k r') (a : Fin (r' + 1)) :
     ιLev k 1 r' g *ᵥ phiV k (1 + r') (su a) = liftVec k 1 r' (g *ᵥ phiV k r' a) := by
@@ -140,7 +140,7 @@ def tt (τ : Matrix (Fin (r' + 1)) (Fin (r' + 1)) ℂ) : Matrix (Fin (1 + r' + 1
 variable (τ : Matrix (Fin (r' + 1)) (Fin (r' + 1)) ℂ)
 
 /- English proof (translation)
-Unfold `tt`. Rewrite using `[if_neg (by simp [su]), dif_neg (by simp [su])]`. Apply the tactic sequence `congr 1 <;> ext <;> simp [su]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tt_su (a b : Fin (r' + 1)) : tt τ (su b) (su a) = τ b a := by
   unfold tt
@@ -148,29 +148,29 @@ theorem tt_su (a b : Fin (r' + 1)) : tt τ (su b) (su a) = τ b a := by
   congr 1 <;> ext <;> simp [su]
 
 /- English proof (translation)
-Simplify using `[tt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tt_00 : tt τ 0 0 = 1 := by
   simp [tt]
 
 /- English proof (translation)
-Simplify using `[tt, hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem triangularCoeff_firstColumn_zero (b : Fin (1 + r' + 1)) (hb : b.val ≠ 0) : tt τ b 0 = 0 := by
   simp [tt, hb]
 
 /- English proof (translation)
-Simplify using `[tt, su]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tt_0su (a : Fin (r' + 1)) : tt τ 0 (su a) = 0 := by
   simp [tt, su]
 
 /- English proof (translation)
-Introduce `i j hij`. Simplify using `only [id] at hij`. Rewrite `hij` using `[Fin.lt_iff_val_lt_val]`. Unfold `tt`. Distinguish the cases in `hi : i.val = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hi]`. Distinguish the cases in `hj : j.val = 0`. Rewrite using `[dif_pos hj]`. Rewrite using `[dif_neg hj]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hτ` to reduce the goal to its premises. Simplify using `only [id, Fin.mk_lt_mk]`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem tt_tri (hτ : τ.BlockTriangular id) : (tt τ).BlockTriangular id := by
   intro i j hij
@@ -188,9 +188,9 @@ theorem tt_tri (hτ : τ.BlockTriangular id) : (tt τ).BlockTriangular id := by
       omega
 
 /- English proof (translation)
-Distinguish the cases in `ha : a.val = 0`. Establish `ha0 : a = 0` using `Fin.ext ha`. Substitute `ha0` using the available equality. Rewrite using `[levelEmbedding_fixes_firstVector, sum_su, tt_00, levelEmbedding_fixes_firstVector, one_smul]`. Rewrite using `[Finset.sum_eq_zero fun b _ => by rw [triangularCoeff_firstColumn_zero τ (su b) (by simp [su]), zero_smul], add_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a', rfl⟩` from `exists_su a ha`. Rewrite using `[io_phi_su, hrep a', lv_sum, sum_su, tt_0su, zero_smul, zero_add]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[tt_su, io_phi_su, lv_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tt_rep (m κ : Mat k r') (hrep : ∀ a, m *ᵥ phiV k r' a = ∑ b, τ b a • (κ *ᵥ phiV k r' b))
     (a : Fin (1 + r' + 1)) :
@@ -209,13 +209,13 @@ def suE : Fin (r' + 1) ↪ Fin (1 + r' + 1) :=
   ⟨su, fun a b h => Fin.ext (by have := congrArg Fin.val h; simp only [su_val] at this; omega)⟩
 
 /- English proof (translation)
-Use extensionality with `l`. Simplify using `only [Finset.mem_Iic, Finset.mem_insert, Finset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hl`. Distinguish the cases in `h0 : l.val = 0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl (Fin.ext h0)`. Take `⟨b, rfl⟩` from `exists_su l h0`. Use `Or.inr ⟨b, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hl`, the goal using `[Fin.le_iff_val_le_val]`. Rewrite `hl` using `[su_val, su_val]`.
+Prove the first alternative. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Introduce and unpack `(rfl | ⟨b, hb, rfl⟩)`. Conclude with `Fin.zero_le _`. Use `show su b ≤ su a`. Rewrite `hb`, the goal using `[Fin.le_iff_val_le_val]`.
+Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[su_val, su_val]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem Iic_su (a : Fin (r' + 1)) : Finset.Iic (su a) = insert 0 ((Finset.Iic a).map suE) := by
   ext l
@@ -237,18 +237,18 @@ theorem Iic_su (a : Fin (r' + 1)) : Finset.Iic (su a) = insert 0 ((Finset.Iic a)
       omega
 
 /- English proof (translation)
-Rewrite using `[Iic_zero, Finset.prod_singleton, tt_00]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tt_prod0 : ∏ j ∈ Finset.Iic (0 : Fin (1 + r' + 1)), ‖tt τ j j‖ ^ 2 = 1 := by
   rw [Iic_zero, Finset.prod_singleton, tt_00]
   simp
 
 /- English proof (translation)
-Rewrite using `[Iic_su, Finset.prod_insert, Finset.prod_map, tt_00]`. Rewrite using `[norm_one, one_pow, one_mul]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `show ‖tt τ (su x) (su x)‖ ^ 2 = _`. Rewrite using `[tt_su]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_map, not_exists, not_and]`. Introduce `b _ h`. Establish `h'` using `congrArg Fin.val h`. Express the relevant statement in the definitionally equal form `(su b).val = (0 : Fin (1 + r' + 1)).val at h'`. Rewrite `h'` using `[su_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at h'`.
+A detailed English derivation is pending.
 -/
 theorem tt_prodS (a : Fin (r' + 1)) :
     ∏ j ∈ Finset.Iic (su a), ‖tt τ j j‖ ^ 2 = ∏ j ∈ Finset.Iic a, ‖τ j j‖ ^ 2 := by
@@ -265,9 +265,9 @@ theorem tt_prodS (a : Fin (r' + 1)) :
     simp at h'
 
 /- English proof (translation)
-Establish `e : (fun a => (x * ιLev k 1 r' m) *ᵥ phiV k (1 + r') a) = fun a => ∑ b, tt τ b a • ((x * ιLev k 1 r' κ) *ᵥ phiV k (1 + r') b)`. Use function extensionality and compare the values at `a`. Rewrite using `[← Matrix.mulVec_mulVec, tt_rep τ m κ hrep a, Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ga_tri k (1 + r') _ (tt τ) (tt_tri τ hτ) l]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ga_lev (x : Mat k (1 + r')) (m κ : Mat k r') (hτ : τ.BlockTriangular id)
     (hrep : ∀ a, m *ᵥ phiV k r' a = ∑ b, τ b a • (κ *ᵥ phiV k r' b)) (l : Fin (1 + r' + 1)) :
@@ -282,7 +282,7 @@ theorem ga_lev (x : Mat k (1 + r')) (m κ : Mat k r') (hτ : τ.BlockTriangular 
   rw [e, ga_tri k (1 + r') _ (tt τ) (tt_tri τ hτ) l]
 
 /- English proof (translation)
-Unfold `Del`. Rewrite using `[ga_lev τ x m κ hτ hrep 0, tt_prod0, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem levelDeterminant_of_triangular_change (x : Mat k (1 + r')) (m κ : Mat k r') (hτ : τ.BlockTriangular id)
     (hrep : ∀ a, m *ᵥ phiV k r' a = ∑ b, τ b a • (κ *ᵥ phiV k r' b)) :
@@ -291,9 +291,7 @@ theorem levelDeterminant_of_triangular_change (x : Mat k (1 + r')) (m κ : Mat k
   rw [ga_lev τ x m κ hτ hrep 0, tt_prod0, one_mul]
 
 /- English proof (translation)
-Unfold `Del`. Rewrite using `[ga_lev τ x m κ hτ hrep (su a), tt_prodS, hprod a]`. Establish `h0 : 0 ≤ Ga k r' a (fun b => m *ᵥ phiV k r' b)`. Rewrite using `[← hprod a]`. Conclude with `Finset.prod_nonneg fun j _ => by positivity`.
-
-Conclude with `Real.sqrt_mul h0 _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem del_levS (x : Mat k (1 + r')) (m κ : Mat k r') (hτ : τ.BlockTriangular id)
     (hrep : ∀ a, m *ᵥ phiV k r' a = ∑ b, τ b a • (κ *ᵥ phiV k r' b))
@@ -307,13 +305,13 @@ theorem del_levS (x : Mat k (1 + r')) (m κ : Mat k r') (hτ : τ.BlockTriangula
   exact Real.sqrt_mul h0 _
 
 /- English proof (translation)
-Establish `hκU' : κ * κᴴ = 1`. Rewrite using `[← Matrix.inv_eq_left_inv hκU]`. Conclude with `Matrix.mul_nonsing_inv κ (Matrix.isUnit_det_of_left_inverse hκU)`. Establish `hG' : κᴴ ∈ GV k r'`. Establish `hκ : κᴴ * Hpk k r' * κ = Hpk k r'` using `hκG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show κᴴᴴ * Hpk k r' * κᴴ = Hpk k r'`. Rewrite using `[Matrix.conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Establish `hinv : (ιLev k 1 r' κᴴ)⁻¹ = ιLev k 1 r' κ` using `Matrix.inv_eq_right_inv (by rw [← io_mul, hκU, io_one])`. Establish `hconj` using `hHC k r' κᴴ hG' X`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hconj` using `[hinv]`. Rewrite using `[← hconj]`. Establish `hU : (ιLev k 1 r' κᴴ)ᴴ * ιLev k 1 r' κᴴ = 1`. Rewrite using `[← io_conjT, Matrix.conjTranspose_conjTranspose, ← io_mul, hκU', io_one]`. Unfold `Del`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc]`. Establish `e : (fun a => (ιLev k 1 r' κᴴ * (heis0 k r' X * ιLev k 1 r' κ)) *ᵥ phiV k (1 + r') a) = fun a => ιLev k 1 r' κᴴ *ᵥ ((heis0 k r' X * ιLev k 1 r' κ) *ᵥ phiV k (1 + r') a)`. Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.mulVec_mulVec]`. Rewrite using `[e, ga_unit k (1 + r') _ hU l]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem del_conj (hHC : HeisConjLev) (κ : Mat k r') (hκG : κ ∈ GV k r') (hκU : κᴴ * κ = 1) (X : HPar k r')
     (l : Fin (1 + r' + 1)) :
@@ -344,7 +342,7 @@ theorem del_conj (hHC : HeisConjLev) (κ : Mat k r') (hκG : κ ∈ GV k r') (h�
   rw [e, ga_unit k (1 + r') _ hU l]
 
 /- English proof (translation)
-Rewrite using `[hrep 0, Finset.sum_eq_single 0]`. Introduce `b _ hb`. Rewrite using `[hτ (show id (0 : Fin (r' + 1)) < id b from lt_of_le_of_ne (Fin.zero_le _) (Ne.symm hb)), zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ 0) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rep0 (m κ : Mat k r') (hτ : τ.BlockTriangular id)
     (hrep : ∀ a, m *ᵥ phiV k r' a = ∑ b, τ b a • (κ *ᵥ phiV k r' b)) :
@@ -357,9 +355,9 @@ theorem rep0 (m κ : Mat k r') (hτ : τ.BlockTriangular id)
     exact absurd (Finset.mem_univ 0) h
 
 /- English proof (translation)
-Take `⟨κ, hκG, hκU, τ, hτ, hrep, hprod⟩` from `iw_apply (k := k) (n := r') hIW hk m hm`. Use `⟨κ, hκG, hκU, τ 0 0, rep0 τ m κ hτ hrep, ?_, fun X => ⟨?_, fun a => ?_⟩⟩` and prove the remaining obligations. Unfold `Del`. Rewrite using `[← hprod 0, Iic_zero, Finset.prod_singleton, Real.sqrt_sq (norm_nonneg _)]`. Rewrite using `[levelDeterminant_of_triangular_change τ _ m κ hτ hrep, del_conj hHC κ hκG hκU X 0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[del_levS τ _ m κ hτ hrep hprod a, del_conj hHC κ hκG hκU X (su a)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_data (hIW : IW) (hHC : HeisConjLev) (hk : 1 ≤ k) (m : Mat k r') (hm : m ∈ UH (Hpk k r')) :
     ∃ κ : Mat k r', κ ∈ GV k r' ∧ κᴴ * κ = 1 ∧ ∃ t : ℂ, m *ᵥ phiV k r' 0 = t • (κ *ᵥ phiV k r' 0) ∧

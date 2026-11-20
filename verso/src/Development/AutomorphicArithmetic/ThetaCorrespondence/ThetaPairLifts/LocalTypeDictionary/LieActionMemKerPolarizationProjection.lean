@@ -16,17 +16,17 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
 namespace GlobalTheory.SquareAgree.KerLie
 /- English proof (translation)
-Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm γ hγ f hf f₁ hf₁ hact φ hφ hv`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hO.psi ▸ hT.base.std`. Establish `hM : Γ.M'.IsGood ψ` using `hO.psi ▸ hT.geo.hM'`. Establish `hW : Γ.M'.IsWeil ψ Xc.α (Xc.α / Xc.β) om'` using `hO.psi ▸ hT.weil'`. Establish `hc : (-1 : D.host.E) ≠ 0` using `neg_ne_zero.2 one_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ algD Γ.M' Bs.ψ Bs.emb` using `Submodule.subset_span ⟨f, φ, hf, hφ, hv, rfl⟩`. Establish `hD1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₁ φ ∈ algD Γ.M' Bs.ψ Bs.emb` using `Submodule.subset_span ⟨f₁, φ, hf₁, hφ, hv, rfl⟩`. Take `⟨Ψ, hΨ, hΨD⟩` from `hO.algB' _ hD0`. Take `⟨Ψ₁, hΨ₁, hΨ₁D⟩` from `hO.algB' _ hD1`. Rewrite using `[mem_kerPD hstd]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hD1, Ψ₁, hΨ₁, hΨ₁D, ?_⟩` and prove the remaining obligations. Establish `hstd' : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers D.host.F v} 1` using `(hv.and hM.std).mono fun v h => h.1.trans h.2`. Establish `hrest` using `GlobalTheory.ThK.EvUniqInf.rest_pure f φ hφ hstd'`. Establish `hder : ∀ z, HasDerivAt (fun t : ℝ => ωB (GlobalTheory.ConjUTransport.conjUInv W₁ (-1) hc hO.JW₁ (γ (Multiplicative.ofAdd t)), 1) Ψ z) (Ψ₁ z) 0`. Introduce `z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, rfl⟩` from `cB.surjective z`. Establish `h1` using `_root_.GlobalTheory.T.thetaSum_differentiable_along_line hP Γ.M' ψ Xc.α (Xc.α / Xc.β) om' hstd hM hW γ hγ f f₁ _ hrest hact u`. Establish `hval : ∀ t : ℝ, GlobalTheory.WeilM.thetaSum D.host.F (Γ.M'.co.rho ψ u (om' (γ (Multiplicative.ofAdd t), 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (⇑f) (fun x => ∏ᶠ v, φ v fun i => Glob …`. Introduce `t`. Establish `h` using `(hO.weilB _ Ψ hΨD (GlobalTheory.ConjUTransport.conjUInv W₁ (-1) hc hO.JW₁ (γ (Multiplicative.ofAdd t))) 1).2 u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[GlobalTheory.KapXLine.kapX_one]`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) hO.JW₁ (GlobalTheory.ConjUTransport.conjUInv W₁ (-1) hc hO.JW₁ (γ (Multiplicative.ofAdd t))) = γ (Multiplicative.ofAdd t)` using `(GlobalTheory.ConjUTransport.conjEquiv W₁ (-1) hc hO.JW₁).apply_symm_apply _`. Rewrite `h` using `[e1]`. Conclude with `h`. Establish `h2` using `hΨ₁D.2 u`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (fun t : ℝ => ωB (GlobalTheory.ConjUTransport.conjUInv W₁ (-1) hc hO.JW₁ (γ (Multiplicative.ofAdd t)), 1) Ψ (cB u)) = fun t : ℝ => GlobalTheory.WeilM.thetaSum D.host.F (Γ.M'.co.rho ψ u (om' (γ (Multiplicative.ofAdd t), 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMo …`. Use function extensionality and compare the values at `fun t => (hval t).symm`. Rewrite using `[e3, ← h2]`. Conclude with `h1`. Conclude with `_root_.GlobalTheory.T.weil_coinvariants_vanish_on_line_derivatives hP D ψ θ W W₁ X A A₁ B α β ωA ωB Pi rf rl p p' hθ hstd hTr hm Γ.V' hO.JW₁ γ hγ Ψ hΨ Ψ₁ hΨ₁ hder`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_action_mem_ker_polarizationProjection : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
@@ -91,7 +91,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareAgree.KerLie.lie_action_mem_ker_polarizationProjection | exact _root_.GlobalTheory.SquareAgree.KerLie.lie_action_mem_ker_polarizationProjection | (intros; apply _root_.GlobalTheory.SquareAgree.KerLie.lie_action_mem_ker_polarizationProjecti …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.ker_polarizationProjection_lie_stable : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

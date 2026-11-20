@@ -24,7 +24,7 @@ def IsLog (G : Germ.FGLaw S d) (ℓ : Germ.Pt S 1 d) : Prop :=
       Germ.comp1 ℓ (Germ.pt S (n := 2) d 0) + Germ.comp1 ℓ (Germ.pt S (n := 2) d 1)
 
 /- English proof (translation)
-The claim follows from `h S d G`.
+A detailed English derivation is pending.
 -/
 example [Algebra ℚ S] (h : TB.LogSt) (G : Germ.FGLaw S d) : ∃ ℓ, IsLog G ℓ := h S d G
 
@@ -38,13 +38,13 @@ def IsSymBal {O : Type} (act : O → Germ.Pt S 1 d) (bar : O → O) (c : Matrix 
       dotProduct u (c.mulVec ((TB.dLin (act (bar a))).mulVec v))
 
 /- English proof (translation)
-Simplify using `[bilLog]`.
+Simplify using the standard rewrite rules.
 -/
 example (ℓ : Germ.Pt S 1 d) {n : ℕ} (P Q : Germ.Pt S n d) : bilLog ℓ 0 P Q = 0 := by
   simp [bilLog]
 
 /- English proof (translation)
-Simplify using `[IsSymBal]`.
+Simplify using the standard rewrite rules.
 -/
 example {O : Type} (act : O → Germ.Pt S 1 d) (bar : O → O) : IsSymBal act bar 0 := by
   simp [IsSymBal]

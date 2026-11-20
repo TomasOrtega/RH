@@ -5,13 +5,11 @@ open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual Recipro
 namespace GlobalTheory.PowFix
 
 /- English proof (translation)
-Establish `hfin : ((minpoly E x).rootSet Ω).Finite` using `Polynomial.rootSet_finite _ _`. Use `haveI := hfin.to_subtype`. Set `f : ℕ → (minpoly E x).rootSet Ω` to `fun n => ⟨(σ ^ n) x, by`. Rewrite using `[Polynomial.mem_rootSet]`. Use `⟨minpoly.ne_zero hx, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ((σ ^ n) x) = ((σ ^ n : Ω ≃ₐ[E] Ω) : Ω →ₐ[E] Ω) x from rfl, Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]⟩`. Take `⟨a, b, hab, h⟩` from `Finite.exists_ne_map_eq_of_infinite f`. Establish `h' : (σ ^ a) x = (σ ^ b) x` using `congrArg Subtype.val h`. Establish `key : ∀ a b : ℕ, a < b → (σ ^ a) x = (σ ^ b) x → ∃ k : ℕ, 0 < k ∧ (σ ^ k) x = x`. Introduce `a b hlt he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b - a, Nat.sub_pos_of_lt hlt, ?_⟩` and prove the remaining obligations. Establish `e : σ ^ b = σ ^ a * σ ^ (b - a)` using `by rw [← pow_add, Nat.add_sub_cancel' hlt.le]`. Rewrite `he` using `[e, AlgEquiv.mul_apply]`. Conclude with `((σ ^ a).injective he).symm`. Break down `lt_or_gt_of_ne hab with hlt | hlt` into its components or cases.
-
-Conclude with `key a b hlt h'`. Conclude with `key b a hlt h'.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_pos_pow_apply_eq {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     (σ : Ω ≃ₐ[E] Ω) (x : Ω) (hx : IsIntegral E x) : ∃ k : ℕ, 0 < k ∧ (σ ^ k) x = x := by
@@ -36,7 +34,7 @@ theorem exists_pos_pow_apply_eq {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω
   · exact key b a hlt h'.symm
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => rw [pow_succ, AlgEquiv.mul_apply, h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_apply_eq_of_apply_eq {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     (τ : Ω ≃ₐ[E] Ω) (x : Ω) (h : τ x = x) (j : ℕ) : (τ ^ j) x = x := by
@@ -45,9 +43,9 @@ theorem pow_apply_eq_of_apply_eq {E Ω : Type} [Field E] [Field Ω] [Algebra E �
   | succ j ih => rw [pow_succ, AlgEquiv.mul_apply, h, ih]
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ σ s`. Establish `hint : ∀ x : Ω, IsIntegral E x` using `fun x => (Algebra.IsAlgebraic.isAlgebraic (R := E) x).isIntegral`. Use `choose k hk0 hk using fun x : Ω => exists_pos_pow_apply_eq σ x (hint x)`. Use `⟨∏ x ∈ s, k x, Finset.prod_pos fun x _ => hk0 x, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem k hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, pow_mul]`. Conclude with `pow_apply_eq_of_apply_eq _ x (hk x) c`.
+A detailed English derivation is pending.
 -/
 theorem exists_pos_pow_fix : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (σ : G E Ω) (s : Finset Ω), ∃ m : ℕ, 0 < m ∧ ∀ x ∈ s, (σ ^ m) x = x := by

@@ -2,13 +2,13 @@ import Mathlib
 import Formalism.PeriodIntegrals.PhNormLimit
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro e he`. Conclude with `absurd he (Nat.not_lt_zero _)`. Consider the case `succ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e he`. Rewrite using `[pow_succ, MvPowerSeries.coeff_mul]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `x hx`. Establish `hsum : x.1 () + x.2 () = e ()`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finsupp.add_apply, Finset.HasAntidiagonal.mem_antidiagonal.mp hx]`. Distinguish the cases in `h0 : x.2 () = 0`. Establish `hx2 : x.2 = 0`. Use `ext`. Simplify using `using h0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx2, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, ha, mul_zero]`. Rewrite using `[ih x.1 (by omega), zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_pow_eq_zero_of_lt_of_constantCoeff_eq_zero {K : Type*} [CommRing K] (a : MvPowerSeries Unit K)
     (ha : MvPowerSeries.constantCoeff a = 0) :
@@ -31,9 +31,9 @@ private theorem coeff_pow_eq_zero_of_lt_of_constantCoeff_eq_zero {K : Type*} [Co
     · rw [ih x.1 (by omega), zero_mul]
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero ha)]`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `d hd`. Simplify using `only [Function.mem_support, ne_eq] at hd`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hn`. Conclude with `hd (by rw [coeff_pow_eq_zero_of_lt_of_constantCoeff_eq_zero a ha d e (by omega), smul_zero])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem coeff_subst_eq_sum_range_coeff_mul_coeff_pow {K : Type*} [CommRing K] (f : PowerSeries K)
     (a : MvPowerSeries Unit K) (ha : MvPowerSeries.constantCoeff a = 0) (e : Unit →₀ ℕ) :
@@ -48,7 +48,7 @@ private theorem coeff_subst_eq_sum_range_coeff_mul_coeff_pow {K : Type*} [CommRi
   exact hd (by rw [coeff_pow_eq_zero_of_lt_of_constantCoeff_eq_zero a ha d e (by omega), smul_zero])
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_subst_eq_sum_range_coeff_mul_coeff_pow f a ha 0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem constantCoeff_subst_of_constantCoeff_eq_zero_orbital_bounds_conclusion {K : Type*} [CommRing K] (f : PowerSeries K)
     (a : MvPowerSeries Unit K) (ha : MvPowerSeries.constantCoeff a = 0) :
@@ -57,9 +57,9 @@ private theorem constantCoeff_subst_of_constantCoeff_eq_zero_orbital_bounds_conc
   simp
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `e`. Simplify using `only [pow_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_const`. Consider the case `succ n ih`. Introduce `e`. Simplify using `only [pow_succ, MvPowerSeries.coeff_mul]`. Conclude with `continuous_finset_sum _ fun x _ => (ih x.1).mul (hF x.2)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem continuous_coeff_pow_of_continuous_coeff {K Y : Type*} [NormedField K] [TopologicalSpace Y]
     (F : Y → MvPowerSeries Unit K) (hF : ∀ e, Continuous fun y => MvPowerSeries.coeff e (F y)) :
@@ -76,7 +76,7 @@ private theorem continuous_coeff_pow_of_continuous_coeff {K Y : Type*} [NormedFi
     exact continuous_finset_sum _ fun x _ => (ih x.1).mul (hF x.2)
 
 /- English proof (translation)
-Introduce `e`. Establish `h : (fun y => MvPowerSeries.coeff e (PowerSeries.subst (a y) f)) = fun y => ∑ d ∈ Finset.range (e () + 1), PowerSeries.coeff d f • MvPowerSeries.coeff e (a y ^ d)`. Use function extensionality and compare the values at `fun y => coeff_subst_eq_sum_range_coeff_mul_coeff_pow f (a y) (ha y) e`. Rewrite using `[h]`. Conclude with `continuous_finset_sum _ fun d _ => Continuous.smul (f := fun _ => PowerSeries.coeff d f) continuous_const (continuous_coeff_pow_of_continuous_coeff a hc d e)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem continuous_coeff_subst_of_continuous_coeff {K Y : Type*} [NormedField K] [TopologicalSpace Y]
     (f : PowerSeries K) (a : Y → MvPowerSeries Unit K)
@@ -93,16 +93,16 @@ private theorem continuous_coeff_subst_of_continuous_coeff {K Y : Type*} [Normed
     Continuous.smul (f := fun _ => PowerSeries.coeff d f) continuous_const (continuous_coeff_pow_of_continuous_coeff a hc d e)
 
 /- English proof (translation)
-Introduce `_ hy` and use `closure_minimal h hc hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem forall_mem_closure_of_isClosed_setOf {Y : Type*} [TopologicalSpace Y] (T : Set Y) (P : Y → Prop)
     (hc : IsClosed {y | P y}) (h : ∀ y ∈ T, P y) : ∀ y ∈ closure T, P y :=
   fun _ hy => closure_minimal h hc hy
 
 /- English proof (translation)
-Establish `h1 : IsClosed {y | MvPowerSeries.constantCoeff (F y) = 0}`. Use `isClosed_eq ?_ continuous_const` and prove the remaining obligations. Simplify `hF 0` using `only [MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Establish `h2 : IsClosed {y | ∀ n : Unit →₀ ℕ, ‖MvPowerSeries.coeff n (G y)‖ ≤ 1}`. Simplify using `only [Set.setOf_forall]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `isClosed_iInter fun n => isClosed_le ?_ continuous_const` and prove the remaining obligations. Simplify using `only [hG]`. Conclude with `(continuous_finset_sum _ fun k _ => (continuous_coeff_pow_of_continuous_coeff F hF k n).div_const _).norm`. Simplify `h1.inter h2` using `only [Set.setOf_and]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem isClosed_setOf_coeff_exp_norm_le_one {K Y : Type*} [NormedField K] [TopologicalSpace Y]
     (F G : Y → MvPowerSeries Unit K) (hF : ∀ e, Continuous fun y => MvPowerSeries.coeff e (F y))
@@ -122,9 +122,9 @@ private theorem isClosed_setOf_coeff_exp_norm_le_one {K Y : Type*} [NormedField 
   simpa only [Set.setOf_and] using h1.inter h2
 
 /- English proof (translation)
-Establish `hin : ∀ y, MvPowerSeries.constantCoeff (MvPowerSeries.C (c y) * PowerSeries.subst (MvPowerSeries.X () : MvPowerSeries Unit K) l) = 0`. Introduce `y`. Rewrite using `[map_mul, MvPowerSeries.constantCoeff_C, constantCoeff_subst_of_constantCoeff_eq_zero_orbital_bounds_conclusion l _ (MvPowerSeries.constantCoeff_X ()), hl, mul_zero]`. Establish `hmid : ∀ y, MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.C (c y) * PowerSeries.subst (MvPowerSeries.X () : MvPowerSeries Unit K) l) ex) = 0` using `fun y => (constantCoeff_subst_of_constantCoeff_eq_zero_orbital_bounds_conclusion ex _ (hin y)).trans hex`. Use `continuous_coeff_subst_of_continuous_coeff ph _ hmid ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_coeff_subst_of_continuous_coeff ex _ hin ?_` and prove the remaining obligations. Introduce `e`. Simplify using `only [MvPowerSeries.coeff_C_mul]`. Conclude with `hc.mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem continuous_coeff_subst_subst_C_mul_subst {K Y : Type*} [NormedField K] [TopologicalSpace Y]
     (l ex ph : PowerSeries K) (hl : PowerSeries.constantCoeff l = 0)
@@ -148,11 +148,11 @@ private theorem continuous_coeff_subst_subst_C_mul_subst {K Y : Type*} [NormedFi
   exact hc.mul continuous_const
 
 /- English proof (translation)
-Unfold `PI.PhNormLimit.Target`. Introduce `p _ l ex ph T h0 h1 _ h3`. Establish `hl : PowerSeries.constantCoeff l = 0`. Rewrite using `[← constantCoeff_subst_of_constantCoeff_eq_zero_orbital_bounds_conclusion l ex h0, h1]`. Conclude with `MvPowerSeries.constantCoeff_X ()`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `forall_mem_closure_of_isClosed_setOf T _ ?_ h3` and prove the remaining obligations. Use `isClosed_setOf_coeff_exp_norm_le_one _ _ ?_ ?_` and prove the remaining obligations. Introduce `e`. Simplify using `only [map_sub, MvPowerSeries.coeff_C_mul]`. Use `Continuous.sub ?_ ((continuous_fst.mul continuous_snd).mul continuous_const)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `continuous_coeff_subst_subst_C_mul_subst l ex ph hl h0 _ continuous_fst e`. Introduce `n y`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem phase_norm_limit_target : PI.PhNormLimit.Target := by
   unfold PI.PhNormLimit.Target

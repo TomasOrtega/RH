@@ -9,15 +9,15 @@ open GlobalTheory.CompanionTheory.LFUDom
 namespace GlobalTheory.CompanionTheory.LFUDom
 
 /- English proof (translation)
-Establish `hψ₀ : ∀ x ∈ 𝒪[F], (Circle.coeHom.compAddChar ψ) x = 1`. Introduce `x hx`. Take `⟨hc, h1, h0⟩` from `hψ`. Establish `ht` using `isTrivialOn_addCharConductor hc h1`. Rewrite `ht` using `[h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ht x (mem_valBall_zero_iff.2 hx)` as an intermediate fact. Use `show ((ψ x : Circle) : ℂ) = 1`. Rewrite using `[this, Circle.coe_one]`. Establish `hanti : Antitone (![a, b] : Fin 2 → ℤ) ↔ b ≤ a`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Simplify using `using h (show (0 : Fin 2) ≤ 1 by decide)`. Apply the tactic sequence `intro h i j hij fin_cases i <;> fin_cases j <;> simp_all`. Establish `hrho : rhoPair (![a, b] : Fin 2 → ℤ) = a - b`. Simplify using `[rhoPair, Fin.sum_univ_two]`.
+Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key` using `sphericalWhittaker_torusPow hψ₀ ![ν (unifUnit F), ν⁻¹ (unifUnit F)] ![a, b]`. Rewrite `key` using `[MonoidHom.inv_apply]`. Unfold `Ad3.LFS.s2`. Rewrite using `[MonoidHom.inv_apply, key]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[if_pos (hanti.2 h), halfModulus_eq, hrho]`. Introduce `h`. Rewrite using `[if_neg (fun h' => absurd (hanti.1 h') (not_le.2 h))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whittaker_torus_value_formula (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F]

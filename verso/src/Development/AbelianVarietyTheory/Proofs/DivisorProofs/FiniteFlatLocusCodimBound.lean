@@ -14,11 +14,11 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 namespace GlobalTheory.Vert.Model.Hom
 
 /- English proof (translation)
-Introduce `O _ _ _ B B' f hN h0`. Take `⟨hpos, hdeg⟩` from `GlobalTheory.T.relative_dim_zero_fibre_degree O B B' f h0`. Set `n` to `Module.finrank f.fnField Γ(f.genFibre, ⊤)`. Set `P : B.X.Opens → Prop` to `fun V => IsAffineOpen V ∧ IsAffineOpen (f.f ⁻¹ᵁ V) ∧ (letI := (f.f.app V).hom.toAlgebra; Module.Free Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V) ∧ Module.Finite Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V) ∧ Module.finrank Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V) = n)`. Set `U : B.X.Opens` to `⨆ V : {V : B.X.Opens // P V}, V.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨U, n, hpos, hdeg, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.closed_complement_dim_bound B.X U B.relDim B.dim_eq fun y hy => ?_` and prove the remaining obligations. Take `⟨V, hyV, hV, hV', hfin⟩` from `GlobalTheory.T.affine_finite_cover_rel_dim_zero O B B' f h0 y hy`. Take `⟨W, hyW, hW, hW', hfree, hfin'⟩` from `GlobalTheory.T.affine_finite_cover_refine O B B' f hN y hy V hyV hV hV' hfin`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨W, hW, hW', hfree, hfin', GlobalTheory.T.finite_free_rank_generic_fibre O B B' f W ⟨y, hyW⟩ hW hW' hfree hfin'⟩, hyW⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨V, hP⟩, hxV⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Conclude with `⟨V, hxV, le_iSup (fun V : {V : B.X.Opens // P V} => V.1) ⟨V, hP⟩, hP⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_free_off_codim_two : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B), GlobalTheory.IsNormalScheme B.X → f.relDim = 0 → ∃ (U : B.X.Opens) (n : ℕ), 0 < n ∧ f.fibreDeg 1 = n ∧ topologicalKrullDim ((U : Set B.X)ᶜ : Set B.X) + 1 ≤ (B.relDim : WithBot ℕ∞) ∧ ∀ x ∈ U, ∃ V : B.X.Opens, x ∈ V ∧ V ≤ U ∧ IsAffineOpen V ∧ IsAffineOpen (f.f ⁻¹ᵁ V) ∧ (letI := (f.f.app V).hom.toAlgebra; Module.Free Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V) ∧ Module.Finite Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V) ∧ Module.finrank Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V) = n) := by
   intro O _ _ _ B B' f hN h0

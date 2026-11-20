@@ -11,11 +11,11 @@ open GlobalTheory.Poinc
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `g n F W8 Z i X₁ η W hη hW`. Use `haveI := X₁.fin`. Establish `hc : IsClosedMap X₁.π.base` using `X₁.π.isClosedMap`. Set `w₀ : Sp X₁.Ω₁` to `IsLocalRing.closedPoint X₁.Ω₁`. Establish `hgen : X₁.M.pt w₀ = genericPoint X₁.M.Z` using `X₁.M.pt_apply w₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : X₁.π (X₁.M.pt w₀) = i η`. Establish `h` using `congrArg (fun f => f.base w₀) X₁.comp`. Simplify using `only [Scheme.Hom.comp_base, TopCat.comp_app] at h`. Rewrite using `[← hη w₀]`. Simplify using `using h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `huniv : closure ({genericPoint X₁.M.Z} : Set X₁.M.Z) = Set.univ` using `genericPoint_spec X₁.M.Z`. Rewrite using `[← hW, ← hpt, hgen, ← Set.image_singleton, ← Set.image_univ, ← huniv]`. Conclude with `(hc.closure_image_eq_of_continuous X₁.π.continuous _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Setup.range_π_eq : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W8 : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W8 i) (η : F.X) (W : Set Z), (∀ w, (spMap X₁.S.R.val.toRingHom ≫ X₁.u) w = η) → closure {i η} = W → Set.range X₁.π = W := by
   intro g n F W8 Z i X₁ η W hη hW

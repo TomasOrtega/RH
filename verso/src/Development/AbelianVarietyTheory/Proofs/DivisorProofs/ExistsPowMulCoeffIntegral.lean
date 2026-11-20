@@ -26,23 +26,21 @@ namespace GlobalTheory.HarmInCoef
 open NumberField IsDedekindDomain Formalism.L2.DIV
 
 /- English proof (translation)
-Establish `hp : (ringChar (𝓞 K ⧸ w₀.asIdeal)).Prime` using `by haveI := w₀.isMaximal haveI : Finite (𝓞 K ⧸ w₀.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ w₀.ne_bot`. Use `letI := Ideal.Quotient.field w₀.asIdeal`. Conclude with `CharP.prime_ringChar _`. Use `set p := ringChar (𝓞 K ⧸ w₀.asIdeal) with hpdef`. Establish `hpw : ((p : ℕ) : 𝓞 K) ∈ w₀.asIdeal`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `(ringChar.spec _ _).2 dvd_rfl`. Set `J : Ideal (𝓞 K)` to `(nabAtr emb lam L').comap (LinearMap.toSpanSingleton (𝓞 K) _ x)`. Establish `hmemJ : ∀ r : 𝓞 K, r ∈ J ↔ r • x ∈ nabAtr emb lam L'` using `fun r => Iff.rfl`. Establish `hJw : ∀ w : HeightOneSpectrum (𝓞 K), ((p : ℕ) : 𝓞 K) ∈ w.asIdeal → ¬ J ≤ w.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw hle`. Establish `hcong` using `(GlobalTheory.GO.localization_nabAtr_delAtr_congr emb lam hL hL' h h' w (GlobalTheory.GO.natCast_notMem_of_coprime ha w hw)).1`. Establish `hx0 : x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (nabAtr emb lam L)` using `⟨1, fun h1 => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1), by simpa using hx⟩`. Establish `hx' : x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (nabAtr emb lam L')` using `hcong ▸ hx0`. Take `⟨u, hu, hux⟩` from `hx'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hu (hle ((hmemJ u).2 hux))`. Establish `hp0 : ((p : ℕ) : 𝓞 K) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hJp : J ⊔ Ideal.span {((p : ℕ) : 𝓞 K)} = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpm : ((p : ℕ) : 𝓞 K) ∈ m` using `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hm0 : m ≠ ⊥` using `fun h0 => hp0 (by rw [h0] at hpm; exact (Submodule.mem_bot _).1 hpm)`. Conclude with `hJw ⟨m, hm.isPrime, hm0⟩ hpm (le_sup_left.trans hle)`. Establish `hJ0 : J ≠ ⊥` using `fun h0 => hJw w₀ hpw (h0 ▸ bot_le)`. Use `⟨Ideal.absNorm J, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `hmem`. Establish `hdvd : p ∣ Ideal.absNorm J`. Use `(ringChar.spec (𝓞 K ⧸ w₀.asIdeal) _).1 ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (Ideal.Quotient.mk w₀.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hmem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : Finite (𝓞 K ⧸ J) := Ideal.finiteQuotientOfFreeOfNeBot J hJ0`. Take `⟨z, hz⟩` from `exists_prime_addOrderOf_dvd_card' (G := 𝓞 K ⧸ J) p (by rwa [← Submodule.cardQuot_apply, ← Ideal.absNorm_apply])`. Establish `h1mem : (1 : 𝓞 K) ∈ J ⊔ Ideal.span {((p : ℕ) : 𝓞 K)}` using `hJp ▸ Submodule.mem_top`. Take `⟨j, hj, y, hy, hjy⟩` from `Submodule.mem_sup.1 h1mem`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Establish `h1 : Ideal.Quotient.mk J (c * (p : 𝓞 K)) = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk J), ← hjy, map_add, Ideal.Quotient.eq_zero_iff_mem.2 hj, zero_add]`. Establish `hpz : p • z = 0` using `hz ▸ addOrderOf_nsmul_eq_zero z`. Establish `hz0 : z = 0`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite `hz` using `[hz0, addOrderOf_zero]`. Conclude with `hp.one_lt.ne hz`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 K)]`. Conclude with `(hmemJ _).1 (Ideal.absNorm_mem J)`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_smul_mem_nabAtr {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι : Type} [Fintype ι]
     {n : ℕ} (emb : ι → E →+* K) (lam : ι → DomWeight n) {L L' : Submodule (𝓞 E) (Fin n → E)}
@@ -111,11 +109,11 @@ namespace GlobalTheory.HarmInCoef
 open NumberField MvPolynomial Formalism.L2.Pj
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial d a`. Establish `e : aeval (fun i => C t * X i) (monomial d a) = monomial d (t ^ (d.sum fun _ e => e) * a)`. Rewrite using `[aeval_monomial, monomial_eq]`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply, mul_pow, Finsupp.prod_mul, Finsupp.prod, Finsupp.sum, Finset.prod_pow_eq_pow_sum, C_mul, C_pow, algebraMap_eq]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, coeff_monomial, coeff_monomial]`. Distinguish the cases in `h : d = m`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`. Consider the case `add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem coeff_aeval_scale {σ K : Type} [Field K] (t : K) (P : MvPolynomial σ K) (m : σ →₀ ℕ) :
     (aeval (fun i => C t * X i) P).coeff m = t ^ (m.sum fun _ e => e) * P.coeff m := by
@@ -138,11 +136,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} (c : Coeff l)
 
 /- English proof (translation)
-Use `(Subring.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `f (⟨o, rfl⟩ | ⟨σ, i, b, hb, rfl⟩)`. Conclude with `⟨C o, by simp⟩`. Establish `hb' : ∀ j, ∃ y : 𝓞 E, algebraMap (𝓞 E) E y = b j` using `fun j => by`. Use `(Submodule.mem_pi.1 hb) j (Set.mem_univ _)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_one.1 this`. Use `choose y hy using hb'`. Establish `hint : ∀ j, IsIntegral ℤ (embF c σ (b j))` using `fun j => by`. Rewrite using `[← hy j]`. Conclude with `(RingOfIntegers.isIntegral_coe (y j)).map (embF c σ).toIntAlgHom`.
-
-Use `⟨∑ j, C (⟨embF c σ (b j), (mem_integralClosure_iff ℤ c.F).2 (hint j)⟩ : integralClosure ℤ c.F) * X (⟨σ, i, j⟩ : LtN Dw n), ?_⟩` and prove the remaining obligations. Simplify using `[letB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem symO_std_le {n : ℕ} :
     symO (Dw := Dw) c (⟨Formalism.L2.Pj.stdLat E n⟩ : GenLat E n) ≤
@@ -162,11 +158,11 @@ theorem symO_std_le {n : ℕ} :
     simp [letB]
 
 /- English proof (translation)
-Set `φ : MvPolynomial (LtN Dw n) c.F →+* MvPolynomial (LtN Dw n) c.F` to `(aeval (fun i => C (k : c.F) * X i) : MvPolynomial (LtN Dw n) c.F →ₐ[c.F] _).toRingHom`. Establish `hle : symO c Λ ≤ (symO c (⟨Formalism.L2.Pj.stdLat E n⟩ : GenLat E n)).comap φ`. Use `(Subring.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `f (⟨o, rfl⟩ | ⟨σ, i, b, hb, rfl⟩)`. Use `Subring.subset_closure (Or.inl ⟨o, ?_⟩)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[φ]`. Use `Subring.subset_closure (Or.inr ⟨σ, i, (k : 𝓞 E) • b, hk b hb, ?_⟩)` and prove the remaining obligations. Simplify using `only [φ, letB, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_sum, map_mul, aeval_C, aeval_X, algebraMap_eq, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← C_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[Algebra.smul_def, map_mul, map_natCast, map_natCast, mul_comm]`. Conclude with `hle hP`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_mem_symO {n : ℕ} (Λ : GenLat E n) (k : ℕ) (hk : ∀ b ∈ Λ.La, (k : 𝓞 E) • b ∈ Formalism.L2.Pj.stdLat E n)
     {P : MvPolynomial (LtN Dw n) c.F} (hP : P ∈ symO c Λ) :
@@ -188,11 +184,11 @@ theorem scale_mem_symO {n : ℕ} (Λ : GenLat E n) (k : ℕ) (hk : ∀ b ∈ Λ.
   exact hle hP
 
 /- English proof (translation)
-Use `⟨P.totalDegree, fun m => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hm : m ∈ P.support`. Take `⟨Q, hQ⟩` from `symO_std_le c (scale_mem_symO c Λ k hk hP)`. Establish `h1 : IsIntegral ℤ ((k : c.F) ^ (m.sum fun _ e => e) * P.coeff m)`. Rewrite using `[← coeff_aeval_scale, ← hQ, coeff_map]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_integralClosure_iff ℤ c.F).1 (Q.coeff m).2`. Establish `h2 : (m.sum fun _ e => e) ≤ P.totalDegree` using `le_totalDegree hm`. Rewrite using `[← Nat.sub_add_cancel h2, pow_add, mul_assoc]`. Establish `hk' : IsIntegral ℤ (k : c.F)`. Simplify using `using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ c.F (k : ℤ)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hk'.pow _).mul h1`. Rewrite using `[notMem_support_iff.1 hm, mul_zero]`. Conclude with `isIntegral_zero`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_coeff_integral {n : ℕ} (Λ : GenLat E n) (k : ℕ) (hk : ∀ b ∈ Λ.La, (k : 𝓞 E) • b ∈ Formalism.L2.Pj.stdLat E n)
     {P : MvPolynomial (LtN Dw n) c.F} (hP : P ∈ symO c Λ) :
@@ -218,7 +214,7 @@ namespace GlobalTheory.HarmInCoef
 open MvPolynomial Formalism.L2.Pj
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Submodule.smul_mem _ t hP.1, fun σ i i' h s => by rw [map_smul, hP.2.1 σ i i' h s], fun m hm σ i => hP.2.2 m (MvPolynomial.support_smul hm) σ i⟩`.
+Supply the required witnesses or components.
 -/
 theorem smul_mem_HHa {T : Type} {r : T → ℕ} {n : ℕ} {k : Type} [Field k] {cc : T → T} {isX : T → Prop} {a : T → ℕ → ℕ}
     {P : MvPolynomial (Letter T r n) k} (hP : P ∈ HHa r n k cc isX a) (t : k) : t • P ∈ HHa r n k cc isX a :=
@@ -226,7 +222,7 @@ theorem smul_mem_HHa {T : Type} {r : T → ℕ} {n : ℕ} {k : Type} [Field k] {
     fun m hm σ i => hP.2.2 m (MvPolynomial.support_smul hm) σ i⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ReciprocityTheory.ChartRestriction.G.PullbackSections.harmK_map f hP.1, GlobalTheory.RowSpan.rowInv_map f hP.2.1, fun m hm => hP.2.2 m (MvPolynomial.support_map_subset f P hm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_mem_HHa {T : Type} {r : T → ℕ} {n : ℕ} {k K : Type} [Field k] [CharZero k] [Field K] (f : k →+* K)
     {cc : T → T} {isX : T → Prop} {a : T → ℕ → ℕ} {P : MvPolynomial (Letter T r n) k} (hP : P ∈ HHa r n k cc isX a) :
@@ -235,7 +231,7 @@ theorem map_mem_HHa {T : Type} {r : T → ℕ} {n : ℕ} {k K : Type} [Field k] 
     fun m hm => hP.2.2 m (MvPolynomial.support_map_subset f P hm)⟩
 
 /- English proof (translation)
-Rewrite using `[coeff_smul, coeff_map, smul_eq_mul, ← map_mul]`. Conclude with `Subalgebra.mem_toSubring.2 ((mem_integralClosure_iff ℤ _).2 (h.map f.toIntAlgHom))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_smul_map_mem {σ k K : Type} [Field k] [Field K] (f : k →+* K) (t : k) (P : MvPolynomial σ k) (m : σ →₀ ℕ)
     (h : IsIntegral ℤ (t * P.coeff m)) :
@@ -252,43 +248,37 @@ open NumberField IsDedekindDomain MvPolynomial Formalism.L2.Pj Formalism.L2.DIV 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ fw O hT _hk i hpins Λ h _hsplit hLa lam htriv P hP`. Take `⟨hfield, hP'⟩` from `hpins`. Take `⟨k, hkcop, hk1, hk2⟩` from `htriv`. Establish `hlift` using `hP'.lift`. Take `⟨gramR, c0R, c0L, hFT, hC0⟩` from `hlift.c0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfld : (inC (O i).c').comp (O i).jL = D.what₂.embLL` using `hlift.field`. Take `⟨_, cga, hIo⟩` from `hP'.io`. Establish `hsub` using `hIo.2.2.2.2.2.2.2`. Establish `hp : (Formalism.EigenvalueLevelCeiling.plc lam).Prime` using `by haveI := lam.isMaximal haveI : Finite (𝓞 D.what₂.LL ⧸ lam.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ lam.ne_bot`. Use `letI := Ideal.Quotient.field lam.asIdeal`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `CharP.prime_ringChar _`. Establish `hplam : ((Formalism.EigenvalueLevelCeiling.plc lam : ℕ) : 𝓞 D.what₂.LL) ∈ lam.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `(ringChar.spec _ _).2 dvd_rfl`. Establish `hk0 : k ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hp.one_lt.ne' (Nat.coprime_zero_left _ |>.1 hkcop)`. Establish `hklam : ((k : ℕ) : 𝓞 D.what₂.LL) ∉ lam.asIdeal` using `GlobalTheory.GO.natCast_notMem_of_coprime hkcop lam hplam`. Establish `hkΛ : ∀ b ∈ Λ.La, (k : 𝓞 D.host.E) • b ∈ Formalism.L2.Pj.stdLat D.host.E (Vc D i).rank` using `fun b hb => hk1 (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hb)`. Take `⟨Dg, hDg⟩` from `exists_pow_mul_coeff_integral _ Λ k hkΛ hP.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set f := incF T.J.toCore.Q.c (O i).c' (O i).hle with hf`. Establish `hQ : f ((k : T.Q.c.F) ^ Dg) • MvPolynomial.map f P ∈ harmA (Dw` using `T.J.toCore.Q.Dw ((i : ℕ) + 1)) (O i).c' (wtA (κ i)) (Vc D i).rank := ⟨smul_mem_HHa (map_mem_HHa f hP.1) _, fun m => coeff_smul_map_mem f _ P m (hDg m)⟩`. Take `⟨y0, hy0, hy0io⟩` from `hsub hQ`. Establish `hsurj : Function.Surjective (O i).jL`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hz : (z : ℂ) ∈ D.what₂.embLL.toRatAlgHom.fieldRange` using `hfield ▸ z.2`. Take `⟨a, ha⟩` from `AlgHom.mem_fieldRange.1 hz`. Use `⟨a, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `(RingHom.congr_fun hfld a).trans ha`. Set `e : D.what₂.LL ≃+* (O i).c'.F` to `RingEquiv.ofBijective (O i).jL ⟨(O i).jL.injective, hsurj⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hje : (O i).jL.comp (e.symm : (O i).c'.F →+* D.what₂.LL) = RingHom.id _`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Conclude with `e.apply_symm_apply z`. Set `F0 : Pol D.what₂.LL D.what₂.Tau (Vc D i).rank` to `MvPolynomial.map (e.symm : (O i).c'.F →+* D.what₂.LL) (y0 : Pol _ _ _)`. Establish `hF0 : MvPolynomial.map (O i).jL F0 = (y0 : Pol _ _ _)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[MvPolynomial.map_map, hje, MvPolynomial.map_id]`. Establish `hx0V : F0 ∈ VV D.what₂.LL (lamV D i)` using `((Formalism.L2.DIV.baseChangeSpace_holds D.what₂.LL (O i).c'.F (O i).jL D.what₂.Tau (Vc D i).rank (lamV D i)).1 F0).2 (hF0 ▸ y0.2)`. Set `x0 : VsV D i D.what₂.LL` to `⟨F0, hx0V⟩`. Establish `hstd : Submodule.IsLattice D.host.E (Formalism.L2.Pj.stdLat D.host.E (Vc D i).rank)`. Use `GlobalTheory.RepsCompare.isLattice_hLat (Vc D i) 1` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hlift.std.2]`. Conclude with `this`. Establish `hemb : (fun τ => (O i).jL.comp (labLL D τ)) = fun τ => embF (O i).c' (tauE D τ)`. Use function extensionality and compare the values at `fun τ => embV_eq_embF (O i).c' (O i).jL hfld τ`. Establish `hx0nab : x0 ∈ nabAtr (labLL D) (lamV D i) (Formalism.L2.Pj.stdLat D.host.E (Vc D i).rank)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `((Formalism.L2.DIV.nablaDeltaDescentAt_holds D.host.E D.what₂.LL (O i).c'.F (O i).jL D.what₂.Tau (Vc D i).rank (labLL D) (lamV D i) _ hstd x0 y0 hF0.symm).2.2.1).2 ?_` and prove the remaining obligations. Rewrite using `[hemb]`. Conclude with `hy0`. Establish `hstarStd : ∀ x ∈ Formalism.L2.Pj.stdLat D.host.E (Vc D i).rank, (fun b => star (x b)) ∈ Formalism.L2.Pj.stdLat D.host.E (Vc D i).rank`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.mem_pi.2 fun j _ => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `Submodule.mem_one.1 ((Submodule.mem_pi.1 hx) j (Set.mem_univ _))`. Establish `hint : IsIntegral ℤ (star (x j))`. Rewrite using `[← hy]`. Conclude with `(RingOfIntegers.isIntegral_coe y).map (starRingEnd D.host.E).toIntAlgHom`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.mem_one.2 ⟨⟨star (x j), (mem_integralClosure_iff ℤ _).2 hint⟩, rfl⟩`. Establish `hcmp1 : ∀ x ∈ Formalism.L2.Pj.stdLat D.host.E (Vc D i).rank, k • x ∈ Bridge.hLat (Vc D i) (fin (Vc D i) h)`. Introduce `x hx`. Establish `h2 : (k : 𝓞 D.host.E) • (fun b => star (x b)) ∈ Λ.La` using `hk2 (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) (hstarStd x hx))`. Establish `h3` using `(hLa _).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `b`. Simplify using `[Algebra.smul_def, star_mul', star_natCast]`. Establish `hcmp2 : ∀ x ∈ Bridge.hLat (Vc D i) (fin (Vc D i) h), k • x ∈ Formalism.L2.Pj.stdLat D.host.E (Vc D i).rank`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (fun b => star (x b)) ∈ Λ.La` using `(hLa _).2 (by simpa using hx)`. Establish `h2 : (k : 𝓞 D.host.E) • (fun b => star (x b)) ∈ Formalism.L2.Pj.stdLat D.host.E (Vc D i).rank` using `hk1 (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) h1)`. Establish `h3` using `hstarStd _ h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Algebra.smul_def, star_mul', star_natCast]`. Take `⟨s, hs, hsx⟩` from `exists_nat_smul_mem_nabAtr (labLL D) (lamV D i) hstd (GlobalTheory.RepsCompare.isLattice_hLat (Vc D i) (fin (Vc D i) h)) hcmp1 hcmp2 lam hkcop hx0nab`. Take `⟨v', hv'pol, hv'c⟩` from `hC0 (s • x0)`. Establish `hv'eq : v' = s • y0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hv'pol]`. Use `show MvPolynomial.map (O i).jL (s • F0) = s • (y0 : Pol _ _ _)`. Rewrite using `[map_nsmul, hF0]`. Use `set r : (O i).c'.F := f ((k : T.Q.c.F) ^ Dg) with hrdef`. Establish `hr : r = (k : (O i).c'.F) ^ Dg` using `by rw [hrdef]; erw [map_pow, map_natCast]`.
-
-Establish `hr0 : r ≠ 0` using `by rw [hr]; exact pow_ne_zero _ (Nat.cast_ne_zero.2 hk0)`. Use `⟨r⁻¹ • y0, s * k ^ Dg, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hy0io]`. Conclude with `inv_smul_smul₀ hr0 _`. Use `push_cast`.
-
-Introduce `hm`. Break down `lam.isPrime.mem_or_mem hm with h1 | h1` into its components or cases. Conclude with `hs h1`. Conclude with `hklam (lam.isPrime.mem_of_pow_mem _ h1)`. Use `⟨gramR, c0R, c0L, hFT, s • x0, hsx, ?_⟩` and prove the remaining obligations.
-
-Establish `hsm : (s * k ^ Dg) • (r⁻¹ • y0) = s • y0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (O i).c'.F, ← Nat.cast_smul_eq_nsmul (O i).c'.F s, smul_smul, Nat.cast_mul, Nat.cast_pow, ← hr, mul_assoc, mul_inv_cancel₀ hr0, mul_one]`. Use `Eq.trans ?_ hv'c` and prove the remaining obligations. Rewrite using `[hv'eq, ← hsm, map_nsmul, Nat.cast_smul_eq_nsmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem harm_mem_coefLat : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : Full D) [Algebra T.J.Q.c.F D.what₂.LL] (R : RealDat D A T.J.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (fw : FWTie T.J R κ v₀) (O : ∀ i, OMDat T.J.toCore R i Unit (fun _ => A.μ0)) (hT : LawsFull T), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m), OMPins T.J R κ v₀ O i → ∀ (Λ : GenLat D.host.E (Vc D i).rank) (h : GA D (Vc D i)), SplitOffBad (Vc D i) (badN D * (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M) h → (∀ w, w ∈ Λ.La ↔ (fun b => star (w b)) ∈ Bridge.hLat (Vc D i) (fin (Vc D i) h)) → ∀ (lam : HeightOneSpectrum (𝓞 D.what₂.LL)), Λ.TrivAt (Formalism.EigenvalueLevelCeiling.plc lam) → ∀ P ∈ harmL (Dw := T.Q.Dw ((i : ℕ) + 1)) T.Q.c Λ (wtA (κ i)), ∃ (y : VsV D i (O i).c'.F) (s : ℕ), (O i).io y = MvPolynomial.map (incF T.J.toCore.Q.c (O i).c' (O i).hle) P ∧ (s : 𝓞 D.what₂.LL) ∉ lam.asIdeal ∧ InCoefLat R i h ((s : ℂ) • (O i).c0' y) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ fw O hT _hk i hpins Λ h _hsplit hLa lam htriv P hP

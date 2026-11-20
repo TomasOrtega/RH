@@ -13,15 +13,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilSiegel.FreeOpen
 
 /- English proof (translation)
-Introduce `m n _ _ _ _ W hW`. Take `⟨P, hP⟩` from `h m n (W.map e) (by`. Introduce `c hc`. Establish `hc' : W *ᵥ (fun j => e.symm (c j)) = 0`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `e.injective` to reduce the goal to its premises. Use `congrFun hc i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum]`. Establish `h0` using `hW _ hc'`. Use function extensionality and compare the values at `j`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun h0 j` as an intermediate fact. Simplify using `using this)`. Use `⟨P.map e.symm, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply `e.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrFun (congrFun hP i) j` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.map_apply] at this`. Rewrite using `[Matrix.mul_apply, map_sum]`. Simplify using `only [map_mul, Matrix.map_apply, RingEquiv.apply_symm_apply]`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lip_of_ringEquiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S)
     (h : PI.VolStabS.TensAllW.LIP S) : PI.VolStabS.TensAllW.LIP R := by
@@ -48,7 +48,7 @@ theorem lip_of_ringEquiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S)
   by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
 
 /- English proof (translation)
-Use `letI : Fintype (MaximalSpectrum R) := Fintype.ofFinite _`. Use `letI : ∀ m : MaximalSpectrum R, Field (R ⧸ m.asIdeal) := fun m => Ideal.Quotient.field m.asIdeal`. Conclude with `lip_of_ringEquiv (IsArtinianRing.equivPi R) (PI.VolStabS.TensAllW.lip_pi (fun m : MaximalSpectrum R => R ⧸ m.asIdeal) (fun m => PI.VolStabS.TensAllW.lip_field _))`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem lip_of_artinian_reduced (R : Type) [CommRing R] [IsArtinianRing R] [IsReduced R] :
     PI.VolStabS.TensAllW.LIP R := by
@@ -61,11 +61,9 @@ theorem lip_of_artinian_reduced (R : Type) [CommRing R] [IsArtinianRing R] [IsRe
       (fun m => PI.VolStabS.TensAllW.lip_field _))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ R _ _ _ _ _ hR n M`. Take `⟨hT, -, -, -, hA, hRed, hU, -⟩` from `hR`. Use `haveI := hT`. Use `haveI := hA`. Use `haveI := hRed`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hUo : IsOpen {r : R | IsUnit r}`. Use `hU.isOpen_range` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `r`.
-
-Simplify using `[IsUnit]`. Conclude with `PI.VolStabS.TensAllW.isOpen_linIndep (Module.finBasis F E) R hUo (lip_of_artinian_reduced R)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_free : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n M : ℕ), IsOpen {X : Fin n → Fin M → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X} := by
   intro F E _ _ _ _ _ σ _ R _ _ _ _ _ hR n M

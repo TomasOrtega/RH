@@ -29,19 +29,19 @@ Both sides reduce to the same expression.
     ev y x (a ⊗ₜ b) = y a * x b := rfl
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun a => by simp`.
+A detailed English derivation is pending.
 -/
 theorem ev_comp_left (y : A →ₐ[O] O) (x : B →ₐ[O] O) :
     (ev y x).comp Algebra.TensorProduct.includeLeft = y := AlgHom.ext fun a => by simp
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun a => by simp`.
+A detailed English derivation is pending.
 -/
 theorem ev_comp_right (y : A →ₐ[O] O) (x : B →ₐ[O] O) :
     (ev y x).comp Algebra.TensorProduct.includeRight = x := AlgHom.ext fun a => by simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ψ.comp Algebra.TensorProduct.includeLeft, ψ.comp Algebra.TensorProduct.includeRight, by ext a <;> simp [← Algebra.TensorProduct.one_def]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ev (ψ : A ⊗[O] B →ₐ[O] O) : ∃ y x, ψ = ev y x :=
   ⟨ψ.comp Algebra.TensorProduct.includeLeft, ψ.comp Algebra.TensorProduct.includeRight, by
@@ -53,7 +53,7 @@ def contr (u : A ⊗[O] B) : CartierDual O A →ₗ[O] B :=
   tensorToHom O B A (TensorProduct.comm O A B u)
 
 /- English proof (translation)
-Unfold `slice`. Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, LinearMap.add_apply, hs, ht]`. Consider the case `tmul a b => simp [mul_comm]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem apply_slice (u : A ⊗[O] B) (y : A →ₐ[O] O) (x : B →ₐ[O] O) :
     y (slice u x) = ev y x u := by
@@ -64,7 +64,7 @@ theorem apply_slice (u : A ⊗[O] B) (y : A →ₐ[O] O) (x : B →ₐ[O] O) :
   | tmul a b => simp [mul_comm]
 
 /- English proof (translation)
-Unfold `slice contr`. Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, LinearMap.add_apply, hs, ht]`. Consider the case `tmul a b => simp [mul_comm]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem apply_contr (u : A ⊗[O] B) (f : CartierDual O A) (x : B →ₐ[O] O) :
     x (contr u f) = f (slice u x) := by
@@ -75,7 +75,7 @@ theorem apply_contr (u : A ⊗[O] B) (f : CartierDual O A) (x : B →ₐ[O] O) :
   | tmul a b => simp [mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, LinearMap.add_apply, hs, ht]`. Consider the case `tmul a b => simp [apply_contr]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ev_map_contr (u : A ⊗[O] B) (x x' : B →ₐ[O] O) (t : CartierDual O A ⊗[O] CartierDual O A) :
     ev x x' (TensorProduct.map (contr u) (contr u) t) = pair O A A t (slice u x ⊗ₜ slice u x') := by
@@ -89,7 +89,7 @@ end Alg
 variable [HopfAlgebra O A] [Module.Finite O A] [Module.Projective O A]
 
 /- English proof (translation)
-The claim follows from `AlgHom.convMul_apply x y a`.
+A detailed English derivation is pending.
 -/
 theorem conv_apply (x y : WithConv (A →ₐ[O] O)) (a : A) :
     (x * y).ofConv a = ev x.ofConv y.ofConv (comul a) := AlgHom.convMul_apply x y a
@@ -108,9 +108,9 @@ variable (C : Type) [Field C] [Algebra O C] [IsIntegrallyClosedIn O C] [IsAlgClo
 include C h
 
 /- English proof (translation)
-Use `h.one_left x` as an intermediate fact. Rewrite `this` using `[← apply_slice]`. Conclude with `this`. Use `comul_eq_tmul_self := TateFree.eq_of_forall_pts O C (A ⊗[O] A) fun ψ => by`. Take `⟨y, y', rfl⟩` from `exists_ev ψ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h.mul_left (toConv y) (toConv y') x` as an intermediate fact. Rewrite `this` using `[← apply_slice, conv_apply]`. Rewrite using `[ev_tmul, apply_slice, apply_slice]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGroupLikeElem_slice (x : A →ₐ[O] O) : IsGroupLikeElem O (slice u x) where
   counit_eq_one := by
@@ -125,13 +125,13 @@ theorem isGroupLikeElem_slice (x : A →ₐ[O] O) : IsGroupLikeElem O (slice u x
     exact this
 
 /- English proof (translation)
-The claim follows from `TateFree.eq_of_forall_pts O C A fun y => by rw [apply_slice, h.one_right, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem slice_one : slice u (1 : WithConv (A →ₐ[O] O)).ofConv = 1 :=
   TateFree.eq_of_forall_pts O C A fun y => by rw [apply_slice, h.one_right, map_one]
 
 /- English proof (translation)
-The claim follows from `TateFree.eq_of_forall_pts O C A fun y => by rw [apply_slice, h.mul_right, map_mul, apply_slice, apply_slice]`.
+A detailed English derivation is pending.
 -/
 theorem slice_mul (x x' : WithConv (A →ₐ[O] O)) :
     slice u (x * x').ofConv = slice u x.ofConv * slice u x'.ofConv :=
@@ -161,11 +161,11 @@ def contrHom : CartierDual O A →ₐc[O] A where
 end Level
 
 /- English proof (translation)
-Establish `key : ∀ (n : ℕ) (x : G.A n →ₐ[O] O), slice (u (n + 1)) (x.comp (G.res n : G.A (n + 1) →ₐ[O] G.A n)) = G.mulP n (slice (u n) x)` using `fun n x => TateFree.eq_of_forall_pts O C _ fun y => by`. Rewrite using `[apply_slice, hl, ← apply_slice]`. Both sides reduce to the same expression. Use `⟨⟨fun n => contrHom C (h n), fun n => BialgHom.ext fun f => TateFree.eq_of_forall_pts O C _ fun x => ?_⟩, fun s s' n => ?_⟩` and prove the remaining obligations. Establish `h1` using `apply_contr (u (n + 1)) f (x.comp (G.res n : G.A (n + 1) →ₐ[O] G.A n))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[key]`. Conclude with `h1.trans (apply_contr (u n) (CartierDual.map (G.mulP n) f) x).symm`. Rewrite using `[muRoot_pairing, ← apply_slice]`. Use `congr 1`. Use `eq_of_forall_apply (R := O) fun f => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[apply_charElem, ← apply_contr]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_hom_dual {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] (C : Type) [Field C] [Algebra O C]
     [IsIntegrallyClosedIn O C] [IsAlgClosed C] [CharZero C] (G : PDivGroup p O)
@@ -206,7 +206,7 @@ section Weil
 variable {C : Type} [Field C] [IsAlgClosed C] [CharZero C] {A : Out.PolAV (Sp C)} {k : ℕ}
 
 /- English proof (translation)
-Establish `hxy : (x * y) ^ k = 1` using `by rw [mul_pow, hx, hy, _root_.mul_one]`. Establish `h` using `weil_self hk hxy`. Rewrite `h` using `[weil_mul_left hk hx hy hxy, weil_mul_right hk hx hy hx, weil_mul_right hk hx hy hy, weil_self hk hx, weil_self hk hy, _root_.one_mul, _root_.mul_one]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_mul_swap (hk : 1 ≤ k) {x y : Pts A.A} (hx : x ^ k = 1) (hy : y ^ k = 1) :
     weil A k x y * weil A k y x = 1 := by
@@ -217,7 +217,7 @@ theorem weil_mul_swap (hk : 1 ≤ k) {x y : Pts A.A} (hx : x ^ k = 1) (hy : y ^ 
   exact h
 
 /- English proof (translation)
-Establish `hz' : z ^ (k * l) = 1` using `by rw [pow_mul, hz, one_pow]`. Establish `hs' : (s ^ l) ^ k = 1` using `by rw [← pow_mul, mul_comm, hs]`. Establish `h1` using `weil_mul_swap (Nat.mul_pos hk hl) hz' hs`. Rewrite `h1` using `[weil_level hk hl hz hs]`. Conclude with `mul_left_cancel (h1.trans (weil_mul_swap hk hz hs').symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_level_left (hk : 1 ≤ k) {l : ℕ} (hl : 1 ≤ l) {z s : Pts A.A} (hz : z ^ k = 1)
     (hs : s ^ (k * l) = 1) : weil A (k * l) s z = weil A k (s ^ l) z := by
@@ -230,21 +230,21 @@ theorem weil_level_left (hk : 1 ≤ k) {l : ℕ} (hl : 1 ≤ l) {z s : Pts A.A} 
 end Weil
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P hW G tw`. Establish `hi : Function.Injective (algebraMap O C)` using `P.integers.hom_inj`. Use `haveI : IsIntegrallyClosedIn O C := isIntegrallyClosedIn_iff.2 ⟨hi, fun hx => P.integers.exists_of_le_one (P.integers.mem_of_integral hx)⟩`. Set `q : ∀ n, WithConv (G.A n →ₐ[O] O) →* Pts P.A.A` to `fun n => P.toA.comp (tw.pts n O)`. Establish `hq : ∀ n x, q n x ^ p ^ n = 1` using `fun n x => by rw [← map_pow, G.pts_pow_self, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `one_le_ppow p`. Establish `hu : ∀ n, ∃ u : G.A n ⊗[O] G.A n, ∀ y x : WithConv (G.A n →ₐ[O] O), algebraMap O C (ev y.ofConv x.ofConv u) = (weil P.A (p ^ n) (q n y) (q n x) : C)` using `fun n => by`. Take `⟨u, hu⟩` from `hW (G.A n ⊗[O] G.A n) (p ^ n) (hp n) (GlobalTheory.DeRham.spOver Algebra.TensorProduct.includeLeft ≫ tw.y n) (GlobalTheory.DeRham.spOver Algebra.TensorProduct.includeRight ≫ tw.y n) ((tw.exists_iff n _).1 ⟨_, rfl⟩) ((tw.exists_iff n _).1 ⟨_, rfl⟩)`. Use `⟨u, fun y x => (hu _).trans ?_⟩` and prove the remaining obligations. Establish `e : ∀ (ψ : G.A n ⊗[O] G.A n →ₐ[O] O) (i : G.A n →ₐ[O] G.A n ⊗[O] G.A n), (Pdiv.ptMap ψ ≫ GlobalTheory.DeRham.spOver i ≫ tw.y n : specO O O ⟶ P.Gt) = GlobalTheory.DeRham.spOver (ψ.comp i) ≫ tw.y n` using `fun ψ i => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.DeRham.spOver_comp, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[e, e, ev_comp_left, ev_comp_right]`. Both sides reduce to the same expression. Use `choose u hu using hu`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(exists_hom_dual C G u (fun n => ⟨fun x => hi ?_, fun x => hi ?_, fun y y' x => hi ?_, fun y y' x => hi ?_⟩) fun n y x => hi ?_).imp fun φ hφ s s' n => by rw [hφ]; exact hu n (s.conv n) (s'.conv n)` and prove the remaining obligations. Use `weil_pow_left (hp n) (hq n 1) (hq n (.toConv x)) 0` as an intermediate fact. Rewrite `this` using `[pow_zero, pow_zero]`. Rewrite using `[hu n 1 (.toConv x), map_one, this, map_one, Units.val_one]`. Use `weil_pow_right (hp n) (hq n 1) (hq n (.toConv x)) 0` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[pow_zero, pow_zero]`. Rewrite using `[hu n (.toConv x) 1, map_one, this, map_one, Units.val_one]`. Rewrite using `[map_mul, hu n _ (.toConv x), hu n _ (.toConv x), hu n _ (.toConv x), map_mul, weil_mul_left (hp n) (hq n _) (hq n _) (hq n _), Units.val_mul]`. Rewrite using `[map_mul, hu n (.toConv x), hu n (.toConv x), hu n (.toConv x), map_mul, weil_mul_right (hp n) (hq n _) (hq n _) (hq n _), Units.val_mul]`. Establish `h1 : q (n + 1) (.toConv (x.comp (G.res n : G.A (n + 1) →ₐ[O] G.A n))) = q n (.toConv x)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congrArg P.toA ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.DeRham.spOver (x.comp _) ≫ tw.y (n + 1) = GlobalTheory.DeRham.spOver x ≫ tw.y n`. Rewrite using `[← GlobalTheory.DeRham.spOver_comp, Category.assoc, tw.res]`. Establish `h2 : q n (.toConv (y.comp (G.mulP n : G.A n →ₐ[O] G.A (n + 1)))) = q (n + 1) (.toConv y) ^ p`. Use `(congrArg P.toA ?_).trans (map_pow P.toA _ p)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `GlobalTheory.DeRham.spOver (y.comp _) ≫ tw.y n = (GlobalTheory.DeRham.spOver y ≫ tw.y (n + 1)) ^ p`. Rewrite using `[← GlobalTheory.DeRham.spOver_comp, Category.assoc, tw.mulP_y, MonObj.comp_pow]`. Establish `a1` using `hu (n + 1) (.toConv y) (.toConv (x.comp (G.res n : G.A (n + 1) →ₐ[O] G.A n)))`. Establish `a2` using `hu n (.toConv (y.comp (G.mulP n : G.A n →ₐ[O] G.A (n + 1)))) (.toConv x)`. Rewrite `a1` using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `a2` using `[h2]`. Use `a1.trans (Eq.trans ?_ a2.symm)` and prove the remaining obligations. Conclude with `congrArg Units.val (weil_level_left (hp n) (Fact.out : p.Prime).pos (hq n _) (hq (n + 1) _))`.
+A detailed English derivation is pending.
 -/
 theorem exists_hom_weil : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (Λ : Type) [CommRing Λ] [StarRing Λ] (P : Point p v O Λ), WeilIntegralFinite P → ∀ (G : PDivGroup p O) (tw : G.TorsionTower P.Gt), ∃ φ : G ⟶ G.dual, ∀ (s s' : G.Tate) (n : ℕ), algebraMap O C (muRoot (pairing G O s (tateMap G G.dual O φ s')) n) = (weil P.A (p ^ n) (P.toA (GlobalTheory.DeRham.spOver (s.pt n) ≫ tw.y n)) (P.toA (GlobalTheory.DeRham.spOver (s'.pt n) ≫ tw.y n)) : C) := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P hW G tw

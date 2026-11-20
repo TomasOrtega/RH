@@ -29,14 +29,14 @@ def elementarySubgroup : Subgroup (GL n R) :=
 variable {n R}
 
 /- English proof (translation)
-The claim follows from `Subgroup.subset_closure ⟨t, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem transvectionGL_mem_elementarySubgroup (t : TransvectionStruct n R) :
     transvectionGL n R t ∈ elementarySubgroup n R :=
   Subgroup.subset_closure ⟨t, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[elementarySubgroup, Subgroup.closure_le]`. Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker]`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, TransvectionStruct.det]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem elementarySubgroup_le_ker_det :
     elementarySubgroup n R ≤ (Matrix.GeneralLinearGroup.det : GL n R →* Rˣ).ker := by
@@ -47,7 +47,7 @@ theorem elementarySubgroup_le_ker_det :
   simp [Matrix.GeneralLinearGroup.val_det_apply, TransvectionStruct.det]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons t L ih => simp [ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem coe_list_prod_transvectionGL (L : List (TransvectionStruct n R)) :
     (((L.map (transvectionGL n R)).prod : GL n R) : Matrix n n R) =
@@ -57,7 +57,7 @@ theorem coe_list_prod_transvectionGL (L : List (TransvectionStruct n R)) :
   | cons t L ih => simp [ih]
 
 /- English proof (translation)
-The claim follows from `Subgroup.list_prod_mem _ fun x hx => by obtain ⟨t, -, rfl⟩ := List.mem_map.1 hx exact transvectionGL_mem_elementarySubgroup t`.
+A detailed English derivation is pending.
 -/
 theorem list_prod_transvectionGL_mem (L : List (TransvectionStruct n R)) :
     (L.map (transvectionGL n R)).prod ∈ elementarySubgroup n R :=
@@ -66,7 +66,7 @@ theorem list_prod_transvectionGL_mem (L : List (TransvectionStruct n R)) :
     exact transvectionGL_mem_elementarySubgroup t
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `mul_transvection_apply_same i b a c M`. Conclude with `mul_transvection_apply_of_ne i j a b h c M`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mul_transvection_apply (i j : n) (c : R) (M : Matrix n n R) (a b : n) :
     (M * transvection i j c) a b = if b = j then M a j + c * M a i else M a b := by
@@ -76,9 +76,9 @@ theorem mul_transvection_apply (i j : n) (c : R) (M : Matrix n n R) (a b : n) :
   · exact mul_transvection_apply_of_ne i j a b h c M
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [mul_transvection_apply]`. Simplify using `only [diagonal_apply, Function.update_apply, Pi.one_apply, transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases hbj : b = j <;> by_cases hbi : b = i <;> by_cases hai : a = i <;> by_cases haj : a = j <;>`. Simplify using `[hbj, hbi, hai, haj, hij, Ne.symm hij, @eq_comm _ i, @eq_comm _ j]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `all_goals (try ring_nf)`. Apply the tactic sequence `all_goals (try simp)`.
+A detailed English derivation is pending.
 -/
 theorem transvection_mul_eq_diagonal_update (i j : n) (hij : i ≠ j) (u : Rˣ) :
     transvection i j (u : R) * transvection j i (-(↑u⁻¹ : R)) * transvection i j (u : R) *
@@ -110,9 +110,9 @@ theorem coe_diagonalGL (d : n → Rˣ) :
     (diagonalGL d : Matrix n n R) = diagonal fun k => (d k : R) := rfl
 
 /- English proof (translation)
-Establish `h : diagonalGL (Pi.mulSingle i u * Pi.mulSingle j u⁻¹) = transvectionGL n R ⟨i, j, hij, u⟩ * transvectionGL n R ⟨j, i, hij.symm, -(↑u⁻¹ : R)⟩ * transvectionGL n R ⟨i, j, hij, u⟩ * transvectionGL n R ⟨i, j, hij, -1⟩ * transvectionGL n R ⟨j, i, hij.symm, 1⟩ * transvectionGL n R ⟨i, …` using `by ext1`. Simplify using `only [Units.val_mul, coe_transvectionGL, TransvectionStruct.toMatrix_mk, coe_diagonalGL]`. Rewrite using `[transvection_mul_eq_diagonal_update i j hij u]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.mul_apply, Units.val_mul, Function.update_apply, Pi.one_apply, Pi.mulSingle_apply]`. Apply the tactic sequence `by_cases hki : k = i <;> by_cases hkj : k = j <;> simp_all`. Rewrite using `[h]`. Apply the tactic sequence `refine mul_mem (mul_mem (mul_mem (mul_mem (mul_mem ?_ ?_) ?_) ?_) ?_) ?_ <;>`. Conclude with `transvectionGL_mem_elementarySubgroup _`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem diagonal_update_mem_elementarySubgroup (i j : n) (hij : i ≠ j) (u : Rˣ) :
     diagonalGL (Pi.mulSingle i u * Pi.mulSingle j u⁻¹) ∈ elementarySubgroup n R := by
@@ -132,17 +132,15 @@ theorem diagonal_update_mem_elementarySubgroup (i j : n) (hij : i ≠ j) (u : R�
     exact transvectionGL_mem_elementarySubgroup _
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty n with hn | ⟨⟨i₀⟩⟩` into its components or cases. Establish `: d = 1` using `funext fun k => isEmptyElim k`. Rewrite using `[this, map_one]`. Conclude with `one_mem _`. Establish `hmem : ∀ i ∈ Finset.univ.erase i₀, Pi.mulSingle i (d i) * Pi.mulSingle i₀ (d i)⁻¹ ∈ (elementarySubgroup n R).comap (diagonalGL (n` using `n) (R := R)) := fun i hi => diagonal_update_mem_elementarySubgroup i i₀ (Finset.ne_of_mem_erase hi) (d i)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod` using `Subgroup.prod_mem _ hmem`. Establish `heq : ∏ i ∈ Finset.univ.erase i₀, (Pi.mulSingle i (d i) * Pi.mulSingle i₀ (d i)⁻¹) = d`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.prod_apply]`. Simplify using `only [Pi.mul_apply, Pi.mulSingle_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hk : k = i₀`. Substitute `hk` using the available equality. Establish `h1 : ∀ i ∈ Finset.univ.erase k, ((if k = i then d i else 1) * if k = k then (d i)⁻¹ else 1) = (d i)⁻¹`. Introduce `i hi`. Rewrite using `[if_neg (Finset.ne_of_mem_erase hi).symm, if_pos rfl, one_mul]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl h1, Finset.prod_inv_distrib]`. Establish `h2` using `Finset.mul_prod_erase Finset.univ d (Finset.mem_univ k)`. Rewrite `h2` using `[hd]`. Rewrite using `[eq_comm, ← mul_eq_one_iff_eq_inv]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ i ∈ Finset.univ.erase i₀, ((if k = i then d i else 1) * if k = i₀ then (d i)⁻¹ else 1) = if k = i then d i else 1`. Introduce `i _`. Rewrite using `[if_neg hk, mul_one]`. Rewrite using `[Finset.prod_congr rfl h1, Finset.prod_ite_eq]`. Rewrite using `[if_pos (Finset.mem_erase.2 ⟨hk, Finset.mem_univ k⟩)]`.
-
-Rewrite `hprod` using `[heq]`. Conclude with `hprod`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagonalGL_mem_elementarySubgroup {d : n → Rˣ} (hd : ∏ k, d k = 1) :
     diagonalGL d ∈ elementarySubgroup n R := by
@@ -188,13 +186,13 @@ section Field
 variable {F : Type*} [Field F]
 
 /- English proof (translation)
-Take `⟨L, L', D, hM⟩` from `Matrix.Pivot.exists_list_transvec_mul_diagonal_mul_list_transvec (g : Matrix n n F)`. Establish `hdet : ∏ k, D k = 1`. Establish `h1 : (g : Matrix n n F).det = 1`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply, hg, Units.val_one]`. Rewrite `h1` using `[hM, det_mul, det_mul, TransvectionStruct.det_toMatrix_prod, TransvectionStruct.det_toMatrix_prod, det_diagonal, one_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Establish `hD : ∀ k, D k ≠ 0` using `fun k h0 => by`. Use `Finset.prod_eq_zero (Finset.mem_univ k) h0` as an intermediate fact. Rewrite `this` using `[hdet]`. Conclude with `one_ne_zero this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `d : n → Fˣ` to `fun k => Units.mk0 (D k) (hD k)`. Establish `hd : ∏ k, d k = 1`. Use `ext`. Simplify using `[d, Units.coe_prod, hdet]`. Establish `hg' : g = (L.map (transvectionGL n F)).prod * diagonalGL d * (L'.map (transvectionGL n F)).prod` using `by ext1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_mul, coe_list_prod_transvectionGL, coe_diagonalGL]`. Rewrite using `[hM]`. Both sides reduce to the same expression. Rewrite using `[hg']`. Conclude with `mul_mem (mul_mem (list_prod_transvectionGL_mem L) (diagonalGL_mem_elementarySubgroup hd)) (list_prod_transvectionGL_mem L')`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_elementarySubgroup_of_det_eq_one {g : GL n F}
     (hg : Matrix.GeneralLinearGroup.det g = 1) : g ∈ elementarySubgroup n F := by

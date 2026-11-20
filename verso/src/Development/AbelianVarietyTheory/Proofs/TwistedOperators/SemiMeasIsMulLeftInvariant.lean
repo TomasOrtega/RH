@@ -6,27 +6,27 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `hμ` as an intermediate fact. Use `hν` as an intermediate fact. Establish `: LocallyCompactSpace N` using `hN.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology N` using `TopologicalSpace.Subtype.secondCountableTopology (N : Set G)`. Establish `: SigmaCompactSpace N` using `sigmaCompactSpace_of_locallyCompact_secondCountable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SigmaFinite ν` using `inferInstance`. Establish `: SigmaFinite μ` using `inferInstance`. Establish `hemb : MeasurableEmbedding (Subtype.val : N → G)` using `MeasurableEmbedding.subtype_coe hN.measurableSet`. Set `φ : H × N → (N ⊔ s.range : Subgroup G)` to `fun p => ⟨p.2.1 * s p.1, mul_mem (Subgroup.mem_sup_left p.2.2) (Subgroup.mem_sup_right ⟨p.1, rfl⟩)⟩`. Establish `hφ : Measurable φ` using `(Continuous.subtype_mk ((continuous_subtype_val.comp continuous_snd).mul (hs.comp continuous_fst)) _).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm : semiMeas N s μ ν = (μ.prod ν).map φ` using `rfl`. Set `T : Subgroup G` to `{ carrier := {g | ∃ hg : g ∈ N ⊔ s.range, (semiMeas N s μ ν).map (fun x => (⟨g, hg⟩ : (N ⊔ s.range : Subgroup G)) * x) = semiMeas N s μ ν} one_mem' := by`. Use `⟨one_mem _, ?_⟩` and prove the remaining obligations. Establish `e : (fun x : (N ⊔ s.range : Subgroup G) => (⟨1, one_mem _⟩ : (N ⊔ s.range : Subgroup G)) * x) = id` using `funext fun x => one_mul x`. Rewrite using `[e, Measure.map_id]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `mul_mem' := by`. Introduce and unpack `a b ⟨ha, ea⟩ ⟨hb, eb⟩`. Use `⟨mul_mem ha hb, ?_⟩` and prove the remaining obligations. Establish `e : (fun x : (N ⊔ s.range : Subgroup G) => (⟨a * b, mul_mem ha hb⟩ : (N ⊔ s.range : Subgroup G)) * x) = (fun x => (⟨a, ha⟩ : (N ⊔ s.range : Subgroup G)) * x) ∘ (fun x => (⟨b, hb⟩ : (N ⊔ s.range : Subgroup G)) * x)`. Use function extensionality and compare the values at `fun x => mul_assoc (⟨a, ha⟩ : (N ⊔ s.range : Subgroup G)) ⟨b, hb⟩ x`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← Measure.map_map (measurable_const_mul _) (measurable_const_mul _), eb, ea]`. Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨ha, ea⟩`. Use `⟨inv_mem ha, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← ea]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Measure.map_map (measurable_const_mul _) (measurable_const_mul _)]`. Establish `e : ((fun x : (N ⊔ s.range : Subgroup G) => (⟨a⁻¹, inv_mem ha⟩ : (N ⊔ s.range : Subgroup G)) * x) ∘ (fun x => (⟨a, ha⟩ : (N ⊔ s.range : Subgroup G)) * x)) = id`. Use function extensionality and compare the values at `fun x => inv_mul_cancel_left (⟨a, ha⟩ : (N ⊔ s.range : Subgroup G)) x`. Rewrite using `[e, Measure.map_id] }`. Establish `hNT : N ≤ T`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `n hn`. Use `⟨Subgroup.mem_sup_left hn, ?_⟩` and prove the remaining obligations. Establish `e : (fun x : (N ⊔ s.range : Subgroup G) => (⟨n, Subgroup.mem_sup_left hn⟩ : (N ⊔ s.range : Subgroup G)) * x) ∘ φ = φ ∘ Prod.map id (fun m : N => (⟨n, hn⟩ : N) * m)`. Use function extensionality and compare the values at `p`. Apply `Subtype.ext` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[φ, mul_assoc]`. Rewrite using `[hm, Measure.map_map (measurable_const_mul _) hφ, e, ← Measure.map_map hφ (measurable_id.prodMap (measurable_const_mul _)), ← Measure.map_prod_map μ ν measurable_id (measurable_const_mul _), Measure.map_id, map_mul_left_eq_self]`. Establish `hST : s.range ≤ T`. Introduce and unpack `_ ⟨h₀, rfl⟩`. Use `⟨Subgroup.mem_sup_right ⟨h₀, rfl⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c : N → N` to `fun m => ⟨s h₀ * m.1 * (s h₀)⁻¹, hnorm m.1 m.2 h₀⟩`. Establish `hcm : Measurable c` using `(Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _).measurable`. Establish `hcν : ν.map c = ν`. Rewrite using `[← hemb.comap_map (ν.map c), Measure.map_map hemb.measurable hcm]`. Establish `e : (Subtype.val ∘ c) = (fun m : N => s h₀ * m.1 * (s h₀)⁻¹)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e, hc h₀, hemb.comap_map]`. Establish `e : (fun x : (N ⊔ s.range : Subgroup G) => (⟨s h₀, Subgroup.mem_sup_right ⟨h₀, rfl⟩⟩ : (N ⊔ s.range : Subgroup G)) * x) ∘ φ = φ ∘ Prod.map (fun h => h₀ * h) c`. Use function extensionality and compare the values at `p`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[φ, c, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite using `[hm, Measure.map_map (measurable_const_mul _) hφ, e, ← Measure.map_map hφ ((measurable_const_mul _).prodMap hcm), ← Measure.map_prod_map μ ν (measurable_const_mul _) hcm, hcν, map_mul_left_eq_self]`. Establish `hT : N ⊔ s.range ≤ T` using `sup_le hNT hST`. Conclude with `⟨fun k => by`. Take `⟨hk, ek⟩` from `hT k.2`. Conclude with `ek⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MixPer.semiMeas_isMulLeftInvariant {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [Group H]

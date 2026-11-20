@@ -14,13 +14,13 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.Hypotheses₂
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hM hJ S₁ S₂ ε hε hnc g hg`. Take `⟨N, hN⟩` from `GlobalTheory.CompanionTheory.StrongApproxSub.propSub F E σ M J ε`. Establish `hcl : IsClosed (N : Set (HA (AF F) σ J))` using `hN ▸ isClosed_closure`. Establish `hS : SUSupp σ J ε ⊆ N`. Introduce `h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: h ∈ closure (SASet σ J ε)` using `subset_closure ⟨1, one_mem _, h, hh, (one_mul h).symm⟩`. Rewrite `this` using `[← hN]`. Conclude with `this`. Establish `hplane : ∀ u₀ u₁ : Fin M → E, PlaneND σ J u₀ u₁ → ¬ IsCompact (PlaneSupp σ J ε u₀ u₁) → ∀ (T₁ : Finset (InfinitePlace F)) (T₂ : Finset (HeightOneSpectrum (𝓞 F))) (δ : AF F), IsPlacesIdem T₁ T₂ δ → PlaneSupp σ J δ u₀ u₁ ⊆ N`. Introduce `u₀ u₁ hnd hc T₁ T₂ δ hδ x hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.T.plane_strong_approx_holds F E σ hCM M J hM hJ S₁ S₂ ε hε u₀ u₁ hnd hc T₁ T₂ δ hδ hx`. Rewrite `h` using `[← hN]`. Conclude with `h`. Establish `hgen` using `GlobalTheory.T.plane_strong_approx_generator F E σ hCM M J hM hJ S₁ S₂ ε hε hnc N hcl hS hplane`. Establish `hmem : g ∈ N` using `GlobalTheory.T.plane_strong_approx_product F E σ M J N hcl hgen g hg`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `: g ∈ (N : Set (HA (AF F) σ J))` using `hmem`. Rewrite `this` using `[hN]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem strongApproxSU : GlobalTheory.Published.StrongApproxSU := by
   intro F E _ _ _ _ _ σ hCM M J hM hJ S₁ S₂ ε hε hnc g hg

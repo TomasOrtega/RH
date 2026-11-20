@@ -17,7 +17,7 @@ open GlobalTheory.UU
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Take `rfl : (fun k => h ≫ φ k) = φ'` from `funext hφ`. Use `⟨DVR.pullSec L φ ε s h, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[sval_of s (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]`. Establish `hm` using `hJ.mem (fun k => h ≫ φ k) r`. Conclude with `(gs_res r z _ hm _).trans (gs_pull r h z (LB.wchart L φ (fun k => J (r ≫ h ≫ φ k))) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hm k) _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_pullSec_sval {X Y Y' : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y) (φ' : K → (Y' ⟶ X)) (hφ : ∀ k, h ≫ φ k = φ' k) :
@@ -31,11 +31,9 @@ theorem exists_pullSec_sval {X Y Y' : Scheme.{0}} {L : LB X} {K : Type} [Fintype
     (gs_pull r h z (LB.wchart L φ (fun k => J (r ≫ h ≫ φ k))) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hm k) _)
 
 /- English proof (translation)
-Establish `hu : ρ ▷ D.P.A ≫ toUnit _ = toUnit _` using `toUnit_unique _ _`. Use `fin_cases i`. Use `show (ρ ▷ D.P.A ≫ snd T D.P.A).left = (snd T' D.P.A).left`. Rewrite using `[whiskerRight_snd]`. Use `show (ρ ▷ D.P.A ≫ padd D.P.A (snd T D.P.A) (toUnit _ ≫ D.c α)).left = (padd D.P.A (snd T' D.P.A) (toUnit _ ≫ D.c α)).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `padd`. Rewrite using `[← Category.assoc, comp_lift, whiskerRight_snd, ← Category.assoc, hu]`. Use `show (ρ ▷ D.P.A ≫ toUnit _ ≫ D.c α).left = (toUnit (T' ⊗ D.P.A) ≫ D.c α).left`. Rewrite using `[← Category.assoc, hu]`.
-
-Use `show (ρ ▷ D.P.A ≫ toUnit _ ≫ η[D.P.A]).left = (toUnit (T' ⊗ D.P.A) ≫ η[D.P.A]).left`. Rewrite using `[← Category.assoc, hu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whisker_famφT {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {T T' : Over (Spec (CommRingCat.of R))}
     (ρ : T' ⟶ T) (α : D.X) (i : Fin 4) : (ρ ▷ D.P.A).left ≫ famφT D T α i = famφT D T' α i := by
@@ -54,13 +52,13 @@ theorem whisker_famφT {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {T T'
     rw [← Category.assoc, hu]
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U T T' ρ k σ f H`. Take `⟨σ', hσ⟩` from `exists_pullSec_sval σ (ρ ▷ G).left (fun _ => (snd T' G).left) (fun _ => by show (ρ ▷ G ≫ snd T G).left = _`. Rewrite using `[whiskerRight_snd])`. Use `choose f' hf using fun α => exists_pullSec_sval (f α) (ρ ▷ D.P.A).left (famφT D T' α) (whisker_famφT D ρ α)`. Establish `s1 : ∀ B : Over (Spec (CommRingCat.of R)), (ρ ▷ B).left ≫ (snd T B).left = (snd T' B).left` using `fun B => by show (ρ ▷ B ≫ snd T B).left = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[whiskerRight_snd]`. Establish `s2 : ∀ B : Over (Spec (CommRingCat.of R)), (ρ ▷ B).left ≫ (fst T B).left = (fst T' B).left ≫ ρ.left` using `fun B => by show (ρ ▷ B ≫ fst T B).left = (fst T' B ≫ ρ).left`. Rewrite using `[whiskerRight_fst]`. Use `⟨σ', f', fun e => ?_, fun α Z r z J hJ => hf α Z r z J hJ, fun F _ _ φ s => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `H e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, fun Z x rG rB h1 h2 h3 z JG J hG hJ => ?_⟩` and prove the remaining obligations. Use `hs Z x (rG ≫ (ρ ▷ G).left) (rB ≫ (ρ ▷ D.P.A).left) (by rw [Category.assoc, s1, h1]) (by rw [Category.assoc, s1, h2]) (by rw [Category.assoc, s2, Category.assoc, s2, ← Category.assoc, h3, Category.assoc]) z JG J hG hJ` as an intermediate fact. Use `⟨fun α hα => (hf α Z rB z J hJ).trans (this.1 α hα), ?_⟩` and prove the remaining obligations. Rewrite using `[hσ Z rG z JG hG, this.2]`. Conclude with `Finset.sum_congr rfl fun α _ => by rw [hf α Z rB z J hJ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (φ ▷ D.P.A).left ≫ (ρ ▷ D.P.A).left = ((φ ≫ ρ) ▷ D.P.A).left`. Rewrite using `[comp_whiskerRight]`. Both sides reduce to the same expression. Establish `key : ∀ α (z : (DegPre.BF D F).left) J, Good D.P.L z J → sval (f' α) (φ ▷ D.P.A).left z J = sval (f α) ((φ ≫ ρ) ▷ D.P.A).left z J` using `fun α z J hJ => (hf α _ (φ ▷ D.P.A).left z J hJ).trans (congrArg (fun q => sval (f α) q z J) e)`. Conclude with `⟨fun h α z J hJ => (h α z J hJ).trans (key α z J hJ), fun h α z J hJ => (h α z J hJ).trans (key α z J hJ).symm⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem expT_pull : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegPre R) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : PreU I D A G) (T T' : Over (Spec (CommRingCat.of R))) (ρ : T' ⟶ T) (k : ℕ) (σ : U.SecGT T k) (f : ∀ α, SecBT D T k α), U.ExpT T k σ f → ∃ (σ' : U.SecGT T' k) (f' : ∀ α, SecBT D T' k α), U.ExpT T' k σ' f' ∧ PullT ρ f f' ∧ ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (φ : TF (R := R) F ⟶ T') (s : Raw D F k), PullB D F φ k f' s ↔ PullB D F (φ ≫ ρ) k f s := by
   intro R _ _ I D A G _ _ U T T' ρ k σ f H

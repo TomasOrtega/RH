@@ -3,7 +3,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 namespace Formalism.L2.SG.TermOp.Vanish
 
 /- English proof (translation)
-The claim follows from `ratApprox_of_sol ratSolApprox_holds`.
+A detailed English derivation is pending.
 -/
 theorem ratApprox_holds : RatApprox := ratApprox_of_sol ratSolApprox_holds
 

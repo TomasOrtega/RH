@@ -11,7 +11,7 @@ def OrbitDegree.Statement : Prop :=
     BlockNonzero x → 0 < Geo.degC (ι := blockIdx n) (orbitIdeal x)
 
 /- English proof (translation)
-The claim follows from `samplePoint_blockNonzero`.
+A detailed English derivation is pending.
 -/
 example : BlockNonzero samplePoint := samplePoint_blockNonzero
 

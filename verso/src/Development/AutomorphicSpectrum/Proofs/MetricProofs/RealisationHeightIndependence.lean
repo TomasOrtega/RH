@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.CoeffWord
 
 /- English proof (translation)
-The claim follows from `|G E| ≤ 2 ^ m * M := by classical have key : ∀ s : Finset (Fin m), ∀ L : Fin m → Λ, (∀ i ∈ s, L i = E i) → (∀ i, i ∉ s → L i = H ∨ L i = T (E i)) → |G L| ≤ 2 ^ s.card * M := by intro s induction s using Finset.induction_on with | empty => intro L _ h simpa using hM L fun i => h i …`.
+A detailed English derivation is pending.
 -/
 theorem abs_le_expand {Λ : Type*} {m : ℕ} (T : Λ → Λ) (H : Λ) (Good : Λ → Prop) (G : (Fin m → Λ) → ℝ)
     (hadd : ∀ (L : Fin m → Λ) (i : Fin m) (C : Λ), (∀ j, Good (L j)) → Good C →
@@ -69,7 +69,7 @@ theorem abs_le_expand {Λ : Type*} {m : ℕ} (T : Λ → Λ) (H : Λ) (Good : Λ
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-The claim follows from `|II K ι P (D + 1) A - II K ι P (D + 1) B| ≤ ((D : ℝ) + 1) * M := by classical let X : ℕ → Fin (D + 1) → HermLine ι := fun k i => if (i : ℕ) < k then B i else A i have hX : ∀ k j, IsSmoothHerm (X k j) := by intro k j simp only [X] split_ifs · exact hB j · exact hA j have hsym := ( …`.
+A detailed English derivation is pending.
 -/
 theorem abs_sub_le_telescope (II : IntersectionSystem) (hII : IsFullIntersectionSystem II)
     {P : Ideal (MRing ι)} {D : ℕ} (hP : IsArithVar P (D + 1)) (A B : Fin (D + 1) → HermLine ι)
@@ -136,9 +136,9 @@ theorem abs_sub_le_telescope (II : IntersectionSystem) (hII : IsFullIntersection
   simpa using this
 
 /- English proof (translation)
-Take `⟨f, g, df, dg, hf, hg, hfP, hgP, hd, hn, h1, h2⟩` from `h`. Use `⟨f, g, df, dg, hf, hg, hfP, hgP, fun k => ?_, fun z hz => ?_, h1, h2⟩` and prove the remaining obligations. Use `hd k` as an intermediate fact. Simplify using `only [HermLine.tensor, Pi.add_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `hn z hz` as an intermediate fact. Simplify using `only [HermLine.tensor]`. Rewrite using `[← mul_assoc, this, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem vertClose_tensor {P : Ideal (MRing ι)} {T : Finset ℕ} {α : ℕ → ℝ} {A B : HermLine ι}
     (h : VertClose P T α A B) (H : HermLine ι) : VertClose P T α (A.tensor H) (B.tensor H) := by
@@ -152,16 +152,16 @@ theorem vertClose_tensor {P : Ideal (MRing ι)} {T : Finset ℕ} {α : ℕ → �
     rw [← mul_assoc, this, mul_assoc]
 
 /- English proof (translation)
-Introduce `j` and use `(h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hVU))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem holoOn_sub_set {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {U V : Set X} {g : X → ℂ}
     (h : A.HoloOn U g) (hVU : V ⊆ U) : A.HoloOn V g := fun j =>
   (h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hVU))
 
 /- English proof (translation)
-Introduce `x _`. Take `⟨V₁, o₁, m₁, G₁, h₁, e₁⟩` from `hA x trivial`. Take `⟨V₂, o₂, m₂, G₂, h₂, e₂⟩` from `hB x trivial`. Use `⟨(V₁ ∩ V₂) ∩ R.U x, (o₁.inter o₂).inter (R.isOpen_U x), ⟨⟨m₁, m₂⟩, R.mem_U x⟩, fun z => G₁ z + G₂ z, holoOn_sub_set (holoOn_add R.A h₁ h₂) Set.inter_subset_left, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨⟨y1, y2⟩, y3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hz` using `(R.mem x y y3).1`. Establish `a1` using `e₁ y y1`. Establish `a2` using `e₂ y y2`. Simplify using `only [potOf, LocPot.pullback, HermLine.tensor] at a1 a2 ⊢`. Rewrite using `[Real.log_mul (A.pos _ hz).ne' (B.pos _ hz).ne', hW, Complex.add_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -185,9 +185,9 @@ theorem samePot_tensor {P J : Ideal (MRing ι)} {D : ℕ} (R : AnLogRes P J D) {
   linarith
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨V, o, m, G, h, e⟩` from `hA x hx`. Use `⟨V, o, m, G, h, fun y hy => ?_⟩` and prove the remaining obligations. Use `e y hy` as an intermediate fact. Simplify using `only [LocPot.pullback] at this ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hW]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem samePot_congr {P J : Ideal (MRing ι)} {D : ℕ} (R : AnLogRes P J D) {Y : Type} [TopologicalSpace Y]
     {π : R.X → Y} (hπ : Continuous π) {A : HermLine ι} {Q W : LocPot Y}
@@ -220,21 +220,21 @@ def wLine {S : AnSys D σ} {P : Ideal (MRing ι)} (Re : Realis S P) (H : HermLin
   v.elim H fun a => (Re.line a t).tensor H
 
 /- English proof (translation)
-Establish `hΦ0 : ∀ i, IsPotential S.A (wordPot S thH (v i))`. Introduce `i`. Consider the cases of `v i with`. Consider the case `none => exact hth`. Consider the case `some a => exact isPotentialAdd _ _ _ (S.sing a).1 hth`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `hu : ∀ i, S.A.Smooth (wordU S t (v i))`. Introduce `i`. Consider the cases of `v i with`. Consider the case `none => exact fun _ => contDiffOn_const`. Consider the case `some a => exact ((S.reg a).2.2 t ht0 ht1).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `hΦ : ∀ i, IsPotential S.A (wordPot S thH (v i) + LocPot.ofFun (wordU S t (v i)))` using `fun i => isPotentialAdd _ _ _ (hΦ0 i) (isPotential_ofFun _ _ (hu i))`. Establish `hsm : ∀ i, IsSmoothHerm (wLine Re H t (v i))`. Introduce `i`. Consider the cases of `v i with`. Consider the case `none => exact hHs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some a => exact isSmoothHerm_tensor (Re.line_smooth a t ht0 ht1) hHs`. Establish `hpot : ∀ i, SamePot Re.R.A Set.univ (potOf Re.R (wLine Re H t (v i))) ((wordPot S thH (v i) + LocPot.ofFun (wordU S t (v i))).pullback Re.π Re.holo.1)`. Introduce `i`. Consider the cases of `v i with`. Consider the case `none`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Use `samePot_congr Re.R Re.holo.1 hHp fun x y => ?_` and prove the remaining obligations. Use `show thH.φ x y + 0 = thH.φ x y`. Expand and normalize the polynomial expressions, which then agree. Consider the case `some a`. Use `samePot_tensor Re.R Re.holo.1 ((GlobalTheory.T.realisation_potential_degree_compatibility hE K ι D σ S P Re).1 a t ht0 ht1) hHp fun x y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show (S.th a).φ x y + thH.φ x y + S.phT a t y = (S.th a).φ x y + S.phT a t y + thH.φ x y`. Expand and normalize the polynomial expressions, which then agree. Establish `h1P : (1 : MRing ι) ∉ P` using `fun h => Re.arith.2.1.1.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Establish `hrat : IsRatSectionOn P (oneLine (ι` using `ι)) 1 1 := by`. Take `⟨a, ha, hs, hP⟩` from `isSectionOn_one (P := P) Re.arith.2.1.1 (B := oneLine (ι := ι)) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨a, a, hs, hs, hP, hP, fun k => by rw [sub_self]; rfl⟩`. Establish `e1 : (fun _ : (Σ k, ι k) → ℂ => (1 : ℝ)) = logNormRat (oneLine (ι` using `ι)) 1 1 := by`. Use function extensionality and compare the values at `z`. Use `logNorm_oneLine (ι := ι) z` as an intermediate fact. Unfold `logNorm at this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `logNormRat`. Simplify using `using this.symm`. Establish `key` using `GlobalTheory.T.intersection_number_pullback_degree_alt hE K ι P Re.J D Re.R S.X S.A Re.π Re.holo Re.deg Re.br Re.arith Re.degree (fun i => wLine Re H t (v i)) (fun i => wordPot S thH (v i) + LocPot.ofFun (wordU S t (v i))) hsm hΦ hpot (oneLine (ι := ι)) 1 1 (fun _ => 1) ∅ isSmoot …`. Rewrite using `[e1, key, massIndep S.A _ _ hΦ0 hu]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pts_wLine (hE : ResExistsStatement) {S : AnSys D σ} [Fintype σ] {P : Ideal (MRing ι)} (Re : Realis S P)
     {thH : LocPot S.X} (hth : IsPotential S.A thH) {H : HermLine ι} (hHs : IsSmoothHerm H)
@@ -289,7 +289,7 @@ theorem pts_wLine (hE : ResExistsStatement) {S : AnSys D σ} [Fintype σ] {P : I
   rfl
 
 /- English proof (translation)
-The claim follows from `|ptsIntegral P (pot L) fun _ => 1| ≤ Re.deg * wordBound S thH := by have hv : ∀ i, ∃ v : Option σ, L i = wLine Re H t v ∨ VertClose P T α (wLine Re H t v) (L i) := by intro i rcases hL i with h | ⟨a, h | h⟩ · exact ⟨none, Or.inl h⟩ · exact ⟨some a, Or.inl h⟩ · refine ⟨some a, Or. …`.
+A detailed English derivation is pending.
 -/
 theorem abs_pts_le (hE : ResExistsStatement) {S : AnSys D σ} [Fintype σ] {P : Ideal (MRing ι)}
     (Re Re' : Realis S P) {thH : LocPot S.X} (hth : IsPotential S.A thH) {T : Finset ℕ} {α : ℕ → ℝ}
@@ -338,29 +338,25 @@ namespace GlobalTheory.CompanionTheory.Ar.PB
 open CoeffWord
 
 /- English proof (translation)
-Introduce `hI D σ _ S thH hth`. Use `⟨((D : ℝ) + 1) * 2 ^ D * wordBound S thH, ?_⟩` and prove the remaining obligations. Introduce `II hII K _ ι _ P Re Re' T α H hdeg hTp hHs hHp hV hN t ht0 ht1 w`. Establish `hP` using `Re.arith`. Establish `hE : ResExistsStatement` using `hI.resExists`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSg0 : 0 ≤ ∑ p ∈ T, α p * Real.log p` using `Finset.sum_nonneg fun p hp => mul_nonneg (hTp p hp).2 (Real.log_natCast_nonneg p)`. Establish `hA : ∀ j, IsSmoothHerm (Re.line (w j) t)` using `fun j => Re.line_smooth _ _ ht0 ht1`. Establish `hB : ∀ j, IsSmoothHerm (Re'.line (w j) t)` using `fun j => Re'.line_smooth _ _ ht0 ht1`. Establish `main : |II K ι P (D + 1) (fun j => Re.line (w j) t) - II K ι P (D + 1) (fun j => Re'.line (w j) t)| ≤ ((D : ℝ) + 1) * (2 ^ D * ((∑ p ∈ T, α p * Real.log p) * (Re.deg * wordBound S thH)))`. Use `abs_sub_le_telescope II hII hP _ _ hA hB _ fun k E hEE => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hEs : ∀ i, IsSmoothHerm (E i)`. Introduce `i`. Apply the tactic sequence `obtain ⟨r, h | h⟩ := hEE i <;> rw [h]`. Conclude with `hA r`. Conclude with `hB r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `abs_le_expand (fun C => C.tensor H) H IsSmoothHerm (fun L => II K ι P (D + 1) (Fin.snoc L (Re.line (w k) t)) - II K ι P (D + 1) (Fin.snoc L (Re'.line (w k) t))) ?_ (fun C hC => isSmoothHerm_tensor hC hHs) hHs E hEs _ ?_` and prove the remaining obligations. Introduce `L i C hL hC`. Establish `hs : ∀ (Z : HermLine ι), IsSmoothHerm Z → ∀ j, IsSmoothHerm ((Fin.snoc L Z : Fin (D + 1) → HermLine ι) j)`. Introduce `Z hZ j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hZ`. Simplify using `using hL i`. Establish `m1` using `hII.2.1 K ι P (D + 1) (Fin.snoc L (Re.line (w k) t)) i.castSucc C H hP (hs _ (hA k)) hC hHs`. Establish `m2` using `hII.2.1 K ι P (D + 1) (Fin.snoc L (Re'.line (w k) t)) i.castSucc C H hP (hs _ (hB k)) hC hHs`. Simplify using `only [Fin.snoc_update]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[m1, m2]`. Expand and normalize the polynomial expressions, which then agree. Introduce `L hL`. Establish `hE' : ∀ i, L i = H ∨ ∃ a, L i = (Re.line a t).tensor H ∨ L i = (Re'.line a t).tensor H`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Break down `hL i with h | h` into its components or cases. Conclude with `Or.inl h`. Take `⟨r, e | e⟩` from `hEE i`. Conclude with `Or.inr ⟨w r, Or.inl (by rw [h, e])⟩`. Conclude with `Or.inr ⟨w r, Or.inr (by rw [h, e])⟩`.
+Extract witnesses or component facts from the available result. Prove the second alternative. Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLs : ∀ j, IsSmoothHerm (L j)`. Introduce `j`. Apply the tactic sequence `rcases hL j with h | h <;> rw [h]`. Conclude with `hHs`. Conclude with `isSmoothHerm_tensor (hEs j) hHs`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `hnef : ∀ p ∈ T, ∀ j, NefAt P p (L j).a`. Introduce `p hp j`. Apply the tactic sequence `rcases hE' j with h | ⟨a, h | h⟩ <;> rw [h]`. Conclude with `(hN p hp).1`. Use `show NefAt P p ((Re.line a t).a + H.a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Re.line_deg]`. Conclude with `((hN p hp).2 a).1`. Use `show NefAt P p ((Re'.line a t).a + H.a)`. Rewrite using `[Re'.line_deg]`. Conclude with `((hN p hp).2 a).2`.
-
-Use `(GlobalTheory.T.intersection_vertical_perturbation_bound hI II hII K ι P D L _ _ T α hP hLs (hA k) (hB k) hTp (hV _ t ht0 ht1) hnef).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ hSg0` and prove the remaining obligations. Conclude with `(le_abs_self _).trans (abs_pts_le hE Re Re' hth hHs hHp hV ht0 ht1 L hE')`. Establish `hd : (0 : ℝ) < Re.deg` using `Nat.cast_pos.2 Re.deg_pos`. Rewrite using `[Realis.num, Realis.num, hdeg, ← sub_div, abs_div, Nat.abs_cast, div_le_iff₀ hd]`.
-
-Use `main.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem abs_num_sub_num_le : Inputs → ∀ (D : ℕ) (σ : Type) [Fintype σ] (S : AnSys D σ) (thH : LocPot S.X),
     IsPotential S.A thH → ∃ C₂ : ℝ, ∀ (II : IntersectionSystem), IsFullIntersectionSystem II →

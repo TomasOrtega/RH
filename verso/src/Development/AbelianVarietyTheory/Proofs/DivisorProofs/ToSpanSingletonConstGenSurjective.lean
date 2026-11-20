@@ -10,15 +10,15 @@ namespace GlobalTheory
 namespace PDivGroup
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Establish `h1 : ∃ k, f (Pi.single k 1) ≠ 0`. Assume the negation of the conclusion as `h`. Establish `h' : ∀ k, f (Pi.single k 1) = 0` using `fun k => by_contra fun hk => h ⟨k, hk⟩`. Establish `h2 : f (∑ k, Pi.single k 1) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun k _ => h' k`. Establish `h3 : (∑ k, Pi.single k 1 : ι → O) = 1` using `Finset.univ_sum_single (1 : ι → O)`. Rewrite `h2` using `[h3, map_one]`. Conclude with `one_ne_zero h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `h1`. Establish `hi : IsIdempotentElem (Pi.single k 1 : ι → O)`. Rewrite using `[IsIdempotentElem, ← Pi.single_mul, mul_one]`. Establish `h4 : f (Pi.single k 1) = 1` using `(hO _ (hi.map f)).resolve_left hk`. Use `⟨k, fun g => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h5 : g * Pi.single k 1 = g k • (Pi.single k 1 : ι → O)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hj]`. Establish `h6` using `congrArg f h5`. Rewrite `h6` using `[map_mul, map_smul, h4, mul_one, smul_eq_mul, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_algHom_pi_eq_eval {O ι : Type*} [CommRing O] [Nontrivial O] [Finite ι]
     (hO : ∀ e : O, IsIdempotentElem e → e = 0 ∨ e = 1) (f : (ι → O) →ₐ[O] O) :
@@ -50,7 +50,7 @@ theorem exists_algHom_pi_eq_eval {O ι : Type*} [CommRing O] [Nontrivial O] [Fin
 variable (p : ℕ) (O : Type) [CommRing O] [Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[← LinearEquiv.eq_symm_apply, constHom_symm_apply, tateMap_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem constHom_constGen : constHom _ (constGen p O) = 𝟙 _ := by
   rw [← LinearEquiv.eq_symm_apply, constHom_symm_apply, tateMap_id]
@@ -58,7 +58,7 @@ Rewrite using `[← LinearEquiv.eq_symm_apply, constHom_symm_apply, tateMap_id]`
 variable [Nontrivial O]
 
 /- English proof (translation)
-Introduce `t` and use `by have h1 : ∀ n, ∃ k : ℕ, ∀ φ, t.pt n φ = constFun p O n φ k := fun n => by obtain ⟨k, hk⟩ := exists_algHom_pi_eq_eval hO ((t.pt n).comp ((constFun p O n).symm : (ZMod (p ^ n) → O) →ₐ[O] (const p O).A n)) refine ⟨k.val, fun φ => ?_⟩ rw [ZMod.natCast_zmod_val, ← hk (constFun p O …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toSpanSingleton_constGen_surjective
     (hO : ∀ e : O, IsIdempotentElem e → e = 0 ∨ e = 1) :
@@ -85,7 +85,7 @@ theorem toSpanSingleton_constGen_surjective
     PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub (fun n => (k n : ℤ)) p h3 n, Int.cast_natCast, hk]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨toSpanSingleton_constGen_injective p O, toSpanSingleton_constGen_surjective p O hO⟩`.
+Supply the required witnesses or components.
 -/
 theorem toSpanSingleton_constGen_bijective
     (hO : ∀ e : O, IsIdempotentElem e → e = 0 ∨ e = 1) :

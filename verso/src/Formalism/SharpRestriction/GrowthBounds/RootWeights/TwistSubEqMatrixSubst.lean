@@ -30,7 +30,7 @@ theorem twistSub_eq_matrixSubst (j : Fin n) :
     twistSub (R := R) LL S j = matrixSubst LL S (coefL R n) (twistMat R n j 1) (twistMat R n j (-1)) := rfl
 
 /- English proof (translation)
-Simplify using `[matrixSubst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matrixSubst_C (φ : R →+* B) (m m' : Matrix (Fin n) (Fin n) B) (c : R) :
     matrixSubst LL S φ m m' (C c) = C (φ c) := by
@@ -38,7 +38,7 @@ theorem matrixSubst_C (φ : R →+* B) (m m' : Matrix (Fin n) (Fin n) B) (c : R)
 
 open Classical in
 /- English proof (translation)
-Simplify using `[matrixSubst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matrixSubst_X (φ : R →+* B) (m m' : Matrix (Fin n) (Fin n) B) (v : ι × Fin n) :
     matrixSubst LL S φ m m' (X v) = if v.1 ∈ S then
@@ -48,19 +48,19 @@ theorem matrixSubst_X (φ : R →+* B) (m m' : Matrix (Fin n) (Fin n) B) (v : ι
   simp [matrixSubst]
 
 /- English proof (translation)
-Establish `: (matrixSubst LL S (RingHom.id B) m1 m1').comp (matrixSubst LL S φ m2 m2') = matrixSubst LL S φ (m1 * m2) (m2' * m1')`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[matrixSubst_C]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.comp_apply, matrixSubst_X, matrixSubst_X]`. Distinguish the cases in `hS : v.1 ∈ S`. Distinguish the cases in `hv : LL.vec v.1 = true`. Rewrite using `[if_pos hS, if_pos hv, if_pos hS, if_pos hv, map_sum]`. Establish `h1 : ∀ b : Fin n, matrixSubst LL S (RingHom.id B) m1 m1' (C (m2 b v.2) * X (v.1, b)) = ∑ a : Fin n, C (m1 a b * m2 b v.2) * X (v.1, a)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `b`. Rewrite using `[map_mul, matrixSubst_C, matrixSubst_X, if_pos hS, if_pos hv, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [h1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, map_sum, Finset.sum_mul]`. Rewrite using `[if_pos hS, if_neg hv, if_pos hS, if_neg hv, map_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ b : Fin n, matrixSubst LL S (RingHom.id B) m1 m1' (C (m2' v.2 b) * X (v.1, b)) = ∑ a : Fin n, C (m2' v.2 b * m1' b a) * X (v.1, a)`. Introduce `b`. Rewrite using `[map_mul, matrixSubst_C, matrixSubst_X, if_pos hS, if_neg hv, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, map_sum, Finset.sum_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hS, if_neg hS, matrixSubst_X, if_neg hS]`. Conclude with `congrArg (fun f => f F) this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matrixSubst_comp (φ : R →+* B) (m1 m1' m2 m2' : Matrix (Fin n) (Fin n) B) (F : MvPolynomial (ι × Fin n) R) :
     matrixSubst LL S (RingHom.id B) m1 m1' (matrixSubst LL S φ m2 m2' F) = matrixSubst LL S φ (m1 * m2) (m2' * m1') F := by
@@ -100,9 +100,9 @@ theorem matrixSubst_comp (φ : R →+* B) (m1 m1' m2 m2' : Matrix (Fin n) (Fin n
   exact congrArg (fun f => f F) this
 
 /- English proof (translation)
-Establish `: (MvPolynomial.map ψ).comp (matrixSubst LL S φ m m') = matrixSubst LL S (ψ.comp φ) (m.map ψ) (m'.map ψ)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[matrixSubst_C]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, matrixSubst_X]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `congrArg (fun f => f F) this`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem map_matrixSubst (φ : R →+* B) (ψ : B →+* B') (m m' : Matrix (Fin n) (Fin n) B)
     (F : MvPolynomial (ι × Fin n) R) :
@@ -118,9 +118,9 @@ theorem map_matrixSubst (φ : R →+* B) (ψ : B →+* B') (m m' : Matrix (Fin n
   exact congrArg (fun f => f F) this
 
 /- English proof (translation)
-Establish `: matrixSubst LL S φ (1 : Matrix (Fin n) (Fin n) B) 1 = MvPolynomial.map φ`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[matrixSubst_C]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [matrixSubst_X, map_X]`. Apply the tactic sequence `split_ifs <;> simp [Matrix.one_apply]`. Conclude with `congrArg (fun f => f F) this`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem matrixSubst_one (φ : R →+* B) (F : MvPolynomial (ι × Fin n) R) :
     matrixSubst LL S φ 1 1 F = MvPolynomial.map φ F := by
@@ -135,7 +135,7 @@ theorem matrixSubst_one (φ : R →+* B) (F : MvPolynomial (ι × Fin n) R) :
   exact congrArg (fun f => f F) this
 
 /- English proof (translation)
-Rewrite using `[← matrixSubst_one LL S, matrixSubst_comp, mul_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matrixSubst_map (φ : R →+* B) (m m' : Matrix (Fin n) (Fin n) B) (F : MvPolynomial (ι × Fin n) R) :
     matrixSubst LL S (RingHom.id B) m m' (MvPolynomial.map φ F) = matrixSubst LL S φ m m' F := by

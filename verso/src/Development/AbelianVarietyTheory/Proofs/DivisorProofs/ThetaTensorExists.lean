@@ -10,17 +10,17 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ σ`. Take `⟨-, -, hker, hsurj, hnu, -, -⟩` from `GlobalTheory.T.fontaineAinf_localDomain_xiAdic_order p C v O hv ε hε`. Use `letI : Algebra ℤ_[p] O := (padicToO p O).toAlgebra`. Set `θ' : Ainf p O →ₐ[ℤ_[p]] O` to `{ WittVector.fontaineTheta O p with commutes' := fun r => rfl }`. Establish `hσ : σ.comp (algebraMap ℤ_[p] Λ) = padicToO p O` using `GlobalTheory.T.padic_ring_hom_eq_canonical p O _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hσr : ∀ r : ℤ_[p], σ (algebraMap ℤ_[p] Λ r) = algebraMap ℤ_[p] O r` using `fun r => by`. Rewrite using `[← RingHom.comp_apply, hσ]`. Both sides reduce to the same expression. Set `σ' : Λ →ₐ[ℤ_[p]] O` to `{ σ with commutes' := hσr }`. Set `f` to `(Algebra.TensorProduct.productMap θ' σ').toRingHom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hf : ∀ (a : Ainf p O) (l : Λ), f (a ⊗ₜ l) = WittVector.fontaineTheta O p a * σ l`. Introduce `a l`. Simplify using `[f, θ', σ', Algebra.TensorProduct.productMap_apply_tmul]`. Both sides reduce to the same expression. Establish `hA : ∀ a : Ainf p O, f (inA a) = WittVector.fontaineTheta O p a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `a`. Use `show f (algebraMap (Ainf p O) (RL p O Λ) a) = _`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, hf]`. Simplify using the standard rewrite rules. Use `⟨f, hf, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨a, rfl⟩` from `hsurj y`. Conclude with `⟨inA a, hA a⟩`. Rewrite using `[hA]`. Establish `: xi ε ∈ RingHom.ker (WittVector.fontaineTheta O p)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hker]`. Conclude with `Ideal.subset_span rfl`. Conclude with `this`. Rewrite using `[hA]`. Conclude with `hnu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_tensor_exists : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]

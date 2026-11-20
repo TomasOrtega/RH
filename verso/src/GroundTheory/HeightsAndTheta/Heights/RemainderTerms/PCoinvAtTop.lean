@@ -9,11 +9,11 @@ open MvPolynomial Finset Coinv
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ _ f n H hH`. Take `⟨v, hv, hJ⟩` from `h1 K f n H`. Take `⟨Q, -, hQ⟩` from `h2 K f n (H - v) hJ (coinvTop f n)`. Take `⟨-, c, hc⟩` from `h3 K f n v hv`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcomp : H - C c * monomial (staircase f n) 1 = homogeneousComponent (coinvTop f n) (H - v)`. Rewrite using `[map_sub, homogeneousComponent_eq_self hH, hc]`. Rewrite using `[hcomp, hQ]`. Use `Ideal.sum_mem _ fun m hm => Ideal.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite `hm` using `[Finset.mem_Icc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (bps_mem_psumIdeal b hm.1 hm.2)`.
+A detailed English derivation is pending.
 -/
 theorem CoinvAtTop.proof (h1 : CoinvPolynomialReduction.Statement)
     (h2 : CoinvIdealComponent.Statement) (h3 : CoinvStaircaseComponent.Statement) :

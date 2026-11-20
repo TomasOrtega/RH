@@ -16,7 +16,7 @@ namespace FormalGroupLawNegation
 open FormalGroupLaws
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem integral_X {K ι : Type} [NormedField K] (x : ι) :
     Integral (MvPowerSeries.X x : MvPowerSeries ι K) := by
@@ -26,7 +26,7 @@ theorem integral_X {K ι : Type} [NormedField K] (x : ι) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[map_neg, norm_neg]`. Conclude with `hf n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_neg {K ι : Type} [NormedField K] {f : MvPowerSeries ι K} (hf : Integral f) :
     Integral (-f) := by

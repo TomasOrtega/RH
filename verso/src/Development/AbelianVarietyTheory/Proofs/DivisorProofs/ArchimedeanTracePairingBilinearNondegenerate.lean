@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.VacLn.TrNondeg
 
 /- English proof (translation)
-Set `b : ∀ c, Module.Basis (Fin (Module.finrank R (E c))) R (E c)` to `fun c => Module.finBasis R (E c)`. Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basis b), Matrix.trace, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.trace_eq_matrix_trace (b c), Matrix.trace]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Algebra.leftMulMatrix_eq_repr_mul, Pi.basis_repr, Pi.basis_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_pi' {R : Type} [Field R] {ι : Type} [Fintype ι]
     {E : ι → Type} [∀ c, CommRing (E c)] [∀ c, Algebra R (E c)] [∀ c, Module.Finite R (E c)]
@@ -29,9 +29,9 @@ def conjM {F : Type} [Field F] [NumberField F] (z : mixedEmbedding.mixedSpace F)
   (z.1, fun w => starRingEnd ℂ (z.2 w))
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_prod_apply, trace_pi', trace_pi']`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[conjM, Algebra.trace_self_apply, sq]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[conjM, Algebra.trace_complex_apply, Complex.normSq_apply, Complex.mul_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_conjM_mul {F : Type} [Field F] [NumberField F] (z : mixedEmbedding.mixedSpace F) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (conjM z * z) =
@@ -44,9 +44,9 @@ theorem trace_conjM_mul {F : Type} [Field F] [NumberField F] (z : mixedEmbedding
     simp [conjM, Algebra.trace_complex_apply, Complex.normSq_apply, Complex.mul_re]
 
 /- English proof (translation)
-Rewrite `h` using `[trace_conjM_mul]`. Establish `h1 : 0 ≤ ∑ w, z.1 w ^ 2` using `Finset.sum_nonneg fun w _ => sq_nonneg _`. Establish `h2 : 0 ≤ ∑ w, 2 * Complex.normSq (z.2 w)` using `Finset.sum_nonneg fun w _ => mul_nonneg (by norm_num) (Complex.normSq_nonneg _)`. Establish `e1` using `(Finset.sum_eq_zero_iff_of_nonneg fun w _ => sq_nonneg (z.1 w)).1 (by linarith)`. Establish `e2` using `(Finset.sum_eq_zero_iff_of_nonneg fun w _ => mul_nonneg (by norm_num : (0:ℝ) ≤ 2) (Complex.normSq_nonneg (z.2 w))).1 (by linarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `w`. Simplify using `using e1 w (Finset.mem_univ _)`. Use `e2 w (Finset.mem_univ _)` as an intermediate fact. Establish `: Complex.normSq (z.2 w) = 0` using `by linarith`. Simplify using `using Complex.normSq_eq_zero.1 this`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_trace_conjM_mul {F : Type} [Field F] [NumberField F]
     (z : mixedEmbedding.mixedSpace F)
@@ -69,9 +69,9 @@ end GlobalTheory.VacLn.TrNondeg
 namespace GlobalTheory.VacLn
 
 /- English proof (translation)
-Introduce `F _ _ κ _ y h`. Establish `h0` using `h (fun i => TrNondeg.conjM (y i))`. Rewrite `h0` using `[trPair_apply, map_sum]`. Establish `hnn : ∀ i, 0 ≤ Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (TrNondeg.conjM (y i) * y i)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[TrNondeg.trace_conjM_mul]`. Conclude with `add_nonneg (Finset.sum_nonneg fun w _ => sq_nonneg _) (Finset.sum_nonneg fun w _ => mul_nonneg (by norm_num) (Complex.normSq_nonneg _))`. Establish `e` using `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => hnn i).1 h0`. Use function extensionality and compare the values at `i`. Conclude with `TrNondeg.eq_zero_of_trace_conjM_mul _ (e i (Finset.mem_univ _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem trPair_nondeg : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (y : κ → mixedEmbedding.mixedSpace F),

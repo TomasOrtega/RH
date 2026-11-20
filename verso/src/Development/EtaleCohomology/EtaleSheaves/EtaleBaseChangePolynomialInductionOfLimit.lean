@@ -7,11 +7,11 @@ open scoped TensorProduct
 namespace LateralTheory.E.t_E3Cut
 
 /- English proof (translation)
-Use `letI : Algebra (Polynomial T) C := c.hom.toAlgebra`. Use `haveI : Algebra.Etale (Polynomial T) C := hc`. Use `letI : Algebra T C := (pC (CommRingCat.of T) ≫ c).hom.toAlgebra`. Use `haveI : IsScalarTower T (Polynomial T) C := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `h3` using `hC3 q T hA hq C i`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hsq` using `CommRingCat.isPushout_tensorProduct T (FractionRing T) C`. Set `e : CommRingCat.of (FractionRing T) ≅ CommRingCat.of K` to `(IsLocalization.algEquiv (nonZeroDivisors T) (FractionRing T) K).toRingEquiv.toCommRingCatIso`. Establish `hsq' : IsPushout (CommRingCat.ofHom (algebraMap T K)) (pC (CommRingCat.of T) ≫ c) (e.inv ≫ CommRingCat.ofHom (S` using `FractionRing T ⊗[T] C) Algebra.TensorProduct.includeLeftRingHom) (CommRingCat.ofHom (S := FractionRing T ⊗[T] C) Algebra.TensorProduct.includeRight.toRingHom) := by`. Use `hsq.of_iso (Iso.refl _) e (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use extensionality with `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `[e]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Conclude with `BC.of_one hsq' h3`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem etale_base_change_fraction_field_of_etale_polynomial_algebra (hC3 : C3) (q : ℕ) [NeZero q] (i : ℤ) (T K : Type) [CommRing T] [IsDomain T] [IsLocalRing T]
     [Field K] [Algebra T K] [IsFractionRing T K] (hA : AIC T) (hq : IsUnit (q : T))
@@ -37,13 +37,11 @@ theorem etale_base_change_fraction_field_of_etale_polynomial_algebra (hC3 : C3) 
   exact BC.of_one hsq' h3
 
 /- English proof (translation)
-Introduce `hH q _ i T K _ _ _ _ _ _ hA hq X h hIE`. Establish `hC3 : C3` using `hH.2.2.2.2.2.2.2.2.2.1`. Set `k` to `CommRingCat.ofHom (algebraMap T K)`. Set `φ` to `pushout.inr k (pC (CommRingCat.of T))`. Establish `P1 : IsPushout k (pC (CommRingCat.of T)) (pushout.inl k (pC (CommRingCat.of T))) φ` using `IsPushout.of_hasPushout _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hqX : IsUnit ((q : ℕ) : CommRingCat.of (Polynomial T))`. Use `hq.map (Polynomial.C : T →+* Polynomial T)` as an intermediate fact. Simplify using `using this`. Establish `hEt : ∀ (C : CommRingCat.{0}) (c : CommRingCat.of (Polynomial T) ⟶ C), Et c → BC q i φ c`. Introduce `C c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb` using `etale_base_change_fraction_field_of_etale_polynomial_algebra hC3 q i T K hA hq C c hc`. Establish `P2` using `IsPushout.of_hasPushout φ c`. Conclude with `BC.of_one P2 (hb _ _ _ (P1.paste_vert P2))`. Establish `hB` using `hL hH q i φ hqX hEt X h hIE`. Establish `P2` using `IsPushout.of_hasPushout φ h`.
-
-Conclude with `BC.of_one (P1.paste_vert P2) (hB _ _ _ P2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_base_change_polynomial_induction_of_limit (hL : Limit) : EtaleBaseChangeFractionFieldIndEtaleOverPolynomial := by
   intro hH q _ i T K _ _ _ _ _ _ hA hq X h hIE

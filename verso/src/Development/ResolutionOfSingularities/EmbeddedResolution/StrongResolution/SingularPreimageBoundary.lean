@@ -40,7 +40,7 @@ private theorem base_comp_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (f ≫ g).base x = g.base (f.base x) := by simp
 
 /- English proof (translation)
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 private theorem isIso_stalkMap_of_isOpenImmersion {A B : Scheme.{u}} (f : A ⟶ B)
     [AlgebraicGeometry.IsOpenImmersion f] (x : ↥A) :
@@ -54,7 +54,7 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
   (S : AffineSpacePrincipalizationData k Y pY)
 
 /- English proof (translation)
-Establish `hle : AlgebraicGeometry.Scheme.Hom.ker (AlgebraicGeometry.Scheme.Hom.ker g).subschemeι ≤ AlgebraicGeometry.Scheme.Hom.ker g` using `le_of_eq (AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι _)`. Establish `hfac : AlgebraicGeometry.IsClosedImmersion.lift (AlgebraicGeometry.Scheme.Hom.ker g).subschemeι g hle ≫ (AlgebraicGeometry.Scheme.Hom.ker g).subschemeι = g` using `AlgebraicGeometry.IsClosedImmersion.lift_fac _ _ _`. Rewrite using `[← AlgebraicGeometry.Scheme.IdealSheafData.range_subschemeι]`. Conclude with `⟨(AlgebraicGeometry.IsClosedImmersion.lift (AlgebraicGeometry.Scheme.Hom.ker g).subschemeι g hle).base q, by`. Rewrite using `[← base_comp_apply, hfac]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem base_apply_mem_support_ker {W Z : Scheme.{u}} (g : W ⟶ Z) (q : ↥W) :
     g.base q ∈ ((AlgebraicGeometry.Scheme.Hom.ker g).support : Set ↥Z) := by
@@ -72,11 +72,9 @@ private theorem base_apply_mem_support_ker {W Z : Scheme.{u}} (g : W ⟶ Z) (q :
     rw [← base_comp_apply, hfac]⟩
 
 /- English proof (translation)
-Establish `hU : p ∈ S.discardedLocusClosureCompl i` using `hp`. Establish `htrace : p ∈ ((S.comapAmbientCenter i).support : Set ↥(S.strictTransform i))`. Rewrite using `[S.comapAmbientCenter_eq i]`. Conclude with `Scheme.IdealSheafData.mem_support_comap.mpr hmem`. Establish `hq0 : (⟨p, hU⟩ : ↥(S.discardedLocusClosureCompl i)) ∈ ((((S.comapAmbientCenter i).comap (S.discardedLocusClosureCompl i).ι).support : TopologicalSpace.Closeds ↥(S.discardedLocusClosureCompl i).toScheme) : Set ↥(S.discardedLocusClosureCompl i).toScheme)` using `Scheme.IdealSheafData.mem_support_comap.mpr htrace`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq0` using `[← AlgebraicGeometry.Scheme.IdealSheafData.range_subschemeι]`. Take `⟨q, hq⟩` from `hq0`. Establish `hmain` using `base_apply_mem_support_ker (((S.comapAmbientCenter i).comap (S.discardedLocusClosureCompl i).ι).subschemeι ≫ (S.discardedLocusClosureCompl i).ι) q`. Rewrite `hmain` using `[base_comp_apply, hq]`. Rewrite using `[S.centerOffDetached_eq i]`.
-
-Conclude with `hmain`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_support_centerOffDetached_of_mem_support_ambientCenter (i : ℕ) (p : ↥(S.strictTransform i))
     (hp : p ∈ ((S.discardedLocusClosureCompl i : (S.strictTransform i).Opens) : Set ↥(S.strictTransform i)))
@@ -101,19 +99,17 @@ theorem mem_support_centerOffDetached_of_mem_support_ambientCenter (i : ℕ) (p 
   exact hmain
 
 /- English proof (translation)
-Establish `hNl : ∀ m, m ≤ S.ambientLength → TopologicalSpace.NoetherianSpace ↥(S.ambientLevel m)`. Introduce `m hm`. Use `hN m hm` as an intermediate fact. Use `infer_instance`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ p hp`. Conclude with `absurd (S.toEmbeddedBlowupSequence.avoidsCenters_zero _) hp`. Consider the case `succ j ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hj p hp`. Establish `hjlt : j < S.ambientLength` using `Nat.lt_of_succ_le hj`. Establish `hjle : j ≤ S.ambientLength` using `Nat.le_of_lt hjlt`. Establish `hnj : TopologicalSpace.NoetherianSpace ↥(S.ambientLevel j)` using `hNl j hjle`. Establish `hNa : TopologicalSpace.NoetherianSpace ↥(S.strictTransform j)` using `S.noetherianSpace_strictTransform j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNl' : TopologicalSpace.NoetherianSpace ↥(S.ambientLevel (j + 1))` using `hNl (j + 1) hj`. Establish `key : (S.strictTransformι j).base ((S.strictTransformMap j).base p) = (S.ambientBlowupMorphism j).base ((S.strictTransformι (j + 1)).base p)`. Establish `h : (S.strictTransformMap j ≫ S.strictTransformι j).base p = (S.strictTransformι (j + 1) ≫ S.ambientBlowupMorphism j).base p`. Rewrite using `[S.strictTransformMap_comp_strictTransformι j]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hdown : (S.strictTransformToZero (j + 1) ≫ S.strictTransformZeroToBase).base p = (S.strictTransformToZero j ≫ S.strictTransformZeroToBase).base ((S.strictTransformMap j).base p)`. Simplify using the standard rewrite rules. Rewrite using `[hdown]`. Distinguish the cases in `hc : (S.ambientBlowupMorphism j).base ((S.strictTransformι (j + 1)).base p) ∈ ((S.ambientCenter j).support : Set ↥(S.ambientLevel j))`. Establish `hfc : (S.strictTransformMap j).base p ∈ ((S.discardedLocusClosureCompl j : (S.strictTransform j).Opens) : Set ↥(S.strictTransform j))` using `S.range_strictTransformMap_subset_discardedLocusClosureCompl j hjlt hNa hNl' (hopen j hjlt) ⟨p, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : (S.strictTransformι j).base ((S.strictTransformMap j).base p) ∈ ((S.ambientCenter j).support : Set ↥(S.ambientLevel j))`. Rewrite using `[key]`. Conclude with `hc`. Conclude with `hcent j hjlt ((S.strictTransformMap j).base p) (S.mem_support_centerOffDetached_of_mem_support_ambientCenter j ((S.strictTransformMap j).base p) hfc hmem)`. Use `ih hjle ((S.strictTransformMap j).base p) ?_` and prove the remaining obligations.
-
-Introduce `hcl`. Establish `hcl' : S.toEmbeddedBlowupSequence.AvoidsCenters j ((S.ambientBlowupMorphism j).base ((S.strictTransformι (j + 1)).base p))`. Rewrite using `[← key]`. Conclude with `hcl`. Conclude with `hp ((S.toEmbeddedBlowupSequence.avoidsCenters_succ_iff j ((S.strictTransformι (j + 1)).base p)).mpr ⟨hc, hcl'⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem forall_mem_smoothLocusComplement_of_not_avoidsCenters
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j))
@@ -170,7 +166,7 @@ private theorem forall_mem_smoothLocusComplement_of_not_avoidsCenters
         exact hp ((S.toEmbeddedBlowupSequence.avoidsCenters_succ_iff j ((S.strictTransformι (j + 1)).base p)).mpr ⟨hc, hcl'⟩)
 
 /- English proof (translation)
-The claim follows from `forall_mem_smoothLocusComplement_of_not_avoidsCenters S hN hopen hcent i hi p hp`.
+A detailed English derivation is pending.
 -/
 theorem mem_smoothLocusComplement_of_not_avoidsCenters [AlgebraicGeometry.IsReduced Y]
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j))
@@ -183,7 +179,7 @@ theorem mem_smoothLocusComplement_of_not_avoidsCenters [AlgebraicGeometry.IsRedu
   forall_mem_smoothLocusComplement_of_not_avoidsCenters S hN hopen hcent i hi p hp
 
 /- English proof (translation)
-Rewrite using `[FunctorialResolution.EmbeddedResolution.support_strictTransform_eq_closure_preimage π Z D]`. Conclude with `subset_closure (Set.mem_preimage.mpr (Set.mem_sdiff_of_mem hD hZ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_support_strictTransform_of_mem_support_of_notMem_support {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     [AlgebraicGeometry.IsLocallyNoetherian X₁] (Z D : X.IdealSheafData) (x : ↥X₁)
@@ -195,15 +191,15 @@ private theorem mem_support_strictTransform_of_mem_support_of_notMem_support {X 
   exact subset_closure (Set.mem_preimage.mpr (Set.mem_sdiff_of_mem hD hZ))
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ x _`. Conclude with `S.toEmbeddedBlowupSequence.avoidsCenters_zero x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ i ih`. Introduce `hi x hx`. Establish `hilt : i < S.principalizationSequence.length` using `hi`. Establish `hbnd` using `S.principalizationSequence.boundary_succ_eq_map_strictTransform_append i hilt`. Establish `hexc : S.principalizationSequence.exceptionalIdeal i ∈ S.principalizationSequence.boundary (i + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbnd]`. Conclude with `List.mem_append.mpr (Or.inr (List.mem_singleton_self _))`. Establish `hnc : ((S.principalizationSequence.transitionMapSucc i).base x) ∉ (((S.principalizationSequence.center i).support : TopologicalSpace.Closeds ↥(S.principalizationSequence.schemeAt i)) : Set ↥(S.principalizationSequence.schemeAt i))`. Introduce `hmem`. Use `hx _ hexc ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[S.principalizationSequence.exceptionalIdeal_eq i]`. Conclude with `Scheme.IdealSheafData.mem_support_comap.mpr hmem`. Use `(S.toEmbeddedBlowupSequence.avoidsCenters_succ_iff i x).mpr ⟨hnc, ?_⟩` and prove the remaining obligations. Use `ih (Nat.le_of_succ_le hi) ((S.principalizationSequence.transitionMapSucc i).base x) ?_` and prove the remaining obligations. Introduce `E hE hmem`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hlocNoeth : AlgebraicGeometry.IsLocallyNoetherian (S.principalizationSequence.schemeAt (i + 1))` using `(hN (i + 1) hi).toIsLocallyNoetherian`. Use `hx (FunctorialResolution.Blowup.strictTransform (S.principalizationSequence.transitionMapSucc i) (S.principalizationSequence.center i) E) ?_ ?_` and prove the remaining obligations. Rewrite using `[hbnd]`. Conclude with `List.mem_append.mpr (Or.inl (List.mem_map.mpr ⟨E, hE, rfl⟩))`. Conclude with `@_root_.FunctorialResolution.EmbeddedResolution.AffineSpacePrincipalizationData.mem_support_strictTransform_of_mem_support_of_notMem_support (S.principalizationSequence.schemeAt i) (S.principalizationSequence.schemeAt (i + 1)) (S.principalizationSequence.transitionMapSucc i) hloc …`.
+A detailed English derivation is pending.
 -/
 private theorem avoidsCenters_of_forall_notMem_support_boundary
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j)) :
@@ -244,7 +240,7 @@ private theorem avoidsCenters_of_forall_notMem_support_boundary
           (S.principalizationSequence.transitionMapSucc i) hlocNoeth (S.principalizationSequence.center i) E x hmem hnc
 
 /- English proof (translation)
-The claim follows from `avoidsCenters_of_forall_notMem_support_boundary S hN i hi x hx`.
+A detailed English derivation is pending.
 -/
 theorem avoidsCenters_of_forall_notMem_boundary
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j))
@@ -255,7 +251,7 @@ theorem avoidsCenters_of_forall_notMem_boundary
   avoidsCenters_of_forall_notMem_support_boundary S hN i hi x hx
 
 /- English proof (translation)
-Use `hu` as an intermediate fact. Use `hv` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isIso_comp_of_isIso_commRingCat {P Q R : CommRingCat.{u}} (u : P ⟶ Q) (v : Q ⟶ R)
     (hu : CategoryTheory.IsIso u) (hv : CategoryTheory.IsIso v) :
@@ -265,9 +261,9 @@ private theorem isIso_comp_of_isIso_commRingCat {P Q R : CommRingCat.{u}} (u : P
   infer_instance
 
 /- English proof (translation)
-Use `hv` as an intermediate fact. Use `huv` as an intermediate fact. Establish `h : u = (u ≫ v) ≫ CategoryTheory.inv v`. Rewrite using `[CategoryTheory.Category.assoc, CategoryTheory.IsIso.hom_inv_id, CategoryTheory.Category.comp_id]`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 private theorem isIso_of_isIso_comp_right {P Q R : CommRingCat.{u}} (u : P ⟶ Q) (v : Q ⟶ R)
     (hv : CategoryTheory.IsIso v) (huv : CategoryTheory.IsIso (u ≫ v)) :
@@ -281,7 +277,7 @@ private theorem isIso_of_isIso_comp_right {P Q R : CommRingCat.{u}} (u : P ⟶ Q
   infer_instance
 
 /- English proof (translation)
-Rewrite `hfg` using `[AlgebraicGeometry.Scheme.Hom.stalkMap_comp]`. Conclude with `isIso_of_isIso_comp_right _ _ hf hfg`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIso_stalkMap_of_isIso_stalkMap_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (x : ↥A)
     (hf : CategoryTheory.IsIso (AlgebraicGeometry.Scheme.Hom.stalkMap f x))
@@ -291,7 +287,7 @@ private theorem isIso_stalkMap_of_isIso_stalkMap_comp {A B C : Scheme.{u}} (f : 
   exact isIso_of_isIso_comp_right _ _ hf hfg
 
 /- English proof (translation)
-Establish `h2 : (I.comap φ).comap (CategoryTheory.inv φ) = (J.comap φ).comap (CategoryTheory.inv φ)` using `by rw [h]`. Rewrite `h2` using `[← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, CategoryTheory.IsIso.inv_hom_id, AlgebraicGeometry.Scheme.IdealSheafData.comap_id, AlgebraicGeometry.Scheme.IdealSheafData.comap_id]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem idealSheafData_comap_injective_of_isIso {A B : Scheme.{u}} (φ : A ⟶ B)
     [CategoryTheory.IsIso φ] (I J : B.IdealSheafData)
@@ -305,7 +301,7 @@ private theorem idealSheafData_comap_injective_of_isIso {A B : Scheme.{u}} (φ :
     AlgebraicGeometry.Scheme.IdealSheafData.comap_id] at h2
 
 /- English proof (translation)
-Use `(Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl)).isEmbedding.toIsInducing.noetherianSpace` as an intermediate fact. Rewrite using `[FunctorialResolution.EmbeddedResolution.strictTransform_eq_ker_restrict π Z D]`. Conclude with `FunctorialResolution.EmbeddedResolution.comap_ker_subschemeι_comp _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem strictTransform_comap_ι_eq_comap_restrict {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) [TopologicalSpace.NoetherianSpace ↥X₁] :
@@ -316,17 +312,13 @@ private theorem strictTransform_comap_ι_eq_comap_restrict {X X₁ : Scheme.{u}}
   exact FunctorialResolution.EmbeddedResolution.comap_ker_subschemeι_comp _ _
 
 /- English proof (translation)
-Establish `hciα : AlgebraicGeometry.IsClosedImmersion ((ι₁ ∣_ (π ⁻¹ᵁ V)) ≫ (π ∣_ V))` using `inferInstance`. Establish `hk1` using `FunctorialResolution.EmbeddedResolution.ker_comap_ι_eq_ker_morphismRestrict ι₁ (π ⁻¹ᵁ V)`. Establish `hk0` using `FunctorialResolution.EmbeddedResolution.ker_comap_ι_eq_ker_morphismRestrict ι₀ V`. Establish `hcomp` using `FunctorialResolution.Blowup.comap_ker_comp_of_isOpenImmersion (ι₁ ∣_ (π ⁻¹ᵁ V)) (π ∣_ V)`. Establish `hkereq : AlgebraicGeometry.Scheme.Hom.ker ((ι₁ ∣_ (π ⁻¹ᵁ V)) ≫ (π ∣_ V)) = AlgebraicGeometry.Scheme.Hom.ker (ι₀ ∣_ V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `idealSheafData_comap_injective_of_isIso (π ∣_ V) _ _ ?_` and prove the remaining obligations. Rewrite using `[hcomp, ← hk1, hker, hk0]`. Establish `hle : AlgebraicGeometry.Scheme.Hom.ker (ι₀ ∣_ V) ≤ AlgebraicGeometry.Scheme.Hom.ker ((ι₁ ∣_ (π ⁻¹ᵁ V)) ≫ (π ∣_ V))` using `le_of_eq hkereq.symm`. Establish `hfac` using `AlgebraicGeometry.IsClosedImmersion.lift_fac (ι₀ ∣_ V) ((ι₁ ∣_ (π ⁻¹ᵁ V)) ≫ (π ∣_ V)) hle`. Establish `hIso : CategoryTheory.IsIso (AlgebraicGeometry.IsClosedImmersion.lift (ι₀ ∣_ V) ((ι₁ ∣_ (π ⁻¹ᵁ V)) ≫ (π ∣_ V)) hle)` using `AlgebraicGeometry.IsClosedImmersion.isIso_of_ker_eq _ _ _ hfac hkereq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono : (Scheme.Opens.ι (ι₁ ⁻¹ᵁ (π ⁻¹ᵁ V)) ≫ m) ≫ ι₀ = ((AlgebraicGeometry.IsClosedImmersion.lift (ι₀ ∣_ V) ((ι₁ ∣_ (π ⁻¹ᵁ V)) ≫ (π ∣_ V)) hle) ≫ Scheme.Opens.ι (ι₀ ⁻¹ᵁ V)) ≫ ι₀`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[AlgebraicGeometry.morphismRestrict_ι]`. Use `_ = (ι₁ ∣_ (π ⁻¹ᵁ V)) ≫ (Scheme.Opens.ι (π ⁻¹ᵁ V) ≫ π) := CategoryTheory.Category.assoc _ _ _`. Use `_ = (ι₁ ∣_ (π ⁻¹ᵁ V)) ≫ ((π ∣_ V) ≫ Scheme.Opens.ι V) := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgebraicGeometry.morphismRestrict_ι]`. Use `_ = ((ι₁ ∣_ (π ⁻¹ᵁ V)) ≫ (π ∣_ V)) ≫ Scheme.Opens.ι V := (CategoryTheory.Category.assoc _ _ _).symm`. Use `_ = ((AlgebraicGeometry.IsClosedImmersion.lift (ι₀ ∣_ V) ((ι₁ ∣_ (π ⁻¹ᵁ V)) ≫ (π ∣_ V)) hle) ≫ (ι₀ ∣_ V)) ≫ Scheme.Opens.ι V := by`. Rewrite using `[hfac]`. Use `_ = (AlgebraicGeometry.IsClosedImmersion.lift (ι₀ ∣_ V) ((ι₁ ∣_ (π ⁻¹ᵁ V)) ≫ (π ∣_ V)) hle) ≫ ((ι₀ ∣_ V) ≫ Scheme.Opens.ι V) := CategoryTheory.Category.assoc _ _ _`.
-
-Use `_ = (AlgebraicGeometry.IsClosedImmersion.lift (ι₀ ∣_ V) ((ι₁ ∣_ (π ⁻¹ᵁ V)) ≫ (π ∣_ V)) hle) ≫ (Scheme.Opens.ι (ι₀ ⁻¹ᵁ V) ≫ ι₀) := by`. Rewrite using `[AlgebraicGeometry.morphismRestrict_ι]`. Use `_ = ((AlgebraicGeometry.IsClosedImmersion.lift (ι₀ ∣_ V) ((ι₁ ∣_ (π ⁻¹ᵁ V)) ≫ (π ∣_ V)) hle) ≫ Scheme.Opens.ι (ι₀ ⁻¹ᵁ V)) ≫ ι₀ := (CategoryTheory.Category.assoc _ _ _).symm`. Establish `hfin` using `(CategoryTheory.cancel_mono ι₀).mp hmono`. Rewrite using `[hfin]`.
-
-Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpenImmersion_preimage_ι_comp_of_ker_comap_eq {X X₁ A₀ A₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (ι₀ : A₀ ⟶ X) (ι₁ : A₁ ⟶ X₁) (m : A₁ ⟶ A₀) (V : X.Opens)
@@ -385,7 +377,7 @@ private theorem isOpenImmersion_preimage_ι_comp_of_ker_comap_eq {X X₁ A₀ A�
   infer_instance
 
 /- English proof (translation)
-Establish `h` using `FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.projectionToBase_succ S.ambientBlowups j`. Rewrite using `[AffineSpacePrincipalizationData.schemeAtToSpec_def, AffineSpacePrincipalizationData.schemeAtToSpec_def, h, CategoryTheory.Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ambientBlowupMorphism_comp_schemeAtToSpec (j : ℕ) :
     S.ambientBlowupMorphism j ≫ S.schemeAtToSpec j = S.schemeAtToSpec (j + 1) := by
@@ -394,7 +386,7 @@ private theorem ambientBlowupMorphism_comp_schemeAtToSpec (j : ℕ) :
     CategoryTheory.Category.assoc]
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => rw [AffineSpacePrincipalizationData.strictTransformToZero_zero, CategoryTheory.Category.id_comp]`. Consider the case `succ j ih`. Rewrite using `[AffineSpacePrincipalizationData.strictTransformToZero_succ, CategoryTheory.Category.assoc, ih, ← CategoryTheory.Category.assoc, S.strictTransformMap_comp_strictTransformι j, CategoryTheory.Category.assoc, ambientBlowupMorphism_comp_schemeAtToSpec S j]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem strictTransformToZero_comp_schemeAtToSpec (i : ℕ) :
     S.strictTransformToZero i ≫ S.strictTransformι 0 ≫ S.schemeAtToSpec 0 = S.strictTransformι i ≫ S.schemeAtToSpec i := by
@@ -406,7 +398,7 @@ private theorem strictTransformToZero_comp_schemeAtToSpec (i : ℕ) :
         ambientBlowupMorphism_comp_schemeAtToSpec S j]
 
 /- English proof (translation)
-Rewrite using `[AffineSpacePrincipalizationData.detachedToBase_def, CategoryTheory.Category.assoc, CategoryTheory.Category.assoc, AffineSpacePrincipalizationData.strictTransformZeroToBase_comp, ← strictTransformToZero_comp_schemeAtToSpec S i]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem detachedToBase_comp_eq_discardedι_comp_schemeAtToSpec (i : ℕ) :
     S.detachedToBase i ≫ pY = S.discardedι i ≫ S.strictTransformι i ≫ S.schemeAtToSpec i := by
@@ -415,17 +407,15 @@ private theorem detachedToBase_comp_eq_discardedι_comp_schemeAtToSpec (i : ℕ)
     ← strictTransformToZero_comp_schemeAtToSpec S i]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ a _`. Rewrite using `[AffineSpacePrincipalizationData.strictTransformToZero_zero]`. Conclude with `isIso_stalkMap_of_isOpenImmersion (CategoryTheory.CategoryStruct.id (S.strictTransform 0)) a`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ j ih`. Introduce `hj a ha`. Establish `hjlt : j < S.ambientLength` using `Nat.lt_of_succ_le hj`. Establish `hNoe : AlgebraicGeometry.IsNoetherian (S.ambientLevel (j + 1))` using `hN (j + 1) hj`. Establish `hNs : TopologicalSpace.NoetherianSpace ↥(S.ambientLevel (j + 1))` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hnc, hcl⟩` from `(S.toEmbeddedBlowupSequence.avoidsCenters_succ_iff j ((S.strictTransformι (j + 1)).base a)).mp ha`. Establish `haO : a ∈ (S.strictTransformι (j + 1) ⁻¹ᵁ (S.ambientBlowupMorphism j ⁻¹ᵁ (S.ambientCenter j).support.compl))` using `hnc`. Establish `hiso : CategoryTheory.IsIso (S.ambientBlowupMorphism j ∣_ ((S.ambientCenter j).support.compl))` using `S.toEmbeddedBlowupSequence.isIso_blowdown_restrict_ambientCenterSupportCompl j hjlt`. Establish `hker : (AlgebraicGeometry.Scheme.Hom.ker (S.strictTransformι (j + 1))).comap (Scheme.Opens.ι (S.ambientBlowupMorphism j ⁻¹ᵁ (S.ambientCenter j).support.compl)) = ((AlgebraicGeometry.Scheme.Hom.ker (S.strictTransformι j)).comap (Scheme.Opens.ι ((S.ambientCenter j).support.compl))) …`. Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι, AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι, S.strictTransformIdeal_succ j]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `strictTransform_comap_ι_eq_comap_restrict (S.ambientBlowupMorphism j) (S.ambientCenter j) (S.strictTransformIdeal j)`. Establish `hoi : AlgebraicGeometry.IsOpenImmersion (Scheme.Opens.ι (S.strictTransformι (j + 1) ⁻¹ᵁ (S.ambientBlowupMorphism j ⁻¹ᵁ (S.ambientCenter j).support.compl)) ≫ S.strictTransformMap j)` using `isOpenImmersion_preimage_ι_comp_of_ker_comap_eq (S.ambientBlowupMorphism j) (S.strictTransformι j) (S.strictTransformι (j + 1)) (S.strictTransformMap j) ((S.ambientCenter j).support.compl) (S.strictTransformMap_comp_strictTransformι j) hker`. Establish `h2 : CategoryTheory.IsIso (AlgebraicGeometry.Scheme.Hom.stalkMap (S.strictTransformMap j) a)` using `isIso_stalkMap_of_isIso_stalkMap_comp (Scheme.Opens.ι (S.strictTransformι (j + 1) ⁻¹ᵁ (S.ambientBlowupMorphism j ⁻¹ᵁ (S.ambientCenter j).support.compl))) (S.strictTransformMap j) ⟨a, haO⟩ (isIso_stalkMap_of_isOpenImmersion _ _) (isIso_stalkMap_of_isOpenImmersion _ _)`. Establish `hb : (S.strictTransformι j).base ((S.strictTransformMap j).base a) = (S.ambientBlowupMorphism j).base ((S.strictTransformι (j + 1)).base a)`. Establish `h` using `congrArg (fun f : S.strictTransform (j + 1) ⟶ S.ambientLevel j => f.base a) (S.strictTransformMap_comp_strictTransformι j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hclj : S.toEmbeddedBlowupSequence.AvoidsCenters j ((S.strictTransformι j).base ((S.strictTransformMap j).base a))`. Rewrite using `[hb]`. Conclude with `hcl`. Establish `hih` using `ih (Nat.le_of_succ_le hj) ((S.strictTransformMap j).base a) hclj`.
-
-Rewrite using `[AffineSpacePrincipalizationData.strictTransformToZero_succ, AlgebraicGeometry.Scheme.Hom.stalkMap_comp]`. Conclude with `isIso_comp_of_isIso_commRingCat _ _ hih h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIso_stalkMap_strictTransformToZero_of_avoidsCenters
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j)) (j : ℕ) :
@@ -481,7 +471,7 @@ private theorem isIso_stalkMap_strictTransformToZero_of_avoidsCenters
       exact isIso_comp_of_isIso_commRingCat _ _ hih h2
 
 /- English proof (translation)
-Establish `hb : Function.Bijective (CommRingCat.Hom.hom ψ)` using `CategoryTheory.ConcreteCategory.bijective_of_isIso ψ`. Conclude with `RingHom.FormallySmooth.of_bijective hb`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem formallySmooth_of_isIso {A B : CommRingCat.{u}} (ψ : A ⟶ B)
     [CategoryTheory.IsIso ψ] : (CommRingCat.Hom.hom ψ).FormallySmooth := by
@@ -490,7 +480,7 @@ private theorem formallySmooth_of_isIso {A B : CommRingCat.{u}} (ψ : A ⟶ B)
   exact RingHom.FormallySmooth.of_bijective hb
 
 /- English proof (translation)
-Establish `h1 : (φ ≫ ψ) ≫ CategoryTheory.inv ψ = φ`. Rewrite using `[CategoryTheory.Category.assoc, CategoryTheory.IsIso.hom_inv_id, CategoryTheory.Category.comp_id]`. Rewrite using `[← h1, CommRingCat.hom_comp]`. Conclude with `RingHom.FormallySmooth.comp h (formallySmooth_of_isIso (CategoryTheory.inv ψ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem formallySmooth_of_formallySmooth_comp_isIso {R A B : CommRingCat.{u}} (φ : R ⟶ A) (ψ : A ⟶ B)
     [CategoryTheory.IsIso ψ]
@@ -503,17 +493,15 @@ private theorem formallySmooth_of_formallySmooth_comp_isIso {R A B : CommRingCat
   exact RingHom.FormallySmooth.comp h (formallySmooth_of_isIso (CategoryTheory.inv ψ))
 
 /- English proof (translation)
-Introduce `hmem`. Establish `hred : AlgebraicGeometry.IsReduced (S.strictTransform i)` using `S.isReduced_strictTransform hN i (le_of_lt hi)`. Establish `hnl : TopologicalSpace.NoetherianSpace ↥(S.ambientLevel i)`. Use `hN i (le_of_lt hi)` as an intermediate fact. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hna : TopologicalSpace.NoetherianSpace ↥(S.strictTransform i)` using `S.noetherianSpace_strictTransform i`. Take `⟨e, he⟩` from `S.exists_iso_discardedSubscheme_discardedLocusOpens i hna (hopen i hi)`. Establish `hfi : AlgebraicGeometry.IsOpenImmersion (S.discardedι i)`. Rewrite using `[← he]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : AlgebraicGeometry.IsOpenImmersion S.strictTransformZeroToBase` using `FunctorialResolution.EmbeddedResolution.isOpenImmersion_strictTransformZeroToBase S`. Establish `hchain` using `isIso_stalkMap_strictTransformToZero_of_avoidsCenters S hN i (le_of_lt hi) ((S.discardedι i).base q) hq`. Establish `hsm : AlgebraicGeometry.Smooth (S.detachedToBase i ≫ pY)`. Rewrite using `[detachedToBase_comp_eq_discardedι_comp_schemeAtToSpec S i]`. Conclude with `hsmooth i hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstq : CategoryTheory.IsIso (AlgebraicGeometry.Scheme.Hom.stalkMap (S.detachedToBase i) q)`. Establish `h1 : CategoryTheory.IsIso (AlgebraicGeometry.Scheme.Hom.stalkMap S.strictTransformZeroToBase ((S.strictTransformToZero i).base ((S.discardedι i).base q)))` using `isIso_stalkMap_of_isOpenImmersion _ _`. Establish `h2 : CategoryTheory.IsIso (AlgebraicGeometry.Scheme.Hom.stalkMap (S.discardedι i) q)` using `isIso_stalkMap_of_isOpenImmersion _ _`. Rewrite using `[AffineSpacePrincipalizationData.detachedToBase_def, AlgebraicGeometry.Scheme.Hom.stalkMap_comp, AlgebraicGeometry.Scheme.Hom.stalkMap_comp]`. Conclude with `isIso_comp_of_isIso_commRingCat _ _ (isIso_comp_of_isIso_commRingCat _ _ h1 hchain) h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htop : (S.detachedToBase i ≫ pY).smoothLocus = ⊤` using `AlgebraicGeometry.Scheme.Hom.smoothLocus_eq_top_iff.mpr hsm`. Establish `hmemq : q ∈ (S.detachedToBase i ≫ pY).smoothLocus`. Rewrite using `[htop]`. Conclude with `TopologicalSpace.Opens.mem_top q`. Establish `hfs` using `AlgebraicGeometry.Scheme.Hom.mem_smoothLocus.mp hmemq`.
-
-Rewrite `hfs` using `[AlgebraicGeometry.Scheme.Hom.stalkMap_comp]`. Establish `hfs2 : (CommRingCat.Hom.hom (AlgebraicGeometry.Scheme.Hom.stalkMap pY ((S.detachedToBase i).base q))).FormallySmooth` using `formallySmooth_of_formallySmooth_comp_isIso _ _ hfs`. Establish `hin : (S.detachedToBase i).base q ∈ pY.smoothLocus` using `AlgebraicGeometry.Scheme.Hom.mem_smoothLocus.mpr hfs2`. Conclude with `hmem hin`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem notMem_smoothLocusComplement_detachedToBase_of_avoidsCenters [AlgebraicGeometry.IsReduced Y]
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j))
@@ -566,7 +554,7 @@ theorem notMem_smoothLocusComplement_detachedToBase_of_avoidsCenters [AlgebraicG
   exact hmem hin
 
 /- English proof (translation)
-Establish `hclear : S.toEmbeddedBlowupSequence.AvoidsCenters i ((S.strictTransformι i).base ((S.discardedι i).base q))` using `avoidsCenters_of_forall_notMem_boundary S hN i (le_of_lt hi) ((S.strictTransformι i).base ((S.discardedι i).base q)) hq`. Conclude with `notMem_smoothLocusComplement_detachedToBase_of_avoidsCenters S hN hopen hsmooth i hi q hclear`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem notMem_smoothLocusComplement_detachedToBase_of_notMem_boundary [AlgebraicGeometry.IsReduced Y]
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j))
@@ -586,15 +574,13 @@ theorem notMem_smoothLocusComplement_detachedToBase_of_notMem_boundary [Algebrai
 end AffineSpacePrincipalizationData
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ E hE x _ _`. Rewrite `hE` using `[S.principalizationSequence.boundary_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hE`. Consider the case `succ i ih`. Introduce `hi E hE x hx hcl`. Establish `hilt : i < S.principalizationSequence.length` using `hi`. Rewrite `hE` using `[S.principalizationSequence.boundary_succ_eq_map_strictTransform_append i hilt, List.mem_append]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcl'` using `(S.toEmbeddedBlowupSequence.avoidsCenters_succ_iff i x).mp hcl`. Break down `hE with hE | hE` into its components or cases. Take `⟨E', hE', rfl⟩` from `List.mem_map.mp hE`. Establish `hmem : x ∈ ((E'.comap (S.principalizationSequence.transitionMapSucc i)).support : Set ↥(S.principalizationSequence.schemeAt (i + 1)))` using `AlgebraicGeometry.Scheme.IdealSheafData.support_antitone (FunctorialResolution.EmbeddedResolution.comap_le_strictTransform (S.principalizationSequence.transitionMapSucc i) (S.principalizationSequence.center i) E') hx`. Establish `hmem2 : (S.principalizationSequence.transitionMapSucc i).base x ∈ (E'.support : Set ↥(S.principalizationSequence.schemeAt i))` using `OpenImmersionRestriction.mem_support_of_mem_support_comap (S.principalizationSequence.transitionMapSucc i) E' x hmem`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ih (Nat.le_of_succ_le hi) E' hE' _ hmem2 hcl'.2`. Rewrite `hE` using `[List.mem_singleton]`. Substitute `hE` using the available equality. Rewrite `hx` using `[S.principalizationSequence.exceptionalIdeal_eq i]`. Establish `hmem2 : (S.principalizationSequence.transitionMapSucc i).base x ∈ ((S.principalizationSequence.center i).support : Set ↥(S.principalizationSequence.schemeAt i))` using `OpenImmersionRestriction.mem_support_of_mem_support_comap (S.principalizationSequence.transitionMapSucc i) (S.principalizationSequence.center i) x hx`.
-
-Conclude with `hcl'.1 hmem2`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem principalizationSequence_not_avoidsCenters_of_mem_boundary {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -635,7 +621,7 @@ private theorem principalizationSequence_not_avoidsCenters_of_mem_boundary {k : 
         exact hcl'.1 hmem2
 
 /- English proof (translation)
-The claim follows from `principalizationSequence_not_avoidsCenters_of_mem_boundary (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY) i hi E hE x hx`.
+A detailed English derivation is pending.
 -/
 theorem not_avoidsCenters_of_mem_support_boundary (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -654,9 +640,9 @@ theorem not_avoidsCenters_of_mem_support_boundary (A : PrincipalizationAlgorithm
     x hx
 
 /- English proof (translation)
-Introduce `q hq`. Establish `hq' : ((AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).discardedι i ≫ (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).strictTransformι i).base q ∈ ⋃ E ∈ (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).boundary i, ((E.support : …` using `hq`. Take `⟨E, hE, hmem⟩` from `Set.mem_iUnion₂.mp hq'`. Establish `hbase : ((AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).discardedι i ≫ (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).strictTransformι i).base q = ((AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).strictTransformι i).base ((( …` using `base_comp_apply _ _ q`. Rewrite `hmem` using `[hbase]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hnc` using `not_avoidsCenters_of_mem_support_boundary A hemb hsnc hsm k Y pY i (le_of_lt hi) E hE (((AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).strictTransformι i).base (((AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).discardedι i).base q)) hmem`. Establish `hsing` using `(AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).mem_smoothLocusComplement_of_not_avoidsCenters (isNoetherian_ambientLevel_ofAffine A hemb hsnc hsm k Y pY) hopen hcent i (le_of_lt hi) (((AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).discardedι …`. Use `show ((AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).detachedToBase i).base q ∈ ((smoothLocusComplement pY : TopologicalSpace.Closeds ↥Y) : Set ↥Y)`. Rewrite using `[AffineSpacePrincipalizationData.detachedToBase_def, base_comp_apply]`. Conclude with `hsing`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boundary_preimage_subset_smoothLocusComplement_preimage (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -702,11 +688,9 @@ theorem boundary_preimage_subset_smoothLocusComplement_preimage (A : Principaliz
   exact hsing
 
 /- English proof (translation)
-Introduce `i hi`. Use `Set.Subset.antisymm ?_ (boundary_preimage_subset_smoothLocusComplement_preimage A hemb hsnc hsm k Y pY hopen hcent i hi)` and prove the remaining obligations. Introduce `q hq`. Assume the negation of the conclusion as `hcon`. Establish `hboundary : ∀ E ∈ (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).boundary i, ((AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).strictTransformι i).base (((AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).discardedι i).base q) ∉ …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `E hE hmem`. Use `hcon ?_` and prove the remaining obligations. Establish `hb` using `base_comp_apply ((AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).discardedι i) ((AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).strictTransformι i) q`. Simplify using `only [Set.mem_preimage, hb]`. Conclude with `Set.mem_iUnion₂.mpr ⟨E, hE, hmem⟩`.
-
-Conclude with `(AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).notMem_smoothLocusComplement_detachedToBase_of_notMem_boundary (isNoetherian_ambientLevel_ofAffine A hemb hsnc hsm k Y pY) hopen hsmooth i hi q hboundary hq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem detachedSingularPreimageEqBoundary_ofAffine (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -742,7 +726,7 @@ theorem detachedSingularPreimageEqBoundary_ofAffine (A : PrincipalizationAlgorit
     (isNoetherian_ambientLevel_ofAffine A hemb hsnc hsm k Y pY) hopen hsmooth i hi q hboundary hq
 
 /- English proof (translation)
-Introduce `k _ _ Y pY _ _ _ _`. Use `detachedSingularPreimageEqBoundary_ofAffine A hemb hsnc hsm k Y pY (hiso k Y pY) (hsmooth k Y pY) ?_` and prove the remaining obligations. Conclude with `AffineSpacePrincipalizationData.centersLieOverSingularLocus_of_inducedCentersLieOverSingularLocus (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY) (hPrincipalization k Y pY) (hcent k Y pY)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem affineDetachedSingularPreimageEqBoundary_of_centersLieOverSing (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})

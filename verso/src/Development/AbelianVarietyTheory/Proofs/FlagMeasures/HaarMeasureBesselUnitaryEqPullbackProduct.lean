@@ -17,9 +17,7 @@ variable {k r n : ℕ} {ε : Fin n → Bool} {Q : Matrix (Fin n) (Fin (2 * r + k
   {Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ}
 
 /- English proof (translation)
-Establish `hγ : (Formalism.MainNotions.S.uMat γ)ᴴ * Formalism.REAL.Jm ε * Formalism.MainNotions.S.uMat γ = Formalism.REAL.Jm ε` using `γ.2`. Establish `hQi` using `Formalism.L2.SG.Pf.Choice.qiHqi ε h2 hg`. Use `show (Qi * Formalism.MainNotions.S.uMat γ * Q)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (Qi * Formalism.MainNotions.S.uMat γ * Q) = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = Formalism.QuantumDeterminants.Hpk k r := by rw [hQi, hγ, hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trG_memUH (h2 : Q * Qi = 1) (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Formalism.QuantumDeterminants.Hpk k r) (γ : Formalism.REAL.UJ ε) :
     trG Q Qi γ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := by
@@ -32,9 +30,9 @@ theorem trG_memUH (h2 : Q * Qi = 1) (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Form
     _ = Formalism.QuantumDeterminants.Hpk k r := by rw [hQi, hγ, hg]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hx' : xᴴ * Formalism.QuantumDeterminants.Hpk k r * x = Formalism.QuantumDeterminants.Hpk k r` using `hx`. Establish `hQiH` using `Formalism.L2.SG.Pf.Choice.qiHqi ε h2 hg`. Establish `hγ : (Q * x * Qi)ᴴ * Formalism.REAL.Jm ε * (Q * x * Qi) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hg, hx', hQiH]`. Use `⟨Formalism.L2.SG.Pf.WFL.toUJ (Q * x * Qi) hγ, ?_⟩` and prove the remaining obligations. Use `show Qi * (Q * x * Qi) * Q = x`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trG_surj (hn : n = 2 * r + k + 1) (h1 : Qi * Q = 1) (h2 : Q * Qi = 1)
     (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Formalism.QuantumDeterminants.Hpk k r) {x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
@@ -52,9 +50,9 @@ theorem trG_surj (hn : n = 2 * r + k + 1) (h1 : Qi * Q = 1) (h2 : Q * Qi = 1)
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `key : trG Q Qi γ *ᵥ (Qi *ᵥ w) = Qi *ᵥ (Formalism.MainNotions.S.uMat γ *ᵥ w)`. Simplify using `only [trG, Matrix.mulVec_mulVec, Matrix.mul_assoc, h2, Matrix.mul_one]`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ y, Q *ᵥ (Qi *ᵥ y) = y` using `fun y => by rw [Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Establish `h' : Q *ᵥ (Qi *ᵥ (Formalism.MainNotions.S.uMat γ *ᵥ w)) = Q *ᵥ (Qi *ᵥ w)` using `congrArg _ h`. Rewrite `h'` using `[e, e]`. Then use the resulting hypothesis. Introduce `h`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem trG_fix (h2 : Q * Qi = 1) (γ : Formalism.REAL.UJ ε) (w : Fin n → ℂ) :
     trG Q Qi γ *ᵥ (Qi *ᵥ w) = Qi *ᵥ w ↔ Formalism.MainNotions.S.uMat γ *ᵥ w = w := by
@@ -70,11 +68,11 @@ theorem trG_fix (h2 : Q * Qi = 1) (γ : Formalism.REAL.UJ ε) (w : Fin n → ℂ
     rw [h]
 
 /- English proof (translation)
-Establish `hb : (Pi.single i 1 : Fin (2 * r + k + 1) → ℂ) = Qi *ᵥ (c • w)`. Rewrite using `[← hQ, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Establish `hc : c ≠ 0`. Introduce and unpack `rfl`. Establish `h0 : (Pi.single i 1 : Fin (2 * r + k + 1) → ℂ) = 0` using `by rw [hb, zero_smul, Matrix.mulVec_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h` using `congrFun h0 i`. Simplify using `at h`. Rewrite using `[hb, trG_fix h2, Matrix.mulVec_smul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `smul_right_injective _ hc h`. Introduce `h`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trG_fix_single (h1 : Qi * Q = 1) (h2 : Q * Qi = 1) (γ : Formalism.REAL.UJ ε) (i : Fin (2 * r + k + 1)) (c : ℂ)
     (w : Fin n → ℂ) (hQ : Q *ᵥ Pi.single i 1 = c • w) :
@@ -100,9 +98,9 @@ section Set
 variable {D : D7} {X : HidaSetting D}
 
 /- English proof (translation)
-Take `⟨h1, h2, hg, hef⟩` from `C.isT τ`. Simplify using `only [Formalism.QuantumDeterminants.UWset, Set.mem_setOf_eq, zB, Formalism.QuantumDeterminants.bvec]`. Rewrite using `[trG_fix h2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, ha, hz⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun a => (trG_fix_single h1 h2 γ _ _ _ (hef a a rfl).1).1 (ha a).1, fun a => (trG_fix_single h1 h2 γ _ _ _ (hef a a rfl).2).1 (ha a).2, hz⟩`. Introduce and unpack `⟨he, hf, hz⟩`. Conclude with `⟨trG_memUH h2 hg γ, fun a => ⟨(trG_fix_single h1 h2 γ _ _ _ (hef a a rfl).1).2 (he a), (trG_fix_single h1 h2 γ _ _ _ (hef a a rfl).2).2 (hf a)⟩, hz⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem trG_mem_UW_iff (C : Choice X 1) (u : D.what₂.Word) (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     trG (C.Q τ) (C.Qi τ) γ ∈ Formalism.QuantumDeterminants.UWset D.R.k D.R.rS (zB X (C.Qi τ) u τ) ↔
@@ -121,11 +119,11 @@ theorem trG_mem_UW_iff (C : Choice X 1) (u : D.what₂.Word) (τ : D.what₂.Tau
       (trG_fix_single h1 h2 γ _ _ _ (hef a a rfl).2).2 (hf a)⟩, hz⟩
 
 /- English proof (translation)
-Simplify using `only [trI, Equiv.apply_symm_apply]`. Repeatedly rewrite using `[trG_mem_UW_iff C u]`. Prove the components needed by the constructor for the conclusion. Introduce `hx τ`. Conclude with `⟨fun a => hx _ _ (Or.inl (Or.inl ⟨a, rfl⟩)), fun a => hx _ _ (Or.inl (Or.inr ⟨a, rfl⟩)), hx _ _ (Or.inr rfl)⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h v y hy`. Take `⟨τ, rfl⟩ : ∃ τ, v = vOf X τ` from `⟨X.pl v, (X.pl.symm_apply_apply v).symm⟩`. Take `⟨he, hf, hz⟩` from `h τ`. Break down `hy with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hy` into its components or cases. Conclude with `he a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hf a`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Conclude with `hz`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mem_Hset_iff (C : Choice X 1) (u : D.what₂.Word) (x : X.B.I.Ginf) :
     x ∈ Hset X.B.I (Set.range (fun a => crdOf X.B.I X.ιE X.bas (X.eX a)) ∪
@@ -156,13 +154,13 @@ section Meas
 variable {D : D7} {X : HidaSetting D}
 
 /- English proof (translation)
-Rewrite using `[X.n_eq, dimS_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem n_eq' : X.B.I.n = 2 * D.R.rS + D.R.k + 1 := by
   rw [X.n_eq, dimS_eq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x τ`. Simplify using `[trI, Pi.map]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem trI_eq (C : Choice X 1) : trI C = Pi.map (fun τ (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) =>
     (Matrix.of.symm (trG (C.Q τ) (C.Qi τ) γ) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)) ∘
@@ -172,7 +170,7 @@ theorem trI_eq (C : Choice X 1) : trI C = Pi.map (fun τ (γ : Formalism.REAL.UJ
   rfl
 
 /- English proof (translation)
-Rewrite using `[trI_eq]`. Conclude with `(Topology.IsClosedEmbedding.piMap fun τ => Formalism.L2.SG.Pf.BaseOf.trG_closedEmb n_eq' (X.B.I.ε (vOf X τ)) (C.isT τ).2.1).comp (Homeomorph.piCongrLeft _).symm.isClosedEmbedding`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trI_closedEmb (C : Choice X 1) : Topology.IsClosedEmbedding (trI C) := by
   rw [trI_eq]
@@ -180,9 +178,9 @@ theorem trI_closedEmb (C : Choice X 1) : Topology.IsClosedEmbedding (trI C) := b
     (X.B.I.ε (vOf X τ)) (C.isT τ).2.1).comp (Homeomorph.piCongrLeft _).symm.isClosedEmbedding
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h : ∀ τ, ∃ γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)), trG (C.Q τ) (C.Qi τ) γ = Matrix.of (y τ)` using `fun τ => trG_surj n_eq' (C.isT τ).1 (C.isT τ).2.1 (C.isT τ).2.2.1 (hy τ).1`. Use `choose γ hγ using h`. Use `⟨Homeomorph.piCongrLeft (Y := fun v => Formalism.REAL.UJ (X.B.I.ε v)) X.pl.symm γ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `key : (Homeomorph.piCongrLeft (Y` using `fun v => Formalism.REAL.UJ (X.B.I.ε v)) X.pl.symm γ) (vOf X τ) = γ τ := congrFun (Homeomorph.symm_apply_apply (Homeomorph.piCongrLeft (Y := fun v => Formalism.REAL.UJ (X.B.I.ε v)) X.pl.symm) γ) τ`. Simplify using `only [trI]`. Rewrite using `[key, hγ τ]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UW_sub_range (C : Choice X 1) (u : D.what₂.Word) :
     {y : D.what₂.Tau → Formalism.QuantumDeterminants.Mt D.R.k D.R.rS | ∀ τ, Matrix.of (y τ) ∈
@@ -203,27 +201,23 @@ theorem UW_sub_range (C : Choice X 1) (u : D.what₂.Word) :
 end Meas
 
 /- English proof (translation)
-Introduce `D X C _ _ u`. Establish `he : MeasurableEmbedding (trI C)` using `(trI_closedEmb C).measurableEmbedding`. Use `haveI : ∀ τ, SigmaFinite (C.muW u τ) := fun τ => (C.muW_haar u τ).1`. Use `set μ := Measure.pi (C.muW u) with hμ`. Use `set P : Set (D.what₂.Tau → Formalism.QuantumDeterminants.Mt D.R.k D.R.rS) := Set.univ.pi (fun τ => {m | Matrix.of m ∈ Formalism.QuantumDeterminants.UWset D.R.k D.R.rS (zB X (C.Qi τ) u τ)}) with hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPc : μ Pᶜ = 0` using `PiM.pi_conc _ _ fun τ => (C.muW_haar u τ).2.2.1`. Establish `hPr : P ⊆ Set.range (trI C)` using `fun y hy => UW_sub_range C u (fun τ => hy τ (Set.mem_univ τ))`. Establish `hrc : μ (Set.range (trI C))ᶜ = 0` using `measure_mono_null (Set.compl_subset_compl.2 hPr) hPc`. Use `set ρ := μ.comap (trI C) with hρ`. Establish `hρA : ∀ A, ρ A = μ (trI C '' A)` using `fun A => he.comap_apply μ A`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hμ1 : μ Set.univ = 1`. Rewrite using `[hμ, Measure.pi_univ]`. Simplify using `[C.muW_one]`. Establish `hρ1 : ρ Set.univ = 1`. Rewrite using `[hρA, Set.image_univ, ← hμ1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_antisymm (measure_mono (Set.subset_univ _)) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `haveI : IsFiniteMeasure ρ := ⟨by rw [hρ1]; exact ENNReal.one_lt_top⟩`. Establish `hρ0 : ρ ≠ 0` using `fun h => by`. Establish `h1` using `hρ1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[h]`. Simplify using `at h1`. Establish `hHc : ρ (HinfG X u : Set X.B.I.Ginf)ᶜ = 0`. Rewrite using `[HinfG_coe, hρA]`. Use `measure_mono_null ?_ hPc` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩ hy`. Conclude with `hx ((mem_Hset_iff C u x).2 fun τ => hy τ (Set.mem_univ τ))`. Establish `hmapρ : ρ.map (trI C) = μ`. Rewrite using `[hρ, he.map_comap, Measure.restrict_eq_self_of_ae_mem (by rw [ae_iff]; exact hrc)]`. Establish `hinv : ∀ s ∈ HinfG X u, ρ.map (fun x => s * x) = ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Establish `hs'` using `(mem_Hset_iff C u s).1 (by rw [← HinfG_coe]; exact hs)`. Establish `hcomm : trI C ∘ (fun x => s * x) = (fun y τ => Formalism.QuantumDeterminants.lmulM (Matrix.of (trI C s τ)) (y τ)) ∘ trI C`. Use function extensionality and compare the values at `x τ`. Use `show C.Qi τ * (Formalism.MainNotions.S.uMat (s (vOf X τ)) * Formalism.MainNotions.S.uMat (x (vOf X τ))) * C.Q τ = C.Qi τ * Formalism.MainNotions.S.uMat (s (vOf X τ)) * C.Q τ * (C.Qi τ * Formalism.MainNotions.S.uMat (x (vOf X τ)) * C.Q τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (C.Q τ) (C.Qi τ), (C.isT τ).2.1, Matrix.one_mul]`. Establish `hLm : Measurable (fun (y : D.what₂.Tau → Formalism.QuantumDeterminants.Mt D.R.k D.R.rS) τ => Formalism.QuantumDeterminants.lmulM (Matrix.of (trI C s τ)) (y τ))` using `measurable_pi_lambda _ fun τ => (Formalism.L2.SG.Pf.WFL.measurable_lmulM _).comp (measurable_pi_apply τ)`. Establish `hμL : μ.map (fun y τ => Formalism.QuantumDeterminants.lmulM (Matrix.of (trI C s τ)) (y τ)) = μ` using `by haveI : ∀ τ, SigmaFinite ((C.muW u τ).map (Formalism.QuantumDeterminants.lmulM (Matrix.of (trI C s τ)))) := fun τ => by`. Rewrite using `[(C.muW_haar u τ).2.2.2 _ (hs' τ)]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `infer_instance`. Rewrite using `[hμ, Measure.pi_map_pi (fun τ => (Formalism.L2.SG.Pf.WFL.measurable_lmulM _).aemeasurable)]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `(C.muW_haar u τ).2.2.2 _ (hs' τ)`.
-
-Rewrite using `[← he.comap_map (ρ.map (fun x => s * x)), Measure.map_map he.measurable (measurable_const_mul s), hcomm, ← Measure.map_map hLm he.measurable, hmapρ, hμL]`. Take `⟨hσ, h0, hc, hi⟩` from `X.muH_haar u`. Use `haveI := hσ`. Rewrite `hc`, `hi` using `[← HinfG_coe]`. Take `⟨κ, hκ0, hκT, hκ⟩` from `PiM.uniq_on_closed (HinfG X u) (HinfG_closed X u) (X.muH u) ρ hc hHc hi hinv h0 hρ0`.
-
-Use `⟨κ, hκ0, hκT, ?_, fun A _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hκ, Measure.smul_apply, hρ1, smul_eq_mul, mul_one]`. Rewrite using `[hκ, Measure.smul_apply, hρA, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullH : ∀ (D : D7) (X : HidaSetting D) (C : Choice X 1) (hB : WuBessel C), GoodLoc C hB →
     ∀ u : D.what₂.Word, ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ X.muH u Set.univ = c ∧

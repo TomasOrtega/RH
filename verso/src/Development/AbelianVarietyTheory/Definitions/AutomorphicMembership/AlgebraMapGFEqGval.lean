@@ -20,14 +20,14 @@ def colVec (S : HSpace E) {a : Type} (A : Matrix (Fin S.rank) a E) (b : a) : S.V
   S.frame.equivFun.symm fun i => A i b
 
 /- English proof (translation)
-Use extensionality with `i b`. Conclude with `congrFun (S.frame.equivFun.apply_symm_apply fun i => A i b) i`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem coMat_colVec {a : Type} (A : Matrix (Fin S.rank) a E) : coMat S (colVec S A) = A := by
   ext i b
   exact congrFun (S.frame.equivFun.apply_symm_apply fun i => A i b) i
 
 /- English proof (translation)
-The claim follows from `funext fun b => S.frame.equivFun.symm_apply_apply (x b)`.
+A detailed English derivation is pending.
 -/
 theorem colVec_coMat {a : Type} (x : a → S.V) : colVec S (coMat S x) = x :=
   funext fun b => S.frame.equivFun.symm_apply_apply (x b)
@@ -52,20 +52,20 @@ def lflagOf (h : IsFrame (starRingEnd E) S.gram T A) : LFlag S r T :=
     zt := colVec S A (Fin.last r) }
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Apply the tactic sequence `induction a using Fin.lastCases <;> simp [Formalism.MainNotions.S.Lat.frame, FlagG.fvec, lflagOf]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem frame_lflagOf (h : IsFrame (starRingEnd E) S.gram T A) : Formalism.MainNotions.S.Lat.frame (lflagOf h) = colVec S A := by
   funext a
   induction a using Fin.lastCases <;> simp [Formalism.MainNotions.S.Lat.frame, FlagG.fvec, lflagOf]
 
 /- English proof (translation)
-Rewrite using `[frame_lflagOf, coMat_colVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coMat_lflagOf (h : IsFrame (starRingEnd E) S.gram T A) :
     coMat S (Formalism.MainNotions.S.Lat.frame (lflagOf h)) = A := by rw [frame_lflagOf, coMat_colVec]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[pairM_coMat]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zhatL_eq (F : LFlag S r T) (F' : LFlag S r T') : Formalism.MainNotions.S.Lat.ZhatL F F' =
     pairM (starRingEnd E) S.gram (coMat S (Formalism.MainNotions.S.Lat.frame F')) (coMat S (Formalism.MainNotions.S.Lat.frame F)) := by
@@ -73,7 +73,7 @@ theorem zhatL_eq (F : LFlag S r T) (F' : LFlag S r T') : Formalism.MainNotions.S
   rw [pairM_coMat]; rfl
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.S.Lat.Gval, Formalism.MainNotions.S.Gflag, Formalism.MainNotions.S.Dl, Formalism.MainNotions.S.Dl, Formalism.MainNotions.S.leadMinorE, Formalism.MainNotions.S.leadMinorE, dif_pos le_rfl, dif_pos (Nat.le_succ r)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gvalL_eq (F : LFlag S r T) (F' : LFlag S r T') :
     Formalism.MainNotions.S.Lat.Gval F F' = Gq (starRingEnd E) T T' (Formalism.MainNotions.S.Lat.ZhatL F F') := by
@@ -84,7 +84,7 @@ theorem gvalL_eq (F : LFlag S r T) (F' : LFlag S r T') :
 omit [NumberField E] [StarRing E] in
 
 /- English proof (translation)
-Establish `e : ZhatOM Z = Z * eps E r`. Use extensionality with `a b`. Simplify using `[ZhatOM, eps, mul_comm]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem liesAt_iff_isInCell (w : Formalism.MainNotions.S.Point E (r + 1)) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     LiesAt w Z ↔ IsInCell (ZhatOM Z) w := by
@@ -104,14 +104,14 @@ def fixedFlag (D : D7) (u : D.what₂.Word) : LFlag (hS D) D.R.rS ((Tu D u : ℕ
   lflagOf (S := hS D) (isFrame_recFrame D u)
 
 /- English proof (translation)
-The claim follows from `funext fun a => (congrFun (colVec_coMat (S := hS D) (Fin.snoc (α := fun _ => (hS D).V) D.sp.hypE (D.zmOf u))) a.castSucc).trans (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem fixedFlag_e (D : D7) (u : D.what₂.Word) : (fixedFlag D u).fl.e = D.sp.hypE := funext fun a =>
   (congrFun (colVec_coMat (S := hS D) (Fin.snoc (α := fun _ => (hS D).V) D.sp.hypE (D.zmOf u))) a.castSucc).trans
     (by simp)
 
 /- English proof (translation)
-The claim follows from `(congrFun (colVec_coMat (S := hS D) (Fin.snoc (α := fun _ => (hS D).V) D.sp.hypE (D.zmOf u))) (Fin.last _)).trans (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem fixedFlag_z_eq_zmOf (D : D7) (u : D.what₂.Word) : (fixedFlag D u).fl.z = D.zmOf u :=
   (congrFun (colVec_coMat (S := hS D) (Fin.snoc (α := fun _ => (hS D).V) D.sp.hypE (D.zmOf u)))
@@ -133,44 +133,44 @@ def fl (_ : RecTerm D u u') : LFlag (hS D) D.R.rS ((Tu D u : ℕ) : D.host.E) :=
 def fl' : LFlag (hS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) := lflagOf (S := hS D) t.adm.1.1
 
 /- English proof (translation)
-The claim follows from `coMat_lflagOf (isFrame_recFrame D u)`.
+A detailed English derivation is pending.
 -/
 theorem coMat_fl : coMat (hS D) (Formalism.MainNotions.S.Lat.frame t.fl) = recFrame D u :=
   coMat_lflagOf (isFrame_recFrame D u)
 
 /- English proof (translation)
-The claim follows from `coMat_lflagOf _`.
+A detailed English derivation is pending.
 -/
 theorem coMat_fl' : coMat (hS D) (Formalism.MainNotions.S.Lat.frame t.fl') = t.fr := coMat_lflagOf _
 
 /- English proof (translation)
-The claim follows from `t.lat_mem.2.1 (Submodule.subset_span ⟨a, 1, Iota.one_mem_dInv _, by rw [one_smul, ← t.coMat_fl]; rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem frame_fl_mem (a : Fin (D.R.rS + 1)) : Formalism.MainNotions.S.Lat.frame t.fl a ∈ t.abelian₂ :=
   t.lat_mem.2.1 (Submodule.subset_span ⟨a, 1, Iota.one_mem_dInv _, by
     rw [one_smul, ← t.coMat_fl]; rfl⟩)
 
 /- English proof (translation)
-The claim follows from `t.adm.1.2.1 (Submodule.subset_span ⟨a, 1, Iota.one_mem_dInv _, by rw [one_smul, ← t.coMat_fl']; rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem frame_fl'_mem (a : Fin (D.R.rS + 1)) : Formalism.MainNotions.S.Lat.frame t.fl' a ∈ t.abelian₂ :=
   t.adm.1.2.1 (Submodule.subset_span ⟨a, 1, Iota.one_mem_dInv _, by
     rw [one_smul, ← t.coMat_fl']; rfl⟩)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simpa [Formalism.MainNotions.S.Lat.frame, FlagG.fvec] using t.frame_fl_mem (Fin.last _), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLift_fl : Formalism.MainNotions.S.Lat.IsLift t.abelian₂ t.fl :=
   ⟨by simpa [Formalism.MainNotions.S.Lat.frame, FlagG.fvec] using t.frame_fl_mem (Fin.last _), rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simpa [Formalism.MainNotions.S.Lat.frame, FlagG.fvec] using t.frame_fl'_mem (Fin.last _), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLift_fl' : Formalism.MainNotions.S.Lat.IsLift t.abelian₂ t.fl' :=
   ⟨by simpa [Formalism.MainNotions.S.Lat.frame, FlagG.fvec] using t.frame_fl'_mem (Fin.last _), rfl⟩
 
 /- English proof (translation)
-Establish `e : t.lat = t'.lat` using `Submodule.ext (co_surjective.forall.2 fun x => by`. Rewrite using `[← mem_latV, ← mem_latV]`. Conclude with `SetLike.ext_iff.1 h x)`. Conclude with `(Col.existsUnique (isHermU_gram _).2 t.lat_mem).unique ⟨1, inS_one, latMap_one _⟩ ⟨1, inS_one, (latMap_one _).trans e⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_eq_of_Lam {u'' : D.what₂.Word} (t' : RecTerm D u u'') (h : t.abelian₂ = t'.abelian₂) : t.col = t'.col := by
   have e : t.lat = t'.lat := Submodule.ext (co_surjective.forall.2 fun x => by
@@ -179,33 +179,33 @@ theorem col_eq_of_Lam {u'' : D.what₂.Word} (t' : RecTerm D u u'') (h : t.abeli
     ⟨1, inS_one, (latMap_one _).trans e⟩
 
 /- English proof (translation)
-Rewrite using `[zhatL_eq, coMat_fl, coMat_fl']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zhatL_fl : Formalism.MainNotions.S.Lat.ZhatL t.fl t.fl' = t.Zhat := by
   rw [zhatL_eq, coMat_fl, coMat_fl']; rfl
 
 /- English proof (translation)
-Rewrite using `[gvalL_eq, zhatL_fl, Term.G, normOf_eq (isFrame_recFrame D u)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gval_fl : Formalism.MainNotions.S.Lat.Gval t.fl t.fl' = t.G := by
   rw [gvalL_eq, zhatL_fl, Term.G, normOf_eq (isFrame_recFrame D u)]; rfl
 
 /- English proof (translation)
-Rewrite using `[gval_fl, t.algebraMap_GF]`. Conclude with `(t.G_eq_minor (isFrame_recFrame D u)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_GF_eq_gval :
     algebraMap D.host.F D.host.E (t.GF D.host.F) = Formalism.MainNotions.S.Lat.Gval t.fl t.fl' := by
   rw [gval_fl, t.algebraMap_GF]; exact (t.G_eq_minor (isFrame_recFrame D u)).symm
 
 /- English proof (translation)
-Rewrite using `[zhatL_fl]`. Conclude with `liesAt_iff_isInCell w _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_iff_isInCell (w : Formalism.MainNotions.S.Point D.host.E (D.R.rS + 1)) :
     t.At w ↔ IsInCell (ZhatOM (Formalism.MainNotions.S.Lat.ZhatL t.fl t.fl')) w := by
   rw [zhatL_fl]; exact liesAt_iff_isInCell w _
 
 /- English proof (translation)
-The claim follows from `(t.at_iff_isInCell _).1 (GlobalTheory.PtEx.at_ptOf_of_relevant t hR fun h => hG (t.GF_eq_zero_iff.2 h))`.
+A detailed English derivation is pending.
 -/
 theorem isInCell_ptOf (hG : t.GF D.host.F ≠ 0) (hR : t.relevant) :
     IsInCell (ZhatOM (Formalism.MainNotions.S.Lat.ZhatL t.fl t.fl')) t.ptOf :=
@@ -214,7 +214,7 @@ theorem isInCell_ptOf (hG : t.GF D.host.F ≠ 0) (hR : t.relevant) :
 end RecTerm
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.S.LocalSplitGroups.Gpt, Formalism.MainNotions.S.LocalSplitGroups.Dmin, Formalism.MainNotions.S.LocalSplitGroups.Dmin, dif_pos le_rfl, dif_pos (Nat.le_succ _), D.conjF_eq, D.conjF_eq, ← bridge_star_holds D.R D.host, ← bridge_star_holds D.R D.host]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gpt_eq (T T' : ℕ) (w : Formalism.MainNotions.S.Point D.host.E (D.R.rS + 1)) :
     Formalism.MainNotions.S.LocalSplitGroups.Gpt T T' w = Gq (starRingEnd D.host.E) (T : D.host.E) (T' : D.host.E) (ptMat w) := by
@@ -227,28 +227,28 @@ namespace RecTerm
 variable (t : RecTerm D u u')
 
 /- English proof (translation)
-The claim follows from `(gpt_eq _ _ w).trans (h.Gq_eq (isFrame_recFrame D u))`.
+A detailed English derivation is pending.
 -/
 theorem gpt_of_at {w : Formalism.MainNotions.S.Point D.host.E (D.R.rS + 1)} (h : t.At w) :
     Formalism.MainNotions.S.LocalSplitGroups.Gpt (D.mem u).A.T (D.mem u').A.T w = t.G :=
   (gpt_eq _ _ w).trans (h.Gq_eq (isFrame_recFrame D u))
 
 /- English proof (translation)
-Rewrite using `[gpt_eq, t.Gq_ptOf_ne_zero_iff, Ne, Ne, t.GF_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gpt_ptOf_ne_zero_iff : Formalism.MainNotions.S.LocalSplitGroups.Gpt (D.mem u).A.T (D.mem u').A.T t.ptOf ≠ 0 ↔
     t.GF D.host.F ≠ 0 ∧ t.At t.ptOf := by
   rw [gpt_eq, t.Gq_ptOf_ne_zero_iff, Ne, Ne, t.GF_eq_zero_iff]
 
 /- English proof (translation)
-The claim follows from `by_contra fun k => h ⟨_, (t.gpt_ptOf_ne_zero_iff.1 k).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem gpt_ptOf_of_not_at (h : ¬ ∃ w, t.At w) :
     Formalism.MainNotions.S.LocalSplitGroups.Gpt (D.mem u).A.T (D.mem u').A.T t.ptOf = 0 :=
   by_contra fun k => h ⟨_, (t.gpt_ptOf_ne_zero_iff.1 k).2⟩
 
 /- English proof (translation)
-The claim follows from `t.gpt_ptOf_ne_zero_iff.2 ⟨hG, (t.at_iff_isInCell _).2 (t.isInCell_ptOf hG hR)⟩`.
+A detailed English derivation is pending.
 -/
 theorem gpt_ptOf_ne_zero (hG : t.GF D.host.F ≠ 0) (hR : t.relevant) :
     Formalism.MainNotions.S.LocalSplitGroups.Gpt (D.mem u).A.T (D.mem u').A.T t.ptOf ≠ 0 :=

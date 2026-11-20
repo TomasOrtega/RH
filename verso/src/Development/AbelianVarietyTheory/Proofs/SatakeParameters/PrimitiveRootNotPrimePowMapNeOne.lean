@@ -4,9 +4,9 @@ open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Fo
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ O _ _ f ζ n hn hζ hpp h1`. Establish `hroot : IsRoot (cyclotomic n O) ζ` using `hζ.isRoot_cyclotomic (by omega)`. Establish `h0 : eval (f ζ) (cyclotomic n k) = 0`. Rewrite using `[← map_cyclotomic n f, eval_map, eval₂_at_apply, hroot.eq_zero, map_zero]`. Establish `hone : eval (1 : k) (cyclotomic n k) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `eval_one_cyclotomic_not_prime_pow` to reduce the goal to its premises. Introduce `p hp j hj`. Conclude with `hpp (hj ▸ (Nat.Prime.isPrimePow hp).pow (by rintro rfl; simp at hj; omega))`. Rewrite `h0` using `[h1, hone]`. Conclude with `one_ne_zero h0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primitiveRoot_notPrimePow_map_ne_one :
     ∀ (k : Type) [Field k] (O : Type) [CommRing O] [IsDomain O] (f : O →+* k) (ζ : O) (n : ℕ),

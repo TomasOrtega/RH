@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Tota
 open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V.LDataCardLeFinrank
 
 /- English proof (translation)
-Rewrite using `[ZMod.unitsMap_val, ← ZMod.natCast_val, ZMod.val_natCast, ← pow_eq_pow_mod _ hζ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ci_pow {Ω : Type*} [Monoid Ω] {m M : ℕ} [NeZero m] [NeZero M] (hm : m ∣ M)
     (a : (ZMod M)ˣ) (ζ : Ω) (hζ : ζ ^ m = 1) :
@@ -13,7 +13,7 @@ private theorem ci_pow {Ω : Type*} [Monoid Ω] {m M : ℕ} [NeZero m] [NeZero M
   rw [ZMod.unitsMap_val, ← ZMod.natCast_val, ZMod.val_natCast, ← pow_eq_pow_mod _ hζ]
 
 /- English proof (translation)
-Establish `: NeZero (l ^ i)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `: NeZero ((l ^ i : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr (NeZero.ne _)⟩`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ci_hen (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosed Ω] (l : ℕ) [Fact l.Prime] (i : ℕ) :
     HasEnoughRootsOfUnity Ω (l ^ i) := by
@@ -22,7 +22,7 @@ private theorem ci_hen (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosed Ω] (l 
   infer_instance
 
 /- English proof (translation)
-Establish `hen` using `ci_hen Ω l`. Conclude with `cyclotomicCharacter.spec l g ζ hζ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ci_spec {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosed Ω] (l : ℕ) [Fact l.Prime] (n : ℕ)
     (g : Ω ≃+* Ω) (ζ : Ω) (hζ : ζ ^ l ^ n = 1) :
@@ -31,9 +31,9 @@ private theorem ci_spec {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosed Ω] (l
   exact cyclotomicCharacter.spec l g ζ hζ
 
 /- English proof (translation)
-Establish `hen` using `ci_hen Ω l n`. Establish `: NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ n)`. Establish `h1` using `ci_spec l n g ζ hζ.pow_eq_one`. Rewrite `h1` using `[h ζ hζ.pow_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfin : IsOfFinOrder ζ` using `isOfFinOrder_iff_pow_eq_one.mpr ⟨l ^ n, Nat.pos_of_neZero _, hζ.pow_eq_one⟩`. Rewrite `h1` using `[hfin.pow_eq_pow_iff_modEq, ← hζ.eq_orderOf, ← ZMod.natCast_eq_natCast_iff, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Conclude with `Units.ext h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ci_red {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosed Ω] (l : ℕ) [Fact l.Prime] (n : ℕ)
     (g : Ω ≃+* Ω) (w : (ZMod (l ^ n))ˣ)
@@ -51,7 +51,7 @@ private theorem ci_red {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosed Ω] (l 
   exact Units.ext h1
 
 /- English proof (translation)
-Establish `h1 : (x / y) ^ a = 1` using `by rw [div_pow, ha, div_self (pow_ne_zero _ hy)]`. Establish `h2 : (x / y) ^ b = 1` using `by rw [div_pow, hb, div_self (pow_ne_zero _ hy)]`. Establish `h3` using `Nat.dvd_gcd (orderOf_dvd_of_pow_eq_one h1) (orderOf_dvd_of_pow_eq_one h2)`. Rewrite `h3` using `[hab.gcd_eq_one, Nat.dvd_one, orderOf_eq_one_iff]`. Conclude with `(div_eq_one_iff_eq hy).1 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ci_eq {Ω : Type} [Field Ω] {x y : Ω} (hy : y ≠ 0) {a b : ℕ} (hab : a.Coprime b)
     (ha : x ^ a = y ^ a) (hb : x ^ b = y ^ b) : x = y := by
@@ -62,15 +62,15 @@ private theorem ci_eq {Ω : Type} [Field Ω] {x y : Ω} (hy : y ≠ 0) {a b : �
   exact (div_eq_one_iff_eq hy).1 h3
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ N _ g h`. Establish `hl : l.Prime` using `Fact.out`. Establish `hN : N ≠ 0` using `NeZero.ne N`. Establish `: NeZero (l ^ N.factorization l)` using `⟨pow_ne_zero _ hl.ne_zero⟩`. Establish `: NeZero (ordCompl[l] N)` using `⟨(Nat.ordCompl_pos l hN).ne'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : ordProj[l] N * ordCompl[l] N = N` using `Nat.ordProj_mul_ordCompl_eq_self N l`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `⟨fun ζ hζ => ?_, ci_red l _ g _ fun ζ hζ => ?_⟩` and prove the remaining obligations. Rewrite using `[← ci_pow _ h ζ hζ]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H ζ (by rw [← hmul, mul_comm, pow_mul, hζ, one_pow])`. Rewrite using `[← ci_pow _ h ζ hζ]`. Conclude with `H ζ (by rw [← hmul, pow_mul, hζ, one_pow])`. Introduce and unpack `⟨H1, H2⟩ ζ hζ`. Establish `hζ0 : ζ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `hζ` using `[zero_pow hN]`. Conclude with `zero_ne_one hζ`. Establish `hcop : (ordProj[l] N).Coprime (ordCompl[l] N)` using `(Nat.coprime_ordCompl hl hN).pow_left _`. Establish `e1 : (ζ ^ ordProj[l] N) ^ ordCompl[l] N = 1` using `by rw [← pow_mul, hmul, hζ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (ζ ^ ordCompl[l] N) ^ ordProj[l] N = 1` using `by rw [← pow_mul, mul_comm, hmul, hζ]`. Use `ci_eq (pow_ne_zero _ hζ0) hcop ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_pow, H1 _ e1, ← ci_pow _ h _ e1, ← pow_mul, ← pow_mul, mul_comm]`. Rewrite using `[← map_pow, ci_spec l _ g _ e2, ← H2, ← ci_pow _ h _ e2, ← pow_mul, ← pow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.LDataCardLeFinrank.classIff :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosed Ω] (l : ℕ) [Fact l.Prime] (N : ℕ) [NeZero N] (g : Ω ≃+* Ω) (h : (ZMod N)ˣ), (∀ ζ : Ω, ζ ^ N = 1 → g ζ = ζ ^ (h : ZMod N).val) ↔

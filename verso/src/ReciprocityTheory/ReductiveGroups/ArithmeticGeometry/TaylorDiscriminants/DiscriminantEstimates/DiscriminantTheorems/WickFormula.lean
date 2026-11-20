@@ -6,7 +6,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.DiscriminantEstimates.DiscriminantLemmas.WickFormula.GenVan
 
 /- English proof (translation)
-The claim follows from `PI.WickFormula.wickFormula_of PI.WickFormula.ordLin_holds PI.WickFormula.ordX_holds PI.WickFormula.base_holds PI.WickFormula.bComm_holds PI.WickFormula.Gen.powXL_holds PI.WickFormula.Gen.commL_holds PI.WickFormula.Gen.vanL_holds`.
+A detailed English derivation is pending.
 -/
 theorem wick_formula : PI.WickFormula :=
   PI.WickFormula.wickFormula_of PI.WickFormula.ordLin_holds PI.WickFormula.ordX_holds

@@ -11,13 +11,13 @@ namespace GlobalTheory
 open Pointwise in
 
 /- English proof (translation)
-Introduce `R _ _ hd f hf hf0 B _ _ _ _ _ k hk`. Use `haveI : IsDomain R := GlobalTheory.isDomain_of_isRegularLocalRing R`. Establish `h3 : ReciprocityTheory.CA.ModDepthGE R B 3` using `GlobalTheory.modDepthGE_three_of_free_of_isRegularLocalRing R hd B`. Establish `hfk0 : f ^ k ≠ 0` using `pow_ne_zero k hf0`. Establish `hfkm : f ^ k ∈ maximalIdeal R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le' hk`. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_left _ _ hf`. Establish `hreg : IsSMulRegular B (f ^ k)` using `smul_right_injective B hfk0`. Establish `h2 : ReciprocityTheory.CA.ModDepthGE R (QuotSMulTop (f ^ k) B) 2` using `ReciprocityTheory.CA.ModDepthGE.quotSMulTop hfkm hreg h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow : (Ideal.span {f}).map (algebraMap R B) ^ k = (Ideal.span {f ^ k}).map (algebraMap R B)`. Rewrite using `[← Ideal.map_pow, Ideal.span_singleton_pow]`. Establish `heq : ((f ^ k) • (⊤ : Submodule R B)) = ((Ideal.span {f}).map (algebraMap R B) ^ k).restrictScalars R`. Rewrite using `[hpow]`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[Submodule.mem_smul_pointwise_iff_exists, Ideal.map_span, Ideal.mem_span_singleton', Algebra.smul_def, mul_comm]`. Set `e : QuotSMulTop (f ^ k) B ≃ₗ[R] (B ⧸ (Ideal.span {f}).map (algebraMap R B) ^ k)` to `(Submodule.quotEquivOfEq _ _ heq).trans (Submodule.Quotient.restrictScalarsEquiv R ((Ideal.span {f}).map (algebraMap R B) ^ k))`. Conclude with `(ReciprocityTheory.CA.modDepthGE_congr e 2).mp h2`.
+A detailed English derivation is pending.
 -/
 theorem modDepthGE_two_quotient_pow_of_free_of_isRegularLocalRing :
     ∀ (R : Type) [CommRing R] [IsRegularLocalRing R], 3 ≤ ringKrullDim R → ∀ f ∈ maximalIdeal R,

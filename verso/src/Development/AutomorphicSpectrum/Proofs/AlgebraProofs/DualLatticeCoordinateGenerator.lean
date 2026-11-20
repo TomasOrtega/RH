@@ -6,21 +6,21 @@ namespace GlobalTheory.CompanionTheory.Ar.Num.HhGraded
 open GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-Simplify using `[dotDual, AddSubgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_dotDual_iff {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω) {n : ℕ}
     (L : AddSubgroup (Fin n → Ω)) (v : Fin n → Ω) : v ∈ dotDual R L ↔ ∀ l ∈ L, l ⬝ᵥ v ∈ R := by
   simp [dotDual, AddSubgroup.mem_iInf]
 
 /- English proof (translation)
-Simplify using `[annSub, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_annSub_iff {Ω : Type} [Field Ω] {n k : ℕ} (l : Fin n → Ω) :
     l ∈ annSub Ω n k ↔ ∀ j : Fin n, (j : ℕ) < k → l j = 0 := by
   simp [annSub, Submodule.mem_pi]
 
 /- English proof (translation)
-Rewrite using `[mem_annSub_iff]`. Introduce `m hm`. Establish `: m ≠ j` using `fun h => by subst h; omega`. Simplify using `[Pi.single_apply, this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem single_mem_annSub {Ω : Type} [Field Ω] {n k : ℕ} (j : Fin n) (hj : k ≤ (j : ℕ)) :
     (Pi.single j 1 : Fin n → Ω) ∈ annSub Ω n k := by
@@ -30,7 +30,7 @@ theorem single_mem_annSub {Ω : Type} [Field Ω] {n k : ℕ} (j : Fin n) (hj : k
   simp [Pi.single_apply, this]
 
 /- English proof (translation)
-Establish `h : l = ∑ j, l j • (Pi.single j 1 : Fin n → Ω)`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [h, map_sum]`. Simplify using `only [map_smul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_eq_sum {Ω : Type} [Field Ω] {n : ℕ} (ρ : (Fin n → Ω) →ₗ[Ω] (Fin n → Ω)) (l : Fin n → Ω) :
     ρ l = ∑ j, l j • ρ (Pi.single j 1) := by
@@ -41,21 +41,21 @@ theorem map_eq_sum {Ω : Type} [Field Ω] {n : ℕ} (ρ : (Fin n → Ω) →ₗ[
   simp only [map_smul]
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ R n L _ hS i u hu hc t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, hz, rfl⟩`. Take `⟨l, hl, hlu⟩` from `(hc u).2 ⟨1, R.one_mem, (one_mul u).symm⟩`. Establish `hlL : l ∈ L` using `(AddSubgroup.mem_inf.1 hl).1`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlA : l ∈ annSub Ω n i` using `(AddSubgroup.mem_inf.1 hl).2`. Establish `hlu' : l i = u` using `hlu`. Establish `h2 : l ⬝ᵥ v = u * v i`. Rewrite using `[dotProduct, Finset.sum_eq_single i, hlu']`. Introduce `j _ hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[(mem_annSub_iff l).1 hlA j h, zero_mul]`. Rewrite using `[hz j h, mul_zero]`. Simplify using the standard rewrite rules. Use `⟨u * v i, ?_, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h2]`. Conclude with `(mem_dotDual_iff R L v).1 hv l hlL`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨a, ha, rfl⟩`. Take `⟨ρ, hρU, hρid, hρL⟩` from `hS i`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfix : ∀ j : Fin n, i ≤ j → ρ (Pi.single j 1) = Pi.single j 1` using `fun j hj => hρid _ (single_mem_annSub j hj)`. Use `⟨fun j => (a * u⁻¹) * ρ (Pi.single j 1) i, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_dotDual_iff]`. Introduce `l hl`. Establish `key : l ⬝ᵥ (fun j => (a * u⁻¹) * ρ (Pi.single j 1) i) = (a * u⁻¹) * ρ l i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_eq_sum ρ l, dotProduct, Finset.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl' : ρ l i ∈ (L ⊓ (annSub Ω n i).toAddSubgroup).map (Pi.evalAddMonoidHom (fun _ => Ω) i)` using `⟨ρ l, AddSubgroup.mem_inf.2 ⟨hρL l hl, hρU l⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hbe⟩` from `(hc _).1 hl'`. Establish `h3 : a * u⁻¹ * (b * u) = a * b` using `by field_simp`. Rewrite using `[key, hbe, h3]`. Conclude with `R.mul_mem ha hb`. Introduce `j hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hne : i ≠ j` using `ne_of_lt hj`. Simplify using `only [hfix j hj.le, Pi.single_apply, hne, if_false, mul_zero]`. Simplify using `only [hfix i le_rfl, Pi.single_eq_same, mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω) (n : ℕ)
     (L : AddSubgroup (Fin n → Ω)), LocFree R n L → (∀ i, Summand L (annSub Ω n i)) →

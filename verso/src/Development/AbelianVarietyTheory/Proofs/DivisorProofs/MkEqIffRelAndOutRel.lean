@@ -5,9 +5,9 @@ open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMi
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Introduce `p _ G P Q`. Establish `e : Equivalence (Pair.Rel (G` using `G)) := GlobalTheory.T.kottwitzPairScalarIsomorphic_equivalence p G`. Establish `key : ∀ A B : Pair G, (Quot.mk Pair.Rel A = Quot.mk Pair.Rel B ↔ A.Rel B)`. Introduce `A B`. Rewrite using `[Quot.eq, e.eqvGen_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨key P Q, ?_⟩` and prove the remaining obligations. Conclude with `(key _ _).1 (Quot.out_eq _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LKMid.Pair.mk_eq_iff_rel_and_out_rel :
     ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P Q : Pair G),

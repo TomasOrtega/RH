@@ -11,15 +11,13 @@ namespace Formalism.RepresentationBoundsCohomology.JL
 open Formalism.NG Formalism.RepresentationBoundsCohomology.BR
 
 /- English proof (translation)
-Introduce `O D M₁ M₂ _ _ _ _ _ _ ρ₁ ρ₂ p hp hs Hf₁ Hf₂ ℓ e hL κ hκ`. Take `⟨x, hx, hxe⟩` from `hL _ hκ`. Take `⟨K₀, rfl⟩` from `Submodule.mkQ_surjective _ x`. Establish `h1 : (Submodule.Quotient.mk (cocycles1MapOfEquivariant ρ₁ ρ₂ p hp K₀ - ((ℓ : O) ^ e) • κ) : H1z ρ₂) = 0`. Rewrite using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxe`. Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Take `⟨v, hv⟩` from `h1`. Take `⟨w, rfl⟩` from `hs v`. Set `cb : coZ1s ρ₁` to `⟨fun g => ρ₁ g w - w, fun g h => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, Module.End.mul_apply, map_sub]`. Use the proof step `abel⟩`. Use `⟨K₀ - cb, ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `hcb : Submodule.mkQ _ cb = (0 : H1z ρ₁)`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨w, by funext g; rfl⟩`. Rewrite using `[map_sub, hcb, sub_zero]`. Conclude with `hx`. Establish `h2 : ρ₂ g (p w) - p w = p ((K₀ : D → M₁) g) - ((ℓ : O) ^ e) • (κ : D → M₂) g` using `congrFun hv g show p ((K₀ : D → M₁) g - (ρ₁ g w - w)) = _`. Rewrite using `[map_sub, map_sub, hp, h2]`.
-
-Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem liftCoc : StatLiftCoc := by
   intro O D M₁ M₂ _ _ _ _ _ _ ρ₁ ρ₂ p hp hs Hf₁ Hf₂ ℓ e hL κ hκ
@@ -47,9 +45,9 @@ theorem liftCoc : StatLiftCoc := by
     abel
 
 /- English proof (translation)
-Introduce `O A T' G _ _ _ _ _ P _ _ _ _ L _ _ _ _ r χ Dl inc v₁ ev hev hs Hf₁ Hf₂ ℓ e' j κ κz hκ hκf hL`. Establish `key` using `fun a => liftCoc O Dl P L _ _ ev (ev_equiv r χ Dl inc v₁ ev hev) hs Hf₁ Hf₂ ℓ e' hL (κz a) (hκf a)`. Use `choose Kz hKz1 hKz2 using key`. Use `⟨fun a g => if h : g ∈ Dl then inc ((Kz a : Dl → P) ⟨g, h⟩) else 0, Kz, ?_, hKz1, ?_⟩` and prove the remaining obligations. Introduce `a g dsimp only`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Rewrite using `[dif_pos g.2]`. Introduce `a g hg dsimp only`. Rewrite using `[dif_pos hg, ← hev, hKz2 a ⟨g, hg⟩, hκ a ⟨g, hg⟩]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colK : StatColK := by
   intro O A T' G _ _ _ _ _ P _ _ _ _ L _ _ _ _ r χ Dl inc v₁ ev hev hs Hf₁ Hf₂ ℓ e' j κ κz hκ hκf hL
@@ -65,9 +63,11 @@ theorem colK : StatColK := by
     rw [dif_pos hg, ← hev, hKz2 a ⟨g, hg⟩, hκ a ⟨g, hg⟩]
 
 /- English proof (translation)
-Introduce `O A T' G _ _ _ _ _ P _ _ _ _ M _ _ _ r χ E δO Dl inc ev hE hM hev hs Hf₁ Hf₂ ℓ e' u uz huz hmem hL`. Take `⟨kz, hk1, hk2⟩` from `liftCoc O Dl P _ _ _ ev (ev_equiv_triv r χ Dl ev hev) hs Hf₁ Hf₂ ℓ e' hL uz hmem`. Use `⟨fun g => if h : g ∈ Dl then inc ((kz : Dl → P) ⟨g, h⟩) else 0, kz, ?_, hk1, ?_, ?_⟩` and prove the remaining obligations. Introduce `g dsimp only`. Rewrite using `[dif_pos g.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Introduce `g dsimp only split_ifs with h`. Conclude with `hE _`. Conclude with `⟨0, (zero_mul E).symm⟩`. Introduce `g hg m dsimp only`. Rewrite using `[dif_pos hg, hM, hk2 ⟨g, hg⟩, Submodule.coe_smul, huz ⟨g, hg⟩, smul_eq_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
+
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colk : StatColk := by
   intro O A T' G _ _ _ _ _ P _ _ _ _ M _ _ _ r χ E δO Dl inc ev hE hM hev hs Hf₁ Hf₂ ℓ e' u uz huz hmem hL
@@ -87,9 +87,9 @@ theorem colk : StatColk := by
     rw [dif_pos hg, hM, hk2 ⟨g, hg⟩, Submodule.coe_smul, huz ⟨g, hg⟩, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `O A T' G _ _ _ _ _ P _ _ _ _ V _ _ r χ Dl inc Hf₁ Lf H K Kz hK hKz s`. Establish `h` using `H ((LinearMap.toSpanSingleton A V s).comp inc) Kz hKz`. Establish `e : (fun g : Dl => K g • s) = fun g : Dl => ((LinearMap.toSpanSingleton A V s).comp inc) ((Kz : Dl → P) g)`. Use function extensionality and compare the values at `g`. Rewrite using `[hK g]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colFun : StatColFun := by
   intro O A T' G _ _ _ _ _ P _ _ _ _ V _ _ r χ Dl inc Hf₁ Lf H K Kz hK hKz s
@@ -103,9 +103,9 @@ theorem colFun : StatColFun := by
   exact h
 
 /- English proof (translation)
-Introduce `O _ _ _ H₁ Cs _ _ _ _ Hf₁ Fs g ℓ e' hL`. Establish `h1 : ∀ x : Fs, ((ℓ : O) ^ e') • x ∈ (Hf₁.map g).comap Fs.subtype`. Introduce `x`. Rewrite using `[Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul]`. Conclude with `hL _ x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Introduce `hfin`. Conclude with `Formalism.RepresentationBoundsCohomology.rowColength O Fs _ ℓ e' h1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rowLift : StatRowLift := by
   intro O _ _ _ H₁ Cs _ _ _ _ Hf₁ Fs g ℓ e' hL
@@ -118,11 +118,11 @@ theorem rowLift : StatRowLift := by
   exact Formalism.RepresentationBoundsCohomology.rowColength O Fs _ ℓ e' h1
 
 /- English proof (translation)
-Introduce `O Dw T₁ T₂ _ _ _ _ _ _ ρ₁ ρ₂ π hπ C₁ Hf₁ Fs hFun hC`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨y, hy, rfl⟩`. Take `⟨a, ha, rfl⟩` from `hC y hy`. Use `⟨(a : Dw → T₁), a.2, ha, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : (fun g => π ((a : Dw → T₁) g)) ∈ coZ1s ρ₂` using `(cocycles1MapOfEquivariant ρ₁ ρ₂ π hπ a).2`. Unfold `clsOf`. Rewrite using `[dif_pos hm]`. Both sides reduce to the same expression. Introduce and unpack `x ⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Conclude with `hFun y hy`.
+A detailed English derivation is pending.
 -/
 theorem rowIm : StatRowIm := by
   intro O Dw T₁ T₂ _ _ _ _ _ _ ρ₁ ρ₂ π hπ C₁ Hf₁ Fs hFun hC
@@ -138,7 +138,7 @@ theorem rowIm : StatRowIm := by
     exact hFun y hy
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> intros <;> exact Iff.rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem locLift : StatLocLift := by
   refine ⟨?_, ?_⟩ <;> intros <;> exact Iff.rfl

@@ -10,9 +10,9 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `w generalizing y with`. Consider the case `nil => simp`. Consider the case `cons p w ih`. Simplify using `only [List.map_cons, List.prod_cons, List.reverse_cons, List.map_append, List.prod_append, Module.End.mul_apply]`. Rewrite using `[hU p.1 p.2, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [List.map_nil, List.prod_nil, Prod.fst_swap, Prod.snd_swap, Module.End.one_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eword_adjoint {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin n → Bool}
     {E : Fin n → Fin n → Module.End ℂ M} (hU : IsInfUnitary ε E) (w : List (Fin n × Fin n)) (x y : M) :
@@ -33,7 +33,7 @@ def anyAdjWSum {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n 
   (l.map fun c => c.1 • (c.2.map fun p => E p.1 p.2).prod).sum
 
 /- English proof (translation)
-Unfold `anyAdjWSum`. Rewrite using `[List.map_append, List.sum_append]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem anyAdjWSum_append {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (l₁ l₂ : List (ℂ × List (Fin n × Fin n))) :
@@ -42,9 +42,9 @@ theorem anyAdjWSum_append {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n
   rw [List.map_append, List.sum_append]
 
 /- English proof (translation)
-Unfold `anyAdjWSum`. Proceed by induction on `l₁ with`. Consider the case `nil => simp`. Consider the case `cons c l ih`. Rewrite using `[List.map_cons, List.sum_cons, add_mul, ih, List.flatMap_cons, List.map_append, List.sum_append]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← List.sum_map_mul_left, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun d _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, List.map_append, List.prod_append, smul_mul_smul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem anyAdjWSum_mul {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (l₁ l₂ : List (ℂ × List (Fin n × Fin n))) :
@@ -73,11 +73,11 @@ def anyAdjWordAlg {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin
   algebraMap_mem' r := ⟨[(r, [])], by simp [anyAdjWSum, Algebra.algebraMap_eq_smul_one]⟩
 
 /- English proof (translation)
-Establish `hE : ∀ a b : Fin n, E a b ∈ anyAdjWordAlg E` using `fun a b => ⟨[(1, [(a, b)])], by simp [anyAdjWSum]⟩`. Establish `h : Formalism.REAL.qdet E u ∈ anyAdjWordAlg E`. Unfold `Formalism.REAL.qdet Formalism.REAL.qminor`. Use `Subalgebra.sum_mem _ fun σ _ => Subalgebra.mul_mem _ (intCast_mem _ _) ?_` and prove the remaining obligations. Use `list_prod_mem fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx` using `[List.mem_ofFn]`. Take `⟨k, rfl⟩` from `hx`. Unfold `Formalism.REAL.Tm`. Use `Subalgebra.add_mem _ ?_ (hE _ _)` and prove the remaining obligations. Use `split_ifs`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `Subalgebra.algebraMap_mem _ _`. Conclude with `Subalgebra.zero_mem _`. Take `⟨l, hl⟩` from `h`. Conclude with `⟨l, hl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem qdet_eq_sum_words {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (u : ℂ) : ∃ l : List (ℂ × List (Fin n × Fin n)),

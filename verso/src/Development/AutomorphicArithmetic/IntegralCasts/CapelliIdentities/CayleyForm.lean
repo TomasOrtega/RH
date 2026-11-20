@@ -32,11 +32,11 @@ noncomputable def UpperTheory.Reformulated.B.Qj14.kap :
       ((1 : UpperTheory.Reformulated.B.Qj14.Mat k r) + Y) * ((1 : UpperTheory.Reformulated.B.Qj14.Mat k r) - Y)⁻¹
 
 /- English proof (translation)
-Establish `h' : Y.conjTranspose * H = -(H * Y)` using `eq_neg_of_add_eq_zero_left h`. Establish `key : (1 + Y).conjTranspose * H * (1 + Y) = (1 - Y).conjTranspose * H * (1 - Y)`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_sub, Matrix.conjTranspose_one, add_mul, sub_mul, h']`. Use `noncomm_ring`. Establish `hinv : (1 - Y) * (1 - Y)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ((1 - Y) * (1 - Y)⁻¹).conjTranspose * H * ((1 - Y) * (1 - Y)⁻¹) := by`. Rewrite using `[key, Matrix.conjTranspose_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by`. Rewrite using `[hinv, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qj14.cayley_form {ι : Type*} [Fintype ι] [DecidableEq ι]
     (H Y : Matrix ι ι ℂ) (h : Y.conjTranspose * H + H * Y = 0) (hu : IsUnit (1 - Y).det) :
@@ -58,7 +58,7 @@ private theorem UpperTheory.Reformulated.B.Qj14.cayley_form {ι : Type*} [Fintyp
         rw [hinv, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `k r Y h hu`. Conclude with `UpperTheory.Reformulated.B.Qj14.cayley_form (UpperTheory.Reformulated.B.Qj14.Hpk k r) Y h hu`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qj14.kap_mem :
     ∀ {k r : ℕ} {Y : UpperTheory.Reformulated.B.Qj14.Mat k r},

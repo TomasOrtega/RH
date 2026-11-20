@@ -18,7 +18,7 @@ def Carries {B Y T : Scheme.{0}} (π : Y ⟶ B) {ι : Type} (E : ι → B.Module
       (Scheme.Modules.pullbackComp g' π).hom.app (E a) ≫ (Scheme.Modules.pullbackCongr w).hom.app (E a)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isFlagBundle_iff {B Y : Scheme.{0}} (π : Y ⟶ B) {ι : Type} (E : ι → B.Modules) (n : ι → ℕ)
     (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (n a)) :
@@ -32,7 +32,7 @@ def carried {B Y T : Scheme.{0}} (π : Y ⟶ B) {ι : Type} (E : ι → B.Module
   ((fl a).pull g').ofIso ((Scheme.Modules.pullbackComp g' π).app (E a) ≪≫ (Scheme.Modules.pullbackCongr w).app (E a))
 
 /- English proof (translation)
-Introduce `a i` and use `⟨Iso.refl _, by simp [carried, Vert.Flag.ofIso, Vert.Flag.pull]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem carries_carried {B Y T : Scheme.{0}} (π : Y ⟶ B) {ι : Type} (E : ι → B.Modules) (n : ι → ℕ)
     (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (n a)) (g' : T ⟶ Y) (g : T ⟶ B) (w : g' ≫ π = g) :
@@ -40,13 +40,13 @@ theorem carries_carried {B Y T : Scheme.{0}} (π : Y ⟶ B) {ι : Type} (E : ι 
   ⟨Iso.refl _, by simp [carried, Vert.Flag.ofIso, Vert.Flag.pull]⟩
 
 /- English proof (translation)
-Substitute `w v` using the available equality. Introduce `H₁ H₂ a i`. Take `⟨e, he⟩` from `H₁ a i`. Take `⟨e', he'⟩` from `H₂ a i`. Use `⟨(Scheme.Modules.pullbackComp h g').symm.app _ ≪≫ (Scheme.Modules.pullback h).mapIso e ≪≫ e', ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `assoc` using `congr_arg (fun φ => φ.app (E a)) (Scheme.Modules.pseudofunctor_associativity h g' π)`. Simplify using `only [NatTrans.comp_app, Functor.whiskerRight_app, Functor.whiskerLeft_app, Functor.associator_hom_app, Category.id_comp, eqToHom_app] at assoc`. Simplify using `only [Iso.trans_hom, Iso.app_hom, Iso.symm_hom, Functor.mapIso_hom, Category.assoc, he']`. Rewrite using `[← Functor.map_comp_assoc, he]`. Simplify using `only [Scheme.Modules.pullbackCongr, eqToIso_refl, Iso.refl_hom, NatTrans.id_app, Category.comp_id, Functor.map_comp, Category.assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `erw [← NatTrans.naturality_assoc]`. Use `congr 1`. Rewrite using `[← cancel_epi ((Scheme.Modules.pullbackComp h (g' ≫ π)).symm.app (E a) ≪≫ (Scheme.Modules.pullback h).mapIso ((Scheme.Modules.pullbackComp g' π).symm.app (E a)) ≪≫ (Scheme.Modules.pullbackComp h g').app _).hom]`. Simplify using `only [Iso.trans_hom, Iso.app_hom, Iso.symm_hom, Functor.mapIso_hom, Category.assoc]`. Rewrite using `[reassoc_of% assoc]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Iso.hom_inv_id_app_assoc, ← Functor.map_comp_assoc, Iso.inv_hom_id_app, Functor.map_id, Category.id_comp, Iso.inv_hom_id_app, eqToIso.hom, eqToHom_app, eqToHom_trans, eqToHom_refl]`. Rewrite using `[CategoryTheory.Functor.map_id, Category.id_comp, Iso.inv_hom_id_app]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carries_comp {B Y T T' : Scheme.{0}} (π : Y ⟶ B) {ι : Type} (E : ι → B.Modules) (n : ι → ℕ)
     (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (n a)) (g' : T ⟶ Y) (g : T ⟶ B) (w : g' ≫ π = g)

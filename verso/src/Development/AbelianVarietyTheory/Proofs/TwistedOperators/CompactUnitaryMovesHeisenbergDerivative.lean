@@ -15,7 +15,7 @@ namespace GlobalTheory.KHeisComm
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `GlobalTheory.ArchIsom.g0 F κ 0 = 1`. Simplify using `[GlobalTheory.ArchIsom.g0, Set.indicator_of_mem (GlobalTheory.ArchIsom.zero_mem_intPts (F := F) κ)]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem archimedean_isomorphism_split_trivial {κ : Type} (z : κ → mixedEmbedding.mixedSpace F) :
     GlobalTheory.ArchIsom.r0 F κ (GlobalTheory.ArchIsom.splitEquiv F κ (z, 0)) = 1 := by
@@ -23,7 +23,7 @@ theorem archimedean_isomorphism_split_trivial {κ : Type} (z : κ → mixedEmbed
   simp [GlobalTheory.ArchIsom.g0, Set.indicator_of_mem (GlobalTheory.ArchIsom.zero_mem_intPts (F := F) κ)]
 
 /- English proof (translation)
-Establish `hz : (fun i => evI F (GlobalTheory.ArchIsom.splitEquiv F κ (z, 0) i)) = z`. Use function extensionality and compare the values at `fun i => GlobalTheory.ArchIsom.evI_splitEquiv κ _ i`. Simplify using `only [tens, hz, archimedean_isomorphism_split_trivial, mul_one]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tens_split {κ : Type} (φ : (κ → mixedEmbedding.mixedSpace F) → ℂ) (z : κ → mixedEmbedding.mixedSpace F) :
     tens (evI F) φ (GlobalTheory.ArchIsom.r0 F κ) (GlobalTheory.ArchIsom.splitEquiv F κ (z, 0)) = φ z := by
@@ -34,7 +34,7 @@ theorem tens_split {κ : Type} (φ : (κ → mixedEmbedding.mixedSpace F) → �
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `g _`. Use `⟨g (fun i => (x i).2) • ((BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ)), fun f => ?_⟩` and prove the remaining obligations. Simplify using `[pureA, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem proj_mem_adm {κ : Type} [Fintype κ] (x : κ → AF F) :
     (LinearMap.proj x : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := by
@@ -50,19 +50,17 @@ open GlobalTheory.KHeisComm in
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP k _ u hu f f₁ fk h hD hA hA₁`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Take `⟨D, hDD⟩` from `GlobalTheory.T.archHeisenbergDerivatives_exist F E σ (Fin n) (Fin d) (Fin n × Fin d) B.ψ (incM F X.J) (incM F W.J) M.co hψ`. Take `⟨D₁, hD₁⟩` from `GlobalTheory.HeisDeriv.exists_heisLine_deriv M B.ψ hψ (mat k * u)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg0` using `GlobalTheory.ArchIsom.standard_vector_mem_schwartz_bruhat (F := F) (Fin n × Fin d)`. Establish `hf₁ : (D u f : SInf F (Fin n × Fin d)) = f₁`. Use `SchwartzMap.ext fun z => ?_` and prove the remaining obligations. Use `set x := GlobalTheory.ArchIsom.splitEquiv F (Fin n × Fin d) (z, 0)`. Establish `a1 : HasDerivAt (fun t => M.heisLine B.ψ u t (tens (evI F) (⇑f) (GlobalTheory.ArchIsom.r0 F (Fin n × Fin d))) x) (pureA F (⇑(D u f)) (GlobalTheory.ArchIsom.g0 F (Fin n × Fin d)) x) 0` using `(hDD u hu f).1 _ hg0 _ (proj_mem_adm x)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `hD _ (GlobalTheory.ArchIsom.restriction_at_standard_point _ f) x`. Establish `e` using `a1.unique a2`. Rewrite `e` using `[← GlobalTheory.ArchIsom.tensor_at_standard_point, tens_split, tens_split]`. Conclude with `e`. It suffices to establish `e : h = D₁ fk by rw [e]; exact hD₁ fk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `SchwartzMap.ext fun z => ?_` and prove the remaining obligations. Use `set x := GlobalTheory.ArchIsom.splitEquiv F (Fin n × Fin d) (z, 0)`. Establish `hl` using `hS.adm (k, 1) _ (proj_mem_adm x)`. Establish `b1` using `(hDD u hu f).1 _ hg0 _ hl`. Establish `hmem : ∀ g : SInf F (Fin n × Fin d), tens (evI F) (⇑g) (GlobalTheory.ArchIsom.r0 F (Fin n × Fin d)) ∈ schA F (Fin n × Fin d)` using `fun g => (GlobalTheory.ArchIsom.restriction_at_standard_point _ g).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (fun t : ℝ => ((LinearMap.proj x : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ) ∘ₗ om (k, 1)) (M.co.rho B.ψ (realAd F t • u) (pureA F (⇑f) (GlobalTheory.ArchIsom.g0 F (Fin n × Fin d))))) = fun t => M.heisLine B.ψ (mat k * u) t (tens (evI F) (⇑fk) (GlobalTheory.ArchIsom.r0 F (Fin …`. Use function extensionality and compare the values at `t`. Rewrite using `[LinearMap.comp_apply, LinearMap.proj_apply, ← GlobalTheory.ArchIsom.tensor_at_standard_point, hS.impl (k, 1) _ _ (hmem f), hA _ (GlobalTheory.ArchIsom.restriction_at_standard_point _ f)]`. Establish `hw : actAB (cA σ) ((k, 1) : UA σ X.J × UA σ W.J) (realAd F t • u) = realAd F t • (mat k * u)`. Simplify using `only [actAB, mat, OneMemClass.coe_one, Units.val_one, Matrix.transpose_one, Matrix.mul_one, Matrix.mul_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hw]`. Both sides reduce to the same expression. Establish `hval : ((LinearMap.proj x : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ) ∘ₗ om (k, 1)) (pureA F (⇑(D u f)) (GlobalTheory.ArchIsom.g0 F (Fin n × Fin d))) = h z`. Rewrite using `[LinearMap.comp_apply, LinearMap.proj_apply, hf₁, ← GlobalTheory.ArchIsom.tensor_at_standard_point, hA₁ _ (GlobalTheory.ArchIsom.restriction_at_standard_point _ f₁), tens_split]`. Rewrite `b1` using `[hfun, hval]`.
-
-Establish `b2` using `hD₁ fk _ (GlobalTheory.ArchIsom.restriction_at_standard_point _ fk) x`. Rewrite `b2` using `[tens_split]`. Conclude with `b1.unique b2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KHeisComm.actsD_heisLine_mat_mul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)

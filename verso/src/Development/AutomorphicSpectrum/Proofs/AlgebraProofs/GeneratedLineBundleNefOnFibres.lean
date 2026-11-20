@@ -23,17 +23,17 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv
 open ReciprocityTheory.ChartRestriction.G.AI.I1 GroundTheory.Heights₂.Heights.HilbertSamuel GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D a m w _ _ hw hg W hW hPW hchar hdim`. Set `_ : LinearOrder K` to `LinearOrder.lift' (Fintype.equivFin K) (Fintype.equivFin K).injective`. Set `_ : ∀ k, LinearOrder (ι k)` to `fun k => LinearOrder.lift' (Fintype.equivFin (ι k)) (Fintype.equivFin (ι k)).injective`. Establish `: W.IsPrime` using `hW.1`. Use `set ℓ := charOf W with hℓdef`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hℓ : ℓ.Prime` using `SemiampleNefAlt.charOf_prime hchar`. Establish `: Fact ℓ.Prime` using `⟨hℓ⟩`. Establish `hgen : KH.GeneratedV (ZMod ℓ) (fibreIdeal ℓ y) a` using `(GenOnFibres.proof K ι Ω y _ m w hw hg).2 ℓ hℓ`. Establish `hpW : ((ℓ : ℕ) : MRing ι) ∈ W`. Establish `h` using `GroundTheory.Heights₂.Heights.Inter.C_charOf_mem W`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis. Use `set W' := W.map (NefAmpleFibreAlt.red (ι := ι) ℓ) with hW'def`. Establish `hker` using `NefAmpleFibreAlt.ker_red_le (ι := ι) ℓ hpW`. Establish `hW'proj : IsProjVarF W' 1`. Use `⟨⟨Ideal.map_isPrime_of_surjective (NefAmpleFibreAlt.red_surjective ℓ) hker, NefAmpleFibreAlt.isMultiHomogIdeal_map _ hW.2.1, fun k => ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi⟩` from `hW.2.2 k`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Rewrite using `[← NefAmpleFibreAlt.mem_map_red_iff ℓ hpW]`. Simplify `h` using `[NefAmpleFibreAlt.red]`. Rewrite using `[NefAmpleFibreAlt.ringKrullDim_red ℓ hpW, hdim, add_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : fibreIdeal ℓ y ≤ W'` using `Ideal.map_mono hPW`. Establish `hI` using `GeoNumTarget.isFieldIntersection_intNum (K := K) (ι := ι) ℓ`. Establish `hnef` using `GeneratedNefF.proof (ZMod ℓ) K ι _ (fibreIdeal ℓ y) a hI hgen W' hW'proj hle`. Establish `hgeo` using `geoNumStatement ι ℓ _ hI W 1 (fun _ => a) hW hpW hW'proj`. Rewrite using `[hgeo]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hnef using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nefOnFibres_of_generatesOn :
     ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (D : ℕ)

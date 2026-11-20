@@ -11,11 +11,9 @@ def RRsub : Prop := ∀ {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSpace P
     RR w q ⊆ closure (w.toNormalization.base '' {p : Spec (CommRingCat.of W) | p.asIdeal ≤ q.asIdeal})
 
 /- English proof (translation)
-Establish `h` using `PrimeSpectrum.localization_comap_range (Localization.AtPrime q.asIdeal) q.asIdeal.primeCompl`. Use extensionality with `p`. Express the relevant statement in the definitionally equal form `p ∈ Set.range (PrimeSpectrum.comap (algebraMap W (Localization.AtPrime q.asIdeal))) ↔ _`. Rewrite using `[h]`. Simplify using `only [Set.mem_ofPred_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hd x hx`. Assume the negation of the conclusion as `hq`. Conclude with `Set.disjoint_left.1 hd (show x ∈ (q.asIdeal.primeCompl : Set W) from hq) hx`. Introduce `hle`.
-
-Conclude with `Set.disjoint_left.2 fun x hx hp => hx (hle hp)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem range_spec_atPrime {W : Type} [CommRing W] (q : PrimeSpectrum W) :
     Set.range (Spec.map (CommRingCat.ofHom (algebraMap W (Localization.AtPrime q.asIdeal)))).base =
@@ -33,7 +31,7 @@ theorem range_spec_atPrime {W : Type} [CommRing W] (q : PrimeSpectrum W) :
     exact Set.disjoint_left.2 fun x hx hp => hx (hle hp)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `p ∈ w.toNormalization ⁻¹ᵁ w.normalization.basicOpen s ↔ _`. Rewrite using `[Scheme.preimage_basicOpen_top, AlgebraicGeometry.basicOpen_eq_of_affine']`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_basicOpen_toNorm {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSpace P] {W : Type} [CommRing W]
     (w : Spec (CommRingCat.of W) ⟶ P) (s : Γ(w.normalization, ⊤)) (p : Spec (CommRingCat.of W)) :
@@ -43,7 +41,7 @@ theorem mem_basicOpen_toNorm {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSp
   rfl
 
 /- English proof (translation)
-Establish `h1 : Function.Injective (w.toNormalization.appTop)` using `w.toNormalization.app_injective ⊤`. Establish `h2 : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of W)).hom` using `((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of W)).hom)).1`. Conclude with `h2.comp h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem phi_injective {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSpace P] {W : Type} [CommRing W]
     (w : Spec (CommRingCat.of W) ⟶ P) : Function.Injective (phi w) := by
@@ -53,11 +51,9 @@ theorem phi_injective {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSpace P] 
   exact h2.comp h1
 
 /- English proof (translation)
-Introduce `y hy s hs hsq`. Establish `hid : IsIdempotentElem s` using `phi_injective w (by rw [map_mul]; exact hs.eq)`. Establish `hcl : IsClosed (w.normalization.basicOpen s : Set w.normalization)`. Rewrite using `[← isOpen_compl_iff]`. Establish `: (w.normalization.basicOpen s : Set w.normalization)ᶜ = w.normalization.basicOpen (1 - s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Conclude with `LateralTheory.E.SysFMPfSys.basicOpen_one_sub hid x`. Rewrite using `[this]`. Conclude with `(w.normalization.basicOpen (1 - s)).isOpen`. Use `closure_minimal ?_ hcl hy` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `(mem_basicOpen_toNorm w s p).2 fun h => hsq (hp h)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem closure_sub_RR {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSpace P] {W : Type} [CommRing W]
     (w : Spec (CommRingCat.of W) ⟶ P) (q : PrimeSpectrum W) :
@@ -83,17 +79,15 @@ def QcIdem : Prop := ∀ (W : Type) [CommRing W], ProdACF W → ∀ U : (Spec (C
     p ∈ U ↔ e ∉ p.asIdeal
 
 /- English proof (translation)
-Introduce `P _ _ W _ w hW q y hy`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[mem_closure_iff]`. Use `push Not at hc`. Take `⟨o, ho, hyo, hoT⟩` from `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, hyV, hVo⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 (Scheme.isBasis_affineOpens w.normalization)) (show y ∈ (⟨o, ho⟩ : TopologicalSpace.Opens w.normalization) from hyo)`. Establish `hVc : IsCompact (w.toNormalization ⁻¹ᵁ V : Set (Spec (CommRingCat.of W)))` using `QuasiCompact.isCompact_preimage _ V.isOpen (IsAffineOpen.isCompact hV)`. Take `⟨e, he, hpe⟩` from `hQ W hW _ hVc`. Establish `heq : e ∈ q.asIdeal`. Assume the negation of the conclusion as `hnq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hmem : w.toNormalization q ∈ V` using `(hpe q).2 hnq`. Establish `: w.toNormalization q ∈ o ∩ (w.toNormalization.base '' {p : Spec (CommRingCat.of W) | p.asIdeal ≤ q.asIdeal})` using `⟨hVo hmem, q, show q.asIdeal ≤ q.asIdeal from le_refl _, rfl⟩`. Rewrite `this` using `[hoT]`. Conclude with `this`. Establish `hf : IsIdempotentElem (1 - e)` using `he.one_sub`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfq : (1 - e) ∉ q.asIdeal` using `fun h => q.2.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using q.asIdeal.add_mem heq h))`. Take `⟨s, hs⟩` from `hI W w hW (1 - e) hf`. Establish `hys : y ∈ w.normalization.basicOpen s` using `hy s (by rw [hs]; exact hf) (by rw [hs]; exact hfq)`. Take `⟨_, ⟨hz1, hz2⟩, p, rfl⟩` from `w.toNormalization.denseRange.inter_open_nonempty ((w.normalization.basicOpen s ⊓ V : w.normalization.Opens) : Set w.normalization) (w.normalization.basicOpen s ⊓ V).isOpen ⟨y, hys, hyV⟩`. Establish `h1 : phi w s ∉ p.asIdeal` using `(mem_basicOpen_toNorm w s p).1 hz1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : e ∉ p.asIdeal` using `(hpe p).1 hz2`. Rewrite `h1` using `[hs]`. Establish `: e * (1 - e) ∈ p.asIdeal` using `by rw [mul_sub, mul_one, he.eq, sub_self]; exact p.asIdeal.zero_mem`. Break down `p.2.mem_or_mem this with h | h` into its components or cases. Conclude with `h2 h`.
-
-Conclude with `h1 h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem RRsub_of (hI : IdemLift) (hQ : QcIdem) : RRsub := by
   intro P _ _ W _ w hW q y hy
@@ -129,11 +123,11 @@ theorem RRsub_of (hI : IdemLift) (hQ : QcIdem) : RRsub := by
   · exact h1 h
 
 /- English proof (translation)
-Introduce `P _ _ W _ w hW q m e1 e2`. Use `set a := Spec.map (CommRingCat.ofHom (algebraMap W (Localization.AtPrime q.asIdeal)))`. Establish `: IsIntegralHom (m ≫ w.fromNormalization)` using `by rw [e2]; infer_instance`. Establish `: IsIntegralHom m` using `IsIntegralHom.of_comp m w.fromNormalization`. Establish `hcl : IsClosedMap m.base` using `m.isClosedMap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : closure (Set.range (a ≫ w).toNormalization.base) = Set.univ` using `(a ≫ w).toNormalization.denseRange.closure_range`. Establish `himg : m.base '' Set.range (a ≫ w).toNormalization.base = w.toNormalization.base '' Set.range a.base`. Rewrite using `[← Set.range_comp, ← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[← Scheme.Hom.comp_apply, ← e1, Scheme.Hom.comp_apply]`. Rewrite using `[subset_antisymm (hC W w hW q) (closure_sub_RR w q), ← range_spec_atPrime q, ← Set.image_univ, ← hd, ← hcl.closure_image_eq_of_continuous m.continuous, himg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FMrange_of (hC : RRsub) : FMrange := by
   intro P _ _ W _ w hW q m e1 e2
@@ -154,7 +148,7 @@ theorem FMrange_of (hC : RRsub) : FMrange := by
     ← hcl.closure_image_eq_of_continuous m.continuous, himg]
 
 /- English proof (translation)
-The claim follows from `FMrange_of (RRsub_of hI hQ)`.
+A detailed English derivation is pending.
 -/
 theorem FMrange_of_leaves (hI : IdemLift) (hQ : QcIdem) : FMrange :=
   FMrange_of (RRsub_of hI hQ)

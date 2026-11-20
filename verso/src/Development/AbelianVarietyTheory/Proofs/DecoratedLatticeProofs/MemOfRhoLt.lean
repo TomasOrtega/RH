@@ -19,9 +19,9 @@ Both sides reduce to the same expression.
 theorem rho_apply (G : GLoc v) (z : 𝓞 D.host.E) : rho G z = (ofSplit G.q).pr (z : D.host.E) := rfl
 
 /- English proof (translation)
-Distinguish the cases in `h0 : z = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Establish `h0' : rho G z ≠ 0` using `(map_ne_zero (G.q.pr.comp (incA D))).2 (RingOfIntegers.coe_ne_zero_iff.2 h0)`. Establish `h1` using `(hid.2 z h0).1 hz`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← G.q.sec_pr, ← G.q.int_iff]`. Express the relevant statement in the definitionally equal form `(G.q.pr.comp (incA D)) _ ∉ _ at h1`. Rewrite `h1` using `[map_inv₀, Valuation.mem_integer_iff, map_inv₀, not_le]`. Conclude with `(one_lt_inv₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0'))).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_lt (G : GLoc v) (hid : Formalism.L2.NTheta.IsIdemAt G.q.e PP) {z : 𝓞 D.host.E} (hz : z ∈ PP.asIdeal) :
     valuation G.k (rho G z) < 1 := by
@@ -35,9 +35,9 @@ theorem rho_lt (G : GLoc v) (hid : Formalism.L2.NTheta.IsIdemAt G.q.e PP) {z : �
   exact (one_lt_inv₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0'))).1 h1
 
 /- English proof (translation)
-Distinguish the cases in `h0 : z = 0`. Substitute `h0` using the available equality. Conclude with `zero_mem _`. Establish `h0' : rho G z ≠ 0` using `(map_ne_zero (G.q.pr.comp (incA D))).2 (RingOfIntegers.coe_ne_zero_iff.2 h0)`. Use `(hid.2 z h0).2 ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← G.q.sec_pr, ← G.q.int_iff]`. Express the relevant statement in the definitionally equal form `(G.q.pr.comp (incA D)) _ ∉ _`. Rewrite using `[map_inv₀, Valuation.mem_integer_iff, map_inv₀, not_le]`. Conclude with `(one_lt_inv₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0'))).2 hz`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_rho_lt (G : GLoc v) (hid : Formalism.L2.NTheta.IsIdemAt G.q.e PP) {z : 𝓞 D.host.E}
     (hz : valuation G.k (rho G z) < 1) : z ∈ PP.asIdeal := by
@@ -53,13 +53,13 @@ theorem mem_of_rho_lt (G : GLoc v) (hid : Formalism.L2.NTheta.IsIdemAt G.q.e PP)
 def out (y : Formalism.L2.DIV.kP PP) : 𝓞 D.host.E := Function.surjInv (Ideal.Quotient.mk_surjective (I := PP.asIdeal)) y
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq (Ideal.Quotient.mk_surjective (I := PP.asIdeal)) y`.
+A detailed English derivation is pending.
 -/
 theorem mk_out (y : Formalism.L2.DIV.kP PP) : Ideal.Quotient.mk PP.asIdeal (out y) = y :=
   Function.surjInv_eq (Ideal.Quotient.mk_surjective (I := PP.asIdeal)) y
 
 /- English proof (translation)
-Rewrite using `[← map_sub]`. Use `rho_lt G hid (Ideal.Quotient.eq.1 ?_)` and prove the remaining obligations. Rewrite using `[mk_out, hz]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_sub_lt (G : GLoc v) (hid : Formalism.L2.NTheta.IsIdemAt G.q.e PP) {y : Formalism.L2.DIV.kP PP} {z : 𝓞 D.host.E}
     (hz : Ideal.Quotient.mk PP.asIdeal z = y) : valuation G.k (rho G (out y) - rho G z) < 1 := by
@@ -71,7 +71,7 @@ def pos (G : GLoc v) : Fin D.R.k ⊕ Fin (G.s + 1) ≃ Fin D.R.r :=
   finSumFinEquiv.trans (finCongr (by have := G.hs; unfold Ranks.r; omega))
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pos_val (G : GLoc v) (a : Fin D.R.k ⊕ Fin (G.s + 1)) : (pos G a).val = GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos _ _ a := by
   rcases a with a | a <;> rfl
@@ -81,9 +81,9 @@ def lift (G : GLoc v) (g : Matrix (Fin D.R.r) (Fin D.R.r) (Formalism.L2.DIV.kP P
   fun a b => rho G (out (g (pos G a) (pos G b)))
 
 /- English proof (translation)
-Introduce `a b`. Establish `e : (lift G (1 : Matrix (Fin D.R.r) (Fin D.R.r) (Formalism.L2.DIV.kP PP)) - 1) a b = rho G (out ((1 : Matrix (Fin D.R.r) (Fin D.R.r) (Formalism.L2.DIV.kP PP)) (pos G a) (pos G b))) - rho G (if a = b then 1 else 0)`. Simplify using `only [Matrix.sub_apply, lift, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `rho_sub_lt G hid ?_` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, (pos G).injective.eq_iff]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_one (G : GLoc v) (hid : Formalism.L2.NTheta.IsIdemAt G.q.e PP) :
     MaxM (lift G (1 : Matrix (Fin D.R.r) (Fin D.R.r) (Formalism.L2.DIV.kP PP)) - 1) := by
@@ -99,11 +99,11 @@ theorem lift_one (G : GLoc v) (hid : Formalism.L2.NTheta.IsIdemAt G.q.e PP) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a b`. Use `h a b (pos G a) (pos G b) (pos_val G a) (pos_val G b) _ (mk_out _)` as an intermediate fact. Simplify `this` using `only [Matrix.sub_apply, lift, rho_apply]`. Introduce `h a b a' b' ha hb z hz`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `rfl : a' = pos G a` from `Fin.ext (ha.trans (pos_val G a).symm)`. Take `rfl : b' = pos G b` from `Fin.ext (hb.trans (pos_val G b).symm)`. Establish `e : (x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val a b - (ofSplit G.q).pr (z : D.host.E) = ((x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - lift G g.val) a b + (rho G (out (g.val (pos G a) (pos G b))) - rho G z)`. Simplify using `only [Matrix.sub_apply, lift, rho_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `Valuation.map_add_lt _ (h a b) (rho_sub_lt G hid hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_iff (G : GLoc v) (hid : Formalism.L2.NTheta.IsIdemAt G.q.e PP) (x : G.S.P.J) (g : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP)) :
     GlobalTheory.LevZero.Red G PP x g ↔ MaxM ((x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - lift G g.val) := by
@@ -121,14 +121,14 @@ theorem red_iff (G : GLoc v) (hid : Formalism.L2.NTheta.IsIdemAt G.q.e PP) (x : 
     exact Valuation.map_add_lt _ (h a b) (rho_sub_lt G hid hz)
 
 /- English proof (translation)
-The claim follows from `mem_KO.1 (G.S.P.le_KO x.2)`.
+A detailed English derivation is pending.
 -/
 theorem intM_J (G : GLoc v) (x : G.S.P.J) : IntM (x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val ∧
     IntM ((x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k)⁻¹).val :=
   mem_KO.1 (G.S.P.le_KO x.2)
 
 /- English proof (translation)
-Rewrite using `[red_iff G hid]`. Use `(lift_one G hid).neg` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem red_one (G : GLoc v) (hid : Formalism.L2.NTheta.IsIdemAt G.q.e PP) : GlobalTheory.LevZero.Red G PP 1 1 := by
   rw [red_iff G hid]
@@ -136,13 +136,13 @@ theorem red_one (G : GLoc v) (hid : Formalism.L2.NTheta.IsIdemAt G.q.e PP) : Glo
   simpa using this
 
 /- English proof (translation)
-Rewrite `hx`, `hx'` using `[red_iff G hid]`. Use `set X := (x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k) with hX`. Use `set X' := (x' : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k) with hX'`. Establish `h1 : MaxM ((X⁻¹ * X').val - 1)` using `mem_KOne.1 hk`. Establish `h2 : MaxM (lift G g'.val - lift G g.val)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : lift G g'.val - lift G g.val = (X.val - lift G g.val) + -(X'.val - lift G g'.val) + X.val * ((X⁻¹ * X').val - 1)`. Rewrite using `[Matrix.mul_sub, Units.val_mul, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `(hx.add hx'.neg).add ((intM_J G x).1.mul_maxM h1)`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Units.ext (Matrix.ext fun a' b' => ?_)` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(pos G).surjective a'`. Take `⟨b, rfl⟩` from `(pos G).surjective b'`. Establish `h3 : valuation G.k (rho G (out (g'.val (pos G a) (pos G b)) - out (g.val (pos G a) (pos G b)))) < 1`. Rewrite using `[map_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h2 a b` using `only [Matrix.sub_apply, lift]`. Establish `h4` using `Ideal.Quotient.eq.2 (mem_of_rho_lt G hid h3)`. Rewrite `h4` using `[mk_out, mk_out]`. Conclude with `h4.symm`.
+A detailed English derivation is pending.
 -/
 theorem red_uniq (G : GLoc v) (hid : Formalism.L2.NTheta.IsIdemAt G.q.e PP) {x x' : G.S.P.J} {g g' : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP)}
     (hx : GlobalTheory.LevZero.Red G PP x g) (hx' : GlobalTheory.LevZero.Red G PP x' g')
@@ -171,7 +171,7 @@ theorem red_uniq (G : GLoc v) (hid : Formalism.L2.NTheta.IsIdemAt G.q.e PP) {x x
 end GlobalTheory.LevZeroUniq
 
 /- English proof (translation)
-Introduce `D c v G PP hid`. Conclude with `⟨GlobalTheory.LevZeroUniq.red_one G hid, fun x x' g g' hx hx' hk => GlobalTheory.LevZeroUniq.red_uniq G hid hx hx' hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.LevZeroUniq.main : ∀ {D : D7} {c : Comm D} {v : VCom c} (G : GLoc v) (PP : Formalism.L2.DIV.Pl D.host.E), Formalism.L2.NTheta.IsIdemAt G.q.e PP → GlobalTheory.LevZero.Red G PP 1 1 ∧ ∀ (x x' : G.S.P.J) (g g' : GL (Fin D.R.r) (kP PP)), GlobalTheory.LevZero.Red G PP x g → GlobalTheory.LevZero.Red G PP x' g' → x.1⁻¹ * x'.1 ∈ GlobalTheory.SplitWeil.KOne G.k (Fin D.R.k ⊕ Fin (G.s + 1)) → g = g' := by
   intro D c v G PP hid

@@ -17,15 +17,15 @@ theorem localIdele_eq_locM {E : Type} [Field E] [NumberField E] (v : HeightOneSp
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ χ h hχ v`. Establish `hloc : ∀ x : (v.adicCompletion E)ˣ, χ.loc v x = h.χ (Units.map (Formalism.L2.NC.locM v) x)`. Introduce `x`. Rewrite using `[hχ, ← localIdele_eq_locM]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hiff : χ.UnrAt v ↔ h.Unr v`. Prove the components needed by the constructor for the conclusion. Introduce `hu u hu1`. Rewrite using `[← hloc]`. Conclude with `hu u hu1`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hu u hu1`. Rewrite using `[hloc]`. Conclude with `hu u hu1`. Use `⟨fun hu => ⟨hiff.1 hu, fun ϖ hϖ => ?_⟩, hiff⟩` and prove the remaining obligations. Establish `hs` using `unif_spec v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `IsUnifAt at hs`. Establish `hq : IsUnitAt v (ϖ * (atFin v (unif v))⁻¹)`. Unfold `IsUnitAt`. Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, hs, hϖ, mul_inv_cancel₀ (WithZero.exp_ne_zero)]`. Establish `h1` using `hu _ hq`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[map_mul, map_inv, mul_inv_eq_one]`. Rewrite using `[← hloc, h1]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem at_val_and_unr_iff : ∀ {E : Type} [Field E] [NumberField E] (χ : HChar E) (h : Formalism.L2.NC.HC E), h.χ = (χ : Ideles E →* ℂˣ) → ∀ (v : HeightOneSpectrum (𝓞 E)), (χ.UnrAt v → h.At v (χ.val v)) ∧ (χ.UnrAt v ↔ h.Unr v) := by
   intro E _ _ χ h hχ v

@@ -15,7 +15,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `e : {p : Fin r × Fin r // p.2 < p.1} ≃ Σ a : Fin r, Finset.Iio a` using `{ toFun := fun p => ⟨p.1.1, p.1.2, Finset.mem_Iio.2 p.2⟩ invFun := fun x => ⟨(x.1, x.2.1), Finset.mem_Iio.1 x.2.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Rewrite using `[Fintype.card_congr e, Fintype.card_sigma]`. Simplify using `only [Fintype.card_coe, Fin.card_Iio]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => i) r, Finset.sum_range_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_strictLower (r : ℕ) : Fintype.card {p : Fin r × Fin r // p.2 < p.1} = r * (r - 1) / 2 := by
   have e : {p : Fin r × Fin r // p.2 < p.1} ≃ Σ a : Fin r, Finset.Iio a :=
@@ -28,18 +28,18 @@ theorem card_strictLower (r : ℕ) : Fintype.card {p : Fin r × Fin r // p.2 < p
   rw [Fin.sum_univ_eq_sum_range (fun i => i) r, Finset.sum_range_id]
 
 /- English proof (translation)
-Unfold `nd dimFl`. Rewrite using `[Fintype.card_prod, card_strictLower, QuadraticCoefficientForms.card_Psi]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nd_eq_dimFl (X : Data E r) : nd X = dimFl E r := by
   unfold nd dimFl
   rw [Fintype.card_prod, card_strictLower, QuadraticCoefficientForms.card_Psi]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ a b`. Establish `h1 : mat (nmat X 0) τ = 1`. Use extensionality with `i j`. Simplify using `only [mat, nmat, Matrix.of_apply, Matrix.one_apply]`. Distinguish the cases in `h : j < i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos h, if_neg (ne_of_gt h)]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h]`. Use `show (mat x0 τ * mat (nmat X 0) τ) a b = x0 τ a b`. Rewrite using `[h1, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cpt_zero (X : Data E r) (x0 : Frame X.Ψ r) : cpt X x0 0 = x0 := by
   funext τ a b
@@ -55,11 +55,11 @@ theorem cpt_zero (X : Data E r) (x0 : Frame X.Ψ r) : cpt X x0 0 = x0 := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[differentiable_pi]`. Introduce `τ`. Rewrite using `[differentiable_pi]`. Introduce `a`. Rewrite using `[differentiable_pi]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Simplify using `only [cpt, rmul, mat, Matrix.mul_apply, Matrix.of_apply]`. Use `Differentiable.fun_sum fun k _ => Differentiable.const_mul ?_ _` and prove the remaining obligations. Distinguish the cases in `h : b < k`. Simplify using `only [nmat, dif_pos h] fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [nmat, dif_neg h]`. Conclude with `differentiable_const _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_cpt (X : Data E r) (x0 : Frame X.Ψ r) : Differentiable ℂ (cpt X x0) := by
   rw [differentiable_pi]; intro τ
@@ -74,7 +74,7 @@ theorem differentiable_cpt (X : Data E r) (x0 : Frame X.Ψ r) : Differentiable �
     exact differentiable_const _
 
 /- English proof (translation)
-Unfold `dmin lminor`. Rewrite using `[hx τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal, norm_prod]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, sgn]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_dmin_of_orth (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) (i : Fin (r + 1)) :
     ‖dmin X.Gm x τ i‖ = 1 := by
@@ -85,7 +85,7 @@ theorem norm_dmin_of_orth (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (�
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Data.nfac`. Use `Finset.prod_eq_one fun τ _ => Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_div, norm_dmin_of_orth X hx, norm_dmin_of_orth X hx, div_one, Real.one_rpow]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem nfac_of_orth (X : Data E r) (la : Wt X.Ψ r) {x : Frame X.Ψ r} (hx : IsOrth X x) : X.nfac la x = 1 := by
   unfold Data.nfac
@@ -99,7 +99,7 @@ theorem pnorm_eq (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x :
     X.pnorm la P x = ‖P x‖ * X.nfac la x := rfl
 
 /- English proof (translation)
-Unfold `Data.spread`. Establish `i : Fin r` using `⟨0, hr⟩`. Establish `h1` using `ciInf_le (Set.finite_range fun i => (la τ i : ℝ)).bddBelow i`. Establish `h2` using `le_ciSup (Set.finite_range fun i => (la τ i : ℝ)).bddAbove i`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem spread_nonneg (X : Data E r) (la : Wt X.Ψ r) (hr : 0 < r) (τ : X.Ψ) : 0 ≤ X.spread la τ := by
   unfold Data.spread
@@ -109,7 +109,7 @@ theorem spread_nonneg (X : Data E r) (la : Wt X.Ψ r) (hr : 0 < r) (τ : X.Ψ) :
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ w` using `le_trans (Finset.sum_nonneg fun τ _ => spread_nonneg X la hr τ) hw`. Establish `hf : (0 : ℝ) < fdeg E` using `by exact_mod_cast (QuadraticCoefficientForms.card_Psi X) ▸ QuadraticCoefficientForms.card_Psi_pos X`. Establish `hr' : (0 : ℝ) < r` using `by exact_mod_cast hr`. Unfold `chartRad`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem chartRad_pos (X : Data E r) (la : Wt X.Ψ r) {w : ℝ} (hr : 0 < r) (hw : (∑ τ, X.spread la τ) ≤ w) :
     0 < chartRad E r w := by
@@ -127,27 +127,23 @@ namespace GlobalTheory.SubmeanChart
 noncomputable section
 
 /- English proof (translation)
-Introduce `E _ _ _ r X la w x P hr hx hw hP`. Use `set ρ := chartRad E r w with hρdef`. Establish `hρ : 0 < ρ` using `chartRad_pos X la hr hw`. Establish `hch` using `GlobalTheory.T.normFactor_and_density_near_one_in_flagChart E r X la w x hr hx hw`. Use `set φ : V (nd X) → ℂ := fun z => P (cpt X x z) with hφdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : DifferentiableOn ℂ φ (Metric.ball 0 ρ)` using `hP.comp (differentiable_cpt X x).differentiableOn fun z hz => (hch z (le_of_lt (mem_ball_zero_iff.1 hz))).1`. Establish `hsub` using `GlobalTheory.enorm_pow_le_inv_measure_mul_lintegral_ball (volume : Measure (V (nd X))) (a := 0) hρ hφ 2`. Establish `hne : ENNReal.ofReal (Real.pi ^ nd X * ρ ^ (2 * nd X) / ((nd X).factorial : ℝ)) = ENNReal.ofReal (Real.pi ^ dimFl E r * ρ ^ (2 * dimFl E r) / ((dimFl E r).factorial : ℝ))`. Rewrite using `[nd_eq_dimFl]`. Rewrite `hsub` using `[GlobalTheory.volume_ball_euclideanSpace_complex (0 : V (nd X)) hρ, Fintype.card_fin, hne]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set D := dimFl E r with hD`. Establish `h1 : ∫⁻ z in Metric.ball (0 : V (nd X)) ρ, ‖φ z‖ₑ ^ 2 ≤ ENNReal.ofReal (Real.exp (1 / 20)) * ∫⁻ z in Metric.ball (0 : V (nd X)) ρ, ENNReal.ofReal (X.pnorm la P (cpt X x z) ^ 2)`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `setLIntegral_mono' measurableSet_ball fun z hz => ?_` and prove the remaining obligations. Take `⟨-, hn, -⟩` from `hch z (le_of_lt (mem_ball_zero_iff.1 hz))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le, ← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[pnorm_eq, mul_pow]`. Establish `he : 1 ≤ Real.exp (1 / 20) * X.nfac la (cpt X x z) ^ 2`. Use `mul_le_mul_of_nonneg_left hn (Real.exp_pos (1 / 20)).le` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `this` using `[← Real.exp_add, show (1 / 20 : ℝ) + -(1 / 20) = 0 by norm_num, Real.exp_zero]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Establish `hμ : ENNReal.ofReal (Real.exp (-(1 / 10))) • (volume.restrict (Metric.ball (0 : V (nd X)) ρ)) ≤ (muF X x).restrict (Metric.ball 0 ρ)`. Establish `hb : Metric.ball (0 : V (nd X)) ρ ∩ OmF X x = Metric.ball 0 ρ` using `Set.inter_eq_left.2 fun z hz => (hch z (le_of_lt (mem_ball_zero_iff.1 hz))).1`. Rewrite using `[muF, restrict_withDensity measurableSet_ball, Measure.restrict_restrict measurableSet_ball, hb, ← withDensity_const]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `withDensity_mono (ae_restrict_of_forall_mem measurableSet_ball fun z hz => ?_)` and prove the remaining obligations. Conclude with `ENNReal.ofReal_le_ofReal (hch z (le_of_lt (mem_ball_zero_iff.1 hz))).2.2`. Establish `h2 : ∫⁻ z in Metric.ball (0 : V (nd X)) ρ, ENNReal.ofReal (X.pnorm la P (cpt X x z) ^ 2) ≤ ENNReal.ofReal (Real.exp (1 / 10)) * ∫⁻ z in Metric.ball (0 : V (nd X)) ρ, ENNReal.ofReal (X.pnorm la P (cpt X x z) ^ 2) ∂(muF X x)`. Establish `h3` using `lintegral_mono' hμ (le_refl (fun z => ENNReal.ofReal (X.pnorm la P (cpt X x z) ^ 2)))`. Rewrite `h3` using `[lintegral_smul_measure, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add, show (1 / 10 : ℝ) + -(1 / 10) = 0 by norm_num, Real.exp_zero, ENNReal.ofReal_one, one_mul]`. Use `_ ≤ _ := by gcongr`. Establish `h0 : ENNReal.ofReal (X.pnorm la P x ^ 2) = ‖φ 0‖ₑ ^ 2`. Rewrite using `[pnorm_eq, nfac_of_orth X la hx, mul_one, show φ 0 = P x by simp only [hφdef, cpt_zero], ← ofReal_norm, ENNReal.ofReal_pow (norm_nonneg _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hvol : (ENNReal.ofReal (Real.pi ^ D * ρ ^ (2 * D) / (D.factorial : ℝ)))⁻¹ = ENNReal.ofReal ((D.factorial : ℝ) / (Real.pi * ρ ^ 2) ^ D)`. Rewrite using `[← ENNReal.ofReal_inv_of_pos (by positivity), inv_div, mul_pow, ← pow_mul, mul_comm 2 D]`. Establish `hexp : Real.exp (1 / 20) * Real.exp (1 / 10) ≤ 2`. Rewrite using `[← Real.exp_add]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hc : ENNReal.ofReal ((D.factorial : ℝ) / (Real.pi * ρ ^ 2) ^ D) * (ENNReal.ofReal (Real.exp (1 / 20)) * ENNReal.ofReal (Real.exp (1 / 10))) ≤ ENNReal.ofReal (2 * (D.factorial : ℝ) / (Real.pi * ρ ^ 2) ^ D)`. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le, ← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hq : 0 ≤ (D.factorial : ℝ) / (Real.pi * ρ ^ 2) ^ D` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[h0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hvol]`. Use `gcongr`. Conclude with `h1.trans (by gcongr)`.
-
-Use `_ = (ENNReal.ofReal ((D.factorial : ℝ) / (Real.pi * ρ ^ 2) ^ D) * (ENNReal.ofReal (Real.exp (1 / 20)) * ENNReal.ofReal (Real.exp (1 / 10)))) * ∫⁻ z in Metric.ball (0 : V (nd X)) ρ, ENNReal.ofReal (X.pnorm la P (cpt X x z) ^ 2) ∂(muF X x) := by`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem submean_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (w : ℝ) (x : Frame X.Ψ r) (P : Frame X.Ψ r → ℂ), 0 < r → IsOrth X x → (∑ τ, X.spread la τ) ≤ w → DifferentiableOn ℂ P X.dom → ENNReal.ofReal (X.pnorm la P x ^ 2) ≤ ENNReal.ofReal (2 * ((dimFl E r).factorial : ℝ) / (Real.pi * chartRad E r w ^ 2) ^ dimFl E r) * ∫⁻ z in Metric.ball (0 : V (nd X)) (chartRad E r w), ENNReal.ofReal (X.pnorm la P (cpt X x z) ^ 2) ∂(muF X x) := by
   intro E _ _ _ r X la w x P hr hx hw hP

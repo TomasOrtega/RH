@@ -75,12 +75,12 @@ def Z1 (h : k[X]) (ρ : Representation ℚ_[l] (Gal k) V) : Submodule ℚ_[l] (g
 def cj (σ : Gal k) (g : geo k) : geo k := ⟨σ⁻¹ * g * σ, (geo_normal k).conj_mem' _ g.2 σ⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [cj, mul_assoc])`.
+A detailed English derivation is pending.
 -/
 theorem cj_mul (σ : Gal k) (g g' : geo k) : cj σ (g * g') = cj σ g * cj σ g' := Subtype.ext (by simp [cj, mul_assoc])
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Simplify using `[cj, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rho_cj (ρ : Representation ℚ_[l] (Gal k) V) (σ : Gal k) (g : geo k) (v : V) :
     ρ σ (ρ (cj σ g) v) = ρ g (ρ σ v) := by

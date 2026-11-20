@@ -8,7 +8,7 @@ open scoped Kronecker
 namespace GlobalTheory.FlagFibre
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨a, b⟩`. Simplify using `only [Formalism.MJ.vecOf, Matrix.toLin'_apply, mulVec, dotProduct, Fintype.sum_prod_type, Matrix.mul_apply, kroneckerMap_apply, transpose_apply, toMat, of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecOf_mul_toMat_mul {p q : ℕ} (R : Matrix (Fin p) (Fin p) ℂ) (T : Matrix (Fin q) (Fin q) ℂ)
     (v : Fin p × Fin q → ℂ) : Formalism.MJ.vecOf (R * toMat v * T) = Matrix.toLin' (R ⊗ₖ Tᵀ) v := by
@@ -19,13 +19,13 @@ theorem vecOf_mul_toMat_mul {p q : ℕ} (R : Matrix (Fin p) (Fin p) ℂ) (T : Ma
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Introduce `p q R T C hR hT f hf`. Use `set Lr : (Fin p × Fin q → ℂ) →ₗ[ℝ] (Fin p × Fin q → ℂ) := (Matrix.toLin' (R ⊗ₖ Tᵀ)).restrictScalars ℝ with hLr`. Establish `hdet : LinearMap.det Lr = Complex.normSq R.det ^ q * Complex.normSq T.det ^ p`. Rewrite using `[hLr, LinearMap.det_restrictScalars, Algebra.norm_complex_apply, LinearMap.det_toLin', det_kronecker, det_transpose]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpos : 0 < Complex.normSq R.det ^ q * Complex.normSq T.det ^ p` using `mul_pos (pow_pos (Complex.normSq_pos.2 hR.ne_zero) _) (pow_pos (Complex.normSq_pos.2 hT.ne_zero) _)`. Establish `hdet0 : LinearMap.det Lr ≠ 0` using `by rw [hdet]; exact hpos.ne'`. Establish `hLm : Measurable Lr` using `(LinearMap.continuous_of_finiteDimensional Lr).measurable`. Establish `hg : Measurable fun w : Fin p × Fin q → ℂ => f (w + Formalism.MJ.vecOf C)` using `hf.comp (measurable_add_const _)`. Establish `e1 : ∫⁻ v : Fin p × Fin q → ℂ, f (Formalism.MJ.vecOf (R * toMat v * T + C)) = ∫⁻ w, f (w + Formalism.MJ.vecOf C) ∂(Measure.map Lr volume)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_map hg hLm]`. Use `lintegral_congr fun v => ?_` and prove the remaining obligations. Establish `: Formalism.MJ.vecOf (R * toMat v * T + C) = Formalism.MJ.vecOf (R * toMat v * T) + Formalism.MJ.vecOf C` using `rfl`. Rewrite using `[this, vecOf_mul_toMat_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[Measure.map_linearMap_addHaar_eq_smul_addHaar volume hdet0, lintegral_smul_measure, hdet, abs_of_nonneg (inv_nonneg.2 hpos.le), smul_eq_mul, lintegral_add_right_eq_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_affine :
     ∀ (p q : ℕ) (R : Matrix (Fin p) (Fin p) ℂ) (T : Matrix (Fin q) (Fin q) ℂ) (C : Matrix (Fin p) (Fin q) ℂ), IsUnit R.det → IsUnit T.det → ∀ f : (Fin p × Fin q → ℂ) → ℝ≥0∞, Measurable f → ∫⁻ v : Fin p × Fin q → ℂ, f (vecOf (R * toMat v * T + C)) = ENNReal.ofReal ((Complex.normSq R.det ^ q * Complex.normSq T.det ^ p)⁻¹) * ∫⁻ v, f v := by

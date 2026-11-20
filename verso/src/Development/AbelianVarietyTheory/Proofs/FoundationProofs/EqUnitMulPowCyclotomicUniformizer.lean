@@ -9,9 +9,9 @@ open scoped NNReal
 namespace GlobalTheory.K5.UnitPow
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ hclo T b hb hb0`. Take `⟨n, ι, w, hn, hemb, hw, hmem⟩` from `GlobalTheory.T.exists_level_emb_of_mem_adjoin_zeta_qq p Ω hclo T b hb`. Take `⟨hdom, hdvr, hirr⟩` from `GlobalTheory.T.isDiscreteValuationRing_cyclotomicTowerLevel p n hn`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hb0 (by rw [← hw, map_zero])`. Take `⟨k, ε, hε⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hw0 hirr`. Use `⟨n, k, hn, ι (ε : On p n), hmem _, ι ((ε⁻¹ : (On p n)ˣ) : On p n), hmem _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite using `[← hw, hε, map_mul, map_pow, map_sub, map_one, hemb.1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_unit_mul_pow : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω → ∀ (T : Tower p Ω), ∀ b ∈ Algebra.adjoin (O0 p) (Set.range T.ζ ∪ Set.range T.qq), b ≠ 0 → ∃ (n k : ℕ), 1 ≤ n ∧ ∃ u ∈ Algebra.adjoin (O0 p) (Set.range T.ζ ∪ Set.range T.qq), ∃ u' ∈ Algebra.adjoin (O0 p) (Set.range T.ζ ∪ Set.range T.qq), u * u' = 1 ∧ b = u * (T.ζ n - 1) ^ k := by
   intro p _ Ω _ _ hclo T b hb hb0

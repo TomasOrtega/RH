@@ -8,11 +8,11 @@ set_option autoImplicit false
 namespace GlobalTheory.SiegelAction
 
 /- English proof (translation)
-Introduce `E _ _ g B τ γ hP b hb`. Break down `Nat.eq_zero_or_pos g with rfl | hg` into its components or cases. Conclude with `isUnit_of_subsingleton _`. Assume the negation of the conclusion as `h`. Establish `hdet : ¬ IsUnit (den γ (τ b)).det` using `fun hd => h ((Matrix.isUnit_iff_isUnit_det _).2 hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : (den γ (τ b))⁻¹ = 0` using `Matrix.nonsing_inv_apply_not_isUnit _ hdet`. Establish `hS : GlobalTheory.IsSiegel (moeb γ (τ b))` using `hP.2.2 b hb`. Establish `h0 : moeb γ (τ b) = 0` using `by simp [moeb, hinv]`. Rewrite `hS` using `[h0]`. Establish `hpd` using `hS.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `i : Fin g` to `⟨0, hg⟩`. Establish `hx : (Finsupp.single i (1 : ℝ)) ≠ 0` using `Finsupp.single_ne_zero.2 one_ne_zero`. Use `hpd.2 hx` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem den_isUnit_of_isPeriodMap : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ} (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (γ : Sp g), IsPeriodMap B (fun b => moeb γ (τ b)) → ∀ b ∈ B, IsUnit (den γ (τ b)) := by
   intro E _ _ g B τ γ hP b hb

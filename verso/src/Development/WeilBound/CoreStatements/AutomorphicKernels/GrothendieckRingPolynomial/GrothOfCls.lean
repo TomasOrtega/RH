@@ -14,9 +14,9 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.GrothendieckRingP
 namespace PositivityTheory.Groth
 
 /- English proof (translation)
-Use `groth_of_steps (fun k _ _ _ _ => ?_) triAut uniTri` and prove the remaining obligations. Establish `hc` using `H k`. Establish `hm` using `mulCls k`. Establish `ha` using `assoc k hm`. Establish `hco` using `comm k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho` using `one k`. Establish `hp` using `prodList k hm`. Conclude with `⟨hc, hm, ha, hco, ho, hp, tri k hc, multOne k hc hm ha hco ho hp, jCls k, jSeg k, altSum k⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem groth_of_cls (H : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], Cls k) :
     GlobalTheory.Published.GrothendieckRingPolynomial := by

@@ -15,15 +15,15 @@ noncomputable section
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Set `f : J →ₗ[R] R` to `J.subtype`. Set `g : R →ₗ[R] R` to `LinearMap.mulLeft R t`. Establish `ex : Function.Exact f g`. Introduce `y`. Express the relevant statement in the definitionally equal form `t * y = 0 ↔ y ∈ Set.range f`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[_root_.mul_comm, ← hJ]`. Conclude with `⟨fun hy ↦ ⟨⟨y, hy⟩, rfl⟩, fun ⟨x, hx⟩ ↦ hx ▸ x.2⟩`. Establish `ex'` using `Module.Flat.lTensor_exact S ex`. Establish `h0 : g.lTensor S (b ⊗ₜ[R] (1 : R)) = 0`. Rewrite using `[LinearMap.lTensor_tmul]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `b ⊗ₜ[R] (t * 1) = 0`. Rewrite using `[_root_.mul_one, ← _root_.mul_one t, ← smul_eq_mul, ← TensorProduct.smul_tmul, hb, TensorProduct.zero_tmul]`. Take `⟨y, hy⟩` from `(ex' _).1 h0`. Establish `key : ∀ y : S ⊗[R] J, TensorProduct.rid R S (f.lTensor S y) ∈ J.map (algebraMap R S)`. Introduce `y`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s j`. Rewrite using `[LinearMap.lTensor_tmul, TensorProduct.rid_tmul, Algebra.smul_def]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ j.2)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x z hx hz => rw [map_add, map_add]`. Conclude with `add_mem hx hz`. Use `key y` as an intermediate fact. Rewrite `this` using `[hy, TensorProduct.rid_tmul, _root_.one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_map_of_smul_eq_zero_of_flat {R S : Type} [CommRing R] [CommRing S] [Algebra R S]
     [Module.Flat R S] (t : R) (J : Ideal R) (hJ : ∀ a, a ∈ J ↔ a * t = 0) (b : S) (hb : t • b = 0) :
@@ -54,9 +54,9 @@ theorem mem_map_of_smul_eq_zero_of_flat {R S : Type} [CommRing R] [CommRing S] [
   rwa [hy, TensorProduct.rid_tmul, _root_.one_smul] at this
 
 /- English proof (translation)
-Use `⟨fun hb ↦ ?_, mem_map_of_smul_eq_zero_of_flat t J hJ b⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_mul, _root_.mul_comm, (hJ a).1 ha, map_zero]`. Consider the case `zero => exact MulZeroClass.mul_zero _`. Consider the case `add x y _ _ hx hy => rw [_root_.mul_add, hx, hy, _root_.add_zero]`. Consider the case `smul a x _ hx => rw [smul_eq_mul, _root_.mul_left_comm, hx, MulZeroClass.mul_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mem_map_ann_iff {R S : Type} [CommRing R] [CommRing S] [Algebra R S] [Module.Flat R S]
     (t : R) (J : Ideal R) (hJ : ∀ a, a ∈ J ↔ a * t = 0) (b : S) :
@@ -72,7 +72,7 @@ theorem mem_map_ann_iff {R S : Type} [CommRing R] [CommRing S] [Algebra R S] [Mo
   | smul a x _ hx => rw [smul_eq_mul, _root_.mul_left_comm, hx, MulZeroClass.mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩; exact ⟨a, by rw [Algebra.smul_def, _root_.mul_comm]⟩`. Introduce and unpack `⟨c, rfl⟩; exact ⟨c, by rw [Algebra.smul_def, _root_.mul_comm]⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 -/
 theorem mem_map_span_singleton_iff {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (t : R) (b : S) :
     b ∈ (Ideal.span {t}).map (algebraMap R S) ↔ ∃ c : S, b = t • c := by
@@ -86,9 +86,9 @@ end GlobalTheory.AbCoh
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R R' R₀ _ _ _ t σ σ₀ X X' X₀ s s' s₀ φ φ₀ h h₀ _ _ hE hF U`. Take `⟨hσ, hk, hσ₀, hk₀⟩` from `hE`. Establish `A` using `secPull_surjective_and_ker R R' (Ideal.span {t}) σ hσ hk X' X s' s φ h (prePair φ U.unop) rfl`. Establish `B` using `secPull_surjective_and_ker R R₀ (RingHom.ker σ₀) σ₀ hσ₀ rfl X₀ X s₀ s φ₀ h₀ (prePair φ₀ U.unop) rfl`. Use `haveI : Flat s := hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfl : (algebraMap R (Sec s U.unop.1)).Flat`. Express the relevant statement in the definitionally equal form `((s.appLE ⊤ U.unop.1 le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom).Flat`. Conclude with `RingHom.Flat.comp (RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv)) (Flat.flat_appLE s (isAffineOpen_top _) U.unop.2 le_top)`. Use `haveI : Module.Flat R (Sec s U.unop.1) := hfl`. Conclude with `⟨A.1, fun b ↦ (A.2 b).trans (mem_map_span_singleton_iff t b), B.1, fun b ↦ (B.2 b).trans (mem_map_ann_iff t _ (fun a ↦ RingHom.mem_ker.trans (hk₀ a)) b)⟩`.
+Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem preα_surjective_and_ker : ∀ (R R' R₀ : Type) [CommRing R] [CommRing R'] [CommRing R₀] (t : R) (σ : R →+* R') (σ₀ : R →+* R₀) (X X' X₀ : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (s₀ : X₀ ⟶ Sp R₀) (φ : X' ⟶ X) (φ₀ : X₀ ⟶ X) (h : IsPullback φ s' s (spMap σ)) (h₀ : IsPullback φ₀ s₀ s (spMap σ₀)) [IsAffineHom φ] [IsAffineHom φ₀], SmallExt t σ σ₀ → Flat s → ∀ U : AffOp X, Function.Surjective (preα φ s s' U) ∧ (∀ b, preα φ s s' U b = 0 ↔ ∃ c, b = t • c) ∧ Function.Surjective (preα φ₀ s s₀ U) ∧ ∀ b : (OAff s).obj U, preα φ₀ s s₀ U b = 0 ↔ t • b = 0 := by
   intro R R' R₀ _ _ _ t σ σ₀ X X' X₀ s s' s₀ φ φ₀ h h₀ _ _ hE hF U

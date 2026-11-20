@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.IdemSingleSum
 
 /- English proof (translation)
-Repeatedly rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ S'`. Rewrite using `[if_pos hi, Finset.sum_eq_single_of_mem i hi fun j _ hji => horth i j (Ne.symm hji), hid]`.
+Rewrite the conclusion repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hi]`. Conclude with `Finset.sum_eq_zero fun j hj => horth i j fun hij => hi (by rw [hij]; exact hj)`. Use `_ = ∑ i ∈ S ∩ S', f i := Finset.sum_ite_mem S S' f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_mul_sum_orth {R ι : Type} [Ring R] [DecidableEq ι] (f : ι → R) (hid : ∀ i, f i * f i = f i)
     (horth : ∀ i j, i ≠ j → f i * f j = 0) (S S' : Finset ι) :
@@ -32,7 +32,7 @@ theorem sum_mul_sum_orth {R ι : Type} [Ring R] [DecidableEq ι] (f : ι → R) 
     _ = ∑ i ∈ S ∩ S', f i := Finset.sum_ite_mem S S' f
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `h`. Simplify using `using hes w (Finset.mem_singleton_self w)`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isIdemAt_of_single {D : D7} {a : AE D} {w : Pl D.host.E} (h : IsIdemSum a {w}) :
     Formalism.L2.NTheta.IsIdemAt a w := by
@@ -40,7 +40,7 @@ theorem isIdemAt_of_single {D : D7} {a : AE D} {w : Pl D.host.E} (h : IsIdemSum 
   simpa using hes w (Finset.mem_singleton_self w)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.PartialIdemSum.mul_sum_of_isIdemAt hx {w} (fun _ => x) (by simpa using hx)`. Simplify `h` using `only [Finset.sum_singleton, Finset.mem_singleton_self, if_true]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mul_self_eq_of_isIdemAt {D : D7} {x : AE D} {w : Formalism.L2.DIV.Pl D.host.E}
     (hx : Formalism.L2.NTheta.IsIdemAt x w) : x * x = x := by
@@ -48,7 +48,7 @@ private theorem mul_self_eq_of_isIdemAt {D : D7} {x : AE D} {w : Formalism.L2.DI
   simpa only [Finset.sum_singleton, Finset.mem_singleton_self, if_true] using h
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.PartialIdemSum.mul_sum_of_isIdemAt hx {w'} (fun _ => y) (by simpa using hy)`. Rewrite `h` using `[Finset.sum_singleton, if_neg (by simpa using hne)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem mul_eq_zero_of_isIdemAt_of_ne {D : D7} {x y : AE D} {w w' : Formalism.L2.DIV.Pl D.host.E}
     (hx : Formalism.L2.NTheta.IsIdemAt x w) (hy : Formalism.L2.NTheta.IsIdemAt y w') (hne : w ≠ w') : x * y = 0 := by
@@ -56,7 +56,7 @@ private theorem mul_eq_zero_of_isIdemAt_of_ne {D : D7} {x y : AE D} {w w' : Form
   rwa [Finset.sum_singleton, if_neg (by simpa using hne)] at h
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.PartialIdemSum.mul_sum_of_isIdemAt hx {w} (fun _ => y) (by simpa using hy)`. Establish `h2` using `GlobalTheory.PartialIdemSum.mul_sum_of_isIdemAt hy {w} (fun _ => x) (by simpa using hx)`. Simplify using `only [Finset.sum_singleton, Finset.mem_singleton_self, if_true] at h1 h2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 private theorem eq_of_isIdemAt_of_isIdemAt {D : D7} {x y : AE D} {w : Formalism.L2.DIV.Pl D.host.E}
     (hx : Formalism.L2.NTheta.IsIdemAt x w) (hy : Formalism.L2.NTheta.IsIdemAt y w) : x = y := by
@@ -68,13 +68,11 @@ private theorem eq_of_isIdemAt_of_isIdemAt {D : D7} {x y : AE D} {w : Formalism.
     _ = y := h2
 
 /- English proof (translation)
-Introduce `D e P he eL hL`. Take `⟨⟨es, hes, hsum⟩, he0⟩` from `he`. Establish `hat : ∀ w : P, Formalism.L2.NTheta.IsIdemAt (eL w) w.1` using `fun w => isIdemAt_of_single (hL w)`. Establish `hprod : ∀ S S' : Finset P, (∑ w ∈ S, eL w) * (∑ w ∈ S', eL w) = ∑ w ∈ S ∩ S', eL w` using `fun S S' => sum_mul_sum_orth eL (fun w => mul_self_eq_of_isIdemAt (hat w)) (fun w w' hne => mul_eq_zero_of_isIdemAt_of_ne (hat w) (hat w') fun h => hne (Subtype.ext h)) S S'`. Establish `htot : e = ∑ w, eL w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsum, ← Finset.sum_coe_sort P es]`. Conclude with `Finset.sum_congr rfl fun w _ => (eq_of_isIdemAt_of_isIdemAt (hat w) (hes w.1 w.2)).symm`. Use `⟨htot, fun S => ⟨⟨es, ?_, ?_⟩, ?_⟩, hprod⟩` and prove the remaining obligations. Introduce `PP hPP`. Take `⟨w, -, rfl⟩` from `Finset.mem_map.1 hPP`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hes w.1 w.2`. Rewrite using `[Finset.sum_map]`. Conclude with `Finset.sum_congr rfl fun w _ => eq_of_isIdemAt_of_isIdemAt (hat w) (hes w.1 w.2)`. Establish `hse : (∑ w ∈ S, eL w) * e = ∑ w ∈ S, eL w`. Rewrite using `[htot, hprod, Finset.inter_univ]`.
-
-Use `set s := ∑ w ∈ S, eL w`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_single : ∀ (D : D7) (e : AE D) (P : Finset (Pl D.host.E)), IsIdemSum e P → ∀ (eL : P → AE D), (∀ w, IsIdemSum (eL w) {w.1}) → e = ∑ w, eL w ∧ (∀ S : Finset P, IsIdemSum (∑ w ∈ S, eL w) (S.map (Function.Embedding.subtype _))) ∧ ∀ S S' : Finset P, (∑ w ∈ S, eL w) * (∑ w ∈ S', eL w) = ∑ w ∈ S ∩ S', eL w := by
   intro D e P he eL hL

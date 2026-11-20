@@ -9,13 +9,13 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial Matrix ComplexSets
 
 /- English proof (translation)
-Introduce `g hg`. Assume the negation of the conclusion as `hno`. Simplify using `only [not_exists, not_and] at hno`. Establish `: (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)).IsPrime` using `RingHom.ker_isPrime _`. Use `set N : Submodule (MvPolynomial (Fin n) ℂ) (MvPolynomial (Fin n) ℂ ⧸ I) := Submodule.span _ {Ideal.Quotient.mk I g}`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : ∀ s, s ∈ Module.annihilator (MvPolynomial (Fin n) ℂ) N ↔ s * g ∈ I`. Introduce `s`. Express the relevant statement in the definitionally equal form `s ∈ N.annihilator ↔ _`. Rewrite using `[Submodule.mem_annihilator_span_singleton]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I s * Ideal.Quotient.mk I g = 0 ↔ _`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hKq : Module.annihilator (MvPolynomial (Fin n) ℂ) N ≤ RingHom.ker (eval q)`. Introduce `s hs`. Assume the negation of the conclusion as `h`. Conclude with `hno s h ((hK s).1 hs)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P, hPmin, hPq⟩` from `Ideal.exists_minimalPrimes_le hKq`. Establish `hPass : P ∈ associatedPrimes (MvPolynomial (Fin n) ℂ) (MvPolynomial (Fin n) ℂ ⧸ I)` using `associatedPrimes.subset_of_injective (f := N.subtype) Subtype.val_injective (Module.associatedPrimes.minimalPrimes_annihilator_subset_associatedPrimes _ _ hPmin)`. Take `⟨hPI, hPne⟩` from `hA P hPass hPq`. Take `⟨s, hsP, hsg⟩` from `hB P hPI.1.1 hPI.1.2 hPne g hg`. Conclude with `hsP (hPmin.1.2 ((hK s).2 hsg))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isRadicalAt_of_associatedPrimes {n : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {q : Fin n → ℂ}
     (hA : ∀ P ∈ associatedPrimes (MvPolynomial (Fin n) ℂ) (MvPolynomial (Fin n) ℂ ⧸ I),
@@ -48,9 +48,9 @@ theorem isRadicalAt_of_associatedPrimes {n : ℕ} {I : Ideal (MvPolynomial (Fin 
   exact hsP (hPmin.1.2 ((hK s).2 hsg))
 
 /- English proof (translation)
-Introduce `n d J W u hJ hdim hu hW`. Take `⟨f, hfW, hf⟩` from `hU n d J W u hJ hdim hu hW`. Use `⟨f, hfW, fun q hq hfq => ?_⟩` and prove the remaining obligations. Take `⟨O₁, hO₁o, hO₁d, hO₁⟩` from `hf q hq hfq`. Take `⟨O₂, hO₂o, hO₂d, hO₂⟩` from `hB n d J q hJ.isRadical`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨O₁ ∩ O₂, hO₁o.inter hO₂o, hO₁d.inter_of_isOpen_left hO₂d hO₁o, fun L hL => isRadicalAt_of_associatedPrimes (hO₁ L hL.1) (hO₂ L hL.2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem SliceReducedGeneral.proof (hU : SliceUnmixedGeneral.Statement)
     (hB : SliceReducedAway.Statement) : SliceReducedGeneral.Statement := by

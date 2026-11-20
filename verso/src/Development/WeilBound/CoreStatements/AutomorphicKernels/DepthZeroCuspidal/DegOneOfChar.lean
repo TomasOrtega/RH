@@ -16,7 +16,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocGL.TemperedTests.exists_eq_ofChar x hx`.
+A detailed English derivation is pending.
 -/
 theorem deg_one_ofChar (x : IrrGL (w.adicCompletion E)) (hx : x.1 = 1) :
     ∃ (χ : (w.adicCompletion E)ˣ →* ℂˣ) (hχ : IsSmoothChar χ), x = IrrGL.ofChar χ hχ :=

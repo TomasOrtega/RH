@@ -28,25 +28,23 @@ variable {G G₂ : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [
   {ι : Type} [Fintype ι] {kk : ι → G₂} {cc : ι → G₂ → ℂ}
 
 /- English proof (translation)
-Establish `hcont : Continuous fun x => Φ (j x)`. Use `continuous_iff_continuousAt.2 fun x₀ => ?_` and prove the remaining obligations. Establish `hn : {x | x₀⁻¹ * x ∈ K} ∈ 𝓝 x₀` using `(hK.preimage (continuous_const.mul continuous_id)).mem_nhds (by simp [K.one_mem])`. Establish `hg : Continuous fun x => ∑ l, cc l (j (x₀⁻¹ * x)) * Φ (j x₀ * kk l)` using `continuous_finsetSum _ fun l _ => ((hcc l).comp (continuous_const.mul continuous_id)).mul continuous_const`. Use `hg.continuousAt.congr (Filter.eventually_of_mem hn fun x hx => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : j x = j x₀ * j (x₀⁻¹ * x)` using `by rw [← map_mul, mul_inv_cancel_left]`. Use `show _ = Φ (j x)`. Rewrite using `[e]`. Conclude with `(hexp _ _ (hKK _ hx)).symm`. Establish `hm : AEStronglyMeasurable (fun x => Φ (j x)) μ` using `hcont.aestronglyMeasurable`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, -, ⟨M, hM⟩, hC⟩` from `exists_coeff (Γ := Γ) hK hKc A hcov (fun l k => cc l (j k)) hcc`. Use `set S : G₂ → ℝ≥0∞ := fun g => ∑' q, ‖term P Γ₂ Φ g q‖ₑ with hS`. Establish `hSfin : ∀ g, S g ≠ ⊤` using `fun g => by`. Use `ENNReal.ofReal_tsum_of_nonneg (fun q => norm_nonneg (term P Γ₂ Φ g q)) (hconv g)` as an intermediate fact. Simplify using `only [ofReal_norm] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `∑' q, ‖term P Γ₂ Φ g q‖ₑ ≠ ⊤`. Rewrite using `[← this]`. Conclude with `ENNReal.ofReal_ne_top`. Use `set B : ℝ≥0∞ := ∑ a ∈ A, ∑ l, ‖(M : ℂ)‖ₑ * S (j a * kk l) with hB`. Establish `hδ : ∀ x, ∑' δ : Γ, ‖Φ (j (δ * x))‖ₑ = S (j x)` using `fun x => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = ∑' q, ‖term P Γ₂ Φ (j x) q‖ₑ`. Rewrite using `[← (Equiv.ofBijective _ hr).tsum_eq]`. Use `tsum_congr fun δ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.ofBijective_apply, term_mk hΦ, hri, ← map_mul]`. Establish `hbd : ∀ x, S (j x) ≤ B` using `fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, γ, hγ, k, hk, rfl, hCx⟩` from `hC x`. Establish `e : j (γ * a * k) = j γ * (j a * j k)` using `by simp only [map_mul, mul_assoc]`. Establish `hγ2 : j γ ∈ Γ₂` using `hri ⟨γ, hγ⟩ ▸ (r ⟨γ, hγ⟩).2`. Express the relevant statement in the definitionally equal form `∑' q, ‖term P Γ₂ Φ _ q‖ₑ ≤ B`. Rewrite using `[e, tsum_enorm_term_mul_left hΦ hγ2]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(cosetSum_norm_expansion hexp _ (hKK k hk)).trans ?_` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun a => ∑ l, ‖(M : ℂ)‖ₑ * S (j a * kk l)) (fun _ _ => zero_le) ha)` and prove the remaining obligations. Use `Finset.sum_le_sum fun l _ => mul_le_mul_left ?_ _` and prove the remaining obligations. Use `hM a l (γ * a * k)` as an intermediate fact. Rewrite `this` using `[hCx a l, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[enorm_le_iff_norm_le, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `this.trans (le_abs_self M)`. Establish `hBfin : B ≠ ⊤` using `ENNReal.sum_ne_top.2 fun a _ => ENNReal.sum_ne_top.2 fun l _ => ENNReal.mul_ne_top enorm_ne_top (hSfin _)`. Establish `hfin : ∫⁻ x in 𝓕, ∑' δ : Γ, ‖Φ (j (δ * x))‖ₑ ∂μ ≠ ⊤`. Use `ne_top_of_le_ne_top (ENNReal.mul_ne_top hBfin (measure_lt_top_of_cover h𝓕 hKc A hcov).ne) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hFi : Integrable (fun x => Φ (j x)) μ`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[HasFiniteIntegral, ← lintegral_tsum_eq h𝓕 hm.enorm]`. Conclude with `lt_top_iff_ne_top.2 hfin`.
-
-Rewrite using `[← (integral_tsum_eq h𝓕 hFi).2]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `(cosetSum_eq_tsum hΦ hr _).trans (tsum_congr fun δ => ?_)` and prove the remaining obligations. Rewrite using `[hri, ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold_hom (hri : ∀ δ, (r δ : G₂) = j δ)
     (hr : Function.Bijective fun δ => mk (P.subgroupOf Γ₂) (r δ)) (hK : IsOpen (K : Set G))
@@ -116,33 +114,31 @@ end Abstract
 open GlobalTheory.DefDoubling
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B hB n r s' X hX hmin X₂ i K₂ hD χ s₀ σ₀ f hf hconv Ψ hΨ μ 𝓕 hμ h𝓕`. Use `haveI : IsTopologicalGroup (UA σ X.J) := inferInstanceAs (IsTopologicalGroup (UG (cA σ) (incM F X.J)))`. Use `haveI : IsTopologicalGroup (UA σ X₂.J) := inferInstanceAs (IsTopologicalGroup (UG (cA σ) (incM F X₂.J)))`. Use `haveI := GlobalTheory.DefDoubling.countable_ratU σ X.J`. Establish `hX' : X.IsHerm σ B n 0 ∨ X.IsHerm σ B 0 n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `h` using `(hX.sig w).1`. Break down `Nat.min_eq_zero_iff.1 hmin with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Take `rfl : s' = n` from `by omega`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Prove the second alternative. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inr hX`. Substitute `h0` using the available equality. Take `rfl : r = n` from `by omega`. Conclude with `Or.inl hX`. Establish `hi` using `hD.emb`.
+Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK` using `GlobalTheory.StabHaar.isStab_stabK (σ := σ) B X`. Establish `hKo` using `GlobalTheory.DefiniteStab.isOpen_stab_of_definite hB.cm hX' hK`. Establish `hKc` using `isCompact_of_isStab_definite hB.cm hX' hK`. Take `⟨A, hcov⟩` from `exists_finite_doubleCosets hB.cm hX' hK`. Establish `hKK : ∀ k ∈ GlobalTheory.StabHaar.stabK (σ` using `σ) B X, i (k, 1) ∈ K₂ := fun k hk => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk'` using `(hK k).1 hk`. Establish `e1 : mat (i (k, 1)) = blkMat finSumFinEquiv (mat k) 1` using `hi k 1`. Establish `e2 : mat (i (k, 1))⁻¹ = blkMat finSumFinEquiv (mat k⁻¹) 1`. Rewrite using `[← map_inv, Prod.inv_mk, inv_one]`. Conclude with `hi k⁻¹ 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(hD.stab _).2 ⟨fun w => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[e1, hD.maj, blkMat_map _ _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)] show _ * _ = _ * _`. Rewrite using `[blkMat_mul, blkMat_mul, Matrix.mul_one, Matrix.one_mul, (hk'.1 w).eq]`. Rewrite using `[e1, e2]`. Conclude with `⟨GlobalTheory.DefSkewStab.blkMat_mulVec_mem hD.lat (fun y hy => (hk'.2 y hy).1) hz, GlobalTheory.DefSkewStab.blkMat_mulVec_mem hD.lat (fun y hy => (hk'.2 y hy).2) hz⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `han` using `GlobalTheory.DefiniteAniso.anisotropic_of_definite hB.cm hX'`. Establish `hrat` using `GlobalTheory.ThK.DblKer.RatPair.blk_mem_ratU F E σ n X X₂ hD.gram i hi`. Set `r₂ : ratU σ X.J → ratU σ X₂.J` to `fun δ => ⟨i (1, δ), hrat 1 (one_mem _) δ δ.2⟩`. Set `r₁ : ratU σ X.J → ratU σ X₂.J` to `fun δ => ⟨i (δ, 1), hrat δ δ.2 1 (one_mem _)⟩`. Establish `hr₂` using `GlobalTheory.DoublingRat.bijective_open_orbit F E σ n X.J X₂.J han hD.gram i hi r₂ fun δ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hiP : ∀ h : UA σ X.J, i (h, h) ∈ siegelOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype` using `fun h => by`. Rewrite using `[mem_siegelOf]`. Express the relevant statement in the definitionally equal form `KeepsDiag finSumFinEquiv (mat (i (h, h)))`. Rewrite using `[hi]`. Conclude with `(keepsDiag_blkMat finSumFinEquiv).2 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr₁ : Function.Bijective fun δ => GlobalTheory.AutomorphicL2Unitary.mk ((siegelOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype).subgroupOf (ratU σ X₂.J)) (r₁ δ)`. Establish `h` using `hr₂.comp (Equiv.inv (ratU σ X.J)).bijective`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `δ`. Use `(GlobalTheory.AutomorphicL2Unitary.mk_eq_iff.2 ⟨⟨⟨i (δ, δ), hrat δ δ.2 δ δ.2⟩, Subgroup.mem_subgroupOf.2 (hiP δ)⟩, ?_⟩).symm` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `i (δ, δ) * i (1, (δ : UA σ X.J)⁻¹) = i (δ, 1)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one, mul_inv_cancel]`. Take `⟨-, hfc, hfK⟩` from `(mem_degPSOf).1 hf`. Take `⟨m, kk, cc, hkk, hcc, hexp⟩` from `translate_eq_sum_of_isKFinite hfc hfK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hmat : ∀ {n : ℕ} {J : Matrix (Fin n) (Fin n) E}, Continuous fun g : UA σ J => mat g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hic : Continuous i`. Establish `h1 : Continuous fun k : UA σ X.J × UA σ X.J => mat (i k)`. Establish `: (fun k : UA σ X.J × UA σ X.J => mat (i k)) = fun k => blkMat finSumFinEquiv (mat k.1) (mat k.2)`. Use function extensionality and compare the values at `fun k => hi k.1 k.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Simplify using `only [blkMat]`. Conclude with `((hmat.comp continuous_fst).matrix_fromBlocks continuous_const continuous_const (hmat.comp continuous_snd)).matrix_submatrix _ _`. Use `continuous_induced_rng.2 (Units.continuous_iff.2 ⟨h1, (h1.comp continuous_inv).congr fun k => ?_⟩)` and prove the remaining obligations. Rewrite using `[Function.comp_apply, map_inv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Set `i' : UA σ X.J × UA σ X.J →* UA σ X₂.J` to `i.comp (MulEquiv.prodComm : _ ≃* _).toMonoidHom`. Establish `hi'c : Continuous i'` using `hic.comp continuous_swap`. Establish `key` using `(holValueAt_integral (i := i') (A := A) (K₂ := K₂) (w := fun _ => 1) hi'c (fun γ hγ => hrat γ hγ 1 (one_mem _)) hKo hKc hKK hcov h𝓕 (fun s hs => (hconv s hs).1) hcc (fun s _ g k hk => flatSec_expansion hD.iwa hkk hexp s₀ s g hk) (fun s hs => (hconv s hs).2) continuous_const (fun …`. Simplify using `only [mul_one] at key`.
-
-Use `key.congr ⟨σ₀, fun s hs => ?_⟩` and prove the remaining obligations. Conclude with `unfold_hom (j := i.comp (MonoidHom.inl _ _)) (r := r₁) (fun δ => rfl) hr₁ hKo hKc hKK hcov h𝓕 (hconv s hs).1 (fun l => (hcc l).comp (hic.comp (continuous_id.prodMk continuous_const))) (fun g k hk => flatSec_expansion hD.iwa hkk hexp s₀ s g hk) (hconv s hs).2`.
+A detailed English derivation is pending.
 -/
 theorem holValueAt_first : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ → ∀ (n r s' : ℕ) (X : Spc F E n), X.IsHerm σ B r s' → min r s' = 0 →
     ∀ (X₂ : Spc F E (n + n)) (i : UA σ X.J × UA σ X.J →* UA σ X₂.J) (K₂ : Subgroup (UA σ X₂.J)), IsDbl B X X₂ i K₂ →

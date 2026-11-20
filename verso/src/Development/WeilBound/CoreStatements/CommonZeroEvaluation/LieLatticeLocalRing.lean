@@ -11,13 +11,13 @@ noncomputable section
 namespace ModelDimension
 
 /- English proof (translation)
-Introduce `X G _ _ Ω _ ξ Li _ _ M A _ hξ hG zq hz hc e`. Establish `hg` using `genMap_eq_of_factor (algebraMap A Ω) zq hz hc`. Substitute `hz` using the available equality. Rewrite using `[← lieLat_fibAt_iff X G Ω _ Li M A zq Ω Li M hξ hG hc specializes_rfl e]`. Unfold `LieModel.fibAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `Iff.of_eq (congrArg (fun s : Set Li => e ∈ Submodule.span A s) (Set.ext fun w => ⟨fun hw => ?_, ?_⟩))` and prove the remaining obligations. Take `⟨v, hv⟩` from `((lieLat_carrier X G Ω _ Li M _).1 w).1 hw`. Use `⟨hc, w, hw, LieFib.valAt_base M zq hc specializes_rfl v hv _ (LieCarrier.epsHom (Scheme.stalkClosedPointTo zq).hom _ _ (Scheme.Spec_stalkClosedPointTo_fromSpecStalk zq) ≫ v) ?_ rfl⟩` and prove the remaining obligations. Establish `e1` using `LieFib.spec_dualMap_comp (Scheme.stalkClosedPointTo zq).hom (algebraMap A Ω)`. Rewrite `e1` using `[← hg]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hv.2.trans ((congrArg (· ≫ v.left) e1).trans (Category.assoc _ _ _))`. Introduce and unpack `⟨_, e', he', h, v, hv, hw⟩`. Establish `hg'` using `genMap_eq_of_factor (RingHom.id Ω) (Spec.map (CommRingCat.ofHom (algebraMap A Ω)) ≫ zq) (by rw [CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]) h`. Establish `h2` using `hv.2`. Rewrite `h2` using `[hg']`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: w = e'` using `M.inj (Over.OverMorphism.ext (hw.trans h2.symm))`. Rewrite using `[this]`. Conclude with `he'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_lattice_local_ring : ∀ (X : Scheme.{0}) (G : CategoryTheory.Over X) [GrpObj G] [IsCommMonObj G] (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (A : Subring Ω) [IsLocalRing A], IsCptGen ξ → AlgebraicGeometry.Smooth G.hom → ∀ (zq : Spec (CommRingCat.of A) ⟶ X), Spec.map (CommRingCat.ofHom (algebraMap A Ω)) ≫ zq = ξ → ∀ (hc : genPt ξ ⤳ centre zq) (e : Li), e ∈ Submodule.span A (M.lat ⟨centre zq, hc⟩ : Set Li) ↔ ∃ v : GlobalTheory.CompanionTheory.Ar.epsAt zq ⟶ G, GlobalTheory.CompanionTheory.Ar.IsTanAt G zq v ∧ (M.pt e).left = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.dualMap (algebraMap A Ω))) ≫ v.left := by
   intro X G _ _ Ω _ ξ Li _ _ M A _ hξ hG zq hz hc e

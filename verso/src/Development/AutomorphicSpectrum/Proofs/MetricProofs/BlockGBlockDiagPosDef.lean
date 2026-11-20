@@ -12,7 +12,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.PB.BMx
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Xgp.t_c_bm_exists_blockpos`.
+A detailed English derivation is pending.
 -/
 theorem blockG_isBlockDiag_posDef :
     ∀ (p q : ℕ) (Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ), Γ.PosDef →

@@ -15,33 +15,31 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y L a h hS`. Take `⟨hcm, hun, hJ, hn, hW, hA, hI⟩` from `hS`. Take `⟨Eis, c, p1, p2, p3, p4, p5⟩` from `hK.eisensteinIsotropicLine F E σ hcm hun n J hJ r X Y hW (col0 X) (col0 Y)`. Use `rfl rfl L a hA h hI.1 hI.2`. Establish `hP : EisensteinHyp σ J (col0 X) (col0 Y) h Eis c` using `⟨p1, p2, p3, p4, p5⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hS : HidaSetting σ J X Y L a h` using `⟨hcm, hun, hJ, hn, hW, hA, hI⟩`. Take `⟨mid, hmid, hct⟩` from `GlobalTheory.T.eisenstein_constant_term_setting hK.eisensteinIsotropicLine F E σ n J r X Y L a h Eis c hS hP`. Take `⟨u, U₀, U₁, Hol, C, N, ⟨hU₀, hu, hu0, hcu⟩, hU₁, hHol, hHd, hHb, hHρ⟩` from `GlobalTheory.T.eisenstein_constant_term_setting_alt hK.eisensteinResidueLine F E σ n J r X Y L a h Eis c hS hP mid hmid hct`. Use `set ρ : ℂ := ((n : ℂ) - 1) / 2 with hρ`. Establish `hpos : 0 < ‖u ρ‖` using `norm_pos_iff.2 hu0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ s in 𝓝 (-ρ), (s ≠ -ρ → c s * c (-s) = 1 ∧ ∀ g, Eis s g = c s * Eis (-s) g) ∧ -s ∈ U₀ ∧ -s ∈ U₁ ∧ ‖u ρ‖ / 2 < ‖u (-s)‖`. Establish `t : Tendsto (fun s : ℂ => -s) (𝓝 (-ρ)) (𝓝 ρ)` using `by simpa using (continuous_neg.tendsto (-ρ))`. Establish `hucont : ContinuousAt u ρ` using `(hu.differentiableAt hU₀).continuousAt`. Use `((eventually_nhdsWithin_iff.1 (p5 (-ρ))).mono fun s hs hne => hs hne).and ((t.eventually hU₀).and ((t.eventually hU₁).and ?_))` and prove the remaining obligations. Establish `: Tendsto (fun s : ℂ => ‖u (-s)‖) (𝓝 (-ρ)) (𝓝 ‖u ρ‖)` using `(continuous_norm.tendsto _).comp (hucont.tendsto.comp t)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this.eventually_const_lt (by linarith)`. Take `⟨V, hV, hVs⟩` from `hev.exists_mem`. Set `Eis' : ℂ → GAd σ J → ℂ` to `fun s g => if s = -ρ then 1 else Eis s g`. Establish `hform : ∀ s ∈ V, ∀ g, Eis' s g = Hol (-s) g / u (-s)`. Introduce `s hs g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨h1, h2, h3, h4⟩` from `hVs s hs`. Distinguish the cases in `e : s = -ρ`. Substitute `e` using the available equality. Simplify using `[Eis', hHρ, div_self hu0]`. Establish `hne : -s ≠ ρ` using `fun h' => e (by rw [← h', neg_neg])`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : u (-s) ≠ 0` using `fun h0 => by rw [h0, norm_zero] at h4; linarith`. Establish `hd : -s - ρ ≠ 0` using `sub_ne_zero.2 hne`. Take `⟨hc1, hc2⟩` from `h1 e`. Establish `hc' : c s * (u (-s) / (-s - ρ)) = 1` using `by rw [← hcu (-s) h2 hne]; exact hc1`. Simplify using `only [Eis', if_neg e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hc2 g, hHol (-s) h3 hne g]`. Clear denominators, using `at hc' ⊢` for the nonvanishing conditions. Take the linear combination `Eis (-s) g * hc'`. Establish `hneg : ∃ U ∈ 𝓝 (-ρ), ∃ (C : ℝ) (N : ℕ), ∀ g, DifferentiableOn ℂ (Eis' · g) U ∧ (∀ s ∈ U, ‖Eis' s g‖ ≤ C * (height σ J g : ℝ) ^ N) ∧ Eis' (-ρ) g = 1`. Use `⟨V, hV, 2 * C / ‖u ρ‖, N, fun g => ⟨?_, ?_, by simp [Eis']⟩⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : DifferentiableOn ℂ (fun s => Hol (-s) g / u (-s)) V`. Use `DifferentiableOn.div ((hHd g).comp differentiable_neg.differentiableOn fun s hs => (hVs s hs).2.2.1) (hu.comp differentiable_neg.differentiableOn fun s hs => (hVs s hs).2.1) fun s hs => ?_` and prove the remaining obligations. Use `(hVs s hs).2.2.2` as an intermediate fact. Introduce `h0`. Rewrite `this` using `[h0, norm_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hd.congr fun s hs => hform s hs g`. Introduce `s hs`. Rewrite using `[hform s hs g, norm_div]`. Establish `h1` using `hHb (-s) (hVs s hs).2.2.1 g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h2` using `(hVs s hs).2.2.2`. Establish `h0 : 0 ≤ C * (height σ J g : ℝ) ^ N` using `(norm_nonneg _).trans h1`. Combine the equalities or inequalities in the displayed calculation. Use `⟨Eis', ?_, ?_, hneg⟩` and prove the remaining obligations. Introduce `T hT s hs g`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hne : s ≠ -ρ`. Introduce and unpack `rfl`. Establish `e : (-ρ).re = -(((n : ℝ) - 1) / 2)` using `by simp [hρ]`. Establish `hn' : (4 : ℝ) ≤ n` using `by exact_mod_cast hn`. Rewrite `hs` using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify `p1 T hT s hs g` using `[Eis', hne]`. Introduce `s₀`. Distinguish the cases in `h0 : s₀ = -ρ`. Substitute `h0` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨V', hV', C', N', hall⟩` from `hneg`. Conclude with `⟨0, V', Eis', C', N', hV', fun s _ _ g => by simp, fun g => (hall g).1, fun s hs g => (hall g).2.1 s hs⟩`. Take `⟨k, U, H, hU, hH, hsm, hhol⟩` from `p4 s₀`. Take `⟨V', hV', C', N', hb⟩` from `GlobalTheory.WeakHolFamily.locally_uniform_moderate_growth F E σ n J H s₀ U hU hsm hhol`. Use `⟨k, U ∩ V' ∩ {-ρ}ᶜ, H, C', N', Filter.inter_mem (Filter.inter_mem hU hV') (isOpen_compl_singleton.mem_nhds h0), fun s hs hs0 g => ?_, fun g => ?_, fun s hs g => hb s hs.1.2 g⟩` and prove the remaining obligations.
-
-Establish `e : s ≠ -ρ` using `hs.2`. Simplify using `only [Eis', if_neg e]`. Conclude with `hH s hs.1.1 hs0 g`. Conclude with `(hhol _ (GlobalTheory.EisLine.isModerateForm_proj σ J g)).mono fun s hs => hs.1.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EisRes.eisCore_of_kazhdanPatterson (hK : GlobalTheory.ThK.KP) : EisCore := by
   intro F E _ _ _ _ _ σ n J r X Y L a h hS
@@ -122,7 +120,7 @@ theorem GlobalTheory.EisRes.eisCore_of_kazhdanPatterson (hK : GlobalTheory.ThK.K
       · exact (hhol _ (GlobalTheory.EisLine.isModerateForm_proj σ J g)).mono fun s hs => hs.1.1
 
 /- English proof (translation)
-Introduce `hK` and use `GlobalTheory.EisReduce.eisAtMinusRho_of_core (GlobalTheory.EisRes.eisCore_of_kazhdanPatterson hK)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ConeSmall.eisAtMinusRho : GlobalTheory.ThK.KP → GlobalTheory.ConeSmall.EisAtMinusRho := fun hK =>
   GlobalTheory.EisReduce.eisAtMinusRho_of_core (GlobalTheory.EisRes.eisCore_of_kazhdanPatterson hK)

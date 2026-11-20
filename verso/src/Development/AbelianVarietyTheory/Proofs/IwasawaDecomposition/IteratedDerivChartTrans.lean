@@ -14,13 +14,13 @@ set_option autoImplicit false
 namespace GlobalTheory.ChernReg.ExphOn
 
 /- English proof (translation)
-Introduce `k _ Y p σ d R a ha c c' u ξ h0 h0' hu hs hj`. Establish `hU : IsOpen (c.e.target ∩ c.e.symm ⁻¹' c'.e.source)` using `GlobalTheory.ChartGlue.isOpen_over c.e c'.e.open_source`. Establish `hz : c.e (u 0) ∈ c.e.target ∩ c.e.symm ⁻¹' c'.e.source` using `GlobalTheory.ChartGlue.mem_over c.e h0 h0'`. Establish `hm` using `GlobalTheory.T.chart_matrix_smooth_invertible k Y p σ d R a ha c`. Establish `hm'` using `GlobalTheory.T.chart_matrix_smooth_invertible k Y p σ d R a ha c'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.ChernReg.iteratedDeriv_comp_eq_jet d (c.e.target ∩ c.e.symm ⁻¹' c'.e.source) c'.e.target (c'.e ∘ c.e.symm) (matIn a c) (matIn a c') hU c'.e.open_target (c.holo_trans c') (fun v hv => c'.e.map_source hv.2) hm'.1 (fun v hv => hm.2.1 v hv.1) hm'.2.1 (fun v hv => GlobalT …`. Establish `hev : (fun t => c'.e (u t)) =ᶠ[𝓝 0] (c'.e ∘ c.e.symm) ∘ (fun t => c.e (u t))`. Establish `hmem : ∀ᶠ t in 𝓝 (0:ℝ), u t ∈ c.e.source` using `hu.preimage_mem_nhds (c.e.open_source.mem_nhds h0)`. Use `filter_upwards [hmem] with t ht`. Simplify using `only [Function.comp_apply, c.e.left_inv ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Rewrite using `[hev.iteratedDeriv_eq n, key n]`. Use `congr 1`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, c.e.left_inv h0]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_chart_trans : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) (R : AnRead p σ d) (a : ChartForm p σ d), IsKaehlerForm R a → ∀ (c c' : AlgChart p σ d) (u : ℝ → CxPts p σ) (ξ : ReciprocityTheory.L2DbarEstimates.V d), u 0 ∈ c.e.source → u 0 ∈ c'.e.source → ContinuousAt u 0 → ContDiffAt ℝ ∞ (fun t => c.e (u t)) 0 → (∀ n, iteratedDeriv n (fun t => c.e (u t)) 0 = jet (matIn a c) n (c.e (u 0), ξ)) → ∀ n, iteratedDeriv n (fun t => c'.e (u t)) 0 = jet (matIn a c') n (c'.e (u 0), WithLp.toLp 2 (c.dtrans c' (u 0) ξ.ofLp)) := by
   intro k _ Y p σ d R a ha c c' u ξ h0 h0' hu hs hj

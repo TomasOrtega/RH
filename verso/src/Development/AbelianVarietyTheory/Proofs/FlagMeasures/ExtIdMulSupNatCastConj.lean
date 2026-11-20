@@ -9,9 +9,9 @@ open scoped InnerProductSpace ComplexOrder TensorProduct Pointwise Classical
 namespace GlobalTheory.RowLev
 
 /- English proof (translation)
-Unfold `extId Ideal.map`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, e⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, Subtype.ext e.symm⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨a, ha, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem extId_eq_map_psi (I : AutInst) (𝔞 : Ideal (𝓞 I.E)) : extId I 𝔞 = 𝔞.map (Inhab.psi I.F I.E) := by
   unfold extId Ideal.map
@@ -24,21 +24,19 @@ theorem extId_eq_map_psi (I : AutInst) (𝔞 : Ideal (𝓞 I.E)) : extId I 𝔞 
     exact ⟨a, ha, rfl⟩
 
 /- English proof (translation)
-Introduce `I`. Set `st : 𝓞 I.E →+* 𝓞 I.E` to `RingOfIntegers.mapRingHom (starRingEnd I.E)`. Establish `hst : ∀ a : 𝓞 I.E, (st a : I.E) = star (a : I.E)` using `fun a => rfl`. Establish `hst2 : ∀ a, st (st a) = a` using `fun a => RingOfIntegers.ext (by rw [hst, hst, star_star])`. Establish `hsurj : Function.Surjective st` using `fun a => ⟨st a, hst2 a⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsig : ∀ z ∈ IntAf I.F I.E, Formalism.UG.sigR I.cm.sig (Af I.F) z ∈ IntAf I.F I.E` using `(intAf_approx_inter_unit_conj I 1 le_rfl).2.2.2`. Use `⟨fun a b => ?_, fun a b h => ?_, fun m => ?_, fun w => ?_, fun w w' h => ?_, fun w w' w'' h h' => ?_, fun w w' h z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [extId_eq_map_psi, Ideal.map_mul]`. Simplify using `only [extId_eq_map_psi, ← Ideal.map_sup, h, Ideal.map_top]`. Rewrite using `[extId_eq_map_psi, Ideal.map_span, Set.image_singleton, map_natCast]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨w.comap st hsurj, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `: b = st a` using `RingOfIntegers.ext hab`. Substitute `this` using the available equality. Use `show _ ↔ st (st a) ∈ w.asIdeal`. Rewrite using `[hst2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Conclude with `(h b a (by rw [hab, star_star])).symm`. Use `HeightOneSpectrum.ext (Ideal.ext fun b => ?_)` and prove the remaining obligations. Establish `e : (b : I.E) = star (st b : I.E)` using `by rw [hst, star_star]`. Conclude with `(h (st b) b e).symm.trans (h' (st b) b e)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Proceed by induction.
 
-Establish `key : (⟨_, hsig z z.2⟩ : IntAf I.F I.E) ∈ extId I w'.asIdeal`. Unfold `extId at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, e⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Ideal.subset_span ⟨st a, (h a (st a) (hst a)).1 ha, ?_⟩` and prove the remaining obligations. Use `show Formalism.UG.sigR I.cm.sig (Af I.F) x = _`. Rewrite using `[e]`. Both sides reduce to the same expression. Consider the case `zero`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately.
 
-Use `(extId I w'.asIdeal).zero_mem using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext (map_zero _)`. Consider the case `add x y _ _ hx hy`. Use `add_mem hx hy using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext (map_add _ _ _)`.
-
-Consider the case `smul a x _ hx`. Use `Ideal.mul_mem_left _ ⟨_, hsig a a.2⟩ hx using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext (map_mul _ _ _)`. Conclude with `⟨_, key, rfl⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem extId_mul_sup_natCast_conj : ∀ (I : AutInst), (∀ 𝔞 𝔟 : Ideal (𝓞 I.E), extId I (𝔞 * 𝔟) = extId I 𝔞 * extId I 𝔟) ∧ (∀ 𝔞 𝔟 : Ideal (𝓞 I.E), 𝔞 ⊔ 𝔟 = ⊤ → extId I 𝔞 ⊔ extId I 𝔟 = ⊤) ∧ (∀ m : ℕ, extId I (Ideal.span {(m : 𝓞 I.E)}) = Ideal.span {(m : IntAf I.F I.E)}) ∧ (∀ w : HeightOneSpectrum (𝓞 I.E), ∃ w', IsConj I w w') ∧ (∀ w w' : HeightOneSpectrum (𝓞 I.E), IsConj I w w' → IsConj I w' w) ∧ (∀ w w' w'' : HeightOneSpectrum (𝓞 I.E), IsConj I w w' → IsConj I w w'' → w' = w'') ∧ ∀ w w' : HeightOneSpectrum (𝓞 I.E), IsConj I w w' → ∀ z ∈ extId I w.asIdeal, ∃ z' ∈ extId I w'.asIdeal, (z' : (I.E ⊗[I.F] Af I.F)) = Formalism.UG.sigR I.cm.sig (Af I.F) z := by
   intro I

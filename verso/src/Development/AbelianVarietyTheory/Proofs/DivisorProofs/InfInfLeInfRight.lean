@@ -16,7 +16,7 @@ open TopologicalSpace Opposite
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h).op ≫ X.presheaf.map (homOfLE k).op).hom x.val = _`. Rewrite using `[← X.presheaf.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resU_resU {U V W : X.Opens} (h : V ≤ U) (k : W ≤ V) (x : Γ(X, U)ˣ) :
     res k (res h x) = res (k.trans h) x := by
@@ -26,7 +26,7 @@ theorem resU_resU {U V W : X.Opens} (h : V ≤ U) (k : W ≤ V) (x : Γ(X, U)ˣ)
   rfl
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE k).op ≫ f.appLE V W h).hom x.val = (f.appLE U W _).hom x.val`. Rewrite using `[Scheme.Hom.map_appLE]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem resU_pullU_resU (f : Y ⟶ X) {U V : X.Opens} (k : V ≤ U) {W : Y.Opens}
     (h : W ≤ f ⁻¹ᵁ V) (x : Γ(X, U)ˣ) :
@@ -36,7 +36,7 @@ theorem resU_pullU_resU (f : Y ⟶ X) {U V : X.Opens} (k : V ≤ U) {W : Y.Opens
   rw [Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem resU_pullU_congr {m m' : Y ⟶ X} (e : m = m') (U : X.Opens) {W : Y.Opens}
     (h : W ≤ m ⁻¹ᵁ U) (h' : W ≤ m' ⁻¹ᵁ U) (x : Γ(X, U)ˣ) :
@@ -45,7 +45,7 @@ theorem resU_pullU_congr {m m' : Y ⟶ X} (e : m = m') (U : X.Opens) {W : Y.Open
   rfl
 
 /- English proof (translation)
-Conclude with `resU_pullU_congr e U h h' x`.
+A detailed English derivation is pending.
 -/
 theorem resU_pullU_square {P : Scheme.{0}} {g : Z ⟶ Y} {f : Y ⟶ X} {g' : Z ⟶ P} {f' : P ⟶ X}
     (e : g ≫ f = g' ≫ f') (U : X.Opens) {W : Z.Opens} (h : W ≤ g ⁻¹ᵁ f ⁻¹ᵁ U)
@@ -54,7 +54,7 @@ theorem resU_pullU_square {P : Scheme.{0}} {g : Z ⟶ Y} {f : Y ⟶ X} {g' : Z �
   exact resU_pullU_congr e U h h' x
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h).op ≫ X.presheaf.map (homOfLE k).op).hom x = _`. Rewrite using `[← X.presheaf.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rs_rs {U V W : X.Opens} (h : V ≤ U) (k : W ≤ V) (x : Γ(X, U)) :
     (X.presheaf.map (homOfLE k).op).hom ((X.presheaf.map (homOfLE h).op).hom x) =
@@ -70,7 +70,7 @@ theorem rs_app (f : Y ⟶ X) (U : X.Opens) {W : Y.Opens} (h : W ≤ f ⁻¹ᵁ U
     (Y.presheaf.map (homOfLE h).op).hom ((f.app U).hom x) = (f.appLE U W h).hom x := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE k).op ≫ f.appLE V W h).hom x = _`. Rewrite using `[Scheme.Hom.map_appLE]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_rs (f : Y ⟶ X) {U V : X.Opens} (k : V ≤ U) {W : Y.Opens} (h : W ≤ f ⁻¹ᵁ V)
     (x : Γ(X, U)) :
@@ -80,7 +80,7 @@ theorem appLE_rs (f : Y ⟶ X) {U V : X.Opens} (k : V ≤ U) {W : Y.Opens} (h : 
   rw [Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(f.appLE U V h ≫ Y.presheaf.map (homOfLE k).op).hom x = _`. Rewrite using `[Scheme.Hom.appLE_map]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rs_appLE (f : Y ⟶ X) (U : X.Opens) {V W : Y.Opens} (h : V ≤ f ⁻¹ᵁ U) (k : W ≤ V)
     (x : Γ(X, U)) :
@@ -102,25 +102,25 @@ theorem val_res {U W : X.Opens} (h : W ≤ U) (x : Γ(X, U)ˣ) :
     ((res h x : Γ(X, W)ˣ) : Γ(X, W)) = (X.presheaf.map (homOfLE h).op).hom x := rfl
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨hx.1.1, hx.2.1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem inf_inf_le_inf_left (A B C D : X.Opens) : (A ⊓ B) ⊓ (C ⊓ D) ≤ A ⊓ C :=
   fun _ hx => ⟨hx.1.1, hx.2.1⟩
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨hx.1.2, hx.2.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem inf_inf_le_inf_right (A B C D : X.Opens) : (A ⊓ B) ⊓ (C ⊓ D) ≤ B ⊓ D :=
   fun _ hx => ⟨hx.1.2, hx.2.2⟩
 
 /- English proof (translation)
-Introduce `_ hx` and use `hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inf_preimage_le (f : Y ⟶ X) (A B : X.Opens) : f ⁻¹ᵁ A ⊓ f ⁻¹ᵁ B ≤ f ⁻¹ᵁ (A ⊓ B) :=
   fun _ hx => hx
 
 /- English proof (translation)
-Conclude with `(Fintype.prod_unique (fun _ : PUnit => _)).trans (zpow_one _)`.
+A detailed English derivation is pending.
 -/
 theorem pull_g_eq (L : LB X) (f : Y ⟶ X) (i i' : (L.pull f).ι) :
     (L.pull f).g i i' = res (le_inf ((inf_le_left.trans (LB.wchart_le L (fun _ => f) i PUnit.unit)))
@@ -129,48 +129,44 @@ theorem pull_g_eq (L : LB X) (f : Y ⟶ X) (i i' : (L.pull f).ι) :
   exact (Fintype.prod_unique (fun _ : PUnit => _)).trans (zpow_one _)
 
 /- English proof (translation)
-The claim follows from `(mul_cancel_right_mem_nonZeroDivisors hr).mp h`.
+A detailed English derivation is pending.
 -/
 theorem cancel_nzd {R : Type} [CommRing R] {x y r : R} (hr : r ∈ nonZeroDivisors R)
     (h : x * r = y * r) : x = y :=
   (mul_cancel_right_mem_nonZeroDivisors hr).mp h
 
 /- English proof (translation)
-Introduce `X Y j L θ Ix V a ha hb hc hw`. Use `choose c hc using hc`. Use `choose w hw using hw`. Establish `c_self : ∀ k, c k k = 1`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `h' : (c k k : Γ(X, V k ⊓ V k)) * (X.presheaf.map (homOfLE (inf_le_left : V k ⊓ V k ≤ V k)).op).hom (a k) = 1 * (X.presheaf.map (homOfLE (inf_le_left : V k ⊓ V k ≤ V k)).op).hom (a k)`. Rewrite using `[_root_.one_mul]`. Conclude with `(hc k k).symm`. Conclude with `cancel_nzd (ha k (V k ⊓ V k) inf_le_left) h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `c_cocycle : ∀ k l m, res (inf_le_left : V k ⊓ V l ⊓ V m ≤ V k ⊓ V l) (c k l) * res (le_inf (inf_le_left.trans inf_le_right) inf_le_right : V k ⊓ V l ⊓ V m ≤ V l ⊓ V m) (c l m) = res (le_inf (inf_le_left.trans inf_le_left) inf_le_right : V k ⊓ V l ⊓ V m ≤ V k ⊓ V m) (c k m)`. Introduce `k l m`. Apply `Units.ext` to reduce the goal to its premises. Establish `e1` using `congrArg (X.presheaf.map (homOfLE (inf_le_left : V k ⊓ V l ⊓ V m ≤ V k ⊓ V l)).op).hom (hc k l)`. Establish `e2` using `congrArg (X.presheaf.map (homOfLE (le_inf (inf_le_left.trans inf_le_right) inf_le_right : V k ⊓ V l ⊓ V m ≤ V l ⊓ V m)).op).hom (hc l m)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `e3` using `congrArg (X.presheaf.map (homOfLE (le_inf (inf_le_left.trans inf_le_left) inf_le_right : V k ⊓ V l ⊓ V m ≤ V k ⊓ V m)).op).hom (hc k m)`. Simplify using `only [map_mul, rs_rs] at e1 e2 e3`. Apply `cancel_nzd (ha m (V k ⊓ V l ⊓ V m) inf_le_right)` to reduce the goal to its premises. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe, Units.val_mul]`. Rewrite using `[_root_.mul_assoc, ← e2, ← e1, e3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Y1 : ∀ k l i i', res (inf_inf_le_inf_left (j ⁻¹ᵁ V k) (j ⁻¹ᵁ V l) (L.U i) (L.U i')) (w k i) = res (inf_le_right : (j ⁻¹ᵁ V k ⊓ j ⁻¹ᵁ V l) ⊓ (L.U i ⊓ L.U i') ≤ L.U i ⊓ L.U i') (L.g i i') * (res ((inf_le_left : (j ⁻¹ᵁ V k ⊓ j ⁻¹ᵁ V l) ⊓ (L.U i ⊓ L.U i') ≤ _).trans (inf_preimage_le …`. Introduce `k l i i'`. Establish `hWl : (j ⁻¹ᵁ V k ⊓ j ⁻¹ᵁ V l) ⊓ (L.U i ⊓ L.U i') ≤ j ⁻¹ᵁ V l` using `fun _ hx => hx.1.2`. Establish `hWkl : (j ⁻¹ᵁ V k ⊓ j ⁻¹ᵁ V l) ⊓ (L.U i ⊓ L.U i') ≤ j ⁻¹ᵁ (V k ⊓ V l)` using `fun _ hx => hx.1`. Establish `hW1 : (j ⁻¹ᵁ V k ⊓ j ⁻¹ᵁ V l) ⊓ (L.U i ⊓ L.U i') ≤ j ⁻¹ᵁ V k ⊓ L.U i` using `fun _ hx => ⟨hx.1.1, hx.2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW2 : (j ⁻¹ᵁ V k ⊓ j ⁻¹ᵁ V l) ⊓ (L.U i ⊓ L.U i') ≤ j ⁻¹ᵁ V l ⊓ L.U i'` using `fun _ hx => ⟨hx.1.2, hx.2.2⟩`. Establish `hW3 : (j ⁻¹ᵁ V k ⊓ j ⁻¹ᵁ V l) ⊓ (L.U i ⊓ L.U i') ≤ L.U i ⊓ L.U i'` using `fun _ hx => hx.2`. Establish `f1` using `congrArg (Y.presheaf.map (homOfLE hW1).op).hom (hw k i)`. Establish `f2` using `congrArg (Y.presheaf.map (homOfLE hW2).op).hom (hw l i')`. Establish `f3` using `congrArg (Y.presheaf.map (homOfLE hW3).op).hom (θ.compat i i')`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `f4` using `congrArg (j.appLE (V k ⊓ V l) _ hWkl).hom (hc k l)`. Simplify using `only [map_mul, rs_rs, rs_app, appLE_rs, rs_appLE] at f1 f2 f3 f4`. Establish `Y1e : (Y.presheaf.map (homOfLE hW1).op).hom (w k i : Γ(Y, j ⁻¹ᵁ V k ⊓ L.U i)) * (j.appLE (V k ⊓ V l) _ hWkl).hom (c k l : Γ(X, V k ⊓ V l)) = (Y.presheaf.map (homOfLE hW3).op).hom (L.g i i' : Γ(Y, L.U i ⊓ L.U i')) * (Y.presheaf.map (homOfLE hW2).op).hom (w l i' : Γ(Y, j ⁻¹ᵁ V l ⊓ …`. Apply `cancel_nzd (hb l _ hWl)` to reduce the goal to its premises. Simplify using `only [rs_app]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[_root_.mul_assoc, ← f4, ← f1, f3, f2, _root_.mul_assoc]`. Rewrite using `[mul_right_comm, eq_mul_inv_iff_mul_eq]`. Conclude with `Units.ext Y1e`. Set `O : X.Opens` to `⨆ k, V k`. Establish `hVO : ∀ k, V k ≤ O` using `fun k => le_iSup V k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinf3 : ∀ A B C : X.Opens, O.ι ⁻¹ᵁ A ⊓ O.ι ⁻¹ᵁ B ⊓ O.ι ⁻¹ᵁ C ≤ O.ι ⁻¹ᵁ (A ⊓ B ⊓ C)` using `fun _ _ _ _ hx => hx`. Set `N : LB O.toScheme` to `LB.mk Ix (fun k => O.ι ⁻¹ᵁ V k) (fun k l => res (inf_preimage_le O.ι (V k) (V l)) (pullU O.ι _ (c k l)))`. Establish `hN : N.IsLB`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `eq_top_iff.mpr fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hx : O.ι x ∈ O` using `by first`. Consider the case `exact x.2`. Consider the case `exact (Scheme.Opens.range_ι O).le ⟨x, rfl⟩`. Consider the case `simp [Scheme.Opens.ι_apply]`. Rewrite `hx`, the goal using `[TopologicalSpace.Opens.mem_iSup]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hx`. Introduce `k show res _ (res _ (pullU O.ι _ (c k k))) = 1`. Rewrite using `[c_self, map_one, map_one, map_one]`. Introduce `k l m show res _ (res _ (pullU O.ι _ (c k l))) * res _ (res _ (pullU O.ι _ (c l m))) = res _ (res _ (pullU O.ι _ (c k m)))`. Use `congrArg (fun u => res (hinf3 (V k) (V l) (V m)) (pullU O.ι _ u)) (c_cocycle k l m)` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, resU_pullU_resU] at this`. Simplify using `only [resU_resU]`. Conclude with `this`. Use `⟨O, N, hVO, hN, ?_⟩` and prove the remaining obligations. Establish `hsq : pullback.fst O.ι j ≫ O.ι = pullback.snd O.ι j ≫ j` using `pullback.condition`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ x, O.ι.base ((pullback.fst O.ι j).base x) = j.base ((pullback.snd O.ι j).base x)` using `fun x => by`. Use `congrArg (fun f : pullback O.ι j ⟶ X => f.base x) hsq` as an intermediate fact. Simplify using `using this`. Establish `hle : ∀ p : (PUnit → L.ι) × (PUnit → Ix), (L.pull (pullback.snd O.ι j)).U p.1 ⊓ (N.pull (pullback.fst O.ι j)).U p.2 ≤ pullback.snd O.ι j ⁻¹ᵁ (j ⁻¹ᵁ V (p.2 PUnit.unit) ⊓ L.U (p.1 PUnit.unit))`. Introduce `p x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `LB.wchart_le L (fun _ => pullback.snd O.ι j) p.1 PUnit.unit hx.1`. Establish `h2` using `LB.wchart_le N (fun _ => pullback.fst O.ι j) p.2 PUnit.unit hx.2`. Use `⟨?_, h1⟩` and prove the remaining obligations. Use `show j.base ((pullback.snd O.ι j).base x) ∈ V (p.2 PUnit.unit)`. Rewrite using `[← hpt]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Set `w' : LB.Iso (N.pull (pullback.fst O.ι j)) (L.pull (pullback.snd O.ι j))` to `⟨fun p => res (hle p) (pullU (pullback.snd O.ι j) _ (w (p.2 PUnit.unit) (p.1 PUnit.unit)))⟩`. Use `⟨w', fun p q => ?_⟩` and prove the remaining obligations. Establish `hQ : (LB.div (L.pull (pullback.snd O.ι j)) (N.pull (pullback.fst O.ι j))).U p ⊓ (LB.div (L.pull (pullback.snd O.ι j)) (N.pull (pullback.fst O.ι j))).U q ≤ pullback.snd O.ι j ⁻¹ᵁ ((j ⁻¹ᵁ V (p.2 PUnit.unit) ⊓ j ⁻¹ᵁ V (q.2 PUnit.unit)) ⊓ (L.U (p.1 PUnit.unit) ⊓ L.U (q.1 PUnit.unit)) …` using `fun x hx => ⟨⟨(hle p hx.1).1, (hle q hx.2).1⟩, ⟨(hle p hx.1).2, (hle q hx.2).2⟩⟩`. Establish `hQc : (LB.div (L.pull (pullback.snd O.ι j)) (N.pull (pullback.fst O.ι j))).U p ⊓ (LB.div (L.pull (pullback.snd O.ι j)) (N.pull (pullback.fst O.ι j))).U q ≤ pullback.fst O.ι j ⁻¹ᵁ O.ι ⁻¹ᵁ (V (p.2 PUnit.unit) ⊓ V (q.2 PUnit.unit))` using `fun x hx => ⟨LB.wchart_le N (fun _ => pullback.fst O.ι j) p.2 PUnit.unit hx.1.2, LB.wchart_le N (fun _ => pullback.fst O.ι j) q.2 PUnit.unit hx.2.2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `congrArg (fun u => res hQ (pullU (pullback.snd O.ι j) _ u)) (Y1 (p.2 PUnit.unit) (q.2 PUnit.unit) (p.1 PUnit.unit) (q.1 PUnit.unit))`. Simplify using `only [map_mul, map_inv, resU_pullU_resU] at key`. Rewrite `key` using `[resU_pullU_square hsq.symm _ _ hQc]`. Establish `goal' : res (inf_le_left : ((L.pull (pullback.snd O.ι j)).U p.1 ⊓ (N.pull (pullback.fst O.ι j)).U p.2) ⊓ ((L.pull (pullback.snd O.ι j)).U q.1 ⊓ (N.pull (pullback.fst O.ι j)).U q.2) ≤ _) (res (hle p) (pullU (pullback.snd O.ι j) _ (w (p.2 PUnit.unit) (p.1 PUnit.unit)))) = (res (le_ …`. Establish `eL : res (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left) : ((L.pull (pullback.snd O.ι j)).U p.1 ⊓ (N.pull (pullback.fst O.ι j)).U p.2) ⊓ ((L.pull (pullback.snd O.ι j)).U q.1 ⊓ (N.pull (pullback.fst O.ι j)).U q.2) ≤ _) ((L.pull (pullback.snd O.ι j)).g p.1 …`.
-
-Rewrite using `[pull_g_eq]`. Conclude with `resU_resU _ _ _`. Establish `eN : res (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right) : ((L.pull (pullback.snd O.ι j)).U p.1 ⊓ (N.pull (pullback.fst O.ι j)).U p.2) ⊓ ((L.pull (pullback.snd O.ι j)).U q.1 ⊓ (N.pull (pullback.fst O.ι j)).U q.2) ≤ _) ((N.pull (pullback.fst O.ι j)).g p. …`. Rewrite using `[pull_g_eq, show N.g (p.2 PUnit.unit) (q.2 PUnit.unit) = res (inf_preimage_le O.ι (V (p.2 PUnit.unit)) (V (q.2 PUnit.unit))) (pullU O.ι _ (c (p.2 PUnit.unit) (q.2 PUnit.unit))) from rfl]`. Use `(resU_resU _ _ _).trans ?_` and prove the remaining obligations.
-
-Conclude with `resU_pullU_resU (pullback.fst O.ι j) (inf_preimage_le O.ι _ _) _ _`. Rewrite using `[eL, eN, resU_resU, resU_resU]`. Conclude with `key`. Conclude with `goal'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lb_of_localEq : ∀ (X Y : Scheme.{0}) (j : Y ⟶ X) (L : LB Y) (θ : L.Sec) (Ix : Type) (V : Ix → X.Opens) (a : ∀ k, Γ(X, V k)), (∀ k (W : X.Opens) (hW : W ≤ V k), (X.presheaf.map (homOfLE hW).op).hom (a k) ∈ nonZeroDivisors Γ(X, W)) → (∀ k (W : Y.Opens) (hW : W ≤ j ⁻¹ᵁ V k), (Y.presheaf.map (homOfLE hW).op).hom ((j.app (V k)).hom (a k)) ∈ nonZeroDivisors Γ(Y, W)) → (∀ k l, ∃ c : Γ(X, V k ⊓ V l)ˣ, (X.presheaf.map (homOfLE inf_le_left).op).hom (a k) = (c : Γ(X, V k ⊓ V l)) * (X.presheaf.map (homOfLE inf_le_right).op).hom (a l)) → (∀ k i, ∃ w : Γ(Y, j ⁻¹ᵁ V k ⊓ L.U i)ˣ, (Y.presheaf.map (homOfLE inf_le_right).op).hom (θ.f i) = (w : Γ(Y, j ⁻¹ᵁ V k ⊓ L.U i)) * (Y.presheaf.map (homOfLE inf_le_left).op).hom ((j.app (V k)).hom (a k))) → ∃ (O : X.Opens) (N : LB O.toScheme), (∀ k, V k ≤ O) ∧ N.IsLB ∧ LBIso (N.pull (pullback.fst O.ι j)) (L.pull (pullback.snd O.ι j)) := by
   intro X Y j L θ Ix V a ha hb hc hw

@@ -3,7 +3,7 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.AStepFin
 namespace ReciprocityTheory.ChartRestriction.DS.Xi
 
 /- English proof (translation)
-Introduce `k r r' hr hk hA`. Substitute `hr` using the available equality. Conclude with `StepA.aStep_fin hB2 hIW hT hF hCH k r' hk hA`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem aStepSucc_of (hB2 : InductiveHeisenbergInputs) (hIW : IW) (hT : TLeft) (hF : FormulaF) (hCH : CH) : AStepSucc := by
   intro k r r' hr hk hA

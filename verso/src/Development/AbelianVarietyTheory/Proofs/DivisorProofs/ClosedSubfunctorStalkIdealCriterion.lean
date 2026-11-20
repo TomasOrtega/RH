@@ -11,9 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FinStalk
 
 /- English proof (translation)
-Establish `: IsAffine X` using `isAffine_of_isAffineHom f`. Establish `hfin : ((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ f.appTop).hom.Finite` using `f.finite_appTop.comp (RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).2)`. Use `letI := ((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ f.appTop).hom.toAlgebra`. Use `haveI : Module.Finite K Γ(X, ⊤) := hfin`. Use `haveI : IsArtinianRing Γ(X, ⊤) := IsArtinianRing.of_finite K Γ(X, ⊤)`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hU` using `isAffineOpen_top X`. Use `letI := TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨x, trivial⟩ : (⊤ : X.Opens))`. Establish `hl` using `hU.isLocalization_stalk ⟨x, trivial⟩`. Conclude with `IsArtinianRing.localization_artinian (hU.primeIdealOf ⟨x, trivial⟩).asIdeal.primeCompl _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stalk_isArtinianRing (K : Type) [Field K] (X : Scheme) (f : X ⟶ Sp K) [IsFinite f] (x : X) :
     IsArtinianRing (X.presheaf.stalk x) := by
@@ -34,21 +34,17 @@ end GlobalTheory.FinStalk
 namespace GlobalTheory.FinStalk
 
 /- English proof (translation)
-Introduce `K _ A _ H _ j hj hci hfin x₀ hx₀ J hJ`. Take `⟨p, hp⟩` from `hx₀`. Establish `hη : (η[H] ≫ j).left = η[A].left` using `congrArg CommaMorphism.left (IsMonHom.one_hom j)`. Take `⟨h₀, e⟩ : ∃ h₀ : H.left, x₀ = j.left.base h₀` from `⟨η[H].left.base p, by rw [← hp, ← hη]; rfl⟩`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Establish `hJ1 : J ≤ RingHom.ker (j.left.stalkMap h₀).hom` using `(hJ (H.left.presheaf.stalk h₀) (j.left.stalkMap h₀).hom).1 ⟨H.left.fromSpecStalk h₀, (Scheme.SpecMap_stalkMap_fromSpecStalk j.left).symm⟩`. Establish `hne : J ≠ ⊤` using `fun h => RingHom.ker_ne_top _ (top_le_iff.1 (h ▸ hJ1))`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Use `haveI : Nontrivial (A.left.presheaf.stalk (j.left.base h₀) ⧸ J) := Ideal.Quotient.nontrivial_iff.2 hne`. Use `haveI : IsLocalRing (A.left.presheaf.stalk (j.left.base h₀) ⧸ J) := IsLocalRing.of_surjective' (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : IsLocalHom (Ideal.Quotient.mk J) := Function.Surjective.isLocalHom _ Ideal.Quotient.mk_surjective`. Take `⟨y, hy⟩` from `(hJ _ (Ideal.Quotient.mk J)).2 (by rw [Ideal.mk_ker])`. Set `R` to `CommRingCat.of (A.left.presheaf.stalk (j.left.base h₀) ⧸ J)`. Establish `hpt : y.base (IsLocalRing.closedPoint R) = h₀`. Apply `j.left.isClosedEmbedding.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: j.left.base (y.base (IsLocalRing.closedPoint R)) = (A.left.fromSpecStalk (j.left.base h₀)).base ((Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))).base (IsLocalRing.closedPoint R))` using `congrArg (fun g : Sp R ⟶ A.left => g.base (IsLocalRing.closedPoint R)) hy`. Rewrite using `[this]`. Use `haveI : IsLocalHom (CommRingCat.ofHom (Ideal.Quotient.mk J)).hom := by`. Express the relevant statement in the definitionally equal form `IsLocalHom (Ideal.Quotient.mk J)`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Spec_closedPoint, Scheme.fromSpecStalk_closedPoint]`. Establish `key : ∀ z (_ : y.base (IsLocalRing.closedPoint R) = z), ∃ φ : H.left.presheaf.stalk z ⟶ R, Spec.map φ ≫ H.left.fromSpecStalk z = y`. Introduce and unpack `z rfl`. Conclude with `⟨_, Scheme.Spec_stalkClosedPointTo_fromSpecStalk y⟩`. Take `⟨φ, hφ⟩` from `key h₀ hpt`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp : j.left.stalkMap h₀ ≫ φ = CommRingCat.ofHom (Ideal.Quotient.mk J)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (A.left.fromSpecStalk (j.left.base h₀)), ← hy, ← hφ, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkMap_fromSpecStalk, Category.assoc]`. Establish `hsurj : Function.Surjective φ.hom`. Introduce `r`.
-
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective (I := J) r`. Conclude with `⟨(j.left.stalkMap h₀).hom a, by`. Rewrite using `[← CommRingCat.comp_apply, hcomp]`. Use the proof step `rfl⟩`. Use `haveI := stalk_isArtinianRing K H.left H.hom h₀`.
-
-Conclude with `hsurj.isArtinianRing`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalk_quotient_ne_top_and_isArtinianRing : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A] (H : Over (Sp K)) [GrpObj H] (j : H ⟶ A), IsMonHom j → IsClosedImmersion j.left → IsFinite H.hom → ∀ x₀ : A.left, x₀ ∈ Set.range (η[A]).left.base → ∀ J : Ideal (A.left.presheaf.stalk x₀), (∀ (R' : Type) [CommRing R'] (ψ : A.left.presheaf.stalk x₀ →+* R'), (∃ y : Sp R' ⟶ H.left, y ≫ j.left = Spec.map (CommRingCat.ofHom ψ) ≫ A.left.fromSpecStalk x₀) ↔ J ≤ RingHom.ker ψ) → J ≠ ⊤ ∧ IsArtinianRing (A.left.presheaf.stalk x₀ ⧸ J) := by
   intro K _ A _ H _ j hj hci hfin x₀ hx₀ J hJ

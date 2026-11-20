@@ -8,13 +8,13 @@ namespace GlobalTheory.ValCrit
 open Polynomial in
 
 /- English proof (translation)
-Rewrite `h` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, hp⟩` from `h`. Use `letI : Invertible y := invertibleOfNonzero hy`. Use `set n := p.natDegree`. Establish `hrefl : (reflect n p).degree < ((n + 1 : ℕ) : WithBot ℕ)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_lt (degree_le_natDegree) ?_` and prove the remaining obligations. Establish `: (reflect n p).natDegree ≤ n` using `natDegree_reflect_le.trans (by simp [n])`. Conclude with `Nat.lt_succ_of_le this` after adjusting the coercions. Use `⟨X ^ (n + 1) - reflect n p, monic_X_pow_sub hrefl, ?_⟩` and prove the remaining obligations. Establish `key` using `eval₂_reflect_mul_pow (algebraMap R K) y n p le_rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[invOf_eq_inv]`. Establish `hp' : eval₂ (algebraMap R K) y p = y⁻¹` using `hp`. Rewrite `key` using `[hp']`. Establish `hval : eval₂ (algebraMap R K) y⁻¹ (reflect n p) = y⁻¹ ^ (n + 1)`. Establish `hyn : y ^ n ≠ 0` using `pow_ne_zero _ hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_inv_cancel_right₀ hyn (eval₂ (algebraMap R K) y⁻¹ (reflect n p)), key, pow_succ, inv_pow, mul_comm]`. Rewrite using `[eval₂_sub, eval₂_X_pow, hval, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ValCrit.isIntegral_of_mem_adjoin_inv {R K : Type*} [CommRing R] [Field K] [Algebra R K]
     (y : K) (hy : y ≠ 0)
@@ -39,17 +39,15 @@ theorem _root_.GlobalTheory.ValCrit.isIntegral_of_mem_adjoin_inv {R K : Type*} [
   rw [eval₂_sub, eval₂_X_pow, hval, sub_self]
 
 /- English proof (translation)
-Use `set S := Algebra.adjoin R {y}`. Use `set ys : S := ⟨y, Algebra.self_mem_adjoin_singleton R y⟩`. Introduce `hJ`. Use `set π := Ideal.Quotient.mk (Ideal.span {ys})`. Establish `hsurj : Function.Surjective (π.comp (algebraMap R S))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `s`. Take `⟨s, hs⟩` from `Ideal.Quotient.mk_surjective s`. Establish `hs2 : (s : K) ∈ (Polynomial.aeval (R` using `R) y).range := by`. Rewrite using `[← Algebra.adjoin_singleton_eq_range_aeval]`. Conclude with `s.2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf⟩` from `hs2`. Establish `hfs : Polynomial.aeval ys f = s` using `Subtype.ext (by rw [← hf, Polynomial.aeval_subalgebra_coe]; rfl)`. Use `⟨f.coeff 0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, ← hfs, RingHom.comp_apply]`. Use `conv_rhs => rw [← Polynomial.X_mul_divX_add f]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C, map_add, map_mul, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self ys), zero_mul, zero_add]`. Establish `htop : (IsLocalRing.maximalIdeal R).map (π.comp (algebraMap R S)) = ⊤`. Use `congrArg (Ideal.map π) hJ` as an intermediate fact. Rewrite `this` using `[Ideal.map_sup, Ideal.map_map, Ideal.map_quotient_self, sup_bot_eq, Ideal.map_top]`. Then use the resulting hypothesis. Take `⟨a, ha, ha1⟩` from `(Ideal.mem_map_iff_of_surjective _ hsurj).1 (htop ▸ Submodule.mem_top : (1 : S ⧸ Ideal.span {ys}) ∈ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmem : ys ∣ algebraMap R S (1 - a)`. Rewrite using `[← Ideal.mem_span_singleton, map_sub, map_one, ← Ideal.Quotient.eq]`. Conclude with `ha1.symm`. Establish `hunitA : IsUnit (algebraMap R S (1 - a))` using `(IsLocalRing.isUnit_one_sub_self_of_mem_nonunits a ((IsLocalRing.mem_maximalIdeal a).1 ha)).map _`. Take `⟨u, hu⟩` from `isUnit_of_dvd_unit hmem hunitA`.
-
-Apply `hnot` to reduce the goal to its premises. Establish `h1 : ((u⁻¹ : Sˣ) : S) * ys = 1` using `by rw [← hu, Units.inv_mul]`. Establish `h2 : (((u⁻¹ : Sˣ) : S) : K) = y⁻¹` using `eq_inv_of_mul_eq_one_left (congrArg Subtype.val h1)`. Conclude with `h2 ▸ ((u⁻¹ : Sˣ) : S).2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem maximalIdeal_map_sup_span_ne_univ_of_inv_not_mem_adjoin {R K : Type} [CommRing R]
     [IsLocalRing R] [Field K] [Algebra R K] (y : K) (hnot : y⁻¹ ∉ Algebra.adjoin R {y}) :
@@ -91,27 +89,23 @@ private theorem maximalIdeal_map_sup_span_ne_univ_of_inv_not_mem_adjoin {R K : T
   exact h2 ▸ ((u⁻¹ : Sˣ) : S).2
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ p q hq H`. Distinguish the cases in `hp : p = 0`. Conclude with `hp ▸ dvd_zero q`. Assume the negation of the conclusion as `hdvd`. Use `set K := FractionRing R`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinjK : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Establish `hpK : algebraMap R K p ≠ 0` using `(map_ne_zero_iff _ hinjK).2 hp`. Establish `hqK : algebraMap R K q ≠ 0` using `(map_ne_zero_iff _ hinjK).2 hq`. Use `set y : K := algebraMap R K q / algebraMap R K p with hy_def`. Establish `hy : y ≠ 0` using `div_ne_zero hqK hpK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set S := Algebra.adjoin R {y}`. Establish `hnot : y⁻¹ ∉ S`. Introduce `hmem`. Establish `hint` using `_root_.GlobalTheory.ValCrit.isIntegral_of_mem_adjoin_inv y hy hmem`. Take `⟨r, hr⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hdvd ⟨r, hinjK ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hr, hy_def, inv_div, mul_comm, div_mul_cancel₀ _ hqK]`. Set `ys : S` to `⟨y, Algebra.self_mem_adjoin_singleton R y⟩`. Establish `hinjS : Function.Injective (algebraMap R S)`. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hinjK (congrArg Subtype.val hab)`. Use `haveI : Algebra.FiniteType R S := Algebra.FiniteType.adjoin_of_finite (Set.finite_singleton y)`. Use `haveI : IsNoetherianRing S := Algebra.FiniteType.isNoetherianRing R S`. Use `haveI : CharZero S := charZero_of_injective_algebraMap hinjS`. Use `set J : Ideal S := (IsLocalRing.maximalIdeal R).map (algebraMap R S) ⊔ Ideal.span {ys}`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ : J ≠ ⊤` using `maximalIdeal_map_sup_span_ne_univ_of_inv_not_mem_adjoin y hnot`. Take `⟨P, hPmax, hJP⟩` from `Ideal.exists_le_maximal J hJ`. Establish `hyP : ys ∈ P` using `hJP (Ideal.mem_sup_right (Ideal.mem_span_singleton_self ys))`. Establish `hcomapP : P.comap (algebraMap R S) = IsLocalRing.maximalIdeal R`. Use `((IsLocalRing.maximalIdeal.isMaximal R).eq_of_le ?_ ?_).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hPmax.isPrime.comap (algebraMap R S)).ne_top`. Conclude with `Ideal.map_le_iff_le_comap.1 (le_trans le_sup_left hJP)`. Take `⟨V, _, _, _, φ, hV, hφ, hcomap⟩` from `_root_.GlobalTheory.PrimeUnif.exists_cdvr S P`. Establish `hψ : Function.Injective (φ.comp (algebraMap R S))` using `hφ.comp hinjS`. Establish `hψc : (IsLocalRing.maximalIdeal V).comap (φ.comp (algebraMap R S)) = IsLocalRing.maximalIdeal R`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Ideal.comap_comap, hcomap, hcomapP]`. Take `⟨v, hv⟩` from `H V (φ.comp (algebraMap R S)) hV hψ hψc`. Establish `hrel : ys * algebraMap R S p = algebraMap R S q`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `y * algebraMap R K p = algebraMap R K q`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy_def, div_mul_cancel₀ _ hpK]`. Establish `hψp : φ (algebraMap R S p) ≠ 0`. Introduce `h0`. Conclude with `hp (hψ (by simpa using h0))`. Establish `hone : φ ys * v = 1`.
-
-Apply `mul_left_cancel₀ hψp` to reduce the goal to its premises. Simplify using `only [RingHom.comp_apply] at hv`. Rewrite `hv` using `[← hrel, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hunit : IsUnit (φ ys)` using `isUnit_iff_exists_inv.2 ⟨v, hone⟩`.
-
-Establish `hys : ys ∉ P`. Rewrite using `[← hcomap, Ideal.mem_comap]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 h hunit`. Conclude with `hys hyP`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ValCrit.dvd_of_forall_cdvr : ∀ (R : Type) [CommRing R] [IsDomain R]
     [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] (p q : R), q ≠ 0 →

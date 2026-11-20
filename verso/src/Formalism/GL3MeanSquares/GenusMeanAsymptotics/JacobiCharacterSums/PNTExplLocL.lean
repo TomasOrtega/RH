@@ -10,7 +10,7 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 open Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Simplify using `only [add_re, mul_re, ofReal_re, I_re, ofReal_im, I_im, mul_zero, mul_one, sub_self]`. Establish `: ((101 / 100 : ℂ)).re = 101 / 100`. Establish `h : (101 / 100 : ℂ) = ((101 / 100 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[h, ofReal_re]`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -22,9 +22,9 @@ theorem ex_centre_re (t : ℝ) : ((101 / 100 : ℂ) + t * I).re = 101 / 100 := b
   rw [this]; ring
 
 /- English proof (translation)
-Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Establish `h1 : ‖(101 / 100 : ℂ)‖ = 101 / 100`. Establish `h : (101 / 100 : ℂ) = ((101 / 100 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[h, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by norm_num)]`. Establish `h2 : ‖(t : ℂ) * I‖ = |t|`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs]`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_centre_norm (t : ℝ) : ‖(101 / 100 : ℂ) + t * I‖ ≤ 101 / 100 + |t| := by
   refine (norm_add_le _ _).trans ?_
@@ -36,11 +36,11 @@ theorem ex_centre_norm (t : ℝ) : ‖(101 / 100 : ℂ) + t * I‖ ≤ 101 / 100
   rw [h1, h2]
 
 /- English proof (translation)
-Establish `hre` using `ex_centre_re t`. Establish `h` using `exLF_lower χ ((101 / 100 : ℂ) + t * I) (by rw [hre]; norm_num)`. Rewrite `h` using `[hre]`. Establish `h1 : (1 / 100 : ℝ) ≤ ‖(101 / 100 : ℂ) + t * I - 1‖`. Establish `h2` using `Complex.abs_re_le_norm ((101 / 100 : ℂ) + t * I - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[sub_re, hre, one_re]`. Rewrite `h2` using `[abs_of_pos (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (1 / 100 : ℝ) ≤ min 1 ‖(101 / 100 : ℂ) + t * I - 1‖` using `le_min (by norm_num) h1`. Establish `h4 : (1 / 100 : ℝ) * ((101 / 100 - 1) / (101 / 100)) ≤ min 1 ‖(101 / 100 : ℂ) + t * I - 1‖ * ((101 / 100 - 1) / (101 / 100))` using `mul_le_mul_of_nonneg_right h3 (by norm_num)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans ?_ (h4.trans h)` and prove the remaining obligations. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions.
 -/
 theorem ex_centre_lower {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (t : ℝ) :
     1 / 10100 ≤ ‖exLF χ ((101 / 100 : ℂ) + t * I)‖ := by
@@ -60,19 +60,19 @@ theorem ex_centre_lower {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (t 
   norm_num
 
 /- English proof (translation)
-Establish `hM3 : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `ht : 0 ≤ |t|` using `abs_nonneg t`. Establish `hB1 : 1 ≤ C0 * M * (|t| + 3) ^ 2 * 10100`. Establish `h1 : 1 ≤ C0 * M` using `by nlinarith`. Establish `h2 : 1 ≤ (|t| + 3) ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 1 ≤ C0 * M * (|t| + 3) ^ 2` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hB1, Real.log_nonneg hB1, ?_⟩` and prove the remaining obligations. Use `set X : ℝ := (M : ℝ) * (|t| + 2) with hX`. Establish `hX6 : 6 ≤ X` using `by rw [hX]; nlinarith`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX0 : 0 < X` using `by linarith`. Establish `hMX : (M : ℝ) ≤ X` using `by rw [hX]; nlinarith`. Establish `htX : |t| + 3 ≤ X` using `by rw [hX]; nlinarith`. Establish `hlogX : 1 ≤ Real.log X`. Rewrite using `[Real.le_log_iff_exp_le hX0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK : 1 ≤ C0 * 10100` using `by linarith`. Establish `hK0 : 0 ≤ Real.log (C0 * 10100)` using `Real.log_nonneg hK`. Establish `hle : C0 * M * (|t| + 3) ^ 2 * 10100 ≤ C0 * 10100 * X ^ 3`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (|t| + 3) ^ 2 ≤ X ^ 2` using `by gcongr`. Establish `h2 : (M : ℝ) * (|t| + 3) ^ 2 ≤ X * X ^ 2`. Apply `mul_le_mul hMX h1 (by positivity) hX0.le` to reduce the goal to its premises. Establish `h3 : C0 * 10100 * ((M : ℝ) * (|t| + 3) ^ 2) ≤ C0 * 10100 * (X * X ^ 2)` using `mul_le_mul_of_nonneg_left h2 (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h5 : Real.log (C0 * M * (|t| + 3) ^ 2 * 10100) ≤ Real.log (C0 * 10100 * X ^ 3)` using `Real.log_le_log (by linarith) hle`. Establish `h6 : Real.log (C0 * 10100 * X ^ 3) = Real.log (C0 * 10100) + 3 * Real.log X`. Rewrite using `[Real.log_mul (by linarith) (by positivity), Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h5` using `[h6]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ex_log_bound (C0 : ℝ) (hC0 : 1 ≤ C0) (M : ℕ) (hM : 3 ≤ M) (t : ℝ) :
     1 ≤ C0 * M * (|t| + 3) ^ 2 * 10100 ∧
@@ -116,27 +116,25 @@ theorem ex_log_bound (C0 : ℝ) (hC0 : 1 ≤ C0) (M : ℕ) (hM : 3 ≤ M) (t : �
   nlinarith
 
 /- English proof (translation)
-Take `⟨C0, hC0, hG⟩` from `exLF_growth`. Establish `hK0 : 0 ≤ Real.log (C0 * 10100)` using `Real.log_nonneg (by linarith)`. Use `⟨180 * (Real.log (C0 * 10100) + 3), by linarith, ?_⟩` and prove the remaining obligations. Introduce `M _ χ t hM`. Take `⟨hB1, hB0, hBlog⟩` from `ex_log_bound C0 hC0 M hM t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set B : ℝ := C0 * M * (|t| + 3) ^ 2 * 10100 with hB`. Use `set z₀ : ℂ := (101 / 100 : ℂ) + t * I with hz₀`. Establish `hlow : 1 / 10100 ≤ ‖exLF χ z₀‖` using `ex_centre_lower χ t`. Establish `hne : exLF χ z₀ ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite `hlow` using `[h, norm_zero]`. Evaluate the numerical expressions using `at hlow`. Establish `hM0 : (0 : ℝ) ≤ M` using `Nat.cast_nonneg M`. Establish `hbound : ∀ z ∈ Metric.closedBall z₀ (2 / 5), ‖exLF χ z‖ ≤ B * ‖exLF χ z₀‖`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hz` using `[Metric.mem_closedBall, dist_eq_norm]`. Establish `hre : 1 / 2 ≤ z.re`. Establish `h1` using `Complex.abs_re_le_norm (z - z₀)`. Rewrite `h1` using `[sub_re, hz₀, ex_centre_re t]`. Establish `h2` using `(abs_le.1 (h1.trans hz)).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn : ‖z‖ ≤ |t| + 2`. Establish `h1 : ‖z‖ ≤ ‖z - z₀‖ + ‖z₀‖`. Use `norm_add_le (z - z₀) z₀` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `ex_centre_norm t`. Rewrite `h2` using `[← hz₀]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (1 + ‖z‖) ^ 2 ≤ (|t| + 3) ^ 2`. Establish `: 0 ≤ ‖z‖` using `norm_nonneg z`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pow_le_pow_left₀ (by linarith) (by linarith) 2`. Establish `h4 : C0 * M * (1 + ‖z‖) ^ 2 ≤ C0 * M * (|t| + 3) ^ 2` using `mul_le_mul_of_nonneg_left h3 (mul_nonneg (by linarith) hM0)`. Establish `h5 : B * (1 / 10100) ≤ B * ‖exLF χ z₀‖` using `mul_le_mul_of_nonneg_left hlow (by linarith)`. Establish `h6 : B * (1 / 10100) = C0 * M * (|t| + 3) ^ 2` using `by rw [hB]; ring`. Combine the linear relations using `[hG M χ z hre]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Z, hZ1, -, hZ3, hZ4⟩` from `ex_landau_ord (exLF χ) z₀ (2 / 5) B (by norm_num) hB1 (exLF_differentiable χ).differentiableOn hne hbound`. Establish `e3 : (2 / 5 : ℝ) / 3 = 2 / 15` using `by norm_num`. Establish `e6 : (2 / 5 : ℝ) / 6 = 1 / 15` using `by norm_num`. Rewrite `hZ1` using `[e3]`. Rewrite `hZ4` using `[e6]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Z, hZ1, ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : Real.log B / Real.log 2 ≤ 180 * Real.log B`. Establish `hl2 : (1 / 2 : ℝ) ≤ Real.log 2` using `by have := Real.log_two_gt_d9; linarith`. Rewrite using `[div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : ((∑ ρ ∈ Z, exOrd χ ρ : ℕ) : ℝ) ≤ Real.log B / Real.log 2` using `hZ3`. Combine the equalities or inequalities in the displayed calculation. Introduce `s hs hs0`. Establish `h1 : ‖deriv (exLF χ) s / exLF χ s - ∑ ρ ∈ Z, (exOrd χ ρ : ℂ) / (s - ρ)‖ ≤ 72 * Real.log B / (2 / 5)` using `hZ4 s hs hs0`. Establish `h2 : 72 * Real.log B / (2 / 5) = 180 * Real.log B` using `by ring`.
-
-Rewrite `h1` using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ex_local : ∃ C : ℝ, 0 < C ∧ ∀ (M : ℕ) [NeZero M] (χ : DirichletCharacter ℂ M) (t : ℝ), 3 ≤ M →
     ∃ Z : Finset ℂ,

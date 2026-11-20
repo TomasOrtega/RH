@@ -13,9 +13,9 @@ open CongruenceSubgroup
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Unfold `Tower.B at hb`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.2 γ hγ`. Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => rw [map_smul, hx]`.
+Treat this case separately.
 -/
 private theorem dc_fix (N w : ℕ) (γ : SL(2, ℤ)) (hγ : γ ∈ Gam N l) (b : X.Fn l) (hb : b ∈ X.B N l w) :
     X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) b = b := by
@@ -27,7 +27,7 @@ private theorem dc_fix (N w : ℕ) (γ : SL(2, ℤ)) (hγ : γ ∈ Gam N l) (b :
   | smul a x _ hx => rw [map_smul, hx]
 
 /- English proof (translation)
-Rewrite using `[Tower.act_act Ω ε X l _ _ (by rw [σ.2]; norm_num) (by rw [τ.2]; norm_num), Matrix.SpecialLinearGroup.coe_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem dc_mul (σ τ : SL(2, ℤ)) (b : X.Fn l) :
     X.act l (τ : Matrix (Fin 2) (Fin 2) ℤ) (X.act l (σ : Matrix (Fin 2) (Fin 2) ℤ) b) =
@@ -36,7 +36,7 @@ private theorem dc_mul (σ τ : SL(2, ℤ)) (b : X.Fn l) :
     Matrix.SpecialLinearGroup.coe_mul]
 
 /- English proof (translation)
-Establish `h0` using `Gamma0_mem.1 hσ`. Simplify using `only [en, Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Use `push_cast`. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem dc_en (N : ℕ) (σ τ : SL(2, ℤ)) (hσ : σ ∈ Gamma0 N) (hτ : τ ∈ Gamma0 N) :
     (en (σ * τ) 1 1 : ZMod N) = (en σ 1 1 : ZMod N) * (en τ 1 1 : ZMod N) := by
@@ -47,15 +47,15 @@ private theorem dc_en (N : ℕ) (σ τ : SL(2, ℤ)) (hσ : σ ∈ Gamma0 N) (h�
   ring
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩ : ∃ ρ, ρ = τ * σ⁻¹` from `⟨_, rfl⟩`. Establish `hτ' : τ = ρ * σ` using `by rw [hρ, inv_mul_cancel_right]`. Establish `hρ0 : ρ ∈ Gamma0 N ⊓ Gamma0 l`. Rewrite using `[hρ]`. Conclude with `Subgroup.mul_mem _ hτ (Subgroup.inv_mem _ hσ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `det1 : ∀ B : SL(2, ℤ), B ∈ Gamma0 N → (en B 0 0 : ZMod N) * (en B 1 1 : ZMod N) = 1`. Introduce `B hB`. Establish `h0` using `Gamma0_mem.1 hB`. Establish `hd` using `congrArg (fun z : ℤ => (z : ZMod N)) B.2`. Simplify using `only [Matrix.det_fin_two] at hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at hd`. Rewrite `hd` using `[h0, mul_zero, sub_zero]`. Conclude with `hd`. Establish `hσ11 : (en σ⁻¹ 1 1 : ZMod N) = (en σ 0 0 : ZMod N)`. Simplify using `[en, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hρ11 : (en ρ 1 1 : ZMod N) = 1`. Rewrite using `[hρ, dc_en N τ σ⁻¹ hτ.1 (Subgroup.inv_mem _ hσ.1), ← h, hσ11, mul_comm]`. Conclude with `det1 σ hσ.1`. Establish `hρ00 : (en ρ 0 0 : ZMod N) = 1`. Use `det1 ρ hρ0.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hρ11, mul_one]`. Conclude with `this`. Establish `hρG : ρ ∈ Gam N l` using `⟨(Gamma1_mem _ _).2 ⟨hρ00, hρ11, Gamma0_mem.1 hρ0.1⟩, hρ0.2⟩`. Rewrite using `[hτ', ← dc_mul X l ρ σ b, dc_fix X l N w ρ hρG b hb]`.
+A detailed English derivation is pending.
 -/
 private theorem dc_same (N w : ℕ) (σ τ : SL(2, ℤ)) (hσ : σ ∈ Gamma0 N ⊓ Gamma0 l) (hτ : τ ∈ Gamma0 N ⊓ Gamma0 l)
     (h : (en σ 1 1 : ZMod N) = (en τ 1 1 : ZMod N)) (b : X.Fn l) (hb : b ∈ X.B N l w) :
@@ -88,25 +88,23 @@ private theorem dc_same (N w : ℕ) (σ τ : SL(2, ℤ)) (hσ : σ ∈ Gamma0 N 
 end UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Unfold `SDiamChar`. Introduce `l _ Ω _ _ _ ι e gN A W ε X pr N _ x c d gm ψ cf hA he hlN hb`. Take `⟨-, -, -, -, -, -, -, -, ⟨δ, hδ⟩, -⟩` from `hA`. Take `⟨b0, hb0, hne⟩` from `hb`. Establish `hl : l.Prime` using `Fact.out`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN0 : N ≠ 0` using `NeZero.ne N`. Establish `hNpos : 0 < N` using `Nat.pos_of_ne_zero hN0`. Establish `hdiam : ∀ (q : ℕ) (b : X.Fn l), X.diam N l q b = X.act l (sgD N l q : Matrix (Fin 2) (Fin 2) ℤ) b` using `fun q b => rfl`. Establish `hcop : ∀ q : ℕ, q.Prime → ¬ q ∣ l * N → q.Coprime N` using `fun q hq hd => (Nat.Prime.coprime_iff_not_dvd hq).2 (fun h => hd (Dvd.dvd.mul_left h l))`. Establish `hisD : ∀ q : ℕ, q.Prime → ¬ q ∣ l * N → IsDiam N l q (sgD N l q)` using `fun q hq hd => Betti.isDiam_sgD hN0 hl.ne_zero (hcop q hq hd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpr : ∀ q : ℕ, q.Prime → ¬ q ∣ l * N → ∀ b ∈ X.B N l (2 * e - 1), pr (X.act l (sgD N l q : Matrix (Fin 2) (Fin 2) ℤ) b) = δ q • pr b` using `fun q hq hd b hb => (hδ q hq hd b hb).2`. Establish `cancel : ∀ a a' : Qbar l, a • pr b0 = a' • pr b0 → a = a'` using `fun a a' h => smul_left_injective (Qbar l) hne h`. Establish `hQ : ∀ u : (ZMod N)ˣ, ∃ q > l * N, q.Prime ∧ (q : ZMod N) = u` using `fun u => Nat.forall_exists_prime_gt_and_eq_mod u.isUnit (l * N)`. Use `choose Q hQgt hQp hQu using hQ`. Establish `hQd : ∀ u, ¬ Q u ∣ l * N` using `fun u h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Nat.le_of_dvd (Nat.mul_pos hl.pos hNpos) h`. Establish `h2` using `hQgt u`. Use linear arithmetic over natural numbers and integers. Establish `mem : ∀ u, sgD N l (Q u) ∈ CongruenceSubgroup.Gamma0 N ⊓ CongruenceSubgroup.Gamma0 l` using `fun u => (hisD _ (hQp u) (hQd u)).1`. Establish `en_u : ∀ u, (en (sgD N l (Q u)) 1 1 : ZMod N) = u` using `fun u => by`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hisD _ (hQp u) (hQd u)).2, hQu]`. Establish `inB : ∀ u (b : X.Fn l), b ∈ X.B N l (2 * e - 1) → X.act l (sgD N l (Q u) : Matrix (Fin 2) (Fin 2) ℤ) b ∈ X.B N l (2 * e - 1)` using `fun u b hb => (sBStab Ω ε X l N (2 * e - 1) hNpos b hb).2.1 _ (mem u)`. Establish `hΔ : ∀ u (b : X.Fn l), b ∈ X.B N l (2 * e - 1) → pr (X.act l (sgD N l (Q u) : Matrix (Fin 2) (Fin 2) ℤ) b) = δ (Q u) • pr b` using `fun u b hb => hpr _ (hQp u) (hQd u) b hb`. Establish `formula : ∀ (q : ℕ) (u : (ZMod N)ˣ), q.Prime → ¬ q ∣ l * N → (u : ZMod N) = q → ∀ b ∈ X.B N l (2 * e - 1), pr (X.diam N l q b) = δ (Q u) • pr b`. Introduce `q u hq hd hu b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : X.diam N l q b = X.act l (sgD N l (Q u) : Matrix (Fin 2) (Fin 2) ℤ) b`. Rewrite using `[hdiam]`. Conclude with `dc_same X l N (2 * e - 1) _ _ (hisD q hq hd).1 (mem u) (by rw [(hisD q hq hd).2, en_u, hu]) b hb`. Rewrite using `[e1]`. Conclude with `hΔ u b hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `mul : ∀ u v, δ (Q (u * v)) = δ (Q u) * δ (Q v)`. Introduce `u v`. Apply `cancel` to reduce the goal to its premises. Establish `e2 : X.act l (((sgD N l (Q u) * sgD N l (Q v) : SL(2, ℤ))) : Matrix (Fin 2) (Fin 2) ℤ) b0 = X.act l (sgD N l (Q (u * v)) : Matrix (Fin 2) (Fin 2) ℤ) b0` using `dc_same X l N (2 * e - 1) _ _ (Subgroup.mul_mem _ (mem u) (mem v)) (mem (u * v)) (by rw [dc_en N _ _ (mem u).1 (mem v).1, en_u, en_u, en_u, Units.val_mul]) b0 hb0`. Rewrite using `[← hΔ (u * v) b0 hb0, ← e2, ← dc_mul X l, hΔ v _ (inB u b0 hb0), hΔ u b0 hb0, smul_smul, mul_comm]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `one : δ (Q 1) = 1`. Apply `cancel` to reduce the goal to its premises. Rewrite using `[one_smul, ← hΔ 1 b0 hb0]`. Establish `e3 : X.act l (sgD N l (Q 1) : Matrix (Fin 2) (Fin 2) ℤ) b0 = X.act l ((1 : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) b0` using `dc_same X l N (2 * e - 1) _ _ (mem 1) (Subgroup.one_mem _) (by rw [en_u]; simp [en]) b0 hb0`. Rewrite using `[e3, dc_fix X l N (2 * e - 1) 1 (Subgroup.one_mem _) b0 hb0]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `inv : ∀ u : (ZMod N)ˣ, δ (Q u) * δ (Q u⁻¹) = 1` using `fun u => by`. Rewrite using `[← mul, mul_inv_cancel, one]`. Use `⟨MonoidHom.mk' (fun u => Units.mkOfMulEqOne (δ (Q u)) (δ (Q u⁻¹)) (inv u)) (fun u v => by` and prove the remaining obligations. Use `ext`. Simplify using `[mul]), ?_⟩`.
-
-Introduce `q u hq hd hu b hb`. Simplify using `only [MonoidHom.mk'_apply, Units.val_mkOfMulEqOne]`. Conclude with `formula q u hq hd hu b hb`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sDiamChar :
     UpperTheory.V.Z.Kato.Nb.SDiamChar := by

@@ -6,7 +6,7 @@ private noncomputable def gE (y s : ℂ) : ℂ :=
     (Real.pi : ℂ) * Complex.I * (s * y + starRingEnd ℂ s * starRingEnd ℂ y))
 
 /- English proof (translation)
-Rewrite using `[gE, ← Complex.exp_add, Complex.mul_conj', Complex.re_eq_add_conj, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma gE_eq (y s : ℂ) : gE y s = Complex.exp (-(Real.pi : ℂ) * (‖s‖ : ℂ) ^ 2) *
     Complex.exp (-(2 * Real.pi * Complex.I) * (((s * y).re : ℝ) : ℂ)) := by
@@ -15,7 +15,7 @@ private lemma gE_eq (y s : ℂ) : gE y s = Complex.exp (-(Real.pi : ℂ) * (‖s
   ring
 
 /- English proof (translation)
-Rewrite using `[gE_eq, norm_mul, Complex.norm_exp, Complex.norm_exp, ← Real.exp_add]`. Use `congr 1`. Simplify using `[← Complex.ofReal_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private lemma gE_norm (y s : ℂ) : ‖gE y s‖ = Real.exp (-Real.pi * ‖s‖ ^ 2) := by
   rw [gE_eq, norm_mul, Complex.norm_exp, Complex.norm_exp, ← Real.exp_add]
@@ -23,7 +23,7 @@ private lemma gE_norm (y s : ℂ) : ‖gE y s‖ = Real.exp (-Real.pi * ‖s‖ 
   simp [← Complex.ofReal_pow]
 
 /- English proof (translation)
-Unfold `gE`. Use `Complex.continuous_conj` as an intermediate fact. Use `fun_prop`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma gE_cont (y : ℂ) : Continuous (gE y) := by
   unfold gE
@@ -31,15 +31,15 @@ private lemma gE_cont (y : ℂ) : Continuous (gE y) := by
   fun_prop
 
 /- English proof (translation)
-Establish `hb : 0 < (((Real.pi - 1 : ℝ)) : ℂ).re`. Rewrite using `[Complex.ofReal_re]`. Combine the linear relations using `[Real.pi_gt_three]`. Establish `h` using `(GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) hb 0 0).norm`. Use `Integrable.mono' (h.const_mul (((a + b).factorial : ℝ) * Real.exp 1)) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Complex.continuous_conj` as an intermediate fact. Use `gE_cont y` as an intermediate fact. Apply `Continuous.aestronglyMeasurable` to reduce the goal to its premises. Use `fun_prop`. Use `Filter.Eventually.of_forall fun s => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_mul, norm_pow, norm_pow, Complex.norm_conj, gE_norm, Complex.norm_exp, ← pow_add]`. Establish `e : (-((Real.pi - 1 : ℝ) : ℂ) * (‖s‖ : ℂ) ^ 2 + 0 * ((inner ℝ (0 : ℂ) s : ℝ) : ℂ)).re = -(Real.pi - 1) * ‖s‖ ^ 2`. Simplify using `[← Complex.ofReal_pow]`. Rewrite using `[e]`. Establish `h1` using `Real.pow_div_factorial_le_exp ‖s‖ (norm_nonneg s) (a + b)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (0 : ℝ) < ((a + b).factorial : ℝ)` using `by positivity`. Rewrite `h1` using `[div_le_iff₀ hf]`. Establish `h2 : Real.exp ‖s‖ ≤ Real.exp (1 + ‖s‖ ^ 2)`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use polynomial arithmetic with `[sq_nonneg (‖s‖ - 1)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `h1.trans (by gcongr)`. Use `_ = _ := by`. Rewrite using `[show -(Real.pi - 1) * ‖s‖ ^ 2 = ‖s‖ ^ 2 + -Real.pi * ‖s‖ ^ 2 by ring, Real.exp_add, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma gE_int (y : ℂ) (a b : ℕ) :
     Integrable (fun s : ℂ => s ^ a * (starRingEnd ℂ s) ^ b * gE y s) := by
@@ -74,11 +74,11 @@ private lemma gE_int (y : ℂ) (a b : ℕ) :
           ring
 
 /- English proof (translation)
-Unfold `HasLineDerivAt`. Establish `h1 : HasDerivAt (fun t : ℂ => s + t * v) v 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).mul_const v).const_add s`. Establish `h2 : HasDerivAt (fun t : ℂ => starRingEnd ℂ s + t * starRingEnd ℂ v) (starRingEnd ℂ v) 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).mul_const (starRingEnd ℂ v)).const_add (starRingEnd ℂ s)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3` using `(h2.fun_pow k).fun_mul ((((h1.fun_mul h2).const_mul (-(Real.pi : ℂ))).fun_sub (((h1.mul_const y).fun_add (h2.mul_const (starRingEnd ℂ y))).const_mul ((Real.pi : ℂ) * Complex.I))).cexp)`. Establish `h4` using `HasDerivAt.comp_ofReal (z := 0) (by simpa using h3)`. Use `convert! h4 using 1`. Use function extensionality and compare the values at `t`. Simplify using `[gE]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [gE, neg_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma gE_deriv (y : ℂ) (k : ℕ) (v s : ℂ) :
     HasLineDerivAt ℝ (fun s : ℂ => (starRingEnd ℂ s) ^ k * gE y s)
@@ -104,13 +104,11 @@ private lemma gE_deriv (y : ℂ) (k : ℕ) (v s : ℂ) :
     ring
 
 /- English proof (translation)
-Establish `i1` using `(gE_int y 0 (k + 1)).const_mul (-(Real.pi : ℂ))`. Establish `i2` using `(gE_int y 0 k).const_mul ((Real.pi : ℂ) * Complex.I * y)`. Establish `i3` using `(gE_int y 0 (k - 1)).const_mul (k : ℂ)`. Establish `i4` using `(gE_int y 1 k).const_mul (Real.pi : ℂ)`. Establish `i5` using `(gE_int y 0 k).const_mul ((Real.pi : ℂ) * Complex.I * starRingEnd ℂ y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `j1` using `(i1.sub' i2).const_mul v`. Establish `j2` using `((i3.sub' i4).sub' i5).const_mul (starRingEnd ℂ v)`. Establish `H` using `integral_bilinear_hasLineDerivAt_right_eq_neg_left_of_integrable (μ := volume) (f := fun _ : ℂ => (1 : ℂ)) (f' := fun _ => 0) (v := v) (B := ContinuousLinearMap.mul ℝ ℂ) (g := fun s : ℂ => (starRingEnd ℂ s) ^ k * gE y s) (by simp) ?_ ?_ ?_ (fun s _ => gE_deriv y k v s)`. Simplify using `only [ContinuousLinearMap.mul_apply', one_mul, zero_mul, integral_zero, neg_zero] at H`. Rewrite `H` using `[integral_add j1 j2, integral_const_mul, integral_const_mul, integral_sub i1 i2, integral_sub (i3.sub' i4) i5, integral_sub i3 i4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [integral_const_mul] at H`. Conclude with `H`. Simplify using `only [ContinuousLinearMap.mul_apply', one_mul]`. Conclude with `j1.add j2`. Simplify using `using gE_int y 0 k`.
-
-Introduce `x _`. Conclude with `(hasFDerivAt_const (1 : ℂ) x).hasLineDerivAt v`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma gE_zero (y : ℂ) (k : ℕ) (v : ℂ) :
     v * (-(Real.pi : ℂ) * (∫ s : ℂ, s ^ 0 * (starRingEnd ℂ s) ^ (k + 1) * gE y s)
@@ -142,17 +140,17 @@ private lemma gE_zero (y : ℂ) (k : ℕ) (v : ℂ) :
     exact (hasFDerivAt_const (1 : ℂ) x).hasLineDerivAt v
 
 /- English proof (translation)
-Introduce `k y`. Simplify using `only [mul_assoc _ (Complex.exp _) (Complex.exp _), ← gE_eq]`. Proceed by induction on `k with`. Consider the case `zero`. Establish `hb : 0 < ((Real.pi : ℝ) : ℂ).re`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[Complex.ofReal_re]`. Conclude with `Real.pi_pos`. Establish `h` using `GaussianFourier.integral_cexp_neg_mul_sq_norm_add (V := ℂ) hb (-(2 * Real.pi * Complex.I)) (starRingEnd ℂ y)`. Establish `hp : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Simplify using `only [pow_zero, one_mul, gE_eq, ← Complex.exp_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use `congr 1`. Use function extensionality and compare the values at `s`. Simplify using `[Complex.inner, mul_comm]`. Rewrite using `[div_self hp, Complex.one_cpow, one_mul, Complex.norm_conj]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1` using `gE_zero y k 1`. Establish `h2` using `gE_zero y k Complex.I`. Establish `hp : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Simplify using `only [pow_zero, one_mul, map_one, Complex.conj_I, ih] at h1 h2`. Apply `mul_left_cancel₀ (mul_ne_zero (mul_ne_zero two_ne_zero hp) Complex.I_ne_zero)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-Complex.I * h1 - h2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.gaussian_fourier_conj_power :
     ∀ (k : ℕ) (y : ℂ), ∫ s : ℂ, (starRingEnd ℂ s) ^ k * Complex.exp (-(Real.pi : ℂ) * (‖s‖ : ℂ) ^ 2) *

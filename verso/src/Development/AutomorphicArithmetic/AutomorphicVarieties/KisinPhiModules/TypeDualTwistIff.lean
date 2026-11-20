@@ -6,9 +6,9 @@ section
 open TensorProduct GlobalTheory.Pst Polynomial Matrix
 
 /- English proof (translation)
-Establish `e : Units.map (f : R →* R) T = Units.map (algebraMap Q R : Q →* R) c * T` using `by ext; simpa [Algebra.smul_def] using h`. Establish `e' : Units.map (algebraMap Q R : Q →* R) (c ^ m) * Units.map (f : R →* R) (T ^ (-m)) = T ^ (-m)`. Rewrite using `[map_zpow, map_zpow, e, mul_zpow, ← mul_assoc, ← _root_.zpow_add]`. Simplify using the standard rewrite rules. Rewrite using `[Algebra.smul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Units.val e'`.
+A detailed English derivation is pending.
 -/
 private theorem zpow_fix {Q R : Type} [Field Q] [CommRing R] [Algebra Q R] (f : R →ₐ[Q] R) (T : Rˣ) (c : Qˣ)
     (h : f (T : R) = (c : Q) • T) (m : ℤ) :
@@ -21,7 +21,7 @@ private theorem zpow_fix {Q R : Type} [Field Q] [CommRing R] [Algebra Q R] (f : 
   exact congrArg Units.val e'
 
 /- English proof (translation)
-Use `⟨(LinearEquiv.lTensor (Fin n → B) (u.mulLeftLinearEquiv Q R)).trans ((TensorProduct.piLeft Q R (fun _ : Fin n => B)).trans ((Pi.basisFun B (Fin n)).constr Q)), fun v r w => ?_⟩` and prove the remaining obligations. Simplify using `[Module.Basis.constr_apply_fintype, dotProduct, sum_tmul, smul_tmul', mul_comm, TensorProduct.piLeft]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem exists_phi {Q B R : Type} [Field Q] [CommRing B] [Algebra Q B] [CommRing R] [Algebra Q R]
     (n : ℕ) (u : Rˣ) :
@@ -34,13 +34,13 @@ private theorem exists_phi {Q B R : Type} [Field Q] [CommRing B] [Algebra Q B] [
 variable {l : ℕ} [Fact l.Prime] {K : FinExt l} {B : Type} [CommRing B] [Algebra ℚ_[l] B]
 
 /- English proof (translation)
-Establish `h3 : ∀ x, x ∈ Dpst (PP l) (resCoef ℚ_[l] ρ) ↔ Φ x ∈ DpstHom K σ`. Introduce `x`. Rewrite using `[mem_Dpst]`. Use `exists_congr fun K' => forall_congr' fun g => imp_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[← Φ.injective.eq_iff, h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h v conv_lhs => rw [← h]`. Simplify using the standard rewrite rules. Introduce `h ext1 v`. Simplify using `[← h]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h4 : ∀ (y : V ⊗[ℚ_[l]] Bst (PP l)) (c : Fin n → B ⊗[ℚ_[l]] ↥(MaximalUnramifiedExtension l)) (x : Fin n → V ⊗[ℚ_[l]] Bst (PP l)), y = ∑ a, Thick.sm V (Bst (PP l)) (c a) (x a) ↔ Φ y = ∑ a, (LinearMap.mulLeft B (toSt (c a))).comp (Φ (x a))`. Introduce `y c x`. Rewrite using `[← Φ.injective.eq_iff, map_sum]`. Simplify using `only [h2]`. Unfold `TypeSt TypeLit`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `(Equiv.piCongrRight fun _ : Fin n => Φ.toEquiv).exists_congr fun x => ?_` and prove the remaining obligations. Use `and_congr (forall_congr' fun a => h3 _) (and_congr ?_ ?_)` and prove the remaining obligations. Use `Φ.toEquiv.forall_congr fun y => imp_congr (h3 _) (existsUnique_congr fun c => h4 _ _ _)` and prove the remaining obligations. Use `forall_congr' fun γ => imp_congr_right fun _ => forall_congr' fun M => imp_congr_left (forall_congr' fun b => ?_)` and prove the remaining obligations. Rewrite using `[h4 _ (fun a => M a b), h1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -83,23 +83,23 @@ end
 
 open TensorProduct GlobalTheory.Pst Polynomial Matrix in
 /- English proof (translation)
-Introduce `l _ K B _ _ _ _ n ρ a t`. Set `T : (Bst (PP l))ˣ` to `Units.map (C : (PP l).R.B →+* Bst (PP l)) (isUnit_tB (PP l)).unit`. Establish `hT : (T : Bst (PP l)) = C (PP l).tB` using `rfl`. Establish `hu : ∀ g : GQ l, (((PP l).χQ g ^ a : ℚ_[l]ˣ) : ℚ_[l]) • actSt (PP l) g ((T ^ (-a) : (Bst (PP l))ˣ) : Bst (PP l)) = ((T ^ (-a) : (Bst (PP l))ˣ) : Bst (PP l))` using `fun g => zpow_fix (actSt (PP l) g) T ((PP l).χQ g) (by rw [hT, actSt_C, smul_C, localPrime_galoisAction_periodT]) a`. Establish `hχ : ∀ g : GQ l, cycA l l B g = Units.map (algebraMap ℚ_[l] B : ℚ_[l] →* B) ((PP l).χQ g)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g`. Use `ext`. Simplify using `only [cycA, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, (cycFacts l l).2.2 g]`. Conclude with `IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] B _`. Establish `hχ' : ∀ g : ↥(GK K), (((((cycA l l B).comp (GK K).subtype) ^ (-a)) g⁻¹ : Bˣ) : B) = algebraMap ℚ_[l] B (((PP l).χQ g ^ a : ℚ_[l]ˣ) : ℚ_[l])`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[map_inv, MonoidHom.zpow_apply, _root_.zpow_neg, inv_inv, MonoidHom.comp_apply, hχ, ← map_zpow]`. Both sides reduce to the same expression. Generalize the expression as in `T ^ (-a) = u at hu`. Generalize the expression as in `((cycA l l B).comp (GK K).subtype) ^ (-a) = χ at hχ'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦ⟩` from `exists_phi (Q := ℚ_[l]) (B := B) n u`. Use `transfer _ _ Φ.toAddEquiv (fun g x => ?_) (fun c x => ?_) n t` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Φ _ = (actBst (g : GQ l)).comp ((Φ x).comp _)`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy, LinearMap.add_comp, LinearMap.comp_add]`. Consider the case `tmul v b`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `e : colRep (dualTw χ ρ) g⁻¹ w = (χ g⁻¹ : B) • ((ρ g : Matrix (Fin n) (Fin n) B)ᵀ *ᵥ w)`. Simplify using `[colRep, dualTw, Matrix.smul_mulVec]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e' : resCoef ℚ_[l] (colRep ρ) g v = (ρ g : Matrix (Fin n) (Fin n) B) *ᵥ v` using `rfl`. Rewrite using `[stRep_tmul, hΦ, LinearMap.comp_apply, LinearMap.comp_apply, hΦ, e, e', hχ', actBst, AlgebraTensorModule.map_tmul, dotProduct_smul, algebraMap_smul, LinearMap.id_apply, smul_tmul, LinearMap.restrictScalars_apply, AlgHom.toLinearMap_apply, map_mul, ← smul_mul_assoc, hu, dotProduct …`. Express the relevant statement in the definitionally equal form `Φ _ = (LinearMap.mulLeft B (toSt c)).comp (Φ x)`. Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy`. Rewrite using `[map_add, LinearMap.add_apply, map_add, hx, hy, map_add]`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, add_mul]`. Consider the case `tmul p k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, LinearMap.comp_add]`. Consider the case `tmul v b`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Thick.sm_tmul, hΦ, LinearMap.comp_apply, hΦ, LinearMap.mulLeft_apply, toSt, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_mul_tmul, smul_dotProduct, Algebra.smul_def k, mul_left_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.type_dual_twist_iff :
     ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] ℚ_[l] B] (n : ℕ) (ρ : ↥(GK K) →* GL (Fin n) B) (a : ℤ) (t : ↥(GK K) → B), TypeSt K (colRep ρ) n t ↔ TypeLit K (colRep (dualTw (((cycA l l B).comp (GK K).subtype) ^ (-a)) ρ)) n t := by

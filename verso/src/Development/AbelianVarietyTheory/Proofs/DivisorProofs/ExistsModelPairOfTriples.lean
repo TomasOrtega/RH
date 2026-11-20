@@ -12,11 +12,11 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ThK.MidPair
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B b a' G G₁ X om om' om₁ om₁' hT hT₁`. Take `⟨M₂, hM₂⟩` from `GlobalTheory.ModelEx.model_exists F E σ B hT.base (b + 2) (b + a') G.V G₁.W _ _ _ _ hT.geo.hV hT₁.geo.hW`. Establish `hW : IsHecke F E (X.β / X.α)`. Use `⟨Continuous.div' hT.chars.heckeβ.1 hT.chars.heckeα.1, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.div_apply, hT.chars.heckeβ.2 x, hT.chars.heckeα.2 x, div_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `resW : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range (X.β / X.α) (b + a')`. Introduce `t`. Establish `h1` using `hT₁.chars.resβ t`. Establish `h2` using `hT₁.chars.resα t`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, h1, h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[pow_add, div_eq_mul_inv, ← inv_pow, inv_neg_one]`. Take `⟨om₂, hw⟩` from `GlobalTheory.WeilExGen.exists_isWeil hK.base F E σ B hT.base (b + 2) (b + a') G.V G₁.W _ _ _ _ hT.geo.hV hT₁.geo.hW M₂ hM₂ X.β (X.β / X.α) hT.chars.heckeβ hW hT.chars.resβ resW`. Conclude with `⟨M₂, om₂, ⟨hT.base, hT.geo.hV, hT₁.geo.hW, hM₂, hT.chars.heckeβ, hW, hT.chars.resβ, resW, hw⟩⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_midPair : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (X : Chars F E) (om : Rep σ G.V G.W)

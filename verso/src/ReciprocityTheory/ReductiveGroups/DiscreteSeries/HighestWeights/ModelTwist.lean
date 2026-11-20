@@ -12,9 +12,7 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨hu, -⟩` from `k.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.det_conjTranspose]`. Use `_ = (star (toMK k) * toMK k).det := (Matrix.det_mul _ _).symm`. Use `_ = 1 := by`.
-
-Rewrite using `[show star (toMK k) * toMK k = 1 from Unitary.star_mul_self_of_mem hu, Matrix.det_one]`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma twist_det_star_mul {ε : Fin n → Bool} (k : KG ε) : star (toMK k).det * (toMK k).det = 1 := by
   obtain ⟨hu, -⟩ := k.2
@@ -25,7 +23,7 @@ lemma twist_det_star_mul {ε : Fin n → Bool} (k : KG ε) : star (toMK k).det *
         rw [show star (toMK k) * toMK k = 1 from Unitary.star_mul_self_of_mem hu, Matrix.det_one]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `twist_det_star_mul k`. Rewrite `h1` using `[h, mul_zero]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma twist_det_ne {ε : Fin n → Bool} (k : KG ε) : (toMK k).det ≠ 0 := by
   intro h
@@ -34,15 +32,15 @@ lemma twist_det_ne {ε : Fin n → Bool} (k : KG ε) : (toMK k).det ≠ 0 := by
   exact zero_ne_one h1
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Subtype.ext (Units.ext h))`.
+A detailed English derivation is pending.
 -/
 lemma twist_toMK_inj {ε : Fin n → Bool} {k k' : KG ε} (h : toMK k = toMK k') : k = k' :=
   Subtype.ext (Subtype.ext (Units.ext h))
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `hc : ∀ t : ℝ, ((t : ℂ) • X) = t • X` using `fun t => Complex.coe_smul t X`. Establish `h1` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Rewrite `h1` using `[zero_smul, NormedSpace.exp_zero, one_mul]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap { toFun := fun M => M i j, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `h2` using `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Simplify using `only [hc]`. Conclude with `h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hasDerivAt_exp_smul_apply_zero (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) i j) (X i j) 0 := by
@@ -58,7 +56,7 @@ private theorem hasDerivAt_exp_smul_apply_zero (X : Matrix (Fin n) (Fin n) ℂ) 
   exact h2
 
 /- English proof (translation)
-Use `InhabA.hasDerivAt_det_of_one (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X ?_ (fun i j => hasDerivAt_exp_smul_apply_zero X i j)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma twist_hasDerivAt_det_exp (X : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X)).det) X.trace 0 := by
@@ -67,7 +65,7 @@ lemma twist_hasDerivAt_det_exp (X : Matrix (Fin n) (Fin n) ℂ) :
   simp
 
 /- English proof (translation)
-Conclude with `Unitary.smul_mem_of_mem (Unitary.mem_iff.2 ⟨hs, by rw [mul_comm]; exact hs⟩) hA`.
+A detailed English derivation is pending.
 -/
 lemma twist_smul_mem_unitary {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V] {s : ℂ}
     (hs : star s * s = 1) {A : V →L[ℂ] V} (hA : A ∈ unitary (V →L[ℂ] V)) :
@@ -75,40 +73,36 @@ lemma twist_smul_mem_unitary {V : Type} [NormedAddCommGroup V] [InnerProductSpac
   exact Unitary.smul_mem_of_mem (Unitary.mem_iff.2 ⟨hs, by rw [mul_comm]; exact hs⟩) hA
 
 /- English proof (translation)
-Rewrite using `[star_zpow₀, ← _root_.mul_zpow, twist_det_star_mul, _root_.one_zpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma twist_zpow_star {ε : Fin n → Bool} (k : KG ε) (c : ℤ) :
     star ((toMK k).det ^ c) * (toMK k).det ^ c = 1 := by
   rw [star_zpow₀, ← _root_.mul_zpow, twist_det_star_mul, _root_.one_zpow]
 
 /- English proof (translation)
-Use `letI := T.instNACG`. Use `letI := T.instIPS`. Use `letI := T.instFD`. Use `letI := T.instCS`. Set `d : KG ε → ℂ` to `fun k => (toMK k).det ^ c`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hd : ∀ k, star (d k) * d k = 1` using `fun k => twist_zpow_star k c`. Establish `hdne : ∀ k, d k ≠ 0` using `fun k => zpow_ne_zero c (twist_det_ne k)`. Establish `hdmul : ∀ k k', d (k * k') = d k * d k'`. Introduce `k k'`. Use `show (toMK (k * k')).det ^ c = (toMK k).det ^ c * (toMK k').det ^ c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show toMK (k * k') = toMK k * toMK k' from rfl, Matrix.det_mul, _root_.mul_zpow]`. Establish `hd1 : d 1 = 1` using `by show (toMK (1 : KG ε)).det ^ c = 1`. Rewrite using `[show toMK (1 : KG ε) = 1 from rfl, Matrix.det_one, _root_.one_zpow]`. Set `τ' : KG ε →* unitary (T.V →L[ℂ] T.V)` to `{ toFun := fun k => ⟨d k • ((T.τ k : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V), twist_smul_mem_unitary (hd k) (T.τ k).2⟩ map_one' := by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show d 1 • ((T.τ 1 : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V) = 1`. Rewrite using `[hd1, one_smul, map_one, OneMemClass.coe_one]`. Use the proof step `map_mul' := fun k k' => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show d (k * k') • ((T.τ (k * k') : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V) = (d k • ((T.τ k : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V)) * (d k' • ((T.τ k' : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[hdmul, map_mul, Submonoid.coe_mul, smul_mul_smul_comm] }`. Establish `hcontd : Continuous d`. Establish `h1 : Continuous fun k : KG ε => (toMK k).det` using `Continuous.matrix_det (Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val))`. Conclude with `h1.zpow₀ c (fun k => Or.inl (twist_det_ne k))`. Set `dτ' : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] (T.V →L[ℂ] T.V)` to `T.dτ + (c : ℂ) • (Matrix.traceLinearMap (Fin n) ℂ ℂ).smulRight (1 : T.V →L[ℂ] T.V)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdτ : ∀ X, dτ' X = T.dτ X + ((c : ℂ) * X.trace) • (1 : T.V →L[ℂ] T.V)`. Introduce `X`. Simplify using `only [dτ', LinearMap.add_apply, LinearMap.smul_apply, LinearMap.smulRight_apply, Matrix.traceLinearMap_apply, smul_smul]`. Use `⟨⟨T.V, τ', ?_, ?_, dτ', ?_, T.w, T.w_norm, ?_, ?_⟩⟩` and prove the remaining obligations. Use `show Continuous (fun k => (⟨d k • ((T.τ k : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V), twist_smul_mem_unitary (hd k) (T.τ k).2⟩ : unitary (T.V →L[ℂ] T.V)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Continuous.subtype_mk (hcontd.smul (continuous_subtype_val.comp T.cont)) _`. Introduce `W hW`. Use `T.irred W (fun k v hv => ?_)` and prove the remaining obligations. Establish `h : (d k • ((T.τ k : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V)) v ∈ W` using `hW k v hv`. Establish `e : ((T.τ k : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V) v = (d k)⁻¹ • ((d k • ((T.τ k : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V)) v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.smul_apply, smul_smul, inv_mul_cancel₀ (hdne k), one_smul]`. Rewrite using `[e]`. Conclude with `W.smul_mem _ h`. Introduce `X hX γ hγ`. Establish `hg` using `T.hasDeriv X hX γ hγ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hγ0 : γ 0 = 1`. Apply `twist_toMK_inj` to reduce the goal to its premises. Rewrite using `[hγ 0, show (((0 : ℝ) : ℂ) • X) = 0 by simp, NormedSpace.exp_zero]`. Both sides reduce to the same expression. Establish `hf0 : HasDerivAt (fun t : ℝ => (toMK (γ t)).det) X.trace 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(twist_hasDerivAt_det_exp X).congr_of_eventuallyEq (Filter.Eventually.of_forall (fun t => ?_))` and prove the remaining obligations. Simplify using `only [hγ t]`. Establish `hdet0 : (toMK (γ 0)).det = 1`. Rewrite using `[hγ0]`. Conclude with `Matrix.det_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : HasDerivAt (fun t : ℝ => d (γ t)) ((c : ℂ) * X.trace) 0`. Establish `hz` using `hasDerivAt_zpow c ((toMK (γ 0)).det) (Or.inl (twist_det_ne _))`. Establish `hc` using `hz.comp (0 : ℝ) hf0`. Rewrite `hc` using `[hdet0, _root_.one_zpow, mul_one]`. Conclude with `hc`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hτ0 : ((T.τ (γ 0) : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V) = 1`. Rewrite using `[hγ0, map_one, OneMemClass.coe_one]`. Establish `hd0 : d (γ 0) = 1` using `by show (toMK (γ 0)).det ^ c = 1`. Rewrite using `[hdet0, _root_.one_zpow]`. Establish `hsm` using `hf.smul hg`.
-
-Simplify using `only [hτ0, hd0, one_smul] at hsm`. Rewrite `hsm` using `[← hdτ]`. Conclude with `hsm`. Introduce `a`. Rewrite using `[hdτ, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, T.w_wt a, Matrix.trace_single_eq_same, mul_one]`.
-
-Use `push_cast`. Rewrite using `[add_smul]`. Introduce `a b hab he`. Rewrite using `[hdτ, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, T.w_hw a b hab he, Matrix.trace_single_eq_of_ne _ _ _ hab.ne, mul_zero, zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kType_twist {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (c : ℤ) :
     Nonempty (KType ε (fun a => Λ a + (c : ℝ))) := by

@@ -13,37 +13,35 @@ open GlobalTheory.CompanionTheory.FinActS
 namespace GlobalTheory.CompanionTheory.FinActS.SumFiber
 
 /- English proof (translation)
-Establish `outL : ∀ x : Γ, ∃ u ∈ L, (QuotientGroup.mk x : Γ ⧸ L).out = x * u`. Introduce `x`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul L x`. Conclude with `⟨u, u.2, hu⟩`. Establish `outV : ∀ x : H, ∃ u ∈ V, (QuotientGroup.mk x : H ⧸ V).out = x * u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul V x`. Conclude with `⟨u, u.2, hu⟩`. Establish `hφout : ∀ x : Γ, φ (QuotientGroup.mk x : Γ ⧸ L).out = φ x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, h⟩` from `outL x`. Rewrite using `[h, hφ u hu]`. Set `S : Set (Γ ⧸ L)` to `{q | p q.out ∈ V}`. Establish `hS : ∀ x : Γ, p x ∈ V → (QuotientGroup.mk x : Γ ⧸ L) ∈ S`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, h⟩` from `outL x`. Express the relevant statement in the definitionally equal form `p (QuotientGroup.mk x : Γ ⧸ L).out ∈ V`. Rewrite using `[h, map_mul]`. Conclude with `V.mul_mem hx (hLV u hu)`. Set `T : (H ⧸ V) × S → Γ ⧸ L` to `fun a => QuotientGroup.mk (e a.1.out * a.2.1.out)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective T`. Introduce and unpack `⟨m, q, hq⟩ ⟨m', q', hq'⟩ h`. Establish `hq1 : p q.out ∈ V` using `hq`. Establish `hq2 : p q'.out ∈ V` using `hq'`. Establish `h1 : (e m.out * q.out)⁻¹ * (e m'.out * q'.out) ∈ L` using `QuotientGroup.eq.1 h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hLV _ h1`. Simplify using `only [map_mul, map_inv, hpe] at h2`. Establish `hm : m = m'`. Rewrite using `[← QuotientGroup.out_eq' m, ← QuotientGroup.out_eq' m']`. Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : m.out⁻¹ * m'.out = p q.out * ((p q.out)⁻¹ * m.out⁻¹ * (m'.out * p q'.out)) * (p q'.out)⁻¹` using `by group`. Rewrite using `[h3]`. Use `V.mul_mem (V.mul_mem hq1 ?_) (V.inv_mem hq2)` and prove the remaining obligations. Simplify `h2` using `[_root_.mul_inv_rev]`. Substitute `hm` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hqq : q = q'`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q']`. Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Establish `h3 : q.out⁻¹ * q'.out = (e m.out * q.out)⁻¹ * (e m.out * q'.out)` using `by group`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Conclude with `h1`. Substitute `hqq` using the available equality. Both sides reduce to the same expression. Establish `hsurj : Function.Surjective T`. Introduce `q`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨v, hv, hm⟩` from `outV (p q.out)`. Set `m : H ⧸ V` to `QuotientGroup.mk (p q.out)`. Establish `hmem : p ((e m.out)⁻¹ * q.out) ∈ V`. Establish `: p ((e m.out)⁻¹ * q.out) = v⁻¹`. Simplify using `only [map_mul, map_inv, hpe, m]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Use `group`. Rewrite using `[this]`. Conclude with `V.inv_mem hv`. Use `⟨(m, ⟨QuotientGroup.mk ((e m.out)⁻¹ * q.out), hS _ hmem⟩), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu, h⟩` from `outL ((e m.out)⁻¹ * q.out)`. Express the relevant statement in the definitionally equal form `(QuotientGroup.mk (e m.out * (QuotientGroup.mk ((e m.out)⁻¹ * q.out) : Γ ⧸ L).out) : Γ ⧸ L) = q`. Rewrite using `[h]`. Use `Eq.trans (QuotientGroup.eq.2 ?_) (QuotientGroup.out_eq' q)` and prove the remaining obligations. Establish `h3 : (e m.out * ((e m.out)⁻¹ * q.out * u))⁻¹ * q.out = u⁻¹` using `by group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h3]`. Conclude with `L.inv_mem hu`. Set `E : (H ⧸ V) × S ≃ Γ ⧸ L` to `Equiv.ofBijective T ⟨hinj, hsurj⟩`. Establish `hsupp : (Function.support (fun a : (H ⧸ V) × S => φ (e a.1.out * a.2.1.out))).Finite`. Use `(hfin.preimage (f := T) hinj.injOn).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha`. Express the relevant statement in the definitionally equal form `φ (QuotientGroup.mk (e a.1.out * a.2.1.out) : Γ ⧸ L).out ≠ 0`. Rewrite using `[hφout]`. Conclude with `ha`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_congr fun m => ?_` and prove the remaining obligations. Rewrite using `[finsum_set_coe_eq_finsum_mem S (f := fun q : Γ ⧸ L => φ (e m.out * q.out)), finsum_mem_def]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Distinguish the cases in `hq : p q.out ∈ V`. Establish `hq' : q ∈ S` using `hq`.
-
-Rewrite using `[Set.indicator_of_mem hq', Set.indicator_of_mem (show p q.out ∈ (V : Set H) from hq)]`. Simplify using the standard rewrite rules. Establish `hq' : q ∉ S` using `hq`. Rewrite using `[Set.indicator_of_notMem hq', Set.indicator_of_notMem (show p q.out ∉ (V : Set H) from hq)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finsum_cosets_retraction {Γ H : Type} [Group Γ] [Group H] (p : Γ →* H) (e : H →* Γ)
     (hpe : ∀ m, p (e m) = m)

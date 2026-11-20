@@ -27,9 +27,9 @@ noncomputable def omL (J : V ≃ₗᵢ[ℝ] V) : V →L[ℝ] V →L[ℝ] ℝ :=
     (J.toContinuousLinearEquiv : V →L[ℝ] V)
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun t => ρ (b t) (Y 0)) (fderiv ℝ (fun u => ρ u (Y 0)) (b 0) b') 0` using `(ContDiff.differentiable hs (by simp) (b 0)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hb`. Establish `h2 : HasDerivAt (fun t => ρ (b t) (Y t - Y 0)) (ρ (b 0) Y') 0`. Rewrite `hY`, the goal using `[hasDerivAt_iff_tendsto_slope]`. Establish `hc : Continuous fun p : V × B => ρ p.1 p.2` using `h.continuous continuous_fst continuous_snd`. Use `(hc.tendsto (b 0, Y')).comp ((hb.continuousAt.tendsto.mono_left nhdsWithin_le_nhds).prodMk_nhds hY)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.congr fun t => ?_` and prove the remaining obligations. Simplify using `[slope]`. Simplify using `using h2.fun_add h1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasDerivAt_heis (h : IsHeis (omJ J) ρ) {b : ℝ → V} {Y : ℝ → B} {b' : V} {Y' : B} (hb : HasDerivAt b b' 0)
     (hY : HasDerivAt Y Y' 0) (hs : Sm ρ (Y 0)) :
@@ -51,7 +51,7 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   {ρ : V → B →L[ℂ] B} in
 set_option linter.unusedSectionVars false in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.Mem.Lift.OscDeriv.omL, _root_.GlobalTheory.RealWeil.omJ]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma omL_apply_eq_omJ (x y : V) :
     _root_.GlobalTheory.Mem.Lift.OscDeriv.omL J x y = _root_.GlobalTheory.RealWeil.omJ J x y := by
@@ -64,7 +64,7 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   {ρ : V → B →L[ℂ] B} in
 set_option linter.unusedSectionVars false in
 /- English proof (translation)
-Use function extensionality and compare the values at `x y`. Conclude with `omL_apply_eq_omJ x y`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private lemma omL_eq_omJ :
     (fun x y => _root_.GlobalTheory.Mem.Lift.OscDeriv.omL J x y) = _root_.GlobalTheory.RealWeil.omJ J := by
@@ -77,7 +77,7 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   {ρ : V → B →L[ℂ] B} in
 set_option linter.unusedSectionVars false in
 /- English proof (translation)
-Rewrite using `[omL_apply_eq_omJ]`. Unfold `_root_.GlobalTheory.RealWeil.omJ`. Establish `h1` using `J.inner_map_map x (J x)`. Rewrite `h1` using `[hJ, inner_neg_right, real_inner_comm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma omL_self_eq_zero (hJ : ∀ x, J (J x) = -x) (x : V) :
     _root_.GlobalTheory.Mem.Lift.OscDeriv.omL J x x = 0 := by
@@ -94,7 +94,7 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   {ρ : V → B →L[ℂ] B} in
 set_option linter.unusedSectionVars false in
 /- English proof (translation)
-Establish `hi` using `((hg 0).const_mul a).add (((hg 1).const_mul b).add ((hg 2).const_mul c))`. Use `Integrable.mono' (hi.congr (ae_of_all _ fun w => ?_)) hGm (ae_of_all _ hb)` and prove the remaining obligations. Simplify using `only [pow_zero, pow_one, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma integrable_of_quadratic_weight {μ : Measure V} {g : V → ℝ}
     (hg : ∀ n : ℕ, Integrable (fun w => ‖w‖ ^ n * g w) μ) {G : V → B}
@@ -111,7 +111,7 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   {ρ : V → B →L[ℂ] B} in
 set_option linter.unusedSectionVars false in
 /- English proof (translation)
-Establish `hlim : ∀ w, Filter.Tendsto (fun t : ℝ => t⁻¹ • (ρ ((0 + t) • v) (G w) - ρ ((0:ℝ) • v) (G w))) (𝓝[≠] 0) (𝓝 (_root_.GlobalTheory.Mem.Lift.dH ρ v (G w)))` using `fun w => (hasDerivAt_iff_tendsto_slope_zero.1 (_root_.GlobalTheory.Mem.Lift.hasDerivAt_dH v (hG w)))`. Conclude with `aestronglyMeasurable_of_tendsto_ae (𝓝[≠] (0:ℝ)) (fun t => (((ρ _).continuous.comp_aestronglyMeasurable hGm).sub ((ρ _).continuous.comp_aestronglyMeasurable hGm)).const_smul _) (ae_of_all _ hlim)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma aestronglyMeasurable_dH_comp {μ : Measure V} {G : V → B}
     (hGm : AEStronglyMeasurable G μ) (hG : ∀ w, _root_.GlobalTheory.RealWeil.Sm ρ (G w)) (v : V) :
@@ -130,7 +130,7 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   {ρ : V → B →L[ℂ] B} in
 set_option linter.unusedSectionVars false in
 /- English proof (translation)
-The claim follows from `|_root_.GlobalTheory.Mem.Lift.OscDeriv.omL J x y| ≤ ‖x‖ * ‖y‖ := by rw [omL_apply_eq_omJ] unfold _root_.GlobalTheory.RealWeil.omJ calc |⟪x, J y⟫| ≤ ‖x‖ * ‖J y‖ := abs_real_inner_le_norm _ _ _ = ‖x‖ * ‖y‖ := by rw [LinearIsometryEquiv.norm_map]`.
+A detailed English derivation is pending.
 -/
 private lemma abs_omL_apply_le (x y : V) :
     |_root_.GlobalTheory.Mem.Lift.OscDeriv.omL J x y| ≤ ‖x‖ * ‖y‖ := by
@@ -146,11 +146,9 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   {ρ : V → B →L[ℂ] B} in
 set_option linter.unusedSectionVars false in
 /- English proof (translation)
-Establish `hb : _root_.GlobalTheory.RealWeil.IsHeis (fun x y => _root_.GlobalTheory.Mem.Lift.OscDeriv.omL J x y) ρ`. Rewrite using `[omL_eq_omJ]`. Conclude with `h`. Rewrite using `[(_root_.GlobalTheory.Mem.Lift.DCalc.dH_calculus V B _ ρ (omL_self_eq_zero hJ) hb z hz).2.2.2.1 v w]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul, h.2.2.1, h.2.2.1]`. Use `abs_omL_apply_le (J := J) v w` as an intermediate fact. Establish `hn : ‖(2 * (π:ℂ) * Complex.I * ((_root_.GlobalTheory.Mem.Lift.OscDeriv.omL J v w : ℝ) : ℂ))‖ = 2 * π * |_root_.GlobalTheory.Mem.Lift.OscDeriv.omL J v w|`. Simplify using `[abs_of_pos Real.pi_pos]`. Rewrite using `[hn]`.
-
-Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma norm_dH_action_le (hJ : ∀ x, J (J x) = -x)
     (h : _root_.GlobalTheory.RealWeil.IsHeis (_root_.GlobalTheory.RealWeil.omJ J) ρ) {z : B}
@@ -173,13 +171,11 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   {ρ : V → B →L[ℂ] B} in
 set_option linter.unusedSectionVars false in
 /- English proof (translation)
-Establish `hb : _root_.GlobalTheory.RealWeil.IsHeis (fun x y => _root_.GlobalTheory.Mem.Lift.OscDeriv.omL J x y) ρ`. Rewrite using `[omL_eq_omJ]`. Conclude with `h`. Establish `hself` using `omL_self_eq_zero (J := J) hJ`. Establish `comm1 : ∀ v, _root_.GlobalTheory.Mem.Lift.dH ρ v (∫ w, F w ∂μ) = ∫ w, _root_.GlobalTheory.Mem.Lift.dH ρ v (F w) ∂μ` using `fun v => _root_.GlobalTheory.Mem.Lift.dH_integral V B _ ρ hself hb V μ F hFs hF hIs v (hD1 v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `comm2 : ∀ u v, _root_.GlobalTheory.Mem.Lift.dH ρ u (∫ w, _root_.GlobalTheory.Mem.Lift.dH ρ v (F w) ∂μ) = ∫ w, _root_.GlobalTheory.Mem.Lift.dH ρ u (_root_.GlobalTheory.Mem.Lift.dH ρ v (F w)) ∂μ`. Introduce `u v`. Use `_root_.GlobalTheory.Mem.Lift.dH_integral V B _ ρ hself hb V μ _ (fun w => (_root_.GlobalTheory.Mem.Lift.DCalc.dH_calculus V B _ ρ hself hb _ (hFs w)).1 v) (hD1 v) ?_ u (hD2 u v)` and prove the remaining obligations. Rewrite using `[← comm1]`. Conclude with `(_root_.GlobalTheory.Mem.Lift.DCalc.dH_calculus V B _ ρ hself hb _ hIs).1 v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `_root_.GlobalTheory.Mem.Lift.quad`. Rewrite using `[integral_finset_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_smul, comm1, comm2]`. Introduce `i _`.
-
-Conclude with `(hD2 _ _).smul (c i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma quad_integral_eq_integral_quad (hJ : ∀ x, J (J x) = -x)
     (h : _root_.GlobalTheory.RealWeil.IsHeis (_root_.GlobalTheory.RealWeil.omJ J) ρ)
@@ -215,13 +211,13 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   {ρ : V → B →L[ℂ] B} in
 set_option linter.unusedSectionVars false in
 /- English proof (translation)
-Establish `hb : _root_.GlobalTheory.RealWeil.IsHeis (fun x y => _root_.GlobalTheory.Mem.Lift.OscDeriv.omL J x y) ρ`. Rewrite using `[omL_eq_omJ]`. Conclude with `h`. Establish `hcal` using `_root_.GlobalTheory.Mem.Lift.DCalc.dH_calculus V B _ ρ (omL_self_eq_zero hJ) hb y hy`. Establish `hcd : ContDiff ℝ ∞ (fun v => ρ v y)` using `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiff : Differentiable ℝ (fun v => ρ v y)` using `hcd.differentiable (by simp)`. Establish `hR : 0 ≤ R` using `(norm_nonneg _).trans hw`. Use `(convex_closedBall (0:V) R).norm_image_sub_le_of_norm_fderiv_le (fun u _ => hdiff u) (fun u hu => ?_) (by simpa using hw) (by simpa using hw')` and prove the remaining obligations. Rewrite `hu` using `[Metric.mem_closedBall, dist_zero_right]`. Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun s => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcal.2.2.1 u s]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_smul, h.2.2.1, h.2.2.1]`. Establish `h1` using `abs_omL_apply_le (J := J) u s`. Establish `hn : ‖((π:ℂ) * Complex.I * ((_root_.GlobalTheory.Mem.Lift.OscDeriv.omL J u s : ℝ) : ℂ))‖ = π * |_root_.GlobalTheory.Mem.Lift.OscDeriv.omL J u s|`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[abs_of_pos Real.pi_pos]`. Rewrite using `[hn]`. Establish `h2 : π * |_root_.GlobalTheory.Mem.Lift.OscDeriv.omL J u s| ≤ π * (R * ‖s‖)` using `mul_le_mul_of_nonneg_left (h1.trans (by gcongr)) Real.pi_pos.le`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma norm_heis_action_sub_le (hJ : ∀ x, J (J x) = -x)
     (h : _root_.GlobalTheory.RealWeil.IsHeis (_root_.GlobalTheory.RealWeil.omJ J) ρ) {y : B}
@@ -259,9 +255,9 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   {ρ : V → B →L[ℂ] B} in
 set_option linter.unusedSectionVars false in
 /- English proof (translation)
-Establish `h1 : Filter.Tendsto (fun i => ρ (u i) v₀) l (𝓝 (ρ u₀ v₀))` using `((h.2.2.2 v₀).tendsto u₀).comp hu`. Rewrite `hv`, `h1`, the goal using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun i => ?_) (by simpa using hv.add h1)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sub, sub_add_sub_cancel]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ ‖ρ (u i) (v i - v₀)‖ + ‖ρ (u i) v₀ - ρ u₀ v₀‖ := norm_add_le _ _`. Use `_ = ‖v i - v₀‖ + ‖ρ (u i) v₀ - ρ u₀ v₀‖ := by rw [h.2.2.1]`.
+A detailed English derivation is pending.
 -/
 private lemma tendsto_heis_action_apply {om : V → V → ℝ} (h : _root_.GlobalTheory.RealWeil.IsHeis om ρ)
     {ι : Type} {l : Filter ι} {u : ι → V} {v : ι → B} {u₀ : V} {v₀ : B}
@@ -284,69 +280,63 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
 set_option linter.unusedSectionVars false in
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ B _ _ _ J ρ hJ h a X ha0 hX hsym κ _ c p q hQ`. Take `⟨⟨C0, hC0⟩, lam, hlam⟩` from `_root_.GlobalTheory.Mem.Lift.MovedVac.moved_vacuum_deriv V B J ρ hJ h a X ha0 hX hsym κ c p q hQ`. Take `⟨⟨C1, hC1⟩, hC2, -⟩` from `_root_.GlobalTheory.Mem.Lift.VacBd.vacuum_bound V B J ρ hJ h`. Use `⟨lam, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hb : _root_.GlobalTheory.RealWeil.IsHeis (fun x y => _root_.GlobalTheory.Mem.Lift.OscDeriv.omL J x y) ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[omL_eq_omJ]`. Conclude with `h`. Establish `hself` using `omL_self_eq_zero (J := J) hJ`. Establish `hQ' : _root_.GlobalTheory.Mem.Lift.IsQuadOf (fun x y => _root_.GlobalTheory.Mem.Lift.OscDeriv.omL J x y) X c p q`. Rewrite using `[omL_eq_omJ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hQ`. Establish `hPP : ∀ x, _root_.GlobalTheory.RealWeil.proj h (_root_.GlobalTheory.RealWeil.proj h x) = _root_.GlobalTheory.RealWeil.proj h x` using `_root_.GlobalTheory.RealWeil.Osc.proj_proj hJ h`. Establish `hPs : ∀ x, _root_.GlobalTheory.RealWeil.Sm ρ (_root_.GlobalTheory.RealWeil.proj h x)` using `fun x => _root_.GlobalTheory.RealWeil.Good.sm hJ (_root_.GlobalTheory.RealWeil.Osc.good_proj hJ h x)`. Establish `hrd : _root_.GlobalTheory.RealWeil.Good h f` using `_root_.GlobalTheory.RealWeil.Osc.good_of_sm hJ h hf`. Establish `hint : ∀ n : ℕ, Integrable (fun w : V => ‖w‖ ^ n * ‖_root_.GlobalTheory.RealWeil.proj h (ρ (-w) f)‖)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n`. Conclude with `hrd n`. Establish `hres : ∫ w, ρ w (_root_.GlobalTheory.RealWeil.proj h (ρ (-w) f)) = f` using `_root_.GlobalTheory.RealWeil.Good.inversion hJ hrd`. Take `⟨y, hy⟩ : ∃ y : V → B, y = fun w => _root_.GlobalTheory.RealWeil.proj h (ρ (-w) f)` from `⟨_, rfl⟩`. Establish `hyP : ∀ w, _root_.GlobalTheory.RealWeil.proj h (y w) = y w` using `fun w => by rw [hy]; exact hPP _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hys : ∀ w, _root_.GlobalTheory.RealWeil.Sm ρ (y w)` using `fun w => by rw [hy]; exact hPs _`. Choose the witnesses or unpack the hypotheses as in `⟨C1', hC1'0, hC1'⟩ : ∃ C, 0 ≤ C ∧ ∀ w s, ‖_root_.GlobalTheory.Mem.Lift.dH ρ s (y w)‖ ≤ C * ‖s‖ * ‖y w‖ := by`. Use `⟨max C1 0, le_max_right _ _, fun w s => ?_⟩` and prove the remaining obligations. Use `hC1 s (y w)` as an intermediate fact. Rewrite `this` using `[hyP]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.trans (by gcongr; exact le_max_left _ _)`. Establish `hint' : ∀ n : ℕ, Integrable (fun w : V => ‖w‖ ^ n * ‖y w‖)` using `by rw [hy]; exact hint`. Establish `hres' : ∫ w, ρ w (y w) = f` using `by rw [hy]; exact hres`. Establish `hFi : Integrable (fun w => ρ w (y w))`. Rewrite using `[hy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `_root_.GlobalTheory.RealWeil.Osc.intw_integrable (T := _root_.GlobalTheory.RealWeil.proj h) h hPP hrd`. Establish `hcal` using `fun z (hz : _root_.GlobalTheory.RealWeil.Sm ρ z) => _root_.GlobalTheory.Mem.Lift.DCalc.dH_calculus V B _ ρ hself hb z hz`. Establish `hFs : ∀ w, _root_.GlobalTheory.RealWeil.Sm ρ (ρ w (y w))` using `fun w => (hcal _ (hys w)).2.1 w`. Establish `hD1 : ∀ v, Integrable (fun w => _root_.GlobalTheory.Mem.Lift.dH ρ v (ρ w (y w)))`. Introduce `v`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `integrable_of_quadratic_weight hint' (aestronglyMeasurable_dH_comp hFi.aestronglyMeasurable hFs v) (C1' * ‖v‖) (2 * π * ‖v‖) 0 (fun w => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hD2 : ∀ u v, Integrable (fun w => _root_.GlobalTheory.Mem.Lift.dH ρ u (_root_.GlobalTheory.Mem.Lift.dH ρ v (ρ w (y w))))`. Introduce `u v`. Take `⟨C2, hC2'⟩` from `hC2 u v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `integrable_of_quadratic_weight hint' (aestronglyMeasurable_dH_comp (aestronglyMeasurable_dH_comp hFi.aestronglyMeasurable hFs v) (fun w => (hcal _ (hFs w)).1 v) u) C2 (4 * π * C1' * ‖u‖ * ‖v‖) (4 * π ^ 2 * ‖u‖ * ‖v‖) (fun w => ?_)` and prove the remaining obligations. Establish `hyv : _root_.GlobalTheory.RealWeil.Sm ρ (_root_.GlobalTheory.Mem.Lift.dH ρ v (y w))` using `(hcal _ (hys w)).1 v`. Rewrite using `[(hcal _ (hys w)).2.2.2.1 v w, _root_.GlobalTheory.Mem.Lift.dH_add u ((hcal _ hyv).2.1 w) (_root_.GlobalTheory.RealWeil.Osc.sm_smul _ (hFs w)), _root_.GlobalTheory.Mem.Lift.dH_smul u _ (hFs w)]`. Establish `e1` using `norm_dH_action_le hJ h hyv u w`. Establish `e2` using `norm_dH_action_le hJ h (hys w) u w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ‖_root_.GlobalTheory.Mem.Lift.dH ρ u (_root_.GlobalTheory.Mem.Lift.dH ρ v (y w))‖ ≤ C2 * ‖y w‖`. Use `hC2' (y w)` as an intermediate fact. Rewrite `this` using `[hyP]`. Then use the resulting hypothesis. Establish `e4` using `hC1' w v`. Establish `e5` using `hC1' w u`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e6 : ‖(2 * (π:ℂ) * Complex.I * ((_root_.GlobalTheory.Mem.Lift.OscDeriv.omL J v w : ℝ) : ℂ))‖ ≤ 2 * π * (‖v‖ * ‖w‖)`. Establish `: ‖(2 * (π:ℂ) * Complex.I * ((_root_.GlobalTheory.Mem.Lift.OscDeriv.omL J v w : ℝ) : ℂ))‖ = 2 * π * |_root_.GlobalTheory.Mem.Lift.OscDeriv.omL J v w|`. Simplify using `[abs_of_pos Real.pi_pos]`. Rewrite using `[this]`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `abs_omL_apply_le v w`. Establish `hpi` using `Real.pi_pos`. Establish `n1` using `norm_nonneg (y w)`. Establish `n2` using `norm_nonneg u`. Establish `n3` using `norm_nonneg v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n4` using `norm_nonneg w`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_smul]`. Use `gcongr`. Conclude with `e1.trans (by gcongr)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e2.trans (by gcongr)`. Use `_ = _ := by ring`. Establish `hquadint : Integrable (fun w => _root_.GlobalTheory.Mem.Lift.quad ρ c p q (ρ w (y w)))`. Unfold `_root_.GlobalTheory.Mem.Lift.quad`. Conclude with `integrable_finset_sum _ fun i _ => (hD2 _ _).smul (c i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD : ∫ w, (ρ w (_root_.GlobalTheory.Mem.Lift.quad ρ c p q (y w) + lam • y w) + fderiv ℝ (fun u => ρ u (y w)) w (X w)) = _root_.GlobalTheory.Mem.Lift.quad ρ c p q f + lam • f`. Establish `hLim : ∀ w, ρ w (_root_.GlobalTheory.Mem.Lift.quad ρ c p q (y w) + lam • y w) + fderiv ℝ (fun u => ρ u (y w)) w (X w) = _root_.GlobalTheory.Mem.Lift.quad ρ c p q (ρ w (y w)) + lam • ρ w (y w)`. Introduce `w`. Rewrite using `[_root_.GlobalTheory.Mem.Lift.fderiv_eq_quad_comm V B _ ρ hself hb X κ c p q hQ' _ (hys w) w, map_add, map_smul]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Repeatedly rewrite using `[hLim]`. Rewrite using `[integral_add hquadint (hFi.smul lam : Integrable (fun w => lam • ρ w (y w))), integral_smul, hres', ← quad_integral_eq_integral_quad hJ h c p q hFi hFs (by rw [hres']; exact hf) hD1 hD2, hres']`. Take `⟨M, hM⟩ : ∃ M : ℝ → B → B, M = fun t x => ∫ u, _root_.GlobalTheory.RealWeil.gau u • ρ (a t u) x` from `⟨_, rfl⟩`. Establish `hMd : ∀ t x, M t x = ∫ u, _root_.GlobalTheory.RealWeil.gau u • ρ (a t u) x` using `by intro t x; rw [hM]`. Establish `hfun : (fun t : ℝ => ∫ w, ρ (a t w) (∫ u, _root_.GlobalTheory.RealWeil.gau u • ρ (a t u) (_root_.GlobalTheory.RealWeil.proj h (ρ (-w) f)))) = fun t => ∫ w, ρ (a t w) (M t (y w))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hM, hy]`. Establish `hM0 : ∀ x, M 0 x = _root_.GlobalTheory.RealWeil.proj h x`. Introduce `x`. Rewrite using `[hMd, _root_.GlobalTheory.RealWeil.proj_apply]`. Simplify using `[ha0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hMint : ∀ t, Integrable (fun w => ρ (a t w) (M t (y w)))`. Introduce `t`. Establish `hh` using `_root_.GlobalTheory.RealWeil.UnitaryOsc.isHeis_comp h (a t) (hsym t)`. Use `_root_.GlobalTheory.RealWeil.Osc.intw_integrable (T := (_root_.GlobalTheory.RealWeil.proj hh).comp (_root_.GlobalTheory.RealWeil.proj h)) hh (fun x => by simp only [ContinuousLinearMap.comp_apply, hPP]) hrd` as an intermediate fact. Use `this.congr (ae_of_all _ fun w => ?_)` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [ContinuousLinearMap.comp_apply, _root_.GlobalTheory.RealWeil.proj_apply hh, hMd, hy]`. Establish `hF0 : ∀ w, ρ (a 0 w) (M 0 (y w)) = ρ w (y w)`. Introduce `w`. Rewrite using `[hM0, hyP, ha0, ContinuousLinearMap.one_apply]`. Establish `hslope : ∀ t : ℝ, t⁻¹ • ((∫ w, ρ (a t w) (M t (y w))) - ∫ w, ρ (a 0 w) (M 0 (y w))) = ∫ w, t⁻¹ • (ρ (a t w) (M t (y w)) - ρ w (y w))`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `t`. Rewrite using `[← integral_sub (hMint t) (hMint 0), ← integral_smul]`. Repeatedly rewrite using `[hF0]`. Establish `decomp : ∀ (t : ℝ) w, t⁻¹ • (ρ (a t w) (M t (y w)) - ρ w (y w)) = ρ (a t w) (t⁻¹ • (M t (y w) - y w)) + t⁻¹ • (ρ (a t w) (y w) - ρ w (y w))`. Introduce `t w`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ContinuousLinearMap.map_smul_of_tower, map_sub, ← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[hfun, ← hD, hasDerivAt_iff_tendsto_slope_zero]`. Simplify using `only [zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Filter.Tendsto.congr (fun t => (hslope t).symm) ?_` and prove the remaining obligations. Take `⟨K, hK, hKb⟩` from `hX.isBigO_sub.exists_pos`. Establish `hKev` using `hKb.bound`. Establish `h1ev : ∀ᶠ t in 𝓝 (0:ℝ), |t| ≤ 1` using `by filter_upwards [Metric.closedBall_mem_nhds (0:ℝ) one_pos] with t ht`. Simplify `ht` using `[Real.norm_eq_abs]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `tendsto_integral_filter_of_dominated_convergence (fun w => (C0 + K * (C1' + π * (1 + K) * ‖w‖) * ‖w‖) * ‖y w‖) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun t => ((hMint t).sub hFi).aestronglyMeasurable.const_smul _`. Use `filter_upwards [nhdsWithin_le_nhds (hC0.and (hKev.and h1ev)), self_mem_nhdsWithin] with t ⟨hCt, hKt, h1t⟩ ht0`. Use `ae_of_all _ fun w => ?_` and prove the remaining obligations. Establish `ht : t ≠ 0` using `ht0`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hta : |t| ≠ 0` using `abs_ne_zero.mpr ht`. Establish `hat : ‖a t w - w‖ ≤ K * |t| * ‖w‖`. Establish `e : a t w - w = (a t - a 0) w` using `by rw [ha0]; simp`. Rewrite using `[e]`. Use `(ContinuousLinearMap.le_opNorm _ _).trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_right hKt (norm_nonneg w)` as an intermediate fact. Simplify `this` using `[Real.norm_eq_abs]`. Establish `hatw : ‖a t w‖ ≤ (1 + K) * ‖w‖`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left h1t hK.le) (norm_nonneg w)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmv` using `norm_heis_action_sub_le hJ h (hys w) hC1'0 (hC1' w) (R := (1 + K) * ‖w‖) (w := w) (w' := a t w) (by nlinarith [norm_nonneg w, hK]) hatw`. Establish `hc : ‖M t (y w) - y w‖ ≤ C0 * |t| * ‖y w‖`. Use `hCt (y w)` as an intermediate fact. Rewrite `this` using `[hyP]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hMd]`. Conclude with `this`. Rewrite using `[decomp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h.2.2.1, norm_smul, norm_smul, norm_inv, Real.norm_eq_abs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ |t|⁻¹ * (C0 * |t| * ‖y w‖) + |t|⁻¹ * ((C1' + π * ((1 + K) * ‖w‖)) * ‖y w‖ * (K * |t| * ‖w‖)) := by gcongr`. Use `hmv.trans ?_` and prove the remaining obligations. Use `gcongr`. Use `_ = _ := by field_simp`. Use `((hint' 0).const_mul C0).add (((hint' 1).const_mul (K * C1')).add ((hint' 2).const_mul (K * π * (1 + K))))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `this.congr (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Simplify using `only [pow_zero, pow_one, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `ae_of_all _ fun w => ?_` and prove the remaining obligations. Establish `haw : HasDerivAt (fun t => a t w) (X w) 0`.
-
-Simplify using `using hX.clm_apply (hasDerivAt_const (0:ℝ) w)`. Establish `hu : Filter.Tendsto (fun t => a t w) (𝓝[≠] 0) (𝓝 w)`. Simplify `haw.continuousAt.tendsto.mono_left nhdsWithin_le_nhds` using `[ha0]`. Establish `hv : Filter.Tendsto (fun t : ℝ => t⁻¹ • (M t (y w) - y w)) (𝓝[≠] 0) (𝓝 (_root_.GlobalTheory.Mem.Lift.quad ρ c p q (y w) + lam • y w))`. Use `hlam (y w)` as an intermediate fact.
-
-Rewrite `this` using `[hyP, hasDerivAt_iff_tendsto_slope_zero]`. Use `this.congr (fun t => ?_)` and prove the remaining obligations. Rewrite using `[zero_add, ← hMd, ← hMd, hM0, hyP]`. Establish `hd : DifferentiableAt ℝ (fun u => ρ u (y w)) w` using `((show ContDiff ℝ ∞ (fun v => ρ v (y w)) from hys w).differentiable (by simp)) w`. Establish `h2 : HasDerivAt (fun t => ρ (a t w) (y w)) (fderiv ℝ (fun u => ρ u (y w)) w (X w)) 0` using `hd.hasFDerivAt.comp_hasDerivAt_of_eq 0 haw (by simp [ha0])`.
-
-Rewrite `h2` using `[hasDerivAt_iff_tendsto_slope_zero]`. Establish `h2' : Filter.Tendsto (fun t : ℝ => t⁻¹ • (ρ (a t w) (y w) - ρ w (y w))) (𝓝[≠] 0) (𝓝 (fderiv ℝ (fun u => ρ u (y w)) w (X w)))`. Simplify `h2` using `[ha0]`. Conclude with `((tendsto_heis_action_apply h hu hv).add h2').congr (fun t => (decomp t w).symm)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Mem.Lift.OscDeriv.hasDerivAt_osc : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (J : V ≃ₗᵢ[ℝ] V) (ρ : V → B →L[ℂ] B), (∀ x, J (J x) = -x) → ∀ h : _root_.GlobalTheory.RealWeil.IsHeis (_root_.GlobalTheory.RealWeil.omJ J) ρ, ∀ (a : ℝ → V →L[ℝ] V) (X : V →L[ℝ] V), a 0 = 1 → HasDerivAt a X 0 → (∀ t x y, _root_.GlobalTheory.RealWeil.omJ J (a t x) (a t y) = _root_.GlobalTheory.RealWeil.omJ J x y) → ∀ (κ : Type) [Fintype κ] (c : κ → ℂ) (p q : κ → V), _root_.GlobalTheory.Mem.Lift.IsQuadOf (_root_.GlobalTheory.RealWeil.omJ J) X c p q → ∃ lam : ℂ, ∀ f, _root_.GlobalTheory.RealWeil.Sm ρ f → HasDerivAt (fun t : ℝ => ∫ w, ρ (a t w) (∫ u, _root_.GlobalTheory.RealWeil.gau u • ρ (a t u) (_root_.GlobalTheory.RealWeil.proj h (ρ (-w) f)))) (_root_.GlobalTheory.Mem.Lift.quad ρ c p q f + lam • f) 0 := by
   intro V _ _ _ _ _ B _ _ _ J ρ hJ h a X ha0 hX hsym κ _ c p q hQ

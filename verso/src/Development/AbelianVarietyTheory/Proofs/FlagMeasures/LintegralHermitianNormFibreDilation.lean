@@ -18,27 +18,27 @@ namespace GlobalTheory.FibreScaling
 variable {P Q : ℕ}
 
 /- English proof (translation)
-Unfold `qf`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qf_continuous : Continuous (qf : Sp P Q → ℝ) := by
   unfold qf
   fun_prop
 
 /- English proof (translation)
-Simplify using `only [qf, Pi.smul_apply, Complex.real_smul, map_mul, Complex.normSq_ofReal, mul_sub, Finset.mul_sum, sq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qf_real_smul (r : ℝ) (x : Sp P Q) : qf (r • x) = r ^ 2 * qf x := by
   simp only [qf, Pi.smul_apply, Complex.real_smul, map_mul, Complex.normSq_ofReal, mul_sub,
     Finset.mul_sum, sq]
 
 /- English proof (translation)
-Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finrank_sp : Module.finrank ℝ (Sp P Q) = 2 * (P + Q) := by
   simp [Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm]
 
 /- English proof (translation)
-Establish `hs : Real.sqrt t ≠ 0` using `(Real.sqrt_pos.2 ht).ne'`. Establish `h` using `Measure.map_addHaar_smul (volume : Measure (Sp P Q)) hs`. Rewrite `h` using `[finrank_sp, pow_mul, Real.sq_sqrt ht.le, abs_of_pos (by positivity)]`. Rewrite using `[dx, Measure.map_smul, h, smul_comm, smul_smul (ENNReal.ofReal _), ← ENNReal.ofReal_mul (by positivity), mul_inv_cancel₀ (by positivity), ENNReal.ofReal_one, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_dx_smul {t : ℝ} (ht : 0 < t) :
     ENNReal.ofReal (t ^ (P + Q)) • (dx P Q).map (fun y => Real.sqrt t • y) = dx P Q := by
@@ -50,7 +50,7 @@ theorem map_dx_smul {t : ℝ} (ht : 0 < t) :
     one_smul]
 
 /- English proof (translation)
-Establish `h` using `(Homeomorph.mulLeft₀ t⁻¹ (inv_ne_zero ht.ne')).measurableEmbedding.lintegral_map (μ := volume) g`. Rewrite `h` using `[Homeomorph.coe_mulLeft₀, Real.map_volume_mul_left (inv_ne_zero ht.ne'), inv_inv, abs_of_pos ht, lintegral_smul_measure, smul_eq_mul]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_inv_mul {t : ℝ} (ht : 0 < t) (g : ℝ → ℝ≥0∞) :
     ∫⁻ b, g (t⁻¹ * b) = ENNReal.ofReal t * ∫⁻ b, g b := by
@@ -61,17 +61,15 @@ theorem lintegral_inv_mul {t : ℝ} (ht : 0 < t) (g : ℝ → ℝ≥0∞) :
   exact h.symm
 
 /- English proof (translation)
-Establish `hs : Real.sqrt t ≠ 0` using `(Real.sqrt_pos.2 ht).ne'`. Establish `hc : Continuous (fun y : Sp P Q => Real.sqrt t • y)` using `continuous_const_smul _`. Establish `hm` using `hc.measurable`. Establish `hpre : (fun y : Sp P Q => Real.sqrt t • y) ⁻¹' {x : Sp P Q | x ≠ 0} = {x | x ≠ 0}` using `Set.ext fun x => by simp [hs]`. Use `⟨fun b => ?_, fun φ hφ => ?_, fun φ hφ hsu hts => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS : MeasurableSet (qf ⁻¹' {id b} ∩ {x : Sp P Q | x ≠ 0})ᶜ` using `((qf_continuous.measurable (measurableSet_singleton _)).inter isOpen_ne.measurableSet).compl`. Establish `h0 : ((fib (t⁻¹ * b)).map (fun y => Real.sqrt t • y)) (qf ⁻¹' {id b} ∩ {x : Sp P Q | x ≠ 0})ᶜ = 0`. Rewrite using `[Measure.map_apply hm hS]`. Use `h.1 (t⁻¹ * b) using 2` and compare the differences between its conclusion and the goal. Rewrite using `[Set.preimage_compl, Set.preimage_inter, hpre]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, id, qf_real_smul, Real.sq_sqrt ht.le]`. Conclude with `(eq_inv_mul_iff_mul_eq₀ ht.ne').symm`. Rewrite using `[Measure.smul_apply, h0, smul_zero]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [lintegral_smul_measure, lintegral_map hφ hm, smul_eq_mul]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_inv_mul ht fun b => ∫⁻ y, φ (Real.sqrt t • y) ∂(fib b), ← h.2.1 (fun x => φ (Real.sqrt t • x)) (hφ.comp hm), ← mul_assoc, ← ENNReal.ofReal_mul (by positivity), div_mul_cancel₀ _ ht.ne']`. Use `conv_lhs => rw [← map_dx_smul ht]`. Rewrite using `[Measure.restrict_smul, lintegral_smul_measure, smul_eq_mul, Measure.restrict_map hm isOpen_ne.measurableSet, lintegral_map hφ hm, hpre]`. Establish `hs' : HasCompactSupport (φ ∘ fun y : Sp P Q => Real.sqrt t • y)` using `hsu.comp_homeomorph (Homeomorph.smulOfNeZero (Real.sqrt t) hs)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht' : tsupport (φ ∘ fun y : Sp P Q => Real.sqrt t • y) ⊆ {x | x ≠ 0}`. Rewrite using `[← hpre]`. Conclude with `(tsupport_comp_subset_preimage φ hc).trans (Set.preimage_mono hts)`. Take `⟨h1, h2⟩` from `h.2.2 _ (hφ.comp hc) hs' ht'`. Use `⟨fun b _ => ?_, ?_⟩` and prove the remaining obligations.
-
-Conclude with `((integrable_map_measure hφ.aestronglyMeasurable hm.aemeasurable).2 (h1 _ trivial)).smul_measure ENNReal.ofReal_ne_top`. Simplify using `only [integral_smul_measure, integral_map hm.aemeasurable hφ.aestronglyMeasurable]`. Conclude with `(((continuousOn_univ.1 h2).comp (continuous_const_mul t⁻¹)).const_smul (ENNReal.ofReal (t ^ (P + Q) / t)).toReal).continuousOn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDxDq_scale {fib : ℝ → Measure (Sp P Q)} (h : IsDxDq fib) {t : ℝ} (ht : 0 < t) :
     IsDxDq fun b => ENNReal.ofReal (t ^ (P + Q) / t) •
@@ -116,9 +114,9 @@ theorem isDxDq_scale {fib : ℝ → Measure (Sp P Q)} (h : IsDxDq fib) {t : ℝ}
         (ENNReal.ofReal (t ^ (P + Q) / t)).toReal).continuousOn
 
 /- English proof (translation)
-Introduce `P Q fib β t h hβ ht φ hφ`. Establish `hO : (qf : Sp P Q → ℝ) ⁻¹' {t * β} ⊆ {x | x ≠ 0}`. Introduce and unpack `x hx rfl`. Conclude with `mul_ne_zero ht.ne' hβ (by simpa [qf] using hx.symm)`. Establish `e` using `GlobalTheory.IsFibreFamily_eq_at (dx P Q) qf {x | x ≠ 0} {x | x ≠ 0} {x | x ≠ 0} Set.univ Set.univ fib _ (t * β) qf_continuous.measurable isOpen_ne subset_rfl subset_rfl hO isOpen_univ isOpen_univ trivial trivial h (isDxDq_scale h ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, lintegral_smul_measure, smul_eq_mul, inv_mul_cancel_left₀ ht.ne', lintegral_map hφ (continuous_const_smul _).measurable]`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_fibre_scale : ∀ (P Q : ℕ) (fib : ℝ → Measure (Sp P Q)) (β t : ℝ), IsDxDq fib →
     β ≠ 0 → 0 < t → ∀ φ : Sp P Q → ℝ≥0∞, Measurable φ →

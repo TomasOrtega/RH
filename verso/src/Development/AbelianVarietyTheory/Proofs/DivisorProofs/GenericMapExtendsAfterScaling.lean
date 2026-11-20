@@ -20,19 +20,17 @@ open GlobalTheory.Twist (resM resM_resM resM_self resM_smul app_resM)
 namespace GlobalTheory.ClearDenom
 
 /- English proof (translation)
-Introduce `O _ _ _ Z E E' n m hE hE' a`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Set `e` to `Scheme.Modules.restrictFunctorIsoPullback Z.gen.ι`. Set `b : (Scheme.Modules.restrictFunctor Z.gen.ι).obj E ⟶ (Scheme.Modules.restrictFunctor Z.gen.ι).obj E'` to `e.hom.app E ≫ a ≫ e.inv.app E'`. Set `σ : Γ(VB.homMod E E', Z.gen)` to `PtNorm.homOfRestrict b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : IsFiniteQC E' := hE'.isFiniteQC`. Use `haveI : IsFiniteQC (VB.homMod E E') := PtNorm.isFiniteQC_homMod hE`. Take `⟨k, t, ht⟩` from `GlobalTheory.QCoh.Qcqs.exists_pow_smul_eq_res_of_qcqs (VB.homMod E E') (U := ⊤) (isCompact_univ) (isQuasiSeparated_univ) (Z.const ϖ) le_top (Z.gen_eq_basicOpen hϖ.ne_zero hϖ.not_isUnit) σ`. Use `⟨ϖ ^ k, VB.homGlobalEquiv E E' t, pow_ne_zero _ hϖ.ne_zero, ?_⟩` and prove the remaining obligations. Use `set u := VB.homGlobalEquiv E E' t with hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `key : (Scheme.Modules.restrictFunctor Z.gen.ι).map u = b ≫ (Scheme.Modules.restrictFunctor Z.gen.ι).map (smulHom E' (Z.const (ϖ ^ k)))`. Use extensionality with `T x`. Establish `hW : Z.gen.ι ''ᵁ T ≤ Z.gen` using `Z.gen.ι.image_le_opensRange T |>.trans Z.gen.opensRange_ι.le`. Express the relevant statement in the definitionally equal form `u.app (Z.gen.ι ''ᵁ T) x = (smulHom E' (Z.const (ϖ ^ k))).app (Z.gen.ι ''ᵁ T) (b.app T x)`. Express the relevant statement in the definitionally equal form `VB.homApp t le_top x = _`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `erw [smulHom_app_apply]`. Establish `h2 : VB.homApp t le_top x = VB.homApp ((ConcreteCategory.hom (Z.X.presheaf.map (homOfLE (le_top : Z.gen ≤ ⊤)).op)) (Z.const ϖ) ^ k • σ) hW x`. Rewrite using `[ht]`. Both sides reduce to the same expression. Rewrite using `[h2, VB.homApp_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `show resG Z.X hW (_ ^ k) • VB.homApp σ hW x = _`. Use `erw [PtNorm.homApp_homOfRestrict_image]`. Use `congr 1`. Rewrite using `[map_pow, Vert.Model.const, Vert.Model.const, map_pow, map_pow]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `resG_resG (le_top : Z.gen ≤ ⊤) hW (Z.const ϖ)`. Establish `hn` using `e.hom.naturality u`. Establish `hs` using `e.hom.naturality (smulHom E' (Z.const (ϖ ^ k)))`. Rewrite using `[← cancel_epi (e.hom.app E)]`. Express the relevant statement in the definitionally equal form `e.hom.app E ≫ (Scheme.Modules.pullback Z.gen.ι).map u = e.hom.app E ≫ a ≫ (Scheme.Modules.pullback Z.gen.ι).map (smulHom E' (Z.const (ϖ ^ k)))`.
-
-Rewrite using `[← hn, key, Category.assoc, hs]`. Simplify using `only [b, Category.assoc, Iso.inv_hom_id_app_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_genRes_map : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Z : GlobalTheory.Vert.Model O)
     (E E' : Z.X.Modules) (n m : ℕ), GlobalTheory.VB.IsVB E n → GlobalTheory.VB.IsVB E' m → ∀ (a : Z.genRes.obj E ⟶ Z.genRes.obj E'),

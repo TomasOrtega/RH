@@ -17,7 +17,7 @@ section Duality
 variable {A B K : Type} [AddCommGroup A] [AddCommGroup B] [Field K]
 
 /- English proof (translation)
-The claim follows from `(linearIndependent_monoidHom (Multiplicative A) K).comp AddChar.toMonoidHomEquiv AddChar.toMonoidHomEquiv.injective`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_addChar (A K : Type) [AddCommGroup A] [Field K] :
     LinearIndependent K (fun χ : AddChar A K => (χ : A → K)) :=
@@ -25,13 +25,13 @@ theorem linearIndependent_addChar (A K : Type) [AddCommGroup A] [Field K] :
     AddChar.toMonoidHomEquiv.injective
 
 /- English proof (translation)
-The claim follows from `(linearIndependent_addChar A K).finite`.
+A detailed English derivation is pending.
 -/
 theorem finite_addChar (A K : Type) [AddCommGroup A] [Fintype A] [Field K] :
     Finite (AddChar A K) := (linearIndependent_addChar A K).finite
 
 /- English proof (translation)
-Use `haveI := finite_addChar A K`. Use `letI := Fintype.ofFinite (AddChar A K)`. Rewrite using `[Nat.card_eq_fintype_card]`. Simplify using `using (linearIndependent_addChar A K).fintype_card_le_finrank`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_addChar_le (A K : Type) [AddCommGroup A] [Fintype A] [Field K] :
     Nat.card (AddChar A K) ≤ Fintype.card A := by
@@ -41,7 +41,7 @@ theorem card_addChar_le (A K : Type) [AddCommGroup A] [Fintype A] [Field K] :
   simpa using (linearIndependent_addChar A K).fintype_card_le_finrank
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun t t' a => he.add_right a t t', fun t a a' => he.add_left a a' t, he.nondeg_right, he.nondeg_left⟩`.
+Supply the required witnesses or components.
 -/
 theorem perfect_flip {e : A → B → Kˣ} (he : IsPerfectPairing e) :
     IsPerfectPairing (fun t a => e a t) :=
@@ -49,7 +49,7 @@ theorem perfect_flip {e : A → B → Kˣ} (he : IsPerfectPairing e) :
     he.nondeg_left⟩
 
 /- English proof (translation)
-Establish `h` using `he.add_left 0 0 t`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.mp h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing_zero {e : A → B → Kˣ} (he : IsPerfectPairing e) (t : B) : e 0 t = 1 := by
   have h := he.add_left 0 0 t
@@ -68,16 +68,16 @@ theorem chr_apply {e : A → B → Kˣ} (he : IsPerfectPairing e) (t : B) (a : A
     chr he t a = ((e a t : Kˣ) : K) := rfl
 
 /- English proof (translation)
-Rewrite using `[AddChar.map_neg_eq_inv, chr_apply, Units.val_inv_eq_inv_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chr_neg {e : A → B → Kˣ} (he : IsPerfectPairing e) (t : B) (a : A) :
     chr he t (-a) = (((e a t)⁻¹ : Kˣ) : K) := by
   rw [AddChar.map_neg_eq_inv, chr_apply, Units.val_inv_eq_inv_val]
 
 /- English proof (translation)
-Introduce `t t' h`. Use `sub_eq_zero.mp (he.nondeg_right _ fun a => ?_)` and prove the remaining obligations. Establish `h1 : e a t = e a t'` using `Units.ext (DFunLike.congr_fun h a)`. Establish `h2` using `he.add_right a (t - t') t'`. Rewrite `h2` using `[sub_add_cancel, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `right_eq_mul.mp h2`.
+A detailed English derivation is pending.
 -/
 theorem chr_injective {e : A → B → Kˣ} (he : IsPerfectPairing e) :
     Function.Injective (chr he) := by
@@ -91,7 +91,7 @@ theorem chr_injective {e : A → B → Kˣ} (he : IsPerfectPairing e) :
 variable [Fintype A] [Fintype B]
 
 /- English proof (translation)
-Use `haveI := finite_addChar A K`. Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `Nat.card_le_card_of_injective _ (chr_injective he)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_le_of_perfect {e : A → B → Kˣ} (he : IsPerfectPairing e) :
     Fintype.card B ≤ Nat.card (AddChar A K) := by
@@ -100,7 +100,7 @@ theorem card_le_of_perfect {e : A → B → Kˣ} (he : IsPerfectPairing e) :
   exact Nat.card_le_card_of_injective _ (chr_injective he)
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((card_le_of_perfect (perfect_flip he)).trans (card_addChar_le B K)) ((card_le_of_perfect he).trans (card_addChar_le A K))`.
+A detailed English derivation is pending.
 -/
 theorem card_eq_of_perfect {e : A → B → Kˣ} (he : IsPerfectPairing e) :
     Fintype.card A = Fintype.card B :=
@@ -108,7 +108,7 @@ theorem card_eq_of_perfect {e : A → B → Kˣ} (he : IsPerfectPairing e) :
     ((card_le_of_perfect he).trans (card_addChar_le A K))
 
 /- English proof (translation)
-The claim follows from `le_antisymm (card_addChar_le A K) ((card_eq_of_perfect he).le.trans (card_le_of_perfect he))`.
+A detailed English derivation is pending.
 -/
 theorem card_addChar_of_perfect {e : A → B → Kˣ} (he : IsPerfectPairing e) :
     Nat.card (AddChar A K) = Fintype.card A :=
@@ -127,11 +127,11 @@ theorem chrEquiv_apply {e : A → B → Kˣ} (he : IsPerfectPairing e) (t : B) :
 
 omit [Fintype B] in
 /- English proof (translation)
-Introduce `h`. Take `⟨p, hp⟩` from `CharP.exists K`. Establish `hd : p ∣ Fintype.card A` using `(CharP.cast_eq_zero_iff K p _).mp h`. Establish `hp0 : p ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `Fintype.card_ne_zero (zero_dvd_iff.mp hd)`. Use `haveI : Fact p.Prime := ⟨(CharP.char_is_prime_or_zero K p).resolve_right hp0⟩`. Take `⟨a, ha⟩` from `exists_prime_addOrderOf_dvd_card p hd`. Establish `h0 : a = 0` using `he.nondeg_left a fun t => by`. Establish `h1 : chr he t a ^ p = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← AddChar.map_nsmul_eq_pow, ← ha, addOrderOf_nsmul_eq_zero, AddChar.map_zero_eq_one]`. Establish `h2 : (chr he t a - 1) ^ p = 0` using `by rw [sub_pow_char, h1, one_pow, sub_self]`. Conclude with `Units.ext (sub_eq_zero.mp (pow_eq_zero_iff hp0 |>.mp h2))`. Rewrite `ha` using `[h0, addOrderOf_zero]`. Conclude with `(Fact.out : p.Prime).one_lt.ne ha`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_ne_zero_of_perfect {e : A → B → Kˣ} (he : IsPerfectPairing e) :
     (Fintype.card A : K) ≠ 0 := by
@@ -155,7 +155,7 @@ def ManyChars (A K : Type) [AddCommGroup A] [Fintype A] [Field K] : Prop :=
   (Fintype.card A : K) ≠ 0 ∧ Nat.card (AddChar A K) = Fintype.card A
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨card_ne_zero_of_perfect he, card_addChar_of_perfect he⟩`.
+Supply the required witnesses or components.
 -/
 theorem manyChars_of_perfect {e : A → B → Kˣ} (he : IsPerfectPairing e) : ManyChars A K :=
   ⟨card_ne_zero_of_perfect he, card_addChar_of_perfect he⟩
@@ -165,7 +165,7 @@ def evalPairing (A K : Type) [AddCommGroup A] [Field K] (a : A)
   (Additive.toMul χ) (Multiplicative.ofAdd a)
 
 /- English proof (translation)
-The claim follows from `haveI := finite_addChar A K Finite.of_equiv (AddChar A K) ((AddChar.toMonoidHomEquiv.trans MonoidHom.toHomUnitsMulEquiv.toEquiv).trans Additive.ofMul)`.
+A detailed English derivation is pending.
 -/
 theorem finite_unitChar (A K : Type) [AddCommGroup A] [Fintype A] [Field K] :
     Finite (Additive (Multiplicative A →* Kˣ)) :=
@@ -174,15 +174,15 @@ theorem finite_unitChar (A K : Type) [AddCommGroup A] [Fintype A] [Field K] :
     ((AddChar.toMonoidHomEquiv.trans MonoidHom.toHomUnitsMulEquiv.toEquiv).trans Additive.ofMul)
 
 /- English proof (translation)
-Use `⟨fun a a' t => ?_, fun a t t' => ?_, fun a ha => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `[evalPairing]`. Simplify using `[evalPairing]`. Use `haveI := finite_addChar A K`. Use `letI := Fintype.ofFinite (AddChar A K)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hs` using `(linearIndependent_addChar A K).span_eq_top_of_card_eq_finrank (by rw [← Nat.card_eq_fintype_card, h]; simp)`. Establish `key : ∀ f : A → K, f a = f 0`. Introduce `f`. Establish `hf : f ∈ Submodule.span K (Set.range fun χ : AddChar A K => (χ : A → K))`. Rewrite using `[hs]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨χ, rfl⟩` from `hx`. Use `congrArg Units.val (ha (Additive.ofMul χ.toMonoidHom.toHomUnits))` as an intermediate fact.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[evalPairing]`. Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`. Assume the negation of the conclusion as `hne`.
+Treat this case separately. Treat this case separately. Treat this case separately. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `key (fun b => if b = 0 then 1 else 0)` as an intermediate fact. Simplify using `[hne] at this`. Use extensionality with `a`. Conclude with `congrArg Units.val (ht (Multiplicative.toAdd a))`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem perfect_eval (h : Nat.card (AddChar A K) = Fintype.card A) :
     IsPerfectPairing (evalPairing A K) := by
@@ -213,7 +213,7 @@ theorem perfect_eval (h : Nat.card (AddChar A K) = Fintype.card A) :
     exact congrArg Units.val (ht (Multiplicative.toAdd a))
 
 /- English proof (translation)
-Use `⟨fun h => perfect_eval h.2, fun h => ?_⟩` and prove the remaining obligations. Use `haveI := finite_unitChar A K`. Use `letI := Fintype.ofFinite (Additive (Multiplicative A →* Kˣ))`. Conclude with `manyChars_of_perfect h`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem manyChars_iff_eval (A K : Type) [AddCommGroup A] [Fintype A] [Field K] :
     ManyChars A K ↔ IsPerfectPairing (evalPairing A K) := by
@@ -223,7 +223,7 @@ theorem manyChars_iff_eval (A K : Type) [AddCommGroup A] [Fintype A] [Field K] :
   exact manyChars_of_perfect h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h haveI := finite_unitChar A K`. Conclude with `⟨_, inferInstance, Fintype.ofFinite _, _, perfect_eval h.2⟩`. Introduce and unpack `⟨B, _, _, e, he⟩`. Conclude with `manyChars_of_perfect he`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem manyChars_iff_exists (A K : Type) [AddCommGroup A] [Fintype A] [Field K] :
     ManyChars A K ↔ ∃ (B : Type) (_ : AddCommGroup B) (_ : Fintype B) (e : A → B → Kˣ),
@@ -242,14 +242,14 @@ section Fourier
 variable {A B K : Type} [AddCommGroup A] [AddCommGroup B] [Field K] [Fintype A] [Fintype B]
 
 /- English proof (translation)
-Simplify using `only [IndefiniteRowSideFullHecke.PerfectPairings.fourierCoeff, chr_neg, card_eq_of_perfect he]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fourierCoeff_eq {e : A → B → Kˣ} (he : IsPerfectPairing e) (φ : A → K) (t : B) :
     IndefiniteRowSideFullHecke.PerfectPairings.fourierCoeff e φ t = (Fintype.card A : K)⁻¹ * ∑ b, φ b * chr he t (-b) := by
   simp only [IndefiniteRowSideFullHecke.PerfectPairings.fourierCoeff, chr_neg, card_eq_of_perfect he]
 
 /- English proof (translation)
-Rewrite using `[← Equiv.sum_comp (chrEquiv he)]`. Conclude with `Finset.sum_congr rfl fun t _ => by rw [fourierCoeff_eq he]; rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inversionSum_eq [Fintype (AddChar A K)] {e : A → B → Kˣ} (he : IsPerfectPairing e)
     (φ : A → K) (a : A) :
@@ -259,7 +259,7 @@ theorem inversionSum_eq [Fintype (AddChar A K)] {e : A → B → Kˣ} (he : IsPe
   exact Finset.sum_congr rfl fun t _ => by rw [fourierCoeff_eq he]; rfl
 
 /- English proof (translation)
-Rewrite using `[inversionSum_eq he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inversion_iff [Fintype (AddChar A K)] {e : A → B → Kˣ} (he : IsPerfectPairing e)
     (φ : A → K) (a : A) :
@@ -268,7 +268,7 @@ theorem inversion_iff [Fintype (AddChar A K)] {e : A → B → Kˣ} (he : IsPerf
   rw [inversionSum_eq he]
 
 /- English proof (translation)
-Establish `li` using `Fintype.linearIndependent_iff.mp ((linearIndependent_addChar A K).comp _ (chr_injective he)) (fun t => IndefiniteRowSideFullHecke.PerfectPairings.fourierCoeff e (fun a => ((e a t₀ : Kˣ) : K)) t - if t = t₀ then 1 else 0) (by`. Use function extensionality and compare the values at `a`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Function.comp_apply, chr_apply, smul_eq_mul, sub_mul, Finset.sum_sub_distrib, ← h a]`. Use the proof step `simp)`. Conclude with `sub_eq_zero.mp (li t)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_chr_of_inversion [DecidableEq B] {e : A → B → Kˣ} (he : IsPerfectPairing e) (t₀ : B)
     (h : ∀ a, ((e a t₀ : Kˣ) : K) =
@@ -285,11 +285,11 @@ theorem coeff_chr_of_inversion [DecidableEq B] {e : A → B → Kˣ} (he : IsPer
   exact sub_eq_zero.mp (li t)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H A B K _ _ _ _ _ e he haveI := finite_addChar A K`. Use `letI := Fintype.ofFinite (AddChar A K)`. Establish `hm` using `manyChars_of_perfect he`. Establish `hinv : ∀ (φ : A → K) (a : A), φ a = ∑ t : B, IndefiniteRowSideFullHecke.PerfectPairings.fourierCoeff e φ t * ((e a t : Kˣ) : K)` using `fun φ a => (inversion_iff he φ a).mp (H A K hm.1 (by rw [← Nat.card_eq_fintype_card, hm.2]) φ a)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `fun t₀ : B => coeff_chr_of_inversion he t₀ (hinv _)`. Use `⟨card_eq_of_perfect he, card_eq_of_perfect he ▸ hm.1, hinv, fun t₀ => ⟨by rw [hc, if_pos rfl], fun t ht => by rw [hc, if_neg ht]⟩, fun V _ _ θ t₀ => ?_⟩` and prove the remaining obligations. Simplify using `[onDatum, hc]`. Introduce `H A _ _ K _ _ h1 h2 φ a`. Take `⟨B, _, _, e, he⟩` from `(manyChars_iff_exists A K).mp ⟨h1, by rw [Nat.card_eq_fintype_card, h2]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(inversion_iff he φ a).mpr ((H A B K e he).2.2.1 φ a)`.
+A detailed English derivation is pending.
 -/
 theorem fourierInv_iff : FourierInvSt ↔ FourierInversion := by
   classical
@@ -311,7 +311,7 @@ theorem fourierInv_iff : FourierInvSt ↔ FourierInversion := by
     exact (inversion_iff he φ a).mpr ((H A B K e he).2.2.1 φ a)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H A K _ _ _ _ => (manyChars_iff_eval A K).mpr (H A K).2, fun H A K _ _ _ _ => ⟨finite_unitChar A K, (manyChars_iff_eval A K).mp (H A K)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem enoughCharacters_iff : EnoughCharacters ↔
     ∀ (A K : Type) [AddCommGroup A] [Fintype A] [Field K]
@@ -320,7 +320,7 @@ theorem enoughCharacters_iff : EnoughCharacters ↔
     fun H A K _ _ _ _ => ⟨finite_unitChar A K, (manyChars_iff_eval A K).mp (H A K)⟩⟩
 
 /- English proof (translation)
-Rewrite using `[or_iff_left (card_ne_zero_of_perfect he), fourierCoeff_eq he, card_eq_of_perfect he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem denominators_iff {e : A → B → Kˣ} (he : IsPerfectPairing e) (O : Subring K) (φ : A → K)
     (t : B) :
@@ -329,13 +329,13 @@ theorem denominators_iff {e : A → B → Kˣ} (he : IsPerfectPairing e) (O : Su
   rw [or_iff_left (card_ne_zero_of_perfect he), fourierCoeff_eq he, card_eq_of_perfect he]
 
 /- English proof (translation)
-The claim follows from `or_iff_left_of_imp fun h => by rw [h, zero_mul]; exact O.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem or_card_eq_zero_iff (O : Subring K) (n c : K) : (n * c ∈ O ∨ n = 0) ↔ n * c ∈ O :=
   or_iff_left_of_imp fun h => by rw [h, zero_mul]; exact O.zero_mem
 
 /- English proof (translation)
-Use `⟨fun h a t => h (chr he t) a, fun h χ a => ?_⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `(chrEquiv he).surjective χ`. Conclude with `h a t`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem values_iff {e : A → B → Kˣ} (he : IsPerfectPairing e) (O : Subring K) :
     (∀ (χ : AddChar A K) a, χ a ∈ O) ↔ ∀ a t, ((e a t : Kˣ) : K) ∈ O := by
@@ -344,7 +344,7 @@ theorem values_iff {e : A → B → Kˣ} (he : IsPerfectPairing e) (O : Subring 
   exact h a t
 
 /- English proof (translation)
-Establish `h1 : χ a ^ Fintype.card A = 1`. Rewrite using `[← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero, AddChar.map_zero_eq_one]`. Rewrite using `[← O.valuation_le_one_iff]`. Establish `h2 : O.valuation (χ a) ^ Fintype.card A = 1` using `by rw [← map_pow, h1, map_one]`. Conclude with `((pow_eq_one_iff_of_nonneg zero_le' Fintype.card_ne_zero).mp h2).le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem addChar_mem_valuationSubring (O : ValuationSubring K) (χ : AddChar A K) (a : A) :
     χ a ∈ O := by
@@ -361,17 +361,17 @@ def CoeffIntAllChars : Prop :=
         (Fintype.card A : K) = 0
 
 /- English proof (translation)
-Introduce `A _ _ K _ O φ _ hφ hχ χ` and use `H A K O φ hφ χ (hχ χ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coeffIntAllChars_of (H : FourierCoeffIntSt) : CoeffIntAllChars :=
   fun A _ _ K _ O φ _ hφ hχ χ => H A K O φ hφ χ (hχ χ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H A B K _ _ _ _ _ e he φ`. Establish `h1 : ∀ O : Subring K, (∀ a, φ a ∈ O) → (∀ a t, ((e a t : Kˣ) : K) ∈ O) → ∀ t, ((Fintype.card B : ℕ) : K) * IndefiniteRowSideFullHecke.PerfectPairings.fourierCoeff e φ t ∈ O` using `fun O hφ hO t => (denominators_iff he O φ t).mp (H A K O φ (manyChars_of_perfect he) hφ ((values_iff he O).mpr hO) (chr he t))`. Use `⟨h1, fun O hφ => ?_⟩` and prove the remaining obligations. Establish `h2 : ∀ t, ((Fintype.card B : ℕ) : K) * IndefiniteRowSideFullHecke.PerfectPairings.fourierCoeff e φ t ∈ O` using `h1 O.toSubring hφ fun a t => addChar_mem_valuationSubring O (chr he t) a`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h2, fun hu t => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hu.exists_left_inv`. Establish `h3 : (v : K) * ((Fintype.card B : ℕ) : K) = 1`. Simplify using `using congrArg (fun x : O => (x : K)) hv`. Establish `h4` using `O.mul_mem _ _ v.2 (h2 t)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h4` using `[← mul_assoc, h3, one_mul]`. Then use the resulting hypothesis. Introduce `H A _ _ K _ O φ hm hφ hχ χ`. Take `⟨B, _, _, e, he⟩` from `(manyChars_iff_exists A K).mp hm`. Take `⟨t, rfl⟩` from `(chrEquiv he).surjective χ`. Conclude with `(denominators_iff he O φ t).mpr ((H A B K e he φ).1 O hφ ((values_iff he O).mp hχ) t)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coeffIntAllChars_iff : CoeffIntAllChars ↔ FourierDenominators := by
   constructor
@@ -402,7 +402,7 @@ section Chain
 variable {R : Type} [CommRing R] {d : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [mulN, ih, mulNat_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mulN_eq_mulNat (G : FGLaw R d) (n : ℕ) : mulN G n = mulNat G n := by
   induction n with
@@ -410,9 +410,9 @@ theorem mulN_eq_mulNat (G : FGLaw R d) (n : ℕ) : mulN G n = mulNat G n := by
   | succ n ih => rw [mulN, ih, mulNat_succ]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H R _ d G ι _ u P k hP n f`. Rewrite using `[← mulN_eq_mulNat]`. Conclude with `H R d G n u P k hP f`. Introduce `H R _ d G n ι _ u P k hP f`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulN_eq_mulNat]`. Conclude with `H R d G ι u P k hP n f`.
+A detailed English derivation is pending.
 -/
 theorem nChain_iff : NChainSt ↔ ChainNat := by
   constructor
@@ -424,15 +424,13 @@ theorem nChain_iff : NChainSt ↔ ChainNat := by
     exact H R d G ι u P k hP n f
 
 /- English proof (translation)
-Establish `hc` using `A.const 0`. Establish `h1 : A.act 0 = G.add (A.act 0) (A.act 0)` using `by rw [← A.add_act, add_zero]`. Establish `h2 : A.act 0 = comp1 (A.act 0) (A.act 0)` using `by rw [← A.mul_act, mul_zero]`. Establish `h3 : dLin (A.act 0) = 0`. Use `GlobalTheory.FormalMulN.dLin_add G hc hc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← h1]`. Conclude with `left_eq_add.mp this`. Establish `h4 : ∀ i, 2 ≤ (A.act 0 i).order` using `fun i => GlobalTheory.FormalSeries.two_le_order_iff.mpr ⟨hc i, fun j => by`. Take `⟨j0, j⟩` from `j`. Take `rfl : j0 = 0` from `Subsingleton.elim _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `congrFun (congrFun h3 i) j⟩`. Establish `h5 : ∀ (k : ℕ) i, (k : ℕ∞) ≤ (A.act 0 i).order`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ k ih`. Introduce `i`. Use `GlobalTheory.FormalSeries.le_order_subst_sub_subst (a := fun p : Fin 1 × Fin d => (![A.act 0] : Fin 1 → Pt R 1 d) p.1 p.2) (b := 0) (k := k) (fun p => GlobalTheory.GaugeAdjoint.const_one hc p.1 p.2) (by simp) (fun p => by simpa using ih p.2) (h4 i)` as an intermediate fact. Rewrite `this` using `[subst_zero_of_constantCoeff_zero (hc i), sub_zero]`. Rewrite using `[congrFun h2 i]`.
-
-Conclude with `this`. Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.FormalSeries.eq_of_forall_le_order_sub fun k => by simpa using h5 k i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem act_zero {O : Type} [CommRing O] {G : FGLaw R d} (A : OAct O G) : A.act 0 = 0 := by
   have hc := A.const 0
@@ -464,7 +462,7 @@ theorem act_zero {O : Type} [CommRing O] {G : FGLaw R d} (A : OAct O G) : A.act 
   exact GlobalTheory.FormalSeries.eq_of_forall_le_order_sub fun k => by simpa using h5 k i
 
 /- English proof (translation)
-Rewrite using `[Int.cast_natCast]`. Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, act_zero, mulN]`. Consider the case `succ n ih => rw [Nat.cast_succ, A.add_act, A.one_act, ih, mulN]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem act_natCast {O : Type} [CommRing O] {G : FGLaw R d} (A : OAct O G) (n : ℕ) :
     A.act (((n : ℤ) : O)) = mulN G n := by
@@ -474,7 +472,7 @@ theorem act_natCast {O : Type} [CommRing O] {G : FGLaw R d} (A : OAct O G) (n : 
   | succ n ih => rw [Nat.cast_succ, A.add_act, A.one_act, ih, mulN]
 
 /- English proof (translation)
-Rewrite using `[act_natCast, Int.cast_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chainInt_natCast_iff {O : Type} [CommRing O] {G : FGLaw R d} (A : OAct O G) {ι : Type}
     [Fintype ι] (u : ι → Fin d → R) (P : MvPolynomial ι R) (k n : ℕ) (f : PS R 1 d) :
@@ -492,7 +490,7 @@ def ChainIntOn (s : Set ℤ) : Prop :=
           (n : R) ^ k * constantCoeff (DpolyOf G.F u P f)
 
 /- English proof (translation)
-Introduce `R _ d G O _ A ι _ u P k hP n hn f`. Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le hn`. Conclude with `(chainInt_natCast_iff A u P k m f).mp (H R d G m u P k hP f)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chainIntOn_nonneg (H : NChainSt) : ChainIntOn {n | 0 ≤ n} := by
   intro R _ d G O _ A ι _ u P k hP n hn f
@@ -500,9 +498,9 @@ theorem chainIntOn_nonneg (H : NChainSt) : ChainIntOn {n | 0 ≤ n} := by
   exact (chainInt_natCast_iff A u P k m f).mp (H R d G m u P k hP f)
 
 /- English proof (translation)
-Use `⟨fun H' R _ d G O _ A ι _ u P k hP n _ f => H' R d G O A ι u P k hP n f, fun H' => ?_⟩` and prove the remaining obligations. Introduce `R _ d G O _ A ι _ u P k hP n f`. Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg n`. Conclude with `chainIntOn_nonneg H R d G O A ι u P k hP m (Int.natCast_nonneg m) f`. Establish `e : ev ![A.act ((-(m : ℤ) : ℤ) : O)] f = ev ![A.act ((-1 : ℤ) : O)] (ev ![A.act ((m : ℤ) : O)] f)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.GaugeAdjoint.ev_ev_one (A.const _) (GlobalTheory.GaugeAdjoint.const_one (A.const _)), show ((-(m : ℤ) : ℤ) : O) = ((m : ℤ) : O) * ((-1 : ℤ) : O) by push_cast; ring, A.mul_act]`. Both sides reduce to the same expression. Rewrite using `[e, H' R d G O A ι u P k hP (-1) rfl, chainIntOn_nonneg H R d G O A ι u P k hP m (Int.natCast_nonneg m) f, ← mul_assoc, ← mul_pow]`. Use `push_cast`. Rewrite using `[neg_one_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chainInt_iff_neg_one (H : NChainSt) : ChainInt ↔ ChainIntOn {-1} := by
   refine ⟨fun H' R _ d G O _ A ι _ u P k hP n _ f => H' R d G O A ι u P k hP n f, fun H' => ?_⟩
@@ -522,7 +520,7 @@ theorem chainInt_iff_neg_one (H : NChainSt) : ChainInt ↔ ChainIntOn {-1} := by
 end Chain
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨manyChars_iff_exists, fun _ _ _ _ _ _ _ _ _ he => ⟨chrEquiv he, fun _ _ => rfl, fourierCoeff_eq he⟩, fourierInv_iff, enoughCharacters_iff, coeffIntAllChars_of, coeffIntAllChars_iff, fun _ _ _ => mulN_eq_mulNat, fun _ _ _ _ _ _ => act_natCast, nChain_iff, chainIntOn_nonneg, chain …`.
+Supply the required witnesses or components.
 -/
 theorem compare :
     (∀ (A K : Type) [AddCommGroup A] [Fintype A] [Field K],

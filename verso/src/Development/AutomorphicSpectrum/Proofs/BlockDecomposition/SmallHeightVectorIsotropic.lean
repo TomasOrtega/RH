@@ -17,9 +17,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   [Algebra.IsQuadraticExtension F E] {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Establish `hc : ∀ e : E, conjBase F E F (inclR (F` using `F) F e) = inclR (F := F) F (conj F E e) := fun e => rfl`. Establish `hb : baseMatrix F J F = J.map (inclR (F` using `F) F) := rfl`. Simplify using `only [hermValue, hc, hb, hE, Formalism.UG.hform, dotProduct, mulVec, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.map_apply, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hermValue_inclR (v : Fin n → E) :
     hermValue F J F (fun i => inclR (F := F) F (v i)) =
@@ -33,7 +33,7 @@ theorem hermValue_inclR (v : Fin n → E) :
   simp [Matrix.map_apply, mul_assoc]
 
 /- English proof (translation)
-Apply `resVec_injective (ι := Fin n) (Module.finBasis F E) F` to reduce the goal to its premises. Rewrite using `[resVec_ofResVec]`. Use function extensionality and compare the values at `p`. Simplify using `only [cvec, resVec, Function.comp_apply, coordsVec, coords, inclR]`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ofResVec_cvec (v : Fin n → E) :
     ofResVec (ι := Fin n) (Module.finBasis F E) F (cvec F v) = fun i => inclR (F := F) F (v i) := by
@@ -44,9 +44,9 @@ theorem ofResVec_cvec (v : Fin n → E) :
   simp [Algebra.TensorProduct.basis_repr_tmul]
 
 /- English proof (translation)
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `h1 : hermValue F J F (ofResVec (ι` using `Fin n) (Module.finBasis F E) F (cvec F v)) = 0 := by`. Apply `(coords (Module.finBasis F E) F).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Rewrite `h1` using `[ofResVec_cvec, hermValue_inclR]`. Conclude with `Algebra.TensorProduct.includeRight_injective (algebraMap F F).injective (h1.trans (map_zero _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermCoords_cvec_ne_zero {v : Fin n → E} (h : hE (conj F E).toAlgHom J v v ≠ 0) :
     hermCoords J (Module.finBasis F E) F (cvec F v) ≠ 0 := by
@@ -60,7 +60,7 @@ theorem hermCoords_cvec_ne_zero {v : Fin n → E} (h : hE (conj F E).toAlgHom J 
   exact Algebra.TensorProduct.includeRight_injective (algebraMap F F).injective (h1.trans (map_zero _).symm)
 
 /- English proof (translation)
-Rewrite using `[← CompanionTheory.SWFin.HR_eq]`. Conclude with `g.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matHom_mem_unitaryPoints (g : GAd (conj F E).toAlgHom J) :
     matHom (AF F) (conj F E).toAlgHom J g ∈ unitaryPoints F E J (AF F) := by
@@ -68,19 +68,17 @@ theorem matHom_mem_unitaryPoints (g : GAd (conj F E).toAlgHom J) :
   exact g.2
 
 /- English proof (translation)
-Take `⟨C, hC, hCb⟩` from `exists_adelicNorm_aeval_le (K := F) (d := 2) two_pos (hermPoly J (Module.finBasis F E)) (fun v t y k => by`. Rewrite using `[aeval_hermPoly, aeval_hermPoly, hermCoords_smul]`. Use the proof step `rfl)`. Use the proof step `(fun w t y k => by`. Rewrite using `[aeval_hermPoly, aeval_hermPoly, hermCoords_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use the proof step `rfl)`. Use `⟨min 1 C⁻¹, lt_min one_pos (inv_pos.2 hC), fun g v hv hlt => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Rewrite `hlt` using `[hgt_eq]`. Establish `hx : cvec F v ≠ 0` using `cvec_ne_zero hv`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz` using `hermCoords_cvec_ne_zero J hne`. Establish `hy` using `Reduction.hasFiniteContent_height (trG (conj F E).toAlgHom J g) hx`. Establish `he : (fun k => MvPolynomial.aeval (Reduction.ratVec (cvec F v) ᵥ* ((trG (conj F E).toAlgHom J g : GL _ (AF F)) : Matrix _ _ (AF F))) (hermPoly J (Module.finBasis F E) k)) = Reduction.ratVec (hermCoords J (Module.finBasis F E) F (cvec F v))`. Use function extensionality and compare the values at `k`. Rewrite using `[aeval_hermPoly]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrFun (hermCoords_vecMul_trHom J (Module.finBasis F E) (cvec F v) ⟨_, matHom_mem_unitaryPoints J g⟩) k`. Establish `hfz` using `Reduction.hasFiniteContent_ratVec hz`. Rewrite `hfz` using `[← he]`. Establish `h1` using `Reduction.one_le_adelicNorm_ratVec hz`. Rewrite `h1` using `[← he]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ C * Reduction.height (trG (conj F E).toAlgHom J g) (cvec F v) ^ 2` using `h1.trans (hCb _ hy hfz)`. Establish `h0` using `Reduction.height_nonneg (trG (conj F E).toAlgHom J g) (cvec F v)`. Use `set t := Reduction.height (trG (conj F E).toAlgHom J g) (cvec F v)`. Establish `ht1 : t < 1` using `hlt.trans_le (min_le_left _ _)`. Establish `htC : t < C⁻¹` using `hlt.trans_le (min_le_right _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h3 : C * t < 1`. Use `mul_lt_mul_of_pos_left htC hC` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hC.ne']`. Then use the resulting hypothesis. Establish `h4 : C * t ^ 2 ≤ C * t`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hC.le h0) (sub_nonneg.2 ht1.le)]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_pos_isotropic_of_hgt_lt :
     ∃ ε : ℝ, 0 < ε ∧ ∀ (g : GAd (conj F E).toAlgHom J) (v : Fin n → E), v ≠ 0 →
@@ -129,9 +127,7 @@ end GlobalTheory.CompanionTheory.RedCov.Bridge
 namespace GlobalTheory.CompanionTheory.RedCov
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J _`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h.2.2.1⟩`. Use `haveI : IsTotallyReal F := h.1`. Use `haveI : IsTotallyComplex E := h.2.1`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
-
-Take `rfl : σ = (conj F E).toAlgHom` from `AlgHom.ext fun x => τ.injective ((h.2.2.2 τ x).trans (GroundTheory.Heights₂.Heights.FiniteCovolume.embedding_conj τ x).symm)`. Conclude with `Bridge.exists_pos_isotropic_of_hgt_lt J`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isotropic_of_hgt_lt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

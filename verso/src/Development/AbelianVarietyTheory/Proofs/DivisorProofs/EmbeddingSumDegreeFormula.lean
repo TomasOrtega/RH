@@ -8,7 +8,7 @@ open GlobalTheory GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.CM Global
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : Algebra k ℂ := τ.toAlgebra`. Use `haveI : Module.Finite k k' := Module.Finite.of_restrictScalars_finite ℚ k k'`. Rewrite using `[← AlgHom.card k k' ℂ, ← Nat.card_eq_fintype_card]`. Use `Nat.card_congr ⟨fun σ => { σ.1 with commutes' := fun x => RingHom.congr_fun σ.2 x }, fun φ => ⟨φ.toRingHom, RingHom.ext fun x => φ.commutes x⟩, fun σ => rfl, fun φ => rfl⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem card_embeddings_restrict_eq_finrank (k k' : Type) [Field k] [NumberField k] [Field k'] [NumberField k']
     [Algebra k k'] (τ : k →+* ℂ) :
@@ -20,9 +20,9 @@ theorem card_embeddings_restrict_eq_finrank (k k' : Type) [Field k] [NumberField
     fun φ => ⟨φ.toRingHom, RingHom.ext fun x => φ.commutes x⟩, fun σ => rfl, fun φ => rfl⟩
 
 /- English proof (translation)
-Use `letI : Algebra k k' := i.toAlgebra`. Establish `h1 : ∑ σ : k' →+* ℂ, f (σ.comp i) = (Module.finrank k k' : ℝ) * ∑ σ : k →+* ℂ, f σ`. Rewrite using `[← Finset.sum_fiberwise (s := Finset.univ) (g := fun σ : k' →+* ℂ => σ.comp i), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => f τ) (fun σ hσ => by rw [(Finset.mem_filter.1 hσ).2]), Finset.sum_const, nsmul_eq_mul, ← card_embeddings_restrict_eq_finrank k k' τ, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1, ← _root_.mul_assoc, ← Module.finrank_mul_finrank ℚ k k', Nat.cast_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_mul_sum_embeddings_comp (k k' : Type) [Field k] [NumberField k] [Field k'] [NumberField k']
     (i : k →+* k') (f : (k →+* ℂ) → ℝ) :

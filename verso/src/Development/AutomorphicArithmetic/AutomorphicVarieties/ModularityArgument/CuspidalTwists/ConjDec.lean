@@ -15,28 +15,28 @@ section Alg
 variable {R R' : Type} [CommRing R] [CommRing R']
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [tn]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem tn_map (f : R →+* R') (g t : M2 R) : (tn g t).map f = tn (g.map f) (t.map f) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [tn]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [flg, tn, nA, low, Matrix.mul_apply, Fin.sum_univ_succ]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem flg_map (f : R →+* R') (x s : R) : (flg x s).map f = flg (f x) (f s) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [flg, tn, nA, low, Matrix.mul_apply, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, flg, tn, nA, low, Matrix.mul_apply, Fin.sum_univ_succ, sgn, Fin.rev] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_flg (x s : R) : adj (flg x s) = nA (-s) * tn (low (-x)) 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj_apply, flg, tn, nA, low, Matrix.mul_apply, Fin.sum_univ_succ, sgn, Fin.rev] <;> ring
 
 /- English proof (translation)
-Establish `e : tn (low (-y) * g * low x) t = tn (low (-y)) 1 * tn g t * tn (low x) 1`. Rewrite using `[← tn_mul, ← tn_mul, one_mul, mul_one]`. Rewrite using `[adj_flg, e, flg]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem conj_flg (a x y s s' : R) (g t : M2 R) :
     adj (flg y s') * (a • tn g t) * flg x s = a • (nA (-s') * tn (low (-y) * g * low x) t * nA s) := by
@@ -46,9 +46,9 @@ private theorem conj_flg (a x y s s' : R) (g t : M2 R) :
   simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [nA, tn, Matrix.mul_apply, Fin.sum_univ_succ, hm01, hm10, ht01, ht10] at hij ⊢ <;>`. Use `first`. Consider the case `linear_combination (a * m 0 0) * hs1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `linear_combination (-(a * m 0 0)) * hs1`. Consider the case `linear_combination (a * m 1 1) * hs2`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem isUp_mid (a : R) {m t : M2 R} {s s' : R} (hm01 : m 0 1 = 0) (hm10 : m 1 0 = 0) (ht01 : t 0 1 = 0)
     (ht10 : t 1 0 = 0) (hs1 : t 1 1 * s = t 0 0 * s') (hs2 : t 1 1 * s' = t 0 0 * s) :
@@ -64,16 +64,16 @@ private theorem isUp_mid (a : R) {m t : M2 R} {s s' : R} (hm01 : m 0 1 = 0) (hm1
 end Alg
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.conjGal_mem_Dec (τ := RingEquiv.refl ℚ) (σ := g.toRingEquiv) (fun x => g.commutes x) hA hs`.
+A detailed English derivation is pending.
 -/
 private theorem conj_dec {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {A A' : ValuationSubring Ω} {g s : G ℚ Ω}
     (hA : ∀ x, g x ∈ A' ↔ x ∈ A) (hs : s ∈ Dec (F := ℚ) A') : g⁻¹ * s * g ∈ Dec (F := ℚ) A :=
   UpperTheory.V.conjGal_mem_Dec (τ := RingEquiv.refl ℚ) (σ := g.toRingEquiv) (fun x => g.commutes x) hA hs
 
 /- English proof (translation)
-Establish `h0` using `congrFun (congrFun h 0) 0`. Establish `h1` using `congrFun (congrFun h 1) 0`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, hg.1, hg.2, hs.1, hs.2, ht.1, ht.2] at h0 h1 hx hy ⊢`. Establish `e : t 0 0 = s 0 0` using `mul_left_cancel₀ hg0 (by linear_combination h0)`. Rewrite `h1`, `hx` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mul_left_cancel₀ (sub_ne_zero.2 hne) ?_` and prove the remaining obligations. Take the linear combination `h1 - hx + g 0 0 * hy`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem key {R : Type} [Field R] {g s t : M2 R} {x y : R} (h : g * t = s * g) (hg0 : g 0 0 ≠ 0)
     (hg : g 1 1 = 1 ∧ g 0 1 = 0) (hs : s 1 1 = 1 ∧ s 0 1 = 0) (ht : t 1 1 = 1 ∧ t 0 1 = 0) (hne : s 0 0 ≠ 1)
@@ -88,9 +88,9 @@ private theorem key {R : Type} [Field R] {g s t : M2 R} {x y : R} (h : g * t = s
   linear_combination h1 - hx + g 0 0 * hy
 
 /- English proof (translation)
-Establish `hT : l ∈ D.T` using `Finset.mem_insert_self _ _`. Take `⟨u, hu, -⟩` from `(UpperTheory.V.Chr.placesQ Ω).2.2 l _ A hl.out (h.pl_over l hl.out) hA`. Establish `hc : chiO ℚ Ω l c.O (D.sg l) = 1` using `by simp [chiO, h.sg_cyc]`. Establish `e : Phi D pr k (u⁻¹ * D.sg l * u) = (D.ξ * D.Psi ^ (if pr then (-1 : ℤ) else 1)) (D.sg l)`. Rewrite using `[map_mul, map_mul, map_inv, mul_right_comm, inv_mul_cancel, one_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `cases pr <;> simp [Phi, phi, Raw.Psi, Chr.Psi, hc]`. Conclude with `⟨_, hu _ (h.sg_frob l hT).1, fun h' => h.condD l hT _ ((congrArg (fun z : c.Oˣ => residue c.O (z : c.O)) e).symm.trans h')⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 -/
 private theorem phi_ne {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [hl : Fact l.Prime] {c : Coef l}
     (D : Raw Ω c) (h : D.Good) (pr : Bool) (k : ℕ) (A : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) :
@@ -105,25 +105,23 @@ private theorem phi_ne {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
     ((congrArg (fun z : c.Oˣ => residue c.O (z : c.O)) e).symm.trans h')⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ d T hT R _ f hf`. Use `⟨rfl, fun v' => ?_⟩` and prove the remaining obligations. Take `⟨v, g, hg⟩` from `(d.T₀.cover (T.pl v') (T.ovl v')).exists`. Use `⟨v, g, hg, ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hne⟩` from `phi_ne d.D d.ctx.1 d.T₀.pr d.k (T.pl v') (T.ovl v')`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `ht : (resQ d.T₀.F g)⁻¹ * s * resQ d.T₀.F g ∈ Dec (F` using `ℚ) (d.T₀.pl v) := conj_dec hg hs`. Establish `h1 : ∀ t, ((d.ρ₁ t).map f) 1 1 = 1 ∧ ((d.ρ₁ t).map f) 0 1 = 0` using `fun t => ⟨by simpa [sub_eq_zero] using hf _ (d.mod.red t).2.1, hf _ (d.mod.red t).2.2⟩`. Establish `h0 : ∀ t, ((d.ρ₁ t).map f) 0 0 = f (inc d.h (Phi d.D d.T₀.pr d.k t))` using `fun t => by`. Simplify `hf _ (d.mod.red t).1` using `[sub_eq_zero]`. Establish `hk` using `key (g := (d.ρ₁ (resQ d.T₀.F g)).map f) (s := (d.ρ₁ s).map f) (t := (d.ρ₁ ((resQ d.T₀.F g)⁻¹ * s * resQ d.T₀.F g)).map f) (x := f (d.x (d.T₀.pl v))) (y := f (d.x (T.pl v'))) (by rw [← Matrix.map_mul, ← Matrix.map_mul, ← map_mul, ← map_mul]; congr 2; group) (by rw [h0]; exact (((P …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h` using `[h0]`. Establish `hn : ¬ IsUnit ((Phi d.D d.T₀.pr d.k s : d.c.O) - 1)` using `fun hu => by`. Use `((hu.map (inc d.h)).map f).ne_zero` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, map_one, map_one, h, sub_self]`. Conclude with `this rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hne ?_` and prove the remaining obligations. Use `show residue d.c.O (Phi d.D d.T₀.pr d.k s : d.c.O) = 1`. Rewrite using `[← map_one (residue d.c.O)]`. Conclude with `Ideal.Quotient.eq.2 hn)`. Use the proof step `(by simpa using congrArg f (d.mod.flag _ (d.T₀.ovl v) _ ht))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `(by simpa using congrArg f (d.mod.flag _ (T.ovl v') _ hs))`. Establish `z01 : f (d.τ (resQ d.T₀.F g) 0 1) = 0` using `hf _ (d.tau.red _).2`. Establish `hsg` using `d.tau.mov (d.T₀.pl v) (T.pl v') (resQ d.T₀.F g) (d.T₀.ovl v) hg`. Establish `hτ : ((d.τ (resQ d.T₀.F g)).map f) 1 0 = 0 ∧ ((d.τ (resQ d.T₀.F g)).map f) 1 1 * f (d.s (d.T₀.pl v)) = ((d.τ (resQ d.T₀.F g)).map f) 0 0 * f (d.s (T.pl v')) ∧ ((d.τ (resQ d.T₀.F g)).map f) 1 1 * f (d.s (T.pl v')) = ((d.τ (resQ d.T₀.F g)).map f) 0 0 * f (d.s (d.T₀.pl v))`. Simplify using `only [Matrix.map_apply]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hK : resQ d.T₀.F g ∈ d.K'.fixingSubgroup`. Take `⟨e1, e2⟩` from `d.tau.on _ hK`. Rewrite using `[e1, e2, hsg.1 hK, z01]`. Conclude with `⟨rfl, rfl, rfl⟩`. Take `⟨e1, e2⟩` from `d.tau.off _ hK`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[e1, e2, hsg.2 hK, map_neg, map_neg, map_neg, z01]`. Conclude with `⟨neg_zero, by ring, by ring⟩`. Establish `e : ((d.Q d.T₀).map f).r g = f (toC d.h d.δ (resQ d.T₀.F g)) • tn ((d.ρ₁ (resQ d.T₀.F g)).map f) ((d.τ (resQ d.T₀.F g)).map f)`. Rewrite using `[← tn_map]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_mul f _ _`. Establish `e1 : ((d.Q d.T₀).map f).n v = flg (f (d.x (d.T₀.pl v))) (f (d.s (d.T₀.pl v)))`. Rewrite using `[← flg_map]`. Both sides reduce to the same expression. Establish `e2 : ((d.Q T).map f).n v' = flg (f (d.x (T.pl v'))) (f (d.s (T.pl v')))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[← flg_map]`. Both sides reduce to the same expression. Rewrite using `[e, e1, e2, conj_flg]`. Use `isUp_mid _ ?_ ?_ (by simpa using z01) hτ.1 hτ.2.1 hτ.2.2` and prove the remaining obligations. Simplify using `only [low, Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one]`.
-
-Take the linear combination `(h1 (resQ d.T₀.F g)).2`. Simplify using `only [low, Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one]`. Take the linear combination `hk`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem overOf4 : OverOf4 := by
   intro Ω _ _ _ l _ d T hT R _ f hf

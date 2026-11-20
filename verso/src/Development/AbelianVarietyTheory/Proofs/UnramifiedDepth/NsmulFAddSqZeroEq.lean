@@ -5,7 +5,7 @@ open TensorProduct IsLocalRing Matrix ReciprocityTheory.PGsh ReciprocityTheory.P
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `mem_nilradical.2 (ha i)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private lemma fgInv_span_le_nil {S ι : Type} [CommRing S] (a : ι → S) (ha : ∀ i, IsNilpotent (a i)) :
     Ideal.span (Set.range a) ≤ nilradical S := by
@@ -14,7 +14,7 @@ private lemma fgInv_span_le_nil {S ι : Type} [CommRing S] (a : ι → S) (ha : 
   exact mem_nilradical.2 (ha i)
 
 /- English proof (translation)
-Introduce and unpack `(i | i)`. Conclude with `ha i`. Conclude with `hb i`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private lemma fgInv_elim_nil {S ι κ : Type} [CommRing S] (a : ι → S) (b : κ → S)
     (ha : ∀ i, IsNilpotent (a i)) (hb : ∀ i, IsNilpotent (b i)) :
@@ -24,9 +24,9 @@ private lemma fgInv_elim_nil {S ι κ : Type} [CommRing S] (a : ι → S) (b : �
   · exact hb i
 
 /- English proof (translation)
-Establish `h1 : (Ideal.Quotient.mk (nilradical S)).mapMatrix M = (Ideal.Quotient.mk (nilradical S)).mapMatrix 1`. Use extensionality with `k j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`. Conclude with `Ideal.Quotient.eq.2 (hM k j)`. Establish `h2 : Ideal.Quotient.mk (nilradical S) M.det = Ideal.Quotient.mk (nilradical S) 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det, h1, map_one, Matrix.det_one, map_one]`. Establish `h3 : IsNilpotent (M.det - 1)` using `mem_nilradical.1 (Ideal.Quotient.eq.1 h2)`. Establish `h4` using `h3.isUnit_add_one`. Simplify using `using h4`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma fgInv_det_unit {S : Type} [CommRing S] {g : ℕ} (M : Matrix (Fin g) (Fin g) S)
     (hM : ∀ k j, M k j - (1 : Matrix (Fin g) (Fin g) S) k j ∈ nilradical S) : IsUnit M.det := by
@@ -42,7 +42,7 @@ private lemma fgInv_det_unit {S : Type} [CommRing S] {g : ℕ} (M : Matrix (Fin 
   simpa using h4
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_mul_sum]`. Use `Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_mul_mul_comm, he, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma fgInv_mulVec_sq {S : Type} [CommRing S] {g : ℕ} (N : Matrix (Fin g) (Fin g) S)
     (e : Fin g → S) (he : ∀ i j, e i * e j = 0) : ∀ i j, (N *ᵥ e) i * (N *ᵥ e) j = 0 := by
@@ -52,11 +52,9 @@ private lemma fgInv_mulVec_sq {S : Type} [CommRing S] {g : ℕ} (N : Matrix (Fin
   rw [mul_mul_mul_comm, he, mul_zero]
 
 /- English proof (translation)
-Establish `h : (M - 1) *ᵥ u = 0`. Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `key : ∀ x ∈ Ideal.span (Set.range v), x * u j = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨c, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hx`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun l _ => by rw [mul_assoc, hvu, mul_zero]`. Conclude with `key _ (hM k j)`.
-
-Rewrite `h` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private lemma fgInv_mulVec_eq {S : Type} [CommRing S] {g : ℕ} (M : Matrix (Fin g) (Fin g) S)
     (v u : Fin g → S) (hvu : ∀ i j, v i * u j = 0)
@@ -75,23 +73,23 @@ private lemma fgInv_mulVec_eq {S : Type} [CommRing S] {g : ℕ} (M : Matrix (Fin
   rwa [Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero] at h
 
 /- English proof (translation)
-Introduce `H1 H2 R₀ _ g B K ch n S _ _ hn a e ha he`. Establish `h0 : ∀ i : Fin g, IsNilpotent ((0 : Fin g → S) i)` using `fun _ => IsNilpotent.zero`. Establish `hnil : ∀ x y : Fin g → S, (∀ i, IsNilpotent (x i)) → (∀ i, IsNilpotent (y i)) → ∀ i, IsNilpotent (fAdd ch.F x y i)`. Introduce `x y hx hy k`. Establish `hxy` using `fgInv_elim_nil x y hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h00` using `fgInv_elim_nil (0 : Fin g → S) (0 : Fin g → S) h0 h0`. Establish `e1` using `fgInv_span_le_nil _ hxy (((H1 (ch.F k) S (Sum.elim x y)).2 hxy).2)`. Establish `e2` using `fgInv_span_le_nil _ h00 (((H1 (ch.F k) S (Sum.elim 0 0)).2 h00).2)`. Establish `e3 : nEval (ch.F k) (Sum.elim (0 : Fin g → S) (0 : Fin g → S)) = 0` using `congrFun (ch.F_unit S 0 h0) k`. Rewrite `e2` using `[e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e4` using `(nilradical S).sub_mem e1 e2`. Rewrite `e4` using `[sub_sub_sub_cancel_right, sub_zero]`. Conclude with `mem_nilradical.1 e4`. Establish `hns : ∀ x : Fin g → S, (∀ i, IsNilpotent (x i)) → ∀ m, ∀ i, IsNilpotent (nsmulF ch.F x m i)`. Introduce `x hx m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero => exact h0`. Consider the case `succ m ih => exact hnil _ _ ih hx`. Establish `hdist : ∀ x y : Fin g → S, (∀ i, IsNilpotent (x i)) → (∀ i, IsNilpotent (y i)) → ∀ m, nsmulF ch.F (fAdd ch.F x y) m = fAdd ch.F (nsmulF ch.F x m) (nsmulF ch.F y m)`. Introduce `x y hx hy m`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero => exact (ch.F_unit S 0 h0).symm`. Consider the case `succ m ih`. Establish `hX` using `hns x hx m`. Establish `hY` using `hns y hy m`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show fAdd ch.F (nsmulF ch.F (fAdd ch.F x y) m) (fAdd ch.F x y) = fAdd ch.F (fAdd ch.F (nsmulF ch.F x m) x) (fAdd ch.F (nsmulF ch.F y m) y)`. Rewrite using `[ih, ch.F_assoc S _ _ _ hX hY (hnil _ _ hx hy), ch.F_assoc S _ _ _ hX hx (hnil _ _ hY hy), ← ch.F_assoc S _ _ _ hY hx hy, ← ch.F_assoc S _ _ _ hx hY hy, ch.F_comm S _ _ hY hx]`. Take `⟨M, hM, hMe⟩` from `H2 ch S a ha`. Establish `hdet : IsUnit M.det` using `fgInv_det_unit M fun k j => fgInv_span_le_nil a ha (hM k j)`. Use `set u : Fin g → S := M⁻¹ *ᵥ e with hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huu : ∀ i j, u i * u j = 0` using `fgInv_mulVec_sq _ e he`. Establish `hun : ∀ i, IsNilpotent (u i)` using `fun i => ⟨2, by rw [pow_two, huu]⟩`. Establish `hau : fAdd ch.F a u = a + e`. Rewrite using `[hMe u huu, hu, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Establish `hmu : ∀ m : ℕ, nsmulF ch.F u m = (m : S) • u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp [nsmulF]`. Consider the case `succ m ih => show fAdd ch.F (nsmulF ch.F u m) u = _`. Take `⟨N, hN, hNe⟩` from `H2 ch S (nsmulF ch.F u m) (hns u hun m)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hNe u huu, fgInv_mulVec_eq N _ u _ hN, ih, Nat.cast_succ, add_smul, one_smul]`. Introduce `i j`. Rewrite using `[ih, Pi.smul_apply, smul_eq_mul, mul_assoc, huu, mul_zero]`. Rewrite using `[← hau, hdist a u ha hun, hmu, hn, zero_smul, ch.F_unit S _ (hns a ha n)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmulF_add_sqZero_eq :
   (∀ {R₀ : Type} [CommRing R₀] {ι : Type} [Fintype ι] [DecidableEq ι] (f : MvPowerSeries ι R₀) (S : Type) [CommRing S] [Algebra R₀ S] (a : ι → S),

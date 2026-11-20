@@ -26,7 +26,7 @@ open GlobalTheory.KeyPow GlobalTheory.KeyKa
 namespace GlobalTheory.KeyTop
 
 /- English proof (translation)
-Introduce `hL hT hI hP hTor`. Establish `hD : KeyDesc` using `(GlobalTheory.T.keyData_descend_countable_subrings hL).2`. Conclude with `GlobalTheory.T.thetaKeyRule_exists_of_algebraic_invariants hL hT hI hP hTor (GlobalTheory.T.exists_integralKeyInvariantRule_charZero hL hT hTor hD) hD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_keyRule_charHalf :
     Out.Laws → ThetaUnifAV → Key.Chi.InversionStatement → Key.PhHoloStatement → GlobalTheory.TorusAlgebraic →

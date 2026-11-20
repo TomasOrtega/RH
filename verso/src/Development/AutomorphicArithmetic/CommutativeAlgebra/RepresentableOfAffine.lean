@@ -4,27 +4,25 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.EquivOfAffineBijecti
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTheory.E.t_E6Cut UpperTheory.Aff
 
 /- English proof (translation)
-Introduce `hHI hB hC q _ i P P' r c hc hb Y hq φ hφ`. Establish `hnat : ∀ {U V : Scheme.{0}ᵒᵖ} (f : U ⟶ V) (x : P'.obj U), φ.app V (r.app V (P'.map f x)) = f.unop ≫ φ.app U (r.app U x)`. Introduce `U V f x`. Establish `h1 : r.app V (P'.map f x) = P.map f (r.app U x)` using `ConcreteCategory.congr_hom (r.naturality f) x`. Establish `h2 : φ.app V (P.map f (r.app U x)) = f.unop ≫ φ.app U (r.app U x)` using `ConcreteCategory.congr_hom (φ.naturality f) (r.app U x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Set `φ' : P' ⟶ yoneda.obj 𝔸(Fin 1; Y)` to `{ app := fun U => TypeCat.ofHom fun x => AffineSpace.homOfVector (φ.app U (r.app U x)) (fun _ => c U.unop x) naturality := fun U V f => by`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `AffineSpace.homOfVector (φ.app V (r.app V (P'.map f x))) (fun _ => c V.unop (P'.map f x)) = f.unop ≫ AffineSpace.homOfVector (φ.app U (r.app U x)) (fun _ => c U.unop x)`. Rewrite using `[AffineSpace.comp_homOfVector, hnat f x]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `_`. Conclude with `hc f.unop x }`. Establish `hφ'v : ∀ (T : Scheme.{0}) (x : P'.obj (op T)), φ'.app (op T) x = AffineSpace.homOfVector (φ.app (op T) (r.app (op T) x)) (fun _ => c T x)` using `fun _ _ => rfl`. Establish `hφ' : ∀ T : Scheme.{0}, IsAffine T → Function.Bijective (φ'.app (op T))`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hT`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Rewrite `hxy` using `[hφ'v, hφ'v]`. Establish `h1` using `congrArg (· ≫ 𝔸(Fin 1; Y) ↘ Y) hxy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [AffineSpace.homOfVector_over] at h1`. Establish `h2` using `congrArg (fun g => g.appTop (AffineSpace.coord Y (0 : Fin 1))) hxy`. Simplify using `only [AffineSpace.homOfVector_appTop_coord] at h2`. Conclude with `(hb T).1 (Prod.ext ((hφ T hT).1 h1) h2)`. Introduce `g`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `(hφ T hT).2 (g ≫ 𝔸(Fin 1; Y) ↘ Y)`. Take `⟨x, hx⟩` from `(hb T).2 (p, g.appTop (AffineSpace.coord Y (0 : Fin 1)))`. Establish `hx1 : r.app (op T) x = p` using `congrArg Prod.fst hx`. Establish `hx2 : c T x = g.appTop (AffineSpace.coord Y (0 : Fin 1))` using `congrArg Prod.snd hx`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hφ'v]`. Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[AffineSpace.homOfVector_over, hx1]`. Conclude with `hp`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[AffineSpace.homOfVector_appTop_coord, hx2, Subsingleton.elim j 0]`. Establish `comm : φ' ≫ yoneda.map (𝔸(Fin 1; Y) ↘ Y) = r ≫ φ`. Use extensionality with `U x`. Conclude with `AffineSpace.homOfVector_over _ _`. Establish `comm2 : disc.map φ' ≫ sch.map (𝔸(Fin 1; Y) ↘ Y) = disc.map r ≫ disc.map φ`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `disc.map φ' ≫ disc.map (yoneda.map (𝔸(Fin 1; Y) ↘ Y)) = _`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, comm]`. Establish `e1` using `UpperTheory.equiv_of_affine_bijective _ (tw q i) φ hφ`. Establish `e2` using `UpperTheory.equiv_of_affine_bijective _ (tw q i) φ' hφ'`. Establish `e3` using `hHI hB hC q i Y hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `n`. Establish `key : pull _ (disc.map r) (tw q i) n ∘ pull _ (disc.map φ) (tw q i) n = pull _ (disc.map φ') (tw q i) n ∘ pull _ (sch.map (𝔸(Fin 1; Y) ↘ Y)) (tw q i) n`. Use function extensionality and compare the values at `x`. Establish `a1` using `pull_comp (ZMod q) (disc.map r) (disc.map φ) (tw q i) n x`. Establish `a2` using `pull_comp (ZMod q) (disc.map φ') (sch.map (𝔸(Fin 1; Y) ↘ Y)) (tw q i) n x`.
-
-Conclude with `a1.symm.trans ((congrArg (fun g => pull (ZMod q) g (tw q i) n x) comm2.symm).trans a2)`. Use `(Function.Bijective.of_comp_iff (pull _ (disc.map r) (tw q i) n) (e1 n)).1 ?_` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `(e2 n).comp (e3 n)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.representable_of_affine :
     LeafHI → B3 → C4 → ∀ (q : ℕ) [NeZero q] (i : ℤ) {P P' : PSh} (r : P' ⟶ P) (c : ∀ T : Scheme.{0}, P'.obj (op T) → Γ(T, ⊤)), (∀ {T T' : Scheme.{0}} (f : T' ⟶ T) (x : P'.obj (op T)), c T' (P'.map f.op x) = f.appTop.hom (c T x)) → (∀ T : Scheme.{0}, Function.Bijective fun x : P'.obj (op T) => (r.app (op T) x, c T x)) → ∀ Y : Scheme.{0}, IsUnit (q : Γ(Y, ⊤)) → ∀ φ : P ⟶ yoneda.obj Y, (∀ T : Scheme.{0}, IsAffine T → Function.Bijective (φ.app (op T))) → Eqv _ (disc.map r) (tw q i) := by

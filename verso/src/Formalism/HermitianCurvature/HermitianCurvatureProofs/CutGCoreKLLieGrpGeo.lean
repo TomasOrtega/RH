@@ -20,15 +20,15 @@ def cvec2' (k r : ℕ) (z e : Fin (2 * r + k + 1) → ℂ) : JJ r ⊕ Unit → F
   Sum.elim (cvec' k r z) (fun _ => e)
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hu : ∀ a b, unitB (Hpk k r) Bs a b i j = Bs a i * ∑ q, star (Bs b q) * Hpk k r q j`. Introduce `a b`. Simplify using `only [unitB, Matrix.of_apply, herm, dotProduct, Matrix.mulVec, bvec, Pi.star_apply]`. Use `congr 1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply]`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, hu, Matrix.mul_apply, colM, Matrix.of_apply, Matrix.conjTranspose_apply]`. Rewrite using `[Fintype.sum_prod_type]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_lhs => enter [2, b]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `q _`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sum_unitB {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (B : Matrix (Fin m) (Fin m) ℂ) :
     colM Bs * B * ((colM Bs)ᴴ * Hpk k r) = ∑ p : Fin m × Fin m, B p.1 p.2 • unitB (Hpk k r) Bs p.1 p.2 := by
@@ -57,33 +57,27 @@ theorem sum_unitB {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (B : Ma
   ring
 
 /- English proof (translation)
-Establish `hzz : herm (Hpk k r) z z ≠ 0`. Introduce `e0`. Unfold `Tz at hT`. Rewrite `hT` using `[e0]`. Simplify using `at hT`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hBz : IsFrameOf k r [z] Bs` using `⟨hB.1, hB.2.1, fun a v hv => hB.2.2 a v (by`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv ⊢`. Conclude with `Or.inl hv)⟩`. Establish `hE : IsFrameOf k r [z] (fun _ : Fin 1 => e)` using `⟨fun _ => he, fun a b => by`. Simplify using `[Subsingleton.elim a b, hee], fun _ v hv => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the first alternative. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Substitute `hv` using the available equality. Conclude with `hez⟩`. Establish `hBe : ∀ a, herm (Hpk k r) (Bs a) e = 0` using `fun a => hB.2.2 a e (by simp)`. Establish `hBe' : ∀ a, herm (Hpk k r) e (Bs a) = 0` using `fun a => by rw [← Qx2.herm_star, hBe a, star_zero]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g1 : (colM Bs)ᴴ * Hpk k r * colM Bs = 1`. Use extensionality with `a b`. Rewrite using `[gramM_apply, hB.2.1, Matrix.one_apply]`. Simplify using `[eq_comm]`. Establish `g2 : (colM Bs)ᴴ * Hpk k r * colM (cvec2 k r z e) = 0`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a j`. Rewrite using `[gramM_apply]`. Break down `j with j | _` into its components or cases. Conclude with `gram_VC hBz a j`. Conclude with `hBe' a`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `g3 : (colM (cvec2' k r z e))ᴴ * Hpk k r * colM Bs = 0`. Use extensionality with `j a`. Rewrite using `[gramM_apply]`. Break down `j with j | _` into its components or cases. Conclude with `gram_CV hBz a j`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `hBe a`. Establish `g4 : (colM (cvec2' k r z e))ᴴ * Hpk k r * colM (cvec2 k r z e) = 1`. Use extensionality with `i j`. Rewrite using `[gramM_apply, Matrix.one_apply]`. Apply the tactic sequence `rcases i with i | _ <;> rcases j with j | _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [cvec2, cvec2', Sum.elim_inl, Sum.inl.injEq]`. Conclude with `gram_CC hz hzz i j`. Simplify using `only [cvec2, cvec2', Sum.elim_inl, Sum.elim_inr, reduceCtorEq, if_false]`. Conclude with `gram_CV hE 0 i`. Simplify using `only [cvec2, cvec2', Sum.elim_inl, Sum.elim_inr, reduceCtorEq, if_false]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `gram_VC hE 0 j`. Simplify using `[cvec2, cvec2', hee]`. Establish `hJ : Fintype.card (JJ r ⊕ Unit) ≤ Fintype.card (Fin (2 * r + k + 1))`. Establish `h1` using `Matrix.rank_mul_le_right ((colM (cvec2' k r z e))ᴴ * Hpk k r) (colM (cvec2 k r z e))`. Rewrite `h1` using `[g4, Matrix.rank_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h1.trans (Matrix.rank_le_card_height _)`. Simplify using `only [Fintype.card_sum, Fintype.card_fin, Fintype.card_unit] at hJ`. Establish `hc` using `complete (Fintype.equivOfCardEq (by simp; omega)) g1 g2 g3 g4`. Establish `hC : h * colM (cvec2 k r z e) = colM (cvec2 k r z e)`. Rewrite using `[mul_colM]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Break down `j with j | _` into its components or cases. Conclude with `fix_c hh j`. Conclude with `hhe`.
-
-Establish `hC' : h * colM (cvec2' k r z e) = colM (cvec2' k r z e)`. Rewrite using `[mul_colM]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Break down `j with j | _` into its components or cases.
-
-Conclude with `fix_c' hh j`. Conclude with `hhe`. Establish `hCd` using `dual_fix hh.1 hC'`. Take `⟨e1, e2⟩` from `decomp hc g3 h hC hCd`. Take `⟨B, hBs, hBe⟩` from `unitary_log _ (unitary_of Qx8.hpk_herm hh.1 g1 e1)`.
-
-Use `⟨B, hBs, ?_⟩` and prove the remaining obligations. Rewrite using `[exp_lift hc g1 g2 B, hBe, ← e2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_exp {z e : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) (he : inWb k r e)
     (hez : herm (Hpk k r) e z = 0) (hee : herm (Hpk k r) e e = 1) {Bs : Fin (k - 1) → Fin (2 * r + k + 1) → ℂ}

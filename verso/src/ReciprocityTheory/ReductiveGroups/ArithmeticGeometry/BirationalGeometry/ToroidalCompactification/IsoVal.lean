@@ -14,27 +14,25 @@ variable {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] 
 include hG hA hwg
 
 /- English proof (translation)
-Establish `hPG : PGen w` using `(isGen_iff w).1 hwg`. Take `⟨t, ht, htv⟩` from `exists_up hPG L.isLB L'.isLB (φ' := thφ A' (x3 A')) (ε := thε) c'.t c'.isGen`. Establish `hpt : ∀ I : thK.{0}, thφ A' (x3 A') I ≫ Φ = (cubeMapOf gp).F3 ≫ thφ A (x3 A) I` using `fun I => (cubeMapOf gp).psum_comm I.down`. Establish `hFF : FormEq (fun I => thφ A' (x3 A') I ≫ Φ) thε (fun I => (cubeMapOf gp).F3 ≫ thφ A (x3 A) I) thε`. Unfold `FormEq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `U _ h`. Simplify using `only [hpt]`. Establish `hu` using `pullGen_isGen L.L (thφ A (x3 A)) thε c.t c.isGen (cubeMapOf gp).F3`. Establish `he : (lift (1 : A' ⊗ A' ⟶ A') (lift (fst A' A') (snd A' A'))).left ≫ (snd A' (A' ⊗ A')).left = 𝟙 _`. Rewrite using `[← Over.comp_left, lift_snd, lift_fst_snd, Over.id_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp` using `surj_snd hG hA (A' ⊗ A')`. Establish `hE : (lift (1 : A' ⊗ A' ⟶ A') (lift (fst A' A') (snd A' A'))).left ≫ (cubeMapOf gp).F3 = (lift (1 : Over.mk ((A' ⊗ A').hom ≫ f) ⟶ A) (lift (pushPt gp.1.w (fst A' A')) (pushPt gp.1.w (snd A' A')))).left`. Apply `hom_ext_triple` to reduce the goal to its premises. Introduce `i`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, ← Over.comp_left, ← Over.comp_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> simp [x3, cubeMapOf, pushPt] <;>`. Conclude with `congrArg (fun q => q.left) (map_one (pushHom gp (A' ⊗ A')))`. Establish `hvt : ∀ (Z0 : Scheme.{0}) (r : Z0 ⟶ (G3 A').left) (z0 : Z0) (J0 : (Z0 ⟶ A.left) → L.L.ι) (J0' : (Z0 ⟶ A'.left) → L'.L.ι), Good L.L z0 J0 → Good L'.L z0 J0' → val t r z0 J0 = (∏ I : thK.{0}, gw w (r ≫ thφ A' (x3 A') I) z0 (J0 ((r ≫ thφ A' (x3 A') I) ≫ Φ)) (J0' (r ≫ thφ A' (x3 A') …` using `L'.L) (φ := thφ A' (x3 A')) (ε := thε) c'.t r z0 J0' := by`. Introduce `Z0 r z0 J0 J0' hJ0 hJ0'`. Establish `hm1 : r z0 ∈ LB.wchart L.L (fun I => thφ A' (x3 A') I ≫ Φ) (fun I => J0 (r ≫ (thφ A' (x3 A') I ≫ Φ)))` using `Set.mem_iInter.2 fun I => hJ0 (r ≫ (thφ A' (x3 A') I ≫ Φ))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm2 : r z0 ∈ LB.wchart L'.L (thφ A' (x3 A')) (fun I => J0' (r ≫ thφ A' (x3 A') I))` using `Set.mem_iInter.2 fun I => hJ0' (r ≫ thφ A' (x3 A') I)`. Use `(htv Z0 r z0 _ _ hm1 hm2).trans ?_` and prove the remaining obligations. Apply the tactic sequence `simp only [pw, val, Category.assoc] <;> rfl`. Establish `hcov : ∀ q : A'.left, ∃ i, q ∈ L'.L.U i` using `fun q => by`. Establish `hq : q ∈ (⨆ i, L'.L.U i)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[L'.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hq`. Establish `ac : ∀ {U : Type} [CommGroup U] (a b c d : U), a * b⁻¹ * c⁻¹ * a⁻¹ * d * b * c * d⁻¹ = 1`. Introduce `U _ a b c d`.
+Check the elementary cases of the proposition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. The two sides agree by associativity and commutativity.
 
-Establish `e1 : a * b⁻¹ * c⁻¹ * a⁻¹ * d * b * c * d⁻¹ = (a * a⁻¹) * (b⁻¹ * b) * (c⁻¹ * c) * (d * d⁻¹)`. The two sides agree by associativity and commutativity. Rewrite using `[e1]`. Simplify using the standard rewrite rules. Establish `key` using `gen_unique' L.isLB hFF (snd A' (A' ⊗ A')).left (lift (1 : A' ⊗ A' ⟶ A') (lift (fst A' A') (snd A' A'))).left he hp hu ht (fun q Jq hJq => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J'q, hJ'q⟩ : ∃ J'q : ((A' ⊗ A').left ⟶ A'.left) → L'.L.ι, Good L'.L q J'q` from `⟨fun ψ => Classical.choose (hcov (ψ q)), fun ψ => Classical.choose_spec (hcov (ψ q))⟩`. Take `⟨hh, hhd⟩ : ∃ hh : ((A' ⊗ A').left ⟶ A'.left) → ((A' ⊗ A').left.presheaf.stalk q)ˣ, ∀ ψ, hh ψ = gw w ψ q (Jq (ψ ≫ Φ)) (J'q ψ)` from `⟨_, fun _ => rfl⟩`. Establish `f1` using `(isCub_cubV c (T := Over.mk ((A' ⊗ A').hom ≫ f)) hJq).face (pushPt gp.1.w (fst A' A')) (pushPt gp.1.w (snd A' A'))`. Establish `f2 : val (L` using `L'.L) (φ := thφ A' (x3 A')) (ε := thε) c'.t (lift (1 : A' ⊗ A' ⟶ A') (lift (fst A' A') (snd A' A'))).left q J'q = 1 := (isCub_cubV c' (T := A' ⊗ A') hJ'q).face (fst A' A') (snd A' A')`. Establish `f3` using `prod_cub (T := A' ⊗ A') (1 : A' ⊗ A' ⟶ A') (fst A' A') (snd A' A') hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `erw [val_pull]`. Rewrite using `[hE]`. Use `f1.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (hvt _ _ q Jq J'q hJq hJ'q).symm` and prove the remaining obligations. Rewrite using `[f2, _root_.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← hhd]`. Rewrite using `[f3]`. Simplify using `only [_root_.one_mul]`. Conclude with `(ac _ _ _ _).symm`. Apply the tactic sequence `all_goals exact hJq)`.
-
-Use the proof step `T'.left (lift x (lift x' y)).left z J hJ`. Use `erw [val_pull] at key`. Use `key.trans ((hvt _ _ z J J' hJ hJ').trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Apply the tactic sequence `all_goals exact hJ`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cub_w₀ {T' : Over S'} {z : T'.left} {J J'} (hJ : Good L.L z J) (hJ' : Good L'.L z J') (x x' y : T' ⟶ A') :
     val (L := L.L) (φ := thφ A (x3 A)) (ε := thε) c.t ((lift x (lift x' y)).left ≫ (cubeMapOf gp).F3) z J =
@@ -134,11 +132,9 @@ def valZ {M : LB A.left} {K : Type} [Fintype K] {ε : K → ℤ} {φ : K → ((A
 
 include gp in
 /- English proof (translation)
-Establish `hF3 : (lift a (lift b d)).left ≫ (cubeMapOf gp).F3 = (lift a₀ (lift b₀ d₀)).left`. Apply `hom_ext_triple` to reduce the goal to its premises. Introduce `i`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, ← Over.comp_left, ← Over.comp_left]`. Apply the tactic sequence `fin_cases i <;> simp [x3, cubeMapOf]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `ha`. Conclude with `hb`. Conclude with `hd`. Establish `h0` using `cub_w₀ (c := c) (c' := c') (hG := hG) (hA := hA) (gp := gp) (w := w) (hwg := hwg) (hJ := hJ) (hJ' := hJ') (x := a) (x' := b) (y := d)`. Rewrite `h0` using `[hF3]`.
-
-Use `h0.trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `prod_cub a b d (fun ψ => gw w ψ z (J (ψ ≫ (cubeMapOf gp).F)) (J' ψ))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem cub_w {Z : Scheme.{0}} {s' : Z ⟶ S'} {s : Z ⟶ S} {z : Z} {J J'} (hJ : Good L.L z J) (hJ' : Good L'.L z J')
     (a b d : Over.mk s' ⟶ A') (a₀ b₀ d₀ : Over.mk s ⟶ A) (ha : a.left ≫ Φ = a₀.left) (hb : b.left ≫ Φ = b₀.left)

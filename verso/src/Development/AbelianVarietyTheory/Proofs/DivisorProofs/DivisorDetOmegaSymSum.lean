@@ -8,9 +8,9 @@ namespace GlobalTheory.DetOm
 open Classical in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h1 : expo Dw (detOmSym E g) x = ∑ k : Fin g, expo Dw (wholeSym (fun _ => false) none (.inr k : Fin g ⊕ Fin g)) x`. Unfold `detOmSym expo`. Apply the tactic sequence `rw [Finsupp.sum_finset_sum_index (fun _ => by simp) (fun _ _ _ => by split_ifs <;> simp)]`. Rewrite using `[h1, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [wholeSym, expo_single, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← Equiv.sum_comp (Fin.revPerm (n := g))]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply, Fin.rev_rev]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem expo_detOmSym {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (g : ℕ) (a : ℕ → Bool) :
@@ -28,7 +28,7 @@ theorem expo_detOmSym {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Re
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [Setup.adl0, adlOf]`. Rewrite using `[expo_detOmSym _ _ (ArIn.ind ∅)]`. Unfold `divOf`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem div_adl_detOmegaSym (D : D7) (O : Setup D) (c : O.s.Comp) : (O.adl0 c (detOmSym D.host.E (D.R.f * O.N))).D = ∑ k : Fin (D.R.f * O.N), (-1 : ℤ) • (O.adl0 c (Finsupp.single (ArIn.ind ∅, none, Sum.inr (k : ℕ)) 1)).D := by
   simp only [Setup.adl0, adlOf]

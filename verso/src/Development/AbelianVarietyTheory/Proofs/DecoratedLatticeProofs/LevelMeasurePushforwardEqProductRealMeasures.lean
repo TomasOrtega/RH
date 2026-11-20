@@ -26,9 +26,9 @@ namespace GlobalTheory.RealBoxMeasure
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hτ : GlobalTheory.Mem.Vol.IsCMFam (tauE D)` using `GlobalTheory.Mem.Vol.isCMFam_host _ D.host _ D.eTau`. Take `⟨hcm, -⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Take `⟨e1, he1⟩` from `GlobalTheory.Mem.InfGroup.real_points D.host.F D.host.E D.sp.cm.sig W.rank W.gram D.what₂.Tau (tauE D) θ (fun ρ => (W.sig (tauE D ρ)).1) (fun ρ => (W.sig (tauE D ρ)).2) Fr hcm hτ hθ (fun i => hW (tauE D i)) hFr`. Take `⟨e0, he0⟩` from `GlobalTheory.Mem.VolSplit.exists_adelic_split D.host.F D.host.E D.sp.cm.sig W.rank W.gram`. Use `⟨fun h => e1 (e0 h).1, e1.continuous.comp (continuous_fst.comp e0.continuous), fun h i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show UpqT.mat (e1 (e0 h).1 i) * Fr i = _`. Rewrite using `[he1, (he0 h).2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_realPart (θ : InfFam D) (hθ : IsInfFam θ) (W : HSp D) (hW : W.SigOK) (Fr : Frames W)
     (hFr : IsFrames W Fr) :
@@ -44,7 +44,7 @@ theorem exists_realPart (θ : InfFam D) (hθ : IsInfFam θ) (W : HSp D) (hW : W.
   rw [he1, (he0 h).2]; rfl
 
 /- English proof (translation)
-Take `⟨C, h1, -⟩` from `(GlobalTheory.Mem.SignatureFactor.exists_factor _ _ _ _ (hW (tauE D ρ))).2.2 (Fr ρ) (hFr ρ)`. Apply `(GlobalTheory.UpqTopology.upq_lcsc _ _).2.2.2.2.2.injective` to reduce the goal to its premises. Establish `h5` using `congrArg (· * C) h`. Simplify `h5` using `only [Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mat_cancel (W : HSp D) (hW : W.SigOK) (Fr : Frames W) (hFr : IsFrames W Fr) (ρ : D.what₂.Tau)
     {b b' : Upq W ρ} (h : UpqT.mat b * Fr ρ = UpqT.mat b' * Fr ρ) : b = b' := by
@@ -54,7 +54,7 @@ theorem mat_cancel (W : HSp D) (hW : W.SigOK) (Fr : Frames W) (hFr : IsFrames W 
   simpa only [Matrix.mul_assoc, h1, Matrix.mul_one] using h5
 
 /- English proof (translation)
-Establish `hG` using `GlobalTheory.SmoothForms.RealPts.gramAt_unit W ρ`. Unfold `realMat conjFrame`. Establish `e : (Fr ρ)ᴴ * Formalism.UG.Jpq (W.sig (tauE D ρ)).1 (W.sig (tauE D ρ)).2 * (Fr ρ * M) = gramAt D W ρ * M`. Rewrite using `[← Matrix.mul_assoc, hFr ρ]`. Rewrite using `[Matrix.mul_assoc (_ * _), h, e, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hG, Matrix.one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem realMat_of (W : HSp D) (Fr : Frames W) (hFr : IsFrames W Fr) (ρ : D.what₂.Tau) (b : Upq W ρ)
     (M : Matrix (Fin W.rank) (Fin W.rank) ℂ) (h : UpqT.mat b * Fr ρ = Fr ρ * M) : realMat W Fr ρ b = M := by
@@ -65,7 +65,7 @@ theorem realMat_of (W : HSp D) (Fr : Frames W) (hFr : IsFrames W Fr) (ρ : D.wha
   rw [Matrix.mul_assoc (_ * _), h, e, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hG, Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `conjFrame_mem_UH _ _ _ (GlobalTheory.Mem.SignatureFactor.exists_factor _ _ _ _ (hW (tauE D ρ))).1 _ _ (hFr ρ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit W ρ) b`.
+A detailed English derivation is pending.
 -/
 theorem realMat_mem (W : HSp D) (hW : W.SigOK) (Fr : Frames W) (hFr : IsFrames W Fr) (ρ : D.what₂.Tau) (b : Upq W ρ) :
     realMat W Fr ρ b ∈ Formalism.QuantumDeterminants.UH (gramAt D W ρ) :=
@@ -73,7 +73,7 @@ theorem realMat_mem (W : HSp D) (hW : W.SigOK) (Fr : Frames W) (hFr : IsFrames W
     (GlobalTheory.SmoothForms.RealPts.gramAt_unit W ρ) b
 
 /- English proof (translation)
-Rewrite using `[realElt, GlobalTheory.RealTransSm.infMat_list_prod hθ u hu ρ _ (Finset.nodup_toList _), if_pos (Finset.mem_toList.2 (Finset.mem_univ ρ))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infMat_realElt (θ : InfFam D) (hθ : IsInfFam θ) (W : HSp D) (u : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ)
     (hu : ∀ τ, u τ ∈ Formalism.QuantumDeterminants.UH (gramAt D W τ)) (ρ : D.what₂.Tau) :
@@ -82,7 +82,7 @@ theorem infMat_realElt (θ : InfFam D) (hθ : IsInfFam θ) (W : HSp D) (u : D.wh
     if_pos (Finset.mem_toList.2 (Finset.mem_univ ρ))]
 
 /- English proof (translation)
-Use `list_prod_mem fun x hx => ?_` and prove the remaining obligations. Take `⟨τ, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_mem W τ (u τ)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem realElt_mem (θ : InfFam D) (W : HSp D) (u : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) :
     realElt θ W u ∈ GinfC W := by
@@ -91,16 +91,14 @@ theorem realElt_mem (θ : InfFam D) (W : HSp D) (u : D.what₂.Tau → Matrix (F
   exact GlobalTheory.PointAtPlaceHom.atTau_mem W τ (u τ)
 
 /- English proof (translation)
-Rewrite using `[Lev.finE_eq, (MonoidHom.mem_ker).1 (realElt_mem θ W u), map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finE_realElt (θ : InfFam D) (W : HSp D) (u : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) :
     finE W (realElt θ W u) = 1 := by
   rw [Lev.finE_eq, (MonoidHom.mem_ker).1 (realElt_mem θ W u), map_one]
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D W) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Unfold `realElt`. Use `continuous_list_prod _ fun ρ _ => ?_` and prove the remaining obligations. Establish `hκ : Continuous fun b : (∀ ρ, Upq W ρ) => realMat W Fr ρ (b ρ)`. Unfold `realMat conjFrame`.
-
-Conclude with `continuous_const.matrix_mul (((continuous_const.matrix_mul ((GlobalTheory.UpqTopology.upq_lcsc _ _).2.2.2.2.2.continuous.comp (continuous_apply ρ))).matrix_mul continuous_const))`. Conclude with `(GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ W ρ).comp_continuous hκ fun b => realMat_mem W hW Fr hFr ρ (b ρ)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_realElt (θ : InfFam D) (hθ : IsInfFam θ) (W : HSp D) (hW : W.SigOK) (Fr : Frames W)
     (hFr : IsFrames W Fr) :
@@ -116,23 +114,19 @@ theorem continuous_realElt (θ : InfFam D) (hθ : IsInfFam θ) (W : HSp D) (hW :
     fun b => realMat_mem W hW Fr hFr ρ (b ρ)
 
 /- English proof (translation)
-Introduce `D θ hθ W hW K ν hν Fr hFr mR hmR Z hZ hZK hS`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, hsc, hbo, -⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable W`. Use `haveI := hsc`. Use `haveI := hbo`. Use `haveI : ∀ ρ, SigmaFinite (mR ρ) := fun ρ => by haveI := (hmR ρ).1; infer_instance`. Take `⟨φ, hφc, hφ⟩` from `exists_realPart θ hθ W hW Fr hFr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφm : Measurable φ` using `hφc.measurable`. Use `set sec : (∀ ρ, Upq W ρ) → GA D W := fun b => realElt θ W fun ρ => realMat W Fr ρ (b ρ) with hsec`. Establish `hsecm : Measurable (fun b => Z (sec b))` using `hZ.comp (continuous_realElt θ hθ W hW Fr hFr).measurable`. Take `⟨-, -, H⟩` from `hν`. Take `⟨-, H1⟩` from `H θ hθ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨-, H2⟩` from `H1 Fr hFr`. Establish `hpi : Measure.pi mR = Measure.map φ (ν.restrict {h : GA D W | finE W h ∈ K})`. Use `Measure.pi_eq fun B hB => ?_` and prove the remaining obligations. Establish `hm : MeasurableSet (φ ⁻¹' Set.univ.pi B)` using `hφm (MeasurableSet.univ_pi hB)`. Rewrite using `[Measure.map_apply hφm (MeasurableSet.univ_pi hB), Measure.restrict_apply hm, ← H2 mR hmR B hB]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `h`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_univ_pi, Set.mem_setOf_eq]`. Rewrite using `[and_comm]`. Use `and_congr_right fun _ => forall_congr' fun ρ => ⟨fun hb => ⟨φ h ρ, hb, hφ h ρ⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨b, hb, hbe⟩`. Rewrite `hb` using `[mat_cancel W hW Fr hFr ρ (hbe.trans (hφ h ρ).symm)]`. Then use the resulting hypothesis. Establish `hfac : ∀ h ∈ {h : GA D W | finE W h ∈ K}, Z h = Z (sec (φ h))`. Introduce `h hh`. Establish `e : ∀ ρ, infMat D.sp.cm.sig W.gram (θ ρ) (sec (φ h)) = infMat D.sp.cm.sig W.gram (θ ρ) h` using `fun ρ => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[hsec]`. Simplify using `only`. Rewrite using `[infMat_realElt θ hθ W _ (fun τ => realMat_mem W hW Fr hFr τ _) ρ]`. Conclude with `realMat_of W Fr hFr ρ _ _ (hφ h ρ)`. Establish `hk : (sec (φ h))⁻¹ * h ∈ levA W K`.
-
-Use `⟨(GlobalTheory.SmoothForms.RealPts.glue θ hθ W).1 _ fun ρ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul, ← e ρ, ← GlobalTheory.PointAtPlaceHom.infMat_mul, inv_mul_cancel, GlobalTheory.PointAtPlaceHom.infMat_one]`. Use `show finE W ((sec (φ h))⁻¹ * h) ∈ K`. Rewrite using `[map_mul, map_inv, hsec]`. Simplify using `only`.
-
-Rewrite using `[finE_realElt, inv_one, one_mul]`. Conclude with `hh`. Rewrite using `[← hZK (sec (φ h)) _ hk, mul_inv_cancel_left]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lintegral_levelSet_eq_pi : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (W : HSp D), W.SigOK → ∀ (K : Subgroup (GL (Fin W.rank) (Lev.EAf D))) (ν : Measure (GA D W)), IsMeasLev W K ν → ∀ Fr : Frames W, IsFrames W Fr → ∀ mR : ∀ ρ, Measure (Upq W ρ), (∀ ρ, Lev.IsMinf (mR ρ)) → ∀ Z : GA D W → ENNReal, Measurable Z → (∀ g, ∀ k ∈ levA W K, Z (g * k) = Z g) → MeasurableSet {h : GA D W | finE W h ∈ K} → ∫⁻ g in {h : GA D W | finE W h ∈ K}, Z g ∂ν = ∫⁻ b, Z (realElt θ W fun ρ => realMat W Fr ρ (b ρ)) ∂(Measure.pi mR) := by
   intro D θ hθ W hW K ν hν Fr hFr mR hmR Z hZ hZK hS

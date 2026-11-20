@@ -5,13 +5,13 @@ open NumberField IsDedekindDomain Formalism.L2.Ker
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hI : Ideal.span {r} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Establish `hnu : ¬ IsUnit Q.asIdeal` using `fun h => Q.isPrime.ne_top (Ideal.isUnit_iff.1 h)`. Take `⟨J, hJ, hnd⟩` from `(FiniteMultiplicity.of_not_isUnit hnu hI).exists_eq_pow_mul_and_not_dvd`. Use `set m := multiplicity Q.asIdeal (Ideal.span {r})`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hJle : ¬ J ≤ Q.asIdeal` using `fun h => hnd (Ideal.dvd_iff_le.2 h)`. Take `⟨t, htJ, htQ⟩` from `Set.not_subset.1 hJle`. Use `⟨t, htQ, fun Q' hQ' => ?_⟩` and prove the remaining obligations. Establish `hnle : ¬ Q.asIdeal ^ m ≤ Q'.asIdeal`. Introduce `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : Q.asIdeal ≤ Q'.asIdeal` using `Q'.isPrime.le_of_pow_le h`. Establish `h2 : Q.asIdeal = Q'.asIdeal` using `Q.isMaximal.eq_of_le Q'.isPrime.ne_top h1`. Conclude with `hQ' (HeightOneSpectrum.ext h2.symm)`. Take `⟨w, hwm, hwQ'⟩` from `Set.not_subset.1 hnle`. Use `⟨w, hwQ', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : w * t ∈ Ideal.span {r}`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_mem_mul hwm htJ`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 hmem`. Conclude with `⟨z, by rw [← hz, mul_comm]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_not_mem_dvd_locally_away (E : Type) [Field E] [NumberField E]
     (Q : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) (hr : r ≠ 0) :

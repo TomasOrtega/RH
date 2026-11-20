@@ -22,22 +22,22 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
 /- English proof (translation)
-Rewrite `hc`, the goal using `[L.O_def]`. Conclude with `hc.map (L.cj.toAlgHom.restrictScalars 𝒪[F])`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_mem_O {c : E} (hc : c ∈ L.O) : L.cj c ∈ L.O := by
   rw [L.O_def] at hc ⊢
   exact hc.map (L.cj.toAlgHom.restrictScalars 𝒪[F])
 
 /- English proof (translation)
-Simplify using `only [Frames.Nof, Subgroup.mem_inf, Subgroup.mem_iInf] at hw`. Take `⟨⟨-, h1⟩, -⟩` from `hw`. Establish `e' : x = w (∑ i, al i • g i)` using `by simp [e]`. Establish `hz : ∑ i, al i • g i ∈ S.spanTo g (j + 1)` using `((h1 j).1 _).1 (e' ▸ hx)`. Establish `hB` using `(h1 j).2 _ hz`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : S.spanTo g j ≤ LinearMap.ker (FramePsi.pairL L S.Hm (gs j))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Express the relevant statement in the definitionally equal form `hf L S.Hm (g i) (gs j) = 0`. Rewrite using `[hd, if_neg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Simplify using `at hi`. Establish `h2` using `LinearMap.mem_ker.1 (hK hB)`. Rewrite `h2` using `[← e', map_sub, map_sum, sub_eq_zero]`. Establish `h3 : ∀ i, FramePsi.pairL L S.Hm (gs j) (al i • g i) = if i = j.castSucc then al i else 0`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[map_smul]`. Express the relevant statement in the definitionally equal form `al i * hf L S.Hm (g i) (gs j) = _`. Rewrite using `[hd]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [h3, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2`. Conclude with `h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem top_coord (g : Fin (r + 1) → S.V) (gs : Fin r → S.V)
     (hd : ∀ a j, hf L S.Hm (g a) (gs j) = if a = j.castSucc then 1 else 0)
@@ -68,11 +68,11 @@ theorem top_coord (g : Fin (r + 1) → S.V) (gs : Fin r → S.V)
   exact h2
 
 /- English proof (translation)
-Establish `h : ∀ j, S.coef S.f' S.es' n j = 0`. Introduce `j`. Establish `hp : S.f' j.succ ∈ perp L S.Hm S.X'`. Use `FramePsi.hf_span_right L S.Hm _ _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[S.gram', if_neg]`. Introduce and unpack `⟨-, rfl⟩`. Simplify using `at hi`. Rewrite using `[Frames.coef, hn _ hp, Frames.h, S.dual', if_neg]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Simplify using `[Frames.psi', Frames.psiOf, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem psi'_eq_one (n : S.GLV) (hn : ∀ v ∈ perp L S.Hm S.X', n v = v) : S.psi' n = 1 := by
   have h : ∀ j, S.coef S.f' S.es' n j = 0 := by
@@ -90,13 +90,13 @@ theorem psi'_eq_one (n : S.GLV) (hn : ∀ v ∈ perp L S.Hm S.X', n v = v) : S.p
   simp [Frames.psi', Frames.psiOf, h]
 
 /- English proof (translation)
-Introduce `y hy` and use `hu y (Submodule.mem_sup_left hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem perp_left {A B : Submodule E S.V} {u : S.V} (hu : u ∈ perp L S.Hm (A ⊔ B)) :
     u ∈ perp L S.Hm A := fun y hy => hu y (Submodule.mem_sup_left hy)
 
 /- English proof (translation)
-Introduce `y hy` and use `hu y (Submodule.mem_sup_right hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem perp_right {A B : Submodule E S.V} {u : S.V} (hu : u ∈ perp L S.Hm (A ⊔ B)) :
     u ∈ perp L S.Hm B := fun y hy => hu y (Submodule.mem_sup_right hy)
@@ -104,29 +104,27 @@ theorem perp_right {A B : Submodule E S.V} {u : S.V} (hu : u ∈ perp L S.Hm (A 
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hFF x x' u s hM`. Take `⟨n₀, hn₀, n₀', hn₀', n'', hn'', e₀, e₀i, e₀', f'', hset, hW⟩` from `GlobalTheory.T.move_lattice_isTerm_same_datum_with_witnesses L r k S j β βJ d Λ hT hFF x x' u s hM`. Take `⟨t1, t2, -, -, -, -, -, hux, -, -, -⟩` from `GlobalTheory.T.hermitianDoubleCosetFrames_datum_move_properties L r k S j β βJ d Λ hT hFF x x' u s hM`. Take `⟨hT₁, hY⟩` from `GlobalTheory.T.hermitianMove_preserves_frameLattice_levels L r k S j β βJ d Λ hT hFF x x' u s hM _ hset`. Take `⟨hx, hx', hth, hlev, hu, hup, ⟨c, hc, hsc⟩, hs⟩` from `hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hb : x + x' ∈ S.spanTo S.f (j + 1) ⊔ S.spanTo S.f' (j + 1)` using `Submodule.add_mem_sup hx hx'`. Establish `hmem : ∀ v, v ∈ (n₀⁻¹ • Λ : Submodule L.O S.V) ↔ eich L S.Hm x u s v ∈ Λ` using `fun v => Set.ext_iff.1 hset v`. Use `⟨n₀⁻¹ • Λ, hset, hT₁, ?_, fun _ => ⟨hx, hx', ?_, ?_, ?_, (perp L S.Hm _).neg_mem hup, ?_, ?_⟩, fun al al' ex ex' => ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Express the relevant statement in the definitionally equal form `eich L S.Hm x (-u) (L.cj s) v ∈ (n₀⁻¹ • Λ : Submodule L.O S.V) ↔ v ∈ Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hmem, ← e₀, ← e₀i]`. Rewrite using `[show n₀ (n₀⁻¹ v) = v from n₀.apply_symm_apply v]`. Take `⟨y, hy, e⟩` from `hth`. Use `⟨y, (hY y ?_).1 hy, e⟩` and prove the remaining obligations. Establish `: y = algebraMap F E S.th⁻¹ • (x + x')`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, smul_smul, WitIndep.th_mul, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hb`. Rewrite using `[(hY _ hb).2.2, hlev]`. Use `Submodule.neg_mem _ ((hmem u).2 ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: eich L S.Hm x u s u = u + s • x + L.cj s • x`. Establish `h1 : hf L S.Hm u x = 0` using `hux`. Establish `h2 : hf L S.Hm u u = s + L.cj s` using `hs.symm`. Rewrite using `[eich, h1, h2]`. Use `module`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[this]`. Conclude with `Λ.add_mem (Λ.add_mem hu t1) t2`. Conclude with `⟨L.cj c, cj_mem_O hc, by rw [hsc, map_mul, AlgEquiv.commutes]⟩`. Rewrite using `[L.cj_cj, Frames.h, hf_neg_l, hf_neg_r, neg_neg, add_comm]`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `K` using `(TermBasic.term_basic L r k S d Λ hT).2.1`. Establish `hw` using `K.2.2.1`. Establish `hw'` using `K.2.2.2.1`. Take `⟨p1, p2, p3, p4⟩` from `FramePsi.psi_unitary_character L r k S`. Take `⟨m, -, em, -, -, pm⟩` from `EichlerUnip.eichler_mem_unip L r k S S.f S.es (.inl ⟨rfl, rfl⟩) j x u s hx (perp_left S hup) hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m', -, em', -, -, pm'⟩` from `EichlerUnip.eichler_mem_unip L r k S S.f' S.es' (.inr ⟨rfl, rfl⟩) j x' u s hx' (perp_right S hup) hs`. Take `rfl : m = n₀` from `LinearEquiv.ext fun v => (em v).trans (e₀ v).symm`. Take `rfl : m' = n₀'` from `LinearEquiv.ext fun v => (em' v).trans (e₀' v).symm`. Establish `q` using `pm _ hw`. Establish `q'` using `pm' _ hw'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `q` using `[top_coord S S.f S.es S.dual _ hw j x hx al ex]`. Rewrite `q'` using `[top_coord S S.f' S.es' S.dual' _ hw' j x' hx' al' ex']`. Establish `a1` using `p1 m hn₀ _ (mul_mem (inv_mem hn₀) hw)`. Rewrite `a1` using `[mul_inv_cancel_left]`. Establish `a2` using `p2 _ (mul_mem hn'' hn₀') _ hw'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a2` using `[p2 _ hn'' _ hn₀', psi'_eq_one S n'' f'', one_mul]`. Establish `z1 : S.psi m ≠ 0` using `fun h => by simpa [h] using (p3 m).1`. Establish `z2 : S.psi' m' ≠ 0` using `fun h => by simpa [h] using (p3 m').2`. Establish `hchi : L.psi0 (-(algebraMap F E S.th⁻¹ * S.h (al j.castSucc • S.fr d Λ j.succ + al' j.castSucc • S.fr' d Λ j.succ) u)) = (S.psi m * S.psi' m')⁻¹`. Rewrite using `[AddChar.map_neg_eq_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = S.psiOf S.f S.es m * S.psiOf S.f' S.es' m'`. Rewrite using `[q, q', ← AddChar.map_add_eq_mul, Frames.h, hf_add_l, hf_smul_l, hf_smul_l, mul_add]`. Both sides reduce to the same expression. Rewrite using `[(WitIndep.witness_independence L r k S _ _ _ _ hW).1, hchi, a2, Frames.om, a1]`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem move_term : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (j : Fin r) (β βJ : ℕ) (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → S.InFF β (j + 1) βJ d Λ → ∀ x x' u s, S.IsMove (j + 1) d Λ x x' u s → ∃ Λ₁ : Submodule L.O S.V, (Λ₁ : Set S.V) = S.moved Λ x u s ∧ S.IsTerm d Λ₁ ∧ S.moved Λ₁ x (-u) (L.cj s) = Λ ∧ (S.InFF β (j + 1) βJ d Λ₁ → S.IsMove (j + 1) d Λ₁ x x' (-u) (L.cj s)) ∧ ∀ al al' : Fin (r + 1) → E, x = ∑ i, al i • S.fr d Λ i → x' = ∑ i, al' i • S.fr' d Λ i → S.om d Λ₁ = S.om d Λ * L.psi0 (-(algebraMap F E S.th⁻¹ * S.h (al j.castSucc • S.fr d Λ j.succ + al' j.castSucc • S.fr' d Λ j.succ) u)) := by
   intro F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hFF x x' u s hM

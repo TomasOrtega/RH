@@ -9,23 +9,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R _ C _ F W _ _ _ _ j h`. Take `⟨n, v, hv⟩` from `Module.Finite.exists_fin' R W`. Take `⟨σ, hσ⟩` from `Module.projective_lifting_property v (LinearMap.id) hv`. Establish `hw : ∀ x : W, x = ∑ i, σ x i • v (Pi.single i 1)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LinearMap.congr_fun hσ x` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] at this`. Use `conv_lhs => rw [← this]`. Use `conv_lhs => rw [show σ x = ∑ i, σ x i • Pi.single i (1 : R) from by`. Use extensionality with `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]]`. Simplify using `[map_sum, map_smul]`. Use `choose e he hb using h`. Set `l : Fin n → W →ₗ[R] R` to `fun i ↦ LinearMap.proj i ∘ₗ σ`. Set `δ : Fin n → ∀ T : C, Ω[F.obj T⁄R] →ₗ[F.obj T] F.obj T` to `fun i T ↦ (hb T).lift (Algebra.linearMap R (F.obj T) ∘ₗ l i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hδ : ∀ i T (x : W), δ i T (e T x) = algebraMap R (F.obj T) (σ x i)`. Introduce `i T x`. Conclude with `(hb T).lift_eq _ x`. Use `⟨n, ⟨⟨fun i ↦ j (v (Pi.single i 1)), δ, ?_, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `i T T' φ ω`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(hb T).inductionOn ω (fun ω ↦ δ i T' (p1 F φ ω) = mp F φ (δ i T ω)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `x`. Establish `h1 : p1 F φ (e T x) = e T' x`. Rewrite using `[he T x, he T' x]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((j x).2 φ).symm`. Rewrite using `[h1, hδ, hδ]`. Conclude with `((mp F φ).commutes _).symm`. Introduce `s ω hω`. Rewrite using `[oneFormsMapOfFunctorMorphism_smul, LinearMap.map_smul, LinearMap.map_smul, hω, smul_eq_mul, smul_eq_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hb'`. Rewrite using `[map_add, map_add, map_add, ha, hb', map_add]`. Introduce `T ω`. Use `(hb T).inductionOn ω (fun ω ↦ ω = ∑ i, δ i T ω • (j (v (Pi.single i 1))).1 T) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `x`. Repeatedly rewrite using `[hδ, ← he T, algebraMap_smul]`. Use `conv_lhs => rw [hw x]`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[map_smul]`.
-
-Introduce `s ω hω conv_lhs => rw [hω]`. Repeatedly rewrite using `[LinearMap.map_smul, Finset.smul_sum, smul_eq_mul, mul_smul]`. Introduce `a b ha hb' conv_lhs => rw [ha, hb']`. Repeatedly rewrite using `[map_add, add_smul, Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFrame_of_isBaseChange : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R), ∀ (W : Type) [AddCommGroup W] [Module R W] [Module.Finite R W] [Module.Projective R W] (j : W →ₗ[R] Glob1 F), (∀ T : C, ∃ e : W →ₗ[R] Ω[F.obj T⁄R], (∀ w, e w = (j w).1 T) ∧ IsBaseChange (F.obj T) e) → HasFrame F := by
   intro R _ C _ F W _ _ _ _ j h

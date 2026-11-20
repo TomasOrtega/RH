@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain MeasureTheory GlobalTheory.CuspRep GlobalTheor
 open scoped ENNReal NNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.JSW.mspanR_cont_left_avg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCuspFormRapidSpanContinuousAutomorphicCuspidal.lean&line=44#L44)
 -/

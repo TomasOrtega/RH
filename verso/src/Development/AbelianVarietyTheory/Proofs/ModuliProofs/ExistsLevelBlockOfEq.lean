@@ -15,15 +15,15 @@ namespace GlobalTheory.FrameFibre
 variable {E : Type} [Field E] [NumberField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `hu : u ∈ Submodule.span E (Set.range φ)` using `by rw [hspan]; trivial`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨v, rfl⟩ := hx; exact ⟨1, v, one_ne_zero, by simp⟩`. Consider the case `zero => exact ⟨1, 0, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨c, v, hc, hv⟩` from `hx`. Take `⟨d, w, hd, hw⟩` from `hy`. Use `⟨c * d, d • v + c • w, mul_ne_zero hc hd, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul, ← hv, ← hw]`. Use extensionality with `k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul a x _ hx`. Take `⟨c, v, hc, hv⟩` from `hx`. Take `⟨n, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) a`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hd1 : algebraMap (𝓞 E) E d ≠ 0` using `by simpa using hd0`. Use `⟨c * d, n • v, mul_ne_zero hc hd0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← hv]`. Use extensionality with `k`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, RingOfIntegers.coe_eq_algebraMap, map_mul]`. Rewrite using `[Algebra.smul_def]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_smul_eq {L : Type} [AddCommGroup L] [Module (𝓞 E) L] (φ : L →ₗ[𝓞 E] (Fin r → E))
     (hspan : Submodule.span E (Set.range φ) = ⊤) (u : Fin r → E) :
@@ -53,9 +53,9 @@ theorem exists_smul_eq {L : Type} [AddCommGroup L] [Module (𝓞 E) L] (φ : L �
     field_simp
 
 /- English proof (translation)
-Use `haveI : IsLocalizedModule (𝓞 E)⁰ φ := { map_units := fun s => (isLocalizedModule_id (𝓞 E)⁰ (Fin r → E) E).map_units s surj := fun u => by`. Take `⟨c, v, hc, hv⟩` from `exists_smul_eq φ hspan u`. Conclude with `⟨(v, ⟨c, mem_nonZeroDivisors_of_ne_zero hc⟩), hv⟩`. Use `exists_of_eq := fun h => ⟨1, by rw [hφ h]⟩ }`. Establish `hb` using `IsLocalizedModule.isBaseChange (𝓞 E)⁰ E φ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨LinearMap.toMatrix' (hb.lift ψ), fun v => by`. Rewrite using `[LinearMap.toMatrix'_mulVec, hb.lift_eq]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_matrix {L : Type} [AddCommGroup L] [Module (𝓞 E) L] (φ : L →ₗ[𝓞 E] (Fin r → E))
     (hφ : Function.Injective φ) (hspan : Submodule.span E (Set.range φ) = ⊤)
@@ -71,9 +71,9 @@ theorem exists_matrix {L : Type} [AddCommGroup L] [Module (𝓞 E) L] (φ : L �
     rw [LinearMap.toMatrix'_mulVec, hb.lift_eq]⟩
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `exists_matrix φ hφ hspan (φ ∘ₗ gam.toLinearMap)`. Take `⟨B, hB⟩` from `exists_matrix φ hφ hspan (φ ∘ₗ gam.symm.toLinearMap)`. Establish `hA' : ∀ v, A *ᵥ φ v = φ (gam v)` using `hA`. Establish `hB' : ∀ v, B *ᵥ φ v = φ (gam.symm v)` using `hB`. Establish `hAB : A * B = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext_on_range hspan fun v => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, hB', hA', Matrix.one_mulVec, LinearEquiv.apply_symm_apply]`. Conclude with `⟨⟨A, B, hAB, mul_eq_one_comm.1 hAB⟩, hA'⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_gl {L : Type} [AddCommGroup L] [Module (𝓞 E) L] (φ : L →ₗ[𝓞 E] (Fin r → E))
     (hφ : Function.Injective φ) (hspan : Submodule.span E (Set.range φ) = ⊤)
@@ -91,9 +91,9 @@ theorem exists_gl {L : Type} [AddCommGroup L] [Module (𝓞 E) L] (φ : L →ₗ
   exact ⟨⟨A, B, hAB, mul_eq_one_comm.1 hAB⟩, hA'⟩
 
 /- English proof (translation)
-Use `(traceForm_nondegenerate ℚ E).1 t fun e => ?_` and prove the remaining obligations. Establish `halg : IsAlgebraic ℤ e` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨k, hk, hki⟩` from `halg.exists_integral_multiple`. Establish `h : Algebra.trace ℚ E ((k • e) * t) = 0` using `ht ⟨k • e, hki⟩`. Rewrite `h` using `[smul_mul_assoc, map_zsmul, smul_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Algebra.traceForm_apply, mul_comm]`. Conclude with `h.resolve_left hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_trace (t : E) (ht : ∀ a : 𝓞 E, Algebra.trace ℚ E ((a : E) * t) = 0) : t = 0 := by
   refine (traceForm_nondegenerate ℚ E).1 t fun e => ?_
@@ -108,7 +108,7 @@ theorem eq_zero_of_trace (t : E) (ht : ∀ a : 𝓞 E, Algebra.trace ℚ E ((a :
 variable [IsCMField E]
 
 /- English proof (translation)
-Simplify using `only [FD.herm, FD.cc, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, map_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_smul_smul (G : Matrix (Fin r) (Fin r) E) (c d : E) (x y : Fin r → E) :
     FD.herm G (c • x) (d • y) = c * FD.cc d * FD.herm G x y := by
@@ -117,13 +117,13 @@ theorem herm_smul_smul (G : Matrix (Fin r) (Fin r) E) (c d : E) (x y : Fin r →
   ring
 
 /- English proof (translation)
-Establish `h1 : FD.cc (1 : E) = 1` using `map_one (IsCMField.complexConj E)`. Establish `key : ∀ v w, FD.herm G (A *ᵥ φ v) (A *ᵥ φ w) = FD.herm G (φ v) (φ w)`. Introduce `v w`. Apply `mul_left_cancel₀ hξ` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `eq_zero_of_trace _ fun a => ?_` and prove the remaining obligations. Establish `h2` using `h (a • v) w`. Establish `h3 : φ (a • v) = (a : E) • φ v` using `by rw [map_smul]; rfl`. Establish `h4` using `herm_smul_smul G (a : E) 1 (A *ᵥ φ v) (A *ᵥ φ w)`. Establish `h5` using `herm_smul_smul G (a : E) 1 (φ v) (φ w)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4`, `h5` using `[one_smul, h1, mul_one]`. Rewrite `h2` using `[h3, Matrix.mulVec_smul, h4, h5]`. Rewrite using `[mul_sub, map_sub, mul_left_comm, h2, mul_left_comm, sub_self]`. Take `⟨c, v, hc, hv⟩` from `exists_smul_eq φ hspan x`. Take `⟨d, w, hd, hw⟩` from `exists_smul_eq φ hspan y`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `key v w`. Rewrite `h2` using `[← hv, ← hw, Matrix.mulVec_smul, Matrix.mulVec_smul, herm_smul_smul, herm_smul_smul]`. Use `mul_left_cancel₀ (mul_ne_zero ?_ ?_) h2` and prove the remaining obligations. Simplify using `using hc`. Conclude with `(map_ne_zero (IsCMField.complexConj E)).2 (by simpa using hd)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem herm_of_trace {L : Type} [AddCommGroup L] [Module (𝓞 E) L] (φ : L →ₗ[𝓞 E] (Fin r → E))
     (hspan : Submodule.span E (Set.range φ) = ⊤) (G A : Matrix (Fin r) (Fin r) E) (ξ : E) (hξ : ξ ≠ 0)
@@ -152,11 +152,11 @@ theorem herm_of_trace {L : Type} [AddCommGroup L] [Module (𝓞 E) L] (φ : L �
   · exact (map_ne_zero (IsCMField.complexConj E)).2 (by simpa using hd)
 
 /- English proof (translation)
-Introduce `τ`. Establish `e1 : FD.mat (FD.lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * FD.mat x τ` using `rfl`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit ((γ : Matrix (Fin r) (Fin r) E).map τ.1).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (γ.isUnit.map τ.1.mapMatrix)`. Rewrite using `[e1, Matrix.det_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero hu.ne_zero (hx τ).1`. Establish `h` using `(hx τ).2 i`. Establish `e2 : FD.gram τ.1 G (FD.mat (FD.lact γ x) τ) = FD.gram τ.1 G (FD.mat x τ)`. Use extensionality with `a b`. Simplify using `only [FD.gram, Matrix.of_apply, e1, PerMove.col_mul, PerMove.hermC_unitary _ _ _ hγ]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `FD.dmin at h ⊢`. Rewrite using `[e2]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lact_mem_GG {Ψ : Finset (E →+* ℂ)} {G : Matrix (Fin r) (Fin r) E} {q : ℕ} {γ : GL (Fin r) E}
     (hγ : ∀ u v, FD.herm G ((γ : Matrix (Fin r) (Fin r) E) *ᵥ u) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v) =
@@ -176,19 +176,19 @@ theorem lact_mem_GG {Ψ : Finset (E →+* ℂ)} {G : Matrix (Fin r) (Fin r) E} {
     rwa [e2]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ g ty U i r ξ Gm φ Ψ idx Pf hΨ hty hξ hpos hlat hr hPf x hx x' hx' hu`. Establish `hper` using `(FramePeriod.isPeriod_frame E H (U.Di i) r ξ Gm φ Ψ hΨ g idx ty hty hξ hpos hlat hr).2`. Take `⟨gam, h, hiso, hhalf, hA, hh⟩` from `(U.fibre i _ _ ((hper x hx).2 _ (hPf x)) ((hper x' hx').2 _ (hPf x'))).1 hu`. Establish `hM` using `LevelHalf.trivial_mod_of_trivial_on_half E H (U.Di i) l gam hiso hhalf`. Take `⟨γ, hγ⟩` from `exists_gl φ hlat.1 hlat.2.1 gam`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hξ0 : ξ ≠ 0`. Establish `hcm` using `FramePeriod.cmType H Ψ hΨ`. Take `⟨s⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, τ ∈ Ψ := by`. Distinguish the cases in `h : ComplexEmbedding.conjugate s ∈ Ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨_, h⟩`. Conclude with `⟨s, (hcm s).2 h⟩`. Introduce and unpack `rfl`. Simplify using `using hpos τ hτ`. Establish `hun` using `herm_of_trace φ hlat.2.1 Gm γ ξ hξ0 fun v w => by`.
+Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hγ, hγ, ← hlat.2.2.2.2, ← hlat.2.2.2.2, hiso]`. Establish `hmove` using `(per_move E H (U.Di i) r ξ Gm φ Ψ hΨ g idx ty hty hξ hpos hlat).2.1 x γ (Pf x) (Pf (FD.lact γ x)) hun (hPf x) (hPf _)`. Take `⟨b, hb, hb0, -⟩` from `FramePeriod.frame_of_period_linear E H (U.Di i) r ξ Gm φ Ψ hΨ g idx ty hty hξ hpos hlat (Pf (FD.lact γ x)) _ (lact_mem_GG hun hx) x' hx' (hPf _) (Pf x') (hPf _) (LinearMap.toMatrix' h.toLinearMap) fun v => by`. Take `⟨a, rfl⟩` from `gam.surjective v`. Rewrite using `[LinearMap.toMatrix'_mulVec, hh, hmove a (gam a) (hγ a).symm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨γ, b, ⟨hun, fun y => ⟨?_, ?_⟩⟩, fun v => ?_, fun v => ?_, hb, hb0⟩` and prove the remaining obligations. Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨gam v, (hγ v).symm⟩`. Introduce and unpack `⟨v, hv⟩`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨gam.symm v, ?_⟩` and prove the remaining obligations. Apply `(Matrix.mulVec_injective_of_isUnit γ.isUnit)` to reduce the goal to its premises. Rewrite using `[hγ, LinearEquiv.apply_symm_apply, hv]`. Take `⟨e, he⟩` from `hM v`. Conclude with `⟨e, by rw [hγ, he, map_add, map_nsmul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨e, he⟩` from `hA v`. Conclude with `⟨e, by rw [hγ, he, map_add, map_nsmul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_level_block_of_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (U : FamilyUnif Xo σ ty) (i : Fin U.n) (r : ℕ) (ξ : E) (Gm : Matrix (Fin r) (Fin r) E) (φ : (U.Di i).La →ₗ[𝓞 E] (Fin r → E)) (Ψ : Finset (E →+* ℂ)) (idx : Fin g ≃ Ψ × Fin r) (Pf : FD.Frame Ψ r → ((U.Di i).La →+ (Fin g → ℂ))), (∀ τ, τ ∈ Ψ ↔ τ (H.rt : E) = H.rt0) → (∀ k, ty k = if ((idx k).2 : ℕ) < (U.Di i).q then ComplexEmbedding.conjugate (idx k).1.1 else (idx k).1.1) → FD.cc ξ = -ξ → (∀ τ ∈ Ψ, 0 < (τ ξ).im) → (Function.Injective φ ∧ Submodule.span E (Set.range φ) = ⊤ ∧ (∀ a b, FD.cc (Gm a b) = Gm b a) ∧ Gm.det ≠ 0 ∧ ∀ x y, (((U.Di i).EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (ξ * FD.herm Gm (φ x) (φ y))) → r = (U.Di i).p + (U.Di i).q → (∀ x v k, Pf x v k = if ((idx k).2 : ℕ) < (U.Di i).q then FD.hermC (idx k).1.1 Gm (FD.col (FD.mat x (idx k).1) (idx k).2) (FD.Data.emb (idx k).1.1 (φ v)) else ((FD.mat x (idx k).1)⁻¹ *ᵥ FD.Data.emb (idx k).1.1 (φ v)) (idx k).2) → ∀ x ∈ FD.GG Ψ Gm (U.Di i).q, ∀ x' ∈ FD.GG Ψ Gm (U.Di i).q, U.u i (Pf x) = U.u i (Pf x') → ∃ (γ : GL (Fin r) E) (b : FD.Frame Ψ r), FD.IsUStab Gm (LinearMap.range φ) γ ∧ (∀ v, ∃ w, (γ : Matrix (Fin r) (Fin r) E) *ᵥ φ v = φ v + l.M • φ w) ∧ (∀ v, ∃ w, (γ : Matrix (Fin r) (Fin r) E) *ᵥ φ v = φ v + l.A • φ w) ∧ x' = FD.rmul (FD.lact γ x) b ∧ ∀ τ (a c : Fin r), (c : ℕ) < (U.Di i).q → (U.Di i).q ≤ (a : ℕ) → b τ a c = 0 := by
   classical

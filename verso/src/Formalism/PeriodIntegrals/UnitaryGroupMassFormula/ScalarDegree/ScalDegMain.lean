@@ -10,9 +10,9 @@ open MvPolynomial PI.ScalDeg
 open Classical in
 
 /- English proof (translation)
-Unfold `Finsupp.prod Finsupp.sum`. Repeatedly rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [pow_ite, pow_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_ite_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_fiber {T : Type} [Fintype T] {N : ℕ} (s : T → ℂ) (v : FrV T N →₀ ℕ) :
     (v.prod fun k n => s k.1 ^ n) =
@@ -37,7 +37,7 @@ theorem polD_eq {T : Type} {N N' : ℕ} (s : T → ℂ) (Q : MvPolynomial (FrV T
     (y' : T → Matrix (Fin N') (Fin N') ℂ) : polD s Q y' = aeval (gv s y') Q := rfl
 
 /- English proof (translation)
-Unfold `gv`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← C_mul, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gv_mul {T : Type} {N N' : ℕ} (s s' : T → ℂ) (y' : T → Matrix (Fin N') (Fin N') ℂ)
     (k : FrV T N) : gv (fun τ => s τ * s' τ) y' k = C (s k.1) * gv s' y' k := by
@@ -47,9 +47,9 @@ theorem gv_mul {T : Type} {N N' : ℕ} (s s' : T → ℂ) (y' : T → Matrix (Fi
   rw [← mul_assoc, ← C_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[polD_eq, polD_eq]`. Unfold `sclP`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Use `congr 2`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[gv_mul]`. Unfold `gv`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, aeval_C, aeval_X, algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -70,13 +70,11 @@ theorem part_two {T : Type} {N N' : ℕ} (s s' : T → ℂ) (Q : MvPolynomial (F
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[polD_eq, polD_eq]`. Use `conv_lhs => rw [MvPolynomial.as_sum Q]`. Use `conv_rhs => rw [MvPolynomial.as_sum Q]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[aeval_monomial, aeval_monomial]`. Establish `hg : (v.prod fun i k => gv (fun τ => s τ * s' τ) y' i ^ k) = C (v.prod fun i k => s i.1 ^ k) * v.prod fun i k => gv s' y' i ^ k`. Repeatedly rewrite using `[gv_mul, mul_pow]`. Rewrite using `[Finsupp.prod_mul]`. Use `congr 1`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[map_finsuppProd]`. Repeatedly rewrite using `[map_pow]`. Establish `hp : (v.prod fun i k => s i.1 ^ k) = ∏ τ, s τ ^ dg τ`. Rewrite using `[prod_fiber]`. Conclude with `Finset.prod_congr rfl fun τ _ => by rw [hQ v hv τ]`.
-
-Rewrite using `[hg, hp]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem part_one {T : Type} [Fintype T] {N N' : ℕ} (s s' : T → ℂ) (Q : MvPolynomial (FrV T N) ℂ)
     (dg : T → ℕ) (hQ : HomDeg Q dg) (y' : T → Matrix (Fin N') (Fin N') ℂ) :
@@ -101,7 +99,7 @@ theorem part_one {T : Type} [Fintype T] {N N' : ℕ} (s s' : T → ℂ) (Q : MvP
   ring
 
 /- English proof (translation)
-Introduce `T _ N N' s s' Q dg hQ y'`. Conclude with `⟨part_one s s' Q dg hQ y', part_two s s' Q y'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem scalDeg_main : PI.ScalDeg.ScalDeg := by
   intro T _ N N' s s' Q dg hQ y'

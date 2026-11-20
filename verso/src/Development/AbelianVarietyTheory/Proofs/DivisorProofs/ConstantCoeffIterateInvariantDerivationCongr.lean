@@ -13,9 +13,9 @@ namespace GlobalTheory.LawDer.IterateLocal
 open MvPowerSeries in
 set_option autoImplicit false in
 /- English proof (translation)
-Establish `hadd` using `(_root_.GlobalTheory.LawDer.Linear.invDer_linear R d μ hμ u).1`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro F G`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `succ m ih`. Introduce `F G`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, Function.iterate_succ_apply, ih]`. Use `congr 1`. Rewrite using `[sub_eq_iff_eq_add, ← hadd, sub_add_cancel]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 private lemma iterate_invDer_sub (R : Type) [CommRing R] (d : ℕ)
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : ∀ i, constantCoeff (μ i) = 0)
@@ -36,9 +36,9 @@ private lemma iterate_invDer_sub (R : Type) [CommRing R] (d : ℕ)
 open MvPowerSeries in
 set_option autoImplicit false in
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro H hH α hα; exact hH α (by simpa using hα)`. Consider the case `succ m ih`. Introduce `H hH α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.iterate_succ_apply]`. Use `ih _ (fun β hβ => ?_) α hα` and prove the remaining obligations. Conclude with `_root_.GlobalTheory.invDer_coeff_eq_zero_of_degree_lt R d μ hμ u H (N + m) (fun γ hγ => hH γ (by omega)) β hβ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma coeff_iterate_invDer_eq_zero_of_degree_lt (R : Type) [CommRing R] (d : ℕ)
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : ∀ i, constantCoeff (μ i) = 0)
@@ -60,7 +60,7 @@ open MvPowerSeries in
 set_option autoImplicit false in
 
 /- English proof (translation)
-Introduce `R _ d μ hμ u n F G hFG`. Rewrite using `[← sub_eq_zero, ← map_sub, iterate_invDer_sub R d μ hμ u, ← coeff_zero_eq_constantCoeff_apply]`. Use `coeff_iterate_invDer_eq_zero_of_degree_lt R d μ hμ u 1 n (F - G) (fun α hα => ?_) 0 (by simp)` and prove the remaining obligations. Rewrite using `[map_sub, hFG α (by omega), sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.LawDer.IterateLocal.constantCoeff_iterate_invDer_congr : ∀ (R : Type) [CommRing R] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R), (∀ i, constantCoeff (μ i) = 0) → ∀ (u : Fin d → R) (n : ℕ) (F G : MvPowerSeries (Fin d) R), (∀ α : Fin d →₀ ℕ, α.degree ≤ n → coeff α F = coeff α G) → constantCoeff ((_root_.GlobalTheory.LawDer.invDer μ u)^[n] F) = constantCoeff ((_root_.GlobalTheory.LawDer.invDer μ u)^[n] G) := by
   intro R _ d μ hμ u n F G hFG

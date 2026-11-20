@@ -7,9 +7,9 @@ open scoped TensorProduct Matrix nonZeroDivisors
 namespace GlobalTheory.AdIdem
 
 /- English proof (translation)
-Establish `h2 : (1 + 1 : K) = (1 + s) + (1 - s)` using `by ring`. Establish `h` using `w.map_add (1 + s) (1 - s)`. Rewrite `h` using `[← h2]`. Break down `le_total (w (1 - s)) (w (1 + s)) with hle | hle` into its components or cases. Use `⟨1, Or.inr rfl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[max_eq_left hle]`. Simplify using `using h`. Use `⟨0, Or.inl rfl, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[max_eq_right hle]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem local_val {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] (w : Valuation K Γ) (s : K) :
     ∃ e : K, (e = 0 ∨ e = 1) ∧ w (1 + 1) ≤ w (e * (1 + s) + (1 - e) * (1 - s)) := by
@@ -25,9 +25,9 @@ theorem local_val {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] (
     simpa using h
 
 /- English proof (translation)
-Distinguish the cases in `h : 1 + s = 0`. Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h'`. Apply `h2` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `h + h'`. Conclude with `⟨1, by simp, by simpa [isUnit_iff_ne_zero] using h⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components.
 -/
 theorem local_field {K : Type*} [Field K] (h2 : (1 + 1 : K) ≠ 0) (s : K) :
     ∃ e : K, e * e = e ∧ IsUnit (e * (1 + s) + (1 - e) * (1 - s)) := by
@@ -40,15 +40,13 @@ theorem local_field {K : Type*} [Field K] (h2 : (1 + 1 : K) ≠ 0) (s : K) :
   · exact ⟨1, by simp, by simpa [isUnit_iff_ne_zero] using h⟩
 
 /- English proof (translation)
-Establish `hu : IsUnit (1 + 1 : FiniteAdeleRing R K)`. Establish `: IsUnit (1 + 1 : K)`. Rewrite using `[isUnit_iff_ne_zero]`. Evaluate the numerical expressions. Simplify using `using this.map (algebraMap K (FiniteAdeleRing R K))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hu` using `[FiniteAdeleRing.isUnit_iff]`. Use `choose e he hv using fun v : HeightOneSpectrum R => local_val (Valued.v : Valuation (v.adicCompletion K) _) (s v)`. Establish `hint : ∀ v : HeightOneSpectrum R, e v ∈ v.adicCompletionIntegers K`. Introduce `v`. Apply the tactic sequence `rcases he v with h | h <;> rw [h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Conclude with `zero_mem _`. Conclude with `one_mem _`. Set `E : FiniteAdeleRing R K` to `⟨e, Filter.Eventually.of_forall hint⟩`. Use `⟨E, ?_, ?_⟩` and prove the remaining obligations. Use `FiniteAdeleRing.ext K fun v => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `e v * e v = e v`. Apply the tactic sequence `rcases he v with h | h <;> simp [h]`. Establish `hval : ∀ v : HeightOneSpectrum R, Valued.v ((1 + 1 : FiniteAdeleRing R K) v) ≤ Valued.v ((E * (1 + s) + (1 - E) * (1 - s)) v)` using `fun v => hv v`. Rewrite using `[FiniteAdeleRing.isUnit_iff]`. Use `⟨fun v h0 => ?_, ?_⟩` and prove the remaining obligations.
-
-Use `hval v` as an intermediate fact. Rewrite `this` using `[h0, map_zero, le_zero_iff, map_eq_zero]`. Conclude with `hu.1 v this`. Use `filter_upwards [hu.2, (E * (1 + s) + (1 - E) * (1 - s)).2] with v h1 h2`. Conclude with `le_antisymm h2 (h1 ▸ hval v)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_part (R K : Type*) [CommRing R] [IsDedekindDomain R] [Field K] [CharZero K] [Algebra R K]
     [IsFractionRing R K] (s : FiniteAdeleRing R K) :
@@ -81,9 +79,9 @@ theorem finite_part (R K : Type*) [CommRing R] [IsDedekindDomain R] [Field K] [C
       exact le_antisymm h2 (h1 ▸ hval v)
 
 /- English proof (translation)
-Establish `h2 : ∀ v : InfinitePlace K, (1 + 1 : v.Completion) ≠ 0`. Introduce `v h`. Establish `: algebraMap K v.Completion (1 + 1) = 0` using `by rw [map_add, map_one]; exact h`. Rewrite `this` using `[map_eq_zero]`. Evaluate the numerical expressions using `at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Use `choose e he hu using fun v : InfinitePlace K => local_field (h2 v) (s v)`. Conclude with `⟨e, funext he, Pi.isUnit_iff.2 hu⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem infinite_part (K : Type*) [Field K] [CharZero K] (s : InfiniteAdeleRing K) :
     ∃ e : InfiniteAdeleRing K, e * e = e ∧ IsUnit (e * (1 + s) + (1 - e) * (1 - s)) := by
@@ -96,7 +94,7 @@ theorem infinite_part (K : Type*) [Field K] [CharZero K] (s : InfiniteAdeleRing 
   exact ⟨e, funext he, Pi.isUnit_iff.2 hu⟩
 
 /- English proof (translation)
-Take `⟨e₁, h₁, u₁⟩` from `infinite_part F s.1`. Take `⟨e₂, h₂, u₂⟩` from `finite_part (𝓞 F) F s.2`. Conclude with `⟨(e₁, e₂), Prod.ext h₁ h₂, Prod.isUnit_iff.2 ⟨u₁, u₂⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_idem_isUnit (F : Type) [Field F] [NumberField F] (s : AdeleRing (𝓞 F) F) :
     ∃ e : AdeleRing (𝓞 F) F, e * e = e ∧ IsUnit (e * (1 + s) + (1 - e) * (1 - s)) := by

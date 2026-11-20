@@ -6,7 +6,7 @@ open scoped ContDiff ENNReal Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : LinearOrder m := LinearOrder.lift' f hf`. Conclude with `Matrix.det_of_upperTriangular (M := M) (fun i j hij => h hij)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem det_of_blockTriangular_injective {m α R : Type} [Fintype m] [DecidableEq m]
     [LinearOrder α] [CommRing R] (M : Matrix m m R) (f : m → α) (hf : Function.Injective f)
@@ -15,9 +15,9 @@ theorem det_of_blockTriangular_injective {m α R : Type} [Fintype m] [DecidableE
   exact Matrix.det_of_upperTriangular (M := M) (fun i j hij => h hij)
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_subtype (Finset.univ.filter fun p : Fin r × Fin r => p.2 < p.1) (by simp) (fun p => d p.1), Finset.prod_filter, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Simplify using `only [Finset.prod_const]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Fin.card_Iio a]`. Use `congr 1`. Use extensionality with `c`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prod_lowerPairs_fst {r : ℕ} (d : Fin r → ℂ) :
     ∏ p : {p : Fin r × Fin r // p.2 < p.1}, d p.1.1 = ∏ a, d a ^ (a : ℕ) := by
@@ -32,9 +32,9 @@ theorem prod_lowerPairs_fst {r : ℕ} (d : Fin r → ℂ) :
   ext c; simp
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_subtype (Finset.univ.filter fun p : Fin r × Fin r => p.2 < p.1) (by simp) (fun p => d p.2), Finset.prod_filter, Fintype.prod_prod_type_right]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Simplify using `only [Finset.prod_const]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Fin.card_Ioi a]`. Use `congr 1`. Use extensionality with `c`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prod_lowerPairs_snd {r : ℕ} (d : Fin r → ℂ) :
     ∏ p : {p : Fin r × Fin r // p.2 < p.1}, d p.1.2 = ∏ a, d a ^ (r - 1 - (a : ℕ)) := by
@@ -49,19 +49,19 @@ theorem prod_lowerPairs_snd {r : ℕ} (d : Fin r → ℂ) :
   ext c; simp
 
 /- English proof (translation)
-Introduce `r B hdet htri`. Establish `hu : IsUnit B.det` using `isUnit_iff_ne_zero.mpr hdet`. Use `letI : Invertible B := Matrix.invertibleOfIsUnitDet B hu`. Establish `hB : B.BlockTriangular id` using `fun a c h => htri a c h`. Establish `hBi : B⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiag : ∀ a, B a a * B⁻¹ a a = 1`. Introduce `a`. Establish `h1 : (B * B⁻¹) a a = 1` using `by rw [Matrix.mul_nonsing_inv B hu]; simp`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Conclude with `h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with h | h` into its components or cases. Rewrite using `[htri a c h, zero_mul]`. Rewrite using `[hBi (i := c) (j := a) h, mul_zero]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne : ∀ a, B a a ≠ 0` using `fun a => left_ne_zero_of_mul_eq_one (hdiag a)`. Establish `hinv : ∀ a, B⁻¹ a a = (B a a)⁻¹` using `fun a => eq_inv_of_mul_eq_one_right (hdiag a)`. Rewrite using `[det_of_blockTriangular_injective _ (fun p : {p : Fin r × Fin r // p.2 < p.1} => toLex (p.1.1, OrderDual.toDual p.1.2))]`. Simplify using `only [Matrix.of_apply, hinv]`. Rewrite using `[Finset.prod_mul_distrib, prod_lowerPairs_fst (fun a => B a a), prod_lowerPairs_snd (fun a => (B a a)⁻¹), ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[inv_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_neg, ← zpow_add₀ (hne a)]`. Use `congr 1`. Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p q h`. Establish `h'` using `toLex.injective h`. Simplify using `only [Prod.mk.injEq, EmbeddingLike.apply_eq_iff_eq] at h'`. Conclude with `Subtype.ext (Prod.ext h'.1 h'.2)`. Introduce `p q h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [Prod.Lex.toLex_lt_toLex, OrderDual.toDual_lt_toDual] at h`. Break down `h with h | ⟨_, h⟩` into its components or cases. Simplify using `[htri _ _ h]`. Simplify using `[hBi (i := q.1.2) (j := p.1.2) h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_conj_strictLower : (∀ (r : ℕ) (B : Matrix (Fin r) (Fin r) ℂ), B.det ≠ 0 → (∀ a c : Fin r, c < a → B a c = 0) → (Matrix.of fun p q : {p : Fin r × Fin r // p.2 < p.1} => B p.1.1 q.1.1 * B⁻¹ q.1.2 p.1.2).det = ∏ a : Fin r, B a a ^ (2 * (a : ℤ) - ((r : ℤ) - 1))) := by
   intro r B hdet htri

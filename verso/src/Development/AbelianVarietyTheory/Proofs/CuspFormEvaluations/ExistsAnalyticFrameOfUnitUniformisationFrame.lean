@@ -18,15 +18,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnVal
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U k x W Wu`. Set `_ : Algebra c.F ℂ` to `σ.toAlgebra`. Establish `hAH : AHFrame W.F (W.ik k) W.Pm Wu.Hm Wu.χl Wu.fr`. Use `⟨Wu.herm, Wu.pos, Wu.c1, Wu.c2, Wu.c3, Wu.c4, ?_, Wu.c6⟩` and prove the remaining obligations. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← W.pt]`. Conclude with `Wu.c5 j hj`. Take `⟨Φ, hO, hH, hχ, hfr, hlin, hlev⟩` from `GlobalTheory.T.analyticFrame_of_appellHumbertFramePeriodFamily E H Dw l Xo c (U.un k x) W.g (fun j => relab c σ (W.e j).1) W.e _ W.F (W.ik k) W.Pm Wu.Hm Wu.χl Wu.fr W.per W.pt hAH (fun ℓ => W.der ℓ.1 ℓ.2)`. Establish `hRd : ∀ kk F θ, Φ.toAnFr.Rd kk F θ ↔ IsFrRd W Wu kk F θ`. Introduce `kk F θ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `AnFr.Rd IsFrRd`. Prove the components needed by the constructor for the conclusion. Introduce `h j z pt h1 h2 h3`. Rewrite `h1`, `h3` using `[← hO.1 z]`. Rewrite using `[← hfr]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h j z pt h1 h2 h3`. Introduce `h j z pt h1 h2 h3`. Rewrite `h1`, `h3` using `[hO.1 z]`. Rewrite using `[hfr]`. Conclude with `h j z pt h1 h2 h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Φ, hO, hH, hχ, hfr, ?_, hRd, hlin, hlev⟩` and prove the remaining obligations. Use `(hRd _ _ _).2 ?_` and prove the remaining obligations. Introduce `j z pt h1 h2 h3`. Rewrite using `[zpow_one]`. Conclude with `Wu.c7 j z pt h1 h2 h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_anPt_of_unitAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (k : U.Comp) (x : (U.X k).dom) (W : UnfAt U k x) (Wu : UnitAt W), letI : Algebra c.F ℂ := σ.toAlgebra; ∃ Φ : AnPt (Xo := Xo) (c := c) (U.un k x) W.g (fun j => relab c σ (W.e j).1) W.e, Φ.OfFam W.F (W.ik k) W.Pm ∧ Φ.Hm = Wu.Hm ∧ Φ.χ = Wu.χl ∧ Φ.fr = Wu.fr ∧ Φ.toAnFr.Rd 1 (U.un k x).s Wu.θ ∧ (∀ kk F θ, Φ.toAnFr.Rd kk F θ ↔ IsFrRd W Wu kk F θ) ∧ (∀ (α : 𝓞 E) a, W.Pm (W.F.t (W.ik k) (α • a)) = tyAct (fun j => relab c σ (W.e j).1) α (W.Pm (W.F.t (W.ik k) a))) ∧ ∀ a ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La), levPt Xo (U.un k x).x a = Φ.e ((l.M : ℂ)⁻¹ • W.Pm (W.F.t (W.ik k) a)) := by
   intro E _ _ _ H Dw l Xo c σ r U k x W Wu

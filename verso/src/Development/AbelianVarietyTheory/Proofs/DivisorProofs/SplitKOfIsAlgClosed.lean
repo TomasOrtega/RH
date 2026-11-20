@@ -39,7 +39,7 @@ def pairDet {R J : Type} [CommRing R] {g m k : ℕ} (h : J → Fin g → R) (a :
   (Matrix.of fun r l : Fin k => ∑ i, h (σ r) i * a (Fin.castLE hk l) i).det
 
 /- English proof (translation)
-Rewrite using `[pairDet, RingHom.map_det]`. Use `congr 1`. Use extensionality with `r l`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_pairDet {R S J : Type} [CommRing R] [CommRing S] (φ : R →+* S) {g m k : ℕ} (h : J → Fin g → R)
     (a : Fin m → Fin g → R) (hk : k ≤ m) (σ : Fin k → J) :
@@ -82,9 +82,9 @@ def CharFam {S : Scheme.{0}} (ρ : S ⟶ X) (p : ℕ) [Fact p.Prime] (n : ℕ) :
           ∀ j, DlogIs t p n (c j y) (fun i => spMap (dualMap x) ≫ e i) (fun i => x (h j i))
 
 /- English proof (translation)
-Introduce `Ω _ io w hw`. Set `ε` to `(FractionRing.algEquiv K K).toRingEquiv`. Establish `: IsAlgClosed (FractionRing K)` using `IsAlgClosed.of_ringEquiv K _ ε.symm`. Establish `e : (io.comp ε.toRingHom).comp (algebraMap K (FractionRing K)) = io` using `RingHom.ext fun a => congrArg io ((FractionRing.algEquiv K K).commutes a)`. Establish `h` using `splitTors_of_isAlgClosed E H X t K ξ q hq Ω (io.comp ε.toRingHom)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Take `⟨w₀, h₀⟩` from `h w hw`. Use `⟨spMap ε.toRingHom ≫ w₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← h₀, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem splitK_of_isAlgClosed [IsLocallyNoetherian X] {K : Type} [Field K] [IsAlgClosed K] (ξ : Sp K ⟶ X) {q : ℕ}
     (hq : q ≠ 0) : SplitK t ξ q := by

@@ -7,9 +7,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.LemK
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hle : genSub E V ≤ LinearMap.ker (A - c • (1 : Module.End ℂ M))`. Use `sInf_le ⟨fun v hv => ?_, fun a b v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, hV v hv, sub_self]`. Rewrite `hv`, the goal using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← (hA a b).eq, Module.End.mul_apply, sub_eq_zero.1 hv, map_smul, sub_self]`. Establish `hy'` using `hle hy`. Rewrite `hy'` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `hy'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalar_genSub {M : Type*} [AddCommGroup M] [Module ℂ M] {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M)
     (A : Module.End ℂ M) (hA : ∀ a b, Commute (E a b) A) (c : ℂ) (V : Submodule ℂ M)
@@ -28,7 +28,7 @@ theorem scalar_genSub {M : Type*} [AddCommGroup M] [Module ℂ M] {n : ℕ} (E :
   exact hy'
 
 /- English proof (translation)
-Introduce `ε lam h H _ _ _ σ D E V hσ hD hV hcas hVK hint hanti hgap hp hq f hf`. Establish `hcV : ∀ ω : ℂ, ∀ y ∈ V, Capelli.capelliC E ω y = (∏ t, (ω + ((thV lam t : ℝ) : ℂ))) • y` using `fun ω y hy => hcV_of_centralChar n hCC ε lam h H σ D E V hσ hD hV hcas hVK hint hanti hgap hp hq ω y hy`. Conclude with `prodShift_eeV_of_capelli' E hD.glRep (thV lam) (genSub E V) (fun ω => scalar_genSub E _ (fun a b => Capelli.capelliC_central E hD.glRep ω a b) _ V (hcV ω)) f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem standardKType_of_centralChar (n : ℕ) (hCC : CentralCharStatement n) : LowestKTypeEulerTensorStandard n := by
   intro ε lam h H _ _ _ σ D E V hσ hD hV hcas hVK hint hanti hgap hp hq f hf

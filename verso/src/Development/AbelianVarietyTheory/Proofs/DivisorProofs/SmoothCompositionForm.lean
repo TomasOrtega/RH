@@ -8,11 +8,11 @@ open scoped Classical
 namespace GlobalTheory.SmoothComp
 
 /- English proof (translation)
-Introduce `M _ n A f s G hf hfs hs hfs' hG`. Establish `hcont : Continuous (fun y => G (f y))` using `hG.continuousOn.comp_continuous hf hfs'`. Establish `hsm : A.SmoothOn Set.univ (fun y => (G (f y) : ℂ))`. Introduce `i`. Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (f ∘ (A.e i).symm) ((A.e i).target ∩ (A.e i).symm ⁻¹' Set.univ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(Complex.reCLM.contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞))).comp_contDiffOn (hfs i)` as an intermediate fact. Use `this.congr fun v _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h2 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (G ∘ (f ∘ (A.e i).symm)) ((A.e i).target ∩ (A.e i).symm ⁻¹' Set.univ)` using `hG.comp h1 fun v _ => hfs' _`. Establish `h3` using `(Complex.ofRealCLM.contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞))).comp_contDiffOn h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h3.congr fun v _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `⟨hcont, hsm, A.isForm_fn hsm⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem smooth_comp : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n) (f : M → ℝ) (s : Set ℝ) (G : ℝ → ℝ), Continuous f → A.SmoothOn Set.univ (fun y => (f y : ℂ)) →
     IsOpen s → (∀ y, f y ∈ s) → ContDiffOn ℝ (⊤ : ℕ∞) G s →

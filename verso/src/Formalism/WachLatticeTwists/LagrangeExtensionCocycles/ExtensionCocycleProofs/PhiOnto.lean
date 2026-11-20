@@ -8,25 +8,23 @@ namespace Formalism.RepresentationBoundsCohomology.N2
 open Formalism.CoboundaryTransfers
 
 /- English proof (translation)
-Introduce `O A _ _ _ B M D _ _ _ _ W I _ k b hk hMb hQI hφI n hn`. Take `⟨v, hv⟩` from `hk`. Take `⟨d, hd⟩ : ∃ d, k * b = M + 1 + d` from `⟨k * b - (M + 1), by omega⟩`. Establish `hmem : ∀ x : W.N, (B.Q * (B.Q ^ d * v ^ b)) • (B.Q ^ M • W.φ (x : D)) ∈ W.N` using `fun x => W.N.smul_mem _ (W.φ_N x x.2)`. Set `g : W.N →+ W.N` to `{ toFun := fun x => ⟨_, hmem x⟩ map_zero' := by ext; simp map_add' := fun x y => by ext; simp [smul_add] }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg : ∀ x : W.N, W.φ (B.X ^ b • (x : D)) = B.X ^ b • ((g x : W.N) : D)`. Introduce `x`. Use `show _ = B.X ^ b • ((B.Q * (B.Q ^ d * v ^ b)) • (B.Q ^ M • W.φ (x : D)))`. Rewrite using `[W.φ_smul, map_pow, hv, smul_smul, smul_smul]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, mul_pow, ← pow_mul, hd]`. Expand and normalize the polynomial expressions, which then agree. Establish `hφpow : ∀ (j : ℕ) (r : A), r ∈ I ^ j → B.φ r ∈ I ^ j`. Introduce `j r hr`. Establish `h1 : Ideal.map (B.φ : A →+* A) I ≤ I` using `Ideal.map_le_iff_le_comap.2 (fun a ha => hφI a ha)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (B.φ : A →+* A) r ∈ Ideal.map (B.φ : A →+* A) (I ^ j)` using `Ideal.mem_map_of_mem _ hr`. Rewrite `h2` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 j h2`. Establish `hcontr : ∀ j : ℕ, ∀ x ∈ (I ^ j • ⊤ : Submodule A W.N), g x ∈ (I ^ (j + 1) • ⊤ : Submodule A W.N)`. Introduce `j x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `r hr m _`. Establish `e : g (r • m) = (B.φ r * B.Q) • (⟨(B.Q ^ d * v ^ b) • (B.Q ^ M • W.φ (m : D)), W.N.smul_mem _ (W.φ_N m m.2)⟩ : W.N)`. Use `ext`. Use `show (B.Q * (B.Q ^ d * v ^ b)) • (B.Q ^ M • W.φ (r • (m : D))) = _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[W.φ_smul]`. Simplify using `only [SetLike.mk_smul_mk, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul (hφpow j r hr) hQI`. Introduce `x y hx hy`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ hx hy`. Establish `hbij` using `_root_.subIdBijectiveOfContracting_holds A W.N I g hcontr`. Take `⟨z, hz⟩` from `hbij.2 (-(⟨n, hn⟩ : W.N))`. Use `⟨z, z.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hg z, ← smul_sub]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congr 1`. Establish `: ((g z - z : W.N) : D) = -n`. Use `congrArg (fun t : W.N => (t : D)) hz` as an intermediate fact. Simplify using `using this`. Establish `h3 : ((g z : W.N) : D) - (z : D) = -n` using `by simpa using this`.
-
-Rewrite using `[← neg_sub, h3, neg_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_map_surjective : StatPhiOnto := by
   intro O A _ _ _ B M D _ _ _ _ W I _ k b hk hMb hQI hφI n hn

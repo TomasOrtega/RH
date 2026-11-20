@@ -7,9 +7,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.Mem.Full
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NatMulIntegerMultiple.main`. Consider the case `exact _root_.GlobalTheory.NatMulIntegerMultiple.main`. Consider the case `(apply _root_.GlobalTheory.NatMulIntegerMultiple.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatMulIntegerMultiple.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NatMulIntegerMultiple.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatMulIntegerMultiple.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem_of_span {K V : Type*} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] (L : Submodule (𝓞 K) V) (x : V) (hx : x ∈ Submodule.span K (L : Set V)) :
@@ -23,9 +23,9 @@ theorem exists_nsmul_mem_of_span {K V : Type*} [Field K] [NumberField K] [AddCom
   | (intros; exact _root_.GlobalTheory.NatMulIntegerMultiple.main ..)
 
 /- English proof (translation)
-Introduce `D`. Use `⟨fun u => (D.mem u).C.DGam_pos, fun u x => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, h⟩` from `exists_nsmul_mem_of_span ((D.fm u).lat 0).L (D.nuIn u x) (by rw [((D.fm u).lat_good 0).2.2]; trivial)`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Use `show D.nuIn u (n • x) ∈ ((D.fm u).lat 0).L`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_nsmul]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem dgam_pos_and_full : ∀ D : D7, (∀ u, 0 < (D.mem u).C.DGam) ∧
     ∀ u (x : (D.div.Nu u).V), ∃ n : ℕ, n ≠ 0 ∧ n • x ∈ DV.MramL D u := by

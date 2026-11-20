@@ -15,9 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ Z L hL Y _ _ K _ φ ε s`. Establish `: CompactSpace Y.left` using `QuasiCompact.compactSpace_of_compactSpace Y.hom`. Establish `: QuasiSeparatedSpace Y.left` using `quasiSeparatedSpace_of_quasiSeparated Y.hom`. Establish `H : IsPullback (snd (TK V) Y).left (fst (TK V) Y).left Y.hom (Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V))))` using `(IsPullback.of_hasPullback (TK V).hom Y.hom).flip`. Take `⟨t, ht, σ, hσ⟩` from `TwistLoc.exists_clear_denominator (nonZeroDivisors V) H hL φ ε s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨t, nonZeroDivisors.ne_zero ht, σ, fun T ρ z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[sval_of σ (ρ ≫ (snd (TK V) Y).left) z J (fun k => J (ρ ≫ (snd (TK V) Y).left ≫ φ k)) (fun k => by rw [Category.assoc])]`. Use `(hσ T ρ z _ (hJ.mem (fun k => (snd (TK V) Y).left ≫ φ k) ρ)).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Rewrite using `[Over.w (snd (TK V) Y)]`. Conclude with `(gs_pull ρ (TK V ⊗ Y).hom z ⊤ trivial _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_generic_fibre : ∀ (V : Type) [CommRing V] [IsDomain V] (Z : Scheme.{0}) (L : LB Z), L.IsLB → ∀ (Y : Over (Spec (CommRingCat.of V))) [QuasiCompact Y.hom] [IsSeparated Y.hom] (K : Type) [Fintype K] (φ : K → (Y.left ⟶ Z)) (ε : K → ℤ) (s : LB.Sec (LB.LinComb L (fun k => (snd (TK V) Y).left ≫ φ k) ε)), ∃ (r : V) (_ : r ≠ 0) (σ : LB.Sec (LB.LinComb L φ ε)), ∀ (T : Scheme.{0}) (ρ : T ⟶ (TK V ⊗ Y).left) (z : T) (J), Good L z J → sval σ (ρ ≫ (snd (TK V) Y).left) z J = gs ρ z ⊤ (scal (TK V ⊗ Y).hom r) * sval s ρ z J := by
   intro V _ _ Z L hL Y _ _ K _ φ ε s

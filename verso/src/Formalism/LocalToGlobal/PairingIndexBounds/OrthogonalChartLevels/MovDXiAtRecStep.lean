@@ -29,9 +29,9 @@ def RdAway {D : D7} {u : D.what₂.Word} {μ : D.what₂.Tup} {X : Fields} (p : 
   ∃ S₀ : Finset ℕ, p ∉ S₀ ∧ ∀ i c c' x, IntOff S₀ (rd.Xi i c c' x)
 
 /- English proof (translation)
-Use `⟨zero_mem _, fun p _ lam _ => ?_⟩` and prove the remaining obligations. Unfold `TaylorLogMetric.lamC`. Use `split_ifs with h`. Establish `e : (⟨0, h⟩ : TaylorLogMetric.Qbar) = 0` using `rfl`. Rewrite using `[e, map_zero, norm_zero]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_le_one`. Rewrite using `[norm_zero]`. Conclude with `zero_le_one`.
+A detailed English derivation is pending.
 -/
 theorem intOff_zero (S : Finset ℕ) : IntOff S 0 := by
   refine ⟨zero_mem _, fun p _ lam _ => ?_⟩
@@ -69,9 +69,9 @@ def xiAt0 : ∀ j, (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt j → (sys
     else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `movD xiAt0`. Rewrite using `[dif_pos hr]`. Use `congr 2`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y`. Simplify using `[inFr]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem movD_xiAt0 (j : ℕ) (La : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt j) (La' : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt (j + 1))
     (hr : ((sysAt Ch std vp unif eO eO_spec dG dG_spec om).Pj j).m + 1 = D.R.N j ∧ ((sysAt Ch std vp unif eO eO_spec dG dG_spec om).Pj (j + 1)).m + 1 = D.R.N (j + 1)) :
@@ -88,14 +88,14 @@ theorem movD_xiAt0 (j : ℕ) (La : (sysAt Ch std vp unif eO eO_spec dG dG_spec o
 include I L0 in
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => by exact L0.A.rk | i + 1, hi, La => by exact ((I.at' i hi).st.loc ((I.at' i hi).st.eC.symm La.1).1).rk`.
+A detailed English derivation is pending.
 -/
 theorem rankAt : ∀ j, j ≤ D.R.m → (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt j → ((sysAt Ch std vp unif eO eO_spec dG dG_spec om).Pj j).m + 1 = D.R.N j
   | 0, _, _ => by exact L0.A.rk
   | i + 1, hi, La => by exact ((I.at' i hi).st.loc ((I.at' i hi).st.eC.symm La.1).1).rk
 
 /- English proof (translation)
-The claim follows from `movD_xiAt0 Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad s rd cls j La La' ⟨rankAt Ch std vp unif eO eO_spec dG dG_spec om I L0 j (by omega) La, rankAt Ch std vp unif eO eO_spec dG dG_spec om I L0 (j + 1) hj La'⟩`.
+A detailed English derivation is pending.
 -/
 theorem movD_xiAt0_step (j : ℕ) (hj : j + 1 ≤ D.R.m) (La : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt j) (La' : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt (j + 1)) :
     movD (xiAt0 Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad s rd cls j La La') ((fdAtL Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad).trG j La) ((fdAtL Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad).trG (j + 1) La') =
@@ -104,9 +104,7 @@ theorem movD_xiAt0_step (j : ℕ) (hj : j + 1 ≤ D.R.m) (La : (sysAt Ch std vp 
   movD_xiAt0 Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad s rd cls j La La' ⟨rankAt Ch std vp unif eO eO_spec dG dG_spec om I L0 j (by omega) La, rankAt Ch std vp unif eO eO_spec dG dG_spec om I L0 (j + 1) hj La'⟩
 
 /- English proof (translation)
-Take `⟨S₀, hp, hS⟩` from `H`. Use `⟨S₀, hp, fun j La La' y => ?_⟩` and prove the remaining obligations. Unfold `xiAt0`. Use `split_ifs`. Conclude with `hS _ _ _ _`.
-
-Conclude with `intOff_zero S₀`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem xiAway_xiAt0 (H : RdAway (D.what₂.places.resChar w) rd) :
     Formalism.L2.KerInert.RepRec.XiAway (sysAt Ch std vp unif eO eO_spec dG dG_spec om) D (xiAt0 Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad s rd cls) := by
@@ -118,7 +116,7 @@ theorem xiAway_xiAt0 (H : RdAway (D.what₂.places.resChar w) rd) :
   · exact intOff_zero S₀
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hcl, xiAway_xiAt0 Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad s rd cls H⟩`.
+Supply the required witnesses or components.
 -/
 theorem dataAway_xiAt0 (cl : ℕ) (hcl : Formalism.L2.KerInert.RepRec.ClAway (D.what₂.places.resChar w) cl)
     (H : RdAway (D.what₂.places.resChar w) rd) :
@@ -161,7 +159,7 @@ def xiAtRec : ∀ j, (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt j → (s
   xiAt0 Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad t.seam (t.rd u μ) KA.cls
 
 /- English proof (translation)
-The claim follows from `movD_xiAt0_step Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad t.seam (t.rd u μ) KA.cls j hj La La'`.
+A detailed English derivation is pending.
 -/
 theorem movD_xiAtRec_step (j : ℕ) (hj : j + 1 ≤ D.R.m) (La : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt j) (La' : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt (j + 1)) :
     movD (xiAtRec Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad t KA j La La') ((fdAtL Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad).trG j La) ((fdAtL Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad).trG (j + 1) La') =
@@ -170,7 +168,7 @@ theorem movD_xiAtRec_step (j : ℕ) (hj : j + 1 ≤ D.R.m) (La : (sysAt Ch std v
   movD_xiAt0_step Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad t.seam (t.rd u μ) KA.cls j hj La La'
 
 /- English proof (translation)
-The claim follows from `dataAway_xiAt0 Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad t.seam (t.rd u μ) KA.cls cl hcl H`.
+A detailed English derivation is pending.
 -/
 theorem dataAway_xiAtRec (cl : ℕ) (hcl : Formalism.L2.KerInert.RepRec.ClAway (D.what₂.places.resChar w) cl)
     (H : RdAway (D.what₂.places.resChar w) (t.rd u μ)) :

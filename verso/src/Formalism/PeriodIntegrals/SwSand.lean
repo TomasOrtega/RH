@@ -35,7 +35,7 @@ def dg (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℕ :=
 def Fil (p : ℕ) (X : Mat k r) : Prop := ∀ i j, dg k r j < dg k r i + p → X i j = 0
 
 /- English proof (translation)
-Unfold `PI.SwSand.Fil at hX hY ⊢`. Introduce `i j h`. Rewrite using `[Matrix.add_apply, hX i j h, hY i j h, add_zero]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Fil.add {p : ℕ} {X Y : Mat k r} (hX : Fil p X) (hY : Fil p Y) : Fil p (X + Y) := by
   unfold PI.SwSand.Fil at hX hY ⊢
@@ -43,7 +43,7 @@ theorem Fil.add {p : ℕ} {X Y : Mat k r} (hX : Fil p X) (hY : Fil p Y) : Fil p 
   rw [Matrix.add_apply, hX i j h, hY i j h, add_zero]
 
 /- English proof (translation)
-Unfold `PI.SwSand.Fil at hX ⊢`. Introduce `i j h`. Rewrite using `[Matrix.smul_apply, hX i j h, smul_zero]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Fil.smul {p : ℕ} {X : Mat k r} (c : ℂ) (hX : Fil p X) : Fil p (c • X) := by
   unfold PI.SwSand.Fil at hX ⊢
@@ -51,7 +51,7 @@ theorem Fil.smul {p : ℕ} {X : Mat k r} (c : ℂ) (hX : Fil p X) : Fil p (c •
   rw [Matrix.smul_apply, hX i j h, smul_zero]
 
 /- English proof (translation)
-Unfold `PI.SwSand.Fil`. Introduce `i j _`. Conclude with `Matrix.zero_apply i j`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Fil.zero (p : ℕ) : Fil p (0 : Mat k r) := by
   unfold PI.SwSand.Fil
@@ -61,13 +61,13 @@ theorem Fil.zero (p : ℕ) : Fil p (0 : Mat k r) := by
 def adjH (X : Mat k r) : Mat k r := Hpk k r * Xᴴ * Hpk k r
 
 /- English proof (translation)
-Simplify using `only [adjH, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adjH_add (X Y : Mat k r) : adjH (X + Y) = adjH X + adjH Y := by
   simp only [adjH, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Simplify using `only [adjH, Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adjH_smul (c : ℂ) (X : Mat k r) : adjH (c • X) = star c • adjH X := by
   simp only [adjH, Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]
@@ -75,7 +75,7 @@ theorem adjH_smul (c : ℂ) (X : Mat k r) : adjH (c • X) = star c • adjH X :
 def lieN (k r : ℕ) : Set (Mat k r) := {X | Fil 1 X ∧ adjH X + X = 0}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hX`. Use `show Fil 1 ((t : ℂ) • X) ∧ adjH ((t : ℂ) • X) + (t : ℂ) • X = 0`. Use `⟨h1.smul _, ?_⟩` and prove the remaining obligations. Rewrite using `[adjH_smul, Complex.star_def, Complex.conj_ofReal, ← smul_add, h2, smul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieN_smul {X : Mat k r} (hX : X ∈ lieN k r) (t : ℝ) : ((t : ℂ) • X) ∈ lieN k r := by
   obtain ⟨h1, h2⟩ := hX
@@ -84,7 +84,7 @@ theorem lieN_smul {X : Mat k r} (hX : X ∈ lieN k r) (t : ℝ) : ((t : ℂ) •
   rw [adjH_smul, Complex.star_def, Complex.conj_ofReal, ← smul_add, h2, smul_zero]
 
 /- English proof (translation)
-Take `⟨hX1, hX2⟩` from `hX`. Take `⟨hY1, hY2⟩` from `hY`. Use `show Fil 1 (X + Y) ∧ adjH (X + Y) + (X + Y) = 0`. Use `⟨hX1.add hY1, ?_⟩` and prove the remaining obligations. Rewrite using `[adjH_add, add_add_add_comm, hX2, hY2, add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieN_add {X Y : Mat k r} (hX : X ∈ lieN k r) (hY : Y ∈ lieN k r) : X + Y ∈ lieN k r := by
   obtain ⟨hX1, hX2⟩ := hX
@@ -94,7 +94,7 @@ theorem lieN_add {X Y : Mat k r} (hX : X ∈ lieN k r) (hY : Y ∈ lieN k r) : X
   rw [adjH_add, add_add_add_comm, hX2, hY2, add_zero]
 
 /- English proof (translation)
-Use `show Fil 1 (0 : PI.SwBig.Mat k r) ∧ adjH (0 : PI.SwBig.Mat k r) + 0 = 0`. Conclude with `⟨PI.SwSand.Fil.zero 1, by simp [adjH]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem zero_mem_lieN : (0 : Mat k r) ∈ lieN k r := by
   show Fil 1 (0 : PI.SwBig.Mat k r) ∧ adjH (0 : PI.SwBig.Mat k r) + 0 = 0

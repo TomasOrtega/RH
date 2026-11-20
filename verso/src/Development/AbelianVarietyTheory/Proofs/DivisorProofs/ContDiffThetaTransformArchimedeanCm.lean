@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.ThetaSmoothF
 
 /- English proof (translation)
-Take `⟨-, ⟨θ, hθ⟩, hall⟩` from `h`. Establish `hform` using `hall θ hθ`. Use `set e := InfiniteAdeleRing.ringEquiv_mixedSpace F`. Set `c : ℂ` to `2 * Real.pi * Complex.I * ((-1 : ℤ) : ℂ)`. Set `g : mixedEmbedding.mixedSpace F →+ ℂ` to `{ toFun := fun m => c * ∑ ρ, θ ρ (e.symm m ⊗ₜ[F] (1 : E)) map_zero' := by simp map_add' := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Simplify using `[TensorProduct.add_tmul, Finset.sum_add_distrib, mul_add] }`. Establish `hg : Continuous g` using `by show Continuous fun m => c * ∑ ρ, θ ρ (e.symm m ⊗ₜ[F] (1 : E))`. Use `continuous_const.mul (continuous_finset_sum _ fun ρ _ => ?_)` and prove the remaining obligations. Conclude with `(hθ ρ).2.comp (GlobalTheory.PsiInfLinear.continuous_ringEquiv_mixedSpace_symm F)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨AddMonoidHom.toRealLinearMap g hg, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hform x]`. Use `congr 1`. Use `show _ = c * ∑ ρ, θ ρ (e.symm (e x) ⊗ₜ[F] (1 : E))`. Rewrite using `[e.symm_apply_apply]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiInf_eq_exp_linearF {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {Tau : Type} [Fintype Tau] (tauE : Tau → (E →+* ℂ)) (ψ : AddChar (AF F) ℂ) (h : IsStdCharF tauE ψ (-1)) :
@@ -48,23 +48,19 @@ theorem psiInf_eq_exp_linearF {F E : Type} [Field F] [NumberField F] [Field E] [
   rw [e.symm_apply_apply]
 
 /- English proof (translation)
-Establish `hε : ∀ t, (pairA F 0 1) • L t = 0`. Introduce `t`. Use extensionality with `i j`. Establish `h0 : finPartF F E (L t i j) = 0` using `congrFun (congrFun (hfin t) i) j`. Rewrite using `[Matrix.smul_apply, GlobalTheory.RealDirCoord.eps_smul_gen]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `LinearMap.rTensor E (LinearMap.inr F (Ainf F) (Af F)) (finPartF F E (L t i j)) = 0`. Rewrite using `[h0, LinearMap.map_zero]`. Establish `hsnd : ∀ t i, ((e (L t)).1 i).2 = 0 ∧ ((e (L t)).2 i).2 = 0`. Introduce `t i`. Establish `h` using `congrArg e (hε t)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[LinearEquiv.map_smul, LinearEquiv.map_zero]`. Establish `h1` using `congrArg Prod.snd (congrFun (congrArg Prod.fst h) i)`. Establish `h2` using `congrArg Prod.snd (congrFun (congrArg Prod.snd h) i)`. Conclude with `⟨(GlobalTheory.RealDirCoord.eps_mul_snd _).symm.trans h1, (GlobalTheory.RealDirCoord.eps_mul_snd _).symm.trans h2⟩`. Establish `he : Continuous e` using `by haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩ haveI : IsModuleTopology (AF F) (WOF F E nS nT) := inferInstanceAs (IsModuleTopology (AF F) (Fin _ → Fin _ → AF F ⊗[F] E))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `hc : ∀ (p : ((κ → AF F) × (κ → AF F)) → (κ → AF F)), Continuous p → (∀ x y, p (x + y) = p x + p y) → ∃ P : (Fin k → ℝ) →L[ℝ] (κ → mixedEmbedding.mixedSpace F), ∀ t i, P t i = InfiniteAdeleRing.ringEquiv_mixedSpace F (p (e (L t)) i).1`. Introduce `p hp hadd`. Set `f : (Fin k → ℝ) →+ (κ → mixedEmbedding.mixedSpace F)` to `{ toFun := fun t i => InfiniteAdeleRing.ringEquiv_mixedSpace F (p (e (L t)) i).1 map_zero' := by`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h0 : p 0 = 0` using `by simpa using hadd 0 0`. Rewrite using `[map_zero, LinearEquiv.map_zero, h0]`. Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Use the proof step `map_add' := by`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[map_add, LinearEquiv.map_add, hadd]`. Conclude with `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) _ _ }`. Establish `hf : Continuous f`. Use `continuous_pi fun i => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.RealDirCoord.continuous_ringEquiv_mixed F).comp (continuous_fst.comp ((continuous_apply i).comp (hp.comp (he.comp hL))))`. Conclude with `⟨f.toRealLinearMap hf, fun t i => rfl⟩`. Take `⟨P, hP⟩` from `hc Prod.fst continuous_fst (fun _ _ => rfl)`. Take `⟨Q, hQ⟩` from `hc Prod.snd continuous_snd (fun _ _ => rfl)`. Use `⟨P, Q, fun t => ?_⟩` and prove the remaining obligations.
-
-Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations. Use `show (e (L t)).1 i = ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (P t i), 0)`. Rewrite using `[hP, RingEquiv.symm_apply_apply]`. Conclude with `Prod.ext rfl (hsnd t i).1`. Use `show (e (L t)).2 i = ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (Q t i), 0)`.
-
-Rewrite using `[hQ, RingEquiv.symm_apply_apply]`. Conclude with `Prod.ext rfl (hsnd t i).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem darboux_real_coordsF {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (nS nT : ℕ) (κ : Type) [Fintype κ] (e : WOF F E nS nT ≃ₗ[AF F] (κ → AF F) × (κ → AF F)) (k : ℕ)
@@ -127,67 +123,63 @@ theorem darboux_real_coordsF {F E : Type} [Field F] [NumberField F] [Field E] [N
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B0' hgood hψ nS nT JS JT hJS hJT ξ₀ hξ₀ hσξ JA JB ξ0 hJA hJB κ _ co hrat Φ hΦ k L hLc hLf w0`. Use `set ψ := B0'.ψ`. Take `⟨P, Q, hPQ⟩` from `darboux_real_coordsF (F := F) (E := E) nS nT κ co.e k L hLc hLf`. Take `⟨Λ, hΛ⟩` from `psiInf_eq_exp_linearF _ ψ hψ`. Establish `hψ1 : ∀ x, ‖ψ x‖ = 1` using `hψ.1.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΛre : ∀ m, (Λ m).re = 0`. Introduce `m`. Establish `h1` using `hψ1 (pairA _ ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm m) 0)`. Establish `h2` using `hΛ ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm m)`. Unfold `psiInf at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, RingEquiv.apply_symm_apply, Complex.norm_exp]`. Conclude with `Real.exp_eq_one_iff _ |>.mp h1`. It suffices to establish `key : ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, ∀ w, Summable (fun x : κ → F => co.rho ψ w Φ (fun i => algebraMap F (AF F) (x i))) ∧ ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t => GlobalTheory.WeilSchrodinger.thetaTr F co ψ Φ (w + L t) from (key Φ hΦ w0).2`. Establish `rho_add : ∀ w (Φ₁ Φ₂ : (κ → AF F) → ℂ), co.rho ψ w (Φ₁ + Φ₂) = co.rho ψ w Φ₁ + co.rho ψ w Φ₂`. Introduce `w Φ₁ Φ₂`.
+Reduce the argument to an intermediate assertion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, mul_add]`. Establish `rho_smul : ∀ w (c : ℂ) (Φ₁ : (κ → AF F) → ℂ), co.rho ψ w (c • Φ₁) = c • co.rho ψ w Φ₁`. Introduce `w c Φ₁`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`. Expand and normalize the polynomial expressions, which then agree. Establish `rho_zero : ∀ w, co.rho ψ w (0 : (κ → AF F) → ℂ) = 0`. Introduce `w`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`. Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w`. Take `⟨M, hM⟩` from `GlobalTheory.T.summable_rational_schwartzBruhat_mul_polynomial_decay F κ g hg (fun i => ((co.e w).1 i).2)`. Set `eM` to `InfiniteAdeleRing.ringEquiv_mixedSpace F`. Set `yv : (κ → F) → (κ → mixedEmbedding.mixedSpace F)` to `fun x i => mixedEmbedding F (x i)`. Set `ah : κ → mixedEmbedding.mixedSpace F` to `fun i => eM ((co.e w).1 i).1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `bh : κ → mixedEmbedding.mixedSpace F` to `fun i => eM ((co.e w).2 i).1`. Set `c2 : mixedEmbedding.mixedSpace F` to `eM (⅟(2 : AF F)).1`. Set `B0 : (κ → mixedEmbedding.mixedSpace F) →ₗ[ℝ] (Fin k → ℝ) →ₗ[ℝ] ℂ` to `LinearMap.mk₂ ℝ (fun y t => Λ (∑ i, y i * Q t i)) (fun y₁ y₂ t => by simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib, map_add]) (fun r y t => by simp only [Pi.smul_apply, smul_mul_assoc, ← Finset.smul_sum, map_smul]) (fun y t₁ t₂ => by simp only [map_add, Pi.add_apply, m …`. Set `B : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] (Fin k → ℝ) →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : ((Fin k → ℝ) →ₗ[ℝ] ℂ) ≃ₗ[ℝ] _).toLinearMap ∘ₗ B0)`. Establish `hB : ∀ y t, B y t = Λ (∑ i, y i * Q t i)` using `fun y t => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `hfun : (Fin k → ℝ) → ℂ` to `fun t => Λ (c2 * ∑ i, (ah i * Q t i + P t i * bh i + P t i * Q t i))`. Establish `hPi : ∀ i, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t : Fin k → ℝ => P t i` using `fun i => ((ContinuousLinearMap.proj i).comp P).contDiff`. Establish `hQi : ∀ i, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t : Fin k → ℝ => Q t i` using `fun i => ((ContinuousLinearMap.proj i).comp Q).contDiff`. Establish `hsm : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) hfun` using `Λ.contDiff.comp (contDiff_const.mul (ContDiff.sum fun i _ => ((contDiff_const.mul (hQi i)).add ((hPi i).mul contDiff_const)).add ((hPi i).mul (hQi i))))`. Establish `hre : ∀ y t, (B y t + hfun t).re = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y t`. Rewrite using `[hB, ← map_add]`. Conclude with `hΛre _`. Set `K : (κ → F) → ℂ` to `fun x => ψ ((fun i => algebraMap F (AF F) (x i)) ⬝ᵥ (co.e w).2 + ⅟2 * ((co.e w).1 ⬝ᵥ (co.e w).2)) * g (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (x i) + ((co.e w).1 i).2)`. Set `G : (κ → F) → (Fin k → ℝ) → ℂ` to `fun x t => Complex.exp (B (yv x) t + hfun t) * f (yv x + ah + P t)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `term : (κ → F) → (Fin k → ℝ) → ℂ` to `fun x t => K x * G x t`. Establish `hid : ∀ x t, co.rho ψ (w + L t) (GlobalTheory.WeilM.pureA F f g) (fun i => algebraMap F (AF F) (x i)) = term x t`. Introduce `x t`. Establish `he : co.e (w + L t) = ((co.e w).1 + fun i => pairA F (eM.symm (P t i)) 0, (co.e w).2 + fun i => pairA F (eM.symm (Q t i)) 0)`. Rewrite using `[map_add, hPQ t]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hy : ∀ i, eM (algebraMap F (AF F) (x i)).1 = yv x i`. Introduce `i`. Simplify using `only [yv, eM]`. Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Establish `h1 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (((fun i => algebraMap F (AF F) (x i)) + ((co.e w).1 + fun i => pairA F (eM.symm (P t i)) 0)) i).1) = yv x + ah + P t`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `eM ((algebraMap F (AF F) (x i)).1 + (((co.e w).1 i).1 + eM.symm (P t i))) = _`. Rewrite using `[map_add, map_add, RingEquiv.apply_symm_apply, hy i, ← add_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Establish `h2 : (fun i => (((fun i => algebraMap F (AF F) (x i)) + ((co.e w).1 + fun i => pairA F (eM.symm (P t i)) 0)) i).2) = fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (x i) + ((co.e w).1 i).2`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(algebraMap F (AF F) (x i)).2 + (((co.e w).1 i).2 + 0) = _`. Rewrite using `[add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hL : co.rho ψ (w + L t) (GlobalTheory.WeilM.pureA F f g) (fun i => algebraMap F (AF F) (x i)) = ψ ((fun i => algebraMap F (AF F) (x i)) ⬝ᵥ ((co.e w).2 + fun i => pairA F (eM.symm (Q t i)) 0) + ⅟2 * (((co.e w).1 + fun i => pairA F (eM.symm (P t i)) 0) ⬝ᵥ ((co.e w).2 + fun i => pai …`. Rewrite using `[← h1, ← h2]`. Use `show GlobalTheory.WeilM.schr ψ (co.e (w + L t)) _ _ = _`. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Rewrite using `[hL]`. Set `φ : AF F →+* mixedEmbedding.mixedSpace F` to `eM.toRingHom.comp (fstA F).toRingHom`. Set `φf : AF F →+* FiniteAdeleRing (𝓞 F) F` to `(sndA F).toRingHom`. Establish `hφx : ∀ i, φ (algebraMap F (AF F) (x i)) = yv x i` using `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφP : ∀ i, φ (pairA F (eM.symm (P t i)) 0) = P t i` using `fun i => eM.apply_symm_apply _`. Establish `hφQ : ∀ i, φ (pairA F (eM.symm (Q t i)) 0) = Q t i` using `fun i => eM.apply_symm_apply _`. Establish `hφa : ∀ i, φ ((co.e w).1 i) = ah i` using `fun i => rfl`. Establish `hφb : ∀ i, φ ((co.e w).2 i) = bh i` using `fun i => rfl`. Establish `hφ2 : φ ⅟2 = c2` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφdef : ∀ z : AF F, eM z.1 = φ z` using `fun _ => rfl`. Establish `hφfdef : ∀ z : AF F, z.2 = φf z` using `fun _ => rfl`. Establish `hφpair : ∀ n, φ (pairA F (eM.symm n) 0) = n` using `fun n => eM.apply_symm_apply _`. Establish `hφfpair : ∀ n, φf (pairA F (eM.symm n) 0) = 0` using `fun n => rfl`. Establish `hφfP : ∀ i, φf (pairA F (eM.symm (P t i)) 0) = 0` using `fun i => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφfQ : ∀ i, φf (pairA F (eM.symm (Q t i)) 0) = 0` using `fun i => rfl`. Use `set X := (fun i => algebraMap F (AF F) (x i)) ⬝ᵥ (co.e w).2 + ⅟2 * ((co.e w).1 ⬝ᵥ (co.e w).2) with hX`. Use `set m := ∑ i, yv x i * Q t i + c2 * ∑ i, (ah i * Q t i + P t i * bh i + P t i * Q t i) with hm`. Establish `hsplit : (fun i => algebraMap F (AF F) (x i)) ⬝ᵥ ((co.e w).2 + fun i => pairA F (eM.symm (Q t i)) 0) + ⅟2 * (((co.e w).1 + fun i => pairA F (eM.symm (P t i)) 0) ⬝ᵥ ((co.e w).2 + fun i => pairA F (eM.symm (Q t i)) 0)) = X + pairA F (eM.symm m) 0`. Establish `hY : (fun i => algebraMap F (AF F) (x i)) ⬝ᵥ (fun i => pairA F (eM.symm (Q t i)) 0) + ⅟2 * ((co.e w).1 ⬝ᵥ (fun i => pairA F (eM.symm (Q t i)) 0) + (fun i => pairA F (eM.symm (P t i)) 0) ⬝ᵥ (co.e w).2 + (fun i => pairA F (eM.symm (P t i)) 0) ⬝ᵥ (fun i => pairA F (eM.symm (Q t i)) …`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `eM.injective` to reduce the goal to its premises. Rewrite using `[hφdef, hφdef, hφpair, hm]`. Simplify using `only [dotProduct, map_add, map_mul, map_sum, hφx, hφP, hφQ, hφa, hφb, hφ2, Finset.sum_add_distrib]`. Rewrite using `[hφfdef, hφfdef, hφfpair]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [dotProduct, map_add, map_mul, map_sum, hφfP, hφfQ, mul_zero, zero_mul, Finset.sum_const_zero, add_zero]`. Rewrite using `[← hY, hX]`. Simplify using `only [dotProduct_add, add_dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Establish `hψY : ψ (pairA F (eM.symm m) 0) = Complex.exp (B (yv x) t + hfun t)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Express the relevant statement in the definitionally equal form `psiInf F ψ (eM.symm m) = _`. Rewrite using `[hΛ, show InfiniteAdeleRing.ringEquiv_mixedSpace F = eM from rfl, RingEquiv.apply_symm_apply, hm, map_add]`. Both sides reduce to the same expression. Rewrite using `[hsplit, AddChar.map_add_eq_mul, hψY]`. Simplify using `only [term, K, G]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hK : ∀ x, ‖K x‖ = ‖g (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (x i) + ((co.e w).1 i).2)‖`. Introduce `x`. Simplify using `only [K, norm_mul, hψ1, one_mul]`. Establish `hG : ∀ x, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (G x)` using `fun x => (Complex.contDiff_exp.comp ((B (yv x)).contDiff.add hsm)).mul ((f.smooth ⊤).comp (contDiff_const.add P.contDiff))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsmooth : ∀ x, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (term x)` using `fun x => contDiff_const.mul (hG x)`. Establish `hbd : ∀ (n : ℕ) (R : ℝ), ∃ u : (κ → F) → ℝ, Summable u ∧ ∀ x t, ‖t‖ ≤ R → ‖iteratedFDeriv ℝ n (term x) t‖ ≤ u x`. Introduce `n R`. Take `⟨C, hC⟩` from `GlobalTheory.ThetaSmooth.norm_iteratedFDeriv_exp_mul_schwartz_le f B hfun hsm hre ah P n M R`. Use `⟨fun x => C * (‖g (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (x i) + ((co.e w).1 i).2)‖ * ((1 + ‖yv x + 0‖) ^ M)⁻¹), (hM 0).mul_left C, fun x t ht => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e : term x = K x • G x` using `rfl`. Rewrite using `[e, iteratedFDeriv_const_smul_apply ((hG x).contDiffAt.of_le (by exact_mod_cast le_top)), norm_smul, hK]`. Establish `h1` using `hC (yv x) t ht`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨u, hu, hu'⟩` from `hbd 0 0`. Use `Summable.of_norm_bounded hu fun x => ?_` and prove the remaining obligations. Establish `h1` using `hu' x 0 (by simp)`. Rewrite `h1` using `[norm_iteratedFDeriv_zero, ← hid x 0]`. Simplify using `using h1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `e : (fun t => GlobalTheory.WeilSchrodinger.thetaTr F co ψ (GlobalTheory.WeilM.pureA F f g) (w + L t)) = fun t => ∑' x, term x t` using `funext fun t => tsum_congr fun x => hid x t`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.contDiff_tsum_of_summable_iteratedFDeriv_bounds term hsmooth hbd`. Consider the case `zero`. Introduce `w`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, rho_zero, Pi.zero_apply]`. Conclude with `⟨summable_zero, by simpa [GlobalTheory.WeilM.thetaSum] using contDiff_const⟩`. Consider the case `add Φ₁ Φ₂ _ _ h1 h2`. Introduce `w`. Use `⟨by rw [rho_add]; exact (h1 w).1.add (h2 w).1, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun t => GlobalTheory.WeilSchrodinger.thetaTr F co ψ (Φ₁ + Φ₂) (w + L t)) = fun t => GlobalTheory.WeilSchrodinger.thetaTr F co ψ Φ₁ (w + L t) + GlobalTheory.WeilSchrodinger.thetaTr F co ψ Φ₂ (w + L t)`. Use function extensionality and compare the values at `t`. Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.thetaSum, rho_add, Pi.add_apply]`. Conclude with `(h1 (w + L t)).1.tsum_add (h2 (w + L t)).1`. Rewrite using `[e]`.
-
-Conclude with `(h1 w).2.add (h2 w).2`. Consider the case `smul c Φ₁ _ h1`. Introduce `w`. Use `⟨by rw [rho_smul]; exact (h1 w).1.const_smul c, ?_⟩` and prove the remaining obligations. Establish `e : (fun t => GlobalTheory.WeilSchrodinger.thetaTr F co ψ (c • Φ₁) (w + L t)) = fun t => c * GlobalTheory.WeilSchrodinger.thetaTr F co ψ Φ₁ (w + L t)`.
-
-Use function extensionality and compare the values at `t`. Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.thetaSum, rho_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`. Rewrite using `[e]`. Conclude with `contDiff_const.mul (h1 w).2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_thetaTr_realF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →

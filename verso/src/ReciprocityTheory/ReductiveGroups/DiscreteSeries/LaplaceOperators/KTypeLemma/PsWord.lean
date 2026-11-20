@@ -23,7 +23,7 @@ local notation "WW" => ((Fin n → Fin n → ℂ) × (Fin n → Fin n → ℂ)) 
 def mmul (A B : 𝕄) : 𝕄 := Matrix.of A * Matrix.of B
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun a => contDiff_pi.2 fun b => ?_` and prove the remaining obligations. Simplify using `only [mmul, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `ContDiff.sum fun c _ => (contDiff_pi.1 (contDiff_pi.1 hf a) c).mul (contDiff_pi.1 (contDiff_pi.1 hg c) b)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma contDiff_mmul {X : Type*} [NormedAddCommGroup X] [NormedSpace ℂ X] {f g : X → 𝕄}
     (hf : ContDiff ℂ ω f) (hg : ContDiff ℂ ω g) : ContDiff ℂ ω fun x => mmul (f x) (g x) := by
@@ -33,7 +33,7 @@ lemma contDiff_mmul {X : Type*} [NormedAddCommGroup X] [NormedSpace ℂ X] {f g 
     (contDiff_pi.1 (contDiff_pi.1 hf a) c).mul (contDiff_pi.1 (contDiff_pi.1 hg c) b)
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [mmul, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `continuous_finset_sum _ fun c _ => ((continuous_apply c).comp ((continuous_apply a).comp hf)).mul ((continuous_apply b).comp ((continuous_apply c).comp hg))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma continuous_mmul {X : Type*} [TopologicalSpace X] {f g : X → 𝕄} (hf : Continuous f)
     (hg : Continuous g) : Continuous fun x => mmul (f x) (g x) := by
@@ -44,7 +44,7 @@ lemma continuous_mmul {X : Type*} [TopologicalSpace X] {f g : X → 𝕄} (hf : 
       ((continuous_apply b).comp ((continuous_apply c).comp hg))
 
 /- English proof (translation)
-Conclude with `(h.contDiffAt (hs.mem_nhds hx)).differentiableAt (by simp)`.
+A detailed English derivation is pending.
 -/
 lemma diffAt {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F]
     [NormedSpace ℂ F] {f : E → F} {s : Set E} {x : E} (h : ContDiffOn ℂ ω f s) (hs : IsOpen s)
@@ -52,7 +52,7 @@ lemma diffAt {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   exact (h.contDiffAt (hs.mem_nhds hx)).differentiableAt (by simp)
 
 /- English proof (translation)
-Break down `Int.eq_nat_or_neg m with ⟨k, rfl | rfl⟩` into its components or cases. Simplify using `only [zpow_natCast]`. Conclude with `hf.pow k`. Simplify using `only [_root_.zpow_neg, zpow_natCast]`. Conclude with `(hf.pow k).inv (pow_ne_zero _ hx)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma contDiffAt_zpow {X : Type*} [NormedAddCommGroup X] [NormedSpace ℂ X] {f : X → ℂ} {x : X}
     (hf : ContDiffAt ℂ ω f x) (hx : f x ≠ 0) (m : ℤ) : ContDiffAt ℂ ω (fun y => f y ^ m) x := by
@@ -63,7 +63,7 @@ lemma contDiffAt_zpow {X : Type*} [NormedAddCommGroup X] [NormedSpace ℂ X] {f 
     exact (hf.pow k).inv (pow_ne_zero _ hx)
 
 /- English proof (translation)
-Establish `h : (fun z : Fin m → Fin m → ℂ => Matrix.det z) = fun z => ∑ σ : Equiv.Perm (Fin m), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, z (σ i) i`. Use function extensionality and compare the values at `z`. Conclude with `Matrix.det_apply' _`. Rewrite using `[h]`. Conclude with `ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun i _ => contDiff_pi.1 (contDiff_pi.1 contDiff_id (σ i)) i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem contDiff_det_k_type {m : ℕ} {k : WithTop ℕ∞} :
     ContDiff ℂ k (fun z : Fin m → Fin m → ℂ => Matrix.det z) := by
@@ -76,11 +76,11 @@ private theorem contDiff_det_k_type {m : ℕ} {k : WithTop ℕ∞} :
     (contDiff_prod fun i _ => contDiff_pi.1 (contDiff_pi.1 contDiff_id (σ i)) i)
 
 /- English proof (translation)
-Distinguish the cases in `h : i ≤ n`. Establish `e : (fun z : 𝕄 => lead i z) = fun z : 𝕄 => Matrix.det (fun a b => z (Fin.castLE h a) (Fin.castLE h b) : Fin i → Fin i → ℂ)`. Use function extensionality and compare the values at `z`. Simplify using `only [lead, dif_pos h]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `contDiff_det_k_type.comp (contDiff_pi.2 fun a => contDiff_pi.2 fun b => contDiff_pi.1 (contDiff_pi.1 contDiff_id (Fin.castLE h a)) (Fin.castLE h b))`. Establish `e : (fun z : 𝕄 => lead i z) = fun _ => 0`. Use function extensionality and compare the values at `z`. Simplify using `only [lead, dif_neg h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `contDiff_const`.
+A detailed English derivation is pending.
 -/
 lemma contDiff_lead (i : ℕ) : ContDiff ℂ ω (fun z : 𝕄 => lead i z) := by
   by_cases h : i ≤ n
@@ -101,9 +101,9 @@ lemma contDiff_lead (i : ℕ) : ContDiff ℂ ω (fun z : 𝕄 => lead i z) := by
 def PhiQ (μ : Fin n → ℤ) : 𝕄 → ℂ := fun y => PhiM μ y
 
 /- English proof (translation)
-Use `show ContDiffOn ℂ ω (fun y : 𝕄 => ∏ i : Fin n, lead ((i : ℕ) + 1) y ^ (-(μ i - muNext μ i))) (OmegaSet n : Set 𝕄)`. Use `contDiffOn_prod fun i _ => ?_` and prove the remaining obligations. Establish `hne : ∀ y ∈ (OmegaSet n : Set 𝕄), lead ((i : ℕ) + 1) y ≠ 0` using `fun y hy => (show ∀ j : Fin n, lead ((j : ℕ) + 1) y ≠ 0 from hy) i`. Establish `hg : ContDiffOn ℂ ω (fun y : 𝕄 => lead ((i : ℕ) + 1) y) (OmegaSet n : Set 𝕄)` using `(contDiff_lead _).contDiffOn`. Break down `Int.eq_nat_or_neg (-(μ i - muNext μ i)) with ⟨k, hk | hk⟩` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [hk, zpow_natCast]`. Conclude with `hg.pow k`. Simplify using `only [hk, _root_.zpow_neg, zpow_natCast]`. Conclude with `(hg.pow k).inv fun y hy => pow_ne_zero _ (hne y hy)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma contDiffOn_phiQ (μ : Fin n → ℤ) : ContDiffOn ℂ ω (PhiQ μ) (OmegaSet n : Set 𝕄) := by
   show ContDiffOn ℂ ω (fun y : 𝕄 => ∏ i : Fin n, lead ((i : ℕ) + 1) y ^ (-(μ i - muNext μ i)))
@@ -122,7 +122,7 @@ lemma contDiffOn_phiQ (μ : Fin n → ℤ) : ContDiffOn ℂ ω (PhiQ μ) (OmegaS
 def Om : Set WW := {q | q.2 ∈ OmegaSet n}
 
 /- English proof (translation)
-Establish `ho : IsOpen (OmegaSet n : Set 𝕄)` using `by show IsOpen {z : 𝕄 | ∀ i : Fin n, lead ((i : ℕ) + 1) z ≠ 0}`. Rewrite using `[Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_ne_fun (contDiff_lead (n := n) _).continuous continuous_const`. Conclude with `ho.preimage continuous_snd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isOpen_Om : IsOpen (Om : Set WW) := by
   have ho : IsOpen (OmegaSet n : Set 𝕄) := by
@@ -136,7 +136,7 @@ def Fw (μ : Fin n → ℤ) (D : List MM) (q : WW) : ℂ :=
   lWord (D.map fun Z => mmul (mmul q.1.1 Z) q.1.2) (PhiM μ) q.2
 
 /- English proof (translation)
-Use `first`. Consider the case `exact hf.hasFDerivAt.comp q.2 (hasFDerivAt_prodMk_right q.1 q.2)`. Consider the case `exact hf.hasFDerivAt.comp q.2 (hasFDerivAt_prod_mk_right q.1 q.2)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma hasFDerivAt_slice {f : WW → ℂ} {q : WW} (hf : DifferentiableAt ℂ f q) :
     HasFDerivAt (fun y : 𝕄 => f (q.1, y))
@@ -146,7 +146,7 @@ lemma hasFDerivAt_slice {f : WW → ℂ} {q : WW} (hf : DifferentiableAt ℂ f q
   | exact hf.hasFDerivAt.comp q.2 (hasFDerivAt_prod_mk_right q.1 q.2)
 
 /- English proof (translation)
-The claim follows from `| [] => (contDiffOn_phiQ μ).comp contDiff_snd.contDiffOn fun _ hq => hq | Z :: D => by have hD := contDiffOn_Fw μ D have h1 : ContDiffOn ℂ ω (fderiv ℂ (Fw μ D)) Om := hD.fderiv_of_isOpen isOpen_Om le_top have h2 : ContDiff ℂ ω fun q : WW => ((0 : 𝕄 × 𝕄), mmul (mmul (mmul q.1.1 Z) …`.
+A detailed English derivation is pending.
 -/
 lemma contDiffOn_Fw (μ : Fin n → ℤ) : ∀ D : List MM, ContDiffOn ℂ ω (Fw μ D) Om
   | [] => (contDiffOn_phiQ μ).comp contDiff_snd.contDiffOn fun _ hq => hq
@@ -169,7 +169,7 @@ def dpsi (k : KG ε) : 𝕄 →L[ℂ] WW :=
   (0 : 𝕄 →L[ℂ] 𝕄 × 𝕄).prod (Ps1.conjCLM (toMK k⁻¹) (toMK k))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (hasFDerivAt_const (toMK k⁻¹, toMK k) z).prodMk (Ps1.conjCLM (toMK k⁻¹) (toMK k)).hasFDerivAt`. Consider the case `exact (hasFDerivAt_const (toMK k⁻¹, toMK k) z).prod (Ps1.conjCLM (toMK k⁻¹) (toMK k)).hasFDerivAt`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma hasFDerivAt_psi (k : KG ε) (z : 𝕄) : HasFDerivAt (psi k) (dpsi k) z := by
   first
@@ -179,9 +179,9 @@ lemma hasFDerivAt_psi (k : KG ε) (z : 𝕄) : HasFDerivAt (psi k) (dpsi k) z :=
       (Ps1.conjCLM (toMK k⁻¹) (toMK k)).hasFDerivAt
 
 /- English proof (translation)
-Establish `h1 : Continuous fun k : KG ε => toMK k` using `by first`. Consider the case `fun_prop`. Consider the case `(unfold toMK; fun_prop)`. Consider the case `continuity`. Consider the case `(unfold toMK; continuity)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h2 : Continuous fun k : KG ε => toMK k⁻¹` using `h1.comp continuous_inv`. Establish `hm : Continuous fun p : 𝕄 × KG ε => mmul (mmul (toMK p.2⁻¹) p.1) (toMK p.2)` using `continuous_mmul (continuous_mmul (h2.comp continuous_snd) continuous_fst) (h1.comp continuous_snd)`. Use `first`. Consider the case `exact ((h2.comp continuous_snd).prodMk (h1.comp continuous_snd)).prodMk hm`. Consider the case `exact ((h2.comp continuous_snd).prod_mk (h1.comp continuous_snd)).prod_mk hm`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma continuous_psi : Continuous fun p : 𝕄 × KG ε => psi p.2 p.1 := by
   have h1 : Continuous fun k : KG ε => toMK k := by
@@ -207,7 +207,7 @@ def G' (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) (z : 𝕄) (k : KG �
   ((fderiv ℂ (Fw μ D) (psi k z)).comp (dpsi k)).smulRight (T.op k * projW T * T.op k⁻¹)
 
 /- English proof (translation)
-Conclude with `((diffAt (contDiffOn_Fw μ D) isOpen_Om hx).hasFDerivAt.comp x (hasFDerivAt_psi k x)).smul_const _`.
+A detailed English derivation is pending.
 -/
 lemma hasFDerivAt_G (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) (k : KG ε) {x : 𝕄}
     (hx : psi k x ∈ (Om : Set WW)) : HasFDerivAt (fun y => G T μ D y k) (G' T μ D x k) x := by
@@ -215,7 +215,7 @@ lemma hasFDerivAt_G (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) (k : KG
     (hasFDerivAt_psi k x)).smul_const _
 
 /- English proof (translation)
-Establish `hop : Continuous fun k : KG ε => T.op k` using `continuous_subtype_val.comp T.cont`. Establish `hC : Continuous fun k : KG ε => T.op k * projW T * T.op k⁻¹` using `(hop.mul continuous_const).mul (hop.comp continuous_inv)`. Conclude with `((contDiffOn_Fw μ D).continuousOn.comp continuous_psi.continuousOn (fun ⦃p⦄ hp => hp.1 p.2)).smul (hC.comp continuous_snd).continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma continuousOn_G (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) :
     ContinuousOn (fun p : 𝕄 × KG ε => G T μ D p.1 p.2) (Ps1.Uset ε ×ˢ Set.univ) := by
@@ -226,11 +226,11 @@ lemma continuousOn_G (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) :
     (fun ⦃p⦄ hp => hp.1 p.2)).smul (hC.comp continuous_snd).continuousOn
 
 /- English proof (translation)
-Establish `h1 : Continuous fun k : KG ε => toMK k` using `by first`. Consider the case `fun_prop`. Consider the case `(unfold toMK; fun_prop)`. Consider the case `continuity`. Consider the case `(unfold toMK; continuity)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h2 : Continuous fun k : KG ε => toMK k⁻¹` using `h1.comp continuous_inv`. Establish `hop : Continuous fun k : KG ε => T.op k` using `continuous_subtype_val.comp T.cont`. Establish `hC : Continuous fun k : KG ε => T.op k * projW T * T.op k⁻¹` using `(hop.mul continuous_const).mul (hop.comp continuous_inv)`. Establish `hFd : ContinuousOn (fun p : 𝕄 × KG ε => fderiv ℂ (Fw μ D) (psi p.2 p.1)) (Ps1.Uset ε ×ˢ Set.univ)` using `((contDiffOn_Fw μ D).continuousOn_fderiv_of_isOpen isOpen_Om le_top).comp continuous_psi.continuousOn (fun ⦃p⦄ hp => hp.1 p.2)`. Use `continuousOn_clm_apply.2 fun y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdy : Continuous fun p : 𝕄 × KG ε => dpsi p.2 y` using `by first`. Consider the case `exact continuous_const.prodMk (continuous_mmul (continuous_mmul (h2.comp continuous_snd) continuous_const) (h1.comp continuous_snd))`. Consider the case `exact continuous_const.prod_mk (continuous_mmul (continuous_mmul (h2.comp continuous_snd) continuous_const) (h1.comp continuous_snd))`. Conclude with `(hFd.clm_apply hdy.continuousOn).smul (hC.comp continuous_snd).continuousOn`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma continuousOn_G' (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) :
     ContinuousOn (fun p : 𝕄 × KG ε => G' T μ D p.1 p.2) (Ps1.Uset ε ×ˢ Set.univ) := by
@@ -258,7 +258,7 @@ lemma continuousOn_G' (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) :
   exact (hFd.clm_apply hdy.continuousOn).smul (hC.comp continuous_snd).continuousOn
 
 /- English proof (translation)
-Establish `hc : Continuous fun k : KG ε => psi k z` using `by first`. Consider the case `exact continuous_psi.comp (Continuous.prodMk continuous_const continuous_id)`. Consider the case `exact continuous_psi.comp (Continuous.prod_mk continuous_const continuous_id)`. Conclude with `(contDiffOn_Fw μ D).continuousOn.comp_continuous hc (fun k => hz k)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma continuous_Fwk (μ : Fin n → ℤ) (D : List MM) {z : 𝕄} (hz : z ∈ Ps1.Uset ε) :
     Continuous fun k : KG ε => Fw μ D (psi k z) := by
@@ -269,7 +269,7 @@ lemma continuous_Fwk (μ : Fin n → ℤ) (D : List MM) {z : 𝕄} (hz : z ∈ P
   exact (contDiffOn_Fw μ D).continuousOn.comp_continuous hc (fun k => hz k)
 
 /- English proof (translation)
-Establish `hop : Continuous fun k : KG ε => T.op k` using `continuous_subtype_val.comp T.cont`. Establish `hC : Continuous fun k : KG ε => T.op k * projW T * T.op k⁻¹` using `(hop.mul continuous_const).mul (hop.comp continuous_inv)`. Conclude with `(continuous_Fwk μ D hz).smul hC`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma continuous_Gk (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) {z : 𝕄} (hz : z ∈ Ps1.Uset ε) :
     Continuous (G T μ D z) := by
@@ -279,13 +279,13 @@ lemma continuous_Gk (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) {z : �
   exact (continuous_Fwk μ D hz).smul hC
 
 /- English proof (translation)
-Establish `h1 : Continuous fun k : KG ε => toMK k` using `by first`. Consider the case `fun_prop`. Consider the case `(unfold toMK; fun_prop)`. Consider the case `continuity`. Consider the case `(unfold toMK; continuity)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h2 : Continuous fun k : KG ε => toMK k⁻¹` using `h1.comp continuous_inv`. Establish `hop : Continuous fun k : KG ε => T.op k` using `continuous_subtype_val.comp T.cont`. Establish `hC : Continuous fun k : KG ε => T.op k * projW T * T.op k⁻¹` using `(hop.mul continuous_const).mul (hop.comp continuous_inv)`. Establish `hps : Continuous fun k : KG ε => psi k z` using `by first`. Consider the case `exact continuous_psi.comp (Continuous.prodMk continuous_const continuous_id)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact continuous_psi.comp (Continuous.prod_mk continuous_const continuous_id)`. Establish `hFd : Continuous fun k : KG ε => fderiv ℂ (Fw μ D) (psi k z)` using `((contDiffOn_Fw μ D).continuousOn_fderiv_of_isOpen isOpen_Om le_top).comp_continuous hps (fun k => hz k)`. Use `continuous_clm_apply.2 fun y => ?_` and prove the remaining obligations. Establish `hdy : Continuous fun k : KG ε => dpsi k y` using `by first`. Consider the case `exact continuous_const.prodMk (continuous_mmul (continuous_mmul h2 continuous_const) h1)`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact continuous_const.prod_mk (continuous_mmul (continuous_mmul h2 continuous_const) h1)`. Conclude with `(hFd.clm_apply hdy).smul hC`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma continuous_G'k (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) {z : 𝕄} (hz : z ∈ Ps1.Uset ε) :
     Continuous (G' T μ D z) := by
@@ -314,7 +314,7 @@ lemma continuous_G'k (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) {z : �
   exact (hFd.clm_apply hdy).smul hC
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (continuous_Gk T μ D hz).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Consider the case `exact integrableOn_univ.1 ((continuous_Gk T μ D hz).continuousOn.integrableOn_compact isCompact_univ)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma integrable_G [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) {z : 𝕄}
     (hz : z ∈ Ps1.Uset ε) : Integrable (G T μ D z) (muK ε) := by
@@ -323,7 +323,7 @@ lemma integrable_G [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ)
   | exact integrableOn_univ.1 ((continuous_Gk T μ D hz).continuousOn.integrableOn_compact isCompact_univ)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (continuous_G'k T μ D hz).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Consider the case `exact integrableOn_univ.1 ((continuous_G'k T μ D hz).continuousOn.integrableOn_compact isCompact_univ)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma integrable_G' [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) {z : 𝕄}
     (hz : z ∈ Ps1.Uset ε) : Integrable (G' T μ D z) (muK ε) := by
@@ -332,9 +332,9 @@ lemma integrable_G' [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ
   | exact integrableOn_univ.1 ((continuous_G'k T μ D hz).continuousOn.integrableOn_compact isCompact_univ)
 
 /- English proof (translation)
-Take `⟨ε₀, hε₀, hball⟩` from `Metric.isOpen_iff.1 Ps1.isOpen_Uset z hz`. Establish `hr0 : 0 < ε₀ / 2` using `half_pos hε₀`. Establish `hcb : Metric.closedBall z (ε₀ / 2) ⊆ Ps1.Uset ε` using `(Metric.closedBall_subset_ball (half_lt_self hε₀)).trans hball`. Take `⟨C, hC⟩` from `((isCompact_closedBall z (ε₀ / 2)).prod isCompact_univ).exists_bound_of_continuousOn ((continuousOn_G' T μ D).mono (Set.prod_mono hcb le_rfl))`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (bound := fun _ => C) (Metric.ball_mem_nhds z hr0) ?_ (integrable_G T μ D hz) (continuous_G'k T μ D hz).aestronglyMeasurable ?_ (integrable_const C) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Filter.eventually_of_mem (Ps1.isOpen_Uset.mem_nhds hz) fun x hx => (continuous_Gk T μ D hx).aestronglyMeasurable`. Conclude with `ae_of_all _ fun k x hx => hC (x, k) ⟨Metric.ball_subset_closedBall hx, Set.mem_univ _⟩`. Conclude with `ae_of_all _ fun k x hx => hasFDerivAt_G T μ D k (hcb (Metric.ball_subset_closedBall hx) k)`.
+A detailed English derivation is pending.
 -/
 lemma hasFDerivAt_intG [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM)
     {z : 𝕄} (hz : z ∈ Ps1.Uset ε) :
@@ -354,9 +354,9 @@ lemma hasFDerivAt_intG [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → 
   · exact ae_of_all _ fun k x hx => hasFDerivAt_G T μ D k (hcb (Metric.ball_subset_closedBall hx) k)
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [toMK]; rw [← map_mul, mul_inv_cancel, map_one])`. Consider the case `(unfold toMK; rw [← map_mul, mul_inv_cancel, map_one])`. Consider the case `simp [toMK, toM]`. Consider the case `(unfold toMK toM; simp)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [toMK, toM]; simp [Matrix.mul_eq_one_comm])`.
+A detailed English derivation is pending.
 -/
 lemma toMK_mul_inv (k : KG ε) : toMK k * toMK k⁻¹ = 1 := by
   first
@@ -367,13 +367,11 @@ lemma toMK_mul_inv (k : KG ε) : toMK k * toMK k⁻¹ = 1 := by
   | (simp only [toMK, toM]; simp [Matrix.mul_eq_one_comm])
 
 /- English proof (translation)
-Establish `hq : psi k z ∈ (Om : Set WW)` using `hz k`. Establish `hs` using `hasFDerivAt_slice (diffAt (contDiffOn_Fw μ D) isOpen_Om hq)`. Establish `hrep : Fw μ (Z :: D) (psi k z) = fderiv ℂ (Fw μ D) (psi k z) (ContinuousLinearMap.inr ℂ (𝕄 × 𝕄) 𝕄 (mmul (mmul (mmul (psi k z).1.1 Z) (psi k z).1.2) (psi k z).2))` using `by show fderiv ℂ (fun y : 𝕄 => Fw μ D ((psi k z).1, y)) (psi k z).2 (mmul (mmul (mmul (psi k z).1.1 Z) (psi k z).1.2) (psi k z).2) = _`. Rewrite using `[hs.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hv : dpsi k (Z * z) = ContinuousLinearMap.inr ℂ (𝕄 × 𝕄) 𝕄 (mmul (mmul (mmul (psi k z).1.1 Z) (psi k z).1.2) (psi k z).2)`. Establish `h1` using `toMK_mul_inv k`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use `show toMK k⁻¹ * (Z * z) * toMK k = toMK k⁻¹ * Z * toMK k * (toMK k⁻¹ * z * toMK k)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Simplify using `only [mul_one, mul_assoc]`. Use `_ = toMK k⁻¹ * Z * toMK k * (toMK k⁻¹ * z * toMK k) := by`. Simplify using `only [mul_assoc]`. Use `show ((fderiv ℂ (Fw μ D) (psi k z)).comp (dpsi k)).smulRight (T.op k * projW T * T.op k⁻¹) (Z * z) = Fw μ (Z :: D) (psi k z) • (T.op k * projW T * T.op k⁻¹)`.
-
-Rewrite using `[hrep, ← hv]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma G'_apply (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) {z : MM} (hz : z ∈ Ps1.Uset ε)
     (k : KG ε) (Z : MM) : G' T μ D z k (Z * z) = G T μ (Z :: D) z k := by
@@ -402,7 +400,7 @@ lemma G'_apply (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) {z : MM} (hz
   rfl
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => rfl | Z :: D, z, hz => by have hE : (fun x : 𝕄 => lWord D (psM T μ) x) =ᶠ[𝓝 z] fun x => cc T • ∫ k, G T μ D x k ∂(muK ε) := Filter.eventually_of_mem (Ps1.isOpen_Uset.mem_nhds hz) fun x hx => lWord_psM T μ D x hx have hd := (hasFDerivAt_intG T μ D hz).const_smul (cc …`.
+A detailed English derivation is pending.
 -/
 lemma lWord_psM [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ) :
     ∀ (D : List MM) (z : MM), z ∈ Ps1.Uset ε →
@@ -425,9 +423,9 @@ lemma lWord_psM [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ) :
 end PsW
 
 /- English proof (translation)
-Introduce `ε Λ T μ`. Use `haveI : CompactSpace (KG ε) := compactSpace_KG ε`. Use `⟨Ps1.Uset ε, Ps1.isOpen_Uset, Ps1.posSet_subset_Uset, fun z hz k => hz k, fun D => ⟨?_, fun z hz => PsW.continuous_Fwk μ D hz, fun z hz => ?_⟩⟩` and prove the remaining obligations. Introduce `z hz`. Establish `heq : lWord D (psM T μ) =ᶠ[𝓝 z] fun x => PsW.cc T • ∫ k, PsW.G T μ D x k ∂(muK ε)` using `Filter.eventually_of_mem (Ps1.isOpen_Uset.mem_nhds hz) fun x hx => PsW.lWord_psM T μ D x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : DifferentiableAt ℂ (fun x => PsW.cc T • ∫ k, PsW.G T μ D x k ∂(muK ε)) z` using `((PsW.hasFDerivAt_intG T μ D hz).const_smul (PsW.cc T)).differentiableAt`. Conclude with `(hd.congr_of_eventuallyEq heq).differentiableWithinAt`. Rewrite using `[PsW.lWord_psM T μ D z hz]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem psM_word (n : ℕ) : PsMWordInterface n := by
   intro ε Λ T μ

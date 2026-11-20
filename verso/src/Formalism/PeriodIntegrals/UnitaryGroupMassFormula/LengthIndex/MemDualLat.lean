@@ -10,17 +10,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Set `S` to `nonZeroDivisors (𝓞 K)`. Establish `hV : IsLocalizedModule S (LinearMap.id : V →ₗ[𝓞 K] V)` using `isLocalizedModule_id S V K`. Establish `hK : IsLocalizedModule S (LinearMap.id : K →ₗ[𝓞 K] K)` using `isLocalizedModule_id S K K`. Use `haveI : IsLocalizedModule S L.subtype := { map_units := fun x => hV.map_units x surj := by`. Introduce `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy : y ∈ Submodule.span K (L : Set V)` using `hL ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨(⟨x, hx⟩, 1), by simp⟩`. Consider the case `zero => exact ⟨(0, 1), by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a, s⟩, ha⟩` from `hx`. Take `⟨⟨b, t⟩, hb⟩` from `hy`. Use `⟨(t • a + s • b, s * t), ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.smul_def, Submonoid.coe_mul, Submodule.subtype_apply, Submodule.coe_add, Submodule.coe_smul] at ha hb ⊢`. Rewrite using `[← ha, ← hb]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `module`. Consider the case `smul c x _ hx`. Take `⟨⟨a, s⟩, ha⟩` from `hx`. Take `⟨⟨p, q⟩, hpq⟩` from `IsLocalization.surj S c`. Establish `key : (q : 𝓞 K) • (c • x) = p • x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← algebraMap_smul K (q : 𝓞 K) (c • x), smul_smul, mul_comm]`. Simplify using `only at hpq`. Rewrite using `[hpq, algebraMap_smul]`. Use `⟨(p • a, q * s), ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.smul_def, Submonoid.coe_mul, Submodule.subtype_apply, Submodule.coe_smul] at ha ⊢`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul, key, smul_comm, ha]`. Use `exists_of_eq := fun {x₁ x₂} h => ⟨1, by rw [one_smul, one_smul]; exact Subtype.ext h⟩ }`. Use `⟨(IsLocalizedModule.lift S L.subtype g (fun x => hK.map_units x)).extendScalarsOfIsLocalization S K, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.extendScalarsOfIsLocalization_apply']`. Conclude with `IsLocalizedModule.lift_apply S L.subtype g _ a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ext_lat {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     (L : Submodule (𝓞 K) V) (hL : Submodule.span K (L : Set V) = ⊤) (g : L →ₗ[𝓞 K] K) :
@@ -64,40 +64,36 @@ lemma ext_lat {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsSc
 variable [StarRing K] (A : HLat K)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_dualLat {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     (M : Submodule (𝓞 K) V) (f : Module.Dual K V) :
     f ∈ Formalism.HN.dualLat M ↔ ∀ x ∈ M, f x ∈ Set.range (algebraMap (𝓞 K) K) := Iff.rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[mem_dualLat]`. Set `Q` to `imgE A (1 - e) A.L`. Use `haveI : Module.IsTorsionFree (𝓞 K) A.V := Module.IsTorsionFree.trans_faithfulSMul (𝓞 K) K A.V`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Module.IsTorsionFree (𝓞 K) Q := Function.Injective.moduleIsTorsionFree (Q.subtype) Subtype.val_injective (fun _ _ => rfl)`. Use `haveI : Module.Finite (𝓞 K) Q := Module.Finite.iff_fg.mpr (fg_img A hG (1 - e))`. Use `haveI : Module.FinitePresentation (𝓞 K) Q := Module.finitePresentation_of_finite _ _`. Use `haveI : Module.Projective (𝓞 K) Q := Module.Flat.projective_of_finitePresentation`. Set `g : A.L →ₗ[𝓞 K] Q` to `((1 - e).restrictScalars (𝓞 K)).submoduleMap A.L`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨s, hs⟩` from `Module.projective_lifting_property g LinearMap.id (LinearMap.submoduleMap_surjective _ _)`. Establish `hgs : ∀ q : Q, (1 - e) (s q : A.V) = q` using `fun q => by`. Establish `h1` using `LinearMap.congr_fun hs q`. Establish `h2` using `congrArg Subtype.val h1`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `r : A.L →ₗ[𝓞 K] A.V` to `A.L.subtype - A.L.subtype ∘ₗ s ∘ₗ g`. Establish `hr_apply : ∀ a : A.L, r a = (a : A.V) - (s (g a) : A.V)` using `fun a => rfl`. Establish `hr : ∀ a : A.L, r a ∈ cutE A e A.L`. Introduce `a`. Use `(mem_cutE A e A.L _).2 ⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[hr_apply]`. Conclude with `A.L.sub_mem a.2 (s (g a)).2`. Use `⟨r a, ?_⟩` and prove the remaining obligations. Establish `h0 : (1 - e) (r a) = 0`. Rewrite using `[hr_apply, map_sub, hgs]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(1 - e) (a : A.V) - (1 - e) (a : A.V) = 0`. Conclude with `sub_self _`. Establish `h3 : e (r a) = r a - (1 - e) (r a)` using `by simp`. Rewrite using `[h3, h0, sub_zero]`. Take `⟨φ, hφ⟩` from `ext_lat A.L hG.2.2 ((ψ.restrictScalars (𝓞 K)) ∘ₗ r)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hagree : ∀ y ∈ cutE A e A.L, φ y = ψ y`. Introduce `y hy`. Establish `hy'` using `(mem_cutE A e A.L y).1 hy`. Establish `hg0 : g ⟨y, hy'.1⟩ = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(1 - e) y = 0`. Rewrite using `[LinearMap.sub_apply, Module.End.one_apply, idem_of A he hy'.2, sub_self]`. Establish `hry : r ⟨y, hy'.1⟩ = y`. Rewrite using `[hr_apply, hg0, map_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hφ ⟨y, hy'.1⟩, LinearMap.comp_apply, hry]`. Both sides reduce to the same expression. Use `⟨φ, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Rewrite using `[hφ ⟨a, ha⟩]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h _ (hr _)`. Establish `hnK : ((n : ℕ) : K) ≠ 0` using `by exact_mod_cast hn0.ne'`. Establish `hcomp : φ ∘ₗ e = ψ ∘ₗ e`. Use `LinearMap.ext_on hG.2.2 ?_` and prove the remaining obligations. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ((n : ℕ) : 𝓞 K) • e a ∈ cutE A e A.L` using `part1 A hn (e a) ((mem_imgE A e A.L _).2 ⟨a, ha, rfl⟩)`. Establish `h1` using `hagree _ hmem`. Rewrite `h1` using `[LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower, Nat.cast_smul_eq_nsmul (𝓞 K), Nat.cast_smul_eq_nsmul (𝓞 K), ← Nat.cast_smul_eq_nsmul K, ← Nat.cast_smul_eq_nsmul K, smul_eq_mul, smul_eq_mul]`. Simplify using `only [LinearMap.comp_apply]`. Conclude with `mul_left_cancel₀ hnK h1`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h1 : ψ (e x) = ψ x` using `LinearMap.congr_fun hψ x`. Establish `h2 : φ (e x) = ψ (e x)` using `LinearMap.congr_fun hcomp x`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[h2, h1]`.
-
-Introduce and unpack `⟨φ, hφ, rfl⟩`. Rewrite using `[mem_dualLat]`. Introduce `m hm`. Take `⟨hmL, hmr⟩` from `(mem_cutE A e A.L m).1 hm`. Simplify using `only [LinearMap.comp_apply]`.
-
-Rewrite using `[idem_of A he hmr]`. Conclude with `hφ m hmL`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dual_part (hG : A.Good) {e : Module.End K A.V} (he : e * e = e) {n : ℕ} (hn0 : 0 < n)
     (hn : ∀ x ∈ A.L, ((n : ℕ) : 𝓞 K) • e x ∈ A.L) (ψ : Module.Dual K A.V) (hψ : ψ ∘ₗ e = ψ) :

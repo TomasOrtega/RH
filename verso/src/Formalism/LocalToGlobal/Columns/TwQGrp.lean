@@ -21,7 +21,7 @@ def qbInt (A : Matrix (Fin n) (Fin n) Kv) : Prop := ∀ i j, A i j ∈ Ov
 def qbDiv (c : Kv) (A : Matrix (Fin n) (Fin n) Kv) : Prop := ∀ i j, ∃ z ∈ Ov, A i j = c * z
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.one_apply]; split_ifs · exact one_mem _ · exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem qbInt_one : qbInt (1 : Matrix (Fin n) (Fin n) Kv) := fun i j => by
   rw [Matrix.one_apply]; split_ifs
@@ -29,7 +29,7 @@ theorem qbInt_one : qbInt (1 : Matrix (Fin n) (Fin n) Kv) := fun i j => by
   · exact zero_mem _
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => mul_mem (hA i k) (hB k j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qbInt_mul {A B : Matrix (Fin n) (Fin n) Kv} (hA : qbInt A) (hB : qbInt B) : qbInt (A * B) := by
   intro i j
@@ -37,12 +37,12 @@ theorem qbInt_mul {A B : Matrix (Fin n) (Fin n) Kv} (hA : qbInt A) (hB : qbInt B
   exact sum_mem fun k _ => mul_mem (hA i k) (hB k j)
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨0, zero_mem _, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem qbDiv_zero (c : Kv) : qbDiv c (0 : Matrix (Fin n) (Fin n) Kv) := fun _ _ => ⟨0, zero_mem _, by simp⟩
 
 /- English proof (translation)
-Introduce `i j` and use `by obtain ⟨z, hz, e⟩ := hA i j obtain ⟨z', hz', e'⟩ := hB i j exact ⟨z + z', Subring.add_mem _ hz hz', by rw [Matrix.add_apply, e, e', mul_add]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem qbDiv_add {c : Kv} {A B : Matrix (Fin n) (Fin n) Kv} (hA : qbDiv c A) (hB : qbDiv c B) : qbDiv c (A + B) := fun i j => by
   obtain ⟨z, hz, e⟩ := hA i j
@@ -50,14 +50,14 @@ theorem qbDiv_add {c : Kv} {A B : Matrix (Fin n) (Fin n) Kv} (hA : qbDiv c A) (h
   exact ⟨z + z', Subring.add_mem _ hz hz', by rw [Matrix.add_apply, e, e', mul_add]⟩
 
 /- English proof (translation)
-Introduce `i j` and use `by obtain ⟨z, hz, e⟩ := hA i j exact ⟨-z, Subring.neg_mem _ hz, by rw [Matrix.neg_apply, e, mul_neg]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem qbDiv_neg {c : Kv} {A : Matrix (Fin n) (Fin n) Kv} (hA : qbDiv c A) : qbDiv c (-A) := fun i j => by
   obtain ⟨z, hz, e⟩ := hA i j
   exact ⟨-z, Subring.neg_mem _ hz, by rw [Matrix.neg_apply, e, mul_neg]⟩
 
 /- English proof (translation)
-Introduce `i j` and use `by choose z hz e using hA refine ⟨∑ l, z i l * B l j, Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hz i l) (hB l j), ?_⟩ rw [Matrix.mul_apply, Finset.mul_sum] exact Finset.sum_congr rfl fun l _ => by rw [e i l, mul_assoc]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem qbDiv_mul_right {c : Kv} {A B : Matrix (Fin n) (Fin n) Kv} (hA : qbDiv c A) (hB : qbInt B) : qbDiv c (A * B) := fun i j => by
   choose z hz e using hA
@@ -66,9 +66,9 @@ theorem qbDiv_mul_right {c : Kv} {A B : Matrix (Fin n) (Fin n) Kv} (hA : qbDiv c
   exact Finset.sum_congr rfl fun l _ => by rw [e i l, mul_assoc]
 
 /- English proof (translation)
-Introduce `i j`. Use `choose z hz he using hB`. Use `⟨∑ k, A i k * z k j, sum_mem fun k _ => mul_mem (hA i k) (hz k j), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he k j, mul_left_comm]`.
+A detailed English derivation is pending.
 -/
 theorem qbDiv_mul_left {c : Kv} {A B : Matrix (Fin n) (Fin n) Kv} (hA : qbInt A) (hB : qbDiv c B) : qbDiv c (A * B) := by
   intro i j
@@ -105,17 +105,15 @@ def qbK (c : Kv) : Subgroup (GL (Fin n) Kv) where
     exact qbDiv_neg (qbDiv_mul_left ha2 ha3)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_qbK {c : Kv} {k : GL (Fin n) Kv} : k ∈ qbK c ↔ qbInt (k : Matrix (Fin n) (Fin n) Kv) ∧
     qbInt ((k⁻¹ : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv) ∧ qbDiv c ((k : Matrix (Fin n) (Fin n) Kv) - 1) := Iff.rfl
 
 /- English proof (translation)
-Take `⟨k1, k2, k3⟩` from `hk`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `qbInt_mul (qbInt_mul h2 k1) h1`. Rewrite using `[mul_inv_rev, mul_inv_rev, inv_inv, Units.val_mul, Units.val_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `qbInt_mul h2 (qbInt_mul k2 h1)`. Establish `e : ((h⁻¹ * k * h : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv) - 1 = ((h⁻¹ : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv) * ((k : Matrix (Fin n) (Fin n) Kv) - 1) * (h : Matrix (Fin n) (Fin n) Kv)`. Establish `hh : ((h⁻¹ : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv) * (h : Matrix (Fin n) (Fin n) Kv) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite using `[Units.val_mul, Units.val_mul, _root_.mul_sub, _root_.sub_mul, _root_.mul_one, hh]`.
-
-Rewrite using `[e]`. Conclude with `qbDiv_mul_right (qbDiv_mul_left h2 k3) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qbK_conj {c : Kv} {k h : GL (Fin n) Kv} (hk : k ∈ qbK c) (h1 : qbInt (h : Matrix (Fin n) (Fin n) Kv))
     (h2 : qbInt ((h⁻¹ : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv)) : h⁻¹ * k * h ∈ qbK c := by

@@ -4,7 +4,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ProjExists
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SepReal.interlaced_sub_single` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsInterlacedSubSingleOfSpread.lean&line=6#L6)
 -/

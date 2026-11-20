@@ -28,23 +28,21 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Sl.Unimod
 
 /- English proof (translation)
-Establish `addR : ∀ (v x y : Fin g → ℂ), hermForm Hm v (x + y) = hermForm Hm v x + hermForm Hm v y` using `fun v x y => by`. Simplify using `[hermForm, Matrix.mulVec_add, dotProduct_add]`. Establish `addL : ∀ (v v' x : Fin g → ℂ), hermForm Hm (v - v') x = hermForm Hm v x - hermForm Hm v' x` using `fun v v' x => by`. Simplify using `[hermForm, sub_dotProduct]`. Establish `smulR : ∀ (v x : Fin g → ℂ) (r : ℝ), hermForm Hm v (r • x) = r * hermForm Hm v x` using `fun v x r => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : star (r • x) = (r : ℂ) • star x`. Use extensionality with `i`. Simplify using the standard rewrite rules. Simplify using `only [hermForm, e, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Use `choose k hk using hw`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `kadd : ∀ a b : Λ, k (a + b) = k a + k b` using `fun a b => by`. Establish `h` using `hk (a + b)`. Rewrite `h` using `[Submodule.coe_add, addR, Complex.add_im, hk a, hk b]`. Conclude with `h.symm` after adjusting the coercions. Set `ℓ : Λ →ₗ[ℤ] ℤ` to `(AddMonoidHom.mk' k kadd).toIntLinearMap`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hB.2 ℓ`. Establish `hv : ∀ x ∈ Submodule.span ℝ (Λ : Set (Fin g → ℂ)), (hermForm Hm (w - c) x).im = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hE c ⟨x, hx⟩`. Establish `h' : Ef c ⟨x, hx⟩ = k ⟨x, hx⟩` using `LinearMap.congr_fun hc _`. Rewrite using `[addL, Complex.sub_im, ← h, h']`. Use `hk ⟨x, hx⟩` as an intermediate fact. Simplify using `only at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this, sub_self]`. Consider the case `zero => simp [hermForm]`. Consider the case `add x y _ _ hx hy => rw [addR, Complex.add_im, hx, hy, add_zero]`. Consider the case `smul r x _ hx => rw [smulR, Complex.im_ofReal_mul, hx, mul_zero]`. Establish `hI : (hermForm Hm (w - c) (Complex.I • (w - c))).im = 0` using `hv _ (by rw [hfull]; trivial)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hv0 : w - (c : Fin g → ℂ) = 0`. Assume the negation of the conclusion as `hne`. Establish `hp` using `hpos _ hne`. Establish `e : star (Complex.I • (w - (c : Fin g → ℂ))) = (-Complex.I) • star (w - (c : Fin g → ℂ))`. Use extensionality with `i`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `e' : hermForm Hm (w - c) (Complex.I • (w - c)) = -Complex.I * hermForm Hm (w - c) (w - c)`. Simplify using `only [hermForm, e, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Rewrite `hI` using `[e']`. Establish `: (hermForm Hm (w - c) (w - c)).re = 0` using `by simpa using hI`.
-
-Conclude with `hp.ne' this`. Rewrite using `[sub_eq_zero.1 hv0]`. Conclude with `c.2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_unimodular {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ))
     (hfull : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) (Hm : Matrix (Fin g) (Fin g) ℂ)
@@ -99,23 +97,23 @@ theorem mem_of_unimodular {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ))
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `hLφ : (D.t.PP.L.pull a.φ).IsLB` using `pull_isLB D.t.PP.isLB _`. Take `⟨hpr, hamp, hkt⟩` from `D.princ`. Use `D.tK.semi.smooth` as an intermediate fact. Use `D.tK.semi.geomConnected` as an intermediate fact. Establish `: ConnectedSpace D.tK.G.left` using `GeometricallyConnected.connectedSpace D.tK.G.hom D.tK.G.hom.isOpenMap`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨gd, hgd⟩` from `exists_dim_of_preconnected D.tK.G.hom (Classical.arbitrary _)`. Set `P₀ : Out.PolAV (Sp L)` to `{ A := D.tK.G, g := gd, smoothDim := hgd, L := D.tK.PP.L, isLB := D.tK.PP.isLB, ample := hamp, ktriv := hkt isAb := ⟨D.tK.semi.comm, D.tK.semi.smooth, hpr, D.tK.semi.geomConnected⟩ rigid := GlobalTheory.ObjDim.rigidified sym := GlobalTheory.ObjDim.sym }`. Take `⟨P', ψ, hψ, -, hm, t, ht⟩` from `GlobalTheory.polBaseChange_holds (Sp L) (Sp ℂ) (spMap σ) P₀`. Establish `hpb : IsGrpPullback P'.A D.tK.G (spMap σ) ψ`. Use `⟨hψ, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(Over.OverMorphism.ext hx : x₀ = Out.toBase hψ.w x), (Over.OverMorphism.ext hy : y₀ = Out.toBase hψ.w y), ← hm]`. Both sides reduce to the same expression. Establish `hpc : IsGrpPullback P'.A D.t.G (emb σ) (ψ ≫ D.m.φ)` using `(hpb.comp D.m.cart).congr (by rw [spMap_comp_spMap]) rfl`. Take `⟨e, hmon, he⟩` from `grpPullback_iso a.cart hpc`. Use `haveI := hmon`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rig, hrig⟩` from `P'.rigid`. Take `⟨u₀, H₀, χ₀, Ef, hu₀, -, hv, hw, -, -, hE, hB, -⟩` from `GlobalTheory.thetaUnifAV_closed P' rig hrig`. Establish `hol : IsHolTo (Set.univ : Set (Fin D.g → ℂ)) (fun w => (a.u.ex w ≫ e.hom).left)`. Simplify `GlobalTheory.HolTorsion.isHolTo_comp (Flat.PerGram.isHolTo_ex a.u) e.hom.left` using `only [Over.comp_left]`. Take `⟨F, hF, -⟩` from `GlobalTheory.existsUnique_linear_lift_of_isHolTo P'.A P'.isAb P'.L P'.g D.g u₀ hv hw (fun w => a.u.ex w ≫ e.hom) (fun p q => by rw [a.u.ex_add, MonObj.mul_comp]) hol`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hΛ : ∀ l ∈ a.u.Λ, F l ∈ u₀.Λ` using `fun l hl => (u₀.ker _).1 (by`. Rewrite using `[hF, (a.u.ker l).2 hl, MonObj.one_comp])`. Establish `back : ∀ z, F z ∈ u₀.Λ → z ∈ a.u.Λ` using `fun z hz => (a.u.ker z).1 (by`. Establish `h` using `(u₀.ker _).2 hz`. Rewrite `h` using `[hF]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h'` using `congrArg (· ≫ e.inv) h`. Simplify `h')` using `[MonObj.one_comp]`. Establish `hsurj : Function.Surjective F` using `by haveI := u₀.discrete`. Use `LinearMap.range_eq_top.1 (GlobalTheory.AHWeil.eq_top_of_add_discrete u₀.Λ _ fun w => ?_)` and prove the remaining obligations. Take `⟨z, hz⟩` from `a.u.ex_onto (u₀.ex w ≫ e.inv)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz' : u₀.ex (F z) = u₀.ex w`. Rewrite using `[hF, hz, Category.assoc, e.inv_hom_id, Category.comp_id]`. Establish `h` using `u₀.ex_add (w - F z) (F z)`. Rewrite `h` using `[sub_add_cancel, hz']`. Conclude with `⟨⟨w - F z, (u₀.ker _).1 (mul_eq_right.1 h.symm)⟩, z, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `i₁ : LBIso P'.L (D.tK.PP.L.pull ψ)` using `LBIso.symm ⟨t, ht⟩`. Establish `i₂ : LBIso D.tK.PP.L (D.t.PP.L.pull D.m.φ)`. Take `⟨w, hw, -⟩` from `D.m.lin`. Conclude with `⟨w, hw⟩`. Establish `i₃ : LBIso (D.tK.PP.L.pull ψ) (D.t.PP.L.pull (ψ ≫ D.m.φ))` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso i₂ ψ rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i₄ : LBIso P'.L (D.t.PP.L.pull (ψ ≫ D.m.φ))` using `LBIso.trans P'.isLB (pull_isLB D.tK.PP.isLB _) (pull_isLB D.t.PP.isLB _) i₁ i₃`. Establish `i₅ : LBIso (P'.L.pull e.hom.left) (D.t.PP.L.pull a.φ)` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso i₄ e.hom.left he.symm`. Establish `iso : LBIso (lbPow (D.t.PP.L.pull a.φ) 1) (lbPow (P'.L.pull e.hom.left) 1)` using `GlobalTheory.lbIso_lbPow (LBIso.symm i₅) 1`. Take `⟨hH, hχ⟩` from `GlobalTheory.appellHumbert_data_eq_of_lbIso_pow_pull a.A P'.A _ P'.L D.g P'.g a.u u₀ a.Hm H₀ a.χ χ₀ e.hom F hΛ 1 one_pos hLφ P'.isLB a.ah hu₀ hF iso`. Conclude with `⟨P'.g, u₀.Λ, H₀, χ₀, Ef, F, hΛ, u₀.full, hu₀.2.1, hE, hB, GlobalTheory.ThetaUnifCompare.chi_eq_one_or_of_sym P'.isLB P'.sym hu₀, hH, fun l => by simpa using hχ l, back, hsurj⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_compare (D : PPData H L) (σ : L →+* ℂ) (a : D.Frame σ) :
     ∃ (g' : ℕ) (Λ₀ : Submodule ℤ (Fin g' → ℂ)) (H₀ : Matrix (Fin g') (Fin g') ℂ) (χ₀ : Λ₀ → ℂ)
@@ -187,11 +185,11 @@ theorem exists_compare (D : PPData H L) (σ : L →+* ℂ) (a : D.Frame σ) :
     GlobalTheory.ThetaUnifCompare.chi_eq_one_or_of_sym P'.isLB P'.sym hu₀, hH, fun l => by simpa using hχ l, back, hsurj⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H L _ _ D σ a`. Establish `hLφ : (D.t.PP.L.pull a.φ).IsLB` using `pull_isLB D.t.PP.isLB _`. Take `⟨g', Λ₀, H₀, χ₀, Ef, F, hΛ, hfull, hpos, hE, hB, hχ₀, hH, hχ, back, hsurj⟩` from `exists_compare D σ a`. Use `⟨fun l l' => ?_, fun w hw => ?_, fun l l' => GlobalTheory.FrameValue.chi_add hLφ a.ah l l', fun l => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `GlobalTheory.FrameValue.exists_int_im hLφ a.ah l l'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, hn.symm⟩`. Use `back w (mem_of_unimodular Λ₀ hfull H₀ hpos Ef hE hB (F w) fun l₀ => ?_)` and prove the remaining obligations. Take `⟨z, hz⟩` from `hsurj l₀`. Establish `hzΛ : z ∈ a.u.Λ` using `back z (hz ▸ l₀.2)`. Take `⟨k, hk⟩` from `hw ⟨z, hzΛ⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, ← hH]`. Conclude with `hk`. Rewrite using `[hχ l]`. Apply the tactic sequence `rcases hχ₀ ⟨F l, hΛ l l.2⟩ with h | h <;> simp [h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem frame_unimodular : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (σ : L →+* ℂ) (a : D.Frame σ), (∀ l l' : a.u.Λ, ∃ k : ℤ, (a.herm l l').im = k) ∧ (∀ w : Fin D.g → ℂ, (∀ l : a.u.Λ, ∃ k : ℤ, (a.herm w l).im = k) → w ∈ a.u.Λ) ∧ (∀ l l' : a.u.Λ, a.χ (l + l') = a.χ l * a.χ l' * Complex.exp (Real.pi * Complex.I * (a.herm l l').im)) ∧ ∀ l : a.u.Λ, a.χ l ^ 2 = 1 := by
   intro E _ _ _ H L _ _ D σ a

@@ -9,25 +9,23 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology
 
 /- English proof (translation)
-Take `⟨N, k, f, hNo, hwN, hf, hXN⟩` from `hX`. Take `⟨W, hW, hisoW⟩` from `hiso`. Take `⟨r₀, hr₀, hball⟩` from `Metric.mem_nhds_iff.1 (Filter.inter_mem (Filter.inter_mem hU (hNo.mem_nhds hwN)) hW)`. Use `set r := r₀ / 2 with hr`. Establish `hr0 : 0 < r` using `half_pos hr₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcb : Metric.closedBall w r ⊆ U ∩ N ∩ W` using `(Metric.closedBall_subset_ball (half_lt_self hr₀)).trans hball`. Use `set Z : Set (σ → ℂ) := Metric.closedBall w r ∩ ⋂ i, (Metric.closedBall w r ∩ f i ⁻¹' {0}) with hZ`. Establish `hZc : IsClosed Z`. Use `Metric.isClosed_closedBall.inter (isClosed_iInter fun i => ?_)` and prove the remaining obligations. Conclude with `((hf i).continuousOn.mono fun z hz => (hcb hz).1.2).preimage_isClosed_of_isClosed Metric.isClosed_closedBall isClosed_singleton`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hZk : IsCompact Z` using `(isCompact_closedBall w r).of_isClosed_subset hZc Set.inter_subset_left`. Establish `hZX : ∀ z ∈ Metric.closedBall w r, (z ∈ X ↔ z ∈ Z)`. Introduce `z hz`. Establish `hzN : z ∈ N` using `(hcb hz).1.2`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hzX`. Establish `h1 : z ∈ X ∩ N` using `⟨hzX, hzN⟩`. Rewrite `h1` using `[hXN]`. Conclude with `⟨hz, Set.mem_iInter.2 fun i => ⟨hz, h1.2 i⟩⟩`. Introduce `hzZ`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : z ∈ {z | z ∈ N ∧ ∀ i, f i z = 0}` using `⟨hzN, fun i => (Set.mem_iInter.1 hzZ.2 i).2⟩`. Rewrite `h2` using `[← hXN]`. Conclude with `h2.1`. Establish `hSk : IsCompact (Z ∩ Metric.sphere w r)` using `hZk.inter_right Metric.isClosed_sphere`. Establish `hAS : A w ∉ A '' (Z ∩ Metric.sphere w r)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨x, ⟨hxZ, hxs⟩, hxA⟩`. Establish `hxcb : x ∈ Metric.closedBall w r` using `Metric.sphere_subset_closedBall hxs`. Establish `hxw` using `hisoW x ⟨(hZX x hxcb).2 hxZ, (hcb hxcb).2⟩ hxA`. Rewrite `hxs` using `[hxw, Metric.mem_sphere, dist_self]`. Conclude with `hr0.ne hxs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨ε, hε, hεS⟩` from `Metric.mem_nhds_iff.1 ((hSk.image A.continuous).isClosed.isOpen_compl.mem_nhds hAS)`. Use `⟨Metric.ball w r ∩ A ⁻¹' Metric.ball (A w) ε, Metric.ball (A w) ε, Metric.isOpen_ball.inter (Metric.isOpen_ball.preimage A.continuous), ?_, ⟨hw, Metric.mem_ball_self hr0, Metric.mem_ball_self hε⟩, Metric.isOpen_ball, (convex_ball _ _).isPreconnected, fun x hx => hx.2.2, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun x hx => (hcb (Metric.ball_subset_closedBall hx.1)).1.1`. Introduce `K hKD hK`. Establish `heq : {x | x ∈ X ∩ (Metric.ball w r ∩ A ⁻¹' Metric.ball (A w) ε) ∧ A x ∈ K} = Z ∩ A ⁻¹' K`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hxX, hxb, -⟩, hxK⟩`. Conclude with `⟨(hZX x (Metric.ball_subset_closedBall hxb)).1 hxX, hxK⟩`. Introduce and unpack `⟨hxZ, hxK⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxcb : x ∈ Metric.closedBall w r` using `hxZ.1`. Use `⟨⟨(hZX x hxcb).2 hxZ, ?_, hKD hxK⟩, hxK⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hxb`. Establish `hxs : x ∈ Metric.sphere w r` using `Metric.mem_sphere.2 (le_antisymm (Metric.mem_closedBall.1 hxcb) (not_lt.1 fun h => hxb (Metric.mem_ball.2 h)))`. Conclude with `hεS (hKD hxK) ⟨x, ⟨hxZ, hxs⟩, rfl⟩`.
-
-Rewrite using `[heq]`. Conclude with `hZk.inter_right (hK.isClosed.preimage A.continuous)`. Conclude with `fun x hx hxA => hisoW x ⟨hx.1, (hcb (Metric.ball_subset_closedBall hx.2.1)).2⟩ hxA`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_proper_projection_nbhd {σ : Type} [Fintype σ] {X : Set (σ → ℂ)} {w : σ → ℂ} {d : ℕ}
     (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)) (hX : IsAnalyticNear X w) (hw : w ∈ X)
@@ -98,9 +96,9 @@ theorem exists_proper_projection_nbhd {σ : Type} [Fintype σ] {X : Set (σ → 
   · exact fun x hx hxA => hisoW x ⟨hx.1, (hcb (Metric.ball_subset_closedBall hx.2.1)).2⟩ hxA
 
 /- English proof (translation)
-Introduce `σ _ X w hX hirr U hU`. Take `⟨d, A, hiso, hinj⟩` from `hproj σ X w hX hirr`. Take `⟨N₀, hN₀, hcovB⟩` from `hcov σ X w d A hX hirr hiso hinj`. Take `⟨B, D, hBo, hBU, hwB, hDo, hDc, hmaps, hprop, hisoB⟩` from `exists_proper_projection_nbhd A hX hirr.1 hiso (Filter.inter_mem hU hN₀)`. Take `⟨δ, N, hP⟩` from `hcovB B D hBo (hBU.trans Set.inter_subset_right) hwB hDo hDc hmaps hprop hisoB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨d, A, B, D, δ, N, hBU.trans Set.inter_subset_left, hP⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocalParametrisation.proof (hproj : GermFiniteProjection.Statement)
     (hcov : FiniteGermProjectionCover.Statement) : LocalParametrisation.Statement := by

@@ -13,9 +13,9 @@ open scoped BigOperators Pointwise
 namespace GlobalTheory.HermGauss
 
 /- English proof (translation)
-Use `split_ifs with hf`. Simplify using `[hf]`. Use `push_neg at hf`. Take `⟨a, ha⟩` from `hf`. Establish `e : ∑ b, f b = f a * ∑ b, f b`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum, ← Equiv.sum_comp (Equiv.addLeft a)]`. Conclude with `Finset.sum_congr rfl fun b _ => h a b`. Establish `: (1 - f a) * ∑ b, f b = 0` using `by linear_combination e`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 ha.symm)`.
+A detailed English derivation is pending.
 -/
 theorem sum_char {G : Type} [AddCommGroup G] [Fintype G] (f : G → ℂ) (h0 : f 0 = 1)
     (h : ∀ a b, f (a + b) = f a * f b) :
@@ -35,13 +35,13 @@ variable {R : Type} [CommRing R] {σ : R →+* R} {M : Type} [AddCommGroup M] [M
   {φ : M → ℂ} {β : M → M → ℂ}
 
 /- English proof (translation)
-Introduce `h` and use `h0 (x + y) (by rw [h1, h, mul_zero])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem beta_ne (h0 : ∀ x, φ x ≠ 0) (h1 : ∀ x y, φ (x + y) = φ x * φ y * β x y) (x y : M) :
     β x y ≠ 0 := fun h => h0 (x + y) (by rw [h1, h, mul_zero])
 
 /- English proof (translation)
-Use `h1 x y` as an intermediate fact. Rewrite `this` using `[add_comm, h1, mul_comm (φ y)]`. Conclude with `(mul_left_cancel₀ (mul_ne_zero (h0 x) (h0 y)) this).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem beta_comm (h0 : ∀ x, φ x ≠ 0) (h1 : ∀ x y, φ (x + y) = φ x * φ y * β x y) (x y : M) :
     β x y = β y x := by
@@ -50,7 +50,7 @@ theorem beta_comm (h0 : ∀ x, φ x ≠ 0) (h1 : ∀ x y, φ (x + y) = φ x * φ
   exact (mul_left_cancel₀ (mul_ne_zero (h0 x) (h0 y)) this).symm
 
 /- English proof (translation)
-Use `h2 0 0 y` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_left_cancel₀ (beta_ne h0 h1 0 y) (by rw [mul_one]; exact this)).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem beta_zero (h0 : ∀ x, φ x ≠ 0) (h1 : ∀ x y, φ (x + y) = φ x * φ y * β x y)
     (h2 : ∀ x x' y, β (x + x') y = β x y * β x' y) (y : M) : β 0 y = 1 := by
@@ -59,7 +59,7 @@ theorem beta_zero (h0 : ∀ x, φ x ≠ 0) (h1 : ∀ x y, φ (x + y) = φ x * φ
   exact (mul_left_cancel₀ (beta_ne h0 h1 0 y) (by rw [mul_one]; exact this)).symm
 
 /- English proof (translation)
-Use `h1 0 0` as an intermediate fact. Rewrite `this` using `[add_zero, beta_zero h0 h1 h2, mul_one]`. Conclude with `(mul_left_cancel₀ (h0 0) (by rw [mul_one]; exact this)).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_zero (h0 : ∀ x, φ x ≠ 0) (h1 : ∀ x y, φ (x + y) = φ x * φ y * β x y)
     (h2 : ∀ x x' y, β (x + x') y = β x y * β x' y) : φ 0 = 1 := by
@@ -68,7 +68,7 @@ theorem phi_zero (h0 : ∀ x, φ x ≠ 0) (h1 : ∀ x y, φ (x + y) = φ x * φ 
   exact (mul_left_cancel₀ (h0 0) (by rw [mul_one]; exact this)).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ carrier := {y | ∀ x ∈ X, β y x = 1} add_mem' := fun {a b} ha hb x hx => by rw [h2, ha x hx, hb x hx, one_mul] zero_mem' := fun x _ => hz x smul_mem' := fun c a ha x hx => by rw [h3]; exact ha _ (X.smul_mem _ hx) }, fun _ => Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_orth (hz : ∀ y, β 0 y = 1) (h2 : ∀ x x' y, β (x + x') y = β x y * β x' y)
     (h3 : ∀ (a : R) x y, β (a • x) y = β x (σ a • y)) (X : Submodule R M) :
@@ -79,7 +79,7 @@ theorem exists_orth (hz : ∀ y, β 0 y = 1) (h2 : ∀ x x' y, β (x + x') y = �
      smul_mem' := fun c a ha x hx => by rw [h3]; exact ha _ (X.smul_mem _ hx) }, fun _ => Iff.rfl⟩
 
 /- English proof (translation)
-Rewrite using `[sum_char (fun x : X => β y x) (by rw [hc]; exact hz y) (fun a b => by rw [hc y, hc y, hc y]; exact h2 _ _ _)]`. Simplify using `only [hY, Subtype.forall]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_beta [Fintype M] (hc : ∀ x y, β x y = β y x) (hz : ∀ y, β 0 y = 1)
     (h2 : ∀ x x' y, β (x + x') y = β x y * β x' y) {X Y : Submodule R M}
@@ -90,11 +90,11 @@ theorem sum_beta [Fintype M] (hc : ∀ x y, β x y = β y x) (hz : ∀ y, β 0 y
   simp only [hY, Subtype.forall]
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite M`. Establish `e1 : ∑ y : M, ∑ x : X, β y x = (Nat.card X * Nat.card Y : ℕ)`. Simplify using `only [sum_beta hc hz h2 hY]`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, Nat.cast_mul, mul_comm, Nat.card_eq_fintype_card (α := Y), Fintype.card_subtype]`. Establish `e2 : ∑ x : X, ∑ y : M, β y x = (Nat.card M : ℕ)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_eq_single (0 : X)]`. Simplify using `[hc _ 0, hz]`. Introduce `x _ hx`. Rewrite using `[sum_char (fun y => β y x) (hz _) (fun a b => h2 _ _ _), if_neg]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx (Subtype.ext (h4 _ fun y => by rw [hc]; exact h y))`. Simplify using the standard rewrite rules. Rewrite `e1` using `[Finset.sum_comm, e2]`. Conclude with `e1.symm` after adjusting the coercions.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_mul_card_orth [Finite M] (hc : ∀ x y, β x y = β y x) (hz : ∀ y, β 0 y = 1)
     (h2 : ∀ x x' y, β (x + x') y = β x y * β x' y) (h4 : ∀ x, (∀ y, β x y = 1) → x = 0)
@@ -117,9 +117,9 @@ theorem card_mul_card_orth [Finite M] (hc : ∀ x y, β x y = β y x) (hz : ∀ 
   exact_mod_cast e1.symm
 
 /- English proof (translation)
-Establish `hn : (Nat.card X : ℂ) ≠ 0` using `by exact_mod_cast (Nat.card_pos (α := X)).ne'`. Apply `mul_left_cancel₀ hn` to reduce the goal to its premises. Establish `e1 : ∑ x : X, ∑ y : M, φ (y + x) = Nat.card X * ∑ y, φ y`. Establish `e0 : ∀ x : M, ∑ y, φ (y + x) = ∑ y, φ y` using `fun x => Equiv.sum_comp (Equiv.addRight x) φ`. Simplify using `[e0]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e1, Finset.sum_comm, Finset.mul_sum, ← Finset.sum_subtype (Finset.univ.filter (· ∈ Y)) (by simp) (fun y => (Nat.card X : ℂ) * φ y), Finset.sum_filter]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun x : X => φ y * β y x) (fun x _ => by rw [h1, hX _ x.2, mul_one]), ← Finset.mul_sum, sum_beta hc hz h2 hY]`. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_eq_sum_orth [Fintype M] (hc : ∀ x y, β x y = β y x) (hz : ∀ y, β 0 y = 1)
     (h1 : ∀ x y, φ (x + y) = φ x * φ y * β x y)
@@ -140,9 +140,9 @@ theorem sum_eq_sum_orth [Fintype M] (hc : ∀ x y, β x y = β y x) (hz : ∀ y,
   split_ifs <;> simp [mul_comm]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SumCompSurjective.sum_comp_surjective`. Consider the case `exact _root_.GlobalTheory.SumCompSurjective.sum_comp_surjective`. Consider the case `(apply _root_.GlobalTheory.SumCompSurjective.sum_comp_surjective <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SumCompSurjective.sum_comp_surjective <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SumCompSurjective.sum_comp_surjective <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SumCompSurjective.sum_comp_surjective ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sum_comp_surj {G Q : Type} [AddCommGroup G] [AddCommGroup Q] [Fintype G] [Fintype Q]
     (π : G →+ Q) (hπ : Function.Surjective π) (g : Q → ℂ) :
@@ -168,31 +168,27 @@ variable {R : Type} [CommRing R] {σ : R →+* R} {M : Type} [AddCommGroup M] [M
   {φ : M → ℂ} {β : M → M → ℂ}
 
 /- English proof (translation)
-Take `⟨h0, h1, h2, h3, h4, h5⟩` from `h`. Establish `hc` using `beta_comm h0 h1`. Establish `hz` using `beta_zero h0 h1 h2`. Establish `hXY : X ≤ Y` using `fun x hx => (hY x).2 fun x' hx' => by`. Use `h1 x x'` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hX _ (X.add_mem hx hx'), hX _ hx, hX _ hx', one_mul, one_mul, eq_comm]`. Then use the resulting hypothesis. Establish `c1` using `card_mul_card_orth hc hz h2 h4 hY`. Establish `c2 : Nat.card Y = Nat.card X * Nat.card (Y ⧸ X.submoduleOf Y)`. Rewrite using `[Submodule.card_eq_card_quotient_mul_card (X.submoduleOf Y), Nat.card_congr (Submodule.submoduleOfEquivOfLe hXY).toEquiv]`. Take `⟨Z, hZ⟩` from `exists_orth hz h2 h3 Y`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `c3` using `card_mul_card_orth hc hz h2 h4 hZ`. Establish `hXZ : X = Z`. Establish `hle : X ≤ Z` using `fun x hx => (hZ x).2 fun y hy => by rw [hc]; exact (hY y).1 hy x hx`. Establish `hcard : Nat.card Z = Nat.card X`. Rewrite `c3` using `[← c1, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Nat.eq_of_mul_eq_mul_right Nat.card_pos c3`. Conclude with `SetLike.coe_injective (Set.Finite.eq_of_subset_of_card_le (Set.toFinite _) hle hcard.le)`. Use `⟨by rw [← c1, c2], ?_⟩` and prove the remaining obligations. Set `π` to `(X.submoduleOf Y).mkQ`. Establish `hπ : Function.Surjective π` using `Submodule.mkQ_surjective _`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hout : ∀ y : Y, ∃ x ∈ X, ((Quotient.out (π y) : Y) : M) = y + x` using `fun y => ⟨((Quotient.out (π y) - y : Y) : M), (Submodule.Quotient.eq (X.submoduleOf Y)).1 (Quotient.out_eq (π y)), by simp⟩`. Set `φ' : (Y ⧸ X.submoduleOf Y) → ℂ` to `fun q => φ (Quotient.out q : Y)`. Set `β' : (Y ⧸ X.submoduleOf Y) → (Y ⧸ X.submoduleOf Y) → ℂ` to `fun p q => β (Quotient.out p : Y) (Quotient.out q : Y)`. Establish `hφ : ∀ y : Y, φ' (π y) = φ y` using `fun y => by`. Take `⟨x, hx, e⟩` from `hout y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [φ']`. Rewrite using `[e, h1, hX x hx, (hY y).1 y.2 x hx, mul_one, mul_one]`. Establish `hβ : ∀ y y' : Y, β' (π y) (π y') = β y y'` using `fun y y' => by`. Take `⟨x, hx, e⟩` from `hout y`. Take `⟨x', hx', e'⟩` from `hout y'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [β']`. Rewrite using `[e, h2, hc x, (hY _).1 (Quotient.out (π y') : Y).2 x hx, mul_one, e', hc, h2, hc x', (hY y).1 y.2 x' hx', mul_one, hc]`. Use `⟨φ', β', ⟨fun q => h0 _, fun p q => ?_, fun p p' q => ?_, fun a p q => ?_, fun p hp => ?_, fun p => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `hπ p`. Take `⟨q, rfl⟩` from `hπ q`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_add, hφ, hφ, hφ, hβ]`. Conclude with `h1 _ _`. Take `⟨p, rfl⟩` from `hπ p`. Take `⟨p', rfl⟩` from `hπ p'`. Take `⟨q, rfl⟩` from `hπ q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_add, hβ, hβ, hβ]`. Conclude with `h2 _ _ _`. Take `⟨p, rfl⟩` from `hπ p`. Take `⟨q, rfl⟩` from `hπ q`. Rewrite using `[← map_smul, ← map_smul, hβ, hβ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3 _ _ _`. Take `⟨p, rfl⟩` from `hπ p`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(p : M) ∈ X`. Rewrite using `[hXZ, hZ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Equip the data with the indicated structure.
 
-Introduce `y hy`. Conclude with `(hβ p ⟨y, hy⟩).symm.trans (hp _)`. Take `⟨p, rfl⟩` from `hπ p`. Take `⟨χ, hχ, hχ'⟩` from `h5 (p : M)`. Conclude with `⟨χ, hχ, fun a => by rw [← map_smul, hφ]; exact hχ' a⟩`.
-
-Use `letI := Fintype.ofFinite M haveI : Finite (Y ⧸ X.submoduleOf Y) := Finite.of_surjective _ hπ`. Use `letI := Fintype.ofFinite (Y ⧸ X.submoduleOf Y)`. Take `⟨n, hn, e⟩` from `sum_comp_surj π.toAddMonoidHom hπ φ'`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, ← e, sum_eq_sum_orth hc hz h1 h2 hY hX]`.
-
-Conclude with `Finset.sum_congr rfl fun y _ => (hφ y).symm`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isotropic_step [Finite M] (h : IsHerm σ φ β) {X Y : Submodule R M}
     (hY : ∀ y, y ∈ Y ↔ ∀ x ∈ X, β y x = 1) (hX : ∀ x ∈ X, φ x = 1) :
@@ -266,15 +262,15 @@ theorem isotropic_step [Finite M] (h : IsHerm σ φ β) {X Y : Submodule R M}
     exact Finset.sum_congr rfl fun y _ => (hφ y).symm
 
 /- English proof (translation)
-Take `⟨h0, h1, h2, h3, h4, h5⟩` from `h`. Establish `hc` using `beta_comm h0 h1`. Establish `hz` using `beta_zero h0 h1 h2`. Establish `c1` using `card_mul_card_orth hc hz h2 h4 hY`. Establish `hinj : Function.Injective (fun p : X × Y => (p.1 : M) + p.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, b⟩ ⟨a', b'⟩ e`. Establish `e' : (a : M) - a' = b' - b`. Simplify using `only at e`. Rewrite using `[sub_eq_sub_iff_add_eq_add, e, add_comm]`. Establish `hm : (a : M) - a' ∈ X ⊓ Y` using `⟨X.sub_mem a.2 a'.2, e' ▸ Y.sub_mem b'.2 b.2⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[hd, Submodule.mem_bot]`. Rewrite `e'` using `[hm]`. Conclude with `Prod.ext (Subtype.ext (sub_eq_zero.1 hm)) (Subtype.ext (sub_eq_zero.1 e'.symm).symm)`. Establish `hbij` using `hinj.bijective_of_nat_card_le (by rw [Nat.card_prod, c1])`. Use `⟨c1.symm, ⟨fun y => h0 _, fun _ _ => h1 _ _, fun _ _ _ => h2 _ _ _, fun _ _ _ => h3 _ _ _, fun y hy => Subtype.ext (h4 _ fun z => ?_), fun y => h5 _⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a, b⟩, rfl⟩` from `hbij.2 z`. Simplify using `only`. Rewrite using `[hc, h2, hc a, hc b, (hY _).1 y.2 _ a.2, one_mul]`. Conclude with `hy b`. Use `letI := Fintype.ofFinite M`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, ← hbij.sum_comp φ, Fintype.sum_prod_type, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[h1, hc, (hY _).1 b.2 _ a.2, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_step [Finite M] (h : IsHerm σ φ β) {X Y : Submodule R M}
     (hY : ∀ y, y ∈ Y ↔ ∀ x ∈ X, β y x = 1) (hd : X ⊓ Y = ⊥) :
@@ -314,19 +310,19 @@ variable {R : Type} [CommRing R] {σ : R →+* R} {M : Type} [AddCommGroup M] [M
   {φ : M → ℂ} {β : M → M → ℂ}
 
 /- English proof (translation)
-Take `⟨h0, h1, h2, h3, h4, h5⟩` from `h`. Establish `hz` using `beta_zero h0 h1 h2`. Take `⟨χ, hχ, hχ'⟩` from `h5 x`. Establish `hst : ∀ a ∈ P, σ a ∈ P`. Introduce `p hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hn`. Take `⟨c, p', hp', e⟩` from `hP.exists_inv hn`. Apply `ha` to reduce the goal to its premises. Establish `e1 : a₀ • x = (a₀ * (c * σ p)) • x`. Rewrite using `[mul_smul, eq_sub_of_add_eq e, sub_smul, one_smul, (hx _).1 hp', sub_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (a₀ * (σ c * p)) • x = 0` using `(hx _).1 (P.mul_mem_left _ (P.mul_mem_left _ hp))`. Rewrite using `[e1, hχ', ← phi_zero h0 h1 h2, ← e2, hχ']`. Use `congr 1`. Simplify using `only [map_mul, hσ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hb : ∀ a b : R, β (a • x) (b • x) = χ (a * σ b + σ a * b)` using `fun a b => by`. Use `h1 (a • x) (b • x)` as an intermediate fact. Rewrite using `[← add_smul, hχ' (a + b), show (a + b) * σ (a + b) = a * σ a + b * σ b + (a * σ b + σ a * b) by`. Rewrite using `[map_add]`. Use the proof step `ring, hχ, hχ, ← hχ', ← hχ'] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_left_cancel₀ (mul_ne_zero (h0 _) (h0 _)) this).symm`. Establish `hn : ∀ a : R, β ((a * σ a) • x) (w • x) = φ (a • x)` using `fun a => by`. Rewrite using `[hb, hχ']`. Use `congr 1`. Rewrite using `[map_mul, hσ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(a * σ a) * hw`. Use `⟨hst, by rwa [hn], fun hne => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, e⟩` from `GlobalTheory.NormGauss.finsum_norm_neg R σ P hσ hst hne (fun a => β (a • x) (w • x)) (fun a b => by rw [add_smul, h2]) (fun a haP => by simp only [(hx a).1 haP, hz]) ⟨a₀ * σ a₀ * w, by`. Establish `: a₀ * σ a₀ * w + σ (a₀ * σ a₀ * w) = a₀ * σ a₀`. Simplify using `only [map_mul, hσ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take the linear combination `(a₀ * σ a₀) * hw`. Rewrite using `[this, hn]⟩` and apply the resulting hypothesis. Conclude with `⟨m, hm, by simpa only [hn] using e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem line_step (h : IsHerm σ φ β) (hσ : ∀ a, σ (σ a) = a) {w : R} (hw : w + σ w = 1) {x : M}
     {P : Ideal R} [hP : P.IsMaximal] [Finite (R ⧸ P)] (hx : ∀ a, a ∈ P ↔ a • x = 0) {a₀ : R}
@@ -371,29 +367,25 @@ theorem line_step (h : IsHerm σ φ β) (hσ : ∀ a, σ (σ a) = a) {w : R} (hw
 end
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `M _ _ _ φ β hn h`. Establish `h'` using `h`. Take `⟨h0, h1, h2, h3, h4, h5⟩` from `h'`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `beta_comm h0 h1`. Establish `hz` using `beta_zero h0 h1 h2`. Break down `eq_bot_or_exists_atom_le (⊤ : Submodule R M) with htop | ⟨X, hX, -⟩` into its components or cases. Use `haveI : Subsingleton M := ⟨fun a b => by`. Establish `ha : a - b ∈ (⊤ : Submodule R M)` using `trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[htop, Submodule.mem_bot, sub_eq_zero] at ha⟩` and apply the resulting hypothesis. Use `haveI : Unique M := uniqueOfSubsingleton 0`. Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_unique, Nat.card_unique, s1, Subsingleton.elim default (0 : M), phi_zero h0 h1 h2]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Y, hY⟩` from `exists_orth hz h2 h3 X`. Establish `hX1 : 1 < Nat.card X` using `Finite.one_lt_card_iff_nontrivial.2 (Submodule.nontrivial_iff_ne_bot.2 hX.1)`. Distinguish the cases in `hφ : ∀ x ∈ X, φ x = 1`. Take `⟨c, φ', β', h', k, hk, e⟩` from `isotropic_step h hY hφ haveI : Finite (Y ⧸ X.submoduleOf Y) := Finite.of_surjective _ (Submodule.mkQ_surjective _)`. Establish `hq : 0 < Nat.card (Y ⧸ X.submoduleOf Y)` using `Nat.card_pos`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr, e'⟩` from `ih _ (by rw [← hn, c]; nlinarith [Nat.mul_pos hq (zero_lt_one.trans hX1)]) _ φ' β' rfl h'`. Use `⟨k * r, by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[e, e', c, ← Nat.card_prod, smul, Nat.card_prod, smul, ← mul_assoc (s _), ssq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push_neg at hφ`. Take `⟨x, hxX, hx1⟩` from `hφ`. Establish `hx0 : x ≠ 0` using `by rintro rfl; exact hx1 (phi_zero h0 h1 h2)`. Set `f` to `LinearMap.toSpanSingleton R M x`. Establish `hr : LinearMap.range f = X`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `(hX.le_iff.1 ?_).resolve_left fun hb => hx0 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `X.smul_mem a hxX`. Establish `: x ∈ LinearMap.range f` using `⟨1, one_smul _ _⟩`. Rewrite `this` using `[hb, Submodule.mem_bot]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Set `P : Ideal R` to `LinearMap.ker f`. Set `e : (R ⧸ P) ≃ₗ[R] X` to `f.quotKerEquivRange.trans (LinearEquiv.ofEq _ _ hr)`. Establish `he : ∀ q : R ⧸ P, ((e q : X) : M) = Quotient.out q • x` using `fun q => by conv_lhs => rw [← Quotient.out_eq q]`. Both sides reduce to the same expression. Use `haveI : IsSimpleModule R X := isSimpleModule_iff_isAtom.2 hX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : P.IsMaximal := Ideal.isMaximal_def.2 (isSimpleModule_iff_isCoatom.1 (IsSimpleModule.congr e))`. Use `haveI : Finite (R ⧸ P) := Finite.of_equiv _ e.toEquiv.symm`. Take `⟨hst, hnd, hsum⟩` from `line_step h hσ hw (x := x) (P := P) (a₀ := 1) (fun a => Iff.rfl) (by rwa [one_smul])`. Take `⟨hs, hne⟩` from `sP P inferInstance hst`. Take `⟨m, hm, hsum⟩` from `hsum hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : X ⊓ Y = ⊥` using `(hX.le_iff.1 inf_le_left).resolve_right fun hh => hnd ((hY _).1 (inf_eq_left.1 hh (X.smul_mem _ hxX)) _ (X.smul_mem _ hxX))`. Take `⟨c, h', e1⟩` from `split_step h hY hd`. Establish `hq : 0 < Nat.card Y` using `Nat.card_pos`. Take `⟨r, hr, e'⟩` from `ih _ (by rw [← hn, c]; nlinarith) Y _ _ rfl h'`. Use `⟨m * r, by positivity, ?_⟩` and prove the remaining obligations.
-
-Establish `e2 : ∑ᶠ x : X, φ x = -(m : ℂ)`. Rewrite using `[← hsum, ← finsum_comp_equiv e.toEquiv]`. Conclude with `finsum_congr fun q => congrArg φ (he q)`. Rewrite using `[e1, e', e2, c, smul, ← Nat.card_congr e.toEquiv, hs]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gauss_sign {R : Type} [CommRing R] (σ : R →+* R) (hσ : ∀ a, σ (σ a) = a) {w : R}
     (hw : w + σ w = 1) (s : ℕ → ℂ) (s1 : s 1 = 1) (ssq : ∀ n, s n * s n = 1)
@@ -467,11 +459,11 @@ theorem gauss_sign {R : Type} [CommRing R] (σ : R →+* R) (hσ : ∀ a, σ (σ
     ring
 
 /- English proof (translation)
-Introduce `D M _ _ _ φ β h0 h1 h2 h3 h4 h5`. Take `⟨w, hw, -⟩` from `GlobalTheory.TraceOne.exists_trace_one D 2 Nat.prime_two`. Use `gauss_sign (GlobalTheory.InertSign.sgO D) (GlobalTheory.InertSign.sgO_sgO D) hw (sgn D) sgn_one sgn_mul_self (fun A B _ _ _ _ _ _ => sgn_mul (GlobalTheory.T.finite_module_sign_eq_neg_one_pow_length D A).1 (GlobalTheory.T.finite_module_sign_eq_neg_one_pow_length D B).1 Nat.card_po …` and prove the remaining obligations. Establish `hfix : D.host.conj • P = P`. Apply `le_antisymm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Ideal.map_le_iff_le_comap.2 fun a ha => hst a ha`. Introduce `a ha`. Use `Ideal.mem_map_of_mem (GlobalTheory.InertSign.sgO D) (hst a ha)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.InertSign.sgO_sgO]`. Then use the resulting hypothesis. Take `⟨hs, q, -, hq, -, -, hqP, -⟩` from `(GlobalTheory.T.absNorm_cmPrime_inertPrime_sign D P hP).2.1 hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, -, hv⟩` from `GlobalTheory.TraceOne.exists_trace_one D q hq`. Use `⟨?_, v, hv P hP.isPrime hqP⟩` and prove the remaining obligations. Rewrite `hs` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gauss_sum_sign : ∀ (D : D7) (M : Type) [AddCommGroup M] [Module (𝓞 D.host.E) M] [Finite M] (φ : M → ℂ) (β : M → M → ℂ), (∀ x, φ x ≠ 0) → (∀ x y, φ (x + y) = φ x * φ y * β x y) → (∀ x x' y, β (x + x') y = β x y * β x' y) → (∀ (a : 𝓞 D.host.E) x y, β (a • x) y = β x (GlobalTheory.InertSign.sgO D a • y)) → (∀ x, (∀ y, β x y = 1) → x = 0) → (∀ x, ∃ χ : 𝓞 D.host.E → ℂ, (∀ a b, χ (a + b) = χ a * χ b) ∧ ∀ a, φ (a • x) = χ (a * GlobalTheory.InertSign.sgO D a)) → ∃ r : ℝ, 0 < r ∧ ∑ᶠ x, φ x = sgn D (Nat.card M) * (r : ℂ) := by
   intro D M _ _ _ φ β h0 h1 h2 h3 h4 h5

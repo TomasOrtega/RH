@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.ExpandKer
 variable {l : ℕ} [Fact l.Prime] (A : PAlg l)
 
 /- English proof (translation)
-Take `⟨-, hmul, -⟩` from `GlobalTheory.T.crystalline_filtration_multiplicative A`. Express the relevant statement in the definitionally equal form `A.mkAcr 1 (A.dxi0 i) * A.mkAcr 1 (A.dxi0 j) = ((i + j).choose i : A.Acr 1) * A.mkAcr 1 (A.dxi0 (i + j))`. Rewrite using `[← map_mul, hmul, map_mul, map_natCast]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem dxi_mul (i j : ℕ) :
     A.dxi 1 i * A.dxi 1 j = ((i + j).choose i : A.Acr 1) * A.dxi 1 (i + j) := by
@@ -25,9 +25,9 @@ theorem dxi_mul (i j : ℕ) :
   rw [← map_mul, hmul, map_mul, map_natCast]
 
 /- English proof (translation)
-Take `⟨-, -, hfac, -⟩` from `GlobalTheory.T.crystalline_filtration_multiplicative A`. Establish `h1 : A.dxi0 1 = algebraMap A.W A.Acr0 A.xi`. Simplify using `using hfac 1`. Establish `h2 : A.dxi 1 1 = A.toAcr 1 A.xi`. Express the relevant statement in the definitionally equal form `A.mkAcr 1 (A.dxi0 1) = A.mkAcr 1 (algebraMap A.W A.Acr0 A.xi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1]`. Rewrite using `[h2, ← A.aTo1_coeff, A.xi_coeff_zero, map_neg, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem aTo1_pi : A.aTo1 A.pi = -A.dxi 1 1 := by
   obtain ⟨-, -, hfac, -⟩ := GlobalTheory.T.crystalline_filtration_multiplicative A
@@ -39,19 +39,19 @@ theorem aTo1_pi : A.aTo1 A.pi = -A.dxi 1 1 := by
   rw [h2, ← A.aTo1_coeff, A.xi_coeff_zero, map_neg, neg_neg]
 
 /- English proof (translation)
-Rewrite using `[← A.aTo1_coeff, WittVector.teichmuller_coeff_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toAcr_teichmuller (b : A.A) : A.toAcr 1 (WittVector.teichmuller l b) = A.aTo1 b := by
   rw [← A.aTo1_coeff, WittVector.teichmuller_coeff_zero]
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Proceed by induction on `j with`. Consider the case `zero => exact ⟨1, Nat.coprime_one_left l, by simp⟩`. Consider the case `succ j ih`. Take `⟨c, hc, hcj⟩` from `ih (Nat.lt_of_succ_lt hj)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hnd : ¬ l ∣ m + j + 1`. Introduce `h`. Establish `h2 : l ∣ j + 1`. Rewrite `h` using `[Nat.add_assoc]`. Conclude with `(Nat.dvd_add_right hm).mp h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Nat.le_of_dvd (Nat.succ_pos j) h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨c * (m + j + 1), Nat.Coprime.mul_left hc ((Nat.Prime.coprime_iff_not_dvd hp).mpr hnd).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', mul_assoc, hcj, mul_left_comm, dxi_mul A 1 (m + j), Nat.choose_one_right]`. Establish `e : 1 + (m + j) = m + (j + 1)` using `by omega`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_coprime {m : ℕ} (hm : l ∣ m) {j : ℕ} (hj : j < l) :
     ∃ c : ℕ, c.Coprime l ∧ A.dxi 1 1 ^ j * A.dxi 1 m = (c : A.Acr 1) * A.dxi 1 (m + j) := by
@@ -75,13 +75,11 @@ theorem exists_coprime {m : ℕ} (hm : l ∣ m) {j : ℕ} (hj : j < l) :
     ring
 
 /- English proof (translation)
-Establish `hl : ((l : ℕ) : A.Acr 1) = 0`. Establish `e : ((l : ℕ) : A.Acr 1) = A.toAcr 1 (l : A.W)` using `by rw [map_natCast]`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (algebraMap A.W A.Acr0 (l : A.W)) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.subset_span (by simp)`. Establish `h1 : (1 : A.Acr 1) = (c : A.Acr 1) * (Nat.gcdA c l : A.Acr 1) + (l : A.Acr 1) * (Nat.gcdB c l : A.Acr 1)`. Establish `h'` using `Nat.gcd_eq_gcd_ab c l`. Rewrite `h'` using `[Nat.Coprime.gcd_eq_one hc, Nat.cast_one]`. Establish `h''` using `congrArg (fun z : ℤ => (z : A.Acr 1)) h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h''`. Conclude with `h''`. Establish `hx : x = (Nat.gcdA c l : A.Acr 1) * ((c : A.Acr 1) * x)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hx]`.
-
-Conclude with `I.mul_mem_left _ h`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_coprime_mul {I : Ideal (A.Acr 1)} {c : ℕ} (hc : c.Coprime l) {x : A.Acr 1}
     (h : (c : A.Acr 1) * x ∈ I) : x ∈ I := by
@@ -105,15 +103,15 @@ theorem mem_of_coprime_mul {I : Ideal (A.Acr 1)} {c : ℕ} (hc : c.Coprime l) {x
   exact I.mul_mem_left _ h
 
 /- English proof (translation)
-Take `⟨c, hc, hcj⟩` from `exists_coprime A (dvd_mul_right l k) hj`. Establish `hx : A.aTo1 b * A.dxi 1 (l * k + j) ∈ A.Fil 1 (l * k + j + 1)`. Establish `e : A.aTo1 (A.pi ^ j * b) * A.dxi 1 (l * k) = (c : A.Acr 1) * ((-1) ^ j * (A.aTo1 b * A.dxi 1 (l * k + j)))`. Rewrite using `[map_mul, map_pow, aTo1_pi A]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h` using `[e]`. Establish `h2` using `mem_of_coprime_mul A hc h`. Establish `h3 : (-1 : A.Acr 1) ^ j * ((-1) ^ j * (A.aTo1 b * A.dxi 1 (l * k + j))) ∈ A.Fil 1 (l * k + j + 1)` using `Ideal.mul_mem_left _ _ h2`. Establish `h4 : (-1 : A.Acr 1) ^ j * ((-1) ^ j * (A.aTo1 b * A.dxi 1 (l * k + j))) = A.aTo1 b * A.dxi 1 (l * k + j)`. Rewrite using `[← mul_assoc, ← mul_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h3` using `[h4]`. Then use the resulting hypothesis. Rewrite `hx` using `[← toAcr_teichmuller A b]`. Establish `hth` using `((GlobalTheory.T.graded_filtration_generated_by_dividedXi A 1 (l * k + j)).2 (WittVector.teichmuller l b)).mp hx`. Establish `hz : A.aToU1 b = 0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `A.sharpMap_coeff (WittVector.teichmuller l b)`. Rewrite `e` using `[WittVector.teichmuller_coeff_zero]`. Rewrite using `[e, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hth`. Take `⟨-, hker⟩` from `GlobalTheory.CompanionTheory.Untilt.sharp_map_surjective_ker A`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hker]`. Conclude with `RingHom.mem_ker.mpr hz`.
+A detailed English derivation is pending.
 -/
 theorem inner_step (k : ℕ) {j : ℕ} (hj : j < l) (b : A.A)
     (h : A.aTo1 (A.pi ^ j * b) * A.dxi 1 (l * k) ∈ A.Fil 1 (l * k + j + 1)) :
@@ -147,7 +145,7 @@ theorem inner_step (k : ℕ) {j : ℕ} (hj : j < l) (b : A.A)
   exact RingHom.mem_ker.mpr hz
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.mp h`. Take `⟨-, -, -, h4⟩` from `GlobalTheory.T.expansion_surjective_additive_linear A`. Rewrite using `[map_mul, mul_assoc, h4, mul_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem term_eq_zero {a : A.A} (h : a ∈ Ideal.span {A.pi ^ l}) (m : ℕ) :
     A.aTo1 a * A.dxi 1 m = 0 := by
@@ -156,23 +154,21 @@ theorem term_eq_zero {a : A.A} (h : a ∈ Ideal.span {A.pi ^ l}) (m : ℕ) :
   rw [map_mul, mul_assoc, h4, mul_zero]
 
 /- English proof (translation)
-Take `⟨-, hadd, -, -⟩` from `GlobalTheory.T.expansion_surjective_additive_linear A`. Take `⟨-, -, -, -, hmap, -⟩` from `GlobalTheory.T.crystalline_filtration_multiplicative A`. Establish `hdx : ∀ m, A.dxi 1 m ∈ A.Fil 1 m` using `fun m => by`. Rewrite using `[hmap]`. Express the relevant statement in the definitionally equal form `A.mkAcr 1 (A.dxi0 m) ∈ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises. Unfold `CrystallineSemistableComparison.PAlg.Fil0`. Conclude with `Ideal.subset_span ⟨m, le_rfl, rfl⟩`. Establish `hanti : ∀ r s : ℕ, r ≤ s → A.Fil 1 s ≤ A.Fil 1 r`. Introduce `r s hrs`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmap, hmap]`. Apply `Ideal.map_mono` to reduce the goal to its premises. Unfold `CrystallineSemistableComparison.PAlg.Fil0`. Apply `Ideal.span_mono` to reduce the goal to its premises. Introduce and unpack `z ⟨i, hi, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨i, le_trans hrs hi, rfl⟩`. Establish `hsingle : A.expand (Finsupp.single k (c k)) = A.aTo1 (c k) * A.dxi 1 (l * k)`. Unfold `CrystallineSemistableComparison.PAlg.expand`. Rewrite using `[Finsupp.sum_single_index]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `herase : A.expand (c.erase k) ∈ A.Fil 1 (l * k + l)`. Unfold `CrystallineSemistableComparison.PAlg.expand`. Rewrite using `[Finsupp.sum]`. Apply `Ideal.sum_mem` to reduce the goal to its premises. Introduce `i hi`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hik : i ≠ k`. Introduce and unpack `rfl`. Simplify using `at hi`. Rewrite using `[Finsupp.erase_ne hik]`. Break down `lt_or_gt_of_ne hik with hlt | hgt` into its components or cases.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[term_eq_zero A (hk i hlt)]`. Conclude with `Ideal.zero_mem _`. Apply `Ideal.mul_mem_left` to reduce the goal to its premises. Use `hanti _ _ ?_ (hdx (l * i))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsplit` using `hadd (Finsupp.single k (c k)) (c.erase k)`. Rewrite `hsplit` using `[Finsupp.single_add_erase, h0, hsingle]`. Establish `e : A.aTo1 (c k) * A.dxi 1 (l * k) = -A.expand (c.erase k)`. Rewrite using `[eq_neg_iff_add_eq_zero]`. Conclude with `hsplit.symm`.
-
-Rewrite using `[e]`. Conclude with `(Ideal.neg_mem_iff _).mpr herase`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_mem (c : ℕ →₀ A.A) (h0 : A.expand c = 0) (k : ℕ)
     (hk : ∀ i < k, c i ∈ Ideal.span {A.pi ^ l}) :
@@ -222,9 +218,9 @@ theorem term_mem (c : ℕ →₀ A.A) (h0 : A.expand c = 0) (k : ℕ)
   exact (Ideal.neg_mem_iff _).mpr herase
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hmap, -⟩` from `GlobalTheory.T.crystalline_filtration_multiplicative A`. Rewrite using `[hmap, hmap]`. Apply `Ideal.map_mono` to reduce the goal to its premises. Unfold `CrystallineSemistableComparison.PAlg.Fil0`. Apply `Ideal.span_mono` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `z ⟨i, hi, rfl⟩`. Conclude with `⟨i, le_trans h hi, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem fil_anti {r s : ℕ} (h : r ≤ s) : A.Fil 1 s ≤ A.Fil 1 r := by
   obtain ⟨-, -, -, -, hmap, -⟩ := GlobalTheory.T.crystalline_filtration_multiplicative A
@@ -236,13 +232,11 @@ theorem fil_anti {r s : ℕ} (h : r ≤ s) : A.Fil 1 s ≤ A.Fil 1 r := by
   exact ⟨i, le_trans h hi, rfl⟩
 
 /- English proof (translation)
-Establish `hT` using `term_mem A c h0 k hk`. Establish `key : ∀ j, j ≤ l → c k ∈ Ideal.span {A.pi ^ j}`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ j ih`. Introduce `hj`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp (ih (Nat.le_of_succ_le hj))`. Establish `h1 : A.aTo1 (A.pi ^ j * b) * A.dxi 1 (l * k) ∈ A.Fil 1 (l * k + j + 1)`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mul_comm (A.pi ^ j) b, hb]`. Conclude with `fil_anti A (by omega) hT`. Take `⟨b', hb'⟩` from `Ideal.mem_span_singleton'.mp (inner_step A k (Nat.lt_of_succ_le hj) b h1)`. Rewrite using `[← hb, ← hb', pow_succ]`. Conclude with `Ideal.mem_span_singleton'.mpr ⟨b', by ring⟩`.
-
-Conclude with `key l le_rfl`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem (c : ℕ →₀ A.A) (h0 : A.expand c = 0) (k : ℕ)
     (hk : ∀ i < k, c i ∈ Ideal.span {A.pi ^ l}) : c k ∈ Ideal.span {A.pi ^ l} := by
@@ -263,11 +257,11 @@ theorem coeff_mem (c : ℕ →₀ A.A) (h0 : A.expand c = 0) (k : ℕ)
   exact key l le_rfl
 
 /- English proof (translation)
-Introduce `l _ A c`. Prove the components needed by the constructor for the conclusion. Introduce `h0 k`. Use `Nat.strong_induction_on k ?_` and prove the remaining obligations. Introduce `k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `coeff_mem A c h0 k ih`. Introduce `h`. Unfold `CrystallineSemistableComparison.PAlg.expand`. Rewrite using `[Finsupp.sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Conclude with `term_eq_zero A (h i) _`.
+A detailed English derivation is pending.
 -/
 theorem expand_eq_zero_iff : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (c : ℕ →₀ A.A),
     A.expand c = 0 ↔ ∀ k, c k ∈ Ideal.span {A.pi ^ l} := by

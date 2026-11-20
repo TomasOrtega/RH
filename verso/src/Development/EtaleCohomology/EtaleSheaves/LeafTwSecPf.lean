@@ -19,9 +19,9 @@ def gen {q : ℕ} {B : Type} [CommRing B] (ζ : Prim q B) (k : ℤ) (U : Over (S
   Submodule.Quotient.mk (Finsupp.single (Prim.map (ρ U) ζ) 1)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (Finsupp.mapDomain _ (Finsupp.single _ _)) = _`. Rewrite using `[Finsupp.mapDomain_single]`. Establish `h : Prim.map (Scheme.Γ.map f.left.op).hom (Prim.map (ρ U) ζ) = Prim.map (ρ V) ζ`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Scheme.Γ.map f.left.op).hom (ρ U ζ.1) = ρ V ζ.1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [ρ]`. Rewrite using `[← Over.w f]`. Apply the tactic sequence `first | rfl | simp [Scheme.Hom.comp_appTop] | simp`. Conclude with `congrArg (fun z => Submodule.Quotient.mk (p := twRel q k _) (Finsupp.single z (1 : ULift.{1} (ZMod q)))) h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_map {q : ℕ} {B : Type} [CommRing B] (ζ : Prim q B) (k : ℤ) {U V : Over (Spec (CommRingCat.of B))}
     (f : V ⟶ U) : ((Pr q k _).map f.op).hom (gen ζ k U) = gen ζ k V := by
@@ -50,9 +50,9 @@ def LeafTwLB : Prop := ∀ (q : ℕ) [NeZero q] (B : Type) [CommRing B] (ζ : Pr
     (cmap ζ k))
 
 /- English proof (translation)
-Introduce `q _ B _ ζ i j`. Set `K` to `(Over.forget (Spec (CommRingCat.of B))).pushforwardContinuousSheafificationCompatibility (ModuleCat.{1} (ULift.{1} (ZMod q))) (Scheme.etaleTopology.over (Spec (CommRingCat.of B))) Scheme.etaleTopology`. Use `haveI := h q B ζ i`. Use `haveI := h q B ζ j`. Set `Φ` to `(K.app (Scheme.Γ ⋙ twF q i)).symm ≪≫ (asIso ((presheafToSheaf _ _).map (cmap ζ i))).symm ≪≫ asIso ((presheafToSheaf _ _).map (cmap ζ j)) ≪≫ K.app (Scheme.Γ ⋙ twF q j)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `Ψ` to `(sheafToPresheaf _ _).mapIso Φ`. Use `⟨fun U x => (Ψ.app (op (Over.mk x))).toLinearEquiv, ?_⟩` and prove the remaining obligations. Introduce `V U g x s`. Use `congrArg (fun f => f.hom s) (Ψ.hom.naturality (Over.homMk g : Over.mk (g ≫ x) ⟶ Over.mk x).op)` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LeafTwSec_of (h : LeafTwLB) : LateralTheory.E.LeafTwistPf.LeafTwSec := by
   intro q _ B _ ζ i j
@@ -75,7 +75,7 @@ def LeafTwInj : Prop := ∀ (q : ℕ) [NeZero q] (B : Type) [CommRing B] (ζ : P
   Presheaf.IsLocallyInjective (Scheme.etaleTopology.over (Spec (CommRingCat.of B))) (cmap ζ k)
 
 /- English proof (translation)
-Introduce `q _ B _ ζ k`. Use `haveI := hI q B ζ k`. Use `haveI := hS q B ζ k`. Conclude with `(GrothendieckTopology.W_iff _ _).1 (GrothendieckTopology.W_of_isLocallyBijective _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LeafTwLB_of (hI : LeafTwInj) (hS : LeafTwSurj) : LeafTwLB := by
   intro q _ B _ ζ k
@@ -84,7 +84,7 @@ theorem LeafTwLB_of (hI : LeafTwInj) (hS : LeafTwSurj) : LeafTwLB := by
   exact (GrothendieckTopology.W_iff _ _).1 (GrothendieckTopology.W_of_isLocallyBijective _ _)
 
 /- English proof (translation)
-The claim follows from `LeafTwSec_of (LeafTwLB_of hI hS)`.
+A detailed English derivation is pending.
 -/
 theorem LeafTwSec_of' (hI : LeafTwInj) (hS : LeafTwSurj) : LateralTheory.E.LeafTwistPf.LeafTwSec :=
   LeafTwSec_of (LeafTwLB_of hI hS)

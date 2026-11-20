@@ -88,14 +88,14 @@ def CuspFormLimitTwoPlaces : Prop :=
         ClauseAt .crys π ι r w ∧ ClauseAt .dR π ι r w)
 
 /- English proof (translation)
-Introduce `τ _ lam` and use `h τ lam`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameWtOff_of_eq (ι : Qbar l ≃+* ℂ) (w₀ v' : HeightOneSpectrum (𝓞 E)) (U U' : Submodule ℂ (UA E a → ℂ))
     (h : ∀ τ lam, HasWeightAt U τ lam ↔ HasWeightAt U' τ lam) : SameWtOff ι w₀ v' U U' :=
   fun τ _ lam => h τ lam
 
 /- English proof (translation)
-Introduce `τ hτ lam` and use `h τ (fun u hu => by rw [hw τ hτ u hu]; exact ⟨h₀, h'⟩) lam`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameWtAt_of_off (ι : Qbar l ≃+* ℂ) {w₀ v' w : HeightOneSpectrum (𝓞 E)} {U U' : Submodule ℂ (UA E a → ℂ)}
     (h : SameWtOff ι w₀ v' U U') (hw : ∀ τ : E →+* ℂ, OverPl ι τ w → ∀ u, OverPl ι τ u → u = w)
@@ -108,7 +108,7 @@ def SeedWtU.ofWeightPredicate
   fun E _ _ _ l _ a ι _ v' _ U' => P E l a ι v' U'
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha d hd T hT U hU w₀ v' hw₀ hs hv' hap S Y`. Take `⟨Z₀, hZ, hr⟩` from `hS E Ω l ι a ha d hd T hT U hU w₀ v' hw₀ hs hv' hap S Y`. Conclude with `⟨Z₀, hZ, fun U' hA hoff hW => hr U' hA hoff (h E l a ι w₀ v' U U' hW)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SeedWU2.mono {Ty : UnitaryAutomorphicTypeClass} {Gen : ℕ → ℕ → Multiset ℂˣ → Prop} {Wt Wt' : SeedWtU}
     (h : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l : ℕ) [Fact l.Prime] (a : ℕ) (ι : Qbar l ≃+* ℂ)
@@ -119,9 +119,9 @@ theorem SeedWU2.mono {Ty : UnitaryAutomorphicTypeClass} {Gen : ℕ → ℕ → M
   exact ⟨Z₀, hZ, fun U' hA hoff hW => hr U' hA hoff (h E l a ι w₀ v' U U' hW)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ l _ ι a ha T hT U hU w₀ v' hw₀ hs hv' hap`. Take `⟨Kw, h1, h2, h3, h4⟩` from `hC E l ι a ha T hT U hU w₀ v' hw₀ hs hv' hap`. Use `⟨Kw, h1, h2, h3, fun Z hZ J O θ hθ => ?_⟩` and prove the remaining obligations. Take `⟨hP, hL⟩` from `h4 Z hZ J O θ hθ`. Use `⟨GlobalTheory.Cong.PolyApprox.mono hP ?_, hL⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `θ' ⟨U', g1, g2, g3, g4, g5⟩`. Conclude with `⟨U', g1, g2, g3, h E l a ι w₀ v' U U' g4, g5⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem CongUW2.mono {Ty : UnitaryAutomorphicTypeClass} {Gen : ℕ → ℕ → Multiset ℂˣ → Prop} {Wt Wt' : SeedWtU}
     (h : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l : ℕ) [Fact l.Prime] (a : ℕ) (ι : Qbar l ≃+* ℂ)
@@ -136,14 +136,14 @@ theorem CongUW2.mono {Ty : UnitaryAutomorphicTypeClass} {Gen : ℕ → ℕ → M
   exact ⟨U', g1, g2, g3, h E l a ι w₀ v' U U' g4, g5⟩
 
 /- English proof (translation)
-The claim follows from `SeedWU2.mono (fun _ _ _ _ _ _ _ _ _ _ _ _ _ => trivial) hS`.
+A detailed English derivation is pending.
 -/
 theorem SeedWU2.of_any {Ty : UnitaryAutomorphicTypeClass} {Gen : ℕ → ℕ → Multiset ℂˣ → Prop} (Wt : SeedWtU) (hS : SeedWU2 Ty Gen) :
     SeedWU2 Ty Gen Wt :=
   SeedWU2.mono (fun _ _ _ _ _ _ _ _ _ _ _ _ _ => trivial) hS
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a _ d _ T _ U _ w₀ v' _ _ _ _ S Y`. Conclude with `⟨∅, by simp, fun _ _ _ hW => hW.elim⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 example (Ty : UnitaryAutomorphicTypeClass) (Gen : ℕ → ℕ → Multiset ℂˣ → Prop) :
     SeedWU2 Ty Gen (fun _ _ _ _ _ _ _ _ _ _ _ _ => False) := by

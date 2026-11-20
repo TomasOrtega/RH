@@ -15,9 +15,9 @@ def posFn {m : ℕ} (j o : ℕ) : Fin m ⊕ Fin j → ℕ
   | .inr w => o + w
 
 /- English proof (translation)
-Break down `x with a | w` into its components or cases. Use `a.2` as an intermediate fact. Simplify using `only [posFn]`. Apply the tactic sequence `split_ifs <;> omega`. Use `w.2` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [posFn]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem posFn_lt {m j N o : ℕ} (h : m + j = N) (ho : o ≤ m) (x : Fin m ⊕ Fin j) : posFn j o x < N := by
   rcases x with a | w
@@ -29,9 +29,9 @@ theorem posFn_lt {m j N o : ℕ} (h : m + j = N) (ho : o ≤ m) (x : Fin m ⊕ F
     omega
 
 /- English proof (translation)
-Apply the tactic sequence `rintro (a | w) (b | w') hxy <;> simp only [posFn] at hxy`. Apply the tactic sequence `have : (a : ℕ) = b := by split_ifs at hxy <;> omega`. Conclude with `congrArg _ (Fin.ext this)`. Use `w'.2` as an intermediate fact. It suffices to derive a contradiction.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. It suffices to derive a contradiction. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs at hxy <;> omega`. Use `w.2` as an intermediate fact. It suffices to derive a contradiction. Apply the tactic sequence `split_ifs at hxy <;> omega`. Conclude with `congrArg _ (Fin.ext (by omega))`.
+Establish an intermediate fact. It suffices to derive a contradiction. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem posFn_injective {m j o : ℕ} (ho : o ≤ m) :
     Function.Injective (posFn j o : Fin m ⊕ Fin j → ℕ) := by
@@ -63,9 +63,9 @@ section Pull
 variable (K : Type) [Field K] [Fintype K] [DecidableEq K]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x y`. Apply `propext` to reduce the goal to its premises. Apply the tactic sequence `rcases x with a | w <;> rcases y with b | w' <;>`. Apply the tactic sequence `simp only [colPat, Fin.lt_def, eo_val, posFn, chainPat] <;>`. Apply the tactic sequence `(try have := a.2) <;> (try have := b.2) <;> (try have := w.2) <;> (try have := w'.2) <;>`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `(try split_ifs) <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem col_pat {m j N : ℕ} (h : m + j = N) (ho : 0 ≤ m) :
     (fun x y => colPat N j (eo h ho x) (eo h ho y)) = chainPat m j 0 := by
@@ -77,9 +77,9 @@ theorem col_pat {m j N : ℕ} (h : m + j = N) (ho : 0 ≤ m) :
     (try split_ifs) <;> omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x y`. Apply the tactic sequence `rcases x with a | w <;> rcases y with b | w' <;>`. Apply the tactic sequence `simp only [cutE, eo_val, posFn, chainE] <;>`. Apply the tactic sequence `(try have := a.2) <;> (try have := b.2) <;> (try have := w.2) <;> (try have := w'.2) <;>`. Use `first`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `exact if_congr (by omega) rfl rfl`. Consider the case `(split_ifs <;> first | rfl | (exfalso; omega))`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem col_E {m j N : ℕ} (h : m + j = N) (ho : 0 ≤ m) :
     (fun x y => cutE K N j (eo h ho x) (eo h ho y)) = chainE K m j := by
@@ -92,9 +92,9 @@ theorem col_E {m j N : ℕ} (h : m + j = N) (ho : 0 ≤ m) :
       | (split_ifs <;> first | rfl | (exfalso; omega))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x y`. Apply `propext` to reduce the goal to its premises. Apply the tactic sequence `rcases x with x | w <;> rcases y with b | w' <;>`. Apply the tactic sequence `simp only [rowPat, Fin.lt_def, eo_val, posFn, chainPat] <;>`. Apply the tactic sequence `(try have := x.2) <;> (try have := b.2) <;> (try have := w.2) <;> (try have := w'.2) <;>`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `(try split_ifs) <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem row_pat {m j N k a : ℕ} (h : m + j = N) (ho : a + 1 ≤ m) (hk : k = a + 1 + j) :
     (fun x y => rowPat N k a (eo h ho x) (eo h ho y)) = chainPat m j a := by
@@ -106,9 +106,9 @@ theorem row_pat {m j N k a : ℕ} (h : m + j = N) (ho : a + 1 ≤ m) (hk : k = a
     (try split_ifs) <;> omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x y`. Apply the tactic sequence `rcases x with x | w <;> rcases y with b | w' <;>`. Apply the tactic sequence `simp only [rowE, eo_val, posFn, chainE] <;>`. Apply the tactic sequence `(try have := x.2) <;> (try have := b.2) <;> (try have := w.2) <;> (try have := w'.2) <;>`. Use `first`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `exact if_congr (by omega) rfl rfl`. Consider the case `(split_ifs <;> first | rfl | (exfalso; omega))`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem row_E {m j N k a : ℕ} (h : m + j = N) (ho : a + 1 ≤ m) (hk : k = a + 1 + j) :
     (fun x y => rowE K N k a (eo h ho x) (eo h ho y)) = chainE K m j := by
@@ -121,9 +121,9 @@ theorem row_E {m j N k a : ℕ} (h : m + j = N) (ho : a + 1 ≤ m) (hk : k = a +
       | (split_ifs <;> first | rfl | (exfalso; omega))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x y`. Apply `propext` to reduce the goal to its premises. Apply the tactic sequence `rcases x with x | w <;> rcases y with b | w' <;>`. Apply the tactic sequence `simp only [jPat, Fin.lt_def, eo_val, posFn, chainPat] <;>`. Apply the tactic sequence `(try have := x.2) <;> (try have := b.2) <;> (try have := w.2) <;> (try have := w'.2) <;>`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `(try split_ifs) <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem j_pat {m kk N s : ℕ} (h : m + kk = N) (ho : s ≤ m) :
     (fun x y => jPat N kk s (eo h ho x) (eo h ho y)) = chainPat m kk s := by
@@ -135,9 +135,9 @@ theorem j_pat {m kk N s : ℕ} (h : m + kk = N) (ho : s ≤ m) :
     (try split_ifs) <;> omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x y`. Apply the tactic sequence `rcases x with x | w <;> rcases y with b | w' <;>`. Apply the tactic sequence `simp only [jE, eo_val, posFn, chainE] <;>`. Apply the tactic sequence `(try have := x.2) <;> (try have := b.2) <;> (try have := w.2) <;> (try have := w'.2) <;>`. Use `first`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `exact if_congr (by omega) rfl rfl`. Consider the case `(split_ifs <;> first | rfl | (exfalso; omega))`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem j_E {m kk N s : ℕ} (h : m + kk = N) (ho : s ≤ m) :
     (fun x y => jE K N kk s (eo h ho x) (eo h ho y)) = chainE K m kk := by
@@ -150,9 +150,9 @@ theorem j_E {m kk N s : ℕ} (h : m + kk = N) (ho : s ≤ m) :
       | (split_ifs <;> first | rfl | (exfalso; omega))
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ m` using `Nat.zero_le m`. Establish `s1` using `(hS K (Fin m ⊕ Fin j) (Fin N) Φ E ψ₀ χ).1 (eo h ho)`. Establish `s2` using `(hS K (Fin m ⊕ Fin j) (Fin N) (colPat N j) (cutE K N j) ψ₀ χ).1 (eo h h0)`. Establish `c` using `((hS K (Fin m ⊕ Fin j) (Fin N) Φ E ψ₀ χ).2 hχ).1 (eo h ho) (eo h h0)`. Rewrite `s1` using `[hΦ, hE]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `s2` using `[col_pat h h0, col_E K h h0]`. Rewrite using `[← s1, ← s2, show (fun x => χ (glEquiv K (eo h ho) x)) = fun x => χ (glEquiv K (eo h h0) x) from funext c]`. Use `hC K m j t ψ₀ _ hψ (fun x g => ?_) ht` and prove the remaining obligations. Simplify using `only [map_mul, map_inv]`. Conclude with `hχ _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wh_eq_col (hS : St.WhSym) (hC : St.ChainIndep) {m j N o t : ℕ} (h : m + j = N) (ho : o ≤ m)
     (ht : t < m) (ψ₀ : AddChar K ℂ) (hψ : ψ₀ ≠ 1) (χ : GL (Fin N) K → ℂ)
@@ -173,9 +173,9 @@ theorem wh_eq_col (hS : St.WhSym) (hC : St.ChainIndep) {m j N o t : ℕ} (h : m 
   exact hχ _ _
 
 /- English proof (translation)
-Introduce `K _ _ _ N ψ₀ χ hψ hχ`. Use `⟨fun k a hak hkN => ?_, fun kk s hN => ?_⟩` and prove the remaining obligations. Establish `h : (N - (k - 1 - a)) + (k - 1 - a) = N` using `by omega`. Establish `ho : a + 1 ≤ N - (k - 1 - a)` using `by omega`. Establish `hk : k = a + 1 + (k - 1 - a)` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `wh_eq_col K hS hC h ho (t := a) (by omega) ψ₀ hψ χ hχ (row_pat h ho hk) (row_E K h ho hk)`. Establish `h : (2 * s + 1) + kk = N` using `by omega`. Establish `ho : s ≤ 2 * s + 1` using `by omega`. Conclude with `wh_eq_col K hS hC h ho (t := s) (by omega) ψ₀ hψ χ hχ (j_pat h ho) (j_E K h ho)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rowToCol_of (hS : St.WhSym) (hC : St.ChainIndep) : St.RowToCol := by
   intro K _ _ _ N ψ₀ χ hψ hχ
@@ -191,7 +191,7 @@ theorem rowToCol_of (hS : St.WhSym) (hC : St.ChainIndep) : St.RowToCol := by
 end Pull
 
 /- English proof (translation)
-The claim follows from `rowToCol_of GlobalTheory.T.whittaker_symmetry GlobalTheory.T.chain_independence`.
+A detailed English derivation is pending.
 -/
 theorem rowToCol : St.RowToCol := rowToCol_of GlobalTheory.T.whittaker_symmetry GlobalTheory.T.chain_independence
 

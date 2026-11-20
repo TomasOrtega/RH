@@ -11,61 +11,59 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {g : SplitG M.L} {r : ℕ} (hs : M.split = some g)
 
 /- English proof (translation)
-Simplify using `[p1, cmp1, e_rOf, c1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem firstProj_firstComponent (Y : Ix r → M.L.O) (b : Fin (r + 1)) : p1 g (cmp1 hs Y b : E) = p1 g (Y (Sum.inl b)) := by
   simp [p1, cmp1, e_rOf, c1]
 /- English proof (translation)
-Simplify using `[p1, p2, cmp1, e_rOf, c1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem secondProj_firstComponent (Y : Ix r → M.L.O) (b : Fin (r + 1)) :
     p2 g (cmp1 hs Y b : E) = p1 g (Y (Sum.inl b)) + (g.q : F) * p1 g (Y (Sum.inr b)) := by
   simp [p1, p2, cmp1, e_rOf, c1]
 /- English proof (translation)
-Simplify using `[p1, p2, cmp2, e_rOf, c2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem firstProj_secondComponent (Y : Ix r → M.L.O) (b : Fin (r + 1)) : p1 g (cmp2 hs Y b : E) = p2 g (Y (Sum.inl b)) := by
   simp [p1, p2, cmp2, e_rOf, c2]
 /- English proof (translation)
-Simplify using `[p1, p2, cmp2, e_rOf, c2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem secondProj_secondComponent (Y : Ix r → M.L.O) (b : Fin (r + 1)) :
     p2 g (cmp2 hs Y b : E) = p2 g (Y (Sum.inl b)) + (g.q : F) * p2 g (Y (Sum.inr b)) := by
   simp [p1, p2, cmp2, e_rOf, c2]
 /- English proof (translation)
-Simplify using `[p1, q2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem firstProj_uniformizer_mul (x : M.R) : p1 g ((q2 hs * x : M.R) : E) = 0 := by
   simp [p1, q2]
 /- English proof (translation)
-Simplify using `[p2, q2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem secondProj_uniformizer_mul (x : M.R) : p2 g ((q2 hs * x : M.R) : E) = (g.q : F) * p2 g (x : E) := by
   simp [p2, q2]
 
 /- English proof (translation)
-Unfold `dl`. Rewrite using `[if_neg (Fin.castSucc_lt_last a).ne]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dl_cast (a : Fin r) : dl (F := F) r a.castSucc = 0 := by
   unfold dl
   rw [if_neg (Fin.castSucc_lt_last a).ne]
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M g hs r T T' TT Zh Z Zσ h`. Introduce and unpack `_ ⟨⟨a, b⟩, ⟨⟨l, η, rfl⟩, ⟨l', η', rfl⟩⟩, rfl⟩`. Establish `hZh : IsUnit Zh.det` using `h.2.2.2.2.2.1`. Use `set u : Fin (r + 1) → M.R := η • (eV r : Fin (r + 1) → M.R) + q2 hs • l`. Use `set u' : Fin (r + 1) → M.R := η' • (eV r : Fin (r + 1) → M.R) + q2 hs • l'`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Y : Ix r → M.L.O := iota1 hs u + iota2 hs u'`. Use `set Y'' : Ix r → M.L.O := iota1 hs l + iota2 hs l'`. Use `set Y' : Ix r → M.L.O := Y - dgO g g.q • Y''`. Establish `h1 : cmp1 hs Y = u` using `by simp only [Y, map_add, firstComponent_iotaOne, firstComponent_iotaTwo, add_zero]`. Establish `h2 : cmp2 hs Y = u'` using `by simp only [Y, map_add, secondComponent_iotaOne, secondComponent_iotaTwo, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3 : cmp1 hs Y'' = l` using `by simp only [Y'', map_add, firstComponent_iotaOne, firstComponent_iotaTwo, add_zero]`. Establish `h4 : cmp2 hs Y'' = l'` using `by simp only [Y'', map_add, secondComponent_iotaOne, secondComponent_iotaTwo, zero_add]`. Establish `hY : ∀ i, (Y i : E) - Y' i = algebraMap F E (g.q : F) * Y'' i` using `fun i => by`. Simplify using `only [Y', Pi.sub_apply, Pi.smul_apply, smul_eq_mul, dgO, AddSubgroupClass.coe_sub, MulMemClass.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hW1 : ∀ i, p1 g (Y' i) = p1 g (Y i) - (g.q : F) * p1 g (Y'' i)` using `fun i => by`. Use `congrArg (p1 g) (hY i)` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, firstProj_algebraMap_split]`. Take the linear combination `-this`. Establish `hW2 : ∀ i, p2 g (Y' i) = p2 g (Y i) - (g.q : F) * p2 g (Y'' i)` using `fun i => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (p2 g) (hY i)` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, secondProj_algebraMap_split]`. Take the linear combination `-this`. Establish `fY` using `components_of_firstComponent_eq hs h1`. Establish `gY` using `components_of_secondComponent_eq hs h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `fZ` using `components_of_firstComponent_eq hs h3`. Establish `gZ` using `components_of_secondComponent_eq hs h4`. Simplify using `only [u, u', firstProj_unit_vector_eq hs, secondProj_unit_vector_eq hs] at fY gY`. Use `⟨Y, Y', Y'', fun a => ?_, fun a => ?_, hY, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `E_ext (g := g)` to reduce the goal to its premises. Rewrite using `[(fY _).1, dl_cast, mul_zero, ZeroMemClass.coe_zero, map_zero]`. Rewrite using `[(gY _).1, dl_cast, mul_zero, ZeroMemClass.coe_zero, map_zero]`. Apply `E_ext (g := g)` to reduce the goal to its premises. Rewrite using `[map_add, map_mul, firstProj_algebraMap_split, hW1, hW1, map_zero]`.
-
-Take the linear combination `(fY a.castSucc).2 - (g.q : F) * (fZ a.castSucc).2 + p2 g η * dl_cast (F := F) a`. Rewrite using `[map_add, map_mul, secondProj_algebraMap_split, hW2, hW2, map_zero]`. Take the linear combination `(gY a.castSucc).2 - (g.q : F) * (gZ a.castSucc).2 + p2 g η' * dl_cast (F := F) a`. Conclude with `Prod.ext rfl (Prod.ext rfl (vals hs hZh T T' h1 h2 h3 h4 hY).symm)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gamSup_holds : GamSupP := by
   intro F _ _ _ E _ _ _ _ M g hs r T T' TT Zh Z Zσ h
@@ -106,29 +104,27 @@ theorem gamSup_holds : GamSupP := by
   · exact Prod.ext rfl (Prod.ext rfl (vals hs hZh T T' h1 h2 h3 h4 hY).symm)
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M g hs r T T' TT Zh Z Zσ h`. Introduce and unpack `_ ⟨Y, Y', Y'', c1, c2, c3, rfl⟩`. Establish `hZh : IsUnit Zh.det` using `h.2.2.2.2.2.1`. Use `set l := cmp1 hs Y''`. Use `set l' := cmp2 hs Y''`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set η : M.R := cmp1 hs Y (Fin.last r) - q2 hs * l (Fin.last r)`. Use `set η' : M.R := cmp2 hs Y (Fin.last r) - q2 hs * l' (Fin.last r)`. Establish `hW1 : ∀ i, p1 g (Y' i) = p1 g (Y i) - (g.q : F) * p1 g (Y'' i)` using `fun i => by`. Use `congrArg (p1 g) (c3 i)` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, firstProj_algebraMap_split]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `-this`. Establish `hW2 : ∀ i, p2 g (Y' i) = p2 g (Y i) - (g.q : F) * p2 g (Y'' i)` using `fun i => by`. Use `congrArg (p2 g) (c3 i)` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, secondProj_algebraMap_split]`. Take the linear combination `-this`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : cmp1 hs Y = η • (eV r : Fin (r + 1) → M.R) + q2 hs • l`. Use function extensionality and compare the values at `b`. Apply `R_ext (g := g)` to reduce the goal to its premises. Rewrite using `[firstProj_unit_vector_eq hs, firstProj_firstComponent]`. Distinguish the cases in `hb : b = Fin.last r`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Substitute `hb` using the available equality. Simplify using `only [η, AddSubgroupClass.coe_sub, map_sub, firstProj_uniformizer_mul, firstProj_firstComponent, dl_last, mul_one, sub_zero]`. Take `⟨a, rfl⟩` from `Fin.exists_castSucc_eq.2 hb`. Rewrite using `[c1 a, dl_cast, mul_zero, ZeroMemClass.coe_zero, map_zero]`. Rewrite using `[secondProj_unit_vector_eq hs, secondProj_firstComponent]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality. Simplify using `only [η, l, AddSubgroupClass.coe_sub, map_sub, secondProj_uniformizer_mul, secondProj_firstComponent, dl_last, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, rfl⟩` from `Fin.exists_castSucc_eq.2 hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e` using `congrArg (p1 g) (c2 a)`. Rewrite `e` using `[map_add, map_mul, firstProj_algebraMap_split, hW1, hW1, map_zero]`. Simplify using `only [l, secondProj_firstComponent, dl_cast, mul_zero, zero_add]`. Take the linear combination `e`. Establish `h2 : cmp2 hs Y = η' • (eV r : Fin (r + 1) → M.R) + q2 hs • l'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `b`. Apply `R_ext (g := g)` to reduce the goal to its premises. Rewrite using `[firstProj_unit_vector_eq hs, firstProj_secondComponent]`. Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [η', AddSubgroupClass.coe_sub, map_sub, firstProj_uniformizer_mul, firstProj_secondComponent, dl_last, mul_one, sub_zero]`. Take `⟨a, rfl⟩` from `Fin.exists_castSucc_eq.2 hb`. Establish `e` using `congrArg Prod.snd (congrArg g.e (congrArg Subtype.val (c1 a)))`. Rewrite using `[dl_cast, mul_zero]`. Simplify `e` using `[adele_ext_components]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[secondProj_unit_vector_eq hs, secondProj_secondComponent]`. Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality. Simplify using `only [η', l', AddSubgroupClass.coe_sub, map_sub, secondProj_uniformizer_mul, secondProj_secondComponent, dl_last, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨a, rfl⟩` from `Fin.exists_castSucc_eq.2 hb`. Establish `e` using `congrArg (p2 g) (c2 a)`. Rewrite `e` using `[map_add, map_mul, secondProj_algebraMap_split, hW2, hW2, map_zero]`. Simplify using `only [l', secondProj_secondComponent, dl_cast, mul_zero, zero_add]`. Take the linear combination `e`.
-
-Use `⟨(((QuotientAddGroup.mk (cmp1 hs Y) : DD1 hs Z TT), (QuotientAddGroup.mk l : DD1 hs Z TT), η, laG (ZZm g Zh T T') l), ((QuotientAddGroup.mk (cmp2 hs Y) : DD1 hs Zσ TT), (QuotientAddGroup.mk l' : DD1 hs Zσ TT), η', laG (ZZm g (Zh.map M.L.cj) T T') l')), ⟨⟨l, η, by rw [h1]⟩, ⟨l', η …` and prove the remaining obligations. Use `Prod.ext ?_ (Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `(splitH hs h).symm_apply_apply (Submodule.Quotient.mk Y)`. Conclude with `(splitH hs h).symm_apply_apply (Submodule.Quotient.mk Y'')`. Conclude with `(vals hs hZh T T' h1 h2 rfl rfl c3).symm`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gamSub_holds : GamSubP := by
   intro F _ _ _ E _ _ _ _ M g hs r T T' TT Zh Z Zσ h

@@ -15,7 +15,7 @@ open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MinorBound.exists_minor_ge | exact GlobalTheory.MinorBound.exists_minor_ge | (intros; apply GlobalTheory.MinorBound.exists_minor_ge <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_minor_norm_det_bounds_and_det_sub_le : ∀ (p : ℕ) [Fact p.Prime] (n m g : ℕ) (d : ℂ_[p]) (A Cc : Fin g → Fin m → ℂ_[p]) (G : Matrix (Fin m) (Fin m) ℂ_[p])
     (M : Fin m → Fin g → ℂ_[p]), d ≠ 0 → (∀ k j, ‖Cc k j‖ ≤ 1) → (∀ k j, ‖Cc k j - A k j‖ ≤ (p : ℝ)⁻¹ ^ n) →

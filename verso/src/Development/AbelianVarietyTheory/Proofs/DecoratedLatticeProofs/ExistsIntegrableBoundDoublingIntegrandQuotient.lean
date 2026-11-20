@@ -14,23 +14,23 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.Dom
 
 /- English proof (translation)
-Introduce `D V μ m hm f₁ f₂ hf₁ hf₂ C' c hC' C N`. Establish `hC'1 : 1 ≤ C'`. Establish `h` using `hC' 1 1`. Establish `e : io V ((1 : GA D V), (1 : GA D V)) = 1` using `map_one (io V)`. Simplify using `only [e, GlobalTheory.Grow.height_one, mul_one, one_pow] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Use `set K : ℝ := max C 0 * (C' * 4 ^ c) ^ N with hK`. Establish `i₁` using `GlobalTheory.T.integrable_unitaryQuotientHeight_pow_mul_rapidlyDecreasing D V m hm f₁ hf₁ (c * N)`. Establish `i₂` using `GlobalTheory.T.integrable_unitaryQuotientHeight_pow_mul_rapidlyDecreasing D V m hm f₂ hf₂ (c * N)`. Use `⟨fun q => K * ((GlobalTheory.Grow.quotHeight V q.1.out ^ (c * N) * ‖f₁ q.1.out‖) * (GlobalTheory.Grow.quotHeight V q.2.out ^ (c * N) * ‖f₂ q.2.out‖)), (i₁.mul_prod i₂).const_mul K, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `E hE hEb q`. Take `⟨γ₁, hγ₁, h₁⟩` from `GlobalTheory.Grow.exists_height_le_two_mul_quotHeight V q.1.out`. Take `⟨γ₂, hγ₂, h₂⟩` from `GlobalTheory.Grow.exists_height_le_two_mul_quotHeight V q.2.out`. Establish `hinv : E (io V (q.1.out, q.2.out)) = E (io V (γ₁ * q.1.out, γ₂ * q.2.out))`. Establish `e : io V (γ₁ * q.1.out, γ₂ * q.2.out) = io V (γ₁, γ₂) * io V (q.1.out, q.2.out)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← map_mul]`. Both sides reduce to the same expression. Rewrite using `[e, hE _ (io_mem_GQ V hγ₁ hγ₂)]`. Establish `hq₁` using `GlobalTheory.Grow.one_le_quotHeight V q.1.out`. Establish `hq₂` using `GlobalTheory.Grow.one_le_quotHeight V q.2.out`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx₁` using `GlobalTheory.Grow.one_le_height V (γ₁ * q.1.out)`. Establish `hx₂` using `GlobalTheory.Grow.one_le_height V (γ₂ * q.2.out)`. Establish `hEq : ‖E (io V (q.1.out, q.2.out))‖ ≤ K * (GlobalTheory.Grow.quotHeight V q.1.out ^ (c * N) * GlobalTheory.Grow.quotHeight V q.2.out ^ (c * N))`. Rewrite using `[hinv]`. Use `(hEb _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh` using `hC' (γ₁ * q.1.out) (γ₂ * q.2.out)`. Establish `hprod : GlobalTheory.Grow.height V (γ₁ * q.1.out) * GlobalTheory.Grow.height V (γ₂ * q.2.out) ≤ 4 * (GlobalTheory.Grow.quotHeight V q.1.out * GlobalTheory.Grow.quotHeight V q.2.out)`. Use `mul_le_mul h₁ h₂ (by linarith) (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : GlobalTheory.Grow.height (dblSp V) (io V (γ₁ * q.1.out, γ₂ * q.2.out)) ≤ C' * 4 ^ c * (GlobalTheory.Grow.quotHeight V q.1.out * GlobalTheory.Grow.quotHeight V q.2.out) ^ c`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hh.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (mul_nonneg (by linarith) (by linarith)) hprod c) (by linarith)`. Establish `h0 : 1 ≤ GlobalTheory.Grow.height (dblSp V) (io V (γ₁ * q.1.out, γ₂ * q.2.out))` using `GlobalTheory.Grow.one_le_height _ _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hK, pow_mul, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hμ : ‖((μ (detA V q.2.out) : ℂ))⁻¹‖ = 1`. Rewrite using `[norm_inv, Circle.norm_coe, inv_one]`. Simplify using `only [GlobalTheory.Eis.dblIntegrandQ, GlobalTheory.Eis.dblIntegrand, norm_mul, hμ, mul_one, Complex.norm_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hK0 : 0 ≤ K`. Rewrite using `[hK]; exact mul_nonneg (le_max_right _ _) (pow_nonneg (mul_nonneg (by linarith) (by positivity)) N)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem exists_integrable_bound_dblIntegrandQ : ∀ (D : D7) (V : HSp D) (μ : (AE D)ˣ →* Circle) (m : Measure (GA D V)), m.IsHaarMeasure →
     ∀ f₁ f₂ : GA D V → ℂ, GlobalTheory.Grow.RapidDec V f₁ → GlobalTheory.Grow.RapidDec V f₂ → ∀ (C' : ℝ) (c : ℕ),

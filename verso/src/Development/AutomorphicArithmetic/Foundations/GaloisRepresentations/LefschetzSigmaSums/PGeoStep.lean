@@ -14,27 +14,23 @@ open scoped Classical
 namespace UpperTheory.Gal.LocalSmoothExtension
 
 /- English proof (translation)
-Introduce `W1 KSP FK LS HG HT HO OT p _ D G L sc gb std i₀ v hv k T N d hd h hΔ hreg α hα`. Take `⟨m, hm1, -, hm3⟩` from `T.X.deep (T.lev N) {(T.lev N, h)}`. Take `⟨N₁, rfl⟩` from `T.lev.surjective m`. Choose the witnesses or unpack the hypotheses as in `⟨N', hdvd, hle⟩ : ∃ N' : Lv p, N.1 ∣ N'.1 ∧ T.X.K (T.lev N') ≤ T.X.K (T.lev N₁) := by`. Use `⟨⟨N.1 * N₁.1, le_trans N.2.1 (Nat.le_mul_of_pos_right _ (by have := N₁.2.1; omega)), Nat.coprime_mul_iff_left.2 ⟨N.2.2, N₁.2.2⟩⟩, Dvd.intro _ rfl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[T.K_eq, T.K_eq]`. Conclude with `UpperTheory.Gal.Int.Geo.KN_anti (Dvd.intro_left _ rfl)`. Establish `a₀ : T.X.admitted (T.lev N') (T.lev N) 1` using `T.X.isAdmissibleIntegralBasisChange_one (hle.trans hm1)`. Establish `b₀ : T.X.admitted (T.lev N') (T.lev N) h` using `⟨hΔ, fun u hu => hm3 (T.lev N, h) (by simp) u (hle hu)⟩`. Take `⟨hcx, hfin, het, F, A, hF, hA, hsum⟩` from `FK p D G L sc gb std i₀ v hv k T N' N hdvd d hd h a₀ b₀ hreg α hα`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hcx, fun y => ?_⟩` and prove the remaining obligations. Use `haveI := T.X.fin (T.lev N') (T.lev N) a₀.1 a₀.2`. Use `haveI := T.X.etale (T.lev N') (T.lev N) a₀.1 a₀.2`. Use `haveI := hd`. Establish `hq1 : T.X.tr _ _ 1 a₀.1 a₀.2 ≫ qAt T N = qAt T N'` using `T.X.tr_q _ _ _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqh : T.X.tr _ _ h b₀.1 b₀.2 ≫ qAt T N = qAt T N'` using `T.X.tr_q _ _ _ _ _`. Establish `hop` using `fun a b => HO T.X (hodge ℂ a b) (HG ℂ a b) (T.lev N') (T.lev N) h a₀ b₀`. Establish `hW` using `W1 _ (qAt T N) d (KSP p D G L sc gb k T N).1 _ (qAt T N') (T.X.tr _ _ 1 a₀.1 a₀.2) (leg T N' N h b₀ α) hq1 (leg_q T N' N h b₀ α) hfin het F hF A hA`. Establish `hne : (L.KN N'.1).relIndex (UpperTheory.Gal.G3.lev (L.KN N.1) h) ≠ 0`. Use `(hop 0 0).1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[T.K_eq N', T.K_eq N]`. Then use the resulting hypothesis. Establish `hc : (((L.KN N'.1).relIndex (UpperTheory.Gal.G3.lev (L.KN N.1) h) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hne`. Establish `key : ∀ a b, hk T N (ind ℂ (L.KN N.1) h⁻¹) a b ∘ₗ hodgePull (al_q T N α) a b = (((L.KN N'.1).relIndex (UpperTheory.Gal.G3.lev (L.KN N.1) h) : ℕ) : ℂ)⁻¹ • (hodgeTrace hq1 a b ∘ₗ hodgePull (leg_q T N' N h b₀ α) a b)`. Introduce `a b`. Establish `hIs` using `(hop a b).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hIs` using `[T.K_eq N', T.K_eq N]`. Establish `e` using `(OT (hodge ℂ a b) (HG ℂ a b) (qAt T N) (qAt T N') (qAt T N) _ _ hq1 hqh (hodgeTrace hq1 a b) (HT ℂ a b _ _ _ hq1) _).1 hIs`. Establish `e2 : hk T N (ind ℂ (L.KN N.1) h⁻¹) a b = (((L.KN N'.1).relIndex (UpperTheory.Gal.G3.lev (L.KN N.1) h) : ℕ) : ℂ)⁻¹ • (hodgeTrace hq1 a b ∘ₗ hodgePull hqh a b)`. Establish `e' : (((L.KN N'.1).relIndex (UpperTheory.Gal.G3.lev (L.KN N.1) h) : ℕ) : ℂ) • hk T N (ind ℂ (L.KN N.1) h⁻¹) a b = hodgeTrace hq1 a b ∘ₗ hodgePull hqh a b` using `e`. Rewrite using `[← e', smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply]`. Rewrite using `[hodgePull_comp (al_q T N α) hqh (leg_q T N' N h b₀ α) a b x]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinner : ∀ a, ∑ b ∈ Finset.range (d + 1), (-1 : ℂ) ^ b * LinearMap.trace ℂ _ (hk T N (ind ℂ (L.KN N.1) h⁻¹) a b ∘ₗ hodgePull (al_q T N α) a b) = (((L.KN N'.1).relIndex (UpperTheory.Gal.G3.lev (L.KN N.1) h) : ℕ) : ℂ)⁻¹ * ∑ x ∈ F, (Matrix.det (1 + (Polynomial.X : Polynomial ℂ) • (A …`. Introduce `a`. Rewrite using `[← (hW a).2, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[key a b, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hfinal : altTr (qAt T N) d (fun a b => hk T N (ind ℂ (L.KN N.1) h⁻¹) a b ∘ₗ hodgePull (al_q T N α) a b) y = (((L.KN N'.1).relIndex (UpperTheory.Gal.G3.lev (L.KN N.1) h) : ℕ) : ℂ)⁻¹ * ∑ x ∈ F, UpperTheory.Gal.W2.lefTerm (A x) y`. Unfold `altTr`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum]`.
-
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun a _ => by ring`. Use `_ = _ := by`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun x _ => LS d (A x) y`.
-
-Rewrite using `[hfinal, hsum y, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geoStep_of :
     HolomorphicLefschetzFormula → KSProj → FixK → LefSum → UpperTheory.Gal.G3.HodgeGood → UpperTheory.Gal.G3.HodgeTr → UpperTheory.Gal.G3.HopOp.{0} → UpperTheory.Gal.G3.OpTr.{0} → GeoStep := by

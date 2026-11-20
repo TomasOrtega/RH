@@ -25,7 +25,7 @@ def IsResidue (P : Ideal (𝓞 K)) (x : K) (r : 𝓞 K ⧸ P) : Prop :=
     r * Ideal.Quotient.mk P b = Ideal.Quotient.mk P a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a, 1, (Ideal.ne_top_iff_one P).mp hP.ne_top, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (P : Ideal (𝓞 K)) [hP : P.IsMaximal] (a : 𝓞 K) :
     IsResidue P (a : K) (Ideal.Quotient.mk P a) :=

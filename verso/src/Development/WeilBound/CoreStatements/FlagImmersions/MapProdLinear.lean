@@ -3,9 +3,9 @@ import Mathlib
 open MvPolynomial
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_sum, map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hX : ∏ k, (C (c k (w k)) * X (w k) : MvPolynomial J ℝ) = (∏ k, c k (w k)) • monomial (∑ k, Finsupp.single (w k) 1) (1 : ℝ)`. Rewrite using `[Finset.prod_mul_distrib, monomial_sum_one, ← C_mul', map_prod]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hX, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem RootFieldNumerics.map_prod_linear (J : Type) [Fintype J] (d : ℕ) (Φ : MvPolynomial J ℝ →ₗ[ℝ] ℝ)
     (c : Fin d → J → ℝ) :

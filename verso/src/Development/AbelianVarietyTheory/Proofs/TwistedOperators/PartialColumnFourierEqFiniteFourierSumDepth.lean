@@ -12,7 +12,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {A C : Type} [Fintype A] [DecidableEq C]
 
 /- English proof (translation)
-Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← (Valuation.integer.integers (valuation k)).le_iff_dvd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_maxIdeal_pow_iff {ϖ : kˣ} (hϖ : IsUnif ϖ) (n : ℕ) (r : 𝒪[k]) :
     r ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ n ↔ valuation k (r : k) ≤ valuation k ((ϖ ^ n : kˣ) : k) := by
@@ -21,13 +21,13 @@ theorem mem_maxIdeal_pow_iff {ϖ : kˣ} (hϖ : IsUnif ϖ) (n : ℕ) (r : 𝒪[k]
   rfl
 
 /- English proof (translation)
-Establish `h0 : 0 < valuation k ((ϖ ^ n : kˣ) : k)` using `zero_lt_iff.2 (by simp)`. Establish `hZ : setCols P 0 (U - V) ∈ matLat A ((ϖ ^ n) • stdLat k C)`. Rewrite using `[mem_matLat]`. Introduce `i`. Rewrite using `[mem_smul_lat, mem_stdLat]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Distinguish the cases in `hj : j ∈ P`. Establish `h1` using `h i ⟨j, hj⟩`. Simplify using `only [cball, Set.mem_setOf_eq] at h1`. Simplify using `only [Pi.smul_apply, Matrix.row, setCols, of_apply, dif_pos hj, Matrix.sub_apply, Units.smul_def, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Valuation.mem_integer_iff, map_mul, Units.val_inv_eq_inv_val, map_inv₀, inv_mul_le_iff₀ h0, mul_one]`. Conclude with `h1`. Simplify using `[Matrix.row, setCols, hj]`. Use `hΦ.2 (setCols P Y V) _ hZ` as an intermediate fact. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hj : j ∈ P <;> simp [setCols, hj]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem natDatum_setCols_eq {ϖ : kˣ} {n : ℕ} {Φ : Matrix A C k → ℂ} (hΦ : IsNatDatum ϖ n Φ) (P : Finset C)
     (Y : Matrix A C k) {U V : Matrix A P k} (h : ∀ i j, U i j - V i j ∈ cball (ϖ ^ n)) :
@@ -53,11 +53,11 @@ theorem natDatum_setCols_eq {ϖ : kˣ} {n : ℕ} {Φ : Matrix A C k → ℂ} (h�
   by_cases hj : j ∈ P <;> simp [setCols, hj]
 
 /- English proof (translation)
-Establish `h1 : pairCols P Y U = pairCols P Y V + pairCols P Y (U - V)`. Simplify using `only [pairCols, ← Finset.sum_add_distrib, Matrix.sub_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Rewrite using `[h1, AddChar.map_add_eq_mul, hψ.eq_one (y := pairCols P Y (U - V)) ?_, mul_one]`. Use `show valuation k _ ≤ valuation k ((1 : kˣ) : k)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_one, map_one]`. Use `Valuation.map_sum_le _ fun i _ => Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Establish `h2` using `h i j`. Establish `h3` using `hY i j j.2`. Rewrite `h2` using `[cball, Set.mem_setOf_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[Valuation.mem_integer_iff, map_mul]`. Rewrite using `[map_mul, Matrix.sub_apply]`. Conclude with `(mul_le_mul' h2 le_rfl).trans (by rw [mul_comm] at h3 ⊢; exact h3)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_pairCols_eq {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ϖ : kˣ} {n : ℕ} (P : Finset C)
     {Y : Matrix A C k} (hY : ∀ i, ∀ j ∈ P, ((ϖ ^ n : kˣ) : k) * Y i j ∈ 𝒪[k]) {U V : Matrix A P k}
@@ -79,43 +79,39 @@ theorem psi_pairCols_eq {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ϖ : 
 end Lemmas
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ A C _ _ _ ψ m ϖ hϖ hψ hm P n Φ hΦ`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI := hm.1`. Establish `h0 : 0 < valuation k ((ϖ ^ n : kˣ) : k)` using `zero_lt_iff.2 (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `Y`. Rewrite using `[fourierSum_apply]`. Use `split_ifs with hY`. Rewrite using `[fourierInt] set F : Matrix A P k → ℂ := fun U => Φ (setCols P Y U) * (ψ (pairCols P Y U) : ℂ) with hF`. Set `S : (A → P → Res k n) → Set (Matrix A P k)` to `fun T => Set.univ.pi fun i => Set.univ.pi fun j => (fun x => x + -liftRes T i j) ⁻¹' cball (ϖ ^ n)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hmemS : ∀ T U, U ∈ S T ↔ ∀ i j, U i j - liftRes T i j ∈ cball (ϖ ^ n)`. Introduce `T U`. Conclude with `⟨fun h i j => by simpa [sub_eq_add_neg] using h i trivial j trivial, fun h i _ j _ => by simpa [sub_eq_add_neg] using h i j⟩`. Establish `hS : ∀ T, MeasurableSet (S T)` using `fun T => MeasurableSet.univ_pi fun i => MeasurableSet.univ_pi fun j => (isOpen_cball _).measurableSet.preimage (measurable_add_const _)`. Establish `hcb : m (cball (ϖ ^ n)) = (distribHaarChar k (ϖ ^ n) : ENNReal)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[measure_cball, hm.2, mul_one]`. Establish `hvolE : ∀ T, (volM m A P) (S T) = (distribHaarChar k (ϖ ^ n) : ENNReal) ^ (Fintype.card A * P.card)`. Introduce `T`. Simplify using `only [volM, S]`. Use `(Measure.pi_pi (fun _ : A => Measure.pi fun _ : P => m) (fun i => Set.univ.pi fun j => (fun x => x + -liftRes T i j) ⁻¹' cball (ϖ ^ n))).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Measure.pi_pi, measure_preimage_add_right, hcb, Finset.prod_const, Finset.card_univ, Fintype.card_coe, ← pow_mul]`. Rewrite using `[mul_comm]`. Establish `hnabs : nabs k (ϖ ^ n) = ((resCard k : ℝ) ^ n)⁻¹`. Establish `h1 : ∀ l : ℕ, nabs k (ϖ ^ l) = nabs k ϖ ^ l`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `l with`. Consider the case `zero => simp [nabs_one]`. Consider the case `succ l ih => rw [pow_succ, nabs_mul, ih, pow_succ]`. Rewrite using `[h1, nabs_uniformiser hϖ.irreducible (x := ϖ) rfl, inv_pow]`. Establish `hvol : ∀ T, (volM m A P).real (S T) = ((resCard k : ℝ) ^ (n * Fintype.card A * P.card))⁻¹`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `T`. Rewrite using `[Measure.real, hvolE, ENNReal.toReal_pow, ENNReal.coe_toReal]`. Establish `: ((distribHaarChar k (ϖ ^ n) : NNReal) : ℝ) = nabs k (ϖ ^ n)` using `rfl`. Rewrite using `[this, hnabs, inv_pow, ← pow_mul, mul_assoc]`. Establish `hfin : ∀ T, (volM m A P) (S T) ≠ ⊤` using `fun T => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hvolE]`. Conclude with `ENNReal.pow_ne_top ENNReal.coe_ne_top`. Establish `hpt : ∀ U, F U = ∑ T, (S T).indicator (fun _ => F (liftRes T)) U`. Introduce `U`. Distinguish the cases in `hU : ∀ i j, U i j ∈ 𝒪[k]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `T0 : A → P → Res k n` to `fun i j => Ideal.Quotient.mk _ ⟨U i j, hU i j⟩`. Establish `key1 : ∀ T i j, U i j - liftRes T i j ∈ cball (ϖ ^ n) ↔ T i j = T0 i j`. Introduce `T i j`. Establish `e : T i j = T0 i j ↔ (⟨U i j, hU i j⟩ - Quotient.out (T i j) : 𝒪[k]) ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ n` using `by conv_lhs => rw [← Ideal.Quotient.mk_out (T i j)]`. Rewrite using `[eq_comm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.Quotient.eq`. Rewrite using `[e, mem_maxIdeal_pow_iff hϖ]`. Both sides reduce to the same expression. Establish `key : ∀ T, U ∈ S T ↔ T = T0`. Introduce `T`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmemS]`. Simplify using `only [key1]`. Conclude with `⟨fun h => funext fun i => funext fun j => h i j, fun h i j => by rw [h]⟩`. Rewrite using `[Finset.sum_eq_single T0 (fun T _ hT => Set.indicator_of_notMem (fun h => hT ((key T).1 h)) _) (by simp), Set.indicator_of_mem ((key T0).2 rfl)]`. Establish `hd` using `(hmemS T0 U).1 ((key T0).2 rfl)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hF]`. Rewrite using `[natDatum_setCols_eq hΦ P Y hd, psi_pairCols_eq hψ P hY hd]`. Use `push_neg at hU`. Take `⟨i, j, hij⟩` from `hU`. Establish `hz : F U = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hF]`. Rewrite using `[hΦ.1 _ ?_, zero_mul]`. Introduce `hm'`. Apply `hij` to reduce the goal to its premises. Use `mem_matLat_stdLat.1 hm' i j` as an intermediate fact.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[setCols, j.2]`. Rewrite using `[hz]`. Use `symm`. Use `Finset.sum_eq_zero fun T _ => Set.indicator_of_notMem (fun h => hij ?_) _` and prove the remaining obligations. Establish `h1 : valuation k (U i j - liftRes T i j) ≤ valuation k ((ϖ ^ n : kˣ) : k)` using `(hmemS T U).1 h i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : U i j - liftRes T i j ∈ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff]`. Use `le_trans h1 ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, map_pow]`. Conclude with `pow_le_one' (hϖ.mem) n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using add_mem h2 (liftRes_mem T i j)`. Rewrite using `[show F = fun U => ∑ T, (S T).indicator (fun _ => F (liftRes T)) U from funext hpt]`. Rewrite using `[integral_finset_sum _ (fun T _ => (integrable_indicator_iff (hS T)).2 (integrableOn_const (lt_top_iff_ne_top.2 (hfin T)).ne)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (hS T), hvol, Complex.real_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[fourierInt_eq_pi]`. Use `GlobalTheory.SplitWeil.FourierPi.fourier_eq_zero_pi _ hψ (s := ϖ ^ n) (fun t ht x => ?_) ?_` and prove the remaining obligations. Conclude with `natDatum_setCols_eq hΦ P Y fun i j => by simpa using ht ⟨i, j⟩ trivial`.
-
-Introduce `hmem`. Apply `hY` to reduce the goal to its premises. Introduce `i j hj`. Establish `h1 : valuation k (Y i j) ≤ valuation k ((((1 : kˣ) * (ϖ ^ n)⁻¹ : kˣ)) : k)` using `hmem ⟨i, ⟨j, hj⟩⟩ trivial`. Rewrite `h1` using `[one_mul, Units.val_inv_eq_inv_val, map_inv₀]`.
-
-Rewrite using `[Valuation.mem_integer_iff, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fourierInt_eq_fourierSum : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (A C : Type) [Fintype A] [DecidableEq A]

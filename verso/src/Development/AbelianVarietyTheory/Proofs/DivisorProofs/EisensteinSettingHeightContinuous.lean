@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Establish `h1 : (matHom _ σ J p⁻¹).1 * (matHom _ σ J p).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Establish `h2 : l.1 • ((matHom _ σ J p⁻¹).1 * adMat F x) = adMat F x`. Rewrite using `[← Matrix.mul_smul, ← hp, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_eigen {x : Matrix (Fin n) (Fin 1) E} {p : GAd σ J} {l : (AF F ⊗[F] E)ˣ}
     (hp : (matHom _ σ J p).1 * adMat F x = l.1 • adMat F x) :
@@ -31,7 +31,7 @@ theorem inv_eigen {x : Matrix (Fin n) (Fin 1) E} {p : GAd σ J} {l : (AF F ⊗[F
     _ = _ := by rw [← smul_smul, h2]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h0 : ∀ j, X j 0 = 0` using `fun j => hc j`. Use `congrFun (congrFun hW.xy 0) 0` as an intermediate fact. Simplify using `[Matrix.mul_apply, Formalism.UG.cT, h0] at this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem witt_frame_first_column_has_nonzero_entry {r : ℕ} {X Y : Matrix (Fin n) (Fin (r + 1)) E} (hW : IsWittFrame σ J X Y) :
     ∃ i, col0 X i 0 ≠ 0 := by
@@ -42,25 +42,21 @@ theorem witt_frame_first_column_has_nonzero_entry {r : ℕ} {X Y : Matrix (Fin n
   simp [Matrix.mul_apply, Formalism.UG.cT, h0] at this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y L a h hS`. Take `⟨hCM, -, -, -, hW, hA, hI⟩` from `hS`. Use `haveI := hA.lat`. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := AF F)`. Establish `hK : IsCompact (levelAll σ J L a : Set (GAd σ J))` using `GlobalTheory.Doubling.isCompact_levelAll hCM J L a`. Apply the tactic sequence `obtain ⟨i, hi⟩ := witt_frame_first_column_has_nonzero_entry hW`. Use `set x := col0 X with hx`. Establish `hm : Continuous fun g : GAd σ J => (matHom _ σ J g).1` using `Units.continuous_val.comp (isEmbedding_matHom _ σ J).continuous`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `Λ : GAd σ J → AF F ⊗[F] E` to `fun g => ((matHom _ σ J g).1 * adMat F x) i 0 * inclR (F := F) (AF F) (x i 0)⁻¹`. Establish `hΛ : Continuous Λ` using `((hm.matrix_mul continuous_const).matrix_elem i 0).mul continuous_const`. Establish `key : ∀ p (l : (AF F ⊗[F] E)ˣ), (matHom _ σ J p).1 * adMat F x = l.1 • adMat F x → l.1 = Λ p`. Introduce `p l hl`. Establish `e` using `congrFun (congrFun hl i) 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.map_apply] at e`. Simplify using `only [Λ, e, mul_assoc, ← map_mul, mul_inv_cancel₀ hi, map_one, mul_one]`. Set `P : Set (GAd σ J)` to `{p | (matHom _ σ J p).1 * adMat F x = Λ p • adMat F x ∧ Λ p * Λ p⁻¹ = 1}`. Establish `memP : ∀ p, (∃ l : (AF F ⊗[F] E)ˣ, (matHom _ σ J p).1 * adMat F x = l.1 • adMat F x) → p ∈ P`. Introduce and unpack `p ⟨l, hl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e1` using `key p l hl`. Establish `e2` using `key p⁻¹ l⁻¹ (inv_eigen hl)`. Conclude with `⟨by rw [← e1]; exact hl, by rw [← e1, ← e2, Units.mul_inv]⟩`. Establish `hPc : IsClosed P` using `(isClosed_eq (hm.matrix_mul continuous_const) (hΛ.smul continuous_const)).inter (isClosed_eq (hΛ.mul (hΛ.comp continuous_inv)) continuous_const)`. Set `u : P → (AF F ⊗[F] E)ˣ` to `fun p => ⟨Λ p, Λ p.1⁻¹, p.2.2, by rw [mul_comm]; exact p.2.2⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : Continuous u` using `Units.continuous_iff.2 ⟨hΛ.comp continuous_subtype_val, (hΛ.comp continuous_inv).comp continuous_subtype_val⟩`. Set `f : P → ℝ` to `fun p => (absE F E (u p) : ℝ)`. Establish `hf : Continuous f` using `NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp hu)`. Establish `hval : ∀ p : P, ∀ k ∈ levelAll σ J L a, h (p.1 * k) = f p` using `fun p k hk => hI.2 p.1 (u p) p.2.1 k hk`. Rewrite using `[continuous_iff_isClosed]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Establish `hpre : h ⁻¹' s = (Subtype.val '' (f ⁻¹' s)) * (levelAll σ J L a : Set (GAd σ J))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨p, l, hl, k, hk, rfl⟩` from `hI.1 g`. Establish `hp : p ∈ P` using `memP p ⟨l, hl⟩`. Use `⟨p, ⟨⟨p, hp⟩, ?_, rfl⟩, k, hk, rfl⟩` and prove the remaining obligations. Use `show f ⟨p, hp⟩ ∈ s`. Rewrite using `[← hval ⟨p, hp⟩ k hk]`.
-
-Conclude with `hg`. Introduce and unpack `⟨_, ⟨p, hp, rfl⟩, k, hk, rfl⟩ show h (p.1 * k) ∈ s`. Rewrite using `[hval p k hk]`. Conclude with `hp`. Rewrite using `[hpre]`.
-
-Conclude with `(hPc.isClosedEmbedding_subtypeVal.isClosedMap _ (hs.preimage hf)).mul_right_of_isCompact hK`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_iwaHt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))

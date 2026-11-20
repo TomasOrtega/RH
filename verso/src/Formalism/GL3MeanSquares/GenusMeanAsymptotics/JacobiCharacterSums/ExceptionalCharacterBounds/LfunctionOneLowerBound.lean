@@ -9,13 +9,13 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.SupplyAP
 
 /- English proof (translation)
-Establish `hx0 : 0 < x` using `by linarith`. Establish `hdiv : -(x ^ 3) / x = -(x ^ 2)` using `by field_simp`. Rewrite using `[hdiv, Real.exp_neg]`. Establish `he` using `Real.pow_div_factorial_le_exp (x ^ 2) (sq_nonneg x) 4`. Establish `h24 : ((4 : ℕ).factorial : ℝ) = 24` using `by norm_num [Nat.factorial]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `he` using `[h24]`. Establish `hE : 0 < Real.exp (x ^ 2)` using `Real.exp_pos _`. Rewrite using `[le_div_iff₀ (by positivity), mul_assoc, mul_assoc]`. Establish `hx1 : x + 1 ≤ 2 * x` using `by linarith`. Establish `hpos : 0 < (Real.exp (x ^ 2))⁻¹` using `inv_pos.mpr hE`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : x ^ 3 * (x + 1) * x ^ 4 ≤ 2 * x ^ 8` using `by nlinarith [pow_pos hx0 7]`. Establish `h8 : x ^ 8 ≤ 24 * Real.exp (x ^ 2)`. Establish `: (x ^ 2) ^ 4 = x ^ 8` using `by ring`. Rewrite `he` using `[this]`. Rewrite using `[div_le_iff₀ (by norm_num)] at he; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem tail_small {x : ℝ} (hx : 1 ≤ x) : x ^ 3 * (x + 1) * Real.exp (-(x ^ 3) / x) ≤ 48 / x ^ 4 := by
   have hx0 : 0 < x := by linarith
@@ -41,31 +41,29 @@ theorem tail_small {x : ℝ} (hx : 1 ≤ x) : x ^ 3 * (x + 1) * Real.exp (-(x ^ 
     _ = 48 := by field_simp; ring
 
 /- English proof (translation)
-Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Use `set B : ℝ := (q : ℝ) + 1 with hB`. Establish `hB2 : 2 ≤ B` using `by linarith`. Use `set Kn : ℕ := 2 * (q + 1) with hKn`. Use `set Nn : ℕ := Kn ^ 6 with hNn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKr : (Kn : ℝ) = 2 * B` using `by rw [hKn, hB]; push_cast; ring`. Use `set x : ℝ := (Kn : ℝ) ^ 2 with hx`. Establish `hxB : x = 4 * B ^ 2` using `by rw [hx, hKr]; ring`. Establish `hx16 : 16 ≤ x` using `by rw [hxB]; nlinarith`. Establish `hx0 : 0 < x` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNr : (Nn : ℝ) = x ^ 3` using `by rw [hNn, hx]; push_cast; ring`. Establish `hKN : Kn ^ 2 ≤ Nn` using `Nat.pow_le_pow_right (by omega) (by norm_num)`. Establish `hs` using `smoothLower q χ hχ2 Kn Nn x hx0 le_rfl hKN`. Establish `ha` using `abelG q χ hχ x hx0 Nn`. Establish `hGre` using `(Complex.re_le_norm _).trans ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hN1 : 1 ≤ Nn` using `Nat.one_le_pow _ _ (by omega)`. Establish `hP` using `Formalism.FX.l_function_partial_sum q χ hχ ((q : ℝ) + 1) (fun M => norm_character_sum_Icc_le χ hχ M) 1 (by norm_num) Nn hN1`. Simplify using `only [norm_one, Complex.one_re, div_one] at hP`. Establish `hsum : ∑ n ∈ Finset.Icc 1 Nn, χ (n : ZMod q) * (n : ℂ) ^ (-(1 : ℂ)) = ∑ d ∈ Finset.Icc 1 Nn, χ (d : ZMod q) / (d : ℂ)`. Use `Finset.sum_congr rfl (fun n _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.cpow_neg_one, div_eq_mul_inv]`. Rewrite `hP` using `[hsum]`. Use `set P := ∑ d ∈ Finset.Icc 1 Nn, χ (d : ZMod q) / (d : ℂ) with hPdef`. Use `set R := (DirichletCharacter.LFunction χ 1).re with hR`. Establish `hNpow : (Nn : ℝ) ^ (-(1 : ℝ)) = x⁻¹ ^ 3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Real.rpow_neg_one, hNr, inv_pow]`. Rewrite `hP` using `[hNpow]`. Establish `hPre : P.re ≤ R + 2 * ((q : ℝ) + 1) * (1 + 1) * x⁻¹ ^ 3`. Establish `h1 : (P - DirichletCharacter.LFunction χ 1).re ≤ ‖P - DirichletCharacter.LFunction χ 1‖` using `Complex.re_le_norm _`. Rewrite `h1` using `[Complex.sub_re, norm_sub_rev]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1' : P.re - R ≤ ‖DirichletCharacter.LFunction χ 1 - P‖` using `h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `htail` using `tail_small (x := x) (by linarith)`. Rewrite `htail` using `[← hNr]`. Establish `he : Real.exp 1 ≤ (68 / 25 : ℝ)` using `by have := Real.exp_one_lt_d9; linarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hKe : 2 * B / (68 / 25 : ℝ) ≤ (Kn : ℝ) / Real.exp 1`. Rewrite using `[hKr]; exact div_le_div_of_nonneg_left (by linarith) (Real.exp_pos 1) he`. Establish `hx3 : x * (2 * B * 2 * x⁻¹ ^ 3) ≤ 1 / 32`. Establish `: x * (2 * B * 2 * x⁻¹ ^ 3) = 4 * B / x ^ 2` using `by field_simp; ring_nf`. Rewrite using `[this, div_le_iff₀ (by positivity), hxB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use polynomial arithmetic with `[pow_le_pow_left₀ (by norm_num : (0:ℝ) ≤ 2) hB2 3]`. Establish `h48 : 48 / x ^ 4 ≤ 1 / 1000`. Rewrite using `[div_le_iff₀ (by positivity)]`. Use polynomial arithmetic with `[pow_le_pow_left₀ (by norm_num : (0:ℝ) ≤ 16) hx16 4]`. Establish `hmono : x * P.re ≤ x * (R + 2 * B * 2 * x⁻¹ ^ 3)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Apply `mul_le_mul_of_nonneg_left _ hx0.le` to reduce the goal to its premises. Establish `h2 : 2 * ((q : ℝ) + 1) * (1 + 1) * x⁻¹ ^ 3 = 2 * B * 2 * x⁻¹ ^ 3` using `by rw [hB]; ring`. Combine the linear relations using `[hPre, h2]`. Establish `hxP : x * P.re ≤ x * R + 1 / 32`. Rewrite `hmono` using `[mul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG : (∑ d ∈ Finset.Icc 1 Nn, χ (d : ZMod q) * ((gExp ((d : ℝ) / x) : ℝ) : ℂ)).re ≤ B / 2`. Rewrite using `[hB]`. Conclude with `hGre`. Establish `hmain : 2 * B / (68 / 25 : ℝ) ≤ x * R + 1 / 32 + B / 2 + 1 / 1000`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[hs, hKe, hG, htail, h48, hxP]`. Establish `hxR : B / 5 ≤ x * R` using `by linarith`. Rewrite `hxR` using `[hxB]`. Establish `hB0 : 0 < B` using `by linarith`. Establish `hfin : B * 1 ≤ B * (R * (20 * B))` using `by linarith`.
-
-Use `le_of_mul_le_mul_left hfin hB0` as an intermediate fact. Rewrite using `[div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lfunction_one_lower_bound (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (hχ2 : χ ^ 2 = 1) (hχ : χ ≠ 1) :
     1 / (20 * ((q : ℝ) + 1)) ≤ (DirichletCharacter.LFunction χ 1).re := by

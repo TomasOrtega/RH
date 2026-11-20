@@ -11,15 +11,15 @@ open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApply
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
 /- English proof (translation)
-Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M N hN Y β β' k1 k2 ha w`. Take `⟨-, cadd, -, -, -, -, -, cmap⟩` from `cobLaws M.F`. Establish `hY : ∀ t h, Y (M.F.U t h) = M.F.U t (Y h)` using `fun t h => by`. Take `⟨u, rfl⟩` from `M.J.surjective h`. Rewrite using `[M.hJ, ha.1, ha.1, M.hJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg M.J (DFunLike.congr_fun ((convLaws β k1).1 t) u)`. Establish `h1` using `cmap M.F Y hY _ (hN w)`. Rewrite `h1` using `[map_sub, ha.1, ha.2]`. Take `⟨-, b1, s1⟩` from `(svSpec (V := W)).2 w`. Take `⟨-, b2, s2⟩` from `(svSpec (V := V)).2 (N w)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b3, s3⟩` from `(convLaws β' k2).2.2 _ b1`. Take `⟨b4, s4⟩` from `(convLaws β k1).2.2 _ b2`. Establish `h2` using `nAll M N hN _ b3`. Rewrite `h2` using `[s3, s1]`. Establish `h3` using `((cobTail _).2 ((cobTail _).1 b4)).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[s4, s2]`. Establish `h4` using `(cobLaws (shF V)).2.2.2.2.2.2.2 M.F (M.J.toContinuousLinearEquiv : L V →L[ℂ] H) (fun t h => (M.hJ t h).symm) _ h3`. Establish `h5` using `(cadd _ _ (cadd _ _ h1 h2).2 h4).1`. Establish `h6 : M.F.Cob (M.J (one V (N (symb β' 0 w) - symb β 0 (N w))))`. Use `h5 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `sub_eq_zero.1 ((nIso M).1 _ h6)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.nInt :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W) (N : W →ₗ[ℂ] V), M.IsN N → ∀ (Y : H →L[ℂ] H) (β : ℝ → V →L[ℂ] V) (β' : ℝ → W →L[ℂ] W), Ker β → Ker β' → M.Acts Y β β' →

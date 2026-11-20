@@ -52,9 +52,9 @@ open NumberField IsDedekindDomain Matrix MeasureTheory Filter Topology in
 open scoped ENNReal NNReal in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Use `show IsClosed {g : Ψ → GL (Fin r) ℂ | ∀ τ : Ψ, (g τ : Matrix (Fin r) (Fin r) ℂ).det = 1 ∧ ∀ u w, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ.1 G ((g τ : Matrix (Fin r) (Fin r) ℂ) *ᵥ u) ((g τ : Matrix (Fin r) (Fin r) ℂ) *ᵥ w) = _root_.ReciprocityTheory.ChartRestriction. …`. Establish `hc : ∀ τ : Ψ, Continuous fun g : Ψ → GL (Fin r) ℂ => (g τ : Matrix (Fin r) (Fin r) ℂ)` using `fun τ => Units.continuous_val.comp (continuous_apply τ)`. Simplify using `only [Set.setOf_forall, Set.setOf_and]`. Use `isClosed_iInter fun τ => ((isClosed_eq (hc τ).matrix_det continuous_const).inter (isClosed_iInter fun u => isClosed_iInter fun w => isClosed_eq ?_ continuous_const))` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hu` using `(hc τ).matrix_mulVec (continuous_const (y := u))`. Establish `hw` using `(hc τ).matrix_mulVec (continuous_const (y := w))`. Use `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => ?_` and prove the remaining obligations. Conclude with `(((continuous_apply a).comp hu).mul continuous_const).mul (Complex.continuous_conj.comp ((continuous_apply b).comp hw))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SUVol.isClosed_realSU (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) :
     IsClosed (_root_.GlobalTheory.SUVol.realSU Ψ G : Set (Ψ → GL (Fin r) ℂ)) := by
@@ -168,7 +168,7 @@ def IsSReps (G : Matrix (Fin r) (Fin r) E) (L : Set (Fin r → E)) (M : ℕ) {J 
   (∀ j, IsSA G (s j)) ∧ (∀ i j, SEquiv G L M (s i) (s j) → i = j) ∧ ∀ g, IsSA G g → ∃ j, SEquiv G L M (s j) g
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (Algebra.TensorProduct.includeRight : E →ₐ[maximalRealSubfield E] RA (maximalRealSubfield E) E))`.
+A detailed English derivation is pending.
 -/
 theorem ratM_mul (γ δ : Matrix (Fin r) (Fin r) E) :
     ratM (maximalRealSubfield E) (γ * δ) = ratM (maximalRealSubfield E) γ * ratM (maximalRealSubfield E) δ :=
@@ -176,7 +176,7 @@ theorem ratM_mul (γ δ : Matrix (Fin r) (Fin r) E) :
     E →ₐ[maximalRealSubfield E] RA (maximalRealSubfield E) E))
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (TensorProduct.tmul_zero _ _) rfl`.
+A detailed English derivation is pending.
 -/
 theorem ratM_one : ratM (maximalRealSubfield E) (1 : Matrix (Fin r) (Fin r) E) = 1 :=
   Matrix.map_one _ (TensorProduct.tmul_zero _ _) rfl
@@ -208,13 +208,11 @@ open NumberField IsDedekindDomain Matrix MeasureTheory Filter Topology in
 open scoped ENNReal NNReal in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Establish `hK' : ∀ a b, τ (G a b) = ∑ i, ∑ j, τ (M i a) * τ (G i j) * starRingEnd ℂ (τ (M j b))`. Introduce `a b`. Rewrite using `[← hK a b]`. Simplify using `[map_sum, IsCMField.complexEmbedding_complexConj]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `conv_rhs => rw [Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by rw [hK' a b]]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Use `conv_lhs => enter [2, i, 2, j]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => enter [2, i]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => enter [2, i, 2, a]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_lhs => enter [2, a]`.
-
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma hermC_map_mulVec_eq_of_preserves_form (τ : E →+* ℂ) (G M : Matrix (Fin r) (Fin r) E)
     (hK : ∀ a b, ∑ i, ∑ j, M i a * G i j * IsCMField.complexConj E (M j b) = G a b) (u w : Fin r → ℂ) :
@@ -239,9 +237,9 @@ open scoped ENNReal NNReal in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 
 /- English proof (translation)
-Establish `hK : ∀ a b, ∑ i, ∑ j, (γ : Matrix (Fin r) (Fin r) E) i a * G i j * IsCMField.complexConj E ((γ : Matrix (Fin r) (Fin r) E) j b) = G a b`. Introduce `a b`. Establish `h` using `h2 (Pi.single a 1) (Pi.single b 1)`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.herm _root_.ReciprocityTheory.ChartRestriction.G.FD.cc at h`. Simplify `h` using `[Pi.single_apply, Matrix.mulVec_single_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 
-Use `fun τ => ?_` and prove the remaining obligations. Establish `hv : ((_root_.GlobalTheory.SUVol.embGL Ψ r γ τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = (γ : Matrix (Fin r) (Fin r) E).map τ.1` using `Matrix.GeneralLinearGroup.val_map_apply τ.1 γ`. Rewrite using `[hv]`. Conclude with `⟨by rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, h1, map_one], hermC_map_mulVec_eq_of_preserves_form τ.1 G _ hK⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.SUVol.embGL_mem_realSU (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E)
     (γ : GL (Fin r) E) (h1 : (γ : Matrix (Fin r) (Fin r) E).det = 1)

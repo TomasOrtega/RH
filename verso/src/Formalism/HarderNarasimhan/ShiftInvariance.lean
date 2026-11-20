@@ -34,111 +34,111 @@ import Formalism.HarderNarasimhan.HarderNarasimhanProofs.DualPl
 namespace Formalism.HN
 
 /- English proof (translation)
-The claim follows from `real_saturation_property`.
+A detailed English derivation is pending.
 -/
 theorem satR : SatR := real_saturation_property
 /- English proof (translation)
-The claim follows from `finite_supremum_slopes`.
+A detailed English derivation is pending.
 -/
 theorem finSup : FinSup := finite_supremum_slopes
 /- English proof (translation)
-The claim follows from `saturation_basic_properties`.
+A detailed English derivation is pending.
 -/
 theorem satBasic : SatBasic := saturation_basic_properties
 /- English proof (translation)
-The claim follows from `maximal_slope_ratio`.
+A detailed English derivation is pending.
 -/
 theorem ratioMax : RatioMax := maximal_slope_ratio
 /- English proof (translation)
-The claim follows from `degree_supermodular`.
+A detailed English derivation is pending.
 -/
 theorem degSupermod : DegSupermod := degree_supermodular
 /- English proof (translation)
-The claim follows from `slope_characterization`.
+A detailed English derivation is pending.
 -/
 theorem muChar : MuChar := slope_characterization
 /- English proof (translation)
-The claim follows from `hnStep_of degSupermod muChar ratioMax finSup satR satBasic`.
+A detailed English derivation is pending.
 -/
 theorem hnStep_spec : HNStep := hnStep_of degSupermod muChar ratioMax finSup satR satBasic
 /- English proof (translation)
-The claim follows from `slope_inequality_general`.
+A detailed English derivation is pending.
 -/
 theorem slopeIneq : SlopeIneq := slope_inequality_general
 /- English proof (translation)
-The claim follows from `polygon_slope_sum`.
+A detailed English derivation is pending.
 -/
 theorem hnSum : HNSum := polygon_slope_sum
 /- English proof (translation)
-The claim follows from `polygon_slopes_characterization`.
+A detailed English derivation is pending.
 -/
 theorem hnSlopes : HNSlopes := polygon_slopes_characterization
 /- English proof (translation)
-The claim follows from `shiftInvariance_of muChar muChar hnSlopes`.
+A detailed English derivation is pending.
 -/
 theorem shiftInvariance : ShiftInvariance := shiftInvariance_of muChar muChar hnSlopes
 /- English proof (translation)
-The claim follows from `slope_duality_formula`.
+A detailed English derivation is pending.
 -/
 theorem duality : Duality := slope_duality_formula
 /- English proof (translation)
-The claim follows from `product_slope_sum`.
+A detailed English derivation is pending.
 -/
 theorem piSum : PiSum := product_slope_sum
 /- English proof (translation)
-The claim follows from `place_lattice_structure`.
+A detailed English derivation is pending.
 -/
 theorem plLat : PlLat := place_lattice_structure
 /- English proof (translation)
-The claim follows from `size_maximal_slope`.
+A detailed English derivation is pending.
 -/
 theorem sizeMu : SizeMu := size_maximal_slope
 /- English proof (translation)
-The claim follows from `gram_block_determinant`.
+A detailed English derivation is pending.
 -/
 theorem gramBlock : GramBlock := gram_block_determinant
 /- English proof (translation)
-The claim follows from `rescale_covolume_formula`.
+A detailed English derivation is pending.
 -/
 theorem rescaleCovol : RescaleCovol := rescale_covolume_formula
 /- English proof (translation)
-The claim follows from `twist_of rescaleCovol plLat shiftInvariance`.
+A detailed English derivation is pending.
 -/
 theorem twist : Twist := twist_of rescaleCovol plLat shiftInvariance
 /- English proof (translation)
-The claim follows from `slope_inequality_mean`.
+A detailed English derivation is pending.
 -/
 theorem slopeIneqMean : SlopeIneqMean := slope_inequality_mean
 /- English proof (translation)
-The claim follows from `height_gram_determinant`.
+A detailed English derivation is pending.
 -/
 theorem htGram : HtGram := height_gram_determinant
 /- English proof (translation)
-The claim follows from `height_image_formula`.
+A detailed English derivation is pending.
 -/
 theorem htImage : HtImage := height_image_formula
 /- English proof (translation)
-The claim follows from `sizeIneq_of size_maximal_slope height_image_formula place_lattice_structure`.
+A detailed English derivation is pending.
 -/
 theorem sizeIneq : SizeIneq := sizeIneq_of size_maximal_slope height_image_formula place_lattice_structure
 /- English proof (translation)
-The claim follows from `lattice_rerealization`.
+A detailed English derivation is pending.
 -/
 theorem rerealize : Rerealize := lattice_rerealization
 /- English proof (translation)
-The claim follows from `quotient_lattice_realization`.
+A detailed English derivation is pending.
 -/
 theorem quotRealize : QuotRealize := quotient_lattice_realization
 /- English proof (translation)
-The claim follows from `frame_theorem_sharp`.
+A detailed English derivation is pending.
 -/
 theorem theoremFSharp : TheoremFSharp := frame_theorem_sharp
 /- English proof (translation)
-The claim follows from `frame_theorem_log_ideal`.
+A detailed English derivation is pending.
 -/
 theorem theoremF : TheoremF := frame_theorem_log_ideal
 /- English proof (translation)
-The claim follows from `dual_polygon_identity`.
+A detailed English derivation is pending.
 -/
 theorem dualPl : DualPl := dual_polygon_identity
 

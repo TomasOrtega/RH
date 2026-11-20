@@ -6,7 +6,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage (app HasTensor
 open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (IsCO rescale)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PosOne.RrLin.exists_linear_isQuotInt_tInt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsLinearIsQuotIntTInt.lean&line=124#L124)
 -/

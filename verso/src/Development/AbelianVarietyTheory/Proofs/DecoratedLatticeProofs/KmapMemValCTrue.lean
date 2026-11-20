@@ -17,7 +17,7 @@ open Formalism.L2.Forms (fnOf shiftOf ValC CSpan)
 variable {X : Fields} {R : Ranks}
 
 /- English proof (translation)
-Simplify using `[fnOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fnOf_one_apply {ι : Type} [Fintype ι] {n : ℕ} (G : ι → Matrix (Fin n) (Fin n) ℂ) (s : ι → ℤ)
     (P : MvPolynomial (ι × Fin n × Fin n) ℂ) (y : Formalism.L2.Forms.Frames G) :
@@ -25,7 +25,7 @@ theorem fnOf_one_apply {ι : Type} [Fintype ι] {n : ℕ} (G : ι → Matrix (Fi
   simp [fnOf]
 
 /- English proof (translation)
-Establish `hN : R.N i < R.N (i + 1)` using `by unfold Ranks.N; rw [add_mul]; omega`. Use `GlobalTheory.JetPoint.jetMap_mem hN.le _ _ _ (fun ap => ?_) J` and prove the remaining obligations. Use `GlobalTheory.SubstMem.substAdj_sharp_mem ℂ X.Tau _ _ hN _ _ (sD hc i) (sS hc i) _ ⟨fun τ a => ?_, fun τ j hj => GlobalTheory.GO.ChSrc.trueWt_new hc hi τ j (not_lt.mpr hj), GlobalTheory.GO.ChSrc.nuEnd_cast hc hi⟩ ap _ hP` and prove the remaining obligations. Use `GlobalTheory.GO.ChSrc.trueWt_old hc hi τ (Fin.castLE hN.le a) a.2` as an intermediate fact. Simplify using `only [Fin.val_castLE, Fin.eta] at this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -41,7 +41,7 @@ theorem jetMap_mem_VV (hc : X.Tau → HCParam R) {i : ℕ} (hi : i < R.m)
   omega
 
 /- English proof (translation)
-Simplify using `[jetMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jetMap_zero_mul {ι : Type} [Fintype ι] {a b : ℕ} (J : (DVar ι a b →₀ ℕ) → ℂ) (n : ι → ℕ) (P : Pol ℂ ι a) :
     jetMap J 0 (P * ∏ τ, frDet ℂ a τ ^ n τ) = jetMap J n P := by
@@ -58,17 +58,15 @@ open Formalism.L2.Forms (fnOf shiftOf ValC CSpan)
 variable {X : Fields} {R : Ranks}
 
 /- English proof (translation)
-Take `⟨P, hP, rfl⟩` from `Submodule.mem_map.1 hf`. Rewrite `hP` using `[GlobalTheory.Pdv.FormsStd.cSpan_eq_VV]`. Establish `h1 : (I.chain X.emb σ h hc).sharp i (fnOf (Gr X.emb σ (R.N i)) (shiftOf (trueWt hc i)) 1 P) = polFn X σ _ (P * ∏ τ, frDet ℂ (R.N i) τ ^ nuEnd hc i τ)`. Use function extensionality and compare the values at `(y : Fr X.emb σ (R.N i))`. Establish `hd : ∀ τ, MvPolynomial.eval (fun v : X.Tau × Fin (R.N i) × Fin (R.N i) => y.1 v.1 v.2.1 v.2.2) (frDet ℂ (R.N i) τ) = (y.1 τ).det` using `fun τ => by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[frDet, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Use `show (∏ τ, (y.1 τ).det ^ (I.chain X.emb σ h hc).sSharp i τ) * fnOf (Gr X.emb σ (R.N i)) (shiftOf (trueWt hc i)) 1 P y = _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.GO.ChSrc.polFn_apply, MvPolynomial.eval_mul, MvPolynomial.eval_prod, fnOf_one_apply, ← mul_assoc, ← Finset.prod_mul_distrib, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval_pow, hd, ← zpow_natCast, GlobalTheory.GO.ChSrc.nuEnd_cast hc hi, zpow_add₀ (isUnit_det_fr y τ).ne_zero, (GlobalTheory.LvT.Built.KMap.sSharp_eq I σ h hc hi τ).1, mul_comm]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_map.2 ⟨(I.rho i c * I.rho' i c') • jetMap J (nuEnd hc i) P, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Pdv.FormsStd.cSpan_eq_VV]`. Conclude with `Submodule.smul_mem _ _ (jetMap_mem_VV hc hi J P hP)`. Use function extensionality and compare the values at `(y : Fr X.emb σ (R.N (i + 1)))`. Use `show _ = (I.rho i c * I.rho' i c') * ((∏ τ, (y.1 τ).det ^ (I.chain X.emb σ h hc).sDiv i τ)⁻¹ * polFn X σ _ (I.jet i c c' (fnPol X σ _ ((I.chain X.emb σ h hc).sharp i (fnOf (Gr X.emb σ (R.N i)) (shiftOf (trueWt hc i)) 1 P)))) y)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[h1, GlobalTheory.GO.ChSrc.fnPol_polFn, hJ, jetMap_zero_mul, map_smul, Pi.smul_apply, smul_eq_mul, fnOf_one_apply, GlobalTheory.GO.ChSrc.polFn_apply]`. Use `congr 1`. Use `congr 1`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[(GlobalTheory.LvT.Built.KMap.sSharp_eq I σ h hc hi τ).2, ← zpow_neg, ← GlobalTheory.GO.ChSrc.trueWt_detShift_succ hc hi]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kmap_mem_valC (I : ChainIn X.E X.K X.Tau R) (σ : X.K →+* ℂ) (h : I.Ok) (hc : X.Tau → HCParam R) {i : ℕ} (hi : i < R.m)
     (c : (I.S i).Cl) (c' : (I.S (i + 1)).Cl) (J : (DVar X.Tau (R.N i) (R.N (i + 1)) →₀ ℕ) → ℂ) (hJ : I.jet i c c' = jetMap J 0)

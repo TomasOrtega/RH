@@ -20,14 +20,14 @@ namespace GlobalTheory.Mem.Df
 set_option maxHeartbeats 1000000
 
 /- English proof (translation)
-The claim follows from `(Nat.card_congr (MulAction.stabilizerEquivStabilizer (rfl : g • x = g • x)).toEquiv).symm`.
+A detailed English derivation is pending.
 -/
 theorem card_stabilizer_eq_of_smul {G α : Type*} [Group G] [MulAction G α] (g : G) (x : α) :
     Nat.card (MulAction.stabilizer G (g • x)) = Nat.card (MulAction.stabilizer G x) :=
   (Nat.card_congr (MulAction.stabilizerEquivStabilizer (rfl : g • x = g • x)).toEquiv).symm
 
 /- English proof (translation)
-The claim follows from `@Fintype.sum_equiv α β M i1 i2 _ e f g h`.
+A detailed English derivation is pending.
 -/
 private theorem finset_sum_univ_eq_of_equiv {α β M : Type*} [AddCommMonoid M] (i1 : Fintype α) (i2 : Fintype β) (e : α ≃ β)
     (f : α → M) (g : β → M) (h : ∀ x, f x = g (e x)) :
@@ -35,13 +35,13 @@ private theorem finset_sum_univ_eq_of_equiv {α β M : Type*} [AddCommMonoid M] 
   @Fintype.sum_equiv α β M i1 i2 _ e f g h
 
 /- English proof (translation)
-Introduce `B X I hOk hP l hX Z u a F G F' G' hF hG`. Rewrite using `[GlobalTheory.Mem.Col2.IpMt.ipMt_sum I hOk hP l Z u a F G]`. Establish `hd : Disjoint (B.primes X).vGs (QE I.sel (I.tup a : Chr B.fields.F B.fields.E B.fields.K))` using `(GlobalTheory.TopStep.tilOk_of_avoid (mu := I.tup a) l.pr hOk.sel_ok u ⟨hOk.T_mem u, hOk.g_mem⟩).2.2`. Establish `hs : (I.perIn u a).sgT = B.wts.sgTrue`. Use function extensionality and compare the values at `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite using `[hs, GlobalTheory.Mem.Df.cSum_apply]`. Use `finset_sum_univ_eq_of_equiv _ _ (GlobalTheory.PeriodOnStep.clEquiv (X := B.fields) (Pr := B.primes X) (R := B.R) B.wts I.Ch I.sel (I.tup a) I.Ps hd) _ _ (fun c => ?_)` and prove the remaining obligations. Establish `hFc` using `hF ((stepX I.Ch I.sel (I.tup a) I.Ps).rep c)`. Establish `hGc` using `hG ((stepX I.Ch I.sel (I.tup a) I.Ps).rep c)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcls : (rowS I a).cls ((rowS I a).outSec.rep ((GlobalTheory.PeriodOnStep.clEquiv (X` using `B.fields) (Pr := B.primes X) (R := B.R) B.wts I.Ch I.sel (I.tup a) I.Ps hd) c)) = (rowS I a).cls (GlobalTheory.PeriodOnStep.rowPt (X := B.fields) (Pr := B.primes X) (R := B.R) I.Ch I.sel (I.tup a) I.Ps c) := (rowS I a).outSec.spec _`. Take `⟨g, hg⟩` from `((rowS I a).cls_eq_iff _ _).1 hcls`. Establish `hcard` using `GlobalTheory.PeriodOnStep.card_stab (X := B.fields) (Pr := B.primes X) (R := B.R) B.wts I.Ch I.sel (I.tup a) I.Ps hd c`. Establish `hpair` using `GlobalTheory.T.pairing_complexForms_const_on_row_classes I hX a F' G' _ _ hcls`. Unfold `cTerm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hpair, ← hg, @card_stabilizer_eq_of_smul (rowS I a).G (rowS I a).D _ (rowS I a).actD g _, ← hcard]`. Conclude with `congrArg₂ (fun x y => (((Nat.card ((stepX I.Ch I.sel (I.tup a) I.Ps).Stab c) : ℕ) : ℂ))⁻¹ * pairB B.wts.sgTrue (MvPolynomial.map (starRingEnd ℂ) x) y) hFc hGc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipMt_eq_cSum : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (hX : B.fields.Ok) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (F G : (I.per l u a).Mt) (F' G' : MtCx I a), SameForm I l u a F' F → SameForm I l u a G' G → I.ipMt l u a F G = cSum I hX a F' G' := by
   intro B X I hOk hP l hX Z u a F G F' G' hF hG

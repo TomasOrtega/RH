@@ -3,11 +3,11 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.Redu
 namespace ReciprocityTheory.ChartRestriction.G.H1
 
 /- English proof (translation)
-Proceed by induction on `N, hN using Nat.le_induction with`. Consider the case `base => norm_num [Nat.factorial]`. Consider the case `succ n hn ih`. Establish `hx : (0:ℝ) < n` using `by exact_mod_cast (show 0 < n by omega)`. Establish `hk : ((n:ℝ) + 1) * (Real.log n - Real.log ((n:ℝ) + 1)) ≤ -1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Real.log_le_sub_one_of_pos (show (0:ℝ) < (n:ℝ) / ((n:ℝ) + 1) from div_pos hx (by positivity))`. Rewrite `h` using `[Real.log_div hx.ne' (by positivity)]`. Establish `e : ((n:ℝ) + 1) * ((n:ℝ) / ((n:ℝ) + 1) - 1) = -1` using `by first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h (show (0:ℝ) ≤ (n:ℝ) + 1 by positivity)]`. Rewrite using `[Nat.factorial_succ]`. Use `push_cast`. Rewrite using `[Real.log_mul (by positivity) (by exact_mod_cast (Nat.factorial_ne_zero n))]`. Use polynomial arithmetic with `[ih, hk]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma primeLogSum_log_factorial_le {N : ℕ} (hN : 1 ≤ N) :
     Real.log ((N.factorial : ℕ) : ℝ) ≤ ((N : ℝ) + 1) * Real.log N - N + 1 := by
@@ -29,11 +29,11 @@ lemma primeLogSum_log_factorial_le {N : ℕ} (hN : 1 ≤ N) :
     nlinarith [ih, hk]
 
 /- English proof (translation)
-Establish `hlog : 0 < Nat.log p N` using `by first`. Consider the case `exact Nat.log_pos hp.one_lt hpN`. Consider the case `exact Nat.log_pos_iff.mpr ⟨hpN, hp.one_lt⟩`. Consider the case `exact Nat.log_pos_iff.mpr ⟨hp.one_lt, hpN⟩`. Consider the case `exact Nat.log_pos hpN hp.one_lt`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `haveI := Fact.mk hp`. Rewrite using `[Nat.factorization_def _ hp, padicValNat_factorial (Nat.lt_add_one (Nat.log p N))]`. Establish `h1 : 1 ∈ Finset.Ico 1 (Nat.log p N + 1)`. Rewrite using `[Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma primeLogSum_div_le_factorization (N p : ℕ) (hp : p.Prime) (hpN : p ≤ N) :
     N / p ≤ (N.factorial).factorization p := by
@@ -53,9 +53,9 @@ lemma primeLogSum_div_le_factorization (N p : ℕ) (hp : p.Prime) (hpN : p ≤ N
       Finset.single_le_sum (f := fun i => N / p ^ i) (fun i _ => Nat.zero_le _) h1
 
 /- English proof (translation)
-Rewrite using `[Real.log_nat_eq_sum_factorization]`. Apply `Finsupp.sum_of_support_subset` to reduce the goal to its premises. Introduce `p hp`. Establish `hp' : p.Prime ∧ p ∣ N.factorial` using `by first`. Consider the case `(rw [Nat.support_factorization] at hp; exact ⟨Nat.prime_of_mem_primeFactors hp, Nat.dvd_of_mem_primeFactors hp⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact ⟨Nat.prime_of_mem_factorization hp, Nat.dvd_of_mem_factorization hp⟩`. Rewrite using `[Finset.mem_filter, Finset.mem_Iic]`. Conclude with `⟨(Nat.Prime.dvd_factorial hp'.1).mp hp'.2, hp'.1⟩`. Introduce `i _`. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma primeLogSum_log_factorial_eq (N : ℕ) :
     Real.log ((N.factorial : ℕ) : ℝ) = ∑ p ∈ (Finset.Iic N).filter Nat.Prime,
@@ -73,13 +73,13 @@ lemma primeLogSum_log_factorial_eq (N : ℕ) :
     simp
 
 /- English proof (translation)
-Establish `hv` using `primeLogSum_div_le_factorization N p hp hpN`. Establish `hlog : 0 ≤ Real.log p` using `Real.log_nonneg (by exact_mod_cast hp.one_lt.le)`. Establish `hpp : (0:ℝ) < p` using `by exact_mod_cast hp.pos`. Establish `hnat : N ≤ N.factorial.factorization p * p + p`. Establish `h1` using `Nat.div_add_mod N p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Nat.mod_lt N hp.pos`. Establish `h3 : N / p * p ≤ N.factorial.factorization p * p` using `by first`. Consider the case `exact Nat.mul_le_mul_right p hv`. Consider the case `exact Nat.mul_le_mul_right hv`. Consider the case `nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN : (N:ℝ) ≤ ((N.factorial.factorization p : ℕ) : ℝ) * p + p` using `by exact_mod_cast hnat`. Rewrite using `[← mul_div_assoc]`. Use `first`. Consider the case `rw [div_le_iff₀ hpp]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [div_le_iff hpp]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hN hlog]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma primeLogSum_point (N p : ℕ) (hp : p.Prime) (hpN : p ≤ N) :
     (N : ℝ) * (Real.log p / p) ≤
@@ -104,17 +104,15 @@ lemma primeLogSum_point (N p : ℕ) (hp : p.Prime) (hpN : p ≤ N) :
   nlinarith [mul_le_mul_of_nonneg_right hN hlog]
 
 /- English proof (translation)
-Establish `hA : (Finset.Iic N).filter Nat.Prime = (Finset.range (N + 1)).filter Nat.Prime`. Use extensionality with `p`. Simplify using `only [Finset.mem_filter, Finset.mem_Iic, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨by omega, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨by omega, h2⟩`. Establish `hprod : ∏ p ∈ (Finset.range (N + 1)).filter Nat.Prime, p ≤ 4 ^ N` using `by first`. Consider the case `exact primorial_le_4_pow N`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact Nat.primorial_le_4_pow N`. Establish `hne : ∀ p ∈ (Finset.range (N + 1)).filter Nat.Prime, ((p : ℕ) : ℝ) ≠ 0` using `fun p hp => Nat.cast_ne_zero.mpr (Finset.mem_filter.mp hp).2.ne_zero`. Establish `hpos : (0:ℝ) < ((∏ p ∈ (Finset.range (N + 1)).filter Nat.Prime, p : ℕ) : ℝ)` using `Nat.cast_pos.mpr (Finset.prod_pos fun p hp => (Finset.mem_filter.mp hp).2.pos)`. Rewrite using `[hA]`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Consider the case `exact (Real.log_prod hne).symm`. Consider the case `exact (Real.log_prod _ _ hne).symm`. Use `_ = Real.log ((∏ p ∈ (Finset.range (N + 1)).filter Nat.Prime, p : ℕ) : ℝ) := by`. Rewrite using `[Nat.cast_prod]`. Use `_ ≤ Real.log ((4 ^ N : ℕ) : ℝ) := by first`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Real.log_le_log hpos (by exact_mod_cast hprod)`. Consider the case `exact Real.log_le_log_of_le hpos (by exact_mod_cast hprod)`. Use `_ = Real.log 4 * N := by`. Use `push_cast`. Rewrite using `[Real.log_pow]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma primeLogSum_theta (N : ℕ) :
     ∑ p ∈ (Finset.Iic N).filter Nat.Prime, Real.log p ≤ Real.log 4 * N := by
@@ -153,9 +151,9 @@ lemma primeLogSum_theta (N : ℕ) :
         ring
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `h1 : (1:ℝ) ≤ n` using `by exact_mod_cast (show 1 ≤ n by omega)`. Apply `div_nonneg (Real.log_nonneg h1)` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `mul_nonneg (by linarith) (by linarith)`.
+A detailed English derivation is pending.
 -/
 lemma primeLogSum_f_nonneg (n : ℕ) : 0 ≤ Real.log n / ((n : ℝ) * ((n : ℝ) - 1)) := by
   rcases Nat.eq_zero_or_pos n with h | h
@@ -166,7 +164,7 @@ lemma primeLogSum_f_nonneg (n : ℕ) : 0 ≤ Real.log n / ((n : ℝ) * ((n : ℝ
     exact mul_nonneg (by linarith) (by linarith)
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `h1 : (1:ℝ) ≤ n` using `by exact_mod_cast (show 1 ≤ n by omega)`. Apply `div_nonneg (Real.log_nonneg h1)` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -179,9 +177,9 @@ lemma primeLogSum_g_nonneg (n : ℕ) : 0 ≤ Real.log n / ((n : ℝ) - 1) := by
     linarith
 
 /- English proof (translation)
-Establish `h1 : (0:ℝ) < p` using `by exact_mod_cast hp`. Establish `h2 : (p:ℝ) ≤ (2:ℝ) ^ k` using `by exact_mod_cast hk`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact Real.log_le_log h1 h2`. Consider the case `exact Real.log_le_log_of_le h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately.
 
-Use `_ = (k : ℝ) * Real.log 2 := by first`. Consider the case `exact Real.log_pow 2 k`. Consider the case `exact Real.log_pow k 2`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma primeLogSum_log_le (p k : ℕ) (hp : 0 < p) (hk : p ≤ 2 ^ k) :
     Real.log (p : ℝ) ≤ (k : ℝ) * Real.log 2 := by
@@ -197,17 +195,17 @@ lemma primeLogSum_log_le (p k : ℕ) (hp : 0 < p) (hk : p ≤ 2 ^ k) :
         | exact Real.log_pow k 2
 
 /- English proof (translation)
-Establish `hx2 : (2:ℝ) ≤ (m:ℝ)` using `by exact_mod_cast hm`. Establish `e1 : ((m + 1 : ℕ) : ℝ) = (m:ℝ) + 1` using `by push_cast; ring`. Establish `e2 : (m:ℝ) + 1 - 1 = m` using `by ring`. Rewrite using `[e1, e2]`. Establish `hx0 : (0:ℝ) < m` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : 0 ≤ Real.log (m:ℝ)` using `Real.log_nonneg (by linarith)`. Establish `hLl : Real.log (m:ℝ) ≤ Real.log ((m:ℝ) + 1)` using `by first`. Consider the case `exact Real.log_le_log hx0 (by linarith)`. Consider the case `exact Real.log_le_log_of_le hx0 (by linarith)`. Establish `hk : (m:ℝ) * (Real.log ((m:ℝ) + 1) - Real.log m) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h` using `Real.log_le_sub_one_of_pos (show (0:ℝ) < ((m:ℝ) + 1) / m from div_pos (by linarith) hx0)`. Rewrite `h` using `[Real.log_div (by positivity) hx0.ne']`. Establish `e : (m:ℝ) * (((m:ℝ) + 1) / m - 1) = 1` using `by first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hm1 : (0:ℝ) < (m:ℝ) - 1` using `by linarith`. Establish `hA : (m:ℝ) - 1 ≠ 0` using `hm1.ne'`. Establish `hB : (m:ℝ) ≠ 0` using `hx0.ne'`. Establish `hC : (m:ℝ) + 1 ≠ 0` using `by positivity`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hden : (0:ℝ) < ((m:ℝ) - 1) * m * ((m:ℝ) + 1)` using `mul_pos (mul_pos hm1 hx0) (by linarith)`. Establish `e : (Real.log (m:ℝ) + 1) / ((m:ℝ) - 1) - (Real.log ((m:ℝ) + 1) + 1) / m - Real.log ((m:ℝ) + 1) / (((m:ℝ) + 1) * m) = ((Real.log (m:ℝ) + 1) * m * ((m:ℝ) + 1) - (Real.log ((m:ℝ) + 1) + 1) * ((m:ℝ) - 1) * ((m:ℝ) + 1) - Real.log ((m:ℝ) + 1) * ((m:ℝ) - 1)) / (((m:ℝ) - 1) * m * ((m:ℝ) …` using `by first`. Consider the case `(field_simp; ring)`. Consider the case `(rw [eq_div_iff hden.ne']; field_simp)`. Consider the case `(rw [eq_div_iff hden.ne']; field_simp; ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hnum : 0 ≤ (Real.log (m:ℝ) + 1) * m * ((m:ℝ) + 1) - (Real.log ((m:ℝ) + 1) + 1) * ((m:ℝ) - 1) * ((m:ℝ) + 1) - Real.log ((m:ℝ) + 1) * ((m:ℝ) - 1)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hk (show (0:ℝ) ≤ (m:ℝ) + 1 by linarith)]`. Use `div_nonneg hnum hden.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma primeLogSum_tele (m : ℕ) (hm : 2 ≤ m) :
     Real.log ((m + 1 : ℕ) : ℝ) / (((m + 1 : ℕ) : ℝ) * (((m + 1 : ℕ) : ℝ) - 1)) ≤
@@ -254,9 +252,9 @@ lemma primeLogSum_tele (m : ℕ) (hm : 2 ≤ m) :
   linarith
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[Finset.Icc_eq_empty (by norm_num)]`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[← Nat.add_assoc, Finset.sum_Icc_succ_top (by omega)]`. Establish `ht` using `primeLogSum_tele (30 + k) (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma sum_Icc_log_div_le_sub (k : ℕ) :
     ∑ n ∈ Finset.Icc 31 (30 + k), Real.log n / ((n : ℝ) * ((n : ℝ) - 1)) ≤
@@ -272,15 +270,15 @@ lemma sum_Icc_log_div_le_sub (k : ℕ) :
     linarith
 
 /- English proof (translation)
-Distinguish the cases in `hN : N ≤ 30`. Rewrite using `[Finset.Icc_eq_empty (by omega), Finset.sum_empty]`. Conclude with `div_nonneg (by linarith [Real.log_pos (by norm_num : (1:ℝ) < 2)]) (by norm_num)`. Take `⟨k, rfl⟩ : ∃ k, N = 30 + k` from `⟨N - 30, by omega⟩`. Establish `h1` using `sum_Icc_log_div_le_sub k`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ (Real.log ((30 + k : ℕ) : ℝ) + 1) / (((30 + k : ℕ) : ℝ) - 1)`. Establish `h30 : (30:ℝ) ≤ ((30 + k : ℕ) : ℝ)`. Use `push_cast`. Combine the linear relations using `[(Nat.cast_nonneg k : (0:ℝ) ≤ k)]`. Apply `div_nonneg` to reduce the goal to its premises.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[Real.log_nonneg (show (1:ℝ) ≤ ((30 + k : ℕ) : ℝ) by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : Real.log ((30 : ℕ) : ℝ) ≤ 5 * Real.log 2`. Use `primeLogSum_log_le 30 5 (by norm_num) (by norm_num)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (Real.log ((30 : ℕ) : ℝ) + 1) / (((30 : ℕ) : ℝ) - 1) ≤ (5 * Real.log 2 + 1) / 29`. Establish `e : (((30 : ℕ) : ℝ) - 1) = 29` using `by norm_num`. Establish `h5 : Real.log ((30 : ℕ) : ℝ) + 1 ≤ 5 * Real.log 2 + 1` using `add_le_add h3 le_rfl`. Rewrite using `[e]`. Use `first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact div_le_div_of_nonneg_right h5 (by norm_num)`. Consider the case `exact (div_le_div_iff_of_pos_right (by norm_num)).mpr h5`. Consider the case `exact (div_le_div_right (by norm_num)).mpr h5`. Consider the case `gcongr`. Conclude with `le_trans h1 (le_trans (sub_le_self _ h2) h4)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma primeLogSum_tail (N : ℕ) :
     ∑ n ∈ Finset.Icc 31 N, Real.log n / ((n : ℝ) * ((n : ℝ) - 1)) ≤
@@ -312,21 +310,17 @@ lemma primeLogSum_tail (N : ℕ) :
     exact le_trans h1 (le_trans (sub_le_self _ h2) h4)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter]`. Establish `hI : Finset.Iic 30 = Finset.range 31`. Use extensionality with `x`. Simplify using `only [Finset.mem_Iic, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hI]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero]`. Establish `b3 : Real.log 3 ≤ 2 * Real.log 2`. Use `primeLogSum_log_le 3 2 (by norm_num) (by norm_num)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b5 : Real.log 5 ≤ 3 * Real.log 2`. Use `primeLogSum_log_le 5 3 (by norm_num) (by norm_num)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `b7 : Real.log 7 ≤ 3 * Real.log 2`. Use `primeLogSum_log_le 7 3 (by norm_num) (by norm_num)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `b11 : Real.log 11 ≤ 4 * Real.log 2`. Use `primeLogSum_log_le 11 4 (by norm_num) (by norm_num)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `b13 : Real.log 13 ≤ 4 * Real.log 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `primeLogSum_log_le 13 4 (by norm_num) (by norm_num)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `b17 : Real.log 17 ≤ 5 * Real.log 2`. Use `primeLogSum_log_le 17 5 (by norm_num) (by norm_num)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b19 : Real.log 19 ≤ 5 * Real.log 2`. Use `primeLogSum_log_le 19 5 (by norm_num) (by norm_num)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `b23 : Real.log 23 ≤ 5 * Real.log 2`. Use `primeLogSum_log_le 23 5 (by norm_num) (by norm_num)` as an intermediate fact.
-
-Conclude with `this` after adjusting the coercions. Establish `b29 : Real.log 29 ≤ 5 * Real.log 2`. Use `primeLogSum_log_le 29 5 (by norm_num) (by norm_num)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Evaluate the numerical expressions.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma primeLogSum_small :
     ∑ p ∈ (Finset.Iic 30).filter Nat.Prime, Real.log p / ((p : ℝ) * ((p : ℝ) - 1)) ≤
@@ -370,33 +364,29 @@ lemma primeLogSum_small :
   linarith
 
 /- English proof (translation)
-Break down `(show N = 1 ∨ 2 ≤ N by omega) with h1 | hN2` into its components or cases. Substitute `h1` using the available equality. Establish `h0 : ∑ p ∈ (Finset.Iic 1).filter Nat.Prime, Real.log p / ((p : ℝ) - 1) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `p hp`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hp1, hp2⟩` from `Finset.mem_filter.mp hp`. Establish `hp3` using `Finset.mem_Iic.mp hp1`. Conclude with `absurd hp2.two_le (by omega)`. Rewrite using `[h0]`. Evaluate the numerical expressions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hsplit : ∑ p ∈ (Finset.Iic N).filter Nat.Prime, Real.log p / ((p : ℝ) - 1) = ∑ p ∈ (Finset.Iic N).filter Nat.Prime, Real.log p / (p : ℝ) + ∑ p ∈ (Finset.Iic N).filter Nat.Prime, Real.log p / ((p : ℝ) * ((p : ℝ) - 1))`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `p hp`. Establish `hp2 : (2:ℝ) ≤ p` using `by exact_mod_cast (Finset.mem_filter.mp hp).2.two_le`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (p:ℝ) ≠ 0` using `(show (0:ℝ) < p by linarith).ne'`. Establish `h1 : (p:ℝ) - 1 ≠ 0` using `(show (0:ℝ) < (p:ℝ) - 1 by linarith).ne'`. Use `first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : (N:ℝ) * ∑ p ∈ (Finset.Iic N).filter Nat.Prime, Real.log p / (p : ℝ) ≤ ((N:ℝ) + 1) * Real.log N - N + 1 + Real.log 4 * N`. Rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `p hp`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hp1, hp2⟩` from `Finset.mem_filter.mp hp`. Conclude with `primeLogSum_point N p hp2 (Finset.mem_Iic.mp hp1)`. Use `_ = Real.log ((N.factorial : ℕ) : ℝ) + ∑ p ∈ (Finset.Iic N).filter Nat.Prime, Real.log p := by`. Rewrite using `[Finset.sum_add_distrib, primeLogSum_log_factorial_eq]`. Use `_ ≤ ((N:ℝ) + 1) * Real.log N - N + 1 + Real.log 4 * N := by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Combine the linear relations using `[primeLogSum_log_factorial_le (show 1 ≤ N by omega), primeLogSum_theta N]`. Establish `hS2 : ∑ p ∈ (Finset.Iic N).filter Nat.Prime, Real.log p / ((p : ℝ) * ((p : ℝ) - 1)) ≤ Real.log 2 * (1 / 2 + 2 / 6 + 3 / 20 + 3 / 42 + 4 / 110 + 4 / 156 + 5 / 272 + 5 / 342 + 5 / 506 + 5 / 812) + (5 * Real.log 2 + 1) / 29`. Establish `hsub : (Finset.Iic N).filter Nat.Prime ⊆ (Finset.Iic 30).filter Nat.Prime ∪ Finset.Icc 31 N`. Introduce `p hp`. Take `⟨hp1, hp2⟩` from `Finset.mem_filter.mp hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpN` using `Finset.mem_Iic.mp hp1`. Rewrite using `[Finset.mem_union]`. Distinguish the cases in `h : p ≤ 30`. Use `left`. Conclude with `Finset.mem_filter.mpr ⟨Finset.mem_Iic.mpr h, hp2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation.
 
-Use `right`. Conclude with `Finset.mem_Icc.mpr ⟨by omega, hpN⟩`. Establish `hdisj : Disjoint ((Finset.Iic 30).filter Nat.Prime) (Finset.Icc 31 N)`. Rewrite using `[Finset.disjoint_left]`. Introduce `p h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `Finset.mem_Iic.mp (Finset.mem_filter.mp h1).1`. Establish `h4` using `(Finset.mem_Icc.mp h2).1`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsplit]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx2 : (2:ℝ) ≤ N` using `by exact_mod_cast hN2`. Establish `hlogN : Real.log N ≤ Real.log 2 + (N:ℝ) / 2 - 1`. Establish `h` using `Real.log_le_sub_one_of_pos (show (0:ℝ) < (N:ℝ) / 2 by linarith)`. Rewrite `h` using `[Real.log_div (show (0:ℝ) < N by linarith).ne' (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlog4 : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4:ℝ) = 2 * 2 by norm_num, Real.log_mul (by norm_num) (by norm_num)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hX` using `[hlog4]`. Establish `hL` using `Real.log_two_lt_d9`.
-
-Establish `hL0 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hS2'` using `mul_le_mul_of_nonneg_left hS2 (show (0:ℝ) ≤ N by linarith)`. Establish `hLx` using `mul_le_mul_of_nonneg_right hL.le (show (0:ℝ) ≤ N by linarith)`. Use `le_of_mul_le_mul_left ?_ (show (0:ℝ) < N by linarith)` and prove the remaining obligations. Use `first`.
-
-Consider the case `linarith`. Consider the case `nlinarith [hX, hS2', hlogN, hLx, hL, hL0]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma primeLogSum_nat (N : ℕ) (hN : 1 ≤ N) :
     ∑ p ∈ (Finset.Iic N).filter Nat.Prime, Real.log p / ((p : ℝ) - 1) ≤ Real.log N + 2.2 := by

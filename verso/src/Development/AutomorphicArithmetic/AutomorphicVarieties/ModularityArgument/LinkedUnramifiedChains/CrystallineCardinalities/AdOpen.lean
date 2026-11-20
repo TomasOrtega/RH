@@ -8,13 +8,11 @@ namespace UpperTheory.V.Z.J.AdjointKernelOpen
 variable {l : ℕ} [Fact l.Prime] {κ : Type} [Field κ] {F : Frame l κ} {C : Type} [CommRing C]
 
 /- English proof (translation)
-Establish `hset : (B.r.ker : Set F.Γ) = (F.del.ker : Set F.Γ) ∩ ⋂ i, ⋂ j, (fun s => (B.r s).mat i j) ⁻¹' {(1 : Matrix (Fin 3) (Fin 3) C) i j}`. Use extensionality with `s`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, Set.mem_singleton_iff]`. Rewrite using `[← B.nu s]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hs`. Use `⟨by rw [hs]; rfl, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Both sides reduce to the same expression. Introduce and unpack `⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Apply `SemidirectProduct.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Conclude with `h2 i j`. Conclude with `h1`.
-
-Rewrite using `[hset]`. Conclude with `hdel.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (h i j).isOpen_fiber _)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem r_ker_open (hdel : IsOpen (F.del.ker : Set F.Γ)) (B : Box F 3 C)
     (h : ∀ i j, IsLocallyConstant fun s => (B.r s).mat i j) : IsOpen (B.r.ker : Set F.Γ) := by
@@ -43,11 +41,11 @@ end UpperTheory.V.Z.J.AdjointKernelOpen
 
 open UpperTheory.V.Z.J.AdjointKernelOpen in
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ F C₀ hF hl B k hB`. Use `haveI : CharP (ResidueField O) l := IsCoef.char`. Take `⟨N, hN⟩` from `(okFin l O hl).2.2.2.2.1 k`. Establish `hK : IsOpen ((boxK B k).r.ker : Set F.Γ)`. Use `r_ker_open hF.del_open (boxK B k) fun i j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc` using `(hB i j N).comp (Ideal.Quotient.factor hN)`. Use `hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Simplify using `[Ideal.Quotient.factor_mk, boxK, Box.map, GG.map, GG.mat]`. Use `Subgroup.isOpen_mono (fun s hs => ?_) hK` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hs`, the goal using `[MonoidHom.mem_ker]`. Use extensionality with `x`. Simplify using `[adK, Box.ad, adRep, hs]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.adOpen :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (F : Frame l (ResidueField O)) (C₀ : ℕ), F.Ok C₀ → (l : O) ≠ 0 → ∀ (B : Box F 3 O) (k : ℕ), B.Cont (maximalIdeal O) → IsOpen ((adK B k).ker : Set F.Γ) := by

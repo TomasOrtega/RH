@@ -19,7 +19,7 @@ noncomputable section
 universe u w
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [coeff_homogeneousComponent, coeff_map]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem homogeneousComponent_map_eq {R R' : Type*} [CommRing R] [CommRing R'] (φ : R →+* R') {N : ℕ}
     (d : ℕ) (p : Poly R N) :
@@ -29,9 +29,9 @@ theorem homogeneousComponent_map_eq {R R' : Type*} [CommRing R] [CommRing R'] (�
   split_ifs <;> simp
 
 /- English proof (translation)
-Set `_` to `MvPolynomial.algebraMvPolynomial (σ := Fin (N + 1)) (R := S) (S := F)`. Establish `hdisj : Disjoint (((nonZeroDivisors S).map (C : S →+* Poly S N) : Submonoid (Poly S N)) : Set (Poly S N)) (qq : Set (Poly S N))`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨s, hs, rfl⟩ hsq`. Conclude with `nonZeroDivisors.ne_zero hs (hconst s hsq)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h` using `IsLocalization.under_map_of_isPrime_disjoint ((nonZeroDivisors S).map (C : S →+* Poly S N)) (Poly F N) hq hdisj`. Rewrite using `[← h]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_map_mem_map {S : Type u} [CommRing S] [IsDomain S] {F : Type u} [Field F] [Algebra S F]
     [IsFractionRing S F] {N : ℕ} {qq : Ideal (Poly S N)} (hq : qq.IsPrime)
@@ -49,17 +49,15 @@ theorem mem_of_map_mem_map {S : Type u} [CommRing S] [IsDomain S] {F : Type u} [
   exact hp
 
 /- English proof (translation)
-Introduce `S _ _ F _ _ _ Ω _ _ _ _ N x L 𝔪 h𝔪 qq hq hconst e hsub`. Establish `hhom : ∀ p ∈ qq, ∀ d : ℕ, homogeneousComponent d p ∈ qq` using `fun p hp d => by`. Use `mem_of_map_mem_map (F := F) hq hconst ?_` and prove the remaining obligations. Rewrite using `[← homogeneousComponent_map_eq]`. Conclude with `hsub.homog _ (Ideal.mem_map_of_mem _ hp) d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : x ≠ 0`. Take `⟨i, hi⟩` from `hsub.relevant`. Introduce and unpack `rfl`. Conclude with `hi (hsub.le ((mem_primeOf_of_isHomogeneous (S := F) _ (isHomogeneous_X F i)).mpr (by simp)))`. Use `filter_upwards [hK S F Ω N x L 𝔪 h𝔪 qq hq hconst e hsub] with c hc`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set Q : LineBundle S x := L.tensorProd (twistBundle S x (c : ℤ)) with hQdef`. Establish `hQ : Q.toSubSystem = L.toSubSystem.twist (twistSys S x (c : ℤ))` using `rfl`. Rewrite using `[← SubSystem.extend_twistSys (S := S) (F := F) (c : ℤ), ← SubSystem.extend_twist, ← hQ, hG S F Ω N x Q.toSubSystem qq hhom]`. Rewrite `hc` using `[← hQ]`. Rewrite using `[restrLen, hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set A := Q.toSubSystem.secs`. Use `set Bq := (Q.toSubSystem.twist (idealSys x qq)).secs`. Use `set K := Bq.comap A.subtype`. Establish `hcomap : (Bq ⊔ 𝔪 • A).comap A.subtype = K ⊔ 𝔪 • (⊤ : Submodule S A)`. Apply `Submodule.map_injective_of_injective A.injective_subtype` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_comap_subtype, Submodule.map_sup, Submodule.map_comap_subtype, Submodule.map_smul'', Submodule.map_subtype_top, inf_comm, sup_comm, sup_inf_assoc_of_le _ (Submodule.smul_le_right), inf_comm, sup_comm]`. Establish `hmap : (K ⊔ 𝔪 • (⊤ : Submodule S A)).map K.mkQ = 𝔪 • (⊤ : Submodule S (A ⧸ K))`. Rewrite using `[Submodule.map_sup, Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ, Submodule.mkQ_map_self, bot_sup_eq]`. Establish `hlen : Module.length S (A ⧸ (K ⊔ 𝔪 • (⊤ : Submodule S A))) = Module.length S ((A ⧸ K) ⧸ 𝔪 • (⊤ : Submodule S (A ⧸ K)))`. Rewrite using `[← hmap]`.
-
-Conclude with `((Submodule.quotientQuotientEquivQuotient K _ le_sup_left).length_eq).symm`. Establish `: Module.Finite S A` using `(hF S Ω N x Q hx).1`. Rewrite using `[hcomap, hlen, hR S (A ⧸ K) inferInstance (hT S F Ω N x Q qq hq hconst e hsub) 𝔪 h𝔪]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem FibreSectionsFlat.proof (hG : GenericRestrLen.Statement.{u, w}) (hK : FibreRestrKer.Statement.{u, w})
     (hT : RestrQuotTorsionFree.Statement.{u, w}) (hR : DedekindFibreRank.Statement.{u, w})

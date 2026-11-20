@@ -28,22 +28,22 @@ private def fB {k : Type} [Field k] (A B : Matrix (Fin 3) (Fin 3) k) :
     (LinearMap.snd k _ _ ∘ₗ LinearMap.snd k _ _)
 
 /- English proof (translation)
-Simplify using `[fB]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem fB_apply {k : Type} [Field k] (A B X Y : Matrix (Fin 3) (Fin 3) k) (z : k) :
     fB A B (X, Y, z) = (A * X).trace + (B * Y).trace - z := by
   simp [fB]
 
 /- English proof (translation)
-Introduce `l _ Γ _ _ _ _ _ r r' hirr V hV ⟨g, hg⟩ hu`. Take `⟨H, -, hHo, hH⟩` from `Ga.coset Γ V hV g hg`. Establish `hR : IsIrr ((Ga.sym4 r).comp H.subtype)` using `hirr H hHo`. Establish `key` using `Ga.kerLe (Qbar l) H 5 ((Ga.sym4 r).comp H.subtype) hR (Ga.sym4 r g) (Matrix (Fin 3) (Fin 3) (Qbar l) × Matrix (Fin 3) (Fin 3) (Qbar l) × Qbar l) (phiB ((ad0 r).comp H.subtype) ((ad0 r').comp H.subtype)) (fB (ad0 r g : Matrix (Fin 3) (Fin 3) (Qbar l)) (ad0 r' g)) ?_`. Establish `h1` using `key.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Module.finrank (Qbar l) ↥(Algebra.adjoin (Qbar l) (Set.range ⇑(phiB ((ad0 r).comp H.subtype) ((ad0 r').comp H.subtype)))) ≤ 19`. Use `(Submodule.finrank_le (Subalgebra.toSubmodule (Algebra.adjoin (Qbar l) (Set.range ⇑(phiB ((ad0 r).comp H.subtype) ((ad0 r').comp H.subtype)))))).trans ?_` and prove the remaining obligations. Simplify using `[Module.finrank_prod, Module.finrank_matrix]`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgh` using `hu (g * h) (hH h h.2)`. Establish `e1 : Ga.tr (Ga.sym4 r g * ((Ga.sym4 r).comp H.subtype) h) = Ga.tr (Ga.sym4 r (g * h))`. Simplify using `[map_mul]`. Establish `e2 : ((ad0 r g : Matrix (Fin 3) (Fin 3) (Qbar l)) * (ad0 r (h : Γ))).trace = Ga.uf (r (g * h)) + 1`. Rewrite using `[← (Ga.ufFacts (Qbar l) (r (g * h))).2.2.2.2 Γ r (g * h), map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e3 : ((ad0 r' g : Matrix (Fin 3) (Fin 3) (Qbar l)) * (ad0 r' (h : Γ))).trace = Ga.uf (r' (g * h)) + 1`. Rewrite using `[← (Ga.ufFacts (Qbar l) (r' (g * h))).2.2.2.2 Γ r' (g * h), map_mul]`. Both sides reduce to the same expression. Rewrite using `[e1, Ga.trSym4]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = fB _ _ ((((ad0 r).comp H.subtype) h : Matrix (Fin 3) (Fin 3) (Qbar l)), (((ad0 r').comp H.subtype) h : Matrix (Fin 3) (Fin 3) (Qbar l)), 1)`. Rewrite using `[fB_apply]`. Simplify using `only [MonoidHom.comp_apply, Subgroup.coe_subtype]`. Rewrite using `[e2, e3, hgh]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Ga.noKappa :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] (r r' : Γ →* GL (Fin 2) (Qbar l)), IrrOpen (Ga.sym4 r) → ∀ V : Set Γ, IsOpen V → V.Nonempty → (∀ g ∈ V, Ga.uf (r' g) = Ga.uf (r g) ^ 2 - 2) → False := by

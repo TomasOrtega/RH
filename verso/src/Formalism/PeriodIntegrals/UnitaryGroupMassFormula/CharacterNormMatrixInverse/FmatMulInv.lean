@@ -18,29 +18,29 @@ theorem fmat_mul' (a b : I.Gf) : I.fmat (a * b) = I.fmat a * I.fmat b := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[← fmat_mul', mul_inv_cancel]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fmat_mul_inv' (a : I.Gf) : I.fmat a * I.fmat a⁻¹ = 1 := by
   rw [← fmat_mul', mul_inv_cancel]
   rfl
 
 /- English proof (translation)
-Establish `h' : ∀ x, x ∈ I.Lf ↔ I.fmat k *ᵥ x ∈ I.Lf` using `hk`. Conclude with `(h' y).1 hy`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kset_mem {k : I.Gf} (hk : k ∈ I.Kset) {y : VA I} (hy : y ∈ I.Lf) : I.fmat k *ᵥ y ∈ I.Lf := by
   have h' : ∀ x, x ∈ I.Lf ↔ I.fmat k *ᵥ x ∈ I.Lf := hk
   exact (h' y).1 hy
 
 /- English proof (translation)
-Conclude with `(Formalism.UG.stabGL I.Lf).inv_mem (show (k : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf from hk)`.
+A detailed English derivation is pending.
 -/
 theorem kset_inv {k : I.Gf} (hk : k ∈ I.Kset) : k⁻¹ ∈ I.Kset := by
   exact (Formalism.UG.stabGL I.Lf).inv_mem (show (k : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf from hk)
 
 /- English proof (translation)
-Establish `key : ∀ u v : n → A, Formalism.UG.hform σ J u v = (fun i => σ (u i)) ⬝ᵥ (J *ᵥ v)`. Introduce `u v`. Simplify using `only [Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`. Rewrite using `[key, key]`. Establish `e₁ : (fun i => σ ((M *ᵥ x) i)) = M.map σ *ᵥ (fun i => σ (x i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun i => RingHom.map_mulVec σ M x i`. Rewrite using `[e₁]`. Use `conv_rhs => rw [← hM]`. Rewrite using `[Formalism.UG.cT, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec _ (M.map σ)ᵀ, vecMul_transpose]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hform_mulVec_mulVec_of_cT_mul_mul_eq {A : Type} [CommRing A] {n : Type} [Fintype n] (σ : A →+* A)
     (J M : Matrix n n A) (hM : Formalism.UG.cT σ M * J * M = J) (x y : n → A) :
@@ -56,14 +56,14 @@ private theorem hform_mulVec_mulVec_of_cT_mul_mul_eq {A : Type} [CommRing A] {n 
   rw [Formalism.UG.cT, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec _ (M.map σ)ᵀ, vecMul_transpose]
 
 /- English proof (translation)
-Conclude with `hform_mulVec_mulVec_of_cT_mul_mul_eq (Formalism.UG.sigR I.cm.sig (Af I.F)) (I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F))) (I.fmat k) k.2 x y`.
+A detailed English derivation is pending.
 -/
 theorem hA_fmat' (k : I.Gf) (x y : VA I) : hA I (I.fmat k *ᵥ x) (I.fmat k *ᵥ y) = hA I x y := by
   exact hform_mulVec_mulVec_of_cT_mul_mul_eq (Formalism.UG.sigR I.cm.sig (Af I.F)) (I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)))
     (I.fmat k) k.2 x y
 
 /- English proof (translation)
-Establish `h` using `hA_fmat' I k⁻¹ x (I.fmat k *ᵥ y)`. Establish `h1 : I.fmat 1 = 1` using `rfl`. Rewrite `h` using `[mulVec_mulVec, ← fmat_mul', inv_mul_cancel, h1, one_mulVec]`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hA_left_inv (k : I.Gf) (x y : VA I) : hA I x (I.fmat k *ᵥ y) = hA I (I.fmat k⁻¹ *ᵥ x) y := by
   have h := hA_fmat' I k⁻¹ x (I.fmat k *ᵥ y)
@@ -72,68 +72,66 @@ theorem hA_left_inv (k : I.Gf) (x y : VA I) : hA I x (I.fmat k *ᵥ y) = hA I (I
   exact h.symm
 
 /- English proof (translation)
-Simplify using `only [hA, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_add_left (x x' y : VA I) : hA I (x + x') y = hA I x y + hA I x' y := by
   simp only [hA, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hA, Formalism.UG.hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_sub_left (x x' y : VA I) : hA I (x - x') y = hA I x y - hA I x' y := by
   simp only [hA, Formalism.UG.hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hA, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_add_right (x y y' : VA I) : hA I x (y + y') = hA I x y + hA I x y' := by
   simp only [hA, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hA, Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_sub_right (x y y' : VA I) : hA I x (y - y') = hA I x y - hA I x y' := by
   simp only [hA, Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[hA, Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_zero_left (y : VA I) : hA I 0 y = 0 := by
   simp [hA, Formalism.UG.hform]
 
 /- English proof (translation)
-Simplify using `[hA, Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_zero_right (x : VA I) : hA I x 0 = 0 := by
   simp [hA, Formalism.UG.hform]
 
 /- English proof (translation)
-Simplify using `only [hA, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hA_smul_left (c : I.E ⊗[I.F] Af I.F) (x y : VA I) : hA I (c • x) y = sigA I c * hA I x y := by
   simp only [hA, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hA, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hA_smul_right (c : I.E ⊗[I.F] Af I.F) (x y : VA I) : hA I x (c • y) = c * hA I x y := by
   simp only [hA, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Conclude with `Subring.subset_closure (Or.inl ⟨⟨e, he⟩, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem inclE_int {e : I.E} (he : e ∈ (algebraMap (𝓞 I.E) I.E).range) :
     Formalism.UG.inclE (F := I.F) (Af I.F) e ∈ IntAf I.F I.E := by
   exact Subring.subset_closure (Or.inl ⟨⟨e, he⟩, rfl⟩)
 
 /- English proof (translation)
-Establish `key : IntAf I.F I.E ≤ (IntAf I.F I.E).comap (sigA I)`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨x, hx⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`. Take `⟨a, rfl⟩` from `hx show Formalism.UG.sigR I.cm.sig (Af I.F) ((algebraMap (𝓞 I.E) I.E a) ⊗ₜ[I.F] (1 : Af I.F)) ∈ IntAf I.F I.E`. Rewrite using `[Formalism.UG.sigR, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : IsIntegral ℤ (I.cm.sig (algebraMap (𝓞 I.E) I.E a))` using `map_isIntegral_int I.cm.sig.toRingHom (RingOfIntegers.isIntegral_coe a)`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨_, ⟨⟨_, hi⟩, rfl⟩⟩, rfl⟩)`. Use `show Formalism.UG.sigR I.cm.sig (Af I.F) ((1 : I.E) ⊗ₜ[I.F] y) ∈ IntAf I.F I.E`. Rewrite using `[Formalism.UG.sigR, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, map_one]`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨y, hy⟩, rfl⟩)`.
-
-Conclude with `key hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigA_int {c : I.E ⊗[I.F] Af I.F} (hc : c ∈ IntAf I.F I.E) : sigA I c ∈ IntAf I.F I.E := by
   have key : IntAf I.F I.E ≤ (IntAf I.F I.E).comap (sigA I) := by
@@ -151,7 +149,7 @@ theorem sigA_int {c : I.E ⊗[I.F] Af I.F} (hc : c ∈ IntAf I.F I.E) : sigA I c
   exact key hc
 
 /- English proof (translation)
-Use `show (Algebra.TensorProduct.map I.cm.sig (AlgHom.id I.F (Af I.F))) (e ⊗ₜ[I.F] (1 : Af I.F)) = (starRingEnd I.E e) ⊗ₜ[I.F] (1 : Af I.F)`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sigA_inclE' (e : I.E) :
     sigA I (Formalism.UG.inclE (F := I.F) (Af I.F) e) = Formalism.UG.inclE (F := I.F) (Af I.F) (starRingEnd I.E e) := by
@@ -161,7 +159,7 @@ theorem sigA_inclE' (e : I.E) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [hA, Formalism.UG.hform, incl, Matrix.map_apply, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show Formalism.UG.sigR I.cm.sig (Af I.F) (Formalism.UG.inclE (F := I.F) (Af I.F) (x i)) = Formalism.UG.inclE (F := I.F) (Af I.F) (starRingEnd I.E (x i)) from sigA_inclE' I (x i)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_incl' (x y : Fin I.n → I.E) :
     hA I (incl I x) (incl I y) =
@@ -172,17 +170,13 @@ theorem hA_incl' (x y : Fin I.n → I.E) :
     Formalism.UG.inclE (F := I.F) (Af I.F) (starRingEnd I.E (x i)) from sigA_inclE' I (x i)]
 
 /- English proof (translation)
-Establish `gen : ∀ a ∈ I.L, ∀ b ∈ I.L, hA I (incl I a) (incl I b) ∈ IntAf I.F I.E`. Introduce `a ha b hb`. Rewrite using `[hA_incl']`. Conclude with `inclE_int I ((I.L_dual b).1 hb a ha)`. Establish `step : ∀ b ∈ I.L, ∀ u ∈ I.Lf, hA I u (incl I b) ∈ IntAf I.F I.E`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb u hu`. Establish `hu' : u ∈ Submodule.span (IntAf I.F I.E) (Set.range fun z : I.L => fun i => Formalism.UG.inclE (F` using `I.F) (Af I.F) ((z : Fin I.n → I.E) i)) := hu`. Use `clear hu`. Proceed by induction on `hu' using Submodule.span_induction with`. Consider the case `mem z hz`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨⟨a, ha⟩, rfl⟩` from `hz`. Conclude with `gen a ha b hb`. Consider the case `zero => rw [hA_zero_left]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [hA_add_left]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `add_mem hu hv`. Consider the case `smul c u _ hu => rw [Subring.smul_def, hA_smul_left]`. Conclude with `mul_mem (sigA_int I c.2) hu`. Establish `hy' : y ∈ Submodule.span (IntAf I.F I.E) (Set.range fun z : I.L => fun i => Formalism.UG.inclE (F` using `I.F) (Af I.F) ((z : Fin I.n → I.E) i)) := hy`. Use `clear hy`.
-
-Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨⟨b, hb⟩, rfl⟩` from `hz`. Conclude with `step b hb x hx`. Consider the case `zero => rw [hA_zero_right]`.
-
-Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [hA_add_right]`. Conclude with `add_mem hu hv`. Consider the case `smul c u _ hu => rw [Subring.smul_def, hA_smul_right]`. Conclude with `mul_mem c.2 hu`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hA_int {x y : VA I} (hx : x ∈ I.Lf) (hy : y ∈ I.Lf) : hA I x y ∈ IntAf I.F I.E := by
   have gen : ∀ a ∈ I.L, ∀ b ∈ I.L, hA I (incl I a) (incl I b) ∈ IntAf I.F I.E := by
@@ -213,11 +207,11 @@ theorem hA_int {x y : VA I} (hx : x ∈ I.Lf) (hy : y ∈ I.Lf) : hA I x y ∈ I
   | smul c u _ hu => rw [Subring.smul_def, hA_smul_right]; exact mul_mem c.2 hu
 
 /- English proof (translation)
-Establish `hδ' : δ ∈ Submodule.span (IntAf I.F I.E) {y | ∃ x ∈ I.Lf, y = (m : I.E ⊗[I.F] Af I.F) • x}` using `hδ`. Use `clear hδ`. Proceed by induction on `hδ' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨hA I x w, hA_int I hx hw, by rw [hA_smul_left, map_natCast]⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by rw [hA_zero_left, mul_zero]⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨t₁, ht₁, e₁⟩` from `hu`. Take `⟨t₂, ht₂, e₂⟩` from `hv`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨t₁ + t₂, add_mem ht₁ ht₂, by rw [hA_add_left, e₁, e₂, mul_add]⟩`. Consider the case `smul c u _ hu`. Take `⟨t, ht, e⟩` from `hu`. Conclude with `⟨sigA I c * t, mul_mem (sigA_int I c.2) ht, by rw [Subring.smul_def, hA_smul_left, e]; ring⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hA_mL_left (m : ℕ) {δ w : VA I} (hδ : δ ∈ mL I m) (hw : w ∈ I.Lf) :
     ∃ t ∈ IntAf I.F I.E, hA I δ w = (m : I.E ⊗[I.F] Af I.F) * t := by
@@ -238,11 +232,11 @@ theorem hA_mL_left (m : ℕ) {δ w : VA I} (hδ : δ ∈ mL I m) (hw : w ∈ I.L
     exact ⟨sigA I c * t, mul_mem (sigA_int I c.2) ht, by rw [Subring.smul_def, hA_smul_left, e]; ring⟩
 
 /- English proof (translation)
-Establish `hδ' : δ ∈ Submodule.span (IntAf I.F I.E) {y | ∃ x ∈ I.Lf, y = (m : I.E ⊗[I.F] Af I.F) • x}` using `hδ`. Use `clear hδ`. Proceed by induction on `hδ' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨hA I w x, hA_int I hw hx, by rw [hA_smul_right]⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by rw [hA_zero_right, mul_zero]⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨t₁, ht₁, e₁⟩` from `hu`. Take `⟨t₂, ht₂, e₂⟩` from `hv`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨t₁ + t₂, add_mem ht₁ ht₂, by rw [hA_add_right, e₁, e₂, mul_add]⟩`. Consider the case `smul c u _ hu`. Take `⟨t, ht, e⟩` from `hu`. Conclude with `⟨c * t, mul_mem c.2 ht, by rw [Subring.smul_def, hA_smul_right, e]; ring⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hA_mL_right (m : ℕ) {δ w : VA I} (hδ : δ ∈ mL I m) (hw : w ∈ I.Lf) :
     ∃ t ∈ IntAf I.F I.E, hA I w δ = (m : I.E ⊗[I.F] Af I.F) * t := by
@@ -263,9 +257,9 @@ theorem hA_mL_right (m : ℕ) {δ w : VA I} (hδ : δ ∈ mL I m) (hw : w ∈ I.
     exact ⟨c * t, mul_mem c.2 ht, by rw [Subring.smul_def, hA_smul_right, e]; ring⟩
 
 /- English proof (translation)
-Use `⟨Nat.gcdA c g, Nat.gcdB c g, ?_⟩` and prove the remaining obligations. Establish `h` using `Nat.gcd_eq_gcd_ab c g`. Rewrite `h` using `[Nat.Coprime.gcd_eq_one hc]`. Establish `h'` using `congrArg (Int.cast : ℤ → I.E ⊗[I.F] Af I.F) h`. Move the coercions through the operations in `at h'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `-h'`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem bezout_cast {c g : ℕ} (hc : Nat.Coprime c g) :
     ∃ u v : ℤ, (u : I.E ⊗[I.F] Af I.F) * c + (v : I.E ⊗[I.F] Af I.F) * g = 1 := by
@@ -277,9 +271,9 @@ theorem bezout_cast {c g : ℕ} (hc : Nat.Coprime c g) :
   linear_combination -h'
 
 /- English proof (translation)
-Take `⟨c, hc, hcδ⟩` from `hδ`. Take `⟨t₁, ht₁, e₁⟩` from `hA_mL_left I g hcδ hw`. Rewrite `e₁` using `[hA_smul_left, map_natCast]`. Take `⟨u, v, huv⟩` from `bezout_cast I hc`. Use `⟨u * t₁ + v * hA I δ w, add_mem (mul_mem (intCast_mem _ u) ht₁) (mul_mem (intCast_mem _ v) (hA_int I hδL hw)), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(-hA I δ w) * huv + (u : I.E ⊗[I.F] Af I.F) * e₁`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hA_inAt_left {g : ℕ} {δ w : VA I} (hδ : InAt I g g δ) (hδL : δ ∈ I.Lf) (hw : w ∈ I.Lf) :
     ∃ t ∈ IntAf I.F I.E, hA I δ w = (g : I.E ⊗[I.F] Af I.F) * t := by
@@ -292,9 +286,9 @@ theorem hA_inAt_left {g : ℕ} {δ w : VA I} (hδ : InAt I g g δ) (hδL : δ �
   linear_combination (-hA I δ w) * huv + (u : I.E ⊗[I.F] Af I.F) * e₁
 
 /- English proof (translation)
-Take `⟨c, hc, hcδ⟩` from `hδ`. Take `⟨t₁, ht₁, e₁⟩` from `hA_mL_right I g hcδ hw`. Rewrite `e₁` using `[hA_smul_right]`. Take `⟨u, v, huv⟩` from `bezout_cast I hc`. Use `⟨u * t₁ + v * hA I w δ, add_mem (mul_mem (intCast_mem _ u) ht₁) (mul_mem (intCast_mem _ v) (hA_int I hw hδL)), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(-hA I w δ) * huv + (u : I.E ⊗[I.F] Af I.F) * e₁`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hA_inAt_right {g : ℕ} {δ w : VA I} (hδ : InAt I g g δ) (hw : w ∈ I.Lf) (hδL : δ ∈ I.Lf) :
     ∃ t ∈ IntAf I.F I.E, hA I w δ = (g : I.E ⊗[I.F] Af I.F) * t := by
@@ -307,13 +301,13 @@ theorem hA_inAt_right {g : ℕ} {δ w : VA I} (hδ : InAt I g g δ) (hw : w ∈ 
   linear_combination (-hA I w δ) * huv + (u : I.E ⊗[I.F] Af I.F) * e₁
 
 /- English proof (translation)
-Simplify using `[divN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem divN_zero' (x : I.E ⊗[I.F] Af I.F) : divN I 0 x = 0 := by
   simp [divN]
 
 /- English proof (translation)
-Establish `h : algebraMap I.F (I.E ⊗[I.F] Af I.F) ((g : I.F)⁻¹) * (g : I.E ⊗[I.F] Af I.F) = 1`. Rewrite using `[← map_natCast (algebraMap I.F (I.E ⊗[I.F] Af I.F)) g, ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.mpr hg), map_one]`. Simplify using `only [divN]`. Rewrite using `[mul_add, ← mul_assoc, h, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem divN_add_mul {g : ℕ} (hg : g ≠ 0) (x t : I.E ⊗[I.F] Af I.F) :
     divN I g (x + (g : I.E ⊗[I.F] Af I.F) * t) = divN I g x + t := by
@@ -324,13 +318,13 @@ theorem divN_add_mul {g : ℕ} (hg : g ≠ 0) (x t : I.E ⊗[I.F] Af I.F) :
   rw [mul_add, ← mul_assoc, h, one_mul]
 
 /- English proof (translation)
-Establish `hk₁` using `kset_inv I h₁`. Establish `hκ'` using `kset_inv I hκ`. Establish `hw₁ : I.fmat κ *ᵥ (I.fmat k₂ *ᵥ v) ∈ I.Lf` using `kset_mem I hκ (kset_mem I h₂ hv)`. Establish `hd₁ : I.fmat k₁⁻¹ *ᵥ f - f ∈ I.Lf` using `sub_mem (kset_mem I hk₁ hf) hf`. Establish `hd₂ : I.fmat k₂ *ᵥ v - v ∈ I.Lf` using `sub_mem (kset_mem I h₂ hv) hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw₂ : I.fmat κ⁻¹ *ᵥ f ∈ I.Lf` using `kset_mem I hκ' hf`. Take `⟨t₁, ht₁, e₁⟩` from `hA_inAt_left I c₁ hd₁ hw₁`. Take `⟨t₂, ht₂, e₂⟩` from `hA_inAt_right I c₂ hw₂ hd₂`. Use `⟨t₁ + t₂, add_mem ht₁ ht₂, ?_⟩` and prove the remaining obligations. Establish `s₁ : hA I f (I.fmat (k₁ * κ * k₂) *ᵥ v) = hA I (I.fmat k₁⁻¹ *ᵥ f) (I.fmat κ *ᵥ (I.fmat k₂ *ᵥ v))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[fmat_mul', fmat_mul', ← mulVec_mulVec, ← mulVec_mulVec, hA_left_inv I k₁]`. Establish `s₂ : hA I (I.fmat k₁⁻¹ *ᵥ f) (I.fmat κ *ᵥ (I.fmat k₂ *ᵥ v)) = hA I f (I.fmat κ *ᵥ (I.fmat k₂ *ᵥ v)) + hA I (I.fmat k₁⁻¹ *ᵥ f - f) (I.fmat κ *ᵥ (I.fmat k₂ *ᵥ v))`. Rewrite using `[← hA_add_left]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Establish `s₃ : hA I f (I.fmat κ *ᵥ (I.fmat k₂ *ᵥ v)) = hA I f (I.fmat κ *ᵥ v) + hA I (I.fmat κ⁻¹ *ᵥ f) (I.fmat k₂ *ᵥ v - v)`. Rewrite using `[← hA_left_inv I κ, mulVec_sub, hA_sub_right]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[s₁, s₂, s₃, e₁, e₂]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term_step (g : ℕ) {κ k₁ k₂ : I.Gf} (hκ : κ ∈ I.Kset) (h₁ : k₁ ∈ I.Kset) (h₂ : k₂ ∈ I.Kset)
     {f v : VA I} (hf : f ∈ I.Lf) (hv : v ∈ I.Lf)
@@ -362,7 +356,7 @@ theorem term_step (g : ℕ) {κ k₁ k₂ : I.Gf} (hκ : κ ∈ I.Kset) (h₁ : 
   ring
 
 /- English proof (translation)
-Use `choose t ht e using h`. Conclude with `⟨∑ a, t a, sum_mem fun a _ => ht a, by`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => e a⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_step (g : ℕ) {ι : Type} [Fintype ι] (A B : ι → I.E ⊗[I.F] Af I.F)
     (h : ∀ a, ∃ t ∈ IntAf I.F I.E, A a = B a + (g : I.E ⊗[I.F] Af I.F) * t) :
@@ -379,7 +373,7 @@ section Main
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.SG.HidaSetting.nxt]`. Use `split`. Conclude with `(X.vectorsInLattice.1 _).1`. Conclude with `X.vectorsInLattice.2.1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nxt_mem {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (a : Fin D.R.rS) :
     nxt X.e0 X.z0 a ∈ X.B.I.Lf := by
@@ -389,9 +383,9 @@ theorem nxt_mem {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting
   · exact X.vectorsInLattice.2.1
 
 /- English proof (translation)
-Introduce `κ k₁ k₂ hκ h₁ h₂ hf hv`. Take `⟨t, ht, hS⟩` from `sum_step X.B.I X.B.g (fun a => hA X.B.I (X.f0 a) (X.B.I.fmat (k₁ * κ * k₂) *ᵥ nxt X.e0 X.z0 a)) (fun a => hA X.B.I (X.f0 a) (X.B.I.fmat κ *ᵥ nxt X.e0 X.z0 a)) (fun a => term_step X.B.I X.B.g hκ h₁ h₂ (X.vectorsInLattice.1 a).2 (nxt_mem X a) (hf a) (hv a))`. Unfold `Formalism.L2.SG.TermOp.chiN`. Rewrite using `[hS]`. Break down `Nat.eq_zero_or_pos X.B.g with h0 | hpos` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h0, divN_zero', divN_zero']`. Rewrite using `[divN_add_mul X.B.I hpos.ne', X.psiEf_add, X.psiEf_int t ht, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiNBi_holds {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) : Formalism.L2.SG.NormCut.ChiNBi X := by
   intro κ k₁ k₂ hκ h₁ h₂ hf hv

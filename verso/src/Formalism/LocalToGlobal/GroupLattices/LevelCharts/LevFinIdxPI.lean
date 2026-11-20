@@ -8,7 +8,7 @@ open scoped TensorProduct
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `h F E S.rank hc.sig S.gram Lb Uloc U hfin hspan hU hlev hcof hidx`.
+A detailed English derivation is pending.
 -/
 theorem levFinIdx_of_prod (h : PI.LevelProdIdx) (hc : Formalism.BasicNotions.CMData F E) (S : Formalism.BasicNotions.HSpace E)
     (Lb : Submodule (𝓞 E) (Fin S.rank → E))
@@ -23,7 +23,7 @@ theorem levFinIdx_of_prod (h : PI.LevelProdIdx) (hc : Formalism.BasicNotions.CMD
   h F E S.rank hc.sig S.gram Lb Uloc U hfin hspan hU hlev hcof hidx
 
 /- English proof (translation)
-The claim follows from `levFinIdx_of_prod level_product_index hc S Lb Uloc U hfin hspan hU hlev hcof hidx`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.L2.G.level_subgroup_finiteIndex (hc : Formalism.BasicNotions.CMData F E) (S : Formalism.BasicNotions.HSpace E)
     (Lb : Submodule (𝓞 E) (Fin S.rank → E))

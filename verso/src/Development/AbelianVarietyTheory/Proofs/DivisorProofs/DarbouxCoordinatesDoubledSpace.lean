@@ -19,9 +19,9 @@ variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {α β : Type} [Fi
   [DecidableEq β]
 
 /- English proof (translation)
-Unfold `symp hTens`. Use `congr 2`. Simplify using `only [Matrix.transpose_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symp_transpose (c : A →ₐ[R] A) (ξ : A) (JA : Matrix α α A) (JB : Matrix β β A) (x y : Matrix α β A) :
     symp c ξ JB JA xᵀ yᵀ = symp c ξ JA JB x y := by
@@ -64,7 +64,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Take `⟨y, z, h⟩` from `hd xᵀ`. Use `⟨fun p => y p.swap, fun p => z p.swap, ?_⟩` and prove the remaining obligations. Establish `e : (incM F x)ᵀ = incM F xᵀ` using `(Matrix.transpose_map).symm`. Rewrite using `[darbouxTransp_e, e, h]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem darbouxTransp_rational {σ : E →ₐ[F] E} {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
     {JA : Matrix α α E} {JB : Matrix β β E} (d : Darboux (symp (R := AF F) (cA σ) (-1) (incM F JA) (incM F JB)) (α × β))
@@ -80,9 +80,9 @@ theorem darbouxTransp_rational {σ : E →ₐ[F] E} {α β : Type} [Fintype α] 
 omit [NumberField E] in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n m J J' J₂ hJ d hd`. Take `⟨co, hr, h1, h2⟩` from `exists_rational_dblCoord hJ (darbouxTransp d) (darbouxTransp_rational d hd)`. Use `⟨darbouxTransp co, darbouxTransp_rational co hr, fun u hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[darbouxTransp_e, h1 uᵀ (by simpa only [Matrix.transpose_transpose] using hu)]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[darbouxTransp_e, h2 uᵀ (by simpa only [Matrix.transpose_transpose] using hu)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_rational_dblCoord_right : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n m : ℕ)

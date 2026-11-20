@@ -8,17 +8,17 @@ open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheor
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `K H _ _ _ _ _ _ _ p hp`. Rewrite using `[UpperTheory.V.CF.unramIff.1 K p hp]`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Establish `hv : (p : 𝓞 K) ∈ w.asIdeal.under (𝓞 K)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `hw` using `[Ideal.under, Ideal.mem_comap, map_natCast]`. Set `v : HeightOneSpectrum (𝓞 K)` to `⟨w.asIdeal.under (𝓞 K), inferInstance, fun hb => by`. Rewrite `hv` using `[hb]`. Conclude with `(Nat.cast_ne_zero.mpr hp.ne_zero) ((Ideal.mem_bot).mp hv)⟩`. Rewrite using `[← Subgroup.map_eq_bot_iff, UpperTheory.V.CF.ineMap ℚ K H w]`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h v hv`. Introduce `h v hv`. Establish `hle : Ideal.comap (algebraMap (𝓞 K) (𝓞 H)) ⊥ ≤ v.asIdeal`. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_bot]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : x = 0` using `FaithfulSMul.algebraMap_injective (𝓞 K) (𝓞 H) (by rw [hx, map_zero])`. Rewrite using `[hx0]`. Conclude with `v.asIdeal.zero_mem`. Take `⟨Q, -, hQ, hQv⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral v.asIdeal ⊥ hle`. Establish `hpQ : (p : 𝓞 H) ∈ Q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hc : (p : 𝓞 K) ∈ Q.comap (algebraMap (𝓞 K) (𝓞 H))` using `hQv ▸ hv`. Simplify `hc` using `[Ideal.mem_comap, map_natCast]`. Set `w : HeightOneSpectrum (𝓞 H)` to `⟨Q, hQ, fun hb => by`. Rewrite `hpQ` using `[hb]`. Conclude with `(Nat.cast_ne_zero.mpr hp.ne_zero) ((Ideal.mem_bot).mp hpQ)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `h w hpQ`. Rewrite `h1` using `[← Subgroup.map_eq_bot_iff, UpperTheory.V.CF.ineMap ℚ K H w]`. Establish `hw : Ideal.under (𝓞 K) w.asIdeal = v.asIdeal` using `hQv`. Rewrite `h1` using `[hw]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.ineFixQ :
     ∀ (K H : Type) [Field K] [NumberField K] [Field H] [NumberField H] [Algebra K H] [IsGalois ℚ K] [IsGalois ℚ H] (p : ℕ), p.Prime → (UnramAt K p ↔ ∀ w : HeightOneSpectrum (𝓞 H), (p : 𝓞 H) ∈ w.asIdeal → w.asIdeal.inertia Gal(H/ℚ) ≤ (resTo ℚ K H).ker) := by

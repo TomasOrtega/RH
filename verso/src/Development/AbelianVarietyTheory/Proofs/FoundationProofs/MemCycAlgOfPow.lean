@@ -27,7 +27,7 @@ def fixA (A : ValuationSubring Ω) : Subring A where
     rw [map_neg, ha s hs]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_fixA {A : ValuationSubring Ω} {a : A} : a ∈ fixA A ↔ ∀ s ∈ Ine (F := ℚ) A, s (a : Ω) = a := Iff.rfl
 
@@ -38,7 +38,7 @@ def cycAlg (l : ℕ) (A : ValuationSubring Ω) : Subalgebra (fixA A) A :=
   Algebra.adjoin (fixA A) {z : A | ∃ n : ℕ, z ^ (l ^ n) = 1}
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨n, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_cycAlg_of_pow {l : ℕ} {A : ValuationSubring Ω} {z : A} {n : ℕ} (h : z ^ (l ^ n) = 1) :
     z ∈ cycAlg l A := Algebra.subset_adjoin ⟨n, h⟩
@@ -47,7 +47,7 @@ def ineCyc (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) : Subgroup (G ℚ 
   Ine (F := ℚ) A ⊓ (cycZ ℚ Ω l).ker
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ineCyc {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {s : G ℚ Ω} :
     s ∈ ineCyc l A ↔ s ∈ Ine (F := ℚ) A ∧ cycZ ℚ Ω l s = 1 := Iff.rfl
@@ -57,7 +57,7 @@ abbrev FracA (A : ValuationSubring Ω) : Type := Ω ⧸ LinearMap.range (Algebra
 omit [Algebra ℚ Ω] in
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← A.valuation_le_one_iff]`. Rewrite `h` using `[map_pow]`. Assume the negation of the conclusion as `hx`. Use `push_neg at hx`. Conclude with `absurd h (not_le.2 (one_lt_pow' hx hn))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem mem_of_pow_mem (A : ValuationSubring Ω) {x : Ω} {n : ℕ} (hn : n ≠ 0)
     (h : x ^ n ∈ A) : x ∈ A := by

@@ -32,7 +32,7 @@ def NabD (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) : Set (UD σ 
     ∃ b : Matrix (Fin d) (Fin d) (AE F E), matD n * diagCols (Fin d) = diagCols (Fin d) + antiCols d * b}
 
 /- English proof (translation)
-Establish `hk : (mat k)ᵀ * incM F W.J * (mat k).map (cA σ) = incM F W.J` using `k.2`. Rewrite using `[Matrix.fromBlocks_map, Matrix.fromBlocks_transpose, dbl, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hk, Matrix.map_one _ (map_zero (cA σ)) (map_one (cA σ))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fromBlocks_mem {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} (k : UA σ W.J) :
     ((Matrix.fromBlocks (mat k) 0 0 1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)))ᵀ * dbl (incM F W.J) *

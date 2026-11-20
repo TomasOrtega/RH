@@ -13,15 +13,13 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `Fintype.ofFinite G` as an intermediate fact. Use `set P : Polynomial B := ∏ g : G, (Polynomial.X - Polynomial.C (g • b)) with hP`. Establish `hinvP : ∀ k : G, k • P = P`. Introduce `k`. Rewrite using `[hP, Finset.smul_prod']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fintype.prod_bijective (k • ·) (MulAction.bijective k) _ _ (fun g => by`. Rewrite using `[smul_sub, Polynomial.smul_X, Polynomial.smul_C, smul_smul, smul_eq_mul])`. Establish `hmap : P.map x = P.map y`. Use extensionality with `n`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_map]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h` to reduce the goal to its premises. Introduce `g`. Rewrite using `[← Polynomial.coeff_smul, hinvP]`. Establish `hb : P.eval b = 0`. Rewrite using `[hP, Polynomial.eval_prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ 1) (by simp)`. Establish `h0 : (P.map y).eval (y b) = 0`. Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_at_apply, hb, map_zero]`. Rewrite `h0` using `[← hmap, Polynomial.eval_map, hP, Polynomial.eval₂_finsetProd]`. Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_X, Polynomial.eval₂_C] at h0`.
-
-Take `⟨g, -, hg⟩` from `Finset.prod_eq_zero_iff.mp h0`. Conclude with `⟨g, sub_eq_zero.mp hg⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_apply_eq_of_eq_on_invariants {G B D : Type*} [Group G] [Finite G] [CommRing B]
     [CommRing D] [IsDomain D] [MulSemiringAction G B] (x y : B →+* D)
@@ -51,15 +49,13 @@ theorem exists_smul_apply_eq_of_eq_on_invariants {G B D : Type*} [Group G] [Fini
   exact ⟨g, sub_eq_zero.mp hg⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `choose c hc using hne`. Use `Fintype.ofFinite G` as an intermediate fact. Set `e` to `Fintype.equivFin G`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `p : Polynomial B` to `∑ g : G, Polynomial.C (c g) * Polynomial.X ^ (e g : ℕ)`. Establish `hcoef : ∀ g, p.coeff (e g) = c g`. Introduce `g`. Simplify using `only [p, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_eq_single g (fun g' _ hg' => if_neg (fun hh => hg' (e.injective (Fin.ext hh)).symm)) (by simp), if_pos rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyp : ∀ q : Polynomial B, (∀ g : G, g • q = q) → Polynomial.mapRingHom x q = Polynomial.mapRingHom y q`. Introduce `q hq`. Use extensionality with `n`. Simplify using `only [Polynomial.coe_mapRingHom, Polynomial.coeff_map]`. Apply `h` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[← Polynomial.coeff_smul, hq]`. Take `⟨g, hg⟩` from `exists_smul_apply_eq_of_eq_on_invariants (G := G) (Polynomial.mapRingHom x) (Polynomial.mapRingHom y) hyp p`. Establish `hgc` using `congrArg (fun q => q.coeff (e g)) hg`. Simplify using `only [Polynomial.coe_mapRingHom, Polynomial.coeff_map, Polynomial.coeff_smul, hcoef] at hgc`.
-
-Conclude with `hc g hgc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_of_eq_on_invariants {G B D : Type*} [Group G] [Finite G] [CommRing B]
     [CommRing D] [IsDomain D] [MulSemiringAction G B] (x y : B →+* D)
@@ -91,21 +87,21 @@ theorem exists_smul_eq_of_eq_on_invariants {G B D : Type*} [Group G] [Finite G] 
   exact hc g hgc
 
 /- English proof (translation)
-Establish `hU : ∀ g, π ⁻¹ᵁ W ≤ (ρ g).hom ⁻¹ᵁ π ⁻¹ᵁ W` using `fun g => by show _ ≤ ((ρ g).hom ≫ π) ⁻¹ᵁ W`. Rewrite using `[hπ g]`. Set `_` to `sectionsAction ρ _ hU`. Establish `hact : ∀ (g : G) (s : Γ(X, π ⁻¹ᵁ W)), g • s = (ρ g⁻¹).hom.appLE _ _ (hU g⁻¹) s` using `fun g s => rfl`. Establish `hy : ⊤ ≤ y ⁻¹ᵁ π ⁻¹ᵁ W` using `by show ⊤ ≤ (y ≫ π) ⁻¹ᵁ W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hxy]`. Conclude with `hx`. Establish `key : ∀ (f f' : T ⟶ X') (_ : f = f') (h1 : ⊤ ≤ f ⁻¹ᵁ W) (h2 : ⊤ ≤ f' ⁻¹ᵁ W), f.appLE W ⊤ h1 = f'.appLE W ⊤ h2`. Introduce and unpack `f f' rfl h1 h2`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hagree : ∀ s : Γ(X, π ⁻¹ᵁ W), (∀ g : G, g • s = s) → (x.appLE (π ⁻¹ᵁ W) ⊤ hx).hom s = (y.appLE (π ⁻¹ᵁ W) ⊤ hy).hom s`. Introduce `s hs`. Establish `hinv' : IsInvariantSection ρ _ s`. Introduce `g`. Use `⟨hU g, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hs g⁻¹` as an intermediate fact. Rewrite `this` using `[hact]`. Simplify `this` using `only [inv_inv]`. Take `⟨t, rfl⟩` from `hinv s hinv'`. Establish `e1` using `Scheme.Hom.comp_appLE x π W ⊤ hx`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `Scheme.Hom.comp_appLE y π W ⊤ hy`. Use `congrArg (fun φ => φ.hom t) (key _ _ hxy hx hy)` as an intermediate fact. Rewrite `this` using `[e1, e2]`. Conclude with `this`. Take `⟨g, hg⟩` from `exists_smul_eq_of_eq_on_invariants (G := G) _ _ hagree`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨g⁻¹, ?_⟩` and prove the remaining obligations. Establish `h' : ⊤ ≤ (x ≫ (ρ g⁻¹).hom) ⁻¹ᵁ π ⁻¹ᵁ W` using `by show ⊤ ≤ x ⁻¹ᵁ ((ρ g⁻¹).hom ⁻¹ᵁ π ⁻¹ᵁ W)`. Conclude with `hx.trans (x.preimage_mono (hU g⁻¹))`. Establish `heq : y.appLE (π ⁻¹ᵁ W) ⊤ hy = (x ≫ (ρ g⁻¹).hom).appLE (π ⁻¹ᵁ W) ⊤ h'`. Use extensionality with `s`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Scheme.Hom.appLE_comp_appLE x (ρ g⁻¹).hom _ _ _ (hU g⁻¹) hx]`. Rewrite using `[hg s, hact]`. Both sides reduce to the same expression. Establish `hA : IsAffineOpen (π ⁻¹ᵁ W)` using `hW.preimage π`. Establish `h1` using `IsAffineOpen.SpecMap_appLE_fromSpec y hA (isAffineOpen_top T) hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `IsAffineOpen.SpecMap_appLE_fromSpec (x ≫ (ρ g⁻¹).hom) hA (isAffineOpen_top T) h'`. Rewrite `h1` using `[heq]`. Rewrite `h1`, `h2` using `[IsAffineOpen.fromSpec_top]`. Conclude with `(cancel_epi _).1 (h1.symm.trans h2)`.
+A detailed English derivation is pending.
 -/
 theorem exists_aut_of_comp_eq_of_invariant {G : Type*} [Group G] [Finite G] {X X' T : Scheme.{0}}
     (ρ : G →* Aut X) (π : X ⟶ X') [IsAffineHom π] (hπ : ∀ g, (ρ g).hom ≫ π = π)
@@ -160,19 +156,17 @@ theorem exists_aut_of_comp_eq_of_invariant {G : Type*} [Group G] [Finite G] {X X
   exact (cancel_epi _).1 (h1.symm.trans h2)
 
 /- English proof (translation)
-Rewrite using `[isIntegralHom_iff]`. Use `⟨inferInstance, fun W hW => ?_⟩` and prove the remaining obligations. Establish `hU : ∀ g, π ⁻¹ᵁ W ≤ (ρ g).hom ⁻¹ᵁ π ⁻¹ᵁ W` using `fun g => by show _ ≤ ((ρ g).hom ≫ π) ⁻¹ᵁ W`. Rewrite using `[hπ g]`. Set `_` to `sectionsAction ρ _ hU`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hact : ∀ (g : G) (s : Γ(X, π ⁻¹ᵁ W)), g • s = (ρ g⁻¹).hom.appLE _ _ (hU g⁻¹) s` using `fun g s => rfl`. Use `Fintype.ofFinite G` as an intermediate fact. Introduce `s`. Break down `subsingleton_or_nontrivial Γ(X, π ⁻¹ᵁ W) with hsub | hnt` into its components or cases. Rewrite using `[Subsingleton.elim s 0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.isIntegralElem_zero _`. Use `set P : Polynomial Γ(X, π ⁻¹ᵁ W) := ∏ g : G, (Polynomial.X - Polynomial.C (g • s)) with hP`. Establish `hinvP : ∀ k : G, k • P = P`. Introduce `k`. Rewrite using `[hP, Finset.smul_prod']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Fintype.prod_bijective (k • ·) (MulAction.bijective k) _ _ (fun g => by`. Rewrite using `[smul_sub, Polynomial.smul_X, Polynomial.smul_C, smul_smul, smul_eq_mul])`. Establish `hlift : P ∈ Polynomial.lifts (π.app W).hom`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hinv W hW` to reduce the goal to its premises. Introduce `g`. Use `⟨hU g, ?_⟩` and prove the remaining obligations. Use `congrArg (fun q => q.coeff n) (hinvP g⁻¹)` as an intermediate fact. Simplify using `only [Polynomial.coeff_smul] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[hact]`. Simplify `this` using `only [inv_inv]`. Establish `hmonic : P.Monic` using `Polynomial.monic_prod_of_monic _ _ (fun g _ => Polynomial.monic_X_sub_C _)`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hlift hmonic`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Polynomial.eval_map, hq, hP, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ 1) (by simp)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegralHom_of_invariant {G : Type*} [Group G] [Finite G] {X X' : Scheme.{0}}
     (ρ : G →* Aut X) (π : X ⟶ X') [IsAffineHom π] (hπ : ∀ g, (ρ g).hom ≫ π = π)
@@ -216,35 +210,31 @@ theorem isIntegralHom_of_invariant {G : Type*} [Group G] [Finite G] {X X' : Sche
   exact Finset.prod_eq_zero (Finset.mem_univ 1) (by simp)
 
 /- English proof (translation)
-Introduce `Γ _ _ X X' ρ π ⟨hAff, hπ, hV⟩`. Establish `hinvAll : ∀ W : X'.Opens, IsAffineOpen W → ∀ s : Γ(X, π ⁻¹ᵁ W), IsInvariantSection ρ _ s → s ∈ Set.range (π.app W)`. Introduce `W _ s hs`. Apply `(hV W).2 s` to reduce the goal to its premises. Introduce `g h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h', e⟩` from `hs g`. Conclude with `e`. Establish `hInt : IsIntegralHom π` using `isIntegralHom_of_invariant ρ π hπ hinvAll`. Establish `hfield : ∀ (k : Type) [Field k] (x y : Sp k ⟶ X), x ≫ π = y ≫ π → ∃ g, y = x ≫ (ρ g).hom`. Introduce `k _ x y hxy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `p₀ : Sp k` to `⟨⊥, Ideal.isPrime_bot⟩`. Take `⟨W, hW, hmem, -⟩` from `exists_isAffineOpen_mem_and_subset (x := (x ≫ π) p₀) (U := ⊤) trivial`. Use `exists_aut_of_comp_eq_of_invariant ρ π hπ hW (hinvAll W hW) x y hxy ?_` and prove the remaining obligations. Introduce `p _`. Establish `hp : p = p₀` using `Subsingleton.elim _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hp` using the available equality. Conclude with `hmem`. Establish `hpts : ∀ x y : X, π x = π y → ∃ g, y = (ρ g).hom x`. Introduce `x y hxy`. Take `⟨z, hz1, hz2⟩` from `Scheme.Pullback.exists_preimage_pullback x y hxy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hab : (Scheme.fromSpecResidueField _ z ≫ pullback.fst π π) ≫ π = (Scheme.fromSpecResidueField _ z ≫ pullback.snd π π) ≫ π`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`. Take `⟨g, hg⟩` from `hfield ((pullback π π).residueField z) _ _ hab`. Use `⟨g, ?_⟩` and prove the remaining obligations. Set `s : Spec ((pullback π π).residueField z)` to `⟨⊥, Ideal.isPrime_bot⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : (Scheme.fromSpecResidueField _ z ≫ pullback.fst π π) s = x` using `by show pullback.fst π π (Scheme.fromSpecResidueField _ z s) = x`. Rewrite using `[Scheme.fromSpecResidueField_apply]`. Conclude with `hz1`. Establish `hb : (Scheme.fromSpecResidueField _ z ≫ pullback.snd π π) s = y` using `by show pullback.snd π π (Scheme.fromSpecResidueField _ z s) = y`. Rewrite using `[Scheme.fromSpecResidueField_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `hz2`. Rewrite using `[← hb, hg, ← ha]`. Both sides reduce to the same expression. Establish `hsurj : Surjective π`. Rewrite using `[surjective_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Take `⟨W, hW, hmem, -⟩` from `exists_isAffineOpen_mem_and_subset (x := y) (U := ⊤) trivial`. Establish `hA : IsAffineOpen (π ⁻¹ᵁ W)` using `hW.preimage π`. Establish `heq` using `IsAffineOpen.SpecMap_appLE_fromSpec π hW hA le_rfl`. Establish `hmem' : y ∈ Set.range hW.fromSpec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hW.range_fromSpec]`. Conclude with `hmem`. Take `⟨p, rfl⟩` from `hmem'`. Establish `hint : (π.appLE W (π ⁻¹ᵁ W) le_rfl).hom.IsIntegral`. Rewrite using `[← Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hInt.isIntegral_app W hW`. Establish `hinj : Function.Injective (π.appLE W (π ⁻¹ᵁ W) le_rfl).hom`. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `(hV W).1`. Take `⟨q, hq⟩` from `hint.comap_surjective hinj p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hA.fromSpec q, ?_⟩` and prove the remaining obligations. Use `congrArg (fun f => f q) heq` as an intermediate fact. Rewrite using `[← hq]`. Conclude with `this.symm`. Establish `hopen : ∀ U : X.Opens, (∀ g, (ρ g).hom ⁻¹ᵁ U = U) → ∃ V : X'.Opens, π ⁻¹ᵁ V = U`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components.
 
-Introduce `U hU`. Establish `hcl : IsClosed (π '' (U : Set X)ᶜ)` using `π.isClosedMap _ U.isOpen.isClosed_compl`. Use `⟨⟨(π '' (U : Set X)ᶜ)ᶜ, hcl.isOpen_compl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Use `show π x ∈ (π '' (U : Set X)ᶜ)ᶜ ↔ x ∈ U`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hx`. Conclude with `h ⟨x, hx, rfl⟩`. Introduce and unpack `hx ⟨y, hy, hxy⟩`.
-
-Take `⟨g, rfl⟩` from `hpts x y hxy.symm`. Apply `hy` to reduce the goal to its premises. Establish `hx' : x ∈ (ρ g).hom ⁻¹ᵁ U`. Rewrite using `[hU g]`. Conclude with `hx`.
-
-Conclude with `hx'`. Conclude with `⟨hInt, hsurj, hpts, hfield, hopen⟩`.
+A detailed English derivation is pending.
 -/
 theorem quotient_isIntegral_surjective_orbits :
     ∀ (Γ : Type) [Group Γ] [Finite Γ] (X X' : Scheme.{0}) (ρ : Γ →* Aut X) (π : X ⟶ X'), (IsAffineHom π ∧ (∀ g, (ρ g).hom ≫ π = π) ∧ ∀ V : X'.Opens, Function.Injective (π.app V).hom ∧ ∀ f : Γ(X, π ⁻¹ᵁ V), (∀ g (h : π ⁻¹ᵁ V ≤ (ρ g).hom ⁻¹ᵁ (π ⁻¹ᵁ V)), ((ρ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (π.app V).hom) → IsIntegralHom π ∧ Surjective π ∧ (∀ x y : X, π x = π y → ∃ g, y = (ρ g).hom x) ∧ (∀ (k : Type) [Field k] (x y : Sp k ⟶ X), x ≫ π = y ≫ π → ∃ g, y = x ≫ (ρ g).hom) ∧ ∀ U : X.Opens, (∀ g, (ρ g).hom ⁻¹ᵁ U = U) → ∃ V : X'.Opens, π ⁻¹ᵁ V = U := by

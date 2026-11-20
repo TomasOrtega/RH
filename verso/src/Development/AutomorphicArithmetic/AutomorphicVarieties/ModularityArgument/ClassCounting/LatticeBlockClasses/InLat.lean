@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK UpperTheory.V.ZK.Cl
 
 /- English proof (translation)
-Use `show P.valuation F (algebraMap (𝓞 F) F (u : 𝓞 F)) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl, Ideal.mem_primeCompl_iff]`. Conclude with `fun hm => P.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hm u.isUnit)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem val_one {F : Type} [Field F] [NumberField F] (u : (𝓞 F)ˣ) (P : HeightOneSpectrum (𝓞 F)) :
     P.valuation F ((toF u : Fˣ) : F) = 1 := by
@@ -14,23 +14,23 @@ private theorem val_one {F : Type} [Field F] [NumberField F] (u : (𝓞 F)ˣ) (P
   exact fun hm => P.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hm u.isUnit)
 
 /- English proof (translation)
-Introduce `L F _ _ _ _ _ q _ ζ h`. Establish `hq` using `toF_pow h`. Establish `hmod : ∀ n : ℕ, toF ζ ^ n = toF ζ ^ (n % q)` using `fun n => by conv_lhs => rw [← Nat.div_add_mod n q, pow_add, pow_mul, hq, one_pow, one_mul]`. Establish `hv1 : ∀ P : HeightOneSpectrum (𝓞 F), P.valuation F ((toF ζ : Fˣ) : F) = 1` using `fun P => val_one ζ P`. Establish `hrep : ∀ (x : Cq q × Cq q) (y : ZMod q × ZMod q → F) (j : ZMod q × ZMod q) (P : HeightOneSpectrum (𝓞 F)), P.valuation F (repD L q ζ h x y j) = P.valuation F (y j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x y j P`. Simplify using `only [repD, MonoidHom.comp_apply, diag, MonoidHom.coe_mk, OneHom.coe_mk, LinearEquiv.piCongrRight_apply, DistribMulAction.toLinearEquiv_apply, MonoidHom.pi_apply, MonoidHom.coprod_apply, chi, Units.smul_def, Units.val_mul, Units.val_pow_eq_pow_val, smul_eq_mul, map_mul, map_pow, …`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t c`. Simplify using `only [repD, repC, dt, MonoidHom.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [MonoidHom.pi_apply, MonoidHom.coprod_apply, MonoidHom.prod_apply, MonoidHom.id_apply, powMonoidHom_apply, chi, MonoidHom.coe_mk, OneHom.coe_mk]`. Rewrite using `[← pow_add, hmod, hmod ((j.1 + (t : ZMod q) * j.2).val * _)]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `(ZMod.natCast_eq_natCast_iff' _ _ _).mp` to reduce the goal to its premises. Move the coercions through the operations in `[ZMod.natCast_val, ZMod.cast_id', toAdd_pow]`. Simplify using `only [id]`. Expand and normalize the polynomial expressions, which then agree. Introduce `𝔞 x show ∀ y, InLat 𝔞 y ↔ InLat 𝔞 (repD L q ζ h x y)`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Unfold `InLat`. Simplify using `only [hrep]`. Introduce `b x show ∀ y, InLoc b y ↔ InLoc b (repD L q ζ h x y)`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `InLoc`. Simplify using `only [hrep]`. Introduce `J _ χ 𝔟 δ g hC c`. Take `⟨_, s, β, g', hB, hsβ, _⟩` from `hC`. Establish `hc` using `((cBlock L F J (ZMod q) s β g').2 g hB).1 (fun j => toF ζ ^ ((χ j).val * (Multiplicative.toAdd c).val)) (fun x => toF ζ ^ (x.val * (Multiplicative.toAdd c).val)) (by`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[map_pow, pow_mul, hsβ j, ← pow_mul])`. Conclude with `hc`. Introduce `hp`. Establish `hinj : Function.Injective (Units.map (algebraMap (𝓞 F) F : 𝓞 F →* F))` using `Units.map_injective (IsFractionRing.injective (𝓞 F) F)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp' : IsPrimitiveRoot (toF ζ) q` using `hp.map_of_injective hinj`. Establish `hex : ∀ σ : Gal(F/L), ∃ i : ℕ, actU σ (toF ζ) = toF ζ ^ i`. Introduce `σ`. Establish `hσ : (actU σ (toF ζ)) ^ q = 1` using `by rw [← map_pow, hq, map_one]`. Take `⟨i, _, hi⟩` from `hp'.eq_pow_of_mem_rootsOfUnity (ξ := actU σ (toF ζ)) ((mem_rootsOfUnity _ _).2 hσ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨i, hi.symm⟩`. Use `choose kap hk using hex`. Conclude with `⟨kap, hk⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.Cl.cRep :
     UpperTheory.V.ZK.Cl.CRep := by

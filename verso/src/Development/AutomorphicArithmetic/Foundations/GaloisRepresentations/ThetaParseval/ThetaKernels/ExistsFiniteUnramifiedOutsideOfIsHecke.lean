@@ -11,9 +11,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.Dbl GlobalTheory.PRep Formalism.BasicNotions UpperTheory.TP
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB χ hχ`. Establish `hfin : {w : HeightOneSpectrum (𝓞 E) | ¬ UnrAt χ w}.Finite` using `Filter.eventually_cofinite.1 (GlobalTheory.PairVac.eventually_unrAt_of_isHecke σ hB.cm χ hχ)`. Use `⟨(hfin.image fun w => w.under (𝓞 F)).toFinset, fun w hw => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Conclude with `hw (by show w.under (𝓞 F) ∈ (((hfin.image fun w => w.under (𝓞 F)).toFinset : Finset (Pl F)) : Set (Pl F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `⟨w, hu, rfl⟩)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_finite_unramified_outside_of_isHecke :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E}, _root_.UpperTheory.TP.W.GoodK σ B → ∀ {χ : Chr F E}, IsHecke F E χ → ∃ S : Finset (Pl F), UnrOff χ (S : Set (Pl F)) := by

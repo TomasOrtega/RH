@@ -11,7 +11,7 @@ namespace UpperTheory.Ru.crystallineComparison
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Introduce `b`. Take `⟨a, ha⟩` from `h.2 (Pi.single i b)`. Conclude with `⟨a, by simpa using congrFun ha i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem isDec_surj {A : Test l} {S : Fam A} (h : IsDec S) (i : S.ι) :
     Function.Surjective (PAlg.Hom.f (S.f i).hom) := by
@@ -21,19 +21,19 @@ private theorem isDec_surj {A : Test l} {S : Fam A} (h : IsDec S) (i : S.ι) :
   exact ⟨a, by simpa using congrFun ha i⟩
 
 /- English proof (translation)
-Use `choose e he using fun i => h.2 (Pi.single i (1 : (S.B i).obj.A))`. Establish `hv : ∀ i j, PAlg.Hom.f (S.f j).hom (e i) = (Pi.single i 1 : ∀ k, (S.B k).obj.A) j` using `fun i j => congrFun (he i) j`. Establish `ext' : ∀ x y : A.obj.A, (∀ j, PAlg.Hom.f (S.f j).hom x = PAlg.Hom.f (S.f j).hom y) → x = y` using `fun x y hxy => h.1 (funext hxy)`. Establish `hsame : ∀ i, PAlg.Hom.f (S.f i).hom (e i) = 1` using `fun i => by rw [hv, Pi.single_eq_same]`. Establish `hne : ∀ i j, j ≠ i → PAlg.Hom.f (S.f j).hom (e i) = 0` using `fun i j hji => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, Pi.single_eq_of_ne hji]`. Use `⟨e, ⟨⟨?_, ?_⟩, ?_⟩, hsame, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `ext' _ _ fun j => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Rewrite using `[hsame, one_mul]`. Rewrite using `[hne i j hji, zero_mul]`. Introduce `i i' hii`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext' _ _ fun j => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Rewrite using `[hne i' j hii, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hne i j hji, zero_mul]`. Use `ext' _ _ fun j => ?_` and prove the remaining obligations. Rewrite using `[map_sum, map_one, Finset.sum_eq_single j, hsame]`. Introduce `i _ hij`. Conclude with `hne i j hij.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hj`. Conclude with `absurd (Finset.mem_univ j) hj`. Introduce `i a ha`. Use `ext' _ _ fun j => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Rewrite using `[ha, zero_mul]`. Rewrite using `[hne i j hji, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_idem {A : Test l} {S : Fam A} (h : IsDec S) :
     ∃ e : S.ι → A.obj.A, CompleteOrthogonalIdempotents e ∧
@@ -75,15 +75,15 @@ private theorem exists_idem {A : Test l} {S : Fam A} (h : IsDec S) :
     · rw [hne i j hji, mul_zero]
 
 /- English proof (translation)
-Take `⟨e, he, h1, h0⟩` from `exists_idem h`. Take `⟨B', f', hd, hf⟩` from `decEx l A' S.ι (fun i => PAlg.Hom.f φ.hom (e i)) (he.map (PAlg.Hom.f φ.hom))`. Establish `key : ∀ i, RingHom.ker (PAlg.Hom.f (S.f i).hom) ≤ RingHom.ker ((PAlg.Hom.f (f' i).hom).comp (PAlg.Hom.f φ.hom))`. Introduce `i a ha`. Establish `ha0 : a * e i = 0` using `h0 i a ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : PAlg.Hom.f (f' i).hom (PAlg.Hom.f φ.hom a) * 1 = 0`. Establish `h3` using `hf i`. Rewrite using `[← h3, ← map_mul, ← map_mul, ha0, map_zero, map_zero]`. Simplify `h2` using `[RingHom.mem_ker]`. Set `g : ∀ i, (S.B i).obj.A →+* (B' i).obj.A` to `fun i => (PAlg.Hom.f (S.f i).hom).liftOfRightInverse (Function.surjInv (isDec_surj h i)) (Function.rightInverse_surjInv _) ⟨_, key i⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hg : ∀ i a, g i (PAlg.Hom.f (S.f i).hom a) = PAlg.Hom.f (f' i).hom (PAlg.Hom.f φ.hom a)` using `fun i a => RingHom.liftOfRightInverse_comp_apply _ _ _ _ a`. Establish `hcomm : ∀ i, (g i).comp (S.B i).obj.s = (B' i).obj.s`. Introduce `i`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Establish `c1 : PAlg.Hom.f (S.f i).hom (A.obj.s x) = (S.B i).obj.s x` using `RingHom.congr_fun (PAlg.Hom.comm (S.f i).hom) x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `c2 : PAlg.Hom.f φ.hom (A.obj.s x) = A'.obj.s x` using `RingHom.congr_fun (PAlg.Hom.comm φ.hom) x`. Establish `c3 : PAlg.Hom.f (f' i).hom (A'.obj.s x) = (B' i).obj.s x` using `RingHom.congr_fun (PAlg.Hom.comm (f' i).hom) x`. Rewrite using `[RingHom.comp_apply, ← c1, hg, c2, c3]`. Use `⟨B', f', fun i => ObjectProperty.homMk (⟨g i, hcomm i⟩ : PAlg.Hom _ _), hd, fun i => ?_⟩` and prove the remaining obligations. Apply `ObjectProperty.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `PAlg.Hom.ext` to reduce the goal to its premises. Conclude with `RingHom.ext fun a => hg i a`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem pullback_decomposition {A A' : Test l} (φ : A ⟶ A') (S : Fam A) (h : IsDec S) :
     ∃ (B' : S.ι → Test l) (f' : ∀ i, A' ⟶ B' i) (ψ : ∀ i, S.B i ⟶ B' i),
@@ -120,25 +120,23 @@ private theorem pullback_decomposition {A A' : Test l} (φ : A ⟶ A') (S : Fam 
   exact RingHom.ext fun a => hg i a
 
 /- English proof (translation)
-Introduce `l _`. Use `⟨{ Cov := fun S => IsDec S, triv := ?_, pull := ?_, trans := ?_, epi := ?_, disj := ?_ }, fun _ _ => Iff.rfl⟩` and prove the remaining obligations. Introduce `A`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrFun hab ()`. Introduce `b`. Conclude with `⟨b (), funext fun _ => rfl⟩`. Introduce `A A' φ S h`. Conclude with `pullback_decomposition φ S h`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `A S T hS hT`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Use `hS.1 (funext fun i => (hT i).1 (funext fun j => ?_))` and prove the remaining obligations. Conclude with `congrFun hab ⟨i, j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c choose b hb using fun i => (hT i).2 (fun j => c ⟨i, j⟩)`. Take `⟨a, ha⟩` from `hS.2 b`. Use `⟨a, funext fun x => ?_⟩` and prove the remaining obligations. Take `⟨i, j⟩` from `x`. Establish `h1 : PAlg.Hom.f (S.f i).hom a = b i` using `congrFun ha i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrFun (hb i) j`. Simplify using `only at h2`. Rewrite `h2` using `[← h1]`. Conclude with `h2`. Introduce `A S h i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun {X} u v huv => ?_⟩` and prove the remaining obligations. Apply `ObjectProperty.hom_ext` to reduce the goal to its premises. Apply `PAlg.Hom.ext` to reduce the goal to its premises. Use `RingHom.ext fun b => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `isDec_surj h i b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (fun w => PAlg.Hom.f w.hom a) huv` as an intermediate fact. Conclude with `this`. Introduce `A S h i j hij X u v huv classical`. Take `⟨a, ha⟩` from `h.2 (Pi.single i 1)`. Establish `hi : PAlg.Hom.f (S.f i).hom a = 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun ha i` as an intermediate fact. Simplify using `using this`. Establish `hj : PAlg.Hom.f (S.f j).hom a = 0`. Use `congrFun ha j` as an intermediate fact. Simplify `this` using `[Pi.single_eq_of_ne hij.symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `h10 : (1 : X.obj.A) = 0`. Establish `h3 : PAlg.Hom.f u.hom (PAlg.Hom.f (S.f i).hom a) = PAlg.Hom.f v.hom (PAlg.Hom.f (S.f j).hom a)` using `congrArg (fun w => PAlg.Hom.f w.hom a) huv`. Rewrite `h3` using `[hi, hj, map_one, map_zero]`. Conclude with `h3`. Establish `hs : Subsingleton X.obj.A` using `subsingleton_of_zero_eq_one h10.symm`.
-
-Prove the components needed by the constructor for the conclusion. Introduce `a b _`. Conclude with `Subsingleton.elim a b`. Introduce `b`. Conclude with `⟨0, funext fun e => e.elim⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem partsEx :
     UpperTheory.Ru.crystallineComparison.PartsEx := by

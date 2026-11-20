@@ -11,7 +11,7 @@ namespace GlobalTheory.SumRowType
 variable {E : Type} [Field E]
 
 /- English proof (translation)
-Rewrite using `[Loc.atN, dif_pos (Nat.lt_succ_self n)]`. Establish `h` using `sumE_last (rfl : n + 1 = n + 1) j 1 (Loc.eN E (n + 1) t)`. Establish `e : (⟨n, Nat.lt_succ_self n⟩ : Fin (n + 1)) = Br.iL (rfl : n + 1 = n + 1)` using `rfl`. Rewrite using `[e, h, Units.val_one, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem atN_sumE_last {n : ℕ} (j : Sp E n ≃ₗ[E] Sp E n) (t : ℕ) :
     Loc.atN ((sumE (rfl : n + 1 = n + 1) j 1) (Loc.eN E (n + 1) t)) n = if n = t then 1 else 0 := by
@@ -22,9 +22,9 @@ theorem atN_sumE_last {n : ℕ} (j : Sp E n ≃ₗ[E] Sp E n) (t : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Loc.atN, dif_pos (by omega), Loc.atN, dif_pos hs]`. Establish `h` using `congrFun (prH_sumE (rfl : n + 1 = n + 1) j 1 (Loc.eN E (n + 1) t)) ⟨s, hs⟩`. Establish `e1 : prH E (rfl : n + 1 = n + 1) (Loc.eN E (n + 1) t) = Loc.eN E n t`. Use function extensionality and compare the values at `i`. Rewrite using `[prH_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h` using `[e1]`. Rewrite using `[← h, prH_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem atN_sumE_up {n : ℕ} (j : Sp E n ≃ₗ[E] Sp E n) (t s : ℕ) (hs : s < n) :
     Loc.atN ((sumE (rfl : n + 1 = n + 1) j 1) (Loc.eN E (n + 1) t)) s = Loc.atN (j (Loc.eN E n t)) s := by
@@ -44,15 +44,13 @@ namespace GlobalTheory.SumRowType
 
 open Matrix in
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, n = r + m` from `⟨n - r, by omega⟩`. Establish `hm : r + m + 1 - r = m + 1` using `by omega`. Establish `hm' : r + m - r = m` using `by omega`. Use `set A := Matrix.of fun s t : Fin (r + m + 1 - r) => Loc.atN ((sumE (rfl : r + m + 1 = r + m + 1) j 1).toLinearMap (Loc.eN E (r + m + 1) (r + t.1))) (r + s.1) with hA`. Rewrite using `[← Matrix.det_submatrix_equiv_self (finCongr hm).symm A]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.det_submatrix_equiv_self (finCongr hm').symm]`. Rewrite using `[Matrix.det_succ_row _ (Fin.last m)]`. Rewrite using `[Finset.sum_eq_single (Fin.last m)]`. Establish `e1 : A.submatrix (finCongr hm).symm (finCongr hm).symm (Fin.last m) (Fin.last m) = 1` using `by show Loc.atN ((sumE rfl j 1) (Loc.eN E (r + m + 1) (r + m))) (r + m) = 1`. Rewrite using `[atN_sumE_last, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Fin.succAbove_last, Fin.val_last, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul, one_mul]`. Use `congr 1`. Use extensionality with `s t`. Use `show Loc.atN ((sumE rfl j 1) (Loc.eN E (r + m + 1) (r + t.1))) (r + s.1) = Loc.atN (j (Loc.eN E (r + m) (r + t.1))) (r + s.1)`. Conclude with `atN_sumE_up j _ _ (by have := s.2; omega)`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b _ hb`. Establish `hb' : b.1 < m` using `Fin.val_lt_last hb`. Establish `e1 : A.submatrix (finCongr hm).symm (finCongr hm).symm (Fin.last m) b = 0` using `by show Loc.atN ((sumE rfl j 1) (Loc.eN E (r + m + 1) (r + b.1))) (r + m) = 0`. Rewrite using `[atN_sumE_last, if_neg (by omega)]`. Rewrite using `[e1, mul_zero, zero_mul]`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem det_sumE {E : Type} [Field E] {n : ℕ} (r : ℕ) (hr : r ≤ n) (j : Sp E n ≃ₗ[E] Sp E n) :
     (Matrix.of fun s t : Fin (n + 1 - r) =>
@@ -86,7 +84,7 @@ theorem det_sumE {E : Type} [Field E] {n : ℕ} (r : ℕ) (hr : r ≤ n) (j : Sp
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ P ξ N n hN r hr j`. Substitute `hN` using the available equality. Unfold `LocE.lamQB`. Rewrite using `[det_sumE r hr j]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lamQB_sumE : ∀ {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] (P : HeightOneSpectrum (𝓞 E)) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {N n : ℕ} (hN : N = n + 1) (r : ℕ), r ≤ n → ∀ j : Sp E n ≃ₗ[E] Sp E n, LocE.lamQB ξ r N (sumE hN j 1).toLinearMap = LocE.lamQB ξ r n j.toLinearMap := by
   intro E K _ _ _ _ P ξ N n hN r hr j

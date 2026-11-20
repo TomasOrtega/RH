@@ -10,7 +10,7 @@ namespace GlobalTheory.CommutingExistence
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Rewrite `h1`, `h2` using `[Matrix.det_fin_two]`. Simplify using `at h2`. Take the linear combination `h1 - h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem trace_two (A : Matrix (Fin 2) (Fin 2) k) (h1 : A.det = 1) (h2 : (A - 1).det = 0) :
     A 0 0 + A 1 1 = 2 := by
@@ -19,19 +19,19 @@ theorem trace_two (A : Matrix (Fin 2) (Fin 2) k) (h1 : A.det = 1) (h2 : (A - 1).
   linear_combination h1 - h2
 
 /- English proof (translation)
-Establish `tA` using `trace_two A hA hA'`. Establish `tB` using `trace_two B hB hB'`. Establish `tAB` using `trace_two (A * B) (by rw [Matrix.det_mul, hA, hB, mul_one]) hAB`. Rewrite `hA`, `hB` using `[Matrix.det_fin_two]`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two] at tAB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨x, hx⟩ : ∃ x, A 0 0 = 1 + x` from `⟨A 0 0 - 1, by ring⟩`. Take `⟨a, ha⟩ : ∃ a, B 0 0 = 1 + a` from `⟨B 0 0 - 1, by ring⟩`. Establish `hx' : A 1 1 = 1 - x` using `by linear_combination tA - hx`. Establish `ha' : B 1 1 = 1 - a` using `by linear_combination tB - ha`. Rewrite `hA`, `tAB` using `[hx, hx']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hB`, `tAB` using `[ha, ha']`. Establish `e1 : x ^ 2 + A 0 1 * A 1 0 = 0` using `by linear_combination -hA`. Establish `e2 : a ^ 2 + B 0 1 * B 1 0 = 0` using `by linear_combination -hB`. Establish `e3 : 2 * x * a + A 0 1 * B 1 0 + A 1 0 * B 0 1 = 0` using `by linear_combination tAB`. Establish `f00 : x * a + A 0 1 * B 1 0 = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `pow_eq_zero_iff (two_ne_zero) |>.mp` to reduce the goal to its premises. Take the linear combination `a ^ 2 * e1 - A 0 1 * A 1 0 * e2 + A 0 1 * B 1 0 * e3`. Establish `f01 : x * B 0 1 - A 0 1 * a = 0`. Apply `pow_eq_zero_iff (two_ne_zero) |>.mp` to reduce the goal to its premises. Take the linear combination `B 0 1 ^ 2 * e1 + A 0 1 ^ 2 * e2 - A 0 1 * B 0 1 * e3`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `f10 : A 1 0 * a - x * B 1 0 = 0`. Apply `pow_eq_zero_iff (two_ne_zero) |>.mp` to reduce the goal to its premises. Take the linear combination `B 1 0 ^ 2 * e1 + A 1 0 ^ 2 * e2 - A 1 0 * B 1 0 * e3`. Establish `f11 : A 1 0 * B 0 1 + x * a = 0`. Take the linear combination `e3 - f00`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, hx, hx', ha, ha']`. Take the linear combination `f00`. Take the linear combination `f01`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `f10`. Take the linear combination `f11`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mul_nil (A B : Matrix (Fin 2) (Fin 2) k) (hA : A.det = 1) (hB : B.det = 1)
     (hA' : (A - 1).det = 0) (hB' : (B - 1).det = 0) (hAB : (A * B - 1).det = 0) :
@@ -70,39 +70,37 @@ theorem mul_nil (A B : Matrix (Fin 2) (Fin 2) k) (hA : A.det = 1) (hB : B.det = 
   · linear_combination f11
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hle : ⁅H, H⁆ ≤ H`. Rewrite using `[Subgroup.commutator_le]`. Introduce `a ha b hb`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[commutatorElement_def]`. Conclude with `H.mul_mem (H.mul_mem (H.mul_mem ha hb) (H.inv_mem ha)) (H.inv_mem hb)`. Establish `hconj : ∀ g ∈ H, ∀ φ ∈ ⁅H, H⁆, g⁻¹ * φ * g ∈ ⁅H, H⁆`. Introduce `g hg φ hφ`. Use `Subgroup.commutator_mem_commutator (H.inv_mem hg) (hle hφ)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h2` using `Subgroup.mul_mem _ this hφ`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[commutatorElement_def]`. Use `group`. Set `F : Submodule k (Fin 2 → k)` to `{ carrier := {v | ∀ φ ∈ ⁅H, H⁆, (ρ φ : Matrix (Fin 2) (Fin 2) k) *ᵥ v = v} add_mem' := by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hb φ hφ`. Rewrite using `[Matrix.mulVec_add, ha φ hφ, hb φ hφ]`. Use the proof step `zero_mem' := by`. Introduce `φ _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := by`. Introduce `c a ha φ hφ`. Rewrite using `[Matrix.mulVec_smul, ha φ hφ] }`. Establish `hF : ∀ v, v ∈ F ↔ ∀ φ ∈ ⁅H, H⁆, (ρ φ : Matrix (Fin 2) (Fin 2) k) *ᵥ v = v` using `fun _ => Iff.rfl`. Establish `hFinv : ∀ g ∈ H, ∀ v ∈ F, (ρ g : Matrix (Fin 2) (Fin 2) k) *ᵥ v ∈ F`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg v hv`. Rewrite `hv`, the goal using `[hF]`. Introduce `φ hφ`. Establish `h1` using `hv _ (hconj g hg φ hφ)`. Establish `h2 : φ * g = g * (g⁻¹ * φ * g)` using `by group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, h2, map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, h1]`. Establish `hFtop : ∀ v, v ∈ F`. Break down `hirr F hFinv with h | h` into its components or cases. Introduce `w`. Rewrite using `[hF]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ψ hψ`. Establish `: ((ρ ψ : Matrix (Fin 2) (Fin 2) k) - 1) *ᵥ w ∈ F`. Rewrite using `[hF]`. Introduce `φ hφ`. Establish `h0` using `mul_nil (ρ φ : Matrix (Fin 2) (Fin 2) k) (ρ ψ : Matrix (Fin 2) (Fin 2) k) (hdet _ (hle hφ)) (hdet _ (hle hψ)) (hcon _ hφ) (hcon _ hψ) (by rw [← Units.val_mul, ← map_mul]; exact hcon _ (Subgroup.mul_mem _ hφ hψ))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mulVec_mulVec]`. Use `congr 1`. Rewrite `h0` using `[sub_mul, one_mul, sub_eq_zero]`. Conclude with `h0`. Rewrite `this` using `[h, Submodule.mem_bot, Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this`. Introduce `w`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Establish `hcomm : ∀ g ∈ H, ∀ g' ∈ H, ∀ v, (ρ g : Matrix (Fin 2) (Fin 2) k) *ᵥ ((ρ g' : Matrix (Fin 2) (Fin 2) k) *ᵥ v) = (ρ g' : Matrix (Fin 2) (Fin 2) k) *ᵥ ((ρ g : Matrix (Fin 2) (Fin 2) k) *ᵥ v)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g hg g' hg' v`. Establish `h1` using `(hF _).1 (hFtop ((ρ g' : Matrix (Fin 2) (Fin 2) k) *ᵥ ((ρ g : Matrix (Fin 2) (Fin 2) k) *ᵥ v))) _ (Subgroup.commutator_mem_commutator hg hg')`. Rewrite using `[← h1]`. Simplify using `only [Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul]`. Use `congr 3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[commutatorElement_def]`. Use `group`. Establish `hscal : ∀ g ∈ H, ∃ c : k, ∀ v, (ρ g : Matrix (Fin 2) (Fin 2) k) *ᵥ v = c • v`. Introduce `g hg`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (Matrix.toLin' (ρ g : Matrix (Fin 2) (Fin 2) k))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Break down `hirr (Module.End.eigenspace (Matrix.toLin' (ρ g : Matrix (Fin 2) (Fin 2) k)) c) (by` into its components or cases. Introduce `g' hg' v hv`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`. Rewrite using `[hcomm g hg g' hg', hv, Matrix.mulVec_smul]) with h | h`.
+Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd h (Module.End.hasEigenvalue_iff.1 hc)`. Introduce `v`. Establish `: v ∈ Module.End.eigenspace (Matrix.toLin' (ρ g : Matrix (Fin 2) (Fin 2) k)) c`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`. Then use the resulting hypothesis. Break down `hirr (Submodule.span k {(![1, 0] : Fin 2 → k)}) (by` into its components or cases. Introduce `g hg v hv`. Take `⟨c, hc⟩` from `hscal g hg`. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.smul_mem _ _ hv) with h | h`. Rewrite `h` using `[Submodule.span_singleton_eq_bot]`. Use `congrFun h 0` as an intermediate fact. Simplify using `at this`. Establish `: (![0, 1] : Fin 2 → k) ∈ Submodule.span k {(![1, 0] : Fin 2 → k)}`.
-
-Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 this`. Use `congrFun hc 1` as an intermediate fact. Simplify using `at this`.
+A detailed English derivation is pending.
 -/
 theorem exists_comm [IsAlgClosed k] {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin 2) k) (H : Subgroup Γ)
     (hdet : ∀ s ∈ H, (ρ s : Matrix (Fin 2) (Fin 2) k).det = 1)
@@ -201,9 +199,9 @@ theorem exists_comm [IsAlgClosed k] {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin
     simp at this
 
 /- English proof (translation)
-Use `exists_comm W (GlobalTheory.Ord2.H0g W) ?_ ?_` and prove the remaining obligations. Introduce `s hs`. Establish `h1 : GlobalTheory.Ord2.dt W s = 1` using `hs.2`. Establish `h2` using `congrArg Units.val h1`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `V hV`. Conclude with `h.irr.2.2 V le_top (fun g v hv => hV g g.2 v hv)`.
+A detailed English derivation is pending.
 -/
 theorem main (l : ℕ) [Fact (Nat.Prime l)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ)
     (S : Finset GlobalTheory.Ord2.Pl) (A : ValuationSubring Ω) (W : GlobalTheory.Ord2.R2 Ω l) (h : GlobalTheory.Ord2.Nf e S A W) :

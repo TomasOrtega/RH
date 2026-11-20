@@ -17,7 +17,7 @@ section Points
 variable {F : Type u} [Field F] (C : VariableChange F) {E E' : WeierstrassCurve F}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `map_variableChange _ _ _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem baseChange_smul_eq (L : Type*) [Field L] [Algebra F L] (h : C • E = E') :
     C.baseChange L • E.baseChange L = E'.baseChange L := by
@@ -25,11 +25,9 @@ theorem baseChange_smul_eq (L : Type*) [Field L] [Algebra F L] (h : C • E = E'
   exact map_variableChange _ _ _
 
 /- English proof (translation)
-Break down `P with _ | ⟨x, y, hP⟩` into its components or cases. Both sides reduce to the same expression. Rewrite using `[vcPoint_some, Point.map_some, Point.map_some, vcPoint_some, Point.some.injEq]`. Establish `hC : (C.baseChange L).map (f : L →+* L') = C.baseChange L'` using `VariableChange.map_baseChange C f`. Prove the components needed by the constructor for the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use `map_vcX (C.baseChange L) (f : L →+* L') x` as an intermediate fact. Rewrite `this` using `[hC]`. Conclude with `this`. Use `map_vcY (C.baseChange L) (f : L →+* L') x y` as an intermediate fact. Rewrite `this` using `[hC]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_vcPoint {L L' : Type*} [Field L] [Algebra F L] [Field L'] [Algebra F L'] [DecidableEq L]
     [DecidableEq L'] (f : L →ₐ[F] L') (h : C • E = E') (P : (E.baseChange L).toAffine.Point) :
@@ -49,9 +47,9 @@ theorem map_vcPoint {L L' : Type*} [Field L] [Algebra F L] [Field L'] [Algebra F
       exact this
 
 /- English proof (translation)
-Substitute `hD` using the available equality. Break down `P with _ | ⟨x, y, hP⟩` into its components or cases. Both sides reduce to the same expression. Rewrite using `[vcPoint_some, vcPoint_some, Point.some.injEq]`. Establish `hu` using `D.u.inv_mul`.
+Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [vcX, vcY, VariableChange.inv_def, inv_inv]`. Prove the components needed by the constructor for the conclusion. Take the linear combination `x * (((D.u⁻¹ : Lˣ) : L) * D.u + 1) * hu`. Take the linear combination `y * ((((D.u⁻¹ : Lˣ) : L) * D.u) ^ 2 + ((D.u⁻¹ : Lˣ) : L) * D.u + 1) * hu`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem vcPoint_vcPoint_of_eq_inv {L : Type*} [Field L] {W W₂ : WeierstrassCurve L}
     (D D' : VariableChange L) (hD : D' = D⁻¹) (h₁ : D • W = W₂) (h₂ : D' • W₂ = W)
@@ -67,7 +65,7 @@ theorem vcPoint_vcPoint_of_eq_inv {L : Type*} [Field L] {W W₂ : WeierstrassCur
     · linear_combination y * ((((D.u⁻¹ : Lˣ) : L) * D.u) ^ 2 + ((D.u⁻¹ : Lˣ) : L) * D.u + 1) * hu
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Conclude with `vcPoint_injective D h (e.trans (vcPoint_zero D h).symm)`. Introduce and unpack `rfl`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vcPoint_eq_zero_iff {L : Type*} [Field L] {W W₂ : WeierstrassCurve L} (D : VariableChange L)
     (h : D • W = W₂) {P : W.toAffine.Point} : vcPoint D h P = 0 ↔ P = 0 := by
@@ -88,7 +86,7 @@ def vcPt (h : C • E = E') : (E'.baseChange E.toAffine.FunctionField).toAffine.
   vcPoint (C.baseChange _) (baseChange_smul_eq C _ h) (genericPoint E)
 
 /- English proof (translation)
-Introduce `L _ _ _ u₁ v₁ u₂ v₂ u₃ v₃ h₁ h₂ h₃ t₁ t₂ t₃ hs`. Simplify using `only [ratMapValue, vcPt]`. Rewrite using `[map_vcPoint C _ h, map_vcPoint C _ h, map_vcPoint C _ h, map_liftPoint_genericPoint E h₁ t₁, map_liftPoint_genericPoint E h₂ t₂, map_liftPoint_genericPoint E h₃ t₃, ← vcPoint_add, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem respectsAdd_vcPt (h : C • E = E') : RespectsAdd E E' (vcPt C h) := by
   intro L _ _ _ u₁ v₁ u₂ v₂ u₃ v₃ h₁ h₂ h₃ t₁ t₂ t₃ hs
@@ -99,20 +97,20 @@ theorem respectsAdd_vcPt (h : C • E = E') : RespectsAdd E E' (vcPt C h) := by
 def vcHom (h : C • E = E') : isogHom E E' := ⟨vcPt C h, respectsAdd_vcPt C h⟩
 
 /- English proof (translation)
-Rewrite using `[vcPt, Ne, vcPoint_eq_zero_iff]`. Conclude with `isGenPt_ne_zero E isGenPt_genericPoint`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vcPt_ne_zero (h : C • E = E') : vcPt C h ≠ 0 := by
   rw [vcPt, Ne, vcPoint_eq_zero_iff]
   exact isGenPt_ne_zero E isGenPt_genericPoint
 
 /- English proof (translation)
-The claim follows from `isGenPt_of_mem_isogHom (vcHom C h).2 (vcPt_ne_zero C h)`.
+A detailed English derivation is pending.
 -/
 theorem isGenPt_vcHom (h : C • E = E') : IsGenPt E' (vcHom C h).1 :=
   isGenPt_of_mem_isogHom (vcHom C h).2 (vcPt_ne_zero C h)
 
 /- English proof (translation)
-The claim follows from `map_vcPoint C g h (genericPoint E)`.
+A detailed English derivation is pending.
 -/
 theorem map_vcHom {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
     (g : E.toAffine.FunctionField →ₐ[F] L) (h : C • E = E') :
@@ -122,15 +120,15 @@ theorem map_vcHom {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
 
 omit [IsAlgClosed F] [DecidableEq F] [E.IsElliptic] [E'.IsElliptic] in
 /- English proof (translation)
-Rewrite using `[← h, inv_smul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_smul_eq_of_smul_eq (h : C • E = E') : C⁻¹ • E' = E := by
   rw [← h, inv_smul_smul]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[homComp_of_isGenPt _ _ (isGenPt_vcHom C h)]`. Rewrite using `[map_vcHom, map_genEval_genericPoint]`. Establish `hD' : D.baseChange E.toAffine.FunctionField = (C.baseChange E.toAffine.FunctionField)⁻¹`. Substitute `hD` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `map_inv (VariableChange.mapHom (algebraMap F E.toAffine.FunctionField)) C`. Conclude with `vcPoint_vcPoint_of_eq_inv _ _ hD' (baseChange_smul_eq C _ h) (baseChange_smul_eq D _ h') (genericPoint E)`.
+A detailed English derivation is pending.
 -/
 theorem homComp_vcHom_vcHom (D : VariableChange F) (hD : D = C⁻¹) (h : C • E = E')
     (h' : D • E' = E) : homComp (vcHom D h') (vcHom C h) = homId := by
@@ -178,9 +176,9 @@ variable {F : Type u} [Field F] [IsAlgClosed F] [DecidableEq F]
   {E E' E'' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic] [E''.IsElliptic]
 
 /- English proof (translation)
-Distinguish the cases in `hQ : IsGenPt E' Q.1`. Use `set g := genEval E' Q.1 hQ`. Establish `key : algebraMap F E.toAffine.FunctionField (homConst E' E'' R * homConst E E' Q) • invariantDifferential E = omegaAt E'' (homComp R Q).1`. Rewrite using `[homComp_of_isGenPt _ _ hQ, ← kpush_omegaAt, omegaAt_eq_homConst_smul, ← algebraMap_smul E'.toAffine.FunctionField (homConst E' E'' R) (invariantDifferential E'), kpush_smul, AlgHom.commutes, show invariantDifferential E' = omegaAt E' (genericPoint E') from rfl, kpush_omegaAt, ma …`. Apply `(algebraMap F E.toAffine.FunctionField).injective` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[algebraMap_homConst]`. Establish `h2` using `homCoeff_smul (homComp R Q)`. Rewrite `h2` using `[← key]`. Conclude with `smul_left_injective _ (invariantDifferential_ne_zero E) h2`. Rewrite using `[eq_zero_of_not_isGenPt Q hQ, homComp_zero_right, map_zero, map_zero, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homConst_homComp (R : isogHom E' E'') (Q : isogHom E E') :
     homConst E E'' (homComp R Q) = homConst E' E'' R * homConst E E' Q := by
@@ -202,7 +200,7 @@ theorem homConst_homComp (R : isogHom E' E'') (Q : isogHom E E') :
   · rw [eq_zero_of_not_isGenPt Q hQ, homComp_zero_right, map_zero, map_zero, mul_zero]
 
 /- English proof (translation)
-Apply `(algebraMap F E.toAffine.FunctionField).injective` to reduce the goal to its premises. Rewrite using `[algebraMap_homConst, map_one]`. Conclude with `invCoeff_invariantDifferential E`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homConst_homId : homConst E E (homId : isogEnd E) = 1 := by
   apply (algebraMap F E.toAffine.FunctionField).injective
@@ -224,7 +222,7 @@ Both sides reduce to the same expression.
 theorem endConst_apply (f : isogEnd E) : endConst E f = homConst E E f := rfl
 
 /- English proof (translation)
-Establish `e` using `homConst_homComp (vcHom C h) (vcHom C⁻¹ (inv_smul_eq_of_smul_eq C h))`. Rewrite `e` using `[homComp_vcHom_vcHom C⁻¹ C (inv_inv C).symm (inv_smul_eq_of_smul_eq C h) h, homConst_homId]`. Rewrite using `[endConst_apply, endConst_apply, vcEndEquiv_apply, homConst_homComp, homConst_homComp]`. Take the linear combination `(-(homConst E E f)) * e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem endConst_vcEndEquiv (C : VariableChange F) (h : C • E = E') (f : isogEnd E) :
     endConst E' (vcEndEquiv C h f) = endConst E f := by
@@ -241,16 +239,16 @@ section Complex
 variable {E : WeierstrassCurve ℂ} [E.IsElliptic]
 
 /- English proof (translation)
-The claim follows from `homConst_latticeEndEquiv L α`.
+A detailed English derivation is pending.
 -/
 theorem endConst_latticeEndEquiv (L : PeriodPair) (α : latticeEnd L) :
     endConst (weierstrassCurve L) (latticeEndEquiv L α) = α :=
   homConst_latticeEndEquiv L α
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, rfl⟩`. Take `⟨α, rfl⟩` from `(latticeEndEquiv L).surjective f`. Rewrite using `[endConst_latticeEndEquiv]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `α.2`. Introduce `hz`. Conclude with `⟨latticeEndEquiv L ⟨z, hz⟩, endConst_latticeEndEquiv L ⟨z, hz⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_endConst_weierstrassCurve (L : PeriodPair) :
     (endConst (weierstrassCurve L)).range = latticeEnd L := by
@@ -264,9 +262,9 @@ theorem range_endConst_weierstrassCurve (L : PeriodPair) :
     exact ⟨latticeEndEquiv L ⟨z, hz⟩, endConst_latticeEndEquiv L ⟨z, hz⟩⟩
 
 /- English proof (translation)
-Take `⟨L, C, hC⟩` from `exists_variableChange_eq_weierstrassCurve E`. Introduce `f g hfg`. Apply `(vcEndEquiv C hC).injective` to reduce the goal to its premises. Apply `(latticeEndEquiv L).symm.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hf` using `endConst_latticeEndEquiv L ((latticeEndEquiv L).symm (vcEndEquiv C hC f))`. Establish `hg` using `endConst_latticeEndEquiv L ((latticeEndEquiv L).symm (vcEndEquiv C hC g))`. Rewrite `hf`, `hg` using `[RingEquiv.apply_symm_apply, endConst_vcEndEquiv]`. Rewrite using `[← hf, ← hg, hfg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem endConst_injective : Function.Injective (endConst E) := by
   obtain ⟨L, C, hC⟩ := exists_variableChange_eq_weierstrassCurve E
@@ -280,9 +278,9 @@ theorem endConst_injective : Function.Injective (endConst E) := by
   rw [← hf, ← hg, hfg]
 
 /- English proof (translation)
-Rewrite using `[← range_endConst_weierstrassCurve]`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, rfl⟩`. Conclude with `⟨vcEndEquiv C hC f, endConst_vcEndEquiv C hC f⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨g, rfl⟩`. Take `⟨f, rfl⟩` from `(vcEndEquiv C hC).surjective g`. Conclude with `⟨f, (endConst_vcEndEquiv C hC f).symm⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem range_endConst {L : PeriodPair} {C : VariableChange ℂ} (hC : C • E = weierstrassCurve L) :
     (endConst E).range = latticeEnd L := by

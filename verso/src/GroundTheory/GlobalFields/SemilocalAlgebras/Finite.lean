@@ -21,7 +21,7 @@ def tensorMap : v.adicCompletion K ⊗[K] L →ₐ[v.adicCompletion K] Completio
     (fun _ _ ↦ Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[tensorMap]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem tensorMap_tmul (a : v.adicCompletion K) (x : L) :
     tensorMap L v (a ⊗ₜ x) =
@@ -29,7 +29,7 @@ Simplify using `[tensorMap]`.
   simp [tensorMap]
 
 /- English proof (translation)
-The claim follows from `denseRange_algebraMap_pi (fun w : PlacesOver L v ↦ w.1) Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem denseRange_algebraMap_completionsOver :
     DenseRange (algebraMap L (CompletionsOver L v)) :=
@@ -37,9 +37,9 @@ theorem denseRange_algebraMap_completionsOver :
 
 open scoped Valued in
 /- English proof (translation)
-Establish `hclosed : IsClosed (LinearMap.range (tensorMap L v).toLinearMap : Set (CompletionsOver L v))` using `Submodule.closed_of_finiteDimensional _`. Establish `hdense : Dense (Set.range (tensorMap L v))`. Use `(denseRange_algebraMap_completionsOver L v).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨1 ⊗ₜ x, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite `hclosed` using `[LinearMap.coe_range]`. Establish `h2 : closure (Set.range (tensorMap L v)) = Set.range (tensorMap L v)` using `hclosed.closure_eq`. Rewrite using `[← Set.range_eq_univ, ← h2, hdense.closure_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorMap_surjective : Function.Surjective (tensorMap L v) := by
   have hclosed : IsClosed (LinearMap.range (tensorMap L v).toLinearMap :
@@ -54,7 +54,7 @@ theorem tensorMap_surjective : Function.Surjective (tensorMap L v) := by
   rw [← Set.range_eq_univ, ← h2, hdense.closure_eq]
 
 /- English proof (translation)
-Rewrite using `[← Module.finrank_pi_fintype]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_finrank_le :
     ∑ w : PlacesOver L v, finrank (v.adicCompletion K) (w.1.adicCompletion L) ≤ finrank K L := by
@@ -65,7 +65,7 @@ theorem sum_finrank_le :
     _ = finrank K L := Module.finrank_baseChange
 
 /- English proof (translation)
-Use `v.isPrime` as an intermediate fact. Rewrite using `[IsFractionRing.finrank_eq (𝓞 K) K (𝓞 L) L, ← Ideal.sum_ramification_inertia_eq_finrank v.asIdeal (𝓞 L)]`. Conclude with `Fintype.sum_equiv (placesOverEquiv L v) _ _ (fun _ ↦ rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_ramificationIdx_mul_inertiaDeg :
     ∑ w : PlacesOver L v, w.1.asIdeal.ramificationIdx (𝓞 K) * w.1.asIdeal.inertiaDeg (𝓞 K) =
@@ -76,7 +76,7 @@ theorem sum_ramificationIdx_mul_inertiaDeg :
   exact Fintype.sum_equiv (placesOverEquiv L v) _ _ (fun _ ↦ rfl)
 
 /- English proof (translation)
-Use `le_antisymm (sum_finrank_le L v) ?_` and prove the remaining obligations. Rewrite using `[← sum_ramificationIdx_mul_inertiaDeg L v]`. Conclude with `Finset.sum_le_sum fun w _ ↦ ramificationIdx_mul_inertiaDeg_le_finrank v w.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_finrank_eq :
     ∑ w : PlacesOver L v, finrank (v.adicCompletion K) (w.1.adicCompletion L) = finrank K L := by
@@ -85,7 +85,7 @@ theorem sum_finrank_eq :
   exact Finset.sum_le_sum fun w _ ↦ ramificationIdx_mul_inertiaDeg_le_finrank v w.1
 
 /- English proof (translation)
-Establish `h` using `(Finset.sum_eq_sum_iff_of_le (fun (w : PlacesOver L v) _ ↦ ramificationIdx_mul_inertiaDeg_le_finrank v w.1)).1 (by rw [sum_ramificationIdx_mul_inertiaDeg, sum_finrank_eq])`. Conclude with `(h ⟨w, inferInstance⟩ (Finset.mem_univ _)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_eq_ramificationIdx_mul_inertiaDeg (w : HeightOneSpectrum (𝓞 L))
     [w.asIdeal.LiesOver v.asIdeal] :
@@ -97,7 +97,7 @@ theorem finrank_eq_ramificationIdx_mul_inertiaDeg (w : HeightOneSpectrum (𝓞 L
   exact (h ⟨w, inferInstance⟩ (Finset.mem_univ _)).symm
 
 /- English proof (translation)
-The claim follows from `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := (tensorMap L v).toLinearMap) (by rw [Module.finrank_baseChange, Module.finrank_pi_fintype, sum_finrank_eq])).2 (tensorMap_surjective L v)`.
+A detailed English derivation is pending.
 -/
 theorem tensorMap_injective : Function.Injective (tensorMap L v) :=
   (LinearMap.injective_iff_surjective_of_finrank_eq_finrank
@@ -109,7 +109,7 @@ def tensorEquiv : v.adicCompletion K ⊗[K] L ≃ₐ[v.adicCompletion K] Complet
   AlgEquiv.ofBijective (tensorMap L v) ⟨tensorMap_injective L v, tensorMap_surjective L v⟩
 
 /- English proof (translation)
-The claim follows from `tensorMap_tmul L v a x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem tensorEquiv_tmul (a : v.adicCompletion K) (x : L) :
     tensorEquiv L v (a ⊗ₜ x) =
@@ -128,7 +128,7 @@ def tensorMap' : L ⊗[K] v.adicCompletion K →ₐ[L] CompletionsOver L v :=
     (IsScalarTower.toAlgHom K (v.adicCompletion K) _) (fun _ _ ↦ Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[tensorMap']`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem tensorMap'_tmul (x : L) (a : v.adicCompletion K) :
     tensorMap' L v (x ⊗ₜ a) =
@@ -136,7 +136,7 @@ Simplify using `[tensorMap']`.
   simp [tensorMap']
 
 /- English proof (translation)
-Establish `: (tensorMap' L v).restrictScalars K = ((tensorEquiv L v).toAlgHom.restrictScalars K).comp (Algebra.TensorProduct.comm K L (v.adicCompletion K)).toAlgHom` using `Algebra.TensorProduct.ext' fun x a ↦ by simp [mul_comm]`. Conclude with `congrArg DFunLike.coe this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tensorMap'_eq_comp :
     ⇑(tensorMap' L v) = tensorEquiv L v ∘ Algebra.TensorProduct.comm K L (v.adicCompletion K) := by
@@ -152,7 +152,7 @@ def tensorEquiv' : L ⊗[K] v.adicCompletion K ≃ₐ[L] CompletionsOver L v :=
     exact (tensorEquiv L v).bijective.comp (AlgEquiv.bijective _))
 
 /- English proof (translation)
-The claim follows from `tensorMap'_tmul L v x a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem tensorEquiv'_tmul (x : L) (a : v.adicCompletion K) :
     tensorEquiv' L v (x ⊗ₜ a) =
@@ -160,7 +160,7 @@ The claim follows from `tensorMap'_tmul L v x a`.
   tensorMap'_tmul L v x a
 
 /- English proof (translation)
-Rewrite using `[map_mul, tensorEquiv'_tmul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorEquiv'_tmul_mul (a : v.adicCompletion K) (y : L ⊗[K] v.adicCompletion K) :
     tensorEquiv' L v ((1 ⊗ₜ a) * y) =

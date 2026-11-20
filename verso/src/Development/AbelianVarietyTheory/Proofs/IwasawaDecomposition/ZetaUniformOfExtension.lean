@@ -38,9 +38,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `key : ∀ (tp : T → D.what₂.Tup) (j : ∀ t, (Fin (rDim D A3.A F.P1 F.ψ1 t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] D.what₂.Amb (tp t)), tp = Y.tup → HEq j Y.jA → ∀ (u : D.what₂.Word) (t : T) (x : Fin ((Dc (R.toCx3 F).zs).a (C.wU u)) → D.what₂.LL) (f : Fin ((A3.side3 F.P1 F.ψ1 (R.toCx3 F).z …`. Introduce `tp j h1 h2`. Substitute `h1` using the available equality. Consider the cases of `h2`. Conclude with `C.pt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 
-Conclude with `⟨⟨C.wU, C.bij, C.eNu, C.NuC, C.nu, key Y₁.tup Y₁.jA h1 h2⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem readC_reFace_updS (R : RealDat3 D A3 Ks) (F : Face3 D A3) (X0 : BaseLevelRowSide D)
     (Dc : ∀ Zs : DefSub A3.fam3.amb3, DefCols (A3.side3 F.P1 F.ψ1 Zs)) (Sp Sp' : ∀ Zs, SPer (Dc Zs))
@@ -67,13 +67,13 @@ open Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Form
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hPr hL N S Γ hN K q`. Establish `hK : ∃ t : Formalism.L2.Ker.KerEntTied q.O.ex, KPin q t`. Take `⟨B, f, T, w, Z, O, x⟩` from `q`. Take `⟨L, gatT, Gx, Gy, Kc, X, cX, ex⟩` from `O`. Take `⟨lev, th, th_io, cmp, lat, tw, ker, ep_def, ep_tie, kapI_def, fills_all, nu_unserved, idx, kap_def, lam_def, kapR_def, errX, err, nch, nch_tie, xd, p0, rationalRoots_def, amb, amb0, fdef, duStar_def, Dstar_def, gauge, gauge_def⟩` from `ex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨isOver, forced, Wt, pin, coh, vol, col, what₂, rx, hlev, herrX, n, nx, sx, ker0, ker_eq, kT, div, thT, obj, ox, real, dsig_eq, gaugeG, good⟩` from `x`. Simplify using `only [ofObj, extraObj] at ker_eq`. Consider the cases of `ker_eq`. Take `⟨t1, s1, o1, e1, a1, p1⟩` from `TC.kerEntTied_true_ent w.I w.ok w.pins w.l Z L col.Gt Gx Gy Kc X cX ⟨lev, th, th_io, col.cmp, lat, w.tw Z, ker, ep_def, ep_tie, kapI_def, fills_all, nu_unserved, idx, kap_def, lam_def, kapR_def, errX, err, nch, nch_tie, xd, p0, rationalRoots_def, amb, amb0, fdef, duStar_def, Dsta …`. Conclude with `⟨t1, (StdModel.stdKer_iff w.I w.l Z t1).2 s1, o1, heq_of_eq e1, a1, p1⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t, ht⟩` from `hK`. Take `⟨Dc, Sp₀, Zsc₀, C₀, -⟩` from `GlobalTheory.Mem.R3.SelC.cols_of_witnesses _ K q t ht ⟨q.x.rx⟩`. Take `⟨kap, lam, err, hP, hH, -, -, -, Y', Z', htup, -, hjA, -⟩` from `GlobalTheory.Mem.R3.reFace_scalars_errors_readings _ _ _ _ _ _ _ q.x.what₂.r.z.R q.x.what₂.r.z.F q.x.what₂.r.z.cG _ q.x.what₂.r.Y q.x.what₂.r.Z Dc Sp₀ q.x.what₂.r.z.F.Zsc (fun _ => Or.inl rfl) q.x.what₂.r.z.pins q.x.what₂.r.intersectionNumber_baseChange`. Take `⟨C'⟩` from `GlobalTheory.Mem.R3.readC_reFace_updS _ _ _ Dc Sp₀ Sp₀ Zsc₀ q.x.what₂.r.z.F.Zsc kap lam err C₀ Y' htup hjA`. Take `⟨nb⟩` from `hN _ _ _ _ _ _ _ _ _ _ _ _ _ q.x.nx.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hBk : BkLaw (q.w.D q.Z)` using `nb.2.down`. Establish `hRat` using `GlobalTheory.Mem.R3.divisionPairing_rational_on_rationalPoints hPr (q.w.st q.Z).toD7 _ _ _ _ _ _ _ _ _ _ Y' Z' C' hP hH`. Conclude with `GlobalTheory.Mem.R3.zeTied_of_read hPr (q.w.st q.Z).toD7 _ _ _ _ _ _ _ _ _ _ Y' Z' C' hP hH (hBk hRat)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Top.Bl.zeU_prmR_NEb : (GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧ GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay) → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (NEb hL K B f T w Z Wt p0 t nch n xd c)) → ZeU (prmR N S Γ).s := by
   intro hPr hL N S Γ hN K q

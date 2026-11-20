@@ -12,17 +12,17 @@ open scoped InnerProductSpace
 namespace GlobalTheory.KStableGraph
 
 /- English proof (translation)
-Establish `hT : Formalism.MainNotions.S.IsKStableOn ε ρ (S ⊓ (U ⊔ S'))`. Introduce `g hg v hv`. Take `⟨hvS, hvU⟩` from `Submodule.mem_inf.mp hv`. Take `⟨u, hu, t, ht, rfl⟩` from `Submodule.mem_sup.mp hvU`. Use `Submodule.mem_inf.mpr ⟨hS g hg _ hvS, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hU g hg u hu) (hS' g hg t ht)`. Break down `irr _ inf_le_left hT with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU0`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, t, ht, hst⟩` from `Submodule.mem_sup.mp (hle hu)`. Establish `hsT : s ∈ S ⊓ (U ⊔ S')`. Use `Submodule.mem_inf.mpr ⟨hs, ?_⟩` and prove the remaining obligations. Establish `: s = u - t` using `by rw [← hst]; abel`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.sub_mem_sup hu ht`. Rewrite `hsT` using `[h]`. Establish `hs0 : s = 0` using `(Submodule.mem_bot ℂ).mp hsT`. Establish `hut : u = t` using `by rw [← hst, hs0, zero_add]`. Establish `: u ∈ U ⊓ S'` using `Submodule.mem_inf.mpr ⟨hu, hut ▸ ht⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hUS']`. Conclude with `hu0 ((Submodule.mem_bot ℂ).mp this)`. Introduce `s hs`. Establish `hs' : s ∈ S ⊓ (U ⊔ S')` using `h.symm ▸ hs`. Take `⟨u, hu, t, ht, hut⟩` from `Submodule.mem_sup.mp (Submodule.mem_inf.mp hs').2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-t, S'.neg_mem ht, ?_⟩` and prove the remaining obligations. Establish `: s + -t = u` using `by rw [← hut]; abel`. Rewrite using `[this]`. Conclude with `hu`.
+A detailed English derivation is pending.
 -/
 theorem exists_partner {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {S S' U : Submodule ℂ H}
@@ -61,27 +61,23 @@ theorem exists_partner {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddComm
     rw [this]; exact hu
 
 /- English proof (translation)
-Introduce `n ε H _ _ ρ S S' U hS hS' hU irrS irrS' hSS' hle hUS hUS' hU0`. Establish `ex` using `exists_partner hS hS' hU irrS hle hUS' hU0`. Establish `ex'` using `exists_partner hS' hS hU irrS' (by rwa [sup_comm]) hUS hU0`. Establish `uniq : ∀ s ∈ S, ∀ a ∈ S', ∀ b ∈ S', s + a ∈ U → s + b ∈ U → a = b`. Introduce `s _ a ha b hb h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3` using `U.sub_mem h1 h2`. Rewrite `h3` using `[add_sub_add_left_eq_sub]`. Establish `: a - b ∈ U ⊓ S'` using `Submodule.mem_inf.mpr ⟨h3, S'.sub_mem ha hb⟩`. Rewrite `this` using `[hUS']`. Conclude with `sub_eq_zero.mp ((Submodule.mem_bot ℂ).mp this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `choose g hg using ex`. Set `f : S →ₗ[ℂ] S'` to `{ toFun := fun x => ⟨g x x.2, (hg x x.2).1⟩ map_add' := fun x y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show g ((x + y : S) : H) (x + y).2 = g x x.2 + g y y.2`. Use `uniq _ (x + y).2 _ (hg _ _).1 _ (S'.add_mem (hg x x.2).1 (hg y y.2).1) (hg _ _).2 ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `U.add_mem (hg x x.2).2 (hg y y.2).2` as an intermediate fact. Rewrite using `[Submodule.coe_add]`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := fun c x => by`.
+Normalize the expressions using the abelian group laws. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show g ((c • x : S) : H) (c • x).2 = c • g x x.2`. Use `uniq _ (c • x).2 _ (hg _ _).1 _ (S'.smul_mem c (hg x x.2).1) (hg _ _).2 ?_` and prove the remaining obligations. Use `U.smul_mem c (hg x x.2).2` as an intermediate fact. Rewrite using `[Submodule.coe_smul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_add] }`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl S`. Set `φ : H →ₗ[ℂ] H` to `S'.subtype ∘ₗ f ∘ₗ S.projectionOnto C hC`. Establish `hφ : ∀ u (hu : u ∈ S), φ u = g u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `u hu`. Use `Submodule.linearProjOfIsCompl_apply_left hC ⟨u, hu⟩` as an intermediate fact. Express the relevant statement in the definitionally equal form `((f (S.projectionOnto C hC ((⟨u, hu⟩ : S) : H)) : S') : H) = _`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨φ, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk u hu`. Establish `hku : ρ k u ∈ S` using `hS k hk u hu`. Rewrite using `[hφ _ hku, hφ u hu]`. Use `uniq _ hku _ (hg _ hku).1 _ (hS' k hk _ (hg u hu).1) (hg _ hku).2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_add]`. Conclude with `hU k hk _ (hg u hu).2`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Rewrite using `[hφ u hu]`.
-
-Conclude with `(hg u hu).1`. Introduce `s' hs'`. Take `⟨s, hs, hsU⟩` from `ex' s' hs'`. Use `Submodule.mem_map.mpr ⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ s hs]`.
-
-Conclude with `uniq s hs _ (hg s hs).1 s' hs' (hg s hs).2 (by rwa [add_comm])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_kMap_onto : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (S S' U : Submodule ℂ H), Formalism.MainNotions.S.IsKStableOn ε ρ S → Formalism.MainNotions.S.IsKStableOn ε ρ S' → Formalism.MainNotions.S.IsKStableOn ε ρ U → (∀ T : Submodule ℂ H, T ≤ S → Formalism.MainNotions.S.IsKStableOn ε ρ T → T = ⊥ ∨ T = S) → (∀ T : Submodule ℂ H, T ≤ S' → Formalism.MainNotions.S.IsKStableOn ε ρ T → T = ⊥ ∨ T = S') → S ⊓ S' = ⊥ → U ≤ S ⊔ S' → U ⊓ S = ⊥ → U ⊓ S' = ⊥ → U ≠ ⊥ → ∃ φ : H →ₗ[ℂ] H, (∀ k ∈ Formalism.REAL.Kset ε, ∀ u ∈ S, φ (ρ k u) = ρ k (φ u)) ∧ S.map φ = S' := by
   intro n ε H _ _ ρ S S' U hS hS' hU irrS irrS' hSS' hle hUS hUS' hU0

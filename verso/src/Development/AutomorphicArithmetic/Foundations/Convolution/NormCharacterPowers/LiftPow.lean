@@ -8,9 +8,9 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 open UpperTheory.ConvolutionTheory.R
 
 /- English proof (translation)
-Take `⟨a, ha⟩ : ∃ a : ℝ → HChar E, ∀ t, (a t).IsAbsPow t` from `⟨UnitExponent.nu E, fun t => GlobalTheory.Mem.Chr.CharModel.absChar_isAbsPow (F := E) t⟩`. Take `⟨b, hb, -⟩` from `norm_exponent_equality E`. Use `⟨fun z => a z.re * b z.im, fun z v => ⟨fun x hx => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[HChar.loc_mul, (ha _).1 v x hx, (hb _ v).1 x hx, one_mul]`. Establish `h0 : ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)` after adjusting the coercions. Rewrite using `[HChar.val_mul, Units.val_mul, (ha _).2.1 v, (hb _ v).2, ← Complex.cpow_add _ _ h0, ← neg_add, Complex.re_add_im]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem exPow (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] : ∃ ν : ℂ → HChar E,
     ∀ z v, (ν z).UnrAt v ∧ ((ν z).val v : ℂ) = (normV v : ℂ) ^ (-z) := by

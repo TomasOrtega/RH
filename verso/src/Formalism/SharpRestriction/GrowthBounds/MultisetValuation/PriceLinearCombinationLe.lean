@@ -7,7 +7,7 @@ namespace Formalism.MainNotions.FormalGroupSystem.Pf
 open Formalism.BasicNotions Finset
 
 /- English proof (translation)
-Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hr hN) hcg, mul_nonneg (mul_nonneg hn hr) (sub_nonneg.mpr hjt)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem price_linear_combination_le (n N rr w2 η cg NM b1 jt : ℝ) (hn : 0 ≤ n) (hN : 0 ≤ N) (hr : 0 ≤ rr) (hcg : 0 ≤ cg) (hjt : jt ≤ NM) :
     n * (rr * (w2 + η + cg)) + N * (rr * (2 * b1)) + n * rr * jt ≤
@@ -24,7 +24,7 @@ variable (X : Formalism.MainNotions.G.Inst D L) (Y : Formalism.MainNotions.G.Lat
 
 include hL ht0 in
 /- English proof (translation)
-Take `⟨_, h2, h3, _⟩` from `((hL u w hg).2.2.2.2.2.2 t0 ht0).2 s`. Rewrite using `[(h3 hs).2]`. Unfold `Formalism.MainNotions.G.bL`. Rewrite using `[dif_pos (h2.1 hs)]`. Conclude with `⟨L.bT_ge _, ne_bT_le hS _⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ne_b_top (hS : Formalism.MainNotions.SizesAt L) (s : Fin ((D.gat u w hg).P.n' (Y.vOf u w hg t0)))
     (hs : s ∈ (Y.Fl u w hg).TT (Y.vOf u w hg t0)) :
@@ -38,7 +38,7 @@ theorem ne_b_top (hS : Formalism.MainNotions.SizesAt L) (s : Fin ((D.gat u w hg)
 
 include hL ht0 in
 /- English proof (translation)
-Take `⟨_, h2, h3, _⟩` from `((hL u w hg).2.2.2.2.2.2 t0 ht0).2 s`. Rewrite using `[(h3 hs).1]`. Unfold `Formalism.MainNotions.G.aL`. Rewrite using `[dif_pos (h2.1 hs)]`. Conclude with `ne_aT_le _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_a_top (s : Fin ((D.gat u w hg).P.n' (Y.vOf u w hg t0)))
     (hs : s ∈ (Y.Fl u w hg).TT (Y.vOf u w hg t0)) :
@@ -52,21 +52,19 @@ theorem ne_a_top (s : Fin ((D.gat u w hg).P.n' (Y.vOf u w hg t0)))
 end Orbit
 
 /- English proof (translation)
-Establish `he` using `L.sc.eps_pos`. Establish `he2` using `L.sc.eps_lt`. Establish `hx1` using `L.sc.one_lt_alt`. Establish `hK : Formalism.MainNotions.SizeK L` using `hS.2.2.1`. Take `⟨hk, -⟩` from `hK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hexp : (2 : ℝ) ≤ 9 / 2 + 10 * L.sc.eps - Formalism.MainNotions.szTh L`. Simplify using `only [Formalism.MainNotions.szTh]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx2 : L.sc.x ^ (2 : ℝ) ≤ L.sc.x ^ (9 / 2 + 10 * L.sc.eps - Formalism.MainNotions.szTh L)` using `Real.rpow_le_rpow_of_exponent_le hx1.le hexp`. Establish `hsq : L.sc.x ^ (2 : ℝ) = L.sc.x * L.sc.x` using `by rw [Real.rpow_two, sq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E := 1 / L.sc.eps with hE`. Establish `hEpos : 0 < E` using `by positivity`. Establish `hxe : 34 * E < L.sc.x`. Rewrite using `[hE, mul_one_div, div_lt_iff₀ he]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hinv : 52 < E`. Rewrite using `[hE, lt_div_iff₀ he]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsq2 : 34 * E * (34 * E) ≤ L.sc.x * L.sc.x` using `mul_self_le_mul_self (by positivity) hxe.le`. Establish `hv : 8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps = 32 * E + 64`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE]`. Simplify using `only [Formalism.MainNotions.G.hG]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hv0 : 0 ≤ 8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps` using `by rw [hv]; positivity`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `Nat.ceil_lt_add_one hv0`. Establish `hq : 32 * E + 66 ≤ 34 * E * (34 * E)` using `by nlinarith`. Establish `h1 : (⌈8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps⌉₊ : ℝ) + 1 < 32 * E + 66`. Combine the linear relations using `[hc, hv]`. Establish `h2 : 32 * E + 66 ≤ (D.R.k : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Unfold `Formalism.MainNotions.G.rG Formalism.MainNotions.G.KG`. Establish `hfin : ((⌈8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps⌉₊ + 1 : ℕ) : ℝ) < (D.R.k : ℝ)`. Use `push_cast`. Conclude with `lt_of_lt_of_le h1 h2`.
-
-Conclude with `hfin` after adjusting the coercions.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem ne_rG_lt (hS : Formalism.MainNotions.SizesAt L) (h : 34 < L.sc.x * L.sc.eps) : Formalism.MainNotions.G.rG L.sc < D.R.k := by
   have he := L.sc.eps_pos
@@ -109,30 +107,30 @@ theorem ne_rG_lt (hS : Formalism.MainNotions.SizesAt L) (h : 34 < L.sc.x * L.sc.
 def priceThreshold : ℝ := 9
 
 /- English proof (translation)
-Evaluate the numerical expressions using `[priceThreshold]`.
+Evaluate the numerical expressions.
 -/
 theorem price_threshold_ge_nine : 9 ≤ priceThreshold := by norm_num [priceThreshold]
 
 open Classical in
 
 /- English proof (translation)
-Introduce `D L X Y K hK hS hT hL u w hg hp t0 ht0 j hj`. Take `⟨hrk, hx2⟩` from `hK`. Establish `hr : (D.gat u w hg).P.r = Formalism.MainNotions.G.rG L.sc` using `by rw [(hL u w hg).2.2.2.1, if_pos hp]`. Establish `ht : (Y.Fl u w hg).t = D.R.t` using `(hL u w hg).2.1`. Establish `hc : ((Y.Fl u w hg).c : ℝ) ≤ Formalism.MainNotions.G.cG L` using `(hL u w hg).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `nc_iota_inj X Y hT hL u w hg t0 ht0`. Establish `hm` using `nc_m_ge hT u w hg`. Establish `hk` using `hT.gat_k u w hg`. Establish `hno : ¬ ((D.gat u w hg).P.m + 1 ≤ Formalism.MainNotions.G.rG L.sc)` using `by omega`. Establish `hr0 : (0 : ℝ) ≤ (Formalism.MainNotions.G.rG L.sc : ℝ)` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw` using `ne_w''_nonneg (L := L)`. Establish `hη` using `L.etaSz_pos`. Establish `hcG` using `nc_cG_nonneg (L := L)`. Establish `hb'` using `L.sc.b'_pos`. Rewrite using `[hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `ne_abs (Y.Fl u w hg).t (Formalism.MainNotions.G.rG L.sc) j ((Y.Fl u w hg).TT (Y.vOf u w hg t0)) ((D.gat u w hg).P.lam0 (Y.vOf u w hg t0)) ((Y.Fl u w hg).w (Y.vOf u w hg t0)) ((Formalism.MainNotions.G.rG L.sc : ℝ) * (L.sc.w'' D.R.n + L.etaSz + Formalism.MainNotions.G.cG L)) ((Form …`. Establish `hsum` using `ne_sum_le (Y.Fl u w hg) (Y.vOf u w hg t0) s (Formalism.MainNotions.G.rG L.sc) hm (fun hs => by`. Establish `h0` using `(ne_b_top X Y hT hL u w hg t0 ht0 hS s hs).1`. Establish `: (0 : ℝ) ≤ ((Y.Fl u w hg).b (Y.vOf u w hg t0) s : ℝ)` using `by linarith`. Conclude with `this)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsum` using `[if_neg (fun h => hno h.2)]`. Establish `h7` using `mul_le_mul_of_nonneg_left hc hr0`. Establish `h11` using `mul_nonneg hr0 hw`. Distinguish the cases in `hs : s ∈ (Y.Fl u w hg).TT (Y.vOf u w hg t0)`. Rewrite using `[if_pos hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hwt` using `ne_w_top X Y hT hL u w hg t0 ht0 j hj s hs`. Establish `hb` using `(ne_b_top X Y hT hL u w hg t0 ht0 hS s hs).2`. Establish `hx : L.sc.b' / L.sc.x ≤ L.sc.b' / 2` using `div_le_div_of_nonneg_left hb'.le (by norm_num) hx2`. Establish `h5` using `mul_le_mul_of_nonneg_left (show ((Y.Fl u w hg).w (Y.vOf u w hg t0) j s : ℝ) ≤ 2 * L.sc.b' + L.etaSz by linarith) hr0`. Use polynomial arithmetic with `[h5, h7, hsum, h11]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hs]`. Establish `hwn` using `ne_w_non X Y hT hL u w hg t0 ht0 j hj s hs`. Establish `h5` using `mul_le_mul_of_nonneg_left hwn hr0`. Use polynomial arithmetic with `[h5, h7, hsum])`. Use `le_trans h1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.MainNotions.G.Pr Formalism.MainNotions.G.Nv`. Rewrite using `[if_neg (not_le.2 hp), nc_topsOn X Y hT hL u w hg t0 ht0, Finset.card_image_of_injective _ hinj, ne_nP X Y hT hL u w hg t0 ht0, ht]`. Establish `hN` using `ne_Nm (D := D) j hj`. Establish `hfin` using `price_linear_combination_le ((D.gat u w hg).P.n' (Y.vOf u w hg t0) : ℝ) (((Y.Fl u w hg).TT (Y.vOf u w hg t0)).card : ℝ) (Formalism.MainNotions.G.rG L.sc : ℝ) (L.sc.w'' D.R.n) L.etaSz (Formalism.MainNotions.G.cG L) (Formalism.MainNotions.G.Nm D) L.sc.b' ((j : ℝ) * ((D.R.t : ℝ) + 1 …`. Establish `e : ((D.gat u w hg).P.n' (Y.vOf u w hg t0) : ℝ) * (Formalism.MainNotions.G.rG L.sc : ℝ) * (j : ℝ) * ((D.R.t : ℝ) + 1) / 2 = ((D.gat u w hg).P.n' (Y.vOf u w hg t0) : ℝ) * (Formalism.MainNotions.G.rG L.sc : ℝ) * ((j : ℝ) * ((D.R.t : ℝ) + 1) / 2)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hfin`.
+A detailed English derivation is pending.
 -/
 theorem price_bound_small_primes : PriceBoundSmallPrimes := by
   intro D L X Y K hK hS hT hL u w hg hp t0 ht0 j hj
@@ -189,25 +187,25 @@ theorem price_bound_small_primes : PriceBoundSmallPrimes := by
   exact hfin
 
 /- English proof (translation)
-Introduce `D L X Y K hK` and use `price_bound_large_primes D L X Y K (by linarith [price_threshold_ge_nine])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem priceBoundLargePrimes_priceThreshold : PriceBoundLargePrimes priceThreshold :=
   fun D L X Y K hK => price_bound_large_primes D L X Y K (by linarith [price_threshold_ge_nine])
 
 /- English proof (translation)
-The claim follows from `priceBound_of_largePrimes_of_smallPrimes priceThreshold priceBoundLargePrimes_priceThreshold price_bound_small_primes`.
+A detailed English derivation is pending.
 -/
 theorem ne_priceThreshold : PriceBound priceThreshold :=
   priceBound_of_largePrimes_of_smallPrimes priceThreshold priceBoundLargePrimes_priceThreshold price_bound_small_primes
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨priceThreshold, price_threshold_ge_nine, ne_priceThreshold⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_priceBound : ∃ C₀ : ℝ, 9 ≤ C₀ ∧ PriceBound C₀ :=
   ⟨priceThreshold, price_threshold_ge_nine, ne_priceThreshold⟩
 
 /- English proof (translation)
-The claim follows from `numerical_closed_of_threshold priceThreshold price_threshold_ge_nine (nc_need3_of priceThreshold hS ne_priceThreshold)`.
+A detailed English derivation is pending.
 -/
 theorem numericalComparisonUniform_of_size (hS : nd_NeedSize) : Formalism.MainNotions.FormalGroupSystem.NumericalComparisonUniform :=
   numerical_closed_of_threshold priceThreshold price_threshold_ge_nine (nc_need3_of priceThreshold hS ne_priceThreshold)

@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SameCharCompat
 
 /- English proof (translation)
-Introduce `D V V' W r C B hs ψ χS χT χT' ω ω' hω hω' μ 𝓨 hμ h f hf`. Take `⟨c, hc⟩` from `GlobalTheory.T.wittTowerRestriction_intertwines_weil_upToCharacter D V V' W r C B hs ψ χS χT χS χT' ω ω' hω hω' μ 𝓨 hμ`. Establish `h1 : ∀ g, c g = 1` using `GlobalTheory.SplitCharTrivial.eq_one_of_rat_of_split D W c (GlobalTheory.T.continuous_wittTowerRestriction_weilCharacter D V V' W r C B hs ψ χS χT χS χT' ω ω' hω hω' μ 𝓨 hμ c hc) (GlobalTheory.T.wittTowerRestriction_weilCharacter_rational_eq_one D V V' W r C B hs ψ χS χT χS χT' ω …`. Rewrite using `[hc h f hf, h1 h]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem compatibleOfSameChar : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.CompatibleOfSameChar D := by
   intro D V V' W r C B hs ψ χS χT χT' ω ω' hω hω' μ 𝓨 hμ h f hf

@@ -21,13 +21,13 @@ namespace GlobalTheory.ConeSmallSerInt
 open GlobalTheory.ConeSmallSer GlobalTheory.ConeSmallCT
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J x T hT f hinv S φ hφ hdist g C hsum hC`. Establish `hr : ∀ s, ∃ t, t ∈ T ∧ StabLn x (φ s * t⁻¹)` using `fun s => (hT.2 _ (hφ s)).exists`. Use `choose r hrT hrs using hr`. Set `ρ : S → T` to `fun s => ⟨r s, hrT s⟩`. Establish `hinj : Function.Injective ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s₁ s₂ h`. Establish `h' : r s₁ = r s₂` using `congrArg Subtype.val h`. Establish `h3` using `stabLn_mul (hrs s₁) (stabLn_inv (hrs s₂))`. Establish `e : φ s₁ * (r s₁)⁻¹ * (φ s₂ * (r s₂)⁻¹)⁻¹ = φ s₁ * (φ s₂)⁻¹` using `by rw [h']; group`. Rewrite `h3` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hdist s₁ s₂ h3`. Establish `heq : (fun s => ‖f (φ s * g)‖) = (fun t : T => ‖f (t.1 * g)‖) ∘ ρ`. Use function extensionality and compare the values at `s`. Establish `e : φ s * g = (φ s * (r s)⁻¹) * (r s * g)` using `by group`. Simplify using `only [Function.comp_apply, ρ]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, hinv _ (mul_mem (hφ s) (inv_mem (hT.1 (hrT s)))) (hrs s)]`. Establish `hs : Summable ((fun t : T => ‖f (t.1 * g)‖) ∘ ρ)` using `hsum.comp_injective hinj`. Establish `hle : ∑' s, ((fun t : T => ‖f (t.1 * g)‖) ∘ ρ) s ≤ ∑' t : T, ‖f (t.1 * g)‖` using `hs.tsum_le_tsum_of_inj ρ hinj (fun _ _ => norm_nonneg _) (fun _ => le_rfl) hsum`. Rewrite using `[heq]`. Conclude with `⟨hs, hle.trans hC⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem summable_norm_le_of_distinct : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) (T : Set (UA σ J)), GlobalTheory.ConeSmallCT.IsReps T x →

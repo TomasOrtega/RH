@@ -15,7 +15,7 @@ namespace GlobalTheory.Frames
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 
 /- English proof (translation)
-Introduce `hbc E _ _ _ H Dw l Xo c p y₀`. Take `⟨A, π, X, s, h⟩` from `_root_.GlobalTheory.exists_frameRing_testRing c.F (E →+* ℂ) Dw.mult p`. Take `⟨u₀, hu₀⟩` from `_root_.GlobalTheory.Frames.FramedBaseChange.exists_frMap hbc E H Dw l Xo c p.R A.R π y₀`. Take `⟨u, hu, -⟩` from `_root_.GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c A.R u₀ X s h.1`. Conclude with `⟨A, π, X, s, u, h, u₀, hu₀, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.Frames.exists_univFrame_testRing : _root_.ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E]
     [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l)

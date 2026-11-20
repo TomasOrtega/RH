@@ -16,13 +16,13 @@ section Frame
 variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S] {r : ℕ}
 
 /- English proof (translation)
-Use `Matrix.ext fun x y => ?_` and prove the remaining obligations. Simplify using `only [eU, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply]`. Distinguish the cases in `hxy : x = y`. Substitute `hxy` using the available equality. Rewrite using `[if_pos rfl]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `x a = v`. Apply the tactic sequence `fin_cases v <;> simp`. Rewrite using `[if_neg hxy]`. Establish `h : ∀ i : Fin 2, ¬ (x a = i ∧ y a = i ∧ ∀ b, b ≠ a → x b = y b)`. Introduce and unpack `i ⟨h1, h2, h3⟩`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hxy` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Rewrite using `[h1, h2]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3 b hb`. Rewrite using `[if_neg (h 0), if_neg (h 1), add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eU_zero_zero_add_eU_one_one (a : S) : (eU a 0 0 : SlopeTestRemainingChoices S A) + eU a 1 1 = 1 := by
   refine Matrix.ext fun x y => ?_
@@ -43,7 +43,7 @@ private theorem eU_zero_zero_add_eU_one_one (a : S) : (eU a 0 0 : SlopeTestRemai
     rw [if_neg (h 0), if_neg (h 1), add_zero]
 
 /- English proof (translation)
-Use `show (io g : SlopeTestRemainingChoices S A) * eU a i j = eU a i j * io g`. Use `Matrix.ext fun x y => ?_` and prove the remaining obligations. Simplify using `only [io, Matrix.scalar_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, eU, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem commute_io_eU (g : A) (a : S) (i j : Fin 2) : Commute (io g : SlopeTestRemainingChoices S A) (eU a i j) := by
   show (io g : SlopeTestRemainingChoices S A) * eU a i j = eU a i j * io g
@@ -52,7 +52,7 @@ private theorem commute_io_eU (g : A) (a : S) (i j : Fin 2) : Commute (io g : Sl
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `ins`. Conclude with `Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => (commute_io_eU g a i j).mul_right (h i j)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem commute_io_ins_of_commute_entries (g : A) (a : S) (M : M2 (SlopeTestRemainingChoices S A)) (h : ∀ i j, Commute (io g : SlopeTestRemainingChoices S A) (M i j)) :
     Commute (io g : SlopeTestRemainingChoices S A) (ins a M) := by
@@ -60,9 +60,9 @@ private theorem commute_io_ins_of_commute_entries (g : A) (a : S) (M : M2 (Slope
   exact Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => (commute_io_eU g a i j).mul_right (h i j)
 
 /- English proof (translation)
-Establish `hff : (io f : SlopeTestRemainingChoices S A) * io fi = 1`. Unfold `io`. Rewrite using `[← map_mul (Matrix.scalar (Ix S)), h1, map_one]`. Unfold `cj`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hff, mul_one]`. Simplify using `only [mul_assoc]`. Use `_ = io fi * x * io f * (io fi * y * io f) := by simp only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cj_mul_of_mul_inv_eq_one {f fi : A} (h1 : f * fi = 1) (x y : SlopeTestRemainingChoices S A) :
     cj f fi (x * y) = cj f fi x * cj f fi y := by
@@ -74,7 +74,7 @@ private theorem cj_mul_of_mul_inv_eq_one {f fi : A} (h1 : f * fi = 1) (x y : Slo
     _ = io fi * x * io f * (io fi * y * io f) := by simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `hfi : (io fi : SlopeTestRemainingChoices S A) * io f = 1`. Unfold `io`. Rewrite using `[← map_mul (Matrix.scalar (Ix S)), h2, map_one]`. Unfold `cj`. Rewrite using `[mul_assoc, ← hx.eq, ← mul_assoc, hfi, one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cj_eq_self_of_commute {f fi : A} (h2 : fi * f = 1) (x : SlopeTestRemainingChoices S A) (hx : Commute (io f : SlopeTestRemainingChoices S A) x) :
     cj f fi x = x := by
@@ -84,29 +84,29 @@ private theorem cj_eq_self_of_commute {f fi : A} (h2 : fi * f = 1) (x : SlopeTes
   rw [mul_assoc, ← hx.eq, ← mul_assoc, hfi, one_mul]
 
 /- English proof (translation)
-Unfold `cj`. Rewrite using `[mul_smul_comm, smul_mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cj_smul' (f fi : A) (c : ℂ) (x : SlopeTestRemainingChoices S A) : cj f fi (c • x) = c • cj f fi x := by
   unfold cj; rw [mul_smul_comm, smul_mul_assoc]
 
 /- English proof (translation)
-Unfold `cj`. Rewrite using `[mul_sub, sub_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cj_sub' (f fi : A) (x y : SlopeTestRemainingChoices S A) : cj f fi (x - y) = cj f fi x - cj f fi y := by
   unfold cj; rw [mul_sub, sub_mul]
 
 /- English proof (translation)
-Unfold `cj`. Rewrite using `[mul_add, add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cj_add' (f fi : A) (x y : SlopeTestRemainingChoices S A) : cj f fi (x + y) = cj f fi x + cj f fi y := by
   unfold cj; rw [mul_add, add_mul]
 
 /- English proof (translation)
-Use `Matrix.ext fun x y => ?_` and prove the remaining obligations. Rewrite using `[Matrix.star_apply]`. Simplify using `only [eU, Matrix.of_apply]`. Establish `hiff : (y a = i ∧ x a = j ∧ ∀ b, b ≠ a → y b = x b) ↔ (x a = j ∧ y a = i ∧ ∀ b, b ≠ a → x b = y b)`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h2, h1, fun b hb => (h3 b hb).symm⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h2, h1, fun b hb => (h3 b hb).symm⟩`. Distinguish the cases in `h : x a = j ∧ y a = i ∧ ∀ b, b ≠ a → x b = y b`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos (hiff.2 h), if_pos h, star_one]`. Rewrite using `[if_neg (mt hiff.1 h), if_neg h, star_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem star_eU_apply_swap (a : S) (i j : Fin 2) : star (eU a i j : SlopeTestRemainingChoices S A) = eU a j i := by
   refine Matrix.ext fun x y => ?_
@@ -121,9 +121,9 @@ private theorem star_eU_apply_swap (a : S) (i j : Fin 2) : star (eU a i j : Slop
   · rw [if_neg (mt hiff.1 h), if_neg h, star_zero]
 
 /- English proof (translation)
-Establish `hc : ∀ i j, eU a i j * k = k * eU a i j` using `fun i j => (hk i j).eq`. Establish `hp : p = eU a 0 0 * p + eU a 1 1 * p` using `by rw [← add_mul, eU_zero_zero_add_eU_one_one, one_mul]`. Unfold `ins`. Simplify using `[Fin.sum_univ_two, mul_add, ← mul_assoc, hc]`. Use `conv_lhs => rw [hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem ins_combine (a : S) (p k : SlopeTestRemainingChoices S A) (hk : FreeOf a k) (M : M2 (SlopeTestRemainingChoices S A)) :
     p + k * ins a M = ins a !![p + k * M 0 0, k * M 0 1; k * M 1 0, p + k * M 1 1] := by
@@ -135,7 +135,7 @@ theorem ins_combine (a : S) (p k : SlopeTestRemainingChoices S A) (hk : FreeOf a
   abel
 
 /- English proof (translation)
-Conclude with `ins_combine a p k hk !![x, y; z, w]`.
+A detailed English derivation is pending.
 -/
 theorem ins_combine_mk (a : S) (p k : SlopeTestRemainingChoices S A) (hk : FreeOf a k) (x y z w : SlopeTestRemainingChoices S A) :
     p + k * ins a !![x, y; z, w] = ins a !![p + k * x, k * y; k * z, p + k * w] := by
@@ -144,11 +144,11 @@ theorem ins_combine_mk (a : S) (p k : SlopeTestRemainingChoices S A) (hk : FreeO
 variable {L : R.LevelData A r} {st : Fr.Start A} {f fi : A} {s : ℂ}
 
 /- English proof (translation)
-Establish `hx' : cj f fi x = x - t • (1 : SlopeTestRemainingChoices S A)` using `hx`. Establish `hw' : cj f fi w = w - t • (1 : SlopeTestRemainingChoices S A)` using `hw`. Establish `key : cj f fi (ins a !![x, y; z, w]) = ins a !![cj f fi x, cj f fi y; cj f fi z, cj f fi w]`. Unfold `ins cj`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, (commute_io_eU fi a i j).eq, mul_assoc (eU a i j), mul_assoc (eU a i j)]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> rfl`. Use `show cj f fi (ins a !![x, y; z, w]) = ins a !![x, y; z, w] - t • (1 : SlopeTestRemainingChoices S A)`. Rewrite using `[key, hx', hw', hy, hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `conv_rhs => rw [← eU_zero_zero_add_eU_one_one (A := A) a]`. Unfold `ins`. Apply the tactic sequence `simp [Fin.sum_univ_two, mul_sub, smul_add, mul_smul_comm] <;> abel`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem tw_ins_mk (a : S) (t : ℂ) (x y z w : SlopeTestRemainingChoices S A) (hx : Tw f fi t x) (hw : Tw f fi t w)
     (hy : cj f fi y = y) (hz : cj f fi z = z) : Tw f fi t (ins a !![x, y; z, w]) := by
@@ -173,7 +173,7 @@ variable (hW : WaveHyp L st f fi s) (fw : Fr.FrameData S A) (hF : Fr.IsFrame L f
 include hW hF ihx ihl
 
 /- English proof (translation)
-Introduce `Y hY`. Take `⟨h1, h2⟩` from `hF.x_xi Y hY`. Establish `hx` using `ihx Y`. Use `show (io f : SlopeTestRemainingChoices S A) * fw.xi Y = fw.xi Y * io f`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem io_commute_xi : ∀ Y ∈ fw.inv, Commute (io f : SlopeTestRemainingChoices S A) (fw.xi Y) := by
   intro Y hY
@@ -185,11 +185,11 @@ theorem io_commute_xi : ∀ Y ∈ fw.inv, Commute (io f : SlopeTestRemainingChoi
     _ = fw.xi Y * io f := by rw [mul_assoc, mul_assoc, h1, mul_one]
 
 /- English proof (translation)
-Introduce `Y hY Y' hY'`. Establish `hl : cj f fi (fw.l L Y) = fw.l L Y - s • (1 : SlopeTestRemainingChoices S A)` using `ihl Y hY`. Establish `hl' : cj f fi (fw.l L Y') = fw.l L Y' - s • (1 : SlopeTestRemainingChoices S A)` using `ihl Y' hY'`. Establish `hio : (io (L.l0 Y - L.l0 Y') : SlopeTestRemainingChoices S A) = io (L.l0 Y) - io (L.l0 Y')` using `map_sub (Matrix.scalar (Ix S)) _ _`. Establish `e : Fr.kapL L * fw.DD Y Y' = (Y - Y')⁻¹ • (fw.l L Y - fw.l L Y' - io (L.l0 Y - L.l0 Y'))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.FourierDecayAlt.Fr.FrameData.DD Formalism.FourierDecayAlt.Fr.FrameData.l`. Rewrite using `[mul_smul_comm, mul_sub, hio]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `hc : Commute (io f : SlopeTestRemainingChoices S A) (io (L.l0 Y - L.l0 Y'))` using `(hW.lowering_constant_sub Y Y').map (Matrix.scalar (Ix S))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[e, cj_smul', cj_sub', cj_sub', hl, hl', cj_eq_self_of_commute hW.fi_f _ hc]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 -/
 theorem cj_kapL_DD : ∀ Y ∈ fw.inv, ∀ Y' ∈ fw.inv,
     cj f fi (Fr.kapL L * fw.DD Y Y') = Fr.kapL L * fw.DD Y Y' := by
@@ -208,9 +208,9 @@ theorem cj_kapL_DD : ∀ Y ∈ fw.inv, ∀ Y' ∈ fw.inv,
   abel
 
 /- English proof (translation)
-Introduce `Y hY Ya hYa`. Establish `hxi` using `io_commute_xi hW fw hF ihx ihl Ya hYa`. Take `⟨h1, h2⟩` from `hF.x_xi Ya hYa`. Establish `hl : cj f fi (fw.l L Y) = fw.l L Y - s • (1 : SlopeTestRemainingChoices S A)` using `ihl Y hY`. Use `show cj f fi (fw.xi Ya * fw.l L Y * fw.x Ya) = fw.xi Ya * fw.l L Y * fw.x Ya - s • (1 : SlopeTestRemainingChoices S A)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cj_mul_of_mul_inv_eq_one hW.f_fi, cj_mul_of_mul_inv_eq_one hW.f_fi, cj_eq_self_of_commute hW.fi_f _ hxi, cj_eq_self_of_commute hW.fi_f _ (ihx Ya), hl, mul_sub, sub_mul, mul_smul_comm, mul_one, smul_mul_assoc, h2]`.
+A detailed English derivation is pending.
 -/
 theorem tw_xi_l_x : ∀ Y ∈ fw.inv, ∀ Ya ∈ fw.inv, Tw f fi s (fw.xi Ya * fw.l L Y * fw.x Ya) := by
   intro Y hY Ya hYa
@@ -223,15 +223,13 @@ theorem tw_xi_l_x : ∀ Y ∈ fw.inv, ∀ Ya ∈ fw.inv, Tw f fi s (fw.xi Ya * f
 
 omit ihx ihl in
 /- English proof (translation)
-Introduce `Y Ya hYa`. Take `⟨h1, h2⟩` from `hF.x_xi Ya hYa`. Establish `hz` using `mem_zfns L`. Establish `hl0 : Commute (fw.x Ya) (io (L.l0 Y))`. Rewrite using `[embed_lowering_constant]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hF.x_nab Ya).neg_right.sub_right (((Commute.one_right _).smul_right _).mul_right ((hF.x_fn Ya _ hz.2.2.1).mul_right (hF.x_fn Ya _ hz.2.2.2.2.2)))`. Establish `hk : Commute (fw.x Ya) (Fr.kapL L)`. Unfold `Fr.kapL io`. Rewrite using `[map_mul, map_mul]`. Conclude with `((hF.x_fn Ya _ hz.2.2.1).mul_right (hF.x_fn Ya _ hz.2.1)).mul_right (hF.x_fn Ya _ hz.2.2.2.2.2)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : fw.xi Ya * io (L.l0 Y) * fw.x Ya = io (L.l0 Y)`. Rewrite using `[mul_assoc, ← hl0.eq, ← mul_assoc, h2, one_mul]`. Establish `e2 : fw.xi Ya * Fr.kapL L = Fr.kapL L * fw.xi Ya`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_assoc, h1, mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `_ = fw.xi Ya * fw.x Ya * Fr.kapL L * fw.xi Ya := by rw [← hk.eq]; simp only [mul_assoc]`. Use `_ = Fr.kapL L * fw.xi Ya := by rw [h2, one_mul]`. Unfold `Formalism.FourierDecayAlt.Fr.FrameData.l`. Rewrite using `[mul_add, add_mul, e1]`. Use `congr 1`.
-
-Rewrite using `[← mul_assoc (fw.xi Ya) (Fr.kapL L) (fw.ee Y), e2]`. Simplify using `only [mul_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem io_l0_add_kapL_eq : ∀ Y, ∀ Ya ∈ fw.inv, io (L.l0 Y) + Fr.kapL L * (fw.xi Ya * fw.ee Y * fw.x Ya) =
     fw.xi Ya * fw.l L Y * fw.x Ya := by
@@ -271,11 +269,7 @@ include hW hF m0 ihx ihl
 
 omit m0 ihl in
 /- English proof (translation)
-Introduce `Y`. Use `show Commute (io f : SlopeTestRemainingChoices S A) (fw.x Y * ins a !![((Y - Ya) / (Y - Ya - 1)) • 1, 0; 0, 1])`. Use `(ihx Y).mul_right (commute_io_ins_of_commute_entries f a _ ?_)` and prove the remaining obligations. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
-
-Use `show Commute (io f : SlopeTestRemainingChoices S A) (((Y - Ya) / (Y - Ya - 1)) • (1 : SlopeTestRemainingChoices S A))`. Conclude with `(Commute.one_right _).smul_right _`. Use `show Commute (io f : SlopeTestRemainingChoices S A) 0`. Conclude with `Commute.zero_right _`. Use `show Commute (io f : SlopeTestRemainingChoices S A) 0`.
-
-Conclude with `Commute.zero_right _`. Use `show Commute (io f : SlopeTestRemainingChoices S A) 1`. Conclude with `Commute.one_right _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem commute_io_plus_x : ∀ Y, Commute (io f : SlopeTestRemainingChoices S A) ((fw.plus L a Ya).x Y) := by
   intro Y
@@ -294,9 +288,7 @@ theorem commute_io_plus_x : ∀ Y, Commute (io f : SlopeTestRemainingChoices S A
 
 omit m0 in
 /- English proof (translation)
-Use `show Commute (io f : SlopeTestRemainingChoices S A) (fw.c * ins a !![fw.q Ya • fw.xi (Ya + 1), 0; 0, fw.x Ya])`. Use `ihc.mul_right (commute_io_ins_of_commute_entries f a _ ?_)` and prove the remaining obligations. Introduce `i j`. Establish `h1` using `(io_commute_xi hW fw hF ihx ihl (Ya + 1) m1).smul_right (fw.q Ya)`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
-
-Conclude with `h1`. Conclude with `Commute.zero_right _`. Conclude with `Commute.zero_right _`. Conclude with `ihx Ya`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem plus_c (ihc : Commute (io f : SlopeTestRemainingChoices S A) fw.c) (m1 : Ya + 1 ∈ fw.inv) : Commute (io f : SlopeTestRemainingChoices S A) (fw.plus L a Ya).c := by
   show Commute (io f : SlopeTestRemainingChoices S A) (fw.c * ins a !![fw.q Ya • fw.xi (Ya + 1), 0; 0, fw.x Ya])
@@ -310,13 +302,11 @@ theorem plus_c (ihc : Commute (io f : SlopeTestRemainingChoices S A) fw.c) (m1 :
   · exact ihx Ya
 
 /- English proof (translation)
-Introduce `Y hY`. Establish `hY0 : Y ∈ fw.inv` using `hY.1`. Establish `hkap : FreeOf a (Fr.kapL L : SlopeTestRemainingChoices S A)` using `fun i j => by unfold Fr.kapL; exact (commute_io_eU _ a i j).symm`. Use `show cj f fi (io (L.l0 Y) + Fr.kapL L * ins a !![fw.ee Y - fw.DD Y Ya + Fr.tz L, -((Y - Ya)⁻¹ • (1 : SlopeTestRemainingChoices S A)); 0, fw.xi Ya * fw.ee Y * fw.x Ya]) = io (L.l0 Y) + Fr.kapL L * ins a !![fw.ee Y - fw.DD Y Ya + Fr.tz L, -((Y - Ya)⁻¹ • (1 : SlopeTestRemainingChoic …`. Rewrite using `[ins_combine_mk a _ _ hkap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tw_ins_mk a s _ _ _ _ ?_ ?_ ?_ ?_` and prove the remaining obligations. Establish `e : io (L.l0 Y) + Fr.kapL L * (fw.ee Y - fw.DD Y Ya + Fr.tz L) = fw.l L Y - Fr.kapL L * fw.DD Y Ya + Fr.kapL L * Fr.tz L`. Unfold `Formalism.FourierDecayAlt.Fr.FrameData.l`. Rewrite using `[mul_add, mul_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hl : cj f fi (fw.l L Y) = fw.l L Y - s • (1 : SlopeTestRemainingChoices S A)` using `ihl Y hY0`. Use `show cj f fi _ = _ - s • (1 : SlopeTestRemainingChoices S A)`. Rewrite using `[e, cj_add', cj_sub', hl, cj_kapL_DD hW fw hF ihx ihl Y hY0 Ya m0, cj_eq_self_of_commute hW.fi_f _ (hW.kap.mul_right hW.tz)]`. Normalize the expressions using the abelian group laws. Use `show cj f fi _ = _ - s • (1 : SlopeTestRemainingChoices S A)`.
-
-Rewrite using `[io_l0_add_kapL_eq hW fw hF Y Ya m0]`. Conclude with `tw_xi_l_x hW fw hF ihx ihl Y hY0 Ya m0`. Conclude with `cj_eq_self_of_commute hW.fi_f _ (hW.kap.mul_right ((Commute.one_right _).smul_right _).neg_right)`. Conclude with `cj_eq_self_of_commute hW.fi_f _ (hW.kap.mul_right (Commute.zero_right _))`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plus_l : ∀ Y ∈ (fw.plus L a Ya).inv, Tw f fi s ((fw.plus L a Ya).l L Y) := by
   intro Y hY
@@ -345,11 +335,9 @@ theorem plus_l : ∀ Y ∈ (fw.plus L a Ya).inv, Tw f fi s ((fw.plus L a Ya).l L
   · exact cj_eq_self_of_commute hW.fi_f _ (hW.kap.mul_right (Commute.zero_right _))
 
 /- English proof (translation)
-Establish `hfl : FreeOf a (fw.l L Ya)` using `fun i j => by`. Unfold `Formalism.FourierDecayAlt.Fr.FrameData.l Fr.kapL`. Conclude with `((commute_io_eU _ a i j).symm).add_right (((commute_io_eU _ a i j).symm).mul_right (hfree.2.2.2.2.2.2.2.2 Ya i j))`. Establish `hD : FreeOf2 a (!![io L.ζi, 0; 0, io L.ζbi] * !![1, 0; io L.GG * fw.l L Ya, io L.GG] : M2 (SlopeTestRemainingChoices S A))`. Rewrite using `[Matrix.mul_fin_two]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p q i j`. Establish `hio : ∀ g : A, Commute (eU a i j) (io g : SlopeTestRemainingChoices S A)` using `fun g => (commute_io_eU g a i j).symm`. Apply the tactic sequence `fin_cases p <;> fin_cases q`. Conclude with `((hio _).mul_right (Commute.one_right _)).add_right ((Commute.zero_right _).mul_right ((hio _).mul_right (hfl i j)))`. Conclude with `((hio _).mul_right (Commute.zero_right _)).add_right ((Commute.zero_right _).mul_right (hio _))`.
-
-Conclude with `((Commute.zero_right _).mul_right (Commute.one_right _)).add_right ((hio _).mul_right ((hio _).mul_right (hfl i j)))`. Conclude with `((Commute.zero_right _).mul_right (Commute.zero_right _)).add_right ((hio _).mul_right (hio _))`. Establish `hz` using `mem_zfns L`. Establish `hE` using `block_twist hW.f_fi hW.fi_f s (io L.ζi) (io L.ζbi) (io L.GG) (fw.l L Ya) (hW.io_fn hz.2.1) (hW.io_fn hz.2.2.2.1) (hW.io_fn hz.2.2.2.2.1) (ihl Ya m0)`. Conclude with `frame_step hW.f_fi a s _ fw.F UU hD hfree.2.2.1 ihF hE`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem plus_F (hfree : fw.Free a) (UU : SlopeTestRemainingChoices S A) (ihF : fw.F * (io f * UU) = io f * fw.F) :
     (fw.plus L a Ya).F * (io f * (ins a (lift0 (Uinv (A := A) s)) * UU)) = io f * (fw.plus L a Ya).F := by
@@ -372,11 +360,7 @@ theorem plus_F (hfree : fw.Free a) (UU : SlopeTestRemainingChoices S A) (ihF : f
 
 omit m0 ihl in
 /- English proof (translation)
-Introduce `Y`. Use `show Commute (io f : SlopeTestRemainingChoices S A) (fw.x Y * ins a !![((Ya - Y) / (Ya - Y - 1)) • 1, 0; 0, 1])`. Use `(ihx Y).mul_right (commute_io_ins_of_commute_entries f a _ ?_)` and prove the remaining obligations. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
-
-Use `show Commute (io f : SlopeTestRemainingChoices S A) (((Ya - Y) / (Ya - Y - 1)) • (1 : SlopeTestRemainingChoices S A))`. Conclude with `(Commute.one_right _).smul_right _`. Use `show Commute (io f : SlopeTestRemainingChoices S A) 0`. Conclude with `Commute.zero_right _`. Use `show Commute (io f : SlopeTestRemainingChoices S A) 0`.
-
-Conclude with `Commute.zero_right _`. Use `show Commute (io f : SlopeTestRemainingChoices S A) 1`. Conclude with `Commute.one_right _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem commute_io_minus_x : ∀ Y, Commute (io f : SlopeTestRemainingChoices S A) ((fw.minus L a Ya).x Y) := by
   intro Y
@@ -395,9 +379,7 @@ theorem commute_io_minus_x : ∀ Y, Commute (io f : SlopeTestRemainingChoices S 
 
 omit m0 in
 /- English proof (translation)
-Use `show Commute (io f : SlopeTestRemainingChoices S A) (fw.c * ins a !![fw.q (Ya - 1) • fw.xi (Ya - 1), 0; 0, fw.x Ya])`. Use `ihc.mul_right (commute_io_ins_of_commute_entries f a _ ?_)` and prove the remaining obligations. Introduce `i j`. Establish `h1` using `(io_commute_xi hW fw hF ihx ihl (Ya - 1) mm1).smul_right (fw.q (Ya - 1))`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
-
-Conclude with `h1`. Conclude with `Commute.zero_right _`. Conclude with `Commute.zero_right _`. Conclude with `ihx Ya`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem minus_c (ihc : Commute (io f : SlopeTestRemainingChoices S A) fw.c) (mm1 : Ya - 1 ∈ fw.inv) : Commute (io f : SlopeTestRemainingChoices S A) (fw.minus L a Ya).c := by
   show Commute (io f : SlopeTestRemainingChoices S A) (fw.c * ins a !![fw.q (Ya - 1) • fw.xi (Ya - 1), 0; 0, fw.x Ya])
@@ -411,13 +393,11 @@ theorem minus_c (ihc : Commute (io f : SlopeTestRemainingChoices S A) fw.c) (mm1
   · exact ihx Ya
 
 /- English proof (translation)
-Introduce `Y hY`. Establish `hY0 : Y ∈ fw.inv` using `hY.1`. Establish `hkap : FreeOf a (Fr.kapL L : SlopeTestRemainingChoices S A)` using `fun i j => by unfold Fr.kapL; exact (commute_io_eU _ a i j).symm`. Use `show cj f fi (io (L.l0 Y) + Fr.kapL L * ins a !![fw.ee Y, 0; -((fw.q (Ya - 1) / (Ya - Y - 1)) • (fw.xi Ya * fw.xi (Ya - 1))), fw.xi Ya * fw.ee Y * fw.x Ya - fw.DD Y Ya + Fr.tz L]) = io (L.l0 Y) + Fr.kapL L * ins a !![fw.ee Y, 0; -((fw.q (Ya - 1) / (Ya - Y - 1)) • (fw.xi Ya * fw.x …`. Rewrite using `[ins_combine_mk a _ _ hkap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tw_ins_mk a s _ _ _ _ ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `ihl Y hY0`. Establish `e : io (L.l0 Y) + Fr.kapL L * (fw.xi Ya * fw.ee Y * fw.x Ya - fw.DD Y Ya + Fr.tz L) = (io (L.l0 Y) + Fr.kapL L * (fw.xi Ya * fw.ee Y * fw.x Ya)) - Fr.kapL L * fw.DD Y Ya + Fr.kapL L * Fr.tz L`. Rewrite using `[mul_add, mul_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl' : cj f fi (fw.xi Ya * fw.l L Y * fw.x Ya) = fw.xi Ya * fw.l L Y * fw.x Ya - s • (1 : SlopeTestRemainingChoices S A)` using `tw_xi_l_x hW fw hF ihx ihl Y hY0 Ya m0`. Use `show cj f fi _ = _ - s • (1 : SlopeTestRemainingChoices S A)`. Rewrite using `[e, io_l0_add_kapL_eq hW fw hF Y Ya m0, cj_add', cj_sub', hl', cj_kapL_DD hW fw hF ihx ihl Y hY0 Ya m0, cj_eq_self_of_commute hW.fi_f _ (hW.kap.mul_right hW.tz)]`. Normalize the expressions using the abelian group laws. Conclude with `cj_eq_self_of_commute hW.fi_f _ (hW.kap.mul_right (Commute.zero_right _))`.
-
-Establish `h1` using `io_commute_xi hW fw hF ihx ihl Ya m0`. Establish `h2` using `io_commute_xi hW fw hF ihx ihl (Ya - 1) mm1`. Conclude with `cj_eq_self_of_commute hW.fi_f _ (hW.kap.mul_right ((h1.mul_right h2).smul_right _).neg_right)`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem minus_l (mm1 : Ya - 1 ∈ fw.inv) : ∀ Y ∈ (fw.minus L a Ya).inv, Tw f fi s ((fw.minus L a Ya).l L Y) := by
   intro Y hY
@@ -449,17 +429,15 @@ theorem minus_l (mm1 : Ya - 1 ∈ fw.inv) : ∀ Y ∈ (fw.minus L a Ya).inv, Tw 
 omit m0 in
 
 /- English proof (translation)
-Take `⟨hcc, hcc'⟩` from `hF.c_ci`. Establish `hci : Commute (io f : SlopeTestRemainingChoices S A) fw.ci` using `by show (io f : SlopeTestRemainingChoices S A) * fw.ci = fw.ci * io f`. Combine the equalities or inequalities in the displayed calculation. Establish `hdi : Commute (io f : SlopeTestRemainingChoices S A) (fw.di L)`. Unfold `Formalism.FourierDecayAlt.Fr.FrameData.di`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hci.mul_right ((WaveHyp.wti (S := S) hW).pow_right _)`. Establish `hd : Commute (io f : SlopeTestRemainingChoices S A) (fw.d L)`. Unfold `Formalism.FourierDecayAlt.Fr.FrameData.d`. Conclude with `((WaveHyp.wt (S := S) hW).pow_right _).mul_right ihc`. Establish `hstar : ∀ x : A, star (io x : SlopeTestRemainingChoices S A) = io (star x)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Introduce `x`. Use `first`. Consider the case `(unfold io`. Rewrite using `[Matrix.scalar_apply, Matrix.scalar_apply, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]`. Use the proof step `rfl)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Consider the case `(refine Matrix.ext fun i j => ?_`. Simplify using `[io, Matrix.scalar_apply, Matrix.diagonal_apply, Matrix.star_apply]`. Apply the tactic sequence `split_ifs <;> simp_all)`. Establish `hsf : star fi = f` using `by rw [← hW.star_f, star_star]`. Establish `cjs : ∀ z : SlopeTestRemainingChoices S A, cj f fi (star z) = star (cj f fi z)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z`. Unfold `cj`. Rewrite using `[star_mul, star_mul, hstar, hstar, hW.star_f, hsf, mul_assoc]`. Establish `hl : cj f fi (fw.l L (Ya - 1)) = fw.l L (Ya - 1) - s • (1 : SlopeTestRemainingChoices S A)` using `ihl (Ya - 1) mm1`. Use `show cj f fi (fw.di L * star (fw.l L (Ya - 1)) * fw.d L) = fw.di L * star (fw.l L (Ya - 1)) * fw.d L - star s • (1 : SlopeTestRemainingChoices S A)`.
-
-Rewrite using `[cj_mul_of_mul_inv_eq_one hW.f_fi, cj_mul_of_mul_inv_eq_one hW.f_fi, cj_eq_self_of_commute hW.fi_f _ hdi, cj_eq_self_of_commute hW.fi_f _ hd, cjs, hl, star_sub, star_smul, star_one, mul_sub, sub_mul, mul_smul_comm, mul_one, smul_mul_assoc, di_d L fw hcc']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minus_m (ihc : Commute (io f : SlopeTestRemainingChoices S A) fw.c) (mm1 : Ya - 1 ∈ fw.inv) : Tw f fi (star s) (fw.m L Ya) := by
   obtain ⟨hcc, hcc'⟩ := hF.c_ci
@@ -496,15 +474,11 @@ theorem minus_m (ihc : Commute (io f : SlopeTestRemainingChoices S A) fw.c) (mm1
 
 omit m0 in
 /- English proof (translation)
-Establish `hfl : FreeOf a (fw.l L (Ya - 1))` using `fun i j => by`. Unfold `Formalism.FourierDecayAlt.Fr.FrameData.l Fr.kapL`. Conclude with `((commute_io_eU _ a i j).symm).add_right (((commute_io_eU _ a i j).symm).mul_right (hfree.2.2.2.2.2.2.2.2 (Ya - 1) i j))`. Establish `hfm : FreeOf a (fw.m L Ya)` using `fun i j => by`. Establish `hs : Commute (eU a i j) (star (fw.l L (Ya - 1)))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(hfl j i).star_star`. Rewrite `h` using `[star_eU_apply_swap]`. Then use the resulting hypothesis. Unfold `Formalism.FourierDecayAlt.Fr.FrameData.m Formalism.FourierDecayAlt.Fr.FrameData.di Formalism.FourierDecayAlt.Fr.FrameData.d Fr.wti Fr.wt`. Conclude with `(((hfree.2.2.2.2.2.2.2.1 i j).mul_right ((commute_io_eU _ a i j).symm.pow_right _)).mul_right hs).mul_right (((commute_io_eU _ a i j).symm.pow_right _).mul_right (hfree.2.2.2.2.2.2.1 i j))`. Establish `hD : FreeOf2 a (!![io L.ζbi, 0; 0, io L.ζi] * !![1, 0; io L.GG * fw.m L Ya, io L.GG] : M2 (SlopeTestRemainingChoices S A))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mul_fin_two]`. Introduce `p q i j`. Establish `hio : ∀ g : A, Commute (eU a i j) (io g : SlopeTestRemainingChoices S A)` using `fun g => (commute_io_eU g a i j).symm`. Apply the tactic sequence `fin_cases p <;> fin_cases q`. Conclude with `((hio _).mul_right (Commute.one_right _)).add_right ((Commute.zero_right _).mul_right ((hio _).mul_right (hfm i j)))`.
-
-Conclude with `((hio _).mul_right (Commute.zero_right _)).add_right ((Commute.zero_right _).mul_right (hio _))`. Conclude with `((Commute.zero_right _).mul_right (Commute.one_right _)).add_right ((hio _).mul_right ((hio _).mul_right (hfm i j)))`. Conclude with `((Commute.zero_right _).mul_right (Commute.zero_right _)).add_right ((hio _).mul_right (hio _))`. Establish `hz` using `mem_zfns L`. Establish `hE` using `block_twist hW.f_fi hW.fi_f (star s) (io L.ζbi) (io L.ζi) (io L.GG) (fw.m L Ya) (hW.io_fn hz.2.2.2.1) (hW.io_fn hz.2.1) (hW.io_fn hz.2.2.2.2.1) (minus_m (hW := hW) (fw := fw) (hF := hF) (Ya := Ya) (ihx := ihx) (ihl := ihl) (ihc := ihc) (mm1 := mm1))`.
-
-Conclude with `frame_step hW.f_fi a (star s) _ fw.F UU hD hfree.2.2.1 ihF hE`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem minus_F (hfree : fw.Free a) (ihc : Commute (io f : SlopeTestRemainingChoices S A) fw.c) (mm1 : Ya - 1 ∈ fw.inv) (UU : SlopeTestRemainingChoices S A) (ihF : fw.F * (io f * UU) = io f * fw.F) :
     (fw.minus L a Ya).F * (io f * (ins a (lift0 (Uinv (A := A) (star s))) * UU)) =
@@ -537,21 +511,21 @@ theorem minus_F (hfree : fw.Free a) (ihc : Commute (io f : SlopeTestRemainingCho
 end Letters
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil`. Introduce `_`. Use `⟨fun Y => commute_io_io (hW.x Y), Commute.one_right _, fun Y hY => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Tw f fi s (io (L.l0 Y) + Fr.kapL L * io (st.ee Y))`. Establish `e : (io (L.l0 Y) + Fr.kapL L * io (st.ee Y) : SlopeTestRemainingChoices S A) = io (L.l0 Y + L.ζb * L.ζi * L.GGi * st.ee Y)`. Simplify using `only [Fr.kapL, io_add', io_mul']`. Rewrite using `[e]`. Unfold `Tw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cj_io, hW.l Y hY, io_sub', io_algebraMap]`. Use `show (1 : SlopeTestRemainingChoices S A) * (io f * 1) = io f * 1`. Simplify using the standard rewrite rules. Consider the case `cons l w ih`. Introduce `hA`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hnd, hre, hpt, hpw⟩` from `hA`. Establish `hnd' : l.intersection_update_fsHerm_neg_one ∉ w.map Letter.intersection_update_fsHerm_neg_one ∧ (w.map Letter.intersection_update_fsHerm_neg_one).Nodup` using `List.nodup_cons.mp (by simpa only [List.map_cons] using hnd)`. Establish `hpw'` using `List.pairwise_cons.mp hpw`. Establish `hAw : Fr.admitted st w` using `⟨hnd'.2, fun l' h => hre l' (by simp [h]), fun l' h => hpt l' (by simp [h]), hpw'.2⟩`. Take `⟨ihx, ihc, ihl, ihF⟩` from `ih hAw`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF` using `Formalism.FourierDecayAlt.P.frame_of_admissible_word A S r L st w hL hst hAw`. Establish `hfree` using `Formalism.FourierDecayAlt.P.frame_free_of_new_position A S r L st w l.intersection_update_fsHerm_neg_one hnd'.1`. Take `⟨p0, p1, pm1, -, -⟩` from `hpt l (by simp)`. Establish `hd` using `hpw'.1`. Establish `m0 : l.pt ∈ (Fr.ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ p0 (fun l' hl' => ⟨fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 1 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' (-1) (by norm_num) (by push_cast; linear_combin …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1 : l.pt + 1 ∈ (Fr.ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ p1 (fun l' hl' => ⟨fun e => hd l' hl' (-1) (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' (-2) (by norm_num) (by push_cast; linear_com …`. Establish `mm1 : l.pt - 1 ∈ (Fr.ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ pm1 (fun l' hl' => ⟨fun e => hd l' hl' 1 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 2 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combinat …`. Distinguish the cases in `hp : l.plus`. Establish `e : Fr.ofWord L st (l :: w) = (Fr.ofWord L st w).plus L l.intersection_update_fsHerm_neg_one l.pt` using `by simp [Fr.ofWord, hp]`. Establish `eV : (Vw f s (l :: w) : SlopeTestRemainingChoices S A) = io f * (ins l.intersection_update_fsHerm_neg_one (lift0 (Uinv (A` using `A) s)) * UUiw s w) := by`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Vw, UUiw, hp]`. Rewrite using `[e, eV]`. Conclude with `⟨commute_io_plus_x hW _ hF l.intersection_update_fsHerm_neg_one l.pt ihx, plus_c hW _ hF l.intersection_update_fsHerm_neg_one l.pt ihx ihl ihc m1, plus_l hW _ hF l.intersection_update_fsHerm_neg_one l.pt m0 ihx ihl, plus_F hW _ hF l.intersection_update_fsHerm_neg_one l.pt m0 ihx …`. Establish `e : Fr.ofWord L st (l :: w) = (Fr.ofWord L st w).minus L l.intersection_update_fsHerm_neg_one l.pt` using `by simp [Fr.ofWord, hp]`. Establish `eV : (Vw f s (l :: w) : SlopeTestRemainingChoices S A) = io f * (ins l.intersection_update_fsHerm_neg_one (lift0 (Uinv (A` using `A) (star s))) * UUiw s w) := by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Vw, UUiw, hp]`. Rewrite using `[e, eV]`. Conclude with `⟨commute_io_minus_x hW _ hF l.intersection_update_fsHerm_neg_one l.pt ihx, minus_c hW _ hF l.intersection_update_fsHerm_neg_one l.pt ihx ihl ihc mm1, minus_l hW _ hF l.intersection_update_fsHerm_neg_one l.pt m0 ihx ihl mm1, minus_F hW _ hF l.intersection_update_fsHerm_neg_one l.p …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frame_twist (hL : Fr.IsStarLevel L) (hst : Fr.IsLevelStart L st) (hW : WaveHyp L st f fi s) :
     ∀ w : List (Letter ℂ S), Fr.admitted st w →
@@ -614,7 +588,7 @@ theorem frame_twist (hL : Fr.IsStarLevel L) (hst : Fr.IsLevelStart L st) (hW : W
         minus_l hW _ hF l.intersection_update_fsHerm_neg_one l.pt m0 ihx ihl mm1, minus_F hW _ hF l.intersection_update_fsHerm_neg_one l.pt ihx ihl hfree ihc mm1 _ ihF⟩
 
 /- English proof (translation)
-Take `⟨-, hc, -, hF⟩` from `frame_twist hL hst hW w hw`. Use `⟨hF, ?_⟩` and prove the remaining obligations. Unfold `Formalism.FourierDecayAlt.Fr.FrameData.d`. Conclude with `((WaveHyp.wt (S := S) hW).pow_right _).mul_right hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem frame_twist_F (hL : Fr.IsStarLevel L) (hst : Fr.IsLevelStart L st) (hW : WaveHyp L st f fi s)
     (w : List (Letter ℂ S)) (hw : Fr.admitted st w) :

@@ -32,11 +32,9 @@ open GlobalTheory.LamT (CMPt)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hU e F hF hF0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hF0` to reduce the goal to its premises. Use function extensionality and compare the values at `p y`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `show F p y = 0`. Use `Formalism.L2.Pj.eq_zero_of_cpts σ p _ fun ψ => ?_` and prove the remaining obligations. Take `⟨k, x, u, hk⟩` from `GlobalTheory.test_value_eq_const_mul_reading_secZ GlobalTheory.abelianSchemeLaws_all.1.secBaseChange U hU e p y ψ`. Establish `h` using `hk F hF`. Rewrite `h` using `[hcon k x.1 x.2, mul_zero]`.
-
-Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rdU_ne_zero_of_mem_secZ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), IsUnf U →

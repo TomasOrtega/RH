@@ -6,17 +6,17 @@ open Polynomial LateralTheory.E.PartDiagCut GlobalTheory.EtC
 namespace LateralTheory.E.PartCPfSplit
 
 /- English proof (translation)
-Introduce `B _ _ I hB P p hm`. Establish `key : ∀ e : P.1, ∃ g : Fin p.natDegree → Localization (S I e.1), p.map (Pi.evalRingHom (fun e : P.1 => Localization (S I e.1)) e) = ∏ l, (X - C (g l))`. Introduce `e`. Establish `h0 : (0:B) ∉ S I e.1`. Introduce and unpack `⟨t, ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `(P.idem e.1 e.2).2` to reduce the goal to its premises. Simplify using `using ht.symm`. Take `⟨hdom, haic⟩` from `hLoc B (S I e.1) h0 hB`. Establish `hme` using `hm.map (Pi.evalRingHom (fun e : P.1 => Localization (S I e.1)) e)`. Take `⟨s, hs⟩` from `hMS _ haic _ hme`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcard : s.toList.length = p.natDegree`. Use `congrArg natDegree hs` as an intermediate fact. Rewrite `this` using `[natDegree_multiset_prod_X_sub_C_eq_card, hm.natDegree_map]`. Simplify using `[this]`. Use `⟨fun l => s.toList.get (Fin.cast hcard.symm l), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs]`. Use `conv_lhs => rw [← Multiset.coe_toList s]`. Rewrite using `[Multiset.map_coe, Multiset.prod_coe]`. Rewrite using `[← Fintype.prod_equiv (finCongr hcard) (fun i : Fin s.toList.length => X - C (s.toList.get i)) _ (fun _ => rfl)]`. Rewrite using `[← List.prod_ofFn]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply the tactic sequence `apply List.ext_get <;> simp`. Use `choose g hg using key`. Use `⟨p.natDegree, fun l e => g e l, ?_⟩` and prove the remaining obligations. Use `Polynomial.ext fun k => funext fun e => ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (∏ l, (X - C (fun e => g e l))).map (Pi.evalRingHom (fun e : P.1 => Localization (S I e.1)) e) = ∏ l, (X - C (g e l))` using `by simp [Polynomial.map_prod]`. Use `congrArg (coeff · k) ((hg e).trans h2.symm)` as an intermediate fact. Simplify `this` using `[coeff_map]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem split_of (hLoc : LateralTheory.E.HensCut.LocAIC) (hMS : LateralTheory.E.HensCut.MonicSplits) : LateralTheory.E.PartCPf.Split := by
   intro B _ _ I hB P p hm
@@ -51,7 +51,7 @@ theorem split_of (hLoc : LateralTheory.E.HensCut.LocAIC) (hMS : LateralTheory.E.
   simpa [coeff_map] using this
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.PartCPf.PartC_of' (split_of hLoc hMS) hIP hA hl`.
+A detailed English derivation is pending.
 -/
 theorem PartC_of (hLoc : LateralTheory.E.HensCut.LocAIC) (hMS : LateralTheory.E.HensCut.MonicSplits) (hIP : LateralTheory.E.HensCut.IdemPart)
     (hA : LateralTheory.E.PartDiagCut.PartA) (hl : LateralTheory.E.PartCPf.Lift) : LateralTheory.E.PartDiagCut.PartC :=

@@ -5,23 +5,21 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Schu
 namespace GlobalTheory.CartanInt
 
 /- English proof (translation)
-Introduce `G ι _ _ _ _ _ _ _ mK _ K U θ T δ hθ hU hK hinv hδ hT hch`. Establish `hTδ : 0 < T + δ` using `by linarith`. Use `set Q : Set (ι → ℝ) := Metric.closedBall 0 (T + δ) with hQ`. Use `set S : Set ((ι → ℝ) × G) := {p | (θ p.1)⁻¹ * p.2 ∈ U} with hS`. Establish `hSc : IsClosed S` using `hU.preimage (by fun_prop : Continuous fun p : (ι → ℝ) × G => (θ p.1)⁻¹ * p.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSm : MeasurableSet S` using `hSc.measurableSet`. Establish `hQv : volume Q = ENNReal.ofReal ((2 * (T + δ)) ^ Fintype.card ι)` using `Real.volume_pi_closedBall _ hTδ.le`. Establish `hsec : ∀ R, mK (Prod.mk R ⁻¹' S) = mK U`. Introduce `R`. Establish `hm : MeasurableSet (Prod.mk R ⁻¹' S)` using `measurable_prodMk_left hSm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_lhs => rw [← hinv R]`. Rewrite using `[Measure.map_apply (by fun_prop) hm]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[hS]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : ((volume.restrict Q).prod mK) S = mK U * volume Q`. Rewrite using `[Measure.prod_apply hSm]`. Simplify using `[hsec]`. Establish `h2 : ENNReal.ofReal ((2 * δ) ^ Fintype.card ι) ≤ ((volume.restrict Q).prod mK) S`. Rewrite using `[Measure.prod_apply_symm hSm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hae : ∀ᵐ x ∂mK, x ∈ K` using `hK`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae (hae.mono fun x hx => ?_)` and prove the remaining obligations. Take `⟨R₀, hR₀, hR⟩` from `hch x hx`. Establish `hm : MeasurableSet ((fun R => (R, x)) ⁻¹' S)` using `measurable_prodMk_right hSm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Measure.restrict_apply hm, ← Real.volume_pi_closedBall R₀ hδ.le]`. Use `measure_mono fun R hRm => ?_` and prove the remaining obligations. Establish `hd : ∀ i, |R i - R₀ i| ≤ δ` using `fun i => by`. Use `(dist_pi_le_iff hδ.le).1 (Metric.mem_closedBall.1 hRm) i` as an intermediate fact. Rewrite `this` using `[Real.dist_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hR R hd, ?_⟩` and prove the remaining obligations. Rewrite using `[hQ, Metric.mem_closedBall, dist_pi_le_iff hTδ.le]`. Introduce `i`. Establish `h3` using `abs_le.1 (hd i)`. Establish `h4` using `abs_le.1 (hR₀ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Real.dist_eq, Pi.zero_apply, sub_zero, abs_le]`. Apply the tactic sequence `constructor <;> linarith [h3.1, h3.2, h4.1, h4.2]`. Rewrite `h2` using `[h1, hQv]`. Establish `hpos : 0 < (2 * (T + δ)) ^ Fintype.card ι` using `by positivity`. Establish `he : (δ / (T + δ)) ^ Fintype.card ι = (2 * δ) ^ Fintype.card ι / (2 * (T + δ)) ^ Fintype.card ι`.
-
-Rewrite using `[← div_pow, mul_div_mul_left _ _ (two_ne_zero)]`. Rewrite using `[he, ENNReal.ofReal_div_of_pos hpos]`. Conclude with `ENNReal.div_le_of_le_mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_measure_lower_bound_of_chart :
     ∀ (G ι : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [Fintype ι] (mK : Measure G) [IsProbabilityMeasure mK] (K U : Set G) (θ : (ι → ℝ) → G) (T δ : ℝ), Continuous θ → IsClosed U → mK Kᶜ = 0 → (∀ R, Measure.map (fun x => θ R * x) mK = mK) → 0 < δ → 0 ≤ T → (∀ x ∈ K, ∃ R₀ : ι → ℝ, (∀ i, |R₀ i| ≤ T) ∧ ∀ R : ι → ℝ, (∀ i, |R i - R₀ i| ≤ δ) → (θ R)⁻¹ * x ∈ U) → ENNReal.ofReal ((δ / (T + δ)) ^ Fintype.card ι) ≤ mK U := by

@@ -19,13 +19,13 @@ def nrmG {H : Type} [Group H] (θ : H →* H) (r : ℕ) (δ : H) : H :=
 variable {S A : Type*} [Ring S] [CommRing A] [Algebra A S]
 
 /- English proof (translation)
-Establish `h1 : (σ x).unop * (σ ((x⁻¹ : Sˣ) : S)).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Establish `ht : algebraMap A S ((t⁻¹ : Aˣ) : A) * algebraMap A S (t : A) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `h2 : ((x⁻¹ : Sˣ) : S) * (σ ((x⁻¹ : Sˣ) : S)).unop = algebraMap A S ((t⁻¹ : Aˣ) : A) * b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Algebra.commutes (t : A), ← mul_assoc, ← mul_assoc, ht, one_mul]`. Use `_ = algebraMap A S ((t⁻¹ : Aˣ) : A) * ((((x⁻¹ : Sˣ) : S) * x) * b * ((σ x).unop * (σ ((x⁻¹ : Sˣ) : S)).unop)) := by`. Rewrite using `[← hx]`. Simplify using `only [mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `_ = _ := by rw [Units.inv_mul, h1, one_mul, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, map_mul, MulOpposite.unop_mul, mul_assoc]`. Use `_ = algebraMap A S ((t⁻¹ : Aˣ) : A) * (x * (y * b * (σ y).unop) * (σ x).unop) := by`. Rewrite using `[h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc]`. Use `_ = algebraMap A S ((t⁻¹ : Aˣ) : A) * (algebraMap A S s * (x * b * (σ x).unop)) := by`. Rewrite using `[hy]`. Simplify using `only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc]`. Use `_ = _ := by rw [hx, Algebra.commutes s, ← mul_assoc, ht, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem conj_mul_star (σ : S →+* Sᵐᵒᵖ) (b : S) (x y : Sˣ) (t : Aˣ) (s : A)
     (hx : (x : S) * b * (σ x).unop = algebraMap A S t) (hy : (y : S) * b * (σ y).unop = algebraMap A S s * b) :
@@ -248,13 +248,13 @@ Both sides reduce to the same expression.
 theorem scal_val (G : HTGroup p) (a : G.Fˣ) : ((scal G a : G.Cˣ) : G.C) = algebraMap G.F G.C a := rfl
 
 /- English proof (translation)
-The claim follows from `G.star_F x`.
+A detailed English derivation is pending.
 -/
 theorem sh_algebraMap (G : HTGroup p) (x : G.F) :
     sh G (algebraMap G.F G.C x) = algebraMap G.F G.C (IsCMField.complexConj G.F x) := G.star_F x
 
 /- English proof (translation)
-Simplify using `[sh]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sh_one_eq (G : HTGroup p) : sh G 1 = 1 := by simp [sh]
 
@@ -274,7 +274,7 @@ def Pair.ofScalar (G : HTGroup p) (hn : G.n = 1) (a : G.Fˣ) (c : ℚˣ)
   trivR := ⟨1, by simp [Triv, inC]⟩
 
 /- English proof (translation)
-Use `show minpoly G.F (algebraMap G.F G.C (a : G.F)) = _`. Conclude with `minpoly.eq_X_sub_C _ _`.
+A detailed English derivation is pending.
 -/
 theorem Pair.ofScalar_pol (G : HTGroup p) (hn : G.n = 1) (a : G.Fˣ) (c : ℚˣ)
     (h : (a : G.F) * IsCMField.complexConj G.F a = algebraMap ℚ G.F c) :
@@ -283,11 +283,11 @@ theorem Pair.ofScalar_pol (G : HTGroup p) (hn : G.n = 1) (a : G.Fˣ) (c : ℚˣ)
   exact minpoly.eq_X_sub_C _ _
 
 /- English proof (translation)
-Distinguish the cases in `h0 : ∃ v : InfinitePlace G.F, sigPosH (G.gram_herm v) = 1`. Take `⟨v0, hv0⟩` from `h0`. Use `⟨fun P => if hP : 0 < (P.map v0.embedding).degree then (Complex.exists_root hP).choose else 0, ?_⟩` and prove the remaining obligations. Introduce `v hv P hm hd`. Establish `h1 : Fintype.card {v : InfinitePlace G.F // sigPosH (G.gram_herm v) = 1} ≤ 1` using `h`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hvv : v = v0` using `congrArg Subtype.val (Fintype.card_le_one_iff.1 h1 ⟨v, hv⟩ ⟨v0, hv0⟩)`. Substitute `hvv` using the available equality. Establish `hP : 0 < (P.map v.embedding).degree`. Rewrite using `[Polynomial.degree_eq_natDegree (hm.map _).ne_zero, hm.natDegree_map, hd]`. Conclude with `G.n_pos` after adjusting the coercions.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_pos hP]`. Rewrite using `[← Polynomial.eval_map]`. Conclude with `(Complex.exists_root hP).choose_spec`. Conclude with `⟨0, fun v hv _ _ _ => absurd ⟨v, hv⟩ h0⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isSel (G : HTGroup p) (h : G.a ≤ 1) : ∃ sel, IsSel G sel := by
   by_cases h0 : ∃ v : InfinitePlace G.F, sigPosH (G.gram_herm v) = 1
@@ -306,17 +306,17 @@ theorem exists_isSel (G : HTGroup p) (h : G.a ≤ 1) : ∃ sel, IsSel G sel := b
   · exact ⟨0, fun v hv _ _ _ => absurd ⟨v, hv⟩ h0⟩
 
 /- English proof (translation)
-The claim follows from `exists_isSel G h.2.le`.
+A detailed English derivation is pending.
 -/
 theorem exists_isSel_of_isSimple (G : HTGroup p) (h : IsSimple G) : ∃ sel, IsSel G sel :=
   exists_isSel G h.2.le
 
 /- English proof (translation)
-Use `⟨Subgroup.Commensurable.refl K, hK, fun k hk g => ?_, {1}, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hθ : θ k ∈ K` using `hK ⟨k, hk, rfl⟩`. Distinguish the cases in `hg : g ∈ K`. Establish `h' : k⁻¹ * g * θ k ∈ K` using `K.mul_mem (K.mul_mem (K.inv_mem hk) hg) hθ`. Simplify using `[Set.indicator_apply, hg, h']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h' : k⁻¹ * g * θ k ∉ K` using `fun h => hg (by`. Establish `e : g = k * (k⁻¹ * g * θ k) * (θ k)⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `K.mul_mem (K.mul_mem hk h) (K.inv_mem hθ))`. Simplify using `[Set.indicator_apply, hg, h']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hgK : g ∈ K`. Assume the negation of the conclusion as `hn; exact hg (by simp [Set.indicator_apply, hn])`. Conclude with `⟨1, Finset.mem_singleton_self _, 1, K.one_mem, g, hgK, by simp⟩`.
+Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isTest_indicator {H : Type} [Group H] (θ : H →* H) (K : Subgroup H) (hK : K.map θ ≤ K) :
     IsTest θ K K (Set.indicator (K : Set H) 1) := by
@@ -334,7 +334,7 @@ theorem isTest_indicator {H : Type} [Group H] (θ : H →* H) (K : Subgroup H) (
     exact ⟨1, Finset.mem_singleton_self _, 1, K.one_mem, g, hgK, by simp⟩
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem match_refl (G : HTGroup p) (K : Subgroup (Gr G 1)) (φ : Gr G 1 → ℂ) : Match G 1 K φ K φ :=
   fun _ _ => rfl
@@ -348,9 +348,9 @@ open GlobalTheory.LKTrip.Example
 abbrev gi : QI := IsCyclotomicExtension.zeta 4 ℚ QI
 
 /- English proof (translation)
-Set `φ : QI →+* ℂ` to `Classical.arbitrary _`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, map_neg]`. Establish `h3 : φ gi ^ 2 = Complex.I ^ 2`. Rewrite using `[← map_pow, zeta_sq, map_neg, map_one, Complex.I_sq]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases sq_eq_sq_iff_eq_or_eq_neg.1 h3 with h | h <;> rw [h] <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_gi : IsCMField.complexConj QI gi = -gi := by
   let φ : QI →+* ℂ := Classical.arbitrary _
@@ -361,7 +361,7 @@ theorem conj_gi : IsCMField.complexConj QI gi = -gi := by
   rcases sq_eq_sq_iff_eq_or_eq_neg.1 h3 with h | h <;> rw [h] <;> simp
 
 /- English proof (translation)
-Introduce `h`. Establish `e : gi = -2` using `by linear_combination h`. Establish `h2 : gi ^ 2 = -1` using `zeta_sq`. Rewrite `h2` using `[e]`. Evaluate the numerical expressions using `at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem two_add_gi_ne_zero : (2 + gi : QI) ≠ 0 := by
   intro h
@@ -373,7 +373,7 @@ theorem two_add_gi_ne_zero : (2 + gi : QI) ≠ 0 := by
 def a21 : QIˣ := Units.mk0 (2 + gi) two_add_gi_ne_zero
 
 /- English proof (translation)
-Use `show (2 + gi) * IsCMField.complexConj QI (2 + gi) = algebraMap ℚ QI 5`. Rewrite using `[map_add, conj_gi, map_ofNat, map_ofNat]`. Take the linear combination `(-1 : QI) * zeta_sq`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_gaussian_element_eq_five : ((a21 : QI)) * IsCMField.complexConj QI a21 = algebraMap ℚ QI ((Units.mk0 (5 : ℚ) (by norm_num) : ℚˣ) : ℚ) := by
   show (2 + gi) * IsCMField.complexConj QI (2 + gi) = algebraMap ℚ QI 5
@@ -384,9 +384,9 @@ def exPair : Pair (ex 1 one_ne_zero) :=
   Pair.ofScalar (ex 1 one_ne_zero) rfl a21 (Units.mk0 5 (by norm_num)) norm_gaussian_element_eq_five
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_, a_ex_one⟩` and prove the remaining obligations. Establish `key : ∀ y : Matrix (Fin 1) (Fin 1) QI, y ≠ 0 → IsUnit y`. Introduce `y hy`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_unique]`. Use `isUnit_iff_ne_zero.2 fun h => hy ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i default, Subsingleton.elim j default, h]`. Both sides reduce to the same expression. Conclude with `key x hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isSimple_unitaryRankOne : IsSimple (ex 1 one_ne_zero) := by
   refine ⟨fun x hx => ?_, a_ex_one⟩
@@ -400,11 +400,9 @@ theorem isSimple_unitaryRankOne : IsSimple (ex 1 one_ne_zero) := by
   exact key x hx
 
 /- English proof (translation)
-Establish `ha : 0 < (ex 1 one_ne_zero).a` using `by rw [a_ex_one]; exact one_pos`. Take `⟨⟨v, hv⟩⟩` from `Fintype.card_pos_iff.1 ha`. Use `⟨v.embedding (show (ex 1 one_ne_zero).F from (2 + gi : QI)), v, hv, fun _ => 1, ?_, ?_⟩` and prove the remaining obligations. Use `show (ex 1 one_ne_zero).psi v (algebraMap (ex 1 one_ne_zero).F (ex 1 one_ne_zero).C (show (ex 1 one_ne_zero).F from (2 + gi : QI))) *ᵥ (fun _ => (1 : ℂ)) = v.embedding (show (ex 1 one_ne_zero).F from (2 + gi : QI)) • (fun _ => (1 : ℂ))`. Rewrite using `[(ex 1 one_ne_zero).psi_F v, Matrix.scalar_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Rewrite using `[Matrix.mulVec_diagonal, Pi.smul_apply, smul_eq_mul]`. Use `show 0 < (star (fun _ => (1 : ℂ)) ⬝ᵥ (((ex 1 one_ne_zero).gram v * (ex 1 one_ne_zero).psi v (((1 : (ex 1 one_ne_zero).Cˣ)⁻¹ : (ex 1 one_ne_zero).Cˣ) : (ex 1 one_ne_zero).C)) *ᵥ (fun _ => (1 : ℂ)))).re`. Rewrite using `[inv_one, Units.val_one, map_one, Matrix.mul_one]`. Use `show 0 < (star (fun _ : Fin 1 => (1 : ℂ)) ⬝ᵥ (gramAt (Hc 1) (v.embedding : QI →+* ℂ) *ᵥ fun _ : Fin 1 => (1 : ℂ))).re`.
-
-Simplify using `[gramAt, Hc, dotProduct, Matrix.mulVec]`. Establish `h1 : ((v.embedding : QI →+* ℂ) 1).re = 1` using `by rw [map_one]; rfl`. Conclude with `lt_of_lt_of_eq zero_lt_one h1.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exPair_mark : ∃ μ : ℂ, exPair.Mark μ := by
   have ha : 0 < (ex 1 one_ne_zero).a := by rw [a_ex_one]; exact one_pos
@@ -425,12 +423,12 @@ theorem exPair_mark : ∃ μ : ℂ, exPair.Mark μ := by
     exact lt_of_lt_of_eq zero_lt_one h1.symm
 
 /- English proof (translation)
-The claim follows from `exists_isSel_of_isSimple _ isSimple_unitaryRankOne`.
+A detailed English derivation is pending.
 -/
 theorem exists_rootSelection_unitaryRankOne : ∃ sel, IsSel (ex 1 one_ne_zero) sel := exists_isSel_of_isSimple _ isSimple_unitaryRankOne
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Quot.mk _ exPair, exPair, rfl, exPair_mark⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_cls_mark : ∃ q : Cls (ex 1 one_ne_zero), ∃ P : Pair (ex 1 one_ne_zero), Quot.mk _ P = q ∧ ∃ μ, P.Mark μ :=
   ⟨Quot.mk _ exPair, exPair, rfl, exPair_mark⟩
@@ -441,13 +439,13 @@ Both sides reduce to the same expression.
 example : ((exPair.c : ℚˣ) : ℚ) = 5 := rfl
 
 /- English proof (translation)
-The claim follows from `Pair.ofScalar_pol (ex 1 one_ne_zero) rfl a21 _ norm_gaussian_element_eq_five`.
+A detailed English derivation is pending.
 -/
 example : exPair.pol = Polynomial.X - Polynomial.C (2 + gi) :=
   Pair.ofScalar_pol (ex 1 one_ne_zero) rfl a21 _ norm_gaussian_element_eq_five
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LKTrip.LevelExists.level_exists 5 (ex 1 one_ne_zero)`.
+A detailed English derivation is pending.
 -/
 example : Nonempty (ex 1 one_ne_zero).Level := GlobalTheory.LKTrip.LevelExists.level_exists 5 (ex 1 one_ne_zero)
 

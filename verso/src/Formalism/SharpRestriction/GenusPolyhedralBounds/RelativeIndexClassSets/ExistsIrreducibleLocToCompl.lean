@@ -13,7 +13,7 @@ variable {R : Type} [CommRing R] [IsDedekindDomain R] (K : Type) [Field K] [Alge
   (v : HeightOneSpectrum R)
 
 /- English proof (translation)
-Rewrite using `[← IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap (K := K), ← IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Use `first`. Consider the case `rfl`. Consider the case `congr 1`. Consider the case `simp [IsScalarTower.algebraMap_apply R K (v.adicCompletion K)]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem valued_algebraMap_int (a : R) :
     Valued.v ((algebraMap R (v.adicCompletionIntegers K) a : v.adicCompletionIntegers K) : v.adicCompletion K) =
@@ -26,11 +26,9 @@ theorem valued_algebraMap_int (a : R) :
   | simp [IsScalarTower.algebraMap_apply R K (v.adicCompletion K)]
 
 /- English proof (translation)
-Rewrite using `[ValuationSubring.valuation_eq_one_iff]`. Establish `h1` using `valued_algebraMap_int K v a`. Establish `h2 : (v.adicCompletionIntegers K).valuation ((algebraMap R (v.adicCompletionIntegers K) a : v.adicCompletionIntegers K) : v.adicCompletion K) = 1 ↔ Valued.v ((algebraMap R (v.adicCompletionIntegers K) a : v.adicCompletionIntegers K) : v.adicCompletion K) = 1`. Conclude with `(Valuation.isEquiv_valuation_valuationSubring Valued.v).symm.eq_one_iff_eq_one`. Rewrite using `[h2, h1, Ideal.mem_primeCompl_iff, ← IsDedekindDomain.HeightOneSpectrum.intValuation_lt_one_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h hlt`. Rewrite `hlt` using `[h]`. Conclude with `lt_irrefl _ hlt`. Introduce `h`.
-
-Conclude with `le_antisymm (IsDedekindDomain.HeightOneSpectrum.intValuation_le_one v a) (not_lt.mp h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnit_algebraMap_int_iff (a : R) :
     IsUnit (algebraMap R (v.adicCompletionIntegers K) a) ↔ a ∈ v.asIdeal.primeCompl := by
@@ -53,14 +51,14 @@ def locToCompl : Localization.AtPrime v.asIdeal →+* v.adicCompletionIntegers K
     fun y => (isUnit_algebraMap_int_iff K v y).2 y.2
 
 /- English proof (translation)
-Conclude with `IsLocalization.lift_eq (M := v.asIdeal.primeCompl) _ a`.
+A detailed English derivation is pending.
 -/
 theorem locToCompl_algebraMap (a : R) :
     locToCompl K v (algebraMap R (Localization.AtPrime v.asIdeal) a) = algebraMap R (v.adicCompletionIntegers K) a := by
   exact IsLocalization.lift_eq (M := v.asIdeal.primeCompl) _ a
 
 /- English proof (translation)
-Rewrite using `[ValuationSubring.valuation_eq_one_iff]`. Conclude with `(Valuation.isEquiv_valuation_valuationSubring Valued.v).symm.eq_one_iff_eq_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma irreducible_algebraMap_int_lemma (x : v.adicCompletionIntegers K) :
     IsUnit x ↔ Valued.v (x : v.adicCompletion K) = 1 := by
@@ -68,19 +66,17 @@ private lemma irreducible_algebraMap_int_lemma (x : v.adicCompletionIntegers K) 
   exact (Valuation.isEquiv_valuation_valuationSubring Valued.v).symm.eq_one_iff_eq_one
 
 /- English proof (translation)
-Establish `hv : Valued.v ((algebraMap R (v.adicCompletionIntegers K) π : v.adicCompletionIntegers K) : v.adicCompletion K) = WithZero.exp (-1)`. Rewrite using `[valued_algebraMap_int]`. Conclude with `h`. Use `⟨fun hu => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[irreducible_algebraMap_int_lemma, hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (-1 : ℤ) = 0` using `WithZero.exp_inj.mp (hu.trans WithZero.exp_zero.symm)`. Use linear arithmetic over natural numbers and integers. Introduce `y z hyz`. Establish `hy : Valued.v (y : v.adicCompletion K) ≤ 1` using `(IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers R K v).mp y.2`. Establish `hz : Valued.v (z : v.adicCompletion K) ≤ 1` using `(IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers R K v).mp z.2`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[hyz]`. Establish `hyz' : Valued.v (y : v.adicCompletion K) * Valued.v (z : v.adicCompletion K) = WithZero.exp (-1)`. Rewrite using `[← map_mul]`. Conclude with `hv`. Establish `hy0 : Valued.v (y : v.adicCompletion K) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Rewrite `hyz'` using `[h0, zero_mul]`. Conclude with `WithZero.exp_ne_zero hyz'.symm`. Establish `hz0 : Valued.v (z : v.adicCompletion K) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hyz'` using `[h0, mul_zero]`. Conclude with `WithZero.exp_ne_zero hyz'.symm`. Establish `hm : (Valued.v (y : v.adicCompletion K)).log ≤ 0`. Rewrite using `[← WithZero.exp_le_exp, WithZero.exp_log hy0, WithZero.exp_zero]`. Conclude with `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : (Valued.v (z : v.adicCompletion K)).log ≤ 0`. Rewrite using `[← WithZero.exp_le_exp, WithZero.exp_log hz0, WithZero.exp_zero]`. Conclude with `hz`. Rewrite `hyz'` using `[← WithZero.exp_log hy0, ← WithZero.exp_log hz0, ← WithZero.exp_add, WithZero.exp_inj]`. Distinguish the cases in `hm0 : (Valued.v (y : v.adicCompletion K)).log = 0`.
-
-Use `left`. Rewrite using `[irreducible_algebraMap_int_lemma, ← WithZero.exp_log hy0, hm0, WithZero.exp_zero]`. Use `right`. Establish `hn0 : (Valued.v (z : v.adicCompletion K)).log = 0` using `by omega`. Rewrite using `[irreducible_algebraMap_int_lemma, ← WithZero.exp_log hz0, hn0, WithZero.exp_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irreducible_algebraMap_int {π : R} (h : v.intValuation π = WithZero.exp (-1)) :
     Irreducible (algebraMap R (v.adicCompletionIntegers K) π) := by
@@ -124,17 +120,15 @@ theorem irreducible_algebraMap_int {π : R} (h : v.intValuation π = WithZero.ex
       rw [irreducible_algebraMap_int_lemma, ← WithZero.exp_log hz0, hn0, WithZero.exp_zero]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDedekindDomain.HeightOneSpectrum.intValuation_exists_uniformizer v`. Establish `hirr` using `irreducible_algebraMap_int K v hπ`. Establish `hloc : ∀ x : Localization.AtPrime v.asIdeal, IsUnit (locToCompl K v x) → IsUnit x`. Introduce `x hx`. Break down `IsLocalization.mk'_surjective v.asIdeal.primeCompl x with ⟨⟨r, t⟩, hrt⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hrt` using the available equality. Establish `hspec` using `IsLocalization.mk'_spec (Localization.AtPrime v.asIdeal) r t`. Establish `hsu : IsUnit (algebraMap R (Localization.AtPrime v.asIdeal) (t : R))` using `IsLocalization.map_units _ t`. Establish `hfr : IsUnit (locToCompl K v (algebraMap R (Localization.AtPrime v.asIdeal) r))`. Rewrite using `[← hspec, map_mul]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx.mul (hsu.map _)`. Rewrite `hfr` using `[locToCompl_algebraMap, isUnit_algebraMap_int_iff]`. Establish `hru : IsUnit (algebraMap R (Localization.AtPrime v.asIdeal) r)` using `IsLocalization.map_units _ ⟨r, hfr⟩`. Rewrite `hru` using `[← hspec]`. Conclude with `isUnit_of_mul_isUnit_left hru`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨algebraMap R (Localization.AtPrime v.asIdeal) π, ⟨fun hu => hirr.not_isUnit ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← locToCompl_algebraMap]`. Conclude with `hu.map _`. Introduce `y z hyz`. Establish `h1 : algebraMap R (v.adicCompletionIntegers K) π = locToCompl K v y * locToCompl K v z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Rewrite using `[← locToCompl_algebraMap, hyz, map_mul]`. Break down `hirr.isUnit_or_isUnit h1 with h | h` into its components or cases. Conclude with `Or.inl (hloc y h)`. Conclude with `Or.inr (hloc z h)`. Rewrite using `[locToCompl_algebraMap]`.
-
-Conclude with `hirr`.
+Prove the second alternative. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_irreducible_locToCompl :
     ∃ ϖ : Localization.AtPrime v.asIdeal, Irreducible ϖ ∧ Irreducible (locToCompl K v ϖ) := by
@@ -166,17 +160,15 @@ theorem exists_irreducible_locToCompl :
     exact hirr
 
 /- English proof (translation)
-Establish `: IsDiscreteValuationRing (Localization.AtPrime v.asIdeal)` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R v.ne_bot _`. Set `: Algebra (Localization.AtPrime v.asIdeal) (v.adicCompletionIntegers K)` to `(locToCompl K v).toAlgebra`. Take `⟨ϖ, hϖ, hϖ'⟩` from `exists_irreducible_locToCompl K v`. Set `mR : Module R Q'` to `Module.compHom Q' (algebraMap R (v.adicCompletionIntegers K))`. Set `mL : Module (Localization.AtPrime v.asIdeal) Q'` to `Module.compHom Q' (locToCompl K v)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower R (Localization.AtPrime v.asIdeal) Q'` using `⟨fun a b x => by show locToCompl K v (a • b) • x = algebraMap R (v.adicCompletionIntegers K) a • (locToCompl K v b • x)`. Rewrite using `[Algebra.smul_def, map_mul, locToCompl_algebraMap, mul_smul]⟩`. Set `gR : Q →ₗ[R] Q'` to `{ toFun := g, map_add' := g.map_add, map_smul' := fun a x => g.map_smulₛₗ a x }`. Establish `hu : ∀ s : v.asIdeal.primeCompl, IsUnit (algebraMap R (Module.End R Q') s)`. Introduce `s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Module.End.isUnit_iff]`. Take `⟨u, hu⟩` from `(isUnit_algebraMap_int_iff K v s).2 s.2`. Establish `: ⇑(algebraMap R (Module.End R Q') s) = fun x => u • x`. Use function extensionality and compare the values at `x`. Use `show algebraMap R (v.adicCompletionIntegers K) (s : R) • x = u • x`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `MulAction.bijective u`. Set `l` to `LinearMap.extendScalarsOfIsLocalization v.asIdeal.primeCompl (Localization.AtPrime v.asIdeal) (LocalizedModule.lift v.asIdeal.primeCompl gR hu)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `g' : LocalizedModule v.asIdeal.primeCompl Q →ₛₗ[algebraMap (Localization.AtPrime v.asIdeal) (v.adicCompletionIntegers K)] Q'` to `{ toFun := l, map_add' := l.map_add, map_smul' := fun a x => l.map_smul a x }`. Use `T0.length_le_of_semilinear ϖ hϖ hϖ' g' ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hg]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
-
-Conclude with `⟨LocalizedModule.mkLinearMap _ _ x, LinearMap.congr_fun (LocalizedModule.lift_comp _ gR hu) x⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem length_le_length_localized {Q Q' : Type} [AddCommGroup Q] [Module R Q] [AddCommGroup Q']
     [Module (v.adicCompletionIntegers K) Q'] (g : Q →ₛₗ[algebraMap R (v.adicCompletionIntegers K)] Q')
@@ -215,9 +207,9 @@ theorem length_le_length_localized {Q Q' : Type} [AddCommGroup Q] [Module R Q] [
   exact ⟨LocalizedModule.mkLinearMap _ _ x, LinearMap.congr_fun (LocalizedModule.lift_comp _ gR hu) x⟩
 
 /- English proof (translation)
-Establish `: IsDiscreteValuationRing (Localization.AtPrime v.asIdeal)` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R v.ne_bot _`. Establish `h1` using `Formalism.LatticeIndexTer.LatticeIndexLength.length_quot_ne_top (O := Localization.AtPrime v.asIdeal) (M := LocalizedModule v.asIdeal.primeCompl Q) (algebraMap R _ d) (by rw [Ne, FaithfulSMul.algebraMap_eq_zero_iff]; exact hd) ⊥ (fun m => by`. Proceed by induction on `m using LocalizedModule.induction_on with`. Consider the case `_ m s`. Rewrite using `[algebraMap_smul, LocalizedModule.smul'_mk, h, LocalizedModule.zero_mk]`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _)`. Rewrite `h1` using `[(Submodule.quotEquivOfEqBot ⊥ rfl).length_eq]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem length_localized_ne_top {Q : Type} [AddCommGroup Q] [Module R Q] [Module.Finite R Q] (d : R) (hd : d ≠ 0)
     (h : ∀ x : Q, d • x = 0) :
@@ -242,7 +234,7 @@ section Lat
 variable (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (ka : WeightFamilies.Wt D j)
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.WeightAlgebra.PJ.bc, TensorProduct.mk_apply]`. Rewrite using `[← algebraMap_smul B.KO a F, TensorProduct.tmul_smul, TensorProduct.smul_tmul', ← Algebra.algebraMap_eq_smul_one]`. Rewrite using `[show (algebraMap (𝓞 B.KO) (X.Ol la) a) • ((1 : X.Kl la) ⊗ₜ[B.KO] F) = ((algebraMap (𝓞 B.KO) (X.Ol la) a : X.Ol la) : X.Kl la) • ((1 : X.Kl la) ⊗ₜ[B.KO] F) from rfl, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem bc_smul_int (a : 𝓞 B.KO) (F : X.Forms) :
     X.bc la (a • F) = algebraMap (𝓞 B.KO) (X.Ol la) a • X.bc la F := by
@@ -255,11 +247,11 @@ theorem bc_smul_int (a : 𝓞 B.KO) (F : X.Forms) :
   congr 1
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Formalism.MainNotions.WeightAlgebra.PJ.loc, Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Use `Submodule.span_induction (p := fun F _ => X.bc la F ∈ Submodule.span (X.Ol la) (X.bc la '' s)) ?_ ?_ ?_ ?_ hF` and prove the remaining obligations. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a x _ hx`. Rewrite using `[bc_smul_int]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[Formalism.MainNotions.WeightAlgebra.PJ.loc]`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_span (s : Set X.Forms) :
     X.loc la (Submodule.span (𝓞 B.KO) s) = Submodule.span (X.Ol la) (X.bc la '' s) := by
@@ -281,11 +273,9 @@ theorem loc_span (s : Set X.Forms) :
     exact Submodule.span_mono (Set.image_mono Submodule.subset_span)
 
 /- English proof (translation)
-Establish `hle : X.loc la N ≤ (T0.WL X ka la).restrictScalars (X.Ol la)`. Unfold `Formalism.MainNotions.WeightAlgebra.PJ.loc`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨n, hn, rfl⟩`. Conclude with `Submodule.subset_span ⟨n, hN hn, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.fg_of_fg_map_injective ((T0.WL X ka la).subtype.restrictScalars (X.Ol la)) Subtype.val_injective` to reduce the goal to its premises. Use `show (Submodule.map _ (Submodule.comap _ (X.loc la N))).FG`. Rewrite using `[Submodule.map_comap_eq, inf_eq_right.mpr (fun x hx => ⟨⟨x, hle hx⟩, rfl⟩)]`. Take `⟨S, hS⟩` from `hfg`. Rewrite using `[← hS, loc_span]`.
-
-Conclude with `Submodule.fg_span (S.finite_toSet.image _)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inW_loc_fg (N : Submodule (𝓞 B.KO) X.Forms) (hN : N ≤ X.Msup ka) (hfg : N.FG) :
     (T0.inW X ka la (X.loc la N)).FG := by
@@ -302,13 +292,13 @@ theorem inW_loc_fg (N : Submodule (𝓞 B.KO) X.Forms) (hN : N ≤ X.Msup ka) (h
   exact Submodule.fg_span (S.finite_toSet.image _)
 
 /- English proof (translation)
-Establish `hWN : ∀ y ∈ Submodule.span (X.Kl la) (X.bc la '' (N : Set X.Forms)), y ∈ T0.WL X ka la`. Introduce `y hy`. Use `Submodule.span_mono ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨n, hn, rfl⟩`. Conclude with `⟨n, hN hn, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨w, hw⟩ -`. Establish `hw' : w ∈ Submodule.span (X.Kl la) (X.bc la '' (N : Set X.Forms))` using `hW hw`. Use `Submodule.span_induction (p := fun y _ => ∀ h : y ∈ T0.WL X ka la, (⟨y, h⟩ : T0.WL X ka la) ∈ Submodule.span (X.Kl la) (T0.inW X ka la (X.loc la N) : Set (T0.WL X ka la))) ?_ ?_ ?_ ?_ hw' hw` and prove the remaining obligations. Introduce and unpack `_ ⟨n, hn, rfl⟩ h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span (show X.bc la n ∈ X.loc la N from Submodule.subset_span ⟨n, hn, rfl⟩)`. Introduce `h`. Conclude with `Submodule.zero_mem _`. Introduce `x y hx' hy' hx hy h`. Establish `h1` using `Submodule.add_mem _ (hx (hWN x hx')) (hy (hWN y hy'))`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h1`. Introduce `a x hx' hx h`. Establish `h1` using `Submodule.smul_mem _ a (hx (hWN x hx'))`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem span_inW_loc (N : Submodule (𝓞 B.KO) X.Forms) (hN : N ≤ X.Msup ka)
     (hW : X.locK la (X.Msup ka) ≤ X.locK la N) :
@@ -336,7 +326,7 @@ theorem span_inW_loc (N : Submodule (𝓞 B.KO) X.Forms) (hN : N ≤ X.Msup ka)
     exact h1
 
 /- English proof (translation)
-Conclude with `⟨inW_loc_fg X la ka N hN hfg, span_inW_loc X la ka N hN hW⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLat_inW_loc (N : Submodule (𝓞 B.KO) X.Forms) (hN : N ≤ X.Msup ka) (hfg : N.FG)
     (hW : X.locK la (X.Msup ka) ≤ X.locK la N) :
@@ -344,18 +334,18 @@ theorem isLat_inW_loc (N : Submodule (𝓞 B.KO) X.Forms) (hN : N ≤ X.Msup ka)
   exact ⟨inW_loc_fg X la ka N hN hfg, span_inW_loc X la ka N hN hW⟩
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.WeightAlgebra.PJ.Msup Formalism.MainNotions.WeightAlgebra.PJ.emb`. Conclude with `hM.fg.map _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Msup_fg (hM : Submodule.IsLattice B.KO (B.Mlat j ka)) : (X.Msup ka).FG := by
   unfold Formalism.MainNotions.WeightAlgebra.PJ.Msup Formalism.MainNotions.WeightAlgebra.PJ.emb
   exact hM.fg.map _
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.WeightAlgebra.PJ.locK`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨G, ⟨F, -, rfl⟩, rfl⟩`. Establish `hF : F ∈ Submodule.span B.KO (N : Set (B.Cusp j ka))`. Rewrite using `[hsp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Establish `h1 : X.bc la (X.inc ka F) ∈ Submodule.span B.KO ((X.bc la ∘ₗ X.inc ka) '' (N : Set (B.Cusp j ka)))`. Rewrite using `[← Submodule.map_span]`. Conclude with `⟨F, hF, rfl⟩`. Establish `h2` using `Submodule.span_le_restrictScalars B.KO (X.Kl la) ((X.bc la ∘ₗ X.inc ka) '' (N : Set (B.Cusp j ka))) h1`.
+Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨n, hn, rfl⟩`. Conclude with `⟨X.inc ka n, ⟨n, hn, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem locK_le_of_span (N : Submodule (𝓞 B.KO) (B.Cusp j ka))
     (hsp : Submodule.span B.KO (N : Set (B.Cusp j ka)) = ⊤) :
@@ -378,7 +368,7 @@ theorem locK_le_of_span (N : Submodule (𝓞 B.KO) (B.Cusp j ka))
 end Lat
 
 /- English proof (translation)
-Use `⟨isLat_inW_loc X la ka (X.Msup ka) le_rfl (Msup_fg X ka hM) le_rfl, isLat_inW_loc X la ka _ hΘM ((Msup_fg X ka hM).of_le hΘM) ?_⟩` and prove the remaining obligations. Conclude with `(locK_le_of_span X la ka _ hsp).trans (Submodule.span_mono (Set.image_mono (SetLike.coe_subset_coe.mpr (by`. Unfold `Formalism.MainNotions.WeightAlgebra.PJ.Theta`. Conclude with `le_sup_right))))`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem inLat_of (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ) (la : HeightOneSpectrum (𝓞 B.KO))
     (hM : Submodule.IsLattice B.KO (B.Mlat j ka)) (hΘM : X.Theta S ka wL wF T ≤ X.Msup ka)
@@ -394,20 +384,18 @@ section Quot
 variable (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (ka : WeightFamilies.Wt D j)
 
 /- English proof (translation)
-Use `show X.bc la (X.inc ka F) ∈ X.loc la (X.Msup ka)`. Conclude with `Submodule.subset_span ⟨X.inc ka F, ⟨F, F.2, rfl⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem toW_mem_MW (F : B.Mlat j ka) : toW X la ka F ∈ T0.MW X ka la := by
   show X.bc la (X.inc ka F) ∈ X.loc la (X.Msup ka)
   exact Submodule.subset_span ⟨X.inc ka F, ⟨F, F.2, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hle : X.loc la (X.Msup ka) ≤ (T0.WL X ka la).restrictScalars (X.Ol la)`. Unfold `Formalism.MainNotions.WeightAlgebra.PJ.loc`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `Submodule.subset_span hx`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.map_injective_of_injective (f := (T0.WL X ka la).subtype.restrictScalars (X.Ol la)) Subtype.val_injective` to reduce the goal to its premises. Use `show Submodule.map _ (Submodule.comap _ (X.loc la (X.Msup ka))) = _`. Rewrite using `[Submodule.map_comap_eq, inf_eq_right.mpr (fun x hx => ⟨⟨x, hle hx⟩, rfl⟩), Submodule.map_span]`. Unfold `Formalism.MainNotions.WeightAlgebra.PJ.loc`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨G, ⟨F, hF, rfl⟩, rfl⟩`. Conclude with `⟨toW X la ka ⟨F, hF⟩, ⟨⟨F, hF⟩, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨F, rfl⟩, rfl⟩`.
-
-Conclude with `⟨X.inc ka F, ⟨F, F.2, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem MW_eq_span : T0.MW X ka la = Submodule.span (X.Ol la) (Set.range (toW X la ka)) := by
   have hle : X.loc la (X.Msup ka) ≤ (T0.WL X ka la).restrictScalars (X.Ol la) := by
@@ -441,21 +429,17 @@ def toWl : B.Mlat j ka →ₛₗ[algebraMap (𝓞 B.KO) (X.Ol la)] ↥(T0.MW X k
     rw [Submodule.coe_smul, ← bc_smul_int, LinearMap.map_smul_of_tower]
 
 /- English proof (translation)
-Use `set S₁ : Submodule (X.Ol la) ↥(T0.MW X ka la) := (MggW X la ka CRm T c ⊔ Submodule.span (X.Ol la) (Set.range fun i => toW X la ka (th i))).comap (T0.MW X ka la).subtype with hS₁`. Set `g0 : B.Mlat j ka →ₛₗ[algebraMap (𝓞 B.KO) (X.Ol la)] (↥(T0.MW X ka la) ⧸ S₁)` to `S₁.mkQ.comp (toWl X la ka)`. Establish `hk : WeightFamilies.MggIn B CRm T c j ka ≤ LinearMap.ker g0`. Introduce `F hF`. Rewrite using `[LinearMap.mem_ker]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show S₁.mkQ _ = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `Submodule.mem_sup_left ?_` and prove the remaining obligations. Use `show X.bc la (X.inc ka F) ∈ X.loc la (X.emb ka (MggO B CRm T c j ka))`. Conclude with `Submodule.subset_span ⟨X.inc ka F, ⟨F, ⟨F.2, hF⟩, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Set `g1 : WeightFamilies.Qm B CRm T c j ka →ₛₗ[algebraMap (𝓞 B.KO) (X.Ol la)] (↥(T0.MW X ka la) ⧸ S₁)` to `(WeightFamilies.MggIn B CRm T c j ka).liftQ g0 hk`. Establish `hk1 : Submodule.span (𝓞 B.KO) (Set.range fun i => (Submodule.Quotient.mk (th i) : WeightFamilies.Qm B CRm T c j ka)) ≤ LinearMap.ker g1`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `show g1 _ = 0`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show S₁.mkQ _ = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨i, rfl⟩)`. Unfold `WeightFamilies.lenAt`. Use `length_le_length_localized B.KO la (Submodule.liftQ _ g1 hk1) ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Establish `key : ∀ y (_ : y ∈ Submodule.span (X.Ol la) (Set.range (toW X la ka))) (hy : y ∈ T0.MW X ka la), (Submodule.Quotient.mk ⟨y, hy⟩ : ↥(T0.MW X ka la) ⧸ S₁) ∈ Submodule.span (X.Ol la) (Set.range (Submodule.liftQ _ g1 hk1))`. Introduce `y hy'`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem y h`. Take `⟨F, rfl⟩` from `h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hy`. Conclude with `Submodule.subset_span ⟨Submodule.Quotient.mk (Submodule.Quotient.mk F), rfl⟩`. Consider the case `zero => intro hy`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b ha hb iha ihb`.
-
-Introduce `hy`. Conclude with `Submodule.add_mem _ (iha (MW_eq_span X la ka ▸ ha)) (ihb (MW_eq_span X la ka ▸ hb))`. Consider the case `smul r a ha ih`. Introduce `hy`. Conclude with `Submodule.smul_mem _ r (ih (MW_eq_span X la ka ▸ ha))`.
-
-Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`. Take `⟨⟨y, hy⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Conclude with `key y (MW_eq_span X la ka ▸ hy) hy`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem quot_len_le (CRm T c : ℝ) {n : ℕ} (th : Fin n → B.Mlat j ka) :
     Module.length (X.Ol la) (↥(T0.MW X ka la) ⧸ (MggW X la ka CRm T c ⊔
@@ -509,17 +493,17 @@ theorem quot_len_le (CRm T c : ℝ) {n : ℕ} (th : Fin n → B.Mlat j ka) :
 end Quot
 
 /- English proof (translation)
-Establish `: Module.Finite (𝓞 B.KO) (B.Mlat j ka)` using `Module.Finite.iff_fg.2 hM.1`. Take `⟨d, hd, h⟩` from `Formalism.LatticeIndexTer.LatticeIndexLength.exists_smul_le (K := B.KO) (B.Mlat j ka) (Submodule.span (𝓞 B.KO) (Set.range fun i => ((th i : B.Mlat j ka) : B.Cusp j ka)) ⊔ (WeightFamilies.MggK B CRm T c j ka).restrictScalars (𝓞 B.KO)) hM.1 (by`. Rewrite using `[eq_top_iff, ← hsp]`. Use `sup_le (Submodule.span_le.2 ?_) fun x hx => Submodule.subset_span (Submodule.mem_sup_right hx)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span (Submodule.mem_sup_left (Submodule.subset_span ⟨i, rfl⟩)))`. Unfold `WeightFamilies.lenAt`. Use `length_localized_ne_top la d hd ?_` and prove the remaining obligations. Introduce `x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨t, ht, G, hG, htG⟩` from `Submodule.mem_sup.1 (h F F.2)`. Establish `e1 : Submodule.span (𝓞 B.KO) (Set.range fun i => ((th i : B.Mlat j ka) : B.Cusp j ka)) = (Submodule.span (𝓞 B.KO) (Set.range th)).map (B.Mlat j ka).subtype`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `ht` using `[e1]`. Take `⟨t', ht', rfl⟩` from `ht`. Establish `hG' : d • F - t' ∈ WeightFamilies.MggIn B CRm T c j ka` using `by show ((d • F - t' : B.Mlat j ka) : B.Cusp j ka) ∈ WeightFamilies.MggK B CRm T c j ka`. Establish `: ((d • F - t' : B.Mlat j ka) : B.Cusp j ka) = G`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_sub, Submodule.coe_smul, ← htG]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hG`. Rewrite using `[(Submodule.Quotient.eq _).2 hG']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : Submodule.span (𝓞 B.KO) (Set.range fun i => (Submodule.Quotient.mk (th i) : WeightFamilies.Qm B CRm T c j ka)) = (Submodule.span (𝓞 B.KO) (Set.range th)).map (WeightFamilies.MggIn B CRm T c j ka).mkQ`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `⟨t', ht', rfl⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quot_len_ne_top (la : HeightOneSpectrum (𝓞 B.KO)) (ka : WeightFamilies.Wt D j) (CRm T c : ℝ) {n : ℕ}
     (th : Fin n → B.Mlat j ka) (hM : Submodule.IsLattice B.KO (B.Mlat j ka))

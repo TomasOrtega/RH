@@ -16,9 +16,9 @@ namespace GlobalTheory.RingCls
 section Idelic
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ih`. Rewrite using `[pow_succ M, pow_mul, ← mul_geom_sum, pow_succ t]`. Use `mul_dvd_mul ih ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : t ∣ x ^ (M ^ k) - 1` using `hx.trans (sub_one_dvd_pow_sub_one _ _)`. Establish `e : ∑ i ∈ Finset.range M, (x ^ (M ^ k)) ^ i = (M : O) + ∑ i ∈ Finset.range M, ((x ^ (M ^ k)) ^ i - 1)`. Simplify using `[Finset.sum_sub_distrib]`. Rewrite using `[e]`. Conclude with `dvd_add hM (Finset.dvd_sum fun i _ => h1.trans (sub_one_dvd_pow_sub_one _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_pow_pow_sub_one {O : Type} [CommRing O] {t x : O} {M : ℕ} (hM : t ∣ (M : O)) (hx : t ∣ x - 1) (k : ℕ) :
     t ^ (k + 1) ∣ x ^ (M ^ k) - 1 := by
@@ -36,13 +36,13 @@ theorem dvd_pow_pow_sub_one {O : Type} [CommRing O] {t x : O} {M : ℕ} (hM : t 
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hx1 : Valued.v x ≤ 1`. Use `Valuation.map_add_le (Valued.v : Valuation (v.adicCompletion E) _) hx.le (le_of_eq (map_one _))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Set `y : v.adicCompletionIntegers E` to `⟨x, hx1⟩`. Establish `hI` using `Valuation.integer.integers (Valued.v : Valuation (v.adicCompletion E) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, ht, h1, h2⟩ : ∃ t : v.adicCompletionIntegers E, Valued.v (t : v.adicCompletion E) < 1 ∧ t ∣ (M : v.adicCompletionIntegers E) ∧ t ∣ y - 1 := by`. Break down `le_total (Valued.v ((M : ℕ) : v.adicCompletion E)) (Valued.v (x - 1)) with h | h` into its components or cases. Conclude with `⟨y - 1, hx, hI.dvd_of_le h, dvd_rfl⟩`. Conclude with `⟨M, hM, dvd_rfl, hI.dvd_of_le h⟩`. Establish `h0 : Tendsto (fun k : ℕ => (t : v.adicCompletion E) ^ (k + 1)) atTop (𝓝 0)` using `(Valued.tendsto_zero_pow_of_v_lt_one ht).comp (tendsto_add_atTop_nat 1)`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← tendsto_sub_nhds_zero_iff]`. Use `squeeze_zero_norm (fun k => ?_) (tendsto_zero_iff_norm_tendsto_zero.1 h0)` and prove the remaining obligations. Take `⟨c, hc⟩` from `dvd_pow_pow_sub_one h1 h2 k`. Establish `e : x ^ (M ^ k) - 1 = (t : v.adicCompletion E) ^ (k + 1) * c` using `congrArg Subtype.val hc`. Rewrite using `[e, norm_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_right (norm_nonneg _) (Valued.toNormedField.norm_le_one_iff.2 c.2)`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_pow_pow (v : HeightOneSpectrum (𝓞 E)) {M : ℕ} (hM : Valued.v ((M : ℕ) : v.adicCompletion E) < 1)
     {x : v.adicCompletion E} (hx : Valued.v (x - 1) < 1) :
@@ -67,11 +67,11 @@ theorem tendsto_pow_pow (v : HeightOneSpectrum (𝓞 E)) {M : ℕ} (hM : Valued.
   exact mul_le_of_le_one_right (norm_nonneg _) (Valued.toNormedField.norm_le_one_iff.2 c.2)
 
 /- English proof (translation)
-Establish `hN : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Take `⟨a, M, hM, hNM⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN l hl.ne_one`. Establish `hmem : ((M : ℕ) : 𝓞 E) ∈ v.asIdeal`. Establish `h` using `Ideal.absNorm_mem v.asIdeal`. Rewrite `h` using `[hNM, Nat.cast_mul, Nat.cast_pow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(v.isPrime.mem_or_mem h).resolve_left fun h' => hv (v.isPrime.mem_of_pow_mem a h')`. Use `⟨M, hl.coprime_iff_not_dvd.mpr hM, ?_⟩` and prove the remaining obligations. Establish `h : Valued.v (((algebraMap (𝓞 E) E (M : 𝓞 E) : E)) : v.adicCompletion E) = v.valuation E (algebraMap (𝓞 E) E (M : 𝓞 E))` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`. Establish `h2 : v.valuation E (algebraMap (𝓞 E) E (M : 𝓞 E)) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem v _).mpr hmem`. Rewrite `h2` using `[← h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (((algebraMap (𝓞 E) E (M : 𝓞 E) : E)) : v.adicCompletion E) = ((M : ℕ) : v.adicCompletion E)`. Rewrite using `[map_natCast]`. Conclude with `map_natCast (algebraMap E (v.adicCompletion E)) M`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_nat_coprime {l : ℕ} (hl : l.Prime) {v : HeightOneSpectrum (𝓞 E)} (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal) :
     ∃ M : ℕ, l.Coprime M ∧ Valued.v ((M : ℕ) : v.adicCompletion E) < 1 := by
@@ -96,9 +96,9 @@ theorem exists_nat_coprime {l : ℕ} (hl : l.Prime) {v : HeightOneSpectrum (𝓞
 variable {B : Type} [CommGroup B]
 
 /- English proof (translation)
-Take `⟨M, hc, hM⟩` from `exists_nat_coprime hl hv`. Establish `ht : Tendsto (fun k : ℕ => x ^ (M ^ k)) atTop (𝓝 1)`. Rewrite using `[Units.isEmbedding_val₀.tendsto_nhds_iff]`. Simplify `tendsto_pow_pow v hM hx` using `[Function.comp_def]`. Take `⟨k, hk⟩` from `(ht.eventually (hθ.mem_nhds θ.ker.one_mem)).exists`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hk' : θ x ^ (M ^ k) = 1` using `by rw [← map_pow]; exact hk`. Take `⟨n, hn⟩` from `hB (θ x)`. Use `pow_gcd_eq_one.2 ⟨hn, hk'⟩` as an intermediate fact. Rewrite `this` using `[(hc.pow n k).gcd_eq_one, pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tame {l : ℕ} (hl : l.Prime) (hB : ∀ x : B, ∃ n : ℕ, x ^ (l ^ n) = 1) {v : HeightOneSpectrum (𝓞 E)}
     (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal) (θ : (v.adicCompletion E)ˣ →* B)
@@ -115,11 +115,11 @@ theorem tame {l : ℕ} (hl : l.Prime) (hB : ∀ x : B, ∃ n : ℕ, x ^ (l ^ n) 
   rwa [(hc.pow n k).gcd_eq_one, pow_one] at this
 
 /- English proof (translation)
-Establish `hm : 0 < Nat.card B` using `Nat.card_pos`. Establish `h2 : ∀ w : InfinitePlace E, ∃ y : w.Completion, y ^ Nat.card B = (a : AdeleRing (𝓞 E) E).1 w` using `fun w => by`. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (e ((a : AdeleRing (𝓞 E) E).1 w)) hm`. Conclude with `⟨e.symm z, e.injective (by rw [map_pow, e.apply_symm_apply, hz])⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose y hy using h2`. Set `b : AdeleRing (𝓞 E) E` to `(y, 1)`. Establish `hb : b ^ Nat.card B * (finPartI E a : AdeleRing (𝓞 E) E) = a` using `Prod.ext (funext fun w => (mul_one _).trans (hy w)) (by show (1 : FiniteAdeleRing (𝓞 E) E) ^ Nat.card B * (a : AdeleRing (𝓞 E) E).2 = _`. Rewrite using `[one_pow, one_mul])`. Take `⟨u, hu⟩ : IsUnit b` from `(isUnit_pow_iff hm.ne').1 (isUnit_of_mul_isUnit_left (hb ▸ a.isUnit))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : u ^ Nat.card B * finPartI E a = a` using `Units.ext (by rw [Units.val_mul, Units.val_pow_eq_pow_val, hu, hb])`. Use `conv_rhs => rw [← e, map_mul, map_pow, pow_card_eq_one', one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem map_finPartI [IsTotallyComplex E] [Finite B] (ψ : Ideles E →* B) (a : Ideles E) :
     ψ (finPartI E a) = ψ a := by
@@ -139,9 +139,9 @@ theorem map_finPartI [IsTotallyComplex E] [Finite B] (ψ : Ideles E →* B) (a :
   conv_rhs => rw [← e, map_mul, map_pow, pow_card_eq_one', one_mul]
 
 /- English proof (translation)
-Rewrite using `[← map_finPartI]`. Use `(ψ.ker.isClosed_of_isOpen hψ).mem_of_tendsto (GlobalTheory.Mem.LocTriv.tendsto_part (finPartI_mem_unitIdl.2 ha) fun _ => rfl) (Eventually.of_forall fun S => ?_)` and prove the remaining obligations. Use `Subgroup.prod_mem _ fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : v ∉ Q ∨ v ∈ placesOver E l`. Conclude with `hu v h _ (ha v)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[not_or, not_not]`. Conclude with `tame hl hB h.2 (ψ.comp (localIdele E v)) (hψ.preimage (Determ.continuous_localIdele v)) _ (hQ v h.1)`.
+A detailed English derivation is pending.
 -/
 theorem map_congr_unit [IsTotallyComplex E] [Finite B] {l : ℕ} (hl : l.Prime) (hB : ∀ x : B, ∃ n : ℕ, x ^ (l ^ n) = 1)
     (Q : Finset (HeightOneSpectrum (𝓞 E))) (ψ : Ideles E →* B) (hψ : IsOpen (ψ.ker : Set (Ideles E)))
@@ -165,7 +165,7 @@ def red (v : HeightOneSpectrum (𝓞 E)) : unitIdl E →* IsLocalRing.ResidueFie
     exact congrArg _ (Subtype.ext rfl)
 
 /- English proof (translation)
-Establish `h1 : IsLocalRing.residue (v.adicCompletionIntegers E) (⟨((a : Ideles E) : AdeleRing (𝓞 E) E).2 v, (a.2 v).le⟩ - 1) = 0`. Rewrite using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h`. Rewrite `h1` using `[IsLocalRing.residue_eq_zero_iff]`. Conclude with `(Valuation.mem_maximalIdeal_iff _ _).1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_eq_one {v : HeightOneSpectrum (𝓞 E)} {a : unitIdl E} (h : red v a = 1) :
     Valued.v (((a : Ideles E) : AdeleRing (𝓞 E) E).2 v - 1) < 1 := by
@@ -176,11 +176,9 @@ theorem red_eq_one {v : HeightOneSpectrum (𝓞 E)} {a : unitIdl E} (h : red v a
   exact (Valuation.mem_maximalIdeal_iff _ _).1 h1
 
 /- English proof (translation)
-Use `fun v : Q => Formalism.UG.P.glint_finite_residueField (F := E) v.1` as an intermediate fact. Set `ρ` to `(MonoidHom.pi fun v : Q => red (E := E) v.1).toHomUnits`. Establish `h1 : ρ.ker.FiniteIndex` using `Subgroup.finiteIndex_ker _`. Establish `h2 : (K.subgroupOf (unitIdl E)).FiniteIndex`. Use `Subgroup.finiteIndex_of_le (H := ρ.ker) fun a ha => hU a a.2 fun v hv => red_eq_one ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun (congrArg Units.val (MonoidHom.mem_ker.1 ha)) ⟨v, hv⟩`. Use `GlobalTheory.Mem.UnitIndex.finiteIndex_unitIdl_sup E` as an intermediate fact. Establish `h3 : (unitIdl E ⊔ K).FiniteIndex` using `Subgroup.finiteIndex_of_le (H := unitIdl E ⊔ (diagUnits E).range) (sup_le_sup_left (by rintro _ ⟨k, rfl⟩; exact hD k) _)`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← Subgroup.relIndex_mul_index (le_sup_right : K ≤ unitIdl E ⊔ K), Subgroup.relIndex_sup_right]`.
-
-Conclude with `mul_ne_zero h2.1 h3.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteIndex_of_congr (Q : Finset (HeightOneSpectrum (𝓞 E))) (K : Subgroup (Ideles E))
     (hD : ∀ k, diagUnits E k ∈ K)
@@ -218,7 +216,7 @@ def ringKer (c : Ω ≃+* Ω) (l : ℕ) (Q : Finset (HeightOneSpectrum (𝓞 E))
 variable (c : Ω ≃+* Ω) (l : ℕ) (Q : Finset (HeightOneSpectrum (𝓞 E)))
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_sInf`.
+A detailed English derivation is pending.
 -/
 theorem mem_ringKer {g : G E Ω} : g ∈ ringKer c l Q ↔ ∀ K, IsRingKer c l Q K → g ∈ K := Subgroup.mem_sInf
 
@@ -242,22 +240,22 @@ instance : CommGroup (RingClass c l Q) :=
 def art : G E Ω →* RingClass c l Q := QuotientGroup.mk' (ringKer c l Q)
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.ker_mk' _`.
+A detailed English derivation is pending.
 -/
 theorem ker_art : (art c l Q).ker = ringKer c l Q := QuotientGroup.ker_mk' _
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.eq_one_iff g`.
+A detailed English derivation is pending.
 -/
 theorem art_eq_one {g : G E Ω} : art c l Q g = 1 ↔ g ∈ ringKer c l Q := QuotientGroup.eq_one_iff g
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.mk'_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem art_surjective : Function.Surjective (art c l Q) := QuotientGroup.mk'_surjective _
 
 /- English proof (translation)
-Introduce `g g' h` and use `by rw [eq_inv_iff_mul_eq_one, ← map_mul, art_eq_one, mem_ringKer] rintro _ ⟨B, _, _, φ, -, -, ha, -, rfl⟩ rw [MonoidHom.mem_ker, map_mul, ha g g' h, inv_mul_cancel]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem art_anti : AntiHom c (art c l Q) := fun g g' h => by
   rw [eq_inv_iff_mul_eq_one, ← map_mul, art_eq_one, mem_ringKer]
@@ -265,7 +263,7 @@ theorem art_anti : AntiHom c (art c l Q) := fun g g' h => by
   rw [MonoidHom.mem_ker, map_mul, ha g g' h, inv_mul_cancel]
 
 /- English proof (translation)
-Rewrite using `[art_eq_one, mem_ringKer]`. Introduce and unpack `_ ⟨B, _, _, φ, -, -, -, hu, rfl⟩`. Conclude with `hu v hv A hA σ hσ`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem art_unram {v : HeightOneSpectrum (𝓞 E)} (hv : v ∉ Q ∨ v ∈ placesOver E l) (A : ValuationSubring Ω)
     (hA : IsPlaceOver A v) (σ : G E Ω) (hσ : σ ∈ Ine (F := E) A) : art c l Q σ = 1 := by
@@ -274,7 +272,7 @@ theorem art_unram {v : HeightOneSpectrum (𝓞 E)} (hv : v ∉ Q ∨ v ∈ place
   exact hu v hv A hA σ hσ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨QuotientGroup.lift (ringKer c l Q) φ (sInf_le ⟨B, inferInstance, inferInstance, φ, hB, ho, ha, fun v hv => hu v (hv.elim id fun h h' => hQ v h' h), rfl⟩), MonoidHom.ext fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem art_universal (hQ : ∀ v ∈ Q, v ∉ placesOver E l) (B : Type) [CommGroup B] [Finite B]
     (hB : ∀ x : B, ∃ n : ℕ, x ^ (l ^ n) = 1) (φ : G E Ω →* B) (ho : IsOpen (φ.ker : Set (G E Ω))) (ha : AntiHom c φ)
@@ -284,7 +282,7 @@ theorem art_universal (hQ : ∀ v ∈ Q, v ∉ placesOver E l) (B : Type) [CommG
     fun v hv => hu v (hv.elim id fun h h' => hQ v h' h), rfl⟩), MonoidHom.ext fun _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `sInf_le_sInf fun _ ⟨B, i, j, φ, hB, ho, ha, hu, e⟩ => ⟨B, i, j, φ, hB, ho, ha, fun v hv => hu v (hv.imp_left fun h1 h2 => h1 (h h2)), e⟩`.
+A detailed English derivation is pending.
 -/
 theorem ringKer_anti {Q Q' : Finset (HeightOneSpectrum (𝓞 E))} (h : Q' ⊆ Q) : ringKer c l Q ≤ ringKer c l Q' :=
   sInf_le_sInf fun _ ⟨B, i, j, φ, hB, ho, ha, hu, e⟩ =>
@@ -294,13 +292,13 @@ def res (Q Q' : Finset (HeightOneSpectrum (𝓞 E))) (h : Q' ⊆ Q) : RingClass 
   QuotientGroup.lift (ringKer c l Q) (art c l Q') ((ringKer_anti c l h).trans (ker_art c l Q').ge)
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem res_comp_art (Q Q' : Finset (HeightOneSpectrum (𝓞 E))) (h : Q' ⊆ Q) :
     (res c l Q Q' h).comp (art c l Q) = art c l Q' := MonoidHom.ext fun _ => rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PUnit, inferInstance, inferInstance, 1, fun _ => ⟨0, rfl⟩, by simp, fun _ _ _ => rfl, fun _ _ _ _ _ _ => rfl, MonoidHom.ker_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRingKer_top : IsRingKer c l Q ⊤ :=
   ⟨PUnit, inferInstance, inferInstance, 1, fun _ => ⟨0, rfl⟩, by simp, fun _ _ _ => rfl,
@@ -308,11 +306,9 @@ theorem isRingKer_top : IsRingKer c l Q ⊤ :=
 
 variable {c l Q} in
 /- English proof (translation)
-Take `⟨B, _, _, φ, hB, ho, ha, hu, rfl⟩` from `h`. Take `⟨B', _, _, φ', hB', ho', ha', hu', rfl⟩` from `h'`. Use `⟨B × B', inferInstance, inferInstance, φ.prod φ', fun x => ?_, ?_, fun g g' e => Prod.ext (ha g g' e) (ha' g g' e), fun v hv A hA σ hσ => Prod.ext (hu v hv A hA σ hσ) (hu' v hv A hA σ hσ), MonoidHom.ker_prod _ _⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hB x.1`. Take `⟨m, hm⟩` from `hB' x.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n + m, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Use `show x.1 ^ l ^ (n + m) = 1`. Rewrite using `[pow_add, pow_mul, hn, one_pow]`. Use `show x.2 ^ l ^ (n + m) = 1`. Rewrite using `[add_comm, pow_add, pow_mul, hm, one_pow]`.
-
-Rewrite using `[MonoidHom.ker_prod]`. Conclude with `ho.inter ho'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRingKer.inf {K K' : Subgroup (G E Ω)} (h : IsRingKer c l Q K) (h' : IsRingKer c l Q K') :
     IsRingKer c l Q (K ⊓ K') := by
@@ -332,9 +328,9 @@ theorem IsRingKer.inf {K K' : Subgroup (G E Ω)} (h : IsRingKer c l Q K) (h' : I
     exact ho.inter ho'
 
 /- English proof (translation)
-Establish `hfin : {K | IsRingKer c l Q K}.Finite`. Use `Set.Finite.of_finite_image (f := Subgroup.map (QuotientGroup.mk' (ringKer c l Q))) (Set.toFinite _) ?_` and prove the remaining obligations. Introduce `K hK K' hK' e`. Establish `h1` using `Subgroup.comap_map_eq_self (f := QuotientGroup.mk' (ringKer c l Q)) (H := K) (by rw [QuotientGroup.ker_mk']; exact sInf_le hK)`. Establish `h2` using `Subgroup.comap_map_eq_self (f := QuotientGroup.mk' (ringKer c l Q)) (H := K') (by rw [QuotientGroup.ker_mk']; exact sInf_le hK')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1, e, h2]`. Take `⟨K, hK, hmin⟩` from `hfin.exists_minimal ⟨⊤, isRingKer_top c l Q⟩`. Establish `e : ringKer c l Q = K` using `le_antisymm (sInf_le hK) (le_sInf fun K' hK' => (hmin (hK.inf hK') inf_le_left).trans inf_le_right)`. Rewrite using `[e]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem isRingKer_ringKer [(ringKer c l Q).FiniteIndex] : IsRingKer c l Q (ringKer c l Q) := by
   have hfin : {K | IsRingKer c l Q K}.Finite := by
@@ -351,19 +347,19 @@ theorem isRingKer_ringKer [(ringKer c l Q).FiniteIndex] : IsRingKer c l Q (ringK
   rwa [e]
 
 /- English proof (translation)
-Establish `hc : (commutator (G E Ω)).topologicalClosure ≤ (art c l Q).ker`. Rewrite using `[ker_art]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨B, _, _, φ, -, ho, -, -, rfl⟩`. Conclude with `Subgroup.topologicalClosure_minimal _ (Abelianization.commutator_subset_ker φ) (φ.ker.isClosed_of_isOpen ho)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `π : Gab E Ω →* RingClass c l Q` to `QuotientGroup.lift _ (art c l Q) hc`. Establish `hπ : ∀ σ, π (toAb E Ω σ) = art c l Q σ` using `fun _ => rfl`. Establish `hs : Function.Surjective (π.comp a)` using `fun x => by`. Take `⟨σ, rfl⟩` from `art_surjective c l Q x`. Take `⟨y, hy⟩` from `ha.quot.surjective (toAb E Ω σ)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, by rw [MonoidHom.comp_apply, hy, hπ]⟩`. Establish `hi : (π.comp a).ker.FiniteIndex`. Use `finiteIndex_of_congr Q _ (fun k => ?_) fun x hx hQ => ?_` and prove the remaining obligations. Establish `hk : diagUnits E k ∈ a.ker`. Rewrite using `[ha.ker]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left ⟨k, rfl⟩)`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.mem_ker.1 hk, map_one]`. Take `⟨σ, hσ⟩` from `toAb_surjective (a x)`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, ← hσ, hπ, art_eq_one, mem_ringKer]`. Introduce and unpack `_ ⟨B, _, _, φ, hB, ho, -, hu, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `_ : TopologicalSpace B` to `⊥`. Establish `: DiscreteTopology B` using `⟨rfl⟩`. Establish `hφ : Continuous φ` using `continuous_of_isOpen_ker' φ ho`. Establish `hψ : Continuous ((liftAb φ hφ).comp a)` using `(continuous_liftAb φ hφ).comp ha.quot.continuous`. Use `map_congr_unit hl hB Q ((liftAb φ hφ).comp a) ((isOpen_discrete {1}).preimage hψ) (fun v hv y hy => by` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩` from `exists_isPlaceOver Ω v`. Take `⟨τ, hτ, e⟩` from `(ha.ine v A hA _).1 ⟨y, hy, rfl⟩`. Rewrite using `[MonoidHom.comp_apply, ← e, liftAb_toAb, hu v hv A hA τ hτ]) hx hQ`. Rewrite `this` using `[MonoidHom.comp_apply, ← hσ, liftAb_toAb]`. Then use the resulting hypothesis. Establish `: Finite (π.comp a).range`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Subgroup.finite_quotient_of_finiteIndex (H := (π.comp a).ker)` as an intermediate fact. Conclude with `Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange (π.comp a)).toEquiv`. Establish `: Finite (G E Ω ⧸ ringKer c l Q)` using `Finite.of_surjective (fun x : (π.comp a).range => (x.1 : RingClass c l Q)) fun x => ⟨⟨x, hs x⟩, rfl⟩`. Conclude with `Subgroup.finiteIndex_of_finite_quotient`.
+A detailed English derivation is pending.
 -/
 theorem finiteIndex_ringKer [IsTotallyComplex E] {a : Ideles E →* Gab E Ω} (ha : IsGlobalArtin a) (hl : l.Prime) :
     (ringKer c l Q).FiniteIndex := by
@@ -405,20 +401,20 @@ theorem finiteIndex_ringKer [IsTotallyComplex E] {a : Ideles E →* Gab E Ω} (h
   exact Subgroup.finiteIndex_of_finite_quotient
 
 /- English proof (translation)
-The claim follows from `Subgroup.finite_quotient_of_finiteIndex`.
+A detailed English derivation is pending.
 -/
 theorem finite_ringClass [(ringKer c l Q).FiniteIndex] : Finite (RingClass c l Q) :=
   Subgroup.finite_quotient_of_finiteIndex
 
 /- English proof (translation)
-Take `⟨B, _, _, φ, -, ho, -, -, e⟩` from `isRingKer_ringKer c l Q`. Rewrite using `[ker_art, ← e]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem isOpen_ker_art [(ringKer c l Q).FiniteIndex] : IsOpen ((art c l Q).ker : Set (G E Ω)) := by
   obtain ⟨B, _, _, φ, -, ho, -, -, e⟩ := isRingKer_ringKer c l Q
   rwa [ker_art, ← e]
 
 /- English proof (translation)
-Take `⟨B, _, _, φ, hB, -, -, -, e⟩` from `isRingKer_ringKer c l Q`. Take `⟨g, rfl⟩` from `art_surjective c l Q x`. Take `⟨n, hn⟩` from `hB (φ g)`. Conclude with `⟨n, by rw [← map_pow, art_eq_one, ← e, MonoidHom.mem_ker, map_pow, hn]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pow_eq_one [(ringKer c l Q).FiniteIndex] (x : RingClass c l Q) : ∃ n : ℕ, x ^ (l ^ n) = 1 := by
   obtain ⟨B, _, _, φ, hB, -, -, -, e⟩ := isRingKer_ringKer c l Q
@@ -429,7 +425,7 @@ theorem pow_eq_one [(ringKer c l Q).FiniteIndex] (x : RingClass c l Q) : ∃ n :
 end Galois
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hA E Ω`. Use `fun Q : Finset (HeightOneSpectrum (𝓞 E)) => finiteIndex_ringKer c l Q ha hl` as an intermediate fact. Conclude with `⟨fun Q => finite_ringClass c l Q, fun Q => pow_eq_one c l Q, art_surjective c l, fun Q => isOpen_ker_art c l Q, art_anti c l, fun Q v hv => art_unram c l Q (Or.inl hv), fun Q hQ B _ _ => art_universal c l Q hQ B, res_comp_art c l⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ringClass_laws (hA : GlobalTheory.Published.GlobalArtinReciprocity) (E Ω : Type) [Field E] [NumberField E]
     [IsTotallyComplex E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (c : Ω ≃+* Ω) (l : ℕ) (hl : l.Prime) :
@@ -452,7 +448,7 @@ theorem ringClass_laws (hA : GlobalTheory.Published.GlobalArtinReciprocity) (E �
     res_comp_art c l⟩
 
 /- English proof (translation)
-Establish `: IsCMField H.E` using `H.isCMField_hostE`. Establish `h` using `fun i => ringClass_laws hA H.E N.Om cc (l i) (lPrime i).out`. Conclude with `⟨fun i Q => RingClass cc (l i) Q, inferInstance, fun i Q => @Fintype.ofFinite _ ((h i).1 Q), fun i Q => art cc (l i) Q, fun i => res cc (l i), fun i => (h i).2.1, fun i => (h i).2.2.1, fun i => (h i).2.2.2.1, fun i => (h i).2.2.2.2.1, fun i => (h i).2.2.2.2.2.1, fun i => (h i).2. …`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_ringClass_host (hA : GlobalTheory.Published.GlobalArtinReciprocity) (R : Ranks) (H : Host R) (what₂ : Rows.Data R)
     (N : NData R H what₂) (cc : N.Om ≃+* N.Om) (Tw : Type) (l : Tw → ℕ) [lPrime : ∀ i, Fact (l i).Prime] :

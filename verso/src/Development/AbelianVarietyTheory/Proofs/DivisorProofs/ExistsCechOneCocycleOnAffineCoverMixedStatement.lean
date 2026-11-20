@@ -8,7 +8,7 @@ open AlgebraicGeometry CategoryTheory Limits
 open GlobalTheory.KS (rsT C1 IsCoc IsCob)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CechMixed.exists_cocycle_on_affine` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCechOneCocycleOnAffineCoverMixed.lean&line=48#L48)
 -/

@@ -11,7 +11,7 @@ namespace GlobalTheory.CptCoeff
 open MeasureTheory Matrix ComplexConjugate
 
 /- English proof (translation)
-Establish `e : ∀ y : ℂ, (((‖y‖ ^ 2 : ℝ)) : ℂ) = y * conj y` using `fun y => by`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[e, e, e, e]`. Simplify using `only [map_add, map_sub, map_mul, Complex.conj_I]`. Take the linear combination `(1 / 2 : ℂ) * (z * conj w - w * conj z) * Complex.I_sq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mul_conj_polar (z w : ℂ) : z * conj w = (1 / 4 : ℂ) * ((((‖z + w‖ ^ 2 : ℝ) : ℂ) - ((‖z - w‖ ^ 2 : ℝ) : ℂ)) +
     Complex.I * (((‖z + Complex.I * w‖ ^ 2 : ℝ) : ℂ) - ((‖z - Complex.I * w‖ ^ 2 : ℝ) : ℂ))) := by
@@ -22,7 +22,7 @@ theorem mul_conj_polar (z w : ℂ) : z * conj w = (1 / 4 : ℂ) * ((((‖z + w�
   linear_combination (1 / 2 : ℂ) * (z * conj w - w * conj z) * Complex.I_sq
 
 /- English proof (translation)
-Establish `hi : Integrable (fun x => ‖h x‖ ^ 2) μ` using `hh.integrable_norm_pow two_ne_zero`. Rewrite using `[integral_complex_ofReal, integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun x => by positivity) hi.aestronglyMeasurable]`. Use `congr 3`. Use function extensionality and compare the values at `x`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_sq_norm {X : Type} [MeasurableSpace X] {μ : Measure X} {h : X → ℂ} (hh : MemLp h 2 μ) :
     ∫ x, (((‖h x‖ ^ 2 : ℝ)) : ℂ) ∂μ = (((∫⁻ x, ‖h x‖ₑ ^ 2 ∂μ).toReal : ℝ) : ℂ) := by
@@ -34,18 +34,16 @@ theorem integral_sq_norm {X : Type} [MeasurableSpace X] {μ : Measure X} {h : X 
   rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]
 
 /- English proof (translation)
-The claim follows from `(hh.integrable_norm_pow two_ne_zero).ofReal`.
+A detailed English derivation is pending.
 -/
 theorem integrable_sq_norm {X : Type} [MeasurableSpace X] {μ : Measure X} {h : X → ℂ} (hh : MemLp h 2 μ) :
     Integrable (fun x => (((‖h x‖ ^ 2 : ℝ)) : ℂ)) μ :=
   (hh.integrable_norm_pow two_ne_zero).ofReal
 
 /- English proof (translation)
-Establish `h1` using `hf.add hg`. Establish `h2` using `hf.sub hg`. Establish `h3` using `hf.add (hg.const_smul Complex.I)`. Establish `h4` using `hf.sub (hg.const_smul Complex.I)`. Rewrite using `[← integral_sq_norm h1, ← integral_sq_norm h2, ← integral_sq_norm h3, ← integral_sq_norm h4, ← integral_sub (integrable_sq_norm h1) (integrable_sq_norm h2), ← integral_sub (integrable_sq_norm h3) (integrable_sq_norm h4), ← integral_const_mul, ← integral_add, ← integral_const_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_conj_polar (f x) (g x)`. Conclude with `(integrable_sq_norm h1).sub (integrable_sq_norm h2)`.
-
-Conclude with `((integrable_sq_norm h3).sub (integrable_sq_norm h4)).const_mul _`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_mul_conj {X : Type} [MeasurableSpace X] {μ : Measure X} {f g : X → ℂ} (hf : MemLp f 2 μ)
     (hg : MemLp g 2 μ) : ∫ x, f x * conj (g x) ∂μ = (1 / 4 : ℂ) *
@@ -68,7 +66,7 @@ theorem integral_mul_conj {X : Type} [MeasurableSpace X] {μ : Measure X} {f g :
   · exact ((integrable_sq_norm h3).sub (integrable_sq_norm h4)).const_mul _
 
 /- English proof (translation)
-Rewrite using `[integral_mul_conj (hP _ (hT f hf)) (hP _ (hT g hg)), integral_mul_conj (hP f hf) (hP g hg), ← map_add, ← map_sub, ← map_smul, ← map_add, ← map_sub, hU _ (P.add_mem hf hg), hU _ (P.sub_mem hf hg), hU _ (P.add_mem hf (P.smul_mem _ hg)), hU _ (P.sub_mem hf (P.smul_mem _ hg))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_mul_conj_map {X : Type} [MeasurableSpace X] {μ : Measure X} (P : Submodule ℂ (X → ℂ))
     (hP : ∀ f ∈ P, MemLp f 2 μ) (T : Module.End ℂ (X → ℂ)) (hT : ∀ f ∈ P, T f ∈ P)
@@ -83,9 +81,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def infOne : AF F := ((1 : InfiniteAdeleRing F), (0 : FiniteAdeleRing (𝓞 F) F))
 
 /- English proof (translation)
-Introduce `t ht`. Establish `h1 : t.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact ht)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t.1 * 1 = 0`. Rewrite using `[h1, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `t.2 * 0 = 0`. Conclude with `mul_zero _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem at_infOne : At (evI F) (infOne (F := F)) := by
   intro t ht
@@ -97,23 +95,23 @@ theorem at_infOne : At (evI F) (infOne (F := F)) := by
     exact mul_zero _
 
 /- English proof (translation)
-The claim follows from `evalV_singleFin_ne h a`.
+A detailed English derivation is pending.
 -/
 theorem evFin_liftV_ne {v w : Pl F} (h : w ≠ v) (a : Fv F v) : evFin F w (GlobalTheory.LatVac.liftV v a) = 0 :=
   evalV_singleFin_ne h a
 
 /- English proof (translation)
-Use `set e : AF F := infOne + ∑ w ∈ S, GlobalTheory.LatVac.liftV w 1 with he`. Establish `h1 : evI F (1 - e) = 0`. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F (fstA F (1 - e)) = 0`. Establish `h0 : fstA F (infOne (F` using `F)) = 1 := rfl`. Establish `hl : ∀ w : Pl F, fstA F (GlobalTheory.LatVac.liftV w 1) = 0` using `fun w => rfl`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: fstA F (1 - e) = 0`. Rewrite using `[he, map_sub, map_one, map_add, map_sum, h0, Finset.sum_eq_zero fun w _ => hl w, add_zero, sub_self]`. Rewrite using `[this, map_zero]`. Establish `h2 : ∀ w ∈ S, evFin F w (1 - e) = 0`. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, map_sub, map_one, map_add, map_sum]`. Establish `h0 : evFin F w (infOne (F` using `F)) = 0 := by`. Express the relevant statement in the definitionally equal form `evalV F w (sndA F infOne) = 0`. Establish `: sndA F (infOne (F` using `F)) = 0 := rfl`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ∑ x ∈ S, evFin F w (GlobalTheory.LatVac.liftV x 1) = ∑ x ∈ S, if w = x then (1 : Fv F w) else 0`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : w = x`. Substitute `hx` using the available equality. Rewrite using `[if_pos rfl, GlobalTheory.LatVac.evFin_liftV]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hx, evFin_liftV_ne hx]`. Rewrite using `[h0, hs, Finset.sum_ite_eq S w (fun _ => (1 : Fv F w)), if_pos hw, zero_add, sub_self]`. Establish `hue : u = e • u`. Use `hu (1 - e) h1 h2` as an intermediate fact. Rewrite `this` using `[sub_smul, one_smul, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hA : e • A = 0`. Rewrite using `[he, add_smul, Finset.sum_smul, hI _ at_infOne, zero_add]`. Conclude with `Finset.sum_eq_zero fun w hw => hS w hw _ (GlobalTheory.LatVac.at_liftV w 1)`. Rewrite using `[hue, Matrix.mul_smul, ← Matrix.smul_mul, hA, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_eq_zero_of_supp (S : Finset (Pl F)) {m n k : ℕ} (A : Matrix (Fin m) (Fin n) (AE F E))
     (hI : ∀ t : AF F, At (evI F) t → t • A = 0) (hS : ∀ w ∈ S, ∀ t : AF F, At (evFin F w) t → t • A = 0)
@@ -150,13 +148,13 @@ theorem mul_eq_zero_of_supp (S : Finset (Pl F)) {m n k : ℕ} (A : Matrix (Fin m
   rw [hue, Matrix.mul_smul, ← Matrix.smul_mul, hA, Matrix.zero_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT S g h hgI hhI hgS hhS Φ hΦ u hu μ hμ`. Use `letI : MeasurableSpace (Fin a' × Fin (a + a') → AF F) := borel _`. Establish `hW` using `IsUWeilPair.isUSplitting hT.weil'`. Establish `hg : mat g * u = u`. Use `mul_eq_zero_of_supp S (mat g - 1) hgI hgS u hu` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hh : u * (mat h)ᵀ = u`. Use `mul_eq_zero_of_supp S (mat h - 1) hhI hhS uᵀ (fun t h1 h2 => by rw [← Matrix.transpose_smul, hu t h1 h2, Matrix.transpose_zero])` as an intermediate fact. Rewrite `this` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Use `congrArg Matrix.transpose this` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_transpose]`. Then use the resulting hypothesis. Establish `hact : actAB (cA σ) (g, h) u = u`. Express the relevant statement in the definitionally equal form `mat g * u * (mat h)ᵀ = u`. Rewrite using `[hg, hh]`. Establish `hcomm : om' (g, h) (G.M'.co.rho B.ψ u Φ) = G.M'.co.rho B.ψ u (om' (g, h) Φ)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hW.impl (g, h) u Φ hΦ, hact]`. Rewrite using `[← hcomm]`. Conclude with `integral_mul_conj_map (μ := μ) (schA F _) (fun f hf => GlobalTheory.T.adelic_schwartz_mem_L2 F _ μ hμ f hf) (om' (g, h)) (fun f hf => hW.pres (g, h) f hf) (fun f hf => hW.unit μ hμ (g, h) f hf) hΦ (GlobalTheory.HeisSchA.rho_mem_schA G.M' B.ψ hT.base.std u Φ hΦ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matrix_coeff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

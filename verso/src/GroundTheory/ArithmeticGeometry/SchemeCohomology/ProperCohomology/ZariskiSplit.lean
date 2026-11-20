@@ -16,17 +16,15 @@ variable {A : Type u} [CommRing A] [IsNoetherianRing A] [IsLocalRing A] {X : Sch
   [X.Over (Spec (.of A))]
 
 /- English proof (translation)
-Establish `hzero : ∀ {V : X.Opens}, V ≤ W₁ ⊓ W₂ → ∀ t : Γ(F, V), t = 0` using `fun hV t => hF _ (Set.disjoint_of_subset_left hV hdisj) t`. Set `Wf : ULift.{u} Bool → X.Opens` to `fun b => if b.down then W₁ else W₂`. Establish `hWf : ∀ b c : ULift.{u} Bool, Wf b ⊓ Wf c ≤ W₁ ⊓ W₂ ∨ b = c`. Introduce and unpack `⟨_ | _⟩ ⟨_ | _⟩`. Conclude with `Or.inr rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Prove the second alternative.
 
-Conclude with `Or.inl (le_of_eq (inf_comm _ _))`. Conclude with `Or.inl le_rfl`. Conclude with `Or.inr rfl`. Set `sf : ∀ b, ToType ((modulesAb F).1.obj (op (Wf b)))` to `fun b => by`. Break down `b with ⟨_ | _⟩` into its components or cases.
+Prove the first alternative. Prove the first alternative. Prove the second alternative. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `s₂`. Conclude with `s₁`. Establish `hcovx : ∀ x ∈ (⊤ : X.Opens), ∃ b, x ∈ Wf b` using `fun x _ => by`. Establish `: x ∈ W₁ ⊔ W₂` using `hcov ▸ trivial`. Break down `this with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨true⟩, h⟩`. Conclude with `⟨⟨false⟩, h⟩`. Take `⟨s, hs⟩` from `sheaf_exists_glue (modulesAb F) (V := ⊤) Wf (fun _ => le_top) hcovx sf (fun b c => by`. Break down `hWf b c with h | rfl` into its components or cases. Conclude with `(hzero h _).trans (hzero h _).symm`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `rfl)`. Use `⟨s, ⟨hs ⟨true⟩, hs ⟨false⟩⟩, fun t ht => ?_⟩` and prove the remaining obligations. Apply `sheaf_eq_of_locally (modulesAb F) t s` to reduce the goal to its premises. Introduce `x _`. Establish `: x ∈ W₁ ⊔ W₂` using `hcov ▸ trivial`.
-
-Break down `this with h | h` into its components or cases. Conclude with `⟨W₁, le_top, h, ht.1.trans (hs ⟨true⟩).symm⟩`. Conclude with `⟨W₂, le_top, h, ht.2.trans (hs ⟨false⟩).symm⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma existsUnique_glue_of_supportedIn {F : X.Modules} {T : Set X}
     (hF : Scheme.Modules.SupportedIn F T) {W₁ W₂ : X.Opens} (hcov : W₁ ⊔ W₂ = ⊤)
@@ -73,7 +71,7 @@ def splitSection (n : ℕ) : Γ(fibreQuot A X n, ⊤) :=
     (resF (fibreQuot A X n) (le_top : W₁ ≤ ⊤) (fibreOne A X n)) 0).exists.choose
 
 /- English proof (translation)
-The claim follows from `(existsUnique_glue_of_supportedIn (supportedIn_fibreQuot_closedFibre n) hcov hdisj (resF (fibreQuot A X n) (le_top : W₁ ≤ ⊤) (fibreOne A X n)) 0).exists.choose_spec`.
+A detailed English derivation is pending.
 -/
 lemma splitSection_spec (n : ℕ) :
     resF (fibreQuot A X n) (le_top : W₁ ≤ ⊤) (splitSection A hcov hdisj n) =
@@ -83,7 +81,7 @@ lemma splitSection_spec (n : ℕ) :
     (resF (fibreQuot A X n) (le_top : W₁ ≤ ⊤) (fibreOne A X n)) 0).exists.choose_spec
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((quotPowπ (maximalIdeal A) (𝟙_ X.Modules) (n + 1)).app ⊤ ≫ (quotPowMap (maximalIdeal A) (𝟙_ X.Modules) n).app ⊤) _ = _`. Rewrite using `[← Scheme.Modules.Hom.comp_app, quotPowπ_map]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma quotPowMap_fibreOne (n : ℕ) :
     (quotPowMap (maximalIdeal A) (𝟙_ X.Modules) n).app ⊤ (fibreOne A X (n + 1)) =
@@ -93,7 +91,7 @@ lemma quotPowMap_fibreOne (n : ℕ) :
   rw [← Scheme.Modules.Hom.comp_app, quotPowπ_map]
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `splitSection_spec hcov hdisj (n + 1)`. Use `(existsUnique_glue_of_supportedIn (supportedIn_fibreQuot_closedFibre n) hcov hdisj (resF (fibreQuot A X n) (le_top : W₁ ≤ ⊤) (fibreOne A X n)) 0).unique ⟨?_, ?_⟩ (splitSection_spec hcov hdisj n)` and prove the remaining obligations. Rewrite using `[resF_app, h₁, ← resF_app, quotPowMap_fibreOne]`. Rewrite using `[resF_app, h₂, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma quotPowMap_splitSection (n : ℕ) :
     (quotPowMap (maximalIdeal A) (𝟙_ X.Modules) n).app ⊤ (splitSection A hcov hdisj (n + 1)) =
@@ -112,7 +110,7 @@ abbrev fibreTower : ∀ n, Sheaf.H.{u} (modulesAb (fibreQuot A X (n + 1))) 0 →
   fun n => H.linearMap A (quotPowMap (maximalIdeal A) (𝟙_ X.Modules) n) 0
 
 /- English proof (translation)
-Introduce `n`. Express the relevant statement in the definitionally equal form `Sheaf.H.map.{u} (modulesAbMap (quotPowMap (maximalIdeal A) (𝟙_ X.Modules) n)) 0 ((Sheaf.H.equiv₀ _ isTerminalTop).symm (splitSection A hcov hdisj (n + 1))) = _`. Conclude with `(Sheaf.H.equiv₀_symm_naturality isTerminalTop _ _).trans (congrArg _ (quotPowMap_splitSection hcov hdisj n))`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 lemma mem_towerLimit_splitSection :
     (fun n => (Sheaf.H.equiv₀ (modulesAb (fibreQuot A X n)) isTerminalTop).symm
@@ -126,19 +124,17 @@ lemma mem_towerLimit_splitSection :
 include hcov hdisj in
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `hsurj _ (mem_towerLimit_splitSection hcov hdisj)`. Use `set g : Γ(X, ⊤) := Sheaf.H.equiv₀ (modulesAb (𝟙_ X.Modules)) isTerminalTop h`. Take `⟨a, ha⟩` from `hΓ g`. Establish `hs : splitSection A hcov hdisj 0 = (algebraMap A Γ(X, ⊤) a) • fibreOne A X 0`. Establish `e1 : Sheaf.H.equiv₀ (modulesAb (fibreQuot A X 0)) isTerminalTop (H.linearMap A (quotPowπ (maximalIdeal A) (𝟙_ X.Modules) 0) 0 h) = splitSection A hcov hdisj 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh]`. Conclude with `AddEquiv.apply_symm_apply _ _`. Rewrite using `[← e1]`. Express the relevant statement in the definitionally equal form `Sheaf.H.equiv₀ _ isTerminalTop (Sheaf.H.map.{u} (modulesAbMap (quotPowπ (maximalIdeal A) (𝟙_ X.Modules) 0)) 0 h) = _`. Rewrite using `[← Sheaf.H.equiv₀_naturality]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(quotPowπ (maximalIdeal A) (𝟙_ X.Modules) 0).app ⊤ g = _`. Establish `e2 : (show Γ(𝟙_ X.Modules, ⊤) from g) = algebraMap A Γ(X, ⊤) a • (show Γ(𝟙_ X.Modules, ⊤) from (1 : Γ(X, ⊤)))`. Rewrite using `[← ha]`. Conclude with `(mul_one (algebraMap A Γ(X, ⊤) a)).symm`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Scheme.Modules.Hom.app_smul _ _ _`. Take `⟨hs₁, hs₂⟩` from `splitSection_spec hcov hdisj 0`. Rewrite `hs₁`, `hs₂` using `[hs, resF_smul]`. Break down `isUnit_or_isUnit_one_sub_self a with hu | hu` into its components or cases. Apply `resF_fibreOne_ne_zero hx₂ hx₂W 0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu' : IsUnit (resO (le_top : W₂ ≤ ⊤) (algebraMap A Γ(X, ⊤) a))` using `(hu.map _).map _`. Take `⟨v, hv⟩` from `hu'`. Rewrite `hs₂` using `[← hv]`. Use `congrArg (fun t => (↑v⁻¹ : Γ(X, W₂)) • t) hs₂` as an intermediate fact. Simplify `this` using `[smul_smul]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `resF_fibreOne_ne_zero hx₁ hx₁W 0` to reduce the goal to its premises. Establish `hu' : IsUnit (resO (le_top : W₁ ≤ ⊤) (algebraMap A Γ(X, ⊤) (1 - a)))` using `(hu.map _).map _`. Establish `e : resO (le_top : W₁ ≤ ⊤) (algebraMap A Γ(X, ⊤) (1 - a)) • resF (fibreQuot A X 0) (le_top : W₁ ≤ ⊤) (fibreOne A X 0) = 0`. Rewrite using `[map_sub, map_one, map_sub, map_one, sub_smul, one_smul, hs₁, sub_self]`. Take `⟨v, hv⟩` from `hu'`.
-
-Rewrite `e` using `[← hv]`. Use `congrArg (fun t => (↑v⁻¹ : Γ(X, W₁)) • t) e` as an intermediate fact. Simplify `this` using `[smul_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem false_of_split (hΓ : Function.Surjective (algebraMap A Γ(X, ⊤)))
     (hsurj : ∀ x : (∀ n, Sheaf.H.{u} (modulesAb (fibreQuot A X n)) 0),
@@ -193,27 +189,25 @@ variable {A : Type u} [CommRing A] [IsNoetherianRing A] [IsLocalRing A] {X : Sch
 omit [IsNoetherianRing A] in
 
 /- English proof (translation)
-The claim follows from `(isClosed_singleton_closedPoint A).preimage (X ↘ Spec (.of A)).base.hom.continuous`.
+A detailed English derivation is pending.
 -/
 lemma isClosed_closedFibre : IsClosed (closedFibre (A := A) X) :=
   (isClosed_singleton_closedPoint A).preimage (X ↘ Spec (.of A)).base.hom.continuous
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace (X ↘ Spec (.of A))`. Establish `hinj : Function.Injective (X ↘ Spec (.of A)).appTop`. Introduce `r s hrs`. Take `⟨r', rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of A)).inv).2 r`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s', rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of A)).inv).2 s`. Establish `: algebraMap A Γ(X, ⊤) r' = algebraMap A Γ(X, ⊤) s'` using `hrs`. Rewrite using `[hΓ.1 this]`. Establish `: IsDominant (X ↘ Spec (.of A))` using `isDominant_of_of_appTop_injective hinj`. Establish `hrange : Set.range (X ↘ Spec (.of A)).base = Set.univ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ((X ↘ Spec (.of A)).isClosedMap.isClosed_range).closure_eq]`. Conclude with `(X ↘ Spec (.of A)).denseRange.closure_range`. Take `⟨x, hx⟩ : closedPoint A ∈ Set.range (X ↘ Spec (.of A)).base` from `hrange ▸ trivial`. Conclude with `⟨x, hx⟩`. Introduce `u v hu hv hsub hu' hv'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Use `set X₀ := closedFibre (A := A) X`. Establish `hX₀ : IsOpen X₀ᶜ` using `isClosed_closedFibre.isOpen_compl`. Set `W₁ : X.Opens` to `⟨u ∪ X₀ᶜ, hu.union hX₀⟩`. Set `W₂ : X.Opens` to `⟨v ∪ X₀ᶜ, hv.union hX₀⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcov : W₁ ⊔ W₂ = ⊤`. Apply `le_antisymm le_top` to reduce the goal to its premises. Introduce `x _`. Distinguish the cases in `hx : x ∈ X₀`. Break down `hsub hx with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inl (Or.inl h)`. Conclude with `Or.inr (Or.inl h)`. Conclude with `Or.inl (Or.inr hx)`. Establish `hdisj : Disjoint ((W₁ ⊓ W₂ : X.Opens) : Set X) X₀`. Rewrite using `[Set.disjoint_left]`.
+Prove the first alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce and unpack `x ⟨h₁, h₂⟩ hx`. Break down `h₁ with h₁ | h₁` into its components or cases. Break down `h₂ with h₂ | h₂` into its components or cases. Conclude with `hne ⟨x, hx, h₁, h₂⟩`. Conclude with `h₂ hx`.
-
-Conclude with `h₁ hx`. Take `⟨x₁, hx₁, hx₁u⟩` from `hu'`. Take `⟨x₂, hx₂, hx₂v⟩` from `hv'`. Conclude with `false_of_split hcov hdisj hΓ.2 hsurj hx₁ (Or.inl hx₁u) hx₂ (Or.inl hx₂v)`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isConnected_closedFibre_of_surj [IsProper (X ↘ Spec (.of A))]
     (hΓ : Function.Bijective (algebraMap A Γ(X, ⊤)))

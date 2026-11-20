@@ -27,7 +27,7 @@ namespace SnapperSections
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, I => by simp [SubSystem.twistPows] | t + 1, L, n, I => by rw [SubSystem.twistPows, SubSystem.twist_sub_eq_mul_of_line, SubSystem.pow_sub, twistPows_sub F t, Fin.prod_univ_castSucc] ring`.
+A detailed English derivation is pending.
 -/
 theorem twistPows_sub (F : SubSystem k x Ω) : ∀ (t : ℕ) (L : Fin t → SubSystem k x Ω) (n : Fin t → ℕ)
     (I : Chart x), (F.twistPows t L n).sub I = F.sub I * ∏ j, (L j).sub I ^ n j
@@ -43,14 +43,14 @@ def powsBundle (F : LineBundle k x) : (t : ℕ) → (Fin t → LineBundle k x) �
       ((L (Fin.last t)).powBundle (n (Fin.last t)))
 
 /- English proof (translation)
-The claim follows from `SubSystem.twist_sub_eq_mul_of_line _ _ I`.
+A detailed English derivation is pending.
 -/
 theorem tensorProd_sub (P Q : LineBundle k x) (I : Chart x) :
     (P.tensorProd Q).sub I = Q.sub I * P.sub I :=
   SubSystem.twist_sub_eq_mul_of_line _ _ I
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, I => by simp [powsBundle] | t + 1, L, n, I => by rw [powsBundle, tensorProd_sub, LineBundle.powBundle_toSubSystem, SubSystem.pow_sub, powsBundle_sub F t, Fin.prod_univ_castSucc] ring`.
+A detailed English derivation is pending.
 -/
 theorem powsBundle_sub (F : LineBundle k x) : ∀ (t : ℕ) (L : Fin t → LineBundle k x) (n : Fin t → ℕ)
     (I : Chart x), (powsBundle F t L n).sub I = F.sub I * ∏ j, (L j).sub I ^ n j
@@ -82,9 +82,9 @@ theorem spanBundle_sub (s : Ω) (hs : s ≠ 0) (I : Chart x) :
     (spanBundle k x s hs).sub I = Submodule.span (chartRing k x I) {s} := rfl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[pow_succ]`. Simplify using `[h]`.
+Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `_ = (∏ i, a i ^ n i) * a j := by rw [Finset.prod_mul_distrib, Finset.prod_ite_eq']; simp`.
+A detailed English derivation is pending.
 -/
 theorem prod_update_pow {M : Type*} [CommMonoid M] {t : ℕ} (a : Fin t → M) (n : Fin t → ℕ) (j : Fin t) :
     ∏ i, a i ^ Function.update n j (n j + 1) i = (∏ i, a i ^ n i) * a j := by
@@ -97,14 +97,14 @@ theorem prod_update_pow {M : Type*} [CommMonoid M] {t : ℕ} (a : Fin t → M) (
     _ = (∏ i, a i ^ n i) * a j := by rw [Finset.prod_mul_distrib, Finset.prod_ite_eq']; simp
 
 /- English proof (translation)
-The claim follows from `Submodule.mul_le.mpr fun _ hp _ hq => Submodule.mul_mem_mul (h₁ hp) (h₂ hq)`.
+A detailed English derivation is pending.
 -/
 theorem mul_le_mul_sub {I : Chart x} {P Q P' Q' : Submodule (chartRing k x I) Ω} (h₁ : P ≤ P') (h₂ : Q ≤ Q') :
     P * Q ≤ P' * Q' :=
   Submodule.mul_le.mpr fun _ hp _ hq => Submodule.mul_mem_mul (h₁ hp) (h₂ hq)
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, m, e, -, hm, hf, hme, rfl⟩`. Conclude with `Submodule.mem_one.mpr ⟨⟨_, f, m, e, hm, hf, hme, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem idealMod_le_one (pp : Ideal (Poly k N)) (I : Chart x) : idealMod (x := x) pp I ≤ 1 := by
   refine Submodule.span_le.mpr ?_
@@ -114,7 +114,7 @@ theorem idealMod_le_one (pp : Ideal (Poly k N)) (I : Chart x) : idealMod (x := x
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-Establish `hJ : (zeroIdeal D s).IsHomogeneous (homogeneousSubmodule (Fin (N + 1)) k)` using `Ideal.homogeneous_span _ _ fun f ⟨c, hf, _⟩ => ⟨c, (mem_homogeneousSubmodule c f).mpr hf⟩`. Introduce `f hf d`. Establish `h` using `hJ d hf`. Establish `hc : (DirectSum.decompose (homogeneousSubmodule (Fin (N + 1)) k) f d : Poly k N) = homogeneousComponent d f` using `decomposition.decompose'_apply f d`. Rewrite `h` using `[hc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem zeroIdeal_homog (D : SubSystem k x Ω) (s : Ω) :
     ∀ f ∈ zeroIdeal D s, ∀ d : ℕ, homogeneousComponent d f ∈ zeroIdeal D s := by
@@ -127,9 +127,9 @@ theorem zeroIdeal_homog (D : SubSystem k x Ω) (s : Ω) :
   rwa [hc] at h
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, m, e, hf, hm, hfe, hme, rfl⟩`. Take `⟨g, hg, z, hz, hgz⟩` from `Submodule.mem_sup.mp hf`. Establish `hfe' : f = homogeneousComponent e g + homogeneousComponent e z`. Rewrite using `[← map_add, hgz, homogeneousComponent_eq_self hfe]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, hfe', map_add, add_div]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨_, m, e, hh g hg e, hm, homogeneousComponent_isHomogeneous _ _, hme, rfl⟩) (Submodule.subset_span ⟨_, m, e, hh' z hz e, hm, homogeneousComponent_isHomogeneous _ _, hme, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealMod_sup_le (pp pp' : Ideal (Poly k N)) (hh : ∀ f ∈ pp, ∀ d : ℕ, homogeneousComponent d f ∈ pp)
     (hh' : ∀ f ∈ pp', ∀ d : ℕ, homogeneousComponent d f ∈ pp') (I : Chart x) :
@@ -145,13 +145,13 @@ theorem idealMod_sup_le (pp pp' : Ideal (Poly k N)) (hh : ∀ f ∈ pp, ∀ d : 
     (Submodule.subset_span ⟨_, m, e, hh' z hz e, hm, homogeneousComponent_isHomogeneous _ _, hme, rfl⟩)
 
 /- English proof (translation)
-Establish `hge` using `one_le_ringKrullDim_of_relevant pp hh hrel`. Establish `hle : ringKrullDim (Poly k N ⧸ pp) ≤ ((N + 1 : ℕ) : WithBot ℕ∞)`. Use `(ringKrullDim_le_of_surjective _ Ideal.Quotient.mk_surjective).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `ringKrullDim (Poly k N ⧸ pp) = d at hge hle`. Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => exact absurd hge (by simp)`. Consider the case `coe d`. Proceed by induction on `d using ENat.recTopCoe with`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `top`. It suffices to derive a contradiction. Establish `h2 : ((⊤ : ℕ∞) : WithBot ℕ∞) ≤ (((N + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)` using `hle`. Conclude with `ENat.natCast_ne_top (N + 1) (top_le_iff.mp (WithBot.coe_le_coe.mp h2))`. Consider the case `coe m`.
+Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ m` using `by exact_mod_cast hge`. Conclude with `⟨m - 1, by rw [Nat.sub_add_cancel h1]; rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dim_eq (pp : Ideal (Poly k N)) [pp.IsPrime] (hh : ∀ f ∈ pp, ∀ d : ℕ, homogeneousComponent d f ∈ pp)
     (hrel : ∃ i, (X i : Poly k N) ∉ pp) :
@@ -179,51 +179,45 @@ end SnapperSections
 open SnapperSections in
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x pp hp hh hle hrel t L j a`. Use `hp` as an intermediate fact. Take `⟨μ, hμ⟩` from `Generated.full k Ω N x (L j)`. Take `⟨D, hDdef⟩ : ∃ D : LineBundle k x, D = (L j).tensorProd (twistBundle k x μ)` from `⟨_, rfl⟩`. Establish `hDgen : D.toSubSystem.Generated` using `hDdef ▸ hμ μ le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hDsub : ∀ I, D.sub I = (twistSys k x μ).sub I * (L j).sub I` using `fun I => by`. Rewrite using `[hDdef, tensorProd_sub (L j) (twistBundle k x μ) I, twistBundle_sub]`. Take `⟨s, hs, I₀, hsI₀⟩` from `hN k Ω N x pp hp hh hle hrel D hDgen`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hsI₀ (Submodule.zero_mem _)`. Establish `hsD : ∀ I, s ∈ D.sub I` using `fun I => (Submodule.mem_iInf _).mp hs I`. Take `⟨e, he⟩` from `exists_dim_eq pp hh hrel`. Take `⟨f₀, hf₀Z, hf₀p⟩` from `CutZeroNotLe.proof k Ω N x e pp D s ⟨hp, hh, hle, hrel, he⟩ hs ⟨I₀, hsI₀⟩`. Take `⟨Zs, hZs⟩ : ∃ Zs : Ideal (Poly k N), Zs = zeroIdeal D.toSubSystem s` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hZh : ∀ f ∈ Zs, ∀ d : ℕ, homogeneousComponent d f ∈ Zs` using `hZs ▸ zeroIdeal_homog _ s`. Establish `hJh : ∀ f ∈ pp ⊔ Zs, ∀ d : ℕ, homogeneousComponent d f ∈ pp ⊔ Zs`. Introduce `f hf d`. Take `⟨g, hg, z, hz, rfl⟩` from `Submodule.mem_sup.mp hf`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.add_mem_sup (hh g hg d) (hZh z hz d)`. Take `⟨F₁, hF₁def⟩ : ∃ F₁ : LineBundle k x, F₁ = (twistBundle k x a).tensorProd D` from `⟨_, rfl⟩`. Establish `hF₁sub : ∀ I, F₁.sub I = D.sub I * (twistSys k x a).sub I` using `fun I => by`. Rewrite using `[hF₁def, tensorProd_sub (twistBundle k x a) D I, twistBundle_sub]`. Take `⟨G₀, hG₀, -⟩` from `IdealTwistFamily.proof k Ω N x F₁ pp hh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG₀sub : ∀ I, G₀.sub I = idealMod (x` using `x) pp I * (D.sub I * (twistSys k x a).sub I) := fun I => by`. Rewrite using `[hG₀, SubSystem.twist_sub_eq_mul_of_line, idealSys_sub]`. Rewrite using `[hF₁sub]`. Take `⟨F₂, hF₂def⟩ : ∃ F₂ : SubFamily k x Ω, F₂ = SubFamily.sup ((twistBundle k x a).tensorProd (spanBundle k x s hs0)).toSubFamily G₀` from `⟨_, rfl⟩`. Establish `hF₂sub : ∀ I, F₂.sub I = Submodule.span (chartRing k x I) {s} * (twistSys k x a).sub I ⊔ idealMod (x` using `x) pp I * (D.sub I * (twistSys k x a).sub I) := fun I => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hF₂def, supFam_sub, tensorProd_sub (twistBundle k x a) (spanBundle k x s hs0) I, spanBundle_sub, twistBundle_sub, hG₀sub]`. Establish `hF₂₁ : ∀ I, F₂.sub I ≤ F₁.sub I` using `fun I => by`. Rewrite using `[hF₂sub, hF₁sub]`. Use `sup_le (mul_le_mul_sub ((Submodule.span_singleton_le_iff_mem _ _).mpr (hsD I)) le_rfl) ?_` and prove the remaining obligations. Conclude with `(mul_le_mul_sub (idealMod_le_one pp I) le_rfl).trans_eq (one_mul _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hJF : ∀ I, (F₁.toSubFamily.toSubSystem.twist (idealSys x (pp ⊔ Zs))).sub I ≤ F₂.sub I` using `fun I => by`. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line, idealSys_sub, hF₂sub]`. Express the relevant statement in the definitionally equal form `idealMod (x := x) (pp ⊔ Zs) I * F₁.sub I ≤ _`. Rewrite using `[hF₁sub]`. Use `(mul_le_mul_sub (idealMod_sup_le pp Zs hh hZh I) le_rfl).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.sup_mul]`. Use `sup_le le_sup_right (le_sup_of_le_left ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, hZs]`. Conclude with `mul_le_mul_sub (StepThree.Away.idealMod_zeroIdeal_mul_le D.toSubSystem s I) le_rfl`. Take `⟨r, qq, b, hqq, hdev⟩` from `hD k Ω N x Ω F₁.toSubFamily F₂ F₁.fg hF₂₁ (pp ⊔ Zs) hJh (hle.trans le_sup_left) hJF`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨μ, r, qq, b, fun m => ⟨(hqq m).1, (hqq m).2.1, lt_of_le_of_ne (le_sup_left.trans (hqq m).2.2) fun h => hf₀p ?_⟩, fun n c => ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `(hqq m).2.2 (Ideal.mem_sup_right (hZs ▸ hf₀Z))`. Take `⟨M, hMdef⟩ : ∃ M : LineBundle k x, M = (powsBundle (twistBundle k x a) t L n).tensorProd (twistBundle k x c)` from `⟨_, rfl⟩`. Establish `hMsub : ∀ I, M.sub I = (twistSys k x c).sub I * ((twistSys k x a).sub I * ∏ i, (L i).sub I ^ n i)` using `fun I => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMdef, tensorProd_sub (powsBundle (twistBundle k x a) t L n) (twistBundle k x c) I, powsBundle_sub, twistBundle_sub, twistBundle_sub]`. Establish `hMD : ∀ I, (M.tensorProd D).sub I = D.sub I * M.sub I` using `fun I => tensorProd_sub M D I`. Take `⟨G₁, hG₁, -⟩` from `IdealTwistFamily.proof k Ω N x (M.tensorProd D) pp hh`. Establish `hG₁sub : ∀ I, G₁.sub I = idealMod (x` using `x) pp I * (D.sub I * M.sub I) := fun I => by`. Rewrite using `[hG₁, SubSystem.twist_sub_eq_mul_of_line, idealSys_sub, hMD]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨F₂', hF₂'def⟩ : ∃ F₂' : SubFamily k x Ω, F₂' = SubFamily.sup (M.tensorProd (spanBundle k x s hs0)).toSubFamily G₁` from `⟨_, rfl⟩`. Establish `hF₂'sub : ∀ I, F₂'.sub I = Submodule.span (chartRing k x I) {s} * M.sub I ⊔ idealMod (x` using `x) pp I * (D.sub I * M.sub I) := fun I => by`. Rewrite using `[hF₂'def, supFam_sub, tensorProd_sub M (spanBundle k x s hs0) I, spanBundle_sub, hG₁sub]`. Establish `hadd` using `hA k Ω N x Ω (M.tensorProd D).toSubFamily F₂' G₁ (M.tensorProd D).fg (fun I => by`. Rewrite using `[hF₂'sub, hMD]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `sup_le (mul_le_mul_sub ((Submodule.span_singleton_le_iff_mem _ _).mpr (hsD I)) le_rfl) ?_` and prove the remaining obligations. Conclude with `(mul_le_mul_sub (idealMod_le_one pp I) le_rfl).trans_eq (one_mul _))`. Use the proof step `(fun I => by rw [hF₂'sub, hG₁sub]; exact le_sup_right)`. Establish `hmul` using `hM k Ω N x M.toSubSystem (M.toSubSystem.twist (idealSys x pp)) F₂'.toSubSystem G₁.toSubSystem s (fun I y hy => by`. Rewrite using `[hF₂'sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `Submodule.mem_sup_left (Submodule.mul_mem_mul (Submodule.mem_span_singleton_self s) hy))`. Use the proof step `(fun I z hz => by`. Express the relevant statement in the definitionally equal form `z ∈ F₂'.sub I at hz`. Rewrite `hz` using `[hF₂'sub]`. Take `⟨z₁, hz₁, z₂, hz₂, rfl⟩` from `Submodule.mem_sup.mp hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy, rfl⟩` from `Submodule.mem_span_singleton_mul.mp hz₁`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hG₁sub, add_sub_cancel_left]`. Conclude with `hz₂)`. Use the proof step `(fun I y hy => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `hI k Ω N x pp hp hh hle D M s ⟨f₀, hf₀Z, hf₀p⟩ I y hy ?_` and prove the remaining obligations. Rewrite `h` using `[hG₁]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `h`. Rewrite `h` using `[SubSystem.twist_sub_eq_mul_of_line, idealSys_sub]`. Rewrite using `[hG₁sub, show idealMod (x := x) pp I * (D.sub I * M.sub I) = idealMod (x := x) pp I * M.sub I * D.sub I by ring, mul_comm s y]`. Conclude with `Submodule.mul_mem_mul h (hsD I))`. Establish `hE1 : pieceChar k pp a L (Function.update n j (n j + 1)) (c + μ) = eulerCharQuot k (M.tensorProd D).toSubSystem G₁.toSubSystem`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `pieceChar`. Apply the tactic sequence `congr 1 <;> refine SubSystem.ext_sub fun I => ?_`. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line, twistPows_sub, prod_update_pow, ← twistSys_sub_mul]`. Rewrite using `[hMD, hMsub, hDsub]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[SubSystem.twist_sub_eq_mul_of_line, twistPows_sub, prod_update_pow, ← twistSys_sub_mul, SubSystem.twist_sub_eq_mul_of_line, idealSys_sub]`. Rewrite using `[hG₁sub, hMsub, hDsub]`. Expand and normalize the polynomial expressions, which then agree. Establish `hE2 : pieceChar k pp a L n c = eulerCharQuot k M.toSubSystem (M.toSubSystem.twist (idealSys x pp))`. Unfold `pieceChar`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `congr 1 <;> refine SubSystem.ext_sub fun I => ?_`. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line, twistPows_sub]`. Rewrite using `[hMsub]`. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line, twistPows_sub, SubSystem.twist_sub_eq_mul_of_line, idealSys_sub, SubSystem.twist_sub_eq_mul_of_line, idealSys_sub]`. Rewrite using `[hMsub]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hE3 : eulerCharQuot k ((F₁.toSubFamily.toSubSystem.twistPows t (fun i => (L i).toSubSystem) n).twist (twistSys k x c)) ((F₂.toSubSystem.twistPows t (fun i => (L i).toSubSystem) n).twist (twistSys k x c)) = eulerCharQuot k (M.tensorProd D).toSubSystem F₂'.toSubSystem`. Apply the tactic sequence `congr 1 <;> refine SubSystem.ext_sub fun I => ?_`. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line, twistPows_sub]`. Rewrite using `[hF₁sub, hMD, hMsub]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line, twistPows_sub]`. Rewrite using `[hF₂sub, hF₂'sub, hMsub]`. Simplify using `only [← Submodule.add_eq_sup]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hE1, hE2, hadd, hmul, ← hE3, hdev t L n c]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem SnapperSection.proof (hA : SnapperQuotAdd.Statement.{u, w, w})
     (hD : SnapperQuotDevissage.Statement.{u, w, w}) (hM : MulQuotEq.Statement.{u, w})

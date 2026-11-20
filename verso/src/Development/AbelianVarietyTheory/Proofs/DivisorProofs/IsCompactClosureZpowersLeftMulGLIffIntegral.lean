@@ -15,11 +15,9 @@ section Top
 variable {E : Type} [Field E] [NumberField E] {w : Pl E} {a : ℕ}
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion E w`. Establish `hK : IsCompact {A : Matrix (Fin a) (Fin a) (w.adicCompletion E) | ∀ i j, ‖A i j‖ ≤ R}`. Establish `h : IsCompact (Set.pi Set.univ fun _ : Fin a => Set.pi Set.univ fun _ : Fin a => Metric.closedBall (0 : w.adicCompletion E) R)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Establish `e : {A : Matrix (Fin a) (Fin a) (w.adicCompletion E) | ∀ i j, ‖A i j‖ ≤ R} = (Set.pi Set.univ fun _ : Fin a => Set.pi Set.univ fun _ : Fin a => Metric.closedBall (0 : w.adicCompletion E) R)` using `Set.ext fun A => ⟨fun hA i _ j _ => by simpa using hA i j, fun hA i j => by simpa using hA i trivial j trivial⟩`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin a) (Fin a) (w.adicCompletion E))).isCompact_preimage (hK.prod (hK.image MulOpposite.continuous_op))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Units.embedProduct_apply, Set.mem_prod, (MulOpposite.op_injective).mem_set_image]`.
-
-Conclude with `⟨fun hg => ⟨fun i j => (hg i j).1, fun i j => (hg i j).2⟩, fun hg i j => ⟨hg.1 i j, hg.2 i j⟩⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCompact_boundedGL (R : ℝ) :
     IsCompact {g : GLw a w | ∀ i j, ‖g.val i j‖ ≤ R ∧ ‖(g⁻¹).val i j‖ ≤ R} := by
@@ -43,11 +41,11 @@ theorem isCompact_boundedGL (R : ℝ) :
   exact ⟨fun hg => ⟨fun i j => (hg i j).1, fun i j => (hg i j).2⟩, fun hg i j => ⟨hg.1 i j, hg.2 i j⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hc`. Establish `hb : ∀ i j : Fin a, ∃ C : ℝ, ∀ h ∈ closure (Subgroup.zpowers g : Set (GLw a w)), ‖h.val i j‖ ≤ C` using `fun i j => hc.exists_bound_of_continuousOn (f := fun h : GLw a w => h.val i j) ((Units.continuous_val (M := Matrix (Fin a) (Fin a) (w.adicCompletion E))).matrix_elem i j).continuousOn`. Use `choose C hC using hb`. Use `⟨∑ i, ∑ j, max (C i j) 0, fun n i j => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hC i j (g ^ n) (subset_closure (Subgroup.zpow_mem_zpowers g n))`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨R, hR⟩`. Use `(isCompact_boundedGL R).closure_of_subset ?_` and prove the remaining obligations. Introduce `h hh`.
+Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hh`. Use `fun i j => ⟨hR n i j, ?_⟩` and prove the remaining obligations. Rewrite using `[← _root_.zpow_neg]`. Conclude with `hR (-n) i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_closure_zpowers_iff (g : GLw a w) :
     IsCompact (closure (Subgroup.zpowers g : Set (GLw a w))) ↔
@@ -82,7 +80,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {w : Pl E} {K : Glob
 
 omit [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[he]`. Conclude with `Valued.toNormedField.norm_le_one_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_iff_mem (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) (x : K.E) :
     ‖e x‖ ≤ 1 ↔ x ∈ (algebraMap K.O K.E).range := by
@@ -92,13 +90,11 @@ theorem norm_le_one_iff_mem (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Va
 omit [IsCMField E] in
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible K.O`. Establish `hπ0 : algebraMap K.O K.E π ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective K.O K.E)]`. Conclude with `hπ.ne_zero`. Establish `hn : ¬ (algebraMap K.O K.E π)⁻¹ ∈ (algebraMap K.O K.E).range`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨o, ho⟩`. Apply `hπ.not_isUnit` to reduce the goal to its premises. Establish `h : π * o = 1` using `IsFractionRing.injective K.O K.E (by rw [map_mul, ho, mul_inv_cancel₀ hπ0, map_one])`. Conclude with `isUnit_iff_exists_inv.2 ⟨o, h⟩`. Establish `h1 : 1 < ‖e (algebraMap K.O K.E π)⁻¹‖`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← not_le, norm_le_one_iff_mem e he]`. Conclude with `hn`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt R h1`. Use `⟨((algebraMap K.O K.E π)⁻¹) ^ n, pow_ne_zero _ (inv_ne_zero hπ0), ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, norm_pow]`.
-
-Conclude with `hn.le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_ge (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) (R : ℝ) :
     ∃ c : K.E, c ≠ 0 ∧ R ≤ ‖e c‖ := by
@@ -122,11 +118,11 @@ theorem exists_norm_ge (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.
 omit [IsCMField E] in
 
 /- English proof (translation)
-Take `⟨c, hc0, hc⟩` from `exists_norm_ge e he R`. Use `⟨Submodule.span K.O (Set.range fun j => c • b j), Submodule.fg_span (Set.finite_range _), fun y hy => ?_⟩` and prove the remaining obligations. Establish `hec : e c ≠ 0` using `by rwa [Ne, map_eq_zero_iff _ e.injective]`. Rewrite using `[← b.sum_repr y]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : b.repr y j / c ∈ (algebraMap K.O K.E).range`. Rewrite using `[← norm_le_one_iff_mem e he, map_div₀, norm_div, div_le_one (norm_pos_iff.2 hec)]`. Conclude with `(hy j).trans hc`. Take `⟨o, ho⟩` from `hm`. Establish `: b.repr y j • b j = o • (c • b j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K.E o, smul_smul, ho, div_mul_cancel₀ _ hc0]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fg_of_crd_le (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) (R : ℝ) :
     ∃ M : Submodule K.O B.A, M.FG ∧ ∀ y, (∀ i, ‖crd e b y i‖ ≤ R) → y ∈ M := by
@@ -145,11 +141,11 @@ theorem exists_fg_of_crd_le (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Va
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Take `⟨M, hMfg, hM⟩` from `exists_fg_of_crd_le e b he (∑ j, R * ‖crd e b 1 j‖)`. Establish `hle : Subalgebra.toSubmodule (Algebra.adjoin K.O {u}) ≤ M`. Rewrite using `[Algebra.adjoin_eq_span, Submodule.span_le, ← Submonoid.powers_eq_closure]`. Introduce and unpack `_ ⟨n, rfl⟩`. Use `hM _ fun i => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : crd e b (u ^ n) = mulHom e b (u ^ n) *ᵥ crd e b 1` using `by rw [← crd_mul, mul_one]`. Rewrite using `[h1]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (hR n i j) (norm_nonneg _)`. Use `haveI : IsNoetherian K.O M := isNoetherian_of_fg_of_noetherian M hMfg`. Use `haveI : IsNoetherian K.O (Subalgebra.toSubmodule (Algebra.adjoin K.O {u})) := isNoetherian_of_le hle`. Conclude with `isIntegral_of_submodule_noetherian _ this u (Algebra.self_mem_adjoin_singleton K.O u)`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_bounded (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) (u : B.A)
     (R : ℝ) (hR : ∀ n : ℕ, ∀ i j, ‖mulHom e b (u ^ n) i j‖ ≤ R) : IsIntegral K.O u := by
@@ -169,11 +165,11 @@ theorem isIntegral_of_bounded (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ 
   exact isIntegral_of_submodule_noetherian _ this u (Algebra.self_mem_adjoin_singleton K.O u)
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hM`. Use `⟨∑ y ∈ S, ∑ i, ∑ j, ‖mulHom e b y i j‖, fun x hx i j => ?_⟩` and prove the remaining obligations. Take `⟨f, -, rfl⟩` from `Submodule.mem_span_finset.1 hx`. Establish `hsum : mulHom e b (∑ y ∈ S, f y • y) i j = ∑ y ∈ S, e (algebraMap K.O K.E (f y)) * mulHom e b y i j`. Rewrite using `[mulHom_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mulHom_apply, Finset.sum_mul, smul_mul_assoc]`. Simplify using `only [← algebraMap_smul K.E (f _), map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[hsum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun y _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖e (algebraMap K.O K.E (f y))‖ ≤ 1` using `(norm_le_one_iff_mem e he _).2 ⟨f y, rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem bounded_of_fg (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) (M : Submodule K.O B.A)
     (hM : M.FG) : ∃ R : ℝ, ∀ y ∈ M, ∀ i j, ‖mulHom e b y i j‖ ≤ R := by
@@ -205,20 +201,20 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {w : Pl E} {K : Glob
   (e : K.E ≃+* w.adicCompletion E) {a : ℕ} {B : GlobalTheory.UnitLemma.InvAlg K} (b : Module.Basis (Fin a) K.E B.A)
 
 /- English proof (translation)
-Rewrite using `[← map_zpow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulGL_zpow_val (t : B.Aˣ) (n : ℤ) : ((mulGL e b t) ^ n).val = mulHom e b ((t ^ n : B.Aˣ) : B.A) := by
   rw [← map_zpow]
   rfl
 
 /- English proof (translation)
-Rewrite using `[isCompact_closure_zpowers_iff]`. Simplify using `only [mulGL_zpow_val]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨R, hR⟩`. Use `⟨isIntegral_of_bounded e b he _ R fun n i j => ?_, isIntegral_of_bounded e b he _ R fun n i j => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `hR n i j` as an intermediate fact. Rewrite `this` using `[zpow_natCast, Units.val_pow_eq_pow_val]`. Then use the resulting hypothesis. Use `hR (-(n : ℤ)) i j` as an intermediate fact. Rewrite `this` using `[_root_.zpow_neg, zpow_natCast, ← inv_pow, Units.val_pow_eq_pow_val]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Take `⟨R, hR⟩` from `bounded_of_fg e b he _ (fg_adjoin_of_finite (s := {(t : B.A), ((t⁻¹ : B.Aˣ) : B.A)}) (Set.toFinite _) (by rintro x (rfl | rfl); exacts [h1, h2]))`. Use `⟨R, fun n i j => hR _ ((Subalgebra.mem_toSubmodule _).2 ?_) i j⟩` and prove the remaining obligations. Take `⟨k, rfl | rfl⟩` from `Int.eq_nat_or_neg n`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val]`. Conclude with `Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_insert _ _)) k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.zpow_neg, zpow_natCast, ← inv_pow, Units.val_pow_eq_pow_val]`. Conclude with `Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_insert_of_mem _ (Set.mem_singleton _))) k`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_closure_zpowers_mulGL_iff' (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1)
     (t : B.Aˣ) : IsCompact (closure (Subgroup.zpowers (mulGL e b t) : Set (GLw a w))) ↔
@@ -246,7 +242,7 @@ theorem isCompact_closure_zpowers_mulGL_iff' (he : ∀ x, x ∈ (algebraMap K.O 
 end Main
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ e he _ _ b t` and use `isCompact_closure_zpowers_mulGL_iff' e b he t`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCompact_closure_zpowers_mulGL_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E) (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (a : ℕ) (B : GlobalTheory.UnitLemma.InvAlg K) (b : Module.Basis (Fin a) K.E B.A) (t : B.Aˣ), IsCompact (closure (Subgroup.zpowers (GlobalTheory.TwOrbLat.mulGL e b t) : Set (GLw a w))) ↔ t ∈ GlobalTheory.UnitLemma.intUnits K.O B.A :=
   fun _ _ _ _ _ _ e he _ _ b t => isCompact_closure_zpowers_mulGL_iff' e b he t

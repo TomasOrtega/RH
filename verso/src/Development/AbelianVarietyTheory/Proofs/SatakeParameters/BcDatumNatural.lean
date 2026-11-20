@@ -50,14 +50,14 @@ def cmpU (k : X₁ ⟶ X₂) (hk : k ≫ j₂ = j₁) : pullback u j₁ ⟶ pull
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem cmpU_fst (k : X₁ ⟶ X₂) (hk : k ≫ j₂ = j₁) :
     cmpU u k hk ≫ pullback.fst u j₂ = pullback.fst u j₁ := pullback.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cmpU_snd (k : X₁ ⟶ X₂) (hk : k ≫ j₂ = j₁) :
     cmpU u k hk ≫ pullback.snd u j₂ = pullback.snd u j₁ ≫ k := pullback.lift_snd _ _ _
@@ -69,7 +69,7 @@ def cmpY (k : X₁ ⟶ X₂) (hk : k ≫ j₂ = j₁) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem cmpY_fst (k : X₁ ⟶ X₂) (hk : k ≫ j₂ = j₁) :
     cmpY u p k hk ≫ pullback.fst p (pullback.fst u j₂) = pullback.fst p (pullback.fst u j₁) :=
@@ -77,7 +77,7 @@ theorem cmpY_fst (k : X₁ ⟶ X₂) (hk : k ≫ j₂ = j₁) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cmpY_snd (k : X₁ ⟶ X₂) (hk : k ≫ j₂ = j₁) :
     cmpY u p k hk ≫ pullback.snd p (pullback.fst u j₂) =

@@ -8,9 +8,9 @@ noncomputable section
 namespace GlobalTheory.LKMid
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology ℚ_[p] (KQ p K r) := ⟨rfl⟩`. Set `b` to `Module.Free.chooseBasis ℚ_[p] (KQ p K r)`. Set `φ : KQ p K r →ₗ[ℚ_[p]] (Module.Free.ChooseBasisIndex ℚ_[p] (KQ p K r) → ℚ_[p])` to `Finsupp.lcoeFun ∘ₗ b.repr.toLinearMap`. Establish `hinj : Function.Injective φ`. Introduce `x y h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `b.repr.injective` to reduce the goal to its premises. Conclude with `DFunLike.coe_injective h`. Conclude with `T2Space.of_injective_continuous hinj (IsModuleTopology.continuous_of_linearMap φ)`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_kq {p : ℕ} [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ) :
     T2Space (KQ p K r) := by

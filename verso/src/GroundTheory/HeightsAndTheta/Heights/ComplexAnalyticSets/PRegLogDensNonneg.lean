@@ -19,13 +19,13 @@ noncomputable section
 namespace RegularizedLogDensityNonneg
 
 /- English proof (translation)
-Set `τ : (Fin e → ℂ) → Fin n → ℂ` to `fun w => s w - x`. Establish `hτ : AnalyticAt ℂ τ y` using `han.sub analyticAt_const`. Establish `hS : sqSum (τ y) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hj : ∀ j ∈ Finset.univ, ‖(s y - x) j‖ ^ 2 = 0` using `(Finset.sum_eq_zero_iff_of_nonneg fun j _ => sq_nonneg _).1 h0`. Use function extensionality and compare the values at `j`. Use `hj j (Finset.mem_univ j)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Establish `hφ : ContDiffAt ℝ 2 phi (τ y)` using `contDiffAt_phi hS`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hfun : logDistSq x ∘ s = fun w => 2 * (phi ∘ τ) w`. Use function extensionality and compare the values at `w`. Simplify using `only [Function.comp_apply, logDistSq, phi, τ, euclPot, sqSum]`. Expand and normalize the polynomial expressions, which then agree. Establish `hP : (ReciprocityTheory.AnForm.hessC (phi ∘ τ) y).PosSemidef`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `ReciprocityTheory.AnForm.M.hessC_posSemidef _ _ (hφ.comp _ hτ.restrictScalars.contDiffAt) fun v => ?_` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.AnForm.levi_comp v hτ hφ]`. Conclude with `GroundTheory.Heights₂.Heights.Inter.TorusInvariantLevi.leviForm_phi_nonneg hS _`. Rewrite using `[hfun, ReciprocityTheory.AnForm.M.hessC_const_mul']`. Conclude with `hP.smul (by norm_num)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hessC_logDistSq_comp_posSemidef {n e : ℕ} (x : Fin n → ℂ) (s : (Fin e → ℂ) → Fin n → ℂ)
     (y : Fin e → ℂ) (han : AnalyticAt ℂ s y) (hne : s y ≠ x) :
@@ -55,19 +55,17 @@ theorem hessC_logDistSq_comp_posSemidef {n e : ℕ} (x : Fin n → ℂ) (s : (Fi
 end RegularizedLogDensityNonneg
 
 /- English proof (translation)
-Introduce `n d J A u ε x z s hε hzx hs`. Establish `han : AnalyticAt ℂ s (A *ᵥ z)` using `FormIntegralPositivity.analyticAt_sheet hs`. Establish `hsz : s (A *ᵥ z) = z`. Take `⟨U, -, -, -, h, -⟩` from `hs`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `ReciprocityTheory.AnForm.A.maDens_nonneg_of_posSemidef _ _ fun k => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) k` and prove the remaining obligations. Simplify using `only [Matrix.cons_val_zero] set y := A *ᵥ z`. Establish `hh : AnalyticAt ℂ (fun w => linEval u (s w)) y`. Unfold `linEval`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression.
 
-Conclude with `Finset.analyticAt_fun_sum _ fun j _ => analyticAt_const.mul ((analyticAt_pi_iff.1 han) j)`. Set `τ : (Fin (d + 1) → ℂ) → (Fin 2 → ℂ)` to `fun w => ![linEval u (s w), ((√ε : ℝ) : ℂ)]`. Establish `hτ : AnalyticAt ℂ τ y`. Use `analyticAt_pi_iff.2 fun i => ?_` and prove the remaining obligations. Use `fin_cases i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hh` using `[τ]`. Simplify `(analyticAt_const : AnalyticAt ℂ (fun _ : Fin (d + 1) → ℂ => ((√ε : ℝ) : ℂ)) y)` using `[τ]`. Establish `hS : sqSum (τ y) ≠ 0`. Establish `: sqSum (τ y) = ‖linEval u (s y)‖ ^ 2 + ε`. Simplify using `only [τ, sqSum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt hε.le]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Rewrite using `[this]`. Check the signs of the components of the expression. Establish `hφ : ContDiffAt ℝ 2 phi (τ y)` using `contDiffAt_phi hS`. Establish `hfun : logReg u ε ∘ s = phi ∘ τ`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RegularizedDensityNonneg.half_log_eq_phi _ hε.le`. Rewrite using `[hfun]`. Use `ReciprocityTheory.AnForm.M.hessC_posSemidef _ _ (hφ.comp _ hτ.restrictScalars.contDiffAt) fun v => ?_` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.AnForm.levi_comp v hτ hφ]`. Conclude with `GroundTheory.Heights₂.Heights.Inter.TorusInvariantLevi.leviForm_phi_nonneg hS _`.
-
-Simplify using `only [Matrix.cons_val_succ]`. Conclude with `RegularizedLogDensityNonneg.hessC_logDistSq_comp_posSemidef x s _ han (hsz.symm ▸ hzx)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem RegLogDensNonneg.proof : RegLogDensNonneg.Statement := by
   intro n d J A u ε x z s hε hzx hs

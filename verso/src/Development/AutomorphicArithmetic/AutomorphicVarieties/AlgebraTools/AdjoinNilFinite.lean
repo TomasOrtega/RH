@@ -3,25 +3,21 @@ import Mathlib
 open Polynomial Matrix IsLocalRing TensorProduct
 
 /- English proof (translation)
-Introduce `A G _ _ _ _ _ P hP hnil`. Set `N : Subalgebra A G` to `{ carrier := {y | ∃ a : A, IsNilpotent (y - algebraMap A G a)} mul_mem' := by`. Introduce and unpack `x y ⟨a, ha⟩ ⟨b, hb⟩`. Use `⟨a * b, ?_⟩` and prove the remaining obligations. Establish `e : x * y - algebraMap A G (a * b) = (x - algebraMap A G a) * y + algebraMap A G a * (y - algebraMap A G b)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Take `⟨k, hk⟩` from `ha`. Take `⟨m, hm⟩` from `hb`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(Commute.all _ _).isNilpotent_add ⟨k, by rw [mul_pow, hk, zero_mul]⟩ ⟨m, by rw [mul_pow, hm, mul_zero]⟩`. Use the proof step `add_mem' := by`. Introduce and unpack `x y ⟨a, ha⟩ ⟨b, hb⟩`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Establish `e : x + y - algebraMap A G (a + b) = (x - algebraMap A G a) + (y - algebraMap A G b)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(Commute.all _ _).isNilpotent_add ha hb`. Use the proof step `algebraMap_mem' := fun r => ⟨r, by simp⟩ }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hS : Algebra.adjoin A (P : Set G) ≤ N` using `Algebra.adjoin_le (fun y hy => hnil y hy)`. Establish `hint : ∀ y, (∃ a : A, IsNilpotent (y - algebraMap A G a)) → IsIntegral A y`. Introduce and unpack `y ⟨a, k, hk⟩`. Establish `hn : IsIntegral A (y - algebraMap A G a)` using `⟨X ^ k, monic_X_pow k, by simp [hk]⟩`. Use `hn.add (isIntegral_algebraMap (x := a))` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Use `⟨?_, ?_, fun y hy => hS hy⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hP`. Rewrite using `[← hs, Algebra.adjoin_span]`. Conclude with `Algebra.finite_adjoin_of_finite_of_isIntegral s.finite_toSet (fun y hy => hint y (hnil y (hs ▸ Submodule.subset_span hy)))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `IsLocalRing.of_isUnit_or_isUnit_one_sub_self` to reduce the goal to its premises. Introduce `y`. Take `⟨a, ha⟩` from `hS y.2`. Set `n : Algebra.adjoin A (P : Set G)` to `⟨(y : G) - algebraMap A G a, Subalgebra.sub_mem _ y.2 (Subalgebra.algebraMap_mem _ a)⟩`. Establish `hn : IsNilpotent n`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `ha`. Conclude with `⟨k, Subtype.ext (by simpa [n] using hk)⟩`. Establish `hy : y = algebraMap A _ a + n` using `Subtype.ext (by simp [n])`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self a with hu | hu` into its components or cases. Use `left`.
-
-Rewrite using `[hy, add_comm]`. Conclude with `hn.isUnit_add_right_of_commute (hu.map _) (Commute.all _ _)`. Use `right`. Establish `e : 1 - y = algebraMap A _ (1 - a) + (-n)`. Rewrite using `[hy, map_sub, map_one]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, add_comm]`. Conclude with `hn.neg.isUnit_add_right_of_commute (hu.map _) (Commute.all _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.adjoin_nil_finite :
     ∀ {A G : Type} [CommRing A] [IsLocalRing A] [CommRing G] [Algebra A G] [Nontrivial G] (P : Submodule A G), P.FG → (∀ y ∈ P, ∃ a : A, IsNilpotent (y - algebraMap A G a)) → Module.Finite A (Algebra.adjoin A (P : Set G)) ∧ IsLocalRing (Algebra.adjoin A (P : Set G)) ∧ ∀ y ∈ Algebra.adjoin A (P : Set G), ∃ a : A, IsNilpotent (y - algebraMap A G a) := by

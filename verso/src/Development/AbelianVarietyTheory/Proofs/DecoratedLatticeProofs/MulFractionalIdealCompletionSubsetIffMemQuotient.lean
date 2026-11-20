@@ -22,17 +22,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.IdealQuot
 
 /- English proof (translation)
-Use `⟨Ideal.mul_mem_right _ _ ha.1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Establish `hx` using `ha.2`. Establish `hy` using `hb.2`. Generalize the expression as in `finPart D a = x at hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `finPart D b = y at hy`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, c, rfl⟩` from `hx`. Proceed by induction on `hy using AddSubgroup.closure_induction with`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨b, hb, d, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨a * b, fun w => ?_, c * d, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha w) (hb w)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Use `push_cast`. Both sides reduce to the same expression. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => rw [mul_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [mul_neg]`. Conclude with `neg_mem hy`. Consider the case `zero => rw [zero_mul]`.
-
-Conclude with `zero_mem _`. Consider the case `add x z _ _ hx hz => rw [add_mul]`. Conclude with `add_mem hx hz`. Consider the case `neg x _ hx => rw [neg_mul]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem intAt_mul {D : D7} {v : Pl D} {a b : AE D} (ha : a ∈ intAt D (· = v)) (hb : b ∈ intAt D (· = v)) :
     a * b ∈ intAt D (· = v) := by
@@ -59,21 +57,21 @@ theorem intAt_mul {D : D7} {v : Pl D} {a b : AE D} (ha : a ∈ intAt D (· = v))
   | neg x _ hx => rw [neg_mul]; exact neg_mem hx
 
 /- English proof (translation)
-Take the linear combination `(Y * X) * hse - s * e2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem commRing_rearrange_idempotent_fixed_product {R : Type*} [CommRing R] (Y X P Q ε s : R) (e2 : P * Q = Y * X) (hse : ε * s = s) :
     Y * (s * (X * ε)) = P * (Q * s) := by
   linear_combination (Y * X) * hse - s * e2
 
 /- English proof (translation)
-Take the linear combination `(-(s * a)) * e2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem commGroup_mul_mul_eq_mul_mul_div {R : Type*} [CommRing R] (Y P Q C s a : R) (e2 : P * Q * C = Y) :
     Y * (s * a) = P * ((Q * s) * (C * a)) := by
   linear_combination (-(s * a)) * e2
 
 /- English proof (translation)
-Use `⟨fun ht => ((h t).1 ((GlobalTheory.SeeSaw.idV_one_eq_intAt D v t).2 ht)).1, fun ht => ?_⟩` and prove the remaining obligations. Establish `h1 : incA D c * t ∈ idAt D (· = v)` using `Ideal.mul_mem_left _ _ ht.1`. Establish `h2 : incA D c⁻¹ * (incA D c * t) = t`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hc, map_one, one_mul]`. Conclude with `(GlobalTheory.SeeSaw.idV_one_eq_intAt D v _).1 ((h _).2 ⟨by rw [h2]; exact ht, h1⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_of_gen {D : D7} {v : Pl D} {c : D.host.E} (hc : c ≠ 0)
     (h : ∀ s, s ∈ idV (1 : FI D) v ↔ incA D c⁻¹ * s ∈ intAt D (· = v) ∧ s ∈ idAt D (· = v)) (t : AE D) :
@@ -86,21 +84,21 @@ theorem unit_of_gen {D : D7} {v : Pl D} {c : D.host.E} (hc : c ≠ 0)
   exact (GlobalTheory.SeeSaw.idV_one_eq_intAt D v _).1 ((h _).2 ⟨by rw [h2]; exact ht, h1⟩)
 
 /- English proof (translation)
-Introduce `D v 𝔞 𝔟 h𝔞 h𝔟 s hs`. Take `⟨x, hx, gx⟩` from `GlobalTheory.IdVGen.idV_gen D v 𝔞 h𝔞`. Take `⟨y, hy, gy⟩` from `GlobalTheory.IdVGen.idV_gen D v 𝔟 h𝔟`. Take `⟨z, hz, gz⟩` from `GlobalTheory.IdVGen.idV_gen D v 𝔞⁻¹ (inv_ne_zero h𝔞)`. Establish `gyz` using `GlobalTheory.SeeSaw.IdVMul.idV_mul_gen D v 𝔟 𝔞⁻¹ y z hy hz gy gz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `gxz` using `GlobalTheory.SeeSaw.IdVMul.idV_mul_gen D v 𝔞 𝔞⁻¹ x z hx hz gx gz`. Rewrite `gxz` using `[mul_inv_cancel₀ h𝔞]`. Establish `hxz : x * z ≠ 0` using `mul_ne_zero hx hz`. Establish `u` using `unit_of_gen hxz gxz`. Take `⟨ε, -, -, hε, hεa, -⟩` from `(GlobalTheory.FinPl.localComponents D (· = v)).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[gyz]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Establish `hxε : incA D x * ε ∈ idV 𝔞 v`. Use `(gx _).2 ⟨?_, Ideal.mul_mem_left _ _ hε.1⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hx, map_one, one_mul]` and apply the resulting hypothesis. Establish `h1` using `((gy _).1 (H _ hxε)).1`. Establish `e1 : incA D y⁻¹ * (s * (incA D x * ε)) = incA D (x * z) * (incA D (y * z)⁻¹ * s)`. Establish `hse : ε * s = s` using `(hεa s).1 hs`. Establish `e2 : incA D (x * z) * incA D (y * z)⁻¹ = incA D y⁻¹ * incA D x`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Conclude with `commRing_rearrange_idempotent_fixed_product _ _ _ _ _ _ e2 hse`. Rewrite `h1` using `[e1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hs⟩` and prove the remaining obligations. Use `(u _).1 h1` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hxz, map_one, one_mul]`. Then use the resulting hypothesis. Introduce and unpack `⟨H, -⟩ a ha`. Take `⟨ha1, ha2⟩` from `(gx a).1 ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gy _).2 ⟨?_, Ideal.mul_mem_right _ _ hs⟩` and prove the remaining obligations. Establish `e1 : incA D y⁻¹ * (s * a) = incA D (x * z) * ((incA D (y * z)⁻¹ * s) * (incA D x⁻¹ * a))`. Establish `e2 : incA D (x * z) * incA D (y * z)⁻¹ * incA D x⁻¹ = incA D y⁻¹`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Conclude with `commGroup_mul_mul_eq_mul_mul_div _ _ _ _ _ _ e2`. Rewrite using `[e1]`. Conclude with `(u _).2 (intAt_mul H ha1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_subset_iff : ∀ (D : D7) (v : Pl D) (𝔞 𝔟 : FI D), 𝔞 ≠ 0 → 𝔟 ≠ 0 → ∀ s ∈ idAt D (· = v),
     (∀ a ∈ idV 𝔞 v, s * a ∈ idV 𝔟 v) ↔ s ∈ idV (𝔟 * 𝔞⁻¹) v := by

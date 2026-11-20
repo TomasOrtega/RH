@@ -18,9 +18,9 @@ section Scale
 variable {K : Type*} [Fintype K] [DecidableEq K] {ι : K → Type*} {R T : Type*} [CommRing R] [CommRing T]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply]`. Simplify using `only [Finsupp.sum, Finset.sum_apply, Pi.smul_apply, blockWeight, smul_eq_mul]`. Repeatedly rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_eq_single s.1 (fun k _ hk => by simp [hk]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_pow_blockWeight (t : K → T) (d : (Σ k, ι k) →₀ ℕ) :
     ∏ k, t k ^ (Finsupp.weight (blockWeight ι) d k) = ∏ s ∈ d.support, t s.1 ^ d s := by
@@ -33,7 +33,7 @@ theorem prod_pow_blockWeight (t : K → T) (d : (Σ k, ι k) →₀ ℕ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[eval₂_eq, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight (blockWeight ι) d = b` using `hF (mem_support_iff.mp hd)`. Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib]`. Rewrite using `[← hw, prod_pow_blockWeight]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -50,7 +50,7 @@ theorem eval₂_blockScale (f : R →+* T) (t : K → T) (a : (Σ k, ι k) → T
 variable {κ : Type*} [CommRing κ]
 
 /- English proof (translation)
-Rewrite using `[eval₂_blockScale _ _ _ hF]`. Establish `h1 : eval₂ ((C : κ →+* MvPolynomial K κ).comp g) (fun s => C (c s)) F = C (eval₂ g c F)` using `(eval₂_comp_left C g c F).symm`. Rewrite using `[h1, monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval₂_blockVar_of_isMultiHomog (g : R →+* κ) (c : (Σ k, ι k) → κ) {F : MRing ι R} {b : K → ℕ}
     (hF : IsMultiHomog F b) :
@@ -64,11 +64,11 @@ theorem eval₂_blockVar_of_isMultiHomog (g : R →+* κ) (c : (Σ k, ι k) → 
   ring
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial d r`. Establish `hd : IsMultiHomog (monomial d r : MRing ι R) (Finsupp.weight (blockWeight ι) d)` using `isWeightedHomogeneous_monomial _ _ _ rfl`. Rewrite using `[eval₂_blockVar_of_isMultiHomog g c hd, coeff_monomial]`. Distinguish the cases in `h : Finsupp.weight (blockWeight ι) d = b`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[hd.weightedHomogeneousComponent_same, eval₂_blockVar_of_isMultiHomog g c hd, if_pos rfl]`. Establish `h0 : weightedHomogeneousComponent (blockWeight ι) b (monomial d r : MRing ι R) = 0`. Rewrite using `[weightedHomogeneousComponent_of_mem (p := (monomial d r : MRing ι R)) (n := Finsupp.weight (blockWeight ι) d) hd, if_neg (Ne.symm h)]`. Rewrite using `[h0, if_neg (fun h' => h (Finsupp.equivFunOnFinite.symm.injective h')), eval₂_zero, map_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq`. Rewrite using `[map_add, eval₂_add, hp, hq, eval₂_add, coeff_add, map_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval₂_blockVar_component (g : R →+* κ) (c : (Σ k, ι k) → κ) (F : MRing ι R) (b : K → ℕ) :
     eval₂ ((C : κ →+* MvPolynomial K κ).comp g) (fun s => X s.1 * C (c s))
@@ -92,7 +92,7 @@ theorem eval₂_blockVar_component (g : R →+* κ) (c : (Σ k, ι k) → κ) (F
     rw [map_add, eval₂_add, hp, hq, eval₂_add, coeff_add, map_add]
 
 /- English proof (translation)
-Use `⟨fun h b => by rw [eval₂_blockVar_component, h, coeff_zero, map_zero], fun h => ?_⟩` and prove the remaining obligations. Use extensionality with `d`. Use `h (Finsupp.equivFunOnFinite d)` as an intermediate fact. Rewrite `this` using `[eval₂_blockVar_component, Equiv.symm_apply_apply, monomial_eq_zero]`. Rewrite using `[this, coeff_zero]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval₂_blockVar_eq_zero_iff (g : R →+* κ) (c : (Σ k, ι k) → κ) (F : MRing ι R) :
     eval₂ ((C : κ →+* MvPolynomial K κ).comp g) (fun s => X s.1 * C (c s)) F = 0 ↔
@@ -111,65 +111,55 @@ section Centre
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} {J : Type} [Fintype J] {O : Type u} [CommRing O]
 
 /- English proof (translation)
-Use `set L := FractionRing (MRing ι O ⧸ P)`. Set `τ : MRing (extIdx ι J) O →+* L` to `(algebraMap (MRing ι O ⧸ P) L).comp (blowUpEval P u)`. Set `q : MRing ι O →+* L` to `(algebraMap (MRing ι O ⧸ P) L).comp (Ideal.Quotient.mk P)`. Establish `hτl : ∀ f, τ (liftForm f) = q f` using `fun f => by`. Simplify using `only [τ, q, RingHom.comp_apply, blowUpEval_liftForm]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hτX : ∀ (k : K) (i : ι k), τ (X ⟨some k, i⟩) = q (X ⟨k, i⟩)` using `fun k i => by`. Rewrite using `[← hτl, liftForm_X]`. Establish `hτY : ∀ l : J, τ (X ⟨none, l⟩) = q (u l)` using `fun l => by`. Simplify using `[τ, q, blowUpEval, blowUpSubst]`. Establish `hq0 : ∀ f, q f = 0 ↔ f ∈ P` using `fun f => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [q, RingHom.comp_apply]`. Rewrite using `[map_eq_zero_iff _ (IsFractionRing.injective _ L), Ideal.Quotient.eq_zero_iff_mem]`. Establish `hAgen : ∀ (b : K → ℕ) (f g : MRing ι O), IsMultiHomog f b → IsMultiHomog g b → g ∉ W → q f / q g ∈ V` using `fun b f g hf hg hgW => hAV (Subring.subset_closure ⟨b, f, g, hf, hg, hgW, rfl⟩)`. Use `choose ik hik using hWrel`. Choose the witnesses or unpack the hypotheses as in `⟨j, hjP, hjmax⟩ : ∃ j, u j ∉ P ∧ ∀ l, u l ∉ P → V.valuation (q (u l)) ≤ V.valuation (q (u j)) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j₀, hj₀⟩` from `hu'`. Take `⟨j, hj, hmax⟩` from `Finset.exists_max_image (Finset.univ.filter fun j => u j ∉ P) (fun j => V.valuation (q (u j))) ⟨j₀, by simpa using hj₀⟩`. Conclude with `⟨j, (Finset.mem_filter.mp hj).2, fun l hl => hmax l (by simpa using hl)⟩`. Set `e : (o : Option K) → extIdx ι J o` to `fun o => match o with`. Consider the case `none => j`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Consider the case `some k => ik k`. Set `t : Option K → L` to `fun o => τ (X ⟨o, e o⟩)`. Establish `ht : ∀ o, t o ≠ 0`. Introduce and unpack `(_ | k)`. Use `show τ (X ⟨none, j⟩) ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[hτY, Ne, hq0]`. Conclude with `hjP`. Use `show τ (X ⟨some k, ik k⟩) ≠ 0`. Rewrite using `[hτX, Ne, hq0]`. Conclude with `fun h => hik k (hPW h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Set `a : (Σ o, extIdx ι J o) → L` to `fun s => τ (X s) / t s.1`. Establish `ha : ∀ s, a s ∈ V`. Introduce and unpack `⟨_ | k, i⟩`. Use `show τ (X ⟨none, i⟩) / τ (X ⟨none, j⟩) ∈ V`. Rewrite using `[show τ (X ⟨none, i⟩) = q (u i) from hτY i, hτY]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : u i ∈ P`. Rewrite using `[(hq0 _).2 hi, zero_div]`. Conclude with `V.zero_mem`. Use `V.mem_of_valuation_le_one _ ?_` and prove the remaining obligations. Rewrite using `[map_div₀]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hj0 : V.valuation (q (u j)) ≠ 0`. Rewrite using `[Ne, Valuation.zero_iff, hq0]`. Conclude with `hjP`. Conclude with `(div_le_one₀ (zero_lt_iff.2 hj0)).2 (hjmax i hi)`. Use `show τ (X ⟨some k, i⟩) / τ (X ⟨some k, ik k⟩) ∈ V`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show τ (X ⟨some k, i⟩) = q (X ⟨k, i⟩) from hτX k i, hτX]`. Conclude with `hAgen (Pi.single k 1) _ _ (isWeightedHomogeneous_X _ _ _) (isWeightedHomogeneous_X _ _ _) (hik k)`. Establish `hC : ∀ r, (τ.comp C) r ∈ V` using `fun r => by`. Establish `h` using `hAgen 0 (C r) 1 (isWeightedHomogeneous_C _ _) (isWeightedHomogeneous_one _ _) (fun h => hW.ne_top ((Ideal.eq_top_iff_one _).2 h))`. Rewrite `h` using `[map_one, div_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[RingHom.comp_apply, ← liftForm_C, hτl]` and apply the resulting hypothesis. Set `cV : O →+* V` to `(τ.comp C).codRestrict V hC`. Set `aV : (Σ o, extIdx ι J o) → V` to `fun s => ⟨a s, ha s⟩`. Set `ψV : MRing (extIdx ι J) O →+* V` to `eval₂Hom cV aV`. Establish `hψ : ∀ F, (ψV F : L) = eval₂ (τ.comp C) a F` using `fun F => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `eval₂_comp_left V.subtype cV aV F`. Conclude with `h`. Establish `hτψ : ∀ F b, IsMultiHomog F b → τ F = (∏ o, t o ^ b o) * ψV F`. Introduce `F b hF`. Rewrite using `[hψ, ← eval₂_blockScale _ t a hF]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (fun s : (Σ o, extIdx ι J o) => t s.1 * a s) = τ ∘ X`. Use function extensionality and compare the values at `fun s => mul_div_cancel₀ _ (ht s.1)`. Rewrite using `[h1]`. Use `conv_lhs => rw [← eval₂_eta F]`. Conclude with `eval₂_comp_left τ C X F`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM : ∀ b : Option K → ℕ, (∏ o, t o ^ b o) ≠ 0` using `fun b => Finset.prod_ne_zero_iff.2 fun o _ => pow_ne_zero _ (ht o)`. Set `ρ : V →+* IsLocalRing.ResidueField V` to `IsLocalRing.residue V`. Set `Φ : MRing (extIdx ι J) O →+* MvPolynomial (Option K) (IsLocalRing.ResidueField V)` to `eval₂Hom ((C : IsLocalRing.ResidueField V →+* _).comp (ρ.comp cV)) (fun s => X s.1 * C (ρ (aV s)))`. Establish `hΦhom : ∀ F b, IsMultiHomog F b → Φ F = monomial (Finsupp.equivFunOnFinite.symm b) (ρ (ψV F))`. Introduce `F b hF`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `eval₂_blockVar_of_isMultiHomog (ρ.comp cV) (fun s => ρ (aV s)) hF`. Establish `h2 : eval₂ (ρ.comp cV) (fun s => ρ (aV s)) F = ρ (ψV F)` using `(eval₂_comp_left ρ cV aV F).symm`. Rewrite `h` using `[h2]`. Conclude with `h`. Establish `hmem : ∀ F b, IsMultiHomog F b → (F ∈ RingHom.ker Φ ↔ ψV F ∈ IsLocalRing.maximalIdeal V)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `F b hF`. Rewrite using `[RingHom.mem_ker, hΦhom F b hF, monomial_eq_zero, IsLocalRing.residue_eq_zero_iff]`. Establish `hker : ∀ F, F ∈ RingHom.ker Φ ↔ ∀ b, weightedHomogeneousComponent (blockWeight (extIdx ι J)) b F ∈ RingHom.ker Φ` using `fun F => by`. Simplify using `only [RingHom.mem_ker]`. Conclude with `eval₂_blockVar_eq_zero_iff (ρ.comp cV) (fun s => ρ (aV s)) F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨RingHom.ker Φ, RingHom.ker_isPrime Φ, fun F hF b => (hker F).1 hF b, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `o`. Use `⟨e o, ?_⟩` and prove the remaining obligations. Establish `h1 : aV ⟨o, e o⟩ = 1` using `Subtype.ext (div_self (ht o))`. Rewrite using `[RingHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Φ, eval₂Hom_X', h1, map_one, mul_one]`. Conclude with `X_ne_zero _`. Introduce `F hF`. Rewrite using `[hker]`. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFb` using `isMultiHomogIdeal_blowUpOf hPh N u hu F hF b`. Establish `hh` using `weightedHomogeneousComponent_isWeightedHomogeneous (w := blockWeight (extIdx ι J)) b F`. Rewrite using `[hmem _ b hh]`. Establish `h0 : τ (weightedHomogeneousComponent (blockWeight (extIdx ι J)) b F) = 0` using `by show algebraMap _ L (Polynomial.eval 1 (aeval (blowUpSubst P u) _)) = 0`. Rewrite using `[(RingHom.mem_ker).mp hFb, Polynomial.eval_zero, map_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[hτψ _ b hh, mul_eq_zero]`. Establish `h0' : ψV (weightedHomogeneousComponent (blockWeight (extIdx ι J)) b F) = 0` using `Subtype.ext (h0.resolve_left (hM b))`. Rewrite using `[h0']`. Conclude with `Ideal.zero_mem _`. Introduce `f hf`.
+Both sides reduce to the same expression. Treat this case separately. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hf` using `[Ideal.mem_comap, hker]`. It suffices to establish `hc : ∀ c, weightedHomogeneousComponent (blockWeight ι) c f ∈ W by`. Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]`. Conclude with `Ideal.sum_mem _ fun c _ => hc c`. Introduce `c`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hcW`. Use `set fc := weightedHomogeneousComponent (blockWeight ι) c f`. Establish `hfc : IsMultiHomog fc c` using `weightedHomogeneousComponent_isWeightedHomogeneous _ _`. Establish `hlift : weightedHomogeneousComponent (blockWeight (extIdx ι J)) (liftMDeg c) (liftForm f) = liftForm fc`. Establish `h` using `FieldNumbers.ContractRelevant.rename_weightedHomogeneousComponent (ι := ι) (ι' := extIdx ι J) (j := some) (g := fun v => (⟨some v.1, v.2⟩ : Σ o, extIdx ι J o)) (fun _ => rfl) (Option.some_injective K) (fun v w h => Sigma.ext (Option.some_injective _ (congrArg Sigma.fst h)) (Sigma …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hext : Function.extend some c 0 = liftMDeg c`. Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `none`. Rewrite using `[Function.extend_apply' _ _ _ (fun ⟨k, hk⟩ => Option.some_ne_none k hk)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `some k => rw [(Option.some_injective K).extend_apply]`. Both sides reduce to the same expression. Rewrite `h` using `[hext]`. Conclude with `h.symm`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hf (liftMDeg c)`. Rewrite `h1` using `[hlift, hmem _ _ (isMultiHomog_liftForm hfc)]`. Establish `hM' : (∏ o, t o ^ liftMDeg c o) = q (powMonomial c ik)`. Rewrite using `[Fintype.prod_option]`. Simplify using `only [liftMDeg, Option.elim, pow_zero, one_mul, powMonomial, map_prod, map_pow]`.
-
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show τ (X ⟨some k, ik k⟩) ^ c k = _`. Rewrite using `[hτX]`. Establish `hpm : powMonomial c ik ∉ W` using `fun h => (W.primeCompl.prod_mem fun k _ => W.primeCompl.pow_mem (hik k) _ : powMonomial c ik ∈ W.primeCompl) h`. Establish `hinv` using `hAgen c _ _ (isMultiHomog_powMonomial c ik) hfc hcW`.
-
-Establish `hqf : q fc ≠ 0` using `fun h => hcW (hPW ((hq0 _).1 h))`. Establish `hqm : q (powMonomial c ik) ≠ 0` using `fun h => hpm (hPW ((hq0 _).1 h))`. Establish `heq` using `hτψ _ _ (isMultiHomog_liftForm hfc)`. Rewrite `heq` using `[hτl, hM']`. Establish `hψ0 : (ψV (liftForm fc) : L) ≠ 0` using `fun h => hqf (by rw [heq, h, mul_zero])`.
-
-Establish `key : (ψV (liftForm fc) : L) * (q (powMonomial c ik) / q fc) = 1`. Rewrite using `[heq]`. Clear the denominators using the available nonvanishing facts. Establish `hunit : IsUnit (ψV (liftForm fc))` using `IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext key)`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 h1 hunit`.
-
-Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨b, F, G, hF, hG, hGW', rfl⟩`. Use `show τ F / τ G ∈ V`. Rewrite using `[hτψ F b hF, hτψ G b hG, mul_div_mul_left _ _ (hM b)]`. Establish `hG' : IsUnit (ψV G)`.
-
-Assume the negation of the conclusion as `hnu`. Conclude with `hGW' ((hmem G b hG).2 ((IsLocalRing.mem_maximalIdeal _).2 hnu))`. Use `V.mem_of_valuation_le_one _ ?_` and prove the remaining obligations. Rewrite using `[map_div₀, (V.valuation_eq_one_iff _).1 hG', div_one]`. Conclude with `V.valuation_le_one _`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_blowUp_centre (P W : Ideal (MRing ι O)) [P.IsPrime] (hPh : IsMultiHomogIdeal P)
     (hW : W.IsPrime) (hPW : P ≤ W) (hWrel : IsRelevant W) (N : K → ℕ) (u : J → MRing ι O)

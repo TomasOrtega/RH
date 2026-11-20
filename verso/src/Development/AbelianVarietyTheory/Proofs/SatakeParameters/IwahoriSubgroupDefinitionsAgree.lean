@@ -6,15 +6,15 @@ open GlobalTheory.IwFn GlobalTheory.SmGL GlobalTheory.TfJl ValuativeRel Matrix
 namespace GlobalTheory.IwEq
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Rewrite `hu` using `[SetLike.mem_coe, Subgroup.mem_comap, mem_borel]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Subgroup.mem_comap, GroundTheory.Automorphic.mem_borel_iff]`. Introduce `i j hij`. Rewrite using `[GroundTheory.Automorphic.GLnLocal.residueReduction_apply]`. Conclude with `hu i j hij`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Introduce and unpack `⟨u, hu, rfl⟩`. Rewrite `hu` using `[SetLike.mem_coe, Subgroup.mem_comap, GroundTheory.Automorphic.mem_borel_iff]`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, Subgroup.mem_comap, mem_borel]`. Introduce `i j hij`. Establish `h` using `hu i j hij`. Rewrite `h` using `[GroundTheory.Automorphic.GLnLocal.residueReduction_apply]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use extensionality with `i j`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem iwahori_eq_glnLocal_iwahori : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a : ℕ),

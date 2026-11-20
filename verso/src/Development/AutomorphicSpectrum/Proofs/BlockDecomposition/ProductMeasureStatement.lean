@@ -19,25 +19,23 @@ variable {X Y Z : Type*} [AddCommGroup X] [AddCommGroup Y] [AddCommGroup Z]
   [MeasurableSpace X] [MeasurableSpace Y] [MeasurableSpace Z]
 
 /- English proof (translation)
-Establish `hm : ∀ R : Set (X × Y), (μ.prod ν).map J (J '' R) = μ.prod ν R` using `fun R => by`. Rewrite using `[J.map_apply, Set.preimage_image_eq _ J.injective]`. Establish `htr : ∀ (l : Z) (w : X × Y), l + J w = J (J.symm l + w)` using `fun l w => by`. Rewrite using `[hJ, J.apply_symm_apply]`. Establish `himg : ∀ l : Λ, (l +ᵥ (J '' (F ×ˢ G)) : Set Z) = J '' ((((⟨(J.symm l.1).1, ((hΛ _).1 l.2).1⟩ : Γ) +ᵥ F : Set X)) ×ˢ (((⟨(J.symm l.1).2, ((hΛ _).1 l.2).2⟩ : Δ) +ᵥ G : Set Y)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `l`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨w, ⟨h1, h2⟩, rfl⟩, rfl⟩`. Use `⟨J.symm l.1 + w, ⟨⟨w.1, h1, rfl⟩, ⟨w.2, h2, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(htr l.1 w).symm`. Introduce and unpack `⟨w, ⟨⟨a, ha, h1⟩, ⟨b, hb, h2⟩⟩, rfl⟩`. Use `⟨J (a, b), ⟨(a, b), ⟨ha, hb⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `: J.symm l.1 + (a, b) = w` using `Prod.ext h1 h2`. Express the relevant statement in the definitionally equal form `l.1 + J (a, b) = J w`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htr, this]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hq : QuasiMeasurePreserving J.symm ((μ.prod ν).map J) (μ.prod ν)`. Use `⟨J.symm.measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_map J.symm.measurable J.measurable]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [MeasurableEquiv.symm_comp_self, Measure.map_id]`. Conclude with `Measure.AbsolutelyContinuous.rfl`. Rewrite using `[J.image_eq_preimage_symm]`. Conclude with `(hF.nullMeasurableSet.prod hG.nullMeasurableSet).preimage hq`. Rewrite using `[J.measurableEmbedding.ae_map_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `(quasiMeasurePreserving_fst (μ := μ) (ν := ν)).ae hF.ae_covers`. Establish `h2` using `(quasiMeasurePreserving_snd (μ := μ) (ν := ν)).ae hG.ae_covers`. Use `filter_upwards [h1, h2] with w hw1 hw2`. Take `⟨g, hg⟩` from `hw1`. Take `⟨d, hd⟩` from `hw2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨⟨J (g.1, d.1), (hΛ _).2 (by simp)⟩, (g.1 + w.1, d.1 + w.2), ⟨hg, hd⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `J (g.1 + w.1, d.1 + w.2) = J (g.1, d.1) + J w`. Rewrite using `[← hJ]`. Both sides reduce to the same expression. Introduce `l l' hll`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Express the relevant statement in the definitionally equal form `(μ.prod ν).map J ((l +ᵥ (J '' (F ×ˢ G)) : Set Z) ∩ (l' +ᵥ (J '' (F ×ˢ G)) : Set Z)) = 0`. Rewrite using `[himg, himg, ← Set.image_inter J.injective, hm, Set.prod_inter_prod, Measure.prod_prod]`. Establish `hne : (⟨(J.symm l.1).1, ((hΛ _).1 l.2).1⟩ : Γ) ≠ ⟨(J.symm l'.1).1, ((hΛ _).1 l'.2).1⟩ ∨ (⟨(J.symm l.1).2, ((hΛ _).1 l.2).2⟩ : Δ) ≠ ⟨(J.symm l'.1).2, ((hΛ _).1 l'.2).2⟩`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Apply `hll` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `J.symm.injective` to reduce the goal to its premises. Conclude with `Prod.ext (congrArg Subtype.val hcon.1) (congrArg Subtype.val hcon.2)`. Break down `hne with h | h` into its components or cases.
-
-Use `hF.aedisjoint h` as an intermediate fact. Rewrite using `[show μ _ = 0 from this, zero_mul]`. Use `hG.aedisjoint h` as an intermediate fact. Rewrite using `[show ν _ = 0 from this, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAddFundamentalDomain_join (J : X × Y ≃ᵐ Z) (hJ : ∀ a b, J (a + b) = J a + J b)
     (Γ : AddSubgroup X) (Δ : AddSubgroup Y) (Λ : AddSubgroup Z)
@@ -103,19 +101,19 @@ end Abstract
 variable {D : D7} {r s p : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Simplify using `[rowT, rowJ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rowT_rowJ (x : Mx D r p) (z : Mx D s p) : rowT (rowJ x z) = x := by
   funext i j; simp [rowT, rowJ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Simplify using `[rowB, rowJ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rowB_rowJ (x : Mx D r p) (z : Mx D s p) : rowB (rowJ x z) = z := by
   funext i j; simp [rowB, rowJ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left a => simp [rowT, rowJ]`. Consider the case `right b => simp [rowB, rowJ]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem rowJ_rowT_rowB (y : Mx D (r + s) p) : rowJ (rowT y) (rowB y) = y := by
   funext i j
@@ -124,7 +122,7 @@ theorem rowJ_rowT_rowB (y : Mx D (r + s) p) : rowJ (rowT y) (rowB y) = y := by
   | right b => simp [rowB, rowJ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left a => simp [rowJ]`. Consider the case `right b => simp [rowJ]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem rowJ_add (x x' : Mx D r p) (z z' : Mx D s p) : rowJ (x + x') (z + z') = rowJ x z + rowJ x' z' := by
   funext i j
@@ -133,21 +131,21 @@ theorem rowJ_add (x x' : Mx D r p) (z z' : Mx D s p) : rowJ (x + x') (z + z') = 
   | right b => simp [rowJ]
 
 /- English proof (translation)
-The claim follows from `continuous_matrix fun i j => continuous_id.matrix_elem _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rowT : Continuous (rowT : Mx D (r + s) p → Mx D r p) :=
   continuous_matrix fun i j => continuous_id.matrix_elem _ _
 
 /- English proof (translation)
-The claim follows from `continuous_matrix fun i j => continuous_id.matrix_elem _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rowB : Continuous (rowB : Mx D (r + s) p → Mx D s p) :=
   continuous_matrix fun i j => continuous_id.matrix_elem _ _
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Proceed by induction on `i using Fin.addCases with`. Consider the case `left a`. Simplify `(continuous_fst.matrix_elem a j)` using `[rowJ]`. Consider the case `right b`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify `(continuous_snd.matrix_elem b j)` using `[rowJ]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_rowJ : Continuous (fun z : Mx D r p × Mx D s p => rowJ z.1 z.2) := by
   refine continuous_matrix fun i j => ?_
@@ -166,13 +164,13 @@ def rowH : Mx D r p × Mx D s p ≃ₜ Mx D (r + s) p where
   continuous_invFun := continuous_rowT.prodMk continuous_rowB
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, rfl⟩`. Conclude with `⟨⟨fun i j => γ (Fin.castAdd s i) j, rfl⟩, ⟨fun i j => γ (Fin.natAdd r i) j, rfl⟩⟩`. Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩ replace ha : rat a = rowT y := ha replace hb : rat b = rowB y := hb`. Use `⟨fun i j => Fin.addCases (motive := fun _ => D.host.E) (fun u => a u j) (fun v => b v j) i, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `rat _ = y`. Use function extensionality and compare the values at `i j`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left u`. Use `Eq.trans ?_ (congrFun (congrFun ha u) j)` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `incA D (Fin.addCases (motive := fun _ => D.host.E) (fun u => a u j) (fun v => b v j) (Fin.castAdd s u)) = incA D (a u j)`. Rewrite using `[Fin.addCases_left]`. Consider the case `right v`. Use `Eq.trans ?_ (congrFun (congrFun hb v) j)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `incA D (Fin.addCases (motive := fun _ => D.host.E) (fun u => a u j) (fun v => b v j) (Fin.natAdd r v)) = incA D (b v j)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Fin.addCases_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_ratMx_iff (y : Mx D (r + s) p) :
     y ∈ ratMx D (r + s) p ↔ rowT y ∈ ratMx D r p ∧ rowB y ∈ ratMx D s p := by
@@ -198,13 +196,11 @@ theorem mem_ratMx_iff (y : Mx D (r + s) p) :
       rw [Fin.addCases_right]
 
 /- English proof (translation)
-Introduce `D r s p μr 𝓕r μs 𝓕s μ 𝓕 hr hs h`. Take `⟨a1, a2, a3, a4, -⟩` from `lattice_Mx D r p`. Take `⟨b1, b2, b3, b4, -⟩` from `lattice_Mx D s p`. Take `⟨c1, c2, c3, c4, -⟩` from `lattice_Mx D (r + s) p`. Use `haveI : BorelSpace (Mx D r p) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : BorelSpace (Mx D s p) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D (r + s) p) := ⟨rfl⟩`. Use `haveI := hr.1`. Use `haveI := hs.1`. Set `J : Mx D r p × Mx D s p ≃ᵐ Mx D (r + s) p` to `(rowH (D := D) (r := r) (s := s) (p := p)).toMeasurableEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : ∀ a b, J (a + b) = J a + J b` using `fun a b => rowJ_add a.1 b.1 a.2 b.2`. Establish `hJf : (J : Mx D r p × Mx D s p → Mx D (r + s) p) = fun z => rowJ z.1 z.2` using `rfl`. Set `e : Mx D r p × Mx D s p ≃+ Mx D (r + s) p` to `{ (rowH (D := D) (r := r) (s := s) (p := p)).toEquiv with map_add' := hJ }`. Establish `hH : ((μr.prod μs).map e).IsAddHaarMeasure` using `AddEquiv.isAddHaarMeasure_map (μr.prod μs) e continuous_rowJ (continuous_rowT.prodMk continuous_rowB)`. Establish `hF : IsAddFundamentalDomain (ratMx D (r + s) p) (J '' (𝓕r ×ˢ 𝓕s)) ((μr.prod μs).map J)` using `isAddFundamentalDomain_join J hJ (ratMx D r p) (ratMx D s p) (ratMx D (r + s) p) (fun z => mem_ratMx_iff z) μr μs 𝓕r 𝓕s hr.2.1 hs.2.1`.
-
-Establish `h1 : (μr.prod μs).map J (J '' (𝓕r ×ˢ 𝓕s)) = 1`. Rewrite using `[J.map_apply, Set.preimage_image_eq _ J.injective, Measure.prod_prod, hr.2.2, hs.2.2, one_mul]`. Establish `hcov : IsCovolOne (ratMx D (r + s) p) ((μr.prod μs).map J) (J '' (𝓕r ×ˢ 𝓕s))` using `⟨hH, hF, h1⟩`. Conclude with `covolOne_measure_eq hcov h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prodMeas : ProdMeas := by
   intro D r s p μr 𝓕r μs 𝓕s μ 𝓕 hr hs h

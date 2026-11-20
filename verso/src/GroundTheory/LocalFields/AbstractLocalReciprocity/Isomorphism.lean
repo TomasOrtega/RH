@@ -9,7 +9,7 @@ open ProfiniteInteger MulAction
 section Transfer
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qe30.transfer_of_comp_subtype H g`.
+A detailed English derivation is pending.
 -/
 theorem transfer_of_comp_subtype {Γ : Type*} [Group Γ] (H : Subgroup Γ) [H.FiniteIndex] (g : Γ) :
     ((Abelianization.of : Γ →* Abelianization Γ).comp H.subtype).transfer g =
@@ -19,9 +19,9 @@ theorem transfer_of_comp_subtype {Γ : Type*} [Group Γ] (H : Subgroup Γ) [H.Fi
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
 
 /- English proof (translation)
-Rewrite using `[verlagerung, map_transfer, ← transfer_of_comp_subtype]`. Establish `e : (Abelianization.map (galRestrict (K` using `K) (L := L) (K' := K') (L' := L) hK'K le_rfl)).comp ((Abelianization.of).comp (MonoidHom.ofInjective (galRestrict_injective (L := L) hK'K)).symm.toMonoidHom) = (Abelianization.of).comp (galRestrict (K := K) (L := L) (K' := K') (L' := L) hK'K le_rfl).range.subtype := by`. Use `MonoidHom.ext fun h => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, Abelianization.map_of, MonoidHom.comp_apply, Subgroup.coe_subtype]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congrArg Subtype.val ((MonoidHom.ofInjective (galRestrict_injective (L := L) hK'K)).apply_symm_apply h)` as an intermediate fact. Rewrite `this` using `[MonoidHom.ofInjective_apply]`. Conclude with `this`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_verlagerung {K K' L : OpenSubgroup G} [((L : Subgroup G).subgroupOf K).Normal]
     [((L : Subgroup G).subgroupOf K').Normal] (hK'K : K' ≤ K)
@@ -59,7 +59,7 @@ variable {K L : OpenSubgroup G} (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K)
   (hax : ClassFieldAxiom G A) [IsDiscreteModule G A]
 
 /- English proof (translation)
-The claim follows from `reciprocity_of_isPGroup hax _ (le_fixedOpen hLK _) rfl (P.isPGroup'.of_equiv (galFixedEquiv hLK (P : Subgroup ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K))).symm)`.
+A detailed English derivation is pending.
 -/
 theorem reciprocity_fixedOpen_sylow {p : ℕ} [Fact p.Prime]
     (P : Sylow p ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)) :
@@ -71,15 +71,15 @@ theorem reciprocity_fixedOpen_sylow {p : ℕ} [Fact p.Prime]
     (P.isPGroup'.of_equiv (galFixedEquiv hLK (P : Subgroup ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K))).symm)
 
 /- English proof (translation)
-Introduce `x`. Assume the negation of the conclusion as `hx`. Use `set R := (D.reciprocity hLK hax).range with hR`. Establish `hxR : x ∉ R` using `fun h => hx (MonoidHom.mem_range.1 h)`. Use `set y : tateZero A (K : Subgroup G) (L : Subgroup G) ⧸ R := (x : _ ⧸ R) with hy`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hy1 : y ≠ 1` using `fun h => hxR ((QuotientGroup.eq_one_iff x).1 h)`. Take `⟨p, hp, hpy⟩` from `Nat.exists_prime_and_dvd (mt orderOf_eq_one_iff.1 hy1)`. Use `Fact.mk hp` as an intermediate fact. Set `P : Sylow p ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)` to `Classical.arbitrary _`. Establish `hMK : ((fixedOpen hLK (P : Subgroup ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)) : OpenSubgroup G) : Subgroup G) ≤ K` using `fun _ h => fixedOpen_le hLK _ h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hs, -⟩` from `reciprocity_fixedOpen_sylow (D := D) hLK hax P`. Establish `hyP : y ^ (P : Subgroup ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)).index = 1`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`. Take `⟨t, ht⟩` from `hs ((⟨a, fixedModule_anti hMK a.2⟩ : fixedModule A ((fixedOpen hLK (P : Subgroup ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)) : OpenSubgroup G) : Subgroup G)) : tateZero A _ (L : Subgroup G))`. Establish `e` using `D.reciprocity_galRestrict hax hLK (le_fixedOpen hLK _) (fixedOpen_le hLK _) le_rfl t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[ht, normTateZero_mk]`. Establish `hn : norm A (K : Subgroup G) ((fixedOpen hLK (P : Subgroup ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)) : OpenSubgroup G) : Subgroup G) ⟨a, fixedModule_anti hMK a.2⟩ = a ^ (P : Subgroup ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)).index`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_norm_of_mem hMK a.2, relIndex_fixedOpen_eq_index, SubgroupClass.coe_pow]`. Rewrite `e` using `[hn, QuotientGroup.mk_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hy, ← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`. Conclude with `⟨_, e⟩`. Conclude with `Sylow.not_dvd_index P (hpy.trans (orderOf_dvd_of_pow_eq_one hyP))`.
+A detailed English derivation is pending.
 -/
 theorem reciprocity_surjective : Function.Surjective (D.reciprocity hLK hax) := by
   classical
@@ -113,11 +113,11 @@ theorem reciprocity_surjective : Function.Surjective (D.reciprocity hLK hax) := 
   exact Sylow.not_dvd_index P (hpy.trans (orderOf_dvd_of_pow_eq_one hyP))
 
 /- English proof (translation)
-Introduce `σ hσ`. Rewrite `hσ` using `[MonoidHom.mem_ker]`. Rewrite using `[← Abelianization.ker_of, MonoidHom.mem_ker]`. Assume the negation of the conclusion as `h1`. Take `⟨p, hp, hpd⟩` from `Nat.exists_prime_and_dvd (mt orderOf_eq_one_iff.1 h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `Fact.mk hp` as an intermediate fact. Set `P : Sylow p ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)` to `Classical.arbitrary _`. Take `⟨-, hk⟩` from `reciprocity_fixedOpen_sylow (D := D) hLK hax P`. Establish `hinj` using `Abelianization.lift_injective_of_ker_le _ hk`. Establish `hv` using `D.reciprocity_verlagerung hax (le_fixedOpen hLK (P : Subgroup ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K))) (fixedOpen_le hLK (P : Subgroup ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K))) σ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hv` using `[hσ, map_one]`. Establish `hv1 : verlagerung (L` using `L) (fixedOpen_le hLK (P : Subgroup ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K))) σ = 1 := hinj (by rw [hv, map_one])`. Establish `hmap` using `map_verlagerung (fixedOpen_le hLK (P : Subgroup ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K))) σ`. Rewrite `hmap` using `[hv1, map_one, range_galRestrict_fixedOpen]`. Conclude with `Sylow.not_dvd_index P (hpd.trans (orderOf_dvd_of_pow_eq_one hmap.symm))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_reciprocity_le_commutator :
     (D.reciprocity hLK hax).ker ≤ commutator ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) := by
@@ -141,7 +141,7 @@ theorem ker_reciprocity_le_commutator :
   exact Sylow.not_dvd_index P (hpd.trans (orderOf_dvd_of_pow_eq_one hmap.symm))
 
 /- English proof (translation)
-Use `le_antisymm (ker_reciprocity_le_commutator hLK hax) ?_` and prove the remaining obligations. Rewrite using `[← Abelianization.ker_of]`. Introduce `σ hσ`. Rewrite `hσ`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[← Abelianization.lift_apply_of (D.reciprocity hLK hax), hσ, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_reciprocity_eq_commutator :
     (D.reciprocity hLK hax).ker = commutator ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) := by
@@ -159,14 +159,14 @@ noncomputable def reciprocityAb :
   Abelianization.lift (D.reciprocity hLK hax)
 
 /- English proof (translation)
-The claim follows from `Abelianization.lift_apply_of _ q`.
+A detailed English derivation is pending.
 -/
 theorem reciprocityAb_of (q : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) :
     D.reciprocityAb hLK hax (Abelianization.of q) = D.reciprocity hLK hax q :=
   Abelianization.lift_apply_of _ q
 
 /- English proof (translation)
-Use `⟨Abelianization.lift_injective_of_ker_le _ (ker_reciprocity_le_commutator hLK hax), fun x => ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `reciprocity_surjective (D := D) hLK hax x`. Conclude with `⟨Abelianization.of q, hq⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem reciprocityAb_bijective : Function.Bijective (D.reciprocityAb hLK hax) := by
   refine ⟨Abelianization.lift_injective_of_ker_le _ (ker_reciprocity_le_commutator hLK hax),
@@ -189,7 +189,7 @@ theorem reciprocityAbEquiv_apply (z : Abelianization ((K : Subgroup G) ⧸ (L : 
   rfl
 
 /- English proof (translation)
-The claim follows from `reciprocityAb_of hLK hax q`.
+A detailed English derivation is pending.
 -/
 theorem reciprocityAbEquiv_of (q : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) :
     D.reciprocityAbEquiv hLK hax (Abelianization.of q) = D.reciprocity hLK hax q :=
@@ -198,7 +198,7 @@ theorem reciprocityAbEquiv_of (q : (K : Subgroup G) ⧸ (L : Subgroup G).subgrou
 include hLK hax in
 
 /- English proof (translation)
-The claim follows from `(Nat.card_congr (D.reciprocityAbEquiv hLK hax).toEquiv).symm`.
+A detailed English derivation is pending.
 -/
 theorem card_tateZero (D : ClassFieldData G A) :
     Nat.card (tateZero A (K : Subgroup G) (L : Subgroup G)) =
@@ -206,9 +206,9 @@ theorem card_tateZero (D : ClassFieldData G A) :
   (Nat.card_congr (D.reciprocityAbEquiv hLK hax).toEquiv).symm
 
 /- English proof (translation)
-Use `⟨?_, reciprocity_surjective hLK hax⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_one]`. Introduce `q hq`. Establish `h` using `ker_reciprocity_le_commutator (D := D) hLK hax hq`. Rewrite `h` using `[commutator, Subgroup.commutator_eq_bot_iff_le_centralizer.2 (fun x _ y _ => mul_comm' y x)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem reciprocity_bijective_of_isMulCommutative
     [IsMulCommutative ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)] :
@@ -227,7 +227,7 @@ section Squares
 variable (hax : ClassFieldAxiom G A) [IsDiscreteModule G A]
 
 /- English proof (translation)
-Proceed by induction on `z using QuotientGroup.induction_on with`. Consider the case `H q => show D.reciprocityAb hLK hax (Abelianization.map (galRestrict hK hL) (Abelianization.of q)) = normTateZero hK hL hL'K' hLK (D.reciprocityAb hL'K' hax (Abelianization.of q))`. Rewrite using `[Abelianization.map_of, reciprocityAb_of, reciprocityAb_of, D.reciprocity_galRestrict hax hLK hL'K' hK hL q]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem reciprocityAb_map_galRestrict {K L K' L' : OpenSubgroup G} (hLK : L ≤ K)
     [((L : Subgroup G).subgroupOf K).Normal] (hL'K' : L' ≤ K')
@@ -243,7 +243,7 @@ theorem reciprocityAb_map_galRestrict {K L K' L' : OpenSubgroup G} (hLK : L ≤ 
       D.reciprocity_galRestrict hax hLK hL'K' hK hL q]
 
 /- English proof (translation)
-Rewrite using `[MulEquiv.symm_apply_eq]`. Take `⟨z, rfl⟩` from `(D.reciprocityAbEquiv hL'K' hax).surjective x`. Rewrite using `[MulEquiv.symm_apply_apply, reciprocityAbEquiv_apply, reciprocityAbEquiv_apply, reciprocityAb_map_galRestrict]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem reciprocityAbEquiv_symm_normTateZero {K L K' L' : OpenSubgroup G} (hLK : L ≤ K)
     [((L : Subgroup G).subgroupOf K).Normal] (hL'K' : L' ≤ K')
@@ -257,9 +257,9 @@ theorem reciprocityAbEquiv_symm_normTateZero {K L K' L' : OpenSubgroup G} (hLK :
     reciprocityAb_map_galRestrict]
 
 /- English proof (translation)
-Rewrite using `[MulEquiv.symm_apply_eq]`. Take `⟨z, rfl⟩` from `(D.reciprocityAbEquiv hLK hax).surjective x`. Rewrite using `[MulEquiv.symm_apply_apply]`. Proceed by induction on `z using QuotientGroup.induction_on with`. Consider the case `H q => show tateZeroConj σ K L (D.reciprocityAbEquiv hLK hax (Abelianization.of q)) = D.reciprocityAbEquiv (conjOpen_mono σ hLK) hax (Abelianization.map (galConj σ K L) (Abelianization.of q))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite using `[Abelianization.map_of, reciprocityAbEquiv_of, reciprocityAbEquiv_of, D.reciprocity_galConj hax σ hLK q]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reciprocityAbEquiv_symm_tateZeroConj (σ : G) {K L : OpenSubgroup G} (hLK : L ≤ K)
     [((L : Subgroup G).subgroupOf K).Normal] (x : tateZero A (K : Subgroup G) (L : Subgroup G)) :
@@ -277,9 +277,9 @@ theorem reciprocityAbEquiv_symm_tateZeroConj (σ : G) {K L : OpenSubgroup G} (hL
       D.reciprocity_galConj hax σ hLK q]
 
 /- English proof (translation)
-Rewrite using `[MulEquiv.symm_apply_eq]`. Take `⟨z, rfl⟩` from `(D.reciprocityAbEquiv (hLK'.trans hK'K) hax).surjective x`. Rewrite using `[MulEquiv.symm_apply_apply]`. Proceed by induction on `z using QuotientGroup.induction_on with`. Consider the case `H q => show tateZeroIncl hLK' hK'K (D.reciprocityAbEquiv (hLK'.trans hK'K) hax (Abelianization.of q)) = D.reciprocityAbEquiv hLK' hax (Abelianization.lift (verlagerung hK'K) (Abelianization.of q))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite using `[Abelianization.lift_apply_of, reciprocityAbEquiv_of, reciprocityAbEquiv_apply, reciprocityAb, D.reciprocity_verlagerung hax hLK' hK'K q]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reciprocityAbEquiv_symm_tateZeroIncl {K K' L : OpenSubgroup G}
     [((L : Subgroup G).subgroupOf K).Normal] [((L : Subgroup G).subgroupOf K').Normal]
@@ -304,7 +304,7 @@ variable {K L : OpenSubgroup G} (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K)
   (hax : ClassFieldAxiom G A) [IsDiscreteModule G A]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `D.exists_prime K`. Rewrite using `[MulEquiv.symm_apply_eq, map_pow, reciprocityAbEquiv_of, reciprocity_frobenius_of_unramified hLK hax hu hφ hπ]`. Apply `(D.tateZeroVal_bijective hax hLK hu).1` to reduce the goal to its premises. Rewrite using `[map_pow, tateZeroVal_mk, tateZeroVal_mk, valuationMod_apply, valuationMod_apply, hπ, toAdd_ofAdd, map_one, ← ofAdd_nsmul, nsmul_one, ZMod.natCast_zmod_val]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem reciprocityAbEquiv_symm_of_unramified (hu : (K : Subgroup G) ⊓ D.deg.ker ≤ L)
     {φ : (K : Subgroup G)} (hφ : D.relDeg K φ = Multiplicative.ofAdd 1)
@@ -320,7 +320,7 @@ theorem reciprocityAbEquiv_symm_of_unramified (hu : (K : Subgroup G) ⊓ D.deg.k
     map_one, ← ofAdd_nsmul, nsmul_one, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `D.exists_prime K`. Rewrite using `[MulEquiv.symm_apply_eq, map_zpow, reciprocityAbEquiv_of, reciprocity_frobenius_of_unramified hLK hax hu hφ hπ]`. Apply `(D.tateZeroVal_bijective hax hLK hu).1` to reduce the goal to its premises. Rewrite using `[map_zpow, tateZeroVal_mk, tateZeroVal_mk, valuationMod_apply, valuationMod_apply, hπ, ha, toAdd_ofAdd, toAdd_ofAdd, map_one, map_intCast, ← ofAdd_zsmul, zsmul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem reciprocityAbEquiv_symm_of_unramified_of_valuation (hu : (K : Subgroup G) ⊓ D.deg.ker ≤ L)
     {φ : (K : Subgroup G)} (hφ : D.relDeg K φ = Multiplicative.ofAdd 1)

@@ -10,11 +10,11 @@ section
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Establish `hj : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)`. Take `⟨φ, a, b⟩` from `X.j_hol`. Conclude with `⟨φ, b, a⟩`. Establish `H` using `Tower.overY_comap_sl_gal ε X ε.injective hj`. Use `⟨fun c => (X.sl g).commutes c, fun W => ⟨fun hW => (H W hW).1 g, fun hW => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `(H _ hW).1 g⁻¹`. Establish `e : (W.comap (slR X g : X.K →+* X.K)).comap (X.sl g⁻¹).toRingEquiv.toRingHom = W`. Use extensionality with `f`. Rewrite using `[ValuationSubring.mem_comap, ValuationSubring.mem_comap]`. Express the relevant statement in the definitionally equal form `X.sl g (X.sl g⁻¹ f) ∈ W ↔ _`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← X.sl_mul, inv_mul_cancel, X.sl_one]`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem admissible_sl2_action [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (g : GQ) : admitted X (slR X g) 1 := by
   have hj : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero) := by
@@ -31,7 +31,7 @@ private theorem admissible_sl2_action [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (g
   rwa [e] at h2
 
 /- English proof (translation)
-Use `⟨fun c => X.gal_algebraMap s c, fun W => ?_⟩` and prove the remaining obligations. Simplify using `only [Tower.OverY, ValuationSubring.mem_comap, RingEquiv.coe_toRingHom, X.gal_algebraMap, X.gal_jK]`. Use `and_congr ⟨fun h c => h _, fun h c => ?_⟩ Iff.rfl` and prove the remaining obligations. Establish `h3` using `h (s.symm c)`. Rewrite `h3` using `[AlgEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem admissible_galois_action (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) : admitted X (X.gal s) s := by
   refine ⟨fun c => X.gal_algebraMap s c, fun W => ?_⟩
@@ -41,9 +41,9 @@ private theorem admissible_galois_action (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] �
   rwa [AlgEquiv.apply_symm_apply] at h3
 
 /- English proof (translation)
-Use `⟨fun c => ?_, fun W => ?_⟩` and prove the remaining obligations. Use `show τ' (τ _) = _`. Rewrite using `[h.1, h'.1, AlgEquiv.mul_apply]`. Establish `heq : W.comap ((τ.trans τ') : X.K →+* X.K) = (W.comap (τ' : X.K →+* X.K)).comap (τ : X.K →+* X.K)`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ValuationSubring.mem_comap, ValuationSubring.mem_comap, ValuationSubring.mem_comap]`. Both sides reduce to the same expression. Rewrite using `[heq]`. Conclude with `(h'.2 W).trans (h.2 _)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem admissible_trans (X : Tower Ω ε) (τ : X.K ≃+* X.K) (s : Ω ≃ₐ[ℚ] Ω) (τ' : X.K ≃+* X.K) (s' : Ω ≃ₐ[ℚ] Ω)
     (h : admitted X τ s) (h' : admitted X τ' s') : admitted X (τ.trans τ') (s' * s) := by
@@ -59,9 +59,9 @@ private theorem admissible_trans (X : Tower Ω ε) (τ : X.K ≃+* X.K) (s : Ω 
     exact (h'.2 W).trans (h.2 _)
 
 /- English proof (translation)
-Use `⟨fun c => ?_, fun W => ?_⟩` and prove the remaining obligations. Rewrite using `[RingEquiv.symm_apply_eq, h.1, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Establish `e : (W.comap (τ.symm : X.K →+* X.K)).comap (τ : X.K →+* X.K) = W`. Use extensionality with `f`. Rewrite using `[ValuationSubring.mem_comap, ValuationSubring.mem_comap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h.2 (W.comap (τ.symm : X.K →+* X.K)), e]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem admissible_symm (X : Tower Ω ε) (τ : X.K ≃+* X.K) (s : Ω ≃ₐ[ℚ] Ω) (h : admitted X τ s) :
     admitted X τ.symm s⁻¹ := by
@@ -74,9 +74,9 @@ private theorem admissible_symm (X : Tower Ω ε) (τ : X.K ≃+* X.K) (s : Ω �
     rw [h.2 (W.comap (τ.symm : X.K →+* X.K)), e]
 
 /- English proof (translation)
-Establish `h0 : τ u ≠ 0` using `(map_ne_zero τ).2 hu.1`. Use `⟨h0, fun W hW => ?_⟩` and prove the remaining obligations. Establish `h1` using `hu.2 _ ((h.2 W).1 hW)`. Rewrite `h1` using `[KmapA.val_eq_one_iff _ hu.1]`. Rewrite using `[KmapA.val_eq_one_iff _ h0, ← map_inv₀]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨ValuationSubring.mem_comap.1 h1.1, ValuationSubring.mem_comap.1 h1.2⟩`.
+Supply the required witnesses or components.
 -/
 private theorem admissible_preserves_units (X : Tower Ω ε) (τ : X.K ≃+* X.K) (s : Ω ≃ₐ[ℚ] Ω) (h : admitted X τ s) (u : X.K)
     (hu : IsU X u) : IsU X (τ u) := by
@@ -88,15 +88,15 @@ private theorem admissible_preserves_units (X : Tower Ω ε) (τ : X.K ≃+* X.K
   exact ⟨ValuationSubring.mem_comap.1 h1.1, ValuationSubring.mem_comap.1 h1.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsAlgClosure.equivOfEquiv (Kb X) (Kb X) τ, fun f => IsAlgClosure.equivOfEquiv_algebraMap (Kb X) (Kb X) τ f⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_algebraic_closure_lift (X : Tower Ω ε) (τ : X.K ≃+* X.K) : ∃ σ, Lifts X σ τ :=
   ⟨IsAlgClosure.equivOfEquiv (Kb X) (Kb X) τ, fun f => IsAlgClosure.equivOfEquiv_algebraMap (Kb X) (Kb X) τ f⟩
 
 /- English proof (translation)
-Use `⟨fun W _ => ⟨1, by simp⟩, fun f g hf hg => ⟨fun W hW => ?_, fun W hW => ?_⟩⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hf W hW`. Take `⟨b, hb⟩` from `hg W hW`. Use `⟨a * b, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, mul_pow, mul_div_mul_comm, map_mul, ha, hb, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `hf W hW`. Use `⟨a⁻¹, ?_⟩` and prove the remaining obligations. Establish `e : ((f⁻¹ : X.Kˣ) : X.K) / ((a⁻¹ : X.Kˣ) : X.K) ^ m = ((f : X.K) / (a : X.K) ^ m)⁻¹`. Rewrite using `[Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, inv_pow, inv_div_inv, inv_div]`. Rewrite using `[e, map_inv₀, ha, inv_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem units_subgroup_closure (X : Tower Ω ε) (m : ℕ) :
     (1 : X.Kˣ) ∈ X.Un m ∧ ∀ f g, f ∈ X.Un m → g ∈ X.Un m → f * g ∈ X.Un m ∧ f⁻¹ ∈ X.Un m := by
@@ -114,7 +114,7 @@ private theorem units_subgroup_closure (X : Tower Ω ε) (m : ℕ) :
 end
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X`. Conclude with `⟨admissible_sl2_action X, admissible_galois_action X, ⟨fun _ => rfl, fun _ => Iff.rfl⟩, admissible_trans X, admissible_symm X, fun τ s h => ⟨admissible_preserves_units X τ s h, fun m f hf => KmapA.un_map X τ (fun W hW => (h.2 W).1 hW) m f hf⟩, exists_algebraic_closure_lift X, uni …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Kato.Sym.admB :
     UpperTheory.V.Z.Kato.Sym.AdmB := by

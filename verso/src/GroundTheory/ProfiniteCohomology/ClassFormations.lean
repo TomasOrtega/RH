@@ -22,7 +22,7 @@ def quotQuotHom (h : V' ≤ V) : U ⧸ V'.subgroupOf U →* U ⧸ V.subgroupOf U
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-The claim follows from `(QuotientGroup.isQuotientMap_mk _).continuous_iff.2 QuotientGroup.continuous_mk`.
+A detailed English derivation is pending.
 -/
 theorem continuous_quotQuotHom (h : V' ≤ V) : Continuous (quotQuotHom (U := U) h) :=
   (QuotientGroup.isQuotientMap_mk _).continuous_iff.2 QuotientGroup.continuous_mk
@@ -68,14 +68,14 @@ include F
 
 omit [CompactSpace G] [TotallyDisconnectedSpace G] in
 /- English proof (translation)
-The claim follows from `(F.inv_bijective W).1`.
+A detailed English derivation is pending.
 -/
 theorem inv_injective (W : OpenSubgroup G) : Function.Injective (F.inv W) :=
   (F.inv_bijective W).1
 
 omit [CompactSpace G] [TotallyDisconnectedSpace G] in
 /- English proof (translation)
-The claim follows from `(F.inv_bijective W).2 q`.
+A detailed English derivation is pending.
 -/
 theorem exists_inv_eq (W : OpenSubgroup G) (q : QZ) : ∃ x : H2Open C W, F.inv W x = q :=
   (F.inv_bijective W).2 q
@@ -83,7 +83,7 @@ theorem exists_inv_eq (W : OpenSubgroup G) (q : QZ) : ∃ x : H2Open C W, F.inv 
 include hVU in
 
 /- English proof (translation)
-The claim follows from `F.toPreClassFormation.tate_hypotheses hVU F.inv_injective (F.exists_inv_eq U _) S`.
+A detailed English derivation is pending.
 -/
 theorem tate_hypotheses (S : Subgroup (U ⧸ (V : Subgroup G).subgroupOf U)) :
     IsZero (groupCohomology (Rep.res S.subtype ((Rep.res (U : Subgroup G).subtype C).quotientToInvariants
@@ -107,7 +107,7 @@ include F
 omit [CompactSpace G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-The claim follows from `(AddMonoidHom.mem_range).1 (QZ.mem_of_nsmul_eq_zero P (F.inv W).range (F.primaryComponent_le_range W) n hn hP _ (QZ.nsmul_mk_one_div n))`.
+A detailed English derivation is pending.
 -/
 theorem exists_inv_eq_one_div (W : OpenSubgroup G) {n : ℕ} (hn : n ≠ 0)
     (hP : ∀ p : Nat.Primes, (p : ℕ) ∣ n → p ∈ P) :
@@ -120,7 +120,7 @@ variable (hP : ∀ p : Nat.Primes, (p : ℕ) ∣ (V : Subgroup G).relIndex U →
 include hVU hP in
 
 /- English proof (translation)
-The claim follows from `F.toPreClassFormation.tate_hypotheses hVU F.inv_injective (F.exists_inv_eq_one_div U (relIndex_ne_zero_of_isOpen V.isOpen _) hP) S`.
+A detailed English derivation is pending.
 -/
 theorem tate_hypotheses (S : Subgroup (U ⧸ (V : Subgroup G).subgroupOf U)) :
     IsZero (groupCohomology (Rep.res S.subtype ((Rep.res (U : Subgroup G).subtype C).quotientToInvariants

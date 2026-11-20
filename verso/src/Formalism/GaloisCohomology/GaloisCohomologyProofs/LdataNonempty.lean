@@ -10,9 +10,9 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hU : UnramOutside S (cycZ F Ω l)`. Rewrite using `[unramOutside_iff S _ (continuous_cycZ F Ω l)]`. Introduce `v hv A hA σ hσ`. Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => ?_)` and prove the remaining obligations. Rewrite using `[cycZ_toZModPow_eq (hS v hv) hA (q := 1) (fun x hx => by simpa using hσ.2 x hx) n]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨QuotientGroup.lift (NS Ω S) (cycZ F Ω l) (fun σ h => (MonoidHom.mem_ker).2 (hU σ h)), ?_⟩` and prove the remaining obligations. Use extensionality with `σ`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem chi_exists (S : Set (HeightOneSpectrum (𝓞 F)))
     (hS : ∀ v ∉ S, ((l:ℕ) : 𝓞 F) ∉ v.asIdeal) :
@@ -27,11 +27,9 @@ theorem chi_exists (S : Set (HeightOneSpectrum (𝓞 F)))
   ext σ; rfl
 
 /- English proof (translation)
-Establish `hl : ((l : ℕ) : 𝓞 F) ≠ 0`. Introduce `h`. Establish `h2` using `congrArg (algebraMap (𝓞 F) F) h`. Simplify using `only [map_natCast, map_zero, Nat.cast_eq_zero] at h2`. Conclude with `(Fact.out : l.Prime).ne_zero h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hl`. Use `(Ideal.finite_factors h0).subset ?_` and prove the remaining obligations. Introduce `v hv`.
-
-Use `show v.asIdeal ∣ Ideal.span {((l : ℕ) : 𝓞 F)}`. Rewrite using `[Ideal.dvd_span_singleton]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem above_finite : (Above F l).Finite := by
   have hl : ((l : ℕ) : 𝓞 F) ≠ 0 := by
@@ -49,7 +47,7 @@ theorem above_finite : (Above F l).Finite := by
   exact hv
 
 /- English proof (translation)
-Set `S` to `(above_finite (F := F) l).toFinset`. Establish `hS : (S : Set _) = Above F l` using `by simp [S]`. Take `⟨chi, hchi⟩` from `chi_exists (F := F) (Ω := Ω) l (S : Set _) (fun v hv h => hv (by rw [hS]; exact h))`. Conclude with `⟨⟨S, hS, fun v => placeOf Ω v.1, fun v => isPlaceOver_placeOf Ω v.1, chi, hchi⟩⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ldata_nonempty : Nonempty (LData F Ω l) := by
   classical
@@ -61,7 +59,7 @@ theorem ldata_nonempty : Nonempty (LData F Ω l) := by
 end
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _`. Conclude with `ldata_nonempty (F := F) (Ω := Ω) l`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ldataExists : LDataExists := by
   intro F Ω _ _ _ _ _ l _

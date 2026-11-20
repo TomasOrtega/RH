@@ -9,7 +9,7 @@ open Metric Real
 noncomputable section
 
 /- English proof (translation)
-Apply `DiffContOnCl.circleAverage` to reduce the goal to its premises. Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[closure_ball _ (by norm_num : |(1:ℝ)| ≠ 0), abs_one]`. Conclude with `hh.differentiableOn`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem circleAverage_of_analytic {h : ℂ → ℂ} (hh : AnalyticOnNhd ℂ h (closedBall 0 1)) :
     circleAverage h 0 1 = h 0 := by
@@ -19,14 +19,14 @@ theorem circleAverage_of_analytic {h : ℂ → ℂ} (hh : AnalyticOnNhd ℂ h (c
   exact hh.differentiableOn
 
 /- English proof (translation)
-The claim follows from `(hh.continuousOn.mono sphere_subset_closedBall).circleIntegrable zero_le_one`.
+A detailed English derivation is pending.
 -/
 theorem circleIntegrable_of_analytic {h : ℂ → ℂ} (hh : AnalyticOnNhd ℂ h (closedBall 0 1)) :
     CircleIntegrable h 0 1 :=
   (hh.continuousOn.mono sphere_subset_closedBall).circleIntegrable zero_le_one
 
 /- English proof (translation)
-Use `Complex.imCLM.circleAverage_comp_comm (circleIntegrable_of_analytic hh)` as an intermediate fact. Rewrite `this` using `[circleAverage_of_analytic hh]`. Simplify `this` using `[Function.comp_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem circleAverage_im_of_analytic {h : ℂ → ℂ} (hh : AnalyticOnNhd ℂ h (closedBall 0 1)) :
     circleAverage (fun ζ => (h ζ).im) 0 1 = (h 0).im := by
@@ -35,13 +35,13 @@ theorem circleAverage_im_of_analytic {h : ℂ → ℂ} (hh : AnalyticOnNhd ℂ h
   simpa [Function.comp_def] using this
 
 /- English proof (translation)
-Establish `hh' : AnalyticOnNhd ℂ h (closedBall 0 |(1 : ℝ)|)` using `by simpa using hh`. Rewrite using `[hh'.circleAverage_log_norm one_ne_zero (hne 0 (mem_closedBall_self zero_le_one))]`. Establish `hzero : ∀ u : ℂ, (MeromorphicOn.divisor h (closedBall 0 |(1:ℝ)|) u : ℝ) * Real.log (1 * ‖(0:ℂ) - u‖⁻¹) = 0`. Introduce `u`. Distinguish the cases in `hu : u ∈ closedBall (0:ℂ) |(1:ℝ)|`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hu' : u ∈ closedBall (0:ℂ) 1` using `by simpa using hu`. Rewrite using `[MeromorphicOn.AnalyticOnNhd.divisor_apply hh' hu, (hh' u hu).analyticOrderAt_eq_zero.mpr (hne u hu')]`. Simplify using the standard rewrite rules. Rewrite using `[Function.locallyFinsuppWithin.apply_eq_zero_of_notMem _ hu]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hz2 : ∀ u : ℂ, -((MeromorphicOn.divisor h (closedBall 0 |(1:ℝ)|) u : ℝ) * Real.log ‖u‖) = 0`. Introduce `u`. Use `hzero u` as an intermediate fact. Simplify using `only [one_mul, zero_sub, norm_neg, Real.log_inv, mul_neg] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [one_mul, zero_sub, norm_neg, Real.log_inv, mul_neg, hz2, finsum_zero, zero_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem circleAverage_log_norm_of_ne_zero {h : ℂ → ℂ} (hh : AnalyticOnNhd ℂ h (closedBall 0 1))
     (hne : ∀ ζ ∈ closedBall (0:ℂ) 1, h ζ ≠ 0) :

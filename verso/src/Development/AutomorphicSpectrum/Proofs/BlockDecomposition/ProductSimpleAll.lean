@@ -31,27 +31,23 @@ def regSub {Γ : Type} [Group Γ] (N : Submodule ℂ (MonoidAlgebra ℂ Γ))
     rw [← mul_assoc, MonoidAlgebra.single_mul_single, one_mul]
 
 /- English proof (translation)
-Establish `htop` using `IsSemisimpleModule.sSup_simples_eq_top (MonoidAlgebra ℂ Γ) (MonoidAlgebra ℂ Γ)`. Establish `hex : ∃ I : Submodule (MonoidAlgebra ℂ Γ) (MonoidAlgebra ℂ Γ), IsSimpleModule (MonoidAlgebra ℂ Γ) I ∧ ∃ n ∈ I, T n ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Establish `hz : ∀ a ∈ sSup {m : Submodule (MonoidAlgebra ℂ Γ) (MonoidAlgebra ℂ Γ) | IsSimpleModule (MonoidAlgebra ℂ Γ) m}, T a = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Rewrite `ha` using `[sSup_eq_iSup']`. Use `Submodule.iSup_induction _ (motive := fun x => T x = 0) ha ?_ (map_zero T) ?_` and prove the remaining obligations. Introduce and unpack `⟨I, hI⟩ x hx`. Conclude with `hno I hI x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y hx hy`. Rewrite using `[map_add, hx, hy, add_zero]`. Conclude with `hT (hz 1 (by rw [htop]; trivial))`. Take `⟨I, hI, n, hn, hTn⟩` from `hex`. Establish `hstab : ∀ g : Γ, ∀ a ∈ I.restrictScalars ℂ, MonoidAlgebra.single g (1 : ℂ) * a ∈ I.restrictScalars ℂ` using `fun g a ha => I.smul_mem (MonoidAlgebra.single g (1 : ℂ)) ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `⟨I.restrictScalars ℂ, hstab, ⟨?_, ?_⟩, n, hn, hTn⟩` and prove the remaining obligations. Establish `hn0 : n ≠ 0` using `fun h0 => hTn (by rw [h0, map_zero])`. Conclude with `⟨⟨⟨n, hn⟩, 0, fun h0 => hn0 (congrArg Subtype.val h0)⟩⟩`. Introduce `U hU`. Establish `hmul : ∀ a : MonoidAlgebra ℂ Γ, ∀ x ∈ U.map (I.restrictScalars ℂ).subtype, a * x ∈ U.map (I.restrictScalars ℂ).subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `a`. Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of g`. Introduce and unpack `x ⟨u, hu, rfl⟩`. Conclude with `⟨regSub _ hstab g u, hU g u hu, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb`. Introduce `x hx`. Rewrite using `[add_mul]`. Conclude with `Submodule.add_mem _ (ha x hx) (hb x hx)`. Consider the case `smul r a ha`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ r (ha x hx)`. Set `J : Submodule (MonoidAlgebra ℂ Γ) (MonoidAlgebra ℂ Γ)` to `{ carrier := U.map (I.restrictScalars ℂ).subtype add_mem' := fun ha hb => Submodule.add_mem _ ha hb zero_mem' := Submodule.zero_mem _ smul_mem' := fun a x hx => hmul a x hx }`. Establish `hJI : J ≤ I`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `x ⟨u, -, rfl⟩`. Conclude with `u.2`. Break down `(isSimpleModule_iff_isAtom.mp hI).le_iff.mp hJI with h0 | h1` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu`. Establish `: (u : MonoidAlgebra ℂ Γ) ∈ J` using `⟨u, hu, rfl⟩`. Rewrite `this` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext ((Submodule.mem_bot _).1 this))`. Use `right`.
-
-Rewrite using `[eq_top_iff]`. Introduce `u _`. Establish `: (u : MonoidAlgebra ℂ Γ) ∈ J`. Rewrite using `[h1]`. Conclude with `u.2`.
-
-Take `⟨u', hu', he⟩` from `this`. Establish `: u' = u` using `Subtype.ext he`. Conclude with `this ▸ hu'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_irr {Γ : Type} [Group Γ] [Fintype Γ] {W : Type} [AddCommGroup W] [Module ℂ W]
     (T : MonoidAlgebra ℂ Γ →ₗ[ℂ] W) (hT : T 1 ≠ 0) :
@@ -132,16 +128,16 @@ def psi (ρ : Representation ℂ (∀ c, L c) W) (v : W) :
     ((MultilinearMap.mkPiAlgebra ℂ (Fin s) ℂ).compLinearMap (fun c => cf (g c))).smulRight (ρ g v)
 
 /- English proof (translation)
-Simplify using `[psi, MultilinearMap.sum_apply, cf_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_apply (ρ : Representation ℂ (∀ c, L c) W) (v : W) (x : ∀ c, MonoidAlgebra ℂ (L c)) :
     psi ρ v x = ∑ g : ∀ c, L c, (∏ c, (x c).coeff (g c)) • ρ g v := by
   simp [psi, MultilinearMap.sum_apply, cf_apply]
 
 /- English proof (translation)
-Rewrite using `[psi_apply, Finset.sum_eq_single (1 : ∀ c, L c)]`. Simplify using `[MonoidAlgebra.one_def]`. Introduce `g _ hg`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, g c ≠ 1 := by`. Assume the negation of the conclusion as `hall`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hall`. Conclude with `hg (funext hall)`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ c), zero_smul]`. Simplify using `[MonoidAlgebra.one_def, Finsupp.single_apply, hc.symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psi_one (ρ : Representation ℂ (∀ c, L c) W) (v : W) :
     psi ρ v (fun _ => 1) = v := by
@@ -158,7 +154,7 @@ theorem psi_one (ρ : Representation ℂ (∀ c, L c) W) (v : W) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[psi_apply, psi_apply, map_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft g⁻¹) _ _ fun h => ?_` and prove the remaining obligations. Simplify using `only [MonoidAlgebra.coeff_single_mul_apply, one_mul, map_smul, Equiv.coe_mulLeft, Pi.mul_apply, Pi.inv_apply]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_single_mul (ρ : Representation ℂ (∀ c, L c) W) (v : W) (g : ∀ c, L c)
     (x : ∀ c, MonoidAlgebra ℂ (L c)) :
@@ -170,15 +166,15 @@ theorem psi_single_mul (ρ : Representation ℂ (∀ c, L c) W) (v : W) (g : ∀
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset (Fin s), ∃ x : ∀ c, MonoidAlgebra ℂ (L c), (∀ c, c ∉ S → x c = 1) ∧ (∀ c ∈ S, ∃ (N : Submodule ℂ (MonoidAlgebra ℂ (L c))) (h : ∀ g : L c, ∀ a ∈ N, MonoidAlgebra.single g (1 : ℂ) * a ∈ N), IsIrr (regSub N h) ∧ x c ∈ N) ∧ psi ρ v x ≠ 0`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Conclude with `⟨fun _ => 1, fun _ _ => rfl, by simp, by rwa [psi_one]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `insert c S hc ih`. Take `⟨x, h1, h2, h3⟩` from `ih`. Establish `hT : (psi ρ v).toLinearMap x c 1 ≠ 0`. Rewrite using `[MultilinearMap.toLinearMap_apply, ← h1 c hc, Function.update_eq_self]`. Conclude with `h3`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨N, h, hirr, n, hn, hTn⟩` from `exists_irr _ hT`. Use `⟨Function.update x c n, fun c' hc' => ?_, fun c' hc' => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hc'` using `[Finset.mem_insert, not_or]`. Rewrite using `[Function.update_of_ne hc'.1]`. Conclude with `h1 c' hc'.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hcc : c' = c`. Substitute `hcc` using the available equality. Conclude with `⟨N, h, hirr, by rwa [Function.update_self]⟩`. Take `⟨N', h', hirr', hm⟩` from `h2 c' ((Finset.mem_insert.mp hc').resolve_left hcc)`. Conclude with `⟨N', h', hirr', by rwa [Function.update_of_ne hcc]⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `hTn` using `[MultilinearMap.toLinearMap_apply]`. Take `⟨x, -, h2, h3⟩` from `key Finset.univ`. Conclude with `⟨x, fun c => h2 c (Finset.mem_univ c), h3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_family (ρ : Representation ℂ (∀ c, L c) W) (v : W) (hv : v ≠ 0) :
     ∃ x : ∀ c, MonoidAlgebra ℂ (L c),
@@ -216,13 +212,11 @@ end GlobalTheory.CompanionTheory.ProdSimple
 
 open GlobalTheory.CompanionTheory.ProdSimple in
 /- English proof (translation)
-Introduce `s L _ _ W _ _ _ _ ρ`. Take `⟨v, hv⟩` from `exists_ne (0 : W)`. Take `⟨x, hx, hne⟩` from `exists_family ρ v hv`. Use `choose N h hirr hmem using hx`. Establish `hfin : ∀ c, Module.Finite ℂ (N c)` using `fun c => inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `lam : ∀ c, FDRep ℂ (L c)` to `fun c => FDRep.of (regSub (N c) (h c))`. Set `M : MultilinearMap ℂ (fun c => (lam c : Type)) W` to `(psi ρ v).compLinearMap (fun c => (N c).subtype)`. Use `⟨lam, PiTensorProduct.lift M, fun c => ?_, ?_, fun g => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.CompanionTheory.TyFin.simpleIffIrr.1 (L c) (lam c)).2 (hirr c)`. Introduce `h0`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Use `congrArg (fun f => f (PiTensorProduct.tprod ℂ (fun c => (⟨x c, hmem c⟩ : N c)))) h0` as an intermediate fact. Simplify using `only [LinearMap.zero_apply, PiTensorProduct.lift.tprod] at this`. Conclude with `this`. Apply `PiTensorProduct.ext` to reduce the goal to its premises.
-
-Use extensionality with `y`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod]`. Conclude with `psi_single_mul ρ v g (fun c => (y c : MonoidAlgebra ℂ (L c)))`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.ProdSimple.prodSimpleAll : ReciprocityTheory.Ty.Fin.St.ProdSimpleAll := by
   intro s L _ _ W _ _ _ _ ρ

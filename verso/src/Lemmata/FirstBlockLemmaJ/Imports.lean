@@ -5,15 +5,15 @@ universe u_1
 namespace Bl.FirstBlockLemmaJ
 
 /- English proof (translation)
-Introduce `V _ _ g x ε hg z hz hz0 y hy`. Set `φ : ℂ → V` to `fun t => z + t • (y - z)`. Establish `hφd : Differentiable ℂ φ` using `(differentiable_const z).add (differentiable_id.smul_const (y - z))`. Establish `hφc : Continuous φ` using `hφd.continuous`. Set `U : Set ℂ` to `φ ⁻¹' Metric.ball x ε`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hUo : IsOpen U` using `Metric.isOpen_ball.preimage hφc`. Establish `hdiff : DifferentiableOn ℂ (g ∘ φ) U` using `hg.comp hφd.differentiableOn (fun t ht => ht)`. Establish `han : AnalyticOnNhd ℂ (g ∘ φ) U` using `hdiff.analyticOnNhd hUo`. Set `S : Set ℂ` to `(fun θ : ℝ => (θ : ℂ)) '' Set.Icc (0 : ℝ) 1`. Establish `hSc : IsPreconnected S` using `isPreconnected_Icc.image _ Complex.continuous_ofReal.continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hSU : S ⊆ U`. Introduce and unpack `t ⟨θ, hθ, rfl⟩`. Use `show z + (θ : ℂ) • (y - z) ∈ Metric.ball x ε`. Rewrite using `[Complex.coe_smul]`. Conclude with `(convex_ball x ε).add_smul_sub_mem hz hy hθ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : ℂ) ∈ S` using `⟨0, ⟨le_refl _, zero_le_one⟩, by simp⟩`. Establish `h1 : (1 : ℂ) ∈ S` using `⟨1, ⟨zero_le_one, le_refl _⟩, by simp⟩`. Establish `ht : Filter.Tendsto φ (nhds 0) (nhds z)`. Use `hφc.tendsto 0` as an intermediate fact. Simplify `this` using `[φ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : Filter.EventuallyEq (nhds (0 : ℂ)) (g ∘ φ) 0` using `(ht.eventually hz0).mono (fun t h => by simpa using h)`. Use `(han.mono hSU).eqOn_zero_of_preconnected_of_eventuallyEq_zero hSc h0 hev h1` as an intermediate fact. Simplify `this` using `[φ]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {V : Type u_1} [inst : NormedAddCommGroup.{u_1} V] [inst_1 : NormedSpace.{0, u_1} Complex V] {g : V → Complex} {x : V}

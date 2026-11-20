@@ -8,9 +8,9 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.Kd.K4 Polynomial
 open scoped Matrix MatrixGroups
 
 /- English proof (translation)
-Proceed by induction on `k generalizing x with`. Consider the case `zero => simpa using h`. Consider the case `succ k ih`. Apply `ih` to reduce the goal to its premises. Apply `GlobalTheory.T.kummerCompletion_no_prime_torsion X l` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← mul_smul, ← pow_succ']`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_tf {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     (l : ℕ) [Fact l.Prime] (k : ℕ) (x : X.Khat l) (h : ((l : ℤ_[l]) ^ k) • x = 0) : x = 0 := by
@@ -23,7 +23,7 @@ private theorem pow_tf {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ
     exact h
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa using h`. Consider the case `succ e ih => exact ih ((GlobalTheory.T.towerUnitClassModPrimePow_properties Ω ε X l (m + e)).2.2.2.2.2.2 x f h)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem eval_down {Ω : Type} [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε)
     (l : ℕ) [Fact l.Prime] (m e : ℕ) (x : X.Khat l) (f : X.Kˣ)
@@ -34,15 +34,15 @@ private theorem eval_down {Ω : Type} [Field Ω] [Algebra ℚ Ω] (ε : Ω →+*
   | succ e ih => exact ih ((GlobalTheory.T.towerUnitClassModPrimePow_properties Ω ε X l (m + e)).2.2.2.2.2.2 x f h)
 
 /- English proof (translation)
-Establish `hj : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)`. Take `⟨φ, h1, h2⟩` from `X.j_hol`. Conclude with `⟨φ, h2, h1⟩`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Introduce `m`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf, ef⟩` from `GlobalTheory.T.exists_unit_eval_eq_kummer_class ε X hj l (m + e) _ h`. Take `⟨hsurj, hker, hmul, hone, -, -, -⟩` from `GlobalTheory.T.towerUnitClassModPrimePow_properties Ω ε X l (m + e)`. Take `⟨g, hg⟩` from `hsurj (AdicCompletion.eval (idl l) (X.Kl l) (m + e) k)`. Establish `hpow : ∀ t : ℕ, X.cls l (m + e) (g ^ t) = t • X.cls l (m + e) g`. Introduce `t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `t with`. Consider the case `zero => simp [hone]`. Consider the case `succ t ih => rw [pow_succ g t, hmul, ih, succ_nsmul]`. Establish `h1 : X.cls l (m + e) (g ^ (l ^ e)) = X.cls l (m + e) f`. Rewrite using `[hpow, hg, ← Nat.cast_smul_eq_nsmul ℤ_[l], ← map_smul, Nat.cast_pow, ef]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `(hker _ _).1 h1`. Take `⟨-, umul, -, upow, -, -, -⟩` from `GlobalTheory.T.localPowerUnitsTower_closure_properties ε X ε.injective hj (l ^ (m + e))`. Establish `hU : g ^ (l ^ e) ∈ X.Un (l ^ e * l ^ m)`. Rewrite using `[← pow_add, add_comm e m, ht]`. Conclude with `umul _ _ hf (upow t)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgU : g ∈ X.Un (l ^ m)` using `(GlobalTheory.T.localPowerUnitsTower_closure_properties ε X ε.injective hj (l ^ e)).2.2.2.2.2.2 (l ^ m) g (pow_pos (Fact.out : l.Prime).pos e) hU`. Conclude with `⟨g, hgU, eval_down ε X l m e k g hg.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem mem_A_of_pow {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε)
     (l : ℕ) [Fact l.Prime] (e : ℕ) (k : X.Khat l) (h : ((l : ℤ_[l]) ^ e) • k ∈ X.A l) : k ∈ X.A l := by
@@ -72,11 +72,11 @@ private theorem mem_A_of_pow {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosu
   exact ⟨g, hgU, eval_down ε X l m e k g hg.symm⟩
 
 /- English proof (translation)
-Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨⟨0, fun i => Submodule.zero_mem _, fun u => by simp⟩, fun γ _ => map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨⟨c, hc, ex⟩, ix⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨d, hd, ey⟩, iy⟩` from `hy`. Use `⟨⟨c + d, fun i => Submodule.add_mem _ (hc i) (hd i), fun u => ?_⟩, fun γ hγ => by rw [map_add, ix γ hγ, iy γ hγ]⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, ex u, ey u, smul_add, Finset.sum_add_distrib]`. Consider the case `smul r x _ hx`. Take `⟨⟨c, hc, ex⟩, ix⟩` from `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨r • c, fun i => Submodule.smul_mem _ r (hc i), fun u => ?_⟩, fun γ hγ => by rw [map_smul, ix γ hγ]⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, ex u, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_BSet {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (N l w : ℕ)
     [Fact l.Prime] {b : X.Fn l} (hb : b ∈ X.B N l w) : b ∈ X.BSet N l w := by
@@ -97,25 +97,23 @@ private theorem mem_BSet {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* 
     exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ N w`. Set `V : Matrix (Fin (w + 1)) (Fin (w + 1)) ℤ_[l]` to `Matrix.vandermonde (fun t : Fin (w + 1) => ((t : ℕ) : ℤ_[l]))`. Establish `hD : V.det ≠ 0`. Use `Matrix.det_vandermonde_ne_zero_iff.mpr ?_` and prove the remaining obligations. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hab' : ((a : ℕ) : ℤ_[l]) = ((b : ℕ) : ℤ_[l])` using `hab`. Conclude with `Fin.ext (by exact_mod_cast hab')`. Use `⟨V.det.valuation, ?_⟩` and prove the remaining obligations. Introduce `n b hb h0`. Take `⟨⟨cf, hcf, hbc⟩, hinv⟩` from `mem_BSet X N l w hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : ∀ i, V.det • cf i = ∑ t, V.adjugate i t • b ![((t : ℕ) : ℤ_[l]), 1]`. Introduce `i`. Establish `hbt : ∀ t : Fin (w + 1), b ![((t : ℕ) : ℤ_[l]), 1] = ∑ j, V t j • cf j`. Introduce `t`. Rewrite using `[hbc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[V, Matrix.vandermonde_apply]`. Repeatedly rewrite using `[hbt, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, ← Matrix.mul_apply, Matrix.adjugate_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.smul_apply, Matrix.one_apply]`. Establish `hk : ∀ i, ∃ k : X.Khat l, ((l : ℤ_[l]) ^ n) • k = ((l : ℤ_[l]) ^ V.det.valuation) • cf i`. Introduce `i`. Establish `h1 : V.det • cf i ∈ LinearMap.ker (AdicCompletion.eval (idl l) (X.Kl l) n)`. Rewrite using `[LinearMap.mem_ker, e1 i, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Establish `h2` using `h0 ![((t : ℕ) : ℤ_[l]), 1]`. Simplify using `only [Pi.zero_apply, sub_zero] at h2`. Rewrite using `[map_smul, h2, smul_zero]`. Rewrite `h1` using `[← AdicCompletion.pow_smul_top_eq_ker_eval (Submodule.fg_span_singleton _), Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, -, hk⟩` from `h1`. Use `⟨((PadicInt.unitCoeff hD)⁻¹ : ℤ_[l]ˣ) • k, ?_⟩` and prove the remaining obligations. Establish `hv : (((PadicInt.unitCoeff hD)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) * V.det = (l : ℤ_[l]) ^ V.det.valuation` using `(congrArg _ (PadicInt.unitCoeff_spec hD)).trans (Units.inv_mul_cancel_left _ _)`. Rewrite using `[smul_comm, hk, Units.smul_def, smul_smul, hv]`. Use `choose k hk using hk`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hkA : ∀ i, k i ∈ X.A l` using `fun i => mem_A_of_pow ε X l n (k i) (by rw [hk i]; exact Submodule.smul_mem _ _ (hcf i))`. Set `b' : X.Fn l` to `fun u => ∑ i : Fin (w + 1), (u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) • k i`. Establish `hrel : ((l : ℤ_[l]) ^ V.det.valuation) • b = ((l : ℤ_[l]) ^ n) • b'`. Use function extensionality and compare the values at `u`. Simplify using `only [Pi.smul_apply, hbc u, b', Finset.smul_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, ← hk i]`. Conclude with `smul_comm _ _ _`. Use `⟨b', Submodule.subset_span ⟨⟨k, hkA, fun u => rfl⟩, fun γ hγ => ?_⟩, hrel⟩` and prove the remaining obligations. Establish `h1 : ((l : ℤ_[l]) ^ n) • (X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) b' - b') = 0`.
-
-Rewrite using `[smul_sub, ← map_smul, ← hrel, map_smul, hinv γ hγ, sub_self]`. Use function extensionality and compare the values at `u`. Conclude with `sub_eq_zero.mp (pow_tf X l n _ (congrFun h1 u))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.K4.pur :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), ∀ (l : ℕ) [Fact l.Prime] (N w : ℕ), ∃ c : ℕ, ∀ (n : ℕ), ∀ b ∈ X.B N l w, CgF X l n b 0 → ∃ b' ∈ X.B N l w, ((l : ℤ_[l]) ^ c) • b = ((l : ℤ_[l]) ^ n) • b' := by

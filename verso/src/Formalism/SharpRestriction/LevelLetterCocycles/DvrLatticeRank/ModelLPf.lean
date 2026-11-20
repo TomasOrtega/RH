@@ -9,13 +9,13 @@ namespace Formalism.MainNotions.N.Ln34
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules
 
 /- English proof (translation)
-Unfold `ModelLStep modelLR recU`. Introduce `D HW F Cm CA CB CK hA l _ hl K LL hG π' E hr h' hh' T hT hJ c`. Take `⟨u₀, hu₀, hΛ⟩` from `MLL.exists_mul_gamma_Eat_pow_eq_Eat_pow D HW F Cm CA CB CK hA l hl K LL hG π' E hr h'`. Take `⟨hu, hu1⟩` from `MLL.rec_u D HW l hl K LL hG`. Establish `hwd` using `MLL.rec_WD D HW F Cm CA CB CK hA l hl K LL hG π' E hr T hT c`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlet` using `Formalism.MainNotions.ArcLiftingSetup.γA_letE ((HW l).W K 1 LL hG) ((HW l).W K 1 LL hG).gamK c`. Establish `hlev` using `fun τ ζ (hpt : Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG c ζ τ) a => MLL.rec_lev D HW F Cm l hl K LL hG c τ ζ hpt a`. Unfold `ModelL`. Use `⟨MLF.nl_le _ _ _ _ _ _ _, fun x hx => MLH.nl_γ _ _ _ _ _ _ _ hu₀ hΛ hlet _ hlev hx, fun a ha x hx => MLF.nl_smulA _ _ _ _ _ _ _ ha hx, MLD.model_lattice_filtration D HW F Cm CA CB CK hA l hl K LL hG π' E hr h' hh' T hT hJ c, fun x hx k hk => MLF.nl_sat _ _ _ _ _ _ _ hwd ?_ hx k h …` and prove the remaining obligations. Rewrite using `[map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.MainNotions.LiftingTheory.tr_pLL_ne ((HW l).W K 1 LL hG)`. Introduce `τ ζ hpt`. Take `⟨U, hU, hU0⟩` from `MLK.lev_Eat_simple D HW l hl K LL hG π' E hr c ζ τ hpt`. Use `⟨U ^ h', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hU, mul_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ hU0`.
+A detailed English derivation is pending.
 -/
 theorem modell_pf : ModelLStep := by
   unfold ModelLStep modelLR recU

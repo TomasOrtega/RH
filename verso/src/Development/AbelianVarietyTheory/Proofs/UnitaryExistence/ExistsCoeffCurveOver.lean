@@ -15,11 +15,11 @@ namespace GlobalTheory.CurveField
 open GlobalTheory.Ex.UnifModel GlobalTheory.Ex.TorsionField
 
 /- English proof (translation)
-Set `F` to `algebraicClosure M ℂ`. Establish `: IsAlgClosed F` using `(algebraicClosure.isAlgClosure M ℂ).isAlgClosed`. Take `⟨s, hs⟩` from `exists_finset (F := F) hM P hn`. Use `⟨s.image Subtype.val, fun z hz => ?_, fun τ h₁ h₂ x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `isIntegral_trans (A := M) _ (mem_algebraicClosure_iff'.1 y.2)`. Set `k : Subfield F` to `RingHom.eqLocusField (τ.comp (algebraMap F ℂ)) (algebraMap F ℂ)`. Take `⟨y, hy, hy'⟩` from `exists_descend_algClosed hM P (algebraMap M F) (algebraMap F ℂ) (algebraMap M ℂ) (fun _ => rfl) hn x hx`. Take `⟨z, hz⟩` from `hs k k.subtype (fun c => ⟨⟨algebraMap M F c, h₁ c c.2⟩, rfl⟩) (fun c hc => ⟨⟨c, h₂ c (Finset.mem_image_of_mem _ hc)⟩, rfl⟩) y hy`. Establish `e₁ : spMap (algebraMap F ℂ) ≫ spMap k.subtype = spMap ((algebraMap F ℂ).comp k.subtype)` using `spMap_comp fun _ => rfl`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : spMap τ ≫ spMap ((algebraMap F ℂ).comp k.subtype) = spMap ((algebraMap F ℂ).comp k.subtype)` using `spMap_comp fun c => c.2`. Rewrite using `[← hy', ← hz, reassoc_of% e₁, reassoc_of% e₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_fixed (hM : Out.MulNSt) (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M]
     (P : Out.PolAV (Sp M)) {n : ℕ} (hn : 1 ≤ n) :
@@ -46,9 +46,9 @@ theorem exists_finset_fixed (hM : Out.MulNSt) (M : IntermediateField ℚ ℂ) [F
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `h : H.rt0 ^ 2 = (Complex.I * Real.sqrt H.d) ^ 2`. Rewrite using `[H.sqrt_neg_disc_sq, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (by positivity)]`. Simplify using the standard rewrite rules. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h with h | h` into its components or cases. Conclude with `⟨a.1, a.2, by rw [wC, h]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨a.1 + a.2, -a.2, by rw [wC, h]; push_cast; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_wC_eq (H : Host E) (a : ℤ × ℤ) :
     ∃ m k : ℤ, wC H a = (m : ℂ) + k * ((1 + Complex.I * Real.sqrt H.d) / 2) := by
@@ -60,7 +60,7 @@ theorem exists_wC_eq (H : Host E) (a : ℤ × ℤ) :
   · exact ⟨a.1 + a.2, -a.2, by rw [wC, h]; push_cast; ring⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero]`. Conclude with `(u.ker 0).2 (zero_mem _)`. Consider the case `succ n ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ex_nsmul {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) (z : Fin g → ℂ) (n : ℕ) :
     u.ex (n • z) = u.ex z ^ n := by
@@ -69,7 +69,7 @@ theorem ex_nsmul {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : H
   | succ n ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]
 
 /- English proof (translation)
-Take `⟨m, k, h⟩` from `exists_wC_eq H a`. Rewrite using `[← ex_nsmul, C.u.ker]`. Use `(C.lat _).2 ⟨m, k, funext fun _ => ?_⟩` and prove the remaining obligations. Establish `: (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Rewrite using `[← h, Pi.smul_apply, nsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -83,9 +83,9 @@ theorem ex_pow_eq_one (C : Curve H) {n : ℕ} (hn : 0 < n) (a : ℤ × ℤ) :
   field_simp
 
 /- English proof (translation)
-Establish `hd` using `H.d_mod`. Take `⟨K, _, h2, hr⟩` from `exists_quadraticField_sq_eq_neg (d := H.d) H.d_prime.pos`. Take `⟨M, _, w, P, v, hw, hg, -, ⟨P₀, π, -, -, ⟨hg₀, hπ, hL₀⟩, -⟩, hcm, -⟩` from `cmCurve_closed H.d (by omega) H.d_prime.squarefree (by omega) K h2 hr`. Take `⟨PC, ψ, hgC, hψ, hLC⟩` from `exists_baseChange firstFiveLaws.1.polBaseChange (spMap (algebraMap M ℂ)) P₀`. Take `⟨u, hu⟩` from `exists_isThetaUnif thetaUnifAV_all PC`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hL : LBIso PC.L (P.L.pull (ψ ≫ π))` using `LBIso.trans PC.isLB (pull_isLB P₀.isLB ψ) (pull_isLB P.isLB _) hLC (LBIso.chartPull (Geo.Tor.chartPullPull P₀.L ψ ψ rfl) (Geo.Tor.chartPullSame P.L _ _ _ ψ fun _ => rfl) hL₀.symm)`. Take `⟨c, hc, hΛ⟩` from `hcm PC (ψ ≫ π) ⟨hgC.trans hg₀, (hψ.comp hπ).congr (spMap_comp fun _ => rfl) rfl, hL.symm⟩ u`. Rewrite `hΛ` using `[hw]`. Conclude with `⟨M, inferInstance, P₀, ⟨PC, hgC.trans (hg₀.trans hg), u, hu, c, hc, hΛ⟩, ψ, hψ⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_model (H : Host E) : ∃ (M : IntermediateField ℚ ℂ) (_ : FiniteDimensional ℚ M)
     (P : Out.PolAV (Sp M)) (C : Curve H) (ψ : C.P.A.left ⟶ P.A.left),
@@ -105,15 +105,15 @@ theorem exists_model (H : Host E) : ∃ (M : IntermediateField ℚ ℂ) (_ : Fin
   exact ⟨M, inferInstance, P₀, ⟨PC, hgC.trans (hg₀.trans hg), u, hu, c, hc, hΛ⟩, ψ, hψ⟩
 
 /- English proof (translation)
-Take `⟨M, _, P, C, ψ, hψ⟩` from `exists_model H`. Take `⟨s, hs, hfix⟩` from `exists_finset_fixed firstFiveLaws.1.mulN M P hn`. Use `IntermediateField.finiteDimensional_adjoin (K := ℚ) (S := (s : Set ℂ)) hs` as an intermediate fact. Use `⟨M ⊔ IntermediateField.adjoin ℚ (s : Set ℂ), inferInstance, fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `h₁ : ∀ x ∈ M, (τ : ℂ →+* ℂ) x = x` using `fun x hx => hτ x (le_sup_left (a := M) hx)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₂ : ∀ z ∈ s, (τ : ℂ →+* ℂ) z = z` using `fun z hz => hτ z (le_sup_right (a := M) (IntermediateField.subset_adjoin ℚ _ hz))`. Establish `e : spMap (τ : ℂ →+* ℂ) ≫ spMap (algebraMap M ℂ) = spMap (algebraMap M ℂ)` using `spMap_comp fun c => h₁ c c.2`. Establish `w : ψ ≫ P.A.hom = (C.P.A.hom ≫ spMap (τ : ℂ →+* ℂ)) ≫ spMap (algebraMap M ℂ)`. Rewrite using `[Category.assoc, e, hψ.1.w]`. Use `⟨C, hψ.1.lift _ _ w, hψ.cancel (hψ.congr e.symm (hψ.1.lift_fst _ _ w).symm) (hψ.1.lift_snd _ _ w), fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : wC H (1, 0) = 1` using `by simp [wC]`. Rewrite using `[h1, _root_.one_mul]`. Take `⟨ε, hε⟩` from `exists_mulEquiv_of_isGrpPullback hψ (𝟙 (Sp ℂ)) (spMap (algebraMap M ℂ)) (Category.id_comp _).symm`. Establish `hx` using `hfix τ h₁ h₂ (ε (C.u.ex fun _ => C.c * (wC H a / n))) (by`. Rewrite using `[← map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg ε (ex_pow_eq_one C hn a)).trans (map_one ε))`. Rewrite `hx` using `[hε]`. Establish `ho : C.pt (wC H a / n) ≫ C.P.A.hom = 𝟙 _` using `Over.w (C.u.ex fun _ => C.c * (wC H a / n))`. Use `hψ.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hψ.1.lift_fst, Category.assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx.symm`. Rewrite using `[Category.assoc, hψ.1.lift_snd, Category.assoc, ho, reassoc_of% ho, Category.comp_id]`.
+A detailed English derivation is pending.
 -/
 theorem exists_curveOver (H : Host E) {n : ℕ} (hn : 0 < n) :
     ∃ F : IntermediateField ℚ ℂ, FiniteDimensional ℚ F ∧ CurveOver H F n := by
@@ -144,7 +144,7 @@ theorem exists_curveOver (H : Host E) {n : ℕ} (hn : 0 < n) :
   · rw [Category.assoc, hψ.1.lift_snd, Category.assoc, ho, reassoc_of% ho, Category.comp_id]
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c n hn`. Take `⟨F, _, hF⟩` from `exists_curveOver H hn`. Use `c.fin` as an intermediate fact. Conclude with `⟨⟨c.F ⊔ F, inferInstance, fun τ a => le_sup_left (b := F) (c.conj τ a), le_sup_left (b := F) c.zeta_mem, c.le.trans le_sup_left⟩, le_sup_left, fun c'' h τ hτ => hF τ fun x hx => hτ x (h (le_sup_right (a := c.F) hx))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_coeff_curveOver : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (n : ℕ), 0 < n → ∃ c' : Coeff l, c.F ≤ c'.F ∧ ∀ c'' : Coeff l, c'.F ≤ c''.F → CurveOver H c''.F n := by
   intro E _ _ _ H l c n hn

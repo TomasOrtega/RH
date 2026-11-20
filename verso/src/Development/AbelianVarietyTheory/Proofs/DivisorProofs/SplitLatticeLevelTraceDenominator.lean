@@ -9,13 +9,11 @@ open scoped Classical MatrixGroups nonZeroDivisors
 namespace GlobalTheory.HilbFam
 
 /- English proof (translation)
-Establish `h1 : (![0, c] : Fin 2 → F) ∈ stdLat F`. Introduce `i _`. Use `fin_cases i`. Conclude with `Submodule.zero_mem _`. Conclude with `hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `(h.1 _ h1).2`. Establish `h3 : ((N : 𝓞 F) • (![0, c] : Fin 2 → F)) 1 - ((N : 𝓞 F) • (![0, c] : Fin 2 → F)) 0 * x = (N : F) * c`. Simplify using `[Algebra.smul_def]`. Rewrite `h2` using `[h3, GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latM_eq_dual, FractionalIdeal.mem_dual 𝔞.ne_zero]`. Take `⟨n, hn⟩` from `h2 ν hν`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h4 : (N : F) * c * ν = (N : ℚ) • (ν * c)`. Rewrite using `[Algebra.smul_def, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hn` using `[Algebra.traceForm_apply, h4, map_smul, smul_eq_mul]`.
-
-Simplify using `using hn.symm`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_int_mul_trace_of_hasLevel {F : Type} [Field F] [NumberField F] {N : ℕ} {𝔞 𝔟 : Frac F} {x : F}
     (h : HasLevel N (split 𝔞 𝔟 x)) {ν c : F} (hν : ν ∈ (𝔞 : FractionalIdeal (𝓞 F)⁰ F))
@@ -37,15 +35,13 @@ theorem exists_int_mul_trace_of_hasLevel {F : Type} [Field F] [NumberField F] {N
   simpa using hn.symm
 
 /- English proof (translation)
-Introduce `F _ _ _ N 𝔞 𝔟 x ξ h hξ`. Rewrite `hξ` using `[Units.val_mul]`. Use `FractionalIdeal.mul_induction_on hξ (C := fun ξ ↦ (∃ n : ℤ, (N : ℚ) * Algebra.trace ℚ F ξ = n) ∧ ∃ n : ℤ, (N : ℚ) * Algebra.trace ℚ F (ξ * x) = n) ?_ ?_` and prove the remaining obligations. Introduce `ν hν β hβ`. Establish `h1 : (![β, β * x] : Fin 2 → F) ∈ split 𝔞 𝔟 x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨hβ, ?_⟩` and prove the remaining obligations. Establish `: (![β, β * x] : Fin 2 → F) 1 - (![β, β * x] : Fin 2 → F) 0 * x = 0` using `by simp`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem (latM 𝔞 : Submodule (𝓞 F) F)`. Establish `h2` using `h.2 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨exists_int_mul_trace_of_hasLevel h hν (h2 0 trivial), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `exists_int_mul_trace_of_hasLevel h hν (h2 1 trivial)`. Introduce and unpack `a b ⟨⟨m, hm⟩, m', hm'⟩ ⟨⟨n, hn⟩, n', hn'⟩`. Use `⟨⟨m + n, ?_⟩, m' + n', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[map_add, mul_add, hm, hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[add_mul, map_add, mul_add, hm', hn']`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem trace_denominator_of_hasLevel : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (N : ℕ) (𝔞 𝔟 : Frac F) (x ξ : F), HasLevel N (split 𝔞 𝔟 x) → ξ ∈ ((𝔞 * 𝔟 : Frac F) : FractionalIdeal (𝓞 F)⁰ F) → (∃ n : ℤ, (N : ℚ) * Algebra.trace ℚ F ξ = n) ∧ ∃ n : ℤ, (N : ℚ) * Algebra.trace ℚ F (ξ * x) = n := by
   intro F _ _ _ N 𝔞 𝔟 x ξ h hξ

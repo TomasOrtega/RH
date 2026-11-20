@@ -16,17 +16,17 @@ open scoped TensorProduct
 namespace GlobalTheory.GeoLevel
 
 /- English proof (translation)
-Take `⟨x₁, hx₁, ⟨y₁, hy₁, hxy₁⟩, hr₁⟩` from `GlobalTheory.T.exists_integral_unit_root_norm_one_adele F E c h2 hc hP u huO hu`. Take `⟨e, f, hee, hef, hun⟩` from `exists_idem (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletionIntegers F) n`. Take `⟨y₀, hy₀⟩` from `(unit_of_integral (inclHat F E) (inclHat_integral F E) (e * n) hun ⟨z, hz⟩).exists_right_inv`. Establish `hse : sg (FiniteAdeleRing (𝓞 F) F) c (inclHat F E e : RA F E) = (inclHat F E e : RA F E)`. Express the relevant statement in the definitionally equal form `sg (FiniteAdeleRing (𝓞 F) F) c (incl F e ⊗ₜ[F] (1 : E)) = incl F e ⊗ₜ[F] (1 : E)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[sg]`. Establish `hee' : (inclHat F E e : RA F E) * inclHat F E e = inclHat F E e`. Rewrite using `[← Subring.coe_mul, ← map_mul, hee]`. Establish `hef' : 1 - (inclHat F E e : RA F E) = n * inclHat F E f`. Use `congrArg (fun t => (inclHat F E t : RA F E)) hef` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hy₀' : (1 + (inclHat F E e : RA F E) * n * z) * y₀ = 1`. Use `congrArg (fun t : intHat F E => (t : RA F E)) hy₀` as an intermediate fact. Simplify using `using this`. Establish `heO` using `(inclHat F E e).2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hfO` using `(inclHat F E f).2`. Establish `hy₀O` using `y₀.2`. Generalize the expression as in `(inclHat F E e : RA F E) = e' at *`. Generalize the expression as in `(inclHat F E f : RA F E) = f' at *`. Generalize the expression as in `(y₀ : RA F E) = y' at *`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hx₁' : x₁ ∈ intHat F E` using `hx₁`. Establish `hy₁' : y₁ ∈ intHat F E` using `hy₁`. Establish `he1` using `sub_mem (one_mem (intHat F E)) heO`. Use `⟨e' * w + (1 - e') * x₁, e' * (w' * y') + (1 - e') * y₁, add_mem (mul_mem heO hwO) (mul_mem he1 hx₁'), add_mem (mul_mem heO (mul_mem hwO' hy₀O)) (mul_mem he1 hy₁'), ?_, ?_, f' * (x₁ - w), mul_mem hfO (sub_mem hx₁' hwO), ?_⟩` and prove the remaining obligations. Take the linear combination `e' * hy₀' + (1 - e') * hxy₁ + e' * y' * hww + (w * w' * y' - w * y₁ - x₁ * w' * y' + x₁ * y₁ - n * z * y') * hee'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_add, map_mul _ (1 - e'), map_mul _ e', map_sub, map_one, hse]`. Take the linear combination `e' * hw + (1 - e') * hr₁`. Take the linear combination `(x₁ - w) * hef'`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem finite_root_near (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1)
@@ -85,26 +85,26 @@ noncomputable def unswap (D : D7) : EAf D →+* Af D.host.F ⊗[D.host.F] D.host
   (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).symm.toAlgHom.toRingHom
 
 /- English proof (translation)
-The claim follows from `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).symm_apply_apply z`.
+A detailed English derivation is pending.
 -/
 theorem unswap_swap (z : Af D.host.F ⊗[D.host.F] D.host.E) : unswap D (swapAE D z) = z :=
   (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).symm_apply_apply z
 
 /- English proof (translation)
-The claim follows from `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).apply_symm_apply z`.
+A detailed English derivation is pending.
 -/
 theorem swap_unswap (z : EAf D) : swapAE D (unswap D z) = z :=
   (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).apply_symm_apply z
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.IdeleParts.integralFiniteAdeles_eq_adelicCompletion_integers]`. Conclude with `GlobalTheory.PlaceDatum.comm_symm_mem z.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unswap_int (z : Formalism.L2.Herm.intAf D.host.F D.host.E) : unswap D z ∈ intAE D := by
   rw [GlobalTheory.IdeleParts.integralFiniteAdeles_eq_adelicCompletion_integers]
   exact GlobalTheory.PlaceDatum.comm_symm_mem z.2
 
 /- English proof (translation)
-Rewrite using `[← HeightOneSpectrum.valuation_of_algebraMap (K := D.host.E)]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_coe_int (P : Pl D.host.E) (a : 𝓞 D.host.E) :
     Valued.v (algebraMap D.host.E (P.adicCompletion D.host.E) (a : D.host.E)) = P.intValuation a := by
@@ -112,15 +112,15 @@ theorem valued_coe_int (P : Pl D.host.E) (a : 𝓞 D.host.E) :
   exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P _
 
 /- English proof (translation)
-Set `ev : FiniteAdeleRing (𝓞 D.host.E) D.host.E →+* P.adicCompletion D.host.E` to `RestrictedProduct.evalRingHom (fun v : HeightOneSpectrum (𝓞 D.host.E) => v.adicCompletion D.host.E) P`. Set `φ : Formalism.L2.Herm.intAf D.host.F D.host.E →+* P.adicCompletion D.host.E` to `ev.comp ((ι : _ →+* _).comp ((unswap D).comp (Subring.subtype _)))`. Establish `hφ : ∀ b : 𝓞 D.host.E, φ (oToS D.host.F D.host.E b) = algebraMap D.host.E _ (b : D.host.E)` using `fun b => congrArg ev (h1 (b : D.host.E))`. Establish `key : ∀ z ∈ idS D.host.F P.asIdeal, Valued.v (φ z) ≤ WithZero.exp (-1 : ℤ)`. Introduce `z hz`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.span_induction (p := fun z _ => Valued.v (φ z) ≤ WithZero.exp (-1 : ℤ)) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Rewrite using `[hφ, valued_coe_int]`. Use `(P.intValuation_le_pow_iff_mem b 1).2 (by simpa using hb)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Valuation.map_add_le _ hx hy`. Introduce `c x _ hx`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hm : X - oToS D.host.F D.host.E a ∈ idS D.host.F P.asIdeal`. Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `(RingEquiv.ofBijective (cmpS D.host.F P.asIdeal) (cmpS_bij P.asIdeal P.ne_bot)).symm.injective (h.trans (resS_oToS P a).symm)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `key _ hm` as an intermediate fact. Rewrite `this` using `[map_sub, hφ]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem valued_sub_le (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E)
     (h1 : ∀ x : D.host.E, ι ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) = algebraMap D.host.E _ x)
@@ -156,11 +156,11 @@ theorem valued_sub_le (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAde
   rwa [map_sub, hφ] at this
 
 /- English proof (translation)
-Establish `hs' : Valued.v ((s⁻¹ : (P.adicCompletion D.host.E)ˣ) : P.adicCompletion D.host.E) = 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hs, inv_one]`. Establish `e : ((t * s⁻¹ : (P.adicCompletion D.host.E)ˣ) : P.adicCompletion D.host.E) - 1 = -(((s : P.adicCompletion D.host.E) - t) * (s⁻¹ : (P.adicCompletion D.host.E)ˣ))`. Rewrite using `[sub_mul, Units.mul_inv, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1 : Valued.v (((t * s⁻¹ : (P.adicCompletion D.host.E)ˣ) : P.adicCompletion D.host.E) - 1) ≤ WithZero.exp (-1 : ℤ)`. Rewrite using `[e, Valuation.map_neg, map_mul, hs', mul_one]`. Conclude with `h`. Establish `h2 : IsUnitAt P (t * s⁻¹)`. Establish `h3` using `Valuation.map_one_add_of_lt Valued.v (h1.trans_lt (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WithZero.exp_zero]; exact WithZero.exp_lt_exp.2 (by norm_num)))`. Rewrite `h3` using `[add_sub_cancel]`. Then use the resulting hypothesis. Use `ht _ h2 h1` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem loc_eq_of_tame {χ : HChar D.host.E} {P : Pl D.host.E} (ht : χ.TameAt P) {s t : (P.adicCompletion D.host.E)ˣ}
     (hs : IsUnitAt P s) (h : Valued.v ((s : P.adicCompletion D.host.E) - t) ≤ WithZero.exp (-1 : ℤ)) :
@@ -180,27 +180,25 @@ theorem loc_eq_of_tame {χ : HChar D.host.E} {P : Pl D.host.E} (ht : χ.TameAt P
   rwa [map_mul, map_inv, mul_inv_eq_one] at this
 
 /- English proof (translation)
-Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨N, hN, hprod⟩` from `GlobalTheory.CharLocProd.char_eq_prod_locK D ι h1 h2 (GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3) c χ hc`. Establish `hM : 0 < ∏ P ∈ Pg, Ideal.absNorm P.asIdeal` using `Finset.prod_pos fun P _ => Nat.pos_of_ne_zero fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Take `⟨S, k, hS, hS'⟩` from `GlobalTheory.finiteIdele_exists_local_approx D.host.E _ (Nat.mul_pos hN hM) (Units.map ((ι : _ →+* _).comp (finPart D)).toMonoidHom x)`. Take `⟨hx1, hx2, hx3⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hv : ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (ι (finPart D (x : AE D)) P) = 1`. Introduce `P`. Establish `a` using `(h2 _).1 hx2 P`. Establish `b` using `(h2 _).1 hx3 P`. Establish `e : ι (finPart D (x : AE D)) * ι (finPart D ((x⁻¹ : (AE D)ˣ) : AE D)) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Establish `e' : Valued.v (ι (finPart D (x : AE D)) P) * Valued.v (ι (finPart D ((x⁻¹ : (AE D)ˣ) : AE D)) P) = 1`. Rewrite using `[← map_mul]`. Establish `: ι (finPart D (x : AE D)) P * ι (finPart D ((x⁻¹ : (AE D)ˣ) : AE D)) P = 1` using `congrArg (fun z : FiniteAdeleRing (𝓞 D.host.E) D.host.E => z P) e`. Rewrite using `[this, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_antisymm a ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hsub : Pg ⊆ S` using `fun P hP => by`. Assume the negation of the conclusion as `h`. Use `(hS' P h).2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.cast_mul, ← Finset.mul_prod_erase _ _ hP, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _))`. Establish `key` using `hprod x hx1 S k (fun P hP => ⟨(hS P hP).1, (hS P hP).2.1.trans (by`. Use `mul_le_mul_left ?_ _` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_of_le_one_right' ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap (𝓞 D.host.E) D.host.E)]`. Conclude with `P.valuation_le_one _)⟩)`. Use the proof step `(fun P hP => ⟨(hS' P hP).1, fun h => (hS' P hP).2 (by rw [Nat.cast_mul]; exact Ideal.mul_mem_right _ _ h)⟩)`. Establish `loc : ∀ P ∈ S, IsUnitAt P (atFin P (k P)) ∧ ∀ (a : 𝓞 D.host.E) (k' : D.host.Eˣ), (k' : D.host.E) = a → resS D.host.F P X = Ideal.Quotient.mk _ a → χ.locK P k' = χ.locK P (k P)` using `fun P hP => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, -, b⟩` from `hS P hP`. Establish `a' : Valued.v (ι (finPart D (x : AE D)) P) = P.valuation D.host.E (k P : D.host.E)` using `a`. Establish `b' : Valued.v (ι (finPart D (x : AE D)) P - algebraMap D.host.E _ (k P : D.host.E)) ≤ WithZero.exp (-1 : ℤ) * P.valuation D.host.E (k P : D.host.E)` using `b`. Rewrite `a'` using `[hv P]`. Rewrite `b'` using `[← a', mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hun : IsUnitAt P (atFin P (k P))` using `by show Valued.v (((k P : D.host.E)) : P.adicCompletion D.host.E) = _`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', ← a']`. Use `⟨hun, fun a k' hk' ha => loc_eq_of_tame (ht P) hun ?_⟩` and prove the remaining obligations. Establish `h4` using `valued_sub_le ι h1 h2 P X a ha`. Rewrite `h4` using `[hX, ← hk']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Establish `h5` using `Valuation.map_sub_le _ h4 b'`. Rewrite `h5` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis. Rewrite using `[key, ← Finset.prod_subset hsub, ← Finset.prod_coe_sort Pg]`. Use `Finset.prod_congr rfl fun P _ => congrArg _ ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (u P : kP P.1)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (a : D.host.E) ≠ 0` using `fun h => by`. Establish `: a = 0` using `RingOfIntegers.coe_injective h`. Conclude with `(u P).ne_zero (by rw [← ha, this, map_zero])`. Rewrite using `[hres P.1 P.2 a (Units.mk0 _ h0) (u P) rfl ha.symm]`. Conclude with `((loc P.1 (hsub P.2)).2 a _ rfl ((hu P).symm.trans ha.symm)).symm`.
-
-Introduce `P hP hP'`. Break down `hoff P hP' with h | h` into its components or cases. Conclude with `congrArg Units.val (h _ (loc P hP).1)`. Rewrite using `[← (loc P hP).2 1 1 rfl h, map_one, Units.val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_finUnit {c : (AE D)ˣ →* Circle} {χ : HChar D.host.E} (hc : ChrEq c χ) (ht : ∀ P, χ.TameAt P)
     (Pg : Finset (Pl D.host.E)) (ch : ∀ P : Pl D.host.E, (kP P)ˣ →* ℂˣ) (hres : ∀ P ∈ Pg, IsRes χ P (ch P))
@@ -273,9 +271,9 @@ theorem char_finUnit {c : (AE D)ˣ →* Circle} {χ : HChar D.host.E} (hc : ChrE
     · rw [← (loc P hP).2 1 1 rfl h, map_one, Units.val_one]
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, rfl⟩` from `hz`. Conclude with `GlobalTheory.PlaceDatum.tmul_mem_int ⟨x, rfl⟩ ha`. Consider the case `zero => rw [RingHom.map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [RingHom.map_add]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [RingHom.map_neg]`. Conclude with `neg_mem ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem swap_int {z : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D) :
     swapAE D z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -288,7 +286,7 @@ theorem swap_int {z : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D) :
   | neg a _ ha => rw [RingHom.map_neg]; exact neg_mem ha
 
 /- English proof (translation)
-Establish `h1 : Matrix.GeneralLinearGroup.det (β * intGL F E n y * β⁻¹) = Matrix.GeneralLinearGroup.det (intGL F E n y)`. Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Conclude with `(congrArg Units.val h1).trans ((Formalism.L2.Herm.intAf F E).subtype.map_det _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_frGL {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E)) :
@@ -298,7 +296,7 @@ theorem det_frGL {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   exact (congrArg Units.val h1).trans ((Formalism.L2.Herm.intAf F E).subtype.map_det _).symm
 
 /- English proof (translation)
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, upper_block_val_submatrix _ h, redFn_frGL, RingHom.map_det]`. Conclude with `Matrix.det_submatrix_equiv_self (finCongr he) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_reduced_block_eq_residue_det {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n r : ℕ} (hr : r ≤ n)
     (he : r = n) (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E)) (P : Pl E)
@@ -308,7 +306,7 @@ theorem det_reduced_block_eq_residue_det {F E : Type} [Field F] [NumberField F] 
   exact Matrix.det_submatrix_equiv_self (finCongr he) _
 
 /- English proof (translation)
-Rewrite using `[map_add, map_mul, ha, hb]`. Take the linear combination `(-a) * hu`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem root_sum {R : Type} [CommRing R] (σ : R →+* R) {a b u : R} (ha : σ a = b) (hb : σ b = a) (hu : u * σ u = 1) :
     a + b * u = u * σ (a + b * u) := by
@@ -316,16 +314,16 @@ theorem root_sum {R : Type} [CommRing R] (σ : R →+* R) {a b u : R} (ha : σ a
   linear_combination (-a) * hu
 
 /- English proof (translation)
-Take the linear combination `(a + b + 1) * e1 + (u + u' - 2) * e2 + b ^ 2 * hu`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem root_sum_mul {R : Type} [CommRing R] {a b u u' m s s' : R} (hu : u * u' = 1) (e1 : a + b = 1 + m * s)
     (e2 : a * b = m * s') : (a + b * u) * (a + b * u') = 1 + m * (s * (a + b + 1) + s' * (u + u' - 2)) := by
   linear_combination (a + b + 1) * e1 + (u + u' - 2) * e2 + b ^ 2 * hu
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `parLev_St hk.2.1`. Use `⟨y.1.det, ?_, fun P => ?_⟩` and prove the remaining obligations. Establish `h2 : swapAE D (finHom V k).1.det = (finE V k).1.det` using `(swapAE D).map_det _`. Rewrite using `[← det_frGL β y, hy, ← h2, unswap_swap]`. Establish `h1` using `blockTri_blkOf_le _ _ (parLev_g hk.2.1 P.2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : g₀ P = upperLeftBlock L.hr (redFn β P.1 (finE V k))` using `(congrFun hk.2.2 P).symm`. Rewrite `h1`, `h2` using `[← hy]`. Rewrite using `[h2]`. Conclude with `det_reduced_block_eq_residue_det L.hr hr β y P.1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_det_of_lift {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {L : LevDat D.host.E ℂ V.rank} (hr : L.r = V.rank)
     {g₀ : G0 L.Pg L.r} {k : GA D V} (hk : IsLevelLift V β L g₀ k) :
@@ -342,9 +340,9 @@ theorem exists_det_of_lift {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {L : LevDa
     exact det_reduced_block_eq_residue_det L.hr hr β y P.1 h1
 
 /- English proof (translation)
-Establish `e1 : infPart D (matHom V k).1.det = 1`. Establish `h : infHom V k = 1` using `hk`. Establish `h' : (infHom V k).1.det = 1` using `by rw [h]; exact Matrix.det_one`. Conclude with `((infPart D).map_det _).trans h'`. Establish `e2 : finPart D (matHom V k).1.det = (finHom V k).1.det` using `(finPart D).map_det _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.PlaceIdem.parts_inj D _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, e1, one_mul]`. Conclude with `h1.trans ((GlobalTheory.PlaceIdem.infPart_cA D _).trans (by rw [h1, RingHom.map_one])).symm`. Rewrite using `[RingHom.map_mul, e2]`. Conclude with `h2.trans (congrArg _ (GlobalTheory.PlaceIdem.finPart_cA D _).symm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDetRoot_of_fin {V : HSp D} {k : GA D V} (hk : k ∈ GfC V) {x : (AE D)ˣ} (h1 : infPart D (x : AE D) = 1)
     (h2 : finPart D (x : AE D) = (finHom V k).1.det * sigR (Af D.host.F) D.sp.cm.sig (finPart D (x : AE D))) :
@@ -363,17 +361,17 @@ theorem isDetRoot_of_fin {V : HSp D} {k : GA D V} (hk : k ∈ GfC V) {x : (AE D)
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hP : ∀ P : Ideal (𝓞 D.host.E), P.IsMaximal → ∃ t s : 𝓞 D.host.E, (s : D.host.E) = GlobalTheory.Member.cF D (t : D.host.E) ∧ t - s ∉ P` using `fun P hP => by`. Take `⟨θ, t, ht, hθ⟩` from `D.sp.cm.cmUnram.2.2 P hP`. Conclude with `⟨θ, t, ht, hθ⟩`. Establish `hc1 : GlobalTheory.Member.cF D ≠ 1`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨P, hM⟩` from `Ideal.exists_maximal (𝓞 D.host.E)`. Take `⟨t, s, hs, hts⟩` from `hP P hM`. Rewrite `hs` using `[h]`. Establish `: s = t` using `Subtype.ext hs`. Rewrite `hts` using `[this, sub_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hts P.zero_mem`. Set `j : 𝓞 D.host.E →+* Af D.host.F ⊗[D.host.F] D.host.E` to `(unswap D).comp ((Subring.subtype _).comp (oToS D.host.F D.host.E))`. Set `σ` to `sigR (Af D.host.F) D.sp.cm.sig`. Establish `hO : ∀ z, z ∈ GlobalTheory.AdLat.RootNear.intHat D.host.F D.host.E ↔ z ∈ intAE D` using `fun z => by`. Rewrite using `[GlobalTheory.IdeleParts.integralFiniteAdeles_eq_adelicCompletion_integers]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hj : ∀ t, j t ∈ GlobalTheory.AdLat.RootNear.intHat D.host.F D.host.E` using `fun t => (hO _).2 (unswap_int (oToS D.host.F D.host.E t))`. Establish `hσa : σ (j a) = j b` using `by show (1 : Af D.host.F) ⊗ₜ[D.host.F] star (a : D.host.E) = 1 ⊗ₜ[D.host.F] (b : D.host.E)`. Rewrite using `[hb]`. Establish `hσb : σ (j b) = j a` using `by show (1 : Af D.host.F) ⊗ₜ[D.host.F] star (b : D.host.E) = 1 ⊗ₜ[D.host.F] (a : D.host.E)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, star_star]`. Establish `hu` using `(hO _).2 (unswap_int U)`. Establish `hu'` using `(hO _).2 (GlobalTheory.PlaceIdem.sig_mem D (unswap_int U))`. Establish `e1 : j a + j b = 1 + m * j s` using `by rw [← map_add, hs, map_add, map_one, map_mul, map_natCast]`. Establish `e2 : j a * j b = m * j s'` using `by rw [← map_mul, hs', map_mul, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `finite_root_near D.host.F D.host.E (GlobalTheory.Member.cF D) D.sp.cm.deg2 hc1 hP m (unswap D U) (j a + j b * unswap D U) (j a + j b * σ (unswap D U)) (j s * (j a + j b + 1) + j s' * (unswap D U + σ (unswap D U) - 2)) hu (add_mem (hj a) (mul_mem (hj b) hu)) (add_mem (hj a) (mul_m …`. Rewrite using `[GlobalTheory.IdeleParts.integralFiniteAdeles_eq_adelicCompletion_integers]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root_half (m : ℕ) (U : Formalism.L2.Herm.intAf D.host.F D.host.E) (a b s s' : 𝓞 D.host.E)
     (hb : (b : D.host.E) = star (a : D.host.E)) (hs : a + b = 1 + m * s) (hs' : a * b = m * s')
@@ -419,7 +417,7 @@ theorem exists_root_half (m : ℕ) (U : Formalism.L2.Herm.intAf D.host.F D.host.
   exact key
 
 /- English proof (translation)
-Establish `h0` using `Ideal.Quotient.eq_zero_iff_mem.2 hm`. Prove the components needed by the constructor for the conclusion. Rewrite using `[map_add, map_add, map_mul, map_mul, resS_oToS, resS_oToS, resS_oToS, h0, zero_mul, add_zero]`. Rewrite using `[← map_add, hs, map_add, map_mul, h0, zero_mul, add_zero, map_one]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem resS_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (P : Pl E) {a b s m : 𝓞 E}
     (U p : Formalism.L2.Herm.intAf F E) (hs : a + b = 1 + m * s) (hm : m ∈ P.asIdeal) :
@@ -431,7 +429,7 @@ theorem resS_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   · rw [← map_add, hs, map_add, map_mul, h0, zero_mul, add_zero, map_one]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `resS_sum P U p hs hm`. Establish `h0` using `Ideal.Quotient.eq_zero_iff_mem.2 ha`. Rewrite `h2` using `[h0, zero_add]`. Rewrite using `[h1, h0, h2, zero_add, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem resS_sum_left {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (P : Pl E) {a b s m : 𝓞 E}
     (U p : Formalism.L2.Herm.intAf F E) (hs : a + b = 1 + m * s) (hm : m ∈ P.asIdeal) (ha : a ∈ P.asIdeal) :
@@ -442,7 +440,7 @@ theorem resS_sum_left {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   rw [h1, h0, h2, zero_add, one_mul]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `resS_sum P U p hs hm`. Establish `h0` using `Ideal.Quotient.eq_zero_iff_mem.2 hb`. Rewrite `h2` using `[h0, add_zero]`. Rewrite using `[h1, h0, h2, zero_mul, add_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem resS_sum_right {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (P : Pl E) {a b s m : 𝓞 E}
     (U p : Formalism.L2.Herm.intAf F E) (hs : a + b = 1 + m * s) (hm : m ∈ P.asIdeal) (hb : b ∈ P.asIdeal) :
@@ -453,7 +451,7 @@ theorem resS_sum_right {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   rw [h1, h0, h2, zero_mul, add_zero]
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem map_coe_sum {R B : Type} [CommRing R] [CommRing B] (S : Subring R) (f : R →+* B) (a b u m' p : S) (m : ℕ) (hm : m' = m) :
     f ((a + b * u + m' * p : S) : R) = f a + f b * f u + m * f p := by
@@ -463,11 +461,11 @@ theorem map_coe_sum {R B : Type} [CommRing R] [CommRing B] (S : Subring R) (f : 
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨U, hU, hUP⟩` from `exists_det_of_lift hr hk`. Take `⟨y, y', hy, hy', hyy, hroot, p, hp, hyp⟩` from `exists_root_half m U a b s s' hb hs hs' (by rw [hU]; exact GlobalTheory.RecDict.det_finHom_norm V k)`. Take `⟨x, hx1, hx2, hx3⟩` from `GlobalTheory.DetRootCong.exists_idele D y y' hyy`. Establish `hx : FinUnit x` using `⟨hx1, hx2 ▸ hy, hx3 ▸ hy'⟩`. Use `⟨x, hx, isDetRoot_of_fin hk.1 hx1 (by rw [hx2, ← hU]; exact hroot), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `p' : Formalism.L2.Herm.intAf D.host.F D.host.E` to `⟨swapAE D p, swap_int hp⟩`. Use `char_finUnit hc ht L.Pg ch hres hx (oToS _ _ a + oToS _ _ b * U + oToS _ _ m * p') ?_ _ (fun P => ?_) fun P hP => ?_` and prove the remaining obligations. Rewrite using `[hx2, hyp, ← unswap_swap p]`. Conclude with `map_coe_sum _ (unswap D) _ _ U _ p' m (map_natCast _ m)`. Conclude with `(hUP P).trans (resS_sum_left P.1 U p' hs (hin P.1 P.2).2 (hin P.1 P.2).1).symm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Distinguish the cases in `hm : (m : 𝓞 D.host.E) ∈ P.asIdeal`. Conclude with `Or.inr (resS_sum_right P U p' hs hm (hout P hP hm))`. Conclude with `Or.inl (hun P hm)`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem exists_root_char {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {L : LevDat D.host.E ℂ V.rank} (hr : L.r = V.rank)
     {g₀ : G0 L.Pg L.r} {k : GA D V} (hk : IsLevelLift V β L g₀ k) {c : (AE D)ˣ →* Circle} {χ : HChar D.host.E} (hc : ChrEq c χ)
@@ -494,15 +492,13 @@ theorem exists_root_char {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {L : LevDat 
     · exact Or.inl (hun P hm)
 
 /- English proof (translation)
-Establish `hbar` using `H.bar_eq`. Establish `hbb : ∀ t : 𝓞 E, H.bar (H.bar t) = t` using `fun t => RingOfIntegers.ext (by rw [hbar, hbar, IsCMField.complexConj_apply_apply])`. Take `⟨a, ha, a', ha', haa⟩` from `Submodule.mem_sup.1 (l.coprime.ge (Submodule.mem_top (x := (1 : 𝓞 E))))`. Establish `hb : H.bar a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `Ideal.mem_map_of_mem _ ha`. Establish `hb' : H.bar a' ∈ l.Mb`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht, rfl⟩` from `(Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective).1 ha'`. Conclude with `(hbb t).symm ▸ ht`. Establish `hbb' : H.bar a + H.bar a' = 1` using `by rw [← map_add, haa, map_one]`. Establish `h1 : a + H.bar a - 1 ∈ Ideal.span {(l.M : 𝓞 E)}`. Rewrite using `[← l.prod, Ideal.mul_eq_inf_of_isCoprime (Ideal.isCoprime_iff_sup_eq.2 l.coprime)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: a + H.bar a - 1 = a - H.bar a'` using `by linear_combination hbb'`. Conclude with `this ▸ sub_mem ha hb'`. Establish `: a + H.bar a - 1 = H.bar a - a'` using `by linear_combination haa`. Conclude with `this ▸ sub_mem hb ha'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.1 h1`. Take `⟨s', hs'⟩` from `Ideal.mem_span_singleton'.1 (l.prod.le (Ideal.mul_mem_mul ha hb))`. Use `⟨a, H.bar a, s, s', hbar a, by linear_combination -hs, by linear_combination -hs', fun P hP => ?_, fun P hP hm => ?_⟩` and prove the remaining obligations. Establish `hle : l.Mb ≤ P.asIdeal` using `(h P).1 hP`. Conclude with `⟨hle ha, hle (Ideal.mul_le_left (l.prod.ge (Ideal.mem_span_singleton_self _)))⟩`.
-
-Break down `P.isPrime.mul_le.1 (l.prod.le.trans ((Ideal.span_singleton_le_iff_mem _).2 hm)) with h2 | h2` into its components or cases. Conclude with `absurd ((h P).2 h2) hP`. Conclude with `h2 hb`.
+Establish an intermediate fact. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_half_elements {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Pg : Finset (Pl E)) (h : ∀ P : Pl E, P ∈ Pg ↔ l.Mb ≤ P.asIdeal) :

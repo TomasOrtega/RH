@@ -10,7 +10,7 @@ open Formalism.BasicNotions NumberField Formalism.MainNotions.G Formalism.Froben
 namespace Formalism.L2.G
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Nat.sub_add_cancel h1]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem wG_idx (R : Ranks) (e : Fin R.m → ℚ) (b j : ℕ) (hb : b < R.m) (hj : j - 1 < R.m) (h : b = j - 1) (h1 : 1 ≤ j) :
     wG R (e ⟨b, hb⟩) (b + 1) = wG R (e ⟨j - 1, hj⟩) j := by
@@ -18,13 +18,13 @@ theorem wG_idx (R : Ranks) (e : Fin R.m → ℚ) (b j : ℕ) (hb : b < R.m) (hj 
   rw [Nat.sub_add_cancel h1]
 
 /- English proof (translation)
-Establish `hj'` using `Finset.mem_Icc.1 hj`. Establish `hjm : j - 1 < D.R.m` using `by omega`. Establish `h` using `(D.fm u).lam_eq D.R.m le_rfl (D.eTau.symm g) ⟨D.R.k + (min j D.R.m - 1) * (D.R.t + 1), blkIdx_lt D.R j⟩`. Rewrite `h` using `[dif_neg (by show ¬ D.R.k + (min j D.R.m - 1) * (D.R.t + 1) < D.R.k; omega)]`. Establish `hb : (D.R.k + (min j D.R.m - 1) * (D.R.t + 1) - D.R.k) / (D.R.t + 1) = j - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.add_sub_cancel_left, Nat.mul_div_cancel _ (Nat.succ_pos _), min_eq_left hj'.2]`. Establish `h' : ((((D.fm u).lam D.R.m (D.eTau.symm g)).w ⟨D.R.k + (min j D.R.m - 1) * (D.R.t + 1), blkIdx_lt D.R j⟩ : ℤ) : ℚ) = -wG D.R ((D.hcW u (D.eTau.symm g)).e ⟨j - 1, hjm⟩) j`. Rewrite using `[h]`. Conclude with `congrArg Neg.neg (wG_idx D.R _ _ j _ hjm hb hj'.1)`. Rewrite `h'` using `[D.hcW_e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h''` using `congrArg (fun q : ℚ => (q : ℝ)) h'`. Simplify using `only [wG] at h''`. Move the coercions through the operations in `at h''`. Unfold `wRec wj Formalism.MainNotions.G.kaJ`. Rewrite using `[dif_pos hjm]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[h'']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wRec_eq (D : D7) (u : D.what₂.Word) (g : D.R.Psi) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) :
     ((wRec D u g j : ℤ) : ℝ) = wj D j (D.eTau.symm g) - Formalism.MainNotions.G.kaJ D j := by
@@ -51,9 +51,9 @@ theorem wRec_eq (D : D7) (u : D.what₂.Word) (g : D.R.Psi) (j : ℕ) (hj : j �
   ring
 
 /- English proof (translation)
-Establish `h` using `(D.fm u).lam_eq 0 (Nat.zero_le _) (D.eTau.symm g) ⟨i.1, by simp only [Ranks.N]; omega⟩`. Rewrite `h` using `[dif_pos hi]`. Establish `h'` using `congrArg (fun q : ℚ => (q : ℝ)) h`. Simplify using `only [hcToWeightQ, rhoVec] at h'`. Move the coercions through the operations in `at h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Conclude with `h'`.
+A detailed English derivation is pending.
 -/
 theorem lamRec_real (D : D7) (u : D.what₂.Word) (g : D.R.Psi) (i : Fin (D.R.k - 1 + 1)) (hi : i.1 < D.R.k) :
     ((lamRec D u g i : ℤ) : ℝ) =
@@ -66,13 +66,13 @@ theorem lamRec_real (D : D7) (u : D.what₂.Word) (g : D.R.Psi) (i : Fin (D.R.k 
   exact h'
 
 /- English proof (translation)
-Establish `hk` using `k_pred D.R`. Establish `hk0 : 0 < D.R.k` using `by omega`. Establish `hkR : ((D.R.k - 1 : ℕ) : ℝ) = (D.R.k : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega)]; simp`. Establish `tu` using `L.top_u (D.eTau.symm g) t hk0 (by rw [Equiv.apply_symm_apply]; exact ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Establish `h` using `lamRec_real D u g 0 (by simpa using hk0)`. Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[h]`. Establish `e : (⟨(0 : Fin (D.R.k - 1 + 1)).1, by simpa using hk0⟩ : Fin D.R.k) = ⟨0, hk0⟩` using `Fin.ext (by simp)`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, D.hcW_first u _ hk0, tu.1]`. Simplify using the standard rewrite rules. Establish `h` using `lamRec_real D u g (Fin.last _) (by simp only [Fin.val_last]; omega)`. Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (⟨(Fin.last (D.R.k - 1)).1, by simp only [Fin.val_last]; omega⟩ : Fin D.R.k) = ⟨D.R.k - 1, by omega⟩` using `Fin.ext (by simp only [Fin.val_last])`. Rewrite using `[e, D.hcW_last u _ hk0, tu.2]`. Simplify using `only [Fin.val_last]`. Rewrite using `[hkR]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -105,19 +105,19 @@ theorem lamRec_top {D : D7} (L : SizeData₂ D) (u : D.what₂.Word) (g : D.R.Ps
 def cRec {D : D7} (L : SizeData₂ D) : ℕ := ⌊Formalism.MainNotions.G.cG L⌋₊
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.G.cG`. Combine the linear relations using `[L.Sc_pos]`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cG_nonneg {D : D7} (L : SizeData₂ D) : 0 ≤ Formalism.MainNotions.G.cG L := by
   unfold Formalism.MainNotions.G.cG
   linarith [L.Sc_pos]
 
 /- English proof (translation)
-The claim follows from `Nat.floor_le (cG_nonneg L)`.
+A detailed English derivation is pending.
 -/
 theorem cRec_le {D : D7} (L : SizeData₂ D) : (cRec L : ℝ) ≤ Formalism.MainNotions.G.cG L := Nat.floor_le (cG_nonneg L)
 
 /- English proof (translation)
-Use `Nat.lt_floor_add_one (Formalism.MainNotions.G.cG L)` as an intermediate fact. Unfold `cRec`. Unfold `Formalism.MainNotions.G.cG at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lt_cRec {D : D7} (L : SizeData₂ D) : 4 * L.Sc - 1 < (cRec L : ℝ) := by
   have := Nat.lt_floor_add_one (Formalism.MainNotions.G.cG L)
@@ -126,9 +126,9 @@ theorem lt_cRec {D : D7} (L : SizeData₂ D) : 4 * L.Sc - 1 < (cRec L : ℝ) := 
   linarith
 
 /- English proof (translation)
-Establish `h` using `P.Del_ge.2.2.2`. Establish `hm : (1 : ℝ) ≤ (D.R.m : ℝ)` using `by have := D.R.two_le_m; exact_mod_cast (by omega : 1 ≤ D.R.m)`. Establish `hm10 : (1 : ℝ) ≤ (D.R.m : ℝ) ^ 10` using `one_le_pow₀ hm`. Establish `hN : (D.R.k : ℝ) + D.R.t + 1 ≤ (D.R.N D.R.m : ℝ)`. Simplify using `only [Ranks.N]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Establish `ht : (0 : ℝ) ≤ (D.R.t : ℝ) + 1` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hN0 : (0 : ℝ) ≤ (D.R.N D.R.m : ℝ)` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem ktl_le_Del {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) :
     (D.R.k : ℝ) + D.R.t + 1 ≤ (D.s.Del : ℝ) := by
@@ -144,7 +144,7 @@ theorem ktl_le_Del {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) :
   nlinarith
 
 /- English proof (translation)
-Establish `h1` using `R.two_le_m`. Establish `h2` using `R.m_add_three_le_k`. Conclude with `(by omega : 5 ≤ R.k)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem five_le_k (R : Ranks) : (5 : ℝ) ≤ (R.k : ℝ) := by
   have h1 := R.two_le_m
@@ -152,7 +152,7 @@ theorem five_le_k (R : Ranks) : (5 : ℝ) ≤ (R.k : ℝ) := by
   exact_mod_cast (by omega : 5 ≤ R.k)
 
 /- English proof (translation)
-Establish `h1` using `ktl_le_Del P`. Establish `h2` using `five_le_k D.R`. Establish `h3 : (0 : ℝ) ≤ (D.R.t : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[L.Sc_eq]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem ktl_le_Sc {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) : 20 * ((D.R.k : ℝ) + D.R.t + 1) ≤ L.Sc := by
   have h1 := ktl_le_Del P
@@ -162,11 +162,11 @@ theorem ktl_le_Sc {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) : 20 *
   nlinarith
 
 /- English proof (translation)
-Establish `hm : 1 ≤ D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hle` using `Formalism.MainNotions.Inhab.scale_w''_le L.sc D.R.n (Formalism.MainNotions.Inhab.ranks_one_le_n D.R)`. Distinguish the cases in `htop : (D.eTau τ : D.R.GG) ∈ D.host.topPlaces`. Take `⟨t, ht, hte⟩` from `Finset.mem_image.1 htop`. Establish `h1` using `(L.win_top 1 le_rfl hm τ ⟨t, ht⟩ hte.symm).1`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `L.bT_ge ⟨t, ht⟩`. Establish `h3` using `Formalism.MainNotions.Inhab.scale_b'_nonneg L.sc`. Combine the linear relations using `[hle.1]`. Distinguish the cases in `hth : (D.eTau τ : D.R.GG) ∈ D.host.thickPlaces`. Establish `h1` using `(L.win_thick 1 le_rfl hm τ hth).1`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Combine the linear relations using `[hle.2]`. Conclude with `(L.win_thin 1 le_rfl hm τ ⟨(D.eTau τ).2, htop, hth⟩).1`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem w''_le_wj_one {D : D7} (L : SizeData₂ D) (τ : D.what₂.Tau) : L.sc.w'' D.R.n ≤ wj D 1 τ := by
   have hm : 1 ≤ D.R.m := by have := D.R.two_le_m; omega
@@ -183,33 +183,31 @@ theorem w''_le_wj_one {D : D7} (L : SizeData₂ D) (τ : D.what₂.Tau) : L.sc.w
     · exact (L.win_thin 1 le_rfl hm τ ⟨(D.eTau τ).2, htop, hth⟩).1
 
 /- English proof (translation)
-Establish `hk` using `k_pred D.R`. Establish `hk5` using `five_le_k D.R`. Establish `hk5n : 5 ≤ D.R.k`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hS` using `ktl_le_Sc P`. Establish `hc` using `lt_cRec L`. Establish `ht0 : (0 : ℝ) ≤ (D.R.t : ℝ)` using `Nat.cast_nonneg _`. Establish `hmid : ∀ (g : D.R.Psi) (i : Fin (D.R.k - 1 + 1)), 0 < i.val → i.val < D.R.k - 1 → |lamRec D u g i| ≤ (cRec L : ℤ)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g i h0 h1`. Establish `hi : i.1 < D.R.k` using `by omega`. Establish `h` using `lamRec_real D u g i hi`. Establish `cl` using `L.cloud_u u (D.eTau.symm g) ⟨i.1, hi⟩ h0 (by show i.1 + 1 < D.R.k; omega)`. Establish `hiR : (i.1 : ℝ) + 1 ≤ (D.R.k : ℝ)` using `by exact_mod_cast hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi0 : (0 : ℝ) ≤ (i.1 : ℝ)` using `Nat.cast_nonneg _`. Establish `h2 : |((lamRec D u g i : ℤ) : ℝ)| ≤ (cRec L : ℝ)`. Rewrite using `[h, abs_le]`. Apply the tactic sequence `constructor <;> linarith [cl.1, cl.2]`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun g _ i h0 h1 => hmid g i h0 h1, fun g hg i => ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `hg' : (D.eTau (D.eTau.symm g) : D.R.GG) ∉ D.host.topPlaces` using `by rwa [Equiv.apply_symm_apply]`. Establish `hk0 : 0 < D.R.k` using `by omega`. Distinguish the cases in `h0 : i.val = 0`. Establish `hi : i.1 < D.R.k` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `lamRec_real D u g i hi`. Establish `e : (⟨i.1, hi⟩ : Fin D.R.k) = ⟨0, hk0⟩` using `Fin.ext h0`. Rewrite `h` using `[e, D.hcW_first u _ hk0, h0]`. Establish `g1` using `(L.cloud_gap (D.eTau.symm g) (by omega) hg').1`. Establish `g2` using `P.cloud_place_bound (D.eTau.symm g) (by omega) hg'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g3` using `L.cloud_v (D.eTau.symm g) ⟨0, by omega⟩`. Move the coercions through the operations in `at g1 g2`. Establish `h2 : |((lamRec D u g i : ℤ) : ℝ)| ≤ (cRec L : ℝ)`. Rewrite using `[h, abs_le]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith [g3.1, g3.2]`. Conclude with `h2` after adjusting the coercions. Distinguish the cases in `h1 : i.val < D.R.k - 1`. Conclude with `hmid g i (Nat.pos_of_ne_zero h0) h1`. Establish `hi1 : i.val = D.R.k - 1` using `by have := i.2; omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : i.1 < D.R.k` using `by omega`. Establish `h` using `lamRec_real D u g i hi`. Establish `e : (⟨i.1, hi⟩ : Fin D.R.k) = ⟨D.R.k - 1, by omega⟩` using `Fin.ext hi1`. Establish `hkR : ((D.R.k - 1 : ℕ) : ℝ) = (D.R.k : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega)]; simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite `h` using `[e, D.hcW_last u _ hk0, P.uk_extreme (D.eTau.symm g) (by omega) hg', hi1, hkR]`. Establish `g3` using `L.cloud_v (D.eTau.symm g) ⟨D.R.k - 2, by omega⟩`. Move the coercions through the operations in `at h`. Establish `h2 : |((lamRec D u g i : ℤ) : ℝ)| ≤ (cRec L : ℝ)`. Rewrite using `[h, abs_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> linarith [g3.1, g3.2]`. Conclude with `h2` after adjusting the coercions. Establish `h1 : (1 : ℕ) ∈ SizeData₂.lifts D` using `Finset.mem_Icc.2 ⟨le_rfl, by have := D.R.two_le_m; omega⟩`. Establish `hw` using `wRec_eq D u g 1 h1`. Establish `hw''` using `w''_le_wj_one L (D.eTau.symm g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hkS` using `P.kS_le`. Establish `hSc` using `L.Sc_pos`. Establish `hka : Formalism.MainNotions.G.kaJ D 1 = ((D.R.k : ℝ) + D.R.t + 1) / 2`. Unfold `Formalism.MainNotions.G.kaJ`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcle` using `cRec_le L`. Unfold `Formalism.MainNotions.G.cG at hcle`. Establish `h5 : 5 * L.Sc ≤ (D.R.k : ℝ) * L.Sc` using `by nlinarith`. Establish `h2 : ((cRec L : ℕ) : ℝ) ≤ ((wRec D u g 1 : ℤ) : ℝ)`.
-
-Rewrite using `[hw, hka]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cloudBound {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (u : D.what₂.Word) : CloudBound D u (cRec L) := by
   have hk := k_pred D.R

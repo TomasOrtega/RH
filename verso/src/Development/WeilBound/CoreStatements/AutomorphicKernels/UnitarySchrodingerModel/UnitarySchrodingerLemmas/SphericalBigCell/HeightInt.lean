@@ -37,7 +37,7 @@ open GlobalTheory.CompanionTheory.SwUnf GlobalTheory.CompanionTheory.HermPoisson
 open PositivityTheory.PfSWUS.HUnfold (majorant countable_cosets countable_ratHerm sec_det_one)
 
 /- English proof (translation)
-Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Rewrite using `[height_eq hH]`. Conclude with `isSection_iff.2 (isIwasawa.npow_iwAbs_mem HeightExists.isClosed_P continuous_modP HeightExists.isCompact_K _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSection_npow_height {D : D7} {n : ℕ} {H : G D n → ℝ≥0} (hH : IsHeight H) (s : ℂ) :
     IsSection 1 s (fun x => npow (H x) (s + (n : ℂ) / 2)) := by
@@ -47,44 +47,36 @@ theorem isSection_npow_height {D : D7} {n : ℕ} {H : G D n → ℝ≥0} (hH : I
     (isIwasawa.npow_iwAbs_mem HeightExists.isClosed_P continuous_modP HeightExists.isCompact_K _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[stdSec, npow]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem stdSec_self {D : D7} {n : ℕ} (H : G D n → ℝ≥0) (φ : G D n → ℂ) (s : ℂ) : stdSec H φ s s = φ := by
   funext x
   simp [stdSec, npow]
 
 /- English proof (translation)
-Take `⟨hnb, hHaar, hD, hD1⟩` from `hCD`. Set `φ : G D n → ℂ` to `fun x => npow (H x) (s + (n : ℂ) / 2)`. Establish `hsz : IsSection 1 s φ` using `isSection_npow_height hH s`. Establish `hstd : stdSec H φ s s = φ` using `stdSec_self H φ s`. Establish `hLI : LeftInv (P D n ⊓ GF D n) φ` using `leftInv_of_isSection ⟨continuous_const, fun _ => rfl⟩ hsz`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D n n`. Use `haveI : IsTopologicalAddGroup (Mx D n n) := i1`. Use `haveI : SecondCountableTopology (Mx D n n) := i3`. Use `haveI : BorelSpace (Mx D n n) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (hermA D n) := Topology.IsInducing.subtypeVal.secondCountableTopology`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : ContinuousAdd (hermA D n) := ⟨Continuous.subtype_mk ((continuous_subtype_val.comp continuous_fst).add (continuous_subtype_val.comp continuous_snd)) _⟩`. Use `haveI : BorelSpace (hermA D n) := Subtype.borelSpace _`. Use `haveI : MeasurableAdd (hermA D n) := ContinuousAdd.measurableAdd`. Use `haveI := hHaar`. Use `haveI := countable_ratHerm (D := D) (n := n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := countable_cosets (D := D) (n := n)`. Set `F : Cosets (P D n) (GF D n) → hermA D n → ℂ` to `fun q b => term (P D n) (GF D n) φ (nb b * g) q`. Set `F0 : hermA D n → ℂ` to `fun b => φ (w * nb b * g)`. Set `ch : hermA D n → ℂ` to `chi ψ (-(β.1.map (incA D)))`. Establish `hch : ∀ b, ch b = ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n)))` using `fun b => chi_neg_left ψ _ b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hβr : -(β.1.map (incA D)) ∈ ratMx D n n` using `neg_mem (mem_ratMx.2 ⟨β.1, rfl⟩)`. Establish `hcont : Continuous φ` using `hsz.2.1`. Establish `hnbc : Continuous nb` using `nb_continuous hnb`. Establish `hγ : ∀ l : ratHerm D n, nb l.1 ∈ GF D n` using `fun l => nb_rat hnb l.2`. Take `⟨-, K0, hK0, hK0x⟩` from `GlobalTheory.CompanionTheory.HermVol.isCoLat_herm (D := D) (r := n)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, hu, hub⟩` from `majorant hH hsz hs (hK0.image (hnbc.mul continuous_const (g := fun _ => g)))`. Establish `hbound : ∀ b, Summable (fun q => ‖F q b‖) ∧ ∑' q, ‖F q b‖ ≤ ∑' q, u q`. Introduce `b`. Take `⟨γ, hγm, hγK⟩` from `hK0x b`. Set `γ' : GF D n` to `⟨nb γ, nb_rat hnb hγm⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : ∀ q, ‖F q b‖ ≤ u ((rmulEquiv (P D n) (GF D n) γ').symm q)`. Introduce `q`. Establish `h2` using `term_mul_left hLI γ' (nb b * g) ((rmulEquiv (P D n) (GF D n) γ').symm q)`. Rewrite `h2` using `[Equiv.apply_symm_apply]`. Establish `h1 : F q b = term (P D n) (GF D n) φ (nb (γ + b) * g) ((rmulEquiv (P D n) (GF D n) γ').symm q)` using `by show term (P D n) (GF D n) φ (nb b * g) q = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h2, nb_add hnb, mul_assoc]`. Rewrite using `[h1]`. Establish `h3` using `hub ((rmulEquiv (P D n) (GF D n) γ').symm q) _ ⟨γ + b, hγK, rfl⟩`. Rewrite `h3` using `[hstd]`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hsu : Summable (fun q => u ((rmulEquiv (P D n) (GF D n) γ').symm q))` using `(Equiv.summable_iff (rmulEquiv (P D n) (GF D n) γ').symm).2 hu`. Establish `hsF : Summable (fun q => ‖F q b‖)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hle hsu`. Use `⟨hsF, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hF : ∀ q, AEStronglyMeasurable (F q) lam` using `fun q => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: Continuous (F q)` using `hcont.comp (continuous_const.mul (hnbc.mul continuous_const))`. Conclude with `this.aestronglyMeasurable`. Establish `hchm : AEStronglyMeasurable ch lam` using `(continuous_chi hψ _).aestronglyMeasurable`. Establish `hchn : ∀ b, ‖ch b‖ = 1` using `fun b => hψ.2.1 _`. Establish `hcha : ∀ a b, ch (a + b) = ch a * ch b` using `fun a b => chi_add_right ψ _ a b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hchr : ∀ l : ratHerm D n, ch l = 1` using `fun l => chi_rat hψ hβr l`. Set `τ : ratHerm D n → Cosets (P D n) (GF D n) ≃ Cosets (P D n) (GF D n)` to `fun l => rmulEquiv (P D n) (GF D n) ⟨nb l.1, hγ l⟩`. Establish `hτ : ∀ (l : ratHerm D n) q b, F q ((l : hermA D n) + b) = F (τ l q) b`. Introduce `l q b`. Use `show term (P D n) (GF D n) φ (nb ((l : hermA D n) + b) * g) q = term (P D n) (GF D n) φ (nb b * g) (rmulEquiv (P D n) (GF D n) ⟨nb l.1, hγ l⟩ q)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[nb_add hnb, mul_assoc]`. Conclude with `term_mul_left hLI (⟨nb l.1, hγ l⟩ : GF D n) (nb b * g) q`. Establish `hτc : ∀ (l : ratHerm D n) q, cosetCell (τ l q) = cosetCell q`. Introduce `l q`. Take `⟨x, hx⟩` from `mem_ratMx.1 (AddSubgroup.mem_comap.1 l.2)`.
-
-Use `GlobalTheory.T.coset_cell_invariant_unipotent q _ x ?_` and prove the remaining obligations. Use `show mat (nb l.1) = _`. Rewrite using `[hnb l.1]`. Conclude with `congrArg (fun m => blk4 1 m 0 1) hx.symm`. Take `⟨e, he, hfib, hval⟩` from `GlobalTheory.T.big_cell_cosets_hermitian_param hw hnb`.
-
-Establish `he0 : ∀ (l : ratHerm D n) b, F (e l) b = F0 ((l : hermA D n) + b)`. Introduce `l b`. Use `show term (P D n) (GF D n) φ (nb b * g) (e l) = φ (w * nb ((l : hermA D n) + b) * g)`. Rewrite using `[hval _ hLI l (nb b * g), nb_add hnb]`. Simplify using `only [mul_assoc]`.
-
-Establish `hsmall : ∀ y, y ≠ (⊥ : Submodule D.host.E (Fin n → D.host.E)) → ∃ ν, ch ν ≠ 1 ∧ ∀ q, cosetCell q = y → ∀ b, F q (ν + b) = F q b`. Introduce `y hy`. Take `⟨ν0, hν, hsm⟩` from `GlobalTheory.T.nondegenerate_character_cell_factorization hψ β hβ y hy`. Use `⟨ν0, by rw [hch]; exact hν, fun q hq b => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, a, ha, hd, hpe⟩` from `hsm ((q.out : GF D n) : G D n) (nb ν0) q.out.2 (ratOf q.out) (mat_ratOf q.out) hq (hnb ν0)`.
-
-Use `show φ (((q.out : GF D n) : G D n) * (nb (ν0 + b) * g)) = φ (((q.out : GF D n) : G D n) * (nb b * g))`. Rewrite using `[nb_add hnb, mul_assoc, ← mul_assoc ((q.out : GF D n) : G D n), hpe, mul_assoc]`. Conclude with `sec_det_one hsz hp ha hd _`. Conclude with `(GlobalTheory.T.fundamental_domain_fourier_unfolding lam (ratHerm D n) 𝓖 hD hD1 cosetCell ⊥ F F0 ch hF hchm hchn hcha hchr (∑' q, u q) hbound τ hτ hτc e he hfib he0 hsmall).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_bigCell_spherical {D : D7} {n : ℕ} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
     {H : G D n → ℝ≥0} (hH : IsHeight H) {nb : hermA D n → G D n} {lam : Measure (hermA D n)} {𝓖 : Set (hermA D n)}
@@ -186,7 +178,7 @@ theorem integrable_bigCell_spherical {D : D7} {n : ℕ} {ψ : AddChar (AF D.host
 end Unfolding
 
 /- English proof (translation)
-Conclude with `integrable_bigCell_spherical hψ hH hCD hw β hβ hs g`.
+A detailed English derivation is pending.
 -/
 theorem integrable_npow_height {D : D7} {n : ℕ} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
     {H : G D n → ℝ≥0} (hH : IsHeight H) {nb : hermA D n → G D n} {lam : Measure (hermA D n)} {𝓖 : Set (hermA D n)}

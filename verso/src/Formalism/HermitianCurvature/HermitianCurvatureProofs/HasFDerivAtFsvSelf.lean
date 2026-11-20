@@ -10,7 +10,7 @@ namespace Formalism.FourierDecayAlt.P5
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd
 
 /- English proof (translation)
-Establish `hL : ContDiff ℝ ∞ (fun t : ℂ => s * t - conj s * conj t)` using `(contDiff_const.mul contDiff_id).sub (contDiff_const.mul Complex.conjCLE.contDiff)`. Conclude with `Complex.contDiff_exp.comp hL`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_fsv (s : ℂ) : ContDiff ℝ ∞ (fsv s) := by
   have hL : ContDiff ℝ ∞ (fun t : ℂ => s * t - conj s * conj t) :=

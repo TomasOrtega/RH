@@ -17,7 +17,7 @@ variable {n : ℕ} {A : Type} [Ring A] [Algebra ℂ A] (g : Fin n → Fin n → 
 omit [Ring A] [Algebra ℂ A] in
 
 /- English proof (translation)
-Rewrite `h` using `[← two_smul ℂ x, ← two_smul ℂ y]`. Conclude with `smul_right_injective M (two_ne_zero' ℂ) h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_eq {M : Type} [AddCommGroup M] [Module ℂ M] {x y : M} (h : x + x = y + y) : x = y := by
   rw [← two_smul ℂ x, ← two_smul ℂ y] at h
@@ -30,11 +30,11 @@ variable (hg : ∀ a b d e, g a b * g d e + g d e * g a b = if a = e ∧ b = d t
 include hg
 
 /- English proof (translation)
-Unfold `uF`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Establish `h1 : ∀ e, g a e * g e b * g d f - g d f * (g a e * g e b) = g a e * (if e = f ∧ b = d then (2 : ℂ) • (1 : A) else 0) - (if a = f ∧ e = d then (2 : ℂ) • (1 : A) else 0) * g e b`. Introduce `e`. Rewrite using `[← hg e b d f, ← hg a e d f]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `noncomm_ring`. Repeatedly rewrite using `[h1]`. Rewrite using `[Finset.sum_sub_distrib]`. Use `congr 1`. Distinguish the cases in `h : b = d`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Simplify using `[h]`. Distinguish the cases in `h : a = f`. Simplify using `[h]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem u_comm (a b d f : Fin n) :
     uF g a b * g d f - g d f * uF g a b =
@@ -58,11 +58,11 @@ theorem u_comm (a b d f : Fin n) :
     · simp [h]
 
 /- English proof (translation)
-Establish `h1 : uF g a b * uF g d e - uF g d e * uF g a b = ∑ f, ((uF g a b * g d f - g d f * uF g a b) * g f e + g d f * (uF g a b * g f e - g f e * uF g a b))`. Establish `h2 : uF g d e = ∑ f, g d f * g f e` using `rfl`. Rewrite using `[h2, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun f _ => by noncomm_ring`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [u_comm hg, sub_mul, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Apply the tactic sequence `have t1 : ∑ f, (if b = d then (2 : ℂ) • g a f else 0) * g f e = if b = d then (2 : ℂ) • uF g a e else 0 := by split_ifs <;> simp [uF, Finset.smul_sum]`. Establish `t2 : ∑ f, (if a = f then (2 : ℂ) • g d b else 0) * g f e = (2 : ℂ) • (g d b * g a e)`. Simplify using the standard rewrite rules. Establish `t3 : ∑ f, g d f * (if b = f then (2 : ℂ) • g a e else 0) = (2 : ℂ) • (g d b * g a e)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `have t4 : ∑ f, g d f * (if a = e then (2 : ℂ) • g f b else 0) = if a = e then (2 : ℂ) • uF g d b else 0 := by split_ifs <;> simp [uF, Finset.smul_sum]`. Rewrite using `[t1, t2, t3, t4]`. Normalize the expressions using the abelian group laws.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem u_bracket (a b d e : Fin n) :
     uF g a b * uF g d e - uF g d e * uF g a b =
@@ -90,15 +90,15 @@ variable (g) in
 def sF (a b : Fin n) : A := (1 / 2 : ℂ) • uF g a b - if a = b then ((n : ℂ) / 2) • (1 : A) else 0
 
 /- English proof (translation)
-Introduce `a b d e`. Establish `hz : ∀ (z w : ℂ), ((1 / 2 : ℂ) • uF g a b - z • (1 : A)) * ((1 / 2 : ℂ) • uF g d e - w • (1 : A)) - ((1 / 2 : ℂ) • uF g d e - w • (1 : A)) * ((1 / 2 : ℂ) • uF g a b - z • (1 : A)) = (1 / 4 : ℂ) • (uF g a b * uF g d e - uF g d e * uF g a b)`. Introduce `z w`. Simplify using `only [sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`. Use `module`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : ∀ a b : Fin n, sF g a b = (1 / 2 : ℂ) • uF g a b - (if a = b then ((n : ℂ) / 2) else 0) • (1 : A)`. Introduce `a b`. Unfold `sF`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hs a b, hs d e, hz, u_bracket hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h1 : b = d <;> by_cases h2 : a = e`. Substitute `h1 h2` using the available equality. Simplify using `only [if_true, hs]`. Use `module`. Establish `h3 : ¬ e = a` using `fun h => h2 h.symm`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1, h2, h3, if_true, if_false, hs]`. Simplify using `[h2]`. Use `module`. Establish `h3 : ¬ d = b` using `fun h => h1 h.symm`. Substitute `h2` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [h1, h3, if_true, if_false, hs]`. Simplify using `[h3]`. Use `module`. Establish `h3 : ¬ e = a` using `fun h => h2 h.symm`. Simplify using `[h1, h2, h3]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem s_gl : Formalism.REAL.GlRel (sF g) := by
   intro a b d e
@@ -130,11 +130,11 @@ theorem s_gl : Formalism.REAL.GlRel (sF g) := by
     simp [h1, h2, h3]
 
 /- English proof (translation)
-Apply `half_eq` to reduce the goal to its premises. Establish `h1 : ∑ a, uF g a a = ∑ a, ∑ e, g e a * g a e`. Unfold `uF`. Rewrite using `[Finset.sum_comm]`. Establish `h2 : ∑ a, uF g a a + ∑ a, uF g a a = ∑ a : Fin n, ∑ e : Fin n, (2 : ℂ) • (1 : A)` using `by nth_rewrite 2 [h1]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `uF`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg a e e a]`. Simplify using the standard rewrite rules. Rewrite using `[h2]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, ← add_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -158,11 +158,11 @@ theorem u_trace : ∑ a, uF g a a = ((n : ℂ) ^ 2) • (1 : A) := by
   ring
 
 /- English proof (translation)
-Apply `half_eq` to reduce the goal to its premises. Establish `h2 : ∑ a, ∑ f, g a a * g f f + ∑ a, ∑ f, g a a * g f f = ∑ a : Fin n, ∑ f : Fin n, if a = f then (2 : ℂ) • (1 : A) else 0` using `by nth_rewrite 2 [Finset.sum_comm]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[hg a a f f]`. Simplify using the standard rewrite rules. Rewrite using `[h2]`. Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, ← add_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem c_diag : ∑ a, ∑ f, g a a * g f f = (n : ℂ) • (1 : A) := by
   apply half_eq
@@ -182,37 +182,35 @@ theorem c_diag : ∑ a, ∑ f, g a a * g f f = (n : ℂ) • (1 : A) := by
   ring
 
 /- English proof (translation)
-Use `set W := ∑ a, ∑ b, uF g a b * uF g b a with hW`. Establish `hA : ∀ a, ∑ b, uF g a b * uF g b a = ∑ e, ∑ f, g a e * (uF g e f * g f a)`. Introduce `a`. Establish `hM : ∀ a b, (Matrix.of g * Matrix.of g) a b = uF g a b` using `fun a b => rfl`. Establish `h1 : (Matrix.of g * Matrix.of g) * (Matrix.of g * Matrix.of g) = Matrix.of g * ((Matrix.of g * Matrix.of g) * Matrix.of g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Establish `h2` using `congrFun (congrFun h1 a) a`. Rewrite `h2` using `[Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `only [hM] at h2`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Simplify using `only [hM, Matrix.of_apply]`. Establish `hB : ∀ a e f, g a e * (uF g e f * g f a) = g a e * g f a * uF g e f + (2 : ℂ) • (g a e * g e a) - if e = a then (2 : ℂ) • (g a a * g f f) else 0`. Introduce `a e f`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `u_comm hg e f f a`. Rewrite `h1` using `[if_pos rfl]`. Rewrite using `[eq_add_of_sub_eq' h1]`. Distinguish the cases in `h : e = a`. Substitute `h` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_add, mul_sub, mul_assoc]`. Normalize the expressions using the abelian group laws. Simplify using `[h, mul_add, mul_sub, mul_assoc]`. Establish `hC : ∀ e f, ∑ a, g a e * g f a = (n : ℂ) • (if e = f then (2 : ℂ) • (1 : A) else 0) - uF g f e`. Introduce `e f`.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ∀ a, g a e * g f a = (if e = f then (2 : ℂ) • (1 : A) else 0) - g f a * g a e`. Introduce `a`. Use `hg a e f a` as an intermediate fact. Simplify using `only [true_and] at this`. Conclude with `eq_sub_of_add_eq this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [h1, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ]`. Both sides reduce to the same expression. Establish `t1 : ∑ a, ∑ e, ∑ f, g a e * g f a * uF g e f = (2 * (n : ℂ) ^ 3) • (1 : A) - W`. Establish `e1 : ∑ a, ∑ e, ∑ f, g a e * g f a * uF g e f = ∑ e, ∑ f, (∑ a, g a e * g f a) * uF g e f`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Rewrite using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hC, sub_mul, Finset.sum_sub_distrib]`. Establish `e2 : ∑ e, ∑ f, uF g f e * uF g e f = W`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[e2]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e3 : ∀ e, ∑ f, (n : ℂ) • (if e = f then (2 : ℂ) • (1 : A) else 0) * uF g e f = ((n : ℂ) * 2) • uF g e e`. Introduce `e`. Simplify using `[smul_smul, ite_mul]`. Simplify using `only [e3]`. Rewrite using `[← Finset.smul_sum, u_trace hg, smul_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `t2 : ∑ a, ∑ e, ∑ f : Fin n, (2 : ℂ) • (g a e * g e a) = (2 * (n : ℂ) ^ 3) • (1 : A)`. Establish `h1 : ∑ a, uF g a a = ∑ a, ∑ e, g a e * g e a` using `rfl`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Finset.smul_sum]`. Rewrite using `[← h1, u_trace hg]`. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t3 : ∑ a, ∑ e, ∑ f, (if e = a then (2 : ℂ) • (g a a * g f f) else 0) = (2 * (n : ℂ)) • (1 : A)`. Establish `h1 : ∀ a, ∑ e, ∑ f, (if e = a then (2 : ℂ) • (g a a * g f f) else 0) = (2 : ℂ) • ∑ f, g a a * g f f`. Introduce `a`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using `[Finset.smul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Simplify using `only [h1]`. Rewrite using `[← Finset.smul_sum, c_diag hg, smul_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : W = ((2 * (n : ℂ) ^ 3) • (1 : A) - W) + (2 * (n : ℂ) ^ 3) • (1 : A) - (2 * (n : ℂ)) • (1 : A)`. Rewrite using `[← t1, ← t2, ← t3, hW]`. Simplify using `only [hA, hB, Finset.sum_sub_distrib, Finset.sum_add_distrib]`. Establish `: W + W = W + (((2 * (n : ℂ) ^ 3) • (1 : A) - W) + (2 * (n : ℂ) ^ 3) • (1 : A) - (2 * (n : ℂ)) • (1 : A))` using `by nth_rewrite 2 [hT]`. Both sides reduce to the same expression.
-
-Rewrite using `[this]`. Use `module`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u_four : (∑ a, ∑ b, uF g a b * uF g b a) + (∑ a, ∑ b, uF g a b * uF g b a) =
     (4 * (n : ℂ) ^ 3 - 2 * n) • (1 : A) := by
@@ -301,17 +299,15 @@ theorem u_four : (∑ a, ∑ b, uF g a b * uF g b a) + (∑ a, ∑ b, uF g a b *
   module
 
 /- English proof (translation)
-Establish `hs : ∀ a b : Fin n, sF g a b * sF g b a = (1 / 4 : ℂ) • (uF g a b * uF g b a) - (if a = b then ((n : ℂ) / 2) • uF g a a - ((n : ℂ) / 2) ^ 2 • (1 : A) else 0)`. Introduce `a b`. Unfold `sF`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [if_true, sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_sub, smul_smul]`. Use `module`. Establish `h' : ¬ b = a` using `fun e => h e.symm`. Simplify using `only [h, h', if_false, sub_zero, smul_mul_assoc, mul_smul_comm, smul_smul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Unfold `Formalism.REAL.Cas`. Simplify using `only [hs, Finset.sum_sub_distrib, ← Finset.smul_sum, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[u_trace hg]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4` using `u_four hg`. Establish `: ∀ W : A, W + W = (4 * (n : ℂ) ^ 3 - 2 * n) • (1 : A) → (1 / 4 : ℂ) • W = ((n : ℂ) ^ 3 / 2 - (n : ℂ) / 4) • (1 : A)`. Introduce `W hW`. Establish `e : W = (2 * (n : ℂ) ^ 3 - n) • (1 : A)`. Apply `half_eq` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hW]`. Use `module`. Rewrite using `[e, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this _ h4]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem s_cas : Formalism.REAL.Cas (sF g) = (((n : ℂ) ^ 3 - n) / 4) • (1 : A) := by
   have hs : ∀ a b : Fin n, sF g a b * sF g b a =
@@ -349,9 +345,9 @@ end Cl
 section Sq
 
 /- English proof (translation)
-Establish `e1 : (∑ i, P i * G i) * (∑ i, P i * G i) = ∑ i, ∑ j, P i * P j * (G i * G j)`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_assoc (G i), ← h j i, mul_assoc, mul_assoc]`. Establish `e2 : (∑ i, P i * G i) * (∑ i, P i * G i) = ∑ i, ∑ j, P j * P i * (G j * G i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sq_sym {I : Type} [Fintype I] {A : Type} [Ring A] (P G : I → A) (h : ∀ i j, P i * G j = G j * P i) :
     (∑ i, P i * G i) * (∑ i, P i * G i) + (∑ i, P i * G i) * (∑ i, P i * G i) =
@@ -372,7 +368,7 @@ theorem sq_sym {I : Type} [Fintype I] {A : Type} [Ring A] (P G : I → A) (h : �
 variable {n : ℕ} {A : Type} [Ring A] [Algebra ℂ A]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem delta4 (H : Fin n → Fin n → A) (a b : Fin n) :
     ∑ c, ∑ d, H c d * (if c = b then (if d = a then (2 : ℂ) • (1 : A) else 0) else 0) = (2 : ℂ) • H b a := by
@@ -383,35 +379,33 @@ theorem delta4 (H : Fin n → Fin n → A) (a b : Fin n) :
   · simp
 
 /- English proof (translation)
-Establish `hD : ∑ a, ∑ b, p a b * g b a = ∑ i : Fin n × Fin n, p i.1 i.2 * g i.2 i.1` using `(Fintype.sum_prod_type (fun i : Fin n × Fin n => p i.1 i.2 * g i.2 i.1)).symm`. Establish `hs` using `sq_sym (fun i : Fin n × Fin n => p i.1 i.2) (fun i => g i.2 i.1) (fun i j => hpg _ _ _ _)`. Rewrite `hs` using `[← hD]`. Simplify using `only [Fintype.sum_prod_type] at hs`. Establish `hAn : ∀ a b c d, g b a * g d c + g d c * g b a = if c = b then (if d = a then (2 : ℂ) • (1 : A) else 0) else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a b c d`. Establish `e : (b = c ∧ a = d) ↔ (c = b ∧ d = a)` using `⟨fun h => ⟨h.1.symm, h.2.symm⟩, fun h => ⟨h.1.symm, h.2.symm⟩⟩`. Rewrite using `[hg b a d c]`. Simplify using `only [e]`. Apply the tactic sequence `by_cases h1 : c = b <;> by_cases h2 : d = a <;> simp [h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [hAn] at hs`. Establish `T1 : ∑ a, ∑ b, ∑ c, ∑ d, p a b * p c d * (if c = b then (if d = a then (2 : ℂ) • (1 : A) else 0) else 0) = ∑ a, ∑ b, (2 : ℂ) • (p a b * p b a)` using `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => delta4 (fun c d => p a b * p c d) a b`. Establish `T2 : ∑ a, ∑ b, ∑ c, ∑ d, (p a b * p c d - p c d * p a b) * (if c = b then (if d = a then (2 : ℂ) • (1 : A) else 0) else 0) = 0`. Establish `e : ∑ a, ∑ b, ∑ c, ∑ d, (p a b * p c d - p c d * p a b) * (if c = b then (if d = a then (2 : ℂ) • (1 : A) else 0) else 0) = ∑ a, ∑ b, (2 : ℂ) • (p a b * p b a - p b a * p a b)` using `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => delta4 (fun c d => p a b * p c d - p c d * p a b) a b`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_zero, Finset.sum_comm]`. Use `set U : Fin n → Fin n → A := fun a d => ∑ e, g d e * g e a with hU`. Establish `Q1 : ∑ a, ∑ b, ∑ c, ∑ d, (if b = c then k a d else 0) * (g b a * g d c) = ∑ a, ∑ d, k a d * ((n : ℂ) • (if a = d then (2 : ℂ) • (1 : A) else 0) - U a d)`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : ∀ b, ∑ c, ∑ d, (if b = c then k a d else 0) * (g b a * g d c) = ∑ d, k a d * (g b a * g d b)`. Introduce `b`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Ne.symm hc]`. Simplify using the standard rewrite rules. Simplify using `only [e1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Establish `e2 : ∀ b, g b a * g d b = (if a = d then (2 : ℂ) • (1 : A) else 0) - g d b * g b a`. Introduce `b`. Use `hg b a d b` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [true_and] at this`. Conclude with `eq_sub_of_add_eq this`. Simplify using `only [e2, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ]`. Both sides reduce to the same expression. Establish `Q2 : ∑ a, ∑ b, ∑ c, ∑ d, (if d = a then k c b else 0) * (g b a * g d c) = ∑ a, ∑ d, k a d * U a d`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ∀ a b c, ∑ d, (if d = a then k c b else 0) * (g b a * g d c) = k c b * (g b a * g a c)`. Introduce `a b c`. Simplify using the standard rewrite rules. Simplify using `only [e1]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hU, ← Finset.mul_sum]`. Establish `T3 : ∑ a, ∑ b, ∑ c, ∑ d, (p a b * p c d - p c d * p a b) * (g b a * g d c) = ∑ a, ∑ d, k a d * ((n : ℂ) • (if a = d then (2 : ℂ) • (1 : A) else 0) - U a d - U a d)`. Simplify using `only [hp, sub_mul, Finset.sum_sub_distrib]`. Establish `e : ∀ a d, k a d * ((n : ℂ) • (if a = d then (2 : ℂ) • (1 : A) else 0) - U a d - U a d) = k a d * ((n : ℂ) • (if a = d then (2 : ℂ) • (1 : A) else 0) - U a d) - k a d * U a d`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a d`. Rewrite using `[mul_sub]`. Simplify using `only [e, Finset.sum_sub_distrib]`. Rewrite using `[← Q1, ← Q2]`. Rewrite `hs` using `[T1, T2, T3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `half_eq` to reduce the goal to its premises. Rewrite using `[hs]`. Use `set W : Fin n → Fin n → A := fun a d => (1 / 2 : ℂ) • ∑ e, g d e * g e a - if d = a then ((n : ℂ) / 2) • (1 : A) else 0 with hW`. Establish `hc : ∀ a d, (n : ℂ) • (if a = d then (2 : ℂ) • (1 : A) else 0) - U a d - U a d = -(W a d + W a d + (W a d + W a d))`. Introduce `a d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : a = d`. Substitute `h` using the available equality. Simplify using `only [hW, hU, if_true]`. Use `module`. Establish `h' : ¬ d = a` using `fun e => h e.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hW, hU, h, h', if_false]`. Use `module`. Establish `hZ : ∑ a, ∑ d, k a d * (W a d + W a d + (W a d + W a d)) = ∑ a, ∑ d, k a d * W a d + ∑ a, ∑ d, k a d * W a d + (∑ a, ∑ d, k a d * W a d + ∑ a, ∑ d, k a d * W a d)`. Simplify using `only [mul_add, Finset.sum_add_distrib]`. Establish `hP : ∑ a, ∑ b, (2 : ℂ) • (p a b * p b a) = ∑ a, ∑ b, p a b * p b a + ∑ a, ∑ b, p a b * p b a`.
-
-Simplify using `only [← Finset.smul_sum]`. Conclude with `two_smul ℂ _`. Simplify using `only [hc, mul_neg, Finset.sum_neg_distrib]`. Rewrite using `[hZ, hP, two_mul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem dirac_sq_ring (p k g : Fin n → Fin n → A)
     (hg : ∀ a b d e, g a b * g d e + g d e * g a b = if a = e ∧ b = d then (2 : ℂ) • (1 : A) else 0)
@@ -521,11 +515,11 @@ end Sq
 section Misc
 
 /- English proof (translation)
-Establish `key : ∀ (m : ℕ) (t : ℝ), ∑ i ∈ range m, (t - (i : ℝ)) ^ 2 = m * t ^ 2 - t * m * (m - 1) + ((m : ℝ) - 1) * m * (2 * m - 1) / 6`. Introduce `m t`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_range_succ, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ∑ a, (rhoV n a) ^ 2 = ∑ i ∈ range n, (((n : ℝ) - 1) / 2 - (i : ℝ)) ^ 2`. Rewrite using `[Finset.sum_range]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1, key]`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_rhoV_sq (n : ℕ) : ∑ a, (rhoV n a) ^ 2 = ((n : ℝ) ^ 3 - n) / 12 := by
   have key : ∀ (m : ℕ) (t : ℝ), ∑ i ∈ range m, (t - (i : ℝ)) ^ 2 =
@@ -544,25 +538,25 @@ theorem sum_rhoV_sq (n : ℕ) : ∑ a, (rhoV n a) ^ 2 = ((n : ℝ) ^ 3 - n) / 12
   ring
 
 /- English proof (translation)
-Unfold `GlobalTheory.Dec.gelfVal`. Use `set l : Fin n → ℂ := fun c => χ c + ((n : ℂ) - 1) / 2 with hl`. Use `set B := Formalism.REAL.Amat l with hB`. Establish `hcol : ∀ c, ∑ a, B a c = l c - ((c : ℕ) : ℂ)`. Introduce `c`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ a, B a c = (if a = c then l c else 0) + (if a < c then (-1 : ℂ) else 0)`. Introduce `a`. Simplify using `only [hB, Formalism.REAL.Amat, Matrix.of_apply]`. Distinguish the cases in `h : a = c`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `hc : (univ.filter fun a : Fin n => a < c).card = (c : ℕ)`. Rewrite using `[Finset.filter_gt_eq_Iio, Fin.card_Iio]`. Simplify using `only [e, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_filter, Finset.sum_const, hc]`. Simplify using `[sub_eq_add_neg]`. Establish `hrow : ∀ c, ∑ b, B c b = l c - ((n : ℂ) - 1 - ((c : ℕ) : ℂ))`. Introduce `c`. Establish `e : ∀ b, B c b = (if c = b then l c else 0) + (if c < b then (-1 : ℂ) else 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `b`. Simplify using `only [hB, Formalism.REAL.Amat, Matrix.of_apply]`. Distinguish the cases in `h : c = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h]`. Establish `hc : (univ.filter fun b : Fin n => c < b).card = n - 1 - (c : ℕ)`. Rewrite using `[Finset.filter_lt_eq_Ioi, Fin.card_Ioi]`. Establish `hc' : ((n - 1 - (c : ℕ) : ℕ) : ℂ) = (n : ℂ) - 1 - ((c : ℕ) : ℂ)`. Use `c.isLt` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Nat.sub_sub, Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, hc]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [nsmul_eq_mul, hc']`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ∑ a, ∑ b, (B ^ 2) a b = ∑ c, (∑ a, B a c) * ∑ b, B c b`. Simplify using `only [pow_two, Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul_sum]`. Rewrite using `[h1]`. Simplify using `only [hcol, hrow]`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [hl, rhoV]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gelfVal_two_eq (n : ℕ) (χ : Fin n → ℂ) :
     GlobalTheory.Dec.gelfVal χ 2 = ∑ a, χ a ^ 2 - ∑ a, ((rhoV n a : ℝ) : ℂ) ^ 2 := by
@@ -620,7 +614,7 @@ theorem gelfVal_two_eq (n : ℕ) (χ : Fin n → ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [Module.End.mul_apply, lft_apply, rgt_apply, hP, map_sum, map_smul, sum_inner, inner_sum, inner_smul_left, inner_smul_right, mul_neg, Finset.sum_neg_distrib, neg_inj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hN]`. Simplify using `[Matrix.conjTranspose_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem skew_term {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ι : Type} [Fintype ι] [DecidableEq ι]
     (P Q : Module.End ℂ V) (M N : Matrix ι ι ℂ) (hP : ∀ x y : V, ⟪P x, y⟫_ℂ = -⟪x, Q y⟫_ℂ) (hN : Mᴴ = N) (x y : ι → V) :
@@ -633,9 +627,9 @@ theorem skew_term {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {�
   simp [Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Establish `hx : ∀ (z : ι → V) (i : ι), dirac P c z i = ∑ a, ∑ b, (lft ι (P a b) * rgt V (c b a)) z i`. Introduce `z i`. Simplify using `[dirac, LinearMap.sum_apply, Finset.sum_apply]`. Simplify using `only [hx, sum_inner, inner_sum]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_neg_distrib]`. Use `_ = -∑ i, ∑ a, ∑ b, ⟪x i, (lft ι (P a b) * rgt V (c b a)) y i⟫_ℂ := by`. Rewrite using `[neg_inj]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dirac_skew {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ι : Type} [Fintype ι] [DecidableEq ι]
     (P : Fin n → Fin n → Module.End ℂ V) (c : Fin n → Fin n → Matrix ι ι ℂ)
@@ -664,7 +658,7 @@ theorem dirac_skew {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpac
 variable {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Rewrite using `[h.1]`. Use `split_ifs`. Rewrite using `[two_smul, one_add_one_eq_two]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cliff_hg {c : Fin n → Fin n → Matrix ι ι ℂ} (h : IsCliff c) (a b d e : Fin n) :
     c a b * c d e + c d e * c a b = if a = e ∧ b = d then (2 : ℂ) • (1 : Matrix ι ι ℂ) else 0 := by
@@ -674,13 +668,13 @@ theorem cliff_hg {c : Fin n → Fin n → Matrix ι ι ℂ} (h : IsCliff c) (a b
   · rfl
 
 /- English proof (translation)
-The claim follows from `s_gl (g := c) (cliff_hg h)`.
+A detailed English derivation is pending.
 -/
 theorem spinM_glRel (c : Fin n → Fin n → Matrix ι ι ℂ) (h : IsCliff c) : Formalism.REAL.GlRel (spinM c) :=
   s_gl (g := c) (cliff_hg h)
 
 /- English proof (translation)
-The claim follows from `s_cas (g := c) (cliff_hg h)`.
+A detailed English derivation is pending.
 -/
 theorem spinM_cas (c : Fin n → Fin n → Matrix ι ι ℂ) (h : IsCliff c) :
     Formalism.REAL.Cas (spinM c) = (((n : ℂ) ^ 3 - n) / 4) • (1 : Matrix ι ι ℂ) :=
@@ -693,9 +687,9 @@ section Ring
 variable {n : ℕ} {R : Type} [Ring R]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Cas`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `noncomm_ring`.
+A detailed English derivation is pending.
 -/
 theorem cas_p_add_k (E1 E2 : Fin n → Fin n → R) :
     (∑ a, ∑ b, (E1 a b - E2 a b) * (E1 b a - E2 b a)) + Formalism.REAL.Cas (fun a b => E1 a b + E2 a b) =
@@ -708,9 +702,9 @@ theorem cas_p_add_k (E1 E2 : Fin n → Fin n → R) :
   noncomm_ring
 
 /- English proof (translation)
-Establish `h1 : ∑ a, ∑ b, s a b * k b a = ∑ a, ∑ b, k a b * s b a`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => (h a b b a).symm`. Establish `h2 : (2 : R) * (∑ a, ∑ b, k a b * s b a) = (∑ a, ∑ b, k a b * s b a) + ∑ a, ∑ b, s a b * k b a`. Rewrite using `[h1, two_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Unfold `Formalism.REAL.Cas`. Simplify using `only [add_mul, mul_add, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cas_add (k s : Fin n → Fin n → R) (h : ∀ a b c d, k a b * s c d = s c d * k a b) :
     Formalism.REAL.Cas (fun a b => k a b + s a b) =
@@ -726,9 +720,9 @@ theorem cas_add (k s : Fin n → Fin n → R) (h : ∀ a b c d, k a b * s c d = 
   abel
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `e : (k a b + s a b) * (k c d + s c d) - (k c d + s c d) * (k a b + s a b) = (k a b * k c d - k c d * k a b) + (s a b * s c d - s c d * s a b)`. Establish `h1` using `h a b c d`. Establish `h2` using `h c d a b`. Simplify using `only [add_mul, mul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`. Normalize the expressions using the abelian group laws. Simplify using `only []`. Rewrite using `[e, hk a b c d, hs a b c d]`. Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a <;> simp [h1, h2] <;> abel`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_add (k s : Fin n → Fin n → R) (hk : Formalism.REAL.GlRel k) (hs : Formalism.REAL.GlRel s)
     (h : ∀ a b c d, k a b * s c d = s c d * k a b) : Formalism.REAL.GlRel (fun a b => k a b + s a b) := by
@@ -745,9 +739,9 @@ theorem glRel_add (k s : Fin n → Fin n → R) (hk : Formalism.REAL.GlRel k) (h
   by_cases h1 : b = c <;> by_cases h2 : d = a <;> simp [h1, h2] <;> abel
 
 /- English proof (translation)
-Establish `e : (E1 a b - E2 a b) * (E1 c d - E2 c d) - (E1 c d - E2 c d) * (E1 a b - E2 a b) = (E1 a b * E1 c d - E1 c d * E1 a b) + (E2 a b * E2 c d - E2 c d * E2 a b)`. Establish `h3` using `h a b c d`. Establish `h4` using `h c d a b`. Simplify using `only [sub_mul, mul_sub]`. Rewrite using `[h3, h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e, h1 a b c d, h2 a b c d]`. Apply the tactic sequence `by_cases h5 : b = c <;> by_cases h6 : d = a <;> simp [h5, h6] <;> abel`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bracket_p (E1 E2 : Fin n → Fin n → R) (h1 : Formalism.REAL.GlRel E1) (h2 : Formalism.REAL.GlRel E2)
     (h : ∀ a b c d, E1 a b * E2 c d = E2 c d * E1 a b) (a b c d : Fin n) :
@@ -764,9 +758,9 @@ theorem bracket_p (E1 E2 : Fin n → Fin n → R) (h1 : Formalism.REAL.GlRel E1)
   by_cases h5 : b = c <;> by_cases h6 : d = a <;> simp [h5, h6] <;> abel
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `h1` using `congrArg f (h a b c d)`. Simplify using `only [map_sub, map_mul] at h1`. Simplify using `only []`. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h5 : b = c <;> by_cases h6 : d = a <;> simp [h5, h6]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_map {S : Type} [Ring S] (f : R →+* S) {E : Fin n → Fin n → R} (h : Formalism.REAL.GlRel E) :
     Formalism.REAL.GlRel (fun a b => f (E a b)) := by
@@ -784,13 +778,13 @@ section Gel
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 /- English proof (translation)
-Simplify using `[gelA, epow, Formalism.REAL.Cas]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gelA_two (E : Fin n → Fin n → Module.End ℂ V) : gelA E 2 = Formalism.REAL.Cas E := by
   simp [gelA, epow, Formalism.REAL.Cas]
 
 /- English proof (translation)
-Rewrite using `[gelA_two]`. Unfold `Formalism.REAL.Cas barF`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gelA_bar_two (E : Fin n → Fin n → Module.End ℂ V) : gelA (barF E) 2 = Formalism.REAL.Cas E := by
   rw [gelA_two]
@@ -801,11 +795,11 @@ theorem gelA_bar_two (E : Fin n → Fin n → Module.End ℂ V) : gelA (barF E) 
 end Gel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Establish `h1 : (univ.filter fun b : Fin n => a < b ∧ (true = true)).card = n - 1 - (a : ℕ)`. Simplify using `only [eq_self_iff_true, and_true]`. Rewrite using `[Finset.filter_lt_eq_Ioi, Fin.card_Ioi]`. Establish `h2 : (univ.filter fun b : Fin n => b < a ∧ (true = true)).card = (a : ℕ)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [eq_self_iff_true, and_true]`. Rewrite using `[Finset.filter_gt_eq_Iio, Fin.card_Iio]`. Unfold `Formalism.REAL.rhoC rhoV`. Rewrite using `[h1, h2]`. Establish `ha` using `a.isLt`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((n - 1 - (a : ℕ) : ℕ) : ℝ) = (n : ℝ) - 1 - (a : ℕ)`. Rewrite using `[Nat.sub_sub, Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -828,7 +822,7 @@ theorem rhoC_true (n : ℕ) : Formalism.REAL.rhoC (fun _ : Fin n => true) = rhoV
   ring
 
 /- English proof (translation)
-Use `push_cast`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Unfold `infOf m0`. Apply the tactic sequence `cases s <;> simp <;> ring`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem infOf_sq {n : ℕ} (lam : Fin n → ℤ) (s : Bool) :
     ∑ a, infOf lam s a ^ 2 = (((∑ a, (m0 lam a) ^ 2) / 4 : ℝ) : ℂ) := by
@@ -839,61 +833,53 @@ theorem infOf_sq {n : ℕ} (lam : Fin n → ℤ) (s : Bool) :
   cases s <;> simp <;> ring
 
 /- English proof (translation)
-Introduce `n lam V _ _ E1 E2 σ A h ι _ _ c hc τ x hx hK`. Take `⟨hc1, hc2⟩` from `hc`. Establish `hcl : IsCliff c` using `⟨hc1, hc2⟩`. Establish `hp` using `h.pair`. Use `set L := lft (V := V) ι with hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Rr := rgt (ι := ι) V with hRr`. Use `set p : Fin n → Fin n → Module.End ℂ (ι → V) := fun a b => L (pF E1 E2 a b) with hpdef`. Use `set k : Fin n → Fin n → Module.End ℂ (ι → V) := fun a b => L (kF E1 E2 a b) with hkdef`. Use `set g : Fin n → Fin n → Module.End ℂ (ι → V) := fun a b => Rr (c a b) with hgdef`. Use `set s : Fin n → Fin n → Module.End ℂ (ι → V) := fun a b => Rr (spinM c a b) with hsdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D := dirac (pF E1 E2) c with hD`. Establish `hDe : D = ∑ a, ∑ b, p a b * g b a` using `rfl`. Establish `hks : ∀ a b c' d, k a b * s c' d = s c' d * k a b` using `fun a b c' d => lft_mul_rgt _ _`. Establish `hglK : Formalism.REAL.GlRel (kF E1 E2)` using `glRel_add E1 E2 hp.gl1 hp.gl2 hp.comm`. Establish `hGk : Formalism.REAL.GlRel k` using `glRel_map L.toRingHom hglK`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGs : Formalism.REAL.GlRel s` using `glRel_map Rr.toRingHom (spinM_glRel c hcl)`. Establish `hYe : yF (kF E1 E2) c = fun a b => k a b + s a b`. Use function extensionality and compare the values at `a b`. Conclude with `yF_eq _ _ a b`. Establish `hGY : Formalism.REAL.GlRel (yF (kF E1 E2) c)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hYe]`. Conclude with `glRel_add k s hGk hGs hks`. Establish `hCY` using `Formalism.REAL.compactCasimirOnHighestWeight_holds (ι → V) n (fun _ => true) _ τ x hGY hK`. Establish `hCK : Formalism.REAL.CasK (fun _ : Fin n => true) (yF (kF E1 E2) c) = Formalism.REAL.Cas (yF (kF E1 E2) c)`. Simplify using `[Formalism.REAL.CasK, Formalism.REAL.Cas]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hCY` using `[hCK, rhoC_true]`. Establish `hg : ∀ a b d e, g a b * g d e + g d e * g a b = if a = e ∧ b = d then (2 : ℂ) • (1 : Module.End ℂ (ι → V)) else 0`. Introduce `a b d e`. Establish `h1` using `congrArg Rr (cliff_hg hcl a b d e)`. Simplify using `only [map_add, map_mul] at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show g a b * g d e + g d e * g a b = Rr (c a b) * Rr (c d e) + Rr (c d e) * Rr (c a b) from rfl, h1]`. Use `split_ifs`. Rewrite using `[map_smul, map_one]`. Conclude with `map_zero Rr`. Establish `hpp : ∀ a b c' d, p a b * p c' d - p c' d * p a b = (if b = c' then k a d else 0) - (if d = a then k c' b else 0)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b c' d`. Establish `h1` using `congrArg L (bracket_p E1 E2 hp.gl1 hp.gl2 hp.comm a b c' d)`. Simplify using `only [map_sub, map_mul] at h1`. Establish `h2 : p a b * p c' d - p c' d * p a b = L (E1 a b - E2 a b) * L (E1 c' d - E2 c' d) - L (E1 c' d - E2 c' d) * L (E1 a b - E2 a b)` using `rfl`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub]`. Rewrite using `[h1]`. Apply the tactic sequence `by_cases h5 : b = c' <;> by_cases h6 : d = a <;> simp [h5, h6, hkdef, kF]`. Establish `hsq` using `dirac_sq_ring p k g hg hpp (fun a b c' d => lft_mul_rgt _ _)`. Establish `hsE : ∀ d a, ((1 / 2 : ℂ) • ∑ e, g d e * g e a - if d = a then ((n : ℂ) / 2) • (1 : Module.End ℂ (ι → V)) else 0) = s d a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `d a`. Establish `: s d a = Rr (spinM c d a)` using `rfl`. Rewrite using `[this]`. Unfold `spinM`. Apply the tactic sequence `by_cases h1 : d = a <;> simp [h1, map_sub, map_smul, map_sum, map_mul, hgdef]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hsE] at hsq`. Rewrite `hsq` using `[← hDe]`. Establish `hCasY` using `cas_add k s hks`. Rewrite `hCasY` using `[← hYe]`. Establish `hCasP : (∑ a, ∑ b, p a b * p b a) + Formalism.REAL.Cas k = L (Formalism.REAL.Cas E1 + Formalism.REAL.Cas E1 + (Formalism.REAL.Cas E2 + Formalism.REAL.Cas E2))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `congrArg L (cas_p_add_k E1 E2)`. Simplify using `only [two_mul] at h1`. Rewrite using `[← h1]`. Simplify using `[Formalism.REAL.Cas, map_add, map_sum, map_mul, hpdef, hkdef, pF, kF]`. Establish `hCasS : Formalism.REAL.Cas s = (((n : ℂ) ^ 3 - n) / 4) • (1 : Module.End ℂ (ι → V))`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h1` using `congrArg Rr (spinM_cas c hcl)`. Simplify using `only [map_smul, map_one] at h1`. Rewrite using `[← h1]`. Simplify using `[Formalism.REAL.Cas, map_sum, map_mul, hsdef]`. Establish `hTot : D * D + Formalism.REAL.Cas (yF (kF E1 E2) c) = L (Formalism.REAL.Cas E1 + Formalism.REAL.Cas E1 + (Formalism.REAL.Cas E2 + Formalism.REAL.Cas E2)) + (((n : ℂ) ^ 3 - n) / 4) • (1 : Module.End ℂ (ι → V))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hCasP, ← hCasS, hsq, hCasY]`. Normalize the expressions using the abelian group laws. Use `set R : ℝ := ∑ a, (rhoV n a) ^ 2 with hR`. Use `set S : ℝ := (∑ a, (m0 lam a) ^ 2) / 4 with hS`. Establish `hv : ∀ b : Bool, GlobalTheory.Dec.gelfVal (infOf lam b) 2 = ((S - R : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Introduce `b`. Rewrite using `[gelfVal_two_eq, infOf_sq, Complex.ofReal_sub, hS, hR]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hC1 : ∀ v : V, Formalism.REAL.Cas E1 v = ((S - R : ℝ) : ℂ) • v`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v`. Rewrite using `[← gelA_two, h.ch1 2 v, hv]`. Establish `hC2 : ∀ v : V, Formalism.REAL.Cas E2 v = ((S - R : ℝ) : ℂ) • v`. Introduce `v`. Rewrite using `[← gelA_bar_two, h.ch2 2 v, hv]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn : (((n : ℂ) ^ 3 - n) / 4) = ((3 * R : ℝ) : ℂ)`. Rewrite using `[hR, sum_rhoV_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set T : ℝ := Formalism.REAL.nsq (τ + rhoV n) - Formalism.REAL.nsq (rhoV n) with hT`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hDD : D (D x) = ((4 * (S - R) + 3 * R - T : ℝ) : ℂ) • x`. Establish `h1` using `congrArg (fun f : Module.End ℂ (ι → V) => f x) hTot`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, LinearMap.smul_apply, Module.End.one_apply] at h1`. Rewrite `h1` using `[hCY]`. Establish `h2 : L (Formalism.REAL.Cas E1 + Formalism.REAL.Cas E1 + (Formalism.REAL.Cas E2 + Formalism.REAL.Cas E2)) x = ((4 * (S - R) : ℝ) : ℂ) • x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [hL, lft_apply, LinearMap.add_apply, hC1, hC2, Pi.smul_apply]`. Use `push_cast`. Use `module`. Rewrite `h1` using `[h2, hn]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_sub_of_add_eq h1]`. Use `push_cast`. Use `module`. Establish `hsk` using `dirac_skew (pF E1 E2) c hp.unitP hc2 x (D x)`. Establish `hN : 0 < ∑ i, ‖x i‖ ^ 2`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Take `⟨i, hi⟩` from `Function.ne_iff.mp hx`. Conclude with `Finset.sum_pos' (fun _ _ => by positivity) ⟨i, Finset.mem_univ _, by`. Establish `: x i ≠ 0` using `hi`. Use the proof step `positivity⟩`. Establish `hM : 0 ≤ ∑ i, ‖D x i‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hEq : ((∑ i, ‖D x i‖ ^ 2 : ℝ) : ℂ) = -(((4 * (S - R) + 3 * R - T) * ∑ i, ‖x i‖ ^ 2 : ℝ) : ℂ)`. Establish `e1 : ∑ i, ⟪dirac (pF E1 E2) c x i, D x i⟫_ℂ = ((∑ i, ‖D x i‖ ^ 2 : ℝ) : ℂ)`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun i _ => by`. Rewrite using `[inner_self_eq_norm_sq_to_K]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2 : ∑ i, ⟪x i, dirac (pF E1 E2) c (D x) i⟫_ℂ = (((4 * (S - R) + 3 * R - T) * ∑ i, ‖x i‖ ^ 2 : ℝ) : ℂ)`. Establish `: dirac (pF E1 E2) c (D x) = ((4 * (S - R) + 3 * R - T : ℝ) : ℂ) • x` using `hDD`. Rewrite using `[this]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by`. Rewrite using `[Pi.smul_apply, inner_smul_right, inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Both sides reduce to the same expression.
-
-Rewrite using `[← e1, hsk, e2]`. Establish `hEq' : (∑ i, ‖D x i‖ ^ 2) = -((4 * (S - R) + 3 * R - T) * ∑ i, ‖x i‖ ^ 2)`. Conclude with `hEq` after adjusting the coercions. Establish `hle : 4 * (S - R) + 3 * R - T ≤ 0`. Assume the negation of the conclusion as `hcon`.
-
-Use `push_neg at hcon`. Use `mul_pos hcon hN` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT' : T = ∑ a, (τ a + rhoV n a) ^ 2 - R`. Rewrite using `[hT, hR]`.
-
-Simplify using `only [Formalism.REAL.nsq, Formalism.REAL.dot, Pi.add_apply, pow_two]`. Rewrite `hle` using `[hT']`. Establish `: ∑ a, (m0 lam a) ^ 2 = 4 * S`. Rewrite using `[hS]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem dirac_ineq : ∀ {n : ℕ} (lam : Fin n → ℤ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (E1 E2 : Fin n → Fin n → Module.End ℂ V) (σ : Matrix.unitaryGroup (Fin n) ℂ →* (V →ₗ[ℂ] V)) (A : V →ₗ[ℂ] V),

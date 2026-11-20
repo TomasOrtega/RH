@@ -15,14 +15,14 @@ def cmp : (Ψ.obj (widePushout U (fun _ : J => V) fun _ => g)).unop ⟶
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Simplify using `only [cmp, WidePullback.lift_π]`. Use the proof step `@[reassoc (attr := simp)]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cmp_π (i : J) : cmp Ψ g J ≫ WidePullback.π _ i = (Ψ.map (WidePushout.ι _ i)).unop := by
   simp only [cmp, WidePullback.lift_π]
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Simplify using `only [cmp, WidePullback.lift_base]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cmp_base : cmp Ψ g J ≫ WidePullback.base _ = (Ψ.map (WidePushout.head _)).unop := by
   simp only [cmp, WidePullback.lift_base]
@@ -34,15 +34,13 @@ def coc : Cocone (WidePushoutShape.wideSpan U (fun _ : J => V) (fun _ => g) ⋙ 
       exact WidePullback.π_arrow (fun _ : J => (Ψ.map g).unop) i)
 
 /- English proof (translation)
-Set `hC` to `isColimitOfPreserves Ψ (colimit.isColimit (WidePushoutShape.wideSpan U (fun _ : J => V) (fun _ => g)))`. Use `⟨(hC.desc (coc Ψ g J)).unop, ?_, ?_⟩` and prove the remaining obligations. Apply `Quiver.Hom.op_inj show hC.desc (coc Ψ g J) ≫ (cmp Ψ g J).op = 𝟙 _` to reduce the goal to its premises. Apply `hC.hom_ext` to reduce the goal to its premises. Introduce `j`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (· ≫ (cmp Ψ g J).op) (hC.fac (coc Ψ g J) j)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Category.comp_id _).symm` and prove the remaining obligations. Apply `Quiver.Hom.unop_inj` to reduce the goal to its premises. Break down `j with _ | i` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `cmp_base Ψ g J`. Conclude with `cmp_π Ψ g J i`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `i`. Use `congrArg Quiver.Hom.unop (hC.fac (coc Ψ g J) (some i))` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg _ (cmp_π Ψ g J i)).trans ?_` and prove the remaining obligations. Conclude with `this.trans (Category.id_comp _).symm`. Use `congrArg Quiver.Hom.unop (hC.fac (coc Ψ g J) none)` as an intermediate fact. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations.
-
-Use `(congrArg _ (cmp_base Ψ g J)).trans ?_` and prove the remaining obligations. Conclude with `this.trans (Category.id_comp _).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma isIso_cmp [PreservesColimitsOfShape (WidePushoutShape J) Ψ] : IsIso (cmp Ψ g J) := by
   let hC := isColimitOfPreserves Ψ (colimit.isColimit (WidePushoutShape.wideSpan U (fun _ : J => V) (fun _ => g)))
@@ -74,17 +72,15 @@ end GlobalTheory.EtC.ConerveNerve
 namespace GlobalTheory.EtC.ConerveNerve
 
 /- English proof (translation)
-Introduce `T _ _ Ψ hΨ U V g`. Use `⟨{ app := fun n => cmp Ψ g (Fin (n.unop.len + 1)), naturality := ?_ }, ?_, ?_⟩` and prove the remaining obligations. Introduce `m n f`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Category.assoc _ _ _).symm` and prove the remaining obligations. Use `(congrArg _ (cmp_π Ψ g _ i)).trans ?_` and prove the remaining obligations. Establish `hN : (Arrow.mk (Ψ.map g).unop).cechNerve.map f ≫ WidePullback.π (fun _ => (Arrow.mk (Ψ.map g).unop).hom) i = WidePullback.π (fun _ => (Arrow.mk (Ψ.map g).unop).hom) (f.unop.toOrderHom i)` using `WidePullback.lift_π _ _ _ _ _`. Use `Eq.trans ?_ (congrArg _ hN).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (cmp_π Ψ g _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Ψ.map (WidePushout.ι _ i) ≫ Ψ.map ((Arrow.mk g).cechConerve.map f.unop)).unop = _`. Use `(congrArg Quiver.Hom.unop (Ψ.map_comp _ _).symm).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun k => (Ψ.map k).unop) (by apply WidePushout.ι_desc)`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (Category.assoc _ _ _).symm` and prove the remaining obligations. Use `(congrArg _ (cmp_base Ψ g _)).trans ?_` and prove the remaining obligations. Establish `hN : (Arrow.mk (Ψ.map g).unop).cechNerve.map f ≫ WidePullback.base (fun _ : Fin ((unop n).len + 1) => (Arrow.mk (Ψ.map g).unop).hom) = WidePullback.base (fun _ : Fin ((unop m).len + 1) => (Arrow.mk (Ψ.map g).unop).hom)`. Apply `WidePullback.lift_base` to reduce the goal to its premises. Use `Eq.trans ?_ (congrArg _ hN).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (cmp_base Ψ g _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Ψ.map (WidePushout.head _) ≫ Ψ.map ((Arrow.mk g).cechConerve.map f.unop)).unop = _`. Use `(congrArg Quiver.Hom.unop (Ψ.map_comp _ _).symm).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun k => (Ψ.map k).unop) (by apply WidePushout.head_desc)`. Establish `: ∀ n : SimplexCategoryᵒᵖ, IsIso (cmp Ψ g (Fin (n.unop.len + 1)))` using `fun n => by haveI := hΨ n.unop.len`.
-
-Conclude with `isIso_cmp Ψ g _`. Conclude with `(NatTrans.isIso_iff_isIso_app _).2 this`. Use `NatTrans.ext (funext fun n => ?_)` and prove the remaining obligations. Conclude with `cmp_base Ψ g _`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conerve_nerve : ∀ (T : Type 1) [Category.{0} T] [HasFiniteWidePushouts T] (Ψ : T ⥤ PShᵒᵖ), (∀ n : ℕ, PreservesColimitsOfShape (WidePushoutShape (Fin (n + 1))) Ψ) → ∀ (U V : T) (g : U ⟶ V), ∃ e : ((((Arrow.mk g).cechConerve ⋙ Ψ).leftOp : Spc) ⟶ (Arrow.mk (Ψ.map g).unop).cechNerve), IsIso e ∧ e ≫ (Arrow.mk (Ψ.map g).unop).augmentedCechNerve.hom = lev Ψ (coAug g) := by
   intro T _ _ Ψ hΨ U V g

@@ -16,16 +16,14 @@ def pw (k r : ℕ) : Fin (2 * r + k + 1) → ℂ := fun i => if r ≤ i.val ∧ 
 def aP (X : PI.Mx k r) : PI.Mx k r := Matrix.diagonal (pw k r) * X * Matrix.diagonal (pw k r)
 
 /- English proof (translation)
-Unfold `aP`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem middleBlock_apply (X : PI.Mx k r) (i j : Fin (2 * r + k + 1)) : aP X i j = pw k r i * X i j * pw k r j := by
   unfold aP
   rw [Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Establish `h1` using `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (PI.exp_deriv X)`. Establish `h2 : HasDerivAt (fun t : ℝ => L (NormedSpace.exp ((t : ℂ) • X))) 0 0`. Establish `: (fun t : ℝ => L (NormedSpace.exp ((t : ℂ) • X))) = fun _ => c` using `funext h`. Rewrite using `[this]`. Conclude with `hasDerivAt_const _ _`.
-
-Conclude with `h1.unique h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clm_zero (X : PI.Mx k r) (L : PI.Mx k r →L[ℝ] ℂ) (c : ℂ)
     (h : ∀ t : ℝ, L (NormedSpace.exp ((t : ℂ) • X)) = c) : L X = 0 := by
@@ -49,13 +47,13 @@ Both sides reduce to the same expression.
 theorem mvL_apply (v : Fin (2 * r + k + 1) → ℂ) (M : PI.Mx k r) : mvL v M = M *ᵥ v := rfl
 
 /- English proof (translation)
-Establish `hz : ∀ n : ℕ, ((t : ℂ) • A) ^ (n + 1) *ᵥ v = 0`. Introduce `n`. Establish `hv' : ((t : ℂ) • A) *ᵥ v = 0`. Use function extensionality and compare the values at `i`. Use `congrFun hv i` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Pi.zero_apply] at this ⊢`. Simplify using `only [mul_assoc, ← Finset.mul_sum, this, mul_zero]`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, hv', Matrix.mulVec_zero]`. Establish `h1 : HasSum (fun n : ℕ => mvL v (((n.factorial : ℂ)⁻¹) • ((t : ℂ) • A) ^ n)) (mvL v (NormedSpace.exp ((t : ℂ) • A)))` using `by open scoped Matrix.Norms.Operator in`. Conclude with `(mvL v).hasSum (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) ((t : ℂ) • A))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : HasSum (fun n : ℕ => mvL v (((n.factorial : ℂ)⁻¹) • ((t : ℂ) • A) ^ n)) (mvL v (((Nat.factorial 0 : ℂ)⁻¹) • ((t : ℂ) • A) ^ 0))`. Apply `hasSum_single 0` to reduce the goal to its premises. Introduce `n hn`. Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`. Rewrite using `[map_smul, mvL_apply, hz m, smul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h1.unique h2` as an intermediate fact. Rewrite `this` using `[mvL_apply, mvL_apply]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exp_fix (A : PI.Mx k r) (v : Fin (2 * r + k + 1) → ℂ) (hv : A *ᵥ v = 0) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • A) *ᵥ v = v := by
@@ -83,7 +81,7 @@ theorem exp_fix (A : PI.Mx k r) (v : Fin (2 * r + k + 1) → ℂ) (hv : A *ᵥ v
   simp
 
 /- English proof (translation)
-Establish `he : Formalism.QuantumDeterminants.eI k r ⟨l.val, hl⟩ = l` using `Fin.ext rfl`. Use `congrFun (hh.2.1 ⟨l.val, hl⟩).1 i` as an intermediate fact. Rewrite `this` using `[he]`. Simplify `this` using `[Formalism.QuantumDeterminants.bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hcol {z : Fin (2 * r + k + 1) → ℂ} {h : PI.Mx k r} (hh : h ∈ Formalism.QuantumDeterminants.UWset k r z)
     (i l : Fin (2 * r + k + 1)) (hl : l.val < r) : h i l = if i = l then 1 else 0 := by
@@ -93,11 +91,9 @@ theorem hcol {z : Fin (2 * r + k + 1) → ℂ} {h : PI.Mx k r} (hh : h ∈ Forma
   simpa [Formalism.QuantumDeterminants.bvec, Matrix.mulVec, dotProduct, Pi.single_apply] using this
 
 /- English proof (translation)
-Take `⟨h, hh, m, hm, rfl⟩` from `hs`. Establish `ha` using `a.2`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Formalism.QuantumDeterminants.eI k r a)]`. Rewrite using `[hm.2.1 a (Formalism.QuantumDeterminants.eI k r a) le_rfl, if_pos rfl, mul_one]`. Conclude with `hcol hh i _ a.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _ hl`. Distinguish the cases in `hal : a.val ≤ l.val`. Rewrite using `[hm.2.1 a l hal, if_neg hl, mul_zero]`. Rewrite using `[hcol hh i l (by omega), if_neg (by intro e; rw [e] at hai; omega), zero_mul]`. Introduce `hn`.
-
-Conclude with `absurd (Finset.mem_univ _) hn`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem S_col {z : Fin (2 * r + k + 1) → ℂ} {s : PI.Mx k r} (hs : s ∈ Formalism.QuantumDeterminants.Sset k r z) (a : Fin r)
     (i : Fin (2 * r + k + 1)) (hai : a.val ≤ i.val) :
@@ -114,15 +110,15 @@ theorem S_col {z : Fin (2 * r + k + 1) → ℂ} {s : PI.Mx k r} (hs : s ∈ Form
   · intro hn; exact absurd (Finset.mem_univ _) hn
 
 /- English proof (translation)
-Take `⟨h, hh, m, hm, rfl⟩` from `hs`. Rewrite using `[← Matrix.mulVec_mulVec]`. Establish `hv : ∀ l : Fin (2 * r + k + 1), r ≤ l.val → (m *ᵥ z) l = z l`. Introduce `l hl`. Express the relevant statement in the definitionally equal form `(∑ x, m l x * z x) = z l`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Finset.sum_eq_single l]`. Distinguish the cases in `hlW : l.val ≤ r + k`. Rewrite using `[hm.2.2 l l hl hlW hl, if_pos rfl, one_mul]`. Rewrite using `[hz l (Or.inr (by omega)), mul_zero]`. Introduce `x _ hx`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hxW : r ≤ x.val ∧ x.val ≤ r + k`. Rewrite using `[hm.2.2 l x hxW.1 hxW.2 hl, if_neg (fun e => hx e.symm), zero_mul]`. Rewrite using `[hz x (by omega), mul_zero]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz' : (∑ l, h i l * z l) = z i` using `congrFun hh.2.2 i`. Express the relevant statement in the definitionally equal form `(∑ l, h i l * (m *ᵥ z) l) = z i`. Rewrite using `[← hz']`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hl : r ≤ l.val`. Rewrite using `[hv l hl]`. Rewrite using `[hcol hh i l (by omega), if_neg (by intro e; rw [e] at hi; omega), zero_mul, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabilizer_fixes_tail_coords {z : Fin (2 * r + k + 1) → ℂ} (hz : Formalism.QuantumDeterminants.inWb k r z) {s : PI.Mx k r}
     (hs : s ∈ Formalism.QuantumDeterminants.Sset k r z) (i : Fin (2 * r + k + 1)) (hi : r ≤ i.val) : (s *ᵥ z) i = z i := by
@@ -150,13 +146,13 @@ theorem stabilizer_fixes_tail_coords {z : Fin (2 * r + k + 1) → ℂ} (hz : For
   · rw [hcol hh i l (by omega), if_neg (by intro e; rw [e] at hi; omega), zero_mul, zero_mul]
 
 /- English proof (translation)
-Establish `hH2` using `(Formalism.QuantumDeterminants.hpkFacts k r).2.1`. Establish `hf : HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • Xᴴ)) Xᴴ 0` using `PI.exp_deriv _`. Establish `hg : HasDerivAt (fun t : ℝ => Formalism.QuantumDeterminants.Hpk k r * NormedSpace.exp ((t : ℂ) • (-X)) * Formalism.QuantumDeterminants.Hpk k r) (Formalism.QuantumDeterminants.Hpk k r * (-X) * Formalism.QuantumDeterminants.Hpk k r) 0` using `(PI.mulR (Formalism.QuantumDeterminants.Hpk k r)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) ((PI.mulL (Formalism.QuantumDeterminants.Hpk k r)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (PI.exp_deriv (-X)))`. Establish `hfg : (fun t : ℝ => NormedSpace.exp ((t : ℂ) • Xᴴ)) = fun t : ℝ => Formalism.QuantumDeterminants.Hpk k r * NormedSpace.exp ((t : ℂ) • (-X)) * Formalism.QuantumDeterminants.Hpk k r`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hU : (NormedSpace.exp ((t : ℂ) • X))ᴴ * Formalism.QuantumDeterminants.Hpk k r * NormedSpace.exp ((t : ℂ) • X) = Formalism.QuantumDeterminants.Hpk k r` using `hX t`. Establish `hst : star (t : ℂ) = (t : ℂ)` using `Complex.conj_ofReal t`. Rewrite `hU` using `[← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, hst]`. Establish `e2 : NormedSpace.exp ((t : ℂ) • X) * NormedSpace.exp ((t : ℂ) • (-X)) = 1`. Rewrite using `[smul_neg, ← Matrix.exp_add_of_commute _ _ ((Commute.refl ((t : ℂ) • X)).neg_right)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e2, Matrix.mul_one, Matrix.mul_assoc, hH2, Matrix.mul_one]`. Use `_ = (NormedSpace.exp ((t : ℂ) • Xᴴ) * Formalism.QuantumDeterminants.Hpk k r * NormedSpace.exp ((t : ℂ) • X)) * NormedSpace.exp ((t : ℂ) • (-X)) * Formalism.QuantumDeterminants.Hpk k r := by simp only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hU]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hf` using `[hfg]`. Establish `e` using `hf.unique hg`. Use `show Xᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * X = 0`. Rewrite using `[e, Matrix.mul_assoc, hH2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lieHpk_of {X : PI.Mx k r}
     (hX : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) : PI.InLieHpk k r X := by
@@ -190,7 +186,7 @@ theorem lieHpk_of {X : PI.Mx k r}
   simp
 
 /- English proof (translation)
-Establish `ha` using `a.2`. Establish `hl` using `l.2`. Simplify using `only [Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.eI, Fin.val_mk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_row (a : Fin r) (l : Fin (2 * r + k + 1)) :
     Formalism.QuantumDeterminants.Hpk k r (Formalism.QuantumDeterminants.eI k r a) l = if a.val + l.val = 2 * r + k then 1 else 0 := by
@@ -200,7 +196,7 @@ theorem hpk_row (a : Fin r) (l : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Establish `hj` using `j.2`. Simplify using `only [Formalism.QuantumDeterminants.Hpk]`. Apply the tactic sequence `split_ifs with h1 h2 h3 <;> (try rfl) <;> (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_cross (i j : Fin (2 * r + k + 1))
     (h : (r ≤ i.val ∧ i.val ≤ r + k ∧ (j.val < r ∨ r + k < j.val)) ∨
@@ -211,9 +207,9 @@ theorem hpk_cross (i j : Fin (2 * r + k + 1))
   split_ifs with h1 h2 h3 <;> (try rfl) <;> (exfalso; omega)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Unfold `pw`. Apply the tactic sequence `by_cases hi : r ≤ i.val ∧ i.val ≤ r + k <;> by_cases hj : r ≤ j.val ∧ j.val ≤ r + k`. Simplify using `[hi, hj]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[hpk_cross i j (Or.inl ⟨hi.1, hi.2, by omega⟩)]; simp`. Rewrite using `[hpk_cross i j (Or.inr ⟨by omega, hj.1, hj.2⟩)]; simp`. Simplify using `[hi, hj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hpk_pw : Formalism.QuantumDeterminants.Hpk k r * Matrix.diagonal (pw k r) = Matrix.diagonal (pw k r) * Formalism.QuantumDeterminants.Hpk k r := by
   ext i j
@@ -226,7 +222,7 @@ theorem hpk_pw : Formalism.QuantumDeterminants.Hpk k r * Matrix.diagonal (pw k r
   · simp [hi, hj]
 
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : r ≤ i.val ∧ i.val ≤ r + k <;> simp [pw, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pw_star : (Matrix.diagonal (pw k r))ᴴ = Matrix.diagonal (pw k r) := by
   rw [Matrix.diagonal_conjTranspose]
@@ -235,11 +231,9 @@ theorem pw_star : (Matrix.diagonal (pw k r))ᴴ = Matrix.diagonal (pw k r) := by
   by_cases h : r ≤ i.val ∧ i.val ≤ r + k <;> simp [pw, h]
 
 /- English proof (translation)
-Establish `hX' : Xᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * X = 0` using `hX`. Use `show (aP X)ᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * aP X = 0`. Unfold `aP`. Use `set P := Matrix.diagonal (pw k r)`. Use `set H := Formalism.QuantumDeterminants.Hpk k r`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : H * P = P * H` using `hpk_pw`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, pw_star]`. Establish `e1 : P * (Xᴴ * P) * H = P * (Xᴴ * H) * P`. Rewrite using `[Matrix.mul_assoc P (Xᴴ * P) H, Matrix.mul_assoc Xᴴ P H, ← hc, ← Matrix.mul_assoc Xᴴ H P, ← Matrix.mul_assoc P (Xᴴ * H) P]`. Establish `e2 : H * (P * X * P) = P * (H * X) * P`.
-
-Rewrite using `[← Matrix.mul_assoc H (P * X) P, ← Matrix.mul_assoc H P X, hc, Matrix.mul_assoc P H X]`. Rewrite using `[e1, e2, ← Matrix.add_mul, ← Matrix.mul_add, hX', Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inLie_aP {X : PI.Mx k r} (hX : PI.InLieHpk k r X) : PI.InLieHpk k r (aP X) := by
   have hX' : Xᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * X = 0 := hX
@@ -257,9 +251,9 @@ theorem inLie_aP {X : PI.Mx k r} (hX : PI.InLieHpk k r X) : PI.InLieHpk k r (aP 
   rw [e1, e2, ← Matrix.add_mul, ← Matrix.mul_add, hX', Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Establish `hX' : Xᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * X = 0` using `hX`. Establish `hY' : Yᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * Y = 0` using `hY`. Use `show (X - Y)ᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * (X - Y) = 0`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.sub_mul, Matrix.mul_sub]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Use `_ = 0 := by rw [hX', hY', sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem inLie_sub {X Y : PI.Mx k r} (hX : PI.InLieHpk k r X) (hY : PI.InLieHpk k r Y) :
     PI.InLieHpk k r (X - Y) := by
@@ -273,9 +267,9 @@ theorem inLie_sub {X Y : PI.Mx k r} (hX : PI.InLieHpk k r X) (hY : PI.InLieHpk k
     _ = 0 := by rw [hX', hY', sub_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `hi : i = l`. Substitute `hi` using the available equality. Simplify using `[pw, hl]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.QuantumDeterminants.bvec, hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pw_mulVec_bvec (l : Fin (2 * r + k + 1)) (hl : ¬(r ≤ l.val ∧ l.val ≤ r + k)) :
     Matrix.diagonal (pw k r) *ᵥ Formalism.QuantumDeterminants.bvec l = 0 := by
@@ -286,7 +280,7 @@ theorem pw_mulVec_bvec (l : Fin (2 * r + k + 1)) (hl : ¬(r ≤ l.val ∧ l.val 
   · simp [Formalism.QuantumDeterminants.bvec, hi]
 
 /- English proof (translation)
-Unfold `aP`. Rewrite using `[← Matrix.mulVec_mulVec, pw_mulVec_bvec l hl, Matrix.mulVec_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem middleBlock_mulVec_basisVec_eq_zero (X : PI.Mx k r) (l : Fin (2 * r + k + 1)) (hl : ¬(r ≤ l.val ∧ l.val ≤ r + k)) :
     aP X *ᵥ Formalism.QuantumDeterminants.bvec l = 0 := by
@@ -302,37 +296,35 @@ namespace Formalism.FourierDecayAlt.P.CutMP.SmoothTransferRegularity
 open LieSplitPf
 
 /- English proof (translation)
-Introduce `k r z hz _hT X hX`. Establish `hXS : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) ∈ Formalism.QuantumDeterminants.Sset k r z` using `hX`. Establish `hUH : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)`. Introduce `t`. Take `⟨h, hh, m, hm, he⟩` from `hXS t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[he]`. Conclude with `PI.UH_mul hh.1 hm.1`. Establish `F0 : PI.InLieHpk k r X` using `lieHpk_of hUH`. Establish `F1 : ∀ (a : Fin r) (i : Fin (2 * r + k + 1)), a.val ≤ i.val → X i (Formalism.QuantumDeterminants.eI k r a) = 0`. Introduce `a i hai`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `refine (PI.exp_entry X i _).unique ?_`. Establish `: (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X)) i (Formalism.QuantumDeterminants.eI k r a)) = fun _ => if i = Formalism.QuantumDeterminants.eI k r a then 1 else 0` using `funext fun t => S_col (hXS t) a i hai`. Rewrite using `[this]`. Conclude with `hasDerivAt_const _ _`. Establish `F2 : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → (X *ᵥ z) i = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi`. Conclude with `clm_zero X ((ContinuousLinearMap.proj i).comp ((mvL z).restrictScalars ℝ)) (z i) (fun t => stabilizer_fixes_tail_coords hz (hXS t) i hi)`. Establish `F3 : ∀ i j : Fin (2 * r + k + 1), r ≤ j.val → j.val ≤ r + k → r + k < i.val → X i j = 0`. Introduce `i j h1 h2 h3`. Establish `hi` using `i.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `a : Fin r` to `⟨2 * r + k - i.val, by omega⟩`. Establish `hE` using `congrFun (congrFun F0 (Formalism.QuantumDeterminants.eI k r a)) j`. Rewrite `hE` using `[Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply, Matrix.zero_apply]`. Establish `s1 : ∑ l, Xᴴ (Formalism.QuantumDeterminants.eI k r a) l * Formalism.QuantumDeterminants.Hpk k r l j = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `l _`. Distinguish the cases in `hl : a.val ≤ l.val`. Rewrite using `[Matrix.conjTranspose_apply, F1 a l hl, star_zero, zero_mul]`. Rewrite using `[hpk_cross l j (Or.inr ⟨Or.inl (by have := a.2; omega), h1, h2⟩), mul_zero]`. Establish `s2 : ∑ l, Formalism.QuantumDeterminants.Hpk k r (Formalism.QuantumDeterminants.eI k r a) l * X l j = X i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[hpk_row, if_pos (by simp only [a]; omega), one_mul]`. Introduce `l _ hl`. Rewrite using `[hpk_row, if_neg (by simp only [a]; intro e; exact hl (Fin.ext (by omega))), zero_mul]`. Introduce `hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `absurd (Finset.mem_univ _) hn`. Rewrite `hE` using `[s1, s2, zero_add]`. Conclude with `hE`. Use `⟨aP X, ?_, X - aP X, ?_, by abel⟩` and prove the remaining obligations. Establish `hPz : Matrix.diagonal (pw k r) *ᵥ z = z`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal]`. Unfold `pw`. Use `split_ifs with h`. Rewrite using `[one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz i (by omega), zero_mul]`. Establish `hAz : aP X *ᵥ z = 0`. Unfold `aP`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hPz]`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mulVec_diagonal, Pi.zero_apply]`. Unfold `pw`. Use `split_ifs with h`. Rewrite using `[F2 i h.1, mul_zero]`. Rewrite using `[zero_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `t`. Use `⟨PI.exp_mem_UH (inLie_aP F0) t, fun a => ⟨?_, ?_⟩, exp_fix _ z hAz t⟩` and prove the remaining obligations. Conclude with `exp_fix _ _ (middleBlock_mulVec_basisVec_eq_zero X _ (by have := a.2; simp only [Formalism.QuantumDeterminants.eI]; omega)) t`. Conclude with `exp_fix _ _ (middleBlock_mulVec_basisVec_eq_zero X _ (by have := a.2; simp only [Formalism.QuantumDeterminants.esI]; omega)) t`. Establish `hN : PI.InLieN k r (X - aP X)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨inLie_sub F0 (inLie_aP F0), ?_, ?_⟩` and prove the remaining obligations. Introduce `a i hai`. Establish `ha` using `a.2`. Rewrite using `[Matrix.sub_apply, middleBlock_apply, F1 a i hai]`. Establish `: pw k r (Formalism.QuantumDeterminants.eI k r a) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `pw`. Rewrite using `[if_neg]`. Simplify using `only [Formalism.QuantumDeterminants.eI]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, mul_zero, sub_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j h1 h2 h3`. Rewrite using `[Matrix.sub_apply, middleBlock_apply]`. Establish `hj : pw k r j = 1` using `by unfold pw; rw [if_pos ⟨h1, h2⟩]`. Rewrite using `[hj, mul_one]`. Distinguish the cases in `hi : i.val ≤ r + k`.
-
-Establish `: pw k r i = 1` using `by unfold pw; rw [if_pos ⟨h3, hi⟩]`. Rewrite using `[this, one_mul, sub_self]`. Rewrite using `[F3 i j h1 h2 (by omega), mul_zero, sub_zero]`. Introduce `t`. Conclude with `PI.exp_mem_N (hN.smul t)`.
+A detailed English derivation is pending.
 -/
 theorem lie_stabilizer_splitting : LieSsetSplit := by
   intro k r z hz _hT X hX

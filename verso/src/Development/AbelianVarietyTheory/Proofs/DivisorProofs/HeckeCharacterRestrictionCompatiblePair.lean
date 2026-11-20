@@ -20,25 +20,21 @@ namespace GlobalTheory.TwoModels
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B hB n d r s r₁ s₁ X W hX hW χX χW hχX hχW hrX hrW cb co hcb hco`. Take `⟨μ, 𝓕, hμ, h𝓕⟩` from `GlobalTheory.ModelEx.exists_haar_fundDom F E σ n X.J`. Establish `hI` using `GlobalTheory.VacIndic.eventually_isVac_indicator B hB X W _ _ _ _ hX hW cb hcb`. Set `M₀ : Model σ X W` to `⟨cb, fun _ => 0, 0, ∅⟩`. Set `ind : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun v => Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `vac : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun v => if M₀.IsVac B.ψ v (ind v) then ind v else (GlobalTheory.T.exists_finitePlace_vacuum_any_darboux_coordinates B hB X W _ _ _ _ hX hW cb v).choose`. Set `Mb : Model σ X W` to `⟨cb, vac, μ, 𝓕⟩`. Establish `hMb : Mb.IsGood B.ψ`. Use `⟨hcb, fun v => ?_, ?_, hμ, h𝓕⟩` and prove the remaining obligations. Use `show M₀.IsVac B.ψ v (vac v)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : M₀.IsVac B.ψ v (ind v)`. Simplify using `only [vac, if_pos h]`. Conclude with `h`. Simplify using `only [vac, if_neg h]`. Conclude with `(GlobalTheory.T.exists_finitePlace_vacuum_any_darboux_coordinates B hB X W _ _ _ _ hX hW cb v).choose_spec`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [hI] with v hv show vac v = ind v`. Conclude with `if_pos hv`. Take `⟨omb, homb⟩` from `GlobalTheory.WeilExGen.exists_isWeil hKP.base F E σ B hB n d X W r s r₁ s₁ hX hW Mb hMb χX χW hχX hχW hrX hrW`. Establish `hpair : IsPair B Mb χX χW omb r s r₁ s₁` using `⟨hB, hX, hW, hMb, hχX, hχW, hrX, hrW, homb⟩`. Take `⟨e, ei, ev, hei, hmaps, hheis, hSB, hvac, hstd, hpure, hbij⟩` from `GlobalTheory.SympChangeBij.change_of_coordinates_bij F E σ B n d X W Mb r s r₁ s₁ hB hX hW hMb co hco`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Set `M₁ : Model σ X W` to `⟨co, fun v => ev v (Mb.vac v), Mb.μ, Mb.dom⟩`. Establish `hM₁ : M₁.IsGood B.ψ` using `⟨hco, hvac, hstd, hMb.haar, hMb.dom⟩`. Establish `hne : ∃ f : SInf F (Fin n × Fin d), f ≠ 0`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨φ, hφ, hθ⟩` from `GlobalTheory.ThetaSumNe.exists_mem_schA_thetaSum_ne_zero F (Fin n × Fin d)`. Establish `hle : schA F (Fin n × Fin d) ≤ ⊥`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, g, -, rfl⟩`. Rewrite using `[hall f]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show pureA F 0 g = 0`. Use function extensionality and compare the values at `x`. Simplify using `[pureA]`. Establish `h0 : φ = 0` using `(Submodule.mem_bot ℂ).1 (hle hφ)`. Conclude with `hθ (by rw [h0]; simp [thetaSum])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hev : IsEv B Mb M₁ 1 1 ∅ e`. Use `⟨hmaps, fun z Φ hΦ => ?_, fun u hu => hu.elim, ei, ev, ?_, fun v => ⟨rfl, hSB v⟩, hpure⟩` and prove the remaining obligations. Establish `h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h1' : incM F (1 : Matrix (Fin d) (Fin d) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[h1, h1', Matrix.one_mul, Matrix.transpose_one, Matrix.mul_one]`.
-
-Conclude with `hheis z Φ hΦ`. Take `⟨f, hf⟩` from `hne`. Take `⟨g, rfl⟩` from `hei f`. Introduce `h`. Conclude with `hf (by rw [h]; rfl)`.
-
-Take `⟨om₁, hW₁, hint⟩` from `GlobalTheory.ModelTr.exists_isWeil_trans_of_bijOn F E σ B n d X W Mb χX χW omb r s r₁ s₁ hpair M₁ hM₁ e hev hbij`. Take `⟨c₀, -, hth⟩` from `GlobalTheory.ThetaChange.main F E σ B n d X W Mb χX χW omb r s r₁ s₁ hpair M₁ hM₁ e hev hbij`. Use `⟨Mb, M₁, omb, om₁, e, c₀, rfl, rfl, hpair, ⟨hB, hX, hW, hM₁, hχX, hχW, hrX, hrW, hW₁⟩, hbij, fun l hl => (GlobalTheory.ModelAdmUnconditional.model_admissible_iff_evaluation F E σ B n d X W Mb χX χW omb r s r₁ s₁ hpair M₁ hM₁ e hev hbij l).1 hl, fun Φ hΦ => ⟨hth Φ hΦ, fun x => hin …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_two_models : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ → ∀ (n d r s r₁ s₁ : ℕ) (X : Spc F E n) (W : Spc F E d), X.IsHerm σ B r s → W.IsSkew σ B r₁ s₁ →
     ∀ (χX χW : Chr F E), IsHecke F E χX → IsHecke F E χW →

@@ -20,9 +20,9 @@ def cK (R : Type) [CommRing R] [Algebra F R] {d : ℕ} (b : Module.Basis (Fin d)
   (Algebra.TensorProduct.basis R b).repr y k
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp [cK]`. Consider the case `add x y hx hy`. Simplify using `only [cK] at hx hy ⊢`. Simplify using `[map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `tmul r e`. Simplify using `[cK, Algebra.TensorProduct.basis_repr_tmul, Algebra.smul_def]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem cK_map {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] {d : ℕ}
     (b : Module.Basis (Fin d) F E) (f : R →ₐ[F] R') (y : R ⊗[F] E) (k : Fin d) :
@@ -66,7 +66,7 @@ theorem eW_apply (hK : IsHomeomorph (cK (F := F) (E := E) R b)) (n M : ℕ)
     eW R hK n M X p = cK R b (X p.1 p.2.1) p.2.2 := rfl
 
 /- English proof (translation)
-Rewrite using `[MeasurableEquiv.map_symm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coordK_eq (hK : IsHomeomorph (cK (F := F) (E := E) R b)) (lam : Measure R) :
     coordK R b lam = (Measure.pi fun _ : Fin d => lam).map (eK R hK).symm := by
@@ -74,7 +74,7 @@ theorem coordK_eq (hK : IsHomeomorph (cK (F := F) (E := E) R b)) (lam : Measure 
   rfl
 
 /- English proof (translation)
-Rewrite using `[coordK_eq R hK lam]`. Conclude with `(eK R hK).symm.measurableEmbedding.sigmaFinite_map`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigmaFinite_coordK (hK : IsHomeomorph (cK (F := F) (E := E) R b)) (lam : Measure R)
     [SigmaFinite lam] : SigmaFinite (coordK R b lam) := by
@@ -82,15 +82,15 @@ theorem sigmaFinite_coordK (hK : IsHomeomorph (cK (F := F) (E := E) R b)) (lam :
   exact (eK R hK).symm.measurableEmbedding.sigmaFinite_map
 
 /- English proof (translation)
-Use `haveI := sigmaFinite_coordK R hK lam`. Use `⟨(eW R hK n M).measurable, ?_⟩` and prove the remaining obligations. Use `symm`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply (eW R hK n M).measurable (MeasurableSet.univ_pi hs)]`.
+Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hset : (eW R hK n M) ⁻¹' Set.pi Set.univ s = Set.pi Set.univ fun a => Set.pi Set.univ fun i => (eK R hK) ⁻¹' Set.pi Set.univ fun k => s (a, i, k)`. Use extensionality with `X`. Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, forall_true_left]`. Conclude with `⟨fun h a i k => h (a, i, k), fun h p => h p.1 p.2.1 p.2.2⟩`. Establish `hK1 : ∀ t : Fin d → Set R, (∀ k, MeasurableSet (t k)) → coordK R b lam ((eK R hK) ⁻¹' Set.pi Set.univ t) = ∏ k, lam (t k)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Rewrite using `[coordK_eq R hK lam, Measure.map_apply (eK R hK).symm.measurable ((eK R hK).measurable (MeasurableSet.univ_pi ht))]`. Establish `: (eK R hK).symm ⁻¹' ((eK R hK) ⁻¹' Set.pi Set.univ t) = Set.pi Set.univ t`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Measure.pi_pi]`. Rewrite using `[hset, coordW, Measure.pi_pi]`. Repeatedly rewrite using `[Measure.pi_pi]`. Repeatedly rewrite using `[hK1 _ (fun k => hs _)]`. Rewrite using `[Fintype.prod_prod_type]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_coordW (hK : IsHomeomorph (cK (F := F) (E := E) R b)) (lam : Measure R) [SigmaFinite lam]
     (n M : ℕ) :
@@ -126,17 +126,13 @@ theorem map_coordW (hK : IsHomeomorph (cK (F := F) (E := E) R b)) (lam : Measure
 end Gen
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ d b lam hlam lf hlf h1 n M S A hA`. Take `⟨-, hAfLC, hAfSC, hAfT2⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Establish `hloc` using `fun v => GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI : ∀ v, IsTopologicalRing (Fv F v) := fun v => (hloc v).1`. Use `haveI : ∀ v, LocallyCompactSpace (Fv F v) := fun v => (hloc v).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : ∀ v, SecondCountableTopology (Fv F v) := fun v => (hloc v).2.2.1`. Use `haveI : ∀ v, T2Space (Fv F v) := fun v => (hloc v).2.2.2.1`. Use `haveI : ∀ v, BorelSpace (Fv F v) := fun v => ⟨rfl⟩`. Use `haveI : ∀ v, (lam v).IsAddHaarMeasure := fun v => (hlam v).1`. Use `haveI : BorelSpace (Af F) := ⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKf : IsHomeomorph (cK (F` using `F) (E := E) (Af F) b) := (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Af F)).2.2.2.2.2.2.1 d b`. Establish `hKv : ∀ v, IsHomeomorph (cK (F` using `F) (E := E) (Fv F v) b) := fun v => (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)).2.2.2.2.2.2.1 d b`. Establish `mf` using `map_coordW (Af F) hKf lf n M`. Establish `mv` using `fun v => map_coordW (Fv F v) (hKv v) (lam v) n M`. Set `A' : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin n × Fin M × Fin d → Fv F v)` to `fun v => (eW (Fv F v) (hKv v) n M).symm ⁻¹' A v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hA' : ∀ v, MeasurableSet (A' v)` using `fun v => (eW (Fv F v) (hKv v) n M).symm.measurable (hA v)`. Establish `hcomm : ∀ (v : HeightOneSpectrum (𝓞 F)) (X : Fin n → Fin M → Af F ⊗[F] E) (p : Fin n × Fin M × Fin d), evalV F v (eW (Af F) hKf n M X p) = eW (Fv F v) (hKv v) n M (projV v X) p`. Introduce `v X p`. Rewrite using `[eW_apply, eW_apply, projV, cK_map]`. Establish `hset : {X : Fin n → Fin M → Af F ⊗[F] E | (∀ v ∈ S, projV v X ∈ A v) ∧ ∀ v, v ∉ S → projV v X ∈ latV b v} = (eW (Af F) hKf n M) ⁻¹' {x | (∀ v ∈ S, (fun i => evalV F v (x i)) ∈ A' v) ∧ ∀ v, v ∉ S → ∀ i, evalV F v (x i) ∈ v.adicCompletionIntegers F}`.
-
-Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, hcomm]`. Use `and_congr (forall₂_congr fun v _ => ?_) (forall₂_congr fun v _ => ?_)` and prove the remaining obligations. Simplify using `[A']`. Conclude with `⟨fun h p => h p.1 p.2.1 p.2.2, fun h a i k => h (a, i, k)⟩`.
-
-Rewrite using `[hset, mf.measure_preimage_equiv, GlobalTheory.CompanionTheory.SW.AfBox.pi_box F lam hlam lf hlf h1 (Fin n × Fin M × Fin d) S A' hA']`. Conclude with `Finset.prod_congr rfl fun v _ => (mv v).symm.measure_preimage_equiv (A v)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordW_box : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), (∀ v, IsStdV v (lam v)) → ∀ (lf : Measure (Af F)), lf.IsAddHaarMeasure → lf {x | ∀ v, x v ∈ v.adicCompletionIntegers F} = 1 → ∀ (n M : ℕ) (S : Finset (HeightOneSpectrum (𝓞 F))) (A : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin n → Fin M → Fv F v ⊗[F] E)), (∀ v, MeasurableSet (A v)) → coordW (Af F) b lf n M {X | (∀ v ∈ S, projV v X ∈ A v) ∧ ∀ v, v ∉ S → projV v X ∈ latV b v} = ∏ v ∈ S, coordW (Fv F v) b (lam v) n M (A v) := by
   intro F E _ _ _ _ _ σ hσ d b lam hlam lf hlf h1 n M S A hA

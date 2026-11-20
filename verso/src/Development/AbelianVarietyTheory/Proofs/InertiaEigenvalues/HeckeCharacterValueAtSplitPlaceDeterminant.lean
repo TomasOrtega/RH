@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.HeckeDetValue
 
 /- English proof (translation)
-Introduce `D c χ Q V P k α z hc hU hS hoff hα hz`. Conclude with `GlobalTheory.HeckeDetChar.chi_detAt hc hU hS hoff hα hz`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chr_detAt : ∀ {D : D7} (c : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E) (Q : Finset (Pl D.host.E)) (V : HSp D) (P : Pl D.host.E) (k : ℕ) (α : GA D V) (z : (AE D)ˣ), ChrEq c χ → GlobalTheory.ExportSeries.UnramOutside c Q → GlobalTheory.ExportSeries.SplitSet Q → Bridge.SplitOff P (Q : Set (Pl D.host.E)) → IsHeckeAt V P k α → IsDetAt (idemAt P) V α z → ((c z : Circle) : ℂ) = ((χ.val P : ℂˣ) : ℂ) ^ k := by
   intro D c χ Q V P k α z hc hU hS hoff hα hz

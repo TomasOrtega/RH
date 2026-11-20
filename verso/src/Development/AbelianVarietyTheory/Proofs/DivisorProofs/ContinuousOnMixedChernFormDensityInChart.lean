@@ -21,17 +21,15 @@ open scoped ContDiff
 namespace GlobalTheory.Mix
 
 /- English proof (translation)
-Introduce `k _ X p σ D L c y₀ hy₀`. Set `i : ∀ a, (L a).B.ι` to `fun a => pick (L a).φ.isLB y₀`. Set `S : Set (CxPts p σ)` to `c.e.source ∩ ⋂ a, ptsIn p σ ((L a).B.U (i a))`. Establish `hSo : IsOpen S` using `c.e.open_source.inter (isOpen_iInter_of_finite fun a => isOpen_ptsIn _)`. Establish `hy₀S : y₀ ∈ S` using `⟨hy₀, mem_iInter.2 fun a => mem_pick _ y₀⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : ∀ (a : Fin D) (j l : Fin D), ContinuousOn (fun y => c.hess (L a).φ (i a) y j l) S`. Introduce `a j l`. Establish `hO : IsOpen (c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ ((L a).B.U (i a)))` using `isOpen_over c.e (isOpen_ptsIn _)`. Establish `hg : ContDiffOn ℝ ∞ (fun v => ((L a).φ.φ (i a) (c.e.symm v) : ℂ)) (c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ ((L a).B.U (i a)))` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (contDiffOn_chart ((L a).cInf (i a)) c)`. Establish `hw` using `ReciprocityTheory.L2DbarEstimates.Y.continuousOn_wd_wdb hO hg j l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hw.comp (c.e.continuousOn.mono inter_subset_left) fun y hy => ⟨c.e.map_source hy.1, by`. Simplify `mem_iInter.1 hy.2 a⟩` using `only [mem_preimage, c.e.left_inv hy.1]`. Set `F : CxPts p σ → ℝ` to `fun y => (Real.pi ^ D)⁻¹ * (∑ τ : Equiv.Perm (Fin D), (Matrix.of fun j l => c.hess (L (τ l)).φ (i (τ l)) y j l).det).re`. Establish `hF : ContinuousOn F S`. Use `continuousOn_const.mul (Complex.continuous_re.comp_continuousOn (continuousOn_finsetSum _ fun τ _ => ?_))` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(continuous_id.matrix_det).comp_continuousOn ?_` and prove the remaining obligations. Conclude with `continuousOn_pi.2 fun j => continuousOn_pi.2 fun l => hH (τ l) j l`. Establish `he : ∀ y ∈ S, dens L c y = F y`. Introduce `y hy`. Establish `hm : ∀ τ : Equiv.Perm (Fin D), (Matrix.of fun j l => c.hess (L (τ l)).φ (pick (L (τ l)).φ.isLB y) y j l) = Matrix.of fun j l => c.hess (L (τ l)).φ (i (τ l)) y j l` using `fun τ => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `j l`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[c.hess_eq (L (τ l)).cInf hy.1 (mem_iInter.1 hy.2 (τ l)) (mem_pick _ y)]`. Simplify using `only [dens, F, hm]`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations.
-
-Use `(hF.continuousAt (hSo.mem_nhds hy₀S)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hSo.mem_nhds hy₀S] with y hy`. Conclude with `(he y hy).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousOn_dens : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ)
     (D : ℕ) (L : Fin D → MLine p σ) (c : AlgChart p σ D), ContinuousOn (dens L c) c.e.source := by

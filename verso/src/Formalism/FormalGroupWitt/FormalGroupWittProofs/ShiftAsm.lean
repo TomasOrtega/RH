@@ -12,7 +12,7 @@ open MvPowerSeries
 variable {R S : Type*} [CommRing R] [CommRing S]
 
 /- English proof (translation)
-Use extensionality with `n`. Use `congrArg (coeff n) e` as an intermediate fact. Simplify using `only [coeff_map] at this`. Conclude with `hh this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_inj {σ : Type*} (h : R →+* S) (hh : Function.Injective h) {f g : MvPowerSeries σ R}
     (e : map h f = map h g) : f = g := by
@@ -22,7 +22,7 @@ theorem map_inj {σ : Type*} (h : R →+* S) (hh : Function.Injective h) {f g : 
   exact hh this
 
 /- English proof (translation)
-The claim follows from `map_subst (hasSubst_of_constantCoeff_zero ha) f`.
+A detailed English derivation is pending.
 -/
 theorem map_subst' {σ τ : Type*} [Finite σ] (h : R →+* S) {a : σ → MvPowerSeries τ R}
     (ha : ∀ s, constantCoeff (a s) = 0) (f : MvPowerSeries σ R) :
@@ -32,7 +32,7 @@ theorem map_subst' {σ τ : Type*} [Finite σ] (h : R →+* S) {a : σ → MvPow
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Introduce `_ _ e` and use `Subtype.ext e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coe_injective (l : ℕ) [Fact l.Prime] : Function.Injective (PadicInt.Coe.ringHom (p := l)) :=
   fun _ _ e => Subtype.ext e

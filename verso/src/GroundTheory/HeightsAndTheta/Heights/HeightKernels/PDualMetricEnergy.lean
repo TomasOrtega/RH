@@ -14,9 +14,9 @@ open scoped ComplexOrder
 namespace DualMetricEnergyAlt
 
 /- English proof (translation)
-Establish `hd : A.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det A).mp (Matrix.mulVec_injective_iff_isUnit.mp hA.1)).ne_zero`. Take `⟨hre, him⟩` from `Complex.lt_def.mp hH.det_pos`. Simplify using `only [Complex.zero_re, Complex.zero_im] at hre him`. Establish `hHd : H.det = (H.det.re : ℂ)` using `Complex.ext (by simp) (by simp [← him])`. Establish `hn : 0 < Complex.normSq A.det` using `Complex.normSq_pos.mpr hd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (Aᴴ * H * A).det.re = Complex.normSq A.det * H.det.re`. Rewrite using `[det_mul, det_mul, det_conjTranspose, hHd, mul_right_comm, Complex.star_def, ← Complex.normSq_eq_conj_mul_self, ← Complex.ofReal_mul, Complex.ofReal_re, Complex.ofReal_re]`. Establish `e2 : (Aᴴ * A).det.re = Complex.normSq A.det`. Rewrite using `[det_mul, det_conjTranspose, Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]`. Rewrite using `[e1, e2, Real.log_mul hn.ne' hre.ne']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -40,11 +40,11 @@ theorem log_det_re_sub {m : Type} [Fintype m] [DecidableEq m] {H A : Matrix m m 
 end DualMetricEnergyAlt
 
 /- English proof (translation)
-Introduce `K _ _ i F T _ _ b hb hi`. Take `⟨A, hA, hE⟩` from `hD K i F T b hb hi`. Take `⟨B, hB, hG'⟩` from `hG (i - 1)`. Establish `e1 : 1 * 1 * (i - 1) = i - 1` using `by simp`. Rewrite using `[e1, hG', hM _ _ (Matrix.PosDef.conjTranspose_mul_self B hB.1), Finset.sum_congr rfl fun k _ => hE k, Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by omega⟩`. Establish `hterm : ∀ σ : K →+* ℂ, ∑ k ∈ Finset.range (n + 1), chartMixedEnergy ((A σ)ᴴ * F.metric σ * A σ) ((A σ)ᴴ * A σ) k = 1 / 2 * Real.log (F.metric σ).det.re * chartMass (1 : Matrix (Fin (n + 1 - 1 + 1)) (Fin (n + 1 - 1 + 1)) ℂ)`. Introduce `σ`. Establish `h` using `hC (n + 1 - 1) _ _ ((F.posDef σ).conjTranspose_mul_mul_same (hA σ).1) (Matrix.PosDef.conjTranspose_mul_self (A σ) (hA σ).1)`. Establish `hl` using `DualMetricEnergyAlt.log_det_re_sub (m := Fin (n + 1)) (F.posDef σ) (hA σ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hl]`. Conclude with `h`. Rewrite using `[Finset.sum_congr rfl fun σ _ => hterm σ, ← Finset.sum_mul, ← Finset.mul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DualMetricEnergy.proof (hD : DualEnergyCharts.Statement) (hC : ChartEnergy.Statement)
     (hG : GrassGeomDegChart.Statement) (hM : ChartMassInvariant.Statement) :

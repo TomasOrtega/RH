@@ -16,7 +16,7 @@ set_option autoImplicit false
 namespace GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue
 
 /- English proof (translation)
-Substitute `e` using the available equality. Introduce `x y hxy`. Rewrite `hxy` using `[GlobalTheory.Cube.res_self, GlobalTheory.Cube.res_self]`. Then use the resulting hypothesis.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cube_res_injective_of_eq {ι : Type} {A : Type} [CommRing A] (C : Cube.{0} ι A)
     {s t : Finset ι} (e : s = t) (h : s ⊆ t) : Function.Injective (Cube.res C h) := by
@@ -25,7 +25,7 @@ theorem cube_res_injective_of_eq {ι : Type} {A : Type} [CommRing A] (C : Cube.{
   rwa [GlobalTheory.Cube.res_self, GlobalTheory.Cube.res_self] at hxy
 
 /- English proof (translation)
-Establish `hx` using `hc i i i`. Rewrite `hx` using `[add_eq_left]`. Apply `GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue.cube_res_injective_of_eq C (s := {i, i}) (t := {i, i, i}) (by ext; simp) (GlobalTheory.CompanionTheory.FormalAlg.Lift.sub_triple_ij i i i)` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cube_pairs_diag {ι : Type} [LinearOrder ι] {A : Type} [CommRing A] (C : Cube.{0} ι A)
     (c : ∀ i j : ι, C.obj {i, j})
@@ -40,21 +40,19 @@ theorem cube_pairs_diag {ι : Type} [LinearOrder ι] {A : Type} [CommRing A] (C 
   exact hx
 
 /- English proof (translation)
-Introduce `ι _ A _ C hex c hc`. Establish `hne : ∀ s : Finset ι, s.card = 2 → s.Nonempty` using `fun s hs => Finset.card_pos.1 (by omega)`. Establish `hmm : ∀ (s : Finset ι) (hs : s.card = 2), ({s.min' (hne s hs), s.max' (hne s hs)} : Finset ι) ⊆ s` using `fun s hs => Finset.insert_subset (Finset.min'_mem _ _) (Finset.singleton_subset_iff.2 (Finset.max'_mem _ _))`. Establish `htr : ∀ {a b a' b' : ι} (ha : a = a') (hb : b = b') (h : ({a, b} : Finset ι) ⊆ {a', b'}), GlobalTheory.Cube.res C h (c a b) = c a' b'`. Introduce `a b a' b' ha hb h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `ha hb` using the available equality. Conclude with `GlobalTheory.Cube.res_self C h _`. Set `y : GlobalTheory.Cube.Term C 2` to `fun s => -GlobalTheory.Cube.res C (hmm s.1 s.2) (c (s.1.min' (hne s.1 s.2)) (s.1.max' (hne s.1 s.2)))`. Establish `hy : ∀ {i j : ι} (hij : i < j) (hs : ({i, j} : Finset ι).card = 2), y ⟨{i, j}, hs⟩ = -c i j`. Introduce `i j hij hs`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmin : ({i, j} : Finset ι).min' (hne _ hs) = i` using `le_antisymm (Finset.min'_le _ _ (by simp)) (Finset.le_min' _ _ _ (by simp [hij.le]))`. Establish `hmax : ({i, j} : Finset ι).max' (hne _ hs) = j` using `le_antisymm (Finset.max'_le _ _ _ (by simp [hij.le])) (Finset.le_max' _ _ (by simp))`. Conclude with `congrArg Neg.neg (htr hmin hmax _)`. Establish `hy0 : GlobalTheory.Cube.d C 2 y = 0`. Use function extensionality and compare the values at `⟨t, ht⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = 0`. Take `⟨i, j, k, hij, hjk, rfl⟩` from `GlobalTheory.AbLaw.CechOne.exists_triple (t := t) ht`. Rewrite using `[GlobalTheory.AbLaw.CechOne.d_two_apply_triple C y hij hjk ht, hy hij, hy hjk, hy (hij.trans hjk)]`. Simplify using `only [map_neg]`. Rewrite using `[← hc i j k]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Take `⟨x, hx⟩` from `(hex y).1 hy0`. Establish `hlt : ∀ i j, i < j → c i j = GlobalTheory.Cube.res C (GlobalTheory.CompanionTheory.FormalAlg.Lift.sub_pair_left i j) (x ⟨{i}, Finset.card_singleton i⟩) - GlobalTheory.Cube.res C (GlobalTheory.CompanionTheory.FormalAlg.Lift.sub_pair_right i j) (x ⟨{j}, Finset.card_singleton j⟩)`. Introduce `i j hij`. Establish `h1` using `GlobalTheory.Cube.d_one_apply_pair C x hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[hx, hy hij]`. Rewrite using `[← neg_sub, ← h1, neg_neg]`. Use `⟨fun i => x ⟨{i}, Finset.card_singleton i⟩, fun i j => ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy i j with hij | rfl | hji` into its components or cases. Conclude with `hlt i j hij`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue.cube_pairs_diag C c hc i, sub_self]`. Apply `GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue.cube_res_injective_of_eq C (s := {i, j}) (t := {i, j, i}) (by ext; simp only [Finset.mem_insert, Finset.mem_singleton]; tauto) (GlobalTheory.CompanionTheory.FormalAlg.Lift.sub_triple_ij i j i)` to reduce the goal to its premises. Establish `h` using `hc i j i`. Rewrite `h` using `[GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue.cube_pairs_diag C c hc i, map_zero]`. Rewrite using `[eq_neg_of_add_eq_zero_left h, hlt j i hji]`.
-
-Simplify using `only [map_sub, neg_sub, GlobalTheory.Cube.res_res]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coboundary_of_pairs_cocycle : ∀ (ι : Type) [LinearOrder ι] (A : Type) [CommRing A] (C : Cube.{0} ι A), Function.Exact (Cube.d C 1) (Cube.d C 2) → ∀ c : ∀ i j : ι, C.obj {i, j}, (∀ i j k, Cube.res C (sub_triple_ij i j k) (c i j) + Cube.res C (sub_triple_jk i j k) (c j k) = Cube.res C (sub_triple_ik i j k) (c i k)) → ∃ b : ∀ i : ι, C.obj {i}, ∀ i j, c i j = Cube.res C (sub_pair_left i j) (b i) - Cube.res C (sub_pair_right i j) (b j) := by
   intro ι _ A _ C hex c hc

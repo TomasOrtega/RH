@@ -10,13 +10,11 @@ noncomputable section
 namespace GlobalTheory.SphEis
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ j m`. Take `⟨Ω, C, hΩ, h⟩` from `GlobalTheory.GodementSectionReduction.cover_adele F E σ hσ`. Use `choose Y hY h using h`. Use `⟨Ω, (C ^ m) ^ j, hΩ, fun μ => ⟨Fintype.piFinset fun i => Fintype.piFinset fun _ : Fin m => Y (μ i), ?_, fun x => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (Fintype.piFinset fun i => Fintype.piFinset fun _ : Fin m => Y (μ i)).card = ∏ i, (Y (μ i)).card ^ m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `(Nat.cast_le.2 h1.le).trans ?_` and prove the remaining obligations. Use `push_cast`. Use `(Finset.prod_le_prod (fun _ _ => by positivity) fun i _ => pow_le_pow_left₀ (Nat.cast_nonneg _) (hY (μ i)) m).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [bse, mul_pow, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul _ (μ _), mul_comm m]`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose x₀ y hy ω hω e using fun i k => h (μ i) (x i k)`. Use `⟨Matrix.of x₀, Matrix.of y, Fintype.mem_piFinset.2 fun i => Fintype.mem_piFinset.2 (hy i), Matrix.of ω, fun i k => hω i k, ?_⟩` and prove the remaining obligations. Use extensionality with `i k`. Rewrite using `[Matrix.add_apply, Matrix.add_apply, ← add_assoc]`. Simplify using `only [tor, GlobalTheory.Eis.Conv.dg, Matrix.diagonal_mul, adMat, Matrix.map_apply, Matrix.of_apply, zpow_natCast, Units.val_pow_eq_pow_val]`.
-
-Conclude with `e i k`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cover_rect_adMat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ j m : ℕ, ∃ (Ω : Set (AF F ⊗[F] E)) (B : ℝ), IsCompact Ω ∧ ∀ μ : Fin j → ℕ, ∃ Y : Finset (Matrix (Fin j) (Fin m) (AF F ⊗[F] E)), (Y.card : ℝ) ≤ B * ∏ i, bse F ^ (m * μ i) ∧ ∀ x : Matrix (Fin j) (Fin m) (AF F ⊗[F] E), ∃ x₀ : Matrix (Fin j) (Fin m) E, ∃ y ∈ Y, ∃ ω : Matrix (Fin j) (Fin m) (AF F ⊗[F] E), (∀ i k, ω i k ∈ Ω) ∧ x = adMat F x₀ + (y + (tor F E fun i => (μ i : ℤ)).1 * ω) := by
   intro F E _ _ _ _ _ σ hσ j m

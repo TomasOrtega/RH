@@ -10,14 +10,14 @@ noncomputable section
 namespace GlobalTheory.EigenDescent
 
 /- English proof (translation)
-The claim follows from `(Scheme.Opens.topIso_inv W).trans (Eq.trans rfl (Scheme.Opens.ι_appLE W W ⊤ h).symm)`.
+A detailed English derivation is pending.
 -/
 theorem topIso_inv_eq_appLE {X : Scheme.{0}} (W : X.Opens) (h : (⊤ : W.toScheme.Opens) ≤ W.ι ⁻¹ᵁ W) :
     W.topIso.inv = W.ι.appLE W ⊤ h :=
   (Scheme.Opens.topIso_inv W).trans (Eq.trans rfl (Scheme.Opens.ι_appLE W W ⊤ h).symm)
 
 /- English proof (translation)
-Establish `h0 : (⊤ : W.toScheme.Opens) ≤ W.ι ⁻¹ᵁ W` using `fun x _ => x.2`. Rewrite using `[topIso_inv_eq_appLE W h0]`. Use `Eq.trans ?_ (Scheme.Hom.appLE_comp_appLE y W.ι W ⊤ ⊤ h0 le_rfl)` and prove the remaining obligations. Use `congr 1`. Conclude with `(Scheme.Hom.appLE_eq_app _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem topIso_inv_appTop {X Z : Scheme.{0}} (W : X.Opens) (y : Z ⟶ W.toScheme)
     (h : (⊤ : Z.Opens) ≤ (y ≫ W.ι) ⁻¹ᵁ W) :
@@ -29,9 +29,9 @@ theorem topIso_inv_appTop {X Z : Scheme.{0}} (W : X.Opens) (y : Z ⟶ W.toScheme
   exact (Scheme.Hom.appLE_eq_app _).symm
 
 /- English proof (translation)
-Establish `h0 : (⊤ : (π ⁻¹ᵁ U).toScheme.Opens) ≤ (π ⁻¹ᵁ U).ι ⁻¹ᵁ (π ⁻¹ᵁ U)` using `fun x _ => x.2`. Establish `h1 : ∀ g : (π ⁻¹ᵁ U).toScheme ⟶ Y, g = (π ⁻¹ᵁ U).ι ≫ π → ∀ h : ⊤ ≤ g ⁻¹ᵁ U, g.appLE U ⊤ h = π.app U ≫ (π ⁻¹ᵁ U).topIso.inv`. Introduce and unpack `_ rfl h`. Rewrite using `[topIso_inv_eq_appLE _ h0, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`. Rewrite using `[topIso_inv_appTop U (π ∣_ U) (fun x _ => ((π ∣_ U) x).2)]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 _ (morphismRestrict_ι π U) _`.
+A detailed English derivation is pending.
 -/
 theorem topIso_inv_restrict_appTop {X Y : Scheme.{0}} (π : X ⟶ Y) (U : Y.Opens) :
     U.topIso.inv ≫ (π ∣_ U).appTop = π.app U ≫ (π ⁻¹ᵁ U).topIso.inv := by
@@ -44,7 +44,7 @@ theorem topIso_inv_restrict_appTop {X Y : Scheme.{0}} (π : X ⟶ Y) (U : Y.Open
   exact h1 _ (morphismRestrict_ι π U) _
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun φ => φ.hom r.val) (topIso_inv_appTop W y (fun z _ => h z))`. Conclude with `e.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evU_val_restrict {X Z : Scheme.{0}} (W : X.Opens) (y : Z ⟶ W.toScheme)
     (h : ∀ z, (y ≫ W.ι) z ∈ W) (r : Γ(X, W)ˣ) :
@@ -53,7 +53,7 @@ theorem evU_val_restrict {X Z : Scheme.{0}} (W : X.Opens) (y : Z ⟶ W.toScheme)
   exact e.symm
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `e : Q ≫ Out.TLinPf.mOf a = Q ≫ Out.TLinPf.mOf b`. Rewrite using `[Out.TLinPf.comp_mOf, Out.TLinPf.comp_mOf, hab]`. Rewrite `e` using `[cancel_epi]`. Rewrite using `[← Out.TLinPf.fnOf_mOf a, e, Out.TLinPf.fnOf_mOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem appTop_injective_of_epi {X Y : Scheme.{0}} (Q : X ⟶ Y) [Epi Q] :
     Function.Injective Q.appTop.hom := by
@@ -64,17 +64,17 @@ theorem appTop_injective_of_epi {X Y : Scheme.{0}} (Q : X ⟶ Y) [Epi Q] :
   rw [← Out.TLinPf.fnOf_mOf a, e, Out.TLinPf.fnOf_mOf]
 
 /- English proof (translation)
-Introduce `X Y π _ _ _ U r hr`. Establish `hS : Surjective (π ∣_ U)` using `MorphismProperty.of_isPullback (P := @Surjective) (isPullback_morphismRestrict π U).flip inferInstance`. Establish `hA : IsAffineHom (π ∣_ U)` using `MorphismProperty.of_isPullback (P := @IsAffineHom) (isPullback_morphismRestrict π U).flip inferInstance`. Establish `hE : Epi (π ∣_ U)` using `Flat.epi_of_flat_of_surjective _`. Establish `key : ∀ {Z : Scheme.{0}} (y₁ y₂ : Z ⟶ (π ⁻¹ᵁ U).toScheme), y₁ ≫ π ∣_ U = y₂ ≫ π ∣_ U → evU (y₁ ≫ (π ⁻¹ᵁ U).ι) (fun z => (y₁ z).2) r = evU (y₂ ≫ (π ⁻¹ᵁ U).ι) (fun z => (y₂ z).2) r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Z y₁ y₂ e`. Use `hr Z _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← morphismRestrict_ι, ← Category.assoc, e, Category.assoc]`. Take `⟨v, hv⟩` from `Out.TLinPf.descend_gen (π ∣_ U) ((π ⁻¹ᵁ U).topIso.inv.hom r.val) (by`. Introduce `Z y₁ y₂ e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← evU_val_restrict _ y₁ (fun z => (y₁ z).2), ← evU_val_restrict _ y₂ (fun z => (y₂ z).2), key y₁ y₂ e])`. Take `⟨v', hv'⟩` from `Out.TLinPf.descend_gen (π ∣_ U) ((π ⁻¹ᵁ U).topIso.inv.hom (r⁻¹).val) (by`. Introduce `Z y₁ y₂ e`. Rewrite using `[← evU_val_restrict _ y₁ (fun z => (y₁ z).2), ← evU_val_restrict _ y₂ (fun z => (y₂ z).2)]`. Establish `k` using `key y₁ y₂ e`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [evU, map_inv] at k ⊢`. Rewrite using `[k])`. Establish `hvv : v * v' = 1`. Apply `appTop_injective_of_epi (π ∣_ U)` to reduce the goal to its premises. Rewrite using `[map_mul, hv, hv', ← map_mul, Units.mul_inv, map_one, map_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : U.topIso.hom.hom v * U.topIso.hom.hom v' = 1`. Rewrite using `[← map_mul, hvv, map_one]`. Use `⟨⟨U.topIso.hom.hom v, U.topIso.hom.hom v', h1, by rw [mul_comm, h1]⟩, Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(π.app U).hom (U.topIso.hom.hom v) = r.val`. Establish `e` using `congrArg (fun φ => φ.hom (U.topIso.hom.hom v)) (topIso_inv_restrict_appTop π U)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Rewrite `e` using `[Iso.hom_inv_id_apply, hv]`. Conclude with `((π ⁻¹ᵁ U).topIso.symm.commRingCatIsoToRingEquiv.injective e).symm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_descends : ∀ {X Y : Scheme.{0}} (π : X ⟶ Y) [Flat π] [Surjective π] [IsAffineHom π] (U : Y.Opens) (r : Γ(X, π ⁻¹ᵁ U)ˣ),
     (∀ (Z : Scheme.{0}) (g₁ g₂ : Z ⟶ X) (h₁ : ∀ z, g₁ z ∈ π ⁻¹ᵁ U) (h₂ : ∀ z, g₂ z ∈ π ⁻¹ᵁ U),

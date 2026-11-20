@@ -43,15 +43,13 @@ def chartPullTw {X : Scheme.{0}} (L : LB X) (f : X ⟶ X) (e : ℤ) (n t : ℕ) 
     simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Category.id_comp]
 
 /- English proof (translation)
-Establish `hLB` using `h.isLB`. Take `⟨n, hn, hc⟩` from `h.exists_cover_mul`. Take `⟨N, s, hs, ha⟩` from `hc k hk`. Establish `: CompactSpace X` using `h.compactSpace`. Establish `: QuasiSeparatedSpace X` using `h.quasiSeparatedSpace`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, y ∈ nonzeroLocus (s i) := by`. Establish `hy : y ∈ (⨆ i, nonzeroLocus (s i))` using `hs ▸ trivial`. Simplify `hy` using `[TopologicalSpace.Opens.mem_iSup]`. Establish `hM` using `LB.isLB_linComb hLB (fun _ : PUnit => f) (fun _ => e)`. Establish `hH` using `isLB_lbPow hLB (n * k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, N', hyV, hV⟩` from `GlobalTheory.TwistGen.exists_nhds hM hH (s i) (ha i) y hi`. Take `⟨u, hu⟩` from `hV 1`. Establish `hmul : n * k * (N' + 1) = k * (n * (N' + 1))` using `by ring`. Use `⟨n * (N' + 1), Nat.one_le_iff_ne_zero.mpr (by positivity), ?_⟩` and prove the remaining obligations. Rewrite using `[← hmul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨chartSec (chartPullTw L f e (n * k) (N' + 1)) u, ?_⟩` and prove the remaining obligations. Rewrite using `[nonzeroLocus_chartSec_id]`. Conclude with `hu hyV`. Introduce `z j hj`. Use `⟨![j.1 PUnit.unit, j.2 PUnit.unit], Set.mem_iInter.2 fun m => ?_⟩` and prove the remaining obligations.
-
-Use `fin_cases m`. Conclude with `Set.mem_iInter.1 hj.1 PUnit.unit`. Conclude with `Set.mem_iInter.1 hj.2 PUnit.unit`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_sec_twist {X : Scheme.{0}} {L : LB X} (h : IsAmpleLB L) (f : X ⟶ X) (e : ℤ) (k : ℕ) (hk : 1 ≤ k)
     (y : X) : ∃ n, 1 ≤ n ∧ ∃ u : LB.Sec (LB.LinComb L (K := Fin 2) ![f, 𝟙 X] ![e, ((k * n : ℕ) : ℤ)]),
@@ -81,21 +79,21 @@ theorem exists_sec_twist {X : Scheme.{0}} {L : LB X} (h : IsAmpleLB L) (f : X �
     · exact Set.mem_iInter.1 hj.2 PUnit.unit
 
 /- English proof (translation)
-Introduce `_ R _ _ A F _ _ a ha j k hk`. Establish `hamp : IsAmpleLB A.L` using `GlobalTheory.isAmpleLB_of_relAmple_of_isAffine A.A A.isLB A.ample`. Establish `hUq : Unique (TFK (R` using `R) F).left := by`. Unfold `TFK`. Conclude with `inferInstanceAs (Unique (Spec (CommRingCat.of F)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, u, hu⟩` from `PullPair.exists_sec_twist hamp a.left (-(j : ℤ)) k hk ((1 : TFK (R := R) F ⟶ A.A).left default)`. Establish `hασ : ((TFK (R` using `R) F) ◁ a).left ≫ (snd (TFK (R := R) F) A.A).left = (snd (TFK (R := R) F) A.A).left ≫ a.left := by`. Rewrite using `[← Over.comp_left, whiskerLeft_snd, Over.comp_left]`. Establish `hF : FormEq (Sum.elim (fun m => (snd (TFK (R` using `R) F) A.A).left ≫ (![a.left, 𝟙 A.A.left] : Fin 2 → _) m) (fun _ : Fin 1 => ((TFK (R := R) F) ◁ a).left ≫ (snd (TFK (R := R) F) A.A).left)) (Sum.elim (![-(j : ℤ), ((k * n : ℕ) : ℤ)] : Fin 2 → ℤ) (fun _ : Fin 1 => (j : ℤ))) (fun _ : Fin 1 => (snd (TFK (R := R) F) A.A).left) (fun _ …`. Introduce `U _ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Fin.prod_univ_one, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, hασ]`. Rewrite using `[mul_right_comm, ← zpow_add, neg_add_cancel, zpow_zero, _root_.one_mul]`. Use `⟨n, hn, fun (t₁ t₂ : LB.Sec (LB.LinComb A.L (fun _ : Fin 1 => (snd (TFK (R := R) F) A.A).left) (fun _ => (j : ℤ)))) => ?_⟩` and prove the remaining obligations. Take `⟨s₁, hs₁⟩` from `exists_sec A.isLB hF (ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.mulSec (ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.pullSec u (snd (TFK (R := R) F) A.A).left) (ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.pullSec t₁ ((TFK (R := R) F) ◁ a …`. Take `⟨s₂, hs₂⟩` from `exists_sec A.isLB hF (ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.mulSec (ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.pullSec u (snd (TFK (R := R) F) A.A).left) (ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.pullSec t₂ ((TFK (R := R) F) ◁ a …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s₁, s₂, ?_, ?_⟩` and prove the remaining obligations. Introduce `z J hJ`. Unfold `sA`. Rewrite using `[hs₁ _ _ z J hJ, hs₂ _ _ z J hJ, ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_mulSec _ _ _ _ hJ, ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_mulSec _ _ _ _ hJ, ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_pullSec _ _ _ _ hJ, …`. Simplify using `only [Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `hne z J hJ`. Establish `hr : (ptSecT A.A (1 : TFK (R` using `R) F ⟶ A.A)).left ≫ ((TFK (R := R) F) ◁ a).left = (ptSecT A.A (1 : TFK (R := R) F ⟶ A.A)).left := by`. Rewrite using `[← Over.comp_left]`. Unfold `ptSecT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lift_whiskerLeft, MonObj.one_comp]`. Establish `hs : (ptSecT A.A (1 : TFK (R` using `R) F ⟶ A.A)).left ≫ (snd (TFK (R := R) F) A.A).left = (1 : TFK (R := R) F ⟶ A.A).left := by`. Rewrite using `[← Over.comp_left]`. Unfold `ptSecT`. Rewrite using `[lift_snd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne'` using `hne z J hJ`. Unfold `sA at hne' ⊢`. Rewrite using `[hs₂ _ _ z J hJ, ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_mulSec _ _ _ _ hJ, ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_pullSec _ _ _ _ hJ, ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_pullSec _ _ _ _ hJ, hr]`. Establish `hmem : ((ptSecT A.A (1 : TFK (R` using `R) F ⟶ A.A)).left ≫ (snd (TFK (R := R) F) A.A).left) z ∈ nonzeroLocus u := by`. Rewrite using `[hs, Subsingleton.elim z default]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `hu`. Unfold `nonzeroLocus at hmem`. Take `⟨i, hi⟩` from `(TopologicalSpace.Opens.mem_iSup).1 hmem`. Establish `hunit` using `ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.isUnit_sval u _ z hJ i hi`. Conclude with `fun h0 => hne' ((hunit.mul_right_eq_zero).1 h0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_cross : LL → ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (F : Type) [Field F] [Algebra (FractionRing R) F] (a : A.A ⟶ A.A), IsMonHom a → ∀ (j k : ℕ), 1 ≤ k → ∃ n, 1 ≤ n ∧ ∀ t₁ t₂ : SecA A F j, ∃ t₁' t₂' : SecA A F (k * n), Cross a t₁ t₂ t₁' t₂' ∧ ((∀ z J, Good A.L z J → sA t₂ (ptSecT A.A 1).left z J ≠ 0) → (∀ z J, Good A.L z J → sA t₂' (ptSecT A.A 1).left z J ≠ 0)) := by
   intro _ R _ _ A F _ _ a ha j k hk

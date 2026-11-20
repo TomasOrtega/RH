@@ -7,21 +7,19 @@ namespace PI.SzCt.UnitaryGroupMassFormula
 open Formalism.BasicNotions Formalism.MainNotions.G
 
 /- English proof (translation)
-Introduce `D L hSz hx`. Take `⟨-, -, -, -, -, -, -, -, hLa, hRho, hBot, -, -, hEta, -, -, hDel, -⟩` from `hSz`. Establish `hx0 : (0 : ℝ) < L.sc.x` using `by linarith`. Establish `hx1 : (1 : ℝ) ≤ L.sc.x` using `by linarith`. Establish `hb1 : 1 ≤ L.sc.b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Scale.b`. Conclude with `Real.one_le_exp (Real.rpow_nonneg hx0.le _)`. Establish `hb'0 : 0 ≤ L.sc.b'`. Unfold `Scale.b' Scale.a`. Conclude with `div_nonneg (mul_nonneg hx0.le (by linarith)) (Real.exp_pos _).le`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hn1 : (1 : ℝ) ≤ D.R.n`. Unfold `Formalism.BasicNotions.Ranks.n`. Conclude with `D.R.ord_pos` after adjusting the coercions. Establish `ht1 : (1 : ℝ) ≤ D.R.t` using `by exact_mod_cast D.R.t_odd.pos`. Establish `hη` using `L.etaSz_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨?_, ?_, hDel.2.2.2.1, ?_, hEta.2.2.2.2.1, hb1, hb'0⟩` and prove the remaining obligations. Introduce `t`. Establish `hLa0 : 0 ≤ L.LaG` using `le_trans (Real.rpow_nonneg hx0.le _) hLa.1`. Establish `hk0 : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Use `set Q := Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k with hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ L.sc.x ^ Formalism.MainNotions.szTh L * Real.log L.sc.x * L.LaG / D.R.k` using `div_nonneg (mul_nonneg (mul_nonneg (Real.rpow_nonneg hx0.le _) (Real.log_nonneg hx1)) hLa0) hk0`. Establish `h3 : L.sc.x ^ (-2 : ℝ) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hx1 (by norm_num)`. Establish `h4 : 4 * Q ≤ 1`. Establish `: 4 * Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k = 4 * Q` using `by rw [hQ]; ring`. Unfold `Formalism.MainNotions.SizeRho at hRho`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5` using `hBot t`. Establish `h6 : Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG * L.sc.b' / D.R.k = Q * L.sc.b'`. Rewrite using `[hQ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h5` using `[h6]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h` using `hEta.2.2.2.1`. Combine the equalities or inequalities in the displayed calculation. Unfold `Scale.w''`.
-
-Conclude with `div_le_div_of_nonneg_left hb'0 hx0 (le_mul_of_one_le_right hx0.le hn1)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sizeFacts : SizeFacts := by
   intro D L hSz hx

@@ -12,13 +12,11 @@ open GlobalTheory.TanPtMod
 namespace GlobalTheory.UPel.HT.ES.WTors
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Conclude with `h _ (Ideal.mem_map_of_mem _ ha)`. Introduce `h a ha`. Simplify using `only [GlobalTheory.IwLevel.htAct_act]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_induction (p := fun y _ => x ≫ o.act.act y = 1) ?_ ?_ ?_ ?_ ha` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `h c hc`. Establish `h0 : o.act.act 0 = 1`. Use `o.act.add 0 0` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[add_zero]`. Conclude with `mul_left_cancel (this.symm.trans (_root_.mul_one _).symm)`. Rewrite using `[h0, comp_one]`. Introduce `y z _ _ hy hz`. Rewrite using `[o.act.add, comp_mul, hy, hz, _root_.mul_one]`.
-
-Introduce `c y _ hy haveI := o.act.hom c`. Rewrite using `[smul_eq_mul, o.act.mul, ← Category.assoc, hy, one_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killedBy_iff_map {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b N s) (w : Ideal (𝓞 D.F)) {T : Over S} (x : T ⟶ o.A) :

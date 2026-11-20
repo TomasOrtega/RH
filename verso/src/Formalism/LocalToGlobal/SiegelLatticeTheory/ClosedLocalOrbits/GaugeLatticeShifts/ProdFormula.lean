@@ -14,15 +14,13 @@ variable {ι : Type} [Fintype ι] {r : ℕ} {G : ι → Type} [∀ v, Group (G v
   [∀ v, MeasurableMul₂ (G v)] [∀ v, MeasurableInv (G v)]
 
 /- English proof (translation)
-Establish `hFm : ∀ v, Measurable (fun x : (Fin (r + 1) → ℂ) × (G v × G v) => x.2.1 * h v x.1 * x.2.2⁻¹)` using `fun v => ((measurable_fst.comp measurable_snd).mul ((hh v).comp measurable_fst)).mul (measurable_snd.comp measurable_snd).inv`. Establish `: ∀ v, SigmaFinite (((ν v).prod ((μ v).prod (μ' v))).map (fun x : (Fin (r + 1) → ℂ) × (G v × G v) => x.2.1 * h v x.1 * x.2.2⁻¹))` using `fun v => by`. Rewrite using `[← hm v]`. Use `infer_instance`. Establish `hpi : Measure.pi mG = (Measure.pi fun v => (ν v).prod ((μ v).prod (μ' v))).map (fun y v => (y v).2.1 * h v (y v).1 * (y v).2.2⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.pi_map_pi (fun v => (hFm v).aemeasurable)]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `hm v`. Establish `hYm : Measurable (fun (y : (v : ι) → (Fin (r + 1) → ℂ) × (G v × G v)) (v : ι) => (y v).2.1 * h v (y v).1 * (y v).2.2⁻¹)` using `measurable_pi_lambda _ fun v => (hFm v).comp (measurable_pi_apply v)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgm : Measurable (fun z : ((v : ι) → (Fin (r + 1) → ℂ)) × (((v : ι) → G v) × ((v : ι) → G v)) => φ (z.2.1 * (fun v => h v (z.1 v)) * z.2.2⁻¹))`. Use `hφ.comp (((measurable_fst.comp measurable_snd).mul ?_).mul (measurable_snd.comp measurable_snd).inv)` and prove the remaining obligations. Conclude with `measurable_pi_lambda _ fun v => (hh v).comp ((measurable_pi_apply v).comp measurable_fst)`. Establish `hE1` using `measurePreserving_piProd (α := fun _ => Fin (r + 1) → ℂ) (β := fun v => G v × G v) ν (fun v => (μ v).prod (μ' v))`. Establish `hE2` using `(MeasurePreserving.id (Measure.pi ν)).prod (measurePreserving_piProd (α := G) (β := G) μ μ')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hE` using `hE2.comp hE1`. Rewrite using `[hpi, lintegral_map hφ hYm]`. Use `Eq.trans ?_ ((hE.lintegral_comp hgm).trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Rewrite using `[lintegral_prod _ hgm.aemeasurable]`.
-
-Use `lintegral_congr fun c => ?_` and prove the remaining obligations. Conclude with `lintegral_prod (fun y : ((v : ι) → G v) × ((v : ι) → G v) => φ (y.1 * (fun v => h v (c v)) * y.2⁻¹)) (hgm.comp measurable_prodMk_left).aemeasurable`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem prod_formula (mG : ∀ v, Measure (G v)) [∀ v, SigmaFinite (mG v)]
     (ν : ∀ v, Measure (Fin (r + 1) → ℂ)) [∀ v, SigmaFinite (ν v)]
@@ -65,11 +63,9 @@ theorem prod_formula (mG : ∀ v, Measure (G v)) [∀ v, SigmaFinite (mG v)]
     φ (y.1 * (fun v => h v (c v)) * y.2⁻¹)) (hgm.comp measurable_prodMk_left).aemeasurable
 
 /- English proof (translation)
-Establish `hΦ : Measurable fun a : (v : ι) → G v => ∫⁻ s', φ (a * γ * s'⁻¹) ∂μ'` using `(hφ.comp ((measurable_fst.mul_const γ).mul measurable_snd.inv)).lintegral_prod_right'`. Establish `inner : ∀ a : (v : ι) → G v, ∫⁻ s', φ (a * γ * (s' * t')⁻¹) ∂μ' = ∫⁻ s', φ (a * γ * s'⁻¹) ∂μ'`. Introduce `a`. Establish `hf : Measurable fun s' : (v : ι) → G v => φ (a * γ * s'⁻¹)` using `hφ.comp (measurable_const.mul measurable_inv)`. Rewrite using `[← lintegral_map hf (measurable_mul_const t'), ht']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun s => lintegral_congr fun s' => ?_` and prove the remaining obligations. Use `congr 1`. Use `group`. Use `_ = ∫⁻ s, ∫⁻ s', φ (s * t * γ * s'⁻¹) ∂μ' ∂μ := lintegral_congr fun s => inner (s * t)`.
-
-Use `_ = ∫⁻ s, ∫⁻ s', φ (s * γ * s'⁻¹) ∂μ' ∂μ := by`. Rewrite using `[← lintegral_map hΦ (measurable_mul_const t), ht]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dc_switch (μ μ' : Measure ((v : ι) → G v)) [SFinite μ'] (φ : ((v : ι) → G v) → ℝ≥0∞) (hφ : Measurable φ)
     (γ t t' : (v : ι) → G v) (ht : μ.map (fun x => x * t) = μ) (ht' : μ'.map (fun x => x * t') = μ') :

@@ -4,13 +4,13 @@ open scoped nonZeroDivisors Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GroundTheory.Global GroundTheory.Global.IdeleGroup UpperTheory.Gal.TP.Skew
 
 /- English proof (translation)
-Introduce `E _ _ z`. Establish `h0 : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `one_ne_zero`. Rewrite using `[FractionalIdeal.mem_dual h0]`. Prove the components needed by the constructor for the conclusion. Introduce `h o`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `h (algebraMap (𝓞 E) E o) ((FractionalIdeal.mem_one_iff _).2 ⟨o, rfl⟩)`. Rewrite `h1` using `[Algebra.traceForm_apply, mul_comm]`. Take `⟨n, hn⟩` from `h1`. Establish `h2 : Algebra.trace ℚ E ((o : E) * z) = algebraMap ℤ ℚ n` using `hn.symm`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_algebraMap`. Introduce `h a ha`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Rewrite using `[Algebra.traceForm_apply, mul_comm]`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (h o)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, hn⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Skew.memDual :
     UpperTheory.Gal.TP.Skew.MemDual := by

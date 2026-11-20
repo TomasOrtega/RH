@@ -11,7 +11,7 @@ open GlobalTheory.KeyCl
 namespace GlobalTheory.KeyFamUnit
 
 /- English proof (translation)
-Introduce `κ hF hU S _ _ _ _ _ y`. Take `⟨u, hu⟩` from `GlobalTheory.KeySmoothBase.exists_unit_normal (κ := κ) hF hU S y`. Conclude with `⟨u, GlobalTheory.KeySpec.isValue_of_generic κ hF hU S y u fun K _ _ f x hf hx => hu K f x ((RingHom.injective_iff_ker_eq_bot f).1 hf) hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem famUnit : ∀ κ : Rule, Funct κ → UnitSp κ → FamUnit κ := by
   intro κ hF hU S _ _ _ _ _ y

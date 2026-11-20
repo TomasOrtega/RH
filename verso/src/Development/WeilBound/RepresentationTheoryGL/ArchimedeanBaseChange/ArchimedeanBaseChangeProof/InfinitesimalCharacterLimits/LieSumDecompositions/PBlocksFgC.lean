@@ -19,15 +19,15 @@ def lowL (X : Lie E (r + s)) : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E) :=
 def skw (X : Lie E (r + s)) : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E) := lowL X - (lowL X)ᴴ
 
 /- English proof (translation)
-Rewrite using `[skw, conjTranspose_sub, conjTranspose_conjTranspose, neg_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem skw_skew (X : Lie E (r + s)) : (skw X)ᴴ = -skw X := by
   rw [skw, conjTranspose_sub, conjTranspose_conjTranspose, neg_sub]
 
 /- English proof (translation)
-Establish `h1 : lowL X (Fin.natAdd r i) (Fin.castAdd s j) = X (Fin.natAdd r i) (Fin.castAdd s j)`. Simplify using `[lowL]`. Establish `h2 : lowL X (Fin.castAdd s j) (Fin.natAdd r i) = 0`. Simplify using `[lowL]`. Express the relevant statement in the definitionally equal form `X (Fin.natAdd r i) (Fin.castAdd s j) - (lowL X (Fin.natAdd r i) (Fin.castAdd s j) - star (lowL X (Fin.castAdd s j) (Fin.natAdd r i))) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, h2, star_zero, sub_zero, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem par_low (X : Lie E (r + s)) (i : Fin s) (j : Fin r) :
     (X - toL (skw X)) (Fin.natAdd r i) (Fin.castAdd s j) = 0 := by
@@ -40,28 +40,28 @@ theorem par_low (X : Lie E (r + s)) (i : Fin s) (j : Fin r) :
   rw [h1, h2, star_zero, sub_zero, sub_self]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.add_apply, ← map_add, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_split (X : Lie E (r + s)) (F : Sm E (r + s)) :
     lie E (r + s) X F = lie E (r + s) (X - toL (skw X)) F + lie E (r + s) (toL (skw X)) F := by
   rw [← LinearMap.add_apply, ← map_add, sub_add_cancel]
 
 /- English proof (translation)
-The claim follows from `InducedTensorMap.cf_mul a k k' g g'`.
+A detailed English derivation is pending.
 -/
 theorem yp_mul {a : ℕ} (k k' : Kinf E a) (g g' : GL (Fin a) (Af E)) :
     BlockDerivatives.yp k g * BlockDerivatives.yp k' g' = BlockDerivatives.yp (k * k') (g * g') :=
   InducedTensorMap.cf_mul a k k' g g'
 
 /- English proof (translation)
-Rewrite using `[← yp_mul, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rt_yp_rt {a : ℕ} (k k' : Kinf E a) (g g' : GL (Fin a) (Af E)) (φ : Sm E a) :
     rt E a (BlockDerivatives.yp k g) (rt E a (BlockDerivatives.yp k' g') φ) = rt E a (BlockDerivatives.yp (k * k') (g * g')) φ := by
   rw [← yp_mul, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Simplify using `[BlockDerivatives.yp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem act_fin_eq {a : ℕ} (h : GL (Fin a) (Af E)) (φ : Sm E a) : act (.fin h) φ = rt E a (BlockDerivatives.yp 1 h) φ := by
   refine Subtype.ext (funext fun x => ?_)
@@ -69,7 +69,7 @@ theorem act_fin_eq {a : ℕ} (h : GL (Fin a) (Af E)) (φ : Sm E a) : act (.fin h
   rfl
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Simplify using `[BlockDerivatives.yp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem act_cpt_eq {a : ℕ} (κ : Kinf E a) (φ : Sm E a) : act (.cpt κ) φ = rt E a (BlockDerivatives.yp κ 1) φ := by
   refine Subtype.ext (funext fun x => ?_)
@@ -77,7 +77,7 @@ theorem act_cpt_eq {a : ℕ} (κ : Kinf E a) (φ : Sm E a) : act (.cpt κ) φ = 
   rfl
 
 /- English proof (translation)
-Use `⟨toL ((Unitary.toUnits k).val * Matrix.of X * ((Unitary.toUnits k)⁻¹).val), ?_⟩` and prove the remaining obligations. Rewrite using `[BlockDerivatives.yp, map_mul, mul_assoc, ← lie_rt_fin, ← mul_assoc, ← mul_assoc]`. Conclude with `congrArg (· * _) (GlobalTheory.CapAdInv.rt_lie (Unitary.toUnits k) (Matrix.of X))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_lie_yp {a : ℕ} (k : Kinf E a) (g : GL (Fin a) (Af E)) (X : Lie E a) :
     ∃ X' : Lie E a, rt E a (BlockDerivatives.yp k g) * lie E a X = lie E a X' * rt E a (BlockDerivatives.yp k g) := by

@@ -18,7 +18,7 @@ variable {H₁ H₂ Γ V : Type} [Group H₁] [Group H₂] [Group Γ] [AddCommGr
 
 variable {K₁} in
 /- English proof (translation)
-Use `hf.1 1 c h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem hecke_right {f : H₁ → ℂ} (hf : f ∈ Hecke ℂ K₁) (h : H₁) (c : K₁) : f (h * c) = f h := by
   have := hf.1 1 c h
@@ -26,7 +26,7 @@ private theorem hecke_right {f : H₁ → ℂ} (hf : f ∈ Hecke ℂ K₁) (h : 
 
 variable {K₁} in
 /- English proof (translation)
-Use `hf.1 c 1 h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem hecke_left {f : H₁ → ℂ} (hf : f ∈ Hecke ℂ K₁) (h : H₁) (c : K₁) : f (c * h) = f h := by
   have := hf.1 c 1 h
@@ -34,7 +34,7 @@ private theorem hecke_left {f : H₁ → ℂ} (hf : f ∈ Hecke ℂ K₁) (h : H
 
 variable {K₁} in
 /- English proof (translation)
-The claim follows from `(P.finite_supp K₁ hK f hf).subset fun x hx h0 => hx (by simp [h0])`.
+A detailed English derivation is pending.
 -/
 private theorem fin_act (hK : IsCommensurated K₁) {f : H₁ → ℂ} (hf : f ∈ Hecke ℂ K₁) (Φ : H₁ × H₂ → V) (g : H₁ × H₂) :
     (Function.support fun x : H₁ ⧸ K₁ => f x.out • Φ (g * (x.out, 1))).Finite :=
@@ -42,7 +42,7 @@ private theorem fin_act (hK : IsCommensurated K₁) {f : H₁ → ℂ} (hf : f �
 
 variable {ι K₁ K₂ ξ} in
 /- English proof (translation)
-The claim follows from `hΦ.2 _ (Subgroup.mem_prod.2 ⟨h₁, h₂⟩) g`.
+A detailed English derivation is pending.
 -/
 private theorem form_right {Φ : H₁ × H₂ → V} (hΦ : Φ ∈ HeckeTraceForms.forms ι (K₁.prod K₂) ξ) (g : H₁ × H₂) {k₁ : H₁} {k₂ : H₂}
     (h₁ : k₁ ∈ K₁) (h₂ : k₂ ∈ K₂) : Φ (g * (k₁, k₂)) = Φ g :=
@@ -50,13 +50,13 @@ private theorem form_right {Φ : H₁ × H₂ → V} (hΦ : Φ ∈ HeckeTraceFor
 
 variable {ι K₁ K₂ ξ} in
 /- English proof (translation)
-Use `⟨fun γ g => ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Unfold `hActK`. Rewrite using `[map_finsum (ξ γ) (fin_act hK hf Φ g)]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[map_smul, mul_assoc, hΦ.1]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h₁, h₂⟩` from `Subgroup.mem_prod.1 hk`. Unfold `hActK`. Establish `key` using `P.finsum_out_mul K₁ k.1 (fun h => f h • Φ (g * (h, 1))) (fun h c => by`. Establish `e : g * (h * (c : H₁), (1 : H₂)) = g * (h, 1) * ((c : H₁), (1 : H₂))`. Simplify using `[mul_assoc]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show f (h * c) • Φ (g * (h * (c : H₁), (1 : H₂))) = f h • Φ (g * (h, 1))`. Rewrite using `[hecke_right hf, e, form_right hΦ _ c.2 (one_mem _)])`. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Establish `e : g * k * (x.out, (1 : H₂)) = g * (k.1 * x.out, 1) * ((1 : H₁), k.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp [mul_assoc]`. Use `show _ = f (k.1 * x.out) • Φ (g * (k.1 * x.out, 1))`. Rewrite using `[e, form_right hΦ _ (one_mem _) h₂, hecke_left hf x.out ⟨k.1, h₁⟩]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem act_mem (hK : IsCommensurated K₁) {f : H₁ → ℂ} (hf : f ∈ Hecke ℂ K₁) {Φ : H₁ × H₂ → V}
     (hΦ : Φ ∈ HeckeTraceForms.forms ι (K₁.prod K₂) ξ) : hActK K₁ f Φ ∈ HeckeTraceForms.forms ι (K₁.prod K₂) ξ := by
@@ -101,15 +101,15 @@ private def act (hK : IsCommensurated K₁) {f : H₁ → ℂ} (hf : f ∈ Hecke
 
 variable {K₁} in
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Set `φ : H₁ → V` to `fun x => Φ (g * (x, 1))`. Establish `hφ : φ ∈ AMF ℂ (⊥ : Subgroup H₁) K₁ (1 : Representation ℂ (⊥ : Subgroup H₁) V)`. Introduce and unpack `⟨γ, hγ⟩ x ⟨κ, hκ⟩`. Take `rfl : γ = 1` from `Subgroup.mem_bot.1 hγ`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `e : g * ((1 : H₁) * x * κ, (1 : H₂)) = g * (x, 1) * (κ, 1)` using `by simp [mul_assoc]`. Use `show Φ (g * ((1 : H₁) * x * κ, (1 : H₂))) = Φ (g * (x, 1))`. Rewrite using `[e, hΦ κ hκ]`. Establish `key` using `congrFun (P.hecke_act_mul H₁ ⊥ K₁ ℂ V 1 hK f₁ h₁ f₂ h₂ φ hφ) 1`. Establish `e1 : ∀ (f : H₁ → ℂ) (a : H₁), hAct K₁ f φ a = hActK K₁ f Φ (g * (a, 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f a`. Unfold `hAct hActK`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Establish `e : g * (a * x.out, (1 : H₂)) = g * (a, 1) * (x.out, 1)` using `by simp [mul_assoc]`. Use `show f x.out • Φ (g * (a * x.out, (1 : H₂))) = _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Establish `l : hActK K₁ (conv K₁ f₁ f₂) Φ g = hAct K₁ (conv K₁ f₁ f₂) φ 1`. Rewrite using `[e1]`. Conclude with `congrArg _ (mul_one g).symm`. Establish `r : hActK K₁ f₁ (hActK K₁ f₂ Φ) g = hAct K₁ f₁ (hAct K₁ f₂ φ) 1` using `by show (∑ᶠ x : H₁ ⧸ K₁, f₁ x.out • hActK K₁ f₂ Φ (g * (x.out, 1))) = ∑ᶠ x : H₁ ⧸ K₁, f₁ x.out • hAct K₁ f₂ φ (1 * x.out)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[e1, one_mul]`. Rewrite using `[l, r, key]`.
+A detailed English derivation is pending.
 -/
 private theorem act_mul (hK : IsCommensurated K₁) {f₁ f₂ : H₁ → ℂ} (h₁ : f₁ ∈ Hecke ℂ K₁) (h₂ : f₂ ∈ Hecke ℂ K₁)
     {Φ : H₁ × H₂ → V} (hΦ : ∀ (k : H₁), k ∈ K₁ → ∀ g, Φ (g * (k, 1)) = Φ g) :
@@ -142,25 +142,23 @@ private theorem act_mul (hK : IsCommensurated K₁) {f₁ f₂ : H₁ → ℂ} (
 
 variable {ι K₁ K₂ ξ} in
 /- English proof (translation)
-Introduce `φ g`. Set `e : H₁ ⧸ K₁ → (H₁ × H₂) ⧸ (K₁.prod K₂)` to `fun q => QuotientGroup.mk (q.out, 1)`. Establish `he : Function.Injective e`. Introduce `a b hab`. Establish `h` using `QuotientGroup.eq.1 hab`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(Subgroup.mem_prod.1 h).1`. Rewrite using `[← QuotientGroup.out_eq' a, ← QuotientGroup.out_eq' b]`. Conclude with `QuotientGroup.eq.2 (by simpa using h1)`. Use `set A : (H₁ × H₂) ⧸ (K₁.prod K₂) → V := fun h => (f h.out.1 * Set.indicator (K₂ : Set H₂) (1 : H₂ → ℂ) h.out.2) • (φ : H₁ × H₂ → V) (g * h.out) with hA`. Establish `hsupp : ∀ h, A h ≠ 0 → h ∈ Set.range e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h hh`. Establish `h2 : h.out.2 ∈ K₂`. Assume the negation of the conclusion as `hn`. Conclude with `hh (by simp [hA, Set.indicator_of_notMem (show h.out.2 ∉ (K₂ : Set H₂) from hn)])`. Use `⟨QuotientGroup.mk h.out.1, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `QuotientGroup.mk_out_eq_mul K₁ h.out.1`. Use `show QuotientGroup.mk ((QuotientGroup.mk h.out.1 : H₁ ⧸ K₁).out, (1 : H₂)) = h`. Rewrite using `[hc, ← QuotientGroup.out_eq' h]`. Use `QuotientGroup.eq.2 (Subgroup.mem_prod.2 ?_)` and prove the remaining obligations. Simplify using `only [QuotientGroup.out_eq']`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `using K₁.inv_mem c.2`. Simplify using `using h2`. Establish `hval : ∀ q, A (e q) = f q.out • (φ : H₁ × H₂ → V) (g * (q.out, 1))`. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨c, hc⟩` from `QuotientGroup.mk_out_eq_mul (K₁.prod K₂) ((q.out, 1) : H₁ × H₂)`. Take `⟨c₁, c₂⟩` from `Subgroup.mem_prod.1 c.2`. Establish `ho : (e q).out = (q.out, 1) * (c : H₁ × H₂)` using `hc`. Simplify using `only [hA]`. Rewrite using `[ho]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e2 : g * (((q.out, 1) : H₁ × H₂) * (c : H₁ × H₂)) = g * (q.out, 1) * ((c : H₁ × H₂).1, (c : H₁ × H₂).2)`. Rewrite using `[mul_assoc]`. Rewrite using `[e2, form_right φ.2 _ c₁ c₂]`. Use `congr 1`. Establish `i2 : ((((q.out, 1) : H₁ × H₂) * (c : H₁ × H₂)).2) ∈ (K₂ : Set H₂)` using `by simpa using c₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_mem i2]`. Use `hecke_right hf q.out ⟨_, c₁⟩` as an intermediate fact. Simplify using `using this`. Establish `hsum : (∑ᶠ h, A h) = ∑ᶠ q, A (e q)`. Rewrite using `[← finsum_mem_range he, finsum_mem_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_congr fun h => ?_` and prove the remaining obligations. Distinguish the cases in `hr : h ∈ Set.range e`. Rewrite using `[Set.indicator_of_mem hr]`. Rewrite using `[Set.indicator_of_notMem hr]`. Assume the negation of the conclusion as `hne`.
-
-Conclude with `hr (hsupp h hne)`. Use `show hActK K₁ f φ g = ∑ᶠ h, A h`. Rewrite using `[hsum]`. Conclude with `finsum_congr fun q => (hval q).symm`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem act_isHecke (hK : IsCommensurated K₁) {f : H₁ → ℂ} (hf : f ∈ Hecke ℂ K₁) :
     HeckeTraceForms.IsHecke ι (K₁.prod K₂) ξ (fun h => f h.1 * Set.indicator (K₂ : Set H₂) (1 : H₂ → ℂ) h.2)
@@ -217,23 +215,21 @@ private theorem act_isHecke (hK : IsCommensurated K₁) {f : H₁ → ℂ} (hf :
   exact finsum_congr fun q => (hval q).symm
 
 /- English proof (translation)
-Set `T : (H₁ → ℂ) → Module.End ℂ (HeckeTraceForms.forms ι (K₁.prod K₂) ξ)` to `fun f => if h : f ∈ Hecke ℂ K₁ then act ι K₁ K₂ ξ hK h else 0`. Establish `hT : ∀ f (h : f ∈ Hecke ℂ K₁), T f = act ι K₁ K₂ ξ hK h` using `fun f h => dif_pos h`. Establish `hTa : ∀ f (h : f ∈ Hecke ℂ K₁) Φ, (T f Φ : H₁ × H₂ → V) = hActK K₁ f Φ` using `fun f h Φ => by rw [hT f h]; rfl`. Use `⟨T, ?_, fun f hf => ⟨hTa f hf, ?_, fun f' hf' => ⟨?_, fun c => ?_⟩⟩⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hTa 0 (Submodule.zero_mem _)]`. Use function extensionality and compare the values at `g`. Simplify using `[hActK]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hI` using `act_isHecke (ι := ι) (K₂ := K₂) (ξ := ξ) hK hf`. Establish `hex : ∃ T', HeckeTraceForms.IsHecke ι (K₁.prod K₂) ξ (fun h => f h.1 * Set.indicator (K₂ : Set H₂) (1 : H₂ → ℂ) h.2) T'` using `⟨_, hI⟩`. Rewrite using `[HeckeTraceForms.heckeTrace, dif_pos hex, hT f hf]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[hex.choose_spec Φ g, hI Φ g]`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hc` using `P.hecke_convolution_mem_holds H₁ K₁ ℂ hK f hf f' hf'`. Rewrite using `[hTa _ hc, Module.End.mul_apply, hTa f hf, hTa f' hf']`. Conclude with `act_mul hK hf hf' fun k hk g => form_right Φ.2 g hk (one_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hc : c • f + f' ∈ Hecke ℂ K₁` using `Submodule.add_mem _ (Submodule.smul_mem _ c hf) hf'`. Rewrite using `[hTa _ hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = c • (T f Φ : H₁ × H₂ → V) + (T f' Φ : H₁ × H₂ → V)`. Rewrite using `[hTa f hf, hTa f' hf']`. Use function extensionality and compare the values at `g`. Use `show (∑ᶠ x : H₁ ⧸ K₁, (c • f + f') x.out • (Φ : H₁ × H₂ → V) (g * (x.out, 1))) = c • (∑ᶠ x : H₁ ⧸ K₁, f x.out • (Φ : H₁ × H₂ → V) (g * (x.out, 1))) + ∑ᶠ x : H₁ ⧸ K₁, f' x.out • (Φ : H₁ × H₂ → V) (g * (x.out, 1))`. Establish `hA : Function.HasFiniteSupport (fun x : H₁ ⧸ K₁ => f x.out • (Φ : H₁ × H₂ → V) (g * (x.out, 1)))` using `fin_act hK hf _ g`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hB : Function.HasFiniteSupport (fun x : H₁ ⧸ K₁ => f' x.out • (Φ : H₁ × H₂ → V) (g * (x.out, 1)))` using `fin_act hK hf' _ g`. Establish `hC : Function.HasFiniteSupport (fun x : H₁ ⧸ K₁ => c • f x.out • (Φ : H₁ × H₂ → V) (g * (x.out, 1)))` using `Set.Finite.subset hA fun x hx h0 => hx (by show c • f x.out • (Φ : H₁ × H₂ → V) (g * (x.out, 1)) = 0`. Rewrite using `[show f x.out • (Φ : H₁ × H₂ → V) (g * (x.out, 1)) = 0 from h0, smul_zero])`. Rewrite using `[smul_finsum' c hA, ← finsum_add_distrib hC hB]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations.
-
-Simplify using `[add_smul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem abs_main (hK : IsCommensurated K₁) :
     ∃ T : (H₁ → ℂ) → Module.End ℂ (HeckeTraceForms.forms ι (K₁.prod K₂) ξ), T 0 = 0 ∧
@@ -296,9 +292,9 @@ private theorem abs_main (hK : IsCommensurated K₁) :
 end Abstract
 
 /- English proof (translation)
-Introduce `g`. Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 hc`. Establish `h1 : IsOpen ((K.map (MulAut.conj g).toMonoidHom : Subgroup H) : Set H)`. Rewrite using `[Subgroup.coe_map]`. Conclude with `((Homeomorph.mulLeft g).trans (Homeomorph.mulRight g⁻¹)).isOpenMap _ ho`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : IsOpen (((K.map (MulAut.conj g).toMonoidHom).subgroupOf K : Subgroup K) : Set K)` using `h1.preimage continuous_subtype_val`. Use `Subgroup.quotient_finite_of_isOpen _ h2` as an intermediate fact. Conclude with `Subgroup.index_ne_zero_iff_finite.2 this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem comm_of_open {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (K : Subgroup H)
     (ho : IsOpen (K : Set H)) (hc : IsCompact (K : Set H)) : IsCommensurated K := by
@@ -315,7 +311,7 @@ private theorem comm_of_open {H : Type} [Group H] [TopologicalSpace H] [IsTopolo
 end UpperTheory.Gal.Spc
 
 /- English proof (translation)
-Introduce `p _ G Lv V _ _ ξ B`. Conclude with `UpperTheory.Gal.Spc.abs_main B.emb Lv.K.toSubgroup (UpperTheory.Gal.LocalSmoothExtension.Kp G) (ξ.comp (GlobalTheory.LKCx.grp G B.β).subtype) (UpperTheory.Gal.Spc.comm_of_open _ Lv.K.isOpen Lv.compact)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Spc.opAlg :
     UpperTheory.Gal.Spc.OpAlg := by

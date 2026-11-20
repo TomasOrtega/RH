@@ -7,13 +7,13 @@ import Formalism.GaloisCohomology.LocalTateDualityK
 namespace GlobalTheory.FixedFinsetInvariants
 
 /- English proof (translation)
-Set `F : Finset G → Submodule LL V` to `fun s => ⨅ g ∈ s, LinearMap.ker (ρ g - LinearMap.id)`. Establish `hF : ∀ (s : Finset G) (v : V), v ∈ F s ↔ ∀ g ∈ s, ρ g v = v`. Introduce `s v`. Simplify using `only [F, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Take `⟨_, ⟨s, rfl⟩, hmin⟩` from `(wellFounded_lt (α := Submodule LL V)).has_min (Set.range F) ⟨F ∅, ∅, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨s, fun v hv => ?_⟩` and prove the remaining obligations. Unfold `Formalism.WeaklyAdmissibleFiltrations.H0V`. Rewrite using `[Submodule.mem_iInf]`. Introduce `g`. Establish `hle : F (insert g s) ≤ F s`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw`. Rewrite `hw`, the goal using `[hF]`. Conclude with `fun h hh => hw h (Finset.mem_insert_of_mem hh)`. Establish `heq : F (insert g s) = F s`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hmin _ ⟨insert g s, rfl⟩ (lt_of_le_of_ne hle hne)`. Establish `hv' : v ∈ F (insert g s)` using `heq ▸ (hF s v).2 hv`. Establish `hg` using `(hF _ v).1 hv' g (Finset.mem_insert_self g s)`. Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `hg`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_finset_fixed_mem_invariants {G LL V : Type} [Group G] [Field LL] [AddCommGroup V]
     [Module LL V] [FiniteDimensional LL V] (ρ : Representation LL G V) :

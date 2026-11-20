@@ -9,11 +9,11 @@ namespace PI.ScPiFrameW
 open PI.ScPiExists
 
 /- English proof (translation)
-Introduce `ε e f z`. Use `⟨rfl, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro i; fin_cases i <;> rfl`. Introduce `a b`. Simplify using `[e, ε, hJ_eq_sum, sg, Fin.sum_univ_four]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a b`. Simplify using `[f, ε, hJ_eq_sum, sg, Fin.sum_univ_four]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b`. Establish `: a = b` using `Subsingleton.elim a b`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[this, e, f, ε, hJ_eq_sum, sg, Fin.sum_univ_four]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a`. Simplify using `[e, f, z, ε, hJ_eq_sum, sg, Fin.sum_univ_four]`. Simplify using `[z, ε, hJ_eq_sum, sg, Fin.sum_univ_four]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem frame_hypotheses_rank_one :
     let ε : Fin 4 → Bool := ![true, false, true, false]
@@ -37,7 +37,7 @@ theorem frame_hypotheses_rank_one :
   · simp [z, ε, hJ_eq_sum, sg, Fin.sum_univ_four]
 
 /- English proof (translation)
-Introduce `ε z`. Use `⟨rfl, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro i; fin_cases i <;> rfl`. Simplify using `[z, ε, hJ_eq_sum, sg, Fin.sum_univ_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem frame_hypotheses_rank_zero :
     let ε : Fin 2 → Bool := ![true, false]

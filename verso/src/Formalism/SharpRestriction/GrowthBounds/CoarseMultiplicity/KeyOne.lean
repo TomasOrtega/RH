@@ -7,7 +7,7 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G MvPolynomial Formalism.MainNotions.LemmaBAlt
 
 /- English proof (translation)
-Unfold `liftSubst`. Rewrite using `[MvPolynomial.aeval_X, sigMat_one, inv_one]`. Apply the tactic sequence `by_cases hv : LL.vec v.1 <;> simp [hv, Matrix.one_apply, dW] <;> split_ifs <;> simp_all`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem liftSubst_one_X {p f : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [Algebra (WF p f) O] (w : O) (r : ℕ)
     {ι : Type} {k : ℕ} (LL : LiftLetters ι) (v : ι × Fin k) :
@@ -18,7 +18,7 @@ theorem liftSubst_one_X {p f : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDo
   by_cases hv : LL.vec v.1 <;> simp [hv, Matrix.one_apply, dW] <;> split_ifs <;> simp_all
 
 /- English proof (translation)
-Rewrite using `[liftSubst_one_X]`. Establish `hd : dW O w (hhLetters X.TT) 1 x b = if (x.2 = true ∧ 1 ≤ (b : ℕ)) ∨ (x.2 = false ∧ (b : ℕ) < 1) then w else 1` using `rfl`. Rewrite using `[hd]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem liftSubst_one_hh {X : Loc} [Fact X.p.Prime] {O : Type} [CommRing O] [IsDomain O] [Algebra (WF X.p X.n') O] (w : O)
     (x : X.TT × Bool) (b : Fin (X.m + 1)) :
@@ -33,7 +33,7 @@ theorem liftSubst_one_hh {X : Loc} [Fact X.p.Prime] {O : Type} [CommRing O] [IsD
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[liftSubst_one_hh]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem liftSubst_X_true_zero_eq_X {X : Loc} [Fact X.p.Prime] {O : Type} [CommRing O] [IsDomain O]
     [Algebra (WF X.p X.n') O] (w : O) (y : X.TT) :
@@ -43,7 +43,7 @@ private theorem liftSubst_X_true_zero_eq_X {X : Loc} [Fact X.p.Prime] {O : Type}
   simp
 
 /- English proof (translation)
-Rewrite using `[liftSubst_one_hh]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem liftSubst_X_true_succ_eq_C_mul_X {X : Loc} [Fact X.p.Prime] {O : Type} [CommRing O] [IsDomain O]
     [Algebra (WF X.p X.n') O] (w : O) (y : X.TT) (c : Fin X.m) :
@@ -54,7 +54,7 @@ private theorem liftSubst_X_true_succ_eq_C_mul_X {X : Loc} [Fact X.p.Prime] {O :
   simp
 
 /- English proof (translation)
-Rewrite using `[liftSubst_one_hh]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem liftSubst_X_false_zero_eq_C_mul_X {X : Loc} [Fact X.p.Prime] {O : Type} [CommRing O] [IsDomain O]
     [Algebra (WF X.p X.n') O] (w : O) (y : X.TT) :
@@ -65,7 +65,7 @@ private theorem liftSubst_X_false_zero_eq_C_mul_X {X : Loc} [Fact X.p.Prime] {O 
   simp
 
 /- English proof (translation)
-Rewrite using `[liftSubst_one_hh]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem liftSubst_X_false_succ_eq_X {X : Loc} [Fact X.p.Prime] {O : Type} [CommRing O] [IsDomain O]
     [Algebra (WF X.p X.n') O] (w : O) (y : X.TT) (c : Fin X.m) :
@@ -75,11 +75,11 @@ private theorem liftSubst_X_false_succ_eq_X {X : Loc} [Fact X.p.Prime] {O : Type
   simp
 
 /- English proof (translation)
-Establish `hq1 : 1 ≤ X.p ^ (segDists X.TT j).get i` using `Nat.one_le_pow _ _ (Fact.out : X.p.Prime).pos`. Unfold `kSkey`. Rewrite using `[map_sum, Fin.sum_univ_succ]`. Simplify using `only [map_mul, map_pow, liftSubst_X_true_zero_eq_X, liftSubst_X_true_succ_eq_C_mul_X, liftSubst_X_false_zero_eq_C_mul_X, liftSubst_X_false_succ_eq_X]`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, MvPolynomial.algebraMap_apply, MvPolynomial.algebraMap_apply, map_pow, map_pow]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q', hq'⟩ : ∃ q', X.p ^ (segDists X.TT j).get i = q' + 1` from `⟨_, (Nat.sub_add_cancel hq1).symm⟩`. Rewrite using `[hq', Nat.add_sub_cancel]`. Establish `hsum : ∑ c : Fin X.m, (C (algebraMap O (KK O) w) * MvPolynomial.X ((topStart X j, true), c.succ)) ^ (q' + 1) * MvPolynomial.X ((topOdd X j i, false), c.succ) = C (algebraMap O (KK O) w) ^ (q' + 1) * ∑ c : Fin X.m, MvPolynomial.X ((topStart X j, true), c.succ) ^ (q' + 1) * MvPolyn …`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem key3One_S {X : Loc} [Fact X.p.Prime] {O : Type} [CommRing O] [IsDomain O] [Algebra (WF X.p X.n') O] (w : O)
     (j : Fin (numSeg X.TT)) (i : Fin (segS X.TT j)) :
@@ -107,9 +107,9 @@ theorem key3One_S {X : Loc} [Fact X.p.Prime] {O : Type} [CommRing O] [IsDomain O
   ring
 
 /- English proof (translation)
-Establish `hq1 : 1 ≤ X.p ^ (segDists X.TT j).get i` using `Nat.one_le_pow _ _ (Fact.out : X.p.Prime).pos`. Unfold `kWkey`. Simplify using `only [map_sub, map_mul, map_pow, liftSubst_X_true_zero_eq_X, liftSubst_X_true_succ_eq_C_mul_X]`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, MvPolynomial.algebraMap_apply, MvPolynomial.algebraMap_apply, map_pow, map_pow]`. Take `⟨q', hq'⟩ : ∃ q', X.p ^ (segDists X.TT j).get i = q' + 1` from `⟨_, (Nat.sub_add_cancel hq1).symm⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hq', Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem key_lift_identity_lower {X : Loc} [Fact X.p.Prime] {O : Type} [CommRing O] [IsDomain O] [Algebra (WF X.p X.n') O] (w : O)
     (j : Fin (numSeg X.TT)) (i : Fin (segS X.TT j)) (c : Fin X.m) :
@@ -129,7 +129,7 @@ theorem key_lift_identity_lower {X : Loc} [Fact X.p.Prime] {O : Type} [CommRing 
   ring
 
 /- English proof (translation)
-Unfold `locC`. Simplify using `only [map_sub, map_prod, map_pow, liftSubst_X_true_zero_eq_X, liftSubst_X_true_succ_eq_C_mul_X]`. Rewrite using `[Algebra.smul_def, MvPolynomial.algebraMap_apply, map_pow, map_pow, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun j _ => mul_pow _ _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem loc4One {X : Loc} [Fact X.p.Prime] {O : Type} [CommRing O] [IsDomain O] [Algebra (WF X.p X.n') O] (w : O)
     (c : Fin X.m) :
@@ -160,14 +160,14 @@ def LocalOrderBound : Prop :=
       InWjRg X.p X.n' O S.w 1 (hhLetters X.TT) g (locR O X j0) 1
 
 /- English proof (translation)
-Introduce `X _ O _ _ _ _ S hSq hD j i`. Conclude with `⟨fun g hg => h X O S hSq hD j i g hg, key3One_S S.w j i, fun c => key_lift_identity_lower S.w j i c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem third_key_of_order (h : CoarseMultiplicityOrderBound) : CoarseMultiplicityBoundAtIdentity := by
   intro X _ O _ _ _ _ S hSq hD j i
   exact ⟨fun g hg => h X O S hSq hD j i g hg, key3One_S S.w j i, fun c => key_lift_identity_lower S.w j i c⟩
 
 /- English proof (translation)
-Introduce `X _ O _ _ _ _ S hSq hD hn`. Conclude with `⟨fun j0 g hg hr => h X O S hSq hD hn j0 g hg hr, fun c => loc4One S.w c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem local_fourth_of_order (h : LocalOrderBound) : LocalBoundAtIdentity := by
   intro X _ O _ _ _ _ S hSq hD hn

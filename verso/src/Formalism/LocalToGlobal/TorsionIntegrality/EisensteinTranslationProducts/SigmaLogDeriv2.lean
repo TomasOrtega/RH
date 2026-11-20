@@ -10,59 +10,59 @@ import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.
 namespace Formalism.L2.Th1.F
 
 /- English proof (translation)
-The claim follows from `zeta_summable`.
+A detailed English derivation is pending.
 -/
 theorem zetaSummable : ZetaSummable := zeta_summable
 /- English proof (translation)
-The claim follows from `zeta_has_deriv`.
+A detailed English derivation is pending.
 -/
 theorem zetaHasDeriv : ZetaHasDeriv := zeta_has_deriv
 /- English proof (translation)
-The claim follows from `zeta_odd`.
+A detailed English derivation is pending.
 -/
 theorem zetaOdd : ZetaOdd := zeta_odd
 /- English proof (translation)
-The claim follows from `zetaQuasi_of zetaHasDeriv zetaOdd`.
+A detailed English derivation is pending.
 -/
 theorem zetaQuasi : ZetaQuasi := zetaQuasi_of zetaHasDeriv zetaOdd
 /- English proof (translation)
-The claim follows from `sigma_summable`.
+A detailed English derivation is pending.
 -/
 theorem sigmaSummable : SigmaSummable := sigma_summable
 /- English proof (translation)
-The claim follows from `sigma_product_locally_uniform`.
+A detailed English derivation is pending.
 -/
 theorem sigmaProdLU : SigmaProdLU := sigma_product_locally_uniform
 /- English proof (translation)
-The claim follows from `sigmaEntire_of sigmaProdLU`.
+A detailed English derivation is pending.
 -/
 theorem sigmaEntire : SigmaEntire := sigmaEntire_of sigmaProdLU
 /- English proof (translation)
-The claim follows from `sigma_odd`.
+A detailed English derivation is pending.
 -/
 theorem sigmaOdd : SigmaOdd := sigma_odd
 /- English proof (translation)
-The claim follows from `sigmaZero_of sigmaSummable`.
+A detailed English derivation is pending.
 -/
 theorem sigmaZero : SigmaZero := sigmaZero_of sigmaSummable
 /- English proof (translation)
-The claim follows from `sigmaLogDeriv_of sigmaProdLU sigmaSummable zetaSummable`.
+A detailed English derivation is pending.
 -/
 theorem sigmaLogDeriv : SigmaLogDeriv := sigmaLogDeriv_of sigmaProdLU sigmaSummable zetaSummable
 /- English proof (translation)
-The claim follows from `sigmaQuasi_of zetaQuasi sigmaLogDeriv sigmaEntire sigmaOdd sigmaZero`.
+A detailed English derivation is pending.
 -/
 theorem sigmaQuasi : SigmaQuasi := sigmaQuasi_of zetaQuasi sigmaLogDeriv sigmaEntire sigmaOdd sigmaZero
 /- English proof (translation)
-The claim follows from `sigmaSimple_of sigmaQuasi sigmaEntire (sigmaDerivZero_of sigmaProdLU)`.
+A detailed English derivation is pending.
 -/
 theorem sigmaSimple : SigmaSimple := sigmaSimple_of sigmaQuasi sigmaEntire (sigmaDerivZero_of sigmaProdLU)
 /- English proof (translation)
-The claim follows from `etaEisenstein_of zetaSummable zetaOdd`.
+A detailed English derivation is pending.
 -/
 theorem etaEisenstein : EtaEisenstein := etaEisenstein_of zetaSummable zetaOdd
 /- English proof (translation)
-The claim follows from `legendre_of etaEisenstein`.
+A detailed English derivation is pending.
 -/
 theorem legendre : Legendre := legendre_of etaEisenstein
 

@@ -10,7 +10,7 @@ open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviBlockExponent.leviEmb_positionElt_eq_diagonal | exact GlobalTheory.LeviBlockExponent.leviEmb_positionElt_eq_diagonal | (intros; apply GlobalTheory.LeviBlockExponent.leviEmb_positionElt_eq_diagonal <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.leviEmb_position_diagonal : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n i : ℕ) (hi : i + 1 ≤ n) (ϖ : kˣ),
     ((GlobalTheory.SmGL.leviEmb k (blockIndex hi) (blockScalar₂ k n i ϖ)) : Matrix (Fin n) (Fin n) k) =

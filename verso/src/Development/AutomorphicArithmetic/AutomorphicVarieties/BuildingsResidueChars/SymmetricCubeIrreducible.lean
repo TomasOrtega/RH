@@ -10,11 +10,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Sd.S3
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Take `⟨h1, -, h3⟩` from `hr`. Use `⟨h1, fun _ _ _ => Submodule.mem_top, fun W _ hi => ?_⟩` and prove the remaining obligations. Establish `key` using `h3 (W.comap (Matrix.mulVecLin (g : Matrix (Fin n) (Fin n) k))) le_top (fun s v hv => by`. Establish `h4` using `hi s _ hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[hg s]`. Simplify `h4)` using `[Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Establish `hs : Function.Surjective (Matrix.mulVecLin (g : Matrix (Fin n) (Fin n) k))` using `fun v => ⟨((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).mulVec v, by`. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]⟩`. Establish `e` using `Submodule.map_comap_eq_of_surjective hs W`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `key with key | key` into its components or cases. Use `left`. Rewrite using `[← e, key, Submodule.map_bot]`. Use `right`. Rewrite using `[← e, key, Submodule.map_top, LinearMap.range_eq_top.mpr hs]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIrr_iso {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r r' : Γ →* GL (Fin n) k} (h : RepIso r r')
     (hr : IsIrr r) : IsIrr r' := by

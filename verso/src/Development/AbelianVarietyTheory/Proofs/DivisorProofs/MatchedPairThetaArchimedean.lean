@@ -13,17 +13,13 @@ namespace GlobalTheory.ThetaFacCompl
 open MeasureTheory
 
 /- English proof (translation)
-Take `⟨_, _, hsc, _⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ n J`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Use `haveI := GlobalTheory.RatUDiscrete.discreteTopology_ratU F E σ n J`. Use `haveI : Countable (ratU σ J) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI : MeasurableConstSMul (ratU σ J) (UA σ J) := ⟨fun c => (continuous_const_mul (c : UA σ J)).measurable⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `haveI : SMulInvariantMeasure (ratU σ J) (UA σ J) μ := ⟨fun c s _ => by show μ ((fun x => (c : UA σ J) * x) ⁻¹' s) = μ s`. Conclude with `measure_preimage_mul μ (c : UA σ J) s⟩`. Use `set t : Set (UA σ J) := {x | f x ≠ 0} with ht`. Establish `hto : IsOpen t` using `isOpen_ne_fun hf continuous_const`. Establish `hts : μ (t ∩ 𝓕) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h1 : μ.restrict 𝓕 t = 0` using `by simpa [t] using ae_iff.1 h0`. Rewrite `h1` using `[Measure.restrict_apply hto.measurableSet]`. Then use the resulting hypothesis. Establish `htz : μ t = 0`. Use `h𝓕.measure_zero_of_invariant t (fun g => ?_) hts` and prove the remaining obligations. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ show f ((g : UA σ J) * y) ≠ 0`. Rewrite using `[hinv _ g.2]`. Conclude with `hy`. Introduce `hx`.
-
-Use `⟨(g⁻¹ : ratU σ J) • x, ?_, by simp⟩` and prove the remaining obligations. Use `show f (((g⁻¹ : ratU σ J) : UA σ J) * x) ≠ 0`. Rewrite using `[hinv _ (g⁻¹).2]`. Conclude with `hx`. Establish `hae : f =ᵐ[μ] 0`.
-
-Rewrite using `[Filter.EventuallyEq, ae_iff]`. Simplify `htz` using `[t]`. Conclude with `(Continuous.ae_eq_iff_eq μ hf continuous_const).1 hae`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ae_restrict_fd {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (μ : Measure (UA σ J)) (𝓕 : Set (UA σ J))
@@ -61,7 +57,7 @@ theorem eq_zero_of_ae_restrict_fd {F E : Type} [Field F] [NumberField F] [Field 
   exact (Continuous.ae_eq_iff_eq μ hf continuous_const).1 hae
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 Φ hΦ h0`. Take `⟨hc, hinv⟩` from `GlobalTheory.T.continuous_left_invariant_dual hKP F E σ B a a' G X om om' hM.triple Φ hΦ`. Conclude with `eq_zero_of_ae_restrict_fd σ G.W.J μ 𝓕 hμ h𝓕 _ hc hinv h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem theta_eq_zero_of_ae_fd : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ (μ : MeasureTheory.Measure (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J)) (𝓕 : Set (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J)), μ.IsHaarMeasure → MeasureTheory.IsFundamentalDomain (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ratU σ G.W.J) 𝓕 μ → ∀ Φ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), (G.M'.I om' Φ =ᵐ[μ.restrict 𝓕] 0) → G.M'.I om' Φ = 0 := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 Φ hΦ h0

@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SphTheta.SplitSph
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ hχ hχ1 hcond c₁ c₂ h₁ h₂`. Rewrite using `[GlobalTheory.CompanionTheory.SplitStandardVector.indicator_eq_phiS]`. Conclude with `GlobalTheory.CompanionTheory.SplitStandardVector.sphN_WcS_phiS χ c₁ c₂ ⟨hχ, hχ1, hcond⟩ h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sphs_direct : Ad3.K.QuadraticBaseChangeGL3.Th.SPHS := by
   intro F _ _ _ _ _ _ _ χ hχ hχ1 hcond c₁ c₂ h₁ h₂

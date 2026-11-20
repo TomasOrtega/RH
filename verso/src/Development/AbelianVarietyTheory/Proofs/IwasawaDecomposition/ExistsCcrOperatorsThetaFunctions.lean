@@ -7,7 +7,7 @@ noncomputable section
 namespace GlobalTheory.Mem.Lift.ThOps
 
 /- English proof (translation)
-Use `choose a ha using hA`. Conclude with `⟨{ toFun := a map_add' := fun f g => hj (by simp only [map_add, ha]) map_smul' := fun c f => hj (by simp only [map_smul, ha, RingHom.id_apply]) }, ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_restrict {Θ M : Type} [AddCommGroup Θ] [Module ℂ Θ] [AddCommGroup M] [Module ℂ M] (j : Θ →ₗ[ℂ] M)
     (hj : Function.Injective j) (A : Module.End ℂ M) (hA : ∀ f, ∃ g, j g = A (j f)) :
@@ -18,9 +18,9 @@ theorem exists_restrict {Θ M : Type} [AddCommGroup Θ] [Module ℂ Θ] [AddComm
            map_smul' := fun c f => hj (by simp only [map_smul, ha, RingHom.id_apply]) }, ha⟩
 
 /- English proof (translation)
-Use `⟨fun k l => LinearMap.ext fun f => hj ?_, fun k l => LinearMap.ext fun f => hj ?_, fun k l => LinearMap.ext fun f => hj ?_⟩` and prove the remaining obligations. Simplify `LinearMap.congr_fun (h.1 k l) (j f)` using `only [Module.End.mul_apply, hx]`. Simplify `LinearMap.congr_fun (h.2.1 k l) (j f)` using `only [Module.End.mul_apply, hd]`. Use `LinearMap.congr_fun (h.2.2 k l) (j f)` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, map_sub, hx, hd] at this ⊢`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isCCR_restrict {Θ M κ : Type} [DecidableEq κ] [AddCommGroup Θ] [Module ℂ Θ] [AddCommGroup M] [Module ℂ M]
     (j : Θ →ₗ[ℂ] M) (hj : Function.Injective j) {x d : κ → Module.End ℂ Θ} {x₀ d₀ : κ → Module.End ℂ M}
@@ -38,15 +38,15 @@ theorem isCCR_restrict {Θ M κ : Type} [DecidableEq κ] [AddCommGroup Θ] [Modu
 open Matrix GlobalTheory.RealWeil in
 
 /- English proof (translation)
-Take `⟨x₀, d₀, hx₀, hd₀, hc⟩` from `exists_isCCR_xOp_dOp ι H hH hd B ρ hρ`. Set `j : Θ →ₗ[ℂ] smS ρ` to `J.codRestrict _ hs`. Establish `hj : Function.Injective j` using `fun f g e => hJ (congrArg Subtype.val e)`. Establish `h1 : ∀ k, ∃ a : Module.End ℂ Θ, ∀ f, j (a f) = x₀ k (j f)` using `fun k => exists_restrict j hj _ fun f => by`. Take `⟨g₁, e₁⟩` from `hk (Pi.single k 1) f`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g₂, e₂⟩` from `hk (Complex.I • Pi.single k 1) f`. Use `⟨g₁ - Complex.I • g₂, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hx₀]`. Express the relevant statement in the definitionally equal form `J _ = xOp ρ k (J f)`. Rewrite using `[xOp, map_sub, map_smul, e₁, e₂]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ k, ∃ a : Module.End ℂ Θ, ∀ f, j (a f) = d₀ k (j f)` using `fun k => exists_restrict j hj _ fun f => by`. Take `⟨g₁, e₁⟩` from `hk (H⁻¹ *ᵥ Pi.single k 1) f`. Take `⟨g₂, e₂⟩` from `hk (Complex.I • H⁻¹ *ᵥ Pi.single k 1) f`. Use `⟨(-(1 / (4 * Real.pi)) : ℂ) • (g₁ + Complex.I • g₂), Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hd₀]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `J _ = dOp ρ H k (J f)`. Rewrite using `[dOp, map_smul, map_add, map_smul, e₁, e₂]`. Use `choose x hx using h1`. Use `choose d hd' using h2`. Use `⟨x, d, isCCR_restrict j hj hx hd' hc, fun X f => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ex : ∀ k f, J (x k f) = xOp ρ k (J f)` using `fun k f => (congrArg Subtype.val (hx k f)).trans (hx₀ k _)`. Establish `ed : ∀ k f, J (d k f) = dOp ρ H k (J f)` using `fun k f => (congrArg Subtype.val (hd' k f)).trans (hd₀ k _)`. Simplify using `only [nOp, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply, map_sum, map_smul, ex, ed]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ops {ι : Type} [Fintype ι] [DecidableEq ι] (H : Matrix ι ι ℂ) (hH : Hᴴ = H) (hd : H.det ≠ 0)
     {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] (ρ : (ι → ℂ) → B →L[ℂ] B)
@@ -89,13 +89,13 @@ open scoped Classical
 open GlobalTheory.RealWeil in
 
 /- English proof (translation)
-Introduce `D θ σ h ψ hψ S T`. Set `J : thetaSub ψ S T →ₗ[ℂ] BB ψ S T` to `{ toFun := fun f => toB hψ f.1 f.2 map_add' := fun f g => QB_ext fun x => rfl map_smul' := fun a f => QB_ext fun x => rfl }`. Establish `hc : ∀ f, ((J f).1 : WO S T → ℂ) = f.1` using `fun f => coe_toB hψ f.1 f.2`. Establish `hJ : Function.Injective J` using `fun f g e => Subtype.ext (by rw [← hc, ← hc, e])`. Establish `ht : ∀ f, IsThetaFunO ψ S T (J f).1` using `fun f => (hc f).symm ▸ f.2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ f, GlobalTheory.RealWeil.Sm (rhoV hψ σ S T) (J f)` using `fun f => sm_of_theta h hψ _ (ht f)`. Establish `hk : ∀ v f, ∃ g, J g = dH (rhoV hψ σ S T) v (J f)`. Introduce `v f`. Take `⟨F', hF', hd⟩` from `exists_deriv h hψ (J f) (ht f) v`. Use `⟨⟨F'.1, hF'⟩, QB_ext fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc]`. Conclude with `(hd w).unique (((ev _ _ w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_dH v (hs f)))`. Take `⟨x, d, hxd, hn⟩` from `ThOps.exists_ops (HM S T) HM_herm HM_det (rhoV hψ σ S T) (isHeis_rhoB h hψ) J hJ hs hk`. Use `⟨x, d, hxd, fun X f F hF => ?_⟩` and prove the remaining obligations. Establish `e : F = J f` using `QB_ext fun w => by rw [hF, hc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← hn, hc]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Lift.exists_isCCR_theta : ∀ (D : D7) (θ : InfF D) (σ : (D.what₂.Tau → ℂ) →+ AE D), GlobalTheory.FockCompare.Chart θ σ → ∀ (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D), ∃ x d : GlobalTheory.RealWeil.Ix S T → Module.End ℂ (GlobalTheory.RealWeil.thetaSub ψ S T), IsCCR x d ∧ ∀ (X : Matrix (GlobalTheory.RealWeil.Ix S T) (GlobalTheory.RealWeil.Ix S T) ℂ) (f : GlobalTheory.RealWeil.thetaSub ψ S T) (F : GlobalTheory.RealWeil.BB ψ S T), (F.1 : WO S T → ℂ) = f.1 → ((∑ k, ∑ l, X k l • (x k * d l)) f).1 = (nOp (GlobalTheory.RealWeil.rhoV hψ σ S T) (GlobalTheory.RealWeil.HM S T) X F).1 := by
   intro D θ σ h ψ hψ S T

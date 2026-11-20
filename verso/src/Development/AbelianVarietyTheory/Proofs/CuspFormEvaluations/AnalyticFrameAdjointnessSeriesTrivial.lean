@@ -21,9 +21,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnValAd
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_C_mul, ← GlobalTheory.JetLinSub.tay_coord k, coeff_tay, coeff_tay]`. Unfold `mD lD`. Establish `hf : (fun v : Fin g → ℂ => c * v k) = c • (fun v : Fin g → ℂ => v k)`. Use function extensionality and compare the values at `v`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[smul_eq_mul]`. Rewrite using `[hf, iteratedFDeriv_const_smul_apply (by fun_prop)]`. Simplify using `[smul_eq_mul, mul_div_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tay_coord {g : ℕ} (c : ℂ) (k : Fin g) :
     tay (fun v : Fin g → ℂ => c * v k) 0 = MvPowerSeries.C c * MvPowerSeries.X ((0 : Fin 1), k) := by
@@ -37,7 +37,7 @@ theorem tay_coord {g : ℕ} (c : ℂ) (k : Fin g) :
   simp [smul_eq_mul, mul_div_assoc]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.JetLinSub.psJet_X (κ := κ) m s`. Unfold `psJet psTrunc at h ⊢`. Simplify using `only [MvPowerSeries.coeff_C_mul, ← MvPolynomial.C_mul_monomial, ← Finset.mul_sum, map_mul, h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem psJet_CX {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (c : ℂ) (s : κ) :
     psJet m (MvPowerSeries.C c * MvPowerSeries.X s : MvPowerSeries κ ℂ) =
@@ -47,9 +47,9 @@ theorem psJet_CX {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (c : ℂ) (
   simp only [MvPowerSeries.coeff_C_mul, ← MvPolynomial.C_mul_monomial, ← Finset.mul_sum, map_mul, h]
 
 /- English proof (translation)
-Unfold `jetN`. Establish `hf : (fun v : Fin (n * g) → ℂ => (fun w : Fin n → Fin g → ℂ => c * w i j) (colsOf n g v)) = fun v => c * v (finProdFinEquiv (i, j))` using `rfl`. Rewrite using `[hf]`. Unfold `jetOf`. Rewrite using `[tay_coord, psJet_CX]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show Ideal.Quotient.mk _ (MvPolynomial.aeval (fun p : Fin 1 × Fin (n * g) => (MvPolynomial.X (finProdFinEquiv.symm p.2) : MvPolynomial (Fin n × Fin g) ℂ)) (MvPolynomial.C c * MvPolynomial.X ((0 : Fin 1), finProdFinEquiv (i, j)))) = _`. Rewrite using `[map_mul, MvPolynomial.aeval_C, MvPolynomial.aeval_X, MvPolynomial.algebraMap_eq, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetN_coord {n g : ℕ} (m : ℕ) (c : ℂ) (i : Fin n) (j : Fin g) :
     jetN m (fun w : Fin n → Fin g → ℂ => c * w i j) =
@@ -66,7 +66,7 @@ theorem jetN_coord {n g : ℕ} (m : ℕ) (c : ℂ) (i : Fin n) (j : Fin g) :
   rw [map_mul, MvPolynomial.aeval_C, MvPolynomial.aeval_X, MvPolynomial.algebraMap_eq, Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.JetLinSub.psJet_X]`. Use `show Ideal.Quotient.mk _ (MvPolynomial.aeval (fun i => sb i - MvPolynomial.C (MvPolynomial.constantCoeff (sb i))) (MvPolynomial.X p)) = _`. Rewrite using `[MvPolynomial.aeval_X, hc, map_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_X_eq {n n' g : ℕ} (m : ℕ) (sb : Fin n × Fin g → MvPolynomial (Fin n' × Fin g) ℂ) (p : Fin n × Fin g)
     (hc : MvPolynomial.constantCoeff (sb p) = 0) :
@@ -78,9 +78,9 @@ theorem subst_X_eq {n n' g : ℕ} (m : ℕ) (sb : Fin n × Fin g → MvPolynomia
   rw [MvPolynomial.aeval_X, hc, map_zero, sub_zero]
 
 /- English proof (translation)
-Establish `h` using `psJet_CX m c ((0 : Fin 1), j)`. Unfold `psJet at h`. Establish `h'` using `congrArg (⇑(jetMap (fun p : Fin 1 × Fin g => (MvPolynomial.X (![i] p.1, p.2) : MvPolynomial (Fin n' × Fin g) ℂ)) (fun _ => X_mem_orig _) : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin n' × Fin g) m)) h`. Establish `e1 : ∀ P : MvPolynomial (Fin 1 × Fin g) ℂ, (jetMap (fun p : Fin 1 × Fin g => (MvPolynomial.X (![i] p.1, p.2) : MvPolynomial (Fin n' × Fin g) ℂ)) (fun _ => X_mem_orig _) : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin n' × Fin g) m) (Ideal.Quotient.mk (orig ℂ (Fin 1 × Fin g) ^ (m + 1)) …` using `fun _ => rfl`. Rewrite `h'` using `[e1, e1, map_mul, MvPolynomial.aeval_C, MvPolynomial.aeval_X, MvPolynomial.algebraMap_eq]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `psIn`. Rewrite using `[← MvPolynomial.aeval_X_left_apply (MvPolynomial.rename _ _), MvPolynomial.aeval_rename]`. Conclude with `h'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_psIn_lin {n' g : ℕ} (m : ℕ) (i : Fin n') (c : ℂ) (j : Fin g) :
     Ideal.Quotient.mk (orig ℂ (Fin n' × Fin g) ^ (m + 1))
@@ -104,7 +104,7 @@ theorem mk_psIn_lin {n' g : ℕ} (m : ℕ) (i : Fin n') (c : ℂ) (j : Fin g) :
   exact h'
 
 /- English proof (translation)
-Take `⟨h1, rfl⟩` from `h`. Take `⟨h2, rfl⟩` from `h'`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem jetMap_unique {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {x0 : Sp ℂ ⟶ S} {g : ℕ}
     (Φ : AnFr A L x0 g) {n m : ℕ} {ψ ψ' : Sp (Jet ℂ (Fin n × Fin g) m) ⟶ A.left}
@@ -114,13 +114,13 @@ theorem jetMap_unique {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {x0
   rfl
 
 /- English proof (translation)
-Establish `hφ : φ = Sum.elim ψ' ψ`. Use function extensionality and compare the values at `k`. Consider the cases of `k with`. Consider the case `inl k => exact h1 k`. Consider the case `inr k => exact h2 k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Substitute `hφ` using the available equality. Introduce `x`. Rewrite using `[Fintype.sum_sum_type, Fintype.sum_sum_type, add_assoc, ← Finset.sum_add_distrib]`. Use `(congrArg (HAdd.hAdd _) (Finset.sum_eq_zero fun k _ => ?_)).trans (add_zero _)` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Establish `key : ∀ (P : Prop) (i1 i2 : Decidable P) (b : ℤ), @ite ℤ P i1 (-b) 0 + @ite ℤ P i2 b 0 = 0`. Introduce `P i1 i2 b`. Distinguish the cases in `hP : P`. Rewrite using `[@if_pos P i1 hP, @if_pos P i2 hP]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[@if_neg P i1 hP, @if_neg P i2 hP]`. Use linear arithmetic over natural numbers and integers. Conclude with `key _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sameSum_cancel {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K ⊕ K → (Y ⟶ X)) (ψ ψ' : K → (Y ⟶ X))
     (ε : K → ℤ) (h1 : ∀ k, φ (Sum.inl k) = ψ' k) (h2 : ∀ k, φ (Sum.inr k) = ψ k) :
@@ -145,9 +145,9 @@ theorem sameSum_cancel {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K ⊕ K �
   exact key _ _ _ _
 
 /- English proof (translation)
-Unfold `scaleGen unitΓ`. Simplify using `only [map_one]`. Consider the cases of `t`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `one_mul _`.
+A detailed English derivation is pending.
 -/
 theorem scaleGen_one {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {A : Type} [CommRing A] {K : Type} [Fintype K] (φ : K → (Sp A ⟶ Xo.univ.t.G.left))
@@ -163,7 +163,7 @@ def pairL {g : ℕ} (A B : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) : (Fin 2
   LinearMap.pi ![A ∘ₗ LinearMap.proj 0, B ∘ₗ LinearMap.proj 1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pairL_apply {g : ℕ} (A B : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (w : Fin 2 → Fin g → ℂ) :
     pairL A B w = ![A (w 0), B (w 1)] := by
@@ -171,43 +171,37 @@ theorem pairL_apply {g : ℕ} (A B : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ _ y g ty el Φ hImm hstar e he a`. Establish `h3 : ∀ (b : 𝓞 E) (j : Fin g), (anFB ty).A.act b j = MvPowerSeries.C (ty j (b : E)) * MvPowerSeries.X ((0 : Fin 1), j)`. Introduce `b j`. Both sides reduce to the same expression. Establish `h5 : ∀ m : ℕ, psJet m (1 : MvPowerSeries (Fin 2 × Fin g) ℂ) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `m`. Unfold `psJet psTrunc`. Rewrite using `[Finset.sum_eq_single 0]`. Rewrite using `[MvPowerSeries.coeff_zero_one, ← MvPolynomial.C_apply, map_one, map_one]`. Introduce `b _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MvPowerSeries.coeff_one, if_neg hb, map_zero]`. Introduce `h0`. It suffices to derive a contradiction. Apply `h0` to reduce the goal to its premises. Simplify using `[degLE]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun _ => 0, by ext i; simp⟩`. Take `⟨wL, hwL, hread⟩` from `GlobalTheory.AdjRead.exists_adj_reading_one E H Dw l Xo c y g ty el Φ a`. Use `⟨wL, hwL, fun m => ⟨1, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[show (anFB ty).ad a = 1 from rfl, h5, Units.val_one]`. Rewrite using `[scaleGen_one]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hJ, -, hMul, -, -⟩` from `GlobalTheory.AnVal.jetPts_jetMap E H Dw l Xo c y g ty el Φ 2 m`. Take `⟨-, hq, hlift⟩` from `hMul (jpt y g Φ.jx m 0) (jpt y g Φ.jx m 1) (LinearMap.proj 0) (LinearMap.proj 1) (hJ 0) (hJ 1)`. Establish `R1` using `GlobalTheory.AnValJetGlob.jetRd_pullGen _ _ _ _ g Φ.toAnFr 2 m _ _ _ _ wL (Sum.elim (fun I => psumL 2 g I ∘ₗ pairL LinearMap.id (tyAct ty (H.bar a))) (fun I => psumL 2 g I ∘ₗ pairL (tyAct ty a) LinearMap.id)) _ hq (fun v => by`. Establish `h` using `hread (colsOf 2 g v 0) (colsOf 2 g v 1)`. Establish `hp : (fun k => (Sum.elim (fun I => psumL 2 g I ∘ₗ pairL LinearMap.id (tyAct ty (H.bar a))) (fun I => psumL 2 g I ∘ₗ pairL (tyAct ty a) LinearMap.id) : ULift.{0} (Finset (Fin 2)) ⊕ ULift.{0} (Finset (Fin 2)) → (Fin 2 → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) k (colsOf 2 g v)) = Sum.elim (fu …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases k with I | I <;> simp only [Sum.elim_inl, Sum.elim_inr, LinearMap.comp_apply, pairL_apply, LinearMap.id_apply]`. Rewrite using `[hp]`. Conclude with `h)`. Rewrite `R1` using `[← hlift]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hσA : ∀ p : Fin 2 × Fin g, (jetSubstP m (fun p => ![fun j => psIn g m ![0] ((anFB ty).A.act a j), fun j => MvPolynomial.X ((1 : Fin 2), j)] p.1 p.2) : Jet ℂ (Fin 2 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m) (psJet m (MvPowerSeries.X p)) = jetN m (fun w => pairL (tyAct ty a) Linear …`. Introduce and unpack `⟨i, j⟩`. Use `fin_cases i`. Use `show (jetSubstP m _ : Jet ℂ (Fin 2 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m) (psJet m (MvPowerSeries.X ((0 : Fin 2), j))) = jetN m (fun w => pairL (tyAct ty a) LinearMap.id w 0 j)`. Rewrite using `[subst_X_eq]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `show Ideal.Quotient.mk _ (psIn g m ![0] ((anFB ty).A.act a j)) = _`. Establish `hw : (fun w : Fin 2 → Fin g → ℂ => pairL (tyAct ty a) LinearMap.id w 0 j) = fun w => ty j (a : E) * w 0 j`. Use function extensionality and compare the values at `w`. Simplify using `[pairL_apply, tyAct]`. Rewrite using `[hw, jetN_coord, h3, mk_psIn_lin]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show MvPolynomial.constantCoeff (psIn g m ![0] ((anFB ty).A.act a j)) = 0`. Rewrite using `[h3]`. Unfold `psIn psTrunc`. Simplify using the standard rewrite rules. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Introduce `e _`. Rewrite using `[MvPolynomial.constantCoeff_monomial]`. Use `split_ifs with he`. Substitute `he` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `show (jetSubstP m _ : Jet ℂ (Fin 2 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m) (psJet m (MvPowerSeries.X ((1 : Fin 2), j))) = jetN m (fun w => pairL (tyAct ty a) LinearMap.id w 1 j)`. Rewrite using `[subst_X_eq]`. Use `show Ideal.Quotient.mk _ (MvPolynomial.X ((1 : Fin 2), j)) = _`. Establish `hw : (fun w : Fin 2 → Fin g → ℂ => pairL (tyAct ty a) LinearMap.id w 1 j) = fun w => 1 * w 1 j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Simplify using `[pairL_apply]`. Rewrite using `[hw, jetN_coord, map_one, _root_.one_mul]`. Use `show MvPolynomial.constantCoeff (MvPolynomial.X ((1 : Fin 2), j) : MvPolynomial (Fin 2 × Fin g) ℂ) = 0`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hσB : ∀ p : Fin 2 × Fin g, (jetSubstP m (fun p => ![fun j => MvPolynomial.X ((0 : Fin 2), j), fun j => psIn g m ![1] ((anFB ty).A.act (H.bar a) j)] p.1 p.2) : Jet ℂ (Fin 2 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m) (psJet m (MvPowerSeries.X p)) = jetN m (fun w => pairL LinearMap.i …`. Introduce and unpack `⟨i, j⟩`. Use `fin_cases i`. Use `show (jetSubstP m _ : Jet ℂ (Fin 2 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m) (psJet m (MvPowerSeries.X ((0 : Fin 2), j))) = jetN m (fun w => pairL LinearMap.id (tyAct ty (H.bar a)) w 0 j)`. Rewrite using `[subst_X_eq]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 2), j)) = _`. Establish `hw : (fun w : Fin 2 → Fin g → ℂ => pairL LinearMap.id (tyAct ty (H.bar a)) w 0 j) = fun w => 1 * w 0 j`. Use function extensionality and compare the values at `w`. Simplify using `[pairL_apply]`. Rewrite using `[hw, jetN_coord, map_one, _root_.one_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show MvPolynomial.constantCoeff (MvPolynomial.X ((0 : Fin 2), j) : MvPolynomial (Fin 2 × Fin g) ℂ) = 0`. Simplify using the standard rewrite rules. Use `show (jetSubstP m _ : Jet ℂ (Fin 2 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m) (psJet m (MvPowerSeries.X ((1 : Fin 2), j))) = jetN m (fun w => pairL LinearMap.id (tyAct ty (H.bar a)) w 1 j)`. Rewrite using `[subst_X_eq]`. Use `show Ideal.Quotient.mk _ (psIn g m ![1] ((anFB ty).A.act (H.bar a) j)) = _`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : (fun w : Fin 2 → Fin g → ℂ => pairL LinearMap.id (tyAct ty (H.bar a)) w 1 j) = fun w => ty j ((H.bar a : 𝓞 E) : E) * w 1 j`. Use function extensionality and compare the values at `w`. Simplify using `[pairL_apply, tyAct]`. Rewrite using `[hw, jetN_coord, h3, mk_psIn_lin]`. Use `show MvPolynomial.constantCoeff (psIn g m ![1] ((anFB ty).A.act (H.bar a) j)) = 0`.
-
-Rewrite using `[h3]`. Unfold `psIn psTrunc`. Simplify using the standard rewrite rules. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `e _`.
-
-Rewrite using `[MvPolynomial.constantCoeff_monomial]`. Use `split_ifs with he`. Substitute `he` using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
-
-Establish `R2` using `GlobalTheory.JetLinSub.jetRd_linSubst _ _ _ _ g Φ.toAnFr 2 2 m _ _ hσA _ _ _ _ _ (he m).2`. Establish `R3` using `GlobalTheory.JetLinSub.jetRd_linSubst _ _ _ _ g Φ.toAnFr 2 2 m _ _ hσB _ _ _ _ _ (he m).2`. Establish `AdjoinForm` using `(GlobalTheory.AnVal.jetRd_mul_inv_pow _ _ _ _ g Φ.toAnFr 2 m _ _ _ _ _ _ _ _ _ _ R1 R2).1`. Use `GlobalTheory.AnVal.JetCorr.corr_of_jetRd _ _ _ _ g Φ.toAnFr hImm 2 m _ _ _ _ _ _ _ _ _ _ AdjoinForm R3 ?_` and prove the remaining obligations. Conclude with `sameSum_cancel _ _ _ _ (fun k => jetMap_unique Φ.toAnFr (R1.1 (Sum.inl k)) (R3.1 k)) (fun k => jetMap_unique Φ.toAnFr (R1.1 (Sum.inr k)) (R2.1 k))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem adjoint_series_trivial : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] [StarRing (𝓞 E)] (y : FrPt Xo c ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (el : Fin g ≃ Lt1 Dw) (Φ : AnPt y g ty el), Φ.toAnFr.Imm → (∀ a : 𝓞 E, star a = H.bar a) → ∀ e : ∀ m, FrTy y g Φ.jx m, Φ.IsAnE e → ∀ a : 𝓞 E, ∃ wL : LB.Gen (LB.LinComb Xo.univ.t.PP.L (Sum.elim (cφ ![fst Xo.univ.t.G Xo.univ.t.G, snd Xo.univ.t.G Xo.univ.t.G ≫ Xo.univ.t.act.act (H.bar a)]) (cφ ![fst Xo.univ.t.G Xo.univ.t.G ≫ Xo.univ.t.act.act a, snd Xo.univ.t.G Xo.univ.t.G])) (Sum.elim (cε 2) fun I => -cε 2 I)), wL.IsGen ∧ ∀ m, ∃ u : (Jet ℂ (Fin 2 × Fin g) m)ˣ, (u : Jet ℂ (Fin 2 × Fin g) m) = psJet m ((anFB ty).ad a) ∧ LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ (LB.mulGen Xo.univ.t.PP.L _ _ _ _ (LB.pullGen Xo.univ.t.PP.L _ _ wL (lift (jpt y g Φ.jx m (0 : Fin 2)) (jpt y g Φ.jx m (1 : Fin 2))).left) (pe y g Φ.jx e m ![fun j => psIn g m ![0] ((anFB ty).A.act a j), fun j => MvPolynomial.X ((1 : Fin 2), j)])) (scaleGen _ _ (unitΓ u) (pe y g Φ.jx e m ![fun j => MvPolynomial.X ((0 : Fin 2), j), fun j => psIn g m ![1] ((anFB ty).A.act (H.bar a) j)])) := by
   intro E _ _ _ H Dw l Xo c _ _ y g ty el Φ hImm hstar e he a

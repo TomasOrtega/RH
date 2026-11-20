@@ -14,18 +14,18 @@ variable {F : Type} [Field F] [NumberField F]
 private noncomputable def E (κ : Fin 2 → F) (u : Fin 2 → A F) : ℂ := ψ (rt (κ 0) * u 0 + rt (κ 1) * u 1)
 
 /- English proof (translation)
-The claim follows from `continuous_ψ.comp (((continuous_const).mul (continuous_apply 0)).add ((continuous_const).mul (continuous_apply 1)))`.
+A detailed English derivation is pending.
 -/
 private theorem E_cont (κ : Fin 2 → F) : Continuous (E κ) :=
   continuous_ψ.comp (((continuous_const).mul (continuous_apply 0)).add ((continuous_const).mul (continuous_apply 1)))
 
 /- English proof (translation)
-The claim follows from `norm_ψ _`.
+A detailed English derivation is pending.
 -/
 private theorem E_norm (κ : Fin 2 → F) (u : Fin 2 → A F) : ‖E κ u‖ = 1 := norm_ψ _
 
 /- English proof (translation)
-Simplify using `only [E, ← UpperTheory.ConvolutionTheory.R2.ψ_add]`. Use `congr 1`. Simplify using `only [Pi.add_apply, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem E_add_left (κ κ' : Fin 2 → F) (u : Fin 2 → A F) : E (κ + κ') u = E κ u * E κ' u := by
   simp only [E, ← UpperTheory.ConvolutionTheory.R2.ψ_add]
@@ -34,7 +34,7 @@ private theorem E_add_left (κ κ' : Fin 2 → F) (u : Fin 2 → A F) : E (κ + 
   ring
 
 /- English proof (translation)
-Simplify using `only [E, ← UpperTheory.ConvolutionTheory.R2.ψ_add]`. Use `congr 1`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem E_add_right (κ : Fin 2 → F) (u v : Fin 2 → A F) : E κ (u + v) = E κ u * E κ v := by
   simp only [E, ← UpperTheory.ConvolutionTheory.R2.ψ_add]
@@ -43,15 +43,15 @@ private theorem E_add_right (κ : Fin 2 → F) (u v : Fin 2 → A F) : E κ (u +
   ring
 
 /- English proof (translation)
-Simplify using `[E]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem E_zero (u : Fin 2 → A F) : E (0 : Fin 2 → F) u = 1 := by
   simp [E]
 
 /- English proof (translation)
-Introduce `ξ hξ x`. Take `⟨η, rfl⟩` from `mem_vecLattice.1 hξ`. Rewrite using `[E_add_right]`. Establish `: E κ (fun i => algebraMap F (A F) (η i)) = 1`. Simplify using `only [E]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_mul, ← map_mul, ← map_add]`. Conclude with `ψ_rt _`. Rewrite using `[this, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem E_per (κ : Fin 2 → F) : ∀ ξ ∈ vecLattice F (Fin 2), ∀ x, E κ (ξ + x) = E κ x := by
   intro ξ hξ x
@@ -64,13 +64,11 @@ private theorem E_per (κ : Fin 2 → F) : ∀ ξ ∈ vecLattice F (Fin 2), ∀ 
   rw [this, one_mul]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, adelicChar F x ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `adelicChar_ne_one (K := F) (DFunLike.ext _ _ fun x => by simpa using h x)`. Establish `hx' : ψ x ≠ 1` using `fun h => hx (Circle.ext (by simpa [ψ] using h))`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `Function.ne_iff.1 hκ`. Establish `hr : rt (κ i) * rt (κ i)⁻¹ = (1 : A F)`. Rewrite using `[← map_mul, mul_inv_cancel₀ hi, map_one]`. Use `⟨Pi.single i (rt (κ i)⁻¹ * x), ?_⟩` and prove the remaining obligations. Use `fin_cases i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.zero_eta, Fin.isValue] at hr ⊢`. Simplify using `only [E, Pi.single_eq_same, ne_eq, zero_ne_one, not_false_eq_true, Pi.single_eq_of_ne, mul_zero, add_zero, ← mul_assoc, hr, one_mul, Fin.isValue, one_ne_zero]`. Conclude with `hx'`. Simplify using `only [Fin.mk_one, Fin.isValue] at hr ⊢`. Simplify using `only [E, Pi.single_eq_same, ne_eq, zero_ne_one, not_false_eq_true, Pi.single_eq_of_ne, mul_zero, zero_add, ← mul_assoc, hr, one_mul, Fin.isValue, one_ne_zero]`.
-
-Conclude with `hx'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_ne (κ : Fin 2 → F) (hκ : κ ≠ 0) : ∃ a, E κ a ≠ 1 := by
   obtain ⟨x, hx⟩ : ∃ x, adelicChar F x ≠ 1 := by
@@ -93,9 +91,9 @@ private theorem exists_ne (κ : Fin 2 → F) (hκ : κ ≠ 0) : ∃ a, E κ a �
     exact hx'
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_ne κ hκ`. Express the relevant statement in the definitionally equal form `∫ u in vecDomain F (Fin 2), E κ u ∂(vecMeasure F (Fin 2)) = 0`. Establish `h` using `setIntegral_comp_add (K := F) (ι := Fin 2) a (h := E κ) (E_per κ)`. Simplify using `only [E_add_right] at h`. Rewrite `h` using `[integral_mul_const]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (∫ u in vecDomain F (Fin 2), E κ u ∂(vecMeasure F (Fin 2))) * (E κ a - 1) = 0`. Rewrite using `[mul_sub, h, mul_one, sub_self]`. Conclude with `(mul_eq_zero.1 h1).resolve_right (sub_ne_zero.2 ha)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem E_int (κ : Fin 2 → F) (hκ : κ ≠ 0) : ∫ u in FS2 F, E κ u ∂(adeleMeasurePi F) = 0 := by
   obtain ⟨a, ha⟩ := exists_ne κ hκ
@@ -108,27 +106,27 @@ private theorem E_int (κ : Fin 2 → F) (hκ : κ ≠ 0) : ∫ u in FS2 F, E κ
   exact (mul_eq_zero.1 h1).resolve_right (sub_ne_zero.2 ha)
 
 /- English proof (translation)
-Rewrite using `[Measure.restrict_apply_univ]`. Conclude with `vecMeasure_vecDomain`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vol : (adeleMeasurePi F).restrict (FS2 F) Set.univ = 1 := by
   rw [Measure.restrict_apply_univ]
   exact vecMeasure_vecDomain
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [vol]; exact ENNReal.one_lt_top⟩`.
+Supply the required witnesses or components.
 -/
 private theorem fin_inst : IsFiniteMeasure ((adeleMeasurePi F).restrict (FS2 F)) :=
   ⟨by rw [vol]; exact ENNReal.one_lt_top⟩
 
 /- English proof (translation)
-Rewrite using `[integral_const, measureReal_def, vol]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem int_const (a : ℝ) : ∫ _ in FS2 F, a ∂(adeleMeasurePi (ι := Fin 2) F) = a := by
   rw [integral_const, measureReal_def, vol]
   simp
 
 /- English proof (translation)
-Simplify using `only [E_zero]`. Rewrite using `[integral_const, measureReal_def, vol]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem E_int_zero : ∫ u in FS2 F, E (0 : Fin 2 → F) u ∂(adeleMeasurePi F) = 1 := by
   simp only [E_zero]
@@ -136,24 +134,24 @@ private theorem E_int_zero : ∫ u in FS2 F, E (0 : Fin 2 → F) u ∂(adeleMeas
   simp
 
 /- English proof (translation)
-Take `⟨C, hC, hs⟩` from `exists_isCompact_superset_vecDomain (K := F) (ι := Fin 2)`. Conclude with `(hg.continuousOn.integrableOn_compact (μ := vecMeasure F (Fin 2)) hC).mono_set hs`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem cont_int {g : (Fin 2 → A F) → ℂ} (hg : Continuous g) : IntegrableOn g (FS2 F) (adeleMeasurePi F) := by
   obtain ⟨C, hC, hs⟩ := exists_isCompact_superset_vecDomain (K := F) (ι := Fin 2)
   exact (hg.continuousOn.integrableOn_compact (μ := vecMeasure F (Fin 2)) hC).mono_set hs
 
 /- English proof (translation)
-Use `haveI := countable_numberField F`. Use `haveI := fin_inst (F := F)`. Use `set g : (Fin 2 → F) → (Fin 2 → A F) → ℂ := fun ξ u => E (κ₀ + L ξ) u * c ξ with hgdef`. Establish `hgc : ∀ ξ, Continuous (g ξ)` using `fun ξ => (E_cont _).mul continuous_const`. Establish `hgn : ∀ ξ u, ‖g ξ u‖ = ‖c ξ‖` using `fun ξ u => by simp [hgdef, norm_mul, E_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ u, Summable fun ξ => E (L ξ) u * c ξ` using `fun u => Summable.of_norm (by simpa [norm_mul, E_norm] using hc)`. Establish `e : ∀ u, Φ u * E κ₀ u = c₀ * E κ₀ u + ∑' ξ, g ξ u`. Introduce `u`. Rewrite using `[hΦ, add_mul, ← tsum_mul_right]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Simplify using `only [hgdef, E_add_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcont : Continuous fun u => ∑' ξ, g ξ u` using `continuous_tsum hgc hc fun ξ u => (hgn ξ u).le`. Establish `hI` using `cont_int hcont`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT` using `cont_int (E_cont κ₀)`. Establish `hT' : IntegrableOn (fun u => c₀ * E κ₀ u) (FS2 F) (adeleMeasurePi F)` using `hT.const_mul c₀`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [e]`. Conclude with `hT'.add hI`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hS` using `hasSum_integral_of_summable_integral_norm (μ := (adeleMeasurePi F).restrict (FS2 F)) (F := g) (fun ξ => cont_int (hgc ξ)) (by`. Simplify using `only [hgn]`. Simplify `hc)` using `only [int_const]`. Establish `h2 : (∫ u in FS2 F, Φ u * E κ₀ u ∂(adeleMeasurePi F)) - c₀ * ∫ u in FS2 F, E κ₀ u ∂(adeleMeasurePi F) = ∫ u in FS2 F, ∑' ξ, g ξ u ∂(adeleMeasurePi F)`. Simplify using `only [e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[integral_add hT' hI, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Simplify `hS` using `only [hgdef, integral_mul_const]`.
+A detailed English derivation is pending.
 -/
 private theorem core (κ₀ : Fin 2 → F) (L : (Fin 2 → F) → Fin 2 → F) (c₀ : ℂ) (c : (Fin 2 → F) → ℂ)
     (hc : Summable fun ξ => ‖c ξ‖) (Φ : (Fin 2 → A F) → ℂ) (hΦ : ∀ u, Φ u = c₀ + ∑' ξ, E (L ξ) u * c ξ) :
@@ -197,31 +195,29 @@ end UpperTheory.ConvolutionTheory.R2.G.OrthogonalVectors
 
 open UpperTheory.ConvolutionTheory.R2.G.OrthogonalVectors in
 /- English proof (translation)
-Introduce `F _ _ δ hδ c₀ c Φ hc hΦ`. Use `set L : (Fin 2 → F) → Fin 2 → F := fun ξ => ![-(2 * ξ 0), 2 * δ * ξ 1] with hL`. Establish `hchi : ∀ ξ u, chi δ ξ u = E (L ξ) u`. Introduce `ξ u`. Simplify using `only [chi, E, hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, map_neg, map_mul, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `hΦ' : ∀ u, Φ u = c₀ + ∑' ξ, E (L ξ) u * c ξ` using `fun u => by`. Rewrite using `[hΦ]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hchi]`. Use `set κ : Fin 2 → F := ![2, 0] with hκ`. Establish `hψ : ∀ u : Fin 2 → A F, ψ (2 * u 0) = E κ u`. Introduce `u`. Establish `h2A : rt (2 : F) = (2 : A F)` using `map_ofNat _ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [E, hκ]`. Use `congr 1`. Simplify using `[h2A]`. Establish `h2 : (2 : F) ≠ 0` using `two_ne_zero`. Establish `hκ0 : κ ≠ 0` using `fun h => h2 (by simpa [hκ] using congrFun h 0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i0, s0⟩` from `core 0 L c₀ c hc Φ hΦ'`. Take `⟨i1, s1⟩` from `core κ L c₀ c hc Φ hΦ'`. Simplify using `only [E_zero, mul_one, zero_add] at i0 s0`. Simplify using `only [← hψ] at i1`. Use `⟨i0, i1, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t : HasSum (fun ξ => (∫ u in FS2 F, E (L ξ) u ∂(adeleMeasurePi F)) * c ξ) (c 0)`. Establish `hL0 : L 0 = 0`. Apply the tactic sequence `ext i; fin_cases i <;> simp [hL]`. Use `hasSum_single (f := fun ξ => (∫ u in FS2 F, E (L ξ) u ∂(adeleMeasurePi F)) * c ξ) (0 : Fin 2 → F) (fun ξ hξ => by` as an intermediate fact. Establish `hne : L ξ ≠ 0` using `fun h => hξ (by`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a0` using `congrFun h 0`. Establish `a1` using `congrFun h 1`. Simplify using `only [hL, Matrix.cons_val_zero, Matrix.cons_val_one, Pi.zero_apply, neg_eq_zero, mul_eq_zero, h2, hδ, false_or] at a0 a1`. Use extensionality with `i`. Use `fin_cases i`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `a0`. Conclude with `a1)`. Rewrite using `[E_int _ hne, zero_mul])`. Simplify `this` using `only [hL0, E_int_zero, one_mul]`. Establish `e1` using `s0.unique t`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∫ u in FS2 F, (1 : ℂ) ∂(adeleMeasurePi F) = 1`. Simplify `E_int_zero (F := F)` using `only [E_zero]`. Rewrite `e1` using `[e2, mul_one]`. Rewrite `e1` using `[sub_eq_iff_eq_add]`. Rewrite using `[e1, add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t : HasSum (fun ξ => (∫ u in FS2 F, E (κ + L ξ) u ∂(adeleMeasurePi F)) * c ξ) (c ![1, 0])`. Establish `hL0 : κ + L ![1, 0] = 0`. Apply the tactic sequence `ext i; fin_cases i <;> simp [hL, hκ]`. Use `hasSum_single (f := fun ξ => (∫ u in FS2 F, E (κ + L ξ) u ∂(adeleMeasurePi F)) * c ξ) (![1, 0] : Fin 2 → F) (fun ξ hξ => by` as an intermediate fact. Establish `hne : κ + L ξ ≠ 0` using `fun h => hξ (by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `a0` using `congrFun h 0`. Establish `a1` using `congrFun h 1`. Simplify using `only [hL, hκ, Pi.add_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Pi.zero_apply, zero_add, mul_eq_zero, h2, hδ, false_or] at a0 a1`. Use extensionality with `i`. Use `fin_cases i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: 2 * (1 - ξ 0) = 0` using `by linear_combination a0`. Use `(mul_eq_zero.1 this).resolve_left h2` as an intermediate fact. Simplify using `using (sub_eq_zero.1 this).symm`. Simplify using `using a1)`. Rewrite using `[E_int _ hne, zero_mul])`.
-
-Simplify `this` using `only [hL0, E_int_zero, one_mul]`. Establish `e1` using `s1.unique t`. Rewrite `e1` using `[E_int κ hκ0, mul_zero, sub_zero]`. Simplify `e1` using `only [hψ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.orth :
     ∀ (F : Type) [Field F] [NumberField F] (δ : F), δ ≠ 0 → ∀ (c₀ : ℂ) (c : (Fin 2 → F) → ℂ) (Φ : (Fin 2 → A F) → ℂ), Summable (fun ξ => ‖c ξ‖) →

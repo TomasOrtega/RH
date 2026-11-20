@@ -4,27 +4,25 @@ universe u
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C _ _ I H _ _ _ _ F hIF hEx`. Take `⟨E', M, hc, hF⟩` from `hEx`. Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' C H`. Take `⟨σ, hσ⟩` from `Module.projective_lifting_property π LinearMap.id hπ`. Set `P : H →ₗ[C] M` to `Submodule.linearProjOfIsCompl M E' hc.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `q : H →ₗ[C] H` to `M.subtype ∘ₗ P`. Establish `hPq : ∀ x, P (q x) = P x` using `fun x => Submodule.linearProjOfIsCompl_apply_left hc.symm (P x)`. Establish `hqq : ∀ x, q (q x) = q x` using `fun x => congrArg Subtype.val (hPq x)`. Establish `hqE : ∀ x ∈ E', q x = 0` using `fun x hx => by`. Establish `h0 : P x = 0` using `(Submodule.linearProjOfIsCompl_apply_eq_zero_iff hc.symm).2 hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ((P x : M) : H) = 0`. Rewrite using `[h0]`. Both sides reduce to the same expression. Establish `hxq : ∀ x, x - q x ∈ F`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hF]`. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Establish `h0 : P (x - q x) = 0` using `by rw [map_sub, hPq, sub_self]`. Conclude with `(Submodule.linearProjOfIsCompl_apply_eq_zero_iff hc.symm).1 h0`. Establish `hσπ : ∀ x, π (σ x) = x` using `fun x => LinearMap.congr_fun hσ x`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `s0 : H →ₗ[C] (Fin n → C ⧸ I)` to `(LinearMap.pi fun k => (Submodule.mkQ I) ∘ₗ LinearMap.proj k) ∘ₗ σ ∘ₗ q`. Establish `hs0 : F ≤ LinearMap.ker s0`. Rewrite using `[← hF]`. Use `sup_le (fun x hx => ?_) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker] show (LinearMap.pi fun k => (Submodule.mkQ I) ∘ₗ LinearMap.proj k) (σ (q x)) = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hqE x hx, map_zero, map_zero]`. Use `Submodule.smul_le.2 (fun c hcI y _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_smul]`. Use function extensionality and compare the values at `k`. Use `show c • (Submodule.mkQ I (σ (q y) k)) = 0`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `I.mul_mem_right _ hcI`. Set `s : (H ⧸ F) →ₗ[C] (Fin n → C ⧸ I)` to `F.liftQ s0 hs0`. Set `e : Fin n → (Fin n → C)` to `fun k j => if k = j then 1 else 0`. Establish `hk : ∀ k, I ≤ LinearMap.ker (LinearMap.toSpanSingleton C (H ⧸ F) (F.mkQ (q (π (e k)))))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `k c hcI`. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hIF (Submodule.smul_mem_smul hcI Submodule.mem_top)`. Set `g : Fin n → ((C ⧸ I) →ₗ[C] (H ⧸ F))` to `fun k => I.liftQ _ (hk k)`. Set `r : (Fin n → C ⧸ I) →ₗ[C] (H ⧸ F)` to `∑ k, g k ∘ₗ LinearMap.proj k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨n, s, r, ?_⟩` and prove the remaining obligations. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use extensionality with `x`. Establish `h1 : r (s (F.mkQ x)) = F.mkQ (q (π (σ (q x))))`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ π (σ (q x)), map_sum, map_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [r, s, g, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply, Submodule.liftQ_apply, Submodule.mkQ_apply, s0, LinearMap.pi_apply]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.toSpanSingleton_apply, map_smul, ← Submodule.Quotient.mk_smul]`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, h1, hσπ, hqq]`. Use `show F.mkQ (q x) = F.mkQ x`.
-
-Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, eq_comm, Submodule.Quotient.eq]`. Conclude with `hxq x`.
+A detailed English derivation is pending.
 -/
 theorem quotient_retract_pi_quotient :
     ∀ {C : Type} [CommRing C] [IsLocalRing C] (I : Ideal C) {H : Type u} [AddCommGroup H] [Module C H]

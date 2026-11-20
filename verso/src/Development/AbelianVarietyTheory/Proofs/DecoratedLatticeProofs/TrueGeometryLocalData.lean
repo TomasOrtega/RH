@@ -25,7 +25,7 @@ noncomputable section
 namespace GlobalTheory.FamTrace
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha hT' row col hc κ hκ y e`. Establish `hx : embA a.d.B.d a.d.B.o κ ∈ GfC ((I.rec7 l Z).sp.Y 0)` using `GlobalTheory.Corev.EmbAGfC.embA_mem_GfC_fin _ _ _ _ _ _ _ _ κ hκ`. Rewrite using `[GlobalTheory.T.true_geometry_final_identity W hA u a ha hT' row col hc κ hκ y e, GlobalTheory.T.true_geometry_final_value W hA u a ha hT' row col hc _ hx]`. Unfold `InYLev InLevG`. Rewrite using `[GlobalTheory.T.moves_embA_iff_moves_and_keepsPairs_off_gP W hA u a ha hT' row col hc κ hκ, GlobalTheory.T.true_geometry_final_property W hA u a ha hT' row col hc κ hκ, ← GlobalTheory.T.carriesLatticeCompletion_on_off_iff_all_finitePlaces _ κ _ (fun p => p ∈ a.v.gP)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 The claim follows by propositional logic.
 -/

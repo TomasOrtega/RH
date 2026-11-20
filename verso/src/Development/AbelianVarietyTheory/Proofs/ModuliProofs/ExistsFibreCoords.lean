@@ -15,17 +15,17 @@ open GlobalTheory.KS
 namespace GlobalTheory.KS
 
 /- English proof (translation)
-Set `ψ : J → Module.Dual K (Fin g → K)` to `φ`. Establish `hspan : Submodule.span K (Set.range ψ) = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Establish `hco : (Submodule.span K (Set.range ψ)).dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Rewrite `hw` using `[Submodule.mem_dualCoannihilator]`. Conclude with `(Submodule.mem_bot K).2 (h w fun i => hw _ (Submodule.subset_span ⟨i, rfl⟩))`. Establish `hdim` using `Subspace.finrank_add_finrank_dualCoannihilator_eq (Submodule.span K (Set.range ψ))`. Rewrite `hdim` using `[hco, finrank_bot, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdim, Subspace.dual_finrank_eq]`. Take `⟨b, hbsub, hbspan, hbli⟩` from `exists_linearIndependent K (Set.range ψ)`. Set `B : Module.Basis b K (Module.Dual K (Fin g → K))` to `Module.Basis.mk hbli (le_of_eq (by rw [Subtype.range_coe, hbspan, hspan]))`. Set `D : Module.Basis (Fin g) K (Module.Dual K (Fin g → K))` to `(Pi.basisFun K (Fin g)).dualBasis`. Set `e : b ≃ Fin g` to `B.indexEquiv D`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hex : ∀ k : Fin g, ∃ j, ψ j = ((e.symm k : b) : Module.Dual K (Fin g → K))` using `fun k => hbsub (e.symm k).2`. Use `choose c hc using hex`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hM : (Matrix.of fun a k => φ (c k) (Pi.single a 1)) = D.toMatrix (B.reindex e)`. Use extensionality with `a k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.of_apply]`. Express the relevant statement in the definitionally equal form `ψ (c k) (Pi.single a 1) = _`. Rewrite using `[hc k]`. Simplify using `only [Module.Basis.toMatrix_apply, D, Module.Basis.dualBasis_repr, Module.Basis.reindex_apply, B, Module.Basis.mk_apply, Pi.basisFun_apply]`. Rewrite using `[hM]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Establish `hone` using `congrArg Matrix.det (D.toMatrix_mul_toMatrix_flip (B.reindex e))`. Rewrite `hone` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one hone`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_det_ne_zero_of_common_ker {K J : Type} [Field K] {g : ℕ} (φ : J → (Fin g → K) →ₗ[K] K)
     (h : ∀ w, (∀ i, φ i w = 0) → w = 0) :
@@ -64,9 +64,9 @@ theorem exists_det_ne_zero_of_common_ker {K J : Type} [Field K] {g : ℕ} (φ : 
   exact zero_ne_one hone
 
 /- English proof (translation)
-Use `revert h`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ p _`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `@insert a s ha ih`. Introduce `h p hp`. Rewrite using `[Finset.inf_insert]`. Conclude with `⟨h a (Finset.mem_insert_self a s) hp, ih (fun i hi => h i (Finset.mem_insert_of_mem hi)) hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem top_le_preimage_finset_inf {X : Scheme.{0}} (x : Sp ℂ ⟶ X) {κ : Type} (s : Finset κ) (W : κ → X.Opens)
     (h : ∀ i ∈ s, ⊤ ≤ x ⁻¹ᵁ W i) : ⊤ ≤ x ⁻¹ᵁ (s.inf W) := by
@@ -82,11 +82,11 @@ theorem top_le_preimage_finset_inf {X : Scheme.{0}} (x : Sp ℂ ⟶ X) {κ : Typ
     exact ⟨h a (Finset.mem_insert_self a s) hp, ih (fun i hi => h i (Finset.mem_insert_of_mem hi)) hp⟩
 
 /- English proof (translation)
-Establish `key : ∀ (y : Sp ℂ ⟶ X), ⊤ ≤ y ⁻¹ᵁ W' → valAt' y W' (resG X h f) = valAt' y W f`. Introduce `y hy`. Establish `hy2 : ⊤ ≤ y ⁻¹ᵁ W` using `hy.trans (fun q hq => h hq)`. Unfold `valAt'`. Rewrite using `[dif_pos hy, dif_pos hy2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `valAt`. Use `congr 1`. Rewrite using `[← Scheme.Hom.map_appLE y hy (homOfLE h).op]`. Both sides reduce to the same expression. Establish `hopen : IsOpen (dom u m W')`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `(u.hol (m ⁻¹ᵁ W') 0).1`. Apply `Filter.EventuallyEq.fderiv_eq` to reduce the goal to its premises. Use `filter_upwards [hopen.mem_nhds hz] with z' hz'`. Conclude with `key _ hz'`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem fderiv_fn_resG {g : ℕ} {A₀ : Over (Sp ℂ)} [GrpObj A₀] {L₀ : LB A₀.left} (u : HolUnif A₀ L₀ g)
     {X : Scheme.{0}} (m : A₀.left ⟶ X) {W W' : X.Opens} (h : W' ≤ W) (f : Γ(X, W)) {z : Fin g → ℂ}
@@ -107,13 +107,13 @@ theorem fderiv_fn_resG {g : ℕ} {A₀ : Over (Sp ℂ)} [GrpObj A₀] {L₀ : LB
   exact key _ hz'
 
 /- English proof (translation)
-Introduce `P₀ u Hm χ hG R _ x₀ X p m hsm hpb z`. Set `J : Type` to `{Wf : (W : X.Opens) × Γ(X, W) // z ∈ dom u m Wf.1}`. Set `φ : J → (Fin P₀.g → ℂ) →ₗ[ℂ] ℂ` to `fun j => (fderiv ℂ (fn u m j.1.1 j.1.2) z).toLinearMap`. Establish `hker : ∀ w, (∀ j, φ j w = 0) → w = 0`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hδ : PtDer ((u.ex z).left ≫ m) (fun _ _ => (0 : ℂ))` using `⟨fun _ _ _ _ => by simp, fun _ _ _ _ => by simp, fun _ _ _ _ _ => rfl⟩`. Take `⟨w₀, _, huniq⟩` from `GlobalTheory.T.existsUnique_uniformising_vector_vertical_tangent P₀ u Hm χ hG R x₀ X p m hsm hpb z (fun _ _ => 0) hδ (fun _ => rfl)`. Establish `e1 : w = w₀` using `huniq w (fun W f hzW => (hw ⟨⟨W, f⟩, hzW⟩).symm)`. Establish `e2 : (0 : Fin P₀.g → ℂ) = w₀` using `huniq 0 (fun W f _ => (ContinuousLinearMap.map_zero _).symm)`. Conclude with `e1.trans e2.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_det_ne_zero_of_common_ker φ hker`. Establish `hzW : z ∈ dom u m (Finset.univ.inf fun b => (c b).1.1)` using `top_le_preimage_finset_inf ((u.ex z).left ≫ m) Finset.univ (fun b => (c b).1.1) (fun b _ => (c b).2)`. Use `⟨Finset.univ.inf fun b => (c b).1.1, fun b => resG X (Finset.inf_le (Finset.mem_univ b)) (c b).1.2, hzW, ?_⟩` and prove the remaining obligations. Establish `hE : (Matrix.of fun a b => fderiv ℂ (fn u m (Finset.univ.inf fun b => (c b).1.1) (resG X (Finset.inf_le (Finset.mem_univ b)) (c b).1.2)) z (Pi.single a 1)) = Matrix.of fun a b => φ (c b) (Pi.single a 1)`. Use extensionality with `a b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply]`. Rewrite using `[fderiv_fn_resG u m (Finset.inf_le (Finset.mem_univ b)) (c b).1.2 hzW]`. Both sides reduce to the same expression. Rewrite using `[hE]`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fibre_coords : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (R : Type) [CommRing R] (x₀ : R →+* ℂ) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : P₀.A.left ⟶ X), Smooth p → IsPullback m P₀.A.hom p (spMap x₀) → ∀ z, ∃ (W : X.Opens) (t : Fin P₀.g → Γ(X, W)), z ∈ dom u m W ∧ (Matrix.of fun a b => fderiv ℂ (fn u m W (t b)) z (Pi.single a 1)).det ≠ 0 := by
   intro P₀ u Hm χ hG R _ x₀ X p m hsm hpb z

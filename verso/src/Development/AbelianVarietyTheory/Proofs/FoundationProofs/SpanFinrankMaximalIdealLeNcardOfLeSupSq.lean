@@ -10,7 +10,7 @@ namespace GlobalTheory
 universe u
 
 /- English proof (translation)
-Establish `h : maximalIdeal S ≤ Ideal.span s` using `Submodule.le_of_le_smul_of_le_jacobson_bot (IsNoetherian.noetherian _) (maximalIdeal_le_jacobson ⊥) (by rwa [smul_eq_mul, ← pow_two])`. Rewrite using `[le_antisymm h h₁]`. Conclude with `Submodule.spanFinrank_span_le_ncard_of_finite hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanFinrank_maximalIdeal_le_ncard_of_le_sup_sq {S : Type*} [CommRing S] [IsLocalRing S]
     [IsNoetherianRing S] {s : Set S} (hs : s.Finite) (h₁ : Ideal.span s ≤ maximalIdeal S)
@@ -23,13 +23,13 @@ theorem spanFinrank_maximalIdeal_le_ncard_of_le_sup_sq {S : Type*} [CommRing S] 
   exact Submodule.spanFinrank_span_le_ncard_of_finite hs
 
 /- English proof (translation)
-Establish `: IsNoetherianRing S` using `isNoetherianRing_of_surjective P S f hf`. Use `IsLocalHom.of_surjective f hf` as an intermediate fact. Establish `hfg` using `(maximalIdeal S).fg_of_isNoetherianRing`. Establish `hfin` using `Submodule.FG.finite_generators hfg`. Set `g` to `Function.surjInv hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg (y : S) : f (g y) = y` using `Function.surjInv_eq hf y`. Establish `hmap : (Ideal.span (g '' (maximalIdeal S).generators)).map f = maximalIdeal S`. Rewrite using `[Ideal.map_span, ← Set.image_comp]`. Establish `: f ∘ g = id` using `funext hg`. Rewrite using `[this, Set.image_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(maximalIdeal S).span_generators`. Establish `hcomap : maximalIdeal P = Ideal.span (g '' (maximalIdeal S).generators) ⊔ RingHom.ker f`. Rewrite using `[← maximalIdeal_comap f]`. Use `conv_lhs => rw [← hmap, Ideal.comap_map_of_surjective f hf]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Submodule.FG.generators_ncard hfg]`. Use `(spanFinrank_maximalIdeal_le_ncard_of_le_sup_sq (hfin.image g) ?_ ?_).trans (Set.ncard_image_le hfin)` and prove the remaining obligations. Conclude with `le_sup_left.trans hcomap.ge`. Conclude with `hcomap.le.trans (sup_le_sup_left hker _)`.
+A detailed English derivation is pending.
 -/
 theorem spanFinrank_maximalIdeal_le_of_ker_le_sq {P S : Type*} [CommRing P] [IsLocalRing P]
     [IsNoetherianRing P] [CommRing S] [IsLocalRing S] (f : P →+* S) (hf : Function.Surjective f)
@@ -57,9 +57,9 @@ theorem spanFinrank_maximalIdeal_le_of_ker_le_sq {P S : Type*} [CommRing P] [IsL
   · exact hcomap.le.trans (sup_le_sup_left hker _)
 
 /- English proof (translation)
-Use `ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isDomain P` as an intermediate fact. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Establish `h₁` using `ringKrullDim_succ_le_of_surjective f hf (mem_nonZeroDivisors_of_ne_zero h0) hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h₁` using `[← IsRegularLocalRing.spanFinrank_maximalIdeal (R := P), ← IsRegularLocalRing.spanFinrank_maximalIdeal (R := S)]`. Establish `h₂` using `spanFinrank_maximalIdeal_le_of_ker_le_sq f hf hker`. Establish `h₃ : (maximalIdeal S).spanFinrank + 1 ≤ (maximalIdeal P).spanFinrank`. Conclude with `h₁` after adjusting the coercions. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ker_eq_bot_of_isRegularLocalRing_of_le_sq {P S : Type*} [CommRing P] [IsRegularLocalRing P]
     [CommRing S] [IsRegularLocalRing S] (f : P →+* S) (hf : Function.Surjective f)
@@ -77,19 +77,19 @@ theorem ker_eq_bot_of_isRegularLocalRing_of_le_sq {P S : Type*} [CommRing P] [Is
   omega
 
 /- English proof (translation)
-Proceed by induction on `hn : (maximalIdeal P).spanFinrank using Nat.strong_induction_on generalizing P with`. Consider the case `_ n ih`. Distinguish the cases in `hker : RingHom.ker f ≤ maximalIdeal P ^ 2`. Rewrite using `[ker_eq_bot_of_isRegularLocalRing_of_le_sq f hf hker]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨x, hx, hx2⟩` from `SetLike.not_le_iff_exists.mp hker`. Establish `hxm : x ∈ maximalIdeal P` using `le_maximalIdeal (RingHom.ker_ne_top f) hx`. Use `ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.quotient_span_singleton hxm hx2` as an intermediate fact. Establish `hlt : (maximalIdeal (P ⧸ Ideal.span {x})).spanFinrank < n`. Establish `h₁` using `ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.spanFinrank_maximalIdeal_quotient_succ_le P hxm hx2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₁` using `[← spanFinrank_maximalIdeal_eq_finrank_cotangentSpace]`. Use linear arithmetic over natural numbers and integers. Establish `hle : Ideal.span {x} ≤ RingHom.ker f` using `(Ideal.span_singleton_le_iff_mem _).mpr hx`. Set `π` to `Ideal.Quotient.mk (Ideal.span {x})`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mk_surjective`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f' : P ⧸ Ideal.span {x} →+* S` to `Ideal.Quotient.lift _ f hle`. Establish `hf' : Function.Surjective f'` using `Ideal.Quotient.lift_surjective_of_surjective _ hle hf`. Establish `hk : RingHom.ker f' = (RingHom.ker f).map π` using `Ideal.ker_quotient_lift f hle`. Establish `hm : maximalIdeal (P ⧸ Ideal.span {x}) = (maximalIdeal P).map π` using `(map_maximalIdeal_of_surjective π hπ).symm`. Establish `h` using `ih _ hlt _ f' hf' rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hk, hm, ← Ideal.map_pow, ← Ideal.map_mul]`. Introduce and unpack `y ⟨hy₁, hy₂⟩`. Establish `hy` using `h ⟨Ideal.mem_map_of_mem π hy₁, Ideal.mem_map_of_mem π hy₂⟩`. Take `⟨z, hz, hzy⟩` from `(Ideal.mem_map_iff_of_surjective π hπ).mp hy`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.mp (Ideal.Quotient.eq.mp hzy.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz2 : z ∈ maximalIdeal P ^ 2`. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mono_right (le_maximalIdeal (RingHom.ker_ne_top f)) hz`. Establish `ham : a ∈ maximalIdeal P`. Assume the negation of the conclusion as `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hu : IsUnit a` using `by simpa using hu`. Conclude with `hx2 ((Ideal.unit_mul_mem_iff_mem _ hu).mp (ha ▸ sub_mem hy₂ hz2))`. Rewrite using `[← sub_add_cancel y z, ← ha]`. Conclude with `add_mem (Ideal.mul_mem_mul ham hx) hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_inf_sq_le_of_isRegularLocalRing {S : Type*} [CommRing S] [IsRegularLocalRing S]
     (P : Type u) [CommRing P] [IsRegularLocalRing P] (f : P →+* S) (hf : Function.Surjective f) :
@@ -132,13 +132,13 @@ theorem ker_inf_sq_le_of_isRegularLocalRing {S : Type*} [CommRing S] [IsRegularL
   exact add_mem (Ideal.mul_mem_mul ham hx) hz
 
 /- English proof (translation)
-Rewrite using `[Algebra.FormallySmooth.iff_injective_cotangentComplexBaseChange_residueField P hf (IsNoetherian.noetherian _), injective_iff_map_eq_zero]`. Establish `hs : Function.Surjective (algebraMap P (ResidueField S))`. Rewrite using `[IsScalarTower.algebraMap_eq P S]`. Conclude with `residue_surjective.comp hf`. Establish `hk : RingHom.ker (algebraMap P (ResidueField S)) = maximalIdeal P` using `eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective _ hs)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `(Algebra.FormallySmooth.kerCotangentToTensor_injective_iff (R := R) hs).mpr inferInstance`. Introduce `t ht`. Take `⟨x, rfl⟩` from `TensorProduct.mk_surjective P _ _ hs t`. Rewrite `ht` using `[TensorProduct.mk_apply, KaehlerDifferential.cotangentComplexBaseChange_tmul, one_smul]`. Establish `hxm : x.1 ∈ RingHom.ker (algebraMap P (ResidueField S))` using `hk.ge (le_maximalIdeal (RingHom.ker_ne_top _) x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : (RingHom.ker (algebraMap P (ResidueField S))).toCotangent ⟨x.1, hxm⟩ = 0` using `hinj (by rw [map_zero]; exact ht)`. Establish `h₁ : x.1 ∈ maximalIdeal P ^ 2` using `hk ▸ (Ideal.toCotangent_eq_zero _ _).mp h₁`. Establish `h₂` using `ker_inf_sq_le_of_isRegularLocalRing P _ hf ⟨x.2, h₁⟩`. Establish `h₃ : x ∈ maximalIdeal P • (⊤ : Submodule P (RingHom.ker (algebraMap P S)))`. Rewrite using `[Submodule.mem_smul_top_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h₂`. Use `Submodule.smul_induction_on h₃ (fun a ha y _ ↦ ?_) (fun a b ha hb ↦ ?_)` and prove the remaining obligations. Establish `: algebraMap P (ResidueField S) a = 0` using `hk.ge ha`. Rewrite using `[TensorProduct.mk_apply, ← TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, this, TensorProduct.zero_tmul]`. Rewrite using `[map_add, ha, hb, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formallySmooth_of_isRegularLocalRing_of_surjective (R P S : Type*) [CommRing R]
     [CommRing P] [IsRegularLocalRing P] [CommRing S] [IsRegularLocalRing S]
@@ -174,15 +174,15 @@ theorem formallySmooth_of_isRegularLocalRing_of_surjective (R P S : Type*) [Comm
   · rw [map_add, ha, hb, add_zero]
 
 /- English proof (translation)
-Take `⟨n, f₀, hf₀⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp (inferInstance : Algebra.FiniteType k (Algebra.EssFiniteType.subalgebra k S))`. Set `g : MvPolynomial (Fin n) k →ₐ[k] S` to `(Algebra.EssFiniteType.subalgebra k S).val.comp f₀`. Set `p : Ideal (MvPolynomial (Fin n) k)` to `(maximalIdeal S).comap g`. Set `P` to `Localization.AtPrime p`. Establish `hu (x : MvPolynomial (Fin n) k) : x ∈ p.primeCompl ↔ IsUnit (g x)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[p, Ideal.mem_primeCompl_iff]`. Set `fP : P →ₐ[k] S` to `IsLocalization.liftAlgHom (M := p.primeCompl) (f := g) fun x ↦ (hu _).mp x.2`. Establish `hf₁ : Function.Surjective fP`. Introduce `x`. Take `⟨x, ⟨s, hs⟩, rfl⟩` from `IsLocalization.exists_mk'_eq (Algebra.EssFiniteType.submonoid k S) x`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `hf₀ x`. Take `⟨s, rfl⟩` from `hf₀ s`. Use `⟨IsLocalization.mk' (M := p.primeCompl) _ x ⟨s, (hu _).mpr hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.eq_mk'_iff_mul_eq]`. Express the relevant statement in the definitionally equal form `_ * g s = g x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e (y) : g y = fP (algebraMap _ P y)` using `by simp [fP]`. Use `congrArg fP (IsLocalization.mk'_spec P x (⟨s, (hu _).mpr hs⟩ : p.primeCompl))` as an intermediate fact. Rewrite `this` using `[map_mul, ← e, ← e]`. Then use the resulting hypothesis. Use `algebraize [fP.toRingHom]`. Establish `: Algebra.FormallyEtale (MvPolynomial (Fin n) k) P` using `.of_isLocalization p.primeCompl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.FormallySmooth k P` using `.comp _ (MvPolynomial (Fin n) k) _`. Establish `: Module.Free P Ω[P⁄k]` using `.of_equiv (KaehlerDifferential.tensorKaehlerEquivOfFormallyEtale k (MvPolynomial (Fin n) k) P)`. Conclude with `formallySmooth_of_isRegularLocalRing_of_surjective k P S hf₁`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formallySmooth_of_isRegularLocalRing_of_residueField (k S : Type*) [Field k]
     [CommRing S] [IsRegularLocalRing S] [Algebra k S] [Algebra.EssFiniteType k S]
@@ -216,7 +216,7 @@ theorem formallySmooth_of_isRegularLocalRing_of_residueField (k S : Type*) [Fiel
   exact formallySmooth_of_isRegularLocalRing_of_surjective k P S hf₁
 
 /- English proof (translation)
-The claim follows from `have : Algebra.EssFiniteType k (ResidueField S) := .comp k S _ formallySmooth_of_isRegularLocalRing_of_residueField k S`.
+A detailed English derivation is pending.
 -/
 theorem formallySmooth_of_isRegularLocalRing_of_perfectField (k S : Type*) [Field k]
     [PerfectField k] [CommRing S] [IsRegularLocalRing S] [Algebra k S]
@@ -225,9 +225,9 @@ theorem formallySmooth_of_isRegularLocalRing_of_perfectField (k S : Type*) [Fiel
   formallySmooth_of_isRegularLocalRing_of_residueField k S
 
 /- English proof (translation)
-Establish `hfree : Module.Free S Ω[S⁄k]` using `Module.free_of_flat_of_isLocalRing`. Use `⟨hfree, ?_⟩` and prove the remaining obligations. Establish `hs : Function.Surjective (algebraMap S (ResidueField S))` using `residue_surjective`. Establish `hinj` using `(Algebra.FormallySmooth.kerCotangentToTensor_injective_iff (R := k) hs).mpr inferInstance`. Establish `hsurj : Function.Surjective (KaehlerDifferential.kerCotangentToTensor k S (ResidueField S))` using `fun y ↦ (KaehlerDifferential.exact_kerCotangentToTensor_mapBaseChange k S _ hs y).mp (Subsingleton.elim _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e : CotangentSpace S ≃ₗ[S] ResidueField S ⊗[S] Ω[S⁄k]` to `(Ideal.Cotangent.equivOfEq _ _ ker_residue.symm).trans (LinearEquiv.ofBijective _ ⟨hinj, hsurj⟩)`. Rewrite using `[(e.extendScalarsOfSurjective hs).finrank_eq, Module.finrank_baseChange]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem free_and_finrank_kaehler_eq_finrank_cotangentSpace (k S : Type*) [Field k] [CommRing S]
     [IsLocalRing S] [Algebra k S] [Algebra.EssFiniteType k S] [Algebra.FormallySmooth k S]
@@ -248,17 +248,17 @@ theorem free_and_finrank_kaehler_eq_finrank_cotangentSpace (k S : Type*) [Field 
   rw [(e.extendScalarsOfSurjective hs).finrank_eq, Module.finrank_baseChange]
 
 /- English proof (translation)
-Establish `: IsNoetherianRing S` using `IsLocalization.isNoetherianRing x.primeCompl S inferInstance`. Set `` to `Ideal.Quotient.field x`. Establish `: Module.Finite B x.Cotangent` using `.of_surjective _ x.toCotangent_surjective`. Establish `: Module.Finite (B ⧸ x) x.Cotangent` using `.of_restrictScalars_finite B _ _`. Set `b` to `Module.finBasis (B ⧸ x) x.Cotangent`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose y hy using fun i ↦ x.toCotangent_surjective (b i)`. Establish `h : x ≤ Ideal.span (Set.range fun i ↦ (y i : B)) ⊔ x ^ 2`. Introduce `z hz`. Use `choose c hc using fun i ↦ Ideal.Quotient.mk_surjective (b.repr (x.toCotangent ⟨z, hz⟩) i)`. Establish `h₁ : x.toCotangent ⟨z, hz⟩ = x.toCotangent (∑ i, c i • y i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← b.sum_repr (x.toCotangent ⟨z, hz⟩), map_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, hy, ← hc]`. Both sides reduce to the same expression. Establish `h₂` using `(Ideal.toCotangent_eq x).mp h₁`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← add_sub_cancel ((∑ i, c i • y i : x) : B) z]`. Use `Submodule.add_mem_sup ?_ h₂` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum]`. Conclude with `sum_mem fun i _ ↦ Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`. Establish `hm : x.map (algebraMap B S) = maximalIdeal S` using `IsLocalization.AtPrime.map_eq_maximalIdeal x S`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← spanFinrank_maximalIdeal_eq_finrank_cotangentSpace]`. Use `(spanFinrank_maximalIdeal_le_ncard_of_le_sup_sq (s := Set.range fun i ↦ algebraMap B S (y i)) (Set.finite_range _) ?_ ?_).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hm.le (Ideal.mem_map_of_mem _ (y i).2)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.map_mono (f := algebraMap B S) h` as an intermediate fact. Rewrite `this` using `[Ideal.map_sup, Ideal.map_pow, hm, Ideal.map_span, ← Set.range_comp]`. Then use the resulting hypothesis. Rewrite using `[← Set.image_univ]`. Use `(Set.ncard_image_le Set.finite_univ).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finrank_cotangentSpace_le_finrank_cotangent {B : Type*} [CommRing B] [IsNoetherianRing B]
     (x : Ideal B) [x.IsMaximal] (S : Type*) [CommRing S] [IsLocalRing S] [Algebra B S]
@@ -297,7 +297,7 @@ theorem finrank_cotangentSpace_le_finrank_cotangent {B : Type*} [CommRing B] [Is
     simp
 
 /- English proof (translation)
-Establish `h₃` using `ringKrullDim_le_spanFinrank_maximalIdeal S`. Rewrite `h₃` using `[spanFinrank_maximalIdeal_eq_finrank_cotangentSpace]`. Establish `h₄ : Module.finrank (ResidueField S) (CotangentSpace S) = d` using `h₂.antisymm (by exact_mod_cast h₁.trans h₃)`. Establish `h₅ : ringKrullDim S = d` using `le_antisymm (h₄ ▸ h₃) h₁`. Conclude with `⟨(IsRegularLocalRing.iff_finrank_cotangentSpace S).mpr (by rw [h₄, h₅]), h₅, h₄⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isRegularLocalRing_of_finrank_cotangentSpace_le (S : Type*) [CommRing S] [IsLocalRing S]
     [IsNoetherianRing S] {d : ℕ} (h₁ : (d : WithBot ℕ∞) ≤ ringKrullDim S)
@@ -312,7 +312,7 @@ theorem isRegularLocalRing_of_finrank_cotangentSpace_le (S : Type*) [CommRing S]
   exact ⟨(IsRegularLocalRing.iff_finrank_cotangentSpace S).mpr (by rw [h₄, h₅]), h₅, h₄⟩
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (IsScalarTower.toAlgHom R B (ResidueField S))` using `(IsLocalization.AtPrime.equivQuotMaximalIdeal x S).surjective.comp Ideal.Quotient.mk_surjective`. Establish `: Algebra.FiniteType R (ResidueField S)` using `.of_surjective _ hs`. Establish `: Algebra.FiniteType k (ResidueField S)` using `.of_restrictScalars_finiteType R _ _`. Establish `: Module.Finite k (ResidueField S)` using `finite_of_finite_type_of_isJacobsonRing _ _`. Conclude with `Algebra.FormallyEtale.of_isSeparable k _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formallyEtale_residueField_of_isMaximal (R k : Type*) [CommRing R] [Field k]
     [PerfectField k] [Algebra R k] {B : Type*} [CommRing B] [Algebra R B] [Algebra.FiniteType R B]
@@ -327,7 +327,7 @@ theorem formallyEtale_residueField_of_isMaximal (R k : Type*) [CommRing R] [Fiel
   exact Algebra.FormallyEtale.of_isSeparable k _
 
 /- English proof (translation)
-The claim follows from `have : IsNoetherianRing S := Algebra.EssFiniteType.isNoetherianRing k S have := (isRegularLocalRing_of_finrank_cotangentSpace_le S h₁ h₂).1 formallySmooth_of_isRegularLocalRing_of_perfectField k S`.
+A detailed English derivation is pending.
 -/
 theorem formallySmooth_of_finrank_cotangentSpace_le (k S : Type*) [Field k] [PerfectField k]
     [CommRing S] [IsLocalRing S] [Algebra k S] [Algebra.EssFiniteType k S] {d : ℕ}
@@ -339,9 +339,9 @@ theorem formallySmooth_of_finrank_cotangentSpace_le (k S : Type*) [Field k] [Per
   formallySmooth_of_isRegularLocalRing_of_perfectField k S
 
 /- English proof (translation)
-Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing k A`. Establish `h₃` using `finrank_cotangentSpace_le_finrank_cotangent m (Localization.AtPrime m)`. Take `⟨h₄, h₅, h₆⟩` from `isRegularLocalRing_of_finrank_cotangentSpace_le _ h₁ (h₃.trans h₂)`. Establish `h₇` using `formallySmooth_of_isRegularLocalRing_of_perfectField k (Localization.AtPrime m)`. Use `formallyEtale_residueField_of_isMaximal k k m (Localization.AtPrime m)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h₈, h₉⟩` from `free_and_finrank_kaehler_eq_finrank_cotangentSpace k (Localization.AtPrime m)`. Conclude with `⟨h₄, h₅, h₂.antisymm (h₆ ▸ h₃), h₇, h₈, h₉.trans h₆⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSmoothAt_of_finrank_cotangent_le_of_perfectField (k : Type*) [Field k] [PerfectField k]
     {A : Type*} [CommRing A] [Algebra k A] [Algebra.FiniteType k A] (m : Ideal A) [m.IsMaximal]
@@ -360,9 +360,9 @@ theorem isSmoothAt_of_finrank_cotangent_le_of_perfectField (k : Type*) [Field k]
   exact ⟨h₄, h₅, h₂.antisymm (h₆ ▸ h₃), h₇, h₈, h₉.trans h₆⟩
 
 /- English proof (translation)
-Establish `e₁` using `PrimeSpectrum.height_eq_orderHeight (⟨y, inferInstance⟩ : PrimeSpectrum C)`. Establish `e₂` using `PrimeSpectrum.height_eq_orderHeight (PrimeSpectrum.comap ψ ⟨y, inferInstance⟩)`. Use `e₁.trans_le (le_of_le_of_eq ?_ e₂.symm)` and prove the remaining obligations. Use `Order.height_le_height_apply_of_strictMono _ (Monotone.strictMono_of_injective ?_ ?_) _` and prove the remaining obligations. Conclude with `fun _ _ h ↦ Ideal.comap_mono h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `PrimeSpectrum.comap_injective_of_surjective ψ hψ`.
+A detailed English derivation is pending.
 -/
 theorem height_le_height_comap_of_surjective {B C : Type*} [CommRing B] [CommRing C]
     (ψ : B →+* C) (hψ : Function.Surjective ψ) (y : Ideal C) [y.IsPrime] :
@@ -380,21 +380,19 @@ variable (V : Type u) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {A : Type u} [CommRing A] [Algebra V A] [Algebra.FiniteType V A]
 
 /- English proof (translation)
-Establish `: FaithfulSMul V (A ⧸ p)`. Rewrite using `[faithfulSMul_iff_algebraMap_injective, injective_iff_map_eq_zero]`. Introduce `v hv`. Conclude with `hp.le ((Ideal.Quotient.eq_zero_iff_mem (I := p)).mp hv)`. Establish `hq : (x.comap φ).IsMaximal` using `Ideal.comap_isMaximal_of_surjective φ hφ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq' : ((x.comap φ).map (Ideal.Quotient.mk p)).IsPrime` using `Ideal.isPrime_map_quotientMk_of_isPrime hpx`. Establish `hle : (maximalIdeal V).map (algebraMap V (A ⧸ p)) ≤ (x.comap φ).map (Ideal.Quotient.mk p)`. Rewrite using `[IsScalarTower.algebraMap_eq V A (A ⧸ p), ← Ideal.map_map, ← hker]`. Conclude with `Ideal.map_mono (Ideal.ker_le_comap φ)`. Take `⟨r, hr, hrq⟩` from `Ideal.exists_minimalPrimes_le hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hr.1.1` as an intermediate fact. Use `liesOver_maximalIdeal_of_mem_minimalPrimes V hr` as an intermediate fact. Set `` to `Ideal.Quotient.field (maximalIdeal V)`. Establish `: Algebra.FiniteType (V ⧸ maximalIdeal V) ((A ⧸ p) ⧸ r)` using `.of_restrictScalars_finiteType V _ _`. Establish `htr` using `(trdeg_quotient_eq_of_mem_minimalPrimes V (V ⧸ maximalIdeal V) Ideal.Quotient.mk_surjective hr).trans he`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `χ : A →+* (A ⧸ p) ⧸ r` to `(Ideal.Quotient.mk r).comp (Ideal.Quotient.mk p)`. Establish `hχ : Function.Surjective χ` using `Ideal.Quotient.mk_surjective.comp Ideal.Quotient.mk_surjective`. Establish `hkχ : RingHom.ker φ ≤ RingHom.ker χ`. Rewrite using `[hker, Ideal.map_le_iff_le_comap]`. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (hr.1.2 (Ideal.mem_map_of_mem _ hv))`. Establish `hχq : RingHom.ker χ ≤ x.comap φ` using `fun a ha ↦ (Ideal.mem_quotient_iff_mem hpx).mp (hrq (Ideal.Quotient.eq_zero_iff_mem.mp ha))`. Set `ψ : B →+* (A ⧸ p) ⧸ r` to `φ.liftOfSurjective hφ ⟨χ, hkχ⟩`. Establish `hψφ (a : A) : ψ (φ a) = χ a` using `RingHom.liftOfSurjective_comp_apply _ hφ ⟨χ, hkχ⟩ a`. Establish `hψ : Function.Surjective ψ` using `fun c ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `hχ c`. Conclude with `⟨φ a, hψφ a⟩`. Establish `hψx : RingHom.ker ψ ≤ x` using `fun b hb ↦ by`. Take `⟨a, rfl⟩` from `hφ b`. Conclude with `hχq (show χ a = 0 from hψφ a ▸ hb)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcm : (x.map ψ).comap ψ = x`. Rewrite using `[Ideal.comap_map_of_surjective ψ hψ, sup_eq_left]`. Conclude with `hψx`. Establish `: (x.map ψ).IsMaximal`. Use `(Ideal.map_eq_top_or_isMaximal_of_surjective ψ hψ inferInstance).resolve_left fun h ↦ ?_` and prove the remaining obligations.
-
-Rewrite `hcm` using `[h, Ideal.comap_top]`. Conclude with `Ideal.IsMaximal.ne_top inferInstance hcm.symm`. Establish `h` using `height_le_height_comap_of_surjective ψ hψ (x.map ψ)`. Rewrite `h` using `[hcm, ReciprocityTheory.CA.height_eq_of_isMaximal_of_trdeg_eq_field e htr]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem le_height_of_trdeg_quotient_eq {B : Type*} [CommRing B] (φ : A →+* B)
     (hφ : Function.Surjective φ)
@@ -450,9 +448,9 @@ theorem le_height_of_trdeg_quotient_eq {B : Type*} [CommRing B] (φ : A →+* B)
 omit [IsDiscreteValuationRing V] [Algebra.FiniteType V A] in
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Assume the negation of the conclusion as `h0`. Establish `hreg : IsSMulRegular A v` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero h0)`. Use `Set.disjoint_left.mp (Ideal.disjoint_nonZeroDivisors_of_mem_minimalPrimes hp) hv ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_nonZeroDivisors_iff_left.mpr fun a ha ↦ hreg ?_` and prove the remaining obligations. Simplify `ha` using `[Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem under_eq_bot_of_mem_minimalPrimes_of_flat [Module.Flat V A] {p : Ideal A}
     (hp : p ∈ minimalPrimes A) : p.under V = ⊥ := by
@@ -469,15 +467,13 @@ attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 omit [IsDiscreteValuationRing V] in
 
 /- English proof (translation)
-Establish `hbot` using `under_eq_bot_of_mem_minimalPrimes_of_flat V hp`. Use `hp.1.1` as an intermediate fact. Use `IsLocalization.tensorRight (S := A) K (nonZeroDivisors V)` as an intermediate fact. Establish `hdisj : Disjoint (Algebra.algebraMapSubmonoid A (nonZeroDivisors V) : Set A) p`. Rewrite using `[Set.disjoint_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨v, hv, rfl⟩ h`. Conclude with `nonZeroDivisors.ne_zero hv (hbot.le h)`. Prove the components needed by the constructor for the conclusion. Establish `h` using `IsLocalization.minimalPrimes_map (Algebra.algebraMapSubmonoid A (nonZeroDivisors V)) (K ⊗[V] A) ⊥`. Rewrite `h` using `[Ideal.map_bot]`.
+Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.ge ?_` and prove the remaining obligations. Establish `h'` using `IsLocalization.under_map_of_isPrime_disjoint _ (K ⊗[V] A) ‹p.IsPrime› hdisj`. Conclude with `(congrArg (· ∈ minimalPrimes A) h').mpr hp`. Establish `: FaithfulSMul V (A ⧸ p)`. Rewrite using `[faithfulSMul_iff_algebraMap_injective, injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv`. Conclude with `hbot.le ((Ideal.Quotient.eq_zero_iff_mem (I := p)).mp hv)`. Establish `hk` using `Algebra.TensorProduct.lTensor_ker (A := K) (Ideal.Quotient.mkₐ V p) Ideal.Quotient.mk_surjective`. Rewrite `hk` using `[show RingHom.ker (Ideal.Quotient.mkₐ V p) = p from Ideal.mk_ker]`. Establish `hs : Function.Surjective (Algebra.TensorProduct.map (AlgHom.id V K) (Ideal.Quotient.mkₐ V p))` using `LinearMap.lTensor_surjective K (g := (Ideal.Quotient.mkₐ V p).toLinearMap) Ideal.Quotient.mk_surjective`.
-
-Rewrite using `[← hk, ringKrullDim_eq_of_ringEquiv (Ideal.quotientKerAlgEquivOfSurjective hs).toRingEquiv]`. Conclude with `ringKrullDim_genericFibre_eq V K he`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_minimalPrimes_genericFibre_of_flat [Module.Flat V A]
     (K : Type u) [Field K] [Algebra V K] [IsFractionRing V K] {p : Ideal A}
@@ -514,9 +510,9 @@ theorem mem_minimalPrimes_genericFibre_of_flat [Module.Flat V A]
     exact ringKrullDim_genericFibre_eq V K he
 
 /- English proof (translation)
-Take `⟨p, hp, hpx⟩` from `Ideal.exists_minimalPrimes_le (bot_le : ⊥ ≤ x.comap φ)`. Use `hp.1.1` as an intermediate fact. Take `⟨e, he⟩` from `exists_trdeg_eq_natCast V (A := A ⧸ p)`. Take `⟨h₁, h₂⟩` from `mem_minimalPrimes_genericFibre_of_flat V K hp he`. Establish `h₃` using `hd _ h₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h₃` using `[h₂]`. Use `le_trans ?_ (le_height_of_trdeg_quotient_eq V φ hφ hker x p (under_eq_bot_of_mem_minimalPrimes_of_flat V hp) hpx he)` and prove the remaining obligations. Conclude with `h₃` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem le_height_of_flat [Module.Flat V A]
     (K : Type u) [Field K] [Algebra V K] [IsFractionRing V K] {d : ℕ}
@@ -537,13 +533,13 @@ theorem le_height_of_flat [Module.Flat V A]
 end DVR
 
 /- English proof (translation)
-Establish `hm : RingHom.ker (Algebra.ofId R k) = maximalIdeal R` using `eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective (algebraMap R k) hk)`. Establish `h` using `Algebra.TensorProduct.rTensor_ker (R := R) (C := A) (Algebra.ofId R k) hk`. Rewrite `h` using `[hm]`. Set `e` to `Algebra.TensorProduct.lid R A`. Establish `h₁ : (maximalIdeal R).map (algebraMap R A) = ((maximalIdeal R).map (algebraMap R (R ⊗[R] A))).map e.toRingEquiv.toRingHom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_map]`. Use `congr 1`. Use extensionality with `r`. Simplify using `[e, Algebra.algebraMap_eq_smul_one]`. Use extensionality with `a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Rewrite using `[h₁, Ideal.mem_map_iff_of_surjective e.toRingEquiv.toRingHom e.surjective]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Conclude with `⟨1 ⊗ₜ a, h.le (by simpa [RingHom.mem_ker] using ha), by simp [e]⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨a, rfl⟩` from `e.symm.surjective y`. Simplify `h.ge hy` using `[e, RingHom.mem_ker]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ker_includeRight_of_surjective (R : Type*) [CommRing R] [IsLocalRing R] (k : Type*)
     [Field k] [Algebra R k] (hk : Function.Surjective (algebraMap R k)) {A : Type*} [CommRing A]
@@ -573,23 +569,21 @@ theorem ker_includeRight_of_surjective (R : Type*) [CommRing R] [IsLocalRing R] 
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 
 /- English proof (translation)
-Set `q` to `x.comap φ`. Set `L` to `Localization.AtPrime q`. Set `T` to `ResidueField R ⊗[R] L`. Establish `hmq : (maximalIdeal R).map (algebraMap R A) ≤ q` using `hker ▸ Ideal.ker_le_comap φ`. Establish `: q.LiesOver (maximalIdeal R)` using `⟨(maximalIdeal.isMaximal R).eq_of_le (Ideal.IsPrime.ne_top inferInstance) (Ideal.map_le_iff_le_comap.mp hmq)⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isLocalHom_algebraMap_localization_of_liesOver R q` as an intermediate fact. Set `g : L →+* T` to `algebraMap L T`. Establish `hg : Function.Surjective g` using `TensorProduct.mk_surjective R L _ residue_surjective`. Establish `hgk : RingHom.ker g = (RingHom.ker φ).map (algebraMap A L)`. Rewrite using `[hker, Ideal.map_map, ← IsScalarTower.algebraMap_eq]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ker_includeRight_of_surjective R _ residue_surjective`. Establish `hle : RingHom.ker φ ≤ RingHom.ker (g.comp (algebraMap A L))` using `fun a ha ↦ hgk.ge (Ideal.mem_map_of_mem _ ha)`. Set `: Algebra B T` to `(φ.liftOfSurjective hφ ⟨_, hle⟩).toAlgebra`. Establish `hcomp : g.comp (algebraMap A L) = (algebraMap B T).comp φ` using `(RingHom.liftOfSurjective_comp _ hφ ⟨_, hle⟩).symm`. Establish `hloc` using `IsLocalization.of_surjective q.primeCompl L φ hφ g hg hcomp hgk.le`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : q.primeCompl.map φ = x.primeCompl`. Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `ha`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hb`. Take `⟨a, rfl⟩` from `hφ b`. Conclude with `⟨a, hb, rfl⟩`. Rewrite `hloc` using `[hM]`. Set `e : S ≃+* T` to `(IsLocalization.algEquiv x.primeCompl S T).toRingEquiv`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsRegularLocalRing T` using `.of_ringEquiv e`. Establish `: Algebra.EssFiniteType A L` using `.of_isLocalization L q.primeCompl`. Establish `: Algebra.EssFiniteType R L` using `.comp R A L`. Establish `: Algebra.FormallySmooth (ResidueField R) T` using `formallySmooth_of_isRegularLocalRing_of_perfectField _ _`. Establish `hsm : Algebra.FormallySmooth R L` using `Algebra.FormallySmooth.of_formallySmooth_residueField_tensor (P := A) q.primeCompl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfree : Module.Free L Ω[L⁄R]` using `Module.free_of_flat_of_isLocalRing`. Use `⟨hsm, hfree, ?_⟩` and prove the remaining obligations. Set `: Algebra R B` to `(φ.comp (algebraMap R A)).toAlgebra`. Establish `: Algebra.FiniteType R B` using `.of_surjective (⟨φ, fun _ ↦ rfl⟩ : A →ₐ[R] B) hφ`. Establish `: IsScalarTower R B T` using `.of_algebraMap_eq fun r ↦ by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_apply R L T, IsScalarTower.algebraMap_apply R A L]`. Conclude with `congr($hcomp (algebraMap R A r))`. Use `formallyEtale_residueField_of_isMaximal R (ResidueField R) x T` as an intermediate fact. Establish `h` using `(free_and_finrank_kaehler_eq_finrank_cotangentSpace (ResidueField R) T).2`. Rewrite `h` using `[← (KaehlerDifferential.tensorKaehlerEquiv R (ResidueField R) L T).finrank_eq, Module.finrank_baseChange]`.
-
-Rewrite using `[ringKrullDim_eq_of_ringEquiv e, ← (IsRegularLocalRing.iff_finrank_cotangentSpace T).mp inferInstance, ← h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothAt_of_flat_of_isRegularLocalRing (R : Type*) [CommRing R] [IsLocalRing R]
     [PerfectField (ResidueField R)] {A : Type*} [CommRing A] [Algebra R A]
@@ -653,11 +647,11 @@ theorem isSmoothAt_of_flat_of_isRegularLocalRing (R : Type*) [CommRing R] [IsLoc
     ← (IsRegularLocalRing.iff_finrank_cotangentSpace T).mp inferInstance, ← h]
 
 /- English proof (translation)
-Take `⟨f, hf, hs⟩` from `Algebra.IsSmoothAt.exists_notMem_isStandardSmooth R q`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Establish `hle : Submonoid.powers f ≤ q.primeCompl` using `Submonoid.powers_le.mpr hf`. Set `L` to `Localization.AtPrime q`. Set `: Algebra (Localization.Away f) L` to `IsLocalization.localizationAlgebraOfSubmonoidLe _ _ _ _ hle`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower A (Localization.Away f) L` using `IsLocalization.localization_isScalarTower_of_submonoid_le _ _ _ _ hle`. Establish `: IsScalarTower R (Localization.Away f) L` using `.to₁₃₄ R A _ _`. Use `IsLocalization.isLocalization_of_submonoid_le (Localization.Away f) L _ _ hle` as an intermediate fact. Establish `: Algebra.FormallyEtale (Localization.Away f) L` using `.of_isLocalization (q.primeCompl.map (algebraMap A (Localization.Away f)))`. Establish `: Nontrivial (Localization.Away f)` using `(algebraMap (Localization.Away f) L).domain_nontrivial`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.IsStandardSmoothOfRelativeDimension.iff_of_isStandardSmooth, ← hd, ← (KaehlerDifferential.tensorKaehlerEquivOfFormallyEtale R (Localization.Away f) L).finrank_eq, Module.finrank_baseChange, Module.finrank_eq_rank]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isStandardSmoothOfRelativeDimension_of_isSmoothAt (R : Type*) [CommRing R]
     {A : Type*} [CommRing A] [Algebra R A] [Algebra.FinitePresentation R A] (q : Ideal A)
@@ -688,11 +682,11 @@ variable (V K : Type u) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {A : Type u} [CommRing A] [Algebra V A] [Algebra.FiniteType V A] [Module.Flat V A]
 
 /- English proof (translation)
-Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing V A`. Establish `: IsNoetherianRing B` using `isNoetherianRing_of_surjective A B φ hφ`. Establish `: IsNoetherianRing S` using `IsLocalization.isNoetherianRing x.primeCompl S inferInstance`. Establish `: Algebra.FinitePresentation V A` using `Algebra.FinitePresentation.of_finiteType.mp ‹_›`. Establish `h₁ : (d : WithBot ℕ∞) ≤ ringKrullDim S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height x S]`. Conclude with `le_height_of_flat V K hd φ hφ hker x` after adjusting the coercions. Take `⟨h₂, h₃, h₄⟩` from `isRegularLocalRing_of_finrank_cotangentSpace_le S h₁ hx`. Take `⟨h₅, -, h₆⟩` from `isSmoothAt_of_flat_of_isRegularLocalRing V φ hφ hker x S`. Rewrite `h₆` using `[h₃]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨h₅, exists_isStandardSmoothOfRelativeDimension_of_isSmoothAt V _ (by exact_mod_cast h₆), h₂, h₃, h₄⟩`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothAt_of_flat_of_finrank_cotangentSpace_le {d : ℕ}
     (hd : ∀ p ∈ minimalPrimes (K ⊗[V] A), (d : WithBot ℕ∞) ≤ ringKrullDim ((K ⊗[V] A) ⧸ p))
@@ -718,7 +712,7 @@ theorem isSmoothAt_of_flat_of_finrank_cotangentSpace_le {d : ℕ}
     h₂, h₃, h₄⟩
 
 /- English proof (translation)
-Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing V A`. Establish `: IsNoetherianRing B` using `isNoetherianRing_of_surjective A B φ hφ`. Establish `h` using `finrank_cotangentSpace_le_finrank_cotangent x (Localization.AtPrime x)`. Take `⟨h₁, h₂, h₃, h₄, h₅⟩` from `isSmoothAt_of_flat_of_finrank_cotangentSpace_le V K hd φ hφ hker x (Localization.AtPrime x) (h.trans hx)`. Conclude with `⟨h₁, h₂, h₃, h₄, hx.antisymm (h₅ ▸ h)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSmoothAt_of_flat_of_finrank_cotangent_le_of_surjective {d : ℕ}
     (hd : ∀ p ∈ minimalPrimes (K ⊗[V] A), (d : WithBot ℕ∞) ≤ ringKrullDim ((K ⊗[V] A) ⧸ p))
@@ -737,11 +731,9 @@ theorem isSmoothAt_of_flat_of_finrank_cotangent_le_of_surjective {d : ℕ}
   exact ⟨h₁, h₂, h₃, h₄, hx.antisymm (h₅ ▸ h)⟩
 
 /- English proof (translation)
-Establish `hkq : RingHom.ker φ ≤ q`. Rewrite using `[hker, Ideal.map_le_iff_le_comap]`. Conclude with `(q.over_def (maximalIdeal V)).le`. Establish `hprime : (q.map φ).IsPrime` using `Ideal.map_isPrime_of_surjective hφ hkq`. Take `⟨x, hxm, hqx⟩` from `Ideal.exists_le_maximal _ hprime.ne_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ⟨f, hf, hs⟩, -⟩` from `isSmoothAt_of_flat_of_finrank_cotangent_le_of_surjective V K hd φ hφ hker x (hx x hxm)`. Establish `hfq : f ∉ q` using `fun h ↦ hf (Ideal.map_le_iff_le_comap.mp hqx h)`. Use `⟨?_, f, hfq, hs⟩` and prove the remaining obligations. Establish `: Algebra.FinitePresentation V A` using `Algebra.FinitePresentation.of_finiteType.mp ‹_›`. Establish `: Algebra.IsStandardSmooth V (Localization.Away f)` using `hs.isStandardSmooth d`.
-
-Conclude with `(Algebra.basicOpen_subset_smoothLocus_iff (R := V) (f := f)).mpr inferInstance (show (⟨q, ‹_›⟩ : PrimeSpectrum A) ∈ PrimeSpectrum.basicOpen f from hfq)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSmoothAt_of_liesOver_of_flat_of_forall_finrank_cotangent_le {d : ℕ}
     (hd : ∀ p ∈ minimalPrimes (K ⊗[V] A), (d : WithBot ℕ∞) ≤ ringKrullDim ((K ⊗[V] A) ⧸ p))
@@ -766,7 +758,7 @@ theorem isSmoothAt_of_liesOver_of_flat_of_forall_finrank_cotangent_le {d : ℕ}
     (show (⟨q, ‹_›⟩ : PrimeSpectrum A) ∈ PrimeSpectrum.basicOpen f from hfq)
 
 /- English proof (translation)
-The claim follows from `isSmoothAt_of_flat_of_finrank_cotangent_le_of_surjective V K (fun p hp ↦ (hd p hp).ge) _ Ideal.Quotient.mk_surjective (Ideal.mk_ker.trans (map_maximalIdeal_eq_span_of_irreducible V hϖ).symm) x hx`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothAt_of_flat_of_finrank_cotangent_le {ϖ : V} (hϖ : Irreducible ϖ) {d : ℕ}
     (hd : ∀ p ∈ minimalPrimes (K ⊗[V] A), ringKrullDim ((K ⊗[V] A) ⧸ p) = d)
@@ -782,7 +774,7 @@ theorem isSmoothAt_of_flat_of_finrank_cotangent_le {ϖ : V} (hϖ : Irreducible �
     (Ideal.mk_ker.trans (map_maximalIdeal_eq_span_of_irreducible V hϖ).symm) x hx
 
 /- English proof (translation)
-The claim follows from `isSmoothAt_of_flat_of_finrank_cotangent_le_of_surjective V K (fun p hp ↦ (hd p hp).ge) _ (TensorProduct.mk_surjective V A k hk) (ker_includeRight_of_surjective V k hk) x hx`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothAt_of_flat_of_finrank_cotangent_le_tensor (k : Type*) [Field k] [Algebra V k]
     (hk : Function.Surjective (algebraMap V k)) {d : ℕ}
@@ -805,9 +797,9 @@ section Scheme
 open AlgebraicGeometry CategoryTheory Topology
 
 /- English proof (translation)
-Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Set `φ` to `Spec.preimage (hU.fromSpec ≫ f)`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : x ∈ Set.range hU.fromSpec := by`. Rewrite using `[hU.range_fromSpec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxU`. Conclude with `⟨Γ(X, U), inferInstance, φ.hom.toAlgebra, hU.fromSpec, inferInstance, q, hq, (Spec.map_preimage _).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_affine_chart_over {O : Type u} [CommRing O] {X : Scheme.{u}} (f : X ⟶ Spec (.of O))
     (x : X) : ∃ (A : Type u) (_ : CommRing A) (_ : Algebra O A) (j : Spec (.of A) ⟶ X)
@@ -824,9 +816,9 @@ theorem exists_affine_chart_over {O : Type u} [CommRing O] {X : Scheme.{u}} (f :
     (Spec.map_preimage _).symm⟩
 
 /- English proof (translation)
-Establish `H` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct O k A)`. Rewrite `H` using `[← hj]`. Set `j₀` to `h.lift _ _ ((Category.assoc _ _ _).trans H.w.symm)`. Establish `h₂ : j₀ ≫ p = _` using `h.lift_snd _ _ _`. Rewrite `H` using `[← h₂]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `H'` using `IsPullback.of_right H (h.lift_fst _ _ _) h.flip`. Conclude with `⟨j₀, MorphismProperty.of_isPullback H'.flip ‹_›, H'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_affine_chart_of_isPullback {O k : Type u} [CommRing O] [CommRing k] [Algebra O k]
     {X X₀ : Scheme.{u}} {f : X ⟶ Spec (.of O)} {i : X₀ ⟶ X} {p : X₀ ⟶ Spec (.of k)}
@@ -845,9 +837,9 @@ theorem exists_affine_chart_of_isPullback {O k : Type u} [CommRing O] [CommRing 
   exact ⟨j₀, MorphismProperty.of_isPullback H'.flip ‹_›, H'⟩
 
 /- English proof (translation)
-Rewrite using `[← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim]`. Use `topologicalKrullDim_eq_of_isEmbedding (j.isOpenEmbedding.isEmbedding.comp (PrimeSpectrum.isClosedEmbedding_comap_of_surjective _ (Ideal.Quotient.mk q.asIdeal) Ideal.Quotient.mk_surjective).isEmbedding) ?_` and prove the remaining obligations. Use `(Set.range_comp _ _).trans (.trans (congrArg (Set.image j) ?_) Set.image_preimage_eq_range_inter)` and prove the remaining obligations. Use `(range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.mk_ker]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(PrimeSpectrum.closure_singleton q).symm.trans ((j.isOpenEmbedding.isInducing.closure_eq_preimage_closure_image _).trans (congrArg (fun s ↦ j ⁻¹' closure s) Set.image_singleton))`.
+A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_range_inter_closure_eq {Y : Scheme.{u}} {B : Type u} [CommRing B]
     (j : Spec (.of B) ⟶ Y) [IsOpenImmersion j] (q : PrimeSpectrum B) :
@@ -865,9 +857,9 @@ theorem topologicalKrullDim_range_inter_closure_eq {Y : Scheme.{u}} {B : Type u}
       (congrArg (fun s ↦ j ⁻¹' closure s) Set.image_singleton))
 
 /- English proof (translation)
-Establish `hle : Submonoid.powers g ≤ nonZeroDivisors C` using `powers_le_nonZeroDivisors_of_noZeroDivisors hg`. Establish `: IsDomain (Localization.Away g)` using `IsLocalization.isDomain_localization hle`. Establish `: FaithfulSMul C (Localization.Away g)` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (IsLocalization.injective _ hle)`. Establish `: Algebra.IsAlgebraic C (Localization.Away g)` using `IsLocalization.isAlgebraic _ (Submonoid.powers g)`. Take `⟨e, h₁, h₂⟩` from `exists_ringKrullDim_eq_and_trdeg_eq K C`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h₁]`. Conclude with `ringKrullDim_eq_of_trdeg_eq K _ ((trdeg_eq_of_isAlgebraic_top K C _).trans h₂)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_localizationAway_eq (K : Type u) [Field K] {C : Type u} [CommRing C]
     [IsDomain C] [Algebra K C] [Algebra.FiniteType K C] {g : C} (hg : g ≠ 0) :
@@ -883,15 +875,13 @@ theorem ringKrullDim_localizationAway_eq (K : Type u) [Field K] {C : Type u} [Co
   exact ringKrullDim_eq_of_trdeg_eq K _ ((trdeg_eq_of_isAlgebraic_top K C _).trans h₂)
 
 /- English proof (translation)
-Rewrite using `[← topologicalKrullDim_range_inter_closure_eq j q]`. Use `le_antisymm (topologicalKrullDim_le_of_forall_exists_isOpen fun z ↦ ?_) (IsEmbedding.inclusion Set.inter_subset_right).isInducing.topologicalKrullDim_le` and prove the remaining obligations. Take `⟨C, _, _, j', _, y, hy, hj'⟩` from `exists_affine_chart_over p z.1`. Establish `: Algebra.FiniteType K C` using `RingHom.finiteType_algebraMap.mp <| (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := CommRingCat.ofHom (algebraMap K C))).mp (hj' ▸ inferInstance)`. Take `⟨q', hq'⟩` from `(specializes_iff_mem_closure.mpr z.2).mem_open j'.isOpenEmbedding.isOpen_range ⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Subtype.val ⁻¹' Set.range j', j'.isOpenEmbedding.isOpen_range.preimage continuous_subtype_val, ⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← topologicalKrullDim_eq_of_isEmbedding (IsEmbedding.subtypeVal.comp IsEmbedding.subtypeVal) (Z := Set.range j' ∩ closure {j q}) (by rw [Set.range_comp, Subtype.range_coe, Subtype.image_preimage_coe, Set.inter_comm])]`. Use `conv_lhs => rw [← hq', topologicalKrullDim_range_inter_closure_eq j' q']`. Take `⟨_, ⟨g, rfl⟩, hg, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (show q' ∈ j' ⁻¹' Set.range j from ⟨q, hq'.symm⟩) (j.isOpenEmbedding.isOpen_range.preimage j'.continuous)`. Use `q'.isPrime` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : Ideal.Quotient.mk q'.asIdeal g ≠ 0` using `fun h ↦ hg (Ideal.Quotient.eq_zero_iff_mem.mp h)`. Rewrite using `[← ringKrullDim_localizationAway_eq K hg', ← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim]`. Establish `he` using `(j'.isOpenEmbedding.isEmbedding.comp (PrimeSpectrum.isClosedEmbedding_comap_of_surjective _ (Ideal.Quotient.mk q'.asIdeal) Ideal.Quotient.mk_surjective).isEmbedding).comp (PrimeSpectrum.localization_comap_isEmbedding (Localization.Away (Ideal.Quotient.mk q'.asIdeal g)) (Submonoid …`. Use `(he.isInducing.codRestrict (s := Set.range j ∩ closure {j q}) fun t ↦ ⟨hsub ?_, ?_⟩).topologicalKrullDim_le` and prove the remaining obligations. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `t.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h (IsLocalization.Away.algebraMap_isUnit (Ideal.Quotient.mk q'.asIdeal g)))`. Rewrite using `[← specializes_iff_mem_closure, ← hq']`. Use `((PrimeSpectrum.le_iff_specializes _ _).mp fun a ha ↦ ?_).map j'.continuous` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap _ _ (Ideal.Quotient.mk q'.asIdeal a) ∈ t.asIdeal`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr ha, map_zero]`.
-
-Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_closure_eq_ringKrullDim_quotient {K : Type u} [Field K]
     {Y : Scheme.{u}} (p : Y ⟶ Spec (.of K)) [LocallyOfFiniteType p] {B : Type u} [CommRing B]
@@ -937,9 +927,9 @@ theorem topologicalKrullDim_closure_eq_ringKrullDim_quotient {K : Type u} [Field
     exact zero_mem _
 
 /- English proof (translation)
-Use `⟨isIrreducible_singleton.closure, fun W hW hle ↦ ?_⟩` and prove the remaining obligations. Establish `hη` using `hW.isGenericPoint_genericPoint_closure`. Establish `h₁ : hW.genericPoint ⤳ j q` using `hη.specializes (subset_closure (hle (subset_closure rfl)))`. Take `⟨q', hq'⟩` from `h₁.mem_open j.isOpenEmbedding.isOpen_range ⟨q, rfl⟩`. Rewrite `h₁`, `hη` using `[← hq']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₂ : q'.asIdeal ≤ q.asIdeal` using `(PrimeSpectrum.le_iff_specializes q' q).mpr (j.isOpenEmbedding.isInducing.specializes_iff.mp h₁)`. Take `rfl : q' = q` from `PrimeSpectrum.ext (h₂.antisymm (hq.2 ⟨q'.isPrime, bot_le⟩ h₂))`. Conclude with `subset_closure.trans hη.def.ge`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem closure_mem_irreducibleComponents_of_mem_minimalPrimes {Y : Scheme.{u}} {B : Type u}
     [CommRing B] (j : Spec (.of B) ⟶ Y) [IsOpenImmersion j] (q : PrimeSpectrum B)
@@ -965,19 +955,17 @@ variable (V K k : Type u) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 include hk h₀ h₁
 
 /- English proof (translation)
-Take `⟨A, _, _, j, _, q, hq, hj⟩` from `exists_affine_chart_over f (i₀ x)`. Establish `: Algebra.FiniteType V A` using `RingHom.finiteType_algebraMap.mp <| (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := CommRingCat.ofHom (algebraMap V A))).mp (hj ▸ inferInstance)`. Establish `: Module.Flat V A` using `RingHom.flat_algebraMap_iff.mp <| (HasRingHomProperty.Spec_iff (P := @Flat) (φ := CommRingCat.ofHom (algebraMap V A))).mp (hj ▸ inferInstance)`. Establish `: LocallyOfFiniteType p₁` using `MorphismProperty.of_isPullback h₁ ‹_›`. Take `⟨j₀, _, H₀⟩` from `exists_affine_chart_of_isPullback h₀ j hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j₁, _, -⟩` from `exists_affine_chart_of_isPullback h₁ j hj`. Take `⟨y, rfl, hy⟩` from `Scheme.exists_preimage_of_isPullback H₀ x q hq.symm`. Establish `hmax : y.asIdeal.IsMaximal`. Use `(PrimeSpectrum.isClosed_singleton_iff_isMaximal y).mp ?_` and prove the remaining obligations. Use `hxc.preimage j₀.continuous` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[← Set.image_singleton, j₀.isOpenEmbedding.injective.preimage_image]`. Then use the resulting hypothesis. Establish `hd' (p) (hp : p ∈ minimalPrimes (K ⊗[V] A)) : (d : WithBot ℕ∞) ≤ ringKrullDim ((K ⊗[V] A) ⧸ p)` using `(hd _ (closure_mem_irreducibleComponents_of_mem_minimalPrimes j₁ ⟨p, hp.1.1⟩ hp)).trans_eq (topologicalKrullDim_closure_eq_ringKrullDim_quotient p₁ j₁ ⟨p, hp.1.1⟩)`. Set `e : Localization.AtPrime y.asIdeal ≃+* X₀.presheaf.stalk (j₀ y)` to `(asIso (j₀.stalkMap y) ≪≫ Spec.stalkIso (.of (k ⊗[V] A)) y).commRingCatIsoToRingEquiv.symm`. Set `: Algebra (k ⊗[V] A) (X₀.presheaf.stalk (j₀ y))` to `(e.toRingHom.comp (algebraMap _ _)).toAlgebra`. Establish `: IsLocalization.AtPrime (X₀.presheaf.stalk (j₀ y)) y.asIdeal` using `IsLocalization.isLocalization_of_algEquiv y.asIdeal.primeCompl ({ e with commutes' _ := rfl } : Localization.AtPrime y.asIdeal ≃ₐ[k ⊗[V] A] _)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨-, ⟨g, hg, hs⟩, h⟩` from `isSmoothAt_of_flat_of_finrank_cotangentSpace_le V K hd' _ (TensorProduct.mk_surjective V A k hk) (ker_includeRight_of_surjective V k hk) y.asIdeal _ hx`. Use `⟨?_, h⟩` and prove the remaining obligations. Set `j'` to `Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away g))) ≫ j`. Establish `hs' : SmoothOfRelativeDimension d (j' ≫ f)`. Rewrite using `[Category.assoc, hj, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq, HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension d)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ((RingHom.isStandardSmoothOfRelativeDimension_algebraMap d).mpr hs)`. Use `⟨j'.opensRange, ?_, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : q ∈ Set.range (PrimeSpectrum.comap (algebraMap A (Localization.Away g))) := by`. Rewrite using `[PrimeSpectrum.localization_away_comap_range _ g, ← hy]`. Conclude with `hg`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq, ← ht]`. Both sides reduce to the same expression. Rewrite using `[← j'.isoOpensRange_inv_comp, Category.assoc]`. Use `smoothOfRelativeDimension_comp 0 d j'.isoOpensRange.inv (j' ≫ f)` as an intermediate fact.
-
-Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_smoothOfRelativeDimension_of_flat_of_finrank_cotangentSpace_le {d : ℕ}
     (hd : ∀ Z ∈ irreducibleComponents X₁, (d : WithBot ℕ∞) ≤ topologicalKrullDim Z)
@@ -1035,11 +1023,11 @@ theorem exists_smoothOfRelativeDimension_of_flat_of_finrank_cotangentSpace_le {d
     rwa [zero_add] at this
 
 /- English proof (translation)
-Establish `: LocallyOfFiniteType p₀` using `MorphismProperty.of_isPullback h₀ ‹_›`. Establish `: JacobsonSpace X₀` using `LocallyOfFiniteType.jacobsonSpace p₀`. Use `choose U hU hs using fun x : closedPoints X₀ ↦ (exists_smoothOfRelativeDimension_of_flat_of_finrank_cotangentSpace_le V K k hk h₀ h₁ hd x.1 x.2 (hx x.1 x.2)).1`. Use `⟨⨆ x, U x, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx₁, hx₂⟩` from `nonempty_inter_closedPoints (Z := closure {z}) ⟨z, subset_closure rfl⟩ isClosed_closure.isLocallyClosed`. Conclude with `((specializes_iff_mem_closure.mpr hx₁).map i₀.continuous).mem_open (⨆ x, U x).isOpen (le_iSup U ⟨x, hx₂⟩ (hU ⟨x, hx₂⟩))`. Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @SmoothOfRelativeDimension d)` as an intermediate fact. Use `IsZariskiLocalAtSource.of_openCover (Scheme.Opens.iSupOpenCover U) fun x ↦ ?_` and prove the remaining obligations. Establish `: (Scheme.Opens.iSupOpenCover U).f x ≫ (⨆ x, U x).ι = (U x).ι`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Scheme.Opens.iSupOpenCover]`. Rewrite using `[← Category.assoc, this]`. Conclude with `hs x`.
+A detailed English derivation is pending.
 -/
 theorem exists_smoothOfRelativeDimension_of_flat_of_forall_finrank_cotangentSpace_le {d : ℕ}
     (hd : ∀ Z ∈ irreducibleComponents X₁, (d : WithBot ℕ∞) ≤ topologicalKrullDim Z)
@@ -1067,11 +1055,11 @@ theorem exists_smoothOfRelativeDimension_of_flat_of_forall_finrank_cotangentSpac
 end Scheme
 
 /- English proof (translation)
-Establish `h` using `isSmoothAt_of_flat_of_finrank_cotangent_le_of_surjective V (FractionRing V) (A := Polynomial V) (d := 1) ?_ (Polynomial.mapRingHom (residue V)) (Polynomial.map_surjective _ residue_surjective) (by rw [Polynomial.ker_mapRingHom, ker_residue]; rfl) x ?_`. Conclude with `⟨h.1, h.2.2.2.2⟩`. Establish `: IsDomain (FractionRing V ⊗[V] Polynomial V)` using `(polyEquivTensor V (FractionRing V)).symm.toMulEquiv.isDomain`. Introduce `p hp`. Rewrite `hp` using `[IsDomain.minimalPrimes_eq_singleton_bot, Set.mem_singleton_iff]`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hp, ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), ringKrullDim_genericFibre_eq V (FractionRing V) (d := 1) (by simp [Polynomial.trdeg_of_isDomain])]`. Set `` to `Ideal.Quotient.field x`. Take `⟨a, ha⟩` from `IsPrincipalIdealRing.principal x`. Use `finrank_le_one (x.toCotangent ⟨a, ha.ge (Submodule.mem_span_singleton_self a)⟩) fun w ↦ ?_` and prove the remaining obligations. Take `⟨⟨w, hw⟩, rfl⟩` from `x.toCotangent_surjective w`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp (ha.le hw)`. Conclude with `⟨Ideal.Quotient.mk x c, (map_smul x.toCotangent c _).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (V : Type u) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [PerfectField (ResidueField V)] (x : Ideal (Polynomial (ResidueField V))) [x.IsMaximal] :

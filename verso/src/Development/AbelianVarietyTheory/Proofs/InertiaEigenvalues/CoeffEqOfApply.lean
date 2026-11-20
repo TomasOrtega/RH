@@ -14,31 +14,31 @@ variable {F M : Type} [Field F] [AddCommGroup M] [Module F M]
 def zc (c : F⟦X⟧) (n : ℤ) : F := if 0 ≤ n then coeff n.toNat c else 0
 
 /- English proof (translation)
-Simplify using `[zc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zc_nat (c : F⟦X⟧) (n : ℕ) : zc c n = coeff n c := by
   simp [zc]
 
 /- English proof (translation)
-Unfold `zc`. Rewrite using `[if_neg (not_le.mpr h)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem zc_neg (c : F⟦X⟧) {n : ℤ} (h : n < 0) : zc c n = 0 := by
   unfold zc
   rw [if_neg (not_le.mpr h)]
 
 /- English proof (translation)
-Unfold `zc`. Apply the tactic sequence `split_ifs <;> simp [map_add]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zc_add (c c' : F⟦X⟧) (n : ℤ) : zc (c + c') n = zc c n + zc c' n := by
   unfold zc
   split_ifs <;> simp [map_add]
 
 /- English proof (translation)
-Break down `lt_or_ge n 0 with hn | hn` into its components or cases. Rewrite using `[zc_neg _ hn]`. Use `symm`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[zc_neg _ (by omega), mul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `lift n to ℕ using hn`. Establish `hN : n < N` using `by exact_mod_cast h`. Rewrite using `[zc_nat, PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => coeff i f * coeff j c), ← Finset.sum_range_add_sum_Ico _ (show n + 1 ≤ N by omega)]`. Rewrite using `[Finset.sum_eq_zero (s := Finset.Ico (n + 1) N) ?_, add_zero]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[Finset.mem_range]`. Rewrite using `[show ((n : ℤ) - (j : ℤ)) = ((n - j : ℕ) : ℤ) by omega, zc_nat]`. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_Ico]`. Rewrite using `[zc_neg _ (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zc_mul (f c : F⟦X⟧) (n : ℤ) (N : ℕ) (h : n < N) :
     zc (f * c) n = ∑ j ∈ Finset.range N, coeff j f * zc c (n - j) := by
@@ -64,7 +64,7 @@ def lines {r : ℕ} (u : Fin r → ℤ) (d : Fin r → M) (c : Fin r → F⟦X�
   ∑ k, serLine (u k) (d k) (c k)
 
 /- English proof (translation)
-Unfold `lines`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [serLine, zc]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lines_apply {r : ℕ} (u : Fin r → ℤ) (d : Fin r → M) (c : Fin r → F⟦X⟧) (m : ℤ) :
     lines u d c m = ∑ k, zc (c k) (m + u k) • d k := by
@@ -75,7 +75,7 @@ theorem lines_apply {r : ℕ} (u : Fin r → ℤ) (d : Fin r → M) (c : Fin r �
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `only [lines_apply, Pi.add_apply, zc_add, add_smul, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lines_add {r : ℕ} (u : Fin r → ℤ) (d : Fin r → M) (c c' : Fin r → F⟦X⟧) :
     lines u d (c + c') = lines u d c + lines u d c' := by
@@ -83,9 +83,9 @@ theorem lines_add {r : ℕ} (u : Fin r → ℤ) (d : Fin r → M) (c c' : Fin r 
   simp only [lines_apply, Pi.add_apply, zc_add, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Rewrite using `[lines_apply, Pi.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `: zc (0 : F⟦X⟧) (m + u k) = 0`. Unfold `zc`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Pi.zero_apply, this, zero_smul]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem lines_zero {r : ℕ} (u : Fin r → ℤ) (d : Fin r → M) :
     lines u d (0 : Fin r → F⟦X⟧) = 0 := by
@@ -98,7 +98,7 @@ theorem lines_zero {r : ℕ} (u : Fin r → ℤ) (d : Fin r → M) :
   rw [Pi.zero_apply, this, zero_smul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty, lines_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, lines_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lines_sum {r : ℕ} (u : Fin r → ℤ) (d : Fin r → M) {ι : Type} (s : Finset ι)
     (c : ι → Fin r → F⟦X⟧) : lines u d (∑ j ∈ s, c j) = ∑ j ∈ s, lines u d (c j) := by
@@ -108,7 +108,7 @@ theorem lines_sum {r : ℕ} (u : Fin r → ℤ) (d : Fin r → M) {ι : Type} (s
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, lines_add, ih]
 
 /- English proof (translation)
-Rewrite `h` using `[lines_apply, lines_apply, Finset.smul_sum]`. Establish `h2 : ∑ k, (zc (c k) (m + u k) - a * zc (c' k) (m + u k)) • d k = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, mul_smul]`. Rewrite using `[h, sub_self]`. Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hd _ h2 k)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_eq_of_apply {r : ℕ} (u : Fin r → ℤ) {d : Fin r → M} (hd : LinearIndependent F d)
     (c c' : Fin r → F⟦X⟧) (a : F) (m : ℤ) (h : lines u d c m = a • lines u d c' m) (k : Fin r) :
@@ -120,7 +120,7 @@ theorem coeff_eq_of_apply {r : ℕ} (u : Fin r → ℤ) {d : Fin r → M} (hd : 
   exact sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hd _ h2 k)
 
 /- English proof (translation)
-Introduce `c c' h`. Use function extensionality and compare the values at `k`. Use extensionality with `n`. Use `coeff_eq_of_apply u hd c c' 1 ((n : ℤ) - u k) (by rw [h, one_smul]) k` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, one_mul, zc_nat, zc_nat]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lines_injective {r : ℕ} (u : Fin r → ℤ) {d : Fin r → M} (hd : LinearIndependent F d) :
     Function.Injective (lines (F := F) u d) := by
@@ -131,15 +131,15 @@ theorem lines_injective {r : ℕ} (u : Fin r → ℤ) {d : Fin r → M} (hd : Li
   rwa [sub_add_cancel, one_mul, zc_nat, zc_nat] at this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, ∀ k, m + u k < N := by`. Use `⟨(Finset.univ.sup fun k => (m + u k).toNat) + 1, fun k => ?_⟩` and prove the remaining obligations. Establish `h1 : (m + u k).toNat ≤ Finset.univ.sup fun k => (m + u k).toNat` using `Finset.le_sup (f := fun k => (m + u k).toNat) (Finset.mem_univ k)`. Establish `h2` using `Int.self_le_toNat (m + u k)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Use linear arithmetic over natural numbers and integers. Establish `hsupp : (Function.support fun j : ℕ => coeff j f • lines u d c (m - j)) ⊆ ↑(Finset.range N)`. Introduce `j hj`. Rewrite `hj` using `[Function.mem_support]`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hjN`. Apply `hj` to reduce the goal to its premises. Rewrite using `[lines_apply, Finset.sum_eq_zero, smul_zero]`. Introduce `k _`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[zc_neg _ (by have := hN k; omega), zero_smul]`. Unfold `serAct`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp]`. Repeatedly rewrite using `[lines_apply, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[zc_mul f (c k) (m + u k) N (hN k), Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show m - (j : ℤ) + u k = m + u k - j by ring]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem serAct_lines {r : ℕ} (u : Fin r → ℤ) (d : Fin r → M) (f : F⟦X⟧) (c : Fin r → F⟦X⟧) :
     serAct f (lines u d c) = lines u d (f • c) := by
@@ -171,19 +171,17 @@ theorem serAct_lines {r : ℕ} (u : Fin r → ℤ) (d : Fin r → M) (f : F⟦X�
   rw [show m - (j : ℤ) + u k = m + u k - j by ring]
 
 /- English proof (translation)
-Introduce `F M A N _ _ _ _ _ _ lev L r u d hd hL hS`. Establish `hex : ∀ x, ∃ c : Fin r → F⟦X⟧, L x = lines u d c`. Introduce `x`. Take `⟨c, hc⟩` from `(hS (L x)).mp ⟨1, fun _ => x, fun _ => 1, by simp only [Fin.sum_univ_one, serAct_one]⟩`. Conclude with `⟨c, hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose e he using hex`. Establish `hinj` using `lines_injective (F := F) u hd`. Establish `eadd : ∀ x y, e (x + y) = e x + e y` using `fun x y => hinj (by rw [← he, lines_add, ← he, ← he, map_add])`. Use `⟨AddMonoidHom.mk' e eadd, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a x show e (a • x) = lev a • e x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[← he, hL, he x, serAct_lines]`. Rewrite using `[eq_top_iff]`. Introduce `c _`. Take `⟨s, x, f, hy⟩` from `(hS (lines u d c)).mpr ⟨c, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : c = ∑ j, f j • e (x j)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hy, lines_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[he, serAct_lines]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨x j, rfl⟩)`. Introduce `χ x y hχ hxy k show e y k = C (χ ^ (-u k)) * rescale χ (e x k)`. Use extensionality with `n`. Establish `h1 : lines u d (e y) ((n : ℤ) - u k) = χ ^ ((n : ℤ) - u k) • lines u d (e x) ((n : ℤ) - u k)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← he, ← he]`. Conclude with `hxy _`. Establish `h2` using `coeff_eq_of_apply u hd (e y) (e x) _ _ h1 k`. Rewrite `h2` using `[sub_add_cancel, zc_nat, zc_nat]`. Rewrite using `[h2, PowerSeries.coeff_C_mul, PowerSeries.coeff_rescale, zpow_sub₀ hχ, zpow_neg, zpow_natCast]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_coords : ∀ {F M A N : Type} [Field F] [AddCommGroup M] [Module F M] [CommRing A] [AddCommGroup N] [Module A N] (lev : A → F⟦X⟧) (L : N →+ (ℤ → M)) {r : ℕ} (u : Fin r → ℤ) (d : Fin r → M), LinearIndependent F d → (∀ a x, L (a • x) = serAct (lev a) (L x)) → SpanIsLines L u d F → ∃ e : N →+ (Fin r → F⟦X⟧), (∀ a x, e (a • x) = lev a • e x) ∧ Submodule.span F⟦X⟧ (Set.range e) = ⊤ ∧ ∀ (χ : F) (x y : N), χ ≠ 0 → (∀ k : ℤ, L y k = χ ^ k • L x k) → ∀ k, e y k = C (χ ^ (-u k)) * rescale χ (e x k) := by
   intro F M A N _ _ _ _ _ _ lev L r u d hd hL hS

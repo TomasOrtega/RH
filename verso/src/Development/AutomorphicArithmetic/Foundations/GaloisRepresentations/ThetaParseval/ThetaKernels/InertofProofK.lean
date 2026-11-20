@@ -10,9 +10,7 @@ noncomputable section
 namespace PositivityTheory.ThK
 open NumberField IsDedekindDomain GlobalTheory.AdelicU
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB v he`. Use `haveI := hB.unram`. Use `haveI := v.isMaximal`. Establish `h1` using `ncard_primesOver_le_two hB.cm v`. Establish `h2 : (v.asIdeal.primesOver (𝓞 E)).ncard ≠ 2` using `fun h => not_nonempty_iff.2 he ((nonempty_split_iff hB.cm).2 h)`.
-
-Establish `h3 : 0 < (v.asIdeal.primesOver (𝓞 E)).ncard` using `Nat.pos_of_ne_zero (IsDedekindDomain.primesOver_ncard_ne_zero _ _)`. Conclude with `map_eq_of_ncard_eq_one v (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inertof_proof_k : _root_.PositivityTheory.ThK.InertOf_k := by
   intro F E _ _ _ _ _ σ B hB v he

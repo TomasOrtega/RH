@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.CM.WeilAddLeft
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_comp_hom {S : Scheme.{0}} {G H Z : Over S} [GrpObj G] [GrpObj H] (φ : G ⟶ H) [IsMonHom φ]
     (x : Z ⟶ G) (n : ℕ) : (x ^ n) ≫ φ = (x ≫ φ) ^ n := by
@@ -20,21 +20,19 @@ theorem pow_comp_hom {S : Scheme.{0}} {G H Z : Over S} [GrpObj G] [GrpObj H] (φ
   | succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]
 
 /- English proof (translation)
-The claim follows from `map_mul (Units.map _) u v`.
+A detailed English derivation is pending.
 -/
 theorem unitOn_mul {R : Type} [CommRing R] (u v : Rˣ) : unitOn (u * v) = unitOn u * unitOn v :=
   map_mul (Units.map _) u v
 
 /- English proof (translation)
-Introduce `E _ _ _ H K _ _ σ₁ A B f₁ f₂ g hf₁ hf₂ hg r₁ r₂ h₁ h₂ n x y c hn hx hy`. Establish `hL : Out.Laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Use `haveI : IsCommMonObj B.pol.A := B.pol.isAb.comm`. Use `haveI : IsCommMonObj A.pol.A := A.pol.isAb.comm`. Establish `tor : ∀ (f : A.t.G ⟶ B.t.G), IsMonHom f → ((x ≫ f) ^ n = 1)` using `fun f hf => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_comp_hom, hx, one_comp]`. Establish `tory : (y ≫ g) ^ n = 1` using `by rw [← pow_comp_hom, hy, one_comp]`. Take `⟨c₁, hc₁⟩` from `TorsionGenerators.exists_weilIs hL B.pol (σ₁.comp (algebraMap (𝓞 K) K)) (tor f₁ hf₁) tory`. Take `⟨c₂, hc₂⟩` from `TorsionGenerators.exists_weilIs hL B.pol (σ₁.comp (algebraMap (𝓞 K) K)) (tor f₂ hf₂) tory`. Establish `a₁` using `(h₁ n x y c₁ hn hx hy).1 hc₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂` using `(h₂ n x y c₂ hn hx hy).1 hc₂`. Establish `hB` using `weilIs_mul_left hL.globalFns _ B.pol n _ _ _ _ _ _ hc₁ hc₂`. Establish `hA` using `weilIs_mul_left hL.globalFns _ A.pol n _ _ _ _ _ _ a₁ a₂`. Rewrite `hB`, `hA` using `[← MonObj.comp_mul]`. Rewrite `hA` using `[← A.t.act.add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite `hB`, `hA` using `[← unitOn_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `rfl` from `weilIs_unique_fieldPoint _ _ _ B.t.PP.isLB _ _ _ _ _ _ _ h hB`. Conclude with `hA`.
-
-Introduce `h`. Take `rfl` from `weilIs_unique_fieldPoint _ _ _ A.t.PP.isLB _ _ _ _ _ _ _ h hA`. Conclude with `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem weilEq_mul_left : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K]
     [NumberField K] (σ₁ : K →+* ℂ) (A B : PAT H (Sp (𝓞 K))) (f₁ f₂ g : A.t.G ⟶ B.t.G), IsMonHom f₁ → IsMonHom f₂ →

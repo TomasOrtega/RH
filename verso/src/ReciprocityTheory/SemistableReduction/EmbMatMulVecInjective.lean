@@ -14,7 +14,7 @@ def embMat {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K →+* ℂ)
   Matrix.of fun a j => σ (v j a)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gramC, embMat, embVec, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramC_eq_mul {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (v : Fin k → Fin r → K) :
@@ -27,13 +27,13 @@ theorem gramC_eq_mul {K : Type} [Field K] [NumberField K] {r k : ℕ}
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => by ring
 
 /- English proof (translation)
-Use `set B : Matrix (Fin r) (Fin k) K := Matrix.of fun a j => v j a`. Establish `hcol : B.col = v`. Use function extensionality and compare the values at `j a`. Both sides reduce to the same expression. Establish `hB : Function.Injective B.mulVec`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_injective_iff, hcol]`. Conclude with `hv`. Establish `hker : LinearMap.ker (Matrix.toLin' B) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`. Introduce `x y h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hB (by simpa [Matrix.toLin'_apply] using h)`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' B) hker`. Establish `hNB : LinearMap.toMatrix' g * B = 1`. Rewrite using `[← LinearMap.toMatrix'_toLin' B, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]`. Establish `hE : embMat σ v = B.map σ` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (LinearMap.toMatrix' g).map σ * embMat σ v = 1`. Rewrite using `[hE, ← Matrix.map_mul, hNB, Matrix.map_one _ σ.map_zero σ.map_one]`. Introduce `x y hxy`. Establish `h` using `congrArg ((LinearMap.toMatrix' g).map σ).mulVec hxy`. Simplify `h` using `[Matrix.mulVec_mulVec, h1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem embMat_mulVec_injective {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K →+* ℂ)
     {v : Fin k → Fin r → K} (hv : LinearIndependent K v) :
@@ -60,7 +60,7 @@ theorem embMat_mulVec_injective {K : Type} [Field K] [NumberField K] {r k : ℕ}
   simpa [Matrix.mulVec_mulVec, h1] using h
 
 /- English proof (translation)
-Rewrite using `[gramC_eq_mul]`. Conclude with `hH.conjTranspose_mul_mul_same (embMat_mulVec_injective σ hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramC_posDef {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) {v : Fin k → Fin r → K} (hH : H.PosDef)
@@ -69,7 +69,7 @@ theorem gramC_posDef {K : Type} [Field K] [NumberField K] {r k : ℕ}
   exact hH.conjTranspose_mul_mul_same (embMat_mulVec_injective σ hv)
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) (j | j) <;> simp [gramC, gramX]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramC_append_blocks {K : Type} [Field K] [NumberField K] {r k m : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (b : Fin k → Fin r → K)
@@ -79,11 +79,11 @@ theorem gramC_append_blocks {K : Type} [Field K] [NumberField K] {r k m : ℕ}
   ext (i | i) (j | j) <;> simp [gramC, gramX]
 
 /- English proof (translation)
-Establish `hG` using `(gramC_posDef H σ hH h).det_pos`. Establish `hGb` using `(gramC_posDef H σ hH hb).det_pos`. Establish `: Invertible (gramC H σ b)` using `(gramC_posDef H σ hH hb).isUnit.invertible`. Establish `hdet : (gramC H σ (Fin.append b c)).det = (gramC H σ b).det * (quotGramC H σ b c).det`. Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv (gramC H σ (Fin.append b c)), gramC_append_blocks, Matrix.det_fromBlocks₁₁, Matrix.invOf_eq_nonsing_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hG`, the goal using `[hdet]`. Rewrite `hG`, `hGb` using `[Complex.pos_iff]`. Establish `hre : ((gramC H σ b).det * (quotGramC H σ b c).det).re = (gramC H σ b).det.re * (quotGramC H σ b c).det.re`. Simplify using `[Complex.mul_re, ← hGb.2]`.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hy : 0 < (quotGramC H σ b c).det.re`. Rewrite `hG` using `[hre]`. Conclude with `(pos_iff_pos_of_mul_pos hG.1).mp hGb.1`. Rewrite using `[hre, Real.log_mul hGb.1.ne' hy.ne']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_det_gram_append {K : Type} [Field K] [NumberField K] {r k m : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (b : Fin k → Fin r → K)

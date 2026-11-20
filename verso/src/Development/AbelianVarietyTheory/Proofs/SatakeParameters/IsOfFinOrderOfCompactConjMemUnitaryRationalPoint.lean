@@ -14,19 +14,17 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ n D hD g c hc hgc`. Use `haveI : DiscreteTopology (ratGL E n).range := GroundTheory.Automorphic.AdelicGLn.discreteTopology_rationalGL E n`. Establish `hcl : IsClosed (((ratGL E n).range : Subgroup (GA E n)) : Set (GA E n))` using `Subgroup.isClosed_of_discrete`. Set `K : Set (GA E n)` to `(fun x : UA E n => ((g * x * g⁻¹ : UA E n) : GA E n)) '' (D : Set (UA E n))`. Establish `hK : IsCompact K` using `hD.image (continuous_subtype_val.comp ((continuous_const.mul continuous_id).mul continuous_const))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKG : IsCompact (K ∩ ((ratGL E n).range : Set (GA E n)))` using `hK.inter_right hcl`. Set `t : Set (ratGL E n).range` to `{x | (x : GA E n) ∈ K}`. Establish `himg : Subtype.val '' t = K ∩ ((ratGL E n).range : Set (GA E n))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨hx, x.2⟩`. Introduce and unpack `⟨hy, hy'⟩`. Conclude with `⟨⟨y, hy'⟩, hy, rfl⟩`. Establish `ht : IsCompact t`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Topology.IsEmbedding.subtypeVal.isCompact_iff, himg]`. Conclude with `hKG`. Establish `hfin : (K ∩ ((ratGL E n).range : Set (GA E n))).Finite`. Rewrite using `[← himg]`. Conclude with `(ht.finite_of_discrete).image _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hno`. Establish `hinj` using `(injective_pow_iff_not_isOfFinOrder).2 hno`. Use `Set.infinite_of_injective_forall_mem (f := fun k : ℕ => ((g * c ^ k * g⁻¹ : UA E n) : GA E n)) ?_ ?_ hfin` and prove the remaining obligations. Introduce `i j hij`. Apply `hinj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : g * c ^ i * g⁻¹ = g * c ^ j * g⁻¹` using `Subtype.ext hij`. Simplify using `using h1`. Introduce `k`. Use `⟨⟨c ^ k, D.pow_mem hc k, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hk : g * c ^ k * g⁻¹ ∈ ratU E n`.
-
-Use `(ratU E n).pow_mem hgc k` as an intermediate fact. Simplify `this` using `[conj_pow]`. Conclude with `(Subgroup.mem_subgroupOf).1 hk`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isOfFinOrder_of_conj_mem_ratU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (D : Subgroup (UA E n)),
     IsCompact (D : Set (UA E n)) → ∀ (g : UA E n), ∀ c ∈ D, g * c * g⁻¹ ∈ ratU E n → IsOfFinOrder c := by

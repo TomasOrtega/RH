@@ -6,7 +6,7 @@ namespace GlobalTheory.FlatRed
 open GlobalTheory.FlatFactor GlobalTheory.LocFlat
 
 /- English proof (translation)
-Take `rfl : P = Q` from `funext fun a => propext (h a)`. Take `rfl : i1 = i2` from `Subsingleton.elim _ _`. Take `rfl : F = G` from `funext hFG`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem integral_pi_subtype_iff {k α : Type} [MeasurableSpace k] {P Q : α → Prop} {i1 : Fintype (Subtype P)}
     {i2 : Fintype (Subtype Q)} (h : ∀ a, P a ↔ Q a) (ν : Measure k) (F : (Subtype P → k) → ℂ)
@@ -25,13 +25,13 @@ section
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
 
 /- English proof (translation)
-Simplify using `[itFree]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_itFree (ρ : ℕ) (e : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1))) : e ∈ itFree n n' c ρ ↔ Free (ρ + 1) e := by
   simp [itFree]
 
 /- English proof (translation)
-Simplify using `[evAll]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_evAll (ρ : ℕ) (e : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1))) :
     e ∈ evAll n n' c ρ ↔ ¬ Free (ρ + 1) e ∧ ¬ IsRead n n' c ρ e := by
@@ -40,17 +40,17 @@ theorem mem_evAll (ρ : ℕ) (e : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1))) :
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Use extensionality with `r q`. Simplify using `only [fill, affPt, Matrix.of_apply, Matrix.add_apply]`. Distinguish the cases in `hF : Free (ρ + 1) (r, q)`. Rewrite using `[dif_pos ((mem_itFree ρ _).2 hF), dif_pos hF]`. Apply the tactic sequence `rcases r with r | l <;> rcases q with s | i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `hF.elim`. Establish `h1 : ρ + 1 < i.val + 1` using `hF`. Establish `h2 : i.val ≠ ρ` using `by omega`. Simplify using `[basePt, colAt, h2]`. Simplify using `[basePt, colAt]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : l.val < i.val` using `hF`. Establish `h2 : l.val ≠ i.val` using `by omega`. Simplify using `[basePt, colAt, h2]`. Rewrite using `[dif_neg (fun hh => hF ((mem_itFree ρ _).1 hh)), dif_neg hF]`. Distinguish the cases in `hR : IsRead n n' c ρ (r, q)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun hh => ((mem_evAll ρ _).1 hh).2 hR)]`. Apply the tactic sequence `rcases r with r | l <;> rcases q with s | i`. Simplify using `[basePt, colAt, readPart]`. Establish `h1 : i.val = ρ` using `hR`. Take `rfl : i = ⟨ρ, h⟩` from `Fin.ext h1`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[basePt, colAt, readPart]`. Conclude with `hR.elim`. Conclude with `hR.elim`. Rewrite using `[if_pos ((mem_evAll ρ _).2 ⟨hF, hR⟩)]`. Apply the tactic sequence `rcases r with r | l <;> rcases q with s | i`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(hR trivial).elim`. Establish `h1 : i.val ≠ ρ` using `hR`. Simplify using `[basePt, colAt, h1]`. Simplify using `[basePt, colAt]`. Simplify using `[basePt, colAt]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fill_eq (ρ : ℕ) (h : ρ < c + 1) (t : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)
     (a : {e // e ∈ itFree n n' c ρ} → k) :
@@ -89,7 +89,7 @@ theorem fill_eq (ρ : ℕ) (h : ρ < c + 1) (t : Matrix (n ⊕ Fin c) (n' ⊕ Fi
       · simp [basePt, colAt]
 
 /- English proof (translation)
-Simplify using `[ch, colAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ch_add_colAt (p : ℕ) (z : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (y : n → k) :
     ch (z + colAt n' c p y) = ch z := by
@@ -98,9 +98,9 @@ theorem ch_add_colAt (p : ℕ) (z : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)
 end
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ψ ν n n' _ _ _ _ c ρ hc Φ hΦ t`. Establish `h : ρ < c + 1` using `by omega`. Rewrite using `[← hΦ (readPart ρ h t)]`. Unfold `red flCol opE`. Use `integral_pi_subtype_iff (mem_itFree ρ) ν _ _ fun a => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `beta_reduce`. Rewrite using `[fill_eq ρ h t a, ch_add_colAt, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_eq_zero_of_flCol : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c ρ : ℕ), c = 2 * ρ → ∀ Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ, (∀ x, GlobalTheory.LocFlat.flCol ψ ν (ρ + 1) Φ x = 0) → ∀ t, GlobalTheory.FlatFactor.red ν (GlobalTheory.FlatFactor.evAll n n' c ρ) (GlobalTheory.FlatFactor.itFree n n' c ρ) (basePt c (0 : Matrix n n' k)) (fun t => (ψ (-ch t) : ℂ) * Φ t) t = 0 := by
   intro k _ _ _ _ _ _ ψ ν n n' _ _ _ _ c ρ hc Φ hΦ t

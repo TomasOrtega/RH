@@ -23,9 +23,9 @@ namespace GlobalTheory.GeoTie
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SingleStatement.main`. Consider the case `exact _root_.GlobalTheory.SingleStatement.main`. Consider the case `(apply _root_.GlobalTheory.SingleStatement.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SingleStatement.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SingleStatement.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SingleStatement.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_sum_le_of_le {p : ℕ} [Fact p.Prime] {ι : Type} (s : Finset ι) (g : ι → ℂ_[p]) {r : ℝ} (hr : 0 ≤ r)
     (h : ∀ k ∈ s, ‖g k‖ ≤ r) : ‖∑ k ∈ s, g k‖ ≤ r := by
@@ -47,9 +47,9 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T1 : Type}
   (j : Fin D.R.m)
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [RingHom.mem_fieldRange]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Take `⟨c, rfl⟩` from `(eKs YS).surjective a`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, (embC_eKs YS iC b c).symm⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨eKs YS c, embC_eKs YS iC b c⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem fieldRange_embC : (embC YS iC b).fieldRange = (embS S iC b).fieldRange := by
   ext y
@@ -62,7 +62,7 @@ theorem fieldRange_embC : (embC YS iC b).fieldRange = (embS S iC b).fieldRange :
     exact ⟨eKs YS c, embC_eKs YS iC b c⟩
 
 /- English proof (translation)
-Rewrite using `[kurAt, Subfield.mem_comap, kurC_congr _ (fieldRange_embC YS iC b)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kurAt_iff (a : FractionRing (D.ntw.O i)) : a ∈ kurAt YS iC b ↔ iC a ∈ kurC (embS S iC b) := by
   rw [kurAt, Subfield.mem_comap, kurC_congr _ (fieldRange_embC YS iC b)]
@@ -73,7 +73,7 @@ def coef {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : ℕ) + 1))) (x
 
 variable {b j} in
 /- English proof (translation)
-Conclude with `Finsupp.ext_iff.1 (map_add (B.baseChange (NX.KB S i b)).repr x y) s`.
+A detailed English derivation is pending.
 -/
 theorem coef_add {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : ℕ) + 1))) (x y : NX.Fm S i ((j : ℕ) + 1) b)
     (s : Fin n) : coef b j B (x + y) s = coef b j B x s + coef b j B y s := by
@@ -81,7 +81,7 @@ theorem coef_add {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : ℕ) +
 
 variable {b j} in
 /- English proof (translation)
-Conclude with `Finsupp.ext_iff.1 (map_neg (B.baseChange (NX.KB S i b)).repr x) s`.
+A detailed English derivation is pending.
 -/
 theorem coef_neg {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : ℕ) + 1))) (x : NX.Fm S i ((j : ℕ) + 1) b)
     (s : Fin n) : coef b j B (-x) s = -coef b j B x s := by
@@ -89,7 +89,7 @@ theorem coef_neg {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : ℕ) +
 
 variable {b j} in
 /- English proof (translation)
-Conclude with `Finsupp.ext_iff.1 (map_zero (B.baseChange (NX.KB S i b)).repr) s`.
+A detailed English derivation is pending.
 -/
 theorem coef_zero {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : ℕ) + 1))) (s : Fin n) :
     coef b j B (0 : NX.Fm S i ((j : ℕ) + 1) b) s = 0 := by
@@ -97,7 +97,7 @@ theorem coef_zero {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : ℕ) 
 
 variable {b j} in
 /- English proof (translation)
-Conclude with `Module.Basis.baseChange_repr_tmul (b := B) (x := a) (y := f) (i := s)`.
+A detailed English derivation is pending.
 -/
 theorem coef_tmul {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : ℕ) + 1))) (a : NX.KB S i b)
     (f : NX.FmK S ((j : ℕ) + 1)) (s : Fin n) :
@@ -106,11 +106,9 @@ theorem coef_tmul {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : ℕ) 
   exact Module.Basis.baseChange_repr_tmul (b := B) (x := a) (y := f) (i := s)
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, f, rfl⟩` from `hx`. Rewrite using `[coef_tmul]`. Use `(kurAt YS iC b).mul_mem ?_ ha` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[kurAt_iff]`. Conclude with `mem_kurC (embS S iC b) (B.repr f s)`. Consider the case `zero => rw [coef_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [coef_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [coef_neg]`. Conclude with `neg_mem hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coef_mem_kurAt {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : ℕ) + 1)))
     {x : NX.Fm S i ((j : ℕ) + 1) b} (hx : x ∈ ratForms S ((j : ℕ) + 1) b (kurAt YS iC b)) (s : Fin n) :
@@ -146,7 +144,7 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T1 : Type}
 def oneK (f : NX.FmK S ((j : ℕ) + 1)) : NX.Fm S i ((j : ℕ) + 1) b := (1 : NX.KB S i b) ⊗ₜ[S.Ks] f
 
 /- English proof (translation)
-Establish `h` using `(B.baseChange (NX.KB S i b)).sum_repr x`. Simplify using `only [Module.Basis.baseChange_apply] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_sum_coef {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : ℕ) + 1))) (x : NX.Fm S i ((j : ℕ) + 1) b) :
     x = ∑ s, coef b j B x s • oneK b j (B s) := by
@@ -155,9 +153,9 @@ theorem eq_sum_coef {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : ℕ
   exact h.symm
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_sum_coef b j B x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[valAt_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h1 : iC (1 : NX.KB S i b) = 1` using `map_one iC`. Conclude with `(valAt_tmul YS fw j z 1 (B s)).trans (by rw [h1, one_mul])`.
+A detailed English derivation is pending.
 -/
 theorem valAt_eq_sum {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : ℕ) + 1))) (x : NX.Fm S i ((j : ℕ) + 1) b)
     (z : FrC YS iC b ((j : ℕ) + 1)) :
@@ -171,39 +169,35 @@ theorem valAt_eq_sum {n : ℕ} (B : Module.Basis (Fin n) S.Ks (NX.FmK S ((j : �
   exact (valAt_tmul YS fw j z 1 (B s)).trans (by rw [h1, one_mul])
 
 /- English proof (translation)
-Take `⟨n, B, hB, hBc⟩` from `hC1`. Establish `hkur : ∀ s, iC (coef b j B x s) ∈ kurC (embS S iC b)` using `fun s => (kurAt_iff YS iC b _).1 (coef_mem_kurAt YS iC b j B hx.1 s)`. Establish `hval : ∀ z : Pts YS iC b ((j : ℕ) + 1), ‖∑ s, iC (coef b j B x s) * valC z.1 (cuspOf YS fw j (B s) : T0.R ((j : ℕ) + 1))‖ ≤ 1` using `fun z => by`. Rewrite using `[← valAt_eq_sum]`. Conclude with `hx.2 z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : ∀ s, ‖iC (coef b j B x s)‖ ≤ 1`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨s1, hs1⟩` from `hne`. Take `⟨s0, -, hs0⟩` from `Finset.exists_max_image Finset.univ (fun s => ‖iC (coef b j B x s)‖) ⟨s1, Finset.mem_univ _⟩`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hM : 1 < ‖iC (coef b j B x s0)‖` using `hs1.trans_le (hs0 s1 (Finset.mem_univ _))`. Take `⟨c, hc⟩` from `(GlobalTheory.KurValue.kurC_value_residue (D.ntw.l i) S.Ks (embS S iC b)).1 _ (hkur s0)`. Establish `hcpos : 0 < ‖embS S iC b c‖` using `by rw [← hc]; linarith`. Establish `hc0 : embS S iC b c ≠ 0` using `norm_pos_iff.1 hcpos`. Use `set w : Fin n → ℂ_[D.ntw.l i] := fun s => iC (coef b j B x s) / embS S iC b c with hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw1 : ∀ s, ‖w s‖ ≤ 1` using `fun s => by`. Rewrite using `[hw, norm_div, ← hc, div_le_one (by linarith)]`. Conclude with `hs0 s (Finset.mem_univ _)`. Establish `hw0 : ‖w s0‖ = 1`. Rewrite using `[hw, norm_div, ← hc, div_self (by linarith)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwk : ∀ s, w s ∈ kurC (embS S iC b)` using `fun s => div_mem (hkur s) (mem_kurC _ c)`. Take `⟨ϖ, hϖ0, hϖ1, hϖ⟩` from `GlobalTheory.T.exists_uniformiser_norm_gap_padic_embedding (D.ntw.l i) S.Ks (embS S iC b)`. Use `set r := ‖embS S iC b ϖ‖ with hr`. Establish `hcr : ‖embS S iC b c‖⁻¹ ≤ r`. Establish `h1 : ‖embS S iC b c⁻¹‖ < 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_inv₀, norm_inv, ← hc]`. Conclude with `inv_lt_one_of_one_lt₀ hM`. Use `hϖ c⁻¹ h1` as an intermediate fact. Rewrite `this` using `[map_inv₀, norm_inv]`. Then use the resulting hypothesis. Establish `hsum : ∀ z : Pts YS iC b ((j : ℕ) + 1), ‖∑ s, w s * valC z.1 (cuspOf YS fw j (B s) : T0.R ((j : ℕ) + 1))‖ ≤ r` using `fun z => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : ∑ s, w s * valC z.1 (cuspOf YS fw j (B s) : T0.R ((j : ℕ) + 1)) = (∑ s, iC (coef b j B x s) * valC z.1 (cuspOf YS fw j (B s) : T0.R ((j : ℕ) + 1))) * (embS S iC b c)⁻¹`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [hw]`. Rewrite using `[div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, norm_inv]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨F', _, _, _, φ', hφ', hunr, a', ha'⟩` from `GlobalTheory.T.exists_finite_unramified_approximation_padic (D.ntw.l i) S.Ks (embS S iC b) n w hwk r hϖ0`. Establish `hsum' : ∀ z : Pts YS iC b ((j : ℕ) + 1), ‖∑ s, φ' (a' s) * valC z.1 (cuspOf YS fw j (B s) : T0.R ((j : ℕ) + 1))‖ ≤ r` using `fun z => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∑ s, φ' (a' s) * valC z.1 (cuspOf YS fw j (B s) : T0.R ((j : ℕ) + 1)) = ∑ s, w s * valC z.1 (cuspOf YS fw j (B s) : T0.R ((j : ℕ) + 1)) + ∑ s, (φ' (a' s) - w s) * valC z.1 (cuspOf YS fw j (B s) : T0.R ((j : ℕ) + 1))`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hsum z) ?_)` and prove the remaining obligations. Use `norm_sum_le_of_le _ _ hϖ0.le fun s _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul ?_ (hB s z) (norm_nonneg _) hϖ0.le` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_sub_rev]`. Conclude with `(ha' s).le`. Use `_ = r := mul_one r`. Establish `hϖ' : φ' (algebraMap S.Ks F' ϖ) ≠ 0` using `by rw [hφ']; exact norm_pos_iff.1 hϖ0`. Take `⟨m, β, g, hβ, hg, heq⟩` from `hC2 F' φ' hφ' hunr n (fun s => a' s * (algebraMap S.Ks F' ϖ)⁻¹) (fun s => B s) (fun z => by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ∑ s, φ' (a' s * (algebraMap S.Ks F' ϖ)⁻¹) * valC z.1 (cuspOf YS fw j (B s) : T0.R ((j : ℕ) + 1)) = (∑ s, φ' (a' s) * valC z.1 (cuspOf YS fw j (B s) : T0.R ((j : ℕ) + 1))) * (φ' (algebraMap S.Ks F' ϖ))⁻¹`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, norm_mul, norm_inv, hφ', ← hr]`. Rewrite using `[← div_eq_mul_inv, div_le_one hϖ0]`. Conclude with `hsum' z)`. Establish `hco` using `congrArg (fun t => (B.baseChange F').repr t s0) heq`. Simplify using `only [map_sum, Finsupp.coe_finset_sum, Finset.sum_apply, Module.Basis.baseChange_repr_tmul, Module.Basis.repr_self, Finsupp.single_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at hco`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖φ' (a' s0 * (algebraMap S.Ks F' ϖ)⁻¹)‖ ≤ 1`. Rewrite using `[hco, map_sum]`. Use `norm_sum_le_of_le _ _ zero_le_one fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, hφ', norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ‖φ' (a' s0)‖ ≤ r`. Rewrite `h1` using `[map_mul, map_inv₀, hφ', norm_mul, norm_inv, ← hr, ← div_eq_mul_inv, div_le_one hϖ0]`. Conclude with `h1`. Establish `h3 : ‖w s0‖ ≤ r`. Use `IsUltrametricDist.norm_add_le_max (w s0 - φ' (a' s0)) (φ' (a' s0))` as an intermediate fact.
-
-Rewrite `this` using `[sub_add_cancel]`. Conclude with `this.trans (max_le (ha' s0).le h2)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[eq_sum_coef b j B x]`. Use `Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations.
-
-Take `⟨o, ho⟩` from `(hiC (coef b j B x s)).1 (hle s)`. Rewrite using `[← ho, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨B s, hB s, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_locBall
     (hiC : ∀ x, ‖iC x‖ ≤ 1 ↔ x ∈ (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i))).range)
@@ -314,13 +308,13 @@ end Core2
 end GlobalTheory.GeoTie
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 I0 T1 A3 T0 _ Rl cG S YS κ v₀ fw i iC hiC b j`. Establish `hA` using `GlobalTheory.T.supLatticeRationalForm_mem_localUnitBall D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j`. Establish `hbdd` using `GlobalTheory.T.weight_vector_realization_exists D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j hA`. Establish `h1 : iC (1 : NX.KB S i b) = 1` using `map_one iC`. Unfold `SupDescent`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[NX.Bsup, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨tmul_mem_ratForms (b := b) (kurAt YS iC b).one_mem x, fun z => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[valAt_tmul, h1, one_mul]`. Conclude with `hA x hx z`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Establish `h` using `mem_span_locBall YS fw iC b j hiC (GlobalTheory.T.exists_basis_rationalForms_local_unit_ball D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j hbdd) (GlobalTheory.T.unitBall_finite_unramified_descent_complexPadic D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j hbdd) x hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.span_le.2 ?_) h` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `GlobalTheory.T.one_tmul_mem_supLattice_of_mem_localUnitBall D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j f hf`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GeoTie.supDescent_side : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T1 : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T1 D.R.m) (T0 : CoreJ D) [Algebra T0.Q.c.F D.what₂.LL] (Rl : RealDat3 D A3 T0.Q.c.F) (cG : Formalism.L2.DIV.G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS Rl cG S) (κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)) (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) (fw : FWTie T0 Rl.toRealDat κ v₀) (i : D.ntw.Tw) (iC : FractionRing (D.ntw.O i) →+* ℂ_[D.ntw.l i]), (∀ x, ‖iC x‖ ≤ 1 ↔ x ∈ (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i))).range) → ∀ (b : Bool) (j : Fin D.R.m), SupDescent YS fw iC b j := by
   intro D Γ _ _ Pl0 I0 T1 A3 T0 _ Rl cG S YS κ v₀ fw i iC hiC b j

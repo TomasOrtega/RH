@@ -33,7 +33,7 @@ def sbs (g : I → GL (Fin 2) ℂ) : MvPolynomial (I × Fin 2) ℂ →ₐ[ℂ] M
 
 omit [Fintype I] in
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [sbs]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => rw [map_mul, map_mul, map_mul, hp]`. Simplify using `[sbs, act]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem eval_sbs (g : I → GL (Fin 2) ℂ) (x : I × Fin 2 → ℂ) (P : MvPolynomial (I × Fin 2) ℂ) :
     eval x (sbs g P) = eval (act g x) P := by
@@ -44,14 +44,14 @@ theorem eval_sbs (g : I → GL (Fin 2) ℂ) (x : I × Fin 2 → ℂ) (P : MvPoly
 
 omit [Fintype I] in
 /- English proof (translation)
-Apply the tactic sequence `funext p; obtain ⟨v, i⟩ := p; fin_cases i <;> simp [act]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem act_one (x : I × Fin 2 → ℂ) : act 1 x = x := by
   funext p; obtain ⟨v, i⟩ := p; fin_cases i <;> simp [act]
 
 omit [Fintype I] in
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `[act, Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem act_mul (g h : I → GL (Fin 2) ℂ) (x : I × Fin 2 → ℂ) : act (g * h) x = act h (act g x) := by
   funext p; simp [act, Matrix.mul_apply, Fin.sum_univ_two]; ring
@@ -68,7 +68,7 @@ def detE (e : I → ℤ) : (I → GL (Fin 2) ℂ) →* ℂˣ where
   map_mul' g h := by simp [mul_zpow, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Introduce `s x`. Rewrite using `[eval_sbs, eval_sbs, ← h]`. Use `congr 2`. Use function extensionality and compare the values at `p`. Simplify using `[act, mul_add, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sbs_mem {n : I → ℕ} (g : I → GL (Fin 2) ℂ) {P : MvPolynomial (I × Fin 2) ℂ} (h : P ∈ Wt n) : sbs g P ∈ Wt n := by
   intro s x
@@ -89,7 +89,7 @@ def wRep (n : I → ℕ) (e : I → ℤ) : Representation ℂ (I → GL (Fin 2) 
     rw [smul_eval, smul_eval, eval_sbs, eval_sbs, smul_eval, eval_sbs, act_mul, map_mul, Units.val_mul, mul_assoc]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `eval x ((detE e g : ℂ) • sbs g P.1) = _`. Rewrite using `[smul_eval, eval_sbs]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_wRep (n : I → ℕ) (e : I → ℤ) (g : I → GL (Fin 2) ℂ) (P : Wt n) (x : I × Fin 2 → ℂ) :
     eval x (wRep n e g P).1 = (detE e g : ℂ) * eval (act g x) P.1 := by
@@ -132,7 +132,7 @@ theorem psi_apply (R : Representation ℂ G W) (t : W →ₗ[ℂ] ℂ) (f : G �
 def stab (j : Γ →* G) (H : Subgroup G) (g : G) : Subgroup Γ := H.comap ((MulAut.conj g⁻¹).toMonoidHom.comp j)
 
 /- English proof (translation)
-Simplify using `[stab]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stab {j : Γ →* G} {H : Subgroup G} {g : G} {γ : Γ} : γ ∈ stab j H g ↔ g⁻¹ * j γ * g ∈ H := by
   simp [stab]
@@ -226,12 +226,12 @@ def resplit (Q : DefQuat F) : DefQuat F :=
       simp [Matrix.algebraMap_matrix_apply, apply_ite (D.ea v), h] }
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem cmp_resplit (Q : DefQuat F) : D.Cmp (D.resplit Q) := fun _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `funext fun v => Units.ext (h v γ)`.
+A detailed English derivation is pending.
 -/
 theorem Cmp.toInf {D : LDat F ι} {Q : DefQuat F} (h : D.Cmp Q) (γ : Q.Dˣ) : Q.toInf γ = D.gl (Q.toFin γ) :=
   funext fun v => Units.ext (h v γ)

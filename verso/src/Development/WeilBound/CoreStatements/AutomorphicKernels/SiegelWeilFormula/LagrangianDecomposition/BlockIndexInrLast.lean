@@ -12,23 +12,23 @@ def eB {N n : ℕ} (h : n + 1 = N) : Fin N ⊕ Fin N ≃ (Fin n ⊕ Fin n) ⊕ (
   (Equiv.sumCongr (eI h) (eI h)).trans (Equiv.sumSumSumComm _ _ _ _)
 
 /- English proof (translation)
-Establish `hi : finCongr h.symm (PositivityTheory.SiegelWeilFormula.Ald.em0 h i) = Fin.castAdd 1 i` using `Fin.ext rfl`. Rewrite using `[PositivityTheory.SiegelWeilFormula.Ald.eI, Equiv.trans_apply, hi, finSumFinEquiv_symm_apply_castAdd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem index_embedded_equiv {N n : ℕ} (h : n + 1 = N) (i : Fin n) : eI h (em0 h i) = Sum.inl i := by
   have hi : finCongr h.symm (PositivityTheory.SiegelWeilFormula.Ald.em0 h i) = Fin.castAdd 1 i := Fin.ext rfl
   rw [PositivityTheory.SiegelWeilFormula.Ald.eI, Equiv.trans_apply, hi, finSumFinEquiv_symm_apply_castAdd]
 
 /- English proof (translation)
-Establish `hi : finCongr h.symm (PositivityTheory.SiegelWeilFormula.Ald.i0 h) = Fin.natAdd n (0 : Fin 1)` using `Fin.ext (by simp [PositivityTheory.SiegelWeilFormula.Ald.i0])`. Rewrite using `[PositivityTheory.SiegelWeilFormula.Ald.eI, Equiv.trans_apply, hi, finSumFinEquiv_symm_apply_natAdd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem index_last_equiv {N n : ℕ} (h : n + 1 = N) : eI h (i0 h) = Sum.inr 0 := by
   have hi : finCongr h.symm (PositivityTheory.SiegelWeilFormula.Ald.i0 h) = Fin.natAdd n (0 : Fin 1) := Fin.ext (by simp [PositivityTheory.SiegelWeilFormula.Ald.i0])
   rw [PositivityTheory.SiegelWeilFormula.Ald.eI, Equiv.trans_apply, hi, finSumFinEquiv_symm_apply_natAdd]
 
 /- English proof (translation)
-Break down `u with a | a` into its components or cases. Use `show Equiv.sumSumSumComm _ _ _ _ (Sum.inl (PositivityTheory.SiegelWeilFormula.Ald.eI h (PositivityTheory.SiegelWeilFormula.Ald.em0 h a))) = _`. Rewrite using `[PositivityTheory.SiegelWeilFormula.Ald.index_embedded_equiv]`. Both sides reduce to the same expression. Use `show Equiv.sumSumSumComm _ _ _ _ (Sum.inr (PositivityTheory.SiegelWeilFormula.Ald.eI h (PositivityTheory.SiegelWeilFormula.Ald.em0 h a))) = _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[PositivityTheory.SiegelWeilFormula.Ald.index_embedded_equiv]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem eB_map {N n : ℕ} (h : n + 1 = N) (u : Fin n ⊕ Fin n) :
     eB h (Sum.map (em0 h) (em0 h) u) = Sum.inl u := by
@@ -41,7 +41,7 @@ theorem eB_map {N n : ℕ} (h : n + 1 = N) (u : Fin n ⊕ Fin n) :
     rfl
 
 /- English proof (translation)
-Use `show Equiv.sumSumSumComm _ _ _ _ (Sum.inl (PositivityTheory.SiegelWeilFormula.Ald.eI h (PositivityTheory.SiegelWeilFormula.Ald.i0 h))) = _`. Rewrite using `[PositivityTheory.SiegelWeilFormula.Ald.index_last_equiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem block_index_inl_last {N n : ℕ} (h : n + 1 = N) : eB h (Sum.inl (i0 h)) = Sum.inr (Sum.inl 0) := by
   show Equiv.sumSumSumComm _ _ _ _ (Sum.inl (PositivityTheory.SiegelWeilFormula.Ald.eI h (PositivityTheory.SiegelWeilFormula.Ald.i0 h))) = _
@@ -49,7 +49,7 @@ theorem block_index_inl_last {N n : ℕ} (h : n + 1 = N) : eB h (Sum.inl (i0 h))
   rfl
 
 /- English proof (translation)
-Use `show Equiv.sumSumSumComm _ _ _ _ (Sum.inr (PositivityTheory.SiegelWeilFormula.Ald.eI h (PositivityTheory.SiegelWeilFormula.Ald.i0 h))) = _`. Rewrite using `[PositivityTheory.SiegelWeilFormula.Ald.index_last_equiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem block_index_inr_last {N n : ℕ} (h : n + 1 = N) : eB h (Sum.inr (i0 h)) = Sum.inr (Sum.inr 0) := by
   show Equiv.sumSumSumComm _ _ _ _ (Sum.inr (PositivityTheory.SiegelWeilFormula.Ald.eI h (PositivityTheory.SiegelWeilFormula.Ald.i0 h))) = _
@@ -57,11 +57,11 @@ theorem block_index_inr_last {N n : ℕ} (h : n + 1 = N) : eB h (Sum.inr (i0 h))
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ i : Fin N, (∃ j, i = PositivityTheory.SiegelWeilFormula.Ald.em0 h j) ∨ i = PositivityTheory.SiegelWeilFormula.Ald.i0 h`. Introduce `i`. Distinguish the cases in `hi : i = PositivityTheory.SiegelWeilFormula.Ald.i0 h`. Conclude with `Or.inr hi`. Take `⟨j, rfl⟩` from `(PositivityTheory.SiegelWeilFormula.Ald.ne_last_iff_mem_range h i).1 hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inl ⟨j, rfl⟩`. Apply the tactic sequence `rcases u with i | i <;> rcases key i with ⟨j, rfl⟩ | rfl`. Conclude with `Or.inl ⟨Sum.inl j, rfl⟩`. Conclude with `Or.inr (Or.inl rfl)`. Conclude with `Or.inl ⟨Sum.inr j, rfl⟩`.
+Prove the first alternative. Apply the first step, then apply the next step to every resulting obligation. Prove the first alternative. Prove the second alternative. Prove the first alternative.
 
-Conclude with `Or.inr (Or.inr rfl)`.
+Prove the second alternative.
 -/
 theorem idx_cases {N n : ℕ} (h : n + 1 = N) (u : Fin N ⊕ Fin N) :
     (∃ u', u = Sum.map (em0 h) (em0 h) u') ∨ u = Sum.inl (i0 h) ∨ u = Sum.inr (i0 h) := by
@@ -78,7 +78,7 @@ theorem idx_cases {N n : ℕ} (h : n + 1 = N) (u : Fin N ⊕ Fin N) :
   · exact Or.inr (Or.inr rfl)
 
 /- English proof (translation)
-Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hu`. Break down `hu with rfl | rfl` into its components or cases. Conclude with `⟨_, PositivityTheory.SiegelWeilFormula.Ald.block_index_inl_last h⟩`. Conclude with `⟨_, PositivityTheory.SiegelWeilFormula.Ald.block_index_inr_last h⟩`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem eB_out {N n : ℕ} (h : n + 1 = N) (u : Fin N ⊕ Fin N) (hu : u ∈ ({Sum.inl (i0 h), Sum.inr (i0 h)} : Set (Fin N ⊕ Fin N))) :
     ∃ p, eB h u = Sum.inr p := by
@@ -101,7 +101,7 @@ theorem blk_apply [Zero R] {N n : ℕ} (h : n + 1 = N) (M : Matrix (Fin n ⊕ Fi
     blk h M P u v = Matrix.fromBlocks M 0 0 P (eB h u) (eB h v) := rfl
 
 /- English proof (translation)
-Rewrite using `[PositivityTheory.SiegelWeilFormula.Ald.blk_apply, PositivityTheory.SiegelWeilFormula.Ald.eB_map, PositivityTheory.SiegelWeilFormula.Ald.eB_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blk_map_apply [Zero R] {N n : ℕ} (h : n + 1 = N) (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R)
     (P : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) R) (u v : Fin n ⊕ Fin n) :
@@ -110,7 +110,7 @@ theorem blk_map_apply [Zero R] {N n : ℕ} (h : n + 1 = N) (M : Matrix (Fin n �
   rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun u v => PositivityTheory.SiegelWeilFormula.Ald.blk_map_apply h M P u v`.
+A detailed English derivation is pending.
 -/
 theorem blk_sub [Zero R] {N n : ℕ} (h : n + 1 = N) (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R)
     (P : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) R) :
@@ -118,27 +118,27 @@ theorem blk_sub [Zero R] {N n : ℕ} (h : n + 1 = N) (M : Matrix (Fin n ⊕ Fin 
   Matrix.ext fun u v => PositivityTheory.SiegelWeilFormula.Ald.blk_map_apply h M P u v
 
 /- English proof (translation)
-Simplify using `[PositivityTheory.SiegelWeilFormula.Ald.blk, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_mul [NonUnitalNonAssocSemiring R] {N n : ℕ} (h : n + 1 = N) (M M' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R)
     (P P' : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) R) : blk h M P * blk h M' P' = blk h (M * M') (P * P') := by
   simp [PositivityTheory.SiegelWeilFormula.Ald.blk, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Simplify using `[PositivityTheory.SiegelWeilFormula.Ald.blk, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_one [Semiring R] {N n : ℕ} (h : n + 1 = N) : blk h (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R) 1 = 1 := by
   simp [PositivityTheory.SiegelWeilFormula.Ald.blk, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
 
 /- English proof (translation)
-Simplify using `[PositivityTheory.SiegelWeilFormula.Ald.blk, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_transpose [Zero R] {N n : ℕ} (h : n + 1 = N) (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R)
     (P : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) R) : (blk h M P)ᵀ = blk h Mᵀ Pᵀ := by
   simp [PositivityTheory.SiegelWeilFormula.Ald.blk, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose]
 
 /- English proof (translation)
-Use extensionality with `u v`. Rewrite using `[Matrix.map_apply, PositivityTheory.SiegelWeilFormula.Ald.blk_apply, PositivityTheory.SiegelWeilFormula.Ald.blk_apply]`. Apply the tactic sequence `rcases PositivityTheory.SiegelWeilFormula.Ald.eB h u with a | a <;> rcases PositivityTheory.SiegelWeilFormula.Ald.eB h v with b | b <;>`. Simplify using `[hf]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blk_map [Zero R] {S : Type*} [Zero S] {N n : ℕ} (h : n + 1 = N) (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R)
     (P : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) R) (f : R → S) (hf : f 0 = 0) :
@@ -149,7 +149,7 @@ theorem blk_map [Zero R] {S : Type*} [Zero S] {N n : ℕ} (h : n + 1 = N) (M : M
     simp [hf]
 
 /- English proof (translation)
-Simplify using `[PositivityTheory.SiegelWeilFormula.Ald.blk, Matrix.conjTranspose_submatrix, Matrix.fromBlocks_conjTranspose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_conjTranspose [AddMonoid R] [StarAddMonoid R] {N n : ℕ} (h : n + 1 = N)
     (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R) (P : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) R) :
@@ -157,9 +157,9 @@ theorem blk_conjTranspose [AddMonoid R] [StarAddMonoid R] {N n : ℕ} (h : n + 1
   simp [PositivityTheory.SiegelWeilFormula.Ald.blk, Matrix.conjTranspose_submatrix, Matrix.fromBlocks_conjTranspose]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun e ((PositivityTheory.SiegelWeilFormula.Ald.eB h).symm (Sum.inl i))) ((PositivityTheory.SiegelWeilFormula.Ald.eB h).symm (Sum.inl j))`. Simplify `hij` using `[PositivityTheory.SiegelWeilFormula.Ald.blk_apply]`. Use extensionality with `i j`.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Establish `hij` using `congrFun (congrFun e ((PositivityTheory.SiegelWeilFormula.Ald.eB h).symm (Sum.inr i))) ((PositivityTheory.SiegelWeilFormula.Ald.eB h).symm (Sum.inr j))`. Simplify `hij` using `[PositivityTheory.SiegelWeilFormula.Ald.blk_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem blk_inj [Zero R] {N n : ℕ} (h : n + 1 = N) {M M' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R}
     {P P' : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) R} (e : blk h M P = blk h M' P') : M = M' ∧ P = P' := by
@@ -174,7 +174,7 @@ theorem blk_inj [Zero R] {N n : ℕ} (h : n + 1 = N) {M M' : Matrix (Fin n ⊕ F
     simpa [PositivityTheory.SiegelWeilFormula.Ald.blk_apply] using hij
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Conclude with `(PositivityTheory.SiegelWeilFormula.Ald.blk_inj h (e.trans (PositivityTheory.SiegelWeilFormula.Ald.blk_one h).symm)).1`. Introduce and unpack `rfl`. Conclude with `PositivityTheory.SiegelWeilFormula.Ald.blk_one h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem blk_eq_one_iff [Semiring R] {N n : ℕ} (h : n + 1 = N) (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R) :
     blk h M 1 = 1 ↔ M = 1 := by
@@ -185,13 +185,11 @@ theorem blk_eq_one_iff [Semiring R] {N n : ℕ} (h : n + 1 = N) (M : Matrix (Fin
     exact PositivityTheory.SiegelWeilFormula.Ald.blk_one h
 
 /- English proof (translation)
-Establish `hrow : ∀ u v, u ∈ ({Sum.inl (PositivityTheory.SiegelWeilFormula.Ald.i0 h), Sum.inr (PositivityTheory.SiegelWeilFormula.Ald.i0 h)} : Set (Fin N ⊕ Fin N)) → X u v = PositivityTheory.SiegelWeilFormula.Ald.blk h M 1 u v`. Introduce `u v hu`. Take `⟨p, hp⟩` from `PositivityTheory.SiegelWeilFormula.Ald.eB_out h u hu`. Rewrite using `[(hout u hu v).1, ← PositivityTheory.SiegelWeilFormula.Ald.blk_one h, PositivityTheory.SiegelWeilFormula.Ald.blk_apply, PositivityTheory.SiegelWeilFormula.Ald.blk_apply, hp]`. Apply the tactic sequence `rcases PositivityTheory.SiegelWeilFormula.Ald.eB h v with q | q <;> rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hcol : ∀ u v, v ∈ ({Sum.inl (PositivityTheory.SiegelWeilFormula.Ald.i0 h), Sum.inr (PositivityTheory.SiegelWeilFormula.Ald.i0 h)} : Set (Fin N ⊕ Fin N)) → X u v = PositivityTheory.SiegelWeilFormula.Ald.blk h M 1 u v`. Introduce `u v hv`. Take `⟨p, hp⟩` from `PositivityTheory.SiegelWeilFormula.Ald.eB_out h v hv`. Rewrite using `[(hout v hv u).2, ← PositivityTheory.SiegelWeilFormula.Ald.blk_one h, PositivityTheory.SiegelWeilFormula.Ald.blk_apply, PositivityTheory.SiegelWeilFormula.Ald.blk_apply, hp]`. Apply the tactic sequence `rcases PositivityTheory.SiegelWeilFormula.Ald.eB h u with q | q <;> rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `u v`. Break down `PositivityTheory.SiegelWeilFormula.Ald.idx_cases h u with ⟨u', rfl⟩ | hu | hu` into its components or cases. Break down `PositivityTheory.SiegelWeilFormula.Ald.idx_cases h v with ⟨v', rfl⟩ | hv | hv` into its components or cases. Rewrite using `[PositivityTheory.SiegelWeilFormula.Ald.blk_map_apply]`. Conclude with `congrFun (congrFun hin u') v'`.
-
-Conclude with `hcol _ _ (by simp [hv])`. Conclude with `hcol _ _ (by simp [hv])`. Conclude with `hrow _ _ (by simp [hu])`. Conclude with `hrow _ _ (by simp [hu])`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_blk [Semiring R] {N n : ℕ} (h : n + 1 = N) (X : Matrix (Fin N ⊕ Fin N) (Fin N ⊕ Fin N) R)
     (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R)
@@ -221,11 +219,11 @@ theorem eq_blk [Semiring R] {N n : ℕ} (h : n + 1 = N) (X : Matrix (Fin N ⊕ F
   · exact hrow _ _ (by simp [hu])
 
 /- English proof (translation)
-Establish `hne : ∀ a : Fin n, PositivityTheory.SiegelWeilFormula.Ald.em0 h a ≠ PositivityTheory.SiegelWeilFormula.Ald.i0 h` using `fun a => (PositivityTheory.SiegelWeilFormula.Ald.ne_last_iff_mem_range h _).2 ⟨a, rfl⟩`. Establish `hne' : ∀ a : Fin n, PositivityTheory.SiegelWeilFormula.Ald.i0 h ≠ PositivityTheory.SiegelWeilFormula.Ald.em0 h a` using `fun a => (hne a).symm`. Establish `hl : ∀ a, PositivityTheory.SiegelWeilFormula.Ald.eB h (Sum.inl (PositivityTheory.SiegelWeilFormula.Ald.em0 h a)) = Sum.inl (Sum.inl a)` using `fun a => PositivityTheory.SiegelWeilFormula.Ald.eB_map h (Sum.inl a)`. Establish `hr : ∀ a, PositivityTheory.SiegelWeilFormula.Ald.eB h (Sum.inr (PositivityTheory.SiegelWeilFormula.Ald.em0 h a)) = Sum.inl (Sum.inr a)` using `fun a => PositivityTheory.SiegelWeilFormula.Ald.eB_map h (Sum.inr a)`. Establish `key : ∀ i : Fin N, (∃ j, i = PositivityTheory.SiegelWeilFormula.Ald.em0 h j) ∨ i = PositivityTheory.SiegelWeilFormula.Ald.i0 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Distinguish the cases in `hi : i = PositivityTheory.SiegelWeilFormula.Ald.i0 h`. Conclude with `Or.inr hi`. Take `⟨j, rfl⟩` from `(PositivityTheory.SiegelWeilFormula.Ald.ne_last_iff_mem_range h i).1 hi`. Conclude with `Or.inl ⟨j, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Extract witnesses or component facts from the available result. Prove the first alternative.
 
-Use extensionality with `u v`. Apply the tactic sequence `rcases u with i | i <;> rcases v with j | j <;> rcases key i with ⟨i, rfl⟩ | rfl <;>`. Apply the tactic sequence `rcases key j with ⟨j, rfl⟩ | rfl <;>`. Simplify using `[PositivityTheory.SiegelWeilFormula.Ald.blk_apply, hl, hr, PositivityTheory.SiegelWeilFormula.Ald.block_index_inl_last, PositivityTheory.SiegelWeilFormula.Ald.block_index_inr_last, Matrix.one_apply, hne, hne', (PositivityTheory.SiegelWeilFormula.Ald.em0_injective h).eq_iff]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem jepsR_blk [Semiring R] {N n : ℕ} (h : n + 1 = N) (c : R) :
     (Matrix.fromBlocks 0 1 (c • 1) 0 : Matrix (Fin N ⊕ Fin N) (Fin N ⊕ Fin N) R) =

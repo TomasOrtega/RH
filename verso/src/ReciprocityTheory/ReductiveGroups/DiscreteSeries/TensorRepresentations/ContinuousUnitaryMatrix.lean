@@ -13,13 +13,13 @@ variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
 
 /- English proof (translation)
-Take `⟨hu, hkJ⟩` from `hk`. Establish `hkk : kᴴ * k = 1`. Use `Matrix.mem_unitaryGroup_iff'.1 hu` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `hkU : k ∈ UJset ε` using `by show kᴴ * Jm ε * k = Jm ε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, ← hkJ, ← Matrix.mul_assoc, hkk, Matrix.one_mul]`. Establish `hσ' : σ (g * k) = (σ g).comp (σ k)` using `hσ.1.2 g hg k hkU`. Establish `hkinv : k⁻¹ = kᴴ` using `Matrix.inv_eq_left_inv hkk`. Use function extensionality and compare the values at `c`. Simplify using `only [tensGrp, kDiag, hσ', ContinuousLinearMap.comp_apply, map_sum, map_smul, Finset.smul_sum, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Consider the cases of `dual`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Split into cases according to the possible forms of the given data.
 
-Simplify using `[Matrix.mul_apply]`. Simplify using `only [cond_true]`. Rewrite using `[Matrix.mul_inv_rev, hkinv, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun e _ => by rw [Matrix.conjTranspose_apply, mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_group_mul_kDiag (dual : Bool) (hσ : IsURepOn (UJset ε) σ) {g k : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ UJset ε) (hk : k ∈ Kset ε) (f : Fin n → H) :
@@ -47,11 +47,11 @@ theorem tensor_group_mul_kDiag (dual : Bool) (hσ : IsURepOn (UJset ε) σ) {g k
     exact Finset.sum_congr rfl fun e _ => by rw [Matrix.conjTranspose_apply, mul_comm]
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Consider the cases of `dual`. Both sides reduce to the same expression. Establish `hJJ : Jm ε * Jm ε = 1`. Rewrite using `[Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hinv : g⁻¹ = Jm ε * gᴴ * Jm ε` using `Matrix.inv_eq_left_inv (by`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg', hJJ])`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [oa1Phi, cond_true]`. Rewrite using `[hinv]`. Simplify using `[Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tensor_phi_of_unitary {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (dual : Bool) (c d : Fin n) :
     oa1Phi dual g c d =
@@ -71,13 +71,11 @@ theorem tensor_phi_of_unitary {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) 
     simp [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Establish `hent : ‖g c d‖ ≤ Real.sqrt (S7.hs g)`. Establish `h1 : ‖g c d‖ ^ 2 ≤ ∑ j', ‖g c j'‖ ^ 2` using `Finset.single_le_sum (f := fun j' => ‖g c j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ d)`. Establish `h2 : ∑ j', ‖g c j'‖ ^ 2 ≤ ∑ i', ∑ j', ‖g i' j'‖ ^ 2` using `Finset.single_le_sum (f := fun i' => ∑ j', ‖g i' j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ c)`. Establish `h3 : ‖g c d‖ ^ 2 ≤ S7.hs g`. Simplify using `only [S7.hs, Formalism.REAL.hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h1.trans h2`. Establish `h4` using `Real.abs_le_sqrt h3`. Rewrite `h4` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis. Rewrite using `[tensor_phi_of_unitary hg dual c d]`. Consider the cases of `dual`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Conclude with `hent`. Establish `hb : ∀ b : Bool, ‖(if b then (1 : ℂ) else -1)‖ = 1`. Introduce `b`. Apply the tactic sequence `cases b <;> simp`. Simplify using `only [cond_true, norm_mul, norm_star]`.
-
-Rewrite using `[hb, hb, one_mul, mul_one]`. Conclude with `hent`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_tensor_phi_le_sqrt_hs {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (dual : Bool) (c d : Fin n) :
     ‖oa1Phi dual g c d‖ ≤ Real.sqrt (S7.hs g) := by
@@ -102,7 +100,7 @@ theorem norm_tensor_phi_le_sqrt_hs {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ �
     exact hent
 
 /- English proof (translation)
-Unfold `Formalism.REAL.SmoothOnG at h ⊢`. Introduce `g₀ hg₀`. Use `choose! U F hU hgU hF hFU using fun i (hi : i ∈ s) => h i hi g₀ hg₀`. Use `⟨⋂ i ∈ s, U i, fun x => ∑ i ∈ s, F i x, isOpen_biInter_finset fun i hi => hU i hi, Set.mem_iInter₂.2 fun i hi => hgU i hi, ContDiffOn.sum fun i hi => (hF i hi).mono (Set.biInter_subset_of_mem hi), fun g hg hgJ => ?_⟩` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i hi => hFU i hi g (Set.mem_iInter₂.1 hg i hi) hgJ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem smoothOnG_finset_sum {ι : Type*} (s : Finset ι) (F : ι → Matrix (Fin n) (Fin n) ℂ → ℂ)
     (h : ∀ i ∈ s, Formalism.REAL.SmoothOnG ε (F i)) : Formalism.REAL.SmoothOnG ε (fun x => ∑ i ∈ s, F i x) := by
@@ -115,9 +113,9 @@ theorem smoothOnG_finset_sum {ι : Type*} (s : Finset ι) (F : ι → Matrix (Fi
   exact Finset.sum_congr rfl fun i hi => hFU i hi g (Set.mem_iInter₂.1 hg i hi) hgJ
 
 /- English proof (translation)
-Unfold `IsSmoothVecU S7.SmoothOnGV at hv`. Unfold `Formalism.REAL.SmoothOnG`. Introduce `g₀ h₀`. Take `⟨U, F, hU, h0U, hF, hFU⟩` from `hv g₀ h₀`. Use `⟨U, fun g => inner ℂ w (F g), hU, h0U, contDiffOn_const.inner ℂ hF, fun g hg hgJ => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hFU g hg hgJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smoothOnG_inner_rep (w : H) {v : H} (hv : IsSmoothVecU ε σ v) :
     Formalism.REAL.SmoothOnG ε (fun g => inner ℂ w (σ g v)) := by
@@ -129,11 +127,11 @@ theorem smoothOnG_inner_rep (w : H) {v : H} (hv : IsSmoothVecU ε σ v) :
   simp only [hFU g hg hgJ]
 
 /- English proof (translation)
-Establish `hent : ContDiff ℝ ∞ (fun g : Matrix (Fin n) (Fin n) ℂ => g c d)`. Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] ℂ` to `{ toFun := fun M => M c d, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Conclude with `(LinearMap.toContinuousLinearMap L).contDiff`. Establish `hst : ContDiff ℝ ∞ (fun g : Matrix (Fin n) (Fin n) ℂ => star (g c d))`. Apply the tactic sequence `let L' : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] ℂ := { toFun := fun M => star (M c d) map_add' := fun _ _ => by simp map_smul' := fun r M => by simp [Complex.real_smul, Complex.conj_ofReal] <;> ring }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Conclude with `(LinearMap.toContinuousLinearMap L').contDiff`. Unfold `Formalism.REAL.SmoothOnG`. Introduce `g₀ _`. Consider the cases of `dual`. Conclude with `⟨Set.univ, fun g => g c d, isOpen_univ, trivial, hent.contDiffOn, fun g _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Set.univ, fun g => (if ε d then (1 : ℂ) else -1) * star (g c d) * (if ε c then (1 : ℂ) else -1), isOpen_univ, trivial, ((contDiff_const.mul hst).mul contDiff_const).contDiffOn, fun g _ hg => ?_⟩ beta_reduce` and prove the remaining obligations. Rewrite using `[tensor_phi_of_unitary hg true c d]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem smoothOnG_tensor_phi (dual : Bool) (c d : Fin n) : Formalism.REAL.SmoothOnG ε (fun g => oa1Phi dual g c d) := by
   have hent : ContDiff ℝ ∞ (fun g : Matrix (Fin n) (Fin n) ℂ => g c d) := by
@@ -157,9 +155,9 @@ theorem smoothOnG_tensor_phi (dual : Bool) (c d : Fin n) : Formalism.REAL.Smooth
     rfl
 
 /- English proof (translation)
-Unfold `Formalism.REAL.SmoothOnG at hf hg ⊢`. Introduce `g₀ h₀`. Take `⟨U, F, hU, h0U, hF, hFU⟩` from `hf g₀ h₀`. Take `⟨V, G, hV, h0V, hG, hGV⟩` from `hg g₀ h₀`. Use `⟨U ∩ V, fun x => F x * G x, hU.inter hV, ⟨h0U, h0V⟩, (hF.mono Set.inter_subset_left).mul (hG.mono Set.inter_subset_right), fun x hx hxJ => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hFU x hx.1 hxJ, hGV x hx.2 hxJ]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma smoothOnG_mul {f g : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : Formalism.REAL.SmoothOnG ε f)
     (hg : Formalism.REAL.SmoothOnG ε g) : Formalism.REAL.SmoothOnG ε (fun x => f x * g x) := by
@@ -172,7 +170,7 @@ private lemma smoothOnG_mul {f g : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : For
   simp only [hFU x hx.1 hxJ, hGV x hx.2 hxJ]
 
 /- English proof (translation)
-Establish `heq : (fun g => ∑ c, inner ℂ (η c) (tensGrp dual σ g f c)) = fun g => ∑ c, ∑ d, oa1Phi dual g c d * inner ℂ (η c) (σ g (f d))`. Use function extensionality and compare the values at `g`. Simplify using `only [tensGrp, inner_sum, inner_smul_right, oa1Phi]`. Rewrite using `[heq]`. Conclude with `smoothOnG_finset_sum univ (fun c g => ∑ d, oa1Phi dual g c d * inner ℂ (η c) (σ g (f d))) fun c _ => smoothOnG_finset_sum univ (fun d g => oa1Phi dual g c d * inner ℂ (η c) (σ g (f d))) fun d _ => smoothOnG_mul (smoothOnG_tensor_phi dual c d) (smoothOnG_inner_rep (η c) (hf d))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_coef_smooth (dual : Bool) (η f : Fin n → H) (hf : ∀ d, IsSmoothVecU ε σ (f d)) :
     Formalism.REAL.SmoothOnG ε (fun g => ∑ c, inner ℂ (η c) (tensGrp dual σ g f c)) := by
@@ -186,20 +184,20 @@ theorem tensor_coef_smooth (dual : Bool) (η f : Fin n → H) (hf : ∀ d, IsSmo
       smoothOnG_mul (smoothOnG_tensor_phi dual c d) (smoothOnG_inner_rep (η c) (hf d))
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_umat' : Continuous (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat g) := Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `(hσ.2.2 v).comp_continuous continuous_umat' fun g => g.2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rep_orbit (hσ : IsURepOn (UJset ε) σ) (v : H) :
     Continuous (fun g : Formalism.REAL.UJ ε => σ (Formalism.MainNotions.S.umat g) v) := (hσ.2.2 v).comp_continuous continuous_umat' fun g => g.2
 
 /- English proof (translation)
-Establish `he : Continuous (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat g c d)` using `(continuous_apply d).comp ((continuous_apply c).comp continuous_umat')`. Consider the cases of `dual`. Conclude with `he`. Establish `hfun : (fun g : Formalism.REAL.UJ ε => oa1Phi true (Formalism.MainNotions.S.umat g) c d) = fun g => (if ε d then (1 : ℂ) else -1) * star (Formalism.MainNotions.S.umat g c d) * (if ε c then (1 : ℂ) else -1)`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tensor_phi_of_unitary (g := Formalism.MainNotions.S.umat g) (show inUJ ε (Formalism.MainNotions.S.umat g) from g.2) true c d]`. Both sides reduce to the same expression. Rewrite using `[hfun]`. Conclude with `(continuous_const.mul he.star).mul continuous_const`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_tensor_phi (dual : Bool) (c d : Fin n) :
     Continuous (fun g : Formalism.REAL.UJ ε => oa1Phi dual (Formalism.MainNotions.S.umat g) c d) := by
@@ -216,7 +214,7 @@ theorem continuous_tensor_phi (dual : Bool) (c d : Fin n) :
     exact (continuous_const.mul he.star).mul continuous_const
 
 /- English proof (translation)
-Use `MemLp.of_le (hW v hv w hw) ?_ (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `((continuous_tensor_phi dual c d).mul (continuous_const.inner (continuous_rep_orbit hσ _))).aestronglyMeasurable`. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]`. Conclude with `mul_le_mul_of_nonneg_right (norm_tensor_phi_le_sqrt_hs (show inUJ ε (Formalism.MainNotions.S.umat g) from g.2) dual c d) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_term_memLp (hσ : IsURepOn (UJset ε) σ) {S : Submodule ℂ D}
     (hW : ∀ v ∈ S, ∀ w ∈ S, MemLp (fun g : Formalism.REAL.UJ ε =>
@@ -232,7 +230,7 @@ theorem tensor_term_memLp (hσ : IsURepOn (UJset ε) σ) {S : Submodule ℂ D}
       (norm_tensor_phi_le_sqrt_hs (show inUJ ε (Formalism.MainNotions.S.umat g) from g.2) dual c d) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `e : (fun g : Formalism.REAL.UJ ε => ∑ c, inner ℂ ((η c : D) : H) (tensGrp dual σ (Formalism.MainNotions.S.umat g) (fun c => ((f c : D) : H)) c)) = fun g => ∑ c, ∑ d, oa1Phi dual (Formalism.MainNotions.S.umat g) c d * inner ℂ ((η c : D) : H) (σ (Formalism.MainNotions.S.umat g) ((f …`. Use function extensionality and compare the values at `fun g => tensor_coef_expand dual σ _ _ _`. Rewrite using `[e]`. Rewrite `hη`, `hf` using `[tset_mem]`. Conclude with `memLp_finsetSum _ fun c _ => memLp_finsetSum _ fun d _ => tensor_term_memLp hσ hW dual (hη c) (hf d) c d`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_coef_memLp (dual : Bool) (hσ : IsURepOn (UJset ε) σ) {S : Submodule ℂ D}
     (hW : ∀ v ∈ S, ∀ w ∈ S, MemLp (fun g : Formalism.REAL.UJ ε =>

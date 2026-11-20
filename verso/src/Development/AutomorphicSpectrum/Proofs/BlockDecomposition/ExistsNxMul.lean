@@ -9,17 +9,17 @@ open scoped NumberField.AdeleRing Classical
 namespace GlobalTheory.CompanionTheory.GAKMajInj
 
 /- English proof (translation)
-Establish `hne : (g : Matrix (Fin 2) (Fin 2) K).det ≠ 0` using `(Matrix.isUnits_det_units g).ne_zero`. Rewrite `hne` using `[Matrix.det_fin_two]`. Rewrite `hd` using `[Matrix.det_fin_two, Matrix.det_fin_two]`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx0, hx1⟩ : ∃ x : K, (g' : Matrix (Fin 2) (Fin 2) K) 0 0 = (g : Matrix (Fin 2) (Fin 2) K) 0 0 + x * (g : Matrix (Fin 2) (Fin 2) K) 1 0 ∧ (g' : Matrix (Fin 2) (Fin 2) K) 0 1 = (g : Matrix (Fin 2) (Fin 2) K) 0 1 + x * (g : Matrix (Fin 2) (Fin 2) K) 1 1 := by`. Rewrite `hd` using `[← h0, ← h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Generalize the expression as in `(g : Matrix (Fin 2) (Fin 2) K) 0 0 = a at *`. Generalize the expression as in `(g : Matrix (Fin 2) (Fin 2) K) 0 1 = b at *`. Generalize the expression as in `(g : Matrix (Fin 2) (Fin 2) K) 1 0 = c at *`. Generalize the expression as in `(g : Matrix (Fin 2) (Fin 2) K) 1 1 = d at *`. Generalize the expression as in `(g' : Matrix (Fin 2) (Fin 2) K) 0 0 = a' at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(g' : Matrix (Fin 2) (Fin 2) K) 0 1 = b' at *`. Distinguish the cases in `hdz : d = 0`. Substitute `hdz` using the available equality. Establish `hc : c ≠ 0`. Introduce and unpack `rfl`.
+Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `at hne`. Use `⟨(a' - a) / c, by field_simp; ring, ?_⟩` and prove the remaining obligations. Establish `: (b' - b) * c = 0` using `by linear_combination hd`. Establish `hb : b' - b = 0` using `(mul_eq_zero.1 this).resolve_right hc`. Take the linear combination `hb`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨(b' - b) / d, ?_, by field_simp; ring⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hd`. Use `⟨x, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Ad3.K.GA.nx, Matrix.mul_apply, Fin.sum_univ_two, hx0, hx1, h0, h1]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem exists_nx_mul (K : Type) [Field K] [NumberField K] (g g' : GL (Fin 2) K)
     (h0 : (g : Matrix (Fin 2) (Fin 2) K) 1 0 = (g' : Matrix (Fin 2) (Fin 2) K) 1 0)
@@ -59,7 +59,7 @@ theorem exists_nx_mul (K : Type) [Field K] [NumberField K] (g g' : GL (Fin 2) K)
     simp [Ad3.K.GA.nx, Matrix.mul_apply, Fin.sum_univ_two, hx0, hx1, h0, h1]
 
 /- English proof (translation)
-Introduce `K _ _ q q' h0 h1 hd`. Take `⟨x, hx⟩` from `exists_nx_mul K q.out q'.out h0 h1 hd`. Establish `hr : (QuotientGroup.rightRel (Ad3.K.GA.nU K)) q.out q'.out` using `QuotientGroup.rightRel_apply.2 ⟨Multiplicative.ofAdd x, eq_mul_inv_of_mul_eq hx⟩`. Rewrite using `[← Quotient.out_eq q, ← Quotient.out_eq q']`. Conclude with `Quotient.sound hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maj_inj : ∀ (K : Type) [Field K] [NumberField K] (q q' : Ad3.K.GA.NQ K),
     (q.out : Matrix (Fin 2) (Fin 2) K) 1 0 = (q'.out : Matrix (Fin 2) (Fin 2) K) 1 0 →

@@ -14,9 +14,9 @@ open Formalism.L2.DIV Formalism.IndefR.Cx Formalism.IndefR.Cx.CxData
 open scoped InnerProductSpace Matrix
 
 /- English proof (translation)
-Use `conv_rhs => rw [pi_eq_sum_univ z]`. Simplify using `only [map_sum, map_smul, LinearMap.map_smulₛₗ, iC, lin, Fintype.linearCombination_apply, cpt]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 4`. Use extensionality with `j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, eq_comm]`.
+A detailed English derivation is pending.
 -/
 theorem iC_cpt_eq_theta_toR {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A)
     {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (b : Bool) (t : Bs.Tup) (z : Fin ((lv (fc X.zs) b).dQ t) → K) :
@@ -29,11 +29,11 @@ theorem iC_cpt_eq_theta_toR {K : Type} [Field K] [NumberField K] [StarRing K] {B
   simp [Pi.single_apply, eq_comm]
 
 /- English proof (translation)
-Establish `hperp : ∀ m ∈ Submodule.span ℂ ((X.jR t) '' (X.Z t : Set (A.FR t))), ⟪m, X.jR t x⟫_ℂ = 0`. Introduce `m hm`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem m hm`. Take `⟨w, hw, rfl⟩` from `hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hJ t w x, hx w hw, map_zero]`. Consider the case `zero => exact inner_zero_left _`. Consider the case `add a b _ _ ha hb => rw [inner_add_left, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [inner_smul_left, ha, mul_zero]`. Use `ext_inner_left ℂ fun e => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inner_zero_right, ← LinearMap.adjoint_inner_left]`. Apply `hperp` to reduce the goal to its premises. Rewrite using `[hZ.1 t]`. Conclude with `LinearMap.mem_range_self _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_jR_eq_zero_of_perp {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A)
     (cv : CrdV A) (hJ : X.JIsoR cv) (hZ : X.RatZ) (t : Bs.Tup) (x : A.FR t) (hx : ∀ w ∈ X.Z t, cv.hR t w x = 0) :
@@ -54,17 +54,17 @@ theorem theta_jR_eq_zero_of_perp {K : Type} [Field K] [NumberField K] [StarRing 
   exact LinearMap.mem_range_self _ _
 
 /- English proof (translation)
-Use `set E := B.zE ℓ Z with hE`. Use `set H := B.HV ℓ with hH`. Establish `hdet : IsUnit (Eᴴ * H * E).det`. Assume the negation of the conclusion as `hu`. Establish `h0 : B.Pq ℓ Z = 0` using `by show (Eᴴ * H * E)⁻¹ * (Eᴴ * H) = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ hu, Matrix.zero_mul]`. Apply `hu` to reduce the goal to its premises. Establish `hd : B.dZ ℓ Z = 0`. Assume the negation of the conclusion as `hne`. Take `⟨i⟩ : Nonempty (Fin (B.dZ ℓ Z))` from `⟨⟨0, Nat.pos_of_ne_zero hne⟩⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx⟩` from `hs (Pi.single i 1)`. Rewrite `hx` using `[h0, Matrix.zero_mulVec]`. Use `congrFun hx i` as an intermediate fact. Simplify using `at this`. Establish `: IsEmpty (Fin (B.dZ ℓ Z))` using `⟨fun i => by have := i.2; omega⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_isEmpty]`. Conclude with `isUnit_one`. Establish `hO` using `(Formalism.DivisionValues.exponent_index_lattice.isOrthProj_formula H E hdet).2`. Introduce `z hz`. Choose the witnesses or unpack the hypotheses as in `⟨c, rfl⟩ : ∃ c, E.mulVec c = z := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h` using `(Formalism.L2.DIV.subspace_image_spec K _ (B.Z0 ℓ Z)).2`. Establish `: z ∈ LinearMap.range (subE (B.Z0 ℓ Z)).mulVecLin` using `by rw [h]; exact hz`. Take `⟨c, hc⟩` from `this`. Conclude with `⟨c, hc⟩`. Rewrite using `[Formalism.DivisionValues.RationalHermitianForm.hform_eq_dot, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: Eᴴ *ᵥ (H *ᵥ (y - E *ᵥ (B.Pq ℓ Z *ᵥ y))) = (Eᴴ * H * (1 - E * B.Pq ℓ Z)) *ᵥ y`. Simplify using `only [Matrix.mulVec_sub, Matrix.mul_sub, Matrix.sub_mulVec, Matrix.mulVec_mulVec, Matrix.mul_one, Matrix.mul_assoc]`. Rewrite using `[this]`. Use `show star c ⬝ᵥ (Eᴴ * H * (1 - E * ((Eᴴ * H * E)⁻¹ * (Eᴴ * H)))) *ᵥ y = 0`. Rewrite using `[hO, Matrix.zero_mulVec, dotProduct_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_zE_Pq_mem_U {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
     (B : BlockDat K G Pl0) (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) (hs : Function.Surjective (B.Pq ℓ Z).mulVec)
@@ -102,19 +102,17 @@ theorem sub_zE_Pq_mem_U {K : Type} [Field K] [NumberField K] [StarRing K] {G : T
   rw [hO, Matrix.zero_mulVec, dotProduct_zero]
 
 /- English proof (translation)
-Establish `hpe` using `good_at_spec K v0 hv G ℓ.X hX ℓ.P ℓ.ψ`. Take `⟨hO, hEP⟩` from `orthogonal_projection_spec K v0 hv B.S (hB.hpos v0) G B.r hB.act _ hpe.idem hpe.selfAdj`. Establish `hadj` using `group_action_matrix_adjoint K B.S G B.r hB.act (goodAt ℓ.X ℓ.P ℓ.ψ)`. Rewrite `hadj` using `[hpe.selfAdj]`. Establish `hE : B.vE ℓ = B.S.cutE B.r (goodAt ℓ.X ℓ.P ℓ.ψ)` using `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set Gm := B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ) with hGm`. Use `set E := B.vE ℓ with hEdef`. Use `set x := B.S.basis.equivFun w with hx`. Establish `hw' : (w : B.S.Cl → B.S.V) = B.S.I x` using `by simp [CSD.I, x]`. Establish `hv' : ((B.S.basis.equivFun.symm (E.mulVec u) : B.S.Forms) : B.S.Cl → B.S.V) = B.S.I (E.mulVec u)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw', hv', CSD.csum_sum, ← Formalism.DivisionValues.RationalHermitianForm.hform_apply]`. Establish `hGE : Gm *ᵥ (E *ᵥ u) = E *ᵥ u`. Establish `hO1 : B.S.cutPr B.r (goodAt ℓ.X ℓ.P ℓ.ψ) * E = 1` using `hO.1`. Rewrite using `[← hEP, Matrix.mulVec_mulVec, ← hE, Matrix.mul_assoc, hO1, Matrix.mul_one]`. Rewrite using `[← hGE]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmove : Formalism.DivisionValues.hform B.S.H x (Gm *ᵥ (E *ᵥ u)) = Formalism.DivisionValues.hform B.S.H (Gm *ᵥ x) (E *ᵥ u)`. Rewrite using `[Formalism.DivisionValues.RationalHermitianForm.hform_eq_dot, Formalism.DivisionValues.RationalHermitianForm.hform_eq_dot, Matrix.mulVec_mulVec, ← hadj, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]`. Use `set z' := B.S.cutPr B.r (goodAt ℓ.X ℓ.P ℓ.ψ) *ᵥ x with hz'def`. Establish `hGx : Gm *ᵥ x = E *ᵥ z'` using `by rw [← hEP, ← Matrix.mulVec_mulVec, hE]`. Establish `hz' : z' ∈ B.Z0 ℓ Z` using `by show (E.mulVecLin z') ∈ B.coord Z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mulVecLin_apply, ← hGx]`. Use `⟨B.S.gaOp B.r (goodAt ℓ.X ℓ.P ℓ.ψ) w, ?_, ?_⟩` and prove the remaining obligations. Use `show (B.S.gaOp B.r (goodAt ℓ.X ℓ.P ℓ.ψ) w) ∈ Z`. Simplify using `only [CSD.gaOp, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Submodule.sum_mem _ fun t _ => Submodule.smul_mem _ _ (hZ t hw)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [CSD.gaOp, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, hGm, CSD.gaMat, Matrix.sum_mulVec, Matrix.smul_mulVec]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `show B.S.basis.equivFun (B.r t w) = (LinearMap.toMatrix B.S.basis B.S.basis (B.r t)) *ᵥ (B.S.basis.equivFun w)`. Rewrite using `[Module.Basis.equivFun_apply, Module.Basis.equivFun_apply, LinearMap.toMatrix_mulVec_repr]`.
-
-Rewrite using `[hmove, hGx, ← Formalism.L2.DIV.hform_cut]`. Establish `hP : (Nat.card ℓ.P : K) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `hH : Eᴴ * B.S.H * E = (Nat.card ℓ.P : K) • B.HV ℓ`. Simplify using `only [hEdef, BlockDat.HV, BlockDat.vE, CSD.goodPartHermitianForm, CSD.cutH, CSD.V0E, smul_smul, mul_inv_cancel₀ hP, one_smul]`. Rewrite using `[hH, Formalism.DivisionValues.RationalHermitianForm.hform_eq_dot, Matrix.smul_mulVec, dotProduct_smul, ← Formalism.DivisionValues.RationalHermitianForm.hform_eq_dot, hu z' hz', smul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem csum_goodPart_perp_eq_zero {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
     (B : BlockDat K G Pl0) (s : ℕ) (hB : B.Ok s) (v0 : InfinitePlace K) (hv : Formalism.DivisionValues.IsConjAt v0) (ℓ : Lvl K G)
@@ -165,9 +163,9 @@ theorem csum_goodPart_perp_eq_zero {K : Type} [Field K] [NumberField K] [StarRin
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p hp t y`. Establish `hCx` using `Formalism.IndefR.Links.complex_data_conditions_base_level_of_primitive_links hp.ok hp.sep p.charW hp.prim`. Rewrite using `[iC_cpt_eq_theta_toR, TieModel.toR_eq]`. Set `y' : Fin ((p.P.A3.A.fam.R t).nV (p.P.A3.A.fam.lvl p.P.P0 p.P.ψ0)) → D.what₂.LL` to `y`. Establish `hu` using `sub_zE_Pq_mem_U (p.P.A3.A.fam.R t) (p.P.A3.A.fam.lvl p.P.P0 p.P.ψ0) ((p.R.toCx3 p.F).zs.Z t) ((hCx.wf false).Pq_surj t) y'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `theta_jR_eq_zero_of_perp _ p.F.cv hCx.jIsoR hCx.ratZ t (eV0 p t (y' - ((p.P.A3.A.fam.R t).zE (p.P.A3.A.fam.lvl p.P.P0 p.P.ψ0) ((p.R.toCx3 p.F).zs.Z t)).mulVec (((Df p).Pq t).mulVec y))) (fun w hw => csum_goodPart_perp_eq_zero (p.P.A3.A.fam.R t) 1 (hp.ok.ok2.what₂ t) _ hp.ok.ok2.c …`. Use `erw [(eV0 p t).map_sub] at h`. Establish `h2` using `((p.R.toCx3 p.F).jR t).map_sub (eV0 p t y') (eV0 p t (((p.P.A3.A.fam.R t).zE (p.P.A3.A.fam.lvl p.P.P0 p.P.ψ0) ((p.R.toCx3 p.F).zs.Z t)).mulVec (((Df p).Pq t).mulVec y)))`. Use `erw [h2, map_sub] at h`. Conclude with `sub_eq_zero.mp h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theta_eV0_eq_iC_Pq : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), p.Rows → ∀ (t : Tup p) (y : Fin ((Df p).nV t) → D.what₂.LL), (p.R.toCx3 p.F).Θ t ((p.R.toCx3 p.F).jR t (eV0 p t y)) = (p.R.toCx3 p.F).iC p.F.cr false t (cpt p.P.A3.fam3.base3.v0.embedding (((Df p).Pq t).mulVec y)) := by
   intro D L hT Gi Gl Kc Y cX ex Csz p hp t y

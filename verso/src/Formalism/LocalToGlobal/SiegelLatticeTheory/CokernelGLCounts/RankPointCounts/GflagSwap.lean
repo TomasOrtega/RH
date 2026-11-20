@@ -14,11 +14,11 @@ open Formalism.MainNotions.S Formalism.BasicNotions
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
 /- English proof (translation)
-Establish `h1 : ∀ a, ∀ y ∈ F.X, S.hT (F.e a) y = 0`. Introduce `a y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨b, rfl⟩ := hy`. Conclude with `F.e_iso a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add y z _ _ h1 h2 => simp [map_add, h1, h2]`. Consider the case `smul c y _ h => simp [map_smul, h]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `h1 a x' hx'`. Consider the case `zero => simp`. Consider the case `add y z _ _ h1 h2 => simp [map_add, LinearMap.add_apply, h1, h2]`. Consider the case `smul c y _ h => simp [LinearMap.map_smulₛₗ, LinearMap.smul_apply, h]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hT_X_X (F : FlagG S r T) {x x' : S.V} (hx : x ∈ F.X) (hx' : x' ∈ F.X) : S.hT x x' = 0 := by
   have h1 : ∀ a, ∀ y ∈ F.X, S.hT (F.e a) y = 0 := by
@@ -35,7 +35,7 @@ theorem hT_X_X (F : FlagG S r T) {x x' : S.V} (hx : x ∈ F.X) (hx' : x' ∈ F.X
   | smul c y _ h => simp [LinearMap.map_smulₛₗ, LinearMap.smul_apply, h]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (S.herm x y).symm`. Consider the case `exact (S.herm.eq x y).symm`. Consider the case `simpa using (S.herm x y).symm`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem hT_swap_eq_star (x y : S.V) : S.hT y x = star (S.hT x y) := by
   first
@@ -44,9 +44,9 @@ private theorem hT_swap_eq_star (x y : S.V) : S.hT y x = star (S.hT x y) := by
   | simpa using (S.herm x y).symm
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Rewrite using `[hT_swap_eq_star, F.z_orth a, star_zero]`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add y z _ _ h1 h2 => simp [map_add, h1, h2]`. Consider the case `smul c y _ h => simp [map_smul, h]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem hT_z_X (F : FlagG S r T) {x : S.V} (hx : x ∈ F.X) : S.hT F.z x = 0 := by
   induction hx using Submodule.span_induction with
@@ -61,13 +61,11 @@ def Qsp (F : FlagG S r T) (H : Submodule E S.V) : Submodule E S.V :=
   Lat.orth S (F.X ⊔ Submodule.span E {F.z} ⊔ H)
 
 /- English proof (translation)
-Simplify using `only [Qsp, Lat.orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun x hx => h x ?_, h F.z ?_, fun x hx => h x ?_⟩` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left hx)`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))`. Conclude with `Submodule.mem_sup_right hx`. Introduce and unpack `⟨h1, h2, h3⟩ x hx`. Establish `hle : F.X ⊔ Submodule.span E {F.z} ⊔ H ≤ LinearMap.ker (S.hT.flip v)`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Simplify using `using h1 y hy`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Simplify using `using h2`. Introduce `y hy`.
-
-Simplify using `using h3 y hy`. Simplify using `using hle hx`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_Qsp (F : FlagG S r T) (H : Submodule E S.V) {v : S.V} :
     v ∈ Qsp F H ↔ (∀ x ∈ F.X, S.hT x v = 0) ∧ S.hT F.z v = 0 ∧ ∀ h ∈ H, S.hT h v = 0 := by
@@ -87,25 +85,23 @@ theorem mem_Qsp (F : FlagG S r T) (H : Submodule E S.V) {v : S.V} :
     simpa using hle hx
 
 /- English proof (translation)
-Set `b` to `Module.finBasis E U`. Set `ψ : S.V →ₗ[E] (Fin (finrank E U) → E)` to `LinearMap.pi (fun i => S.hT ((b i : U) : S.V))`. Establish `hker : LinearMap.ker ψ = Lat.orth S U`. Use extensionality with `y`. Simplify using `only [LinearMap.mem_ker, Lat.orth, Submodule.mem_iInf]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Establish `hyi : ∀ i, S.hT ((b i : U) : S.V) y = 0` using `fun i => by`. Simplify `congrFun hy i` using `[ψ]`. Establish `hxs : x = ∑ i, b.repr ⟨x, hx⟩ i • ((b i : U) : S.V)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at this`. Conclude with `this.symm`. Rewrite using `[hxs, map_sum, LinearMap.sum_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[LinearMap.map_smulₛₗ, hyi]`. Introduce `h`. Use function extensionality and compare the values at `i`. Simplify `h _ (b i).2` using `[ψ]`. Establish `hrange : LinearMap.range ψ = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Use `set c : Fin (finrank E U) → E := fun i => f (fun j => if i = j then 1 else 0) with hc`. Establish `hfw : ∀ w, f w = ∑ i, w i * c i` using `fun w => by`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f w]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[c, smul_eq_mul]`. Establish `hu : (∑ i, star (c i) • ((b i : U) : S.V)) = 0`. Apply `S.nondeg.1` to reduce the goal to its premises. Introduce `y`. Establish `h1 : f (ψ y) = 0` using `hf (LinearMap.mem_range_self ψ y)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hfw]`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Simplify using `only [LinearMap.map_smulₛₗ, starRingEnd_apply, star_star, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[ψ, mul_comm]`. Establish `hli : LinearIndependent E (fun i => ((b i : U) : S.V))` using `b.linearIndependent.map' U.subtype (Submodule.ker_subtype U)`. Establish `hc0 : ∀ i, c i = 0`. Introduce `i`. Use `(Fintype.linearIndependent_iff.1 hli) (fun i => star (c i)) hu i` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using this`. Apply `hf0` to reduce the goal to its premises. Conclude with `LinearMap.ext fun w => by simp [hfw, hc0]`. Use `LinearMap.finrank_range_add_finrank_ker ψ` as an intermediate fact. Rewrite `this` using `[hrange, finrank_top, Module.finrank_fin_fun, hker]`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem finrank_add_finrank_orth_le (U : Submodule E S.V) :
     finrank E U + finrank E (Lat.orth S U) ≤ finrank E S.V := by
@@ -158,11 +154,11 @@ private theorem finrank_add_finrank_orth_le (U : Submodule E S.V) :
   omega
 
 /- English proof (translation)
-Establish `hw0 : w ≠ 0` using `fun h => hw (h ▸ A.zero_mem)`. Use `Submodule.finrank_sup_add_finrank_inf_eq A (Submodule.span E {w})` as an intermediate fact. Establish `hinf : A ⊓ Submodule.span E {w} = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hu.2`. Rewrite using `[Submodule.mem_bot]`. Assume the negation of the conclusion as `hc0`. Establish `hc : c ≠ 0` using `by rintro rfl; exact hc0 (zero_smul _ _)`. Apply `hw` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `A.smul_mem c⁻¹ hu.1` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis. Rewrite `this` using `[hinf, finrank_bot, add_zero, finrank_span_singleton hw0]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finrank_sup_span_singleton_of_not_mem' (A : Submodule E S.V) {w : S.V} (hw : w ∉ A) :
     finrank E ↥(A ⊔ Submodule.span E {w}) = finrank E A + 1 := by
@@ -182,25 +178,23 @@ private theorem finrank_sup_span_singleton_of_not_mem' (A : Submodule E S.V) {w 
   exact this
 
 /- English proof (translation)
-Establish `hXQ : F.X ≤ Qsp F H`. Introduce `x hx`. Rewrite using `[mem_Qsp]`. Use `⟨fun x' hx' => hT_X_X F hx' hx, hT_z_X F hx, fun h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[hT_swap_eq_star, hXH x hx h hh, star_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hXr : finrank E F.X = r` using `by show finrank E (Submodule.span E (Set.range F.e)) = r`. Rewrite using `[finrank_span_eq_card F.e_indep, Fintype.card_fin]`. Establish `hzXH : F.z ∉ F.X ⊔ H`. Introduce `hz`. Take `⟨x, hx, h, hh, hxh⟩` from `Submodule.mem_sup.1 hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : S.hT F.z F.z = 0`. Combine the equalities or inequalities in the displayed calculation. Use `F.z_norm` as an intermediate fact. Rewrite `this` using `[h1]`. Conclude with `hT (neg_eq_zero.1 this.symm)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hXH_fin : finrank E ↥(F.X ⊔ H) = r + finrank E H`. Use `Submodule.finrank_sup_add_finrank_inf_eq F.X H` as an intermediate fact. Establish `hinf : F.X ⊓ H = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot]`. Conclude with `hdisj x hx.1 hx.2`. Rewrite `this` using `[hinf, finrank_bot, add_zero, hXr]`. Conclude with `this`. Establish `hU : F.X ⊔ Submodule.span E {F.z} ⊔ H = (F.X ⊔ H) ⊔ Submodule.span E {F.z}` using `sup_right_comm _ _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU_fin : finrank E ↥(F.X ⊔ Submodule.span E {F.z} ⊔ H) = r + finrank E H + 1`. Rewrite using `[hU, finrank_sup_span_singleton_of_not_mem' _ hzXH, hXH_fin]`. Establish `hQ : finrank E (Qsp F H) ≤ r + 1`. Use `finrank_add_finrank_orth_le (F.X ⊔ Submodule.span E {F.z} ⊔ H)` as an intermediate fact. Use `show finrank E (Lat.orth S (F.X ⊔ Submodule.span E {F.z} ⊔ H)) ≤ r + 1`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hy0X : y0 ∉ F.X` using `fun h => hy00 (hT_X_X F h h)`. Establish `hle : F.X ⊔ Submodule.span E {y0} ≤ Qsp F H` using `sup_le hXQ (by rw [Submodule.span_le, Set.singleton_subset_iff]; exact hy0)`. Establish `hfin2 : finrank E ↥(F.X ⊔ Submodule.span E {y0}) = r + 1`. Rewrite using `[finrank_sup_span_singleton_of_not_mem' _ hy0X, hXr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `heq : F.X ⊔ Submodule.span E {y0} = Qsp F H` using `Submodule.eq_of_le_of_finrank_le hle (by omega)`. Rewrite `hv` using `[← heq]`. Take `⟨x, hx, w, hw, rfl⟩` from `Submodule.mem_sup.1 hv`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Establish `h1 : S.hT y0 x = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hT_swap_eq_star, ((mem_Qsp F H).1 hy0).1 x hx, star_zero]`. Establish `h2 : c * S.hT y0 y0 = 0`. Use `hvy` as an intermediate fact. Simplify using `only [brS, map_add, map_smul, smul_eq_mul, h1, zero_add] at this`. Conclude with `this`.
-
-Establish `hc : c = 0`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hy00`. Simplify `hx` using `[hc]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem line (F : FlagG S r T) (hT : T ≠ 0) (H : Submodule E S.V) (hXH : ∀ x ∈ F.X, ∀ h ∈ H, S.hT x h = 0)
     (hzH : ∀ h ∈ H, S.hT F.z h = 0) (hdisj : ∀ x ∈ F.X, x ∈ H → x = 0)
@@ -261,7 +255,7 @@ theorem line (F : FlagG S r T) (hT : T ≠ 0) (H : Submodule E S.V) (hXH : ∀ x
   simpa [hc] using hx
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.conjTranspose_apply]`. Simplify using `only [Zhat]`. Conclude with `brS_swap (F'.fvec a) (F.fvec b)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zhat_swap (F : FlagG S r T) (F' : FlagG S r T') : Zhat F' F = (Zhat F F')ᴴ := by
   ext a b
@@ -270,7 +264,7 @@ theorem zhat_swap (F : FlagG S r T) (F' : FlagG S r T') : Zhat F' F = (Zhat F F'
   exact brS_swap (F'.fvec a) (F.fvec b)
 
 /- English proof (translation)
-Unfold `Dl leadMinorE`. Rewrite using `[zhat_swap]`. Use `split_ifs with h`. Rewrite using `[← Matrix.conjTranspose_submatrix, Matrix.det_conjTranspose]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Dl_swap (F : FlagG S r T) (F' : FlagG S r T') (l : ℕ) : Dl F' F l = star (Dl F F' l) := by
   unfold Dl leadMinorE
@@ -280,7 +274,7 @@ theorem Dl_swap (F : FlagG S r T) (F' : FlagG S r T') (l : ℕ) : Dl F' F l = st
   · simp
 
 /- English proof (translation)
-Unfold `Gflag`. Simplify using `only [Dl_swap F F', star_star]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Gflag_swap (F : FlagG S r T) (F' : FlagG S r T') : Gflag F' F = Gflag F F' := by
   unfold Gflag

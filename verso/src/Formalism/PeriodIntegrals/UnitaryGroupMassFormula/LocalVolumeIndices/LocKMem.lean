@@ -12,15 +12,15 @@ open Formalism.MainNotions.S (AutInst)
 variable (I : AutInst)
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset ι, S ⊆ T → (∑ p ∈ S, χ p) * (∑ p ∈ S, χ p) = ∑ p ∈ S, χ p ∧ locG I (∑ p ∈ S, χ p) x ∈ K2`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.sum_empty, mul_zero, true_and]`. Rewrite using `[LocB_locG_zero]`. Conclude with `hone`. Consider the case `insert q S hq ih`. Introduce `hS`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `ih (fun p hp => hS (Finset.mem_insert_of_mem hp))`. Establish `horth : χ q * ∑ p ∈ S, χ p = 0`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun p hp => hort q p fun h => hq (h ▸ hp)`. Rewrite using `[Finset.sum_insert hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (χ q + ∑ p ∈ S, χ p) * (χ q + ∑ p ∈ S, χ p) = χ q * χ q + χ q * (∑ p ∈ S, χ p) + χ q * (∑ p ∈ S, χ p) + (∑ p ∈ S, χ p) * (∑ p ∈ S, χ p)` using `by ring`. Rewrite using `[e, hid, horth, h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← LocB_locG_add I _ _ (hid q) h1 horth]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmul _ (hloc q (hS (Finset.mem_insert_self q S))) _ h2`. Take `⟨hT1, hT2⟩` from `key T subset_rfl`. Rewrite using `[← LocB_locG_split I _ hT1 x]`. Conclude with `hmul _ hT2 _ (hKg _ (LocB_Kg I g _ c hT1 hc hgc x hx))`.
+A detailed English derivation is pending.
 -/
 theorem LocK_mem {ι : Type} (K2 : Set I.Gf) (hone : (1 : I.Gf) ∈ K2)
     (hmul : ∀ x ∈ K2, ∀ y ∈ K2, x * y ∈ K2) (g : ℕ) (hKg : ∀ x ∈ I.Kg g, x ∈ K2)

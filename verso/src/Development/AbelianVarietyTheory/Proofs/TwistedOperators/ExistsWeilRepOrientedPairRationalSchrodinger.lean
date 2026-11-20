@@ -32,7 +32,7 @@ noncomputable section
 namespace GlobalTheory.SquareAgree
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem submatrix_mul_id {R : Type} [CommRing R] {m n p k : ℕ} (M : Matrix (Fin m) (Fin n) R) (N : Matrix (Fin n) (Fin p) R)
     (e : Fin k → Fin m) : (M * N).submatrix e id = M.submatrix e id * N := by
@@ -40,7 +40,7 @@ theorem submatrix_mul_id {R : Type} [CommRing R] {m n p k : ℕ} (M : Matrix (Fi
   simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Substitute `hLx h₁ h₂` using the available equality. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, submatrix_mul_id, ← Matrix.mul_assoc (Qᵀ.submatrix e e), Matrix.submatrix_mul_equiv, submatrix_mul_id]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hu]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actE_eq_of_conj_related {R : Type} [CommRing R] {n m k : ℕ} (e : Fin k ≃ Fin m) (P : Matrix (Fin n) (Fin n) R)
     (x : Matrix (Fin n) (Fin m) R) (Q : Matrix (Fin m) (Fin m) R) (G H : Matrix (Fin n) (Fin n) R)
@@ -54,9 +54,9 @@ theorem actE_eq_of_conj_related {R : Type} [CommRing R] {n m k : ℕ} (e : Fin k
   rw [hu]
 
 /- English proof (translation)
-Establish `h'` using `congrArg Matrix.transpose h`. Rewrite `h'` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.mul_assoc, hK, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`. Establish `hc : P.map c * P'.map c = 1`. Rewrite using `[← Matrix.map_mul, hPP]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem unit_aux {R : Type} [CommRing R] {n : ℕ} (c : R →+* R) (P P' K G : Matrix (Fin n) (Fin n) R)
     (hPP : P * P' = 1) (hK : Kᵀ = -G) (h : (P.map c)ᵀ * K * P = K) : Pᵀ * G = G * P'.map c := by
@@ -71,7 +71,7 @@ theorem unit_aux {R : Type} [CommRing R] {n : ℕ} (c : R →+* R) (P P' K G : M
     _ = G * P'.map c := by rw [h']
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eq_submatrix_symm {α : Type} {a b : ℕ} (f : Fin a ≃ Fin b) (M : Matrix (Fin b) (Fin b) α)
     (N : Matrix (Fin a) (Fin a) α) (h : M.submatrix f f = N) : M = N.submatrix f.symm f.symm := by
@@ -80,7 +80,7 @@ theorem eq_submatrix_symm {α : Type} {a b : ℕ} (f : Fin a ≃ Fin b) (M : Mat
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, Matrix.map_apply, Matrix.neg_apply, Matrix.submatrix_apply, Equiv.refl_apply, map_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_neg_refl {D : D7} {n : ℕ} (G : Matrix (Fin n) (Fin n) D.host.E) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (-(G.submatrix (Equiv.refl (Fin n)) (Equiv.refl (Fin n)))) = -(G.map (incA D)) := by
@@ -89,9 +89,9 @@ theorem incM_neg_refl {D : D7} {n : ℕ} (G : Matrix (Fin n) (Fin n) D.host.E) :
     Equiv.refl_apply, map_neg]
 
 /- English proof (translation)
-Establish `e1 : (-ξ • J⁻¹)⁻¹ = (-ξ)⁻¹ • J`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_nonsing_inv _ hJ, inv_mul_cancel₀ (neg_ne_zero.2 hξ), one_smul]`. Establish `e2 : ξ • (-ξ)⁻¹ • J = -J`. Rewrite using `[smul_smul, inv_neg, mul_neg, mul_inv_cancel₀ hξ, neg_one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Use function extensionality and compare the values at `i j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem neg_incM_eq {D : D7} {n : ℕ} (J : Matrix (Fin n) (Fin n) D.host.E) (hJ : IsUnit J.det) {ξ : D.host.E} (hξ : ξ ≠ 0) :
     (-1 : AF D.host.F ⊗[D.host.F] D.host.E) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F J =
@@ -106,7 +106,7 @@ theorem neg_incM_eq {D : D7} {n : ℕ} (J : Matrix (Fin n) (Fin n) D.host.E) (hJ
   simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `i j`. Simplify using `[Formalism.L2.Theta.cA_cA]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eq_map_conj {D : D7} {n : ℕ} (P Q : Matrix (Fin n) (Fin n) (AE D)) (h : Q = P.map (cA D)) : P = Q.map (cA D) := by
   subst h
@@ -114,7 +114,7 @@ theorem eq_map_conj {D : D7} {n : ℕ} (P Q : Matrix (Fin n) (Fin n) (AE D)) (h 
   simp [Formalism.L2.Theta.cA_cA]
 
 /- English proof (translation)
-Establish `h1 : Pᵀ * B = 1` using `by rw [h, ← Matrix.transpose_mul, hP, Matrix.transpose_one]`. Establish `h2 : B' = Pᵀ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, Matrix.transpose_transpose]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_inv_transpose {R : Type} [CommRing R] {n : ℕ} (P P' B B' : Matrix (Fin n) (Fin n) R) (hP : P' * P = 1)
     (hB : B * B' = 1) (h : B = P'ᵀ) : P = B'ᵀ := by
@@ -125,9 +125,7 @@ theorem eq_inv_transpose {R : Type} [CommRing R] {n : ℕ} (P P' B B' : Matrix (
   rw [h2, Matrix.transpose_transpose]
 
 /- English proof (translation)
-Consider the cases of `ε`. Use `show S.gram = _`. Simplify using the standard rewrite rules. Use `show (neg S).gram = _`. Rewrite using `[neg_gram]`.
-
-Simplify using the standard rewrite rules.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sgn_gram_eq {D : D7} (ε : Bool) (S : HSp D) : (sgn ε S).gram = (if ε then -1 else 1 : D.host.E) • S.gram := by
   cases ε
@@ -138,7 +136,7 @@ theorem sgn_gram_eq {D : D7} (ε : Bool) (S : HSp D) : (sgn ε S).gram = (if ε 
     simp
 
 /- English proof (translation)
-Rewrite using `[sgn_gram_eq, hJ]`. Apply the tactic sequence `cases ε <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gram_neg_sgn {D : D7} (ε : Bool) (S : HSp D) {J : Matrix (Fin S.rank) (Fin S.rank) D.host.E}
     (hJ : J = (if ε then 1 else -1 : D.host.E) • S.gram) : J = -(sgn ε S).gram := by
@@ -146,7 +144,7 @@ theorem gram_neg_sgn {D : D7} (ε : Bool) (S : HSp D) {J : Matrix (Fin S.rank) (
   cases ε <;> simp
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.WeilSchrodinger.gram_hspOf]`. Conclude with `Matrix.transpose_transpose J`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_hspOf_transpose {D : D7} {k : ℕ} (J : Matrix (Fin k) (Fin k) D.host.E)
     (h1 : (GlobalTheory.WeilSchrodinger.sesq D Jᵀ).IsSymm) h2 L hL h3 (sg : (D.host.E →+* ℂ) → ℕ × ℕ) :
@@ -157,39 +155,35 @@ theorem gram_hspOf_transpose {D : D7} {k : ℕ} (J : Matrix (Fin k) (Fin k) D.ho
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D ψ θ _hθ ε S X A B d e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW _hcart M hM cS hcS χ χ' ω hω`. Substitute `hψ` using the available equality. Establish `hω' : IsWeilDatumO Bs.ψ (sgn ε S) X χ χ' (ω.toSgn ε)` using `hω`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.hermitianSelfDualLatticeSpace_form_hermitian_nondeg_unimodular D Bs hBs S.rank Vs r s hV`. Take `⟨hJd, L0, hL0, h4, h5, h6⟩` from `GlobalTheory.T.skewHermitian_neg_traceZero_inv_hermitian_unimodular D Bs hBs d Ws r' s' hW`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `Th` to `GlobalTheory.WeilSchrodinger.hspOf D Vs.Jᵀ h1 h2 Vs.L hV.lat h3 (fun _ => (r, s))`. Set `Sh` to `GlobalTheory.WeilSchrodinger.hspOf D (-D.host.xi0 • Ws.J⁻¹) h4 h5 L0 hL0 h6 (fun _ => (s', r'))`. Establish `hTt : Th.gramᵀ = Vs.J` using `gram_hspOf_transpose _ _ _ _ _ _ _`. Establish `hSg : Sh.gram = -D.host.xi0 • Ws.J⁻¹` using `GlobalTheory.WeilSchrodinger.gram_hspOf _ _ _ _ _ _ _`. Establish `hdX : X.rank = d` using `Fin.equiv_iff_eq.mp ⟨e⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hξ : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Establish `hT' : Th.gramᵀ = -((sgn ε S).gram.submatrix (Equiv.refl (Fin S.rank)) (Equiv.refl (Fin S.rank)))`. Rewrite using `[hTt, Equiv.coe_refl, Matrix.submatrix_id_id]`. Conclude with `gram_neg_sgn ε S hJ`. Establish `hS' : Sh.gram⁻¹ = -(X.gramᵀ.submatrix e.symm e.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Establish `hK : D.host.xi0 • X.gramᵀ.submatrix e.symm e.symm = Ws.J` using `by rw [hJW]; rfl`. Establish `key : (-(X.gramᵀ.submatrix e.symm e.symm)) * (-D.host.xi0 • Ws.J⁻¹) = 1`. Rewrite using `[neg_mul, Matrix.mul_smul, neg_smul, neg_neg, ← Matrix.smul_mul, hK]`. Conclude with `Matrix.mul_nonsing_inv _ hJd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hSg]`. Conclude with `key`. Take `⟨φ', hφ'c, hφ'Q, hφ'm, hφ'S, hφ'd⟩` from `GlobalTheory.T.exists_unitary_equiv_conj_of_gram_transpose_eq_neg D (sgn ε S) Th (Equiv.refl _) hT'`. Take `⟨φ, hφc, hφQ, hφm, hφS, hφd⟩` from `GlobalTheory.T.exists_unitary_equiv_inv_transpose_of_gram_inv D X Sh e.symm hS'`. Take `⟨L, hL1, -, hLc, hLc', hLQ, hLi, hLf⟩` from `GlobalTheory.T.exists_transposeGram_coordinate_homeomorph_symplectic D (sgn ε S) X Sh Th (Equiv.refl _) e.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsy` using `GlobalTheory.T.symplectic_hom_transpose_gram_darboux D (sgn ε S) X Sh Th (Equiv.refl _) e.symm hT' hS'`. Establish `hLx : ∀ u : Matrix (Fin S.rank) (Fin d) (AE D), L u = (HMul.hMul (uᵀ.submatrix e id) ((sgn ε S).gram.map (incA D)) : Matrix (Fin X.rank) (Fin S.rank) (AE D))` using `fun u => (hL1 u).trans rfl`. Establish `hcL : ∀ u, cS u = L u` using `fun u => by`. Rewrite using `[hcS, hLx, sgn_gram_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hact : ∀ (g : GA D Sh) (h : GA D Th) (x : WO Sh Th), L (actO Sh Th g h x) = actO (sgn ε S) X (φ' h) (φ g) (L x)`. Introduce `g h x`. Establish `hg : Formalism.L2.Theta.mt X (φ g) = ((Formalism.L2.Theta.mt Sh g⁻¹)ᵀ).submatrix e e` using `eq_submatrix_symm e.symm _ _ (hφm g)`. Establish `hh : Formalism.L2.Theta.mt (sgn ε S) (φ' h)⁻¹ = (Formalism.L2.Theta.mt Th h⁻¹).map (cA D)`. Rewrite using `[← map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hφ'm h⁻¹`. Establish `hTinc : (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM Th.gram)ᵀ = -((sgn ε S).gram.map (incA D))`. Establish `e0 : (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM Th.gram)ᵀ = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM Th.gramᵀ` using `rfl`. Rewrite using `[e0, hT']`. Conclude with `incM_neg_refl _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hPP : Formalism.L2.Theta.mt Th h * Formalism.L2.Theta.mt Th h⁻¹ = 1`. Simplify using `only [Formalism.L2.Theta.mt, map_inv, Units.mul_inv]`. Establish `hu` using `unit_aux (cA D) _ _ _ _ hPP hTinc (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.mt_gram Th h)`. Conclude with `(hLx _).trans (actE_eq_of_conj_related e _ x _ _ _ _ _ _ (hLx x) hg hh hu)`. Take `⟨ω', hω'', hrel⟩` from `GlobalTheory.T.isWeilDatum_comp_group_swapping_symplectic_equiv D Bs.ψ (sgn ε S) X Sh Th hdX.symm rfl L φ.toMonoidHom φ'.toMonoidHom hLc hLc' hLQ (fun x y => by rw [hL1, hL1]; exact hsy x y) hLi hLf hφc hφ'c hφQ hφ'Q hact hφS hφ'S hφd hφ'd χ χ' (ω.toSgn ε) hω'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : Vs.J = Th.gramᵀ` using `hTt.symm`. Establish `hB : (-1 : AF D.host.F ⊗[D.host.F] D.host.E) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Ws.J = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (D.host.xi0 • Sh.gram⁻¹)`. Rewrite using `[hSg]`. Conclude with `neg_incM_eq Ws.J hJd hξ`. Take `⟨om, hom⟩` from `GlobalTheory.T.exists_weilDatum_transport_adelicSchwartz_thetaTransform D Bs.ψ hω'.std Sh Th χ' χ hω''.hecS hω''.hecT hω''.resS hω''.resT Vs.J Ws.J (-1) hA hB (Fin S.rank × Fin d) M.co hM.rat ω' hω''`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equivariant D Bs.ψ hω'.std Sh Th χ' χ hω''.hecS hω''.hecT hω''.resS hω''.resT Vs.J Ws.J (-1) hA hB (Fin S.rank × Fin d) M.co hM.rat ω' hω'' om hom`. Establish `h3` using `GlobalTheory.T.transportedWeilDatum_keeps_admissible_forms D Bs.ψ hω'.std Sh Th χ' χ hω''.hecS hω''.hecT hω''.resS hω''.resT Vs.J Ws.J (-1) hA hB (Fin S.rank × Fin d) M.co hM.rat ω' hω'' om hom`. Establish `h4` using `GlobalTheory.T.transportedWeilDatum_isUnitary_adelicSchwartz D Bs.ψ hω'.std Sh Th χ' χ hω''.hecS hω''.hecT hω''.resS hω''.resT Vs.J Ws.J (-1) hA hB (Fin S.rank × Fin d) M.co hM.rat ω' hω'' om hom`. Establish `h5` using `GlobalTheory.T.continuous_transported_weilDatum_adelicSchwartz D Bs.ψ hω'.std Sh Th χ' χ hω''.hecS hω''.hecT hω''.resS hω''.resT Vs.J Ws.J (-1) hA hB (Fin S.rank × Fin d) M.co hM.rat ω' hω'' om hom`. Establish `h6` using `GlobalTheory.T.exists_doubledWeil_blockEmbedding_acts_on_first_boxFactor D Bs.ψ hω'.std Sh Th χ' χ hω''.hecS hω''.hecT hω''.resS hω''.resT Vs.J Ws.J (-1) hA hB (Fin S.rank × Fin d) M.co hM.rat ω' hω'' om hom`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h7` using `GlobalTheory.T.exists_doubled_schrodingerModel_transposed_siegelRule D Bs.ψ hω'.std Sh Th χ' χ hω''.hecS hω''.hecT hω''.resS hω''.resT Vs.J Ws.J (-1) hA hB (Fin S.rank × Fin d) M.co hM.rat ω' hω'' om hom`. Establish `hsp : GlobalTheory.WeilM.IsUSplitting (GlobalTheory.WeilM.adeleClass D.host.F) Bs.ψ M.co (GlobalTheory.WeilM.actAB (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig)) om` using `⟨⟨h2.1, h2.2, h3⟩, h4, h5⟩`. Establish `hW : M.IsWeil Bs.ψ χ χ' om` using `⟨⟨GlobalTheory.WeilSchrodinger.isUSplitting_inr hsp, h6⟩, ⟨GlobalTheory.WeilSchrodinger.transD _ M.co, GlobalTheory.WeilSchrodinger.transD_e M.co, GlobalTheory.WeilSchrodinger.isUSplitting_inl hsp, h7⟩, h5⟩`. Use `⟨om, hW, ?_⟩` and prove the remaining obligations. Introduce `Φ f hΦ g h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : Formalism.L2.Theta.mt (sgn ε S) ((ofSgn ε S).symm g) = Formalism.L2.Theta.mt S g`. Rewrite using `[← mt_ofSgn, MulEquiv.apply_symm_apply]`. Establish `h0` using `hφ'm (φ'.symm ((ofSgn ε S).symm g))`. Rewrite `h0` using `[MulEquiv.apply_symm_apply]`. Establish `ha : Formalism.L2.Theta.mt Th (φ'.symm ((ofSgn ε S).symm g)) = (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU S _ hJ g).1.1` using `eq_map_conj _ _ (hm.symm.trans h0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hφm (φ.symm h)`. Rewrite `h1` using `[MulEquiv.apply_symm_apply]`. Establish `hP : Formalism.L2.Theta.mt Sh (φ.symm h)⁻¹ * Formalism.L2.Theta.mt Sh (φ.symm h) = 1`. Simplify using `only [Formalism.L2.Theta.mt, map_inv, Units.inv_mul]`. Establish `hb : Formalism.L2.Theta.mt Sh (φ.symm h) = ((kapX X e hJW h)⁻¹).1.1ᵀ` using `eq_inv_transpose _ _ _ _ hP (Units.mul_inv (kapX X e hJW h).1) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hs, ht⟩` from `hom (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU S _ hJ g) (kapX X e hJW h) (φ.symm h) (φ'.symm ((ofSgn ε S).symm g)) ha hb Φ hΦ.1`. Use `⟨hs, fun u => ?_⟩` and prove the remaining obligations. Establish `hΦf : GlobalTheory.WeilSchrodinger.thetaTr D.host.F M.co Bs.ψ Φ = fun u => f (L u)` using `funext fun u => by`. Rewrite using `[← hcL]`. Conclude with `hΦ.2 u`.
-
-Establish `k1` using `congrFun ht u`. Establish `k2` using `congrArg (fun F => ω' (φ.symm h, φ'.symm ((ofSgn ε S).symm g)) F u) hΦf`. Establish `k3` using `congrFun (hrel (φ.symm h) (φ'.symm ((ofSgn ε S).symm g)) f) u`. Rewrite using `[hcL]`. Use `k1.trans (k2.trans (k3.trans ?_))` and prove the remaining obligations.
-
-Simplify using `[WRep.toSgn]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_weil_of_oriented : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)

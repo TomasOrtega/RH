@@ -6,29 +6,27 @@ open scoped ComplexOrder Classical
 namespace GlobalTheory.CompanionTheory.Ar.PB.StepShape
 
 /- English proof (translation)
-Introduce `N j a b ca cb C hj hb hcase hca hcb hbd hv r c hcr hne`. Establish `hr` using `r.2`. Establish `hc` using `c.2`. Establish `ha` using `a.2`. Establish `hb'` using `b.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcb'` using `cb.2`. Establish `hlt : (c : ℕ) < r` using `hcr`. Establish `hba : b ≠ a`. Introduce `h`. Rewrite `hb` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Unfold `lastCol at hca`. Distinguish the cases in `hs : ((r : ℕ) < N - j ↔ (c : ℕ) < N - j)`. Use `swap`. Conclude with `hbd r c hs`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hW : N - j ≤ (c : ℕ)`. Take `⟨i, hi⟩ : ∃ i : Fin N, (i : ℕ) = c - (N - j)` from `⟨⟨(c : ℕ) - (N - j), by omega⟩, rfl⟩`. Distinguish the cases in `hia : i = a`. Establish `hai : (a : ℕ) = c - (N - j)` using `by rw [← hia]; exact hi`. Rewrite `hca` using `[if_pos (by omega)]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : c = ca` using `Fin.ext (by omega)`. Establish `hrcb : (r : ℕ) ≠ cb` using `fun h => hne ⟨Fin.ext h, hcc⟩`. Use `hv b ⟨by omega, by omega⟩ hba r c ?_ ?_` and prove the remaining obligations. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[if_pos (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers. Use `hv i ⟨by omega, by omega⟩ hia r c ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[if_pos (by omega)]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨i, hi⟩ : ∃ i : Fin N, (i : ℕ) = j + c` from `⟨⟨j + (c : ℕ), by omega⟩, rfl⟩`. Distinguish the cases in `hia : i = a`. Establish `hai : (a : ℕ) = j + c` using `by rw [← hia]; exact hi`. Rewrite `hca` using `[if_neg (by omega)]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : c = ca` using `Fin.ext (by omega)`. Establish `hrcb : (r : ℕ) ≠ cb` using `fun h => hne ⟨Fin.ext h, hcc⟩`. Use `hv b ⟨by omega, by omega⟩ hba r c ?_ ?_` and prove the remaining obligations. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[if_neg (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[if_neg (by omega)]`. Use linear arithmetic over natural numbers and integers. Use `hv i ⟨by omega, by omega⟩ hia r c ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[if_neg (by omega)]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[if_neg (by omega)]`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem upper_of_steps : ∀ (N j : ℕ) (a b ca cb : Fin N) (C : Matrix (Fin N) (Fin N) ℂ), j ≤ N → (b : ℕ) = a + 1 →
     ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → IsBlockDiag j C →

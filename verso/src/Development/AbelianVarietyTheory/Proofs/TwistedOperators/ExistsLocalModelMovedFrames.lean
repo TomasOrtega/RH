@@ -37,7 +37,7 @@ theorem subH_apply (εS : GL Y' k) (εT : GL Y k) (σS : Z' ≃ Y') (σT : Z ≃
     subH εS εT σS σT x = ((εT⁻¹).val * x * εS.val).submatrix σT σS := rfl
 
 /- English proof (translation)
-Simplify using `only [subH_apply, Matrix.mul_add, Matrix.add_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem subH_add (εS : GL Y' k) (εT : GL Y k) (σS : Z' ≃ Y') (σT : Z ≃ Y) (x y : Matrix Y Y' k) :
     subH εS εT σS σT (x + y) = subH εS εT σS σT x + subH εS εT σS σT y := by
@@ -51,7 +51,7 @@ def pullS (εS : GL Y' k) (εT : GL Y k) (σS : Z' ≃ Y') (σT : Z ≃ Y) : SB 
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sub_mul_sub {n m : Type} [Fintype n] [Fintype m] (P : Matrix Y n k) (Q : Matrix n m k) (R : Matrix m Y' k)
     (σS : Z' ≃ Y') (σT : Z ≃ Y) : P.submatrix σT id * Q * R.submatrix id σS = (P * Q * R).submatrix σT σS := by
@@ -66,7 +66,7 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
   {Y Y' Z Z' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] [Fintype Z] [DecidableEq Z] [Fintype Z'] [DecidableEq Z']
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul]`. Establish `: mt S g⁻¹ * mt S g = 1`. Rewrite using `[show mt S g⁻¹ * mt S g = mt S (g⁻¹ * g) by simp [Formalism.L2.Theta.mt], inv_mul_cancel]`. Simplify using `[Formalism.L2.Theta.mt]`. Rewrite using `[this, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mt_inv_mul {S : HSp D} (g : GA D S) : (mt S g⁻¹).map p.π * (mt S g).map p.π = 1 := by
   rw [← Matrix.map_mul]
@@ -76,11 +76,11 @@ theorem map_mt_inv_mul {S : HSp D} (g : GA D S) : (mt S g⁻¹).map p.π * (mt S
   rw [this, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `h1 : IsHalf p.e (actO S T a b (p.up FS FT x))` using `GlobalTheory.SplitHecke.isHalf_actO a b (Witness.up_half p FS FT x)`. Rewrite using `[← Witness.up_down p (mvFr p a FS εS σS) (mvFr p b FT εT σT) h1]`. Use `congr 1`. Establish `hu : (p.up FS FT x).map p.π = FT.β * x * FS.γ` using `Matrix.ext fun _ _ => p.π_ι _`. Establish `hA` using `map_mt_inv_mul p a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `map_mt_inv_mul p b`. Unfold `Place.down actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hu, subH_apply]`. Express the relevant statement in the definitionally equal form `((εT⁻¹).val * FT.γ * (mt T b⁻¹).map p.π).submatrix σT id * _ * ((mt S a).map p.π * FS.β * εS.val).submatrix id σS = _`. Rewrite using `[sub_mul_sub]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((mt T b⁻¹).map p.π), hB, Matrix.one_mul, ← Matrix.mul_assoc FT.γ FT.β, FT.γβ, Matrix.one_mul, ← Matrix.mul_assoc ((mt S a⁻¹).map p.π), hA, Matrix.one_mul, ← Matrix.mul_assoc FS.γ FS.β, FS.γβ, Matrix.one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_up_mvFr {S T : HSp D} (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (a : GA D S) (b : GA D T)
     (εS : GL Y' k) (εT : GL Y k) (σS : Z' ≃ Y') (σT : Z ≃ Y) (x : Matrix Y Y' k) :
@@ -108,17 +108,17 @@ namespace GlobalTheory.FlatPlace
 open GlobalTheory.FlatPlace.MoveModel in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p ψ S T χS χT ω hW Y Y' _ _ _ _ Z Z' _ _ _ _ FS FT Tm hm a b εS εT σS σT`. Set `L` to `pullS (k := k) εS εT σS σT`. Set `W₀ : Module.End ℂ (WO S T → ℂ)` to `ω (a, b)`. Establish `hA` using `actO_up_mvFr p FS FT a b εS εT σS σT`. Use `⟨W₀ ∘ₗ Tm ∘ₗ L, ⟨fun Φ => hW.om_pres _ _ (hm.theta _), fun z Φ Φ₁ hΦ => ?_, fun y hy Φ Φ₁ hΦ => ?_⟩, fun Φ Φ' e => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set x := (subH εS εT σS σT).symm z with hx`. Establish `hz : subH εS εT σS σT x = z` using `(subH εS εT σS σT).apply_symm_apply z`. Establish `h1 : ∀ t, (L Φ₁).1 t = (L Φ).1 (t + x)` using `fun t => by`. Express the relevant statement in the definitionally equal form `Φ₁.1 (subH εS εT σS σT t) = Φ.1 (subH εS εT σS σT (t + x))`. Rewrite using `[hΦ, subH_add, hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hm.trans x (L Φ) (L Φ₁) h1`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[h2]`. Use `show ω (a, b) _ = _`. Rewrite using `[hW.om_heis _ _ _ _ (hm.theta _), hA, hz]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y₀ := actO S T a⁻¹ b⁻¹ y`. Establish `hy₀ : IsHalf (cA D p.e) y₀` using `GlobalTheory.SplitHecke.isHalf_actO a⁻¹ b⁻¹ hy`. Establish `hyy : actO S T a b y₀ = y`. Use `GlobalTheory.SplitHecke.actO_inv_actO a⁻¹ b⁻¹ y` as an intermediate fact. Rewrite `this` using `[inv_inv, inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ t, (L Φ₁).1 t = ψ (symplO S T (p.up FS FT t) y₀) * (L Φ).1 t` using `fun t => by`. Express the relevant statement in the definitionally equal form `Φ₁.1 (subH εS εT σS σT t) = _ * Φ.1 (subH εS εT σS σT t)`. Rewrite using `[hΦ, ← hA, ← hyy, GlobalTheory.SplitHecke.symplO_actO]`. Establish `h2` using `hm.modul y₀ hy₀ (L Φ) (L Φ₁) h1`. Simplify using `only [LinearMap.comp_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Use `show ω (a, b) _ = _`. Rewrite using `[hW.om_heis _ _ _ _ (hm.theta _), hyy]`. Establish `: L Φ' = Φ` using `Subtype.ext (funext fun x => (e x).symm) show ω (a, b) (Tm (L Φ')) = _`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isModel_mvFr : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT ω → ∀ (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (Z Z' : Type) [Fintype Z] [DecidableEq Z] [Fintype Z'] [DecidableEq Z'] (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) Tm, p.IsModel ψ FS FT Tm → ∀ (a : GA D S) (b : GA D T) (εS : GL Y' k) (εT : GL Y k) (σS : Z' ≃ Y') (σT : Z ≃ Y), ∃ Tm', p.IsModel ψ (mvFr p a FS εS σS) (mvFr p b FT εT σT) Tm' ∧ ∀ (Φ : SB (Matrix Y Y' k)) (Φ' : SB (Matrix Z Z' k)), (∀ x, Φ.1 x = Φ'.1 (((εT⁻¹).val * x * εS.val).submatrix σT σS)) → Tm' Φ' = ω (a, b) (Tm Φ) := by
   intro D k _ _ _ _ p ψ S T χS χT ω hW Y Y' _ _ _ _ Z Z' _ _ _ _ FS FT Tm hm a b εS εT σS σT

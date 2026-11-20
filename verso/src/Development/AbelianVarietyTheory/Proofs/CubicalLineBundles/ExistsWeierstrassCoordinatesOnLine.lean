@@ -14,33 +14,29 @@ namespace GlobalTheory.UnifCoord
 open Filter Topology
 
 /- English proof (translation)
-Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hw`. Establish `hlin : Differentiable ℂ (fun z : ℂ => z • w)` using `by fun_prop`. Establish `hcont : Tendsto (fun z : ℂ => z • w) (𝓝 0) (𝓝 0)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hlin.continuous.tendsto 0`. Establish `hd2 : ∀ j, DifferentiableOn ℂ (fun z : ℂ => F 2 j (z • w)) {z | z • w ∈ Λ}ᶜ` using `fun j => (hd 2 j).comp hlin.differentiableOn fun z hz h => hz ((hΛ _).1 h)`. Establish `hn1 : {z | P z 1 ≠ 0} ∈ 𝓝 (0 : Fin g → ℂ)` using `(ho 1).mem_nhds h1`. Establish `hev1 : ∀ᶠ z : ℂ in 𝓝 0, P (z • w) 1 ≠ 0` using `hcont hn1`. Establish `hoff : ∀ᶠ z : ℂ in 𝓝[≠] 0, P (z • w) 2 ≠ 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : ({0} : Set Λ) ∈ 𝓝 (0 : Λ)` using `(isOpen_discrete _).mem_nhds rfl`. Rewrite `h` using `[nhds_subtype_eq_comap, mem_comap]`. Take `⟨s, hs, hs'⟩` from `h`. Establish `h' : ∀ᶠ z : ℂ in 𝓝 0, z • w ∈ s` using `hcont hs`. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds h', self_mem_nhdsWithin] with z hz hz0 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hs' (show (⟨z • w, (hΛ _).1 h2⟩ : Λ) ∈ Subtype.val ⁻¹' s from hz)` as an intermediate fact. Establish `e : z • w = 0` using `congrArg Subtype.val this`. Conclude with `hz0 ((smul_eq_zero.1 e).resolve_right hw0)`. Establish `hda : ∀ j, DifferentiableAt ℂ (F 1 j) 0` using `fun j => (hd 1 j).differentiableAt hn1`. Establish `h2 : P 0 2 = 0` using `(hΛ 0).2 Λ.zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨hw0, fun z => F 2 0 (z • w), fun z => F 2 1 (z • w), fun z => -F 1 0 (z • w), hd2 0, hd2 1, fun l hl z => ?_, fun z hz => ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [add_smul, hper _ _ _ _ hl, and_self]`. Establish `hz2 : P (z • w) 2 ≠ 0` using `fun h => hz ((hΛ _).1 h)`. Rewrite using `[← WeierstrassCurve.Projective.equation_some, ← WeierstrassCurve.Projective.equation_smul _ (isUnit_iff_ne_zero.2 hz2)]`. Use `hE (z • w) using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `i`. Use `fin_cases i`. Simplify `hF 2 0 _ hz2` using `[mul_comm]`. Simplify `hF 2 1 _ hz2` using `[mul_comm]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `AnalyticAt.neg (DifferentiableOn.analyticAt (s := {z : ℂ | P (z • w) 1 ≠ 0}) ?_ hev1)` and prove the remaining obligations. Conclude with `(hd 1 0).comp hlin.differentiableOn fun z hz => hz`. Use `hF 1 0 0 h1` as an intermediate fact. Rewrite `this` using `[h0, mul_eq_zero]`. Simplify using `[this.resolve_right h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : HasDerivAt (fun z : ℂ => z • w) w 0`. Simplify using `using (hasDerivAt_id (0 : ℂ)).smul_const w`. Establish `h4 : HasFDerivAt (F 1 0) (fderiv ℂ (F 1 0) 0) ((0 : ℂ) • w)`. Rewrite using `[zero_smul]`. Conclude with `(hda 0).hasFDerivAt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `(h4.comp_hasDerivAt (0 : ℂ) h3).neg`. Rewrite `h5` using `[hw, neg_neg]`. Conclude with `h5.deriv`. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds hev1, hoff] with z hz1 hz2`. Apply `mul_right_cancel₀ hz2` to reduce the goal to its premises.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a` using `hF 1 0 _ hz1`. Establish `b` using `hF 2 0 _ hz2`. Establish `c` using `hF 2 1 _ hz2`. Take the linear combination `-(F 1 0 (z • w)) * c - a + b`. Establish `hs0 : F 1 2 0 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hF 1 2 0 h1` as an intermediate fact. Rewrite `this` using `[h2, mul_eq_zero]`. Conclude with `this.resolve_right h1`. Establish `hs : Tendsto (fun z : ℂ => F 1 2 (z • w)) (𝓝[≠] 0) (𝓝 0)`. Use `(hda 2).continuousAt.tendsto.comp hcont` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[hs0]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Establish `hprod : ∀ᶠ z : ℂ in 𝓝[≠] 0, F 1 2 (z • w) * F 2 1 (z • w) = 1` using `by filter_upwards [mem_nhdsWithin_of_mem_nhds hev1, hoff] with z hz1 hz2`. Apply `mul_right_cancel₀ hz2` to reduce the goal to its premises. Establish `a` using `hF 1 2 _ hz1`.
-
-Establish `c` using `hF 2 1 _ hz2`. Take the linear combination `(F 1 2 (z • w)) * c + a`. Establish `hs' : Tendsto (fun z : ℂ => F 1 2 (z • w)) (𝓝[≠] 0) (𝓝[≠] 0)` using `tendsto_nhdsWithin_iff.2 ⟨hs, hprod.mono fun z hz => left_ne_zero_of_mul_eq_one hz⟩`. Use `(tendsto_norm_inv_nhdsNE_zero_atTop.comp hs').congr' ?_` and prove the remaining obligations. Use `filter_upwards [hprod] with z hz`.
-
-Simplify using `only [Function.comp_apply]`. Rewrite using `[eq_inv_of_mul_eq_one_right hz]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_xyt {g : ℕ} (V : WeierstrassCurve ℂ) (Λ : Submodule ℤ (Fin g → ℂ))
     [DiscreteTopology Λ] (P : (Fin g → ℂ) → Fin 3 → ℂ) (F : Fin 3 → Fin 3 → (Fin g → ℂ) → ℂ)
@@ -128,9 +124,9 @@ theorem exists_xyt {g : ℕ} (V : WeierstrassCurve ℂ) (Λ : Submodule ℤ (Fin
     rw [eq_inv_of_mul_eq_one_right hz]
 
 /- English proof (translation)
-Rewrite using `[ptHom_preimage_coordOpen]`. Prove the components needed by the constructor for the conclusion. Introduce `h h0`. Rewrite `h` using `[h0, PrimeSpectrum.basicOpen_zero]`. Conclude with `h (Set.mem_univ (default : PrimeSpectrum ℂ))`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h p _ hp`. Conclude with `p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hp (isUnit_iff_ne_zero.2 h))`.
+A detailed English derivation is pending.
 -/
 theorem top_le_ptHom_preimage_iff {R : Type} [CommRing R] (W : WeierstrassCurve R) (f : R →+* ℂ)
     (P : Fin 3 → ℂ) (hP : IsUnimodularSol (W.map f) P) (i : Fin 3) :
@@ -144,11 +140,9 @@ theorem top_le_ptHom_preimage_iff {R : Type} [CommRing R] (W : WeierstrassCurve 
     exact p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hp (isUnit_iff_ne_zero.2 h))
 
 /- English proof (translation)
-Establish `h0 : P 0 = 0` using `WeierstrassCurve.Projective.X_eq_zero_of_Z_eq_zero hP.equation h2`. Use `⟨h0, fun h1 => ?_⟩` and prove the remaining obligations. Establish `h : Ideal.span (Set.range P) ≤ ⊥`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `fin_cases i`. Conclude with `h0`. Conclude with `h1`. Conclude with `h2`. Rewrite `h` using `[hP.span_eq_top]`.
-
-Conclude with `top_ne_bot (le_bot_iff.1 h)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_and_ne_zero {V : WeierstrassCurve ℂ} {P : Fin 3 → ℂ} (hP : IsUnimodularSol V P)
     (h2 : P 2 = 0) : P 0 = 0 ∧ P 1 ≠ 0 := by
@@ -165,11 +159,11 @@ theorem eq_zero_and_ne_zero {V : WeierstrassCurve ℂ} {P : Fin 3 → ℂ} (hP :
   exact top_ne_bot (le_bot_iff.1 h)
 
 /- English proof (translation)
-Rewrite using `[SpecMap_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h2`. Take `⟨h0, h1⟩` from `eq_zero_and_ne_zero hP h2`. Rewrite using `[← ptHom_smul W f ![0, 1, 0] (isUnimodularSol_zero _) (isUnit_iff_ne_zero.2 h1)]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `ptHom_congr W _ _ _ rfl ?_ _` and prove the remaining obligations. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [h0, h2]`. Introduce `e`. Assume the negation of the conclusion as `h2`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `(top_le_ptHom_preimage_iff W f P hP 2).2 h2` as an intermediate fact. Rewrite `this` using `[e, top_le_ptHom_preimage_iff]`. Conclude with `this rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptHom_eq_zero_iff {R : Type} [CommRing R] (W : WeierstrassCurve R) (f : R →+* ℂ)
     (P : Fin 3 → ℂ) (hP : IsUnimodularSol (W.map f) P) :
@@ -189,25 +183,21 @@ theorem ptHom_eq_zero_iff {R : Type} [CommRing R] (W : WeierstrassCurve R) (f : 
     exact this rfl
 
 /- English proof (translation)
-Introduce `R _ W f A _ φ v h hpb he hv L₁ g u w hw`. Take `⟨c, hc, -⟩` from `GlobalTheory.CoordFn.exists_coordFn R W`. Establish `hover : ∀ z, (u.ex z).left ≫ A.hom = 𝟙 (Sp ℂ)` using `fun z => Over.w (u.ex z)`. Establish `hpt : ∀ z, ∃ (P : Fin 3 → ℂ) (hP : IsUnimodularSol (W.map f) P), (u.ex z).left ≫ φ = ptHom W f P hP` using `fun z => exists_eq_ptHom_of_isLocalRing R W ℂ f ((u.ex z).left ≫ φ) (by`. Rewrite using `[Category.assoc, hpb.w, ← Category.assoc, hover]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Category.id_comp _)`. Use `choose P hP hPe using hpt`. Establish `hmem : ∀ z i, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (φ ⁻¹ᵁ coordOpen W i) ↔ P z i ≠ 0` using `fun z i => by`. Rewrite using `[← top_le_ptHom_preimage_iff W f (P z) (hP z), ← hPe, Scheme.Hom.comp_preimage]`. Establish `hset : ∀ i, {z | P z i ≠ 0} = {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ (φ ⁻¹ᵁ coordOpen W i)}` using `fun i => Set.ext fun z => (hmem z i).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΛ : ∀ z, P z 2 = 0 ↔ z ∈ u.Λ` using `fun z => by`. Rewrite using `[ptHom_eq_zero_iff W f (P z) (hP z), ← hPe, ← he, ← u.ker]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Establish `e' : u.ex z = η[A]` using `Over.OverMorphism.ext (hpb.hom_ext e ((hover z).trans (Over.w η[A]).symm))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e', Hom.one_def]`. Simplify using the standard rewrite rules. Introduce `e`. Rewrite using `[e, Hom.one_def]`. Simplify using `[eSec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h00` using `eq_zero_and_ne_zero (hP 0) ((hΛ 0).2 u.Λ.zero_mem)`. Use `u.discrete` as an intermediate fact. Use `exists_xyt (W.map f) u.Λ P (fun i j z => valAt' (u.ex z).left (φ ⁻¹ᵁ coordOpen W i) ((φ.app (coordOpen W i)).hom (c i j))) (fun z => (hP z).equation) (fun i => hset i ▸ (u.hol _ 0).1) (fun i j => hset i ▸ (u.hol _ _).2) (fun i j z hz => ?_) hΛ (fun i j z l hl => ?_) h00.1 h00.2 w …` and prove the remaining obligations. Establish `hz'` using `(top_le_ptHom_preimage_iff W f (P z) (hP z) i).2 hz`. Establish `e : valAt' (u.ex z).left (φ ⁻¹ᵁ coordOpen W i) ((φ.app (coordOpen W i)).hom (c i j)) = valAt' (ptHom W f (P z) (hP z)) (coordOpen W i) (c i j)` using `(valAt'_comp (u.ex z).left φ _ _).trans (congrArg (fun k => valAt' k _ _) (hPe z))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `beta_reduce`. Rewrite using `[e, valAt'_eq_valAt _ hz']`. Conclude with `hc i j ℂ f (P z) (hP z) hz'`. Simplify using `only [u.ex_add, (u.ker l).2 hl, _root_.mul_one]`. Establish `h1 : ⊤ ≤ ptHom W ((algebraMap ℂ (DualNumber ℂ)).comp f) ![DualNumber.eps, -1, 0] h ⁻¹ᵁ coordOpen W 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ptHom_preimage_coordOpen]`. Introduce `p _ hp`. Conclude with `p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hp isUnit_one.neg)`. Establish `h2 : ⊤ ≤ v.left ⁻¹ᵁ (φ ⁻¹ᵁ coordOpen W 1)`. Rewrite using `[← Scheme.Hom.comp_preimage, hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Rewrite using `[← hw _ h2]`. Establish `e` using `hc 1 0 _ _ _ h h1`. Establish `e2 : ∀ (k : Sp (DualNumber ℂ) ⟶ scheme W) (hk : ⊤ ≤ k ⁻¹ᵁ coordOpen W 1), v.left ≫ φ = k → (v.left.appLE (φ ⁻¹ᵁ coordOpen W 1) ⊤ h2).hom ((φ.app (coordOpen W 1)).hom (c 1 0)) = (k.appLE (coordOpen W 1) ⊤ hk).hom (c 1 0)`. Introduce and unpack `_ hk rfl`.
-
-Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Rewrite using `[e2 _ h1 hv]`. Establish `e3` using `congrArg TrivSqZeroExt.snd e`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, mul_neg, _root_.mul_one, TrivSqZeroExt.snd_neg, DualNumber.snd_eps] at e3`.
-
-Conclude with `neg_eq_iff_eq_neg.1 e3`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coord_on_line : ∀ (R : Type) [CommRing R] (W : WeierstrassCurve R) (f : R →+* ℂ) (A : Over (Sp ℂ)) [GrpObj A] (φ : A.left ⟶ scheme W) (v : epsR ℂ ⟶ A) (h : IsUnimodularSol (W.map ((algebraMap ℂ (DualNumber ℂ)).comp f)) ![DualNumber.eps, -1, 0]), IsPullback φ A.hom (toSpec W) (spMap f) → eSec A ≫ φ = spMap f ≫ zero W → v.left ≫ φ = ptHom W ((algebraMap ℂ (DualNumber ℂ)).comp f) ![DualNumber.eps, -1, 0] h → ∀ (L₁ : LB A.left) (g : ℕ) (u : HolUnif A L₁ g) (w : Fin g → ℂ), u.IsDiff w v → w ≠ 0 ∧ ∃ x y t : ℂ → ℂ, DifferentiableOn ℂ x {z | z • w ∈ u.Λ}ᶜ ∧ DifferentiableOn ℂ y {z | z • w ∈ u.Λ}ᶜ ∧ (∀ l : ℂ, l • w ∈ u.Λ → ∀ z, x (z + l) = x z ∧ y (z + l) = y z) ∧ (∀ z : ℂ, z • w ∉ u.Λ → (W.map f).toAffine.Equation (x z) (y z)) ∧ AnalyticAt ℂ t 0 ∧ t 0 = 0 ∧ deriv t 0 = 1 ∧ (∀ᶠ z in nhdsWithin 0 {0}ᶜ, t z * y z = -x z) ∧ Filter.Tendsto (fun z => ‖y z‖) (nhdsWithin 0 {0}ᶜ) Filter.atTop := by
   intro R _ W f A _ φ v h hpb he hv L₁ g u w hw

@@ -78,14 +78,14 @@ end GlobalTheory.EtC.LCSec
 namespace GlobalTheory.EtC.LCSec
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_res {R : Type} [CommRing R] {F : Shv R} {U V W : Scheme.{0}} (a : W ⟶ V) (b : V ⟶ U) (y : Sec F U) :
     Sec.res a (Sec.res b y) = Sec.res (a ≫ b) y := by
   simp [Sec.res]
 
 /- English proof (translation)
-Take `⟨hc⟩` from `GlobalTheory.EtC.spec_pi_cofan_isColimit S (fun _ => B) (S → B) (RingEquiv.refl _)`. Conclude with `GlobalTheory.T.etaleModuleSheaf_sections_coprod_bijective R F _ S _ _ hc`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sec_pi_bijective (R : Type) [CommRing R] (F : Shv R) (B : Type) [CommRing B] (S : Type) [Finite S] :
     Function.Bijective (fun (y : Sec F (Spec (CommRingCat.of (S → B)))) (s : S) =>
@@ -94,7 +94,7 @@ theorem sec_pi_bijective (R : Type) [CommRing R] (F : Shv R) (B : Type) [CommRin
   exact GlobalTheory.T.etaleModuleSheaf_sections_coprod_bijective R F _ S _ _ hc
 
 /- English proof (translation)
-Rewrite using `[res_res, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_eval_pullQ (R : Type) [CommRing R] (F : Shv R) (X : Type) [TopologicalSpace X] (B : Type) [CommRing B]
     (S : DiscreteQuotient X) (y : Sec F (Spec (CommRingCat.of (S → B)))) (x : X) :
@@ -109,21 +109,17 @@ end GlobalTheory.EtC.LCSec
 open GlobalTheory.EtC.LCSec in
 
 /- English proof (translation)
-Introduce `R _ F hF X _ _ B _`. Establish `hfin` using `((GlobalTheory.T.preservesFilteredColimits_moduleCat_iff_forget_iff_elements (ULift.{1} R) (onRings F)).2.mp hF) _ (stage X B) (lcCocone X B) (lcCoconeIsColimit X B)`. Establish `hrep : ∀ t : Sec F (Spec (CommRingCat.of (LocallyConstant X B))), ∃ (S : DiscreteQuotient X) (y : Sec F (Spec (CommRingCat.of (S → B)))), Sec.res (Spec.map (CommRingCat.ofHom (pullQ X B S))) y = t`. Introduce `t`. Take `⟨S, y, hy⟩` from `hfin.1 t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨S.unop, y, hy⟩`. Establish `hzero : ∀ t : Sec F (Spec (CommRingCat.of (LocallyConstant X B))), (∀ x, Sec.res (Spec.map (CommRingCat.ofHom (LocallyConstant.evalRingHom x))) t = 0) → t = 0`. Introduce `t ht`. Take `⟨S, y, rfl⟩` from `hrep t`. Establish `hall : ∀ s : S, Sec.res (Spec.map (CommRingCat.ofHom (Pi.evalRingHom (fun _ : S => B) s))) y = 0`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `s`. Take `⟨x, rfl⟩` from `DiscreteQuotient.proj_surjective _ s`. Rewrite using `[← res_eval_pullQ]`. Conclude with `ht x`. Establish `hy : y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(sec_pi_bijective R F B S).1` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Conclude with `(hall s).trans (map_zero _).symm`. Rewrite using `[hy]`. Conclude with `map_zero _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun t => ?_, fun t₁ t₂ h => ?_, fun ψ hψ => ?_⟩` and prove the remaining obligations. Take `⟨S, y, rfl⟩` from `hrep t`. Establish `he : (fun x : X => Sec.res (Spec.map (CommRingCat.ofHom (LocallyConstant.evalRingHom x))) (Sec.res (Spec.map (CommRingCat.ofHom (pullQ X B S))) y)) = (fun s : S => Sec.res (Spec.map (CommRingCat.ofHom (Pi.evalRingHom (fun _ : S => B) s))) y) ∘ S.proj`. Use function extensionality and compare the values at `fun x => res_eval_pullQ R F X B S y x`. Rewrite using `[he]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.proj_isLocallyConstant.comp _`. Establish `h0` using `hzero (t₁ - t₂) fun x => by`. Express the relevant statement in the definitionally equal form `(F.obj.map _).hom (t₁ - t₂) = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.mpr (congrFun h x)`.
-
-Conclude with `sub_eq_zero.mp h0`. Set `f : LocallyConstant X (Sec F (Spec (CommRingCat.of B)))` to `⟨ψ, hψ⟩`. Take `⟨y, hy⟩` from `(sec_pi_bijective R F B f.discreteQuotient).2 (⇑f.lift)`. Use `⟨Sec.res (Spec.map (CommRingCat.ofHom (pullQ X B f.discreteQuotient))) y, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[res_eval_pullQ]`.
-
-Conclude with `congrFun hy (f.discreteQuotient.proj x)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.sec_locallyConstant : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F → ∀ (X : Type) [TopologicalSpace X] [CompactSpace X] (B : Type) [CommRing B], (∀ t : Sec F (Spec (CommRingCat.of (LocallyConstant X B))), IsLocallyConstant (fun x : X => Sec.res (Spec.map (CommRingCat.ofHom (LocallyConstant.evalRingHom x))) t)) ∧ Function.Injective (fun (t : Sec F (Spec (CommRingCat.of (LocallyConstant X B)))) (x : X) => Sec.res (Spec.map (CommRingCat.ofHom (LocallyConstant.evalRingHom x))) t) ∧ ∀ ψ : X → Sec F (Spec (CommRingCat.of B)), IsLocallyConstant ψ → ∃ t : Sec F (Spec (CommRingCat.of (LocallyConstant X B))), ∀ x, Sec.res (Spec.map (CommRingCat.ofHom (LocallyConstant.evalRingHom x))) t = ψ x := by
   intro R _ F hF X _ _ B _

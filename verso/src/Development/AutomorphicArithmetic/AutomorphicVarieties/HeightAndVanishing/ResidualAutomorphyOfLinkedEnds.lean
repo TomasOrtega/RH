@@ -14,7 +14,7 @@ namespace UpperTheory.V.HV.Core
 open UpperTheory.V.Lit UpperTheory.V.W
 
 /- English proof (translation)
-The claim follows from `KN.O.caseI { loc := U.localGaloisCohomology₂ hN, pt := hN.coh.pt, gf := hN.coh.gf, ge := hN.coh.ge, lemK := hK, lemM := Alg.M.main_holds, lemM' := Alg.M.mprime_holds, lemP := Alg.lemmaP, kato := hKa, adK := adK, adQ := adQ, newAut := nw, number := nU } h3`.
+A detailed English derivation is pending.
 -/
 theorem countI (hN : LitN) (hK : ∃ CK : ℝ, LemmaK CK) (hKa : KatoUseN) (adK : Af.AdVanishK) (adQ : Af.AdVanishQ)
     (nw : Af.NewformAut) (nU : Af.CongruenceNumberRankThree) (h3 : Aut.AutomorphyUnramifiedCoefficients) : CountI :=

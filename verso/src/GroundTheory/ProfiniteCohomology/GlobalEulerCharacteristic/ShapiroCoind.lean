@@ -17,7 +17,7 @@ section FunIso
 variable {k G : Type u} [CommRing k] [Group G] (U : Subgroup G) (A : Rep.{u} k G)
 
 /- English proof (translation)
-The claim follows from `f.2 u y`.
+A detailed English derivation is pending.
 -/
 theorem coindResSubtype_apply_mul (f : Rep.coind U.subtype (Rep.res U.subtype A)) (u : U) (y : G) :
     f.1 ((u : G) * y) = A.ρ (u : G) (f.1 y) :=
@@ -40,9 +40,9 @@ theorem coindResToFun_mk (f : Rep.coind U.subtype (Rep.res U.subtype A)) (y : G)
   rfl
 
 /- English proof (translation)
-Introduce `u y`. Establish `hq : (QuotientGroup.mk ((U.subtype u * y)⁻¹) : G ⧸ U) = QuotientGroup.mk y⁻¹`. Rewrite using `[QuotientGroup.eq]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `A.ρ (U.subtype u * y) (F (QuotientGroup.mk ((U.subtype u * y)⁻¹))) = A.ρ (u : G) (A.ρ y (F (QuotientGroup.mk y⁻¹)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hq, map_mul, Module.End.mul_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem funToCoindRes_mem (F : G ⧸ U → A) :
     (fun y : G => A.ρ y (F (QuotientGroup.mk y⁻¹))) ∈
@@ -106,7 +106,7 @@ theorem quotientComapMap_mk (g : G) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H y`. Rewrite using `[MulAction.Quotient.smul_mk, quotientComapMap_mk, quotientComapMap_mk, MulAction.Quotient.smul_mk, smul_eq_mul, smul_eq_mul, map_mul]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem quotientComapMap_smul (g : G) (x : G ⧸ D.comap π) :
     quotientComapMap π D (g • x) = π g • quotientComapMap π D x := by
@@ -119,11 +119,11 @@ variable {π} (hπ : Function.Surjective π)
 
 include hπ in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H a`. Proceed by induction on `y using QuotientGroup.induction_on with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `H b`. Rewrite `h` using `[quotientComapMap_mk, quotientComapMap_mk, QuotientGroup.eq]`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_comap]`. Simplify using `using h`. Introduce `c`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `c using QuotientGroup.induction_on with`. Consider the case `H γ`. Take `⟨g, rfl⟩` from `hπ γ`. Conclude with `⟨QuotientGroup.mk g, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem quotientComapMap_bijective : Function.Bijective (quotientComapMap π D) := by
   constructor
@@ -171,7 +171,7 @@ section Card
 variable {k G : Type u} [CommRing k] [Group G] (U : Subgroup G) (B : Rep.{u} k U)
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul U y⁻¹`. Rewrite using `[hh, mul_inv_cancel_left]`. Conclude with `h.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_out_mk_inv_mem (y : G) : y * (QuotientGroup.mk y⁻¹ : G ⧸ U).out ∈ U := by
   obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul U y⁻¹
@@ -182,9 +182,9 @@ def coindCosetElt (y : G) : U :=
   ⟨y * (QuotientGroup.mk y⁻¹ : G ⧸ U).out, mul_out_mk_inv_mem U y⟩
 
 /- English proof (translation)
-Establish `hq : (QuotientGroup.mk ((u : G) * y)⁻¹ : G ⧸ U) = QuotientGroup.mk y⁻¹`. Rewrite using `[QuotientGroup.eq]`. Simplify using the standard rewrite rules. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(u : G) * y * (QuotientGroup.mk ((u : G) * y)⁻¹ : G ⧸ U).out = (u : G) * (y * (QuotientGroup.mk y⁻¹ : G ⧸ U).out)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hq, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coindCosetElt_mul (u : U) (y : G) :
     coindCosetElt U ((u : G) * y) = u * coindCosetElt U y := by
@@ -197,7 +197,7 @@ theorem coindCosetElt_mul (u : U) (y : G) :
   rw [hq, mul_assoc]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `c.out⁻¹ * (QuotientGroup.mk c.out⁻¹⁻¹ : G ⧸ U).out = 1`. Rewrite using `[inv_inv, QuotientGroup.out_eq', inv_mul_cancel]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coindCosetElt_out_inv (c : G ⧸ U) : coindCosetElt U c.out⁻¹ = 1 := by
   apply Subtype.ext
@@ -205,7 +205,7 @@ theorem coindCosetElt_out_inv (c : G ⧸ U) : coindCosetElt U c.out⁻¹ = 1 := 
   rw [inv_inv, QuotientGroup.out_eq', inv_mul_cancel]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `y * (QuotientGroup.mk y⁻¹ : G ⧸ U).out * ((QuotientGroup.mk y⁻¹ : G ⧸ U).out)⁻¹ = y`. Rewrite using `[mul_inv_cancel_right]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_coindCosetElt_mul_out_inv (y : G) :
     (coindCosetElt U y : G) * ((QuotientGroup.mk y⁻¹ : G ⧸ U).out)⁻¹ = y := by
@@ -225,9 +225,9 @@ def coindToCosetFun (f : Rep.coind U.subtype B) : G ⧸ U → B :=
   fun c => f.1 c.out⁻¹
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨coindOfCosetFun U B, fun f => ?_, fun φ => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `B.ρ (coindCosetElt U y) (f.1 ((QuotientGroup.mk y⁻¹ : G ⧸ U).out)⁻¹) = f.1 y`. Establish `h` using `f.2 (coindCosetElt U y) ((QuotientGroup.mk y⁻¹ : G ⧸ U).out)⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `f.1 ((coindCosetElt U y : G) * ((QuotientGroup.mk y⁻¹ : G ⧸ U).out)⁻¹) = _ at h`. Rewrite using `[← h, coe_coindCosetElt_mul_out_inv]`. Use function extensionality and compare the values at `c`. Express the relevant statement in the definitionally equal form `B.ρ (coindCosetElt U c.out⁻¹) (φ (QuotientGroup.mk c.out⁻¹⁻¹)) = φ c`. Rewrite using `[coindCosetElt_out_inv, inv_inv, QuotientGroup.out_eq', map_one, Module.End.one_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coindToCosetFun_bijective : Function.Bijective (coindToCosetFun U B) := by
   refine Function.bijective_iff_has_inverse.2 ⟨coindOfCosetFun U B, fun f => ?_, fun φ => ?_⟩
@@ -242,7 +242,7 @@ theorem coindToCosetFun_bijective : Function.Bijective (coindToCosetFun U B) := 
     rw [coindCosetElt_out_inv, inv_inv, QuotientGroup.out_eq', map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Rewrite using `[Nat.card_eq_of_bijective _ (coindToCosetFun_bijective U B), Nat.card_fun, Subgroup.index]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_coind_eq [Finite (G ⧸ U)] :
     Nat.card (Rep.coind U.subtype B) = Nat.card B ^ U.index := by
@@ -256,7 +256,7 @@ variable {k G H : Type u} [CommRing k] [Group G] [Group H] [TopologicalSpace G] 
   [IsTopologicalGroup G] [IsTopologicalGroup H]
 
 /- English proof (translation)
-Simplify using `only [eulerChar]`. Use `Finset.prod_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.card_congr (cohomologyIsoOfContinuousMulEquiv e (Iso.refl _) q).toLinearEquiv.toEquiv]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eulerChar_res_continuousMulEquiv (e : H ≃ₜ* G) (A : Rep.{u} k G) [IsDiscreteRep A]
     [IsDiscreteRep (Rep.res e.toMulEquiv.toMonoidHom A)] :

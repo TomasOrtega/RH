@@ -10,11 +10,11 @@ open MonoidAlgebra
 variable {K : Type} [Field K] {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Proceed by induction on `z using MonoidAlgebra.induction_on with`. Consider the case `of y`. Rewrite using `[Representation.asAlgebraHom_of, eS, Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft y) _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, ← map_mul (MonoidAlgebra.of K G), ← map_mul (T.tau s)]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Equiv.coe_mulLeft, mul_inv_rev, inv_mul_cancel_right]`. Consider the case `add x y hx hy`. Rewrite using `[add_mul, hx, hy, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, mul_add, map_add, mul_add, add_smul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul r x hx`. Rewrite using `[smul_mul_assoc, hx, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, mul_smul_comm, map_smul, smul_smul, smul_eq_mul]`. Use `congr 1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -40,13 +40,11 @@ lemma mul_eS (T : GoodSet K G) (s : T.S) (z : MonoidAlgebra K G) :
     ring
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, E v ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hE (LinearMap.ext h)`. Establish `hex : ¬ ∀ φ : Module.Dual K W, φ (E v) = 0` using `fun h => hv ((Module.forall_dual_apply_eq_zero_iff K _).mp h)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `push Not at hex`. Take `⟨f0, hf0⟩` from `hex`. Set `f : Module.Dual K W` to `(f0 (E v))⁻¹ • f0`. Establish `hf : f (E v) = 1` using `by simp [f, hf0]`. Set `b` to `Module.finBasis K W`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Module.finrank K W, fun i => f.smulRight (b i), fun i => (b.coord i).smulRight v, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply, Module.End.one_apply]`. Use `conv_rhs => rw [← b.sum_repr x]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, LinearMap.smulRight_apply, LinearMap.smulRight_apply, map_smul, map_smul, hf, smul_eq_mul, mul_one, Module.Basis.coord_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma end_simple {W : Type} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
     (E : Module.End K W) (hE : E ≠ 0) :
@@ -71,13 +69,11 @@ lemma end_simple {W : Type} [AddCommGroup W] [Module K W] [FiniteDimensional K W
     LinearMap.smulRight_apply, map_smul, map_smul, hf, smul_eq_mul, mul_one, Module.Basis.coord_apply]
 
 /- English proof (translation)
-Use `AddSubgroup.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Take `⟨n, A, B, hAB⟩` from `end_simple _ (h s)`. Use `choose a ha using fun i => T.irr s (A i)`. Use `choose b hb using fun i => T.irr s (B i)`. Establish `hτ : (T.tau s).asAlgebraHom (∑ i, a i * eps P * b i) = (T.tau s).asAlgebraHom 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_one, map_sum]`. Simplify using `only [map_mul, ha, hb]`. Conclude with `hAB`. Establish `e1` using `mul_eS T s (∑ i, a i * eps P * b i)`. Establish `e2` using `mul_eS T s 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e2` using `[one_mul]`. Establish `key : (∑ i, a i * eps P * b i) * eS T s = eS T s`. Rewrite using `[e1, e2, hτ]`. Rewrite using `[← key, Finset.sum_mul]`. Use `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.subset_closure ?_` and prove the remaining obligations.
-
-Conclude with `⟨a i, b i * eS T s, mul_assoc _ _ _⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eG_mem (T : GoodSet K G) (P : Pair K G) (h : ∀ s, (T.tau s).asAlgebraHom (eps P) ≠ 0) :
     eG T ∈ AddSubgroup.closure {w | ∃ a b : MonoidAlgebra K G, w = a * eps P * b} := by
@@ -99,7 +95,7 @@ theorem eG_mem (T : GoodSet K G) (P : Pair K G) (h : ∀ s, (T.tau s).asAlgebraH
   exact ⟨a i, b i * eS T s, mul_assoc _ _ _⟩
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1 : nS T P s = 1` using `h s`. Unfold `nS at h1`. Rewrite `h1` using `[Submodule.finrank_eq_zero.mpr (by rw [h0]; exact LinearMap.range_zero)]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma tau_eps_ne (T : GoodSet K G) (P : Pair K G) (h : M1 T P) (s : T.S) :
     (T.tau s).asAlgebraHom (eps P) ≠ 0 := by

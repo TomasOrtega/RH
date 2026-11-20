@@ -5,7 +5,7 @@ import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PDualStackedGraphBihom
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.DualStackedGraphBihomog.proof`.
+A detailed English derivation is pending.
 -/
 theorem graph_bihomog : GroundTheory.Heights₂.Heights.DualStackedGraphBihomog.Statement :=
   GroundTheory.Heights₂.Heights.DualStackedGraphBihomog.proof

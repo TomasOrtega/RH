@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Use extensionality with `i`. Use `h (i + 1)` as an intermediate fact. Rewrite `this` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton, PowerSeries.X_pow_dvd_iff]`. Simplify using `using this i (Nat.lt_succ_self i)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem np_desc_sep {K : Type} [Field K] (a : PowerSeries K)
     (h : ∀ m : ℕ, a ∈ (Ideal.span {(PowerSeries.X : PowerSeries K)}) ^ m) : a = 0 := by
@@ -16,23 +16,23 @@ private theorem np_desc_sep {K : Type} [Field K] (a : PowerSeries K)
   simpa using this i (Nat.lt_succ_self i)
 
 /- English proof (translation)
-Introduce `l _ L G G' g n x k H _ hH hη hU hker`. Establish `hρ : ∀ d, x.ρX x.A d = mat x.ρ d`. Introduce `d`. Use extensionality with `i j`. Simplify using `[NP.ρX]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨hR, -, -, -⟩` from `rho_hom l G.frame n x k x.A`. Establish `hl : (l : x.A) = 0`. Use `(am_fin l G.frame n x 0 0).2.2.2.2.1` as an intermediate fact. Simplify using `using this`. Establish `hunip : ∀ (m : ℕ) (h : G.G₀), (h : G.Γ) ∈ H → ∃ e, ∀ i j, (x.ρX x.A (h ^ l ^ e) - 1) i j ∈ (Ideal.span {algebraMap x.A x.A x.t}) ^ m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `m h hh`. Take `⟨e, he⟩` from `hU m h hh`. Use `⟨e, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ, show algebraMap x.A x.A x.t = x.t from rfl, Ideal.span_singleton_pow]`. Conclude with `he i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `sep : ∀ a : x.A, (∀ m, a ∈ (Ideal.span {algebraMap x.A x.A x.t}) ^ m) → a = 0` using `fun a h => np_desc_sep a h`. Establish `key : ∀ d : G.G₀, g.p₀ d = 1 → x.ρ d = 1 ∧ ∀ j, k.κ j d = 0`. Introduce `d hd`. Establish `hdP : (d : G.Γ) ∈ PL l H`. Rewrite using `[← hker, MonoidHom.mem_ker, ← Glob.Hom.coe_p₀, hd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Establish `h0` using `(coc_pl l L G n x.A _ (x.ρX x.A) (fun _ => 0) H hH hη hl hR.1 hR.2.1 hR.2.2 hunip (fun i j N => IsLocallyConstant.const _) (fun a b => by simp)).2 d hdP`. Apply `Units.ext` to reduce the goal to its premises. Establish `hm : x.ρX x.A d = 1` using `Matrix.ext fun i j => sub_eq_zero.mp (sep _ (fun m => (h0 m i j).1))`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[hρ]`. Conclude with `hm`. Introduce `j`. Establish `hj` using `(coc_pl l L G n x.A _ (x.ρX x.A) (k.κ j) H hH hη hl hR.1 hR.2.1 hR.2.2 hunip (k.mem j).2.1 (k.mem j).2.2.1).2 d hdP`. Conclude with `Matrix.ext fun a b => sep _ (fun m => (hj m a b).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hkerρ : g.p₀.ker ≤ x.ρ.ker` using `fun d hd => (key d hd).1`. Set `e` to `QuotientGroup.quotientKerEquivOfSurjective g.p₀ g.p₀_surj`. Use `⟨⟨(QuotientGroup.lift g.p₀.ker x.ρ hkerρ).comp e.symm.toMonoidHom, fun a => ?_⟩, ⟨fun j b => k.κ j (Classical.choose (g.p₀_surj b)), fun j a => ?_⟩⟩` and prove the remaining obligations. Establish `hs : e.symm (g.p₀ a) = (QuotientGroup.mk a : G.G₀ ⧸ g.p₀.ker)`. Rewrite using `[MulEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `show QuotientGroup.lift g.p₀.ker x.ρ hkerρ (e.symm (g.p₀ a)) = x.ρ a`. Rewrite using `[hs]`. Both sides reduce to the same expression. Establish `hc : g.p₀ (Classical.choose (g.p₀_surj (g.p₀ a))) = g.p₀ a` using `Classical.choose_spec (g.p₀_surj (g.p₀ a)) set c := Classical.choose (g.p₀_surj (g.p₀ a))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hd : g.p₀ (c⁻¹ * a) = 1` using `by rw [map_mul, map_inv, hc, inv_mul_cancel]`. Establish `h3` using `(k.mem j).2.2.1 c (c⁻¹ * a)`. Rewrite `h3` using `[mul_inv_cancel_left, (key _ hd).2 j]`. Simplify using `at h3`. Conclude with `h3.symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.np_desc :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G' : Glob l L) (g : G.Hom G') (n : ℕ) (x : NP G.frame n) (k : Kap x) (H : Subgroup G.Γ) [H.Normal], IsOpen (H : Set G.Γ) → H ≤ G.η.ker → x.UnipOn H → g.p.ker = PL l H → (∃ ρ' : G'.G₀ →* GL (Fin n) x.A, ∀ a, ρ' (g.p₀ a) = x.ρ a) ∧ ∃ κ' : Fin k.g → G'.G₀ → Matrix (Fin n) (Fin n) x.A, ∀ j a, κ' j (g.p₀ a) = k.κ j a := by

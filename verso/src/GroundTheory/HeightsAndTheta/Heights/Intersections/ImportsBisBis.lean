@@ -14,21 +14,19 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ P s a W hP hs hsP hW`. Establish `hPp : P.IsPrime` using `hP.2.1.1`. Use `hPp` as an intermediate fact. Establish `hWp : W.IsPrime` using `hW.1.1.1`. Establish `hPW : P ≤ W` using `le_sup_left.trans hW.1.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsW : s ∈ W` using `hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`. Take `⟨hloc, hunit⟩` from `hL K ι P W hPp hWp hPW`. Establish `hnoeth` using `hN K ι P W hPp hWp hPW hW.2`. Use `hloc` as an intermediate fact. Use `hnoeth` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hloc, hnoeth, ?_⟩` and prove the remaining obligations. Use `choose c hc using hW.2`. Establish `ht : IsMultiHomog (∏ k, (X ⟨k, c k⟩ : MRing ι) ^ a k) a` using `AvoidRing.isMultiHomog_coordProd c a`. Establish `htW : (∏ k, (X ⟨k, c k⟩ : MRing ι) ^ a k) ∉ W` using `AvoidRing.coordProd_not_mem hWp c hc a`. Establish `htP : Ideal.Quotient.mk P (∏ k, (X ⟨k, c k⟩ : MRing ι) ^ a k) ∈ nonZeroDivisors (MRing ι ⧸ P)` using `mem_nonZeroDivisors_of_ne_zero fun h => htW (hPW (Ideal.Quotient.eq_zero_iff_mem.mp h))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set xF := IsLocalization.mk' (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P s) ⟨_, htP⟩ with hxF`. Establish `hxmem : xF ∈ locRing P W` using `Subring.subset_closure ⟨s, _, a, htP, htW, hs, ht, rfl⟩`. Establish `hxt : xF * algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P (∏ k, (X ⟨k, c k⟩ : MRing ι) ^ a k)) = algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P s)` using `IsLocalization.mk'_spec _ _ _`. Use `set x : locRing P W := ⟨xF, hxmem⟩`. Establish `hx0 : x ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Establish `h' : xF = 0` using `congrArg Subtype.val h`. Rewrite `hxt` using `[h', zero_mul, eq_comm, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hsP hxt`. Establish `hxu : ¬ IsUnit x` using `fun h => (hunit x s _ a hs ht htW hxt).mp h hsW`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmin : IsLocalRing.maximalIdeal (locRing P W) ∈ (Ideal.span {x}).minimalPrimes`. Use `⟨⟨inferInstance, (Ideal.span_singleton_le_iff_mem _).mpr hxu⟩, fun q hq _ y hy => ?_⟩` and prove the remaining obligations. Take `⟨u, v, b, hu, hv, hvW, hyuv⟩` from `hF K ι P W hPp hWp hPW y y.2`. Establish `huW : u ∈ W`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hy ((hunit y u v b hu hv hvW hyuv).mpr h)`. Take `⟨n, z, hz, hyz⟩` from `hPw K ι P s _ a W xF u v b y hPp hP.2.1.2.1 hs hsP hW ht htW hxt hu hv huW hvW hyuv`. Establish `e : y ^ n = x * ⟨z, hz⟩` using `Subtype.ext (by simpa using hyz)`. Establish `hq1` using `hq.1`. Conclude with `hq1.mem_of_pow_mem n (e ▸ q.mul_mem_right _ (hq.2 (Ideal.mem_span_singleton_self x)))`.
-
-Establish `h1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ hmin`. Establish `h2` using `Ideal.height_span_singleton_eq_one_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hx0) hxu`. Establish `h3` using `Ideal.height_mono hmin.1.2`. Rewrite using `[← IsLocalRing.maximalIdeal_height_eq_ringKrullDim, le_antisymm h1 (h2 ▸ h3)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem regularityLocalDimension_holds.proof (hF : LocRingFrac.Statement) (hL : LocRingLocal.Statement) (hN : LocRingNoeth.Statement)
     (hPw : LocRingPow.Statement) : regularityLocalDimension_holds.Statement := by

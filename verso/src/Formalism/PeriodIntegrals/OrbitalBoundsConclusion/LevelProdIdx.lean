@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelProductIndex.PrVMe
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelProductIndex.SingleApply
 
 /- English proof (translation)
-The claim follows from `PI.LPI.levelProdIdx_of PI.LPI.plDown (PI.LPI.plUp_of PI.LPI.plGen PI.LPI.plInj) (PI.LPI.plLocal_of PI.LPI.plGen PI.LPI.plDown)`.
+A detailed English derivation is pending.
 -/
 theorem level_product_index : PI.LevelProdIdx :=
   PI.LPI.levelProdIdx_of PI.LPI.plDown (PI.LPI.plUp_of PI.LPI.plGen PI.LPI.plInj)

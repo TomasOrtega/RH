@@ -11,19 +11,17 @@ open scoped TensorProduct Matrix NNReal
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : IsTotallyReal F := hCM.1`. Establish `h2 : Module.finrank F E = 2` using `hCM.2.2.1`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ h2`. Set `b : Module.Basis (Fin 2) F E` to `Module.finBasisOfFinrankEq F E h2`. Set `eT` to `GlobalTheory.SiegelWeilConvCompare.tensHomeo (F := F) (E := E) (Ainf F) b`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `eR : Ainf F ≃ₜ (InfinitePlace F → ℝ)` to `Homeomorph.piCongrRight fun v => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal v)).toHomeomorph`. Establish `hRadd : ∀ x y : InfinitePlace F → ℝ, eR.symm (x + y) = eR.symm x + eR.symm y`. Introduce `x y`. Use function extensionality and compare the values at `v`. Conclude with `(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v)).symm.map_add (x v) (y v)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hTadd : ∀ x y : Fin 2 → Ainf F, eT.symm (x + y) = eT.symm x + eT.symm y`. Introduce `x y`. Conclude with `(Algebra.TensorProduct.basis (Ainf F) b).equivFun.symm.map_add x y`. Set `f : (Fin 2 → InfinitePlace F → ℝ) → (ι → ℂ)` to `fun x i => θ i (eT.symm (fun k => eR.symm (x k)))`. Establish `hfadd : ∀ x y, f (x + y) = f x + f y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Use function extensionality and compare the values at `i`. Simplify using `only [f, Pi.add_apply]`. Rewrite using `[show (fun k => eR.symm (x k + y k)) = (fun k => eR.symm (x k)) + (fun k => eR.symm (y k)) from`. Use function extensionality and compare the values at `fun k => hRadd (x k) (y k), hTadd, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `fA : (Fin 2 → InfinitePlace F → ℝ) →+ (ι → ℂ)` to `{ toFun := f map_zero' := by`. Establish `h0` using `hfadd 0 0`. Rewrite `h0` using `[add_zero]`. Conclude with `(add_eq_left.1 h0.symm)`. Use the proof step `map_add' := hfadd }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hfc : Continuous fA` using `continuous_pi fun i => (hP.cont i).comp (eT.symm.continuous.comp (continuous_pi fun k => eR.symm.continuous.comp (continuous_apply k)))`. Set `L` to `fA.toRealLinearMap hfc`. Establish `hbij : Function.Bijective L`. Establish `h1 : Function.Bijective (fun x : Fin 2 → InfinitePlace F → ℝ => fun k => eR.symm (x k))` using `(Equiv.piCongrRight fun _ => eR.symm.toEquiv).bijective`. Conclude with `hP.bij.comp (eT.symm.bijective.comp h1)`.
-
-Establish `hr` using `(LinearEquiv.ofBijective (L : (Fin 2 → InfinitePlace F → ℝ) →ₗ[ℝ] (ι → ℂ)) hbij).finrank_eq`. Simplify using `only [Module.finrank_pi, Module.finrank_fin_fun, Module.finrank_pi_fintype, Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, Module.finrank_self] at hr`. Establish `hc : Fintype.card (InfinitePlace F) = Module.finrank ℚ F`. Rewrite using `[NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero, IsTotallyReal.finrank]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_places (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) :
@@ -71,27 +69,21 @@ theorem card_places (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (A
   omega
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ n hMn ψ hψ ι _ θ l hP e fr hfr g μ ν hμ hν T hT`. Use `haveI : IsTotallyReal F := hCM.1`. Use `haveI := secondCountable_tens (F := F) (E := E)`. Use `haveI := borel_tens (F := F) (E := E)`. Use `haveI := borel_herm (F := F) (E := E) σ n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨eC, heC⟩` from `exists_crdHomeo σ hCM ψ θ l hP fr g`. Take `⟨eb, heb⟩` from `exists_ybHomeo σ hCM ψ θ l hP g`. Use `haveI := haar_volE ι n`. Use `haveI := haar_volW ι M n`. Use `haveI : μ.IsAddHaarMeasure := hμ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : ν.IsAddHaarMeasure := hν.1`. Take `⟨cμ, -, hcμ⟩` from `exists_map_eq_smul (volume : Measure (ι → Fin M → Fin n → ℂ)) μ eC`. Take `⟨cb, -, hcb⟩` from `exists_map_eq_smul (volume : Measure (ι → WR.E n)) ν eb`. Establish `hl : ∀ i, l i ≠ 0` using `hP.ne`. Establish `hβ : ∀ i, (herm (ygAll σ θ g T i)).det ≠ 0` using `det_herm_ygAll σ hCM ψ θ l hP g T hT`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hw : ∀ i, ∃ W : ℂ → ℂ, Differentiable ℂ W ∧ ∃ σ₀ : ℝ, ∀ z : ℂ, σ₀ < z.re → Integrable (fw (fun _ : Fin M => e i) (l i) (1 : PX M n) (ygAll σ θ g T i) z) ∧ z ^ (n - M) * W z = ∫ y, fw (fun _ : Fin M => e i) (l i) (1 : PX M n) (ygAll σ θ g T i) z y`. Introduce `i`. Establish `hc : 0 < 2 * Real.pi * |l i|` using `by have := abs_pos.2 (hl i); positivity`. Establish `ht : 2 * Real.pi * l i = 2 * Real.pi * |l i| ∨ 2 * Real.pi * l i = -(2 * Real.pi * |l i|)`. Break down `le_or_gt 0 (l i) with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `left`. Rewrite using `[abs_of_nonneg h]`. Use `right`. Rewrite using `[abs_of_neg h]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h M n hMn (e i) (2 * Real.pi * |l i|) (2 * Real.pi * l i) hc ht (ygAll σ θ g T i) (hβ i)`. Use `choose Wi hWid hrest using hw`. Use `choose σ₀ hσ₀ using hrest`. Use `set s0 : ℂ := ((M : ℂ) - n) / 2 with hs0`. Use `⟨fun z => (cb : ℂ) * (cμ : ℂ) * ∏ i, Wi i (z - s0), ?_, ((M : ℝ) - n) / 2 + ∑ i, |σ₀ i|, fun z hz => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(differentiable_const _).mul ?_` and prove the remaining obligations. Use `Differentiable.finset_prod (u := Finset.univ) (f := fun i z => Wi i (z - s0)) (fun i _ => (hWid i).comp (differentiable_id.sub_const s0))` as an intermediate fact. Rewrite `this` using `[Finset.prod_fn]`. Conclude with `this`. Establish `hzi : ∀ i, σ₀ i < (z - s0).re`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `h1 : (z - s0).re = z.re - ((M : ℝ) - n) / 2`. Rewrite using `[hs0]`. Simplify using the standard rewrite rules. Establish `h2 : σ₀ i ≤ ∑ j, |σ₀ j|` using `(le_abs_self _).trans (Finset.single_le_sum (f := fun j => |σ₀ j|) (fun j _ => abs_nonneg _) (Finset.mem_univ i))`.
-
-Rewrite using `[h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hint : ∀ i, Integrable (fw ((fun i (_ : Fin M) => e i) i) (l i) ((fun _ => (1 : PX M n)) i) (ygAll σ θ g T i) (z - s0))` using `fun i => (hσ₀ i _ (hzi i)).1`. Take `⟨h1, h2⟩` from `integral_whI σ hCM ψ θ l hP J (fun i _ => e i) fr hfr g (fun _ => 1) μ eC heC cμ hcμ ν eb heb cb hcb T z hint`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
-
-Rewrite `h2` using `[← hs0]`. Rewrite using `[h2]`. Establish `h3 : ∀ i, ∫ y, fw ((fun i (_ : Fin M) => e i) i) (l i) ((fun _ => (1 : PX M n)) i) (ygAll σ θ g T i) (z - s0) y = (z - s0) ^ (n - M) * Wi i (z - s0)` using `fun i => ((hσ₀ i _ (hzi i)).2).symm`. Simplify using `only [h3]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, card_places σ hCM ψ θ l hP, ← pow_mul, mul_comm (n - M)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem realLow_of (h : WROrd) : RealLow := by
   intro F E _ _ _ _ _ σ hCM M J hJ n hMn ψ hψ ι _ θ l hP e fr hfr g μ ν hμ hν T hT

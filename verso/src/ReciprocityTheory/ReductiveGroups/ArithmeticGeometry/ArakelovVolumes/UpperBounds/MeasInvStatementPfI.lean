@@ -30,14 +30,14 @@ def Wf (y : Frame X.Ψ r) : ENNReal := (SW X).indicator 1 y
 def uf (v : Ix X.Ψ r → ℂ) : Frame X.Ψ r := fun τ a b => v (τ, a, b)
 
 /- English proof (translation)
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sgn_mul_self (p0 a : ℕ) : ((sgn p0 a : ℝ) : ℂ) * ((sgn p0 a : ℝ) : ℂ) = 1 := by
   unfold sgn
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Simplify using `only [CmatSet, Set.mem_setOf_eq] at hβ ⊢`. Introduce `τ a b`. Take `⟨h1, h2, h3⟩` from `hβ τ a b`. Simplify using `only [Matrix.diagonal_mul, mat, Matrix.of_apply, norm_mul, hD, one_mul]`. Conclude with `⟨fun h => by rw [h1 h, mul_zero], h2, h3⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 lemma CmatSet_diag_smul {β : Frame X.Ψ r} (hβ : β ∈ CmatSet X) {D : X.Ψ → Fin r → ℂ}
     (hD : ∀ τ a, ‖D τ a‖ = 1) : (fun τ => (diagonal (D τ) * mat β τ : Matrix (Fin r) (Fin r) ℂ)) ∈ CmatSet X := by
@@ -48,15 +48,15 @@ lemma CmatSet_diag_smul {β : Frame X.Ψ r} (hβ : β ∈ CmatSet X) {D : X.Ψ �
   exact ⟨fun h => by rw [h1 h, mul_zero], h2, h3⟩
 
 /- English proof (translation)
-Introduce `a b h` and use `(hβ τ a b).1 h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma CmatSet_upper {β : Frame X.Ψ r} (hβ : β ∈ CmatSet X) (τ : X.Ψ) :
     (mat β τ).BlockTriangular id := fun a b h => (hβ τ a b).1 h
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (CmatSet_upper X hβ τ)]`. Use `Finset.prod_ne_zero_iff.2 fun a _ => ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `((hβ τ a a).2.1 rfl).1`. Establish `h0' : β τ a a = 0` using `h0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0', norm_zero]`. Evaluate the numerical expressions using `at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 lemma CmatSet_det {β : Frame X.Ψ r} (hβ : β ∈ CmatSet X) (τ : X.Ψ) : (mat β τ).det ≠ 0 := by
   rw [Matrix.det_of_upperTriangular (CmatSet_upper X hβ τ)]
@@ -68,13 +68,13 @@ lemma CmatSet_det {β : Frame X.Ψ r} (hβ : β ∈ CmatSet X) (τ : X.Ψ) : (ma
   norm_num at h1
 
 /- English proof (translation)
-Establish `hU : ∀ τ, (Umat y τ).BlockTriangular id`. Introduce `τ a b h`. Establish `h' : b < a` using `h`. Simplify using `only [Umat, Matrix.of_apply]`. Rewrite using `[dif_neg (not_not.2 h')]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : ∀ τ, (β τ * Umat y τ).BlockTriangular id` using `fun τ => (hβ τ).mul (hU τ)`. Simplify using `only [Cy, CmatSet, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Take `⟨⟨τ, a, b⟩, hi⟩` from `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨_, h2, h3⟩` from `h τ a b`. Conclude with `⟨fun hab => h2 hab, fun hab => h3 (lt_of_le_of_ne (not_lt.1 hi) hab)⟩`. Introduce `h τ a b`. Use `⟨fun hab => hP τ hab, fun hab => ?_, fun hab => ?_⟩` and prove the remaining obligations. Substitute `hab` using the available equality.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Conclude with `(h ⟨(τ, a, a), lt_irrefl a⟩).1 rfl`. Conclude with `(h ⟨(τ, a, b), not_lt.2 hab.le⟩).2 (ne_of_lt hab)`.
+A detailed English derivation is pending.
 -/
 lemma mem_CmatSet_iff_Cy (β : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (hβ : ∀ τ, (β τ).BlockTriangular id)
     (y : UpI X.Ψ r → ℂ) :
@@ -102,7 +102,7 @@ def UF (y : UpI X.Ψ r → ℂ) : Frame X.Ψ r := fun τ => Umat y τ
 def β0 (y : Frame X.Ψ r) (τ : X.Ψ) : Matrix (Fin r) (Fin r) ℂ := (mat (bOf X y) τ)⁻¹
 
 /- English proof (translation)
-Establish `h` using `bOf_mem (X := X) hy`. Simplify using `only [Bor, Set.mem_setOf_eq] at h`. Conclude with `(h τ).1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma bOf_det {y : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) : (mat (bOf X y) τ).det ≠ 0 := by
   have h := bOf_mem (X := X) hy
@@ -110,7 +110,7 @@ lemma bOf_det {y : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) : (mat (bOf X y)
   exact (h τ).1
 
 /- English proof (translation)
-Establish `h` using `bOf_mem (X := X) hy`. Simplify using `only [Bor, Set.mem_setOf_eq] at h`. Establish `hu : (mat (bOf X y) τ).BlockTriangular id` using `fun a c hac => (h τ).2 a c hac`. Use `letI := (mat (bOf X y) τ).invertibleOfIsUnitDet (isUnit_iff_ne_zero.2 (bOf_det X hy τ))`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 lemma β0_upper {y : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) : (β0 X y τ).BlockTriangular id := by
   have h := bOf_mem (X := X) hy
@@ -120,9 +120,9 @@ lemma β0_upper {y : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) : (β0 X y τ)
   exact Matrix.blockTriangular_inv_of_blockTriangular hu
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `Matrix.det_mul (mat (bOf X y) τ) (mat (bOf X y) τ)⁻¹`. Rewrite `h1` using `[Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (bOf_det X hy τ)), Matrix.det_one]`. Establish `h0' : ((mat (bOf X y) τ)⁻¹).det = 0` using `h0`. Rewrite `h1` using `[h0', mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h1`.
+A detailed English derivation is pending.
 -/
 lemma β0_det {y : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) : (β0 X y τ).det ≠ 0 := by
   intro h0
@@ -133,11 +133,11 @@ lemma β0_det {y : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) : (β0 X y τ).d
   exact one_ne_zero h1
 
 /- English proof (translation)
-Establish `hB` using `bOf_det X hy τ`. Establish `hyB : gram τ.1 X.Gm (mat y τ * mat (bOf X y) τ) = Jd X` using `ortho_bOf (X := X) hy τ`. Establish `hy' : mat y τ = mat y τ * mat (bOf X y) τ * (mat (bOf X y) τ)⁻¹`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hB), Matrix.mul_one]`. Establish `hgy : gram τ.1 X.Gm (mat y τ) = (β0 X y τ)ᵀ * Jd X * (β0 X y τ).map (starRingEnd ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy', gram_mul, hyB]`. Both sides reduce to the same expression. Use `show gram τ.1 X.Gm (mat y τ * mat b τ) = _`. Rewrite using `[gram_mul, hgy]`. Unfold `gramT`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma gram_rmul_eq {y b : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) :
     gram τ.1 X.Gm (mat (rmul y b) τ) = gramT X (β0 X y τ * mat b τ) := by
@@ -155,13 +155,11 @@ lemma gram_rmul_eq {y b : Frame X.Ψ r} (hy : y ∈ X.dom) (τ : X.Ψ) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [Bor, Set.mem_setOf_eq]`. Introduce `τ`. Establish `hU : (Umat y τ).BlockTriangular id`. Introduce `a b h`. Establish `h' : b < a` using `h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Umat, Matrix.of_apply]`. Rewrite using `[dif_neg (not_not.2 h')]`. Use `⟨?_, fun a c h => hU h⟩` and prove the remaining obligations. Use `show (Umat y τ).det ≠ 0`. Rewrite using `[Matrix.det_of_upperTriangular hU]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_ne_zero_iff.2 fun a _ => ?_` and prove the remaining obligations. Establish `e : Umat y τ a a = y (dI τ a)`. Unfold `Umat dI`. Rewrite using `[Matrix.of_apply, dif_pos (lt_irrefl a)]`. Rewrite using `[e]`.
-
-Conclude with `hy τ a`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma UF_mem {y : UpI X.Ψ r → ℂ} (hy : ∀ τ b, y (dI τ b) ≠ 0) : UF X y ∈ Bor X.Ψ r := by
   simp only [Bor, Set.mem_setOf_eq]
@@ -182,15 +180,15 @@ lemma UF_mem {y : UpI X.Ψ r → ℂ} (hy : ∀ τ b, y (dI τ b) ≠ 0) : UF X 
   exact hy τ a
 
 /- English proof (translation)
-Simplify using `only [Data.dom, GG, Set.mem_setOf_eq] at hy ⊢`. Simplify using `only [Bor, Set.mem_setOf_eq] at hb`. Introduce `τ`. Take `⟨hdet, hpos⟩` from `hy τ`. Take `⟨hbdet, hbup⟩` from `hb τ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hup : (mat b τ).BlockTriangular id` using `fun a c h => hbup a c h`. Establish `hdiag : ∀ a, mat b τ a a ≠ 0`. Establish `h` using `hbdet`. Rewrite `h` using `[Matrix.det_of_upperTriangular hup]`. Conclude with `fun a => Finset.prod_ne_zero_iff.1 h a (Finset.mem_univ a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Use `show (mat y τ * mat b τ).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hdet hbdet`. Establish `hb2 : b ∈ Bor X.Ψ r` using `fun τ' => hb τ'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dmin_rmul (X := X) y hb2 τ i]`. Use `set p := ∏ j : Fin i, mat b τ (Fin.castLE (Nat.le_of_lt_succ i.isLt) j) (Fin.castLE (Nat.le_of_lt_succ i.isLt) j) with hp`. Establish `hp0 : p ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => hdiag _`. Establish `e : p * dmin X.Gm y τ i * conj p = (Complex.normSq p : ℂ) * dmin X.Gm y τ i`. Rewrite using `[← Complex.mul_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.re_ofReal_mul]`. Establish `hn : 0 < Complex.normSq p` using `Complex.normSq_pos.2 hp0`. Establish `h3` using `hpos i`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma mem_dom_rmul {y b : Frame X.Ψ r} (hy : y ∈ X.dom) (hb : b ∈ Bor X.Ψ r) :
     rmul y b ∈ X.dom := by
@@ -222,19 +220,19 @@ private lemma mem_dom_rmul {y b : Frame X.Ψ r} (hy : y ∈ X.dom) (hb : b ∈ B
     nlinarith
 
 /- English proof (translation)
-Establish `hb` using `UF_mem X hy'`. Establish `hdom : rmul y (UF X y') ∈ X.dom` using `mem_dom_rmul X hy hb`. Establish `hb'` using `hb`. Simplify using `only [Bor, Set.mem_setOf_eq] at hb'`. Establish `hβu : ∀ τ, (β0 X y τ).BlockTriangular id` using `fun τ => β0_upper X hy τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : rmul y (UF X y') ∈ SW X ↔ Lβ (β0 X y) y' ∈ Cy X.Ψ r`. Rewrite using `[← mem_CmatSet_iff_Cy X (β0 X y) hβu y']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, β, hβ, hg⟩`. Establish `hU : ∀ τ, (mat (UF X y') τ).BlockTriangular id` using `fun τ a c h => (hb' τ).2 a c h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hD : ∀ τ, ∃ D : Fin r → ℂ, (∀ a, ‖D a‖ = 1) ∧ mat β τ = diagonal D * (β0 X y τ * mat (UF X y') τ)`. Introduce `τ`. Use `gram_upper_unique (ε := fun a => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) (fun a => sgn_mul_self X.p0 a) ((hβu τ).mul (hU τ)) (CmatSet_upper X hβ τ) ?_ (CmatSet_det X hβ τ) ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (β0_det X hy τ) (hb' τ).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hg τ).symm.trans (gram_rmul_eq X hy τ)`. Use `choose D hD1 hD2 using hD`. Establish `e : (fun τ => (β0 X y τ * Umat y' τ : Matrix (Fin r) (Fin r) ℂ)) = fun τ => (diagonal (fun a => conj (D τ a)) * mat β τ : Matrix (Fin r) (Fin r) ℂ)`. Use function extensionality and compare the values at `τ`. Establish `h1 : (fun a => conj (D τ a) * D τ a) = fun _ => (1 : ℂ)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hD1 τ a]`. Evaluate the numerical expressions. Rewrite using `[hD2 τ, ← Matrix.mul_assoc, Matrix.diagonal_mul_diagonal, h1, Matrix.diagonal_one, Matrix.one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[e]`. Conclude with `CmatSet_diag_smul X (D := fun τ a => conj (D τ a)) hβ (fun τ a => by simpa using hD1 τ a)`. Introduce `h`. Conclude with `⟨hdom, fun τ => (β0 X y τ * Umat y' τ : Matrix (Fin r) (Fin r) ℂ), h, fun τ => gram_rmul_eq X hy τ⟩`. Unfold `Wf`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `h : Lβ (β0 X y) y' ∈ Cy X.Ψ r`. Establish `h2` using `key.2 h`. Simplify using `[Set.indicator_apply, h, h2]`. Establish `h2 : rmul y (UF X y') ∉ SW X` using `fun h' => h (key.1 h')`. Simplify using `[Set.indicator_apply, h, h2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Wf_rmul_UF {y : Frame X.Ψ r} (hy : y ∈ X.dom) {y' : UpI X.Ψ r → ℂ} (hy' : ∀ τ b, y' (dI τ b) ≠ 0) :
     Wf X (rmul y (UF X y')) = (Cy X.Ψ r).indicator 1 (Lβ (β0 X y) y') := by
@@ -280,11 +278,11 @@ theorem Wf_rmul_UF {y : Frame X.Ψ r} (hy : y ∈ X.dom) {y' : UpI X.Ψ r → �
 def invF (b : Frame X.Ψ r) : Frame X.Ψ r := fun τ => ((mat b τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ)
 
 /- English proof (translation)
-Simplify using `only [Bor, Set.mem_setOf_eq] at hb ⊢`. Introduce `τ`. Take `⟨hd, hup⟩` from `hb τ`. Establish `hu : (mat b τ).BlockTriangular id` using `fun a c h => hup a c h`. Use `letI := (mat b τ).invertibleOfIsUnitDet (isUnit_iff_ne_zero.2 hd)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hinv` using `Matrix.blockTriangular_inv_of_blockTriangular hu`. Use `⟨?_, fun a c h => hinv h⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `Matrix.det_mul (mat b τ) (mat b τ)⁻¹`. Rewrite `h1` using `[Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hd), Matrix.det_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0' : ((mat b τ)⁻¹).det = 0` using `h0`. Rewrite `h1` using `[h0', mul_zero]`. Conclude with `one_ne_zero h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma invF_mem' {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) : invF X b ∈ Bor X.Ψ r := by
   simp only [Bor, Set.mem_setOf_eq] at hb ⊢
@@ -302,9 +300,9 @@ lemma invF_mem' {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) : invF X b ∈ Bor X.
   exact one_ne_zero h1
 
 /- English proof (translation)
-Establish `hb'` using `hb`. Simplify using `only [Bor, Set.mem_setOf_eq] at hb'`. Use function extensionality and compare the values at `τ`. Establish `hd` using `(hb' τ).1`. Use `show mat y τ * mat b τ * (mat b τ)⁻¹ = y τ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hd), Matrix.mul_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma rmul_invF {y b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) : rmul (rmul y b) (invF X b) = y := by
   have hb' := hb
@@ -316,9 +314,9 @@ lemma rmul_invF {y b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) : rmul (rmul y b) (
   rfl
 
 /- English proof (translation)
-Unfold `Wf`. Establish `h : rmul y b ∉ SW X`. Introduce and unpack `⟨h1, -⟩`. Apply `hy` to reduce the goal to its premises. Establish `h2` using `mem_dom_rmul X h1 (invF_mem' X hb)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `h2` using `[rmul_invF X hb]`. Then use the resulting hypothesis. Simplify using `[Set.indicator_apply, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 -/
 theorem Wf_rmul_not_dom {y b : Frame X.Ψ r} (hy : y ∉ X.dom) (hb : b ∈ Bor X.Ψ r) : Wf X (rmul y b) = 0 := by
   unfold Wf
@@ -330,7 +328,7 @@ theorem Wf_rmul_not_dom {y b : Frame X.Ψ r} (hy : y ∉ X.dom) (hb : b ∈ Bor 
   simp [Set.indicator_apply, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : P`. Simplify `hS` using `[h]`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 lemma isClosed_imp {P : Prop} {S : Set ℂ} (hS : IsClosed S) : IsClosed {z : ℂ | P → z ∈ S} := by
   by_cases h : P
@@ -338,18 +336,18 @@ lemma isClosed_imp {P : Prop} {S : Set ℂ} (hS : IsClosed S) : IsClosed {z : �
   · simp [h]
 
 /- English proof (translation)
-The claim follows from `(continuous_apply b).comp ((continuous_apply a).comp (continuous_apply τ))`.
+A detailed English derivation is pending.
 -/
 lemma continuous_coord (τ : X.Ψ) (a b : Fin r) : Continuous fun β : Frame X.Ψ r => β τ a b := (continuous_apply b).comp ((continuous_apply a).comp (continuous_apply τ))
 
 /- English proof (translation)
-Establish `hS : ∀ a b : Fin r, IsCompact {z : ℂ | (b < a → z = 0) ∧ (a = b → 1 ≤ ‖z‖ ∧ ‖z‖ ≤ 2) ∧ (a < b → ‖z‖ ≤ 1)}`. Introduce `a b`. Apply `Metric.isCompact_of_isClosed_isBounded` to reduce the goal to its premises. Rewrite using `[Set.setOf_and, Set.setOf_and]`. Use `IsClosed.inter (isClosed_imp (S := {0}) isClosed_singleton) (IsClosed.inter (isClosed_imp (S := {z : ℂ | 1 ≤ ‖z‖ ∧ ‖z‖ ≤ 2}) ?_) (isClosed_imp (S := {z : ℂ | ‖z‖ ≤ 1}) ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isClosed_le continuous_const continuous_norm).inter (isClosed_le continuous_norm continuous_const)`. Conclude with `isClosed_le continuous_norm continuous_const`. Use `(Metric.isBounded_closedBall (x := (0 : ℂ)) (r := 2)).subset ?_` and prove the remaining obligations. Introduce and unpack `z ⟨h1, h2, h3⟩`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Break down `lt_trichotomy a b with h | h | h` into its components or cases. Combine the linear relations using `[h3 h]`. Conclude with `(h2 h).2`. Rewrite using `[h1 h, norm_zero]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e : CmatSet X = Set.pi Set.univ fun τ => Set.pi Set.univ fun a => Set.pi Set.univ fun b => {z : ℂ | (b < a → z = 0) ∧ (a = b → 1 ≤ ‖z‖ ∧ ‖z‖ ≤ 2) ∧ (a < b → ‖z‖ ≤ 1)}`. Use extensionality with `β`. Simplify using `[CmatSet, Set.mem_pi]`. Rewrite using `[e]`. Conclude with `isCompact_univ_pi fun τ => isCompact_univ_pi fun a => isCompact_univ_pi fun b => hS a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isCompact_CmatSet : IsCompact (CmatSet X) := by
   have hS : ∀ a b : Fin r, IsCompact {z : ℂ | (b < a → z = 0) ∧ (a = b → 1 ≤ ‖z‖ ∧ ‖z‖ ≤ 2) ∧ (a < b → ‖z‖ ≤ 1)} := by
@@ -376,7 +374,7 @@ lemma isCompact_CmatSet : IsCompact (CmatSet X) := by
   exact isCompact_univ_pi fun τ => isCompact_univ_pi fun a => isCompact_univ_pi fun b => hS a b
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun τ => continuous_pi fun a => continuous_pi fun b => hf τ a b`.
+A detailed English derivation is pending.
 -/
 lemma continuous_entry {α : Type*} [TopologicalSpace α] {f : α → Frame X.Ψ r}
     (hf : ∀ τ a b, Continuous fun y => f y τ a b) :
@@ -387,7 +385,7 @@ def gramF (y : Frame X.Ψ r) : Frame X.Ψ r := fun τ => gram τ.1 X.Gm (mat y �
 def gramTF (β : Frame X.Ψ r) : Frame X.Ψ r := fun τ => gramT X (mat β τ)
 
 /- English proof (translation)
-Apply `continuous_entry` to reduce the goal to its premises. Introduce `τ a b`. Simplify using `only [gramF, ReciprocityTheory.ChartRestriction.G.FD.gram, Matrix.of_apply, ReciprocityTheory.ChartRestriction.G.FD.hermC, ReciprocityTheory.ChartRestriction.G.FD.col, mat]`. Conclude with `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ((continuous_coord X τ i a).mul continuous_const).mul (Complex.continuous_conj.comp (continuous_coord X τ j b))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma continuous_gramF : Continuous (gramF X) := by
   apply continuous_entry
@@ -397,7 +395,7 @@ lemma continuous_gramF : Continuous (gramF X) := by
     ((continuous_coord X τ i a).mul continuous_const).mul (Complex.continuous_conj.comp (continuous_coord X τ j b))
 
 /- English proof (translation)
-Apply `continuous_entry` to reduce the goal to its premises. Introduce `τ a b`. Simplify using `only [gramTF, gramT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, mat, Matrix.of_apply]`. Conclude with `continuous_finset_sum _ fun l _ => (continuous_finset_sum _ fun k _ => (continuous_coord X τ k a).mul continuous_const).mul (Complex.continuous_conj.comp (continuous_coord X τ l b))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma continuous_gramTF : Continuous (gramTF X) := by
   apply continuous_entry
@@ -408,11 +406,9 @@ lemma continuous_gramTF : Continuous (gramTF X) := by
       (Complex.continuous_conj.comp (continuous_coord X τ l b))
 
 /- English proof (translation)
-Establish `e : X.dom = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩ ⋂ i : Fin (r + 1), {x : Frame X.Ψ r | 0 < psgn X.p0 i * (dmin X.Gm x τ i).re})`. Use extensionality with `x`. Simplify using `[Data.dom, GG]`. Rewrite using `[e]`. Use `isOpen_iInter_of_finite fun τ => IsOpen.inter ?_ (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : Continuous fun x : Frame X.Ψ r => mat x τ` using `continuous_apply τ`. Conclude with `isOpen_ne_fun hm.matrix_det continuous_const`. Establish `hg : Continuous fun x : Frame X.Ψ r => gram τ.1 X.Gm (mat x τ)` using `(continuous_apply τ).comp (continuous_gramF X)`. Establish `hc : Continuous fun x : Frame X.Ψ r => (dmin X.Gm x τ i).re`. Unfold `dmin lminor`.
-
-Conclude with `Complex.continuous_re.comp (hg.matrix_submatrix _ _).matrix_det`. Conclude with `isOpen_lt continuous_const (continuous_const.mul hc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma isOpen_X_dom : IsOpen X.dom := by
   have e : X.dom = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩
@@ -431,11 +427,11 @@ private lemma isOpen_X_dom : IsOpen X.dom := by
     exact isOpen_lt continuous_const (continuous_const.mul hc)
 
 /- English proof (translation)
-Establish `e : SW X = X.dom ∩ gramF X ⁻¹' (gramTF X '' CmatSet X)`. Use extensionality with `y`. Simplify using `only [SW, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_preimage, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, β, hβ, hg⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1, β, hβ, funext fun τ => (hg τ).symm⟩`. Introduce and unpack `⟨h1, β, hβ, hg⟩`. Conclude with `⟨h1, β, hβ, fun τ => (congrFun hg τ).symm⟩`. Rewrite using `[e]`. Establish `h1 : MeasurableSet X.dom` using `(isOpen_X_dom X).measurableSet`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : IsClosed (gramF X ⁻¹' (gramTF X '' CmatSet X))` using `((isCompact_CmatSet X).image (continuous_gramTF X)).isClosed.preimage (continuous_gramF X)`. Conclude with `h1.inter h2.measurableSet`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma measurableSet_SW : MeasurableSet (SW X) := by
   have e : SW X = X.dom ∩ gramF X ⁻¹' (gramTF X '' CmatSet X) := by
@@ -453,7 +449,7 @@ lemma measurableSet_SW : MeasurableSet (SW X) := by
   exact h1.inter h2.measurableSet
 
 /- English proof (translation)
-The claim follows from `measurable_one.indicator (measurableSet_SW X)`.
+A detailed English derivation is pending.
 -/
 lemma measurable_Wf : Measurable (Wf X) := measurable_one.indicator (measurableSet_SW X)
 

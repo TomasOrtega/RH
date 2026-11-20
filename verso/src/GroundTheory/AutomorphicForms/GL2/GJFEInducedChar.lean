@@ -17,9 +17,9 @@ omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Measu
   [BorelSpace F] in
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.coe_det, ← LinearMap.det_toMatrix']`. Establish `: LinearMap.toMatrix' (L : (ι → F) →ₗ[F] (ι → F)) = Matrix.diagonal c`. Use extensionality with `s t`. Rewrite using `[LinearMap.toMatrix'_apply, LinearEquiv.coe_coe, h, Matrix.diagonal_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, Matrix.det_diagonal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_eq_prod_of_apply {ι : Type*} [Fintype ι] [DecidableEq ι]
     (L : (ι → F) ≃ₗ[F] (ι → F)) (c : ι → F) (h : ∀ x s, L x s = c s * x s) :
@@ -34,7 +34,7 @@ theorem det_eq_prod_of_apply {ι : Type*} [Fintype ι] [DecidableEq ι]
 omit [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [LocalField.modulus_one]`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.prod_insert hi, LocalField.modulus_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem modulus_prod {ι : Type*} (s : Finset ι) (f : ι → F) :
     LocalField.modulus (∏ i ∈ s, f i) = ∏ i ∈ s, LocalField.modulus (f i) := by
@@ -44,7 +44,7 @@ theorem modulus_prod {ι : Type*} (s : Finset ι) (f : ι → F) :
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.prod_insert hi, LocalField.modulus_mul, ih]
 
 /- English proof (translation)
-Rewrite using `[distribHaarChar_pi_eq, GroundTheory.LocalField.distribHaarChar_eq_modulus]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem distribHaarChar_pi_eq_modulus {ι : Type*} [Fintype ι] [DecidableEq ι] (L : (ι → F) ≃ₗ[F] (ι → F)) :
     (distribHaarChar (ι → F) L : ℝ≥0) = LocalField.modulus (LinearEquiv.det L : F) := by
@@ -55,9 +55,9 @@ variable (β) in
 abbrev leviDiag (μ : Fin n → ℤ) : levi F n β := ⟨Cartan.diagPow F n μ, diagPow_mem_levi μ⟩
 
 /- English proof (translation)
-Rewrite using `[LinearChart.leftModulus, distribHaarChar_pi_eq_modulus, det_eq_prod_of_apply _ (fun s => (uniformizer F : F) ^ μ s.1.1), modulus_prod]`. Introduce `x s`. Use `show (((Cartan.diagPow F n μ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * (((leviCoord F n β).symm x : lieLevi F n β) : Matrix (Fin n) (Fin n) F)) s.1.1 s.1.2 = _`. Rewrite using `[Cartan.coe_diagPow, Matrix.diagonal_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[leviCoord, s.2]`.
+A detailed English derivation is pending.
 -/
 theorem leviChart_leftModulus_diag (μ : Fin n → ℤ) :
     (leviChart β).leftModulus (leviDiag (F := F) β μ) =
@@ -73,9 +73,9 @@ theorem leviChart_leftModulus_diag (μ : Fin n → ℤ) :
   simp [leviCoord, s.2]
 
 /- English proof (translation)
-Rewrite using `[LinearChart.leftModulus, distribHaarChar_pi_eq_modulus, det_eq_prod_of_apply _ (fun s => (uniformizer F : F) ^ μ s.1.1), modulus_prod]`. Introduce `x s`. Use `show (((Cartan.diagPow F n μ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * (((parabolicCoord F n β).symm x : lieParabolic F n β) : Matrix (Fin n) (Fin n) F)) s.1.1 s.1.2 = _`. Rewrite using `[Cartan.coe_diagPow, Matrix.diagonal_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[parabolicCoord, s.2]`.
+A detailed English derivation is pending.
 -/
 theorem parabolicChart_leftModulus_diag (μ : Fin n → ℤ) :
     (parabolicChart F n β).leftModulus (leviIncl (leviDiag (F := F) β μ)) =
@@ -91,7 +91,7 @@ theorem parabolicChart_leftModulus_diag (μ : Fin n → ℤ) :
   simp [parabolicCoord, s.2]
 
 /- English proof (translation)
-Rewrite using `[show x = ((Units.mk0 x hx : Fˣ) : F) from rfl, Measures.modulus_units, GroundTheory.LocalField.distribHaarChar_eq_modulus]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem localField_modulus_eq_modulus {x : F} (hx : x ≠ 0) :
     LocalField.modulus x = Measures.modulus x := by
@@ -99,7 +99,7 @@ theorem localField_modulus_eq_modulus {x : F} (hx : x ≠ 0) :
     GroundTheory.LocalField.distribHaarChar_eq_modulus]
 
 /- English proof (translation)
-Establish `hϖ : (uniformizer F : F) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Rewrite using `[modularCharacter_blockUpper_of_mem_borel' _ (diagPow_mem_borel μ)]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [leviIncl_coe, Cartan.coe_diagPow, Matrix.diagonal_apply_eq]`. Rewrite using `[localField_modulus_eq_modulus (zpow_ne_zero _ hϖ), localField_modulus_eq_modulus (zpow_ne_zero _ hϖ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem modularCharacter_leviDiag (μ : Fin n → ℤ) :
     Measure.modularCharacter (leviIncl (leviDiag (F := F) β μ)) =
@@ -115,7 +115,7 @@ theorem modularCharacter_leviDiag (μ : Fin n → ℤ) :
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Rewrite using `[Cartan.coe_diagPow, Matrix.det_diagonal, modulus_prod]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem modulus_det_diagPow (μ : Fin n → ℤ) :
     LocalField.modulus ((Cartan.diagPow F n μ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).det =
@@ -125,9 +125,9 @@ theorem modulus_det_diagPow (μ : Fin n → ℤ) :
 omit [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_subtype (Finset.univ.filter fun ij : Fin n × Fin n => β ij.1 = β ij.2) (by simp) (fun ij => f ij.1), Finset.prod_filter, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Simplify using `only [Finset.prod_const]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[blockSize, Fintype.card_subtype]`. Use `congr 1`. Use extensionality with `j`. Simplify using `[blockOf, Set.rangeFactorization, Subtype.ext_iff, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prod_leviIndex_eq (f : Fin n → ℝ≥0) :
     ∏ s : LeviIndex n β, f s.1.1 = ∏ i, f i ^ blockSize β (blockOf β i) := by
@@ -145,11 +145,11 @@ theorem prod_leviIndex_eq (f : Fin n → ℝ≥0) :
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Establish `hblock : ∀ a, ((leviBlock F (leviDiag (F` using `F) β μ) a : GL (Fiber β a) F) : Matrix (Fiber β a) (Fiber β a) F).det = ∏ i : Fiber β a, (uniformizer F : F) ^ μ i.1 := by`. Introduce `a`. Rewrite using `[coe_leviBlock]`. Establish `: blocks β F ((Cartan.diagPow F n μ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) a = Matrix.diagonal fun i : Fiber β a => (uniformizer F : F) ^ μ i.1`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [blocks, Cartan.coe_diagPow, Matrix.diagonal_apply, Subtype.ext_iff]`. Rewrite using `[this, Matrix.det_diagonal]`. Rewrite using `[leviModulus, prod_leviIndex_eq (β := β) fun i => LocalField.modulus ((uniformizer F : F) ^ μ i)]`. Repeatedly rewrite using `[hblock, modulus_prod, ← Finset.prod_pow]`. Rewrite using `[← Fintype.prod_fiberwise (blockOf β) fun i => LocalField.modulus ((uniformizer F : F) ^ μ i) ^ blockSize β (blockOf β i)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[i.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviModulus_diag (μ : Fin n → ℤ) :
     leviModulus β (leviDiag (F := F) β μ) =
@@ -174,7 +174,7 @@ theorem leviModulus_diag (μ : Fin n → ℤ) :
 omit [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Rewrite using `[← Finset.prod_filter]`. Conclude with `(Finset.prod_subtype (Finset.univ.filter P) (by simp) g).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_subtype_eq_ite {M : Type*} [CommMonoid M] (P : Fin n × Fin n → Prop) [DecidablePred P]
     (g : Fin n × Fin n → M) :
@@ -186,19 +186,19 @@ omit [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField
   [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-Use `set A := ∏ ij : Fin n × Fin n, if β ij.1 = β ij.2 then t ij.1 else 1 with hAdef`. Use `set U := ∏ ij : Fin n × Fin n, if β ij.1 < β ij.2 then t ij.1 else 1 with hUdef`. Use `set L := ∏ ij : Fin n × Fin n, if β ij.2 < β ij.1 then t ij.1 else 1 with hLdef`. Establish `hA : ∏ s : LeviIndex n β, t s.1.1 = A` using `prod_subtype_eq_ite (fun ij : Fin n × Fin n => β ij.1 = β ij.2) fun ij => t ij.1`. Establish `hP : ∏ s : ParabolicIndex n β, t s.1.1 = A * U`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[prod_subtype_eq_ite (fun ij : Fin n × Fin n => ¬ β ij.2 < β ij.1) fun ij => t ij.1, hAdef, hUdef, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun ij _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy (β ij.1) (β ij.2) with h | h | h` into its components or cases. Simplify using `[h, h.ne, not_lt.2 h.le]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h, h.ne', not_lt.2 h.le]`. Establish `hU : ∏ s : {ij : Fin n × Fin n // β ij.1 < β ij.2}, t s.1.1 / t s.1.2 = U / L`. Rewrite using `[prod_subtype_eq_ite (fun ij : Fin n × Fin n => β ij.1 < β ij.2) fun ij => t ij.1 / t ij.2]`. Establish `hswap : L = ∏ ij : Fin n × Fin n, if β ij.1 < β ij.2 then t ij.2 else 1` using `Fintype.prod_equiv (Equiv.prodComm (Fin n) (Fin n)) _ _ fun ij => rfl`. Rewrite using `[hswap, hUdef, ← Finset.prod_div_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun ij _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Establish `hall : (∏ i, t i) ^ n = A * U * L`. Establish `: (∏ i, t i) ^ n = ∏ ij : Fin n × Fin n, t ij.1`. Rewrite using `[Fintype.prod_prod_type, ← Finset.prod_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, hAdef, hUdef, hLdef, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun ij _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy (β ij.1) (β ij.2) with h | h | h` into its components or cases. Simplify using `[h, h.ne, not_lt.2 h.le]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[h]`. Simplify using `[h, h.ne', not_lt.2 h.le]`. Apply the tactic sequence `have hne : ∀ P : Fin n × Fin n → Prop, ∀ [DecidablePred P], (∏ ij : Fin n × Fin n, if P ij then t ij.1 else 1) ≠ 0 := fun P _ => Finset.prod_ne_zero_iff.2 fun ij _ => by split_ifs <;> simp [ht]`. Establish `hA0 : A ≠ 0` using `hne _`. Establish `hU0 : U ≠ 0` using `hne _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hL0 : L ≠ 0` using `hne _`. Rewrite using `[hA, hP, hU, hall]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem prod_identity (t : Fin n → ℝ≥0) (ht : ∀ i, t i ≠ 0) :
     ((∏ s : LeviIndex n β, t s.1.1) / ∏ s : ParabolicIndex n β, t s.1.1) ^ 2 *
@@ -281,7 +281,7 @@ theorem leviModulusHom_apply (m : levi F n β) : leviModulusHom β m = leviModul
 omit [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-The claim follows from `LocalField.modulus_eq_one_iff.2 ⟨hx, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem modulus_eq_one_of_ord {x : F} (hx : x ≠ 0) (h : LocalField.ord x = 0) :
     LocalField.modulus x = 1 :=
@@ -289,7 +289,7 @@ theorem modulus_eq_one_of_ord {x : F} (hx : x ≠ 0) (h : LocalField.ord x = 0) 
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-The claim follows from `modulus_eq_one_of_ord (det_ne_zero _) (ordDet_of_mem_integralGL hk)`.
+A detailed English derivation is pending.
 -/
 theorem leviAbsDet_of_mem_integralGL {k : levi F n β}
     (hk : (k : GL (Fin n) F) ∈ integralGL F n) : leviAbsDet β k = 1 :=
@@ -297,7 +297,7 @@ theorem leviAbsDet_of_mem_integralGL {k : levi F n β}
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[modulus_eq_one_of_ord (det_ne_zero_of_GL _) (blockOrd_of_mem_integralGL a hk), one_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviModulus_of_mem_integralGL {k : levi F n β}
     (hk : (k : GL (Fin n) F) ∈ integralGL F n) : leviModulus β k = 1 := by
@@ -306,7 +306,7 @@ theorem leviModulus_of_mem_integralGL {k : levi F n β}
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-The claim follows from `eq_one_of_mem_compact (leviRatio β) continuous_leviRatio (isCompact_leviIntegral (F := F)) (Subgroup.mem_subgroupOf.2 hk)`.
+A detailed English derivation is pending.
 -/
 theorem leviRatio_of_mem_integralGL {k : levi F n β}
     (hk : (k : GL (Fin n) F) ∈ integralGL F n) : leviRatio β k = 1 :=
@@ -316,7 +316,7 @@ theorem leviRatio_of_mem_integralGL {k : levi F n β}
 omit [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, hf k₁ h₁, hf k₂ h₂, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_cartan (f : levi F n β →* ℝ≥0)
     (hf : ∀ k : levi F n β, (k : GL (Fin n) F) ∈ integralGL F n → f k = 1) {k₁ k₂ : levi F n β}
@@ -325,9 +325,9 @@ theorem hom_cartan (f : levi F n β →* ℝ≥0)
   rw [map_mul, map_mul, hf k₁ h₁, hf k₂ h₂, one_mul, mul_one]
 
 /- English proof (translation)
-Take `⟨μ, k₁, hk₁, k₂, hk₂, hm⟩` from `exists_eq_mul_diagPow_mul_levi m.2`. Establish `e : m = ⟨k₁, hk₁.1⟩ * leviDiag (F` using `F) β μ * ⟨k₂, hk₂.1⟩ := Subtype.ext hm`. Establish `h1` using `hom_cartan (leviRatio β) (fun k hk => leviRatio_of_mem_integralGL hk) (k₁ := ⟨k₁, hk₁.1⟩) (k₂ := ⟨k₂, hk₂.1⟩) hk₁.2 hk₂.2 (leviDiag (F := F) β μ)`. Establish `h2` using `hom_cartan (Measure.modularCharacter.comp leviIncl) (fun k hk => modularCharacter_eq_one_of_mem_integralGL _ hk) (k₁ := ⟨k₁, hk₁.1⟩) (k₂ := ⟨k₂, hk₂.1⟩) hk₁.2 hk₂.2 (leviDiag (F := F) β μ)`. Establish `h3` using `hom_cartan (leviAbsDet β) (fun k hk => leviAbsDet_of_mem_integralGL hk) (k₁ := ⟨k₁, hk₁.1⟩) (k₂ := ⟨k₂, hk₂.1⟩) hk₁.2 hk₂.2 (leviDiag (F := F) β μ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `hom_cartan (leviModulusHom β) (fun k hk => leviModulus_of_mem_integralGL hk) (k₁ := ⟨k₁, hk₁.1⟩) (k₂ := ⟨k₂, hk₂.1⟩) hk₁.2 hk₂.2 (leviDiag (F := F) β μ)`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, leviModulusHom_apply] at h2 h4`. Rewrite using `[e, h1, h2, h3, h4, leviRatio_apply, leviChart_leftModulus_diag, parabolicChart_leftModulus_diag, modularCharacter_leviDiag, leviAbsDet_apply, modulus_det_diagPow, leviModulus_diag]`. Conclude with `prod_identity (fun i => LocalField.modulus ((uniformizer F : F) ^ μ i)) fun i => LocalField.modulus_ne_zero (zpow_ne_zero _ (Cartan.uniformizer_ne_zero F))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviRatio_sq_mul_modular_mul_det (m : levi F n β) :
     leviRatio β m ^ 2 * Measure.modularCharacter (leviIncl m) * leviAbsDet β m ^ n =

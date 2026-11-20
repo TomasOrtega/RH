@@ -15,17 +15,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨-, hdual, hN, hin, hout⟩` from `hB`. Establish `hN0 : (N : D.host.E) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hl0` using `(Formalism.IndefR.Fin.SelfDualLatticeFinitePlaces.self_dual_lattice_is_self_dual V).1`. Set `φ : (Fin V.rank → D.host.E) →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)` to `(N : 𝓞 D.host.E) • LinearMap.id`. Establish `hφ : ∀ x, φ x = (N : D.host.E) • x` using `fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [φ, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[← algebraMap_smul D.host.E (N : 𝓞 D.host.E) x, map_natCast]`. Use `⟨⟨?_, ?_⟩, fun y => ?_⟩` and prove the remaining obligations. Establish `hφinj : Function.Injective φ` using `fun a b hab => by`. Rewrite `hab` using `[hφ, hφ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `smul_right_injective _ hN0 hab`. Establish `hle : Λ.map φ ≤ Formalism.IndefR.Fin.SelfDualLatticeFinitePlaces.l0s V`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[Formalism.IndefR.Fin.SelfDualLatticeFinitePlaces.mem_self_dual_lattice_set, hφ]`. Conclude with `hout x hx`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherian (𝓞 D.host.E) (Formalism.IndefR.Fin.SelfDualLatticeFinitePlaces.l0s V)` using `isNoetherian_of_fg_of_noetherian _ hl0.fg`. Establish `h1 : ((Λ.map φ).comap (Formalism.IndefR.Fin.SelfDualLatticeFinitePlaces.l0s V).subtype).FG` using `IsNoetherian.noetherian _`. Establish `h2` using `h1.map (Formalism.IndefR.Fin.SelfDualLatticeFinitePlaces.l0s V).subtype`. Rewrite `h2` using `[Submodule.map_comap_eq, Submodule.range_subtype, inf_eq_right.2 hle]`. Conclude with `Submodule.fg_of_fg_map_injective φ hφinj h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff, ← hl0.span_eq_top, Submodule.span_le]`. Introduce `x hx`. Establish `hNx : (N : D.host.E) • x ∈ Λ` using `hin x ((Formalism.IndefR.Fin.SelfDualLatticeFinitePlaces.mem_self_dual_lattice_set V x).1 hx)`. Establish `: x = (N : D.host.E)⁻¹ • ((N : D.host.E) • x)` using `by rw [smul_smul, inv_mul_cancel₀ hN0, one_smul]`. Establish `key : (N : D.host.E)⁻¹ • ((N : D.host.E) • x) ∈ Submodule.span D.host.E (Λ : Set (Fin V.rank → D.host.E))` using `Submodule.smul_mem _ _ (Submodule.subset_span hNx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[← this]`. Conclude with `key`. Rewrite using `[Formalism.IndefR.Eqv.dual_of_dualL hdual y]`. Simplify using `only [Formalism.UG.hform, starRingEnd_apply, RingHom.mem_range]`.
+A detailed English derivation is pending.
 -/
 theorem isSelfDualC_of_base {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     {N : ℕ} (hB : Formalism.IndefR.Lev.IsBaseFrame V β Λ N) : IsSelfDualC V Λ := by
@@ -61,19 +61,19 @@ theorem isSelfDualC_of_base {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {Λ : Sub
     simp only [Formalism.UG.hform, starRingEnd_apply, RingHom.mem_range]
 
 /- English proof (translation)
-Set `P` to `{i : Fin n // ε i = true}`. Set `Q` to `{i : Fin n // ¬ ε i = true}`. Establish `hcard : Fintype.card P + Fintype.card Q = n`. Establish `h1 : Fintype.card Q = n - Fintype.card P` using `by show Fintype.card {i : Fin n // ¬ ε i = true} = n - Fintype.card {i : Fin n // ε i = true}`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_fin]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Fintype.card P ≤ n` using `by show Fintype.card {i : Fin n // ε i = true} ≤ n`. Use `Fintype.card_subtype_le (fun i : Fin n => ε i = true)` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Then use the resulting hypothesis. Rewrite using `[h1]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Set `e : Fin n ≃ P ⊕ Q` to `(Equiv.sumCompl (fun i : Fin n => ε i = true)).symm`. Set `f : P ⊕ Q ≃ Fin (Fintype.card P) ⊕ Fin (Fintype.card Q)` to `(Fintype.equivFin P).sumCongr (Fintype.equivFin Q)`. Set `g : Fin (Fintype.card P) ⊕ Fin (Fintype.card Q) ≃ Fin n` to `finSumFinEquiv.trans (finCongr hcard)`. Use `⟨Fintype.card P, (e.trans (f.trans g)).symm, fun a => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `g.surjective a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hx : (e.trans (f.trans g)).symm (g x) = e.symm (f.symm x)`. Simplify using `only [Equiv.symm_trans_apply, Equiv.symm_apply_apply]`. Rewrite using `[hx]`. Break down `x with x | x` into its components or cases. Establish `h1 : e.symm (f.symm (Sum.inl x)) = ((Fintype.equivFin P).symm x).1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `[e, f, Equiv.sumCompl]`. Establish `h2 : (g (Sum.inl x)).val = x.val` using `by simp [g]`. Rewrite using `[h1, h2]`. Simplify using `only [((Fintype.equivFin P).symm x).2, true_iff]`. Conclude with `x.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : e.symm (f.symm (Sum.inr x)) = ((Fintype.equivFin Q).symm x).1`. Simplify using `[e, f, Equiv.sumCompl]`. Establish `h2 : (g (Sum.inr x)).val = Fintype.card P + x.val` using `by simp [g]`. Rewrite using `[h1, h2]`. Use `((Fintype.equivFin Q).symm x).2` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Bool.not_eq_true] at this`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sort {n : ℕ} (ε : Fin n → Bool) :
     ∃ (p : ℕ) (σ : Fin n ≃ Fin n), ∀ a : Fin n, (ε (σ a) = true ↔ a.val < p) := by
@@ -114,23 +114,19 @@ theorem exists_sort {n : ℕ} (ε : Fin n → Bool) :
     simp [this]
 
 /- English proof (translation)
-Take `⟨p, σ, hσ⟩` from `exists_sort (M.ε τ)`. Establish `hu : IsUnit (M.fr τ)` using `M.fr_unit τ`. Establish `hinv : (M.fr τ)⁻¹ * M.fr τ = 1` using `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hu)`. Establish `hinv' : M.fr τ * (M.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hu)`. Set `B` to `((M.fr τ)⁻¹).submatrix id σ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ε' : Fin V.rank → ℝ` to `fun a => if M.ε τ (σ a) then 1 else -1`. Establish `hG : ((M.fr τ)⁻¹)ᴴ * gramAt D V τ * (M.fr τ)⁻¹ = Formalism.REAL.Jm (M.ε τ)`. Rewrite using `[← M.fr_gram τ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [hinv']; simp`. Establish `hC : Formalism.IndefR.Links.cart M τ * (M.fr τ)⁻¹ = (M.fr τ)⁻¹ * Formalism.REAL.Jm (M.ε τ)`. Unfold `Formalism.IndefR.Links.cart`. Simplify using `only [Matrix.mul_assoc, hinv', Matrix.mul_one]`. Establish `hJ : (Formalism.REAL.Jm (M.ε τ)).submatrix σ σ = Matrix.diagonal fun a => ((ε' a : ℝ) : ℂ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.submatrix_diagonal_equiv]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [ε']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h : M.ε τ (σ a) = true <;> simp [h]`. Use `⟨B, p, ε', fun a => ?_, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : M.ε τ (σ a) = true`. Use the proof step `left; exact ⟨by simp [ε', h], (hσ a).1 h⟩`. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hf : M.ε τ (σ a) = false` using `by simpa using h`. Use `⟨by simp [ε', hf], ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `h ((hσ a).2 (not_le.1 hlt))`. Use `show (((M.fr τ)⁻¹).submatrix id σ)ᴴ * gramAt D V τ * ((M.fr τ)⁻¹).submatrix id σ = _`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← hJ, ← hG]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id, Matrix.conjTranspose_apply]`. Use `show Formalism.IndefR.Links.cart M τ * ((M.fr τ)⁻¹).submatrix id σ = ((M.fr τ)⁻¹).submatrix id σ * _`. Rewrite using `[← hJ]`.
-
-Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun hC i) (σ j)`. Simplify using `only [Matrix.mul_apply] at h1`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id]`. Rewrite using `[h1]`.
-
-Conclude with `(Equiv.sum_comp σ (fun k => (M.fr τ)⁻¹ i k * Formalism.REAL.Jm (M.ε τ) k (σ j))).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_onb {V : HSp D} {S : D.what₂.Tau → SPar} (M : Formalism.IndefR.Mult.DSModel V S) (τ : D.what₂.Tau) :
     ∃ (B : Matrix (Fin V.rank) (Fin V.rank) ℂ) (p : ℕ), IsONBasis (gramAt D V τ) (Formalism.IndefR.Links.cart M τ) B p := by
@@ -186,9 +182,7 @@ variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : 
 open Classical in
 
 /- English proof (translation)
-Take `⟨cS, hBS⟩` from `hLev.βY k (by omega)`. Take `⟨cT, hBT⟩` from `hLev.βY (k + 1) hk`. Use `choose BS pS hS using fun τ => exists_onb (R.MY k) τ`. Use `choose BT pT hT using fun τ => exists_onb (R.MY (k + 1)) τ`. Use `⟨⟨BS, BT, pS, pT, ?_⟩, hsph, hunr, htG, htQ⟩` and prove the remaining obligations.
-
-Conclude with `{ cartS := fun τ => Formalism.IndefR.Fock.IoExist.cart_isCartanInv (R.MY k) τ cartT := fun τ => Formalism.IndefR.Fock.IoExist.cart_isCartanInv (R.MY (k + 1)) τ onbS := hS onbT := hT frS := hBS.1 frT := hBT.1 sdS := isSelfDualC_of_base hBS sdT := isSelfDualC_of_base hBT disj := hd …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sideYR_of (hLev : R.toLevCh.Is A.μ0) (hC : R.IsChain) {t : T} {k : ℕ} (hk : k + 1 < D.R.m)
     (hdisj : Disjoint R.Pg (R.Q t))

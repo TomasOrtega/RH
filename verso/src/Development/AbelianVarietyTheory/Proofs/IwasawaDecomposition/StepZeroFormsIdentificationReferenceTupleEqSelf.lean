@@ -7,9 +7,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.TC.MuZeroForms
 
 /- English proof (translation)
-Introduce `B X I h l Z l0 u x`. Apply `(I.fm l u I.mu0).emb_inj 0` to reduce the goal to its premises. Rewrite using `[(l0 u I.mu0).choose_spec.2 x]`. Use `show LinearEquiv.funCongrLeft ℂ _ (I.eCls0 l u I.mu0).symm ((I.fm l u I.mu0).emb 0 x) = _`. Use function extensionality and compare the values at `c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.funCongrLeft_apply]`. Use `show (I.fm l u I.mu0).emb 0 x ((I.eCls0 l u I.mu0).symm c) = _`. Establish `hc : (I.eCls0 l u I.mu0).symm c = c` using `(I.eCls0 l u I.mu0).symm_apply_eq.2 (GlobalTheory.T.eCls0_mu0_eq_self I h l u c).symm`. Rewrite using `[hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law0_choose_mu0_eq_self : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws)
     (Z : TC.Later B (I.cols l)) (l0 : I.Law0 l) (u : B.Word) (x : ((I.fm l u I.mu0).lat 0).V),

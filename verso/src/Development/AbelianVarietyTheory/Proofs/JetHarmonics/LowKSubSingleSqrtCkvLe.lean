@@ -6,7 +6,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.LowCasShift
 
 /- English proof (translation)
-Use `⟨Nat.cast_nonneg _, ?_⟩` and prove the remaining obligations. Establish `h : (univ.filter p).card ≤ n`. Simplify using `using card_filter_le (univ : Finset (Fin n)) p`. Conclude with `h` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_le {n : ℕ} (p : Fin n → Prop) [DecidablePred p] :
     (0 : ℝ) ≤ ((univ.filter p).card : ℝ) ∧ ((univ.filter p).card : ℝ) ≤ n := by
@@ -16,7 +16,7 @@ theorem card_le {n : ℕ} (p : Fin n → Prop) [DecidablePred p] :
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `h1` using `card_le (fun b : Fin n => a < b ∧ ε b = ε a)`. Establish `h2` using `card_le (fun b : Fin n => b < a ∧ ε b = ε a)`. Unfold `rhoC`. Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rhoC_bd {n : ℕ} (ε : Fin n → Bool) (a : Fin n) :
     -((n : ℝ) / 2) ≤ rhoC ε a ∧ rhoC ε a ≤ (n : ℝ) / 2 := by
@@ -26,7 +26,7 @@ theorem rhoC_bd {n : ℕ} (ε : Fin n → Bool) (a : Fin n) :
   constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]
 
 /- English proof (translation)
-Establish `h1` using `card_le (fun b : Fin n => a < b ∧ ε b ≠ ε a)`. Establish `h2` using `card_le (fun b : Fin n => b < a ∧ ε b ≠ ε a)`. Unfold `rhoN`. Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rhoN_bd {n : ℕ} (ε : Fin n → Bool) (a : Fin n) :
     -((n : ℝ) / 2) ≤ rhoN ε a ∧ rhoN ε a ≤ (n : ℝ) / 2 := by
@@ -36,9 +36,9 @@ theorem rhoN_bd {n : ℕ} (ε : Fin n → Bool) (a : Fin n) :
   constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]
 
 /- English proof (translation)
-Establish `h : ∀ a, (u - Pi.single s 1 : Fin n → ℝ) a * (u - Pi.single s 1 : Fin n → ℝ) a = u a * u a + (if a = s then 1 - 2 * u s else 0)`. Introduce `a`. Distinguish the cases in `ha : a = s`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[ha]`. Unfold `nsq dot`. Simplify using `only [h, sum_add_distrib, sum_ite_eq', mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nsq_sub_single {n : ℕ} (u : Fin n → ℝ) (s : Fin n) :
     nsq (u - Pi.single s 1) = nsq u - 2 * u s + 1 := by
@@ -53,9 +53,9 @@ theorem nsq_sub_single {n : ℕ} (u : Fin n → ℝ) (s : Fin n) :
   ring
 
 /- English proof (translation)
-Unfold `nsq dot`. Establish `h : ∀ a ∈ (univ : Finset (Fin n)), rhoC ε a * rhoC ε a ≤ (n : ℝ) ^ 2`. Introduce `a _`. Use `rhoC_bd ε a` as an intermediate fact. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[this.1, this.2]`. Use `sum_le_card_nsmul _ _ _ h` as an intermediate fact. Simplify using `only [card_univ, Fintype.card_fin, nsmul_eq_mul] at this`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem nsq_rhoC_le {n : ℕ} (ε : Fin n → Bool) : nsq (rhoC ε) ≤ (n : ℝ) ^ 3 := by
   unfold nsq dot
@@ -70,14 +70,14 @@ theorem nsq_rhoC_le {n : ℕ} (ε : Fin n → Bool) : nsq (rhoC ε) ≤ (n : ℝ
     _ = _ := by ring
 
 /- English proof (translation)
-Unfold `nsq dot`. Conclude with `single_le_sum (f := fun a => u a * u a) (fun i _ => mul_self_nonneg _) (mem_univ a)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sq_le_nsq {n : ℕ} (u : Fin n → ℝ) (a : Fin n) : u a * u a ≤ nsq u := by
   unfold nsq dot
   exact single_le_sum (f := fun a => u a * u a) (fun i _ => mul_self_nonneg _) (mem_univ a)
 
 /- English proof (translation)
-Establish `h1 : b / 2 ≤ Real.sqrt X` using `Real.le_sqrt_of_sq_le hX`. Establish `h0 : 0 ≤ X` using `le_trans (sq_nonneg _) hX`. Establish `h2 : Real.sqrt X ^ 2 = X` using `Real.sq_sqrt h0`. Establish `h3 : Real.sqrt X - 2 ≤ Real.sqrt Y`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
 Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -98,23 +98,23 @@ namespace GlobalTheory
 open LowCasShift in
 
 /- English proof (translation)
-Introduce `n kk ε μ bv s h`. Take `⟨hk1, hk2, -, hc, hnode, hb⟩` from `h`. Use `⟨by unfold lowK; abel, ?_⟩` and prove the remaining obligations. Establish `hn2 : 2 ≤ n` using `by omega`. Establish `hn : (2 : ℝ) ≤ n` using `by exact_mod_cast hn2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn1 : (1 : ℝ) ≤ n` using `by linarith`. Establish `h37 : (n : ℝ) ^ 3 ≤ (n : ℝ) ^ 7` using `pow_le_pow_right₀ hn1 (by norm_num)`. Establish `h13 : (n : ℝ) ≤ (n : ℝ) ^ 3`. Simplify using `using pow_le_pow_right₀ hn1 (show 1 ≤ 3 by norm_num)`. Establish `hX : ckv ε (lowK ε μ) = nsq (μ + rhoN ε) - nsq (rhoC ε)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Unfold `ckv lowK`. Use `congr 2`. Normalize the expressions using the abelian group laws. Establish `hY : ckv ε (lowK ε (μ - Pi.single s 1)) = nsq (μ + rhoN ε) - 2 * (μ s + rhoN ε s) + 1 - nsq (rhoC ε)`. Establish `: lowK ε (μ - Pi.single s 1) + rhoC ε = (μ + rhoN ε) - Pi.single s 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `lowK`. Normalize the expressions using the abelian group laws. Unfold `ckv`. Rewrite using `[this, nsq_sub_single]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hs : μ s ≤ bv / 8 + bv / 100`. Distinguish the cases in `hsk : s.val + 1 < kk`. Conclude with `(hc s hsk).2.2`. Use `(hnode s (by omega)).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hNs` using `(rhoN_bd ε s).2`. Set `l : Fin n` to `⟨n - 1, by omega⟩`. Establish `hl` using `(hnode l (by show kk ≤ n - 1 + 1; omega)).2`. Establish `hNl` using `(rhoN_bd ε l).2`. Establish `hsq` using `sq_le_nsq (μ + rhoN ε) l`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `nsq_rhoC_le ε`. Establish `hneg : (μ + rhoN ε) l ≤ -(9 / 10 * bv)` using `by show μ l + rhoN ε l ≤ _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb4 : 4 ≤ bv` using `by linarith`. Establish `hbig : (9 / 10 * bv) ^ 2 ≤ (μ + rhoN ε) l * (μ + rhoN ε) l` using `by nlinarith`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXl : (bv / 2) ^ 2 ≤ ckv ε (lowK ε μ)`. Rewrite using `[hX]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hstep` using `sqrt_step hb4 hXl (Y := ckv ε (lowK ε (μ - Pi.single s 1))) (by rw [hX, hY]; linarith)`. Establish `hsn : Real.sqrt n ≤ n`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Real.sqrt_le_iff.mpr` to reduce the goal to its premises. Apply the tactic sequence `constructor <;> nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lowK_sub_single_and_sqrt_ckv_le :
     ∀ (n kk : ℕ) (ε : Fin n → Bool) (μ : Fin n → ℝ) (bv : ℝ) (s : Fin n), Shape ε kk μ bv →

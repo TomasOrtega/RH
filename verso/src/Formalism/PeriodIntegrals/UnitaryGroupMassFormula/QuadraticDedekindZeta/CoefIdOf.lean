@@ -7,7 +7,7 @@ open scoped ArithmeticFunction.zeta
 namespace PI.ClassNumImQ.ZetaNonvanishing₂
 
 /- English proof (translation)
-Unfold `cnt`. Rewrite using `[Nat.card_eq_one_iff_exists]`. Conclude with `⟨⟨⊤, by simp⟩, fun y => Subtype.ext (Ideal.absNorm_eq_one_iff.mp y.2)⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cnt_one (K : Type) [Field K] [NumberField K] : cnt K 1 = 1 := by
   unfold cnt

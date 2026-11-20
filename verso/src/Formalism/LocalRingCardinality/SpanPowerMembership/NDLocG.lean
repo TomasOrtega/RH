@@ -19,9 +19,9 @@ instance Kphi_fin (φ : F →+* PadicAlgCl l) : FiniteDimensional ℚ_[l] (Kphi 
   IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x
 
 /- English proof (translation)
-Establish `hx` using `(Module.finBasis ℚ F).sum_repr x`. Rewrite using `[← hx, map_sum]`. Use `sum_mem (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_rat_smul, Rat.smul_def]`. Use `mul_mem ?_ (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `first`. Consider the case `exact SubfieldClass.ratCast_mem _ _`. Consider the case `exact ratCast_mem _ _`. Consider the case `exact (Kphi φ).toSubfield.ratCast_mem _`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem phi_mem (φ : F →+* PadicAlgCl l) (x : F) : φ x ∈ Kphi φ := by
   have hx := (Module.finBasis ℚ F).sum_repr x
@@ -43,16 +43,16 @@ instance KE_fin : FiniteDimensional ℚ_[l] (KE l F) :=
   IntermediateField.finiteDimensional_iSup_of_finite
 
 /- English proof (translation)
-The claim follows from `(le_iSup (fun ψ : F →+* PadicAlgCl l => Kphi ψ) φ) (phi_mem φ x)`.
+A detailed English derivation is pending.
 -/
 theorem phi_mem_KE (φ : F →+* PadicAlgCl l) (x : F) : φ x ∈ KE l F := (le_iSup (fun ψ : F →+* PadicAlgCl l => Kphi ψ) φ) (phi_mem φ x)
 
 /- English proof (translation)
-Set `ψ : F →+* PadicAlgCl l` to `τ.toRingHom.comp (φ.codRestrict (Kphi φ) (phi_mem φ))`. Establish `hle : Kphi φ ≤ ((Kphi ψ).comap τ).map (Kphi φ).val` using `by show IntermediateField.adjoin ℚ_[l] _ ≤ _`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `s ⟨i, rfl⟩`. Use `first`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Treat this case separately.
 
-Consider the case `exact ⟨⟨φ (Module.finBasis ℚ F i), phi_mem φ _⟩, phi_mem ψ (Module.finBasis ℚ F i), rfl⟩`. Consider the case `exact IntermediateField.mem_map.mpr ⟨⟨φ (Module.finBasis ℚ F i), phi_mem φ _⟩, phi_mem ψ (Module.finBasis ℚ F i), rfl⟩`. Take `⟨z, hz, hzy⟩` from `hle y.2`. Establish `hzy' : z = y` using `Subtype.ext hzy`. Establish `key : τ y ∈ Kphi ψ`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hzy']`. Conclude with `hz`. Conclude with `(le_iSup (fun ψ' : F →+* PadicAlgCl l => Kphi ψ') ψ) key`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_KE (φ : F →+* PadicAlgCl l) (τ : ↥(Kphi φ) →ₐ[ℚ_[l]] PadicAlgCl l) (y : ↥(Kphi φ)) :
     τ y ∈ KE l F := by
@@ -73,9 +73,9 @@ theorem conj_mem_KE (φ : F →+* PadicAlgCl l) (τ : ↥(Kphi φ) →ₐ[ℚ_[l
   exact (le_iSup (fun ψ' : F →+* PadicAlgCl l => Kphi ψ') ψ) key
 
 /- English proof (translation)
-Establish `hA` using `isPlaceOver_placeOf (AlgebraicClosure F) w`. Establish `hAl : (placeOf (AlgebraicClosure F) w).valuation ((l : ℕ) : AlgebraicClosure F) < 1`. Use `(hA ((l : ℕ) : 𝓞 F)).mpr hw` as an intermediate fact. Simplify using `using this`. Use `haveI : IsAlgClosure ℚ (AlgebraicClosure F) := isAlgClosureQ F (AlgebraicClosure F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `exists_emb (l := l) _ hAl`. Conclude with `⟨j.comp (algebraMap F (AlgebraicClosure F)), fun x => by`. Rewrite using `[← hA x, val_lt_one_iff hj]`. Use the proof step `rfl⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_embAt (w : HeightOneSpectrum (𝓞 F)) (hw : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal) :
     ∃ φ : F →+* PadicAlgCl l, ∀ x : 𝓞 F, x ∈ w.asIdeal ↔ ‖φ (x : F)‖ < 1 := by
@@ -92,9 +92,7 @@ end Emb
 
 variable (l) in
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : NeZero (N : PadicAlgCl l) := ⟨by exact_mod_cast hN.ne'⟩`. Use `first`. Consider the case `exact HasEnoughRootsOfUnity.exists_primitiveRoot (PadicAlgCl l) N`. Consider the case `exact ⟨_, IsCyclotomicExtension.zeta_spec N (PadicAlgCl l) (PadicAlgCl l)⟩`.
-
-Consider the case `exact ⟨_, IsCyclotomicExtension.zeta_spec ⟨N, hN⟩ (PadicAlgCl l) (PadicAlgCl l)⟩`. Consider the case `exact IsAlgClosed.exists_primitiveRoot (PadicAlgCl l) N`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_prim (N : ℕ) (hN : 0 < N) : ∃ ζ : PadicAlgCl l, IsPrimitiveRoot ζ N := by
   haveI : NeZero N := ⟨hN.ne'⟩
@@ -120,7 +118,7 @@ variable (LL : FinExt l) {N : ℕ} [NeZero N] {ζ : PadicAlgCl l} (hζ : IsPrimi
 
 include hζ in
 /- English proof (translation)
-Use `first`. Consider the case `exact hζ.norm'_eq_one (NeZero.ne N)`. Consider the case `(have h := congrArg norm hζ.pow_eq_one`. Rewrite `h` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (NeZero.ne N)).mp h)`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_prim : ‖ζ‖ = 1 := by
   first
@@ -132,7 +130,7 @@ theorem norm_prim : ‖ζ‖ = 1 := by
 def zO : ↥(OL LL) := ⟨⟨ζ, hm⟩, (mem_OL LL _).mpr (norm_prim hζ).le⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `(apply Subtype.ext; apply Subtype.ext; simp [zO, hζ.pow_eq_one])`. Consider the case `(ext; simp [zO, hζ.pow_eq_one])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem zO_pow : zO LL hζ hm ^ N = 1 := by
   first
@@ -142,7 +140,7 @@ theorem zO_pow : zO LL hζ hm ^ N = 1 := by
 def zU : (↥(OL LL))ˣ := Units.ofPowEqOne (zO LL hζ hm) N (zO_pow LL hζ hm) (NeZero.ne N)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Units.ext (by simp [zU, zO_pow LL hζ hm])`. Consider the case `(ext; simp [zU, zO_pow LL hζ hm])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem zU_pow : zU LL hζ hm ^ N = 1 := by
   first
@@ -152,9 +150,9 @@ theorem zU_pow : zU LL hζ hm ^ N = 1 := by
 def muHom : Multiplicative (ZMod N) →* (↥(OL LL))ˣ := powHom (zU LL hζ hm) N (zU_pow LL hζ hm)
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h1` using `congrArg (fun u : (↥(OL LL))ˣ => u.val.val.val) h`. Establish `h2 : ζ ^ (Multiplicative.toAdd a).val = ζ ^ (Multiplicative.toAdd b).val`. Simplify `h1` using `[muHom, powHom, zU, zO]`. Establish `h3` using `hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `Multiplicative.toAdd.injective (ZMod.val_injective N h3)`.
+A detailed English derivation is pending.
 -/
 theorem muHom_injective : Function.Injective (muHom LL hζ hm) := by
   intro a b h

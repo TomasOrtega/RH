@@ -25,9 +25,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : DIV.F
   {F : Formalism.IndefR.Links.Face3 D A3} {X0 : BaseLevelRowSide D} {Y : Read R.toRealDat F.lv2 X0} {M : MtFam D}
 
 /- English proof (translation)
-Establish `h0 : Formalism.IndefR.RecTie.Used0 D D.what₂.mu0` using `Or.inl rfl`. Use function extensionality and compare the values at `g`. Apply `(hMA.eW _ h0 i).injective` to reduce the goal to its premises. Establish `e1` using `hMA.read _ h0 i x (g * κ)`. Establish `e2` using `hMA.read _ h0 i x g`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `(Y.IL.jMt _ h0 i x).2.2 _ hJ ((hMA.PV i).ψ g)`. Rewrite `e3` using `[hχ, ← map_mul]`. Conclude with `e1.trans (e3.trans ((one_smul ℂ _).trans e2.symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_real_eq_of_lev (hMA : MtAd Y M) (i : Fin D.R.m) (x : D.what₂.Mt D.what₂.mu0 (i.1 + 1))
     (κ : GAf D.host.E D.R.nV)
@@ -49,11 +49,11 @@ theorem rt_real_eq_of_lev (hMA : MtAd Y M) (i : Fin D.R.m) (x : D.what₂.Mt D.w
 end Read
 
 /- English proof (translation)
-Establish `hLvl` using `GlobalTheory.T.standardFrame_nonsplit_maxCompact_in_level`. Introduce `_ hL`. Unfold `GlobalTheory.LiftRef.AtRows`. Use `GlobalTheory.LiftRef.overRows_and_mono hLvl hLvl (fun K B f T w Z Wt hX z p0 Y h _ => ?_)` and prove the remaining obligations. Introduce `Rw a M tup Q hMA _ j h1 h2 S hS hne w' hw'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, rfl⟩ : ∃ i : Fin (w.st Z).toD7.R.m, i.1 + 1 = j` from `⟨⟨j - 1, by omega⟩, by simp only; omega⟩`. Rewrite using `[a.A.sph (i.1 + 1) h1 h2 _ w' (HeightOneSpectrum.under (𝓞 (maximalRealSubfield (w.st Z).toD7.host.E)) w') hw' rfl]`. Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Establish `hry : (M _ _ h1 h2).real y ≠ 0` using `fun e => hy0 ((M _ _ h1 h2).real_inj (e.trans (map_zero _).symm))`. Take `⟨f, hf, hf0, hff⟩` from `GlobalTheory.AutUnr.exists_fixed_of_isoTyp _ hS.1.stable {κ | κ ∈ Umax (w.st Z).toD7.host.E (w.st Z).toD7.R.nV ∧ TrivOutside {HeightOneSpectrum.under (𝓞 (maximalRealSubfield (w.st Z).toD7.host.E)) w'} κ} hy hry (fun κ hκ => rt_real_eq_of_lev hMA i y κ (h i (hMA.PV i) (hMA.std i) …`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, hf, hf0, fun κ hU htr => hff κ ⟨hU, htr⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem sph_inert : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.LiftRef.AtRows hL fun D _ _ _ a M => ∀ (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (S : Submodule ℂ (Formalism.AUTREP.GAf D.host.E D.R.nV → (M D.what₂.mu0 j h1 h2).wt.W)) (hS : NG.IsIrrRep (M D.what₂.mu0 j h1 h2).wt.ρ S), (NG.isoTyp (M D.what₂.mu0 j h1 h2).wt.ρ S).comap (M D.what₂.mu0 j h1 h2).real ≠ ⊥ → SphericalInertData.SphInert D.nd D.naut D.nbc j (a.A.cls j h1 h2 (GlobalTheory.LiftRef.autOf (M D.what₂.mu0 j h1 h2) S hS)) := by
   have hLvl := GlobalTheory.T.standardFrame_nonsplit_maxCompact_in_level

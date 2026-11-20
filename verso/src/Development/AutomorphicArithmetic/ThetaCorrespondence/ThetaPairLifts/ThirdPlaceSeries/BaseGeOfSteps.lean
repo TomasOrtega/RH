@@ -33,9 +33,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (w : D.what₂.places.Pl) (j : Fin D.R.m)
 end Point
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.BigOn.Exp.BaseLowerBound₂ _root_.GlobalTheory.BigOn.Exp.CanonicalFits _root_.GlobalTheory.BigOn.Exp.ReadInjAlt _root_.GlobalTheory.BigOn.Exp.LatticeHasSmallGenerators _root_.GlobalTheory.BigOn.Exp.SerBase.KerOfAtAlt _root_.GlobalTheory.BigOn.Exp.SerBase.TraceA …`. Use `((((((Formalism.MainNotions.Closed.and hI hG).and h1).and h2).and h3).and h4).and h5).imp fun Fm CH _ H => ?_` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨⟨a1, a2⟩, a3⟩, a4⟩, a5⟩, a6⟩, a7⟩` from `H`. Take `⟨x0, hx0⟩` from `(((((a1.and a2).and a3).and a4).and a5).and a6).and a7`. Use `⟨x0, fun x hx hle i p hp hm w hw j ρ hρ ν rd hfit hcan => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨⟨⟨⟨⟨b1, b2⟩, b3⟩, b4⟩, b5⟩, b6⟩, b7⟩` from `hx0 x hx hle i p hp`. Conclude with `baseLat_le_realBase p w j hfit (b1 hm w hw j ρ hρ ν hfit.norm.1) (b2 hm w hw j ρ hρ hfit.pin) fun h hh Q hQ g hg => tmul_mem_realBase p w j (_root_.GlobalTheory.T.links2_of_single_index_twisted _ _ _ _ _ _ _ _ _ _ p hp hm.1) (b3 hm w hw j) (b4 hm w hw j) (b5 hm w hw j) (b6 hm w h …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem baseGe_of_serBase_facts_flatKer_centLat (hI : _root_.GlobalTheory.BigOn.Exp.ReadInjAlt) (hG : _root_.GlobalTheory.BigOn.Exp.LatticeHasSmallGenerators) (h1 : _root_.GlobalTheory.BigOn.Exp.SerBase.KerOfAtAlt) (h2 : _root_.GlobalTheory.BigOn.Exp.SerBase.TraceAt') (h3 : _root_.GlobalTheory.BigOn.Exp.SerBase.KernelRationalAt) (h4 : _root_.GlobalTheory.BigOn.Exp.SerBase.LatticeInclusionAt)
     (h5 : _root_.GlobalTheory.BigOn.Exp.SerBase.ReadComparisonAt) (hF : FlatKer) (hC : CentLat) (hTr : TraceRat) (hO : OwnUnit) : _root_.GlobalTheory.BigOn.Exp.BaseLowerBound₂ := by
@@ -51,7 +51,7 @@ theorem baseGe_of_serBase_facts_flatKer_centLat (hI : _root_.GlobalTheory.BigOn.
 end GlobalTheory.BigOn.Exp.SerBase
 namespace GlobalTheory.BigOn.Exp
 /- English proof (translation)
-Introduce `hP hA hR hS` and use `_root_.GlobalTheory.BigOn.Exp.SerBase.baseGe_of_serBase_facts_flatKer_centLat _root_.GlobalTheory.T.read_injective _root_.GlobalTheory.T.latSmallGen' _root_.GlobalTheory.T.kerOfAt' _root_.GlobalTheory.T.trace_rationality_at_place' (_root_.GlobalTheory.T.kernel_rationality_of_reci …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem baseGe_of_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
     GlobalTheory.SerStd.SeriesRatS → _root_.GlobalTheory.BigOn.Exp.BaseLowerBound₂ := fun hP hA hR hS =>

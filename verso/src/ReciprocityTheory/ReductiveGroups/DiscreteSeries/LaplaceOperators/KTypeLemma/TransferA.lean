@@ -15,7 +15,7 @@ section CurveL
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Establish `h` using `(dga_exp (-X)).mul_const y`. Establish `e : (fun t : ℝ => NormedSpace.exp (-((t : ℂ) • X)) * y) = fun t : ℝ => NormedSpace.exp ((t : ℂ) • -X) * y`. Simplify using `only [smul_neg]`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ta_curve_neg (X y : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp (-((t : ℂ) • X)) * y) (-X * y) 0 := by
@@ -27,7 +27,7 @@ lemma ta_curve_neg (X y : Matrix (Fin n) (Fin n) ℂ) :
   exact h
 
 /- English proof (translation)
-Conclude with `(dga_exp X).const_mul g`.
+A detailed English derivation is pending.
 -/
 lemma ta_curve (g X : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) (g * X) 0 := by
@@ -38,7 +38,7 @@ end CurveL
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Rewrite using `[Jm, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma jm_sq_lemma (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   rw [Jm, diagonal_mul_diagonal, ← diagonal_one]
@@ -47,7 +47,7 @@ private lemma jm_sq_lemma (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Rewrite using `[Jm, diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp [*]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Jm_conjTranspose_eq_selfKType (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   rw [Jm, diagonal_conjTranspose]
@@ -56,15 +56,15 @@ private lemma Jm_conjTranspose_eq_selfKType (ε : Fin n → Bool) : (Jm ε)ᴴ =
   split_ifs <;> simp [*]
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, jm_sq_lemma, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma ta_Jm_Jm (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : Jm ε * (Jm ε * X) = X := by
   rw [← mul_assoc, jm_sq_lemma, one_mul]
 
 /- English proof (translation)
-Unfold `inG cpart1`. Rewrite using `[conjTranspose_smul, conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, Jm_conjTranspose_eq_selfKType, conjTranspose_conjTranspose]`. Simplify using `only [smul_mul_assoc, mul_smul_comm, sub_mul, mul_sub, mul_assoc, jm_sq_lemma, ta_Jm_Jm, mul_one]`. Establish `h2 : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 lemma ta_inG_cpart1 (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) : inG ε (cpart1 ε Z) := by
   unfold inG cpart1
@@ -76,9 +76,9 @@ lemma ta_inG_cpart1 (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) : inG
   module
 
 /- English proof (translation)
-Unfold `inG cpart2`. Rewrite using `[conjTranspose_smul, conjTranspose_add, conjTranspose_mul, conjTranspose_mul, Jm_conjTranspose_eq_selfKType, conjTranspose_conjTranspose]`. Simplify using `only [smul_mul_assoc, mul_smul_comm, add_mul, mul_add, mul_assoc, jm_sq_lemma, ta_Jm_Jm, mul_one]`. Establish `h2 : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))`. Rewrite using `[star_div₀, star_one, star_mul', Complex.star_def, Complex.conj_I]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_ofNat]`. Rewrite using `[mul_neg, div_neg]`. Rewrite using `[h2]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ta_inG_cpart2 (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) : inG ε (cpart2 ε Z) := by
   unfold inG cpart2
@@ -93,9 +93,9 @@ lemma ta_inG_cpart2 (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) : inG
   module
 
 /- English proof (translation)
-Unfold `cpart1 cpart2`. Rewrite using `[smul_smul]`. Establish `h : Complex.I * (1 / (2 * Complex.I)) = 1 / 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 lemma ta_cpart_sum (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
     cpart1 ε Z + Complex.I • cpart2 ε Z = Z := by
@@ -107,9 +107,9 @@ lemma ta_cpart_sum (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
   module
 
 /- English proof (translation)
-Establish `hJ : IsUnit (Jm ε)` using `⟨⟨Jm ε, Jm ε, jm_sq_lemma ε, jm_sq_lemma ε⟩, rfl⟩`. Establish `hJi : (Jm ε)⁻¹ = Jm ε` using `Matrix.inv_eq_left_inv (jm_sq_lemma ε)`. Establish `hXc : Xᴴ = Jm ε * (-X) * Jm ε`. Establish `h1 : Xᴴ * Jm ε * Jm ε + Jm ε * X * Jm ε = 0`. Rewrite using `[← add_mul, hX, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[mul_assoc Xᴴ, jm_sq_lemma, mul_one]`. Rewrite using `[mul_neg, neg_mul, ← sub_eq_zero, sub_neg_eq_add, h1]`. Establish `hs : (t : ℂ) • (Jm ε * (-X) * Jm ε) = Jm ε * ((t : ℂ) • -X) * (Jm ε)⁻¹`. Rewrite using `[hJi, mul_smul_comm, smul_mul_assoc]`. Rewrite using `[← Matrix.exp_conjTranspose, conjTranspose_smul, hXc, Complex.star_def, Complex.conj_ofReal, hs, Matrix.exp_conj _ _ hJ, hJi, smul_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma ta_exp_conjT (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (t : ℝ) :
     (NormedSpace.exp ((t : ℂ) • X))ᴴ = Jm ε * NormedSpace.exp (-((t : ℂ) • X)) * Jm ε := by
@@ -126,9 +126,9 @@ lemma ta_exp_conjT (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : 
     Matrix.exp_conj _ _ hJ, hJi, smul_neg]
 
 /- English proof (translation)
-Unfold `inUJ at hg ⊢`. Rewrite using `[conjTranspose_mul, ta_exp_conjT ε hX t]`. Establish `he : NormedSpace.exp (-((t : ℂ) • X)) * NormedSpace.exp ((t : ℂ) • X) = 1`. Rewrite using `[← Matrix.exp_add_of_commute (-((t : ℂ) • X)) ((t : ℂ) • X) ((Commute.refl ((t : ℂ) • X)).neg_left), neg_add_cancel, NormedSpace.exp_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [mul_assoc]`. Use `_ = Jm ε * NormedSpace.exp (-((t : ℂ) • X)) * NormedSpace.exp ((t : ℂ) • X) := by`. Rewrite using `[hg]`. Simplify using `only [mul_assoc, ta_Jm_Jm]`. Use `_ = Jm ε := by rw [mul_assoc, he, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ta_inUJ_mul_exp (ε : Fin n → Bool) {g X : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hX : inG ε X)
     (t : ℝ) : inUJ ε (g * NormedSpace.exp ((t : ℂ) • X)) := by
@@ -147,11 +147,11 @@ lemma ta_inUJ_mul_exp (ε : Fin n → Bool) {g X : Matrix (Fin n) (Fin n) ℂ} (
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Establish `hc` using `ta_curve g X`. Establish `hnear : ∀ᶠ t : ℝ in nhds (0 : ℝ), g * NormedSpace.exp ((t : ℂ) • X) ∈ W`. Apply `hc.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Establish `h0 : g * NormedSpace.exp ((((0 : ℝ) : ℂ)) • X) = g`. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0]`. Conclude with `hW.mem_nhds hg`. Establish `hcn` using `ta_curve_neg X (g⁻¹ * m)`. Establish `hcomp : HasDerivAt (fun t : ℝ => F (NormedSpace.exp (-((t : ℂ) • X)) * (g⁻¹ * m))) (fderiv ℂ F (g⁻¹ * m) (-X * (g⁻¹ * m))) 0`. Use `(hF.hasFDerivAt.restrictScalars ℝ).comp_hasDerivAt_of_eq (0 : ℝ) hcn (by simp only [Complex.ofReal_zero, zero_smul, neg_zero, NormedSpace.exp_zero, one_mul])` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `heq : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[nhds 0] (fun t : ℝ => F (NormedSpace.exp (-((t : ℂ) • X)) * (g⁻¹ * m)))` using `by filter_upwards [hnear] with t ht`. Rewrite using `[hf _ ht (ta_inUJ_mul_exp ε hgu hX t), Matrix.mul_inv_rev, ← Matrix.exp_neg, mul_assoc]`. Conclude with `(hcomp.congr_of_eventuallyEq heq).deriv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ta_rdV_local (ε : Fin n → Bool) {F : Matrix (Fin n) (Fin n) ℂ → E}
     {W : Set (Matrix (Fin n) (Fin n) ℂ)} {m g X : Matrix (Fin n) (Fin n) ℂ}
@@ -179,9 +179,9 @@ theorem ta_rdV_local (ε : Fin n → Bool) {F : Matrix (Fin n) (Fin n) ℂ → E
   exact (hcomp.congr_of_eventuallyEq heq).deriv
 
 /- English proof (translation)
-Unfold `EcV Lhol`. Rewrite using `[ta_rdV_local ε hW hg hgu (ta_inG_cpart1 ε Z) hF hf, ta_rdV_local ε hW hg hgu (ta_inG_cpart2 ε Z) hF hf, ← map_smul, ← map_add]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [neg_mul, smul_neg, add_mul, smul_mul_assoc, neg_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = -Z * (g⁻¹ * m) := by rw [ta_cpart_sum ε Z]`.
+A detailed English derivation is pending.
 -/
 theorem ta_ecV_local (ε : Fin n → Bool) {F : Matrix (Fin n) (Fin n) ℂ → E}
     {W : Set (Matrix (Fin n) (Fin n) ℂ)} {m g : Matrix (Fin n) (Fin n) ℂ}

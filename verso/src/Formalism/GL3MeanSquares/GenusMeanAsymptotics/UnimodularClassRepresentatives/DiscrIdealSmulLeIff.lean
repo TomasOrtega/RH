@@ -12,7 +12,7 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
 
 omit [FiniteDimensional K V] in
 /- English proof (translation)
-Introduce `x hx y hy`. Establish `h1 : algebraMap F K (c : F) ∈ (1 : Submodule (𝓞 K) K)` using `Submodule.mem_one.2 ⟨algebraMap (𝓞 F) (𝓞 K) c, rfl⟩`. Establish `h2` using `Submodule.mul_mem_mul h1 (hLi x hx y hy)`. Rewrite `h2` using `[one_mul]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegralLat_smul {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) (c : 𝓞 F) :
@@ -25,9 +25,9 @@ theorem isIntegralLat_smul {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (�
   exact h2
 
 /- English proof (translation)
-Establish `: Fact (IsFixF K F)` using `⟨hF⟩`. Take `⟨b, H, D, hb, hH, -⟩` from `localValuationFiltration.exists_local_data hF hs hd hL hLi h𝔭`. Establish `hH' : ∀ i j, algebraMap (𝓞 K) K ((algebraMap (𝓞 F) (𝓞 K) c • H) i j) = (algebraMap F K (c : F) • h) (b i) (b j)`. Introduce `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, hH, MeanB.algebraMap_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[integralBasisSpans.akCount_eq _ h𝔭 b hb hH', integralBasisSpans.akCount_eq h h𝔭 b hb hH, PinAA.akM_smul hK h𝔭 hc hk, Fintype.card_fin]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem akCount_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -46,9 +46,9 @@ theorem akCount_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
     Fintype.card_fin]
 
 /- English proof (translation)
-Establish `: Fact (IsFixF K F)` using `⟨hF⟩`. Take `⟨b, H, D, hb, hH, -⟩` from `localValuationFiltration.exists_local_data hF hs hd hL hLi h𝔭`. Establish `hH' : ∀ i j, algebraMap (𝓞 K) K ((algebraMap (𝓞 F) (𝓞 K) c • H) i j) = (algebraMap F K (c : F) • h) (b i) (b j)`. Introduce `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, hH, MeanB.algebraMap_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[integralBasisSpans.nkCount_eq _ h𝔭 b hb hH', integralBasisSpans.nkCount_eq h h𝔭 b hb hH, PinAA.nkM_smul hK h𝔭 hc n hk, Fintype.card_fin]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem nkCount_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -68,9 +68,9 @@ theorem nkCount_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
 
 omit [NumberField K] [StarRing K] [Algebra F K] in
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[pow_zero, zero_mul, zero_add, pow_one]`. Conclude with `fun e => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 e)`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately.
 
-Rewrite using `[show (m + 1) * j + 1 = m * j + j + 1 by ring, pow_succ c]`. Conclude with `idealPowerSpanBounds.mul_notMem h𝔭.isPrime (idealPowerSpanBounds.ne_bot h𝔭) ih hc`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_notMem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {c : 𝓞 F} {j : ℕ} (hc : c ∉ 𝔭 ^ (j + 1))
     (m : ℕ) : c ^ m ∉ 𝔭 ^ (m * j + 1) := by
@@ -83,9 +83,9 @@ theorem pow_notMem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {c : 𝓞 F}
     exact idealPowerSpanBounds.mul_notMem h𝔭.isPrime (idealPowerSpanBounds.ne_bot h𝔭) ih hc
 
 /- English proof (translation)
-Establish `e : (Matrix.of fun i j => (algebraMap F K (c : F) • h) (x i) (x j)) = algebraMap F K (c : F) • Matrix.of fun i j => h (x i) (x j)`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.det_smul, Fintype.card_fin]`. Use `congr 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [map_pow]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem gram_smul (h : V →ₗ⋆[K] V →ₗ[K] K) (c : 𝓞 F) (x : Fin (finrank K V) → V) :
     (Matrix.of fun i j => (algebraMap F K (c : F) • h) (x i) (x j)).det =
@@ -101,15 +101,15 @@ theorem gram_smul (h : V →ₗ⋆[K] V →ₗ[K] K) (c : 𝓞 F) (x : Fin (finr
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hle`. Unfold `discrIdeal`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `z ⟨x, hx, ez⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `idealPowerSpanBounds.mem_of_mul_mem h𝔭 (pow_notMem h𝔭 (localValuationFiltration.notMem_pow_vF h𝔭 hc) (finrank K V))` to reduce the goal to its premises. Apply `hle` to reduce the goal to its premises. Conclude with `Ideal.subset_span ⟨x, hx, by rw [gram_smul, map_mul, ez]⟩`. Introduce `hle`. Unfold `discrIdeal`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `z ⟨x, hx, ez⟩`. Take `⟨g, -, hdet⟩` from `LocF.exists_gram hLi x hx`. Establish `hz : z = algebraMap (𝓞 F) (𝓞 K) (c ^ finrank K V) * g.det`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap (𝓞 K) K z = algebraMap (𝓞 K) K _`. Rewrite using `[ez, gram_smul, map_mul, hdet]`. Establish `h1 : g.det ∈ extP K 𝔭 ^ e` using `hle (Ideal.subset_span ⟨x, hx, hdet⟩)`. Establish `h2 : algebraMap (𝓞 F) (𝓞 K) (c ^ finrank K V) ∈ extP K 𝔭 ^ (finrank K V * vF 𝔭 c)`. Apply `localizedQuotients.ι_mem_pow` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, pow_mul]`. Conclude with `Ideal.pow_mem_pow (localValuationFiltration.mem_pow_vF h𝔭 hc) _`. Use `show z ∈ _`. Rewrite using `[hz, pow_add]`. Conclude with `Ideal.mul_mem_mul h2 h1`.
+A detailed English derivation is pending.
 -/
 theorem discrIdeal_smul_le_iff {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {c : 𝓞 F} (hc : c ≠ 0)
@@ -143,17 +143,15 @@ theorem discrIdeal_smul_le_iff {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule
     exact Ideal.mul_mem_mul h2 h1
 
 /- English proof (translation)
-Establish `hD` using `LocF.discrIdeal_ne_bot (LocF.aniso_of_totPosDef hd) hL hLi`. Establish `hE : extP K 𝔭 ≠ ⊤`. Introduce `e`. Apply `h𝔭.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← pow_one 𝔭, ← idealPowerSpanBounds.mem_pow_iff (K := K), pow_one, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Establish `hb : BddAbove {e : ℕ | discrIdeal h L ≤ extP K 𝔭 ^ e}`. Assume the negation of the conclusion as `hnb`. Rewrite `hnb` using `[not_bddAbove_iff]`. Apply `hD` to reduce the goal to its premises.
+Check the elementary cases of the proposition. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[eq_bot_iff, ← Ideal.iInf_pow_eq_bot_of_isDomain (extP K 𝔭) hE]`. Use `le_iInf fun k => ?_` and prove the remaining obligations. Take `⟨e, he, hke⟩` from `hnb k`. Conclude with `he.trans (Ideal.pow_le_pow_right hke.le)`. Establish `hmem : vd h L 𝔭 ∈ {e : ℕ | discrIdeal h L ≤ extP K 𝔭 ^ e}` using `Nat.sSup_mem ⟨0, by simp⟩ hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : IsGreatest {e : ℕ | discrIdeal (algebraMap F K (c : F) • h) L ≤ extP K 𝔭 ^ e} (vd h L 𝔭 + finrank K V * vF 𝔭 c)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[add_comm]`. Conclude with `(discrIdeal_smul_le_iff hLi h𝔭 hc _).2 hmem`. Introduce `e' he'`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Use linear arithmetic over natural numbers and integers.
 
-Distinguish the cases in `hlt : e' ≤ finrank K V * vF 𝔭 c`. Use linear arithmetic over natural numbers and integers. Take `⟨e, rfl⟩ : ∃ e, e' = finrank K V * vF 𝔭 c + e` from `⟨e' - finrank K V * vF 𝔭 c, by omega⟩`. Establish `h1 : e ≤ vd h L 𝔭` using `le_csSup hb ((discrIdeal_smul_le_iff hLi h𝔭 hc e).1 he')`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `hg.csSup_eq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem vd_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}

@@ -12,9 +12,9 @@ section
 variable {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [NormedSpace ℝ V] {d : ℕ} (G : Dr.Geo Γ V S d)
 
 /- English proof (translation)
-Establish `hδ : δ = γ⁻¹` using `eq_inv_of_mul_eq_one_right h`. Substitute `hδ` using the available equality. Use extensionality with `v`. Rewrite using `[Geo.tr_apply, Geo.tr_apply, Matrix.mulVec_mulVec, ← map_mul, mul_inv_cancel, map_one, Matrix.one_mulVec]`. Establish `hv : (fun i => (G.ρ γ⁻¹⁻¹) ((G.ρ γ⁻¹) (v i))) = v`.
+Establish an intermediate fact. Substitute using the available equality. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `Geo.ρ_inv_apply G γ⁻¹ (v i)`. Rewrite using `[hv]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tr_tr (q : ℕ) (γ δ : Γ) (h : γ * δ = 1) (m : V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) :
     G.tr q γ (G.tr q δ m) = m := by
@@ -29,15 +29,15 @@ private theorem tr_tr (q : ℕ) (γ δ : Γ) (h : γ * δ = 1) (m : V [⋀^Fin q
   rw [hv]
 
 /- English proof (translation)
-Set `L : (V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) ≃L[ℝ] (V [⋀^Fin q]→L[ℝ] (Fin d → ℂ))` to `ContinuousLinearEquiv.equivOfInverse (G.tr q γ) (G.tr q γ⁻¹) (fun m => tr_tr G q γ⁻¹ γ (inv_mul_cancel γ) m) (fun m => tr_tr G q γ γ⁻¹ (mul_inv_cancel γ) m)`. Establish `hL : ∀ m, L m = G.tr q γ m` using `fun m => rfl`. Establish `key : ∀ f : ℝ → (V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)), L (∫ t in (0:ℝ)..1, f t) = ∫ t in (0:ℝ)..1, L (f t)`. Introduce `f`. Simplify using `only [intervalIntegral, map_sub, L.integral_comp_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hpt : ∀ t : ℝ, G.ρ γ⁻¹ (G.ρ γ p + t • (x - G.ρ γ p)) = p + t • (G.ρ γ⁻¹ x - p)`. Introduce `t`. Simplify using `[map_add, map_smul, map_sub, Geo.ρ_inv_apply]`. Rewrite using `[← hL]`. Unfold `coneOp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[key]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[map_smul]`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpt]`. Use `congr 1`. Use extensionality with `v`. Rewrite using `[hL, Geo.tr_apply, ContinuousAlternatingMap.curryLeft_apply_apply, ContinuousAlternatingMap.curryLeft_apply_apply, Geo.tr_apply]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ ?_ i` and prove the remaining obligations. Simplify using `[Geo.ρ_inv_apply]`. Introduce `j`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tr_coneOp (q : ℕ) (γ : Γ) (w : V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) (p x : V) :
     G.tr q γ (coneOp p w (G.ρ γ⁻¹ x)) = coneOp (G.ρ γ p) (fun y => G.tr (q + 1) γ (w (G.ρ γ⁻¹ y))) x := by
@@ -75,29 +75,27 @@ private theorem tr_coneOp (q : ℕ) (γ : Γ) (w : V → V [⋀^Fin (q + 1)]→L
 end
 
 /- English proof (translation)
-Introduce `Γ V S _ _ _ _ d G hconv q`. Establish `hD` using `coneD V (Fin d → ℂ) G.Y G.isOpen hconv`. Set `f : V → G.Om (q + 1) → S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)` to `fun p w s x => if x ∈ G.Y then coneOp p ((w : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s) x else 0`. Establish `hwm : ∀ (w : G.Om (q + 1)) (s : S), ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) ((w : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s) G.Y ∧ ∀ x ∉ G.Y, (w : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s x = 0` using `fun w => w.2`. Establish `hf : ∀ p ∈ G.Y, ∀ w, f p w ∈ G.Om q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p hp w`. Use `fun s => ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `((hD p hp q _ (hwm w s).1).1).congr (fun x hx => if_pos hx)`. Introduce `x hx`. Conclude with `if_neg hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `K : V → G.Om (q + 1) → G.Om q` to `fun p w => if hp : p ∈ G.Y then ⟨f p w, hf p hp w⟩ else 0`. Establish `hK : ∀ p (hp : p ∈ G.Y) w, ((K p w : G.Om q) : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) = f p w`. Introduce `p hp w`. Simplify using `[K, hp]`. Use `⟨K, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p hp w hw0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s x`. Distinguish the cases in `hx : x ∈ G.Y`. Rewrite using `[Geo.dOm_apply G (K p w) s hx, hK p hp w]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hclosed : ∀ y ∈ G.Y, extDeriv ((w : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s) y = 0`. Introduce `y hy`. Establish `h0` using `congrArg (fun u : G.Om (q + 1 + 1) => (u : S → V → V [⋀^Fin (q + 1 + 1)]→L[ℝ] (Fin d → ℂ)) s y) hw0`. Rewrite `h0` using `[Geo.dOm_apply G w s hy]`. Simplify using `using h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hloc : extDeriv (f p w s) x = extDeriv (coneOp p ((w : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s)) x`. Rewrite using `[← extDerivWithin_univ, ← extDerivWithin_univ]`. Apply `Filter.EventuallyEq.extDerivWithin_eq_of_mem _ (Set.mem_univ x)` to reduce the goal to its premises. Rewrite using `[nhdsWithin_univ]`. Conclude with `Filter.eventually_of_mem (G.isOpen.mem_nhds hx) (fun y hy => if_pos hy)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hloc]`. Conclude with `(hD p hp q _ (hwm w s).1).2 hclosed x hx`. Establish `h1` using `((G.dOm q (K p w)).2 s).2 x hx`. Establish `h2` using `(hwm w s).2 x hx`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `γ p hp w`. Establish `hp' : G.ρ γ p ∈ G.Y` using `G.maps γ p hp`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s x`. Use `show G.tr q γ (((K p w : G.Om q) : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) (G.σ γ⁻¹ s) (G.ρ γ⁻¹ x)) = ((K (G.ρ γ p) (G.act (q + 1) γ w) : G.Om q) : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s x`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hK p hp, hK _ hp']`. Distinguish the cases in `hx : x ∈ G.Y`. Establish `hx' : G.ρ γ⁻¹ x ∈ G.Y` using `G.maps γ⁻¹ x hx`. Simplify using `only [f, if_pos hx, if_pos hx']`. Conclude with `tr_coneOp G q γ _ p x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx' : G.ρ γ⁻¹ x ∉ G.Y`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `h2` using `G.maps γ _ h`. Establish `h3` using `Geo.ρ_inv_apply G γ⁻¹ x`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h3` using `[inv_inv]`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Simplify using `only [f, if_neg hx, if_neg hx', map_zero]`. Introduce `p hp w hw s C hC hCc`. Establish `h` using `coneLim V (Fin d → ℂ) G.Y hconv p hp q (fun k => ((w k : G.Om (q + 1)) : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s) (fun C' hC' hC'c => hw s C' hC' hC'c) C hC hCc`.
-
-Use `h.congr ?_` and prove the remaining obligations. Use `filter_upwards with k`. Introduce `x hx`. Rewrite using `[hK p hp]`. Simplify using `[f, hC hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.poinOp :
     UpperTheory.V.Cj.H.PoinOp := by

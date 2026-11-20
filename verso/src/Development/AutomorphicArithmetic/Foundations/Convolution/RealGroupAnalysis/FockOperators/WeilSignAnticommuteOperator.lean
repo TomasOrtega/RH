@@ -7,7 +7,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(wW F).1 * (wW F).1 = (mD (-1 : (A F)ˣ)).1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [wW, mD, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem wW_sq (F : Type) [Field F] [NumberField F] : wW F * wW F = mD (-1 : (A F)ˣ) := by
   apply Subtype.ext
@@ -16,18 +16,18 @@ private theorem wW_sq (F : Type) [Field F] [NumberField F] : wW F * wW F = mD (-
   fin_cases i <;> fin_cases j <;> simp [wW, mD, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Simplify using `[cw, map_neg]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cw_neg {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (w : InfinitePlace F) (a : A F) :
     cw w (-a) = -cw w a := by
   simp [cw, map_neg]
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Establish `h1` using `W.Om_m (-1 : (A F)ˣ) (O.x w j φ) v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2` using `O.x_apply w j (W.Om (mD (-1 : (A F)ˣ)) φ) v`. Establish `h3` using `W.Om_m (-1 : (A F)ˣ) φ v`. Establish `h4` using `O.x_apply w j φ (fun i => (((-1 : (A F)ˣ) : A F)) * v i)`. Express the relevant statement in the definitionally equal form `(W.Om (mD (-1 : (A F)ˣ)) (O.x w j φ)).1 v = -((O.x w j (W.Om (mD (-1 : (A F)ˣ)) φ)).1 v)`. Rewrite using `[h1, h2, h3, h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : cw w ((((-1 : (A F)ˣ) : A F)) * v j) = -cw w (v j)`. Rewrite using `[Units.val_neg, Units.val_one, neg_one_mul, cw_neg]`. Rewrite using `[h5]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem weilSign_anticommute_operator {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [IsTotallyComplex E] {D : Dat F E} (W : Weil D) (O : Ops F) (w : InfinitePlace F) (j : Fin 4) :
@@ -48,7 +48,7 @@ private theorem weilSign_anticommute_operator {F E : Type} [Field F] [NumberFiel
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> simp [Ops.p, mul_smul_comm, smul_mul_assoc, weilSign_anticommute_operator W O w]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem R_p {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [IsTotallyComplex E] {D : Dat F E} (W : Weil D) (O : Ops F) (w : InfinitePlace F) (i : Fin 4) :
@@ -56,11 +56,11 @@ private theorem R_p {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   fin_cases i <;> simp [Ops.p, mul_smul_comm, smul_mul_assoc, weilSign_anticommute_operator W O w]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W O w i`. Establish `hd` using `UpperTheory.ConvolutionTheory.R2.Fo.dW F E D W O w i`. Establish `hR : W.Om (wW F) * W.Om (wW F) = W.Om (mD (-1 : (A F)ˣ))`. Rewrite using `[← map_mul, wW_sq]`. Establish `hinv : W.Om (wW F) * W.Om (wW F)⁻¹ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Establish `key : (W.Om (wW F) * O.d w i) * W.Om (wW F) = (-(O.p D.δ w i * W.Om (wW F))) * W.Om (wW F)`. Combine the equalities or inequalities in the displayed calculation. Establish `key2 : W.Om (wW F) * O.d w i = -(O.p D.δ w i * W.Om (wW F))`. Use `congrArg (· * W.Om (wW F)⁻¹) key` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [mul_assoc, hinv, mul_one]`. Rewrite using `[key2, neg_neg]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.pW :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (O : Ops F) w i, O.p D.δ w i * W.Om (wW F) = -(W.Om (wW F) * O.d w i) := by

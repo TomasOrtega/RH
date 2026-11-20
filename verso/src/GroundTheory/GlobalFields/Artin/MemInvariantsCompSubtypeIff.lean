@@ -17,7 +17,7 @@ def cosetAverage (I : Subgroup G) (f : G → ℂ) (g : G) : ℂ :=
   (Nat.card I : ℂ)⁻¹ * ∑ᶠ i : I, f (g * i)
 
 /- English proof (translation)
-Unfold `cosetAverage`. Use `congr 1`. Use `finsum_comp_equiv (Equiv.mulLeft (⟨j, hj⟩ : I)) (f := fun i : I => f (g * (i : G)))` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cosetAverage_mul_of_mem (I : Subgroup G) (f : G → ℂ) (g : G) {j : G} (hj : j ∈ I) :
     cosetAverage I f (g * j) = cosetAverage I f g := by
@@ -27,11 +27,9 @@ theorem cosetAverage_mul_of_mem (I : Subgroup G) (f : G → ℂ) (g : G) {j : G}
   simpa [mul_assoc] using this
 
 /- English proof (translation)
-Set `e : I ≃ J` to `{ toFun := fun i => ⟨h * i * h⁻¹, (hIJ _).2 (by`. Rewrite using `[show h⁻¹ * (h * (i : G) * h⁻¹) * h = i by group]; exact i.2)⟩`. Use `invFun := fun j => ⟨h⁻¹ * j * h, (hIJ _).1 j.2⟩`. Use `left_inv := fun i => by ext; simp [mul_assoc]`. Use `right_inv := fun j => by ext; simp [mul_assoc] }`.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `cosetAverage`. Rewrite using `[Nat.card_congr e, ← finsum_comp_equiv e]`. Use `congr 1`. Use `finsum_congr fun i => ?_` and prove the remaining obligations. Simplify using `only [e, Equiv.coe_fn_mk]`.
-
-Rewrite using `[show h * g * h⁻¹ * (h * (i : G) * h⁻¹) = h * (g * i) * h⁻¹ by group, hf]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosetAverage_conj (I J : Subgroup G) (f : G → ℂ) (hf : ∀ g h : G, f (h * g * h⁻¹) = f g)
     (h : G) (hIJ : ∀ σ, σ ∈ J ↔ h⁻¹ * σ * h ∈ I) (g : G) :
@@ -56,9 +54,9 @@ section Inertia
 variable {G S : Type*} [Group G] [CommRing S] [MulSemiringAction G S]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hσ x`. Use `hσ (h • x)` as an intermediate fact. Rewrite `this` using `[Submodule.mem_toAddSubgroup, Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Simplify `this` using `[mul_smul, smul_sub]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hσ x`. Rewrite using `[Submodule.mem_toAddSubgroup, Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Simplify `hσ (h⁻¹ • x)` using `[mul_smul, smul_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_inertia_smul_iff (P : Ideal S) (h σ : G) :
     σ ∈ (h • P).inertia G ↔ h⁻¹ * σ * h ∈ P.inertia G := by
@@ -72,7 +70,7 @@ theorem mem_inertia_smul_iff (P : Ideal S) (h σ : G) :
     simpa [mul_smul, smul_sub] using hσ (h⁻¹ • x)
 
 /- English proof (translation)
-Establish `hsP : s • P = P` using `hs`. Rewrite using `[← hsP, mem_inertia_smul_iff, show s⁻¹ * (s * i * s⁻¹) * s = i by group]`. Conclude with `hi`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mul_inv_mem_inertia {P : Ideal S} {s i : G} (hs : s ∈ MulAction.stabilizer G P)
     (hi : i ∈ P.inertia G) : s * i * s⁻¹ ∈ P.inertia G := by
@@ -81,9 +79,9 @@ theorem mul_mul_inv_mem_inertia {P : Ideal S} {s i : G} (hs : s ∈ MulAction.st
   exact hi
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [one_mem]`. Consider the case `succ m ih`. Establish `h1` using `mul_mul_inv_mem_inertia (inv_mem ha) (mul_mem ih hab)`. Rewrite `h1` using `[inv_inv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[pow_succ, pow_succ]`. Use `group`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_pow_mul_pow_mem_inertia {P : Ideal S} {a b : G} (ha : a ∈ MulAction.stabilizer G P)
     (hab : b * a⁻¹ ∈ P.inertia G) (m : ℕ) : (a ^ m)⁻¹ * b ^ m ∈ P.inertia G := by
@@ -104,9 +102,9 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
   [IsGalois K L] (v : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup v.asIdeal w.asIdeal w'.asIdeal Gal(L/K)`. Establish `hψ : IsArithFrobAt (𝓞 K) (h * φ * h⁻¹) w'.asIdeal` using `hh ▸ hφ.conj h`. Establish `hI` using `inv_pow_mul_pow_mem_inertia hψ.mem_stabilizer (hφ'.mul_inv_mem_inertia hψ) m`. Rewrite using `[← mul_inv_cancel_left ((h * φ * h⁻¹) ^ m) (φ' ^ m), cosetAverage_mul_of_mem _ _ _ hI, conj_pow]`. Use `cosetAverage_conj _ _ f hf h (fun σ => ?_) _` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hh, mem_inertia_smul_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetAverage_inertia_eq (f : Gal(L/K) → ℂ) (hf : ∀ g h, f (h * g * h⁻¹) = f g)
     (w w' : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal]
@@ -124,7 +122,7 @@ theorem cosetAverage_inertia_eq (f : Gal(L/K) → ℂ) (hf : ∀ g h, f (h * g *
 
 omit [NumberField L] [IsGalois K L] in
 /- English proof (translation)
-Take `⟨Q, hQmax, hQ⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 L) v.asIdeal`. Use `⟨⟨Q, hQmax.isPrime, fun h => v.ne_bot ?_⟩, hQ⟩` and prove the remaining obligations. Rewrite using `[hQ.over, h]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_liesOver : ∃ w : HeightOneSpectrum (𝓞 L), w.asIdeal.LiesOver v.asIdeal := by
   obtain ⟨Q, hQmax, hQ⟩ := Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 L) v.asIdeal
@@ -145,7 +143,7 @@ def localAverage (f : Gal(L/K) → ℂ) (m : ℕ) : ℂ :=
     (arithFrobAt (𝓞 K) Gal(L/K) (placeAbove (L := L) v).asIdeal ^ m)
 
 /- English proof (translation)
-The claim follows from `cosetAverage_inertia_eq v f hf w (placeAbove v) hφ (IsArithFrobAt.arithFrobAt _ _ _) m`.
+A detailed English derivation is pending.
 -/
 theorem localAverage_eq (f : Gal(L/K) → ℂ) (hf : ∀ g h, f (h * g * h⁻¹) = f g)
     (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal] {φ : Gal(L/K)}
@@ -165,7 +163,7 @@ abbrev subgroupInvariants (I : Subgroup G) : Submodule ℂ V :=
 
 omit [Finite G] [FiniteDimensional ℂ V] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h i hi => h ⟨i, hi⟩, fun h i => h i i.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_invariants_comp_subtype_iff (I : Subgroup G) (x : V) :
     x ∈ subgroupInvariants ρ I ↔ ∀ i ∈ I, ρ i x = x :=
@@ -174,7 +172,7 @@ theorem mem_invariants_comp_subtype_iff (I : Subgroup G) (x : V) :
 omit [Finite G] [FiniteDimensional ℂ V] in
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_invariants_comp_subtype_iff]`. Introduce `i hi`. Rewrite using `[← Module.End.mul_apply, ← map_mul, show i * g = g * (g⁻¹ * i * g) by group, map_mul, Module.End.mul_apply, hx _ (hg i hi)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem mapsTo_invariants (I : Subgroup G) {g : G} (hg : ∀ i ∈ I, g⁻¹ * i * g ∈ I) (x : V)
     (hx : x ∈ subgroupInvariants ρ I) : ρ g x ∈ subgroupInvariants ρ I := by
@@ -184,17 +182,17 @@ theorem mapsTo_invariants (I : Subgroup G) {g : G} (hg : ∀ i ∈ I, g⁻¹ * i
     Module.End.mul_apply, hx _ (hg i hi)]
 
 /- English proof (translation)
-Use `Fintype.ofFinite I` as an intermediate fact. Use `set W := subgroupInvariants ρ I`. Establish `hI : (Nat.card I : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Use `set e : Module.End ℂ V := (Nat.card I : ℂ)⁻¹ • ∑ i : I, ρ i with he`. Establish `he_apply : ∀ x, e x = (Nat.card I : ℂ)⁻¹ • ∑ i : I, ρ i x` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he, LinearMap.smul_apply, LinearMap.sum_apply]`. Establish `he_mem : ∀ x, e x ∈ W`. Introduce `x`. Rewrite using `[mem_invariants_comp_subtype_iff]`. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[he_apply, map_smul, map_sum]`. Use `congr 1`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft (⟨j, hj⟩ : I)) _ _ (fun i => by`. Simplify using `only [Equiv.coe_mulLeft, Subgroup.coe_mul, map_mul, Module.End.mul_apply])`. Establish `he_id : ∀ x ∈ W, e x = x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite `hx` using `[mem_invariants_comp_subtype_iff]`. Rewrite using `[he_apply, Finset.sum_congr rfl fun i _ => hx i.1 i.2, Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hI, one_smul]`. Set `e' : V →ₗ[ℂ] W` to `e.codRestrict W he_mem`. Establish `h1 : B.restrict hB = (e' ∘ₗ B) ∘ₗ W.subtype`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[e', he_id _ (hB x x.2)]`. Establish `h2 : W.subtype ∘ₗ (e' ∘ₗ B) = e ∘ₗ B`. Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, LinearMap.trace_comp_comm', h2, finsum_eq_sum_of_fintype, he, LinearMap.smul_comp, map_smul, smul_eq_mul, ← Module.End.mul_eq_comp, Finset.sum_mul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `LinearMap.trace_mul_comm ℂ (ρ i) B`.
+A detailed English derivation is pending.
 -/
 theorem trace_restrict_invariants (I : Subgroup G) (B : Module.End ℂ V)
     (hB : ∀ x ∈ subgroupInvariants ρ I, B x ∈ subgroupInvariants ρ I) :
@@ -239,7 +237,7 @@ def invariantsEnd (I : Subgroup G) (g : G) (hg : ∀ i ∈ I, g⁻¹ * i * g ∈
   (ρ g).restrict (mapsTo_invariants ρ I hg)
 
 /- English proof (translation)
-Rewrite using `[invariantsEnd, Module.End.pow_restrict, trace_restrict_invariants, cosetAverage]`. Use `congr 1`. Use `finsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[Representation.character, map_mul ρ, map_pow ρ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_invariantsEnd_pow (I : Subgroup G) (g : G) (hg : ∀ i ∈ I, g⁻¹ * i * g ∈ I)
     (m : ℕ) :
@@ -260,7 +258,7 @@ variable {K L V : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Al
 omit [NumberField K] [NumberField L] [IsGalois K L] in
 
 /- English proof (translation)
-Introduce `_ hi` and use `by simpa using mul_mul_inv_mem_inertia (inv_mem hφ) hi`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_mul_mul_mem_inertia (w : HeightOneSpectrum (𝓞 L)) {φ : Gal(L/K)}
     (hφ : φ ∈ MulAction.stabilizer Gal(L/K) w.asIdeal) :
@@ -272,7 +270,7 @@ def inertiaFactor (w : HeightOneSpectrum (𝓞 L)) (φ : Gal(L/K))
   (invariantsEnd ρ (w.asIdeal.inertia Gal(L/K)) φ (inv_mul_mul_mem_inertia w hφ)).charpoly.reverse
 
 /- English proof (translation)
-The claim follows from `reverse_charpoly_eq_of_trace_pow_eq _ _ fun m _ => by rw [trace_invariantsEnd_pow, trace_invariantsEnd_pow, cosetAverage_inertia_eq v ρ.character (fun g h => ρ.char_conj g h) w w' hφ hφ' m]`.
+A detailed English derivation is pending.
 -/
 theorem inertiaFactor_eq (w w' : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal]
     [w'.asIdeal.LiesOver v.asIdeal] {φ φ' : Gal(L/K)} (hφ : IsArithFrobAt (𝓞 K) φ w.asIdeal)
@@ -285,7 +283,7 @@ theorem inertiaFactor_eq (w w' : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver
 omit [IsGalois K L] in
 
 /- English proof (translation)
-Rewrite using `[inertiaFactor, logOf_inv_reverse_charpoly]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Rewrite using `[trace_invariantsEnd_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem logOf_inv_inertiaFactor (w : HeightOneSpectrum (𝓞 L)) {φ : Gal(L/K)}
     (hφ : φ ∈ MulAction.stabilizer Gal(L/K) w.asIdeal) :
@@ -302,7 +300,7 @@ def localFactor : ℂ[X] :=
     (IsArithFrobAt.arithFrobAt_mem_stabilizer _ _ _)
 
 /- English proof (translation)
-The claim follows from `inertiaFactor_eq v ρ _ _ (IsArithFrobAt.arithFrobAt _ _ _) hφ`.
+A detailed English derivation is pending.
 -/
 theorem localFactor_eq (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal]
     {φ : Gal(L/K)} (hφ : IsArithFrobAt (𝓞 K) φ w.asIdeal) :
@@ -310,7 +308,7 @@ theorem localFactor_eq (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.as
   inertiaFactor_eq v ρ _ _ (IsArithFrobAt.arithFrobAt _ _ _) hφ
 
 /- English proof (translation)
-The claim follows from `logOf_inv_inertiaFactor ρ _ _`.
+A detailed English derivation is pending.
 -/
 theorem logOf_inv_localFactor :
     PowerSeries.logOf ((localFactor v ρ : PowerSeries ℂ)⁻¹) =

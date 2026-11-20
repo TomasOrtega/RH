@@ -9,9 +9,9 @@ namespace GlobalTheory.Mem.Top
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem NumberField IsDedekindDomain
 
 /- English proof (translation)
-Establish `hint : IsIntegral (D.ntw.O0 (c.twI w)) (e (x : ↥D.LL0))` using `(RingOfIntegers.isIntegral_coe x).map_of_comp_eq (Int.castRingHom _) e (RingHom.ext_int _ _)`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint`. Establish `hleft : (∃ y' ∈ IsLocalRing.maximalIdeal (D.ntw.O0 (c.twI w)), algebraMap _ (FractionRing (D.ntw.O0 (c.twI w))) y' = e (x : ↥D.LL0)) ↔ ¬ IsUnit y`. Use `⟨fun ⟨y', h1, h2⟩ => ?_, fun h1 => ⟨y, h1, hy⟩⟩` and prove the remaining obligations. Rewrite using `[← IsFractionRing.injective _ _ (h2.trans hy.symm)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Establish `e1` using `h.embedding_baseField_condition w x y 1 one_ne_zero (by rw [← he, map_one, mul_one, hy])`. Simplify using `only [map_one, mul_one] at e1`. Rewrite using `[hleft, GlobalTheory.TwistGoodCompare.pos_iff_not_isUnit c w _ _ e1, not_iff_not]`. Conclude with `⟨GlobalTheory.TwistGoodCompare.isUnit_of_toOe c w y, fun hu => ((hu.map _).map _).map _⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pos_iff_side_mem_max {D : D7} {c : NChoice D} (h : NChTie D c) (w : D.what₂.places.Pl) (x : 𝓞 ↥D.LL0)
     (e : ↥D.LL0 →+* FractionRing (D.ntw.O0 (c.twI w)))
@@ -32,17 +32,17 @@ theorem pos_iff_side_mem_max {D : D7} {c : NChoice D} (h : NChTie D c) (w : D.wh
   exact ⟨GlobalTheory.TwistGoodCompare.isUnit_of_toOe c w y, fun hu => ((hu.map _).map _).map _⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hq` using `D.what₂.places.resChar_prime w`. Establish `hq0 : 0 < D.what₂.places.val w ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)`. Rewrite using `[D.what₂.places.val_resChar w]`. Conclude with `D.what₂.places.ramIdx_pos w` after adjusting the coercions.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : IsCoprime ((D.what₂.places.resChar w : ℕ) : ℤ) (p : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hq hp).2 hne)`. Take `⟨a, b, hab⟩` from `hc`. Establish `hnat : ∀ n : ℕ, 0 ≤ D.what₂.places.val w (n : D.what₂.LL)`. Introduce `n`. Proceed by induction on `n with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ]`. Conclude with `(D.what₂.places.val w).map_le_add ih (by simp)`. Establish `hint : ∀ n : ℤ, 0 ≤ D.what₂.places.val w (n : D.what₂.LL)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n`. Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg n`. Simplify using `using hnat m`. Rewrite using `[Int.cast_neg, AddValuation.map_neg]`. Simplify using `using hnat m`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (a : D.what₂.LL) * ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) + (b : D.what₂.LL) * ((p : ℕ) : D.what₂.LL) = 1`. Conclude with `congrArg (Int.cast : ℤ → D.what₂.LL) hab` after adjusting the coercions. Establish `h2 : 0 < D.what₂.places.val w 1`. Rewrite using `[← h1]`. Use `(D.what₂.places.val w).map_lt_add ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[AddValuation.map_mul]`. Conclude with `hq0.trans_le (le_add_of_nonneg_left (hint a))`. Rewrite using `[AddValuation.map_mul]`. Conclude with `h.trans_le (le_add_of_nonneg_left (hint b))`. Simplify using `at h2`.
+A detailed English derivation is pending.
 -/
 theorem resChar_eq_of_pos {D : D7} (w : D.what₂.places.Pl) {p : ℕ} (hp : p.Prime)
     (h : 0 < D.what₂.places.val w ((p : ℕ) : D.what₂.LL)) : D.what₂.places.resChar w = p := by
@@ -76,9 +76,9 @@ theorem resChar_eq_of_pos {D : D7} (w : D.what₂.places.Pl) {p : ℕ} (hp : p.P
   simp at h2
 
 /- English proof (translation)
-Introduce and unpack `p hp w hw ⟨w', -, hw'⟩`. Use `⟨c.twI w', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[c.twI_l]`. Use `resChar_eq_of_pos w' hp ?_` and prove the remaining obligations. Simplify using `using (hw' _).1 hw`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the cases of `hs : c.sd w'`. Conclude with `Or.inr fun x => (hw' x).trans (pos_iff_side_mem_max h w' x _ (by rw [hs, if_neg (by simp)]))`. Conclude with `Or.inl fun x => (hw' x).trans (pos_iff_side_mem_max h w' x _ (by rw [hs, if_pos rfl]))`.
+Split into cases according to the possible forms of the given data. Prove the second alternative. Prove the first alternative.
 -/
 theorem twCoverPair_of_tie (D : D7) (c : NChoice D) (h : NChTie D c) : TwCoverPair D := by
   rintro p hp w hw ⟨w', -, hw'⟩

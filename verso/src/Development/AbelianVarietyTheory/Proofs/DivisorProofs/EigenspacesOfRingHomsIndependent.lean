@@ -5,13 +5,13 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C _ O _ _ Λ _ h ρ hinj`. Set `T : Λ → Module.End C (Fin h → C)` to `fun a => Matrix.toLin' ((ρ a).map (algebraMap O C))`. Establish `hT : ∀ a b, T a * T b = T (a * b)`. Introduce `a b`. Simplify using `only [T, map_mul, Matrix.map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.toLin'_mul]`. Both sides reduce to the same expression. Establish `hc : ∀ a b, Commute (T a) (T b)`. Introduce `a b`. Use `show T a * T b = T b * T a`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, hT, mul_comm]`. Establish `hind` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo T (fun i j φ => Module.End.mapsTo_maxGenEigenspace_of_comm (hc j i) φ)`. Set `g : (Λ →+* O) → (Λ → C)` to `fun σ a => algebraMap O C (σ a)`. Establish `hg : Function.Injective g`. Introduce `σ τ hστ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Conclude with `hinj (congrFun hστ a)`. Use `(hind.comp hg).mono ?_` and prove the remaining obligations. Introduce `σ`. Conclude with `iInf_mono fun a => Module.End.eigenspace_le_maxGenEigenspace`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem iSupIndep_eig : ∀ (C : Type) [Field C] (O : Type) [CommRing O] [Algebra O C] (Λ : Type)
     [CommRing Λ] (h : ℕ) (ρ : Λ →+* Matrix (Fin h) (Fin h) O), Function.Injective (algebraMap O C) →

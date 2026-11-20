@@ -6,7 +6,7 @@ open MeasureTheory Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalis
 open scoped InnerProductSpace ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.DecGapBound.decGap_of_formulaGap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FLowestKTypeDecayGapOfCompressionFormulaGap.lean&line=11#L11)
 -/

@@ -19,43 +19,39 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.WeightsFamPf
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨aH, bH, hH⟩` from `GlobalTheory.T.differentLocalIdentity_familiesLemmaH Cg cb Cw cT CT C0`. Use `⟨max aH 2, bH, fun C' Cl e1 e2 D large₂ X Y u u' hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire _hBk K S TS cls hFQ γ _hγ Fm hFT _hRel _hTerm hG5 => ?_⟩` and prove the remaining obligations. Establish `hC' : (2 : ℝ) ≤ C'` using `le_trans (le_max_right _ _) e1`. Establish `hCH : aH ≤ C'` using `le_trans (le_max_left _ _) e1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk4 : 4 * D.R.rS + 7 ≤ D.R.k` using `four_rank_add_seven_le_k hc`. Establish `hk5 : 2 * D.R.rS + 2 + D.R.f + 5 ≤ D.R.k`. Take `⟨⟨hH0, _, _⟩, _, _⟩` from `hc`. Unfold `Formalism.MainNotions.S.StandingHypotheses at hH0`. Simplify using `only at hH0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify by unfolding definitions.
 
-Take `⟨-, h2, h3, -, -⟩` from `hH0`. Establish `hm2` using `D.R.two_le_m`. Take `⟨j, hj⟩` from `D.R.m_even`. Establish `hmr : 2 * D.R.rS + 2 = D.R.m` using `by simp only [Formalism.BasicNotions.Ranks.rS]; omega`. Establish `hL : (1 : ℝ) ≤ large₂.sc.L` using `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (2 : ℝ) ≤ (D.R.m : ℝ)` using `by exact_mod_cast hm2`. Establish `hf : ((D.R.m : ℝ)) ^ 4 ≤ (D.R.f : ℝ)` using `by exact_mod_cast h3`. Establish `hm5 : (2 : ℝ) ^ 5 ≤ (D.R.m : ℝ) ^ 5` using `pow_le_pow_left₀ (by norm_num) hm 5`. Establish `hm4 : (2 : ℝ) ^ 4 ≤ (D.R.m : ℝ) ^ 4` using `pow_le_pow_left₀ (by norm_num) hm 4`. Establish `hmm : (D.R.m : ℝ) ≤ (D.R.m : ℝ) ^ 4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℝ) ≤ (D.R.m : ℝ)` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hf0 : (0 : ℝ) ≤ (D.R.f : ℝ)` using `by positivity`. Establish `h64 : (64 : ℝ) ≤ C' * (D.R.m : ℝ) ^ 5` using `by nlinarith`. Establish `ha : 64 * (D.R.f : ℝ) ≤ C' * (D.R.m : ℝ) ^ 5 * (D.R.f : ℝ)` using `mul_le_mul_of_nonneg_right h64 hf0`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : C' * (D.R.m : ℝ) ^ 5 * (D.R.f : ℝ) ≤ C' * (D.R.m : ℝ) ^ 5 * (D.R.f : ℝ) * large₂.sc.L` using `le_mul_of_one_le_right (by nlinarith) hL`. Establish `hreal : (D.R.m : ℝ) + (D.R.f : ℝ) + 5 ≤ (D.R.k : ℝ)` using `by nlinarith`. Establish `hnat : D.R.m + D.R.f + 5 ≤ D.R.k` using `by exact_mod_cast hreal`. Use linear arithmetic over natural numbers and integers. Establish `hLaw` using `GlobalTheory.T.matchedFamily_mass_law_base_situation Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' hc K S TS cls hFQ γ Fm hFT hG5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Take `⟨_w0, F, F', _Y0, _hw0, _hn, _hZ, _hTP, hBase, _hML, _hgenL⟩` from `id hLaw`. Establish `hcong` using `GlobalTheory.T.flagNorms_congr_mod_level_sq D (zOf Y) Fm.FP u u' F F' hBase.1 (fun p => (hBase.2.1 p).2.2.2.2.2.2)`. Take `⟨hpos, hHp, w, G', hw, hzt, hTP', hcell, hglue⟩` from `GlobalTheory.T.genericMass_le_heightPow_mul_gluedCount D X Y u u' hk4 Fm γ hG5.1 hLaw`. Take `⟨-, -, -, -, -, -, ⟨_, _, -, -, -, -, -, hLT⟩, -⟩` from `hc.2.2`. Take `⟨s, hgl, hs⟩` from `GlobalTheory.T.gluedLattice_weightedCount_le_explicit D X Y u u' hLT hk5 hcong G' hzt hTP'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hne, hngen⟩` from `hglue s hgl`. Take `⟨⟨Λ, hΛ, hEZ⟩, hgs⟩` from `hs hne`. Take `⟨hfac, hAA⟩` from `GlobalTheory.T.meanCountConstant_eq_unscaledMainConstant hS Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' hc hk5 hcong hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq`. Take `⟨hDl, hNG, hLam⟩` from `GlobalTheory.T.norms_invariants_generic_rational_framePair D X Y u u' hcong G' Λ w hzt hTP' hΛ hEZ hcell`. Establish `hHT` using `hH C' Cl hCH e2 D large₂ X Y u u' hc TS cls (nmlOf Y u u') γ Fm hFT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hw` using the available equality. Establish `hrd : 0 < D.host.rdE`. Unfold `Host.rdE`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Conclude with `abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero _)`.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `set HP := HPt D.host.rdE (X.B.g : ℝ) ((Tu D u : ℕ) * (Tu D u' : ℕ)) (toPts w) with hHPdef`. Establish `hHt1 : 1 ≤ Fm.toL.Htot` using `by show 1 ≤ ∏ p : {p // p ∈ Fm.P}, (Fm.FP p.1).Hp`. Use `Finset.prod_le_prod (s := Finset.univ) (f := fun _ : {p // p ∈ Fm.P} => (1 : ℝ)) (g := fun p => (Fm.FP p.1).Hp) (fun _ _ => zero_le_one) (fun p _ => hHp p.1 p.2)` as an intermediate fact. Simplify using `using this`. Establish `hH1 : 1 ≤ HP` using `by rw [hHT]; exact hHt1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg1 : (1 : ℝ) ≤ (X.B.g : ℝ)`. Take `⟨-, -, -, -, -, -, -, hg0, hg1, -⟩` from `hc.2.1`. Rewrite using `[X.g_eq]`. Conclude with `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero hg0.ne_zero hg1.ne_zero)` after adjusting the coercions. Establish `hgS : ((gS D : ℕ) : ℝ) = (X.B.g : ℝ)` using `by rw [X.g_eq]; rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hND0 : 0 ≤ NDPt D.host.rdE (toPts w)`. Unfold `NDPt`. Conclude with `Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => by positivity`. Establish `hND : NDPt D.host.rdE (toPts w) ≤ HP`. Establish `h1 : 1 ≤ ((X.B.g : ℝ) ^ ((2 * D.R.rS + 1) * Fintype.card (InfinitePlace D.host.E)))⁻¹ * NGPt D.host.rdE (Tu D u * Tu D u') (toPts w)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : 0 < (X.B.g : ℝ) ^ ((2 * D.R.rS + 1) * Fintype.card (InfinitePlace D.host.E))` using `pow_pos (by linarith) _`. Rewrite using `[inv_mul_eq_div, le_div_iff₀ hp, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hHPdef]`. Unfold `HPt`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `le_mul_of_one_le_left hND0 h1`. Establish `hhaar` using `GlobalTheory.T.gram_invariant_pow_le_haar_weight D.host.E D.R.rS D.R.k (Tu D u * Tu D u') D.host.rdE HP (toPts w) hrd hDl hND`. Rewrite `hngen` using `[← hHT]`. Establish `hY0 : 0 ≤ NGPt D.host.rdE (Tu D u * Tu D u') (toPts w) ^ (D.R.k - 1)`. Apply `pow_nonneg` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_trans (pow_nonneg (by positivity) _) hNG`. Establish `hHa : 0 < HP ^ (3 * (D.R.rS + 1) ^ 2)` using `pow_pos (by linarith) _`. Establish `hNle : Fm.toL.ngenTot ≤ HP ^ (3 * (D.R.rS + 1) ^ 2) * (2 * (bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq).AA * PN.abelian₂ (2 * D.host.v) D.R.rS D.R.k D.R.f) * NGPt D.host.rdE (Tu D u * Tu D u') (toPts w) ^ (D.R.k - 1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hAA]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left hgs hHa.le`. Use `_ = _ := by rw [← mul_assoc 2, mul_assoc (2 * _), mul_comm (Formalism.L2.SG.MassDataConc.ngFac D), hLam]; ring`. Establish `hc0 : 0 ≤ 2 * (bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq).AA * PN.abelian₂ (2 * D.host.v) D.R.rS D.R.k D.R.f`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1 : HP ^ (3 * (D.R.rS + 1) ^ 2) * (2 * (bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq).AA * PN.abelian₂ (2 * D.host.v) D.R.rS D.R.k D.R.f) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos hHa.le hneg.le`. Establish `h2` using `mul_nonpos_of_nonpos_of_nonneg h1 hY0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnP : 0 ≤ nPt D.host.rdE D.R.k ((Tu D u : ℕ) * (Tu D u' : ℕ)) (toPts w)`. Unfold `nPt`.
-
-Conclude with `Finset.prod_nonneg fun _ _ => mul_nonneg (pow_nonneg (by positivity) _) (Finset.prod_nonneg fun _ _ => pow_nonneg (by positivity) _)`. Establish `hab : 3 * (D.R.rS + 1) ^ 2 + 6 * (2 * D.R.rS + 2) ≤ PN.eN D.R.rS`. Unfold `PN.eN`. Generalize the expression as in `(D.R.rS + 1) ^ 2 = t`. Use linear arithmetic over natural numbers and integers.
-
-Use `⟨hpos, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem weightsFam_of (hS : PI.VolStabS.MassDataS.SWXS) : GlobalTheory.SnFam.WeightsFam := by
   intro Cg cb Cw cT CT C0

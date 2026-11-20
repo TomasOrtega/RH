@@ -9,7 +9,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `q _ E`. Conclude with `⟨fun hE _ _ a => (GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 E hE a, fun a b c => GlobalTheory.T.tateTwistCupProduct_assoc q E a b c, fun a b => GlobalTheory.T.tateTwistCupProduct_graded_comm q E a b⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem EtC.a6ring_holds : GlobalTheory.EtC.DivisorRingCompatibility := by
   intro q _ E

@@ -5,11 +5,11 @@ open NumberField
 namespace GlobalTheory.SmallIntegerVanishing
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Establish `hnn : ∀ (w : InfinitePlace E) (y : E), 0 ≤ w y` using `fun w y => w.1.nonneg y`. Establish `hne : Algebra.norm ℤ x ≠ 0`. Rewrite using `[Ne, Algebra.norm_eq_zero_iff]` and apply the resulting hypothesis. Establish `h1 : (1 : ℝ) ≤ ((|Algebra.norm ℚ (x : E)| : ℚ) : ℝ)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← Algebra.coe_norm_int]`. Establish `: (1 : ℤ) ≤ |Algebra.norm ℤ x|` using `Int.one_le_abs hne`. Conclude with `this` after adjusting the coercions. Rewrite `h1` using `[← NumberField.InfinitePlace.prod_eq_abs_norm]`. Take `⟨w0⟩` from `(inferInstance : Nonempty (InfinitePlace E))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w0)]`. Establish `hle : ∏ w ∈ Finset.univ.erase w0, w (x : E) ^ w.mult ≤ 1` using `Finset.prod_le_one (fun w _ => pow_nonneg (hnn w _) _) fun w _ => pow_le_one₀ (hnn w _) (h w).le`. Establish `hlt : w0 (x : E) ^ w0.mult < 1` using `pow_lt_one₀ (hnn w0 _) (h w0) NumberField.InfinitePlace.mult_ne_zero`. Establish `h3 : w0 (x : E) ^ w0.mult * ∏ w ∈ Finset.univ.erase w0, w (x : E) ^ w.mult ≤ w0 (x : E) ^ w0.mult` using `mul_le_of_le_one_right (pow_nonneg (hnn w0 _) _) hle`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_small (E : Type) [Field E] [NumberField E] (x : RingOfIntegers E)
     (h : ∀ w : InfinitePlace E, w (x : E) < 1) : x = 0 := by
@@ -34,17 +34,17 @@ theorem eq_zero_of_small (E : Type) [Field E] [NumberField E] (x : RingOfInteger
   linarith
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hΛ`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (S.biUnion fun g => Finset.univ.image fun a => g a)`. Use `⟨(y : RingOfIntegers E), by exact_mod_cast hy0, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite `hv` using `[← hS]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem g hg`. Introduce `a`. Establish `hint` using `hy (g a) (Finset.mem_biUnion.mpr ⟨g, hg, Finset.mem_image.mpr ⟨a, Finset.mem_univ _, rfl⟩⟩)`. Use `⟨⟨y • g a, hint⟩, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[zsmul_eq_mul]`. Consider the case `zero`. Introduce `a`. Conclude with `⟨0, by simp⟩`. Consider the case `add u w _ _ hu hw`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `a`. Take `⟨x1, h1⟩` from `hu a`. Take `⟨x2, h2⟩` from `hw a`. Use `⟨x1 + x2, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Consider the case `smul r u _ hu`. Introduce `a`. Take `⟨x1, h1⟩` from `hu a`. Use `⟨r * x1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Use `show _ = _ * ((r : E) * u a)`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_denominator (E : Type) [Field E] [NumberField E] (j : ℕ)
     (Λ : Submodule (RingOfIntegers E) (Fin j → E)) (hΛ : Λ.FG) :
@@ -85,13 +85,11 @@ theorem exists_denominator (E : Type) [Field E] [NumberField E] (j : ℕ)
         ring
 
 /- English proof (translation)
-Take `⟨d, hd0, hd⟩` from `exists_denominator E j Λ hΛ`. Establish `hdE : (d : E) ≠ 0` using `by exact_mod_cast hd0`. Establish `hnn : ∀ (w : InfinitePlace E) (z : E), 0 ≤ w z` using `fun w z => w.1.nonneg z`. Use `set M : ℝ := ∑ w : InfinitePlace E, w (d : E) with hM`. Establish `hwM : ∀ w : InfinitePlace E, w (d : E) ≤ M` using `fun w => Finset.single_le_sum (f := fun w : InfinitePlace E => w (d : E)) (fun w _ => hnn w _) (Finset.mem_univ w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMpos : 0 < M`. Take `⟨w0⟩` from `(inferInstance : Nonempty (InfinitePlace E))`. Conclude with `lt_of_lt_of_le (NumberField.InfinitePlace.pos_iff.mpr hdE) (hwM w0)`. Use `⟨1 / M, by positivity, fun y hy hsmall => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `hd y hy a`. Establish `hx0 : x = 0` using `eq_zero_of_small E x fun w => by`. Rewrite using `[hx, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hza : (d : E) * y a = 0` using `by rw [← hx, hx0]; rfl`.
-
-Simplify `hza` using `[hdE]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main (E : Type) [Field E] [NumberField E] (j : ℕ)
     (Λ : Submodule (RingOfIntegers E) (Fin j → E)) (hΛ : Λ.FG) :

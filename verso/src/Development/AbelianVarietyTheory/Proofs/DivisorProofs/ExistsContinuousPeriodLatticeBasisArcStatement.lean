@@ -12,7 +12,7 @@ open scoped CategoryTheory.MonObj
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ShFam.BdArc.ArcLat.exists_continuous_latBasis_of_arc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsContinuousPeriodLatticeBasisArc.lean&line=87#L87)
 -/

@@ -24,7 +24,7 @@ def skewGram (hd : J.det ≠ 0) (τ : E →ₐ[F] Fv F v) : GL (Fin m) (Fv F v) 
     rw [← AlgHom.mapMatrix_apply, ← AlgHom.map_det]; exact (map_ne_zero τ).2 hd)
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => by simp only [Matrix.map_apply, AlgHom.comp_apply, Matrix.neg_apply, Matrix.transpose_apply] rw [hs j i, map_neg]`.
+A detailed English derivation is pending.
 -/
 theorem map_comp_conj_skew (hs : ∀ i j, σ (J j i) = -J i j) (τ : E →ₐ[F] Fv F v) :
     J.map (τ.comp σ) = -(J.map τ)ᵀ :=
@@ -33,7 +33,7 @@ theorem map_comp_conj_skew (hs : ∀ i j, σ (J j i) = -J i j) (τ : E →ₐ[F]
     rw [hs j i, map_neg]
 
 /- English proof (translation)
-Use `splitMat_ext h τ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_unitary, splitPairMat_map, splitPairMat_map_comp, JR_map_splitProj, e]`. Rewrite using `[map_unitary, comp_conj_conj h, splitPairMat_map, splitPairMat_map_comp, JR_map_splitProj, map_comp_conj_skew hs, Matrix.mul_neg, Matrix.neg_mul, neg_inj, ← Matrix.transpose_inj, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose, ← …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitPairMat_unitary_skew (h : IsCMExt F E σ) (hs : ∀ i j, σ (J j i) = -J i j) (τ : E →ₐ[F] Fv F v)
     {a b : Matrix (Fin m) (Fin m) (Fv F v)} (e : bᵀ * J.map τ * a = J.map τ) :
@@ -46,7 +46,7 @@ theorem splitPairMat_unitary_skew (h : IsCMExt F E σ) (hs : ∀ i j, σ (J j i)
       Matrix.transpose_transpose, ← Matrix.mul_assoc, e]
 
 /- English proof (translation)
-Introduce `g g' e` and use `by have c : ∀ x : GLoc σ J v, splitHom σ J (τ.comp σ) x = dualConj (skewGram hd τ) (splitHom σ J τ x) := fun x => eq_dualConj_iff.2 (splitHom_unitary τ x) exact matHom_injective _ σ J (Units.ext (splitMat_ext h τ (congrArg Units.val e) (by rw [← splitHom_val, ← splitHom_val, c, c …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem splitHom_injective_skew (h : IsCMExt F E σ) (hd : J.det ≠ 0) (τ : E →ₐ[F] Fv F v) :
     Function.Injective (splitHom σ J τ) := fun g g' e => by
@@ -56,7 +56,7 @@ theorem splitHom_injective_skew (h : IsCMExt F E σ) (hd : J.det ≠ 0) (τ : E 
     rw [← splitHom_val, ← splitHom_val, c, c, e])))
 
 /- English proof (translation)
-Introduce `x` and use `⟨(⟨splitPairGL h τ x (dualConj (skewGram hd τ) x), splitPairMat_unitary_skew h hs τ ((eq_dualConj_iff (A := skewGram hd τ)).1 rfl)⟩ : HR (Fv F v) σ J), Units.ext (splitPairMat_map h τ _ _)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem splitHom_surjective_skew (h : IsCMExt F E σ) (hs : ∀ i j, σ (J j i) = -J i j) (hd : J.det ≠ 0)
     (τ : E →ₐ[F] Fv F v) : Function.Surjective (splitHom σ J τ) := fun x =>
@@ -67,15 +67,15 @@ theorem splitHom_surjective_skew (h : IsCMExt F E σ) (hs : ∀ i j, σ (J j i) 
 end Skew
 
 /- English proof (translation)
-The claim follows from `(Units.mapEquiv (Matrix.reindexAlgEquiv R R (finSumFinEquiv (m := n) (n := n)).symm).toMulEquiv).bijective`.
+A detailed English derivation is pending.
 -/
 theorem blkGL_bijective {R : Type} [CommRing R] (n : ℕ) : Function.Bijective (blkGL (R := R) n) :=
   (Units.mapEquiv (Matrix.reindexAlgEquiv R R (finSumFinEquiv (m := n) (n := n)).symm).toMulEquiv).bijective
 
 /- English proof (translation)
-Establish `e : (Matrix.fromBlocks 0 1 (-1) 0 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) D.host.E) * Matrix.fromBlocks 0 1 (-1) 0 = -1`. Rewrite using `[Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_neg]`. Simplify using the standard rewrite rules. Establish `e2` using `Matrix.submatrix_mul_equiv (Matrix.fromBlocks 0 1 (-1) 0 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) D.host.E) (Matrix.fromBlocks 0 1 (-1) 0 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) D.host.E) (finSumFinEquiv (m := n) (n := n)).symm (finSumFinEquiv (m := n) (n := n)).symm (finSumFinE …`. Rewrite `e2` using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `e2.trans (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Jst_mul_self (D : D7) (n : ℕ) : Jst D n * Jst D n = -1 := by
   have e : (Matrix.fromBlocks 0 1 (-1) 0 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) D.host.E) *
@@ -92,7 +92,7 @@ theorem Jst_mul_self (D : D7) (n : ℕ) : Jst D n * Jst D n = -1 := by
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Establish `: IsUnit (Jst D n).det` using `Matrix.isUnit_det_of_left_inverse (B := -Jst D n) (by rw [Matrix.neg_mul, Jst_mul_self, neg_neg])`. Conclude with `this.ne_zero`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Jst_det_ne_zero (D : D7) (n : ℕ) : (Jst D n).det ≠ 0 := by
   have : IsUnit (Jst D n).det :=
@@ -100,11 +100,11 @@ theorem Jst_det_ne_zero (D : D7) (n : ℕ) : (Jst D n).det ≠ 0 := by
   exact this.ne_zero
 
 /- English proof (translation)
-Establish `key : ∀ a b : Fin n ⊕ Fin n, D.sp.cm.sig ((Matrix.fromBlocks 0 1 (-1) 0 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) D.host.E) b a) = -(Matrix.fromBlocks 0 1 (-1) 0 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) D.host.E) a b`. Apply the tactic sequence `rintro (a | a) (b | b) <;>`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, Matrix.one_apply, map_zero, neg_zero, map_neg]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hab, Ne.symm hab]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hab, Ne.symm hab]`. Conclude with `key _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Jst_skew (D : D7) (n : ℕ) (i j : Fin (n + n)) :
     D.sp.cm.sig (Jst D n j i) = -Jst D n i j := by
@@ -123,7 +123,7 @@ theorem Jst_skew (D : D7) (n : ℕ) (i j : Fin (n + n)) :
   exact key _ _
 
 /- English proof (translation)
-Introduce `D n _ τ` and use `(blkGL_bijective n).comp ⟨splitHom_injective_skew (isCMExt_host D) (Jst_det_ne_zero D n) τ, splitHom_surjective_skew (isCMExt_host D) (Jst_skew D n) (Jst_det_ne_zero D n) τ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thU_bijective : ∀ (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v),
     Function.Bijective (thU D n v τ) := fun D n _ τ =>

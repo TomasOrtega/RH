@@ -16,23 +16,21 @@ open scoped TensorProduct nonZeroDivisors
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `dec : ∀ x : hatRing F E, ∃ a : 𝓞 E, ∃ w : hatRing F E, x = diagInt F E a + (N : hatRing F E) * w`. Introduce `x`. Take `⟨a, w, hw, e⟩` from `exists_int_add_nsmul F E N hN x x.2`. Use `⟨a, ⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[e, nsmul_eq_mul]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Take `⟨a, w, ea⟩` from `dec v`. Take `⟨b, w', eb⟩` from `dec (v⁻¹ : (hatRing F E)ˣ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hv : (v : hatRing F E) * (v⁻¹ : (hatRing F E)ˣ) = 1` using `Units.mul_inv v`. Set `z : hatRing F E` to `-(diagInt F E a * w' + w * diagInt F E b + N * w * w')`. Establish `h1 : diagInt F E (a * b - 1) = N * z`. Rewrite `hv` using `[ea, eb]`. Rewrite using `[map_sub, map_mul, map_one]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [z]`. Take the linear combination `hv`. Establish `hN' : (N : E) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `h2 : diag F E (((a * b - 1 : 𝓞 E) : E) / N) = z`. Apply `(isUnit_nat F E hN).mul_left_cancel` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← map_natCast (diag F E), ← map_mul, mul_div_cancel₀ _ hN', map_natCast]`. Use `congrArg (hatRing F E).subtype h1` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast]`. Conclude with `this`. Take `⟨r, hr⟩` from `GlobalTheory.AdIdem.mem_range_of_one_tmul_mem F E (x := ((a * b - 1 : 𝓞 E) : E) / N) (by rw [← diag_apply, h2]; exact z.2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : a * b - 1 = N * r`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_natCast, hr, mul_div_cancel₀ _ hN']`. Set `q` to `Ideal.Quotient.mk (Ideal.span {(N : 𝓞 E)})`. Establish `h4 : q a * q b = 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← map_one q, Ideal.Quotient.eq, h3]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Use `set k := Nat.card (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)})ˣ with hk`. Establish `h5 : (Units.mkOfMulEqOne _ _ h4) ^ k = 1` using `pow_card_eq_one'`. Establish `h6 : q (a ^ k) = q 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_pow, map_one]`. Conclude with `(Units.val_pow_eq_pow_val _ _).symm.trans (congrArg Units.val h5)`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 h6)`. Establish `h7` using `congrArg (diagInt F E) hc`. Rewrite `h7` using `[map_sub, map_pow, map_one, map_mul, map_natCast]`.
-
-Take `⟨d, hd⟩` from `sub_dvd_pow_sub_pow (v : hatRing F E) (diagInt F E a) k`. Use `⟨w * d + diagInt F E c, ?_⟩` and prove the remaining obligations. Take the linear combination `hd + h7 + d * ea`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem unit_pow_card_cong (N : ℕ) (hN : 0 < N) (v : (hatRing F E)ˣ) :
     ∃ w : hatRing F E, (v : hatRing F E) ^ Nat.card (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)})ˣ - 1 = N * w := by
@@ -82,21 +80,21 @@ theorem unit_pow_card_cong (N : ℕ) (hN : 0 < N) (v : (hatRing F E)ˣ) :
 variable (c : E ≃ₐ[F] E)
 
 /- English proof (translation)
-Use `set k := Nat.card (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)})ˣ with hk`. Take `⟨b, hb, s, t, e, hst⟩` from `pow_classNumber F E x`. Establish `hst' : (s : RA F E) * t = 1` using `congrArg Subtype.val hst`. Establish `hbst : bar c s * bar c t = 1` using `by rw [← map_mul, hst', map_one]`. Establish `hcb : c b ≠ 0` using `by simpa using hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : b / c b ≠ 0` using `div_ne_zero hb hcb`. Set `r : (RA F E)ˣ` to `(isUnit_diag F E hq).unit`. Establish `hr : r ∈ ratOne c`. Use `⟨⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `diag F E (b / c b) * diag F E (c (b / c b)) = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, map_div₀, hc, div_mul_div_comm, mul_comm b, div_self (mul_ne_zero hcb hb), map_one]`. Set `v : (hatRing F E)ˣ` to `Units.mkOfMulEqOne (s * ⟨_, bar_mem c t.2⟩) (t * ⟨_, bar_mem c s.2⟩) (Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(s : RA F E) * bar c t * (t * bar c s) = 1`. Take the linear combination `(bar c s * bar c t) * hst' + hbst))`. Set `u : (RA F E)ˣ` to `Units.map (hatRing F E).subtype.toMonoidHom v`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu : (u : RA F E) = s * bar c t` using `rfl`. Establish `hun : (u : RA F E) * bar c u = 1`. Rewrite using `[hu, map_mul, bar_bar c hc]`. Take the linear combination `(bar c s * bar c t) * hst' + hbst`. Establish `hx2 : x ^ (classNumber E * 2) = r * u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `h1 : (x : RA F E) ^ classNumber E * bar c ((x : RA F E) ^ classNumber E) = 1`. Rewrite using `[map_pow, ← mul_pow, hx, one_pow]`. Establish `h2 : diag F E (b / c b) * diag F E (c b) = diag F E b`. Rewrite using `[← map_mul, div_mul_cancel₀ _ hcb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : bar c (diag F E b) = diag F E (c b)` using `rfl`. Rewrite `h1` using `[e, map_mul, h3]`. Rewrite using `[Units.val_pow_eq_pow_val, pow_mul, e, Units.val_mul, hu]`. Express the relevant statement in the definitionally equal form `_ = diag F E (b / c b) * _`. Take the linear combination `(diag F E (b / c b) * s * bar c t) * h1 - (diag F E b * s * s) * h2 - (diag F E (b / c b) * diag F E (c b) * diag F E b * s * s) * hbst`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `huk : u ^ k ∈ congOne c N`. Use `⟨?_, by rw [Units.val_pow_eq_pow_val, map_pow, ← mul_pow, hun, one_pow]⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `unit_pow_card_cong N hN v`. Use `⟨w, w.2, ?_⟩` and prove the remaining obligations. Use `congrArg (hatRing F E).subtype hw` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_sub, map_one, map_mul, map_natCast, map_pow]`. Then use the resulting hypothesis. Rewrite using `[mul_comm 2, pow_mul, hx2, mul_pow]`. Conclude with `Subgroup.mul_mem_sup (pow_mem hr k) huk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mem_ratOne_sup_congOne (hc : ∀ y, c (c y) = y) (N : ℕ) (hN : 0 < N) (x : (RA F E)ˣ)
     (hx : (x : RA F E) * bar c x = 1) :
@@ -150,11 +148,11 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor F
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `D N xi hN h1 h2 x hx`. Establish `hc : ∀ (φ : D.host.E →+* ℂ) (y : D.host.E), φ (GlobalTheory.Member.cF D y) = starRingEnd ℂ (φ y)` using `fun φ y => @IsCMField.complexEmbedding_complexConj D.host.E _ _ (D.host.isCMField_hostE) _ φ y`. Establish `hcc : ∀ y, GlobalTheory.Member.cF D (GlobalTheory.Member.cF D y) = y` using `fun y => D.host.φ₀.injective (by rw [hc, hc, Complex.conj_conj])`. Establish `hcong : ∀ (x : (AfE D)ˣ), x ∈ congOne (GlobalTheory.Member.cF D) N ↔ CongOne N x ∧ NormOne x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `CongOne`. Simplify using `only [GlobalTheory.CharFin.integralFiniteAdeles_eq_adelicCompletion_integers, nsmul_eq_mul]`. Conclude with `Iff.rfl`. Take `⟨r, ⟨⟨a, ha⟩, hr⟩, k, hk, e⟩` from `Subgroup.mem_sup.1 (pow_mem_ratOne_sup_congOne (GlobalTheory.Member.cF D) hcc N hN x hx)`. Rewrite using `[← map_pow]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : xi (r * k) = 1`. Rewrite using `[map_mul, h1 r a ha hr, h2 k ((hcong k).1 hk).2 ((hcong k).1 hk).1, mul_one]`. Rewrite using `[← e']`. Conclude with `congrArg xi e.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tame_pow_eq_one : ∀ (D : D7) (N : ℕ) (xi : (AfE D)ˣ →* ℂˣ), 0 < N → (∀ (x : (AfE D)ˣ) (a : D.host.E), (x : AfE D) = 1 ⊗ₜ a → NormOne x → xi x = 1) → (∀ x, NormOne x → CongOne N x → xi x = 1) → ∀ x, NormOne x → xi x ^ (2 * classNumber D.host.E * Nat.card (𝓞 D.host.E ⧸ Ideal.span {(N : 𝓞 D.host.E)})ˣ) = 1 := by
   intro D N xi hN h1 h2 x hx

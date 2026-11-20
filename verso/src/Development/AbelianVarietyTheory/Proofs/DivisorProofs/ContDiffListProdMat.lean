@@ -29,7 +29,7 @@ open GlobalTheory.SiegelSet GlobalTheory.UAut
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using contDiff_const`. Consider the case `cons i l ih`. Simplify using `only [List.map_cons, List.prod_cons]`. Conclude with `(hf i List.mem_cons_self).mul (ih fun j hj => hf j (List.mem_cons_of_mem _ hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_list_prod_mat {k N : ℕ} {ι : Type} (l : List ι) (f : ι → (Fin k → ℝ) → Matrix (Fin N) (Fin N) ℂ)
     (hf : ∀ i ∈ l, ContDiff ℝ ∞ (f i)) : ContDiff ℝ ∞ fun t => (l.map fun i => f i t).prod := by
@@ -40,57 +40,51 @@ theorem contDiff_list_prod_mat {k N : ℕ} {ι : Type} (l : List ι) (f : ι →
     exact (hf i List.mem_cons_self).mul (ih fun j hj => hf j (List.mem_cons_of_mem _ hj))
 
 /- English proof (translation)
-Use `⟨fun k γ hγ g => ?_, fun l hl => ?_⟩` and prove the remaining obligations. Use `swap`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨Φ, hΦ, rfl⟩`. Consider the case `cons γ l ih`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ, hΨ, e⟩` from `ih fun δ hδ => hl δ (List.mem_cons_of_mem _ hδ)`. Take `⟨w, τ, Z, -, hZ⟩` from `hl γ List.mem_cons_self`. Take `⟨D, hDP, hDd⟩` from `hder w τ`. Use `⟨D Z Ψ, hDP Z Ψ hΨ, ?_⟩` and prove the remaining obligations. Rewrite using `[List.foldr_cons, e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Establish `hγ` using `hl γ List.mem_cons_self`. Use `(hDd Z γ (GlobalTheory.RealLineCont.continuous_of_isRealLine F E σ hcm _ J' γ hγ) (GlobalTheory.SiegelSet.isRealLine_add F E σ hcm _ J' γ hγ) (fun t => ?_) (fun t => ?_) Ψ hΨ x).deriv` and prove the remaining obligations. Take `⟨y, hy, -⟩` from `hZ t`. Rewrite using `[hy, projArch_embArch_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hy2⟩` from `hZ t`. Rewrite using `[hy, projArch_embArch_self, hy2]`. Use `haveI : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℝ _`. Set `P : (Fin k → ℝ) → GAd σ J'` to `fun t => (List.ofFn fun i => γ i (t i)).prod`. Set `S : Set ((Fin k → ℝ) → ℂ)` to `{f | ∃ Ψ ∈ S₀, f = fun t => FF Ψ (g * P t)}`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : Continuous P`. Establish `e : P = fun t => ((List.finRange k).map fun i => γ i (t i)).prod`. Use function extensionality and compare the values at `t`. Simplify using `[P, List.ofFn_eq_map]`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `continuous_list_prod (f := fun (i : Fin k) (t : Fin k → ℝ) => γ i (t i)) _ fun i _ => (GlobalTheory.RealLineCont.continuous_of_isRealLine F E σ hcm _ J' (γ i) (hγ i)).comp (continuous_apply i)`. Use `GlobalTheory.contDiff_of_partials_in_smooth_span k S ?_ ?_ _ ⟨Φ, hΦ, rfl⟩` and prove the remaining obligations. Introduce and unpack `f ⟨Ψ, hΨ, rfl⟩`. Conclude with `(hcont Ψ hΨ).comp (continuous_const.mul hP)`. Introduce and unpack `f ⟨Ψ, hΨ, rfl⟩ j`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨w, τ, Z, -, hZ⟩` from `hγ j`. Take `⟨D, hDP, hDd⟩` from `hder w τ`. Set `A : GAd σ J' →* Matrix (Fin n) (Fin n) ℂ` to `(GlobalTheory.Orb.archMat σ J' τ).comp (projArch σ J' w)`. Set `suf : (Fin k → ℝ) → GAd σ J'` to `fun t => (List.ofFn fun i => if j < i then γ i (t i) else 1).prod`. Set `Zt : (Fin k → ℝ) → Matrix (Fin n) (Fin n) ℂ` to `fun t => A (suf t)⁻¹ * Z * A (suf t)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hexp : ContDiff ℝ ∞ (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → _)` using `contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt`. Establish `hA : ContDiff ℝ ∞ fun t => A (suf t)` using `by choose Zi hZi using fun i => GlobalTheory.UAut.Model.exists_exp hcm τ (hγ i)`. Establish `e : (fun t => A (suf t)) = fun t => ((List.finRange k).map fun i => (if j < i then NormedSpace.exp (t i • Zi i) else 1 : Matrix (Fin n) (Fin n) ℂ)).prod`. Use function extensionality and compare the values at `t`. Simplify using `only [suf, List.ofFn_eq_map, map_list_prod, List.map_map]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `List.map_congr_left fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `split_ifs`. Conclude with `hZi i (t i)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `map_one A`. Rewrite using `[e]`. Use `contDiff_list_prod_mat _ _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : j < i`. Simplify using `only [h, if_true]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hexp.comp ((contDiff_apply ℝ ℝ i).smul contDiff_const)`. Simplify using `only [h, if_false]`. Conclude with `contDiff_const`. Establish `hinv : ∀ t, A (suf t)⁻¹ = Ring.inverse (A (suf t))` using `fun t => by`. Rewrite using `[← MonoidHom.coe_toHomUnits A (suf t), Ring.inverse_unit, ← map_inv, MonoidHom.coe_toHomUnits]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hAi : ContDiff ℝ ∞ fun t => A (suf t)⁻¹`. Simplify using `only [hinv]`. Use `contDiff_iff_contDiffAt.2 fun t => ?_` and prove the remaining obligations. Establish `h1` using `contDiffAt_ringInverse ℝ (n := ∞) (A.toHomUnits (suf t))`. Rewrite `h1` using `[MonoidHom.coe_toHomUnits]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Conclude with `h1.comp t hA.contDiffAt`. Establish `hZt : ContDiff ℝ ∞ Zt` using `(hAi.mul contDiff_const).mul hA`. Set `bm : Fin n × Fin n × Bool → Matrix (Fin n) (Fin n) ℂ` to `fun x => Matrix.single x.1 x.2.1 (if x.2.2 then Complex.I else 1)`. Set `cf : Fin n × Fin n × Bool → (Fin k → ℝ) → ℝ` to `fun x t => if x.2.2 then (Zt t x.1 x.2.1).im else (Zt t x.1 x.2.1).re`. Establish `hcf : ∀ x, ContDiff ℝ ∞ fun t => ((cf x t : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `x`. Establish `he : ContDiff ℝ ∞ fun t => Zt t x.1 x.2.1` using `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ x.1 x.2.1)).contDiff.comp hZt`. Break down `x with ⟨p, q, b⟩` into its components or cases. Consider the cases of `b`. Conclude with `Complex.ofRealCLM.contDiff.comp (Complex.reCLM.contDiff.comp he)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Complex.ofRealCLM.contDiff.comp (Complex.imCLM.contDiff.comp he)`. Establish `hZe : ∀ t, Zt t = ∑ x, cf x t • bm x`. Introduce `t`. Use extensionality with `p q`. Simplify using `only [Matrix.sum_apply, Fintype.sum_prod_type, Fintype.sum_bool, Matrix.smul_apply, bm, cf, Matrix.single_apply, if_true, Bool.false_eq_true, if_false]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.sum_add_distrib, Complex.real_smul, ite_and]`. Use `conv_lhs => rw [← Complex.re_add_im (Zt t p q)]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨Fin n × Fin n × Bool, inferInstance, fun x t => (cf x t : ℂ), fun x t => FF (D (bm x) Ψ) (g * P t), hcf, fun x => ⟨_, hDP _ Ψ hΨ, rfl⟩, fun t => ?_⟩` and prove the remaining obligations. Set `γ' : ℝ → GAd σ J'` to `fun s => (suf t)⁻¹ * γ j s * suf t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hγe : ∀ s, ∃ y, γ' s = embArch σ J' w ((projArch σ J' w (suf t))⁻¹ * y * projArch σ J' w (suf t)) ∧ GlobalTheory.Orb.archMat σ J' τ y = NormedSpace.exp (s • Z)`. Introduce `s`. Take `⟨y, hy, hy2⟩` from `hZ s`. Conclude with `⟨y, by simp only [γ']; rw [hy]; exact GlobalTheory.ConjArch.conj_embArch F E σ _ J' w y (suf t), hy2⟩`. Establish `h1 : ∀ s, embArch σ J' w (projArch σ J' w (γ' s)) = γ' s`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `s`. Take `⟨y, hy, -⟩` from `hγe s`. Rewrite using `[hy, projArch_embArch_self]`. Establish `h2 : ∀ s, GlobalTheory.Orb.archMat σ J' τ (projArch σ J' w (γ' s)) = NormedSpace.exp (s • Zt t)`. Introduce `s`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨y, hy, hy2⟩` from `hγe s`. Rewrite using `[hy, projArch_embArch_self, map_mul, map_mul, hy2]`. Set `Ui : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `A.toHomUnits (suf t)⁻¹`. Establish `hU1 : (Ui : Matrix (Fin n) (Fin n) ℂ) = A (suf t)⁻¹` using `MonoidHom.coe_toHomUnits _ _`. Establish `hU2 : ((Ui⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix _ _ ℂ) = A (suf t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Ui]`. Rewrite using `[← map_inv, inv_inv, MonoidHom.coe_toHomUnits]`. Establish `e1 : s • Zt t = (Ui : Matrix _ _ ℂ) * (s • Z) * ((Ui⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix _ _ ℂ)`. Rewrite using `[hU1, hU2]`. Simplify using `only [Zt, smul_mul_assoc, mul_smul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, Matrix.exp_units_conj, hU1, hU2]`. Simplify using `only [A, MonoidHom.comp_apply, map_inv]`. Establish `hPs : ∀ s, g * P (t + s • Pi.single j 1) = g * P t * γ' s`. Introduce `s`. Establish `e1 : (fun i => γ i ((t + s • (Pi.single j 1 : Fin k → ℝ)) i)) = Function.update (fun i => γ i (t i)) j (γ j (t j) * γ j s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using `[GlobalTheory.SiegelSet.isRealLine_add F E σ hcm _ J' (γ i) (hγ i)]`. Simplify using `[hi, Function.update_of_ne hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [P, γ', suf, e1, GlobalTheory.list_prod_ofFn_update_mul_right, mul_assoc]`. Establish `hd` using `hDd (Zt t) γ' ((continuous_const.mul (GlobalTheory.RealLineCont.continuous_of_isRealLine F E σ hcm _ J' _ (hγ j))).mul continuous_const) (fun s u => by`. Simplify using `only [γ', GlobalTheory.SiegelSet.isRealLine_add F E σ hcm _ J' _ (hγ j)]`. Use the proof step `group) h1 h2 Ψ hΨ (g * P t)`. Establish `hval : FF (D (Zt t) Ψ) (g * P t) = ∑ x, (cf x t : ℂ) * FF (D (bm x) Ψ) (g * P t)`.
-
-Establish `e2 : D (Zt t) Ψ = ∑ x, (cf x t : ℂ) • D (bm x) Ψ`. Rewrite using `[hZe t, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply]`. Use function extensionality and compare the values at `y`.
-
-Simplify using `[Complex.real_smul]`. Rewrite using `[e2]`. Conclude with `hsum _ (fun x => cf x t) _ (fun x _ => hDP _ Ψ hΨ) _`. Rewrite using `[← hval]`. Use `hd.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
-
-Simplify using `only [hPs]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smooth_of_der {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (hcm : IsCMExt F E σ) {n : ℕ} (J' : Matrix (Fin n) (Fin n) E) {κ : Type} (S₀ : Submodule ℂ (κ → ℂ))
@@ -252,27 +246,23 @@ section Unit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ J`. Use `haveI : MeasurableMul (UA σ J) := ⟨fun g => (continuous_const.mul continuous_id).measurable, fun g => (continuous_id.mul continuous_const).measurable⟩`. Use `haveI : MeasurableConstSMul (ratU σ J) (UA σ J) := ⟨fun γ => (continuous_const.mul continuous_id : Continuous fun x : UA σ J => γ.1 * x).measurable⟩`. Use `haveI : SMulInvariantMeasure (ratU σ J) (UA σ J) μ := ⟨fun γ A _ => measure_preimage_mul μ γ.1 A⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : ∀ φ ∈ S, ∀ ψ ∈ S, IntegrableOn (fun g => φ g * starRingEnd ℂ (ψ g)) 𝓕 μ`. Introduce `φ hφ ψ hψ`. Take `⟨c1, -, C, hC⟩` from `hS φ hφ`. Take `⟨c2, -, C', hC'⟩` from `hS ψ hψ`. Use `Measure.integrableOn_of_bounded (M := C * C') hv.ne (c1.mul (Complex.continuous_conj.comp c2)).aestronglyMeasurable (.of_forall fun g => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul (hC g) (hC' g) (norm_nonneg _) ((norm_nonneg _).trans (hC g))`. Use `⟨fun φ ψ => ∫ g in 𝓕, φ g * starRingEnd ℂ (ψ g) ∂μ, fun φ hφ ψ hψ χ hχ c => ?_, fun φ _ ψ _ => ?_, fun φ hφ h0 => ?_, fun φ hφ ψ hψ k _ => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← integral_const_mul, ← integral_add ((hint φ hφ χ hχ).const_mul c) (hint ψ hψ χ hχ)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `beta_reduce`. Rewrite using `[← integral_conj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Use `beta_reduce`. Take `⟨c1, hl, -⟩` from `hS φ hφ`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : (fun g => φ g * starRingEnd ℂ (φ g)) = fun g => ((Complex.normSq (φ g) : ℝ) : ℂ)`. Use function extensionality and compare the values at `fun g => Complex.mul_conj _`. Establish `hi : IntegrableOn (fun g => Complex.normSq (φ g)) 𝓕 μ`. Establish `h` using `hint φ hφ φ hφ`. Rewrite `h` using `[e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h.re` using `[IntegrableOn]`. Rewrite using `[e, integral_complex_ofReal, Complex.ofReal_re, integral_pos_iff_support_of_nonneg (fun g => Complex.normSq_nonneg _) hi]`. Establish `es : (Function.support fun g => Complex.normSq (φ g)) = Function.support φ`. Use extensionality with `g`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `ho : IsOpen (Function.support φ)` using `c1.isOpen_support`. Rewrite using `[es, Measure.restrict_apply ho.measurableSet, pos_iff_ne_zero]`. Introduce `hz`. Use `h𝓕.measure_zero_of_invariant (Function.support φ) (fun γ => ?_) hz` as an intermediate fact. Conclude with `(ho.measure_pos μ (Function.support_nonempty_iff.2 h0)).ne' this`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Simplify using `only [Function.mem_support]`. Rewrite using `[show γ⁻¹ • x = (γ⁻¹).1 * x from rfl, hl _ (γ⁻¹).2]`. Use `beta_reduce`.
-
-Take `⟨-, hl, -⟩` from `hS φ hφ`. Take `⟨-, hl', -⟩` from `hS ψ hψ`. Set `e : UA σ J ≃ᵐ UA σ J` to `MeasurableEquiv.mulRight k`. Establish `hmp : MeasurePreserving e μ μ` using `measurePreserving_mul_right μ k`. Establish `h1 : ∫ g in 𝓕, rt k φ g * starRingEnd ℂ (rt k ψ g) ∂μ = ∫ g in e '' 𝓕, φ g * starRingEnd ℂ (ψ g) ∂μ` using `(hmp.setIntegral_image_emb e.measurableEmbedding (fun g => φ g * starRingEnd ℂ (ψ g)) 𝓕).symm`.
-
-Establish `h2 : IsFundamentalDomain (ratU σ J) (e '' 𝓕) μ` using `h𝓕.image_of_equiv e.toEquiv (hmp.symm e).quasiMeasurePreserving (Equiv.refl _) (fun γ x => (mul_assoc γ.1 x k))`. Rewrite using `[h1]`. Conclude with `h2.setIntegral_eq h𝓕 fun γ x => by`. Rewrite using `[show γ • x = γ.1 * x from rfl, hl _ γ.2, hl' _ γ.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_of_bounded {n : ℕ} {J : Matrix (Fin n) (Fin n) E} [ContinuousMul (UA σ J)] (μ : Measure (UA σ J))
     [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {𝓕 : Set (UA σ J)} (h𝓕 : IsFundamentalDomain (ratU σ J) 𝓕 μ) (hv : μ 𝓕 < ⊤)
@@ -347,21 +337,17 @@ section Lift
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `haveI : BorelSpace (UA σ JW) := ⟨rfl⟩`. Take `⟨-, _, -⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_UA F E σ n J`. Use `haveI : FirstCountableTopology (UA σ J) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Take `⟨C, k, hC⟩` from `hθb`. Take `⟨D, hD⟩` from `hdec k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hht : Continuous (fun g : UA σ J => (ht g : ℝ))` using `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp continuous_subtype_val)`. Establish `hD0 : 0 ≤ D` using `le_trans (by positivity) (hD 1)`. Establish `hb : ∀ g h, ‖f h * starRingEnd ℂ (θ g h)‖ ≤ max C 0 * D * (ht g : ℝ) ^ N` using `fun g h => by`. Rewrite using `[norm_mul, Complex.norm_conj]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left ((hC g h).trans ?_) (norm_nonneg _)` and prove the remaining obligations. Use `gcongr`. Conclude with `le_max_left _ _`. Use `_ = max C 0 * (‖f h‖ * (qht h : ℝ) ^ k) * (ht g : ℝ) ^ N := by ring`. Use `_ ≤ max C 0 * D * (ht g : ℝ) ^ N := by gcongr; exact hD h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb' : ∀ g h (R : ℝ), (ht g : ℝ) < R → ‖f h * starRingEnd ℂ (θ g h)‖ ≤ max C 0 * D * R ^ N` using `fun g h R hR => (hb g h).trans (by gcongr)`. Establish `hcont : ∀ g, Continuous (fun h => f h * starRingEnd ℂ (θ g h))` using `fun g => hfc.mul (Complex.continuous_conj.comp (hθc.comp (continuous_const.prodMk continuous_id)))`. Use `⟨fun g => Measure.integrableOn_of_bounded hv.ne (hcont g).aestronglyMeasurable (.of_forall (hb g)), ?_, ⟨max C 0 * D * μ.real 𝓕, fun g => ?_⟩, fun θ₀ δ hδ hadd hint hder g => ?_⟩` and prove the remaining obligations. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `continuousAt_of_dominated (bound := fun _ => max C 0 * D * ((ht g₀ : ℝ) + 1) ^ N) (.of_forall fun g => (hcont g).aestronglyMeasurable) ?_ (integrableOn_const hv.ne) (.of_forall fun h => ?_)` and prove the remaining obligations. Use `filter_upwards [hht.continuousAt.eventually_lt (continuousAt_const (y := (ht g₀ : ℝ) + 1)) (lt_add_one _)] with g hg`. Conclude with `.of_forall fun h => hb' g h _ hg`. Conclude with `(continuous_const.mul (Complex.continuous_conj.comp (hθc.comp (continuous_id.prodMk continuous_const)))).continuousAt`. Use `(norm_setIntegral_le_of_norm_le_const hv fun h _ => hb g h).trans (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : δ 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
-
-Establish `hc : Continuous fun t => (ht (g * δ t) : ℝ)` using `hht.comp (continuous_const.mul hδ)`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ.restrict 𝓕) (x₀ := (0 : ℝ)) (F := fun t h => f h * starRingEnd ℂ (θ₀ (g * δ t) h)) (F' := fun t h => f h * starRingEnd ℂ (θ (g * δ t) h)) (bound := fun _ => max C 0 * D * ((ht (g * δ 0) : ℝ) + 1) ^ N) (s := {t | (ht (g * δ …`. Simplify `key.2` using `only [h0, mul_one]`. Establish `h1` using `hder (g * δ t) h`. Rewrite `h1` using `[← sub_self t]`.
-
-Establish `h2` using `(HasDerivAt.comp_sub_const t t h1).congr_of_eventuallyEq (f₁ := fun u => θ₀ (g * δ u) h) (.of_forall fun u => by simp only [mul_assoc, ← hadd, add_sub_cancel])`. Conclude with `h2.star.const_mul (f h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_reg {n m : ℕ} {J : Matrix (Fin n) (Fin n) E} {JW : Matrix (Fin m) (Fin m) E} [ContinuousMul (UA σ J)]
     {f : UA σ JW → ℂ} (hfc : Continuous f) (hdec : ∀ N : ℕ, ∃ C : ℝ, ∀ h, ‖f h‖ * (qht h : ℝ) ^ N ≤ C)

@@ -22,9 +22,9 @@ def botRight {n j : ℕ} (h : j ≤ n) (M : Matrix (Fin n) (Fin n) R) : Matrix (
   M.submatrix (fun r => ⟨j + r, by have := r.2; omega⟩) (fun r => ⟨j + r, by have := r.2; omega⟩)
 
 /- English proof (translation)
-Take `⟨A, hA'⟩` from `A`. Take `⟨B, hB'⟩` from `B`. Simplify using `only at hA hB`. Substitute `hA hB` using the available equality. Unfold `pivotMinor`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use extensionality with `r c`. Simplify using `only [Matrix.submatrix_apply, topLeft, pivotCols]`. Apply the tactic sequence `split_ifs <;> congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pivotMinor_topLeft {n j : ℕ} (h : j ≤ n) (M : Matrix (Fin n) (Fin n) R) (a : Fin (j - 1)) (b : Fin j)
     (A : Fin (n - 1)) (B : Fin n) (hA : (A : ℕ) = a) (hB : (B : ℕ) = b) :
@@ -40,11 +40,11 @@ theorem pivotMinor_topLeft {n j : ℕ} (h : j ≤ n) (M : Matrix (Fin n) (Fin n)
   split_ifs <;> congr 1
 
 /- English proof (translation)
-Unfold `pivotMinor`. Use `congr 1`. Use extensionality with `r c`. Simplify using `only [Matrix.submatrix_apply]`. Apply `hM` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Fin.val_castLE]`. Use `r.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [pivotCols]`. Use `split_ifs with hc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Use linear arithmetic over natural numbers and integers. Conclude with `hb`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem pivotMinor_congr {n j : ℕ} (M M' : Matrix (Fin n) (Fin n) R)
     (hM : ∀ r c : Fin n, (r : ℕ) < j → (c : ℕ) < j → M r c = M' r c) (a : Fin (n - 1)) (b : Fin n)
@@ -60,7 +60,7 @@ theorem pivotMinor_congr {n j : ℕ} (M M' : Matrix (Fin n) (Fin n) R)
     · exact hb
 
 /- English proof (translation)
-Unfold `pivotMinor`. Use `Matrix.det_eq_zero_of_column_eq_zero (Fin.last a) fun r => ?_` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply, pivotCols, Fin.val_last, lt_irrefl, dif_neg, not_false_eq_true]`. Conclude with `hz _ _ (by simp only [Fin.val_castLE]; have := r.2; omega) hb`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pivotMinor_eq_zero_of_block {n j : ℕ} (M : Matrix (Fin n) (Fin n) R)
     (hz : ∀ r c : Fin n, (r : ℕ) < j → j ≤ (c : ℕ) → M r c = 0) (a : Fin (n - 1)) (b : Fin n)
@@ -71,15 +71,15 @@ theorem pivotMinor_eq_zero_of_block {n j : ℕ} (M : Matrix (Fin n) (Fin n) R)
   exact hz _ _ (by simp only [Fin.val_castLE]; have := r.2; omega) hb
 
 /- English proof (translation)
-Take `⟨A, hA'⟩` from `A`. Take `⟨B, hB'⟩` from `B`. Simplify using `only at hA hB`. Substitute `hA hB` using the available equality. Unfold `pivotMinor`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Replace the relevant objects with their definitions.
 
-Set `e : Fin j ⊕ Fin ((a : ℕ) + 1) ≃ Fin (j + (a : ℕ) + 1)` to `finSumFinEquiv.trans (finCongr (Nat.add_assoc _ _ _).symm)`. Rewrite using `[← Matrix.det_submatrix_equiv_self e]`. Establish `key : (M.submatrix (Fin.castLE (by omega)) (pivotCols (⟨j + a, hA'⟩ : Fin (n - 1)) ⟨j + b, hB'⟩)).submatrix e e = Matrix.fromBlocks (topLeft h M) 0 ((M.submatrix (Fin.castLE (by omega)) (pivotCols (⟨j + a, hA'⟩ : Fin (n - 1)) ⟨j + b, hB'⟩)).submatrix e e).toBlocks₂₁ ((botRight h …` using `a.2; omega)) (pivotCols a b)) := by`. Use extensionality with `(r | r) (c | c)`. Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₁₁, topLeft, e, Equiv.trans_apply, finSumFinEquiv_apply_left, finCongr_apply, pivotCols]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos (by simp; omega)]`. Use `congr 1`. Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, e, Equiv.trans_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, finCongr_apply, pivotCols] split_ifs with hc`. Conclude with `hz _ _ (by simp) (by simp)`. Conclude with `hz _ _ (by simp) (by simp)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₂₂, botRight, e, Equiv.trans_apply, finSumFinEquiv_apply_right, finCongr_apply, pivotCols] split_ifs with h1 h2 h2`. Use `congr 1`. Simplify using `at h1`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `at h1`. Use linear arithmetic over natural numbers and integers. Use `congr 1`. Rewrite using `[key, Matrix.det_fromBlocks_zero₁₂]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pivotMinor_block {n j : ℕ} (h : j ≤ n) (M : Matrix (Fin n) (Fin n) R)
     (hz : ∀ r c : Fin n, (r : ℕ) < j → j ≤ (c : ℕ) → M r c = 0) (a : Fin (n - j - 1)) (b : Fin (n - j))
@@ -124,7 +124,7 @@ section Generic
 variable (F : Type) [Field F] (Ψ : Type)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `rename_injective _ he (IsFractionRing.injective (MvPolynomial β F) (FractionRing (MvPolynomial β F)) h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem renFr_inj {α β : Type} (e : α → β) (he : Function.Injective e) :
     Function.Injective ((IsScalarTower.toAlgHom F (MvPolynomial β F) (FractionRing (MvPolynomial β F))).comp
@@ -136,7 +136,7 @@ def renFr {α β : Type} (e : α → β) (he : Function.Injective e) :
   IsFractionRing.liftAlgHom (renFr_inj F e he)
 
 /- English proof (translation)
-Use `show IsFractionRing.lift (renFr_inj F e he) _ = _`. Rewrite using `[IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem renFr_algebraMap {α β : Type} (e : α → β) (he : Function.Injective e) (p : MvPolynomial α F) :
     renFr F e he (algebraMap _ _ p) = algebraMap _ _ (rename e p) := by
@@ -152,7 +152,7 @@ def eD : Ψ × Fin (n - j) × Fin (n - j) → Ψ × Fin n × Fin n :=
   fun p => (p.1, ⟨j + p.2.1, by have := p.2.1.2; omega⟩, ⟨j + p.2.2, by have := p.2.2.2; omega⟩)
 
 /- English proof (translation)
-Introduce and unpack `⟨τ, a, b⟩ ⟨τ', a', b'⟩ e`. Simplify using `only [eA, Prod.mk.injEq, Fin.ext_iff, Fin.val_castLE] at e`. Take `⟨h0, h1, h2⟩` from `e`. Substitute `h0` using the available equality. Rewrite using `[Fin.ext h1, Fin.ext h2]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem eA_inj : Function.Injective (eA Ψ h) := by
   rintro ⟨τ, a, b⟩ ⟨τ', a', b'⟩ e
@@ -162,7 +162,7 @@ theorem eA_inj : Function.Injective (eA Ψ h) := by
   rw [Fin.ext h1, Fin.ext h2]
 
 /- English proof (translation)
-Introduce and unpack `⟨τ, a, b⟩ ⟨τ', a', b'⟩ e`. Simplify using `only [eD, Prod.mk.injEq, Fin.ext_iff] at e`. Take `⟨h0, h1, h2⟩` from `e`. Substitute `h0` using the available equality. Rewrite using `[Fin.ext (by omega : (a : ℕ) = a'), Fin.ext (by omega : (b : ℕ) = b')]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem eD_inj : Function.Injective (eD Ψ h) := by
   rintro ⟨τ, a, b⟩ ⟨τ', a', b'⟩ e
@@ -176,13 +176,13 @@ def φA : GenFrac F Ψ j →ₐ[F] GenFrac F Ψ n := renFr F (eA Ψ h) (eA_inj �
 def φD : GenFrac F Ψ (n - j) →ₐ[F] GenFrac F Ψ n := renFr F (eD Ψ h) (eD_inj Ψ h)
 
 /- English proof (translation)
-Simplify using `[genMat0Fr, hr, hc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zero_block (τ : Ψ) (r c : Fin n) (hr : (r : ℕ) < j) (hc : j ≤ (c : ℕ)) : genMat0Fr F Ψ n j τ r c = 0 := by
   simp [genMat0Fr, hr, hc]
 
 /- English proof (translation)
-Use extensionality with `r c`. Establish `hc : ¬ (j ≤ (Fin.castLE h c : ℕ))` using `by simp`. Simplify using `only [topLeft, genMat0Fr, Matrix.submatrix_apply, Matrix.of_apply, Matrix.map_apply, genMatFr, φA, renFr_algebraMap, rename_X, hc, and_false, if_false]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem topLeft_eq (τ : Ψ) : topLeft h (genMat0Fr F Ψ n j τ) = (genMatFr F Ψ j τ).map (φA F Ψ h) := by
   ext r c
@@ -192,7 +192,7 @@ theorem topLeft_eq (τ : Ψ) : topLeft h (genMat0Fr F Ψ n j τ) = (genMatFr F �
   rfl
 
 /- English proof (translation)
-Use extensionality with `r c`. Establish `hr : ¬ ((j + r : ℕ) < j)` using `by omega`. Simplify using `only [botRight, genMat0Fr, Matrix.submatrix_apply, Matrix.of_apply, Matrix.map_apply, genMatFr, φD, renFr_algebraMap, rename_X, hr, false_and, if_false]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem botRight_eq (τ : Ψ) : botRight h (genMat0Fr F Ψ n j τ) = (genMatFr F Ψ (n - j) τ).map (φD F Ψ h) := by
   ext r c
@@ -202,9 +202,9 @@ theorem botRight_eq (τ : Ψ) : botRight h (genMat0Fr F Ψ n j τ) = (genMatFr F
   rfl
 
 /- English proof (translation)
-Set `f : MvPolynomial (Fin m × Fin m) F →+* GenFrac F Ψ m` to `(algebraMap (MvPolynomial (Ψ × Fin m × Fin m) F) (GenFrac F Ψ m)).comp (rename fun q => (τ, q)).toRingHom`. Establish `hf : Function.Injective f` using `(IsFractionRing.injective _ _).comp (rename_injective _ (Prod.mk_right_injective τ))`. Establish `e : genMatFr F Ψ m τ = f.mapMatrix (Matrix.mvPolynomialX (Fin m) (Fin m) F)`. Use extensionality with `a b`. Simplify using `[f, genMatFr, Matrix.mvPolynomialX]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, ← RingHom.map_det]`. Introduce `h0`. Conclude with `Matrix.det_mvPolynomialX_ne_zero (Fin m) F (hf (h0.trans (map_zero f).symm))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem det_genMatFr_ne_zero (m : ℕ) (τ : Ψ) : (genMatFr F Ψ m τ).det ≠ 0 := by
   let f : MvPolynomial (Fin m × Fin m) F →+* GenFrac F Ψ m :=
@@ -218,7 +218,7 @@ theorem det_genMatFr_ne_zero (m : ℕ) (τ : Ψ) : (genMatFr F Ψ m τ).det ≠ 
   exact Matrix.det_mvPolynomialX_ne_zero (Fin m) F (hf (h0.trans (map_zero f).symm))
 
 /- English proof (translation)
-The claim follows from `FlagRatioTrdeg.pivotMinor_map (f : K →+* L) M a b`.
+A detailed English derivation is pending.
 -/
 theorem pivotMinor_mapAlg {K L : Type} [CommRing K] [CommRing L] [Algebra F K] [Algebra F L] {m : ℕ}
     (f : K →ₐ[F] L) (M : Matrix (Fin m) (Fin m) K) (a : Fin (m - 1)) (b : Fin m) :
@@ -226,14 +226,14 @@ theorem pivotMinor_mapAlg {K L : Type} [CommRing K] [CommRing L] [Algebra F K] [
   FlagRatioTrdeg.pivotMinor_map (f : K →+* L) M a b
 
 /- English proof (translation)
-The claim follows from `(AlgHom.map_det f M).symm`.
+A detailed English derivation is pending.
 -/
 theorem det_mapAlg {K L : Type} [CommRing K] [CommRing L] [Algebra F K] [Algebra F L] {m : ℕ}
     (f : K →ₐ[F] L) (M : Matrix (Fin m) (Fin m) K) : (M.map f).det = f M.det :=
   (AlgHom.map_det f M).symm
 
 /- English proof (translation)
-Rewrite using `[pivotMinor_topLeft h _ a b A B hA hB, leadMinor, pivotMinor_topLeft h _ a (Fin.castLE (Nat.sub_le j 1) a) A _ hA (by simp [hA]), topLeft_eq, pivotMinor_mapAlg, pivotMinor_mapAlg, pivotRatio, map_div₀]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ratio_A (τ : Ψ) (a : Fin (j - 1)) (b : Fin j) (hab : (a : ℕ) < b) (A : Fin (n - 1)) (B : Fin n)
     (hA : (A : ℕ) = a) (hB : (B : ℕ) = b) :
@@ -245,7 +245,7 @@ theorem ratio_A (τ : Ψ) (a : Fin (j - 1)) (b : Fin j) (hab : (a : ℕ) < b) (A
   rfl
 
 /- English proof (translation)
-Establish `hz` using `zero_block F Ψ (n := n) (j := j) τ`. Rewrite using `[pivotMinor_block h _ hz a b A B hA hB, leadMinor, pivotMinor_block h _ hz a (Fin.castLE (Nat.sub_le (n - j) 1) a) A _ hA (by simp [hA]), mul_div_mul_left _ _ (by rw [topLeft_eq, det_mapAlg]; exact (map_ne_zero_iff _ (φA F Ψ h).toRingHom.injective).2 (det_genMatFr_ne_zero F Ψ j τ …`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ratio_D (τ : Ψ) (a : Fin (n - j - 1)) (b : Fin (n - j)) (hab : (a : ℕ) < b) (A : Fin (n - 1)) (B : Fin n)
     (hA : (A : ℕ) = j + a) (hB : (B : ℕ) = j + b) :
@@ -279,14 +279,14 @@ def sp (v : Ψ × Fin n × Fin n) : GenFrac F Ψ n :=
   else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨τ, a, b⟩`. Simplify using `[sp, eA]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sp_eA : sp F Ψ h ∘ eA Ψ h = fun p => φA F Ψ h (FlagRatioTrdeg.specAll F Ψ j p) := by
   funext ⟨τ, a, b⟩
   simp [sp, eA]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨τ, a, b⟩`. Simplify using `[sp, eD]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sp_eD : sp F Ψ h ∘ eD Ψ h = fun p => φD F Ψ h (FlagRatioTrdeg.specAll F Ψ (n - j) p) := by
   funext ⟨τ, a, b⟩
@@ -297,15 +297,15 @@ def idx : IdxLe Ψ n j → Ψ × Fin n × Fin n :=
     (fun q => eD Ψ h (q.1, Fin.castLE (Nat.sub_le (n - j) 1) q.2.1, q.2.2.1))
 
 /- English proof (translation)
-Apply the tactic sequence `rintro (⟨τ, a, b, hb⟩ | ⟨τ, a, b, hb⟩) (⟨τ', a', b', hb'⟩ | ⟨τ', a', b', hb'⟩) e <;>`. Simplify using `only [idx, Sum.elim_inl, Sum.elim_inr, eA, eD, Prod.mk.injEq, Fin.ext_iff, Fin.val_castLE] at e`. Take `⟨h0, h1, h2⟩` from `e`. Substitute `h0` using the available equality. Establish `h1' : a = a'` using `Fin.ext h1`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `h1'` using the available equality. Establish `h2' : b = b'` using `Fin.ext h2`. Substitute `h2'` using the available equality. Both sides reduce to the same expression. Take `⟨_, h1, _⟩` from `e`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨_, h1, _⟩` from `e`. Use `a'.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨h0, h1, h2⟩` from `e`. Substitute `h0` using the available equality. Establish `h1' : a = a'` using `Fin.ext (by omega)`. Substitute `h1'` using the available equality. Establish `h2' : b = b'` using `Fin.ext (by omega)`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `h2'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem idx_inj : Function.Injective (idx Ψ h) := by
   rintro (⟨τ, a, b, hb⟩ | ⟨τ, a, b, hb⟩) (⟨τ', a', b', hb'⟩ | ⟨τ', a', b', hb'⟩) e <;>
@@ -332,11 +332,11 @@ theorem idx_inj : Function.Injective (idx Ψ h) := by
     rfl
 
 /- English proof (translation)
-Use `AlgebraicIndependent.of_comp (aeval (sp F Ψ h)) ?_` and prove the remaining obligations. Establish `hfun : ⇑(aeval (sp F Ψ h)) ∘ wpol F Ψ h = ⇑(IsScalarTower.toAlgHom F (MvPolynomial (Ψ × Fin n × Fin n) F) (GenFrac F Ψ n)) ∘ ((X : Ψ × Fin n × Fin n → MvPolynomial (Ψ × Fin n × Fin n) F) ∘ idx Ψ h)`. Use function extensionality and compare the values at `q`. Break down `q with ⟨τ, a, b, hab⟩ | ⟨τ, a, b, hab⟩` into its components or cases. Simplify using `only [Function.comp_apply, wpol, Sum.elim_inl, idx, IsScalarTower.toAlgHom_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[aeval_rename, sp_eA, ← comp_aeval_apply, FlagRatioTrdeg.specAll_pivotMinor F Ψ j τ a b hab]`. Rewrite using `[φA, renFr_algebraMap, rename_X]`. Simplify using `only [Function.comp_apply, wpol, Sum.elim_inr, idx, IsScalarTower.toAlgHom_apply]`. Rewrite using `[aeval_rename, sp_eD, ← comp_aeval_apply, FlagRatioTrdeg.specAll_pivotMinor F Ψ (n - j) τ a b hab]`. Rewrite using `[φD, renFr_algebraMap, rename_X]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Use `AlgebraicIndependent.map' ?_ (IsFractionRing.injective _ _)` and prove the remaining obligations. Conclude with `(algebraicIndependent_X _ F).comp _ (idx_inj Ψ h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wpol_indep : AlgebraicIndependent F (wpol F Ψ h) := by
   refine AlgebraicIndependent.of_comp (aeval (sp F Ψ h)) ?_
@@ -360,9 +360,9 @@ def w : IdxLe Ψ n j → GenFrac F Ψ n :=
     (fun q => φD F Ψ h (pivotMinor (genMatFr F Ψ (n - j) q.1) q.2.1 q.2.2.1))
 
 /- English proof (translation)
-Establish `hw` using `(wpol_indep F Ψ h).map' (f := IsScalarTower.toAlgHom F (MvPolynomial (Ψ × Fin n × Fin n) F) (GenFrac F Ψ n)) (IsFractionRing.injective _ _)`. Use `hw using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Break down `q with ⟨τ, a, b, hab⟩ | ⟨τ, a, b, hab⟩` into its components or cases. Simplify using `only [w, wpol, Function.comp_apply, Sum.elim_inl, IsScalarTower.toAlgHom_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[FlagRatioTrdeg.genMatFr_eq, FlagRatioTrdeg.pivotMinor_map, φA, renFr_algebraMap]`. Simplify using `only [w, wpol, Function.comp_apply, Sum.elim_inr, IsScalarTower.toAlgHom_apply]`. Rewrite using `[FlagRatioTrdeg.genMatFr_eq, FlagRatioTrdeg.pivotMinor_map, φD, renFr_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem w_indep : AlgebraicIndependent F (w F Ψ h) := by
   have hw := (wpol_indep F Ψ h).map'
@@ -385,9 +385,9 @@ def diagIdx (m : ℕ) (q : FlagRatioTrdeg.PivotIdxLe Ψ m) : FlagRatioTrdeg.Pivo
 def inclIdx (m : ℕ) (q : PivotIdx Ψ m) : FlagRatioTrdeg.PivotIdxLe Ψ m := (q.1, ⟨q.2.1, ⟨q.2.2.1, q.2.2.2.le⟩⟩)
 
 /- English proof (translation)
-Introduce and unpack `⟨τ, a, b, hb⟩ ⟨τ', a', b', hb'⟩ e`. Simplify using `only [inclIdx, Prod.mk.injEq, Sigma.mk.inj_iff] at e`. Take `⟨h0, h1, h2⟩` from `e`. Substitute `h0 h1` using the available equality. Simplify using `only [heq_eq_eq, Subtype.mk.injEq] at h2`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem inclIdx_inj (m : ℕ) : Function.Injective (inclIdx Ψ m) := by
   rintro ⟨τ, a, b, hb⟩ ⟨τ', a', b', hb'⟩ e
@@ -399,7 +399,7 @@ theorem inclIdx_inj (m : ℕ) : Function.Injective (inclIdx Ψ m) := by
   rfl
 
 /- English proof (translation)
-Introduce `e`. Use `congrArg (fun r : FlagRatioTrdeg.PivotIdxLe Ψ m => ((r.2.2.1 : Fin m) : ℕ)) e` as an intermediate fact. Simplify using `only [diagIdx, inclIdx, Fin.val_castLE] at this`. Use `q.2.2.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem diag_ne (m : ℕ) (q : PivotIdx Ψ m) : diagIdx Ψ m (inclIdx Ψ m q) ≠ inclIdx Ψ m q := by
   intro e
@@ -409,13 +409,13 @@ theorem diag_ne (m : ℕ) (q : PivotIdx Ψ m) : diagIdx Ψ m (inclIdx Ψ m q) �
   omega
 
 /- English proof (translation)
-Set `δ : IdxLe Ψ n j → IdxLe Ψ n j` to `Sum.map (diagIdx Ψ j) (diagIdx Ψ (n - j))`. Apply the tactic sequence `have hz := FlagRatioTrdeg.ratio_indep F (w_indep F Ψ h) δ (fun t => by rcases t with t | t <;> rfl)`. Establish `hinj : Function.Injective (Sum.map (inclIdx Ψ j) (inclIdx Ψ (n - j)))` using `Sum.map_injective.2 ⟨inclIdx_inj Ψ j, inclIdx_inj Ψ (n - j)⟩`. It suffices to establish `e : (fun i => if δ i = i then w F Ψ h i else w F Ψ h i / w F Ψ h (δ i)) ∘ Sum.map (inclIdx Ψ j) (inclIdx Ψ (n - j)) = z F Ψ h by`. Rewrite using `[← e]`.
+Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz.comp _ hinj`. Use function extensionality and compare the values at `q`. Break down `q with q | q` into its components or cases. Establish `hne : δ (Sum.inl (inclIdx Ψ j q)) ≠ Sum.inl (inclIdx Ψ j q)` using `fun e => diag_ne Ψ j q (Sum.inl_injective e)`. Rewrite using `[Function.comp_apply, Sum.map_inl, if_neg hne]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [z, w, δ, Sum.map_inl, Sum.elim_inl, pivotRatio, map_div₀]`. Both sides reduce to the same expression. Establish `hne : δ (Sum.inr (inclIdx Ψ (n - j) q)) ≠ Sum.inr (inclIdx Ψ (n - j) q)` using `fun e => diag_ne Ψ (n - j) q (Sum.inr_injective e)`. Rewrite using `[Function.comp_apply, Sum.map_inr, if_neg hne]`. Simplify using `only [z, w, δ, Sum.map_inr, Sum.elim_inr, pivotRatio, map_div₀]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem z_indep : AlgebraicIndependent F (z F Ψ h) := by
   classical
@@ -443,11 +443,9 @@ theorem z_indep : AlgebraicIndependent F (z F Ψ h) := by
 include h in
 
 /- English proof (translation)
-Distinguish the cases in `hA : (A : ℕ) < j`. Establish `e` using `pivotMinor_congr (genMat0Fr F Ψ n j τ) (genMatFr F Ψ n τ) (fun r c _ hc => by simp [genMat0Fr, Nat.not_le.2 hc]) A (Fin.castLE (Nat.sub_le n 1) A) hA (by simpa using hA)`. Rewrite using `[leadMinor, e]`. Conclude with `(FlagRatioTrdeg.pivot_indep F Ψ n).ne_zero (τ, ⟨A, ⟨Fin.castLE (Nat.sub_le n 1) A, by simp⟩⟩)`. Establish `hA' : j ≤ (A : ℕ)` using `Nat.le_of_not_lt hA`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `a : Fin (n - j - 1)` to `⟨A - j, by have := A.2; omega⟩`. Rewrite using `[leadMinor, pivotMinor_block h _ (zero_block F Ψ τ) a (Fin.castLE (Nat.sub_le (n - j) 1) a) A _ (by simp [a]; omega) (by simp [a]; omega)]`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[topLeft_eq, det_mapAlg]`. Conclude with `(map_ne_zero _).2 (det_genMatFr_ne_zero F Ψ j τ)`.
-
-Rewrite using `[botRight_eq, pivotMinor_mapAlg]`. Conclude with `(map_ne_zero _).2 ((FlagRatioTrdeg.pivot_indep F Ψ (n - j)).ne_zero (τ, ⟨a, ⟨Fin.castLE (Nat.sub_le (n - j) 1) a, by simp⟩⟩))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leadMinor_ne_zero (τ : Ψ) (A : Fin (n - 1)) : leadMinor (genMat0Fr F Ψ n j τ) A ≠ 0 := by
   by_cases hA : (A : ℕ) < j
@@ -469,19 +467,19 @@ theorem leadMinor_ne_zero (τ : Ψ) (A : Fin (n - 1)) : leadMinor (genMat0Fr F �
 end Indep
 
 /- English proof (translation)
-Introduce `F _ Ψ _ n j h`. Establish `hadj : IntermediateField.adjoin F (Set.range (flagMinorRatio0 F Ψ n j)) = IntermediateField.adjoin F (Set.range (z F Ψ h))`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨τ, i, S⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `FlagRatioTrdeg.flag_mem F (genMat0Fr F Ψ n j τ) _ (leadMinor_ne_zero F Ψ h τ) (fun a b hab => ?_) i S` and prove the remaining obligations. Distinguish the cases in `hb : (b : ℕ) < j`. Rewrite using `[ratio_A F Ψ h τ ⟨a, by omega⟩ ⟨b, hb⟩ hab a b rfl rfl]`. Conclude with `IntermediateField.subset_adjoin F _ ⟨Sum.inl (τ, ⟨⟨a, by omega⟩, ⟨⟨b, hb⟩, hab⟩⟩), rfl⟩`. Distinguish the cases in `ha : j ≤ (a : ℕ)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h1 : (a : ℕ) - j < n - j - 1` using `by have := a.2; omega`. Establish `h2 : (b : ℕ) - j < n - j` using `by have := b.2; omega`. Establish `h3 : (a : ℕ) - j < (b : ℕ) - j` using `by omega`. Rewrite using `[ratio_D F Ψ h τ ⟨a - j, h1⟩ ⟨b - j, h2⟩ h3 a b (by simp; omega) (by simp; omega)]`. Conclude with `IntermediateField.subset_adjoin F _ ⟨Sum.inr (τ, ⟨⟨a - j, h1⟩, ⟨⟨b - j, h2⟩, h3⟩⟩), rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pivotMinor_eq_zero_of_block _ (zero_block F Ψ τ) a b (by omega) (by omega), zero_div]`. Conclude with `IntermediateField.zero_mem _`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨(⟨τ, a, b, hab⟩ | ⟨τ, a, b, hab⟩), rfl⟩`. Set `A : Fin (n - 1)` to `⟨a, by have := a.2; omega⟩`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `B : Fin n` to `Fin.castLE h b`. Establish `hAB : (A : ℕ) ≤ B` using `by simp only [A, B, Fin.val_castLE]; omega`. Use `IntermediateField.subset_adjoin F _ ⟨(τ, ⟨A, ⟨_, card_image_pivotCols A B hAB⟩⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [flagMinorRatio0, z, Sum.elim_inl]`. Rewrite using `[← pivotMinor_eq_flagMinor _ A B hAB]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `ratio_A F Ψ h τ a b hab A B rfl (by simp [B])`. Set `A : Fin (n - 1)` to `⟨j + a, by have := a.2; omega⟩`. Set `B : Fin n` to `⟨j + b, by have := b.2; omega⟩`. Establish `hAB : (A : ℕ) ≤ B` using `by simp only [A, B]; omega`. Use `IntermediateField.subset_adjoin F _ ⟨(τ, ⟨A, ⟨_, card_image_pivotCols A B hAB⟩⟩), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [flagMinorRatio0, z, Sum.elim_inr]`. Rewrite using `[← pivotMinor_eq_flagMinor _ A B hAB]`. Conclude with `ratio_D F Ψ h τ a b hab A B rfl rfl`. Rewrite using `[hadj, FlagRatioTrdeg.trdeg_adjoin_eq (z_indep F Ψ h), Cardinal.mk_fintype, Fintype.card_sum, FlagRatioTrdeg.card_pivotIdx, FlagRatioTrdeg.card_pivotIdx, ← mul_add]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem proof : HodgeFlagMinorTrdeg.Statement := by
   intro F _ Ψ _ n j h
@@ -526,7 +524,7 @@ theorem proof : HodgeFlagMinorTrdeg.Statement := by
 end HodgeFlagMinorTrdeg
 
 /- English proof (translation)
-The claim follows from `HodgeFlagMinorTrdeg.proof`.
+A detailed English derivation is pending.
 -/
 theorem HodgeFlagMinorTrdeg.full : HodgeFlagMinorTrdeg.Statement := HodgeFlagMinorTrdeg.proof
 

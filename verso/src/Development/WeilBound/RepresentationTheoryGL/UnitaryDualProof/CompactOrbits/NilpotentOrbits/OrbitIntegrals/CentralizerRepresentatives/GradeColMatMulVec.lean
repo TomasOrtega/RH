@@ -18,7 +18,7 @@ def gradeBasisGL (b : Module.Basis (Fin n) k (Fin n → k)) : GL (Fin n) k :=
   ⟨gradeColMat b, gradeRowMat b, Module.Basis.toMatrix_mul_toMatrix_flip _ _, Module.Basis.toMatrix_mul_toMatrix_flip _ _⟩
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `[gradeColMat, Matrix.mulVec, dotProduct, Module.Basis.toMatrix_apply, Finset.sum_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gradeColMat_mulVec (b : Module.Basis (Fin n) k (Fin n → k)) (u : Fin n → k) :
     gradeColMat b *ᵥ u = ∑ i, u i • b i := by
@@ -26,7 +26,7 @@ theorem gradeColMat_mulVec (b : Module.Basis (Fin n) k (Fin n → k)) (u : Fin n
   simp [gradeColMat, Matrix.mulVec, dotProduct, Module.Basis.toMatrix_apply, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Conclude with `b.ext fun i => by simpa [Matrix.toLin'_apply] using h i`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem grade_mat_ext {ι : Type} (b : Module.Basis ι k (Fin n → k)) (X Y : Matrix (Fin n) (Fin n) k)
     (h : ∀ i, X *ᵥ b i = Y *ᵥ b i) : X = Y := by
@@ -34,9 +34,9 @@ theorem grade_mat_ext {ι : Type} (b : Module.Basis ι k (Fin n → k)) (X Y : M
   exact b.ext fun i => by simpa [Matrix.toLin'_apply] using h i
 
 /- English proof (translation)
-Set `f : (Fin n → k) →ₗ[k] (Fin n → k)` to `Matrix.toLin' g - c • LinearMap.id`. Establish `hle : span k (b '' S) ≤ LinearMap.ker f`. Rewrite using `[span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Simplify using `[f, Matrix.toLin'_apply, hg, hS i hi]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `hle hy` as an intermediate fact. Simplify using `only [LinearMap.mem_ker, f, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, Matrix.toLin'_apply] at this`. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem grade_eig {ι : Type} (b : Module.Basis ι k (Fin n → k)) (g : Matrix (Fin n) (Fin n) k) (d : ι → k)
     (hg : ∀ i, g *ᵥ b i = d i • b i) (S : Set ι) (c : k) (hS : ∀ i ∈ S, d i = c) (y : Fin n → k)
@@ -52,17 +52,17 @@ theorem grade_eig {ι : Type} (b : Module.Basis ι k (Fin n → k)) (g : Matrix 
   exact sub_eq_zero.mp this
 
 /- English proof (translation)
-Use `⟨fun t => ?_, fun a ha haN => ?_⟩` and prove the remaining obligations. Introduce `g`. Establish `hrow : ∀ j, gradeRowMat b *ᵥ b j = Pi.single j 1`. Introduce `j`. Establish `h1 : gradeColMat b *ᵥ Pi.single j 1 = b j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[gradeColMat_mulVec]`. Simplify using `[Pi.single_apply]`. Rewrite using `[← h1, Matrix.mulVec_mulVec]`. Use `show (b.toMatrix (Pi.basisFun k (Fin n)) * (Pi.basisFun k (Fin n)).toMatrix b) *ᵥ _ = _`. Rewrite using `[Module.Basis.toMatrix_mul_toMatrix_flip, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgdef : g = gradeColMat b * diagonal (fun i => ((t ^ w i : kˣ) : k)) * gradeRowMat b` using `rfl`. Use `clear_value g`. Establish `hg : ∀ j, g *ᵥ b j = ((t ^ w j : kˣ) : k) • b j`. Introduce `j`. Rewrite using `[hgdef, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hrow, gradeColMat_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Matrix.mulVec_diagonal, Pi.single_apply]`. Use `⟨fun a ha => ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `grade_mat_ext b` to reduce the goal to its premises. Introduce `j`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hg, Matrix.mulVec_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[grade_eig b g (fun i => ((t ^ w i : kˣ) : k)) hg {j' | w j' = w j} _ (fun i hi => by rw [hi]) _ (hZ a ha j)]`. Apply `grade_mat_ext b` to reduce the goal to its premises. Introduce `j`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.smul_mulVec, ← Matrix.mulVec_mulVec, hg, Matrix.mulVec_smul, grade_eig b g (fun i => ((t ^ w i : kˣ) : k)) hg {j' | w j' = w j + 1} (((t ^ (w j + 1) : kˣ) : k)) (fun i hi => by rw [hi]) _ (hN j), smul_smul, _root_.zpow_add_one, Units.val_mul, Units …`. Rewrite using `[grade_eig b g (fun i => ((t ^ w i : kˣ) : k)) hg {j | w j = 0} 1 (fun i hi => by rw [hi]; simp) v hv, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨⇑(b.repr (a *ᵥ v)), ?_, fun i hi => hA a ha haN i hi⟩` and prove the remaining obligations. Simplify using `only [gradeBasisGL]`. Rewrite using `[gradeColMat_mulVec, b.sum_repr]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grade_fin (b : Module.Basis (Fin n) k (Fin n → k)) (w : Fin n → ℤ)
     (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (N : Matrix (Fin n) (Fin n) k) (v : Fin n → k)
@@ -111,17 +111,17 @@ theorem grade_fin (b : Module.Basis (Fin n) k (Fin n → k)) (w : Fin n → ℤ)
     rw [gradeColMat_mulVec, b.sum_repr]
 
 /- English proof (translation)
-Establish `hcard : Fintype.card κ = n`. Rewrite using `[← Module.finrank_eq_card_basis β, Module.finrank_fin_fun]`. Set `e : κ ≃ Fin n` to `Fintype.equivFinOfCardEq hcard`. Set `b` to `β.reindex e`. Set `w : Fin n → ℤ` to `fun i => ω (e.symm i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hb : ∀ j, β j = b (e j)` using `fun j => by simp [b]`. Establish `himg : ∀ c : ℤ, β '' {j | ω j = c} = b '' {i | w i = c}`. Introduce `c`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨e j, by simpa [w] using hj, (hb j).symm⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨e.symm i, hi, by simp [b]⟩`. Use `⟨gradeBasisGL b, w, grade_fin b w Z N v ?_ ?_ ?_ ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz i`. Use `hZ z hz (e.symm i)` as an intermediate fact. Rewrite `this` using `[himg]`. Simplify `this` using `[b, w]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hN (e.symm i)` as an intermediate fact. Rewrite `this` using `[himg]`. Simplify `this` using `[b, w]`. Rewrite using `[← himg]`. Conclude with `hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha haN i hi`. Use `hA a ha haN (e.symm i) hi` as an intermediate fact. Simplify `this` using `[b]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem grade_of_basis {κ : Type} [Fintype κ] (β : Module.Basis κ k (Fin n → k)) (ω : κ → ℤ)
     (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (N : Matrix (Fin n) (Fin n) k) (v : Fin n → k)
@@ -164,13 +164,11 @@ theorem grade_of_basis {κ : Type} [Fintype κ] (β : Module.Basis κ k (Fin n �
     simpa [b] using this
 
 /- English proof (translation)
-Set `ω : (Σ m, L m × (Σ a : F.ι m, Fin (F.l m a))) → ℤ` to `fun j => ((j.2.2.2 : ℕ) : ℤ) - (F.s j.1 j.2.2.1 : ℤ)`. Apply `grade_of_basis F.β ω Z N v` to reduce the goal to its premises. Introduce and unpack `z hz ⟨m, p, jj⟩`. Rewrite using `[show (z : Matrix (Fin n) (Fin n) k) = ((⟨z, hz⟩ : Z) : Matrix (Fin n) (Fin n) k) from rfl, F.hZ]`. Use `sum_mem fun q _ => smul_mem _ _ (subset_span ⟨⟨m, q, jj⟩, rfl, rfl⟩)` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨m, p, a, i⟩`. Rewrite using `[F.hN]`. Use `split_ifs with h`. Conclude with `subset_span ⟨_, by simp only [Set.mem_ofPred_eq, ω]; push_cast; ring, rfl⟩`. Conclude with `zero_mem _`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-It suffices to establish `h : (∑ m, ∑ p, ∑ a, if h : F.s m a < F.l m a then o m p • F.β ⟨m, (p, ⟨a, ⟨F.s m a, h⟩⟩)⟩ else 0) ∈ span k (F.β '' {j | ω j = 0}) by rw [← F.hv] at h; exact h`. Use `sum_mem fun m _ => sum_mem fun p _ => sum_mem fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `smul_mem _ _ (subset_span ⟨_, by simp [ω], rfl⟩)`. Conclude with `zero_mem _`.
-
-Introduce and unpack `A hA hAN ⟨m, p, a, i⟩ hi`. Conclude with `F.hA A hA hAN m p a i (by simp only [ω] at hi; omega)`.
+A detailed English derivation is pending.
 -/
 theorem grade_of_frame {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {M : Type} [Fintype M] {L : M → Type}
     [∀ m, Fintype (L m)] {R : Z → (m : M) → L m → L m → k} {o : (m : M) → L m → k}

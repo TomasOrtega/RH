@@ -17,7 +17,7 @@ def endLat (Λ : Submodule (𝓞 E) (Fin r → E)) : AddSubgroup (Matrix (Fin r)
   neg_mem' {Y} hY x hx := by rw [neg_mulVec]; exact Λ.neg_mem (hY x hx)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_endLat {Λ : Submodule (𝓞 E) (Fin r → E)} {Y : Matrix (Fin r) (Fin r) E} :
     Y ∈ endLat Λ ↔ ∀ x ∈ Λ, Y *ᵥ x ∈ Λ := Iff.rfl
@@ -72,7 +72,7 @@ def dualLie (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E
     · rw [Matrix.mul_neg, trace_neg]; exact (hY.2.2 X hX).neg
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.closure_eq (dualLie G Λ)`.
+A detailed English derivation is pending.
 -/
 theorem closure_dualLie (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) :
     AddSubgroup.closure {Y : Matrix (Fin r) (Fin r) E | Y.trace = 0 ∧
@@ -81,12 +81,12 @@ theorem closure_dualLie (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) 
   AddSubgroup.closure_eq (dualLie G Λ)
 
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_cc (a : E) : cc (cc a) = a := by simp [cc]
 
 /- English proof (translation)
-Establish `h` using `Λ.smul_mem (⟨c, hc⟩ : 𝓞 E) hx`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.smul_def]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem smul_mem_of_isIntegral {Λ : Submodule (𝓞 E) (Fin r → E)} {c : E} (hc : IsIntegral ℤ c)
     {x : Fin r → E} (hx : x ∈ Λ) : c • x ∈ Λ := by
@@ -97,7 +97,7 @@ theorem smul_mem_of_isIntegral {Λ : Submodule (𝓞 E) (Fin r → E)} {c : E} (
   rfl
 
 /- English proof (translation)
-Introduce `x hx` and use `by have : (c • Y) *ᵥ x = c • (Y *ᵥ x) := by ext i; simp [mulVec, dotProduct, Finset.mul_sum, mul_assoc] rw [this]; exact smul_mem_of_isIntegral hc (hY x hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smul_mem_endLat {Λ : Submodule (𝓞 E) (Fin r → E)} {c : E} (hc : IsIntegral ℤ c)
     {Y : Matrix (Fin r) (Fin r) E} (hY : Y ∈ endLat Λ) : c • Y ∈ endLat Λ := fun x hx => by
@@ -106,14 +106,14 @@ theorem smul_mem_endLat {Λ : Submodule (𝓞 E) (Fin r → E)} {c : E} (hc : Is
   rw [this]; exact smul_mem_of_isIntegral hc (hY x hx)
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [← mulVec_mulVec]; exact hY _ (hZ x hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_mem_endLat {Λ : Submodule (𝓞 E) (Fin r → E)} {Y Z : Matrix (Fin r) (Fin r) E}
     (hY : Y ∈ endLat Λ) (hZ : Z ∈ endLat Λ) : Y * Z ∈ endLat Λ := fun x hx => by
   rw [← mulVec_mulVec]; exact hY _ (hZ x hx)
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [one_mulVec]; exact hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem_endLat {Λ : Submodule (𝓞 E) (Fin r → E)} : (1 : Matrix (Fin r) (Fin r) E) ∈ endLat Λ :=
   fun x hx => by rw [one_mulVec]; exact hx

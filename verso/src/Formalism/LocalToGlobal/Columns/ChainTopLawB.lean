@@ -29,7 +29,7 @@ section Top
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Unfold `LocE.unitV`. Rewrite using `[dif_pos hU]`. Conclude with `Units.ne_zero _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ctl_unitV_ne {K : Type} [Field K] (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a : E} (hU : IsUnit (redP P a)) : LocE.unitV χ a ≠ 0 := by
   unfold LocE.unitV
@@ -37,7 +37,7 @@ theorem ctl_unitV_ne {K : Type} [Field K] (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* K�
   exact Units.ne_zero _
 
 /- English proof (translation)
-Establish `hU' : IsUnit (redP P b)` using `hab ▸ hU`. Unfold `LocE.unitV`. Rewrite using `[dif_pos hU, dif_pos hU', MonoidHom.inv_apply, Units.val_inv_eq_inv_val]`. Establish `: hU.unit = hU'.unit` using `Units.ext (by rw [IsUnit.unit_spec, IsUnit.unit_spec, hab])`. Rewrite using `[this, inv_mul_cancel₀ (Units.ne_zero _)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ctl_unitV_inv_mul {K : Type} [Field K] (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a b : E} (hab : redP P a = redP P b)
     (hU : IsUnit (redP P a)) : LocE.unitV χ⁻¹ a * LocE.unitV χ b = 1 := by
@@ -48,7 +48,7 @@ theorem ctl_unitV_inv_mul {K : Type} [Field K] (χ : (𝓞 E ⧸ P.asIdeal)ˣ �
   rw [this, inv_mul_cancel₀ (Units.ne_zero _)]
 
 /- English proof (translation)
-Use `letI := resField P`. Rewrite using `[lamJsym_eq_lamSym (RingEquiv.refl (𝓞 E ⧸ P.asIdeal)) σ₀ ψ₀ χ ht hn h M]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ctl_lamJsym_lamJ {K : Type} [Field K] (σ₀ : K →+* ℂ) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K)
     (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {n k₀ rS t j : ℕ} (ht : 0 < t) (hn : k₀ + 2 * rS + 1 + j * t ≤ n) (h : k₀ + 2 * rS + 1 ≤ n)
@@ -68,29 +68,27 @@ section TopMain
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Substitute `hc' hr0` using the available equality. Establish `hq0` using `ciQ_ne_zero hu`. Take `⟨N', rfl⟩ : ∃ N', N = N' + 1` from `⟨N - 1, by omega⟩`. Establish `hN' : N' = k₀ + 2 * rS + 1 + m * t` using `by omega`. Establish `hinv' : H'⁻¹ ∈ HXmsym (𝓞 E ⧸ P.asIdeal) (N' + 1) k₀ (k₀ + 2 * rS + 1) t m rS hrN` using `Subgroup.inv_mem _ hH'`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ p : Fin N', (H' : Matrix (Fin (N' + 1)) (Fin (N' + 1)) (𝓞 E ⧸ P.asIdeal)) (Fin.castSucc p) (Fin.last N') = 0` using `ctl_fixCol_zero hH'.2 hN'`. Establish `hA' : ∀ p : Fin N', ((H'⁻¹ : GL (Fin (N' + 1)) (𝓞 E ⧸ P.asIdeal)) : Matrix (Fin (N' + 1)) (Fin (N' + 1)) (𝓞 E ⧸ P.asIdeal)) (Fin.castSucc p) (Fin.last N') = 0` using `ctl_fixCol_zero hinv'.2 hN'`. Establish `hll' : ((H'⁻¹ : GL (Fin (N' + 1)) (𝓞 E ⧸ P.asIdeal)) : Matrix (Fin (N' + 1)) (Fin (N' + 1)) (𝓞 E ⧸ P.asIdeal)) (Fin.last N') (Fin.last N') = 1`. Rewrite using `[hinv'.2 (Fin.last N') (Fin.last N') (by rw [Fin.val_last]; exact hN'), Matrix.one_apply_eq]`. Take `⟨γ, hγ, hγJ, hγr, hgA, hgl⟩` from `ctl_tgt (q := q) hq hu hN' hrN (by omega) (by omega) (by omega) ht hκ' hH'.1 hA hA' hred'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `γ' : Sp E (N' + 1 - 1) ≃ₗ[E] Sp E (N' + 1 - 1)` to `γ`. Establish `hκJ : κ ∈ LocE.JGsym P q k₀ rS (k₀ + 2 * rS + 1) t n' 0` using `ctl_mem_JGsym hq hu (by omega) (by omega) hrn' ht (by omega) hκ (Subgroup.inv_mem _ hH) hred`. Establish `hY : ∀ l s, l < N' + 1 → s < n' → IntAt P (Loc.atN (y (κ (Loc.eN E n' s))) l)`. Introduce `l s hl hs`. Establish `hv : κ (Loc.eN E n' s) ∈ stdAt E n' P` using `(hκ _).2 (by rw [ocbS_eN_single hs]; exact ciSingle_mem _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `xt_map_std y hy hv`. Rewrite using `[ocbS_atN_of_lt _ hl]`. Conclude with `(ciMem_stdAt P _).1 h1 _`. Establish `hcongr` using `ctl_congr hq hu ψ₀ χ (k₀ := k₀) (rS := rS) (r := k₀ + 2 * rS + 1) (t := t) (j := m) (n' := n') (N := N' + 1) (by omega) (by omega) (by omega) (by have : (m - 1) * t ≤ m * t := Nat.mul_le_mul_right t (Nat.sub_le m 1); omega) κ'.symm.toLinearMap γ'.symm.toLinearMap y κ.toLinearMap …`. Establish `hL` using `hlaw E K P q ψ₀ χ k₀ rS t m n' (N' + 1 - 1) hq hu (by omega) ht (by omega) (by omega) γ' κ hγJ hκJ (prXpG E (N' + 1) ∘ₗ y ∘ₗ LinearMap.funLeft E E (Fin.castAdd 0))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcongr, hL]`. Use `letI := resField P`. Establish `hinvJ : ((lamJsym ψ₀ χ n' k₀ (k₀ + 2 * rS + 1) t (m - 1) rS hrn' ⟨H⁻¹, Subgroup.inv_mem _ hH⟩ : Kˣ) : K) = ((lamJsym ψ₀ χ n' k₀ (k₀ + 2 * rS + 1) t (m - 1) rS hrn' ⟨H, hH⟩ : Kˣ) : K)⁻¹`. Rewrite using `[show (⟨H⁻¹, Subgroup.inv_mem _ hH⟩ : ↥(HJsym (𝓞 E ⧸ P.asIdeal) n' k₀ (k₀ + 2 * rS + 1) t (m - 1) rS hrn')) = ⟨H, hH⟩⁻¹ from rfl, map_inv, Units.val_inv_eq_inv_val]`. Establish `hκL : LocE.lamGBS q ψ₀ χ k₀ (k₀ + 2 * rS + 1) t (m - 1) n' 0 κ.toLinearMap = ((lamJsym ψ₀ χ n' k₀ (k₀ + 2 * rS + 1) t (m - 1) rS hrn' ⟨H, hH⟩ : Kˣ) : K)⁻¹`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hinvJ]`. Apply `σ₀.injective` to reduce the goal to its premises. Rewrite using `[ctl_lamGBS_lamJ (RingEquiv.refl (𝓞 E ⧸ P.asIdeal)) σ₀ ψ₀ χ (by omega) (by omega) hκ hred, ctl_lamJsym_lamJ σ₀ ψ₀ χ ht (by omega) hrn']`. Use `set A := ctlTLGL H' hA hA' with hAdef`. Establish `hAmem : A ∈ HJsym (𝓞 E ⧸ P.asIdeal) N' k₀ (k₀ + 2 * rS + 1) t m rS (by omega)` using `ctl_TL_mem hrN (by omega) hH'.1 hA hA'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hXm : ((lamXmsym ψ₀ χ (N' + 1) k₀ (k₀ + 2 * rS + 1) t m rS hrN ⟨H', hH'⟩ : Kˣ) : K) = ((lamJsym ψ₀ χ N' k₀ (k₀ + 2 * rS + 1) t m rS (by omega) ⟨A, hAmem⟩ : Kˣ) : K)`. Apply `σ₀.injective` to reduce the goal to its premises. Establish `e1 : ((lamXmsym ψ₀ χ (N' + 1) k₀ (k₀ + 2 * rS + 1) t m rS hrN ⟨H', hH'⟩ : Kˣ) : K) = ((lamJsym ψ₀ χ (N' + 1) k₀ (k₀ + 2 * rS + 1) t m rS hrN ⟨H', hH'.1⟩ : Kˣ) : K)` using `rfl`. Rewrite using `[e1, ctl_lamJsym_lamJ σ₀ ψ₀ χ ht (by omega) hrN, ctl_lamJsym_lamJ σ₀ ψ₀ χ ht (by omega) (by omega), ctl_lamJ_TL _ _ (by omega) (by omega)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγL : (LocE.lamGBS q ψ₀ χ k₀ (k₀ + 2 * rS + 1) t m (N' + 1 - 1) 0 γ'.toLinearMap)⁻¹ = ((lamXmsym ψ₀ χ (N' + 1) k₀ (k₀ + 2 * rS + 1) t m rS hrN ⟨H', hH'⟩ : Kˣ) : K)`. Establish `h1 : LocE.lamGBS q ψ₀ χ k₀ (k₀ + 2 * rS + 1) t m (N' + 1 - 1) 0 γ'.toLinearMap = ((lamJsym ψ₀ χ N' k₀ (k₀ + 2 * rS + 1) t m rS (by omega) ⟨A⁻¹, Subgroup.inv_mem _ hAmem⟩ : Kˣ) : K)`. Apply `σ₀.injective` to reduce the goal to its premises. Rewrite using `[ctl_lamJsym_lamJ σ₀ ψ₀ χ ht (by omega) (by omega)]`. Conclude with `ctl_lamGBS_lamJ (RingEquiv.refl (𝓞 E ⧸ P.asIdeal)) σ₀ ψ₀ χ (k₀ := k₀) (r := k₀ + 2 * rS + 1) (t := t) (j := m) (n := N') (by omega) (by omega) hγ hγr`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hXm, show (⟨A⁻¹, Subgroup.inv_mem _ hAmem⟩ : ↥(HJsym (𝓞 E ⧸ P.asIdeal) N' k₀ (k₀ + 2 * rS + 1) t m rS (by omega))) = ⟨A, hAmem⟩⁻¹ from rfl, map_inv, Units.val_inv_eq_inv_val, inv_inv]`. Establish `hHu : IsUnit ((H⁻¹ : GL (Fin n') (𝓞 E ⧸ P.asIdeal)) : Matrix (Fin n') (Fin n') (𝓞 E ⧸ P.asIdeal)).det` using `isUnit_iff_exists_inv.2 ⟨(H : Matrix (Fin n') (Fin n') (𝓞 E ⧸ P.asIdeal)).det, by`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.det_one]⟩`. Establish `hdκ` using `ctl_det_red hκ hred`. Establish `huS : LocE.unitV (χ (m - 1)) (LinearEquiv.det κ : E) ≠ 0` using `ctl_unitV_ne _ (by rw [hdκ.2]; exact hHu)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdκ'` using `ctl_det_red hκ' hred'`. Establish `hdγ` using `ctl_det_red hγ hγr`. Establish `hH'u : IsUnit ((H'⁻¹ : GL (Fin (N' + 1)) (𝓞 E ⧸ P.asIdeal)) : Matrix (Fin (N' + 1)) (Fin (N' + 1)) (𝓞 E ⧸ P.asIdeal)).det` using `isUnit_iff_exists_inv.2 ⟨(H' : Matrix (Fin (N' + 1)) (Fin (N' + 1)) (𝓞 E ⧸ P.asIdeal)).det, by`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.det_one]⟩`. Establish `hab : redP P (LinearEquiv.det κ' : E) = redP P (LinearEquiv.det γ' : E)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hdκ'.2]`. Use `show _ = redP P (LinearEquiv.det γ : E)`. Rewrite using `[hdγ.2, ctl_det_TL _ hA' hll']`. Both sides reduce to the same expression. Establish `hTγ : LocE.unitV (χ (m - 1))⁻¹ (LinearEquiv.det κ' : E) * LocE.unitV (χ (m - 1)) (LinearEquiv.det γ' : E) = 1` using `ctl_unitV_inv_mul (χ (m - 1)) hab (by rw [hdκ'.2]; exact hH'u)`.
-
-Rewrite using `[hκL, hγL]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ctl_top (hlaw : CtlPhiLaw) (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {K : Type} [Field K]
     (σ₀ : K →+* ℂ) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {k₀ rS r t m n' N c' : ℕ}
@@ -211,7 +209,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ctl_lamXmsym_congr {κ K : Type} [CommRing κ] [Field K] (ψ : AddChar κ K) (χ : ℕ → κˣ →* Kˣ) {n k r t m m' rS : ℕ} (h : r ≤ n)
     (e : m = m') {M : GL (Fin n) κ} (h1 : M ∈ HXmsym κ n k r t m rS h) (h2 : M ∈ HXmsym κ n k r t m' rS h) :
@@ -220,27 +218,23 @@ theorem ctl_lamXmsym_congr {κ K : Type} [CommRing κ] [Field K] (ψ : AddChar �
   rfl
 
 /- English proof (translation)
-Introduce `w hw h h' κ κ' hκ hκ' y hy`. Take `⟨σ₀⟩ : Nonempty (X.K →+* ℂ)` from `inferInstance`. Establish `hq` using `ciQ_mem w.1`. Establish `hu` using `ciQ_notMem_sq hX hPr hw`. Establish `hj : m2 + 1 + 1 = R.m` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrn' : R.r ≤ R.N (m2 + 1)` using `r_le_N_of_le (by omega)`. Establish `hrN : R.r ≤ R.N (m2 + 1 + 1)` using `r_le_N_of_le (by omega)`. Establish `ht : 0 < R.t` using `by have := R.three_m_lt_t; omega`. Establish `hH : h.1 ∈ HJsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N (m2 + 1)) R.k R.r R.t (m2 + 1 + 1 - 1) R.rS hrn'`. Establish `h2` using `h.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `h.1 ∈ (colLevSym Ch (m2 + 1) ⟨w.1, hw⟩).H at h2`. Rewrite `h2` using `[colLevSym_pred Ch hj]`. Conclude with `h2`. Establish `hlamS : ((((oneIdx (colLevSym Ch) (QE sel (mu : Chr X.F X.E X.K)) m2).levG (m2 + 1) (oneAl (colLevSym Ch) sel mu m2 (m2 + 1) le_rfl) ⟨w.1, hw⟩).lam h : X.Kˣ) : X.K) = ((lamJsym (Ch.psi0 ⟨w.1, hw⟩) (extChi fun s => Ch.chi s ⟨w.1, hw⟩) (R.N (m2 + 1)) R.k R.r R.t (m2 + 1 + 1 - 1) R. …`. Establish `key : ∀ (l : Lev (𝓞 X.E ⧸ w.1.asIdeal) X.K (R.N (m2 + 1))), l = colLevSym Ch (m2 + 1) ⟨w.1, hw⟩ → ∀ (M : ↥l.H) (hM : M.1 ∈ HJsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N (m2 + 1)) R.k R.r R.t (m2 + 1 + 1 - 1) R.rS hrn'), ((l.lam M : X.Kˣ) : X.K) = ((lamJsym (Ch.psi0 ⟨w.1, hw⟩) (extChi fun s => …`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl M hM`. Rewrite `hl` using `[colLevSym_pred Ch hj]`. Substitute `hl` using the available equality. Both sides reduce to the same expression. Conclude with `key _ rfl h hH`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH'm : h'.1 ∈ HXmsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N (m2 + 1 + 1)) R.k R.r R.t R.m R.rS hrN`. Establish `h2 : ∀ M, M ∈ (colLevSym Ch (m2 + 1 + 1) ⟨w.1, hw⟩).H → M ∈ HXmsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N (m2 + 1 + 1)) R.k R.r R.t R.m R.rS hrN` using `fun M hM => by`. Rewrite `hM` using `[colLevSym_top_H Ch (by omega) ⟨w.1, hw⟩]`. Conclude with `hM`. Conclude with `h2 h'.1 h'.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hH' : h'.1 ∈ HXmsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N (m2 + 1 + 1)) R.k R.r R.t (m2 + 1 + 1) R.rS hrN`. Establish `h3` using `hH'm`. Rewrite `h3` using `[show R.m = m2 + 1 + 1 by omega]`. Conclude with `h3`. Establish `hlamT : ((((colLevSym Ch (m2 + 1 + 1)) ⟨w.1, hw⟩).lam h' : X.Kˣ) : X.K) = ((lamXmsym (Ch.psi0 ⟨w.1, hw⟩) (extChi fun s => Ch.chi s ⟨w.1, hw⟩) (R.N (m2 + 1 + 1)) R.k R.r R.t (m2 + 1 + 1) R.rS hrN ⟨h'.1, hH'⟩ : X.Kˣ) : X.K)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[colLevSym_top_lam Ch (by omega) ⟨w.1, hw⟩ h' hH'm]`. Conclude with `congrArg (fun z : X.Kˣ => (z : X.K)) (ctl_lamXmsym_congr (Ch.psi0 ⟨w.1, hw⟩) (extChi fun s => Ch.chi s ⟨w.1, hw⟩) hrN (by omega) hH'm hH')`. Unfold `rhoS rhoT PhiTopG`. Simplify using `only [if_pos hw, hsharp, if_true]`. Establish `e1 : psi0P Ch w.1 = Ch.psi0 ⟨w.1, hw⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `psi0P`. Rewrite using `[dif_pos hw]`. Establish `e2 : chiP Ch w.1 = extChi fun s => Ch.chi s ⟨w.1, hw⟩`. Unfold `chiP`. Rewrite using `[dif_pos hw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Both sides reduce to the same expression. Rewrite using `[Units.val_inv_eq_inv_val, hlamS, hlamT, e1, e2]`. Establish `hn' : R.N (m2 + 1) = R.r + (m2 + 1 + 1 - 1) * R.t` using `by show R.N (m2 + 1) = R.r + (m2 + 1) * R.t`. Rewrite using `[N_eq_blocks]`. Unfold `Ranks.r`.
-
-Use linear arithmetic over natural numbers and integers. Establish `hN : R.N (m2 + 1 + 1) = R.r + (m2 + 1 + 1) * R.t + 1`. Rewrite using `[N_eq_blocks]`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `ctl_top hlaw hq hu σ₀ (Ch.psi0 ⟨w.1, hw⟩) (extChi fun s => Ch.chi s ⟨w.1, hw⟩) (xt_cOf hm) (r_eq_sym R) (by omega) ht hn' hN hrn' hrN κ.2 hH hκ κ'.2 hH' hκ' y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem topLawG_sym (hlaw : CtlPhiLaw) (hX : X.Ok) (hPr : Pr.Ok) {m2 : ℕ} (hm : R.m = m2 + 2) (hsharp : cst.sharp = true) :
     TopLawG Ch sel mu cst (oneIdx (colLevSym Ch) (QE sel (mu : Chr X.F X.E X.K)) m2) m2 (colLevSym Ch (m2 + 1 + 1))

@@ -20,9 +20,7 @@ namespace GlobalTheory.ThKSwapV
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hmono : Monotone fun t : ℝ≥0 => C * (t : ℝ) ^ k` using `fun s t hst => mul_le_mul_of_nonneg_left (pow_le_pow_left₀ s.2 (NNReal.coe_le_coe.2 hst) k) hC`. Establish `hcont : Continuous fun t : ℝ≥0 => C * (t : ℝ) ^ k` using `continuous_const.mul (NNReal.continuous_coe.pow k)`. Establish `e` using `Monotone.map_ciInf_of_continuousAt (g := fun γ : ratU σ J => ht (γ.1 * h)) hcont.continuousAt hmono (OrderBot.bddBelow _)`. Use `show x ≤ C * ((⨅ γ : ratU σ J, ht (γ.1 * h) : ℝ≥0) : ℝ) ^ k`. Rewrite using `[e]`.
-
-Conclude with `le_ciInf hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_mul_qht_pow {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (h : UA σ J) {x C : ℝ} (k : ℕ) (hC : 0 ≤ C)
     (hx : ∀ γ : ratU σ J, x ≤ C * (ht (γ.1 * h) : ℝ) ^ k) : x ≤ C * (qht h : ℝ) ^ k := by

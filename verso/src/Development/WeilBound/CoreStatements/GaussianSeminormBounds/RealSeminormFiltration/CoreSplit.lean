@@ -10,9 +10,9 @@ namespace PositivityTheory.KReal
 variable {p q r s : ℕ}
 
 /- English proof (translation)
-Unfold `chiTr Eab`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.trace_single_eq_of_ne _ _ _ h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiTr_Eab (c : ℂ) (a b : Ix p q) : chiTr c (Eab a b) = if a = b then c else 0 := by
   unfold chiTr Eab
@@ -23,7 +23,7 @@ theorem chiTr_Eab (c : ℂ) (a b : Ix p q) : chiTr c (Eab a b) = if a = b then c
     simp [h]
 
 /- English proof (translation)
-Unfold `minusPart`. Use `finsum_eq_zero_of_forall_eq_zero fun e => ?_` and prove the remaining obligations. Rewrite using `[homogeneousComponent_of_mem hQ, if_neg (by omega), map_zero, map_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem minusPart_small {σ : Type} (A : Module.End ℂ (MvPolynomial σ ℂ)) {d : ℕ} (hd : d < 2)
     {Q : MvPolynomial σ ℂ} (hQ : Q ∈ homog σ d) : minusPart A Q = 0 := by
@@ -32,23 +32,23 @@ theorem minusPart_small {σ : Type} (A : Module.End ℂ (MvPolynomial σ ℂ)) {
   rw [homogeneousComponent_of_mem hQ, if_neg (by omega), map_zero, map_zero]
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Set `D : Ix p q → Ix p q → Module.End ℂ (Pol p q r s)` to `fun a b => fockAct1 p q r s (Eab a b) - (if a = b then ((c0 : ℚ) : ℂ) else 0) • 1`. Establish `hDa : ∀ a b w, D a b w = fockAct1 p q r s (Eab a b) w + (-(if a = b then ((c0 : ℚ) : ℂ) else 0)) • w`. Introduce `a b w`.
+Substitute using the available equality. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[neg_smul, ← sub_eq_add_neg]`. Both sides reduce to the same expression. Establish `hDW : ∀ a b, sameBlock a b → ∀ w ∈ W, D a b w ∈ W`. Introduce `a b hab w hw`. Rewrite using `[hDa]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.add_mem (hW a b hab w hw) (W.smul_mem _ hw)`. Set `K : Submodule ℂ (Pol p q r s)` to `⨆ ab : {ab : Ix p q × Ix p q // sameBlock ab.1 ab.2}, W.map (D ab.1.1 ab.1.2)`. Establish `hKW : K ≤ W` using `iSup_le fun ab => by`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `hDW _ _ ab.2 w hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hKc : K ≤ coinvSub (act1 p q r s) (chiTr ((c0 : ℚ) : ℂ))` using `iSup_le fun ab => by`. Introduce and unpack `_ ⟨w, -, rfl⟩`. Use `Submodule.mem_iSup_of_mem (Eab ab.1.1 ab.1.2) ⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[chiTr_Eab]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy, hz⟩` from `PI.FHS.exists_orth K d (hKW.trans hWd) x`. Establish `hzW : x - y ∈ W` using `W.sub_mem hx (hKW hy)`. Use `⟨x - y, ⟨hzW, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(mem_polChi_iff _ _).2 fun a b hab => ?_` and prove the remaining obligations. Establish `hw` using `hDW a b hab _ hzW`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hba : sameBlock b a` using `PI.FHS.sameBlock_symm hab`. Establish `h0` using `hz (D b a (D a b (x - y))) (Submodule.mem_iSup_of_mem (⟨(b, a), hba⟩ : {ab : Ix p q × Ix p q // sameBlock ab.1 ab.2}) ⟨_, hw, rfl⟩)`. Establish `h1 : fockInner (D a b (x - y)) (D a b (x - y)) = 0`. Establish `e : ∀ w : Pol p q r s, fockInner w (D a b (x - y)) = fockInner (D b a w) (x - y)`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hDa, hDa, PI.FHS.fockInner_add_right, PI.FHS.fockInner_add_left, PI.FHS.fockInner_smul_right, PI.FHS.fockInner_smul_left, PI.FockOneDegW.fock_kernel_adjoint p q r s a b hab]`. Use `congr 2`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h, Ne.symm h]`. Rewrite using `[e, h0]`. Establish `h2` using `PI.FHS.fockInner_self_eq_zero h1`. Rewrite `h2` using `[hDa, neg_smul, add_neg_eq_zero]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub]`. Establish `: thMkC p q r s ((c0 : ℚ) : ℂ) y = 0` using `(Submodule.Quotient.mk_eq_zero _).2 (hKc hy)`. Rewrite using `[this, sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem charSplit (c : ℂ) (c0 : ℚ) (hc : c = c0) (d : ℕ) (W : Submodule ℂ (Pol p q r s))
     (hWd : W ≤ homog (Ix p q × Ix r s) d) (hW : KSt (units (fockAct1 p q r s)) W) :
@@ -104,7 +104,7 @@ theorem charSplit (c : ℂ) (c0 : ℚ) (hc : c = c0) (d : ℕ) (W : Submodule �
     rw [this, sub_zero]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Use `(highestWeightDegree_le p q r s).1 d (fun _ => c0) g hg ⟨h0, (mem_polChi_iff_hw c c0 hc g).1 hχ⟩` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem polChi_small (c : ℂ) (c0 : ℚ) (hc : c = c0) (d : ℕ)
     (hd : (d : ℚ) < degW (cPair r s) (fun _ : Ix p q => c0)) {g : Pol p q r s}
@@ -114,7 +114,7 @@ theorem polChi_small (c : ℂ) (c0 : ℚ) (hc : c = c0) (d : ℕ)
   linarith
 
 /- English proof (translation)
-Take `⟨e, ⟨he, hχ⟩, h⟩` from `charSplit c c0 hc d _ le_rfl (homogeneous_stable_first_action d) ⟨g, hg, rfl⟩`. Rewrite using `[← h, polChi_small c c0 hc d hd he hχ, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem th_small (c : ℂ) (c0 : ℚ) (hc : c = c0) (d : ℕ)
     (hd : (d : ℚ) < degW (cPair r s) (fun _ : Ix p q => c0)) {g : Pol p q r s}
@@ -123,9 +123,9 @@ theorem th_small (c : ℂ) (c0 : ℚ) (hc : c = c0) (d : ℕ)
   rw [← h, polChi_small c c0 hc d hd he hχ, map_zero]
 
 /- English proof (translation)
-Establish `h` using `(gradedOscillatorProperty p q r s).2.2.1 Z hZ g`. Apply the tactic sequence `have htr : Z.trace = 0 := Finset.sum_eq_zero fun a _ => hZ a a (by cases a <;> trivial)`. Establish `h0 : thMkC p q r s c (fockAct1 p q r s Z g) = 0`. Use `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_iSup_of_mem Z ⟨g, ?_⟩)` and prove the remaining obligations. Simplify using `[chiTr, htr, act1]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[h, map_add]`. Conclude with `eq_neg_of_add_eq_zero_left h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_plus1 (c : ℂ) {Z : Mat p q} (hZ : IsPC Z) (g : Pol p q r s) :
     thMkC p q r s c (plusPart (fockAct1 p q r s Z) g) = - thMkC p q r s c (minusPart (fockAct1 p q r s Z) g) := by
@@ -139,15 +139,13 @@ theorem th_plus1 (c : ℂ) {Z : Mat p q} (hZ : IsPC Z) (g : Pol p q r s) :
   exact eq_neg_of_add_eq_zero_left h0
 
 /- English proof (translation)
-Establish `hs` using `harmonicSplitting_holds p q r s true false rfl d0`. Establish `hR : (Submodule.span ℂ (raised p q r s true false d0)).map (thMkC p q r s c) = ⊥`. Rewrite using `[Submodule.map_span, Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨_, ⟨Q, hQ, (⟨-, Z, hZ, rfl⟩ | ⟨h, -⟩)⟩, rfl⟩`. Rewrite using `[th_plus1 c hZ, neg_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_ge d0 2 with h2 | h2` into its components or cases. Rewrite using `[minusPart_small _ h2 hQ, map_zero]`. Take `⟨e, rfl⟩` from `Nat.exists_eq_add_of_le' h2`. Rewrite using `[PI.FHS.minusPart_of_mem hQ]`. Use `th_small c c0 hc e ?_ (homogeneousComponent_mem e _)` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hd]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd h (by simp)`. Establish `hK : KSt (units (fockAct1 p q r s)) (homog (Ix p q × Ix r s) (d0 + 2) ⊓ harm1 p q r s)` using `fun a b hab x hx => ⟨homogeneous_stable_first_action _ a b hab x hx.1, harmonic_stable_first_action a b hab x hx.2⟩`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `charSplit c c0 hc (d0 + 2) _ inf_le_left hK`. Use `conv_lhs => rw [hs]`. Rewrite using `[Submodule.map_sup, hR, sup_bot_eq]`. Use `h1.trans (Submodule.map_mono ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨⟨a, b⟩, e⟩`.
-
-Conclude with `⟨⟨b, e⟩, a⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem th_next (c : ℂ) (c0 : ℚ) (hc : c = c0) (d0 : ℕ)
     (hd : (d0 : ℚ) = degW (cPair r s) (fun _ : Ix p q => c0)) :

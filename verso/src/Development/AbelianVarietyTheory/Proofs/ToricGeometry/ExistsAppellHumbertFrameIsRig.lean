@@ -14,7 +14,7 @@ def ValRules : Prop :=
   ∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨e, he⟩` from `(hv X x).2.1 U h`. Establish `key` using `congrArg e s.val_inv`. Rewrite `key` using `[map_mul, map_one, ← he, h0, zero_mul]`. Conclude with `zero_ne_one key`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rigVal_ne_zero (hv : ValRules) {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (s : Γ(X, U)ˣ) : valAt' x U s.val ≠ 0 := by
@@ -25,9 +25,7 @@ theorem rigVal_ne_zero (hv : ValRules) {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : 
   exact zero_ne_one key
 
 /- English proof (translation)
-Use `delta LB.pull LB.LinComb LB.wchart`. Prove the components needed by the constructor for the conclusion. Introduce `h p _`. Conclude with `Set.mem_iInter.mp (h trivial) PUnit.unit`. Introduce `h p hp`.
-
-Conclude with `Set.mem_iInter.mpr (fun k => by cases k; exact h hp)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rigChart_iff {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (L : LB X) (j : (L.pull x).ι) :
     ⊤ ≤ (L.pull x).U j ↔ ⊤ ≤ x ⁻¹ᵁ L.U (j PUnit.unit) := by
@@ -39,13 +37,13 @@ theorem rigChart_iff {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (L : LB X) (j : (L.pull
     exact Set.mem_iInter.mpr (fun k => by cases k; exact h hp)
 
 /- English proof (translation)
-Unfold `LB.Gen.IsGen at hr`. Take `⟨hle, hg⟩ : ∃ hle : (L.pull x).U j ⊓ (L.pull x).U j' ≤ x ⁻¹ᵁ (L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit)), (L.pull x).g j j' = res hle (pullU x _ (L.g (j PUnit.unit) (j' PUnit.unit)))` from `by delta LB.pull LB.LinComb dsimp only`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `⟨_, rfl⟩`. Establish `hJ : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ ((L.pull x).U j ⊓ (L.pull x).U j')`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `le_inf hj hj'`. Take `⟨e, he⟩` from `(hv (Sp ℂ) (𝟙 _)).2.1 _ hJ`. Establish `hrj` using `congrArg (fun u => e (Units.val u)) (hr j j')`. Rewrite `hrj` using `[hg]`. Rewrite `hrj` using `[Units.val_mul, map_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [← he] at hrj`. Establish `eres : ∀ {U W : (Sp ℂ).Opens} (hh : W ≤ U) (u : (Γ(Sp ℂ, U))ˣ), ((res hh u : (Γ(Sp ℂ, W))ˣ) : Γ(Sp ℂ, W)) = resG (Sp ℂ) hh (u : Γ(Sp ℂ, U))` using `fun _ _ => rfl`. Establish `epu : ∀ (W : X.Opens) (u : (Γ(X, W))ˣ), ((pullU x W u : (Γ(Sp ℂ, x ⁻¹ᵁ W))ˣ) : Γ(Sp ℂ, x ⁻¹ᵁ W)) = (x.app W).hom (u : Γ(X, W))` using `fun _ _ => rfl`. Establish `r3` using `fun U h f => (hv (Sp ℂ) (𝟙 (Sp ℂ))).2.2.1 U ((L.pull x).U j ⊓ (L.pull x).U j') h f hJ`. Simplify using `only [eres, epu, r3] at hrj`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hrj` using `[(hv (Sp ℂ) (𝟙 _)).2.2.2.1 X x, Category.id_comp]`. Conclude with `hrj`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rigVal_compat (hv : ValRules) {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (L : LB X)
     (rig : LB.Gen (L.pull x)) (hr : rig.IsGen) (j j' : (L.pull x).ι)
@@ -81,27 +79,27 @@ end OriginFrame
 open OriginFrame in
 
 /- English proof (translation)
-Introduce `hCube hV hFrame hLoc hGlob hFact hNorm P rig hrig u₀`. Establish `hLB : P.L.IsLB` using `P.7`. Take `⟨cs⟩` from `(hCube (Sp ℂ) P ⟨P.L, rig, hLB, hrig⟩ rfl).1`. Take `⟨W, hW⟩ : ∃ W : P.L.ι → Set (Fin P.g → ℂ), W = fun i => {z | ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ P.L.U i}` from `⟨_, rfl⟩`. Take `⟨c, hc⟩ : ∃ c : P.L.ι → P.L.ι → (Fin P.g → ℂ) → ℂ, c = fun i j z => valAt' (u₀.ex z).left (P.L.U i ⊓ P.L.U j) (P.L.g i j).val` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `memW : ∀ i z, z ∈ W i ↔ ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ P.L.U i`. Introduce `i z`. Rewrite using `[hW]`. Conclude with `Iff.rfl`. Take `⟨⟨hWo, hWc, hcd, hcn, hcc, hWp, hcp⟩, T, hT1, hT2, hT3, hT4⟩` from `hFrame P.A _ P.L P.g u₀ hLB cs.t cs.2 W c hW hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Extract witnesses or component facts from the available result.
 
-Establish `hloc` using `hLoc P.g W c hWo hWc hcd hcn hcc T hT1 hT2 hT3 u₀.Λ u₀.discrete u₀.full hWp hcp hT4`. Take `⟨fr, κ, ⟨hfrd, hfrn, hfrc⟩, hTfr⟩` from `hGlob P.g W c hWo hWc hcd hcn hcc T hT1 hT2 hT3 hloc`. Take `⟨a, B, ha, hab, hfa⟩` from `hFact P.g W c hWo hWc hcd hcn hcc T hT1 hT2 hT3 u₀.Λ u₀.discrete u₀.full hWp hcp hT4 fr κ ⟨hfrd, hfrn, hfrc⟩ hTfr`. Take `⟨Hm, χ, Ef, Q, hH, hχ, hEf, hQd, _, hQ⟩` from `hNorm P.g u₀.Λ u₀.discrete u₀.full a B ha hab`. Establish `hex0 : u₀.ex 0 = 1` using `(u₀.ker 0).2 (Submodule.zero_mem _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he0 : (u₀.ex 0).left = eSec P.A`. Simplify using `only [hex0, CategoryTheory.Hom.one_def, toUnit_unit, Category.id_comp]`. Both sides reduce to the same expression. Take `⟨i₀, h₀⟩` from `hWc 0`. Establish `hjj : ⊤ ≤ (P.L.pull (eSec P.A)).U (fun _ => i₀ : PUnit.{1} → P.L.ι)` using `(OriginFrame.rigChart_iff (eSec P.A) P.L (fun _ => i₀ : PUnit.{1} → P.L.ι)).2 (by rw [← he0]; exact (memW _ _).1 h₀)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hjj' : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ (P.L.pull (eSec P.A)).U (fun _ => i₀ : PUnit.{1} → P.L.ι)`. Conclude with `hjj`. Establish `hvne` using `OriginFrame.rigVal_ne_zero hV (𝟙 (Sp ℂ)) _ hjj' (rig.s (fun _ => i₀ : PUnit.{1} → P.L.ι))`. Use `clear hFrame hLoc hGlob hFact hNorm hCube hT1 hT2 hT3 hT4 hloc hTfr hcd hcn hcc hWp hcp hWo hWc hab`. Establish `hF : fr i₀ 0 * Complex.exp (Q 0) ≠ 0` using `mul_ne_zero (hfrn i₀ 0 h₀ trivial) (Complex.exp_ne_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlam : valAt' (𝟙 (Sp ℂ)) ((P.L.pull (eSec P.A)).U (fun _ => i₀ : PUnit.{1} → P.L.ι)) (rig.s (fun _ => i₀ : PUnit.{1} → P.L.ι)).val / (fr i₀ 0 * Complex.exp (Q 0)) ≠ 0` using `div_ne_zero hvne hF`. Use `⟨{ ex := u₀.ex ex_add := u₀.ex_add ex_onto := u₀.ex_onto Λ := u₀.Λ ker := u₀.ker discrete := u₀.discrete full := u₀.full hol := u₀.hol fr := fun i z => valAt' (𝟙 (Sp ℂ)) ((P.L.pull (eSec P.A)).U (fun _ => i₀ : PUnit.{1} → P.L.ι)) (rig.s (fun _ => i₀ : PUnit.{1} → P.L.ι)).val / (f …` and prove the remaining obligations. Introduce `i`. Use `(((hfrd i).mono fun z hz => ⟨(memW i z).2 hz, trivial⟩).mul hQd.cexp.differentiableOn).const_mul _` and prove the remaining obligations. Introduce `i z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero hlam (mul_ne_zero (hfrn i z ((memW i z).2 hz) trivial) (Complex.exp_ne_zero _))`. Introduce `i j z hz`. Establish `hp` using `((hV _ (u₀.ex z).left).1 _).1 hz`. Establish `hzi : z ∈ W i` using `(memW i z).2 (((hV _ _).1 _).2 hp.1)`. Establish `hzj : z ∈ W j` using `(memW j z).2 (((hV _ _).1 _).2 hp.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions.
 
-Establish `h1` using `hfrc i j z hzi hzj trivial`. Rewrite `h1` using `[hc]`. Simplify using `only at h1 ⊢`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j hj`. Establish `hj0 : 0 ∈ W (j PUnit.unit)` using `(memW _ _).2 (by rw [he0]; exact (OriginFrame.rigChart_iff (eSec P.A) P.L j).1 hj)`. Establish `hcomp` using `OriginFrame.rigVal_compat hV (eSec P.A) P.L rig hrig j (fun _ => i₀ : PUnit.{1} → P.L.ι) hj hjj`. Establish `hfc` using `hfrc (j PUnit.unit) i₀ 0 hj0 h₀ trivial`. Rewrite `hfc` using `[hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only at hfc ⊢`. Rewrite using `[hcomp, hfc, he0, div_mul_eq_mul_div, div_eq_iff hF]`. Expand and normalize the polynomial expressions, which then agree. Introduce `l i z hz`. Establish `hzW : z ∈ W i` using `(memW i z).2 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at hz ⊢`. Establish `hE` using `Complex.exp_ne_zero (Q (z + l))`. Rewrite using `[← hQ l z, hfa l i z hzW, Complex.exp_sub]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_appellHumbert_frame_isRig :
     Out.CubeSt → (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default

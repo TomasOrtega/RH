@@ -42,7 +42,7 @@ variable {d : ℕ} (E : Frame Φ (d + 1)) (E' : Frame Φ' (d + 1)) (e : E.D ⟶ 
 
 include he hρ in
 /- English proof (translation)
-Apply `hρ Y.T` to reduce the goal to its premises. Establish `h` using `he 0 (X.s ≫ φ.1) Y.s`. Rewrite using `[map_zero, Category.assoc, ← m.G.map_comp, h]`. Conclude with `φ.2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cut_mem {X Y : Cut E'} (φ : X ⟶ Y) :
     E.τ 0 ((e ≫ m.G.map X.s) ≫ m.G.map φ.1) (e ≫ m.G.map Y.s) = 0 := by
@@ -72,7 +72,7 @@ def e1 : (Cut.E1 E).D ⟶ (G1 m E E' e he hρ).obj (Cut.E1 E').D :=
     exact E.τ_self 0 e⟩
 
 /- English proof (translation)
-Introduce `i {T} s s'` and use `he i.succ s.1 s'.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fr1 : (m1 m E E' e he hρ).Fr (Cut.E1 E) (Cut.E1 E') (e1 m E E' e he hρ) :=
   fun i {T} s s' => he i.succ s.1 s'.1
@@ -83,13 +83,13 @@ def etaC (X : Pt E') : (Cut.P0 Q).obj ((Gp m E E' e).obj X) ⟶ (G1 m E E' e he 
   Cut.adjInv Q _ _ (m.G.map (Q'.j X.T))
 
 /- English proof (translation)
-The claim follows from `Cut.adjInv_j Q ((Gp m E E' e).obj X) ((G1 m E E' e he hρ).obj ((Cut.P0 Q').obj X)) (m.G.map (Q'.j X.T))`.
+A detailed English derivation is pending.
 -/
 theorem j_eta (X : Pt E') : Q.j (m.G.obj X.T) ≫ (etaC m E E' e he hρ Q Q' X).1 = m.G.map (Q'.j X.T) :=
   Cut.adjInv_j Q ((Gp m E E' e).obj X) ((G1 m E E' e he hρ).obj ((Cut.P0 Q').obj X)) (m.G.map (Q'.j X.T))
 
 /- English proof (translation)
-Establish `h1 : (Φ.A.map (etaC m E E' e he hρ Q Q' X).1).hom (Q.X (m.G.obj X.T)) = E.τ 0 ((e ≫ m.G.map X.s) ≫ m.G.map (Q'.j X.T)) (e ≫ m.G.map (Cut.sec Q' X))` using `Q.lift_X (m.G.map (Q'.j X.T)) _ (E.mem 0 _ _)`. Rewrite using `[h1, Category.assoc, ← m.G.map_comp, he 0 (X.s ≫ Q'.j X.T) (Cut.sec Q' X), Cut.sec_spec, if_pos rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_eta (X : Pt E') :
     m.ρ (Q'.P X.T) ((Φ.A.map (etaC m E E' e he hρ Q Q' X).1).hom (Q.X (m.G.obj X.T))) = Q'.X X.T := by
@@ -99,9 +99,9 @@ theorem rho_eta (X : Pt E') :
   rw [h1, Category.assoc, ← m.G.map_comp, he 0 (X.s ≫ Q'.j X.T) (Cut.sec Q' X), Cut.sec_spec, if_pos rfl]
 
 /- English proof (translation)
-Establish `e1 : Q.j (m.G.obj X.T) ≫ Cut.Pmap (X` using `(Gp m E E' e).obj X) (Y := (Gp m E E' e).obj Y) Q (m.G.map φ) = m.G.map φ ≫ Q.j (m.G.obj Y.T) := Cut.Pmap_j (X := (Gp m E E' e).obj X) (Y := (Gp m E E' e).obj Y) Q (m.G.map φ)`. Establish `e2 : Q'.j X.T ≫ Cut.Pmap (X` using `X) (Y := Y) Q' φ = φ ≫ Q'.j Y.T := Cut.Pmap_j (X := X) (Y := Y) Q' φ`. Establish `e3 : Q.j (m.G.obj X.T) ≫ Cut.Pmap (X` using `(Gp m E E' e).obj X) (Y := (Gp m E E' e).obj Y) Q (m.G.map φ) ≫ (etaC m E E' e he hρ Q Q' Y).1 = Q.j (m.G.obj X.T) ≫ (etaC m E E' e he hρ Q Q' X).1 ≫ m.G.map (Cut.Pmap (X := X) (Y := Y) Q' φ) := by`. Rewrite using `[← Category.assoc, e1, Category.assoc, j_eta, ← Category.assoc (Q.j _), j_eta, ← m.G.map_comp, ← m.G.map_comp, e2]`. Establish `e4` using `Cut.truncation_hom_ext Q (X := (Gp m E E' e).obj X) (Y := (G1 m E E' e he hρ).obj ((Cut.P0 Q').obj Y)) (ψ := (Cut.P0 Q).map (show (Gp m E E' e).obj X ⟶ (Gp m E E' e).obj Y from m.G.map φ) ≫ etaC m E E' e he hρ Q Q' Y) (ψ' := etaC m E E' e he hρ Q Q' X ≫ (G1 m E E' e he hρ).map (( …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val e4`.
+A detailed English derivation is pending.
 -/
 theorem eta_nat {X Y : Pt E'} (φ : X.T ⟶ Y.T) :
     Cut.Pmap (X := (Gp m E E' e).obj X) (Y := (Gp m E E' e).obj Y) Q (m.G.map φ) ≫ (etaC m E E' e he hρ Q Q' Y).1 =

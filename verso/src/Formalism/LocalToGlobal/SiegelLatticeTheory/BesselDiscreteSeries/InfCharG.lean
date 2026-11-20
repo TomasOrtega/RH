@@ -16,9 +16,9 @@ open ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `haveI : CompleteSpace H := hDS.1`. Introduce `v hv Y`. Establish `hσ : IsURepOn (UJset ε) σ` using `hDS.2.2.1`. Establish `hm : v ∈ smD ε σ` using `mem_smD_of_smoothVecs hv`. Establish `hc` using `anyCap hDS hgap hP hcap Y ⟨v, hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[actU_qdet hσ _ v hm, hc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem infChar_of_model {ε : Fin n → Bool} {lam : Fin n → ℝ} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hDS : Formalism.MainNotions.S.IsDS ε lam σ)
@@ -38,9 +38,7 @@ theorem infChar_of_model {ε : Fin n → Bool} {lam : Fin n → ℝ} {H : Type} 
   rfl
 
 /- English proof (translation)
-Use `⟨fun k₁ k₂ g hg => S7.psiM_equiv T μ k₁ k₂ hg, S7.psiM_one T μ, S7.psiM_smooth T μ hμ, fun g hg => S7.psiM_casimir T μ hμ hg, fun ν hν => ?_⟩` and prove the remaining obligations. Use `haveI : CompactSpace (S7.UJ ε) := cmpt_compact (cmpt_eps_eq hpq)`. Use `haveI := hν`. Use `haveI : IsFiniteMeasure ν := inferInstance`. Establish `hc : Continuous (fun g : S7.UJ ε => S7.PsiM T μ (S7.toM g))` using `(S7.psiM_continuousOn T μ hμ).comp_continuous (Units.continuous_val.comp continuous_subtype_val) (fun g => g.2)`.
-
-Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hc.continuousOn`. Conclude with `MemLp.of_bound hc.aestronglyMeasurable C (Filter.Eventually.of_forall fun g => hC g (Set.mem_univ _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isPsiFor_compact {ε : Fin n → Bool} {lam : Fin n → ℝ} (hpq : pOf ε = 0 ∨ qOf ε = 0)
     (T : S7.KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : S7.IsMu lam μ) :
@@ -57,15 +55,13 @@ theorem isPsiFor_compact {ε : Fin n → Bool} {lam : Fin n → ℝ} (hpq : pOf 
   exact MemLp.of_bound hc.aestronglyMeasurable C (Filter.Eventually.of_forall fun g => hC g (Set.mem_univ _))
 
 /- English proof (translation)
-Introduce `n ε lam H _ _ σ hlam hDS h hh hthr`. Take `⟨T⟩` from `HW.kType_exists ε lam hlam`. Take `⟨μ, hμ⟩` from `S7.exists_mu hlam`. Establish `hcap : ∀ (Y : ℂ) (g : Matrix (Fin n) (Fin n) ℂ), inUJ ε g → Formalism.QuantumDeterminants.capelli ε (Y + ((n : ℂ) - 1) / 2) (S7.PsiM T μ) g = Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y • S7.PsiM T μ g` using `fun Y g hg => S7.psiCapelli ε lam T μ hμ Y g hg`. Break down `Nat.eq_zero_or_pos (S7.q0 ε) with h0 | hq` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hpq : pOf ε = 0 ∨ qOf ε = 0` using `Nat.min_eq_zero_iff.1 h0`. Conclude with `infChar_of_model hDS (cf_stdGap_of_pq hpq hlam.1) (isPsiFor_compact hpq T μ hμ) hcap`. Establish `hX : Formalism.MainNotions.GapDS.thrDS ε ≤ Formalism.MainNotions.GapDS.thrX ε ∧ 120 * (n : ℝ) * ((S7.q0 ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ Formalism.MainNotions.GapDS.thrX ε` using `⟨le_max_left _ _, le_max_right _ _⟩`. Establish `hq1 : (1 : ℝ) ≤ (S7.q0 ε : ℝ)` using `by exact_mod_cast hq`. Establish `e1 : (S7.q0 ε : ℝ) ≤ (S7.q0 ε : ℝ) ^ ((3 : ℝ) / 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.rpow_le_rpow_of_exponent_le hq1 (by norm_num : (1 : ℝ) ≤ 3 / 2)` as an intermediate fact. Simplify using `using this`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `h8 : 8 * (n : ℝ) * (S7.q0 ε : ℝ) < h`. Establish `e2 : 8 * (n : ℝ) * (S7.q0 ε : ℝ) ≤ 120 * (n : ℝ) * ((S7.q0 ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 8 * (n : ℝ) * (S7.q0 ε : ℝ) ≤ 120 * (n : ℝ) * (S7.q0 ε : ℝ)` using `by nlinarith`. Establish `e3 : 120 * (n : ℝ) * (S7.q0 ε : ℝ) ≤ 120 * (n : ℝ) * ((S7.q0 ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2)` using `mul_le_mul_of_nonneg_left e1 (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[hX.2]`. Establish `hstd : StdGap ε lam` using `⟨hlam.1, h, hh, lt_of_le_of_lt hX.1 hthr⟩`.
-
-Conclude with `infChar_of_model hDS hstd (S7.isPsiFor_psiM ε lam h T μ hlam hμ hh hq h8).1 hcap`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem infinitesimal_character_discrete_series_gap : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), Formalism.QuantumDeterminants.IsHCParam lam →
@@ -104,7 +100,7 @@ theorem infinitesimal_character_discrete_series_gap : ∀ (n : ℕ) (ε : Fin n 
     exact infChar_of_model hDS hstd (S7.isPsiFor_psiM ε lam h T μ hlam hμ hh hq h8).1 hcap
 
 /- English proof (translation)
-The claim follows from `infinitesimal_character_discrete_series_gap`.
+A detailed English derivation is pending.
 -/
 theorem gapped_infinitesimal_character : Formalism.MainNotions.GapDS.InfCharDSG := infinitesimal_character_discrete_series_gap
 

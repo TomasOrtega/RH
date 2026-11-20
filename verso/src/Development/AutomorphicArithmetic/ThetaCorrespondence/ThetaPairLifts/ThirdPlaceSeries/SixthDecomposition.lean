@@ -9,7 +9,7 @@ section
 open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Formalism.MainNotions.N Polynomial NumberField IsDedekindDomain ReciprocityTheory.Gal GlobalTheory.StringRepresentationDecomposition
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.StringDecomp.stringDecomp_holds_alt_alt | exact _root_.GlobalTheory.StringDecomp.stringDecomp_holds_alt_alt | (intros; apply _root_.GlobalTheory.StringDecomp.stringDecomp_holds_alt_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.centred_string_decomposition : _root_.GlobalTheory.StringRepresentationDecomposition.CentredStringDecompositionAlt := by
   first | exact @_root_.GlobalTheory.StringDecomp.stringDecomp_holds_alt_alt | exact _root_.GlobalTheory.StringDecomp.stringDecomp_holds_alt_alt | (intros; apply _root_.GlobalTheory.StringDecomp.stringDecomp_holds_alt_alt <;> assumption)

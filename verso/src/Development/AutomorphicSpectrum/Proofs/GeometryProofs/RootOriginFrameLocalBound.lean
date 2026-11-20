@@ -22,7 +22,7 @@ section Grp
 variable {S S' T T' : Scheme.{0}}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `congrArg (fun q => q.left) (comp_one (M := G) (CategoryTheory.Over.homMk a rfl : CategoryTheory.Over.mk (a ≫ x) ⟶ CategoryTheory.Over.mk x))`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem one_left_pull {G : CategoryTheory.Over S} [GrpObj G] (a : T' ⟶ T) (x : T ⟶ S) (x' : T' ⟶ S) (h : a ≫ x = x') :
     a ≫ (1 : CategoryTheory.Over.mk x ⟶ G).left = (1 : CategoryTheory.Over.mk x' ⟶ G).left := by
@@ -30,11 +30,11 @@ theorem one_left_pull {G : CategoryTheory.Over S} [GrpObj G] (a : T' ⟶ T) (x :
   exact congrArg (fun q => q.left) (comp_one (M := G) (CategoryTheory.Over.homMk a rfl : CategoryTheory.Over.mk (a ≫ x) ⟶ CategoryTheory.Over.mk x))
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hw : ((1 : CategoryTheory.Over.mk x' ⟶ G').left ≫ φ) ≫ G.hom = (CategoryTheory.Over.mk (x' ≫ f)).hom`. Establish `h1` using `CategoryTheory.Over.w (1 : CategoryTheory.Over.mk x' ⟶ G')`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, h1]`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `x₀ : CategoryTheory.Over.mk (x' ≫ f) ⟶ G` to `CategoryTheory.Over.homMk _ hw`. Establish `h2` using `h.2 (CategoryTheory.Over.mk x') 1 1 x₀ x₀ rfl rfl`. Rewrite `h2` using `[_root_.mul_one]`. Establish `h3 : x₀ * x₀ = x₀` using `CategoryTheory.Over.OverMorphism.ext h2`. Establish `h4 : x₀ = 1` using `mul_eq_left.1 h3`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (fun q => q.left) h4`.
+A detailed English derivation is pending.
 -/
 theorem one_left_grp {G' : CategoryTheory.Over S'} [GrpObj G'] {G : CategoryTheory.Over S} [GrpObj G] {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
     (h : IsGrpPullback G' G f φ) (x' : T ⟶ S') (x : T ⟶ S) (e : x' ≫ f = x) :
@@ -56,7 +56,7 @@ end Grp
 section Ring
 
 /- English proof (translation)
-Use `choose θ h1 h2 using h`. Conclude with `⟨{ toFun := θ map_one' := hg (by simp [h1]) map_mul' := fun a b => hg (by simp [h1]) map_zero' := hg (by simp [h1]) map_add' := fun a b => hg (by simp [h1]) }, RingHom.ext h1, RingHom.ext h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_factor {O' R Ω C : Type} [CommRing O'] [CommRing R] [CommRing Ω] [CommRing C] (g : O' →+* Ω)
     (cl : O' →+* C) (hg : Function.Injective g) (φ : R →+* Ω) (ψ : R →+* C)
@@ -69,7 +69,7 @@ theorem exists_factor {O' R Ω C : Type} [CommRing O'] [CommRing R] [CommRing Ω
            map_add' := fun a b => hg (by simp [h1]) }, RingHom.ext h1, RingHom.ext h2⟩
 
 /- English proof (translation)
-Rewrite using `[LieTangent.spec_comp]`. Use `congr 2`. Use `RingHom.ext fun t => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spec_dual_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (a : R →+* R') (b : R' →+* R'') :
     spMap (GlobalTheory.CompanionTheory.Ar.dualMap b) ≫ spMap (GlobalTheory.CompanionTheory.Ar.dualMap a) = spMap (GlobalTheory.CompanionTheory.Ar.dualMap (b.comp a)) := by
@@ -79,7 +79,7 @@ theorem spec_dual_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R'
   ext <;> simp
 
 /- English proof (translation)
-Rewrite using `[LieTangent.spec_comp]`. Establish `e1 : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R`. Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite using `[e1, CommRingCat.ofHom_id, Spec.map_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem spec_fst_alg (R : Type) [CommRing R] :
     spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _ := by
@@ -89,9 +89,7 @@ theorem spec_fst_alg (R : Type) [CommRing R] :
   rw [e1, CommRingCat.ofHom_id, Spec.map_id]
 
 /- English proof (translation)
-Use `haveI : IsDomain O' := hg.isDomain g`. Use `haveI : IsDominant (spMap g) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical g).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot g).1 hg]`. Conclude with `bot_le)⟩`. Use `ext_of_isDominant_of_isSeparated s ?_ (spMap g) h` and prove the remaining obligations.
-
-Use `ext_of_isDominant (spMap g) ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, h, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pts_eq {O' Ω R₀ : Type} [CommRing O'] [Field Ω] [CommRing R₀] (g : O' →+* Ω) (hg : Function.Injective g)
     {B : Scheme.{0}} (s : B ⟶ Sp R₀) [IsSeparated s] {a b : Sp O' ⟶ B} (h : spMap g ≫ a = spMap g ≫ b) : a = b := by
@@ -110,9 +108,9 @@ section Lift
 variable {X B : Scheme.{0}} {G : CategoryTheory.Over X} [GrpObj G] {G₀ : CategoryTheory.Over B} [GrpObj G₀] {f : X ⟶ B} {φ : G.left ⟶ G₀.left}
 
 /- English proof (translation)
-Establish `hw : (spMap (GlobalTheory.CompanionTheory.Ar.dualMap θ) ≫ t) ≫ G₀.hom = (spMap (algebraMap O' (DualNumber O')) ≫ x) ≫ f`. Rewrite using `[Category.assoc, ht, ← Category.assoc, LieTangent.spec_dual_alg, Category.assoc, Category.assoc, he]`. Establish `l1` using `hc.1.lift_fst _ _ hw`. Establish `l2` using `hc.1.lift_snd _ _ hw`. Use `⟨CategoryTheory.Over.homMk (hc.1.lift _ _ hw) l2, ?_, l1⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show spMap (TrivSqZeroExt.fstHom O' O' O').toRingHom ≫ hc.1.lift _ _ hw = (1 : CategoryTheory.Over.mk x ⟶ G).left`. Use `hc.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, l1, ← Category.assoc, LieTangent.spec_fst_dual, Category.assoc, h1, one_left_pull _ P _ he.symm, one_left_grp hc x _ rfl]`. Rewrite using `[Category.assoc, l2, ← Category.assoc, spec_fst_alg, Category.id_comp]`. Conclude with `(CategoryTheory.Over.w (1 : CategoryTheory.Over.mk x ⟶ G)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tan_lift (hc : IsGrpPullback G G₀ f φ) {O' R : Type} [CommRing O'] [CommRing R]
     (x : Sp O' ⟶ X) (θ : R →+* O') (P : Sp R ⟶ B) (t : Sp (DualNumber R) ⟶ G₀.left)
@@ -134,9 +132,9 @@ theorem exists_tan_lift (hc : IsGrpPullback G G₀ f φ) {O' R : Type} [CommRing
     exact (CategoryTheory.Over.w (1 : CategoryTheory.Over.mk x ⟶ G)).symm
 
 /- English proof (translation)
-Use `⟨hv, hc.1.hom_ext (h.trans (Category.assoc _ _ _).symm) ?_⟩` and prove the remaining obligations. Establish `h2 : (M.pt e).left ≫ G.hom = spMap (algebraMap Ω (DualNumber Ω)) ≫ ξ` using `CategoryTheory.Over.w (M.pt e)`. Establish `h3 : v.left ≫ G.hom = spMap (algebraMap (X.presheaf.stalk p.1) (DualNumber (X.presheaf.stalk p.1))) ≫ X.fromSpecStalk p.1` using `CategoryTheory.Over.w v`. Establish `h4 : (Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.dualMap (genMap ξ p))) ≫ v.left) ≫ G.hom = spMap (algebraMap Ω (DualNumber Ω)) ≫ ξ`. Rewrite using `[Category.assoc, h3, ← Category.assoc, LieTangent.spec_dual_alg, Category.assoc, LieTangent.spec_genMap]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.trans h4.symm`.
+A detailed English derivation is pending.
 -/
 theorem extends_of (hc : IsGrpPullback G G₀ f φ) {Ω E : Type} [Field Ω] [AddCommGroup E] [Module Ω E]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} (M : LieModel G ξ E) (p : Cpt ξ) (e : E)
@@ -162,9 +160,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {S : Type} [CommRing S] [Algebra c.F S]
 
 /- English proof (translation)
-Establish `a : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ Small.tanF Y y τ i = (1 : CategoryTheory.Over.mk (Small.ptF y) ⟶ Y.oF.t.G).left`. Use `Y.m0.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Small.tanF_φ, (y.tan τ i).2]`. Conclude with `(one_left_grp Y.m0.cart (Small.ptF y) y.x (Small.ptF_fst y)).symm`. Rewrite using `[Category.assoc, Small.tanF_hom, ← Category.assoc, spec_fst_alg, Category.id_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(CategoryTheory.Over.w (1 : CategoryTheory.Over.mk (Small.ptF y) ⟶ Y.oF.t.G)).symm`. Rewrite using `[Small.tanY, ← Category.assoc, a]`. Conclude with `one_left_grp Y.m.cart (Small.ptF y) (Small.ptY Y y) rfl`.
+A detailed English derivation is pending.
 -/
 theorem tanY_one (y : FrPt Xo c S) (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
     spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ Small.tanY Y y τ i =
@@ -189,21 +187,19 @@ open FrameValue in
 set_option maxHeartbeats 600000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr A p _ z ev hz hv hG la T io e y evT zT t hI zV hR EC _ _ MC s i`. Use `letI := io.toAlgebra`. Use `letI := Small.cstAlg Or`. Take `⟨-, -, -, -, -, -, ⟨q, φ, ψ, yq, hφ, hψ, hr⟩, -⟩` from `hI`. Establish `hgen : genPt Or.𝔐.ξ ⤳ centre (gen T zV)` using `Or.𝔐.all _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `P : Cpt Or.𝔐.ξ` to `⟨centre (gen T zV), hgen⟩`. Establish `hinj : Function.Injective (genMap Or.𝔐.ξ P)` using `Or.𝔐.tie.gen.inj P`. Establish `hreg : ∀ r, ∃ s', genMap Or.𝔐.ξ P s' = φ.toRingHom r ∧ (Scheme.stalkClosedPointTo (gen T zV)).hom s' = ψ.toRingHom r` using `fun r => by`. Take `⟨h, e'⟩` from `hr r`. Take `⟨h', s', hs, hs'⟩` from `hR ⟨φ r, h⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s', hs, hs'.trans e'.symm⟩`. Take `⟨θ, hθ1, hθ2⟩` from `exists_factor _ _ hinj φ.toRingHom ψ.toRingHom hreg`. Establish `hsep : IsProper Y.s` using `projProper O Y.X Y.s Y.proj`. Establish `he : Or.𝔐.X.fromSpecStalk P.1 ≫ Or.𝔐.f = spMap θ ≫ Small.ptY Y yq`. Use `pts_eq (genMap Or.𝔐.ξ P) hinj Y.s ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Category.assoc, ← Category.assoc]`. Establish `e1 : spMap (genMap Or.𝔐.ξ P) ≫ Or.𝔐.X.fromSpecStalk P.1 = Or.𝔐.ξ` using `LieTangent.spec_genMap _ _`. Rewrite using `[e1, ← Fr.pt_eq, Small.ptY_map Y hφ, ← hθ1, LieTangent.spec_comp]`. Take `⟨v, hvt, hv'⟩` from `exists_tan_lift Or.𝔐.m.cart (Or.𝔐.X.fromSpecStalk P.1) θ (Small.ptY Y yq) (Small.tanY Y yq (Small.labelC s) (Small.labelFin Dw s i)) (Small.tanY_hom Y _ _ _) (tanY_one Y _ _ _) he`. Establish `hext : Or.𝔐.M.Extends P (Or.Fl.b s i) v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `extends_of Or.𝔐.m.cart _ P _ v hvt ?_` and prove the remaining obligations. Establish `e2` using `Small.tanY_map Y hφ (Small.labelC s) (Small.labelFin Dw s i)`. Establish `e3` using `Fr.tan_eq s i`. Establish `e4 : spMap (GlobalTheory.CompanionTheory.Ar.dualMap φ.toRingHom) ≫ Small.tanY Y yq (Small.labelC s) (Small.labelFin Dw s i) = spMap (GlobalTheory.CompanionTheory.Ar.dualMap (genMap Or.𝔐.ξ P)) ≫ spMap (GlobalTheory.CompanionTheory.Ar.dualMap θ) ≫ Small.tanY Y yq (Small.labelC s) ( …`. Rewrite using `[← Category.assoc, spec_dual_comp, hθ1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e3.symm.trans (e2.trans (e4.trans (congrArg (fun u => _ ≫ u) hv'.symm)))`. Establish `hb` using `LieTangent.isTanAt_base _ (LieTangent.spec_centre (gen T zV)) hvt`. Take `⟨w, hw⟩` from `MC.onto _ hb`. Use `⟨w, ?_, (Or.𝔐.M.valAt_iff _ _ _).2 ⟨hgen, v, hext, hw⟩⟩` and prove the remaining obligations. Use `show (MC.pt w).left ≫ Or.𝔐.m.φ = Small.tanY Y zT (Small.labelC s) (Small.labelFin Dw s i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5 : (MC.pt w).left = spMap (GlobalTheory.CompanionTheory.Ar.dualMap (Scheme.stalkClosedPointTo (gen T zV)).hom) ≫ v.left` using `congrArg (fun u => u.left) hw`. Establish `e6 : spMap (GlobalTheory.CompanionTheory.Ar.dualMap ψ.toRingHom) ≫ Small.tanY Y yq (Small.labelC s) (Small.labelFin Dw s i) = spMap (GlobalTheory.CompanionTheory.Ar.dualMap (Scheme.stalkClosedPointTo (gen T zV)).hom) ≫ spMap (GlobalTheory.CompanionTheory.Ar.dualMap θ) ≫ Small.tan …`. Establish `e7 : spMap (GlobalTheory.CompanionTheory.Ar.dualMap (Scheme.stalkClosedPointTo (gen T zV)).hom) ≫ spMap (GlobalTheory.CompanionTheory.Ar.dualMap θ) = spMap (GlobalTheory.CompanionTheory.Ar.dualMap ψ.toRingHom)` using `(spec_dual_comp θ _).trans (by rw [hθ2])`. Conclude with `(congrArg (fun u => u ≫ Small.tanY Y yq (Small.labelC s) (Small.labelFin Dw s i)) e7.symm).trans (Category.assoc _ _ _)`. Rewrite using `[e5, Small.tanY_map Y hψ, e6]`.
-
-Conclude with `(Category.assoc _ _ _).trans (congrArg (fun u => _ ≫ u) hv')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (A : Subring RM.Ω) (p : ℕ) [Fact p.Prime] (z : (Σ k, RM.ι k) → PadicAlgCl p) (ev : A →+* PadicAlgCl p), z ∈ Small.algPts p (mCoordIdeal RM.y) → (∀ x : A, Small.HasVal RM.y 0 (x : RM.Ω) z (ev x)) → FinRd.GoodRing Fr A → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ) (y : IntFr Xo c T io) (evT : A →+* T.Fr) (zT : letI := io.toAlgebra; FrPt Xo c T.Fr) (t : Ix Dw → T.Frˣ), FinRd.IsIntPt Fr A ev la T io e y evT zT t → ∀ (zV : Spec (CommRingCat.of T.V) ⟶ Or.𝔐.X), FinRd.Roots.ReadsPt Or.𝔐.ξ A T evT zV → ∀ (EC : Type) [AddCommGroup EC] [Module T.Fr EC] (MC : LieModel Or.𝔐.t.G (FinRd.Roots.gen T zV) EC) (s : CMType H ⊕ CMType H) (i : Fin (labelRk Dw s)), ∃ w : EC, FinRd.Roots.IsFrameVec Or io zT MC w s i ∧ Or.𝔐.M.ValAt (FinRd.Roots.gen T zV) (Or.Fl.b s i) (MC.pt w) := by
   intro E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr A p _ z ev hz hv hG la T io e y evT zT t hI zV hR EC _ _ MC s i

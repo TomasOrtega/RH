@@ -8,35 +8,31 @@ open scoped Classical
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Introduce `F F' _ _ _ _ s hs n δ₀`. Use `haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective`. Use `haveI : Finite (GL (Fin n) F) := inferInstance`. Use `haveI : Finite (GL (Fin n) F') := inferInstance`. Use `letI := Fintype.ofFinite (GL (Fin n) F)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := Fintype.ofFinite (GL (Fin n) F')`. Establish `hfib` using `GlobalTheory.T.card_isGaloisTwistedNormGL_mul_card_GL F F' s hs n`. Establish `hnd` using `GlobalTheory.T.isConj_of_isConj_glFieldExtensionInclusion F F' n`. Set `cl : GL (Fin n) F → ℕ` to `fun γ => Nat.card {γ' : GL (Fin n) F // IsConj γ γ'}`. Establish `hcl_pos : ∀ γ, 0 < cl γ` using `fun γ => Nat.card_pos_iff.2 ⟨⟨⟨γ, IsConj.refl γ⟩⟩, inferInstance⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hcl_eq : ∀ γ, (cl γ : ℚ) = ((Finset.univ.filter fun γ' => IsConj γ γ').card : ℚ)`. Introduce `γ`. Simplify using `only [cl, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Establish `hcard : ∀ γ, Nat.card {δ : GL (Fin n) F' // IsNorm s δ γ} = (Finset.univ.filter fun δ => IsNorm s δ γ).card`. Introduce `γ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [Nat.card_eq_fintype_card, Fintype.card_subtype]`. Set `f : GL (Fin n) F' → GL (Fin n) F → ℚ` to `fun δ γ => if IsNorm s δ γ then ((cl γ : ℚ))⁻¹ else 0`. Establish `h1 : ∀ δ, ∑ γ, f δ γ = if ∃ γ, IsNorm s δ γ then 1 else 0`. Introduce `δ`. Distinguish the cases in `h : ∃ γ, IsNorm s δ γ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨γ₀, h₀⟩` from `h`. Rewrite using `[if_pos ⟨γ₀, h₀⟩]`. Establish `hiff : ∀ γ, IsNorm s δ γ ↔ IsConj γ₀ γ`. Introduce `γ`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hγ`. Conclude with `hnd γ₀ γ (h₀.trans hγ.symm)`. Introduce `hγ`. Conclude with `(isConj_iff.2 (by`. Take `⟨c, hc⟩` from `isConj_iff.1 hγ`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨incl F F' n c, by rw [← hc]; simp [map_mul, map_inv]⟩)).symm.trans h₀`. Establish `hcl' : ∀ γ, IsConj γ₀ γ → cl γ = cl γ₀`. Introduce `γ hγ`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun γ' => ⟨fun h => hγ.trans h, fun h => hγ.symm.trans h⟩)`. Establish `: ∀ γ, f δ γ = if IsConj γ₀ γ then ((cl γ₀ : ℚ))⁻¹ else 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `γ`. Simplify using `only [f, hiff γ]`. Use `split_ifs with hh`. Rewrite using `[hcl' γ hh]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [this]`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul, ← hcl_eq]`. Conclude with `mul_inv_cancel₀ (by exact_mod_cast (hcl_pos γ₀).ne')`. Rewrite using `[if_neg h]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `γ _`. Simplify using `only [f]`. Rewrite using `[if_neg (fun hh => h ⟨γ, hh⟩)]`. Establish `h2 : ∀ γ, ∑ δ, f δ γ = (Nat.card (GL (Fin n) F') : ℚ) / Nat.card (GL (Fin n) F)`. Introduce `γ`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [f]`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul, ← hcard]`. Establish `hG : (0 : ℚ) < Nat.card (GL (Fin n) F)` using `by exact_mod_cast Nat.card_pos`. Establish `hc : (0 : ℚ) < cl γ` using `by exact_mod_cast hcl_pos γ`. Establish `hq : (Nat.card {δ : GL (Fin n) F' // IsNorm s δ γ} : ℚ) * Nat.card (GL (Fin n) F) = cl γ * Nat.card (GL (Fin n) F')` using `by exact_mod_cast hfib γ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Combine the linear relations using `[hq]`. Establish `hsum : ∑ δ : GL (Fin n) F', (if ∃ γ, IsNorm s δ γ then (1 : ℚ) else 0) = ∑ δ : GL (Fin n) F', (1 : ℚ)`. Simplify using `only [← h1]`. Rewrite using `[Finset.sum_comm]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [h2]`. Rewrite using `[Finset.sum_const, Finset.sum_const, nsmul_eq_mul, nsmul_eq_mul, Finset.card_univ, Finset.card_univ, ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card]`. Establish `hG : (0 : ℚ) < Nat.card (GL (Fin n) F)` using `by exact_mod_cast Nat.card_pos`. Clear the denominators using the available nonvanishing facts. Establish `hle : ∀ δ ∈ (Finset.univ : Finset (GL (Fin n) F')), (if ∃ γ, IsNorm s δ γ then (1 : ℚ) else 0) ≤ 1`.
-
-Introduce `δ _`. Apply the tactic sequence `split_ifs <;> norm_num`. Use `(Finset.sum_eq_sum_iff_of_le hle).1 hsum δ₀ (Finset.mem_univ _)` as an intermediate fact. Assume the negation of the conclusion as `hno`. Rewrite `this` using `[if_neg hno]`.
-
-Evaluate the numerical expressions using `at this`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem exists_isNorm : ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F'),
     (∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s) → ∀ (n : ℕ) (δ : GL (Fin n) F'), ∃ γ : GL (Fin n) F, IsNorm s δ γ := by

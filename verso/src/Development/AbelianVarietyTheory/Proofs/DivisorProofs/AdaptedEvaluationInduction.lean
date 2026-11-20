@@ -23,13 +23,13 @@ namespace GlobalTheory.IsoNonzero
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' he' χX χW om r s r' s' hP μ 𝓕 hμ h𝓕 h1 Ψ hΨ w hw`. Establish `hlaw : ∀ u ∈ unip σ W H', thetaSum F (e' (M₁.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (incV F H'.y)) (om (1, u) Ψ))))) = B.ψ (GlobalTheory.IsoPhase.phase σ W H' w u) * thetaSum F (e' (M₁.co.rho B.ψ (Matrix.vecMulVec (i …`. Introduce `u hu`. Take `⟨z, β, hz⟩` from `GlobalTheory.T.unipotent_moves_y_by_iota_and_x F E σ B d d₁ W W₁ H' i₀ i₁ r' s' hP.base.cm hP.skew hH' u⁻¹ (inv_mem hu)`. Rewrite using `[GlobalTheory.T.adapted_evaluation_pair_relation hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ hH u hu z β hz Ψ hΨ, GlobalTheory.T.herm_adapted_evaluation_reduction F E σ B n d₁ X W₁ M₁ r s n₁ X₁ H j₀ j₁ M₂ hP.base hP.herm hH e' he' _ …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he₀.maps _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hP.base.std _ Ψ hΨ)`. Use `haveI := hμ`. Take `⟨g, hg, hψg⟩` from `GlobalTheory.T.isotropic_phase_nontrivial_character F E σ B d d₁ W W₁ H' i₀ i₁ r' s' hP.base hP.skew hH' w hw`. Establish `hadd` using `GlobalTheory.T.isotropic_phase_additive F E σ B d d₁ W W₁ H' i₀ i₁ r' s' hP.base.cm hP.skew hH' w`. Use `GlobalTheory.IsoPhase.setIntegral_eq_zero_of_mul_right σ W H' μ 𝓕 h𝓕 h1 (fun u : unip σ W H' => thetaSum F (e' (M₁.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (incV F H'.y)) (om (1, u.1) Ψ)))))) ?_ ⟨g, hg⟩ (B.ψ (GlobalThe …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `γ hγ x`. Establish `hγU : (γ : UA σ W.J) ∈ ratU σ W.J` using `Subgroup.mem_subgroupOf.1 hγ`. Take `⟨c, hc⟩` from `GlobalTheory.T.isotropic_phase_rational_value F E σ d d₁ W H' w γ.1 hγU`. Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[hlaw _ (mul_mem γ.2 x.2), hlaw _ x.2, hadd _ γ.2 _ x.2, AddChar.map_add_eq_mul, hc, hP.base.std.2.1 c, one_mul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x`. Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[hlaw _ (mul_mem x.2 hg), hlaw _ x.2, hadd _ x.2 _ hg, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_isotropic_nonzero_eq_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

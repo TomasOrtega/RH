@@ -9,9 +9,9 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Take `⟨pt⟩ : Nonempty (Spec (CommRingCat.of K))` from `inferInstance`. Take `⟨⟨i, w⟩, hw⟩` from `(sigmaMk (fun _ : I => W)).surjective (y pt)`. Rewrite `hw` using `[sigmaMk_mk]`. Use `⟨i, IsOpenImmersion.lift (Sigma.ι (fun _ : I => W) i) y ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Subsingleton.elim q pt]`. Conclude with `⟨w, hw⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem exists_sigma_point {W : Scheme.{0}} {I : Type} (K : Type) [Field K]
     (y : Spec (CommRingCat.of K) ⟶ ∐ fun _ : I => W) :
@@ -26,15 +26,13 @@ private theorem exists_sigma_point {W : Scheme.{0}} {I : Type} (K : Type) [Field
   exact ⟨w, hw⟩
 
 /- English proof (translation)
-Set `F : I × {y' : Spec (CommRingCat.of K) ⟶ Y // y' ≫ s = x} → {y : Spec (CommRingCat.of K) ⟶ ∐ (fun _ : I => Y) // y ≫ (Sigma.desc fun _ : I => s) = x}` to `fun q => ⟨q.2.1 ≫ Sigma.ι (fun _ : I => Y) q.1, by`. Rewrite using `[Category.assoc, Sigma.ι_desc]`. Conclude with `q.2.2⟩`. Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨i, a, ha⟩ ⟨j, b, hb⟩ h`. Establish `h' : a ≫ Sigma.ι (fun _ : I => Y) i = b ≫ Sigma.ι (fun _ : I => Y) j` using `congrArg Subtype.val h`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `hab : a = b` using `(cancel_mono _).mp h'`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hab` using the available equality. Both sides reduce to the same expression. It suffices to derive a contradiction. Establish `hE` using `isEmpty_of_commSq_sigmaι_of_ne (g := fun _ : I => Y) ⟨h'⟩ hij`. Take `⟨p⟩` from `(inferInstance : Nonempty (Spec (CommRingCat.of K)))`.
+Both sides reduce to the same expression. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Conclude with `hE.false p`. Introduce and unpack `⟨y, hy⟩`. Take `⟨i, y', rfl⟩` from `exists_sigma_point K y`. Use `⟨⟨i, y', ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite `hy` using `[Category.assoc, Sigma.ι_desc]`.
-
-Conclude with `hy`. Rewrite using `[← Nat.card_congr (Equiv.ofBijective F hF), Nat.card_prod]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_sigma_fibre {Y Z : Scheme.{0}} (s : Y ⟶ Z) (I : Type) (K : Type) [Field K]
     (x : Spec (CommRingCat.of K) ⟶ Z) :
@@ -67,15 +65,13 @@ private theorem card_sigma_fibre {Y Z : Scheme.{0}} (s : Y ⟶ Z) (I : Type) (K 
   rw [← Nat.card_congr (Equiv.ofBijective F hF), Nat.card_prod]
 
 /- English proof (translation)
-Introduce `Y Z s d I _ hs`. Take `⟨hfin, het, hcard⟩` from `hs`. Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin I`. Establish `hid : IsFinite (Sigma.desc fun _ : I => 𝟙 Y)`. Establish `h1` using `GlobalTheory.Et.TrivTors.isFinite_sigmaDesc_fin Y n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsFinite ((Sigma.reindex e (fun _ : Fin n => Y)).hom ≫ Sigma.desc fun _ : Fin n => 𝟙 Y)` using `inferInstance`. Establish `h3 : (Sigma.desc fun _ : I => 𝟙 Y) = (Sigma.reindex e (fun _ : Fin n => Y)).hom ≫ Sigma.desc fun _ : Fin n => 𝟙 Y`. Use `Sigma.hom_ext (f := fun _ : I => Y) _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[Sigma.ι_desc, ← Category.assoc]`. Use `erw [Sigma.ι_reindex_hom (f := fun _ : Fin n => Y) e i]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Sigma.ι_desc]`. Rewrite using `[h3]`. Conclude with `h2`. Establish `hfac : (Sigma.desc fun _ : I => s) = (Sigma.desc fun _ : I => 𝟙 Y) ≫ s`. Use `Sigma.hom_ext (f := fun _ : I => Y) _ _ fun i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hloc : IsZariskiLocalAtSource @Etale.{0}` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfac] infer_instance`. Conclude with `IsZariskiLocalAtSource.sigmaDesc (P := @Etale.{0}) fun _ => het`.
-
-Introduce `K _ _ x`. Rewrite using `[card_sigma_fibre, hcard]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pSigmaFEt :
     SigmaFEt := by

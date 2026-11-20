@@ -19,9 +19,9 @@ section Lin
 variable {A : Type} [CommRing A] {n m : ℕ}
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `(GlobalTheory.StdPar.UnipArch.mem_span_cols_iff C I y).1 hy`. Establish `h1 : (U * C) *ᵥ a = 0` using `funext fun i => by show ∑ l, (U * C) i l * a l = 0`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l ∈ I`. Rewrite using `[hUC i l hl, zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha l hl, mul_zero]`. Establish `h2 : (1 + C * U + W * D) *ᵥ (C *ᵥ a) = C *ᵥ a + C *ᵥ ((U * C) *ᵥ a) + W *ᵥ ((D * C) *ᵥ a)`. Simplify using `only [add_mulVec, one_mulVec, ← mulVec_mulVec]`. Rewrite using `[h2, h1, hDC]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_eq_of_mem (C : Matrix (Fin n) (Fin m) A) (D : Matrix (Fin m) (Fin n) A) (U : Matrix (Fin m) (Fin n) A)
     (W : Matrix (Fin n) (Fin m) A) (I : Set (Fin m)) (hDC : D * C = 0) (hUC : ∀ i j, j ∈ I → (U * C) i j = 0)
@@ -39,9 +39,9 @@ theorem mulVec_eq_of_mem (C : Matrix (Fin n) (Fin m) A) (D : Matrix (Fin m) (Fin
   simp
 
 /- English proof (translation)
-Establish `h : (1 + C * U + W * D) *ᵥ y - y = C *ᵥ (U *ᵥ y)`. Simplify using `only [add_mulVec, one_mulVec, ← mulVec_mulVec, hy]`. Normalize the expressions using the abelian group laws. Rewrite using `[h]`. Use `(GlobalTheory.StdPar.UnipArch.mem_span_cols_iff C I _).2 ⟨U *ᵥ y, fun l hl => ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ∑ v, U l v * y v = 0`. Conclude with `Finset.sum_eq_zero fun v _ => by rw [hU l v hl, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_sub_mem (C : Matrix (Fin n) (Fin m) A) (D : Matrix (Fin m) (Fin n) A) (U : Matrix (Fin m) (Fin n) A)
     (W : Matrix (Fin n) (Fin m) A) (I : Set (Fin m)) (hU : ∀ i v, i ∉ I → U i v = 0) {y : Fin n → A}
@@ -55,7 +55,7 @@ theorem mulVec_sub_mem (C : Matrix (Fin n) (Fin m) A) (D : Matrix (Fin m) (Fin n
   exact Finset.sum_eq_zero fun v _ => by rw [hU l v hl, zero_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by rwa [hS y h], fun h => by rwa [← hM (hS _ h)]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_iff_of_fix {M : Matrix (Fin n) (Fin n) A} (hM : Function.Injective M.mulVec) (S : Submodule A (Fin n → A))
     (hS : ∀ y ∈ S, M *ᵥ y = y) (y : Fin n → A) : y ∈ S ↔ M *ᵥ y ∈ S :=
@@ -64,19 +64,17 @@ theorem mem_iff_of_fix {M : Matrix (Fin n) (Fin n) A} (hM : Function.Injective M
 end Lin
 
 /- English proof (translation)
-Establish `hDC : adMat F (Formalism.UG.cT (σ : E →+* E) X * J) * adMat F X = 0`. Rewrite using `[adMat, adMat, ← Matrix.map_mul, hX]`. Conclude with `Matrix.map_zero _ (map_zero _)`. Establish `hinj : Function.Injective (GlobalTheory.AdelicU.matHom _ σ J g).1.mulVec` using `Matrix.mulVec_injective_of_isUnit (Units.isUnit _)`. Establish `hfix : ∀ y ∈ colSpan F X (upTo T), (GlobalTheory.AdelicU.matHom _ σ J g).1 *ᵥ y = y` using `fun y hy => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg]`. Conclude with `mulVec_eq_of_mem _ _ U W _ hDC hUX hy`. Establish `hsub : ∀ y, W *ᵥ (adMat F (Formalism.UG.cT (σ : E →+* E) X * J) *ᵥ y) = 0 → (GlobalTheory.AdelicU.matHom _ σ J g).1 *ᵥ y - y ∈ colSpan F X (upTo T)` using `fun y hy => by`. Rewrite using `[hg]`. Conclude with `mulVec_sub_mem _ _ U W _ hU hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hiff : ∀ S ≤ colSpan F X (upTo T), ∀ y, y ∈ S ↔ (GlobalTheory.AdelicU.matHom _ σ J g).1 *ᵥ y ∈ S` using `fun S hS => mem_iff_of_fix hinj S fun y hy => hfix y (hS hy)`. Use `⟨Subgroup.mem_iInf.2 fun j => ?_, hiff _ le_rfl, fun y hy => hsub y ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ upTo T`. Establish `hA : colSpan F X {i | ∃ k ∈ T, i ≤ k ∧ k < j} ≤ colSpan F X (upTo T)` using `Submodule.span_mono (Set.image_mono fun i ⟨k, hk, hik, _⟩ => ⟨k, hk, hik⟩)`. Establish `hB : colSpan F X {j} ≤ colSpan F X (upTo T)` using `Submodule.span_mono (Set.image_mono (Set.singleton_subset_iff.2 hj))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hiff _ hA, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hfix y (hB hy), sub_self]`. Conclude with `zero_mem _`. Establish `hA : {i | ∃ k ∈ T, i ≤ k ∧ k < j} = upTo T` using `Set.ext fun i => ⟨fun ⟨k, hk, hik, _⟩ => ⟨k, hk, hik⟩, fun ⟨k, hk, hik⟩ => ⟨k, hk, hik, not_le.1 fun h => hj ⟨k, hk, h⟩⟩⟩`. Rewrite using `[hA]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨hiff _ le_rfl, fun y hy => hsub y ?_⟩` and prove the remaining obligations. Take `⟨a, -, rfl⟩` from `(GlobalTheory.StdPar.UnipArch.mem_span_cols_iff _ _ y).1 hy`. Rewrite using `[mulVec_mulVec a, hDC, zero_mulVec, mulVec_zero]`. Use function extensionality and compare the values at `v show ∑ i, W v i * (adMat F (Formalism.UG.cT (σ : E →+* E) X * J) *ᵥ y) i = 0`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : i ∈ upTo T`. Establish `h : (adMat F (Formalism.UG.cT (σ : E →+* E) X * J) *ᵥ y) i = 0`. Simplify using `only [colPerp, Submodule.mem_iInf, LinearMap.mem_ker] at hy`. Conclude with `hy i hi`. Rewrite using `[h, mul_zero]`.
-
-Rewrite using `[hW v i hi, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unip {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n m : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n) (Fin m) E) (T : Finset (Fin m)) (g : GAd σ J)

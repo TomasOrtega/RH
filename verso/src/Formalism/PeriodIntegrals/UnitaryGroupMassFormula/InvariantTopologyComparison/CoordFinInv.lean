@@ -18,23 +18,23 @@ def finCoordL (j : Fin 2) : (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) →ₗ
     ((basisE I).coord j).rTensor (Formalism.MainNotions.S.Af I.F)
 
 /- English proof (translation)
-Use `set eb := NumberField.RingOfIntegers.basis I.E`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ ((Finset.univ : Finset (_ × Fin 2)).image (fun p => (basisE I).repr ((eb p.1 : 𝓞 I.E) : I.E) p.2))`. Use `⟨y.natAbs, Nat.one_le_iff_ne_zero.2 (Int.natAbs_ne_zero.2 hy0), ?_⟩` and prove the remaining obligations. Establish `hint : ∀ c : I.F, IsIntegral ℤ (y • c) → IsIntegral ℤ ((y.natAbs : I.F) * c)`. Introduce `c hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `: ((y.natAbs : ℤ) : I.F) * c = y • c` using `by rw [← h, zsmul_eq_mul]`. Rewrite using `[← Int.cast_natCast, this]`. Conclude with `hc`. Establish `: ((y.natAbs : ℤ) : I.F) * c = -(y • c)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[zsmul_eq_mul]`. Use `conv_rhs => rw [h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Int.cast_natCast, this]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hc.neg`. Establish `gen : ∀ i j, ∃ r : 𝓞 I.F, (y.natAbs : I.F) * (basisE I).repr ((eb i : 𝓞 I.E) : I.E) j = algebraMap (𝓞 I.F) I.F r`. Introduce `i j`. Establish `hm` using `hy _ (Finset.mem_image_of_mem _ (Finset.mem_univ (i, j)))`. Conclude with `⟨⟨_, hint _ hm⟩, rfl⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Introduce `o`. Establish `ho : o ∈ Submodule.span ℤ (Set.range eb)` using `by rw [eb.span_eq]; exact Submodule.mem_top`. Proceed by induction on `ho using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `gen i`. Consider the case `zero`. Introduce `j`. Conclude with `⟨0, by simp⟩`. Consider the case `add x y' _ _ hx hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Take `⟨r, hr⟩` from `hx j`. Take `⟨r', hr'⟩` from `hy' j`. Use `⟨r + r', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← hr, ← hr']`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Rewrite using `[map_add, Finsupp.add_apply, mul_add]`. Consider the case `smul a x _ hx`. Introduce `j`. Take `⟨r, hr⟩` from `hx j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨a • r, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, ← hr]`. Establish `e : ((a • x : 𝓞 I.E) : I.E) = a • (x : I.E)` using `by push_cast; rfl`. Rewrite using `[e, map_zsmul, Finsupp.smul_apply, zsmul_eq_mul, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_denom : ∃ D : ℕ, 1 ≤ D ∧ ∀ o : 𝓞 I.E, ∀ j : Fin 2,
     ∃ r : 𝓞 I.F, (D : I.F) * (basisE I).repr (o : I.E) j = algebraMap (𝓞 I.F) I.F r := by

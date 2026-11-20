@@ -8,15 +8,15 @@ namespace GroundTheory.Heights₂.Heights.Model
 namespace KrullAkizuki
 
 /- English proof (translation)
-Establish `hmeet : ∀ I : Ideal S, I ≠ ⊥ → ∃ b : R, b ≠ 0 ∧ algebraMap R S b ∈ I`. Introduce `I hI`. Take `⟨x, hxI, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Establish `halg : Algebra.IsAlgebraic R L` using `(IsFractionRing.comap_isAlgebraic_iff (K := K)).mpr inferInstance`. Establish `hx : IsAlgebraic R x` using `Subalgebra.isAlgebraic_iff_isAlgebraic_val.mpr (halg.isAlgebraic _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, hb, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (Ideal.comap_ne_bot_of_algebraic_mem hx0 hxI hx)`. Conclude with `⟨b, hb0, hb⟩`. Use `⟨(isNoetherianRing_iff_ideal_fg S).mpr fun I => ?_, ⟨fun {P} hP0 hP => ?_⟩⟩` and prove the remaining obligations. Break down `eq_or_ne I ⊥ with rfl | hI` into its components or cases. Conclude with `Submodule.fg_bot`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb0, hbI⟩` from `hmeet I hI`. Establish `: IsNoetherian R (S ⧸ Ideal.span {algebraMap R S b})` using `(isFiniteLength_iff_isNoetherian_isArtinian.mp (h b hb0)).1`. Establish `: IsNoetherian S (S ⧸ Ideal.span {algebraMap R S b})` using `isNoetherian_of_tower R inferInstance`. Use `Submodule.fg_of_fg_map_of_fg_inf_ker (Ideal.span {algebraMap R S b}).mkQ (IsNoetherian.noetherian _) ?_` and prove the remaining obligations. Rewrite using `[Submodule.ker_mkQ, inf_eq_right.mpr ((Ideal.span_singleton_le_iff_mem I).mpr hbI)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.fg_span_singleton _`. Take `⟨b, hb0, hbP⟩` from `hmeet P hP0`. Establish `hle : Ideal.span {algebraMap R S b} ≤ P` using `(Ideal.span_singleton_le_iff_mem P).mpr hbP`. Establish `hfl : IsFiniteLength R (S ⧸ P)` using `(h b hb0).of_surjective (f := (Ideal.Quotient.factorₐ R hle).toLinearMap) (Ideal.Quotient.factor_surjective hle)`. Establish `: IsArtinian R (S ⧸ P)` using `(isFiniteLength_iff_isNoetherian_isArtinian.mp hfl).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsArtinianRing (S ⧸ P)` using `isArtinian_of_tower R inferInstance`. Establish `: IsDomain (S ⧸ P)` using `Ideal.Quotient.isDomain P`. Conclude with `Ideal.Quotient.maximal_of_isField P (IsArtinianRing.isField_of_isDomain _)`.
+A detailed English derivation is pending.
 -/
 theorem noetherian_and_dimensionLEOne
     {R : Type} [CommRing R] [IsDomain R]
@@ -59,9 +59,9 @@ theorem noetherian_and_dimensionLEOne
     exact Ideal.Quotient.maximal_of_isField P (IsArtinianRing.isField_of_isDomain _)
 
 /- English proof (translation)
-Use `⟨fun R _ _ _ hR K _ _ _ L _ _ _ _ _ S => ?_, fun R _ _ _ hR K _ _ _ => ?_⟩` and prove the remaining obligations. Take `⟨h₁, h₂⟩` from `noetherian_and_dimensionLEOne (K := K) S (h R hR K L S)`. Use `⟨h₁, ?_⟩` and prove the remaining obligations. Use `(Ring.krullDimLE_iff (R := S) (n := 1)).mp inferInstance` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, h₂⟩` from `noetherian_and_dimensionLEOne (K := K) (L := K) (integralClosure R K) (h R hR K K _)`. Establish `: IsIntegrallyClosed (integralClosure R K)` using `integralClosure.isIntegrallyClosedOfFiniteExtension (R := R) K (L := K)`. Conclude with `{ }`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem proof (h : KrullAkizukiQuotientLength.Statement) : KrullAkizuki.Statement := by
   refine ⟨fun R _ _ _ hR K _ _ _ L _ _ _ _ _ S => ?_, fun R _ _ _ hR K _ _ _ => ?_⟩

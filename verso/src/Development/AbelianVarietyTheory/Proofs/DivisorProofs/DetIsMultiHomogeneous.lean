@@ -14,15 +14,15 @@ section MH
 variable {R : Type} [CommSemiring R] {B n : ℕ}
 
 /- English proof (translation)
-Introduce `s hs`. Simplify using `at hs`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem mh_zero (a : Fin B → ℕ) : IsMultiHomogeneous a (0 : MvPolynomial (Fin B × Fin n) R) := by
   intro s hs; simp at hs
 
 /- English proof (translation)
-Introduce `s hs b`. Rewrite `hs` using `[mem_support_iff, coeff_C]`. Establish `: (0 : Fin B × Fin n →₀ ℕ) = s`. Assume the negation of the conclusion as `h`. Conclude with `hs (if_neg h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality.
 
-Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mh_C (r : R) : IsMultiHomogeneous (0 : Fin B → ℕ) (C r : MvPolynomial (Fin B × Fin n) R) := by
   classical
@@ -33,9 +33,9 @@ theorem mh_C (r : R) : IsMultiHomogeneous (0 : Fin B → ℕ) (C r : MvPolynomia
   subst this; simp
 
 /- English proof (translation)
-Introduce `s hs b`. Rewrite `hs` using `[mem_support_iff, coeff_X']`. Establish `: Finsupp.single (i, j) 1 = s`. Assume the negation of the conclusion as `h`. Conclude with `hs (if_neg h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality.
 
-Substitute `this` using the available equality. Distinguish the cases in `hb : b = i`. Substitute `hb` using the available equality. Simplify using `[Finsupp.single_apply]`. Simplify using `[Finsupp.single_apply, hb, Pi.single_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mh_X (i : Fin B) (j : Fin n) :
     IsMultiHomogeneous (Pi.single i 1) (X (i, j) : MvPolynomial (Fin B × Fin n) R) := by
@@ -50,7 +50,7 @@ theorem mh_X (i : Fin B) (j : Fin n) :
   · simp [Finsupp.single_apply, hb, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `s hs`. Break down `Finset.mem_union.1 (support_add hs) with h | h` into its components or cases. Use `exacts [hf s h, hg s h]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mh_add {a : Fin B → ℕ} {f g : MvPolynomial (Fin B × Fin n) R}
     (hf : IsMultiHomogeneous a f) (hg : IsMultiHomogeneous a g) : IsMultiHomogeneous a (f + g) := by
@@ -60,7 +60,7 @@ theorem mh_add {a : Fin B → ℕ} {f g : MvPolynomial (Fin B × Fin n) R}
   exacts [hf s h, hg s h]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using mh_zero (R := R) (n := n) a`. Consider the case `insert x t hx ih`. Rewrite using `[Finset.sum_insert hx]`. Conclude with `mh_add (hf x (Finset.mem_insert_self _ _)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mh_sum {ι : Type} (t : Finset ι) {a : Fin B → ℕ} (f : ι → MvPolynomial (Fin B × Fin n) R)
     (hf : ∀ i ∈ t, IsMultiHomogeneous a (f i)) : IsMultiHomogeneous a (∑ i ∈ t, f i) := by
@@ -72,14 +72,14 @@ theorem mh_sum {ι : Type} (t : Finset ι) {a : Fin B → ℕ} (f : ι → MvPol
     exact mh_add (hf x (Finset.mem_insert_self _ _)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Introduce `s hs` and use `hf s (support_smul hs)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mh_smul {S : Type} [SMulZeroClass S R] {a : Fin B → ℕ} (c : S) {f : MvPolynomial (Fin B × Fin n) R}
     (hf : IsMultiHomogeneous a f) : IsMultiHomogeneous a (c • f) :=
   fun s hs => hf s (support_smul hs)
 
 /- English proof (translation)
-Introduce `s hs i`. Take `⟨u, hu, v, hv, rfl⟩` from `Finset.mem_add.1 (support_mul f g hs)`. Simplify using `[Finset.sum_add_distrib, hf u hu i, hg v hv i]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem mh_mul {a b : Fin B → ℕ} {f g : MvPolynomial (Fin B × Fin n) R}
     (hf : IsMultiHomogeneous a f) (hg : IsMultiHomogeneous b g) : IsMultiHomogeneous (a + b) (f * g) := by
@@ -89,7 +89,7 @@ theorem mh_mul {a b : Fin B → ℕ} {f g : MvPolynomial (Fin B × Fin n) R}
   simp [Finset.sum_add_distrib, hf u hu i, hg v hv i]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using mh_C (R := R) (B := B) (n := n) 1`. Consider the case `insert x t hx ih`. Rewrite using `[Finset.sum_insert hx, Finset.prod_insert hx]`. Conclude with `mh_mul (hf x (Finset.mem_insert_self _ _)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mh_prod {ι : Type} (t : Finset ι) (a : ι → Fin B → ℕ) (f : ι → MvPolynomial (Fin B × Fin n) R)
     (hf : ∀ i ∈ t, IsMultiHomogeneous (a i) (f i)) : IsMultiHomogeneous (∑ i ∈ t, a i) (∏ i ∈ t, f i) := by
@@ -105,7 +105,7 @@ end MH
 def cnt {B t : ℕ} (β : Fin t → Fin B) (b : Fin B) : ℕ := (Finset.univ.filter fun q => β q = b).card
 
 /- English proof (translation)
-Unfold `cnt`. Rewrite using `[← Finset.card_eq_sum_card_fiberwise (fun x _ => Finset.mem_univ (β x))]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_cnt {B t : ℕ} (β : Fin t → Fin B) : ∑ b, cnt β b = t := by
   classical
@@ -114,9 +114,9 @@ theorem sum_cnt {B t : ℕ} (β : Fin t → Fin B) : ∑ b, cnt β b = t := by
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Simplify using `only [Finset.sum_apply, Pi.single_apply, cnt]`. Rewrite using `[Finset.card_filter]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : β i = b`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_single_eq_cnt {B t : ℕ} (β : Fin t → Fin B) :
     (∑ i, (Pi.single (β i) 1 : Fin B → ℕ)) = cnt β := by
@@ -130,7 +130,7 @@ theorem sum_single_eq_cnt {B t : ℕ} (β : Fin t → Fin B) :
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Unfold `coordP`. Use `mh_sum _ _ fun e _ => ?_` and prove the remaining obligations. Establish `h` using `mh_mul (mh_C (R := K) (B := B) (n := N) (c (word mul (fun i => Pi.single (e i) 1) m))) (mh_prod Finset.univ (fun i => (Pi.single (β i) 1 : Fin B → ℕ)) (fun i => (X (β i, e i) : MvPolynomial (Fin B × Fin N) K)) fun i _ => mh_X (β i) (e i))`. Rewrite `h` using `[zero_add, sum_single_eq_cnt]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mh_coordP {K A : Type} [Field K] [AddCommGroup A] [Module K A] {N B t : ℕ}
     (mul : (Fin N → K) →ₗ[K] Module.End K A) (c : A →ₗ[K] K) (β : Fin t → Fin B) (m : A) :
@@ -148,9 +148,9 @@ end GlobalTheory.HSShort.DetHom
 open GlobalTheory.HSShort.DetHom in
 
 /- English proof (translation)
-Introduce `F A _ _ _ _ _ _ S d c col`. Use `⟨∑ k, cnt (col k).β, ?_, ?_⟩` and prove the remaining obligations. Unfold `Sys.det`. Rewrite using `[Matrix.det_apply]`. Use `mh_sum _ _ fun σ _ => mh_smul _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `mh_prod Finset.univ (fun k => cnt (col k).β) (fun k => (Matrix.of fun i k => coordP S.mul (c i) (col k).β ((col k).x : A)) (σ k) k) fun k _ => by simpa using mh_coordP S.mul (c (σ k)) (col k).β ((col k).x : A)`. Conclude with `h`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => sum_cnt (col k).β`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HSShort.det_isMultiHomogeneous : ∀ (F A : Type) [Field F] [NumberField F] [AddCommGroup A] [Module F A] [Module (𝓞 F) A] [IsScalarTower (𝓞 F) F A] (S : Sys F A) (d : ℕ) (c : Fin d → A →ₗ[F] F) (col : Fin d → S.Col), ∃ a : Fin (S.D + 1) → ℕ, IsMultiHomogeneous a (S.det c col) ∧ ∑ i, a i = ∑ k, (col k).t := by
   intro F A _ _ _ _ _ _ S d c col

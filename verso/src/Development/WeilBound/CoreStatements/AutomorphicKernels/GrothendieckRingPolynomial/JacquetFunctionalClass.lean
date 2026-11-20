@@ -16,7 +16,7 @@ namespace PositivityTheory.Groth.JClsPf
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ProdFiniteLength.piTensor_isIrreducible_of_schur _ (fun a => (x a).2.rep.irr) fun a φ hφ => GlobalTheory.SchurAdm.schur_admissible _ (KO k (Fin (x a).1)) GlobalTheory.SplitFlip.isOpen_KO GlobalTheory.SplitFlip.isCompact_KO _ _ (x a).2.rep.irr (PositivityTheory.Tls2.B …`.
+A detailed English derivation is pending.
 -/
 theorem piTensor_irr {h : ℕ} (x : Fin h → IrrGL k) : (piTensor fun a => (x a).rep).IsIrreducible :=
   GlobalTheory.ProdFiniteLength.piTensor_isIrreducible_of_schur _ (fun a => (x a).2.rep.irr) fun a φ hφ =>
@@ -25,7 +25,7 @@ theorem piTensor_irr {h : ℕ} (x : Fin h → IrrGL k) : (piTensor fun a => (x a
       (PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top k _ _ _ (x a).2.rep.smooth (x a).2.rep.irr) φ hφ
 
 /- English proof (translation)
-The claim follows from `jhMult_ne_top (piTensor_irr x) (GlobalTheory.T.jacquet_module_finite_length k (Fin h) (Fin N) (fun a => Fin (x a).1) (stdBlocks (fun a => (x a).1) hd) V π hπ hl)`.
+A detailed English derivation is pending.
 -/
 theorem jm_ne_top {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) (hπ : IsSmooth π) (hl : HasFiniteLength π) : jm x hd π ≠ ⊤ :=
@@ -33,7 +33,7 @@ theorem jm_ne_top {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) 
     (GlobalTheory.T.jacquet_module_finite_length k (Fin h) (Fin N) (fun a => Fin (x a).1) (stdBlocks (fun a => (x a).1) hd) V π hπ hl)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient x hd π τ hτ (.of_injective φ.toIntertwiningMap φ.injective)) (GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient x hd τ π hπ (.of_surjective φ.toIntertwiningMap φ.surjective))`.
+A detailed English derivation is pending.
 -/
 theorem jm_congr {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] {π : Representation ℂ (GL (Fin N) k) V} {τ : Representation ℂ (GL (Fin N) k) W}
@@ -42,27 +42,25 @@ theorem jm_congr {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) {
     (GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient x hd τ π hπ (.of_surjective φ.toIntertwiningMap φ.surjective))
 
 /- English proof (translation)
-Use `set F := (finite_constituents hl).toFinset with hF`. Establish `hσ` using `piTensor_irr x`. Establish `φ` using `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := π)`. Take `⟨_, _⟩` from `isFiniteLength_iff_isNoetherian_isArtinian.1 hl`. Establish `: WellFoundedGT (Subrepresentation π)` using `φ.toOrderEmbedding.wellFoundedGT`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: WellFoundedLT (Subrepresentation π)` using `φ.toOrderEmbedding.wellFoundedLT`. Establish `key : ∀ S : Subrepresentation π, jm x hd S.toRepresentation = ∑ c ∈ F, jhMult c.rep.ρ S.toRepresentation * jm x hd c.rep.ρ`. Introduce `S`. Proceed by induction on `S using WellFoundedLT.induction with`. Consider the case `ind S ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne S ⊥ with rfl | hne` into its components or cases. Establish `h0 : Subsingleton (⊥ : Subrepresentation π).toSubmodule` using `inferInstanceAs (Subsingleton (⊥ : Submodule ℂ V))`. Establish `h1 : Subsingleton (Jacquet (⊥ : Subrepresentation π).toRepresentation (unipRad k (stdBlocks (fun a => (x a).1) hd)))` using `(Submodule.Quotient.mk_surjective _).subsingleton`. Rewrite using `[jm, jhMult_of_subsingleton hσ]`. Use `(Finset.sum_eq_zero fun c _ => ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[jhMult_of_subsingleton c.rep.irr, zero_mul]`. Take `⟨T, -, hT⟩` from `exists_le_covBy_of_lt (bot_lt_iff_ne_bot.2 hne)`. Set `p : S.toRepresentation.IntertwiningMap (subQuot S T)` to `⟨Submodule.mkQ _, fun _ => rfl⟩`. Set `j : S.toRepresentation.IntertwiningMap π` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`. Establish `hq : IsSubquotient (subQuot S T) S.toRepresentation` using `.of_surjective p (Submodule.Quotient.mk_surjective _)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqπ : IsSubquotient (subQuot S T) π` using `hq.trans (.of_injective j Subtype.val_injective)`. Establish `hsm : IsSmooth (subQuot S T)` using `hqπ.isSmooth hπ`. Establish `hirr : (subQuot S T).IsIrreducible` using `isIrreducible_subQuot hT`. Set `τ : IrrRep (GL (Fin N) k)` to `⟨_, subQuot S T, hsm, hirr⟩`. Establish `hsplit : jm x hd S.toRepresentation = jm x hd T.toRepresentation + jm x hd (subQuot S T)` using `GlobalTheory.CompanionTheory.WordIrr.jhMult_jac_of_le _ hσ hπ hT.le`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmult : ∀ c : IrrCl (GL (Fin N) k), jhMult c.rep.ρ S.toRepresentation = jhMult c.rep.ρ T.toRepresentation + jhMult c.rep.ρ (subQuot S T)` using `fun c => jhMult_of_le c.rep.irr hT.le`. Establish `hzero : ∀ c : IrrCl (GL (Fin N) k), c ≠ τ.cl → jhMult c.rep.ρ (subQuot S T) = 0`. Introduce `c hc`. Assume the negation of the conclusion as `h0`. Take `⟨ψ⟩` from `(jhMult_ne_zero_iff.1 h0).nonempty_equiv c.rep.irr hirr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hc (c.cl_rep.symm.trans (IrrRep.cl_eq_iff.2 ⟨ψ.symm⟩))`. Take `⟨ψ⟩` from `τ.nonempty_equiv_rep`. Establish `hone : jhMult τ.cl.rep.ρ (subQuot S T) = 1`. Rewrite using `[jhMult_congr_left ψ]`. Conclude with `jhMult_self hirr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : τ.cl ∈ F`. Rewrite using `[hF, Set.Finite.mem_toFinset]`. Introduce `h0`. Use `GlobalTheory.CompanionTheory.JmMono.jhMult_le_of_isSubquotient τ.cl.rep.ρ hqπ` as an intermediate fact. Rewrite `this` using `[hone, h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd this (by simp)`. Establish `hQ : jm x hd (subQuot S T) = ∑ c ∈ F, jhMult c.rep.ρ (subQuot S T) * jm x hd c.rep.ρ`. Rewrite using `[Finset.sum_eq_single_of_mem τ.cl hmem (fun c _ hc => by rw [hzero c hc, zero_mul]), hone, one_mul]`. Conclude with `(jm_congr x hd τ.cl.rep.smooth hsm ψ).symm`. Rewrite using `[hsplit, ih T hT.lt, hQ, ← Finset.sum_add_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hmult c, add_mul]`. Establish `hT1 : IsSmooth (⊤ : Subrepresentation π).toRepresentation` using `(IsSubquotient.of_injective (topEquiv π).toIntertwiningMap (topEquiv π).injective).isSmooth hπ`. Rewrite using `[← jm_congr x hd hT1 hπ (topEquiv π), key ⊤]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[jhMult_congr_right _ (topEquiv π)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jm_eq_sum {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) (hπ : IsSmooth π) (hl : HasFiniteLength π) :
@@ -137,7 +135,7 @@ open PositivityTheory.Groth.JClsPf
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Unfold `J cl0`. Rewrite using `[dif_pos hl, clsGL, Finsupp.sum_mapDomain_index (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacquet_functional_class (W : List (IrrGL k)) {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) (hl : HasFiniteLength π) :
@@ -148,17 +146,15 @@ theorem jacquet_functional_class (W : List (IrrGL k)) {N : ℕ} {V : Type} [AddC
 variable (k) in
 
 /- English proof (translation)
-Introduce `W N V _ _ π hπ hl`. Distinguish the cases in `hd : ∑ a, (W.get a).1 = N`. Establish `hjπ : jmL W π = jm W.get hd π` using `dif_pos hd`. Establish `hjc : ∀ c : IrrCl (GL (Fin N) k), jmL W (IrrGL.rep (⟨N, c⟩ : IrrGL k)) = jm W.get hd c.rep.ρ` using `fun c => dif_pos hd`. Use `⟨by rw [hjπ]; exact jm_ne_top W.get hd π hπ hl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set F := (finite_constituents hl).toFinset with hF`. Establish `ha : ∀ c : IrrCl (GL (Fin N) k), jhMult c.rep.ρ π ≠ ⊤` using `fun c => jhMult_ne_top c.rep.irr hl`. Establish `hb : ∀ c : IrrCl (GL (Fin N) k), jm W.get hd c.rep.ρ ≠ ⊤` using `fun c => jm_ne_top W.get hd c.rep.ρ c.rep.smooth c.rep.hasFiniteLength`. Establish `hsum : jm W.get hd π = ((∑ c ∈ F, (jhMult c.rep.ρ π).toNat * (jm W.get hd c.rep.ρ).toNat : ℕ) : ℕ∞)`. Rewrite using `[jm_eq_sum W.get hd π hπ hl, Nat.cast_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, ENat.natCast_toNat (ha c), ENat.natCast_toNat (hb c)]`. Establish `hsub : (cls π hl).support ⊆ F`. Introduce `c hc`. Rewrite `hc` using `[Finsupp.mem_support_iff, cls_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF, Set.Finite.mem_toFinset]`. Introduce `h0`. Conclude with `hc (by rw [h0]; rfl)`. Rewrite using `[jacquet_functional_class W π hl, hjπ, hsum, ENat.toNat_natCast, Nat.cast_sum, Finsupp.sum_of_support_subset (cls π hl) hsub (fun c m => m * ((jmL W (IrrGL.rep (⟨N, c⟩ : IrrGL k))).toNat : ℤ)) (fun c _ => zero_mul _)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hjc c, cls_apply, Nat.cast_mul]`. Establish `hjπ : jmL W π = 0` using `dif_neg hd`. Establish `hjc : ∀ c : IrrCl (GL (Fin N) k), jmL W (IrrGL.rep (⟨N, c⟩ : IrrGL k)) = 0` using `fun c => dif_neg hd`. Use `⟨by rw [hjπ]; exact ENat.zero_ne_top, ?_⟩` and prove the remaining obligations. Rewrite using `[jacquet_functional_class W π hl, hjπ]`.
-
-Simplify using `[hjc, Finsupp.sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jCls : JCls k := by
   intro W N V _ _ π hπ hl

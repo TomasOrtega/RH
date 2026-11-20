@@ -15,14 +15,14 @@ variable {D : D7}
 def sg (b : Bool) : ℝ := if b then 1 else -1
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [sg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_mul_self (b : Bool) : sg b * sg b = 1 := by cases b <;> simp [sg]
 
 def cf (b b' : Bool) (c : ℂ) : ℂ := (c.re : ℂ) + ((sg b * sg b' * c.im : ℝ) : ℂ) * Complex.I
 
 /- English proof (translation)
-Establish `h : sg b * sg b' * (sg b * sg b') = 1`. Rewrite using `[mul_mul_mul_comm, sg_mul_self, sg_mul_self, one_mul]`. Apply the tactic sequence `apply Complex.ext <;> simp [cf, h, ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cf_cf (b b' : Bool) (c : ℂ) : cf b b' (cf b b' c) = c := by
   have h : sg b * sg b' * (sg b * sg b') = 1 := by
@@ -30,13 +30,13 @@ theorem cf_cf (b b' : Bool) (c : ℂ) : cf b b' (cf b b' c) = c := by
   apply Complex.ext <;> simp [cf, h, ← mul_assoc]
 
 /- English proof (translation)
-Unfold `cf`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_cf (b b' : Bool) : Continuous (cf b b') := by
   unfold cf; fun_prop
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.single_apply, sg]`. Apply the tactic sequence `by_cases ha : i = a <;> by_cases hb : j = b <;> subst_vars <;> simp_all <;> split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_mul_single_mul_jm {m n : ℕ} (εB : Fin m → Bool) (εA : Fin n → Bool) (i : Fin m) (j : Fin n) :
     Formalism.REAL.Jm εB * Matrix.single i j (1 : ℂ) * Formalism.REAL.Jm εA =
@@ -48,20 +48,20 @@ theorem jm_mul_single_mul_jm {m n : ℕ} (εB : Fin m → Bool) (εA : Fin n →
 variable {S T : HSp D}
 
 /- English proof (translation)
-The claim follows from `(Matrix.isUnit_iff_isUnit_det _).1 (A.fr_unit τ)`.
+A detailed English derivation is pending.
 -/
 theorem det_fr_unit {V : HSp D} (A : GlobalTheory.ChainFr.Fr V) (τ : D.what₂.Tau) : IsUnit (A.fr τ).det :=
   (Matrix.isUnit_iff_isUnit_det _).1 (A.fr_unit τ)
 
 /- English proof (translation)
-Simplify using `only [unitMap, GlobalTheory.ChainFr.Fr.onb, Matrix.nonsing_inv_nonsing_inv _ (det_fr_unit A τ)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unitMap_fr (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (τ : D.what₂.Tau) (i : Fin T.rank) (j : Fin S.rank) :
     unitMap (A.onb τ) (B.onb τ) i j = (B.fr τ)⁻¹ * Matrix.single i j (1 : ℂ) * A.fr τ := by
   simp only [unitMap, GlobalTheory.ChainFr.Fr.onb, Matrix.nonsing_inv_nonsing_inv _ (det_fr_unit A τ)]
 
 /- English proof (translation)
-Rewrite using `[unitMap_fr]`. Establish `e : B.cart τ * ((B.fr τ)⁻¹ * Matrix.single i j (1 : ℂ) * A.fr τ) * A.cart τ = (B.fr τ)⁻¹ * (Formalism.REAL.Jm (B.ε τ) * Matrix.single i j (1 : ℂ) * Formalism.REAL.Jm (A.ε τ)) * A.fr τ`. Simplify using `only [GlobalTheory.ChainFr.Fr.cart, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (det_fr_unit B τ), Matrix.mul_nonsing_inv_cancel_left _ _ (det_fr_unit A τ)]`. Rewrite using `[cplxO, e, jm_mul_single_mul_jm, ← Matrix.smul_mul, ← Matrix.mul_smul, Matrix.smul_single, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cplxO_unitMap_fr (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (τ : D.what₂.Tau) (i : Fin T.rank)
     (j : Fin S.rank) :
@@ -75,11 +75,11 @@ theorem cplxO_unitMap_fr (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.Chain
   rw [cplxO, e, jm_mul_single_mul_jm, ← Matrix.smul_mul, ← Matrix.mul_smul, Matrix.smul_single, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Establish `ht : ∀ i j, (((z i j).re : ℂ) • unitMap (A.onb τ) (B.onb τ) i j + ((z i j).im : ℂ) • cplxO (A.cart τ) (B.cart τ) (unitMap (A.onb τ) (B.onb τ) i j)) = (B.fr τ)⁻¹ * Matrix.single i j (cf (B.ε τ i) (A.ε τ j) (z i j)) * A.fr τ`. Introduce `i j`. Rewrite using `[cplxO_unitMap_fr, unitMap_fr, ← Matrix.smul_mul, ← Matrix.mul_smul, ← Matrix.smul_mul, ← Matrix.mul_smul, ← Matrix.add_mul, ← Matrix.mul_add, Matrix.smul_single, Matrix.smul_single, ← Matrix.single_add]`. Use `congr 3`. Simplify using `only [cf, smul_eq_mul, mul_one, Complex.ofReal_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[fockMat]`. Simplify using `only [ht]`. Simplify using `only [← Matrix.sum_mul, ← Matrix.mul_sum]`. Use `congr 2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_rhs => rw [Matrix.matrix_eq_sum_single (Matrix.of _)]`. Simplify using `only [Matrix.of_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fockMat_eq (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (τ : D.what₂.Tau) (z : Fin T.rank → Fin S.rank → ℂ) :
     fockMat A B τ z = (B.fr τ)⁻¹ * Matrix.of (fun i j => cf (B.ε τ i) (A.ε τ j) (z i j)) * A.fr τ := by
@@ -104,7 +104,7 @@ def fockInvMat (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (
   fun i j => cf (B.ε τ i) (A.ε τ j) ((B.fr τ * X * (A.fr τ)⁻¹) i j)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Rewrite using `[fockInvMat, fockMat_eq]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (det_fr_unit B τ), Matrix.mul_nonsing_inv _ (det_fr_unit A τ), Matrix.mul_one, Matrix.of_apply, cf_cf]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fockInvMat_fockMat (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (τ : D.what₂.Tau)
     (z : Fin T.rank → Fin S.rank → ℂ) : fockInvMat A B τ (fockMat A B τ z) = z := by
@@ -114,7 +114,7 @@ theorem fockInvMat_fockMat (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.Cha
     Matrix.mul_nonsing_inv _ (det_fr_unit A τ), Matrix.mul_one, Matrix.of_apply, cf_cf]
 
 /- English proof (translation)
-Rewrite using `[fockMat_eq]`. Establish `e : (Matrix.of fun i j => cf (B.ε τ i) (A.ε τ j) (fockInvMat A B τ X i j)) = B.fr τ * X * (A.fr τ)⁻¹`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, fockInvMat, cf_cf]`. Rewrite using `[e, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (det_fr_unit A τ), Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_left _ _ (det_fr_unit B τ)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockMat_fockInvMat (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (τ : D.what₂.Tau)
     (X : Matrix (Fin T.rank) (Fin S.rank) ℂ) : fockMat A B τ (fockInvMat A B τ X) = X := by
@@ -125,14 +125,14 @@ theorem fockMat_fockInvMat (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.Cha
     Matrix.nonsing_inv_mul_cancel_left _ _ (det_fr_unit B τ)]
 
 /- English proof (translation)
-Unfold `fockMat`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_fockMat (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (τ : D.what₂.Tau) :
     Continuous (fockMat A B τ) := by
   unfold fockMat; fun_prop
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => continuous_pi fun j => (continuous_cf _ _).comp (((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).matrix_elem i j)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fockInvMat (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (τ : D.what₂.Tau) :
     Continuous (fockInvMat A B τ) :=
@@ -144,7 +144,7 @@ def fockInv (θ : InfFam D) (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.Ch
   fun τ => fockInvMat A B τ (GlobalTheory.FockCompare.piW θ T S w τ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `e : GlobalTheory.FockCompare.piW θ T S (fockPt σ A B z) τ = fockMat A B τ (z τ)` using `congrFun (h.pi_iota T S _) τ`. Use `show fockInvMat A B τ (GlobalTheory.FockCompare.piW θ T S (fockPt σ A B z) τ) = z τ`. Rewrite using `[e, fockInvMat_fockMat]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fockInv_fockPt {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ)
     (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (z : VCx D.what₂.Tau S.rank T.rank) :
@@ -155,7 +155,7 @@ theorem fockInv_fockPt {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} 
   rw [e, fockInvMat_fockMat]
 
 /- English proof (translation)
-Establish `e : (fun τ => fockMat A B τ (fockInv θ A B w τ)) = GlobalTheory.FockCompare.piW θ T S w`. Use function extensionality and compare the values at `fun τ => fockMat_fockInvMat A B τ _`. Rewrite using `[fockPt, e]`. Conclude with `h.iota_pi hw`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fockPt_fockInv {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ)
     (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) {w : WO S T} (hw : w.map (finPart D) = 0) :
@@ -166,15 +166,13 @@ theorem fockPt_fockInv {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} 
   exact h.iota_pi hw
 
 /- English proof (translation)
-Introduce `D θ σ h S T A B`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : T2Space (WO S T) := (GlobalTheory.MixModel.lattice_Mx D T.rank S.rank).2.2.2.1`. Establish `hc : Continuous (fockPt σ A B)` using `(h.continuous_iota T S).comp (continuous_pi fun τ => (continuous_fockMat A B τ).comp (continuous_apply τ))`. Establish `hic : Continuous (fockInv θ A B)` using `continuous_pi fun τ => (continuous_fockInvMat A B τ).comp ((continuous_apply τ).comp (GlobalTheory.FockCompare.continuous_pi' h.inf T S))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : Function.LeftInverse (fockInv θ A B) (fockPt σ A B)` using `fun z => fockInv_fockPt h A B z`. Establish `hr : Set.range (fockPt σ A B) = {w | fockPt σ A B (fockInv θ A B w) = w}`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `congrArg (fockPt σ A B) (hl z)`. Introduce `hw`. Conclude with `⟨_, hw⟩`. Establish `hme : MeasurableEmbedding (fockPt σ A B)` using `MeasurableEmbedding.of_measurable_inverse hc.measurable (by rw [hr]; exact (isClosed_eq (hc.comp hic) continuous_id).measurableSet) hic.measurable hl`. Use `⟨hc, fun w hw => ⟨_, fockPt_fockInv h A B hw⟩, fun g hg => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : SigmaFinite (volume : Measure (Fin S.rank → ℂ)) := inferInstance`. Use `haveI : SigmaFinite (volume : Measure (Fin T.rank → Fin S.rank → ℂ)) := inferInstance`. Use `haveI : SigmaFinite (volume : Measure (VCx D.what₂.Tau S.rank T.rank)) := inferInstance`. Use `⟨Measure.map (fockPt σ A B) volume, g ∘ fockInv θ A B, MeasureTheory.Measure.instSFiniteMap _ _, ?_, fun H => ?_⟩` and prove the remaining obligations. Rewrite using `[hme.integrable_map_iff]`.
-
-Establish `e : (g ∘ fockInv θ A B) ∘ fockPt σ A B = g` using `funext fun z => congrArg g (hl z)`. Rewrite using `[e]`. Conclude with `hg`. Rewrite using `[hme.integral_map]`. Simplify using `only [Function.comp_apply, hl _]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fockPt_transport : ∀ (D : D7) (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D), GlobalTheory.FockCompare.Chart θ σ →
     ∀ (S T : HSp D) (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T), Continuous (fockPt σ A B) ∧

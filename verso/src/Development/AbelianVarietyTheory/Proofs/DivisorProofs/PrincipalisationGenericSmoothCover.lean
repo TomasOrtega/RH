@@ -18,7 +18,7 @@ open scoped TensorProduct
 namespace GlobalTheory.GenSmoothCover
 
 /- English proof (translation)
-Establish `: IsLocalization (Algebra.algebraMapSubmonoid k (nonZeroDivisors ℤ)) K` using `inferInstance`. Use `Algebra.isPushout_of_isLocalization (nonZeroDivisors ℤ) ℚ k K` as an intermediate fact. Conclude with `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_of_isPushout ℤ k ℚ K)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPullback_rat (k K : Type) [CommRing k] [IsDomain k] [Module.Finite ℤ k] [CharZero k] [Field K] [CharZero K]
     [Algebra k K] [IsFractionRing k K] :
@@ -33,19 +33,19 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ}
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 
 /- English proof (translation)
-Use `h.isDomain` as an intermediate fact. Establish `: IsProper p` using `CommonModel.isProper_of_isProjOver h.isProjOver`. Take `⟨A, _, _, i, _, a, -, hi⟩` from `exists_affine_chart_over p (genericPoint X)`. Establish `: Nontrivial A` using `PrimeSpectrum.nonempty_iff_nontrivial.1 ⟨a⟩`. Take `⟨_, _, _⟩` from `RegGenSmooth.chart_props h i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, hd⟩` from `RegGenSmooth.ringKrullDim_chart h H i hi`. Use `IsLocalization.tensorRight (S := A) K (nonZeroDivisors k)` as an intermediate fact. Establish `hle : Algebra.algebraMapSubmonoid A (nonZeroDivisors k) ≤ nonZeroDivisors A` using `Submonoid.map_le_iff_le_comap.mpr fun x hx ↦ mem_nonZeroDivisors_of_ne_zero (by simpa using nonZeroDivisors.ne_zero hx)`. Establish `hinj : Function.Injective (algebraMap A (K ⊗[k] A))` using `IsLocalization.injective _ hle`. Take `⟨i₀, _, H₀⟩` from `exists_affine_chart_of_isPullback H i hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: LocallyOfFiniteType q` using `MorphismProperty.of_isPullback H inferInstance`. Use `IsPreimmersion.of_isLocalization (R := k) (S := K) (nonZeroDivisors k)` as an intermediate fact. Establish `: IsPreimmersion j` using `MorphismProperty.of_isPullback H.flip this`. Use `flat_specMap_localization (nonZeroDivisors k) K` as an intermediate fact. Establish `: Flat j` using `MorphismProperty.of_isPullback H.flip this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `η : Spec (.of (K ⊗[k] A))` to `(⟨⊥, inferInstance⟩ : PrimeSpectrum _)`. Establish `e₁ : topologicalKrullDim (closure {i₀ η} : Set Y) = D` using `(topologicalKrullDim_closure_eq_ringKrullDim_quotient q i₀ η).trans ((ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _)).trans hd)`. Establish `e₂ : j (i₀ η) = genericPoint X`. Rewrite using `[← Scheme.Hom.comp_apply, H₀.w, Scheme.Hom.comp_apply, ← genericPoint_eq_of_isOpenImmersion i]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[genericPoint_eq_bot_of_affine]`. Conclude with `PrimeSpectrum.ext (Ideal.comap_bot_of_injective _ hinj)`. Establish `e₃ : closure {i₀ η} = Set.univ` using `Set.eq_univ_of_forall fun y => specializes_iff_mem_closure.1 (j.isEmbedding.isInducing.specializes_iff.1 (e₂ ▸ genericPoint_specializes _))`. Establish `: IrreducibleSpace Y` using `(irreducibleSpace_def Y).2 (by`. Rewrite using `[Set.top_eq_univ, ← e₃]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isIrreducible_singleton.closure)`. Establish `hr (y : Y) : _root_.IsReduced (Y.presheaf.stalk y)`. Use `GenSpread.isIso_stalkMap_of_flat j y` as an intermediate fact. Conclude with `isReduced_of_injective (asIso (j.stalkMap y)).commRingCatIsoToRingEquiv.symm (asIso (j.stalkMap y)).commRingCatIsoToRingEquiv.symm.injective`. Establish `: IsReduced Y` using `isReduced_of_isReduced_stalk Y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e₁` using `[e₃, (Homeomorph.Set.univ Y).isHomeomorph.topologicalKrullDim_eq]`. Use `⟨isIntegral_of_irreducibleSpace_of_isReduced Y, e₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← e₂, (genericPoint_spec Y).eq (show IsGenericPoint (i₀ η) Set.univ from e₃)]`.
+A detailed English derivation is pending.
 -/
 theorem genericFibre [IsIntegral X] (h : IsArithVar p D) {K : Type} [Field K] [Algebra k K]
     [IsFractionRing k K] {Y : Scheme.{0}} {j : Y ⟶ X} {q : Y ⟶ Sp K}
@@ -92,17 +92,17 @@ theorem genericFibre [IsIntegral X] (h : IsArithVar p D) {K : Type} [Field K] [A
   rw [← e₂, (genericPoint_spec Y).eq (show IsGenericPoint (i₀ η) Set.univ from e₃)]
 
 /- English proof (translation)
-Take `⟨M, i, _, rfl⟩` from `hq`. Establish `B` using `ProjSpace.isPullback_baseChange M (algebraMap k K)`. Establish `hP` using `ProjSpace.isProjOver_pullback hp (ProjSpace.isProjOver_pspace_str k M)`. Set `π` to `pullback.fst p (PSpace.str k M) ≫ p`. Establish `: IsProper π` using `CommonModel.isProper_of_isProjOver hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `j : W ⟶ pullback p (PSpace.str k M)` to `pullback.lift w (i ≫ ProjSpace.baseChange M (algebraMap k K)) (by rw [hw, Category.assoc, Category.assoc, B.w])`. Establish `hj₁ : j ≫ pullback.fst _ _ = w` using `pullback.lift_fst _ _ _`. Establish `hj₂ : j ≫ pullback.snd _ _ = i ≫ ProjSpace.baseChange M (algebraMap k K)` using `pullback.lift_snd _ _ _`. Establish `G` using `IsPullback.of_hasPullback π (spMap (algebraMap k K))`. Set `c` to `G.lift j (i ≫ PSpace.str K M) (by rw [reassoc_of% hj₁, hw])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc₁ : c ≫ pullback.fst _ _ = j` using `G.lift_fst _ _ _`. Establish `hc₂ : c ≫ pullback.snd _ _ = i ≫ PSpace.str K M` using `G.lift_snd _ _ _`. Set `t` to `B.lift (pullback.fst π (spMap (algebraMap k K)) ≫ pullback.snd _ _) (pullback.snd _ _) (by rw [Category.assoc, ← pullback.condition, G.w])`. Establish `ht₁ : t ≫ _ = _` using `B.lift_fst _ _ _`. Establish `ht₂ : t ≫ _ = _` using `B.lift_snd _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsSeparated (t ≫ PSpace.str K M)` using `by rw [ht₂]; infer_instance`. Establish `: IsSeparated t` using `IsSeparated.of_comp t (PSpace.str K M)`. Establish `hct : c ≫ t = i` using `B.hom_ext (by rw [Category.assoc, ht₁, reassoc_of% hc₁, hj₂]) (by rw [Category.assoc, ht₂, hc₂])`. Establish `: IsClosedImmersion (c ≫ t)` using `by rwa [hct]`. Establish `: IsClosedImmersion c` using `.of_comp c t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `flat_specMap_localization (nonZeroDivisors k) K` as an intermediate fact. Use `mono_specMap_localization (nonZeroDivisors k) K` as an intermediate fact. Establish `: QuasiCompact j` using `by rw [← hc₁]; infer_instance`. Establish `H` using `(isPullback_toImage_of_isClosedImmersion j c _ hc₁).flip.paste_vert G`. Rewrite `H` using `[hc₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨j.image, j.imageι ≫ pullback.fst _ _, inferInstance, j.toImage, by simp [hj₁], ?_, ?_, inferInstance, inferInstance⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `ProjSpace.isProjOver_comp_of_isClosedImmersion _ hP`. Rewrite using `[Category.assoc]`. Conclude with `H`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_closure (hp : IsProjOver p) {K : Type} [Field K] [Algebra k K] [IsFractionRing k K] {W : Scheme.{0}}
     [IsIntegral W] (w : W ⟶ X) (q : W ⟶ Sp K) (hw : w ≫ p = q ≫ spMap (algebraMap k K)) (hq : IsProjOver q) :
@@ -144,21 +144,21 @@ theorem exists_closure (hp : IsProjOver p) {K : Type} [Field K] [Algebra k K] [I
     exact H
 
 /- English proof (translation)
-Introduce `hP k _ X p _ D h`. Use `h.isDomain` as an intermediate fact. Use `h.finite` as an intermediate fact. Use `h.charZero_base` as an intermediate fact. Use `h.isNoetherianRing` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `K` to `FractionRing k`. Establish `G` using `IsPullback.of_hasPullback p (spMap (algebraMap k K))`. Use `set f := pullback.fst p (spMap (algebraMap k K))`. Use `set q := pullback.snd p (spMap (algebraMap k K))`. Take `⟨_, hd, hf⟩` from `genericFibre h G`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hq : IsProjOver q` using `ProjSpace.isProjOver_of_isPullback_spMap _ G h.isProjOver`. Take `⟨W, s, U, _, hsm, hW, hU, hiso⟩` from `WeakRes.weak_resolution hP K _ q D hq hd`. Establish `: IsProper q` using `CommonModel.isProper_of_isProjOver hq`. Establish `: IsProper (s ≫ q)` using `CommonModel.isProper_of_isProjOver hW`. Establish `hdW : topologicalKrullDim W = D` using `(OpenDim.topologicalKrullDim_eq_of_isIso_restrict K _ W q (s ≫ q) s inferInstance inferInstance rfl U hU hiso).trans hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Y, ρ, _, j, hj, hY, H, _, _⟩` from `exists_closure h.isProjOver (s ≫ f) (s ≫ q) (by rw [Category.assoc, Category.assoc, G.w]) hW`. Establish `: IsProper (ρ ≫ p)` using `CommonModel.isProper_of_isProjOver hY`. Establish `: IsFinite (spMap (Int.castRingHom k))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 h.finite)`. Establish `H'` using `H.paste_vert (isPullback_rat k K)`. Establish `: Flat (j ≫ (ρ ≫ p) ≫ spMap (Int.castRingHom k))` using `flat_of_over_fractionField (K := ℚ) _ _ H'.w.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfl : Flat ((ρ ≫ p) ≫ spMap (Int.castRingHom k))` using `flat_of_schemeDominant_of_isDedekindDomain j _`. Establish `hA : IsArithVar (ρ ≫ p) D` using `⟨h.isDomain, h.finite, ‹_›, hY, hfl, IntModel.topologicalKrullDim_eq_succ Int.not_isField H' hdW⟩`. Take `⟨_, -, hjη⟩` from `genericFibre hA H`. Take `⟨x, hx⟩` from `hU`. Establish `: Nonempty (s ⁻¹ᵁ U : W.Opens).toScheme` using `⟨inv (s ∣_ U) ⟨x, hx⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegral (s ⁻¹ᵁ U : W.Opens).toScheme` using `isIntegral_of_isOpenImmersion (s ⁻¹ᵁ U).ι`. Establish `e : ((s ⁻¹ᵁ U).ι ≫ j) ≫ ρ = (s ∣_ U ≫ U.ι) ≫ f`. Rewrite using `[Category.assoc, hj, morphismRestrict_ι, Category.assoc]`. Establish `eη : ((s ⁻¹ᵁ U).ι ≫ j) (genericPoint _) = genericPoint Y`. Rewrite using `[Scheme.Hom.comp_apply, genericPoint_eq_of_isOpenImmersion, hjη]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsPreimmersion.of_isLocalization (R := k) (S := K) (nonZeroDivisors k)` as an intermediate fact. Establish `: IsPreimmersion f` using `MorphismProperty.of_isPullback G.flip this`. Use `⟨Y, ρ, ‹_›, ⟨hA, ?_, ?_⟩, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[← eη, ← Scheme.Hom.comp_apply, e, Scheme.Hom.comp_apply, genericPoint_eq_of_isOpenImmersion, hf]`. Establish `h₁` using `PullbackFinitePoint.residueDegree_ne_zero_of_surjectiveOnStalks ((s ∣_ U ≫ U.ι) ≫ f) (genericPoint _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h₁` using `[← e, CurveDegreesCompare.residueDegree_comp, eη]`. Conclude with `left_ne_zero_of_mul h₁`. Establish `: LocallyOfFinitePresentation (ρ ≫ p)` using `inferInstance`. Conclude with `⟨⟨AlgChart (ρ ≫ p) σ D, id, ModelCharts.exists_chart H (RegGenSmooth.injective_of_charZero σ)⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isCov_genSmooth : GlobalTheory.Published.Principalisation → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     [IsIntegral X] (D : ℕ), IsArithVar p D → ∃ (Y : Scheme.{0}) (ρ : Y ⟶ X) (_ : IsIntegral Y),

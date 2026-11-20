@@ -15,11 +15,9 @@ open GlobalTheory.Doubling
 namespace GlobalTheory.ThKLiftCusp
 
 /- English proof (translation)
-Establish `hM : IsNilpotent (-N)` using `(IsNilpotent.neg ⟨k, hN⟩)`. Establish `h0` using `Polynomial.isNilpotent_iff.1 (Matrix.isNilpotent_charpoly_sub_pow_of_isNilpotent hM)`. Establish `h1 : (-N).charpoly = Polynomial.X ^ Fintype.card n`. Use extensionality with `i`. Use `(h0 i).eq_zero` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[Polynomial.coeff_sub]`. Conclude with `sub_eq_zero.1 this`. Establish `h2` using `Matrix.eval_charpoly (-N) 1`. Rewrite `h2` using `[h1]`. Simplify using `only [Polynomial.eval_pow, Polynomial.eval_X, one_pow, map_one, sub_neg_eq_add] at h2`.
-
-Conclude with `h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_one_add_of_pow_eq_zero {R : Type} [CommRing R] [IsReduced R] {n : Type} [Fintype n] [DecidableEq n]
     (N : Matrix n n R) (k : ℕ) (hN : N ^ k = 0) : (1 + N).det = 1 := by
@@ -38,11 +36,11 @@ theorem det_one_add_of_pow_eq_zero {R : Type} [CommRing R] [IsReduced R] {n : Ty
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hz : ∀ z : Fin d → AE F E, ((mat u - 1) ^ 3) *ᵥ z = 0`. Introduce `z`. Establish `hN : ∀ w : Fin d → AE F E, (mat u - 1) *ᵥ w = mat u *ᵥ w - w` using `fun w => by`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Take `⟨a, ha⟩` from `h2 ((mat u - 1) *ᵥ z) (fun k => by rw [hN]; exact h3 z k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e2 : (mat u - 1) *ᵥ ((mat u - 1) *ᵥ z) = incM F Y *ᵥ a`. Rewrite using `[hN ((mat u - 1) *ᵥ z), ha]`. Normalize the expressions using the abelian group laws. Establish `e3 : (mat u - 1) * incM F Y = 0` using `by rw [Matrix.sub_mul, h1, Matrix.one_mul, sub_self]`. Rewrite using `[pow_succ, pow_two, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e2, Matrix.mulVec_mulVec, e3, Matrix.zero_mulVec]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Use `congrFun (hz (Pi.single b 1)) a` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gen_sub_one_pow_three {σ : E →ₐ[F] E} {d j : ℕ} (W : Spc F E d) (Y : Matrix (Fin d) (Fin j) E)
     (u : UA σ W.J) (h1 : mat u * incM F Y = incM F Y)
@@ -64,11 +62,11 @@ theorem gen_sub_one_pow_three {σ : E →ₐ[F] E} {d j : ℕ} (W : Spc F E d) (
   simpa [Matrix.mulVec_single_one] using this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d W j Y`. Establish `hle : unipSp σ W Y ≤ (Matrix.GeneralLinearGroup.det.comp (Subgroup.subtype _)).ker`. Unfold `unipSp`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `u ⟨h1, h2, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker]`. Apply `Units.ext` to reduce the goal to its premises. Establish `hred : IsReduced (AE F E)` using `GlobalTheory.ReducedAlg.isReduced_tensor (k := F) (AF F) E`. Establish `key` using `det_one_add_of_pow_eq_zero (mat u - 1) 3 (gen_sub_one_pow_three W Y u h1 h2 h3)`. Rewrite `key` using `[add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key`. Introduce `n hn`. Conclude with `hle hn`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem det_eq_one_of_mem_unipSp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (d : ℕ) (W : Spc F E d) (j : ℕ) (Y : Matrix (Fin d) (Fin j) E),

@@ -29,15 +29,15 @@ def latticeHom : AddSubgroup ℂ where
 variable {L₁ L₂}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latticeHom {α : ℂ} : α ∈ latticeHom L₁ L₂ ↔ ∀ l ∈ L₁.lattice, α * l ∈ L₂.lattice :=
   Iff.rfl
 
 /- English proof (translation)
-Establish `hg : AnalyticAt ℂ (fun z : ℂ ↦ t * z + s) z₀` using `by fun_prop`. Establish `hd : deriv (fun z : ℂ ↦ t * z + s) z₀ ≠ 0`. Establish `h1` using `((hasDerivAt_id' z₀).const_mul t).add_const s`. Rewrite using `[h1.deriv, mul_one]`. Conclude with `ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `meromorphicOrderAt_comp_of_deriv_ne_zero (f := ℘[L]) hg hd` as an intermediate fact. Rewrite `this` using `[Function.comp_def]`. Rewrite using `[this, L.order_weierstrassP _ hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meromorphicOrderAt_weierstrassP_affine (L : PeriodPair) {t s z₀ : ℂ} (ht : t ≠ 0)
     (hz : t * z₀ + s ∈ L.lattice) :
@@ -52,11 +52,11 @@ theorem meromorphicOrderAt_weierstrassP_affine (L : PeriodPair) {t s z₀ : ℂ}
   rw [this, L.order_weierstrassP _ hz]
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[germ_eq_germ_iff (meromorphic_weierstrassP_affine L a 0) (meromorphic_weierstrassP_affine L b 0)]`. Establish `hne` using `(meromorphic_weierstrassP_affine L a 0 z₀).eventuallyEq_nhdsNE_of_eventuallyEq_codiscreteWithin (meromorphic_weierstrassP_affine L b 0 z₀) (mem_univ z₀) (by`. Rewrite using `[accPt_iff_frequently_nhdsNE]`. Conclude with `Eventually.frequently (Eventually.of_forall fun _ ↦ mem_univ _)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `meromorphicOrderAt_weierstrassP_affine L ha h₁`. Rewrite `h1` using `[meromorphicOrderAt_congr hne]`. Establish `hf : AnalyticAt ℂ (fun z : ℂ ↦ b * z + 0) z₀` using `by fun_prop`. Establish `han : AnalyticAt ℂ (fun z ↦ ℘[L] (b * z + 0)) z₀`. Establish `h3` using `AnalyticAt.comp (f := fun z : ℂ ↦ b * z + 0) (g := ℘[L]) (L.analyticOnNhd_weierstrassP (b * z₀ + 0) h₂) hf`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `h0` using `han.meromorphicOrderAt_nonneg`. Rewrite `h0` using `[h1]`. Conclude with `absurd h0 (by decide)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_weierstrassP_ne (L : PeriodPair) {a b z₀ : ℂ} (ha : a ≠ 0)
     (h₁ : a * z₀ + 0 ∈ L.lattice) (h₂ : b * z₀ + 0 ∉ L.lattice) :
@@ -80,7 +80,7 @@ theorem germ_weierstrassP_ne (L : PeriodPair) {a b z₀ : ℂ} (ha : a ≠ 0)
   exact absurd h0 (by decide)
 
 /- English proof (translation)
-Introduce `h`. Take `⟨a, ha⟩` from `exists_int_of_real_mul_mem L h`. Conclude with `irrational_sqrt_two ⟨a, by push_cast; exact ha.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sqrt_two_mul_notMem (L : PeriodPair) : (Real.sqrt 2 : ℂ) * L.ω₁ ∉ L.lattice := by
   intro h
@@ -88,14 +88,14 @@ theorem sqrt_two_mul_notMem (L : PeriodPair) : (Real.sqrt 2 : ℂ) * L.ω₁ ∉
   exact irrational_sqrt_two ⟨a, by push_cast; exact ha.symm⟩
 
 /- English proof (translation)
-Establish `: (0 : ℝ) < 1 + Real.sqrt 2` using `by positivity`. Conclude with `this.ne'` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_add_sqrt_two_ne_zero : (1 : ℂ) + Real.sqrt 2 ≠ 0 := by
   have : (0 : ℝ) < 1 + Real.sqrt 2 := by positivity
   exact_mod_cast this.ne'
 
 /- English proof (translation)
-Substitute `e₁ e₂` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem affinePoint_congr (L : PeriodPair) {t t' s s' : ℂ} (ht : t ≠ 0) (ht' : t' ≠ 0)
     (e₁ : t = t') (e₂ : s = s') : affinePoint L t s ht = affinePoint L t' s' ht' := by
@@ -103,20 +103,20 @@ theorem affinePoint_congr (L : PeriodPair) {t t' s s' : ℂ} (ht : t ≠ 0) (ht'
   rfl
 
 /- English proof (translation)
-Simplify using `only [basePoint, affinePoint, one_mul, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basePoint_eq (L : PeriodPair) : basePoint L = affinePoint L 1 0 one_ne_zero := by
   simp only [basePoint, affinePoint, one_mul, add_zero]
 
 /- English proof (translation)
-The claim follows from `transcendental_germ_weierstrassP_affine L t s ht`.
+A detailed English derivation is pending.
 -/
 theorem isGenPt_affinePoint (L : PeriodPair) (t s : ℂ) (ht : t ≠ 0) :
     IsGenPt (weierstrassCurve L) (affinePoint L t s ht) :=
   transcendental_germ_weierstrassP_affine L t s ht
 
 /- English proof (translation)
-Use `(eq_genEval (weierstrassCurve L) _ ?_ h).symm` and prove the remaining obligations. Rewrite using `[← Point.map_map, map_ellEval_genericPoint, map_affineComp_basePoint]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem genEval_affinePoint (L : PeriodPair) (s : ℂ) (hs : s ≠ 0)
     (h : IsGenPt (weierstrassCurve L) (affinePoint L s 0 hs)) :
@@ -125,9 +125,9 @@ theorem genEval_affinePoint (L : PeriodPair) (s : ℂ) (hs : s ≠ 0)
   rw [← Point.map_map, map_ellEval_genericPoint, map_affineComp_basePoint]
 
 /- English proof (translation)
-Consider the cases of `A with`. Consider the case `zero => exact h.elim`. Consider the case `some x y k`. Rewrite `h` using `[Point.map_some, isGenPt_some]`. Rewrite using `[isGenPt_some]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun halg ↦ h (halg.algHom τ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGenPt_of_map' {F : Type*} [Field F] {E : WeierstrassCurve F} {M N : Type*} [Field M]
     [Algebra F M] [DecidableEq M] [Field N] [Algebra F N] [DecidableEq N] (τ : M →ₐ[F] N)
@@ -140,7 +140,7 @@ theorem isGenPt_of_map' {F : Type*} [Field F] {E : WeierstrassCurve F} {M N : Ty
     exact fun halg ↦ h (halg.algHom τ)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem map_genEval_congr {F : Type*} [Field F] {E E' : WeierstrassCurve F} {M : Type*} [Field M]
     [Algebra F M] [DecidableEq M] (Q : (E'.baseChange E.toAffine.FunctionField).toAffine.Point)
@@ -150,7 +150,7 @@ theorem map_genEval_congr {F : Type*} [Field F] {E E' : WeierstrassCurve F} {M :
   rfl
 
 /- English proof (translation)
-Use `⟨meromorphic_weierstrassP_affine L₂ α 0, fun z l hl ↦ ?_⟩` and prove the remaining obligations. Use `show ℘[L₂] (α * (z + l) + 0) = ℘[L₂] (α * z + 0)`. Rewrite using `[show α * (z + l) + 0 = (α * z + 0) + α * l by ring]`. Conclude with `isPeriodic_weierstrassP _ _ (hα l hl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEllipticFunction_weierstrassP_mul {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) :
     IsEllipticFunction L₁ fun z ↦ ℘[L₂] (α * z + 0) := by
@@ -160,7 +160,7 @@ theorem isEllipticFunction_weierstrassP_mul {α : ℂ} (hα : α ∈ latticeHom 
   exact isPeriodic_weierstrassP _ _ (hα l hl)
 
 /- English proof (translation)
-Use `⟨meromorphic_derivWeierstrassP_half_affine L₂ α 0, fun z l hl ↦ ?_⟩` and prove the remaining obligations. Use `show ℘'[L₂] (α * (z + l) + 0) / 2 = ℘'[L₂] (α * z + 0) / 2`. Rewrite using `[show α * (z + l) + 0 = (α * z + 0) + α * l by ring]`. Simplify using `only [isPeriodic_derivWeierstrassP _ _ (hα l hl)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isEllipticFunction_derivWeierstrassP_mul_half {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) :
     IsEllipticFunction L₁ fun z ↦ ℘'[L₂] (α * z + 0) / 2 := by
@@ -176,21 +176,21 @@ def isogY {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) : (weierstrassCurve L�
   (exists_ellEval_eq_germ L₁ (isEllipticFunction_derivWeierstrassP_mul_half hα)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_ellEval_eq_germ L₁ (isEllipticFunction_weierstrassP_mul hα)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem ellEval_isogX {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) :
     ellEval L₁ (isogX hα) = germ fun z ↦ ℘[L₂] (α * z + 0) :=
   (exists_ellEval_eq_germ L₁ (isEllipticFunction_weierstrassP_mul hα)).choose_spec
 
 /- English proof (translation)
-The claim follows from `(exists_ellEval_eq_germ L₁ (isEllipticFunction_derivWeierstrassP_mul_half hα)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem ellEval_isogY {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) :
     ellEval L₁ (isogY hα) = germ fun z ↦ ℘'[L₂] (α * z + 0) / 2 :=
   (exists_ellEval_eq_germ L₁ (isEllipticFunction_derivWeierstrassP_mul_half hα)).choose_spec
 
 /- English proof (translation)
-Rewrite using `[← (weierstrassCurve L₂).toAffine.baseChange_nonsingular (ellEval_injective L₁), ellEval_isogX, ellEval_isogY]`. Conclude with `equation_iff_nonsingular.1 (equation_affine L₂ α 0 h0)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonsingular_isog {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) (h0 : α ≠ 0) :
     ((weierstrassCurve L₂).baseChange (weierstrassCurve L₁).toAffine.FunctionField).toAffine.Nonsingular
@@ -204,7 +204,7 @@ def isogPt {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) (h0 : α ≠ 0) :
   .some _ _ (nonsingular_isog hα h0)
 
 /- English proof (translation)
-Simplify using `only [isogPt, affinePoint, Point.map_some, Point.some.injEq]`. Conclude with `⟨ellEval_isogX hα, ellEval_isogY hα⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem map_ellEval_isogPt {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) (h0 : α ≠ 0) :
     Point.map (ellEval L₁) (isogPt hα h0) = affinePoint L₂ α 0 h0 := by
@@ -212,7 +212,7 @@ theorem map_ellEval_isogPt {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) (h0 : 
   exact ⟨ellEval_isogX hα, ellEval_isogY hα⟩
 
 /- English proof (translation)
-Apply `isGenPt_of_map' (ellEval L₁)` to reduce the goal to its premises. Rewrite using `[map_ellEval_isogPt]`. Conclude with `isGenPt_affinePoint L₂ α 0 h0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenPt_isogPt {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) (h0 : α ≠ 0) :
     IsGenPt (weierstrassCurve L₂) (isogPt hα h0) := by
@@ -221,7 +221,7 @@ theorem isGenPt_isogPt {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) (h0 : α �
   exact isGenPt_affinePoint L₂ α 0 h0
 
 /- English proof (translation)
-Rewrite using `[genEval_affinePoint L₁ s hs h, ← Point.map_map, map_ellEval_isogPt, map_affineComp_affinePoint]`. Conclude with `affinePoint_congr L₂ _ _ rfl (by ring)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_isogPt {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) (h0 : α ≠ 0) (s : ℂ) (hs : s ≠ 0)
     (h : IsGenPt (weierstrassCurve L₁) (affinePoint L₁ s 0 hs)) :
@@ -232,19 +232,17 @@ theorem value_isogPt {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) (h0 : α ≠
   exact affinePoint_congr L₂ _ _ rfl (by ring)
 
 /- English proof (translation)
-Use `set r : ℂ := (Real.sqrt 2 : ℂ)`. Establish `hr : r ≠ 0` using `sqrt_two_ne_zero`. Establish `hA` using `isGenPt_map_genericPoint (weierstrassCurve L₁) (ellEval L₁)`. Establish `eA : Point.map (ellEval L₁) (genericPoint (weierstrassCurve L₁)) = affinePoint L₁ 1 0 one_ne_zero`. Rewrite using `[map_ellEval_genericPoint, basePoint_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx₁ : (germ fun z ↦ ℘[L₁] (1 * z + 0)) ≠ germ fun z ↦ ℘[L₁] (r * z + 0)` using `germ_weierstrassP_ne L₁ one_ne_zero (z₀ := L₁.ω₁) (by simpa using L₁.ω₁_mem_lattice) (by simpa using sqrt_two_mul_notMem L₁)`. Establish `eAB : affinePoint L₁ 1 0 one_ne_zero + affinePoint L₁ r 0 hr = affinePoint L₁ (1 + r) 0 one_add_sqrt_two_ne_zero`. Rewrite using `[affinePoint_add L₁ one_ne_zero hr one_add_sqrt_two_ne_zero hx₁]`. Conclude with `affinePoint_congr L₁ _ _ rfl (by ring)`. Apply `respectsAdd_of_univAdd` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `univAdd_of_pair (isogPt hα h0) (ellEval L₁) (equation_iff_nonsingular.1 (equation_affine L₁ r 0 hr)) (ellEval_indep L₁) hA (isGenPt_affinePoint L₁ r 0 hr) (by` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsGenPt _ (Point.map (ellEval L₁) (genericPoint _) + affinePoint L₁ r 0 hr)`. Rewrite using `[eA, eAB]`. Conclude with `isGenPt_affinePoint L₁ _ 0 _) ?_`. Establish `eS : Point.map (ellEval L₁) (genericPoint (weierstrassCurve L₁)) + affinePoint L₁ r 0 hr = affinePoint L₁ (1 + r) 0 one_add_sqrt_two_ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eA, eAB]`. Establish `hx₂ : (germ fun z ↦ ℘[L₂] (α * 1 * z + 0)) ≠ germ fun z ↦ ℘[L₂] (α * r * z + 0)`. Use `germ_weierstrassP_ne L₂ (mul_ne_zero h0 one_ne_zero) (z₀ := L₂.ω₁ / α) ?_ ?_` and prove the remaining obligations. Rewrite using `[show α * 1 * (L₂.ω₁ / α) + 0 = L₂.ω₁ by field_simp; ring]`. Conclude with `L₂.ω₁_mem_lattice`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show α * r * (L₂.ω₁ / α) + 0 = r * L₂.ω₁ by field_simp; ring]`. Conclude with `sqrt_two_mul_notMem L₂`. Establish `key : affinePoint L₂ (α * (1 + r)) 0 (mul_ne_zero h0 one_add_sqrt_two_ne_zero) = affinePoint L₂ (α * 1) 0 (mul_ne_zero h0 one_ne_zero) + affinePoint L₂ (α * r) 0 (mul_ne_zero h0 hr)`. Rewrite using `[affinePoint_add L₂ _ _ (by rw [← mul_add]; exact mul_ne_zero h0 one_add_sqrt_two_ne_zero) hx₂]`. Conclude with `affinePoint_congr L₂ _ _ (by ring) (by ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `v1` using `value_isogPt hα h0 1 one_ne_zero (isGenPt_affinePoint L₁ 1 0 one_ne_zero)`. Establish `vr` using `value_isogPt hα h0 r hr (isGenPt_affinePoint L₁ r 0 hr)`. Establish `vs` using `value_isogPt hα h0 (1 + r) one_add_sqrt_two_ne_zero (isGenPt_affinePoint L₁ _ 0 one_add_sqrt_two_ne_zero)`. Use `(map_genEval_congr _ eS _ (isGenPt_affinePoint L₁ _ 0 one_add_sqrt_two_ne_zero)).trans ?_` and prove the remaining obligations. Use `vs.trans (key.trans ?_)` and prove the remaining obligations.
-
-Rewrite using `[← v1, ← vr]`. Use `congr 1`. Conclude with `map_genEval_congr _ eA.symm _ _`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem respectsAdd_isogPt {α : ℂ} (hα : α ∈ latticeHom L₁ L₂) (h0 : α ≠ 0) :
     RespectsAdd (weierstrassCurve L₁) (weierstrassCurve L₂) (isogPt hα h0) := by
@@ -303,7 +301,7 @@ def latticeToHom (α : latticeHom L₁ L₂) : isogHom (weierstrassCurve L₁) (
   if h : (α : ℂ) = 0 then 0 else (latticeIsog α.2 h).toHom
 
 /- English proof (translation)
-Rewrite using `[latticeToHom, dif_neg h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem latticeToHom_of_ne_zero (α : latticeHom L₁ L₂) (h : (α : ℂ) ≠ 0) :
     (latticeToHom α).1 = isogPt α.2 h := by
@@ -311,7 +309,7 @@ theorem latticeToHom_of_ne_zero (α : latticeHom L₁ L₂) (h : (α : ℂ) ≠ 
   rfl
 
 /- English proof (translation)
-Rewrite using `[latticeToHom, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem latticeToHom_of_eq_zero (α : latticeHom L₁ L₂) (h : (α : ℂ) = 0) : latticeToHom α = 0 := by
   rw [latticeToHom, dif_pos h]
@@ -319,13 +317,13 @@ theorem latticeToHom_of_eq_zero (α : latticeHom L₁ L₂) (h : (α : ℂ) = 0)
 def omegaDeriv : KaehlerDifferential ℂ MeroField →ₗ[MeroField] MeroField := germDeriv.liftKaehlerDifferential
 
 /- English proof (translation)
-The claim follows from `germDeriv.liftKaehlerDifferential_comp_D u`.
+A detailed English derivation is pending.
 -/
 theorem omegaDeriv_D (u : MeroField) : omegaDeriv (D ℂ MeroField u) = germDeriv u :=
   germDeriv.liftKaehlerDifferential_comp_D u
 
 /- English proof (translation)
-Rewrite using `[show (fun z ↦ f z / 2) = f / fun _ ↦ (2 : ℂ) from rfl, germ_div hf (Meromorphic.const 2), germ_const, map_ofNat]`. Establish `h2ne : (2 : MeroField) ≠ 0`. Rewrite using `[← map_ofNat (algebraMap ℂ MeroField) 2]`. Conclude with `(_root_.map_ne_zero _).2 two_ne_zero`. Conclude with `mul_div_cancel₀ _ h2ne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_mul_germ_half {f : ℂ → ℂ} (hf : Meromorphic f) :
     (2 : MeroField) * germ (fun z ↦ f z / 2) = germ f := by
@@ -337,9 +335,9 @@ theorem two_mul_germ_half {f : ℂ → ℂ} (hf : Meromorphic f) :
   exact mul_div_cancel₀ _ h2ne
 
 /- English proof (translation)
-Introduce `h`. Establish `e` using `(equation_iff _ _).1 (equation_affine L t s ht)`. Rewrite `e` using `[h]`. Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆, weierstrassCurve_a₁, weierstrassCurve_a₂, weierstrassCurve_a₃, weierstrassCurve_a₄, weierstrassCurve_a₆, map_zero, zero_ …`. Apply `transcendental_germ_weierstrassP_affine L t s ht` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨X ^ 3 + C (-(L.g₂ / 4)) * X + C (-(L.g₃ / 4)), ?_, ?_⟩` and prove the remaining obligations. Use `apply_fun (fun p ↦ p.coeff 3)`. Simplify using the standard rewrite rules. Simplify using `only [map_add, map_pow, aeval_X, map_mul, aeval_C]`. Take the linear combination `-e`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem germ_derivWeierstrassP_half_ne_zero (L : PeriodPair) (t s : ℂ) (ht : t ≠ 0) :
     (germ fun z ↦ ℘'[L] (t * z + s) / 2) ≠ 0 := by
@@ -359,13 +357,13 @@ theorem germ_derivWeierstrassP_half_ne_zero (L : PeriodPair) (t s : ℂ) (ht : t
     linear_combination -e
 
 /- English proof (translation)
-Take `⟨s₁, -⟩` from `omegaAt_some_spec (weierstrassCurve L) (equation_iff_nonsingular.1 (equation_affine L t s ht))`. Establish `e` using `congrArg omegaDeriv s₁`. Rewrite `e` using `[LinearMap.map_smul, omegaDeriv_D, germDeriv_germ (meromorphic_weierstrassP_affine L t s)]`. Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃, weierstrassCurve_a₁, weierstrassCurve_a₃, map_zero, zero_mul, add_zero, smul_eq_mul] at e`. Establish `hd : deriv (fun z ↦ ℘[L] (t * z + s)) =ᶠ[codiscrete ℂ] fun z ↦ t * ℘'[L] (t * z + s)` using `by filter_upwards [eventually_affine (eventually_notMem_lattice L) ht s] with z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `(hasDerivAt_weierstrassP hz).comp z (((hasDerivAt_id' z).const_mul t).add_const s)`. Rewrite `h1` using `[mul_one]`. Rewrite using `[show (fun z ↦ ℘[L] (t * z + s)) = ℘[L] ∘ fun x ↦ t * x + s from rfl, h1.deriv, mul_comm]`. Establish `md : Meromorphic fun z ↦ t * ℘'[L] (t * z + s)` using `fun x ↦ (MeromorphicAt.const t x).mul (meromorphic_comp_affine L.meromorphic_derivWeierstrassP t s x)`. Rewrite `e` using `[germ_congr (meromorphic_weierstrassP_affine L t s).deriv hd, show (fun z ↦ t * ℘'[L] (t * z + s)) = (fun _ ↦ t) * fun z ↦ ℘'[L] (t * z + s) from rfl, germ_mul (Meromorphic.const t) (meromorphic_comp_affine L.meromorphic_derivWeierstrassP t s), germ_const, ← two_mul_germ_half (me …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy` using `germ_derivWeierstrassP_half_ne_zero L t s ht`. Establish `h2 : (2 : MeroField) * germ (fun z ↦ ℘'[L] (t * z + s) / 2) ≠ 0`. Use `mul_ne_zero ?_ hy` and prove the remaining obligations. Rewrite using `[← map_ofNat (algebraMap ℂ MeroField) 2]`. Conclude with `(_root_.map_ne_zero _).2 two_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_left_cancel₀ h2` to reduce the goal to its premises. Conclude with `e.trans (mul_comm _ _)`.
+A detailed English derivation is pending.
 -/
 theorem omegaDeriv_affinePoint (L : PeriodPair) (t s : ℂ) (ht : t ≠ 0) :
     omegaDeriv (omegaAt (weierstrassCurve L) (affinePoint L t s ht)) = algebraMap ℂ MeroField t := by
@@ -395,16 +393,16 @@ theorem omegaDeriv_affinePoint (L : PeriodPair) (t s : ℂ) (ht : t ≠ 0) :
   exact e.trans (mul_comm _ _)
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul K c η, kpush_smul, AlgHom.commutes, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kpush_const_smul {K M : Type*} [Field K] [Algebra ℂ K] [Field M] [Algebra ℂ M]
     (σ : K →ₐ[ℂ] M) (c : ℂ) (η : KaehlerDifferential ℂ K) : kpush σ (c • η) = c • kpush σ η := by
   rw [← algebraMap_smul K c η, kpush_smul, AlgHom.commutes, algebraMap_smul]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : (α : ℂ) = 0`. Rewrite using `[latticeToHom_of_eq_zero α h0, map_zero, h0]`. Establish `e` using `omegaAt_eq_homConst_smul (latticeToHom α)`. Establish `e'` using `congrArg (kpush (ellEval L₁)) e`. Rewrite `e'` using `[kpush_omegaAt, latticeToHom_of_ne_zero α h0, map_ellEval_isogPt, kpush_const_smul, invariantDifferential, kpush_omegaAt, map_ellEval_genericPoint, basePoint_eq]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e''` using `congrArg omegaDeriv e'`. Rewrite `e''` using `[omegaDeriv_affinePoint, ← algebraMap_smul MeroField, LinearMap.map_smul, omegaDeriv_affinePoint, smul_eq_mul, map_one, mul_one]`. Conclude with `((algebraMap ℂ MeroField).injective e'').symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homConst_latticeToHom (α : latticeHom L₁ L₂) :
     homConst (weierstrassCurve L₁) (weierstrassCurve L₂) (latticeToHom α) = α := by

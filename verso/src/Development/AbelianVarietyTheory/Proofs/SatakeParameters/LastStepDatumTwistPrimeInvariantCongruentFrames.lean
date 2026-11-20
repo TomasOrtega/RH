@@ -18,9 +18,9 @@ section Local
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Establish `hq : (qOf P : E) ≠ 0` using `qOf_ne_zero`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hMD`. Establish `h` using `hκ _ hv`. Rewrite `h` using `[map_smul, ← smul_sub, smul_smul]`. Rewrite using `[Nat.add_sub_cancel_left]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `h using 2` and compare the differences between its conclusion and the goal. Rewrite using `[pow_add]`. Clear the denominators using the available nonvanishing facts.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem cong_scaled {n : ℕ} (κ : Sp E n ≃ₗ[E] Sp E n) {D M : ℕ} (hMD : M ≤ D)
     (hκ : ∀ w ∈ stdAt E n P, ((qOf P : E) ^ D)⁻¹ • (κ w - w) ∈ stdAt E n P)
@@ -36,7 +36,7 @@ theorem cong_scaled {n : ℕ} (κ : Sp E n ≃ₗ[E] Sp E n) {D M : ℕ} (hMD : 
   field_simp
 
 /- English proof (translation)
-Introduce `w hw`. Establish `hu : κ.symm w ∈ stdAt E n P` using `glint_mem (⟨κ, hκ⟩⁻¹ : GLint E n P) hw`. Use `neg_mem (h _ hu)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply, ← smul_neg, neg_sub]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_symm {n : ℕ} {κ : Sp E n ≃ₗ[E] Sp E n} (hκ : κ ∈ GLint E n P) {D : ℕ}
     (h : ∀ w ∈ stdAt E n P, ((qOf P : E) ^ D)⁻¹ • (κ w - w) ∈ stdAt E n P) :
@@ -51,17 +51,17 @@ def abelian₂ (P : HeightOneSpectrum (𝓞 E)) (n M : ℕ) (v : Sp E n) : Prop 
   (∀ l, IntAt P ((qOf P : E) ^ M * v l)) ∧ ∀ l : Fin n, l.1 + 1 < n → IntAt P (v l)
 
 /- English proof (translation)
-The claim follows from `mem_stdAt.2 fun l => by simpa only [Pi.smul_apply, smul_eq_mul] using h.1 l`.
+A detailed English derivation is pending.
 -/
 theorem abelian₂.smul_mem {n M : ℕ} {v : Sp E n} (h : abelian₂ P n M v) : ((qOf P : E) ^ M) • v ∈ stdAt E n P :=
   mem_stdAt.2 fun l => by simpa only [Pi.smul_apply, smul_eq_mul] using h.1 l
 
 /- English proof (translation)
-Establish `hq : (qOf P : E) ≠ 0` using `qOf_ne_zero`. Establish `hd` using `cong_scaled b (by omega) hbc hv.smul_mem`. Use `⟨⟨fun l => ?_, fun l hl => ?_⟩, hd⟩` and prove the remaining obligations. Establish `h1` using `mem_stdAt.1 (glint_mem (⟨b, hb⟩ : GLint E n P) hv.smul_mem) l`. Rewrite `h1` using `[show ((⟨b, hb⟩ : GLint E n P) : Sp E n ≃ₗ[E] Sp E n) = b from rfl, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h1` using `only [Pi.smul_apply, smul_eq_mul]`. Establish `h2` using `mem_stdAt.1 hd l`. Establish `h3 : IntAt P ((qOf P : E) ^ (D - M))` using `intAt_pow (GlobalTheory.TopStep.intAt_nat _) _`. Establish `h4` using `(h3.mul h2).add (hv.2 l hl)`. Use `h4 using 1` and compare the differences between its conclusion and the goal.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hq), one_mul, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem abelian₂.move {n M D : ℕ} {b : Sp E n ≃ₗ[E] Sp E n} (hb : b ∈ GLint E n P)
     (hbc : ∀ w ∈ stdAt E n P, ((qOf P : E) ^ D)⁻¹ • (b w - w) ∈ stdAt E n P) (hMD : M + 1 ≤ D)
@@ -81,7 +81,7 @@ theorem abelian₂.move {n M D : ℕ} {b : Sp E n ≃ₗ[E] Sp E n} (hb : b ∈ 
     ring
 
 /- English proof (translation)
-Use `⟨fun l => ?_, fun l hl => ?_⟩` and prove the remaining obligations. Conclude with `intAt_form_of_mem_stdAt ((qOf P : E) ^ M) (LinearMap.proj l ∘ₗ y) (fun i => (hy i).1 l) hv`. Use `intAt_form_of_mem_stdAt (1 : E) (LinearMap.proj l ∘ₗ y) (fun i => by rw [one_mul]; exact (hy i).2 l hl) hv` as an intermediate fact. Rewrite `this` using `[one_mul]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abelian₂.of_basis {n n' M : ℕ} (y : HomE E n' n) (hy : ∀ j, abelian₂ P n M (y (Pi.single j 1)))
     {v : Sp E n'} (hv : v ∈ stdAt E n' P) : abelian₂ P n M (y v) := by
@@ -105,13 +105,13 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem k_le_N (i : ℕ) : R.k ≤ R.N i := by
   unfold Ranks.N; omega
 
 /- English proof (translation)
-Establish `h : 1 ≤ (i + 1) * (R.t + 1)` using `Nat.one_le_iff_ne_zero.mpr (by positivity)`. Unfold `Ranks.N`. Generalize the expression as in `(i + 1) * (R.t + 1) = a at *`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 theorem k_le_N_pred (i : ℕ) : R.k ≤ R.N (i + 1) - 1 := by
   have h : 1 ≤ (i + 1) * (R.t + 1) := Nat.one_le_iff_ne_zero.mpr (by positivity)
@@ -120,17 +120,17 @@ theorem k_le_N_pred (i : ℕ) : R.k ≤ R.N (i + 1) - 1 := by
   omega
 
 /- English proof (translation)
-Unfold `topDat at h`. Establish `hne` using `left_ne_zero_of_mul h`. Establish `hne2` using `right_ne_zero_of_mul h`. Unfold `PhiTopG at hne`. Rewrite `hne` using `[if_neg hP]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hint` using `twAn_phiQ_int _ _ (k_le_N i) (k_le_N_pred i) _ hne`. Unfold `ftY at hne2`. Rewrite `hne2` using `[if_neg hP]`. Establish `hlast : ∀ i', IntAt P.1 ((qOf P.1 : X.E) ^ cst.M * (atNL X.E (R.N (i + 1)) (R.N (i + 1) - 1) ∘ₗ y) (Pi.single i' 1))`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hne2 (if_neg hc)`. Introduce `j`. Establish `hpre : ∀ l : Fin (R.N (i + 1)), l.1 + 1 < R.N (i + 1) → IntAt P.1 (y (Pi.single j 1) l)`. Introduce `l hl`. Use `hint (Fin.castAdd _ j) ⟨l.1, by omega⟩` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R i)) (Pi.single (Fin.castAdd (cOf R i) j) (1 : X.E)) : Sp X.E (R.N i)) = Pi.single j 1`. Use extensionality with `a`. Simplify using `[LinearMap.funLeft_apply, Pi.single_apply]`. Simplify using `only [LinearMap.comp_apply, e] at this`. Conclude with `this`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `⟨fun l => ?_, hpre⟩` and prove the remaining obligations. Distinguish the cases in `hl : l.1 + 1 < R.N (i + 1)`. Conclude with `(intAt_pow (GlobalTheory.TopStep.intAt_nat _) _).mul (hpre l hl)`. Establish `hN : R.N (i + 1) - 1 < R.N (i + 1)` using `by omega`. Use `hlast j` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : l = ⟨R.N (i + 1) - 1, hN⟩` using `Fin.ext (by show l.1 = R.N (i + 1) - 1; omega)`. Simplify using `only [LinearMap.comp_apply, atNL, dif_pos hN, LinearMap.proj_apply] at this`. Rewrite using `[e]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem lam_of_topDat_ne (i : ℕ) (P : rowSG Pr sel mu) (hP : P.1 ∉ Pr.vGs)
     (y : HomE X.E (R.N i) (R.N (i + 1))) (y'' : Sp X.E (R.N i))
@@ -179,7 +179,7 @@ section Move
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Introduce `j` and use `(abelian₂.move hb hbc hMD (abelian₂.of_basis y hy (glint_mem (⟨a, ha⟩ : GLint E n' P) (single_mem_stdAt P j)))).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lam_comp {n' n M D : ℕ} {a : Sp E n' ≃ₗ[E] Sp E n'} {b : Sp E n ≃ₗ[E] Sp E n}
     (ha : a ∈ GLint E n' P) (hb : b ∈ GLint E n P)
@@ -189,7 +189,7 @@ theorem lam_comp {n' n M D : ℕ} {a : Sp E n' ≃ₗ[E] Sp E n'} {b : Sp E n �
   (abelian₂.move hb hbc hMD (abelian₂.of_basis y hy (glint_mem (⟨a, ha⟩ : GLint E n' P) (single_mem_stdAt P j)))).1
 
 /- English proof (translation)
-Rewrite `hz` using `[inv_mul_eq_div]`. Conclude with `GlobalTheory.TopInv.intAt_div_pow_le qOf_ne_zero h hz`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_inv_pow_le {a b : ℕ} (h : a ≤ b) {z : E} (hz : IntAt P (((qOf P : E) ^ b)⁻¹ * z)) :
     IntAt P (z / (qOf P : E) ^ a) := by
@@ -209,31 +209,29 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-Establish `hM1 : 1 ≤ cst.M` using `hc.M_pos`. Establish `hMD : cst.M + 1 ≤ cst.D P` using `by omega`. Establish `hq : (qOf P.1 : X.E) ≠ 0` using `qOf_ne_zero`. Establish `hκ's : κ'.symm ∈ GLint X.E _ P.1` using `(GLint X.E _ P.1).inv_mem hκ'`. Establish `hκs : κ.symm ∈ GLint X.E _ P.1` using `(GLint X.E _ P.1).inv_mem hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ'sc` using `cong_symm hκ' hκ'c`. Distinguish the cases in `hg : ∀ j, abelian₂ P.1 (R.N (m2 + 1 + 1)) cst.M (y (Pi.single j 1))`. Unfold `topDat`. Use `congr 1`. Unfold `PhiTopG`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg hP]`. Establish `hc0 : cOf R (m2 + 1) = 0` using `cOf_topB hm`. Establish `hw : ∀ w ∈ stdAt X.E (R.N (m2 + 1)) P.1, ∀ l : Fin (R.N (m2 + 1 + 1)), l.1 + 1 < R.N (m2 + 1 + 1) → IntAt P.1 ((κ'.symm (y (κ w)) - y w) l / (qOf P.1 : X.E))`. Introduce `w hw l hl`. Establish `hu` using `abelian₂.of_basis y hg (glint_mem (⟨κ, hκ⟩ : GLint X.E _ P.1) hw)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `d1` using `mem_stdAt.1 (abelian₂.move hκ's hκ'sc hMD hu).2 l`. Establish `e1` using `intAt_inv_pow_le (a := 1) (by omega) d1`. Establish `hu' : ((qOf P.1 : X.E) ^ cst.D P)⁻¹ • (κ w - w) ∈ stdAt X.E _ P.1` using `hκc w hw`. Establish `hyu` using `(abelian₂.of_basis y hg hu').2 l hl`. Rewrite `hyu` using `[map_smul, map_sub, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `intAt_inv_pow_le (a := 1) (by omega) hyu`. Rewrite `e1`, `e2` using `[pow_one]`. Establish `e3` using `e1.add e2`. Rewrite `e3` using `[← add_div]`. Use `e3 using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `fun z hz => GlobalTheory.TopInv.PhiQ_add (K := X.K) (GlobalTheory.TopInv.qOf_mem P.1) hq (resChar (mu : Chr X.F X.E X.K) P.1) R.k R.r (cOf R (m2 + 1)) (R.N (m2 + 1)) (R.N (m2 + 1 + 1) - 1) hc0 (prXpG X.E (R.N (m2 + 1 + 1)) ∘ₗ y ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 …`. Use `(congrArg _ (add_sub_cancel _ _)).symm.trans (key _ ?_)` and prove the remaining obligations. Introduce `s l`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hws : (LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))) (Pi.single s (1 : X.E)) : Sp X.E _) ∈ stdAt X.E (R.N (m2 + 1)) P.1` using `mem_stdAt.2 fun a => GlobalTheory.TopInv.single_int s (Fin.castAdd _ a)`. Use `hw _ hws ⟨l.1, by omega⟩ (by show l.1 + 1 < _; omega)` as an intermediate fact. Conclude with `this`. Establish `h1` using `ftY_comp_glint sel mu cst hc P (fun _ => hD) ⟨κ, hκ⟩ (atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ κ'.symm.toLinearMap ∘ₗ y) y'' (κ.symm y'') (fun h => absurd h hP) (fun _ => hy'') (fun h => absurd h hP) (fun _ => by show ((qOf P.1 : X.E) ^ cst.M)⁻¹ • (κ (κ.symm y'') - y …`. Rewrite using `[LinearEquiv.apply_symm_apply, sub_self, smul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_mem _)`. Use `h1.trans ?_` and prove the remaining obligations. Establish `hy''s : ((qOf P.1 : X.E) ^ cst.M) • y'' ∈ stdAt X.E _ P.1` using `mem_stdAt.2 fun l => by simpa only [Pi.smul_apply, smul_eq_mul] using hy'' l`. Establish `hδ : ∀ i, IntAt P.1 (((qOf P.1 : X.E) ^ cst.M)⁻¹ * ((atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ κ'.symm.toLinearMap ∘ₗ y) - atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ y) (Pi.single i 1))`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1` using `mem_stdAt.1 (abelian₂.move hκ's hκ'sc (v := y (Pi.single i 1)) hMD (hg i)).2`. Establish `e1 : ∀ l, IntAt P.1 ((κ'.symm (y (Pi.single i 1)) - y (Pi.single i 1)) l / (qOf P.1 : X.E) ^ cst.M)` using `fun l => intAt_inv_pow_le (by omega) (d1 l)`. Establish `e2` using `GlobalTheory.TopInv.atNL_int (R.N (m2 + 1 + 1) - 1) _ _ e1`. Rewrite using `[inv_mul_eq_div]`. Use `e2 using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, map_sub]`. Both sides reduce to the same expression. Establish `h2` using `GlobalTheory.ftY_pert_qM sel mu cst hc P hP hD (atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ y) _ y'' hδ hy''s`. Rewrite `h2` using `[add_sub_cancel]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : topDat Ch sel mu cst (m2 + 1) P y y'' = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hg (lam_of_topDat_ne Ch sel mu cst _ P hP y y'' hne)`. Rewrite using `[h0]`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hg` to reduce the goal to its premises. Establish `h1` using `lam_of_topDat_ne Ch sel mu cst _ P hP _ _ hne`. Establish `h2` using `lam_comp hκs hκ' hκ'c hMD _ h1`. Introduce `j`. Use `h2 j` as an intermediate fact.
-
-Simplify `this` using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem topDat_frames {m2 : ℕ} (hm : R.m = m2 + 2) (hc : cst.Ok) (P : rowSG Pr sel mu) (hP : P.1 ∉ Pr.vGs)
     (hD : 2 * cst.M ≤ cst.D P)
@@ -330,7 +328,7 @@ end GlobalTheory.TopFrameQ
 namespace GlobalTheory.TopFrameQ
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a _ _ P hP κ κ' hκ hκc hκ' hκ'c y y'' hy''`. Conclude with `topDat_frames t.Ch t.sel (t.tup μ) (t.cst μ) (t.idx_ok μ).hm (t.idx_ok μ).cst_ok P hP ((t.idx_ok μ).depthQ P hP) κ κ' hκ hκc hκ' hκ'c y y'' hy''`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem topDat_frames_tie : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ (P : SB t μ), P.1 ∉ t.Pr.vGs →
   ∀ (κ : Sp t.X.E (D.R.N (t.m2 + 1)) ≃ₗ[t.X.E] Sp t.X.E (D.R.N (t.m2 + 1)))

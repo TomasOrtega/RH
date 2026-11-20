@@ -19,7 +19,7 @@ def heisPairMap (h : HermitianForm F E W) (v : Basis ι E W) (x₀ w₀ : W) (w 
 
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] [DecidableEq ι] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [heisPairMap, hForm, Matrix.mulVec, dotProduct_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem heisPairMap_apply (w : InfinitePlace E) (z : ι → ℂ) :
     heisPairMap h v x₀ w₀ w z =
@@ -33,9 +33,9 @@ def heisYAt (h : HermitianForm F E W) (v : Basis ι E W) (x₀ w₀ : W) (w : In
 
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[heisYAt, LinearMap.mem_ker, heisPairMap_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Conclude with `⟨by simpa using congrFun hz 0, by simpa using congrFun hz 1⟩`. Introduce and unpack `⟨h0, h1⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [h0, h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_heisYAt {w : InfinitePlace E} {z : ι → ℂ} :
     z ∈ heisYAt h v x₀ w₀ w ↔ hForm (gramAt h v w) (vecAt v x₀ w) z = 0 ∧
@@ -49,9 +49,9 @@ theorem mem_heisYAt {w : InfinitePlace E} {z : ι → ℂ} :
     fin_cases i <;> simp [h0, h1]
 
 /- English proof (translation)
-Take `⟨hH, -, ha, hb, hab⟩` from `hyperbolic_at_place h v hp w`. Establish `hba : hForm (gramAt h v w) (vecAt v w₀ w) (vecAt v x₀ w) = 1`. Rewrite using `[← hForm_conj hH, hab, map_one]`. Establish `hs : Function.Surjective (heisPairMap h v x₀ w₀ w)` using `fun u => ⟨u 0 • vecAt v w₀ w + u 1 • vecAt v x₀ w, by`. Rewrite using `[heisPairMap_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [hForm_add_right, hForm_smul_right, ha, hb, hab, hba]⟩`. Establish `e` using `LinearMap.finrank_range_add_finrank_ker (heisPairMap h v x₀ w₀ w)`. Rewrite `e` using `[LinearMap.range_eq_top.2 hs, finrank_top, Module.finrank_fin_fun, Module.finrank_fintype_fun_eq_card]`. Rewrite using `[heisYAt]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -88,11 +88,11 @@ def heisYAtEquiv (hp : IsHyperbolicPair h x₀ w₀) (w : InfinitePlace E) :
     omega)
 
 /- English proof (translation)
-Use `set e : heisY h v x₀ w₀ ≃ₗ[ℝ] (InfinitePlace E → Fin (Fintype.card ι - 2) → ℂ) := (heisYEquiv h v x₀ w₀).trans (LinearEquiv.piCongrRight fun w => (heisYAtEquiv hp w).restrictScalars ℝ) with he`. Use `set P : (InfinitePlace E → Fin (Fintype.card ι - 2) → ℂ) →ₗ[ℝ] (InfinitePlace E → Fin (Fintype.card ι - 2) → ℂ) := LinearMap.pi (fun w => ((c w • LinearMap.id : (Fin (Fintype.card ι - 2) → ℂ) →ₗ[ℂ] (Fin (Fintype.card ι - 2) → ℂ)).restrictScalars ℝ).comp (LinearMap.proj w)) with h …`. Establish `key : heisScale h v x₀ w₀ c = (e.symm : _ →ₗ[ℝ] _) ∘ₗ P ∘ₗ (e.symm.symm : _ →ₗ[ℝ] _)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `e.injective` to reduce the goal to its premises. Simplify using `only [LinearEquiv.symm_symm, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `w`. Simplify using `only [he, hP, LinearEquiv.trans_apply, LinearEquiv.piCongrRight_apply, LinearEquiv.restrictScalars_apply, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.restrictScalars_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[← map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[key, LinearMap.det_conj, hP, LinearMap.det_pi]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_smul, LinearMap.det_id, mul_one, Module.finrank_fin_fun, map_pow, Algebra.norm_complex_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_heisScale (hp : IsHyperbolicPair h x₀ w₀) (c : InfinitePlace E → ℂ) :
     LinearMap.det (heisScale h v x₀ w₀ c) =
@@ -129,7 +129,7 @@ def placeScale (r : InfinitePlace E → ℝ) : (InfinitePlace E → ℝ) →ₗ[
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Rewrite using `[placeScale, LinearMap.det_pi]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_placeScale (r : InfinitePlace E → ℝ) : LinearMap.det (placeScale r) = ∏ w, r w := by
   rw [placeScale, LinearMap.det_pi]

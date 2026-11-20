@@ -10,17 +10,17 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 namespace GlobalTheory.CompanionTheory.GapLie
 
 /- English proof (translation)
-Introduce `V _ _ _ _ n E m hE hq`. Take `⟨ν, v, -, hv0, hw, -⟩` from `Formalism.FourierDecayAlt.P.exists_singular_maximal_vector V n E hE ⊤ (fun _ _ _ _ => Submodule.mem_top) top_ne_bot`. Establish `hc` using `Formalism.FourierDecayAlt.P.HighestWeightPolynomials.hw_cpol (m := m) hE (Qr.mem_CapSp.2 fun w => hq w v) hv0 hw`. Establish `hroot : ∀ i, ∃ a : Fin n, m i = ν a - ((a : ℕ) : ℂ)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hc (-m i)`. Unfold `Qr.cpol at h1`. Rewrite `h1` using `[Finset.prod_eq_zero (Finset.mem_univ i) (by ring)]`. Take `⟨a, -, ha⟩` from `Finset.prod_eq_zero_iff.1 h1.symm`. Conclude with `⟨a, by linear_combination -ha⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hdom : ∀ a b : Fin n, ∃ N : ℤ, ν a - ν b = (N : ℂ)`. Introduce `a b`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Take `⟨N, hN⟩` from `Formalism.FourierDecayAlt.P.singular_dominant V n E ν v hE hw hv0 a b h`. Conclude with `⟨N, by simpa using hN⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, by simp [h]⟩`. Take `⟨N, hN⟩` from `Formalism.FourierDecayAlt.P.singular_dominant V n E ν v hE hw hv0 b a h`. Use `⟨-N, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `-hN`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `i j`. Take `⟨a, ha⟩` from `hroot i`. Take `⟨b, hb⟩` from `hroot j`. Take `⟨N, hN⟩` from `hdom a b`. Use `⟨N - (a : ℕ) + (b : ℕ), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Take the linear combination `ha - hb + hN`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem capelli_params_diff_int : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] [Nontrivial V] (n : ℕ) (E : Fin n → Fin n → Module.End ℂ V) (m : Fin n → ℂ), GlRel E → (∀ w v, qdet E w v = Qr.cpol m w • v) → ∀ i j, ∃ N : ℤ, m i - m j = (N : ℂ) := by
   intro V _ _ _ _ n E m hE hq

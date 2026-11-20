@@ -20,11 +20,11 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible Formalism.
 namespace GlobalTheory.RealPlaceTheta
 
 /- English proof (translation)
-Introduce `hDS hHC`. Take `⟨X, hX⟩` from `GlobalTheory.exists_provA_of_forall_exists_hasParam fun p q T lam hl => GlobalTheory.CoverDS.exists_hasParam hDS p q T lam hl`. Establish `hH1 : admH1 X` using `GlobalTheory.FockDeg.degrees_and_adjoints X`. Establish `hH2 : admH2 X` using `GlobalTheory.FockAlg.fock_structure X`. Establish `hD1 : DiscreteSeriesBlattner X` using `GlobalTheory.CoverDS.admissibleDiscreteSeries_of_hasParam hDS X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ5 : admQ5 X` using `GlobalTheory.Published.HarishChandraModules.admQ5_of_harishChandraModules hHC X`. Establish `hQ6 : CoverHaarIntegration X` using `GlobalTheory.T.polarCoordinates_unitaryPQ_doubleCover X`. Establish `hQ7 : admQ7` using `TensorHW.highestWeight_tensor`. Establish `hQ8 : admQ8` using `GlobalTheory.InducedPBW.pbw_induced`. Establish `hD2 : DiscreteSeriesPositivity X` using `GlobalTheory.SphJet.lowest_type_positive_and_decays X hD1 hQ5 hQ7 hQ8`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA1 : ArchimedeanRallisFirst X` using `GlobalTheory.T.doublingIntegral_jointHarmonic_pos X hH1 hH2 hD1 hD2 hQ5 hQ6 hQ7 hQ8`. Establish `hA2 : ArchimedeanRallisSecond X` using `GlobalTheory.T.fockSpace_contains_discreteSeriesTensor X hH1 hH2 hD1 hD2 hQ5 hQ6 hQ7 hQ8 hA1`. Establish `hA3 : ArchimedeanRallisUpDownLine X` using `GlobalTheory.T.theta_correspondence_fock_ds_uniqueness X hH1 hH2 hD1 hQ5 hQ7 hQ8 hA1 hA2`. Establish `hA5 : ArchimedeanRallisFifth X` using `GlobalTheory.T.no_intertwiner_smaller_fock_to_discrete_series X hH1 hH2 hD1 hQ5`. Conclude with `⟨X, hX, hD1, hQ5, hA1, hA2, hA3, hA5⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_record_theta :
     GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules →

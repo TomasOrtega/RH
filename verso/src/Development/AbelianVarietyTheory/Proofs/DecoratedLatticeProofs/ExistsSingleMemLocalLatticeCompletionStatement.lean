@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain GlobalTheory.AdelicU Formalism.MainNotions.Glo
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AdelicU.exists_single_mem_latLoc` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsSingleMemLocalLatticeCompletion.lean&line=22#L22)
 -/

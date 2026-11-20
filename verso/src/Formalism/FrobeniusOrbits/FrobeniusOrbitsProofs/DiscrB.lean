@@ -15,16 +15,16 @@ open Formalism.FrobeniusOrbits Formalism.TwoAdicCyclotomicDecomposition
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `hm`. Conclude with `IsCoprime.pow_right ⟨1, -j, by ring⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma isCoprime_odd_two_pow {m : ℤ} (hm : Odd m) (k : ℕ) : IsCoprime m (2 ^ k) := by
   obtain ⟨j, rfl⟩ := hm
   exact IsCoprime.pow_right ⟨1, -j, by ring⟩
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `h2 : ι x ∈ (adjoin ℚ S).map ι`. Rewrite using `[IntermediateField.adjoin_map, hS]`. Conclude with `hx x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hyx⟩` from `h2`. Rewrite using `[← (ι : K →+* L).injective hyx]` and apply the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma adjoin_eq_top_of_map {K : Type} [Field K] [Algebra ℚ K] (ι : K →ₐ[ℚ] L) (S : Set K)
     (T : IntermediateField ℚ L) (hS : adjoin ℚ (ι '' S) = T) (hx : ∀ x : K, ι x ∈ T) :
@@ -38,19 +38,19 @@ lemma adjoin_eq_top_of_map {K : Type} [Field K] [Algebra ℚ K] (ι : K →ₐ[�
   rwa [← (ι : K →+* L).injective hyx]
 
 /- English proof (translation)
-Rewrite using `[Nat.sub_mul, one_mul, show 2 ^ (e + 2) * (e + 1) = 2 ^ e * (e + 1) * 4 by ring]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma exp_E (e : ℕ) : (2 ^ e * (e + 1) - 1) * 4 = 2 ^ (e + 2) * (e + 1) - 4 := by
   rw [Nat.sub_mul, one_mul, show 2 ^ (e + 2) * (e + 1) = 2 ^ e * (e + 1) * 4 by ring]
 
 /- English proof (translation)
-Rewrite using `[Nat.sub_mul, one_mul, show 2 ^ (e + 1) * (e + 1) = 2 ^ e * (e + 1) * 2 by ring]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma exp_F (e : ℕ) : (2 ^ e * (e + 1) - 1) * 2 = 2 ^ (e + 1) * (e + 1) - 2 := by
   rw [Nat.sub_mul, one_mul, show 2 ^ (e + 1) * (e + 1) = 2 ^ e * (e + 1) * 2 by ring]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((q / 2 : ℕ) : ℤ), by have := Nat.div_add_mod q 2; omega⟩`.
+Supply the required witnesses or components.
 -/
 lemma odd_of_mod {q : ℕ} (h : q % 2 = 1) : Odd (q : ℤ) :=
   ⟨((q / 2 : ℕ) : ℤ), by have := Nat.div_add_mod q 2; omega⟩
@@ -58,40 +58,38 @@ lemma odd_of_mod {q : ℕ} (h : q % 2 = 1) : Odd (q : ℤ) :=
 variable {e q d : ℕ} {ζ a b : L}
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify `h.2.2.1` using `[bE]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma bE_sq (h : IsLayer (e + 2) q d ζ a b) : bE ζ a b ^ 2 = -(d : hostE ζ a b) := by
   apply Subtype.ext
   simpa [bE] using h.2.2.1
 
 /- English proof (translation)
-Establish `hqd` using `hH.toHypOdd`. Take `⟨hqp, hdp, hq8, hd16, -⟩` from `hH`. Establish `hne : q ≠ d` using `hqd.2.2.1`. Set `α₀ : Fin 2 → hostE ζ a b` to `![aE ζ a b, bE ζ a b]`. Set `K₁ : IntermediateField ℚ (hostE ζ a b)` to `adjoin ℚ (Set.range α₀)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `K₂ : IntermediateField ℚ (hostE ζ a b)` to `adjoin ℚ {thE ζ a b}`. Set `β : Fin 2 → K₁` to `fun i => ⟨α₀ i, subset_adjoin _ _ ⟨i, rfl⟩⟩`. Set `qq : Fin 2 → ℕ` to `![q, d]`. Establish `hβ : Formalism.Q3.IsMQ (fun i => -(qq i : ℤ)) β`. Use `⟨fun i => Subtype.ext ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases i`. Simplify `ConjReal.aE_sq h` using `[β, α₀, qq]`. Simplify `bE_sq h` using `[β, α₀, qq]`. Apply `Formalism.HF.P.adjoin_top_of_lift` to reduce the goal to its premises. Rewrite using `[← Set.range_comp]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hqq : ∀ i, (qq i).Prime ∧ qq i % 4 = 3`. Introduce `i`. Use `fin_cases i`. Conclude with `⟨hqp, by simp [qq]; omega⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨hdp, by simp [qq]; omega⟩`. Establish `hinj : Function.Injective qq`. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [qq]`. Establish `hd₁ : discr K₁ = (q : ℤ) ^ 2 * (d : ℤ) ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Formalism.HF.Final.mqDiscr 2 qq (by norm_num) hqq hinj K₁ β hβ]`. Simplify using `[Fin.prod_univ_two, qq]`. Establish `hGal₁ : IsGalois ℚ K₁` using `(Formalism.Q3.mqGalois 2 K₁ _ β hβ (fun i => neg_ne_zero.2 (Nat.cast_ne_zero.2 (hqq i).1.ne_zero))).1`. Set `ι : hostE ζ a b →ₐ[ℚ] L` to `((hostE ζ a b).val : hostE ζ a b →+* L).toRatAlgHom`. Establish `hmap : K₂.map ι = F1 ζ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[adjoin_map, Set.image_singleton]`. Both sides reduce to the same expression. Set `f₂` to `(K₂.equivMap ι).trans (equivOfEq hmap)`. Establish `hd₂ : discr K₂ = 2 ^ (2 ^ e * (e + 1) - 1)`. Rewrite using `[discr_eq_discr_of_algEquiv _ f₂.toRingEquiv.toRatAlgEquiv, h1 e L ζ h.1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf₂ : Module.finrank ℚ K₂ = 2 ^ e`. Rewrite using `[f₂.toLinearEquiv.finrank_eq]`. Conclude with `RealCyclotomicSubfield.finrank_real_subfield h.1`. Establish `hcop : IsCoprime (discr K₁) (discr K₂)`. Rewrite using `[hd₁, hd₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `isCoprime_odd_two_pow` to reduce the goal to its premises. Conclude with `((odd_of_mod (by omega)).pow).mul ((odd_of_mod (by omega)).pow)`. Establish `hld` using `linearDisjoint_of_isGalois_isCoprime_discr (hostE ζ a b) K₁ K₂ hcop`. Establish `hsup : K₁ ⊔ K₂ = ⊤`. Rewrite using `[← adjoin_union]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `adjoin_eq_top_of_map ι _ ℚ⟮ζ + ζ⁻¹, a, b⟯ ?_ (fun x => by rw [← Galois.hostE_eq_adjoin]; exact x.2)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `x`. Simplify using `[α₀, aE, bE, thE, ι]`. The claim follows by propositional logic.
+The claim follows by propositional logic. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hf₁ : Module.finrank ℚ K₁ = 4`. Use `hld.finrank_sup` as an intermediate fact. Rewrite `this` using `[hsup, finrank_top', finrank_cmField hqd h, hf₂]`. Establish `h4 : 2 ^ (e + 2) = 4 * 2 ^ e` using `by ring`. Rewrite `this` using `[h4]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Nat.eq_of_mul_eq_mul_right (by positivity) this).symm`. Establish `hnat` using `natAbs_discr_eq_natAbs_discr_pow_mul_natAbs_discr_pow (hostE ζ a b) K₁ K₂ hld hsup (isCoprime_differentIdeal_of_isCoprime_discr (hostE ζ a b) hcop)`. Establish `hr : nrRealPlaces (hostE ζ a b) = 0` using `Formalism.HF.P.nrRealPlaces_zero (aE ζ a b) (-(q : ℤ)) (by have := hqp.pos; omega) (by rw [ConjReal.aE_sq h]; push_cast; rfl)`. Establish `hc : nrComplexPlaces (hostE ζ a b) = 2 ^ (e + 1)`. Use `card_add_two_mul_card_eq_rank (K := hostE ζ a b)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hr, finrank_cmField hqd h, pow_succ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : (discr (hostE ζ a b)).sign = 1`. Rewrite using `[sign_discr, hc]`. Conclude with `Even.neg_one_pow ⟨2 ^ e, by ring⟩`.
-
-Rewrite using `[← Int.sign_mul_natAbs (discr (hostE ζ a b)), hs, hnat, hd₁, hd₂, hf₁, hf₂, one_mul]`. Simplify using `only [Int.natAbs_mul, Int.natAbs_pow, Int.natAbs_natCast]`. Use `push_cast`. Rewrite using `[← pow_mul, exp_E, show 2 ^ (e + 1) = 2 * 2 ^ e by ring, pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem discr_hostE (h1 : DiscrMaximalRealCyclotomic) (hH : HostHyp q d) (h : IsLayer (e + 2) q d ζ a b) :
     discr (hostE ζ a b) = 2 ^ (2 ^ (e + 2) * (e + 1) - 4) * ((q * d : ℕ) : ℤ) ^ (2 ^ (e + 1)) := by
@@ -172,33 +170,31 @@ theorem discr_hostE (h1 : DiscrMaximalRealCyclotomic) (hH : HostHyp q d) (h : Is
   ring
 
 /- English proof (translation)
-Establish `hqd` using `hH.toHypOdd`. Take `⟨hqp, hdp, hq8, hd16, -⟩` from `hH`. Establish `hne : q ≠ d` using `hqd.2.2.1`. Set `ι : hostF ζ a b →ₐ[ℚ] L` to `(((hostE ζ a b).val : hostE ζ a b →+* L).comp (hostF ζ a b).subtype).toRatAlgHom`. Establish `hab : aE ζ a b * bE ζ a b ∈ hostF ζ a b` using `(mem_hostF_iff_adjoin hqd h _).2 (subset_adjoin ℚ _ (by simp [aE, bE]))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hth : thE ζ a b ∈ hostF ζ a b` using `(mem_hostF_iff_adjoin hqd h _).2 (subset_adjoin ℚ _ (by simp [thE]))`. Set `abF : hostF ζ a b` to `⟨_, hab⟩`. Set `thF : hostF ζ a b` to `⟨_, hth⟩`. Set `M₁ : IntermediateField ℚ (hostF ζ a b)` to `adjoin ℚ {abF}`. Set `M₂ : IntermediateField ℚ (hostF ζ a b)` to `adjoin ℚ {thF}`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x₁ : M₁` to `⟨abF, mem_adjoin_simple_self _ _⟩`. Establish `hx₁ : x₁ ^ 2 = (((q : ℤ) * d : ℤ) : M₁)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_cast`. Use `show (a * b) ^ 2 = _`. Rewrite using `[mul_pow, h.2.1, h.2.2.1]`. Expand and normalize the polynomial expressions, which then agree. Establish `htop₁ : adjoin ℚ {x₁} = ⊤`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Formalism.HF.P.adjoin_top_of_lift` to reduce the goal to its premises. Rewrite using `[Set.image_singleton]`. Establish `hsf : Squarefree ((q : ℤ) * d)`. Rewrite using `[show ((q : ℤ) * d) = ((q * d : ℕ) : ℤ) by push_cast; rfl, Int.squarefree_natCast, Nat.squarefree_mul_iff]`. Conclude with `⟨(Nat.coprime_primes hqp hdp).2 hne, hqp.squarefree, hdp.squarefree⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hmod : ((q : ℤ) * d) % 4 = 1`. Establish `hq4 : (q : ℤ) % 4 = 3` using `by omega`. Establish `hd4 : (d : ℤ) % 4 = 3` using `by omega`. Rewrite using `[Int.mul_emod, hq4, hd4]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hd₁ : discr M₁ = (q : ℤ) * d` using `Formalism.HF.Final.quadDiscr M₁ _ x₁ hx₁ htop₁ hsf hmod`. Establish `hGal₁ : IsGalois ℚ M₁` using `(Formalism.Q3.mqGalois 1 M₁ (fun _ => (q : ℤ) * d) (fun _ => x₁) ⟨fun _ => hx₁, by rw [Set.range_const]; exact htop₁⟩ (fun _ => mul_ne_zero (Nat.cast_ne_zero.2 hqp.ne_zero) (Nat.cast_ne_zero.2 hdp.ne_zero))).1`. Establish `hmap : M₂.map ι = F1 ζ`. Rewrite using `[adjoin_map, Set.image_singleton]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `f₂` to `(M₂.equivMap ι).trans (equivOfEq hmap)`. Establish `hd₂ : discr M₂ = 2 ^ (2 ^ e * (e + 1) - 1)`. Rewrite using `[discr_eq_discr_of_algEquiv _ f₂.toRingEquiv.toRatAlgEquiv, h1 e L ζ h.1]`. Establish `hf₂ : Module.finrank ℚ M₂ = 2 ^ e`. Rewrite using `[f₂.toLinearEquiv.finrank_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `RealCyclotomicSubfield.finrank_real_subfield h.1`. Establish `hcop : IsCoprime (discr M₁) (discr M₂)`. Rewrite using `[hd₁, hd₂]`. Apply `isCoprime_odd_two_pow` to reduce the goal to its premises. Conclude with `(odd_of_mod (by omega)).mul (odd_of_mod (by omega))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hld` using `linearDisjoint_of_isGalois_isCoprime_discr (hostF ζ a b) M₁ M₂ hcop`. Establish `hsup : M₁ ⊔ M₂ = ⊤`. Rewrite using `[← adjoin_union]`. Use `adjoin_eq_top_of_map ι _ ℚ⟮a * b, ζ + ζ⁻¹⟯ ?_ (fun x => (mem_hostF_iff_adjoin hqd h (x : hostE ζ a b)).1 x.2)` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Use extensionality with `x`. Simplify using `[ι, abF, thF, aE, bE, thE]`. The claim follows by propositional logic. Establish `hf₁ : Module.finrank ℚ M₁ = 2`. Use `hld.finrank_sup` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hsup, finrank_top', finrank_hostF hqd h, hf₂]`. Establish `h2 : 2 ^ (e + 1) = 2 * 2 ^ e` using `by ring`. Rewrite `this` using `[h2]`. Conclude with `(Nat.eq_of_mul_eq_mul_right (by positivity) this).symm`. Establish `hnat` using `natAbs_discr_eq_natAbs_discr_pow_mul_natAbs_discr_pow (hostF ζ a b) M₁ M₂ hld hsup (isCoprime_differentIdeal_of_isCoprime_discr (hostF ζ a b) hcop)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hs : (discr (hostF ζ a b)).sign = 1`. Rewrite using `[sign_discr, IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero]`. Rewrite using `[← Int.sign_mul_natAbs (discr (hostF ζ a b)), hs, hnat, hd₁, hd₂, hf₁, hf₂, one_mul]`. Simplify using `only [Int.natAbs_mul, Int.natAbs_pow, Int.natAbs_natCast]`. Use `push_cast`.
-
-Rewrite using `[← pow_mul, exp_F]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem discr_hostF (h1 : DiscrMaximalRealCyclotomic) (hH : HostHyp q d) (h : IsLayer (e + 2) q d ζ a b) :
     discr (hostF ζ a b) = 2 ^ (2 ^ (e + 1) * (e + 1) - 2) * ((q * d : ℕ) : ℤ) ^ (2 ^ e) := by
@@ -278,7 +274,7 @@ theorem discr_hostF (h1 : DiscrMaximalRealCyclotomic) (hH : HostHyp q d) (h : Is
   ring
 
 /- English proof (translation)
-The claim follows from `|(((2 : ℤ) ^ (2 ^ (e + 2) * (e + 1) - 4) * ((q * d : ℕ) : ℤ) ^ (2 ^ (e + 1)) : ℤ) : ℝ)| ^ ((1 : ℝ) / (2 ^ (e + 2) : ℝ)) = (2 : ℝ) ^ ((e : ℝ) + 1 - (2 : ℝ) ^ (-(e : ℝ))) * Real.sqrt ((q : ℝ) * d) := by have hX : (0 : ℝ) ≤ (q : ℝ) * d := by positivity have hB : 4 ≤ 2 ^ (e + 2) * (e …`.
+A detailed English derivation is pending.
 -/
 theorem rdE (e q d : ℕ) (hq : 0 < q) (hd : 0 < d) :
     |(((2 : ℤ) ^ (2 ^ (e + 2) * (e + 1) - 4) * ((q * d : ℕ) : ℤ) ^ (2 ^ (e + 1)) : ℤ) : ℝ)| ^
@@ -303,7 +299,7 @@ theorem rdE (e q d : ℕ) (hq : 0 < q) (hd : 0 < d) :
     ring
 
 /- English proof (translation)
-The claim follows from `|(((2 : ℤ) ^ (2 ^ (e + 1) * (e + 1) - 2) * ((q * d : ℕ) : ℤ) ^ (2 ^ e) : ℤ) : ℝ)| ^ ((1 : ℝ) / (2 ^ (e + 1) : ℝ)) = (2 : ℝ) ^ ((e : ℝ) + 1 - (2 : ℝ) ^ (-(e : ℝ))) * Real.sqrt ((q : ℝ) * d) := by have hX : (0 : ℝ) ≤ (q : ℝ) * d := by positivity have hB : 2 ≤ 2 ^ (e + 1) * (e + 1) …`.
+A detailed English derivation is pending.
 -/
 theorem rdF (e q d : ℕ) (hq : 0 < q) (hd : 0 < d) :
     |(((2 : ℤ) ^ (2 ^ (e + 1) * (e + 1) - 2) * ((q * d : ℕ) : ℤ) ^ (2 ^ e) : ℤ) : ℝ)| ^
@@ -328,7 +324,7 @@ theorem rdF (e q d : ℕ) (hq : 0 < q) (hd : 0 < d) :
     ring
 
 /- English proof (translation)
-Establish `hB : 2 ^ (e + 2) * (e + 1) - 4 = (2 ^ (e + 1) * (e + 1) - 2) * 2`. Rewrite using `[Nat.sub_mul, show 2 ^ (e + 2) * (e + 1) = 2 ^ (e + 1) * (e + 1) * 2 by ring]`. Rewrite using `[hB, mul_pow, ← pow_mul, ← pow_mul, ← pow_succ]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqF (e q d : ℕ) :
     ((2 : ℤ) ^ (2 ^ (e + 1) * (e + 1) - 2) * ((q * d : ℕ) : ℤ) ^ (2 ^ e)) ^ 2 =
@@ -344,9 +340,9 @@ namespace Formalism.FrobeniusOrbits
 open Formalism.TwoAdicCyclotomicDecomposition
 
 /- English proof (translation)
-Introduce `e q d hH L _ _ ζ a b h`. Establish `hq : 0 < q` using `hH.1.pos`. Establish `hd : 0 < d` using `hH.2.1.pos`. Establish `hE` using `DiscrB.discr_hostE h1 hH h`. Establish `hF` using `DiscrB.discr_hostF h1 hH h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hE, hF, by rw [hE, hF]; exact (DiscrB.sqF e q d).symm, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hE]`. Conclude with `DiscrB.rdE e q d hq hd`. Rewrite using `[hF]`. Conclude with `DiscrB.rdF e q d hq hd`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hostDiscr_of (h1 : DiscrMaximalRealCyclotomic) : HostDiscr := by
   intro e q d hH L _ _ ζ a b h

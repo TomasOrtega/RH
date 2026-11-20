@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.isTest_lift | exact GlobalTheory.FlatModel.isTest_lift | (intros; apply GlobalTheory.FlatModel.isTest_lift <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.test_point_lift_proper : ∀ (p : ℕ) [Fact p.Prime] (X X' : Scheme.{0}) (π : X' ⟶ X), IsProper π → ∀ (Xw O : X.Opens), Xw ≤ O →
     IsIso (π ∣_ O) → ∀ yb : Sp 𝓞_ℂ_[p] ⟶ X, IsTest p Xw yb → ∃ yb', IsTest p (π ⁻¹ᵁ Xw) yb' ∧ yb' ≫ π = yb := by

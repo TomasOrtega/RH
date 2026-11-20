@@ -6,9 +6,9 @@ open Classical Complex
 namespace PI.TransInvLatW
 
 /- English proof (translation)
-Establish `h1` using `hy (z + x)`. Establish `hz : z + (x + y) = z + x + y` using `by ring`. Rewrite using `[hz, ← h1, mul_assoc (G (z + x + y)), ← Complex.exp_add]`. Use `congr 1`. Establish `hE : -P * z * (X + Y) / A - P * (x + y) * (X + Y) / (2 * A) = (-P * (z + x) * Y / A - P * y * Y / (2 * A) + (-P * z * X / A - P * x * X / (2 * A))) + P * (x * Y - y * X) / (2 * A)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[hE, Complex.exp_add, hph, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_core (P A : ℂ) (G : ℂ → ℂ) (x y X Y : ℂ)
     (hy : ∀ z, G (z + y) * exp (-P * z * Y / A - P * y * Y / (2 * A)) = G z)
@@ -31,11 +31,11 @@ def PhaseOne : Prop :=
         (2 * (m : ℂ) * ω) * (starRingEnd ℂ) x) / (2 * (area (lat2 w₁ w₂) : ℂ))) = 1
 
 /- English proof (translation)
-Introduce `w₁ w₂ hD G hG x ω m hm hx hω`. Establish `hy : 2 * (m : ℂ) * ω ∈ lat2 w₁ w₂`. Establish `: 2 * (m : ℂ) * ω = (2 * m : ℕ) • ω` using `by rw [nsmul_eq_mul]; push_cast; ring`. Rewrite using `[this]`. Conclude with `AddSubgroup.nsmul_mem _ hω _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy2 : 2 * (m : ℂ) * ω / 2 ∈ lat2 w₁ w₂`. Establish `: 2 * (m : ℂ) * ω / 2 = m • ω` using `by rw [nsmul_eq_mul]; ring`. Rewrite using `[this]`. Conclude with `AddSubgroup.nsmul_mem _ hω _`. Establish `hG'` using `hG _ hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [if_pos hy2, one_mul] at hG'`. Use function extensionality and compare the values at `z`. Unfold `U1`. Rewrite using `[map_add]`. Conclude with `shift_core _ _ G x _ _ _ (fun z => hG' z) (h w₁ w₂ hD x ω m hm hx hω) z`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transInvLat_of_phase (h : PhaseOne) : PI.TransInvLat := by
   intro w₁ w₂ hD G hG x ω m hm hx hω

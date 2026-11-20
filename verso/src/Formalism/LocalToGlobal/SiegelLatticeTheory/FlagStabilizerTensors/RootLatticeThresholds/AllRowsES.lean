@@ -21,7 +21,7 @@ def Ea (a : CV D) : MonoidAlgebra ℂ (G0g D.nd) :=
     ∏ kv : (Σ k : Fin 2, D.nd.PlG k), (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf (a kv))).coeff (γ kv)
 
 /- English proof (translation)
-Introduce `k` and use `⟨D.host.g_prime k⟩ ∏ kv : (Σ k : Fin 2, D.nd.PlG k), (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf (a kv))).coeff (γ kv) := by simp [Ea, MonoidAlgebra.coeff_ofCoeff]`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Ea_coeff (a : CV D) (γ : G0g D.nd) :
     (Ea a).coeff γ = haveI : ∀ k, Fact (D.host.g k).Prime := fun k => ⟨D.host.g_prime k⟩
@@ -30,9 +30,9 @@ theorem Ea_coeff (a : CV D) (γ : G0g D.nd) :
 
 open Classical in
 /- English proof (translation)
-Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `γ`. Rewrite using `[MonoidAlgebra.coeff_sum, Finset.sum_apply', Finset.sum_filter]`. Unfold `ES`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[Ea_coeff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ES_eq (S : Set (Tup2 D)) : ES S = ∑ a ∈ Finset.univ.filter (fun a : CV D => tupOf a ∈ S), Ea a := by
   apply MonoidAlgebra.ext
@@ -47,7 +47,7 @@ theorem ES_eq (S : Set (Tup2 D)) : ES S = ∑ a ∈ Finset.univ.filter (fun a : 
   · rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[← Formalism.L2.SG.Pf.RowDictPf.coeff_monicOf a i, ← Formalism.L2.SG.Pf.RowDictPf.coeff_monicOf b i, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem monicOf_inj {g : ℕ} [Fact g.Prime] {N : ℕ} {a b : Fin N → ZMod g}
     (h : Formalism.CyclotomicNorms.monicOf a = Formalism.CyclotomicNorms.monicOf b) : a = b := by
@@ -56,15 +56,15 @@ theorem monicOf_inj {g : ℕ} [Fact g.Prime] {N : ℕ} {a b : Fin N → ZMod g}
 
 open Classical in
 /- English proof (translation)
-Establish `: ∀ k, Fact (D.host.g k).Prime` using `fun k => ⟨D.host.g_prime k⟩`. Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `γ`. Rewrite using `[coeff_mul_fin]`. Simplify using `only [Ea_coeff]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ∑ δ : G0g D.nd, (∏ kv : (Σ k : Fin 2, D.nd.PlG k), (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf (a kv))).coeff (δ kv)) * ∏ kv : (Σ k : Fin 2, D.nd.PlG k), (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf (b kv))).coeff ((δ⁻¹ * γ) kv) = ∏ kv : (Σ k : Fin 2, D …`. Simplify using `only [coeff_mul_fin]`. Rewrite using `[Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[key]`. Use `split_ifs with hab`. Substitute `hab` using the available equality. Rewrite using `[Ea_coeff]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations. Rewrite using `[D.ntypes.eSer_idem]`. Choose the witnesses or unpack the hypotheses as in `⟨kv, hkv⟩ : ∃ kv, a kv ≠ b kv := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hab (funext h)`. Establish `h0 : (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf (a kv))) * (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf (b kv))) = 0` using `D.ntypes.eSer_orth kv.1 _ _ fun h => hkv (monicOf_inj h)`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ kv) (by rw [h0]; simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Ea_mul (a b : CV D) : Ea a * Ea b = if a = b then Ea a else 0 := by
   have : ∀ k, Fact (D.host.g k).Prime := fun k => ⟨D.host.g_prime k⟩
@@ -100,7 +100,7 @@ theorem Ea_mul (a b : CV D) : Ea a * Ea b = if a = b then Ea a else 0 := by
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[ES_eq, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Simplify using `only [Ea_mul]`. Rewrite using `[Finset.sum_eq_single a (fun b _ hb => if_neg (Ne.symm hb)) (fun h => absurd ha h), if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ES_idem (S : Set (Tup2 D)) : ES S * ES S = ES S := by
   rw [ES_eq, Finset.sum_mul_sum]
@@ -109,13 +109,13 @@ theorem ES_idem (S : Set (Tup2 D)) : ES S * ES S = ES S := by
   rw [Finset.sum_eq_single a (fun b _ hb => if_neg (Ne.symm hb)) (fun h => absurd ha h), if_pos rfl]
 
 /- English proof (translation)
-The claim follows from `central_of_class _ (ES_conj S) y`.
+A detailed English derivation is pending.
 -/
 theorem ES_central (S : Set (Tup2 D)) (y : MonoidAlgebra ℂ (G0g D.nd)) : ES S * y = y * ES S :=
   central_of_class _ (ES_conj S) y
 
 /- English proof (translation)
-The claim follows from `selfadj_of_central_idem _ (ES_idem S) (ES_central S)`.
+A detailed English derivation is pending.
 -/
 theorem ES_selfadj (S : Set (Tup2 D)) : conjA (ES S) = ES S :=
   selfadj_of_central_idem _ (ES_idem S) (ES_central S)

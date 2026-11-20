@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 open scoped Matrix
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qi38.irr_map f r hr N hN`.
+A detailed English derivation is pending.
 -/
 private theorem irr_map {Γ E E' : Type} [Group Γ] [Field E] [Field E'] (f : E →+* E') {n : ℕ}
     (r : Γ →* Matrix (Fin n) (Fin n) E) (hr : Irr r) (N : Submodule E' (Fin n → E'))
@@ -15,11 +15,11 @@ private theorem irr_map {Γ E E' : Type} [Group Γ] [Field E] [Field E'] (f : E 
   _root_.UpperTheory.Reformulated.B.Qi38.irr_map f r hr N hN
 
 /- English proof (translation)
-Take `⟨p, hpN, hpM⟩ : ∃ p : Module.End K V, (∀ v ∈ N, p v = v) ∧ (∀ v ∈ M, p v = 0)` from `⟨N.subtype ∘ₗ N.linearProjOfIsCompl M hc, fun v hv => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hc ⟨v, hv⟩), fun v hv => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_right hc ⟨v, hv⟩)⟩`. Establish `key : T = (p * T) * (1 - p) + ((1 - p) * T) * p`. Use extensionality with `v`. Establish `hv : v ∈ N ⊔ M` using `by rw [hc.sup_eq_top]; trivial`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `[hpN a ha, hpM b hb, hpN _ (h2 b hb), hpM _ (h1 a ha), add_comm]`. Establish `hpp : p * p = p`. Use extensionality with `v`. Establish `hv : v ∈ N ⊔ M` using `by rw [hc.sup_eq_top]; trivial`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `[hpN a ha, hpM b hb]`. Rewrite using `[key, map_add, LinearMap.trace_mul_comm K (p * T), LinearMap.trace_mul_comm K ((1 - p) * T), ← mul_assoc, ← mul_assoc, sub_mul, mul_sub, hpp]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem trace_swap {K V : Type} [Field K] [AddCommGroup V] [Module K V] [Module.Finite K V]
     (N M : Submodule K V) (hc : IsCompl N M) (T : Module.End K V)
@@ -44,21 +44,19 @@ private theorem trace_swap {K V : Type} [Field K] [AddCommGroup V] [Module K V] 
   simp
 
 /- English proof (translation)
-Introduce `Γ E E' _ _ _ f n H r _ hr hH hg N hN`. Break down `hg with rfl | ⟨g, hg, ht⟩` into its components or cases. Conclude with `irr_map f r hr N fun g => hN g trivial`. Use `set ρ := mapRep f r with hρ`. Set `M : Submodule E' (Fin n → E')` to `N.map (Matrix.mulVecLin (ρ g))`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hNM : ∀ a, a ∉ H → ∀ v ∈ N, ρ a *ᵥ v ∈ M`. Introduce `a ha v hv`. Establish `: g⁻¹ * a ∈ H` using `hH _ _ (fun h => hg (H.inv_mem_iff.1 h)) ha`. Use `⟨_, hN _ this v hv, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, ← map_mul, mul_inv_cancel_left]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hMN : ∀ a, a ∉ H → ∀ v ∈ M, ρ a *ᵥ v ∈ N`. Introduce and unpack `a ha _ ⟨v, hv, rfl⟩`. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, ← map_mul]`. Conclude with `hN _ (hH _ _ ha hg) v hv`. Establish `hMM : ∀ a ∈ H, ∀ v ∈ M, ρ a *ᵥ v ∈ M`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce and unpack `a ha _ ⟨v, hv, rfl⟩`. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, ← map_mul]`. Conclude with `hNM _ (fun h => hg ((H.mul_mem_cancel_left ha).1 h)) v hv`. Assume the negation of the conclusion as `hcon`. Take `⟨hb, htop⟩` from `not_or.1 hcon`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Establish `hinf : N ⊓ M = ⊥`. Use `(irr_map f r hr (N ⊓ M) fun a v hv => ?_).resolve_right fun h => htop (top_le_iff.1 (h ▸ inf_le_left))` and prove the remaining obligations. Distinguish the cases in `ha : a ∈ H`. Conclude with `⟨hN a ha v hv.1, hMM a ha v hv.2⟩`. Conclude with `⟨hMN a ha v hv.2, hNM a ha v hv.1⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hsup : N ⊔ M = ⊤`. Use `(irr_map f r hr (N ⊔ M) fun a v hv => ?_).resolve_left fun h => hb (le_bot_iff.1 (h ▸ le_sup_left))` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hv`. Rewrite using `[Matrix.mulVec_add]`. Distinguish the cases in `ha : a ∈ H`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.add_mem_sup (hN a ha x hx) (hMM a ha y hy)`. Rewrite using `[add_comm]`. Conclude with `Submodule.add_mem_sup (hMN a ha y hy) (hNM a ha x hx)`. Establish `hc : IsCompl N M` using `⟨disjoint_iff.2 hinf, codisjoint_iff.2 hsup⟩`. Establish `h0` using `trace_swap N M hc (Matrix.toLin' (ρ g)) (fun v hv => hNM g hg v hv) (fun v hv => hMN g hg v hv)`.
-
-Rewrite `h0` using `[Matrix.trace_toLin'_eq]`. Apply `ht` to reduce the goal to its premises. Apply `f.injective` to reduce the goal to its premises. Rewrite using `[map_zero, ← h0]`. Simplify using `[Matrix.trace, hρ]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.P1.irrTr :
     ∀ {Γ E E' : Type} [Group Γ] [Field E] [Field E'] (f : E →+* E') {n : ℕ} (H : Subgroup Γ) (r : Γ →* Matrix (Fin n) (Fin n) E), (2 : E) ≠ 0 → Irr r →

@@ -19,7 +19,7 @@ variable {O B K L : Type} [CommRing O] [IsDomain O] [CommRing B] [Algebra O B] [
 omit [IsDomain O] [IsFractionRing O K] [IsLocalization (Algebra.algebraMapSubmonoid B O⁰) L] in
 
 /- English proof (translation)
-Simplify using `only [map_sum, Algebra.smul_def, map_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply O B L, IsScalarTower.algebraMap_apply O K L]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_sum_smul {n : ℕ} (η : Fin n → B) (v : Fin n → O) :
     algebraMap B L (∑ m, v m • η m) = ∑ m, algebraMap O K (v m) • algebraMap B L (η m) := by
@@ -28,13 +28,11 @@ theorem algebraMap_sum_smul {n : ℕ} (η : Fin n → B) (v : Fin n → O) :
   rw [← IsScalarTower.algebraMap_apply O B L, IsScalarTower.algebraMap_apply O K L]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨⟨b, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Algebra.algebraMapSubmonoid B O⁰) x`. Take `⟨a, ha, has⟩` from `s.2`. Establish `hle : (Algebra.adjoin O (Set.range η)).map (IsScalarTower.toAlgHom O B L) ≤ (Algebra.adjoin K (Set.range fun m => algebraMap B L (η m))).restrictScalars O`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[AlgHom.map_adjoin, Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨_, ⟨m, rfl⟩, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_restrictScalars, IsScalarTower.coe_toAlgHom']`. Conclude with `Algebra.subset_adjoin ⟨m, rfl⟩`. Establish `hb : algebraMap B L b ∈ Algebra.adjoin K (Set.range fun m => algebraMap B L (η m))` using `hle (Subalgebra.mem_map.2 ⟨b, by rw [hgen]; trivial, IsScalarTower.toAlgHom_apply O B L b⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : algebraMap O K a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 (nonZeroDivisors.ne_zero ha)`. Establish `hs : IsLocalization.mk' L b s = (algebraMap O K a)⁻¹ • algebraMap B L b`. Rewrite using `[eq_inv_smul_iff₀ ha0, Algebra.smul_def, ← IsScalarTower.algebraMap_apply O K L, IsScalarTower.algebraMap_apply O B L, has]`. Conclude with `IsLocalization.mk'_spec' L b s`. Express the relevant statement in the definitionally equal form `IsLocalization.mk' L b s ∈ _`.
-
-Rewrite using `[hs]`. Conclude with `Subalgebra.smul_mem _ hb _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_range_eq_top {n : ℕ} (η : Fin n → B) (hgen : Algebra.adjoin O (Set.range η) = ⊤) :
     Algebra.adjoin K (Set.range fun m => algebraMap B L (η m)) = ⊤ := by
@@ -63,7 +61,7 @@ theorem adjoin_range_eq_top {n : ℕ} (η : Fin n → B) (hgen : Algebra.adjoin 
 omit [IsDomain O] in
 
 /- English proof (translation)
-Rewrite using `[hEval K L n _ _]`. Express the relevant statement in the definitionally equal form `algebraMap O K (Algebra.norm O _) = _`. Rewrite using `[← Algebra.norm_localization O O⁰ (Sₘ := L), algebraMap_sum_smul (K := K)]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_det_mulLeft [Module.Free O B] [Module.Finite O B] [FiniteDimensional K L]
     (hEval : NormFormEval.Statement) {n : ℕ} (η : Fin n → B) (v : Fin n → O) :
@@ -78,23 +76,23 @@ end NormOfDividedForm
 open NormOfDividedForm in
 
 /- English proof (translation)
-Introduce `O B _ _ _ _ _ _ _ _ n η t P hgen ht hP hdvd u`. Set `K` to `FractionRing O`. Set `L` to `FractionRing B`. Set `_ : Algebra K L` to `FractionRing.liftAlgebra O L`. Establish `: IsScalarTower O K L` using `FractionRing.isScalarTower_liftAlgebra O L`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: FiniteDimensional K L` using `.of_isLocalization O B O⁰`. Establish `: Algebra.IsSeparable K L` using `Algebra.IsAlgebraic.isSeparable_of_perfectField`. Establish `hOB : Function.Injective (algebraMap O B)` using `FaithfulSMul.algebraMap_injective O B`. Establish `hOK : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Set `ηL : Fin n → L` to `fun m => algebraMap B L (η m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `tK : Fin n → K` to `fun m => algebraMap O K (t m)`. Establish `htL : ∑ m, tK m • ηL m = 1`. Rewrite using `[← algebraMap_sum_smul, ht, map_one]`. Establish `hdvdL : (∑ m, X m * C (ηL m)) ∣ map (algebraMap K L) (map (algebraMap O K) P)`. Establish `h` using `_root_.map_dvd (MvPolynomial.map (algebraMap B L)) hdvd`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_map, ← IsScalarTower.algebraMap_eq, IsScalarTower.algebraMap_eq O K L, ← map_map, map_sum]`. Simplify `h` using `only [map_mul, map_X, map_C]`. Establish `hnc : ∀ a : O, P ≠ C a`. Introduce and unpack `a rfl`. Take `⟨g, hg⟩` from `hdvd`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `h` using `congrArg (eval 0) hg`. Simplify using `only [map_C, eval_C, map_mul, map_sum, eval_X, Pi.zero_apply, zero_mul, Finset.sum_const_zero] at h`. Conclude with `hP.ne_zero (by rw [(map_eq_zero_iff _ hOB).1 h, map_zero])`. Take `⟨c, hc⟩` from `hDvd K L n ηL tK _ (adjoin_range_eq_top η hgen) htL hdvdL`. Establish `hNt : eval tK (normForm K L ηL) = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hEval K L n ηL, htL, map_one]`. Establish `hN0 : ¬ IsUnit (normForm K L ηL)`. Introduce `h`. Establish `h0` using `h.map (eval (0 : Fin n → K))`. Rewrite `h0` using `[hEval K L n ηL]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.zero_apply, zero_smul, Finset.sum_const_zero, Algebra.norm_zero] at h0`. Conclude with `not_isUnit_zero h0`. Establish `hcu : IsUnit c` using `((hPrime O K n P hP hnc).irreducible.isUnit_or_isUnit hc).resolve_left hN0`. Take `⟨c₀, -, rfl⟩` from `(MvPolynomial.isUnit_iff_eq_C_of_isReduced).1 hcu`. Establish `hev : ∀ v : Fin n → O, eval (fun m => algebraMap O K (v m)) (map (algebraMap O K) P) = algebraMap O K (eval v P)` using `fun v => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[eval_map]`. Conclude with `(eval₂_comp_left (algebraMap O K) (RingHom.id O) v P).symm`. Establish `hct : c₀ = algebraMap O K (eval t P)`. Establish `h` using `congrArg (eval tK) hc`. Rewrite `h` using `[map_mul, hNt, eval_C, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← h, hev]`. Apply `hOK` to reduce the goal to its premises. Establish `h` using `congrArg (eval (fun m => algebraMap O K (u m))) hc`. Rewrite `h` using `[map_mul, eval_C, hct, hev]`. Rewrite using `[map_mul, algebraMap_det_mulLeft (L := L) hEval η u, h, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NormOfDividedForm.proof (hEval : NormFormEval.Statement) (hDvd : NormFormDvd.Statement)
     (hPrime : PrimeMapFractionRing.Statement) : NormOfDividedForm.Statement := by

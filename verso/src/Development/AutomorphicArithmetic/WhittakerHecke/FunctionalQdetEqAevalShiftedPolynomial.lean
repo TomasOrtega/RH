@@ -4,25 +4,21 @@ open MeasureTheory NumberField GlobalTheory.CuspRep GlobalTheory.CompanionTheory
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace UpperTheory.ConvolutionTheory.BW
 
 /- English proof (translation)
-Introduce `A _ _ n X j l p hc h v`. Set `B : Subalgebra ℂ A` to `Subalgebra.centralizer ℂ {j}`. Establish `hB : ∀ i k, (X i k - if i = k then j else 0) ∈ B` using `fun i k => by`. Introduce and unpack `_ rfl`. Use `(Commute.sub_left (hc i k) ?_).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Conclude with `Commute.refl _`. Conclude with `Commute.zero_left _`. Set `X' : Fin n → Fin n → B` to `fun i k => ⟨_, hB i k⟩`. Set `Q : Polynomial B` to `Formalism.REAL.qdet (fun i k => Polynomial.C (X' i k) + if i = k then Polynomial.X else 0) v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hev : ∀ (b : A) (hb : ∀ a : B, Commute (B.val a) b), Q.eval₂ (B.val : B →+* A) b = Formalism.REAL.qdet (fun i k => (X i k - if i = k then j else 0) + if i = k then b else 0) v` using `fun b hb => by`. Use `UpperTheory.V.Fb.map_qdet (Polynomial.eval₂AlgHom B.val b hb) (fun i k => Polynomial.C (X' i k) + if i = k then Polynomial.X else 0) v` as an intermediate fact. Use `Eq.trans ?_ (this.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Use `congr 1`.
+Both sides reduce to the same expression. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i k`. Rewrite using `[map_add, apply_ite (Polynomial.eval₂AlgHom B.val b hb), map_zero]`. Use `congr 1`. Conclude with `Polynomial.eval₂_C _ _`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Polynomial.eval₂_X _ _`. Establish `h1 : Q.eval₂ (B.val : B →+* A) j = Formalism.REAL.qdet X v`. Rewrite using `[hev j (fun a => (a.2 j rfl).symm)]`. Simplify using the standard rewrite rules. Use `set q := p.comp (Polynomial.X + Polynomial.C v) with hq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ (a : A) (k : ℕ), l ((Q.coeff k : A) * a) = q.coeff k * l a` using `fun a k => by`. Establish `e : (∑ m ∈ Q.support, Polynomial.monomial m (l ((Q.coeff m : A) * a))) = q * Polynomial.C (l a)`. Use `Polynomial.funext fun c => ?_` and prove the remaining obligations. Use `h (v + c) a` as an intermediate fact. Rewrite `this` using `[← GlobalTheory.CuspRep.qdet_shift, ← hev _ (fun a => (Algebra.commutes c _).symm), Polynomial.eval₂_eq_sum, Polynomial.sum, Finset.sum_mul, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Polynomial.eval_mul, Polynomial.eval_C, hq, Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_C, add_comm c v, ← this, Polynomial.eval_finset_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_monomial, ← map_pow, mul_assoc, ← Algebra.smul_def, mul_smul_comm, map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression. Establish `e2` using `congrArg (fun r => Polynomial.coeff r k) e`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [Polynomial.finset_sum_coeff, Polynomial.coeff_monomial, Polynomial.coeff_mul_C, Finset.sum_ite_eq'] at e2`. Rewrite using `[← e2]`. Use `split_ifs with hk`. Both sides reduce to the same expression. Rewrite using `[Polynomial.notMem_support_iff.1 hk]`.
-
-Simplify using the standard rewrite rules. Set `N` to `max Q.natDegree q.natDegree + 1`. Rewrite using `[← h1, Polynomial.eval₂_eq_sum_range' _ (show Q.natDegree < N from Nat.lt_succ_of_le (le_max_left _ _)), Polynomial.aeval_eq_sum_range' (show q.natDegree < N from Nat.lt_succ_of_le (le_max_right _ _)), map_sum, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`.
-
-Conclude with `h2 _ m`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.functional_qdet_eq_aeval_shifted_polynomial :
     ∀ (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (X : Fin n → Fin n → A) (j : A) (l : A →ₗ[ℂ] ℂ) (p : Polynomial ℂ),

@@ -16,19 +16,17 @@ namespace GlobalTheory.KFinCuspApprox
 open MeasureTheory Matrix Formalism.REAL GlobalTheory.Grow GlobalTheory.Mem.AutSpace GlobalTheory.PointAtPlaceHom GlobalTheory.Mem.RealTranslate
 
 /- English proof (translation)
-Introduce `D θ hθ N τ e he a`. Use `set P := N.M.fr τ with hPdef`. Establish `hU : ∀ k : KG (N.M.ε τ), P⁻¹ * toMK k * P ∈ Formalism.QuantumDeterminants.UH (gramAt D N.V τ)` using `fun k => GlobalTheory.Published.AutFin.conj_mem_UH (N.M.fr_unit τ) (N.M.fr_gram τ) k`. Establish `hκ : Continuous fun k : KG (N.M.ε τ) => P⁻¹ * toMK k * P` using `(continuous_const.matrix_mul (GlobalTheory.TypeSum.continuous_toMK _)).matrix_mul continuous_const`. Establish `hA : Continuous fun k : KG (N.M.ε τ) => atTau θ N.V τ (P⁻¹ * toMK k * P)` using `(continuousOn_atTau hθ N.V τ).comp_continuous hκ hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨H, hH⟩` from `isCompact_univ.exists_bound_of_continuousOn ((continuous_height N.V).comp hA).continuousOn`. Establish `hHk : ∀ k, height N.V (atTau θ N.V τ (P⁻¹ * toMK k * P)) ≤ |H|` using `fun k => by`. Establish `h` using `hH k (Set.mem_univ k)`. Simplify using `only [Function.comp_apply, Real.norm_eq_abs] at h`. Conclude with `(le_abs_self _).trans (h.trans (le_abs_self _))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : Continuous fun k => ‖e k‖` using `he.norm`. Use `⟨(∫ k, ‖e k‖ ∂(muK (N.M.ε τ))) * |H| ^ a, mul_nonneg (integral_nonneg fun _ => norm_nonneg _) (pow_nonneg (abs_nonneg _) _), fun f B hf g => ?_⟩` and prove the remaining obligations. Establish `hq` using `quotHeight_pos N.V g`. Establish `hqa : 0 < quotHeight N.V g ^ a` using `pow_pos hq a`. Establish `hpt : ∀ k, ‖e k * f (g * atTau θ N.V τ (P⁻¹ * toMK k * P))‖ ≤ ‖e k‖ * (B * |H| ^ a / quotHeight N.V g ^ a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Use `set A := atTau θ N.V τ (P⁻¹ * toMK k * P)`. Establish `h1 : quotHeight N.V g ≤ quotHeight N.V (g * A) * |H|`. Establish `h` using `quotHeight_mul_le N.V (g * A) A⁻¹`. Rewrite `h` using `[mul_inv_cancel_right, height_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.trans (mul_le_mul_of_nonneg_left (hHk k) (quotHeight_pos N.V _).le)`. Establish `h2 : quotHeight N.V g ^ a ≤ quotHeight N.V (g * A) ^ a * |H| ^ a`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ hq.le h1 a`. Establish `h3 : ‖f (g * A)‖ * quotHeight N.V g ^ a ≤ B * |H| ^ a`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hqa]`. Conclude with `h3`.
-
-Establish `hint : ‖GlobalTheory.KFinCuspApprox.avgN θ N τ e f g‖ ≤ ∫ k, ‖e k‖ * (B * |H| ^ a / quotHeight N.V g ^ a) ∂(muK (N.M.ε τ))` using `norm_integral_le_of_norm_le (GlobalTheory.ExpansionAverage.integrable_K (hne.mul continuous_const)) (Filter.Eventually.of_forall hpt)`. Rewrite `hint` using `[integral_mul_const]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem avgN_weighted_bound : ∀ {D : D7} (θ : InfFam D), IsInfFam θ → ∀ (N : GlobalTheory.Grid.Node D) (τ : D.what₂.Tau)
     (e : Formalism.REAL.KG (N.M.ε τ) → ℂ), Continuous e → ∀ a : ℕ, ∃ C : ℝ, 0 ≤ C ∧

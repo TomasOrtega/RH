@@ -48,18 +48,16 @@ noncomputable def upB : ℝ :=
   d.PP0' * d.wsize d.wL + max 0 d.laW + Real.log (d.N + 1 : ℕ) + 1
 
 /- English proof (translation)
-Conclude with `d.w_eq_scalarRatio_smul hd c j`.
+A detailed English derivation is pending.
 -/
 theorem lineSection_eq_ratio_smul (hd : d.AxH 𝒜) (c : ι) (j : Fin (d.N + 1)) :
     d.w j c = d.affineCoord c j • d.w (d.jc c) c := by
   exact d.w_eq_scalarRatio_smul hd c j
 
 /- English proof (translation)
-Use `haveI := hd.graded c`. Establish `hw` using `hd.w_mem (d.jc c) c`. Establish `hw0` using `hd.w_base c`. Proceed by induction on `n with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero]`. Use `haveI : Nontrivial (A c) := ⟨⟨_, _, hw0⟩⟩`. Conclude with `one_ne_zero`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`.
-
-Conclude with `hd.mul_ne_zero c (SetLike.pow_mem_graded n hw) hw ih hw0`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineSection_pow_ne_zero (hd : d.AxH 𝒜) (c : ι) (n : ℕ) : d.w (d.jc c) c ^ n ≠ 0 := by
   haveI := hd.graded c
@@ -75,9 +73,9 @@ theorem lineSection_pow_ne_zero (hd : d.AxH 𝒜) (c : ι) (n : ℕ) : d.w (d.jc
     exact hd.mul_ne_zero c (SetLike.pow_mem_graded n hw) hw ih hw0
 
 /- English proof (translation)
-Rewrite using `[xDeg, Finset.sum_subset (Finset.subset_univ _), Fintype.sum_sum_type]`. Simplify using the standard rewrite rules. Introduce `x _ hx`. Consider the cases of `x with`. Consider the case `inl p => rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr i => simpa using hx`.
+Treat this case separately.
 -/
 private theorem sum_support_inr_eq_xDeg {D N : ℕ} (s : UXVar D N →₀ ℕ) :
     ∑ x ∈ s.support, Sum.elim (fun _ => 0) (fun i => s (Sum.inr i)) x = xDeg s := by
@@ -89,17 +87,17 @@ private theorem sum_support_inr_eq_xDeg {D N : ℕ} (s : UXVar D N →₀ ℕ) :
     | inr i => simpa using hx
 
 /- English proof (translation)
-Use `haveI := hd.tower c`. Establish `hw0` using `d.lineSection_pow_ne_zero hd c n`. Establish `hfac : d.evc c Q = MvPolynomial.map (algebraMap (Ω c) (A c)) (d.linearSubstitution c Q) * MvPolynomial.C (d.w (d.jc c) c ^ n)`. Rewrite using `[Q.as_sum, map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [evc, linearSubstitution, MvPolynomial.aeval_monomial, MvPolynomial.algebraMap_apply, map_mul, MvPolynomial.map_C, Finsupp.prod, map_prod, map_pow]`. Rewrite using `[← IsScalarTower.algebraMap_apply, mul_assoc]`. Use `congr 1`. Rewrite using `[← hQ s hs, ← sum_support_inr_eq_xDeg s]`. Rewrite using `[← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Consider the cases of `x with`. Consider the case `inl p => simp`. Consider the case `inr i`. Simplify using `only [Sum.elim_inr, map_sum, map_mul, MvPolynomial.map_X, MvPolynomial.map_C]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_pow, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[d.lineSection_eq_ratio_smul hd c j, Algebra.smul_def, MvPolynomial.C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfac]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `β`. Establish `hb` using `congrArg (MvPolynomial.coeff β) h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[mul_comm, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_map, MvPolynomial.coeff_zero, mul_comm, ← Algebra.smul_def]`. Rewrite using `[MvPolynomial.coeff_zero]`. Conclude with `(smul_eq_zero.1 hb).resolve_right hw0`. Introduce `h`. Rewrite using `[h, map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineEval_eq_zero_iff (hd : d.AxH 𝒜) (c : ι) (n : ℕ) (Q : MvPolynomial (UXVar d.D d.N) K)
     (hQ : XHom n Q) : d.evc c Q = 0 ↔ d.linearSubstitution c Q = 0 := by
@@ -138,29 +136,25 @@ theorem lineEval_eq_zero_iff (hd : d.AxH 𝒜) (c : ι) (n : ℕ) (Q : MvPolynom
     rw [h, map_zero, zero_mul]
 
 /- English proof (translation)
-Take `⟨F1, κ, a, m, deF, hκ, hm, hmd, hirr, hx, hu, hG, hphiG, hmh⟩` from `d.irreducible_factor_structure hd h F hF c hpos`. Establish `hy : d.affineCoord c (d.jc c) ≠ 0`. Introduce `h0`. Apply `hd.w_base c` to reduce the goal to its premises. Establish `e` using `d.lineSection_eq_ratio_smul hd c (d.jc c)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `e` using `[h0, zero_smul]`. Conclude with `e`. Establish `hx0 : d.linearSubstitution c (MvPolynomial.X (Sum.inr 0)) ≠ 0`. Introduce `h0`. Establish `e` using `congrArg (MvPolynomial.eval (fun p : Fin (d.D + 2) × Fin (d.N + 1) => if p = (0, d.jc c) then (1 : Ω c) else 0)) h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[linearSubstitution] at e`. Conclude with `hy e`. Establish `hκ' : d.linearSubstitution c (MvPolynomial.C κ) ≠ 0`. Simplify using `[linearSubstitution, hκ]`. Establish `hF1 : d.linearSubstitution c F1 = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hphiG` using `[hG, map_mul, map_mul, map_pow, map_pow]`. Simplify using `only [mul_eq_zero, pow_eq_zero_iff', hκ', hx0, false_and, false_or] at hphiG`. Conclude with `hphiG.1`. Establish `hF1ne : F1 ≠ 0` using `hirr.ne_zero`. Establish `hspan : (Ideal.span {F1}).IsPrime` using `(Ideal.span_singleton_prime hF1ne).mpr hirr.prime`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : Ideal.span {F1} ≤ RingHom.ker (d.scaledSubstitution c)`. Rewrite using `[Ideal.span_singleton_le_iff_mem, RingHom.mem_ker, d.scaledSubstitution_of_homogeneous c deF F1 hx, hF1, map_zero, mul_zero]`. Establish `hPp : (RingHom.ker (d.scaledSubstitution c)).IsPrime` using `RingHom.ker_isPrime _`. Establish `heq : Ideal.span {F1} = RingHom.ker (d.scaledSubstitution c)`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Ideal.height_add_one_le_of_lt_of_isPrime (lt_of_le_of_ne hle hne)`. Establish `h2` using `d.height_ker_scaledSubstitution_le_one hd c`. Establish `h3 : (Ideal.span {F1}).height ≠ 0`. Rewrite using `[Ne, Ideal.height_eq_zero_iff_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hF1ne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h4 : 1 ≤ (Ideal.span {F1}).height` using `Order.one_le_iff_ne_zero.mpr h3`. Establish `h5 : (1 : ℕ∞) + 1 ≤ 1` using `le_trans (by gcongr) (h1.trans h2)`. Conclude with `absurd h5 (by norm_num)`. Establish `hdeF : 1 ≤ deF`. Assume the negation of the conclusion as `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `h0' : deF = 0` using `by omega`. Conclude with `hF1ne (d.eq_zero_of_xhom_zero c F1 (fun s hs => (hx s hs).trans h0') hF1)`. Establish `hkey : ∀ (n : ℕ) (Q : MvPolynomial (UXVar d.D d.N) K), XHom n Q → (d.evc c Q = 0 ↔ F1 ∣ Q)`. Introduce `n Q hQ`. Rewrite using `[d.lineEval_eq_zero_iff hd c n Q hQ, ← Ideal.mem_span_singleton, heq, RingHom.mem_ker, d.scaledSubstitution_of_homogeneous c n Q hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite using `[h0, map_zero, mul_zero]`. Introduce `h0`. Break down `mul_eq_zero.mp h0 with h1 | h1` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (pow_eq_zero_iff'.mp h1).1 (MvPolynomial.X_ne_zero _)`. Conclude with `MvPolynomial.rename_injective _ (Option.some_injective _) (by rw [h1, map_zero])`. Establish `hFne : F c ≠ 0`. Introduce `h0`. Rewrite `hpos` using `[h0]`.
-
-Simplify using `[ReciprocityTheory.MultiplicativeHeights.h0, ReciprocityTheory.MultiplicativeHeights.gaussAbs, ReciprocityTheory.MultiplicativeHeights.blockSphereMean] at hpos`. Establish `hh : ReciprocityTheory.MultiplicativeHeights.h0 (F c) ≤ m * hT F1`. Establish `e1` using `logHeight_le_torusHeight_subst (F c) hFne _ hmh`. Rewrite `e1` using `[hG, hTX5_C_mul_X_pow_mul_pow κ hκ _ a m F1 hF1ne]`. Conclude with `e1`.
-
-Conclude with `⟨F1, m, deF, hm, hdeF, hmd, hirr, hx, hu, hh, hkey⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem irreducible_factor_height_bound (hd : d.AxH 𝒜) (h : d.S1) (F : ι → KTp K d.D d.N)
     (hF : ∀ c, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (F c) = d.fZ h c) (c : ι)

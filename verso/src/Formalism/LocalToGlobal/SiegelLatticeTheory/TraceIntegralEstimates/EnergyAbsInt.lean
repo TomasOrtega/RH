@@ -21,19 +21,19 @@ variable {V V' : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteD
 def φinv (p : G × G) : G := p.2⁻¹ * p.1
 
 /- English proof (translation)
-Unfold `φinv`. Conclude with `continuous_snd.inv.mul continuous_fst`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_φinv : Continuous (φinv : G × G → G) := by
   unfold φinv
   exact continuous_snd.inv.mul continuous_fst
 
 /- English proof (translation)
-The claim follows from `continuous_φinv.measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_φinv : Measurable (φinv : G × G → G) := continuous_φinv.measurable
 
 /- English proof (translation)
-Take `⟨h1, hmul, hinn, -⟩` from `hσ`. Establish `e : ∀ a : HH, σ u (σ u⁻¹ a) = a` using `fun a => by`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← hmul, mul_inv_cancel, h1, ContinuousLinearMap.one_apply]`. Rewrite using `[← hinn u, hmul u⁻¹ z, ContinuousLinearMap.mul_apply, e]`. Simplify using `only [hmul, ContinuousLinearMap.mul_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coef_shift {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) (γ z u z' u' : G) :
     ⟪σ (u⁻¹ * z) w, σ γ (σ (u'⁻¹ * z') w)⟫_ℂ = ⟪σ z w, σ (u * γ * u'⁻¹) (σ z' w)⟫_ℂ := by
@@ -44,7 +44,7 @@ theorem coef_shift {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) 
   simp only [hmul, ContinuousLinearMap.mul_apply]
 
 /- English proof (translation)
-Establish `hu' : u⁻¹ ∈ S` using `hinv u hu`. Establish `h` using `hW.2.2.1 u⁻¹ hu' (W z) (W z)`. Rewrite using `[hW.2.2.2.1 u⁻¹ hu' z, norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ), h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_W_shift {σ : G → (HH →L[ℂ] HH)} {μ ν : Measure G} {d : ℝ} {w : HH} {S : Set G}
     {τ : G → (V →L[ℂ] V)} {W : G → V} (hW : IsWAbs μ σ d w S τ ν W) (hinv : ∀ a ∈ S, a⁻¹ ∈ S)
@@ -54,7 +54,7 @@ theorem norm_W_shift {σ : G → (HH →L[ℂ] HH)} {μ ν : Measure G} {d : ℝ
   rw [hW.2.2.2.1 u⁻¹ hu' z, norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ), h]
 
 /- English proof (translation)
-Establish `h` using `norm_rk1A_le a b`. Rewrite using `[enorm_eq_nnnorm, enorm_eq_nnnorm, enorm_eq_nnnorm, ← ENNReal.coe_mul, ENNReal.coe_le_coe, ← NNReal.coe_le_coe]`. Use `push_cast`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem enorm_rk1A_le (a : V) (b : V') : ‖rk1A a b‖ₑ ≤ ‖a‖ₑ * ‖b‖ₑ := by
   have h := norm_rk1A_le a b
@@ -67,9 +67,9 @@ def bInt (σ : G → (HH →L[ℂ] HH)) (w : HH) (W : G → V) (W' : G → V') (
   ‖⟪σ z w, σ (s * γ * s'⁻¹) (σ z' w)⟫_ℂ‖ₑ * ‖W z‖ₑ * ‖W' z'‖ₑ
 
 /- English proof (translation)
-Take `⟨-, hmul, -, hc⟩` from `hσ`. Establish `e : (fun q : G × G × G × G => ⟪σ q.1 w, σ (q.2.2.1 * γ * q.2.2.2⁻¹) (σ q.2.1 w)⟫_ℂ) = fun q => ⟪σ q.1 w, σ (q.2.2.1 * γ * q.2.2.2⁻¹ * q.2.1) w⟫_ℂ`. Use function extensionality and compare the values at `q`. Rewrite using `[hmul (q.2.2.1 * γ * q.2.2.2⁻¹) q.2.1, ContinuousLinearMap.mul_apply]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : Continuous fun q : G × G × G × G => q.2.2.1 * γ * q.2.2.2⁻¹ * q.2.1` using `by fun_prop`. Conclude with `((hc w).comp continuous_fst).inner ((hc w).comp hg)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_coef5 {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) (γ : G) :
     Continuous (fun q : G × G × G × G => ⟪σ q.1 w, σ (q.2.2.1 * γ * q.2.2.2⁻¹) (σ q.2.1 w)⟫_ℂ) := by
@@ -83,11 +83,11 @@ theorem continuous_coef5 {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w 
   exact ((hc w).comp continuous_fst).inner ((hc w).comp hg)
 
 /- English proof (translation)
-Establish `hm : Measurable (fun p : (G × G) × (G × G) => f p.1.1 p.2.1 p.1.2 p.2.2)`. Establish `hg : Measurable (fun p : (G × G) × (G × G) => (p.1.1, p.2.1, p.1.2, p.2.2))` using `by fun_prop`. Conclude with `hf.comp hg`. Establish `h1 : Measurable fun x : G × G => ∫⁻ y, f x.1 y.1 x.2 y.2 ∂(ν'.prod μS')` using `hm.lintegral_prod_right'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun z => lintegral_congr fun s => ?_` and prove the remaining obligations. Establish `hg : Measurable (fun y : G × G => (z, y.1, s, y.2))` using `by fun_prop`. Conclude with `lintegral_prod (fun y : G × G => f z y.1 s y.2) (hf.comp hg).aemeasurable`. Use `_ = ∫⁻ z, ∫⁻ z', ∫⁻ s, ∫⁻ s', f z z' s s' ∂μS' ∂μS ∂ν' ∂ν := by`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Measurable (fun p : (G × G) × G => (z, p.1.2, p.1.1, p.2))` using `by fun_prop`. Establish `hk : Measurable (fun p : (G × G) × G => f z p.1.2 p.1.1 p.2)` using `hf.comp hg`. Establish `hk' : Measurable (fun x : G × G => ∫⁻ s', f z x.2 x.1 s' ∂μS')` using `hk.lintegral_prod_right'`. Conclude with `lintegral_lintegral_swap (f := fun s z' => ∫⁻ s', f z z' s s' ∂μS') hk'.aemeasurable`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_four {ν μS ν' μS' : Measure G} [SFinite ν] [SFinite μS] [SFinite ν'] [SFinite μS']
     (f : G → G → G → G → ℝ≥0∞) (hf : Measurable (fun q : G × G × G × G => f q.1 q.2.1 q.2.2.1 q.2.2.2)) :
@@ -116,7 +116,7 @@ theorem lintegral_four {ν μS ν' μS' : Measure G} [SFinite ν] [SFinite μS] 
         exact lintegral_lintegral_swap (f := fun s z' => ∫⁻ s', f z z' s s' ∂μS') hk'.aemeasurable
 
 /- English proof (translation)
-Unfold `bInt`. Establish `h1 : Measurable fun q : G × G × G × G => ‖⟪σ q.1 w, σ (q.2.2.1 * γ * q.2.2.2⁻¹) (σ q.2.1 w)⟫_ℂ‖ₑ` using `(continuous_enorm.comp (continuous_coef5 hσ w γ)).measurable`. Establish `h2 : Measurable fun q : G × G × G × G => ‖W q.1‖ₑ` using `(continuous_enorm.comp (hW.comp continuous_fst)).measurable`. Establish `h3 : Measurable fun q : G × G × G × G => ‖W' q.2.1‖ₑ` using `(continuous_enorm.comp (hW'.comp (continuous_fst.comp continuous_snd))).measurable`. Conclude with `(h1.mul h2).mul h3`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_bInt {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) {W : G → V} {W' : G → V'}
     (hW : Continuous W) (hW' : Continuous W') (γ : G) :
@@ -132,7 +132,7 @@ theorem measurable_bInt {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w :
   exact (h1.mul h2).mul h3
 
 /- English proof (translation)
-Establish `hS : ∀ᵐ s ∂μS, s ∈ S` using `ae_iff.mpr h0`. Establish `hS' : ∀ᵐ s ∂μS', s ∈ S'` using `ae_iff.mpr h0'`. Establish `a1 : ∀ᵐ p ∂((ν.prod μS).prod (ν'.prod μS')), p.1.2 ∈ S` using `quasiMeasurePreserving_fst.ae (quasiMeasurePreserving_snd.ae hS)`. Establish `a2 : ∀ᵐ p ∂((ν.prod μS).prod (ν'.prod μS')), p.2.2 ∈ S'` using `quasiMeasurePreserving_snd.ae (quasiMeasurePreserving_snd.ae hS')`. Conclude with `a1.and a2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ae_mem_four {ν μS ν' μS' : Measure G} [SFinite ν] [SFinite μS] [SFinite ν'] [SFinite μS'] {S S' : Set G}
     (h0 : μS Sᶜ = 0) (h0' : μS' S'ᶜ = 0) :
@@ -146,7 +146,7 @@ theorem ae_mem_four {ν μS ν' μS' : Measure G} [SFinite ν] [SFinite μS] [SF
   exact a1.and a2
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hm, ← hm']`. Use `_ = _ := map_prod_map _ _ measurable_φinv measurable_φinv`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_map_φinv {μ ν μS ν' μS' : Measure G} [SFinite ν] [SFinite μS] [SFinite ν'] [SFinite μS']
     (hm : μ = (ν.prod μS).map φinv) (hm' : μ = (ν'.prod μS').map φinv) :
@@ -156,11 +156,11 @@ theorem prod_map_φinv {μ ν μS ν' μS' : Measure G} [SFinite ν] [SFinite μ
     _ = _ := map_prod_map _ _ measurable_φinv measurable_φinv
 
 /- English proof (translation)
-Establish `e1 : ‖W (u⁻¹ * z)‖ₑ = ‖W z‖ₑ`. Rewrite using `[enorm_eq_nnnorm, enorm_eq_nnnorm]`. Use `congr 1`. Conclude with `NNReal.eq ((norm_W_shift hW) hinv hu z)`. Establish `e2 : ‖W' (u'⁻¹ * z')‖ₑ = ‖W' z'‖ₑ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[enorm_eq_nnnorm, enorm_eq_nnnorm]`. Use `congr 1`. Conclude with `NNReal.eq ((norm_W_shift hW') hinv' hu' z')`. Establish `hR : ‖Formalism.L2.SG.Pf.EnergyAbs.rk1A (W (u⁻¹ * z)) (W' (u'⁻¹ * z'))‖ₑ ≤ ‖W z‖ₑ * ‖W' z'‖ₑ`. Rewrite using `[← e1, ← e2]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `enorm_rk1A_le _ _`. Simplify using `only [kG, bInt]`. Rewrite using `[coef_shift hσ, enorm_smul, enorm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem enorm_kG_shift_le {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {μ ν ν' : Measure G} {d : ℝ} {w : HH}
     {S S' : Set G} {τ : G → (V →L[ℂ] V)} {τ' : G → (V' →L[ℂ] V')} {W : G → V} {W' : G → V'}
@@ -185,7 +185,7 @@ theorem enorm_kG_shift_le {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {�
     _ = _ := by simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `hmem` using `ae_mem_four (ν := ν) (ν' := ν') h0 h0'`. Use `hmem.mono fun p hp => ?_` and prove the remaining obligations. Conclude with `enorm_kG_shift_le hσ hW hW' hinv hinv' γ p.1.1 p.1.2 p.2.1 p.2.2 hp.1 hp.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem ae_enorm_kG_le_bInt {ν μS ν' μS' : Measure G} [SFinite ν] [SFinite μS]
     [SFinite ν'] [SFinite μS'] {σ : G → (HH →L[ℂ] HH)} (hσ : Formalism.L2.SG.Pf.EnergyAbs.IsUnitRep σ) {μ : Measure G} {d : ℝ}
@@ -201,11 +201,11 @@ private theorem ae_enorm_kG_le_bInt {ν μS ν' μS' : Measure G} [SFinite ν] [
   exact enorm_kG_shift_le hσ hW hW' hinv hinv' γ p.1.1 p.1.2 p.2.1 p.2.2 hp.1 hp.2
 
 /- English proof (translation)
-Take `⟨-, hmul, -, hc⟩` from `hσ`. Establish `e : (fun p : (G × G) × (G × G) => bInt σ w W W' γ p.1.1 p.2.1 p.1.2 p.2.2) = fun p => ‖⟪σ p.1.1 w, σ (p.1.2 * γ * p.2.2⁻¹ * p.2.1) w⟫_ℂ‖ₑ * ‖W p.1.1‖ₑ * ‖W' p.2.1‖ₑ`. Use function extensionality and compare the values at `p`. Unfold `bInt`. Rewrite using `[hmul (p.1.2 * γ * p.2.2⁻¹) p.2.1, ContinuousLinearMap.mul_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `hg : Continuous fun p : (G × G) × (G × G) => p.1.2 * γ * p.2.2⁻¹ * p.2.1` using `by fun_prop`. Establish `h1 : Measurable fun p : (G × G) × (G × G) => ‖⟪σ p.1.1 w, σ (p.1.2 * γ * p.2.2⁻¹ * p.2.1) w⟫_ℂ‖ₑ` using `(continuous_enorm.comp (((hc w).comp (continuous_fst.comp continuous_fst)).inner ((hc w).comp hg))).measurable`. Establish `h2 : Measurable fun p : (G × G) × (G × G) => ‖W p.1.1‖ₑ` using `(continuous_enorm.comp (hW.comp (continuous_fst.comp continuous_fst))).measurable`. Establish `h3 : Measurable fun p : (G × G) × (G × G) => ‖W' p.2.1‖ₑ` using `(continuous_enorm.comp (hW'.comp (continuous_fst.comp continuous_snd))).measurable`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h1.mul h2).mul h3`.
+A detailed English derivation is pending.
 -/
 private theorem measurable_bInt_prod {σ : G → (HH →L[ℂ] HH)} (hσ : Formalism.L2.SG.Pf.EnergyAbs.IsUnitRep σ) (w : HH)
     {W : G → V} {W' : G → V'} (hW : Continuous W) (hW' : Continuous W') (γ : G) :
@@ -231,7 +231,7 @@ private theorem measurable_bInt_prod {σ : G → (HH →L[ℂ] HH)} (hσ : Forma
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hc` using `measurable_bInt_prod hσ w hW hW' γ`. Establish `e1` using `lintegral_const_mul (μ := (ν.prod μS).prod (ν'.prod μS')) c hc`. Establish `e2` using `lintegral_four (ν := ν) (μS := μS) (ν' := ν') (μS' := μS') (bInt σ w W W' γ) (measurable_bInt hσ w hW hW' γ)`. Conclude with `e1.trans (congrArg (fun x => c * x) e2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lintegral_const_mul_bInt_eq_iterated {ν μS ν' μS' : Measure G} [SFinite ν] [SFinite μS]
     [SFinite ν'] [SFinite μS'] {σ : G → (HH →L[ℂ] HH)} (hσ : Formalism.L2.SG.Pf.EnergyAbs.IsUnitRep σ) (w : HH) {W : G → V}
@@ -247,9 +247,9 @@ private theorem lintegral_const_mul_bInt_eq_iterated {ν μS ν' μS' : Measure 
   exact e1.trans (congrArg (fun x => c * x) e2)
 
 /- English proof (translation)
-Establish `hle` using `ae_enorm_kG_le_bInt hσ hW hW' hinv hinv' h0 h0' γ`. Establish `h2` using `lintegral_const_mul_bInt_eq_iterated (ν := ν) (μS := μS) (ν' := ν') (μS' := μS') hσ w hW.2.2.2.2.1 hW'.2.2.2.2.1 γ ‖(d : ℂ)‖ₑ`. Establish `hd : ‖(d : ℂ)‖ₑ ≠ ⊤` using `enorm_ne_top`. Use `lt_of_le_of_lt (lintegral_mono_ae hle) ?_` and prove the remaining obligations. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ENNReal.mul_ne_top hd hB.ne).lt_top`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_kG_shift_lt_top {ν μS ν' μS' : Measure G} [SFinite ν] [SFinite μS] [SFinite ν'] [SFinite μS']
     {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {μ : Measure G} {d : ℝ} {w : HH} {S S' : Set G}
@@ -267,9 +267,9 @@ theorem lintegral_kG_shift_lt_top {ν μS ν' μS' : Measure G} [SFinite ν] [SF
   exact (ENNReal.mul_ne_top hd hB.ne).lt_top
 
 /- English proof (translation)
-Establish `hK : Continuous (kG σ d w W W' γ)` using `continuous_kG hσ d w hW.2.2.2.2.1 hW'.2.2.2.2.1 γ`. Use `⟨hK.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hF : Measurable (Prod.map φinv φinv : (G × G) × (G × G) → G × G)` using `(continuous_φinv.prodMap continuous_φinv).measurable`. Establish `hg : Measurable fun q : G × G => ‖kG σ d w W W' γ q‖ₑ` using `(continuous_enorm.comp hK).measurable`. Use `show ∫⁻ q, ‖kG σ d w W W' γ q‖ₑ ∂(μ.prod μ) < ⊤`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_map_φinv hm hm', lintegral_map hg hF]`. Conclude with `lintegral_kG_shift_lt_top hσ hW hW' hinv hinv' h0 h0' γ hB`.
+A detailed English derivation is pending.
 -/
 theorem integrable_kG {μ ν μS ν' μS' : Measure G} [SFinite ν] [SFinite μS] [SFinite ν'] [SFinite μS']
     {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {d : ℝ} {w : HH} {S S' : Set G} {τ : G → (V →L[ℂ] V)}

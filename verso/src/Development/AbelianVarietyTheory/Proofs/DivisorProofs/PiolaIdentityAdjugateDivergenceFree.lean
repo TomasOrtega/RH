@@ -7,9 +7,9 @@ open Finset Matrix
 variable {K R : Type} [CommRing K] [CommRing R] [Algebra K R]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[prod_insert ha, Derivation.leibniz, ih, sum_insert ha, prod_insert ha, Function.update_self, prod_congr rfl (fun i hi => Function.update_of_ne (ne_of_mem_of_not_mem hi ha) _ _)]`. Simplify using `only [smul_eq_mul, mul_sum]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_comm, mul_comm (∏ i ∈ s, f i)]`. Use `congr 1`. Use `sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[prod_insert ha, Function.update_of_ne (ne_of_mem_of_not_mem hk ha).symm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem derivation_prod {ι : Type} [DecidableEq ι] (D : Derivation K R R) (f : ι → R) (s : Finset ι) :
     D (∏ i ∈ s, f i) = ∑ k ∈ s, ∏ i ∈ s, Function.update f k (D (f k)) i := by
@@ -25,11 +25,11 @@ theorem derivation_prod {ι : Type} [DecidableEq ι] (D : Derivation K R R) (f :
     rw [prod_insert ha, Function.update_of_ne (ne_of_mem_of_not_mem hk ha).symm]
 
 /- English proof (translation)
-Simplify using `only [det_apply, map_sum]`. Rewrite using `[sum_comm]`. Use `sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;>`. Simplify using `only [h, one_smul, Units.neg_smul, map_neg, sum_neg_distrib, neg_inj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[derivation_prod]`. Use `conv_rhs => rw [← Equiv.sum_comp σ]`. Use `sum_congr rfl fun k _ => prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[updateRow_apply]`. Rewrite using `[Function.update_of_ne hik, updateRow_apply, if_neg (σ.injective.ne hik)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivation_det {ι : Type} [Fintype ι] [DecidableEq ι] (D : Derivation K R R)
     (A : Matrix ι ι R) :
@@ -47,27 +47,25 @@ theorem derivation_det {ι : Type} [Fintype ι] [DecidableEq ι] (D : Derivation
     · rw [Function.update_of_ne hik, updateRow_apply, if_neg (σ.injective.ne hik)]
 
 /- English proof (translation)
-Use `set f : ι × ι → R := fun p => ((M.updateRow p.1 (Pi.single j 1)).updateRow p.2 fun l => δ p.1 ((M.updateRow p.1 (Pi.single j 1)) p.2 l)).det with hf`. Establish `hS : ∑ i, δ i (M.adjugate j i) = ∑ p ∈ univ ×ˢ univ, f p`. Rewrite using `[sum_product]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[adjugate_apply, derivation_det]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiag : ∀ i, f (i, i) = 0`. Introduce `i`. Use `det_eq_zero_of_row_eq_zero i fun l => ?_` and prove the remaining obligations. Simplify using `only [updateRow_self]`. Distinguish the cases in `hl : l = j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hl]`. Establish `hpair : ∀ i k, i ≠ k → f (i, k) + f (k, i) = 0`. Introduce `i k hik`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set D : ι → R := fun l => δ i (M k l) with hD`. Establish `h1 : f (i, k) = ((M.updateRow i (Pi.single j 1)).updateRow k D).det`. Simplify using `only [hf]`. Use `congr 2`. Use function extensionality and compare the values at `l`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[updateRow_ne (Ne.symm hik)]`. Establish `h2 : f (k, i) = (((M.updateRow i (Pi.single j 1)).updateRow k D).submatrix (Equiv.swap i k) id).det`. Simplify using `only [hf]`. Use `congr 1`. Use extensionality with `a b`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [submatrix_apply, id, updateRow_apply, updateRow_ne hik, hD]`. Distinguish the cases in `hai : a = i`. Substitute `hai` using the available equality. Simplify using `[Equiv.swap_apply_left, hik, Ne.symm hik, hM]`. Distinguish the cases in `hak : a = k`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hak` using the available equality. Simplify using `[Equiv.swap_apply_right, hik, Ne.symm hik]`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne hai hak]`. Simplify using `[hai, hak]`. Rewrite using `[h1, h2, det_permute, Equiv.Perm.sign_swap hik]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hS]`. Use `sum_involution (fun p _ => p.swap) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨i, k⟩ _`. Distinguish the cases in `hik : i = k`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hik` using the available equality. Simplify using `[hdiag]`. Conclude with `hpair i k hik`. Introduce and unpack `⟨i, k⟩ _ hne heq`. Simplify using `only [Prod.swap_prod_mk, Prod.mk.injEq] at heq`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite `hne` using `[heq.1]`. Conclude with `hne (hdiag i)`. Introduce `p _`. Simplify using the standard rewrite rules. Introduce `p _`.
-
-Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem piola {ι : Type} [Fintype ι] [DecidableEq ι] (δ : ι → Derivation K R R)
     (M : Matrix ι ι R) (hM : ∀ h i j, δ h (M i j) = δ i (M h j)) (j : ι) :
@@ -121,7 +119,7 @@ theorem piola {ι : Type} [Fintype ι] [DecidableEq ι] (δ : ι → Derivation 
   · intro p _; simp
 
 /- English proof (translation)
-Introduce `δ M hM j` and use `piola δ M hM j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem piola_identity : ∀ {K R : Type} [CommRing K] [CommRing R] [Algebra K R] {ι : Type} [Fintype ι]
     [DecidableEq ι] (δ : ι → Derivation K R R) (M : Matrix ι ι R),

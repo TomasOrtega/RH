@@ -26,7 +26,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hs : IsIdemSum a {PP}` using `⟨⟨fun _ => a, fun Q hQ => by rw [Finset.mem_singleton.1 hQ]; exact h, by simp⟩, h.1.2.1⟩`. Conclude with `GlobalTheory.PlaceDatum.infPart_idemSum hs`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem infPart_idemAt {a : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt a PP) : infPart D a = 0 := by
   classical
@@ -34,7 +34,7 @@ theorem infPart_idemAt {a : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (h : Forma
   exact GlobalTheory.PlaceDatum.infPart_idemSum hs
 
 /- English proof (translation)
-Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Rewrite using `[hx]`. Conclude with `iff_of_true (zero_mem _) (zero_mem _)`. Conclude with `(h.2 x hx).trans (h'.2 x hx).symm`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_eq_of_idem {a : AE D} {P P' : Formalism.L2.DIV.Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt a P)
     (h' : Formalism.L2.NTheta.IsIdemAt a P') : P = P' := by
@@ -45,53 +45,47 @@ theorem prime_eq_of_idem {a : AE D} {P P' : Formalism.L2.DIV.Pl D.host.E} (h : F
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT βS βT LS χ Q ξ f₀ f μ 𝓕 t ht Hl cl hP hB hC _ _ hdisj hv`. Take `⟨hvac, e, ⟨⟨es, hes, rfl⟩, hce⟩, hth⟩` from `hv`. Establish `hSd : IsSelfDualC S ΛS` using `hB.2.2.1`. Establish `hTd : IsSelfDualC T ΛT` using `hB.2.2.2.1`. Establish `hψ : IsStdChar D ψ (-1)` using `base_std hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `hs : LS.Pg ∪ Q = s at *`. Establish `hPs : ∀ PP, PP ∈ LS.Pg → PP ∈ s` using `fun PP h => hs ▸ Finset.mem_union_left _ h`. Establish `hQs : ∀ PP, PP ∈ Q → PP ∈ s` using `fun PP h => hs ▸ Finset.mem_union_right _ h`. Establish `hsum` using `GlobalTheory.T.splitIdempotent_prime_projection_correspondence D`. Use `choose vP φP hφ hpr using fun i : ↥s => hsum.1 (es i.1) i.1 (hes i.1 i.2)`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose rP hrP using fun i : ↥s => (show ∃ r, IsRedMap (φP i) i.1 r from`. Set `⟨r, h⟩` to `(GlobalTheory.T.degree_one_prime_reduction_split_place_dictionary D (vP i) (φP i) i.1 (hpr i)).1`. Use the proof step `⟨r, h⟩)`. Set `ω : ∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin T.rank) (Fin S.rank) (Formalism.L2.DIV.kP PP) → ℂ` to `fun PP => if h : PP ∈ LS.Pg then gLoc LS PP (Hl ⟨PP, h⟩) (cl ⟨PP, h⟩) (χ PP) else qLoc LS.r PP (ξ PP)`. Set `Φ : ↥s → WO S T → ℂ` to `fun i => locFn S T βS βT (es i.1) i.1 (ω i.1)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hPi : ∀ i : ↥s, (Formalism.L2.NTheta.IsIdemAt (es i.1) i.1)` using `fun i => hes i.1 i.2`. Establish `hsplit : ∀ i : ↥s, IsSplitIdem D (es i.1) ∧ es i.1 + cA D (es i.1) = idem D (.inl (vP i))` using `fun i => ⟨(hφ i).1, (hφ i).2.1⟩`. Take `⟨K, hK, hKC⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_of_frMapO hSd.1 hTd.1 βS βT`. Establish `hsb : ∀ i : ↥s, IsSBHalf (es i.1) (latO S T ΛS ΛT fun _ => True) (Φ i)` using `fun i => GlobalTheory.PlaceDatum.isSBHalf_of_red (es i.1) _ (frMapO S T βS βT) (GlobalTheory.PlaceDatum.frMapO_add βS βT) (GlobalTheory.PlaceDatum.exists_den_frMapO hSd.1.fg hTd.1.fg βS βT) ⟨K, hK, fun t ht => hKC t (GlobalTheory.PlaceDatum.infPart_of_half (infPart_idemAt (hPi i) …`. Establish `hcmpG : ∀ (i : ↥s) (hi : i.1 ∈ LS.Pg) (J : Subgroup (GL (Fin S.rank) ((vP i).adicCompletionIntegers D.host.F))) (lam : J →* ℂˣ) (mu : (Fv D.host.F (vP i))ˣ →* ℂˣ), IsLocLevel (φP i) i.1 LS (Hl ⟨i.1, hi⟩) (cl ⟨i.1, hi⟩) J lam → LiftsChar (φP i) i.1 mu (χ i.1) → onHalf (φP i) S T ( …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `i hi J lam mu hJ hmu`. Establish `h1 : (fun y => localNewformFunction (vP i) J lam mu (rowsTB ht y)) = viaRed (rP i) (ω i.1)`. Use function extensionality and compare the values at `y`. Rewrite using `[GlobalTheory.T.localLevelDatum_eq_function_of_residueReduction D (vP i) (φP i) i.1 (rP i) (hrP i) _ _ t ht LS _ _ J lam hJ mu (χ i.1) hmu y]`. Simplify using `only [ω, dif_pos hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1]`. Conclude with `GlobalTheory.T.splitHalf_residueReduction_function_eq_frameLocal D (vP i) (φP i) (es i.1) i.1 (rP i) (hφ i) (hpr i) (hrP i) S T βS βT (ω i.1)`. Establish `hcmpQ : ∀ (i : ↥s) (hi : i.1 ∈ Q) (mu : (Fv D.host.F (vP i))ˣ →* ℂˣ), LiftsChar (φP i) i.1 mu (ξ i.1)⁻¹ → onHalf (φP i) S T (frCo (φP i) βS) (frCo (φP i) βT) (es i.1) (phiQ (vP i) LS.r mu) = Φ i`. Introduce `i hi mu hmu`. Establish `hn : i.1 ∉ LS.Pg` using `fun h => Finset.disjoint_left.1 hdisj h hi`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : phiQ (vP i) LS.r mu = viaRed (b` using `T.rank) (a := S.rank) (rP i) (ω i.1) := by`. Use function extensionality and compare the values at `y`. Rewrite using `[GlobalTheory.T.thetaTwistDatum_eq_function_of_residueReduction D (vP i) (φP i) i.1 (rP i) (hrP i) _ _ LS.r mu (ξ i.1) hmu y]`. Simplify using `only [ω, dif_neg hn]`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.T.splitHalf_residueReduction_function_eq_frameLocal D (vP i) (φP i) (es i.1) i.1 (rP i) (hφ i) (hpr i) (hrP i) S T βS βT (ω i.1)`. Establish `hunder : ∀ i : ↥s, (i.1).asIdeal.under (𝓞 D.host.F) = (vP i).asIdeal` using `fun i => (hsum.2 _ _ _ (hpr i)).1`. Establish `hcross` using `GlobalTheory.PlaceDatum.cross_eq_zero (R := AE D) GlobalTheory.PlaceDatum.isUnit_natCast (cA D) es s (fun i hi => (hes i hi).1.1) hce`. Establish `hinj : Function.Injective vP`. Introduce `i j hij`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hsplit i).2`. Establish `h2` using `(hsplit j).2`. Rewrite `h1` using `[hij]`. Establish `h3` using `GlobalTheory.PlaceDatum.idempotent_eq_of_orthogonal_decomp (hes i.1 i.2).1.1 (hes i.1 i.2).1.2.1 (hes j.1 j.2).1.1 (hes j.1 j.2).1.2.1 (h1.trans h2.symm) (hcross _ i.2 _ j.2) (hcross _ j.2 _ i.2)`. Conclude with `Subtype.ext (prime_eq_of_idem (hes i.1 i.2) (h3 ▸ hes j.1 j.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hid : ∀ (i : ↥s) (v : FinPl D) (φ : SplitProj D v) (e' : AE D), IsIdemOf φ e' → IsProjAt φ i.1 → ∃ hv : v = vP i, e' = es i.1 ∧ hv ▸ φ = φP i`. Introduce `i v φ e' h1 h2`. Take `⟨hu, -, h3⟩` from `hsum.2 v φ i.1 h2`. Establish `hv : v = vP i` using `HeightOneSpectrum.ext (hu.symm.trans (hunder i))`. Substitute `hv` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Take `⟨-, h4, h5⟩` from `h3 e' h1`. Establish `h6` using `h4 _ (hPi i)`. Use `⟨rfl, h6.symm, (h5 _ (h6 ▸ hφ i)).symm⟩` and prove the remaining obligations. Establish `hmodel : ∀ i : ↥s, ∃ Tm, IsPlaceModel ψ (symplO S T) (heisO ψ S T) (es i.1) (latO S T ΛS ΛT fun _ => True) 1 f₀ Tm` using `fun i => (GlobalTheory.T.split_idempotent_base_function_identity D ψ θ S T sS sT ΛS ΛT f₀ hB (vP i) (es i.1) (hsplit i).1 (hsplit i).2).1`. Use `choose xθ hxθ using fun i : ↥s => GlobalTheory.PlaceDatum.exists_isThetaAt hψ hSd hTd (hes i.1 i.2).1.1 (infPart_idemAt (hPi i)) (hmodel i) (hsb i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Set `x : Place D → WO S T → ℂ` to `Sum.elim (fun v => if h : ∃ i, vP i = v then xθ h.choose else f₀) fun _ => f₀`. Establish `hxi : ∀ i, x (.inl (vP i)) = xθ i`. Introduce `i`. Establish `h : ∃ j, vP j = vP i` using `⟨i, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `show (if h : ∃ j, vP j = vP i then xθ h.choose else f₀) = xθ i`. Rewrite using `[dif_pos h, hinj h.choose_spec]`. Use `⟨x, ⟨fun τ => rfl, fun v hv => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (if h : ∃ i, vP i = v then xθ h.choose else f₀) = f₀`. Use `dif_neg ?_` and prove the remaining obligations.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Introduce and unpack `⟨i, rfl⟩`. Conclude with `hv i.1 i.2 (hunder i)`. Introduce `v φ e' he' mu`. Use `⟨fun PP hpp hmu J lam hJ => ?_, fun PP hq hpp hmu => ?_⟩` and prove the remaining obligations. Take `⟨hv, rfl, hφ'⟩` from `hid ⟨PP.1, hPs _ PP.2⟩ v φ e' he' hpp`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hv` using the available equality. Take `rfl : φ = φP ⟨PP.1, hPs _ PP.2⟩` from `hφ'`. Rewrite using `[hcmpG ⟨PP.1, hPs _ PP.2⟩ PP.2 J lam mu hJ hmu, hxi]`. Conclude with `hxθ _`. Take `⟨hv, rfl, hφ'⟩` from `hid ⟨PP, hQs _ hq⟩ v φ e' he' hpp`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Substitute `hv` using the available equality. Take `rfl : φ = φP ⟨PP, hQs _ hq⟩` from `hφ'`. Rewrite using `[hcmpQ ⟨PP, hQs _ hq⟩ hq mu hmu, hxi]`. Conclude with `hxθ _`. Introduce and unpack `x ⟨⟨hx1, hx2⟩, hloc⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hθ : ∀ i : ↥s, IsThetaAt ψ (symplO S T) (heisO ψ S T) (es i.1) (latO S T ΛS ΛT fun _ => True) 1 f₀ (Φ i) (x (.inl (vP i)))`. Introduce `i`. Distinguish the cases in `hi : i.1 ∈ LS.Pg`. Take `⟨mu, hmu⟩` from `(GlobalTheory.T.degree_one_prime_reduction_split_place_dictionary D (vP i) (φP i) i.1 (hpr i)).2 (χ i.1)`. Take `⟨J, lam, hJ⟩` from `GlobalTheory.T.exists_isLocalLevelAtPrimeOfLevelDatum D (vP i) (φP i) i.1 (rP i) (hrP i) _ LS (Hl ⟨i.1, hi⟩) (cl ⟨i.1, hi⟩)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `(hloc (vP i) (φP i) (es i.1) (hφ i) mu).1 ⟨i.1, hi⟩ (hpr i) hmu J lam hJ`. Rewrite `h` using `[hcmpG i hi J lam mu hJ hmu]`. Then use the resulting hypothesis. Establish `hq : i.1 ∈ Q` using `(Finset.mem_union.1 (hs ▸ i.2)).resolve_left hi`. Take `⟨mu, hmu⟩` from `(GlobalTheory.T.degree_one_prime_reduction_split_place_dictionary D (vP i) (φP i) i.1 (hpr i)).2 (ξ i.1)⁻¹`. Establish `h` using `(hloc (vP i) (φP i) (es i.1) (hφ i) mu).2 i.1 hq (hpr i) hmu`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[hcmpQ i hq mu hmu]`. Then use the resulting hypothesis. Establish `hoff : ∀ p, (∀ i ∈ (Finset.univ : Finset ↥s), p ≠ .inl (vP i)) → x p = f₀`. Introduce and unpack `(v | τ) h`. Use `hx2 v fun PP hPP hu => h ⟨PP, hPP⟩ (Finset.mem_univ _) ?_` and prove the remaining obligations. Conclude with `congrArg Sum.inl (HeightOneSpectrum.ext (hu.symm.trans (hunder ⟨PP, hPP⟩)))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hx1 τ`. Establish `hsumes : ∑ i : ↥s, es i.1 = ∑ PP ∈ s, es PP` using `Finset.sum_coe_sort s es`. Establish `hprod : ∀ y : ∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin T.rank) (Fin S.rank) (Formalism.L2.DIV.kP PP), omegaG LS χ y * omegaQ Q LS.r ξ 1 y = ∏ PP ∈ s, ω PP (y PP)`. Introduce `y`. Rewrite using `[← hs, Finset.prod_union hdisj, GlobalTheory.T.levelDatumValue_eq_prod_localResidueValues D _ _ LS χ Hl cl hP y, GlobalTheory.T.twistDatumValue_eq_prod_localResidueValues D _ _ LS.r Q ξ y, ← Finset.prod_coe_sort LS.Pg fun PP => ω PP (y PP)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Simplify using `only [ω, dif_pos PP.2]`. Use `Finset.prod_congr rfl fun PP hq => ?_` and prove the remaining obligations. Simplify using `only [ω, dif_neg fun h => Finset.disjoint_left.1 hdisj h hq]`.
-
-Rewrite `hth` using `[← hsumes]`. Use `GlobalTheory.T.thetaFunction_splitProductDatum_isPureTensor D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hC ↥s Finset.univ vP (fun i => es i.1) (fun i _ => hsplit i) hinj.injOn Φ (fun i _ => hsb i) x f _ (fun i _ => hθ i) hoff ?_ ?_ hth` and prove the remaining obligations. Introduce `t' ht'`. Establish `h` using `GlobalTheory.T.prod_residueFunctions_half_sum_idempotents D S T βS βT s es hes ω t' (hsumes ▸ ht')`. Establish `h2 : ∏ i : ↥s, Φ i (es i.1 • t') = ∏ PP ∈ s, locFn S T βS βT (es PP) PP (ω PP) (es PP • t')` using `Finset.prod_coe_sort s fun PP => locFn S T βS βT (es PP) PP (ω PP) (es PP • t')`.
-
-Use `show (if _ then _ else _) = ∏ i : ↥s, Φ i (es i.1 • t')`. Rewrite using `[h2, ← h]`. Distinguish the cases in `hI : IsIntM (frMapO S T βS βT t')`. Rewrite using `[if_pos ⟨ht', hI⟩, if_pos hI]`. Conclude with `hprod _`.
-
-Rewrite using `[if_neg fun h => hI h.2, if_neg hI]`. Introduce `t' ht'`. Conclude with `if_neg fun h => ht' h.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stepVecLocal : ∀ D : D7, StepVecLocal D := by
   classical

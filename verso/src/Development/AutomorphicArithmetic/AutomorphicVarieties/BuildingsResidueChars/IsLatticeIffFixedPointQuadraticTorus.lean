@@ -11,43 +11,43 @@ private theorem im_form {K : Type} [Field K] {τ : K} (x y : Etau K τ) :
   simp; ring
 
 /- English proof (translation)
-Rewrite using `[QuadraticAlgebra.im_smul, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem smul_im' {O K : Type} [CommRing O] [Field K] [Algebra O K] {τ : K} (r : O)
     (x : Etau K τ) : (r • x).im = algebraMap O K r * x.im := by
   rw [QuadraticAlgebra.im_smul, Algebra.smul_def]
 
 /- English proof (translation)
-Rewrite using `[QuadraticAlgebra.re_smul, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem smul_re' {O K : Type} [CommRing O] [Field K] [Algebra O K] {τ : K} (r : O)
     (x : Etau K τ) : (r • x).re = algebraMap O K r * x.re := by
   rw [QuadraticAlgebra.re_smul, Algebra.smul_def]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h.fg`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors O) (s.image (fun x : Etau K τ => t * x.im) ∪ s.image (fun x : Etau K τ => t * x.re))`. Use `set B : K := algebraMap O K (b : O) with hBdef`. Establish `hB : B ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Establish `key : ∀ x ∈ Submodule.span O (s : Set (Etau K τ)), t * x.im * B ∈ (algebraMap O K).range ∧ t * x.re * B ∈ (algebraMap O K).range`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨r1, hr1⟩` from `hb (t * x.im) (Finset.mem_union_left _ (Finset.mem_image_of_mem _ hx))`. Take `⟨r2, hr2⟩` from `hb (t * x.re) (Finset.mem_union_right _ (Finset.mem_image_of_mem _ hx))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨r1, ?_⟩, ⟨r2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hr1, Algebra.smul_def, hBdef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hr2, Algebra.smul_def, hBdef]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e` using `add_mem hx.1 hy.1`. Use `e using 1` and compare the differences between its conclusion and the goal.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [QuadraticAlgebra.im_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `e` using `add_mem hx.2 hy.2`. Use `e using 1` and compare the differences between its conclusion and the goal. Simplify using `only [QuadraticAlgebra.re_add]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `smul r x _ hx`. Rewrite using `[smul_im', smul_re']`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e` using `mul_mem (RingHom.mem_range_self (algebraMap O K) r) hx.1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `e using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `e` using `mul_mem (RingHom.mem_range_self (algebraMap O K) r) hx.2`. Use `e using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `m1 : B • (1 : Etau K τ) ∈ S`. Rewrite using `[h.dual]`. Introduce `x hx`. Rewrite `hx` using `[hs]`. Establish `e : (x * star (B • (1 : Etau K τ))).im = x.im * B`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[im_form]`. Simplify using the standard rewrite rules. Rewrite using `[e, ← mul_assoc]`. Conclude with `(key x hx).1`. Establish `m2 : B • (ω : Etau K τ) ∈ S`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h.dual]`. Introduce `x hx`. Rewrite `hx` using `[hs]`. Establish `e : (x * star (B • (ω : Etau K τ))).im = -(x.re * B)`. Rewrite using `[im_form]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e, mul_neg, ← mul_assoc]`. Conclude with `neg_mem (key x hx).2`. Use `⟨h.fg, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `y _`. Establish `e : y = (y.re / B) • (B • (1 : Etau K τ)) + (y.im / B) • (B • (ω : Etau K τ))`. Apply the tactic sequence `ext <;> simp <;> field_simp`. Rewrite using `[e]`. Conclude with `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span m1)) (Submodule.smul_mem _ _ (Submodule.subset_span m2))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fix_lat {O K : Type} [CommRing O] [IsDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
     {τ t : K} {S : Set (Etau K τ)} (h : IsFixP O τ t S) : IsLat O τ S := by
@@ -117,13 +117,13 @@ private theorem fix_lat {O K : Type} [CommRing O] [IsDomain O] [Field K] [Algebr
     (Submodule.smul_mem _ _ (Submodule.subset_span m2))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Take `⟨r, s, rfl⟩` from `Submodule.mem_span_pair.1 hy`. Take `⟨p, q, rfl⟩` from `Submodule.mem_span_pair.1 hx`. Use `⟨p * s - q * r, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[im_form]`. Simplify using `only [QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, smul_im', smul_re', map_sub, map_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `H`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨β, hβ⟩` from `H u (Submodule.subset_span (by simp))`. Take `⟨α, hα⟩` from `H v (Submodule.subset_span (by simp))`. Rewrite `hα`, `hβ` using `[im_form]`. Use `Submodule.mem_span_pair.2 ⟨-α, β, ?_⟩` and prove the remaining obligations. Use `ext`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [QuadraticAlgebra.re_add, smul_re', map_neg, hα, hβ]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [QuadraticAlgebra.im_add, smul_im', map_neg, hα, hβ]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -156,15 +156,15 @@ private theorem dual_pair {O K : Type} [CommRing O] [Field K] [Algebra O K]
       ring
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ hL hτ S`. Use `haveI := hL.frac`. Use `⟨fun t h => fix_lat h, fun hS hst => ?_⟩` and prove the remaining obligations. Take `⟨y, x, hx, -, -, e⟩` from `latCls O K Δ τ hL hτ S hS`. Establish `e' : S = (Submodule.span O {(y : Etau K τ), (y : Etau K τ) * x} : Submodule O (Etau K τ))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use extensionality with `w`. Simplify using `only [SetLike.mem_coe, Submodule.mem_span_pair, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨p, q, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨p, q, by simp [mul_add]⟩`. Introduce and unpack `⟨p, q, rfl⟩`. Conclude with `⟨_, ⟨p, q, rfl⟩, by simp [mul_add]⟩`. Establish `hn : QuadraticAlgebra.norm (y : Etau K τ) ≠ 0` using `(isUnit_iff_norm_isUnit.1 y.isUnit).ne_zero`. Establish `hd : (y : Etau K τ).im * ((y : Etau K τ) * x).re - (y : Etau K τ).re * ((y : Etau K τ) * x).im ≠ 0`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (y : Etau K τ).im * ((y : Etau K τ) * x).re - (y : Etau K τ).re * ((y : Etau K τ) * x).im = -(QuadraticAlgebra.norm (y : Etau K τ) * x.im)`. Simplify using `[norm_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `neg_ne_zero.2 (mul_ne_zero hn hx)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, inv_ne_zero hd, hS.fg, fun w => ?_, hst⟩` and prove the remaining obligations. Rewrite using `[e']`. Conclude with `dual_pair _ _ hd w`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.isLattice_iff_fixedPoint_quadraticTorus :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ → τ ^ 2 - 4 ≠ 0 → ∀ S : Set (Etau K τ), (∀ t : K, IsFixP O τ t S → IsLat O τ S) ∧ (IsLat O τ S → (∀ y ∈ S, ω * y ∈ S) → ∃ t : K, t ≠ 0 ∧ IsFixP O τ t S) := by

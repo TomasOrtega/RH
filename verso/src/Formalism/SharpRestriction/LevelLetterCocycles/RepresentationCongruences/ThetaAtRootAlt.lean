@@ -12,25 +12,23 @@ section Roots
 variable {O : Type*} [CommRing O] [IsDomain O] [IsLocalRing O]
 
 /- English proof (translation)
-Establish `hl0 : 0 < l` using `hp.out.pos`. Establish `hζ1 : (1 + x₀) ≠ 1` using `fun h => hx (by linear_combination h)`. Establish `hprim : IsPrimitiveRoot (1 + x₀) l`. Establish `h` using `IsPrimitiveRoot.orderOf (1 + x₀)`. Rewrite `h` using `[orderOf_eq_prime hrx hζ1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hζu : IsUnit (1 + x₀)` using `by first`. Consider the case `exact hprim.isUnit hl0`. Consider the case `exact hprim.isUnit hl0.ne'`. Establish `hwu : ¬ IsUnit w` using `(IsLocalRing.mem_maximalIdeal w).1 hw`. Take `⟨i, hil, hi⟩ : ∃ i < l, (1 + x₀) ^ i = 1 + y` from `by first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Consider the case `exact hprim.eq_pow_of_pow_eq_one hry`. Consider the case `exact hprim.eq_pow_of_pow_eq_one hry hl0`. Break down `i with _ | j` into its components or cases. It suffices to derive a contradiction. Establish `hy0 : y = 0` using `by linear_combination -hi`.
+Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hxw : x₀ * (1 + w) = 0` using `by linear_combination -hyw + hy0`. Break down `mul_eq_zero.1 hxw with h | h` into its components or cases. Conclude with `hx h`. Apply `hwu` to reduce the goal to its premises. Establish `hw1 : w = -1` using `by linear_combination h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw1]`. Conclude with `isUnit_one.neg`. Break down `j with _ | j` into its components or cases. Take the linear combination `-hi`. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0 : 0 < j + 1` using `Nat.succ_pos j`. Establish `hkl : j + 1 < l` using `by omega`. Establish `hcop : (j + 1).Coprime l` using `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hp.out).2 (Nat.not_dvd_of_pos_of_lt hk0 hkl))`. Establish `hprim'` using `hprim.pow_of_coprime (j + 1) hcop`. Take `⟨m, -, hm⟩ : ∃ m < l, ((1 + x₀) ^ (j + 1)) ^ m = 1 + x₀` from `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hprim'.eq_pow_of_pow_eq_one hrx`. Consider the case `exact hprim'.eq_pow_of_pow_eq_one hrx hl0`. Establish `e1` using `geom_sum_mul ((1 + x₀) ^ (j + 1)) m`. Establish `e2` using `geom_sum_mul (1 + x₀) (j + 1)`. Rewrite `e1` using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S := ∑ i ∈ Finset.range m, ((1 + x₀) ^ (j + 1)) ^ i with hS`. Use `set v := ∑ i ∈ Finset.range (j + 1), (1 + x₀) ^ i with hv`. Establish `hSv0 : x₀ * (S * v - 1) = 0` using `by linear_combination S * e2 + e1`. Establish `hSv : S * v = 1`. Use `(mul_eq_zero.1 hSv0).resolve_left hx` as an intermediate fact.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `this`. Establish `hvu : IsUnit v` using `⟨⟨v, S, by rw [mul_comm]; exact hSv, hSv⟩, rfl⟩`. Establish `hwz : x₀ * (w - (1 + x₀) * v) = 0`. Take the linear combination `-hyw - hi - (1 + x₀) * e2`. Establish `hw' : w = (1 + x₀) * v`.
-
-Use `(mul_eq_zero.1 hwz).resolve_left hx` as an intermediate fact. Take the linear combination `this`. Conclude with `hwu (hw' ▸ hζu.mul hvu)`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem root_eq (l : ℕ) [hp : Fact l.Prime] {x₀ y w : O} (hx : x₀ ≠ 0)
     (hrx : (1 + x₀) ^ l = 1) (hry : (1 + y) ^ l = 1)
@@ -96,11 +94,9 @@ variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Char
   [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
 
 /- English proof (translation)
-Establish `hk : ((l : ℕ) : IsLocalRing.ResidueField O) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue O)]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 hl`. Use `haveI : CharP (IsLocalRing.ResidueField O) l := by first`. Consider the case `exact (CharP.charP_iff_prime_eq_zero hp.out).2 hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact ringChar.of_eq ((hp.out.eq_one_or_self_of_dvd _ (ringChar.dvd hk)).resolve_left CharP.ringChar_ne_one)`. Establish `h` using `congrArg (IsLocalRing.residue O) hroot`. Simplify using `only [map_pow, map_add, map_one] at h`. Rewrite `h` using `[add_pow_char, one_pow]`. Establish `h2 : (IsLocalRing.residue O x₀) ^ l = 0` using `by linear_combination h`.
-
-Conclude with `(IsLocalRing.residue_eq_zero_iff _).1 (pow_eq_zero_iff hp.out.ne_zero |>.1 h2)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_max (l : ℕ) [hp : Fact l.Prime] (hl : ((l : ℕ) : O) ∈ IsLocalRing.maximalIdeal O)
     {x₀ : O} (hroot : (1 + x₀) ^ l = 1) : x₀ ∈ IsLocalRing.maximalIdeal O := by
@@ -119,7 +115,7 @@ theorem mem_max (l : ℕ) [hp : Fact l.Prime] (hl : ((l : ℕ) : O) ∈ IsLocalR
   exact (IsLocalRing.residue_eq_zero_iff _).1 (pow_eq_zero_iff hp.out.ne_zero |>.1 h2)
 
 /- English proof (translation)
-Establish `h : IsLocalRing.residue O x₀ = 0` using `(IsLocalRing.residue_eq_zero_iff x₀).2 hx`. Rewrite using `[map_sub, PowerSeries.map_X, PowerSeries.map_C, h, map_zero, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_res {x₀ : O} (hx : x₀ ∈ IsLocalRing.maximalIdeal O) :
     PowerSeries.map (IsLocalRing.residue O) (X - C x₀) = X := by
@@ -127,7 +123,7 @@ theorem map_res {x₀ : O} (hx : x₀ ∈ IsLocalRing.maximalIdeal O) :
   rw [map_sub, PowerSeries.map_X, PowerSeries.map_C, h, map_zero, sub_zero]
 
 /- English proof (translation)
-Establish `h : Ideal.Quotient.mk (IsLocalRing.maximalIdeal O) x₀ = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hx`. Rewrite using `[map_sub, PowerSeries.map_X, PowerSeries.map_C, h, map_zero, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mk {x₀ : O} (hx : x₀ ∈ IsLocalRing.maximalIdeal O) :
     PowerSeries.map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O)) (X - C x₀) = X := by
@@ -136,15 +132,13 @@ theorem map_mk {x₀ : O} (hx : x₀ ∈ IsLocalRing.maximalIdeal O) :
   rw [map_sub, PowerSeries.map_X, PowerSeries.map_C, h, map_zero, sub_zero]
 
 /- English proof (translation)
-Establish `hord : PowerSeries.map (IsLocalRing.residue O) (X - C x₀) ≠ 0`. Rewrite using `[map_res hx]`. Conclude with `PowerSeries.X_ne_zero`. Take `⟨q, r, hqr⟩` from `PowerSeries.exists_isWeierstrassDivision (f := p) (g := X - C x₀) hord`. Establish `hdeg` using `hqr.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately.
 
-Use `first`. Consider the case `rw [map_mk hx, PowerSeries.order_X] at hdeg`. Consider the case `rw [map_res hx, PowerSeries.order_X] at hdeg`. Simplify using `at hdeg`. Establish `hrc : (r : O⟦X⟧) = C (r.coeff 0)` using `by first`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `(have hr0 : r.degree ≤ 0 := by first`. Consider the case `exact Nat.WithBot.lt_one_iff_le_zero.1 hdeg`. Consider the case `exact Order.le_of_lt_succ hdeg`. Use `conv_lhs => rw [Polynomial.eq_C_of_degree_le_zero hr0]`. Conclude with `Polynomial.coe_C _)`.
+Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(ext n`. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Polynomial.coeff_coe, PowerSeries.coeff_C, if_neg (Nat.succ_ne_zero n)]`. Conclude with `Polynomial.coeff_eq_zero_of_degree_lt (lt_of_lt_of_le hdeg (by exact_mod_cast Nat.succ_le_succ (Nat.zero_le n))))`.
-
-Use `⟨r.coeff 0, q, ?_⟩` and prove the remaining obligations. Rewrite using `[← hrc]`. Conclude with `hqr.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomp {x₀ : O} (hx : x₀ ∈ IsLocalRing.maximalIdeal O) (p : O⟦X⟧) :
     ∃ c : O, ∃ q : O⟦X⟧, p = (X - C x₀) * q + C c := by
@@ -175,15 +169,15 @@ theorem decomp {x₀ : O} (hx : x₀ ∈ IsLocalRing.maximalIdeal O) (p : O⟦X�
   exact hqr.2
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `Ideal.mem_span_singleton'.1 hc`. Establish `hrec : ∀ n, coeff n f = x₀ * coeff (n + 1) f`. Introduce `n`. Establish `h` using `congrArg (fun g => coeff (n + 1) g) hf`. Simplify using `only [mul_sub, map_sub, PowerSeries.coeff_succ_mul_X, PowerSeries.coeff_mul_C, PowerSeries.coeff_C, Nat.succ_ne_zero, if_false] at h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `h`. Establish `hpow : ∀ n, coeff 0 f = x₀ ^ n * coeff n f`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih => rw [ih, hrec n]`. Expand and normalize the polynomial expressions, which then agree. Establish `hall : ∀ n : ℕ, coeff 0 f ≡ 0 [SMOD ((IsLocalRing.maximalIdeal O) ^ n • ⊤ : Submodule O O)]`. Introduce `n`. Rewrite using `[SModEq.zero]`.
+Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem` using `Submodule.smul_mem_smul (Ideal.mul_mem_right (coeff n f) _ (Ideal.pow_mem_pow hx n)) (Submodule.mem_top : (1 : O) ∈ ⊤)`. Rewrite using `[hpow n]`. Simplify using `using hmem`. Establish `hcoef0 : coeff 0 f = 0` using `by first`. Consider the case `exact IsHausdorff.haus inferInstance _ hall`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact IsHausdorff.haus' _ hall`. Establish `h0` using `congrArg (fun g => coeff 0 g) hf`. Simplify using `only [mul_sub, map_sub, PowerSeries.coeff_zero_mul_X, PowerSeries.coeff_mul_C, hcoef0, PowerSeries.coeff_zero_C] at h0`. Take the linear combination `-h0`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem uniq {x₀ : O} (hx : x₀ ∈ IsLocalRing.maximalIdeal O) {c : O}
     (hc : C c ∈ Ideal.span {X - C x₀}) : c = 0 := by
@@ -219,9 +213,9 @@ def Fs (l : ℕ) (x₀ : O) (a : O⟦X⟧) : O⟦X⟧ :=
   ∑ i ∈ Finset.range l, (1 + a) ^ i * (1 + C x₀) ^ (l - 1 - i)
 
 /- English proof (translation)
-Establish `hy : (1 + C x₀ : O⟦X⟧) ^ l = 1`. Simplify `congrArg (C : O →+* O⟦X⟧) hroot` using `[map_pow, map_add, map_one]`. Establish `h` using `geom_sum₂_mul (1 + a) (1 + C x₀) l`. Rewrite `h` using `[hy]`. Unfold `Fs`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← h]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Fs_mul (l : ℕ) {x₀ : O} (hroot : (1 + x₀) ^ l = 1) (a : O⟦X⟧) :
     (1 + a) ^ l - 1 = Fs l x₀ a * (a - C x₀) := by
@@ -235,7 +229,7 @@ theorem Fs_mul (l : ℕ) {x₀ : O} (hroot : (1 + x₀) ^ l = 1) (a : O⟦X⟧) 
   ring
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [show (C a : O⟦X⟧) = a • (1 : O⟦X⟧) by rw [PowerSeries.smul_eq_C_mul, mul_one], map_smul, map_one])`. Consider the case `(have e := h.commutes a; simpa using e)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem algHom_C_eq_C (h : O⟦X⟧ →ₐ[O] O⟦X⟧) (a : O) : h (C a) = C a := by
   first
@@ -244,9 +238,9 @@ private theorem algHom_C_eq_C (h : O⟦X⟧ →ₐ[O] O⟦X⟧) (a : O) : h (C a
   | (have e := h.commutes a; simpa using e)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `e : coeff 1 ((1 + X : O⟦X⟧) ^ n * X) = 1`. Rewrite using `[show (1 : ℕ) = 0 + 1 from rfl, PowerSeries.coeff_succ_mul_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[pow_succ, mul_add, mul_one, map_add, ih, e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem coeff_one_one_add_X_pow_eq (n : ℕ) : coeff 1 ((1 + X : O⟦X⟧) ^ n) = n := by
   induction n with
@@ -260,41 +254,37 @@ private theorem coeff_one_one_add_X_pow_eq (n : ℕ) : coeff 1 ((1 + X : O⟦X�
     ring
 
 /- English proof (translation)
-Use `set I : Ideal O⟦X⟧ := Ideal.span {X - C x₀} with hI`. Establish `hxm : x₀ ∈ IsLocalRing.maximalIdeal O` using `mem_max l hl hroot`. Establish `hgen : X - C x₀ ∈ I` using `Ideal.subset_span (Set.mem_singleton _)`. Establish `hinj : ∀ a b : O, Ideal.Quotient.mk I (C a) = Ideal.Quotient.mk I (C b) → a = b`. Introduce `a b h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Ideal.Quotient.eq, ← map_sub]`. Conclude with `sub_eq_zero.1 (uniq hxm h)`. Establish `hsurj : ∀ f : O⟦X⟧, ∃ c : O, Ideal.Quotient.mk I f = Ideal.Quotient.mk I (C c)`. Introduce `f`. Take `⟨c, q, hq⟩` from `decomp hxm f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.eq, hq, add_sub_cancel_right]`. Conclude with `Ideal.mul_mem_right _ _ hgen`. Establish `hXI : Ideal.Quotient.mk I X = Ideal.Quotient.mk I (C x₀)`. Rewrite using `[Ideal.Quotient.eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hgen`. Establish `hφX : φ₀ X ∈ I`. Rewrite using `[hφ₀, Fs_mul l hroot X]`. Conclude with `Ideal.mul_mem_left _ _ hgen`. Establish `hL2 : ∀ f, Ideal.Quotient.mk I (φ₀ f) = Ideal.Quotient.mk I (C (constantCoeff f))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `f`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : X ∣ f - C (constantCoeff f) := by`. Rewrite using `[PowerSeries.X_dvd_iff]`. Simplify using the standard rewrite rules. Rewrite using `[Ideal.Quotient.eq, ← algHom_C_eq_C φ₀, ← map_sub, hh, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mul_mem_right _ _ hφX`. Take `⟨g₁, hg₁⟩ : X ∣ γ X` from `PowerSeries.X_dvd_iff.2 h0`. Establish `hg₁c : constantCoeff g₁ = χ`. Establish `e : coeff (0 + 1) (γ X) = χ` using `h1`. Rewrite `e` using `[hg₁, PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `e`. Choose the witnesses or unpack the hypotheses as in `⟨h₂, hh₂⟩ : X ∣ g₁ - C χ := by`. Rewrite using `[PowerSeries.X_dvd_iff]`. Simplify using `[hg₁c]`. Take `⟨d, hd⟩` from `hsurj h₂`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `hsurj (γ X)`. Establish `hb' : b = x₀ * (χ + x₀ * d)`. Apply `hinj` to reduce the goal to its premises. Establish `eg : g₁ = C χ + X * h₂` using `by rw [← hh₂]; ring`. Rewrite using `[← hb, hg₁, eg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_add, map_mul, hXI, hd]`. Establish `hbroot : (1 + b) ^ l = 1`. Establish `e1 : γ (φ₀ X) = (1 + γ X) ^ l - 1`. Simplify using `only [hφ₀, map_sub, map_pow, map_add, map_one]`. Establish `e2 : Ideal.Quotient.mk I (γ (φ₀ X)) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← hc, hL2, h0, map_zero, map_zero]`. Rewrite `e2` using `[e1]`. Establish `e3 : Ideal.Quotient.mk I ((1 + γ X) ^ l - 1) = Ideal.Quotient.mk I (C ((1 + b) ^ l - 1))`. Simplify using `only [map_sub, map_pow, map_add, map_one, hb]`. Establish `h3 : (1 + b) ^ l - 1 = 0` using `hinj _ _ (by rw [← e3, e2, map_zero, map_zero])`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Take the linear combination `h3`. Establish `hbx : b = x₀`. Use `root_eq l hx₀ hroot hbroot (w := χ - 1 + x₀ * d) ?_ ?_` and prove the remaining obligations. Use `Ideal.add_mem _ ?_ (Ideal.mul_mem_right _ _ hxm)` and prove the remaining obligations. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 hl hχ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hb']`. Expand and normalize the polynomial expressions, which then agree. Establish `hγX : Ideal.Quotient.mk I (γ X) = Ideal.Quotient.mk I (C x₀)` using `by rw [hb, hbx]`. Establish `hL4 : ∀ f, Ideal.Quotient.mk I (γ f) = Ideal.Quotient.mk I f`. Introduce `f`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, q, hq⟩` from `decomp hxm f`. Simplify using `only [hq, map_add, map_mul, map_sub, algHom_C_eq_C γ, hγX, hXI, sub_self, zero_mul, zero_add]`. Establish `hXQ : X * Q ≠ 0`. Rewrite using `[hQ]`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun f => coeff 1 f) h`. Establish `hl' : ((l : ℕ) : O) = 0` using `by simpa [coeff_one_one_add_X_pow_eq] using e`. Conclude with `hp.out.ne_zero (by exact_mod_cast hl')`. Establish `key : X * Q * (g₁ * u * θ) = X * Q * (γ u * φ₀ g₁)`. Establish `e1 : γ (X * (u * Q)) = X * g₁ * (u * Q * θ)` using `by rw [map_mul, hθ, hg₁]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e2 : γ (X * (u * Q)) = γ u * (X * Q * φ₀ g₁)`. Rewrite using `[show X * (u * Q) = u * (X * Q) by ring, map_mul, hQ, ← hφ₀, ← hc, hg₁, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `key2` using `mul_left_cancel₀ hXQ key`. Take `⟨e, he⟩` from `hsurj g₁`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `he1 : e = 1`. Establish `hxe : x₀ * e = x₀ * 1`. Apply `hinj` to reduce the goal to its premises. Establish `h` using `hγX`. Rewrite `h` using `[hg₁, map_mul, hXI, he]`.
-
-Simplify `h` using `[map_mul]`. Conclude with `mul_left_cancel₀ hx₀ hxe`. Establish `hg1 : Ideal.Quotient.mk I g₁ = 1` using `by rw [he, he1, map_one, map_one]`. Establish `hπ` using `congrArg (Ideal.Quotient.mk I) key2`. Simplify using `only [map_mul] at hπ`.
-
-Rewrite `hπ` using `[hL4 u, hL2 g₁, hg₁c, hg1, one_mul]`. Establish `hθ' : Ideal.Quotient.mk I θ = Ideal.Quotient.mk I (C χ)` using `(hu.map _).mul_left_cancel hπ`. Conclude with `Ideal.Quotient.eq.1 hθ'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theta_at_root (l : ℕ) [hp : Fact l.Prime] (hl : ((l : ℕ) : O) ∈ IsLocalRing.maximalIdeal O)
     (φ₀ γ : O⟦X⟧ →ₐ[O] O⟦X⟧) (hφ₀ : φ₀ X = (1 + X) ^ l - 1) (hc : ∀ f, φ₀ (γ f) = γ (φ₀ f))

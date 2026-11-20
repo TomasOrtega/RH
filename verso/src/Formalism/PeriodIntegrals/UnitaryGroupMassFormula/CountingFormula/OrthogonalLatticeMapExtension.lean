@@ -35,12 +35,12 @@ def split (h1 : V1 →ₗ⋆[K] V1 →ₗ[K] K) (z : V1) (hz0 : h1 z z ≠ 0) : 
 variable {h1 : V1 →ₗ⋆[K] V1 →ₗ[K] K} {z : V1}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_mem _, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_hz : (1 : V1 ≃ₗ[K] V1) ∈ hz h1 z := ⟨one_mem _, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [hz, Set.mem_setOf_eq] at *`. Use `⟨mul_mem hσ.1 hτ.1, ?_⟩` and prove the remaining obligations. Use `show σ (τ z) = z`. Rewrite using `[hτ.2, hσ.2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_hz {σ τ : V1 ≃ₗ[K] V1} (hσ : σ ∈ hz h1 z) (hτ : τ ∈ hz h1 z) : σ * τ ∈ hz h1 z := by
   simp only [hz, Set.mem_setOf_eq] at *
@@ -49,7 +49,7 @@ theorem mul_mem_hz {σ τ : V1 ≃ₗ[K] V1} (hσ : σ ∈ hz h1 z) (hτ : τ �
   rw [hτ.2, hσ.2]
 
 /- English proof (translation)
-Simplify using `only [hz, Set.mem_setOf_eq] at *`. Use `⟨inv_mem hσ.1, ?_⟩` and prove the remaining obligations. Use `show σ.symm z = z`. Rewrite using `[LinearEquiv.symm_apply_eq, hσ.2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_hz {σ : V1 ≃ₗ[K] V1} (hσ : σ ∈ hz h1 z) : σ⁻¹ ∈ hz h1 z := by
   simp only [hz, Set.mem_setOf_eq] at *
@@ -58,9 +58,9 @@ theorem inv_mem_hz {σ : V1 ≃ₗ[K] V1} (hσ : σ ∈ hz h1 z) : σ⁻¹ ∈ h
   rw [LinearEquiv.symm_apply_eq, hσ.2]
 
 /- English proof (translation)
-Take `⟨hL, hU, hzM, hp⟩` from `hM`. Take `⟨_, _, _, hUi, hLi⟩` from `Formalism.HermitianLatticesTheory.isomAct (𝓞 K) K V1 h1 σ hσ.1 M`. Use `⟨hLi.2 hL, hUi.2 hU, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.HermitianLatticesTheory.isomAct_mem_gmap, SplitBAux.symm_fix hσ.2]`. Conclude with `hzM`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Rewrite `hc` using `[Formalism.HermitianLatticesTheory.isomAct_mem_gmap, map_smul, SplitBAux.symm_fix hσ.2]`. Conclude with `hp c hc`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_gmap {σ : V1 ≃ₗ[K] V1} (hσ : σ ∈ hz h1 z) {M : Submodule (𝓞 K) V1} (hM : IsGlueLat h1 z M) :
     IsGlueLat h1 z (Formalism.HermitianLatticesTheory.gmap σ M) := by
@@ -76,14 +76,14 @@ theorem glue_gmap {σ : V1 ≃ₗ[K] V1} (hσ : σ ∈ hz h1 z) {M : Submodule (
 variable (hz0 : h1 z z ≠ 0)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨SplitBAux.extOf_mem_isom hs _ ha, SplitBAux.extOf_x₀ (split h1 z hz0) a⟩`.
+Supply the required witnesses or components.
 -/
 theorem extOf_mem_hz (hs : h1.IsSymm) {a : wPerp h1 z ≃ₗ[K] wPerp h1 z}
     (ha : a ∈ Formalism.HermitianLatticesTheory.isom (hPerp h1 z)) : SplitBAux.extOf (split h1 z hz0) a ∈ hz h1 z :=
   ⟨SplitBAux.extOf_mem_isom hs _ ha, SplitBAux.extOf_x₀ (split h1 z hz0) a⟩
 
 /- English proof (translation)
-The claim follows from `StabilizerLattices.cut_gmap_extOf (split h1 z hz0) a M`.
+A detailed English derivation is pending.
 -/
 theorem orthogonal_lattice_map_extension (a : wPerp h1 z ≃ₗ[K] wPerp h1 z) (M : Submodule (𝓞 K) V1) :
     l0 h1 z (Formalism.HermitianLatticesTheory.gmap (SplitBAux.extOf (split h1 z hz0) a) M) = Formalism.HermitianLatticesTheory.gmap a (l0 h1 z M) :=
@@ -93,27 +93,27 @@ def resZ {σ : V1 ≃ₗ[K] V1} (hσ : σ ∈ hz h1 z) : wPerp h1 z ≃ₗ[K] wP
   SplitBAux.res (split h1 z hz0) σ hσ.1 hσ.2
 
 /- English proof (translation)
-The claim follows from `SplitBAux.res_mem_isom _ σ hσ.1 hσ.2`.
+A detailed English derivation is pending.
 -/
 theorem resZ_mem {σ : V1 ≃ₗ[K] V1} (hσ : σ ∈ hz h1 z) : resZ hz0 hσ ∈ Formalism.HermitianLatticesTheory.isom (hPerp h1 z) :=
   SplitBAux.res_mem_isom _ σ hσ.1 hσ.2
 
 /- English proof (translation)
-The claim follows from `SplitBAux.gmap_res _ σ hσ.1 hσ.2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem orthogonal_lattice_map_restrict {σ : V1 ≃ₗ[K] V1} (hσ : σ ∈ hz h1 z) (M : Submodule (𝓞 K) V1) :
     Formalism.HermitianLatticesTheory.gmap (resZ hz0 hσ) (l0 h1 z M) = l0 h1 z (Formalism.HermitianLatticesTheory.gmap σ M) :=
   SplitBAux.gmap_res _ σ hσ.1 hσ.2 rfl
 
 /- English proof (translation)
-The claim follows from `LIOrb.OrbF.extOf_res _ hσ.1 hσ.2`.
+A detailed English derivation is pending.
 -/
 theorem extOf_resZ {σ : V1 ≃ₗ[K] V1} (hσ : σ ∈ hz h1 z) :
     SplitBAux.extOf (split h1 z hz0) (resZ hz0 hσ) = σ :=
   LIOrb.OrbF.extOf_res _ hσ.1 hσ.2
 
 /- English proof (translation)
-Use extensionality with `w`. Use `SplitBAux.res_spec (split h1 z hz0) _ (extOf_mem_hz hz0 hs ha).1 (extOf_mem_hz hz0 hs ha).2 w` as an intermediate fact. Rewrite `this` using `[SplitBAux.extOf_ι]`. Conclude with `congrArg Subtype.val ((split h1 z hz0).inj this)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resZ_extOf (hs : h1.IsSymm) {a : wPerp h1 z ≃ₗ[K] wPerp h1 z}
     (ha : a ∈ Formalism.HermitianLatticesTheory.isom (hPerp h1 z)) :
@@ -124,7 +124,7 @@ theorem resZ_extOf (hs : h1.IsSymm) {a : wPerp h1 z ≃ₗ[K] wPerp h1 z}
   exact congrArg Subtype.val ((split h1 z hz0).inj this)
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.gmap, ← Submodule.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem gmap_mul_lemma {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K) W]
     [IsScalarTower (𝓞 K) K W] (a b : W ≃ₗ[K] W) (N : Submodule (𝓞 K) W) :
@@ -133,9 +133,9 @@ private theorem gmap_mul_lemma {W : Type} [AddCommGroup W] [Module K W] [Module 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← gmap_mul_lemma, inv_mul_cancel]`. Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `hy`. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gmap_inv_gmap' {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
     (a : W ≃ₗ[K] W) (N : Submodule (𝓞 K) W) : Formalism.HermitianLatticesTheory.gmap a⁻¹ (Formalism.HermitianLatticesTheory.gmap a N) = N := by
@@ -149,9 +149,9 @@ theorem gmap_inv_gmap' {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K)
     exact ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Apply `Nat.card_congr` to reduce the goal to its premises. Use `{ toFun := fun σ => ⟨τ⁻¹ * σ.1 * τ, ?_⟩ invFun := fun σ => ⟨τ * σ.1 * τ⁻¹, ?_⟩ left_inv := fun σ => Subtype.ext (by simp [mul_assoc]) right_inv := fun σ => Subtype.ext (by simp [mul_assoc]) }` and prove the remaining obligations. Take `⟨a1, a2⟩` from `σ.2`. Conclude with `⟨mul_mem_hz (mul_mem_hz (inv_mem_hz hτ) a1) hτ, by`. Rewrite using `[gmap_mul_lemma, gmap_mul_lemma, a2, gmap_inv_gmap']⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a1, a2⟩` from `σ.2`. Use `⟨mul_mem_hz (mul_mem_hz hτ a1) (inv_mem_hz hτ), ?_⟩` and prove the remaining obligations. Rewrite using `[gmap_mul_lemma, gmap_mul_lemma, gmap_inv_gmap', a2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_stabZ_conj {τ : V1 ≃ₗ[K] V1} (hτ : τ ∈ hz h1 z) (M : Submodule (𝓞 K) V1) :
     Nat.card (stabZ h1 z (Formalism.HermitianLatticesTheory.gmap τ M)) = Nat.card (stabZ h1 z M) := by
@@ -180,7 +180,7 @@ theorem card_stabZ_conj {τ : V1 ≃ₗ[K] V1} (hτ : τ ∈ hz h1 z) (M : Submo
     rfl
 
 /- English proof (translation)
-The claim follows from `a.2`.
+A detailed English derivation is pending.
 -/
 theorem memAut {h0 : wPerp h1 z →ₗ⋆[K] wPerp h1 z →ₗ[K] K} {L : Submodule (𝓞 K) (wPerp h1 z)}
     (a : autSub h0 L) : a.1 ∈ Formalism.HermitianLatticesTheory.isom h0 ∧ Formalism.HermitianLatticesTheory.gmap a.1 L = L := a.2

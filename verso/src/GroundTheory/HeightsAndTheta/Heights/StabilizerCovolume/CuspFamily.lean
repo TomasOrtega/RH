@@ -181,7 +181,7 @@ def Uat (z : (Σ k, ι k) → ℂ) : ℝ := (F.cusp (F.comp z)).cuspWeight z
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single (F.comp z) (fun c _ hc => if_neg (Ne.symm hc)) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Uat_eq_sum (z : (Σ k, ι k) → ℂ) :
     F.Uat z = ∑ c, if F.comp z = c then (F.cusp c).cuspWeight z else 0 := by
@@ -293,20 +293,20 @@ def ComponentFamilySetting.componentFamilySetting_ofSetting (X : ComponentSettin
 
 omit [DecidableEq Ψ] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem CuspMean.iff_fam (Cu : ℝ) (X : ComponentSetting D O Lt) (hXo : D.Xo.Nonempty) :
     CuspMean Cu X ↔ CuspMeanFam Cu (ComponentFamilySetting.componentFamilySetting_ofSetting X hXo) := Iff.rfl
 
 omit [DecidableEq Ψ] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem StokesLimit.hyp_iff_fam (X : ComponentSetting D O Lt) (hXo : D.Xo.Nonempty) (B : ℕ) (a : ℝ) :
     StokesLimit.Hyp X B a ↔ StokesLimitFam.Hyp (ComponentFamilySetting.componentFamilySetting_ofSetting X hXo) B a := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `h II Ψ K ι Ω E D (ComponentFamilySetting.componentFamilySetting_ofSetting X hXo) B a hII hB hlim hyp`.
+A detailed English derivation is pending.
 -/
 theorem StokesLimit.of_fam (h : StokesLimitFam.Statement) (X : ComponentSetting D O Lt) (hXo : D.Xo.Nonempty) (B : ℕ)
     (a : ℝ) (hII : IsIntersectionSystem II) (hB : 4 * D.f + 2 ≤ B) (hlim : ArLimExists X.H X.S B)
@@ -324,7 +324,7 @@ variable (II : IntersectionSystem)
   (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2])
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 1, mem_mcPts_line.2 ⟨0, one_ne_zero⟩, Set.notMem_empty _⟩`.
+Supply the required witnesses or components.
 -/
 theorem lineData_Xo_nonempty : (lineData II hII).Xo.Nonempty :=
   ⟨fun _ => 1, mem_mcPts_line.2 ⟨0, one_ne_zero⟩, Set.notMem_empty _⟩
@@ -333,7 +333,7 @@ def planeFamily : CuspFamily (lineData II hII) :=
   CuspFamily.const (planeCusp II hII) (lineData_Xo_nonempty II hII)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨planeLine, planeLine_ne_bot, planeLine_saturated, planeLine_isIso, planeCusp_Nz_pos II hII z⟩`.
+Supply the required witnesses or components.
 -/
 theorem planeFamily_isotropic (z : (Σ _ : Unit, Fin 2) → ℂ) :
     ∃ I : Submodule ((planeFamily II hII).O ((planeFamily II hII).comp z))

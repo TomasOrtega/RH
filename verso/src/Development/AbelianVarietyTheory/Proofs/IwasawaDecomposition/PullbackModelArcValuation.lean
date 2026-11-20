@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.PolArcExist
 
 /- English proof (translation)
-Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem j_s {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) :
@@ -30,15 +30,15 @@ instance isDominant_jK (R : Type) [CommRing R] [IsDomain R] : IsDominant (Out.jK
     ((PrimeSpectrum.le_iff_mem_closure _ _).1 (show (⊥ : Ideal R) ≤ y.asIdeal from bot_le))
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c p W hp hW Z Y bV hbV f t m₁ m₂ h1 h2 h3 φ m BD hhom hpol O' _ _ _ b' ϖ a χ₀ hbase hχ₀`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.T.power_series_arc_abelian_locus E H D l Xo c W Y O' b' χ₀ hχ₀.1 hχ₀.2.1`. Take `⟨χ, hχ⟩` from `GlobalTheory.T.pullback_model_arc_torus E H D l Xo c p W hp hW Z Y bV hbV f t m₁ m₂ h1 h2 h3 φ m BD hhom hpol O' b' ϖ a χ₀ hbase hχ₀ x₀ hx₀`. Establish `hsub : spMap (c.V W).subtype ≫ spMap bV = spMap (algebraMap (𝓞 c.F) c.F)`. Rewrite using `[← spMap_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `RingHom.ext fun x => hbV x`. Establish `hgen : Out.jK (PowerSeries O') ≫ spMap (PowerSeries.C (R` using `O')) ≫ spMap b' = x₀ ≫ pullback.snd _ _ ≫ spMap (c.V W).subtype := by`. Rewrite using `[← hχ₀.1, ← Category.assoc, hx₀, Category.assoc, j_s]`. Establish `hs : χ ≫ Z.s = (spMap (PowerSeries.C (R` using `O')) ≫ spMap b') ≫ spMap bV := by`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_of_isDominant_of_isSeparated (terminal.from _) (terminal.hom_ext _ _) (Out.jK (PowerSeries O')) ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hχ, Category.assoc, j_s, ← hsub]`. Simplify using `only [← Category.assoc] at hgen ⊢`. Rewrite using `[← hgen]`. Set `aj : Xo.XF c ⟶ pullback Z.s (spMap bV)` to `pullback.lift Z.j (pullback.snd _ _ ≫ spMap (c.V W).subtype) (by rw [j_s, Category.assoc, hsub])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `haj : aj ≫ f = Y.j` using `h2 aj (pullback.lift_fst _ _ _)`. Use `⟨pullback.lift χ _ hs, ?_, pullback.lift_snd _ _ _⟩` and prove the remaining obligations. Use `isProper_toroidalModel_structureMap Y` as an intermediate fact. Use `ext_of_isDominant_of_isSeparated Y.s ?_ (Out.jK (PowerSeries O')) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, h1, pullback.lift_snd, hχ₀.1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : Out.jK (PowerSeries O') ≫ pullback.lift χ _ hs = x₀ ≫ aj`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, hχ, Category.assoc, pullback.lift_fst]`. Rewrite using `[Category.assoc, pullback.lift_snd, Category.assoc, pullback.lift_snd, hgen]`. Rewrite using `[← Category.assoc, e, Category.assoc, haj, hx₀]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →

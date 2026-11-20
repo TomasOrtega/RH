@@ -20,9 +20,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `hz' : p' z ∈ LB.wchart L (K` using `Fin 1) (fun _ => α) j' := extLI_le_wchart L f l α e j' hz`. Unfold `gs`. Rewrite using `[dif_pos hz, dif_pos hz']`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `TopCat.Presheaf.germ_res_apply _ _ _ _ _`. Use `_ = _ := Scheme.Hom.germ_stalkMap_apply p' _ z hz' _`.
+A detailed English derivation is pending.
 -/
 private theorem secK_extend_locInt {X X' Y Z : Scheme.{0}} (L : LB X) (f : X' ⟶ X) (l : Y ⟶ X')
     (α : Y ⟶ X) (e : l ≫ f = α) {k : ℕ} (σ : SecK L f k) (s : SecK L α k) (j' : Fin 1 → L.ι)
@@ -45,25 +45,23 @@ private theorem secK_extend_locInt {X X' Y Z : Scheme.{0}} (L : LB X) (f : X' �
     _ = _ := Scheme.Hom.germ_stalkMap_apply p' _ z hz' _
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ M G hsm hqc hgi L hL Y α t hpb I _ k s hs`. Take `⟨n, j, W, U, hcov, hWj, hWU, hWaff, hUaff⟩` from `GlobalTheory.T.exists_finite_affine_chart_cover_over_modification R M G hqc L hL`. Establish `key : ∀ (i : I) (b : Fin n), ∃ (nn : ℕ) (c : Fin nn → Γ(G.left, W b)) (bb : Fin nn → Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U b)), (∀ m, (M.gp.app (U b)).hom.IsIntegralElem (bb m)) ∧ (Y.presheaf.map (homOfLE (locInt_le_chart L α (j b) (W b) (hWj b))).op).hom ((s i).f (fun _ => j b)) = ∑ …` using `fun i b => hs i (j b) (W b) (U b) (hWj b) (hWU b) (hWaff b) (hUaff b)`. Use `choose nn c bb hint heq using key`. Set `Ix` to `Σ (p : I × Fin n), Fin (nn p.1 p.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e : Ix ≃ Fin (Nat.card Ix)` to `Finite.equivFin Ix`. Take `⟨M', h, hgp, hfin, hπ, hlift⟩` from `GlobalTheory.T.exists_finiteModification_integral_elements_regular R M (Nat.card Ix) (fun q => U (e.symm q).1.2) (fun q => bb (e.symm q).1.1 (e.symm q).1.2 (e.symm q).2) (fun q => hUaff _) (fun q => hint _ _ _)`. Establish `hlift' : ∀ x : Ix, ∃ cc : Γ(M'.S, h ⁻¹ᵁ U x.1.2), (M'.gp.appLE (h ⁻¹ᵁ U x.1.2) (M.gp ⁻¹ᵁ U x.1.2) (le_preimage_of_comp_eq M.gp M'.gp h hgp (U x.1.2))).hom cc = bb x.1.1 x.1.2 x.2`. Introduce `x`. Establish `hx` using `hlift (e x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Equiv.symm_apply_apply]`. Conclude with `hx`. Use `choose cc hcc using hlift'`. Use `⟨M', h, hfin, hgp, hπ, fun i => ?_⟩` and prove the remaining obligations. Take `⟨l, hl1, hl2⟩ : ∃ l : Y ⟶ pullback G.hom h, l ≫ pullback.fst G.hom h = α ∧ l ≫ pullback.snd G.hom h = t ≫ M'.gp` from `⟨pullback.lift α (t ≫ M'.gp) (by rw [hpb.w, Category.assoc, hgp]), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hout : IsPullback (l ≫ pullback.fst G.hom h) t G.hom (M'.gp ≫ h)`. Rewrite using `[hl1, hgp]`. Conclude with `hpb`. Establish `hpb' : IsPullback l t (pullback.snd G.hom h) M'.gp` using `IsPullback.of_right hout hl2 (IsPullback.of_hasPullback G.hom h)`. Use `haveI := hsm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Flat G.hom := inferInstance`. Establish `hflat : Flat (pullback.snd G.hom h)` using `inferInstance`. Establish `hinj` using `GlobalTheory.T.genericFibre_sections_injective_flat_integral (FractionRing R) (pullback.snd G.hom h) M'.gp l t hpb' hflat M'.integral M'.dominant`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_pulledBackPowerSection_of_local_lifts L (pullback.fst G.hom h) l α hl1 (k i) hinj (s i) n j (fun b => pullback.fst G.hom h ⁻¹ᵁ W b) ((pullback.fst G.hom h).iSup_preimage_eq_top hcov) (fun b => extLI_preimage_mono _ (hWj b)) (fun b => by`. Take `⟨y, hy⟩` from `GlobalTheory.T.sum_mul_pulledBack_functions_genericFibre_eq G.hom h M.gp M'.gp hgp (pullback.fst G.hom h) (pullback.snd G.hom h) pullback.condition α t hpb.w l hl1 hl2 (W b) (U b) (hWU b) (nn i b) (c i b) (bb i b) (fun m => cc ⟨(i, b), m⟩) (fun m => hcc ⟨(i, b), m⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨y, hy.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← heq i b]`. Conclude with `extLI_res_res _ _ _ _)`. Use `⟨σ, ?_⟩` and prove the remaining obligations. Introduce `Z p p' hp z J hJ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Replace the relevant objects with their definitions.
 
-Establish `hp2 : p ≫ pullback.snd G.hom h = p' ≫ t ≫ M'.gp`. Use `GlobalTheory.T.factorization_through_finite_modification R M M' h hfin hgp Z (p ≫ pullback.snd G.hom h) (p' ≫ t) (by` as an intermediate fact. Rewrite using `[Category.assoc, ← pullback.condition, ← Category.assoc, hp, Category.assoc, hpb.w, Category.assoc])`. Rewrite using `[this, Category.assoc]`. Establish `hpl : p = p' ≫ l` using `pullback.hom_ext (by rw [hp, Category.assoc, hl1]) (by rw [hp2, Category.assoc, hl2])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Substitute `hpl` using the available equality. Unfold `sval`. Simplify using `only []`. Rewrite using `[Category.assoc, hl1]`. Establish `hJ' : ∀ ψ : Z ⟶ G.left, ψ z ∈ L.U (J ψ)` using `hJ`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hz : (p' ≫ l) z ∈ LB.wchart L (K` using `Fin 1) (fun _ => pullback.fst G.hom h) (fun _ => J (p' ≫ α)) := by`. Unfold `LB.wchart`. Simplify using `only [TopologicalSpace.Opens.mem_mk, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Introduce `_`. Use `hJ' (p' ≫ α) using 1` and compare the differences between its conclusion and the goal.
-
-Rewrite using `[← hl1]`. Simplify using the standard rewrite rules. Conclude with `secK_extend_locInt L (pullback.fst G.hom h) l α hl1 σ (s i) _ (hσ _) p' z hz`.
+A detailed English derivation is pending.
 -/
 theorem extend_locInt : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [CharZero R] (M : Modif R) (G : Over M.S), Smooth G.hom → QuasiCompact G.hom → GeometricallyIrreducible G.hom → ∀ (L : LB G.left), L.IsLB → ∀ (Y : Scheme.{0}) (α : Y ⟶ G.left) (t : Y ⟶ Sp (FractionRing R)) (hpb : IsPullback α t G.hom M.gp) (I : Type) [Finite I] (k : I → ℕ) (s : ∀ i, SecK L α (k i)), (∀ i, LocInt M G L α t hpb.w (s i)) → ∃ (M' : Modif R) (h : M'.S ⟶ M.S), IsFinite h ∧ M'.gp ≫ h = M.gp ∧ h ≫ M.π = M'.π ∧ ∀ i, ∃ σ : SecK L (pullback.fst G.hom h) (k i), Agree L σ (s i) := by
   intro R _ _ _ _ _ M G hsm hqc hgi L hL Y α t hpb I _ k s hs

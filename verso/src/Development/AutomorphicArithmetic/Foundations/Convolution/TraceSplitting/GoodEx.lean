@@ -2,29 +2,27 @@ import Mathlib
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.NormCharSplit
 
 /- English proof (translation)
-Introduce `n hn`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Use `set S : ℤ := ∑ k : Fin m, ((m : ℤ) + 1 - (k : ℕ)) with hS`. Establish `hS0 : 0 ≤ S`. Use `Finset.sum_nonneg fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `k.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Set `ν : Fin (m + 1) → ℤ` to `fun i => if i = Fin.last m then -S else (m : ℤ) + 1 - (i : ℕ)`. Establish `hlast : ν (Fin.last m) = -S` using `by simp [ν]`. Establish `hcast : ∀ k : Fin m, ν k.castSucc = (m : ℤ) + 1 - (k : ℕ)`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Establish `: k.castSucc ≠ Fin.last m` using `(Fin.castSucc_lt_last k).ne`. Simplify using `[ν, this]`. Establish `hne : ∀ i : Fin (m + 1), i ≠ Fin.last m → ν i = (m : ℤ) + 1 - (i : ℕ)`. Introduce `i hi`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[ν, hi]`. Establish `hpos : ∀ i : Fin (m + 1), i ≠ Fin.last m → 0 < ν i`. Introduce `i hi`. Rewrite using `[hne i hi]`. Use `i.isLt` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hsum : ∑ i, ν i = 0`. Rewrite using `[Fin.sum_univ_castSucc, hlast]`. Simplify using `only [hcast]`. Rewrite using `[← hS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hJ : ∀ J : Finset (Fin (m + 1)), J.Nonempty → Fin.last m ∉ J → 0 < ∑ i ∈ J, ν i`. Introduce `J hJ hl`. Use `Finset.sum_pos (fun i hi => hpos i ?_) hJ` and prove the remaining obligations. Introduce and unpack `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hl hi`. Use `⟨ν, ?_, hsum, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Distinguish the cases in `hj : j = Fin.last m`. Establish `hi : i ≠ Fin.last m`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components. Substitute using the available equality.
 
-Introduce and unpack `rfl`. Substitute `hj` using the available equality. Conclude with `lt_irrefl _ hij`. Establish `h1` using `hpos i hi`. Establish `h2 : ν j = -S` using `by rw [hj, hlast]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `show ν j < ν i`. Use linear arithmetic over natural numbers and integers. Establish `hi : i ≠ Fin.last m`. Introduce and unpack `rfl`. Conclude with `absurd (Fin.le_last j) (not_le.mpr hij)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `show ν j < ν i`. Rewrite using `[hne i hi, hne j hj]`. Establish `: (i : ℕ) < (j : ℕ)` using `hij`. Use linear arithmetic over natural numbers and integers. Introduce `J hJne hJu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hl : Fin.last m ∈ J`. Establish `hc : Jᶜ.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce `h`. Conclude with `hJu (by simpa using h)`.
-
-Establish `h1` using `hJ Jᶜ hc (by simpa using hl)`. Establish `h2 : ∑ i ∈ J, ν i + ∑ i ∈ Jᶜ, ν i = 0`. Rewrite using `[Finset.sum_add_sum_compl, hsum]`. Use linear arithmetic over natural numbers and integers. Conclude with `(hJ J hJne hl).ne'`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.T.goodEx :
     UpperTheory.ConvolutionTheory.T.GoodEx := by

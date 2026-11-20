@@ -8,7 +8,7 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Establish `h1 : (l : Ω) ≠ 0`. Rewrite using `[← map_natCast (algebraMap k Ω)]`. Conclude with `(_root_.map_ne_zero _).mpr hl`. Establish `h3` using `h1.isUnit.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom`. Simplify `h3` using `[map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem l_unit (l : ℕ) {k : Type} [Field k] (hl : (l : k) ≠ 0) (Ω : Type) [Field Ω] [Algebra k Ω] :
     IsUnit (l : Γ(G3.sp Ω, ⊤)) := by
@@ -19,15 +19,13 @@ private theorem l_unit (l : ℕ) {k : Type} [Field k] (hl : (l : k) ≠ 0) (Ω :
   simpa [map_natCast] using h3
 
 /- English proof (translation)
-Introduce `hHop hEx hEt hGood hBc l _ k _ hl H Ω _ _ g d hd T hT`. Take `⟨hhop, -⟩` from `hHop l hl H Ω g d hd`. Establish `hsplit : G3.GalSplit (H.sΩ Ω g)`. Unfold `GlobalTheory.GalV.IsCorrOp at hT`. Unfold `G3.GalSplit`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Take `⟨W, c, G, i1, i2, a, J, i3, σ, hG, hS, -⟩` from `hT`. Conclude with `⟨W, c, G, i1, i2, a, J, i3, σ, hG, hS⟩`. Establish `hgood` using `hGood l (G3.sp Ω) (l_unit l hl Ω)`. Use `haveI : IsFinite (H.s g) := hd.1`. Use `haveI : Etale (H.s g) := hd.2.1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hbc` using `hBc (Spec.map (CommRingCat.ofHom (algebraMap k Ω))) H.q (H.s g ≫ H.q) H.q (H.s g) rfl (𝟙 _) (Category.id_comp _) Empty (fun e => e.elim) (fun e => e.elim)`. Use `haveI : IsFinite (H.sΩ Ω g) := hbc.1`. Use `haveI : Etale (H.sΩ Ω g) := hbc.2.1`. Set `p : H.geomZ Ω ⟶ G3.sp Ω` to `pullback.snd H.q (Spec.map (CommRingCat.ofHom (algebraMap k Ω)))`. Establish `hcomm : H.tΩ Ω g ≫ p = H.sΩ Ω g ≫ p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [p, HTower.sΩ, HTower.tΩ, HTower.geomZ, geom, geomMap]`. Use `erw [pullback.lift_snd, pullback.lift_snd]`. Take `⟨A, -, huniq⟩` from `(hEx (G3.et l (G3.sp Ω)) hgood p p (H.sΩ Ω g) (H.tΩ Ω g) hcomm).1 hsplit`. Establish `h1` using `huniq T ((hEt l p p _ _ hcomm T).mpr hT)`. Establish `h2` using `huniq (hop l H Ω g) ((hEt l p p _ _ hcomm _).mpr hhop)`.
-
-Conclude with `h1.trans h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.opUniq_of :
     G3.HopSpec → G3.OpEx.{1} → G3.OpEt → G3.EtGood → G3.BcSplits → OpUniq := by

@@ -27,7 +27,7 @@ theorem finIncl_tmul (β : Af D.host.F) (x : D.host.E) :
     finIncl D (β ⊗ₜ[D.host.F] x) = pairA D.host.F 0 β ⊗ₜ[D.host.F] x := rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul β x => rw [finIncl_tmul]`. Conclude with `infPart_pair β x`. Consider the case `add y z hy hz => rw [LinearMap.map_add, RingHom.map_add, hy, hz, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem infPart_finIncl (y : Af D.host.F ⊗[D.host.F] D.host.E) : infPart D (finIncl D y) = 0 := by
   induction y using TensorProduct.induction_on with
@@ -36,7 +36,7 @@ theorem infPart_finIncl (y : Af D.host.F ⊗[D.host.F] D.host.E) : infPart D (fi
   | add y z hy hz => rw [LinearMap.map_add, RingHom.map_add, hy, hz, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul β x => rw [finIncl_tmul]`. Conclude with `finPart_pair β x`. Consider the case `add y z hy hz => rw [LinearMap.map_add, RingHom.map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finPart_finIncl (y : Af D.host.F ⊗[D.host.F] D.host.E) : finPart D (finIncl D y) = y := by
   induction y using TensorProduct.induction_on with
@@ -45,7 +45,7 @@ theorem finPart_finIncl (y : Af D.host.F ⊗[D.host.F] D.host.E) : finPart D (fi
   | add y z hy hz => rw [LinearMap.map_add, RingHom.map_add, hy, hz]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_parts` to reduce the goal to its premises. Rewrite using `[RingHom.map_sub, hz, infPart_finIncl, sub_zero]`. Rewrite using `[RingHom.map_sub, finPart_finIncl, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_finIncl {z : AE D} (hz : infPart D z = 0) : z = finIncl D (finPart D z) := by
   rw [← sub_eq_zero]
@@ -54,15 +54,15 @@ theorem eq_finIncl {z : AE D} (hz : infPart D z = 0) : z = finIncl D (finPart D 
   · rw [RingHom.map_sub, finPart_finIncl, sub_self]
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨β, hβ, x, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨β * α, mul_mem_intAf hβ hα, fun w hw => ?_, a, ha, s, hs, x • t, LT.smul_mem x ht, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hsupp w hw, mul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, finIncl_tmul, Algebra.TensorProduct.tmul_mul_tmul, pair_mul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(x : D.host.E) * (a * t i * _) = a * ((x : D.host.E) * t i) * _`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `zero`. Use `(latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = v)).zero_mem using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using the standard rewrite rules. Consider the case `add y z _ _ hy hz`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `add_mem hy hz using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.add_apply, LinearMap.map_add, add_mul]`. Consider the case `neg y _ hy`. Use `neg_mem hy using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.neg_apply, LinearMap.map_neg, neg_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem finIncl_mul_mem {S T : HSp D} (LS : GlobalTheory.FinPl.Lat S) (LT : GlobalTheory.FinPl.Lat T) (v : GlobalTheory.FinPl.Pl D)
     {α : Af D.host.F} (hα : α ∈ intAf D.host.F) (hsupp : ∀ w, ¬ w = v → evalV D.host.F w α = 0)
@@ -93,27 +93,27 @@ theorem finIncl_mul_mem {S T : HSp D} (LS : GlobalTheory.FinPl.Lat S) (LT : Glob
     ext i j; simp only [Matrix.of_apply, Matrix.neg_apply, LinearMap.map_neg, neg_mul]
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q S T LS LT u hu`. Take `⟨ε, ⟨α₀, rfl, h1, h0⟩, hε⟩` from `q.above`. Establish `hee : q.e * q.e = q.e` using `q.split.1`. Establish `hec : q.e * cA D q.e = 0` using `q.split.2.1`. Establish `hεinf : infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α₀)) = 0` using `infPart_pair α₀ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinf : infPart D q.e = 0`. Establish `: q.e = q.e * (q.e + cA D q.e)` using `by rw [mul_add, hee, hec, add_zero]`. Rewrite using `[this, RingHom.map_mul, hε, hεinf, mul_zero]`. Establish `hfin : finPart D q.e ∈ intAE D`. Establish `h` using `q.sec_pr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_one, mul_one]`. Rewrite using `[← h]`. Conclude with `(q.int_iff 1).1 (one_mem _)`. Establish `he` using `eq_finIncl hinf`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, hsupp, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Establish `h` using `finIncl_mul_mem LS LT q.v hα hsupp ha hs ht hfin`. Rewrite `h` using `[← he]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `only [Matrix.of_apply]`. Consider the case `zero`. Use `(latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = q.v)).zero_mem using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Use `add_mem hx hy using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.add_apply, mul_add]`. Consider the case `neg x _ hx`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `neg_mem hx using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.neg_apply, mul_neg]`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα, hsupp, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Introduce `i j`. Establish `hmul : α₀ * α = α`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `evalV D.host.F w (α₀ * α) = evalV D.host.F w α`. Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = q.v`. Substitute `hw` using the available equality. Rewrite using `[h1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsupp w hw, mul_zero]`. Rewrite using `[hε, Matrix.of_apply]`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 α₀ ⊗ₜ[D.host.F] (1 : D.host.E)) * _ = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, pair_mul, hmul]`. Consider the case `zero => intro i j`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro i j`. Rewrite using `[Matrix.add_apply, mul_add, hx, hy]`. Consider the case `neg x _ hx => intro i j`. Rewrite using `[Matrix.neg_apply, mul_neg, hx]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_latO : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (S T : HSp D) (LS : GlobalTheory.FinPl.Lat S) (LT : GlobalTheory.FinPl.Lat T) (u : WO S T), u ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = q.v) → (Matrix.of fun i j => q.e * u i j : WO S T) ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = q.v) ∧ ∀ i j, (q.e + cA D q.e) * u i j = u i j := by
   intro D k _ _ _ _ q S T LS LT u hu

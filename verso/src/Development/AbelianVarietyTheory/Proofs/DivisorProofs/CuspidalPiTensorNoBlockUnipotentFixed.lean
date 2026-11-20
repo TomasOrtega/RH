@@ -14,9 +14,9 @@ section UnipGroup
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K] {ι : Type} [Fintype ι] [DecidableEq ι] {s : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hg.2 i i rfl, if_pos rfl, one_mul, hh.2 i j hij]`. Introduce `k _ hki`. Break down `lt_trichotomy (b k) (b i) with hlt | heq | hgt` into its components or cases. Rewrite using `[hg.1.1 i k hlt, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg.2 i k heq.symm, if_neg (Ne.symm hki), zero_mul]`. Rewrite using `[hh.1.1 k j (by rw [← hij]; exact hgt), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unip_diag_mul (b : ι → Fin s) {g h : GL ι K} (hg : g ∈ unip K b) (hh : h ∈ unip K b)
     (i j : ι) (hij : b i = b j) : ((g * h : GL ι K) : Matrix ι ι K) i j = if i = j then 1 else 0 := by
@@ -30,11 +30,11 @@ theorem unip_diag_mul (b : ι → Fin s) {g h : GL ι K} (hg : g ∈ unip K b) (
   · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Establish `h1 : ((g⁻¹ * g : GL ι K) : Matrix ι ι K) i j = if i = j then 1 else 0`. Rewrite using `[inv_mul_cancel, Units.val_one, Matrix.one_apply]`. Rewrite `h1` using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite `h1` using `[hg.2 j j rfl, if_pos rfl, mul_one]`. Then use the resulting hypothesis. Introduce `k _ hkj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `lt_trichotomy (b k) (b i) with hlt | heq | hgt` into its components or cases. Rewrite using `[hg.1.2 i k hlt, zero_mul]`. Rewrite using `[hg.2 k j (heq.trans hij), if_neg hkj, mul_zero]`. Rewrite using `[hg.1.1 k j (by rw [← hij]; exact hgt), mul_zero]`. Introduce `h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ j) h`.
+A detailed English derivation is pending.
 -/
 theorem unip_diag_inv (b : ι → Fin s) {g : GL ι K} (hg : g ∈ unip K b)
     (i j : ι) (hij : b i = b j) : ((g⁻¹ : GL ι K) : Matrix ι ι K) i j = if i = j then 1 else 0 := by
@@ -58,15 +58,15 @@ def cuspUnipGroup (b : ι → Fin s) : Subgroup (GL ι K) where
 end UnipGroup
 
 /- English proof (translation)
-Set `f : U → ((lam c : Type) →ₗ[ℂ] (lam c : Type))` to `fun u => (lam c).ρ u`. Establish `hinv : ∀ (g : U) (v : (lam c : Type)), f g (∑ u : U, f u v) = ∑ u : U, f u v`. Introduce `g v`. Establish `hm : ∀ u : U, f g (f u v) = f (g * u) v` using `fun u => by`. Simplify using `only [f, Subgroup.coe_mul, map_mul, Module.End.mul_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sum]`. Repeatedly rewrite using `[hm]`. Conclude with `Equiv.sum_comp (Equiv.mulLeft g) (fun u => f u v)`. Establish `hA : (∑ u : U, f u) = 0`. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.sum_apply, LinearMap.zero_apply]`. Conclude with `hU _ fun u hu => hinv ⟨u, hu⟩ v`. Set `F` to `PiTensorProduct.mapMultilinear ℂ (fun c => (lam c : Type)) (fun c => (lam c : Type))`. Set `m : ∀ c', (lam c' : Type) →ₗ[ℂ] (lam c' : Type)` to `fun c' => LinearMap.id`. Establish `h1 : F (Function.update m c (∑ u : U, f u)) y = (Fintype.card U) • y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MultilinearMap.map_update_sum, LinearMap.sum_apply]`. Establish `: ∀ u : U, F (Function.update m c (f u)) y = y` using `fun u => hy u u.2`. Repeatedly rewrite using `[this]`. Rewrite using `[Finset.sum_const, Finset.card_univ]`. Rewrite `h1` using `[hA, MultilinearMap.map_update_zero, LinearMap.zero_apply]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcard : (Fintype.card U : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Rewrite `h1` using `[← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `(smul_eq_zero.1 h1.symm).resolve_left hcard`.
+A detailed English derivation is pending.
 -/
 theorem tensor_eq_zero_of_fixed {K : Type} [Field K] [Fintype K] [DecidableEq K] {r s : ℕ} (b : Fin r → Fin s)
     (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)) (c : Fin s)
@@ -102,17 +102,17 @@ theorem tensor_eq_zero_of_fixed {K : Type} [Field K] [Fintype K] [DecidableEq K]
   exact (smul_eq_zero.1 h1.symm).resolve_left hcard
 
 /- English proof (translation)
-Introduce `K _ _ _ r s b lam hcusp S ⟨i, j, hb, hi, hj⟩ y hy`. Establish `hb' : b i = b j` using `Fin.ext hb`. Set `c` to `b i`. Set `b₂ : {k // b k = c} → Fin 2` to `fun k => if k.1 ∈ S then 0 else 1`. Establish `hsurj : Function.Surjective b₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `t`. Use `fin_cases t`. Conclude with `⟨⟨i, rfl⟩, by simp [b₂, hi]⟩`. Conclude with `⟨⟨j, hb'.symm⟩, by simp [b₂, hj]⟩`. Use `tensor_eq_zero_of_fixed b lam c (cuspUnipGroup b₂) (fun v hv => hcusp c 2 b₂ hsurj le_rfl v hv) y ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u' hu'`. Establish `hu : u' ∈ unip K b₂` using `hu'`. Rewrite using `[← leviTensor_blockExt b lam c u']`. Apply `hy` to reduce the goal to its premises. Introduce `x z hxz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hin : b x = c ∧ b z = c`. Use `⟨by simp only [natBlocks, hin.1, hin.2], ?_⟩` and prove the remaining obligations. Establish `e` using `blockExt_in b c u' ⟨x, hin.1⟩ ⟨z, hin.2⟩`. Simplify using `only at e`. Rewrite `hxz` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Apply `hxz` to reduce the goal to its premises. Apply the tactic sequence `by_cases hxS : x ∈ S <;> by_cases hzS : z ∈ S`. Rewrite using `[hu.2 ⟨x, hin.1⟩ ⟨z, hin.2⟩ (by simp [b₂, hxS, hzS])]`. Simplify using `[Matrix.one_apply, Subtype.ext_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd ⟨hxS, hzS⟩ hcon`. Rewrite using `[hu.1.1 ⟨x, hin.1⟩ ⟨z, hin.2⟩ (by simp [b₂, hxS, hzS]), Matrix.one_apply_ne (by rintro rfl; exact hxS hzS)]`. Rewrite using `[hu.2 ⟨x, hin.1⟩ ⟨z, hin.2⟩ (by simp [b₂, hxS, hzS])]`. Simplify using `[Matrix.one_apply, Subtype.ext_iff]`. Conclude with `absurd (blockExt_out b c u' x z hin) hxz`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cuspidal_tensor_no_unip_fixed : ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (r s : ℕ) (b : Fin r → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)), (∀ c, IsCuspidal K (lam c)) → ∀ S : Finset (Fin r), (∃ i j, natBlocks b i = natBlocks b j ∧ i ∈ S ∧ j ∉ S) → ∀ y : PiTensorProduct ℂ (fun c => (lam c : Type)), (∀ u : blockTri (κ := K) (natBlocks b), (∀ i j, ((u : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) i j ≠ (1 : Matrix (Fin r) (Fin r) K) i j → natBlocks b i = natBlocks b j ∧ i ∈ S ∧ j ∉ S) → leviTensor b lam u y = y) → y = 0 := by
   intro K _ _ _ r s b lam hcusp S ⟨i, j, hb, hi, hj⟩ y hy

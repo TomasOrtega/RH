@@ -10,7 +10,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.ScalarEx
 
 /- English proof (translation)
-Introduce `k _ _ _ _ x t`. Take `⟨ω, -, hω⟩` from `exists_smooth_hasCentralChar x.2.rep.smooth x.2.rep.irr`. Conclude with `⟨(ω t : ℂ), fun v => hω t v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_scalarBy : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (x : IrrGL k) (t : kˣ), ∃ c : ℂ, Zl.ScalarBy x t c := by

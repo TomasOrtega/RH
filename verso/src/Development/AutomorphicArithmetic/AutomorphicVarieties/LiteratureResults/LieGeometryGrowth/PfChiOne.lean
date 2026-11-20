@@ -5,13 +5,13 @@ open UpperTheory.V.Lit.Geo
 open NumberField Formalism.L2.Host GroundTheory.Global in
 
 /- English proof (translation)
-Take `⟨D, hD, -, hxD⟩` from `IdeleGroup.exists_isCompact_normOneSubgroup E`. Establish `hc : Continuous fun z : IdeleGroup E => ((χ.1 z : ℂˣ) : ℂ)` using `Units.continuous_val.comp χ.2.1`. Take `⟨M, hM⟩` from `hD.exists_bound_of_continuousOn hc.continuousOn`. Establish `hb : ∀ z ∈ IdeleGroup.normOneSubgroup E, ‖((χ.1 z : ℂˣ) : ℂ)‖ ≤ M` using `fun z hz => by`. Take `⟨k, hk⟩` from `hxD z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hM _ hk`. Establish `h1 : χ.1 (IdeleGroup.diagonal E k) = 1` using `χ.2.2 k`. Establish `h2 : χ.1 (IdeleGroup.diagonal E k * z) = χ.1 z` using `(map_mul χ.1 _ _).trans (by rw [h1, one_mul])`. Rewrite `h` using `[h2]`. Then use the resulting hypothesis. Establish `hle : ∀ z ∈ IdeleGroup.normOneSubgroup E, ‖((χ.1 z : ℂˣ) : ℂ)‖ ≤ 1` using `fun z hz => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt M (not_le.1 h)`. Establish `h3` using `hb _ (pow_mem hz n)`. Establish `h4 : χ.1 (z ^ n) = χ.1 z ^ n` using `map_pow χ.1 z n`. Rewrite `h3` using `[h4, Units.val_pow_eq_pow_val, norm_pow]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(not_le.2 hn) h3`. Establish `h5` using `hle _ (inv_mem hy)`. Establish `h6 : χ.1 y⁻¹ = (χ.1 y)⁻¹` using `map_inv χ.1 y`. Rewrite `h5` using `[h6, Units.val_inv_eq_inv_val, norm_inv, inv_le_one₀ (norm_pos_iff.2 (Units.ne_zero _))]`. Conclude with `le_antisymm (hle _ hy) h5`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_of_normOne {E : Type} [Field E] [NumberField E] (χ : HChar E) {y : IdeleGroup E}
     (hy : y ∈ IdeleGroup.normOneSubgroup E) : ‖((χ.1 y : ℂˣ) : ℂ)‖ = 1 := by
@@ -38,7 +38,7 @@ private theorem norm_of_normOne {E : Type} [Field E] [NumberField E] (χ : HChar
   exact le_antisymm (hle _ hy) h5
 
 /- English proof (translation)
-Introduce `E _ _ _ a χ s _ g`. Conclude with `norm_of_normOne χ g.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.Pf.chiOne :
     UpperTheory.V.Lit.Geo.Pf.ChiOne := by

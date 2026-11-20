@@ -25,9 +25,9 @@ open Formalism.IndefR.FWT Formalism.L2.Pj Formalism.IndefR.Mult GlobalTheory.Rea
 namespace GlobalTheory
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hc : ∀ x : Fin n → LL, GlobalTheory.Mem.R3.Rw.CrdOver ι x (fun k => ι (x k))` using `fun x => ⟨rfl, fun k k' hk => by rw [Fin.ext hk]⟩`. Use `GlobalTheory.ksForm_baseChange ι hι WK WK' (fun x => (hmem x _ (hc x)).symm) ?_ h` and prove the remaining obligations. Introduce `x' hx'`. Take `⟨x, -, hx⟩` from `honto x' hx'`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `he : x' = fun k => ι (x k)` using `funext fun k => hx k k rfl`. Substitute `he` using the available equality. Conclude with `⟨x, (hmem x _ (hc x)).1 hx', rfl⟩`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem ksForm_baseChange_crd {LL LL' Ks : Type} [Field LL] [Field LL'] [Field Ks] [Algebra Ks LL] [Algebra Ks LL']
     (ι : LL →+* LL') (hι : ∀ y, ι (algebraMap Ks LL y) = algebraMap Ks LL' y) {n n' : ℕ} (hn : n = n')
@@ -55,15 +55,15 @@ end GlobalTheory
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hR hmu ι hι i`. Take `⟨P'⟩` from `B'`. Simplify using `only at hPre`. Substitute `hPre` using the available equality. Break down `core' with ⟨⟨⟨H', l', c'⟩⟩⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨hH, hl, hc, -⟩` from `hcore`. Establish `hH'` using `eq_of_heq hH`. Substitute `hH'` using the available equality. Establish `hl'` using `eq_of_heq hl`. Substitute `hl'` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hc'` using `eq_of_heq hc`. Substitute `hc'` using the available equality. Take `⟨-, -, -, -, -, hnW, -, -, -, -, -, -, hcol, -⟩` from `hR`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hι'⟩` from `hcol i i rfl`. Take `⟨-, ⟨hmem, honto⟩, -⟩` from `hι' ι hι`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hn : z.R.nW i = R'.nW i` using `congrFun (eq_of_heq hnW).symm i`. Establish `halg2 : ∀ y : ↥z.core.Q.c.F, ι (algebraMap _ _ y) = @algebraMap _ _ _ _ alg' y`. Introduce `y`. Apply `(w'.st Z').toD7.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[hι]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(z.alg_eq y).trans (halg y).symm`. Conclude with `GlobalTheory.ksForm_baseChange_crd ι halg2 hn (z.R.FW i).WK (R'.FW i).WK hmem honto (z.geo.fw.ks i)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ksForm_moved : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
     B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)

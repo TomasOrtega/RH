@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionFunctori
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 
 /- English proof (translation)
-Introduce `K _ ι _ P W J J' D d R R' hJ hPW`. Substitute `hJ` using the available equality. Conclude with `GlobalTheory.CompanionTheory.Ar.PB.Proj.exists_holoMap_of_local_lifts R R'.A (V := R'.U) (μ := R'.lift) R'.isOpen_U R'.mem_U R'.holo (fun y u hu => ⟨(R'.mem y u hu).1, fun f hf => (R'.mem y u hu).2 f (hPW hf)⟩) R'.compat`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_res_lift : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P W J J' : Ideal (MRing ι)) (D d : ℕ) (R : AnLogRes P J D) (R' : AnLogRes W J' d), J = ⊤ → P ≤ W → ∃ h : R'.X → R.X, HoloMap R'.A R.A h ∧ ∀ x, SameOrbit (R.lift (h x) (h x)) (R'.lift x x) := by
   intro K _ ι _ P W J J' D d R R' hJ hPW

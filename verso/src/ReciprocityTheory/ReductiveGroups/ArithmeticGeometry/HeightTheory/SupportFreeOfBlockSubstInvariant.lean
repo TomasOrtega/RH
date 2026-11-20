@@ -16,11 +16,11 @@ noncomputable def compB (b : Fin (D + 1)) (k : ℕ) (p : MvPolynomial (TVar D N)
   ∑ s ∈ p.support.filter (fun s => degB b s = k), monomial s (coeff s p)
 
 /- English proof (translation)
-Unfold `compB`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Distinguish the cases in `h : degB b t = k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h]`. Distinguish the cases in `ht : t ∈ p.support`. Establish `hm : t ∈ p.support.filter (fun s => degB b s = k)` using `Finset.mem_filter.mpr ⟨ht, h⟩`. Rewrite using `[if_pos hm]`. Establish `hn : t ∉ p.support.filter (fun s => degB b s = k)` using `fun h' => ht (Finset.mem_filter.mp h').1`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg hn]`. Conclude with `(by simpa using ht : coeff t p = 0).symm`. Establish `hn : t ∉ p.support.filter (fun s => degB b s = k)` using `fun h' => h (Finset.mem_filter.mp h').2`. Rewrite using `[if_neg h, if_neg hn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_compB (b : Fin (D + 1)) (k : ℕ) (p : MvPolynomial (TVar D N) K) (t : TVar D N →₀ ℕ) :
     coeff t (compB b k p) = if degB b t = k then coeff t p else 0 := by
@@ -40,9 +40,9 @@ theorem coeff_compB (b : Fin (D + 1)) (k : ℕ) (p : MvPolynomial (TVar D N) K) 
     rw [if_neg h, if_neg hn]
 
 /- English proof (translation)
-Rewrite `ht` using `[mem_support_iff, coeff_compB]`. Distinguish the cases in `h : degB b t = k`. Rewrite `ht` using `[if_pos h]`. Conclude with `⟨mem_support_iff.mpr ht, h⟩`. Rewrite `ht` using `[if_neg h]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd rfl ht`.
+A detailed English derivation is pending.
 -/
 theorem mem_support_compB {b : Fin (D + 1)} {k : ℕ} {p : MvPolynomial (TVar D N) K}
     {t : TVar D N →₀ ℕ} (ht : t ∈ (compB b k p).support) : t ∈ p.support ∧ degB b t = k := by
@@ -54,9 +54,9 @@ theorem mem_support_compB {b : Fin (D + 1)} {k : ℕ} {p : MvPolynomial (TVar D 
     exact absurd rfl ht
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter, Fintype.sum_prod_type, Finset.sum_eq_single b]`. Simplify using `[degB]`. Introduce `i _ hi`. Simplify using `[hi]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ b) h`.
+A detailed English derivation is pending.
 -/
 private lemma sum_filter_block_eq_degB {D N : ℕ} (b : Fin (D + 1)) (s : TVar D N →₀ ℕ) :
     ∑ v ∈ Finset.univ.filter (fun v : TVar D N => v.1 = b), s v = degB b s := by
@@ -68,9 +68,9 @@ private lemma sum_filter_block_eq_degB {D N : ℕ} (b : Fin (D + 1)) (s : TVar D
     exact absurd (Finset.mem_univ b) h
 
 /- English proof (translation)
-Use `conv_lhs => rw [p.as_sum]`. Rewrite using `[map_sum]`. Simplify using `only [sigP, scaleEquiv_monomial, sum_filter_block_eq_degB]`. Simplify using `only [compB, Finset.mul_sum]`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (fun s hs => Finset.mem_range.mpr (hM s hs))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.mp hs).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scaleBlock_eq_sum (b : Fin (D + 1)) (u : Kˣ) (p : MvPolynomial (TVar D N) K) (M : ℕ)
     (hM : ∀ s ∈ p.support, degB b s < M) :
@@ -90,7 +90,7 @@ section Pres
 variable {K : Type} [Field K] [CharZero K] {D N : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact IsFractionRing.ringEquivOfRingEquiv_algebraMap _ _`. Consider the case `simp [sigF, IsFractionRing.ringEquivOfRingEquiv_algebraMap]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sigF_alg (b : Fin (D + 1)) (u : Kˣ) (g : KTp K D N) :
     sigF (K := K) (D := D) (N := N) b u (algebraMap (KTp K D N) (KTf K D N) g) =
@@ -100,25 +100,21 @@ theorem sigF_alg (b : Fin (D + 1)) (u : Kˣ) (g : KTp K D N) :
   | simp [sigF, IsFractionRing.ringEquivOfRingEquiv_algebraMap]
 
 /- English proof (translation)
-Take `⟨M, hMp, hMq⟩ : ∃ M, (∀ s ∈ p.support, degB b s < M) ∧ (∀ s ∈ q.support, degB b s < M)` from `⟨(p.support ∪ q.support).sup (degB b) + 1, fun s hs => Nat.lt_succ_of_le (Finset.le_sup (f := degB b) (Finset.mem_union_left _ hs)), fun s hs => Nat.lt_succ_of_le (Finset.le_sup (f := degB b) (Finset.mem_union_right _ hs))⟩`. Establish `hroot : ∀ u : Kˣ, ∑ k ∈ Finset.range M, (algebraMap (KTp K D N) (KTf K D N) (compB b k p) - z * algebraMap (KTp K D N) (KTf K D N) (compB b k q)) * (algebraMap (KTp K D N) (KTf K D N) (C (u : K))) ^ k = 0`. Introduce `u`. Establish `h1` using `congrArg (sigF (K := K) (D := D) (N := N) b u) hpq`. Rewrite `h1` using `[map_mul, sigF_alg, sigF_alg, hz u, scaleBlock_eq_sum b u p M hMp, scaleBlock_eq_sum b u q M hMq, map_sum, map_sum, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `sub_eq_zero.mpr h1`. Rewrite `h2` using `[← Finset.sum_sub_distrib]`. Use `Eq.trans (Finset.sum_congr rfl fun k _ => ?_) h2` and prove the remaining obligations. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hQ : (∑ k ∈ Finset.range M, Polynomial.monomial k (algebraMap (KTp K D N) (KTf K D N) (compB b k p) - z * algebraMap (KTp K D N) (KTf K D N) (compB b k q))) = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.infinite_of_injective_forall_mem (f := fun n : ℕ => algebraMap (KTp K D N) (KTf K D N) (C ((n : K) + 1))) ?_ ?_` and prove the remaining obligations. Introduce `n m hnm`. Establish `h2` using `IsFractionRing.injective (KTp K D N) (KTf K D N) hnm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `MvPolynomial.C_injective (TVar D N) K h2`. Conclude with `add_right_cancel h3` after adjusting the coercions. Introduce `n`. Establish `hu` using `hroot (Units.mk0 ((n : K) + 1) (Nat.cast_add_one_ne_zero n))`. Rewrite `hu` using `[Units.val_mk0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Polynomial.eval _ _ = 0`. Rewrite using `[Polynomial.eval_finset_sum]`. Simplify using `only [Polynomial.eval_monomial]`. Conclude with `hu`. Establish `hcoef : ∀ k < M, algebraMap (KTp K D N) (KTf K D N) (compB b k p) - z * algebraMap (KTp K D N) (KTf K D N) (compB b k q) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `k hk`. Establish `h4` using `congrArg (fun P => Polynomial.coeff P k) hQ`. Simplify using `only [Polynomial.finset_sum_coeff, Polynomial.coeff_monomial, Polynomial.coeff_zero] at h4`. Use `first`. Consider the case `rwa [Finset.sum_ite_eq', if_pos (Finset.mem_range.mpr hk)] at h4`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Consider the case `rwa [Finset.sum_ite_eq, if_pos (Finset.mem_range.mpr hk)] at h4`. Establish `hqs : q = ∑ k ∈ Finset.range M, compB b k q`. Use extensionality with `t`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [coeff_compB]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with h`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Conclude with `h (Finset.mem_range.mpr (hMq t (MvPolynomial.mem_support_iff.mpr hne)))`.
-
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk, hqk⟩ : ∃ k ∈ Finset.range M, compB b k q ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hq` to reduce the goal to its premises. Rewrite using `[hqs]`.
-
-Conclude with `Finset.sum_eq_zero hc`. Conclude with `⟨k, hqk, sub_eq_zero.mp (hcoef k (Finset.mem_range.mp hk))⟩`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem one_block (b : Fin (D + 1)) (z : KTf K D N)
     (hz : ∀ u : Kˣ, sigF (K := K) (D := D) (N := N) b u z = z)
@@ -181,13 +177,11 @@ theorem one_block (b : Fin (D + 1)) (z : KTf K D N)
   exact ⟨k, hqk, sub_eq_zero.mp (hcoef k (Finset.mem_range.mp hk))⟩
 
 /- English proof (translation)
-Rewrite using `[aeval_monomial]`. Use `split_ifs with h`. Establish `h' : ∑ j, s (0, j) = 0` using `h`. Establish `hz : ∀ v ∈ s.support, v.1 ≠ 0`. Introduce `v hv h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsum : s (0, v.2) = 0` using `Finset.sum_eq_zero_iff.mp h' v.2 (Finset.mem_univ _)`. Establish `hv' : v = (0, v.2)` using `Prod.ext h0 rfl`. Rewrite `hv` using `[Finsupp.mem_support_iff, hv']`. Conclude with `hv hsum`. Rewrite using `[Finsupp.prod_congr (g2 := fun i k => (X i : KTp K D N) ^ k) (fun i hi => by simp [hz i hi]), MvPolynomial.algebraMap_eq, ← monomial_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h' : ∃ j, s (0, j) ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h (Finset.sum_eq_zero fun j _ => hc j)`. Take `⟨j, hj⟩` from `h'`.
-
-Rewrite using `[Finsupp.prod, Finset.prod_eq_zero (i := ((0 : Fin (D + 1)), j)) (Finsupp.mem_support_iff.mpr hj) (by simp [hj]), mul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma aeval_block_zero_monomial (s : TVar D N →₀ ℕ) (a : K) :
     (aeval (fun v : TVar D N => if v.1 = 0 then C ((0 : Fin (N + 1) → K) v.2) else X v) :
@@ -213,9 +207,9 @@ private lemma aeval_block_zero_monomial (s : TVar D N →₀ ℕ) (a : K) :
       (Finsupp.mem_support_iff.mpr hj) (by simp [hj]), mul_zero]
 
 /- English proof (translation)
-Establish `h0` using `hP 0`. Establish `hc : (aeval (fun v : TVar D N => if v.1 = 0 then C ((0 : Fin (N + 1) → K) v.2) else X v) : KTp K D N →ₐ[K] KTp K D N) P = compB 0 0 P` using `by conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Simplify using `only [aeval_block_zero_monomial]`. Unfold `compB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_filter]`. Establish `hPc : P = compB 0 0 P` using `h0.symm.trans hc`. Introduce `s hs`. Rewrite `hs` using `[hPc]`. Conclude with `(mem_support_compB hs).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_free_of_block_subst_invariant (P : KTp K D N)
     (hP : ∀ x : Fin (N + 1) → K, (aeval (fun v : TVar D N =>
@@ -235,17 +229,17 @@ theorem support_free_of_block_subst_invariant (P : KTp K D N)
   exact (mem_support_compB hs).2
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset (Fin (D + 1)), ∃ a b : KTp K D N, b ≠ 0 ∧ algebraMap (KTp K D N) (KTf K D N) a = z * algebraMap (KTp K D N) (KTf K D N) b ∧ (∀ s ∈ a.support, degB 0 s = 0) ∧ (∀ s ∈ b.support, degB 0 s = 0) ∧ ∃ m : Fin (D + 1) → ℕ, ∀ i ∈ S, (∀ s ∈ a.support, degB i s = m i) ∧ ( …`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨p, q, hq, hpq, hp0, hq0, 0, by simp⟩`. Consider the case `insert i S hi ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨a, b, hb, hab, ha0, hb0, m, hm⟩` from `ih`. Take `⟨k, hk0, hk⟩` from `one_block i z (hz i) a b hb hab`. Use `⟨compB i k a, compB i k b, hk0, hk, fun s hs => ha0 s (mem_support_compB hs).1, fun s hs => hb0 s (mem_support_compB hs).1, Function.update m i k, ?_⟩` and prove the remaining obligations. Introduce `i' hi'`. Break down `Finset.mem_insert.mp hi' with rfl | hi'` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [Function.update_self]`. Conclude with `⟨fun s hs => (mem_support_compB hs).2, fun s hs => (mem_support_compB hs).2⟩`. Establish `hne : i' ≠ i` using `fun h => hi (h ▸ hi')`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `⟨fun s hs => (hm i' hi').1 s (mem_support_compB hs).1, fun s hs => (hm i' hi').2 s (mem_support_compB hs).1⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨a, b, hb, hab, ha0, hb0, m, hm⟩` from `key Finset.univ`. Use `⟨a, b, hb, hab, fun i => if i = 0 then 0 else m i, by simp, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs i`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify `ha0 s hs` using `[degB]`. Simplify `(hm i (Finset.mem_univ i)).1 s hs` using `[hi, degB]`. Introduce `s hs i`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify `hb0 s hs` using `[degB]`. Simplify `(hm i (Finset.mem_univ i)).2 s hs` using `[hi, degB]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem multi_pres (z : KTf K D N)
     (hz : ∀ (b : Fin (D + 1)) (u : Kˣ), sigF (K := K) (D := D) (N := N) b u z = z)

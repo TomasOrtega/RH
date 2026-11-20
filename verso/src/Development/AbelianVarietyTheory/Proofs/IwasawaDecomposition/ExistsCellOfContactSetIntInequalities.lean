@@ -15,14 +15,14 @@ section Contact
 variable {X : Type} [AddCommGroup X] {m : ℕ}
 
 /- English proof (translation)
-Simplify using `[LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_smul_toReal_apply' (t : Fin m → ℝ) (u : Fin m → LinearMap.BilinForm ℤ X) (y z : X) :
     (∑ i, t i • toReal (u i)) y z = ∑ i, t i * (u i y z : ℝ) := by
   simp [LinearMap.sum_apply]
 
 /- English proof (translation)
-Use extensionality with `y z`. Rewrite using `[sum_smul_toReal_apply']`. Simplify using `[LinearMap.sum_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toReal_sum_nsmul (n : Fin m → ℕ) (u : Fin m → LinearMap.BilinForm ℤ X) :
     toReal (∑ i, n i • u i) = ∑ i, (n i : ℝ) • toReal (u i) := by
@@ -31,9 +31,9 @@ theorem toReal_sum_nsmul (n : Fin m → ℕ) (u : Fin m → LinearMap.BilinForm 
   simp [LinearMap.sum_apply]
 
 /- English proof (translation)
-Use extensionality with `y z`. Rewrite using `[sum_smul_toReal_apply', sum_smul_toReal_apply']`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, toReal_apply, Int.cast_sum, Int.cast_mul, Int.cast_natCast, nsmul_eq_mul]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem sum_smul_toReal_comb {r : ℕ} (v : Fin r → Fin m → ℕ) (u : Fin m → LinearMap.BilinForm ℤ X) (c : Fin r → ℝ) :
     ∑ k, c k • toReal (∑ i, v k i • u i) = ∑ i, (∑ k, c k • fun i => (v k i : ℝ)) i • toReal (u i) := by
@@ -48,11 +48,11 @@ theorem sum_smul_toReal_comb {r : ℕ} (v : Fin r → Fin m → ℕ) (u : Fin m 
 variable {O : Type} [CommRing O] [Module O X]
 
 /- English proof (translation)
-Rewrite using `[mem_realForms]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ b ⟨a, y, z, rfl⟩`. Use `h a y z` as an intermediate fact. Rewrite `this` using `[sum_smul_toReal_apply', sum_smul_toReal_apply']`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Int.cast_sub, sub_mul, Finset.sum_sub_distrib, sub_eq_zero]`. Simplify `this` using `only [mul_comm]`. Introduce `h`. Use `⟨fun y z => ?_, fun a y z => ?_⟩` and prove the remaining obligations. Rewrite using `[sum_smul_toReal_apply', sum_smul_toReal_apply']`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [hu i y z]`. Use `h _ ⟨a, y, z, rfl⟩` as an intermediate fact. Rewrite using `[sum_smul_toReal_apply', sum_smul_toReal_apply']`. Simplify using `only [Int.cast_sub, sub_mul, Finset.sum_sub_distrib, sub_eq_zero] at this`. Simplify `this` using `only [mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_mem_realForms_iff (bar : O → O) (u : Fin m → LinearMap.BilinForm ℤ X) (hu : ∀ i y z, u i y z = u i z y)
     (t : Fin m → ℝ) : ∑ i, t i • toReal (u i) ∈ realForms bar X ↔
@@ -77,43 +77,35 @@ theorem sum_mem_realForms_iff (bar : O → O) (u : Fin m → LinearMap.BilinForm
 end Contact
 
 /- English proof (translation)
-Take `⟨r, v, hiff, hZ⟩` from `GlobalTheory.T.minkowskiWeyl_orthant_cone_integral_constraints m A {b | ∃ (a : O) (y z : X), b = fun i => u i (a • y) z - u i y (bar a • z)} hA`. Establish `hbal` using `sum_mem_realForms_iff bar u hsym`. Establish `hKr : (0 : ℝ) < K` using `by exact_mod_cast hK`. Establish `hvk : ∀ k, (∀ i, (0 : ℝ) ≤ (v k i : ℝ)) ∧ (∀ a ∈ A, ∑ i, (a i : ℝ) * (v k i : ℝ) ≤ 0) ∧ (∀ b ∈ {b : Fin m → ℤ | ∃ (a : O) (y z : X), b = fun i => u i (a • y) z - u i y (bar a • z)}, ∑ i, (b i : ℝ) * (v k i : ℝ) = 0)`. Introduce `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hiff _).2 ⟨Pi.single k 1, fun j => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single k (fun j _ hj => by simp [Pi.single_apply, hj]) (by simp)]`. Simplify using the standard rewrite rules. Establish `hγR : ∀ k, toReal (∑ i, v k i • u i) = ∑ i, (v k i : ℝ) • toReal (u i)` using `fun k => toReal_sum_nsmul _ _`. Establish `hγbal : ∀ k, (∑ i, v k i • u i) ∈ balForms bar X`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Use `⟨fun y z => ?_, fun a y z => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hsym i y z]`. Establish `h` using `((hbal _).2 (hvk k).2.2).2 a y z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← hγR]`. Simplify using `only [toReal_apply] at h`. Conclude with `h` after adjusting the coercions. Establish `hγval : ∀ k, ((linW Λ (∑ i, v k i • u i) : ℤ) : ℝ) = K * ψ.evalZ (∑ i, v k i • u i)`. Introduce `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hlin _ (hvk k).1 (hvk k).2.1 ((hbal _).2 (hvk k).2.2)`. Rewrite `h` using `[← hγR, evalR_toReal, evalW_toReal]`. Conclude with `h.symm`. Establish `hcomb` using `sum_smul_toReal_comb v u`. Use `⟨r, fun k => ∑ i, v k i • u i, ⟨hγbal, fun k y => ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Finset.sum_nonneg fun i _ => nsmul_nonneg (hnn i y) _`. Rewrite using `[linearOn_iff]`. Introduce `c hc`. Take `⟨hnt, hAt, hVt⟩` from `(hiff _).2 ⟨c, hc, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hlin _ hnt hAt ((hbal _).2 hVt)`. Rewrite `h` using `[← hcomb, evalW_sum]`. Establish `: (K : ℝ) * evalR ψ (∑ k, c k • toReal (∑ i, v k i • u i)) = K * ∑ k, c k * ψ.evalZ (∑ i, v k i • u i)`. Rewrite using `[h, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hγval]; ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `mul_left_cancel₀ hKr.ne' this`. Use `⟨K, linW Λ, hK, hγval, fun β hβ hp => ?_, fun β hβ hp heq => ?_⟩` and prove the remaining obligations. Rewrite using `[← evalW_toReal]`. Conclude with `hle β hβ hp`. Establish `hpsd : toReal β ∈ psdCone bar X`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `GlobalTheory.T.nonneg_sum_smul_intBilinFormToReal_mem_psdCone O bar X 1 ![β] ![1] (fun i => by fin_cases i; exact hβ) (fun i y => by fin_cases i; exact hp y) (fun i => by fin_cases i; norm_num)` as an intermediate fact. Simplify using `using this`. Take `⟨t, ht0, htA, htB⟩` from `hcon _ hpsd (by rw [evalR_toReal, evalW_toReal]; exact heq)`. Establish `hVt` using `(hbal t).1 (htB ▸ toReal_mem hβ)`. Use `choose z hz using hint β t htB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hz0 : ∀ i, 0 ≤ z i` using `fun i => by`. Use `ht0 i` as an intermediate fact. Rewrite `this` using `[hz i]`. Conclude with `this` after adjusting the coercions. Establish `htn : ∀ i, (((z i).toNat : ℤ) : ℝ) = t i` using `fun i => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Int.toNat_of_nonneg (hz0 i), hz i]`. Take `⟨k, c, hk, hkc⟩` from `hZ (fun i => (z i).toNat) (fun a ha => by`. Use `htA a ha` as an intermediate fact. Simplify using `only [← htn] at this`. Conclude with `this)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use the proof step `(fun b hb => by`. Use `hVt b hb` as an intermediate fact. Simplify using `only [← htn] at this`. Conclude with `this)` after adjusting the coercions. Use `⟨k, c, hk, LinearMap.ext₂ fun y w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hβz : β y w = ∑ i, ((z i).toNat : ℤ) * u i y w`. Establish `h1 : (β y w : ℝ) = ∑ i, t i * (u i y w : ℝ)`. Rewrite using `[← toReal_apply, htB, sum_smul_toReal_apply']`. Establish `h2 : (β y w : ℝ) = ((∑ i, ((z i).toNat : ℤ) * u i y w : ℤ) : ℝ)`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [← htn i]; push_cast; ring`. Conclude with `h2` after adjusting the coercions. Establish `hcoord : ∀ i, (k : ℤ) * ((z i).toNat : ℤ) = ∑ j, (c j : ℤ) * (v j i : ℤ)` using `fun i => by`. Use `congrFun hkc i` as an intermediate fact.
-
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.sum_apply] at this`. Conclude with `this` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hβz, Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Use `_ = ∑ i, ∑ j, (c j : ℤ) * ((v j i : ℤ) * u i y w) := by`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hcoord, Finset.sum_mul]; exact Finset.sum_congr rfl fun j _ => by ring`. Use `_ = ∑ j, (c j : ℤ) * ∑ i, (v j i : ℤ) * u i y w := by`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`.
-
-Use `_ = (∑ j, c j • ∑ i, v j i • u i) y w := by`. Simplify using `[LinearMap.sum_apply, nsmul_eq_mul]`. Introduce `B hB hBe`. Take `⟨t, ht0, htA, rfl⟩` from `hcon B hB hBe`. Take `⟨c, hc, rfl⟩` from `(hiff _).1 ⟨ht0, htA, (hbal _).1 (mem_realForms_of_mem_psdCone hB)⟩`.
-
-Conclude with `⟨c, hc, (hcomb c).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isCell_of_contact (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O)
     (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] (ψ : InvFun O) (K : ℕ) (Λ : (X × X) →₀ ℤ) (m : ℕ)

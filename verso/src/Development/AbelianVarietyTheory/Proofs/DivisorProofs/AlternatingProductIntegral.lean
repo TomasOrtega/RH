@@ -9,25 +9,21 @@ open GlobalTheory GlobalTheory.DI
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Take `⟨hone, hmul, hsmul, -, -⟩` from `GlobalTheory.T.exteriorFormsSpanOfSets_mul_smul_mono A L`. Introduce `vs`. Proceed by induction on `vs with`. Consider the case `nil`. Introduce `_ t`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [prodL, List.foldr_nil, oneC, List.length_nil]`. Use `⟨fun _ q hq => ?_, fun ht => ?_⟩` and prove the remaining obligations. Use `split_ifs with h1t`. Establish `hq0 : q = 0` using `by omega`. Substitute `hq0` using the available equality.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hone`. Conclude with `zero_mem _`. Rewrite using `[if_neg (by omega)]`. Consider the case `cons w vs ih`. Introduce `hvs t`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : w ∈ L` using `hvs w (List.mem_cons_self ..)`. Establish `hvs' : ∀ u ∈ vs, u ∈ L` using `fun u hu => hvs u (List.mem_cons_of_mem _ hu)`. Establish `key : prodL f h (w :: vs) t = Lop f h w (prodL f h vs) t` using `rfl`. Rewrite using `[key, List.length_cons]`. Use `⟨fun hts q hq => ?_, fun hlt => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Lop]`. Distinguish the cases in `ht : t.Nonempty`. Rewrite using `[dif_pos ht]`. Establish `hm : t.min' ht ∈ s` using `hts (t.min'_mem ht)`. Use `add_mem ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `zsmul_mem ?_ _` and prove the remaining obligations. Break down `q with _ | q` into its components or cases. Rewrite using `[(ih hvs' t).2 (by omega), mul_zero]`. Conclude with `zero_mem _`. Conclude with `hmul q _ _ (hf _ hm w hw) ((ih hvs' t).1 hts q (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h2`. Establish `hm' : (t.erase (t.min' ht)).min' h2 ∈ s` using `hts (Finset.mem_of_mem_erase ((t.erase _).min'_mem h2))`. Establish `hcard : (t.erase (t.min' ht)).card = t.card - 1` using `Finset.card_erase_of_mem (t.min'_mem ht)`. Establish `hpos : 0 < t.card` using `ht.card_pos`. Conclude with `hsmul q _ _ (hh _ hm _ hm' w hw) ((ih hvs' _).1 ((Finset.erase_subset _ _).trans hts) q (by omega))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Rewrite using `[dif_neg ht]`. Conclude with `zero_mem _`. Simplify using `only [Lop]`. Distinguish the cases in `ht : t.Nonempty`.
-
-Rewrite using `[dif_pos ht]`. Establish `hcard : (t.erase (t.min' ht)).card = t.card - 1` using `Finset.card_erase_of_mem (t.min'_mem ht)`. Rewrite using `[(ih hvs' t).2 (by omega), mul_zero, smul_zero, zero_add]`. Use `split_ifs with h2`. Rewrite using `[(ih hvs' _).2 (by omega), smul_zero]`.
-
-Both sides reduce to the same expression. Rewrite using `[dif_neg ht]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodL_mem_forms_and_vanish {K : Type} [CommRing K] {V : Type} [AddCommGroup V] [Module K V]
     {ι : Type} [LinearOrder ι]
@@ -90,9 +86,9 @@ theorem prodL_mem_forms_and_vanish {K : Type} [CommRing K] {V : Type} [AddCommGr
       · rw [dif_neg ht]
 
 /- English proof (translation)
-Introduce `K _ V _ _ ι _ f h A L s hf hh a v t hv hts q hq`. Rewrite using `[alt, Finset.sum_apply]`. Use `AddSubgroup.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply]`. Use `zsmul_mem ?_ _` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(prodL_mem_forms_and_vanish f h A L s hf hh _ ?_ t).1 hts q (by rw [List.length_ofFn]; exact hq)` and prove the remaining obligations. Introduce `w hw`. Take `⟨k, rfl⟩` from `List.mem_ofFn.mp hw`. Conclude with `hv _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem alt_mem_forms : ∀ {K : Type} [CommRing K] {V : Type} [AddCommGroup V] [Module K V] {ι : Type}
     [LinearOrder ι] (f : ι → V →+ V) (h : ι → ι → V →+ K) (A : Subring K) (L : Set V) (s : Finset ι),

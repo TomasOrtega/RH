@@ -6,11 +6,11 @@ open scoped Topology
 
 open scoped FourierTransform in
 /- English proof (translation)
-Introduce `u hc hi hz t`. Establish `hF : 𝓕 u = 0`. Use extensionality with `w`. Rewrite using `[Real.fourier_real_eq_integral_exp_smul, Pi.zero_apply, ← hz (2 * Real.pi * w)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `v`. Rewrite using `[smul_eq_mul]`. Use `congr 1`. Use `congr 1`. Use `push_cast`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hinv` using `hc.fourierInv_fourier_eq hi (by rw [hF]; exact integrable_zero _ _ _)`. Rewrite using `[← hinv, hF]`. Simplify using `[Real.fourierInv_eq]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Lit.Cusp.fourier_zero :
     ∀ u : ℝ → ℂ, Continuous u → Integrable u →

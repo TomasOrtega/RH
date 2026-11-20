@@ -10,13 +10,11 @@ namespace Formalism.HermitianLattices.Ext.L3.firstFamilyOperatorEnd
 open HermitianSublattices LocalSpans idealPowerSpanBounds localizedQuotients integralBasisSpans traceDeterminantCongruences reductionMapsOfForms localValuationFiltration hermitianFormColumns vectorCountBounds
 
 /- English proof (translation)
-Establish `hq' : (q : ℝ) ≠ 0` using `by exact_mod_cast hq.ne'`. Establish `hstep : ∀ j, k₀ ≤ j → (u (j + 1) : ℝ) / (q : ℝ) ^ ((j + 1) * e) = (u j : ℝ) / (q : ℝ) ^ (j * e)`. Introduce `j hj`. Rewrite using `[h j hj, Nat.cast_mul, Nat.cast_pow, div_eq_div_iff (pow_ne_zero _ hq') (pow_ne_zero _ hq'), add_mul, one_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hconst : ∀ j, k₀ ≤ j → (u j : ℝ) / (q : ℝ) ^ (j * e) = (u k₀ : ℝ) / (q : ℝ) ^ (k₀ * e)`. Introduce `j hj`. Proceed by induction on `j, hj using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ j hj ih => rw [hstep j hj, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `ht : Tendsto (fun k : ℕ => (u k : ℝ) / (q : ℝ) ^ (k * e)) atTop (𝓝 ((u k : ℝ) / (q : ℝ) ^ (k * e)))`. Rewrite using `[hconst k hk]`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop k₀] with j hj`. Conclude with `(hconst j hj).symm`.
-
-Conclude with `ht.limUnder_eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem limUnder_of_step {u : ℕ → ℕ} {q e k₀ : ℕ} (hq : 0 < q)
     (h : ∀ k, k₀ ≤ k → u (k + 1) = q ^ e * u k) {k : ℕ} (hk : k₀ ≤ k) :
@@ -48,17 +46,17 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
 local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 
 /- English proof (translation)
-Use `haveI : Fact (IsFixF K F) := ⟨hF⟩`. Take `⟨b, H, D, hb, hH, hHh, hD, hD0, hv⟩` from `exists_local_data hF hs hd hL hLi h𝔭`. Rewrite using `[nkCount_eq h h𝔭 b hb hH, nkCount_eq h h𝔭 b hb hH]`. Express the relevant statement in the definitionally equal form `nkM 𝔭 (k + 1) H n = _ * nkM 𝔭 k H n`. Rewrite `hk` using `[hv]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `nkM_succ hK h𝔭 hHh hD (notMem_pow_vF h𝔭 hD0) hn hk`. Rewrite `key` using `[Fintype.card_fin]`. Establish `hN` using `absNorm_pos h𝔭`. Break down `Nat.eq_zero_or_pos (finrank K V) with h0 | hpos` into its components or cases. Establish `e0 : 2 * finrank K V = 0` using `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : 2 * finrank K V - 1 = 0` using `by omega`. Rewrite `key` using `[e0, pow_zero, one_mul]`. Rewrite using `[e1, pow_zero, one_mul]`. Establish `h2` using `two_le_absNorm h𝔭`. Establish `hB : nkM 𝔭 k H n ≤ 1` using `(card_sub_le hK h𝔭 k _).trans (by rw [Fintype.card_fin, e0, mul_zero, pow_zero])`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAN : 2 * nkM 𝔭 (k + 1) H n ≤ nkM 𝔭 (k + 1) H n * Ideal.absNorm 𝔭`. Rewrite using `[mul_comm]`. Conclude with `Nat.mul_le_mul_left _ h2`. Establish `hA0 : nkM 𝔭 (k + 1) H n = 0`. Rewrite `hAN` using `[key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `key` using `[hA0, zero_mul]`. Use linear arithmetic over natural numbers and integers. Establish `e : 2 * finrank K V = (2 * finrank K V - 1) + 1` using `by omega`. Rewrite `key` using `[e, pow_succ]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Nat.eq_of_mul_eq_mul_right hN` to reduce the goal to its premises. Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem nkCount_succ_fine (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -97,7 +95,7 @@ theorem nkCount_succ_fine (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
     ring
 
 /- English proof (translation)
-Unfold `alphaN`. Conclude with `limUnder_of_step (absNorm_pos h𝔭) (fun j hj => nkCount_succ_fine hK hF hs hd hL hLi h𝔭 hn hj) hk`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem alphaN_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -111,9 +109,9 @@ theorem alphaN_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsF
     (fun j hj => nkCount_succ_fine hK hF hs hd hL hLi h𝔭 hn hj) hk
 
 /- English proof (translation)
-Use `haveI : Fact (IsFixF K F) := ⟨hF⟩`. Take `⟨b, H, D, hb, hH, hHh, hD, hD0, hv⟩` from `exists_local_data hF hs hd hL hLi h𝔭`. Rewrite using `[nkCount_eq h h𝔭 b hb hH, nkCount_eq h h𝔭 b hb hH]`. Establish `e : Ideal.Quotient.mk (extP K 𝔭 ^ k) (ι n) = Ideal.Quotient.mk (extP K 𝔭 ^ k) (ι n')`. Rewrite using `[Ideal.Quotient.eq, ← map_sub]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_pow_iff 𝔭 k _).mpr hc`. Rewrite using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem nkCount_congr (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -129,9 +127,9 @@ theorem nkCount_congr (hF : IsFixF K F)
   rw [e]
 
 /- English proof (translation)
-Use `haveI : Fact (IsFixF K F) := ⟨hF⟩`. Take `⟨b, H, D, hb, hH, hHh, hD, hD0, hv⟩` from `exists_local_data hF hs hd hL hLi h𝔭`. Rewrite using `[akCount_eq h h𝔭 b hb hH, akCount_eq h h𝔭 b hb hH]`. Rewrite `hk` using `[hv]`. Establish `key` using `akM_succ hK h𝔭 hHh hD (notMem_pow_vF h𝔭 hD0) hk`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[Fintype.card_fin, ← sq]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem akCount_succ_fine (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -147,7 +145,7 @@ theorem akCount_succ_fine (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
   exact key
 
 /- English proof (translation)
-Unfold `alphaL`. Conclude with `limUnder_of_step (absNorm_pos h𝔭) (fun j hj => akCount_succ_fine hK hF hs hd hL hLi h𝔭 (le_trans hk hj)) le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem alphaL_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -159,9 +157,7 @@ theorem alphaL_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsF
     (fun j hj => akCount_succ_fine hK hF hs hd hL hLi h𝔭 (le_trans hk hj)) le_rfl
 
 /- English proof (translation)
-Use `haveI : Fact (IsFixF K F) := ⟨hF⟩`. Take `⟨b, H, D, hb, hH, hHh, hD, hD0, hv⟩` from `exists_local_data hF hs hd hL hLi h𝔭`. Rewrite using `[akCount_eq h h𝔭 b hb hH]`. Use `haveI := finite_quot (K := K) h𝔭 k`. Use `haveI : Nonempty {X : Matrix (Fin (finrank K V)) (Fin (finrank K V)) (𝓞 K ⧸ extP K 𝔭 ^ k) // Xᴴ * H.map (Ideal.Quotient.mk (extP K 𝔭 ^ k)) * X = H.map (Ideal.Quotient.mk (extP K 𝔭 ^ k))} := ⟨⟨1, by rw [Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]⟩⟩`.
-
-Conclude with `Nat.card_pos`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem akCount_pos (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -177,9 +173,7 @@ theorem akCount_pos (hF : IsFixF K F)
   exact Nat.card_pos
 
 /- English proof (translation)
-Use `haveI : Fact (IsFixF K F) := ⟨hF⟩`. Take `⟨b, H, D, hb, hH, hHh, hD, hD0, hv⟩` from `exists_local_data hF hs hd hL hLi h𝔭`. Rewrite using `[nkCount_eq h h𝔭 b hb hH, hv]`. Establish `key` using `nkM_le hK h𝔭 hHh hD (notMem_pow_vF h𝔭 hD0) (by rw [Fintype.card_fin]; exact hm) k n`. Rewrite `key` using `[Fintype.card_fin]`.
-
-Conclude with `key`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nkCount_le_nat (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}

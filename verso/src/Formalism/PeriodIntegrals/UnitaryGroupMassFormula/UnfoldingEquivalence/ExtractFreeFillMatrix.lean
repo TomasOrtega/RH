@@ -14,13 +14,13 @@ Both sides reduce to the same expression.
 theorem eN_apply (N i : ℕ) (l : Fin N) : eN k N i l = if l.1 = i then 1 else 0 := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Ufl {n c i : ℕ} {v : Fin (n + c) → k} :
     v ∈ Ufl k n c i ↔ ∀ l : Fin (n + c), ¬ (l.1 < n + i) → v l = 0 := Iff.rfl
 
 /- English proof (translation)
-Simplify using `only [inX, LinearMap.pi_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inX_apply {n c : ℕ} (x : Fin n → k) (l : Fin (n + c)) :
     inX k n c x l = if h : l.1 < n then x ⟨l.1, h⟩ else 0 := by
@@ -30,21 +30,21 @@ theorem inX_apply {n c : ℕ} (x : Fin n → k) (l : Fin (n + c)) :
   · rfl
 
 /- English proof (translation)
-Simplify using `only [atN]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem atN_add {N : ℕ} (v w : Fin N → k) (i : ℕ) : atN (v + w) i = atN v i + atN w i := by
   simp only [atN]
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [atN]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem atN_smul {N : ℕ} (a : k) (v : Fin N → k) (i : ℕ) : atN (a • v) i = a * atN v i := by
   simp only [atN]
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `atN`. Use `split_ifs with h`. Conclude with `(mem_Ufl.1 hv) ⟨n + i, h⟩ (lt_irrefl _)`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem atN_of_mem {n c i : ℕ} {v : Fin (n + c) → k} (hv : v ∈ Ufl k n c i) : atN v (n + i) = 0 := by
   unfold atN
@@ -53,14 +53,14 @@ theorem atN_of_mem {n c i : ℕ} {v : Fin (n + c) → k} (hv : v ∈ Ufl k n c i
   · rfl
 
 /- English proof (translation)
-Rewrite using `[atN, dif_pos h, eN_apply]`. Conclude with `if_pos rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atN_eN {N i : ℕ} (h : i < N) : atN (eN k N i) i = 1 := by
   rw [atN, dif_pos h, eN_apply]
   exact if_pos rfl
 
 /- English proof (translation)
-Unfold `atN`. Use `split_ifs with hi`. Rewrite using `[eN_apply]`. Conclude with `if_neg fun e => h e.symm`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem atN_eN_ne {N i j : ℕ} (h : j ≠ i) : atN (eN k N j) i = 0 := by
   unfold atN
@@ -81,7 +81,7 @@ def fe {n' n c : ℕ} (x : (Fin (n' + (c + 1)) → k) →ₗ[k] (Fin (n + c) →
   fun p => x (Pi.single p.1.2 1) p.1.1
 
 /- English proof (translation)
-Simplify using `only [xx1, Matrix.toLin'_apply, Matrix.mulVec_single, MulOpposite.op_one, one_smul, Matrix.col_apply, Matrix.of_apply, base]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fillMatrix_single {n' n c : ℕ} (xj : (Fin n' → k) →ₗ[k] (Fin n → k)) (t : FC n' (c + 1) n c → k)
     (l : Fin (n + c)) (s : Fin (n' + (c + 1))) :
@@ -90,7 +90,7 @@ theorem fillMatrix_single {n' n c : ℕ} (xj : (Fin n' → k) →ₗ[k] (Fin n �
     Matrix.of_apply, base]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Use `show xx1 xj t (Pi.single p.1.2 1) p.1.1 = t p`. Rewrite using `[fillMatrix_single, dif_pos p.2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extractFree_fillMatrix {n' n c : ℕ} (xj : (Fin n' → k) →ₗ[k] (Fin n → k)) (t : FC n' (c + 1) n c → k) :
     fe (xx1 xj t) = t := by

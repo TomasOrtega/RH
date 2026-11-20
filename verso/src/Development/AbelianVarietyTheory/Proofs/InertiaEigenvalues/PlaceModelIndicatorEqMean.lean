@@ -34,7 +34,7 @@ def divPts (Λ : AddSubgroup (WO S T)) (c : AE D) (N : ℕ) : AddSubgroup (WO S 
     exact ⟨by rw [smul_neg, hx1], by rw [smul_neg]; exact Λ.neg_mem hx2⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_divPts {Λ : AddSubgroup (WO S T)} {c : AE D} {N : ℕ} {y : WO S T} :
     y ∈ divPts Λ c N ↔ c • y = y ∧ N • y ∈ Λ := Iff.rfl
@@ -46,14 +46,14 @@ noncomputable def rep {Λ : AddSubgroup (WO S T)} {c : AE D} {N : ℕ} (q : DQ �
   (QuotientAddGroup.mk_surjective q).choose
 
 /- English proof (translation)
-The claim follows from `(QuotientAddGroup.mk_surjective q).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mk_rep {Λ : AddSubgroup (WO S T)} {c : AE D} {N : ℕ} (q : DQ Λ c N) :
     (QuotientAddGroup.mk (rep q) : DQ Λ c N) = q :=
   (QuotientAddGroup.mk_surjective q).choose_spec
 
 /- English proof (translation)
-Introduce `q₁ q₂ h`. Rewrite using `[← mk_rep q₁, ← mk_rep q₂, Subtype.ext h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_injective {Λ : AddSubgroup (WO S T)} {c : AE D} {N : ℕ} :
     Function.Injective fun q : DQ Λ c N => ((rep q : ↥(divPts Λ c N)) : WO S T) := by

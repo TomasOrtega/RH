@@ -11,37 +11,31 @@ namespace GlobalTheory.KZ.ES
 open GlobalTheory.KroneckerCongruence in
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X M q hM hq V s hFr f hf hfV`. Take `⟨hqV, hs⟩` from `hFr`. Establish `hε : Function.Injective ε` using `ε.injective`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Establish `hq0 : (q : ℚ) ≠ 0` using `by exact_mod_cast hq.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ρ := IsLocalRing.residue V with hρ_def`. Establish `hρ0 : ∀ x : V, ρ x = 0 ↔ V.valuation (x : Ω) < 1` using `fun x => by`. Rewrite using `[hρ_def, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Use `haveI : CharP (IsLocalRing.ResidueField V) q := (CharP.charP_iff_prime_eq_zero hq).2 (by`. Establish `: ρ (q : V) = 0` using `(hρ0 _).2 (by simpa [ValuationSubring.mem_nonunits_iff] using hqV)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this)`. Establish `hfrob : ∀ x : V, ρ ⟨s x, (hs x x.2).1⟩ = ρ x ^ q`. Introduce `x`. Rewrite using `[← sub_eq_zero, ← map_pow, ← map_sub, hρ0]`. Simplify using `using (hs x x.2).2.2`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `set c := X.exp f with hc`. Establish `hdet : ∀ j : ℕ, 0 < (!![1, ((j : ℤ) * M : ℤ); 0, (q : ℤ)] : Matrix (Fin 2) (Fin 2) ℤ).det`. Introduce `j`. Simplify using `[Matrix.det_fin_two]`. Conclude with `hq.pos` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hFj : ∀ (j : ℕ) (t : ℚ), (X.exp (X.sl (toGQ !![1, ((j : ℤ) * M : ℤ); 0, (q : ℤ)]) f)).coeff t = eOm ε (t * j * M) * c.coeff (t * q)`. Introduce `j t`. Establish `h` using `X.exp_upper (toGQ !![1, ((j : ℤ) * M : ℤ); 0, (q : ℤ)]) (by rw [ent_toGQ _ (hdet j)]; simp) f (t * q)`. Rewrite `h` using `[ent_toGQ _ (hdet j), ent_toGQ _ (hdet j), ent_toGQ _ (hdet j)]`. Simplify using `at h`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply the tactic sequence `convert h using 2 <;> first | field_simp | (congr 1; field_simp)`. Establish `hw : ∀ (j : ℕ) (t : ℚ), c.coeff (t * q) ≠ 0 → ∃ h : eOm ε (t * j * M) ∈ V, ρ ⟨_, h⟩ = 1`. Introduce `j t ht`. Establish `h1 : eOm ε (t * j * M) ^ q = 1`. Rewrite using `[← eOm_mul_nat hε, show (q : ℚ) * (t * j * M) = j * (t * q * M) by ring, eOm_mul_nat hε, eOm_level X M f hf _ ht, one_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : eOm ε (t * j * M) ∈ V` using `mem_of_pow_eq_one V hq.ne_zero h1`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Establish `h2 : (⟨_, hmem⟩ : V) ^ q = 1` using `Subtype.ext (by simpa using h1)`. Establish `h3 : (ρ ⟨_, hmem⟩ - 1) ^ q = 0` using `by rw [sub_pow_char, ← map_pow, h2, map_one, one_pow, sub_self]`. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff hq.ne_zero |>.1 h3)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `memF : ∀ (j : ℕ) (t : ℚ), (X.exp (X.sl (toGQ !![1, ((j : ℤ) * M : ℤ); 0, (q : ℤ)]) f)).coeff t ∈ V`. Introduce `j t`. Rewrite using `[hFj]`. Distinguish the cases in `h0 : c.coeff (t * q) = 0`. Rewrite using `[h0, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem V`. Conclude with `mul_mem (hw j t h0).1 (hfV _)`. Establish `redF : ∀ (j : ℕ) (t : ℚ), ρ ⟨_, memF j t⟩ = ρ ⟨_, hfV (t * q)⟩`. Introduce `j t`. Distinguish the cases in `h0 : c.coeff (t * q) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg ρ (Subtype.ext (by simp only; rw [hFj, h0, mul_zero]))`. Take `⟨hm, h1⟩` from `hw j t h0`. Establish `e : (⟨_, memF j t⟩ : V) = ⟨_, hm⟩ * ⟨_, hfV (t * q)⟩` using `Subtype.ext (by simp only [MulMemClass.mk_mul_mk]; rw [hFj])`. Rewrite using `[e, map_mul, h1, one_mul]`. Establish `memC : ∀ t : ℚ, (X.exp (X.gal s f)).coeff t ∈ V`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `t`. Rewrite using `[X.gal_exp]`. Conclude with `(hs _ (hfV t)).1`. Use `set LF : ℕ → HahnSeries ℚ V := fun j => liftV V _ (memF j) with hLF`. Use `set LC := liftV V _ memC with hLC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ j, hahnSeriesCoeffRingHomMap ρ (LF j) = hahnSeriesCoeffRingHomMap ρ (LF 0)`. Introduce `j`. Use extensionality with `t`. Rewrite using `[hahnSeriesCoeffRingHomMap_coeff, hahnSeriesCoeffRingHomMap_coeff]`. Conclude with `(redF j t).trans (redF 0 t).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : hahnSeriesCoeffRingHomMap ρ (LF 0) ^ q = hahnSeriesCoeffRingHomMap ρ LC`. Use extensionality with `t`. Rewrite using `[coeff_pow_char q, hahnSeriesCoeffRingHomMap_coeff, hahnSeriesCoeffRingHomMap_coeff]`. Use `show ρ ⟨_, memF 0 (t / q)⟩ ^ q = ρ ⟨_, memC t⟩`. Rewrite using `[redF 0 (t / q), ← hfrob]`.
-
-Conclude with `congrArg ρ (Subtype.ext (by simp only; rw [X.gal_exp, div_mul_cancel₀ t hq0]))`. Establish `hexp : X.exp ((∏ j ∈ Finset.range q, X.sl (toGQ !![1, ((j : ℤ) * M : ℤ); 0, (q : ℤ)]) f) - X.gal s f) = hahnSeriesCoeffRingHomMap V.subtype ((∏ j ∈ Finset.range q, LF j) - LC)`. Simplify using `only [map_sub, map_prod, hLF, hLC, map_liftV]`. Establish `hW : hahnSeriesCoeffRingHomMap ρ ((∏ j ∈ Finset.range q, LF j) - LC) = 0`. Rewrite using `[map_sub, map_prod, Finset.prod_congr rfl (fun j _ => h1 j), Finset.prod_const, Finset.card_range, h2, sub_self]`.
-
-Introduce `r`. Unfold `Nq`. Rewrite using `[hexp, hahnSeriesCoeffRingHomMap_coeff, ValuationSubring.mem_nonunits_iff]`. Use `(hρ0 (((∏ j ∈ Finset.range q, LF j) - LC).coeff r)).1 ?_` and prove the remaining obligations. Rewrite using `[← hahnSeriesCoeffRingHomMap_coeff, hW]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nq_sub_gal_small : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε),
     ∀ (M q : ℕ), 0 < M → q.Prime → ∀ (V : ValuationSubring Ω) (s : Ω ≃ₐ[ℚ] Ω), FrobV V q s →

@@ -19,17 +19,15 @@ variable {G V W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Introduce `w`. Take `⟨v, rfl⟩` from `hf w`. Set `S : Subgroup G` to `{ carrier := {g | σ g (f v) = f v} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `inv_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Establish `h1 : σ a⁻¹ (σ a (f v)) = f v`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[ha] at h1 }` and apply the resulting hypothesis. Set `T : Subgroup G` to `{ carrier := {g | ρ g v = v} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `inv_mem' := fun {a} ha => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Establish `h1 : ρ a⁻¹ (ρ a v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[ha] at h1 }` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : IsOpen (T : Set G)` using `hρ v`. Establish `hTS : T ≤ S` using `fun g hg => by`. Establish `hg' : ρ g v = v` using `hg`. Use `show σ g (f v) = f v`. Rewrite using `[← f.isIntertwining, hg']`.
-
-Conclude with `Subgroup.isOpen_mono hTS hT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmooth_of_surjective {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (hρ : IsSmooth ρ)
     (f : ρ.IntertwiningMap σ) (hf : Function.Surjective f) : IsSmooth σ := by
@@ -69,13 +67,13 @@ end General
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `g` and use `⟨thetaW k N g, GlobalTheory.T.transpose_inverse_involution_apply N g⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem thetaW_surjective (N : ℕ) : Function.Surjective (thetaW k N) :=
   fun g => ⟨thetaW k N g, GlobalTheory.T.transpose_inverse_involution_apply N g⟩
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun g => by show π (thetaW k N (thetaW k N g)) = π g rw [GlobalTheory.T.transpose_inverse_involution_apply N g]`.
+A detailed English derivation is pending.
 -/
 theorem comp_thetaW_thetaW {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) : (π.comp (thetaW k N)).comp (thetaW k N) = π :=
@@ -84,7 +82,7 @@ theorem comp_thetaW_thetaW {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     rw [GlobalTheory.T.transpose_inverse_involution_apply N g]
 
 /- English proof (translation)
-Apply `GlobalTheory.FieldTransport.isCosocle_of_comp (thetaW_surjective N)` to reduce the goal to its premises. Use `show IsCosocle ((σ.comp (thetaW k N)).comp (thetaW k N)) _`. Rewrite using `[comp_thetaW_thetaW σ]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCosocle_comp_thetaW {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ (GL (Fin N) k) W} {π : Representation ℂ (GL (Fin N) k) V}
@@ -95,7 +93,7 @@ theorem isCosocle_comp_thetaW {N : ℕ} {V W : Type} [AddCommGroup V] [Module �
   exact h
 
 /- English proof (translation)
-Establish `E` using `GlobalTheory.T.gelfand_kazhdan_contragredient hGK N (σ.comp (thetaW k N)) hs hi`. Rewrite `E` using `[comp_thetaW_thetaW σ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem equiv_contra_comp_thetaW (hGK : GKLocal k) {N : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     (σ : Representation ℂ (GL (Fin N) k) W) (hs : IsSmooth (σ.comp (thetaW k N)))
@@ -104,7 +102,7 @@ theorem equiv_contra_comp_thetaW (hGK : GKLocal k) {N : ℕ} {W : Type} [AddComm
   rwa [comp_thetaW_thetaW σ] at E
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨Representation.Equiv.refl _⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem prodIrr_congr {h N : ℕ} {x y : Fin h → IrrGL k} (e : x = y) (hx : ∑ a, (x a).1 = N)
     (hy : ∑ a, (y a).1 = N) : Nonempty ((prodIrr x hx).Equiv (prodIrr y hy)) := by
@@ -114,11 +112,11 @@ theorem prodIrr_congr {h N : ℕ} {x y : Fin h → IrrGL k} (e : x = y) (hx : �
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨hd2, ⟨E2⟩⟩` from `GlobalTheory.T.product_transpose_inverse_dual_reverse hA hGK y hdy`. Take `⟨E3⟩` from `prodIrr_congr e3 hd2 hd0`. Establish `hc1 : IsCosocle π ((prodIrr y hdy).comp (thetaW k N))` using `hc.of_equiv (Representation.Equiv.refl _) (E2.trans E3).symm`. Establish `hc2 : IsCosocle (π.comp (thetaW k N)) (prodIrr y hdy)` using `isCosocle_comp_thetaW hc1`. Establish `hs : IsSmooth (π.comp (thetaW k N))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, f, hf, -⟩` from `hc2`. Conclude with `isSmooth_of_surjective (isSmooth_prodIrr y hdy) f hf`. Establish `hsoc` using `GlobalTheory.T.cosocle_contragredient_socle hA (π.comp (thetaW k N)) (prodIrr y hdy) (isSmooth_prodIrr y hdy) (GlobalTheory.T.product_irreducible_finite_length hA y hdy) hc2`. Take `⟨E4⟩` from `equiv_contra_comp_thetaW hGK π hs hc2.1`. Take `⟨hd5, ⟨E5⟩⟩` from `GlobalTheory.T.contragredient_product_irreducible hA y hdy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨E6⟩` from `prodIrr_congr e6 hd5 hd`. Conclude with `hsoc.of_equiv E4.symm (E5.trans E6)`.
+A detailed English derivation is pending.
 -/
 theorem isSocle_rev_of_isCosocle (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hGK : GKLocal k) {h N : ℕ}
     (x y : Fin h → IrrGL k) (hd0 : ∑ a, (x a).1 = N) (hd : ∑ a, ((x ∘ Fin.rev) a).1 = N) (hdy : ∑ a, (y a).1 = N)
@@ -141,9 +139,9 @@ theorem isSocle_rev_of_isCosocle (hA : GlobalTheory.Published.IrreducibleAdmissi
   exact hsoc.of_equiv E4.symm (E5.trans E6)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA hGK hLO 𝔪 h N x hd hx V _ _ π hπ`. Establish `hd0 : ∑ a, (x a).1 = N`. Rewrite using `[← hd]`. Conclude with `(Equiv.sum_comp Fin.revPerm (fun a => (x a).1)).symm`. Establish `hc` using `hLO 𝔪 h N x hd0 hx π hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hdy, -⟩` from `GlobalTheory.T.contragredient_product_irreducible hA (x ∘ Fin.rev) hd`. Conclude with `isSocle_rev_of_isCosocle hA hGK x (fun a => dualCl ((x ∘ Fin.rev) a)) hd0 hd hdy (funext fun a => by`. Simplify using `only [Function.comp_apply, Fin.rev_rev]`. Conclude with `GlobalTheory.T.dual_class_involutive hA (x a))`. Use the proof step `(funext fun a => GlobalTheory.T.dual_class_involutive hA (x (Fin.rev a))) π hc`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lSocleGL : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.IrreducibleAdmissibleGL → GKLocal k → LOrderFree k → LSocleGL k := by

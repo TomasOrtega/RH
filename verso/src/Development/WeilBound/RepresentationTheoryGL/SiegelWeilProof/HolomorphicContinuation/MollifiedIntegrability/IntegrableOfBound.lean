@@ -18,7 +18,7 @@ def lf (t : ℝ) (β : E n) : E n →L[ℝ] ℂ :=
       (ContinuousLinearMap.proj a : E n →L[ℝ] (Fin n → ℝ))))
 
 /- English proof (translation)
-Simplify using `only [lf, ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, ContinuousLinearMap.coe_comp', Function.comp_apply, ContinuousLinearMap.proj_apply, Complex.ofRealCLM_apply, smul_eq_mul]`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -34,7 +34,7 @@ theorem lf_apply (t : ℝ) (β w : E n) :
   ring
 
 /- English proof (translation)
-Rewrite using `[lf_apply, chr]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem chr_eq (t : ℝ) (β y : E n) : chr t β y = Complex.exp (lf t β y) := by
   rw [lf_apply, chr]
@@ -42,7 +42,7 @@ theorem chr_eq (t : ℝ) (β y : E n) : chr t β y = Complex.exp (lf t β y) := 
   rfl
 
 /- English proof (translation)
-Establish `e : chr t β = fun y => Complex.exp (lf t β y)` using `funext (chr_eq t β)`. Rewrite using `[e]`. Conclude with `(lf t β).hasFDerivAt.cexp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_chr (t : ℝ) (β y : E n) : HasFDerivAt (chr t β) (chr t β y • lf t β) y := by
   have e : chr t β = fun y => Complex.exp (lf t β y) := funext (chr_eq t β)
@@ -50,25 +50,25 @@ theorem hasFDerivAt_chr (t : ℝ) (β y : E n) : HasFDerivAt (chr t β) (chr t �
   exact (lf t β).hasFDerivAt.cexp
 
 /- English proof (translation)
-Rewrite using `[(hasFDerivAt_chr t β y).fderiv]`. Simplify using `[smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_chr (t : ℝ) (β y w : E n) : fderiv ℝ (chr t β) y w = chr t β y * lf t β w := by
   rw [(hasFDerivAt_chr t β y).fderiv]
   simp [smul_eq_mul]
 
 /- English proof (translation)
-Introduce `y` and use `(hasFDerivAt_chr t β y).differentiableAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem differentiable_chr (t : ℝ) (β : E n) : Differentiable ℝ (chr t β) :=
   fun y => (hasFDerivAt_chr t β y).differentiableAt
 
 /- English proof (translation)
-The claim follows from `(differentiable_chr t β).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_chr (t : ℝ) (β : E n) : Continuous (chr t β) := (differentiable_chr t β).continuous
 
 /- English proof (translation)
-Rewrite using `[chr_eq, Complex.norm_exp, lf_apply]`. Establish `h : (∑ a, ∑ b, (β a b : ℂ) * (y a b : ℂ)) = ((∑ a, ∑ b, β a b * y a b : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[h]`. Simplify using `[Complex.mul_re, Complex.I_re, Complex.I_im]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_chr (t : ℝ) (β y : E n) : ‖chr t β y‖ = 1 := by
   rw [chr_eq, Complex.norm_exp, lf_apply]
@@ -77,9 +77,9 @@ theorem norm_chr (t : ℝ) (β y : E n) : ‖chr t β y‖ = 1 := by
   simp [Complex.mul_re, Complex.I_re, Complex.I_im]
 
 /- English proof (translation)
-Rewrite using `[lf_apply, lf_apply]`. Establish `h : ∀ a b, (β a b : ℂ) * w a b = (β a b : ℂ) * ((w a b).re : ℂ) + Complex.I * ((β a b : ℂ) * ((w a b).im : ℂ))`. Introduce `a b`. Use `conv_lhs => rw [← Complex.re_add_im (w a b)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[h, Finset.sum_add_distrib, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lf_re_im (t : ℝ) (β : E n) (w : Fin n → Fin n → ℂ) :
     lf t β (fun a b => (w a b).re) + Complex.I * lf t β (fun a b => (w a b).im) =
@@ -100,9 +100,9 @@ theorem herm_apply' (x : E n) (i j : Fin n) :
     herm x i j = ((x i j + x j i : ℝ) : ℂ) / 2 + Complex.I * ((x i j - x j i : ℝ) : ℂ) / 2 := rfl
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single k]`. Rewrite using `[Finset.sum_eq_single l]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `a _ ha`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Simplify using `[ha]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -120,7 +120,7 @@ theorem sum_single (β : E n) (c : ℂ) (k l : Fin n) :
   · simp
 
 /- English proof (translation)
-Simplify using `only [vkl, mul_add, Finset.sum_add_distrib, sum_single]`. Rewrite using `[herm_apply']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_vkl (β : E n) (k l : Fin n) : ∑ a, ∑ b, (β a b : ℂ) * vkl k l a b = herm β k l := by
   simp only [vkl, mul_add, Finset.sum_add_distrib, sum_single]
@@ -129,7 +129,7 @@ theorem sum_vkl (β : E n) (k l : Fin n) : ∑ a, ∑ b, (β a b : ℂ) * vkl k 
   ring
 
 /- English proof (translation)
-Establish `h` using `lf_re_im t β (vkl k l)`. Rewrite `h` using `[sum_vkl]`. Simplify using `only [Dkl, dirC, fderiv_chr]`. Take the linear combination `(chr t β y) * h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dkl_chr (t : ℝ) (β : E n) (k l : Fin n) (y : E n) :
     Dkl k l (chr t β) y = (-(Complex.I * t) * herm β k l) * chr t β y := by
@@ -139,28 +139,28 @@ theorem dkl_chr (t : ℝ) (β : E n) (k l : Fin n) (y : E n) :
   linear_combination (chr t β y) * h
 
 /- English proof (translation)
-Rewrite using `[map_div₀, map_add, map_one, Complex.conj_I, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_half_add : starRingEnd ℂ ((1 + Complex.I) / 2) = (1 - Complex.I) / 2 := by
   rw [map_div₀, map_add, map_one, Complex.conj_I, map_ofNat]; ring
 
 /- English proof (translation)
-Rewrite using `[map_div₀, map_sub, map_one, Complex.conj_I, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_half_sub : starRingEnd ℂ ((1 - Complex.I) / 2) = (1 + Complex.I) / 2 := by
   rw [map_div₀, map_sub, map_one, Complex.conj_I, map_ofNat]; ring
 
 /- English proof (translation)
-Simplify using `only [vkl, map_add, apply_ite (starRingEnd ℂ), map_zero, conj_half_add, conj_half_sub]`. Rewrite using `[add_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem vkl_swap (k l a b : Fin n) : vkl l k a b = starRingEnd ℂ (vkl k l a b) := by
   simp only [vkl, map_add, apply_ite (starRingEnd ℂ), map_zero, conj_half_add, conj_half_sub]
   rw [add_comm]
 
 /- English proof (translation)
-Establish `e1 : (fun a b => (vkl l k a b).re) = fun a b => (vkl k l a b).re`. Use function extensionality and compare the values at `a b`. Rewrite using `[vkl_swap]`. Simplify using the standard rewrite rules. Establish `e2 : (fun a b => (vkl l k a b).im) = -(fun a b => (vkl k l a b).im)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a b`. Rewrite using `[vkl_swap]`. Simplify using the standard rewrite rules. Simplify using `only [Dkl, dirC]`. Rewrite using `[e1, e2, map_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -176,7 +176,7 @@ theorem dkl_swap (g : E n → ℂ) (k l : Fin n) (y : E n) :
   ring
 
 /- English proof (translation)
-Establish `hd : ContDiff ℝ (⊤ : ℕ∞) (fderiv ℝ g)` using `(contDiff_infty_iff_fderiv.mp hg).2`. Simplify using `only [Dkl, dirC]`. Conclude with `(hd.clm_apply contDiff_const).add (contDiff_const.mul (hd.clm_apply contDiff_const))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_dkl {g : E n → ℂ} (hg : ContDiff ℝ (⊤ : ℕ∞) g) (k l : Fin n) :
     ContDiff ℝ (⊤ : ℕ∞) (Dkl k l g) := by
@@ -185,14 +185,14 @@ theorem contDiff_dkl {g : E n → ℂ} (hg : ContDiff ℝ (⊤ : ℕ∞) g) (k l
   exact (hd.clm_apply contDiff_const).add (contDiff_const.mul (hd.clm_apply contDiff_const))
 
 /- English proof (translation)
-The claim follows from `hh.mono' hg.aestronglyMeasurable (Filter.Eventually.of_forall hb)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_bound {g : E n → ℂ} (hg : Continuous g) {h : E n → ℝ} (hh : Integrable h)
     (hb : ∀ y, ‖g y‖ ≤ h y) : Integrable g :=
   hh.mono' hg.aestronglyMeasurable (Filter.Eventually.of_forall hb)
 
 /- English proof (translation)
-The claim follows from `hg.norm.mono' (hc.mul (continuous_chr t β)).aestronglyMeasurable (Filter.Eventually.of_forall fun y => by rw [norm_mul, norm_chr, mul_one])`.
+A detailed English derivation is pending.
 -/
 theorem integrable_mul_chr {g : E n → ℂ} (hg : Integrable g) (hc : Continuous g) (t : ℝ) (β : E n) :
     Integrable fun y => g y * chr t β y :=
@@ -200,13 +200,13 @@ theorem integrable_mul_chr {g : E n → ℂ} (hg : Integrable g) (hc : Continuou
     (Filter.Eventually.of_forall fun y => by rw [norm_mul, norm_chr, mul_one])
 
 /- English proof (translation)
-Establish `hdiff : Differentiable ℝ g` using `hg.differentiable (by simp)`. Establish `hcont : Continuous g` using `hg.continuous`. Establish `hcw : Continuous fun y => fderiv ℝ g y w` using `((contDiff_infty_iff_fderiv.mp hg).2.continuous).clm_apply continuous_const`. Establish `H` using `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable (μ := volume) (f := g) (g := chr t β) (v := w) (integrable_mul_chr hgw hcw t β) (by`. Establish `: (fun y => g y * fderiv ℝ (chr t β) y w) = fun y => (g y * chr t β y) * lf t β w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[fderiv_chr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(integrable_mul_chr hgi hcont t β).mul_const _)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(integrable_mul_chr hgi hcont t β)`. Use the proof step `(fun x _ => hdiff x) (fun x _ => differentiable_chr t β x)`. Establish `: (fun y => g y * fderiv ℝ (chr t β) y w) = fun y => (g y * chr t β y) * lf t β w`. Use function extensionality and compare the values at `y`. Rewrite using `[fderiv_chr]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `H` using `[this, integral_mul_const]`. Take the linear combination `H`.
+A detailed English derivation is pending.
 -/
 theorem ibp_dir {g : E n → ℂ} (hg : ContDiff ℝ (⊤ : ℕ∞) g) (hgi : Integrable g) (w : E n)
     (hgw : Integrable fun y => fderiv ℝ g y w) (t : ℝ) (β : E n) :
@@ -230,17 +230,15 @@ theorem ibp_dir {g : E n → ℂ} (hg : ContDiff ℝ (⊤ : ℕ∞) g) (hgi : In
   linear_combination H
 
 /- English proof (translation)
-Use `set u : E n := fun a b => (vkl k l a b).re`. Use `set w : E n := fun a b => (vkl k l a b).im`. Establish `hre : (fun y => fderiv ℝ g y u) = fun y => (Dkl k l g y + Dkl l k g y) / 2`. Use function extensionality and compare the values at `y`. Rewrite using `[dkl_swap g k l y]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Dkl, dirC, u, w]`. Expand and normalize the polynomial expressions, which then agree. Establish `him : (fun y => fderiv ℝ g y w) = fun y => (Dkl k l g y - Dkl l k g y) / (2 * Complex.I)`. Use function extensionality and compare the values at `y`. Rewrite using `[dkl_swap g k l y]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Dkl, dirC, u, w]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `iu : Integrable fun y => fderiv ℝ g y u` using `by rw [hre]; exact (h1.add h2).div_const _`. Establish `iw : Integrable fun y => fderiv ℝ g y w` using `by rw [him]; exact (h1.sub h2).div_const _`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont` using `hg.continuous`. Establish `hcu : Continuous fun y => fderiv ℝ g y u` using `((contDiff_infty_iff_fderiv.mp hg).2.continuous).clm_apply continuous_const`. Establish `hcw : Continuous fun y => fderiv ℝ g y w` using `((contDiff_infty_iff_fderiv.mp hg).2.continuous).clm_apply continuous_const`. Establish `eD : (fun y => Dkl k l g y * chr t β y) = fun y => fderiv ℝ g y u * chr t β y + Complex.I * (fderiv ℝ g y w * chr t β y)`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Dkl, dirC, u, w]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eD, integral_add (integrable_mul_chr iu hcu t β) ((integrable_mul_chr iw hcw t β).const_mul _), integral_const_mul, ibp_dir hg hgi u iu t β, ibp_dir hg hgi w iw t β]`. Establish `h` using `lf_re_im t β (vkl k l)`. Rewrite `h` using `[sum_vkl]`.
-
-Take the linear combination `(-(∫ y, g y * chr t β y)) * h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ibp_dkl {g : E n → ℂ} (hg : ContDiff ℝ (⊤ : ℕ∞) g) (hgi : Integrable g) (k l : Fin n)
     (h1 : Integrable (Dkl k l g)) (h2 : Integrable (Dkl l k g)) (t : ℝ) (β : E n) :
@@ -268,7 +266,7 @@ theorem ibp_dkl {g : E n → ℂ} (hg : ContDiff ℝ (⊤ : ℕ∞) g) (hgi : In
   linear_combination (-(∫ y, g y * chr t β y)) * h
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simpa using hf`. Consider the case `cons kl L ih => simpa using contDiff_dkl ih kl.1 kl.2`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem contDiff_foldr {f : E n → ℂ} (hf : ContDiff ℝ (⊤ : ℕ∞) f) (L : List (Fin n × Fin n)) :
     ContDiff ℝ (⊤ : ℕ∞) (L.foldr (fun kl g => Dkl kl.1 kl.2 g) f) := by
@@ -277,11 +275,11 @@ theorem contDiff_foldr {f : E n → ℂ} (hf : ContDiff ℝ (⊤ : ℕ∞) f) (L
   | cons kl L ih => simpa using contDiff_dkl ih kl.1 kl.2
 
 /- English proof (translation)
-Establish `hI : ∀ L : List (Fin n × Fin n), Integrable (L.foldr (fun kl g => Dkl kl.1 kl.2 g) f)`. Introduce `L`. Take `⟨h, hh, hbd⟩` from `hb L`. Conclude with `integrable_of_bound (contDiff_foldr hf L).continuous hh hbd`. Proceed by induction on `L with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `nil => simp`. Consider the case `cons kl L ih`. Establish `h1` using `hI (kl :: L)`. Establish `h2` using `hI ((kl.2, kl.1) :: L)`. Simplify using `only [List.foldr_cons] at h1 h2 ⊢`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ibp_dkl (contDiff_foldr hf L) (hI L) kl.1 kl.2 h1 h2 t β, ih, List.map_cons, List.prod_cons]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ibp_list {f : E n → ℂ} (hf : ContDiff ℝ (⊤ : ℕ∞) f) (t : ℝ) (β : E n)
     (hb : ∀ L : List (Fin n × Fin n), ∃ h : E n → ℝ, Integrable h ∧
@@ -302,21 +300,21 @@ theorem ibp_list {f : E n → ℂ} (hf : ContDiff ℝ (⊤ : ℕ∞) f) (t : ℝ
     ring
 
 /- English proof (translation)
-Introduce `n f t β hf ht hdet hb`. Establish `hI : ∀ L : List (Fin n × Fin n), Integrable (L.foldr (fun kl g => Dkl kl.1 kl.2 g) f)`. Introduce `L`. Take `⟨h, hh, hbd⟩` from `hb L`. Conclude with `integrable_of_bound (contDiff_foldr hf L).continuous hh hbd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfold : ∀ σ : Equiv.Perm (Fin n), (List.finRange n).foldr (fun k g => Dkl k (σ k) g) f = ((List.finRange n).map fun k => (k, σ k)).foldr (fun kl g => Dkl kl.1 kl.2 g) f`. Introduce `σ`. Rewrite using `[List.foldr_map]`. Establish `hΔ : ∫ y, Delta f y * chr t β y = (Complex.I * t) ^ n * (herm β).det * ∫ y, f y * chr t β y`. Establish `e : (fun y => Delta f y * chr t β y) = fun y => ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * (((List.finRange n).map fun k => (k, σ k)).foldr (fun kl g => Dkl kl.1 kl.2 g) f y * chr t β y)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [Delta, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, hfold]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_finset_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `swap`. Introduce `σ _`. Conclude with `(integrable_mul_chr (hI _) (contDiff_foldr hf _).continuous t β).const_mul _`. Repeatedly rewrite using `[integral_const_mul, ibp_list hf t β hb, List.map_map]`. Establish `hdet' : (herm β).det = ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ k, herm β k (σ k)`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.det_transpose, Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Both sides reduce to the same expression. Rewrite using `[hdet', Finset.mul_sum, Finset.sum_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hp : (((List.finRange n).map ((fun kl : Fin n × Fin n => Complex.I * t * herm β kl.1 kl.2) ∘ fun k => (k, σ k))).prod) = (Complex.I * t) ^ n * ∏ k, herm β k (σ k)`. Rewrite using `[← Fin.prod_univ_def]`. Simplify using `only [Function.comp_apply]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : (Complex.I * t) ^ n ≠ 0` using `pow_ne_zero _ (mul_ne_zero Complex.I_ne_zero (by exact_mod_cast ht))`. Rewrite using `[hΔ]`. Establish `e2 : (-(Complex.I * t)) ^ n = (-1) ^ n * (Complex.I * t) ^ n` using `by rw [neg_eq_neg_one_mul, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e2]`. Establish `h1 : ((-1 : ℂ) ^ n) * ((-1 : ℂ) ^ n) = 1` using `by rw [← mul_pow]; norm_num`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem ibp : IBP := by
   intro n f t β hf ht hdet hb
@@ -367,7 +365,7 @@ end PositivityTheory.Rg.Sw.WR.Ib
 namespace PositivityTheory.Rg.Sw.WR
 
 /- English proof (translation)
-The claim follows from `Ib.ibp`.
+A detailed English derivation is pending.
 -/
 theorem ibp : IBP := Ib.ibp
 

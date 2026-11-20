@@ -40,11 +40,11 @@ def pre0 {S : Scheme.{0}} (h : ℕ) (A : Over S) [GrpObj A] [IsCommMonObj A] (P 
     exact absurd hz z.ne_zero
 
 /- English proof (translation)
-Introduce `S h A _ _ P hP hA`. Set `c` to `pre0 h A P hP`. Establish `hA' : Out.RelAmple c.A c.diag` using `hA`. Take `⟨hpos, -⟩` from `isE8_W8`. Set `pr : Fin 8 → (Out.powObj A 8 ⟶ A)` to `Out.powPr A`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hmon : ∀ u, IsMonHom (pr u)` using `fun u => inferInstance`. Establish `huniv : ∀ (T : Over S) (y : Fin 8 → (T ⟶ A)), ∃! x : T ⟶ Out.powObj A 8, ∀ u, x ≫ pr u = y u` using `fun T y => ⟨(Out.powIsLimit A 8).lift (Fan.mk T y), fun u => (Out.powIsLimit A 8).fac (Fan.mk T y) ⟨u⟩, fun x hx => (Out.powIsLimit A 8).uniq (Fan.mk T y) x fun u => hx u.as⟩`. Establish `hL : (powLB A P).IsLB` using `LB.isLB_linComb hP.2.2.1 _ _`. Establish `hLW : cls (powLB A P) hL = PrincipalIntegral.quad (cls c.P c.isLB) W8 pr` using `cls_linComb hP.2.2.1 _ _ _`. Establish `hadd` using `PrincipalIntegral.pair_mul c SemiRigid.globalFns hA'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨AbelianSchemeGerms.isAbelianScheme_powObj A hP.1 7, hL, PosDefAmple.relAmple_linComb_of_posDef SemiRigid.globalFns 0 1 8 ℤ 0 S _ c (Out.powObj A 8) pr W8 hmon huniv hA' hpos, PrincipalIntegral.rigidified hadd hmon hL hLW, PrincipalIntegral.sym hadd (PrincipalIntegral.pair_comm c …`.
+Supply the required witnesses or components.
 -/
 theorem powLB_props : ∀ {S : Scheme.{0}} (h : ℕ) (A : Over S) [GrpObj A] [IsCommMonObj A] (P : LB (A ⊗ A).left),
     IsSymmetricPair h A P → Out.RelAmple A (diagPull A P) → IsAbelianScheme (Out.powObj A 8) ∧ (powLB A P).IsLB ∧

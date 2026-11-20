@@ -13,19 +13,19 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-Establish `hyx : form σ J H.y H.x = 1`. Establish `: form σ J H.y H.x = σ (form σ J H.x H.y)`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hxy, map_one]`. Set `L : ((E × E) × (Fin d₂ → E)) →ₗ[E] (Fin n → E)` to `((LinearMap.toSpanSingleton E _ H.x).coprod (LinearMap.toSpanSingleton E _ H.y)).coprod H.ι.mulVecLin`. Establish `hL : ∀ p, L p = p.1.1 • H.x + H.ι *ᵥ p.2 + p.1.2 • H.y`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `p`. Simplify using `only [L, LinearMap.coprod_apply, LinearMap.toSpanSingleton_apply, Matrix.mulVecLin_apply]`. Normalize the expressions using the abelian group laws. Establish `hf : ∀ (s t : E) (u : Fin d₂ → E) (w), form σ J (s • H.x + H.ι *ᵥ u + t • H.y) w = s * form σ J H.x w + form σ J (H.ι *ᵥ u) w + t * form σ J H.y w`. Introduce `s t u w`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [form, add_dotProduct, smul_dotProduct, smul_eq_mul]`. Establish `hinj : Function.Injective L`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨⟨s, t⟩, u⟩ h`. Rewrite `h` using `[hL]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hf s t u H.y`. Establish `h2` using `hf s t u H.x`. Simplify using `only at h`. Rewrite `h1` using `[h, hxy, (ho u).2, hyy]`. Rewrite `h2` using `[h, hxx, (ho u).1, hyx]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [form, zero_dotProduct, mul_one, mul_zero, add_zero, zero_add] at h1 h2`. Substitute `h1 h2` using the available equality. Simplify using `only [zero_smul, add_zero, zero_add] at h`. Establish `: u = 0` using `hi (by rw [h, Matrix.mulVec_zero])`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hsurj : Function.Surjective L` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp; omega)).1 hinj`. Introduce `v`. Take `⟨p, hp⟩` from `hsurj v`. Conclude with `⟨p.1.1, p.1.2, p.2, by rw [← hL, hp]⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem plane_span {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a)
     {n d₂ : ℕ} (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j, σ (J j i) = J i j) (H : Plane E n d₂) (hn : d₂ + 2 = n)
@@ -72,27 +72,23 @@ private theorem plane_span {F E : Type} [Field F] [Field E] [Algebra F E] (σ : 
 set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₂ H ⟨hn, hxx, hyy, hxy, ho, hi⟩ f hf hdec Φ hΦ μ 𝓕 hμ h𝓕 μN 𝓕N hμN h𝓕N hm g`. Establish `hcm` using `hP.base.cm`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Take `⟨K, hKc, hcov⟩` from `GlobalTheory.UnipHermCover.cocompact_herm F E σ hcm n d₂ X H hP.herm.herm hxx hyy hxy ho (plane_span σ hσ X.J hP.herm.herm H hn hxx hyy hxy ho hi)`. Take `⟨hcont, hinv, C, k, hbd⟩` from `((GlobalTheory.T.theta_basic_properties hK.base) F E σ B n d X W M χX χW om r s r' s' hP).1 Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨tg1, lc1, sc1, -⟩` from `GlobalTheory.UnipCT.topFacts σ X.J`. Take `⟨tg2, lc2, sc2, -⟩` from `GlobalTheory.UnipCT.topFacts σ W.J`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`. Establish `hC0 : 0 ≤ C`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `(norm_nonneg _).trans (hbd 1 1)`. Establish `h1 : (0 : ℝ) < (ht (1 : UA σ X.J) : ℝ)` using `lt_of_lt_of_le zero_lt_one (by exact_mod_cast one_le_heightGL F _)`. Establish `h2 : (0 : ℝ) < (ht (1 : UA σ W.J) : ℝ)` using `lt_of_lt_of_le zero_lt_one (by exact_mod_cast one_le_heightGL F _)`. Conclude with `nonneg_of_mul_nonneg_left h0 (pow_pos (mul_pos h1 h2) k)`. Establish `hug : Continuous fun u : unip σ X H => u.1 * g` using `continuous_subtype_val.mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hhc : Continuous fun u : unip σ X H => (ht (u.1 * g) : ℝ)` using `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp (continuous_subtype_val.comp hug))`. Take `⟨A₀, hA₀⟩` from `hKc.exists_bound_of_continuousOn hhc.continuousOn`. Use `set A : ℝ := max A₀ 0 with hAdef`. Establish `hA0 : 0 ≤ A` using `le_max_right _ _`. Establish `hb1 : ∀ (u : unip σ X H) h, ‖theta om Φ (u.1 * g) h‖ ≤ C * A ^ k * (ht h : ℝ) ^ k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u h`. Take `⟨γ, hγ⟩` from `hcov u`. Establish `hr : γ.1.1 ∈ ratU σ X.J` using `Subgroup.mem_subgroupOf.1 γ.2`. Establish `e` using `hinv γ.1.1 hr 1 (one_mem _) (u.1 * g) h`. Rewrite `e` using `[one_mul, ← mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (ht (γ.1.1 * u.1 * g) : ℝ) ≤ A` using `((le_abs_self _).trans (hA₀ _ hγ)).trans (le_max_left _ _)`. Rewrite using `[← e, mul_assoc C, ← mul_pow]`. Use `(hbd _ _).trans (mul_le_mul_of_nonneg_left ?_ hC0)` and prove the remaining obligations. Use `gcongr`. Establish `hCA : 0 ≤ C * A ^ k` using `mul_nonneg hC0 (pow_nonneg hA0 k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb2 : ∀ (u : unip σ X H) h, ‖theta om Φ (u.1 * g) h‖ ≤ C * A ^ k * (qht h : ℝ) ^ k`. Introduce `u h`. Establish `hγ : ∀ γ : ratU σ W.J, ‖theta om Φ (u.1 * g) h‖ ≤ C * A ^ k * ((ht (γ.1 * h) ^ k : ℝ≥0) : ℝ)`. Introduce `γ`. Establish `e` using `hinv 1 (one_mem _) γ.1 γ.2 (u.1 * g) h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[one_mul]`. Rewrite using `[← e, NNReal.coe_pow]`. Conclude with `hb1 u _`. Establish `hm : (qht h) ^ k = ⨅ γ : ratU σ W.J, ht (γ.1 * h) ^ k` using `by show (⨅ γ : ratU σ W.J, ht (γ.1 * h)) ^ k = _`. Conclude with `Monotone.map_ciInf_of_continuousAt (f := fun x : ℝ≥0 => x ^ k) (continuous_pow k).continuousAt (fun x y hxy => pow_le_pow_left₀ (by positivity) hxy k) (OrderBot.bddBelow _)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (qht h : ℝ) ^ k = ⨅ γ : ratU σ W.J, ((ht (γ.1 * h) ^ k : ℝ≥0) : ℝ)`. Rewrite using `[← NNReal.coe_pow, ← NNReal.coe_iInf, hm]`. Rewrite using `[e2, Real.mul_iInf_of_nonneg hCA]`. Conclude with `le_ciInf hγ`. Take `⟨C₂, hC₂⟩` from `hdec k`.
-
-Take `⟨ξ, hξ0, hξ⟩` from `GlobalTheory.UnipMassHerm.exists_anti hcm`. Establish `hJ` using `GlobalTheory.ThK.SqIntHerm.isHermND_smul_map F E σ B d W r' s' hP.skew ξ hξ0 hξ`. Establish `hfin : μ 𝓕 < ⊤` using `GlobalTheory.ThKContSmall.measure_fundamental_domain_lt_top hK.siegelSetUnitary hcm hJ _ (GlobalTheory.SiegelSet.ug_eq_hr hσ hξ0) μ hμ 𝓕 h𝓕`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 hfin.ne`. Use `haveI : IsFiniteMeasure (μN.restrict 𝓕N) := isFiniteMeasure_restrict.2 (by rw [hm]; exact ENNReal.one_ne_top)`.
-
-Establish `hFc : Continuous fun p : unip σ X H × UA σ W.J => f p.2 * (starRingEnd ℂ) (theta om Φ (p.1.1 * g) p.2)` using `(hf.comp continuous_snd).mul (Complex.continuous_conj.comp (hcont.comp ((hug.comp continuous_fst).prodMk continuous_snd)))`. Use `Integrable.mono' (integrable_const (C * A ^ k * C₂)) hFc.aestronglyMeasurable (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_conj]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.pair_plane_hyperbolic_reduction : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

@@ -21,26 +21,26 @@ def rd (F : Pol0 D) (z : (D.mem u).C.Y 0) : ℂ :=
   fnOf _ (shiftOf (lamT u 0)) 1 (MvPolynomial.map D.what₂.embLL F) (T.val0.eY z)
 
 /- English proof (translation)
-Simplify using `only [rd, map_add, Pi.add_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rd_add (F F' : Pol0 D) (z : (D.mem u).C.Y 0) : rd T (F + F') z = rd T F z + rd T F' z := by
   simp only [rd, map_add, Pi.add_apply]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_LL (a : D.what₂.LL) (F : Pol0 D) :
     MvPolynomial.map D.what₂.embLL (a • F) = D.what₂.embLL a • MvPolynomial.map D.what₂.embLL F := by
   rw [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]
 
 /- English proof (translation)
-Simplify using `only [rd, map_smul_LL, LinearMap.map_smul, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rd_smul (a : D.what₂.LL) (F : Pol0 D) (z : (D.mem u).C.Y 0) : rd T (a • F) z = D.what₂.embLL a * rd T F z := by
   simp only [rd, map_smul_LL, LinearMap.map_smul, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Apply `MvPolynomial.map_injective _ D.what₂.embLL.injective` to reduce the goal to its premises. Apply `Formalism.L2.Col.fnOf_injective _ _ 1 (fun _ => by simp) (Formalism.MainNotions.Ext.Lw.frOne _)` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `h (T.val0.eY.symm y)` as an intermediate fact. Simplify `this` using `[rd]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rd_unique {F F' : Pol0 D} (h : ∀ z, rd T F z = rd T F' z) : F = F' := by
   apply MvPolynomial.map_injective _ D.what₂.embLL.injective
@@ -50,7 +50,7 @@ theorem rd_unique {F F' : Pol0 D} (h : ∀ z, rd T F z = rd T F' z) : F = F' := 
   simpa [rd] using this
 
 /- English proof (translation)
-Take `⟨-, h⟩` from `(T.val0.rat ((D.fm u).emb 0 x)).1 ⟨x, rfl⟩`. Take `⟨P, hP, hz⟩` from `h c`. Take `⟨F, hF, rfl⟩` from `Formalism.L2.Col.exists_VV_of_mem_RatSpanG D.what₂.embLL _ hP`. Conclude with `⟨F, hF, hz⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pol (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) :
     ∃ F ∈ Formalism.L2.DIV.VV D.what₂.LL ((D.fm u).lam 0), ∀ z, (D.fm u).emb 0 x c z = rd T F z := by
@@ -62,13 +62,13 @@ theorem exists_pol (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) :
 def pol (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) : Pol0 D := (exists_pol T x c).choose
 
 /- English proof (translation)
-The claim follows from `(exists_pol T x c).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem pol_mem (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) :
     pol T x c ∈ Formalism.L2.DIV.VV D.what₂.LL ((D.fm u).lam 0) := (exists_pol T x c).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_pol T x c).choose_spec.2 z`.
+A detailed English derivation is pending.
 -/
 theorem pol_spec (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) (z : (D.mem u).C.Y 0) :
     (D.fm u).emb 0 x c z = rd T (pol T x c) z := (exists_pol T x c).choose_spec.2 z
@@ -89,9 +89,9 @@ Both sides reduce to the same expression.
 theorem coefficient_map_apply (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) : co0 T x c = pol T x c := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Apply `(D.fm u).emb_inj 0` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `c z`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[pol_spec, ← coefficient_map_apply, hx]`. Simplify using `[rd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coefficient_map_injective : Function.Injective (co0 T) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -103,7 +103,7 @@ theorem coefficient_map_injective : Function.Injective (co0 T) := by
   simp [rd]
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.GlobalTheoryTheory.TraceIntegrality.translate_span_eq]`. Conclude with `pol_mem T x c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefficient_map_mem_span (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) :
     co0 T x c ∈ Formalism.MainNotions.flipTwoThree.TSpan D.what₂.LL ((D.fm u).lam 0) := by
@@ -111,13 +111,13 @@ theorem coefficient_map_mem_span (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0
   exact pol_mem T x c
 
 /- English proof (translation)
-Establish `hF' : ∀ c, F c ∈ Formalism.L2.DIV.VV D.what₂.LL ((D.fm u).lam 0)` using `fun c => by`. Use `hF c` as an intermediate fact. Rewrite `this` using `[Formalism.L2.GlobalTheoryTheory.TraceIntegrality.translate_span_eq]`. Then use the resulting hypothesis. Establish `hs : ∀ c (γ : UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))), bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ.1 ∈ T.cls0.lev.U.map (MulAut.conj (T.cls0.y c).1).toMonoidHom → γ = 1 := by`. Introduce `c γ hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs⟩` from `(T.cls0.stabI_range c γ).2 hγ`. Use `hst c` as an intermediate fact. Rewrite using `[← hs, Subsingleton.elim s 1, map_one]`. Establish `hFi : (fun c z => rd T (F c) z) ∈ (D.fm u).Fi 0`. Rewrite using `[T.val0.Fi, Formalism.MainNotions.Ext.Lw.fiC_eq_pi _ _ _ _ T.cls0.y_bij hs, Submodule.mem_pi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `c _`. Rewrite using `[Formalism.MainNotions.Ext.Lw.valC_eq]`. Use `⟨MvPolynomial.map D.what₂.embLL (F c), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[lamT_zero u, ← Formalism.MainNotions.Ext.Lw.cspan_eq]`. Conclude with `Formalism.L2.Col.map_mem_CSpan D.what₂.embLL _ _ (hF' c)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Simplify using `[rd]`. Take `⟨x, hx⟩` from `(T.val0.rat (fun c z => rd T (F c) z)).2 ⟨hFi, fun c => ⟨_, Formalism.L2.Col.map_mem_RatSpanG D.what₂.embLL _ (hF' c), fun z => rfl⟩⟩`. Use `⟨x, funext fun c => rd_unique T fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[coefficient_map_apply, ← pol_spec, hx]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefficient_map_surjective (hst : ∀ c, Subsingleton ((D.mem u).C.stab 0 c)) (F : (D.mem u).C.cls 0 → Pol0 D)
     (hF : ∀ c, F c ∈ Formalism.MainNotions.flipTwoThree.TSpan D.what₂.LL ((D.fm u).lam 0)) : ∃ x, co0 T x = F := by

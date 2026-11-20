@@ -9,7 +9,7 @@ attribute [local instance] GlobalTheory.TypeRec.factG
 namespace GlobalTheory.GoodTypes
 
 /- English proof (translation)
-Introduce `hG D L hL k f hf` and use `GlobalTheory.GLq.GalSer.eSer_galois hG D ((eSerTie_iff D).2 ⟨L, hL⟩) starRingAut k f hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem seriesConj_of_labTie : Green → ∀ (D : D7) (L : ∀ k, LabelDatum (D.host.g k)), LabTie D L →
     GlobalTheory.GoodTypes.SeriesConj D :=

@@ -16,29 +16,25 @@ noncomputable section
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Z g φs 𝒩 φ EX N R _ _ _ ξ t mt P m γ hg hfan href hN hphi hCN hEt hun hTor hcone hin`. Establish `hCN'` using `hCN`. Take `⟨hNoeth, hIC, -, hChar⟩` from `hCN'`. Use `haveI := hNoeth`. Use `haveI := hChar`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Take `⟨y, hy⟩` from `DomFine.exists_generic_point (𝓞 c.F) c.F Z.X (Xo.XF c) Z.s Z.jQ Z.flat Z.proj Z.jQ_open Z.jQ_dense ξ hEt.1`. Take `⟨W, _, _, _, f, hW, hfi, hfm⟩` from `PrimeUnif.exists_cdvr R (maximalIdeal R)`. Establish `hloc : IsLocalHom f` using `⟨fun a ha => by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Establish `h' : a ∈ (maximalIdeal W).comap f` using `hfm.symm ▸ (mem_maximalIdeal a).2 h`. Conclude with `(mem_maximalIdeal _).1 h' ha⟩`. Establish `hW'` using `hW`. Take `⟨hdvr, hcpl, hch⟩` from `hW'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hdvr`. Use `haveI := hcpl`. Use `haveI := hch`. Establish `hCNW : IsCN W` using `⟨inferInstance, inferInstance, hcpl, hch⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t', mt', P', e, -, hcoord⟩` from `pullSt E H R W f t P hCN hCNW hfi hloc hTor`. Take `⟨be', hbe', hmon, -⟩` from `exists_periodForm P' hϖ`. Take `⟨mt''⟩` from `TraitOrder.comp rfl mt mt'`. Establish `j : Function.Injective ((algebraMap W (FractionRing W)).comp f)` using `(IsFractionRing.injective W _).comp hfi`. Set `gK : FractionRing R →+* FractionRing W` to `IsFractionRing.lift j`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `eK : jK W ≫ spMap f = spMap gK ≫ jK R` using `(GlobalTheory.Ex.UnifModel.spMap_comp fun _ => rfl).trans (GlobalTheory.Ex.UnifModel.spMap_comp (IsFractionRing.lift_algebraMap j)).symm`. Establish `hr : Set.range (jK W ≫ spMap f ≫ ξ) ⊆ Set.range Z.j`. Establish `hmor : spMap gK ≫ y ≫ Z.j = jK W ≫ spMap f ≫ ξ`. Rewrite using `[← Category.assoc (jK W), eK, Category.assoc, ← hy]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Use `⟨(spMap gK ≫ y) p, ?_⟩` and prove the remaining obligations. Use `show (spMap gK ≫ y ≫ Z.j) p = _`. Rewrite using `[hmor]`. Take `⟨n, hn, hid⟩` from `hphi W hW ϖ hϖ (spMap f ≫ ξ) t' mt'' P' hr be' hbe' hmon`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `es : P.D.toPre.X →ₗ[ℤ] P'.D.toPre.X` to `e.symm.toLinearMap.toAddMonoidHom.toIntLinearMap`. Set `be : LinearMap.BilinForm ℤ P.D.toPre.X` to `be'.compl₁₂ es es`. Establish `hbe : ∀ a b, be a b = be' (e.symm a) (e.symm b)` using `fun _ _ => rfl`. Use `⟨W, inferInstance, inferInstance, inferInstance, hW, ϖ, hϖ, f, hloc, be, fun a b => ?_, fun a => ?_, n, ?_, hid⟩` and prove the remaining obligations. Rewrite using `[hbe, hbe, hbe'.1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, k, hk, hc⟩` from `hmon (e.symm a)`. Take `⟨⟨r, hr0, -⟩, -⟩` from `GlobalTheory.PsiCoordLocal.main R P.D hIC a`. Take `⟨u', hc'⟩` from `hcoord (e.symm a) r (by rw [LinearEquiv.apply_symm_apply]; exact hr0)`. Take `⟨v, hv⟩` from `GlobalTheory.PsiCoordLocal.exists_unit_of_coord hc hc'`. Use `⟨r, k 0, hr0, by rw [hbe]; exact hk 0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `e1 : f r = ((u'⁻¹ * v * u : Wˣ) : W) * ϖ ^ k 0`. Establish `: (u' : W) * f r = v * (u * ϖ ^ k 0)` using `by simpa using hv`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1]`. Conclude with `(associated_unit_mul_left _ _ (Units.isUnit _))`.
-
-Rewrite using `[hn]`. Establish `e2 : φ.evalZ be = φ.evalZ be'` using `InvFun.eval_equiv φ e.symm (fun a b => ((be' a b : ℤ) : ℝ))`. Rewrite using `[e2]`. Simplify using `only [InvFun.evalZ, InvFun.eval, comb]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_trait_phiDiv_order : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Z : GMod Xo c) (g : ℕ) (φs : InvFun ℤ) (𝒩 : Finset ℕ) (φ : InvFun (𝓞 E)) (EX : EffCartierData Z.X) (N : ℕ) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ Z.X) (t : SAB H (Sp R)), SABMap t Z.t ξ → ∀ (P : PELUnif (maximalIdeal R) t) (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), Module.finrank ℚ E * min D.p D.q ≤ g → IsPolFan id g φs → Refines H (min D.p D.q) φs 𝒩 φ → 0 < N → IsPhiDiv (comb 0 φ N φ) Z EX → IsCN R → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified → P.TorsionIso → ConeZ E φs P.D.toPre.X m γ → InCone P.D.toPre γ → ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsLocalRing W), CDvr W ∧ ∃ ϖ : W, Irreducible ϖ ∧ ∃ f : R →+* W, IsLocalHom f ∧ ∃ be : LinearMap.BilinForm ℤ P.D.toPre.X, (∀ y z, be y z = be z y) ∧ FormAt P.D.toPre f ϖ be ∧ ∃ n : ℕ, (n : ℝ) = N * φ.evalZ be ∧ idlAlong EX.idealSheaf (spMap f ≫ ξ) = Ideal.span {ϖ ^ n} := by
   intro E _ _ _ H D l Xo c Z g φs 𝒩 φ EX N R _ _ _ ξ t mt P m γ hg hfan href hN hphi hCN hEt hun hTor hcone hin

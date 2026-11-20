@@ -18,7 +18,7 @@ set_option autoImplicit false
 namespace GlobalTheory.Heat.GlueWt
 
 /- English proof (translation)
-Introduce `Y v dd h α W f hf` and use `GlobalTheory.Heat.IsInv.isWt Y v dd h α W f hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isWt_of_isInv : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa) (v : TanM (𝟙 (Sp R)) Y.H) (dd : Fld Y.H.left), IsInv Y.H v dd → ∀ (α : Q.X) (W : Y.H.left.Opens) (f : Γ(Y.H.left, W)), IsWt Y α W f → IsWt Y α W (dd W f) :=
   fun Y v dd h α W f hf => GlobalTheory.Heat.IsInv.isWt Y v dd h α W f hf

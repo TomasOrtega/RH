@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CenIntAtLoc.cenInt_at_alt | exact _root_.GlobalTheory.CenIntAtLoc.cenInt_at_alt | (intros; apply _root_.GlobalTheory.CenIntAtLoc.cenInt_at_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.cenInt_at_members : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ _ _ _ _ => GlobalTheory.PendOf.CenInt (w.D Z) := by
   first | exact @_root_.GlobalTheory.CenIntAtLoc.cenInt_at_alt | exact _root_.GlobalTheory.CenIntAtLoc.cenInt_at_alt | (intros; apply _root_.GlobalTheory.CenIntAtLoc.cenInt_at_alt <;> assumption)

@@ -20,14 +20,14 @@ def levTw (W : RealPack ex) (x : GA (I.rec7 l Z) (I.rec7 l Z).sp.X') (t : W.P.T)
   (Formalism.IndefR.Lev.levG _ (pk W).βX (datXP (pk W) (lvP W) t)).comap (MulAut.conj x⁻¹).toMonoidHom
 
 /- English proof (translation)
-Simplify using `[levSph, levS, MulAut.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_levSph {W : RealPack ex} {x : GA (I.rec7 l Z) (I.rec7 l Z).sp.X'} (h : GA (I.rec7 l Z) (I.rec7 l Z).sp.X') :
     h ∈ levSph W x ↔ x⁻¹ * h * x ∈ levS _ (pk W).βX (datSph W) := by
   simp [levSph, levS, MulAut.conj_apply]
 
 /- English proof (translation)
-Simplify using `[levTw, levS, MulAut.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_levTw {W : RealPack ex} {x : GA (I.rec7 l Z) (I.rec7 l Z).sp.X'} {t : W.P.T} (h : GA (I.rec7 l Z) (I.rec7 l Z).sp.X') :
     h ∈ levTw W x t ↔ x⁻¹ * h * x ∈ levS _ (pk W).βX (datXP (pk W) (lvP W) t) := by

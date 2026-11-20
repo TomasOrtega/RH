@@ -14,7 +14,7 @@ open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FiniteQuotientCharacter.eq_one_of_sum_representatives_ne_zero | exact GlobalTheory.CompanionTheory.FiniteQuotientCharacter.eq_one_of_sum_representatives_ne_zero | (intros; apply GlobalTheory.CompanionTheory.FiniteQuotientCharacter.eq_on …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.character_trivial_of_nonzero_sum : ∀ {A : Type} [AddCommGroup A] (T large₂ : AddSubgroup A) (R : Finset A) (χ : A → ℂ),
   (∀ a ∈ T, ∀ b ∈ T, χ (a + b) = χ a * χ b) → (∀ l ∈ large₂, l ∈ T ∧ χ l = 1) → (∀ r ∈ R, r ∈ T) →

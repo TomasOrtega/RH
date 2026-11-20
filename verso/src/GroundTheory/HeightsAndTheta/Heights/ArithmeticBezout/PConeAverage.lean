@@ -9,21 +9,19 @@ open MvPolynomial MeasureTheory
 noncomputable section
 
 /- English proof (translation)
-Introduce `n e δ h W g hW hg hδ`. Use `set S : Set (EuclideanSpace ℂ (Fin n)) := {y | ‖y‖ < 1 ∧ ∀ q ∈ W, eval (h.pointOf y) q = 0} with hS`. Use `set ν : Measure (EuclideanSpace ℂ (Fin n)) := Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ) with hν`. Use `set D : ℝ := (ν {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ ∀ j : Fin n, e + 1 ≤ (j : ℕ) → y j = 0}).toReal with hD`. Establish `hδ1 : 1 ≤ δ` using `h2 n (e + 1) δ W g (Nat.succ_pos e) hW hg hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hmass : (ν S).toReal / D = δ`. Establish `hm` using `h1 n e δ h W g hW hg hδ`. Unfold `coneIntegral at hm`. Rewrite `hm` using `[setIntegral_const, measureReal_def, smul_eq_mul, mul_one]`. Conclude with `hm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : ν S ≠ ⊤`. Introduce `hinf`. Rewrite `hmass` using `[hinf, ENNReal.toReal_top, zero_div]`. Establish `: (δ : ℝ) ≠ 0` using `by exact_mod_cast (by omega : δ ≠ 0)`. Conclude with `this hmass.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: IsFiniteMeasure (ν.restrict S)` using `isFiniteMeasure_restrict.2 hfin`. Establish `hcone : ∀ φ : (Fin n → ℂ) → ℝ, coneIntegral h W e φ = (∫ y, φ (h.pointOf y) ∂(ν.restrict S)) / D` using `fun _ => rfl`. Establish `hzero : ν.restrict S {(0 : EuclideanSpace ℂ (Fin n))} = 0`. Use `nonpos_iff_eq_zero.mp ((Measure.restrict_apply_le S _).trans_eq ?_)` and prove the remaining obligations. Establish `hd : (((2 * (e + 1) : ℕ) : ℝ)) = (((2 * (e + 1) : ℕ) : NNReal) : ℝ)` using `by simp`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hν, hd]`. Apply `hausdorffMeasure_of_dimH_lt` to reduce the goal to its premises. Rewrite using `[dimH_singleton]`. Conclude with `(by omega : 0 < 2 * (e + 1))` after adjusting the coercions. Establish `hae : ∀ᵐ y ∂(ν.restrict S), y ≠ 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ae_iff]`. Simplify using `using hzero`. Establish `hF` using `h3 n h (ν.restrict S) (fun v y => fsLog h (nrmv h v) (h.pointOf y)) (-(harmonic (n - 1) : ℝ) / 2) ((harmonic (n - 1) : ℝ) / 2 * (volume (ballH h)).toReal) (h5 n h) (hae.mono fun y hy => by`. Take `⟨hi, habs, hmean⟩` from `h4 n h y hy`. Conclude with `⟨hi, habs.le, hmean⟩)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hFi, hFm⟩` from `hF`. Establish `hfun : (fun v => coneIntegral h W e (fsLog h (nrmv h v))) = fun v => (∫ y, fsLog h (nrmv h v) (h.pointOf y) ∂(ν.restrict S)) / D`. Use function extensionality and compare the values at `v`. Conclude with `hcone _`. Rewrite using `[hfun]`.
-
-Use `⟨hFi.div_const D, ?_⟩` and prove the remaining obligations. Rewrite using `[setAverage_eq, integral_div, ← smul_div_assoc, ← setAverage_eq, hFm, Measure.restrict_apply_univ, mul_div_assoc, hmass]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ConeAverage.proof (h1 : ConeIntegralMass.Statement) (h2 : ChowDegreePos.Statement)
     (h3 : ConeFubini.Statement) (h4 : FsLogAverage.Statement) (h5 : FsLogMeasurable.Statement) :

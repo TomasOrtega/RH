@@ -13,11 +13,9 @@ variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup
   [LocallyCompactSpace V] [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V]
 
 /- English proof (translation)
-Establish `h` using `hχ 0 0 y`. Rewrite `h` using `[add_zero]`. Establish `hne : χ 0 y ≠ 0`. Introduce `h0`. Use `hn 0 y` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Establish `h2 : χ 0 y * (χ 0 y - 1) = 0` using `by rw [mul_sub, ← h, mul_one, sub_self]`. Break down `mul_eq_zero.1 h2 with h1 | h1` into its components or cases. Conclude with `absurd h1 hne`.
-
-Conclude with `sub_eq_zero.1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem chi_zero_left (χ : V → V → ℂ) (hχ : ∀ x t y, χ (t + x) y = χ t y * χ x y)
     (hn : ∀ x y, ‖χ x y‖ = 1) (y : V) : χ 0 y = 1 := by
@@ -34,7 +32,7 @@ theorem chi_zero_left (χ : V → V → ℂ) (hχ : ∀ x t y, χ (t + x) y = χ
   · exact sub_eq_zero.1 h1
 
 /- English proof (translation)
-Introduce `x _`. Rewrite using `[hsym]`. Conclude with `chi_zero_left χ hχ hn x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_mem_ann (χ : V → V → ℂ) (hχ : ∀ x t y, χ (t + x) y = χ t y * χ x y)
     (hsym : ∀ x y, χ x y = χ y x) (hn : ∀ x y, ‖χ x y‖ = 1) (L : Set V) : (0 : V) ∈ ann χ L := by
@@ -43,13 +41,13 @@ theorem zero_mem_ann (χ : V → V → ℂ) (hχ : ∀ x t y, χ (t + x) y = χ 
   exact chi_zero_left χ hχ hn x
 
 /- English proof (translation)
-Establish `ha0 : μ0 (A 0) ≠ 0` using `(hAo.measure_pos μ0 hA0).ne'`. Establish `hb0 : μ0 (B 0) ≠ 0` using `(hBo.measure_pos μ0 hB0).ne'`. Establish `hat : μ0 (A 0) ≠ ⊤` using `(hAc 0).measure_lt_top.ne`. Establish `hbt : μ0 (B 0) ≠ ⊤` using `(hBc 0).measure_lt_top.ne`. Use `set c : ℝ := (μ0 (A 0) * μ0 (B 0)).toReal with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcpos : 0 < c` using `ENNReal.toReal_pos (mul_ne_zero ha0 hb0) (ENNReal.mul_ne_top hat hbt)`. Use `set s : ℝ := Real.sqrt c with hs`. Establish `hspos : 0 < s` using `Real.sqrt_pos.2 hcpos`. Establish `hss : s * s = c` using `Real.mul_self_sqrt hcpos.le`. Use `set r : ℝ≥0∞ := ENNReal.ofReal (1 / s) with hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Establish `hr0 : r ≠ 0`. Rewrite using `[hr, ne_eq, ENNReal.ofReal_eq_zero, not_le]`. Check the signs of the components of the expression. Establish `hrt : r ≠ ⊤` using `ENNReal.ofReal_ne_top`. Use `⟨r • μ0, Measure.IsAddHaarMeasure.smul (μ := μ0) hr0 hrt, fun k => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hk : (μ0 (A k)).toReal * (μ0 (B k)).toReal = c`. Rewrite using `[← ENNReal.toReal_mul, hconst k]`. Simplify using `only [Measure.real, Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul]`. Rewrite using `[hr, ENNReal.toReal_ofReal (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_normalized (μ0 : Measure V) [μ0.IsAddHaarMeasure] (A B : ℕ → Set V)
     (hAc : ∀ k, IsCompact (A k)) (hBc : ∀ k, IsCompact (B k)) (hAo : IsOpen (A 0))
@@ -89,7 +87,7 @@ variable (χ : V → V → ℂ) (hχc : Continuous (fun p : V × V => χ p.1 p.2
 
 include hχc in
 /- English proof (translation)
-Establish `: ann χ (M : Set V) = ⋂ x ∈ (M : Set V), {y | χ x y = 1}`. Use extensionality with `y`. Simplify using `[ann]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun x _ => isClosed_eq (hχc.comp (continuous_const.prodMk continuous_id)) continuous_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_ann : IsClosed (ann χ (M : Set V)) := by
   have : ann χ (M : Set V) = ⋂ x ∈ (M : Set V), {y | χ x y = 1} := by
@@ -101,19 +99,19 @@ theorem isClosed_ann : IsClosed (ann χ (M : Set V)) := by
 include hχc hχ hsym hn hMc hMo in
 
 /- English proof (translation)
-Establish `hΦi : Integrable Φ μ` using `hc.integrable_of_hasCompactSupport hs`. Establish `hm : MeasurableSet (M : Set V)` using `hMo.measurableSet`. Establish `h1 : ∀ y, (∫ x, Φ x * χ x y ∂μ) * χ y z = ∫ x, Φ x * χ (x + z) y ∂μ`. Introduce `y`. Rewrite using `[← integral_mul_const]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hχ z x y, hsym z y, mul_assoc]`. Simplify using `only [h1]`. Use `haveI : IsFiniteMeasure (μ.restrict (M : Set V)) := isFiniteMeasure_restrict.2 hMc.measure_lt_top.ne`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hint : Integrable (Function.uncurry fun (y x : V) => Φ x * χ (x + z) y) ((μ.restrict (M : Set V)).prod μ)`. Establish `hb : Integrable (fun p : V × V => (1 : ℝ) * ‖Φ p.2‖) ((μ.restrict (M : Set V)).prod μ)` using `Integrable.mul_prod (integrable_const (1 : ℝ)) hΦi.norm`. Use `hb.mono' ?_ ?_` and prove the remaining obligations. Establish `hcont : Continuous (Function.uncurry fun (y x : V) => Φ x * χ (x + z) y)` using `by show Continuous fun p : V × V => Φ p.2 * χ (p.2 + z) p.1`. Conclude with `(hc.comp continuous_snd).mul (hχc.comp ((continuous_snd.add continuous_const).prodMk continuous_fst))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcont.aestronglyMeasurable`. Use `filter_upwards with p`. Simplify using `[Function.uncurry, norm_mul, hn]`. Rewrite using `[integral_integral_swap hint]`. Establish `h2 : ∀ x, ∫ y in (M : Set V), Φ x * χ (x + z) y ∂μ = (ann χ M).indicator (fun _ => (μ.real (M : Set V) : ℂ)) (x + z) * Φ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Rewrite using `[integral_const_mul, ← transform_indicator μ χ hχ M hMo (x + z), ← integral_indicator hm, mul_comm]`. Use `congr 1`. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ (M : Set V)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Set.indicator_of_mem hy, hsym]`. Simplify using `[Set.indicator_of_notMem hy]`. Simplify using `only [h2]`. Establish `h3 : ∀ x, (ann χ M).indicator (fun _ => (μ.real (M : Set V) : ℂ)) (x + z) * Φ x = (μ.real (M : Set V) : ℂ) * (ann χ M).indicator (fun u => Φ (u - z)) (x + z)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hx : x + z ∈ ann χ M`. Simplify using `[Set.indicator_of_mem hx]`. Simplify using `[Set.indicator_of_notMem hx]`. Simplify using `only [h3]`. Rewrite using `[integral_const_mul, integral_add_right_eq_self (fun w => (ann χ M).indicator (fun u => Φ (u - z)) w) z, integral_indicator (isClosed_ann χ hχc M).measurableSet]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key (Φ : V → ℂ) (hc : Continuous Φ) (hs : HasCompactSupport Φ) (z : V) :
     ∫ y in (M : Set V), (∫ x, Φ x * χ x y ∂μ) * χ y z ∂μ =
@@ -167,23 +165,19 @@ theorem key (Φ : V → ℂ) (hc : Continuous Φ) (hs : HasCompactSupport Φ) (z
 end Inv
 
 /- English proof (translation)
-Take `⟨μ, hμ, hprod⟩` from `exists_normalized μ0 (fun k => (M k : Set V)) (fun k => ann χ (M k)) hMc hNc (hMo 0) (hNo 0) ⟨0, (M 0).zero_mem⟩ ⟨0, zero_mem_ann χ hχ hsym hn _⟩ hconst`. Use `⟨μ, hμ, fun Φ hc hs hI z => ?_⟩` and prove the remaining obligations. Use `set I : V → ℂ := fun y => ∫ x, Φ x * χ x y ∂μ with hIdef`. Establish `hL : Tendsto (fun k => ∫ y, (M k : Set V).indicator (fun y => I y * χ y z) y ∂μ) atTop (𝓝 (∫ y, I y * χ y z ∂μ))`. Use `tendsto_integral_of_dominated_convergence (fun y => ‖I y‖) (fun k => ?_) hI.norm (fun k => ?_) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `(hI.aestronglyMeasurable.mul (hχc.comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable).indicator (hMo k).measurableSet`. Use `filter_upwards with y`. Distinguish the cases in `hy : y ∈ (M k : Set V)`. Simplify using `[Set.indicator_of_mem hy, norm_mul, hn]`. Simplify using `[Set.indicator_of_notMem hy]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `filter_upwards with y`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hex y] with k hk`. Simplify using `[Set.indicator_of_mem (SetLike.mem_coe.2 hk)]`. Establish `hR : Tendsto (fun k => (μ.real (M k : Set V) : ℂ) * ∫ u in ann χ (M k), Φ (u - z) ∂μ) atTop (𝓝 (Φ (-z)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Establish `hcz : Continuous (fun u => Φ (u - z))` using `hc.comp (continuous_id.sub continuous_const)`. Establish `hU : {u : V | dist (Φ (u - z)) (Φ (-z)) < ε / 2} ∈ 𝓝 (0 : V)`. Establish `h0 : Φ ((0 : V) - z) = Φ (-z)` using `by rw [zero_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcz.continuousAt.preimage_mem_nhds (by rw [h0]; exact Metric.ball_mem_nhds _ (half_pos hε))`. Use `filter_upwards [hsh _ hU] with k hk`. Establish `hmn` using `hprod k`. Establish `hfin : μ (ann χ (M k)) < ⊤` using `(hNc k).measure_lt_top`. Establish `hio : IntegrableOn (fun u => Φ (u - z)) (ann χ (M k)) μ` using `hcz.continuousOn.integrableOn_compact (hNc k)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (μ.real (M k : Set V) : ℂ) * ∫ u in ann χ (M k), Φ (u - z) ∂μ - Φ (-z) = (μ.real (M k : Set V) : ℂ) * ∫ u in ann χ (M k), (Φ (u - z) - Φ (-z)) ∂μ`. Rewrite using `[integral_sub hio (integrableOn_const hfin.ne), setIntegral_const, mul_sub]`. Use `congr 1`. Rewrite using `[Complex.real_smul, ← mul_assoc, ← Complex.ofReal_mul, hmn, Complex.ofReal_one, one_mul]`. Rewrite using `[dist_eq_norm, e, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg measureReal_nonneg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hb : ‖∫ u in ann χ (M k), (Φ (u - z) - Φ (-z)) ∂μ‖ ≤ ε / 2 * μ.real (ann χ (M k))`. Use `norm_setIntegral_le_of_norm_le_const hfin fun u hu => ?_` and prove the remaining obligations. Use `hk hu` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq, dist_eq_norm] at this`. Conclude with `this.le`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hEq : (fun k => ∫ y, (M k : Set V).indicator (fun y => I y * χ y z) y ∂μ) = fun k => (μ.real (M k : Set V) : ℂ) * ∫ u in ann χ (M k), Φ (u - z) ∂μ`. Use function extensionality and compare the values at `k`. Rewrite using `[integral_indicator (hMo k).measurableSet]`. Conclude with `key χ hχc hχ hsym hn μ (M k) (hMc k) (hMo k) Φ hc hs z`.
-
-Rewrite `hL` using `[hEq]`. Conclude with `tendsto_nhds_unique hL hR`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_of_pairs (χ : V → V → ℂ) (hχc : Continuous (fun p : V × V => χ p.1 p.2))
     (hχ : ∀ x t y, χ (t + x) y = χ t y * χ x y) (hsym : ∀ x y, χ x y = χ y x)

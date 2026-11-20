@@ -7,9 +7,9 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G
 
 /- English proof (translation)
-Unfold `sdXi`. Establish `h` using `Nat.choose_le_pow_div (α := ℝ) (r - 1) (y + r - 1)`. Rewrite `h` using `[div_eq_mul_inv]`. Use `h.trans ?_` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Establish `h1 : ((y + r - 1 : ℕ) : ℝ) ≤ ((y + r : ℕ) : ℝ)` using `by exact_mod_cast Nat.sub_le _ _`. Conclude with `h1.trans_eq (by push_cast; ring)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nk_b_up (r y : ℕ) : (sdXi r y : ℝ) ≤ ((y : ℝ) + r) ^ (r - 1) * ((r - 1).factorial : ℝ)⁻¹ := by
   unfold sdXi
@@ -22,9 +22,9 @@ theorem nk_b_up (r y : ℕ) : (sdXi r y : ℝ) ≤ ((y : ℝ) + r) ^ (r - 1) * (
   exact h1.trans_eq (by push_cast; ring)
 
 /- English proof (translation)
-Unfold `sdXi`. Establish `h` using `Nat.pow_le_choose (α := ℝ) (r - 1) (y + r - 1)`. Establish `e : y + r - 1 + 1 - (r - 1) = y + 1` using `by omega`. Rewrite `h` using `[e, div_eq_mul_inv]`. Use `le_trans ?_ h` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nk_b_low (r y : ℕ) (hr : 1 ≤ r) : (y : ℝ) ^ (r - 1) * ((r - 1).factorial : ℝ)⁻¹ ≤ (sdXi r y : ℝ) := by
   unfold sdXi
@@ -38,9 +38,9 @@ theorem nk_b_low (r y : ℕ) (hr : 1 ≤ r) : (y : ℝ) ^ (r - 1) * ((r - 1).fac
   linarith
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, m = n + 1` from `⟨m - 1, by omega⟩`. Unfold `sdXi sd`. Establish `e1 : y + (n + 1) - 1 = y + n` using `by omega`. Establish `e2 : n + 1 - 1 = n` using `by omega`. Establish `e3 : y + (n + 1) = y + n + 1` using `by omega`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, e3, Nat.choose_succ_succ]`. Conclude with `Nat.le_add_right _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nk_sdXi_le_sd (m y : ℕ) (hm : 1 ≤ m) : sdXi m y ≤ sd m y := by
   obtain ⟨n, rfl⟩ : ∃ n, m = n + 1 := ⟨m - 1, by omega⟩
@@ -52,13 +52,13 @@ theorem nk_sdXi_le_sd (m y : ℕ) (hm : 1 ≤ m) : sdXi m y ≤ sd m y := by
   exact Nat.le_add_right _ _
 
 /- English proof (translation)
-Use `set f : ℝ := ((r - 1).factorial : ℝ)⁻¹ with hf`. Establish `hf0 : 0 ≤ f` using `by positivity`. Establish `up : (sdXi r L : ℝ) * (∏ i, (sdXi r (R i) : ℝ)) * (∏ i, (sdXi r (n i) : ℝ)) ≤ (((L : ℝ) + r) ^ (r - 1) * f) * (∏ i, (((R i : ℝ) + r) ^ (r - 1) * f)) * (∏ i, (((n i : ℝ) + r) ^ (r - 1) * f))`. Apply `mul_le_mul (mul_le_mul (nk_b_up r L) (Finset.prod_le_prod (fun _ _ => by positivity) (fun i _ => nk_b_up r (R i))) (by positivity) (by positivity)) (Finset.prod_le_prod (fun _ _ => by positivity) (fun i _ => nk_b_up r (n i))) (by positivity) (by positivity)` to reduce the goal to its premises. Establish `low : (((A : ℝ)) ^ (r - 1) * f) * (∏ i, ((Ai i : ℝ) ^ (r - 1) * f)) * (∏ i, ((Ci i : ℝ) ^ (r - 1) * f)) ≤ (sdXi r A : ℝ) * (∏ i, (sdXi r (Ai i) : ℝ)) * ∏ i, (sdXi r (Ci i) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_le_mul (mul_le_mul (nk_b_low r A hr) (Finset.prod_le_prod (fun _ _ => by positivity) (fun i _ => nk_b_low r (Ai i) hr)) (by positivity) (by positivity)) (Finset.prod_le_prod (fun _ _ => by positivity) (fun i _ => nk_b_low r (Ci i) hr)) (by positivity) (by positivity)` to reduce the goal to its premises. Establish `e1 : (((L : ℝ) + r) ^ (r - 1) * f) * (∏ i, (((R i : ℝ) + r) ^ (r - 1) * f)) * (∏ i, (((n i : ℝ) + r) ^ (r - 1) * f)) = (((L : ℝ) + r) * (∏ i, ((R i : ℝ) + r)) * (∏ i, ((n i : ℝ) + r))) ^ (r - 1) * (f * (∏ _i : Fin s, f) * ∏ _i : Fin s, f)`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_pow, mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (((A : ℝ)) ^ (r - 1) * f) * (∏ i, ((Ai i : ℝ) ^ (r - 1) * f)) * (∏ i, ((Ci i : ℝ) ^ (r - 1) * f)) = ((A : ℝ) * (∏ i, (Ai i : ℝ)) * ∏ i, (Ci i : ℝ)) ^ (r - 1) * (f * (∏ _i : Fin s, f) * ∏ _i : Fin s, f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_pow, mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : 0 ≤ f * (∏ _i : Fin s, f) * ∏ _i : Fin s, f` using `by positivity`. Establish `hP : 0 ≤ ((L : ℝ) + r) * (∏ i, ((R i : ℝ) + r)) * (∏ i, ((n i : ℝ) + r))` using `by positivity`. Establish `hpow` using `pow_le_pow_left₀ hP H (r - 1)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpow` using `[mul_pow θ]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nk_core {s : ℕ} (r : ℕ) (hr : 1 ≤ r) (L A : ℕ) (R n Ai Ci : Fin s → ℕ) (θ : ℝ) (hθ : 0 ≤ θ)
     (H : ((L : ℝ) + r) * (∏ i, ((R i : ℝ) + r)) * (∏ i, ((n i : ℝ) + r)) ≤
@@ -122,9 +122,9 @@ def BracketAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :=
 def RestBracket : Prop := TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc => BracketAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc
 
 /- English proof (translation)
-Unfold `dimMM`. Simplify using `only [tl_symDim_nat]`. Use `push_cast`. Rewrite using `[Finset.prod_mul_distrib, ← mul_assoc]`. Establish `h : ∀ y : ℕ, (sdXi m y : ℝ) ≤ (sd m y : ℝ)` using `fun y => by exact_mod_cast nk_sdXi_le_sd m y hm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `mul_le_mul (mul_le_mul (h A) (Finset.prod_le_prod (fun _ _ => by positivity) (fun i _ => h (Ai i))) (by positivity) (by positivity)) (Finset.prod_le_prod (fun _ _ => by positivity) (fun i _ => h (Ci i))) (by positivity) (by positivity)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem nk_prod_le_dimMM {s : ℕ} (m : ℕ) (hm : 1 ≤ m) (A : ℕ) (Ai Ci : Fin s → ℕ) :
     (sdXi m A : ℝ) * (∏ i, (sdXi m (Ai i) : ℝ)) * (∏ i, (sdXi m (Ci i) : ℝ)) ≤ (dimMM (m + 1) (A : ℤ) Ai Ci : ℝ) := by
@@ -138,17 +138,17 @@ theorem nk_prod_le_dimMM {s : ℕ} (m : ℕ) (hm : 1 ≤ m) (A : ℕ) (Ai Ci : F
     (by positivity) (by positivity)
 
 /- English proof (translation)
-Introduce `X _ hD hI hc j rz ry hd A hA1 hA2 mu lam hp hk`. Take `⟨θ, hθ, hθp, hbr⟩` from `hB X hD hI hc j rz ry hd A hA1 hA2 mu lam hp hk`. Establish `hm1 : 1 ≤ X.m` using `Nat.one_le_iff_ne_zero.mpr (NeZero.ne X.m)`. Establish `hroom : 2 * segS X.TT j + 1 ≤ X.m`. Take `⟨⟨-, -, -, -, h5, -, h7, -⟩, -⟩` from `hI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(h5 j).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1` using `hW (segS X.TT j) X.m A _ _ mu lam hroom hp`. Establish `h1' : ((wdim lam : ℚ) : ℝ) ≤ (sdXi X.m (lam 0).toNat : ℝ) * (∏ i : Fin (segS X.TT j), (sdXi X.m (pairRho mu i).toNat : ℝ)) * ∏ i : Fin (segS X.TT j), (sdXi X.m (pairN (s` using `segS X.TT j) lam i).toNat : ℝ) := by`. Use `(Rat.cast_le (K := ℝ)).mpr h1` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Establish `h2` using `nk_core X.m hm1 (lam 0).toNat A (fun i => (pairRho mu i).toNat) (fun i => (pairN (s := segS X.TT j) lam i).toNat) (clA C0 CE1 CE2 X j rz ry) (clC C0 CE1 CE2 X j rz ry) θ hθ hbr`. Establish `h3` using `nk_prod_le_dimMM X.m hm1 A (clA C0 CE1 CE2 X j rz ry) (clC C0 CE1 CE2 X j rz ry)`. Establish `hT0 : (0 : ℝ) ≤ (sdXi X.m A : ℝ) * (∏ i, (sdXi X.m (clA C0 CE1 CE2 X j rz ry i) : ℝ)) * (∏ i, (sdXi X.m (clC C0 CE1 CE2 X j rz ry i) : ℝ))` using `by positivity`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbig : (1 : ℝ) ≤ (8 * (X.a : ℝ) + X.k) ^ ((2 * X.N1 + 2) ^ 2)`. Apply `one_le_pow₀` to reduce the goal to its premises. Establish `: (0 : ℝ) ≤ (X.a : ℝ)` using `Nat.cast_nonneg _`. Establish `: (0 : ℝ) ≤ (X.m : ℝ)` using `Nat.cast_nonneg _`. Unfold `Loc.k`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : 0 < Real.exp (2 - X.La C0 / 5)` using `Real.exp_pos _`. Establish `hdim : (0 : ℝ) ≤ (dimMM (X.m + 1) (A : ℤ) (clA C0 CE1 CE2 X j rz ry) (clC C0 CE1 CE2 X j rz ry) : ℝ)` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hdim` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hexp, hbig]`.
+A detailed English derivation is pending.
 -/
 theorem notKeptWt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hW : WtBoundAt)
     (hB : BracketAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) : NotKeptWtAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
@@ -193,7 +193,7 @@ theorem notKeptWt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hW : WtBoundAt)
         nlinarith [hexp, hbig]
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => notKeptWt_of hW h) hB`.
+A detailed English derivation is pending.
 -/
 theorem restNotKeptWt_of (hW : WtBoundAt) (hB : RestBracket) : RestNotKeptWt :=
   TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => notKeptWt_of hW h) hB

@@ -28,17 +28,15 @@ open GlobalTheory.Published GlobalTheory.TheRec GlobalTheory.ContraPair
 namespace GlobalTheory.CarUniq
 
 /- English proof (translation)
-Introduce `hLL hU hAF hIA E Ω _ _ _ _ _ _ l _ ι a π R hR`. Use `⟨hR, fun R' hR' => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.TraceConjCofinite.main E Ω l a R R' hR.cont hR'.cont hR.ss hR'.ss ?_` and prove the remaining obligations. Establish `hl : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ((l : ℕ) : 𝓞 E) ∉ w.asIdeal`. Establish `h0 : ((l : ℕ) : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Filter.eventually_cofinite.2 ((Ideal.finite_factors (I := Ideal.span {((l : ℕ) : 𝓞 E)}) (by simpa [Ideal.span_singleton_eq_bot] using h0)).subset fun v hv => ?_)` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 (not_not.1 hv)`. Use `filter_upwards [GlobalTheory.CuspRep.LocSph.locComp_spherical E a π, hl] with w hw hlw A h σ`. Take `⟨rc, hrc⟩` from `hLL E Ω A w h`. Establish `hrc'` using `hU.isTheRec hrc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, had⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp hAF E a π w`. Take `⟨v, h0, hv⟩` from `hw s hs`. Establish `hsp : SmGL.IsSpherical s.ρ`. Use `(Submodule.ne_bot_iff _).2 ⟨v, fun x => ?_, h0⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[SmGL.SphCompletion.KO_completion]`. Take `⟨g, rfl⟩` from `hx`. Conclude with `(hv g).trans (one_smul _ _).symm`. Establish `hirr` using `(GlobalTheory.ContraRefl.contra_irreducible_reflexive _ (GlobalTheory.LocalThetaGL.compact_open_basis _) _ _ s.ρ s.ρ had had).1 s.irred`. Set `s' : SmIrr (GL (Fin a) (w.adicCompletion E))` to `{ V := _, ρ := SmGL.contra s.ρ, smooth := SmGL.isSmooth_contra _, irred := hirr }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Nonempty (s'.ρ.Equiv (SmGL.contra s.ρ))` using `⟨.refl _⟩`. Establish `h1` using `hR.unr w hlw A h rc hrc' s s' hs hsp e`. Establish `h2` using `hR'.unr w hlw A h rc hrc' s s' hs hsp e`. Establish `hx` using `isWDOf_wdOf (h := h) hlw ι (Units.continuous_val.comp hR.cont)`. Establish `hx'` using `isWDOf_wdOf (h := h) hlw ι (Units.continuous_val.comp hR'.cont)`.
-
-Rewrite `hx` using `[h1]`. Rewrite `hx'` using `[h2]`. Conclude with `GlobalTheory.WdTrace.trace_eq_of_isWDOf E Ω l ι a R R' w A h _ hx hx' σ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTheRep_of_isAssoc : LocalLanglandsExists → RecUnique → AutomorphicFormsFiniteGL → IrreducibleAdmissibleGL → ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : CuspSub E a) (R : G E Ω →* GL (Fin a) (Qbar l)), GlobalTheory.CarHyp.IsAssoc π ι R → GlobalTheory.CarHyp.IsTheRep π ι R := by
   intro hLL hU hAF hIA E Ω _ _ _ _ _ _ l _ ι a π R hR

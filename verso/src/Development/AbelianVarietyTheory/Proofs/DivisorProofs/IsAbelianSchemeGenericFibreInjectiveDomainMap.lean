@@ -11,9 +11,9 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Set `ρK : FractionRing R →+* FractionRing R'` to `IsFractionRing.map (A := R) (B := R') (j := ρ) hρ`. Establish `hc : jK R' ≫ spMap ρ = spMap ρK ≫ jK R`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[ρK, IsFractionRing.map, IsLocalization.map_eq]`. Establish `h2 : IsAbelianScheme ((Over.pullback (spMap ρK)).obj ((Over.pullback (jK R)).obj G))` using `GlobalTheory.isAbelianScheme_pullback_obj _ _ h`. Establish `h3 : IsAbelianScheme ((Over.pullback (spMap ρK ≫ jK R)).obj G)` using `GlobalTheory.Compare.AbelianSchemeTorusCompare.isAbelianScheme_of_iso (pullCompIso (spMap ρK) (jK R) G) inferInstance h2`. Rewrite `h3` using `[← hc]`. Conclude with `GlobalTheory.Compare.AbelianSchemeTorusCompare.isAbelianScheme_of_iso (pullCompIso (jK R') (spMap ρ) G).symm (inferInstanceAs (IsMonHom (pullCompIso (jK R') (spMap ρ) G).inv)) h3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_generic_of_injective (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
     (ρ : R →+* R') (hρ : Function.Injective ρ) (G : Over (Sp R)) [GrpObj G]

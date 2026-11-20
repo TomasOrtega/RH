@@ -19,13 +19,13 @@ namespace CrystallineSemistableComparison.HT
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-The claim follows from `Inj.exists_int_mul (T := GlobalTheory.EtC.Hl l M.spc n 0) v`.
+A detailed English derivation is pending.
 -/
 theorem toV_ex (M : Model l K) (n : ℕ) (v : M.V n) : ∃ ζ : ℤ_[l], ζ ≠ 0 ∧ ∃ x : M.T n, (ζ : ℚ_[l]) • v = M.toV n x :=
   Inj.exists_int_mul (T := GlobalTheory.EtC.Hl l M.spc n 0) v
 
 /- English proof (translation)
-Use `conv_rhs => rw [← b.sum_repr x, ← b'.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, map_mul, Module.Basis.coord_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun s' _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_coord' {K B V V' V'' : Type _} [Field K] [CommRing B] [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V']
     [AddCommGroup V''] [Module K V''] (o : K →+* B) {m m' : ℕ} (b : Module.Basis (Fin m) K V) (b' : Module.Basis (Fin m') K V')
@@ -46,17 +46,17 @@ def hb (P : HTPre l K) {M : Model l K} (hM : M.Sm) (n a : ℕ) :
   Module.finBasis _ _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `φ`. Rewrite using `[P.cup M hM x y z hz (hb P hM i) (hb P hM j) (a + b) φ]`. Rewrite using `[Finset.sum_eq_single (⟨(a, b), Finset.HasAntidiagonal.mem_antidiagonal.2 rfl⟩ : (Finset.HasAntidiagonal.antidiagonal (a + b) : Finset (ℕ × ℕ)))]`. Take `⟨μ, hμ⟩` from `hF.bilin M.q (rfl : a + b = a + b) (rfl : i + j = i + j)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `sum_coord' (kC K) (hb P hM i a) (hb P hM j b) μ φ c c'` as an intermediate fact. Simplify using `only [hμ] at this`. Use `Eq.trans ?_ this` and prove the remaining obligations. Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (congrArg₂ (· * ·) (hx.1 _) (hy.1 _)) rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨p, q⟩, hp⟩ _ hne`. Establish `hp' : p + q = a + b` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Use `Finset.sum_eq_zero fun s _ => Finset.sum_eq_zero fun s' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : p = a`. Establish `hq : q ≠ b` using `fun e => hne (Subtype.ext (Prod.ext h e))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy.2 q hq, mul_zero, zero_mul]`. Rewrite using `[hx.2 p h, zero_mul, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `e he φ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[P.cup M hM x y z hz (hb P hM i) (hb P hM j) e φ]`. Use `Finset.sum_eq_zero ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨p, q⟩, hp⟩ _`. Establish `hp' : p + q = e` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Use `Finset.sum_eq_zero fun s _ => Finset.sum_eq_zero fun s' _ => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `h : p = a`. Establish `hq : q ≠ b` using `fun e' => he (by omega)`. Rewrite using `[hy.2 q hq, mul_zero, zero_mul]`. Rewrite using `[hx.2 p h, zero_mul, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pure_cup (P : HTPre l K) (hF : KForm) {M : Model l K} (hM : M.Sm) {a b i j : ℕ} {x : M.T i} {y : M.T j}
     {z : M.T (i + j)} (hz : M.CupT x y z) {c : Hdg M.q a i} {c' : Hdg M.q b j} (hx : Pure P M a i x c) (hy : Pure P M b j y c') :
@@ -93,13 +93,13 @@ theorem pure_cup (P : HTPre l K) (hF : KForm) {M : Model l K} (hM : M.Sm) {a b i
     · rw [hx.2 p h, zero_mul, zero_mul]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => by rw [Subsingleton.elim x 0, map_zero, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem dual_zero {K V : Type _} [Field K] [AddCommGroup V] [Module K V] (h : Subsingleton V) (φ : Module.Dual K V) : φ = 0 :=
   LinearMap.ext fun x => by rw [Subsingleton.elim x 0, map_zero, map_zero]
 
 /- English proof (translation)
-The claim follows from `| 0 => ⟨o, P.one M hM o ho, fun a ha φ => by rw [dual_zero ((P.fin M hM a 0).2 (Nat.pos_of_ne_zero ha)) φ, map_zero]⟩ | k + 1 => by obtain ⟨w, hw⟩ := pure_pow P E hF hM o ho hv k obtain ⟨z, hz⟩ := E.cup_ex M w v exact ⟨z, pure_cup P hF hM hz hw hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem pure_pow (P : HTPre l K) (E : EtSide (Model.Sm (l := l) (K := K))) (hF : KForm) {M : Model l K} (hM : M.Sm)
     (o : M.T 0) (ho : ∀ k, o.lev k = GlobalTheory.EtC.one (l ^ k) M.spc) {v : M.T 2} {c : Hdg M.q 1 2} (hv : Pure P M 1 2 v c) :
@@ -112,11 +112,11 @@ theorem pure_pow (P : HTPre l K) (E : EtSide (Model.Sm (l := l) (K := K))) (hF :
     exact ⟨z, pure_cup P hF hM hz hw hv⟩
 
 /- English proof (translation)
-Use `hc.1` as an intermediate fact. Use `hc.2` as an intermediate fact. Take `⟨D, hD⟩` from `Pb.isO1_exists M.p hM.1.1`. Establish `hK : Pb.IsTautologicalLine M.q (genD D)` using `Pb.isTwistingSheaf_pullback (OK l K).subtype M.p D hD`. Establish `he` using `Pb.isO1_etale hD`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N, i, -, -, hi⟩` from `hD`. Establish `hs` using `Pb.sSup_𝒱D D N i hi`. Take `⟨r⟩` from `GlobalTheory.CompanionTheory.RootsC.rootsEx l`. Take `⟨hv, c, hcc, -⟩` from `P.first_chern_class_exists M hM D he hs`. Take `⟨v, hv⟩` from `hv r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `pure_pow P E hF hM o ho (P.c1 M hM D he hs r v c hv hcc) d`. Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_eq_one K (hT M.q d _ hK c hcc)`. Conclude with `⟨_, φ, by rw [hw.1, hφ, map_one]; exact one_ne_zero⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem top_ne (P : HTPre l K) (E : EtSide (Model.Sm (l := l) (K := K))) (hT : KTop) (hF : KForm) {M : Model l K} (hM : M.Sm)
     (o : M.T 0) (ho : ∀ k, o.lev k = GlobalTheory.EtC.one (l ^ k) M.spc) (d : ℕ) (hc : M.Conn d) :
@@ -136,7 +136,7 @@ theorem top_ne (P : HTPre l K) (E : EtSide (Model.Sm (l := l) (K := K))) (hT : K
   exact ⟨_, φ, by rw [hw.1, hφ, map_one]; exact one_ne_zero⟩
 
 /- English proof (translation)
-Apply `mul_left_cancel₀ hζ` to reduce the goal to its premises. Rewrite using `[← mul_assoc, e]`. Simplify using `only [Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun s' _ => by ring`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem abs1 {B ι : Type _} [Field B] [Fintype ι] {κ κ' : ι → Type _} [∀ p, Fintype (κ p)] [∀ p, Fintype (κ' p)]
     (ζ x G : B) (hζ : ζ ≠ 0) (A : ∀ p, κ p → B) (Y : ∀ p, κ' p → B) (W : ∀ p, κ p → κ' p → B)
@@ -147,9 +147,9 @@ theorem abs1 {B ι : Type _} [Field B] [Fintype ι] {κ κ' : ι → Type _} [�
   exact Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun s' _ => by ring
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul]`. Simplify using `only [mul_assoc, hk, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun s' _ => ?_` and prove the remaining obligations. Simplify using `only [← mul_assoc]`. Rewrite using `[← Finset.sum_mul, h p s s', zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem abs2 {B ι α : Type _} [Field B] [Fintype ι] [Fintype α] {κ κ' : ι → Type _} [∀ p, Fintype (κ p)] [∀ p, Fintype (κ' p)]
     (z x : α → B) (G : B) (A : α → ∀ p, κ p → B) (W : ∀ p, κ p → κ' p → B)
@@ -167,9 +167,9 @@ theorem abs2 {B ι α : Type _} [Field B] [Fintype ι] [Fintype α] {κ κ' : ι
   rw [← Finset.sum_mul, h p s s', zero_mul]
 
 /- English proof (translation)
-Take `⟨ζ, hζ, x, hx⟩` from `toV_ex M i v`. Take `⟨w, hw, hw'⟩` from `hf x`. Establish `e` using `P.cup M hM x y w hw (hb P hM i) (hb P hM j) d φ`. Rewrite `e` using `[hw', ← hx, P.lin, f.map_smul, smul_eq_mul, (qC l).map_mul]`. Establish `hq : qC l (ζ : ℚ_[l]) ≠ 0` using `(map_ne_zero (qC l)).mpr (fun h => hζ (Subtype.ext h))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `abs1 _ _ _ hq _ _ _ (e.trans ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Rewrite using `[P.lin]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem key1 (P : HTPre l K) {M : Model l K} (hM : M.Sm) {i j d : ℕ} (v : M.V i)
     (g : M.V (i + j)) (y : M.T j) (f : Module.Dual ℚ_[l] (M.V i))
@@ -188,7 +188,7 @@ theorem key1 (P : HTPre l K) {M : Model l K} (hM : M.Sm) {i j d : ℕ} (v : M.V 
   rw [P.lin]
 
 /- English proof (translation)
-Use `abs2 z _ _ _ _ (fun k => key1 P hM (b k) g y f hf φ) fun p s s' => ?_` and prove the remaining obligations. Break down `hz p.1.1 p.1.2 (Finset.HasAntidiagonal.mem_antidiagonal.1 p.2) with h | h` into its components or cases. Conclude with `h _`. Conclude with `absurd (@Subsingleton.elim _ ((P.fin M hM p.1.2 j).2 h) (hb P hM j p.1.2 s') 0) ((hb P hM j p.1.2).ne_zero s')`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem key0 (P : HTPre l K) {M : Model l K} (hM : M.Sm) {i j d : ℕ} {a : ℕ} (b : Module.Basis (Fin a) ℚ_[l] (M.V i))
     (z : Fin a → ℂ_[l]) (hz : ∀ p q, p + q = d → (∀ ψ, ∑ k, z k * P.h M p i (b k) ψ = 0) ∨ j < q)
@@ -201,15 +201,15 @@ theorem key0 (P : HTPre l K) {M : Model l K} (hM : M.Sm) {i j d : ℕ} {a : ℕ}
   · exact absurd (@Subsingleton.elim _ ((P.fin M hM p.1.2 j).2 h) (hb P hM j p.1.2 s') 0) ((hb P hM j p.1.2).ne_zero s')
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k0`. Establish `hall : ∀ f ∈ Submodule.span F A, ∑ k, z k * q (f (b k)) = 0`. Introduce `f hf`. Use `Submodule.span_induction (p := fun f _ => ∑ k, z k * q (f (b k)) = 0) ?_ ?_ ?_ ?_ hf` and prove the remaining obligations. Conclude with `fun f hf => h f hf`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using the standard rewrite rules. Introduce `f f' _ _ h1 h2`. Simplify using `only [LinearMap.add_apply, map_add, mul_add, Finset.sum_add_distrib]`. Rewrite using `[h1, h2, add_zero]`. Introduce `c f _ h1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∑ k, z k * q ((c • f) (b k)) = q c * ∑ k, z k * q (f (b k))`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show ∑ k, z k * q ((c • f) (b k)) = 0`. Rewrite using `[e, h1, mul_zero]`. Use `hall (b.coord k0) (by rw [hA]; trivial)` as an intermediate fact. Establish `e : ∑ k, z k * q (b.coord k0 (b k)) = z k0`. Rewrite using `[Finset.sum_eq_single k0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[Module.Basis.coord_apply, hk]`. Simplify using the standard rewrite rules. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coords0 {F B V : Type _} [Field F] [Field B] (q : F →+* B) [AddCommGroup V] [Module F V] (A : Set (Module.Dual F V))
     (hA : Submodule.span F A = ⊤) {a : ℕ} (b : Module.Basis (Fin a) F V)
@@ -241,15 +241,13 @@ theorem coords0 {F B V : Type _} [Field F] [Field B] (q : F →+* B) [AddCommGro
   rwa [e] at this
 
 /- English proof (translation)
-Take `⟨r, g, hg, htr, hspan⟩` from `hD.2 n j hj`. Choose the witnesses or unpack the hypotheses as in `⟨v, φ, hu⟩ : ∃ (v : M.V (n + j)) (φ : Module.Dual K (Hdg M.q d (n + j))), P.h M d (n + j) v φ ≠ 0 := by`. Establish `key : ∀ k, k = 2 * d → ∃ (v : M.V k) (φ : Module.Dual K (Hdg M.q d k)), P.h M d k v φ ≠ 0`. Introduce and unpack `k rfl`. Conclude with `hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `key _ hj`. Establish `hv : v ∈ Submodule.span ℚ_[l] (Set.range g)` using `by rw [hg]; trivial`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℚ_[l]).mp hv`. Choose the witnesses or unpack the hypotheses as in `⟨s0, hs0⟩ : ∃ s, P.h M d (n + j) (g s) φ ≠ 0 := by`. Assume the negation of the conclusion as `hall`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at hall`. Apply `hu` to reduce the goal to its premises. Rewrite using `[← hc, map_sum, AddMonoidHom.finsetSum_apply]`. Conclude with `Finset.sum_eq_zero fun s _ => by rw [P.lin, hall, mul_zero]`. Establish `hall : ∀ s, P.h M d (n + j) (g s) φ ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `s h0`. Take `⟨σ, ζ, -, he⟩` from `htr s0 s`. Use `P.equi M hM d (n + j) σ (g s0) φ` as an intermediate fact. Rewrite `this` using `[he, P.lin, h0, mul_zero, mul_zero]`. Conclude with `hs0 ((map_eq_zero_iff _ (GaloisFrobeniusFixed.σC σ.1).injective).1 this.symm)`.
-
-Use `coords0 (qC l) _ hspan b z ?_` and prove the remaining obligations. Introduce and unpack `f ⟨s, y, hf⟩`. Conclude with `(mul_eq_zero.mp (key0 P hM b z hz (g s) y f hf φ)).resolve_right (hall s)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem conn0 (P : HTPre l K) {M : Model l K} (hM : M.Sm) {d : ℕ} (hD : M.Dual d)
     (hne : ∃ (v : M.V (2 * d)) (φ : Module.Dual K (Hdg M.q d (2 * d))), P.h M d (2 * d) v φ ≠ 0) (n j : ℕ) (hj : n + j = 2 * d)
@@ -280,9 +278,9 @@ theorem conn0 (P : HTPre l K) {M : Model l K} (hM : M.Sm) {d : ℕ} (hD : M.Dual
   exact (mul_eq_zero.mp (key0 P hM b z hz (g s) y f hf φ)).resolve_right (hall s)
 
 /- English proof (translation)
-Establish `hexp : ∀ v, P.h M p n v φ = ∑ j, qC l (e.coord j v) * P.h M p n (e j) φ`. Introduce `v`. Use `conv_lhs => rw [← e.sum_repr v]`. Rewrite using `[map_sum, AddMonoidHom.finsetSum_apply]`. Simplify using `only [P.lin, Module.Basis.coord_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[← P.nat M N u hu hM hN, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hexp (Model.pullV u hu n (b m)), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_sum (P : HTPre l K) {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (hM : M.Sm) (hN : N.Sm) (p n : ℕ)
     {a c : ℕ} (b : Module.Basis (Fin a) ℚ_[l] (N.V n)) (e : Module.Basis (Fin c) ℚ_[l] (M.V n)) (z : Fin a → ℂ_[l])
@@ -301,13 +299,13 @@ theorem red_sum (P : HTPre l K) {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ 
   exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Take `⟨r, Q, d, u, hu, hQ, hinj⟩` from `hE.comp M hM`. Establish `: ∀ a, FiniteDimensional ℚ_[l] ((Q a).V n)` using `fun a => hE.fin _ (hQ a).1 n`. Set `e : ∀ a, Module.Basis (Fin (Module.finrank ℚ_[l] ((Q a).V n))) ℚ_[l] ((Q a).V n)` to `fun a => Module.finBasis _ _`. Set `f : (Σ a, Fin (Module.finrank ℚ_[l] ((Q a).V n))) → Module.Dual ℚ_[l] (M.V n)` to `fun i => (e i.1).coord i.2 ∘ₗ Model.pullV (u i.1) (hu i.1) n`. Establish `hf : ∀ v, (∀ i, f i v = 0) → v = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `v hv`. Use `hinj n v fun a => (e a).ext_elem fun j => ?_` and prove the remaining obligations. Simplify `hv ⟨a, j⟩` using `[f, Module.Basis.coord_apply]`. Introduce `c b z hz`. Use function extensionality and compare the values at `m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hm` using `Inj.red_abs (qC l) ⊥ (fun x s hs => by rw [AddSubgroup.mem_bot] at hs ⊢; rw [hs, mul_zero]) f hf b z ?_ m`. Simplify using `using hm`. Introduce and unpack `⟨a, j⟩`. Establish `hc` using `hconn (Q a) (hQ a).1 (d a) (hQ a).2 n (e a) (fun j => ∑ m, z m * qC l (f ⟨a, j⟩ (b m))) (fun p φ => by`. Establish `h` using `hz p (φ ∘ₗ pullH (Model.genMap (u a) (hu a)) (Model.genMap_q (u a) (hu a)) p n)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[← red_sum P (u a) (hu a) (hQ a).1 hM p n b (e a) z φ]`. Conclude with `h)`. Rewrite using `[AddSubgroup.mem_bot]`. Conclude with `congrFun hc j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduce (P : HTPre l K) (hE : EtSide (Model.Sm (l := l) (K := K)))
     (hconn : ∀ M : Model l K, M.Sm → ∀ d, M.Conn d → ∀ n, P.Inj M n) (M : Model l K) (hM : M.Sm) (n : ℕ) : P.Inj M n := by
@@ -334,11 +332,11 @@ theorem reduce (P : HTPre l K) (hE : EtSide (Model.Sm (l := l) (K := K)))
   exact congrFun hc j
 
 /- English proof (translation)
-Establish `hne` using `fun (M : Model l K) (hM : M.Sm) d (hc : M.Conn d) => (h1 M).elim fun o ho => top_ne P E hT hF hM o ho d hc`. Introduce `M hM`. Use `⟨reduce P E (fun M hM d hc n => ?_) M hM, fun d hc => ?_⟩` and prove the remaining obligations. Introduce `k b z hz`. Establish `hD` using `E.dual M hM d hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `hn : 2 * d < n`. Use `hD.1 n hn` as an intermediate fact. Conclude with `funext fun i => absurd (Subsingleton.elim (b i) 0) (b.ne_zero i)`. Conclude with `conn0 P hM hD (hne M hM d hc) n (2 * d - n) (by omega) b z fun p q _ => Or.inl (hz p)`. Introduce `k b z hz`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `conn0 P hM (E.dual M hM d hc) (hne M hM d hc) (2 * d) 0 rfl b z fun p q h => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos q with rfl | hq` into its components or cases. Take `rfl : p = d` from `h`. Conclude with `Or.inl hz`. Conclude with `Or.inr hq`.
+Extract witnesses or component facts from the available result. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem inj_of (P : HTPre l K) (E : EtSide (Model.Sm (l := l) (K := K))) (hT : KTop) (hF : KForm)
     (h1 : ∀ M : Model l K, ∃ v : M.T 0, ∀ k, v.lev k = GlobalTheory.EtC.one (l ^ k) M.spc) :

@@ -44,7 +44,7 @@ def relevantMinimalPrimes {ι : Type*} (x : ι → T) (J : Ideal T) : Set (Ideal
 
 variable {𝒜} in
 /- English proof (translation)
-Establish `h : ∃ P, IsHilbertPoly (gradedQuotPiece 𝒜 J) P` using `⟨P, hP⟩`. Rewrite using `[gradedQuotHilbertPoly, dif_pos h]`. Conclude with `h.choose_spec.unique hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsHilbertPoly.gradedQuotHilbertPoly_eq {J : Ideal T} {P : ℚ[X]}
     (hP : IsHilbertPoly (gradedQuotPiece 𝒜 J) P) : gradedQuotHilbertPoly 𝒜 J = P := by
@@ -60,7 +60,7 @@ variable {ι : Type*} {x : ι → T} (hfin : Module.Finite (Algebra.adjoin K (Se
 include hfin
 
 /- English proof (translation)
-Rewrite `hfin` using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `RingHom.Finite.comp (g := algebraMap _ T) (f := (MvPolynomial.aeval x : MvPolynomial ι K →ₐ[K] T).rangeRestrict.toRingHom) hfin (RingHom.Finite.of_surjective _ (AlgHom.rangeRestrict_surjective _))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_aeval : (MvPolynomial.aeval x : MvPolynomial ι K →ₐ[K] T).Finite := by
   rw [Algebra.adjoin_range_eq_range_aeval] at hfin
@@ -69,7 +69,7 @@ theorem finite_aeval : (MvPolynomial.aeval x : MvPolynomial ι K →ₐ[K] T).Fi
     (RingHom.Finite.of_surjective _ (AlgHom.rangeRestrict_surjective _))
 
 /- English proof (translation)
-Use `letI : Algebra (MvPolynomial ι K) T := (MvPolynomial.aeval x : MvPolynomial ι K →ₐ[K] T).toRingHom.toAlgebra`. Use `haveI : Module.Finite (MvPolynomial ι K) T := finite_aeval hfin`. Conclude with `ReciprocityTheory.CA.ringKrullDim_quotient_eq_quotient_comap_of_isIntegral (A := MvPolynomial ι K) I`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_eq_comap (I : Ideal T) : ringKrullDim (T ⧸ I) =
     ringKrullDim (MvPolynomial ι K ⧸
@@ -83,7 +83,7 @@ theorem ringKrullDim_quotient_eq_comap (I : Ideal T) : ringKrullDim (T ⧸ I) =
 variable [Finite ι]
 
 /- English proof (translation)
-Use `letI : Algebra (MvPolynomial ι K) T := (MvPolynomial.aeval x : MvPolynomial ι K →ₐ[K] T).toRingHom.toAlgebra`. Use `haveI : IsScalarTower K (MvPolynomial ι K) T := IsScalarTower.of_algebraMap_eq fun r => ((MvPolynomial.aeval x : MvPolynomial ι K →ₐ[K] T).commutes r).symm`. Use `haveI : Module.Finite (MvPolynomial ι K) T := finite_aeval hfin`. Conclude with `Algebra.FiniteType.trans (S := MvPolynomial ι K) inferInstance inferInstance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem finiteType : Algebra.FiniteType K T := by
   letI : Algebra (MvPolynomial ι K) T :=
@@ -94,14 +94,14 @@ theorem finiteType : Algebra.FiniteType K T := by
   exact Algebra.FiniteType.trans (S := MvPolynomial ι K) inferInstance inferInstance
 
 /- English proof (translation)
-The claim follows from `haveI := finiteType hfin Algebra.FiniteType.isNoetherianRing K T`.
+A detailed English derivation is pending.
 -/
 theorem isNoetherianRing : IsNoetherianRing T :=
   haveI := finiteType hfin
   Algebra.FiniteType.isNoetherianRing K T
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_quotient_eq_comap hfin]`. Conclude with `exists_ringKrullDim_quotient_mvPolynomial_eq_nat (Ideal.comap_ne_top _ hI)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringKrullDim_quotient_eq_nat {I : Ideal T} (hI : I ≠ ⊤) :
     ∃ δ : ℕ, ringKrullDim (T ⧸ I) = δ := by
@@ -109,7 +109,7 @@ theorem exists_ringKrullDim_quotient_eq_nat {I : Ideal T} (hI : I ≠ ⊤) :
   exact exists_ringKrullDim_quotient_mvPolynomial_eq_nat (Ideal.comap_ne_top _ hI)
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_quotient_eq_comap hfin]`. Conclude with `ringKrullDim_quotient_le_zero_of_forall_X_mem fun i => by simpa using h i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_le_zero {I : Ideal T} (h : ∀ i, x i ∈ I) :
     ringKrullDim (T ⧸ I) ≤ 0 := by
@@ -126,7 +126,7 @@ noncomputable def decomposeExtend : T →ₗ[K] ⨁ i, extendGradingByZero 𝒜 
       (decomposeLinearEquiv 𝒜).toLinearMap
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `toModule K ℕ _ (M := fun n => 𝒜 n) _ (decompose 𝒜 (m : T)) = _`. Rewrite using `[decompose_coe, ← lof_eq_of K]`. Conclude with `toModule_lof K (M := fun n => 𝒜 n) n m`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomposeExtend_coe (n : ℕ) (m : 𝒜 n) :
     decomposeExtend 𝒜 m = lof K ℤ (fun i => extendGradingByZero 𝒜 i) (n : ℤ) m := by
@@ -158,14 +158,14 @@ theorem decomposeExtend_coe (n : ℕ) (m : 𝒜 n) :
 variable {𝒜}
 
 /- English proof (translation)
-The claim follows from `hI.sup (Ideal.homogeneous_span _ _ (by rintro x rfl; exact ⟨d, hf⟩))`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_sup_span {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {f : T} {d : ℕ}
     (hf : f ∈ 𝒜 d) : (I ⊔ Ideal.span {f}).IsHomogeneous 𝒜 :=
   hI.sup (Ideal.homogeneous_span _ _ (by rintro x rfl; exact ⟨d, hf⟩))
 
 /- English proof (translation)
-Introduce `n g hg`. Rewrite `hg`, the goal using `[Submodule.mem_colon_singleton, smul_eq_mul]`. Rewrite using `[← coe_decompose_mul_add_of_right_mem 𝒜 (j := d) hf]`. Conclude with `hI _ hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_colon {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {f : T} {d : ℕ}
     (hf : f ∈ 𝒜 d) : (Submodule.colon I {f}).IsHomogeneous 𝒜 := by
@@ -175,9 +175,9 @@ theorem isHomogeneous_colon {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {f : T} {d
   exact hI _ hg
 
 /- English proof (translation)
-Introduce `htop`. Take `⟨a, ha, _, hb, hab⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 htop)`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Establish `h1` using `congrArg (fun t => (decompose 𝒜 t 0 : T)) hab`. Simplify using `only [decompose_add, DirectSum.add_apply, Submodule.coe_add] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[coe_decompose_mul_of_right_mem_of_not_le 𝒜 hf (by omega), add_zero, decompose_of_mem_same 𝒜 (SetLike.one_mem_graded 𝒜)]`. Conclude with `h ((Ideal.eq_top_iff_one _).2 (h1 ▸ hI 0 ha))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_span_ne_top {I : Ideal T} (hI : I.IsHomogeneous 𝒜) (h : I ≠ ⊤) {f : T} {d : ℕ}
     (hf : f ∈ 𝒜 d) (hd : 0 < d) : I ⊔ Ideal.span {f} ≠ ⊤ := by
@@ -191,9 +191,9 @@ theorem sup_span_ne_top {I : Ideal T} (hI : I.IsHomogeneous 𝒜) (h : I ≠ ⊤
   exact h ((Ideal.eq_top_iff_one _).2 (h1 ▸ hI 0 ha))
 
 /- English proof (translation)
-Rewrite `hp` using `[hI.isPrime_iff]`. Use `push Not at hp`. Take `⟨g, f, -, ⟨d, hf⟩, hgf, hg, hfI⟩` from `hp h`. Use `⟨d, f, hf, lt_of_le_of_ne le_sup_left fun e => hfI ?_, lt_of_le_of_ne (fun x hx => Submodule.mem_colon_singleton.2 (I.mul_mem_right _ hx)) fun e => hg ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self f)`. Rewrite using `[e]`. Conclude with `Submodule.mem_colon_singleton.2 hgf`.
+A detailed English derivation is pending.
 -/
 theorem exists_lt_sup_lt_colon {I : Ideal T} (hI : I.IsHomogeneous 𝒜) (h : I ≠ ⊤)
     (hp : ¬ I.IsPrime) : ∃ (d : ℕ) (f : T), f ∈ 𝒜 d ∧ I < I ⊔ Ideal.span {f} ∧
@@ -211,23 +211,19 @@ variable {ι : Type*} [Finite ι] {x : ι → T} (hx : ∀ i, x i ∈ 𝒜 1)
 include hx hfin
 
 /- English proof (translation)
-Use `letI : Algebra (MvPolynomial ι K) T := (MvPolynomial.aeval x : MvPolynomial ι K →ₐ[K] T).toRingHom.toAlgebra`. Use `haveI : IsScalarTower K (MvPolynomial ι K) T := IsScalarTower.of_algebraMap_eq fun r => ((MvPolynomial.aeval x : MvPolynomial ι K →ₐ[K] T).commutes r).symm`. Use `haveI : Module.Finite (MvPolynomial ι K) T := finite_aeval hfin`. Use `letI := decompositionExtend 𝒜`. Establish `hsm : ∀ i (m : T), (MvPolynomial.X i : MvPolynomial ι K) • m = x i * m` using `fun i m => by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def]`. Conclude with `congrArg (· * m) (MvPolynomial.aeval_X x i)`. Establish `hX : ∀ (i : ι) (n : ℤ), ∀ m ∈ extendGradingByZero 𝒜 n, (MvPolynomial.X i : MvPolynomial ι K) • m ∈ extendGradingByZero 𝒜 (n + 1)`. Introduce `i n m hm`. Consider the cases of `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `ofNat n`. Rewrite using `[hsm, mul_comm]`. Conclude with `SetLike.mul_mem_graded (i := n) hm (hx i)`. Consider the case `negSucc n`. Take `rfl : m = 0` from `hm`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `hpiece` using `GradedHilbert.finite_piece _ hX`. Take `⟨P, hP, h⟩` from `GradedHilbert.exists_polynomial_subquotient _ hX s (I.restrictScalars (MvPolynomial ι K)) ⊤ le_top (by`. Introduce `n m hm`. Rewrite using `[← sum_support_decompose 𝒜 m, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h1 : (decompose 𝒜 m i : T) ∈ extendGradingByZero 𝒜 i` using `SetLike.coe_mem _`. Distinguish the cases in `hi : (i : ℤ) = n`. Rewrite using `[← hi, GradedHilbert.proj_of_mem _ h1]`. Conclude with `hI i hm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[GradedHilbert.proj_of_mem_ne _ h1 hi]`. Conclude with `Submodule.zero_mem _) (by simp)`. Use the proof step `(by`. Introduce `i hi m _`. Rewrite using `[hsm]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `I.mul_mem_right _ (hs i hi))`. Use `⟨fun n => hpiece n, P, ⟨fun n => ?_, ?_⟩, hP⟩` and prove the remaining obligations. Use `haveI := hpiece n`. Unfold `gradedQuotPiece`. Use `infer_instance`.
-
-Use `filter_upwards [h] with n hn haveI := hpiece n`. Establish `e` using `GradedHilbert.finrank_map_add_finrank_inf_ker (Ideal.Quotient.mkₐ K I).toLinearMap (extendGradingByZero 𝒜 n)`. Establish `e2 : LinearMap.ker (Ideal.Quotient.mkₐ K I).toLinearMap = (I.restrictScalars (MvPolynomial ι K)).restrictScalars K`. Use extensionality with `x`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem]`.
-
-Rewrite `e` using `[e2, inf_comm]`. Rewrite `hn` using `[Submodule.restrictScalars_top, top_inf_eq, ← e]`. Rewrite using `[← hn, gradedQuotPiece]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_isHilbertPoly_gradedQuotPiece {I : Ideal T} (hI : I.IsHomogeneous 𝒜)
     (s : Finset ι) (hs : ∀ i ∉ s, x i ∈ I) :
@@ -288,7 +284,7 @@ theorem exists_isHilbertPoly_gradedQuotPiece {I : Ideal T} (hI : I.IsHomogeneous
     ring
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype ι`. Conclude with `(exists_isHilbertPoly_gradedQuotPiece hx hfin (Ideal.IsHomogeneous.bot 𝒜) Finset.univ (by simp)).1 n`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem finite_piece (n : ℕ) : Module.Finite K (𝒜 n) := by
   cases nonempty_fintype ι
@@ -296,7 +292,7 @@ theorem finite_piece (n : ℕ) : Module.Finite K (𝒜 n) := by
     (by simp)).1 n
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype ι`. Take `⟨P, hP, -⟩` from `(exists_isHilbertPoly_gradedQuotPiece hx hfin hI Finset.univ (by simp)).2`. Rewrite using `[hP.gradedQuotHilbertPoly_eq]` and apply the resulting hypothesis.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem isHilbertPoly {I : Ideal T} (hI : I.IsHomogeneous 𝒜) :
     IsHilbertPoly (gradedQuotPiece 𝒜 I) (gradedQuotHilbertPoly 𝒜 I) := by
@@ -306,7 +302,7 @@ theorem isHilbertPoly {I : Ideal T} (hI : I.IsHomogeneous 𝒜) :
   rwa [hP.gradedQuotHilbertPoly_eq]
 
 /- English proof (translation)
-Take `⟨P, hP, hd⟩` from `(exists_isHilbertPoly_gradedQuotPiece hx hfin hI ∅ fun i _ => h i).2`. Rewrite using `[hP.gradedQuotHilbertPoly_eq]`. Use extensionality with `m`. Conclude with `(degree_lt_iff_coeff_zero P _).1 hd m (by simp)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem hilbertPoly_eq_zero {I : Ideal T} (hI : I.IsHomogeneous 𝒜) (h : ∀ i, x i ∈ I) :
     gradedQuotHilbertPoly 𝒜 I = 0 := by
@@ -317,7 +313,7 @@ theorem hilbertPoly_eq_zero {I : Ideal T} (hI : I.IsHomogeneous 𝒜) (h : ∀ i
   exact (degree_lt_iff_coeff_zero P _).1 hd m (by simp)
 
 /- English proof (translation)
-Use `(tendsto_natCast_atTop_atTop (R := ℤ)).eventually (isHilbertPoly hx hfin hI).eventually_eq` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eventually_finrank {I : Ideal T} (hI : I.IsHomogeneous 𝒜) :
     ∀ᶠ n : ℕ in atTop, (finrank K (gradedQuotPiece 𝒜 I n) : ℚ) =
@@ -327,7 +323,7 @@ theorem eventually_finrank {I : Ideal T} (hI : I.IsHomogeneous 𝒜) :
   simpa using this
 
 /- English proof (translation)
-Use `filter_upwards [eventually_finrank hx hfin hI] with n hn`. Rewrite using `[← hn]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem eventually_nonneg {I : Ideal T} (hI : I.IsHomogeneous 𝒜) :
     ∀ᶠ n : ℕ in atTop, 0 ≤ (gradedQuotHilbertPoly 𝒜 I).eval (n : ℚ) := by
@@ -336,9 +332,9 @@ theorem eventually_nonneg {I : Ideal T} (hI : I.IsHomogeneous 𝒜) :
   positivity
 
 /- English proof (translation)
-Use `haveI := finite_piece hx hfin n`. Establish `e` using `GradedHilbert.finrank_map_add_finrank_inf_ker (Ideal.Quotient.mkₐ K I).toLinearMap (𝒜 n)`. Establish `e2 : LinearMap.ker (Ideal.Quotient.mkₐ K I).toLinearMap = I.restrictScalars K`. Use extensionality with `x`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[e2, inf_comm]`. Rewrite using `[gradedQuotPiece_natCast, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_piece_add (I : Ideal T) (n : ℕ) :
     finrank K (gradedQuotPiece 𝒜 I n) +
@@ -352,15 +348,15 @@ theorem finrank_piece_add (I : Ideal T) (n : ℕ) :
   rw [gradedQuotPiece_natCast, e]
 
 /- English proof (translation)
-Establish `h1` using `finrank_piece_add hx hfin (I ⊔ Ideal.span {f}) (n + d)`. Establish `h2` using `finrank_piece_add hx hfin (Submodule.colon I {f}) n`. Establish `h3` using `finrank_piece_add hx hfin I (n + d)`. Use `haveI := finite_piece hx hfin n`. Use `haveI := finite_piece hx hfin (n + d)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `GradedHilbert.finrank_sup_map_add_finrank_inf_comap (LinearMap.mulRight K f) (𝒜 n) (I.restrictScalars K ⊓ 𝒜 (n + d))`. Establish `a₁ : (I ⊔ Ideal.span {f}).restrictScalars K ⊓ 𝒜 (n + d) = (I.restrictScalars K ⊓ 𝒜 (n + d)) ⊔ (𝒜 n).map (LinearMap.mulRight K f)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `m ⟨hm, hmn⟩`. Take `⟨a, ha, _, hb, rfl⟩` from `Submodule.mem_sup.1 hm`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Rewrite using `[← decompose_of_mem_same 𝒜 hmn, decompose_add, DirectSum.add_apply, Submodule.coe_add, coe_decompose_mul_add_of_right_mem _ (j := d) hf]`. Conclude with `Submodule.add_mem_sup ⟨hI _ ha, SetLike.coe_mem _⟩ ⟨_, SetLike.coe_mem _, rfl⟩`. Use `sup_le (inf_le_inf_right _ fun m hm => Submodule.mem_sup_left hm) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨Ideal.mem_sup_right (Ideal.mem_span_singleton'.2 ⟨m, rfl⟩), SetLike.mul_mem_graded hm hf⟩`. Establish `a₂ : (Submodule.colon I {f}).restrictScalars K ⊓ 𝒜 n = 𝒜 n ⊓ (I.restrictScalars K ⊓ 𝒜 (n + d)).comap (LinearMap.mulRight K f)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `m ⟨hm, hmn⟩`. Conclude with `⟨hmn, Submodule.mem_colon_singleton.1 hm, SetLike.mul_mem_graded hmn hf⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `m ⟨hm, hm', -⟩`. Conclude with `⟨Submodule.mem_colon_singleton.2 hm', hm⟩`. Rewrite `h1` using `[a₁]`. Rewrite `h2` using `[a₂]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_sup_add_colon {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {f : T} {d : ℕ}
     (hf : f ∈ 𝒜 d) (n : ℕ) :
@@ -399,9 +395,9 @@ theorem finrank_sup_add_colon {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {f : T} 
   omega
 
 /- English proof (translation)
-Apply `polynomial_eq_of_eventually_eval_nat` to reduce the goal to its premises. Take `⟨N, hN⟩` from `eventually_atTop.1 (eventually_finrank hx hfin (isHomogeneous_colon hI hf))`. Use `filter_upwards [eventually_finrank hx hfin hI, eventually_finrank hx hfin (isHomogeneous_sup_span hI hf), eventually_ge_atTop (N + d)] with n h1 h2 h3`. Take `⟨n, rfl⟩ : ∃ m, n = m + d` from `⟨n - d, by omega⟩`. Rewrite using `[eval_add, ← h1, ← h2, ← finrank_sup_add_colon hx hfin hI hf n, Nat.cast_add, hN n (by omega)]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem hilbertPoly_eq_sup_add_colon {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {f : T} {d : ℕ}
     (hf : f ∈ 𝒜 d) :
@@ -418,9 +414,9 @@ theorem hilbertPoly_eq_sup_add_colon {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {
   simp
 
 /- English proof (translation)
-Establish `h` using `hilbertPoly_eq_sup_add_colon hx hfin hI hf`. Establish `e : Submodule.colon P {f} = P`. Use extensionality with `g`. Rewrite using `[Submodule.mem_colon_singleton, smul_eq_mul, hP.mul_mem_iff_mem_or_mem]`. Simplify using `[hfP]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[e]`. Take the linear combination `-h`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hilbertPoly_sup_of_isPrime {P : Ideal T} [hP : P.IsPrime] (hI : P.IsHomogeneous 𝒜)
     {f : T} {d : ℕ} (hf : f ∈ 𝒜 d) (hfP : f ∉ P) :
@@ -435,9 +431,9 @@ theorem hilbertPoly_sup_of_isPrime {P : Ideal T} [hP : P.IsPrime] (hI : P.IsHomo
   linear_combination -h
 
 /- English proof (translation)
-Use `degree_le_of_eventually_eval_nat (eventually_nonneg hx hfin hJ) ?_` and prove the remaining obligations. Use `filter_upwards [eventually_finrank hx hfin hI, eventually_finrank hx hfin hJ] with n h1 h2`. Establish `h3` using `finrank_piece_add hx hfin I n`. Establish `h4` using `finrank_piece_add hx hfin J n`. Use `haveI := finite_piece hx hfin n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : finrank K (I.restrictScalars K ⊓ 𝒜 n : Submodule K _) ≤ finrank K (J.restrictScalars K ⊓ 𝒜 n : Submodule K _)` using `Submodule.finrank_mono (inf_le_inf_right _ fun x hx => h hx)`. Rewrite using `[← h1, ← h2]`. Conclude with `(by omega)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem degree_hilbertPoly_anti {I J : Ideal T} (hI : I.IsHomogeneous 𝒜)
     (hJ : J.IsHomogeneous 𝒜) (h : I ≤ J) :
@@ -454,9 +450,9 @@ theorem degree_hilbertPoly_anti {I J : Ideal T} (hI : I.IsHomogeneous 𝒜)
   exact_mod_cast (by omega)
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨n, hn⟩` from `(eventually_finrank hx hfin hI).exists`. Use `(isHilbertPoly hx hfin hI).finite n` as an intermediate fact. Establish `hbot : gradedQuotPiece 𝒜 P n = ⊥` using `by simpa [h0] using hn`. Establish `hmem : Ideal.Quotient.mk P (x i ^ n) ∈ gradedQuotPiece 𝒜 P n` using `⟨x i ^ n, by simpa using SetLike.pow_mem_graded n (hx i), rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmem` using `[hbot, Submodule.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h (hP.mem_of_pow_mem _ hmem)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hilbertPoly_ne_zero {P : Ideal T} [hP : P.IsPrime] (hI : P.IsHomogeneous 𝒜) {i : ι}
     (h : x i ∉ P) : gradedQuotHilbertPoly 𝒜 P ≠ 0 := by
@@ -470,25 +466,23 @@ theorem hilbertPoly_ne_zero {P : Ideal T} [hP : P.IsPrime] (hI : P.IsHomogeneous
   exact h (hP.mem_of_pow_mem _ hmem)
 
 /- English proof (translation)
-The claim follows from `hilbertPoly_eq_zero hx hfin (Ideal.IsHomogeneous.top _) fun _ => trivial`.
+A detailed English derivation is pending.
 -/
 theorem hilbertPoly_top : gradedQuotHilbertPoly 𝒜 (⊤ : Ideal T) = 0 :=
   hilbertPoly_eq_zero hx hfin (Ideal.IsHomogeneous.top _) fun _ => trivial
 
 /- English proof (translation)
-Use `haveI := isNoetherianRing hfin`. Proceed by induction on `I using IsNoetherian.induction generalizing m with`. Consider the case `_ I ih`. Establish `mono : ∀ J, I ≤ J → ringKrullDim (T ⧸ J) ≤ m` using `fun J hJ => (ringKrullDim_le_of_surjective _ (Ideal.Quotient.factor_surjective hJ)).trans hm`. Distinguish the cases in `htop : I = ⊤`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htop, hilbertPoly_top hx hfin]`. Simplify using the standard rewrite rules. Distinguish the cases in `hp : Ideal.IsPrime I`. Distinguish the cases in `hX : ∀ i, x i ∈ I`. Rewrite using `[hilbertPoly_eq_zero hx hfin hI hX]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `push Not at hX`. Take `⟨i, hi⟩` from `hX`. Establish `hJ` using `isHomogeneous_sup_span hI (hx i)`. Establish `hlt : I < I ⊔ Ideal.span {x i}` using `lt_of_le_of_ne le_sup_left fun e => hi (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Take `⟨δ, hδ⟩` from `exists_ringKrullDim_quotient_eq_nat hfin (sup_span_ne_top hI htop (hx i) one_pos)`. Establish `h1` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hlt.le) (Ideal.Quotient.factor_surjective _) (r := Ideal.Quotient.mk I (x i)) (mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])) (by`. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `h2 : δ + 1 ≤ m`. Use `h1.trans hm` as an intermediate fact. Rewrite `this` using `[hδ]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `ih _ hlt hJ hδ.le`. Rewrite `h3` using `[hilbertPoly_sup_of_isPrime hx hfin hI (hx i) hi, Nat.cast_one]`. Conclude with `(degree_eq_of_degree_sub_comp h3).trans_lt (by exact_mod_cast h2)`. Take `⟨d, f, hf, h1, h2⟩` from `exists_lt_sup_lt_colon hI htop hp`. Rewrite using `[hilbertPoly_eq_sup_add_colon hx hfin hI hf]`.
-
-Use `(degree_add_le _ _).trans_lt (max_lt (ih _ h1 (isHomogeneous_sup_span hI hf) (mono _ h1.le)) ?_)` and prove the remaining obligations. Rewrite using `[degree_comp_X_sub_C_rat]`. Conclude with `ih _ h2 (isHomogeneous_colon hI hf) (mono _ h2.le)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_hilbertPoly_lt {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {m : ℕ}
     (hm : ringKrullDim (T ⧸ I) ≤ m) : (gradedQuotHilbertPoly 𝒜 I).degree < m := by
@@ -529,21 +523,17 @@ theorem degree_hilbertPoly_lt {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {m : ℕ
     exact ih _ h2 (isHomogeneous_colon hI hf) (mono _ h2.le)
 
 /- English proof (translation)
-Use `haveI := finiteType hfin`. Use `le_antisymm ((degree_le_iff_coeff_zero _ _).2 fun m hm => (degree_lt_iff_coeff_zero _ _).1 (degree_hilbertPoly_lt hx hfin hI he.le) m (by exact_mod_cast hm)) ?_` and prove the remaining obligations. Proceed by induction on `e generalizing P with`. Consider the case `zero`. Establish `: ¬ ∀ i, x i ∈ P` using `fun h => by`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ringKrullDim_quotient_le_zero hfin h` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `absurd this (by norm_num)`. Use `push Not at this`. Take `⟨i, hi⟩` from `this`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_le_degree_iff.2 (hilbertPoly_ne_zero hx hfin hI hi)`. Consider the case `succ e ih`. Establish `: ¬ ∀ i, x i ∈ P` using `fun h => by`. Use `ringKrullDim_quotient_le_zero hfin h` as an intermediate fact. Rewrite `this` using `[he]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd this (by exact_mod_cast (by omega))`. Use `push Not at this`. Take `⟨i, hi⟩` from `this`. Establish `hJ` using `isHomogeneous_sup_span hI (hx i)`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ (sup_span_ne_top hI hP.ne_top (hx i) one_pos)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨Q, hQ, -⟩` from `Ideal.exists_minimalPrimes_le hle`. Establish `: Q.IsPrime` using `hQ.1.1`. Establish `hQh` using `isHomogeneous_of_mem_minimalPrimes _ hJ hQ`. Take `⟨δ, hδ⟩` from `exists_ringKrullDim_quotient_eq_nat hfin this.ne_top`. Establish `h1` using `ringKrullDim_quotient_add_one_of_mem_minimalPrimes_sup K hi hQ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[he, hδ]`. Choose the witnesses or unpack the hypotheses as in `rfl : δ = e + 1 := by`. Establish `: δ + 1 = e + 1 + 1` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `(ih hQh hδ).trans (degree_hilbertPoly_anti hx hfin hJ hQh hQ.1.2)`.
-
-Rewrite `h2` using `[hilbertPoly_sup_of_isPrime hx hfin hI (hx i) hi]`. Assume the negation of the conclusion as `hlt`. Establish `h3 : (gradedQuotHilbertPoly 𝒜 P).degree ≤ e` using `(degree_le_iff_coeff_zero _ _).2 fun m hm => (degree_lt_iff_coeff_zero _ _).1 (not_le.1 hlt) m (by exact_mod_cast hm)`. Establish `h4` using `degree_comp_X_add_C_sub_lt _ (-((1 : ℕ) : ℚ)) e h3`. Rewrite `h4` using `[C_neg, ← sub_eq_add_neg, ← degree_neg, neg_sub]`.
-
-Conclude with `absurd h2 (not_le.2 h4)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_hilbertPoly_eq_of_isPrime {P : Ideal T} [hP : P.IsPrime]
     (hI : P.IsHomogeneous 𝒜) {e : ℕ} (he : ringKrullDim (T ⧸ P) = (e + 1 : ℕ)) :
@@ -590,17 +580,17 @@ theorem degree_hilbertPoly_eq_of_isPrime {P : Ideal T} [hP : P.IsPrime]
     exact absurd h2 (not_le.2 h4)
 
 /- English proof (translation)
-Use `haveI := isNoetherianRing hfin`. Proceed by induction on `I using IsNoetherian.induction generalizing s with`. Consider the case `_ I ih`. Establish `h0` using `coeff_nonneg_of_eventually_eval_nat he (eventually_nonneg hx hfin hI)`. Distinguish the cases in `htop : I = ⊤`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `htop` using the available equality. Take `rfl : s = ∅` from `Finset.eq_empty_of_forall_notMem fun Q hQ => by`. Simplify `hs Q hQ` using `[Ideal.minimalPrimes_top]`. Simplify using `using h0`. Distinguish the cases in `hp : Ideal.IsPrime I`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `: s ⊆ {I}` using `fun Q hQ => by`. Simplify `hs Q hQ` using `[Ideal.minimalPrimes_eq_subsingleton_self]`. Break down `Finset.subset_singleton_iff.1 this with rfl | rfl` into its components or cases. Simplify using `using h0`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨d, f, hf, h1, h2⟩` from `exists_lt_sup_lt_colon hI htop hp`. Establish `hJ₁` using `isHomogeneous_sup_span hI hf`. Establish `hJ₂` using `isHomogeneous_colon hI hf`. Establish `e₁` using `(degree_hilbertPoly_anti hx hfin hI hJ₁ h1.le).trans he`. Establish `e₂` using `(degree_hilbertPoly_anti hx hfin hI hJ₂ h2.le).trans he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hilbertPoly_eq_sup_add_colon hx hfin hI hf, coeff_add, coeff_comp_X_sub_C_rat e₂, ← Finset.sum_filter_add_sum_filter_not s (f ∈ ·)]`. Use `add_le_add (ih _ h1 hJ₁ e₁ _ fun Q hQ => ?_) (ih _ h2 hJ₂ e₂ _ fun Q hQ => ?_)` and prove the remaining obligations. Take `⟨hQ, hfQ⟩` from `Finset.mem_filter.1 hQ replace hQ := hs Q hQ`. Conclude with `⟨⟨hQ.1.1, sup_le hQ.1.2 ((Ideal.span_singleton_le_iff_mem _).2 hfQ)⟩, fun R hR hRQ => hQ.2 ⟨hR.1, h1.le.trans hR.2⟩ hRQ⟩`. Take `⟨hQ, hfQ⟩` from `Finset.mem_filter.1 hQ replace hQ := hs Q hQ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨hQ.1.1, fun g hg => (hQ.1.1.mem_or_mem (hQ.1.2 (Submodule.mem_colon_singleton.1 hg))).resolve_right hfQ⟩, fun R hR hRQ => hQ.2 ⟨hR.1, h2.le.trans hR.2⟩ hRQ⟩`.
+A detailed English derivation is pending.
 -/
 theorem sum_coeff_hilbertPoly_le {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {e : ℕ}
     (he : (gradedQuotHilbertPoly 𝒜 I).degree ≤ e) (s : Finset (Ideal T))
@@ -641,7 +631,7 @@ theorem sum_coeff_hilbertPoly_le {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {e : 
       fun R hR hRQ => hQ.2 ⟨hR.1, h2.le.trans hR.2⟩ hRQ⟩
 
 /- English proof (translation)
-Take `⟨δ, hδ⟩` from `exists_ringKrullDim_quotient_eq_nat hfin hP.ne_top`. Establish `h1` using `(zero_le_degree_iff.2 (hilbertPoly_ne_zero hx hfin hI h)).trans_lt (degree_hilbertPoly_lt hx hfin hI hδ.le)`. Establish `h2 : 0 < δ` using `by exact_mod_cast h1`. Conclude with `⟨δ - 1, by rw [hδ, Nat.sub_add_cancel h2]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_ringKrullDim_quotient_eq_succ {P : Ideal T} [hP : P.IsPrime]
     (hI : P.IsHomogeneous 𝒜) {i : ι} (h : x i ∉ P) :
@@ -653,7 +643,7 @@ theorem exists_ringKrullDim_quotient_eq_succ {P : Ideal T} [hP : P.IsPrime]
   exact ⟨δ - 1, by rw [hδ, Nat.sub_add_cancel h2]⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `h`. Take `⟨e, he⟩` from `exists_ringKrullDim_quotient_eq_succ hx hfin hI hi`. Rewrite using `[natDegree_eq_of_degree_eq_some (degree_hilbertPoly_eq_of_isPrime hx hfin hI he), he]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ringKrullDim_quotient_eq_natDegree_add_one {P : Ideal T} [P.IsPrime]
     (hI : P.IsHomogeneous 𝒜) (h : ∃ i, x i ∉ P) :
@@ -663,9 +653,9 @@ theorem ringKrullDim_quotient_eq_natDegree_add_one {P : Ideal T} [P.IsPrime]
   rw [natDegree_eq_of_degree_eq_some (degree_hilbertPoly_eq_of_isPrime hx hfin hI he), he]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `exists_int_factorial_mul_coeff hr (by filter_upwards [eventually_finrank hx hfin hI] with n hn`. Conclude with `⟨finrank K (gradedQuotPiece 𝒜 I n), by rw [← hn]; simp⟩)`. Establish `h0 : 0 ≤ (r.factorial : ℚ) * (gradedQuotHilbertPoly 𝒜 I).coeff r` using `mul_nonneg (by positivity) (coeff_nonneg_of_eventually_eval_nat hr (eventually_nonneg hx hfin hI))`. Rewrite `h0` using `[hz]`. Use `lift z to ℕ using (by exact_mod_cast h0)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨z, by simpa [gradedQuotDeg] using hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_gradedQuotDeg_eq {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {r : ℕ}
     (hr : (gradedQuotHilbertPoly 𝒜 I).degree ≤ r) : ∃ D : ℕ, gradedQuotDeg 𝒜 r I = D := by
@@ -680,9 +670,9 @@ theorem exists_nat_gradedQuotDeg_eq {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {r
   exact ⟨z, by simpa [gradedQuotDeg] using hz⟩
 
 /- English proof (translation)
-Establish `hd` using `degree_hilbertPoly_eq_of_isPrime hx hfin hI hr`. Take `⟨D, hD⟩` from `exists_nat_gradedQuotDeg_eq hx hfin hI hd.le`. Use `⟨D, Nat.one_le_iff_ne_zero.2 ?_, hD⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hD` using `[gradedQuotDeg, Nat.cast_zero, mul_eq_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hD.elim (by positivity) (coeff_ne_zero_of_eq_degree hd)`.
+A detailed English derivation is pending.
 -/
 theorem exists_pos_nat_gradedQuotDeg_eq {P : Ideal T} [P.IsPrime] (hI : P.IsHomogeneous 𝒜)
     {r : ℕ} (hr : ringKrullDim (T ⧸ P) = (r + 1 : ℕ)) :
@@ -695,7 +685,7 @@ theorem exists_pos_nat_gradedQuotDeg_eq {P : Ideal T} [P.IsPrime] (hI : P.IsHomo
   exact hD.elim (by positivity) (coeff_ne_zero_of_eq_degree hd)
 
 /- English proof (translation)
-Take `⟨D, h1, hD⟩` from `exists_pos_nat_gradedQuotDeg_eq hx hfin hI hr`. Rewrite using `[hD]`. Conclude with `h1` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_gradedQuotDeg {P : Ideal T} [P.IsPrime] (hI : P.IsHomogeneous 𝒜)
     {r : ℕ} (hr : ringKrullDim (T ⧸ P) = (r + 1 : ℕ)) : 1 ≤ gradedQuotDeg 𝒜 r P := by
@@ -706,9 +696,9 @@ theorem one_le_gradedQuotDeg {P : Ideal T} [P.IsPrime] (hI : P.IsHomogeneous �
 omit hx [GradedAlgebra 𝒜] in
 
 /- English proof (translation)
-Use `haveI := finiteType hfin`. Take `⟨δ, hδ⟩` from `exists_ringKrullDim_quotient_eq_nat hfin hQ.1.1.ne_top`. Establish `h1` using `ringKrullDim_quotient_add_one_of_mem_minimalPrimes_sup K hfP hQ`. Rewrite `h1` using `[hr, hδ]`. Establish `: δ + 1 = r + 1` using `by exact_mod_cast h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hδ, show δ = r by omega]`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_of_mem_minimalPrimes_sup {P Q : Ideal T} [P.IsPrime] {r : ℕ}
     (hr : ringKrullDim (T ⧸ P) = (r + 1 : ℕ)) {f : T} (hfP : f ∉ P)
@@ -721,9 +711,9 @@ theorem ringKrullDim_quotient_of_mem_minimalPrimes_sup {P Q : Ideal T} [P.IsPrim
   rw [hδ, show δ = r by omega]
 
 /- English proof (translation)
-Establish `hd` using `degree_hilbertPoly_eq_of_isPrime hx hfin hI (e := e + 1) he`. Take `⟨h1, h2⟩` from `coeff_sub_comp_X_sub_C (gradedQuotHilbertPoly 𝒜 P) (a : ℚ) e hd.le`. Rewrite `h1`, `h2` using `[← hilbertPoly_sup_of_isPrime hx hfin hI hf hfP]`. Establish `h3` using `sum_coeff_hilbertPoly_le hx hfin (isHomogeneous_sup_span hI hf) (e := e) ((degree_le_iff_coeff_zero _ _).2 fun m hm => (degree_lt_iff_coeff_zero _ _).1 h1 m (by exact_mod_cast hm)) s hs`. Simplify using `only [gradedQuotDeg, ← Finset.mul_sum]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(mul_le_mul_of_nonneg_left h3 (by positivity)).trans_eq ?_` and prove the remaining obligations. Rewrite using `[h2, Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_gradedQuotDeg_le {P : Ideal T} [P.IsPrime] (hI : P.IsHomogeneous 𝒜) {e : ℕ}
     (he : ringKrullDim (T ⧸ P) = (e + 2 : ℕ)) {f : T} {a : ℕ} (hf : f ∈ 𝒜 a) (hfP : f ∉ P)
@@ -742,9 +732,9 @@ theorem sum_gradedQuotDeg_le {P : Ideal T} [P.IsPrime] (hI : P.IsHomogeneous �
   ring
 
 /- English proof (translation)
-Establish `hb` using `Ideal.IsHomogeneous.bot 𝒜`. Establish `h1 : ∀ᶠ n : ℕ in atTop, (gradedQuotHilbertPoly 𝒜 ⊥).eval (n : ℚ) ≤ (monomial r (c ^ r) : ℚ[X]).eval (n : ℚ)` using `by filter_upwards [h, eventually_finrank hx hfin hb] with n hn hn'`. Use `finrank_piece_add hx hfin ⊥ n` as an intermediate fact. Rewrite using `[← hn', eval_monomial, ← mul_pow]`. Conclude with `le_trans (by exact_mod_cast (by omega)) hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(degree_le_of_eventually_eval_nat (eventually_nonneg hx hfin hb) h1).trans (degree_monomial_le r _)`. Establish `h3` using `coeff_nonneg_of_eventually_eval_nat ((degree_sub_le _ _).trans (max_le (degree_monomial_le r (c ^ r)) h2)) (by filter_upwards [h1] with n hn`. Rewrite using `[eval_sub, sub_nonneg])` and apply the resulting hypothesis. Rewrite `h3` using `[coeff_sub, coeff_monomial_same, sub_nonneg]`. Conclude with `mul_le_mul_of_nonneg_left h3 (by positivity)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gradedQuotDeg_bot_le {r : ℕ} {c : ℚ}
     (h : ∀ᶠ n : ℕ in atTop, (finrank K (𝒜 n) : ℚ) ≤ (c * n) ^ r) :
@@ -770,13 +760,11 @@ end GradedBezout
 open GradedBezout in
 
 /- English proof (translation)
-Use `⟨fun J hJ => isHilbertPoly hx hfin hJ, fun P r hp hP hi hr => ?_⟩` and prove the remaining obligations. Establish `hdim` using `ringKrullDim_quotient_eq_natDegree_add_one hx hfin hP hi`. Rewrite `hdim` using `[hr]`. Use `⟨⟨hdim, exists_pos_nat_gradedQuotDeg_eq hx hfin hP hdim⟩, fun a f hf hfP => ?_⟩` and prove the remaining obligations. Use `haveI := isNoetherianRing hfin`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfinite` using `(P ⊔ Ideal.span {f}).finite_minimalPrimes_of_isNoetherianRing`. Establish `hQ : ∀ Q ∈ (P ⊔ Ideal.span {f}).minimalPrimes, Q.IsHomogeneous 𝒜 ∧ ringKrullDim (T ⧸ Q) = r` using `fun Q hQ => ⟨isHomogeneous_of_mem_minimalPrimes _ (isHomogeneous_sup_span hP hf) hQ, ringKrullDim_quotient_of_mem_minimalPrimes_sup hfin hdim hfP hQ⟩`. Use `⟨hfinite, hQ, fun h1 => ?_⟩` and prove the remaining obligations. Take `⟨e, rfl⟩ : ∃ e, r = e + 1` from `⟨r - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun Q h => ?_, ?_⟩` and prove the remaining obligations. Use `haveI := h.1.1.1`. Conclude with `natDegree_eq_of_degree_eq_some (degree_hilbertPoly_eq_of_isPrime hx hfin (hQ Q h.1).1 (hQ Q h.1).2)`. Establish `h2 : (relevantMinimalPrimes x (P ⊔ Ideal.span {f})).Finite` using `hfinite.subset fun _ h => h.1`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ h2]`.
-
-Conclude with `sum_gradedQuotDeg_le hx hfin hP hdim hf hfP _ fun Q h => (h2.mem_toFinset.1 h).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graded_bezout_step [GradedAlgebra 𝒜] {ι : Type*} [Finite ι] (x : ι → T)
     (hx : ∀ i, x i ∈ 𝒜 1) (hfin : Module.Finite (Algebra.adjoin K (Set.range x)) T) :
@@ -823,7 +811,7 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 open MvPolynomial
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_surjective (Algebra.linearMap _ _) fun p => ⟨⟨p, by rw [adjoin_range_X]; trivial⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem finite_adjoin_range_X (ι : Type*) :
     Module.Finite (Algebra.adjoin K (Set.range (MvPolynomial.X : ι → MvPolynomial ι K)))
@@ -832,7 +820,7 @@ theorem finite_adjoin_range_X (ι : Type*) :
     ⟨⟨p, by rw [adjoin_range_X]; trivial⟩, rfl⟩
 
 /- English proof (translation)
-Apply `polynomial_eq_of_eventually_eval_nat` to reduce the goal to its premises. Use `filter_upwards [eventually_finrank_quotPiece hI, GradedBezout.eventually_finrank (fun i => isHomogeneous_X K i) (finite_adjoin_range_X ι) hI] with n h1 h2`. Rewrite using `[← h1, ← h2, quotPiece_natCast, gradedQuotPiece_natCast]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gradedQuotHilbertPoly_mvPolynomial {ι : Type*} [Finite ι] {I : Ideal (MvPolynomial ι K)}
     (hI : I.IsHomogeneous (homogeneousSubmodule ι K)) :
@@ -843,7 +831,7 @@ theorem gradedQuotHilbertPoly_mvPolynomial {ι : Type*} [Finite ι] {I : Ideal (
   rw [← h1, ← h2, quotPiece_natCast, gradedQuotPiece_natCast]
 
 /- English proof (translation)
-Use `⟨inferInstance, Ideal.IsHomogeneous.bot _, MvPolynomial.X_ne_zero 0, ?_⟩` and prove the remaining obligations. Use `natDegree_eq_of_degree_eq_some (GradedBezout.degree_hilbertPoly_eq_of_isPrime (fun i => isHomogeneous_X K i) (finite_adjoin_range_X _) (Ideal.IsHomogeneous.bot _) ?_)` and prove the remaining obligations. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : (⊥ : Ideal (MvPolynomial (Fin 2) K)).IsPrime ∧
     (⊥ : Ideal (MvPolynomial (Fin 2) K)).IsHomogeneous (homogeneousSubmodule (Fin 2) K) ∧

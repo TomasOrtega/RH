@@ -19,29 +19,29 @@ open ReciprocityTheory.ChartRestriction.G.Chart (tvec tmap eigLat IsUnivChart sc
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `hs : ∀ {S : Type} [CommRing S] (B : Fin m → Fin n → S) (a : Fin m → S), ∑ j, a j • B j = (Matrix.of B)ᵀ *ᵥ a` using `fun B a => by`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Use `choose A hA using fun k => (hu (Pi.single k 1)).exists`. Set `Bm : Matrix (Fin n) (Fin m) L` to `(Matrix.of B)ᵀ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Am : Matrix (Fin m) (Fin n) L` to `(Matrix.of A)ᵀ`. Establish `h1 : Bm * Am = P.map (algebraMap R L)`. Use extensionality with `i k`. Use `congrFun (hA k) i` as an intermediate fact. Rewrite `this` using `[hs]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this.symm` using `[Bm, Am, Matrix.mul_apply, Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `h2 : Am * Bm = 1`. Use extensionality with `i j`. Establish `e1 : P.map (algebraMap R L) *ᵥ B j = ∑ k, (Am *ᵥ B j) k • B k`. Rewrite using `[hs, ← h1, ← Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : P.map (algebraMap R L) *ᵥ B j = ∑ k, (Pi.single j 1 : Fin m → L) k • B k`. Rewrite using `[hB]`. Simplify using `[Pi.single_apply]`. Use `congrFun ((hu (B j)).unique e1 e2) i` as an intermediate fact. Simplify `this` using `[Bm, Matrix.mul_apply, Matrix.mulVec, dotProduct, Pi.single_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hsB⟩` from `IsLocalization.exist_integer_multiples M Finset.univ (fun p : Fin n × Fin m => Bm p.1 p.2)`. Take `⟨s', hsA⟩` from `IsLocalization.exist_integer_multiples M Finset.univ (fun p : Fin m × Fin n => Am p.1 p.2)`. Use `choose B₀ hB₀ using fun i j => hsB (i, j) (Finset.mem_univ _)`. Use `choose A₀ hA₀ using fun i j => hsA (i, j) (Finset.mem_univ _)`. Establish `eB : (Matrix.of B₀).map (algebraMap R L) = (s : R) • Bm` using `by ext i j; exact hB₀ i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `eA : (Matrix.of A₀).map (algebraMap R L) = (s' : R) • Am` using `by ext i j; exact hA₀ i j`. Establish `clear : ∀ {a b : ℕ} (X Y : Matrix (Fin a) (Fin b) R), X.map (algebraMap R L) = Y.map (algebraMap R L) → ∃ u ∈ M, ∀ (S : Type) [CommRing S] (ψ : R →+* S), IsUnit (ψ u) → X.map ψ = Y.map ψ` using `fun {a b} X Y h => by choose u hu using fun p : Fin a × Fin b => IsLocalization.exists_of_eq (M := M) (S := L) (congrFun (congrFun h p.1) p.2 :)`. Use `⟨∏ p, (u p : R), M.prod_mem fun p _ => (u p).2, fun S _ ψ hψ => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `hp : IsUnit (ψ (u (i, j)))` using `isUnit_of_dvd_unit (map_dvd ψ (Finset.dvd_prod_of_mem (fun p => (u p : R)) (Finset.mem_univ (i, j)))) hψ`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg ψ (hu (i, j))` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`. Conclude with `hp.mul_left_cancel this`. Establish `sm : ∀ {S : Type} [CommRing S] (ψ : R →+* S) {a b : ℕ} (r : R) (X : Matrix (Fin a) (Fin b) R), (r • X).map ψ = ψ r • X.map ψ` using `fun ψ _ _ r X => by ext i j; simp`. Take `⟨u₁, hu₁, k₁⟩` from `clear (Matrix.of B₀ * Matrix.of A₀) (((s : R) * s') • P) (by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.map_mul, eB, eA, Matrix.smul_mul, Matrix.mul_smul, h1, sm, algebraMap_smul, mul_smul])`. Take `⟨u₂, hu₂, k₂⟩` from `clear (Matrix.of A₀ * Matrix.of B₀) (((s : R) * s') • 1) (by`. Rewrite using `[Matrix.map_mul, eB, eA, Matrix.smul_mul, Matrix.mul_smul, h2, sm, algebraMap_smul, mul_comm, mul_smul, Matrix.map_one _ (map_zero _) (map_one _)])`. Use `⟨u₁ * u₂ * (s * s'), M.mul_mem (M.mul_mem hu₁ hu₂) (M.mul_mem s.2 s'.2), fun j i => B₀ i j, fun S _ ψ hψ => ?_⟩` and prove the remaining obligations. Rewrite `hψ` using `[map_mul, map_mul, IsUnit.mul_iff, IsUnit.mul_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨w₁, w₂⟩, w, hw⟩` from `hψ`. Establish `q₁` using `k₁ S ψ w₁`. Establish `q₂` using `k₂ S ψ w₂`. Rewrite `q₁`, `q₂` using `[Matrix.map_mul, sm, ← hw]`. Rewrite `q₂` using `[Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `eb : (Matrix.of fun j => ψ ∘ fun i => B₀ i j)ᵀ = (Matrix.of B₀).map ψ` using `rfl`. Generalize the expression as in `(Matrix.of A₀).map ψ = A' at q₁ q₂`. Establish `can : ∀ {a : ℕ} {x y : Fin a → S}, (w : S) • x = (w : S) • y → x = y` using `fun h => (MulAction.injective w : Function.Injective fun x => w • x) h`. Use `⟨fun j => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Establish `e : (ψ ∘ fun i => B₀ i j) = (Matrix.of B₀).map ψ *ᵥ Pi.single j 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Apply `can` to reduce the goal to its premises. Rewrite using `[← Matrix.smul_mulVec, ← q₁, Matrix.mulVec_mulVec, Matrix.mul_assoc, q₂, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mulVec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hs, eb]`. Use `⟨(↑w⁻¹ : S) • (A' *ᵥ v), can ?_, fun a ha => can ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, q₁, Matrix.smul_mulVec, hv, smul_smul, Units.mul_inv, one_smul]`. Rewrite using `[smul_smul, Units.mul_inv, one_smul, ha, Matrix.mulVec_mulVec, q₂, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem spread_basis {R L : Type} [CommRing R] [CommRing L] [Algebra R L] (M : Submonoid R) [IsLocalization M L]
     {n m : ℕ} (P : Matrix (Fin n) (Fin n) R) (B : Fin m → Fin n → L)
@@ -127,11 +127,11 @@ def Compat (t : SAB H X) {S S' : Type} [CommRing S] [CommRing S'] (ψ : S →+* 
   ∀ cc : Fin n → S, vec t x' xc' (ψ ∘ cc) = spMap (dualMap ψ) ≫ vec t x xc cc
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `letI : Algebra S S' := ψ.toAlgebra`. Take `⟨x₁, hx₁, hcomp⟩` from `LieChart.univChart_baseChange_of_chart (R := S) (R' := S') _ C n xc hx`. Establish `h₁` using `IsGrpPullback.comp (isGrpPullback_pullback ((Over.pullback x).obj t.G) (ReciprocityTheory.ChartRestriction.G.Chart.fB S S')) (isGrpPullback_pullback t.G x)`. Take `⟨e, he, hφ⟩` from `grpPullback_iso h₁ (isGrpPullback_pullback t.G (ReciprocityTheory.ChartRestriction.G.Chart.fB S S' ≫ x))`.
+Substitute using the available equality. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨fun m => x₁ m ≫ e.hom, gfp_chart_iso e hx₁, fun cc => ?_⟩` and prove the remaining obligations. Establish `key : (tvec (x` using `fun m => x₁ m ≫ e.hom) (algebraMap S S' ∘ cc)).left = (tvec (x := x₁) (algebraMap S S' ∘ cc)).left ≫ e.hom.left := by show (_ ≫ x₁ 1 ≫ e.hom).left = (_ ≫ x₁ 1).left ≫ e.hom.left`. Rewrite using `[Over.comp_left, Over.comp_left, Over.comp_left, Category.assoc]`. Use `show (tvec (x := fun m => x₁ m ≫ e.hom) (algebraMap S S' ∘ cc)).left ≫ pullback.fst _ _ = _`. Rewrite using `[key, Category.assoc, hφ, ← Category.assoc, hcomp cc, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem vec_bc_of_chart {S : Type} [CommRing S] {x : Sp S ⟶ X} {n : ℕ}
     {xc : ∀ m : ℕ, sp (R₀ := S) (ReciprocityTheory.ChartRestriction.G.Chart.JetR S (Fin n) m) ⟶ (Over.pullback x).obj t.G}
@@ -159,13 +159,13 @@ theorem vec_bc_of_chart {S : Type} [CommRing S] {x : Sp S ⟶ X} {n : ℕ}
 variable (t) in
 
 /- English proof (translation)
-Set `G : Over Y` to `(Over.pullback i).obj t.G`. Establish `: Smooth G.hom`. Use `t.semi.smooth` as an intermediate fact. Use `show Smooth (pullback.snd t.G.hom _)`. Use `infer_instance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨U, hU, V, hV, e, hxU, -, hs, h⟩` from `LieChart.exists_isStandardSmooth_section G.hom (η[G]).left (Over.w η[G]) y ⊤ trivial`. Set `j : Spec (CommRingCat.of Γ(Y, U)) ⟶ Y` to `hU.fromSpec`. Set `G₀ : Over (Spec (CommRingCat.of Γ(Y, U)))` to `(Over.pullback j).obj G`. Establish `hφ₀ : IsGrpPullback G₀ G j (pullback.fst G.hom j)` using `isGrpPullback_pullback G j`. Take `⟨C, hC⟩` from `LieChart.exists_chart_pullback G hU hV e hs h G₀ _ hφ₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, xc, hx⟩` from `LieChart.univChart_of_chart G₀ C hC`. Establish `h₁` using `hφ₀.comp (isGrpPullback_pullback t.G i)`. Establish `h₂` using `isGrpPullback_pullback t.G (j ≫ i)`. Take `⟨a, ha, -⟩` from `grpPullback_iso h₁ h₂`. Take `⟨b, hb, -⟩` from `grpPullback_iso h₂ h₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: IsIso b.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map b.hom))`. Use `⟨U, hU, hxU, j ≫ i, rfl, ⟨b.hom.left ⁻¹ᵁ C.U, C.hU.preimage_of_isIso _, ?_⟩, n, _, gfp_chart_iso a hx⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_preimage, ← Over.comp_left, IsMonHom.one_hom]`. Conclude with `C.he`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_affine_chart {Y : Scheme.{0}} (i : Y ⟶ X) (y : Y) :
     ∃ (U : Y.Opens) (hU : IsAffineOpen U), y ∈ U ∧ ∃ (x : Sp Γ(Y, U) ⟶ X) (_ : x = hU.fromSpec ≫ i)
@@ -196,23 +196,21 @@ theorem exists_affine_chart {Y : Scheme.{0}} (i : Y ⟶ X) (y : Y) :
 variable {l : Level H} (c : Coeff l)
 
 /- English proof (translation)
-Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`. Take `⟨α, hinj, ⟨f, hf, hfs⟩, hN⟩` from `exists_sepElt (E := E) (F := c.F) c.F.val.toRingHom (embK c) (fun τ a => embK_coe c τ a)`. Use `letI : Algebra c.F L := φ.toAlgebra`. Use `⟨fun τ => LinearMap.toMatrix' (proj (rho hx) (embK c) α τ), fun {k} _ ψ {x' xc'} hx' hv τ => ?_⟩` and prove the remaining obligations. Use `letI : Algebra c.F k := (ψ.comp φ).toAlgebra`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Establish `e₁ : ∀ m, ReciprocityTheory.ChartRestriction.G.PullbackSections.IsEigV (rho hx') (embK c τ) (proj (rho hx') (embK c) α τ m)` using `fun m => eig_of_alpha _ _ α hN τ (proj_eig_alpha _ _ α hinj f hf hfs τ m)`. Establish `e₂ : ∀ m, ReciprocityTheory.ChartRestriction.G.PullbackSections.IsEigV (rho hx') (embK c τ) m → proj (rho hx') (embK c) α τ m = m` using `fun m hm => by`. Use `proj_sum_eig (rho hx') (embK c) α hinj (Pi.single τ m) (fun τ' => by` as an intermediate fact. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Pi.single_eq_same]` and apply the resulting hypothesis. Rewrite using `[Pi.single_eq_of_ne h]`. Introduce `a`. Use the proof step `simp) τ`. Rewrite `this` using `[Finset.sum_pi_single', if_pos (Finset.mem_univ _), Pi.single_eq_same]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `htm : ∀ (a : 𝓞 E) (cc : Fin n → L), rho hx' a (ψ ∘ cc) = ψ ∘ rho hx a cc` using `fun a cc => vec_inj hx' (by show vec t _ xc' (tmap hx' _ _) = vec t _ xc' (_ ∘ tmap hx _ _)`. Rewrite using `[vec_tmap hx', hv, hv, vec_tmap hx, Category.assoc])`. Establish `pw : ∀ (j : ℕ) cc, (rho hx' α ^ j) (ψ ∘ cc) = ψ ∘ (rho hx α ^ j) cc` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => exact fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ j ih => intro cc`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, ih]`. Conclude with `htm α _`. Establish `pr : ∀ (Q : Polynomial c.F) cc, Polynomial.aeval (rho hx' α) (Q.map (algebraMap c.F k)) (ψ ∘ cc) = ψ ∘ Polynomial.aeval (rho hx α) (Q.map (algebraMap c.F L)) cc` using `fun Q cc => by`. Proceed by induction on `Q using Polynomial.induction_on' with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq`. Rewrite using `[Polynomial.map_add, Polynomial.map_add, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hp, hq]`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Consider the case `monomial j a`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Polynomial.map_monomial, Polynomial.map_monomial, Polynomial.aeval_monomial, Polynomial.aeval_monomial, Module.End.mul_apply, Module.End.mul_apply, pw, Module.algebraMap_end_apply, Module.algebraMap_end_apply]`. Use function extensionality and compare the values at `i`. Conclude with `(map_mul ψ _ _).symm`. Establish `hP : (LinearMap.toMatrix' (proj (rho hx) (embK c) α τ)).map ψ = LinearMap.toMatrix' (proj (rho hx') (embK c) α τ)`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `s : (Pi.single j 1 : Fin n → k) = ψ ∘ Pi.single j 1` using `funext fun r => by`. Apply the tactic sequence `by_cases hj : r = j <;> simp [hj, Pi.single_apply]`. Rewrite using `[Matrix.map_apply, LinearMap.toMatrix'_apply, LinearMap.toMatrix'_apply, s]`. Conclude with `(congrFun (pr _ _) i).symm`. Introduce `v`.
-
-Rewrite using `[hP, ← Matrix.toLin'_apply, Matrix.toLin'_toMatrix', ReciprocityTheory.ChartRestriction.G.Chart.mem_eigLat_iff, ReciprocityTheory.ChartRestriction.G.Chart.mem_eigLat_iff]`. Conclude with `⟨e₁ v, e₂ v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_projectors {L : Type} [CommRing L] (φ : c.F →+* L) {x : Sp L ⟶ X} {n : ℕ}
     {xc : ∀ m : ℕ, sp (R₀ := L) (ReciprocityTheory.ChartRestriction.G.Chart.JetR L (Fin n) m) ⟶ (Over.pullback x).obj t.G}
@@ -273,23 +271,21 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
   GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ShFam GlobalTheory.FlagBundle GlobalTheory.ShFam.EigLoc GlobalTheory.LieLocBasis GlobalTheory.ShFam.EigSpread in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z z`. Take `⟨U₀, hU₀, hz, x₀, hx₀, C, n, xc, hx⟩` from `exists_affine_chart Z.t (genι Z) z`. Set `j : Sp Γ(gen Z, U₀) ⟶ gen Z` to `hU₀.fromSpec`. Set `φ₀ : c.F →+* Γ(gen Z, U₀)` to `(Spec.preimage (j ≫ genStr Z)).hom`. Establish `hφ₀ : spMap φ₀ = j ≫ genStr Z` using `Spec.map_preimage _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hov : ∀ {S : Type} [CommRing S] (ψ : Γ(gen Z, U₀) →+* S), (spMap ψ ≫ j) ≫ genStr Z = spMap (ψ.comp φ₀)` using `fun ψ => by rw [Category.assoc, ← hφ₀, ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap]`. Take `⟨P, hP⟩` from `exists_projectors c φ₀ hx`. Set `L : Type` to `(gen Z).presheaf.stalk z`. Use `letI : Algebra Γ(gen Z, U₀) L := TopCat.Presheaf.algebra_section_stalk (gen Z).presheaf ⟨z, hz⟩`. Establish `hloc` using `hU₀.isLocalization_stalk ⟨z, hz⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Take `⟨fL⟩` from `exists_eigFrame E H Dw l Xo c O β Z L _ _ (hov (algebraMap Γ(gen Z, U₀) L))`. Take `⟨xL, hxL, hvL⟩` from `vec_bc_of_chart C hx (algebraMap Γ(gen Z, U₀) L) (x' := (spMap (algebraMap Γ(gen Z, U₀) L) ≫ j) ≫ genι Z) (by rw [hx₀, Category.assoc])`. Use `choose B hB using fun τ i => vec_exists hxL _ (fL.tan τ i)`. Establish `hPL` using `hP _ hxL hvL`. Use `choose g hg B₀ hB₀ using fun τ => spread_basis (hU₀.primeIdealOf ⟨z, hz⟩).asIdeal.primeCompl (P τ) (B τ) (fun i => (hPL τ _).2 ((vec_eig_iff hxL _ _).1 fun a => by rw [← hB]; exact fL.eig τ i a)) (fun v => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `fL.basis τ _ (vec_tan hxL _) ((vec_eig_iff hxL _ _).2 (hPL τ v).1)` as an intermediate fact. Rewrite `this` using `[show fL.v τ = fun i => vec Z.t _ xL (B τ i) from funext (hB τ)]`. Simplify `this)` using `only [comb_iff hxL]`. Establish `frame : ∀ (S : Type) [CommRing S] (ψ : Γ(gen Z, U₀) →+* S) (x' : Sp S ⟶ Z.X) (φ' : c.F →+* S), x' = spMap ψ ≫ x₀ → φ' = ψ.comp φ₀ → IsUnit (ψ (∏ τ, g τ)) → ∃ f : EigFrame Z φ' x', ∀ τ i, f.v τ i = spMap (dualMap ψ) ≫ vec Z.t x₀ xc (B₀ τ i)`. Introduce `S _ ψ x' φ' h1 h2 hu`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `h2` using the available equality. Take `⟨xc', hx', hv⟩` from `vec_bc_of_chart C hx ψ h1`. Establish `hP'` using `hP _ hx' hv`. Establish `k` using `fun τ => hB₀ τ S ψ (isUnit_of_dvd_unit (map_dvd ψ (Finset.dvd_prod_of_mem _ (Finset.mem_univ τ))) hu)`. Use `⟨⟨fun τ i => vec Z.t x' xc' (ψ ∘ B₀ τ i), fun τ i => vec_tan hx' _, fun τ i => (vec_eig_iff hx' _ _).2 ((k τ).1 i ▸ (hP' τ _).1), fun τ w hw he => ?_⟩, fun τ i => hv _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨cc, rfl⟩` from `vec_exists hx' w hw`. Simplify using `only [comb_iff hx']`. Conclude with `(k τ).2 cc ((hP' τ cc).2 ((vec_eig_iff hx' _ _).1 he))`. Set `g₀ : Γ(gen Z, U₀)` to `∏ τ, g τ`. Establish `hU` using `hU₀.basicOpen g₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρ : Γ(gen Z, U₀) →+* Γ(gen Z, (gen Z).basicOpen g₀)` to `((gen Z).presheaf.map (homOfLE ((gen Z).basicOpen_le g₀)).op).hom`. Establish `hρ : spMap ρ ≫ j = hU.fromSpec` using `hU₀.map_fromSpec hU _`. Establish `hu : IsUnit (ρ g₀)` using `(gen Z).toRingedSpace.isUnit_res_basicOpen g₀`. Establish `hx₁ : hU.fromSpec ≫ genι Z = spMap ρ ≫ x₀` using `by rw [hx₀, ← hρ, Category.assoc]`. Take `⟨f, hf⟩` from `frame _ ρ _ _ hx₁ rfl hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨_, hU, ρ.comp φ₀, f, ?_, by rw [← hρ]; exact hov ρ, fun R' _ _ ψ => ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.mem_basicOpen _ _ _ hz]`. Conclude with `IsLocalization.map_units L (⟨g₀, Submonoid.prod_mem _ fun τ _ => hg τ⟩ : (hU₀.primeIdealOf ⟨z, hz⟩).asIdeal.primeCompl)`. Take `⟨f', hf'⟩` from `frame R' (ψ.comp ρ) (spMap ψ ≫ hU.fromSpec ≫ genι Z) (ψ.comp (ρ.comp φ₀)) (by rw [hx₁, ← Category.assoc, ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap]) rfl (hu.map ψ)`. Use `⟨f', fun τ i => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hf', hf, ← Category.assoc, ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap]`. Use `congr 2`. Apply the tactic sequence `exact RingHom.ext fun w => by ext <;> simp [dualMap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ShFam.EigSpread.exists_stable_eigFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (z : gen Z), ∃ (U : (gen Z).Opens) (hU : IsAffineOpen U) (φ : c.F →+* Γ(gen Z, U)) (f : EigFrame Z φ (hU.fromSpec ≫ genι Z)), z ∈ U ∧ hU.fromSpec ≫ genStr Z = spMap φ ∧ f.Stable := by
   intro E _ _ _ H Dw l Xo c O _ β Z z

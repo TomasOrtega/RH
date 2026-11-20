@@ -36,13 +36,11 @@ def DpolyOf (F : Fin d → PS R 2 d) {ι : Type} [Fintype ι] (u : ι → Fin d 
   ∑ m ∈ P.support, C (P.coeff m) * DmonOf F u m f
 
 /- English proof (translation)
-Establish `H : ∃ p : MvPolynomial (Fin m × Fin d) R, (p : MvPowerSeries (Fin m × Fin d) R) = 1` using `⟨1, MvPolynomial.coe_one⟩`. Establish `hc : Classical.choose H = 1`. Establish `h` using `(Classical.choose_spec H).trans MvPolynomial.coe_one.symm`. Use `first`. Consider the case `exact MvPolynomial.coe_inj.mp h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPolynomial.coe_injective _ _ h`. Consider the case `exact MvPolynomial.coe_injective _ h`. Use `first`. Consider the case `(simp [ev]; done)`. Consider the case `(simp only [ev, MvPowerSeries.subst, MvPowerSeries.eval₂];`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[dif_pos H, hc]`. Conclude with `MvPolynomial.eval₂_one _ _)`. Consider the case `(unfold ev MvPowerSeries.subst MvPowerSeries.eval₂;`. Rewrite using `[dif_pos H, hc]`. Conclude with `MvPolynomial.eval₂_one _ _)`.
-
-Consider the case `(simp only [ev, MvPowerSeries.subst, MvPowerSeries.eval₂, dif_pos H, hc, MvPolynomial.eval₂_one])`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 @[simp] lemma ev_one {m n : ℕ} (a : Fin m → Pt R n d) : ev a (1 : PS R m d) = 1 := by
   have H : ∃ p : MvPolynomial (Fin m × Fin d) R, (p : MvPowerSeries (Fin m × Fin d) R) = 1 :=

@@ -20,13 +20,13 @@ noncomputable section
 namespace GlobalTheory.Fam.MemberFrame
 variable (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL)
 /- English proof (translation)
-The claim follows from `RowE.of_all fun _ K β _ b _ _ _ => admissible_ranks_of_mass_formula β.D β.O.ex.lev b.R.T.toTiedDataS.cols (Dstar_eq_mass K β.X β.c.isOver β.c.dsig_eq)`.
+A detailed English derivation is pending.
 -/
 theorem admissible_ranks_of_mass_alt : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (fun _ D _ _ _ => LocalBesselAndTopKernel.FamilyMidVolume D) :=
   RowE.of_all fun _ K β _ b _ _ _ =>
     admissible_ranks_of_mass_formula β.D β.O.ex.lev b.R.T.toTiedDataS.cols (Dstar_eq_mass K β.X β.c.isOver β.c.dsig_eq)
 /- English proof (translation)
-Use `⟨1, one_pos, fun eps C8 C5 c6 Cb _ _ he _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C _ _ _ => ⟨0, fun cD _ => ⟨0, fun ch _ _ => ⟨256, fun K hK hx β _ c b _ => ?_⟩⟩⟩⟩⟩` and prove the remaining obligations. Establish `hs : β.O.L.sc = K.s` using `β.sc`. Establish `hc : β.O.L.CGam = C.CGam` using `β.val.CGam_eq.trans (congrArg Inhab.FC.CGam hK.1)`. Establish `he' : K.s.eps = eps` using `hK.2.2.2.1`. Conclude with `⟨three_L_le β.val.ranks (by rw [hs, he']; exact he) (by rw [hs]; exact hx), hc⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem three_mul_L_le_m_sub_one_and_cGam : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (fun κ D O _ _ =>
     3 * O.L.sc.L ≤ (D.R.m : ℝ) - 1 ∧ O.L.CGam = κ.C.CGam) := by
@@ -37,9 +37,9 @@ theorem three_mul_L_le_m_sub_one_and_cGam : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s
   have he' : K.s.eps = eps := hK.2.2.2.1
   exact ⟨three_L_le β.val.ranks (by rw [hs, he']; exact he) (by rw [hs]; exact hx), hc⟩
 /- English proof (translation)
-Establish `h` using `((((_root_.GlobalTheory.Fam.MemberFrame.admissible_ranks_of_mass_alt hL p).and (_root_.GlobalTheory.T.degHypL_all_linked_good_members hL p (fun _ => 29) (fun _ => 0))).and (_root_.GlobalTheory.T.dataNW_all_linked_good_members hL p)).and (_root_.GlobalTheory.T.rankMu_all_linked_me …`. Use `RowE.imp h ?_` and prove the remaining obligations. Introduce `κ K β c b _ _ _ H0`. Take `⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5, h6⟩` from `H0`. Establish `hH : Formalism.MainNotions.S.StandingHypotheses β.D β.O.L (max 29 (8 * κ.C.CGam)) (max 0 40) (κ.C.P.CYL + 1) (1 / 4) 3 (1 / 2) κ.C.CTu` using `⟨h6 ▸ le_max_right _ _, h2.2⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `member_frame_of_standing_hypotheses_window_three β.p.pt.xa.ties h1 ⟨hH, GlobalTheory.Core.Diag.standingNumericalData_three_of_dataNW_rankMu _ h3 h4, by norm_num⟩ (le_max_left _ _) (le_max_right _ _) h5`.
+A detailed English derivation is pending.
 -/
 theorem tFrameAt_at_linked : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p)
     (fun _ D _ _ _ => Formalism.L2.SG.RowsConc.TFrameAt D) := by
@@ -53,7 +53,7 @@ theorem tFrameAt_at_linked : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.Globa
   exact member_frame_of_standing_hypotheses_window_three β.p.pt.xa.ties h1 ⟨hH, GlobalTheory.Core.Diag.standingNumericalData_three_of_dataNW_rankMu _ h3 h4, by norm_num⟩
     (le_max_left _ _) (le_max_right _ _) h5
 /- English proof (translation)
-Introduce `hL p` and use `_root_.GlobalTheory.Fam.MemberFrame.tFrameAt_at_linked hL p`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tFrameAt_at_linked_of_recT : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL),
     GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (fun _ D _ _ _ => Formalism.L2.SG.RowsConc.TFrameAt D) :=

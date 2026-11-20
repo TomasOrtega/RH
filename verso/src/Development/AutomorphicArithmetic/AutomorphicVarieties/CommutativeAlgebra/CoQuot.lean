@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun f hf => by have hd : ∀ n, ∃ d ∈ I ^ n, p d = f (n + 1) - f n := fun n => by have h := (hf (Nat.le_succ n)).symm rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← Ideal.map_pow] at h exact (Ideal.mem_map_iff_of_surjective p hp).1 h choose d hdI hd using hd obtain ⟨x, hx⟩ := h …`.
+Supply the required witnesses or components.
 -/
 private theorem prec_of_surj {R R' : Type} [CommRing R] [CommRing R'] (p : R →+* R')
     (hp : Function.Surjective p) (I : Ideal R) [IsPrecomplete I R] : IsPrecomplete (I.map p) R' := ⟨fun f hf => by
@@ -28,11 +28,11 @@ private theorem prec_of_surj {R R' : Type} [CommRing R] [CommRing R'] (p : R →
   exact Ideal.mem_map_of_mem p h⟩
 
 /- English proof (translation)
-Introduce `O _ _ R _ _ _ R' _ _ _ p hp`. Establish `hp' : Function.Surjective (p : R →+* R')` using `hp`. Use `haveI hL : IsLocalRing R' := IsLocalRing.of_surjective' (p : R →+* R') hp'`. Use `haveI hN : IsNoetherianRing R' := isNoetherianRing_of_surjective R R' (p : R →+* R') hp'`. Use `haveI hH : IsLocalHom (p : R →+* R') := IsLocalHom.of_surjective _ hp'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : (maximalIdeal R).map (p : R →+* R') = maximalIdeal R'` using `IsLocalRing.map_maximalIdeal_of_surjective _ hp'`. Establish `hP : IsPrecomplete (maximalIdeal R') R'` using `hm ▸ prec_of_surj (p : R →+* R') hp' (maximalIdeal R)`. Use `{ complete := { toIsHausdorff := inferInstance, toIsPrecomplete := hP } isLocalHom := ⟨fun a ha => ?_⟩ res_surj := fun y => ?_ }` and prove the remaining obligations. Rewrite `ha` using `[← p.commutes]`. Conclude with `IsLocalHom.map_nonunit (f := algebraMap O R) a (IsLocalHom.map_nonunit (f := (p : R →+* R')) _ ha)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, rfl⟩` from `hp y`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) x`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← p.commutes, ← map_sub, ← hm]`. Conclude with `Ideal.mem_map_of_mem _ ha`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.co_quot :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (R' : Type) [CommRing R'] [Algebra O R'] [Nontrivial R'] (p : R →ₐ[O] R'), Function.Surjective p → IsCO O R' := by

@@ -7,25 +7,25 @@ namespace PositivityTheory.Rg.Sw.KAKA
 open Matrix
 
 /- English proof (translation)
-Set `c : Fin n → EuclideanSpace ℂ (Fin n)` to `fun j => WithLp.toLp 2 (fun i => M i j)`. Establish `hin : ∀ j k, inner ℂ (c j) (c k) = (Mᴴ * M) j k`. Introduce `j k`. Rewrite using `[EuclideanSpace.inner_toLp_toLp, dotProduct]`. Simplify using `[Matrix.mul_apply, Matrix.conjTranspose_apply, mul_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `v : Fin n → EuclideanSpace ℂ (Fin n)` to `fun j => ((s j : ℂ)⁻¹) • c j`. Set `S : Set (Fin n)` to `{j | s j ≠ 0}`. Establish `hv : Orthonormal ℂ (S.restrict v)`. Rewrite using `[orthonormal_iff_ite]`. Introduce and unpack `⟨j, hj⟩ ⟨k, hk⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `inner ℂ (v j) (v k) = _`. Simplify using `only [v, inner_smul_left, inner_smul_right, hin, hM, Matrix.diagonal_apply]`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Establish `hj' : (s j : ℂ) ≠ 0` using `by exact_mod_cast hj`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Simplify using `only [if_true]`. Rewrite using `[Complex.ofReal_pow, map_inv₀, Complex.conj_ofReal]`. Clear the denominators using the available nonvanishing facts. Establish `: (⟨j, hj⟩ : S) ≠ ⟨k, hk⟩` using `fun h => hjk (congrArg Subtype.val h)`. Simplify using `[hjk]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨b, hb⟩` from `hv.exists_orthonormalBasis_extension_of_card_eq (by simp)`. Establish `hU` using `(EuclideanSpace.basisFun (Fin n) ℂ).toMatrix_orthonormalBasis_mem_unitary b`. Use `set U := (EuclideanSpace.basisFun (Fin n) ℂ).toBasis.toMatrix b with hUd`. Use `⟨U, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.mem_unitaryGroup_iff'.mp hU` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Establish `hUe : ∀ i j, U i j = (b j).ofLp i`. Introduce `i j`. Simplify using `[hUd, Module.Basis.toMatrix_apply]`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_diagonal, hUe]`. Distinguish the cases in `hj : s j = 0`. Establish `hc : c j = 0`. Establish `h1` using `hin j j`. Rewrite `h1` using `[hM, Matrix.diagonal_apply_eq, hj]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Complex.ofReal_zero] at h1`. Conclude with `inner_self_eq_zero.mp h1`. Establish `: M i j = 0`. Use `congrArg (fun x : EuclideanSpace ℂ (Fin n) => x.ofLp i) hc` as an intermediate fact. Simplify `this` using `[c]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, hj]`. Simplify using the standard rewrite rules. Establish `hbj : b j = v j` using `hb j hj`. Rewrite using `[hbj]`. Establish `hj' : (s j : ℂ) ≠ 0` using `by exact_mod_cast hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [v, c, WithLp.ofLp_smul, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem gram_diag_unitary {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (s : Fin n → ℝ)
     (hM : Mᴴ * M = diagonal (fun j => ((s j ^ 2 : ℝ) : ℂ))) :
@@ -79,9 +79,9 @@ theorem gram_diag_unitary {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (s : Fin n 
       field_simp
 
 /- English proof (translation)
-Establish `hG : (Aᴴ * A).IsHermitian` using `Matrix.isHermitian_conjTranspose_mul_self A`. Establish `hdiag` using `hG.conjStarAlgAut_star_eigenvectorUnitary`. Rewrite `hdiag` using `[Unitary.conjStarAlgAut_star_apply]`. Use `⟨(hG.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ), hG.eigenvalues, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.mem_unitaryGroup_iff'.mp hG.eigenvectorUnitary.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Use `Matrix.mem_unitaryGroup_iff.mp hG.eigenvectorUnitary.2` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc Aᴴ, ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, hdiag]`. Both sides reduce to the same expression.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_eigen {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
     ∃ (W : Matrix (Fin n) (Fin n) ℂ) (l : Fin n → ℝ), Wᴴ * W = 1 ∧ W * Wᴴ = 1 ∧

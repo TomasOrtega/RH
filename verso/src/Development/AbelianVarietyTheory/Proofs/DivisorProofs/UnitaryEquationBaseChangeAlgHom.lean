@@ -9,13 +9,13 @@ open scoped TensorProduct Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h`. Use `set φ' : R ⊗[F] E →+* K ⊗[F] E := (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom with hφ'`. Establish `hsig : ∀ x, φ' (sigR R σ x) = sigR K σ (φ' x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul r e => simp [hφ', sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hJ : (JR R J).map φ' = JR K J`. Use extensionality with `i j`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[JR, inclR, hφ']`. Establish `hcT : (Formalism.UG.cT (sigR R σ) g).map φ' = Formalism.UG.cT (sigR K σ) (g.map φ')`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hsig]`. Establish `h2` using `congrArg (fun A => A.map φ') h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_mul] at h2`. Rewrite `h2` using `[hcT, hJ]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitaryEq_baseChange {F E R K : Type} [Field F] [Field E] [Algebra F E] [CommRing R]
     [Algebra F R] [CommRing K] [Algebra F K] (σ : E →ₐ[F] E) {M : ℕ}

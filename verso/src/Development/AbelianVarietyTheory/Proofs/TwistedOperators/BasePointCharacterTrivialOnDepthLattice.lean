@@ -21,9 +21,9 @@ namespace GlobalTheory.XCharBF
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h` using `dB.hO_ext W dJ.jX 0 0 (u ⬝ dB.jY) 0 0`. Simplify using `only [map_zero, add_zero, zero_add] at h`. Rewrite using `[symplO, h]`. Use `congr 2`. Establish `e1 : gA W ⬝ dJ.jX = adj dJ.pY` using `by rw [dJ.pY_eq, adj_mul, adj_gA, adj_adj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [pairS, hO_eq_trace, adj_zero, Matrix.zero_mul, Matrix.mul_zero, trace_zero, add_zero, e1]`. Rewrite using `[← adj_mul, Matrix.mul_assoc]`. Conclude with `trace_adj _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sympl_xZero {V V₀ W W₀ : HSp D} {ρ : ℕ} (dB : HypDec V V₀ ρ) (dJ : HypDec W W₀ ρ) (u : Mx D W.rank V.rank) :
     symplO V W (dB.extX W dJ.jX) (dB.extY W (u ⬝ dB.jY)) =
@@ -40,9 +40,9 @@ theorem sympl_xZero {V V₀ W W₀ : HSp D} {ρ : ℕ} (dB : HypDec V V₀ ρ) (
 end GlobalTheory.XCharBF
 
 /- English proof (translation)
-Introduce `D hq T L μ0 hL sc G W M hM F hF ρ h u hu`. Rewrite using `[show xZero (F.dJ ρ h) = (F.dJ ρ h).jX from rfl, GlobalTheory.XCharBF.sympl_xZero]`. Use `GlobalTheory.T.psiE_xi0_mul_cA_eq_one_of_mem_complId W.ψ_std _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.trace]`. Use `sum_mem fun p _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.complementary_ideal_membership_criterion hq μ0 hL G _ (GlobalTheory.T.besselStep_diagonalCoordinates_mem_complementIdeal hF ρ h u hu.1 p) fun e he => ?_` and prove the remaining obligations. Use `GlobalTheory.T.completed_diagonal_coordinate_mem_completion_conj_AA hF ρ h (e • u) (hu.2 e he) p` as an intermediate fact. Rewrite `this` using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem GlobalTheory.AscFin.pcBF_xZero_char : OnStd fun {D} _ _ {sc} {G} W F =>
     ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ u ∈ latRow G (2 * ρ + 1),

@@ -9,29 +9,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SmVec
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ P G hP hG hσ E _ _ A h1 h2 h3 h4 u f hu hu0 hA`. Establish `hmul : ∀ (g : Formalism.REAL.UJ ε) (v : H), σ (umat g) (σ (umat g⁻¹) v) = v`. Introduce `g v`. Establish `e : σ (umat g * umat g⁻¹) = _` using `hσ.1.2 _ g.2 _ (g⁻¹).2`. Establish `e1 : umat g * umat g⁻¹ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: umat (g * g⁻¹) = umat (1 : Formalism.REAL.UJ ε)` using `by rw [mul_inv_cancel]`. Conclude with `this`. Rewrite `e` using `[e1, hσ.1.1]`. Conclude with `(congrArg (fun T : H →L[ℂ] H => T v) e).symm`. Establish `key : ∀ v ∈ smSub G (trRep σ P), ⟪A v, f⟫_ℂ = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `hmem : ∀ g : Formalism.REAL.UJ ε, σ (umat g⁻¹) v ∈ smSub G (trRep σ P)` using `fun g => sigma_mem hP hG hσ hv (g⁻¹).2`. Establish `hc : ∀ y : E, Continuous fun g : Formalism.REAL.UJ ε => ⟪A (σ (umat g⁻¹) v), y⟫_ℂ`. Introduce `y`. Use `Complex.continuous_conj.comp ((h2 v hv y).comp continuous_inv)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [Function.comp_def, inner_conj_symm]`. Establish `hnorm : ∀ g : Formalism.REAL.UJ ε, ‖A (σ (umat g⁻¹) v)‖ = ‖A v‖`. Introduce `g`. Use `h1 _ (g⁻¹).2 v hv v hv` as an intermediate fact. Rewrite using `[norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ) (A v)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg (fun z => √(RCLike.re z)) this`. Establish `h0` using `eq_zero_of_forall_test (F := fun g : Formalism.REAL.UJ ε => ⟪A (σ (umat g⁻¹) v), f⟫_ℂ) (hc f) (by`. Introduce `φ hφ`. Establish `hg0 : gard ε σ φ 0 = 0` using `by simp [gard]`. Establish `t1 : Tendsto (fun i => ⟪A v, A (gard ε σ φ (u i))⟫_ℂ) atTop (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(tendsto_const_nhds (x := A v)).inner (𝕜 := ℂ) (((h3 φ hφ).tendsto 0).comp hu0)` as an intermediate fact. Simplify `this` using `[hg0, Function.comp_def]`. Establish `e : ∀ i, ⟪A v, A (gard ε σ φ (u i))⟫_ℂ = ∫ g : Formalism.REAL.UJ ε, φ (umat g) • ⟪A (σ (umat g⁻¹) v), A (u i)⟫_ℂ ∂(Formalism.REAL.muG ε)`. Introduce `i`. Rewrite using `[h4 φ hφ _ (hu i)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[← h1 _ g.2 _ (hmem g) _ (hu i)]`. Use `erw [hmul]`. Establish `hψi : Integrable (fun g : Formalism.REAL.UJ ε => φ (umat g)) (Formalism.REAL.muG ε)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using hφ.integrable (F := fun _ : Formalism.REAL.UJ ε => (1 : ℝ)) continuous_const`. Establish `t2 : Tendsto (fun i => ⟪A v, A (gard ε σ φ (u i))⟫_ℂ) atTop (𝓝 (∫ g : Formalism.REAL.UJ ε, φ (umat g) • ⟪A (σ (umat g⁻¹) v), f⟫_ℂ ∂(Formalism.REAL.muG ε)))`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `t3 : Tendsto (fun i => (∫ g : Formalism.REAL.UJ ε, ‖φ (umat g)‖ ∂(Formalism.REAL.muG ε)) * (‖A v‖ * ‖A (u i) - f‖)) atTop (𝓝 0)`. Use `((tendsto_iff_norm_sub_tendsto_zero.1 hA).const_mul ‖A v‖).const_mul (∫ g : Formalism.REAL.UJ ε, ‖φ (umat g)‖ ∂(Formalism.REAL.muG ε))` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun i => ?_) t3` and prove the remaining obligations. Rewrite using `[e, ← integral_sub (hφ.integrable (hc _)) (hφ.integrable (hc _)), ← integral_mul_const]`. Use `norm_integral_le_of_norm_le (hψi.norm.mul_const _) (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[← smul_sub, norm_smul, ← inner_sub_right, ← hnorm g]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `mul_le_mul_of_nonneg_left (norm_inner_le_norm _ _) (norm_nonneg _)`. Conclude with `tendsto_nhds_unique t2 t1)`. Establish `e : σ (umat (1 : Formalism.REAL.UJ ε)⁻¹) v = v`. Rewrite using `[inv_one]`. Use `show σ 1 v = v`.
-
-Rewrite using `[hσ.1.1]`. Both sides reduce to the same expression. Simplify `h0` using `only [e]`. Establish `t` using `hA.inner (𝕜 := ℂ) (tendsto_const_nhds (x := f))`. Simplify using `only [key _ (hu _)] at t`.
-
-Conclude with `inner_self_eq_zero.1 (tendsto_nhds_unique t tendsto_const_nhds)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem closable_of_smoothing : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (P G : Matrix (Fin n) (Fin n) ℂ), IsUnit P → Pᴴ * Formalism.REAL.Jm ε * P = G → IsURepOn (UJset ε) σ → ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℂ E] (A : H →ₗ[ℂ] E), (∀ g ∈ UJset ε, ∀ u ∈ smSub G (trRep σ P), ∀ w ∈ smSub G (trRep σ P), ⟪A (σ g u), A (σ g w)⟫_ℂ = ⟪A u, A w⟫_ℂ) → (∀ u ∈ smSub G (trRep σ P), ∀ f : E, Continuous fun g : Formalism.REAL.UJ ε => ⟪f, A (σ (umat g) u)⟫_ℂ) → (∀ φ, IsTest φ → Continuous fun w => A (gard ε σ φ w)) → (∀ φ, IsTest φ → ∀ w ∈ smSub G (trRep σ P), ∀ f : E, ⟪f, A (gard ε σ φ w)⟫_ℂ = ∫ g : Formalism.REAL.UJ ε, φ (umat g) • ⟪f, A (σ (umat g) w)⟫_ℂ ∂(Formalism.REAL.muG ε)) → (∀ (u : ℕ → H) (f : E), (∀ i, u i ∈ smSub G (trRep σ P)) → Tendsto u atTop (𝓝 0) → Tendsto (fun i => A (u i)) atTop (𝓝 f) → f = 0) := by
   intro n ε H _ _ _ σ P G hP hG hσ E _ _ A h1 h2 h3 h4 u f hu hu0 hA

@@ -19,19 +19,17 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Use `GlobalTheory.ModeDecay.nonempty_cmType X` as an intermediate fact. Use `set f : ℝ := (Fintype.card X.Ψ : ℝ) with hf`. Establish `hf0 : 0 < f` using `Nat.cast_pos.2 Fintype.card_pos`. Establish `hπ` using `Real.pi_pos`. Use `⟨hP, fun ξ hξ x hx => GlobalTheory.ModeDecay.fj_eq_zero_of_decay GlobalTheory.fj_norm_mul_exp_le_sup_flow ReciprocityTheory.ChartRestriction.G.AR.Inst.la1GGStatement_firstMinimum r X la P (c / (8 * Real.pi * f)) hP.1 ⟨Real.sqrt |C|, 0, le_rfl, fun y hy η hη h2 => ?_⟩ ξ hξ 0 (by s …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set t := ⨅ τ, X.tt η y τ with ht`. Establish `ht2 : 2 ≤ t` using `le_ciInf h2`. Establish `ht' : 0 < t` using `by linarith`. Establish `hpos : ∀ v : Fin r → E, v ≠ 0 → ∀ τ, 0 < X.c τ * X.maj y τ (Data.emb τ.1 v)` using `fun v hv τ => mul_pos (TwoSidedBoostBounds.c_pos X τ) (X.maj_pos hy τ (emb_ne_zero τ.1 hv))`. Establish `hle : ∀ τ, X.c τ * X.maj y τ (Data.emb τ.1 η) ≤ 1 / t` using `fun τ => (le_one_div ht' (hpos η hη.2.2 τ)).1 (ciInf_le (f := fun τ => X.tt η y τ) (Finite.bddBelow_range _) τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hla : X.firstMinimumSq y ≤ f / t`. Combine the equalities or inequalities in the displayed calculation. Use `csInf_le ⟨0, ?_⟩ ⟨η, hη.1, hη.2.2, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, -, hv, rfl⟩`. Conclude with `Finset.sum_nonneg fun τ _ => (hpos v hv τ).le`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ ∑ _τ : X.Ψ, 1 / t := Finset.sum_le_sum fun τ _ => hle τ`. Use `_ = f / t := by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one_div]`. Establish `hla0 : 0 < X.firstMinimumSq y` using `Real.sqrt_pos.1 (ReciprocityTheory.ChartRestriction.G.AR.Inst.la1_pos_of_mem_dom X hr hy)`. Establish `hexp : Real.exp (-c / X.firstMinimumSq y) ≤ Real.exp (-4 * Real.pi * (c / (8 * Real.pi * f)) * t) ^ 2`. Rewrite using `[← Real.exp_nat_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `: c / (f / t) ≤ c / X.firstMinimumSq y` using `div_le_div_of_nonneg_left hc.le hla0 hla`. Establish `e1 : ((2 : ℕ) : ℝ) * (-4 * Real.pi * (c / (8 * Real.pi * f)) * t) = -(c / (f / t))`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Evaluate the numerical expressions. Rewrite using `[e1, neg_div]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.rpow_zero, mul_one]`. Use `(Real.le_sqrt_of_sq_le ((h y hy).trans ((mul_le_mul_of_nonneg_right (le_abs_self C) (Real.exp_pos _).le).trans (mul_le_mul_of_nonneg_left hexp (abs_nonneg C))))).trans_eq ?_` and prove the remaining obligations.
-
-Rewrite using `[Real.sqrt_mul (abs_nonneg C), Real.sqrt_sq (Real.exp_pos _).le]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_SS_of_decay (X : Data E r) (hr : 0 < r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : X.IsBddSec la P)
     {C c : ℝ} (hc : 0 < c) (h : ∀ x ∈ X.dom, X.pnorm la P x ^ 2 ≤ C * Real.exp (-c / X.firstMinimumSq x)) : P ∈ X.SS la := by
@@ -85,13 +83,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Use `set w := (FD.mat x τ)⁻¹.mulVec v with hw`. Establish `hv : (FD.mat x τ).mulVec w = v`. Rewrite using `[hw, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (Ne.isUnit (hx τ).1), Matrix.one_mulVec]`. Establish `hg : ∀ i, FD.hermC τ.1 X.Gm (FD.col (FD.mat x τ) b) (FD.col (FD.mat x τ) i) = if b = i then ((FD.sgn X.p0 (b : ℕ) : ℝ) : ℂ) else 0` using `fun i => by`. Use `congrFun (congrFun (ho τ) b) i` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[FD.gram, Matrix.diagonal_apply]`. Establish `e : FD.hermC τ.1 X.Gm (FD.col (FD.mat x τ) b) v = ∑ i, starRingEnd ℂ (w i) * FD.hermC τ.1 X.Gm (FD.col (FD.mat x τ) b) (FD.col (FD.mat x τ) i)`. Rewrite using `[← hv]`. Simplify using `only [FD.hermC, FD.col, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a' _ => Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[e]`. Simplify using `only [hg, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, norm_mul, Complex.norm_conj]`.
-
-Unfold `FD.sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem norm_hermC_col (X : FD.Data E r) {x : FD.Frame X.Ψ r} (hx : x ∈ X.dom) (ho : X.IsOrtho x) (τ : X.Ψ)
     (v : Fin r → ℂ) (b : Fin r) :
@@ -117,17 +113,17 @@ theorem norm_hermC_col (X : FD.Data E r) {x : FD.Frame X.Ψ r} (hx : x ∈ X.dom
   split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨hp0, hty⟩` from `hU.2.1 k`. Take `⟨f, hf⟩` from `GlobalTheory.FrameUnif.exists_letter_equiv (U.X k).Ψ (U.X k).cmType Dw.p Dw.q r hU.1 (relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Establish `hper : ∀ (v : Fin r → E) j, ‖perFr (U.X k) x.1 v (relab c σ (W.e j).1) (W.e j).2‖ = ‖((FD.mat x.1 ((W.e.trans f) j).1)⁻¹.mulVec (FD.Data.emb ((W.e.trans f) j).1.1 v)) ((W.e.trans f) j).2‖`. Introduce `v j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hf (W.e j)`. Rewrite using `[Equiv.trans_apply]`. Generalize the expression as in `f (W.e j) = t at h ⊢`. Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`. Generalize the expression as in `((W.e j).2 : ℕ) = i at h ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only at h ⊢`. Rewrite `h` using `[← hp0]`. Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Unfold `perFr`. Rewrite using `[dif_pos a, dif_pos hn]`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `perFr`. Rewrite using `[dif_neg a, dif_pos (show conjEmb (relab c σ (W.e j).1) ∈ (U.X k).Ψ from hτ), dif_pos hn]`. Conclude with `norm_hermC_col (U.X k) x.2 hx ⟨_, hτ⟩ _ _`. Establish `hn : ∀ j, ‖relab c σ (W.e j).1 (U.X k).ξ0‖ = ‖((W.e.trans f) j).1.1 (U.X k).ξ0‖` using `fun j => by`. Break down `hf (W.e j) with ⟨-, h, -⟩ | ⟨-, h, -⟩` into its components or cases.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.trans_apply, h]`. Rewrite using `[Equiv.trans_apply, h]`. Conclude with `(Complex.norm_conj _).symm`. Simplify using `only [FD.MajorantOrthogonality.maj_ortho _ x.2 hx, ReciprocityTheory.MultiplicativeHeights.normSq, Finset.mul_sum]`. Rewrite using `[← Fintype.sum_prod_type', hm_eq_diagonal E H Dw l Xo c σ r U hσ hU k x W Wu hx, hermForm, dotProduct, Complex.re_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv (W.e.trans f) _ _ fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_diagonal, Pi.star_apply, mul_left_comm, Complex.star_def, Complex.mul_conj, ← Complex.ofReal_mul, Complex.ofReal_re, Complex.normSq_eq_norm_sq, W.pm_eq, hper, hn]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hermForm_period {U : Unf Xo c σ r} (hσ : GoodEmb c σ) (hU : IsUnf U) {k : U.Comp} {x : (U.X k).dom}
     (W : PullbackSections.UnfAt U k x) (Wu : PullbackSections.UnitAt W) (hx : (U.X k).IsOrtho x.1) (a : (W.F.Di (W.ik k)).La) :
@@ -172,15 +168,15 @@ def firstMin {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g)
   sInf {t | ∃ z ∈ Λ, z ≠ 0 ∧ t = (hermForm Hm z z).re}
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Take `⟨W⟩` from `PullbackSections.nonempty_unfAt hU k x`. Take `⟨Wu⟩` from `PullbackSections.nonempty_unitAt W (PullbackSections.PfSupAtUnit.dmin_ortho _ hx)`. Take `⟨-, h₁, h₂⟩` from `SecTieEx.secTie_exists_unique E H Dw l Xo ℂ (U.un k x).x Φ₀.T.t Φ₀.m`. Take `⟨th, ht⟩` from `h₁ (U.un k x).s`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hne` using `(h₂ th _ ht).2.1 (secNZ_of_secGen lawsFieldsSeparately.2.1 E H Dw l Xo ℂ _ _ (U.un k x).gen)`. Set `Φ : FibKey Xo ℂ (U.un k x).x` to `{ Φ₀ with th := th, th_ne := hne }`. Take `⟨u, χ, hΛ, hA, -, -, hg, -⟩` from `exists_unif W.F (W.ik k) W.per W.pt Φ ht Wu.herm Wu.pos Wu.c2 Wu.c3 Wu.c4 Wu.c5 Wu.c6 Wu.c7`. Use `⟨W.g, hg, u, Wu.Hm, χ, hA, congrArg sInf (Set.ext fun t => ?_)⟩` and prove the remaining obligations. Establish `hm : ∀ z, z ∈ u.Λ ↔ ∃ a, W.Pm a = z` using `fun z => by rw [hΛ]; rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, hv0, rfl⟩`. Take `⟨a, ha⟩` from `(W.φ k).surjective ⟨v, hv⟩`. Establish `e` using `hermForm_period hσ hU W Wu hx a`. Rewrite `e` using `[ha]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨W.Pm a, (hm _).2 ⟨a, rfl⟩, fun h0 => ?_, e.symm⟩` and prove the remaining obligations. Use `GlobalTheory.ModeDecay.nonempty_cmType (U.X k)` as an intermediate fact. Establish `hp : 0 < ∑ τ, (U.X k).c τ * (U.X k).maj x.1 τ (FD.Data.emb τ.1 v)` using `Finset.sum_pos (fun τ _ => mul_pos (FD.TwoSidedBoostBounds.c_pos _ τ) ((U.X k).maj_pos x.2 τ (FD.emb_ne_zero τ.1 hv0))) Finset.univ_nonempty`. Rewrite `hp` using `[← e, h0]`. Simplify using `[hermForm] at hp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨z, hz, hz0, rfl⟩`. Take `⟨a, rfl⟩` from `(hm z).1 hz`. Use `⟨W.φ k a, (W.φ k a).2, fun h0 => hz0 ?_, hermForm_period hσ hU W Wu hx a⟩` and prove the remaining obligations. Rewrite using `[(W.φ k).map_eq_zero_iff.1 (Subtype.ext h0), map_zero]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_unif_la1sq {U : Unf Xo c σ r} (hσ : GoodEmb c σ) (hU : IsUnf U) {k : U.Comp} {x : (U.X k).dom}
     (hx : (U.X k).IsOrtho x.1) {y : Sp ℂ ⟶ Xo.X} (hy : y = (U.un k x).x) (Φ₀ : FibKey Xo ℂ y) :
@@ -215,11 +211,11 @@ theorem exists_unif_la1sq {U : Unf Xo c σ r} (hσ : GoodEmb c σ) (hU : IsUnf U
     rw [(W.φ k).map_eq_zero_iff.1 (Subtype.ext h0), map_zero]
 
 /- English proof (translation)
-Take `⟨Φ⟩` from `nonempty_fibKey E H Dw l Xo ℂ (U'.un k' x').x hpq`. Take `⟨_, rfl, u, Hm, χ, hA, h⟩` from `exists_unif_la1sq hσ hU hx e Φ`. Take `⟨_, rfl, u', Hm', χ', hA', h'⟩` from `exists_unif_la1sq hσ hU' hx' rfl Φ`. Take `⟨-, t1', t2'⟩` from `unimodular_and_tangent_of_isAH thetaUnifAV_all Φ.key.P Φ.key.rig Φ.key.rig_gen u' Hm' χ' hA'`. Take `⟨F, hF, -⟩` from `GlobalTheory.existsUnique_linear_lift_of_isHolTo Φ.key.P.A Φ.key.P.isAb Φ.key.P.L Φ.key.P.g Φ.key.P.g u' t1' t2' u.ex u.ex_add (fun U f => by simpa only [Set.mem_univ, true_and] using u.hol U f)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hi` using `UnifCompare.injective u u' F hF`. Establish `hs` using `LinearMap.injective_iff_surjective.1 hi`. Rewrite using `[h, h']`. Use `congrArg sInf (Set.ext fun t => ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨z, hz, hz0, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨F z, (UnifCompare.mem_iff u u' F hF z).2 hz, fun h0 => hz0 (hi (h0.trans (map_zero F).symm)), by rw [UnifCompare.hermForm_eq Φ.key.P.isLB u u' hA hA' F hF]⟩`. Introduce and unpack `⟨z, hz, hz0, rfl⟩`. Take `⟨z, rfl⟩` from `hs z`. Conclude with `⟨z, (UnifCompare.mem_iff u u' F hF z).1 hz, fun h0 => hz0 (by rw [h0, map_zero]), by rw [UnifCompare.hermForm_eq Φ.key.P.isLB u u' hA hA' F hF]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem la1sq_eq_of_un_x_eq {U U' : Unf Xo c σ r} (hσ : GoodEmb c σ) (hU : IsUnf U) (hU' : IsUnf U') (hpq : 1 ≤ Dw.p + Dw.q)
     {k : U.Comp} {x : (U.X k).dom} (hx : (U.X k).IsOrtho x.1) {k' : U'.Comp} {x' : (U'.X k').dom}

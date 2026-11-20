@@ -6,13 +6,11 @@ open scoped Pointwise ENNReal
 namespace GlobalTheory.CompanionTheory.Ar.Cmp
 
 /- English proof (translation)
-Introduce `G _ _ _ S K K' hK'S hK' ⟨O, hO, hOS⟩`. Establish `: CompactSpace K'` using `isCompact_iff_compactSpace.mp hK'`. Establish `hopen : IsOpen ((K.subgroupOf K' : Subgroup K') : Set K')`. Establish `hset : ((K.subgroupOf K' : Subgroup K') : Set K') = Subtype.val ⁻¹' O`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `: (x : G) ∈ O ∩ (S : Set G)` using `by rw [hOS]; exact hx`. Conclude with `this.1`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Establish `: (x : G) ∈ O ∩ (S : Set G)` using `⟨hx, hK'S x.2⟩`. Rewrite `this` using `[hOS]`. Conclude with `this`. Rewrite using `[hset]`.
-
-Conclude with `hO.preimage continuous_subtype_val`. Use `(K.subgroupOf K').quotient_finite_of_isOpen hopen` as an intermediate fact. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_isCompact_of_relOpen :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (S K K' : Subgroup G),

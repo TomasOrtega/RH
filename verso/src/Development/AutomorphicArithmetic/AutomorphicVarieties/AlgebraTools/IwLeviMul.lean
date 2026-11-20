@@ -8,14 +8,14 @@ section SlopeTestRemainingChoices
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Rewrite using `[MulAction.mem_stabilizer_iff, MulAction.Quotient.smul_coe, eq_comm, QuotientGroup.eq, smul_eq_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_stab (I : Subgroup G) (z g : G) :
     g ∈ MulAction.stabilizer G (z : G ⧸ I) ↔ z⁻¹ * g * z ∈ I := by
   rw [MulAction.mem_stabilizer_iff, MulAction.Quotient.smul_coe, eq_comm, QuotientGroup.eq, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← MulAction.index_stabilizer]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ncard_orb (I K : Subgroup G) (q : G ⧸ I) :
     (MulAction.orbit K q).ncard = (MulAction.stabilizer G q).relIndex K := by
@@ -23,15 +23,13 @@ private theorem ncard_orb (I K : Subgroup G) (q : G ⧸ I) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : MulAction.orbit (MulAction.stabilizer G (x : G ⧸ I) ⊓ I : Subgroup G) ((x * y : G) : G ⧸ I) = (fun q : G ⧸ I => x • q) '' MulAction.orbit I (y : G ⧸ I)`. Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨g, hg, hg'⟩, rfl⟩`. Use `⟨_, ⟨⟨x⁻¹ * g * x, (mem_stab I x g).1 hg⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ((x * (x⁻¹ * g * x * y) : G) : G ⧸ I) = ((g * (x * y) : G) : G ⧸ I)`. Use `congr 1`. Use `group`. Introduce and unpack `⟨_, ⟨⟨b, hb⟩, rfl⟩, rfl⟩`. Take `⟨b', hb', h1, h2⟩` from `hB b hb`.
+Reduce the equality to equality of the corresponding arguments. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨x * b' * x⁻¹, (mem_stab I x _).2 (by simpa [mul_assoc] using hb'), h1⟩, ?_⟩` and prove the remaining obligations. Use `show ((x * b' * x⁻¹ * (x * y) : G) : G ⧸ I) = ((x * (b * y) : G) : G ⧸ I)`. Rewrite using `[QuotientGroup.eq]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2` using `ncard_orb I (MulAction.stabilizer G (x : G ⧸ I) ⊓ I) ((x * y : G) : G ⧸ I)`. Rewrite `h2` using `[h1, Set.ncard_image_of_injective _ (MulAction.injective x)]`. Rewrite using `[h2, ncard_orb, ncard_orb, mul_comm, ← Subgroup.inf_relIndex_right (MulAction.stabilizer G (x : G ⧸ I)), ← Subgroup.inf_relIndex_right _ (MulAction.stabilizer G (x : G ⧸ I) ⊓ I), Subgroup.relIndex_mul_relIndex _ _ _ inf_le_right inf_le_right, ← Subgroup.inf_relIndex_right (MulAct …`. Use `congr 1`. Use `le_antisymm (fun g hg => ⟨hg.1, ?_, hg.2⟩) fun g hg => ⟨hg.1, hg.2.2⟩` and prove the remaining obligations.
-
-Conclude with `(mem_stab I x g).2 (hA g hg.2 ((mem_stab I _ g).1 hg.1))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem count (I : Subgroup G) (x y : G)
     (hA : ∀ g ∈ I, (x * y)⁻¹ * g * (x * y) ∈ I → x⁻¹ * g * x ∈ I)
@@ -65,9 +63,9 @@ private theorem count (I : Subgroup G) (x y : G)
   exact (mem_stab I x g).2 (hA g hg.2 ((mem_stab I _ g).1 hg.1))
 
 /- English proof (translation)
-Take `⟨u', hu', j', hj', l, hl, e⟩` from `F.fact _ h`. Use `F.uniq (j'⁻¹ * (u'⁻¹ * u) * j'⁻¹⁻¹) (F.M_U _ (inv_mem hj'.1) _ (mul_mem (inv_mem hu'.1) hu)) (j'⁻¹ * j) (mul_mem (inv_mem hj'.1) hj) l⁻¹ (inv_mem hl.1) (by` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : j = j'` using `(inv_mul_eq_one.1 this.2).symm`. Establish `h3 : j ∈ I` using `h2 ▸ hj'.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨by simpa using mul_mem h (inv_mem h3), h3⟩`.
+Supply the required witnesses or components.
 -/
 private theorem split_mem {I : Subgroup G} (F : LeviFact I) {u j : G} (hu : u ∈ F.Uf) (hj : j ∈ F.Mf) (h : u * j ∈ I) :
     u ∈ I ∧ j ∈ I := by
@@ -83,21 +81,19 @@ private theorem split_mem {I : Subgroup G} (F : LeviFact I) {u j : G} (hu : u �
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `A G M _ _ _ _ ρ I F m m' hI hm hm' hN`. Establish `hP : F.Pos (m * m')`. Use `⟨mul_mem hm.1 hm'.1, fun u hu => ?_, fun l hl => ?_⟩` and prove the remaining obligations. Use `hm.2.1 _ ⟨F.M_U _ hm'.1 u hu.1, hm'.2.1 u hu⟩` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `group`. Use `hm'.2.2 (m⁻¹ * l * m) ⟨by simpa using F.M_L _ (inv_mem hm.1) l hl.1, hm.2.2 l hl⟩` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Establish `hB : ∀ b ∈ I, ∃ b' ∈ I, m * b' * m⁻¹ ∈ I ∧ m'⁻¹ * (b'⁻¹ * b) * m' ∈ I`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `b hb`. Take `⟨u, hu, j, hj, l, hl, rfl⟩` from `F.fact b hb`. Break down `hN with hN | hN` into its components or cases. Use `⟨u * j, mul_mem hu.2 hj.2, ?_, ?_⟩` and prove the remaining obligations. Use `mul_mem (hm.2.1 u hu) (hN j hj).1 using 1 group` and compare the differences between its conclusion and the goal.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `hm'.2.2 l hl using 1 group` and compare the differences between its conclusion and the goal. Use `⟨u, hu.2, hm.2.1 u hu, ?_⟩` and prove the remaining obligations. Use `mul_mem (hN j hj).2 (hm'.2.2 l hl) using 1` and compare the differences between its conclusion and the goal. Use `group`. Establish `hA : ∀ g ∈ I, (m * m')⁻¹ * g * (m * m') ∈ I → m⁻¹ * g * m ∈ I`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g hg h`. Take `⟨u, hu, j, hj, l, hl, rfl⟩` from `F.fact g hg`. Establish `hU : (m * m')⁻¹ * u * (m * m') ∈ F.Uf`. Simplify using `using F.M_U _ (inv_mem hP.1) u hu.1`. Establish `hJ : (m * m')⁻¹ * j * (m * m') ∈ F.Mf` using `mul_mem (mul_mem (inv_mem hP.1) hj.1) hP.1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `split_mem F hU hJ (by`. Use `mul_mem h (inv_mem (hP.2.2 l hl)) using 1` and compare the differences between its conclusion and the goal. Use the proof step `group)`. Establish `h3 : m⁻¹ * u * m ∈ I`. Use `hm'.2.1 _ ⟨hU, h1⟩ using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply an available result and prove the equalities needed to match it to the conclusion. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `group`. Establish `h4 : m⁻¹ * j * m ∈ I`. Break down `hN with hN | hN` into its components or cases. Conclude with `(hN j hj).2`. Use `(hN _ ⟨hJ, h2⟩).1 using 1 group` and compare the differences between its conclusion and the goal.
-
-Use `mul_mem (mul_mem h3 h4) (hm.2.2 l hl) using 1` and compare the differences between its conclusion and the goal. Use `group`. Use `⟨hP, hkMul A G M ρ I m m' hI (fun b hb => ?_) (count I m m' hA hB)⟩` and prove the remaining obligations. Take `⟨b', -, h1, h2⟩` from `hB b hb`. Conclude with `⟨_, h1, _, h2, by group⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.leviMul :
     ∀ (A G M : Type) [CommRing A] [Group G] [AddCommGroup M] [Module A M] (ρ : Representation A G M) (I : Subgroup G) (F : LeviFact I) (m m' : G), HeckePair I → F.Pos m → F.Pos m' → (F.NormJ m ∨ F.NormJ m') → F.Pos (m * m') ∧ hk ρ I m * hk ρ I m' = hk ρ I (m * m') := by

@@ -24,7 +24,7 @@ abbrev pbL : PowerBasis E (Fld P) := AdjoinRoot.powerBasis P.2.2.1.ne_zero
 def vec : Fin (pbL P).dim → k ⊗[F] Fld P := fun i => (1 : k) ⊗ₜ (pbL P).basis i
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map (AlgHom.id F k) (IsScalarTower.toAlgHom F E (Fld P))) (a ⊗ₜ[F] e) * _ = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem smul_tmul' (a : k) (e : E) (b : k) (l : Fld P) :
     (a ⊗ₜ[F] e : k ⊗[F] E) • (b ⊗ₜ[F] l : k ⊗[F] Fld P) = (a * b) ⊗ₜ (algebraMap E (Fld P) e * l) := by
@@ -34,11 +34,11 @@ theorem smul_tmul' (a : k) (e : E) (b : k) (l : Fld P) :
   rfl
 
 /- English proof (translation)
-Use `Submodule.eq_top_iff'.2 fun t => ?_` and prove the remaining obligations. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y hx hy => exact add_mem hx hy`. Consider the case `tmul a l`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← (pbL P).basis.sum_repr l, TensorProduct.tmul_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `: a ⊗ₜ[F] ((pbL P).basis.repr l i • (pbL P).basis i) = (a ⊗ₜ[F] (pbL P).basis.repr l i : k ⊗[F] E) • vec P k i`. Rewrite using `[vec, smul_tmul', mul_one, Algebra.smul_def]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem span_vec : Submodule.span (k ⊗[F] E) (Set.range (vec P k)) = ⊤ := by
   refine Submodule.eq_top_iff'.2 fun t => ?_
@@ -55,9 +55,9 @@ theorem span_vec : Submodule.span (k ⊗[F] E) (Set.range (vec P k)) = ⊤ := by
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (Fintype.linearCombination (k ⊗[F] E) (vec P k))`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, span_vec]`. Establish `hd : (pbL P).dim = r` using `(AdjoinRoot.powerBasis_dim _).trans P.2.2.2.1`. Set `ψ : k ⊗[F] Fld P ≃ₗ[k ⊗[F] E] (Fin (pbL P).dim → k ⊗[F] E)` to `φ.trans (LinearEquiv.funCongrLeft _ _ (finCongr hd))`. Use `haveI : Module.Finite (k ⊗[F] E) (k ⊗[F] Fld P) := Module.Finite.equiv φ.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hi` using `OrzechProperty.injective_of_surjective_endomorphism ((Fintype.linearCombination (k ⊗[F] E) (vec P k)) ∘ₗ ψ.toLinearMap) (hs.comp ψ.surjective)`. Use `⟨fun y y' hyy => ?_, hs⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `ψ.surjective y`. Take `⟨z', rfl⟩` from `ψ.surjective y'`. Rewrite using `[hi hyy]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_vec (φ : k ⊗[F] Fld P ≃ₗ[k ⊗[F] E] (Fin r → k ⊗[F] E)) :
     Function.Bijective (Fintype.linearCombination (k ⊗[F] E) (vec P k)) := by
@@ -79,14 +79,14 @@ def bas (φ : k ⊗[F] Fld P ≃ₗ[k ⊗[F] E] (Fin r → k ⊗[F] E)) :
   Module.Basis.ofEquivFun (LinearEquiv.ofBijective _ (bijective_vec P k φ)).symm
 
 /- English proof (translation)
-Simplify using `[bas, Module.Basis.coe_ofEquivFun]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bas_apply (φ : k ⊗[F] Fld P ≃ₗ[k ⊗[F] E] (Fin r → k ⊗[F] E)) (i : Fin (pbL P).dim) :
     bas P k φ i = vec P k i := by
   simp [bas, Module.Basis.coe_ofEquivFun]
 
 /- English proof (translation)
-Establish `hinc : ∀ e : E, inclR (F` using `F) k e = (1 : k) ⊗ₜ[F] e := fun _ => rfl`. Simplify using `only [vec, hinc, smul_tmul', Algebra.TensorProduct.tmul_mul_tmul, mul_one, ← TensorProduct.tmul_sum]`. Use `congr 1`. Simplify using `only [Algebra.leftMulMatrix_apply, LinearMap.toMatrix_apply, Algebra.coe_lmul_eq_mul, LinearMap.mul_apply', ← Algebra.smul_def]`. Conclude with `((pbL P).basis.sum_repr _).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_vec (j : Fin (pbL P).dim) :
     ((1 : k) ⊗ₜ[F] alpha P) * vec P k j =
@@ -98,7 +98,7 @@ theorem mul_vec (j : Fin (pbL P).dim) :
   exact ((pbL P).basis.sum_repr _).symm
 
 /- English proof (translation)
-The claim follows from `Module.Free.of_basis (bas P k φ) haveI := Module.Finite.of_basis (bas P k φ) (LinearMap.mul (k ⊗[F] E) (k ⊗[F] Fld P) ((1 : k) ⊗ₜ[F] alpha P)).charpoly = P.1.map (inclR (F := F) k) := by haveI := Module.Free.of_basis (bas P k φ) haveI := Module.Finite.of_basis (bas P k φ) rw [← L …`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_mul_alpha (φ : k ⊗[F] Fld P ≃ₗ[k ⊗[F] E] (Fin r → k ⊗[F] E)) :
     haveI := Module.Free.of_basis (bas P k φ)
@@ -120,7 +120,7 @@ theorem charpoly_mul_alpha (φ : k ⊗[F] Fld P ≃ₗ[k ⊗[F] E] (Fin r → k 
   exact congrArg _ (AdjoinRoot.minpoly_powerBasis_gen_of_monic P.2.1)
 
 /- English proof (translation)
-Use `haveI := Module.Free.of_basis (bas P k φ)`. Use `haveI := Module.Finite.of_basis (bas P k φ)`. Express the relevant statement in the definitionally equal form `(LinearMap.toMatrix' (φ.conj (LinearMap.mul (k ⊗[F] E) (k ⊗[F] Fld P) ((1 : k) ⊗ₜ[F] alpha P)))).charpoly = _`. Rewrite using `[← LinearMap.toMatrix_eq_toMatrix', LinearMap.charpoly_toMatrix, LinearEquiv.charpoly_conj, charpoly_mul_alpha P k φ]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_mulMat (φ : k ⊗[F] Fld P ≃ₗ[k ⊗[F] E] (Fin r → k ⊗[F] E)) :
     (mulMat φ ((1 : k) ⊗ₜ[F] alpha P)).charpoly = P.1.map (inclR (F := F) k) := by
@@ -133,7 +133,7 @@ theorem charpoly_mulMat (φ : k ⊗[F] Fld P ≃ₗ[k ⊗[F] E] (Fin r → k ⊗
 variable {P k}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `mulMat φ (torUnit _).1 = _`. Use `congr 1`. Express the relevant statement in the definitionally equal form `Matrix.det _ = _`. Rewrite using `[Matrix.det_fin_one]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gam_val {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {x : k ⊗[F] Fld P}
     {φ : k ⊗[F] Fld P ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)} (h : IsIsom P k J x φ) :
@@ -151,9 +151,9 @@ namespace GlobalTheory.RegularGamma
 open GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots
 
 /- English proof (translation)
-Establish `hm : matAt V ρ (gam h) = (mulMat φ ((1 : (placeOf D ρ).Completion) ⊗ₜ alpha P)).map (infEmb (embOverOf D ρ))`. Rewrite using `[← gam_val h]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(matAt V ρ (gam h)).charpoly.Separable`. Rewrite using `[hm, Matrix.charpoly_map, charpoly_mulMat, Polynomial.map_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Irreducible.separable P.2.2.1).map`.
+A detailed English derivation is pending.
 -/
 theorem isRegSS_gam {D : D7} (V : HSp D) (P : PPol D.sp.cm.sig V.rank) (ρ : D.what₂.Tau) {x φ}
     (h : IsIsom P (placeOf D ρ).Completion V.gram x φ) : IsRegSS (matAt V ρ (gam h)) := by

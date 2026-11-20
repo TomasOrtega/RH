@@ -14,7 +14,7 @@ namespace Dat
 variable {D : Dat A n r}
 
 /- English proof (translation)
-Establish `hz0 : ∀ x, D.h x 0 = 0` using `fun x => by simpa using h_smul_right (D := D) x 0 0`. Simplify using `[L_apply, pW_e H, H.ee, hz0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem L_e (H : D.Hyp) (w : Fin r → n → A) (s : Fin r → Fin r → A) (a : Fin r) :
     D.L w s (D.e a) = D.e a := by
@@ -22,14 +22,14 @@ theorem L_e (H : D.Hyp) (w : Fin r → n → A) (s : Fin r → Fin r → A) (a :
   simp [L_apply, pW_e H, H.ee, hz0]
 
 /- English proof (translation)
-Establish `hz0 : ∀ x, D.h x 0 = 0` using `fun x => by simpa using h_smul_right (D := D) x 0 0`. Simplify using `[L_apply, orthogonal_proj_normal_zero H, H.ez, hz0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem reflection_fixes_normal (H : D.Hyp) (w : Fin r → n → A) (s : Fin r → Fin r → A) : D.L w s D.z = D.z := by
   have hz0 : ∀ x, D.h x 0 = 0 := fun x => by simpa using h_smul_right (D := D) x 0 0
   simp [L_apply, orthogonal_proj_normal_zero H, H.ez, hz0]
 
 /- English proof (translation)
-Establish `hz0 : ∀ x, D.h x 0 = 0` using `fun x => by simpa using h_smul_right (D := D) x 0 0`. Simplify using `[L_apply, pW_f H, H.ef, hz0, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem L_f (H : D.Hyp) (w : Fin r → n → A) (s : Fin r → Fin r → A) (b : Fin r) :
     D.L w s (D.f b) = D.f b + (w b + ∑ a, s a b • D.e a) := by
@@ -37,14 +37,14 @@ theorem L_f (H : D.Hyp) (w : Fin r → n → A) (s : Fin r → Fin r → A) (b :
   simp [L_apply, pW_f H, H.ef, hz0, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use `show (∀ a, _ = _) ∧ _ = _`. Conclude with `⟨fun a => L_e H w s a, reflection_fixes_normal H w s⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem L_fixEZ (H : D.Hyp) (w : Fin r → n → A) (s : Fin r → Fin r → A) : D.FixEZ (D.L w s) := by
   show (∀ a, _ = _) ∧ _ = _
   exact ⟨fun a => L_e H w s a, reflection_fixes_normal H w s⟩
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite using `[L_apply]`. Simplify using `only [hv, zero_smul, Finset.sum_const_zero, add_zero]`. Rewrite using `[sub_sub_cancel_left]`. Conclude with `Submodule.neg_mem _ (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem L_perp (H : D.Hyp) (w : Fin r → n → A) (s : Fin r → Fin r → A) : D.PerpX (D.L w s) := by
   intro v hv
@@ -55,7 +55,7 @@ theorem L_perp (H : D.Hyp) (w : Fin r → n → A) (s : Fin r → Fin r → A) :
     (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))
 
 /- English proof (translation)
-Rewrite using `[L_f H]`. Simplify using `[pW_f H, pW_of_isW (hw b), pW_e H]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coordW_L (H : D.Hyp) {w : Fin r → n → A} (hw : ∀ a, IsW D (w a)) (s : Fin r → Fin r → A)
     (b : Fin r) : D.pW (D.L w s (D.f b)) = w b := by
@@ -63,9 +63,9 @@ theorem coordW_L (H : D.Hyp) {w : Fin r → n → A} (hw : ∀ a, IsW D (w a)) (
   simp [pW_f H, pW_of_isW (hw b), pW_e H]
 
 /- English proof (translation)
-Establish `key : ∀ a', D.h (D.f a) (D.e a') = if a' = a then 1 else 0`. Introduce `a'`. Rewrite using `[h_symm H, H.ef]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hwb : (∀ c, D.h (D.e c) (w b) = 0) ∧ (∀ c, D.h (D.f c) (w b) = 0) ∧ D.h D.z (w b) = 0` using `hw b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[L_f H]`. Simplify using `[h_add_right, h_sum_right, h_smul_right, H.ff, hwb.2.1 a, key]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coordS_L (H : D.Hyp) {w : Fin r → n → A} (hw : ∀ a, IsW D (w a)) (s : Fin r → Fin r → A)
     (a b : Fin r) : D.h (D.f a) (D.L w s (D.f b)) = s a b := by
@@ -79,25 +79,23 @@ theorem coordS_L (H : D.Hyp) {w : Fin r → n → A} (hw : ∀ a, IsW D (w a)) (
   simp [h_add_right, h_sum_right, h_smul_right, H.ff, hwb.2.1 a, key]
 
 /- English proof (translation)
-Establish `hS' : (∀ a, S (D.e a) = D.e a) ∧ S D.z = D.z` using `hS`. Use `set T := D.L (fun b => D.pW (S (D.f b))) (fun a b => D.h (D.f a) (S (D.f b))) with hT`. Establish `he : ∀ a, S (D.e a) = T (D.e a)` using `fun a => by rw [hS'.1 a, L_e H]`. Establish `hz : S D.z = T D.z` using `by rw [hS'.2, reflection_fixes_normal H]`. Establish `hf : ∀ b, S (D.f b) = T (D.f b)` using `fun b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[L_f H]`. Conclude with `(N_f H hS hU b).trans (add_assoc _ _ _)`. Establish `hw : ∀ u, IsW D u → S u = T u`. Introduce `u hu`. Establish `hu' : (∀ a, D.h (D.e a) u = 0) ∧ (∀ a, D.h (D.f a) u = 0) ∧ D.h D.z u = 0` using `hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiff : S u - u ∈ Submodule.span A (Set.range D.e)` using `hP u hu'.1`. Establish `hpw : D.pW (S u) = u`. Establish `h1 : D.pW (S u - u) = 0` using `pW_span H hdiff`. Rewrite `h1` using `[map_sub, pW_of_isW hu]`. Conclude with `sub_eq_zero.mp h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hSu : S u = u + D.pX (S u)`. Establish `h2` using `complement_proj_image hS hU hu`. Rewrite `h2` using `[hpw]`. Conclude with `sub_eq_iff_eq_add.mp h2.symm`. Establish `hcoef : ∀ a, D.h (D.f a) (S u) = - D.h (D.pW (S (D.f a))) u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Establish `h0 : D.h (S (D.f a)) (S u) = 0` using `by rw [hU (D.f a) u]; exact hu'.2.1 a`. Rewrite `h0` using `[N_f H hS hU a, ← pX_apply, h_add_left, h_add_left]`. Establish `hX : D.h (D.pX (S (D.f a))) (S u) = 0` using `h_pX_left (fun c => by rw [h_e_S hS hU]; exact hu'.1 c) _`. Establish `hW : D.h (D.pW (S (D.f a))) (S u) = D.h (D.pW (S (D.f a))) u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : S u = u + (S u - u)` using `by abel`. Rewrite using `[h3, h_add_right, h_W_span H (isW_pW H _) hdiff, add_zero]`. Rewrite `h0` using `[hX, hW, add_zero]`. Conclude with `eq_neg_of_add_eq_zero_left h0`. Establish `hTu : T u = u - ∑ a, D.h (D.pW (S (D.f a))) u • D.e a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hT, L_apply, pW_of_isW hu]`. Simplify using `[hu'.1]`. Rewrite using `[hTu, hSu, pX_apply]`. Simplify using `only [hcoef, neg_smul, Finset.sum_neg_distrib, sub_eq_add_neg]`. Establish `key : v = D.pX v + D.pXv v + D.pz v + D.pW v`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pW_apply, pU_apply]`. Normalize the expressions using the abelian group laws. Establish `h1 : S (D.pX v) = T (D.pX v)`. Rewrite using `[pX_apply]`. Simplify using `only [map_sum, map_smul, he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : S (D.pXv v) = T (D.pXv v)`. Rewrite using `[pXv_apply]`. Simplify using `only [map_sum, map_smul, hf]`. Establish `h3 : S (D.pz v) = T (D.pz v)`. Rewrite using `[pz_apply, map_smul, map_smul, hz]`.
-
-Establish `h4 : S (D.pW v) = T (D.pW v)` using `hw _ (isW_pW H v)`. Rewrite using `[key]`. Simplify using `only [map_add, h1, h2, h3, h4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem N_eq_L (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (hU : D.Uni S)
     (hP : D.PerpX S) (v : n → A) :
@@ -149,9 +147,9 @@ theorem N_eq_L (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) 
   simp only [map_add, h1, h2, h3, h4]
 
 /- English proof (translation)
-Establish `key : ∀ a', D.h (D.f a) (D.e a') = if a' = a then 1 else 0`. Introduce `a'`. Rewrite using `[h_symm H, H.ef]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[pX_apply, h_sum_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h_smul_right, key]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_f_pX (H : D.Hyp) (a : Fin r) (u : n → A) : D.h (D.f a) (D.pX u) = D.h (D.f a) u := by
   have key : ∀ a', D.h (D.f a) (D.e a') = if a' = a then 1 else 0 := by
@@ -162,7 +160,7 @@ theorem h_f_pX (H : D.Hyp) (a : Fin r) (u : n → A) : D.h (D.f a) (D.pX u) = D.
   simp [h_smul_right, key]
 
 /- English proof (translation)
-Rewrite using `[pX_apply, h_sum_left]`. Simplify using `[h_smul_left, H.ef]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem h_pX_f (H : D.Hyp) (b : Fin r) (u : n → A) :
     D.h (D.pX u) (D.f b) = D.σA (D.h (D.f b) u) := by
@@ -170,14 +168,14 @@ theorem h_pX_f (H : D.Hyp) (b : Fin r) (u : n → A) :
   simp [h_smul_left, H.ef]
 
 /- English proof (translation)
-Establish `hw' : (∀ c, D.h (D.e c) w = 0) ∧ (∀ c, D.h (D.f c) w = 0) ∧ D.h D.z w = 0` using `hw`. Rewrite using `[h_symm H, hw'.2.1 b, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem h_W_f (H : D.Hyp) {w : n → A} (hw : IsW D w) (b : Fin r) : D.h w (D.f b) = 0 := by
   have hw' : (∀ c, D.h (D.e c) w = 0) ∧ (∀ c, D.h (D.f c) w = 0) ∧ D.h D.z w = 0 := hw
   rw [h_symm H, hw'.2.1 b, map_zero]
 
 /- English proof (translation)
-Rewrite using `[pX_apply]`. Conclude with `N_f H hS hU b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem N_f' (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (hU : D.Uni S) (b : Fin r) :
     S (D.f b) = D.f b + D.pW (S (D.f b)) + D.pX (S (D.f b)) := by
@@ -185,9 +183,9 @@ theorem N_f' (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (h
   exact N_f H hS hU b
 
 /- English proof (translation)
-Establish `h0 : D.h (S (D.f a)) (S (D.f b)) = 0` using `by rw [hU (D.f a) (D.f b)]; exact H.ff a b`. Establish `hWa` using `isW_pW H (S (D.f a))`. Establish `hWb : (∀ c, D.h (D.e c) (D.pW (S (D.f b))) = 0) ∧ (∀ c, D.h (D.f c) (D.pW (S (D.f b))) = 0) ∧ D.h D.z (D.pW (S (D.f b))) = 0` using `isW_pW H _`. Rewrite `h0` using `[N_f' H hS hU a, N_f' H hS hU b]`. Simplify using `only [h_add_left, h_add_right] at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[H.ff a b, hWb.2.1 a, h_f_pX H a, h_W_f H hWa b, h_W_span H hWa (pX_mem_span (S (D.f b))), h_pX_f H b, h_pX_left hWb.1, h_pX_left (fun c => h_e_pX H c (S (D.f b)))]`. Take the linear combination `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem N_skew (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (hU : D.Uni S) (a b : Fin r) :
     D.h (D.f a) (S (D.f b)) + D.σA (D.h (D.f b) (S (D.f a))) +
@@ -205,13 +203,11 @@ theorem N_skew (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) 
   linear_combination h0
 
 /- English proof (translation)
-Establish `hS' : (∀ a, S (D.e a) = D.e a) ∧ S D.z = D.z` using `hS`. Establish `hfix : ∀ x, S (D.pU x) = D.pU x`. Introduce `x`. Rewrite using `[pU_apply, pX_apply, pXv_apply, pz_apply]`. Simplify using `only [map_add, map_sum, map_smul, hS'.1, hf, hS'.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hwW : ∀ u, IsW D u → D.pW (S u) = S u`. Introduce `u hu`. Establish `hu' : (∀ a, D.h (D.e a) u = 0) ∧ (∀ a, D.h (D.f a) u = 0) ∧ D.h D.z u = 0` using `hu`. Establish `h0 : ∀ a, D.h (D.f a) (S u) = 0` using `fun a => by`. Rewrite using `[← hf a, hU (D.f a) u]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu'.2.1 a`. Rewrite using `[complement_proj_image hS hU hu, pX_apply]`. Simplify using `[h0]`. Establish `hv : v = D.pU v + D.pW v` using `by rw [pW_apply]; abel`. Use `conv_lhs => rw [hv]`.
-
-Rewrite using `[map_add, map_add, hfix, pW_pU H, zero_add, hwW _ (isW_pW H v)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pW_comm (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S)
     (hf : ∀ a, S (D.f a) = D.f a) (hU : D.Uni S) (v : n → A) : D.pW (S v) = S (D.pW v) := by

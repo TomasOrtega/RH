@@ -58,7 +58,7 @@ def SecJetsLow : Prop := ∀ g : ℕ, 0 < g → ∃ C : ℝ, ∀ (K : Type) [Fie
         fun i σ => jetBd F.P₀.g (4 * n ^ 2) i (ρ (σ.comp (algebraMap K K'')))
 
 /- English proof (translation)
-Introduce `V`. Use `h₁ (E ⊓ V.restrictScalars (𝓞 K)) inf_le_left` as an intermediate fact. Rewrite `this` using `[h₃]`. Rewrite using `[h₂]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem muGe_of_muLe {K : Type} [Field K] [NumberField K] {m : ℕ} {h : HermFam K (Fin m → K)}
     {E : Submodule (𝓞 K) (Fin m → K)} {ν : ℝ} (h₁ : MuLe h E ν) (h₂ : deg h E = m * ν)

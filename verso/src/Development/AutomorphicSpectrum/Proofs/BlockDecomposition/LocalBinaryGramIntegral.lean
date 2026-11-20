@@ -17,45 +17,37 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, -⟩` from `id hloc`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`. Use `haveI := h4`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, -, hT2, -, htr, -, hBor, -, hgr⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ h R`. Use `haveI := hT2`. Use `haveI := hBor 1 M`. Use `haveI : BorelSpace (HermR R σ 1) := ⟨rfl⟩`. Establish `hHaar` using `GlobalTheory.T.coordinate_haar_measure F E σ h R d b lam hlam`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hμ` using `hHaar.2.1 1 M`. Establish `hν` using `hHaar.2.2 1`. Establish `hAm : MeasurableSet A` using `hAo.measurableSet`. Use `set φ : (Fin 1 → Fin M → R ⊗[F] E) → ℂ := A.indicator fun _ => 1 with hφ`. Establish `hAclopen : IsClopen A` using `⟨hAc.isClosed, hAo⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hφc : Continuous φ` using `continuous_indicator (by simp [hAclopen.frontier_eq]) continuousOn_const`. Establish `hφs : HasCompactSupport φ` using `HasCompactSupport.intro hAc fun x hx => Set.indicator_of_notMem hx _`. Take `⟨⟨hg, -⟩, -⟩` from `GlobalTheory.T.gram_fiber_integral_isContDensityOn F E σ h M J hJ R hloc 1 _ _ m hμ hν hfib φ hφc hφs`. Establish `hfin : ∀ S, m S A < ⊤` using `fun S => by haveI := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ h M J hJ R hloc 1 _ _ m hμ hν hfib S).1`. Conclude with `hAc.measure_lt_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : ∀ S, ∫ X, φ X ∂(m S) = (((m S A).toReal : ℝ) : ℂ)` using `fun S => by`. Rewrite using `[hφ, integral_indicator_const _ hAm]`. Simplify using `[Measure.real]`. Establish `hcs : Continuous (hermScal R σ (F` using `F) (E := E)) := continuous_hermScal R`. Establish `hqc : Continuous fun X : Fin 1 → Fin M → R ⊗[F] E => algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (gramR R σ J X 0 0)` using `continuous_const.mul (htr.comp ((hgr 1 M J).matrix_elem 0 0))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set K : Set R := (fun X : Fin 1 → Fin M → R ⊗[F] E => algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (gramR R σ J X 0 0)) '' A with hKdef`. Establish `hKc : IsCompact K` using `hAc.image hqc`. Use `haveI : Nontrivial (R ⊗[F] E) := ⟨1, 0, fun e => by`. Establish `h3` using `GlobalTheory.CompanionTheory.SW.FibreRatio.half_trace_tmul (F := F) (E := E) R h (1 : R)`. Rewrite `h3` using `[← Algebra.TensorProduct.one_def, e, map_zero, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `zero_ne_one h3⟩`. Establish `hK0 : (0 : R) ∉ K`. Introduce and unpack `⟨X, hX, h0⟩`. Establish `hu : IsUnit (gramR R σ J X).det` using `hAU hX`. Apply the tactic sequence `rw [Matrix.det_fin_one, gram_entry R h hJ X] at hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at h0`. Rewrite `hu` using `[h0, TensorProduct.zero_tmul]`. Conclude with `not_isUnit_zero hu`. Establish `hzero : ∀ s, s ∉ K → m (hermScal R σ s) A = 0`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `measure_mono_null ?_ (hfib.1 (hermScal R σ s))` and prove the remaining obligations. Introduce `X hX hXG`. Apply `hs` to reduce the goal to its premises. Use `⟨X, hX, ?_⟩` and prove the remaining obligations. Establish `e : gramR R σ J X = (hermScal R σ s : Matrix (Fin 1) (Fin 1) (R ⊗[F] E))` using `hXG.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (gramR R σ J X 0 0) = s`. Rewrite using `[e]`. Conclude with `qS_hermScal R h s`. Establish `hcont : Continuous (fun s : R => (m (hermScal R σ s) A).toReal)`. Rewrite using `[continuous_iff_continuousAt]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s`. Distinguish the cases in `hs : s = 0`. Substitute `hs` using the available equality. Establish `hev : (fun _ : R => (0 : ℝ)) =ᶠ[𝓝 0] fun t : R => (m (hermScal R σ t) A).toReal` using `by filter_upwards [hKc.isClosed.isOpen_compl.mem_nhds hK0] with t ht`. Simplify using `[hzero t ht]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `continuousAt_const.congr hev`. Establish `hunit : hermScal R σ s ∈ {S : HermR R σ 1 | IsUnit (S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)).det}` using `by show IsUnit (Matrix.det _)`. Rewrite using `[Matrix.det_fin_one]`. Conclude with `isUnit_tmul R hs`. Establish `hne : ∀ᶠ t in 𝓝 s, t ≠ 0` using `isOpen_ne.mem_nhds hs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htend : Filter.Tendsto (hermScal R σ) (𝓝 s) (𝓝[{S : HermR R σ 1 | IsUnit (S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)).det}] (hermScal R σ s))`. Use `tendsto_nhdsWithin_iff.mpr ⟨hcs.tendsto s, hne.mono fun t ht => ?_⟩` and prove the remaining obligations. Use `show IsUnit (Matrix.det _)`. Rewrite using `[Matrix.det_fin_one]`. Conclude with `isUnit_tmul R ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Complex.continuous_re.tendsto _).comp ((hg _ hunit).tendsto.comp htend)` as an intermediate fact. Simplify `this` using `[ContinuousAt, Function.comp_def, hint]`. Establish `hsupp : HasCompactSupport (fun s : R => (m (hermScal R σ s) A).toReal)` using `HasCompactSupport.intro hKc fun s hs => by simp [hzero s hs]`. Use `⟨hcont, hsupp, ?_⟩` and prove the remaining obligations. Establish `hνeq : coordHerm R σ b lam 1 = Measure.map (hermScal R σ) lam`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use extensionality with `T hT`. Rewrite using `[Measure.map_apply hcs.measurable hT, ← coordHerm_qS R h htr b lam (hcs.measurable hT : MeasurableSet (hermScal R σ ⁻¹' T))]`. Use `congr 1`. Use extensionality with `S`. Simplify using `[hermScal_qS R h S]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgS : ∀ S, m S A = ENNReal.ofReal ((m (hermScal R σ (qS R σ S)) A).toReal)` using `fun S => by`. Rewrite using `[hermScal_qS R h S, ENNReal.ofReal_toReal (hfin S).ne]`. Establish `hgm : Measurable fun S : HermR R σ 1 => m S A`. Establish `e : (fun S : HermR R σ 1 => m S A) = fun S => ENNReal.ofReal ((m (hermScal R σ (qS R σ S)) A).toReal)` using `funext hgS`. Rewrite using `[e]`.
-
-Conclude with `ENNReal.measurable_ofReal.comp (hcont.comp (continuous_qS R htr)).measurable`. Establish `hV : MeasurableSet ({0}ᶜ : Set R)` using `(measurableSet_singleton 0).compl`. Establish `hP : MeasurableSet {S : HermR R σ 1 | qS R σ S ∈ ({0}ᶜ : Set R)}` using `(continuous_qS R htr).measurable hV`. Establish `hQ : MeasurableSet {X : Fin 1 → Fin M → R ⊗[F] E | algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (gramR R σ J X 0 0) ∈ ({0}ᶜ : Set R)}` using `hqc.measurable hV`. Establish `heq` using `mass_eq_lintegral R h hJ hfib hAm (V := {0}ᶜ) (by simp) hQ hP`.
-
-Establish `hAQ : A ∩ {X : Fin 1 → Fin M → R ⊗[F] E | algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (gramR R σ J X 0 0) ∈ ({0}ᶜ : Set R)} = A`. Use `Set.inter_eq_left.mpr fun X hX e => hK0 ⟨X, hX, e⟩` and prove the remaining obligations. Rewrite `heq` using `[hAQ, ← lintegral_indicator hP]`. Establish `hind : {S : HermR R σ 1 | qS R σ S ∈ ({0}ᶜ : Set R)}.indicator (fun S => m S A) = fun S => m S A`. Use function extensionality and compare the values at `S`.
-
-Distinguish the cases in `hS : S ∈ {S : HermR R σ 1 | qS R σ S ∈ ({0}ᶜ : Set R)}`. Conclude with `Set.indicator_of_mem hS _`. Rewrite using `[Set.indicator_of_notMem hS]`. Establish `h0 : qS R σ S = 0` using `by simpa using hS`. Establish `e : S = hermScal R σ 0` using `by rw [← h0, hermScal_qS R h S]`.
-
-Rewrite using `[e, hzero 0 hK0]`. Rewrite `heq` using `[hind, hνeq, lintegral_map hgm hcs.measurable]`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal (hcont.integrable_of_hasCompactSupport hsupp) (ae_of_all _ fun _ => ENNReal.toReal_nonneg), heq]`. Conclude with `lintegral_congr fun s => ENNReal.ofReal_toReal (hfin _).ne`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem masses_field (R : Type) [Field R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R]
     [BorelSpace R] (hloc : IsLocR R) (h : IsCMExt F E σ) (hJ : IsHermND σ J)
@@ -189,7 +181,7 @@ theorem masses_field (R : Type) [Field R] [Algebra F R] [TopologicalSpace R] [Me
   exact lintegral_congr fun s => ENNReal.ofReal_toReal (hfin _).ne
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ J hJ d b v lam hlam m hfib A hAc hAo hAU`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Conclude with `masses_field (Fv F v) (GlobalTheory.T.completion_is_local_ring F v) hσ hJ b lam hlam.1 m hfib A hAc hAo hAU`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fibre_masses : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
   ∀ (J : Matrix (Fin 2) (Fin 2) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))

@@ -13,7 +13,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.Hypotheses3
 import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
 open GlobalTheory.CovTop GlobalTheory.BigTop
 /- English proof (citation)
-Apply `GlobalTheory.CovTop.AllSteps.covolX_of_scholzeWeinstein` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCovolumeFromHeightTheorems.lean&line=45#L45)
 -/

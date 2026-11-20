@@ -30,7 +30,7 @@ namespace UpperTheory.Rel1
 private abbrev Ac (N : ℕ) : Act := (BC N).sub ((Q1 N).comap (βC N))
 
 /- English proof (translation)
-Establish `h` using `p.pt.2`. Express the relevant statement in the definitionally equal form `IsUnit ((Um.join (show Um N A × Um 2 A from p.pt.1)).1 (Fin.last N)) at h`. Simplify `h` using `[Um.join]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isUnit_cyclotomicPeriod_deRham {N : ℕ} {A : CommRingCat.{0}} (p : Ob (Ac N) A) :
     IsUnit ((show Um N A × Um 2 A from p.pt.1).2.1 1) := by
@@ -46,7 +46,7 @@ private def vert {E : Spc} {N : ℕ} {T : Scheme.{0}} (x : Sx (Sp E (Ac N)) 0 T)
 private def ww (E : Spc) (N : ℕ) (T : Scheme.{0}) (x : Sx (Sp E (Ac N)) 0 T) : (Γ(T, ⊤))ˣ := tU (vert x)
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem triv1 (E : Spc) (N : ℕ) {T' T : Scheme.{0}} (g : T' ⟶ T) (x : Sx (Sp E (Ac N)) 0 T) :
     ww E N T' (x.res g) = Units.map g.appTop.hom.toMonoidHom (ww E N T x) := by
@@ -54,11 +54,11 @@ private theorem triv1 (E : Spc) (N : ℕ) {T' T : Scheme.{0}} (g : T' ⟶ T) (x 
   rfl
 
 /- English proof (translation)
-Set `c : ComposableArrows (Ob (Ac N) Γ(T, ⊤)) 1` to `x.2`. Set `f` to `c.map' 0 1`. Establish `hl : lineUnit (Sp.map E (incl ((Q1 N).comap (βC N))) ≫ Sp.line E (chiB N)) x = (show (Γ(T, ⊤))ˣ × (Γ(T, ⊤))ˣ from f.1).2`. Establish `e : lineUnit (Sp.map E (incl ((Q1 N).comap (βC N))) ≫ Sp.line E (chiB N)) x = Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 1) (show (Γ(T, ⊤))ˣ from (chiB N).app Γ(T, ⊤) f.1))` using `rfl`. Rewrite using `[e]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.scalar]`. Both sides reduce to the same expression. Rewrite using `[hl]`. Express the relevant statement in the definitionally equal form `_ * tU (c.obj 1) = tU (c.obj 0)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `ext`. Establish `e` using `congrArg (fun p => (show Um N Γ(T, ⊤) × Um 2 Γ(T, ⊤) from p.1).2.1 1) f.2`. Express the relevant statement in the definitionally equal form `((show (Γ(T, ⊤))ˣ × (Γ(T, ⊤))ˣ from f.1).2 : Γ(T, ⊤)) * (show Um N Γ(T, ⊤) × Um 2 Γ(T, ⊤) from (c.obj 1).pt.1).2.1 1 = (show Um N Γ(T, ⊤) × Um 2 Γ(T, ⊤) from (c.obj 0).pt.1).2.1 1`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 private theorem triv2 (E : Spc) (N : ℕ) (T : Scheme.{0}) (x : Sx (Sp E (Ac N)) 1 T) :
     lineUnit (Sp.map E (incl ((Q1 N).comap (βC N))) ≫ Sp.line E (chiB N)) x * ww E N T (x.face 0) = ww E N T (x.face 1) := by
@@ -85,7 +85,7 @@ end UpperTheory.Rel1
 end
 
 /- English proof (translation)
-Introduce `q _ N E hE`. Establish `hX : Inv q (Sp E (BC N))` using `fun U ⟨x⟩ => hE U ⟨x.1⟩`. Establish `hY : Inv q (Sp E (UpperTheory.Rel1.Ac N))` using `fun U ⟨x⟩ => hE U ⟨x.1⟩`. Rewrite using `[(GlobalTheory.T.firstChernClassTateTwist_cocycle_unique_natural_additive q).2.1 _ _ hX]`. Conclude with `UpperTheory.firstChernClass_eq_zero_of_isTrivialized q _ (UpperTheory.Rel1.ww E N) hY ⟨fun g x => UpperTheory.Rel1.triv1 E N g x, UpperTheory.Rel1.triv2 E N⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.chernClass_pullback_blowupFirstLocus_eq_zero :
     ∀ (q : ℕ) [NeZero q] (N : ℕ) (E : Spc), Inv q E →

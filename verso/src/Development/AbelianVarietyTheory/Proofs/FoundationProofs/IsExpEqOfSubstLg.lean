@@ -9,7 +9,7 @@ namespace GlobalTheory.FGDepth
 variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)}
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[FormalSeries.jacobian_apply, G.lg_lin i j, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem jacobian_logFGL_lg_eq_one {d : ℕ} (G : LogFGL v d) :
     FormalSeries.jacobian G.lg = 1 := by
@@ -17,7 +17,7 @@ private theorem jacobian_logFGL_lg_eq_one {d : ℕ} (G : LogFGL v d) :
   rw [FormalSeries.jacobian_apply, G.lg_lin i j, Matrix.one_apply]
 
 /- English proof (translation)
-The claim follows from `FormalSeries.exists_subst_inverse G.lg_const (B := 1) (by rw [jacobian_logFGL_lg_eq_one, Matrix.mul_one]) (by rw [jacobian_logFGL_lg_eq_one, Matrix.one_mul])`.
+A detailed English derivation is pending.
 -/
 private theorem exists_subst_inverse_logFGL_lg {d : ℕ} (G : LogFGL v d) :
     ∃ w : Fin d → MvPowerSeries (Fin d) C, (∀ j, constantCoeff (w j) = 0) ∧
@@ -26,14 +26,14 @@ private theorem exists_subst_inverse_logFGL_lg {d : ℕ} (G : LogFGL v d) :
     (by rw [jacobian_logFGL_lg_eq_one, Matrix.mul_one]) (by rw [jacobian_logFGL_lg_eq_one, Matrix.one_mul])
 
 /- English proof (translation)
-Take `⟨w, hw0, hw1, -⟩` from `exists_subst_inverse_logFGL_lg G`. Conclude with `Classical.epsilon_spec (p := IsExp G) ⟨w, hw0, hw1⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isExp_expOf {d : ℕ} (G : LogFGL v d) : IsExp G (expOf G) := by
   obtain ⟨w, hw0, hw1, -⟩ := exists_subst_inverse_logFGL_lg G
   exact Classical.epsilon_spec (p := IsExp G) ⟨w, hw0, hw1⟩
 
 /- English proof (translation)
-Take `⟨he0, he1⟩` from `he`. Establish `hlg : HasSubst G.lg` using `hasSubst_of_constantCoeff_zero G.lg_const`. Establish `hes : HasSubst e` using `hasSubst_of_constantCoeff_zero he0`. Use function extensionality and compare the values at `j`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Chain the equalities or inequalities of the calculation.
 -/
 theorem isExp_eq_of_subst_lg {d : ℕ} (G : LogFGL v d) {w : Fin d → MvPowerSeries (Fin d) C}
     (h2 : ∀ j, subst G.lg (w j) = X j) {e : Fin d → MvPowerSeries (Fin d) C} (he : IsExp G e) :
@@ -49,7 +49,7 @@ theorem isExp_eq_of_subst_lg {d : ℕ} (G : LogFGL v d) {w : Fin d → MvPowerSe
     _ = w j := by rw [subst_self]; rfl
 
 /- English proof (translation)
-Take `⟨w, -, -, hw2⟩` from `exists_subst_inverse_logFGL_lg G`. Rewrite using `[isExp_eq_of_subst_lg G hw2 he, isExp_eq_of_subst_lg G hw2 (isExp_expOf G)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isExp_unique {d : ℕ} (G : LogFGL v d) {e : Fin d → MvPowerSeries (Fin d) C}
     (he : IsExp G e) : e = expOf G := by
@@ -57,7 +57,7 @@ theorem isExp_unique {d : ℕ} (G : LogFGL v d) {e : Fin d → MvPowerSeries (Fi
   rw [isExp_eq_of_subst_lg G hw2 he, isExp_eq_of_subst_lg G hw2 (isExp_expOf G)]
 
 /- English proof (translation)
-Take `⟨w, -, -, hw2⟩` from `exists_subst_inverse_logFGL_lg G`. Rewrite using `[isExp_eq_of_subst_lg G hw2 (isExp_expOf G)]`. Conclude with `hw2 a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_lg_expOf {d : ℕ} (G : LogFGL v d) (a : Fin d) :
     subst G.lg (expOf G a) = (X a : MvPowerSeries (Fin d) C) := by
@@ -66,7 +66,7 @@ theorem subst_lg_expOf {d : ℕ} (G : LogFGL v d) (a : Fin d) :
   exact hw2 a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isExp_expOf G, fun _ he => isExp_unique G he, subst_lg_expOf G⟩`.
+Supply the required witnesses or components.
 -/
 theorem expOf_spec {d : ℕ} (G : LogFGL v d) :
     IsExp G (expOf G) ∧ (∀ e, IsExp G e → e = expOf G) ∧

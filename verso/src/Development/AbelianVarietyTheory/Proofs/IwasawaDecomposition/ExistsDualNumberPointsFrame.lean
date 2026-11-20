@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.MChartDown
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem sabMap_base_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t' : SAB H S'} {t : SAB H S} {f f' : S' ⟶ S} (m : SABMap t' t f) (h : f = f') :
@@ -20,7 +20,7 @@ theorem sabMap_base_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   subst h; exact ⟨m, rfl⟩
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMapR_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (g : R →+* R') (f : R' →+* R'') :
     ReciprocityTheory.ChartRestriction.G.Chart.dualMapR (f.comp g) =
@@ -29,7 +29,7 @@ theorem dualMapR_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''
   ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR]
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMapR_comp_algebraMap {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') :
     (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f).comp (algebraMap R (DualNumber R)) =
@@ -38,26 +38,26 @@ theorem dualMapR_comp_algebraMap {R R' : Type} [CommRing R] [CommRing R'] (f : R
   ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (g : R →+* R') (f : R' →+* R'') :
     spMap (f.comp g) = spMap f ≫ spMap g := by
   rw [spMap, spMap, spMap, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O O' _ _ β β' Y Y' v n M U' hU' hle`. Set `g : Γ(Y.X, M.U) →+* Γ(Y'.X, U')` to `(v.appLE M.U U' hle).hom`. Establish `hsq : spMap g ≫ M.hU.fromSpec = hU'.fromSpec ≫ v` using `IsAffineOpen.SpecMap_appLE_fromSpec v M.hU hU' hle`. Take `⟨t₀, ⟨m₀⟩⟩` from `GlobalTheory.ModFam.exists_sabPull hU'.fromSpec Y'.t`. Take `⟨k₀, hk₀⟩` from `GlobalTheory.ObjMaps.exists_sab_comp n m₀`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k₁, hk₁⟩` from `sabMap_base_congr k₀ hsq.symm`. Take `⟨u, hu, -, -⟩` from `M.lie _ g t₀ k₁`. Use `⟨M.n, fun j => (u j).left ≫ m₀.φ, fun a => (M.ρ a).map g, ?_⟩` and prove the remaining obligations. Introduce `R' _ f t' m`. Take `⟨p₀, hp₀⟩` from `GlobalTheory.ObjMaps.exists_sab_comp n m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hb : (spMap f ≫ hU'.fromSpec) ≫ v = spMap (f.comp g) ≫ M.hU.fromSpec`. Rewrite using `[Category.assoc, ← hsq, spMap_comp, Category.assoc]`. Take `⟨p₁, hp₁⟩` from `sabMap_base_congr p₀ hb`. Take `⟨v', hv', hB, hC⟩` from `M.lie R' (f.comp g) t' p₁`. Use `⟨v', fun j => ?_, hB, fun a j => hC a j⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `n.cart.1.hom_ext` to reduce the goal to its premises. Establish `e1` using `hv' j`. Establish `e2` using `hu j`. Rewrite `e1` using `[hp₁, hp₀]`. Rewrite `e2` using `[hk₁, hk₀]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Category.assoc] at e1 e2 ⊢`. Rewrite using `[e1, e2, dualMapR_comp, spMap_comp, Category.assoc]`. Establish `w1` using `m.cart.1.w`. Establish `w0` using `m₀.cart.1.w`. Establish `o1` using `Over.w (v' j)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `o0` using `Over.w (u j)`. Simplify using `only [Category.assoc] at w1 w0 ⊢`. Rewrite using `[w1, w0, reassoc_of% o1, reassoc_of% o0]`. Simplify using `only [← Category.assoc]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [epsR, Over.mk_hom, ← spMap_comp, dualMapR_comp_algebraMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lieDown : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O O' : Type} [CommRing O] [CommRing O'] {β : O →+* c.F} {β' : O' →+* c.F} (Y : Model Xo c β) (Y' : Model Xo c β') (v : Y'.X ⟶ Y.X), SABMap Y'.t Y.t v → ∀ (M : MChart Y) (U' : Y'.X.Opens) (hU' : IsAffineOpen U'), U' ≤ v ⁻¹ᵁ M.U → ∃ (k : ℕ) (v₀ : Fin k → (Sp (DualNumber Γ(Y'.X, U')) ⟶ Y'.t.G.left)) (ρ : 𝓞 E → Matrix (Fin k) (Fin k) Γ(Y'.X, U')), ∀ (R' : Type) [CommRing R'] (f : Γ(Y'.X, U') →+* R') (t' : SAB H (Sp R')) (m : SABMap t' Y'.t (spMap f ≫ hU'.fromSpec)), ∃ v' : Fin k → (epsR R' ⟶ t'.G), (∀ j, (v' j).left ≫ m.φ = spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ v₀ j) ∧ IsLieBasis v' ∧ ∀ a j, IsLieComb (fun i => f (ρ a i j)) v' (v' j ≫ t'.act.act a) := by
   intro E _ _ _ H D l Xo c O O' _ _ β β' Y Y' v n M U' hU' hle

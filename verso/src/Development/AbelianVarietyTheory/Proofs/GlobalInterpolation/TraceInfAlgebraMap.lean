@@ -5,7 +5,7 @@ namespace GlobalTheory.TraceSumRealEmbeddings
 open NumberField NumberField.InfinitePlace
 
 /- English proof (translation)
-Apply the tactic sequence `rcases InfinitePlace.embedding_mk_eq φ with h | h <;> rw [h]`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, Complex.conj_re]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem re_embedding_mk {F : Type} [Field F] (φ : F →+* ℂ) (x : F) :
     ((InfinitePlace.mk φ).embedding x).re = (φ x).re := by
@@ -13,7 +13,7 @@ theorem re_embedding_mk {F : Type} [Field F] (φ : F →+* ℂ) (x : F) :
   rw [ComplexEmbedding.conjugate_coe_eq, Complex.conj_re]
 
 /- English proof (translation)
-Rewrite using `[← Finset.univ.sum_fiberwise (fun φ => InfinitePlace.mk φ)]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hw : ∀ φ ∈ ({φ | InfinitePlace.mk φ = w} : Finset (F →+* ℂ)), (φ x).re = (w.embedding x).re` using `fun φ hφ => by rw [← (Finset.mem_filter.mp hφ).2, re_embedding_mk]`. Rewrite using `[Finset.sum_congr rfl hw, Finset.sum_const, InfinitePlace.card_filter_mk_eq, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_re_embeddings (F : Type) [Field F] [NumberField F] (x : F) :
     ∑ φ : F →+* ℂ, (φ x).re = ∑ w : InfinitePlace F, (w.mult : ℝ) * (w.embedding x).re := by
@@ -25,7 +25,7 @@ theorem sum_re_embeddings (F : Type) [Field F] [NumberField F] (x : F) :
   rw [Finset.sum_congr rfl hw, Finset.sum_const, InfinitePlace.card_filter_mk_eq, nsmul_eq_mul]
 
 /- English proof (translation)
-Establish `h2 : ((Algebra.trace ℚ F x : ℚ) : ℂ) = ∑ φ : F →+* ℂ, φ x`. Rewrite using `[Fintype.sum_equiv (RingHom.equivRatAlgHom F ℂ) (fun φ => φ x) (fun σ => σ x) (fun φ => rfl), ← trace_eq_sum_embeddings]`. Conclude with `(eq_ratCast (algebraMap ℚ ℂ) _).symm`. Rewrite using `[← Complex.re_sum, ← h2, Complex.ratCast_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_eq_sum_re (F : Type) [Field F] [NumberField F] (x : F) :
     ((Algebra.trace ℚ F x : ℚ) : ℝ) = ∑ φ : F →+* ℂ, (φ x).re := by
@@ -36,7 +36,7 @@ theorem trace_eq_sum_re (F : Type) [Field F] [NumberField F] (x : F) :
   rw [← Complex.re_sum, ← h2, Complex.ratCast_re]
 
 /- English proof (translation)
-Rewrite using `[trace_eq_sum_re, sum_re_embeddings]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.traceInf`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `congr 2`. Conclude with `InfinitePlace.Completion.extensionEmbedding_coe w ((WithAbs.equiv w.1).symm x)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem traceInf_algebraMap (F : Type) [Field F] [NumberField F] (x : F) :
     GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.traceInf F (algebraMap F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F) x) =

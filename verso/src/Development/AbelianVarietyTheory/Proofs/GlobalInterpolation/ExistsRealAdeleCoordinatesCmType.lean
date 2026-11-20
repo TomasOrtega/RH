@@ -14,15 +14,15 @@ open scoped ENNReal TensorProduct
 namespace GlobalTheory.RealAdeleCoord
 
 /- English proof (translation)
-Take `⟨hF, hE, h2, hσ⟩` from `h`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Set `c : E ≃ₐ[F] E` to `AlgEquiv.ofBijective σ (Algebra.IsAlgebraic.algHom_bijective σ)`. Establish `hc' : ∀ (τ : E →+* ℂ) x, τ (c x) = starRingEnd ℂ (τ x)` using `hσ`. Establish `hnr : ∀ φ : E →+* ℂ, ComplexEmbedding.conjugate φ ≠ φ` using `fun φ hφ => IsTotallyComplex.complexEmbedding_not_isReal φ (ComplexEmbedding.isReal_iff.2 hφ)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : c ≠ 1`. Introduce `h1`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `hnr φ (RingHom.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hc', h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨δ, h0, hcδ, hs⟩` from `GlobalTheory.InfAdeleCM.exists_delta c h2 hc hc'`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Apply `hτ.1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `GlobalTheory.InfAdeleCM.eq_or_conj c hc' h0 hcδ hs _ _ (GlobalTheory.InfAdeleCM.mk_eq_iff hij) with e | e` into its components or cases. Simplify using `only [e]`. Simplify using `only [e, InfinitePlace.mk_conjugate_eq]`. Introduce `w`. Take `⟨i, hi⟩` from `hτ.2 (InfinitePlace.mk (ComplexEmbedding.lift E w.embedding))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, ?_⟩` and prove the remaining obligations. Use `congrArg (fun v : InfinitePlace E => v.comap (algebraMap F E)) hi` as an intermediate fact. Simplify using `only [InfinitePlace.comap_mk, ComplexEmbedding.lift_comp_algebraMap, InfinitePlace.mk_embedding] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bijective_place {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) {T : Type} (τ : T → (E →+* ℂ))
@@ -55,19 +55,17 @@ theorem bijective_place {F E : Type} [Field F] [NumberField F] [Field E] [Number
     exact this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h T _ τ θ hτ hθ`. Use `haveI hF := h.1`. Set `u : T ≃ InfinitePlace F` to `Equiv.ofBijective _ (bijective_place σ h τ hτ)`. Set `s : ∀ w : InfinitePlace F, w.Completion ≃+* ℝ` to `fun w => InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)`. Establish `hs : ∀ w, Continuous (s w)` using `fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : ∀ w, Continuous (s w).symm` using `fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).symm.continuous`. Establish `hsc : ∀ w x, ((s w x : ℝ) : ℂ) = InfinitePlace.Completion.extensionEmbedding w x` using `fun w x => InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w) x`. Set `r : Ainf F ≃+* (T → ℝ)` to `{ toFun := fun a ρ => s (u ρ) (a (u ρ)) invFun := fun y w => (s w).symm (y (u.symm w)) left_inv := fun a => funext fun w => by`. Take `⟨ρ, rfl⟩` from `u.surjective w`. Use `show (s (u ρ)).symm (s (u (u.symm (u ρ))) (a (u (u.symm (u ρ))))) = _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[u.symm_apply_apply, RingEquiv.symm_apply_apply]`. Use `right_inv := fun y => funext fun ρ => by show s (u ρ) ((s (u ρ)).symm (y (u.symm (u ρ)))) = _`. Rewrite using `[RingEquiv.apply_symm_apply, u.symm_apply_apply]`. Use the proof step `map_mul' := fun a b => funext fun ρ => map_mul (s (u ρ)) (a (u ρ)) (b (u ρ))`. Use the proof step `map_add' := fun a b => funext fun ρ => map_add (s (u ρ)) (a (u ρ)) (b (u ρ)) }`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Establish `hr : ∀ a ρ, r a ρ = s (u ρ) (a (u ρ))` using `fun _ _ => rfl`. Use `⟨r, continuous_pi fun ρ => (hs _).comp (continuous_apply (u ρ)), continuous_pi fun w => (hs' w).comp (continuous_apply (u.symm w)), fun a ρ => ?_, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.InfAdeleCM.hom_tmul _ _ (hθ ρ).1 (hθ ρ).2, map_one, mul_one, hr, hsc]`. Both sides reduce to the same expression. Unfold `LocalAdditiveCharacterDual.stdInf`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.exp_sum, ← u.sum_comp]`. Use `congr 1`. Simplify using `only [← hsc, ← hr, Complex.ofReal_re]`. Use `push_cast`. Rewrite using `[← Finset.mul_sum]`.
+Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Introduce `ha ρ`. Rewrite using `[hr]`. Conclude with `(map_ne_zero _).2 (ha _)`.
-
-Introduce `ha w`. Take `⟨ρ, rfl⟩` from `u.surjective w`. Conclude with `(map_ne_zero (s (u ρ))).1 (ha ρ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_realCoord : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (T : Type) [Fintype T] (τ : T → (E →+* ℂ)) (θ : T → (Ainf F ⊗[F] E →+* ℂ)), (Function.Bijective fun ρ => InfinitePlace.mk (τ ρ)) → (∀ ρ, IsInfEmb (τ ρ) (θ ρ)) → ∃ r : Ainf F ≃+* (T → ℝ), Continuous r ∧ Continuous r.symm ∧ (∀ a ρ, ((r a ρ : ℝ) : ℂ) = θ ρ (a ⊗ₜ[F] (1 : E))) ∧ (∀ a, LocalAdditiveCharacterDual.stdInf F a = Complex.exp (2 * Real.pi * Complex.I * (((-1 : ℝ) * ∑ ρ, r a ρ : ℝ) : ℂ))) ∧ ∀ a, (∀ w, a w ≠ 0) ↔ ∀ ρ, r a ρ ≠ 0 := by
   intro F E _ _ _ _ _ σ h T _ τ θ hτ hθ

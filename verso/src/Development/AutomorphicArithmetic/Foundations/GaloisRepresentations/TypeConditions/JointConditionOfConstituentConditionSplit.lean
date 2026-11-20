@@ -12,7 +12,7 @@ section
 open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 
 /- English proof (translation)
-Take `⟨K', hK', hA, _, hK⟩` from `h`. Conclude with `GlobalTheory.T.absIrr_distinct_constituents_after_extension D i r hS hr K' (algebraMap (Kf D.nd i) K') (fun x => (hK x).2)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GalS.jointCondition_of_constituentCondition_split (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (hr : GoodR D.nd i r) (h : UpperTheory.GalS.DistinctAbsIrredConstituents D.nd i r) (hS : GlobalTheory.SplitCoef.OSplitAt D i) : AbsIrreducibleDistinct D i r := by

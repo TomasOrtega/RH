@@ -7,11 +7,11 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.PolFanReal
 
 /- English proof (translation)
-Apply `(LinearMap.toMatrix₂ (Module.Free.chooseBasis ℤ X) (Module.Free.chooseBasis ℤ X)).injective` to reduce the goal to its premises. Simplify using `only [map_sum, map_zsmul, LinearEquiv.apply_symm_apply]`. Use extensionality with `a b`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.single_apply, LinearMap.toMatrix₂_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single a, Finset.sum_eq_single b]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[hk]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Simplify using `[hj]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bilin_eq_sum {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     (β : LinearMap.BilinForm ℤ X) :
@@ -32,15 +32,13 @@ theorem bilin_eq_sum {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Fin
   · simp
 
 /- English proof (translation)
-Introduce `X _ _ _ ℓ m γ c be h`. Use `set b := Module.Free.chooseBasis ℤ X`. Use `set E := fun j k => (LinearMap.toMatrix₂ b b).symm (Matrix.single j k (1:ℤ))`. Establish `key : ∀ β : LinearMap.BilinForm ℤ X, ((ℓ β : ℤ) : ℝ) = ∑ j, ∑ k, ((β (b j) (b k) : ℤ) : ℝ) * ((ℓ (E j k) : ℤ) : ℝ)`. Introduce `β`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `conv_lhs => rw [GlobalTheory.PolFanReal.bilin_eq_sum β]`. Simplify using `only [map_sum, map_zsmul, smul_eq_mul, Int.cast_sum, Int.cast_mul, E, b]`. Establish `hjk : ∀ j k, ((be (b j) (b k) : ℤ) : ℝ) = ∑ i, c i * ((γ i (b j) (b k) : ℤ) : ℝ)`. Introduce `j k`. Use `congrArg (fun f => f (b j) (b k)) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify `this` using `[GlobalTheory.PolFan.toReal, LinearMap.sum_apply, LinearMap.smul_apply]`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[hjk, Finset.sum_mul]`. Use `_ = ∑ i, c i * ∑ j, ∑ k, ((γ i (b j) (b k) : ℤ) : ℝ) * ((ℓ (E j k) : ℤ) : ℝ) := by`. Repeatedly rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ i, c i * (ℓ (γ i) : ℝ) := by`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[key (γ i)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearForm_of_toReal_eq : ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) (m : ℕ)
     (γ : Fin m → LinearMap.BilinForm ℤ X) (c : Fin m → ℝ) (be : LinearMap.BilinForm ℤ X),

@@ -43,7 +43,7 @@ theorem h1Map_mk (c : coZ1s ρ) :
     h1Map ρ ρ' φ hφ (Submodule.Quotient.mk c) = Submodule.Quotient.mk (continuousCocycleMap ρ ρ' φ hφ c) := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H c => rfl`.
+Proceed by induction. Treat this case separately.
 -/
 theorem res_h1Map (Dg : Subgroup G) (x : H1z ρ) :
     resH1 ρ' Dg (h1Map ρ ρ' φ hφ x) =
@@ -52,7 +52,7 @@ theorem res_h1Map (Dg : Subgroup G) (x : H1z ρ) :
   | H c => rfl
 
 /- English proof (translation)
-Unfold `unrH1 at hx ⊢`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[res_h1Map ρ ρ' φ hφ Dg x, hx, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem h1Map_mem_unrH1 {Dg : Subgroup G} {x : H1z ρ} (hx : x ∈ unrH1 ρ Dg) : h1Map ρ ρ' φ hφ x ∈ unrH1 ρ' Dg := by
   unfold unrH1 at hx ⊢
@@ -60,9 +60,9 @@ theorem h1Map_mem_unrH1 {Dg : Subgroup G} {x : H1z ρ} (hx : x ∈ unrH1 ρ Dg) 
   rw [res_h1Map ρ ρ' φ hφ Dg x, hx, map_zero]
 
 /- English proof (translation)
-Unfold `lcH1 at hx ⊢`. Take `⟨c, hc, rfl⟩` from `hx`. Use `⟨continuousCocycleMap ρ ρ' φ hφ c, ?_, ?_⟩` and prove the remaining obligations. Use `show IsLocallyConstant (φ ∘ (c : G → M))`. Conclude with `hc.comp φ`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact (h1Map_mk ρ ρ' φ hφ c).symm`. Consider the case `rfl`.
+A detailed English derivation is pending.
 -/
 theorem h1Map_mem_lcH1 [TopologicalSpace G] {x : H1z ρ} (hx : x ∈ lcH1 ρ) : h1Map ρ ρ' φ hφ x ∈ lcH1 ρ' := by
   unfold lcH1 at hx ⊢
@@ -75,9 +75,7 @@ theorem h1Map_mem_lcH1 [TopologicalSpace G] {x : H1z ρ} (hx : x ∈ lcH1 ρ) : 
       | rfl
 
 /- English proof (translation)
-Unfold `Fsha at hx ⊢`. Rewrite using `[res_h1Map ρ ρ' φ hφ (D w) x]`. Use `split_ifs at hx ⊢ with hw`. Conclude with `h1Map_mem_unrH1 (resRep ρ (D w)) (resRep ρ' (D w)) φ (fun g m => hφ g m) hx`. Rewrite `hx`, the goal using `[Submodule.mem_bot]`.
-
-Rewrite using `[hx, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resH1_h1Map_mem_Fsha (D : ℕ → Subgroup G) (Iq : ∀ w, Subgroup (D w)) (qs : Finset ℕ) (w : ℕ) {x : H1z ρ}
     (hx : resH1 ρ (D w) x ∈ Fsha ρ D Iq qs w) : resH1 ρ' (D w) (h1Map ρ ρ' φ hφ x) ∈ Fsha ρ' D Iq qs w := by
@@ -89,7 +87,7 @@ theorem resH1_h1Map_mem_Fsha (D : ℕ → Subgroup G) (Iq : ∀ w, Subgroup (D w
     rw [hx, map_zero]
 
 /- English proof (translation)
-Unfold `selRep2 at hx ⊢`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap] at hx ⊢`. Take `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩` from `hx`. Conclude with `⟨⟨⟨h1Map_mem_lcH1 ρ ρ' φ hφ h1, fun v => h1Map_mem_unrH1 ρ ρ' φ hφ (h2 v)⟩, fun v => h1Map_mem_unrH1 ρ ρ' φ hφ (h3 v)⟩, fun w hw => resH1_h1Map_mem_Fsha ρ ρ' φ hφ D Iq qs w (h4 w hw)⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem h1Map_mem_selRep2 [TopologicalSpace G] {V VS : Type} (J : V → Subgroup G) (JS : VS → Subgroup G)
     (D : ℕ → Subgroup G) (Iq : ∀ w, Subgroup (D w)) (qs P : Finset ℕ) {x : H1z ρ}
@@ -109,15 +107,13 @@ variable {R G M M' : Type} [CommRing R] [Group G] [TopologicalSpace G] [AddCommG
   [AddCommGroup M'] [Module R M']
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h`. Establish `he' : ∀ g m, (e.symm : M' →ₗ[R] M) (ρ' g m) = ρ g ((e.symm : M' →ₗ[R] M) m)`. Introduce `g m`. Apply `e.injective` to reduce the goal to its premises. Use `show e (e.symm (ρ' g m)) = e (ρ g (e.symm m))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.apply_symm_apply, he, LinearEquiv.apply_symm_apply]`. Establish `hinv : ∀ x, h1Map ρ' ρ (e.symm : M' →ₗ[R] M) he' (h1Map ρ ρ' (e : M →ₗ[R] M') he x) = x`. Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1Map_mk, h1Map_mk]`. Use `congr 1`. Conclude with `Subtype.ext (funext fun g => e.symm_apply_apply _)`. Set `F` to `(h1Map ρ ρ' (e : M →ₗ[R] M') he).restrict (p := selRep2 ρ J JS D (Fsha ρ D Iq qs) P) (q := selRep2 ρ' J JS D (Fsha ρ' D Iq qs) P) (fun x hx => h1Map_mem_selRep2 ρ ρ' _ he J JS D Iq qs P hx)`. Establish `hF : Function.Injective F`.
+Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `congrArg Subtype.val hab`. Rewrite `h1` using `[LinearMap.restrict_coe_apply, LinearMap.restrict_coe_apply]`. Establish `h2` using `congrArg (h1Map ρ' ρ (e.symm : M' →ₗ[R] M) he') h1`.
-
-Rewrite `h2` using `[hinv, hinv]`. Then use the resulting hypothesis. Conclude with `Module.length_le_of_injective F hF`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem len_selRep2_le_of_iso (ρ : Representation R G M) (ρ' : Representation R G M') (h : RepIso ρ ρ')
     {V VS : Type} (J : V → Subgroup G) (JS : VS → Subgroup G)
@@ -175,9 +171,9 @@ def blkEquiv (c' : Fin D.R.t) : blockRestrictedRepresentationType (Representatio
 omit [∀ k, IsScalarTower Dd.T' Dd.R' (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)] in
 
 /- English proof (translation)
-Establish `hc` using `D.nd.chi_def i ((c' : ℕ) + 1) (by omega) (by have := c'.isLt; omega)`. Establish `hn : (-(((((c' : ℕ) + 1 : ℕ)) : ℤ) - 1)) = -((((Fin.succ c' : Fin (D.R.t + 1)) : ℕ) - 1 : ℕ) : ℤ)`. Simplify using `[Fin.val_succ]`. Rewrite using `[hc, hn]`. Simplify using `only [MonoidHom.mul_apply, Units.val_mul, Units.inv_mul_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[cycE, map_zpow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chi_ratio (c' : Fin D.R.t) (g : GE D.nd) :
     (((D.nd.chi i 1 g)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) * ((D.nd.chi i ((c' : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i) =
@@ -192,7 +188,7 @@ theorem chi_ratio (c' : Fin D.R.t) (g : GE D.nd) :
   simp [cycE, map_zpow]
 
 /- English proof (translation)
-Use `show uElt Dd.r Dd.χ g • m = _`. Rewrite using `[uElt, smul_assoc, rS_act hE hN c' g m, hE.blk_smul, smul_smul, ← chi_ratio c' g]`. Use `congr 2`. Rewrite using `[← map_inv, hE.chi_eval, map_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uRep_blk (hE : EvS r π Dd) (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (c' : Fin D.R.t) (g : GE D.nd)
     (m : blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk c'.succ) :
@@ -205,9 +201,9 @@ theorem uRep_blk (hE : EvS r π Dd) (hN : RepresentationBoundsCohomology.NormAt 
   rw [← map_inv, hE.chi_eval, map_inv]
 
 /- English proof (translation)
-Proceed by induction on `c using Fin.cases with`. Consider the case `zero => simp at hc`. Consider the case `succ k`. Use `⟨blkEquiv Dd k, fun g m => ?_⟩` and prove the remaining obligations. Establish `h` using `uRep_blk hE hN k g m`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show blkEquiv Dd k (uRep (D.nd.O i) (M := blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k.succ) Dd.r Dd.χ g m) = _`. Rewrite using `[h, map_smul]`. Use `first`. Consider the case `rfl`. Consider the case `simp [koE, Formalism.GaloisCohomology.scalRep]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem blkTw_of (hE : EvS r π Dd) (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (c : Fin (D.R.t + 1)) (hc : 1 ≤ (c : ℕ)) :
     BlockTwistedCyclotomic i Dd c := by
@@ -223,7 +219,7 @@ theorem blkTw_of (hE : EvS r π Dd) (hN : RepresentationBoundsCohomology.NormAt 
       | simp [koE, Formalism.GaloisCohomology.scalRep]
 
 /- English proof (translation)
-The claim follows from `blkTw_of (evS_of hD) hN c hc`.
+A detailed English derivation is pending.
 -/
 theorem blkTw_of_def {g0 : GE D.nd} {eB e₁ s : D.nd.X i → MatN D.nd i}
     (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
@@ -239,9 +235,9 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   [∀ k, SMulCommClass Dd.R' (D.nd.O i) (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)]
 
 /- English proof (translation)
-Unfold `Fall`. Proceed by induction on `c using Fin.cases with`. Consider the case `zero => simp at hc`. Consider the case `succ k`. Use function extensionality and compare the values at `w`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Fin.cases_succ]`. Establish `h1 : ((k.succ : Fin (D.R.t + 1)) : ℕ) ≠ 1` using `by omega`. Unfold `Fpos Fsha`. Simplify using `only [h1, ↓reduceIte]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Fall_eq_Fsha (F0 : ∀ w, Submodule (D.nd.O i) (H1z (resU i dc Dd 0 w))) (c : Fin (D.R.t + 1))
     (hc : 2 ≤ (c : ℕ)) :
@@ -259,7 +255,7 @@ theorem Fall_eq_Fsha (F0 : ∀ w, Submodule (D.nd.O i) (H1z (resU i dc Dd 0 w)))
     split_ifs <;> rfl
 
 /- English proof (translation)
-Rewrite using `[Fall_eq_Fsha i dc Dd F0 c hc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem selChi_eq (F0 : ∀ w, Submodule (D.nd.O i) (H1z (resU i dc Dd 0 w))) (c : Fin (D.R.t + 1))
     (hc : 2 ≤ (c : ℕ)) :
@@ -272,9 +268,9 @@ theorem selChi_eq (F0 : ∀ w, Submodule (D.nd.O i) (H1z (resU i dc Dd 0 w))) (c
   rfl
 
 /- English proof (translation)
-Rewrite using `[selChi_eq i dc Dd F0 c hc]`. Use `le_trans (len_selRep2_le_of_iso _ _ hB (Io i) (IS i) (decs D.host.E (Aw i dc)) (I i dc) (qsN i dc) (Pall i dc)) ?_` and prove the remaining obligations. Establish `h2` using `hC (GE D.nd) (cycE i ^ (-(((c : ℕ) - 1 : ℕ) : ℤ))) (Io i) (IS i) (decs D.host.E (Aw i dc)) (I i dc) (qsN i dc) (Pall i dc)`. Use `le_trans h2 ?_` and prove the remaining obligations. Unfold `ShaN eON`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `mul_le_mul' le_rfl hZ`.
+A detailed English derivation is pending.
 -/
 theorem tieSel2_of (F0 : ∀ w, Submodule (D.nd.O i) (H1z (resU i dc Dd 0 w))) (c : Fin (D.R.t + 1))
     (hc : 2 ≤ (c : ℕ)) (hB : BlockTwistedCyclotomic i Dd c) (hC : CoefChange (D.nd.l i) (D.nd.O i))
@@ -291,7 +287,7 @@ theorem tieSel2_of (F0 : ∀ w, Submodule (D.nd.O i) (H1z (resU i dc Dd 0 w))) (
   exact mul_le_mul' le_rfl hZ
 
 /- English proof (translation)
-The claim follows from `tieSel2_of i dc Dd F0 c hc hB hC hZ`.
+A detailed English derivation is pending.
 -/
 theorem tieSel2 (F0 : ∀ w, Submodule (D.nd.O i) (H1z (resU i dc Dd 0 w))) (c : Fin (D.R.t + 1))
     (hc : 2 ≤ (c : ℕ)) (hB : BlockTwistedCyclotomic i Dd c) (hC : CoefChange (D.nd.l i) (D.nd.O i))
@@ -301,7 +297,7 @@ theorem tieSel2 (F0 : ∀ w, Submodule (D.nd.O i) (H1z (resU i dc Dd 0 w))) (c :
   tieSel2_of i dc Dd F0 c hc hB hC hZ
 
 /- English proof (translation)
-The claim follows from `tieSel2 i dc Dd F0 c hc (blkTw_of_def hD hN c (by omega)) hC (hZ _ (Finset.mem_Ioo.2 ⟨by omega, by have := c.isLt; omega⟩))`.
+A detailed English derivation is pending.
 -/
 theorem tieSel2_rec [∀ k, IsScalarTower Dd.T' Dd.R' (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)]
     {r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))} {ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))}

@@ -13,15 +13,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace COne
 
 /- English proof (translation)
-The claim follows from `d.ok.dbl.weil.2.1.pres x Φ h`.
+A detailed English derivation is pending.
 -/
 theorem om_sch (d : SD σ) (x : d.G) {Φ : d.Fn} (h : Φ ∈ d.sch) : d.om x Φ ∈ d.sch :=
   d.ok.dbl.weil.2.1.pres x Φ h
 
 /- English proof (translation)
-Use `d.ok.dbl.kill 0 Φ h` as an intermediate fact. Establish `e2 : (0 : Matrix (Fin d.m) (Fin d.n) (AE F E)) * (diagCols (Fin d.n) : Matrix _ _ (AE F E))ᵀ = 0` using `Matrix.zero_mul _`. Establish `e3 : (0 : Mx F E d.m d.n) * (incM F d.b.1.toCols₂)ᵀ = 0` using `Matrix.zero_mul _`. Use `erw [e2] at this`. Use `show d.l (d.dd.rho d.B.ψ ((0 : Mx F E d.m d.n) * (incM F d.b.1.toCols₂)ᵀ) Φ) = _`.
-
-Rewrite using `[e3]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_zero (d : SD σ) {Φ : d.Fn} (h : Φ ∈ d.sch) : d.T Φ 0 = d.l Φ := by
   have := d.ok.dbl.kill 0 Φ h
@@ -33,15 +31,15 @@ theorem T_zero (d : SD σ) {Φ : d.Fn} (h : Φ ∈ d.sch) : d.T Φ 0 = d.l Φ :=
   exact this
 
 /- English proof (translation)
-The claim follows from `(T_zero d (om_sch d x h)).symm`.
+A detailed English derivation is pending.
 -/
 theorem section_eq_theta_zero (d : SD σ) {Φ : d.Fn} (h : Φ ∈ d.sch) (x : d.G) : d.sec0 Φ x = d.T (d.om x Φ) 0 :=
   (T_zero d (om_sch d x h)).symm
 
 /- English proof (translation)
-Unfold `SD.T Darboux.rho`. Establish `: schr d.B.ψ (d.dd.e (X * (incM F d.b.1.toCols₂)ᵀ)) (c • Φ) = c • schr d.B.ψ (d.dd.e (X * (incM F d.b.1.toCols₂)ᵀ)) Φ`. Use function extensionality and compare the values at `y`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem T_smul (d : SD σ) (c : ℂ) (Φ : d.Fn) (X : Mx F E d.m d.n) : d.T (c • Φ) X = c * d.T Φ X := by
   unfold SD.T Darboux.rho
@@ -50,7 +48,7 @@ theorem T_smul (d : SD σ) (c : ℂ) (Φ : d.Fn) (X : Mx F E d.m d.n) : d.T (c �
   rw [this, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `SD.orb`. Simplify using `only [T_smul, tsum_mul_left]`. Simplify using `only [MeasureTheory.average]`. Conclude with `integral_const_mul _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orb_smul (d : SD σ) (T : nF σ d.Y d.b) (c : ℂ) (Φ : d.Fn) : d.orb T (c • Φ) = c * d.orb T Φ := by
   unfold SD.orb
@@ -59,7 +57,7 @@ theorem orb_smul (d : SD σ) (T : nF σ d.Y d.b) (c : ℂ) (Φ : d.Fn) : d.orb T
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Establish `e : Fin L.n ≃ {i : Fin d.n // ¬ i = L.i₀}` using `(Equiv.ofInjective L.em L.inj).trans (Equiv.subtypeEquivRight fun i => (L.rng i).symm)`. Establish `h1` using `Fintype.card_congr e`. Rewrite `h1` using `[Fintype.card_fin, Fintype.card_subtype_compl, Fintype.card_fin, Fintype.card_subtype_eq]`. Use `L.i₀.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Ln {d : SD σ} (L : LD d) : L.n + 1 = d.n := by
   have e : Fin L.n ≃ {i : Fin d.n // ¬ i = L.i₀} :=
@@ -70,7 +68,7 @@ theorem Ln {d : SD σ} (L : LD d) : L.n + 1 = d.n := by
   omega
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Eis.cosetSum, GlobalTheory.Eis.term, hF, mul_assoc]`. Conclude with `tsum_mul_left`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cosetSum_factor {G : Type} [Group G] (Pp Γ : Subgroup G) (Fn h : G → ℂ) (K : ℂ) (g₀ : G)
     (hF : ∀ g, Fn g = K * h (g * g₀)) (g : G) :
@@ -79,7 +77,7 @@ theorem cosetSum_factor {G : Type} [Group G] (Pp Γ : Subgroup G) (Fn h : G → 
   exact tsum_mul_left
 
 /- English proof (translation)
-Rewrite using `[Real.toNNReal_mul hr.le, NNReal.coe_mul, Real.coe_toNNReal _ hr.le, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hr.le (NNReal.coe_nonneg _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ht_cpow (r a : ℝ) (hr : 0 < r) (w : ℂ) :
     (((r * a).toNNReal : ℝ) : ℂ) ^ w = (r : ℂ) ^ w * (((a.toNNReal : ℝ) : ℂ)) ^ w := by
@@ -87,9 +85,9 @@ theorem ht_cpow (r a : ℝ) (hr : 0 < r) (w : ℂ) :
     Complex.mul_cpow_ofReal_nonneg hr.le (NNReal.coe_nonneg _)]
 
 /- English proof (translation)
-Take `⟨H, hext, han, hval⟩` from `hW`. Establish `h1` using `hext.comp_add`. Establish `hK : AnalyticOnNhd ℂ (fun z => c * (r : ℂ) ^ (z - s₀)) Set.univ` using `fun z _ => analyticAt_const.mul (analyticAt_const.cpow (analyticAt_id.sub analyticAt_const) (Complex.ofReal_mem_slitPlane.2 hr))`. Establish `h2 : IsExtAt (fun z => c * (r : ℂ) ^ (z - s₀)) s₀ (fun z => c * (r : ℂ) ^ (z - s₀))` using `(isMerExt_self isRightDomain_univ hK.meromorphicOn).isExtAt (Set.mem_univ _)`. Use `⟨_, h2.mul h1, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hK s₀ (Set.mem_univ _)).mul (han.comp_of_eq (analyticAt_id.add analyticAt_const) rfl)`. Simplify using `[hval]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hv_shift (W : ℂ → ℂ) (s₀ a v c : ℂ) (r : ℝ) (hr : 0 < r) (hW : HolValueAt W (s₀ + a) v) :
     HolValueAt (fun z => (c * (r : ℂ) ^ (z - s₀)) * W (z + a)) s₀ (c * v) := by
@@ -104,15 +102,15 @@ theorem hv_shift (W : ℂ → ℂ) (s₀ a v c : ℂ) (r : ℝ) (hr : 0 < r) (hW
   · simp [hval]
 
 /- English proof (translation)
-Establish `hK` using `H.polyKFin F E σ d' R'' Ψ hΨ ((H.vacK F E σ d' R'').2.1 hv)`. Establish `hsec` using `H.secK F E σ d' Ψ hK`. Take `⟨U, p, Ê, t, hE⟩` from `H.eisWk F E σ d' _ _ hsec (s0 d'.m d'.n)`. Take `⟨hUo, hR, hs, hp, hd, hcont, hinv, hfar⟩` from `hE`. Take `⟨hadd, hbd⟩` from `fcAll d' hc T g`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hDiff, hComm⟩` from `lamDeriv (rat2 σ d'.Y) (fun f => fc d'.B.ψ d'.b nb lam 𝓖 f T g) hadd hbd U Ê hUo hd hcont hinv`. Establish `hpt : ∀ g', ∀ i ≤ p.rootMultiplicity (s0 d'.m d'.n), iteratedDeriv i (Ê · g') (s0 d'.m d'.n) = iteratedDeriv i (fun z => p.eval z) (s0 d'.m d'.n) * (2 * d'.I Ψ g')` using `fun g' => ordVal U p (Ê · g') (fun z => d'.eis (d'.sec0 Ψ) (s0 d'.m d'.n) z g') t _ (2 * d'.I Ψ g') hUo hR hs hp (hd g') (fun z hz => (hfar z hz).2 g') (hMV Ψ hΨ hv g')`. Establish `hsm : ∀ (c : ℂ) (φ : d'.G → ℂ), fc d'.B.ψ d'.b nb lam 𝓖 (fun g' => c * φ g') T g = c * fc d'.B.ψ d'.b nb lam 𝓖 φ T g`. Introduce `c φ`. Simplify using `only [fc, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `integral_const_mul _ _`. Establish `hder : ∀ i ≤ p.rootMultiplicity (s0 d'.m d'.n), iteratedDeriv i (fun z => fc d'.B.ψ d'.b nb lam 𝓖 (Ê z) T g) (s0 d'.m d'.n) = iteratedDeriv i (fun z => p.eval z) (s0 d'.m d'.n) * (2 * fc d'.B.ψ d'.b nb lam 𝓖 (d'.I Ψ) T g)`. Introduce `i hi`. Rewrite using `[hComm _ hs i]`. Establish `: (fun g' => iteratedDeriv i (Ê · g') (s0 d'.m d'.n)) = fun g' => (iteratedDeriv i (fun z => p.eval z) (s0 d'.m d'.n) * 2) * d'.I Ψ g'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun g' => by rw [hpt g' i hi]; ring`. Rewrite using `[this, hsm]`. Expand and normalize the polynomial expressions, which then agree. Use `wrap U p _ _ t _ _ hUo hR hs hp hDiff (fun z hz => ?_) (fun i hi => ?_) (hder _ le_rfl)` and prove the remaining obligations. Establish `e1 : Ê z = fun g' => p.eval z * d'.eis (d'.sec0 Ψ) (s0 d'.m d'.n) z g'` using `funext (hfar z hz).2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hsm]`. Rewrite using `[hder i hi.le, pderiv_lt p _ i hi, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fcVal (H : Hyps) {d' : SD σ} (R'' : RD d') (hMV : MainV 2 R'') {Ψ : d'.Fn} (hΨ : Ψ ∈ d'.sch)
     (hv : d'.T Ψ ∈ R''.vac) {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d'.Y) d'.b nb lam 𝓖) (T : nF σ d'.Y d'.b)
@@ -157,31 +155,31 @@ variable (H : Hyps) {d : SD σ} (R : RD d) (L : LD d) (R' : RD L.sd) (hmn : d.m 
 include H hIH hΦ hv in
 
 /- English proof (translation)
-Take `⟨q, g₀, k, r, c, hk, hx, hr, ha, hTq⟩` from `H.iwaQ F E σ d L x`. Establish `hΦk : d.om k Φ ∈ d.sch` using `COne.om_sch d k hΦ`. Establish `hvk : d.T (d.om k Φ) ∈ R.vac` using `(H.vacK F E σ d R).1 Φ hΦ hv k hk`. Take `⟨Φ', hres, hv'⟩` from `(H.vacK F E σ d R).2.2 L R' _ hΦk hvk`. Establish `hΦ' : Φ' ∈ L.sd.sch` using `hres.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hres0 : ∀ g : L.sd.G, L.sd.T (L.sd.om g Φ') 0 = d.T (d.om (L.j g) (d.om k Φ)) 0`. Introduce `g`. Use `L.res _ hΦk Φ' hΦ' hres.2 g 0 (fun a => rfl)` as an intermediate fact. Rewrite `this` using `[Matrix.submatrix_zero]`. Then use the resulting hypothesis. Establish `hf : ∀ g' : L.sd.G, d.sec0 Φ (L.j g' * x) = c * L.sd.sec0 Φ' (g' * g₀)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `g'`. Establish `hΨ : d.om (L.j g₀) (d.om k Φ) ∈ d.sch` using `COne.om_sch d _ hΦk`. Rewrite using `[COne.section_eq_theta_zero d hΦ, COne.section_eq_theta_zero L.sd hΦ', hx]`. Establish `e : d.om (L.j g' * (q * L.j g₀ * k)) Φ = d.om (L.j g' * q) (d.om (L.j g₀) (d.om k Φ))`. Simplify using `only [map_mul, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[e, hTq _ hΨ g' 0 (fun a => rfl), hres0 (g' * g₀)]`. Use `congr 2`. Simplify using `only [map_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hs' : s0 d.m L.n = s0 d.m d.n + 1 / 2`. Unfold `s0`. Rewrite using `[← COne.Ln L]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hid : ∀ z, cOne d L (d.sec0 Φ) (s0 d.m d.n) z nb' lam' 𝓖' T' x = (c * (r : ℂ) ^ (z - s0 d.m d.n)) * fc d.B.ψ L.b nb' lam' 𝓖' (L.sd.eis (L.sd.sec0 Φ') (s0 d.m L.n) (z + 1 / 2)) T' g₀`. Introduce `z`. Establish `ex : z + 1 / 2 - s0 d.m L.n = z - s0 d.m d.n` using `by rw [hs']; ring`. Establish `hF : ∀ g' : L.sd.G, ((d.Ht (L.j g' * x) : ℝ) : ℂ) ^ (z - s0 d.m d.n) * d.sec0 Φ (L.j g' * x) = (c * (r : ℂ) ^ (z - s0 d.m d.n)) * (((L.sd.Ht (g' * g₀) : ℝ) : ℂ) ^ (z + 1 / 2 - s0 d.m L.n) * L.sd.sec0 Φ' (g' * g₀))`. Introduce `g'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hf g', ex]`. Establish `e1 : ((d.Ht (L.j g' * x) : ℝ) : ℂ) = ((((r * L.a (g' * g₀)).toNNReal : ℝ)) : ℂ)`. Simplify using `only [SD.Ht, ha g']`. Rewrite using `[e1, COne.ht_cpow r _ hr]`. Simplify using `only [SD.Ht]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcs : GlobalTheory.Eis.cosetSum (par2 σ L.Y) (rat2 σ L.Y) (fun g => ((d.Ht (L.j g * x) : ℝ) : ℂ) ^ (z - s0 d.m d.n) * d.sec0 Φ (L.j g * x)) = fun g => (c * (r : ℂ) ^ (z - s0 d.m d.n)) * L.sd.eis (L.sd.sec0 Φ') (s0 d.m L.n) (z + 1 / 2) (g * g₀)`. Use function extensionality and compare the values at `fun g => COne.cosetSum_factor _ _ _ _ _ g₀ hF g`. Unfold `cOne`. Rewrite using `[hcs]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [fc, mul_one, mul_assoc, integral_const_mul]`. Establish `hW` using `COne.fcVal H R' hIH hΦ' hv' hc' T' g₀`. Rewrite `hW` using `[hs']`. Establish `hsh` using `COne.hv_shift _ (s0 d.m d.n) (1 / 2) _ c r hr hW`. Establish `hv1 : fc d.B.ψ d.b nb lam 𝓖 (d.I Φ) T x = c * fc d.B.ψ L.b nb' lam' 𝓖' (L.sd.I Φ') T' g₀`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[H.thetaCoef F E σ d Φ hΦ nb lam 𝓖 hc T x, H.thetaCoef F E σ L.sd Φ' hΦ' nb' lam' 𝓖' hc' T' g₀]`. Rewrite using `[(H.orbRes F E σ d).2 L T T' hT (d.om x Φ) (c • L.sd.om g₀ Φ') ⟨?_, ?_⟩, COne.orb_smul]`. Conclude with `Submodule.smul_mem _ _ (COne.om_sch L.sd g₀ hΦ')`. Introduce `X hX`. Rewrite using `[COne.T_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `L.res _ hΦk Φ' hΦ' hres.2 g₀ X hX`. Establish `hΨ` using `COne.om_sch d (L.j g₀) hΦk`. Establish `h2` using `hTq _ hΨ 1 X hX`. Simplify using `only [map_one, one_mul, Module.End.one_apply] at h2`. Establish `h1' : L.sd.T (L.sd.om g₀ Φ') (X.submatrix id L.em) = d.T (d.om (L.j g₀) (d.om k Φ)) X` using `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1', hx]`. Establish `e : d.om (q * L.j g₀ * k) Φ = d.om q (d.om (L.j g₀) (d.om k Φ))` using `by simp only [map_mul]; rfl`. Rewrite using `[e, h2]`. Establish `hfun : (fun z => cOne d L (d.sec0 Φ) (s0 d.m d.n) z nb' lam' 𝓖' T' x) = fun z => (c * (r : ℂ) ^ (z - s0 d.m d.n)) * (fun z => fc d.B.ψ L.b nb' lam' 𝓖' (L.sd.eis (L.sd.sec0 Φ') (s0 d.m d.n + 1 / 2) z) T' g₀) (z + 1 / 2)`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hid z, hs']`. Rewrite using `[hfun, hv1]`. Use `hsh using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cOneVal_pf {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {nb' lam' 𝓖'}
     (hc' : CoefData (σ := σ) (Y := L.Y) L.b nb' lam' 𝓖') {T : nF σ d.Y d.b} {T' : nF σ L.Y L.b} (hT : L.IsSub T T') (x : d.G) :

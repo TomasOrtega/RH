@@ -10,19 +10,15 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : ∀ (s : Finset ι) (f : ι → M), (∀ τ, f τ ∈ Submodule.span K (S τ)) → (∀ τ, τ ∉ s → f τ ∈ S τ) → m f ∈ Submodule.span K {P | ∃ g : ι → M, (∀ τ, g τ ∈ S τ) ∧ P = m g}`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `f _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.subset_span ⟨f, fun τ => h τ (Finset.notMem_empty τ), rfl⟩`. Consider the case `insert a s ha ih`. Introduce `f h1 h2`. Establish `hle : Submodule.span K (S a) ≤ (Submodule.span K {P | ∃ g : ι → M, (∀ τ, g τ ∈ S τ) ∧ P = m g}).comap (m.toLinearMap f a)`. Rewrite using `[Submodule.span_le]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, MultilinearMap.toLinearMap_apply]`. Apply `ih` to reduce the goal to its premises. Introduce `τ`. Distinguish the cases in `hτ : τ = a`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hτ` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `Submodule.subset_span hx`. Rewrite using `[Function.update_of_ne hτ]`. Conclude with `h1 τ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `τ hτs`. Distinguish the cases in `hτ : τ = a`. Substitute `hτ` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hx`.
-
-Rewrite using `[Function.update_of_ne hτ]`. Conclude with `h2 τ (by simp [hτ, hτs])`. Establish `h` using `hle (h1 a)`. Rewrite `h` using `[Submodule.mem_comap, MultilinearMap.toLinearMap_apply, Function.update_eq_self]`. Conclude with `h`.
-
-Conclude with `key Finset.univ f hf (fun τ h => absurd (Finset.mem_univ τ) h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multilinear_mem_span_of_mem_span {K ι M N : Type} [Field K] [Fintype ι]
     [AddCommGroup M] [Module K M] [AddCommGroup N] [Module K N]
@@ -67,9 +63,9 @@ theorem multilinear_mem_span_of_mem_span {K ι M N : Type} [Field K] [Fintype ι
   exact key Finset.univ f hf (fun τ h => absurd (Finset.mem_univ τ) h)
 
 /- English proof (translation)
-Set `m : MultilinearMap K (fun _ : ι => MvPolynomial (Fin n × Fin n) K) (MvPolynomial (ι × Fin n × Fin n) K)` to `(MultilinearMap.mkPiAlgebra K ι (MvPolynomial (ι × Fin n × Fin n) K)).compLinearMap (fun τ => (Formalism.GradedWeylDivisibility.blockEmb K τ).toLinearMap)`. Establish `hm : ∀ f, m f = ten f` using `fun f => rfl`. Unfold `VV Formalism.GradedWeylDivisibility.tensorLat`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `P ⟨F, hF, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `multilinear_mem_span_of_mem_span m S F (fun τ => hS τ (hF τ))`.
+A detailed English derivation is pending.
 -/
 theorem coefSpace_le_span_pure_tensors (K : Type) [Field K] {ι : Type} [Fintype ι] {n : ℕ}
     (lam : ι → DomWeight n) (S : ι → Set (MvPolynomial (Fin n × Fin n) K))

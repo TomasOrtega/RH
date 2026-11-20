@@ -20,9 +20,9 @@ def IsTyped (g1 g2 : ℕ) (v : HeightOneSpectrum (𝓞 F)) : Prop :=
   (g1 : 𝓞 F) ∈ v.asIdeal ∨ (g2 : 𝓞 F) ∈ v.asIdeal
 
 /- English proof (translation)
-Establish `hg' : ((g : 𝓞 F)) ≠ 0` using `Nat.cast_ne_zero.mpr hg`. Establish `hI : Ideal.span {(g : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hg'`. Use `(Ideal.finite_factors hI).subset fun v hv => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq] at hv ⊢`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_over (g : ℕ) (hg : g ≠ 0) : {v : HeightOneSpectrum (𝓞 F) | (g : 𝓞 F) ∈ v.asIdeal}.Finite := by
   have hg' : ((g : 𝓞 F)) ≠ 0 := Nat.cast_ne_zero.mpr hg
@@ -34,7 +34,7 @@ theorem finite_over (g : ℕ) (hg : g ≠ 0) : {v : HeightOneSpectrum (𝓞 F) |
   exact hv
 
 /- English proof (translation)
-The claim follows from `((finite_over F g1 h1).union (finite_over F g2 h2)).subset fun v hv => hv`.
+A detailed English derivation is pending.
 -/
 theorem typed_finite (g1 g2 : ℕ) (h1 : g1 ≠ 0) (h2 : g2 ≠ 0) :
     {v : HeightOneSpectrum (𝓞 F) | IsTyped F g1 g2 v}.Finite := ((finite_over F g1 h1).union (finite_over F g2 h2)).subset fun v hv => hv
@@ -43,7 +43,7 @@ def typSet (g1 g2 : ℕ) : Finset (HeightOneSpectrum (𝓞 F)) :=
   if h : {v : HeightOneSpectrum (𝓞 F) | IsTyped F g1 g2 v}.Finite then h.toFinset else ∅
 
 /- English proof (translation)
-Unfold `typSet`. Rewrite using `[dif_pos (typed_finite F g1 g2 h1 h2), Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_typSet (g1 g2 : ℕ) (h1 : g1 ≠ 0) (h2 : g2 ≠ 0) (v : HeightOneSpectrum (𝓞 F)) :
     v ∈ typSet F g1 g2 ↔ IsTyped F g1 g2 v := by
@@ -202,7 +202,7 @@ def massDataOf : Formalism.FourierDecayAlt.S3.MassData (TypP F g1 g2) :=
       (massDataPre σ J Λ k P P' Kpp Kpp1 Kpp2 MG MW MW' X0 g1 g2 du du' dπ dπ' vH vH' vN vN' L A).ρ0 }
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.S3.MassData.InMass`. Conclude with `div_mul_cancel₀ _ h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem inMass_massDataOf (h : massH σ J Λ P ≠ 0) :
     (massDataOf σ J Λ k P P' Kpp Kpp1 Kpp2 MG MW MW' X0 g1 g2 du du' dπ dπ' vH vH' vN vN' L A).InMass := by

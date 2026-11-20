@@ -13,11 +13,11 @@ namespace GlobalTheory.EtaleKlt
 variable {M W : Scheme.{0}} [IsIntegral M] [IsIntegral W] {k : Type} [CommRing k]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, Cartier.constFn]`. Establish `h1` using `algebraMap_germ (X := W) (U := ⊤) (x := f (genericPoint M)) trivial (algX p ⊤ a)`. Establish `h2` using `algebraMap_germ (X := M) (U := ⊤) (x := genericPoint M) trivial (algX (f ≫ p) ⊤ a)`. Rewrite using `[← h1, ← h2, functionFieldMap_algebraMap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e : f.app ⊤ (algX p ⊤ a) = algX (f ≫ p) ⊤ a`. Simplify using `[algX, Scheme.Hom.appLE]`. Both sides reduce to the same expression. Rewrite using `[← e]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Scheme.Hom.germ_stalkMap_apply f ⊤ _ trivial _`.
+A detailed English derivation is pending.
 -/
 theorem functionFieldMap_comp_constFn (p : W ⟶ Sp k) (f : M ⟶ W) [IsDominant f] :
     (functionFieldMap f).comp (Cartier.constFn p) = Cartier.constFn (f ≫ p) := by

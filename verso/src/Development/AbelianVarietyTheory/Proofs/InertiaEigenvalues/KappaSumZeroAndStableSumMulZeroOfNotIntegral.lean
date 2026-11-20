@@ -8,17 +8,17 @@ namespace GlobalTheory.UnitLemma
 open Polynomial in
 
 /- English proof (translation)
-Take `⟨hfg, hspan⟩` from `hL`. Use `haveI : Module.Finite O L := Module.Finite.iff_fg.mpr hfg`. Set `f : Module.End O L` to `(LinearMap.mulLeft O g).restrict hg`. Establish `hpow : ∀ (n : ℕ) (y : L), ((f ^ n) y : A) = g ^ n * y`. Introduce `n`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => intro y`. Simplify using the standard rewrite rules. Consider the case `succ n ih => intro y`. Rewrite using `[pow_succ', Module.End.mul_apply, pow_succ', mul_assoc, ← ih]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hact : ∀ (q : O[X]) (y : L), ((aeval f q) y : A) = aeval g q * y`. Introduce `q y`. Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp' hq' => simp [add_mul, hp', hq']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `monomial n c => simp [aeval_monomial, hpow, Algebra.smul_def, mul_assoc]`. Take `⟨p, hmon, hp⟩` from `LinearMap.exists_monic_and_aeval_eq_zero O f`. Establish `hzero : ∀ y ∈ Submodule.span E (L : Set A), aeval g p * y = 0`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => rw [← hact p ⟨x, hx⟩, hp]`. Both sides reduce to the same expression. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add, hx, hy, add_zero]`. Consider the case `smul e x _ hx => rw [mul_smul_comm, hx, smul_zero]`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p, hmon, ?_⟩` and prove the remaining obligations. Establish `h1` using `hzero 1 (hspan ▸ Submodule.mem_top)`. Rewrite `h1` using `[mul_one]`. Rewrite using `[← aeval_def]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnitLemma.isIntegral_of_isLat_stable {O E A : Type} [CommRing O] [Field E] [CommRing A] [Algebra O A]
     [Algebra E A] (L : Submodule O A) (hL : _root_.GlobalTheory.UnitLemma.IsLat O E L) (g : A) (hg : ∀ y ∈ L, g * y ∈ L) :
@@ -51,7 +51,7 @@ theorem _root_.GlobalTheory.UnitLemma.isIntegral_of_isLat_stable {O E A : Type} 
 
 open Polynomial in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.UnitLemma.InvAlg.N _root_.GlobalTheory.UnitLemma.orbSum _root_.GlobalTheory.UnitLemma.InvAlg.X`. Use `finsum_eq_zero_of_forall_eq_zero fun o => absurd ?_ hB` and prove the remaining obligations. Take `⟨hfull, hstab, -⟩` from `(Quot.out o).2`. Conclude with `_root_.GlobalTheory.UnitLemma.isIntegral_of_isLat_stable _ hfull _ hstab`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private lemma latticeCount_eq_zero_of_not_isIntegral_lemma (K : _root_.GlobalTheory.UnitLemma.UQ)
     (B : _root_.GlobalTheory.UnitLemma.InvAlg K) (hB : ¬ IsIntegral K.O B.g) (k : B.Cl) :
@@ -63,7 +63,7 @@ private lemma latticeCount_eq_zero_of_not_isIntegral_lemma (K : _root_.GlobalThe
 
 open Polynomial in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.UnitLemma.InvAlg.stSum`. Conclude with `finsum_eq_zero_of_forall_eq_zero fun k => latticeCount_eq_zero_of_not_isIntegral_lemma K B hB k`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma stableLatticeCountSum_eq_zero_of_not_isIntegral_lemma_2 (K : _root_.GlobalTheory.UnitLemma.UQ)
     (B : _root_.GlobalTheory.UnitLemma.InvAlg K) (hB : ¬ IsIntegral K.O B.g) :
@@ -74,11 +74,11 @@ private lemma stableLatticeCountSum_eq_zero_of_not_isIntegral_lemma_2 (K : _root
 open Polynomial in
 
 /- English proof (translation)
-Introduce `K B₁ B₂ h`. Establish `hprod : ¬ IsIntegral K.O (B₁.prod B₂).g`. Introduce `hi`. Establish `hi' : IsIntegral K.O ((B₁.g, B₂.g) : B₁.A × B₂.A)` using `hi`. Apply `h` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨hi'.map (AlgHom.fst K.O B₁.A B₂.A), hi'.map (AlgHom.snd K.O B₁.A B₂.A)⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.UnitLemma.InvAlg.kapSum`. Use `finsum_eq_zero_of_forall_eq_zero fun k => ?_` and prove the remaining obligations. Rewrite using `[latticeCount_eq_zero_of_not_isIntegral_lemma K _ hprod k, mul_zero]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h₁ : IsIntegral K.O B₁.g`. Rewrite using `[stableLatticeCountSum_eq_zero_of_not_isIntegral_lemma_2 K B₂ fun h₂ => h ⟨h₁, h₂⟩, mul_zero]`. Rewrite using `[stableLatticeCountSum_eq_zero_of_not_isIntegral_lemma_2 K B₁ h₁, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.UnitLemma.kapSum_eq_zero_and_stSum_mul_eq_zero_of_not_isIntegral :
     ∀ (K : _root_.GlobalTheory.UnitLemma.UQ) (B₁ B₂ : _root_.GlobalTheory.UnitLemma.InvAlg K),

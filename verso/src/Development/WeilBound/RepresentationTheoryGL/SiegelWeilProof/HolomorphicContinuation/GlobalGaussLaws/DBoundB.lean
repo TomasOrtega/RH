@@ -22,7 +22,7 @@ open DBoundH DBoundAH
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `: stripS X = ⋂ j, {z : ℂ | |z.im * X j| < Real.pi / 4}` using `by ext z; simp [stripS]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun j => isOpen_lt ((continuous_abs.comp (Complex.continuous_im.mul continuous_const))) continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_stripS (X : Fin n → ℝ) : IsOpen (stripS X) := by
   have : stripS X = ⋂ j, {z : ℂ | |z.im * X j| < Real.pi / 4} := by ext z; simp [stripS]
@@ -31,9 +31,9 @@ theorem isOpen_stripS (X : Fin n → ℝ) : IsOpen (stripS X) := by
     isOpen_lt ((continuous_abs.comp (Complex.continuous_im.mul continuous_const))) continuous_const
 
 /- English proof (translation)
-Apply `entC_mul` to reduce the goal to its premises. Introduce `i j`. Conclude with `(Continuous.matrix_elem (mR_cont.comp continuous_fst) i j).continuousOn`. Introduce `i j`. Apply `Continuous.continuousOn` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `by_cases h : i = j <;> simp [aC, Matrix.diagonal_apply, h] <;> fun_prop`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem entC_mR_mul_aC_univ_prod_stripS (X : Fin n → ℝ) :
     EntC (Set.univ ×ˢ stripS X) (fun p : GR n × ℂ => mR p.1 * aC X p.2) := by
@@ -46,11 +46,9 @@ private theorem entC_mR_mul_aC_univ_prod_stripS (X : Fin n → ℝ) :
       by_cases h : i = j <;> simp [aC, Matrix.diagonal_apply, h] <;> fun_prop
 
 /- English proof (translation)
-Establish `hM` using `entC_mR_mul_aC_univ_prod_stripS X`. Establish `h11 : EntC (Set.univ ×ˢ stripS X) (fun p : GR n × ℂ => (mR p.1 * aC X p.2).toBlocks₁₁)` using `fun i j => hM (Sum.inl i) (Sum.inl j)`. Establish `h12 : EntC (Set.univ ×ˢ stripS X) (fun p : GR n × ℂ => (mR p.1 * aC X p.2).toBlocks₁₂)` using `fun i j => hM (Sum.inl i) (Sum.inr j)`. Establish `h21 : EntC (Set.univ ×ˢ stripS X) (fun p : GR n × ℂ => (mR p.1 * aC X p.2).toBlocks₂₁)` using `fun i j => hM (Sum.inr i) (Sum.inl j)`. Establish `h22 : EntC (Set.univ ×ˢ stripS X) (fun p : GR n × ℂ => (mR p.1 * aC X p.2).toBlocks₂₂)` using `fun i j => hM (Sum.inr i) (Sum.inr j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hden : ∀ p ∈ Set.univ ×ˢ stripS X, ((mR p.1 * aC X p.2).toBlocks₂₁ * s • 1 + (mR p.1 * aC X p.2).toBlocks₂₂).det ≠ 0`. Introduce `p hp`. Break down `hs with rfl | rfl` into its components or cases. Conclude with `(dSieg n p.1 X p.2 hp.2).2.2.1`. Conclude with `(dSieg n p.1 X p.2 hp.2).2.2.2`.
-
-Conclude with `entC_mul (entC_add (entC_mul h11 (entC_const _ _)) h12) (entC_inv (entC_add (entC_mul h21 (entC_const _ _)) h22) hden)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ptZ_entC (X : Fin n → ℝ) (s : ℂ) (hs : s = Complex.I ∨ s = -Complex.I) :
     EntC (Set.univ ×ˢ stripS X) (fun p : GR n × ℂ => ptZ p.1 X p.2 s) := by
@@ -73,7 +71,7 @@ theorem ptZ_entC (X : Fin n → ℝ) (s : ℂ) (hs : s = Complex.I ∨ s = -Comp
     (entC_inv (entC_add (entC_mul h21 (entC_const _ _)) h22) hden)
 
 /- English proof (translation)
-Establish `hM` using `entC_mR_mul_aC_univ_prod_stripS X`. Establish `h21 : EntC (Set.univ ×ˢ stripS X) (fun p : GR n × ℂ => (mR p.1 * aC X p.2).toBlocks₂₁)` using `fun i j => hM (Sum.inr i) (Sum.inl j)`. Establish `h22 : EntC (Set.univ ×ˢ stripS X) (fun p : GR n × ℂ => (mR p.1 * aC X p.2).toBlocks₂₂)` using `fun i j => hM (Sum.inr i) (Sum.inr j)`. Conclude with `entC_add (entC_mul h21 (entC_const _ _)) h22`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem entC_toBlocks_smul_add_univ_prod_stripS (X : Fin n → ℝ) (s : ℂ) :
     EntC (Set.univ ×ˢ stripS X) (fun p : GR n × ℂ =>
@@ -86,7 +84,7 @@ private theorem entC_toBlocks_smul_add_univ_prod_stripS (X : Fin n → ℝ) (s :
   exact entC_add (entC_mul h21 (entC_const _ _)) h22
 
 /- English proof (translation)
-Establish `h0 : ContinuousOn (fun x : GR n × ℂ => (mR x.1 * aC X x.2).det ^ e) (Set.univ ×ˢ stripS X)` using `(det_cont (entC_mR_mul_aC_univ_prod_stripS X)).zpow₀ _ fun x _ => Or.inl (det_bigM_ne x.1 X x.2)`. Establish `h1 : ContinuousOn (fun x : GR n × ℂ => ((mR x.1 * aC X x.2).toBlocks₂₁ * Complex.I • 1 + (mR x.1 * aC X x.2).toBlocks₂₂).det ^ (-(p : ℤ))) (Set.univ ×ˢ stripS X)` using `(det_cont (entC_toBlocks_smul_add_univ_prod_stripS X Complex.I)).zpow₀ _ fun x hx => Or.inl (dSieg n x.1 X x.2 hx.2).2.2.1`. Establish `h2 : ContinuousOn (fun x : GR n × ℂ => ((mR x.1 * aC X x.2).toBlocks₂₁ * -Complex.I • 1 + (mR x.1 * aC X x.2).toBlocks₂₂).det ^ (-(q : ℤ))) (Set.univ ×ˢ stripS X)` using `(det_cont (entC_toBlocks_smul_add_univ_prod_stripS X (-Complex.I))).zpow₀ _ fun x hx => Or.inl (dSieg n x.1 X x.2 hx.2).2.2.2`. Conclude with `(h0.mul h1).mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jC_contOn (X : Fin n → ℝ) (e : ℤ) (p q : ℕ) :
     ContinuousOn (fun p' : GR n × ℂ => jC e p q p'.1 X p'.2) (Set.univ ×ˢ stripS X) := by
@@ -103,32 +101,32 @@ theorem jC_contOn (X : Fin n → ℝ) (e : ℤ) (p q : ℕ) :
   exact (h0.mul h1).mul h2
 
 /- English proof (translation)
-Simplify using `[Complex.mul_re, Complex.mul_im]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem re_I_mul_ofReal_mul_eq_neg_mul_im (c : ℝ) (w : ℂ) : (Complex.I * c * w).re = -(c * w.im) := by
   simp [Complex.mul_re, Complex.mul_im]
 
 /- English proof (translation)
-Simplify using `[rowC, norm_star]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sum_norm_sq_rowC_eq_sum_norm_sq {m : ℕ} (u : Fin m → Fin n → ℂ) (a : Fin m) :
     ∑ j, ‖rowC u a j‖ ^ 2 = ∑ j, ‖u a j‖ ^ 2 := by
   simp [rowC, norm_star]
 
 /- English proof (translation)
-Use `set S : Fin m → ℝ := fun a => ∑ j, ‖u a j‖ ^ 2 with hSdef`. Establish `hS : ∀ a, 0 ≤ S a` using `fun a => by positivity`. Establish `hT : ∀ a, c * min δ₁ δ₂ * S a ≤ c * (star (rowC u a) ⬝ᵥ Z *ᵥ rowC u a).im`. Introduce `a`. Establish `e1` using `h1 (rowC u a)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[sum_norm_sq_rowC_eq_sum_norm_sq, ← im_eq_re]`. Establish `hm : min δ₁ δ₂ * S a ≤ δ₁ * S a` using `mul_le_mul_of_nonneg_right (min_le_left _ _) (hS a)`. Use `mul_le_mul_of_nonneg_left e1 hc.le` as an intermediate fact. Use `mul_le_mul_of_nonneg_left hm hc.le` as an intermediate fact. Simplify using `only [hSdef] at *`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hF : ∀ a, c * min δ₁ δ₂ * S a ≤ -(c * (star (rowC u a) ⬝ᵥ Z' *ᵥ rowC u a).im)`. Introduce `a`. Establish `e2` using `h2 (rowC u a)`. Establish `hflip : (star (rowC u a) ⬝ᵥ (-(Complex.I / 2) • (Z'ᴴ - Z')) *ᵥ rowC u a) = -(star (rowC u a) ⬝ᵥ (-(Complex.I / 2) • (Z' - Z'ᴴ)) *ᵥ rowC u a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← neg_sub Z' Z'ᴴ, smul_neg, Matrix.neg_mulVec, dotProduct_neg]`. Rewrite `e2` using `[hflip, Complex.neg_re, ← im_eq_re, sum_norm_sq_rowC_eq_sum_norm_sq]`. Establish `hm : min δ₁ δ₂ * S a ≤ δ₂ * S a` using `mul_le_mul_of_nonneg_right (min_le_right _ _) (hS a)`. Use `mul_le_mul_of_nonneg_left e2 hc.le` as an intermediate fact. Use `mul_le_mul_of_nonneg_left hm hc.le` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hSdef] at *`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsplit : ∑ a, S a = ∑ a with epsT t ε a = true, S a + ∑ a with epsT t ε a = false, S a`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun a => epsT t ε a = true) S]`. Simplify using `only [Bool.not_eq_true]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[trace_gramB, trace_gramB, Finset.mul_sum, Finset.mul_sum, Complex.sub_re, Complex.re_sum, Complex.re_sum]`. Simplify using `only [re_I_mul_ofReal_mul_eq_neg_mul_im]`. Establish `A : ∑ a with epsT t ε a = true, c * min δ₁ δ₂ * S a ≤ ∑ a with epsT t ε a = true, c * (star (rowC u a) ⬝ᵥ Z *ᵥ rowC u a).im` using `Finset.sum_le_sum fun a _ => hT a`. Establish `B : ∑ a with epsT t ε a = false, c * min δ₁ δ₂ * S a ≤ ∑ a with epsT t ε a = false, -(c * (star (rowC u a) ⬝ᵥ Z' *ᵥ rowC u a).im)` using `Finset.sum_le_sum fun a _ => hF a`. Rewrite `A`, `B` using `[← Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `B`, the goal using `[Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_neg_distrib]`. Establish `hall : ∑ a, ∑ j, ‖u a j‖ ^ 2 = ∑ a, S a` using `rfl`. Rewrite using `[hall, hsplit]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem re_bound {m : ℕ} (ε : Fin m → Bool) (t c : ℝ) (hc : 0 < c) (Z Z' : Matrix (Fin n) (Fin n) ℂ)
     (δ₁ δ₂ : ℝ) (hδ₁ : 0 < δ₁) (hδ₂ : 0 < δ₂)
@@ -185,17 +183,15 @@ end DBoundBH
 
 open DBoundH DBoundAH DBoundBH in
 /- English proof (translation)
-Introduce `m n ε t c e p q X hc _`. Use `⟨fun y u => famPQ_holo ε t c e p q X y u, famPQ_cont ε t c e p q X, ?_⟩` and prove the remaining obligations. Introduce `y₀ z₀ hz₀`. Establish `hopen : IsOpen (Set.univ ×ˢ stripS X : Set (GR n × ℂ))` using `isOpen_univ.prod (isOpen_stripS X)`. Establish `hmem : Set.univ ×ˢ stripS X ∈ 𝓝 ((y₀, z₀) : GR n × ℂ)` using `hopen.mem_nhds ⟨trivial, hz₀⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cZ : ∀ s : ℂ, (s = Complex.I ∨ s = -Complex.I) → ∀ i j, ContinuousAt (fun x : GR n × ℂ => ptZ x.1 X x.2 s i j) (y₀, z₀)` using `fun s hs i j => (ptZ_entC X s hs i j).continuousAt hmem`. Take `⟨δ₁, hδ₁, ev1⟩` from `posDef_unif (p₀ := ((y₀, z₀) : GR n × ℂ)) (fun x : GR n × ℂ => (-(Complex.I / 2)) • (ptZ x.1 X x.2 Complex.I - (ptZ x.1 X x.2 Complex.I)ᴴ)) (fun i j => by`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.conjTranspose_apply, smul_eq_mul]`. Conclude with `continuousAt_const.mul ((cZ _ (Or.inl rfl) i j).sub (cZ _ (Or.inl rfl) j i).star))`. Use the proof step `(dSieg n y₀ X z₀ hz₀).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpd2 : ((-(Complex.I / 2)) • ((ptZ y₀ X z₀ (-Complex.I))ᴴ - ptZ y₀ X z₀ (-Complex.I))).PosDef`. Establish `h` using `(dSieg n y₀ X z₀ hz₀).2.1`. Unfold `IsSiegel at h`. Rewrite `h` using `[Matrix.conjTranspose_conjTranspose]`. Then use the resulting hypothesis. Take `⟨δ₂, hδ₂, ev2⟩` from `posDef_unif (p₀ := ((y₀, z₀) : GR n × ℂ)) (fun x : GR n × ℂ => (-(Complex.I / 2)) • ((ptZ x.1 X x.2 (-Complex.I))ᴴ - ptZ x.1 X x.2 (-Complex.I))) (fun i j => by`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.conjTranspose_apply, smul_eq_mul]`. Conclude with `continuousAt_const.mul ((cZ _ (Or.inr rfl) j i).star.sub (cZ _ (Or.inr rfl) i j)))`. Use `hpd2`. Establish `evJ : ∀ᶠ x in 𝓝 ((y₀, z₀) : GR n × ℂ), ‖jC e p q x.1 X x.2‖ < ‖jC e p q y₀ X z₀‖ + 1` using `((jC_contOn X e p q).continuousAt hmem).norm.eventually_lt continuousAt_const (lt_add_one _)`. Take `⟨N, hN, hNp⟩` from `(ev1.and (ev2.and evJ)).exists_mem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨N, c * min δ₁ δ₂, ‖jC e p q y₀ X z₀‖ + 1, hN, by positivity, ?_⟩` and prove the remaining obligations. Introduce `x hx _ u`. Take `⟨b1, b2, bJ⟩` from `hNp x hx`. Establish `hr` using `re_bound ε t c hc (ptZ x.1 X x.2 Complex.I) (ptZ x.1 X x.2 (-Complex.I)) δ₁ δ₂ hδ₁ hδ₂ b1 b2 u`. Use `show ‖jC e p q x.1 X x.2 * gC ε t c (ptZ x.1 X x.2 Complex.I) (ptZ x.1 X x.2 (-Complex.I)) u‖ ≤ _`.
-
-Rewrite using `[norm_mul, gC, Complex.norm_exp]`. Conclude with `mul_le_mul bJ.le (Real.exp_le_exp.2 hr) (Real.exp_pos _).le (by positivity)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dBoundPQ : DBoundPQ := by
   intro m n ε t c e p q X hc _
@@ -235,7 +231,7 @@ theorem dBoundPQ : DBoundPQ := by
   exact mul_le_mul bJ.le (Real.exp_le_exp.2 hr) (Real.exp_pos _).le (by positivity)
 
 /- English proof (translation)
-Introduce `m n ε t c e X hc ht`. Conclude with `dBoundPQ m n ε t c e (cnt (epsT t ε) true) (cnt (epsT t ε) false) X hc ht`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dBound : DBound := by
   intro m n ε t c e X hc ht

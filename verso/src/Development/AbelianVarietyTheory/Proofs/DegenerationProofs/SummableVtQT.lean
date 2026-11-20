@@ -7,13 +7,13 @@ namespace GlobalTheory.Ex.NumD.Int
 variable {C : Type} [NormedField C] {N : NumD C} {q : QuadraticMap ℤ N.X ℝ}
 
 /- English proof (translation)
-Rewrite using `[NumD.vt]`. Simplify using `only [Units.val_mul, norm_mul, h.ψ, h.norm_rep_generators_eq_exp p hk]`. Use `(mul_le_of_le_one_right (by positivity) (h.th _)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← Real.exp_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : q (p.1.1.toAdd + k • χ) = q p.1.1.toAdd + (k : ℝ) ^ 2 * q χ + k * QuadraticMap.polar q p.1.1.toAdd χ`. Establish `a : QuadraticMap.polar q p.1.1.toAdd (k • χ) = k * QuadraticMap.polar q p.1.1.toAdd χ`. Rewrite using `[← natCast_zsmul, QuadraticMap.polar_smul_right, zsmul_eq_mul, Int.cast_natCast]`. Establish `b : q (k • χ) = (k : ℝ) ^ 2 * q χ`. Rewrite using `[← natCast_zsmul, QuadraticMap.map_smul, zsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← a, ← b, QuadraticMap.polar]`. Expand and normalize the polynomial expressions, which then agree. Establish `: (k : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hk`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_vt_QT_le (h : N.Int q) {k : ℕ} (hk : k ≠ 0) (p : N.QT k) (χ : N.X) :
     ‖N.vt p.1.2 χ‖ ≤ Real.exp (-((q (p.1.1.toAdd + k • χ) - q p.1.1.toAdd) / (k : ℝ) ^ 2)) := by
@@ -38,9 +38,9 @@ theorem norm_vt_QT_le (h : N.Int q) {k : ℕ} (hk : k ≠ 0) (p : N.QT k) (χ : 
   ring
 
 /- English proof (translation)
-Establish `inj : Function.Injective fun χ : N.X => p.1.1.toAdd + k • χ` using `fun a b e => by`. Establish `e' : k • a = k • b` using `add_left_cancel e`. Rewrite `e'` using `[← natCast_zsmul, ← natCast_zsmul]`. Conclude with `smul_right_injective N.X (Int.natCast_ne_zero.2 hk) e'`. Establish `t₁` using `h.pos.comp inj.tendsto_cofinite`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `kp : (0 : ℝ) < (k : ℝ) ^ 2` using `pow_pos (Nat.cast_pos.2 (Nat.pos_of_ne_zero hk)) 2`. Establish `t₂` using `(Filter.tendsto_atTop_add_const_right _ (-q p.1.1.toAdd) t₁).atTop_div_const kp`. Establish `t₃` using `Real.tendsto_exp_neg_atTop_nhds_zero.comp t₂`. Use `squeeze_zero_norm (h.norm_vt_QT_le hk p) ?_` and prove the remaining obligations. Simplify `t₃` using `only [Function.comp_def, sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_vt_QT (h : N.Int q) {k : ℕ} (hk : k ≠ 0) (p : N.QT k) :
     Filter.Tendsto (N.vt p.1.2) Filter.cofinite (nhds 0) := by
@@ -60,7 +60,7 @@ end GlobalTheory.Ex.NumD.Int
 namespace GlobalTheory.Ex
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ h _ hk p` and use `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero (h.tendsto_vt_QT hk p)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem summable_vt_QT : ∀ (C : Type) [NormedField C] [IsUltrametricDist C] [CompleteSpace C] (N : NumD C) (q : QuadraticMap ℤ N.X ℝ), N.Int q → ∀ (k : ℕ), k ≠ 0 → ∀ p : N.QT k, Summable (N.vt p.1.2) :=
   fun _ _ _ _ _ _ h _ hk p =>

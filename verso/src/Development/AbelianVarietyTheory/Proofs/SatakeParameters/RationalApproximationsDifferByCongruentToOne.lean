@@ -10,27 +10,25 @@ open NumberField IsDedekindDomain Matrix Formalism.L2.Col
 open scoped TensorProduct
 
 /- English proof (translation)
-Set `S` to `v.integer`. Set `A0 : Matrix ι ι S` to `fun k l => ⟨c⁻¹ * (A - 1) k l, hA k l⟩`. Set `cS : S` to `⟨c, hc.le⟩`. Set `AS : Matrix ι ι S` to `1 + cS • A0`. Establish `hAS : AS.map S.subtype = A`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `k l`. Use `show (((1 : Matrix ι ι S) k l : S) : K) + c * (c⁻¹ * (A - 1) k l) = A k l`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hc0, one_mul, Matrix.sub_apply]`. Distinguish the cases in `h : k = l`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`. Establish `hdet : ∃ y : S, AS.det - 1 = y * cS`. Set `π` to `Ideal.Quotient.mk (Ideal.span {cS})`. Establish `hπc : π cS = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ : π.mapMatrix AS = 1`. Use extensionality with `k l`. Simplify using `only [AS, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, hπc, zero_mul, add_zero]`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1 : π AS.det = π 1` using `by rw [RingHom.map_det, hπ, Matrix.det_one, map_one]`. Conclude with `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 h1) |>.imp fun y hy => hy.symm`. Take `⟨y, hy⟩` from `hdet`. Establish `hdA : A.det = (AS.det : K)`. Rewrite using `[← hAS]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(RingHom.map_det S.subtype AS).symm`. Establish `hv1 : v A.det = 1`. Establish `e : A.det = 1 + (y : K) * c`. Rewrite using `[hdA]`. Establish `: ((AS.det - 1 : S) : K) = ((y * cS : S) : K)` using `congrArg Subtype.val hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at this`. Take the linear combination `this`. Rewrite using `[e]`. Apply `Valuation.map_one_add_of_lt` to reduce the goal to its premises. Rewrite using `[map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hdet0 : A.det ≠ 0` using `fun h => by rw [h, map_zero] at hv1; exact zero_ne_one hv1`. Establish `hMA : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A (isUnit_iff_ne_zero.2 hdet0)`. Establish `hH : H - 1 = A⁻¹ * (B - A)`. Rewrite using `[Matrix.mul_sub, ← hAH, ← Matrix.mul_assoc, hMA, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinv : ∀ k l, v ((A⁻¹) k l) ≤ 1`. Introduce `k l`. Establish `hadj : A.adjugate = AS.adjugate.map S.subtype`. Rewrite using `[← hAS]`. Conclude with `(RingHom.map_adjugate S.subtype AS).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv', map_mul, map_inv₀, hv1, inv_one, one_mul, hadj, Matrix.map_apply]`. Conclude with `(AS.adjugate k l).2`. Establish `e : c⁻¹ * (H - 1) i j = ∑ k, A⁻¹ i k * (c⁻¹ * (B - 1) k j - c⁻¹ * (A - 1) k j)`. Rewrite using `[hH, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [Matrix.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Subring.sum_mem S fun k _ => Subring.mul_mem S (hinv i k) (Subring.sub_mem S (hB k j) (hA k j))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_cong_of_mul_eq {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) {ι : Type} [Fintype ι]
     [DecidableEq ι] {c : K} (hc0 : c ≠ 0) (hc : v c < 1) {A B H : Matrix ι ι K}
@@ -103,25 +101,21 @@ open Formalism.L2.DIV (AfE)
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hn h1 h2 a b`. Take `⟨ι, hι⟩` from `exists_isAdIso F E`. Set `φ : AfE F E →+* P.adicCompletion E` to `{ toFun := fun z => ι z P map_one' := by rw [map_one]; rfl map_mul' := fun x y => by rw [map_mul]; rfl map_zero' := by rw [map_zero]; rfl map_add' := fun x y => by rw [map_add]; rfl }`. Establish `hφ : ∀ e : E, φ (iA F E e) = algebraMap E (P.adicCompletion E) e` using `fun e => by show ι (iA F E e) P = _`. Rewrite using `[show ι (iA F E e) = algebraMap E _ e from hι.1 e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hq0 : ((qOf P : ℕ) : E) ≠ 0`. Establish `: qOf P ≠ 0` using `fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Conclude with `this` after adjusting the coercions. Establish `hqv : Valued.v (algebraMap E (P.adicCompletion E) ((qOf P : ℕ) : E)) < 1` using `by show Valued.v (((((qOf P : ℕ) : E)) : P.adicCompletion E)) < 1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', ← map_natCast (algebraMap (𝓞 E) E), HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_lt_one_iff_mem _ _).2 (Ideal.absNorm_mem _)`. Use `set c : P.adicCompletion E := algebraMap E (P.adicCompletion E) ((((qOf P : ℕ) : E)) ^ n) with hc`. Establish `hc0 : c ≠ 0` using `(map_ne_zero _).2 (pow_ne_zero _ hq0)`. Establish `hcv : Valued.v c < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc, map_pow, map_pow]`. Conclude with `pow_lt_one' hqv (Nat.pos_iff_ne_zero.1 hn)`. Establish `h1apply : ∀ k l : Fin N, φ ((1 : Matrix (Fin N) (Fin N) (AfE F E)) k l) = (1 : Matrix (Fin N) (Fin N) (P.adicCompletion E)) k l`. Introduce `k l`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `htr : ∀ g : GL (Fin N) E, NearAt P n x g → ∀ k l, Valued.v (c⁻¹ * ((((x⁻¹ * ratA F g : GL (Fin N) (AfE F E)) : Matrix (Fin N) (Fin N) (AfE F E)).map φ) - 1) k l) ≤ 1`. Introduce `g hg k l`. Establish `h` using `hι.val_le (hg k l)`. Establish `e : ι (iA F E (((qOf P : ℕ) : E) ^ n)⁻¹ * (((x⁻¹ * ratA F g : GL (Fin N) (AfE F E)) : Matrix (Fin N) (Fin N) (AfE F E)) - 1) k l) P = c⁻¹ * ((((x⁻¹ * ratA F g : GL (Fin N) (AfE F E)) : Matrix (Fin N) (Fin N) (AfE F E)).map φ) - 1) k l` using `by show φ _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, hφ, map_inv₀, Matrix.sub_apply, Matrix.sub_apply, map_sub, h1apply, Matrix.map_apply]`. Rewrite `h` using `[e]`. Conclude with `h`. Establish `hrat : ∀ g : GL (Fin N) E, ((ratA F g : GL (Fin N) (AfE F E)) : Matrix (Fin N) (Fin N) (AfE F E)).map φ = (g : Matrix (Fin N) (Fin N) E).map (algebraMap E (P.adicCompletion E))`. Introduce `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Matrix.ext fun k l => hφ _`. Establish `hmul : (((x⁻¹ * ratA F g₁ : GL (Fin N) (AfE F E)) : Matrix (Fin N) (Fin N) (AfE F E)).map φ) * ((g₁⁻¹ * g₂ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E).map (algebraMap E (P.adicCompletion E)) = (((x⁻¹ * ratA F g₂ : GL (Fin N) (AfE F E)) : Matrix (Fin N) (Fin N) (AfE F E)).map φ)`. Rewrite using `[← hrat, ← Matrix.map_mul, ← Units.val_mul]`. Use `congr 2`. Rewrite using `[map_mul, map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `group`. Establish `key` using `val_cong_of_mul_eq Valued.v hc0 hcv (htr g₁ h1) (htr g₂ h2) hmul a b`. Establish `e2 : c⁻¹ * (((g₁⁻¹ * g₂ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E).map (algebraMap E (P.adicCompletion E)) - 1) a b = algebraMap E (P.adicCompletion E) ((((qOf P : ℕ) : E) ^ n)⁻¹ * (((g₁⁻¹ * g₂ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) - 1) a b)`. Rewrite using `[map_mul, map_inv₀, Matrix.sub_apply, Matrix.sub_apply, map_sub, Matrix.map_apply]`. Use `congr 2`.
-
-Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `key` using `[e2]`. Use `letI : StarRing E := starRingOfComm`. Rewrite using `[qth_intAt_iff]`.
-
-Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_inv_mul_of_nearAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (P : HeightOneSpectrum (𝓞 E)) (n : ℕ) (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (g₁ g₂ : GL (Fin N) E) :

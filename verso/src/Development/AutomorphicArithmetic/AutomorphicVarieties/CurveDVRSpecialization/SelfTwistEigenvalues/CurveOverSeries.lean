@@ -6,29 +6,25 @@ open Polynomial Matrix
 
 open IsLocalRing in
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ p _ _ hdim`. Establish `hKle : Ring.KrullDimLE 1 R`. Rewrite using `[Ring.krullDimLE_iff, hdim]`. Both sides reduce to the same expression. Establish `hm : maximalIdeal R ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `h`. Establish `h0` using `ringKrullDim_eq_zero_of_isField (IsLocalRing.isField_iff_maximalIdeal_eq.mpr h)`. Rewrite `h0` using `[hdim]`. Conclude with `one_ne_zero h0`. Take `⟨π, hπm, hπ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ev, hev⟩` from `GlobalTheory.exists_algHom_powerSeries_apply_X_of_isAdicComplete (maximalIdeal R) hπm`. Set `f : PowerSeries (ZMod p) →+* R` to `ev.toRingHom.comp (PowerSeries.map (ZMod.castHom (dvd_refl p) R))`. Establish `hfX : f PowerSeries.X = π`. Simplify using `[f, hev]`. Establish `hunit : ∀ g : PowerSeries (ZMod p), PowerSeries.constantCoeff g ≠ 0 → IsUnit g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Conclude with `(PowerSeries.isUnit_iff_constantCoeff).mpr (isUnit_iff_ne_zero.mpr hg)`. Use `⟨f, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `g hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hu` using `hunit _ (PowerSeries.constantCoeff_divXPowOrder_eq_zero_iff.not.mpr hne)`. Establish `hfg` using `congrArg f (PowerSeries.X_pow_order_mul_divXPowOrder (f := g))`. Rewrite `hfg` using `[map_mul, map_pow, hfX, hg]`. Use `(hu.map f).ne_zero` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(mul_ne_zero (pow_ne_zero _ hπ0) this) hfg`. Use `⟨fun g hg => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hng`. Establish `hc : PowerSeries.constantCoeff g = 0`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure.
 
-Conclude with `hng (hunit g hc)`. Take `⟨h, rfl⟩` from `(PowerSeries.X_dvd_iff).mpr hc`. Rewrite `hg` using `[map_mul, hfX]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp (Ideal.mul_mem_right _ _ hπm) hg`. Use `letI : Algebra (PowerSeries (ZMod p)) R := f.toAlgebra`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmap : Ideal.map (algebraMap (PowerSeries (ZMod p)) R) (Ideal.span {PowerSeries.X}) = Ideal.span {π}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Conclude with `congrArg (fun x => Ideal.span {x}) hfX`. Establish `hrad : maximalIdeal R ≤ (Ideal.span {π}).radical`. Rewrite using `[Ideal.radical_eq_sInf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `le_sInf fun P ⟨hJP, hP⟩ => ?_` and prove the remaining obligations. Establish `hPne : P ≠ ⊥`. Introduce `hP0`. Establish `hπP : π ∈ P` using `hJP (Ideal.subset_span rfl)`. Rewrite `hπP` using `[hP0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hπ0 ((Submodule.mem_bot R).mp hπP)`. Conclude with `(IsLocalRing.eq_maximalIdeal (hP.isMaximal_of_ne_bot hPne)).ge`. Take `⟨n, hn⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian (maximalIdeal R))`. Establish `hres : Finite (R ⧸ maximalIdeal R)` using `‹Finite (IsLocalRing.ResidueField R)›`. Establish `hpow : Finite (R ⧸ maximalIdeal R ^ n)` using `Ideal.finite_quotient_pow (IsNoetherian.noetherian (maximalIdeal R)) n`.
-
-Establish `hquot : Finite (R ⧸ Ideal.span {π})` using `Finite.of_surjective _ (Ideal.Quotient.factor_surjective hn)`. Establish `hH : IsHausdorff (Ideal.span {π}) R`. Use `⟨fun x hx => IsHausdorff.haus (IsAdicComplete.toIsHausdorff (I := maximalIdeal R)) x fun k => ?_⟩` and prove the remaining obligations. Use `SModEq.mono ?_ (hx k)` and prove the remaining obligations. Conclude with `Submodule.smul_mono_left (Ideal.pow_right_mono (Ideal.span_singleton_le_iff_mem _ |>.mpr hπm) k)`.
-
-Use `haveI : IsHausdorff (Ideal.map (algebraMap (PowerSeries (ZMod p)) R) (Ideal.span {PowerSeries.X})) R := hmap ▸ hH`. Use `haveI : Module.Finite (PowerSeries (ZMod p)) (R ⧸ Ideal.map (algebraMap (PowerSeries (ZMod p)) R) (Ideal.span {PowerSeries.X})) := by`. Rewrite using `[hmap]`. Conclude with `Module.Finite.of_finite`. Conclude with `GlobalTheory.FormalIsogeny.finite_of_finite_quotient_map (Ideal.span {PowerSeries.X})`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.T.curveOverSeries :
     ∀ {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]

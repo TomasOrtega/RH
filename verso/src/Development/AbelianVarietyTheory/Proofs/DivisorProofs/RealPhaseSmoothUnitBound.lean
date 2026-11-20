@@ -20,9 +20,9 @@ set_option autoImplicit false
 noncomputable section
 
 /- English proof (translation)
-Introduce `hX P2 PH SW D O hO hf A T H h B hB τ c g hg hgz ε π hπ hu hc`. Use `haveI : IsLocallyNoetherian (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.X := (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.ar.isLocallyNoetherian`. Take `⟨r, hr, hv, hn⟩` from `GlobalTheory.T.smooth_function_green_bound_first P2 PH SW D O hO hf A T H h B hB τ c g hg hgz ε π hπ hu hc`. Establish `hd` using `GlobalTheory.T.smooth_function_green_bound_second hX P2 PH SW D O hO hf A T H h B hB τ c g hg hgz ε π hπ hu hc`. Take `⟨m, k', i₁, i₂, i₃, ρ, hρ, M, hm, hA, hI⟩` from `GlobalTheory.T.cartier_divisor_height_bound_normal_scheme P2 D.what₂.LL (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.X (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p _ (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.ar (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.normal _ r hr hv hn …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, k', i₁, i₂, i₃, ρ, hρ, M, hm, hA, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.HermLB.Isometric.trans (GlobalTheory.HermLB.icls_eq_iff.1 ?_) hI` and prove the remaining obligations. Rewrite using `[GlobalTheory.ArInt.icls_comb, GlobalTheory.HermLB.icls_pow, GlobalTheory.ArInt.icls_comb, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun o _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, natCast_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlatPullCurve.exists_isometric_pull_curve : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (B : ℝ), 2 ≤ B → ∀ (τ : D.what₂.Tau) (c : O.s.Comp)

@@ -10,13 +10,11 @@ open scoped Classical
 namespace GlobalTheory.RowIndex
 
 /- English proof (translation)
-Take `⟨hQ, hpos, -, -, hfib, -⟩` from `GlobalTheory.InflBasic.inflation_basic I g Q ρ μf hg`. Establish `hS : S.Finite` using `Set.toFinite S`. Establish `hset : {x | x ∈ I.Kset ∧ ρ.toFun x ∈ S} = ⋃ q ∈ hS.toFinset, {x | x ∈ I.Kset ∧ ρ.toFun x = q}`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iUnion, Set.Finite.mem_toFinset, exists_prop]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hq⟩`. Conclude with `⟨_, hq, hx, rfl⟩`. Introduce and unpack `⟨q, hq, hx, rfl⟩`. Conclude with `⟨hx, hq⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hset, measure_biUnion_finset]`. Rewrite using `[Finset.sum_congr rfl (fun q _ => (hfib q).1), Finset.sum_const, ENNReal.toReal_nsmul, nsmul_eq_mul, Nat.card_eq_card_finite_toFinset hS]`. Introduce `q _ q' _ hqq'`. Conclude with `Set.disjoint_left.mpr fun x hx hx' => hqq' (hx.2.symm.trans hx'.2)`. Introduce `q _`.
-
-Conclude with `(hfib q).2.measurableSet`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vol_preimage {I : AutInst} {g : ℕ} {Q : Type} [Group Q] (ρ : Red I g Q) (μf : Measure I.Gf)
     [μf.IsHaarMeasure] (hg : 1 ≤ g) (S : Set Q) :
@@ -42,9 +40,9 @@ theorem vol_preimage {I : AutInst} {g : ℕ} {Q : Type} [Group Q] (ρ : Red I g 
     exact (hfib q).2.measurableSet
 
 /- English proof (translation)
-Take `⟨-, hpos, -⟩` from `GlobalTheory.InflBasic.inflation_basic I g Q ρ μf hg`. Establish `hK : {x | x ∈ I.Kset ∧ ρ.toFun x ∈ (Set.univ : Set Q)} = I.Kset`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `h2` using `vol_preimage ρ μf hg Set.univ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h2` using `[hK, Nat.card_univ]`. Rewrite using `[h2, vol_preimage ρ μf hg S, mul_div_mul_right _ _ hpos.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem vol_ratio {I : AutInst} {g : ℕ} {Q : Type} [Group Q] (ρ : Red I g Q) (μf : Measure I.Gf)
     [μf.IsHaarMeasure] (hg : 1 ≤ g) (S : Set Q) :
@@ -58,7 +56,7 @@ theorem vol_ratio {I : AutInst} {g : ℕ} {Q : Type} [Group Q] (ρ : Red I g Q) 
   rw [h2, vol_preimage ρ μf hg S, mul_div_mul_right _ _ hpos.ne']
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_sigma, Fin.prod_univ_two]`. Simplify using `[hPl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma prod_sigma_fin_two_eq_pow_mul_pow {Pl : Fin 2 → Type} [∀ k, Fintype (Pl k)] (f : ℕ)
     (hPl : ∀ k, Fintype.card (Pl k) = f) (c : Fin 2 → ℕ) :
@@ -67,13 +65,13 @@ private lemma prod_sigma_fin_two_eq_pow_mul_pow {Pl : Fin 2 → Type} [∀ k, Fi
   simp [hPl]
 
 /- English proof (translation)
-Set `S : Set (GProd N g Pl)` to `{h | ∀ k v, P k (h ⟨k, v⟩ : GL (Fin N) (ZMod (g k)))}`. Establish `hK2 : K₂ = {x | x ∈ I.Kset ∧ ρ.toFun x ∈ S}`. Use extensionality with `x`. Rewrite using `[hK]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hK2, vol_ratio ρ μf hg S]`. Set `e : S ≃ ∀ kv : (Σ k : Fin 2, Pl k), {A : GL (Fin N) (ZMod (g kv.1)) // P kv.1 (A : Matrix (Fin N) (Fin N) (ZMod (g kv.1)))}` to `(Equiv.subtypeEquivRight (fun h => ⟨fun hh (kv : Σ k : Fin 2, Pl k) => hh kv.1 kv.2, fun hh k v => hh ⟨k, v⟩⟩)).trans (Equiv.subtypePiEquivPi)`. Establish `hc1 : Nat.card (GProd N g Pl) = Nat.card (GL (Fin N) (ZMod (g 0))) ^ f * Nat.card (GL (Fin N) (ZMod (g 1))) ^ f`. Rewrite using `[Nat.card_pi]`. Conclude with `prod_sigma_fin_two_eq_pow_mul_pow f hPl (fun k => Nat.card (GL (Fin N) (ZMod (g k))))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc2 : Nat.card S = Nat.card {A : GL (Fin N) (ZMod (g 0)) // P 0 (A : Matrix (Fin N) (Fin N) (ZMod (g 0)))} ^ f * Nat.card {A : GL (Fin N) (ZMod (g 1)) // P 1 (A : Matrix (Fin N) (Fin N) (ZMod (g 1)))} ^ f`. Rewrite using `[Nat.card_congr e, Nat.card_pi]`. Conclude with `prod_sigma_fin_two_eq_pow_mul_pow f hPl (fun k => Nat.card {A : GL (Fin N) (ZMod (g k)) // P k (A : Matrix (Fin N) (Fin N) (ZMod (g k)))})`. Rewrite using `[hc1, hc2]`. Simplify using `only [Formalism.MainNotions.StandardLattice.idxLoc, div_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[mul_div_mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem vol_ratio_prod {I : AutInst} {N f : ℕ} {g : Fin 2 → ℕ} {Pl : Fin 2 → Type} [∀ k, Fintype (Pl k)]
     (hPl : ∀ k, Fintype.card (Pl k) = f) (ρ : Red I (g 0 * g 1) (GProd N g Pl))

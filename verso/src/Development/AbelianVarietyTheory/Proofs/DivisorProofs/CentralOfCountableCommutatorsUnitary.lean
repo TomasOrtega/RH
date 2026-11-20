@@ -9,17 +9,17 @@ namespace GlobalTheory
 open scoped Matrix.Norms.Operator in
 
 /- English proof (translation)
-Establish `hd : ∀ t : ℝ, HasDerivAt (fun u : ℝ => NormedSpace.exp (u • X)) (NormedSpace.exp (t • X) * X) t` using `fun t => hasDerivAt_exp_smul_const X t`. Establish `hc : Continuous (fun u : ℝ => NormedSpace.exp (u • X))` using `continuous_iff_continuousAt.2 fun t => (hd t).continuousAt`. Establish `hc' : Continuous (fun u : ℝ => NormedSpace.exp (-(u • X)))`. Use `hc.comp continuous_neg` as an intermediate fact. Use `this.congr fun u => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Function.comp, neg_smul]`. Use `set f : ℝ → Matrix (Fin n) (Fin n) ℂ := fun t => NormedSpace.exp (t • X) * a * NormedSpace.exp (-(t • X)) * a⁻¹ with hf`. Establish `hfc : Continuous f` using `((hc.mul continuous_const).mul hc').mul continuous_const`. Establish `hcount : (Set.range f).Countable` using `hS.mono (by rintro _ ⟨t, rfl⟩; exact h t)`. Establish `hsub : (Set.range f).Subsingleton` using `hcount.isTotallyDisconnected _ subset_rfl (isPreconnected_range hfc)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : ∀ t, f t = 1`. Introduce `t`. Rewrite using `[hsub ⟨t, rfl⟩ ⟨0, rfl⟩]`. Simplify using `[hf, Matrix.mul_nonsing_inv a ha]`. Establish `hcomm : ∀ t : ℝ, NormedSpace.exp (t • X) * a = a * NormedSpace.exp (t • X)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Establish `h1` using `hone t`. Establish `h2 : NormedSpace.exp (-(t • X)) * NormedSpace.exp (t • X) = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.refl (t • X)).neg_left]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : f t * a * NormedSpace.exp (t • X) = NormedSpace.exp (t • X) * a`. Simplify using `only [hf]`. Rewrite using `[Matrix.mul_assoc _ a⁻¹ a, Matrix.nonsing_inv_mul a ha, Matrix.mul_one, Matrix.mul_assoc _ (NormedSpace.exp (-(t • X))), h2, Matrix.mul_one]`. Rewrite using `[← h3, h1, Matrix.one_mul]`. Establish `e1` using `(hd 0).mul_const a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `(hd 0).const_mul a`. Simplify using `only [hcomm] at e1`. Use `e1.unique e2` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem commute_of_countable_commutators_exp {n : ℕ} (X a : Matrix (Fin n) (Fin n) ℂ)
     (S : Set (Matrix (Fin n) (Fin n) ℂ)) (ha : IsUnit a.det) (hS : S.Countable)
@@ -61,15 +61,13 @@ theorem commute_of_countable_commutators_exp {n : ℕ} (X a : Matrix (Fin n) (Fi
   simpa using this
 
 /- English proof (translation)
-Introduce `n J a S hJ hJu ha hS h u`. Establish `key : ∀ X : Matrix (Fin n) (Fin n) ℂ, Xᴴ * J + J * X = 0 → X * a = a * X` using `fun X hX => commute_of_countable_commutators_exp X a S ha hS (h X hX)`. Use `set v : Matrix (Fin n) (Fin n) ℂ := J⁻¹ * uᴴ * J with hv`. Establish `hJv : J * v = uᴴ * J`. Rewrite using `[hv, Matrix.mul_assoc, ← Matrix.mul_assoc J, Matrix.mul_nonsing_inv J hJu, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvJ : vᴴ * J = J * u`. Use `congrArg Matrix.conjTranspose hJv` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, hJ]`. Establish `h1` using `key (u - v) (by`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.sub_mul, Matrix.mul_sub, hJv, hvJ]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `abel)`. Establish `h2` using `key (Complex.I • (u + v)) (by`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, hJv, hvJ, add_comm (J * u), ← add_smul]`. Use the proof step `simp)`. Rewrite `h2` using `[Matrix.smul_mul, Matrix.mul_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (u + v) * a = a * (u + v)` using `smul_right_injective _ Complex.I_ne_zero h2`. Establish `h4 : (2 : ℂ) • (u * a) = (2 : ℂ) • (a * u)`. Rewrite `h1` using `[Matrix.sub_mul, Matrix.mul_sub]`. Rewrite `h3` using `[Matrix.add_mul, Matrix.mul_add]`. Rewrite using `[two_smul, two_smul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `smul_right_injective _ two_ne_zero h4`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem central_of_countable_commutators_unitary :
     ∀ (n : ℕ) (J a : Matrix (Fin n) (Fin n) ℂ) (S : Set (Matrix (Fin n) (Fin n) ℂ)), Jᴴ = J → IsUnit J.det → IsUnit a.det → S.Countable → (∀ X ∈ {X : Matrix (Fin n) (Fin n) ℂ | Xᴴ * J + J * X = 0}, ∀ t : ℝ, NormedSpace.exp (t • X) * a * NormedSpace.exp (-(t • X)) * a⁻¹ ∈ S) → ∀ u, u * a = a * u := by

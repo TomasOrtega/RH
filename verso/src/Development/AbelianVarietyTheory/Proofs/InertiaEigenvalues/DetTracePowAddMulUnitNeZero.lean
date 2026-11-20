@@ -10,15 +10,15 @@ open GlobalTheory.UnitLemma Matrix MeasureTheory
 namespace GlobalTheory.UnitLemma.TraceDet
 
 /- English proof (translation)
-Introduce `K B hsep u hu hdet`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_power_basis_of_charpoly_separable K B hsep`. Take `⟨v, hv0, hv⟩` from `(Matrix.exists_mulVec_eq_zero_iff).2 hdet`. Use `set w : B.A := ∑ l, v l • e l with hw`. Establish `hk : ∀ k, Algebra.trace K.E B.A ((w * u) * e k) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Use `congrFun hv k` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply] at this`. Rewrite using `[← this, hw, Finset.sum_mul, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_mul_assoc, smul_mul_assoc, map_smul, smul_eq_mul, he, he, pow_add]`. Rewrite using `[mul_comm (v l)]`. Use `congr 1`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hz : w * u = 0`. Apply `GlobalTheory.UnitLemma.Centraliser.eq_zero_of_trace_mul B hsep` to reduce the goal to its premises. Introduce `y`. Rewrite using `[← e.sum_repr y, Finset.mul_sum, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul_comm, map_smul, hk k, smul_zero]`. Establish `hw0 : w = 0` using `(hu.mul_left_eq_zero).1 hz`. Apply `hv0` to reduce the goal to its premises. Conclude with `(Fintype.linearIndependent_iff.1 e.linearIndependent) v hw0 |> funext`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem det_trace_pow_mul_ne_zero : ∀ (K : UQ) (B : InvAlg K), B.P.Separable → ∀ u : B.A, IsUnit u →
     (Matrix.of fun k l : Fin (Module.finrank K.E B.A) =>

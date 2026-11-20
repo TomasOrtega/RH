@@ -14,7 +14,7 @@ open Semi Geo.Tor
 def pidx {X Y : Scheme.{0}} (L : LB X) (F : Y ⟶ X) (i : L.ι) : (L.pull F).ι := fun _ => i
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h₁).op ≫ X.presheaf.map (homOfLE h₂).op).hom (x : Γ(X, U)) = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V)
     (x : Γ(X, U)ˣ) : res h₂ (res h₁ x) = res (h₂.trans h₁) x := by
@@ -24,7 +24,7 @@ private theorem res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U
   rfl
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h).op ≫ f.app V).hom (x : Γ(X, U)) = (f.app U ≫ Y.presheaf.map (homOfLE (f.preimage_mono h)).op).hom (x : Γ(X, U))`. Rewrite using `[f.naturality]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem pullU_res_lemma_2 {X Y : Scheme.{0}} (f : Y ⟶ X) {U V : X.Opens} (h : V ≤ U)
     (x : Γ(X, U)ˣ) : pullU f V (res h x) = res (f.preimage_mono h) (pullU f U x) := by
@@ -35,7 +35,7 @@ private theorem pullU_res_lemma_2 {X Y : Scheme.{0}} (f : Y ⟶ X) {U V : X.Open
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem app_map_lemma_3 {X Y : Scheme.{0}} (φ ψ : Y ⟶ X) (e : φ = ψ) (U : X.Opens)
     {W : Y.Opens} (h₁ : W ≤ φ ⁻¹ᵁ U) (h₂ : W ≤ ψ ⁻¹ᵁ U) (x : Γ(X, U)ˣ) :
@@ -44,7 +44,7 @@ private theorem app_map_lemma_3 {X Y : Scheme.{0}} (φ ψ : Y ⟶ X) (e : φ = �
   rfl
 
 /- English proof (translation)
-Rewrite using `[res_res_lemma, pullU_res_lemma_2]`. Apply the tactic sequence `all_goals rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fin_lemma_4 {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (U : X.Opens)
     {A B : Y.Opens} (k₁ : A ≤ g ⁻¹ᵁ U) (k₂ : B ≤ A) (x : Γ(X, U)ˣ) :
@@ -54,9 +54,9 @@ private theorem fin_lemma_4 {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (U 
   all_goals rfl
 
 /- English proof (translation)
-Establish `hW1 : q' ⁻¹ᵁ (V ⊓ V') ≤ a ⁻¹ᵁ (q ⁻¹ᵁ U)` using `(q'.preimage_mono (inf_le_left : V ⊓ V' ≤ V)).trans p`. Establish `hW2 : q' ⁻¹ᵁ (V ⊓ V') ≤ a ⁻¹ᵁ (q ⁻¹ᵁ U')` using `(q'.preimage_mono (inf_le_right : V ⊓ V' ≤ V')).trans p'`. Establish `hW : q' ⁻¹ᵁ (V ⊓ V') ≤ a ⁻¹ᵁ (q ⁻¹ᵁ (U ⊓ U'))` using `le_inf hW1 hW2`. Establish `h1` using `congrArg (fun y => res hW (pullU a (q ⁻¹ᵁ (U ⊓ U')) y)) h`. Simplify using `only [map_mul, pullU_res_lemma_2, res_res_lemma] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LB.pull, LB.LinComb, pidx, Fintype.prod_unique, zpow_one, pullU_res_lemma_2, res_res_lemma]`. Rewrite using `[h1]`. Use `congr 1`. Conclude with `(app_map_lemma_3 (a ≫ q) (q' ≫ F) hqb.symm (L.U i ⊓ L.U i') _ _ (L.g i i')).trans (fin_lemma_4 q' F (L.U i ⊓ L.U i') _ _ (L.g i i'))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem trans_pull {G' G B' B : Scheme.{0}} (a : G' ⟶ G) (q : G ⟶ B) (q' : G' ⟶ B') (F : B' ⟶ B)
     (hqb : q' ≫ F = a ≫ q) (L : LB B) (i i' : L.ι) {U U' : B.Opens} (hU : U ≤ L.U i)

@@ -8,15 +8,13 @@ namespace PI.EF
 open Finset
 
 /- English proof (translation)
-Establish `hK : (0 : ℝ) ≤ K` using `Nat.cast_nonneg K`. Establish `hanti : AntitoneOn (fun x : ℝ => x ^ (-(1 + ε))) (Set.Icc 1 (1 + (K : ℝ)))`. Introduce `x hx y _ hxy`. Conclude with `Real.rpow_le_rpow_of_nonpos (by linarith [hx.1]) hxy (by linarith)`. Establish `h1` using `hanti.sum_le_integral`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `beta_reduce at h1`. Establish `h0 : (0 : ℝ) ∉ Set.uIcc 1 (1 + (K : ℝ))`. Rewrite using `[Set.uIcc_of_le (by linarith)]`. Introduce `h`. Combine the linear relations using `[h.1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[integral_rpow (Or.inr ⟨fun h => by linarith, h0⟩)]`. Establish `hexp : -(1 + ε) + 1 = -ε` using `by ring`. Rewrite `h1` using `[hexp, Real.one_rpow]`. Establish `hpos : 0 ≤ (1 + (K : ℝ)) ^ (-ε)` using `Real.rpow_nonneg (by linarith) _`. Establish `hrhs : ((1 + (K : ℝ)) ^ (-ε) - 1) / (-ε) ≤ 1 / ε`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[div_neg, ← neg_div, neg_sub]`. Conclude with `div_le_div_of_nonneg_right (by linarith) hε.le`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := h1`. Use `_ ≤ 1 / ε := hrhs`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_rpow_le {ε : ℝ} (hε : 0 < ε) (K : ℕ) :
     ∑ i ∈ range K, ((i : ℝ) + 2) ^ (-(1 + ε)) ≤ 1 / ε := by
@@ -49,19 +47,19 @@ theorem sum_rpow_le {ε : ℝ} (hε : 0 < ε) (K : ℕ) :
 def logTerm (c : ℝ) (n : ℕ) : ℝ := Real.log n * (n : ℝ) ^ (-c)
 
 /- English proof (translation)
-Conclude with `mul_nonneg (Real.log_natCast_nonneg n) (Real.rpow_nonneg (Nat.cast_nonneg n) _)`.
+A detailed English derivation is pending.
 -/
 theorem logTerm_nonneg (c : ℝ) (n : ℕ) : 0 ≤ logTerm c n := by
   exact mul_nonneg (Real.log_natCast_nonneg n) (Real.rpow_nonneg (Nat.cast_nonneg n) _)
 
 /- English proof (translation)
-Establish `e0 : logTerm (1 + 2 * ε) 0 = 0` using `by simp [logTerm]`. Establish `e1 : logTerm (1 + 2 * ε) 1 = 0` using `by simp [logTerm]`. Establish `hb : ∀ i : ℕ, logTerm (1 + 2 * ε) (i + 2) ≤ ((i : ℝ) + 2) ^ (-(1 + ε)) / ε`. Introduce `i`. Unfold `logTerm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Establish `hx : (0 : ℝ) < (i : ℝ) + 2` using `by positivity`. Establish `hl` using `Real.log_le_rpow_div hx.le hε`. Establish `hp : 0 ≤ ((i : ℝ) + 2) ^ (-(1 + 2 * ε))` using `Real.rpow_nonneg hx.le _`. Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[div_mul_eq_mul_div, ← Real.rpow_add hx]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_range_succ', Finset.sum_range_succ']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zero_add, e0, e1, add_zero]`. Use `_ ≤ ∑ i ∈ range K, ((i : ℝ) + 2) ^ (-(1 + ε)) / ε := Finset.sum_le_sum fun i _ => hb i`. Use `_ = (∑ i ∈ range K, ((i : ℝ) + 2) ^ (-(1 + ε))) / ε := (Finset.sum_div _ _ _).symm`. Use `_ ≤ (1 / ε) / ε := div_le_div_of_nonneg_right (sum_rpow_le hε K) hε.le`. Use `_ = 1 / ε ^ 2 := by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_logTerm_le {ε : ℝ} (hε : 0 < ε) (K : ℕ) :
     ∑ n ∈ range K, logTerm (1 + 2 * ε) n ≤ 1 / ε ^ 2 := by
@@ -93,7 +91,7 @@ theorem sum_logTerm_le {ε : ℝ} (hε : 0 < ε) (K : ℕ) :
     _ = 1 / ε ^ 2 := by ring
 
 /- English proof (translation)
-Unfold `kb`. Use `split_ifs`. Evaluate the numerical expressions. Conclude with `div_nonneg zero_le_one (mul_nonneg hT.le (abs_nonneg _))`.
+Replace the relevant objects with their definitions. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem kb_nonneg {T : ℝ} (hT : 0 < T) (y : ℝ) : 0 ≤ kb T y := by
   unfold kb
@@ -102,9 +100,7 @@ theorem kb_nonneg {T : ℝ} (hT : 0 < T) (y : ℝ) : 0 ≤ kb T y := by
   · exact div_nonneg zero_le_one (mul_nonneg hT.le (abs_nonneg _))
 
 /- English proof (translation)
-Unfold `kb`. Use `split_ifs with h`. Conclude with `le_rfl`. Establish `h'` using `not_le.mp h`. Rewrite using `[div_le_iff₀ (by linarith)]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem kb_le_two {T : ℝ} (_hT : 0 < T) (y : ℝ) : kb T y ≤ 2 := by
   unfold kb
@@ -115,9 +111,9 @@ theorem kb_le_two {T : ℝ} (_hT : 0 < T) (y : ℝ) : kb T y ≤ 2 := by
     linarith
 
 /- English proof (translation)
-Establish `hTd : 0 < T * d` using `mul_pos hT hd`. Establish `hle : T * d ≤ T * |Real.log y|` using `mul_le_mul_of_nonneg_left h hT.le`. Unfold `kb`. Use `split_ifs with h1`. Rewrite using `[le_div_iff₀ hTd]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem kb_le_of_le {T d y : ℝ} (hT : 0 < T) (hd : 0 < d) (h : d ≤ |Real.log y|) :
     kb T y ≤ 2 / (T * d) := by
@@ -131,11 +127,11 @@ theorem kb_le_of_le {T d y : ℝ} (hT : 0 < T) (hd : 0 < d) (h : d ≤ |Real.log
       _ ≤ 2 / (T * d) := div_le_div_of_nonneg_right (by norm_num) hTd.le
 
 /- English proof (translation)
-Break down `h with h | h` into its components or cases. Establish `h2 : 2 ≤ u / x`. Rewrite using `[le_div_iff₀ hx]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(Real.log_le_log (by norm_num) h2).trans (le_abs_self _)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2 : 2 ≤ x / u`. Rewrite using `[le_div_iff₀ hu]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hflip : Real.log (u / x) = -Real.log (x / u)`. Rewrite using `[← Real.log_inv, inv_div]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hflip, abs_neg]`. Conclude with `(Real.log_le_log (by norm_num) h2).trans (le_abs_self _)`.
+A detailed English derivation is pending.
 -/
 theorem abs_log_div_ge_far {u x : ℝ} (hu : 0 < u) (hx : 0 < x) (h : x ≤ u / 2 ∨ 2 * u ≤ x) :
     Real.log 2 ≤ |Real.log (u / x)| := by
@@ -153,7 +149,7 @@ theorem abs_log_div_ge_far {u x : ℝ} (hu : 0 < u) (hx : 0 < x) (h : x ≤ u / 
     exact (Real.log_le_log (by norm_num) h2).trans (le_abs_self _)
 
 /- English proof (translation)
-Establish `h2` using `Real.log_le_log (by norm_num) hu`. Establish `h3` using `Real.log_two_gt_d9`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_ge_half {u : ℝ} (hu : 2 ≤ u) : 1 / 2 ≤ Real.log u := by
   have h2 := Real.log_le_log (by norm_num) hu
@@ -161,7 +157,7 @@ theorem log_ge_half {u : ℝ} (hu : 2 ≤ u) : 1 / 2 ≤ Real.log u := by
   linarith
 
 /- English proof (translation)
-Establish `hl` using `log_ge_half hu`. Establish `h : 1 / Real.log u ≤ 2`. Rewrite using `[div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `cLine`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -174,7 +170,7 @@ theorem cLine_le_three {u : ℝ} (hu : 2 ≤ u) : cLine u ≤ 3 := by
   linarith
 
 /- English proof (translation)
-Establish `hl` using `log_ge_half hu`. Establish `h : 0 < 1 / Real.log u` using `one_div_pos.mpr (by linarith)`. Unfold `cLine`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cLine_pos {u : ℝ} (hu : 2 ≤ u) : 0 < cLine u := by
   have hl := log_ge_half hu
@@ -183,7 +179,7 @@ theorem cLine_pos {u : ℝ} (hu : 2 ≤ u) : 0 < cLine u := by
   linarith
 
 /- English proof (translation)
-Establish `hu0 : 0 < u` using `by linarith`. Establish `hl : Real.log u ≠ 0` using `by linarith [log_ge_half hu]`. Unfold `cLine`. Rewrite using `[Real.rpow_add hu0, Real.rpow_one, Real.rpow_def_of_pos hu0, mul_one_div_cancel hl, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rpow_cLine {u : ℝ} (hu : 2 ≤ u) : u ^ cLine u = Real.exp 1 * u := by
   have hu0 : 0 < u := by linarith

@@ -27,16 +27,16 @@ open Matrix
 open scoped TensorProduct
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨0, 1, fun e => by obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance exact zero_ne_one ((map_zero (evInf F w)).symm.trans ((congrArg (evInf F w) e).trans (map_one _)))⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nontrivial_AF (F : Type) [Field F] [NumberField F] : Nontrivial (AF F) := ⟨⟨0, 1, fun e => by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
   exact zero_ne_one ((map_zero (evInf F w)).symm.trans ((congrArg (evInf F w) e).trans (map_one _)))⟩⟩
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `GlobalTheory.ClassParam.exists_cyclic_field γ.1.1 hγ`. Use `GlobalTheory.Orb.exists_aeval_of_cyclic (v := inclR (AF D.host.F) ∘ v) ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsUnit (GlobalTheory.ClassParam.krylov (γ.1.1.map (inclR (AF D.host.F))) _).det`. Rewrite using `[← GlobalTheory.ClassParam.krylov_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(isUnit_iff_ne_zero.2 hv).map _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun x => (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig V.gram x).1) (mem_cent.1 hg)` as an intermediate fact. Simplify using `only [map_mul, Units.val_mul] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_aeval_of_mem_cent {D : D7} {V : HSp D} {γ : GF V} (hγ : IsRegSS γ.1.1) {g : GA D V}
     (hg : g ∈ cent (rat V γ)) :
@@ -52,17 +52,15 @@ theorem exists_aeval_of_mem_cent {D : D7} {V : HSp D} {γ : GF V} (hγ : IsRegSS
     exact this
 
 /- English proof (translation)
-Use `set S := extSub (F := D.host.F) V (AF D.host.F) W`. Establish `hs : ∀ y, y ∈ S ↔ act D.sp.cm V (rat V γ) y ∈ S` using `h`. Use `set M := (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig V.gram (rat V γ)).1`. Establish `hM : ∀ y ∈ S, M *ᵥ y ∈ S` using `fun y hy => (hs y).1 hy`. Establish `hp : ∀ p : (AF D.host.F ⊗[D.host.F] D.host.E)[X], ∀ y ∈ S, aeval M p *ᵥ y ∈ S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `p`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a`. Introduce `y hy`. Rewrite using `[aeval_C, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem _ a hy`. Consider the case `add p q hp hq`. Introduce `y hy`. Rewrite using `[map_add, Matrix.add_mulVec]`. Conclude with `add_mem (hp y hy) (hq y hy)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `monomial n a ih`. Introduce `y hy`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, aeval_X, ← Matrix.mulVec_mulVec]`. Conclude with `ih _ (hM y hy)`. Establish `key : ∀ g ∈ cent (rat V γ), ∀ y ∈ S, act D.sp.cm V g y ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Introduce `g hg y hy`. Take `⟨p, e⟩` from `exists_aeval_of_mem_cent hγ hg`. Express the relevant statement in the definitionally equal form `(GlobalTheory.AdelicU.matHom _ D.sp.cm.sig V.gram g).1 *ᵥ y ∈ S`. Rewrite using `[e]`. Conclude with `hp p y hy`.
-
-Conclude with `fun y => ⟨key g hg y, fun hy => by`. Use `key g⁻¹ (inv_mem hg) _ hy` as an intermediate fact. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_inv] at this⟩` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_parab_of_mem_cent {D : D7} {V : HSp D} {γ : GF V} (hγ : IsRegSS γ.1.1) {g : GA D V}
     (hg : g ∈ cent (rat V γ)) (W : Submodule D.host.E V.V)
@@ -98,11 +96,11 @@ theorem mem_parab_of_mem_cent {D : D7} {V : HSp D} {γ : GF V} (hγ : IsRegSS γ
     rwa [GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_inv] at this⟩
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, u i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hu (funext h)`. Establish `h1` using `Φ.ef i i`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h1` using `[if_pos rfl]`. Break down `h : u i with _ | _ | _` into its components or cases. Conclude with `absurd h hi`. Use `⟨Φ.f i, Submodule.subset_span (Or.inr ⟨i, h, rfl⟩), fun e => ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[HSpace.hD] at h1`. Use `⟨Φ.e i, Submodule.subset_span (Or.inl ⟨i, h, rfl⟩), fun e => ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[e]`. Simplify using `[HSpace.hD] at h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_mem_sub {D : D7} {V : HSp D} (Φ : WittFrame V) {u : SV (wittIndex V)} (hu : u ≠ 0) :
     ∃ x ∈ Φ.sub u, x ≠ 0 := by
@@ -120,15 +118,15 @@ theorem exists_ne_zero_mem_sub {D : D7} {V : HSp D} (Φ : WittFrame V) {u : SV (
     rw [e] at h1; simp [HSpace.hD] at h1
 
 /- English proof (translation)
-Establish `hl' : ∀ u ∈ P, rat V γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab D.sp.cm V (AF D.host.F) (Φ.sub u) ∧ rat V γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab D.sp.cm V (AF D.host.F) (Φ.sub (-u))` using `fun u hu => Subgroup.mem_inf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hl u) hu)`. Use `⟨⟨⟨fun a b => Subtype.ext ?_⟩⟩, fun g hg => ?_, fun hne w hK => ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `exists_aeval_of_mem_cent hγ a.2`. Take `⟨q, hq⟩` from `exists_aeval_of_mem_cent hγ b.2`. Apply `GlobalTheory.AdelicU.matHom_injective (AF D.host.F) D.sp.cm.sig V.gram` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, map_mul, Units.val_mul, hp, hq]`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Use `Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `mem_parab_of_mem_cent hγ hg _ (hl' u hu).1`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_parab_of_mem_cent hγ hg _ (hl' u hu).2`. Take `⟨u, hu⟩` from `Finset.nonempty_iff_ne_empty.2 hne`. Establish `hu0 : u ≠ 0` using `fun e => hP.1 (e ▸ hu)`. Use `nontrivial_AF D.host.F` as an intermediate fact. Establish `hi : rat V γ⁻¹ ∈ Φ.levi D.sp.cm (AF D.host.F) P` using `by rw [map_inv]; exact inv_mem hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi'` using `Subgroup.mem_inf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hi u) hu)`. Establish `h1` using `(GlobalTheory.Cusp.diagH_mem_parab (AF D.host.F)).1 (hl' u hu).1`. Establish `h2` using `(GlobalTheory.Cusp.diagH_mem_parab (AF D.host.F)).1 (hl' u hu).2`. Establish `h3` using `(GlobalTheory.Cusp.diagH_mem_parab (AF D.host.F)).1 hi'.1`. Establish `h4` using `(GlobalTheory.Cusp.diagH_mem_parab (AF D.host.F)).1 hi'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, g1, g2, g3⟩` from `GlobalTheory.T.exists_rationalUnitary_scaling_wittFrame D V Φ u`. Establish `hc : Commute g γ` using `GlobalTheory.T.commute_of_wittFrame_weights D V Φ u γ g 2 h1 h2 h3 h4 g1 g2 g3`. Take `⟨x, hxu, hx0⟩` from `exists_ne_zero_mem_sub Φ hu0`. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_pow_archProj_not_mem_of_eigenvalue_two D V g x hx0 (g1 x hxu) w _ hK`. Conclude with `hn (mem_cent.2 (((hc.pow_left n).map (rat V)).map (projArch D.sp.cm.sig V.gram w)).eq)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cent_levi (D : D7) (V : HSp D) (Φ : WittFrame V) (P : Finset (SV (wittIndex V))) (hP : IsPar P) (γ : GF V)
     (hγ : IsRegSS γ.1.1) (hl : rat V γ ∈ Φ.levi D.sp.cm (AF D.host.F) P) :

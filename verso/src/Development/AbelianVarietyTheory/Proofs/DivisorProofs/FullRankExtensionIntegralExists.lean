@@ -14,21 +14,21 @@ namespace GlobalTheory.FullRankCoinv
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.submatrix_apply, finSumFinEquiv_symm_apply_castAdd]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem stack_top {ρ e d : ℕ} (Y₁ : Matrix (Fin ρ) (Fin d) k) (Y₂ : Matrix (Fin e) (Fin d) k) :
     ((Matrix.fromRows Y₁ Y₂).submatrix finSumFinEquiv.symm id).submatrix (Fin.castAdd e) id = Y₁ := by
   ext i j; simp [Matrix.submatrix_apply, finSumFinEquiv_symm_apply_castAdd]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.submatrix_apply, finSumFinEquiv_symm_apply_natAdd]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem stack_bot {ρ e d : ℕ} (Y₁ : Matrix (Fin ρ) (Fin d) k) (Y₂ : Matrix (Fin e) (Fin d) k) :
     ((Matrix.fromRows Y₁ Y₂).submatrix finSumFinEquiv.symm id).submatrix (Fin.natAdd ρ) id = Y₂ := by
   ext i j; simp [Matrix.submatrix_apply, finSumFinEquiv_symm_apply_natAdd]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `Fin.addCases (fun a => ?_) (fun a => ?_) i` and prove the remaining obligations. Simplify using `[Matrix.submatrix_apply, finSumFinEquiv_symm_apply_castAdd]`. Simplify using `[Matrix.submatrix_apply, finSumFinEquiv_symm_apply_natAdd]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem stack_top_bot {ρ e d : ℕ} (Y : Matrix (Fin (ρ + e)) (Fin d) k) :
     (Matrix.fromRows (Y.submatrix (Fin.castAdd e) id) (Y.submatrix (Fin.natAdd ρ) id)).submatrix
@@ -39,17 +39,17 @@ theorem stack_top_bot {ρ e d : ℕ} (Y : Matrix (Fin (ρ + e)) (Fin d) k) :
   · simp [Matrix.submatrix_apply, finSumFinEquiv_symm_apply_natAdd]
 
 /- English proof (translation)
-Establish `hli : LinearIndependent k Y₁.row`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Fintype.card_fin]`. Rewrite `hY` using `[Matrix.rank_eq_finrank_span_row]`. Conclude with `hY.symm`. Set `b` to `Module.Basis.sumExtend hli`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfin : Finite (Fin ρ ⊕ Module.Basis.sumExtendIndex hli)` using `Module.Finite.finite_basis b`. Establish `: Finite (Module.Basis.sumExtendIndex hli)` using `Finite.of_injective (Sum.inr : _ → Fin ρ ⊕ _) Sum.inr_injective`. Establish `: Fintype (Module.Basis.sumExtendIndex hli)` using `Fintype.ofFinite _`. Establish `hcard : Fintype.card (Fin ρ ⊕ Module.Basis.sumExtendIndex hli) = d`. Rewrite using `[← Module.finrank_eq_card_basis b, Module.finrank_fin_fun]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ∀ i, b (Sum.inl i) = Y₁.row i`. Introduce `i`. Simplify using `only [b, Module.Basis.sumExtend, Module.Basis.reindex_apply, Module.Basis.coe_extend, Equiv.symm_symm, Equiv.trans_apply, Equiv.sumCongr_apply]`. Both sides reduce to the same expression. Establish `hS : e ≤ Fintype.card (Module.Basis.sumExtendIndex hli)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcard` using `[Fintype.card_sum, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Take `⟨f⟩` from `Function.Embedding.nonempty_of_card_le (α := Fin e) (β := ↥(Module.Basis.sumExtendIndex hli)) (by rw [Fintype.card_fin]; exact hS)`. Use `⟨Matrix.of fun j => b (Sum.inr (f j)), ?_⟩` and prove the remaining obligations. Set `τ : Fin (ρ + e) → Fin ρ ⊕ Module.Basis.sumExtendIndex hli` to `fun i => Sum.map id f (finSumFinEquiv.symm i)`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτ : Function.Injective τ` using `(Sum.map_injective.2 ⟨Function.injective_id, f.injective⟩).comp finSumFinEquiv.symm.injective`. Establish `hrow : ((Matrix.fromRows Y₁ (Matrix.of fun j => b (Sum.inr (f j)))).submatrix finSumFinEquiv.symm id).row = b ∘ τ`. Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun a => ?_) (fun a => ?_) i` and prove the remaining obligations. Use extensionality with `j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[τ, Matrix.row, Matrix.submatrix_apply]`. Conclude with `(congrFun (hb a) j).symm`. Use extensionality with `j`. Simplify using `[τ, Matrix.row, Matrix.submatrix_apply]`. Rewrite using `[LinearIndependent.rank_matrix (hrow ▸ b.linearIndependent.comp τ hτ), Fintype.card_fin]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stack_rank_eq {ρ e d : ℕ} (h : ρ + e ≤ d) (Y₁ : Matrix (Fin ρ) (Fin d) k) (hY : Y₁.rank = ρ) :
     ∃ Y₂ : Matrix (Fin e) (Fin d) k, ((Matrix.fromRows Y₁ Y₂).submatrix finSumFinEquiv.symm id).rank = ρ + e := by
@@ -88,9 +88,7 @@ theorem exists_stack_rank_eq {ρ e d : ℕ} (h : ρ + e ≤ d) (Y₁ : Matrix (F
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `Fin.addCases (fun a => ?_) (fun a => ?_) i` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply, finSumFinEquiv_symm_apply_castAdd, Matrix.fromRows_apply_inl, id]`. Conclude with `continuous_fst.matrix_elem a j`. Simplify using `only [Matrix.submatrix_apply, finSumFinEquiv_symm_apply_natAdd, Matrix.fromRows_apply_inr, id]`.
-
-Conclude with `continuous_snd.matrix_elem a j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_stack {ρ e d : ℕ} : Continuous fun p : Matrix (Fin ρ) (Fin d) k × Matrix (Fin e) (Fin d) k =>
     (Matrix.fromRows p.1 p.2).submatrix finSumFinEquiv.symm id := by
@@ -102,13 +100,13 @@ theorem continuous_stack {ρ e d : ℕ} : Continuous fun p : Matrix (Fin ρ) (Fi
     exact continuous_snd.matrix_elem a j
 
 /- English proof (translation)
-Take `⟨Z₀, hZ₀⟩` from `exists_stack_rank_eq h Y₀ hY`. Establish `hS` using `GlobalTheory.isOpen_setOf_le_rank_localField k (Fin (ρ + e)) (Fin d) (ρ + e)`. Establish `hW` using `hS.preimage (continuous_stack (k := k) (ρ := ρ) (e := e) (d := d))`. Take `⟨U, V', hU, hV', hYU, hZV', hsub⟩` from `isOpen_prod_iff.1 hW Y₀ Z₀ (show ρ + e ≤ _ from hZ₀.ge)`. Establish `h0 : (fun y => Z₀ + y) ⁻¹' V' ∈ 𝓝 (0 : Matrix (Fin e) (Fin d) k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(continuous_const.add continuous_id).continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Simplify using `using hV'.mem_nhds hZV'`. Take `⟨a, ha⟩` from `GlobalTheory.LocMod.Inhab.exists_box_subset h0`. Establish `hBo` using `GlobalTheory.LocMod.Inhab.isOpen_box (Y := Fin e) (Y' := Fin d) (k := k) a`. Establish `hBc : IsClosed ((GlobalTheory.LocMod.Inhab.box (Fin e) (Fin d) a : AddSubgroup (Matrix (Fin e) (Fin d) k)) : Set (Matrix (Fin e) (Fin d) k))` using `AddSubgroup.isClosed_of_isOpen _ hBo`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨U, hU, hYU, (Homeomorph.subRight Z₀) ⁻¹' (GlobalTheory.LocMod.Inhab.box (Fin e) (Fin d) a : Set _), hBo.preimage (Homeomorph.subRight Z₀).continuous, hBc.preimage (Homeomorph.subRight Z₀).continuous, (Homeomorph.subRight Z₀).isCompact_preimage.2 (GlobalTheory.LocMod.Inhab.isComp …` and prove the remaining obligations. Use `show Z₀ - Z₀ ∈ (GlobalTheory.LocMod.Inhab.box (Fin e) (Fin d) a : Set (Matrix (Fin e) (Fin d) k))`. Rewrite using `[sub_self]`. Conclude with `(GlobalTheory.LocMod.Inhab.box (Fin e) (Fin d) a).zero_mem`. Establish `hZ' : Z₀ + (Z - Z₀) ∈ V'` using `ha (Z - Z₀) hZ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hZ'` using `[add_sub_cancel]`. Establish `hm` using `hsub (Set.mk_mem_prod hY hZ')`. Rewrite `hm` using `[Set.mem_preimage, Set.mem_setOf_eq]`. Conclude with `hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nhds_stack_rank {ρ e d : ℕ} (h : ρ + e ≤ d) (Y₀ : Matrix (Fin ρ) (Fin d) k) (hY : Y₀.rank = ρ) :
     ∃ U : Set (Matrix (Fin ρ) (Fin d) k), IsOpen U ∧ Y₀ ∈ U ∧ ∃ V : Set (Matrix (Fin e) (Fin d) k),
@@ -144,25 +142,23 @@ namespace GlobalTheory.FullRankCoinv
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `set c : ℂ := ((μ.real V : ℝ) : ℂ)⁻¹ with hc`. Establish `hpos : 0 < μ V` using `hVo.measure_pos μ hVne`. Establish `hfin : μ V < ⊤` using `hVc.measure_lt_top`. Establish `hreal : ((μ.real V : ℝ) : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero, Measure.real, ENNReal.toReal_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hpos.ne', hfin.ne⟩`. Establish `hVm : MeasurableSet V` using `hVo.measurableSet`. Set `ind : Matrix (Fin e) (Fin d) k → ℂ` to `V.indicator fun _ => c`. Establish `hind : IsLocallyConstant ind`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Distinguish the cases in `hx : x ∈ V`. Use `filter_upwards [hVo.mem_nhds hx] with y hy`. Simplify using `[ind, hx, hy]`. Use `filter_upwards [hVcl.isOpen_compl.mem_nhds hx] with y hy`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hy' : y ∉ V` using `hy`. Simplify using `[ind, hx, hy']`. Establish `htop : Continuous fun Y : Matrix (Fin (ρ + e)) (Fin d) k => Y.submatrix (Fin.castAdd e) id` using `continuous_id.matrix_submatrix _ _`. Establish `hbot : Continuous fun Y : Matrix (Fin (ρ + e)) (Fin d) k => Y.submatrix (Fin.natAdd ρ) id` using `continuous_id.matrix_submatrix _ _`. Set `Θ : Matrix (Fin (ρ + e)) (Fin d) k → ℂ` to `fun Y => g (Y.submatrix (Fin.castAdd e) id) * ind (Y.submatrix (Fin.natAdd ρ) id)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΘslice : ∀ Y₁ Y₂, Θ ((Matrix.fromRows Y₁ Y₂).submatrix finSumFinEquiv.symm id) = g Y₁ * ind Y₂` using `fun Y₁ Y₂ => by simp only [Θ, stack_top, stack_bot]`. Establish `hΘne : ∀ Y, Θ Y ≠ 0 → Y.submatrix (Fin.castAdd e) id ∈ U ∧ Y.submatrix (Fin.natAdd ρ) id ∈ V`. Introduce `Y hY`. Establish `h1 : g (Y.submatrix (Fin.castAdd e) id) ≠ 0` using `left_ne_zero_of_mul hY`. Establish `h2 : ind (Y.submatrix (Fin.natAdd ρ) id) ≠ 0` using `right_ne_zero_of_mul hY`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `⟨hgU _ h1, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `h2 (by simp [ind, hn])`. Establish `hlc : IsLocallyConstant Θ` using `(hg.1.comp_continuous htop).mul (hind.comp_continuous hbot)`. Use `⟨Θ, ⟨⟨hlc, ?_⟩, fun Y hY => ?_⟩, fun Y₁ => ?_, fun Y₁ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hF` using `continuous_stack (k := k) (ρ := ρ) (e := e) (d := d)`. Use `HasCompactSupport.intro ((hg.2.isCompact.prod hVc).image hF) fun Y hY => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨-, h2⟩` from `hΘne Y hne`. Apply `hY` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨(Y.submatrix (Fin.castAdd e) id, Y.submatrix (Fin.natAdd ρ) id), ⟨subset_tsupport _ (left_ne_zero_of_mul hne), h2⟩, stack_top_bot Y⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨h1, h2⟩` from `hΘne Y hne`. Establish `h3` using `hUV _ h1 _ h2`. Rewrite `h3` using `[stack_top_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h4` using `Matrix.rank_le_card_height Y`. Rewrite `h4` using `[Fintype.card_fin]`. Conclude with `hY (le_antisymm h4 h3)`. Simplify using `only [hΘslice]`. Conclude with `((integrableOn_const hfin.ne : IntegrableOn (fun _ => c) V μ).integrable_indicator hVm).const_mul (g Y₁)`.
-
-Simplify using `only [hΘslice]`. Rewrite using `[integral_const_mul, integral_indicator_const _ hVm, Complex.real_smul, hc, mul_inv_cancel₀ hreal, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fibre_piece {ρ e d : ℕ} [MeasurableSpace (Matrix (Fin e) (Fin d) k)]
     [BorelSpace (Matrix (Fin e) (Fin d) k)] (μ : Measure (Matrix (Fin e) (Fin d) k)) [μ.IsAddHaarMeasure]
@@ -228,19 +224,17 @@ theorem exists_fibre_piece {ρ e d : ℕ} [MeasurableSpace (Matrix (Fin e) (Fin 
     rw [integral_const_mul, integral_indicator_const _ hVm, Complex.real_smul, hc, mul_inv_cancel₀ hreal, mul_one]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ρ e d _ _ μ _ hρe θ hθ`. Set `P : (Matrix (Fin ρ) (Fin d) k → ℂ) → Prop` to `fun g => ∃ Θ ∈ fullRk k (ρ + e) d, (∀ Y₁, Integrable (fun Y₂ => Θ ((Matrix.fromRows Y₁ Y₂).submatrix finSumFinEquiv.symm id)) μ) ∧ ∀ Y₁, ∫ Y₂, Θ ((Matrix.fromRows Y₁ Y₂).submatrix finSumFinEquiv.symm id) ∂μ = g Y₁`. Establish `hcl : IsClosed (Function.support θ)`. Establish `: Function.support θ = (θ ⁻¹' {0})ᶜ` using `by ext; simp`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hθ.1.1.isOpen_fiber 0).isClosed_compl`. Establish `hcpt : IsCompact (Function.support θ)`. Use `hθ.1.2` as an intermediate fact. Rewrite `this` using `[HasCompactSupport, tsupport, hcl.closure_eq]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hloc : ∀ x : Function.support θ, ∃ U : Set (Matrix (Fin ρ) (Fin d) k), IsOpen U ∧ (x : Matrix (Fin ρ) (Fin d) k) ∈ U ∧ ∃ V : Set (Matrix (Fin e) (Fin d) k), IsOpen V ∧ IsClosed V ∧ IsCompact V ∧ V.Nonempty ∧ ∀ Y ∈ U, ∀ Z ∈ V, ρ + e ≤ ((Matrix.fromRows Y Z).submatrix finSumFinEqui …` using `fun x => exists_nhds_stack_rank hρe x.1 (by by_contra h; exact x.2 (hθ.2 _ h))`. Use `choose U hU using hloc`. Take `⟨t, ht⟩` from `hcpt.elim_finite_subcover U (fun i => (hU i).1) fun x hx => Set.mem_iUnion.2 ⟨⟨x, hx⟩, (hU _).2.1⟩`. Establish `hspan` using `GlobalTheory.CoverSB.mem_span_of_cover k (Fin ρ) (Fin d) {i // i ∈ t} (fun i => U i.1) (fun i => (hU _).1) θ hθ.1 fun Y hY => by`. Take `⟨i, hi, hYi⟩` from `Set.mem_iUnion₂.1 (ht hY)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨⟨i, hi⟩, hYi⟩`. Establish `hP : P θ`. Use `Submodule.span_induction (p := fun g _ => P g) ?_ ?_ ?_ ?_ hspan` and prove the remaining obligations. Introduce and unpack `g ⟨hg, i, hgi⟩`. Take `⟨-, -, V, hVo, hVcl, hVc, hVne, hUV⟩` from `hU i.1`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `exists_fibre_piece μ hVo hVcl hVc hVne hUV hg hgi`. Conclude with `⟨0, Submodule.zero_mem _, fun _ => integrable_zero _ _ _, fun _ => by simp⟩`. Introduce and unpack `g₁ g₂ - - ⟨Θ₁, h₁, i₁, e₁⟩ ⟨Θ₂, h₂, i₂, e₂⟩`. Use `⟨Θ₁ + Θ₂, Submodule.add_mem _ h₁ h₂, fun Y₁ => (i₁ Y₁).add (i₂ Y₁), fun Y₁ => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_add (i₁ Y₁) (i₂ Y₁), e₁, e₂]`. Introduce and unpack `a g - ⟨Θ, h, i, e'⟩`. Use `⟨a • Θ, Submodule.smul_mem _ a h, fun Y₁ => (i Y₁).smul a, fun Y₁ => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply]`. Rewrite using `[integral_smul, e']`.
-
-Take `⟨Θ, hΘ, -, hint⟩` from `hP`. Conclude with `⟨Θ, hΘ, hint⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fullRk_fibre_integral_eq : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ρ e d : ℕ)

@@ -42,7 +42,7 @@ variable {A : Type} {N c c' : ℕ} (e : A ⊕ Fin c ≃ Fin (N + c')) (hcc : c' 
 
 include hcc he in
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hc : (e (Sum.inl a)).val - N < c` using `by have := (e (Sum.inl a)).isLt; omega`. Establish `h2 : e (Sum.inr ⟨_, hc⟩) = e (Sum.inl a)` using `Fin.ext (by rw [he]; simp; omega)`. Conclude with `absurd (e.injective h2) (by simp)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eX_lt (a : A) : (e (Sum.inl a)).val < N := by
   by_contra h
@@ -85,7 +85,7 @@ def extX (c : ℕ) (y : Sp E N ≃ₗ[E] Sp E N) : Sp E (N + c) ≃ₗ[E] Sp E (
     (LinearEquiv.funCongrLeft E E finSumFinEquiv).symm
 
 /- English proof (translation)
-Simplify using `[extX, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft, LinearEquiv.sumArrowLequivProdArrow, LinearEquiv.funCongrLeft, Equiv.sumArrowEquivProdArrow]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem extX_castAdd (y : Sp E N ≃ₗ[E] Sp E N) (v : Sp E (N + c)) (i : Fin N) :
     extX c y v (Fin.castAdd c i) = y (fun i => v (Fin.castAdd c i)) i := by
@@ -93,7 +93,7 @@ theorem extX_castAdd (y : Sp E N ≃ₗ[E] Sp E N) (v : Sp E (N + c)) (i : Fin N
   rfl
 
 /- English proof (translation)
-Simplify using `[extX, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft, LinearEquiv.sumArrowLequivProdArrow, LinearEquiv.funCongrLeft, Equiv.sumArrowEquivProdArrow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extX_natAdd (y : Sp E N ≃ₗ[E] Sp E N) (v : Sp E (N + c)) (i : Fin c) :
     extX c y v (Fin.natAdd N i) = v (Fin.natAdd N i) := by

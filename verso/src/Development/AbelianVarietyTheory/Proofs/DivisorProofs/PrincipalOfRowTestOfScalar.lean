@@ -13,11 +13,11 @@ open Formalism.DivisionValues Formalism.L2.Indef Formalism.L2.DIV Formalism.Inde
 namespace GlobalTheory.OneFormTest
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : Tw.out x ∈ Submodule.span ℂ (Set.range v)` using `h ▸ Submodule.mem_top`. Establish `key : ∀ y ∈ Submodule.span ℂ (Set.range v), Tw.mkL s E y ∈ Submodule.span ℂ (Set.range fun i => Tw.mk s (v i))`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hy`. Conclude with `key _ hx`.
+A detailed English derivation is pending.
 -/
 theorem tw_span_top (s : Bool) {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {I : Type} (v : I → E)
     (h : Submodule.span ℂ (Set.range v) = ⊤) : Submodule.span ℂ (Set.range fun i => Tw.mk s (v i)) = ⊤ := by
@@ -35,17 +35,17 @@ theorem tw_span_top (s : Bool) {E : Type} [NormedAddCommGroup E] [InnerProductSp
   exact key _ hx
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem tw_map_surjective (s : Bool) {E E' : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [NormedAddCommGroup E']
     [InnerProductSpace ℂ E'] {f : E →ₗ[ℂ] E'} (h : Function.Surjective f) : Function.Surjective (Tw.map s f) := h
 
 /- English proof (translation)
-Take `⟨-, ⟨h1, h2⟩, h3⟩` from `GlobalTheory.classPres_extMem_extBij_isom _ _ _ _ _ _ _ _ _ _ P`. Use `⟨fun x y => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hM.2.2, hj, hj]`. Conclude with `h3 x y`. Rewrite using `[injective_iff_map_eq_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `h4 : P.extL x = 0` using `by rw [← hj, hx, map_zero]`. Rewrite `h4` using `[← S.basis.sum_repr x, map_sum]`. Simplify using `only [map_smulₛₗ] at h4`. Establish `h5` using `Fintype.linearIndependent_iff.1 h1 _ h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `S.basis.repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations. Rewrite using `[(map_eq_zero _).1 (h5 i), map_zero, Finsupp.zero_apply]`. Apply `Submodule.map_injective_of_injective hM.1` to reduce the goal to its premises. Rewrite using `[Submodule.map_top, hM.2.1, Submodule.map_span, ← Set.range_comp, show M.e ∘ j = P.extL from funext hj, h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem model_of_pres {H Γ : Type} [Group H] [Group Γ] {ι : Γ →* H} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     {K : Type} [Field K] [NumberField K] [StarRing K] {S : CSD K} {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W} {J : Subgroup H}
@@ -68,7 +68,7 @@ theorem model_of_pres {H Γ : Type} [Group H] [Group Γ] {ι : Γ →* H} {W : T
     rw [Submodule.map_top, hM.2.1, Submodule.map_span, ← Set.range_comp, show M.e ∘ j = P.extL from funext hj, h2]
 
 /- English proof (translation)
-Rewrite using `[goodAt, level_idempotent_bot, mul_one, CSD.gaOp, LinearMap.sum_apply, map_sum, map_sum, ← hY (Θ (j x))]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smulₛₗ, map_smul, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_gaOp {K : Type} [Field K] [NumberField K] [StarRing K] {S : CSD K} {σ : K →+* ℂ} {G : Type} [Group G] [Fintype G]
     (r : Representation K G S.Forms) {H E : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup E] [Module ℂ E]
@@ -80,9 +80,9 @@ theorem apply_gaOp {K : Type} [Field K] [NumberField K] [StarRing K] {S : CSD K}
   rw [LinearMap.smul_apply, map_smulₛₗ, map_smul, h]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hp, iSup_le_iff]`. Introduce `c x hx`. Take `⟨l, hl, h⟩` from `h c`. Use `⟨(l : ℂ)⁻¹ • g x, ?_⟩` and prove the remaining obligations. Establish `h1 : f (g x) = (l : ℂ) • x` using `h x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_smul, h1, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hl.ne'), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem surjective_of_scalar {H E : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup E] [Module ℂ E] (f : H →ₗ[ℂ] E)
     (g : E →ₗ[ℂ] H) {I : Type} (p : I → Submodule ℂ E) (hp : ⨆ c, p c = ⊤)
@@ -102,7 +102,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
 
 /- English proof (translation)
-The claim follows from `model_of_pres (S := A.MtildeCSD t) (R.B.R t).pres (R.HX t) (hH t) (R.jX t) (hj t)`.
+A detailed English derivation is pending.
 -/
 theorem model_jX (hH : R.models_HX) (hj : R.models_jX) (t : T) :
     (∀ x y : (A.MtildeCSD t).Forms, ⟪R.jX t x, R.jX t y⟫_ℂ = D.what₂.embLL ((A.MtildeCSD t).csum x.1 y.1)) ∧
@@ -110,7 +110,7 @@ theorem model_jX (hH : R.models_HX) (hj : R.models_jX) (t : T) :
   model_of_pres (S := A.MtildeCSD t) (R.B.R t).pres (R.HX t) (hH t) (R.jX t) (hj t)
 
 /- English proof (translation)
-The claim follows from `((congrArg (cj (twAt D.what₂.embLL A.v0)) ((model_jX R hH hj t).1 x y)).trans (R.emb0 _).symm :) inj t := (model_jX R hH hj t).2.1 span t := tw_span_top (twAt D.what₂.embLL A.v0) (R.jX t) (model_jX R hH hj t).2.2`.
+A detailed English derivation is pending.
 -/
 theorem formsTie (hH : R.models_HX) (hj : R.models_jX) : FormsTie (F := A.fam) (R.toCx F) where
   inner_eq t x y := ((congrArg (cj (twAt D.what₂.embLL A.v0)) ((model_jX R hH hj t).1 x y)).trans (R.emb0 _).symm :)
@@ -118,9 +118,9 @@ theorem formsTie (hH : R.models_HX) (hj : R.models_jX) : FormsTie (F := A.fam) (
   span t := tw_span_top (twAt D.what₂.embLL A.v0) (R.jX t) (model_jX R hH hj t).2.2
 
 /- English proof (translation)
-Apply `hE.1` to reduce the goal to its premises. Establish `h1 : R.HE.e y ∈ R.EEat R.triv` using `hE.2.1 ▸ ⟨y, rfl⟩`. Establish `h2 : postOn (R.MY 0) R.e0 (R.HE.e y) = R.HE.e y` using `sub_eq_zero.1 h1.2`. Rewrite using `[map_sum]`. Use `Eq.trans ?_ h2` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_smul, hg]`. Use extensionality with `v h`. Simplify using `[RealDat.e0, gaL, postOn, RealDat.eC]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem sum_gE_eq (hE : R.models_HE) (hg : R.models_gE) (y : R.HE.H) :
     ∑ g, D.what₂.embLL ((idemOf A.X).coeff g) • R.gE g y = y := by
@@ -135,9 +135,9 @@ theorem sum_gE_eq (hE : R.models_HE) (hg : R.models_gE) (y : R.HE.H) :
   rfl
 
 /- English proof (translation)
-Establish `e1` using `hj t x`. Establish `e2` using `hj t (A.leftGroupActionRight t g x)`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TranslateRepresentations.IsTranslate`. Use `⟨?_, fun κ hκ h => ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `(R.B.R t).act_tie.red_surj g`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨q, (hred t q).symm.trans (congrArg R.eG hq)⟩`. Establish `h1 : (R.B.R t).act_tie.red κ = g` using `R.eG.injective ((hred t κ).trans hκ)`. Establish `h2` using `((e2.trans ((R.B.R t).act_tie.act_eq g κ h1 x)).trans (congrArg (Bridge.g0Act (levEnv D.sp.X' R.βX (R.datXt t)).ch κ) e1.symm))`. Conclude with `congrFun h2 h`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isTranslate_jX (hred : R.grp_red_R) (hj : R.models_jX) (t : T) (g : G) (x : (A.MtildeCSD t).Forms) :
     GlobalTheory.IndefiniteRowSideFullHecke.TranslateRepresentations.IsTranslate D.sp.X' R.βX (R.datXt t) (R.eG g) ((R.HX t).e (R.jX t x))
@@ -154,7 +154,7 @@ theorem isTranslate_jX (hred : R.grp_red_R) (hj : R.models_jX) (t : T) (g : G) (
     exact congrFun h2 h
 
 /- English proof (translation)
-The claim follows from `apply_gaOp (S := A.MtildeCSD t) (A.leftGroupActionRight t) R.gE (R.jX t) (R.Th t) (fun g y => hG.th_of_translate R t (hC.models.HX t).1 g _ _ (isTranslate_jX R hC.grp.red_R hC.models.jX t g y)) A.X (sum_gE_eq R hC.models.HE hC.models.gE) x`.
+A detailed English derivation is pending.
 -/
 theorem th_gaOp (hC : R.Char F) (hG : GlobalTheory.IndefiniteRowSideFullHecke.TranslateRepresentations.GEquiv R) (t : T) (x : (A.MtildeCSD t).Forms) :
     R.Th t (R.jX t ((A.MtildeCSD t).gaOp (A.leftGroupActionRight t) (goodAt A.X ⊥ 1) x)) = R.Th t (R.jX t x) :=
@@ -163,7 +163,7 @@ theorem th_gaOp (hC : R.Char F) (hG : GlobalTheory.IndefiniteRowSideFullHecke.Tr
     A.X (sum_gE_eq R hC.models.HE hC.models.gE) x
 
 /- English proof (translation)
-Introduce `t x` and use `th_gaOp R F hC hG t x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem throughGood (hC : R.Char F) (hG : GlobalTheory.IndefiniteRowSideFullHecke.TranslateRepresentations.GEquiv R) (F' : Face D A) : ThroughGood (F := A.fam) (R.toCx F') :=
   fun t x => th_gaOp R F hC hG t x
@@ -171,19 +171,19 @@ theorem throughGood (hC : R.Char F) (hG : GlobalTheory.IndefiniteRowSideFullHeck
 def PartsSpan : Prop := ⨆ c, GlobalTheory.IndefiniteRowSideFullHecke.DownUpLambdaOperators.partE R c = ⊤
 
 /- English proof (translation)
-The claim follows from `surjective_of_scalar (R.Th t) (LinearMap.adjoint (R.Th t)) (GlobalTheory.IndefiniteRowSideFullHecke.DownUpLambdaOperators.partE R) hS (hB.scalar_pos t)`.
+A detailed English derivation is pending.
 -/
 theorem th_surjective (hB : GlobalTheory.IndefiniteRowSideFullHecke.DownUpLambdaOperators.Concl R) (hS : PartsSpan R) (t : T) : Function.Surjective (R.Th t) :=
   surjective_of_scalar (R.Th t) (LinearMap.adjoint (R.Th t)) (GlobalTheory.IndefiniteRowSideFullHecke.DownUpLambdaOperators.partE R) hS (hB.scalar_pos t)
 
 /- English proof (translation)
-The claim follows from `tw_map_surjective (twAt D.what₂.embLL A.v0) (hon t)`.
+A detailed English derivation is pending.
 -/
 theorem theta_surjective (hon : ∀ t, Function.Surjective (R.Th t)) (t : T) : Function.Surjective ((R.toCx F).Θ t) :=
   tw_map_surjective (twAt D.what₂.embLL A.v0) (hon t)
 
 /- English proof (translation)
-The claim follows from `bijective_and_ratMu (F := A.fam) (X := R.toCx (GlobalTheory.OneForm.principalFace F)) hOk (formsTie R _ hC.models.HX hC.models.jX) (throughGood R F hC hG _) ((GlobalTheory.IndefiniteRowSideFullHecke.RationalRowTestKernel.rowTest_toCx_iff R _).2 ((GlobalTheory.IndefiniteRowSideFul …`.
+A detailed English derivation is pending.
 -/
 theorem principal_of_rowTest {s : ℕ} (hOk : A.fam.Ok s) (hC : R.Char F) (hG : GlobalTheory.IndefiniteRowSideFullHecke.TranslateRepresentations.GEquiv R)
     (hT : GlobalTheory.IndefiniteRowSideFullHecke.RationalRowTestKernel.RowTestAt R F) (hon : ∀ t, Function.Surjective (R.Th t)) :
@@ -195,7 +195,7 @@ theorem principal_of_rowTest {s : ℕ} (hOk : A.fam.Ok s) (hC : R.Char F) (hG : 
     (GlobalTheory.EquivariantEuclideanComplex.isCoord_base A ⊥ 1 F.P1 F.ψ1 F.Dc F.Sp F.Zsc _)
 
 /- English proof (translation)
-The claim follows from `principal_of_rowTest R F hOk hC hG hT (th_surjective R hB hS)`.
+A detailed English derivation is pending.
 -/
 theorem principal_of_rowTest_of_scalar {s : ℕ} (hOk : A.fam.Ok s) (hC : R.Char F) (hG : GlobalTheory.IndefiniteRowSideFullHecke.TranslateRepresentations.GEquiv R)
     (hT : GlobalTheory.IndefiniteRowSideFullHecke.RationalRowTestKernel.RowTestAt R F) (hB : GlobalTheory.IndefiniteRowSideFullHecke.DownUpLambdaOperators.Concl R) (hS : PartsSpan R) :

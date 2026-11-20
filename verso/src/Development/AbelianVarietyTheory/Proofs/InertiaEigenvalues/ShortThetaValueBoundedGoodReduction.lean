@@ -35,7 +35,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hprop : IsProper I.t'.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) I.m1.cart.1 Xo.univ.proper`. Take `⟨j, -⟩` from `GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H T.V inferInstance I.G I.G I.t' hprop I.m2 I.m2`. Establish `hp` using `GlobalTheory.UnifAfterExt.polAt_of_sabMap j I.m2 I.m1 Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (jK T.V) (𝟙 _) ((Category.comp_id _).trans (Category.id_comp _).symm)`. Take `⟨-, P, -, hP⟩` from `GlobalTheory.UnifAfterExt.isOpen_and_uniformised T.V inferInstance I.G hp hS`. Conclude with `⟨P, hP⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unif_of_splitModel {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} (I : IntData Xo c T io y.1)
     (hS : PullbackSections.SplitModel I) : ∃ P : PELUnif (IsLocalRing.maximalIdeal T.V) I.G, P.TorsionIso := by
@@ -47,7 +47,7 @@ theorem unif_of_splitModel {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io
   exact ⟨P, hP⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hN`. Establish `h : levPt Xo x a ^ l.M = 1`. Rewrite using `[levPt, ← MonObj.comp_pow, (GlobalTheory.moduli_univ_eta_killed GlobalTheory.firstFiveLaws.1 E H Dw l Xo a).2.2, MonObj.comp_one]`. Rewrite using `[pow_two, pow_mul, ht, hk, pow_mul, h, one_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem root_pow_sq {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) {N : ℕ} (hN : l.M ∣ N) (a : Dw.La)
     {t : ptO Xo x ⟶ Xo.univ.t.G} (ht : t ^ N = levPt Xo x a) : t ^ (N ^ 2) = 1 := by
@@ -57,7 +57,7 @@ theorem root_pow_sq {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) {N : ℕ} (hN : 
   rw [pow_two, pow_mul, ht, hk, pow_mul, h, one_pow]
 
 /- English proof (translation)
-Take `⟨F₀, F₁, p, m₁, m₂⟩` from `((uu_through_moves E H Dw l Xo S x N hN s).1 x₁ x₂ F h₁ h₂).1 hF`. Use `.move _ x₂ F₁ _ (.move _ x₁ F₀ F₁ (.pull 1 (N ^ 2) (N ^ 2) (N : 𝓞 E) s F₀ .base (.inl rfl) hN.pow ?_ (Nat.one_mul _).symm p) m₁) m₂` and prove the remaining obligations. Rewrite using `[map_natCast, Nat.cast_pow, pow_two]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem reach_of_isUUOver {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {N : ℕ} (hN : Odd N) (s : SecN Xo x 1)
     {x₁ x₂ : ptO Xo x ⟶ Xo.univ.t.G} (h₁ : x₁ ^ (N ^ 2) = 1) (h₂ : x₂ ^ (N ^ 2) = 1)
@@ -69,7 +69,7 @@ theorem reach_of_isUUOver {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {N : ℕ} 
   rw [map_natCast, Nat.cast_pow, pow_two]
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Take `⟨G, t', m1, m2, hG⟩` from `hy`. Take `⟨-, n, -⟩` from `GlobalTheory.ThetaBound.Prep.sab_extensions_iso E H Dw l Xo T.V T.Fr y.1.x I.G G I.t' t' I.m1 I.m2 m1 m2`. Establish `hp : IsProper I.G.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) n.cart.1 hG`. Conclude with `⟨_, GlobalTheory.ZJ.isGt_splitExtOfAbelian _ (GlobalTheory.isAbelianScheme_pullback_obj _ _ (isAbelianScheme_of_proper _ I.G.semi hp))⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem splitModel_of_good {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (hy : GoodPts.Good y)
     (I : IntData Xo c T io y.1) : PullbackSections.SplitModel I := by
@@ -81,13 +81,13 @@ theorem splitModel_of_good {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io
     (isAbelianScheme_of_proper _ I.G.semi hp))⟩
 
 /- English proof (translation)
-Take `⟨C₁, hC₁⟩` from `GlobalTheory.IntChartTrunc.intChart_frTrunc_exists E H Dw l Xo c hstar T io y`. Establish `hgood₁ : Good3 C₁` using `⟨hC₁, unif_of_splitModel C₁.I (splitModel_of_good y hy C₁.I)⟩`. Take `⟨L, _, _, hL, hrat⟩` from `(GlobalTheory.T.torsion_rational_over_finite_extension_level_structure E H Dw l Xo T.Fr (xOf y) M hM).1`. Take `⟨T₂, i₂, e₂, ψ, φ, he₂, hv₂, hψ, -, -⟩` from `GlobalTheory.PlaceExtField.exists_cdvr_finite_extension T L`. Take `⟨⟨y₂, hext₂⟩, hy⟩` from `GlobalTheory.ThetaBound.exists_isExt_and_trans E H Dw l Xo c T T₂ io y i₂ e₂ he₂ hv₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx₂` using `(hy y₂ hext₂).1`. Take `⟨C₂, hgood₂⟩` from `GlobalTheory.ThetaBound.Prep.exists_good_chart_ext E H Dw l Xo c hstar T io y C₁ hgood₁ T₂ i₂ e₂ y₂ hext₂`. Establish `hrat₂` using `((GlobalTheory.T.torsion_rational_over_finite_extension_level_structure E H Dw l Xo L _ M hM).2 hrat).1 T₂.Fr ψ.toRingHom`. Establish `hi : i₂ = ψ.toRingHom.comp (algebraMap T.Fr L)` using `RingHom.ext fun a => (hψ a).symm`. Establish `hsp : spMap ψ.toRingHom ≫ spMap (algebraMap T.Fr L) ≫ xOf y = xOf y₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx₂, hi, ← Category.assoc]`. Use `congr 1`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite `hrat₂` using `[hsp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨T₂, i₂, e₂, y₂, C₂, hext₂, hgood₂, hrat₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ext [StarRing (𝓞 E)] (hstar : ∀ a : 𝓞 E, star a = H.bar a) {T : CDVR} {io : c.F →+* T.Fr}
     (y : IntFr Xo c T io) (hy : GoodPts.Good y) (M : ℕ) (hM : 0 < M) :
@@ -112,7 +112,7 @@ theorem exists_ext [StarRing (𝓞 E)] (hstar : ∀ a : 𝓞 E, star a = H.bar a
   exact ⟨T₂, i₂, e₂, y₂, C₂, hext₂, hgood₂, hrat₂⟩
 
 /- English proof (translation)
-Simplify using `only [Finsupp.degree_eq_sum, colOf, Finsupp.equivFunOnFinite_symm_apply_apply]`. Rewrite using `[Finset.sum_comm, Fintype.sum_sigma, Fintype.sum_sigma]`. Conclude with `Finset.sum_congr rfl fun τ _ => (Fintype.sum_prod_type (fun p : Fin (Dw.mult τ) × Fin n => m ⟨τ, p⟩)).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_degree_colOf {n : ℕ} (m : LtN Dw n →₀ ℕ) : ∑ b, (colOf m b).degree = m.degree := by
   simp only [Finsupp.degree_eq_sum, colOf, Finsupp.equivFunOnFinite_symm_apply_apply]
@@ -120,25 +120,23 @@ theorem sum_degree_colOf {n : ℕ} (m : LtN Dw n →₀ ℕ) : ∑ b, (colOf m b
   exact Finset.sum_congr rfl fun τ _ => (Fintype.sum_prod_type (fun p : Fin (Dw.mult τ) × Fin n => m ⟨τ, p⟩)).symm
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Take `⟨B, hB, hB2⟩` from `GlobalTheory.PlaceInt.integralBiext_gauge_eig_bound E H Dw l Xo c hnab.1 T io y C`. Take `⟨h', hg', hbd⟩` from `GlobalTheory.GaugeBoundedDenom.exists_canonGauge_nabVal_bounded_denom T.V T.Fr E _ B _ (hB2 B hB).1`. Establish `tk : ∀ {r : ℕ} (g : PS T.Fr r (chD C.ch)), FB.toK T.Fr g = g` using `fun g => by`. Use extensionality with `m`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `h1 : C.ch.B.FK T.Fr = B.FK T.Fr`. Use function extensionality and compare the values at `j`. Simplify using `only [FB.FK, FGLaw.mapF, hB.1, ← C.gen.1.1 j]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ a, C.ch.B.actK T.Fr a = B.actK T.Fr a`. Introduce `a`. Use function extensionality and compare the values at `j`. Simplify using `only [FB.actK, hB.2.1, ← C.gen.1.2.1 a j]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hg : C.ch.B.IsCanonGauge T.Fr h'`. Use `⟨hg'.ax0, hg'.ax1, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[h1, tk, ← hg'.ph1, hB.2.2.1]`. Conclude with `C.gen.1.2.2.1`. Rewrite using `[h1, tk, ← hg'.ph2, hB.2.2.2.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `C.gen.1.2.2.2.1`. Rewrite using `[tk, ← hg'.sy, hB.2.2.2.2.1]`. Conclude with `C.gen.1.2.2.2.2.1`. Rewrite using `[h2, h2, tk, ← hg'.ad, hB.2.2.2.2.2]`. Conclude with `C.gen.1.2.2.2.2.2.1 a`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `C' : ChartAt Xo c y.1` to `{ C.ch with h := h', gauge := hg }`. Take `⟨C₀, hex, hpin⟩` from `hnab.2 T.Fr y.1`. Use `choose f₀ hf₀ using fun b => hex k (F b)`. Establish `e₀ : ∀ m, ∏ b, nab y.1 k (F b) (colOf m b) = ∏ b, C₀.B.nabVal T.Fr C₀.h H.w0 k (f₀ b) C₀.uvec (MvPolynomial.monomial (colOf m b) 1)` using `fun m => Finset.prod_congr rfl fun b _ => hpin k (F b) (f₀ b) (hf₀ b) (colOf m b)`. Establish `h` using `GlobalTheory.HarmonicAny.chartVal_indep_of_harmonic E H Dw l Xo c hnab.1 T.Fr y.1 C₀ C' k n F f₀ (fun b => MvPowerSeries.map (algebraMap T.V T.Fr) (f b)) hf₀ hf P hP`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₁ : hv Xo c nab y.1 k F P = chartVal C₀ k f₀ P`. Simplify using `only [hv, chartVal, e₀]`. Rewrite using `[e₁, h, chartVal, Finset.mul_sum]`. Use `Subring.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hm' : m.degree = d`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `hd (MvPolynomial.mem_support_iff.1 hm)`. Rewrite using `[_root_.mul_left_comm, ← hm', ← sum_degree_colOf, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Subring.mul_mem _ (hc m) (Subring.prod_mem _ fun b _ => ?_)` and prove the remaining obligations. Establish `hu : C.ch.uvec = fun ℓ i => algebraMap T.V T.Fr (C.uvecT ℓ i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `fun ℓ => funext fun i => C.gen.1.2.2.2.2.2.2 ℓ i`. Establish `key` using `hbd H.w0 k (f b) (Lt1 Dw) C.uvecT (colOf m b)`. Rewrite `key` using `[← hu]`. Establish `e : C'.B.nabVal T.Fr C'.h H.w0 k (MvPowerSeries.map (algebraMap T.V T.Fr) (f b)) C'.uvec (MvPolynomial.monomial (colOf m b) 1) = B.nabVal T.Fr h' H.w0 k (FB.toK T.Fr (f b)) C.ch.uvec (MvPolynomial.monomial (colOf m b) 1)`. Express the relevant statement in the definitionally equal form `C.ch.B.nabVal T.Fr h' H.w0 k (FB.toK T.Fr (f b)) C.ch.uvec _ = _`.
-
-Simplify using `only [FB.nabVal, FB.hL, h1, h2]`. Rewrite using `[e]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hv_bound [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab) {T : CDVR} {io : c.F →+* T.Fr}
     (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y) (k n d : ℕ) (F : Fin n → SecN Xo (xOf y) k)
@@ -202,9 +200,9 @@ theorem hv_bound [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab) {
   exact key
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Establish `h` using `GlobalTheory.ThetaBound.Prep.vV_nonneg T' a`. Rewrite `h` using `[ha, hv]`. Conclude with `Formalism.L2.PjFree.mem_range_of_vV_nonneg (le_of_mul_le_mul_left (by simpa using h) (by exact_mod_cast he : (0 : ℤ) < e))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `Formalism.L2.PjFree.mem_range_of_vV_nonneg (by`. Rewrite using `[hv]; exact mul_nonneg (by exact_mod_cast he.le) (GlobalTheory.ThetaBound.Prep.vV_nonneg T a))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inV_of_ext {T T' : CDVR} (iT : T.Fr →+* T'.Fr) {e : ℕ} (he : 0 < e)
     (hv : ∀ a : T.Fr, vV T'.V (iT a) = (e : ℤ) * vV T.V a) {x : T.Fr} : InV T' (iT x) ↔ InV T x := by
@@ -219,11 +217,11 @@ theorem inV_of_ext {T T' : CDVR} (iT : T.Fr →+* T'.Fr) {e : ℕ} (he : 0 < e)
       rw [hv]; exact mul_nonneg (by exact_mod_cast he.le) (GlobalTheory.ThetaBound.Prep.vV_nonneg T a))
 
 /- English proof (translation)
-Break down `h with rfl | rfl` into its components or cases. Distinguish the cases in `h0 : (m : K) = 0 ∨ (r : K) = 0 ∨ (N : K) ^ d' = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases h0 with h | h | h <;> simp [h]`. Use `push Not at h0`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, c⟩` from `h0`. Use `⟨1, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Supply the required witnesses or components.
 
-Conclude with `⟨0, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem scalar_cases {K : Type} [Field K] [CharZero K] (m r N d d' : ℕ) (D : ℤ) (s : K) (h : d' = d ∨ s = 0) :
     ∃ ε : ℕ, ((m * r : ℕ) : K) * ((2 * D * N : ℤ) : K) ^ d *
@@ -246,17 +244,15 @@ open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain MvPolynomial
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj GlobalTheory.GoodPts
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ nab hnab T io y n d N La w P v hy hU hT hL hw hP hd hc hv`. Take `⟨T', iT, e, y', C, ⟨he, hval, φ, hφ, hmap⟩, hC, hrat⟩` from `exists_ext hnab.1 y hy (N ^ 2) (pow_pos hL.1.pos 2)`. Use `letI := io.toAlgebra`. Use `letI := (iT.comp io).toAlgebra`. Take `⟨z, tp, F, hz, hg, ht, hF⟩` from `(GlobalTheory.RatData.exists_thetaVal_data E H Dw l Xo c T'.Fr y'.1).2 n La N hU hL hrat`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Establish `key` using `GlobalTheory.HarmonicAny.map_shortValAt nab hnab La N hU hT hL P hP w 1 φ y.1 y'.1 hmap z tp F hz hg ht hF v hv`. Establish `hφv : φ v = iT v` using `congrArg (fun g : T.Fr →+* T'.Fr => g v) hφ`. Use `choose f hf using fun q i b => (GlobalTheory.RegularGerm.regular_germ E H Dw l Xo c hnab.1 T' _ y' C hC.1 (N ^ 2) _).1 (GlobalTheory.ReachRegular.regular_of_reach E H Dw l Xo c hnab.1 T' _ y' C hC (N ^ 2) _ (reach_of_isUUOver hL.1 (GlobalTheory.PlaceInt.sOf1 y') ((hz i).1 b) (roo …`. Establish `hb` using `fun q i => hv_bound nab hnab y' C (N ^ 2) n d _ (f q i) (hf q i) P hP hd (fun m => (inV_of_ext iT he hval).2 (hc m))`. Establish `hcast` using `(GlobalTheory.PlaceInt.hv_linear E H Dw l Xo c hnab.1 nab hnab T'.Fr y'.1 n P).2.2 N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := GlobalTheory.ShortAtField.finite_levQ Dw l`. Use `haveI := Fintype.ofFinite (Fin n → LevQ Dw l)`. Use `haveI : CharZero T'.Fr := algebraRat.charZero _`. Rewrite using `[← inV_of_ext iT he hval, map_mul, map_mul, map_pow, map_natCast, map_intCast, ← hφv, key]`. Simplify using `only [map_mul, map_inv₀, map_one, map_natCast, map_pow]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hcases : P.totalDegree = d ∨ (∑ᶠ q : Fin n → LevQ Dw l, algebraMap c.F T'.Fr (w q) * ∑ i, ∑ m ∈ P.support, algebraMap c.F T'.Fr (P.coeff m) * ∏ b, nab y'.1 ((N : ℤ) ^ 2) (F q i b) (colOf m b)) = 0`. Distinguish the cases in `h0 : P = 0`. Use `right`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+Prove the first alternative. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inl (hd.totalDegree h0)`. Take `⟨ε, hε⟩` from `scalar_cases (La.mIdx N (Dw.p + Dw.q)) (Nat.card (Fin n → LevQ Dw l)) N d P.totalDegree (NumberField.discr E) _ hcases`. Rewrite using `[hε]`. Use `Subring.mul_mem _ (natCast_mem _ ε) ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_fintype, Finset.mul_sum]`.
-
-Use `Subring.sum_mem _ fun q _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, Finset.mul_sum]`. Use `Subring.mul_mem _ ((inV_of_ext iT he hval).2 (hw q)) (Subring.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hcast (F q i)]`. Conclude with `hb q i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_value_bounded : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (n d N : ℕ) (La : GenLat E n) (w : (Fin n → LevQ Dw l) → c.F) (P : MvPolynomial (LtN Dw n) c.F) (v : T.Fr), Good y → La.Unimod → La.TrivAt l.M → La.LevOK N l.M → (∀ q, InV T (io (w q))) → P ∈ harmK Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun _ => 1) → P.IsHomogeneous d → (∀ m, InV T (io (P.coeff m))) → (letI := io.toAlgebra; thLaValAt Xo c nab w La N P y.1 v) → InV T (((La.mIdx N (Dw.p + Dw.q) * Nat.card (Fin n → LevQ Dw l) : ℕ) : T.Fr) * ((2 * NumberField.discr E * N : ℤ) : T.Fr) ^ d * v) := by
   intro E _ _ _ H Dw l Xo c _ nab hnab T io y n d N La w P v hy hU hT hL hw hP hd hc hv

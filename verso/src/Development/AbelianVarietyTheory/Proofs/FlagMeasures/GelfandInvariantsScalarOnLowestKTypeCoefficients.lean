@@ -19,9 +19,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨U, F, hU, hgU, hF, e⟩` from `hf g hg`. Take `⟨U', F', hU', hgU', hF', e'⟩` from `hf' g hg`. Use `⟨U ∩ U', fun h => F h + c * F' h, hU.inter hU', ⟨hgU, hgU'⟩, (hF.mono Set.inter_subset_left).add (contDiffOn_const.mul (hF'.mono Set.inter_subset_right)), ?_⟩` and prove the remaining obligations. Introduce `x hx hxJ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [e x hx.1 hxJ, e' x hx.2 hxJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smooth_comb {ε : Fin n → Bool} {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} (c : ℂ)
     (hf : SmoothOnG ε f) (hf' : SmoothOnG ε f') : SmoothOnG ε (fun h => f h + c * f' h) := by
@@ -34,7 +34,7 @@ theorem smooth_comb {ε : Fin n → Bool} {f f' : Matrix (Fin n) (Fin n) ℂ →
   simp only [e x hx.1 hxJ, e' x hx.2 hxJ]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons p w ih`. Establish `hc` using `complex_parts_mem_lie_algebra_holds n ε (Matrix.single p.1 p.2 1)`. Conclude with `smooth_comb Complex.I (rdSmooth_of right_derivative_extends n ε _ _ ih hc.1) (rdSmooth_of right_derivative_extends n ε _ _ ih hc.2.1)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_word {ε : Fin n → Bool} {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f)
     (w : List (Fin n × Fin n)) : SmoothOnG ε (Eword ε w f) := by
@@ -46,9 +46,9 @@ theorem smooth_word {ε : Fin n → Bool} {f : Matrix (Fin n) (Fin n) ℂ → �
       (rdSmooth_of right_derivative_extends n ε _ _ ih hc.2.1)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro g _`. Both sides reduce to the same expression. Consider the case `cons p w ih`. Introduce `g hg`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc` using `complex_parts_mem_lie_algebra_holds n ε (Matrix.single p.1 p.2 1)`. Establish `h1` using `Eword_congr ε ih [p] g hg`. Establish `h2` using `fun X hX => (right_derivative_linear n ε _ _ X X 0 c g (smooth_word hf w) (smooth_word hf' w) hX hX hg).2.2`. Use `Eq.trans h1 ?_` and prove the remaining obligations. Simplify using `only [Eword, Eab, Ec, id, h2 _ hc.1, h2 _ hc.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -67,7 +67,7 @@ theorem word_comb {ε : Fin n → Bool} {f f' : Matrix (Fin n) (Fin n) ℂ → �
     ring
 
 /- English proof (translation)
-Simplify using `only [gelf, word_comb c hf hf' _ g hg, Finset.sum_add_distrib, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gelf_comb {ε : Fin n → Bool} {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} (c : ℂ)
     (hf : SmoothOnG ε f) (hf' : SmoothOnG ε f') (m : ℕ) (g : Matrix (Fin n) (Fin n) ℂ) (hg : inUJ ε g) :
@@ -75,7 +75,7 @@ theorem gelf_comb {ε : Fin n → Bool} {f f' : Matrix (Fin n) (Fin n) ℂ → �
   simp only [gelf, word_comb c hf hf' _ g hg, Finset.sum_add_distrib, Finset.mul_sum]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun _ _ => Eword_congr ε h _ g hg`.
+A detailed English derivation is pending.
 -/
 theorem gelf_congr {ε : Fin n → Bool} {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (h : ∀ g, inUJ ε g → f g = f' g) (m : ℕ) (g : Matrix (Fin n) (Fin n) ℂ) (hg : inUJ ε g) :
@@ -83,19 +83,19 @@ theorem gelf_congr {ε : Fin n → Bool} {f f' : Matrix (Fin n) (Fin n) ℂ → 
   Finset.sum_congr rfl fun _ _ => Eword_congr ε h _ g hg
 
 /- English proof (translation)
-Introduce `n ε lam H _ _ _ σ hσ hK`. Take `⟨α, hα, hαc, hfix⟩` from `GlobalTheory.T.exists_smooth_compactSupport_fix_lowestKType n ε lam H σ hσ hK`. Establish `hD` using `fun (s : lowKSub ε lam σ) => GlobalTheory.T.derivatives_coefficients_convolutionFixed_vector n ε H σ α s hσ hα hαc (hfix s s.2)`. Establish `hsm : ∀ (s : lowKSub ε lam σ) (u : H), SmoothOnG ε (fun g => ⟪u, σ g s⟫_ℂ)` using `fun s => (hD s).1`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε` using `by simp [UJset, inUJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : ∀ v, σ 1 v = v` using `fun v => by rw [hσ.1.1]; rfl`. Establish `hmul : ∀ a ∈ UJset ε, ∀ b ∈ UJset ε, ∀ v, σ (a * b) v = σ a (σ b v)` using `fun a ha b hb v => by`. Rewrite using `[hσ.1.2 a ha b hb]`. Both sides reduce to the same expression. Establish `hC : ∀ (m : ℕ) (s : lowKSub ε lam σ), ∃ s' : H, ∀ u, ∀ g ∈ UJset ε, gelf ε m (fun x => ⟪u, σ x s⟫_ℂ) g = ⟪u, σ g s'⟫_ℂ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `m s`. Use `choose v hv using (hD s).2`. Use `⟨∑ a : Fin (m + 1) → Fin n, v (cycWord a), fun u g hg => ?_⟩` and prove the remaining obligations. Simplify using `only [gelf, hv _ u g hg, map_sum, inner_sum]`. Use `choose C hC using hC`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC1 : ∀ (m : ℕ) (s : lowKSub ε lam σ) (u : H), ⟪u, C m s⟫_ℂ = gelf ε m (fun x => ⟪u, σ x s⟫_ℂ) 1` using `fun m s u => by rw [hC m s u 1 h1, hone]`. Establish `hlin : ∀ (m : ℕ) (c : ℂ) (s t : lowKSub ε lam σ), C m (s + c • t) = C m s + c • C m t`. Introduce `m c s t`. Use `ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Rewrite using `[inner_add_right, inner_smul_right, hC1, hC1, hC1, ← gelf_comb c (hsm s u) (hsm t u) m 1 h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[inner_add_right, inner_smul_right]`. Establish `h0 : ∀ m, C m 0 = 0` using `fun m => by simpa using hlin m 1 0 0`. Establish `key : ∀ m, ∃ c : ℂ, ∀ s : lowKSub ε lam σ, C m s = c • (s : H)`. Introduce `m`. Use `GlobalTheory.T.kMap_lowestKTypeSubspace_eq_scalar n ε lam H σ hσ hK { toFun := C m map_add' := fun s t => by simpa using hlin m 1 s t map_smul' := fun c t => by simpa [h0] using hlin m c 0 t } ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k hk s s' e`. Establish `hkU : k ∈ UJset ε` using `(maximal_compact_facts n ε).1 k hk`. Use `ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `⟪u, C m s'⟫_ℂ = ⟪u, σ k (C m s)⟫_ℂ`. Rewrite using `[hC1, ← hC m s u k hkU, ← Matrix.one_mul k, ← GlobalTheory.T.gelfandInvariant_comm_rightTranslation n ε m _ k 1 (hsm s u) hkU h1]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `gelf_congr (fun g hg => ?_) m 1 h1` and prove the remaining obligations. Rewrite using `[e, hmul g hg k hkU]`. Use `choose c hc using key`. Use `⟨c, fun s hs u => ⟨hsm ⟨s, hs⟩ u, fun m g hg => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hC m ⟨s, hs⟩ u g hg, hc, map_smul, inner_smul_right]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centre_scalar_low : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsURepOn (UJset ε) σ → IsKTypeOf ε σ (lowK ε lam) (lowKSub ε lam σ) → ∃ c : ℕ → ℂ, ∀ s ∈ lowKSub ε lam σ, ∀ u : H, SmoothOnG ε (fun g => ⟪u, σ g s⟫_ℂ) ∧ ∀ m, ∀ g ∈ UJset ε, gelf ε m (fun x => ⟪u, σ x s⟫_ℂ) g = c m * ⟪u, σ g s⟫_ℂ := by
   intro n ε lam H _ _ _ σ hσ hK

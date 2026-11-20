@@ -13,11 +13,9 @@ namespace SmallSections
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
 /- English proof (translation)
-Use `conv_lhs => rw [F.as_sum]`. Use `conv_rhs => rw [F.as_sum]`. Simplify using `only [map_sum, aeval_monomial, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun μ hμ ↦ ?_` and prove the remaining obligations. Establish `hw : (μ.sum fun _ e ↦ e) = τ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hF (mem_support_iff.mp hμ)`. Rewrite `h` using `[Finsupp.weight_apply]`. Simplify using `using h`. Rewrite using `[← hw]`. Simplify using `only [Finsupp.prod, Finsupp.sum, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aeval_mul_of_isHomogeneous {σ A : Type*} [CommRing A] [Algebra ℤ A] {F : MvPolynomial σ ℤ} {τ : ℕ}
     (hF : F.IsHomogeneous τ) (t : A) (x : σ → A) :
@@ -37,9 +35,9 @@ theorem aeval_mul_of_isHomogeneous {σ A : Type*} [CommRing A] [Algebra ℤ A] {
 omit [Fintype ι] in
 
 /- English proof (translation)
-Rewrite using `[F.as_sum, map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun μ hμ ↦ ?_` and prove the remaining obligations. Establish `hw : (μ.sum fun _ e ↦ e) = τ`. Establish `h` using `hF (mem_support_iff.mp hμ)`. Rewrite `h` using `[Finsupp.weight_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`. Establish `h` using `IsWeightedHomogeneous.prod μ.support (fun i ↦ g i ^ μ i) (fun i ↦ μ i • δ) (fun i _ ↦ (hg i).pow (μ i))`. Rewrite using `[← hw, Finsupp.sum, Finset.sum_smul, aeval_monomial, algebraMap_eq]`. Conclude with `h.C_mul _`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_aeval {σ : Type*} {F : MvPolynomial σ ℤ} {τ : ℕ} (hF : F.IsHomogeneous τ)
     {g : σ → MvPolynomial (Coord n) ℤ} {δ : ι → ℕ}
@@ -59,7 +57,7 @@ theorem isWeightedHomogeneous_aeval {σ : Type*} {F : MvPolynomial σ ℤ} {τ :
 omit [Fintype ι] in
 
 /- English proof (translation)
-Rewrite using `[aeval_def, aeval_def, eval₂_comp_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem mkF_aeval (P : ArithVariety n) {σ : Type*} (g : σ → MvPolynomial (Coord n) ℤ)
     (F : MvPolynomial σ ℤ) : P.mkF (aeval g F) = aeval (fun j ↦ P.mkF (g j)) F := by
@@ -69,7 +67,7 @@ theorem mkF_aeval (P : ArithVariety n) {σ : Type*} (g : σ → MvPolynomial (Co
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(eval₂Hom (Int.castRingHom ℂ) (fun v : Coord n ↦ z v.1 v.2)) (aeval g F) = _`. Rewrite using `[aeval_def, eval₂_comp_left]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem evalCone_aeval {σ : Type*} (z : Cone n ℂ) (g : σ → MvPolynomial (Coord n) ℤ)
     (F : MvPolynomial σ ℤ) :
@@ -82,13 +80,13 @@ theorem evalCone_aeval {σ : Type*} (z : Cone n ℂ) (g : σ → MvPolynomial (C
 omit [Fintype ι] in
 
 /- English proof (translation)
-The claim follows from `fun h ↦ hc k ((P.mkF_eq_zero_iff _).mp h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mkF_X_ne_zero {P : ArithVariety n} {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) (k : ι) :
     P.mkF (X ⟨k, c k⟩) ≠ 0 := fun h ↦ hc k ((P.mkF_eq_zero_iff _).mp h)
 
 /- English proof (translation)
-Rewrite using `[chartMonomial, map_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ by rw [map_pow]; exact pow_ne_zero _ (mkF_X_ne_zero hc k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mkF_chartMonomial_ne_zero {P : ArithVariety n} {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c)
     (d : ι → ℕ) : P.mkF (chartMonomial c d) ≠ 0 := by
@@ -96,7 +94,7 @@ theorem mkF_chartMonomial_ne_zero {P : ArithVariety n} {c : (k : ι) → Fin (n 
   exact Finset.prod_ne_zero_iff.mpr fun k _ ↦ by rw [map_pow]; exact pow_ne_zero _ (mkF_X_ne_zero hc k)
 
 /- English proof (translation)
-Rewrite using `[mkF_aeval, show (fun j ↦ P.mkF (g c j)) = fun j ↦ P.mkF (chartMonomial c d) * D.elt j from`. Use function extensionality and compare the values at `(hg.value c hc), aeval_mul_of_isHomogeneous hF]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 -/
 theorem mkF_aeval_forms {P : ArithVariety n} {D : AddBlockData P} {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ} (hg : D.IsFormSystem d g)
@@ -109,24 +107,24 @@ theorem mkF_aeval_forms {P : ArithVariety n} {D : AddBlockData P} {d : ι → �
 omit [Fintype ι] in
 
 /- English proof (translation)
-The claim follows from `fun k hk ↦ hzc k (by simpa [evalCone] using hz.2 _ hk)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLive_of_mem_points {P : ArithVariety n} {z : Cone n ℂ} (hz : z ∈ P.points ℂ)
     {c : (k : ι) → Fin (n k + 1)} (hzc : ∀ k, z k (c k) ≠ 0) : P.IsLive c :=
   fun k hk ↦ hzc k (by simpa [evalCone] using hz.2 _ hk)
 
 /- English proof (translation)
-Unfold `ArithVariety.chartRing at hu`. Proceed by induction on `hu using Subring.closure_induction with`. Consider the case `mem x hx`. Take `⟨v, rfl⟩` from `hx`. Use `⟨1, X v * ∏ k ∈ Finset.univ.erase v.1, X ⟨k, c k⟩, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : P.mkF (chartMonomial c 1) = P.mkF (X ⟨v.1, c v.1⟩) * ∏ k ∈ Finset.univ.erase v.1, P.mkF (X ⟨k, c k⟩)`. Rewrite using `[chartMonomial, map_prod, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ v.1)]`. Simplify using the standard rewrite rules. Establish `hne` using `mkF_X_ne_zero hc v.1`. Rewrite using `[pow_one, h1, map_mul, map_prod, ArithVariety.chartCoord]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `one => exact ⟨0, 1, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨N, E, hE⟩` from `hx`.
+Clear the denominators using the available nonvanishing facts. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨N', E', hE'⟩` from `hy`. Use `⟨N + N', E * chartMonomial c 1 ^ N' + E' * chartMonomial c 1 ^ N, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, ← hE, ← hE', pow_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Take `⟨N, E, hE⟩` from `hx`. Conclude with `⟨N, -E, by rw [map_neg, ← hE]; ring⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨N, E, hE⟩` from `hx`. Take `⟨N', E', hE'⟩` from `hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N + N', E * E', by rw [map_mul, ← hE, ← hE', pow_add]; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_mul_pow_eq_mkF {P : ArithVariety n} {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c)
     {u : P.FunField} (hu : u ∈ P.chartRing c) :
@@ -160,21 +158,21 @@ theorem exists_mul_pow_eq_mkF {P : ArithVariety n} {c : (k : ι) → Fin (n k + 
     exact ⟨N + N', E * E', by rw [map_mul, ← hE, ← hE', pow_add]; ring⟩
 
 /- English proof (translation)
-Establish `hc : P.IsLive c` using `isLive_of_mem_points hz hzc`. Assume the negation of the conclusion as `hall`. Simplify using `only [not_exists, not_not] at hall`. Take `⟨u, hu, hsum⟩` from `D.generating c hc`. Establish `hex : ∀ j, ∃ (N : ℕ) (E : MvPolynomial (Coord n) ℤ), u j * P.mkF (chartMonomial c 1) ^ N = P.mkF E` using `fun j ↦ exists_mul_pow_eq_mkF hc (hu j)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose N E hE using hex`. Take `⟨S, hSdef⟩ : ∃ S, S = ∑ j, N j` from `⟨_, rfl⟩`. Establish `hcp : P.chartPow c D.deg ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ ↦ zpow_ne_zero _ (mkF_X_ne_zero hc k)`. Establish `hxu : ∑ j, u j * D.elt j = P.chartPow c D.deg`. Establish `h` using `congrArg (· * P.chartPow c D.deg) hsum`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_mul, one_mul] at h`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, div_mul_cancel₀ _ hcp]`. Set `R : MvPolynomial (Coord n) ℤ` to `∏ k, X ⟨k, c k⟩ ^ ((d k : ℤ) + D.deg k).toNat`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hR : P.mkF R = P.mkF (chartMonomial c d) * P.chartPow c D.deg`. Simplify using `only [R, chartMonomial, ArithVariety.chartPow, map_prod, map_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg (hg.nonneg k), zpow_add₀ (mkF_X_ne_zero hc k), zpow_natCast]`. Establish `hterm : ∀ j, P.mkF (E j * chartMonomial c 1 ^ (S - N j) * g c j) = P.mkF (chartMonomial c 1) ^ S * P.mkF (chartMonomial c d) * (u j * D.elt j)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `hS : N j ≤ S` using `hSdef ▸ Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ j)`. Rewrite using `[map_mul, map_mul, map_pow, ← hE j, hg.value c hc j]`. Use `conv_rhs => rw [← Nat.add_sub_cancel' hS, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : chartMonomial c 1 ^ S * R - ∑ j, E j * chartMonomial c 1 ^ (S - N j) * g c j ∈ P.ideal`. Rewrite using `[← P.mkF_eq_zero_iff, map_sub, map_mul, map_pow, hR, map_sum]`. Simplify using `only [hterm]`. Rewrite using `[← Finset.mul_sum, hxu]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `hz.2 _ hmem`. Establish `hall' : ∀ j, eval₂ (Int.castRingHom ℂ) (fun v : Coord n ↦ z v.1 v.2) (g c j) = 0` using `hall`. Simplify using `only [evalCone, eval₂_sub, eval₂_mul, eval₂_pow, eval₂_sum, hall', mul_zero, Finset.sum_const_zero, sub_zero] at h0`. Establish `hM : evalCone z (chartMonomial c 1) ≠ 0`. Rewrite using `[evalCone_chartMonomial]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hzc k)`. Establish `hRz : evalCone z R ≠ 0`. Simplify using `only [R, evalCone, eval₂_prod, eval₂_pow, eval₂_X]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hzc k)`. Conclude with `mul_ne_zero (pow_ne_zero S hM) hRz h0`.
+A detailed English derivation is pending.
 -/
 theorem exists_evalCone_ne_zero {P : ArithVariety n} {D : AddBlockData P} {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ} (hg : D.IsFormSystem d g)
@@ -232,11 +230,11 @@ def formSubst {P : ArithVariety n} (D : AddBlockData P)
   | ⟨some k, i⟩ => X ⟨k, i⟩
 
 /- English proof (translation)
-Set `ψ : MvPolynomial (Option ι) P.FunField →+* P.FunField` to `eval fun o ↦ o.elim (P.mkF (chartMonomial c d)) fun _ ↦ 1`. Establish `hid : P.mkF.comp (aeval (formSubst D g c)).toRingHom = ψ.comp D.extMap`. Use `MvPolynomial.ringHom_ext (fun r ↦ ?_) (fun v ↦ ?_)` and prove the remaining obligations. Simplify using `[AddBlockData.extMap]`. Take `⟨o, i⟩` from `v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Consider the cases of `o with`. Consider the case `none`. Simplify using `[AddBlockData.extMap, AddBlockData.extVal, formSubst, ψ, hg.value c hc i, mul_comm]`. Consider the case `some k`. Simplify using `[AddBlockData.extMap, AddBlockData.extVal, formSubst, ψ]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[← P.mkF_eq_zero_iff]`. Establish `h` using `congrArg (fun φ ↦ φ f) hid`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom] at h`. Rewrite using `[h, (RingHom.mem_ker).mp hf, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_formSubst_mem {P : ArithVariety n} {D : AddBlockData P} {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ} (hg : D.IsFormSystem d g)
@@ -259,13 +257,13 @@ theorem aeval_formSubst_mem {P : ArithVariety n} {D : AddBlockData P} {d : ι �
   rw [h, (RingHom.mem_ker).mp hf, map_zero]
 
 /- English proof (translation)
-Establish `hc : P.IsLive c` using `isLive_of_mem_points hz hzc`. Use `⟨fun o ↦ ?_, fun f hf ↦ ?_⟩` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none`. Take `⟨j, hj⟩` from `exists_evalCone_ne_zero hg hz hzc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `fun h ↦ hj (congrFun h j)`. Consider the case `some k => exact hz.1 k`. Establish `h` using `hz.2 _ (aeval_formSubst_mem hg hc hf)`. Rewrite `h` using `[evalCone_aeval]`. Rewrite using `[← h, evalCone]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `v`. Take `⟨o, i⟩` from `v`. Consider the cases of `o with`. Consider the case `none => rfl`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some k => simp [formSubst, evalCone, AddBlockData.joinPt]`.
+Treat this case separately.
 -/
 theorem joinPt_mem_extPoints {P : ArithVariety n} {D : AddBlockData P} {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ} (hg : D.IsFormSystem d g)
@@ -289,15 +287,15 @@ theorem joinPt_mem_extPoints {P : ArithVariety n} {D : AddBlockData P} {d : ι �
     | some k => simp [formSubst, evalCone, AddBlockData.joinPt]
 
 /- English proof (translation)
-Establish `hc : P.IsLive c` using `isLive_of_mem_points hz hzc`. Establish `hm : evalCone z (chartMonomial c d) ≠ 0`. Rewrite using `[evalCone_chartMonomial]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hzc k)`. Distinguish the cases in `hc' : P.IsLive c'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hmem : chartMonomial c' d * g c j - chartMonomial c d * g c' j ∈ P.ideal`. Rewrite using `[← P.mkF_eq_zero_iff, map_sub, map_mul, map_mul, hg.value c hc j, hg.value c' hc' j]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `hz.2 _ hmem`. Rewrite using `[eq_div_iff hm]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [evalCone, eval₂_sub, eval₂_mul, sub_eq_zero] at h0 ⊢`. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, (X ⟨k, c' k⟩ : MvPolynomial (Coord n) ℤ) ∈ P.ideal := by`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hc' fun k hk ↦ h ⟨k, hk⟩`. Establish `hzk : z k (c' k) = 0` using `by simpa [evalCone] using hz.2 _ hk`. Establish `hm' : evalCone z (chartMonomial c' d) = 0`. Rewrite using `[evalCone_chartMonomial]`. Use `Finset.prod_eq_zero (Finset.mem_univ k) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzk]`. Conclude with `zero_pow (by have := hg.pos k; omega)`. Rewrite using `[hg.dead c' hc' j, hm']`. Simplify using `[evalCone]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalCone_cross {P : ArithVariety n} {D : AddBlockData P} {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ} (hg : D.IsFormSystem d g)
@@ -331,15 +329,13 @@ theorem evalCone_cross {P : ArithVariety n} {D : AddBlockData P} {d : ι → ℕ
     simp [evalCone]
 
 /- English proof (translation)
-Establish `hm : evalCone z (chartMonomial c d) ≠ 0`. Rewrite using `[evalCone_chartMonomial]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hzc k)`. Establish `hm2 : 0 < ‖evalCone z (chartMonomial c d)‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hm) 2`. Establish `hGz : ∀ i, evalCone z (G i) = 0` using `fun i ↦ hz.2 _ (hG.span_eq ▸ Ideal.subset_span ⟨i, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 0 < ∑ j, ‖evalCone z (g c j)‖ ^ 2`. Take `⟨j, hj⟩` from `exists_evalCone_ne_zero hg hz hzc`. Conclude with `Finset.sum_pos' (fun _ _ ↦ by positivity) ⟨j, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hj) 2⟩`. Establish `hS : 0 < ∑ c', ‖evalCone z (chartMonomial c' d)‖ ^ 2` using `Finset.sum_pos' (fun _ _ ↦ by positivity) ⟨c, Finset.mem_univ _, hm2⟩`. Establish `hden : D.den d g G δ z = (∑ c', ‖evalCone z (chartMonomial c' d)‖ ^ 2) * (∑ j, ‖evalCone z (g c j)‖ ^ 2) / ‖evalCone z (chartMonomial c d)‖ ^ 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG0 : ∑ i, ‖evalCone z (G i)‖ ^ 2 * ∏ k, l2Norm (z k) ^ (2 * ((d k : ℤ) + D.deg k - δ i k)) = 0` using `Finset.sum_eq_zero fun i _ ↦ by rw [hGz i, norm_zero]; ring`. Rewrite using `[AddBlockData.den, hG0, add_zero, Finset.sum_mul, Finset.sum_div]`. Use `Finset.sum_congr rfl fun c' _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[evalCone_cross hg hz hzc c' j, norm_div, norm_mul, div_pow, mul_pow]`. Establish `hq : (∑ c', ‖evalCone z (chartMonomial c' d)‖ ^ 2) / D.den d g G δ z = ‖evalCone z (chartMonomial c d)‖ ^ 2 / ∑ j, ‖evalCone z (g c j)‖ ^ 2`. Rewrite using `[hden]`. Clear the denominators using the available nonvanishing facts. Express the relevant statement in the definitionally equal form `N.metric z * l2Norm (fun j ↦ evalCone z (g c j)) * Real.sqrt ((∑ c', ‖evalCone z (chartMonomial c' d)‖ ^ 2) / D.den d g G δ z) = _`.
-
-Rewrite using `[hq, l2Norm, mul_assoc, ← Real.sqrt_mul hL.le, mul_div_cancel₀ _ hL.ne', Real.sqrt_sq (norm_nonneg _), mul_comm]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plusMetric_joinPt {P : ArithVariety n} {D : AddBlockData P} {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ} (hg : D.IsFormSystem d g)
@@ -381,27 +377,25 @@ theorem plusMetric_joinPt {P : ArithVariety n} {D : AddBlockData P} {d : ι → 
 end SmallSections
 
 /- English proof (translation)
-Introduce `ι _ _ n P D`. Use `⟨fun τ F hF ↦ ?_, fun N _ d g hg r G δ hG τ F hF p q hpq ↦ ?_⟩` and prove the remaining obligations. Take `⟨d₀, hd₀⟩` from `hForms ι n P D`. Take `⟨g, hg⟩` from `hd₀ d₀ le_rfl`. Take `⟨c₀, hc₀⟩` from `P.exists_chart`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc₀' : P.IsLive c₀` using `hc₀`. Set `e : ι → ℕ` to `fun k ↦ ((d₀ k : ℤ) + D.deg k).toNat`. Establish `he : ∀ k, (e k : ℤ) = d₀ k + D.deg k` using `fun k ↦ Int.toNat_of_nonneg (hg.nonneg k)`. Establish `hge : ∀ c j, IsWeightedHomogeneous (coordDeg n) (g c j) e`. Introduce `c j`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨δ', h, hδ'⟩` from `hg.homog c j`. Establish `: δ' = e` using `funext fun k ↦ by have := hδ' k; have := he k; omega`. Conclude with `this ▸ h`. Establish `hne : P.mkF (chartMonomial c₀ d₀) ^ τ ≠ 0` using `pow_ne_zero _ (SmallSections.mkF_chartMonomial_ne_zero hc₀' d₀)`. Use `⟨{ num := aeval (g c₀) F den := chartMonomial c₀ d₀ ^ τ numDeg := τ • e denDeg := τ • d₀ num_isHomogeneous := SmallSections.isWeightedHomogeneous_aeval hF (hge c₀) den_isHomogeneous := (isWeightedHomogeneous_chartMonomial c₀ d₀).pow τ deg_eq := fun k ↦ ?_ den_not_mem := fun h ↦ h …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Nat.cast_mul, he k]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨τ • d₀, aeval (g c) F, ⟨τ • e, SmallSections.isWeightedHomogeneous_aeval hF (hge c), fun k ↦ ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, Nat.cast_mul, he k]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chartMonomial_nsmul, ← P.mkF_eq_zero_iff, map_sub, map_mul, map_mul, map_pow, map_pow, SmallSections.mkF_aeval_forms hg hc₀' hF, SmallSections.mkF_aeval_forms hg hc hF]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `P.mkF (aeval (g c₀) F) / P.mkF (chartMonomial c₀ d₀ ^ τ) = _`. Rewrite using `[SmallSections.mkF_aeval_forms hg hc₀' hF, map_pow, mul_div_cancel_left₀ _ hne]`. Establish `hfirst : ∀ c : (k : ι) → Fin (n k + 1), P.IsLive c → chartMonomial c d ^ τ * p - aeval (g c) F * q ∈ P.ideal`.
+Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Rewrite using `[← P.mkF_eq_zero_iff, map_sub, map_mul, map_mul, map_pow, SmallSections.mkF_aeval_forms hg hc hF, hpq]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hfirst, fun hsmall z hz ↦ ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨c, hzc⟩ : ∃ c : (k : ι) → Fin (n k + 1), ∀ k, z k (c k) ≠ 0 := by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : ∀ k, ∃ i, z k i ≠ 0` using `fun k ↦ by`. Assume the negation of the conclusion as `h'`. Conclude with `hz.1 k (funext fun i ↦ by by_contra hi; exact h' ⟨i, hi⟩)`. Use `choose c hc using h`. Conclude with `⟨c, hc⟩`.
+Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : P.IsLive c` using `SmallSections.isLive_of_mem_points hz hzc`. Establish `hm : evalCone z (chartMonomial c d) ≠ 0`. Rewrite using `[evalCone_chartMonomial]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hzc k)`. Establish `hs` using `hsmall _ (SmallSections.joinPt_mem_extPoints hg hz hzc)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs` using `[SmallSections.plusMetric_joinPt hg N hG hz hzc]`. Establish `heq : evalCone z (chartMonomial c d) ^ τ * evalCone z p = eval₂ (Int.castRingHom ℂ) (fun j ↦ evalCone z (g c j)) F * evalCone z q`. Establish `h0` using `hz.2 _ (hfirst c hc)`. Rewrite using `[← SmallSections.evalCone_aeval]`. Simplify using `only [evalCone, eval₂_sub, eval₂_mul, eval₂_pow, sub_eq_zero] at h0 ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h0`. Establish `hA : ‖evalCone z (chartMonomial c d)‖ ^ τ * ‖evalCone z p‖ = ‖eval₂ (Int.castRingHom ℂ) (fun j ↦ evalCone z (g c j)) F‖ * ‖evalCone z q‖`. Rewrite using `[← norm_pow, ← norm_mul, heq, norm_mul]`. Establish `hle` using `mul_le_mul_of_nonneg_right hs (norm_nonneg (evalCone z q))`. Use `le_of_mul_le_mul_left ?_ (pow_pos (norm_pos_iff.mpr hm) τ)` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem SmallSections.proof (hForms : ChartFormsAlt.Statement) : SmallSections.Statement := by
   intro ι _ _ n P D

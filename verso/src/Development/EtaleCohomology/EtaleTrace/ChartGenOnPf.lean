@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry MvPolynomial
 namespace LateralTheory.EtaleTrace.Cov
 
 /- English proof (translation)
-The claim follows from `ChartGenOn_of ChartGenMem_pf h`.
+A detailed English derivation is pending.
 -/
 theorem ChartGenOn_of_val (h : ChartGenVal) : ChartGenOn := ChartGenOn_of ChartGenMem_pf h
 

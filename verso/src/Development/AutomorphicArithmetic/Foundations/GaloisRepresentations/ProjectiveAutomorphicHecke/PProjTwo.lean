@@ -5,13 +5,11 @@ open Module
 universe u v
 
 /- English proof (translation)
-Introduce `F K _ _ e A _ _ _ I _ B _ _ _ J T S hT hS θ`. Use `letI : Algebra F K := e.toRingHom.toAlgebra`. Use `letI : ∀ i, Algebra F (B i) := fun i => ((algebraMap K (B i)).comp e.toRingHom).toAlgebra' (fun c x => Algebra.commutes _ _)`. Use `haveI : Module.Finite F K := Module.Finite.of_surjective (Algebra.linearMap F K) e.surjective`. Use `haveI : ∀ i, IsScalarTower F K (B i) := fun i => IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : ∀ i, Module.Finite F (B i) := fun i => Module.Finite.trans K (B i)`. Establish `hcomm : ∀ j j', Commute ((T j, fun i => S i j) : A × ∀ i, B i) (T j', fun i => S i j')`. Introduce `j j'`. Conclude with `Prod.ext (hT j j') (funext fun i => hS i j j')`. Take `⟨t, ht⟩` from `UpperTheory.Gal.CertificateRingHomMap.pProjOne_holds.{max u v} F (A × ∀ i, B i) J (fun j => (T j, fun i => S i j)) hcomm θ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hid : UpperTheory.Gal.CertificateRingHomMap.wmap (RingHom.id F) t = t`. Use extensionality with `w`. Simplify using `[UpperTheory.Gal.CertificateRingHomMap.wmap]`. Use `⟨t, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `UpperTheory.Gal.CertificateRingHomMap.Cert.map (RingHom.id F) (RingHom.fst A (∀ i, B i)) (fun _ => rfl) ht`.
-
-Rewrite `h` using `[hid]`. Conclude with `h`. Conclude with `UpperTheory.Gal.CertificateRingHomMap.Cert.map e.toRingHom ((Pi.evalRingHom B i).comp (RingHom.snd A (∀ i, B i))) (fun c => rfl) ht`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pProjTwo_holds :
     UpperTheory.Gal.CertificateRingHomMap.ProjTwo.{u,v} := by

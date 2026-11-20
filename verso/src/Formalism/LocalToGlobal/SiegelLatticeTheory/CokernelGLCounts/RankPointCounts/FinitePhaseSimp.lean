@@ -26,17 +26,17 @@ section Conj
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Establish `hmA` using `(Formalism.L2.SG.Pf.isAutLam_iff Λ m).1 hm.1`. Establish `hgi : ∀ y, γ (γ⁻¹ y) = y` using `fun y => by`. Rewrite using `[← LinearEquiv.mul_apply, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `hig : ∀ y, γ⁻¹ (γ y) = y` using `fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← LinearEquiv.mul_apply, inv_mul_cancel]`. Both sides reduce to the same expression. Establish `hiso' : ∀ x y, S.hT (γ⁻¹ x) (γ⁻¹ y) = S.hT x y` using `fun x y => by`. Rewrite using `[← hiso, hgi, hgi]`. Establish `hF' : ∀ a, frame F₂ a = γ⁻¹ (frame F₁ a)` using `fun a => by rw [hF, hig]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsymm : ∀ y, (γ⁻¹).symm y = γ y` using `fun y => by`. Apply `(γ⁻¹).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, hig]`. Establish `e : ∀ x, (γ⁻¹).symm ((γ⁻¹ * m * γ) x - x) = m ((γ⁻¹).symm x) - (γ⁻¹).symm x` using `fun x => by`. Rewrite using `[hsymm, hsymm, map_sub, LinearEquiv.mul_apply, LinearEquiv.mul_apply, hgi]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(Formalism.L2.SG.Pf.isAutLam_iff Λ' _).2 ⟨fun x y => ?_, fun x => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.mul_apply]`. Rewrite using `[hiso', hmA.1, hiso]`. Simplify using `only [LinearEquiv.mul_apply]`. Rewrite using `[← hΛ, hgi, hmA.2, hΛ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `j x hx`. Rewrite `hx`, the goal using `[Formalism.L2.SG.Pf.mem_xflag_of_frame hF']`. Rewrite using `[e]`. Conclude with `hm.2.1 j _ hx`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Formalism.L2.SG.Pf.mem_orth_of_frame hF' hiso']`. Rewrite using `[Formalism.L2.SG.Pf.mem_xsp_of_frame hF', e]`. Conclude with `hm.2.2 _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nlam_conj2 {Λ Λ' : Submodule (𝓞 E) S.V} {T₁ T₂ : E} {F₁ : LFlag S r T₁} {F₂ : LFlag S r T₂}
     {γ m : S.V ≃ₗ[E] S.V} (hiso : ∀ x y, S.hT (γ x) (γ y) = S.hT x y) (hΛ : ∀ x, γ x ∈ Λ ↔ x ∈ Λ')
@@ -71,11 +71,11 @@ theorem nlam_conj2 {Λ Λ' : Submodule (𝓞 E) S.V} {T₁ T₂ : E} {F₁ : LFl
 end Conj
 
 /- English proof (translation)
-Take `⟨h1, hmul, hinv⟩` from `Formalism.L2.SG.Pf.psiInfChar_holds D X u`. Establish `hone : X.psiInfU u 1 = 1`. Establish `h` using `(hmul 1 h1 1 h1).2`. Rewrite `h` using `[mul_one]`. Establish `hn : X.psiInfU u 1 ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Use `psiInfU_norm X u 1` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Conclude with `(mul_right_eq_self₀.1 h.symm).resolve_right hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(hmul s hs s⁻¹ (hinv s hs)).2`. Rewrite `h` using `[mul_inv_cancel, hone]`. Conclude with `eq_inv_of_mul_eq_one_right h.symm`.
+A detailed English derivation is pending.
 -/
 theorem psiInfU_inv {D : D7} (X : HidaSetting D) (u : D.what₂.Word) {s : X.B.I.Ginf} (hs : s ∈ X.NinfU u) :
     X.psiInfU u s⁻¹ = (X.psiInfU u s)⁻¹ := by
@@ -91,7 +91,7 @@ theorem psiInfU_inv {D : D7} (X : HidaSetting D) (u : D.what₂.Word) {s : X.B.I
   exact eq_inv_of_mul_eq_one_right h.symm
 
 /- English proof (translation)
-Set `e : D.host.E ≃ₐ[ℚ] D.host.E` to `AlgEquiv.ofRingEquiv (f := (starRingAut : D.host.E ≃+* D.host.E)) (fun q => by rw [eq_ratCast (algebraMap ℚ D.host.E) q]; exact map_ratCast _ q)`. Establish `ht : Algebra.trace ℚ D.host.E (star x) = Algebra.trace ℚ D.host.E x` using `Algebra.trace_eq_of_algEquiv e x`. Unfold `Formalism.L2.SG.PairVal.psiInf`. Rewrite using `[ht]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiInf_star {D : D7} (g : ℕ) (x : D.host.E) :
     Formalism.L2.SG.PairVal.psiInf g (star x) = Formalism.L2.SG.PairVal.psiInf g x := by
@@ -109,51 +109,49 @@ variable {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `R ρ s hrel L U hL hU hZ`. Establish `hgS : X.B.g = gS D` using `X.g_eq`. Establish `hat : s.1.toTerm.atPt (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)` using `Formalism.L2.SG.PairVal.ptOf_spec _ ⟨(h1 R ρ s hrel).choose, (h1 R ρ s hrel).choose_spec, hrel⟩`. Establish `hex` using `hNR s.1.toTerm (Formalism.L2.SG.PairVal.ptOf s.1.toTerm) hat hrel s.2.2.1`. Unfold `Formalism.L2.SG.PairVal.phaseAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hex]`. Take `⟨⟨hP'', hmk''⟩, hAdm'', hL'', hU'', hZ''⟩` from `hex.choose_spec`. Establish `hrow` using `(Y.rowsOK u).1 s.1.lam s.1.mem`. Establish `hmk : mk s.1.lam (lf D (X.Fu u)) (PD D s.1.lam (lf D (X.Fu u)) u') ⟨s.1.frame, s.1.rep.2.2.2.2⟩ = mk s.1.lam (lf D (X.Fu u)) (PD D s.1.lam (lf D (X.Fu u)) u') ⟨hex.choose.1, hP''⟩` using `hmk''.symm`. Take `⟨n, hn, m, hm, hfr, -⟩` from `(Formalism.L2.SG.Closed.TermEqIff_holds D u u' (X.Fu u) s.1.lam hrow _ _).1 hmk`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨vn, um, hvn, hum, hvnF, humF, hsum⟩` from `Formalism.L2.SG.Pf.UnitriangularPhases.phase_move s.1.lam (lf D (X.Fu u)) s.1.frame hex.choose.1 hn hm hfr _ hL hU hL'' hU'' hZ hZ''`. Establish `hRL : RatLink X s.1.pt s.1.rep.1.2` using `s.1.rep.2.1`. Establish `hiso : s.1.rep.1.2 ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `s.1.rep.2.2.1`. Establish `hmap : Formalism.HermitianLatticesTheory.gmap s.1.rep.1.2 s.1.lam' = s.1.lam` using `s.1.rep.2.2.2.1`. Use `set γ := s.1.rep.1.2 with hγ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hframe : ∀ b, frame s.1.frame b = γ (frame (lf D (X.Fu u')) b)` using `fun b => Formalism.L2.SG.Pf.Act.frame_mapLF hiso (X.Fu u') b`. Establish `hΛ : ∀ y, γ y ∈ s.1.lam ↔ y ∈ s.1.lam'` using `fun y => by`. Rewrite using `[← hmap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hzy⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hz` using `[γ.injective hzy]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `⟨y, h, rfl⟩`. Establish `hgi : ∀ y, γ (γ⁻¹ y) = y` using `fun y => by rw [← LinearEquiv.mul_apply, mul_inv_cancel]; rfl`. Establish `hig : ∀ y, γ⁻¹ (γ y) = y` using `fun y => by rw [← LinearEquiv.mul_apply, inv_mul_cancel]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : γ⁻¹ * m * γ ∈ NLam s.1.lam' (lf D (X.Fu u'))` using `nlam_conj2 (fun x y => hiso x y) hΛ hframe hm`. Establish `hm'F : ∀ b, (γ⁻¹ * m * γ) ((X.Fu u').fvec b) = ∑ c, um c b • (X.Fu u').fvec c`. Introduce `b`. Establish `h` using `humF b`. Simplify using `only [hframe] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.mul_apply]`. Rewrite using `[show (X.Fu u').fvec b = frame (lf D (X.Fu u')) b from rfl, h, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hig]`. Take `⟨xn, hxn⟩` from `Formalism.L2.SG.Pf.ratPt_holds D X n hn.1.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨xm, hxm⟩` from `Formalism.L2.SG.Pf.ratPt_holds D X (γ⁻¹ * m * γ) hm'.1.1`. Establish `hψn : X.psiInfU u xn⁻¹.1 = Formalism.L2.SG.PairVal.psiInf X.B.g (Formalism.L2.SG.PairVal.sgUp vn)` using `Formalism.L2.SG.RealObj.RealFramesCharacters.psiInf_rat X u (ratLink_inv X hxn) vn hvnF`. Establish `hψm : X.psiInfU u' xm.1 = Formalism.L2.SG.PairVal.psiInf X.B.g (Formalism.L2.SG.PairVal.sgUp um)` using `Formalism.L2.SG.RealObj.RealFramesCharacters.psiInf_rat X u' hxm um hm'F`. Establish `hnI : xn.1 ∈ X.NinfU u` using `Formalism.L2.SG.Pf.nLamNinf_holds D X u s.1.lam xn n hxn hn`. Establish `hnF : xn.2 ∈ X.NfinU u` using `Formalism.L2.SG.Pf.nLamNfin_holds D X u s.1.lam xn n hxn hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmI : xm.1 ∈ X.NinfU u'` using `Formalism.L2.SG.Pf.nLamNinf_holds D X u' s.1.lam' xm _ hxm hm'`. Establish `hmF : xm.2 ∈ X.NfinU u'` using `Formalism.L2.SG.Pf.nLamNfin_holds D X u' s.1.lam' xm _ hxm hm'`. Establish `hPn` using `Formalism.L2.SG.Pf.psiProd_all D X u xn (ratLink_mem X hxn) hnI hnF`. Establish `hPm` using `Formalism.L2.SG.Pf.psiProd_all D X u' xm (ratLink_mem X hxm) hmI hmF`. Establish `hinvn : X.psiInfU u xn⁻¹.1 = (X.psiInfU u xn.1)⁻¹` using `by rw [Prod.fst_inv]; exact psiInfU_inv X u hnI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbl : (Y.cs u).lamOf ((Y.cs u).base s.1.lam) = s.1.lam` using `(Y.cs u).base_lam _ s.1.mem`. Establish `hbl' : (Y.cs u').lamOf ((Y.cs u').base s.1.lam') = s.1.lam'` using `(Y.cs u').base_lam _ s.1.mem'`. Take `⟨hC1, -, hC1c⟩` from `Formalism.L2.SG.Pf.nilradical_conj_level' D X Y u ((Y.cs u).base s.1.lam) xn n (by rw [hbl]; exact hn) hxn`. Take `⟨hC2, -, hC2c⟩` from `Formalism.L2.SG.Pf.nilradical_conj_level' D X Y u' ((Y.cs u').base s.1.lam') xm _ (by rw [hbl']; exact hm') hxm`. Establish `hχ1 : chiN X ((((Y.cs u).h ((Y.cs u).base s.1.lam) : X.B.I.Gf) * X.xu u)⁻¹ * xn.2 * (((Y.cs u).h ((Y.cs u).base s.1.lam) : X.B.I.Gf) * X.xu u)) = X.psiFinU u xn.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hC1c 1 Y.hK.1).1` as an intermediate fact. Rewrite `this` using `[mul_one, Formalism.L2.SG.Pf.ChiNHomPf.chiN_one, mul_one]`. Then use the resulting hypothesis. Establish `hχ2 : chiN X ((((Y.cs u').h ((Y.cs u').base s.1.lam') : X.B.I.Gf) * X.xu u')⁻¹ * xm.2 * (((Y.cs u').h ((Y.cs u').base s.1.lam') : X.B.I.Gf) * X.xu u')) = X.psiFinU u' xm.2`. Use `(hC2c 1 Y.hK.1).2` as an intermediate fact. Rewrite `this` using `[one_mul, Formalism.L2.SG.Pf.ChiNHomPf.chiN_one, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hN1` using `Formalism.L2.SG.Pf.ChiNHomPf.level_subgroup_norm_congruence X hC1`. Establish `hN2` using `Formalism.L2.SG.Pf.ChiNHomPf.level_subgroup_norm_congruence X hC2`. Establish `hκK` using `Formalism.L2.SG.NormCut.termK_car (Y.cs u) (Y.cs u') s.1.mem s.1.mem' s.1.rep`. Establish `hκN` using `Formalism.L2.SG.NormCut.adm_norm_of_carrier (Y.cs u) (Y.cs u') (Formalism.L2.SG.Full.Full.frameTie (X := X) u u') (Formalism.L2.SG.Pf.modGAt X) s.1.mem s.1.mem' s.1.rep hκK`. Establish `hRL'' : RatLink X (xn * s.1.rep.1.1 * xm) (n * γ * (γ⁻¹ * m * γ))` using `ratLink_mul X (ratLink_mul X hxn hRL) hxm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ'' : kOf X u u' ((Y.cs u).h ((Y.cs u).base s.1.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base s.1.lam') : X.B.I.Gf) (xn * s.1.rep.1.1 * xm) = ((((Y.cs u).h ((Y.cs u).base s.1.lam) : X.B.I.Gf) * X.xu u)⁻¹ * xn.2 * (((Y.cs u).h ((Y.cs u).base s.1.lam) : X.B.I.Gf) * X.xu u)) * (kOf …`. Simplify using `only [kOf, Prod.snd_mul]`. Use `group`. Establish `hK'' : kOf X u u' ((Y.cs u).h ((Y.cs u).base s.1.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base s.1.lam') : X.B.I.Gf) (xn * s.1.rep.1.1 * xm) ∈ X.B.I.Kset`. Rewrite using `[hκ'']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.K_mul X.B.I (Formalism.L2.SG.Pf.unitaryCongruence.K_mul X.B.I hN1.1 hκK) hN2.1`. Establish `hξm : ∀ c, ModG (VS D) s.1.lam (gS D) ((n * γ * (γ⁻¹ * m * γ)) (frame (lf D (X.Fu u')) c) - frameAct (frame (lf D (X.Fu u))) 1 c)`. Introduce `c`. Establish `e : (n * γ * (γ⁻¹ * m * γ)) (frame (lf D (X.Fu u')) c) = frame hex.choose.1 c`. Rewrite using `[hfr, hframe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [LinearEquiv.mul_apply, hgi]`. Rewrite using `[e]`. Conclude with `hAdm''.2.2 c`. Establish `hkey` using `Formalism.L2.SG.NormCut.key_gen (Y.cs u) (Y.cs u') (Formalism.L2.SG.Full.Full.frameTie (X := X) u u') (Formalism.L2.SG.Pf.modGAt X) s.1.mem (xn * s.1.rep.1.1 * xm) _ hRL'' 1 hξm hK''`. Establish `hfix : ∀ a : Fin D.R.rS, (X.B.I.fmat (kOf X u u' ((Y.cs u).h ((Y.cs u).base s.1.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base s.1.lam') : X.B.I.Gf) (xn * s.1.rep.1.1 * xm)) - 1) *ᵥ nxt X.e0 X.z0 a ∈ mL X.B.I X.B.g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Establish `h` using `hkey a.succ`. Establish `hs : ∑ b, Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (X.ιE.symm (((1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E)) b a.succ : 𝓞 D.host.E) : D.host.E)) • Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 b = Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 a.succ := by`. Rewrite using `[Finset.sum_eq_single a.succ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `b _ hb`. Simplify using `[Matrix.one_apply_ne hb]`. Simplify using the standard rewrite rules. Rewrite `h` using `[hs]`. Establish `hnxt : nxt X.e0 X.z0 a = Fin.snoc (α` using `fun _ => VA X.B.I) X.e0 X.z0 a.succ := by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `nxt`. Use `split_ifs with hh`. Establish `: a.succ = Fin.castSucc ⟨a.1 + 1, hh⟩` using `Fin.ext (by simp)`. Rewrite using `[this, Fin.snoc_castSucc]`. Establish `: a.succ = Fin.last D.R.rS` using `Fin.ext (by simp; omega)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, Fin.snoc_last]`. Rewrite using `[hnxt, Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `h`. Establish `h1''` using `Formalism.L2.SG.Pf.CharacterOnFixedPoints.chiN_of_fix X hfix`. Rewrite `h1''` using `[hκ'', Formalism.L2.SG.Pf.ChiNHomPf.chiN_mul X (Formalism.L2.SG.Pf.unitaryCongruence.K_mul X.B.I hN1.1 hκK) (Formalism.L2.SG.NormCut.ncong_mul X hN1.1 hN1.2 hκN) hN2.2, Formalism.L2.SG.Pf.ChiNHomPf.chiN_mul X hN1.1 hN1.2 hκN, hχ1, hχ2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hψn`, `hψm` using `[hgS]`. Establish `hf1 : X.psiFinU u xn.2 ≠ 0` using `right_ne_zero_of_mul_eq_one hPn`. Establish `hf2 : X.psiFinU u' xm.2 ≠ 0` using `right_ne_zero_of_mul_eq_one hPm`. Establish `hi1 : X.psiInfU u xn.1 = (X.psiFinU u xn.2)⁻¹` using `eq_inv_of_mul_eq_one_left hPn`. Establish `hi2 : X.psiInfU u' xm.1 = (X.psiFinU u' xm.2)⁻¹` using `eq_inv_of_mul_eq_one_left hPm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : Formalism.L2.SG.PairVal.psiInf (gS D) (Formalism.L2.SG.PairVal.sgUp vn) = X.psiFinU u xn.2`. Rewrite using `[← hψn, hinvn, hi1, inv_inv]`. Establish `hc : Formalism.L2.SG.PairVal.psiInf (gS D) (Formalism.L2.SG.PairVal.sgUp um) = (X.psiFinU u' xm.2)⁻¹`. Rewrite using `[← hψm, hi2]`. Establish `hR : Formalism.L2.SG.PairVal.psiInf (gS D) (Formalism.L2.SG.PairVal.sgLo hex.choose.2.1 + Formalism.L2.SG.PairVal.sgUp hex.choose.2.2) = Formalism.L2.SG.PairVal.psiInf (gS D) (Formalism.L2.SG.PairVal.sgLo L + Formalism.L2.SG.PairVal.sgUp U) * Formalism.L2.SG.PairVal.psiInf (gS D) …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hsum, sub_eq_add_neg, Formalism.L2.SG.Pf.psiInf_add, Formalism.L2.SG.Pf.psiInf_add, Formalism.L2.SG.RealObj.FormRegularity.psiInf_neg, psiInf_star]`. Rewrite using `[Formalism.L2.SG.Pf.phasePair_eq, Formalism.L2.SG.Pf.phasePair_eq, hR, ha, hc, inv_inv]`. Establish `hP0 : Formalism.L2.SG.PairVal.psiInf (gS D) (Formalism.L2.SG.PairVal.sgLo L + Formalism.L2.SG.PairVal.sgUp U) ≠ 0` using `Complex.exp_ne_zero _`. Establish `hpt : s.1.pt = s.1.rep.1.1` using `rfl`. Rewrite using `[hpt]`.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `h1''`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem finPhaseC_of (hNR : Formalism.L2.SG.PairVal.NormRepExists D u u' (X.Fu u) (Y.what₂ u))
     (h1 : Formalism.L2.SG.Pf.RowForm.LiftAtSomeC X Y u u' κ) : Formalism.L2.SG.Pf.FinitePhase.FinPhaseC X Y u u' κ := by

@@ -3,11 +3,11 @@ import Mathlib
 open Polynomial Matrix
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n generalizing W with`. Consider the case `zero`. Introduce `f _ v hv`. Simplify using `using hv`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih`. Introduce `f hf v hv`. Rewrite using `[List.ofFn_succ, List.prod_cons, Module.End.mul_apply]`. Establish `h0` using `hf 0`. Simplify using `only [Fin.val_zero, zero_add] at h0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `h0` to reduce the goal to its premises. Establish `ht` using `ih (fun k => W (k + 1)) (fun i => f i.succ) (fun j w hw => by`. Establish `hj` using `hf j.succ w (by simpa [Fin.val_succ] using hw)`. Simplify `hj) v hv` using `[Fin.val_succ]`. Simplify using `using ht`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem UpperTheory.V.AlgebraTools.Det.flag_product_maps_into {R V : Type} [CommRing R] [AddCommGroup V] [Module R V]
     (W : ℕ → Submodule R V) :
@@ -30,7 +30,7 @@ private theorem UpperTheory.V.AlgebraTools.Det.flag_product_maps_into {R V : Typ
     simpa using ht
 
 /- English proof (translation)
-Introduce `R V _ _ _ n W f h0 hn hf`. Use extensionality with `v`. Establish `h` using `UpperTheory.V.AlgebraTools.Det.flag_product_maps_into W n f hf v (by rw [hn]; exact Submodule.mem_top)`. Rewrite `h` using `[h0, Submodule.mem_bot]`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.flagKill :
     ∀ {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] (n : ℕ) (W : ℕ → Submodule R V) (f : Fin n → Module.End R V),

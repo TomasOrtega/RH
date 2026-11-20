@@ -8,13 +8,11 @@ open scoped InnerProductSpace
 namespace GlobalTheory.CongTop
 
 /- English proof (translation)
-Introduce `I`. Take `⟨-, -, -, hKc, -, hK, hg⟩` from `GlobalTheory.CongTop.adelic_topology I`. Use `⟨hK, fun g hg1 => ?_⟩` and prove the remaining obligations. Take `⟨hKgo, ⟨H, hH⟩, hnorm⟩` from `hg g hg1`. Use `⟨⟨H, hH⟩, hKgo, hnorm, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hopen : ∀ t ∈ I.Kset, IsOpen {x : I.Gf | t⁻¹ * x ∈ I.Kg g}` using `fun t _ => hKgo.preimage (continuous_mul_left t⁻¹)`. Establish `hsub : I.Kset ⊆ ⋃ t ∈ I.Kset, {x : I.Gf | t⁻¹ * x ∈ I.Kg g}`. Introduce `x hx`. Use `Set.mem_biUnion hx ?_` and prove the remaining obligations. Use `show x⁻¹ * x ∈ I.Kg g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_mul_cancel, ← hH]`. Conclude with `H.one_mem`. Take `⟨b, -, hb, hcov⟩` from `hKc.elim_finite_subcover_image hopen hsub`. Use `⟨hb.toFinset, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, hxt⟩` from `Set.mem_iUnion₂.mp (hcov hx)`.
-
-Conclude with `⟨t, hb.mem_toFinset.mpr ht, hxt⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem congruence_normal_finite_index : ∀ (I : AutInst), (∃ K : Subgroup I.Gf, (K : Set I.Gf) = I.Kset) ∧ ∀ g : ℕ, 1 ≤ g → (∃ K : Subgroup I.Gf, (K : Set I.Gf) = I.Kg g) ∧ IsOpen (I.Kg g) ∧ (∀ x ∈ I.Kset, ∀ y ∈ I.Kg g, x * y * x⁻¹ ∈ I.Kg g) ∧ ∃ s : Finset I.Gf, ∀ x ∈ I.Kset, ∃ t ∈ s, t⁻¹ * x ∈ I.Kg g := by
   intro I

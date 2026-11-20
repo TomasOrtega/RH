@@ -21,9 +21,9 @@ variable {G : Type} [Group G] [TopologicalSpace G]
   {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /- English proof (translation)
-Establish `hlc : IsLocallyConstant fun u : G => π u m`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨(fun y => x⁻¹ * y) ⁻¹' (L' : Set G), hL'.preimage (by fun_prop), by simp, fun y hy => ?_⟩` and prove the remaining obligations. Establish `: y = x * (x⁻¹ * y)` using `by simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, UnitaryRep.map_mul_apply, hm _ hy]`. Use `haveI : CompactSpace (L : Set G) := isCompact_iff_compactSpace.1 hL`. Rewrite using `[Set.image_eq_range]`. Conclude with `(hlc.comp_continuous continuous_subtype_val).range_finite`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma orbit_finite [IsTopologicalGroup G] (π : UnitaryRep G H) {L L' : Subgroup G} (hL : IsCompact (L : Set G))
     (hL' : IsOpen (L' : Set G)) {m : H} (hm : ∀ u ∈ L', π u m = m) : ((fun u => π u m) '' (L : Set G)).Finite := by
@@ -38,21 +38,19 @@ private lemma orbit_finite [IsTopologicalGroup G] (π : UnitaryRep G H) {L L' : 
   exact (hlc.comp_continuous continuous_subtype_val).range_finite
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ ↥(M ⊓ E) := Submodule.finiteDimensional_of_le inf_le_right`. Establish `hcl : IsClosed ((M ⊓ E : Submodule ℂ H) : Set H)` using `Submodule.closed_of_finiteDimensional _`. It suffices to establish `h : v ∈ closure ((M ⊓ E : Submodule ℂ H) : Set H) by`. Rewrite `h` using `[hcl.closure_eq]`. Conclude with `h.1`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv`, the goal using `[Metric.mem_closure_iff]`. Introduce `ε hε`. Take `⟨m, hm, hd⟩` from `hv ε hε`. Use `set O := (hfin m hm).toFinset with hO`. Establish `hmem : ∀ x, x ∈ O ↔ ∃ u ∈ L, π u m = x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `[hO]`. Establish `hne : O.Nonempty` using `⟨π 1 m, (hmem _).2 ⟨1, L.one_mem, rfl⟩⟩`. Establish `hcard : (0 : ℝ) < O.card` using `by exact_mod_cast hne.card_pos`. Establish `haM : O.centerMass (fun _ => (1 : ℝ)) id ∈ M`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.centerMass]`. Use `M.smul_of_tower_mem _ (M.sum_mem fun x hx => M.smul_of_tower_mem _ ?_)` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `(hmem x).1 hx`. Conclude with `hst u hu m hm`. Use `⟨O.centerMass (fun _ => (1 : ℝ)) id, ⟨haM, hE _ haM fun u hu => ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.centerMass, ContinuousLinearMap.map_smul_of_tower, map_sum]`. Use `congr 1`. Simplify using `only [one_smul, id]`. Use `Finset.sum_nbij' (fun x => π u x) (fun x => π u⁻¹ x) ?_ ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha, rfl⟩` from `(hmem x).1 hx`. Conclude with `(hmem _).2 ⟨u * a, L.mul_mem hu ha, UnitaryRep.map_mul_apply _ _ _ _⟩`. Introduce `x hx`. Take `⟨a, ha, rfl⟩` from `(hmem x).1 hx`. Conclude with `(hmem _).2 ⟨u⁻¹ * a, L.mul_mem (L.inv_mem hu) ha, UnitaryRep.map_mul_apply _ _ _ _⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x _`. Simplify using `[← UnitaryRep.map_mul_apply]`. Introduce `x _`. Simplify using `[← UnitaryRep.map_mul_apply]`. Rewrite using `[dist_comm, ← Metric.mem_ball]`.
-
-Use `(convex_ball v ε).centerMass_mem (fun _ _ => zero_le_one) (by simpa using hcard) fun x hx => ?_` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `(hmem x).1 hx`. Rewrite using `[Metric.mem_ball, id, dist_comm, dist_eq_norm, ← hfix a ha, ← map_sub, UnitaryRep.norm_map, ← dist_eq_norm]`. Conclude with `hd`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mem_of_closure (π : UnitaryRep G H) (L : Subgroup G) (M E : Submodule ℂ H) [FiniteDimensional ℂ E]
     (hst : ∀ u ∈ L, ∀ m ∈ M, π u m ∈ M) (hfin : ∀ m ∈ M, ((fun u => π u m) '' (L : Set G)).Finite)
@@ -105,11 +103,9 @@ section Cl
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨-, -, -, harc, hcs, -⟩` from `levLaws (K := K) n ∅`. Use `haveI := hcs`. Use `haveI := hp.haar.prob`. Establish `hi : ∀ v, Integrable (fun k => p k • rightRegularRep (Gam K n) μ (arc1 k) v) κ` using `fun v => (hp.cont.smul (((rightRegularRep (Gam K n) μ).continuous_orbit v).comp harc)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hb : ∀ v v', dist (pOp μ κ p v) (pOp μ κ p v') ≤ (∫ k, ‖p k‖ ∂κ) * dist v v'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v v'`. Rewrite using `[dist_eq_norm, dist_eq_norm, pOp, pOp, ← integral_sub (hi v) (hi v'), ← integral_mul_const]`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `k`.
-
-Rewrite using `[← smul_sub, ← map_sub, norm_smul, UnitaryRep.norm_map]`. Conclude with `(LipschitzWith.of_dist_le' hb).continuous`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma continuous_pOp (μ : Measure (G1 K n)) [μ.IsHaarMeasure] {κ : Measure (archCompact K n)}
     {p : archCompact K n → ℂ} (hp : IdemA κ p) : Continuous (pOp μ κ p) := by
@@ -129,18 +125,16 @@ private lemma continuous_pOp (μ : Measure (G1 K n)) [μ.IsHaarMeasure] {κ : Me
   exact (LipschitzWith.of_dist_le' hb).continuous
 
 /- English proof (translation)
-Simplify using `[fixF, Submodule.mem_iInf, LinearMap.mem_eqLocus]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma mem_fixF (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (U : Subgroup (FA K n)) (v : L2 μ) :
     v ∈ fixF μ U ↔ ∀ u ∈ U, rhoF μ u v = v := by
   simp [fixF, Submodule.mem_iInf, LinearMap.mem_eqLocus]
 
 /- English proof (translation)
-Establish `hf : ∀ U : Subgroup (FA K n), IsClosed (fixF μ U : Set (L2 μ))`. Introduce `U`. Establish `h : (fixF μ U : Set (L2 μ)) = ⋂ u ∈ U, {v | rhoF μ u v = v}`. Use extensionality with `v`. Simplify using `[mem_fixF]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Conclude with `isClosed_biInter fun u _ => isClosed_eq (rhoF μ u).continuous continuous_id`. Establish `hs : IsClosed (sphOff μ S : Set (L2 μ))`. Rewrite using `[sphOff]`. Simplify using `only [Submodule.coe_iInf]`.
-
-Conclude with `isClosed_iInter fun v => isClosed_iInter fun _ => hf _`. Conclude with `hτ.closed.inter ((isClosed_eq (continuous_pOp μ hp) continuous_id).inter hs)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma isClosed_inH (μ : Measure (G1 K n)) [μ.IsHaarMeasure] {τ : Submodule ℂ (L2 μ)} (hτ : CuspIrr μ τ)
     {κ : Measure (archCompact K n)} {p : archCompact K n → ℂ} (hp : IdemA κ p) (S : Finset (Pl K)) :
@@ -163,45 +157,39 @@ end Cl
 end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ τ κ p hτ hR r w ι hw hι`. Establish `hp : IdemA κ p` using `hR.1`. Take `⟨hX, hX'⟩` from `xMem μ τ κ p hp`. Establish `hstab` using `fun φ hφ => (hX' hτ w ι hw hι φ hφ).2`. Take `⟨J, hJi, hJ, hJr, hJU⟩` from `exists_injection_into_l2_cusp μ τ κ p hτ hp (im w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hcw, hco, -, -, hlev⟩` from `(embEx 2 w hw).2 ι hι`. Establish `hcw1 : ∀ i, GM.cf (w i) (1 : FA K 2) = 1` using `fun i => by`. Use `hcw 1 i` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Establish `hcv1 : ∀ v, GM.cf v (1 : FA K 2) = 1` using `fun v => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Distinguish the cases in `hv : v ∈ im w`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hv`. Conclude with `hcw1 i`. Use `hco 1 v hv` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hCO` using `(levLaws (K := K) 2 (im w)).1`. Establish `hrS : ∀ g (φ : G1 K 2 → ℂ) x, rS ι g φ x = φ (x * fin1 (ι g))` using `fun _ _ _ => rfl`. Establish `hdec : ∀ U, ∀ u ∈ levOn (im w) U, ∃ g, ι g ∈ levOn (im w) U ∧ ∀ φ ∈ Xs μ τ κ p (im w), ∀ x, φ (x * fin1 u) = rS ι g φ x`. Introduce `U u hu`. Take `⟨g, h', rfl, hg, h1, h2⟩` from `(hlev U u).1 hu`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, (hlev U _).2 ⟨g, 1, (mul_one _).symm, hg, hcw1, fun v => ?_⟩, fun φ hφ x => ?_⟩` and prove the remaining obligations. Rewrite using `[hcv1]`. Conclude with `one_mem _`. Take `⟨-, -, -, U', -, hU'⟩` from `(hX _ _).1 hφ`. Use `hU' h' ((hlev U' _).2 ⟨1, h', by simp, fun i => one_mem _, h1, h2⟩) (x * fin1 (ι g))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hrS, ← this]`. Simplify using `only [fin1, map_mul, mul_assoc]`. Set `π : UnitaryRep (FA K 2) (L2 μ)` to `(rightRegularRep (rationalGLOne K 2) μ).compHom (MultiplicityOne.finProj K 2) MultiplicityOne.continuous_finProj`. Establish `hπ : ∀ h, π h = rhoF μ h` using `fun _ => rfl`. Establish `hfixJ : ∀ (L : Subgroup (FA K 2)) (φ : Xs μ τ κ p (im w)), FixF L φ.1 → ∀ u ∈ L, rhoF μ u (J φ) = J φ` using `fun L φ hφ u hu => (hJr u φ φ fun x => (hφ u hu x).symm).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS : SimpleIn (rS ι) (Xs μ τ κ p (im w))`. Use `⟨fun g φ hφ => hstab φ hφ g, fun Q hQ hQs => ?_⟩` and prove the remaining obligations. Set `M : Submodule ℂ (L2 μ)` to `(Q.comap (Xs μ τ κ p (im w)).subtype).map J`. Establish `hM : ∀ g, ∀ m ∈ M, rhoF μ (ι g) m ∈ M`. Introduce and unpack `g _ ⟨φ, hφ, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨⟨rS ι g φ.1, hstab _ φ.2 g⟩, hQs g _ hφ, hJr _ _ _ fun x => rfl⟩`. Establish `hT` using `xTop μ τ κ p hτ hR w ι hw hι M.topologicalClosure M.isClosed_topologicalClosure (fun v hv => closure_minimal (s := (M : Set (L2 μ))) (by rintro _ ⟨φ, -, rfl⟩; exact (hJ φ).2) (isClosed_inH μ hτ hp (im w)) hv) (fun g v hv => map_mem_closure (rhoF μ (ι g)).continuous hv (hM g))`. Break down `hT with hT | hT` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `φ hφ`. Establish `h0 : J ⟨φ, hQ hφ⟩ ∈ M.topologicalClosure` using `M.le_topologicalClosure ⟨⟨φ, hQ hφ⟩, hφ, rfl⟩`. Rewrite `h0` using `[hT, Submodule.mem_bot, ← map_zero J]`. Conclude with `congrArg Subtype.val (hJi h0)`. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm hQ fun φ hφ => ?_` and prove the remaining obligations. Take `⟨-, -, -, U, hU, hφU⟩` from `(hX _ _).1 hφ`. Take `⟨hsur, E, hE, hEU⟩` from `hJU U hU`. Use `haveI : FiniteDimensional ℂ ↥(E.comap (Xs μ τ κ p (im w)).subtype) := FiniteDimensional.of_injective (((Xs μ τ κ p (im w)).subtype.domRestrict (E.comap (Xs μ τ κ p (im w)).subtype)).codRestrict E fun a => a.2) fun a b h => Subtype.ext (Subtype.ext (congrArg (fun z : E => (z : G1 …`. Establish `key : J ⟨φ, hφ⟩ ∈ M`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `mem_of_closure π (levOn (im w) U) M ((E.comap (Xs μ τ κ p (im w)).subtype).map J) ?_ ?_ ?_ (hT _ (hJ _).2) (hfixJ _ ⟨φ, hφ⟩ hφU)` and prove the remaining obligations. Introduce and unpack `u hu _ ⟨ψ, hψ, rfl⟩`. Take `⟨g, -, hg⟩` from `hdec U u hu`. Conclude with `⟨⟨rS ι g ψ.1, hstab _ ψ.2 g⟩, hQs g _ hψ, hJr _ _ _ fun x => (hg _ ψ.2 x).symm⟩`. Introduce and unpack `_ ⟨ψ, -, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨-, -, -, U', hU', hψU⟩` from `(hX _ _).1 ψ.2`. Conclude with `orbit_finite π (hCO U hU).1.1 (hCO U' hU').1.2 (hfixJ _ ψ hψU)`. Introduce and unpack `_ ⟨ψ, -, rfl⟩ hf`. Take `⟨ψ', h1, h2⟩` from `hsur _ (hJ ψ).2 ((mem_fixF μ _ _).2 hf)`. Conclude with `⟨ψ', hEU _ ψ'.2 h2, h1⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ, h⟩` from `key`. Rewrite `hψ` using `[hJi h]`. Conclude with `hψ`. Use `⟨hS, fun T hT => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : ∀ φ : Xs μ τ κ p (im w), φ = 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, fun v => by rw [h0 (T v), zero_smul]⟩`. Use `push Not at h0`. Take `⟨φ, hφ0⟩` from `h0`. Take `⟨-, -, -, U, hU, hφU⟩` from `(hX _ _).1 φ.2`. Take `⟨-, E, hE, hEU⟩` from `hJU U hU`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `F : Submodule ℂ (Xs μ τ κ p (im w))` to `{ carrier := {ψ | FixF (levOn (im w) U) ψ.1} add_mem' := fun ha hb u hu g => by simp [ha u hu g, hb u hu g] zero_mem' := fun u hu g => rfl smul_mem' := fun c _ ha u hu g => by simp [ha u hu g] }`. Use `haveI : FiniteDimensional ℂ ↥(E.comap (Xs μ τ κ p (im w)).subtype) := FiniteDimensional.of_injective (((Xs μ τ κ p (im w)).subtype.domRestrict (E.comap (Xs μ τ κ p (im w)).subtype)).codRestrict E fun a => a.2) fun a b h => Subtype.ext (Subtype.ext (congrArg (fun z : E => (z : G1 …`. Use `haveI : FiniteDimensional ℂ F := Submodule.finiteDimensional_of_le (S₂ := E.comap (Xs μ τ κ p (im w)).subtype) fun ψ hψ => hEU _ ψ.2 hψ`. Use `haveI : Nontrivial F := ⟨⟨⟨φ, hφU⟩, 0, fun h => hφ0 (congrArg Subtype.val h)⟩⟩`. Establish `hTF : ∀ ψ ∈ F, T ψ ∈ F`.
+Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `ψ hψ u hu x`. Take `⟨g, hg, hg'⟩` from `hdec U u hu`. Rewrite using `[hg' _ (T ψ).2, ← hT g ψ ψ (funext fun y => (hψ _ hg y).symm)]`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (T.restrict hTF)`. Take `⟨ψ, hψ⟩` from `hc.exists_hasEigenvector`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hψ1 : T ψ.1 = c • ψ.1` using `congrArg Subtype.val hψ.apply_eq_smul`. Use `⟨c, ?_⟩` and prove the remaining obligations. Break down `hS.2 ((Module.End.eigenspace T c).map (Xs μ τ κ p (im w)).subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `g _ ⟨a, ha, rfl⟩`. Use `⟨⟨rS ι g a.1, hstab _ a.2 g⟩, Module.End.mem_eigenspace_iff.2 (Subtype.ext ?_), rfl⟩` and prove the remaining obligations.
-
-Rewrite using `[hT g a _ rfl, Module.End.mem_eigenspace_iff.1 ha]`. Use the proof step `simp) with h | h`. Establish `: (ψ.1 : G1 K 2 → ℂ) ∈ (Module.End.eigenspace T c).map (Xs μ τ κ p (im w)).subtype` using `⟨ψ.1, Module.End.mem_eigenspace_iff.2 hψ1, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `absurd (Subtype.ext (Subtype.ext this)) hψ.2`.
-
-Introduce `v`. Establish `: (v : G1 K 2 → ℂ) ∈ (Module.End.eigenspace T c).map (Xs μ τ κ p (im w)).subtype`. Rewrite using `[h]`. Conclude with `v.2`. Take `⟨a, ha, hav⟩` from `this`.
-
-Rewrite using `[← Subtype.ext hav]`. Conclude with `Module.End.mem_eigenspace_iff.1 ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.xSimple :
     ∀ {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ : Measure (G1 K 2)) [μ.IsHaarMeasure] (τ : Submodule ℂ (L2 μ)) (κ : Measure (archCompact K 2)) (p : archCompact K 2 → ℂ), CuspIrr μ τ → RankInf μ τ κ p → ∀ {r : ℕ} (w : Fin r → Pl K) (ι : GS 2 w →* FA K 2), Function.Injective w → IsEmb w ι →

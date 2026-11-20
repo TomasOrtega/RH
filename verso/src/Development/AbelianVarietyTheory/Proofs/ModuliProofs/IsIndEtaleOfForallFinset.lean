@@ -28,7 +28,7 @@ def toTop : diagram A S ⟶ (Functor.const (EtaleSub A S)).obj (CommRingCat.of S
 variable {A S}
 
 /- English proof (translation)
-Use `haveI := T.2`. Conclude with `(Subalgebra.fg_iff_finiteType T.1).2 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_adjoin (T : EtaleSub A S) :
     ∃ s : Finset S, Algebra.adjoin A (s : Set S) = T.1 := by
@@ -36,11 +36,11 @@ theorem exists_finset_adjoin (T : EtaleSub A S) :
   exact (Subalgebra.fg_iff_finiteType T.1).2 inferInstance
 
 /- English proof (translation)
-Use `⟨fun T U => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `exists_finset_adjoin T`. Take `⟨t, ht⟩` from `exists_finset_adjoin U`. Take `⟨V, hV, hst⟩` from `h (s ∪ t)`. Rewrite `hst` using `[Finset.coe_union, Set.union_subset_iff]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨V, hV⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T.1 ≤ V`. Rewrite using `[← hs]`. Conclude with `Algebra.adjoin_le hst.1`. Express the relevant statement in the definitionally equal form `U.1 ≤ V`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht]`. Conclude with `Algebra.adjoin_le hst.2`.
+A detailed English derivation is pending.
 -/
 theorem isDirected
     (h : ∀ s : Finset S, ∃ T : Subalgebra A S, Algebra.Etale A T ∧ (s : Set S) ⊆ T) :
@@ -60,11 +60,9 @@ theorem isDirected
     exact Algebra.adjoin_le hst.2
 
 /- English proof (translation)
-Use `haveI := isDirected h`. Use `haveI : Nonempty (EtaleSub A S) := by`. Take `⟨T, hT, -⟩` from `h ∅`. Conclude with `⟨⟨T, hT⟩⟩`. Use `haveI : IsFiltered (EtaleSub A S) := inferInstance`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨EtaleSub A S, inferInstance, inferInstance, diagram A S, fromBase A S, toTop A S, ?_, fun T => ⟨RingHom.etale_algebraMap.2 T.2, rfl⟩⟩` and prove the remaining obligations. Use `haveI : ReflectsColimit (diagram A S) (forget CommRingCat.{0}) := reflectsColimit_of_reflectsIsomorphisms _ _`. Use `isColimitOfReflects (forget CommRingCat.{0}) ?_` and prove the remaining obligations. Use `Types.FilteredColimit.isColimitOf' _ _ (fun x => ?_) (fun T x y hxy => ?_)` and prove the remaining obligations. Take `⟨T, hT, hx⟩` from `h {(x : S)}`.
-
-Conclude with `⟨⟨T, hT⟩, ⟨x, hx (by simp)⟩, rfl⟩`. Establish `: x = y` using `Subtype.ext hxy`. Conclude with `⟨T, 𝟙 T, by rw [this]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isIndEtale_of_forall_finset (A S : Type) [CommRing A] [CommRing S] [Algebra A S]
     (h : ∀ s : Finset S, ∃ T : Subalgebra A S, Algebra.Etale A T ∧ (s : Set S) ⊆ T) :

@@ -12,39 +12,39 @@ variable {K A S : Type} [Field K] [Ring A] [Algebra K A] [Fintype S] [DecidableE
 local notation "JJ" => (Formalism.YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A))
 
 /- English proof (translation)
-Simplify using `only [ins, Finset.smul_sum, Matrix.smul_apply, mul_smul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ins_smul (a : S) (c : K) (M : M2 (SlopeTestRemainingChoices S A)) : ins a (c • M) = c • ins a M := by
   simp only [ins, Finset.smul_sum, Matrix.smul_apply, mul_smul_comm]
 
 /- English proof (translation)
-Simplify using `only [ins, Matrix.neg_apply, mul_neg, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ins_neg (a : S) (M : M2 (SlopeTestRemainingChoices S A)) : ins a (-M) = -ins a M := by
   simp only [ins, Matrix.neg_apply, mul_neg, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Introduce `_ _` and use `Commute.one_right _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem free_one (a : S) : FreeOf a (1 : SlopeTestRemainingChoices S A) := fun _ _ => Commute.one_right _
 
 /- English proof (translation)
-Introduce `_ _` and use `Commute.zero_right _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem free_zero (a : S) : FreeOf a (0 : SlopeTestRemainingChoices S A) := fun _ _ => Commute.zero_right _
 
 /- English proof (translation)
-Introduce `i j` and use `(h i j).neg_right`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem free_neg {a : S} {b : SlopeTestRemainingChoices S A} (h : FreeOf a b) : FreeOf a (-b) := fun i j => (h i j).neg_right
 
 /- English proof (translation)
-Introduce `i j` and use `(h i j).smul_right c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem free_smul {a : S} {b : SlopeTestRemainingChoices S A} (c : K) (h : FreeOf a b) : FreeOf a (c • b) := fun i j => (h i j).smul_right c
 
 /- English proof (translation)
-Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.J] <;> first | exact free_zero a | exact free_one a | exact free_neg (free_one a)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem freeOf_J_matrix (a : S) : FreeOf2 a JJ := by
   intro i j
@@ -52,7 +52,7 @@ theorem freeOf_J_matrix (a : S) : FreeOf2 a JJ := by
     first | exact free_zero a | exact free_one a | exact free_neg (free_one a)
 
 /- English proof (translation)
-Introduce `i j k l`. Simplify using `only [Matrix.mul_apply]`. Conclude with `Commute.sum_right _ _ _ fun m _ => (hM i m k l).mul_right (hN m j k l)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem freeOf2_mul {a : S} {M N : M2 (SlopeTestRemainingChoices S A)} (hM : FreeOf2 a M) (hN : FreeOf2 a N) :
     FreeOf2 a (M * N) := by
@@ -61,22 +61,22 @@ theorem freeOf2_mul {a : S} {M N : M2 (SlopeTestRemainingChoices S A)} (hM : Fre
   exact Commute.sum_right _ _ _ fun m _ => (hM i m k l).mul_right (hN m j k l)
 
 /- English proof (translation)
-Introduce `i j` and use `hM j i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem freeOf2_transpose {a : S} {M : M2 (SlopeTestRemainingChoices S A)} (hM : FreeOf2 a M) : FreeOf2 a Mᵀ := fun i j => hM j i
 
 /- English proof (translation)
-Introduce `i j` and use `free_neg (hM i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem freeOf_matrix_neg {a : S} {M : M2 (SlopeTestRemainingChoices S A)} (hM : FreeOf2 a M) : FreeOf2 a (-M) := fun i j => free_neg (hM i j)
 
 /- English proof (translation)
-Introduce `i j` and use `free_smul c (hM i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem freeOf_matrix_smul {a : S} {M : M2 (SlopeTestRemainingChoices S A)} (c : K) (hM : FreeOf2 a M) : FreeOf2 a (c • M) := fun i j => free_smul c (hM i j)
 
 /- English proof (translation)
-Introduce `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify `h` using `[d0]`. Simplify `free_zero (A := A) a` using `[d0, hij]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem freeOf_diagScalar {a : S} {b : SlopeTestRemainingChoices S A} (h : FreeOf a b) : FreeOf2 a (d0 b) := by
   intro i j
@@ -86,40 +86,40 @@ theorem freeOf_diagScalar {a : S} {b : SlopeTestRemainingChoices S A} (h : FreeO
   · simpa [d0, hij] using free_zero (A := A) a
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.J, Matrix.mul_apply, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem J_mul_J : JJ * JJ = -1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.J, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.J]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem J_transpose : JJᵀ = -JJ := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.J]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.J]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem J_conjTranspose [StarRing A] : JJᴴ = -JJ := by
   funext i j
   fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.J]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.J]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem comm_J (b : SlopeTestRemainingChoices S A) (i j : Fin 2) : Commute b (JJ i j) := by
   fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.J]
 
 /- English proof (translation)
-Simplify using `[d0, Matrix.diagonal_mul_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diagScalar_mul (x y : SlopeTestRemainingChoices S A) : d0 (x * y) = d0 x * d0 y := by
   simp [d0, Matrix.diagonal_mul_diagonal]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[d0]`. Simplify using `[d0, Matrix.diagonal_apply_ne _ h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diagScalar_smul (c : K) (x : SlopeTestRemainingChoices S A) : d0 (c • x) = c • d0 x := by
   funext i j
@@ -129,13 +129,13 @@ theorem diagScalar_smul (c : K) (x : SlopeTestRemainingChoices S A) : d0 (c • 
   · simp [d0, Matrix.diagonal_apply_ne _ h]
 
 /- English proof (translation)
-Simplify using `[d0, Matrix.diagonal_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diagScalar_neg (x : SlopeTestRemainingChoices S A) : d0 (-x) = -d0 x := by
   simp [d0, Matrix.diagonal_neg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Simplify using `[d0, Matrix.diagonal_mul, Matrix.mul_diagonal, (h i j).eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem diagScalar_commute_of_entries {b : SlopeTestRemainingChoices S A} {M : M2 (SlopeTestRemainingChoices S A)} (h : ∀ i j, Commute b (M i j)) :
     d0 b * M = M * d0 b := by
@@ -143,13 +143,13 @@ theorem diagScalar_commute_of_entries {b : SlopeTestRemainingChoices S A} {M : M
   simp [d0, Matrix.diagonal_mul, Matrix.mul_diagonal, (h i j).eq]
 
 /- English proof (translation)
-Simplify using `[ins, Formalism.YangianSpanCharacter.T.J, Fin.sum_univ_two, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ins_J (a : S) : ins a JJ = eU a 0 1 - eU a 1 0 := by
   simp [ins, Formalism.YangianSpanCharacter.T.J, Fin.sum_univ_two, sub_eq_add_neg]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[d0, Matrix.diagonal_mul, Matrix.mul_diagonal, ins_J]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[P0, Q0, mul_sub, sub_mul, Wd1.eU_mul_eU]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem flip_mul_J_insert (a : S) : P0 a * d0 (ins a JJ) = d0 (ins a JJ) * (1 - Q0 a) := by
   ext i j
@@ -158,7 +158,7 @@ theorem flip_mul_J_insert (a : S) : P0 a * d0 (ins a JJ) = d0 (ins a JJ) * (1 - 
     simp [P0, Q0, mul_sub, sub_mul, Wd1.eU_mul_eU]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[d0, Matrix.diagonal_mul, Matrix.mul_diagonal, ins_J]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[P0, Q0, mul_sub, sub_mul, Wd1.eU_mul_eU]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem partial_flip_mul_J_insert (a : S) : Q0 a * d0 (ins a JJ) = d0 (ins a JJ) * (1 - P0 a) := by
   ext i j
@@ -167,9 +167,9 @@ theorem partial_flip_mul_J_insert (a : S) : Q0 a * d0 (ins a JJ) = d0 (ins a JJ)
     simp [P0, Q0, mul_sub, sub_mul, Wd1.eU_mul_eU]
 
 /- English proof (translation)
-Establish `h1 : D - 1 ≠ 0` using `sub_ne_zero.mpr hD1`. Establish `hc : D / (D - 1) * (1 - D - 1)⁻¹ = -(D - 1)⁻¹`. Rewrite using `[show 1 - D - 1 = -D by ring, inv_neg]`. Clear the denominators using the available nonvanishing facts. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Substitute using the available equality.
 
-Unfold `Rh0 Rht0`. Rewrite using `[Matrix.smul_mul, Matrix.sub_mul, Matrix.smul_mul, Matrix.one_mul, flip_mul_J_insert, Matrix.mul_smul, smul_smul, hc, neg_smul, ← smul_neg]`. Use `congr 1`. Simplify using `only [Matrix.mul_sub, Matrix.mul_smul, Matrix.mul_one, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Rh0_J (a : S) (D d : K) (h : d = 1 - D) (hD : D ≠ 0) (hD1 : D ≠ 1) :
     Rh0 a D * d0 (ins a JJ) = (D / (D - 1)) • (d0 (ins a JJ) * Rht0 a d) := by
@@ -186,9 +186,9 @@ theorem Rh0_J (a : S) (D d : K) (h : d = 1 - D) (hD : D ≠ 0) (hD1 : D ≠ 1) :
   abel
 
 /- English proof (translation)
-Establish `h1 : d - 1 ≠ 0` using `sub_ne_zero.mpr hd1`. Establish `hc : d / (d - 1) * (1 - d - 1)⁻¹ = -(d - 1)⁻¹`. Rewrite using `[show 1 - d - 1 = -d by ring, inv_neg]`. Clear the denominators using the available nonvanishing facts. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Substitute using the available equality.
 
-Unfold `Rh0 Rht0`. Rewrite using `[Matrix.smul_mul, Matrix.sub_mul, Matrix.smul_mul, Matrix.one_mul, partial_flip_mul_J_insert, Matrix.mul_smul, smul_smul, hc, neg_smul, ← smul_neg]`. Use `congr 1`. Simplify using `only [Matrix.mul_sub, Matrix.mul_smul, Matrix.mul_one, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Rht0_J (a : S) (d D : K) (h : D = 1 - d) (hd : d ≠ 0) (hd1 : d ≠ 1) :
     Rht0 a d * d0 (ins a JJ) = (d / (d - 1)) • (d0 (ins a JJ) * Rh0 a D) := by
@@ -214,30 +214,30 @@ variable {K A S : Type} [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K 
 local notation "JJ" => (Formalism.YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Simplify using `[Algebra.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem alg_smul (c : K) (M : M2 (SlopeTestRemainingChoices S A)) : algebraMap K (SlopeTestRemainingChoices S A) c • M = c • M := by
   funext i j
   simp [Algebra.smul_def]
 
 /- English proof (translation)
-Rewrite using `[Wd1.ins_mul a _ _ (freeOf_diagScalar hR), Wd1.insert_diagonal_extract]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_ins {a : S} {RR : SlopeTestRemainingChoices S A} (hR : FreeOf a RR) (M : M2 (SlopeTestRemainingChoices S A)) :
     RR * ins a M = ins a (d0 RR * M) := by
   rw [Wd1.ins_mul a _ _ (freeOf_diagScalar hR), Wd1.insert_diagonal_extract]
 
 /- English proof (translation)
-Rewrite using `[mul_ins hR, Wd1.ins_star a _ (freeOf2_mul (freeOf_diagScalar hR) hM), h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_mul_ins {a : S} {RR : SlopeTestRemainingChoices S A} (hR : FreeOf a RR) {M : M2 (SlopeTestRemainingChoices S A)} (hM : FreeOf2 a M)
     (h : (d0 RR * M)ᴴ = d0 RR * M) : star (RR * ins a M) = RR * ins a M := by
   rw [mul_ins hR, Wd1.ins_star a _ (freeOf2_mul (freeOf_diagScalar hR) hM), h]
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun h j) i`. Rewrite `h1` using `[Matrix.conjTranspose_apply, d0, Matrix.diagonal_mul]`. Rewrite using `[Matrix.conjTranspose_apply, d0, Matrix.diagonal_mul, Matrix.diagonal_mul, Matrix.transpose_apply, Matrix.transpose_apply]`. Rewrite `h1` using `[Matrix.diagonal_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem herm_transpose {RR : SlopeTestRemainingChoices S A} {M : M2 (SlopeTestRemainingChoices S A)}
     (h : (d0 RR * M)ᴴ = d0 RR * M) : (d0 RR * Mᵀ)ᴴ = d0 RR * Mᵀ := by
@@ -250,29 +250,29 @@ theorem herm_transpose {RR : SlopeTestRemainingChoices S A} {M : M2 (SlopeTestRe
   exact h1
 
 /- English proof (translation)
-The claim follows from `(Wd1.ins_comm a JJ b hb (comm_J b)).eq`.
+A detailed English derivation is pending.
 -/
 theorem ins_J_comm {a : S} {b : SlopeTestRemainingChoices S A} (hb : FreeOf a b) : b * ins a JJ = ins a JJ * b :=
   (Wd1.ins_comm a JJ b hb (comm_J b)).eq
 
 /- English proof (translation)
-Rewrite using `[PsiP, ins_neg, ins_smul, Wd1.ins_mul a _ _ (freeOf_J_matrix a)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiP_eq (TT : K → M2 (SlopeTestRemainingChoices S A)) (q : K → K) (a : S) (Y : K) :
     PsiP TT q a Y = -((q Y)⁻¹ • (ins a JJ * ins a (TT (Y + 1))ᵀ)) := by
   rw [PsiP, ins_neg, ins_smul, Wd1.ins_mul a _ _ (freeOf_J_matrix a)]
 
 /- English proof (translation)
-Rewrite using `[PsiM, ins_smul, Wd1.ins_mul a _ _ (freeOf_J_matrix a)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiM_eq (TT : K → M2 (SlopeTestRemainingChoices S A)) (q : K → K) (a : S) (Yb : K) :
     PsiM TT q a Yb = (q (Yb - 1))⁻¹ • (ins a JJ * ins a (TT (Yb - 1))) := by
   rw [PsiM, ins_smul, Wd1.ins_mul a _ _ (freeOf_J_matrix a)]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hdet`. Rewrite `h1`, `h2` using `[alg_smul]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PsiP, ← Wd1.ins_mul a _ _ (hF Y)]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.mul_neg, Matrix.mul_smul, ← Matrix.mul_assoc, h2, smul_smul, inv_mul_cancel₀ hq, one_smul, J_transpose]`. Rewrite using `[PsiP, ← Wd1.ins_mul a _ _ (freeOf_matrix_neg (freeOf_matrix_smul _ (freeOf2_mul (freeOf_J_matrix a) (freeOf2_transpose (hF (Y + 1))))))]`. Rewrite using `[Matrix.neg_mul, Matrix.smul_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ JJ, h1, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hq, one_smul, J_mul_J, neg_neg, Wd1.ins_one]`. Rewrite using `[PsiP, ← Wd1.ins_mul a _ _ (freeOf2_mul (freeOf_J_matrix a) (hF Y))]`. Rewrite using `[Matrix.mul_neg, Matrix.mul_smul, Matrix.mul_assoc, ← Matrix.mul_assoc (TT Y), h2, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hq, one_smul, J_mul_J, neg_neg, Wd1.ins_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem position_clauses (TT : K → M2 (SlopeTestRemainingChoices S A)) (q : K → K) (a : S) (Y : K)
     (hF : ∀ Y, FreeOf2 a (TT Y)) (hdet : DetAt TT q Y) (hq : q Y ≠ 0) :
@@ -295,17 +295,15 @@ theorem position_clauses (TT : K → M2 (SlopeTestRemainingChoices S A)) (q : K 
       Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hq, one_smul, J_mul_J, neg_neg, Wd1.ins_one]
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ Ω RR TT q a Y hM hR hF hY hY1 hYr hq`. Take `⟨c1, c2, c3⟩` from `position_clauses TT q a Y hF (hM.det Y hY hY1) hq`. Establish `hH : star (RR * ins a (TT Y)) = RR * ins a (TT Y)` using `star_mul_ins hR (hF Y) (hM.herm Y hY hYr)`. Establish `c4 : star (PsiP TT q a Y) * (RR * ins a (TT Y)) = ins a (Formalism.YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A)) * RR`. Rewrite using `[← hH, ← star_mul, mul_assoc, c1, star_mul, hM.form_herm, Wd1.ins_star a _ (freeOf2_transpose (freeOf_J_matrix a)), J_transpose, Matrix.conjTranspose_neg, J_conjTranspose, neg_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c1, c2, c3, c4, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[c4, ← ins_J_comm hR, mul_assoc, PsiP, ← Wd1.ins_mul a _ _ (freeOf_J_matrix a), Matrix.mul_neg, Matrix.mul_smul, ← Matrix.mul_assoc, J_mul_J, Matrix.neg_mul, Matrix.one_mul, smul_neg, neg_neg, ins_smul, mul_smul_comm]`. Introduce `Y0 hY0 hD1 hD0`. Establish `hex` using `hE K A S Ω RR TT q a Y0 (Y + 1) hM hF hY0 hY1`. Establish `hc : d0 (ins a (Formalism.YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A))) * TT Y0 = TT Y0 * d0 (ins a (Formalism.YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A)))` using `diagScalar_commute_of_entries fun i j => (Wd1.ins_comm a _ (TT Y0 i j) (hF Y0 i j) (comm_J _)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `Rh0_J (A := A) a (Y0 - Y) (Y + 1 - Y0) (by ring) hD0 hD1`. Rewrite using `[psiP_eq, diagScalar_neg, diagScalar_smul, diagScalar_mul]`. Generalize the expression as in `d0 (ins a (Formalism.YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A))) = Jd at hc hk ⊢`. Generalize the expression as in `d0 (ins a (TT (Y + 1))ᵀ) = Td at hex ⊢`. Generalize the expression as in `(Rht0 a (Y + 1 - Y0) : M2 (SlopeTestRemainingChoices S A)) = R at hex hk ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(Y0 - Y) / (Y0 - Y - 1) = c at hk ⊢`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_neg, Matrix.mul_smul, Matrix.mul_assoc]`. Use `_ = -((q Y)⁻¹ • c • ((TT Y0 * Jd) * R * Td)) := by`. Rewrite using `[hk]`.
+Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Use `_ = -((q Y)⁻¹ • c • (Jd * (TT Y0 * R * Td))) := by`. Rewrite using `[← hc]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = -((q Y)⁻¹ • c • (Jd * (Td * R * TT Y0))) := by rw [hex]`.
-
-Use `_ = c • (-((q Y)⁻¹ • (Jd * Td)) * (R * TT Y0)) := by`. Simplify using `only [Matrix.neg_mul, Matrix.smul_mul, smul_neg, Matrix.mul_assoc]`. Rewrite using `[smul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualPlus_of (hE : ExchMinus) : DualPlus := by
   intro K A S _ _ _ _ _ _ _ _ Ω RR TT q a Y hM hR hF hY hY1 hYr hq
@@ -343,23 +341,21 @@ theorem dualPlus_of (hE : ExchMinus) : DualPlus := by
           rw [smul_comm]
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ Ω RR TT q a Yb hM hR hF hYb hYb1 hYr hq`. Establish `hdet : DetAt TT q (Yb - 1)` using `hM.det (Yb - 1) hYb1 (by rwa [sub_add_cancel])`. Take `⟨-, c2, c3⟩` from `position_clauses TT q a (Yb - 1) hF hdet hq`. Take `⟨h1, -⟩` from `hdet`. Rewrite `h1` using `[alg_smul, sub_add_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hH : star (RR * ins a (TT Yb)ᵀ) = RR * ins a (TT Yb)ᵀ` using `star_mul_ins hR (freeOf2_transpose (hF Yb)) (herm_transpose (hM.herm Yb hYb hYr))`. Establish `hP : PsiM TT q a Yb = (q (Yb - 1))⁻¹ • ins a (Formalism.YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A) * TT (Yb - 1))`. Rewrite using `[PsiM, ins_smul]`. Establish `c0 : ins a (TT Yb)ᵀ * PsiM TT q a Yb = ins a (Formalism.YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A))`. Rewrite using `[PsiM, ← Wd1.ins_mul a _ _ (freeOf2_transpose (hF Yb)), Matrix.mul_smul, ← Matrix.mul_assoc, h1, smul_smul, inv_mul_cancel₀ hq, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c4 : star (PsiM TT q a Yb) * (RR * ins a (TT Yb)ᵀ) = ins a (Formalism.YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A))ᵀ * RR`. Rewrite using `[← hH, ← star_mul, mul_assoc, c0, star_mul, hM.form_herm, Wd1.ins_star a _ (freeOf_J_matrix a), J_transpose, J_conjTranspose]`. Use `⟨?_, c4, ?_, ?_⟩` and prove the remaining obligations. Use `⟨⟨PsiM TT q a Yb, q (Yb - 1) • PsiP TT q a (Yb - 1), ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[hP, smul_mul_smul_comm, c3, inv_mul_cancel₀ hq, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, smul_mul_smul_comm, c2, mul_inv_cancel₀ hq, one_smul]`. Rewrite using `[c4, J_transpose, ins_neg, neg_mul, ← ins_J_comm hR, neg_mul, mul_assoc, PsiM, ← Wd1.ins_mul a _ _ (freeOf_J_matrix a), Matrix.mul_smul, ← Matrix.mul_assoc, J_mul_J, Matrix.neg_mul, Matrix.one_mul, smul_neg, ins_neg, mul_neg, neg_neg, ins_smul, mul_smul_comm]`. Introduce `Y0 hY0 hd1 hd0`. Establish `hex` using `hE K A S Ω RR TT q a Y0 (Yb - 1) hM hF hY0 hYb1`. Rewrite `hex` using `[show Y0 - (Yb - 1) = Y0 - Yb + 1 by ring]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : d0 (ins a (Formalism.YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A))) * TT Y0 = TT Y0 * d0 (ins a (Formalism.YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A)))` using `diagScalar_commute_of_entries fun i j => (Wd1.ins_comm a _ (TT Y0 i j) (hF Y0 i j) (comm_J _)).symm`. Establish `hd0' : Yb - Y0 ≠ 0` using `fun h => hd0 (by rw [← neg_sub, h, neg_zero])`. Establish `hk` using `Rht0_J (A := A) a (Yb - Y0) (Y0 - Yb + 1) (by ring) hd0' hd1`. Rewrite using `[show (Yb - Y0) / (Yb - Y0 - 1) = (Y0 - Yb) / (Y0 - Yb + 1) by`. Apply the tactic sequence `rw [← neg_div_neg_eq]; congr 1 <;> ring] at hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[psiM_eq, diagScalar_smul, diagScalar_mul]`. Generalize the expression as in `d0 (ins a (Formalism.YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A))) = Jd at hc hk ⊢`. Generalize the expression as in `d0 (ins a (TT (Yb - 1))) = Td at hex ⊢`. Generalize the expression as in `(Rh0 a (Y0 - Yb + 1) : M2 (SlopeTestRemainingChoices S A)) = R at hex hk ⊢`. Generalize the expression as in `(Y0 - Yb) / (Y0 - Yb + 1) = c at hk ⊢`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_smul, Matrix.mul_assoc]`. Use `_ = (q (Yb - 1))⁻¹ • ((Rht0 a (Yb - Y0) * Jd) * TT Y0 * Td) := by`. Rewrite using `[← hc]`. Simplify using `only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (q (Yb - 1))⁻¹ • c • (Jd * (R * TT Y0 * Td)) := by`. Rewrite using `[hk]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_assoc]`. Use `_ = (q (Yb - 1))⁻¹ • c • (Jd * (Td * TT Y0 * R)) := by rw [hex]`. Use `_ = c • ((q (Yb - 1))⁻¹ • (Jd * Td) * (TT Y0 * R)) := by`.
-
-Simplify using `only [Matrix.smul_mul, Matrix.mul_assoc]`. Rewrite using `[smul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualMinus_of (hE : ExchPlus) : DualMinus := by
   intro K A S _ _ _ _ _ _ _ _ Ω RR TT q a Yb hM hR hF hYb hYb1 hYr hq
@@ -417,12 +413,12 @@ end Formalism.FourierDecayAlt.P.Wd9
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `Wd9.dualPlus_of exchange_relation_minus`.
+A detailed English derivation is pending.
 -/
 theorem duality_plus : Formalism.FourierDecayAlt.Wd.DualPlus := Wd9.dualPlus_of exchange_relation_minus
 
 /- English proof (translation)
-The claim follows from `Wd9.dualMinus_of exchange_relation_plus`.
+A detailed English derivation is pending.
 -/
 theorem duality_minus : Formalism.FourierDecayAlt.Wd.DualMinus := Wd9.dualMinus_of exchange_relation_plus
 

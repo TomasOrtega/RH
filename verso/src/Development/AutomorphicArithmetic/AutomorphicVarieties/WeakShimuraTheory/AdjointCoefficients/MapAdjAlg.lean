@@ -8,7 +8,7 @@ section Co
 variable {A k ι : Type} [CommRing A] [CommRing k] [Fintype ι] [DecidableEq ι] {K : Ideal A} {σ co : A → k}
 
 /- English proof (translation)
-Use `h1 0 K.zero_mem 0 K.zero_mem` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem co_zero (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y) : co 0 = 0 := by
   have := h1 0 K.zero_mem 0 K.zero_mem
@@ -16,7 +16,7 @@ private theorem co_zero (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y
   exact left_eq_add.1 this
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using co_zero h1`. Consider the case `insert c S hc ih`. Rewrite using `[Finset.sum_insert hc, Finset.sum_insert hc, h1 _ (hf c) _ (K.sum_mem fun c _ => hf c), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem co_sum (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y) (S : Finset ι) (f : ι → A)
     (hf : ∀ c, f c ∈ K) : co (∑ c ∈ S, f c) = ∑ c ∈ S, co (f c) := by
@@ -27,7 +27,7 @@ private theorem co_sum (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y)
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `K.sum_mem fun c _ => K.mul_mem_left _ (hZ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_left (M : Matrix ι ι A) {Z : Matrix ι ι A} (hZ : ∀ a b, Z a b ∈ K) (a b : ι) : (M * Z) a b ∈ K := by
   rw [Matrix.mul_apply]
@@ -35,7 +35,7 @@ private theorem mem_left (M : Matrix ι ι A) {Z : Matrix ι ι A} (hZ : ∀ a b
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `K.sum_mem fun c _ => K.mul_mem_right _ (hZ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_right (M : Matrix ι ι A) {Z : Matrix ι ι A} (hZ : ∀ a b, Z a b ∈ K) (a b : ι) :
     (Z * M) a b ∈ K := by
@@ -43,7 +43,7 @@ private theorem mem_right (M : Matrix ι ι A) {Z : Matrix ι ι A} (hZ : ∀ a 
   exact K.sum_mem fun c _ => K.mul_mem_right _ (hZ _ _)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply]`. Rewrite using `[co_sum h1 _ _ fun c => K.mul_mem_left _ (hZ _ _)]`. Conclude with `Finset.sum_congr rfl fun c _ => h2 _ _ (hZ _ _)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem co_left (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y) (h2 : ∀ a, ∀ x ∈ K, co (a * x) = σ a * co x)
     (M : Matrix ι ι A) {Z : Matrix ι ι A} (hZ : ∀ a b, Z a b ∈ K) : (M * Z).map co = M.map σ * Z.map co := by
@@ -53,7 +53,7 @@ private theorem co_left (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y
   exact Finset.sum_congr rfl fun c _ => h2 _ _ (hZ _ _)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply]`. Rewrite using `[co_sum h1 _ _ fun c => K.mul_mem_right _ (hZ _ _)]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [mul_comm, h2 _ _ (hZ _ _), mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem co_right (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y) (h2 : ∀ a, ∀ x ∈ K, co (a * x) = σ a * co x)
     (M : Matrix ι ι A) {Z : Matrix ι ι A} (hZ : ∀ a b, Z a b ∈ K) : (Z * M).map co = Z.map co * M.map σ := by
@@ -64,7 +64,7 @@ private theorem co_right (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co 
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `h1 _ (hZ _ _) _ (hZ' _ _)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem co_add (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y)
     {Z Z' : Matrix ι ι A} (hZ : ∀ a b, Z a b ∈ K) (hZ' : ∀ a b, Z' a b ∈ K) :
@@ -80,7 +80,7 @@ variable {T A ι : Type} [TopologicalSpace T] [CommRing A] [Fintype ι] [Decidab
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `: ∀ᶠ y in nhds x, ∀ a b, f y a b = f x a b` using `Filter.eventually_all.2 fun a => Filter.eventually_all.2 fun b => (h a b).eventually_eq x`. Conclude with `this.mono fun y hy => Matrix.ext hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lc_matrix {B : Type} {f : T → Matrix ι ι B} (h : ∀ a b, IsLocallyConstant fun s => f s a b) :
     IsLocallyConstant f := by
@@ -92,7 +92,7 @@ private theorem lc_matrix {B : Type} {f : T → Matrix ι ι B} (h : ∀ a b, Is
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-The claim follows from `lc_matrix fun a b => h a b N`.
+A detailed English derivation is pending.
 -/
 private theorem lc_ac {I : Ideal A} {f : T → Matrix ι ι A} (h : ∀ a b, AdicCont I fun s => f s a b) (N : ℕ) :
     IsLocallyConstant fun s => (f s).map (Ideal.Quotient.mk (I ^ N)) :=
@@ -100,11 +100,11 @@ private theorem lc_ac {I : Ideal A} {f : T → Matrix ι ι A} (h : ∀ a b, Adi
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Take `⟨n, hn⟩` from `Ideal.exists_pow_inf_eq_pow_smul I (K : Submodule A A)`. Establish `e` using `hn (n + 1) (Nat.le_succ n)`. Establish `e2 : ∀ x ∈ K, x ∈ I ^ (n + 1) → x = 0` using `fun x hx hx' => by`. Establish `m : x ∈ (I ^ (n + 1) • (⊤ : Submodule A A)) ⊓ K` using `⟨by simpa using hx', hx⟩`. Rewrite `m` using `[e, Nat.add_sub_cancel_left, pow_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: x ∈ I * K` using `Submodule.smul_mono le_rfl inf_le_right m`. Rewrite `this` using `[hs, Ideal.mem_bot]`. Then use the resulting hypothesis. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `((h (n + 1)).eventually_eq x).mono fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a b`. Use `congrFun (congrFun hy a) b` as an intermediate fact. Conclude with `sub_eq_zero.1 (e2 _ (K.sub_mem (hf _ _ _) (hf _ _ _)) (Ideal.Quotient.eq.1 this))`.
+By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lc_ker [IsNoetherianRing A] {I K : Ideal A} (hs : I * K = ⊥) {f : T → Matrix ι ι A}
     (hf : ∀ s a b, f s a b ∈ K) (h : ∀ N, IsLocallyConstant fun s => (f s).map (Ideal.Quotient.mk (I ^ N))) :
@@ -128,14 +128,14 @@ end LC
 section G
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (f : R →+* S))`.
+A detailed English derivation is pending.
 -/
 private theorem map_mul_alg {O R S ι : Type} [CommRing O] [CommRing R] [CommRing S] [Algebra O R] [Algebra O S]
     [Fintype ι] [DecidableEq ι] (f : R →ₐ[O] S) (A B : Matrix ι ι R) : (A * B).map f = A.map f * B.map f :=
   Matrix.map_mul (f := (f : R →+* S))
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [adj_apply, Matrix.map_apply, map_zsmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_adj_alg {O R S : Type} [CommRing O] [CommRing R] [CommRing S] [Algebra O R] [Algebra O S]
     (f : R →ₐ[O] S) (X : M4 R) : (adj X).map f = adj (X.map f) := by
@@ -143,9 +143,9 @@ private theorem map_adj_alg {O R S : Type} [CommRing O] [CommRing R] [CommRing S
   simp only [adj_apply, Matrix.map_apply, map_zsmul]
 
 /- English proof (translation)
-Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Break down `lt_or_ge c i with hc | hc` into its components or cases. Rewrite using `[hX i c hc, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY c j (lt_of_lt_of_le h hc), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem up_mul {R : Type} [CommRing R] {X Y : M4 R} (hX : IsUp X) (hY : IsUp Y) : IsUp (X * Y) := by
   intro i j h
@@ -156,7 +156,7 @@ private theorem up_mul {R : Type} [CommRing R] {X Y : M4 R} (hX : IsUp X) (hY : 
   · rw [hY c j (lt_of_lt_of_le h hc), mul_zero]
 
 /- English proof (translation)
-Establish `e : adj X * X = 1`. Unfold `IsGSp at h`. Rewrite `h` using `[one_smul]`. Then use the resulting hypothesis. Conclude with `⟨e, mul_eq_one_comm.1 e⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 -/
 private theorem sp_inv {R : Type} [CommRing R] {X : M4 R} (h : IsGSp 1 X) : adj X * X = 1 ∧ X * adj X = 1 := by
   have e : adj X * X = 1 := by
@@ -165,17 +165,15 @@ private theorem sp_inv {R : Type} [CommRing R] {X : M4 R} (h : IsGSp 1 X) : adj 
   exact ⟨e, mul_eq_one_comm.1 e⟩
 
 /- English proof (translation)
-Take `⟨hmul, -, hadd, -, hone, -⟩` from `grp k`. Take `⟨-, -, hadd', -, -, hmap, -⟩` from `grp A`. Establish `hK' : ∀ a b, adj (Z - Z') a b ∈ K` using `fun a b => by`. Rewrite using `[adj_apply]`. Conclude with `zsmul_mem (hK _ _) _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (adj (Z - Z')).map co = adj ((Z - Z').map co)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, adj_apply, adj_apply, Matrix.map_apply, zsmul_eq_mul, h2 _ _ (hK _ _), map_intCast, zsmul_eq_mul]`. Establish `e0 : adj (Z - Z') * Z' + adj Z * (Z - Z') = 0`. Establish `: adj (Z - Z') = adj Z - adj Z'`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_sub_iff_add_eq, ← hadd', sub_add_cancel]`. Unfold `IsGSp at hZ hZ'`. Rewrite using `[this, sub_mul, mul_sub, hZ, hZ']`. Normalize the expressions using the abelian group laws. Establish `e1` using `congrArg (fun M : M4 A => M.map co) e0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[co_add h1 (mem_right _ hK') (mem_left _ hK), co_right h1 h2 _ hK', co_left h1 h2 _ hK, hc, ← hmap, e, e']`. Establish `e2 : adj ((Z - Z').map co) * g + adj g * (Z - Z').map co = 0`. Rewrite using `[e1]`. Use extensionality with `a b`. Conclude with `co_zero h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show adj _ = -_`. Establish `e3` using `congrArg (fun M => adj g' * M * g') e2`. Simplify using `only [mul_add, add_mul, mul_zero, zero_mul] at e3`. Rewrite `e3` using `[← mul_assoc (adj g') (adj g), ← hmul g g', hg, hone, one_mul, ← mul_assoc, mul_assoc _ g g', hg, mul_one]`. Rewrite using `[hmul]`.
-
-Conclude with `eq_neg_of_add_eq_zero_left e3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem key_sp {A k : Type} [CommRing A] [CommRing k] {K : Ideal A} (σ : A →+* k) {co : A → k}
     (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y) (h2 : ∀ a, ∀ x ∈ K, co (a * x) = σ a * co x)
@@ -212,49 +210,43 @@ private theorem key_sp {A k : Type} [CommRing A] [CommRing k] {K : Ideal A} (σ 
 end G
 
 /- English proof (translation)
-Introduce `Λ _ _ _ _ Γ V _ _ _ Gv _ _ _ loc hloc A R _ _ _ _ _ _ p hp hs ν r n _ hW hr rb nb hb hrb hnb D co c1 c2`. Take `⟨-, hadj, -, -, -, -, -, hgs, -⟩` from `grp A`. Establish `resp : ∀ Z : M4 A, Z.map (res Λ A) = (Z.map p).map (res Λ R)` using `fun Z => by`. Use extensionality with `a b`. Conclude with `(res_map p _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `rinv : ∀ s, rb s⁻¹ * rb s = 1` using `fun s => by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `rinv' : ∀ s, rb s * rb s⁻¹ = 1` using `fun s => by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `rtres : ∀ s, (D.rt s).map (res Λ A) = rb s` using `fun s => by rw [resp, D.rt_map, hrb]`. Establish `hker : ∀ {Z Z' : M4 A}, Z.map p = Z'.map p → ∀ a b, (Z - Z') a b ∈ RingHom.ker p`. Introduce `Z Z' e a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun (congrFun e a) b` as an intermediate fact. Rewrite using `[RingHom.mem_ker, Matrix.sub_apply, map_sub]`. Conclude with `sub_eq_zero.2 this`. Establish `key : ∀ (s : Γ) (Z Z' : M4 A), IsGSp (algebraMap Λ A (ν s)) Z → IsGSp (algebraMap Λ A (ν s)) Z' → Z.map p = r s → Z'.map p = r s → (Z - Z').map co * rb s⁻¹ ∈ sp4 (ResidueField Λ)`. Introduce `s Z Z' k1 k2 e1 e2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `key_sp (res Λ A : A →+* ResidueField Λ) c1 c2 k1 k2 (hker (e1.trans e2.symm)) ((resp Z).trans (by rw [e1, hrb])) ((resp Z').trans (by rw [e2, hrb])) (rinv' s)`. Establish `lcbar : IsLocallyConstant rb`. Use `lc_matrix fun a b => ?_` and prove the remaining obligations. Use `(hr a b 1).comp (Ideal.Quotient.lift (maximalIdeal R ^ 1) (res Λ R : R →+* ResidueField Λ) fun x hx => (res_eq_zero_iff Λ R x).2 (by rwa [pow_one] at hx))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `s`. Rewrite using `[← hrb]`. Both sides reduce to the same expression. Establish `lcinv : IsLocallyConstant fun s : Γ => rb s⁻¹` using `lcbar.comp_continuous continuous_inv`. Establish `lct` using `lc_ac D.rt_cont`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `t4 : ∀ s t, (D.rt s * D.rt t).map p = r (s * t)` using `fun s t => by`. Rewrite using `[map_mul_alg, D.rt_map, D.rt_map, map_mul]`. Establish `k4 : ∀ s t a b, D.om s t a b ∈ RingHom.ker p` using `fun s t => hker ((t4 s t).trans (D.rt_map _).symm)`. Establish `mD : ∀ x : Γ × Γ, (D.om x.1 x.2).map co * rb (x.1 * x.2)⁻¹ ∈ sp4 (ResidueField Λ)`. Introduce and unpack `⟨s, t⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `key _ _ _ ?_ (D.rt_mult _) (t4 s t) (D.rt_map _)` and prove the remaining obligations. Simplify using `only [map_mul, Units.val_mul]`. Conclude with `hgs _ _ _ _ (D.rt_mult s) (D.rt_mult t)`. Establish `lD : IsLocallyConstant fun x : Γ × Γ => (⟨_, mD x⟩ : sp4 (ResidueField Λ))`. Use `IsLocallyConstant.desc _ Subtype.val ?_ Subtype.val_injective` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `l1 : IsLocallyConstant fun x : Γ × Γ => D.om x.1 x.2`. Use `lc_ker hs (fun x => k4 x.1 x.2) fun N => ?_` and prove the remaining obligations. Simplify using `only [SL.om, Matrix.map_sub _ (map_sub (Ideal.Quotient.mk _)), Matrix.map_mul]`. Conclude with `(((lct N).comp_continuous continuous_fst).mul ((lct N).comp_continuous continuous_snd)).sub ((lct N).comp_continuous continuous_mul)`. Conclude with `(l1.comp (fun M => M.map co)).mul (lcinv.comp_continuous continuous_mul)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u4 : ∀ v s, (D.nt v * D.t v s * adj (D.nt v)).map p = r (loc v s)` using `fun v s => by`. Rewrite using `[map_mul_alg, map_mul_alg, map_adj_alg, D.nt_map, D.t_map]`. Simplify using `only [← mul_assoc]`. Rewrite using `[(sp_inv (hW.sp v)).2, one_mul, mul_assoc, (sp_inv (hW.sp v)).2, mul_one]`. Establish `k5 : ∀ v s a b, D.de v s a b ∈ RingHom.ker p` using `fun v s => hker ((D.rt_map _).trans (u4 v s).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `mE : ∀ v s, (D.de v s).map co * rb (loc v s)⁻¹ ∈ sp4 (ResidueField Λ)`. Introduce `v s`. Use `key _ _ _ (D.rt_mult _) ?_ (D.rt_map _) (u4 v s)` and prove the remaining obligations. Establish `h1 : IsGSp 1 (adj (D.nt v))`. Unfold `IsGSp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hadj, one_smul, (sp_inv (D.nt_sp v)).2]`. Use `hgs _ _ _ _ (hgs _ _ _ _ (D.nt_sp v) (D.t_mult v s)) h1` as an intermediate fact. Rewrite `this` using `[one_mul, mul_one]`. Then use the resulting hypothesis. Use `⟨(fun x => ⟨_, mD x⟩, fun v s => ⟨_, mE v s⟩), ⟨lD, fun v => ?_, fun s t u => Subtype.ext ?_, fun v s t => ?_⟩, fun s t => ?_, fun v s => ?_⟩` and prove the remaining obligations. Use `IsLocallyConstant.desc _ Subtype.val ?_ Subtype.val_injective` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `l1 : IsLocallyConstant fun s => D.de v s`. Use `lc_ker hs (k5 v) fun N => ?_` and prove the remaining obligations. Simplify using `only [SL.de, Matrix.map_sub _ (map_sub (Ideal.Quotient.mk _)), Matrix.map_mul]`. Conclude with `((lct N).comp_continuous (hloc v)).sub (((IsLocallyConstant.const _).mul (lc_ac (D.t_cont v) N)).mul (IsLocallyConstant.const _))`. Conclude with `(l1.comp (fun M => M.map co)).mul (lcinv.comp_continuous (hloc v))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : D.rt s * D.om t u + D.om s (t * u) = D.om (s * t) u + D.om s t * D.rt u`. Simplify using `only [SL.om]`. Rewrite using `[mul_assoc s t u]`. Use `noncomm_ring`. Establish `e'` using `congrArg (fun M : M4 A => M.map co) e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e'` using `[co_add c1 (mem_left _ (k4 _ _)) (k4 _ _), co_add c1 (k4 _ _) (mem_right _ (k4 _ _)), co_left c1 c2 _ (k4 _ _), co_right c1 c2 _ (k4 _ _), rtres, rtres]`. Use `show rb s * ((D.om t u).map co * rb (t * u)⁻¹) * rb s⁻¹ + (D.om s (t * u)).map co * rb (s * (t * u))⁻¹ = (D.om (s * t) u).map co * rb (s * t * u)⁻¹ + (D.om s t).map co * rb (s * t)⁻¹`. Establish `e2` using `congrArg (fun M => M * rb (s * t * u)⁻¹) e'`. Simplify using `only [add_mul, mul_assoc, ← map_mul] at e2 ⊢`. Establish `n1 : (t * u)⁻¹ * s⁻¹ = (s * (t * u))⁻¹` using `by group`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2 : u * (s * (t * u))⁻¹ = (s * t)⁻¹` using `by group`. Rewrite `e2` using `[n2]`. Rewrite using `[n1]`. Conclude with `e2`. Establish `k6 : ∀ a b, (D.t v s * D.t v t - D.t v (s * t)) a b ∈ RingHom.ker p`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `hker ?_` and prove the remaining obligations. Rewrite using `[map_mul_alg, D.t_map, D.t_map, D.t_map, map_mul, map_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (n v), (sp_inv (hW.sp v)).2, one_mul]`. Establish `e : D.om (loc v s) (loc v t) + D.de v (s * t) = D.de v s * D.rt (loc v t) + D.nt v * D.t v s * adj (D.nt v) * D.de v t + D.nt v * (D.t v s * D.t v t - D.t v (s * t)) * adj (D.nt v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : D.nt v * D.t v s * adj (D.nt v) * (D.nt v * D.t v t * adj (D.nt v)) = D.nt v * (D.t v s * D.t v t) * adj (D.nt v)`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (adj (D.nt v)), (sp_inv (D.nt_sp v)).1, one_mul]`. Simplify using `only [SL.om, SL.de, map_mul, mul_sub, sub_mul]`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `e'` using `congrArg (fun M : M4 A => M.map co) e`. Establish `k7 : ∀ a b, (D.de v s * D.rt (loc v t) + D.nt v * D.t v s * adj (D.nt v) * D.de v t) a b ∈ RingHom.ker p` using `fun a b => add_mem (mem_right _ (k5 _ _) a b) (mem_left _ (k5 _ _) a b)`. Establish `ntres : (D.nt v).map (res Λ A) = nb v` using `by rw [resp, D.nt_map, hnb]`. Rewrite `e'` using `[co_add c1 (k4 _ _) (k5 _ _), co_add c1 k7 (mem_right _ (mem_left _ k6)), co_add c1 (mem_right _ (k5 _ _)) (mem_left _ (k5 _ _)), co_right c1 c2 _ (k5 _ _), co_left c1 c2 _ (k5 _ _), co_right c1 c2 _ (mem_left _ k6), co_left c1 c2 _ k6, rtres, resp (_ * _), u4, hrb, map_adj_alg, …`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `nbi : adj (nb v) * nb v = 1`. Rewrite using `[← ntres, ← map_adj_alg, ← map_mul_alg, (sp_inv (D.nt_sp v)).1]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `up1 : IsUp ((D.t v s * D.t v t - D.t v (s * t)).map co)` using `fun i j h => by`. Rewrite using `[Matrix.map_apply, Matrix.sub_apply, up_mul (D.t_up v s) (D.t_up v t) i j h, D.t_up v _ i j h, sub_zero, co_zero c1]`.
-
-Establish `up2 : IsUp (adj (nb v) * rb (loc v (s * t))⁻¹ * nb v)` using `fun i j h => by`. Rewrite using `[← map_inv, ← hnb, ← hrb, ← map_adj_alg, ← map_mul_alg, ← map_mul_alg, Matrix.map_apply, hW.flag v _ i j h, map_zero]`. Use `show IsUp (adj (nb v) * ((D.om (loc v s) (loc v t)).map co * rb (loc v s * loc v t)⁻¹ - ((D.de v s).map co * rb (loc v s)⁻¹ + rb (loc v s) * ((D.de v t).map co * rb (loc v t)⁻¹) * rb (loc v s)⁻¹ - (D.de v (s * t)).map co * rb (loc v (s * t))⁻¹)) * nb v)`. Use `up_mul up1 up2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[eq_sub_of_add_eq e', map_mul (loc v) s t, mul_inv_rev, map_mul rb]`.
-
-Simplify using `only [add_mul, sub_mul, mul_add, mul_sub, mul_assoc]`. Rewrite using `[← mul_assoc (rb (loc v t)), rinv', one_mul, ← mul_assoc (adj (nb v)) (nb v), nbi, one_mul]`. Normalize the expressions using the abelian group laws. Use `show _ * rb (s * t)⁻¹ * _ = _`. Rewrite using `[mul_assoc, rinv, mul_one]`.
-
-Use `show _ * rb (loc v s)⁻¹ * _ = _`. Rewrite using `[mul_assoc, rinv, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.X1.obCoc :
     ∀ {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] {Γ V : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] {Gv : V → Type} [∀ v, Group (Gv v)] [∀ v, TopologicalSpace (Gv v)] [∀ v, IsTopologicalGroup (Gv v)] (loc : ∀ v, Gv v →* Γ), (∀ v, Continuous (loc v)) → ∀ {A R : Type} [CommRing A] [Algebra Λ A] [IsCO Λ A] [CommRing R] [Algebra Λ R] [IsCO Λ R] (p : A →ₐ[Λ] R), Function.Surjective p → maximalIdeal A * RingHom.ker p = ⊥ → ∀ (ν : Γ →* Λˣ) (r : Γ →* M4 R) (n : V → M4 R), AdicCont (maximalIdeal Λ) (fun g => (ν g : Λ)) → WP loc (fun g => algebraMap Λ R (ν g)) r n → (∀ i j, AdicCont (maximalIdeal R) fun g => r g i j) → ∀ (rb : Γ →* M4 (ResidueField Λ)) (nb : V → M4 (ResidueField Λ)) (hb : ∀ g, ∃ x, IsGSp x (rb g)), (∀ g, (r g).map (res Λ R) = rb g) → (∀ v, (n v).map (res Λ R) = nb v) → ∀ (D : SL loc ν r n p) (co : A → ResidueField Λ), (∀ x ∈ RingHom.ker p, ∀ y ∈ RingHom.ker p, co (x + y) = co x + co y) → (∀ (a : A), ∀ x ∈ RingHom.ker p, co (a * x) = res Λ A a * co x) → ∃ z ∈ Fr.continuousCocycles2 loc (adSp rb hb) (fun v => bor (nb v)), (∀ s t, (z.1 (s, t)).1 * rb (s * t) = (D.om s t).map co) ∧ ∀ v s, (z.2 v s).1 * rb (loc v s) = (D.de v s).map co := by

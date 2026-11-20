@@ -14,7 +14,7 @@ namespace GlobalTheory.TwoPlaceIdem
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Prod.ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem AF_ext {F : Type} [Field F] [NumberField F] {x y : AF F} (h1 : fstA F x = fstA F y)
     (h2 : sndA F x = sndA F y) : x = y := Prod.ext h1 h2
@@ -30,9 +30,9 @@ Both sides reduce to the same expression.
 theorem sndA_pairA {F : Type} [Field F] [NumberField F] (a : Ainf F) (b : Af F) : sndA F (pairA F a b) = b := rfl
 
 /- English proof (translation)
-Take `⟨α, rfl, h1, h0⟩` from `h`. Use `congr 1`. Use `Subtype.ext (funext fun u => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV D.host.F u α = evalV D.host.F u (singleV D.host.F v 1)`. Distinguish the cases in `huv : u = v`.
+Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Substitute `huv` using the available equality. Rewrite using `[h1, (hsv u).2.1]`. Rewrite using `[h0 u huv, (hsv v).2.2 u huv]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem placeIdem_eq_single
     (hsv : ∀ v : HeightOneSpectrum (𝓞 D.host.F), singleV D.host.F v 1 ∈ intAf D.host.F ∧
@@ -48,9 +48,9 @@ theorem placeIdem_eq_single
   · rw [h0 u huv, (hsv v).2.2 u huv]
 
 /- English proof (translation)
-Use `AF_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, fstA_pairA, fstA_pairA, map_zero, mul_zero]`. Rewrite using `[map_mul, sndA_pairA, sndA_pairA, map_zero]`. Use `Subtype.ext (funext fun u => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV D.host.F u (singleV D.host.F v 1 * singleV D.host.F w 1) = evalV D.host.F u 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Rewrite using `[(hsv w).2.2 u hvw, mul_zero]`. Rewrite using `[(hsv v).2.2 u huv, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem single_mul_single
     (hsv : ∀ v : HeightOneSpectrum (𝓞 D.host.F), singleV D.host.F v 1 ∈ intAf D.host.F ∧
@@ -68,7 +68,7 @@ theorem single_mul_single
     · rw [(hsv v).2.2 u huv, zero_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)) (algebraMap (AF D.host.F) (AE D) x) = _`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finPart_algebraMap (x : AF D.host.F) :
     finPart D (algebraMap (AF D.host.F) (AE D) x) = sndA D.host.F x ⊗ₜ[D.host.F] (1 : D.host.E) := by
@@ -79,25 +79,23 @@ theorem finPart_algebraMap (x : AF D.host.F) :
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D`. Take `⟨P, hP2, hsv, β, hβ, h1⟩` from `GlobalTheory.LatVac.one_eq_sum_singleV_add_two_mul D.host.F`. Establish `H : ∀ v ∈ P, ∃ e : AE D, e * e = e ∧ e * cA D e = 0 ∧ e + cA D e = algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (singleV D.host.F v 1))`. Introduce `v hv`. Take `⟨e, ε, he, hε, hs⟩` from `Formalism.IndefR.Fin.twoSplitIdem D v (hP2 v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e, he.1, he.2.1, by rw [hs, placeIdem_eq_single hsv hε]⟩`. Use `choose! E hEE hEc hEs using H`. Establish `absE : ∀ v ∈ P, E v = E v * algebraMap _ (AE D) (pairA D.host.F 0 (singleV D.host.F v 1))`. Introduce `v hv`. Rewrite using `[← hEs v hv, mul_add, hEE v hv, hEc v hv, add_zero]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `absC : ∀ v ∈ P, cA D (E v) = cA D (E v) * algebraMap _ (AE D) (pairA D.host.F 0 (singleV D.host.F v 1))`. Introduce `v hv`. Rewrite using `[← hEs v hv, mul_add, mul_comm (cA D (E v)) (E v), hEc v hv, ← map_mul, hEE v hv, zero_add]`. Establish `cross : ∀ (x y : AE D) (v w : HeightOneSpectrum (𝓞 D.host.F)), v ≠ w → x = x * algebraMap _ (AE D) (pairA D.host.F 0 (singleV D.host.F v 1)) → y = y * algebraMap _ (AE D) (pairA D.host.F 0 (singleV D.host.F w 1)) → x * y = 0`. Introduce `x y v w hvw hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hee : (∑ v ∈ P, E v) * (∑ v ∈ P, E v) = ∑ v ∈ P, E v`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single v (fun w hw hwv => cross _ _ v w (Ne.symm hwv) (absE v hv) (absE w hw)) (fun h => absurd hv h), hEE v hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hec : (∑ v ∈ P, E v) * cA D (∑ v ∈ P, E v) = 0`. Rewrite using `[map_sum, Finset.sum_mul_sum]`. Use `Finset.sum_eq_zero fun v hv => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single v (fun w hw hwv => cross _ _ v w (Ne.symm hwv) (absE v hv) (absC w hw)) (fun h => absurd hv h), hEc v hv]`. Establish `hsum : (∑ v ∈ P, E v) + cA D (∑ v ∈ P, E v) = algebraMap (AF D.host.F) (AE D) (∑ v ∈ P, pairA D.host.F 0 (singleV D.host.F v 1))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcs : cA D (∑ v ∈ P, E v) = ∑ v ∈ P, cA D (E v)` using `map_sum (cA D) E P`. Combine the equalities or inequalities in the displayed calculation. Establish `hi1 : finPart D (∑ v ∈ P, E v) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ ((map_mul (finPart D) _ _).symm.trans (congrArg (finPart D) hee))`. Establish `hi2 : finPart D (cA D (∑ v ∈ P, E v)) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ ((map_mul (finPart D) _ _).symm.trans (congrArg (finPart D) ((map_mul (cA D) _ _).symm.trans (congrArg (cA D) hee))))`. Use `⟨∑ v ∈ P, E v, hee, hec, hi1, hi2, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨algebraMap (AF D.host.F) (AE D) (pairA D.host.F (algebraMap D.host.F _ (1 / 2)) β), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[finPart_algebraMap, sndA_pairA]`. Conclude with `AddSubgroup.subset_closure ⟨β, hβ, 1, by simp⟩`. Establish `key : 2 * pairA D.host.F (algebraMap D.host.F _ (1 / 2)) β = 1 - ∑ v ∈ P, pairA D.host.F 0 (singleV D.host.F v 1)`. Use `AF_ext ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, map_sub, map_sum, map_one, map_ofNat, fstA_pairA]`. Simplify using `only [fstA_pairA, Finset.sum_const_zero, sub_zero]`. Rewrite using `[← map_ofNat (algebraMap D.host.F (Ainf D.host.F)) 2, ← map_mul]`. Evaluate the numerical expressions. Rewrite using `[map_mul, map_sub, map_sum, map_one, map_ofNat, sndA_pairA]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [sndA_pairA]`. Take the linear combination `-h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (2 : AE D) = algebraMap (AF D.host.F) (AE D) 2 from (map_ofNat _ 2).symm]`. Conclude with `(map_mul _ _ _).symm`.
-
-Use `_ = algebraMap (AF D.host.F) (AE D) (1 - ∑ v ∈ P, pairA D.host.F 0 (singleV D.host.F v 1)) := congrArg _ key`. Use `_ = 1 - algebraMap (AF D.host.F) (AE D) (∑ v ∈ P, pairA D.host.F 0 (singleV D.host.F v 1)) := by`. Rewrite using `[map_sub, map_one]`. Use `_ = 1 - ((∑ v ∈ P, E v) + cA D (∑ v ∈ P, E v)) := by rw [hsum]`. Use `_ = 1 - ∑ v ∈ P, E v - cA D (∑ v ∈ P, E v) := by rw [sub_sub]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idem_half : ∀ (D : D7), ∃ e : AE D, e * e = e ∧ e * cA D e = 0 ∧ finPart D e ∈ intAE D ∧
     finPart D (cA D e) ∈ intAE D ∧ ∃ h : AE D, finPart D h ∈ intAE D ∧ 2 * h = 1 - e - cA D e := by

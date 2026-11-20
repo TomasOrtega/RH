@@ -23,11 +23,11 @@ variable (p : PlF D) (sg : Loc.SplitAt (D.s.atP p).Fp (D.s.atP p).Ep (D.s.atP p)
 include hR hM hge hgq
 
 /- English proof (translation)
-Establish `hcj1 : ∀ x, p1 sg.e ((D.s.atP p).cj x) = p2 sg.e x` using `fun x => by`. Rewrite using `[adeleInfiniteComponent_apply, adele_ext_components, sg.e_cj]`. Both sides reduce to the same expression. Establish `hf1 : ∀ a, p1 sg.e (frFac Zd.δ p a) = cf Zd p a` using `fun a => by rw [frFac_eq, fst_proj_algebraMap]; rfl`. Establish `hf2 : ∀ a, p2 sg.e (frFac Zd.δ p a) = cf Zd p a` using `fun a => by rw [frFac_eq, snd_proj_algebraMap]; rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1 : ∀ k : ℕ, p1 sg.e ((-1 : (D.s.atP p).Ep) ^ k) = (-1) ^ k` using `fun k => by simp`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, CntLocal.ZZP, Loc.HermSp.ZZplusOf, hM, CntLocal.ZhatLoc, LsDatumB.sgnP, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.of_apply, hge, hgq, map_mul, map_sub, fst_proj_symm, apply_ite (p1 sg.e), map_zero, Prod.fst_mul, ← adeleInfiniteComponent_apply, ← ade …`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_last, Nat.sub_self, pow_zero]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem zz1' (u u' : D.what₂.Word) (Z : PairVal.MatR D) :
     (CntLocal.ZZP (M := Zd.M) Zd.δ u u' p Z * LsDatumB.sgnP p).map (p1 sg.e) =
@@ -51,11 +51,11 @@ theorem zz1' (u u' : D.what₂.Word) (Z : PairVal.MatR D) :
   · ring
 
 /- English proof (translation)
-Establish `hcj2 : ∀ x, p2 sg.e ((D.s.atP p).cj x) = p1 sg.e x` using `fun x => by`. Rewrite using `[adeleInfiniteComponent_apply, adele_ext_components, sg.e_cj]`. Both sides reduce to the same expression. Establish `hf1 : ∀ a, p1 sg.e (frFac Zd.δ p a) = cf Zd p a` using `fun a => by rw [frFac_eq, fst_proj_algebraMap]; rfl`. Establish `hf2 : ∀ a, p2 sg.e (frFac Zd.δ p a) = cf Zd p a` using `fun a => by rw [frFac_eq, snd_proj_algebraMap]; rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm2 : ∀ k : ℕ, p2 sg.e ((-1 : (D.s.atP p).Ep) ^ k) = (-1) ^ k` using `fun k => by simp`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, CntLocal.ZZP, Loc.HermSp.ZZplusOf, hM, CntLocal.ZhatLoc, LsDatumB.sgnP, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.of_apply, hge, hgq, map_mul, map_sub, snd_proj_symm, apply_ite (p2 sg.e), map_zero, Prod.snd_mul, ← adeleInfiniteComponent_apply, ← ade …`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_last, Nat.sub_self, pow_zero]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem zz2' (u u' : D.what₂.Word) (Z : PairVal.MatR D) :
     (CntLocal.ZZP (M := Zd.M) Zd.δ u u' p Z * LsDatumB.sgnP p).map (p2 sg.e) =
@@ -80,17 +80,17 @@ theorem zz2' (u u' : D.what₂.Word) (Z : PairVal.MatR D) :
   · ring
 
 /- English proof (translation)
-Use `set q : (D.s.atP p).Fp := (sg.q : (D.s.atP p).Fp) with hqd`. Use `set φ1 := (p1 sg.e).comp (D.s.atP p).ιE with hφ1`. Establish `hq : q ≠ 0` using `fun h => sg.q_irr.ne_zero (Subtype.ext h)`. Establish `hqi : Ring.inverse (qE p) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep q⁻¹`. Simplify using `only [qE, hR]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Ring.inverse_unit ((Units.mk0 q hq).map (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep).toMonoidHom)` as an intermediate fact. Simplify `this` using `only [Units.coe_map, Units.val_mk0, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, Units.coe_map_inv, Units.val_inv_eq_inv_val]`. Establish `htw1 : ∀ s x, p1 sg.e (twist p s x) = p1 sg.e x` using `fun s x => by`. Simplify using `only [twist, hR]`. Rewrite using `[fst_proj_symm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hta1 : ∀ T T' : ℕ, p1 sg.e (tau0 p T T') = -(T : (D.s.atP p).Fp) * q⁻¹` using `fun T T' => by`. Simplify using `only [tau0, hR, map_mul, fst_proj_symm, hqi, fst_proj_algebraMap]`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, modMat_apply', Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Matrix.mul_diagonal, Matrix.diagonal_mul, ptMat_apply', Ecorner, Matrix.of_apply]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hb : b = sgF w a`. Substitute `hb` using the available equality. Simplify using `only [if_true, modMat_blk, map_sub, map_mul, fst_proj_algebraMap, htw1, hqi, apply_ite (p1 sg.e), hta1, map_zero, hφ1, RingHom.comp_apply]`. Distinguish the cases in `ha : a = Fin.last D.R.rS`. Apply the tactic sequence `subst ha; split_ifs <;> first | ring1 | (exfalso; rename_i h1 h2; exact h2 h1.2) | (exfalso; rename_i h1 h2; exact h1 h2.2)`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [ha, false_and, if_false]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hb, if_neg hb, map_zero, map_zero, mul_zero, zero_mul, mul_zero]`. Distinguish the cases in `ha : a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS`. Take `⟨rfl, rfl⟩` from `ha`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ¬ sgF w (Fin.last D.R.rS) = Fin.last D.R.rS` using `fun h => hb h.symm`. Simplify using `[this]`. Simplify using `[ha]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mm1' (Tn T'n : ℕ) (w : Point D.host.E (D.R.rS + 1)) :
     (modMat Zd.δ Tn T'n p w).map (p1 sg.e) =
@@ -128,17 +128,17 @@ theorem mm1' (Tn T'n : ℕ) (w : Point D.host.E (D.R.rS + 1)) :
     · simp [ha]
 
 /- English proof (translation)
-Use `set q : (D.s.atP p).Fp := (sg.q : (D.s.atP p).Fp) with hqd`. Use `set φ2 := (p2 sg.e).comp (D.s.atP p).ιE with hφ2`. Establish `hq : q ≠ 0` using `fun h => sg.q_irr.ne_zero (Subtype.ext h)`. Establish `hqi : Ring.inverse (qE p) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep q⁻¹`. Simplify using `only [qE, hR]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Ring.inverse_unit ((Units.mk0 q hq).map (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep).toMonoidHom)` as an intermediate fact. Simplify `this` using `only [Units.coe_map, Units.val_mk0, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, Units.coe_map_inv, Units.val_inv_eq_inv_val]`. Establish `htw2 : ∀ s x, p2 sg.e (twist p s x) = (-1) ^ s * p2 sg.e x` using `fun s x => by`. Simplify using `only [twist, hR]`. Rewrite using `[snd_proj_symm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hta2 : ∀ T T' : ℕ, p2 sg.e (tau0 p T T') = (T' : (D.s.atP p).Fp) * q⁻¹` using `fun T T' => by`. Simplify using `only [tau0, hR, map_mul, snd_proj_symm, hqi, snd_proj_algebraMap]`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, modMat_apply', Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Matrix.mul_diagonal, Matrix.diagonal_mul, ptMat_apply', Ecorner, Matrix.of_apply, Sg]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hb : b = sgF w a`. Substitute `hb` using the available equality. Establish `hsr` using `sign_rel (R := (D.s.atP p).Fp) _ _ _ (nu_parity w a)`. Simplify using `only [if_true, modMat_blk, map_sub, map_mul, snd_proj_algebraMap, htw2, hqi, apply_ite (p2 sg.e), hta2, map_zero, hφ2, RingHom.comp_apply, hsr]`. Distinguish the cases in `ha : a = Fin.last D.R.rS`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `subst ha; split_ifs <;> first | ring1 | (exfalso; rename_i h1 h2; exact h2 h1.2) | (exfalso; rename_i h1 h2; exact h1 h2.2)`. Simplify using `only [ha, false_and, if_false]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hb, if_neg hb, map_zero, map_zero, mul_zero, zero_mul, mul_zero, zero_mul]`. Distinguish the cases in `ha : a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨rfl, rfl⟩` from `ha`. Establish `: ¬ sgF w (Fin.last D.R.rS) = Fin.last D.R.rS` using `fun h => hb h.symm`. Simplify using `[this]`. Simplify using `[ha]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mm2' (Tn T'n : ℕ) (w : Point D.host.E (D.R.rS + 1)) :
     (modMat Zd.δ Tn T'n p w).map (p2 sg.e) =
@@ -177,17 +177,13 @@ theorem mm2' (Tn T'n : ℕ) (w : Point D.host.E (D.R.rS + 1)) :
     · simp [ha]
 
 /- English proof (translation)
-Establish `hq : (sg.q : (D.s.atP p).Fp) ≠ 0` using `fun h => sg.q_irr.ne_zero (Subtype.ext h)`. Establish `hA' : Z = L * ptMat w * B * Sg D.host.E D.R.rS`. Rewrite using `[← hf', Matrix.mul_assoc, sg_sq, Matrix.mul_one]`. Establish `hs0 : ∀ a : Fin (D.R.rS + 1), (-1 : (D.s.atP p).Fp) ^ (D.R.rS - a.val) ≠ 0` using `fun a => pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)`. Take `⟨L1, U1, hL1, hU1, h1⟩` from `generic_comp (sgF w) (sgF_sgF _) (isLo_map ((p1 sg.e).comp (D.s.atP p).ιE) hL) (isUp_map ((p1 sg.e).comp (D.s.atP p).ιE) hB) (W := (ptMat w).map ((p1 sg.e).comp (D.s.atP p).ιE)) (fun a b hb => by simp only [Matrix.map_apply, ptMat_apply', if_neg hb, map_zero]) (fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Matrix.map_apply, ptMat_apply', if_true]`. Conclude with `(map_ne_zero _).2 (pTau_ne' _ a))`. Use the proof step `(cf Zd p) (cfi Zd p) (cfi_cf Zd p) (sg.q : (D.s.atP p).Fp)⁻¹ (inv_ne_zero hq)`. Use the proof step `(-(((D.mem u).A.T : ℕ) : (D.s.atP p).Fp) / (sg.q : (D.s.atP p).Fp))`. Take `⟨L2, U2, hL2, hU2, h2⟩` from `generic_comp (sgF w) (sgF_sgF _) (isLo_conj (isLo_transpose (isUp_map ((p2 sg.e).comp (D.s.atP p).ιE) hB)) _ _ (fun a => sgn_sq' D.R.rS a) : IsLo (Sg (D.s.atP p).Fp D.R.rS * (B.map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose * Sg (D.s.atP p).Fp D.R.rS)) (isUp_conj (isUp_transpose …`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Sg, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply', if_neg hb, map_zero, mul_zero, zero_mul])`. Use the proof step `(fun a => by`. Simplify using `only [Sg, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply', if_true]`. Conclude with `mul_ne_zero (mul_ne_zero (hs0 _) ((map_ne_zero _).2 (pTau_ne' _ a))) (hs0 _))`. Use the proof step `(cf Zd p) (cfi Zd p) (cfi_cf Zd p) (-(sg.q : (D.s.atP p).Fp)⁻¹) (neg_ne_zero.2 (inv_ne_zero hq))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `((((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) / (sg.q : (D.s.atP p).Fp))`. Establish `e2 : (Z.map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose * Sg (D.s.atP p).Fp D.R.rS = (Sg (D.s.atP p).Fp D.R.rS * (B.map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose * Sg (D.s.atP p).Fp D.R.rS) * (Sg (D.s.atP p).Fp D.R.rS * (ptMat w).map ((p2 sg.e).comp (D.s.atP p).ιE) * Sg (D.s.atP …`. Rewrite using `[hA', Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, sg_map]`. Conclude with `fact2 _ _ _ _ (sg_sq _) (Matrix.diagonal_transpose _) (by rw [← Matrix.transpose_map, ptMat_transpose])`. Use `goal_of (isLo_glue sg.e hL1 hL2) (isUp_glue sg.e hU1 hU2) (mat_eq sg.e ?_ ?_)` and prove the remaining obligations.
-
-Rewrite using `[zz1' Zd p sg hR g hM hge hgq, hf'] conv_lhs => rw [Matrix.map_mul, Matrix.map_mul]`. Rewrite using `[h1]`. Use `conv_rhs => rw [Matrix.map_mul, Matrix.map_mul, glue_map_fst, glue_map_fst]`. Rewrite using `[mm1' Zd p sg hR g hM hge hgq]`. Rewrite using `[zz2' Zd p sg hR g hM hge hgq, e2, h2] conv_rhs => rw [Matrix.map_mul, Matrix.map_mul, glue_map_snd, glue_map_snd]`.
-
-Rewrite using `[mm2' Zd p sg hR g hM hge hgq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zzpSgn_orb_typed (u u' : D.what₂.Word) {w : Point D.host.E (D.R.rS + 1)} {Z L B : PairVal.MatR D}
     (hL : IsLo L) (hB : IsUp B) (hf' : Z * Sg D.host.E D.R.rS = L * ptMat w * B) :
@@ -244,15 +240,13 @@ theorem zzpSgn_orb_typed (u u' : D.what₂.Word) {w : Point D.host.E (D.R.rS + 1
 end Typed
 
 /- English proof (translation)
-Take `⟨L, U, hL, hU, e⟩` from `hZ`. Establish `hL'` using `isLo_of_uni hL`. Establish `hU'` using `isUp_of_uni hU`. Establish `hf' : Z * Sg D.host.E D.R.rS = L * ptMat w * U` using `by rw [← zhatOM_eq]; exact e`. Establish `hAg` using `(Zd.agree p).2.2.2.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hM : (Zd.M p).split with _ | g <;> rcases hR : (D.s.atP p).split with _ | sg <;>`. Simplify using `only [hM, hR] at hAg`. Use `set ι := (D.s.atP p).ιE set fr : Fin (D.R.rS + 1) → (D.s.atP p).Ep := fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf Zd p a) set fri : Fin (D.R.rS + 1) → (D.s.atP p).Ep := fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cfi Zd p a)`. Establish `hfr : ∀ a, fri a * fr a = 1` using `fun a => by simp only [fr, fri, ← map_mul, cfi_cf, map_one]`. Establish `hfr' : ∀ a, fr a * fri a = 1` using `fun a => by simp only [fr, fri, ← map_mul, cf_cfi, map_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmod : Matrix.diagonal fr * (ptMat w).map ι * Matrix.diagonal fr = modMat Zd.δ (D.mem u).A.T (D.mem u').A.T p w`. Use extensionality with `a b`. Rewrite using `[modMat_apply', Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply']`. Distinguish the cases in `hb : b = sgF w a`. Rewrite using `[if_pos hb, if_pos hb, modMat_blk Zd]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [twist, qE, tau0, hR, Ring.inverse_one, mul_one, ite_self, sub_zero, map_mul, fr]`. Substitute `hb` using the available equality. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hb, if_neg hb, map_zero, mul_zero, zero_mul]`. Rewrite using `[zzp_sgn_ord Zd u u' p hM Z, hf', Matrix.map_mul, Matrix.map_mul, regroup fr fri hfr, hmod]`.
-
-Conclude with `goal_of (isLo_conj (isLo_map ι hL') fr fri hfr') (isUp_conj (isUp_map ι hU') fri fr hfr) rfl`. Conclude with `zzpSgn_orb_typed Zd p sg hR g hM hAg.1 hAg.2 u u' hL' hU' hf'`.
+Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zzpSgn_orb (u u' : D.what₂.Word) {w : Point D.host.E (D.R.rS + 1)} {Z : PairVal.MatR D} (hZ : AtMat w Z)
     (p : PlF D) :

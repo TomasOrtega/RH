@@ -11,9 +11,9 @@ namespace RestTerms
 open MvPolynomial Finset
 
 /- English proof (translation)
-Introduce `f N`. Unfold `flagIntegral`. Establish `hne : (blockVandermonde f N).support.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty, Ne, MvPolynomial.support_eq_empty]`. Conclude with `Flag.blockVandermonde_ne_zero f N`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_pos (fun α hα => ?_) hne` and prove the remaining obligations. Establish `hc : coeff α (blockVandermonde f N) ≠ 0` using `mem_support_iff.mp hα`. Use `mul_pos (mul_self_pos.mpr hc) ?_` and prove the remaining obligations. Unfold `Finsupp.prod`. Conclude with `Finset.prod_pos fun i _ => by simp only; exact_mod_cast Nat.factorial_pos _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem FlagIntegralVandermondePos.proof : FlagIntegralVandermondePos.Statement := by
   intro f N

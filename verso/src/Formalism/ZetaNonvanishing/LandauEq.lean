@@ -13,9 +13,9 @@ namespace LandauMellinIdentity
 def Imel (H : ℝ → ℝ) (s : ℂ) : ℂ := ∫ x in Ioi (1:ℝ), (H x : ℂ) * (x : ℂ) ^ (-s - 1)
 
 /- English proof (translation)
-Introduce `s hs`. Establish `hHc : AEStronglyMeasurable (fun x : ℝ => (H x : ℂ)) (volume.restrict (Ioi 1))` using `(Complex.continuous_ofReal.comp_aestronglyMeasurable hH)`. Establish `hnorm : ∀ σ : ℝ, a < σ → IntegrableOn (fun x : ℝ => ‖(H x : ℂ)‖ * x ^ (-σ - 1)) (Ioi 1)`. Introduce `σ hσ`. Use `(hint σ hσ).congr_fun (fun x hx => ?_) measurableSet_Ioi` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hpos x hx)]`. Conclude with `(mellinDeriv (fun x => (H x : ℂ)) a hHc hnorm s hs).differentiableAt |>.differentiableWithinAt`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma imel_differentiableOn {H : ℝ → ℝ} {a : ℝ}
     (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1)))
@@ -37,19 +37,15 @@ end LandauMellinIdentity
 
 open LandauMellinIdentity in
 /- English proof (translation)
-Introduce `H a b hab hH hpos hb Φ hΦ1 hΦ2 hΦeq`. Establish `hint : ∀ σ : ℝ, a < σ → IntegrableOn (fun x : ℝ => H x * x ^ (-σ - 1)) (Ioi 1)` using `landauLemma_of mellinDeriv H a b hab hH hpos hb Φ hΦ1 hΦ2 hΦeq`. Introduce `σ hσ`. Use `⟨hint σ hσ, ?_⟩` and prove the remaining obligations. Establish `hOpen : IsOpen {s : ℂ | a < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hIan : AnalyticOnNhd ℂ (Imel H) {s : ℂ | a < s.re}` using `(imel_differentiableOn hH hpos hint).analyticOnNhd hOpen`. Use `set A : Set ℂ := {s : ℂ | b < s.re} with hA`. Use `set B : Set ℂ := (fun t : ℝ => (t : ℂ)) '' Ioi a with hB`. Establish `hb1A : ((b + 1 : ℝ) : ℂ) ∈ A` using `by simp [hA]`. Establish `hb1B : ((b + 1 : ℝ) : ℂ) ∈ B` using `⟨b + 1, by simp; linarith, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAconv : Convex ℝ A` using `convex_halfSpace_re_gt b`. Establish `hApc : IsPreconnected A` using `hAconv.isPreconnected`. Establish `hBpc : IsPreconnected B` using `(isPreconnected_Ioi).image _ Complex.continuous_ofReal.continuousOn`. Establish `hTpc : IsPreconnected (A ∪ B)` using `IsPreconnected.union _ hb1A hb1B hApc hBpc`. Establish `hTsub : A ∪ B ⊆ {s : ℂ | a < s.re}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `s (hs | ⟨t, ht, rfl⟩)`. Use `show a < s.re`. Establish `: b < s.re` using `hs`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show a < ((t : ℂ)).re`.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Simplify using `using ht`. Establish `hΦan : AnalyticOnNhd ℂ Φ (A ∪ B)`. Introduce and unpack `s (hs | ⟨t, ht, rfl⟩)`. Conclude with `hΦ1 s hs`. Distinguish the cases in `htb : t ≤ b`.
-
-Conclude with `hΦ2 t ht htb`. Conclude with `hΦ1 _ (by simpa using lt_of_not_ge htb)`. Establish `hev : Φ =ᶠ[𝓝 ((b + 1 : ℝ) : ℂ)] Imel H`. Establish `hAo : IsOpen A` using `isOpen_lt continuous_const Complex.continuous_re`. Use `filter_upwards [hAo.mem_nhds hb1A] with s hs`.
-
-Conclude with `hΦeq s hs`. Establish `heq` using `hΦan.eqOn_of_preconnected_of_eventuallyEq (hIan.mono hTsub) hTpc (Or.inl hb1A) hev`. Conclude with `heq (Or.inr ⟨σ, hσ, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem landauEq : LandauEq := by
   intro H a b hab hH hpos hb Φ hΦ1 hΦ2 hΦeq

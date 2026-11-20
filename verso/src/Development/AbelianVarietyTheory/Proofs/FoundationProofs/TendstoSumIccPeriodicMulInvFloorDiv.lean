@@ -8,13 +8,13 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.FloorTelescope
 
 /- English proof (translation)
-Establish `himg : Finset.Icc (-(R:ℤ)) R = (Finset.range (2*R+1)).image (fun k : ℕ => (k:ℤ) - R)`. Use extensionality with `d`. Simplify using `only [Finset.mem_Icc, Finset.mem_image, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(d + R).toNat, by omega, by omega⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Use linear arithmetic over natural numbers and integers. Rewrite using `[himg, Finset.sum_image (by intro a _ b _ h; simp only at h; omega)]`. Use `Finset.sum_range_sub (fun k : ℕ => G ((k:ℤ) - R)) (2*R+1)` as an intermediate fact.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Apply the tactic sequence `congr 2 <;> push_cast <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sum_Icc_sub (G : ℤ → ℂ) (R : ℕ) :
     ∑ d ∈ Finset.Icc (-(R:ℤ)) R, (G (d+1) - G d) = G ((R:ℤ)+1) - G (-(R:ℤ)) := by
@@ -34,41 +34,41 @@ lemma sum_Icc_sub (G : ℤ → ℂ) (R : ℕ) :
   · congr 2 <;> push_cast <;> ring
 
 /- English proof (translation)
-Establish `hsum : ∑ y ∈ Finset.range L, φ y = 0` using `by simpa [hat] using h0`. Establish `hLz : (0:ℤ) < L` using `by exact_mod_cast hL`. Take `⟨u, hu⟩ : ∃ u : ℤ → ℂ, ∀ d, u d = (z + ((L * (d / L) : ℤ) : ℂ))⁻¹` from `⟨_, fun _ => rfl⟩`. Take `⟨Φ, hΦ⟩ : ∃ Φ : ℤ → ℂ, ∀ d, Φ d = ∑ e ∈ Finset.range (d % L).toNat, φ e` from `⟨_, fun _ => rfl⟩`. Take `⟨F, hF⟩ : ∃ F : ℤ → ℂ, ∀ d, F d = Φ d * u d` from `⟨_, fun _ => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ d : ℤ, φ d * u d = F (d+1) - F d`. Introduce `d`. Establish `hdiv` using `Int.mul_ediv_add_emod d L`. Establish `h1` using `Int.emod_nonneg d hLz.ne'`. Establish `h2` using `Int.emod_lt_of_pos d hLz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcast : (((d % L).toNat : ℕ) : ZMod L) = (d : ZMod L)`. Establish `: ((((d % L).toNat : ℕ) : ℤ) : ZMod L) = ((d % L : ℤ) : ZMod L)`. Rewrite using `[Int.toNat_of_nonneg h1]`. Rewrite `this` using `[Int.cast_natCast]`. Rewrite using `[this, ZMod.intCast_mod]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_eq_of_le (show d % L + 1 ≤ L by omega) with hlt | heq` into its components or cases. Establish `hq : (d+1) / L = d / L`. Establish `h3 : d + 1 = (d % L + 1) + L * (d / L)` using `by omega`. Rewrite using `[h3, Int.add_mul_ediv_left _ _ hLz.ne', Int.ediv_eq_zero_of_lt (by omega) hlt, zero_add]`. Establish `hr : (d+1) % L = d % L + 1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Int.mul_ediv_add_emod (d+1) L` as an intermediate fact. Rewrite `this` using `[hq]`. Use linear arithmetic over natural numbers and integers. Establish `hu' : u (d+1) = u d` using `by rw [hu, hu, hq]`. Establish `hΦ' : Φ (d+1) = Φ d + φ d`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hΦ, hΦ, hr, show (d % L + 1).toNat = (d % L).toNat + 1 by omega, Finset.sum_range_succ, hcast]`. Rewrite using `[hF, hF, hu', hΦ']`. Expand and normalize the polynomial expressions, which then agree. Establish `hq : (d+1) / L = d / L + 1`. Rewrite using `[show d + 1 = L * (d / L + 1) by linarith, Int.mul_ediv_cancel_left _ hLz.ne']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hr : (d+1) % L = 0`. Use `Int.mul_ediv_add_emod (d+1) L` as an intermediate fact. Rewrite `this` using `[hq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hΦ0 : Φ (d+1) = 0` using `by rw [hΦ, hr]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hn : (d % L).toNat = L - 1` using `by omega`. Establish `hs` using `Finset.sum_range_succ (fun e : ℕ => φ (e : ZMod L)) (L-1)`. Rewrite `hs` using `[Nat.sub_add_cancel hL, ← hn, hcast, hsum]`. Establish `hΦd : Φ d = - φ d` using `by rw [hΦ]; linear_combination -hs`. Rewrite using `[hF, hF, hΦ0, hΦd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hfun : (fun R : ℕ => ∑ d ∈ Finset.Icc (-(R:ℤ)) R, φ d * (z + (L * (d / L) : ℤ))⁻¹) = fun R : ℕ => F ((R:ℤ)+1) - F (-(R:ℤ))`. Use function extensionality and compare the values at `R`. Rewrite using `[← sum_Icc_sub]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← key, hu]`. Rewrite using `[hfun]`. Use `set M : ℝ := ∑ y ∈ Finset.range L, ‖φ y‖`. Establish `hM : ∀ d, ‖Φ d‖ ≤ M`. Introduce `d`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ]`. Establish `h2` using `Int.emod_lt_of_pos d hLz`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.2 (by omega)) (fun _ _ _ => norm_nonneg _))` and prove the remaining obligations. Establish `uLim : ∀ m : ℕ → ℤ, (∀ R : ℕ, (R:ℝ) - L ≤ |((m R : ℤ) : ℝ)|) → Tendsto (fun R : ℕ => (z + ((m R : ℤ) : ℂ))⁻¹) atTop (𝓝 0)`. Introduce `m hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Simplify using `only [norm_inv]`. Apply `Tendsto.inv_tendsto_atTop` to reduce the goal to its premises. Use `tendsto_atTop_mono (fun R => ?_) (tendsto_atTop_add_const_right _ (-(L:ℝ) - ‖z‖) tendsto_natCast_atTop_atTop)` and prove the remaining obligations. Establish `h1 : ‖((m R : ℤ) : ℂ)‖ ≤ ‖z + ((m R : ℤ) : ℂ)‖ + ‖z‖`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[Complex.norm_intCast]`. Combine the linear relations using `[hm R]`. Establish `hFb : ∀ x, ‖F x‖ ≤ M * ‖(z + ((L * (x / L) : ℤ) : ℂ))⁻¹‖`. Introduce `x`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF, norm_mul, ← hu]`. Conclude with `mul_le_mul_of_nonneg_right (hM x) (norm_nonneg _)`. Establish `hA : Tendsto (fun R : ℕ => F ((R:ℤ)+1)) atTop (𝓝 0)`. Use `squeeze_zero_norm (fun R => hFb _) ?_` and prove the remaining obligations. Establish `hm : ∀ R : ℕ, (R:ℝ) - L ≤ |(((L * (((R:ℤ)+1) / L) : ℤ)) : ℝ)|`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `R`. Establish `e1` using `Int.mul_ediv_add_emod ((R:ℤ)+1) L`. Establish `e2` using `Int.emod_lt_of_pos ((R:ℤ)+1) hLz`. Establish `: (R:ℤ) - L ≤ L * (((R:ℤ)+1) / L)` using `by linarith`. Use `(Int.cast_le (R := ℝ)).2 this` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[Int.cast_sub, Int.cast_natCast, Int.cast_natCast]`. Conclude with `this.trans (le_abs_self _)`. Simplify `((uLim _ hm).norm.const_mul M)` using `only [norm_zero, mul_zero]`. Establish `hB : Tendsto (fun R : ℕ => F (-(R:ℤ))) atTop (𝓝 0)`. Use `squeeze_zero_norm (fun R => hFb _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : ∀ R : ℕ, (R:ℝ) - L ≤ |(((L * ((-(R:ℤ)) / L) : ℤ)) : ℝ)|`. Introduce `R`. Establish `e1` using `Int.mul_ediv_add_emod (-(R:ℤ)) L`. Establish `e2` using `Int.emod_nonneg (-(R:ℤ)) hLz.ne'`. Establish `: (R:ℤ) - L ≤ -(L * ((-(R:ℤ)) / L))` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(Int.cast_le (R := ℝ)).2 this` as an intermediate fact. Rewrite `this` using `[Int.cast_sub, Int.cast_natCast, Int.cast_natCast, Int.cast_neg]`. Conclude with `this.trans (neg_le_abs _)`. Simplify `((uLim _ hm).norm.const_mul M)` using `only [norm_zero, mul_zero]`. Simplify using `using hA.sub hB`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_sum_Icc_div (L : ℕ) (φ : ZMod L → ℂ) (z : ℂ) (hL : 0 < L) (hz : 0 < z.im)
     (h0 : hat φ 0 = 0) :

@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.NGCut.NormalIntegrality
 
 /- English proof (translation)
-The claim follows from `nmlInt_of fun _ _ Y _ _ t0 t h0 h hR hG hT hT' => ⟨(Formalism.L2.SG.NGCut.NormalVectorPairings.line_occ Y t0 t h0 h hR hG hT hT').1.1, (Formalism.L2.SG.NGCut.NormalVectorPairings.line_occ Y t0 t h0 h hR hG hT hT').2.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem NmlInt_holds : Formalism.L2.SG.NGCut.NormalVectorPairings.NmlInt :=
   nmlInt_of fun _ _ Y _ _ t0 t h0 h hR hG hT hT' =>

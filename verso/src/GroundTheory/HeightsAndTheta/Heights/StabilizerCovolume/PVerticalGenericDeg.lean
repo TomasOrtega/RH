@@ -20,13 +20,13 @@ attribute [local instance] MvPolynomial.algebraMvPolynomial
 variable {K : Type} {ι : K → Type}
 
 /- English proof (translation)
-Set `S : Submonoid (MRing ι)` to `(nonZeroDivisors ℤ).map (C (σ := Σ k, ι k))`. Establish `: IsLocalization S (MRingOver ℚ ι)` using `MvPolynomial.isLocalization (nonZeroDivisors ℤ) ℚ`. Establish `hφ : algebraMap (MRing ι) (MRingOver ℚ ι) = MvPolynomial.map (Int.castRingHom ℚ)` using `by show MvPolynomial.map (algebraMap ℤ ℚ) = _`. Rewrite using `[RingHom.ext_int (algebraMap ℤ ℚ) (Int.castRingHom ℚ)]`. Establish `hdisj : Disjoint (S : Set (MRing ι)) W`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨m, hm, rfl⟩ hmW`. Establish `h0 : m ∈ W.comap (C : ℤ →+* MRing ι)` using `hmW`. Rewrite `h0` using `[hh, Ideal.mem_bot]`. Conclude with `zero_notMem_nonZeroDivisors (h0 ▸ hm)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `IsLocalization.under_map_of_isPrime_disjoint S (MRingOver ℚ ι) hW hdisj`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite using `[← h]`. Use `show algebraMap (MRing ι) (MRingOver ℚ ι) x ∈ Ideal.map (algebraMap (MRing ι) (MRingOver ℚ ι)) W`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφ]`. Conclude with `hx`. Introduce `hx`. Conclude with `Ideal.mem_map_of_mem _ hx`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_map_iff {W : Ideal (MRing ι)} (hW : W.IsPrime) (hh : IsHorizontal W) (x : MRing ι) :
     MvPolynomial.map (Int.castRingHom ℚ) x ∈ W.map (MvPolynomial.map (Int.castRingHom ℚ)) ↔ x ∈ W := by
@@ -53,7 +53,7 @@ theorem map_mem_map_iff {W : Ideal (MRing ι)} (hW : W.IsPrime) (hh : IsHorizont
     exact Ideal.mem_map_of_mem _ hx
 
 /- English proof (translation)
-Introduce `d hd`. Apply `h` to reduce the goal to its premises. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[coeff_map, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMultiHomog_map [DecidableEq K] {x : MRing ι} {e : K → ℕ} (h : NumbersDVR.IsMultiHomog x e) :
     NumbersDVR.IsMultiHomog (MvPolynomial.map (Int.castRingHom ℚ) x) e := by
@@ -66,37 +66,33 @@ theorem isMultiHomog_map [DecidableEq K] {x : MRing ι} {e : K → ℕ} (h : Num
 end VerticalGenericDeg
 
 /- English proof (translation)
-Introduce `K _ ι _ P W d p b f g hP hp hV hW hPW`. Use `set φ : MRing ι →+* MRingOver ℚ ι := MvPolynomial.map (Int.castRingHom ℚ) with hφ`. Establish `hPN : NumbersDVR.IsMultiProjPrime P` using `(Bridge.isMultiProjPrime_iff P).mpr hP.2.1`. Establish `: P.IsPrime` using `hPN.isPrime`. Establish `hWN : NumbersDVR.IsMultiProjPrime W` using `(Bridge.isMultiProjPrime_iff W).mpr hW.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: W.IsPrime` using `hWN.isPrime`. Establish `hWh : IsHorizontal W` using `hW.2.2.1`. Establish `hp0 : (p : ℤ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hpW : (C (p : ℤ) : MRing ι) ∉ W`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : (p : ℤ) ∈ W.comap (C : ℤ →+* MRing ι)` using `h`. Rewrite `h0` using `[hWh, Ideal.mem_bot]`. Conclude with `hp0 h0`. Take `⟨bf, bg, hf, hg, hb⟩` from `hV.degrees`. Establish `hfN : NumbersDVR.IsMultiHomog f bf` using `(Bridge.isMultiHomog_iff f bf).mpr hf`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgN : NumbersDVR.IsMultiHomog g bg` using `(Bridge.isMultiHomog_iff g bg).mpr hg`. Take `⟨u, v, hu, hv, huv⟩` from `hV.unit_off_fibre W ‹_› hPW hW.2.1.2.2 hpW`. Take `⟨u', v', e, e', hu', hv', hdeg, hu'W, hv'W, huv'⟩` from `NumbersDVR.exists_form_pair hPN.multiHomog hPW hfN hgN hV.num_not_mem hV.den_not_mem hu hv huv`. Establish `hkey : ∀ W' : Ideal (MRingOver ℚ ι), W'.IsPrime → W.map φ ≤ W' → NumbersDVR.IsRelevant W' → NumbersDVR.divCycle (W.map φ) (φ v') W' = NumbersDVR.divCycle (W.map φ) (φ u') W'`. Introduce `W' hW' hle hrel`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPle : P ≤ W'.comap φ` using `fun x hx => hle (Ideal.mem_map_of_mem φ (hPW hx))`. Establish `hrel' : IsRelevant (W'.comap φ)`. Introduce `k`. Take `⟨i, hi⟩` from `hrel k`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h' : φ (X ⟨k, i⟩) ∈ W'` using `h`. Rewrite `h'` using `[hφ, map_X]`. Then use the resulting hypothesis. Establish `hpW' : (C (p : ℤ) : MRing ι) ∉ W'.comap φ`. Introduce `h`. Establish `hu : IsUnit (φ (C (p : ℤ)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hφ, map_C]`. Conclude with `(isUnit_iff_ne_zero.mpr (by simpa using hp0)).map C`. Conclude with `hW'.ne_top (Ideal.eq_top_of_isUnit_mem _ h hu)`. Take `⟨s, t, hs, ht, hst⟩` from `hV.unit_off_fibre _ (Ideal.comap_isPrime φ W') hPle hrel' hpW'`. Establish `h1 : g * (s * v' - t * u') ∈ P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : g * (s * v' - t * u') = u' * (s * f - t * g) - s * (u' * f - v' * g)` using `by ring`. Rewrite using `[e1]`. Conclude with `P.sub_mem (P.mul_mem_left _ hst) (P.mul_mem_left _ huv')`. Establish `h2 : s * v' - t * u' ∈ P` using `(‹P.IsPrime›.mem_or_mem h1).resolve_left hV.den_not_mem`. Establish `h3 : φ s * φ v' - φ t * φ u' ∈ W.map φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← map_mul, ← map_mul, ← map_sub]`. Conclude with `Ideal.mem_map_of_mem φ (hPW h2)`. Establish `hs' : φ s ∉ W'` using `hs`. Establish `ht' : φ t ∉ W'` using `ht`. Conclude with `NumbersDVR.divCycle_eq_of_mul_sub_mem hs' ht' h3`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hrat : NumbersDVR.ratDiv (W.map φ) (φ v') (φ u') = 0`. Use function extensionality and compare the values at `W'`. Use `show NumbersDVR.divCycle _ _ W' - NumbersDVR.divCycle _ _ W' = 0`. Distinguish the cases in `h1 : NumbersDVR.divCycle (W.map φ) (φ v') W' = 0`. Distinguish the cases in `h2 : NumbersDVR.divCycle (W.map φ) (φ u') W' = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, sub_zero]`. Take `⟨a1, a2, a3⟩` from `NumbersDVR.le_and_isRelevant_of_divCycle_ne_zero h2`. Rewrite using `[hkey W' a1 a2 a3, sub_self]`. Take `⟨a1, a2, a3⟩` from `NumbersDVR.le_and_isRelevant_of_divCycle_ne_zero h1`. Rewrite using `[hkey W' a1 a2 a3, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hX : IsProjVarF (W.map φ) 1` using `isProjVarF_map_of_isArithVar (D := 1) hW`. Establish `hXN : NumbersDVR.IsMultiProjPrime (W.map φ)` using `(Bridge.isMultiProjPrime_iff _).mpr hX.1`. Establish `hdim : ringKrullDim (MRingOver ℚ ι ⧸ W.map φ) = ((0 + 1 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[hX.2, Nat.zero_add]`. Establish `hv'Q : φ v' ∉ W.map φ` using `fun h => hv'W ((VerticalGenericDeg.map_mem_map_iff ‹_› hWh v').mp h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hu'Q : φ u' ∉ W.map φ` using `fun h => hu'W ((VerticalGenericDeg.map_mem_map_iff ‹_› hWh u').mp h)`. Establish `hab : ∀ k, (e' k : ℤ) - e k = b k`. Introduce `k`. Establish `h1 : (e' k : ℤ) + bg k = e k + bf k` using `by exact_mod_cast congrFun hdeg k`. Establish `h2 : (bf k : ℤ) - bg k = b k` using `congrFun hb k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR` using `NumbersDVR.IntNumRatSection.proof FieldNumbers.CutRational.full ℚ K ι 0 (W.map φ) hXN hdim (![] : Fin 0 → K → ℤ) b (φ v') (φ u') e' e (VerticalGenericDeg.isMultiHomog_map hv') (VerticalGenericDeg.isMultiHomog_map hu') hv'Q hu'Q hab`. Establish `hsnoc : (Fin.snoc (α` using `fun _ => K → ℤ) (![] : Fin 0 → K → ℤ) b) = fun _ : Fin 1 => b := by`. Use function extensionality and compare the values at `j`.
-
-Use `fin_cases j`. Both sides reduce to the same expression. Rewrite `hR` using `[hsnoc, hrat]`. Unfold `genDeg`. Rewrite using `[hR]`.
-
-Simplify using `[NumbersDVR.cycEval]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem VerticalGenericDeg.proof : VerticalGenericDeg.Statement := by
   intro K _ ι _ P W d p b f g hP hp hV hW hPW

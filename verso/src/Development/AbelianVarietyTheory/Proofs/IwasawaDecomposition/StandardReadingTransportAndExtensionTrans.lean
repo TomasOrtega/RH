@@ -24,7 +24,7 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 namespace GlobalTheory.Mem.R3.Rw.StdTr
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Consider the cases of `h`. Conclude with `congrArg g (Fin.ext hi.symm)`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem heq_fin_apply {m m' : ℕ} {f : Fin m → ℕ} {g : Fin m' → ℕ} (h : HEq g f) (hm : m' = m) (i : Fin m) (i' : Fin m')
     (hi : (i : ℕ) = i') : g i' = f i := by
@@ -33,71 +33,47 @@ theorem heq_fin_apply {m m' : ℕ} {f : Fin m → ℕ} {g : Fin m' → ℕ} (h :
   exact congrArg g (Fin.ext hi.symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨k, lt_of_lt_of_eq k.2 (heq_fin_apply h hm i i' hi).symm⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem heq_fin_mid {m m' : ℕ} {f : Fin m → ℕ} {g : Fin m' → ℕ} (h : HEq g f) (hm : m' = m) (i : Fin m) (i' : Fin m')
     (hi : (i : ℕ) = i') (k : Fin (f i)) : ∃ k' : Fin (g i'), (k : ℕ) = k' :=
   ⟨⟨k, lt_of_lt_of_eq k.2 (heq_fin_apply h hm i i' hi).symm⟩, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cast h.symm a, cast_heq _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem heq_mid {α β : Type} (h : β = α) (a : α) : ∃ b : β, HEq b a := ⟨cast h.symm a, cast_heq _ _⟩
 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hmm : (w₂.st Z₂).toD7.R.m = (w₁.st Z₁).toD7.R.m` using `congrArg (fun P : Pre => P.R.m) e₁₂.1`. Establish `hm : ∀ i : Fin (w₁.st Z₁).toD7.R.m, ∃ i' : Fin (w₂.st Z₂).toD7.R.m, (i : ℕ) = i'` using `fun i => ⟨⟨i, lt_of_lt_of_eq i.2 hmm.symm⟩, rfl⟩`. Use `@Ext.mk B₁ B₃ f₁ f₃ T₁ T₃ w₁ w₃ Z₁ Z₃ h₁ h₃ W₁ W₃ z₁ z₃ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans y.H x.H`. Use `kexactB HEq.trans y.l x.l`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `kexactB HEq.trans y.c x.c`. Use `kexactB HEq.trans y.Dw x.Dw`. Use `kexactB HEq.trans y.Xo x.Xo`. Use `kexactB HEq.trans y.U x.U`. Use `kexactB HEq.trans y.V x.V`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `kexactB HEq.trans y.dict x.dict`. Use `kexactB HEq.trans y.mu x.mu`. Use `kexactB HEq.trans y.Kf x.Kf`. Use `kexactB HEq.trans y.cE x.cE`. Use `kexactB HEq.trans y.chiW x.chiW`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `kexactB HEq.trans y.x₀ x.x₀`. Use `kexactB HEq.trans y.iota x.iota`. Use `kexactB HEq.trans y.ψ x.ψ`. Use `kexactB HEq.trans y.θ x.θ`. Use `kexactB HEq.trans y.βW x.βW`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `kexactB HEq.trans y.βY x.βY`. Use `kexactB HEq.trans y.nW x.nW`. Use `kexactB HEq.trans y.βV x.βV`. Use `kexactB HEq.trans y.ΛV x.ΛV`. Use `kexactB HEq.trans y.ΛW x.ΛW`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `kexactB HEq.trans y.Pg x.Pg`. Use `kexactB HEq.trans y.eG x.eG`. Use `kexactB HEq.trans y.Sb x.Sb`. Introduce `i i'' h`. Use `Exists.elim (hm i) fun i' hi' => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a` using `x.BV i i' hi'`. Establish `b` using `y.BV i' i'' (hi'.symm.trans h)`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans b.1 a.1`. Use `And.intro ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `kexactB HEq.trans b.2.1 a.2.1`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans b.2.2.1 a.2.2.1`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans b.2.2.2.1 a.2.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans b.2.2.2.2.1 a.2.2.2.2.1`. Use `kexactB HEq.trans b.2.2.2.2.2 a.2.2.2.2.2`. Introduce `i i'' h`. Use `Exists.elim (hm i) fun i' hi' => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a` using `x.MW i i' hi'`. Establish `b` using `y.MW i' i'' (hi'.symm.trans h)`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans (b.1) (a.1)`. Use `And.intro ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `kexactB HEq.trans (b.2.1) (a.2.1)`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans (b.2.2.1) (a.2.2.1)`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans (b.2.2.2.1) (a.2.2.2.1)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans (b.2.2.2.2.1) (a.2.2.2.2.1)`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans (b.2.2.2.2.2.1) (a.2.2.2.2.2.1)`. Use `And.intro ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `kexactB HEq.trans (b.2.2.2.2.2.2.1) (a.2.2.2.2.2.2.1)`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans (b.2.2.2.2.2.2.2.1) (a.2.2.2.2.2.2.2.1)`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans (b.2.2.2.2.2.2.2.2.1) (a.2.2.2.2.2.2.2.2.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans (b.2.2.2.2.2.2.2.2.2.1) (a.2.2.2.2.2.2.2.2.2.1)`. Introduce `φ φ'' hφ`. Use `Exists.elim (heq_mid (GlobalTheory.T.cuspFormType_eq_at_corresponding_lifts z₁ z₂ e₁₂ x i i' hi') φ) fun φ' hφ' => ?_` and prove the remaining obligations. Use `kexactB HEq.trans (b.2.2.2.2.2.2.2.2.2.2 φ' φ'' (HEq.trans hφ hφ'.symm)) (a.2.2.2.2.2.2.2.2.2.2 φ φ' hφ')`.
-
-Introduce `i i'' h φ φ'' hφ k k'' hk`. Use `Exists.elim (hm i) fun i' hi' => ?_` and prove the remaining obligations. Use `Exists.elim (heq_mid (GlobalTheory.T.cuspFormType_eq_at_corresponding_lifts z₁ z₂ e₁₂ x i i' hi') φ) fun φ' hφ' => ?_` and prove the remaining obligations. Use `Exists.elim (heq_fin_mid x.nW hmm i i' hi' k) fun k' hk' => ?_` and prove the remaining obligations. Use `kexactB Eq.trans (y.forms i' i'' (hi'.symm.trans h) φ' φ'' (HEq.trans hφ hφ'.symm) k' k'' (hk'.symm.trans hk)) (x.forms i i' hi' φ φ' hφ' k k' hk')`.
-
-Introduce `v v'' hB`. Use `Exists.elim (GlobalTheory.T.exists_intermediate_coefficientPlace_between (w₁.D Z₁) (w₂.D Z₂) (w₃.D Z₃) e₂₃.2.2.2 v v'' hB) fun v' h => ?_` and prove the remaining obligations. Use `kexactB Iff.trans (x.W1 v v' h.1) (y.W1 v' v'' h.2)`. Introduce `i i'' h`. Use `Exists.elim (hm i) fun i' hi' => ?_` and prove the remaining obligations.
-
-Establish `a` using `x.cV i i' hi'`. Establish `b` using `y.cV i' i'' (hi'.symm.trans h)`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans b.1 a.1`. Use `kexactB HEq.trans b.2 a.2`.
-
-Use `kexactB HEq.trans y.pb x.pb`. Use `kexactB HEq.trans y.ΛY x.ΛY`. Introduce `i i'' h`. Use `Exists.elim (hm i) fun i' hi' => ?_` and prove the remaining obligations. Establish `a` using `x.κ i i' hi'`.
-
-Establish `b` using `y.κ i' i'' (hi'.symm.trans h)`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans b.1 a.1`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans b.2.1 a.2.1`.
-
-Use `kexactB Eq.trans b.2.2 a.2.2`. Introduce `i i'' h`. Use `Exists.elim (hm i) fun i' hi' => ?_` and prove the remaining obligations. Establish `a` using `x.ref i i' hi'`. Establish `b` using `y.ref i' i'' (hi'.symm.trans h)`.
-
-Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans b.1 a.1`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans b.2.1 a.2.1`. Use `And.intro ?_ ?_` and prove the remaining obligations.
-
-Use `kexactB HEq.trans b.2.2.1 a.2.2.1`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans b.2.2.2.1 a.2.2.2.1`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans b.2.2.2.2.1 a.2.2.2.2.1`.
-
-Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans b.2.2.2.2.2.1 a.2.2.2.2.2.1`. Use `And.intro ?_ ?_` and prove the remaining obligations. Use `kexactB HEq.trans b.2.2.2.2.2.2.1 a.2.2.2.2.2.2.1`. Use `kexactB HEq.trans b.2.2.2.2.2.2.2 a.2.2.2.2.2.2.2`.
-
-Introduce `i i'' h ok ok'' φ φ'' C`. Use `Exists.elim (hm i) fun i' hi' => ?_` and prove the remaining obligations. Establish `hv : HEq (B₂.primes w₂.px).vGs (B₁.primes w₁.px).vGs`. Establish `a` using `heq_of_eq z₂.lev.Pg.symm`. Establish `b` using `heq_of_eq z₁.lev.Pg`.
-
-Use `kexactB HEq.trans (HEq.trans a x.Pg) b`. Establish `L` using `GlobalTheory.T.referenceTupleLiftForms_pass_to_coeffEnlargement w₁ w₂ W₁ W₂ e₁₂ hv (GlobalTheory.T.tameCharacters_typePrimes_eq_of_extension z₁ z₂ e₁₂ x) ((i : ℕ) + 1) ((i' : ℕ) + 1) (congrArg (· + 1) hi')`. Use `Exists.elim (L.2 φ) fun φ' C' => ?_` and prove the remaining obligations. Establish `ok' : (Formalism.L2.Col.mtKGSD (Pr` using `B₂.primes w₂.px) B₂.wts w₂.I.Ch w₂.I.sel (mu0F (X := B₂.fields) (tuOf w₂.I (usedOf w₂.I T₂ W₂))).1 ((i' : ℕ) + 1)).Ok := Formalism.L2.Col.mtKOk _ _ _ _ h₂ _`. Establish `a` using `x.jL i i' hi' ok ok' φ φ' C'`.
-
-Establish `b` using `y.jL i' i'' (hi'.symm.trans h) ok' ok'' φ' φ'' fun d' d'' hd => by`. Use `Exists.elim (heq_mid L.1.symm d') fun d hd' => ?_` and prove the remaining obligations. Use `kexactB HEq.trans (C d d'' (HEq.trans hd hd'.symm)) (HEq.symm (C' d d' hd'.symm))`. Use `kexactB HEq.trans b a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ext_trans {B₁ B₂ B₃ : Base} {f₁ f₂ f₃ T₁ T₂ T₃} {w₁ : ColW B₁ f₁ T₁} {w₂ : ColW B₂ f₂ T₂} {w₃ : ColW B₃ f₃ T₃} {Z₁ : w₁.Lt} {Z₂ : w₂.Lt} {Z₃ : w₃.Lt} {h₁ h₂ h₃ W₁ W₂ W₃} {z₁ : Dat (w₁.st Z₁) w₁.I h₁ T₁ W₁} {z₂ : Dat (w₂.st Z₂) w₂.I h₂ T₂ W₂} {z₃ : Dat (w₃.st Z₃) w₃.I h₃ T₃ W₃} (e₁₂ : Enl B₁ B₂) (e₂₃ : Enl B₂ B₃) (x : Ext z₁ z₂) (y : Ext z₂ z₃) :
     Ext z₁ z₃ := by
@@ -233,7 +209,7 @@ theorem ext_trans {B₁ B₂ B₃ : Base} {f₁ f₂ f₃ T₁ T₂ T₃} {w₁ 
     kexactB HEq.trans b a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨std_copy, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ e₁₂ e₂₃ x y => ext_trans e₁₂ e₂₃ x y⟩`.
+Supply the required witnesses or components.
 -/
 theorem std_copy_and_ext_trans : (∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z Z' : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w.st Z') w.I hX T Wt), z'.Xg = z.Xg → z'.tr = z.tr → HEq z'.R (real3 (a := ⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) ⟨Z'.W, Z'.V, Z'.S, Z'.N, Z'.G⟩ (iK := z.alg) z.R) → HEq z'.core (coreJ (a := ⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) ⟨Z'.W, Z'.V, Z'.S, Z'.N, Z'.G⟩ z.core) → z.Std → z'.Std) ∧ ∀ (B₁ B₂ B₃ : Base) f₁ f₂ f₃ T₁ T₂ T₃ (w₁ : ColW B₁ f₁ T₁) (w₂ : ColW B₂ f₂ T₂) (w₃ : ColW B₃ f₃ T₃) (Z₁ : w₁.Lt) (Z₂ : w₂.Lt) (Z₃ : w₃.Lt) h₁ h₂ h₃ W₁ W₂ W₃ (z₁ : Dat (w₁.st Z₁) w₁.I h₁ T₁ W₁) (z₂ : Dat (w₂.st Z₂) w₂.I h₂ T₂ W₂) (z₃ : Dat (w₃.st Z₃) w₃.I h₃ T₃ W₃), Enl B₁ B₂ → Enl B₂ B₃ → Ext z₁ z₂ → Ext z₂ z₃ → Ext z₁ z₃ :=
   ⟨std_copy, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ e₁₂ e₂₃ x y => ext_trans e₁₂ e₂₃ x y⟩

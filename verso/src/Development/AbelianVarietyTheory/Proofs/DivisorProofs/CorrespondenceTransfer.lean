@@ -26,7 +26,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Div.CorrespondenceTransfer
 
 /- English proof (translation)
-The claim follows from `fun c ↦ by simp only [LinearMap.smul_apply, smul_eq_mul, hx c, map_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem corr_smul' {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'}
     {A : Over (Sp R)} [GrpObj A] {A' : Over (Sp R')} [GrpObj A'] {b : Sp R' ⟶ Sp R} {q : A'.left ⟶ A.left}
@@ -35,15 +35,15 @@ theorem corr_smul' {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'}
   simp only [LinearMap.smul_apply, smul_eq_mul, hx c, map_mul]
 
 /- English proof (translation)
-Introduce `R j hj A _ A' _ p m hm n eH x y k hk X Y hX hY`. Take `⟨r, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := R) k`. Establish `hs0 : (s : ℂ) ≠ 0`. Introduce `h0`. Conclude with `nonZeroDivisors.ne_zero hs (Subtype.ext (by simpa using h0))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsK : algebraMap R (FractionRing R) s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hs`. Establish `hlin : s • x = r • y`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.inK (O` using `R) (FractionRing R) (Fin n → R) (s • x - r • y) = 0 := by`. Rewrite using `[map_sub, map_smul, map_smul, hk, ← algebraMap_smul (FractionRing R) s, ← algebraMap_smul (FractionRing R) r, smul_smul, show algebraMap R (FractionRing R) s * (algebraMap R (FractionRing R) r / algebraMap R (FractionRing R) s) = algebraMap R (FractionRing R) r by field_simp, sub …`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.Div.eigen_line_bilinear.inK_ne_zero (K := FractionRing R) inferInstance (sub_ne_zero.2 hne) h1`. Establish `e1 : m.Corr (eH.symm (s • x)) (algebraMap R ℂ s • X)`. Rewrite using `[map_smul]`. Conclude with `corr_smul' hX s`. Establish `e2 : m.Corr (eH.symm (s • x)) (algebraMap R ℂ r • Y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hlin, map_smul]`. Conclude with `corr_smul' hY r`. Establish `heq` using `hm.unique e1 e2`. Establish `hjk : j (algebraMap R (FractionRing R) r / algebraMap R (FractionRing R) s) = (r : ℂ) / s`. Rewrite using `[map_div₀, hj, hj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hjk]`. Establish `hs' : algebraMap R ℂ s = (s : ℂ)` using `rfl`. Establish `hr' : algebraMap R ℂ r = (r : ℂ)` using `rfl`. Rewrite `heq` using `[hs', hr']`. Rewrite using `[div_eq_inv_mul, mul_smul, ← heq, smul_smul, inv_mul_cancel₀ hs0, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer : ∀ (R : Subring ℂ) (j : FractionRing R →+* ℂ), (∀ x : R, j (algebraMap R (FractionRing R) x) = x) →
     ∀ (A : Over (Sp R)) [GrpObj A] (A' : Over (Sp ℂ)) [GrpObj A'] (p : A'.left ⟶ A.left)

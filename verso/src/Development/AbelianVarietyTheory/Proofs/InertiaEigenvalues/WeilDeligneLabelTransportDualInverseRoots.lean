@@ -22,7 +22,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
 variable {A A' : ValuationSubring Ω} {w w' : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', ← hc, ← map_inv₀, ← hc, map_eq_zero_iff _ c.injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_lt_iff (c : Ω ≃+* Ω) (hc : ∀ y, y ∈ A ↔ c y ∈ A') (y : Ω) :
     A'.valuation (c y) < 1 ↔ A.valuation y < 1 := by
@@ -32,9 +32,9 @@ theorem val_lt_iff (c : Ω ≃+* Ω) (hc : ∀ y, y ∈ A ↔ c y ∈ A') (y : �
 omit [NumberField E] in
 
 /- English proof (translation)
-Set `t : 𝓞 E ≃+* 𝓞 E` to `RingOfIntegers.mapRingEquiv s`. Establish `h1 : w.asIdeal = w'.asIdeal.comap t`. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, ← h x, ← h' (t x), ← val_lt_iff c hc, hs]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : w'.asIdeal = w.asIdeal.map (t : 𝓞 E →+* 𝓞 E)`. Rewrite using `[h1]`. Conclude with `(Ideal.map_comap_of_surjective (t : 𝓞 E →+* 𝓞 E) t.surjective _).symm`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv w.asIdeal w'.asIdeal t h2).toEquiv).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normV_eq (s : E ≃+* E) (c : Ω ≃+* Ω)
     (hs : ∀ x : E, c (algebraMap E Ω x) = algebraMap E Ω (s x)) (hc : ∀ y, y ∈ A ↔ c y ∈ A')
@@ -52,11 +52,11 @@ theorem normV_eq (s : E ≃+* E) (c : Ω ≃+* Ω)
 open Pointwise in
 
 /- English proof (translation)
-Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `γ' • A' = A'`. Use extensionality with `x`. Take `⟨x, rfl⟩` from `γ'.surjective x`. Take `⟨x, rfl⟩` from `c.surjective x`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← AlgEquiv.smul_def, ValuationSubring.smul_mem_pointwise_smul_iff, AlgEquiv.smul_def, hγ, ← hc, ← hc, apply_mem_iff_of_mem_Dec h.1]`. Take `⟨x, rfl⟩` from `c.surjective x`. Rewrite using `[hγ, ← map_sub, val_lt_iff c hc]`. Use `h.2 x ?_` and prove the remaining obligations. Rewrite `hx`, the goal using `[ValuationSubring.valuation_le_one_iff]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(hc x).mpr hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_Ine_of (c : Ω ≃+* Ω) (hc : ∀ y, y ∈ A ↔ c y ∈ A') {γ γ' : G E Ω}
     (hγ : ∀ y, γ' (c y) = c (γ y)) (h : γ ∈ Ine (F := E) A) : γ' ∈ Ine (F := E) A' := by
@@ -74,7 +74,7 @@ theorem mem_Ine_of (c : Ω ≃+* Ω) (hc : ∀ y, y ∈ A ↔ c y ∈ A') {γ γ
     exact (hc x).mpr hx
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mem_Ine_of c.symm (fun y => by rw [hc, c.apply_symm_apply]) (fun y => by rw [eq_comm, c.symm_apply_eq, ← hγ, c.apply_symm_apply]), mem_Ine_of c hc hγ⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_Ine_iff (c : Ω ≃+* Ω) (hc : ∀ y, y ∈ A ↔ c y ∈ A') {γ γ' : G E Ω}
     (hγ : ∀ y, γ' (c y) = c (γ y)) : γ' ∈ Ine (F := E) A' ↔ γ ∈ Ine (F := E) A :=
@@ -84,7 +84,7 @@ theorem mem_Ine_iff (c : Ω ≃+* Ω) (hc : ∀ y, y ∈ A ↔ c y ∈ A') {γ �
 omit [NumberField E] in
 
 /- English proof (translation)
-Rewrite using `[mem_Wild, mem_Wild, c.surjective.forall]`. Use `forall_congr' fun y => ?_` and prove the remaining obligations. Rewrite using `[map_ne_zero_iff _ c.injective, hγ, ← val_lt_iff c hc, map_sub c, map_div₀ c, map_one c]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_Wild_iff (c : Ω ≃+* Ω) (hc : ∀ y, y ∈ A ↔ c y ∈ A') {γ γ' : G E Ω}
     (hγ : ∀ y, γ' (c y) = c (γ y)) : γ' ∈ Wild E A' ↔ γ ∈ Wild E A := by
@@ -96,7 +96,7 @@ theorem mem_Wild_iff (c : Ω ≃+* Ω) (hc : ∀ y, y ∈ A ↔ c y ∈ A') {γ 
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `⟨AlgEquiv.ofRingEquiv (f := (c.symm.trans γ.toRingEquiv).trans c) fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `s.surjective x show c (γ (c.symm _)) = _`. Rewrite using `[← hs, c.symm_apply_apply, AlgEquiv.commutes]`. Use `show c (γ (c.symm _)) = _`. Rewrite using `[c.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj (s : E ≃+* E) (c : Ω ≃+* Ω)
     (hs : ∀ x : E, c (algebraMap E Ω x) = algebraMap E Ω (s x)) (γ : G E Ω) :
@@ -112,7 +112,7 @@ theorem exists_conj (s : E ≃+* E) (c : Ω ≃+* Ω)
 omit [NumberField E] in
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `exists_conj s.symm c.symm (fun x => by rw [c.symm_apply_eq, hs, s.apply_symm_apply]) γ'`. Use `⟨γ, fun y => ?_⟩` and prove the remaining obligations. Use `hγ (c y)` as an intermediate fact. Rewrite `this` using `[c.symm_apply_apply]`. Rewrite using `[this, c.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_conj' (s : E ≃+* E) (c : Ω ≃+* Ω)
     (hs : ∀ x : E, c (algebraMap E Ω x) = algebraMap E Ω (s x)) (γ' : G E Ω) :
@@ -127,17 +127,15 @@ theorem exists_conj' (s : E ≃+* E) (c : Ω ≃+* Ω)
 variable [IsAlgClosure E Ω]
 
 /- English proof (translation)
-Establish `hiff : TeichmullerInertiaLabelCondition A' w' t γ' ↔ TeichmullerInertiaLabelCondition A w t γ`. Unfold `TeichmullerInertiaLabelCondition`. Rewrite using `[normV_eq s c hs hc h h', mem_Ine_iff c hc hγ]`. Distinguish the cases in `H : TeichmullerInertiaLabelCondition A w t γ`. Establish `H'` using `hiff.mpr H`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hsp : b.tameSpace = b'.tameSpace`. Use extensionality with `v`. Rewrite using `[WDRep.mem_tameSpace, WDRep.mem_tameSpace]`. Prove the components needed by the constructor for the conclusion. Introduce `hv σ' hσ'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨σ, hσ⟩` from `exists_conj' s c hs (σ' : G E Ω)`. Establish `h1` using `(mem_Wild_iff c hc hσ).mp hσ'`. Rewrite using `[← hb ⟨σ, Ine_le_Weil h (Wild_le_Ine h1)⟩ σ' fun z => (hσ z).symm]`. Conclude with `hv _ h1`. Introduce `hv σ hσ1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨σ', hσ⟩` from `exists_conj s c hs (σ : G E Ω)`. Establish `h1` using `(mem_Wild_iff c hc hσ).mpr hσ1`. Rewrite using `[hb σ ⟨σ', Ine_le_Weil h' (Wild_le_Ine h1)⟩ fun z => (hσ z).symm]`. Conclude with `hv _ h1`. Establish `he : WD.tameEig (WD.mk b') γ' = WD.tameEig (WD.mk b) γ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[WD.tameEig_mk _ (Ine_le_Weil h' H'.2.1), WD.tameEig_mk _ (Ine_le_Weil h H.2.1), ← LinearEquiv.charpoly_conj (LinearEquiv.ofEq _ _ hsp)]`. Use `congr 2`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Conclude with `(LinearMap.congr_fun (hb ⟨γ, Ine_le_Weil h H.2.1⟩ ⟨γ', Ine_le_Weil h' H'.2.1⟩ fun z => (hγ z).symm) v).symm`. Rewrite using `[WD.lab_eq_iff H', he]`.
-
-Conclude with `⟨WD.lab_monic _ _ _, WD.map_rootsBar_lab H _⟩`. Rewrite using `[WD.lab_of_not H, WD.lab_of_not (mt hiff.mp H)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lab_eq (s : E ≃+* E) (c : Ω ≃+* Ω)
     (hs : ∀ x : E, c (algebraMap E Ω x) = algebraMap E Ω (s x)) (hc : ∀ y, y ∈ A ↔ c y ∈ A')
@@ -182,7 +180,7 @@ theorem lab_eq (s : E ≃+* E) (c : Ω ≃+* Ω)
 end General
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.host.g_prime k⟩ Formalism.CyclotomicNorms.rootsBar (GlobalTheory.WeilDeligne.WD.lab (D.ntypes.teichC k) γ' x') = (Formalism.CyclotomicNorms.rootsBar (GlobalTheory.WeilDeligne.WD.lab (D.ntypes.teichC k) γ x)).map (·⁻¹) := by intro D k w w' c hs hc x x' n b b' hx hx' _ hb γ γ' h …`.
+Supply the required witnesses or components.
 -/
 theorem main : ∀ (D : D7) (k : Fin 2) (w w' : PlE D.host) (c : D.nd.Om ≃+* D.nd.Om),
     (∀ x : D.host.E, c (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (D.host.conj x)) →

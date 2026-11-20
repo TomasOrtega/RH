@@ -15,13 +15,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r}
 
 /- English proof (translation)
-Introduce `f`. Establish `h0 : (f : Rul Xo c) ∈ cusp Xo c U a n` using `f.2`. Establish `h1` using `(Submodule.mem_inf.mp h0).2`. Rewrite `h1` using `[Submodule.mem_iInf]`. Establish `h2` using `h1 σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Submodule.mem_iInf]`. Establish `hf : rdC U σ a n f ∈ holSub (U σ).X (laU (U σ) a n)` using `h2 hσ`. Set `K : Submodule ℂ (FDSec (U σ).X)` to `{ carrier := {P | IsHolCusp (U σ).X (laU (U σ) a n) P} zero_mem' := by`. Introduce `k`. Conclude with `((hM5 r ((U σ).X k) (laU (U σ) a n k) (laU (U σ) a n k) 0).1).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `add_mem' := by`. Introduce `P Q hP hQ k`. Conclude with `((hM5 r ((U σ).X k) (laU (U σ) a n k) (laU (U σ) a n k) 0).1).2.1 _ (hP k) _ (hQ k)`. Use the proof step `smul_mem' := by`. Introduce `z P hP k`.
-
-Conclude with `((hM5 r ((U σ).X k) (laU (U σ) a n k) (laU (U σ) a n k) 0).1).2.2 z _ (hP k) }`. Establish `hle : holSub (U σ).X (laU (U σ) a n) ≤ K` using `Submodule.span_le.mpr (fun P hP => hP)`. Conclude with `hle hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem readings_holomorphic_cuspForms (hM5 : SiegelSpaceAlgebra (E := E)) {σ : c.F →+* ℂ} (hσ : GoodEmb c σ)
     (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : RdHolCusp σ (laU (U σ) a n) (rdC U σ a n) := by
@@ -47,9 +45,9 @@ theorem readings_holomorphic_cuspForms (hM5 : SiegelSpaceAlgebra (E := E)) {σ :
   exact hle hf
 
 /- English proof (translation)
-Establish `h0 : (f : Rul Xo c) ∈ cusp Xo c U a n` using `f.2`. Establish `h1` using `(Submodule.mem_inf.mp h0).2`. Rewrite `h1` using `[Submodule.mem_iInf]`. Establish `h2` using `h1 σ`. Rewrite `h2` using `[Submodule.mem_iInf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2 hσ`.
+A detailed English derivation is pending.
 -/
 theorem rdC_mem_holSub {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     (f : cusp Xo c U a n) : rdC U σ a n f ∈ holSub (U σ).X (laU (U σ) a n) := by
@@ -61,7 +59,7 @@ theorem rdC_mem_holSub {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) (a : (E →+* �
   exact h2 hσ
 
 /- English proof (translation)
-Use `Submodule.mem_inf.mpr ⟨rdC_mem_holSub hσ a n f, ?_⟩` and prove the remaining obligations. Introduce `k x hx`. Simplify using `[rdC, rdU, hx]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem rdC_mem_holSub0 {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     (f : cusp Xo c U a n) : rdC U σ a n f ∈ holSub0 (U σ).X (laU (U σ) a n) := by

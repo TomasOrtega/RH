@@ -9,17 +9,17 @@ namespace PositivityTheory.RgUd.Prod.CS
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem sc_one (n : ℕ) : sc n (1 : kˣ) = 1 := map_one _
 
 /- English proof (translation)
-The claim follows from `map_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sc_mul (n : ℕ) (y z : kˣ) : sc n (y * z) = sc n y * sc n z := map_mul _ _ _
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `h : ((sc n y : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = Matrix.scalar (Fin n) (y : k)` using `rfl`. Use `show ((sc n y : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * (g : Matrix (Fin n) (Fin n) k) = (g : Matrix (Fin n) (Fin n) k) * ((sc n y : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Rewrite using `[h]`. Conclude with `(Matrix.scalar_commute (y : k) (fun r => Commute.all _ _) _).eq`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_comm (n : ℕ) (y : kˣ) (g : GL (Fin n) k) : sc n y * g = g * sc n y := by
   apply Units.ext
@@ -30,52 +30,46 @@ theorem sc_comm (n : ℕ) (y : kˣ) (g : GL (Fin n) k) : sc n y * g = g * sc n y
   exact (Matrix.scalar_commute (y : k) (fun r => Commute.all _ _) _).eq
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, sc_comm, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_sc_comm {n : ℕ} (A : GRep k n) (y : kˣ) (g : GL (Fin n) k) (v : A.V) :
     A.ρ (sc n y) (A.ρ g v) = A.ρ g (A.ρ (sc n y) v) := by
   rw [← Module.End.mul_apply, ← map_mul, sc_comm, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Introduce `n A _hs hLF x c a ha hxa`. Take `⟨U, hUf, haU, hUinv⟩` from `hLF a`. Use `hUf` as an intermediate fact. Set `Good : Submodule ℂ A.V → Prop` to `fun S => S ≤ U ∧ S ≠ ⊥ ∧ (∀ y : kˣ, ∀ s ∈ S, A.ρ (sc n y) s ∈ S) ∧ ∀ s ∈ S, A.ρ (sc n x) s = c • s`. Establish `hex : ∃ d : ℕ, ∃ S : Submodule ℂ A.V, Good S ∧ Module.finrank ℂ S = d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨_, U ⊓ LinearMap.ker (A.ρ (sc n x) - c • LinearMap.id), ⟨inf_le_left, ?_, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Introduce `h`. Apply `ha` to reduce the goal to its premises. Establish `hm : a ∈ U ⊓ LinearMap.ker (A.ρ (sc n x) - c • LinearMap.id)` using `⟨haU, by simp [LinearMap.mem_ker, hxa]⟩`. Rewrite `hm` using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.mem_bot ℂ).1 hm`. Introduce and unpack `y s ⟨hsU, hsk⟩`. Use `⟨hUinv y s hsU, ?_⟩` and prove the remaining obligations. Establish `hsk' : A.ρ (sc n x) s = c • s`. Simplify `hsk` using `[LinearMap.mem_ker, sub_eq_zero]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `show A.ρ (sc n y) s ∈ LinearMap.ker (A.ρ (sc n x) - c • LinearMap.id)`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, rho_sc_comm A x (sc n y) s, hsk', map_smul]`. Simplify using the standard rewrite rules. Introduce and unpack `s ⟨_, hsk⟩`. Simplify `hsk` using `[LinearMap.mem_ker, sub_eq_zero]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨S, ⟨hSU, hS0, hSinv, hSx⟩, hSd⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ S' : Submodule ℂ A.V, Good S' → Module.finrank ℂ S ≤ Module.finrank ℂ S'`. Introduce `S' hS'`. Rewrite using `[hSd]`. Conclude with `Nat.find_min' hex ⟨S', hS', rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: FiniteDimensional ℂ S` using `Submodule.finiteDimensional_of_le hSU`. Establish `hscal : ∀ y : kˣ, ∃ μ : ℂ, ∀ s ∈ S, A.ρ (sc n y) s = μ • s`. Introduce `y`. Set `f : Module.End ℂ S` to `(A.ρ (sc n y)).restrict (hSinv y)`. Establish `: Nontrivial S` using `Submodule.nontrivial_iff_ne_bot.2 hS0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue f`. Take `⟨w, hw⟩` from `hμ.exists_hasEigenvector`. Use `⟨μ, ?_⟩` and prove the remaining obligations. Establish `hfw : A.ρ (sc n y) (w : A.V) = μ • (w : A.V)` using `congrArg Subtype.val hw.apply_eq_smul`. Set `S' : Submodule ℂ A.V` to `S ⊓ LinearMap.ker (A.ρ (sc n y) - μ • LinearMap.id)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hmem : ∀ s, s ∈ S' ↔ s ∈ S ∧ A.ρ (sc n y) s = μ • s`. Introduce `s`. Simplify using `[S', Submodule.mem_inf, LinearMap.mem_ker, sub_eq_zero]`. Establish `hgood : Good S'`. Use `⟨inf_le_left.trans hSU, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Establish `hw' : (w : A.V) ∈ S'` using `(hmem _).2 ⟨w.2, hfw⟩`. Rewrite `hw'` using `[h]`. Conclude with `hw.2 (Subtype.ext ((Submodule.mem_bot ℂ).1 hw'))`. Introduce `y' s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hsS, hsy⟩` from `(hmem s).1 hs`. Use `(hmem _).2 ⟨hSinv y' s hsS, ?_⟩` and prove the remaining obligations. Rewrite using `[rho_sc_comm A y (sc n y') s, hsy, map_smul]`. Introduce `s hs`. Conclude with `hSx s ((hmem s).1 hs).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEq : S' = S` using `Submodule.eq_of_le_of_finrank_le inf_le_left (hmin S' hgood)`. Introduce `s hs`. Rewrite `hs` using `[← hEq]`. Conclude with `((hmem s).1 hs).2`. Use `choose lam hlam using hscal`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a', ha'S, ha'0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hS0`. Establish `key : ∀ μ ν : ℂ, μ • a' = ν • a' → μ = ν` using `fun μ ν h => smul_left_injective ℂ ha'0 h`. Establish `hlam1 : lam 1 = 1`. Apply `key` to reduce the goal to its premises. Rewrite using `[← hlam 1 a' ha'S, sc_one, map_one, Module.End.one_apply, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlammul : ∀ y z : kˣ, lam (y * z) = lam y * lam z`. Introduce `y z`. Apply `key` to reduce the goal to its premises. Rewrite using `[← hlam (y * z) a' ha'S, sc_mul, map_mul, Module.End.mul_apply, hlam z a' ha'S, map_smul, hlam y a' ha'S, smul_smul, mul_comm]`. Set `f : kˣ →* ℂ` to `{ toFun := lam, map_one' := hlam1, map_mul' := hlammul }`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `Wm : Submodule ℂ A.V` to `{ carrier := {v | ∀ y : kˣ, A.ρ (sc n y) v = lam y • v} add_mem' := by`. Introduce `u v hu hv y`. Establish `hu' : ∀ y : kˣ, A.ρ (sc n y) u = lam y • u` using `hu`. Establish `hv' : ∀ y : kˣ, A.ρ (sc n y) v = lam y • v` using `hv`. Use `show A.ρ (sc n y) (u + v) = lam y • (u + v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[map_add, hu' y, hv' y, smul_add]`. Use the proof step `zero_mem' := by`. Introduce `y`. Use `show A.ρ (sc n y) 0 = lam y • (0 : A.V)`. Rewrite using `[map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `smul_mem' := by`. Introduce `r v hv y`. Establish `hv' : ∀ y : kˣ, A.ρ (sc n y) v = lam y • v` using `hv`. Use `show A.ρ (sc n y) (r • v) = lam y • (r • v)`. Rewrite using `[map_smul, hv' y, smul_comm] }`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `W : Subrepresentation A.ρ` to `⟨Wm, fun g v hv y => by`. Establish `hv' : ∀ y : kˣ, A.ρ (sc n y) v = lam y • v` using `hv`. Use `show A.ρ (sc n y) (A.ρ g v) = lam y • A.ρ g v`. Rewrite using `[rho_sc_comm, hv' y, map_smul]⟩`. Establish `ha'W : a' ∈ W.toSubmodule` using `fun y => hlam y a' ha'S`.
-
-Use `⟨W, f.toHomUnits, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `ha'0` to reduce the goal to its premises. Establish `h2 : W.toSubmodule = (⊥ : Subrepresentation A.ρ).toSubmodule` using `congrArg _ h`. Establish `h3 : a' ∈ (⊥ : Subrepresentation A.ρ).toSubmodule` using `h2 ▸ ha'W`.
-
-Conclude with `(Submodule.mem_bot ℂ).1 h3`. Introduce `z v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show A.ρ (sc n z) v.1 = ((f.toHomUnits z : ℂˣ) : ℂ) • v.1`. Rewrite using `[MonoidHom.coe_toHomUnits]`.
-
-Conclude with `v.2 z`. Use `show ((f.toHomUnits x : ℂˣ) : ℂ) = c`. Rewrite using `[MonoidHom.coe_toHomUnits]`. Conclude with `(key _ _ ((hlam x a' ha'S).symm.trans (hSx a' ha'S))).trans rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centralSub_gen [TopologicalSpace k] : CentralSub k := by
   classical
@@ -185,7 +179,7 @@ theorem centralSub_gen [TopologicalSpace k] : CentralSub k := by
     exact (key _ _ ((hlam x a' ha'S).symm.trans (hSx a' ha'S))).trans rfl
 
 /- English proof (translation)
-The claim follows from `centralSub_gen`.
+A detailed English derivation is pending.
 -/
 theorem centralSub (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     CentralSub k :=

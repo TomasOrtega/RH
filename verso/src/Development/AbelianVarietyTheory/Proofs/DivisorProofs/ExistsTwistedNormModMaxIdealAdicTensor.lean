@@ -15,32 +15,32 @@ variable (v : HeightOneSpectrum ℤ) {M : Type} [AddCommGroup M] [Module ℚ M] 
   (b : Module.Basis κ ℚ M)
 
 /- English proof (translation)
-Introduce `i` and use `by rw [map_add, Finsupp.add_apply]; exact add_mem (hx i) (hy i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntB_add {x y : v.adicCompletion ℚ ⊗[ℚ] M} (hx : IsIntB v b x) (hy : IsIntB v b y) :
     IsIntB v b (x + y) := fun i => by
   rw [map_add, Finsupp.add_apply]; exact add_mem (hx i) (hy i)
 
 /- English proof (translation)
-Introduce `i` and use `by rw [map_neg, Finsupp.neg_apply]; exact neg_mem (hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntB_neg {x : v.adicCompletion ℚ ⊗[ℚ] M} (hx : IsIntB v b x) : IsIntB v b (-x) := fun i => by
   rw [map_neg, Finsupp.neg_apply]; exact neg_mem (hx i)
 
 /- English proof (translation)
-Introduce `i` and use `by rw [map_add, Finsupp.add_apply]; exact Valuation.map_add_lt _ (hx i) (hy i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmallB_add {x y : v.adicCompletion ℚ ⊗[ℚ] M} (hx : IsSmallB v b x) (hy : IsSmallB v b y) :
     IsSmallB v b (x + y) := fun i => by
   rw [map_add, Finsupp.add_apply]; exact Valuation.map_add_lt _ (hx i) (hy i)
 
 /- English proof (translation)
-Introduce `i` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmallB_zero : IsSmallB v b (0 : v.adicCompletion ℚ ⊗[ℚ] M) := fun i => by simp
 
 /- English proof (translation)
-Introduce `i` and use `by have h0 : IsLocalRing.residue (v.adicCompletionIntegers ℚ) (⟨_, hx i⟩ - ⟨_, hy i⟩) = 0 := by rw [map_sub, h i, sub_self] rw [IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff] at h0 have h1 := Valuation.Integer.not_isUnit_iff_valuation_lt_one.mp h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmallB_sub_of_residue_eq {x y : v.adicCompletion ℚ ⊗[ℚ] M} (hx : IsIntB v b x) (hy : IsIntB v b y)
     (h : ∀ i, IsLocalRing.residue (v.adicCompletionIntegers ℚ) ⟨_, hx i⟩ =
@@ -53,21 +53,21 @@ theorem isSmallB_sub_of_residue_eq {x y : v.adicCompletion ℚ ⊗[ℚ] M} (hx :
   exact h1
 
 /- English proof (translation)
-Establish `k2 : (↑u : R) * ↑u⁻¹ = 1` using `Units.mul_inv u`. Take the linear combination `(-(↑u⁻¹ : R)) * h + (-x) * k2`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eq_neg_inv_of_mul_neg {R : Type*} [CommRing R] (u : Rˣ) (x : R) (h : x * -↑u = 1) : x = -↑u⁻¹ := by
   have k2 : (↑u : R) * ↑u⁻¹ = 1 := Units.mul_inv u
   linear_combination (-(↑u⁻¹ : R)) * h + (-x) * k2
 
 /- English proof (translation)
-Establish `k2 : (↑u : R) * ↑u⁻¹ = 1` using `Units.mul_inv u`. Take the linear combination `(↑u⁻¹ : R) * h - x * k2`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eq_inv_of_mul {R : Type*} [CommRing R] (u : Rˣ) (x : R) (h : x * ↑u = 1) : x = ↑u⁻¹ := by
   have k2 : (↑u : R) * ↑u⁻¹ = 1 := Units.mul_inv u
   linear_combination (↑u⁻¹ : R) * h - x * k2
 
 /- English proof (translation)
-Rewrite using `[mul_mul_mul_comm, Units.mul_inv, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_mul_inv_sq {R : Type*} [CommRing R] (u : Rˣ) : (↑u * ↑u : R) * (↑u⁻¹ * ↑u⁻¹) = 1 := by
   rw [mul_mul_mul_comm, Units.mul_inv, one_mul]
@@ -83,29 +83,25 @@ end GlobalTheory.ResidueNorm
 open GlobalTheory.ResidueNorm in
 
 /- English proof (translation)
-Introduce `v L _ _ c _ κ bL h2 h1 hmul hsm _ θ hθ hθi hσθ e hσe he hei`. Use `set σ := Algebra.TensorProduct.map (AlgHom.id ℚ (v.adicCompletion ℚ)) c with hσdef`. Take `⟨P, hP⟩ : ∃ P : Subring (v.adicCompletion ℚ ⊗[ℚ] L), ∀ x, x ∈ P ↔ IsIntB v bL x ∧ σ x = x` from `⟨ { carrier := {x | IsIntB v bL x ∧ σ x = x} mul_mem' := fun {a b} ha hb => ⟨hmul a b ha.1 hb.1, by rw [map_mul, ha.2, hb.2]⟩ one_mem' := ⟨h1, map_one σ⟩ add_mem' := fun {a b} ha hb => ⟨isIntB_add v bL ha.1 hb.1, by rw [map_add, ha.2, hb.2]⟩ zero_mem' := ⟨isIntB_zero v bL, map_ze …`. Establish `hPi : ∀ x : P, IsIntB v bL (x : v.adicCompletion ℚ ⊗[ℚ] L)` using `fun x => ((hP _).1 x.2).1`. Establish `hPs : ∀ x : P, σ (x : v.adicCompletion ℚ ⊗[ℚ] L) = x` using `fun x => ((hP _).1 x.2).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨I, hmemI⟩ : ∃ I : Ideal P, ∀ x : P, x ∈ I ↔ IsSmallB v bL (x : v.adicCompletion ℚ ⊗[ℚ] L)` from `⟨ { carrier := {x | IsSmallB v bL (x : v.adicCompletion ℚ ⊗[ℚ] L)} add_mem' := fun {a b} ha hb => isSmallB_add v bL ha hb zero_mem' := isSmallB_zero v bL smul_mem' := fun a b hb => hsm _ _ (hPi a) hb }, fun x => Iff.rfl⟩`. Use `haveI : Finite κ := Module.Finite.finite_basis bL`. Use `haveI : Finite (ℤ ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot v.asIdeal v.ne_bot`. Use `haveI : Finite (IsLocalRing.ResidueField (v.adicCompletionIntegers ℚ)) := Finite.of_equiv _ (GroundTheory.Global.residueFieldEquiv (K := ℚ) v).toEquiv`. Set `φ : P → κ → IsLocalRing.ResidueField (v.adicCompletionIntegers ℚ)` to `fun x i => IsLocalRing.residue _ ⟨_, hPi x i⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `out` to `Function.surjInv (Ideal.Quotient.mk_surjective (I := I))`. Use `haveI : Finite (P ⧸ I) := by`. Use `Finite.of_injective (fun q => φ (out q)) fun q1 q2 h => ?_` and prove the remaining obligations. Rewrite using `[← Function.surjInv_eq (Ideal.Quotient.mk_surjective (I := I)) q1, ← Function.surjInv_eq (Ideal.Quotient.mk_surjective (I := I)) q2, Ideal.Quotient.eq, hmemI]`. Conclude with `isSmallB_sub_of_residue_eq v bL (hPi (out q1)) (hPi (out q2)) fun i => congrFun h i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσθi : σ ↑θ⁻¹ = -↑θ⁻¹` using `eq_neg_inv_of_mul_neg θ _ (by rw [← hσθ, ← map_mul, Units.inv_mul, map_one])`. Establish `hσei : σ ↑e⁻¹ = ↑e⁻¹` using `eq_inv_of_mul e _ (by rw [← hσe, ← map_mul, Units.inv_mul, map_one])`. Establish `memP : ∀ x, IsIntB v bL x → σ x = x → x ∈ P` using `fun x h h' => (hP x).2 ⟨h, h'⟩`. Establish `hθθ : σ (↑θ * ↑θ) = ↑θ * ↑θ` using `by rw [map_mul, hσθ, neg_mul_neg]`. Establish `hθθi : σ (↑θ⁻¹ * ↑θ⁻¹) = ↑θ⁻¹ * ↑θ⁻¹` using `by rw [map_mul, hσθi, neg_mul_neg]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `dmem : (↑θ * ↑θ : v.adicCompletion ℚ ⊗[ℚ] L) ∈ P` using `memP _ (hmul _ _ hθ hθ) hθθ`. Set `dP : P` to `⟨_, dmem⟩`. Establish `dimem : (↑θ⁻¹ * ↑θ⁻¹ : v.adicCompletion ℚ ⊗[ℚ] L) ∈ P` using `memP _ (hmul _ _ hθi hθi) hθθi`. Set `diP : P` to `⟨_, dimem⟩`. Establish `emem : (↑e : v.adicCompletion ℚ ⊗[ℚ] L) ∈ P` using `memP _ he hσe`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `eP : P` to `⟨_, emem⟩`. Establish `eimem : (↑e⁻¹ : v.adicCompletion ℚ ⊗[ℚ] L) ∈ P` using `memP _ hei hσei`. Set `eiP : P` to `⟨_, eimem⟩`. Establish `hhalf : (2⁻¹ : v.adicCompletion ℚ) ∈ v.adicCompletionIntegers ℚ`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, h2, inv_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmem2 : ((2⁻¹ : v.adicCompletion ℚ) • (1 : v.adicCompletion ℚ ⊗[ℚ] L)) ∈ P` using `memP _ (fun i => by`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]; exact mul_mem hhalf (h1 i)) (by`. Rewrite using `[Algebra.smul_def, mul_one, Algebra.TensorProduct.algebraMap_apply, hσdef, Algebra.TensorProduct.map_tmul, map_one]`. Use the proof step `rfl)`. Set `hh : P` to `⟨_, hmem2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2P : (2 : P) * hh = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (2 : v.adicCompletion ℚ ⊗[ℚ] L) * ((2⁻¹ : v.adicCompletion ℚ) • 1) = 1`. Establish `h20 : (2 : v.adicCompletion ℚ) ≠ 0`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[h, map_zero]`. Conclude with `zero_ne_one h2`. Rewrite using `[mul_smul_comm, mul_one, ← map_ofNat (algebraMap (v.adicCompletion ℚ) (v.adicCompletion ℚ ⊗[ℚ] L)) 2, Algebra.algebraMap_eq_smul_one, smul_smul, inv_mul_cancel₀ h20, one_smul]`. Establish `hdP : dP * diP = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (↑θ * ↑θ : v.adicCompletion ℚ ⊗[ℚ] L) * (↑θ⁻¹ * ↑θ⁻¹) = 1`. Conclude with `sq_mul_inv_sq θ`. Establish `heP : eP * eiP = 1` using `Subtype.ext (Units.mul_inv e)`. Take `⟨a', b', hab⟩` from `GlobalTheory.FinRingNorm.exists_sq_sub_mul_sq_eq (P ⧸ I) (IsUnit.of_mul_eq_one (Ideal.Quotient.mk I hh) (by rw [← map_ofNat (Ideal.Quotient.mk I) 2, ← map_mul, h2P, map_one])) (Ideal.Quotient.mk I dP) (Ideal.Quotient.mk I eP) (IsUnit.of_mul_eq_one (Ideal.Quotient.mk I diP) (by rw …`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a'`.
-
-Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b'`. Establish `hmem : a ^ 2 - dP * b ^ 2 - eP ∈ I`. Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Simplify `hab` using `only [map_sub, map_mul, map_pow]`. Rewrite `hmem` using `[hmemI]`.
-
-Use `⟨(a : v.adicCompletion ℚ ⊗[ℚ] L) + (b : v.adicCompletion ℚ ⊗[ℚ] L) * (θ : v.adicCompletion ℚ ⊗[ℚ] L), isIntB_add v bL (hPi a) (hmul _ _ (hPi b) hθ), ?_⟩` and prove the remaining obligations. Establish `hσz : σ ((a : v.adicCompletion ℚ ⊗[ℚ] L) + (b : v.adicCompletion ℚ ⊗[ℚ] L) * (θ : v.adicCompletion ℚ ⊗[ℚ] L)) = (a : v.adicCompletion ℚ ⊗[ℚ] L) - (b : v.adicCompletion ℚ ⊗[ℚ] L) * (θ : v.adicCompletion ℚ ⊗[ℚ] L)`. Rewrite using `[map_add, map_mul, hPs a, hPs b, hσθ, mul_neg, ← sub_eq_add_neg]`. Rewrite using `[hσz, norm_expand]`. Conclude with `hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ResidueNorm.exists_norm_mod_small : ∀ (v : HeightOneSpectrum ℤ) (L : Type) [Field L] [NumberField L] (c : L →ₐ[ℚ] L), (∀ x, c (c x) = x) →
     ∀ (κ : Type) (bL : Module.Basis κ ℚ L),

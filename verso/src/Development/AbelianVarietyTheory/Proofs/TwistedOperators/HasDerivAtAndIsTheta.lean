@@ -27,13 +27,13 @@ def IsExpChar (ψ : AddChar (AF D.host.F) ℂ) : Prop :=
     ∃ lam : AF D.host.F →+ ℂ, Continuous lam ∧ ∀ a, sndA D.host.F a = 0 → ψ a = Complex.exp (lam a)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, fun x => by simp, 0, continuous_const, fun a _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isExpChar_one : IsExpChar (1 : AddChar (AF D.host.F) ℂ) :=
   ⟨continuous_const, fun x => by simp, 0, continuous_const, fun a _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨-, ψ₀, h₀⟩` from `GlobalTheory.Ker.exists_infFam_and_stdChar D`. Use `haveI := D.sp.cm.totReal`. Conclude with `⟨ψ₀, h₀, GlobalTheory.AdeleCharTwist.exists_mul_eq D.host.F ψ₀ ψ h₀.1 hψ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_std {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) :
     ∃ ψ₀ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ₀ (-1) ∧ ∃ a : D.host.F, a ≠ 0 ∧
@@ -43,7 +43,7 @@ theorem exists_std {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
   exact ⟨ψ₀, h₀, GlobalTheory.AdeleCharTwist.exists_mul_eq D.host.F ψ₀ ψ h₀.1 hψ⟩
 
 /- English proof (translation)
-Take `⟨ψ₀, h₀, a, -, ha⟩` from `exists_std hψ`. Take `⟨lam, hl, hlam⟩` from `exists_log h₀`. Use `⟨hψ.1, hψ.2.1, lam.comp (AddMonoidHom.mulLeft (algebraMap D.host.F (AF D.host.F) a)), hl.comp (continuous_const.mul continuous_id), fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[ha, hlam _ (by rw [map_mul, hx, mul_zero])]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isExpChar_of_isCharAF {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) : IsExpChar ψ := by
   obtain ⟨ψ₀, h₀, a, -, ha⟩ := exists_std hψ
@@ -56,18 +56,18 @@ theorem isExpChar_of_isCharAF {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D
 variable {ψ ψ' : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
 /- English proof (translation)
-Take `⟨⟨θ, hθ⟩, -⟩` from `GlobalTheory.Ker.exists_infFam_and_stdChar D`. Conclude with `⟨θ, GlobalTheory.RealLineAt.exists_inverse_chart hθ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart (D : D7) : ∃ (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D), Chart θ σ := by
   obtain ⟨⟨θ, hθ⟩, -⟩ := GlobalTheory.Ker.exists_infFam_and_stdChar D
   exact ⟨θ, GlobalTheory.RealLineAt.exists_inverse_chart hθ⟩
 
 /- English proof (translation)
-Take `⟨θ, σ, h⟩` from `exists_chart D`. Take `⟨hc, -, lam, hl, hlam⟩` from `hψ`. Establish `hsm` using `(smooth_iff_sm_and_real_lines D θ σ h T S).1`. Establish `hs : Sm (iotaW σ T S) (heisO ψ S T v f)`. Establish `e : heisO ψ S T v f = fun w => Complex.exp (phase lam S T v w) * f (w + v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[heisO, hlam _ (snd_symplOH S T w v (Or.inr hv))]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `sm_translate _ _ (contDiff_phase h hl v) f ((hsm f).1 hf.smooth) v`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlev : ∃ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) ∧ ∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ S T u (heisO ψ S T v f) = heisO ψ S T v f`. Take `⟨U, hU, h1⟩` from `hf.level`. Conclude with `⟨U, hU, fun u hu h0 => heisO_fix_of_real u v h0 hv f (h1 u hu h0)⟩`. Conclude with `⟨heisO_quasi ψ S T v f hf.quasi, hlev, continuous_of_level h hc _ hlev hs, (hsm _).2 hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isTheta_heis_real (hψ : IsExpChar ψ) {v : WO S T} (hv : v.map (finPart D) = 0) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (heisO ψ S T v f) := by
@@ -88,9 +88,9 @@ theorem isTheta_heis_real (hψ : IsExpChar ψ) {v : WO S T} (hv : v.map (finPart
   exact ⟨heisO_quasi ψ S T v f hf.quasi, hlev, continuous_of_level h hc _ hlev hs, (hsm _).2 hs⟩
 
 /- English proof (translation)
-Establish `hr : (GlobalTheory.FinTranslate.eInf D • u : WO S T).map (finPart D) = 0`. Use extensionality with `i j`. Conclude with `GlobalTheory.ThetaClosed.finPart_eInf_smul (u i j)`. Establish `hn : ((1 - GlobalTheory.FinTranslate.eInf D) • u : WO S T).map (infPart D) = 0`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.ThetaClosed.infPart_one_sub_eInf_smul (u i j)`. Establish `h` using `isTheta_heis_real hψ hr (GlobalTheory.FinTranslate.isThetaFunO_heisO hψ.1 hψ.2.1 hf hn)`. Rewrite `h` using `[heisO_heisO, GlobalTheory.FinTranslate.symplOH_real_fin hn hr, ψ.map_zero_eq_one, one_smul, ← add_smul, add_sub_cancel, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isTheta_heis (hψ : IsExpChar ψ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (u : WO S T) :
     IsThetaFunO ψ S T (heisO ψ S T u f) := by
@@ -103,9 +103,9 @@ theorem isTheta_heis (hψ : IsExpChar ψ) {f : WO S T → ℂ} (hf : IsThetaFunO
     one_smul] at h
 
 /- English proof (translation)
-Introduce `u hu h0`. Use function extensionality and compare the values at `w`. Establish `: (fun t => heisO ψ S T (L t) f w) = fun t => heisO ψ S T u (heisO ψ S T (L t) f) w`. Use function extensionality and compare the values at `t`. Rewrite using `[heisO_fix_of_real u _ h0 (hL.2 t) f (hf u hu h0)]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => unfold dHeis`. Rewrite using `[this]`. Unfold `dHeis`. Rewrite using `[heisO, ← deriv_const_mul_field]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hasLevel_dHeis {L : ℝ →+ WO S T} (hL : IsRealDir L) {U : AddSubgroup (WO S T)} {f : WO S T → ℂ}
     (hf : HasLevel ψ S T U f) : HasLevel ψ S T U (dHeis ψ S T L f) := by
@@ -119,15 +119,15 @@ theorem hasLevel_dHeis {L : ℝ →+ WO S T} (hL : IsRealDir L) {U : AddSubgroup
   rfl
 
 /- English proof (translation)
-Take `⟨θ, σ, h⟩` from `exists_chart D`. Take `⟨hc, -, lam, hl, hlam⟩` from `hψ`. Establish `hsm` using `(smooth_iff_sm_and_real_lines D θ σ h T S).1`. Establish `hline` using `(smooth_iff_sm_and_real_lines D θ σ h T S).2.1 L hL`. Establish `hfs` using `(hsm f).1 hf.smooth`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ w, HasDerivAt (fun t : ℝ => heisO ψ S T (L t) f w) (phase lam S T (L 1) w * f w + fderiv ℝ (fun x => f (w + iotaW σ T S x)) 0 (piW θ T S (L 1))) 0`. Introduce `w`. Establish `e : (fun t : ℝ => heisO ψ S T (L t) f w) = fun t : ℝ => Complex.exp (t * phase lam S T (L 1) w) * f (w + iotaW σ T S (t • piW θ T S (L 1)))`. Use function extensionality and compare the values at `t`. Rewrite using `[heisO, psi_sympl_line hl hlam hL.1 hL.2, ← hline t]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hasDerivAt_exp_mul _ _ f hfs _ w`. Establish `hs : Sm (iotaW σ T S) (dHeis ψ S T L f)`. Establish `e : dHeis ψ S T L f = fun w => phase lam S T (L 1) w * f w + fderiv ℝ (fun x => f (w + iotaW σ T S x)) 0 (piW θ T S (L 1))` using `funext fun w => (hd w).deriv`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sm_deriv _ _ (contDiff_phase h hl _) f hfs _`. Establish `hlev : ∃ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) ∧ ∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ S T u (dHeis ψ S T L f) = dHeis ψ S T L f`. Take `⟨U, hU, h1⟩` from `hf.level`. Conclude with `⟨U, hU, hasLevel_dHeis hL h1⟩`. Use `⟨fun w => (hd w).differentiableAt.hasDerivAt, fun γ w => ?_, hlev, continuous_of_level h hc _ hlev hs, (hsm _).2 hs⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `dHeis`. Rewrite using `[← deriv_const_mul_field]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `heisO_quasi ψ S T (L t) f hf.quasi γ w`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_and_isTheta (hψ : IsExpChar ψ) {L : ℝ →+ WO S T} (hL : IsRealDir L) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) :
@@ -165,7 +165,7 @@ theorem hasDerivAt_and_isTheta (hψ : IsExpChar ψ) {L : ℝ →+ WO S T} (hL : 
   exact heisO_quasi ψ S T (L t) f hf.quasi γ w
 
 /- English proof (translation)
-Proceed by induction on `Ls with`. Consider the case `nil => exact hf`. Consider the case `cons L Ls ih`. Conclude with `(hasDerivAt_and_isTheta hψ (hL L List.mem_cons_self) (ih fun M hM => hL M (List.mem_cons_of_mem _ hM))).2`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isTheta_dHeisWord (hψ : IsExpChar ψ) {Ls : List (ℝ →+ WO S T)} (hL : ∀ L ∈ Ls, IsRealDir L) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (dHeisWord ψ S T Ls f) := by
@@ -175,7 +175,7 @@ theorem isTheta_dHeisWord (hψ : IsExpChar ψ) {Ls : List (ℝ →+ WO S T)} (hL
     exact (hasDerivAt_and_isTheta hψ (hL L List.mem_cons_self) (ih fun M hM => hL M (List.mem_cons_of_mem _ hM))).2
 
 /- English proof (translation)
-Unfold `dHeisWord`. Rewrite using `[List.foldr_append]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dHeisWord_concat (Ls : List (ℝ →+ WO S T)) (L : ℝ →+ WO S T) (f : WO S T → ℂ) :
     dHeisWord ψ S T (Ls ++ [L]) f = dHeisWord ψ S T Ls (dHeis ψ S T L f) := by
@@ -184,19 +184,19 @@ theorem dHeisWord_concat (Ls : List (ℝ →+ WO S T)) (L : ℝ →+ WO S T) (f 
   rfl
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.FinTranslate.heisL S T ψ u).map_add f g`.
+A detailed English derivation is pending.
 -/
 theorem heisO_add (u : WO S T) (f g : WO S T → ℂ) : heisO ψ S T u (f + g) = heisO ψ S T u f + heisO ψ S T u g :=
   (GlobalTheory.FinTranslate.heisL S T ψ u).map_add f g
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.FinTranslate.heisL S T ψ u).map_smul c f`.
+A detailed English derivation is pending.
 -/
 theorem heisO_smul (u : WO S T) (c : ℂ) (f : WO S T → ℂ) : heisO ψ S T u (c • f) = c • heisO ψ S T u f :=
   (GlobalTheory.FinTranslate.heisL S T ψ u).map_smul c f
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `h` using `((hasDerivAt_and_isTheta hψ hL hf).1 w).add ((hasDerivAt_and_isTheta hψ hL hg).1 w)`. Use `HasDerivAt.deriv (h.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_))` and prove the remaining obligations. Conclude with `congrFun (heisO_add (L t) f g) w`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dHeis_add (hψ : IsExpChar ψ) {L : ℝ →+ WO S T} (hL : IsRealDir L) {f g : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) :
@@ -207,9 +207,9 @@ theorem dHeis_add (hψ : IsExpChar ψ) {L : ℝ →+ WO S T} (hL : IsRealDir L) 
   exact congrFun (heisO_add (L t) f g) w
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Use `show _ = c * deriv _ _`. Rewrite using `[← deriv_const_mul_field]`. Unfold `dHeis`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Conclude with `congrFun (heisO_smul (L t) c f) w`.
+A detailed English derivation is pending.
 -/
 theorem dHeis_smul (L : ℝ →+ WO S T) (c : ℂ) (f : WO S T → ℂ) : dHeis ψ S T L (c • f) = c • dHeis ψ S T L f := by
   funext w
@@ -221,9 +221,9 @@ theorem dHeis_smul (L : ℝ →+ WO S T) (c : ℂ) (f : WO S T → ℂ) : dHeis 
   exact congrFun (heisO_smul (L t) c f) w
 
 /- English proof (translation)
-Proceed by induction on `Ls with`. Consider the case `nil => rfl`. Consider the case `cons L Ls ih`. Establish `h' : ∀ M ∈ Ls, IsRealDir M` using `fun M hM => hL M (List.mem_cons_of_mem _ hM)`. Use `show dHeis ψ S T L (dHeisWord ψ S T Ls (f + g)) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih h', dHeis_add hψ (hL L List.mem_cons_self) (isTheta_dHeisWord hψ h' hf) (isTheta_dHeisWord hψ h' hg)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dHeisWord_add (hψ : IsExpChar ψ) {Ls : List (ℝ →+ WO S T)} (hL : ∀ L ∈ Ls, IsRealDir L) {f g : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) :
@@ -237,7 +237,7 @@ theorem dHeisWord_add (hψ : IsExpChar ψ) {Ls : List (ℝ →+ WO S T)} (hL : �
     rfl
 
 /- English proof (translation)
-Proceed by induction on `Ls with`. Consider the case `nil => rfl`. Consider the case `cons L Ls ih => show dHeis ψ S T L (dHeisWord ψ S T Ls (c • f)) = _`. Rewrite using `[ih, dHeis_smul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dHeisWord_smul (Ls : List (ℝ →+ WO S T)) (c : ℂ) (f : WO S T → ℂ) :
     dHeisWord ψ S T Ls (c • f) = c • dHeisWord ψ S T Ls f := by
@@ -249,7 +249,7 @@ theorem dHeisWord_smul (Ls : List (ℝ →+ WO S T)) (c : ℂ) (f : WO S T → �
     rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [heisO, AddChar.mul_apply, Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_mul (u : WO S T) (f g : WO S T → ℂ) :
     heisO (ψ * ψ') S T u (f * g) = heisO ψ S T u f * heisO ψ' S T u g := by
@@ -258,9 +258,9 @@ theorem heisO_mul (u : WO S T) (f g : WO S T → ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [Pi.mul_apply, hf.quasi, hg.quasi, AddChar.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `level := by`. Take `⟨U, hU, h1⟩` from `hf.level`. Take `⟨U', hU', h2⟩` from `hg.level`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨U ⊓ U', hU.inter hU', fun u hu h0 => by rw [heisO_mul, h1 u hu.1 h0, h2 u hu.2 h0]⟩`. Use `cont := hf.cont.mul hg.cont`. Use `smooth k L h1 h2 w := (hf.smooth k L h1 h2 w).mul (hg.smooth k L h1 h2 w)`.
+A detailed English derivation is pending.
 -/
 theorem isTheta_mul {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ' S T g) :
     IsThetaFunO (ψ * ψ') S T (f * g) where
@@ -275,9 +275,9 @@ theorem isTheta_mul {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsT
   smooth k L h1 h2 w := (hf.smooth k L h1 h2 w).mul (hg.smooth k L h1 h2 w)
 
 /- English proof (translation)
-Establish `h1 : ψ⁻¹ x * ψ x = 1`. Rewrite using `[AddChar.inv_apply, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`. Establish `h2 : star (ψ x) * ψ x = 1`. Rewrite using `[Complex.star_def, mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hn]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0 : ψ x ≠ 0` using `fun h => by simpa [h] using hn x`. Conclude with `mul_right_cancel₀ h0 (h2.trans h1.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem star_char (hn : ∀ x, ‖ψ x‖ = 1) (x : AF D.host.F) : star (ψ x) = ψ⁻¹ x := by
   have h1 : ψ⁻¹ x * ψ x = 1 := by
@@ -288,9 +288,9 @@ theorem star_char (hn : ∀ x, ‖ψ x‖ = 1) (x : AF D.host.F) : star (ψ x) =
   exact mul_right_cancel₀ h0 (h2.trans h1.symm)
 
 /- English proof (translation)
-Rewrite using `[Pi.star_apply, Pi.star_apply, hf.quasi, star_mul', star_char hn] level := by`. Take `⟨U, hU, h1⟩` from `hf.level`. Use `⟨U, hU, fun u hu h0 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Rewrite using `[Pi.star_apply, ← congrFun (h1 u hu h0) w, heisO, heisO, star_mul', star_char hn, Pi.star_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `cont := hf.cont.star`. Use `smooth k L h1 h2 w := Complex.conjCLE.contDiff.comp (hf.smooth k L h1 h2 w)`.
+A detailed English derivation is pending.
 -/
 theorem isTheta_star (hn : ∀ x, ‖ψ x‖ = 1) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     IsThetaFunO ψ⁻¹ S T (star f) where
@@ -304,7 +304,7 @@ theorem isTheta_star (hn : ∀ x, ‖ψ x‖ = 1) {f : WO S T → ℂ} (hf : IsT
   smooth k L h1 h2 w := Complex.conjCLE.contDiff.comp (hf.smooth k L h1 h2 w)
 
 /- English proof (translation)
-Use `isTheta_mul hf (isTheta_star hn hh)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isTheta_mul_star (hn : ∀ x, ‖ψ x‖ = 1) {f h : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (hh : IsThetaFunO ψ S T h) : IsThetaFunO 1 S T (f * star h) := by
@@ -312,7 +312,7 @@ theorem isTheta_mul_star (hn : ∀ x, ‖ψ x‖ = 1) {f h : WO S T → ℂ} (hf
   rwa [mul_inv_cancel] at this
 
 /- English proof (translation)
-Use `isTheta_mul hΦ hg` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isTheta_one_mul {Φ g : WO S T → ℂ} (hΦ : IsThetaFunO 1 S T Φ) (hg : IsThetaFunO ψ S T g) :
     IsThetaFunO ψ S T (Φ * g) := by
@@ -320,20 +320,20 @@ theorem isTheta_one_mul {Φ g : WO S T → ℂ} (hΦ : IsThetaFunO 1 S T Φ) (hg
   rwa [one_mul] at this
 
 /- English proof (translation)
-Rewrite using `[← heisO_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_one_mul (u : WO S T) (Φ g : WO S T → ℂ) :
     heisO ψ S T u (Φ * g) = heisO 1 S T u Φ * heisO ψ S T u g := by
   rw [← heisO_mul, one_mul]
 
 /- English proof (translation)
-Rewrite using `[heisO, AddChar.one_apply, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_one_apply (u : WO S T) (Φ : WO S T → ℂ) (w : WO S T) : heisO 1 S T u Φ w = Φ (w + u) := by
   rw [heisO, AddChar.one_apply, one_mul]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨γ, rfl⟩ x`. Use `hΦ.quasi γ x` as an intermediate fact. Rewrite `this` using `[AddChar.one_apply, one_mul]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem periodic_of_one {Φ : WO S T → ℂ} (hΦ : IsThetaFunO 1 S T Φ) : ∀ γ ∈ ratL T S, ∀ x, Φ (γ + x) = Φ x := by
   rintro _ ⟨γ, rfl⟩ x
@@ -341,7 +341,7 @@ theorem periodic_of_one {Φ : WO S T → ℂ} (hΦ : IsThetaFunO 1 S T Φ) : ∀
   rwa [AddChar.one_apply, one_mul] at this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `h` using `((hasDerivAt_and_isTheta isExpChar_one hL hΦ).1 w).mul ((hasDerivAt_and_isTheta hψ hL hg).1 w)`. Simplify using `only [map_zero, heisO_zero] at h`. Use `HasDerivAt.deriv (h.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_))` and prove the remaining obligations. Conclude with `congrFun (heisO_one_mul (L t) Φ g) w`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dHeis_one_mul (hψ : IsExpChar ψ) {L : ℝ →+ WO S T} (hL : IsRealDir L) {Φ g : WO S T → ℂ}
     (hΦ : IsThetaFunO 1 S T Φ) (hg : IsThetaFunO ψ S T g) :
@@ -353,7 +353,7 @@ theorem dHeis_one_mul (hψ : IsExpChar ψ) {L : ℝ →+ WO S T} (hL : IsRealDir
   exact congrFun (heisO_one_mul (L t) Φ g) w
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨γ, rfl⟩ w`. Use `congrArg norm (hf.quasi γ w)` as an intermediate fact. Rewrite `this` using `[norm_mul, hn, one_mul]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_periodic' (hn : ∀ x, ‖ψ x‖ = 1) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     ∀ γ ∈ ratL T S, ∀ w, ‖f (γ + w)‖ = ‖f w‖ := by
@@ -362,9 +362,9 @@ theorem norm_periodic' (hn : ∀ x, ‖ψ x‖ = 1) {f : WO S T → ℂ} (hf : I
   rwa [norm_mul, hn, one_mul] at this
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Take `⟨B, hB⟩` from `hK.exists_bound_of_continuousOn hf.cont.continuousOn`. Establish `: ∀ w, ‖f w‖ ≤ B` using `fun w => by`. Take `⟨γ, hγ, hk⟩` from `hcov w`. Rewrite using `[← norm_periodic' hn hf γ hγ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hB _ hk`. Conclude with `⟨B, (norm_nonneg _).trans (this 0), this⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bound (hn : ∀ x, ‖ψ x‖ = 1) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ w, ‖f w‖ ≤ B := by
@@ -379,7 +379,7 @@ theorem exists_bound (hn : ∀ x, ‖ψ x‖ = 1) {f : WO S T → ℂ} (hf : IsT
 def chi (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (γ x : WO S T) : ℂ := ψ (symplOH S T x γ + symplOH S T x γ)
 
 /- English proof (translation)
-Unfold `chi`. Rewrite using `[← AddChar.map_add_eq_mul, symplOH_add_left]`. Conclude with `congrArg ψ (add_add_add_comm _ _ _ _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_add (γ x y : WO S T) : chi ψ S T γ (x + y) = chi ψ S T γ x * chi ψ S T γ y := by
   unfold chi
@@ -387,7 +387,7 @@ theorem chi_add (γ x y : WO S T) : chi ψ S T γ (x + y) = chi ψ S T γ x * ch
   exact congrArg ψ (add_add_add_comm _ _ _ _)
 
 /- English proof (translation)
-Unfold `chi`. Rewrite using `[← AddChar.map_add_eq_mul, symplOH_add_right]`. Conclude with `congrArg ψ (add_add_add_comm _ _ _ _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_add_left (γ γ' x : WO S T) : chi ψ S T (γ + γ') x = chi ψ S T γ x * chi ψ S T γ' x := by
   unfold chi
@@ -395,19 +395,19 @@ theorem chi_add_left (γ γ' x : WO S T) : chi ψ S T (γ + γ') x = chi ψ S T 
   exact congrArg ψ (add_add_add_comm _ _ _ _)
 
 /- English proof (translation)
-Rewrite using `[chi, GlobalTheory.WeilVacMove.symplOH_zero_right, add_zero, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_zero_left (x : WO S T) : chi ψ S T 0 x = 1 := by
   rw [chi, GlobalTheory.WeilVacMove.symplOH_zero_right, add_zero, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Rewrite using `[chi, GlobalTheory.WeilVacMove.symplOH_zero_left, add_zero, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_zero (γ : WO S T) : chi ψ S T γ 0 = 1 := by
   rw [chi, GlobalTheory.WeilVacMove.symplOH_zero_left, add_zero, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.FinTranslate.continuous_symplOH S T γ`. Establish `h2 : Continuous fun x : WO S T => symplOH S T x γ + symplOH S T x γ` using `h.add h`. Unfold `chi`. Conclude with `hc.comp h2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_chi (hc : Continuous ψ) (γ : WO S T) : Continuous (chi ψ S T γ) := by
   have h := GlobalTheory.FinTranslate.continuous_symplOH S T γ
@@ -416,7 +416,7 @@ theorem continuous_chi (hc : Continuous ψ) (γ : WO S T) : Continuous (chi ψ S
   exact hc.comp h2
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(GlobalTheory.OrientedFormLaws.symplOH_laws D S T).2.2.2.2.2.1 γ' h' γ h`. Rewrite using `[chi, ha, ← map_add]`. Conclude with `hψ.2.2.1 _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_rat (hψ : IsCharAF D.host.F ψ) {γ γ' : WO S T} (h : γ ∈ ratL T S) (h' : γ' ∈ ratL T S) :
     chi ψ S T γ γ' = 1 := by
@@ -425,9 +425,9 @@ theorem chi_rat (hψ : IsCharAF D.host.F ψ) {γ γ' : WO S T} (h : γ ∈ ratL 
   exact hψ.2.2.1 _
 
 /- English proof (translation)
-Take `⟨γ, rfl⟩` from `h`. Use function extensionality and compare the values at `w`. Use `hg.quasi γ w` as an intermediate fact. Rewrite `this` using `[← symplOH_skew, add_comm]`. Rewrite using `[heisO, Pi.mul_apply, chi, AddChar.map_add_eq_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ this`.
+A detailed English derivation is pending.
 -/
 theorem heisO_rat {γ : WO S T} (h : γ ∈ ratL T S) {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g) :
     heisO ψ S T γ g = chi ψ S T γ * g := by
@@ -439,23 +439,19 @@ theorem heisO_rat {γ : WO S T} (h : γ ∈ ratL T S) {g : WO S T → ℂ} (hg :
   exact congrArg _ this
 
 /- English proof (translation)
-Rewrite using `[chi_add, chi_rat hψ h (γ' := ratW T S γ') ⟨γ', rfl⟩, AddChar.one_apply] level := by haveI := (GlobalTheory.AdelicMatrixLattice.lattice D T S).1`. Set `K : AddSubgroup (WO S T)` to `{ carrier := {w | ψ (pairA D.host.F 0 (symplOH S T w γ).2) = 1} zero_mem' := by show ψ _ = 1`. Rewrite using `[GlobalTheory.WeilVacMove.symplOH_zero_left]`. Conclude with `ψ.map_zero_eq_one`. Use the proof step `add_mem' := fun {a b} ha hb => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : ψ _ = 1` using `ha`. Establish `hb' : ψ _ = 1` using `hb`. Use `show ψ _ = 1`. Rewrite using `[← one_mul (1 : ℂ)]`. Use `conv_rhs => rw [← ha']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `arg 2`. Rewrite using `[ha', ← hb']`. Rewrite using `[← AddChar.map_add_eq_mul, symplOH_add_left]`. Use `congr 1`. Conclude with `Prod.ext (add_zero _).symm rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `neg_mem' := fun {a} ha => by`. Establish `ha' : ψ _ = 1` using `ha`. Use `show ψ _ = 1`. Establish `e : symplOH S T (-a) γ = -symplOH S T a γ`. Rewrite using `[symplOH_skew, GlobalTheory.FinTranslate.symplOH_neg_right, neg_neg, symplOH_skew]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2 : pairA D.host.F 0 (symplOH S T (-a) γ).2 = -pairA D.host.F 0 (symplOH S T a γ).2`. Rewrite using `[e]`. Conclude with `Prod.ext neg_zero.symm rfl`. Rewrite using `[e2, AddChar.map_neg_eq_inv, ha', inv_one] }`. Establish `hK : IsOpen (K : Set (WO S T))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `K.isOpen_of_mem_nhds (g := 0) ?_` and prove the remaining obligations. Establish `h1 : Continuous fun w : WO S T => (symplOH S T w γ).2` using `continuous_snd.comp (GlobalTheory.FinTranslate.continuous_symplOH S T γ)`. Conclude with `h1.continuousAt.preimage_mem_nhds (x := 0) (t := {a | ψ (pairA D.host.F 0 a) = 1}) (by rw [GlobalTheory.WeilVacMove.symplOH_zero_left]; exact GlobalTheory.FinTranslate.ker_mem_nhds hψ.1 hψ.2.1)`. Use `⟨K, hK, fun u hu h0 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h4 : symplOH S T u γ = pairA D.host.F 0 (symplOH S T u γ).2` using `Prod.ext (fst_symplOH S T u γ (Or.inl h0)) rfl`. Establish `h5 : ψ (symplOH S T u γ) = 1` using `by rw [h4]; exact hu`. Rewrite using `[heisO_one_apply, chi_add, chi, chi, AddChar.map_add_eq_mul ψ (symplOH S T u γ), h5, mul_one, mul_one]`. Use `cont := continuous_chi hψ.1 γ`. Use `smooth k L hL h0 w := by`.
-
-Take `⟨-, -, lam, hl, hlam⟩` from `isExpChar_of_isCharAF hψ`. Establish `e : (fun t => chi ψ S T γ (w + L t)) = fun t => chi ψ S T γ w * (Complex.exp (((phase lam S T γ).comp L) t) * Complex.exp (((phase lam S T γ).comp L) t))`. Use function extensionality and compare the values at `t`. Rewrite using `[chi_add]`. Use `congr 1`.
-
-Rewrite using `[chi, AddChar.map_add_eq_mul, hlam _ (snd_symplOH S T _ γ (Or.inl (h0 t)))]`. Both sides reduce to the same expression. Establish `hs : ContDiff ℝ ∞ ((phase lam S T γ).comp L)` using `contDiff_additive _ (hl.comp (continuous_symplOH S T hL continuous_const))`. Rewrite using `[e]`. Conclude with `contDiff_const.mul (hs.cexp.mul hs.cexp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTheta_chi (hψ : IsCharAF D.host.F ψ) {γ : WO S T} (h : γ ∈ ratL T S) : IsThetaFunO 1 S T (chi ψ S T γ) where
   quasi γ' w := by rw [chi_add, chi_rat hψ h (γ' := ratW T S γ') ⟨γ', rfl⟩, AddChar.one_apply]
@@ -512,9 +508,7 @@ theorem isTheta_chi (hψ : IsCharAF D.host.F ψ) {γ : WO S T} (h : γ ∈ ratL 
     exact contDiff_const.mul (hs.cexp.mul hs.cexp)
 
 /- English proof (translation)
-Take `⟨γ, rfl⟩` from `h`. Use `⟨b • γ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Use `show (1 : AF D.host.F) ⊗ₜ[D.host.F] (b • γ i j) = algebraMap D.host.F (AF D.host.F) b • ((1 : AF D.host.F) ⊗ₜ[D.host.F] γ i j)`. Rewrite using `[algebraMap_smul]`.
-
-Conclude with `(TensorProduct.mk D.host.F (AF D.host.F) D.host.E 1).map_smul b (γ i j)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_ratL (b : D.host.F) {γ : WO S T} (h : γ ∈ ratL T S) :
     (algebraMap D.host.F (AF D.host.F) b • γ : WO S T) ∈ ratL T S := by
@@ -527,7 +521,7 @@ theorem smul_mem_ratL (b : D.host.F) {γ : WO S T} (h : γ ∈ ratL T S) :
   exact (TensorProduct.mk D.host.F (AF D.host.F) D.host.E 1).map_smul b (γ i j)
 
 /- English proof (translation)
-Establish `h : (c • u : WO S T) = (1 - GlobalTheory.FinTranslate.eInf D) • (c • u)`. Rewrite using `[sub_smul, one_smul, smul_comm, GlobalTheory.FinTranslate.smul_fin hu, smul_zero, sub_zero]`. Rewrite using `[h]`. Use extensionality with `i j`. Conclude with `GlobalTheory.ThetaClosed.infPart_one_sub_eInf_smul _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem smul_fin' (c : AF D.host.F) {u : WO S T} (hu : u.map (infPart D) = 0) :
     (c • u : WO S T).map (infPart D) = 0 := by
@@ -537,7 +531,7 @@ theorem smul_fin' (c : AF D.host.F) {u : WO S T} (hu : u.map (infPart D) = 0) :
   ext i j; exact GlobalTheory.ThetaClosed.infPart_one_sub_eInf_smul _
 
 /- English proof (translation)
-Establish `h : (c • u : WO S T) = GlobalTheory.FinTranslate.eInf D • (c • u)`. Rewrite using `[smul_comm, GlobalTheory.FinTranslate.smul_real hu]`. Rewrite using `[h]`. Use extensionality with `i j`. Conclude with `GlobalTheory.ThetaClosed.finPart_eInf_smul _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem smul_real' (c : AF D.host.F) {u : WO S T} (hu : u.map (finPart D) = 0) :
     (c • u : WO S T).map (finPart D) = 0 := by
@@ -547,9 +541,7 @@ theorem smul_real' (c : AF D.host.F) {u : WO S T} (hu : u.map (finPart D) = 0) :
   ext i j; exact GlobalTheory.ThetaClosed.finPart_eInf_smul _
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI i1 : ContinuousSMul (AF D.host.F) (AE D) := IsModuleTopology.toContinuousSMul _ _`. Use `haveI : ContinuousConstSMul (AF D.host.F) (AE D) := @ContinuousSMul.continuousConstSMul _ _ _ _ _ i1`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `h : Continuous fun u : WO S T => u i j` using `(continuous_apply j).comp (continuous_apply i)`.
-
-Conclude with `h.const_smul c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_smul' (c : AF D.host.F) : Continuous fun u : WO S T => (c • u : WO S T) := by
   haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
@@ -560,13 +552,13 @@ theorem continuous_smul' (c : AF D.host.F) : Continuous fun u : WO S T => (c •
   exact h.const_smul c
 
 /- English proof (translation)
-Establish `key : ∀ x y : WO S T, symplOH S T (algebraMap D.host.F (AF D.host.F) b • x) (algebraMap D.host.F (AF D.host.F) b • y) = algebraMap D.host.F (AF D.host.F) (b * b) * symplOH S T x y`. Introduce `x y`. Rewrite using `[GlobalTheory.FinTranslate.symplOH_smul_left, GlobalTheory.FinTranslate.symplOH_smul_right, map_mul, mul_assoc]`. Use `⟨fun γ w => ?_, ?_, hf.cont.comp (continuous_smul' _), fun k L hL h0 w => ?_⟩` and prove the remaining obligations. Take `⟨γ', h'⟩` from `smul_mem_ratL (S := S) (T := T) b (γ := ratW T S γ) ⟨γ, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h'' : ratW T S γ' = algebraMap D.host.F (AF D.host.F) b • ratW T S γ` using `h'`. Use `hf.quasi γ' (algebraMap D.host.F (AF D.host.F) b • w)` as an intermediate fact. Rewrite `this` using `[h'', key]`. Rewrite using `[smul_add, AddChar.mulShift_apply, mul_neg]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, h1⟩` from `hf.level`. Use `⟨U.comap (DistribSMul.toAddMonoidHom (WO S T) (algebraMap D.host.F (AF D.host.F) b)), hU.preimage (continuous_smul' _), fun u hu h0 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Use `congrFun (h1 _ hu (smul_fin' _ h0)) (algebraMap D.host.F (AF D.host.F) b • w)` as an intermediate fact. Rewrite `this`, the goal using `[heisO]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add, AddChar.mulShift_apply, ← key]`. Conclude with `this`. Use `hf.smooth k ((DistribSMul.toAddMonoidHom (WO S T) (algebraMap D.host.F (AF D.host.F) b)).comp L) ((continuous_smul' _).comp hL) (fun t => smul_real' _ (h0 t)) (algebraMap D.host.F (AF D.host.F) b • w)` as an intermediate fact. Simplify using `only [smul_add]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isTheta_scale (b : D.host.F) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     IsThetaFunO (ψ.mulShift (algebraMap D.host.F (AF D.host.F) (b * b))) S T
@@ -596,7 +588,7 @@ theorem isTheta_scale (b : D.host.F) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S
     exact this
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `Function.ne_iff.1 h0`. Conclude with `⟨_, isTheta_heis hψ hf x, by rwa [heisO_apply_zero]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_zero_ne (hψ : IsExpChar ψ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (h0 : f ≠ 0) :
     ∃ g, IsThetaFunO ψ S T g ∧ g 0 ≠ 0 := by
@@ -604,11 +596,11 @@ theorem exists_zero_ne (hψ : IsExpChar ψ) {f : WO S T → ℂ} (hf : IsThetaFu
   exact ⟨_, isTheta_heis hψ hf x, by rwa [heisO_apply_zero]⟩
 
 /- English proof (translation)
-Take `⟨ψ₀, h₀, a, -, ha⟩` from `exists_std hψ`. Take `⟨f₀, hf₀, hne⟩` from `GlobalTheory.Mem.ThetaNonzero.exists_thetaO_ne_zero h₀ S T`. Take `⟨f, hf, h0⟩` from `exists_zero_ne (isExpChar_of_isCharAF h₀.1) hf₀ hne`. Establish `h` using `isTheta_mul (isTheta_scale ((a + 1) / 2) hf) (isTheta_star (fun x => by rw [AddChar.mulShift_apply]; exact h₀.1.2.1 _) (isTheta_scale ((a - 1) / 2) hf))`. Establish `e : ψ₀.mulShift (algebraMap D.host.F (AF D.host.F) ((a + 1) / 2 * ((a + 1) / 2))) * (ψ₀.mulShift (algebraMap D.host.F (AF D.host.F) ((a - 1) / 2 * ((a - 1) / 2))))⁻¹ = ψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[AddChar.mul_apply, AddChar.inv_apply, AddChar.mulShift_apply, AddChar.mulShift_apply, ← AddChar.map_add_eq_mul, ha, mul_neg, ← sub_eq_add_neg, ← sub_mul, ← map_sub]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨_, h, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Pi.star_apply, smul_zero]`. Conclude with `mul_ne_zero h0 (star_ne_zero.2 h0)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_theta_zero_ne (hψ : IsCharAF D.host.F ψ) (S T : HSp D) : ∃ g, IsThetaFunO ψ S T g ∧ g 0 ≠ 0 := by
   obtain ⟨ψ₀, h₀, a, -, ha⟩ := exists_std hψ

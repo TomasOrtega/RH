@@ -19,13 +19,13 @@ theorem infMat_eq (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (g : GA D V) 
     infMat D.sp.cm.sig V.gram (θ τ) g i j = θ τ (infPart D (mt V g i j)) := rfl
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.Theta.mt, map_mul, Units.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_mul (V : HSp D) (a b : GA D V) : mt V (a * b) = mt V a * mt V b := by
   simp only [Formalism.L2.Theta.mt, map_mul, Units.val_mul]
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.Theta.mt, map_one, Units.val_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_one (V : HSp D) : mt V 1 = 1 := by
   simp only [Formalism.L2.Theta.mt, map_one, Units.val_one]

@@ -4,7 +4,7 @@ import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 open Formalism.BasicNotions UpperTheory.TP.RP
 
 /- English proof (translation)
-Unfold `ofTall`. Use `MvPolynomial.rename_injective _ fun a b hab => ?_` and prove the remaining obligations. Simplify using `only [Prod.mk.injEq, Sum.inl.injEq] at hab`. Conclude with `Prod.ext hab.2 hab.1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ofTall_injective {n d : ℕ} :
     Function.Injective (ofTall (n := n) (d := d)) := by
@@ -14,7 +14,7 @@ private theorem ofTall_injective {n d : ℕ} :
   exact Prod.ext hab.2 hab.1
 
 /- English proof (translation)
-Introduce `n d h μ _ h0`. Use `Formalism.GradedWeylDivisibility.hwNe ℂ d n h μ (ofTall_injective ?_)` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.TP.RP.jointNe :
     ∀ {n d : ℕ} (h : n ≤ d) (μ : Fin n → ℕ), Antitone μ → joint h μ ≠ 0 := by

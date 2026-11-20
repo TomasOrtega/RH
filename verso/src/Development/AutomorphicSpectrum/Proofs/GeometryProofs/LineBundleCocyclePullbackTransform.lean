@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Coc
 
 /- English proof (translation)
-Establish `e : Units.map (a.appLE U V h).hom.toMonoidHom u = res h (pullU a U u)`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[res, pullU, Scheme.Hom.appLE]`. Rewrite using `[e, gm_res _ x h hx, gm_pull (𝟙 Y) a x U (h hx) u, Category.id_comp]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gm_appLE {X Y : Scheme.{0}} (a : Y ⟶ X) {U : X.Opens} {V : Y.Opens} (h : V ≤ a ⁻¹ᵁ U) (u : Γ(X, U)ˣ)
     {x : Y} (hx : x ∈ V) :
@@ -21,7 +21,7 @@ theorem gm_appLE {X Y : Scheme.{0}} (a : Y ⟶ X) {U : X.Opens} {V : Y.Opens} (h
   rw [e, gm_res _ x h hx, gm_pull (𝟙 Y) a x U (h hx) u, Category.id_comp]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cob_group {G : Type} [CommGroup G] (p q r u v B T : G) (h₁ : p * q = v) (h₂ : r * u = v) :
     p * (q * B⁻¹ * T) = r * B⁻¹ * (u * T) := by
@@ -30,17 +30,15 @@ theorem cob_group {G : Type} [CommGroup G] (p q r u v B T : G) (h₁ : p * q = v
     _ = r * B⁻¹ * (u * T) := mul_mul_mul_comm r u B⁻¹ T
 
 /- English proof (translation)
-Establish `hA : ∀ i : Fin 2 → L.ι, ∀ y ∈ LB.wchart L ![a, b] i, a y ∈ L.U (i 0)` using `fun i y hy => Set.mem_iInter.1 hy 0`. Establish `hB : ∀ i : Fin 2 → L.ι, ∀ y ∈ LB.wchart L ![a, b] i, b y ∈ L.U (i 1)` using `fun i y hy => Set.mem_iInter.1 hy 1`. Establish `hle : ∀ i : Fin 2 → L.ι, LB.wchart L ![a, b] i ≤ a ⁻¹ᵁ (L.U (i 0) ⊓ L.U (i 1))` using `fun i y hy => ⟨hA i y hy, by show a y ∈ L.U (i 1)`. Rewrite using `[hab y]`. Conclude with `hB i y hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle' : ∀ i : Fin 2 → L.ι, LB.wchart L ![a, b] i ≤ b ⁻¹ᵁ L.U (i 1)` using `fun i y hy => hB i y hy`. Set `s : ∀ i : Fin 2 → L.ι, Γ(Y, LB.wchart L ![a, b] i)ˣ` to `fun i => res (hle i) (pullU a _ (L.g (i 0) (i 1))) * res (hle' i) (t (i 1))`. Establish `hs : ∀ (i : Fin 2 → L.ι) (x : Y), x ∈ LB.wchart L ![a, b] i → gm (𝟙 Y) x _ (s i) = gm a x _ (L.g (i 0) (i 1)) * gm (𝟙 Y) x _ (t (i 1))`. Introduce `i x hx`. Establish `h₁ : gm (𝟙 Y) x _ (res (hle i) (pullU a _ (L.g (i 0) (i 1)))) = gm a x _ (L.g (i 0) (i 1))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gm_res _ x _ hx, gm_pull (𝟙 Y) a x _ (hle i hx), Category.id_comp]`. Rewrite using `[map_mul, h₁, gm_res _ x _ hx]`. Use `⟨⟨s⟩, fun i i' => unit_ext fun x hx => ?_⟩` and prove the remaining obligations. Establish `hmem : b x ∈ L.U (i 1) ⊓ L.U (i' 1)` using `⟨hB i x hx.1, hB i' x hx.2⟩`. Establish `hh : b ⁻¹ᵁ (L.U (i 1) ⊓ L.U (i' 1)) ≤ a ⁻¹ᵁ (L.U (i 1) ⊓ L.U (i' 1))` using `fun y hy => by show a y ∈ L.U (i 1) ⊓ L.U (i' 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hab y]`. Conclude with `hy`. Establish `e` using `congrArg (gm (𝟙 Y) x (b ⁻¹ᵁ (L.U (i 1) ⊓ L.U (i' 1)))) (ht (i 1) (i' 1) hh)`. Establish `hmem' : x ∈ b ⁻¹ᵁ (L.U (i 1) ⊓ L.U (i' 1))` using `hmem`. Rewrite `e` using `[map_mul, map_mul, map_inv, gm_res (𝟙 Y) x _ hmem', gm_res (𝟙 Y) x _ hmem', gm_appLE a hh _ hmem', gm_pull (𝟙 Y) b x _ hmem, Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₁` using `gm_cocycle hL a x (hA i x hx.1) (show a x ∈ L.U (i 1) from (hle i hx.1).2) (show a x ∈ L.U (i' 1) from (hle i' hx.2).2)`. Establish `c₂` using `gm_cocycle hL a x (hA i x hx.1) (hA i' x hx.2) (show a x ∈ L.U (i' 1) from (hle i' hx.2).2)`. Establish `hg` using `gm_linComb L ![a, b] ![1, -1] (𝟙 Y) x i i' hx.1 hx.2`. Rewrite using `[gm_res _ x _ hx, map_mul, gm_res _ x _ hx]`. Use `show gm (𝟙 Y) x (LB.wchart L ![a, b] i) (s i) = gm (𝟙 Y) x (LB.wchart L ![a, b] i ⊓ LB.wchart L ![a, b] i') ((LB.LinComb L ![a, b] ![1, -1]).g i i') * gm (𝟙 Y) x (LB.wchart L ![a, b] i') (s i')`.
-
-Rewrite using `[hg, hs i x hx.1, hs i' x hx.2, e, Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Category.id_comp, zpow_one, zpow_neg]`. Conclude with `cob_group _ _ _ _ _ _ _ c₁ c₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_units (X Y : Scheme.{0}) (L : LB X) (hL : L.IsLB) (a b : Y ⟶ X) (hab : ∀ y, a y = b y)
     (t : ∀ j, Γ(Y, b ⁻¹ᵁ L.U j)ˣ)

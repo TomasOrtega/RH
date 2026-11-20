@@ -22,7 +22,7 @@ variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 K)) K (N : Set V) x hx`. Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨t, nonZeroDivisors.ne_zero t.2, ht⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_smul_mem_of_mem_span (N : Submodule (𝓞 K) V) {x : V} (hx : x ∈ Submodule.span K (N : Set V)) :
     ∃ a : 𝓞 K, a ≠ 0 ∧ a • x ∈ N := by
@@ -31,11 +31,11 @@ theorem exists_smul_mem_of_mem_span (N : Submodule (𝓞 K) V) {x : V} (hx : x �
   exact ⟨t, nonZeroDivisors.ne_zero t.2, ht⟩
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hfg`. Establish `h1 : ∀ y : s, ∃ a : 𝓞 K, a ≠ 0 ∧ a • (y : V) ∈ N` using `fun y => exists_smul_mem_of_mem_span N (h y (Submodule.subset_span y.2))`. Use `choose a ha0 ha using h1`. Use `⟨∏ y, a y, Finset.prod_ne_zero_iff.mpr fun y _ => ha0 y, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ (⟨y, hy⟩ : s)), mul_smul]`. Conclude with `N.smul_mem _ (ha ⟨y, hy⟩)`. Consider the case `zero => simp`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `N.add_mem hy hz`. Consider the case `smul c y _ hy => rw [smul_comm]`. Conclude with `N.smul_mem _ hy`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_le_of_fg (N N' : Submodule (𝓞 K) V) (hfg : N'.FG)
     (h : ∀ x ∈ N', x ∈ Submodule.span K (N : Set V)) : ∃ a : 𝓞 K, a ≠ 0 ∧ ∀ x ∈ N', a • x ∈ N := by
@@ -57,9 +57,9 @@ theorem exists_smul_le_of_fg (N N' : Submodule (𝓞 K) V) (hfg : N'.FG)
 omit [Module K V] [IsScalarTower (𝓞 K) K V] in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Establish `hI : N.comap (LinearMap.toSpanSingleton (𝓞 K) V x) ≠ ⊤`. Introduce `h1`. Establish `: (1 : 𝓞 K) ∈ N.comap (LinearMap.toSpanSingleton (𝓞 K) V x)` using `h1 ▸ Submodule.mem_top`. Conclude with `hx (by simpa using this)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hI`. Establish `hm0 : m ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField K)`. Take `⟨s, hs, hsx⟩` from `h ⟨m, hm.isPrime, hm0⟩`. Conclude with `hs (hle (by simpa using hsx))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_locP (N : Submodule (𝓞 K) V) {x : V}
     (h : ∀ w : HeightOneSpectrum (𝓞 K), x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal N) : x ∈ N := by
@@ -75,7 +75,7 @@ theorem mem_of_forall_locP (N : Submodule (𝓞 K) V) {x : V}
 
 omit [Module K V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Introduce and unpack `x ⟨s, hs, hx⟩`. Conclude with `⟨a * s, Submonoid.mul_mem _ ha hs, by rw [mul_smul]; exact h _ hx⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem localization_le_of_smul_mem (w : HeightOneSpectrum (𝓞 K)) {N N' : Submodule (𝓞 K) V} {a : 𝓞 K} (ha : a ∉ w.asIdeal)
     (h : ∀ x ∈ N', a • x ∈ N) : Formalism.HermitianLatticesTheory.localization₂ w.asIdeal N' ≤ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal N := by
@@ -83,13 +83,11 @@ theorem localization_le_of_smul_mem (w : HeightOneSpectrum (𝓞 K)) {N N' : Sub
   exact ⟨a * s, Submonoid.mul_mem _ ha hs, by rw [mul_smul]; exact h _ hx⟩
 
 /- English proof (translation)
-Establish `hI : Ideal.span {d} ≠ ⊥` using `by simpa using hd`. Take `⟨Q, hQ, hdQ⟩` from `Ideal.eq_prime_pow_mul_coprime hI w'.asIdeal (hpm := w'.isMaximal)`. Use `set k := Multiset.count w'.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {d}))`. Establish `h1 : ¬ w'.asIdeal ^ k ≤ w.asIdeal`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `Ideal.IsPrime.le_of_pow_le (hP := w.isPrime) h`. Conclude with `hw (HeightOneSpectrum.ext (w'.isMaximal.eq_of_le w.isPrime.ne_top h2))`. Establish `h2 : ¬ Q ≤ w'.asIdeal`. Introduce `h`. Rewrite `hQ` using `[sup_eq_left.mpr h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `w'.isPrime.ne_top hQ`. Take `⟨s, hs, hs'⟩` from `SetLike.not_le_iff_exists.mp h1`. Take `⟨u, hu, hu'⟩` from `SetLike.not_le_iff_exists.mp h2`. Use `⟨s, hs', u, hu', ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, hdQ, mul_comm u]`.
-
-Conclude with `Ideal.mul_mem_mul hs hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dvd_mul {w w' : HeightOneSpectrum (𝓞 K)} (hw : w' ≠ w) {d : 𝓞 K} (hd : d ≠ 0) :
     ∃ s ∉ w.asIdeal, ∃ u ∉ w'.asIdeal, d ∣ u * s := by
@@ -116,9 +114,9 @@ end General
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← (Pi.basisFun K (Fin n)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `Submodule.subset_span ⟨j, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.one_apply, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem span_colLat_one : Submodule.span K (colLat (1 : GL (Fin n) K) : Set (Fin n → K)) = ⊤ := by
   rw [eq_top_iff, ← (Pi.basisFun K (Fin n)).span_eq]
@@ -129,7 +127,7 @@ theorem span_colLat_one : Submodule.span K (colLat (1 : GL (Fin n) K) : Set (Fin
   simp [Matrix.one_apply, Pi.single_apply]
 
 /- English proof (translation)
-Take `⟨a, ha0, ha⟩` from `exists_smul_le_of_fg (colLat (1 : GL (Fin n) K)) M hM.fg (fun x _ => by rw [span_colLat_one]; trivial)`. Take `⟨b, hb0, hb⟩` from `exists_smul_le_of_fg M (colLat (1 : GL (Fin n) K)) (Submodule.fg_span (Set.finite_range _)) (fun x _ => by rw [hM.span_eq_top]; trivial)`. Use `⟨a * b, mul_ne_zero ha0 hb0, fun w hw => le_antisymm ?_ ?_⟩` and prove the remaining obligations. Conclude with `localization_le_of_smul_mem w (fun h => hw (w.asIdeal.mul_mem_right _ h)) ha`. Conclude with `localization_le_of_smul_mem w (fun h => hw (w.asIdeal.mul_mem_left _ h)) hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isBasisAt_one (M : Submodule (𝓞 K) (Fin n → K)) (hM : Submodule.IsLattice K M) :
     ∃ a : 𝓞 K, a ≠ 0 ∧ ∀ w : HeightOneSpectrum (𝓞 K), a ∉ w.asIdeal → IsBasisAt w M 1 := by
@@ -142,16 +140,16 @@ theorem exists_isBasisAt_one (M : Submodule (𝓞 K) (Fin n → K)) (hM : Submod
   · exact localization_le_of_smul_mem w (fun h => hw (w.asIdeal.mul_mem_left _ h)) hb
 
 /- English proof (translation)
-The claim follows from `((actP lam g).restrictScalars (𝓞 K)).map_smul a F`.
+A detailed English derivation is pending.
 -/
 theorem polyAction_smul_int (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (a : 𝓞 K) (F : Pol K ι n) :
     actP lam g (a • F) = a • actP lam g F :=
   ((actP lam g).restrictScalars (𝓞 K)).map_smul a F
 
 /- English proof (translation)
-Take `⟨s, hs, hx⟩` from `hF`. Establish `hs0 : algebraMap (𝓞 K) K s ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 K) K)]`. Introduce and unpack `rfl`. Conclude with `hs w.asIdeal.zero_mem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : algebraMap (𝓞 K) K s • actP lam B⁻¹ F ∈ VV K lam`. Rewrite using `[algebraMap_smul, ← hT]`. Conclude with `Submodule.subset_span hx`. Establish `h2` using `polyAction_mem_VV lam B (((VV K lam).smul_mem_iff hs0).mp h1)`. Rewrite `h2` using `[← polyAction_mul, mul_inv_cancel, polyAction_one₂]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_VV_of_locP (lam : ι → DomWeight n) {T : Submodule (𝓞 K) (Pol K ι n)}
     (hT : Submodule.span K (T : Set (Pol K ι n)) = VV K lam) (w : HeightOneSpectrum (𝓞 K))
@@ -168,9 +166,9 @@ theorem mem_VV_of_locP (lam : ι → DomWeight n) {T : Submodule (𝓞 K) (Pol K
   rwa [← polyAction_mul, mul_inv_cancel, polyAction_one₂] at h2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ show actP lam B⁻¹ (actP lam B y) ∈ _`. Rewrite using `[← polyAction_mul, inv_mul_cancel, polyAction_one₂]`. Conclude with `hy`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, h, ?_⟩` and prove the remaining obligations. Use `show actP lam B (actP lam B⁻¹ F) = F`. Rewrite using `[← polyAction_mul, mul_inv_cancel, polyAction_one₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_map_actP (lam : ι → DomWeight n) (B : ι → GL (Fin n) K) (N : Submodule (𝓞 K) (Pol K ι n))
     (F : Pol K ι n) : F ∈ N.map ((actP lam B).restrictScalars (𝓞 K)) ↔ actP lam B⁻¹ F ∈ N := by
@@ -185,7 +183,7 @@ theorem mem_map_actP (lam : ι → DomWeight n) (B : ι → GL (Fin n) K) (N : S
     rw [← polyAction_mul, mul_inv_cancel, polyAction_one₂]
 
 /- English proof (translation)
-Simplify using `only [transLat, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_transLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K ι n))
     (M : ι → Submodule (𝓞 K) (Fin n → K)) (F : Pol K ι n) :
@@ -194,9 +192,9 @@ theorem mem_transLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K �
   simp only [transLat, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]
 
 /- English proof (translation)
-Use extensionality with `F`. Rewrite using `[mem_map_actP, mem_transLat]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `mem_of_forall_locP T fun w => h w B fun _ => rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h w B' hB'`. Conclude with `hI w B' hB' F ⟨1, Submonoid.one_mem _, by rw [one_smul]; exact h⟩`.
+A detailed English derivation is pending.
 -/
 theorem transLat_colLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K ι n)) (B : ι → GL (Fin n) K)
     (hI : ∀ (w : HeightOneSpectrum (𝓞 K)) (B' : ι → GL (Fin n) K), (∀ τ, IsBasisAt w (colLat (B τ)) (B' τ)) →
@@ -211,23 +209,21 @@ theorem transLat_colLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol 
     exact hI w B' hB' F ⟨1, Submonoid.one_mem _, by rw [one_smul]; exact h⟩
 
 /- English proof (translation)
-Use extensionality with `F`. Rewrite using `[mem_map_actP]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hF⟩`. Take `⟨t, ht, h⟩` from `(mem_transLat lam T M _).mp hF w B hB`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨t * s, Submonoid.mul_mem _ ht hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `(congrArg (fun x => t • x ∈ T) (polyAction_smul_int lam B⁻¹ s F)).mp h`. Introduce `hF`. Establish `hV : F ∈ VV K lam` using `mem_VV_of_locP lam hT w B hF`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ g : ι → GL (Fin n) K, ∃ d : 𝓞 K, d ≠ 0 ∧ d • actP lam g F ∈ T` using `fun g => exists_smul_mem_of_mem_span T (hT ▸ polyAction_mem_VV lam g hV)`. Use `choose a ha0 ha using fun τ => exists_isBasisAt_one (M τ) (hM τ)`. Take `⟨d, hd0, hdF⟩` from `hd (1 : ι → GL (Fin n) K)⁻¹`. Establish `hc0 : Ideal.span {d * ∏ τ, a τ} ≠ 0`. Simplify using `using mul_ne_zero hd0 (Finset.prod_ne_zero_iff.mpr fun τ _ => ha0 τ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `Ideal.finite_factors hc0`. Establish `hloc : ∀ w' : HeightOneSpectrum (𝓞 K), ∃ s ∉ w.asIdeal, ∀ B' : ι → GL (Fin n) K, (∀ τ, IsBasisAt w' (M τ) (B' τ)) → s • actP lam B'⁻¹ F ∈ Formalism.HermitianLatticesTheory.localization₂ w'.asIdeal T`. Introduce `w'`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `⟨1, (Ideal.ne_top_iff_one _).mp w'.isPrime.ne_top, fun B' hB' => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ ((hI w' B B' hB hB' F).mp hF)`. Distinguish the cases in `hex : ∃ B₀ : ι → GL (Fin n) K, ∀ τ, IsBasisAt w' (M τ) (B₀ τ)`. Take `⟨B₀, hB₀⟩` from `hex`. Take `⟨e, he0, heF⟩` from `hd B₀⁻¹`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs, u, hu, c, hc⟩` from `exists_dvd_mul hw he0`. Use `⟨s, hs, fun B' hB' => ?_⟩` and prove the remaining obligations. Rewrite using `[← polyAction_smul_int]`. Use `(hI w' B₀ B' hB₀ hB' _).mp ⟨u, hu, ?_⟩` and prove the remaining obligations. Use `erw [polyAction_smul_int, ← mul_smul, hc, mul_comm, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `T.smul_mem _ heF`. Conclude with `⟨1, (Ideal.ne_top_iff_one _).mp w.isPrime.ne_top, fun B' hB' => absurd ⟨B', hB'⟩ hex⟩`. Use `choose s hs hsF using hloc`. Use `⟨∏ w' ∈ hfin.toFinset, s w', Submonoid.prod_mem _ fun w' _ => hs w', ?_⟩` and prove the remaining obligations. Rewrite using `[mem_transLat]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `w' B' hB'`. Use `erw [polyAction_smul_int]`. Distinguish the cases in `hw' : w' ∈ hfin.toFinset`. Use `erw [← Finset.prod_erase_mul _ _ hw', mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hsF w' B' hB')`.
-
-Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hn : d * ∏ τ, a τ ∉ w'.asIdeal`. Simplify `hw'` using `[Ideal.dvd_span_singleton]`. Establish `h1 : ∀ τ, IsBasisAt w' (M τ) ((1 : ι → GL (Fin n) K) τ)` using `fun τ => ha τ w' fun h => hn (w'.asIdeal.mul_mem_left _ (w'.asIdeal.mem_of_dvd (Finset.dvd_prod_of_mem a (Finset.mem_univ τ)) h))`. Conclude with `(hI w' 1 B' h1 hB' F).mp ⟨d, fun h => hn (w'.asIdeal.mul_mem_right _ h), hdF⟩`.
+A detailed English derivation is pending.
 -/
 theorem locP_transLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K ι n))
     (hT : Submodule.span K (T : Set (Pol K ι n)) = VV K lam)
@@ -290,11 +286,9 @@ theorem locP_transLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K 
       exact (hI w' 1 B' h1 hB' F).mp ⟨d, fun h => hn (w'.asIdeal.mul_mem_right _ h), hdF⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `K _ _ ι _ n lam M hM w B hB`. Conclude with `⟨locP_transLat lam _ (GlobalTheory.StdLatSpan.std_fg_span K ι n lam).2.2.1 M hM (fun w B B' => GlobalTheory.T.nabIndep_and_delIndep_local_conditions.1 K ι n lam w M B B') w B hB, locP_transLat lam _ (GlobalTheory.StdLatSpan.std_fg_span K ι n lam).2.2.2 M hM (fun w B B' => GlobalT …`. Introduce `K _ _ ι _ n lam B`. Conclude with `⟨transLat_colLat lam _ B fun w B' hB' F => (GlobalTheory.T.nabIndep_and_delIndep_local_conditions.1 K ι n lam w _ B B' (fun _ => rfl) hB' F).mp, transLat_colLat lam _ B fun w B' hB' F => (GlobalTheory.T.nabIndep_and_delIndep_local_conditions.2 K ι n lam w _ B B' (fun _ => rfl) hB …`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `K _ _ ι _ n lam M hM F hF`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 K)`. Establish `hm0 : m ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField K)`. Set `w : HeightOneSpectrum (𝓞 K)` to `⟨m, hm.isPrime, hm0⟩`. Use `choose B hB using fun τ => GlobalTheory.LatBasisAt.basisAtEx K n (M τ) (hM τ) w`.
-
-Conclude with `mem_VV_of_locP lam (GlobalTheory.StdLatSpan.std_fg_span K ι n lam).2.2.1 w B ((mem_transLat lam _ M F).mp hF w B hB)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem nabDelLoc_free_leVV : NabDelLoc ∧ NabDelFree ∧ NabLeVV := by
   refine ⟨?_, ?_, ?_⟩

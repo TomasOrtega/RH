@@ -11,7 +11,7 @@ namespace GlobalTheory.Mum.FibEt
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _ @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem map_fst' {X Y Z X' Y' Z' : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) (f' : X' ⟶ Z') (g' : Y' ⟶ Z') (i₁ : X ⟶ X')
     (i₂ : Y ⟶ Y') (i₃ : Z ⟶ Z') (h1 : f ≫ i₃ = i₁ ≫ f') (h2 : g ≫ i₃ = i₂ ≫ g') :
@@ -20,7 +20,7 @@ theorem map_fst' {X Y Z X' Y' Z' : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) (f' :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem map_snd' {X Y Z X' Y' Z' : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) (f' : X' ⟶ Z') (g' : Y' ⟶ Z') (i₁ : X ⟶ X')
     (i₂ : Y ⟶ Y') (i₃ : Z ⟶ Z') (h1 : f ≫ i₃ = i₁ ≫ f') (h2 : g ≫ i₃ = i₂ ≫ g') :
@@ -32,13 +32,13 @@ end GlobalTheory.Mum.FibEt
 namespace GlobalTheory.Mum.FibEt
 
 /- English proof (translation)
-Set `φ` to `Spec.preimage (S.fromSpecResidueField s ≫ π)`. Establish `hφ : Spec.map φ = S.fromSpecResidueField s ≫ π` using `Spec.map_preimage _`. Establish `hpt : ∀ t : Spec (S.residueField s), (Spec.map φ) t = closedPoint R`. Introduce `t`. Rewrite using `[hφ, Scheme.Hom.comp_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `: S.fromSpecResidueField s t = s`. Use `Set.mem_range_self (f := ⇑(S.fromSpecResidueField s)) t` as an intermediate fact. Rewrite `this` using `[Scheme.range_fromSpecResidueField]`. Then use the resulting hypothesis. Rewrite using `[this, hs]`. Establish `hker : ∀ r ∈ maximalIdeal R, φ.hom r = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `r hr`. Set `t : Spec (S.residueField s)` to `closedPoint (S.residueField s)`. Establish `h1 : (PrimeSpectrum.comap φ.hom t) = closedPoint R` using `hpt t`. Establish `h2 : r ∈ (PrimeSpectrum.comap φ.hom t).asIdeal` using `by rw [h1]; exact hr`. Simplify `h2` using `[t, closedPoint]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨Ideal.Quotient.lift (maximalIdeal R) φ.hom hker, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_residue_factor {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} (π : S ⟶ Sp R) (s : S)
     (hs : π s = closedPoint R) :
@@ -67,9 +67,9 @@ end GlobalTheory.Mum.FibEt
 namespace GlobalTheory.Mum.FibEt
 
 /- English proof (translation)
-Establish `e : (𝔸(Fin g; Sp R) ↘ Sp R) = (AffineSpace.isoOfIsAffine (Fin g) (Sp R)).hom ≫ Spec.map (CommRingCat.ofHom MvPolynomial.C) ≫ (Sp R).isoSpec.inv`. Rewrite using `[← AffineSpace.isoOfIsAffine_inv_over (n := Fin g) (S := Sp R), Iso.hom_inv_id_assoc]`. Rewrite using `[e]`. Use `haveI : Algebra.Smooth Γ(Sp R, ⊤) (MvPolynomial (Fin g) Γ(Sp R, ⊤)) := ⟨inferInstance, inferInstance⟩`. Establish `: Smooth (Spec.map (CommRingCat.ofHom (MvPolynomial.C (R` using `Γ(Sp R, ⊤)) (σ := Fin g)))) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HasRingHomProperty.Spec_iff (P := @Smooth)]`. Conclude with `RingHom.smooth_algebraMap.mpr inferInstance`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem smooth_affineSpace_sp (R : Type) [CommRing R] (g : ℕ) : Smooth (𝔸(Fin g; Sp R) ↘ Sp R) := by
   have e : (𝔸(Fin g; Sp R) ↘ Sp R) = (AffineSpace.isoOfIsAffine (Fin g) (Sp R)).hom ≫
@@ -87,51 +87,45 @@ end GlobalTheory.Mum.FibEt
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `R _ _ _ hR M G' _ _ hG E P' b X a hab x y hyb hx0 W0 g τ0 O e hyO hOW hτ0 he he2 he3 c hc1 hc2 z hz`. Use `haveI : Smooth G'.hom := hG.smooth`. Use `haveI : Smooth (𝔸(Fin g; Sp R) ↘ Sp R) := FibEt.smooth_affineSpace_sp R g`. Use `haveI : Etale e := he`. Set `iV : (a ⁻¹ᵁ (b ⁻¹ᵁ W0)).toScheme ⟶ G'.left` to `(a ⁻¹ᵁ (b ⁻¹ᵁ W0)).ι ≫ X.ι ≫ E.H.ι`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `p : (a ⁻¹ᵁ (b ⁻¹ᵁ W0)).toScheme ⟶ M.S` to `iV ≫ G'.hom`. Establish `hh : c ≫ pullback.snd (𝔸(Fin g; Sp R) ↘ Sp R) M.π = p`. Rewrite using `[hc2]`. Simplify using `only [p, iV, Category.assoc]`. Establish `hp : Smooth p` using `by dsimp only [p, iV]; infer_instance`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : a ≫ b ≫ PSpace.str R E.N = X.ι ≫ E.H.ι ≫ G'.hom ≫ M.π` using `by rw [reassoc_of% hab, E.f_over]`. Establish `hs : M.π (p z) = closedPoint R`. Establish `h1` using `congrArg (fun f : X.toScheme ⟶ Sp R => f ((a ⁻¹ᵁ (b ⁻¹ᵁ W0)).ι z)) key`. Simplify using `only [Scheme.Hom.comp_apply] at h1 hz ⊢`. Simplify using `only [p, iV, Scheme.Hom.comp_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← h1, hz]`. Simplify `hx0` using `[Scheme.Hom.comp_apply]`. Take `⟨κ, hκ⟩` from `FibEt.exists_residue_factor M.π (p z) hs`. Take `⟨Ω', _, io, eG, l, -, hl1, hl2⟩` from `E.fib (M.S.residueField (p z)) (M.S.fromSpecResidueField (p z)) κ hκ`. Set `Vs` to `(a ⁻¹ᵁ (b ⁻¹ᵁ W0))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `x' : Sp Ω' ⟶ M.S` to `spMap io ≫ M.S.fromSpecResidueField (p z)`. Set `k' : Sp Ω' ⟶ Sp (ResidueField R)` to `spMap (io.comp κ)`. Establish `hxk : x' ≫ M.π = k' ≫ spMap (residue R)`. Simplify using `only [x', k', Category.assoc, hκ, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpt : x' (closedPoint Ω') = p z`. Simplify using `only [x', Scheme.Hom.comp_apply]`. Use `Set.mem_range_self (f := ⇑(M.S.fromSpecResidueField (p z))) ((spMap io) (closedPoint Ω'))` as an intermediate fact. Rewrite `this` using `[Scheme.range_fromSpecResidueField]`. Then use the resulting hypothesis. Take `⟨w, hw1, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := p) (g := x') z (closedPoint Ω') hpt.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `mG : pullback p x' ⟶ pullback G'.hom x'` to `pullback.map p x' G'.hom x' iV (𝟙 _) (𝟙 _) (by simp [p]) (by simp)`. Set `gm : pullback p x' ⟶ pullback E.Y.hom k'` to `mG ≫ eG.hom.left`. Establish `hgms : gm ≫ pullback.snd E.Y.hom k' = pullback.snd p x'`. Establish `hA : eG.hom.left ≫ pullback.snd E.Y.hom k' = pullback.snd G'.hom x'` using `Over.w eG.hom`. Simplify using `only [gm, Category.assoc, hA, mG, FibEt.map_snd', Category.comp_id]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `E1 : mG ≫ l = pullback.fst p x' ≫ Vs.ι ≫ X.ι`. Rewrite using `[← cancel_mono E.H.ι, Category.assoc, hl1]`. Conclude with `FibEt.map_fst' _ _ _ _ _ _ _ _ _`. Establish `E2 : gm ≫ pullback.fst E.Y.hom k' ≫ E.j = pullback.fst p x' ≫ Vs.ι ≫ a ≫ b`. Simplify using `only [gm, Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `erw [← hl2]`. Rewrite using `[reassoc_of% E1, hab]`. Establish `hgmw : (gm ≫ pullback.fst E.Y.hom k') w = y` using `by haveI : IsImmersion E.j := E.imm`. Apply `E.j.isEmbedding.injective` to reduce the goal to its premises. Establish `h` using `congrArg (fun f : pullback p x' ⟶ PSpace R E.N => f w) E2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Scheme.Hom.comp_apply] at h hz ⊢`. Rewrite using `[h, hw1, hz, hyb]`. Set `Wo : (pullback p x').Opens` to `(gm ≫ pullback.fst E.Y.hom k') ⁻¹ᵁ O`. Establish `hwW : w ∈ Wo` using `by show (gm ≫ pullback.fst E.Y.hom k') w ∈ O`. Rewrite using `[hgmw]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `hyO`. Set `A` to `𝔸(Fin g; Sp R) ↘ Sp R`. Set `Oy` to `pullback (O.ι ≫ E.Y.hom) k'`. Set `eΩ : Oy ⟶ pullback (pullback.snd A (spMap (residue R))) k'` to `pullback.map (O.ι ≫ E.Y.hom) k' (pullback.snd A (spMap (residue R))) k' e (𝟙 _) (𝟙 _) (by rw [Category.comp_id, he2]) (by simp)`. Use `haveI : MorphismProperty.IsStableUnderComposition @Etale := MorphismProperty.IsMultiplicative.toIsStableUnderComposition`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `heΩ : Etale eΩ` using `MorphismProperty.pullback_map (P := @Etale) (f := O.ι ≫ E.Y.hom) (g := k') (f' := pullback.snd A (spMap (residue R))) (g' := k') (i₁ := e) (i₂ := 𝟙 _) he inferInstance he2.symm (by simp)`. Set `θ : pullback (pullback.snd A (spMap (residue R))) k' ⟶ pullback (pullback.snd A M.π) x'` to `(pullbackLeftPullbackSndIso A (spMap (residue R)) k').hom ≫ (pullback.congrHom rfl hxk.symm).hom ≫ (pullbackLeftPullbackSndIso A M.π x').inv`. Establish `hθ1 : θ ≫ pullback.fst (pullback.snd A M.π) x' ≫ pullback.fst A M.π = pullback.fst (pullback.snd A (spMap (residue R))) k' ≫ pullback.fst A (spMap (residue R))`. Simplify using `only [θ, Category.assoc, pullbackLeftPullbackSndIso_inv_fst, pullback.congrHom_hom, FibEt.map_fst', Category.comp_id, pullbackLeftPullbackSndIso_hom_fst]`. Establish `hθ2 : θ ≫ pullback.fst (pullback.snd A M.π) x' ≫ pullback.snd A M.π = pullback.snd (pullback.snd A (spMap (residue R))) k' ≫ x'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [θ, Category.assoc, pullbackLeftPullbackSndIso_inv_fst_snd, pullback.congrHom_hom, FibEt.map_snd'_assoc, Category.id_comp]`. Simplify using the standard rewrite rules. Establish `hθ3 : θ ≫ pullback.snd (pullback.snd A M.π) x' = pullback.snd (pullback.snd A (spMap (residue R))) k'`. Simplify using `only [θ, Category.assoc, pullbackLeftPullbackSndIso_inv_snd_snd, pullback.congrHom_hom, FibEt.map_snd', Category.comp_id]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : Wo.toScheme ⟶ Oy` to `pullback.lift ((gm ≫ pullback.fst E.Y.hom k') ∣_ O) (Wo.ι ≫ gm ≫ pullback.snd E.Y.hom k') (by`. Rewrite using `[← Category.assoc, morphismRestrict_ι]`. Simplify using `only [Category.assoc, pullback.condition]`. Use the proof step `rfl)`. Establish `hψ1 : ψ ≫ pullback.fst (O.ι ≫ E.Y.hom) k' = (gm ≫ pullback.fst E.Y.hom k') ∣_ O` using `pullback.lift_fst _ _ _`.
+Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hψ2 : ψ ≫ pullback.snd (O.ι ≫ E.Y.hom) k' = Wo.ι ≫ gm ≫ pullback.snd E.Y.hom k'` using `pullback.lift_snd _ _ _`. Set `jO : Oy ⟶ pullback E.Y.hom k'` to `pullback.map (O.ι ≫ E.Y.hom) k' E.Y.hom k' O.ι (𝟙 _) (𝟙 _) (by simp) (by simp)`. Use `haveI : IsOpenImmersion jO := MorphismProperty.pullback_map (P := @IsOpenImmersion) (f := O.ι ≫ E.Y.hom) (g := k') (f' := E.Y.hom) (g' := k') (i₁ := O.ι) (i₂ := 𝟙 _) inferInstance inferInstance rfl (by simp)`. Use `haveI : IsOpenImmersion mG := MorphismProperty.pullback_map (P := @IsOpenImmersion) (f := p) (g := x') (f' := G'.hom) (g' := x') (i₁ := iV) (i₂ := 𝟙 _) (by dsimp only [iV]; infer_instance) inferInstance rfl (by simp)`. Use `haveI : IsIso eG.hom.left := by show IsIso ((Over.forget _).map eG.hom); infer_instance`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hψj : ψ ≫ jO = Wo.ι ≫ gm`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [jO]`. Rewrite using `[Category.assoc, FibEt.map_fst', reassoc_of% hψ1, morphismRestrict_ι]`. Simplify using `only [Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [jO]`. Rewrite using `[Category.assoc, FibEt.map_snd', Category.comp_id, hψ2]`. Simplify using `only [Category.assoc]`. Use `haveI : IsOpenImmersion (ψ ≫ jO) := by rw [hψj]; dsimp only [gm]; infer_instance`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `haveI : IsOpenImmersion ψ := IsOpenImmersion.of_comp ψ jO`. Establish `hEq : Wo.ι ≫ pullback.map p x' (pullback.snd A M.π) x' c (𝟙 _) (𝟙 _) (by rw [Category.comp_id, hh]) (by simp) = ψ ≫ eΩ ≫ θ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `hcond : (Wo.ι ≫ pullback.fst p x' ≫ (a ∣_ (b ⁻¹ᵁ W0)) ≫ (b ∣_ W0)) ≫ W0.ι = ((gm ≫ pullback.fst E.Y.hom k') ∣_ O) ≫ O.ι ≫ E.j`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, morphismRestrict_ι, morphismRestrict_ι_assoc]`. Rewrite using `[E2]`. Simplify using `only [Category.assoc]`. Rewrite using `[hθ1, FibEt.map_fst'_assoc, hc1]`. Simplify using `only [eΩ]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FibEt.map_fst'_assoc, reassoc_of% hψ1, he3 _ _ _ hcond]`. Simplify using `only [Category.assoc]`. Simplify using `only [Category.assoc]`. Rewrite using `[hθ2, FibEt.map_fst'_assoc, hh]`. Simplify using `only [eΩ]`.
-
-Rewrite using `[FibEt.map_snd'_assoc, Category.id_comp, reassoc_of% hψ2]`. Rewrite using `[reassoc_of% hgms, pullback.condition]`. Simplify using `only [Category.assoc]`. Rewrite using `[hθ3, FibEt.map_snd', Category.comp_id]`. Simplify using `only [eΩ]`.
-
-Rewrite using `[FibEt.map_snd', Category.comp_id, hψ2, hgms]`. Establish `hEt : Etale (Wo.ι ≫ pullback.map p x' (pullback.snd A M.π) x' c (𝟙 _) (𝟙 _) (by rw [Category.comp_id, hh]) (by simp))`. Rewrite using `[hEq]`. Use `infer_instance`. Take `⟨U, hU, hUe⟩` from `GlobalTheory.Mum.etale_near_of_etale_fibre M.S Vs.toScheme _ p (pullback.snd A M.π) c hh hp inferInstance Ω' x' Wo w hwW hEt`.
-
-Conclude with `⟨U, hw1 ▸ hU, hUe⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.fibre_etale_near : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (M : Modif R) (G' : Over M.S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (E : Emb M.π G') (P' : Scheme.{0}) (b : P' ⟶ PSpace R E.N) (X : E.H.toScheme.Opens) (a : X.toScheme ⟶ P'), a ≫ b = X.ι ≫ E.f → ∀ (x : P') (y : E.Y.left), E.j y = b x → (b ≫ PSpace.str R E.N) x = closedPoint R → ∀ (W0 : (PSpace R E.N).Opens) (g : ℕ) (τ0 : W0.toScheme ⟶ 𝔸(Fin g; Sp R)) (O : E.Y.left.Opens) (e : O.toScheme ⟶ pullback (𝔸(Fin g; Sp R) ↘ Sp R) (spMap (residue R))), y ∈ O → (O : Set E.Y.left) ⊆ E.j ⁻¹' W0 → τ0 ≫ (𝔸(Fin g; Sp R) ↘ Sp R) = W0.ι ≫ PSpace.str R E.N → Etale e → e ≫ pullback.snd _ _ = O.ι ≫ E.Y.hom → (∀ (T : Scheme.{0}) (t : T ⟶ O.toScheme) (w : T ⟶ W0.toScheme), w ≫ W0.ι = t ≫ O.ι ≫ E.j → t ≫ e ≫ pullback.fst _ _ = w ≫ τ0) → ∀ (c : (a ⁻¹ᵁ (b ⁻¹ᵁ W0)).toScheme ⟶ pullback (𝔸(Fin g; Sp R) ↘ Sp R) M.π), c ≫ pullback.fst _ _ = (a ∣_ (b ⁻¹ᵁ W0)) ≫ (b ∣_ W0) ≫ τ0 → c ≫ pullback.snd _ _ = (a ⁻¹ᵁ (b ⁻¹ᵁ W0)).ι ≫ X.ι ≫ E.H.ι ≫ G'.hom → ∀ z : (a ⁻¹ᵁ (b ⁻¹ᵁ W0)).toScheme, ((a ⁻¹ᵁ (b ⁻¹ᵁ W0)).ι ≫ a) z = x → ∃ U : (a ⁻¹ᵁ (b ⁻¹ᵁ W0)).toScheme.Opens, z ∈ U ∧ Etale (U.ι ≫ c) := by
   intro R _ _ _ hR M G' _ _ hG E P' b X a hab x y hyb hx0 W0 g τ0 O e hyO hOW hτ0 he he2 he3 c hc1 hc2 z hz

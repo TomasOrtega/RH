@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.TowerHom
 
 /- English proof (translation)
-Use `choose r hr using h`. Conclude with `⟨fun m => Nat.rec u (fun _ z => r z) m, rfl, fun m => hr _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_roots {R : Type} [CommRing R] {l : ℕ} (h : ∀ x : R, ∃ y, y ^ l = x) (u : R) :
     ∃ y : ℕ → R, y 0 = u ∧ ∀ m, y (m + 1) ^ l = y m := by
@@ -19,7 +19,7 @@ theorem exists_roots {R : Type} [CommRing R] {l : ℕ} (h : ∀ x : R, ∃ y, y 
   exact ⟨fun m => Nat.rec u (fun _ z => r z) m, rfl, fun m => hr _⟩
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact h0`. Consider the case `succ m ih => exact h _ _ (by rw [hy, hz, ih])`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem roots_unique {R : Type} [CommRing R] {l : ℕ} (h : ∀ x y : R, x ^ l = y ^ l → x = y) {y z : ℕ → R}
     (h0 : y 0 = z 0) (hy : ∀ m, y (m + 1) ^ l = y m) (hz : ∀ m, z (m + 1) ^ l = z m) (m : ℕ) : y m = z m := by
@@ -28,7 +28,7 @@ theorem roots_unique {R : Type} [CommRing R] {l : ℕ} (h : ∀ x y : R, x ^ l =
   | succ m ih => exact h _ _ (by rw [hy, hz, ih])
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ l m, pow_mul, pow_mul, pow_mul, ← ih, ← hF, ← hF, ← hF, map_sub]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_sub_pow {R : Type} [CommRing R] {l : ℕ} (F : R →+* R) (hF : ∀ x, F x = x ^ l) (x y : R) (m : ℕ) :
     x ^ l ^ m - y ^ l ^ m = (x - y) ^ l ^ m := by
@@ -38,7 +38,7 @@ theorem pow_sub_pow {R : Type} [CommRing R] {l : ℕ} (F : R →+* R) (hF : ∀ 
     rw [pow_succ l m, pow_mul, pow_mul, pow_mul, ← ih, ← hF, ← hF, ← hF, map_sub]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ' l m, pow_mul, hx, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iter_root {R : Type} [CommRing R] {l : ℕ} {x : ℕ → R} (hx : ∀ m, x (m + 1) ^ l = x m) (m : ℕ) :
     x m ^ l ^ m = x 0 := by
@@ -54,17 +54,17 @@ Both sides reduce to the same expression.
 theorem pow_char (A : PAlg l) (x : A.A) : A.frob x = x ^ l := rfl
 
 /- English proof (translation)
-The claim follows from `A.frob_bijective.1 h`.
+A detailed English derivation is pending.
 -/
 theorem pow_inj (A : PAlg l) (x y : A.A) (h : x ^ l = y ^ l) : x = y := A.frob_bijective.1 h
 
 /- English proof (translation)
-The claim follows from `A.frob_bijective.2 x`.
+A detailed English derivation is pending.
 -/
 theorem pow_surj (A : PAlg l) (x : A.A) : ∃ y, y ^ l = x := A.frob_bijective.2 x
 
 /- English proof (translation)
-Establish `hl : 1 < l` using `(Fact.out : l.Prime).one_lt`. Establish `hH : IsHausdorff (Ideal.span {A.s (pFlat l)}) A.A` using `A.compl.toIsHausdorff`. Use `sub_eq_zero.1 (hH.haus' _ fun n => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.zero, Ideal.smul_top_eq_map, Algebra.algebraMap_self, Ideal.map_id, ← iter_root hx n, ← iter_root hy n, pow_sub_pow A.frob (pow_char A)]`. Conclude with `Ideal.pow_le_pow_right (Nat.lt_pow_self hl).le (Ideal.pow_mem_pow (h n) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_roots_mod (A : PAlg l) {x y : ℕ → A.A} (hx : ∀ m, x (m + 1) ^ l = x m) (hy : ∀ m, y (m + 1) ^ l = y m)
     (h : ∀ m, x m - y m ∈ Ideal.span {A.pi}) : x 0 = y 0 := by
@@ -76,7 +76,7 @@ theorem eq_of_roots_mod (A : PAlg l) {x y : ℕ → A.A} (hx : ∀ m, x (m + 1) 
   exact Ideal.pow_le_pow_right (Nat.lt_pow_self hl).le (Ideal.pow_mem_pow (h n) _)
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Rewrite using `[map_mul, map_natCast]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapU_mem {A A' : PAlg l} (φ : A ⟶ A') {x : A.U} (hx : x ∈ Ideal.span {(l : A.U)}) :
     mapU φ x ∈ Ideal.span {(l : A'.U)} := by
@@ -85,7 +85,7 @@ theorem mapU_mem {A A' : PAlg l} (φ : A ⟶ A') {x : A.U} (hx : x ∈ Ideal.spa
   exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(RL.u_mod A).1 (Ideal.Quotient.mk _ x)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[A.sharpMap_eq]`. Simplify using `using Ideal.Quotient.eq.1 ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_sharp_cong (A : PAlg l) (x : A.U) : ∃ a, A.sharp a - x ∈ Ideal.span {(l : A.U)} := by
   obtain ⟨a, ha⟩ := (RL.u_mod A).1 (Ideal.Quotient.mk _ x)
@@ -105,7 +105,7 @@ def gBar (A : PAlg l) {R : Type} [CommRing R] (g : R →+* A.U) : R →+* A.A �
   ((modEquiv A).symm : A.Un 1 →+* A.A ⧸ Ideal.span {A.pi}).comp ((Ideal.Quotient.mk _).comp g)
 
 /- English proof (translation)
-Establish `e : gBar A g r = (modEquiv A).symm (Ideal.Quotient.mk _ (g r))` using `rfl`. Rewrite using `[e, RingEquiv.symm_apply_eq, modEquiv_mk, A.sharpMap_eq, eq_comm, Ideal.Quotient.eq, pow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gBar_iff (A : PAlg l) {R : Type} [CommRing R] (g : R →+* A.U) (r : R) (a : A.A) :
     gBar A g r = Ideal.Quotient.mk _ a ↔ A.sharp a - g r ∈ Ideal.span {(l : A.U)} := by
@@ -115,31 +115,29 @@ theorem gBar_iff (A : PAlg l) {R : Type} [CommRing R] (g : R →+* A.U) (r : R) 
 open CrystallineSemistableComparison.PAlg in
 
 /- English proof (translation)
-Establish `hy : ∀ k, ∃ y : ℕ → A'.A, y 0 = u k ∧ ∀ m, y (m + 1) ^ l = y m` using `fun k => exists_roots (pow_surj A') (u k)`. Use `choose y hy0 hys using hy`. Establish `hc : ∀ k m, ((𝒯.c k (m + 1)).val) ^ l = (𝒯.c k m).val` using `fun k m => by`. Rewrite using `[← Units.val_pow_eq_pow_val, 𝒯.c_succ]`. Establish `ho : ((Ideal.Quotient.mk (Ideal.span {A'.pi})).comp A'.s) (pFlat l) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ x w, theta0 l w = κ x → gBar A' g (s.a x) = ((Ideal.Quotient.mk (Ideal.span {A'.pi})).comp A'.s) (w.coeff 0)`. Introduce `x w hw`. Establish `hcf : (A'.sW w).coeff 0 = A'.s (w.coeff 0)` using `WittVector.map_coeff _ _ _`. Use `(gBar_iff A' g _ _).2 ?_` and prove the remaining obligations. Establish `e1 : g (s.a x) = A'.th (A'.sW w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← A'.oC_theta0, hw]`. Conclude with `RingHom.congr_fun hga x`. Establish `e2` using `A'.sharpMap_coeff (A'.sW w)`. Rewrite `e2` using `[hcf, A'.sharpMap_eq]`. Rewrite using `[e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using Ideal.Quotient.eq.1 e2`. Establish `h2 : ∀ k, Ideal.Quotient.mk (Ideal.span {A'.pi}) (y k 0) = gBar A' g (s.T k)` using `fun k => ((gBar_iff A' g _ _).2 (by rw [hy0, hu, sub_self]; exact Ideal.zero_mem _)).symm`. Establish `h3 : ∀ k m, Ideal.Quotient.mk (Ideal.span {A'.pi}) (y k (m + 1)) ^ l = Ideal.Quotient.mk (Ideal.span {A'.pi}) (y k m)` using `fun k m => by rw [← map_pow, hys]`. Take `⟨f, ⟨hfo, hfg, hfc⟩, hfu⟩` from `𝒯.univ (A'.A ⧸ Ideal.span {A'.pi}) ((Ideal.Quotient.mk _).comp A'.s) (gBar A' g) (fun k m => Ideal.Quotient.mk _ (y k m)) ho h1 h2 h3`. Take `⟨φ, hφ, hφu⟩` from `GlobalTheory.CompanionTheory.PerfLift.existsUnique_hom 𝒯.A A' f hfo`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφa : ∀ a, Ideal.Quotient.mk (Ideal.span {A'.pi}) (Hom.f φ a) = f a` using `fun a => RingHom.congr_fun hφ a`. Establish `hck : ∀ k, Hom.f φ (𝒯.c k 0).val = u k`. Introduce `k`. Rewrite using `[← hy0 k]`. Use `eq_of_roots_mod A' (x := fun m => Hom.f φ (𝒯.c k m).val) (fun m => ?_) (hys k) fun m => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_pow, hc]`. Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Rewrite using `[hφa, hfc]`. Establish `hgφ : (mapU φ).comp 𝒯.g = g`. Establish `hE` using `GlobalTheory.CompanionTheory.EtaleLift.etLift_of_isAdicComplete (Ideal.span {(l : A'.U)}) A'.completeU (MvPolynomial (Fin d) O) s.R (MvPolynomial.eval₂Hom s.a fun k => (s.T k : s.R)) s.et (g.comp (MvPolynomial.eval₂Hom s.a fun k => (s.T k : s.R))) ((Ideal.Quotient.mk _).comp g) r …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hE.unique ⟨?_, ?_⟩ ⟨rfl, rfl⟩` and prove the remaining obligations. Use `MvPolynomial.ringHom_ext (fun o => ?_) fun k => ?_` and prove the remaining obligations. Establish `e1 : 𝒯.g (s.a o) = 𝒯.A.oC (κ o)` using `RingHom.congr_fun 𝒯.hg o`. Establish `e2 : g (s.a o) = A'.oC (κ o)` using `RingHom.congr_fun hga o`. Simplify using `only [RingHom.comp_apply, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_C]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, mapU_oC]`. Simplify using `only [RingHom.comp_apply, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X]`. Rewrite using `[← 𝒯.c_sharp, mapU_sharp, hck, hu]`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_sharp_cong 𝒯.A (𝒯.g r)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : gBar A' g r = Ideal.Quotient.mk _ (Hom.f φ a)` using `by rw [hφa]; exact (hfg r a ha).symm`. Establish `e1` using `(gBar_iff A' g r _).1 e`. Establish `e2` using `mapU_mem φ ha`. Rewrite `e2` using `[map_sub, mapU_sharp]`. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e3 : mapU φ (𝒯.g r) - g r = (A'.sharp (Hom.f φ a) - g r) - (A'.sharp (Hom.f φ a) - mapU φ (𝒯.g r))` using `by ring`. Express the relevant statement in the definitionally equal form `mapU φ (𝒯.g r) - g r ∈ _`. Rewrite using `[e3]`. Conclude with `Ideal.sub_mem _ e1 e2`. Use `⟨φ, ⟨hgφ, hck⟩, fun φ' hg' hk' => hφu φ' (hfu _ ⟨?_, ?_, ?_⟩)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[RingHom.comp_assoc, Hom.comm]`. Introduce `r a ha`. Establish `e2` using `mapU_mem φ' ha`. Rewrite `e2` using `[map_sub, mapU_sharp]`. Establish `e3 : mapU φ' (𝒯.g r) = g r` using `RingHom.congr_fun hg' r`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e2` using `[e3]`. Conclude with `((gBar_iff A' g r _).2 e2).symm`. Introduce `k m`. Use `roots_unique (pow_inj A') (y := fun m => Hom.f φ' (𝒯.c k m).val) (z := y k) ((hk' k).trans (hy0 k).symm) (fun m => by` as an intermediate fact. Rewrite using `[← map_pow, hc]) (hys k) m`.
-
-Conclude with `congrArg (Ideal.Quotient.mk _) this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core {O : Type} [CommRing O] {F : Fn O} {κ : O →+* OC l} {d : ℕ} {s : F.Small d} (𝒯 : Tower κ s) (A' : PAlg l)
     (g : s.R →+* A'.U) (hga : g.comp s.a = A'.oC.comp κ) (u : Fin d → A'.A) (hu : ∀ k, A'.sharp (u k) = g (s.T k)) :
@@ -215,15 +213,13 @@ theorem core {O : Type} [CommRing O] {F : Fn O} {κ : O →+* OC l} {d : ℕ} {s
     exact congrArg (Ideal.Quotient.mk _) this
 
 /- English proof (translation)
-Introduce `l _ O _ F κ d s 𝒯 T`. Take `⟨g, hg, hgu⟩` from `s.univ (CommRingCat.of T.1.U) T.2.1 (T.1.oC.comp κ) T.2.2`. Establish `hga : g.comp s.a = T.1.oC.comp κ` using `F.ov_uniq (hg ▸ F.ov_map (CommRingCat.ofHom g) s.ov) T.2.2`. Establish `hall : ∀ φ : 𝒯.obj ⟶ T, (mapU φ.1).comp 𝒯.g = g`. Introduce `φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hgu _ ?_` and prove the remaining obligations. Establish `h1 : F.Pt.map (CommRingCat.ofHom (mapU φ.1)) (F.Pt.map (CommRingCat.ofHom 𝒯.g) s.y₀) = T.2.1` using `congrArg Subtype.val φ.2`. Establish `h2 : F.Pt.map (CommRingCat.ofHom ((mapU φ.1).comp 𝒯.g)) s.y₀ = T.2.1`. Rewrite using `[CommRingCat.ofHom_comp, F.Pt.map_comp]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h2`. Use `⟨g, hg, hall, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨φ, ⟨hφg, hφk⟩, hφu⟩` from `core 𝒯 T.1 g hga u hu`. Establish `hpt : (F.pt κ).map φ 𝒯.obj.2 = T.2`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `F.Pt.map (CommRingCat.ofHom (mapU φ)) (F.Pt.map (CommRingCat.ofHom 𝒯.g) s.y₀) = T.2.1`. Establish `h2 : F.Pt.map (CommRingCat.ofHom ((mapU φ).comp 𝒯.g)) s.y₀ = T.2.1`. Rewrite using `[hφg]`. Conclude with `hg`. Rewrite `h2` using `[CommRingCat.ofHom_comp, F.Pt.map_comp]`.
-
-Conclude with `h2`. Use `⟨⟨φ, hpt⟩, hφk, fun φ' hk => Subtype.ext (hφu φ'.1 (hall φ') hk)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tower_hom : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {F : Fn O} {κ : O →+* OC l} {d : ℕ} {s : F.Small d} (𝒯 : Tower κ s) (T : (F.pt κ).Elements), ∃ g : s.R →+* T.1.U, F.Pt.map (CommRingCat.ofHom g) s.y₀ = T.2.1 ∧ (∀ φ : 𝒯.obj ⟶ T, (mapU φ.1).comp 𝒯.g = g) ∧ ∀ u : Fin d → T.1.A, (∀ k, T.1.sharp (u k) = g (s.T k)) → ∃! φ : 𝒯.obj ⟶ T, ∀ k, PAlg.Hom.f φ.1 (𝒯.c k 0).val = u k := by
   intro l _ O _ F κ d s 𝒯 T

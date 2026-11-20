@@ -8,11 +8,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries
 namespace GlobalTheory.RowReal
 
 /- English proof (translation)
-Introduce `D T L sc G X M K hM k hk hk' φ hφ`. Take `⟨hH, hF⟩` from `hM.haar_fund`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig (G.V X).gram`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig (G.V X).gram`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA D.sp.cm.sig (G.V X).gram`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `haveI : Countable (GQ (G.V X)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig (G.V X).gram`. Use `haveI := hH`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableConstSMul_subgroup (GQ (G.V X))`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup (GQ (G.V X)) (M.ν X)`. Set `e : GA D (G.V X) ≃ᵐ GA D (G.V X)` to `{ toFun := fun g => g * k, invFun := fun g => g * k⁻¹, left_inv := fun g => by simp, right_inv := fun g => by simp, measurable_toFun := hk.measurable, measurable_invFun := hk' }`.
-
-Establish `hF' : IsFundamentalDomain (GQ (G.V X)) ((fun g : GA D (G.V X) => g * k) ⁻¹' M.fd X) (M.ν X)` using `hF.preimage_of_equiv hk.quasiMeasurePreserving (e := id) Function.bijective_id (fun γ x => by simp [Subgroup.smul_def, smul_eq_mul, mul_assoc])`. Rewrite using `[hF.setIntegral_eq hF' (f := fun g => φ (g * k)) (fun γ x => by`. Simplify using `only [Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Conclude with `hφ γ γ.2 _)]`. Conclude with `hk.setIntegral_preimage_emb e.measurableEmbedding φ (M.fd X)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setIntegral_fd_mul_right : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {X : Node} (M : Vol G)
     {K : Subgroup (GL (Fin (G.V X).rank) (Formalism.IndefR.Lev.EAf D))}, M.IsAt X K → ∀ (k : GA D (G.V X)),

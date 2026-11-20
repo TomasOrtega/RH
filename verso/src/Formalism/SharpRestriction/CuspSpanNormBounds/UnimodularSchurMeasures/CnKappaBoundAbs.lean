@@ -6,43 +6,41 @@ open scoped ComplexOrder
 namespace Formalism.MainNotions.LeviCoordinates
 
 /- English proof (translation)
-Introduce `C hC`. Establish `hLc : 0 ≤ Real.log C` using `Real.log_nonneg hC`. Use `⟨max 16 ⌈Real.exp (14 * (1 + Real.log C))⌉₊, ?_⟩` and prove the remaining obligations. Introduce `n p q J a f dN v res ℓ hn hpq hq ha haJ hJq hf hdN hv hℓ hlℓ hres0 hres`. Establish `hn16 : (16:ℝ) ≤ n` using `by exact_mod_cast (le_max_left _ _).trans hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn1 : Real.exp (14 * (1 + Real.log C)) ≤ n` using `Nat.ceil_le.mp ((le_max_right _ _).trans hn)`. Establish `hn0 : (0:ℝ) < n` using `by linarith`. Establish `hlog : 14 * (1 + Real.log C) ≤ Real.log n` using `(Real.le_log_iff_exp_le hn0).mpr hn1`. Establish `hC0 : 0 < C` using `by linarith`. Establish `hss : Real.sqrt (n:ℝ) * Real.sqrt (n:ℝ) = n` using `Real.mul_self_sqrt hn0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs4 : 4 ≤ Real.sqrt (n:ℝ)` using `Real.le_sqrt_of_sq_le (by`. Establish `: (4:ℝ) ^ 2 = 16` using `by norm_num`. Use the proof step `linarith)`. Establish `hqs : (q:ℝ) ≤ Real.sqrt (n:ℝ)` using `Real.le_sqrt_of_sq_le (by exact_mod_cast hq)`. Generalize the expression as in `Real.sqrt (n:ℝ) = s at *`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hsn : s ≤ n / 4` using `by nlinarith`. Establish `hpr : (p:ℝ) = n - q`. Establish `: ((p + q : ℕ):ℝ) = n` using `by exact_mod_cast hpq`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hJq' : (J:ℝ) ≤ q` using `by exact_mod_cast hJq`. Establish `hJ1 : (1:ℝ) ≤ J` using `by exact_mod_cast ha.trans haJ`. Establish `hf0 : (0:ℝ) ≤ f` using `Nat.cast_nonneg _`. Establish `hJp : J ≤ p`. Establish `: (J:ℝ) ≤ p` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hpJ : ((p - J : ℕ):ℝ) = p - J` using `Nat.cast_sub hJp`. Establish `hp0 : (0:ℝ) < p` using `by linarith`. Establish `t1 : v ^ (-((f:ℝ) * dN / 2)) ≤ Real.exp ((J:ℝ) * n * f)`. Establish `hv0 : 0 < v` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Real.rpow_def_of_pos hv0]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hlv : 0 ≤ Real.log v + 1`. Establish `h1 : Real.log (1/2) ≤ Real.log v` using `Real.log_le_log (by norm_num) hv`. Establish `h2 : Real.log (1/2) = - Real.log 2` using `by rw [one_div, Real.log_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : (dN:ℝ) ≤ 2 * J * n` using `by exact_mod_cast hdN`. Establish `h3 : 0 ≤ (f:ℝ) * dN / 2` using `by positivity`. Establish `h4 : (f:ℝ) * dN / 2 ≤ J * n * f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[mul_nonneg hlv h3]`. Establish `t2 : C ^ (J * n * f) = Real.exp ((J:ℝ) * n * f * Real.log C)`. Rewrite using `[← Real.rpow_natCast, Real.rpow_def_of_pos hC0]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `t3 : res ^ a ≤ Real.exp (2 * f * J * (Real.log C + n))`. Establish `hCl : 0 < C * ℓ` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← pow_mul, ← Real.rpow_natCast, Real.rpow_def_of_pos hCl, mul_comm]`. Use `_ ≤ _ := by`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Rewrite using `[Real.log_mul hC0.ne' hℓ.ne']`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `ha' : (a:ℝ) ≤ J` using `by exact_mod_cast haJ`. Establish `h0 : 0 ≤ Real.log C + n` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `t4 : (C / (p:ℝ)) ^ (J * (p - J)) ≤ Real.exp (-((J:ℝ) * n / 2 * (Real.log n - 1 - Real.log C)))`. Establish `hCp : 0 < C / (p:ℝ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.rpow_natCast, Real.rpow_def_of_pos hCp]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Rewrite using `[Real.log_div hC0.ne' hp0.ne', Nat.cast_mul, hpJ]`. Establish `hlp : Real.log n - 1 ≤ Real.log p`. Establish `h1 : Real.log (n / 2) ≤ Real.log p` using `Real.log_le_log (by positivity) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h1` using `[Real.log_div hn0.ne' (by norm_num)]`. Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl : 0 ≤ Real.log n - 1 - Real.log C` using `by linarith`. Establish `hk : (J:ℝ) * n / 2 ≤ J * (p - J)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `: (n:ℝ) / 2 ≤ p - J` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hk0 : 0 ≤ (J:ℝ) * (p - J)` using `le_trans (by positivity) hk`. Establish `a1 : (Real.log C - Real.log p) * ((J:ℝ) * (p - J)) ≤ (-(Real.log n - 1 - Real.log C)) * ((J:ℝ) * (p - J))` using `mul_le_mul_of_nonneg_right (by linarith) hk0`. Establish `a2` using `mul_le_mul_of_nonneg_left hk hl`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `t5 : (J:ℝ) ^ ((J:ℝ) ^ 2 / 2) ≤ Real.exp ((J:ℝ) * n / 8 * Real.log n)`. Rewrite using `[Real.rpow_def_of_pos (by linarith)]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hlJ : Real.log J ≤ Real.log n` using `Real.log_le_log (by linarith) (by linarith)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hlJ0 : 0 ≤ Real.log J` using `Real.log_nonneg hJ1`. Establish `hJ2 : (J:ℝ) ^ 2 / 2 ≤ J * n / 8` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hv0 : 0 < v` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[t2]`. Use `gcongr`. Use `_ = Real.exp ((J:ℝ) * n * f + (J:ℝ) * n * f * Real.log C + 2 * f * J * (Real.log C + n) + f * (-((J:ℝ) * n / 2 * (Real.log n - 1 - Real.log C)) + (J:ℝ) * n / 8 * Real.log n)) := by`. Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add, ← Real.exp_nat_mul, ← Real.exp_add]`. Use `_ ≤ _ := by`.
-
-Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hw : 0 ≤ (J:ℝ) * n * f` using `by positivity`. Establish `h2 : (f:ℝ) * J * Real.log C * 1 ≤ (f:ℝ) * J * Real.log C * n` using `by gcongr; linarith`. Establish `h3 : (J:ℝ) * n * f * (14 * (1 + Real.log C)) ≤ (J:ℝ) * n * f * Real.log n` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cn_kappaBoundAbs : ∀ C : ℝ, 1 ≤ C → ∃ n₀ : ℕ, ∀ (n p q J a f dN : ℕ) (v res ℓ : ℝ), n₀ ≤ n → p + q = n → q ^ 2 ≤ n →
     1 ≤ a → a ≤ J → J ≤ q → 1 ≤ f → dN ≤ 2 * J * n → 1 / 2 ≤ v → 0 < ℓ → Real.log ℓ ≤ n → 0 ≤ res →

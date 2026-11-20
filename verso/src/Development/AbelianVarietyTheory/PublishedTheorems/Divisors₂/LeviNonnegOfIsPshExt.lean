@@ -20,9 +20,9 @@ section Flat
 variable {d : ℕ} {U U' : Set (Fin d → ℂ)} {u u' : (Fin d → ℂ) → ℝ}
 
 /- English proof (translation)
-Use `⟨fun z hz y hy => ?_, fun z w hd => ?_⟩` and prove the remaining obligations. Use `filter_upwards [(h.1.mono hU) z hz y ((e z hz).trans_lt hy), self_mem_nhdsWithin] with x hx hx'`. Rewrite using `[← e x hx']` and apply the resulting hypothesis. Take `⟨h₁, h₂⟩` from `h.2 z w fun ζ hζ => hU (hd ζ hζ)`. Establish `he : EqOn (fun ζ : ℂ => u (z + ζ • w)) (fun ζ : ℂ => u' (z + ζ • w)) (Metric.sphere 0 |1|)` using `fun ζ hζ => e _ (hd ζ (by simpa using (mem_sphere_zero_iff_norm.1 hζ).le))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(circleIntegrable_congr he).1 h₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← Real.circleAverage_congr_sphere he, ← e z (by simpa using hd 0 (by simp))]`. Conclude with `h₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPsh_mono_congr (h : IsPsh U u) (hU : U' ⊆ U) (e : ∀ z ∈ U', u z = u' z) : IsPsh U' u' := by
   refine ⟨fun z hz y hy => ?_, fun z w hd => ?_⟩
@@ -36,15 +36,15 @@ theorem isPsh_mono_congr (h : IsPsh U u) (hU : U' ⊆ U) (e : ∀ z ∈ U', u z 
     exact h₂
 
 /- English proof (translation)
-Rewrite using `[← EReal.coe_strictMono.monotone.map_max, EReal.toReal_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toReal_max (x κ : ℝ) : (max (x : EReal) ((-κ : ℝ) : EReal)).toReal = max x (-κ) := by
   rw [← EReal.coe_strictMono.monotone.map_max, EReal.toReal_coe]
 
 /- English proof (translation)
-Use `⟨fun z _ => EReal.coe_ne_top _, ?_, fun z hz => subset_closure ⟨hz, EReal.coe_ne_bot _⟩, fun κ => ?_⟩` and prove the remaining obligations. Conclude with `continuous_coe_real_ereal.comp_upperSemicontinuousOn h.1 EReal.coe_strictMono.monotone`. Establish `hc : IsPsh U fun _ => -κ` using `⟨upperSemicontinuousOn_const, fun z w _ => ⟨circleIntegrable_const _ _ _, by rw [Real.circleAverage_const]⟩⟩`. Use `isPsh_mono_congr (isPsh_sup_thm d Bool U (fun b => if b then u else fun _ => -κ) hU ?_) subset_rfl fun z _ => ?_` and prove the remaining obligations. Introduce and unpack `(_ | _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hc`. Simplify using `using h`. Rewrite using `[toReal_max]`. Simplify using `[Finset.sup'_insert]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPshExt_coe (hU : IsOpen U) (h : IsPsh U u) : IsPshExt U fun z => (u z : EReal) := by
   refine ⟨fun z _ => EReal.coe_ne_top _, ?_, fun z hz => subset_closure ⟨hz, EReal.coe_ne_bot _⟩, fun κ => ?_⟩
@@ -60,7 +60,7 @@ theorem isPshExt_coe (hU : IsOpen U) (h : IsPsh U u) : IsPshExt U fun z => (u z 
       simp [Finset.sup'_insert]
 
 /- English proof (translation)
-Establish `ho : IsOpen (U ∩ u ⁻¹' Ioi (u z - 1))` using `hu.continuousOn.isOpen_inter_preimage hU isOpen_Ioi`. Establish `h₁ : IsPsh (U ∩ u ⁻¹' Ioi (u z - 1)) u` using `isPsh_mono_congr (h.2.2.2 (1 - u z)) inter_subset_left fun x hx => by`. Rewrite using `[toReal_max, neg_sub]`. Conclude with `max_eq_left (le_of_lt hx.2)`. Conclude with `((isPsh_iff_isLeviPsh_thm d _ u ho (hu.mono inter_subset_left)).1 h₁).2 z ⟨hz, by simp⟩ w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_nonneg_of_isPshExt (hU : IsOpen U) (hu : ContDiffOn ℝ 2 u U) (h : IsPshExt U fun z => (u z : EReal))
     {z : Fin d → ℂ} (hz : z ∈ U) (w : Fin d → ℂ) : 0 ≤ ReciprocityTheory.AnForm.levi u z w := by
@@ -71,7 +71,7 @@ theorem levi_nonneg_of_isPshExt (hU : IsOpen U) (hu : ContDiffOn ℝ 2 u U) (h :
   exact ((isPsh_iff_isLeviPsh_thm d _ u ho (hu.mono inter_subset_left)).1 h₁).2 z ⟨hz, by simp⟩ w
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨z, hz⟩ := hU simpa using h.2.2.1 hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isPshExt_bot (hU : U.Nonempty) : ¬ IsPshExt U fun _ => ⊥ := fun h => by
   obtain ⟨z, hz⟩ := hU
@@ -85,13 +85,13 @@ variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+*
   {a θ : ChartForm p σ d} {u : CxPts p σ → ℝ}
 
 /- English proof (translation)
-Establish `key (W φ) (hφ : IsPotential R θ W φ) (c : AlgChart p σ d) : ContDiffOn ℝ 2 ((fun y => φ y + u y) ∘ c.finChart.symm) (c.finChart.target ∩ c.finChart.symm ⁻¹' W) ∧ ∀ y ∈ c.e.source, y ∈ W → ∀ ξ, θ c y ξ + ddcForm u c y ξ = ReciprocityTheory.AnForm.levi ((fun y => φ y + u y) ∘ c.fin …`. Establish `hs : R.SmoothOn W fun y => φ y + u y` using `fun i => (hφ.2.1 i).add ((hu.mono (subset_univ W)) i)`. Use `⟨((c.contDiffOn_finChart_iff _ W _).2 (hs.chart hφ.1 c)).of_le (WithTop.coe_le_coe.2 le_top), fun y hy hW ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ.2.2 c y hy hW, ← c.leviV_re_eq (hs.contDiffAt_two hφ.1 hy hW), ddcForm, ddcForm, ← add_div, ← AlgChart.levi_add (hφ.2.1.contDiffAt_two hφ.1 hy hW) (hu.contDiffAt_two isOpen_univ hy trivial)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h c y hy ξ`. Take `⟨W, φ, hW, hφ⟩` from `hθ y`. Rewrite using `[(key W φ hφ c).2 y hy hW]`. Use `div_nonneg (levi_nonneg_of_isPshExt (c.finChart.isOpen_inter_preimage_symm hφ.1) (key W φ hφ c).1 (h W φ hφ c) ⟨c.finChart.map_source hy, ?_⟩ ξ) Real.pi_pos.le` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_preimage, c.finChart.left_inv hy]` and apply the resulting hypothesis. Introduce `h W φ hφ c`. Establish `ho` using `c.finChart.isOpen_inter_preimage_symm hφ.1`. Use `isPshExt_coe ho ((isPsh_iff_isLeviPsh_thm d _ _ ho (key W φ hφ c).1).2 ⟨(key W φ hφ c).1, fun z hz w => ?_⟩)` and prove the remaining obligations. Establish `hy` using `c.finChart.map_target hz.1`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h c _ hy w` as an intermediate fact. Rewrite `this` using `[(key W φ hφ c).2 _ hy hz.2, c.finChart.right_inv hz.1]`. Conclude with `(div_nonneg_iff.1 this).elim (·.1) fun h => absurd h.2 Real.pi_pos.not_ge`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFormPsh_coe_iff (hθ : IsClosedForm R θ) (hu : R.SmoothOn univ u) :
     IsFormPsh R θ (fun y => (u y : EReal)) ↔
@@ -121,14 +121,14 @@ theorem isFormPsh_coe_iff (hθ : IsClosedForm R θ) (hu : R.SmoothOn univ u) :
     exact (div_nonneg_iff.1 this).elim (·.1) fun h => absurd h.2 Real.pi_pos.not_ge
 
 /- English proof (translation)
-Rewrite using `[ddcForm, AlgChart.levi, c.leviV_re_eq (f := fun _ => r) contDiffAt_const]`. Simplify using `[ReciprocityTheory.AnForm.levi, Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ddcForm_const (r : ℝ) (c : AlgChart p σ d) (y : CxPts p σ) (ξ : Fin d → ℂ) : ddcForm (fun _ => r) c y ξ = 0 := by
   rw [ddcForm, AlgChart.levi, c.leviV_re_eq (f := fun _ => r) contDiffAt_const]
   simp [ReciprocityTheory.AnForm.levi, Function.comp_def]
 
 /- English proof (translation)
-Break down `eq_or_ne ξ 0 with rfl | h` into its components or cases. Use `(continuous_and_smul ha hy).2 0 0` as an intermediate fact. Simplify using `only [smul_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul] at this`. Conclude with `this.ge`. Conclude with `(ha.2 c y hy ξ h).le`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kaehler_nonneg (ha : IsKaehlerForm R a) (c : AlgChart p σ d) {y : CxPts p σ} (hy : y ∈ c.e.source)
     (ξ : Fin d → ℂ) : 0 ≤ a c y ξ := by
@@ -139,7 +139,7 @@ theorem kaehler_nonneg (ha : IsKaehlerForm R a) (c : AlgChart p σ d) {y : CxPts
   · exact (ha.2 c y hy ξ h).le
 
 /- English proof (translation)
-The claim follows from `(isFormPsh_coe_iff (u := fun _ => r) ha.1 fun _ => contDiffOn_const).2 fun c y hy ξ => by rw [ddcForm_const, add_zero] exact kaehler_nonneg ha c hy ξ`.
+A detailed English derivation is pending.
 -/
 theorem isFormPsh_const (ha : IsKaehlerForm R a) (r : ℝ) : IsFormPsh R a fun _ => (r : EReal) :=
   (isFormPsh_coe_iff (u := fun _ => r) ha.1 fun _ => contDiffOn_const).2 fun c y hy ξ => by
@@ -147,7 +147,7 @@ theorem isFormPsh_const (ha : IsKaehlerForm R a) (r : ℝ) : IsFormPsh R a fun _
     exact kaehler_nonneg ha c hy ξ
 
 /- English proof (translation)
-Introduce `h'` and use `by have := (isFormPsh_coe_iff (u := fun _ => r) hθ fun _ => contDiffOn_const).1 h' c y hy ξ rw [ddcForm_const, add_zero] at this exact h.not_ge this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isFormPsh_const (hθ : IsClosedForm R θ) (r : ℝ) (c : AlgChart p σ d) {y : CxPts p σ} (hy : y ∈ c.e.source)
     {ξ : Fin d → ℂ} (h : θ c y ξ < 0) : ¬ IsFormPsh R θ fun _ => (r : EReal) := fun h' => by
@@ -156,9 +156,9 @@ theorem not_isFormPsh_const (hθ : IsClosedForm R θ) (r : ℝ) (c : AlgChart p 
   exact h.not_ge this
 
 /- English proof (translation)
-Establish `e : rho a E (fun _ => (r : EReal).toReal) = fun _ _ => r` using `funext₂ fun y t => rho_const ha E _ y t`. Rewrite using `[e]`. Use `⟨le_rfl, le_rfl, one_pos, fun _ => contDiffOn_const, fun _ _ _ _ _ _ => by simp, fun c y hy w _ _ ξ η => ?_⟩` and prove the remaining obligations. Use `(isFormPsh_coe_iff (u := fun _ => r) hθ fun _ => contDiffOn_const).1 h c y hy ξ.ofLp` as an intermediate fact. Rewrite `this` using `[ddcForm_const, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e' : dbar (fun _ : V d × ℂ => (r : ℂ)) = fun _ => 0` using `funext fun _ => dbar_const _ _`. Rewrite using `[leviForm, ddbar, e', del_const]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conclusion_const [SmoothOfRelativeDimension d p] (ha : IsKaehlerForm R a) (hθ : IsClosedForm R θ)
     (E : ChartMap p σ d) (r : ℝ) (h : IsFormPsh R θ fun _ => (r : EReal)) :
@@ -177,7 +177,7 @@ end Manifold
 open GlobalTheory.ProjVar GlobalTheory.TrueGeo in
 
 /- English proof (translation)
-Establish `ha` using `isKaehlerForm_curvForm (ProjPos.fubiniStudy_weight_pullback_isSmooth Y.ι Y.ι_str (AnRead.all Y.str σ Y.dim)) (ProjPos.fubiniStudy_weight_pullback_closed_immersion_strictPos _ _ _)`. Take `⟨E, hE⟩` from `exists_isExph F Y σ _ ha`. Conclude with `⟨CxPts.compactSpace σ Y.isProjOver, CxPts.t2Space_cxPts_of_isProjOver σ Y.isProjOver, _, E, ha, hE, ha.1, isFormPsh_const ha 0⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hypotheses_inhabited (F : Type) [Field F] [NumberField F] (Y : Var F) (σ : F →+* ℂ) :
     CompactSpace (CxPts Y.str σ) ∧ T2Space (CxPts Y.str σ) ∧
@@ -196,17 +196,15 @@ variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+*
   {a θ : ChartForm p σ d} {Ψ : CxPts p σ → ℝ → ℝ} {A K δ A' K' δ' : ℝ}
 
 /- English proof (translation)
-Use `⟨h.A_nonneg.trans hA, h.K_nonneg.trans hK, hδ', fun c => (h.smooth c).mono (prod_mono subset_rfl fun w hw => ⟨hw.1, hw.2.trans_le hδ⟩), fun y s hs t ht hst => ?_, fun c y hy w hw hw' ξ η => ?_⟩` and prove the remaining obligations. Use `h.mono y (Ioo_subset_Ioo_right hδ hs) (Ioo_subset_Ioo_right hδ ht) hst` as an intermediate fact. Establish `h₁ : (K' - K) * s ^ 2 ≤ (K' - K) * t ^ 2`. Use `hs.1` as an intermediate fact. Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `beta_reduce at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_trans ?_ (h.hess c y hy w hw (hw'.trans_le hδ) ξ η)` and prove the remaining obligations. Establish `hd : DifferentiableAt ℝ (Ψ y) ‖w‖`. Establish `ho : IsOpen (c.e.target ×ˢ {w : ℂ | 0 < ‖w‖ ∧ ‖w‖ < δ})` using `c.e.open_target.prod ((isOpen_lt continuous_const continuous_norm).inter (isOpen_lt continuous_norm continuous_const))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h₁` using `(((h.smooth c).contDiffAt (x := (c.e y, ((‖w‖ : ℝ) : ℂ))) (ho.mem_nhds ⟨c.e.map_source hy, by`. Simplify `hw'.trans_le hδ⟩)).differentiableAt (by simp)).comp (f := fun t : ℝ => (c.e y, (t : ℂ))) ‖w‖ ((differentiableAt_const _).prodMk Complex.ofRealCLM.differentiableAt)` using `using hw, by simpa`. Use `h₁.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [Ioi_mem_nhds hw] with t ht`. Simplify using `[c.e.left_inv hy, abs_of_pos (show 0 < t from ht)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e (L : ℝ) : deriv (fun t => Ψ y t + L * t ^ 2) ‖w‖ = deriv (Ψ y) ‖w‖ + L * (2 * ‖w‖)`. Simplify using `using (hd.hasDerivAt.fun_add ((hasDerivAt_pow 2 ‖w‖).const_mul L)).deriv`. Establish `h0 : 0 ≤ deriv (fun t => Ψ y t + K * t ^ 2) ‖w‖`. Use `(h.mono y).derivWithin_nonneg (x := ‖w‖)` as an intermediate fact. Rewrite `this` using `[derivWithin_of_isOpen isOpen_Ioo ⟨hw, hw'.trans_le hδ⟩]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : deriv (fun t => Ψ y t + K * t ^ 2) ‖w‖ ≤ deriv (fun t => Ψ y t + K' * t ^ 2) ‖w‖`. Rewrite using `[e, e]`. Use `gcongr`. Establish `ha0` using `kaehler_nonneg ha c hy ξ.ofLp`. Establish `hA0` using `h.A_nonneg`.
-
-Establish `hA'` using `hA0.trans hA`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isRegConst_mono (ha : IsKaehlerForm R a) (h : IsRegConst a θ Ψ A K δ) (hA : A ≤ A') (hK : K ≤ K') (hδ' : 0 < δ')
     (hδ : δ' ≤ δ) : IsRegConst a θ Ψ A' K' δ' := by
@@ -246,9 +244,9 @@ end Mono
 def logAbs (z : Fin 1 → ℂ) : EReal := if z 0 = 0 then ⊥ else (Real.log ‖z 0‖ : ℝ)
 
 /- English proof (translation)
-Unfold `logAbs`. Use `split_ifs with h`. Simplify using `[h, (Real.exp_pos _).le]`. Rewrite using `[toReal_max]`. Break down `le_total ‖z 0‖ (Real.exp (-κ)) with h' | h'` into its components or cases.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[max_eq_right h', Real.log_exp, max_eq_right ((Real.log_le_iff_le_exp (norm_pos_iff.2 h)).2 h')]`. Rewrite using `[max_eq_left h', max_eq_left ((Real.le_log_iff_exp_le (norm_pos_iff.2 h)).2 h')]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trunc_logAbs (κ : ℝ) (z : Fin 1 → ℂ) :
     (max (logAbs z) ((-κ : ℝ) : EReal)).toReal = Real.log (max ‖z 0‖ (Real.exp (-κ))) := by
@@ -261,25 +259,21 @@ theorem trunc_logAbs (κ : ℝ) (z : Fin 1 → ℂ) :
     · rw [max_eq_left h', max_eq_left ((Real.le_log_iff_exp_le (norm_pos_iff.2 h)).2 h')]
 
 /- English proof (translation)
-Establish `hc (κ : ℝ) : Continuous fun z : Fin 1 → ℂ => Real.log (max ‖z 0‖ (Real.exp (-κ)))` using `Continuous.log (by fun_prop) fun z => ((Real.exp_pos _).trans_le (le_max_right _ _)).ne'`. Use `⟨fun z _ => ?_, ?_, fun z _ => ?_, fun κ => ?_⟩` and prove the remaining obligations. Unfold `logAbs split_ifs`. Simplify using the standard rewrite rules. Conclude with `EReal.coe_ne_top _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z _ y hy`. Take `⟨b, hb, hb'⟩` from `EReal.lt_iff_exists_real_btwn.1 hy`. Establish `hm (x : Fin 1 → ℂ) : max (logAbs x) ((-(1 - b) : ℝ) : EReal) = (Real.log (max ‖x 0‖ (Real.exp (-(1 - b)))) : ℝ)`. Rewrite using `[← trunc_logAbs, EReal.coe_toReal]`. Use `(max_lt ?_ (EReal.coe_lt_top _)).ne` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `logAbs`. Use `split_ifs`. Simplify using the standard rewrite rules. Conclude with `EReal.coe_lt_top _`. Conclude with `((EReal.bot_lt_coe _).trans_le (le_max_right _ _)).ne'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₁ : Real.log (max ‖z 0‖ (Real.exp (-(1 - b)))) < b`. Rewrite using `[← EReal.coe_lt_coe_iff, ← hm]`. Conclude with `max_lt hb (EReal.coe_lt_coe_iff.2 (by linarith))`. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds ((isOpen_lt (hc (1 - b)) continuous_const).mem_nhds h₁)] with x hx`. Use `lt_trans ((le_max_left _ _).trans_lt ((hm x).trans_lt (EReal.coe_lt_coe_iff.2 hx))) hb'` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : Dense {z : Fin 1 → ℂ | z ≠ 0}` using `dense_compl_singleton (0 : Fin 1 → ℂ)`. Use `closure_mono (fun x hx => (⟨trivial, ?_⟩ : x ∈ {z ∈ univ | logAbs z ≠ ⊥})) (hd z)` and prove the remaining obligations. Establish `: x 0 ≠ 0` using `fun h => hx (funext fun i => by rwa [Subsingleton.elim i 0])`. Simplify using `[logAbs, this]`. Simplify using `only [trunc_logAbs]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(hc κ).continuousOn.upperSemicontinuousOn, fun z w _ => ?_⟩` and prove the remaining obligations. Establish `hi : CircleIntegrable (fun ζ : ℂ => Real.log (max ‖(z + ζ • w) 0‖ (Real.exp (-κ)))) 0 1` using `((hc κ).comp (f := fun ζ : ℂ => z + ζ • w) (by fun_prop)).continuousOn.circleIntegrable zero_le_one`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Break down `le_total ‖z 0‖ (Real.exp (-κ)) with h' | h'` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[max_eq_right h', ← Real.circleAverage_const (Real.log (Real.exp (-κ))) 0 1]`. Conclude with `Real.circleAverage_mono (circleIntegrable_const _ _ _) hi fun ζ _ => Real.log_le_log (Real.exp_pos _) (le_max_right _ _)`. Rewrite using `[max_eq_left h']`. Establish `hz : z 0 ≠ 0` using `norm_pos_iff.1 ((Real.exp_pos _).trans_le h')`. Establish `hg : AnalyticOnNhd ℂ (fun ζ : ℂ => (z + ζ • w) 0) (Metric.closedBall 0 1)` using `fun ζ _ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `fun_prop`. Establish `h0 : (fun ζ : ℂ => (z + ζ • w) 0) 0 ≠ 0` using `by simpa using hz`. Establish `h1` using `hg.preimage_zero_mem_codiscreteWithin h0 (Metric.mem_closedBall_self zero_le_one) (Metric.isConnected_closedBall zero_le_one)`. Establish `h3 : (fun ζ : ℂ => (z + ζ • w) 0) ⁻¹' {0}ᶜ ∈ codiscreteWithin (Metric.sphere (0 : ℂ) |(1 : ℝ)|)` using `codiscreteWithin_mono (by simpa using Metric.sphere_subset_closedBall) h1`.
-
-Establish `hne : ∀ᵐ t ∂(MeasureTheory.volume.restrict (Icc 0 (2 * Real.pi))), (z + circleMap 0 1 t • w) 0 ≠ 0` using `ae_restrict_le_codiscreteWithin measurableSet_Icc (codiscreteWithin_mono (subset_univ _) (circleMap_preimage_codiscrete one_ne_zero h3))`. Establish `hl : CircleIntegrable (fun ζ : ℂ => Real.log ‖(z + ζ • w) 0‖) 0 1` using `MeromorphicOn.circleIntegrable_log_norm (hg.mono (by simpa using Metric.sphere_subset_closedBall)).meromorphicOn`. Establish `hJ` using `log_norm_le_circleAverage_log_norm hg h0`. Simplify using `only [zero_smul, add_zero] at hJ`. Use `hJ.trans ?_` and prove the remaining obligations.
-
-Simplify using `only [Real.circleAverage, smul_eq_mul]`. Use `mul_le_mul_of_nonneg_left (intervalIntegral.integral_mono_ae_restrict (by positivity) hl hi ?_) (by positivity)` and prove the remaining obligations. Use `filter_upwards [hne] with t ht`. Conclude with `Real.log_le_log (norm_pos_iff.2 ht) (le_max_left _ _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isPshExt_logAbs : IsPshExt univ logAbs := by
   have hc (κ : ℝ) : Continuous fun z : Fin 1 → ℂ => Real.log (max ‖z 0‖ (Real.exp (-κ))) :=
@@ -348,7 +342,7 @@ section Ends
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ}
 
 /- English proof (translation)
-Introduce `h` and use `by have h₁ := h.2.1 0 trivial 0 (by simp) rw [nhdsWithin_univ] at h₁ obtain ⟨z, hz, hz'⟩ := (dense_compl_singleton (0 : Fin 1 → ℂ)).inter_nhds_nonempty h₁ have : z ≠ 0 := hz simp [this] at hz'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isPshExt_dip : ¬ IsPshExt (univ : Set (Fin 1 → ℂ)) fun z => if z = 0 then ⊥ else 0 := fun h => by
   have h₁ := h.2.1 0 trivial 0 (by simp)
@@ -358,7 +352,7 @@ theorem not_isPshExt_dip : ¬ IsPshExt (univ : Set (Fin 1 → ℂ)) fun z => if 
   simp [this] at hz'
 
 /- English proof (translation)
-Introduce `h` and use `by have h₁ := ((h.2.2.2 0).2 0 1 fun _ _ => trivial).2 have e : EqOn (fun ζ : ℂ => (max (if (0 : Fin 1 → ℂ) + ζ • (1 : Fin 1 → ℂ) = 0 then (1 : EReal) else 0) ((-0 : ℝ) : EReal)).toReal) (fun _ => 0) (Metric.sphere 0 |1|) := fun ζ hζ => by have : ζ ≠ 0 := by rintro rfl; simp at h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isPshExt_spike : ¬ IsPshExt (univ : Set (Fin 1 → ℂ)) fun z => if z = 0 then 1 else 0 := fun h => by
   have h₁ := ((h.2.2.2 0).2 0 1 fun _ _ => trivial).2
@@ -370,7 +364,7 @@ theorem not_isPshExt_spike : ¬ IsPshExt (univ : Set (Fin 1 → ℂ)) fun z => i
   norm_num at h₁
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 0, 1, conclusion_const ha hθ E r h, fun y t _ => by simp [rho_const ha], fun y => by simp [rho_const ha]⟩`.
+Supply the required witnesses or components.
 -/
 theorem conclusion_const_full {d : ℕ} [SmoothOfRelativeDimension d p] {R : AnRead p σ d} {a θ : ChartForm p σ d}
     (ha : IsKaehlerForm R a) (hθ : IsClosedForm R θ) (E : ChartMap p σ d) (r : ℝ)
@@ -381,17 +375,17 @@ theorem conclusion_const_full {d : ℕ} [SmoothOfRelativeDimension d p] {R : AnR
   ⟨0, 0, 1, conclusion_const ha hθ E r h, fun y t _ => by simp [rho_const ha], fun y => by simp [rho_const ha]⟩
 
 /- English proof (translation)
-Establish `e (y t) : rho a E (fun y => (v y).toReal) y t = (v y).toReal`. Rewrite using `[← rho_zero ha hE (fun y => (v y).toReal) y]`. Simplify using `only [rho, rhoIn]`. Use `congr 1`. Use function extensionality and compare the values at `ξ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Subsingleton.elim (t • ξ) ((0 : ℝ) • ξ)]`. Establish `hf (y) : (((v y).toReal : ℝ) : EReal) = v y`. Take `⟨W, φ, hW, hφ⟩` from `hθ y`. Take `⟨c, hc⟩` from `AlgChart.exists_mem_source (D := 0) y`. Establish `h` using `hv W φ hφ c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl : c.finChart.symm (c.finChart y) = y` using `c.finChart.left_inv hc`. Establish `hm : c.finChart y ∈ c.finChart.target ∩ c.finChart.symm ⁻¹' W` using `⟨c.finChart.map_source hc, by rwa [mem_preimage, hl]⟩`. Establish `h₁` using `h.1 _ hm`. Take `⟨z, -, h₂⟩` from `closure_nonempty_iff.1 ⟨_, h.2.2.1 hm⟩`. Rewrite `h₂` using `[Subsingleton.elim z (c.finChart y)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hl] at h₁ h₂`. Use `EReal.coe_toReal ?_ ?_` and prove the remaining obligations. Introduce and unpack `h'`. Simplify using `[h'] at h₁`. Introduce and unpack `h'`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `[h'] at h₂`. Establish `ec (c : AlgChart p σ 0) : (fun q : V 0 × ℂ => rho a E (fun y => (v y).toReal) (c.e.symm q.1) ‖q.2‖) = fun _ => (v (c.e.symm 0)).toReal` using `funext fun q => by rw [e, Subsingleton.elim q.1 0]`. Use `⟨0, 0, 1, ⟨le_rfl, le_rfl, one_pos, fun c => ?_, fun y s _ t _ _ => by simp [e], fun c y hy w _ _ ξ η => ?_⟩, fun y t _ => by simp [e, hf], fun y => by simp [e, hf]⟩` and prove the remaining obligations. Rewrite using `[ec]`. Conclude with `contDiffOn_const`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨W, φ, hW, hφ⟩` from `hθ y`. Establish `e' (r : ℝ) : dbar (fun _ : V 0 × ℂ => (r : ℂ)) = fun _ => 0` using `funext fun _ => dbar_const _ _`. Rewrite using `[ec, leviForm, ddbar, e', del_const, hφ.2.2 c y hy hW]`. Simplify using `[ddcForm, AlgChart.levi, leviV]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conclusion_dim_zero [SmoothOfRelativeDimension 0 p] {a θ : ChartForm p σ 0} {E : ChartMap p σ 0}
     {v : CxPts p σ → EReal} (ha : IsKaehlerForm (AnRead.all p σ 0) a) (hE : IsExph a E)

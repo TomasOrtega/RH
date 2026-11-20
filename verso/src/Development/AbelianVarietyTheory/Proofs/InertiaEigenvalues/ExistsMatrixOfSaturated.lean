@@ -5,21 +5,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple Form
 namespace GlobalTheory.StableLattice
 
 /- English proof (translation)
-Establish `: Module.IsTorsionFree O ((Fin n → O) ⧸ L)`. Rewrite using `[Module.isTorsionFree_iff_smul_eq_zero]`. Introduce `c x hx`. Take `⟨v, rfl⟩` from `L.mkQ_surjective x`. Distinguish the cases in `hc : c = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl hc`. Use `right`. Rewrite `hx` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hL c v hc hx`.
+Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `Module.projective_lifting_property L.mkQ LinearMap.id L.mkQ_surjective`. Establish `hs' : ∀ x, L.mkQ (s x) = x` using `fun x => LinearMap.congr_fun hs x`. Set `p : (Fin n → O) →ₗ[O] L` to `LinearMap.codRestrict L (LinearMap.id - s ∘ₗ L.mkQ) (by`. Introduce `v`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, hs', sub_self])`. Establish `hp : ∀ x : L, p x = x`. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `: L.mkQ (x : Fin n → O) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `x.2`. Simplify using `only [p, LinearMap.codRestrict_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, this, map_zero, sub_zero]`. Set `e` to `(Module.finBasis O L).equivFun`. Use `⟨Module.finrank O L, LinearMap.toMatrix' (L.subtype ∘ₗ e.symm.toLinearMap), LinearMap.toMatrix' (e.toLinearMap ∘ₗ p), ?_, fun v => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `u`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, hp, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, LinearMap.id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← Matrix.toLin'_apply, ← Matrix.toLin'_apply, Matrix.toLin'_toMatrix', Matrix.toLin'_toMatrix']`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Conclude with `congrArg Subtype.val (hp ⟨v, hv⟩)`.
-
-Introduce `hv`. Rewrite using `[← hv]`. Conclude with `(p v).2`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_matrix_of_saturated {O : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
     {n : ℕ} (L : Submodule O (Fin n → O))
@@ -71,33 +69,29 @@ theorem exists_matrix_of_saturated {O : Type} [CommRing O] [IsDomain O] [IsPrinc
       exact (p v).2
 
 /- English proof (translation)
-Use `set φ := algebraMap O (FractionRing O) with hφ`. Establish `hφi : Function.Injective φ` using `IsFractionRing.injective O (FractionRing O)`. Set `c : (Fin n → O) →ₗ[O] (Fin n → FractionRing O)` to `(Algebra.linearMap O (FractionRing O)).compLeft (Fin n)`. Establish `hc : ∀ v, c v = φ ∘ v` using `fun v => rfl`. Set `L : Submodule O (Fin n → O)` to `(W.restrictScalars O).comap c`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hLm : ∀ v, v ∈ L ↔ φ ∘ v ∈ W` using `fun v => Iff.rfl`. Establish `hsm : ∀ (x : O) (v : Fin n → O), φ ∘ (x • v) = φ x • (φ ∘ v)`. Introduce `x v`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨m, B, P, hPB, hL⟩` from `exists_matrix_of_saturated L (by`. Introduce `x v hx hv`. Rewrite `hv` using `[hLm, hsm]`. Rewrite using `[hLm]`. Conclude with `(W.smul_mem_iff (by simpa using (map_ne_zero_iff φ hφi).2 hx)).1 hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr : ∀ {b : ℕ} (σ : Γ →* GL (Fin b) O) g v, fracRep σ g v = (((σ g : GL (Fin b) O) : Matrix (Fin b) (Fin b) O).map φ).mulVec v` using `fun σ g v => rfl`. Establish `hmv : ∀ {p q : ℕ} (A : Matrix (Fin p) (Fin q) O) (v : Fin q → O), φ ∘ A.mulVec v = (A.map φ).mulVec (φ ∘ v)`. Introduce `p q A v`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec φ A v i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hBL : ∀ u, B.mulVec u ∈ L`. Introduce `u`. Rewrite using `[hL, Matrix.mulVec_mulVec u P B, hPB, Matrix.one_mulVec]`. Establish `hst : ∀ g, B * (P * (r g : Matrix (Fin n) (Fin n) O) * B) = (r g : Matrix (Fin n) (Fin n) O) * B`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Matrix.ext_of_mulVec_single` to reduce the goal to its premises. Introduce `j`. Establish `h1 : (r g : Matrix (Fin n) (Fin n) O).mulVec (B.mulVec (Pi.single j 1)) ∈ L`. Rewrite using `[hLm, hmv, ← hfr]`. Conclude with `hW g _ ((hLm _).1 (hBL _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2` using `(hL _).1 h1`. Simplify using `only [← Matrix.mulVec_mulVec]`. Conclude with `h2`. Set `k : (Fin m → FractionRing O) →ₗ[FractionRing O] (Fin n → FractionRing O)` to `(B.map φ).mulVecLin`. Establish `hk : ∀ v, k v = (B.map φ).mulVec v` using `fun v => rfl`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hki : Function.Injective k`. Apply `Function.LeftInverse.injective (g := (P.map φ).mulVec)` to reduce the goal to its premises. Introduce `v`. Rewrite using `[hk, Matrix.mulVec_mulVec, ← Matrix.map_mul, hPB, Matrix.map_one _ (map_zero φ) (map_one φ), Matrix.one_mulVec]`. Establish `hkr : LinearMap.range k = W`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Matrix.range_mulVecLin, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `(hLm _).1 (hBL (Pi.single j 1))` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `this`. Introduce `w hw`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) (S := FractionRing O) w`. Use `choose v hv using hd`. Establish `hd0 : φ (d : O) ≠ 0` using `(map_ne_zero_iff φ hφi).2 (nonZeroDivisors.coe_ne_zero d)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hvw : φ ∘ v = φ (d : O) • w`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hφ, hv i, Algebra.smul_def]`. Establish `hvL : v ∈ L` using `by rw [hLm, hvw]; exact W.smul_mem _ hw`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← (LinearMap.range k).smul_mem_iff hd0, ← hvw, ← (hL v).1 hvL, hmv]`. Conclude with `⟨_, hk _⟩`. Choose the witnesses or unpack the hypotheses as in `rfl : m = a := by`. Rewrite using `[← ha, ← hkr, LinearMap.finrank_range_of_inj hki, Module.finrank_fin_fun]`. Set `ρ₀ : Γ →* Matrix (Fin m) (Fin m) O` to `{ toFun := fun g => P * (r g : Matrix (Fin n) (Fin n) O) * B map_one' := by rw [map_one, Units.val_one, Matrix.mul_one, hPB] map_mul' := by`.
-
-Introduce `g h`. Rewrite using `[Matrix.mul_assoc (P * _) B, hst, map_mul, Units.val_mul]`. Simplify using `only [Matrix.mul_assoc] }`. Use `⟨ρ₀.toHomUnits, k, ?_, hki, hkr, fun g v => ?_⟩` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul hr).matrix_mul continuous_const`.
-
-Rewrite using `[hfr, hfr, hk, hk, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.map_mul, ← Matrix.map_mul, ← hst g]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_integral_model (O Γ : Type) [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
     [TopologicalSpace O] [IsTopologicalRing O] [Group Γ] [TopologicalSpace Γ] (n a : ℕ)

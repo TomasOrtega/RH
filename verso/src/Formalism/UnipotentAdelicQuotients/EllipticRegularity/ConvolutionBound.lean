@@ -9,16 +9,16 @@ open scoped ENNReal
 variable {d : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qj8.conv_sq_le .. | (apply UpperTheory.Reformulated.B.Qj8.conv_sq_le <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qj8.conv_sq_le <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj8.conv_sq_le <;> assumption) | (intros; …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma conv_sq_le (k g : E d → ℝ≥0∞) (hk : Measurable k) (hg : Measurable g) (ξ : E d) :
     (∫⁻ η, k (ξ - η) * g η) ^ 2 ≤ (∫⁻ ζ, k ζ) * ∫⁻ η, k (ξ - η) * g η ^ 2 := by
   first | exact UpperTheory.Reformulated.B.Qj8.conv_sq_le .. | (apply UpperTheory.Reformulated.B.Qj8.conv_sq_le <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qj8.conv_sq_le <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj8.conv_sq_le <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qj8.conv_sq_le <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj8.conv_sq_le <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qj8.conv_sq_le d k g hk hg ξ | exact @UpperTheory.Reformulated.B.Qj8.conv_sq_le d k g hk hg | exact @UpperTheory.Reformulated.B.Qj8.conv_sq_le d k g hk | exact @UpperTheory.Reformulated.B.Qj8.conv_sq_le d k g | exact @UpperTheory.Reformulated.B.Qj8.conv_sq_le d k | exact @UpperTheory.Reformulated.B.Qj8.conv_sq_le d
 
 /- English proof (translation)
-Establish `hm : Measurable (Function.uncurry fun ξ η : E d => k (ξ - η) * g η ^ 2)` using `(hk.comp (measurable_fst.sub measurable_snd)).mul ((hg.comp measurable_snd).pow_const 2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_lintegral_swap hm.aemeasurable]`. Use `_ = (∫⁻ ζ, k ζ) * ∫⁻ η, (∫⁻ ζ, k ζ) * g η ^ 2 := by`. Use `congr 1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun η => ?_` and prove the remaining obligations. Rewrite using `[lintegral_mul_const _ (show Measurable fun ξ => k (ξ - η) from hk.comp (measurable_id.sub measurable_const)), lintegral_sub_right_eq_self k η]`. Use `_ = (∫⁻ ζ, k ζ) ^ 2 * ∫⁻ η, g η ^ 2 := by`. Rewrite using `[lintegral_const_mul _ (hg.pow_const 2)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma conv_young (k g : E d → ℝ≥0∞) (hk : Measurable k) (hg : Measurable g) :
     ∫⁻ ξ, (∫⁻ η, k (ξ - η) * g η) ^ 2 ≤ (∫⁻ ζ, k ζ) ^ 2 * ∫⁻ η, g η ^ 2 := by
@@ -39,47 +39,43 @@ private lemma conv_young (k g : E d → ℝ≥0∞) (hk : Measurable k) (hg : Me
       rw [lintegral_const_mul _ (hg.pow_const 2)]; ring
 
 /- English proof (translation)
-Unfold `om`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma om_measurable (s M ε : ℝ) : Measurable (om (d := d) s M ε) := by
   unfold om; fun_prop
 
 /- English proof (translation)
-Unfold `om`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 private lemma om_nonneg (s M ε : ℝ) (ξ : E d) : 0 ≤ om s M ε ξ := by
   unfold om; positivity
 
 /- English proof (translation)
-Introduce `d s M ε C N hC hom K F hK hF`. Establish `hKm : Measurable K` using `hK.measurable`. Establish `hFm : Measurable F` using `hF.measurable`. Take `⟨k1, hk1e⟩ : ∃ k1 : E d → ℝ≥0∞, k1 = fun ζ => ‖K ζ‖ₑ` from `⟨_, rfl⟩`. Take `⟨k3, hk3e⟩ : ∃ k3 : E d → ℝ≥0∞, k3 = fun ζ => ENNReal.ofReal (‖ζ‖ * (1 + ‖ζ‖) ^ N) * ‖K ζ‖ₑ` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k2, hk2e⟩ : ∃ k2 : E d → ℝ≥0∞, k2 = fun ζ => ENNReal.ofReal C * k3 ζ` from `⟨_, rfl⟩`. Take `⟨g1, hg1e⟩ : ∃ g1 : E d → ℝ≥0∞, g1 = fun η => ENNReal.ofReal (om s M ε η) * ‖F η‖ₑ` from `⟨_, rfl⟩`. Take `⟨g2, hg2e⟩ : ∃ g2 : E d → ℝ≥0∞, g2 = fun η => ENNReal.ofReal (om (s - 1) M ε η) * ‖F η‖ₑ` from `⟨_, rfl⟩`. Establish `hk1 : Measurable k1` using `by rw [hk1e]; exact hKm.enorm`. Establish `hk3 : Measurable k3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hk3e]`. Conclude with `(ENNReal.measurable_ofReal.comp (by fun_prop)).mul hKm.enorm`. Establish `hk2 : Measurable k2` using `by rw [hk2e]; exact measurable_const.mul hk3`. Establish `hg1 : Measurable g1`. Rewrite using `[hg1e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(ENNReal.measurable_ofReal.comp (om_measurable s M ε)).mul hFm.enorm`. Establish `hg2 : Measurable g2`. Rewrite using `[hg2e]`. Conclude with `(ENNReal.measurable_ofReal.comp (om_measurable (s - 1) M ε)).mul hFm.enorm`. Establish `hprod : ∀ k g : E d → ℝ≥0∞, Measurable k → Measurable g → Measurable (Function.uncurry fun ξ η : E d => k (ξ - η) * g η)` using `fun k g hk hg => (hk.comp (measurable_fst.sub measurable_snd)).mul (hg.comp measurable_snd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT1 : Measurable fun ξ => ∫⁻ η, k1 (ξ - η) * g1 η` using `(hprod k1 g1 hk1 hg1).lintegral_prod_right'`. Establish `hT2 : Measurable fun ξ => ∫⁻ η, k2 (ξ - η) * g2 η` using `(hprod k2 g2 hk2 hg2).lintegral_prod_right'`. Establish `hpt : ∀ ξ, ENNReal.ofReal (om s M ε ξ) * ‖conv K F ξ‖ₑ ≤ (∫⁻ η, k1 (ξ - η) * g1 η) + ∫⁻ η, k2 (ξ - η) * g2 η`. Introduce `ξ`. Establish `h1 : ‖conv K F ξ‖ₑ ≤ ∫⁻ η, ‖K (ξ - η)‖ₑ * ‖F η‖ₑ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `conv`. Use `(enorm_integral_le_lintegral_enorm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `lintegral_congr fun η => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul]`. Establish `hmeas : Measurable fun η => k1 (ξ - η) * g1 η` using `(hk1.comp (measurable_const.sub measurable_id)).mul hg1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun η => ?_` and prove the remaining obligations. Establish `hr : om s M ε ξ ≤ om s M ε η + C * ‖ξ - η‖ * (1 + ‖ξ - η‖) ^ N * om (s - 1) M ε η`. Establish `h` using `hom ξ η`. Establish `h'` using `le_abs_self (om s M ε ξ - om s M ε η)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX : 0 ≤ ‖ξ - η‖ * (1 + ‖ξ - η‖) ^ N` using `by positivity`. Establish `hY` using `om_nonneg (s - 1) M ε η`. Establish `he : ENNReal.ofReal (om s M ε ξ) ≤ ENNReal.ofReal (om s M ε η) + ENNReal.ofReal C * (ENNReal.ofReal (‖ξ - η‖ * (1 + ‖ξ - η‖) ^ N) * ENNReal.ofReal (om (s - 1) M ε η))`. Rewrite using `[← ENNReal.ofReal_mul hX, ← ENNReal.ofReal_mul hC, ← ENNReal.ofReal_add (om_nonneg s M ε η) (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `ENNReal.ofReal_le_ofReal (le_of_le_of_eq hr (by ring))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hk1e, hk2e, hk3e, hg1e, hg2e]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (∫⁻ η, k1 (ξ - η) * g1 η) + ∫⁻ η, k2 (ξ - η) * g2 η := lintegral_add_left hmeas _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : nrm s M ε (conv K F) ≤ ∫⁻ ξ, ((∫⁻ η, k1 (ξ - η) * g1 η) + ∫⁻ η, k2 (ξ - η) * g2 η) ^ (2 : ℝ)`. Unfold `nrm`. Use `lintegral_mono fun ξ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.rpow_two, ← mul_pow]`. Use `gcongr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpt ξ`. Establish `hY : ∀ (k g : E d → ℝ≥0∞), Measurable k → Measurable g → (∫⁻ ξ, (∫⁻ η, k (ξ - η) * g η) ^ (2 : ℝ)) ^ (1 / 2 : ℝ) ≤ (∫⁻ ζ, k ζ) * (∫⁻ η, g η ^ 2) ^ (1 / 2 : ℝ)`. Introduce `k g hk hg`. Establish `h` using `conv_young k g hk hg`. Simplify using `only [← ENNReal.rpow_two] at h ⊢`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.mul_rpow_of_nonneg _ _ (by norm_num), ← ENNReal.rpow_mul]; norm_num`. Establish `e1 : ∫⁻ η, g1 η ^ 2 = nrm s M ε F`. Unfold `nrm`. Rewrite using `[hg1e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_pow]`. Establish `e2 : ∫⁻ η, g2 η ^ 2 = nrm (s - 1) M ε F`. Unfold `nrm`. Rewrite using `[hg2e]`. Simplify using `only [mul_pow]`.
-
-Establish `e3 : ∫⁻ ζ, k2 ζ = ENNReal.ofReal C * ∫⁻ ζ, ENNReal.ofReal (‖ζ‖ * (1 + ‖ζ‖) ^ N) * ‖K ζ‖ₑ`. Rewrite using `[hk2e, lintegral_const_mul _ hk3, hk3e]`. Establish `e4 : ∫⁻ ζ, k1 ζ = ∫⁻ ζ, ‖K ζ‖ₑ` using `by rw [hk1e]`. Establish `hMk` using `ENNReal.lintegral_Lp_add_le (μ := volume) (p := 2) hT1.aemeasurable hT2.aemeasurable (by norm_num)`. Simplify using `only [Pi.add_apply] at hMk`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem convolution_bound : ConvBound := by
   intro d s M ε C N hC hom K F hK hF

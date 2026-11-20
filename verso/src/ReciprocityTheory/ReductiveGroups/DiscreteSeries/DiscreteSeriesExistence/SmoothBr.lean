@@ -18,15 +18,15 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {ε : Fin n → Bool}
 
 /- English proof (translation)
-Unfold `inUJ`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem smBr_inUJ_one : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ) := by
   unfold inUJ; simp
 
 /- English proof (translation)
-Establish `hγ` using `Formalism.REAL.hasDerivAt_mul_exp_smul_zero g X`. Establish `hγ0 : g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) = g`. Simplify using `[NormedSpace.exp_zero]`. Establish `hFd : DifferentiableAt ℝ F g` using `(hF.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hg)`. Establish `hcomp : HasDerivAt (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X))) (fderiv ℝ F g (g * X)) 0` using `hFd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ hγ0.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[𝓝 0] (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X)))`. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 0, g * NormedSpace.exp ((t : ℂ) • X) ∈ U` using `hγ.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hU.mem_nhds hg)`. Use `filter_upwards [hmem] with t ht`. Conclude with `hfF _ ht (Formalism.REAL.indefinite_unitary_mul_mem ε hgJ (Formalism.REAL.exp_indefinite_unitary_holds n ε X hX t))`. Conclude with `hcomp.congr_of_eventuallyEq hev`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smBr_hasDerivAt_ext (f F : Matrix (Fin n) (Fin n) ℂ → E) (U : Set (Matrix (Fin n) (Fin n) ℂ))
     (g X : Matrix (Fin n) (Fin n) ℂ) (hU : IsOpen U) (hg : g ∈ U) (hgJ : inUJ ε g)
@@ -49,7 +49,7 @@ theorem smBr_hasDerivAt_ext (f F : Matrix (Fin n) (Fin n) ℂ → E) (U : Set (M
   exact hcomp.congr_of_eventuallyEq hev
 
 /- English proof (translation)
-The claim follows from `(smBr_hasDerivAt_ext f F U g X hU hg hgJ hF hfF hX).deriv`.
+A detailed English derivation is pending.
 -/
 theorem smBr_rdExt (f F : Matrix (Fin n) (Fin n) ℂ → E) (U : Set (Matrix (Fin n) (Fin n) ℂ))
     (g X : Matrix (Fin n) (Fin n) ℂ) (hU : IsOpen U) (hg : g ∈ U) (hgJ : inUJ ε g)
@@ -58,13 +58,13 @@ theorem smBr_rdExt (f F : Matrix (Fin n) (Fin n) ℂ → E) (U : Set (Matrix (Fi
   (smBr_hasDerivAt_ext f F U g X hU hg hgJ hF hfF hX).deriv
 
 /- English proof (translation)
-Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g hg`. Establish `hFa : ContDiffAt ℝ ∞ F g` using `hF.contDiffAt (hU.mem_nhds hgU)`. Establish `ext : ∀ Z, inG ε Z → ∀ k ∈ U, inUJ ε k → S7.RdV Z f k = fderiv ℝ F k (k * Z)` using `fun Z hZ k hk hkJ => smBr_rdExt f F U k Z hU hk hkJ hF hfF hZ`. Establish `hsm : ∀ Z : Matrix (Fin n) (Fin n) ℂ, ContDiffOn ℝ ∞ (fun k => fderiv ℝ F k (k * Z)) U` using `fun Z => (hF.fderiv_of_isOpen hU Formalism.REAL.withTop_enat_infty_add_one_le_infty).clm_apply (Formalism.REAL.mulRightRealCLM Z).contDiff.contDiffOn`. Establish `hc : DifferentiableAt ℝ (fderiv ℝ F) g` using `(hFa.fderiv_right (m := ∞) Formalism.REAL.withTop_enat_infty_add_one_le_infty).differentiableAt (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ Z W : Matrix (Fin n) (Fin n) ℂ, fderiv ℝ (fun k => fderiv ℝ F k (k * Z)) g W = fderiv ℝ (fderiv ℝ F) g W (g * Z) + fderiv ℝ F g (W * Z)`. Introduce `Z W`. Establish `H` using `(hc.hasFDerivAt.clm_apply (Formalism.REAL.mulRightRealCLM Z).hasFDerivAt).fderiv`. Use `erw [H]`. Conclude with `add_comm _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : S7.RdV X (S7.RdV Y f) g = fderiv ℝ (fun k => fderiv ℝ F k (k * Y)) g (g * X)` using `smBr_rdExt (S7.RdV Y f) _ U g X hU hgU hg (hsm Y) (ext Y hY) hX`. Establish `e2 : S7.RdV Y (S7.RdV X f) g = fderiv ℝ (fun k => fderiv ℝ F k (k * X)) g (g * Y)` using `smBr_rdExt (S7.RdV X f) _ U g Y hU hgU hg (hsm X) (ext X hX) hY`. Establish `e3` using `ext _ (Formalism.REAL.lie_algebra_bracket_mem hX hY) g hgU hg`. Establish `hsym : IsSymmSndFDerivAt ℝ F g` using `hFa.isSymmSndFDerivAt (by rw [minSmoothness_of_isRCLikeNormedField]; norm_cast)`. Establish `hs2` using `hsym (g * X) (g * Y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, e3, hd, hd]`. Simplify using `only [Matrix.mul_sub, Matrix.mul_assoc, map_sub]`. Use `erw [hs2]`. Conclude with `add_sub_add_left_eq_sub _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem smBr_rdBracket (f : Matrix (Fin n) (Fin n) ℂ → E) (X Y g : Matrix (Fin n) (Fin n) ℂ)
     (hf : S7.SmoothOnGV ε f) (hX : inG ε X) (hY : inG ε Y) (hg : inUJ ε g) :
@@ -107,7 +107,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Unfold `S7.RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `h _ (Formalism.REAL.indefinite_unitary_mul_mem ε hg (Formalism.REAL.exp_indefinite_unitary_holds n ε X hX t))`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem smBr_loc {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {f f' : Matrix (Fin n) (Fin n) ℂ → E} (h : ∀ g, inUJ ε g → f g = f' g)
@@ -119,18 +119,18 @@ theorem smBr_loc {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
   exact h _ (Formalism.REAL.indefinite_unitary_mul_mem ε hg (Formalism.REAL.exp_indefinite_unitary_holds n ε X hX t))
 
 /- English proof (translation)
-Simplify using `only [dS, S7.RdV, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smBr_dS_eq (Z : Matrix (Fin n) (Fin n) ℂ) (w : H) :
     dS σ Z w = S7.RdV Z (fun g => σ g w) 1 := by
   simp only [dS, S7.RdV, one_mul]
 
 /- English proof (translation)
-Take `⟨U, F, hU, h1U, hF, hfF⟩` from `hv 1 smBr_inUJ_one`. Establish `hc` using `smBr_hasDerivAt_ext (fun g => σ g v) F U 1 Z hU h1U smBr_inUJ_one hF hfF hZ`. Simplify using `only [one_mul] at hc`. Establish `h2` using `((σ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hc`. Establish `hfun : ((σ g) ∘ fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • Z)) v) = fun t : ℝ => σ (g * NormedSpace.exp ((t : ℂ) • Z)) v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[hσ.1.2 g hg _ (Formalism.REAL.exp_indefinite_unitary_holds n ε Z hZ t)]`. Both sides reduce to the same expression. Establish `h3 : HasDerivAt (fun t : ℝ => σ (g * NormedSpace.exp ((t : ℂ) • Z)) v) (σ g (fderiv ℝ F 1 Z)) 0`. Rewrite using `[← hfun]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Rewrite using `[dS, hc.deriv, S7.RdV, h3.deriv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smBr_orbit (hσ : IsURepOn (UJset ε) σ) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inG ε Z)
     {v : H} (hv : IsSmoothVecU ε σ v) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
@@ -157,9 +157,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Establish `e1 : dS σ X (dS σ Y v) = S7.RdV X (S7.RdV Y (fun g => σ g v)) 1`. Rewrite using `[smBr_dS_eq]`. Conclude with `smBr_loc (fun g hg => smBr_orbit hσ hY hv hg) hX smBr_inUJ_one`. Establish `e2 : dS σ Y (dS σ X v) = S7.RdV Y (S7.RdV X (fun g => σ g v)) 1`. Rewrite using `[smBr_dS_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smBr_loc (fun g hg => smBr_orbit hσ hX hv hg) hY smBr_inUJ_one`. Rewrite using `[e1, e2, smBr_dS_eq]`. Conclude with `smBr_rdBracket _ X Y 1 hv hX hY smBr_inUJ_one`.
+A detailed English derivation is pending.
 -/
 theorem dS_bracket (hσ : IsURepOn (UJset ε) σ) {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (hY : inG ε Y)
     {v : H} (hv : IsSmoothVecU ε σ v) :

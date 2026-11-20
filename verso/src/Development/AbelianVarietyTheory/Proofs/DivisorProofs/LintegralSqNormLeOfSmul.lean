@@ -18,7 +18,7 @@ namespace GlobalTheory.ThetaDecay
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Unfold `evI`. Simplify using `[InfiniteAdeleRing.ringEquiv_mixedSpace]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem evI_algebraMap_eq (x : F) : evI F (algebraMap F (AF F) x) = mixedEmbedding F x := by
   unfold evI
@@ -27,11 +27,11 @@ theorem evI_algebraMap_eq (x : F) : evI F (algebraMap F (AF F) x) = mixedEmbeddi
 
 open scoped Classical in
 /- English proof (translation)
-Use `⟨Fintype.card (InfinitePlace F), fun ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[evI_algebraMap_eq]`. Establish `h : ∀ w : InfinitePlace F, w ξ ≤ ‖mixedEmbedding F ξ‖`. Introduce `w`. Rewrite using `[← mixedEmbedding.normAtPlace_apply w ξ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w.IsReal`. Rewrite using `[mixedEmbedding.normAtPlace_apply_of_isReal hw]`. Conclude with `(norm_le_pi_norm _ _).trans (norm_fst_le _)`. Establish `hc : w.IsComplex` using `InfinitePlace.not_isReal_iff_isComplex.mp hw`. Rewrite using `[mixedEmbedding.normAtPlace_apply_of_isComplex hc]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(norm_le_pi_norm _ _).trans (norm_snd_le _)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem sum_places_le : ∃ c : ℝ, ∀ ξ : F, ∑ w : InfinitePlace F, w ξ ≤ c * ‖evI F (algebraMap F (AF F) ξ)‖ := by
   refine ⟨Fintype.card (InfinitePlace F), fun ξ => ?_⟩

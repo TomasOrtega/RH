@@ -4,11 +4,11 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : VAddInvariantMeasure Γ G μ := ⟨fun g s _ => measure_preimage_add μ (g : G) s⟩`. Use `⟨hc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm]`. Rewrite using `[h𝓕.lintegral_eq_tsum'' (fun x => ‖c x‖ₑ)]`. Rewrite using `[← lintegral_tsum (f := fun (γ : Γ) x => ‖c (γ +ᵥ x)‖ₑ) fun γ : Γ => ((hc.comp (continuous_const_vadd (γ : G))).measurable.enorm).aemeasurable]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpt : ∀ x, ∑' γ : Γ, ‖c (γ +ᵥ x)‖ₑ ≤ ENNReal.ofReal C`. Introduce `x`. Establish `h1 : ∑' γ : Γ, ‖c (γ +ᵥ x)‖ₑ = ENNReal.ofReal (∑' γ : Γ, ‖c ((γ : G) + x)‖)`. Rewrite using `[ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (hC x).1]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ofReal_norm_eq_enorm]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `ENNReal.ofReal_le_ofReal (hC x).2`. Combine the equalities or inequalities in the displayed calculation.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integrable_of_tsum_translate_norm_le
     (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
@@ -38,7 +38,7 @@ theorem integrable_of_tsum_translate_norm_le
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top h𝓕μ
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ Γ _ μ hμ 𝓕 h𝓕 h𝓕μ c hc C hC` and use `integrable_of_tsum_translate_norm_le G Γ μ hμ 𝓕 h𝓕 h𝓕μ c hc C hC`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (Γ : AddSubgroup G) [Countable Γ] (μ : Measure G), μ.IsAddLeftInvariant → ∀ 𝓕 : Set G, IsAddFundamentalDomain Γ 𝓕 μ → μ 𝓕 < ⊤ → ∀ c : G → ℂ, Continuous c → ∀ C : ℝ, (∀ w : G, Summable (fun γ : Γ => ‖c ((γ : G) + w)‖) ∧ ∑' γ : Γ, ‖c ((γ : G) + w)‖ ≤ C) → Integrable c μ :=
   fun G _ _ _ _ _ _ Γ _ μ hμ 𝓕 h𝓕 h𝓕μ c hc C hC =>

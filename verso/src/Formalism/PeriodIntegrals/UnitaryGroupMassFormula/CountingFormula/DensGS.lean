@@ -27,11 +27,9 @@ def SplitCount : Prop :=
             (Formalism.L2.SG.DensExact.countSplit 𝓀[F] (Module.finrank E V) (Fintype.card ι) Ph Gm : ℝ)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ M hF hc0 he V _ _ H Λ hΛ ϖ hϖ ι _ _ G₀ hG1 hG2 hG3 hle`. Take `⟨Ph, Gm, hPh, hrk, heq⟩` from `h F E M hF hc0 he V H Λ hΛ ϖ hϖ ι G₀ hG1 hG2 hG3 hle`. Use `haveI := hF`. Use `haveI : Fintype 𝓀[F] := Fintype.ofFinite _`. Establish `hd` using `bilinearDensityFormula 𝓀[F] (Module.finrank E V) (Fintype.card ι) Ph Gm hPh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hd` using `[hrk, Nat.sub_self, ← Nat.card_eq_fintype_card (α := 𝓀[F])]`. Rewrite using `[← hd, ← heq]`. Establish `hq : (Nat.card 𝓀[F] : ℝ) ≠ 0`. Conclude with `(Nat.card_pos (α := 𝓀[F])).ne'` after adjusting the coercions. Apply the tactic sequence `have hz : ((2 * Module.finrank E V * Fintype.card ι : ℤ) - (Fintype.card ι : ℤ) ^ 2) = ((2 * Module.finrank E V * Fintype.card ι : ℕ) : ℤ) - ((Fintype.card ι ^ 2 : ℕ) : ℤ) := by first | (push_cast; ring) | push_cast`.
-
-Rewrite using `[hz, zpow_sub₀ hq, zpow_natCast, zpow_natCast, mul_div_assoc, div_self (div_ne_zero (pow_ne_zero _ hq) (pow_ne_zero _ hq)), mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locDensSplit_of (h : SplitCount) : LocDensSplit := by
   intro F E _ _ _ _ _ _ _ M hF hc0 he V _ _ H Λ hΛ ϖ hϖ ι _ _ G₀ hG1 hG2 hG3 hle
@@ -93,9 +91,9 @@ def CountBij : Prop :=
               (Ph.map (IsLocalRing.residue 𝒪[F])) Gm : ℝ)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ M hF hc0 ⟨e, he⟩ V _ _ H Λ hΛ ϖ hϖ ι _ _ G₀ hG1 hG2 hG3 _`. Take `⟨π, Ph, hπ⟩` from `hC F E M hF hc0 e he V H Λ hΛ`. Take `⟨Gm, hGm, heq⟩` from `hB F E M hF hc0 e he (hO F E M.L hF e) V H Λ π Ph hπ ϖ hϖ ι G₀ hG1 hG2 hG3`. Take `⟨-, -, hu, -⟩` from `hπ`. Use `⟨Ph.map (IsLocalRing.residue 𝒪[F]), Gm, ?_, hGm, heq⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdet : (Ph.map (IsLocalRing.residue 𝒪[F])).det = IsLocalRing.residue 𝒪[F] Ph.det` using `(RingHom.map_det _ _).symm`. Rewrite using `[hdet]`. Conclude with `hu.map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitCount_of (hO : OSplit) (hC : CoordData) (hB : CountBij) : SplitCount := by
   intro F E _ _ _ _ _ _ _ M hF hc0 ⟨e, he⟩ V _ _ H Λ hΛ ϖ hϖ ι _ _ G₀ hG1 hG2 hG3 _
@@ -109,7 +107,7 @@ theorem splitCount_of (hO : OSplit) (hC : CoordData) (hB : CountBij) : SplitCoun
   exact hu.map _
 
 /- English proof (translation)
-The claim follows from `locDensSplit_of (splitCount_of hO hC hB)`.
+A detailed English derivation is pending.
 -/
 theorem locDensSplit_of' (hO : OSplit) (hC : CoordData) (hB : CountBij) : LocDensSplit := locDensSplit_of (splitCount_of hO hC hB)
 

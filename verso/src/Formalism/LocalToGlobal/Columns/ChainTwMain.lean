@@ -17,7 +17,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
 open Classical
 
 /- English proof (translation)
-The claim follows from `twSt_h_g Ch sel mu cst m2 j b P hP`.
+A detailed English derivation is pending.
 -/
 theorem twIdx_h_g {j : ℕ} {b : (twIdx Ch sel mu cst m2).β j} {P : rowSG Pr sel mu} (hP : P.1 ∈ Pr.vGs) :
     (twIdx Ch sel mu cst m2).h j b P = 1 :=
@@ -30,15 +30,15 @@ theorem twIdx_levQ_zero (b : (twIdx Ch sel mu cst m2).β 0) :
     (twIdx Ch sel mu cst m2).levQ 0 b = LevQFam.top X.E X.K (R.N 0) (QE sel (mu : Chr X.F X.E X.K)) := rfl
 
 /- English proof (translation)
-The claim follows from `if_neg hj`.
+A detailed English derivation is pending.
 -/
 theorem twIdx_levQ_pos {j : ℕ} (hj : j ≠ 0) (b : (twIdx Ch sel mu cst m2).β j) :
     (twIdx Ch sel mu cst m2).levQ j b = twLevQ Ch sel mu cst j ((twSt Ch sel mu cst m2 j).h b) := if_neg hj
 
 /- English proof (translation)
-Take `⟨B', rfl⟩ : ∃ B', B = B' + 1` from `⟨B - 1, by omega⟩`. Establish `e : ((qOf P : X.E) ^ 1)⁻¹ * z = (qOf P : X.E) ^ B' * (((qOf P : X.E) ^ (B' + 1))⁻¹ * z)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `IntAt.mul ?_ hz` and prove the remaining obligations. Establish `e2 : (qOf P : X.E) ^ B' = algebraMap (𝓞 X.E) X.E ((qOf P : 𝓞 X.E) ^ B')` using `by simp`. Rewrite using `[e2]`. Conclude with `IntAt.coe P _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twIntAt_pow_inv {P : HeightOneSpectrum (𝓞 X.E)} {z : X.E} {B : ℕ} (hB : 1 ≤ B) (hq : (qOf P : X.E) ≠ 0)
     (hz : IntAt P (((qOf P : X.E) ^ B)⁻¹ * z)) : IntAt P (((qOf P : X.E) ^ 1)⁻¹ * z) := by
@@ -53,7 +53,7 @@ theorem twIntAt_pow_inv {P : HeightOneSpectrum (𝓞 X.E)} {z : X.E} {B : ℕ} (
   exact IntAt.coe P _
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, _, h0 => absurd rfl h0 | i + 1, b, P, hP, hd, _ => by by_cases h1 : i + 1 ≤ m2 · obtain ⟨hb, hnf, ⟨al, hal⟩, hint⟩ := twSt_cand h1 (hN i (by omega)) b P hP have hs := twSt_of_twNormAt hN i (by omega) al P hP exact hC.1 i (by omega) P hP hd _ _ hs.1 hs.2 hb hnf hint …`.
+A detailed English derivation is pending.
 -/
 theorem twSt_chrOk (hN : ∀ i, i < m2 → TwNormAt (Ch := Ch) (cst := cst) (twSt Ch sel mu cst m2 i)) (hC : TwChrQ Ch sel mu cst m2) :
     ∀ (j : ℕ) (b : (twSt Ch sel mu cst m2 j).β) (P : rowSG Pr sel mu), P.1 ∉ Pr.vGs → TwDegOne X P.1 → j ≠ 0 →
@@ -76,53 +76,33 @@ theorem twSt_chrOk (hN : ∀ i, i < m2 → TwNormAt (Ch := Ch) (cst := cst) (twS
 variable (Ch sel mu cst m2) in
 
 /- English proof (translation)
-Establish `hm` using `hB.hm`. Establish `hX` using `hB.hX`. Establish `hPr` using `hB.hPr`. Establish `hNall : ∀ i, i < m2 → TwNormAt (Ch` using `Ch) (cst := cst) (twSt Ch sel mu cst m2 i) := twNormAt_all hN hd`. Establish `hψ : ∀ (P : rowSG Pr sel mu), P.1 ∈ Pr.vGs → ∀ a, IntAt P.1 a → cst.psi P (a / (qOf P.1 : X.E)) = psi0P Ch P.1 (redP P.1 a)` using `fun P hP a ha => hB.psi0 P a hP ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hc', hc, -, -, -, -⟩` from `ookLast (R := R) hm`. Establish `hΛ` using `closedLevels_by_entries_holds X Pr R Ch m2 hm`. Establish `hGG` using `ocbGrpGLoc_holds Ch sel mu cst m2`. Establish `hCG` using `ocbChrGLoc_holds Ch sel mu cst m2`. Establish `hq0 : ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs → (qOf P.1 : X.E) ≠ 0` using `fun P hP => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(ciQOf_prime hPr hP).ne_zero` after adjusting the coercions. Set `c1 : LocCst X (rowSG Pr sel mu)` to `{ cst with B := 1 }`. Establish `hE1 : ∀ i, i < m2 → ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs → E1at Ch sel mu cst i P 1 1 = E1at Ch sel mu c1 i P 1 1` using `fun i hi P hP => ookE1at_indep Ch sel mu hX hPr c1 hs hm hi P hP (hψ P hP) G.σ₀ hA (le_refl 1) hA hB1`. Establish `hXi : ∀ i, i < m2 → ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs → XiAt Ch sel mu cst i P 1 1 = XiAt Ch sel mu c1 i P 1 1` using `fun i hi P hP => by`. Use function extensionality and compare the values at `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show _ * E1at Ch sel mu cst i P 1 1 y = _ * E1at Ch sel mu c1 i P 1 1 y`. Rewrite using `[hE1 i hi P hP]`. Conclude with `{ hm := hm cst_ok := hB.cst_ok xiUnitAtPrime := hxi weil := hwe muqQ := hmQ muqG := hmG mu0G := fun j => (hT.mu0 j).atg psi0 := fun P a hP ha => hB.psi0 P a hP ha deep := fun A' B' hA' hB' i hi al be P => by`. Distinguish the cases in `hG : P.1 ∈ Pr.vGs`. Rewrite using `[twIdx_h_g hG, twIdx_h_g hG]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ookE1at_indep Ch sel mu hX hPr cst hs hm hi P hG (hψ P hG) G.σ₀ hA hB1 (le_trans hA hA') (le_trans hB1 hB')`. Conclude with `hAn.deep A' B' hA' hB' i hi P hG _ _ (twSt_bdd hNall i al P hG) (twSt_bdd hNall (i + 1) be P hG)`. Use `zero_uniq := ⟨(), fun _ => rfl⟩`. Use `zero_h := fun _ _ => rfl`. Use `zero_G := fun _ => colLevSym_zero Ch`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `zero_Q := fun b => twIdx_levQ_zero b`. Use `last_uniq := by show ∃ b : (twSt Ch sel mu cst m2 (m2 + 1)).β, ∀ b', b' = b`. Rewrite using `[twSt_last]`. Conclude with `⟨(), fun _ => rfl⟩`. Use `last_h := by show ∀ (b : (twSt Ch sel mu cst m2 (m2 + 1)).β) P, (twSt Ch sel mu cst m2 (m2 + 1)).h b P = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[twSt_last]`. Introduce `_ _`. Both sides reduce to the same expression. Use `nonvan := fun i hi => by`. Establish `K` using `fun b P => twNext_nonvan (hNall i hi) b P`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `K` using `[← twSt_succ_le Ch sel mu cst (show i + 1 ≤ m2 by omega)]`. Conclude with `K`. Use `inj := fun i hi b b' H => by`. Establish `K` using `fun b b' H => twNext_inj (hNall i hi) b b' H`. Rewrite `K` using `[← twSt_succ_le Ch sel mu cst (show i + 1 ≤ m2 by omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `K b b' H`. Use `surj := fun i hi hh hs' hb H => by`. Establish `hfin : ∀ P, (twCSet Ch sel mu cst (twSt Ch sel mu cst m2 i) P).Finite` using `fun P => (hF (i + 1) P.1 (Finset.mem_sdiff.1 P.2).2 (hd (twRow P) (Finset.mem_sdiff.1 P.2).2)).subset (fun D ⟨h, hD, hc⟩ => ⟨h, hD, hc.1⟩)`. Establish `K` using `fun hh hs' hb H => twNext_surj (hNall i hi) hfin (fun al P hP => twSt_h_g Ch sel mu cst m2 i al P hP) (fun P hP h hsh H => twSurjG G.σ₀ hB hi P hP h hsh H) (fun P hP => twNonVanG G.σ₀ hB hi P hP) hh hs' hb H`. Rewrite `K` using `[← twSt_succ_le Ch sel mu cst (show i + 1 ≤ m2 by omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `K hh hs' hb H`. Use `stabG := fun j b P hP => by`. Rewrite using `[twIdx_h_g hP]`. Conclude with `Subgroup.one_mem _`. Use `depthG := hB.depthG`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Use `depthQ := hDQ`. Use the proof step `depthQ' := hDQ'`. Use `boundQ := fun j b P hP => twSt_bdd hNall j b P hP`. Use `psiSupp := fun al P x₀ y' h i => by`. Distinguish the cases in `hG : P.1 ∈ Pr.vGs`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[if_pos hG, pow_one]`. Rewrite `h` using `[twIdx_h_g hG]`. Conclude with `(psiAt_sym Ch sel mu cst hc' hc hs P hG x₀ y' h i).1`. Rewrite using `[if_neg hG]`. Conclude with `hAn.psiSupp P hG _ (twSt_bdd hNall m2 al P hG) x₀ y' h i`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `psiInv := fun al P x₀ y' z hz => by`. Distinguish the cases in `hG : P.1 ∈ Pr.vGs`. Rewrite using `[twIdx_h_g hG]`. Conclude with `ookPsiInv Ch sel mu hX hPr cst hs hm P hG x₀ y' z fun i => by`. Establish `h1` using `hz i`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[if_pos hG, pow_zero, inv_one, one_mul]`. Then use the resulting hypothesis. Conclude with `hAn.psiInv P hG _ (twSt_bdd hNall m2 al P hG) x₀ y' z fun i => by`. Establish `h1` using `hz i`. Rewrite `h1` using `[if_neg hG]`. Then use the resulting hypothesis. Use `xiSupp := fun i hi al be P x h s l => by`.
-
-Distinguish the cases in `hG : P.1 ∈ Pr.vGs`. Rewrite `h` using `[twIdx_h_g hG, twIdx_h_g hG]`. Conclude with `ookXiSupp Ch sel mu cst hs hm hi P hG x h s l`. Conclude with `hAn.xiSupp i hi P hG _ _ (twSt_bdd hNall i al P hG) (twSt_bdd hNall (i + 1) be P hG) x h s l`. Use `xiInv := fun i hi al be P x z hz => by`.
-
-Distinguish the cases in `hG : P.1 ∈ Pr.vGs`. Rewrite using `[twIdx_h_g hG, twIdx_h_g hG, hXi i hi P hG]`. Conclude with `ookXiInv Ch sel mu hX hPr c1 hs hm hi P hG (hψ P hG) G.σ₀ hA rfl x z fun s l => twIntAt_pow_inv hB1 (hq0 P hG) (hz s l)`. Conclude with `hAn.xiInv i hi P hG _ _ (twSt_bdd hNall i al P hG) (twSt_bdd hNall (i + 1) be P hG) x z hz`. Use `psiSuppX := fun al P x₀ y' h s l => by`.
-
-Distinguish the cases in `hG : P.1 ∈ Pr.vGs`. Rewrite `h` using `[twIdx_h_g hG]`. Conclude with `ookPsiSuppX Ch sel mu cst hs hm P hG x₀ y' h s l`. Conclude with `hAn.psiSuppX P hG _ (twSt_bdd hNall m2 al P hG) x₀ y' h s l`. Use `psiInvX := fun al P x₀ z y' hz => by`.
-
-Distinguish the cases in `hG : P.1 ∈ Pr.vGs`. Rewrite using `[twIdx_h_g hG]`. Conclude with `ookPsiInvX Ch sel mu hX hPr c1 hs hm P hG rfl x₀ z y' fun s l => twIntAt_pow_inv hB1 (hq0 P hG) (hz s l)`. Conclude with `hAn.psiInvX P hG _ (twSt_bdd hNall m2 al P hG) x₀ z y' hz`. Use `int := fun j b P => twSt_int hs hNall j b P`.
-
-Use `grpQ := fun j b P => by`. Establish `hP : P.1 ∉ Pr.vGs` using `hQG P.1 P.2`. Consider the cases of `j with`. Consider the case `zero`. Rewrite using `[twIdx_levQ_zero]`.
-
-Conclude with `(Subgroup.subgroupOf_eq_top.2 (hZ ⟨P.1, Finset.mem_union_right _ P.2⟩ hP).1).symm`. Consider the case `succ j'`. Rewrite using `[twIdx_levQ_pos (Nat.succ_ne_zero j')]`. Both sides reduce to the same expression. Use `chrQ := fun j b P g r hr hx => by`.
-
-Establish `hP : P.1 ∉ Pr.vGs` using `hQG P.1 P.2`. Consider the cases of `j with`. Consider the case `zero`. Establish `e : ((((twIdx Ch sel mu cst m2).levQ 0 b P).lam g : X.Kˣ) : X.K) = 1` using `rfl`. Rewrite using `[e]`.
-
-Conclude with `((hZ ⟨P.1, Finset.mem_union_right _ P.2⟩ hP).2 r hr).symm`. Consider the case `succ j'`. Establish `hok` using `twSt_chrOk hNall hC (j' + 1) b ⟨P.1, Finset.mem_union_right _ P.2⟩ hP (hd _ hP) (Nat.succ_ne_zero j')`. Use `show (((twLam Ch sel mu cst (j' + 1) ⟨P.1, Finset.mem_union_right _ P.2⟩ ((twSt Ch sel mu cst m2 (j' + 1)).h b ⟨P.1, Finset.mem_union_right _ P.2⟩)) g : X.Kˣ) : X.K) = _`. Rewrite using `[twLam, dif_pos hok]`.
-
-Conclude with `twChiVal_eq hok hr hx`. Use `grpG := fun j b w hbar => by`. Establish `hj` using `twSt_le Ch sel mu cst m2 j b`. Rewrite using `[twIdx_h_g (P := ⟨w.1, Finset.mem_union_left _ w.2⟩) w.2]`. Conclude with `(hΛ.H j hj w hbar).trans (hGG hB j hj w hbar).symm`.
-
-Use `chrG := fun j b w hbar g r hr hg hred => by`. Establish `hj` using `twSt_le Ch sel mu cst m2 j b`. Rewrite `hr`, the goal using `[twIdx_h_g (P := ⟨w.1, Finset.mem_union_left _ w.2⟩) w.2]`. Conclude with `(hΛ.lam j hj w hbar).trans (hCG hB j hj w hbar.1 g r hr hg hred).symm }`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twIdx_ok_of (hB : OcbBase Ch sel mu cst m2) (hs : cst.sharp = true) (G : ChGlob X R.m)
     {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E} (hT : Ch.Tied G.σ₀ e G.mu0 eta)
@@ -277,9 +257,9 @@ theorem twIdx_ok_of (hB : OcbBase Ch sel mu cst m2) (hs : cst.sharp = true) (G :
         exact (hΛ.lam j hj w hbar).trans (hCG hB j hj w hbar.1 g r hr hg hred).symm }
 
 /- English proof (translation)
-Establish `h2` using `R.two_le_m`. Use `twIdx_ok_of Ch sel mu (twCst Ch sel mu G) m2 (twCst_base hX hPr hCh h4 hK hm) rfl G hT (fun P => if hP : P.1 ∈ Pr.vGs then ookXiUnit hCh hW P.1 hP else hK.xi0 P hP) (twCst_weil hX hPr hCh hW hK) (fun i h P hP => ?_) (fun i h P hP qu hqu => ?_) (by show R.m ≤ R.m + 1; omega) (by s …` and prove the remaining obligations. Use `show twMuq Ch sel mu G (i + 1) P = _`. Unfold `twMuq`. Rewrite using `[if_neg hP, dif_pos (by omega)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `show G.σ₀ (twMuq Ch sel mu G (i + 1) P) = _`. Unfold `twMuq`. Rewrite using `[if_pos hP]`. Conclude with `ciMuq_tie G _ hval i h P hP qu hqu`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twIdx_ok (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (G : ChGlob X R.m)
     {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E} (hT : Ch.Tied G.σ₀ e G.mu0 eta) (hW : Ch.WeilTied G.σ₀ G.xi0)

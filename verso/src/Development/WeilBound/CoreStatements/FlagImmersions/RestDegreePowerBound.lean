@@ -18,9 +18,9 @@ open MvPolynomial GlobalTheory.CompanionTheory.Ar.Top
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
 /- English proof (translation)
-Establish `hc : 0 ≤ c` using `(abs_nonneg r).trans hr`. Introduce `s`. Break down `s with _ | _ | s` into its components or cases. Simplify using `using hr`. Simplify using `using he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: (Polynomial.C r + Polynomial.C e * Polynomial.X).coeff (s + 1 + 1) = 0`. Simplify using `[Polynomial.coeff_X, Polynomial.coeff_C]`. Rewrite using `[this, abs_zero]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem maj_lin (r e c A : ℝ) (hA : 0 ≤ A) (hr : |r| ≤ c) (he : |e| ≤ c * A) :
     Maj (Polynomial.C r + Polynomial.C e * Polynomial.X) c A := by
@@ -35,41 +35,39 @@ theorem maj_lin (r e c A : ℝ) (hA : 0 ≤ A) (hr : |r| ≤ c) (he : |e| ≤ c 
     positivity
 
 /- English proof (translation)
-Simplify using `using maj_lin r 0 |r| 0 le_rfl le_rfl (by simp)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem maj_C (r : ℝ) : Maj (Polynomial.C r) |r| 0 := by
   simpa using maj_lin r 0 |r| 0 le_rfl le_rfl (by simp)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `gdet_rho N`. Establish `hP : (∏ τ, gdet (rho τ) (vv u (τ', i) τ)) = ∏ τ, (Polynomial.C c * ∏ a, ∏ b ∈ Finset.Ioi a, (vv u (τ', i) τ b - vv u (τ', i) τ a))` using `Finset.prod_congr rfl fun τ _ => hc _`. Establish `h0 : |(∏ τ, gdet (rho τ) (vv u (τ', i) τ)).coeff 0| = ∏ τ, (|c| * ∏ a, ∏ b ∈ Finset.Ioi a, |u τ b - u τ a|)`. Rewrite using `[hP, Polynomial.coeff_zero_eq_eval_zero, Polynomial.eval_prod, Finset.abs_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.eval_mul, Polynomial.eval_C, abs_mul, Polynomial.eval_prod, Finset.abs_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_prod, Finset.abs_prod]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Simplify using `only [vv, Polynomial.eval_sub, Polynomial.eval_add, Polynomial.eval_C]`. Apply the tactic sequence `split_ifs <;> simp`. Set `w : Ψ → Fin N → ℝ` to `fun τ a => if (τ, a) = (τ', i) then 1 / g else 0`. Establish `hw : ∀ τ a, 0 ≤ w τ a` using `fun τ a => by`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply the tactic sequence `simp only [w]; split_ifs <;> positivity`. Establish `hfac : ∀ τ a, ∀ b ∈ Finset.Ioi a, Maj (vv u (τ', i) τ b - vv u (τ', i) τ a) |u τ b - u τ a| (w τ a + w τ b)`. Introduce `τ a b hb`. Establish `hab : a < b` using `Finset.mem_Ioi.mp hb`. Establish `hA` using `add_nonneg (hw τ a) (hw τ b)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `ha : (τ, a) = (τ', i)`. Establish `hb' : (τ, b) ≠ (τ', i)` using `fun h => hab.ne (by rw [← h] at ha; exact (Prod.mk.inj ha).2)`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj ha`. Establish `: vv u (τ, a) τ b - vv u (τ, a) τ a = Polynomial.C (u τ b - u τ a) + Polynomial.C (-1) * Polynomial.X`. Simplify using `only [vv, if_neg hb', if_true, map_sub, map_neg, map_one]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `maj_lin _ _ _ _ hA le_rfl ?_` and prove the remaining obligations. Establish `h1` using `hsep b hab.ne`. Simplify using `only [w, if_neg hb', if_true, add_zero, abs_neg, abs_one]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[abs_sub_comm, mul_one_div, one_le_div hg]`. Conclude with `h1`. Distinguish the cases in `hb' : (τ, b) = (τ', i)`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj hb'`. Establish `: vv u (τ, b) τ b - vv u (τ, b) τ a = Polynomial.C (u τ b - u τ a) + Polynomial.C 1 * Polynomial.X`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [vv, if_neg ha, if_true, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `maj_lin _ _ _ _ hA le_rfl ?_` and prove the remaining obligations. Establish `h1` using `hsep a hab.ne'`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [w, if_neg ha, if_true, zero_add, abs_one]`. Rewrite using `[mul_one_div, one_le_div hg]`. Conclude with `h1`. Establish `: vv u (τ', i) τ b - vv u (τ', i) τ a = Polynomial.C (u τ b - u τ a) + Polynomial.C 0 * Polynomial.X`. Simplify using `only [vv, if_neg ha, if_neg hb', map_sub, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `maj_lin _ _ _ _ hA le_rfl ?_` and prove the remaining obligations. Rewrite using `[abs_zero]`. Conclude with `mul_nonneg (abs_nonneg _) hA`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hin : ∀ τ a, 0 ≤ ∑ b ∈ Finset.Ioi a, (w τ a + w τ b)` using `fun τ a => Finset.sum_nonneg fun b _ => add_nonneg (hw τ a) (hw τ b)`. Establish `hM` using `Maj.prod Finset.univ (fun τ => Polynomial.C c * ∏ a, ∏ b ∈ Finset.Ioi a, (vv u (τ', i) τ b - vv u (τ', i) τ a)) (fun τ => |c| * ∏ a, ∏ b ∈ Finset.Ioi a, |u τ b - u τ a|) (fun τ => 0 + ∑ a, ∑ b ∈ Finset.Ioi a, (w τ a + w τ b)) (fun τ _ => Maj.mul (maj_C c) (Maj.prod Finset.univ _ …`. Rewrite using `[h0, hP]`. Use `hM.mono (Finset.sum_nonneg fun τ _ => by` and prove the remaining obligations. Rewrite using `[zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_nonneg fun a _ => hin τ a) le_rfl ?_`. Rewrite using `[Finset.sum_eq_single τ' (fun τ _ hτ => by simp [w, hτ]) (by simp), zero_add]`. Establish `hw' : ∀ a, w τ' a = if a = i then 1 / g else 0` using `fun a => by simp [w]`. Simplify using `only [hw', Finset.sum_add_distrib]`. Establish `e1 : ∑ a : Fin N, ∑ _b ∈ Finset.Ioi a, (if a = i then 1 / g else 0) = ((Finset.Ioi i).card : ℝ) * (1 / g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single i (fun a _ ha => by simp [ha]) (by simp)]`. Simplify using the standard rewrite rules. Establish `e2 : ∑ a : Fin N, ∑ b ∈ Finset.Ioi a, (if b = i then 1 / g else 0) = ((Finset.Iio i).card : ℝ) * (1 / g)`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_Ioi]`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Use `congr 1`. Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, ← add_mul, mul_one_div]`.
-
-Use `div_le_div_of_nonneg_right ?_ hg.le` and prove the remaining obligations. Rewrite using `[Fin.card_Ioi, Fin.card_Iio]`. Use `i.2` as an intermediate fact. Conclude with `(by omega : N - 1 - (i : ℕ) + (i : ℕ) ≤ N)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem maj_rho (u : Wt Ψ N) (τ' : Ψ) (i : Fin N) (g : ℝ) (hg : 0 < g)
     (hsep : ∀ b, i ≠ b → g ≤ |u τ' i - u τ' b|) :
@@ -162,9 +160,9 @@ theorem maj_rho (u : Wt Ψ N) (τ' : Ψ) (i : Fin N) (g : ℝ) (hg : 0 < g)
   exact_mod_cast (by omega : N - 1 - (i : ℕ) + (i : ℕ) ≤ N)
 
 /- English proof (translation)
-Establish `h` using `alt_pow (rho : Ψ → Fin N → ℕ) u x0 0 (dimFl Ψ N) (by rw [sum_rho]; rfl)`. Rewrite `h` using `[pow_zero, one_mul]`. Rewrite using `[flagDeg, degFl_eq, h]`. Establish `h1 : ((-1 : ℝ) ^ dimFl Ψ N) * (-1) ^ dimFl Ψ N = 1`. Rewrite using `[← mul_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Simplify using `only [Nat.factorial_zero, Nat.cast_one, mul_one]`. Take the linear combination `(((dimFl Ψ N).factorial : ℝ) * (∏ τ, gdet (rho τ) (vv u x0 τ)).coeff 0) * h1`.
+Evaluate the numerical expressions. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem flagDeg_coeff (u : Wt Ψ N) (x0 : Ψ × Fin N) :
     flagDeg u = ((dimFl Ψ N).factorial : ℝ) * (∏ τ, gdet (rho τ) (vv u x0 τ)).coeff 0 := by
@@ -177,7 +175,7 @@ theorem flagDeg_coeff (u : Wt Ψ N) (x0 : Ψ × Fin N) :
   linear_combination (((dimFl Ψ N).factorial : ℝ) * (∏ τ, gdet (rho τ) (vv u x0 τ)).coeff 0) * h1
 
 /- English proof (translation)
-The claim follows from `|lam τ k (X (τ', i) ^ (k - 1) * linRoot u ^ (dimFl Ψ N + 1))| ≤ ((dimFl Ψ N : ℝ) + 1) * |flagDeg u| * (2 ^ (k - 1) / (k.factorial : ℝ) * U * (k + N * U / g) ^ (k - 1)) := by have hv : ∀ b, Maj (vv u (τ', i) τ b) U (1 / U) := by intro b by_cases h : (τ, b) = (τ', i) · have : vv u …`.
+A detailed English derivation is pending.
 -/
 theorem lam_bound (u : Wt Ψ N) (τ τ' : Ψ) (i : Fin N) (g U : ℝ) (hg : 0 < g) (hU : 0 < U)
     (hsep : ∀ b, i ≠ b → g ≤ |u τ' i - u τ' b|) (hu : ∀ b, |u τ b| ≤ U) (k : ℕ) (hk : 1 ≤ k) :
@@ -230,9 +228,9 @@ theorem lam_bound (u : Wt Ψ N) (τ τ' : Ψ) (i : Fin N) (g U : ℝ) (hg : 0 < 
   ring
 
 /- English proof (translation)
-Rewrite using `[hQ.2, Finset.mul_sum, lam_sum]`. Simplify using `only [Finset.mul_sum, lam_sum]`. Establish `: ∀ τ', ∀ m ∈ Finset.Icc 1 N, lam τ k (γ * (pk τ' m * Q τ' m)) = if τ' = τ ∧ m = k then (k : ℝ) * alt rho (γ * Q τ' m) else 0`. Introduce `τ' m hm`. Rewrite using `[mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lam_pk τ τ' k m hk hkN (Finset.mem_Icc.mp hm).1 (Finset.mem_Icc.mp hm).2 _`. Rewrite using `[Finset.sum_congr rfl fun τ' _ => Finset.sum_congr rfl (this τ'), Finset.sum_eq_single τ (fun τ' _ h => by simp [h]) (by simp), Finset.sum_eq_single k (fun m _ h => by simp [h]) (fun h => absurd (Finset.mem_Icc.mpr ⟨hk, hkN⟩) h)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lam_decomp {F : RP Ψ N} {Q : Ψ → ℕ → RP Ψ N} (hQ : IsDecomp F Q) (τ : Ψ) (k : ℕ) (hk : 1 ≤ k) (hkN : k ≤ N)
     (γ : RP Ψ N) : lam τ k (γ * F) = k * alt rho (γ * Q τ k) := by
@@ -249,9 +247,9 @@ theorem lam_decomp {F : RP Ψ N} {Q : Ψ → ℕ → RP Ψ N} (hQ : IsDecomp F Q
   simp
 
 /- English proof (translation)
-Establish `h : linRoot (fun σ b => u σ b - if σ = τ then a else 0) - linRoot u = pk τ 1 * C a`. Simplify using `only [linRoot, pk, pow_one, map_sub, sub_mul, Finset.sum_sub_distrib]`. Establish `: ∑ x : Ψ × Fin N, (C (if x.1 = τ then a else 0) * X x : RP Ψ N) = (∑ i : Fin N, X (τ, i)) * C a`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single τ (fun σ _ h => by simp [h]) (by simp), Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun b _ => by simp [mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨G, hG⟩` from `sub_dvd_pow_sub_pow (linRoot (fun σ b => u σ b - if σ = τ then a else 0)) (linRoot u) n`. Rewrite `hG` using `[h, sub_eq_iff_eq_add]`. Rewrite using `[hG, mul_add, lam_add, show γ * (pk τ 1 * C a * G) = pk τ 1 * (γ * C a * G) by ring, lam_pk τ τ k 1 (by omega) hkN le_rfl (by omega), if_neg (by omega), zero_add]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_shift (u : Wt Ψ N) (τ : Ψ) (a : ℝ) (k : ℕ) (hk : 2 ≤ k) (hkN : k ≤ N) (γ : RP Ψ N) (n : ℕ) :
     lam τ k (γ * linRoot (fun σ b => u σ b - if σ = τ then a else 0) ^ n) = lam τ k (γ * linRoot u ^ n) := by
@@ -267,7 +265,7 @@ theorem lam_shift (u : Wt Ψ N) (τ : Ψ) (a : ℝ) (k : ℕ) (hk : 2 ≤ k) (hk
     lam_pk τ τ k 1 (by omega) hkN le_rfl (by omega), if_neg (by omega), zero_add]
 
 /- English proof (translation)
-The claim follows from `|k * alt rho (X (τ', i) ^ (k - 1) * Q τ k)| ≤ ((dimFl Ψ N : ℝ) + 1) * flagDeg u * ((2 ^ (k - 1) / (k.factorial : ℝ)) * ((⨆ i, u τ i) - ⨅ i, u τ i) * (N * (1 + 2 * (‖u‖ / g))) ^ (k - 1)) := by obtain ⟨hg, hreg, -, hsep⟩ := hW haveI : Nonempty (Fin N) := ⟨i⟩ have hle : ∀ b, u τ b ≤ …`.
+A detailed English derivation is pending.
 -/
 theorem one_bound (j : ℕ) (u : Wt Ψ N) (g : ℝ) (Q : Ψ → ℕ → RP Ψ N) (hW : WeightHyp j u g)
     (hQ : IsDecomp (linRoot u ^ (dimFl Ψ N + 1)) Q) (τ τ' : Ψ) (k : ℕ) (hk : 2 ≤ k) (hkN : k ≤ N) (i : Fin N)
@@ -308,7 +306,7 @@ theorem one_bound (j : ℕ) (u : Wt Ψ N) (g : ℝ) (Q : Ψ → ℕ → RP Ψ N)
   linarith
 
 /- English proof (translation)
-The claim follows from `|alt rho (pLie j m σ * G)| = |∑ i ∈ I, alt rho (X (τ', i) ^ m * G)| := by have cL : (Finset.univ.filter fun i : Fin N => (i : ℕ) < j).card = j := by rw [Fin.card_filter_val_lt]; omega have cH : (Finset.univ.filter fun i : Fin N => j ≤ (i : ℕ)).card = N - j := by have := Finset.ca …`.
+A detailed English derivation is pending.
 -/
 theorem small_block (j : ℕ) (hj : j < N) (σ : Ψ ⊕ Ψ) (m : ℕ) (hm : 1 ≤ m) (G : RP Ψ N) :
     ∃ (τ' : Ψ) (I : Finset (Fin N)), I.card = min j (N - j) ∧ (∀ i ∈ I, InSmall j i) ∧

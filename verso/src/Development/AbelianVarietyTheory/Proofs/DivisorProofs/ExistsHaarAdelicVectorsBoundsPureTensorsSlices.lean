@@ -30,7 +30,7 @@ theorem splitE_apply (p : (κ → mixedEmbedding.mixedSpace F) × (κ → Finite
     splitE F κ p = fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (p.1 i), p.2 i) := rfl
 
 /- English proof (translation)
-Rewrite using `[show ⇑(splitE F κ) = fun p : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F) => fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (p.1 i), p.2 i) from rfl]`. Conclude with `continuous_pi fun i => ((GlobalTheory.Core.Rk.RapidInt.continuous_ofMixed F).comp ((continuous_apply i).comp continuous_fst)).prodMk ((continuous_apply i).comp continuous_snd)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_splitE : Continuous (splitE F κ) := by
   rw [show ⇑(splitE F κ) = fun p : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F) =>
@@ -39,7 +39,7 @@ theorem continuous_splitE : Continuous (splitE F κ) := by
     ((continuous_apply i).comp continuous_fst)).prodMk ((continuous_apply i).comp continuous_snd)
 
 /- English proof (translation)
-Rewrite using `[show ⇑(splitE F κ).symm = fun x : κ → AdeleRing (𝓞 F) F => ((fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1, fun i => (x i).2) : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F)) from rfl]`. Conclude with `(continuous_pi fun i => (GlobalTheory.Core.Rk.RapidInt.continuous_toMixed F).comp (continuous_fst.comp (continuous_apply i))).prodMk (continuous_pi fun i => continuous_snd.comp (continuous_apply i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_splitE_symm : Continuous (splitE F κ).symm := by
   rw [show ⇑(splitE F κ).symm = fun x : κ → AdeleRing (𝓞 F) F =>
@@ -49,7 +49,7 @@ theorem continuous_splitE_symm : Continuous (splitE F κ).symm := by
     (continuous_fst.comp (continuous_apply i))).prodMk (continuous_pi fun i => continuous_snd.comp (continuous_apply i))
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilM.pureA, splitE_apply, RingEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pureA_splitE (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)
     (p : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F)) :
@@ -57,9 +57,9 @@ theorem pureA_splitE (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ
   simp only [GlobalTheory.WeilM.pureA, splitE_apply, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Simplify using `only [pureA_splitE]`. Conclude with `(f.continuous.comp continuous_fst).mul (hg.1.continuous.comp continuous_snd)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero => exact continuous_const`. Consider the case `add x x' _ _ hx hx' => exact hx.add hx'`. Consider the case `smul a x _ hx => exact hx.const_smul a`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_comp_splitE [Fintype κ] (Φ : (κ → AdeleRing (𝓞 F) F) → ℂ) (hΦ : Φ ∈ GlobalTheory.WeilM.schA F κ) :
     Continuous fun p => Φ (splitE F κ p) := by
@@ -73,14 +73,14 @@ theorem continuous_comp_splitE [Fintype κ] (Φ : (κ → AdeleRing (𝓞 F) F) 
   | smul a x _ hx => exact hx.const_smul a
 
 /- English proof (translation)
-The claim follows from `funext fun i => Prod.ext (add_zero _).symm rfl`.
+A detailed English derivation is pending.
 -/
 theorem splitE_add_finE (z : κ → mixedEmbedding.mixedSpace F) (y u : κ → FiniteAdeleRing (𝓞 F) F) :
     splitE F κ (z, y + u) = splitE F κ (z, y) + GlobalTheory.WeilAdm.finE F u :=
   funext fun i => Prod.ext (add_zero _).symm rfl
 
 /- English proof (translation)
-Use `haveI : MeasurableAdd (mixedEmbedding.mixedSpace F) := ContinuousAdd.measurableAdd`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+A detailed English derivation is pending.
 -/
 theorem volume_isAddHaar [Fintype κ] : (volume : Measure (κ → mixedEmbedding.mixedSpace F)).IsAddHaarMeasure := by
   haveI : MeasurableAdd (mixedEmbedding.mixedSpace F) := ContinuousAdd.measurableAdd
@@ -93,29 +93,21 @@ namespace GlobalTheory.WeilAdm.HaarSplit
 open GlobalTheory.WeilAdm.HaarSplit
 
 /- English proof (translation)
-Introduce `F _ _ κ _ g hg U hU`. Use `haveI := volume_isAddHaar F κ`. Use `haveI : OpensMeasurableSpace (κ → mixedEmbedding.mixedSpace F) := inferInstance`. Use `haveI : LocallyCompactSpace (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI : SecondCountableTopology (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : T2Space (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Use `letI mY : MeasurableSpace (κ → FiniteAdeleRing (𝓞 F) F) := borel _`. Use `haveI : BorelSpace (κ → FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩`. Use `letI mA : MeasurableSpace (κ → AdeleRing (𝓞 F) F) := borel _`. Use `haveI : BorelSpace (κ → AdeleRing (𝓞 F) F) := ⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : SigmaCompactSpace (κ → FiniteAdeleRing (𝓞 F) F) := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `set ν : Measure (κ → FiniteAdeleRing (𝓞 F) F) := Measure.addHaar with hν`. Use `haveI : SFinite ν := inferInstance`. Use `haveI : MeasurableAdd (κ → mixedEmbedding.mixedSpace F) := ContinuousAdd.measurableAdd`. Use `haveI : MeasurableAdd (κ → FiniteAdeleRing (𝓞 F) F) := ContinuousAdd.measurableAdd`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : ν.IsAddHaarMeasure := by rw [hν]; infer_instance`. Use `haveI : ((volume : Measure (κ → mixedEmbedding.mixedSpace F)).prod ν).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure (volume : Measure (κ → mixedEmbedding.mixedSpace F)) ν`. Establish `hμH : Measure.IsAddHaarMeasure ((volume.prod ν).map (splitE F κ))` using `(splitE F κ).isAddHaarMeasure_map _ (continuous_splitE F κ) (continuous_splitE_symm F κ)`. Set `em : ((κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F)) ≃ᵐ (κ → AdeleRing (𝓞 F) F)` to `(Homeomorph.mk (splitE F κ).toEquiv (continuous_splitE F κ) (continuous_splitE_symm F κ)).toMeasurableEquiv`. Establish `hint : ∀ h : (κ → AdeleRing (𝓞 F) F) → ℝ≥0∞, ∫⁻ x, h x ∂((volume.prod ν).map (splitE F κ)) = ∫⁻ p, h (splitE F κ p) ∂(volume.prod ν)` using `fun h => lintegral_map_equiv h em`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgc : Continuous g` using `hg.1.continuous`. Establish `hC : ∫⁻ y, ‖g y‖ₑ ^ 2 ∂ν ≠ ⊤`. Establish `h1 : ∫⁻ y, ‖g y * g y‖ₑ ∂ν < ⊤` using `((hgc.mul hgc).integrable_of_hasCompactSupport (hg.2.mul_left (f := g))).2`. Use `ne_of_lt (lt_of_le_of_lt (le_of_eq (lintegral_congr fun y => ?_)) h1)` and prove the remaining obligations. Rewrite using `[enorm_mul, sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨K, hKc, hK0⟩` from `exists_compact_mem_nhds (0 : κ → FiniteAdeleRing (𝓞 F) F)`. Use `set S : Set (κ → FiniteAdeleRing (𝓞 F) F) := (U : Set _) ∩ K with hS`. Establish `hSm : MeasurableSet S` using `hU.measurableSet.inter hKc.isClosed.measurableSet`. Establish `hc0 : ν S ≠ 0`. Use `ne_of_gt (lt_of_lt_of_le ?_ (measure_mono (Set.inter_subset_inter_right _ interior_subset)))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hU.inter isOpen_interior).measure_pos ν ⟨0, U.zero_mem, mem_interior_iff_mem_nhds.2 hK0⟩`. Establish `hcT : ν S ≠ ⊤` using `ne_top_of_le_ne_top hKc.measure_lt_top.ne (measure_mono Set.inter_subset_right)`. Use `⟨(volume.prod ν).map (splitE F κ), hμH, ∫⁻ y, ‖g y‖ₑ ^ 2 ∂ν, ν S, hC, hc0, hcT, ?_, ?_⟩` and prove the remaining obligations. Introduce `f`. Rewrite using `[hint]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : ∀ p, ‖GlobalTheory.WeilM.pureA F f g (splitE F κ p)‖ₑ ^ 2 = ‖f p.1‖ₑ ^ 2 * ‖g p.2‖ₑ ^ 2`. Introduce `p`. Rewrite using `[pureA_splitE, enorm_mul, mul_pow]`. Repeatedly rewrite using `[e1]`. Rewrite using `[lintegral_prod_mul (f.continuous.measurable.enorm.pow_const 2).aemeasurable (hgc.measurable.enorm.pow_const 2).aemeasurable, mul_comm]`.
-
-Introduce `Φ hΦ hinv y`. Rewrite using `[hint]`. Establish `hHm : Measurable fun p => ‖Φ (splitE F κ p)‖ₑ ^ 2` using `(continuous_comp_splitE F κ Φ hΦ).measurable.enorm.pow_const 2`. Rewrite using `[lintegral_prod _ hHm.aemeasurable, ← lintegral_const_mul' _ _ hcT]`. Use `lintegral_mono fun z => ?_` and prove the remaining obligations.
-
-Use `set T : Set (κ → FiniteAdeleRing (𝓞 F) F) := (fun y' => y' + -y) ⁻¹' S with hT`. Establish `hTm : MeasurableSet T` using `hSm.preimage (continuous_add_right (-y)).measurable`. Establish `hνT : ν T = ν S` using `measure_preimage_add_right ν (-y) S`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_indicator_const hTm, hνT, mul_comm]`.
-
-Use `_ ≤ ∫⁻ y', ‖Φ (splitE F κ (z, y'))‖ₑ ^ 2 ∂ν := by`. Use `lintegral_mono fun y' => (Set.indicator_le (g := fun y' => ‖Φ (splitE F κ (z, y'))‖ₑ ^ 2) (fun a ha => le_of_eq ?_)) y'` and prove the remaining obligations. Establish `hu : a + -y ∈ U` using `ha.1`. Establish `ha' : a = y + (a + -y)` using `by abel`. Use `show ‖Φ (splitE F κ (z, y))‖ₑ ^ 2 = ‖Φ (splitE F κ (z, a))‖ₑ ^ 2`.
-
-Rewrite using `[ha', splitE_add_finE, hinv _ _ hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_pure_slice_bounds : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ),
     g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F) → ∀ U : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F), IsOpen (U : Set (κ → FiniteAdeleRing (𝓞 F) F)) →

@@ -8,15 +8,15 @@ open scoped ContDiff
 namespace UpperTheory.V.Lit.Dr
 
 /- English proof (translation)
-Introduce `Γ V S _ _ _ d G _ l hl q η hη γ s p hp`. Establish `hAp : (G.ρ γ⁻¹) p ∈ G.Y` using `G.maps γ⁻¹ p hp`. Establish `hBA : ∀ x, (G.ρ γ) ((G.ρ γ⁻¹) x) = x` using `fun x => by`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one, ContinuousLinearMap.one_apply]`. Establish `hAB : ∀ x, (G.ρ γ⁻¹) ((G.ρ γ) x) = x` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one, ContinuousLinearMap.one_apply]`. Establish `hss : (G.σ γ) ((G.σ γ⁻¹) s) = s`. Rewrite using `[← Equiv.Perm.mul_apply, ← map_mul, mul_inv_cancel, map_one, Equiv.Perm.one_apply]`. Establish `hlinv : ∀ x ∈ G.Y, l s x = l ((G.σ γ⁻¹) s) ((G.ρ γ⁻¹) x)` using `fun x hx => by`. Establish `h` using `hl.2 γ ((G.σ γ⁻¹) s) ((G.ρ γ⁻¹) x) (G.maps γ⁻¹ x hx)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hss, hBA]`. Conclude with `h`. Establish `hηinv : ∀ x, (η : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s x = G.tr q γ ((η : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) ((G.σ γ⁻¹) s) ((G.ρ γ⁻¹) x))` using `fun x => by`. Establish `h` using `congrArg (fun w : G.Om q => (w : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s x) (hη γ)`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hloc : (fun x => l s x • x) =ᶠ[nhds p] fun x => (G.ρ γ) (l ((G.σ γ⁻¹) s) ((G.ρ γ⁻¹) x) • (G.ρ γ⁻¹) x)` using `Filter.eventuallyEq_of_mem (G.isOpen.mem_nhds hp) fun x hx => by`. Rewrite using `[map_smul, hBA, hlinv x hx]`. Establish `hdl : DifferentiableAt ℝ (l ((G.σ γ⁻¹) s)) ((G.ρ γ⁻¹) p)` using `(((hl.1 ((G.σ γ⁻¹) s)).1).contDiffAt (G.isOpen.mem_nhds hAp)).differentiableAt (by simp)`. Establish `hD : fderiv ℝ (fun x => l s x • x) p = (G.ρ γ) ∘L (fderiv ℝ (fun y => l ((G.σ γ⁻¹) s) y • y) ((G.ρ γ⁻¹) p)) ∘L (G.ρ γ⁻¹)`. Rewrite using `[hloc.fderiv_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : HasFDerivAt (fun y => l ((G.σ γ⁻¹) s) y • y) (fderiv ℝ (fun y => l ((G.σ γ⁻¹) s) y • y) ((G.ρ γ⁻¹) p)) ((G.ρ γ⁻¹) p)` using `(hdl.smul differentiableAt_id).hasFDerivAt`. Conclude with `((G.ρ γ).hasFDerivAt.comp p (h1.comp p (G.ρ γ⁻¹).hasFDerivAt)).fderiv`. Rewrite using `[pull, pull, hD, hηinv, hlinv p hp, map_smul]`. Use `ContinuousAlternatingMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `[Geo.tr, Function.comp_def, hAB]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pullEquiv : PullEquiv := by
   intro Γ V S _ _ _ d G _ l hl q η hη γ s p hp

@@ -13,13 +13,13 @@ open scoped TensorProduct
 namespace GlobalTheory.LogPair
 
 /- English proof (translation)
-Introduce `R _ X f U W h d t hU hW ht`. Establish `h1 : (resG X h).Etale` using `GlobalTheory.TopForm.etale_resG hU hW h`. Establish `h2 : ((resG X h).comp (MvPolynomial.eval₂Hom (cstOn f U) t)).Etale` using `RingHom.Etale.stableUnderComposition _ _ ht h1`. Establish `h3 : MvPolynomial.eval₂Hom (cstOn f W) (fun a => resG X h (t a)) = (resG X h).comp (MvPolynomial.eval₂Hom (cstOn f U) t)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `r`. Establish `hc : cstOn f W = (resG X h).comp (cstOn f U)`. Unfold `cstOn resG`. Rewrite using `[← CommRingCat.hom_comp]`. Establish `e` using `Scheme.Hom.appLE_map f (U := ⊤) (V := U) (by simp) (homOfLE h).op`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun g => ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ g).hom) e.symm`. Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C, hc]`. Introduce `i`. Simplify using the standard rewrite rules. Unfold `IsEtCoord`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem isEtCoord_res : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Sp R) (U W : X.Opens) (h : W ≤ U) (d : ℕ) (t : Fin d → Γ(X, U)), IsAffineOpen U → IsAffineOpen W → IsEtCoord f U t → IsEtCoord f W (fun a => resG X h (t a)) := by
   intro R _ X f U W h d t hU hW ht

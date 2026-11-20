@@ -9,7 +9,7 @@ namespace GlobalTheory
 open Classical in
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m n`. Simplify using `[TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem equivFinsuppOfBasisLeft_lTensor {K M N N' ι : Type*} [Field K] [AddCommGroup M] [Module K M]
     [AddCommGroup N] [Module K N] [AddCommGroup N'] [Module K N'] [DecidableEq ι]
@@ -23,13 +23,13 @@ theorem equivFinsuppOfBasisLeft_lTensor {K M N N' ι : Type*} [Field K] [AddComm
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
 /- English proof (translation)
-Use `set K := maximalRealSubfield L`. Set `b` to `Module.finBasis K L`. Set `e` to `TensorProduct.equivFinsuppOfBasisLeft (N := AFplus L) b`. Establish `hc : ∀ i, e a i = 0`. Introduce `i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `RestrictedProduct.ext _ _ (fun v => ?_)` and prove the remaining obligations. Establish `h1 : ∀ x, ReciprocityTheory.Aut.compAt L v x = LinearMap.lTensor L (ReciprocityTheory.Aut.evalAt L v).toLinearMap x`. Introduce `x`. Simplify using `only [ReciprocityTheory.Aut.compAt]`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul m n => simp [Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy => simp only [map_add] at *`. Rewrite using `[hx, hy]`. Establish `h2` using `equivFinsuppOfBasisLeft_lTensor b (ReciprocityTheory.Aut.evalAt L v).toLinearMap a i`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← h1 a, h v, map_zero, Finsupp.zero_apply]`. Conclude with `h2.symm`. Establish `: e a = 0` using `Finsupp.ext hc`. Simplify using `using congrArg e.symm this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem AL_eq_zero_of_compAt (L : Type) [Field L] [NumberField L] (a : ReciprocityTheory.Aut.AL L)
     (h : ∀ v, ReciprocityTheory.Aut.compAt L v a = 0) : a = 0 := by

@@ -29,7 +29,7 @@ open GlobalTheory.UT.CoefBasic GlobalTheory.Poinc.Sep.Frames
 variable {V : Type} [CommRing V] [IsDomain V]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `GlobalTheory.TorusCoord.exists_ratio hL h t ht t' ht'`. Conclude with `⟨_, fun z J hJ => by rw [ha _ _ z J hJ, Units.val_mul, gm_top_eq]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unit_ratio {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → ((𝟙_ (Over (Sp V))).left ⟶ X)} {ε : K → ℤ} {φ' : K' → ((𝟙_ (Over (Sp V))).left ⟶ X)} {ε' : K' → ℤ}
@@ -42,16 +42,16 @@ theorem unit_ratio {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K' : Type} [Fint
   exact ⟨_, fun z J hJ => by rw [ha _ _ z J hJ, Units.val_mul, gm_top_eq]⟩
 
 /- English proof (translation)
-The claim follows from `map_zpow _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem val_rigPow {S Z : Scheme.{0}} {G : Over S} [GrpObj G] (L : LB G.left) (rig : LB.Gen (L.pull (eSec G))) (k : ℤ)
     (r : Z ⟶ S) (z : Z) (J : (Z ⟶ G.left) → L.ι) : val (rigPow G L rig k) r z J = val rig r z J ^ k :=
   map_zpow _ _ _
 
 /- English proof (translation)
-Establish `e₀ : eSec G ≫ (mulA G N).left = eSec G` using `GlobalTheory.TorsFrameInt.one_mulA N`. Take `⟨u, hu⟩` from `unit_ratio (V := V) M.isLB (t := LB.pullGen M.L _ _ β (eSec G)) (t' := rigPow G M.L M.rig ((N : ℤ) ^ 2 - 1)) (fun U _ h => by`. Rewrite using `[Fin.prod_univ_two, Fintype.prod_unique]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Category.comp_id, e₀]`. Rewrite using `[← zpow_add]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1)`. Use the proof step `(pullGen_isGen _ _ _ _ hβ _) (GlobalTheory.NormMulUniv.rigPow_isGen M.rigGen _)`. Use `⟨u, fun z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← val_pull hJ, hu z J hJ, val_rigPow]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_origin (G : Over (Sp V)) [GrpObj G] (M : RigLB G) (N : ℕ)
     (β : LB.Gen (LB.LinComb M.L (K := Fin 2) ![𝟙 G.left, (mulA G N).left] ![(N : ℤ) ^ 2, -1])) (hβ : β.IsGen) :
@@ -70,13 +70,11 @@ theorem unit_origin (G : Over (Sp V)) [GrpObj G] (M : RigLB G) (N : ℕ)
   rw [← val_pull hJ, hu z J hJ, val_rigPow]
 
 /- English proof (translation)
-Establish `e₀ : h.left ≫ (mulA G N).left = eSec G`. Rewrite using `[GlobalTheory.TorsFrameInt.left_mulA, hN, GlobalTheory.TorsFrameInt.one_left]`. Conclude with `Category.id_comp _`. Take `⟨u, hu⟩` from `unit_ratio (V := V) M.isLB (t := LB.mulGen M.L _ _ _ _ (LB.pullGen M.L _ _ β h.left) M.rig) (t' := GeneratorPullback.powGen M.L _ _ f₀ (N ^ 2)) (fun U _ H => by`. Rewrite using `[Fintype.prod_sum_type, Fin.prod_univ_two, Fintype.prod_unique, Fintype.prod_unique]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Category.comp_id, e₀]`. Rewrite using `[zpow_neg_one, zpow_one, inv_mul_cancel_right]`. Use `push_cast`. Use the proof step `ring_nf)`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ hβ _) M.rigGen) (powGen_isGen _ _ _ _ hf₀ _)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨u, fun z J hJ => ?_⟩` and prove the remaining obligations. Use `hu z J hJ` as an intermediate fact. Rewrite `this` using `[val_mul hJ, val_pull hJ]`. Rewrite using `[this]`. Use `congr 2`.
-
-Conclude with `map_pow _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem unit_at (G : Over (Sp V)) [GrpObj G] (M : RigLB G) (N : ℕ)
     (β : LB.Gen (LB.LinComb M.L (K := Fin 2) ![𝟙 G.left, (mulA G N).left] ![(N : ℤ) ^ 2, -1])) (hβ : β.IsGen)
@@ -106,11 +104,11 @@ theorem unit_at (G : Over (Sp V)) [GrpObj G] (M : RigLB G) (N : ℕ)
   exact map_pow _ _ _
 
 /- English proof (translation)
-Take `⟨-, -, α, hα, hn, hc⟩` from `H`. Use `⟨α, hα, fun Z t y J hJ => ?_, fun Z r y J hJ => ?_⟩` and prove the remaining obligations. Establish `q` using `val_corr hJ hn t`. Rewrite `q` using `[val_pull hJ, val_mul hJ, val_inv]`. Conclude with `q.trans (congrArg (· * _) (map_zpow _ _ _))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `q` using `val_corr hJ hc r`. Rewrite `q` using `[val_mul hJ, val_pull hJ]`. Use `Eq.trans (map_zpow _ _ _).symm (q.trans (congrArg (_ * ·) ?_))` and prove the remaining obligations. Establish `hy` using `hJ.mem (fun _ : Fin 1 => T.hom ≫ eSec P.A) r`. Use `(map_zpow _ _ _).trans ((zpow_one _).trans ((gm_res _ y _ hy _).trans ?_))` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gm_pull r T.hom y (LB.wchart P.L (fun _ : PUnit => eSec P.A) (fun _ => J (r ≫ T.hom ≫ eSec P.A))) (rigT_le P.A P.L _ hy) _).trans ?_` and prove the remaining obligations. Conclude with `(val_of rig (r ≫ T.hom) y J _ (fun _ => by rw [Category.assoc])).symm`.
+A detailed English derivation is pending.
 -/
 theorem frame_values' {S : Scheme.{0}} (P : PolAV S) {rig : LB.Gen (P.L.pull (eSec P.A))} {n : ℕ} {T : Over S}
     {x : T ⟶ P.A} {τ : LB.Gen (LB.LinComb P.L (Y := T.left) (K := Fin 1) (fun _ => x.left) (fun _ => 1))}
@@ -135,9 +133,7 @@ theorem frame_values' {S : Scheme.{0}} (P : PolAV S) {rig : LB.Gen (P.L.pull (eS
     exact (val_of rig (r ≫ T.hom) y J _ (fun _ => by rw [Category.assoc])).symm
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Use `replace a₁ := congrArg Additive.ofMul a₁`. Use `replace a₂ := congrArg Additive.ofMul a₂`. Use `replace a₃ := congrArg Additive.ofMul a₃`. Use `replace a₄ := congrArg Additive.ofMul a₄`.
-
-Use `replace a₅ := congrArg Additive.ofMul a₅`. Use `replace a₆ := congrArg Additive.ofMul a₆`. Use `replace a₇ := congrArg Additive.ofMul a₇`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow] at a₁ a₂ a₃ a₄ a₅ a₆ a₇ ⊢`. Take the linear combination `(norm := module) -a₂ + a₄ + a₆ - n • a₇ + a₁ + a₃ - a₅`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem key_alg {M : Type} [CommGroup M] (n : ℤ) (B0 Bx Cc W0 Wx α0 αx R E Cu0 Cu1 g F Cl : M)
     (a₁ : B0 = Cc * (W0 ^ n * W0⁻¹ * α0)) (a₂ : Bx = Cc * (Wx ^ n * W0⁻¹ * αx)) (a₃ : α0 = R ^ n * R⁻¹)
@@ -155,47 +151,47 @@ theorem key_alg {M : Type} [CommGroup M] (n : ℤ) (B0 Bx Cc W0 Wx α0 αx R E C
   linear_combination (norm := module) -a₂ + a₄ + a₆ - n • a₇ + a₁ + a₃ - a₅
 
 /- English proof (translation)
-Introduce `V _ _ _ hV D A G _ _ hG U w₀ hw₀ ρ hρ N hN`. Establish `hIC : IsIntegrallyClosed V` using `hV.2.1`. Use `U.gen_hom` as an intermediate fact. Set `GK` to `(Over.pullback (jK V)).obj G`. Set `eK : (TF (R` to `V) (FractionRing V)).left ⟶ GK.left := eSec GK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e₁ : eK ≫ U.gen.hom.left = eSec A.A` using `EvalZero.eK_gen U.toUnifPre`. Establish `e₂ : eK ≫ pullback.fst G.hom (jK V) = jK V ≫ eSec G` using `EvalZero.eK_fst`. Establish `e₃ : eK ≫ GK.hom = 𝟙 _` using `Over.w η[GK]`. Establish `e₄ : eK ≫ (mulA GK N).left = eK` using `GlobalTheory.TorsFrameInt.one_mulA N`. Establish `jid : jFK (R` using `V) (FractionRing V) = 𝟙 _ := Spec.map_id _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tU : (toUnit (TF (R` using `V) (FractionRing V))).left = jK V := by show jFK (R := V) (FractionRing V) ≫ jK V = _`. Rewrite using `[jid, Category.id_comp]`. Take `⟨β, hβ⟩` from `GlobalTheory.UT.exists_gen_mulPull_pow_unif V _ D A G U.toUnifPre N 1 (N ^ 2) (by ring)`. Set `β' : LB.Gen (LB.LinComb U.LG.L (K` to `Fin 2) ![𝟙 G.left, (mulA G N).left] ![(N : ℤ) ^ 2, -1]) := β`. Establish `hβ' : β'.IsGen` using `hβ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨z₀⟩` from `exists_pt (R := V) (F := FractionRing V)`. Take `⟨JA₀, hA₀⟩` from `exists_good' A.isLB z₀`. Take `⟨JG₀, hG₀⟩` from `exists_good' U.LG.isLB z₀`. Set `W₀` to `GlobalTheory.TorsFrameInt.wv w₀ eK z₀ JG₀ JA₀`. Set `R₀` to `val (L := A.L) (φ := fun _ : PUnit => eSec A.A) (ε := fun _ => 1) ρ (𝟙 (TF (R := V) (FractionRing V)).left) z₀ JA₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g₀` to `val (L := U.LG.L) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) U.LG.rig (toUnit (TF (R := V) (FractionRing V))).left z₀ JG₀`. Take `⟨l, hl⟩` from `cstH_surj z₀ (W₀ * R₀ * g₀⁻¹).val`. Establish `hl0 : l ≠ 0` using `fun h0 => by`. Rewrite `hl` using `[h0, map_zero]`. Conclude with `Units.ne_zero _ hl.symm`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨l, hl0, fun x e h hx hh hext => ?_⟩` and prove the remaining obligations. Take `⟨α, hα, hα₀, hαx⟩` from `frame_values' A hx`. Take `⟨c, hc0, hc⟩` from `GlobalTheory.T.normalisedMulIso_uniformisation_genericFibre_one_constant V _ D A G U.toUnifPre w₀ hw₀ N α hα β' hβ'`. Take `⟨u₀, hu₀⟩` from `unit_origin (V := V) G U.LG N β' hβ'`. Take `⟨i, hi⟩` from `exists_chart U.LG.isLB (h.left (cpt V))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f₀, hf₀⟩` from `GlobalTheory.TorsFrameInt.exists_gen_of_chart U.LG.isLB (K := Fin 1) (fun _ => h.left) (fun _ => 1) (fun _ => i) (fun y => Set.mem_iInter.2 fun _ => (top_le_iff_cpt (A := V) h.left _).2 hi (show y ∈ ⊤ from trivial))`. Take `⟨u₁, hu₁⟩` from `unit_at (V := V) G U.LG N β' hβ' h hh f₀ hf₀`. Set `x' : (TF (R` to `V) (FractionRing V)).left ⟶ GK.left := x.left ≫ U.gen.inv.left`. Establish `x₁ : x' ≫ U.gen.hom.left = x.left` using `by show (x.left ≫ U.gen.inv.left) ≫ U.gen.hom.left = _`. Rewrite using `[Category.assoc, ← Over.comp_left, U.gen.inv_hom_id]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Category.comp_id _`. Establish `x₂ : x' ≫ pullback.fst G.hom (jK V) = (toUnit (TF (R` using `V) (FractionRing V))).left ≫ h.left := hext`. Establish `x₃ : x' ≫ GK.hom = 𝟙 _` using `by show (x.left ≫ U.gen.inv.left) ≫ GK.hom = _`. Rewrite using `[Category.assoc, Over.w U.gen.inv, Over.w x]`. Conclude with `jid`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `x₄ : x' ≫ (mulA GK N).left = eK`. Establish `hmul : (mulA GK N) ≫ U.gen.hom = U.gen.hom ≫ mulA A.A N` using `by show (𝟙 GK ^ N) ≫ U.gen.hom = U.gen.hom ≫ 𝟙 A.A ^ N`. Rewrite using `[MonObj.pow_comp, MonObj.comp_pow, Category.id_comp, Category.comp_id]`. Use `(cancel_mono U.gen.hom.left).1 ?_` and prove the remaining obligations. Rewrite using `[e₁, Category.assoc, ← Over.comp_left, hmul, Over.comp_left, ← Category.assoc, x₁, GlobalTheory.TorsFrameInt.left_mulA, hx.1, GlobalTheory.TorsFrameInt.one_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `show jFK (R := V) (FractionRing V) ≫ _ = _`. Rewrite using `[jid, Category.id_comp]`. Both sides reduce to the same expression. Establish `hT : (TFK (R` using `V) (FractionRing V)).hom = 𝟙 _ := jid`. Establish `e₂' : eK ≫ pullback.fst G.hom (jK V) = (toUnit (TF (R` using `V) (FractionRing V))).left ≫ eSec G := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e₂, tU]`. Establish `ha` using `hc eK e₃ z₀ JA₀ JG₀ hA₀ hG₀`. Rewrite `ha` using `[e₄, e₁, e₂']`. Establish `hb` using `hc x' x₃ z₀ JA₀ JG₀ hA₀ hG₀`. Rewrite `hb` using `[x₄, x₁, x₂]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hα₀ _ (𝟙 (TF (R := V) (FractionRing V)).left) z₀ JA₀ hA₀`. Rewrite `h3` using `[Category.id_comp]`. Establish `h4` using `hαx _ (𝟙 (TF (R := V) (FractionRing V)).left) z₀ JA₀ hA₀`. Rewrite `h4` using `[Category.id_comp, Category.id_comp, hT]`. Establish `h5` using `hu₀ z₀ JG₀ hG₀`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h6` using `hu₁ z₀ JG₀ hG₀`. Set `C : (FractionRing V)ˣ →* ((TF (R` to `V) (FractionRing V)).left.presheaf.stalk z₀)ˣ := Units.map (cstH z₀).toMonoidHom`. Establish `toU : ∀ (a b : ((TF (R` using `V) (FractionRing V)).left.presheaf.stalk z₀)ˣ) (k : (FractionRing V)ˣ), a.val = UT.cst (FractionRing V) z₀ k.val * b.val → a = C k * b := fun a b k hk => Units.ext (by rw [hk, Units.val_mul, cst_eq]; rfl)`. Set `U₀` to `Units.map (algebraMap V (FractionRing V)).toMonoidHom u₀`. Set `U₁` to `Units.map (algebraMap V (FractionRing V)).toMonoidHom u₁`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₁` using `toU _ _ (Units.mk0 c hc0) ha`. Establish `a₂` using `toU _ _ (Units.mk0 c hc0) hb`. Establish `a₅` using `toU _ _ U₀ h5`. Establish `a₆` using `toU _ _ U₁ h6`. Establish `a₇ : C (Units.mk0 l hl0) = W₀ * R₀ * g₀⁻¹` using `Units.ext hl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `a₆` using `[← zpow_natCast, Nat.cast_pow]`. Establish `key` using `key_alg ((N : ℤ) ^ 2) _ _ _ _ _ _ _ _ _ _ _ _ _ _ a₁ a₂ h3 h4 a₅ a₆ a₇`. Establish `hq : (GlobalTheory.TorsFrameInt.wv w₀ x' z₀ JG₀ JA₀ * val (Z` using `(TF (R := V) (FractionRing V)).left) e (𝟙 _) z₀ JA₀ * (C (Units.mk0 l hl0) * val f₀ (toUnit (TF (R := V) (FractionRing V))).left z₀ JG₀)⁻¹) ^ ((N : ℤ) ^ 2) = C U₁ * (C U₀)⁻¹ := by`. Rewrite using `[mul_zpow, key, inv_zpow, mul_comm, inv_mul_cancel_left]`. Take `⟨k, hk⟩` from `cstH_surj z₀ (GlobalTheory.TorsFrameInt.wv w₀ x' z₀ JG₀ JA₀ * val (Z := (TF (R := V) (FractionRing V)).left) e (𝟙 _) z₀ JA₀ * (C (Units.mk0 l hl0) * val f₀ (toUnit (TF (R := V) (FractionRing V))).left z₀ JG₀)⁻¹).val`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hk' : k ^ (N ^ 2) = algebraMap V (FractionRing V) ((u₁ * u₀⁻¹ : Vˣ) : V)`. Apply `cstH_inj z₀` to reduce the goal to its premises. Rewrite using `[map_pow, hk, ← Units.val_pow_eq_pow_val, ← zpow_natCast, Nat.cast_pow, hq, ← map_inv, ← map_mul, ← map_inv, ← map_mul]`. Both sides reduce to the same expression. Take `⟨v, hv⟩` from `exists_unit_of_pow (Nat.one_le_pow _ _ hN) hk'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `c' : Γ(Sp V, ⊤)ˣ` to `Units.map (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom.toMonoidHom v`. Establish `hcv : Units.map (Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom.toMonoidHom c' = v` using `Units.ext (by show (Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom v.val) = v.val`. Rewrite using `[← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply])`. Set `f` to `GlobalTheory.TorsFrameInt.scale f₀ c'`. Establish `hvf : ∀ z J, Good U.LG.L z J → val f (toUnit (TF (R` using `V) (FractionRing V))).left z J = gm (toUnit (TF (R := V) (FractionRing V))).left z ⊤ c' * val f₀ (toUnit (TF (R := V) (FractionRing V))).left z J := fun z J hJ => GlobalTheory.TorsFrameInt.gm_scale f₀ c' _ z _ (hJ.mem _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgc : gm (toUnit (TF (R` using `V) (FractionRing V))).left z₀ ⊤ c' = GlobalTheory.TorsFrameInt.wv w₀ x' z₀ JG₀ JA₀ * val (Z := (TF (R := V) (FractionRing V)).left) e (𝟙 _) z₀ JA₀ * (C (Units.mk0 l hl0) * val f₀ (toUnit (TF (R := V) (FractionRing V))).left z₀ JG₀)⁻¹ := by`. Use `Units.ext ((gm_top_eq c' z₀).trans ?_)` and prove the remaining obligations. Rewrite using `[hcv, cst_eq, ← hv, hk]`. Establish `can : GlobalTheory.TorsFrameInt.wv w₀ x' z₀ JG₀ JA₀ * val (Z` using `(TF (R := V) (FractionRing V)).left) e (𝟙 _) z₀ JA₀ * (val f (toUnit (TF (R := V) (FractionRing V))).left z₀ JG₀)⁻¹ = C (Units.mk0 l hl0) := by`. Rewrite using `[hvf z₀ JG₀ hG₀, hgc]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Use `⟨f, GlobalTheory.TorsFrameInt.scale_isGen f₀ hf₀ c', fun z JA JG hA hG => ?_⟩` and prove the remaining obligations. Take `rfl` from `pt_eq z₀ z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `ind` using `GlobalTheory.T.uniformisedFrame_ratio_integralFrame_chart_independent V _ D A G U.toUnifPre w₀ hw₀ x e hx.2.1 h f (GlobalTheory.TorsFrameInt.scale_isGen f₀ hf₀ c') hext z₀ JA JA₀ JG JG₀ hA hG hA₀ hG₀`. Establish `w₁ : GlobalTheory.TorsFrameInt.wv w₀ x' z₀ JG₀ JA₀ = Geo.Tor.gw (Y` using `(TF (R := V) (FractionRing V)).left) w₀ (x.left ≫ U.gen.inv.left) z₀ (JG₀ (toUnit (TF (R := V) (FractionRing V)) ≫ h).left) (fun _ => JA₀ x.left) := by show Geo.Tor.gw w₀ x' z₀ (JG₀ (x' ≫ pullback.fst G.hom (jK V))) (fun _ => JA₀ (x' ≫ U.gen.hom.left)) = _`. Rewrite using `[x₁, x₂]`. Both sides reduce to the same expression. Rewrite `ind` using `[← w₁, can, mul_inv_eq_iff_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `iv` using `congrArg Units.val ind`. Rewrite `iv` using `[Units.val_mul, Units.val_mul]`. Rewrite using `[iv, cst_eq]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_frRel : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V) D A G) (w₀ : W0 U.toUnifPre), w₀.IsGen → ∀ (ρ : LB.Gen (A.L.pull (eSec A.A))), ρ.IsGen → ∀ N : ℕ, 1 ≤ N → ∃ l : FractionRing V, l ≠ 0 ∧ ∀ (x : TFK (R := V) (FractionRing V) ⟶ A.A) (e : FrAt x) (h : 𝟙_ (Over (Sp V)) ⟶ G), IsTorsFrame A ρ N x e → h ^ N = 1 → IntTerm.Ext U.toUnifPre x h → IntTerm.FrRel U.toUnifPre w₀ x e h l := by
   intro V _ _ _ hV D A G _ _ hG U w₀ hw₀ ρ hρ N hN

@@ -6,12 +6,12 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Mixed
 namespace UpperTheory.Gal.ToralGalois
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨UpperTheory.Gal.Int.Inp.inp_holds, UpperTheory.Gal.GamX.charLiftPrime_holds⟩`.
+Supply the required witnesses or components.
 -/
 theorem inq_holds : Inq := ⟨UpperTheory.Gal.Int.Inp.inp_holds, UpperTheory.Gal.GamX.charLiftPrime_holds⟩
 
 /- English proof (translation)
-The claim follows from `GalTw.GlobalTheory.DeRhamOfPlainTorus.galoisCompat_unlinkedSupport_of_spherical inq_holds`.
+A detailed English derivation is pending.
 -/
 theorem galoisCompat_unlinkedSupport_of_spherical : GlobalTheory.RoadU.CoreAll → GlobalTheory.DeRhamOfPlainTorus.R1 := GalTw.GlobalTheory.DeRhamOfPlainTorus.galoisCompat_unlinkedSupport_of_spherical inq_holds
 

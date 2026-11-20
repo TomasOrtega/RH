@@ -10,7 +10,7 @@ open CategoryTheory Opposite AlgebraicGeometry Limits
 noncomputable section
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isVectorBundle_iff_model {X : Scheme.{0}} (E : X.Modules) :
     GroundTheory.Heights₂.Heights.Model.IsVectorBundle E ↔ IsVectorBundle E := Iff.rfl
@@ -28,9 +28,7 @@ theorem pbSection_eq_pullSection {A B : Scheme.{0}} (f : A ⟶ B) (M : B.Modules
     pbSection f M t = GroundTheory.Heights₂.Heights.Model.pullSection f M t := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h X _ _ hf L hL s`. Conclude with `h X (toSpecZ X) L hL s`. Introduce `h X f _ _ _ L hL s`. Take `rfl : f = toSpecZ X` from `specZ_hom_ext _ _`.
-
-Conclude with `h X inferInstance L hL s`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ClearDenominators.equiv :
     GroundTheory.Heights₂.Heights.Model.ClearDenominators.Statement ↔ ClearDenominators.Statement := by

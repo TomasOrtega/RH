@@ -6,33 +6,33 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `g E halt hI hpos`. Establish `hskew : ∀ x y, E x y = - E y x`. Introduce `x y`. Establish `h` using `halt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, halt, zero_add, add_zero] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hII : ∀ x : Fin g → ℂ, Complex.I • Complex.I • x = -x`. Introduce `x`. Rewrite using `[smul_smul, Complex.I_mul_I]`. Simplify using the standard rewrite rules.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hcomm : ∀ x y : Fin g → ℂ, E (Complex.I • x) y = E (Complex.I • y) x`. Introduce `x y`. Establish `h` using `hI (Complex.I • x) y`. Rewrite `h` using `[hII, map_neg, LinearMap.neg_apply]`. Rewrite using `[← h, hskew x]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Set `H : (Fin g → ℂ) → (Fin g → ℂ) → ℂ` to `fun x y => ⟨E (Complex.I • x) y, E x y⟩`. Establish `hsym : ∀ x y, H y x = star (H x y)`. Introduce `x y`. Apply `Complex.ext` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `hcomm y x` using `[H]`. Simplify `hskew y x` using `[H]`. Establish `hadd : ∀ a b y, H (a + b) y = H a y + H b y`. Introduce `a b y`. Apply the tactic sequence `apply Complex.ext <;> simp [H, smul_add]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hsmulI : ∀ x y, H (Complex.I • x) y = Complex.I * H x y`. Introduce `x y`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[H, hII]`. Simplify using `[H]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hsmulR : ∀ (r : ℝ) x y, H (r • x) y = (r : ℂ) * H x y`. Introduce `r x y`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[H, smul_comm Complex.I r x]`. Simplify using `[H]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hsmul : ∀ (c : ℂ) x y, H (c • x) y = c * H x y`. Introduce `c x y`. Establish `hc : c • x = c.re • x + c.im • (Complex.I • x)`. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, Pi.add_apply, smul_eq_mul, Complex.real_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [← Complex.re_add_im c]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, hadd, hsmulR, hsmulR, hsmulI]`. Use `conv_rhs => rw [← Complex.re_add_im c]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : Fin g → Fin g → ℂ` to `fun i j => if i = j then 1 else 0`. Establish `hexp : ∀ x y, H x y = ∑ i, x i * H (e i) y`. Introduce `x y`. Set `f : (Fin g → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun x => H x y map_add' := fun a b => hadd a b y map_smul' := fun c a => by simpa using hsmul c a y }`. Simplify `LinearMap.pi_apply_eq_sum_univ f x` using `[f, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hform : ∀ x y, hermForm (Matrix.of fun i j => H (e i) (e j)) x y = H x y`. Introduce `x y`. Rewrite using `[hexp x y]`. Simplify using `only [hermForm, dotProduct, Matrix.mulVec, Matrix.of_apply, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[hsym y (e i), hexp y (e i), star_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul', ← hsym (e j) (e i), mul_comm]`. Use `⟨Matrix.of fun i j => H (e i) (e j), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Matrix.IsHermitian.ext` to reduce the goal to its premises. Introduce `i j`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[← hsym]`. Introduce `z hz`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hform]`. Conclude with `hpos z hz`. Introduce `x y`. Rewrite using `[hform]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.hermOfJ_of :
     UpperTheory.Gal.W2.HermOfJ := by

@@ -36,9 +36,9 @@ def FtA (v : InfinitePlace E) (μa : Measure (G a)) (μb : Measure (G b)) (ν : 
   if hx : x ∈ GLs a then St v μa μb ν ka kb ψ f i q ((y, m₂) * ιA v (GeneralLinearGroup.mkOfDetNeZero x hx)) else 0
 
 /- English proof (translation)
-Rewrite using `[σA, ιA, ← map_mul, ← map_mul]`. Use `congr 1`. Use `Prod.ext (funext fun w => ?_) (by show r.2 * 1 = 1 * r.2` and prove the remaining obligations. Rewrite using `[mul_one, one_mul])`. Distinguish the cases in `h : w = v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Pi.mulSingle_eq_of_ne h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem σA_ιA (v : InfinitePlace E) (t : G a) (r : RA E a b v) : σA v r * ιA v t = ιA v t * σA v r := by
   rw [σA, ιA, ← map_mul, ← map_mul]
@@ -51,7 +51,7 @@ theorem σA_ιA (v : InfinitePlace E) (t : G a) (r : RA E a b v) : σA v r * ιA
   · simp [h, Pi.mulSingle_eq_of_ne h]
 
 /- English proof (translation)
-Simplify using `only [cA]`. Use `congr 2`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne w.2]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_update_right (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ))
     (i j : Io Ma Mb κ) (q : Ix (Ma v)) (r : RA E a b v) :
@@ -62,13 +62,13 @@ theorem cA_update_right (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ 
   rw [Function.update_of_ne w.2]
 
 /- English proof (translation)
-Unfold `St`. Use `Finset.sum_nbij' (fun j => ((Function.update j.1.1 v q', j.1.2), j.2)) (fun j => ((Function.update j.1.1 v q, j.1.2), j.2)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `j _`. Simplify using the standard rewrite rules. Introduce `j _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `j hj`. Establish `h` using `(Finset.mem_filter.1 hj).2`. Simplify using `only [Function.update_idem]`. Rewrite using `[← h, Function.update_eq_self]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `j hj`. Establish `h` using `(Finset.mem_filter.1 hj).2`. Simplify using `only [Function.update_idem]`. Rewrite using `[← h, Function.update_eq_self]`. Introduce `j _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [cA_update_right, Rv_update]`.
+Simplify using the standard rewrite rules.
 -/
 theorem St_indep (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ))
     (f : Io Ma Mb κ → H E a b → ℂ) (i : Io Ma Mb κ) (q q' : Ix (Ma v)) (p : H E a b) :
@@ -91,13 +91,9 @@ theorem St_indep (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ : Matri
 
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Use `haveI : SigmaFinite μa := inferInstance`. Use `haveI : SigmaFinite μb := inferInstance`. Use `haveI : SigmaFinite ν := inferInstance`. Use `haveI : IsLocallyFiniteMeasure (restA μa μb ν v) := by unfold restA; infer_instance`. Use `haveI : SecondCountableTopology (RA E a b v) := inferInstance`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `haveI : LocallyCompactSpace (RA E a b v) := inferInstance`. Use `haveI : FirstCountableTopology (G a × RA E a b v) := inferInstance`. Use `haveI : LocallyCompactSpace (G a × RA E a b v) := inferInstance`. Unfold `St`. Use `continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations.
-
-Take `⟨hc, hcs⟩` from `cA_props v hka hkb hψ i j`. Establish `e : (fun z : G a => ∫ r, cA v ka kb ψ i j r • Rv v μa μb ν ka kb ψ f j (p * ιA v z * σA v r) ∂restA μa μb ν v) = fun z => ∫ r in tsupport (cA v ka kb ψ i j), cA v ka kb ψ i j r • Rv v μa μb ν ka kb ψ f j (p * ιA v z * σA v r) ∂restA μa μb ν v`. Use function extensionality and compare the values at `fun z => (setIntegral_eq_integral_of_forall_compl_eq_zero fun r hr => by`. Rewrite using `[image_eq_zero_of_notMem_tsupport hr, zero_smul]).symm`. Rewrite using `[e]`.
-
-Use `continuous_parametric_integral_of_continuous (f := fun z r => cA v ka kb ψ i j r • Rv v μa μb ν ka kb ψ f j (p * ιA v z * σA v r)) ?_ hcs` and prove the remaining obligations. Conclude with `(hc.comp continuous_snd).smul (continuous_Rv_comp v hf hka hkb hψ j (φ := fun q : G a × RA E a b v => p * ιA v q.1 * σA v q.2) ((continuous_const.mul ((continuous_ιA v).comp continuous_fst)).mul ((continuous_σA v).comp continuous_snd)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_St (v : InfinitePlace E) {ka : Kers Ma} {kb : Kers Mb} {ψ : Matrix κ κ (Hf E a b → ℂ)}
     {f : Io Ma Mb κ → H E a b → ℂ} (hf : ∀ i, Continuous (f i))
@@ -132,33 +128,27 @@ set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Use `haveI : SigmaFinite μa := inferInstance`. Use `haveI : SigmaFinite μb := inferInstance`. Use `haveI : SigmaFinite ν := inferInstance`. Use `haveI : SigmaFinite (restA μa μb ν v) := by unfold restA; infer_instance`. Use `haveI : IsFiniteMeasureOnCompacts (restA μa μb ν v) := by unfold restA; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : IsFiniteMeasureOnCompacts ((restA μa μb ν v).prod μa) := inferInstance`. Use `haveI : SecondCountableTopology (RA E a b v) := inferInstance`. Use `haveI : LocallyCompactSpace (RA E a b v) := inferInstance`. Use `haveI : FirstCountableTopology (RA E a b v × G a) := inferInstance`. Use `haveI : LocallyCompactSpace (RA E a b v × G a) := inferInstance`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set K : G a → ((Ma v).V →L[ℂ] (Ma v).V) := fun t => ka v t.val with hK`. Establish `hKc : Continuous K` using `(hka v).1`. Establish `hKs : HasCompactSupport K` using `(hka v).2`. Establish `hfj : ∀ j P, f j P = c⁻¹ * ∫ t, ⟪eb Ma v (j.1.1 v), K t (Rv v μa μb ν ka kb ψ f j (P * ιA v t))⟫_ℂ ∂μa`. Introduce `j P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrFun (congrFun hrep j) P`. Rewrite `h` using `[conv_slice hF D hC v ka kb ψ f hT hf j P]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h`. Rewrite using `[h, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`. Take `⟨g, hg⟩ : ∃ g : Io Ma Mb κ → RA E a b v × G a → ℂ, g = fun j q => cA v ka kb ψ i j q.1 * ⟪eb Ma v (j.1.1 v), K q.2 (Rv v μa μb ν ka kb ψ f j (p * ιA v q.2 * σA v q.1))⟫_ℂ` from `⟨_, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hRc : ∀ j, Continuous fun q : RA E a b v × G a => Rv v μa μb ν ka kb ψ f j (p * ιA v q.2 * σA v q.1)` using `fun j => continuous_Rv_comp v hf hka hkb hψ j ((continuous_const.mul ((continuous_ιA v).comp continuous_snd)).mul ((continuous_σA v).comp continuous_fst))`. Establish `hgi : ∀ j, Integrable (g j) ((restA μa μb ν v).prod μa)`. Introduce `j`. Take `⟨hc1, hcs1⟩` from `cA_props v hka hkb hψ i j`. Rewrite using `[hg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Continuous.integrable_of_hasCompactSupport ?_ ?_` and prove the remaining obligations. Conclude with `(hc1.comp continuous_fst).mul (continuous_const.inner ((hKc.comp continuous_snd).clm_apply (hRc j)))`. Use `HasCompactSupport.intro (IsCompact.prod hcs1 hKs) fun q hq => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_prod, not_and_or] at hq`. Break down `hq with hq | hq` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [image_eq_zero_of_notMem_tsupport hq, zero_mul]`. Simplify using `only [image_eq_zero_of_notMem_tsupport hq, ContinuousLinearMap.zero_apply, inner_zero_right, mul_zero]`. Establish `hI : ∀ j, ∫ r, cA v ka kb ψ i j r * f j (p * σA v r) ∂restA μa μb ν v = c⁻¹ * ∫ t, ∫ r, g j (r, t) ∂restA μa μb ν v ∂μa`. Introduce `j`. Establish `e1 : ∀ r, cA v ka kb ψ i j r * f j (p * σA v r) = c⁻¹ * ∫ t, g j (r, t) ∂μa`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `r`. Rewrite using `[hfj j, mul_left_comm, ← integral_const_mul]`. Use `congrArg (c⁻¹ * ·) (integral_congr_ae (ae_of_all _ fun t => ?_))` and prove the remaining obligations. Rewrite using `[hg]`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show p * σA v r * ιA v t = p * ιA v t * σA v r by rw [mul_assoc, σA_ιA, ← mul_assoc]]`. Rewrite using `[integral_congr_ae (ae_of_all _ e1), integral_const_mul, integral_integral_swap (f := fun r t => g j (r, t)) (hgi j)]`. Establish `hWi : Integrable (fun t => K t (St v μa μb ν ka kb ψ f i q0 (p * ιA v t))) μa`. Use `Continuous.integrable_of_hasCompactSupport (hKc.clm_apply (continuous_St v hf hka hkb hψ i q0 p)) ?_` and prove the remaining obligations. Conclude with `HasCompactSupport.intro hKs fun t ht => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[image_eq_zero_of_notMem_tsupport ht, ContinuousLinearMap.zero_apply]`. Establish `hsum : ∀ q, ∑ j ∈ Finset.univ.filter (fun j : Io Ma Mb κ => j.1.1 v = q), ∫ r, cA v ka kb ψ i j r * f j (p * σA v r) ∂restA μa μb ν v = c⁻¹ * ⟪eb Ma v q, ∫ t, K t (St v μa μb ν ka kb ψ f i q0 (p * ιA v t)) ∂μa⟫_ℂ`. Introduce `q`. Simplify using `only [hI]`. Rewrite using `[← Finset.mul_sum, ← integral_finset_sum _ fun j _ => (hgi j).integral_prod_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← integral_inner hWi]`. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[St_indep v ka kb ψ f i q0 q]`.
-
-Simplify using `only [St, map_sum, inner_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hjq : j.1.1 v = q` using `(Finset.mem_filter.1 hj).2`. Take `⟨hc1, hcs1⟩` from `cA_props v hka hkb hψ i j`. Establish `hR1 : Continuous fun r : RA E a b v => Rv v μa μb ν ka kb ψ f j (p * ιA v t * σA v r)` using `continuous_Rv_comp v hf hka hkb hψ j (continuous_const.mul (continuous_σA v))`.
-
-Establish `hi1 : Integrable (fun r => cA v ka kb ψ i j r • Rv v μa μb ν ka kb ψ f j (p * ιA v t * σA v r)) (restA μa μb ν v)` using `(hc1.smul hR1).integrable_of_hasCompactSupport (HasCompactSupport.intro hcs1 fun r hr => by show cA v ka kb ψ i j r • Rv v μa μb ν ka kb ψ f j (p * ιA v t * σA v r) = 0`. Rewrite using `[image_eq_zero_of_notMem_tsupport hr, zero_smul])`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm (K t) hi1, ← integral_inner ((K t).integrable_comp hi1)]`. Use `integral_congr_ae (ae_of_all _ fun r => ?_)` and prove the remaining obligations. Rewrite using `[hg]`.
-
-Use `beta_reduce`. Simplify using `only [map_smul, inner_smul_right, hjq]`. Use `conv_lhs => rw [Rv]`. Simplify using `only [hsum, mul_smul]`. Rewrite using `[← Finset.smul_sum, OrthonormalBasis.sum_repr']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rv_eq (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v : InfinitePlace E) (ka : Kers Ma)
     (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (f : Io Ma Mb κ → H E a b → ℂ) (hT : IsTestM (tens ka kb ψ))
@@ -253,9 +243,9 @@ theorem Rv_eq (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v : I
   rw [← Finset.smul_sum, OrthonormalBasis.sum_repr']
 
 /- English proof (translation)
-Rewrite using `[FA, dif_pos hx, Rv_eq hF D hC v ka kb ψ f hT hf hka hkb hψ hc hrep i q0]`. Use `congr 1`. Use `show _ = ∫ t : G a, ka v t.val (FtA v μa μb ν ka kb ψ f i q0 y m₂ (x * t.val)) ∂μa`. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Establish `hxt : x * t.val ∈ GLs a` using `GlobalTheory.CompanionTheory.WaveAll.mul_mem_GLs hx (val_mem_GLs t)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : GeneralLinearGroup.mkOfDetNeZero (x * t.val) hxt = GeneralLinearGroup.mkOfDetNeZero x hx * t` using `Units.ext rfl`. Simplify using `only [FtA, dif_pos hxt, hm, ιA_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem FA_eq_act (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v : InfinitePlace E) (ka : Kers Ma)
     (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (f : Io Ma Mb κ → H E a b → ℂ) (hT : IsTestM (tens ka kb ψ))
@@ -275,13 +265,13 @@ theorem FA_eq_act (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v
   simp only [FtA, dif_pos hxt, hm, ιA_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `hinv : ContinuousOn (fun x : Mat a => x⁻¹) (GLs a)`. Establish `e : (fun x : Mat a => x⁻¹) = fun x => (x.det)⁻¹ • x.adjugate`. Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `((continuous_id.matrix_det).continuousOn.inv₀ fun x hx => hx).smul (continuous_id.matrix_adjugate).continuousOn`. Establish `hm : Continuous fun x : GLs a => GeneralLinearGroup.mkOfDetNeZero x.1 x.2`. Use `Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Establish `e : (fun x : GLs a => ((GeneralLinearGroup.mkOfDetNeZero x.1 x.2)⁻¹ : G a).val) = fun x => x.1⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun x => Matrix.coe_units_inv _`. Rewrite using `[e]`. Conclude with `hinv.comp_continuous continuous_subtype_val fun x => x.2`. Use `show Continuous (fun x : GLs a => FtA v μa μb ν ka kb ψ f i q y m₂ x.1)`. Establish `e : (fun x : GLs a => FtA v μa μb ν ka kb ψ f i q y m₂ x.1) = fun x : GLs a => St v μa μb ν ka kb ψ f i q ((y, m₂) * ιA v (GeneralLinearGroup.mkOfDetNeZero x.1 x.2))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [FtA, dif_pos x.2]`. Rewrite using `[e]`. Conclude with `(continuous_St v hf hka hkb hψ i q (y, m₂)).comp hm`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_FtA (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ))
     (f : Io Ma Mb κ → H E a b → ℂ) (hf : ∀ i, Continuous (f i))
@@ -310,9 +300,9 @@ theorem continuousOn_FtA (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ
   exact (continuous_St v hf hka hkb hψ i q (y, m₂)).comp hm
 
 /- English proof (translation)
-Establish `hA` using `GelP.act_mem_CE_of_mult μa hkv (continuousOn_FtA (μa := μa) (μb := μb) (ν := ν) v ka kb ψ f hf hka hkb hψ i (i.1.1 v) y m₂)`. Use `letI : NormedAddCommGroup (Mat a) := Matrix.normedAddCommGroup`. Use `letI : NormedSpace ℝ (Mat a) := Matrix.normedSpace`. Use `⟨(hA.1.const_smul c⁻¹).congr fun x hx => FA_eq_act hF D hC v ka kb ψ f hT hf hka hkb hψ hc hrep i (i.1.1 v) y m₂ hx, ?_⟩` and prove the remaining obligations. Introduce `g hg k`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgk : g * k.1 ∈ GLs a` using `GlobalTheory.CompanionTheory.WaveAll.mul_mem_GLs hg (GlobalTheory.CompanionTheory.WaveAll.unitary_mem_GLs k)`. Rewrite using `[FA_eq_act hF D hC v ka kb ψ f hT hf hka hkb hψ hc hrep i (i.1.1 v) y m₂ hgk, FA_eq_act hF D hC v ka kb ψ f hT hf hka hkb hψ hc hrep i (i.1.1 v) y m₂ hg, hA.2 g hg k, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem FA_mem_CE (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v : InfinitePlace E) (ka : Kers Ma)
     (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (f : Io Ma Mb κ → H E a b → ℂ) (hT : IsTestM (tens ka kb ψ))
@@ -334,19 +324,17 @@ theorem FA_mem_CE (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v
     FA_eq_act hF D hC v ka kb ψ f hT hf hka hkb hψ hc hrep i (i.1.1 v) y m₂ hg, hA.2 g hg k, map_smul]
 
 /- English proof (translation)
-Use `set ka₂ := Function.update ka v k' with hka₂`. Establish `hka₂m : IsMults μa ka₂ (Function.update va v (fun χ => zVal [(s, m)] χ * coshT g (cas χ))) T`. Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [hka₂, Function.update_self]`. Conclude with `GelP.isMult_of_isKer μa hg hk'`. Simplify using `only [hka₂, Function.update_of_ne h]`. Conclude with `hka w`. Establish `hkc : ∀ {k : Kers Ma} {vk : InfinitePlace E → Inf a → ℂ}, IsMults μa k vk T → ∀ w, Continuous (fun t : G a => k w t.val) ∧ HasCompactSupport (fun t : G a => k w t.val)` using `fun h w => ⟨mult_continuous (h w), mult_hasCompactSupport (h w)⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkbc : ∀ w, Continuous (fun t : G b => kb w t.val) ∧ HasCompactSupport (fun t : G b => kb w t.val)` using `fun w => ⟨mult_continuous (hkb w), mult_hasCompactSupport (hkb w)⟩`. Establish `hT` using `(hTT E a b μa μb Ma Mb κ ka kb va vb T ψ hka hkb hψ).1`. Establish `hT₂` using `(hTT E a b μa μb Ma Mb κ ka₂ kb _ vb T ψ hka₂m hkb hψ).1`. Establish `hFA : FA v μa μb ν ka₂ kb ψ f i y m₂ = FA v μa μb ν ka kb ψ f i y m₂`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `FA`. Use `split_ifs with hz`. Rewrite using `[Rv_congr v (fun w hw => Function.update_of_ne hw _ _)]`. Both sides reduce to the same expression. Establish `hCE` using `FA_mem_CE hF D hC v ka kb ψ f hT hf (hkc hka) hkbc hψ hc hrep (hka v) i y m₂`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hFc` using `continuousOn_FA v ka kb ψ f hf (hkc hka) hkbc hψ i y m₂ (μa := μa) (μb := μb) (ν := ν)`. Use `GelP.gel_eigen_of_act μa hW hk0 hk' (hka v) hCE hFc (eb Ma v (i.1.1 v)) hc ?_ ?_ hx` and prove the remaining obligations. Introduce `x' hx'`. Establish `h` using `along_conv hF D hC v ka kb ψ f hT hf (hkc hka) hkbc hψ i y m₂ hx'`. Rewrite `h` using `[hrep, along_eq v y m₂ _ hx']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[along_eq v y m₂ (f i) hx', ← h]`. Simplify using `[Pi.smul_apply]`. Introduce `x' hx'`. Establish `h` using `along_conv hF D hC v ka₂ kb ψ f hT₂ hf (hkc hka₂m) hkbc hψ i y m₂ hx'`. Rewrite `h` using `[hrep', along_eq v y m₂ _ hx', hFA]`.
-
-Simplify using `only [hka₂, Function.update_self] at h`. Rewrite using `[along_eq v y m₂ (f i) hx', ← h]`. Simplify using `[Pi.smul_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gelA (hW : WaveEx) (hF : CompatFub) (hTT : TensTest) (D : Dom E a b) (hC : Compat D μa μb ν)
     (v : InfinitePlace E) {ka : Kers Ma} {kb : Kers Mb} {va : InfinitePlace E → Inf a → ℂ}

@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Ws.Lk
 
 /- English proof (translation)
-Use `letI : Algebra F L := (IntermediateField.inclusion h).toRingHom.toAlgebra`. Use `haveI : IsScalarTower F L Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Conclude with `Af.continuous_restrictScalarsHom F L Ω`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem cont_resLe {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {F L : IntermediateField ℚ Ω} (h : F ≤ L) :
     Continuous (resLe h) := by
@@ -12,7 +12,7 @@ private theorem cont_resLe {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
   exact Af.continuous_restrictScalarsHom F L Ω
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one f ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Establish `hk : (f.ker : Set Γ) ∈ nhds (1 : Γ)` using `h.mem_nhds (one_mem _)`. Conclude with `(Filter.tendsto_pure.2 (Filter.mem_of_superset hk fun x hx => MonoidHom.mem_ker.1 hx)).mono_right (pure_le_nhds _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_of_open_ker {Γ H : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group H]
     [TopologicalSpace H] [IsTopologicalGroup H] (f : Γ →* H) (h : IsOpen (f.ker : Set Γ)) : Continuous f := by
@@ -22,9 +22,9 @@ private theorem cont_of_open_ker {Γ H : Type} [Group Γ] [TopologicalSpace Γ] 
   exact (Filter.tendsto_pure.2 (Filter.mem_of_superset hk fun x hx => MonoidHom.mem_ker.1 hx)).mono_right (pure_le_nhds _)
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T P`. Establish `hβ : Continuous P.βL` using `P.β_cont.comp (cont_resLe _)`. Establish `ht : Continuous P.tL` using `P.t_cont.comp (cont_resLe _)`. Use `⟨?_, hβ, ht⟩` and prove the remaining obligations. Establish `h0 : Continuous (P.κ₀.comp (resLe (K_le T)))` using `(cont_of_open_ker P.κ₀ P.κ₀_open).comp (cont_resLe _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Continuous (P.γ.comp (resQ T.L))` using `P.γ_cont.comp (UpperTheory.V.Af.continuous_restrictScalarsHom ℚ T.L Ω)`. Use `show Continuous fun g => P.κ₀.comp (resLe (K_le T)) g * ((P.γ.comp (resQ T.L)) g)⁻¹ ^ (D.e + 4) * P.βL g ^ (D.e % 2)`. Conclude with `(h0.mul ((h1.inv).pow _)).mul (hβ.pow _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lk.kapCont :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} (P : Pre T), Continuous P.κ ∧ Continuous P.βL ∧ Continuous P.tL := by

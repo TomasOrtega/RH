@@ -21,7 +21,7 @@ def mulC (t : mixedEmbedding.mixedSpace F) : (κ → mixedEmbedding.mixedSpace F
   map_smul' r x := by funext i; simp [mul_smul_comm]
 
 /- English proof (translation)
-Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (a.1 * b.1) = InfiniteAdeleRing.ringEquiv_mixedSpace F a.1 * InfiniteAdeleRing.ringEquiv_mixedSpace F b.1`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evI_mul' (a b : AF F) : evI F (a * b) = evI F a * evI F b := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F (a.1 * b.1) =
@@ -29,16 +29,14 @@ theorem evI_mul' (a b : AF F) : evI F (a * b) = evI F a * evI F b := by
   rw [map_mul]
 
 /- English proof (translation)
-Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ r)) = _`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem evI_realAd' (r : ℝ) : evI F (realAd F r) = algebraMap ℝ _ r := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ r)) = _
   exact RingEquiv.apply_symm_apply _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (InfiniteAdeleRing.ringEquiv_mixedSpace F u.1 * x i)`. Rewrite using `[map_mul, RingEquiv.symm_apply_apply]`. Use `show u.2 * 0 = 0`.
-
-Conclude with `mul_zero _`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_ptAt (u : AF F) (x : κ → mixedEmbedding.mixedSpace F) :
     u • GlobalTheory.RealLift.ptAt x 0 = GlobalTheory.RealLift.ptAt (mulC (evI F u) x) 0 := by
@@ -51,9 +49,7 @@ theorem smul_ptAt (u : AF F) (x : κ → mixedEmbedding.mixedSpace F) :
     exact mul_zero _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i + y i) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i) + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i)`. Conclude with `map_add _ _ _`. Use `show (0 : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F) = 0 + 0`.
-
-Rewrite using `[add_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptAt_add (x y : κ → mixedEmbedding.mixedSpace F) :
     GlobalTheory.RealLift.ptAt (x + y) 0 = GlobalTheory.RealLift.ptAt x 0 + GlobalTheory.RealLift.ptAt y 0 := by
@@ -66,7 +62,7 @@ theorem ptAt_add (x y : κ → mixedEmbedding.mixedSpace F) :
     rw [add_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm 0 = 0`. Conclude with `map_zero _`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptAt_zero : GlobalTheory.RealLift.ptAt (0 : κ → mixedEmbedding.mixedSpace F) 0 = 0 := by
   funext i
@@ -91,7 +87,7 @@ def mk (d : Darboux B κ) (y : (κ → mixedEmbedding.mixedSpace F) × (κ → m
   d.e.symm (GlobalTheory.RealLift.ptAt y.1 0, GlobalTheory.RealLift.ptAt y.2 0)
 
 /- English proof (translation)
-Rewrite using `[mk, mk, ← LinearEquiv.map_smul, Prod.smul_mk, smul_ptAt, smul_ptAt]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mk_mulP (d : Darboux B κ) (u : AF F) (y : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) :
     mk d (mulP (evI F u) y) = u • mk d y := by
@@ -99,7 +95,7 @@ theorem mk_mulP (d : Darboux B κ) (u : AF F) (y : (κ → mixedEmbedding.mixedS
   rfl
 
 /- English proof (translation)
-Use `show d.e.symm (GlobalTheory.RealLift.ptAt (y.1 + y'.1) 0, GlobalTheory.RealLift.ptAt (y.2 + y'.2) 0) = d.e.symm (GlobalTheory.RealLift.ptAt y.1 0, GlobalTheory.RealLift.ptAt y.2 0) + d.e.symm (GlobalTheory.RealLift.ptAt y'.1 0, GlobalTheory.RealLift.ptAt y'.2 0)`. Rewrite using `[ptAt_add, ptAt_add, ← map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mk_add (d : Darboux B κ) (y y' : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) :
     mk d (y + y') = mk d y + mk d y' := by
@@ -109,7 +105,7 @@ theorem mk_add (d : Darboux B κ) (y y' : (κ → mixedEmbedding.mixedSpace F) �
   rfl
 
 /- English proof (translation)
-Rewrite using `[mk]`. Use `show d.e.symm (GlobalTheory.RealLift.ptAt 0 0, GlobalTheory.RealLift.ptAt 0 0) = 0`. Rewrite using `[ptAt_zero, Prod.mk_zero_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_zero (d : Darboux B κ) : mk d (0 : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) = 0 := by
   rw [mk]
@@ -117,7 +113,7 @@ theorem mk_zero (d : Darboux B κ) : mk d (0 : (κ → mixedEmbedding.mixedSpace
   rw [ptAt_zero, Prod.mk_zero_zero, map_zero]
 
 /- English proof (translation)
-Rewrite using `[← mk_mulP, evI_realAd']`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem mk_smul_real (d : Darboux B κ) (r : ℝ) (y : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) :
     mk d (r • y) = realAd F r • mk d y := by
@@ -125,7 +121,7 @@ theorem mk_smul_real (d : Darboux B κ) (r : ℝ) (y : (κ → mixedEmbedding.mi
   congr 1
 
 /- English proof (translation)
-Simplify using `only [coord, mk, LinearEquiv.apply_symm_apply]`. Conclude with `Prod.ext (funext fun i => RingEquiv.apply_symm_apply _ _) (funext fun i => RingEquiv.apply_symm_apply _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_mk (d : Darboux B κ) (y : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) :
     coord d (mk d y) = y := by
@@ -133,7 +129,7 @@ theorem coord_mk (d : Darboux B κ) (y : (κ → mixedEmbedding.mixedSpace F) ×
   exact Prod.ext (funext fun i => RingEquiv.apply_symm_apply _ _) (funext fun i => RingEquiv.apply_symm_apply _ _)
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[← mk_mulP, hu]`. Establish `h0 : mulP (0 : mixedEmbedding.mixedSpace F) y = 0` using `Prod.ext (funext fun i => zero_mul _) (funext fun i => zero_mul _)`. Rewrite using `[h0, mk_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_mk (d : Darboux B κ) (y : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) :
     At (evI F) (mk d y) := by
@@ -144,11 +140,9 @@ theorem at_mk (d : Darboux B κ) (y : (κ → mixedEmbedding.mixedSpace F) × (�
   rw [h0, mk_zero]
 
 /- English proof (translation)
-Apply `d.e.injective` to reduce the goal to its premises. Rewrite using `[mk, LinearEquiv.apply_symm_apply]`. Establish `h1 : At (evI F) (d.e w).1` using `fun u hu => by`. Establish `h` using `congrArg (fun z => (d.e z).1) (hw u hu)`. Simplify `h` using `only [LinearEquiv.map_smul, Prod.smul_fst, map_zero, Prod.fst_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : At (evI F) (d.e w).2` using `fun u hu => by`. Establish `h` using `congrArg (fun z => (d.e z).2) (hw u hu)`. Simplify `h` using `only [LinearEquiv.map_smul, Prod.smul_snd, map_zero, Prod.snd_zero]`. Use `Prod.ext (funext fun i => Prod.ext ?_ ?_) (funext fun i => Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `RingEquiv.symm_apply_apply _ _`.
-
-Conclude with `(GlobalTheory.RealLift.fin_eq_zero_of_at h1 i).symm`. Conclude with `RingEquiv.symm_apply_apply _ _`. Conclude with `(GlobalTheory.RealLift.fin_eq_zero_of_at h2 i).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mk_coord (d : Darboux B κ) {w : W} (hw : At (evI F) w) : mk d (coord d w) = w := by
   apply d.e.injective
@@ -172,7 +166,7 @@ section Comp
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {α β : Type}
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Use `show infEmb τ (compInf F E w (a ⊗ₜ[F] (1 : E))) = _`. Simplify using `only [compInf, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, infEmb_tmul, map_one, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem piInf_algebraMap {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) :
     piInf τ (algebraMap (AF F) (AE F E) a) = InfinitePlace.Completion.extensionEmbedding w (a.1 w) := by
@@ -183,14 +177,14 @@ theorem piInf_algebraMap {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul, piInf_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem piInf_smul {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) (z : AE F E) :
     piInf τ (a • z) = InfinitePlace.Completion.extensionEmbedding w (a.1 w) * piInf τ z := by
   rw [Algebra.smul_def, map_mul, piInf_algebraMap]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, piInf_smul, smul_eq_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smul_piInf {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) (M : Matrix α β (AE F E)) :
     (a • M).map (piInf τ) = InfinitePlace.Completion.extensionEmbedding w (a.1 w) • M.map (piInf τ) := by
@@ -207,7 +201,7 @@ def sgnAd (ε ε' : InfinitePlace F → ℤˣ) : AF F :=
   ((fun w => if ε w = ε' w then 0 else 1 : InfiniteAdeleRing F), 0)
 
 /- English proof (translation)
-Use `Prod.ext (funext fun w => ?_) ?_` and prove the remaining obligations. Apply the tactic sequence `show (if ε w = ε' w then (0 : w.Completion) else 1) * (if ε w = ε' w then 0 else 1) = if ε w = ε' w then 0 else 1 split_ifs <;> simp`. Use `show (0 : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F) * 0 = 0`. Conclude with `mul_zero _`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sgnAd_mul_self (ε ε' : InfinitePlace F → ℤˣ) : sgnAd ε ε' * sgnAd ε ε' = sgnAd ε ε' := by
   refine Prod.ext (funext fun w => ?_) ?_
@@ -217,7 +211,7 @@ theorem sgnAd_mul_self (ε ε' : InfinitePlace F → ℤˣ) : sgnAd ε ε' * sgn
     exact mul_zero _
 
 /- English proof (translation)
-Use `show InfinitePlace.Completion.extensionEmbedding w (if ε w = ε' w then (0 : w.Completion) else 1) = _`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ext_sgnAd (ε ε' : InfinitePlace F → ℤˣ) (w : InfinitePlace F) :
     InfinitePlace.Completion.extensionEmbedding w ((sgnAd ε ε').1 w) = if ε w = ε' w then 0 else 1 := by
@@ -225,7 +219,7 @@ theorem ext_sgnAd (ε ε' : InfinitePlace F → ℤˣ) (w : InfinitePlace F) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[← evI_mul', sgnAd_mul_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evI_sgnAd_mul_self (ε ε' : InfinitePlace F → ℤˣ) :
     evI F (sgnAd ε ε') * evI F (sgnAd ε ε') = evI F (sgnAd ε ε') := by
@@ -236,43 +230,37 @@ end Sign
 section Main
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ τ JA JB d θA θB ε ε' hcm hA hB`. Set `Ψl : ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) →ₗ[ℝ] (InfinitePlace F → Matrix α β ℂ)` to `{ toFun := fun y w => (mk d y).map (piInf (τ w)) map_add' := fun y y' => by`. Use function extensionality and compare the values at `w`. Use extensionality with `i j`. Simplify using `only [mk_add, Matrix.map_apply, Matrix.add_apply, map_add, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := fun r y => by`. Use function extensionality and compare the values at `w`. Rewrite using `[mk_smul_real, GlobalTheory.T.realScalarArchimedeanAdele_smul_matrix_realPlace σ τ hcm (mk d y) r w]`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Complex.real_smul, RingHom.id_apply, Pi.smul_apply] }`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hΨl : ∀ y w, Ψl y w = (mk d y).map (piInf (τ w))` using `fun _ _ => rfl`. Establish `hinj : Function.Injective Ψl`. Introduce `y y' h`. Establish `hu` using `(GlobalTheory.T.existsUnique_archimedeanMatrix_adeleExtension_of_components σ τ hcm (Ψl y)).unique ⟨at_mk d y, fun w => rfl⟩ ⟨at_mk d y', fun w => (congrFun h w).symm⟩`. Rewrite using `[← coord_mk d y, ← coord_mk d y', hu]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective Ψl`. Introduce `M`. Take `⟨u, ⟨hu, hM⟩, -⟩` from `GlobalTheory.T.existsUnique_archimedeanMatrix_adeleExtension_of_components σ τ hcm M`. Use `⟨coord d u, funext fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hΨl, mk_coord d hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hM w`. Set `Ψ` to `LinearEquiv.ofBijective Ψl ⟨hinj, hsurj⟩`. Set `L : (InfinitePlace F → Matrix α β ℂ) →ₗ[ℝ] (InfinitePlace F → Matrix α β ℂ)` to `{ toFun := fun c w => (((ε w : ℤ) : ℂ) * Complex.I) • (θA w * c w * (θB w)ᵀ) map_add' := fun c c' => by`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.add_apply, Matrix.mul_add, Matrix.add_mul, smul_add]`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := fun r c => by`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.smul_apply, RingHom.id_apply, Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `smul_comm _ _ _ }`. Set `P : (InfinitePlace F → Matrix α β ℂ) →ₗ[ℝ] (InfinitePlace F → Matrix α β ℂ)` to `{ toFun := fun c w => (if ε w = ε' w then (0 : ℂ) else 1) • c w map_add' := fun c c' => by`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `w`. Simplify using `only [Pi.add_apply, smul_add]`. Use the proof step `map_smul' := fun r c => by`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.smul_apply, RingHom.id_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `smul_comm _ _ _ }`. Establish `hLL : ∀ c, L (L c) = -c`. Introduce `c`. Use function extensionality and compare the values at `w`. Use `show (((ε w : ℤ) : ℂ) * Complex.I) • (θA w * ((((ε w : ℤ) : ℂ) * Complex.I) • (θA w * c w * (θB w)ᵀ)) * (θB w)ᵀ) = -c w`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hB' : (θB w)ᵀ * (θB w)ᵀ = 1` using `by rw [← Matrix.transpose_mul, hB w, Matrix.transpose_one]`. Establish `key : θA w * (θA w * c w * (θB w)ᵀ) * (θB w)ᵀ = c w`. Combine the equalities or inequalities in the displayed calculation. Establish `hε : ((ε w : ℤ) : ℂ) * ((ε w : ℤ) : ℂ) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : (((ε w : ℤ) : ℂ) * Complex.I) * (((ε w : ℤ) : ℂ) * Complex.I) = -1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, smul_smul, key, hsq, neg_one_smul]`. Establish `hLP : ∀ c, L (P c) = P (L c)`. Introduce `c`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `w`. Use `show (((ε w : ℤ) : ℂ) * Complex.I) • (θA w * ((if ε w = ε' w then (0 : ℂ) else 1) • c w) * (θB w)ᵀ) = (if ε w = ε' w then (0 : ℂ) else 1) • ((((ε w : ℤ) : ℂ) * Complex.I) • (θA w * c w * (θB w)ᵀ))`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, smul_comm]`. Establish `htt` using `evI_sgnAd_mul_self ε ε'`. Establish `hΨe : ∀ y, Ψl (mulP (evI F (sgnAd ε ε')) y) = P (Ψl y)`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Use function extensionality and compare the values at `w`. Use `show (mk d (mulP (evI F (sgnAd ε ε')) y)).map (piInf (τ w)) = (if ε w = ε' w then (0 : ℂ) else 1) • Ψl y w`. Rewrite using `[mk_mulP, map_smul_piInf, ext_sgnAd]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `J : ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) →ₗ[ℝ] ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F))` to `(Ψ.symm : (InfinitePlace F → Matrix α β ℂ) →ₗ[ℝ] _).comp (L.comp Ψl)`. Establish `hΨJ : ∀ y, Ψl (J y) = L (Ψl y)` using `fun y => Ψ.apply_symm_apply _`. Use `⟨J, mulP (evI F (sgnAd ε ε')), mulC (evI F (sgnAd ε ε')), ?_, ?_, ?_, fun y => rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Apply `hinj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hΨJ, hΨJ, hLL, map_neg]`. Introduce `y`. Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations. Use `show evI F (sgnAd ε ε') * (evI F (sgnAd ε ε') * y.1 i) = evI F (sgnAd ε ε') * y.1 i`. Rewrite using `[← mul_assoc, htt]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show evI F (sgnAd ε ε') * (evI F (sgnAd ε ε') * y.2 i) = evI F (sgnAd ε ε') * y.2 i`. Rewrite using `[← mul_assoc, htt]`. Introduce `y`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hΨJ, hΨe, hΨe, hΨJ, hLP]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Introduce `y x`. Simplify using `only [trPair_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show x i * (evI F (sgnAd ε ε') * y.2 i) = (evI F (sgnAd ε ε') * x i) * y.2 i`.
-
-Expand and normalize the polynomial expressions, which then agree. Introduce `y`. Use `⟨mk d y, mk d (J (y - (2 : ℝ) • mulP (evI F (sgnAd ε ε')) y)), mk d (J y), at_mk d _, at_mk d _, at_mk d _, fun w => ?_, fun w => ?_, coord_mk d _, coord_mk d _, coord_mk d _⟩` and prove the remaining obligations. Use `show Ψl (J (y - (2 : ℝ) • mulP (evI F (sgnAd ε ε')) y)) w = _`. Rewrite using `[hΨJ, map_sub, map_smul, hΨe]`.
-
-Use `show (((ε w : ℤ) : ℂ) * Complex.I) • (θA w * (Ψl y w - (2 : ℝ) • ((if ε w = ε' w then (0 : ℂ) else 1) • Ψl y w)) * (θB w)ᵀ) = (((ε' w : ℤ) : ℂ) * Complex.I) • (θA w * Ψl y w * (θB w)ᵀ)`. Generalize the expression as in `Ψl y w = X`. Apply the tactic sequence `rcases Int.units_eq_one_or (ε w) with h1 | h1 <;> rcases Int.units_eq_one_or (ε' w) with h2 | h2 <;>`. Simplify using `[h1, h2, two_smul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_sub, Matrix.sub_mul]`. Use `show Ψl (J y) w = _`.
-
-Rewrite using `[hΨJ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_bridge : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (α β κ : Type) [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ]

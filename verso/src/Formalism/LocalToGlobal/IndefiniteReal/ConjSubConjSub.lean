@@ -42,15 +42,15 @@ def conjSub (U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)) : Submodule �
     exact U.smul_mem _ hf
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_conjSub {U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)} {f : Formalism.AUTREP.GAf L n → ℂ} :
     f ∈ conjSub U ↔ (fun g => star (f g)) ∈ U := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `f`. Establish `hf : (fun g => star (star (f g))) = f`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Use `show (fun g => star (star (f g))) ∈ U ↔ f ∈ U`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf]`.
+A detailed English derivation is pending.
 -/
 theorem conjSub_conjSub (U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)) : conjSub (conjSub U) = U := by
   ext f
@@ -61,15 +61,15 @@ theorem conjSub_conjSub (U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)) :
   rw [hf]
 
 /- English proof (translation)
-Introduce `_ hf` and use `h hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjSub_mono {U U' : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)} (h : U ≤ U') : conjSub U ≤ conjSub U' :=
   fun _ hf => h hf
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[mem_conjSub, Submodule.mem_bot, Submodule.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `g`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun h g` as an intermediate fact. Simplify using `using this`. Introduce `h`. Substitute `h` using the available equality. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument.
 
 Simplify using the standard rewrite rules.
 -/
@@ -93,7 +93,7 @@ theorem conj_rt (h : Formalism.AUTREP.GAf L n) (f : Formalism.AUTREP.GAf L n →
     (fun g => star (Formalism.L2.NG.rt L n h f g)) = Formalism.L2.NG.rt L n h (fun g => star (f g)) := rfl
 
 /- English proof (translation)
-Introduce `h f hf`. Rewrite `hf`, the goal using `[mem_conjSub]`. Rewrite using `[conj_rt]`. Conclude with `hU h _ hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjSub_stable {U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)} (hU : ∀ h, ∀ f ∈ U, Formalism.L2.NG.rt L n h f ∈ U) :
     ∀ h, ∀ f ∈ conjSub U, Formalism.L2.NG.rt L n h f ∈ conjSub U := by
@@ -202,14 +202,14 @@ def rowRepR {P : RowPsi V n} {M : Mult.DSModel V Sp} {J : Bool → Set (GA D V)}
   Formalism.L2.Col.finTypRep _ σ
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Col.finTypRep_mem _ σ`.
+A detailed English derivation is pending.
 -/
 theorem rowRepR_occ {P : RowPsi V n} {M : Mult.DSModel V Sp} {J : Bool → Set (GA D V)} {χ : Bool → GA D V → ℂ}
     {e : Bool → (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)} (σ : FTR θ P M J χ e) : rowRepR θ σ ∈ OccRows θ P M J χ e :=
   Formalism.L2.Col.finTypRep_mem _ σ
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Col.finTypRep_inj h`.
+A detailed English derivation is pending.
 -/
 theorem rowRepR_inj {P : RowPsi V n} {M : Mult.DSModel V Sp} {J : Bool → Set (GA D V)} {χ : Bool → GA D V → ℂ}
     {e : Bool → (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)} (σ σ' : FTR θ P M J χ e)

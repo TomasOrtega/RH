@@ -22,13 +22,13 @@ namespace GlobalTheory.ShareSection
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `i j hij _`. Establish `: i = j` using `Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ d ih`. Introduce `i j hij hb`. Establish `hk : (i : ℕ) + d < r` using `by omega`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `ih i ⟨i + d, hk⟩ rfl (by`. Break down `hb with hb | hb` into its components or cases. Conclude with `Or.inl hb`. Use `right`. Simplify using `only`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `omega)`. Establish `h2` using `h τ ⟨i + d, hk⟩ j (by simp only; omega) (by omega)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem drop_of_gaps {Ψ : Finset (E →+* ℂ)} {p0 : ℕ} {L : Wt Ψ r} (h : GapsGe p0 L 1) (τ : Ψ) :
     ∀ d : ℕ, ∀ i j : Fin r, (j : ℕ) = i + d → (p0 ≤ (i : ℕ) ∨ (j : ℕ) < p0) → L τ j + d ≤ L τ i := by
@@ -51,7 +51,7 @@ theorem drop_of_gaps {Ψ : Finset (E →+* ℂ)} {p0 : ℕ} {L : Wt Ψ r} (h : G
     linarith
 
 /- English proof (translation)
-Establish `a` using `drop_of_gaps h τ (r - 1 - j) j i1 (by omega) (Or.inl hj)`. Establish `b` using `drop_of_gaps h τ i i0 i (by omega) (Or.inr hi)`. Establish `c : (0 : ℤ) ≤ ((r - 1 - j : ℕ) : ℤ)` using `Nat.cast_nonneg _`. Establish `d : (0 : ℤ) ≤ ((i : ℕ) : ℤ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem spread_of_gaps {Ψ : Finset (E →+* ℂ)} {p0 : ℕ} {L : Wt Ψ r} (h : GapsGe p0 L 1) (τ : Ψ)
     (i j i0 i1 : Fin r) (hi : (i : ℕ) < p0) (hj : p0 ≤ (j : ℕ)) (h0 : (i0 : ℕ) = 0) (h1 : (i1 : ℕ) = r - 1) :
@@ -63,7 +63,7 @@ theorem spread_of_gaps {Ψ : Finset (E →+* ℂ)} {p0 : ℕ} {L : Wt Ψ r} (h :
   linarith
 
 /- English proof (translation)
-Simplify using `only [Pi.sub_apply, Pi.smul_apply]`. Simplify using `only [nsmul_eq_mul, deMul, kapW]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wt_apply (X : Data E r) (L : Wt X.Ψ r) (a s : ℕ) (τ : X.Ψ) (i : Fin r) :
     (a • L - 2 • deMul X.Ψ r X.p0 s - kapW X) τ i =
@@ -81,9 +81,9 @@ namespace GlobalTheory.ShareSection
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Introduce `τ i j hij hj`. Establish `hij' : (i : ℕ) ≤ j` using `hij`. Establish `hd` using `drop_of_gaps hg τ (j - i) i j (by omega) (Or.inr hj)`. Rewrite using `[wt_apply, wt_apply, if_pos hj, if_pos (by omega)]`. Establish `e : (((j - i : ℕ) : ℤ)) = (j : ℤ) - (i : ℤ)` using `by push_cast [Nat.cast_sub hij']; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hd` using `[e]`. Establish `ha : (0 : ℤ) ≤ a` using `Nat.cast_nonneg _`. Establish `hm : (a : ℤ) * L τ j ≤ (a : ℤ) * L τ i` using `mul_le_mul_of_nonneg_left (by linarith) ha`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem block_fst (X : Data E r) {L : Wt X.Ψ r} (hg : GapsGe X.p0 L 1) (a s : ℕ) :
     ∀ (τ : X.Ψ) (i j : Fin r), i ≤ j → (j : ℕ) < X.p0 →
@@ -99,9 +99,9 @@ theorem block_fst (X : Data E r) {L : Wt X.Ψ r} (hg : GapsGe X.p0 L 1) (a s : �
   linarith
 
 /- English proof (translation)
-Introduce `τ i j hi hij`. Establish `hij' : (i : ℕ) ≤ j` using `hij`. Establish `hd` using `drop_of_gaps hg τ (j - i) i j (by omega) (Or.inl hi)`. Rewrite using `[wt_apply, wt_apply, if_neg (by omega), if_neg (by omega)]`. Establish `e : (((j - i : ℕ) : ℤ)) = (j : ℤ) - (i : ℤ)` using `by push_cast [Nat.cast_sub hij']; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hd` using `[e]`. Establish `ha : (0 : ℤ) ≤ a` using `Nat.cast_nonneg _`. Establish `hm : (a : ℤ) * L τ j ≤ (a : ℤ) * L τ i` using `mul_le_mul_of_nonneg_left (by linarith) ha`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem block_snd (X : Data E r) {L : Wt X.Ψ r} (hg : GapsGe X.p0 L 1) (a s : ℕ) :
     ∀ (τ : X.Ψ) (i j : Fin r), X.p0 ≤ (i : ℕ) → i ≤ j →
@@ -117,13 +117,13 @@ theorem block_snd (X : Data E r) {L : Wt X.Ψ r} (hg : GapsGe X.p0 L 1) (a s : �
   linarith
 
 /- English proof (translation)
-Introduce `τ i j hi hj`. Establish `hsp` using `spread_of_gaps hg τ i j ⟨0, by omega⟩ ⟨r - 1, by omega⟩ hi hj rfl rfl`. Establish `hpp` using `hp τ ⟨0, by omega⟩ ⟨r - 1, by omega⟩ rfl rfl`. Establish `hD : (1.9 * T : ℝ) ≤ ((L τ j - L τ i : ℤ) : ℝ)` using `hpp.trans (by exact_mod_cast hsp)`. Establish `ha : (0 : ℝ) ≤ a` using `Nat.cast_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `mul_le_mul_of_nonneg_left hD ha`. Rewrite using `[wt_apply, wt_apply, if_pos hi, if_neg (by omega)]`. Establish `hq0 : s / 2 * 2 ≤ T` using `(Nat.div_mul_le_self s 2).trans hs`. Generalize the expression as in `s / 2 = q at hq0 ⊢`. Establish `hq : (q : ℝ) * 2 ≤ T` using `by exact_mod_cast hq0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hij : ((j : ℕ) : ℝ) - (i : ℕ) ≤ (r : ℝ) - 1`. Establish `: (j : ℕ) + 1 ≤ r` using `j.isLt`. Establish `: (j : ℝ) + 1 ≤ r` using `by exact_mod_cast this`. Establish `: (0 : ℝ) ≤ (i : ℕ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `at hm ⊢`. Use the polynomial consequences of the given equalities and inequalities.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem cross (X : Data E r) {L : Wt X.Ψ r} (hg : GapsGe X.p0 L 1) {T : ℕ} (hp : PairGe L (1.9 * T))
     (a s : ℕ) (hs : s ≤ T) (hr : X.p0 < r) :
@@ -150,13 +150,13 @@ theorem cross (X : Data E r) {L : Wt X.Ψ r} (hg : GapsGe X.p0 L 1) {T : ℕ} (h
   nlinarith
 
 /- English proof (translation)
-Introduce `τ i j hij hj`. Establish `h1` using `hg τ i j hij hj`. Establish `e : ∀ k : Fin r, (n • L - 2 • deMul X.Ψ r X.p0 s) τ k = (n : ℤ) * L τ k - 2 * (if (k : ℕ) < X.p0 then -((s / 2 : ℕ) : ℤ) else ((s / 2 : ℕ) : ℤ))`. Introduce `k`. Simplify using `only [Pi.sub_apply, Pi.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [nsmul_eq_mul, deMul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : (0 : ℤ) ≤ n` using `Nat.cast_nonneg _`. Establish `hm : (0 : ℤ) ≤ (n : ℤ) * (L τ i - L τ j)` using `mul_nonneg hn (by linarith)`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, e]`. Distinguish the cases in `hi : (i : ℕ) < X.p0`. Rewrite using `[if_pos hi, if_pos (by omega)]`. Establish `: (0 : ℤ) ≤ (n : ℤ) * L τ i - 2 * -((s / 2 : ℕ) : ℤ) - ((n : ℤ) * L τ j - 2 * -((s / 2 : ℕ) : ℤ))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `this` after adjusting the coercions. Rewrite using `[if_neg hi, if_neg (by omega)]`. Establish `: (0 : ℤ) ≤ (n : ℤ) * L τ i - 2 * ((s / 2 : ℕ) : ℤ) - ((n : ℤ) * L τ j - 2 * ((s / 2 : ℕ) : ℤ))`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gaps_G (X : Data E r) {L : Wt X.Ψ r} (hg : GapsGe X.p0 L 1) (n s : ℕ) :
     GlobalTheory.IndefiniteRowSideFullHecke.ThetaWeightedNorm.GapsGe X (n • L - 2 • deMul X.Ψ r X.p0 s) 0 := by
@@ -183,11 +183,11 @@ theorem gaps_G (X : Data E r) {L : Wt X.Ψ r} (hg : GapsGe X.p0 L 1) (n s : ℕ)
     exact_mod_cast this
 
 /- English proof (translation)
-Introduce `τ i0 i1 h0' h1'`. Establish `hpp` using `hp τ i0 i1 h0' h1'`. Establish `e : ∀ k : Fin r, (n • L - 2 • deMul X.Ψ r X.p0 s) τ k = (n : ℤ) * L τ k - 2 * (if (k : ℕ) < X.p0 then -((s / 2 : ℕ) : ℤ) else ((s / 2 : ℕ) : ℤ))`. Introduce `k`. Simplify using `only [Pi.sub_apply, Pi.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [nsmul_eq_mul, deMul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, e, if_pos (show (i0 : ℕ) < X.p0 by omega), if_neg (show ¬ (i1 : ℕ) < X.p0 by omega)]`. Establish `hq0 : s / 2 * 2 ≤ T` using `(Nat.div_mul_le_self s 2).trans hs`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Generalize the expression as in `s / 2 = q at hq0 ⊢`. Establish `hq : (q : ℝ) * 2 ≤ T` using `by exact_mod_cast hq0`. Establish `hn' : (6 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hT' : (1 : ℝ) ≤ T` using `by exact_mod_cast hT`. Move the coercions through the operations in `at hpp ⊢`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -213,9 +213,9 @@ theorem pair_G (X : Data E r) {L : Wt X.Ψ r} {T : ℕ} (hp : PairGe L (1.9 * T)
   nlinarith
 
 /- English proof (translation)
-Set `f : X.Ψ × Fin (r - 1) → Ent X` to `fun p => (p.1, ⟨(⟨p.2.1 + 1, by have := p.2.isLt; omega⟩, ⟨0, by have := p.2.isLt; omega⟩), by simp [Fin.lt_def]⟩)`. Establish `hf : Function.Injective f`. Introduce and unpack `⟨τ, i⟩ ⟨τ', i'⟩ h`. Simplify using `only [f, Prod.mk.injEq, Subtype.mk.injEq, Fin.mk.injEq] at h`. Take `⟨h1, h2, -⟩` from `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Substitute `h1` using the available equality. Rewrite using `[Prod.mk.injEq]`. Conclude with `⟨rfl, Fin.ext (by omega)⟩`. Use `Fintype.card_le_of_injective f hf` as an intermediate fact. Simplify `this` using `[Fintype.card_prod, Fintype.card_coe, Fintype.card_fin, nd]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_mul_le_nd (X : Data E r) : X.Ψ.card * (r - 1) ≤ nd X := by
   let f : X.Ψ × Fin (r - 1) → Ent X := fun p =>
@@ -231,9 +231,9 @@ theorem card_mul_le_nd (X : Data E r) : X.Ψ.card * (r - 1) ≤ nd X := by
   simpa [Fintype.card_prod, Fintype.card_coe, Fintype.card_fin, nd] using this
 
 /- English proof (translation)
-Take `⟨e, rfl⟩ : ∃ e, R = e + 1` from `⟨R - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel] at hcn`. Establish `he : 1 ≤ e` using `by omega`. Establish `h1 : c * e * (c * e) ≤ n * n` using `Nat.mul_le_mul hcn hcn`. Establish `h2a : (e + 1) ^ 2 ≤ 4 * (e * e)` using `by nlinarith`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : c * (e + 1) ^ 2 ≤ 4 * (c * e * (c * e))`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : 2 * (e + 1) ≤ 4 * n` using `by nlinarith`. Establish `h4 : 4 * n ≤ 2 * (n * n)` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem size_le (c n R T : ℕ) (hc : 1 ≤ c) (hR : 2 ≤ R) (hn : 2 ≤ n) (hcn : c * (R - 1) ≤ n)
     (hT : 11 * n ^ 2 ≤ T) : 4 * c * R ^ 2 + 2 * R ≤ 2 * T := by
@@ -255,37 +255,37 @@ end GlobalTheory.ShareSection
 namespace GlobalTheory.ShareSection
 
 /- English proof (translation)
-Introduce `E _ _ _ r X Xa Fl _ h0 hr hg hp _ _ s _ hsT _ _ _`. Establish `hn` using `Xa.n_ge`. Establish `hT` using `Xa.T_ge`. Establish `hT1 : 1 ≤ Xa.T` using `le_trans (by nlinarith) hT`. Establish `hδ : 0 < Fl.δ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos Fl.δ with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨x1, hx1, h1⟩` from `Xa.thp_ne`. Take `⟨k, hk⟩` from `Xa.w_nz x1 hx1`. Establish `hb : ∀ n : ℕ, X.toData.IsBddSec (Xa.Fp + n • Xa.L) (Xa.thp * Xa.w k ^ n)`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using Xa.thp_van.1.1`. Consider the case `succ n ih`. Use `BoundedSectionAlgebra.bdd_mul X.toData ih (Xa.w_van k).1.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[succ_nsmul, ← add_assoc, pow_succ, ← mul_assoc]`. Conclude with `this`. Establish `hup` using `GlobalTheory.UpperModel.upper E r X.toData Xa Fl 1 (fun _ => Xa.thp * Xa.w k ^ Xa.T) (fun _ => hb Xa.T) (by`. Introduce `c hc`. Use function extensionality and compare the values at `q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hq : q = 0` using `Subsingleton.elim _ _`. Substitute `hq` using the available equality. Use `hc x1 hx1` as an intermediate fact. Simplify using `only [Fin.sum_univ_one, Pi.mul_apply, Pi.pow_apply] at this`. Break down `mul_eq_zero.1 this with h' | h'` into its components or cases.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Conclude with `h'`. It suffices to derive a contradiction. Conclude with `mul_ne_zero h1 (pow_ne_zero _ hk) h')`. Rewrite `hup` using `[h, zero_mul]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hR : 2 ≤ r` using `by omega`. Establish `hc1 : 1 ≤ X.Ψ.card`. Use `GlobalTheory.ThetaRecordCompare.two_le_r hn` as an intermediate fact. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0c : X.Ψ.card = 0` using `by omega`. Use `card_mul_le_nd X.toData` as an intermediate fact. Establish `hnd : nd X.toData = X.Ψ.card * (Fintype.card {p : Fin r × Fin r // p.2 < p.1})`. Simplify using `[nd, Fintype.card_prod, Fintype.card_coe]`. Rewrite `hnd` using `[h0c, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hsize` using `size_le X.Ψ.card (nd X.toData) r Xa.T hc1 hR hn (card_mul_le_nd X.toData) hT`. Establish `hsize' : (4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 + 2 * r) ≤ 2 * Xa.T` using `by exact_mod_cast hsize`. Establish `hTr : (0 : ℝ) ≤ Xa.T` using `Nat.cast_nonneg _`. Establish `e4 : (nd X.toData + 4) • Xa.L - 2 • deMul X.Ψ r X.p0 s - kapW X.toData - nd X.toData • Xa.L = 4 • Xa.L - 2 • deMul X.Ψ r X.p0 s - kapW X.toData`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use function extensionality and compare the values at `τ i`. Simplify using `only [Pi.sub_apply, Pi.smul_apply]`. Simplify using `only [nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e3 : (nd X.toData + 4) • Xa.L - 2 • deMul X.Ψ r X.p0 s - kapW X.toData - (nd X.toData + 1) • Xa.L = 3 • Xa.L - 2 • deMul X.Ψ r X.p0 s - kapW X.toData`. Use function extensionality and compare the values at `τ i`. Simplify using `only [Pi.sub_apply, Pi.smul_apply]`. Simplify using `only [nsmul_eq_mul]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hmar : ∃ bb m : ℝ, 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bb ∧ bb < m ∧ ∀ x0, IsOrth X.toData x0 → ∀ z ∈ OmF X.toData x0, ∀ ξ : Fin (nd X.toData) → ℂ, m * leviRh X.toData x0 z ξ ≤ leviO X.toData x0 (phla X.toData ((nd X.toData + 4) • Xa.L - 2 • deMul X.Ψ r X.p0 s)) z ξ - leviDens X.t …`. Use `⟨4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 + 1, (4 : ℕ) * (1.9 * Xa.T) - 2 * Xa.T - 2 * ((r : ℝ) - 1), by linarith, by push_cast; nlinarith, fun x0 ho z hz ξ => ?_⟩` and prove the remaining obligations. Establish `h` using `(GlobalTheory.CurvMarginClosed.curv_and_margin_closed (E := E)).2 r X.toData (4 • Xa.L - 2 • deMul X.Ψ r X.p0 s - kapW X.toData) _ (block_fst X.toData hg 4 s) (block_snd X.toData hg 4 s) (cross X.toData hg hp 4 s hsT hr) x0 ho z hz ξ`. Establish `e` using `IW.leviM_comb X.toData x0 ho hz ((nd X.toData + 4) • Xa.L - 2 • deMul X.Ψ r X.p0 s) Xa.L (nd X.toData) ξ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `e` using `[e4]`. Establish `e' : leviO X.toData x0 (phla X.toData (4 • Xa.L - 2 • deMul X.Ψ r X.p0 s - kapW X.toData)) z ξ = leviM X.toData (phla X.toData (4 • Xa.L - 2 • deMul X.Ψ r X.p0 s - kapW X.toData)) x0 z ξ` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hstr : ∃ η : ℝ, 0 < η ∧ ∀ x0, IsOrth X.toData x0 → ∀ z ∈ OmF X.toData x0, ∀ ξ : Fin (nd X.toData) → ℂ, 2 * η * leviO X.toData x0 (phla X.toData Xa.L) z ξ ≤ leviO X.toData x0 (phla X.toData ((nd X.toData + 4) • Xa.L - 2 • deMul X.Ψ r X.p0 s)) z ξ - leviDens X.toData x0 z ξ - (nd X …`. Use `⟨1 / 2, by norm_num, fun x0 ho z hz ξ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hc3 : ∀ (τ : X.Ψ) (i j : Fin r), (i : ℕ) < X.p0 → X.p0 ≤ (j : ℕ) → (0 : ℝ) ≤ (((3 • Xa.L - 2 • deMul X.Ψ r X.p0 s - kapW X.toData) τ j : ℤ) : ℝ) - (((3 • Xa.L - 2 • deMul X.Ψ r X.p0 s - kapW X.toData) τ i : ℤ) : ℝ)`. Introduce `τ i j hi hj`. Use `cross X.toData hg hp 3 s hsT hr τ i j hi hj` as an intermediate fact. Move the coercions through the operations in `at this`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `(GlobalTheory.CurvMarginClosed.curv_and_margin_closed (E := E)).2 r X.toData (3 • Xa.L - 2 • deMul X.Ψ r X.p0 s - kapW X.toData) 0 (block_fst X.toData hg 3 s) (block_snd X.toData hg 3 s) hc3 x0 ho z hz ξ`. Establish `e` using `IW.leviM_comb X.toData x0 ho hz ((nd X.toData + 4) • Xa.L - 2 • deMul X.Ψ r X.p0 s) Xa.L (nd X.toData + 1) ξ`. Rewrite `e` using `[e3]`. Establish `e' : leviO X.toData x0 (phla X.toData (3 • Xa.L - 2 • deMul X.Ψ r X.p0 s - kapW X.toData)) z ξ = leviM X.toData (phla X.toData (3 • Xa.L - 2 • deMul X.Ψ r X.p0 s - kapW X.toData)) x0 z ξ` using `rfl`. Move the coercions through the operations in `at e`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcusp : ∀ P, X.toData.IsBddSec ((nd X.toData + 4) • Xa.L - 2 • deMul X.Ψ r X.p0 s) P → P ∈ X.toData.SS ((nd X.toData + 4) • Xa.L - 2 • deMul X.Ψ r X.p0 s)` using `fun P hP => GlobalTheory.ThetaRecordCompare.cusp_of_gaps hn h0 hr (gaps_G X.toData hg _ s) (pair_G X.toData hp _ s (by omega) hsT hT1 h0 hr) hP`. Take `⟨F, hF, hv⟩` from `GlobalTheory.InterpWeight.interp_weight (E := E) ⟨normFactor_rightBorel_holds, normFactor_leftAction_holds, pointwiseNorm_invariance_holds⟩ poin_holds extFStatement_holds measInv_holds vanishAtS_holds KapPf.kappa_statement_holds r X.toData Xa Fl _ (GlobalTheory.ClosedDiscontinuit …`. Conclude with `⟨F, hF.1.1, Fl.xs ⟨0, hδ⟩, Fl.xs_mem _, by rw [hv]; exact one_ne_zero⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_bddSec_shift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : DataX E r)
     (Xa : ArchInM X.toData) (Fl : FlatM X.toData Xa), GlobalTheory.Shares.Margins X.toData Xa → 0 < X.p0 → X.p0 < r →

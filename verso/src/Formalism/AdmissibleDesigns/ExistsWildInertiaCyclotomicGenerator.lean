@@ -27,7 +27,7 @@ variable (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 def unif : O := Classical.choose (IsDiscreteValuationRing.exists_irreducible O)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (IsDiscreteValuationRing.exists_irreducible O)`.
+A detailed English derivation is pending.
 -/
 theorem unif_irr : Irreducible (unif O) := Classical.choose_spec (IsDiscreteValuationRing.exists_irreducible O)
 
@@ -35,13 +35,13 @@ theorem unif_irr : Irreducible (unif O) := Classical.choose_spec (IsDiscreteValu
   (PI.UnitaryGroupMassFormula.FinExtTop.fracB_basis (unif_irr O)).topology
 
 /- English proof (translation)
-The claim follows from `(PI.UnitaryGroupMassFormula.FinExtTop.fracB_basis (unif_irr O)).toRing_subgroups_basis.toRingFilterBasis.isTopologicalRing`.
+A detailed English derivation is pending.
 -/
 theorem fracTop_ring : @IsTopologicalRing (FractionRing O) (fracTopology O) _ :=
   (PI.UnitaryGroupMassFormula.FinExtTop.fracB_basis (unif_irr O)).toRing_subgroups_basis.toRingFilterBasis.isTopologicalRing
 
 /- English proof (translation)
-Use `letI := fracTopology O`. Use `haveI := fracTop_ring O`. Use `infer_instance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem fracTop_addGroup : @IsTopologicalAddGroup (FractionRing O) (fracTopology O) _ := by
   letI := fracTopology O
@@ -53,19 +53,17 @@ section TopO
 variable [TopologicalSpace O]
 
 /- English proof (translation)
-Use `letI := fracTopology O`. Establish `hm : ∀ n : ℕ, ((IsLocalRing.maximalIdeal O ^ n : Ideal O) : Set O) = {x | unif O ^ n ∣ x}`. Introduce `n`. Use extensionality with `x`. Rewrite using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer (unif O)).1 (unif_irr O), Ideal.span_singleton_pow, SetLike.mem_coe, Ideal.mem_span_singleton]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hB` using `PI.UnitaryGroupMassFormula.FinExtTop.fracB_basis (unif_irr O)`. Establish `hR` using `hB.toRing_subgroups_basis`. Use `set f := algebraMap O (FractionRing O) with hf`. Establish `hnK` using `hR.hasBasis_nhds`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnO` using `hA.hasBasis_nhds`. Establish `hcont : Continuous f`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Use `((hnO x).tendsto_iff (hnK (f x))).2 fun i _ => ⟨i, trivial, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Rewrite `hz` using `[hm]`. Use `show f (x + z) - f x ∈ PI.UnitaryGroupMassFormula.FinExtTop.fracB (unif O) i`. Rewrite using `[map_add, add_sub_cancel_left]`. Conclude with `PI.UnitaryGroupMassFormula.FinExtTop.algebraMap_mem_fracB.2 hz`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hopen : IsOpenMap f`. Use `IsOpenMap.of_nhds_le fun x => ?_` and prove the remaining obligations. Use `Filter.le_map fun s hs => ?_` and prove the remaining obligations. Take `⟨n, -, hn⟩` from `(hnO x).mem_iff.1 hs`. Use `Filter.mem_of_superset ((hnK (f x)).mem_of_mem (i := n) trivial) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `b hb`. Take `⟨c, hc⟩` from `PI.UnitaryGroupMassFormula.FinExtTop.mem_fracB.1 (show b - f x ∈ PI.UnitaryGroupMassFormula.FinExtTop.fracB (unif O) n from hb)`. Use `⟨x + c * unif O ^ n, hn ⟨c * unif O ^ n, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Conclude with `Dvd.intro_left c rfl`.
-
-Rewrite using `[map_add, ← hc, add_sub_cancel]`. Conclude with `Topology.IsOpenEmbedding.of_continuous_injective_isOpenMap hcont (IsFractionRing.injective O (FractionRing O)) hopen`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_openEmb (hA : IsAdic (IsLocalRing.maximalIdeal O)) :
     @Topology.IsOpenEmbedding O (FractionRing O) _ (fracTopology O) (algebraMap O (FractionRing O)) := by
@@ -105,7 +103,7 @@ theorem algebraMap_openEmb (hA : IsAdic (IsLocalRing.maximalIdeal O)) :
     (IsFractionRing.injective O (FractionRing O)) hopen
 
 /- English proof (translation)
-Use `letI := fracTopology O`. Use `haveI := fracTop_ring O`. Conclude with `continuousSMul_of_algebraMap O (FractionRing O) (algebraMap_openEmb O hA).continuous`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem fracTop_smul (hA : IsAdic (IsLocalRing.maximalIdeal O)) :
     @ContinuousSMul O (FractionRing O) _ _ (fracTopology O) := by
@@ -114,7 +112,7 @@ theorem fracTop_smul (hA : IsAdic (IsLocalRing.maximalIdeal O)) :
   exact continuousSMul_of_algebraMap O (FractionRing O) (algebraMap_openEmb O hA).continuous
 
 /- English proof (translation)
-The claim follows from `@FracTop.mk O _ _ (fracTopology O) (algebraMap_openEmb O hA)`.
+A detailed English derivation is pending.
 -/
 theorem fracTop_open (hA : IsAdic (IsLocalRing.maximalIdeal O)) : @FracTop O _ _ (fracTopology O) :=
   @FracTop.mk O _ _ (fracTopology O) (algebraMap_openEmb O hA)
@@ -125,14 +123,14 @@ variable {X' d : Type} [Fintype d] [DecidableEq d]
   moduleTopology O R'
 
 /- English proof (translation)
-The claim follows from `letI := rTopology O R'; ⟨rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem rTop_isModuleTopology (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) :
     letI := rTopology O R'; IsModuleTopology O R' :=
   letI := rTopology O R'; ⟨rfl⟩
 
 /- English proof (translation)
-Use `letI := rTopology O R'`. Use `haveI := rTop_isModuleTopology O R'`. Conclude with `IsModuleTopology.isTopologicalRing O R'`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem rTop_ring (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) [IsTopologicalRing O]
     (hfin : Module.Finite O R') : @IsTopologicalRing R' (rTopology O R') _ := by
@@ -141,7 +139,7 @@ theorem rTop_ring (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) [IsTo
   exact IsModuleTopology.isTopologicalRing O R'
 
 /- English proof (translation)
-Use `letI := rTopology O R'`. Use `haveI := rTop_ring O R' hfin`. Use `infer_instance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem rTop_addGroup (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) [IsTopologicalRing O]
     (hfin : Module.Finite O R') : @IsTopologicalAddGroup R' (rTopology O R') _ := by
@@ -150,7 +148,7 @@ theorem rTop_addGroup (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) [
   infer_instance
 
 /- English proof (translation)
-Use `letI := rTopology O R'`. Use `haveI := rTop_ring O R' hfin`. Use `infer_instance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem rTop_mul (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) [IsTopologicalRing O]
     (hfin : Module.Finite O R') : @ContinuousMul R' (rTopology O R') _ := by
@@ -159,7 +157,7 @@ theorem rTop_mul (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) [IsTop
   infer_instance
 
 /- English proof (translation)
-Use `letI := rTopology O R'`. Use `haveI := rTop_isModuleTopology O R'`. Conclude with `IsModuleTopology.toContinuousSMul O R'`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem rTop_smul (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) [IsTopologicalRing O] :
     letI := rTopology O R'; ContinuousSMul O R' := by
@@ -168,7 +166,7 @@ theorem rTop_smul (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) [IsTo
   exact IsModuleTopology.toContinuousSMul O R'
 
 /- English proof (translation)
-Use `letI := rTopology O R'`. Use `haveI := rTop_smul O R'`. Use `infer_instance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem rTop_constSMul (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) [IsTopologicalRing O] :
     letI := rTopology O R'; ContinuousConstSMul O R' := by
@@ -177,11 +175,9 @@ theorem rTop_constSMul (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) 
   infer_instance
 
 /- English proof (translation)
-Use `letI := rTopology O R'`. Use `haveI := rTop_isModuleTopology O R'`. Use `haveI := rTop_ring O R' hfin`. Use `haveI := rTop_smul O R'`. Establish `_` using `PI.UnitaryGroupMassFormula.FinExtTop.torsionFree_pi_matrix O X' d`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `_ : Module.IsTorsionFree O R'` using `inferInstance`. Establish `_ : Module.Free O R'` using `Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.Free.chooseBasis O R'`. Establish `hc : Continuous b.equivFun` using `IsModuleTopology.continuous_of_linearMap b.equivFun.toLinearMap`. Establish `_ : T2Space R'` using `T2Space.of_injective_continuous b.equivFun.injective hc`.
-
-Conclude with `⟨hfin, inferInstance, inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rTop_fgTop (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) [IsTopologicalRing O] [T2Space O]
     (hfin : Module.Finite O R') : letI := rTopology O R'; IsFGTop O R' := by
@@ -200,9 +196,7 @@ theorem rTop_fgTop (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) [IsT
 end TopO
 
 /- English proof (translation)
-Set `L : (X' → d → d → O) →ₗ[O] (X' → Matrix d d (FractionRing O))` to `{ toFun := fun F x' => Matrix.of fun i j => algebraMap O (FractionRing O) (F x' i j) map_add' := fun F F' => by funext x'; ext i j; simp map_smul' := fun c F => by funext x'; ext i j; simp [Algebra.smul_def] }`. Establish `hle : Subalgebra.toSubmodule R' ≤ LinearMap.range L`. Introduce `a ha`. Use `choose F hF using hint a ha`. Conclude with `⟨F, by funext x'; ext i j; exact hF x' i j⟩`.
-
-Use `haveI : IsNoetherian O (LinearMap.range L) := inferInstance`. Use `haveI h1 : IsNoetherian O (Subalgebra.toSubmodule R') := isNoetherian_of_le hle`. Use `haveI h2 : IsNoetherian O R' := h1`. Use `infer_instance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_of_int {X' d : Type} [Fintype d] [DecidableEq d] [Finite X'] (R' : Subalgebra O (X' → Matrix d d (FractionRing O)))
     (hint : ∀ a ∈ R', ∀ x' i j, ∃ c : O, algebraMap O (FractionRing O) c = a x' i j) : Module.Finite O R' := by
@@ -229,17 +223,15 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X d G
   {Dd : RingData O X d G t bl}
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `hD`. Set `ι` to `algebraMap O (FractionRing O)`. Set `P : X → Polynomial (FractionRing O)` to `fun x => Formalism.RepresentationBoundsCohomology.ringDataObjects.blockPoly ((eB x).map ι) ((eB x * r₀ g₀ x * eB x + s x).map ι)`. Set `S : Set O` to `{a | ∃ x, ι a ∈ (P x).roots}`. Establish `hS : S.Finite`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: S ⊆ ⋃ x, ι ⁻¹' ((P x).roots.toFinset : Set (FractionRing O))`. Introduce and unpack `a ⟨x, hx⟩`. Conclude with `Set.mem_iUnion.2 ⟨x, by simpa using hx⟩`. Use `Set.Finite.subset (Set.finite_iUnion fun x => ?_) this` and prove the remaining obligations. Conclude with `Set.Finite.preimage (IsFractionRing.injective O (FractionRing O)).injOn (Finset.finite_toSet _)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Finite S := hS.to_subtype`. Establish `hmem : ∀ (y : Dd.X') (i : Fin t), ((Dd.rr i : Dd.X' → O) y) ∈ S`. Introduce `y i`. Use `⟨Dd.p y, ?_⟩` and prove the remaining obligations. Establish `hy : P (Dd.p y) = ∏ j ∈ Finset.range t, (Polynomial.X - Polynomial.C (ι ((Dd.rr j : Dd.X' → O) y)))` using `h1 y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.mem_roots', hy]`. Use `⟨(Polynomial.monic_prod_of_monic _ _ fun j _ => Polynomial.monic_X_sub_C _).ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.IsRoot, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_range.2 i.2) (by simp)`. Set `f : Dd.X' → X × (Fin t → S)` to `fun y => (Dd.p y, fun i => ⟨(Dd.rr i : Dd.X' → O) y, hmem y i⟩)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Finite.of_injective f fun y y' h => ?_` and prove the remaining obligations. Establish `hp : Dd.p y = Dd.p y'` using `congrArg (fun z => z.1) h`. Establish `hr : ∀ i : Fin t, (Dd.rr i : Dd.X' → O) y = (Dd.rr i : Dd.X' → O) y'` using `fun i => congrArg (fun z => ((z.2 i : S) : O)) h`. Take `⟨z, -, hz⟩` from `h2 (Dd.p y) (fun i => (Dd.rr i : Dd.X' → O) y) (h1 y)`. Establish `e1` using `hz y ⟨rfl, fun i _ => rfl⟩`.
-
-Establish `e2` using `hz y' ⟨hp.symm, fun i hi => (hr ⟨i, hi⟩).symm⟩`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_X' (hD : RingDef O T r₀ π χ₁ ε g₀ eB e₁ s Dd) : Finite Dd.X' := by
   obtain ⟨h1, h2, -⟩ := hD
@@ -273,11 +265,11 @@ theorem finite_X' (hD : RingDef O T r₀ π χ₁ ε g₀ eB e₁ s Dd) : Finite
   rw [e1, e2]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, h7, h8, -⟩` from `hD`. Introduce `a ha x' i j`. Take `⟨S, c, -, rfl⟩` from `(h8 a).1 ha`. Use `⟨∑ g ∈ S, c g x' * r₀ g (Dd.p x') i j, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_apply, Matrix.sum_apply, map_sum, map_mul]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Use `h7 g x'` as an intermediate fact. Simplify using `only [RingHom.toMonoidHom_eq_coe, MonoidHom.coe_comp, MonoidHom.coe_coe, Function.comp_apply] at *`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show _ = ((Dd.r g : Dd.R') : Dd.X' → Matrix d d (FractionRing O)) x' i j`. Rewrite using `[this, Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_R' (hD : RingDef O T r₀ π χ₁ ε g₀ eB e₁ s Dd) :
     ∀ a ∈ Dd.R', ∀ x' i j, ∃ c : O, algebraMap O (FractionRing O) c = a x' i j := by
@@ -295,7 +287,7 @@ theorem int_R' (hD : RingDef O T r₀ π χ₁ ε g₀ eB e₁ s Dd) :
   rw [this, Matrix.map_apply]
 
 /- English proof (translation)
-Use `haveI := finite_X' hD`. Conclude with `finite_of_int O Dd.R' (int_R' hD)`.
+A detailed English derivation is pending.
 -/
 theorem finite_R' (hD : RingDef O T r₀ π χ₁ ε g₀ eB e₁ s Dd) : Module.Finite O Dd.R' := by
   haveI := finite_X' hD
@@ -309,11 +301,11 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Topol
   [TopologicalSpace (FractionRing O)] [IsTopologicalAddGroup (FractionRing O)] [ContinuousSMul O (FractionRing O)]
 
 /- English proof (translation)
-Use `hO.t2` as an intermediate fact. Apply `IsTopologicalAddGroup.t2Space_of_zero_sep` to reduce the goal to its premises. Introduce `x hx`. Distinguish the cases in `hxr : x ∈ Set.range (algebraMap O (FractionRing O))`. Take `⟨c, rfl⟩` from `hxr`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hc : c ≠ 0` using `by rintro rfl; exact hx (map_zero _)`. Use `⟨algebraMap O (FractionRing O) '' {c}ᶜ, ?_, ?_⟩` and prove the remaining obligations. Establish `hopen : IsOpen (algebraMap O (FractionRing O) '' {c}ᶜ)` using `hF.emb.isOpenMap _ isOpen_compl_singleton`. Conclude with `hopen.mem_nhds ⟨0, fun h => hc (h.symm), map_zero _⟩`. Introduce and unpack `⟨c', hc', he⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hc' (hF.emb.injective he)`. Conclude with `⟨Set.range (algebraMap O (FractionRing O)), hF.emb.isOpen_range.mem_nhds ⟨0, map_zero _⟩, hxr⟩`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_fractionRing_of_padicCoeff (ℓ : ℕ) (hO : PadicCoeff ℓ O) (hF : FracTop O) : T2Space (FractionRing O) := by
   have := hO.t2
@@ -333,13 +325,11 @@ theorem t2Space_fractionRing_of_padicCoeff (ℓ : ℕ) (hO : PadicCoeff ℓ O) (
 variable {X' d : Type} [Fintype d] [DecidableEq d]
 
 /- English proof (translation)
-Use `hO.compact` as an intermediate fact. Use `hR.t2` as an intermediate fact. Use `hR.csmul` as an intermediate fact. Use `hR.fg` as an intermediate fact. Use `t2Space_fractionRing_of_padicCoeff ℓ hO hF` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' O R'`. Establish `hfc : Continuous f` using `LinearMap.continuous_on_pi f`. Establish `hq : Topology.IsQuotientMap f` using `Topology.IsQuotientMap.of_surjective_continuous hf hfc`. Use `haveI : CompactSpace R' := Function.Surjective.compactSpace hfc hf`. Establish `hval : Continuous (fun a : R' => (a : X' → Matrix d d (FractionRing O)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq.continuous_iff]`. Conclude with `LinearMap.continuous_on_pi (R'.val.toLinearMap.comp f)`. Establish `hemb` using `(hval.isClosedEmbedding Subtype.val_injective).isEmbedding`. Rewrite using `[hemb.continuous_iff]`. Use `continuous_pi fun x' => ?_` and prove the remaining obligations.
-
-Conclude with `continuous_pi fun a => continuous_pi fun b => hu x' a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_of_entries (ℓ : ℕ) (R' : Subalgebra O (X' → Matrix d d (FractionRing O)))
     [TopologicalSpace R'] [IsTopologicalAddGroup R'] (hO : PadicCoeff ℓ O) (hF : FracTop O)
@@ -366,11 +356,11 @@ theorem continuous_of_entries (ℓ : ℕ) (R' : Subalgebra O (X' → Matrix d d 
 end Entries
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero φ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`. Introduce `s hs`. Take `⟨n, hn⟩` from `(isAdic_iff.1 hB).2 s hs`. Establish `hopen` using `(isAdic_iff.1 hA).1 n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Filter.mem_map]`. Use `filter_upwards [hopen.mem_nhds (Ideal.zero_mem _)] with x hx`. Apply `hn` to reduce the goal to its premises. Establish `hle : (IsLocalRing.maximalIdeal A).map φ ≤ IsLocalRing.maximalIdeal B` using `Ideal.map_le_iff_le_comap.2 fun a ha => map_nonunit φ a ha`. Establish `h1 : φ x ∈ ((IsLocalRing.maximalIdeal A) ^ n).map φ` using `Ideal.mem_map_of_mem φ hx`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hle n h1`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_isLocalHom {A B : Type} [CommRing A] [CommRing B] [IsLocalRing A] [IsLocalRing B]
     [TopologicalSpace A] [TopologicalSpace B] [IsTopologicalRing A] [IsTopologicalRing B]
@@ -397,9 +387,9 @@ open Formalism.RepresentationBoundsCohomology.FIN (IsCycG)
 variable {D : D7} (i : D.nd.Loc)
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, hu⟩`. Establish `h2` using `Formalism.MainNotions.SumRepresentations.norm_iotaOQ_unit D.nd D.naut i u`. Establish `h3` using `Formalism.MainNotions.SumRepresentations.norm_iotaOQ_l D.nd D.naut i`. Rewrite `h2` using `[hu]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[h2]`. Conclude with `lt_irrefl _ h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_mem_max : ((D.nd.l i : ℕ) : D.nd.O i) ∈ IsLocalRing.maximalIdeal (D.nd.O i) := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
@@ -411,15 +401,15 @@ theorem l_mem_max : ((D.nd.l i : ℕ) : D.nd.O i) ∈ IsLocalRing.maximalIdeal (
   exact lt_irrefl _ h3
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.SumRepresentations.natCast_ne_zero_O D.nd i (D.nd.l i) (D.nd.lPrime i).out.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem l_ne_zero : ((D.nd.l i : ℕ) : D.nd.O i) ≠ 0 :=
   Formalism.MainNotions.SumRepresentations.natCast_ne_zero_O D.nd i (D.nd.l i) (D.nd.lPrime i).out.ne_zero
 
 /- English proof (translation)
-Use `⟨fun z hz => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `h1 : z ∈ IsLocalRing.maximalIdeal ℤ_[D.nd.l i]` using `hn`. Rewrite `h1` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Take `⟨y, rfl⟩` from `h1`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hz` using `[map_mul, map_natCast]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 (l_mem_max i) (isUnit_of_mul_isUnit_left hz)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_alg : IsLocalHom (algebraMap ℤ_[D.nd.l i] (D.nd.O i)) := by
   refine ⟨fun z hz => ?_⟩
@@ -431,16 +421,16 @@ theorem isLocalHom_alg : IsLocalHom (algebraMap ℤ_[D.nd.l i] (D.nd.O i)) := by
   exact (IsLocalRing.mem_maximalIdeal _).1 (l_mem_max i) (isUnit_of_mul_isUnit_left hz)
 
 /- English proof (translation)
-Use `haveI := isLocalHom_alg i`. Conclude with `continuous_of_isLocalHom (ReciprocityTheory.ChartRestriction.T2.padicCoeff_padicInt (p := D.nd.l i)).adic (D.nd.O_adic i) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_alg : Continuous (algebraMap ℤ_[D.nd.l i] (D.nd.O i)) := by
   haveI := isLocalHom_alg i
   exact continuous_of_isLocalHom (ReciprocityTheory.ChartRestriction.T2.padicCoeff_padicInt (p := D.nd.l i)).adic (D.nd.O_adic i) _
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' ℤ_[D.nd.l i] (D.nd.O i)`. Establish `hc : Continuous f`. Establish `: (f : (Fin n → ℤ_[D.nd.l i]) → D.nd.O i) = fun v => ∑ k, algebraMap ℤ_[D.nd.l i] (D.nd.O i) (v k) * f (fun j => if k = j then 1 else 0)`. Use function extensionality and compare the values at `v`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f v]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Rewrite using `[this]`. Conclude with `continuous_finset_sum _ fun k _ => ((continuous_alg i).comp (continuous_apply k)).mul continuous_const`. Conclude with `hf.compactSpace hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compact_O : CompactSpace (D.nd.O i) := by
   obtain ⟨n, f, hf⟩ := Module.Finite.exists_fin' ℤ_[D.nd.l i] (D.nd.O i)
@@ -457,13 +447,11 @@ theorem compact_O : CompactSpace (D.nd.O i) := by
   exact hf.compactSpace hc
 
 /- English proof (translation)
-Establish `hopen : ∀ n : ℕ, IsOpen ((IsLocalRing.maximalIdeal (D.nd.O i) ^ n : Ideal (D.nd.O i)) : Set (D.nd.O i))` using `(isAdic_iff.1 (D.nd.O_adic i)).1`. Establish `hclosed : ∀ n : ℕ, IsClosed ((IsLocalRing.maximalIdeal (D.nd.O i) ^ n : Ideal (D.nd.O i)) : Set (D.nd.O i))` using `fun n => AddSubgroup.isClosed_of_isOpen (Submodule.toAddSubgroup (IsLocalRing.maximalIdeal (D.nd.O i) ^ n)) (hopen n)`. Establish `h0 : ({0} : Set (D.nd.O i)) = ⋂ n : ℕ, ((IsLocalRing.maximalIdeal (D.nd.O i) ^ n : Ideal (D.nd.O i)) : Set (D.nd.O i))`. Use extensionality with `x`. Simplify using `only [Set.mem_singleton_iff, Set.mem_iInter, SetLike.mem_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl n`. Conclude with `Ideal.zero_mem _`. Introduce `h`. Establish `h1 : x ∈ (⨅ n : ℕ, IsLocalRing.maximalIdeal (D.nd.O i) ^ n : Ideal (D.nd.O i))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_iInf]`. Conclude with `h`. Rewrite `h1` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (IsLocalRing.maximalIdeal.isMaximal _).ne_top]`. Conclude with `h1`. Establish `: IsClosed ({0} : Set (D.nd.O i))`.
-
-Rewrite using `[h0]`. Conclude with `isClosed_iInter hclosed`. Use `haveI : T1Space (D.nd.O i) := IsTopologicalAddGroup.t1Space _ this`. Use `infer_instance`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t2Space_nd_O : T2Space (D.nd.O i) := by
   have hopen : ∀ n : ℕ, IsOpen ((IsLocalRing.maximalIdeal (D.nd.O i) ^ n : Ideal (D.nd.O i)) : Set (D.nd.O i)) :=
@@ -488,7 +476,7 @@ theorem t2Space_nd_O : T2Space (D.nd.O i) := by
   infer_instance
 
 /- English proof (translation)
-The claim follows from `D.nd.trO i compact := compact_O i t2 := t2Space_nd_O i adic := D.nd.O_adic i p_mem := l_mem_max i p_ne := l_ne_zero i`.
+A detailed English derivation is pending.
 -/
 theorem padicCoeff_O : PadicCoeff (D.nd.l i) (D.nd.O i) where
   ring := D.nd.trO i
@@ -499,49 +487,49 @@ theorem padicCoeff_O : PadicCoeff (D.nd.l i) (D.nd.O i) where
   p_ne := l_ne_zero i
 
 /- English proof (translation)
-The claim follows from `fracTop_open (D.nd.O i) (D.nd.O_adic i)`.
+A detailed English derivation is pending.
 -/
 theorem fracTop_O : letI := fracTopology (D.nd.O i); FracTop (D.nd.O i) :=
   fracTop_open (D.nd.O i) (D.nd.O_adic i)
 
 /- English proof (translation)
-The claim follows from `fracTop_addGroup (D.nd.O i)`.
+A detailed English derivation is pending.
 -/
 theorem fracTop_addGroup_O : letI := fracTopology (D.nd.O i); IsTopologicalAddGroup (FractionRing (D.nd.O i)) :=
   fracTop_addGroup (D.nd.O i)
 
 /- English proof (translation)
-The claim follows from `fracTop_smul (D.nd.O i) (D.nd.O_adic i)`.
+A detailed English derivation is pending.
 -/
 theorem fracTop_smul_O : letI := fracTopology (D.nd.O i); ContinuousSMul (D.nd.O i) (FractionRing (D.nd.O i)) :=
   fracTop_smul (D.nd.O i) (D.nd.O_adic i)
 
 /- English proof (translation)
-The claim follows from `Formalism.AdicCompletionExports.isCycG_cycZ (D.nd.l i) D.host.E D.nd.Om (D.nd.O i) (algebraMap ℤ_[D.nd.l i] (D.nd.O i))`.
+A detailed English derivation is pending.
 -/
 theorem isCyc_eps : IsCycG (D.nd.l i) (epsU D.nd i) :=
   Formalism.AdicCompletionExports.isCycG_cycZ (D.nd.l i) D.host.E D.nd.Om (D.nd.O i) (algebraMap ℤ_[D.nd.l i] (D.nd.O i))
 
 /- English proof (translation)
-Introduce `v` and use `D.nd.plOm.2 v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem av_over : ∀ v, IsPlaceOver (Formalism.MainNotions.N.K.Av (D := D) v) v := fun v => D.nd.plOm.2 v
 
 /- English proof (translation)
-Use `D.host.isCMField_hostE` as an intermediate fact. Conclude with `Or.inr (NumberField.nrRealPlaces_eq_zero_iff.mpr inferInstance)`.
+Establish an intermediate fact. Prove the second alternative.
 -/
 theorem l_or_noReal : D.nd.l i ≠ 2 ∨ InfinitePlace.nrRealPlaces D.host.E = 0 := by
   have := D.host.isCMField_hostE
   exact Or.inr (NumberField.nrRealPlaces_eq_zero_iff.mpr inferInstance)
 
 /- English proof (translation)
-Conclude with `UpperTheory.KStar.S0.one_le_localLevel D.nd i`.
+A detailed English derivation is pending.
 -/
 theorem one_le_localLevel : 1 ≤ D.nd.s0 i := by
   exact UpperTheory.KStar.S0.one_le_localLevel D.nd i
 
 /- English proof (translation)
-Conclude with `UpperTheory.KStar.S0.two_le_localLevel_of_eq_two D.nd i`.
+A detailed English derivation is pending.
 -/
 theorem restNLevelExponent_of_two : D.nd.l i = 2 → 2 ≤ D.nd.s0 i := by
   exact UpperTheory.KStar.S0.two_le_localLevel_of_eq_two D.nd i
@@ -551,11 +539,11 @@ def yU (u : ℤ_[D.nd.l i]ˣ) : (D.nd.O i)ˣ := Units.map (algebraMap ℤ_[D.nd.
 variable (dc : Formalism.MainNotions.TruncatedSeriesCountingIdentities.Decl D i)
 
 /- English proof (translation)
-Introduce `w hw`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hw`. Establish `hmemS : v ∈ Formalism.MainNotions.N.K.plSet i dc` using `Finset.mem_union_left _ (Finset.mem_union_left _ hv)`. Establish `hpl` using `Formalism.MainNotions.N.K.plOf_idx i dc hmemS`. Establish `hAw : Formalism.MainNotions.N.K.Aw i dc (Formalism.MainNotions.N.K.idx i dc v) = D.nd.plOm.1 v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.MainNotions.N.K.Aw`. Rewrite using `[hpl]`. Rewrite using `[hAw, hpl]`. Use `⟨?_, D.nd.plOm.2 v⟩` and prove the remaining obligations. Establish `hmem : ((D.nd.l i : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal` using `(dc.cover v).1 (Or.inl hv)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `(D.nd.plOm.2 v ((D.nd.l i : ℕ) : 𝓞 D.host.E)).2 hmem`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rows_over : ∀ w ∈ Formalism.MainNotions.N.K.rowsN i dc,
     (Formalism.MainNotions.N.K.Aw i dc w).valuation ((D.nd.l i : ℕ) : D.nd.Om) < 1 ∧
@@ -581,34 +569,34 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
   (Dd : RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R))
 
 /- English proof (translation)
-The claim follows from `finite_R' hD`.
+A detailed English derivation is pending.
 -/
 theorem finite_RD (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd) :
     Module.Finite (D.nd.O i) Dd.R' :=
   finite_R' hD
 
 /- English proof (translation)
-The claim follows from `rTop_addGroup (D.nd.O i) Dd.R' (finite_R' hD)`.
+A detailed English derivation is pending.
 -/
 theorem rTop_addGroup_RD (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd) :
     letI := rTopology (D.nd.O i) Dd.R'; IsTopologicalAddGroup Dd.R' :=
   rTop_addGroup (D.nd.O i) Dd.R' (finite_R' hD)
 
 /- English proof (translation)
-The claim follows from `rTop_constSMul (D.nd.O i) Dd.R'`.
+A detailed English derivation is pending.
 -/
 theorem rTop_constSMul_RD : letI := rTopology (D.nd.O i) Dd.R'; ContinuousConstSMul (D.nd.O i) Dd.R' :=
   rTop_constSMul (D.nd.O i) Dd.R'
 
 /- English proof (translation)
-The claim follows from `rTop_mul (D.nd.O i) Dd.R' (finite_R' hD)`.
+A detailed English derivation is pending.
 -/
 theorem rTop_mul_RD (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd) :
     letI := rTopology (D.nd.O i) Dd.R'; ContinuousMul Dd.R' :=
   rTop_mul (D.nd.O i) Dd.R' (finite_R' hD)
 
 /- English proof (translation)
-Use `haveI := t2Space_nd_O i`. Conclude with `rTop_fgTop (D.nd.O i) Dd.R' (finite_R' hD)`.
+A detailed English derivation is pending.
 -/
 theorem fgTop_RD (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd) :
     letI := rTopology (D.nd.O i) Dd.R'; IsFGTop (D.nd.O i) Dd.R' := by
@@ -616,13 +604,13 @@ theorem fgTop_RD (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomo
   exact rTop_fgTop (D.nd.O i) Dd.R' (finite_R' hD)
 
 /- English proof (translation)
-Use `letI := fracTopology (D.nd.O i)`. Use `letI := rTopology (D.nd.O i) Dd.R'`. Use `haveI := fracTop_addGroup (D.nd.O i)`. Use `haveI := fracTop_smul (D.nd.O i) (D.nd.O_adic i)`. Use `haveI := rTop_addGroup (D.nd.O i) Dd.R' (finite_R' hD)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hι : Continuous (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)))` using `(algebraMap_openEmb (D.nd.O i) (D.nd.O_adic i)).continuous`. Use `continuous_of_entries (D.nd.l i) Dd.R' (padicCoeff_O i) (fracTop_O i) (fgTop_RD i r π g0 eB e₁ s Dd hD) _ ?_` and prove the remaining obligations. Introduce `x' a b`. Establish `h7` using `hD.2.2.2.2.2.2.1`. Establish `h9` using `hD.2.2.2.2.2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h12` using `hD.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `key : ∀ g : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om), ((uElt Dd.r Dd.χ g : Dd.R') : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) x' a b = algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (((D.nd.chi i 1 g⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) * Formalism.MainNotions.N.rO D.nd …`. Introduce `g`. Simplify using `only [uElt]`. Rewrite using `[h9, h7, ← map_inv, h12]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[RepresentationBoundsCohomology.repX_apply, Matrix.map_apply, smul_eq_mul, map_mul]`. Repeatedly rewrite using `[key]`. Use `hι.comp (Continuous.mul ?_ ?_)` and prove the remaining obligations. Conclude with `(D.nd.chi_cont i 1).comp continuous_inv`. Conclude with `(hc (Dd.p x')).matrix_elem a b`.
+A detailed English derivation is pending.
 -/
 theorem uElt_cont (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hc : Formalism.MainNotions.TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r) :

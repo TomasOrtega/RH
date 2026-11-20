@@ -12,27 +12,27 @@ namespace GlobalTheory.PrimePart
 open Formalism.MainNotions.ModuliIntegralCharts.H1.FrTanDirAlg
 
 /- English proof (translation)
-Set `bs` to `RingOfIntegers.basis E`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) = Fintype.card (E →ₐ[ℚ] ℂ)`. Rewrite using `[AlgHom.card, ← RingOfIntegers.rank, Module.finrank_eq_card_chooseBasisIndex]`. Set `e : Module.Free.ChooseBasisIndex ℤ (𝓞 E) ≃ (E →ₐ[ℚ] ℂ)` to `Fintype.equivOfCardEq hcard`. Set `e' : Module.Free.ChooseBasisIndex ℤ (𝓞 E) ≃ (E →+* ℂ)` to `e.trans (RingHom.equivRatAlgHom E ℂ).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A : Matrix (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) V` to `fun i k => χ (e' k) (bs i)`. Establish `hAij : ∀ i k, A i k = χ (e' k) (bs i)` using `fun _ _ => rfl`. Set `AF : Matrix (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) F` to `fun i k => φ (e' k) (bs i : E)`. Establish `hAF : AF.map j = Algebra.embeddingsMatrixReindex ℚ ℂ (fun i => (bs i : E)) e`. Use extensionality with `i k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Algebra.embeddingsMatrixReindex, Algebra.embeddingsMatrix, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply, Equiv.refl_symm, Equiv.refl_apply, Equiv.symm_symm]`. Use `show j (φ (e' k) (bs i : E)) = (e k) (bs i : E)`. Rewrite using `[hφ]`. Both sides reduce to the same expression. Establish `hdF : AF.det ^ 2 = ((discr E : ℤ) : F)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `j.injective` to reduce the goal to its premises. Rewrite using `[map_pow, RingHom.map_det, RingHom.mapMatrix_apply, hAF, ← Algebra.discr_eq_det_embeddingsMatrixReindex_pow_two, map_intCast]`. Establish `hb : (fun i => (bs i : E)) = ⇑(integralBasis E)` using `funext fun i => (integralBasis_apply E i).symm`. Rewrite using `[hb, ← coe_discr, map_intCast]`. Establish `hdV : A.det ^ 2 = ((discr E : ℤ) : V)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_pow, RingHom.map_det, map_intCast]`. Establish `hA : (algebraMap V Fr).mapMatrix A = io.mapMatrix AF`. Use extensionality with `i k`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, hAij, AF, hχ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hA, ← RingHom.map_det, ← map_pow, hdF, map_intCast]`. Establish `hu : IsUnit A.det`. Establish `h` using `isUnit_of_not_dvd g hg hgV _ hd`. Rewrite `h` using `[← hdV]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isUnit_pow_iff two_ne_zero).1 h`. Use `⟨fun i τ => A⁻¹ (e'.symm τ) i, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ τ`. Establish `h1` using `congrFun (congrFun (Matrix.nonsing_inv_mul A hu) (e'.symm τ)) (e'.symm σ)`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [hAij, Equiv.apply_symm_apply] at h1`. Rewrite using `[show (∑ i, χ σ (bs i) * A⁻¹ (e'.symm τ) i) = ∑ i, A⁻¹ (e'.symm τ) i * χ σ (bs i) from Finset.sum_congr rfl fun _ _ => mul_comm _ _, h1]`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (fun h' => h (e'.symm.injective h').symm), if_neg h]`. Introduce `i i'`. Establish `h1` using `congrFun (congrFun (Matrix.mul_nonsing_inv A hu) i') i`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [hAij] at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Equiv.sum_comp e' (fun τ => A⁻¹ (e'.symm τ) i * χ τ (bs i'))]`. Simplify using `only [Equiv.symm_apply_apply]`. Rewrite using `[show (∑ k, A⁻¹ k i * χ (e' k) (bs i')) = ∑ k, χ (e' k) (bs i') * A⁻¹ k i from Finset.sum_congr rfl fun _ _ => mul_comm _ _, h1]`. Distinguish the cases in `h : i = i'`. Substitute `h` using the available equality.
+Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm h), if_neg h]`.
+A detailed English derivation is pending.
 -/
 theorem exists_inv_of_not_dvd_discr (E : Type) [Field E] [NumberField E] {V : Type} [CommRing V] [IsDomain V]
     [IsLocalRing V] {Fr : Type} [Field Fr] [Algebra V Fr]
@@ -104,17 +104,15 @@ theorem exists_inv_of_not_dvd_discr (E : Type) [Field E] [NumberField E] {V : Ty
     · rw [if_neg (Ne.symm h), if_neg h]
 
 /- English proof (translation)
-Use `haveI : IsDomain X.O := X.ints.hom_inj.isDomain _`. Take `⟨Cm, hAC, hCA⟩` from `exists_inv_of_not_dvd_discr E (V := X.O) (Fr := X.C) X.ints.hom_inj (c.F.val : c.F →+* ℂ) (X.ιF.comp io) (embF c) (fun σ x => by simp [embF]) (embO io X) (fun σ a => algebraMap_embO io X σ a) p Fact.out X.nonunit.out hp`. Use `set b := RingOfIntegers.basis E`. Set `Cr : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → (E →+* ℂ) → ResidueField X.O` to `fun i τ => residue X.O (Cm i τ)`. Establish `hAC' : ∀ σ τ, ∑ i, red io X σ (b i) * Cr i τ = if σ = τ then 1 else 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `σ τ`. Use `congrArg (residue X.O) (hAC σ τ)` as an intermediate fact. Simplify `this` using `[map_sum, red, Cr, apply_ite (residue X.O)]`. Establish `hCA' : ∀ i i', ∑ τ, Cr i τ * red io X τ (b i') = if i = i' then 1 else 0`. Introduce `i i'`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (residue X.O) (hCA i i')` as an intermediate fact. Simplify `this` using `[map_sum, red, Cr, apply_ite (residue X.O)]`. Use `⟨fun σ τ hst => ?_, fun χ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h1` using `hAC' σ τ`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `h1` using `[if_neg hne, hst, hAC' τ τ, if_pos rfl]`. Conclude with `one_ne_zero h1`. Set `ρ : 𝓞 E →+* Module.End (ResidueField X.O) (ResidueField X.O)` to `(Algebra.lmul (ResidueField X.O) (ResidueField X.O)).toRingHom.comp χ`. Take `⟨mσ, hm, hs⟩` from `((decomp_of_inv ρ (red io X) b Cr hAC' hCA').1 1)`. Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : ∃ σ, mσ σ ≠ 0 := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`. Simplify using `[h] at hs`. Use `⟨σ, RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Establish `: χ a * mσ σ = red io X σ a * mσ σ` using `hm σ a`.
-
-Conclude with `(mul_right_cancel₀ hσ this).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem red_bijective (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H)
     (c : Coeff l) (p : ℕ) [Fact p.Prime] (T : CDVR) (io : c.F →+* T.Fr) (X : ValExt T p)

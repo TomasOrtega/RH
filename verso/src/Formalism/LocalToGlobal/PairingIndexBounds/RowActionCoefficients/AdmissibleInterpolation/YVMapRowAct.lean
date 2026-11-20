@@ -13,9 +13,9 @@ section Gen
 variable {A A' : Type*} [CommRing A] [CommRing A']
 
 /- English proof (translation)
-Unfold `hvE`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i t`. Simplify using `[Matrix.map_apply, map_sum, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_hvE (f : A →+* A') {n : ℕ} (x : Fin n → ℕ → A) (y : Matrix (Fin n) (Fin n) A) (c : ℕ) (h : Fin c → ℕ)
     (hh : ∀ k, h k ≤ n) : f (hvE x y c h hh) = hvE (fun a i => f (x a i)) (y.map f) c h hh := by
@@ -28,7 +28,7 @@ theorem map_hvE (f : A →+* A') {n : ℕ} (x : Fin n → ℕ → A) (y : Matrix
   simp [Matrix.map_apply, map_sum, map_mul]
 
 /- English proof (translation)
-Unfold `hvO`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, map_catM]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_hvO (f : A →+* A') {n : ℕ} (x : Fin n → ℕ → A) (y : Matrix (Fin n) (Fin n) A) (c : ℕ) (h : Fin c → ℕ) :
     f (hvO x y c h) = hvO (fun a i => f (x a i)) (y.map f) c h := by
@@ -38,9 +38,9 @@ theorem map_hvO (f : A →+* A') {n : ℕ} (x : Fin n → ℕ → A) (y : Matrix
   rw [RingHom.map_det, RingHom.mapMatrix_apply, map_catM]
 
 /- English proof (translation)
-Unfold `hvE`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i t`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, mulC, Matrix.transpose_apply, Finset.mul_sum, Finset.sum_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hvE_mul {n : ℕ} (g : Matrix (Fin n) (Fin n) A) (x : Fin n → ℕ → A) (y : Matrix (Fin n) (Fin n) A) (c : ℕ) (h : Fin c → ℕ)
     (hh : ∀ k, h k ≤ n) : hvE x (g * y) c h hh = hvE (mulC g.transpose x) y c h hh := by
@@ -53,7 +53,7 @@ theorem hvE_mul {n : ℕ} (g : Matrix (Fin n) (Fin n) A) (x : Fin n → ℕ → 
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Unfold `hvO`. Establish `: ∀ k : Fin c, (catM (h k) (g * y) (mulC g x)).det = g.det * (catM (h k) y x).det`. Introduce `k`. Rewrite using `[← mul_catM, Matrix.det_mul]`. Rewrite using `[Finset.prod_congr rfl fun k _ => this k, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hvO_mul {n : ℕ} (g : Matrix (Fin n) (Fin n) A) (x : Fin n → ℕ → A) (y : Matrix (Fin n) (Fin n) A) (c : ℕ) (h : Fin c → ℕ) :
     hvO (mulC g x) (g * y) c h = g.det ^ c * hvO x y c h := by
@@ -70,7 +70,7 @@ section Row
 variable {K : Type} [CommRing K] {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a t`. Simplify using `only [Matrix.map_apply, yV, Matrix.mul_apply]`. Unfold `rowAct`. Rewrite using `[aeval_X]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem yV_map_rowAct (g : Matrix (Fin n) (Fin n) K) :
     (yV K n).map (rowAct K g) = g.map C * yV K n := by
@@ -80,9 +80,9 @@ theorem yV_map_rowAct (g : Matrix (Fin n) (Fin n) K) :
   rw [aeval_X]
 
 /- English proof (translation)
-Establish `h1` using `map_hvE (rowAct K (n := n) g : MvPolynomial (Fin n × Fin n) K →+* MvPolynomial (Fin n × Fin n) K) (fun a i => C (x a i)) (yV K n) c h hh`. Rewrite `h1` using `[RingHom.coe_coe]`. Rewrite using `[h1, yV_map_rowAct g, hvE_mul]`. Use `congr 1`. Use function extensionality and compare the values at `a i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [mulC, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `(rowAct K g).commutes _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rowAct_hvE (g : Matrix (Fin n) (Fin n) K) (x : Fin n → ℕ → K) (c : ℕ) (h : Fin c → ℕ) (hh : ∀ k, h k ≤ n) :
     rowAct K g (hvE (fun a i => C (x a i)) (yV K n) c h hh) = hvE (fun a i => C (mulC g.transpose x a i)) (yV K n) c h hh := by
@@ -98,11 +98,11 @@ theorem rowAct_hvE (g : Matrix (Fin n) (Fin n) K) (x : Fin n → ℕ → K) (c :
   exact (rowAct K g).commutes _
 
 /- English proof (translation)
-Establish `h1` using `map_hvO (rowAct K (n := n) g : MvPolynomial (Fin n × Fin n) K →+* MvPolynomial (Fin n × Fin n) K) (fun a i => C (x a i)) (yV K n) c h`. Rewrite `h1` using `[RingHom.coe_coe]`. Rewrite using `[h1, yV_map_rowAct g]`. Establish `h2 : (fun a i => rowAct K (n` using `n) g (C (x a i))) = mulC (g.map C) (fun a i => (C (mulC gi x a i) : MvPolynomial (Fin n × Fin n) K)) := by`. Use function extensionality and compare the values at `a i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[show rowAct K (n := n) g (C (x a i)) = C (x a i) from (rowAct K g).commutes _]`. Establish `h3 : x a i = mulC g (mulC gi x) a i` using `by rw [← mulC_mul, hg]; simp [mulC, Matrix.one_apply]`. Rewrite using `[h3]`. Simplify using `only [mulC, Matrix.map_apply, map_sum, map_mul]`. Rewrite using `[h2, hvO_mul, smul_eq_C_mul, map_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `(RingHom.map_det C g).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rowAct_hvO (g gi : Matrix (Fin n) (Fin n) K) (hg : g * gi = 1) (x : Fin n → ℕ → K) (c : ℕ) (h : Fin c → ℕ) :
     rowAct K g (hvO (fun a i => C (x a i)) (yV K n) c h) = g.det ^ c • hvO (fun a i => C (mulC gi x a i)) (yV K n) c h := by

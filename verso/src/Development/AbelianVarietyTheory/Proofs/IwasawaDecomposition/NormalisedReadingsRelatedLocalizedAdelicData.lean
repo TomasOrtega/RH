@@ -15,13 +15,13 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 4000000
 
 /- English proof (translation)
-Introduce `K B f T w P x L m hz hC s r hP Y hY`. Establish `hR` using `CopyRead.repOf_heq x.coh x.r x.pin hC r hP`. Take `⟨z, intersectionNumber_baseChange, exAt, inGeo, Xg, tr, core, eta, W1, y, tup, t, tA⟩` from `m`. Simplify using `only at hz`. Substitute `hz` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Take `⟨rY, rZ, rtup, rtupT, rPY, rPW, rjA, rjA0, reMt⟩` from `r`. Simplify using `only at hY`. Consider the cases of `hY`. Use `⟨(by with_unfolding_all exact (hR :)), ?_, ?_⟩` and prove the remaining obligations. Introduce `i y`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heW` using `hP.eW`. Establish `hf : HEq t.lf.eW x.m.t.lf.eW` using `hC.eW.trans x.coh.eW.symm`. Establish `h3 : @Eq (type_of% t.lf.eW) t.lf.eW ((by with_unfolding_all exact (x.m.t.lf.eW :)))` using `@eq_of_heq (type_of% t.lf.eW) t.lf.eW ((by with_unfolding_all exact (x.m.t.lf.eW :))) ((by with_unfolding_all exact (hf :)))`. Conclude with `kc% ((heW i y).trans ((heq_of_eq (congrArg (fun g => g i y) h3)).trans (x.pin.eW i y).symm))`. Introduce `μ h i y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hjMt` using `hP.jMt`. Establish `hf : HEq t.lf.jMt x.m.t.lf.jMt` using `hC.jMt.trans x.coh.jMt.symm`. Establish `h3 : @Eq (type_of% t.lf.jMt) t.lf.jMt ((by with_unfolding_all exact (x.m.t.lf.jMt :)))` using `@eq_of_heq (type_of% t.lf.jMt) t.lf.jMt ((by with_unfolding_all exact (x.m.t.lf.jMt :))) ((by with_unfolding_all exact (hf :)))`. Conclude with `(by with_unfolding_all exact (((hjMt μ h i y).trans ((heq_of_eq (congrArg (fun g => g μ i y) h3)).trans (x.pin.jMt μ h i y).symm)) :))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem yRel_of_pin : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} (x : St P)
     (L : LocAll (lay0 (Dof x))) (m : Moved (oL x L)), m.z = datL x L → m.Coh → ∀ (s : Side0 (oL x L)) (r : ReadPk m s), r.Pin →

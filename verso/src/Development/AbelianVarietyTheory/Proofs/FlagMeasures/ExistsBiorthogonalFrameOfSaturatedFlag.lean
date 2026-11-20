@@ -7,27 +7,27 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.RadCov
 
 /- English proof (translation)
-Set `Φ : ((b : Fin m) → Fin (r b) → E) →ₗ[E] (Fin n → E)` to `∑ b : Fin m, (T b).mulVecLin ∘ₗ LinearMap.proj b`. Establish `hΦ : ∀ u : ∀ b, Fin (r b) → E, Φ (fun b => u b) = ∑ b ∈ Finset.range m, T b *ᵥ u b`. Introduce `u`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun b => T b *ᵥ u b)]`. Simplify using `[Φ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsurj : Function.Surjective Φ` using `fun y => by`. Take `⟨u, hu⟩` from `hs y`. Conclude with `⟨_, (hΦ u).trans hu.symm⟩`. Establish `hinj : Function.Injective Φ`. Use `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).2 hsurj` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `only [Module.finrank_fintype_fun_eq_card, Fintype.card_fin]`. Rewrite using `[hn, Fin.sum_univ_eq_sum_range]`. Set `e` to `LinearEquiv.ofBijective Φ ⟨hinj, hsurj⟩`. Set `T' : ∀ b, Matrix (Fin (r b)) (Fin n) E` to `fun b => if h : b < m then LinearMap.toMatrix' ((LinearMap.proj (⟨b, h⟩ : Fin m) : ((b : Fin m) → Fin (r b) → E) →ₗ[E] _) ∘ₗ e.symm.toLinearMap) else 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hemp : ∀ b, ¬ b < m → IsEmpty (Fin (r b))` using `fun b hb => by`. Rewrite using `[hr b (by omega)]; infer_instance`. Establish `hT' : ∀ (b : Fin m) y, T' b *ᵥ y = e.symm y b` using `fun b y => by`. Simplify using `only [T', dif_pos b.2]`. Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `H1 : ∀ (u : ∀ b, Fin (r b) → E) b, T' b *ᵥ (∑ c ∈ Finset.range m, T c *ᵥ u c) = u b`. Introduce `u b`. Distinguish the cases in `hb : b < m`. Rewrite using `[hT' ⟨b, hb⟩, ← hΦ]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (e.symm_apply_apply _) _`. Use `hemp b hb` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Establish `H2 : ∀ b c v, T' b *ᵥ (T c *ᵥ v) = (Pi.single c v : ∀ b, Fin (r b) → E) b`. Introduce `b c v`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← H1 (Pi.single c v) b]`. Use `congr 1`. Distinguish the cases in `hc : c < m`. Rewrite using `[Finset.sum_eq_single c (fun d _ hd => by simp [Pi.single_eq_of_ne hd]) (fun h => absurd (Finset.mem_range.2 hc) h)]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hemp c hc` as an intermediate fact. Take `rfl : v = 0` from `Subsingleton.elim _ _`. Simplify using the standard rewrite rules. Use `⟨T', fun b => ?_, fun b c hbc => ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.toLin'.injective (LinearMap.ext fun v => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.toLin'_apply]`. Rewrite using `[← Matrix.mulVec_mulVec, H2]`. Simplify using the standard rewrite rules. Use `Matrix.toLin'.injective (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mulVec_mulVec, H2]`. Simplify using `[Pi.single_eq_of_ne hbc]`. Use `Matrix.toLin'.injective (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Take `⟨u, rfl⟩` from `hs y`. Simplify using `only [Matrix.toLin'_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.sum_mulVec, Matrix.one_mulVec]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, H1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_biorth {E : Type} [Field E] {n m : ℕ} {r : ℕ → ℕ}
     (T : ∀ b, Matrix (Fin n) (Fin (r b)) E) (hr : ∀ b, m ≤ b → r b = 0)
@@ -93,41 +93,35 @@ theorem exists_biorth {E : Type} [Field E] {n m : ℕ} {r : ℕ → ℕ}
     rw [← Matrix.mulVec_mulVec, H1]
 
 /- English proof (translation)
-Introduce `E _ _ n m F r hmono h0 hm hL hsat hrk`. Establish `hle : ∀ b, F b ≤ F m` using `fun b => by`. Break down `le_total b m with h | h` into its components or cases. Conclude with `hmono h`. Conclude with `(hm b h).le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ b, ∃ A : Submodule (𝓞 E) (Fin n → E), A ⊓ F b = ⊥ ∧ A ⊔ F b = F (b + 1)`. Introduce `b`. Use `exists_compl_of_saturated _ _ (hmono b.le_succ) (Submodule.FG.of_le hL.fg (hle _)) ?_` and prove the remaining obligations. Introduce `c y hc hy hcy`. Apply `hsat _ y (hle _ hy)` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : (c : E) ≠ 0` using `by simpa using hc`. Rewrite using `[← Submodule.smul_mem_iff _ hc']`. Conclude with `Submodule.subset_span hcy`. Use `choose A hA1 hA2 using key`. Establish `hAF : ∀ b, A b ≤ F (b + 1)` using `fun b => hA2 b ▸ le_sup_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hAr : ∀ b, Formalism.HN.rkK (A b) = r b` using `fun b => by`. Use `AdaptedExists.rkK_add (hA1 b)` as an intermediate fact. Rewrite `this` using `[hA2, hrk]`. Use linear arithmetic over natural numbers and integers. Use `choose Λ T hΛ hT using fun b => AdaptedExists.exists_model (A b) (Submodule.FG.of_le hL.fg ((hAF b).trans (hle _))) (hAr b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdec : ∀ k, ∀ y ∈ F k, ∃ u : ∀ b, Fin (r b) → E, (∀ b, u b ∈ Λ b) ∧ y = ∑ b ∈ Finset.range k, T b *ᵥ u b`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[h0, Submodule.mem_bot]`. Conclude with `⟨0, fun b => zero_mem _, by simpa using hy⟩`. Consider the case `succ k ih`. Introduce `y hy`. Rewrite `hy` using `[← hA2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨a, ha, z, hz, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨v, hv, rfl⟩` from `(hT k a).1 ha`. Take `⟨u, hu, rfl⟩` from `ih z hz`. Use `⟨Function.update u k v, fun b => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : b = k`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Substitute `hb` using the available equality. Simplify using `using hv`. Rewrite using `[Function.update_of_ne hb]`. Conclude with `hu b`. Rewrite using `[Finset.sum_range_succ, add_comm, Function.update_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.mem_range.1 hc).ne]`. Establish `hr0 : ∀ b, m ≤ b → r b = 0` using `fun b hb => by`. Use `hrk b` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite `this` using `[hm b hb, hm (b + 1) (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `hsum : ∀ k, Formalism.HN.rkK (F k) = ∑ b ∈ Finset.range k, r b`. Introduce `k`. Proceed by induction on `k with`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `zero => rw [h0]`. Simplify using `[Formalism.HN.rkK]`. Consider the case `succ k ih => rw [hrk, ih, Finset.sum_range_succ]`. Establish `hn : n = ∑ b ∈ Finset.range m, r b`. Rewrite using `[← hsum, Formalism.HN.rkK, hL.span_eq_top]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Take `⟨T', hB⟩` from `exists_biorth T hr0 hn (fun y => by`. Take `⟨c, hc, hcy⟩` from `AdaptedExists.exists_smul_mem (L := F m) (x := y) (by rw [hL.span_eq_top]; trivial)`. Take `⟨u, -, hu⟩` from `hdec m _ hcy`. Establish `hc' : (c : E) ≠ 0` using `by simpa using hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun b => (c : E)⁻¹ • u b, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec_smul]`. Rewrite using `[← Finset.smul_sum, ← hu, eq_inv_smul_iff₀ hc']`. Use the proof step `rfl)`. Use `⟨T, T', Λ, hB, hΛ, fun k y => ⟨fun hy b => ?_, fun hy => ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, rfl⟩` from `hdec k y hy`. Establish `h1 : T' b *ᵥ (∑ c ∈ Finset.range k, T c *ᵥ u c) = if b < k then u b else 0`. Rewrite using `[Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_mulVec]`. Use `split_ifs with hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single b (fun c _ hc => by rw [hB.2.1 b c hc.symm, Matrix.zero_mulVec]) (fun h => absurd (Finset.mem_range.2 hb) h), hB.1, Matrix.one_mulVec]`. Use `Finset.sum_eq_zero fun c hc => ?_` and prove the remaining obligations. Rewrite using `[hB.2.1 b c (by have := Finset.mem_range.1 hc; omega), Matrix.zero_mulVec]`. Rewrite using `[h1]`. Use `⟨?_, fun h => if_neg (by omega)⟩` and prove the remaining obligations.
-
-Use `split_ifs`. Conclude with `hu b`. Conclude with `zero_mem _`. Establish `h1 : y = ∑ b ∈ Finset.range m, T b *ᵥ (T' b *ᵥ y)`. Simplify using `only [Matrix.mulVec_mulVec]`.
-
-Rewrite using `[← Matrix.sum_mulVec, hB.2.2, Matrix.one_mulVec]`. Rewrite using `[h1]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : k ≤ b`. Rewrite using `[(hy b).2 hb, Matrix.mulVec_zero]`.
-
-Conclude with `zero_mem _`. Conclude with `hmono (show b + 1 ≤ k by omega) (hAF b ((hT b _).2 ⟨_, (hy b).1, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_biorth_of_saturated_flag : ∀ (E : Type) [Field E] [NumberField E] (n m : ℕ) (F : ℕ → Submodule (𝓞 E) (Fin n → E)) (r : ℕ → ℕ), Monotone F → F 0 = ⊥ → (∀ b, m ≤ b → F b = F m) → Submodule.IsLattice E (F m) → (∀ b, ∀ y ∈ F m, y ∈ Submodule.span E (F b : Set (Fin n → E)) → y ∈ F b) → (∀ b, Formalism.HN.rkK (F (b + 1)) = Formalism.HN.rkK (F b) + r b) → ∃ (T : ∀ b, Matrix (Fin n) (Fin (r b)) E) (T' : ∀ b, Matrix (Fin (r b)) (Fin n) E) (Λ : ∀ b, Submodule (𝓞 E) (Fin (r b) → E)), Biorth r m T T' ∧ (∀ b, Submodule.IsLattice E (Λ b)) ∧ ∀ k y, y ∈ F k ↔ ∀ b, T' b *ᵥ y ∈ Λ b ∧ (k ≤ b → T' b *ᵥ y = 0) := by
   intro E _ _ n m F r hmono h0 hm hL hsat hrk

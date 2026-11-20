@@ -16,7 +16,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Establish `hsec` using `Bs.sec.2 ζ hζ`. Establish `e : herm (Hpk k r) (bigCell k r (fun _ => 1) (Bs.μsec ζ) *ᵥ Bs.z') Bs.z = Q.zetaL k r Bs.z Bs.z' (Fin.last r) (B2.embWb k r (Bs.μsec ζ))`. Rewrite using `[Formalism.FourierDecayAlt.P5.Rad.zetaL_last, ← Formalism.FourierDecayAlt.P.TwoByOneBlock.jV_wbPart Bs.z'_mem, Formalism.FourierDecayAlt.P.BigCellHermitian.bigCell_mulVec_jV, Formalism.FourierDecayAlt.P.TwoByOneBlock.emb_mulVec_jV]`. Rewrite using `[← e, Formalism.FourierDecayAlt.P.BigCellHermitian.herm_bigCell _ _ Bs.z_mem Bs.z'_mem, hsec.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem zeta_sec (Bs : B.RealPlaceData k r Wp Wq) {ζ : ℂ} (hζ : Tz k r Bs.z * Tz k r Bs.z' < Complex.normSq ζ) :
     Q.zetaL k r Bs.z Bs.z' (Fin.last r) (B2.embWb k r (Bs.μsec ζ)) = ζ := by
@@ -28,37 +28,35 @@ theorem zeta_sec (Bs : B.RealPlaceData k r Wp Wq) {ζ : ℂ} (hζ : Tz k r Bs.z 
   rw [← e, Formalism.FourierDecayAlt.P.BigCellHermitian.herm_bigCell _ _ Bs.z_mem Bs.z'_mem, hsec.2]
 
 /- English proof (translation)
-The claim follows from `(Formalism.FourierDecayAlt.P.PBH.continuous_zetaL r Bs.z Bs.z').measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_zetaM (Bs : B.RealPlaceData k r Wp Wq) :
     Measurable fun g : Mt k r => Q.zetaL k r Bs.z Bs.z' (Fin.last r) (Matrix.of g) :=
   (Formalism.FourierDecayAlt.P.PBH.continuous_zetaL r Bs.z Bs.z').measurable
 
 /- English proof (translation)
-The claim follows from `rb_measurable_Psi fun i j => (Bs.sec.1 i j).continuousOn`.
+A detailed English derivation is pending.
 -/
 theorem measurable_Psi (Bs : B.RealPlaceData k r Wp Wq) :
     Measurable (rbPsi k r (Tz k r Bs.z) (Tz k r Bs.z') Bs.μsec) :=
   rb_measurable_Psi fun i j => (Bs.sec.1 i j).continuousOn
 
 /- English proof (translation)
-Use `B7.sf Bs.haarW` as an intermediate fact. Use `B7.sf Bs.haarW'` as an intermediate fact. Establish `hz` using `measurable_zetaM Bs`. Establish `hΨ` using `measurable_Psi Bs`. Use `Measure.ext_of_lintegral _ fun ψ hψ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : ∫⁻ a, ψ (Q.zetaL k r Bs.z Bs.z' (Fin.last r) (Matrix.of a)) ∂((rbP k r (Tz k r Bs.z) (Tz k r Bs.z') Bs.μW Bs.μW').map (rbPsi k r (Tz k r Bs.z) (Tz k r Bs.z') Bs.μsec)) = ∫⁻ a, ψ (Q.zetaL k r Bs.z Bs.z' (Fin.last r) (Matrix.of (rbPsi k r (Tz k r Bs.z) (Tz k r Bs.z') Bs.μsec a …` using `lintegral_map (hψ.comp hz) hΨ`. Rewrite using `[lintegral_map hψ hz, e2, lintegral_smul_measure, lintegral_withDensity_eq_lintegral_mul _ (measurable_radial_weight k _ _) hψ]`. Unfold `rbP`. Establish `hFm : Measurable (fun a : ℂ × (Mt k r × Mt k r) => ψ (Q.zetaL k r Bs.z Bs.z' (Fin.last r) (Matrix.of (rbPsi k r (Tz k r Bs.z) (Tz k r Bs.z') Bs.μsec a))))` using `(hψ.comp hz).comp hΨ`. Use `(lintegral_prod _ hFm.aemeasurable).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(lintegral_withDensity_eq_lintegral_mul _ (measurable_radial_weight k _ _) hFm.lintegral_prod_right').trans ?_` and prove the remaining obligations. Establish `hae : ∀ᵐ p ∂(Bs.μW.prod Bs.μW'), Matrix.of p.1 ∈ UWset k r Bs.z ∧ Matrix.of p.2 ∈ UWset k r Bs.z'`. Establish `h1 : Bs.μW (UWset k r Bs.z)ᶜ = 0` using `Bs.haarW.conc`. Establish `h2 : Bs.μW' (UWset k r Bs.z')ᶜ = 0` using `Bs.haarW'.conc`. Rewrite using `[ae_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `measure_mono_null (t := ((UWset k r Bs.z)ᶜ ×ˢ Set.univ) ∪ (Set.univ ×ˢ (UWset k r Bs.z')ᶜ)) ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Set.mem_setOf_eq, not_and_or] at hp`. Break down `hp with h | h` into its components or cases. Conclude with `Or.inl ⟨h, trivial⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr ⟨trivial, h⟩`. Use `measure_union_null ?_ ?_` and prove the remaining obligations. Conclude with `(Measure.prod_prod _ _).trans (mul_eq_zero_of_left h1 _)`. Conclude with `(Measure.prod_prod _ _).trans (mul_eq_zero_of_right _ h2)`. Rewrite using `[smul_eq_mul, ← lintegral_const_mul _ ((measurable_radial_weight k _ _).mul hψ)]`.
+Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [rb_ae_ne_circle (mul_pos Bs.T_pos Bs.T'_pos)] with ζ hζ`. Simplify using `only [Pi.mul_apply]`. Distinguish the cases in `h : ζ ∈ rbO (Tz k r Bs.z) (Tz k r Bs.z')`. Establish `hin : ∫⁻ p, ψ (Q.zetaL k r Bs.z Bs.z' (Fin.last r) (Matrix.of (rbPsi k r (Tz k r Bs.z) (Tz k r Bs.z') Bs.μsec (ζ, p)))) ∂(Bs.μW.prod Bs.μW') = ∫⁻ _p, ψ ζ ∂(Bs.μW.prod Bs.μW')`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with p hp`. Rewrite using `[rb_Psi_eq h]`. Establish `hi` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hp.1`. Use `show ψ (Q.zetaL k r Bs.z Bs.z' (Fin.last r) ((Matrix.of p.1)⁻¹ * B2.embWb k r (Bs.μsec ζ) * Matrix.of p.2)) = ψ ζ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.Qx5.zeta_inv hi hp.2, zeta_sec Bs h]`. Rewrite using `[hin, lintegral_const, ← Set.univ_prod_univ, Measure.prod_prod]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : rbW k (Tz k r Bs.z) (Tz k r Bs.z') ζ = 0`. Unfold `rbW`.
-
-Rewrite using `[rb_zWeight_zero_of_not h hζ, ENNReal.ofReal_zero]`. Simplify using `[h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rbP_map_zeta (Bs : B.RealPlaceData k r Wp Wq) :
     ((rbP k r (Tz k r Bs.z) (Tz k r Bs.z') Bs.μW Bs.μW').map (rbPsi k r (Tz k r Bs.z) (Tz k r Bs.z') Bs.μsec)).map
@@ -123,21 +121,19 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Introduce `A`. Establish `hAm : MeasurableSet A` using `(measurableSet_lt measurable_const Complex.continuous_normSq.measurable).inter (measurableSet_lt Complex.continuous_normSq.measurable measurable_const)`. Rewrite using `[withDensity_apply _ hAm]`. Prove the components needed by the constructor for the conclusion. Set `A' : Set ℂ` to `{ζ | T * T' + 1 / 2 < Complex.normSq ζ ∧ Complex.normSq ζ < T * T' + 1}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression.
 
-Establish `hA'o : IsOpen A'` using `(isOpen_lt continuous_const Complex.continuous_normSq).inter (isOpen_lt Complex.continuous_normSq continuous_const)`. Establish `hA'A : A' ⊆ A` using `fun ζ h => ⟨by linarith [h.1], h.2⟩`. Establish `hne : A'.Nonempty`. Take `⟨x, hx⟩ : ∃ x : ℝ, 0 ≤ x ∧ x ^ 2 = max 0 (T * T' + 3 / 4)` from `⟨Real.sqrt _, Real.sqrt_nonneg _, Real.sq_sqrt (le_max_left _ _)⟩`. Apply the tactic sequence `refine ⟨(x : ℂ), ?_, ?_⟩ <;> simp only [Complex.normSq_ofReal] <;> rw [← sq, hx.2] <;> [exact lt_of_lt_of_le (by linarith) (le_max_right _ _); skip]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Break down `le_total 0 (T * T' + 3 / 4) with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Combine the linear equalities and inequalities to obtain the conclusion. It suffices to derive a contradiction. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. It suffices to derive a contradiction. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hpos : 0 < volume A'` using `hA'o.measure_pos volume hne`. Establish `hc : 0 < ENNReal.ofReal ((1 / 2 : ℝ) ^ (k - 1))` using `ENNReal.ofReal_pos.2 (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono (measurable_radial_weight k _ _) fun ζ hζ => ?_` and prove the remaining obligations. Unfold `rbW B2.zWeight`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos (by linarith [hζ.1])]`. Conclude with `ENNReal.ofReal_le_ofReal (pow_le_pow_left₀ (by norm_num) (by linarith [hζ.1]) _)`. Use `_ ≤ ∫⁻ ζ in A, rbW k T T' ζ := lintegral_mono_set hA'A`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono measurable_const fun ζ hζ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `rbW B2.zWeight`. Rewrite using `[if_pos hζ.1.le]`. Rewrite using `[ENNReal.ofReal_le_one]`. Conclude with `pow_le_one₀ (by linarith [hζ.1]) (by linarith [hζ.2])`. Use `_ = volume A := by rw [setLIntegral_const, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ volume (Metric.closedBall (0 : ℂ) (Real.sqrt (|T * T'| + 1))) := by`. Use `measure_mono fun ζ hζ => ?_` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Rewrite using `[← Real.sqrt_sq (norm_nonneg ζ)]`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations.
-
-Rewrite using `[Complex.sq_norm]`. Combine the linear relations using `[hζ.2, le_abs_self (T * T')]`. Use `_ < ∞ := measure_closedBall_lt_top`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem weight_annulus (k : ℕ) {T T' : ℝ} (hTT : 0 ≤ T * T') :
     let A : Set ℂ := {ζ | T * T' < Complex.normSq ζ ∧ Complex.normSq ζ < T * T' + 1}
@@ -187,9 +183,9 @@ theorem weight_annulus (k : ℕ) {T T' : ℝ} (hTT : 0 ≤ T * T') :
       _ < ∞ := measure_closedBall_lt_top
 
 /- English proof (translation)
-Establish `h1` using `Formalism.FourierDecayAlt.P.PBO.zetaNorm_map hZ`. Establish `h2 : μ.map (fun g : Mt k r => Q.zetaL k r Bs.z Bs.z' (Fin.last r) (Matrix.of g)) = ((C : ℝ≥0∞) * (Bs.μW Set.univ * Bs.μW' Set.univ)) • (volume : Measure ℂ).withDensity (rbW k (Tz k r Bs.z) (Tz k r Bs.z'))`. Rewrite using `[hmap, Measure.map_smul, rbP_map_zeta, smul_smul]`. Rewrite `h2` using `[h1]`. Take `⟨hp, hf⟩` from `weight_annulus k (T := Tz k r Bs.z) (T' := Tz k r Bs.z') (mul_pos Bs.T_pos Bs.T'_pos).le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set A : Set ℂ := {ζ | Tz k r Bs.z * Tz k r Bs.z' < Complex.normSq ζ ∧ Complex.normSq ζ < Tz k r Bs.z * Tz k r Bs.z' + 1}`. Establish `h3` using `congrArg (fun ν : Measure ℂ => ν A) h2`. Simplify using `only [Measure.smul_apply, smul_eq_mul] at h3`. Use `(ENNReal.mul_eq_right hp.ne' hf.ne).1 h3.symm` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem const_one (Bs : B.RealPlaceData k r Wp Wq) (μ : Measure (Mt k r)) (C : ℝ≥0)
     (hmap : μ = (C : ℝ≥0∞) • (rbP k r (Tz k r Bs.z) (Tz k r Bs.z') Bs.μW Bs.μW').map
@@ -217,13 +213,11 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hμb : B.IsHaarOn (B2.UWb k r) μ`. Rewrite using `[rb_uwb_eq]`. Conclude with `hZ.1`. Take `⟨C, hC, hmap⟩` from `rb_map D.k_pos D.z_mem D.z'_mem D.T_pos D.T'_pos D.sec hμb D.haarW D.haarW'`. Establish `h1` using `const_one D μ C hmap hZ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfW : IsFiniteMeasure D.μW` using `RankOneEmbeddings.R1.haar_finite B2x3.compactW D.z_mem D.T_pos D.haarW`. Establish `hfW' : IsFiniteMeasure D.μW'` using `RankOneEmbeddings.R1.haar_finite B2x3.compactW D.z'_mem D.T'_pos D.haarW'`. Establish `hCm : (C : ℝ) * (D.μW.prod D.μW').real Set.univ = 1`. Establish `h2` using `congrArg ENNReal.toReal h1`. Rewrite `h2` using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.coe_toReal, ENNReal.toReal_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.real_def, ← Set.univ_prod_univ, Measure.prod_prod, ENNReal.toReal_mul]`. Conclude with `h2`. Establish `key : P5.pairAt μ Φ Φ' c = (((C : ℝ) * (D.μW.prod D.μW').real Set.univ : ℝ) : ℂ) * ∫ ζ, (B2.zWeight k (Tz k r D.z) (Tz k r D.z') ζ : ℂ) * (((rbGauge k r c ^ 2 : ℝ) : ℂ) * B.hsInner (B.JF D F (B.gq D (c, ζ))) (B.JF D F' (B.gq D (c, ζ))))`. Unfold `P5.pairAt`. Conclude with `rb_integral D.T_pos D.T'_pos D.sec D.haarW D.haarW' hmap _ (rb_pair_sm Φ Φ' c) _ (fun ζ hζ x y hx hy => rb_point D F F' Φ Φ' hΦ hΦ' hc hζ hx hy)`.
-
-Rewrite using `[key, hCm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairAt_one (D : B.RealPlaceData k r Wp Wq) (μ : Measure (Mt k r)) (hZ : KB.ZetaNorm D μ)
     (F F' : B.Mat k r → (Wq →L[ℂ] Wp)) (Φ Φ' : Q.RadSp k r D.z D.z' D.π D.π')
@@ -259,9 +253,9 @@ end formOne
 section exist
 
 /- English proof (translation)
-Rewrite using `[Measure.smul_apply, h.conc, smul_zero] left a ha := by rw [Measure.map_smul, h.left a ha] right a ha := by rw [Measure.map_smul, h.right a ha] finite_compact K hK := by`. Rewrite using `[Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top (lt_top_iff_ne_top.2 hcT) (h.finite_compact K hK)`. Use `ne_zero := by`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `h.ne_zero` to reduce the goal to its premises. Use `congrArg (fun ν : Measure (Mt k r) => c⁻¹ • ν) h0` as an intermediate fact. Simplify `this` using `[smul_smul, ENNReal.inv_mul_cancel hc0 hcT]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem haar_smul {k r : ℕ} {U : Set (B.Mat k r)} {μ : Measure (Mt k r)} (h : B.IsHaarOn U μ) {c : ℝ≥0∞}
     (hc0 : c ≠ 0) (hcT : c ≠ ∞) : B.IsHaarOn U (c • μ) where
@@ -278,13 +272,11 @@ theorem haar_smul {k r : ℕ} {U : Set (B.Mat k r)} {μ : Measure (Mt k r)} (h :
     simpa [smul_smul, ENNReal.inv_mul_cancel hc0 hcT] using this
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ Bs`. Take `⟨μb, hb⟩` from `Formalism.FourierDecayAlt.P.opposite_weyl_haar_exists k r`. Take `⟨C, hC, hmap⟩` from `rb_map Bs.k_pos Bs.z_mem Bs.z'_mem Bs.T_pos Bs.T'_pos Bs.sec hb Bs.haarW Bs.haarW'`. Establish `hfW : IsFiniteMeasure Bs.μW` using `RankOneEmbeddings.R1.haar_finite B2x3.compactW Bs.z_mem Bs.T_pos Bs.haarW`. Establish `hfW' : IsFiniteMeasure Bs.μW'` using `RankOneEmbeddings.R1.haar_finite B2x3.compactW Bs.z'_mem Bs.T'_pos Bs.haarW'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a : ℝ≥0∞ := (C : ℝ≥0∞) * (Bs.μW Set.univ * Bs.μW' Set.univ) with ha`. Establish `ha0 : a ≠ 0`. Use `(ENNReal.mul_pos (by exact_mod_cast hC.ne') (ENNReal.mul_pos ?_ ?_).ne').ne'` and prove the remaining obligations. Conclude with `Measure.measure_univ_ne_zero.2 Bs.haarW.ne_zero`. Conclude with `Measure.measure_univ_ne_zero.2 Bs.haarW'.ne_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `haT : a ≠ ∞` using `ENNReal.mul_ne_top ENNReal.coe_ne_top (ENNReal.mul_ne_top (measure_ne_top _ _) (measure_ne_top _ _))`. Establish `hlaw : μb.map (fun g : Mt k r => Q.zetaL k r Bs.z Bs.z' (Fin.last r) (Matrix.of g)) = a • (volume : Measure ℂ).withDensity (rbW k (Tz k r Bs.z) (Tz k r Bs.z'))`. Rewrite using `[hmap, Measure.map_smul, rbP_map_zeta, smul_smul]`. Use `⟨a⁻¹ • μb, ?_, fun ψ hψ => ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.FourierDecayAlt.P.PBH.glev_last_eq]`.
-
-Conclude with `haar_smul hb (ENNReal.inv_ne_zero.2 haT) (ENNReal.inv_ne_top.2 ha0)`. Rewrite using `[lintegral_smul_measure, ← lintegral_map hψ (measurable_zetaM Bs), hlaw, lintegral_smul_measure, lintegral_withDensity_eq_lintegral_mul _ (measurable_radial_weight k _ _) hψ, smul_eq_mul, smul_eq_mul, ← mul_assoc, ENNReal.inv_mul_cancel ha0 haT, one_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem zetaNormExists : Formalism.FourierDecayAlt.P.PBO.ZetaNormExists := by
   intro k r Wp Wq _ _ _ _ Bs
@@ -315,9 +307,9 @@ end exist
 section formOneThm
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P0 T j X μ L st l0 hD hZ w F F' Φ Φ' ε hε hF hF' hΦ hΦ'`. Establish `hN` using `Formalism.FourierDecayAlt.P.module_regularity Wp Wq P0 T (M.sgn P0 l0) j w F ε hε hF`. Establish `hPic : ∀ a, ∀ y ∈ Q.DomR (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z', (P5.act (P5.RRi L st 0 (D.positionted w)) Φ a : Q.Fn (JC.parLev P0 j).k (JC.parLev P0 j).r (Wq →L[ℂ] Wp)) y.1 y.2 = Q.resG (JC.parLev P0 j).k (JC.parLev P0 j).r (Fin.last _) (B.JF (T.bs j) (D.a …`. Introduce `a y hy`. Rewrite using `[Formalism.FourierDecayAlt.P.radial_module_action Wp Wq P0 T j X μ L st l0 hD w (fun b => B.JF (T.bs j) (F b)) Φ (fun b => Formalism.FourierDecayAlt.P.bessel_function_finite_class _ _ Wp Wq (T.bs j) (F b) ε hε (hF b)) hΦ a y hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Formalism.FourierDecayAlt.P.bessel_module Wp Wq P0 T (M.sgn P0 l0) j w F ε hε hF a y hy).symm`. Establish `h` using `Formalism.FourierDecayAlt.P.JCx2.rb_main (T.bs j) μ 1 (fun G G' Ψ Ψ' hΨ hΨ' c hc => pairAt_one (T.bs j) μ hZ G G' Ψ Ψ' hΨ hΨ' c hc) (D.actOp (D.RRlev T (M.sgn P0 l0) j w) F) F' (P5.act (P5.RRi L st 0 (D.positionted w)) Φ) Φ' (fun a => (hN a).2.1) (fun a => (hF' a).2.1) hPic hΦ'`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Simplify using `only [Complex.ofReal_one, one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem formOne : Formalism.FourierDecayAlt.P.PBO.FormOne := by
   intro Wp Wq _ _ _ _ _ _ P0 T j X μ L st l0 hD hZ w F F' Φ Φ' ε hε hF hF' hΦ hΦ'
@@ -345,12 +337,12 @@ end Formalism.FourierDecayAlt.P.PBF
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `PBF.formOne`.
+A detailed English derivation is pending.
 -/
 theorem module_form_eq_radial_form_one : Formalism.FourierDecayAlt.P.PBO.FormOne := PBF.formOne
 
 /- English proof (translation)
-The claim follows from `PBF.zetaNormExists`.
+A detailed English derivation is pending.
 -/
 theorem exists_zeta_normalized_haar : Formalism.FourierDecayAlt.P.PBO.ZetaNormExists := PBF.zetaNormExists
 

@@ -11,11 +11,11 @@ open scoped TensorProduct
 namespace GlobalTheory.HTSummand
 
 /- English proof (translation)
-Establish `key : ∀ j : ℕ, ∀ a b, (M ^ j) a b ∈ I ^ j`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro a b`. Rewrite using `[pow_zero, Ideal.one_eq_top]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_top`. Consider the case `succ j ih`. Introduce `a b`. Rewrite using `[pow_succ M, Matrix.mul_apply, pow_succ I]`. Conclude with `Ideal.sum_mem _ fun c _ => Ideal.mul_mem_mul (ih a c) (hM c b)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨N, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Use `key N a b` as an intermediate fact. Rewrite `this` using `[hN, Ideal.mem_bot]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isNilpotent_matrix_of_entries_mem {R : Type*} [CommRing R] {n : ℕ} (I : Ideal R) (N : ℕ)
     (hN : I ^ N = ⊥) (M : Matrix (Fin n) (Fin n) R) (hM : ∀ i j, M i j ∈ I) : IsNilpotent M := by
@@ -34,7 +34,7 @@ theorem isNilpotent_matrix_of_entries_mem {R : Type*} [CommRing R] {n : ℕ} (I 
   simpa using this
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Consider the case `succ j ih`. Rewrite using `[pow_succ', Submodule.mul_smul]`. Conclude with `hK.trans (Submodule.smul_mono le_rfl ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_pow_smul_of_le_smul {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] (I : Ideal R)
     (K : Submodule R M) (hK : K ≤ I • K) (j : ℕ) : K ≤ (I ^ j) • K := by
@@ -49,69 +49,57 @@ end GlobalTheory.HTSummand
 namespace GlobalTheory.HTSummand
 
 /- English proof (translation)
-Introduce `C k B _ _ _ _ _ σ hσ H V _ _ _ _ ρ ρ' f hfin hproj hf hker hcomm hV`. Use `letI mH : Module (C ⊗[ℤ] B) H := tensorModOf ρ`. Use `letI mV : Module (k ⊗[ℤ] B) V := tensorModOf ρ'`. Use `set m : Ideal C := RingHom.ker σ with hm_def`. Establish `hmtop : m ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `: (1 : C) ∈ m` using `h ▸ Submodule.mem_top`. Rewrite `this` using `[hm_def, RingHom.mem_ker, map_one]`. Conclude with `one_ne_zero this`. Establish `hmjac : m ≤ (⊥ : Ideal C).jacobson`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Conclude with `IsLocalRing.le_maximalIdeal hmtop`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, m ^ N = ⊥ := by`. Take `⟨N, hN⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := C)`. Conclude with `⟨N, le_bot_iff.1 ((Ideal.pow_right_mono hmjac N).trans (le_of_eq hN))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `τa` to `Algebra.TensorProduct.map σ.toIntAlgHom (AlgHom.id ℤ B)`. Set `τ : C ⊗[ℤ] B →+* k ⊗[ℤ] B` to `τa.toRingHom`. Establish `hτ : Function.Surjective τ` using `Algebra.TensorProduct.map_surjective σ.toIntAlgHom (AlgHom.id ℤ B) hσ Function.surjective_id`. Establish `hτtmul : ∀ (c : C) (b : B), τ (c ⊗ₜ b) = σ c ⊗ₜ b` using `fun _ _ => rfl`. Establish `hkerτ : RingHom.ker τ ≤ Ideal.map (algebraMap C (C ⊗[ℤ] B)) m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : RingHom.ker τ = Ideal.map Algebra.TensorProduct.includeLeft m` using `Algebra.TensorProduct.rTensor_ker σ.toIntAlgHom hσ`. Rewrite using `[h1]`. Conclude with `Ideal.map_le_iff_le_comap.2 fun c hc => Ideal.mem_map_of_mem (algebraMap C (C ⊗[ℤ] B)) hc`. Establish `hJm : ∀ x ∈ RingHom.ker τ, x ∈ (m • ⊤ : Submodule C (C ⊗[ℤ] B))`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.smul_top_eq_map, Submodule.restrictScalars_mem]`. Conclude with `hkerτ hx`. Establish `hJN : (RingHom.ker τ) ^ N = ⊥`. Use `le_bot_iff.1 ((Ideal.pow_right_mono hkerτ N).trans ?_)` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, hN, Ideal.map_bot]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Proceed by induction.
 
-Use `haveI tC : IsScalarTower C (C ⊗[ℤ] B) H := IsScalarTower.of_algebraMap_smul fun c h => by show ((c ⊗ₜ[ℤ] (1 : B) : C ⊗[ℤ] B)) • h = c • h`. Rewrite using `[tensorModOf_tmul, map_one]`. Both sides reduce to the same expression. Use `letI mRV : Module (C ⊗[ℤ] B) V := Module.compHom V τ`. Set `fR : H →ₗ[C ⊗[ℤ] B] V` to `{ toFun := f map_add' := f.map_add map_smul' := fun r h => by show f (r • h) = τ r • f h`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => rw [zero_smul, map_zero, map_zero, zero_smul]`. Consider the case `tmul c b`. Rewrite using `[hτtmul, tensorModOf_tmul, tensorModOf_tmul, f.map_smulₛₗ, hcomm]`. Consider the case `add x y hx hy => rw [add_smul, map_add, hx, hy, map_add, add_smul] }`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfR : Function.Surjective fR` using `hf`. Use `haveI : Module.Finite (C ⊗[ℤ] B) H := Module.Finite.of_restrictScalars_finite C (C ⊗[ℤ] B) H`. Use `haveI : Module.Finite (C ⊗[ℤ] B) V := Module.Finite.of_surjective fR hfR`. Use `haveI finSV : Module.Finite (k ⊗[ℤ] B) V := by`. Use `letI : Algebra (C ⊗[ℤ] B) (k ⊗[ℤ] B) := τ.toAlgebra`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `haveI : IsScalarTower (C ⊗[ℤ] B) (k ⊗[ℤ] B) V := IsScalarTower.of_algebraMap_smul fun r v => rfl`. Conclude with `Module.Finite.of_restrictScalars_finite (C ⊗[ℤ] B) (k ⊗[ℤ] B) V`. Take `⟨n, pb, hpb⟩` from `Module.Finite.exists_fin' (k ⊗[ℤ] B) V`. Take `⟨sb, hsb⟩` from `Module.projective_lifting_property pb LinearMap.id hpb`. Establish `hps : ∀ v, pb (sb v) = v` using `fun v => LinearMap.congr_fun hsb v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set eb : Matrix (Fin n) (Fin n) (k ⊗[ℤ] B) := LinearMap.toMatrix' (sb ∘ₗ pb) with heb`. Establish `heb_idem : IsIdempotentElem eb` using `by show eb * eb = eb`. Rewrite using `[heb, ← LinearMap.toMatrix'_comp]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Simplify using `only [LinearMap.comp_apply, hps]`. Establish `heb_apply : ∀ y, eb.mulVec y = sb (pb y)` using `fun y => by`. Rewrite using `[heb, ← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨E, hE, hEeb⟩` from `exists_isIdempotentElem_eq_of_ker_isNilpotent (τ.mapMatrix : Matrix (Fin n) (Fin n) (C ⊗[ℤ] B) →+* Matrix (Fin n) (Fin n) (k ⊗[ℤ] B)) (fun x hx => by`. Use `isNilpotent_matrix_of_entries_mem (RingHom.ker τ) N hJN x fun i j => ?_` and prove the remaining obligations. Rewrite `hx`, the goal using `[RingHom.mem_ker]`. Conclude with `congrFun (congrFun hx i) j)`. Use `eb ⟨eb.map (Function.surjInv hτ), by ext i j; simp [Function.surjInv_eq hτ]⟩ heb_idem`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hEE : ∀ w, E.mulVec (E.mulVec w) = E.mulVec w` using `fun w => by`. Rewrite using `[Matrix.mulVec_mulVec, hE.eq]`. Establish `hτE : ∀ w : Fin n → C ⊗[ℤ] B, (fun i => τ (E.mulVec w i)) = sb (pb (fun i => τ (w i)))`. Introduce `w`. Rewrite using `[← heb_apply, ← hEeb]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec τ E w i`. Use `set Q : Submodule (C ⊗[ℤ] B) (Fin n → C ⊗[ℤ] B) := LinearMap.range (Matrix.toLin' E) with hQ`. Establish `hQE : ∀ q : Q, E.mulVec (q : Fin n → C ⊗[ℤ] B) = q`. Introduce and unpack `⟨q, w, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `show E.mulVec (Matrix.toLin' E w) = Matrix.toLin' E w`. Rewrite using `[Matrix.toLin'_apply, hEE]`. Set `sQ : (Fin n → C ⊗[ℤ] B) →ₗ[C ⊗[ℤ] B] Q` to `(Matrix.toLin' E).codRestrict Q fun w => LinearMap.mem_range_self _ w`. Establish `hsQ : ∀ q : Q, sQ q = q` using `fun q => Subtype.ext (by show Matrix.toLin' E (q : Fin n → C ⊗[ℤ] B) = q`. Rewrite using `[Matrix.toLin'_apply, hQE])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI hQproj : Module.Projective (C ⊗[ℤ] B) Q := Module.Projective.of_split Q.subtype sQ (LinearMap.ext hsQ)`. Set `φ : Q →ₗ[C ⊗[ℤ] B] V` to `{ toFun := fun q => pb (fun i => τ ((q : Fin n → C ⊗[ℤ] B) i)) map_add' := fun x y => by`. Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Use the proof step `map_smul' := fun r x => by show pb _ = τ r • pb _`. Rewrite using `[← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `}`. Establish `hφ : Function.Surjective φ`. Introduce `v`. Set `w : Fin n → C ⊗[ℤ] B` to `fun i => Function.surjInv hτ (sb v i)`. Use `⟨⟨Matrix.toLin' E w, LinearMap.mem_range_self _ w⟩, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `show pb (fun i => τ (Matrix.toLin' E w i)) = v`. Rewrite using `[Matrix.toLin'_apply, hτE]`. Establish `: (fun i => τ (w i)) = sb v` using `funext fun i => Function.surjInv_eq hτ _`. Rewrite using `[this, hps, hps]`. Take `⟨g, hg⟩` from `Module.projective_lifting_property fR φ hfR`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hgφ : ∀ q, f (g q) = φ q` using `fun q => LinearMap.congr_fun hg q`. Establish `hgs : Function.Surjective g`. Establish `hle : (⊤ : Submodule C H) ≤ (LinearMap.range g).restrictScalars C ⊔ m • ⊤`. Introduce `h _`. Take `⟨q, hq⟩` from `hφ (f h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : f (h - g q) = 0` using `by rw [map_sub, hgφ, hq, sub_self]`. Establish `: h = g q + (h - g q)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (LinearMap.mem_range_self g q) (hker _ h0)`. Establish `htop` using `Submodule.le_of_le_smul_of_le_jacobson_bot Module.Finite.fg_top hmjac hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Conclude with `htop Submodule.mem_top`. Set `g' : Q →ₗ[C] H` to `g.restrictScalars C`. Take `⟨s, hs⟩` from `Module.projective_lifting_property g' LinearMap.id hgs`. Establish `hgs' : ∀ h, g' (s h) = h` using `fun h => LinearMap.congr_fun hs h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `P : Q →ₗ[C] Q` to `LinearMap.id - s ∘ₗ g'`. Establish `hPK : ∀ x, P x ∈ LinearMap.ker g'` using `fun x => by`. Rewrite using `[LinearMap.mem_ker]`. Use `show g' (x - s (g' x)) = 0`. Rewrite using `[map_sub, hgs', sub_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hKm : ∀ x ∈ LinearMap.ker g', x ∈ (m • ⊤ : Submodule C Q)`. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker]`. Establish `hφx : φ x = 0` using `by rw [← hgφ]; exact (congrArg f hx).trans (map_zero f)`. Establish `hτx : (fun i => τ ((x : Fin n → C ⊗[ℤ] B) i)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hτE x`. Rewrite `h1` using `[hQE x]`. Rewrite using `[h1]`. Establish `: pb (fun i => τ ((x : Fin n → C ⊗[ℤ] B) i)) = 0` using `hφx`. Rewrite using `[this, map_zero]`.
-
-Establish `hx1 : (x : Fin n → C ⊗[ℤ] B) ∈ (m • ⊤ : Submodule C (Fin n → C ⊗[ℤ] B))`. Rewrite using `[← Finset.univ_sum_single (x : Fin n → C ⊗[ℤ] B)]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hi : (x : Fin n → C ⊗[ℤ] B) i ∈ (m • ⊤ : Submodule C (C ⊗[ℤ] B))` using `hJm _ (RingHom.mem_ker.2 (congrFun hτx i))`. Use `Submodule.mem_map_of_mem (f := LinearMap.single C (fun _ : Fin n => C ⊗[ℤ] B) i) hi` as an intermediate fact.
-
-Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top this`. Use `Submodule.mem_map_of_mem (f := sQ.restrictScalars C) hx1` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`. Establish `hx' : sQ.restrictScalars C x = x` using `hsQ x`.
-
-Rewrite `this` using `[hx']`. Conclude with `Submodule.smul_mono le_rfl le_top this`. Establish `hK : LinearMap.ker g' ≤ m • LinearMap.ker g'`. Introduce `x hx`. Establish `hPx : P x = x` using `by show x - s (g' x) = x`.
-
-Rewrite using `[LinearMap.mem_ker.1 hx, map_zero, sub_zero]`. Use `Submodule.mem_map_of_mem (f := P) (hKm x hx)` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'', hPx]`. Conclude with `Submodule.smul_mono le_rfl (fun y hy => by`. Take `⟨z, _, rfl⟩` from `hy`.
-
-Conclude with `hPK z) this`. Establish `hK0 : LinearMap.ker g' = ⊥`. Use `le_pow_smul_of_le_smul m _ hK N` as an intermediate fact. Rewrite `this` using `[hN, Submodule.bot_smul]`. Conclude with `le_bot_iff.1 this`.
-
-Establish `hgi : Function.Injective g`. Establish `h' : Function.Injective g'` using `LinearMap.ker_eq_bot.1 hK0`. Conclude with `h'`. Conclude with `Module.Projective.of_equiv (LinearEquiv.ofBijective g ⟨hgi, hgs⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem projective_tensor_of_fibre_projective :
     ∀ (C k B : Type) [CommRing C] [IsLocalRing C] [IsArtinianRing C] [Field k] [CommRing B] (σ : C →+* k),

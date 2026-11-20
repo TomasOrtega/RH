@@ -14,13 +14,11 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Introduce `Ω _ ε C C' C'' φ φ' h h' hd hd' hs hs' heq`. Take `⟨hmono, hadd, -, hcongr⟩` from `GlobalTheory.T.hasQExpansionSumAbove_basic_properties Ω ε`. Use `set C₀ : ℝ := max C (max C' C'') with hC₀`. Establish `h1 : HS ε C₀ φ h` using `hmono C C₀ φ h (le_max_left _ _) hs`. Establish `h2 : HS ε C₀ φ' h'` using `hmono C' C₀ φ' h' (le_trans (le_max_left _ _) (le_max_right _ _)) hs'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : HS ε C₀ (φ - φ') (h - h')` using `((hadd C₀ φ φ' h h') h1 h2).2`. Establish `h4 : HS ε C₀ (fun _ => (0 : ℂ)) (h - h')`. Use `hcongr C₀ (φ - φ') (fun _ => 0) (h - h') ?_ h3` and prove the remaining obligations. Introduce `z hz`. Establish `: C'' < z.im` using `lt_of_le_of_lt (le_trans (le_max_right _ _) (le_max_right _ _)) hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[heq z this]`. Establish `hdd : Den (h - h')` using `(((GlobalTheory.T.hasCommonExponentDenominator_ring_operations Ω).1 h h' hd hd').2.1)`. Assume the negation of the conclusion as `hne`. Establish `hne' : h - h' ≠ 0` using `sub_ne_zero.mpr hne`. Take `⟨D, hD⟩` from `GlobalTheory.T.exists_im_gt_ne_zero_of_hs Ω ε C₀ (fun _ => (0 : ℂ)) (h - h') hdd hne' h4`.
-
-Conclude with `hD ((D + 1 : ℝ) * Complex.I) (by simp) rfl`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hs_uniq : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ) (C C' C'' : ℝ) (φ φ' : ℂ → ℂ) (h h' : HahnSeries ℚ Ω),
     Den h → Den h' → HS ε C φ h → HS ε C' φ' h' → (∀ z : ℂ, C'' < z.im → φ z = φ' z) → h = h' := by

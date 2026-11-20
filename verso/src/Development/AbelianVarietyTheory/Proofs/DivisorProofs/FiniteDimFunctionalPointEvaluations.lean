@@ -5,15 +5,15 @@ open Module
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `E : Xt → Dual ℂ S` to `fun x => (LinearMap.proj x : (Xt → ℂ) →ₗ[ℂ] ℂ).comp S.subtype`. Establish `hE : ∀ x (f : S), E x f = (f : Xt → ℂ) x` using `fun _ _ => rfl`. Use `set W : Submodule ℂ (Dual ℂ S) := Submodule.span ℂ (Set.range E) with hWdef`. Establish `hco : W.dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Rewrite `hf` using `[Submodule.mem_dualCoannihilator]`. Rewrite using `[Submodule.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `hf (E x) (Submodule.subset_span ⟨x, rfl⟩)` as an intermediate fact. Simplify `this` using `[hE]`. Establish `hW : W = ⊤`. Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := W), hco]`. Conclude with `Submodule.dualAnnihilator_bot`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hl : l ∈ W` using `by rw [hW]; trivial`. Take `⟨n, c, g, hg⟩` from `Submodule.mem_span_set'.mp hl`. Use `choose x hx using fun i => (g i).2`. Use `⟨n, x, c, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hx i, hE]`.
+A detailed English derivation is pending.
 -/
 theorem exists_eval_combination (Xt : Type) (S : Submodule ℂ (Xt → ℂ)) [FiniteDimensional ℂ S]
     (l : S →ₗ[ℂ] ℂ) :

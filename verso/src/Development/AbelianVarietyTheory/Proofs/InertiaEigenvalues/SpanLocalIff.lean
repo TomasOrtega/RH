@@ -8,21 +8,19 @@ open IsDedekindDomain NumberField
 namespace GlobalTheory.LocalSpanCriterion
 
 /- English proof (translation)
-Establish `hmem : ∀ y : V, y ∈ Formalism.HermitianLatticesTheory.localization₂ (HeightOneSpectrum.asIdeal w) (Submodule.span (RingOfIntegers K) T) ↔ ∃ s ∈ w.asIdeal.primeCompl, s • y ∈ Submodule.span (RingOfIntegers K) T` using `fun y => Iff.rfl`. Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem y hy => exact ⟨1, w.asIdeal.primeCompl.one_mem, by simpa using Submodule.subset_span hy⟩`. Consider the case `zero => exact ⟨1, w.asIdeal.primeCompl.one_mem, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨s, hs, hsy⟩` from `hy`. Take `⟨t, ht, htz⟩` from `hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s * t, w.asIdeal.primeCompl.mul_mem hs ht, ?_⟩` and prove the remaining obligations. Establish `e : (s * t) • (y + z) = t • (s • y) + s • (t • z)`. Rewrite using `[smul_add, mul_smul, smul_comm s t y, mul_smul]`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ t hsy) (Submodule.smul_mem _ s htz)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul a y _ hy`. Take `⟨s, hs, hsy⟩` from `hy`. Take `⟨⟨r, t⟩, hrt⟩` from `IsLocalization.mk'_surjective w.asIdeal.primeCompl a`. Use `⟨s * t, w.asIdeal.primeCompl.mul_mem hs t.2, ?_⟩` and prove the remaining obligations. Establish `hspec : (IsLocalization.mk' (Formalism.L2.Col.Ow w) r t) * algebraMap (RingOfIntegers K) (Formalism.L2.Col.Ow w) (t : RingOfIntegers K) = algebraMap (RingOfIntegers K) (Formalism.L2.Col.Ow w) r` using `IsLocalization.mk'_spec _ r t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at hrt`. Rewrite `hspec` using `[hrt]`. Establish `e : (s * (t : RingOfIntegers K)) • (a • y) = r • (s • y)`. Establish `ht : (t : RingOfIntegers K) • (a • y) = r • y`. Rewrite using `[← algebraMap_smul (Formalism.L2.Col.Ow w) (t : RingOfIntegers K) (a • y), smul_smul, mul_comm, hspec, algebraMap_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, mul_smul, smul_comm (t : RingOfIntegers K) s, ht, smul_comm s r]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ r hsy`. Introduce and unpack `⟨s, hs, hsx⟩`. Establish `hu : IsUnit (algebraMap (RingOfIntegers K) (Formalism.L2.Col.Ow w) s)` using `IsLocalization.map_units (Formalism.L2.Col.Ow w) (⟨s, hs⟩ : w.asIdeal.primeCompl)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : s • x ∈ Submodule.span (Formalism.L2.Col.Ow w) T`. Use `Submodule.span_le_restrictScalars (RingOfIntegers K) (Formalism.L2.Col.Ow w) T hsx` as an intermediate fact. Conclude with `this`. Rewrite `h1` using `[← algebraMap_smul (Formalism.L2.Col.Ow w) s x]`. Take `⟨u, hu'⟩` from `hu`.
-
-Establish `h2` using `Submodule.smul_mem _ (↑u⁻¹ : Formalism.L2.Col.Ow w) h1`. Rewrite `h2` using `[← hu', smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_local_iff {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V]
     [Module (RingOfIntegers K) V] (w : HeightOneSpectrum (RingOfIntegers K))

@@ -13,19 +13,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Adelic GlobalTheory.Points GlobalTheory.Twist
 
 /- English proof (translation)
-Establish `h0 : ∃ (d : ℕ) (P Q : MvPolynomial (Fin N) F), P.IsHomogeneous d ∧ Q.IsHomogeneous d ∧ eval₂ φ c Q ≠ 0 ∧ 0 * eval₂ φ c Q = eval₂ φ c P` using `⟨0, 0, 1, isHomogeneous_zero _ _ _, isHomogeneous_one _ _, by simp, by simp⟩`. Proceed by induction on `hr using Subfield.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨a, rfl⟩ | ⟨i, j, rfl⟩` into its components or cases. Conclude with `⟨0, C a, 1, isHomogeneous_C _ _, isHomogeneous_one _ _, by simp, by simp⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Distinguish the cases in `hj : c j = 0`. Rewrite using `[hj, div_zero]` and apply the resulting hypothesis. Conclude with `⟨1, X i, X j, isHomogeneous_X _ _, isHomogeneous_X _ _, by simpa using hj, by simp [hj]⟩`. Consider the case `one => exact ⟨0, 1, 1, isHomogeneous_one _ _, isHomogeneous_one _ _, by simp, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Take `⟨d, P, Q, hP, hQ, h1, h2⟩` from `hx`. Take `⟨e, P', Q', hP', hQ', h1', h2'⟩` from `hy`. Use `⟨d + e, P * Q' + Q * P', Q * Q', (hP.mul hQ').add (hQ.mul hP'), hQ.mul hQ', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_mul]`. Conclude with `mul_ne_zero h1 h1'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval₂_add, eval₂_mul, eval₂_mul, eval₂_mul, ← h2, ← h2']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ hx`. Take `⟨d, P, Q, hP, hQ, h1, h2⟩` from `hx`. Conclude with `⟨d, -P, Q, hP.neg, hQ, h1, by rw [eval₂_neg, ← h2, neg_mul]⟩`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `inv x _ hx`. Take `⟨d, P, Q, hP, hQ, h1, h2⟩` from `hx`. Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0, inv_zero]` and apply the resulting hypothesis. Use `⟨d, Q, P, hQ, hP, h2 ▸ mul_ne_zero hx0 h1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2, inv_mul_cancel_left₀ hx0]`. Consider the case `mul x y _ _ hx hy`. Take `⟨d, P, Q, hP, hQ, h1, h2⟩` from `hx`. Take `⟨e, P', Q', hP', hQ', h1', h2'⟩` from `hy`. Use `⟨d + e, P * P', Q * Q', hP.mul hP', hQ.mul hQ', ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval₂_mul]`. Conclude with `mul_ne_zero h1 h1'`. Rewrite using `[eval₂_mul, eval₂_mul, ← h2, ← h2']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_forms_of_mem_closure {F K : Type} [Field F] [Field K] {N : ℕ} (φ : F →+* K) (c : Fin N → K) {r : K}
     (hr : r ∈ Subfield.closure (Set.range φ ∪ {r | ∃ i j, r = c i / c j})) :
@@ -65,9 +65,7 @@ theorem exists_forms_of_mem_closure {F K : Type} [Field F] [Field K] {N : ℕ} (
     · rw [eval₂_mul, eval₂_mul, ← h2, ← h2']; ring
 
 /- English proof (translation)
-Rewrite using `[← basicOpen_eq_bot_iff, eq_bot_iff]`. Introduce `y hy`. Establish `h1 : ptOf (resPt η) ∈ Y.basicOpen f`. Rewrite using `[ptOf_resPt]`. Conclude with `(hη.mem_open_set_iff (Y.basicOpen f).isOpen).2 ⟨y, trivial, hy⟩`.
-
-Conclude with `((valR_ne_zero_iff _ (Y.basicOpen_le f h1) f).2 h1 h).elim`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_valR_generic {Y : Scheme.{0}} [IsReduced Y] {η : Y} (hη : IsGenericPoint η Set.univ)
     {U : Y.Opens} (f : Γ(Y, U)) (h : valR (resPt η) U f = 0) : f = 0 := by
@@ -79,15 +77,15 @@ theorem eq_zero_of_valR_generic {Y : Scheme.{0}} [IsReduced Y] {η : Y} (hη : I
   exact ((valR_ne_zero_iff _ (Y.basicOpen_le f h1) f).2 h1 h).elim
 
 /- English proof (translation)
-Use `hS.isIntegral` as an intermediate fact. Take `⟨η, hη, hr⟩` from `hb`. Take `⟨d, P, Q, hP, hQ, h1, h2⟩` from `exists_forms_of_mem_closure (S.baseHom (resPt η)) (S.coords (resPt η)) (r := valR (resPt η) W a) (hr.ge (Subfield.mem_top _))`. Use `⟨d, P, Q, hP, hQ, fun h => h1 (S.eval₂_coords_eq_zero _ h), fun ha h => ?_, fun K _ _ x hx => ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[S.eval₂_coords_eq_zero _ h]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ha (eq_zero_of_valR_generic hη a ((mul_eq_zero.1 h2).resolve_right h1))`. Use `set j := S.chartAt (ptOf x.1)`. Establish `hxV : ptOf x.1 ∈ W ⊓ S.L.U j` using `⟨hx, S.mem_chartAt _⟩`. Establish `hηV : ptOf (resPt η) ∈ W ⊓ S.L.U j`. Rewrite using `[ptOf_resPt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(hη.mem_open_set_iff (W ⊓ S.L.U j).isOpen).2 ⟨_, trivial, hxV⟩`. Set `f : Γ(S.Y, W ⊓ S.L.U j)` to `(S.Y.presheaf.map (homOfLE inf_le_left).op).hom a * (S.Y.presheaf.map (homOfLE inf_le_right).op).hom (zfun (S.form hQ) j) + -(S.Y.presheaf.map (homOfLE inf_le_right).op).hom (zfun (S.form hP) j)`. Establish `hf : ∀ {Ω : Type} [Field Ω] (z : Sp Ω ⟶ S.Y), ptOf z ∈ W ⊓ S.L.U j → valR z _ f = valR z W a * valR z _ (zfun (S.form hQ) j) - valR z _ (zfun (S.form hP) j)` using `fun z hz => by`. Establish `h` using `(le_iff_ptOf_mem z _).2 hz`. Rewrite using `[valR_add z _ h, valR_neg z _ h, valR_mul z _ h, valR_res z _ h, valR_res z _ h, valR_res z _ h, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf0 : f = 0`. Take `⟨c, -, -, hc⟩` from `S.exists_frame_change (resPt η) j hηV.2`. Use `eq_zero_of_valR_generic hη f ?_` and prove the remaining obligations. Rewrite using `[hf _ hηV, hc, hc, S.powVal_form, S.powVal_form, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `hf x.1 hxV`. Rewrite `h3` using `[hf0, valR_zero _ _ ((le_iff_ptOf_mem _ _).2 hxV), eq_comm, sub_eq_zero]`. Establish `e : ∀ {g : MvPolynomial (Fin S.N) F} (hg : g.IsHomogeneous d), valR x.1 _ (zfun (S.form hg) j) = aeval (S.coords x.1) g` using `fun hg => (S.powVal_form x.1 hg).trans (by rw [LinSys.baseHom_ptOver, aeval_def])`. Rewrite `h3` using `[e, e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_forms (F : Type) [Field F] (S : LinSys F) (hS : S.IsVariety) (_ : S.BasePointFree)
     (hb : S.Birational) (W : S.Y.Opens) (a : Γ(S.Y, W)) :

@@ -13,17 +13,17 @@ namespace GlobalTheory.BlockPoint.SymPrim
 variable {κ : Type} [DecidableEq κ]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_eq, AlgHom.commutes]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mid_C (x y : κ) (a : ℝ) : mid x y (C a) = C a := by
   rw [← algebraMap_eq, AlgHom.commutes]
 
 /- English proof (translation)
-Establish `h` using `hM.aeval (n := 1) (fun z => mid x y (X z)) (fun z => by`. Distinguish the cases in `hx : z = x`. Substitute `hx` using the available equality. Rewrite using `[mid_X_left]`. Conclude with `((isHomogeneous_X _ _).add (isHomogeneous_X _ _)).C_mul _`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : z = y`. Substitute `hy` using the available equality. Rewrite using `[mid_X_right]`. Conclude with `((isHomogeneous_X _ _).add (isHomogeneous_X _ _)).C_mul _`. Rewrite using `[mid_X_of_ne hx hy]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isHomogeneous_X _ _)`. Rewrite `h` using `[one_mul]`. Establish `e : aeval (fun z => mid x y (X z)) M = mid x y M` using `by conv_rhs => rw [aeval_unique (mid x y)]`. Both sides reduce to the same expression. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mid_isHomogeneous (x y : κ) {M : MvPolynomial κ ℝ} {d : ℕ} (hM : M.IsHomogeneous d) :
     (mid x y M).IsHomogeneous d := by
@@ -40,11 +40,11 @@ theorem mid_isHomogeneous (x y : κ) {M : MvPolynomial κ ℝ} {d : ℕ} (hM : M
   rwa [e] at h
 
 /- English proof (translation)
-Establish `: (rename (Equiv.swap x y)).comp (mid x y) = mid x y`. Apply `algHom_ext` to reduce the goal to its premises. Introduce `z`. Simplify using `only [AlgHom.comp_apply]`. Distinguish the cases in `hx : z = x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hx` using the available equality. Rewrite using `[mid_X_left]`. Simplify using `[rename_X, Equiv.swap_apply_left, Equiv.swap_apply_right, add_comm]`. Distinguish the cases in `hy : z = y`. Substitute `hy` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[mid_X_right]`. Simplify using `[rename_X, Equiv.swap_apply_left, Equiv.swap_apply_right, add_comm]`. Rewrite using `[mid_X_of_ne hx hy, rename_X, Equiv.swap_apply_of_ne_of_ne hx hy]`. Conclude with `congrArg (fun f => f M) this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_swap_mid (x y : κ) (M : MvPolynomial κ ℝ) :
     rename (Equiv.swap x y) (mid x y M) = mid x y M := by
@@ -62,13 +62,13 @@ theorem rename_swap_mid (x y : κ) (M : MvPolynomial κ ℝ) :
 abbrev dif (x y : κ) : Derivation ℝ (MvPolynomial κ ℝ) (MvPolynomial κ ℝ) := pderiv y - pderiv x
 
 /- English proof (translation)
-Proceed by induction on `M using MvPolynomial.induction_on with`. Consider the case `C a => rw [mid_C, ← algebraMap_eq, Derivation.map_algebraMap]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, add_zero]`. Consider the case `mul_X p z hp`. Rewrite using `[map_mul, Derivation.leibniz, hp, smul_zero, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `: dif x y (mid x y (X z)) = 0`. Distinguish the cases in `hx : z = x`. Substitute `hx` using the available equality. Rewrite using `[mid_X_left]`. Simplify using `[pderiv_X, Pi.single_apply, hxy, hxy.symm]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hy : z = y`. Substitute `hy` using the available equality. Rewrite using `[mid_X_right]`. Simplify using `[pderiv_X, Pi.single_apply, hxy, hxy.symm]`. Rewrite using `[mid_X_of_ne hx hy]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[pderiv_X, Pi.single_apply, hx, hy, Ne.symm hx, Ne.symm hy]`. Rewrite using `[this, smul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dif_mid (x y : κ) (hxy : x ≠ y) (M : MvPolynomial κ ℝ) : dif x y (mid x y M) = 0 := by
   induction M using MvPolynomial.induction_on with
@@ -85,7 +85,7 @@ theorem dif_mid (x y : κ) (hxy : x ≠ y) (M : MvPolynomial κ ℝ) : dif x y (
     rw [this, smul_zero]
 
 /- English proof (translation)
-Simplify using `[pderiv_X, Pi.single_apply, hxy, hxy.symm]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem dif_u (x y : κ) (hxy : x ≠ y) : dif x y (X y - X x) = 2 := by
   simp [pderiv_X, Pi.single_apply, hxy, hxy.symm]
@@ -95,23 +95,23 @@ def gens (x y : κ) (N : ℕ) : Set (MvPolynomial κ ℝ) :=
   {p | ∃ (j d : ℕ) (M : MvPolynomial κ ℝ), M.IsHomogeneous d ∧ j + d = N ∧ p = (X y - X x) ^ j * mid x y M}
 
 /- English proof (translation)
-Rewrite using `[← map_ofNat (C (R := ℝ) (σ := κ)) 2, ← C_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem half_two : (C (1 / 2 : ℝ) : MvPolynomial κ ℝ) * 2 = 1 := by
   rw [← map_ofNat (C (R := ℝ) (σ := κ)) 2, ← C_mul]; norm_num
 
 /- English proof (translation)
-Establish `: Submodule.span ℝ (gens x y N) ≤ (Submodule.span ℝ (gens x y (N + 1))).comap (LinearMap.mulLeft ℝ (X z))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, d, M, hM, hjd, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.mulLeft_apply]`. Establish `hXM : (X z * M).IsHomogeneous (d + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(isHomogeneous_X ℝ z).mul hM` as an intermediate fact. Rewrite `this` using `[add_comm]`. Then use the resulting hypothesis. Establish `m1 : (X y - X x) ^ j * mid x y (X z * M) ∈ Submodule.span ℝ (gens x y (N + 1))` using `Submodule.subset_span ⟨j, d + 1, X z * M, hXM, by omega, rfl⟩`. Establish `m2 : (X y - X x) ^ (j + 1) * mid x y M ∈ Submodule.span ℝ (gens x y (N + 1))` using `Submodule.subset_span ⟨j + 1, d, M, hM, by omega, rfl⟩`. Distinguish the cases in `hx : z = x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hx` using the available equality. Establish `e : X z * ((X y - X z) ^ j * mid z y M) = (X y - X z) ^ j * mid z y (X z * M) - (1 / 2 : ℝ) • ((X y - X z) ^ (j + 1) * mid z y M)`. Rewrite using `[map_mul, mid_X_left, smul_eq_C_mul]`. Take the linear combination `(-((X y - X z) ^ j * mid z y M * X z)) * (half_two (κ := κ))`. Rewrite using `[e]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sub_mem _ m1 (Submodule.smul_mem _ _ m2)`. Distinguish the cases in `hy : z = y`. Substitute `hy` using the available equality. Establish `e : X z * ((X z - X x) ^ j * mid x z M) = (X z - X x) ^ j * mid x z (X z * M) + (1 / 2 : ℝ) • ((X z - X x) ^ (j + 1) * mid x z M)`. Rewrite using `[map_mul, mid_X_right, smul_eq_C_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-((X z - X x) ^ j * mid x z M * X z)) * (half_two (κ := κ))`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ m1 (Submodule.smul_mem _ _ m2)`. Establish `e : X z * ((X y - X x) ^ j * mid x y M) = (X y - X x) ^ j * mid x y (X z * M)`. Rewrite using `[map_mul, mid_X_of_ne hx hy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `m1`. Conclude with `this hp`.
+A detailed English derivation is pending.
 -/
 theorem X_mul_mem_span (x y : κ) (N : ℕ) (z : κ) {p : MvPolynomial κ ℝ}
     (hp : p ∈ Submodule.span ℝ (gens x y N)) : X z * p ∈ Submodule.span ℝ (gens x y (N + 1)) := by
@@ -145,15 +145,13 @@ theorem X_mul_mem_span (x y : κ) (N : ℕ) (z : κ) {p : MvPolynomial κ ℝ}
   exact this hp
 
 /- English proof (translation)
-Establish `key : ∀ (s : κ →₀ ℕ) (a : ℝ), ∃ n, (monomial s a).IsHomogeneous n ∧ monomial s a ∈ Submodule.span ℝ (gens x y n)`. Use `MvPolynomial.induction_on_monomial (motive := fun p => ∃ n, p.IsHomogeneous n ∧ p ∈ Submodule.span ℝ (gens x y n)) ?_ ?_` and prove the remaining obligations. Introduce `a`. Use `⟨0, isHomogeneous_C _ _, ?_⟩` and prove the remaining obligations. Establish `e : (C a : MvPolynomial κ ℝ) = a • ((X y - X x) ^ 0 * mid x y 1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[pow_zero, map_one, mul_one, smul_eq_C_mul, mul_one]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, 0, 1, isHomogeneous_one _ _, rfl, rfl⟩)`. Introduce `p z hp`. Take `⟨n, hn, hmem⟩` from `hp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n + 1, hn.mul (isHomogeneous_X _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `X_mul_mem_span x y n z hmem`. Rewrite using `[g.as_sum]`. Use `Submodule.sum_mem _ fun v hv => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn, hmem⟩` from `key v (coeff v g)`. Establish `hv' : coeff v g ≠ 0` using `mem_support_iff.mp hv`. Establish `h1` using `hn (by rw [coeff_monomial, if_pos rfl]; exact hv')`. Establish `h2` using `hg hv'`. Rewrite using `[← h1.symm.trans h2]`.
-
-Conclude with `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_isHomogeneous (x y : κ) {N : ℕ} {g : MvPolynomial κ ℝ} (hg : g.IsHomogeneous N) :
     g ∈ Submodule.span ℝ (gens x y N) := by
@@ -195,13 +193,13 @@ def good (x y : κ) (φ ψ : MvPolynomial κ ℝ →ₗ[ℝ] ℝ) (N : ℕ) : Su
     · rw [map_smul, map_smul, h2]
 
 /- English proof (translation)
-Use `set c : ℝ := 1 / (2 * (2 * (k : ℝ) + 1)) with hc`. Use `⟨C c * ((X y - X x) ^ (2 * k + 1) * mid x y M), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hu : (X y - X x : MvPolynomial κ ℝ).IsHomogeneous 1` using `(isHomogeneous_X _ _).sub (isHomogeneous_X _ _)`. Use `((hu.pow (2 * k + 1)).mul (mid_isHomogeneous x y hM)).C_mul c` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Express the relevant statement in the definitionally equal form `dif x y _ = _`. Rewrite using `[← smul_eq_C_mul, Derivation.map_smul, Derivation.leibniz, dif_mid x y hxy, Derivation.leibniz_pow, dif_u x y hxy, smul_zero, zero_add, smul_eq_C_mul, smul_eq_mul, smul_eq_mul, nsmul_eq_mul]`. Establish `hc2 : (C c : MvPolynomial κ ℝ) * (2 * ((2 * k + 1 : ℕ) : MvPolynomial κ ℝ)) = 1`. Rewrite using `[← map_natCast (C (σ := κ) (R := ℝ)), ← map_ofNat (C (R := ℝ) (σ := κ)) 2, ← C_mul, ← C_mul, hc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← C_1]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using `only [Nat.add_sub_cancel]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `((X y - X x) ^ (2 * k) * mid x y M) * hc2`. Rewrite using `[← smul_eq_C_mul, map_smul, smul_eq_mul]`. Conclude with `h k d M hM hkd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_mem_good (x y : κ) (hxy : x ≠ y) (φ ψ : MvPolynomial κ ℝ →ₗ[ℝ] ℝ) (N : ℕ)
     (h : ∀ (k d : ℕ) (M : MvPolynomial κ ℝ), M.IsHomogeneous d → 2 * k + d = N →
@@ -228,13 +226,13 @@ theorem gen_mem_good (x y : κ) (hxy : x ≠ y) (φ ψ : MvPolynomial κ ℝ →
     exact h k d M hM hkd
 
 /- English proof (translation)
-Set `Sy : MvPolynomial κ ℝ →ₗ[ℝ] MvPolynomial κ ℝ` to `(1 / 2 : ℝ) • (LinearMap.id + (rename (Equiv.swap x y)).toLinearMap)`. Establish `hSy : ∀ p, Sy p = (1 / 2 : ℝ) • (p + rename (Equiv.swap x y) p)` using `fun p => rfl`. Establish `hru : rename (Equiv.swap x y) (X y - X x : MvPolynomial κ ℝ) = -(X y - X x)`. Simplify using `[rename_X, Equiv.swap_apply_left, Equiv.swap_apply_right]`. Establish `hle : Submodule.span ℝ (gens x y N) ≤ (good x y φ ψ N).comap Sy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, d, M, hM, hjd, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, hSy, map_mul, map_pow, hru, rename_swap_mid]`. Break down `Nat.even_or_odd j with ⟨k, rfl⟩ | ⟨k, rfl⟩` into its components or cases. Rewrite using `[← two_mul, Even.neg_pow ⟨k, by ring⟩, ← two_smul ℝ, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Conclude with `gen_mem_good x y hxy φ ψ N h k d M hM (by omega)`. Rewrite using `[Odd.neg_pow ⟨k, rfl⟩, neg_mul, add_neg_cancel, smul_zero]`. Conclude with `Submodule.zero_mem _`. Establish `hg' : Sy g ∈ good x y φ ψ N` using `hle (mem_span_of_isHomogeneous x y hg)`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite `hg'` using `[hSy, hsym, ← two_smul ℝ, smul_smul]`. Evaluate the numerical expressions using `at hg'`. Conclude with `hg'`.
+A detailed English derivation is pending.
 -/
 theorem exists_primitive_symm (κ : Type) [Fintype κ] [DecidableEq κ] (x y : κ) (hxy : x ≠ y)
     (φ ψ : MvPolynomial κ ℝ →ₗ[ℝ] ℝ) (N : ℕ)

@@ -5,23 +5,21 @@ open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 namespace GlobalTheory.HCF
 
 /- English proof (translation)
-Introduce `E _ _ _ a L W X hX N`. Use `set S : Module.End ℂ (Sm E a) := scalD E a with hS`. Use `set f : ℂ → Module.End ℂ (Sm E a) := fun c => S - algebraMap ℂ (Module.End ℂ (Sm E a)) c with hf`. Establish `hSZ : S ∈ Zalg E a` using `Central.lie_mem_Zalg 1`. Establish `hpow : ∀ (χ : Module.End ℂ (Sm E a) → ℂ) (φ : Sm E a), CentralNilGL χ N φ → (f (χ S) ^ N) φ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `χ φ h`. Establish `key : ∀ n : ℕ, (List.replicate n S).foldr (fun z g => z g - χ z • g) φ = (f (χ S) ^ n) φ`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih`. Rewrite using `[List.replicate_succ, List.foldr_cons, ih, pow_succ', Module.End.mul_apply]`. Simplify using `[hf, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[← key]`. Conclude with `h _ (List.length_replicate) (fun z hz => by rw [List.eq_of_mem_replicate hz]; exact hSZ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc : ∀ c d, Commute (f c) (f d)` using `fun c d => Commute.sub_left (Commute.sub_right (Commute.refl S) (Algebra.commute_algebraMap_right _ _)) (Commute.sub_right (Algebra.commute_algebraMap_left _ _) (Algebra.commute_algebraMap_left _ _))`. Establish `hcl : ∀ (l : List ℂ) c, Commute (f c) (l.map f).prod` using `fun l c => Commute.list_prod_right _ _ fun y hy => by`. Take `⟨d, -, rfl⟩` from `List.mem_map.1 hy`. Conclude with `hc c d`. Set `G : (Module.End ℂ (Sm E a) → ℂ) → List ℂ` to `fun χ => List.replicate N (χ S)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `main : ∀ (Ls : List (Module.End ℂ (Sm E a) → ℂ)) (φ : Sm E a), (∃ χ ∈ Ls, (f (χ S) ^ N) φ = 0) → ((Ls.flatMap G).map f).prod φ = 0`. Introduce `Ls`. Proceed by induction on `Ls with`. Consider the case `nil => intro φ h`. Simplify using `at h`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `cons χ0 rest ih`. Introduce `φ ⟨χ, hχ, h0⟩`. Rewrite using `[List.flatMap_cons, List.map_append, List.prod_append]`. Establish `hA : ((G χ0).map f).prod = f (χ0 S) ^ N`. Simplify using `[G, List.map_replicate, List.prod_replicate]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `List.mem_cons.1 hχ with rfl | hr` into its components or cases. Establish `hcomm : Commute ((G χ).map f).prod ((rest.flatMap G).map f).prod`. Rewrite using `[hA]`. Conclude with `(hcl _ _).pow_left N`. Rewrite using `[hcomm.eq, Module.End.mul_apply, hA, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Module.End.mul_apply, ih φ ⟨χ, hr, h0⟩, map_zero]`. Use `⟨hX.toFinset.toList.flatMap G, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hsub : formsGL E a L W X N ⊆ (LinearMap.ker ((hX.toFinset.toList.flatMap G).map f).prod : Set (Sm E a))`. Introduce `ψ hψ`. Take `⟨χ, hχX, hχ⟩` from `hψ.2.2.2`.
-
-Conclude with `LinearMap.mem_ker.2 (main _ ψ ⟨χ, by simpa using hχX, hpow χ ψ hχ⟩)`. Conclude with `LinearMap.mem_ker.1 ((Submodule.span_le.2 hsub) hφ)`.
+A detailed English derivation is pending.
 -/
 theorem span_formsGL_killed_scalD : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (L : Subgroup (GL (Fin a) (Af E)))
     (W : Submodule ℂ (Kinf E a → ℂ)) (X : Set (Module.End ℂ (Sm E a) → ℂ)), X.Finite → ∀ N : ℕ,

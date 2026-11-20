@@ -11,7 +11,7 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Establish `h : 0 < ((x : ℂ) + (y : ℂ) * Complex.I).im` using `by simpa using hy`. Rewrite using `[ofComplex_apply_of_im_pos h]`. Express the relevant statement in the definitionally equal form `((x : ℂ) + (y : ℂ) * Complex.I).im = y`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem im_ofComplex_xy (x y : ℝ) (hy : 0 < y) :
     (ofComplex ((x : ℂ) + (y : ℂ) * Complex.I)).im = y := by
@@ -21,9 +21,9 @@ theorem im_ofComplex_xy (x y : ℝ) (hy : 0 < y) :
   simp
 
 /- English proof (translation)
-Establish `hI : IntegrableOn (fun y : ℝ => y ^ (max (r - 2) 0) * Real.exp (-c * y ^ (1 : ℝ))) (Set.Ioi 0)` using `integrableOn_rpow_mul_exp_neg_mul_rpow (by have := le_max_right (r - 2) 0; linarith) one_pos hc`. Establish `hI'` using `hI.mono_set (Set.Ioi_subset_Ioi zero_le_one)`. Use `Integrable.mono' hI' ?_ ?_` and prove the remaining obligations. Conclude with `(Measurable.aestronglyMeasurable (by fun_prop))`. Use `(ae_restrict_iff' measurableSet_Ioi).2 (Eventually.of_forall fun y hy => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hy1 : (1 : ℝ) ≤ y` using `le_of_lt hy`. Establish `hy0 : 0 < y` using `lt_of_lt_of_le one_pos hy1`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (Real.rpow_nonneg hy0.le _) (Real.exp_pos _).le), Real.rpow_one]`. Conclude with `mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le hy1 (le_max_left _ _)) (Real.exp_pos _).le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_rpow_sub_two_mul_exp_Ioi_one (r c : ℝ) (hc : 0 < c) :
     IntegrableOn (fun y : ℝ => y ^ (r - 2) * Real.exp (-c * y)) (Set.Ioi 1) := by
@@ -43,17 +43,17 @@ theorem integrableOn_rpow_sub_two_mul_exp_Ioi_one (r c : ℝ) (hc : 0 < c) :
       (Real.rpow_le_rpow_of_exponent_le hy1 (le_max_left _ _)) (Real.exp_pos _).le
 
 /- English proof (translation)
-Introduce `r c hc`. Establish `hmim : Measurable (fun τ : ℍ => τ.im)` using `UpperHalfPlane.continuous_im.measurable`. Establish `hmeas : Measurable (fun τ : ℍ => τ.im ^ r * Real.exp (-c * τ.im))` using `(hmim.pow_const r).mul (Real.measurable_exp.comp (measurable_const.mul hmim))`. Use `⟨hmeas.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hmT : MeasurableSet {τ : ℍ | 1 ≤ τ.im}` using `measurableSet_le measurable_const hmim`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hS : {τ : ℍ | τ ∈ strip ∧ 1 ≤ τ.im} = {τ : ℍ | 1 ≤ τ.im} ∩ strip`. Use extensionality with `τ`. Simplify using `[and_comm]`. Use `show ∫⁻ τ in {τ : ℍ | τ ∈ strip ∧ 1 ≤ τ.im}, ‖τ.im ^ r * Real.exp (-c * τ.im)‖ₑ < ⊤`. Rewrite using `[hS, ← Measure.restrict_restrict hmT, ← lintegral_indicator hmT, (GlobalTheory.T.unitStrip_integral_eq_iterated).1 _ ((hmeas.enorm).indicator hmT)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinner : Set.EqOn (fun y : ℝ => (∫⁻ x in Set.Ico (0 : ℝ) 1, {τ : ℍ | 1 ≤ τ.im}.indicator (fun τ => ‖τ.im ^ r * Real.exp (-c * τ.im)‖ₑ) (ofComplex (x + y * Complex.I))) * ENNReal.ofReal (1 / y ^ 2)) (fun y : ℝ => (Set.Ici (1 : ℝ)).indicator (fun y => ENNReal.ofReal (y ^ (r - 2) * …`. Introduce `y hy`. Establish `hy0 : (0 : ℝ) < y` using `hy`. Establish `hpt : ∀ x : ℝ, {τ : ℍ | 1 ≤ τ.im}.indicator (fun τ => ‖τ.im ^ r * Real.exp (-c * τ.im)‖ₑ) (ofComplex (x + y * Complex.I)) = (Set.Ici (1 : ℝ)).indicator (fun y => ENNReal.ofReal (y ^ r * Real.exp (-c * y))) y`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : (1 : ℝ) ≤ y`. Rewrite using `[Set.indicator_of_mem (by simpa [im_ofComplex_xy x y hy0] using h1), Set.indicator_of_mem (by simpa using h1), im_ofComplex_xy x y hy0, Real.enorm_eq_ofReal (mul_nonneg (Real.rpow_nonneg hy0.le _) (Real.exp_pos _).le)]`. Rewrite using `[Set.indicator_of_notMem (by simpa [im_ofComplex_xy x y hy0] using h1), Set.indicator_of_notMem (by simpa using h1)]`. Simplify using `only [hpt]`. Rewrite using `[setLIntegral_const, Real.volume_Ico, sub_zero, ENNReal.ofReal_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : (1 : ℝ) ≤ y`. Rewrite using `[Set.indicator_of_mem (by simpa using h1), Set.indicator_of_mem (by simpa using h1), ← ENNReal.ofReal_mul (mul_nonneg (Real.rpow_nonneg hy0.le _) (Real.exp_pos _).le)]`. Use `congr 1`. Rewrite using `[Real.rpow_sub hy0, Real.rpow_two]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (by simpa using h1), Set.indicator_of_notMem (by simpa using h1), zero_mul]`. Rewrite using `[setLIntegral_congr_fun measurableSet_Ioi hinner, lintegral_indicator measurableSet_Ici, Measure.restrict_restrict measurableSet_Ici, Set.inter_eq_left.2 (Set.Ici_subset_Ioi.2 one_pos)]`. Establish `hfin` using `((integrableOn_Ici_iff_integrableOn_Ioi).2 (integrableOn_rpow_sub_two_mul_exp_Ioi_one r c hc)).hasFiniteIntegral`. Conclude with `lt_of_le_of_lt (lintegral_ofReal_le_lintegral_enorm _) hfin`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrableOn_im_rpow_mul_exp_strip_one_le :
     ∀ (r c : ℝ), 0 < c → IntegrableOn (fun τ : ℍ => τ.im ^ r * Real.exp (-c * τ.im))

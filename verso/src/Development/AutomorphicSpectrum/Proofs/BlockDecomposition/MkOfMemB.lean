@@ -14,23 +14,23 @@ namespace GlobalTheory.CompanionTheory.TowFlat
 variable {W : Type} [CommRing W]
 
 /- English proof (translation)
-The claim follows from `(Submodule.Quotient.mk_eq_zero ((L.B n).submoduleOf (L.Z n))).1 hz`.
+A detailed English derivation is pending.
 -/
 theorem mem_B_of_mk {L : Cx.{1} W} {n : ℕ} (z : L.Z n) (hz : (Submodule.Quotient.mk z : L.H n) = 0) :
     z.1 ∈ L.B n :=
   (Submodule.Quotient.mk_eq_zero ((L.B n).submoduleOf (L.Z n))).1 hz
 
 /- English proof (translation)
-The claim follows from `(Submodule.Quotient.mk_eq_zero ((L.B n).submoduleOf (L.Z n))).2 h`.
+A detailed English derivation is pending.
 -/
 theorem mk_of_mem_B {L : Cx.{1} W} {n : ℕ} (z : L.Z n) (h : z.1 ∈ L.B n) :
     (Submodule.Quotient.mk z : L.H n) = 0 :=
   (Submodule.Quotient.mk_eq_zero ((L.B n).submoduleOf (L.Z n))).2 h
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Establish `e : x = 0` using `h`. Rewrite using `[e, map_zero]`. Consider the case `succ n`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨y, rfl⟩` from `h`. Conclude with `L.dd n y`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem d_of_B {L : Cx.{1} W} {n : ℕ} {x : L.X n} (h : x ∈ L.B n) : L.d n x = 0 := by
   cases n with
@@ -50,9 +50,9 @@ section Conn
 variable {A B C : Cx.{1} W} {f : Cx.Hom A B (RingHom.id W)} {g : Cx.Hom B C (RingHom.id W)}
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Establish `e : z = 0` using `h`. Conclude with `⟨0, Submodule.zero_mem _, by rw [e, map_zero]⟩`. Consider the case `succ n`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨c, rfl⟩` from `h`. Take `⟨b, rfl⟩` from `hS.2.1 n c`. Conclude with `⟨B.d n b, ⟨b, rfl⟩, (g.comm n b).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lift_B (hS : Ses f g) {n : ℕ} {z : C.X n} (h : z ∈ C.B n) : ∃ b ∈ B.B n, g.f n b = z := by
   cases n with
@@ -69,9 +69,9 @@ def Rel (f : Cx.Hom A B (RingHom.id W)) (g : Cx.Hom B C (RingHom.id W)) (j : ℕ
     g.f j β = z.1 ∧ f.f (j + 1) w.1 = B.d j β
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨β, hβ⟩` from `hS.2.1 j z.1`. Establish `h0 : g.f (j + 1) (B.d j β) = 0`. Rewrite using `[← g.comm, hβ]`. Conclude with `z.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `(hS.2.2 (j + 1) _).1 h0`. Establish `hd : A.d (j + 1) w = 0`. Apply `hS.1 (j + 2)` to reduce the goal to its premises. Rewrite using `[← f.comm, hw, B.dd, map_zero]`. Conclude with `⟨_, z, β, ⟨w, hd⟩, rfl, rfl, hβ, hw⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rel_total (hS : Ses f g) (j : ℕ) (x : C.H j) : ∃ v, Rel f g j x v := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -86,9 +86,9 @@ theorem rel_total (hS : Ses f g) (j : ℕ) (x : C.H j) : ∃ v, Rel f g j x v :=
   exact ⟨_, z, β, ⟨w, hd⟩, rfl, rfl, hβ, hw⟩
 
 /- English proof (translation)
-Take `⟨z, β, w, rfl, rfl, h1, h2⟩` from `h`. Take `⟨z', β', w', rfl, rfl, h1', h2'⟩` from `h'`. Use `⟨z + z', β + β', w + w', rfl, rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, h1, h1']`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `f.f (j + 1) (w.1 + w'.1) = _`. Rewrite using `[map_add, map_add, h2, h2']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rel_add {j : ℕ} {x x' : C.H j} {v v' : A.H (j + 1)} (h : Rel f g j x v) (h' : Rel f g j x' v') :
     Rel f g j (x + x') (v + v') := by
@@ -100,9 +100,9 @@ theorem rel_add {j : ℕ} {x x' : C.H j} {v v' : A.H (j + 1)} (h : Rel f g j x v
     rw [map_add, map_add, h2, h2']
 
 /- English proof (translation)
-Take `⟨z, β, w, rfl, rfl, h1, h2⟩` from `h`. Use `⟨s • z, s • β, s • w, rfl, rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, h1]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `f.f (j + 1) (s • w.1) = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [map_smul, h2, RingHom.id_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rel_smul {j : ℕ} (s : W) {x : C.H j} {v : A.H (j + 1)} (h : Rel f g j x v) :
     Rel f g j (s • x) (s • v) := by
@@ -113,9 +113,9 @@ theorem rel_smul {j : ℕ} (s : W) {x : C.H j} {v : A.H (j + 1)} (h : Rel f g j 
     simp only [map_smul, h2, RingHom.id_apply]
 
 /- English proof (translation)
-Take `⟨z, β, w, hz, rfl, h1, h2⟩` from `h`. Take `⟨b, hbB, hb⟩` from `lift_B hS (mem_B_of_mk z hz)`. Establish `h0 : g.f j (β - b) = 0` using `by rw [map_sub, h1, hb, sub_self]`. Take `⟨a, ha⟩` from `(hS.2.2 j _).1 h0`. Establish `e : w.1 = A.d j a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hS.1 (j + 1)` to reduce the goal to its premises. Rewrite using `[h2, ← f.comm, ha, map_sub, d_of_B hbB, sub_zero]`. Conclude with `mk_of_mem_B w ⟨a, e.symm⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_zero (hS : Ses f g) {j : ℕ} {v : A.H (j + 1)} (h : Rel f g j 0 v) : v = 0 := by
   obtain ⟨z, β, w, hz, rfl, h1, h2⟩ := h
@@ -128,7 +128,7 @@ theorem rel_zero (hS : Ses f g) {j : ℕ} {v : A.H (j + 1)} (h : Rel f g j 0 v) 
   exact mk_of_mem_B w ⟨a, e.symm⟩
 
 /- English proof (translation)
-Establish `h2` using `rel_add h (rel_smul (-1) h')`. Rewrite `h2` using `[neg_one_smul, neg_one_smul, add_neg_cancel]`. Conclude with `add_neg_eq_zero.1 (rel_zero hS h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_unique (hS : Ses f g) {j : ℕ} {x : C.H j} {v v' : A.H (j + 1)} (h : Rel f g j x v)
     (h' : Rel f g j x v') : v = v' := by
@@ -144,23 +144,23 @@ def cn (hS : Ses f g) (j : ℕ) : C.H j →ₗ[W] A.H (j + 1) where
     (rel_smul s (Classical.choose_spec (rel_total hS j x)))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (rel_total hS j x)`.
+A detailed English derivation is pending.
 -/
 theorem cn_rel (hS : Ses f g) (j : ℕ) (x : C.H j) : Rel f g j x (cn hS j x) :=
   Classical.choose_spec (rel_total hS j x)
 
 /- English proof (translation)
-The claim follows from `rel_unique hS (cn_rel hS j x) h`.
+A detailed English derivation is pending.
 -/
 theorem cn_eq (hS : Ses f g) {j : ℕ} {x : C.H j} {v : A.H (j + 1)} (h : Rel f g j x v) : cn hS j x = v :=
   rel_unique hS (cn_rel hS j x) h
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hb : g.f j z.1 ∈ C.B j` using `mem_B_of_mk (g.mapZ j z) h`. Take `⟨b, hbB, hbg⟩` from `lift_B hS hb`. Establish `h0 : g.f j (z.1 - b) = 0` using `by rw [map_sub, hbg, sub_self]`. Take `⟨a, ha⟩` from `(hS.2.2 j _).1 h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `da : A.d j a = 0`. Apply `hS.1 (j + 1)` to reduce the goal to its premises. Establish `hz : B.d j z.1 = 0` using `z.2`. Rewrite using `[map_zero, ← f.comm, ha, map_sub, d_of_B hbB, hz, sub_zero]`. Use `⟨Submodule.Quotient.mk ⟨a, da⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (f.mapZ j ⟨a, da⟩) = Submodule.Quotient.mk z`. Rewrite using `[Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `f.f j a - z.1 ∈ B.B j`. Rewrite using `[ha, sub_sub_cancel_left]`. Conclude with `Submodule.neg_mem _ hbB`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_mid (hS : Ses f g) (j : ℕ) (x : B.H j) (h : g.mapH j x = 0) : ∃ y, f.mapH j y = x := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -180,11 +180,11 @@ theorem ex_mid (hS : Ses f g) (j : ℕ) (x : B.H j) (h : g.mapH j x = 0) : ∃ y
   exact Submodule.neg_mem _ hbB
 
 /- English proof (translation)
-Take `⟨z, β, w, rfl, hw, h1, h2⟩` from `cn_rel hS j x`. Rewrite `hw` using `[h]`. Take `⟨a, ha⟩` from `mem_B_of_mk w hw`. Establish `hd : B.d j (β - f.f j a) = 0`. Rewrite using `[map_sub, f.comm, ha, h2, sub_self]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Submodule.Quotient.mk ⟨_, hd⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (g.mapZ j ⟨_, hd⟩) = Submodule.Quotient.mk z`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g.f j (β - f.f j a) = z.1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_sub, h1, (hS.2.2 j _).2 ⟨a, rfl⟩, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_cn (hS : Ses f g) (j : ℕ) (x : C.H j) (h : cn hS j x = 0) : ∃ y, g.mapH j y = x := by
   obtain ⟨z, β, w, rfl, hw, h1, h2⟩ := cn_rel hS j x
@@ -200,9 +200,9 @@ theorem ex_cn (hS : Ses f g) (j : ℕ) (x : C.H j) (h : cn hS j x = 0) : ∃ y, 
   rw [map_sub, h1, (hS.2.2 j _).2 ⟨a, rfl⟩, sub_zero]
 
 /- English proof (translation)
-Take `⟨z, β, w, rfl, hw, h1, h2⟩` from `cn_rel hS j x`. Rewrite using `[← hw]`. Use `cn_eq hS' ⟨γ.mapZ j z, μ.f j β, α.mapZ (j + 1) w, rfl, rfl, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g'.f j (μ.f j β) = γ.f j z.1`. Rewrite using `[hg, h1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `f'.f (j + 1) (α.f (j + 1) w.1) = _`. Rewrite using `[hf, h2, μ.comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cn_nat {A' B' C' : Cx.{1} W} {f' : Cx.Hom A' B' (RingHom.id W)} {g' : Cx.Hom B' C' (RingHom.id W)}
     (hS : Ses f g) (hS' : Ses f' g') (α : Cx.Hom A A' (RingHom.id W)) (μ : Cx.Hom B B' (RingHom.id W))
@@ -221,17 +221,15 @@ theorem cn_nat {A' B' C' : Cx.{1} W} {f' : Cx.Hom A' B' (RingHom.id W)} {g' : Cx
 end Conn
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hb : φ.f j z.1 ∈ L.B j` using `mem_B_of_mk (φ.mapZ j z) hx`. Use `mk_of_mem_B z ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Consider the cases of `j with`. Consider the case `zero`. Establish `e : φ.f 0 z.1 = 0` using `hb`. Establish `e' : z.1 = 0` using `(h 0).1 (by rw [e, map_zero])`. Rewrite using `[e']`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `succ j`. Take `⟨y, hy⟩` from `hb`. Take `⟨y, rfl⟩` from `(h j).2 y`. Conclude with `⟨y, (h (j + 1)).1 (by rw [← φ.comm, hy])⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, hy⟩` from `(h j).2 z.1`. Establish `hd : K.d j y = 0`. Apply `(h (j + 1)).1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hz : L.d j z.1 = 0` using `z.2`. Rewrite using `[map_zero, ← φ.comm, hy, hz]`. Use `⟨Submodule.Quotient.mk ⟨y, hd⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (φ.mapZ j ⟨y, hd⟩) = Submodule.Quotient.mk z`. Use `congr 1`.
-
-Conclude with `Subtype.ext hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mapH_bij {K L : Cx.{1} W} (φ : Cx.Hom K L (RingHom.id W)) (h : ∀ i, Function.Bijective (φ.f i))
     (j : ℕ) : Function.Bijective (φ.mapH j) := by
@@ -263,7 +261,7 @@ theorem mapH_bij {K L : Cx.{1} W} (φ : Cx.Hom K L (RingHom.id W)) (h : ∀ i, F
     exact Subtype.ext hy
 
 /- English proof (translation)
-Simplify using `[lpow, LinearMap.mem_range]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_lpow {l : ℕ} {M : Type 1} [AddCommGroup M] [Module W M] {n : ℕ} {x : M} :
     x ∈ lpow (W := W) l M n ↔ ∃ y : M, ((l : W) ^ n) • y = x := by
@@ -286,11 +284,11 @@ theorem mulc_mk (l : ℕ) (K : Cx.{1} W) {a c : ℕ} (h : a ≤ c) (hk : ∀ i (
     (i : ℕ) (x : K.X i) : (mulc l K h hk).f i (Submodule.Quotient.mk x) = ((l : W) ^ (c - a)) • x := rfl
 
 /- English proof (translation)
-Establish `hb : c - a = b` using `by omega`. Use `⟨fun i => (injective_iff_map_eq_zero _).2 fun x hx => ?_, fun i => Submodule.mkQ_surjective _, fun i x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[mulc_mk, hb]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ((hK i).2 a b hc x hx)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, rfl⟩` from `mem_lpow.1 ((Submodule.Quotient.mk_eq_zero _).1 hx)`. Conclude with `⟨Submodule.Quotient.mk y, by rw [mulc_mk, hb]⟩`. Introduce and unpack `⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[mulc_mk, hb]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (mem_lpow.2 ⟨y, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ses_flat {l c : ℕ} {K : Cx.{1} W} (hK : FlatL l c K) {a b : ℕ} (hc : a + b = c) (h : a ≤ c)
     (hk : ∀ i (x : K.X i), ((l : W) ^ c) • x = 0) : Ses (mulc l K h hk) (prj l K b) := by
@@ -310,17 +308,17 @@ theorem ses_flat {l c : ℕ} {K : Cx.{1} W} (hK : FlatL l c K) {a b : ℕ} (hc :
       exact (Submodule.Quotient.mk_eq_zero _).2 (mem_lpow.2 ⟨y, rfl⟩)
 
 /- English proof (translation)
-Establish `hb' : c - a = b` using `by omega`. Use `⟨fun i => (injective_iff_map_eq_zero _).2 fun x hx => ?_, fun i x => ?_, fun i x => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1 : Submodule.Quotient.mk (((l : W) ^ (c - a)) • y) = (0 : (quo l L c).X i)` using `hx`. Rewrite `h1` using `[hb']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, ht⟩` from `mem_lpow.1 ((Submodule.Quotient.mk_eq_zero _).1 h1)`. Establish `h2 : ((l : W) ^ b) • (y - ((l : W) ^ a) • t) = 0`. Rewrite using `[smul_sub, smul_smul, ← pow_add, Nat.add_comm b a, hc, ht, sub_self]`. Take `⟨s, hs⟩` from `mem_lpow.1 ((hL i).2 (e - b) b (by omega) _ h2)`. Use `(Submodule.Quotient.mk_eq_zero _).2 (mem_lpow.2 ⟨((l : W) ^ (e - b - a)) • s + t, ?_⟩)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_add, smul_smul, ← pow_add, show a + (e - b - a) = e - b by omega, hs, sub_add_cancel]`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨Submodule.Quotient.mk y, rfl⟩`. Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Establish `h1 : Submodule.Quotient.mk t = (0 : (quo l L b).X i)` using `hx`. Take `⟨s, rfl⟩` from `mem_lpow.1 ((Submodule.Quotient.mk_eq_zero _).1 h1)`. Use `⟨Submodule.Quotient.mk s, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (((l : W) ^ (c - a)) • s) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hb']`. Introduce and unpack `⟨y, hy⟩`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `h1 : Submodule.Quotient.mk (((l : W) ^ (c - a)) • y) = (Submodule.Quotient.mk t : (quo l L c).X i)` using `hy`. Rewrite `h1` using `[hb']`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h1]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (((l : W) ^ b) • y) = (0 : (quo l L b).X i)`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (mem_lpow.2 ⟨y, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem ses_red {l e : ℕ} {L : Cx.{1} W} (hL : FlatL l e L) {a b c : ℕ} (hc : a + b = c) (he : c ≤ e)
     (ha : a ≤ c) (hb : b ≤ c) : Ses (nug l L ha) (redg l L hb) := by

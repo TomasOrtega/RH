@@ -15,17 +15,17 @@ noncomputable section
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `R _ X K W hW u hu k hk`. Establish `ex : ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt X D), ∃! d : D, ∀ (E : Type) [CommRing E] [Algebra R E] (ψ : D →ₐ[R] E), Sm W (spOver ψ ≫ x) → k E (spOver ψ ≫ x) - u D E ψ x = ψ d`. Introduce `D _ _ x`. Use `natFamily_existsUnique R X K W hW D x (fun E _ _ ψ ↦ k E (spOver ψ ≫ x) - u D E ψ x) ?_` and prove the remaining obligations. Introduce `E _ _ E' _ _ ψ θ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `c` using `hu D E E' ψ θ x (sm_whole x)`. Establish `b` using `hk E E' θ (spOver ψ ≫ x) hψ`. Establish `e : spOver (θ.comp ψ) ≫ x = spOver θ ≫ spOver ψ ≫ x`. Rewrite using `[← Category.assoc, spOver_comp]`. Use `show k E' (spOver (θ.comp ψ) ≫ x) - u D E' (θ.comp ψ) x = θ (k E (spOver ψ ≫ x) - u D E ψ x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, c, b, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Set `k' : Fn0 X` to `fun D _ _ x ↦ (ex D x).exists.choose`. Establish `hk' : ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt X D) (E : Type) [CommRing E] [Algebra R E] (ψ : D →ₐ[R] E), Sm W (spOver ψ ≫ x) → k E (spOver ψ ≫ x) - u D E ψ x = ψ (k' D x)` using `fun D _ _ x ↦ (ex D x).exists.choose_spec`. Use `⟨k', fun D _ _ D' _ _ φ x _ ↦ ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `huniq : k' D' (spOver φ ≫ x) = u D D' φ x + φ (k' D x)`. Use `(ex D' (spOver φ ≫ x)).unique (hk' D' (spOver φ ≫ x)) ?_` and prove the remaining obligations. Introduce `E _ _ ψ hψ`. Establish `e : spOver (ψ.comp φ) ≫ x = spOver ψ ≫ spOver φ ≫ x`. Rewrite using `[← Category.assoc, spOver_comp]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hk' D x E (ψ.comp φ) (by rw [e]; exact hψ)`. Establish `c` using `hu D D' E φ ψ x (sm_whole x)`. Rewrite `h1` using `[e, c, AlgHom.comp_apply]`. Rewrite using `[map_add, ← h1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[huniq]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isCob_whole_of_isCob_cover : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (K : Type) (W : K → X.left.Opens), ⨆ i, W i = ⊤ → ∀ u : Fn1 X, IsCoc (whole X) u → ∀ k : Fn0 X, IsCob W u k → ∃ k' : Fn0 X, IsCob (whole X) u k' := by
   intro R _ X K W hW u hu k hk

@@ -14,14 +14,14 @@ variable {n : ℕ} {Y : Type*} [TopologicalSpace Y] [T2Space Y] [SecondCountable
   (A : WeightedAtlas n Y ι La)
 
 /- English proof (translation)
-Unfold `dbarAt`. Rewrite using `[← sum_wdb_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dbarAt_eq (j : ι) (F : ι → Y → ℂ) (y : Y) (ξ : Fin n → ℂ) :
     A.dbarAt j F y ξ = dbv (fderiv ℝ (F j ∘ (A.chart j).symm) (A.chart j y)) (WithLp.toLp 2 ξ) := by
   unfold dbarAt; rw [← sum_wdb_eq]
 
 /- English proof (translation)
-Rewrite using `[dbarAt_eq, hF.fderiv_eq, dbv_holo hG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dbarAt_eq_zero_of_holo (j : ι) (F : ι → Y → ℂ) (y : Y) {G : V n → ℂ}
     (hF : (F j ∘ (A.chart j).symm) =ᶠ[𝓝 (A.chart j y)] G) (hG : DifferentiableAt ℂ G (A.chart j y))
@@ -29,14 +29,14 @@ theorem dbarAt_eq_zero_of_holo (j : ι) (F : ι → Y → ℂ) (y : Y) {G : V n 
   rw [dbarAt_eq, hF.fderiv_eq, dbv_holo hG]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(A.chart j).map_source hj, by simp [(A.chart j).left_inv hj, hi]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_ovl {j i : ι} {y : Y} (hj : y ∈ (A.chart j).source) (hi : y ∈ (A.chart i).source) :
     A.chart j y ∈ ovl A.chart j i :=
   ⟨(A.chart j).map_source hj, by simp [(A.chart j).left_inv hj, hi]⟩
 
 /- English proof (translation)
-The claim follows from `((A.trans_contDiffOn j i).contDiffAt ((A.isOpen_ovl j i).mem_nhds (A.mem_ovl hj hi))).of_le (by norm_cast)`.
+A detailed English derivation is pending.
 -/
 theorem trans_contDiffAt {j i : ι} {y : Y} (hj : y ∈ (A.chart j).source)
     (hi : y ∈ (A.chart i).source) :
@@ -45,21 +45,17 @@ theorem trans_contDiffAt {j i : ι} {y : Y} (hj : y ∈ (A.chart j).source)
     (by norm_cast)
 
 /- English proof (translation)
-Use `set Φ := (A.chart i) ∘ (A.chart j).symm`. Use `set v0 := (A.chart j) y`. Establish `hv0` using `A.mem_ovl hj hi`. Establish `hO : ovl A.chart j i ∈ 𝓝 v0` using `(A.isOpen_ovl j i).mem_nhds hv0`. Establish `hΦ : ContDiffAt ℂ 2 Φ v0` using `A.trans_contDiffAt hj hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦv : Φ v0 = (A.chart i) y` using `by simp [Φ, v0, (A.chart j).left_inv hj]`. Use `set h : V n → ℝ := fun u => A.ph la i ((A.chart i).symm u) + f ((A.chart i).symm u)`. Establish `hh : ContDiffAt ℝ 2 h (Φ v0)`. Rewrite using `[hΦv]`. Conclude with `(((A.smooth_ph la i).add (hf i)).contDiffAt ((A.chart i).open_target.mem_nhds ((A.chart i).map_source hi))).of_le (by norm_cast)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set G := A.g la j i ∘ (A.chart j).symm`. Establish `hG : ContDiffAt ℂ 2 G v0` using `contDiffAt_two_of_holo (A.isOpen_ovl j i) (A.holo_g la j i) hv0`. Establish `hG0 : G v0 ≠ 0`. Simplify using `only [G, Function.comp, v0, (A.chart j).left_inv hj]`. Conclude with `A.g_ne la j i y hj hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u2 : Fin 2 → V n → ℝ := ![fun v => h (Φ v), fun v => Real.log (Complex.normSq (G v))]`. Establish `hu2 : ∀ k, ContDiffAt ℝ 2 (u2 k) v0`. Introduce `k`. Use `fin_cases k`. Conclude with `hh.comp v0 (hΦ.restrict_scalars ℝ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `(contDiffAt_normSq_comp hG).log (Complex.normSq_pos.2 hG0).ne'`. Establish `hev : (fun v => ((A.ph la j ((A.chart j).symm v) + f ((A.chart j).symm v) : ℝ) : ℂ)) =ᶠ[𝓝 v0] fun v => ((∑ k, u2 k v : ℝ) : ℂ)` using `by filter_upwards [hO] with v hv`. Establish `hxj : (A.chart j).symm v ∈ (A.chart j).source` using `(A.chart j).map_target hv.1`. Establish `hxi : (A.chart j).symm v ∈ (A.chart i).source` using `hv.2`. Establish `hsy : (A.chart i).symm (Φ v) = (A.chart j).symm v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Φ, Function.comp]`. Conclude with `(A.chart i).left_inv hxi`. Establish `hne : ‖A.g la j i ((A.chart j).symm v)‖ ≠ 0` using `norm_ne_zero_iff.2 (A.g_ne la j i _ hxj hxi)`. Simplify using `only [Fin.sum_univ_two, u2, Matrix.cons_val_zero, Matrix.cons_val_one, h, hsy, G, Function.comp, A.ph_trans la j i _ hxj hxi, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Unfold `leviAt`. Rewrite using `[leviV_congr hev, leviV_ofReal_sum hu2, Fin.sum_univ_two]`. Establish `e1 : u2 0 = fun v => h (Φ v)` using `rfl`. Establish `e2 : u2 1 = fun v => Real.log (Complex.normSq (G v))` using `rfl`.
-
-Rewrite using `[e1, e2, leviV_log_normSq hG hG0, add_zero]`. Establish `hc` using `leviV_comp (f := fun u => ((h u : ℝ) : ℂ)) (Φ := Φ) (y := v0) ?_ hΦ ξ`. Rewrite using `[show (fun v => ((h (Φ v) : ℝ) : ℂ)) = (fun u => ((h u : ℝ) : ℂ)) ∘ Φ from rfl, hc, hΦv]`. Conclude with `Complex.ofRealCLM.contDiff.contDiffAt.comp _ hh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_transfer (la : La) (f : Y → ℝ) (hf : A.SmoothFn f) (j i : ι) {y : Y}
     (hj : y ∈ (A.chart j).source) (hi : y ∈ (A.chart i).source) (ξ : Fin n → ℂ) :
@@ -108,13 +104,11 @@ theorem levi_transfer (la : La) (f : Y → ℝ) (hf : A.SmoothFn f) (j i : ι) {
   · exact Complex.ofRealCLM.contDiff.contDiffAt.comp _ hh
 
 /- English proof (translation)
-Use `set Φ := (A.chart i) ∘ (A.chart j).symm`. Use `set v0 := (A.chart j) y`. Establish `hv0` using `A.mem_ovl hj hi`. Establish `hO : ovl A.chart j i ∈ 𝓝 v0` using `(A.isOpen_ovl j i).mem_nhds hv0`. Establish `hΦ : DifferentiableAt ℂ Φ v0` using `(A.trans_contDiffAt hj hi).differentiableAt (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦv : Φ v0 = (A.chart i) y` using `by simp [Φ, v0, (A.chart j).left_inv hj]`. Use `set G := A.g la' j i ∘ (A.chart j).symm`. Establish `hG : DifferentiableAt ℂ G v0` using `(A.holo_g la' j i).differentiableAt hO`. Use `set βc : V n → ℂ := fun u => (β u : ℂ)`. Establish `hβc : ContDiff ℝ ∞ βc` using `Complex.ofRealCLM.contDiff.comp hβ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hβd : DifferentiableAt ℝ βc (Φ v0)` using `hβc.differentiable (by norm_cast) _`. Establish `hf1 : DifferentiableAt ℝ (fun v => c * (βc ∘ Φ) v) v0` using `(hβd.comp v0 (hΦ.restrictScalars ℝ)).const_mul c`. Establish `hev : (F j ∘ (A.chart j).symm) =ᶠ[𝓝 v0] fun v => c * (βc ∘ Φ) v * G v` using `by filter_upwards [hF, hO] with v hv hvO`. Rewrite using `[hv, A.chiC_of_mem hvO.2]`. Simplify using `only [Function.comp, βc, G, Φ]`.
-
-Rewrite using `[dbarAt_eq, hev.fderiv_eq, fderiv_fun_mul hf1 (hG.restrictScalars ℝ), dbv_add, dbv_smul, dbv_smul, dbv_holo hG, mul_zero, zero_add, fderiv_const_mul (hβd.comp v0 (hΦ.restrictScalars ℝ)), dbv_smul, dbv_comp hβd hΦ, hΦv]`. Simplify using `only [G, Function.comp, v0, (A.chart j).left_inv hj]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dbar_local (β : V n → ℝ) (hβ : ContDiff ℝ ∞ β) (la' : La) (j i : ι) {y : Y}
     (hj : y ∈ (A.chart j).source) (hi : y ∈ (A.chart i).source) (F : ι → Y → ℂ) (c : ℂ)

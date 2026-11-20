@@ -8,7 +8,7 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(MonoidAlgebra.lift ℂ (Module.End ℂ W) T ((Units.coeHom _).comp θ)).comp (MvPolynomial.aeval fun a => MonoidAlgebra.single (t a) (c a)), fun a => by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem symOf_act {T W κ : Type} [CommGroup T] [AddCommGroup W] [Module ℂ W]
     (θ : T →* (Module.End ℂ W)ˣ) (t : κ → T) (c : κ → ℂ) :
@@ -17,7 +17,7 @@ private theorem symOf_act {T W κ : Type} [CommGroup T] [AddCommGroup W] [Module
     (MvPolynomial.aeval fun a => MonoidAlgebra.single (t a) (c a)), fun a => by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on generalizing m with`. Consider the case `C r`. Rewrite using `[eq_intCast (MvPolynomial.C : ℤ →+* MvPolynomial κ ℤ), map_intCast, map_intCast, Module.End.intCast_apply, Module.End.intCast_apply, map_zsmul]`. Consider the case `add p q hp hq => rw [map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, map_add, hp, hq]`. Consider the case `mul_X p a hp => rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h, hp]`.
+Proceed by induction. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 -/
 private theorem symOf_int {R R' W W' κ : Type} [CommRing R] [AddCommGroup W] [Module R W] [CommRing R'] [AddCommGroup W']
     [Module R' W'] (Φ : MvPolynomial κ ℤ →+* Module.End R W) (Φ' : MvPolynomial κ ℤ →+* Module.End R' W') (g : W →+ W')
@@ -31,9 +31,9 @@ private theorem symOf_int {R R' W W' κ : Type} [CommRing R] [AddCommGroup W] [M
   | mul_X p a hp => rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h, hp]
 
 /- English proof (translation)
-Establish `h1` using `symOf_int (act.toRingHom.comp (emb ℤ R j)) (act'.toRingHom.comp (MvPolynomial.map (Int.castRingHom ℂ))) g (fun a m => by`. Establish `e : emb ℤ R j (MvPolynomial.X a) = MvPolynomial.X (j, a)` using `by simp [emb]`. Express the relevant statement in the definitionally equal form `act' (MvPolynomial.map _ (MvPolynomial.X a)) _ = g (act (emb ℤ R j (MvPolynomial.X a)) m)`. Rewrite using `[MvPolynomial.map_X, e, h, h', LinearMap.smul_apply, LinearMap.smul_apply, hg, hE, map_pow, map_natCast])`. Use the proof step `(MvPolynomial.esymm (Fin n) ℤ k) m`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[RingHom.comp_apply, MvPolynomial.map_esymm]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 private theorem symOf_sym {R W W' : Type} [CommRing R] [AddCommGroup W] [Module R W] [AddCommGroup W'] [Module ℂ W'] {q n : ℕ}
     (c : R →+* ℂ) (act : PU R q n →ₐ[R] Module.End R W) (act' : MvPolynomial (Fin n) ℂ →ₐ[ℂ] Module.End ℂ W') (g : W →+ W')
@@ -51,7 +51,7 @@ private theorem symOf_sym {R W W' : Type} [CommRing R] [AddCommGroup W] [Module 
   exact h1
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ (Polynomial A) _).det = _`. Rewrite using `[map_sub, MonoidAlgebra.mapRingHom_single, Matrix.charpoly]`. Use `congr 1`. Use extensionality with `i j : 2`. Apply the tactic sequence `by_cases h : i = j <;> simp [GDet.repAlg, Matrix.charmatrix, h, Matrix.one_apply, Matrix.diagonal_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem symOf_chi {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) A) (g : G) :
     (GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly := by
@@ -62,9 +62,9 @@ private theorem symOf_chi {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G 
   by_cases h : i = j <;> simp [GDet.repAlg, Matrix.charmatrix, h, Matrix.one_apply, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Establish `h1` using `((UpperTheory.V.CA.d_gmap D).2.2.1 f (MonoidAlgebra.single g 1)).2 k`. Rewrite `h1` using `[MonoidAlgebra.mapRingHom_single, map_one, hD, GDet.lam, symOf_chi]`. Establish `h2` using `Multiset.prod_X_sub_C_coeff (Finset.univ.val.map α) (k := n - k) (by simp)`. Rewrite `h2` using `[Multiset.map_map, Multiset.card_map, Finset.card_val, Finset.card_fin, Nat.sub_sub_self hk]`. Rewrite using `[← h1, map_mul, ← Polynomial.coeff_map, ← Matrix.charpoly_map, h, ← MvPolynomial.coe_aeval_eq_eval, RingHom.coe_coe, MvPolynomial.aeval_esymm_eq_multiset_esymm, Finset.prod_eq_multiset_prod]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `erw [h2]`. Rewrite using `[map_pow, map_neg, map_one, ← mul_assoc, ← mul_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem symOf_vieta {n : ℕ} {A K K' G : Type} [CommRing A] [CommRing K] [CommRing K'] [Group G] (D : GDet n A G)
     (f : A →+* K) (ρ : G →* Matrix (Fin n) (Fin n) K) (hD : D.map f = GDet.ofRep ρ) (e : K →+* K') (g : G) (α : Fin n → K')
@@ -81,11 +81,9 @@ private theorem symOf_vieta {n : ℕ} {A K K' G : Type} [CommRing A] [CommRing K
   simp
 
 /- English proof (translation)
-Establish `h1` using `isoFix k n Y π σ _ GlobalTheory.SplitFlip.isCompact_KO hs y hy`. Unfold `IsSpherical IsSphericalFor`. Introduce `h2`. Establish `h3 : ∀ v ∈ fixd σ.ρ (KO k (Fin n)), v = 0` using `fun v hv => by`. Establish `h4 : v ∈ GlobalTheory.PRep.fixed σ.ρ (KO k (Fin n))` using `fun u => by simpa using hv u u.2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[h2]`. Conclude with `(Submodule.mem_bot ℂ).1 h4`. Use `h0 ((Submodule.mem_bot ℂ).1 ((iSup_le fun f => ?_ : _ ≤ (⊥ : Submodule ℂ Y)) h1))` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite using `[h3 v hv, map_zero]`.
-
-Conclude with `zero_mem _`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem symOf_sph {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} {Y : Type} [AddCommGroup Y] [Module ℂ Y] (π : Representation ℂ (GL (Fin n) k) Y)

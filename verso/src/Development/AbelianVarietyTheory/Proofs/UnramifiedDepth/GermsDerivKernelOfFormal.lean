@@ -16,7 +16,7 @@ open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formal
 namespace GlobalTheory.RowLaw
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun C _ _ V O _ _ dd Y d _ I _ p H => GlobalTheory.T.integralGerms_independent_of_curveSystem C V d I (Fin dd) (Y.raw p) (GlobalTheory.T.isIntegralGaugedFormalGroupLaw_pairData C V O dd Y d I p) H, fun C _ _ V O _ _ dd Y d _ I _ p _ H => GlobalTheory.T.gaugeDeriv_eq_pairing_of_i …`.
+Supply the required witnesses or components.
 -/
 theorem germs_deriv_kernel_of_formal : IntegralGermIndependentAllCharts ∧ CEqFBSt ∧ IndependenceBoundAllCharts :=
   ⟨fun C _ _ V O _ _ dd Y d _ I _ p H =>

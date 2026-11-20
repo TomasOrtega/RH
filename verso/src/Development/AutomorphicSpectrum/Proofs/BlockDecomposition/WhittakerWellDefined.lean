@@ -9,7 +9,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Establish `hne : (h : F) ≠ 0` using `h.ne_zero`. Establish `hemb : MeasurableEmbedding (fun x : F => (h : F) * x)` using `(Homeomorph.mulLeft₀ (h : F) hne).measurableEmbedding`. Establish `h1 : ∫ t, G t ∂(Measure.map (fun x : F => (h : F) * x) ν) = ∫ y, G ((h : F) * y) ∂ν` using `hemb.integral_map G`. Rewrite using `[← h1, map_mul_left_eq_smul ν hne, integral_smul_nnreal_measure]`. Simplify using `[NNReal.smul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_comp_unit_mul (ν : Measure F) [ν.IsAddHaarMeasure] (h : Fˣ) (G : F → ℂ) :
     ∫ y, G ((h : F) * y) ∂ν = ((modulus (h : F) : ℝ) : ℂ)⁻¹ * ∫ t, G t ∂ν := by
@@ -22,20 +22,20 @@ theorem integral_comp_unit_mul (ν : Measure F) [ν.IsAddHaarMeasure] (h : Fˣ) 
   simp [NNReal.smul_def]
 
 /- English proof (translation)
-Simplify using `[mp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mp_one (h : Fˣ) : mp h 1 = ((modulus (h : F) : ℝ) : ℂ) := by
   simp [mp]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[dg2, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_diagonal_two (a : Fˣ) : GeneralLinearGroup.det (dg2 a (1 : Fˣ)) = a := by
   ext
   simp [dg2, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [dg2, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vecMul_diagonal_bottom_row (a : Fˣ) (u v : F) :
     ![u, v] ᵥ* ((dg2 a (1 : Fˣ) : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = ![u * a, v] := by
@@ -43,11 +43,11 @@ theorem vecMul_diagonal_bottom_row (a : Fˣ) (u v : F) :
   fin_cases i <;> simp [dg2, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `hne : (h : F) ≠ 0` using `h.ne_zero`. Establish `hm : ((modulus (h : F) : ℝ) : ℂ) ≠ 0`. Use `modulus_ne_zero hne` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `e1 : ∀ x : F, pt f g (![(h : F), h * x] ᵥ* ((dg2 a (1 : Fˣ) : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F)) * (ψ (-x) : ℂ) = f ((h : F) * a) * ((fun t : F => g t * (ψ (t * (-((h⁻¹ : Fˣ) : F))) : ℂ)) ((h : F) * x))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `e2 : ((h : F) * x) * (-((h⁻¹ : Fˣ) : F)) = -x`. Rewrite using `[Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [vecMul_diagonal_bottom_row, pt, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_assoc]`. Establish `e3` using `integral_comp_unit_mul (selfDualMeasure ψ) h (fun t : F => g t * (ψ (t * (-((h⁻¹ : Fˣ) : F))) : ℂ))`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall e1), integral_const_mul, e3, mp_one]`. Unfold `localFourier`. Rewrite using `[mul_left_comm, mul_inv_cancel_left₀ hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_pt (ψ : AddChar F Circle) (f g : F → ℂ) (a h : Fˣ) :
     mp h 1 * ∫ x, pt f g (![(h : F), h * x] ᵥ* ((dg2 a (1 : Fˣ) : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F)) *
@@ -73,9 +73,9 @@ theorem inner_pt (ψ : AddChar F Circle) (f g : F → ℂ) (a h : Fˣ) :
   rw [mul_left_comm, mul_inv_cancel_left₀ hm]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ _ μ₁ μ₂ _ _ f _ g _ a`. Unfold `W2`. Rewrite using `[det_diagonal_two]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `inner_pt ψ f g a h` as an intermediate fact. Simplify using `only [mul_assoc] at this ⊢`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem swd : SWd := by
   intro F _ _ _ _ _ _ ψ _ μ₁ μ₂ _ _ f _ g _ a

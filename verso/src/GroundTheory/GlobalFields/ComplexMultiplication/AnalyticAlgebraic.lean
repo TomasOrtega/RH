@@ -21,7 +21,7 @@ def latticeHomEquiv : latticeHom L₁ L₂ ≃+ isogHom (weierstrassCurve L₁) 
   map_add' := latticeToHom_add
 
 /- English proof (translation)
-The claim follows from `homPt_latticeToHom α z`.
+A detailed English derivation is pending.
 -/
 theorem homPt_latticeHomEquiv (α : latticeHom L₁ L₂) (z : ℂ) :
     homPt (latticeHomEquiv L₁ L₂ α) (toPoint L₁ z) = toPoint L₂ (α * z) :=
@@ -51,7 +51,7 @@ def latticeEndEquiv : latticeEnd L ≃+* isogEnd (weierstrassCurve L) where
   map_add' α β := latticeToHom_add ⟨α, α.2⟩ ⟨β, β.2⟩
 
 /- English proof (translation)
-The claim follows from `homConst_latticeToHom _`.
+A detailed English derivation is pending.
 -/
 theorem homConst_latticeEndEquiv (α : latticeEnd L) :
     homConst (weierstrassCurve L) (weierstrassCurve L) (latticeEndEquiv L α) = α :=
@@ -70,7 +70,7 @@ def mulLattice (α : latticeHom L₁ L₂) : AddSubgroup L₂.lattice where
     exact ⟨-l, neg_mem hl, by rw [Submodule.coe_neg, ha, mul_neg]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_mulLattice {α : latticeHom L₁ L₂} {w : L₂.lattice} :
     w ∈ mulLattice α ↔ ∃ l ∈ L₁.lattice, (w : ℂ) = α * l :=
@@ -89,9 +89,9 @@ def kerMap (α : latticeHom L₁ L₂) (h0 : (α : ℂ) ≠ 0) :
     simp only [Submodule.coe_add, add_div, AddMemClass.mk_add_mk, toPoint_add]
 
 /- English proof (translation)
-Introduce and unpack `⟨P, hP⟩`. Take `⟨z, rfl⟩` from `toPoint_surjective (L := L₁) P`. Rewrite `hP` using `[AddMonoidHom.mem_ker, homPt_latticeHomEquiv, toPoint_eq_zero_iff]`. Use `⟨⟨_, hP⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show toPoint L₁ (α * z / α) = toPoint L₁ z`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_cancel_left₀ _ h0]`.
+A detailed English derivation is pending.
 -/
 theorem kerMap_surjective (α : latticeHom L₁ L₂) (h0 : (α : ℂ) ≠ 0) :
     Function.Surjective (kerMap α h0) := by
@@ -103,11 +103,11 @@ theorem kerMap_surjective (α : latticeHom L₁ L₂) (h0 : (α : ℂ) ≠ 0) :
   rw [mul_div_cancel_left₀ _ h0]
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[AddMonoidHom.mem_ker, mem_mulLattice]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : toPoint L₁ (w / α) = 0` using `congrArg Subtype.val h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[toPoint_eq_zero_iff]`. Conclude with `⟨_, h', by rw [mul_div_cancel₀ _ h0]⟩`. Introduce and unpack `⟨l, hl, hw⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show toPoint L₁ (w / α) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, mul_div_cancel_left₀ _ h0]`. Conclude with `toPoint_of_mem hl`.
+A detailed English derivation is pending.
 -/
 theorem ker_kerMap (α : latticeHom L₁ L₂) (h0 : (α : ℂ) ≠ 0) :
     (kerMap α h0).ker = mulLattice α := by

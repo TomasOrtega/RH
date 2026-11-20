@@ -12,35 +12,35 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `hHom`. Apply the tactic sequence `split_ifs <;> simp only [Matrix.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hHom_add_left (V W : HSp D) (x x' y : WA V W) : hHom V W (x + x') y = hHom V W x y + hHom V W x' y := by
   unfold hHom
   split_ifs <;> simp only [Matrix.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `hHom`. Apply the tactic sequence `split_ifs <;> simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hHom_add_right (V W : HSp D) (x y y' : WA V W) : hHom V W x (y + y') = hHom V W x y + hHom V W x y' := by
   unfold hHom
   split_ifs <;> simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [symplH, sympl, hHom_add_right, mul_add, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplH_add_left (V W : HSp D) (x x' y : WA V W) :
     symplH V W (x + x') y = symplH V W x y + symplH V W x' y := by
   simp only [symplH, sympl, hHom_add_right, mul_add, map_add]
 
 /- English proof (translation)
-Simplify using `only [symplH, sympl, hHom_add_left, mul_add, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplH_add_right (V W : HSp D) (x y y' : WA V W) :
     symplH V W x (y + y') = symplH V W x y + symplH V W x y' := by
   simp only [symplH, sympl, hHom_add_left, mul_add, map_add]
 
 /- English proof (translation)
-Simplify using `only [Heisenberg₂, symplH_add_left, symplH_add_right, AddChar.map_add_eq_mul, add_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heis_heis (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (u u' : WA V W) (f : WA V W → ℂ) (w : WA V W) :
     Heisenberg₂ ψ V W u (Heisenberg₂ ψ V W u' f) w = ψ (symplH V W u u') * Heisenberg₂ ψ V W (u + u') f w := by
@@ -48,9 +48,9 @@ theorem heis_heis (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (u u' : WA V W)
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `h` using `heis_heis ψ V W u u' f w`. Rewrite `h` using `[hf u' hu', hf u hu, hf _ (L.add_mem hu hu')]`. Establish `: (ψ (symplH V W u u') - 1) * f w = 0` using `by rw [sub_mul, one_mul, ← h, sub_self]`. Break down `mul_eq_zero.1 this with h1 | h1` into its components or cases.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd (sub_eq_zero.1 h1) hne`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fixed (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (L : AddSubgroup (WA V W))
     {u u' : WA V W} (hu : u ∈ L) (hu' : u' ∈ L) (hne : ψ (symplH V W u u') ≠ 1)
@@ -64,7 +64,7 @@ theorem eq_zero_of_fixed (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (L : Add
   · exact h1
 
 /- English proof (translation)
-Establish `h0 : Φ = 0` using `Wl.evS_inj V W (by`. Rewrite using `[eq_zero_of_fixed Wl.ψ V W _ hu hu' hne _ hΦ, map_zero])`. Conclude with `⟨h0, fun χ χ' p => by rw [h0, map_zero]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem unr_void {X : ThetaX D} {T : ThetaTied D X} (Wl : WeilTied D X T) (V W : HSp D)
     (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) {u u' : WA V W} (hu : u ∈ latVWS V W S) (hu' : u' ∈ latVWS V W S)

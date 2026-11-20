@@ -12,7 +12,7 @@ variable {C0 CE1 CE2 mu : ℝ} {X : Loc} [NeZero X.m] {O : Type} [CommRing O] [I
   {β : GlobalTheory X} (j : Fin (numSeg X.TT)) (ka : Fin (2 * segS X.TT j + 1 + 1) → Fin X.m → ℤ)
 
 /- English proof (translation)
-Unfold `ioD ioA`. Conclude with `aeval_X _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ioD_X (v : BVar (2 * segS X.TT j + 1) X.m (BDk C0 CE1 CE2 mu X β j).T.t) :
     ioD O C0 CE1 CE2 mu X β j (MvPolynomial.X v) =
@@ -21,7 +21,7 @@ theorem ioD_X (v : BVar (2 * segS X.TT j + 1) X.m (BDk C0 CE1 CE2 mu X β j).T.t
   exact aeval_X _ _
 
 /- English proof (translation)
-Rewrite using `[phiS_succ X j C0 CE1 CE2 a b, show PS X j a.succ = symLev X.p C0 CE1 CE2 X j (Sum.inl (a.castSucc, b)) from lev_succ X j C0 CE1 CE2 a b, ← X_pow_eq_monomial, rename_X]`. Conclude with `ioD_X j _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ioD_chain (a : Fin (2 * segS X.TT j + 1)) (b : Fin X.m) :
     ioD O C0 CE1 CE2 mu X β j (rename (chainEmb _ X.m _) (MvPolynomial.X (a, b))) =
@@ -32,17 +32,15 @@ theorem ioD_chain (a : Fin (2 * segS X.TT j + 1)) (b : Fin X.m) :
   exact ioD_X j _
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `_ J`. Use `show f (extOne J) = extOne J`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Conclude with `extOne_map f J`. Consider the case `succ t ih`. Introduce `ht J`. Establish `htN : t < N` using `ht`. Rewrite using `[Joints.Kcol_succ R ka c t htN]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show _ = colStep c (hsOf ka c t) (hsOf ka c (t + 1)) (fun b => f (xOf R N n t b)) (KG c (hsOf ka c) (fun a b => f (xOf R N n a b)) t) J`. Rewrite using `[colStep_map]`. Establish `h1 : hsOf ka c t = colH (ka (⟨t, htN⟩ : Fin N).castSucc) c`. Unfold `hsOf`. Use `congr 2`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use `show min t N = t`. Use linear arithmetic over natural numbers and integers. Establish `h2 : hsOf ka c (t + 1) = colH (ka (⟨t, htN⟩ : Fin N).succ) c`. Unfold `hsOf`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Apply `Fin.ext` to reduce the goal to its premises. Use `show min (t + 1) N = t + 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, h2]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `b`. Simplify using `[xOf, letVec, htN]`. Use function extensionality and compare the values at `J'`. Conclude with `(ih (le_of_lt htN) J')`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem ringHom_Kcol_eq_KG {R P : Type} [CommRing R] [CommRing P] {N n : ℕ}
     (f : MvPolynomial (Fin N × Fin n) R →+* P) (ka : Fin (N + 1) → Fin n → ℤ) (c : ℤ) :
@@ -80,7 +78,7 @@ private theorem ringHom_Kcol_eq_KG {R P : Type} [CommRing R] [CommRing P] {N n :
       exact (ih (le_of_lt htN) J')
 
 /- English proof (translation)
-Conclude with `ringHom_Kcol_eq_KG ((ioD O C0 CE1 CE2 mu X β j).toRingHom.comp (rename (chainEmb _ X.m _)).toRingHom) ka c _ le_rfl J`.
+A detailed English derivation is pending.
 -/
 theorem tan_eq_KG (c : ℤ) (J : Finset (Fin X.m)) :
     ioD O C0 CE1 CE2 mu X β j (rename (chainEmb _ X.m _) (Kcol (KK O) ka c (2 * segS X.TT j + 1) J)) =
@@ -90,7 +88,7 @@ theorem tan_eq_KG (c : ℤ) (J : Finset (Fin X.m)) :
     ka c _ le_rfl J
 
 /- English proof (translation)
-Introduce `m hm`. Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul _ _ hm)`. Rewrite using `[map_add, Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset ha), hQ b hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem homG_monomial_mul_of_homG {σ R : Type} [CommRing R] (φ : (σ →₀ ℕ) →+ ℕ) (M : σ →₀ ℕ) (d : ℕ)
     (Q : MvPolynomial σ R) (hQ : HomG φ d Q) : HomG φ (φ M + d) (monomial M 1 * Q) := by
@@ -100,21 +98,19 @@ private theorem homG_monomial_mul_of_homG {σ R : Type} [CommRing R] (φ : (σ �
   rw [map_add, Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset ha), hQ b hb]
 
 /- English proof (translation)
-Establish `hx : ∀ (a : ℕ) (b : Fin X.m), HomG φ (if h : a < 2 * segS X.TT j + 1 then PS X j (⟨a, h⟩ : Fin _).succ * wt ⟨a, h⟩ else 0) (ioD O C0 CE1 CE2 mu X β j (rename (chainEmb _ X.m _) (xOf (KK O) (2 * segS X.TT j + 1) X.m a b)))`. Introduce `a b`. Distinguish the cases in `h : a < 2 * segS X.TT j + 1`. Rewrite using `[dif_pos h]`. Establish `e : xOf (KK O) (2 * segS X.TT j + 1) X.m a b = MvPolynomial.X (⟨a, h⟩, b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[xOf, h]`. Rewrite using `[e, ioD_chain]`. Establish `hm` using `homG_monomial φ (Finsupp.single (phiS X j ((⟨a, h⟩ : Fin _).succ, Fin.natAdd 1 b)) (PS X j (⟨a, h⟩ : Fin _).succ)) (1 : KK O)`. Rewrite `hm` using `[phi_single, hwt]`. Then use the resulting hypothesis. Establish `e : xOf (KK O) (2 * segS X.TT j + 1) X.m a b = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Simplify using `[xOf, h]`. Rewrite using `[e, map_zero, map_zero]`. Introduce `m hm`. Simplify using `at hm`. Establish `hK` using `KG_hom φ c (hsOf ka c) _ _ hx (2 * segS X.TT j + 1) J`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hK' : HomG φ (∑ a ∈ Finset.range (2 * segS X.TT j + 1), if hsOf ka c a = hsOf ka c (a + 1) then 0 else (if h : a < 2 * segS X.TT j + 1 then PS X j (⟨a, h⟩ : Fin _).succ * wt ⟨a, h⟩ else 0)) (ioD O C0 CE1 CE2 mu X β j (rename (chainEmb _ X.m _) (Kcol (KK O) ka c (2 * segS X.TT j + …`. Rewrite using `[tan_eq_KG]`. Conclude with `hK`. Establish `hS : (∑ a ∈ Finset.range (2 * segS X.TT j + 1), if hsOf ka c a = hsOf ka c (a + 1) then 0 else (if h : a < 2 * segS X.TT j + 1 then PS X j (⟨a, h⟩ : Fin _).succ * wt ⟨a, h⟩ else 0)) = ∑ a : Fin (2 * segS X.TT j + 1), if colH (ka a.castSucc) c = colH (ka a.succ) c then 0 else PS X …`. Rewrite using `[Finset.sum_range]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `ha` using `a.isLt`. Rewrite using `[dif_pos a.isLt]`. Establish `e1 : hsOf ka c a = colH (ka a.castSucc) c`. Unfold `hsOf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Apply `Fin.ext` to reduce the goal to its premises. Use `show min (a : ℕ) _ = a`. Use linear arithmetic over natural numbers and integers. Establish `e2 : hsOf ka c (a + 1) = colH (ka a.succ) c`.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `hsOf`. Use `congr 2`. Apply `Fin.ext` to reduce the goal to its premises. Use `show min ((a : ℕ) + 1) _ = a + 1`. Use linear arithmetic over natural numbers and integers.
-
-Simplify using `only [e1, e2, Fin.eta]`. Rewrite `hK'` using `[hS]`. Conclude with `homG_monomial_mul_of_homG φ _ _ _ hK'`.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sg_hom (φ : MonH X →+ ℕ) (wt : Fin (2 * segS X.TT j + 1) → ℕ)
     (hwt : ∀ a b, φ (Finsupp.single (phiS X j (a.succ, Fin.natAdd 1 b)) 1) = wt a) (c : ℤ) (J : Finset (Fin X.m)) :
@@ -178,7 +174,7 @@ variable {C0 CE1 CE2 mu : ℝ} {X : Loc} [NeZero X.m] {O : Type} [CommRing O] [I
   {vecc : Fin (2 * segS X.TT j + 1) → Bool} {B : Fin (2 * segS X.TT j + 1) → ℕ}
 
 /- English proof (translation)
-Use `show degUS (hhLetters X.TT) 1 (Finsupp.single v 1) = wN X v`. Rewrite using `[degUS, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same]`. Simplify using `[wN, hhLetters]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nd_single (v : VarH X) : ndHom X (Finsupp.single v 1) = wN X v := by
   show degUS (hhLetters X.TT) 1 (Finsupp.single v 1) = wN X v
@@ -186,7 +182,7 @@ theorem nd_single (v : VarH X) : ndHom X (Finsupp.single v 1) = wN X v := by
   simp [wN, hhLetters]
 
 /- English proof (translation)
-Unfold `colH`. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢`. Conclude with `le_trans hb (huv b)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem colH_mono_of_forall_le {n : ℕ} {u v : Fin n → ℤ} (huv : ∀ b, u b ≤ v b) (c : ℤ) :
     colH u c ≤ colH v c := by
@@ -197,7 +193,7 @@ private theorem colH_mono_of_forall_le {n : ℕ} {u v : Fin n → ℤ} (huv : �
   exact le_trans hb (huv b)
 
 /- English proof (translation)
-Unfold `colH`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `b _`. Conclude with `not_le.mpr (hu b)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem colH_eq_zero_of_forall_lt {n : ℕ} {u : Fin n → ℤ} (c : ℤ) (hu : ∀ b, u b < c) : colH u c = 0 := by
   unfold colH
@@ -206,13 +202,13 @@ private theorem colH_eq_zero_of_forall_lt {n : ℕ} {u : Fin n → ℤ} (c : ℤ
   exact not_le.mpr (hu b)
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero`. Introduce `b`. Rewrite using `[h.ka0]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h.nu0]`. Consider the case `succ a ih`. Introduce `b`. Establish `hm` using `h.numono a`. Establish `hs` using `h.kastep a`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Fin.val_succ]`. Distinguish the cases in `hv : vecc a = true`. Conclude with `h.C a hv b`. Rewrite `hs` using `[if_neg hv]`. Establish `h1` using `hs.1 b`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `ih b`. Rewrite `h2` using `[Fin.coe_castSucc]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem PH_ka_le_nu {N K : ℕ} {vecc : Fin N → Bool} {B : Fin N → ℕ} {ka : Fin (N + 1) → Fin K → ℤ}
     {nu : ℕ → ℤ} (h : PH vecc B ka nu) : ∀ (i : Fin (N + 1)) (b : Fin K), ka i b ≤ nu i := by
@@ -236,7 +232,7 @@ private theorem PH_ka_le_nu {N K : ℕ} {vecc : Fin N → Bool} {B : Fin N → �
       omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Fin.castSucc_zero]`. Conclude with `H0 nu ka c`. Rewrite using `[HS, h.ka0, colH_zero]`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem colH_muP_zero_castSucc_and_succ_of_PH {N K : ℕ} {vecc : Fin N → Bool} {B : Fin N → ℕ} {ka : Fin (N + 1) → Fin K → ℤ}
     {nu : ℕ → ℤ} (h : PH vecc B ka nu) (c : ℤ) :
@@ -249,7 +245,7 @@ private theorem colH_muP_zero_castSucc_and_succ_of_PH {N K : ℕ} {vecc : Fin N 
     simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← Fin.succ_castSucc, HS]`. Simplify using the standard rewrite rules. Rewrite using `[HS]`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem colH_muP_succ_castSucc_and_succ_succ {N K : ℕ} {ka : Fin (N + 1) → Fin K → ℤ} {nu : ℕ → ℤ} (c : ℤ) (a : Fin N) :
     colH (muP nu ka a.succ.castSucc) c = (if c ≤ nu (↑a + 1) then 1 else 0) + colH (ka a.castSucc) c ∧
@@ -261,15 +257,15 @@ private theorem colH_muP_succ_castSucc_and_succ_succ {N K : ℕ} {ka : Fin (N + 
     simp
 
 /- English proof (translation)
-Establish `hI` using `PH_ka_le_nu h`. Establish `hm` using `h.numono ↑a`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `hs` using `h.kastep a`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hs` using `[if_pos hv]`. Prove the components needed by the constructor for the conclusion. Apply `colH_eq_zero_of_forall_lt c` to reduce the goal to its premises. Introduce `b`. Establish `h1` using `hs.1 b`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `h.C a hv b`. Use linear arithmetic over natural numbers and integers. Apply `colH_eq_zero_of_forall_lt c` to reduce the goal to its premises. Introduce `b`. Establish `h2` using `h.C a hv b`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `_`. Apply `colH_eq_zero_of_forall_lt c` to reduce the goal to its premises. Introduce `b`. Establish `h1` using `hI a.castSucc b`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[Fin.coe_castSucc]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem colH_ka_eq_zero_of_PH_of_nu_lt {N K : ℕ} {vecc : Fin N → Bool} {B : Fin N → ℕ} {ka : Fin (N + 1) → Fin K → ℤ}
     {nu : ℕ → ℤ} (h : PH vecc B ka nu) (c : ℤ) (a : Fin N) (hc : nu (↑a + 1) < c) :
@@ -299,9 +295,9 @@ private theorem colH_ka_eq_zero_of_PH_of_nu_lt {N K : ℕ} {vecc : Fin N → Boo
     omega
 
 /- English proof (translation)
-Establish `hs` using `h.kastep a`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Rewrite `hs` using `[if_pos hv]`. Conclude with `colH_mono_of_forall_le hs.1 c`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hv`. Rewrite `hs` using `[if_neg (by simp [hv])]`. Conclude with `⟨colH_mono_of_forall_le hs.1 c, h.nucov a hv⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem colH_ka_le_by_vecc_of_PH {N K : ℕ} {vecc : Fin N → Bool} {B : Fin N → ℕ} {ka : Fin (N + 1) → Fin K → ℤ}
     {nu : ℕ → ℤ} (h : PH vecc B ka nu) (c : ℤ) (a : Fin N) :
@@ -317,35 +313,35 @@ private theorem colH_ka_le_by_vecc_of_PH {N K : ℕ} {vecc : Fin N → Bool} {B 
     exact ⟨colH_mono_of_forall_le hs.1 c, h.nucov a hv⟩
 
 /- English proof (translation)
-Simplify using `[wN, Formalism.MainNotions.ColumnSystems.Pf.phiS]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wN_phiS_castAdd_zero_eq_ite_lamS (X : Loc) (j : Fin (numSeg X.TT)) (t : Fin (2 * segS X.TT j + 1 + 1)) :
     wN X (Formalism.MainNotions.ColumnSystems.Pf.phiS X j (t, Fin.castAdd X.m 0)) = if (lamS X j t).2 = false then 1 else 0 := by
   simp [wN, Formalism.MainNotions.ColumnSystems.Pf.phiS]
 
 /- English proof (translation)
-Simplify using `[wN, Formalism.MainNotions.ColumnSystems.Pf.phiS]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wN_phiS_succ_natAdd_eq_ite_lamS (X : Loc) (j : Fin (numSeg X.TT)) (a : Fin (2 * segS X.TT j + 1)) (b : Fin X.m) :
     wN X (Formalism.MainNotions.ColumnSystems.Pf.phiS X j (a.succ, Fin.natAdd 1 b)) = if (lamS X j a.succ).2 = true then 1 else 0 := by
   simp [wN, Formalism.MainNotions.ColumnSystems.Pf.phiS]
 
 /- English proof (translation)
-Establish `hg` using `sg_hom (C0 := C0) (CE1 := CE1) (CE2 := CE2) (mu := mu) (β := β) (O := O) j ka (ndHom X) (fun a => if vecc a = true then 1 else 0) (fun a b => by rw [nd_single, wN_phiS_succ_natAdd_eq_ite_lamS, ← hvec a]) c J`. Establish `hD : ndHom X (plS C0 CE1 CE2 mu X β j c) + ∑ a : Fin (2 * segS X.TT j + 1), (if colH (ka a.castSucc) c = colH (ka a.succ) c then 0 else PS X j a.succ * (if vecc a = true then 1 else 0)) = oCS C0 CE1 CE2 mu X β j ka c`. Rewrite using `[phi_plS]`. Simplify using `only [nd_single, wN_phiS_castAdd_zero_eq_ite_lamS]`. Unfold `oCS oc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[Fin.sum_univ_succ (n := 2 * segS X.TT j + 1), Fin.sum_univ_succ (n := 2 * segS X.TT j + 1), add_assoc, ← Finset.sum_add_distrib]`. Use `congr 1`. Establish `hc` using `colH_muP_zero_castSucc_and_succ_of_PH h c`. Establish `hm : nuS C0 CE1 CE2 mu X β j 0 ≤ nuS C0 CE1 CE2 mu X β j 1` using `h.numono 0`. Establish `h0` using `h.nu0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiff : IsCostly (muP (nuS C0 CE1 CE2 mu X β j) ka) c 0 ↔ ((if c ≤ nuS C0 CE1 CE2 mu X β j 0 then 1 else 0) + (if c ≤ 0 then X.m else 0) < (if c ≤ nuS C0 CE1 CE2 mu X β j 1 then 1 else 0) + (if c ≤ 0 then X.m else 0) ∧ 1 ≤ (if c ≤ nuS C0 CE1 CE2 mu X β j 0 then 1 else 0) + (if c ≤ …`. Unfold `IsCostly`. Rewrite using `[hc.1, hc.2]`. Simplify using `only [hiff, lamS_zero, Bool.true_eq_false, ↓reduceIte, mul_zero, ite_self, Fin.val_zero, zero_add]`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hc` using `colH_muP_succ_castSucc_and_succ_succ (nu := nuS C0 CE1 CE2 mu X β j) (ka := ka) c a`. Establish `hm` using `h.numono (↑a + 1)`. Establish `h6` using `colH_ka_eq_zero_of_PH_of_nu_lt h c a`. Establish `h7` using `colH_ka_le_by_vecc_of_PH h c a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiff : IsCostly (muP (nuS C0 CE1 CE2 mu X β j) ka) c a.succ ↔ ((if c ≤ nuS C0 CE1 CE2 mu X β j (↑a + 1) then 1 else 0) + colH (ka a.castSucc) c < (if c ≤ nuS C0 CE1 CE2 mu X β j (↑a + 1 + 1) then 1 else 0) + colH (ka a.succ) c ∧ 1 ≤ (if c ≤ nuS C0 CE1 CE2 mu X β j (↑a + 1) then 1 …`. Unfold `IsCostly`. Rewrite using `[hc.1, hc.2]`. Simplify using `only [hiff, ← hvec a, Fin.val_succ]`. Distinguish the cases in `hv : vecc a = true`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `hAB` using `h7.1 hv`. Simplify using `only [hv, Bool.true_eq_false, ↓reduceIte, mul_zero, mul_one, ite_self]`. Distinguish the cases in `hcn : nuS C0 CE1 CE2 mu X β j (↑a + 1) < c`. Apply the tactic sequence `obtain ⟨z1, z2⟩ := (h6 hcn).1 hv split_ifs <;> omega`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hv' : vecc a = false` using `by simpa using hv`. Take `⟨hBA, hnu⟩` from `h7.2 hv'`. Simplify using `only [hv', Bool.false_eq_true, ↓reduceIte, mul_zero, mul_one]`. Distinguish the cases in `hcn : nuS C0 CE1 CE2 mu X β j (↑a + 1) < c`. Apply the tactic sequence `have z1 := (h6 hcn).2 hv' split_ifs <;> omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> omega`. Rewrite `hg` using `[hD]`. Conclude with `hg`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colHomC (h : PH vecc B ka (nuS C0 CE1 CE2 mu X β j)) (hvec : ∀ a, vecc a = (lamS X j a.succ).2) (c : ℤ)
     (J : Finset (Fin X.m)) :
@@ -411,21 +407,21 @@ theorem colHomC (h : PH vecc B ka (nuS C0 CE1 CE2 mu X β j)) (hvec : ∀ a, vec
   exact hg
 
 /- English proof (translation)
-Unfold `Pol`. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Simplify using `only [Set.mem_setOf_eq]`. Introduce `l`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg` using `sg_hom (C0 := C0) (CE1 := CE1) (CE2 := CE2) (mu := mu) (β := β) (O := O) j ka { toFun := fun m => multideg m l, map_zero' := by simp [multideg], map_add' := fun a b => multideg_add a b l } (fun a => if lamS X j a.succ = l then 1 else 0) (fun a b => by`. Simplify using `only [AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[Formalism.MainNotions.ColumnSystems.Pf.phiS, md_single]) c J m hm`. Simplify using `only [AddMonoidHom.coe_mk, ZeroHom.coe_mk] at hg`. Rewrite using `[hg, md_plS]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `dgCS`. Rewrite using `[Fin.sum_univ_succ (n := 2 * segS X.TT j + 1), Fin.sum_univ_succ (n := 2 * segS X.TT j + 1), add_assoc, ← Finset.sum_add_distrib]`. Use `congr 1`. Establish `hc` using `colH_muP_zero_castSucc_and_succ_of_PH h c`. Establish `hm : nuS C0 CE1 CE2 mu X β j 0 ≤ nuS C0 CE1 CE2 mu X β j 1` using `h.numono 0`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiff : IsUsed (muP (nuS C0 CE1 CE2 mu X β j) ka) c 0 ↔ (if c ≤ nuS C0 CE1 CE2 mu X β j 0 then 1 else 0) + (if c ≤ 0 then X.m else 0) ≠ (if c ≤ nuS C0 CE1 CE2 mu X β j 1 then 1 else 0) + (if c ≤ 0 then X.m else 0)`. Unfold `IsUsed`. Rewrite using `[hc.1, hc.2]`. Simplify using `only [dgS, hiff, PS, Fin.val_zero, zero_add]`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `ha` using `a.isLt`. Establish `hc` using `colH_muP_succ_castSucc_and_succ_succ (nu := nuS C0 CE1 CE2 mu X β j) (ka := ka) c a`. Establish `hm` using `h.numono (↑a + 1)`. Establish `h6` using `colH_ka_eq_zero_of_PH_of_nu_lt h c a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7` using `colH_ka_le_by_vecc_of_PH h c a`. Establish `hiff : IsUsed (muP (nuS C0 CE1 CE2 mu X β j) ka) c a.succ ↔ (if c ≤ nuS C0 CE1 CE2 mu X β j (↑a + 1) then 1 else 0) + colH (ka a.castSucc) c ≠ (if c ≤ nuS C0 CE1 CE2 mu X β j (↑a + 1 + 1) then 1 else 0) + colH (ka a.succ) c`. Unfold `IsUsed`. Rewrite using `[hc.1, hc.2]`. Simplify using `only [dgS, hiff, PS, Fin.val_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hv : vecc a = true`. Establish `hAB` using `h7.1 hv`. Distinguish the cases in `hcn : nuS C0 CE1 CE2 mu X β j (↑a + 1) < c`. Apply the tactic sequence `obtain ⟨z1, z2⟩ := (h6 hcn).1 hv split_ifs <;> omega`. Apply the tactic sequence `split_ifs <;> omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hv' : vecc a = false` using `by simpa using hv`. Take `⟨hBA, hnu⟩` from `h7.2 hv'`. Distinguish the cases in `hcn : nuS C0 CE1 CE2 mu X β j (↑a + 1) < c`. Apply the tactic sequence `have z1 := (h6 hcn).2 hv' split_ifs <;> omega`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colPolC (h : PH vecc B ka (nuS C0 CE1 CE2 mu X β j)) (c : ℤ) (J : Finset (Fin X.m)) :
     (monomial (plS C0 CE1 CE2 mu X β j c) 1 : RHH O X) *

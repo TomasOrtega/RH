@@ -6,9 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainCo
 namespace LateralTheory.E.stupidPf
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `CohomologyClass.mk_surjective x`. Simplify using `only [cpull, cpre, CohomologyClass.descAddMonoidHom_cohomologyClass, AddMonoidHom.mk'_apply]`. Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises. Simplify using `only [zcomp, Cocycle.mk_coe, Cocycle.ofHom_coe, Cochain.ofHom_comp]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Cochain.comp_assoc_of_first_is_zero_cochain]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpull_comp {R : Type} [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (I : Cx R) (n : ℤ)
     (x : CohomologyClass M I n) : cpull (f ≫ g) I n x = cpull f I n (cpull g I n x) := by
@@ -20,9 +20,9 @@ theorem cpull_comp {R : Type} [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L �
   rw [Cochain.comp_assoc_of_first_is_zero_cochain]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `CohomologyClass.mk_surjective x`. Simplify using `only [cpull, cpre, CohomologyClass.descAddMonoidHom_cohomologyClass, AddMonoidHom.mk'_apply]`. Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises. Simplify using `only [zcomp, Cocycle.mk_coe, Cocycle.ofHom_coe]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `Cochain.id_comp _`.
+A detailed English derivation is pending.
 -/
 theorem cpull_id {R : Type} [CommRing R] (K I : Cx R) (n : ℤ) (x : CohomologyClass K I n) :
     cpull (𝟙 K) I n x = x := by
@@ -34,7 +34,7 @@ theorem cpull_id {R : Type} [CommRing R] (K I : Cx R) (n : ℤ) (x : CohomologyC
   exact Cochain.id_comp _
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨cpull e.inv I n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← cpull_comp, e.inv_hom_id, cpull_id]`. Rewrite using `[← cpull_comp, e.hom_inv_id, cpull_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cpull_iso {R : Type} [CommRing R] {K L : Cx R} (e : K ≅ L) (I : Cx R) (n : ℤ) :
     Function.Bijective (cpull e.hom I n) := by
@@ -52,15 +52,13 @@ def incl : Prop := ∀ (R : Type) [CommRing R] (I : Cx R) [I.IsStrictlyGE 0] {K 
     ∀ n : ℤ, n + 1 ≤ (N : ℤ) → Function.Bijective (cpull ιK I n) ∧ Function.Bijective (cpull ιL I n)
 
 /- English proof (translation)
-Introduce `R _ I _ _ K L _ _ g`. Use `⟨fun hb j => ?_, fun m N hN hG => ?_⟩` and prove the remaining obligations. Take `⟨eK, eL, hsq⟩` from `h0 R g`. Establish `hc : (cpull (trm g 0) I j) ∘ (cpull eL.hom I j) = (cpull eK.hom I j) ∘ (cpull ((CochainComplex.singleFunctor (Shv R) 0).map (g.f (-((0 : ℕ) : ℤ)))) I j)`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, ← cpull_comp, hsq]`. Establish `hb' : Function.Bijective ((cpull (trm g 0) I j) ∘ (cpull eL.hom I j))`. Rewrite using `[hc]`. Conclude with `(cpull_iso eK I j).comp (hb j)`. Conclude with `(Function.Bijective.of_comp_iff _ (cpull_iso eL I j)).1 hb'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ιK, ιL, hsq, hbij⟩` from `hI R I g N`. Establish `hc : ∀ j, (cpull ιK I j) ∘ (cpull g I j) = (cpull (trm g N) I j) ∘ (cpull ιL I j)`. Introduce `j`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, ← cpull_comp, hsq]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun j hj => ?_, ?_⟩` and prove the remaining obligations. Establish `hb' : Function.Bijective ((cpull ιK I j) ∘ (cpull g I j))`. Rewrite using `[hc]; exact (hG.1 j hj).comp (hbij j (by omega)).2`. Conclude with `(Function.Bijective.of_comp_iff' (hbij j (by omega)).1 _).1 hb'`. Establish `hi : Function.Injective ((cpull ιK I m) ∘ (cpull g I m))`.
-
-Rewrite using `[hc]`. Conclude with `hG.2.comp (hbij m hN).2.1`. Conclude with `Function.Injective.of_comp hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stupid_of (h0 : trunc0) (hI : incl) : LateralTheory.E.CxDescPf.stupid := by
   intro R _ I _ _ K L _ _ g

@@ -15,9 +15,9 @@ def blkA' {R : Type} {n : ℕ} (M : Matrix (Fin (n + n)) (Fin (n + n)) R) : Matr
   fun i k => M (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inl k))
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv M, ← Matrix.fromBlocks_toBlocks (M.submatrix finSumFinEquiv finSumFinEquiv)]`. Establish `h0 : (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0`. Use extensionality with `i j`. Conclude with `h i j`. Rewrite using `[h0, Matrix.det_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem det_eq_of_lowerLeft_zero {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin (n + n)) (Fin (n + n)) R)
     (h : ∀ i j : Fin n, M (finSumFinEquiv (Sum.inr i)) (finSumFinEquiv (Sum.inl j)) = 0) :
@@ -30,7 +30,7 @@ theorem det_eq_of_lowerLeft_zero {R : Type} [CommRing R] {n : ℕ} (M : Matrix (
   rfl
 
 /- English proof (translation)
-Unfold `upperHalf`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `funext_iff`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_upperHalf {D : D7} {n : ℕ} (x : Fin (n + n) → AE D) :
     x ∈ upperHalf D n ↔ ∀ i : Fin n, x (finSumFinEquiv (Sum.inr i)) = 0 := by
@@ -43,7 +43,7 @@ end GlobalTheory.CompanionTheory.RatPtsUnn
 namespace GlobalTheory.CompanionTheory.RatPtsUnn
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[← Equiv.sum_comp finSumFinEquiv, Fintype.sum_sum_type]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulVec_inr {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin (n + n)) (Fin (n + n)) R)
     (x : Fin (n + n) → R) (i : Fin n) :
@@ -57,7 +57,7 @@ theorem mulVec_inr {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin (n + n)) (
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Establish `h : γ ∈ (ratEmb D.sp.cm.sig (Jst D n)).range` using `by rw [range_ratEmb]; exact hγ`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ratEmb_of_mem {γ : G D n} (hγ : γ ∈ GF D n) :
     ∃ g0 : GRat D.sp.cm.sig (Jst D n), ratEmb _ _ g0 = γ := by
@@ -71,7 +71,7 @@ theorem mat_ratEmb (g0 : GRat D.sp.cm.sig (Jst D n)) :
     mat (ratEmb _ _ g0) = (g0.1 : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E).map (incA D) := rfl
 
 /- English proof (translation)
-Introduce `γ hγ`. Take `⟨g0, rfl⟩` from `exists_ratEmb_of_mem hγ`. Conclude with `⟨g0.1.1, (Matrix.isUnit_iff_isUnit_det _).1 g0.1.isUnit, g0.2, mat_ratEmb g0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem clause1 : ∀ γ ∈ GF D n, ∃ g : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E, IsUnit g.det ∧
       IsUnitary (D.sp.cm.sig : D.host.E →+* D.host.E) (Jst D n) g ∧ mat γ = g.map (incA D) := by
@@ -80,9 +80,9 @@ theorem clause1 : ∀ γ ∈ GF D n, ∃ g : Matrix (Fin (n + n)) (Fin (n + n)) 
   exact ⟨g0.1.1, (Matrix.isUnit_iff_isUnit_det _).1 g0.1.isUnit, g0.2, mat_ratEmb g0⟩
 
 /- English proof (translation)
-Introduce `g hg hu`. Set `u : GL (Fin (n + n)) D.host.E` to `((Matrix.isUnit_iff_isUnit_det g).2 hg).unit`. Establish `hu' : u ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) (Jst D n)` using `hu`. Use `⟨ratEmb _ _ ⟨u, hu'⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `h : ratEmb D.sp.cm.sig (Jst D n) ⟨u, hu'⟩ ∈ (ratEmb D.sp.cm.sig (Jst D n)).range` using `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[range_ratEmb]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clause2 : ∀ g : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E, IsUnit g.det →
       IsUnitary (D.sp.cm.sig : D.host.E →+* D.host.E) (Jst D n) g → ∃ γ ∈ GF D n, mat γ = g.map (incA D) := by
@@ -95,7 +95,7 @@ theorem clause2 : ∀ g : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E, IsUnit g.
   exact h
 
 /- English proof (translation)
-Unfold `P`. Rewrite using `[Subgroup.mem_comap]`. Conclude with `Iff.rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_P_iff (γ : G D n) :
     γ ∈ P D n ↔ ∀ x : Fin (n + n) → AE D, x ∈ upperHalf D n ↔ mat γ *ᵥ x ∈ upperHalf D n := by
@@ -104,23 +104,21 @@ theorem mem_P_iff (γ : G D n) :
   exact Iff.rfl
 
 /- English proof (translation)
-Introduce `γ _ g hg`. Rewrite using `[mem_P_iff, hg]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `hx : (Pi.single (finSumFinEquiv (Sum.inl j)) 1 : Fin (n + n) → AE D) ∈ upperHalf D n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mem_upperHalf]`. Introduce `k`. Conclude with `Pi.single_eq_of_ne (fun e => Sum.inr_ne_inl (finSumFinEquiv.injective e)) _`. Establish `h2` using `(mem_upperHalf _).1 ((h _).1 hx) i`. Rewrite `h2` using `[Matrix.mulVec_single_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `incA D (g _ _) = 0 at h2`. Conclude with `incA_injective (h2.trans (map_zero _).symm)`. Introduce `hS`. Establish `hM : ∀ i j : Fin n, g.map (incA D) (finSumFinEquiv (Sum.inr i)) (finSumFinEquiv (Sum.inl j)) = 0`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_apply, hS i j, map_zero]`. Establish `hdet : IsUnit (blkD (g.map (incA D))).det`. Establish `h1 : IsUnit (mat γ).det`. Unfold `mat`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hg]`. Rewrite `h1` using `[det_eq_of_lowerLeft_zero _ hM]`. Conclude with `isUnit_of_mul_isUnit_right h1`. Establish `hinj : ∀ y : Fin n → AE D, blkD (g.map (incA D)) *ᵥ y = 0 → y = 0`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.one_mulVec y, ← Matrix.nonsing_inv_mul _ hdet, ← Matrix.mulVec_mulVec, hy, Matrix.mulVec_zero]`. Establish `hsum : ∀ (x : Fin (n + n) → AE D) (i : Fin n), (∑ j, g.map (incA D) (finSumFinEquiv (Sum.inr i)) (finSumFinEquiv (Sum.inl j)) * x (finSumFinEquiv (Sum.inl j))) = 0` using `fun x i => Finset.sum_eq_zero fun j _ => by rw [hM i j, zero_mul]`. Introduce `x`. Rewrite using `[mem_upperHalf, mem_upperHalf]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx i`. Rewrite using `[mulVec_inr]`. Establish `h0 : (fun k => x (finSumFinEquiv (Sum.inr k))) = 0` using `funext hx`. Rewrite using `[hsum, h0, Matrix.mulVec_zero, zero_add]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `hx`. Establish `h0 : (blkD (g.map (incA D)) *ᵥ fun k => x (finSumFinEquiv (Sum.inr k))) = 0`. Use function extensionality and compare the values at `i`. Use `hx i` as an intermediate fact. Rewrite `this` using `[mulVec_inr, hsum, zero_add]`.
-
-Conclude with `this`. Establish `h1` using `hinj _ h0`. Conclude with `fun i => congrFun h1 i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem clause3 : ∀ γ ∈ GF D n, ∀ g : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E, mat γ = g.map (incA D) →
       (γ ∈ P D n ↔ IsSiegelP g) := by
@@ -170,7 +168,7 @@ theorem clause3 : ∀ γ ∈ GF D n, ∀ g : Matrix (Fin (n + n)) (Fin (n + n)) 
       exact fun i => congrFun h1 i
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨clause1, clause2, clause3⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ratPtsUnn : RatPts := fun _ _ => ⟨clause1, clause2, clause3⟩
 

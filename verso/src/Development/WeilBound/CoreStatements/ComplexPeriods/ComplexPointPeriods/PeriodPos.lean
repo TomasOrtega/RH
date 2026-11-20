@@ -13,11 +13,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l}
 
 /- English proof (translation)
-Use `haveI := Xo.smooth`. Use `haveI hs0 : Smooth Xo.s := SmoothOfRelativeDimension.smooth D.dim Xo.s`. Set `s : Xo.XF c ⟶ Sp c.F` to `pullback.snd _ _`. Use `haveI hs : Smooth s := inferInstanceAs (Smooth (pullback.snd _ _))`. Take `⟨L, _, j, g, hj, hg, hZ⟩` from `GlobalTheory.FlatLine.exists_finite_point s hU hne`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI : Algebra c.F L := j.toAlgebra`. Use `haveI : Module.Finite c.F L := hj`. Set `e : L →ₐ[c.F] ℂ` to `IsAlgClosed.lift`. Use `⟨spMap e.toRingHom ≫ g, ?_, fun z => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(spMap e.toRingHom ≫ g) ≫ s = _`.
-
-Rewrite using `[Category.assoc, hg, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `e.comp_algebraMap`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hZ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_complex_point {U : Set (Xo.XF c)} (hU : IsOpen U) (hne : U.Nonempty) :
     ∃ y : Sp ℂ ⟶ Xo.XF c, y ≫ pullback.snd _ _ = spMap (algebraMap c.F ℂ) ∧ ∀ z, y z ∈ U := by
@@ -37,11 +35,11 @@ theorem exists_complex_point {U : Set (Xo.XF c)} (hU : IsOpen U) (hne : U.Nonemp
   · rw [Scheme.Hom.comp_apply]; exact hZ _
 
 /- English proof (translation)
-Take `⟨y₀, hy₀, hU₀⟩` from `exists_complex_point hU.isOpen hne`. Establish `hs : under y₀ ≫ Xo.s = spMap (algebraMap (KA l) ℂ)`. Rewrite using `[under, Category.assoc, pullback.condition, ← Category.assoc, hy₀, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨i, P₀, hP₀, hu₀⟩` from `FU.onto _ hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `⟨i, fun P y hP hu hy => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Establish `h` using `PositivityTheory.Xgn.GeometricOfPeriods.sameComp_periods FU i hty hP hP₀`. Rewrite `h` using `[← hu, hu₀]`. Take `⟨hp, hq, h⟩` from `PositivityTheory.Xgn.GeometricOfPeriods.sameComp_baseChange _ _ Xo.s y y₀ hy hy₀ h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `π : pullback (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) (spMap (algebraMap c.F ℂ)) ⟶ Xo.XF c` to `pullback.fst _ _`. Establish `h1` using `π.continuous.image_connectedComponent_subset _ ⟨_, h z, rfl⟩`. Rewrite `h1` using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.lift_fst, pullback.lift_fst]`. Conclude with `hU.connectedComponent_subset (hU₀ z) h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_period {U : Set (Xo.XF c)} (hU : IsClopen U) (hne : U.Nonempty) {g : ℕ} {ty : Fin g → (E →+* ℂ)}
     (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (hty : IsTypeFn H D.p D.q ty) :
@@ -63,7 +61,7 @@ theorem exists_period {U : Set (Xo.XF c)} (hU : IsClopen U) (hne : U.Nonempty) {
   exact hU.connectedComponent_subset (hU₀ z) h1
 
 /- English proof (translation)
-Take `⟨g, ty, hty⟩` from `GlobalTheory.AllClasses.exists_isTypeFn H D.p D.q`. Take `⟨FU⟩` from `GlobalTheory.CompanionTheory.Ar.Top.complex_uniformisation_holds E H D l Xo (algebraMap (KA l) ℂ) g ty hr rfl hty`. Take `⟨i, hi⟩` from `exists_period hU hne FU hty`. Conclude with `⟨g, ty, FU, i, hty, hi⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem period_in_pos (hr : 1 ≤ D.p + D.q) {U : Set (Xo.XF c)} (hU : IsClopen U) (hne : U.Nonempty) :
     ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n),

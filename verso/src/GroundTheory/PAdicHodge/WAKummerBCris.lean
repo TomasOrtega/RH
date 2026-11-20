@@ -22,7 +22,7 @@ variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-The claim follows from `iotaB_injective hε hζ (((iotaB_algebraMap hε hζ _).trans (congrArg (algebraMap 𝔹 𝔹dR) ((iotaPlus_algebraMap _).trans (iota_padicInt a)))).trans ((iotaB_algebraMap_padic hε hζ _).trans (IsScalarTower.algebraMap_apply ℚ_[p] 𝔹 𝔹dR _)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_padicInt_bCris {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) (a : ℤ_[p]) :
@@ -36,7 +36,7 @@ theorem algebraMap_padicInt_bCris {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-The claim follows from `(galB_algebraMap hε σ _).trans ((congrArg (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε)) ((gal_smul_algebraMap_plus σ _).trans (congrArg (algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p)) (gal_smul_periodT σ hε)))).trans ((congrArg (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε)) (map_mul …`.
+A detailed English derivation is pending.
 -/
 theorem galB_periodTCris {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) (σ : Gal(PadicAlgCl p/K)) :
@@ -55,7 +55,7 @@ abbrev logTeichB {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) {x : 𝒪♭}
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-The claim follows from `(phiB_algebraMap hε _).trans ((congrArg (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε)) ((phiPlus_algebraMap _).trans (congrArg (algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p)) (phi_logTeich hx)))).trans (by simp only [map_mul, map_natCast]))`.
+A detailed English derivation is pending.
 -/
 theorem phiB_logTeichB {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) {x : 𝒪♭}
     (hx : PreTilt.untilt x - 1 ∈ Ideal.span {(p : 𝒪)}) :
@@ -67,7 +67,7 @@ theorem phiB_logTeichB {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) {x : 𝒪♭
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-The claim follows from `(galB_algebraMap hε σ _).trans ((congrArg (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε)) ((gal_smul_algebraMap_plus σ _).trans (congrArg (algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p)) (gal_smul_logTeich_eq hε hζ hx0 hfix hx σ)))).trans ((congrArg (algebraMap (BCrisPlus ℂ_[p] p) (B …`.
+A detailed English derivation is pending.
 -/
 theorem galB_logTeichB {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) {x : 𝒪♭} (hx0 : x ≠ 0)

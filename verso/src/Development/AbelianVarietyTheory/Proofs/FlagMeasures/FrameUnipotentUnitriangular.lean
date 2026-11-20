@@ -12,28 +12,28 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Simplify using `[hf, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_left (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (a b y : Fin n → E) :
     hf L Hm (a + b) y = hf L Hm a y + hf L Hm b y := by
   simp [hf, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[hf, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_smul_left (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (c : E) (a y : Fin n → E) :
     hf L Hm (c • a) y = c * hf L Hm a y := by
   simp [hf, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[hf, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_right (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (x a b : Fin n → E) :
     hf L Hm x (a + b) = hf L Hm x a + hf L Hm x b := by
   simp [hf, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hf_smul_right (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (c : E) (x a : Fin n → E) :
     hf L Hm x (c • a) = L.cj c * hf L Hm x a := by
@@ -41,7 +41,7 @@ theorem hf_smul_right (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hf]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hf_add_left, hf_smul_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hf_sum_left (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) {ι : Type} (s : Finset ι)
     (c : ι → E) (g : ι → Fin n → E) (y : Fin n → E) :
@@ -53,26 +53,26 @@ theorem hf_sum_left (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) {ι
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono fun _ ha => lt_of_lt_of_le ha h)`.
+A detailed English derivation is pending.
 -/
 theorem spanTo_mono (g : Fin (r + 1) → S.V) {i j : ℕ} (h : i ≤ j) : S.spanTo g i ≤ S.spanTo g j :=
   Submodule.span_mono (Set.image_mono fun _ ha => lt_of_lt_of_le ha h)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨i, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_spanTo (g : Fin (r + 1) → S.V) {i : Fin (r + 1)} {j : ℕ} (h : (i : ℕ) < j) :
     g i ∈ S.spanTo g j :=
   Submodule.subset_span ⟨i, h, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Use `⟨Pi.single i 1, fun a ha => ?_, ?_⟩` and prove the remaining obligations. Establish `hi' : (i : ℕ) < j` using `hi`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: a ≠ i` using `by rintro rfl; omega`. Simplify using `[this]`. Simplify using `[Pi.single_apply]`. Consider the case `zero => exact ⟨0, fun _ _ => rfl, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Take `⟨c, hc, rfl⟩` from `hx`. Take `⟨d, hd, rfl⟩` from `hy`. Conclude with `⟨c + d, fun i hi => by simp [hc i hi, hd i hi], by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `smul a x _ hx`. Take `⟨c, hc, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a • c, fun i hi => by simp [hc i hi], by simp [Finset.smul_sum, smul_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem coeff_of_mem (g : Fin (r + 1) → S.V) {j : ℕ} {v : S.V} (hv : v ∈ S.spanTo g j) :
     ∃ c : Fin (r + 1) → E, (∀ i : Fin (r + 1), j ≤ (i : ℕ) → c i = 0) ∧ v = ∑ i, c i • g i := by
@@ -101,11 +101,11 @@ variable (g : Fin (r + 1) → S.V) (gs : Fin r → S.V) (t : Fˣ)
 
 include hg hd in
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Establish `key : ∀ y, ∑ a, c a * hf L S.Hm (g a) y = 0`. Introduce `y`. Rewrite using `[← hf_sum_left, hc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hf]`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Establish `h` using `key (g (Fin.last r))`. Simplify using `only [hg, and_true, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Establish `hu : IsUnit (-algebraMap F E t)` using `(t.isUnit.map (algebraMap F E)).neg`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(hu.mul_left_eq_zero).1 h`. Establish `h` using `key (gs j)`. Simplify `h` using `[hd]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem linInd : LinearIndependent E g := by
   rw [Fintype.linearIndependent_iff]
@@ -123,9 +123,9 @@ theorem linInd : LinearIndependent E g := by
 
 include hg in
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Establish `hi' : (i : ℕ) < r` using `hi`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: i ≠ Fin.last r` using `by rintro rfl; simp at hi'`. Simplify using `[hg, this]`. Consider the case `zero => simp [hf]`. Consider the case `add x y _ _ hx hy => rw [hf_add_right, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [hf_smul_right, hx, mul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem last_mem_perp : g (Fin.last r) ∈ perp L S.Hm (S.spanTo g r) := by
   intro y hy
@@ -141,7 +141,7 @@ theorem last_mem_perp : g (Fin.last r) ∈ perp L S.Hm (S.spanTo g r) := by
 
 include hg in
 /- English proof (translation)
-Take `⟨⟨_, h2⟩, h3⟩` from `hn`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `h3.2 _ (last_mem_perp S g t hg)`. Establish `h` using `(Subgroup.mem_iInf.1 h2 j).2 (g j.castSucc) (mem_spanTo S g (by simp))`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sub_mem {n : S.GLV} (hn : n ∈ S.Nof g) (i : Fin (r + 1)) :
     n (g i) - g i ∈ S.spanTo g i := by
@@ -153,11 +153,9 @@ theorem sub_mem {n : S.GLV} (hn : n ∈ S.Nof g) (i : Fin (r + 1)) :
 
 include hg in
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Establish `hi' : (i : ℕ) < j` using `hi`. Establish `h` using `Submodule.add_mem _ (spanTo_mono S g hi'.le (sub_mem S g t hg hn i)) (mem_spanTo S g hi')`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_mem {n : S.GLV} (hn : n ∈ S.Nof g) (j : ℕ) {v : S.V} (hv : v ∈ S.spanTo g j) :
     n v ∈ S.spanTo g j := by
@@ -173,7 +171,7 @@ theorem map_mem {n : S.GLV} (hn : n ∈ S.Nof g) (j : ℕ) {v : S.V} (hv : v ∈
 
 include hg in
 /- English proof (translation)
-Use `⟨fun h => ?_, map_mem S g t hg hn j⟩` and prove the remaining obligations. Establish `h'` using `map_mem S g t hg ((S.Nof g).inv_mem hn) j h`. Establish `e : n⁻¹ (n v) = v` using `n.symm_apply_apply v`. Rewrite `h'` using `[e]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem map_mem_iff {n : S.GLV} (hn : n ∈ S.Nof g) (j : ℕ) (v : S.V) :
     n v ∈ S.spanTo g j ↔ v ∈ S.spanTo g j := by
@@ -184,11 +182,11 @@ theorem map_mem_iff {n : S.GLV} (hn : n ∈ S.Nof g) (j : ℕ) (v : S.V) :
 
 include hg in
 /- English proof (translation)
-Establish `h : S.spanTo (fun b => n (g b)) j = (S.spanTo g j).map (n : S.V →ₗ[E] S.V)`. Unfold `Frames.spanTo`. Rewrite using `[Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression. Rewrite using `[h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `map_mem S g t hg hn j hx`. Introduce `hv`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n.symm v, ?_, by simp⟩` and prove the remaining obligations. Apply `(map_mem_iff S g t hg hn j _).1` to reduce the goal to its premises. Simplify using `using hv`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem spanTo_comp {n : S.GLV} (hn : n ∈ S.Nof g) (j : ℕ) :
     S.spanTo (fun b => n (g b)) j = S.spanTo g j := by
@@ -208,9 +206,9 @@ theorem spanTo_comp {n : S.GLV} (hn : n ∈ S.Nof g) (j : ℕ) :
 
 include hg in
 /- English proof (translation)
-Use `choose c hc hc' using fun j => coeff_of_mem S g (sub_mem S g t hg hn j)`. Use `⟨Matrix.of fun i j => c j i + if i = j then 1 else 0, ⟨fun i j hij => ?_, fun i => ?_⟩, fun j => ?_⟩` and prove the remaining obligations. Simplify using `[hc j i (le_of_lt hij), hij.ne']`. Simplify using `[hc i i le_rfl]`. Simplify using `only [Matrix.of_apply, add_smul, Finset.sum_add_distrib, ← hc' j, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_tri {n : S.GLV} (hn : n ∈ S.Nof g) :
     ∃ s : Matrix (Fin (r + 1)) (Fin (r + 1)) E, ((∀ i j, j < i → s i j = 0) ∧ (∀ i, s i i = 1)) ∧
@@ -230,9 +228,9 @@ end GlobalTheory.HL.FrameTri
 namespace GlobalTheory.HL
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S g gs h`. Choose the witnesses or unpack the hypotheses as in `⟨t, hg, hd⟩ : ∃ t : Fˣ, (∀ a b, hf L S.Hm (g a) (g b) = if a = Fin.last r ∧ b = Fin.last r then -algebraMap F E t else 0) ∧ ∀ a j, hf L S.Hm (g a) (gs j) = if a = j.castSucc then 1 else 0 := by`. Break down `h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Conclude with `⟨S.T, S.gram, S.dual⟩`. Conclude with `⟨S.T', S.gram', S.dual'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨FrameTri.linInd S g gs t hg hd, fun n hn => ⟨FrameTri.exists_tri S g t hg hn, FrameTri.spanTo_comp S g t hg hn, FrameTri.map_mem_iff S g t hg hn, hn.2.1⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem frame_unipotent_unitriangular : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (g : Fin (r + 1) → S.V) (gs : Fin r → S.V), (g = S.f ∧ gs = S.es) ∨ (g = S.f' ∧ gs = S.es') → LinearIndependent E g ∧ ∀ n ∈ S.Nof g, (∃ s : Matrix (Fin (r + 1)) (Fin (r + 1)) E, ((∀ i j, j < i → s i j = 0) ∧ (∀ i, s i i = 1)) ∧ ∀ j, n (g j) = ∑ i, s i j • g i) ∧ (∀ j, S.spanTo (fun b => n (g b)) j = S.spanTo g j) ∧ (∀ j, ∀ v, n v ∈ S.spanTo g j ↔ v ∈ S.spanTo g j) ∧ ∀ v, n v ∈ perp L S.Hm (S.spanTo g r) ↔ v ∈ perp L S.Hm (S.spanTo g r) := by
   intro F _ _ _ _ _ E _ _ _ L r k S g gs h

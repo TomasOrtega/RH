@@ -14,11 +14,11 @@ namespace GlobalTheory.CompanionTheory.GlobBc
 universe w w'
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `hT`. Set `c : (∀ i, N i ⊗[R] M₁ i) ≃+ (∀ i, N i ⊗[R] M i)` to `AddEquiv.piCongrRight fun i => (TensorProduct.congr (LinearEquiv.refl R (N i)) (e i).symm).toAddEquiv`. Use `⟨c.trans (g.trans e'), fun i n x => ?_⟩` and prove the remaining obligations. Establish `hc : c (Pi.single i (n ⊗ₜ x)) = Pi.single i (n ⊗ₜ (e i).symm x)`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[c]`. Simplify using `[c, Pi.single_eq_of_ne hk]`. Simplify using `only [AddEquiv.trans_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, hg, h, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tens_transport {R : Type} [CommRing R] {ι : Type} [DecidableEq ι] {N : ι → Type} [∀ i, AddCommGroup (N i)]
     [∀ i, Module R (N i)] {M M₁ : ι → Type w} [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)]
@@ -40,7 +40,7 @@ theorem tens_transport {R : Type} [CommRing R] {ι : Type} [DecidableEq ι] {N :
   rw [hc, hg, h, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-The claim follows from `tens_transport (fun i => (e i).symm) e'.symm (fun i n x => by rw [AddEquiv.symm_apply_eq, h, LinearEquiv.apply_symm_apply]) hT`.
+A detailed English derivation is pending.
 -/
 theorem tens_transport_symm {R : Type} [CommRing R] {ι : Type} [DecidableEq ι] {N : ι → Type} [∀ i, AddCommGroup (N i)]
     [∀ i, Module R (N i)] {M M₁ : ι → Type w} [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)]
@@ -65,7 +65,7 @@ def thM : SMor (thP (nlFun (dividedPowersBot O) 0 X q (Ideal.Quotient.mk ⊥))) 
   dp _ _ _ _ := rfl
 
 /- English proof (translation)
-Introduce `T x hx`. Establish `h1 : T.i c ∈ pdP T.δ i` using `dividedPowerFiltration_map T.compat i hc`. Establish `h2 : x ∈ pdP T.δ (r - i).toNat` using `hx`. Establish `h3` using `GlobalTheory.CompanionTheory.DPFil.dividedPowerFiltration_mul_le T.δ _ _ (Ideal.mul_mem_mul h1 h2)`. Conclude with `T.pdPow_anti (by omega) h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem leC {c : A} {i : ℕ} (hc : c ∈ pdP γ i) (r : ℤ) :
     (thM γ q).LeC c (thFil _ (r - i)) (thFil _ r) := by
@@ -86,7 +86,7 @@ variable {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {I : Ideal A} (γ 
   {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (l s : ℕ) {m : ℕ} (S : GrSplit O γ m)
 
 /- English proof (translation)
-Introduce `T x hx` and use `leC γ q (S.mem i n) r T.obj x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leS (𝒱 : Set X.Opens) (i : Fin m) (n : S.N i) (r : ℤ) :
     (smO γ q l s 𝒱).LeC (S.ν i n) (sFil _ (r - i)) (sFil _ r) :=
@@ -102,7 +102,7 @@ def BcAt (𝒱 : Set X.Opens) (r r' : ℤ) (j : ℕ) : Prop :=
 variable {γ q l s}
 
 /- English proof (translation)
-Introduce and unpack `T ⟨h, V, -, -⟩`. Conclude with `⟨h, ⊤, rfl, fun _ _ => trivial⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem st_top {R : Type} [CommRing R] {J : Ideal R} {δ : DividedPowers J} {p : ℕ} {κ : O →+* R ⧸ J}
     (Q : ObjectProperty (Thick (nlFun δ p X q κ))) (𝒱 : Set X.Opens) : St Q 𝒱 ≤ St Q {⊤} := by
@@ -110,9 +110,9 @@ theorem st_top {R : Type} [CommRing R] {J : Ideal R} {δ : DividedPowers J} {p :
   exact ⟨h, ⊤, rfl, fun _ _ => trivial⟩
 
 /- English proof (translation)
-Use `((CrystallineSemistableComparison.P.pull_comp (σ'' := algebraMap O A) (mC γ q l s S {⊤} r r' i n) (rq (st_top (TF l s) 𝒱) r r') j x).1).symm.trans (Eq.trans ?_ ((CrystallineSemistableComparison.P.pull_comp (σ'' := algebraMap O A) (rq (st_top (TF l s) 𝒱) (r - i) (r' - i)) (mC γ q …` and prove the remaining obligations. Use `CrystallineSemistableComparison.P.prism (σ := algebraMap O A) ((mC γ q l s S {⊤} r r' i n).comp (rq (st_top (TF l s) 𝒱) r r')) ((rq (st_top (TF l s) 𝒱) (r - i) (r' - i)).comp (mC γ q l s S 𝒱 r r' i n)) (𝟙 _) (fun T y => ?_) j x` and prove the remaining obligations. Take `⟨y, hy⟩` from `y`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `first`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `(simp only [NatTrans.id_app, CategoryTheory.Functor.map_id]; rfl)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem comm_top (𝒱 : Set X.Opens) (r r' : ℤ) (j : ℕ) (i : Fin m) (n : S.N i) (x) :
     (rq (st_top (TF l s) 𝒱) r r').pull j ((mC γ q l s S {⊤} r r' i n).pull j x) =
@@ -128,16 +128,16 @@ theorem comm_top (𝒱 : Set X.Opens) (r r' : ℤ) (j : ℕ) (i : Fin m) (n : S.
     | (simp only [NatTrans.id_app, CategoryTheory.Functor.map_id]; rfl)
 
 /- English proof (translation)
-The claim follows from `Or.inl ⟨rfl, l, s, rfl⟩`.
+Prove the first alternative.
 -/
 theorem used_TF {R : Type} [CommRing R] {J : Ideal R} {δ : DividedPowers J} {κ : O →+* R ⧸ J} (l s : ℕ) :
     Used (TF l s : ObjectProperty (Thick (nlFun δ 0 X q κ))) :=
   Or.inl ⟨rfl, l, s, rfl⟩
 
 /- English proof (translation)
-Establish `hc : ∀ W ∈ ({⊤} : Set X.Opens), W ≤ sSup 𝒱` using `fun W hW => by rw [h𝒱]; exact le_top`. Establish `bO` using `(GlobalTheory.T.cech_refinement_cohomology_bijective (γ := dividedPowersBot O) (p := 0) (q := q) (κ := Ideal.Quotient.mk (⊥ : Ideal O)) (TF l s) (used_TF l s) 𝒱 {⊤} (st_top _ _) hc j).1`. Establish `bA` using `(GlobalTheory.T.cech_refinement_cohomology_bijective (γ := γ) (p := 0) (q := q) (κ := κA O I) (TF l s) (used_TF l s) 𝒱 {⊤} (st_top _ _) hc j).1`. Set `eO : ∀ i : Fin m, HQ (TO q l s {⊤}) (r - i) (r' - i) j ≃ₗ[O] HQ (TO q l s 𝒱) (r - i) (r' - i) j` to `fun i => LinearEquiv.ofBijective ((rq (st_top (TF l s) 𝒱) (r - i) (r' - i)).pull j) (bO _ _)`. Set `eA : HQ (TS γ q l s {⊤}) r r' j ≃+ HQ (TS γ q l s 𝒱) r r' j` to `(LinearEquiv.ofBijective ((rq (st_top (TF l s) 𝒱) r r').pull j) (bA _ _)).toAddEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcomm : ∀ i n x, eA ((mC γ q l s S {⊤} r r' i n).pull j x) = (mC γ q l s S 𝒱 r r' i n).pull j (eO i x)` using `fun i n x => comm_top S 𝒱 r r' j i n x`. Conclude with `⟨tens_transport eO eA hcomm, tens_transport_symm eO eA hcomm⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem bcAt_iff (𝒱 : Set X.Opens) (h𝒱 : sSup 𝒱 = ⊤) (r r' : ℤ) (j : ℕ) :
     BcAt γ q l s S {⊤} r r' j ↔ BcAt γ q l s S 𝒱 r r' j := by
@@ -169,9 +169,9 @@ abbrev tM (r r' : ℤ) (i : Fin m) (n : S.N i) : CH.Mor (thO q (r - i) (r' - i))
   (thM γ q).sqC (S.ν i n) (leC γ q (S.mem i n) r) (leC γ q (S.mem i n) r')
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `x`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `Subtype.ext ?_` and prove the remaining obligations. Set `B` to `(thA (nlFun γ 0 X q (κA O I))).obj T`. Set `z' : B` to `z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e : algebraMap A B (S.ν i (n + n')) * z' = algebraMap A B (S.ν i n) * z' + algebraMap A B (S.ν i n') * z'`. Rewrite using `[map_add, map_add, add_mul]`. Conclude with `congrArg (Ideal.Quotient.mk ((thFil (nlFun γ 0 X q (κA O I)) r').S T)) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tM_add (r r' : ℤ) (i : Fin m) (n n' : S.N i) (T) (x) :
     (tM γ q S r r' i (n + n')).τ T x = (tM γ q S r r' i n).τ T x + (tM γ q S r r' i n').τ T x := by
@@ -185,9 +185,9 @@ theorem tM_add (r r' : ℤ) (i : Fin m) (n n' : S.N i) (T) (x) :
   exact congrArg (Ideal.Quotient.mk ((thFil (nlFun γ 0 X q (κA O I)) r').S T)) e
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `x`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `Subtype.ext ?_` and prove the remaining obligations. Set `B` to `(thA (nlFun γ 0 X q (κA O I))).obj T`. Set `z' : B` to `z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e : algebraMap A B (S.ν i (c • n)) * z' = algebraMap O A c • (algebraMap A B (S.ν i n) * z')`. Rewrite using `[map_smul, Algebra.smul_def c, map_mul, mul_assoc, Algebra.smul_def (algebraMap O A c)]`. Conclude with `congrArg (Ideal.Quotient.mk ((thFil (nlFun γ 0 X q (κA O I)) r').S T)) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tM_smul (r r' : ℤ) (i : Fin m) (c : O) (n : S.N i) (T) (x) :
     (tM γ q S r r' i (c • n)).τ T x = algebraMap O A c • (tM γ q S r r' i n).τ T x := by
@@ -203,11 +203,9 @@ theorem tM_smul (r r' : ℤ) (i : Fin m) (c : O) (n : S.N i) (T) (x) :
 end
 
 /- English proof (translation)
-Introduce `hG hT O A _ _ _ I γ l s m hO hA S X q 𝒱 hc r r' hrr hr's ha hb j`. Choose the witnesses or unpack the hypotheses as in `⟨U, h𝒱⟩ : Nonempty (Cov q) ∧ sSup 𝒱 = ⊤ := by`. Break down `hc with ⟨h, -⟩ | ⟨-, h⟩` into its components or cases. Conclude with `h.elim`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U⟩` from `U`. Establish `hU : sSup (Set.range U.U) = ⊤` using `by rw [sSup_range]; exact U.cover`. Establish `hmem : ∀ (𝒲 : Set X.Opens) (T), St (TF l s) 𝒲 T → St (TF l s) 𝒲 ((((nmO γ q).mor 0).functor).obj T)` using `fun 𝒲 T h => nmO_mem γ q l s 𝒲 T h`. Establish `key : ∀ j, BcAt γ q l s S (Set.range U.U) r r' j` using `fun j => hG (O := O) (R := O) (I := ⊥) (γ := dividedPowersBot O) (p := 0) (X := X) (q := q) (κ := Ideal.Quotient.mk ⊥) (O' := O) (R' := A) (I' := I) (γ' := γ) (p' := 0) (X' := X) (q' := q) (κ' := κA O I) (Λ := O) (Λ' := A) (σ := algebraMap O A) ((nmO γ q).mor 0).functor S.N (fun …`. Take `⟨α, hα⟩` from `hS'`.
-
-Take `⟨c', -⟩` from `GlobalTheory.T.coordinates_restrict_affine_open (U.c α) (iInf₂_le α hα : (⨅ α ∈ S', U.U α) ≤ U.U α) (U.inter S' ⟨α, hα⟩)`. Conclude with `hT γ l s m hO hA S q {⨅ α ∈ S', U.U α} (Or.inl ⟨trivial, _, _, rfl, ⟨c'⟩⟩) r r' hrr hr's (fun i n => leS γ q l s S _ i n r) (fun i n => leS γ q l s S _ i n r') j) j`. Conclude with `(bcAt_iff S 𝒱 h𝒱 r r' j).1 ((bcAt_iff S (Set.range U.U) hU r r' j).2 (key j))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : KH.GlobBcSt → BcOn True → BcOn False := by
   intro hG hT O A _ _ _ I γ l s m hO hA S X q 𝒱 hc r r' hrr hr's ha hb j

@@ -3,7 +3,7 @@ set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry GroundTheory.PAdicHodge CrystallineSemistableComparison TensorProduct GlobalTheory.LogCris DividedPowers UpperTheory.Ru.crystallineComparison
 
 /- English proof (translation)
-Proceed by induction on `N generalizing c with`. Consider the case `zero => rfl`. Consider the case `succ N ih`. Simplify using `only [Function.iterate_succ_apply]`. Rewrite using `[h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem iter_gen {A R ι : Type*} (f : A → A) (φ : R → R) (E : (ι → R) → A)
     (h : ∀ c, f (E c) = E (fun k => φ (c k))) (N : ℕ) (c : ι → R) :
@@ -15,7 +15,7 @@ private theorem iter_gen {A R ι : Type*} (f : A → A) (φ : R → R) (E : (ι 
     rw [h, ih]
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [LinearMap.map_smulₛₗ, hx]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sl_sum {R A ι : Type*} [Semiring R] [AddCommMonoid A] [Module R A] (σ : R →+* R)
     (f : A →ₛₗ[σ] A) [Fintype ι] (c : ι → R) (x : ι → A) (hx : ∀ k, f (x k) = x k) :
@@ -24,7 +24,7 @@ private theorem sl_sum {R A ι : Type*} [Semiring R] [AddCommMonoid A] [Module R
   exact Finset.sum_congr rfl fun k _ => by rw [LinearMap.map_smulₛₗ, hx]
 
 /- English proof (translation)
-Introduce `l _ K e he M j n N ι _ v c`. Conclude with `iter_gen (phiH M.P n j) (phiA l) (fun c => evE e M j n v c) (fun c => sl_sum (ACris.phi ℂ_[l] l) (M.phiMH n j) c (fun k => e M n j ((v k).lev n)) (fun k => he M n j _)) N c`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.crisFrobenius_iterate_evalEtaleFamily :
     ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (e : E.EtFam l K), e.Phi → ∀ (M : Model l K) (j n N : ℕ) {ι : Type} [Fintype ι] (v : ι → M.T j) (c : ι → Acris l),

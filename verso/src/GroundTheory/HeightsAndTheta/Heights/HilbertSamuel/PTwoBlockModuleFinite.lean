@@ -21,14 +21,14 @@ namespace TwoBlockModuleFinite
 variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-The claim follows from `aeval_X _ _`.
+A detailed English derivation is pending.
 -/
 theorem cone_X (x x' : Ix κ → Ω) (p : Σ k, FinTwoTypeFamily κ k) :
     mConeMap (pair x x') (X p : MRing (FinTwoTypeFamily κ)) = MvPolynomial.C (pair x x' p) * X p.1 :=
   aeval_X _ _
 
 /- English proof (translation)
-Simplify using `only [twoBlockNum, map_sum, map_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Take `⟨⟨⟩, j⟩` from `j`. Rewrite using `[cone_X]`. Simplify using `[mConeMap, pair, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cone_num (x x' : Ix κ → Ω) (l : Ix κ → ℤ) :
     mConeMap (pair x x') (twoBlockNum l) = MvPolynomial.C (∑ j, (l j : Ω) * x' j) * X 1 := by
@@ -39,7 +39,7 @@ theorem cone_num (x x' : Ix κ → Ω) (l : Ix κ → ℤ) :
   simp [mConeMap, pair, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [map_sum, map_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨⟨⟩, i⟩` from `i`. Rewrite using `[cone_X]`. Simplify using `[mConeMap, pair, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coneMap_firstBlock_linearForm (x x' : Ix κ → Ω) (n : Ix κ → ℤ) :
     mConeMap (pair x x') (∑ i : Ix κ, MvPolynomial.C (n i) * (X ⟨0, i.2⟩ : MRing (FinTwoTypeFamily κ))) =
@@ -51,18 +51,18 @@ theorem coneMap_firstBlock_linearForm (x x' : Ix κ → Ω) (n : Ix κ → ℤ) 
   simp [mConeMap, pair, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `RingHom.mem_ker`.
+A detailed English derivation is pending.
 -/
 theorem mem_twoBlockIdeal (x x' : Ix κ → Ω) (f : MRing (FinTwoTypeFamily κ)) :
     f ∈ twoBlockIdeal x x' ↔ mConeMap (pair x x') f = 0 :=
   RingHom.mem_ker
 
 /- English proof (translation)
-Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe b`. Establish `h' : ((b + 1 : ℕ∞) : WithBot ℕ∞) ≤ (((n + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)` using `h`. Rewrite `h'` using `[WithBot.coe_le_coe]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((b : ℕ∞) : WithBot ℕ∞) ≤ (((n : ℕ) : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[WithBot.coe_le_coe]`. Proceed by induction on `b using ENat.recTopCoe with`. Consider the case `top => exact absurd h' (by simp)`. Consider the case `coe m`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `: m + 1 ≤ n + 1` using `by exact_mod_cast h'`. Conclude with `(by omega : m ≤ n)` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_of_add_one_le' {a : WithBot ℕ∞} {n : ℕ} (h : a + 1 ≤ ((n + 1 : ℕ) : WithBot ℕ∞)) :
     a ≤ ((n : ℕ) : WithBot ℕ∞) := by
@@ -84,53 +84,47 @@ end TwoBlockModuleFinite
 open TwoBlockModuleFinite in
 
 /- English proof (translation)
-Establish `hA` using `CoordArithOfFnField.proof`. Establish `hF` using `TwoBlockFnField.proof`. Introduce `D Ω _ _ κ _ x B c l hx hli hB hspan hxc`. Take `⟨hFp, -⟩` from `hF Ω κ x B hB`. Use `set x' := matAct B x with hx'def`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxA : IsArithVar (mCoordIdeal (ι` using `GlobalTheory κ) x) (D + 1) := by`. Rewrite using `[← coordIdeal_eq_mCoordIdeal]`. Conclude with `hx`. Establish `hxc0 : x ⟨(), c⟩ ≠ 0` using `hli.ne_zero _`. Establish `hx'0 : ∃ j, x' ⟨(), j⟩ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hxc0` to reduce the goal to its premises. Rewrite using `[hxc]`. Conclude with `Finset.sum_eq_zero fun j _ => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨⟩, j⟩` from `j`. Rewrite using `[h j, mul_zero]`. Take `⟨i₁, hi₁⟩` from `hx'0`. Establish `hpA : IsArithVar (twoBlockIdeal x x') (D + 1)` using `hA Unit (GlobalTheory κ) (Fin 2) (FinTwoTypeFamily κ) Ω x (pair x x') (D + 1) ⟨0⟩ (fun k => by fin_cases k`. Conclude with `⟨c, by simpa [pair] using hxc0⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨i₁, by simpa [pair] using hi₁⟩) hFp.symm hxA`. Take `⟨S, hS, hPS⟩` from `hpA.2.1.2.1`. Establish `hL : ∀ i : κ, ∃ L : Ix κ → ℤ, x ⟨(), i⟩ = ∑ j, (L j : Ω) * x' j`. Introduce `i`. Establish `hmem : x ⟨(), i⟩ ∈ Submodule.span ℤ (Set.range x')` using `hspan (Submodule.subset_span ⟨_, rfl⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨L, hL⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).mp hmem`. Conclude with `⟨L, by rw [← hL]; simp [zsmul_eq_mul]⟩`. Use `choose L hL using hL`. Use `set N : ℕ := ∏ p : Ix κ × Ix κ, (B p.1 p.2).den with hN`. Establish `hN0 : 0 < N` using `Finset.prod_pos fun p _ => (B p.1 p.2).den_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hn : ∀ j i, ∃ z : ℤ, (z : ℚ) = N * B j i`. Introduce `j i`. Take `⟨M, hM⟩ : (B j i).den ∣ N` from `Finset.dvd_prod_of_mem (fun p : Ix κ × Ix κ => (B p.1 p.2).den) (Finset.mem_univ (j, i))`. Use `⟨M * (B j i).num, ?_⟩` and prove the remaining obligations. Rewrite using `[hM]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[← Rat.mul_den_eq_num]`. Expand and normalize the polynomial expressions, which then agree. Use `choose n hn using hn`. Establish `hNx' : ∀ j : κ, (N : Ω) * x' ⟨(), j⟩ = ∑ i, (n ⟨(), j⟩ i : Ω) * x i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Introduce `j`. Simplify using `only [hx'def, matAct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun q : ℚ => (q : Ω)) (hn ⟨(), j⟩ i)`. Move the coercions through the operations in `at h`. Rewrite using `[h]`. Establish `hPO : twoBlockIdeal x x' ≤ twoBlockMOuter x x' c` using `le_sup_left`. Establish `hPI : twoBlockIdeal x x' ≤ twoBlockMInner x x' l` using `le_sup_left`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hgO : ∀ j : κ, twoBlockDen c * X ⟨1, j⟩ ∈ twoBlockMOuter x x' c` using `fun j => Ideal.mem_sup_right (Ideal.subset_span ⟨j, rfl⟩)`. Establish `hgI : ∀ i : κ, twoBlockNum l * X ⟨0, i⟩ ∈ twoBlockMInner x x' l` using `fun i => Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩)`. Establish `hlx : ∑ j, (l j : Ω) * x' j = x ⟨(), c⟩` using `hxc.symm`. Use `⟨?_, ?_, ?_, ⟨N, hN0, ?_⟩, ?_⟩` and prove the remaining obligations. Use `⟨S ∪ Set.range fun j : κ => twoBlockDen c * X ⟨1, j⟩, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `f (hf | ⟨j, rfl⟩)`. Conclude with `hS f hf`. Conclude with `⟨_, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul (TwoBlockCycleExpand.isMultiHomog_twoBlockDen c) (ReciprocityTheory.ChartRestriction.G.Geo.isMultiHomog_X _)⟩`. Rewrite using `[twoBlockMOuter, hPS, Ideal.span_union]`. Use `⟨S ∪ Set.range fun i : κ => twoBlockNum l * X ⟨0, i⟩, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `f (hf | ⟨i, rfl⟩)`. Conclude with `hS f hf`. Conclude with `⟨_, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul (TwoBlockCycleExpand.isMultiHomog_twoBlockNum l) (ReciprocityTheory.ChartRestriction.G.Geo.isMultiHomog_X _)⟩`. Rewrite using `[twoBlockMInner, hPS, Ideal.span_union]`. Rewrite using `[twoBlockMInner, sup_le_iff]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hPO, Ideal.span_le.mpr ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hd : twoBlockNum l * X ⟨0, i⟩ - twoBlockDen c * twoBlockNum (L i) ∈ twoBlockIdeal x x'`. Rewrite using `[mem_twoBlockIdeal, map_sub, map_mul, map_mul, cone_num, cone_num, twoBlockDen, cone_X, cone_X, hlx, ← hL i]`. Simplify using `[pair]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hs : twoBlockDen c * twoBlockNum (L i) ∈ twoBlockMOuter x x' c`. Rewrite using `[twoBlockNum, Finset.mul_sum]`. Conclude with `Ideal.sum_mem _ fun j _ => by`. Rewrite using `[mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mul_mem_left _ _ (hgO j.2)`. Establish `h` using `Ideal.add_mem _ (hPO hd) hs`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `f hf`. Rewrite `hf` using `[twoBlockMOuter, Submodule.mem_sup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Take `⟨p, hp, s, hs, rfl⟩` from `hf`. Rewrite using `[mul_add]`. Use `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (hPI hp)) ?_` and prove the remaining obligations. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem g hg`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Take `⟨j, rfl⟩` from `hg`. Establish `hd : (N : MRing (FinTwoTypeFamily κ)) * (twoBlockDen c * X ⟨1, j⟩) - twoBlockNum l * ∑ i : Ix κ, MvPolynomial.C (n ⟨(), j⟩ i) * (X ⟨0, i.2⟩ : MRing (FinTwoTypeFamily κ)) ∈ twoBlockIdeal x x'`. Rewrite using `[mem_twoBlockIdeal, map_sub, map_mul, map_mul, map_mul, map_natCast, cone_num, coneMap_firstBlock_linearForm, twoBlockDen, cone_X, cone_X, hlx, ← hNx' j]`. Simplify using `[pair]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : twoBlockNum l * ∑ i : Ix κ, MvPolynomial.C (n ⟨(), j⟩ i) * (X ⟨0, i.2⟩ : MRing (FinTwoTypeFamily κ)) ∈ twoBlockMInner x x' l`. Rewrite using `[Finset.mul_sum]`. Conclude with `Ideal.sum_mem _ fun i _ => by`. Rewrite using `[mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ _ (hgI i.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `Ideal.add_mem _ (hPI hd) hs`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Rewrite using `[mul_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.add_mem _ ha hb`. Consider the case `smul r a _ ha`. Rewrite using `[smul_eq_mul, mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ _ ha`. Introduce `W hW hIW _`.
-
-Establish `: (twoBlockIdeal x x').IsPrime` using `hpA.2.1.1`. Use `hW` as an intermediate fact. Establish `hlt : twoBlockIdeal x x' < W`. Use `lt_of_le_of_ne (hPI.trans hIW) fun h => ?_` and prove the remaining obligations. Establish `hm : twoBlockNum l * X ⟨0, c⟩ ∈ twoBlockIdeal x x'`.
-
-Rewrite using `[h]`. Conclude with `hIW (hgI c)`. Rewrite `hm` using `[mem_twoBlockIdeal, map_mul, cone_num, cone_X, hlx]`. Simplify using `[pair, hxc0] at hm`. Establish `h` using `krullDim_quotient_add_one_le hlt`.
-
-Rewrite `h` using `[hpA.2.2.2, Fintype.card_fin, show D + 1 + 2 = D + 2 + 1 by omega]`. Rewrite using `[Fintype.card_fin]`. Conclude with `le_of_add_one_le' h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TwoBlockModuleFinite.proof : TwoBlockModuleFinite.Statement := by
   classical

@@ -17,11 +17,11 @@ namespace PositivityTheory.SiegelWeilFormula.Afc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `h0 : A.J = 0`. Use extensionality with `i j`. Establish `h1` using `hH.herm i j`. Establish `h2` using `hS.skew i j`. Rewrite `h2` using `[h1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `self_eq_neg.1 h2`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Take `⟨hrs, A', hA'⟩` from `hH.sig w`. Rewrite `hA'` using `[h0, Matrix.map_zero _ (map_zero _), Matrix.mul_zero, Matrix.zero_mul]`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hs : 0 < s` using `by omega`. Use `congrFun (congrFun hA' (Sum.inr ⟨0, hs⟩)) (Sum.inr ⟨0, hs⟩)` as an intermediate fact. Simplify using `at this`. Use `congrFun (congrFun hA' (Sum.inl ⟨0, hr⟩)) (Sum.inl ⟨0, hr⟩)` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_herm_skew {B : Base F E} {m : ℕ} {A : Spc F E m} {r s r' s' : ℕ} (hm : 1 ≤ m)
     (hH : A.IsHerm σ B r s) (hS : A.IsSkew σ B r' s') : False := by
@@ -42,9 +42,7 @@ theorem not_herm_skew {B : Base F E} {m : ℕ} {A : Spc F E m} {r s r' s' : ℕ}
     simp at this
 
 /- English proof (translation)
-Establish `hσ` using `sigma_sigma_of_good d.ok.good`. Establish `hnL : 1 ≤ L.n` using `L.ok.hn`. Establish `key : ∀ (s : ℤ), (∀ i j, σ (d.Y.J j i) = (s : E) * d.Y.J i j) → (∀ i j, σ (L.Y.J j i) = (s : E) * L.Y.J i j) → ε = ε'` using `fun s h1 h2 => Units.ext ((eps_of_sign hσ d.ok.hn hε s h1).trans (eps_of_sign hσ hnL hε' s h2).symm)`. Apply the tactic sequence `rcases d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩ <;> rcases L.ok.sign with ⟨hA', hY'⟩ | ⟨hA', hY'⟩`. Conclude with `key (-1) (fun i j => by rw [hY]; simp) (fun i j => by rw [hY']; simp)`.
-
-Conclude with `(not_herm_skew d.ok.hm hA hA').elim`. Conclude with `(not_herm_skew d.ok.hm hA' hA).elim`. Conclude with `key 1 (fun i j => by rw [hY]; simp) (fun i j => by rw [hY']; simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eps_eq {d : SD σ} (L : LD d) {ε ε' : ℤˣ} (hε : FrameEq σ d.Y d.b ε) (hε' : FrameEq σ L.Y L.b ε') : ε = ε' := by
   have hσ := sigma_sigma_of_good d.ok.good
@@ -59,16 +57,16 @@ theorem eps_eq {d : SD σ} (L : LD d) {ε ε' : ℤˣ} (hε : FrameEq σ d.Y d.b
   · exact key 1 (fun i j => by rw [hY]; simp) (fun i j => by rw [hY']; simp)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := ((cA σ : AE F E →ₐ[AF F] AE F E) : AE F E →+* AE F E))`.
+A detailed English derivation is pending.
 -/
 theorem mapc_mul {p q r : Type} [Fintype q] (X : Matrix p q (AE F E)) (Z : Matrix q r (AE F E)) :
     (X * Z).map (cA σ) = X.map (cA σ) * Z.map (cA σ) :=
   Matrix.map_mul (f := ((cA σ : AE F E →ₐ[AF F] AE F E) : AE F E →+* AE F E))
 
 /- English proof (translation)
-Establish `hβ' : βᵀ = -((((ε : ℤ) : AE F E)) • β.map (cA σ))` using `hβ`. Establish `hcc : ∀ z, cA σ (cA σ z) = z` using `GlobalTheory.EisBL.DoubledUnipotentRadical.cA_cA σ hσ`. Establish `hPP : (P.map (cA σ)).map (cA σ) = P` using `by ext i j; simp [hcc]`. Use `show ((P.map (cA σ))ᵀ * β * P)ᵀ = -((((ε : ℤ) : AE F E)) • ((P.map (cA σ))ᵀ * β * P).map (cA σ))`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, hβ', mapc_mul, mapc_mul, Matrix.transpose_map, hPP]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem cong_nCond (hσ : ∀ a, σ (σ a) = a) {n : ℕ} {ε : ℤˣ} (P β : Matrix (Fin n) (Fin n) (AE F E))
     (hβ : β ∈ nCond σ n ε) : (P.map (cA σ))ᵀ * β * P ∈ nCond σ n ε := by
@@ -81,7 +79,7 @@ theorem cong_nCond (hσ : ∀ a, σ (σ a) = a) {n : ℕ} {ε : ℤˣ} (P β : M
   simp only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hβ' : βᵀ = -((((ε : ℤ) : AE F E)) • β.map (cA σ))` using `hβ`. Use `show (β.submatrix e e)ᵀ = -((((ε : ℤ) : AE F E)) • (β.submatrix e e).map (cA σ))`. Use extensionality with `i j`. Use `congrFun (congrFun hβ' (e i)) (e j)` as an intermediate fact. Simplify `this` using `[Matrix.transpose_apply, Matrix.submatrix_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sub_nCond {N k : ℕ} {ε : ℤˣ} (e : Fin k → Fin N) (β : Matrix (Fin N) (Fin N) (AE F E))
     (hβ : β ∈ nCond σ N ε) : β.submatrix e e ∈ nCond σ k ε := by
@@ -92,11 +90,11 @@ theorem sub_nCond {N k : ℕ} {ε : ℤˣ} (e : Fin k → Fin N) (β : Matrix (F
   simpa [Matrix.transpose_apply, Matrix.submatrix_apply] using this
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `Function.ne_iff.1 hv`. Set `B : Matrix (Fin n) (Fin n) E` to `(1 : Matrix (Fin n) (Fin n) E).updateCol j v`. Establish `hB : B.det = v j`. Use `congrFun (Matrix.cramer_one (α := E) (n := Fin n) ▸ rfl : Matrix.cramer (1 : Matrix (Fin n) (Fin n) E) v = v) j` as an intermediate fact. Rewrite `this` using `[Matrix.cramer_apply]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Set `M` to `B.submatrix id (Equiv.swap i₀ j)`. Establish `hM : M.det ≠ 0`. Rewrite using `[Matrix.det_permute', hB]`. Conclude with `mul_ne_zero (by simp) hj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨((Matrix.isUnit_iff_isUnit_det M).2 (isUnit_iff_ne_zero.2 hM)).unit, fun k => ?_⟩` and prove the remaining obligations. Simplify using `[M, B, Matrix.updateCol_self]`.
+A detailed English derivation is pending.
 -/
 theorem exists_gl_col {n : ℕ} (v : Fin n → E) (hv : v ≠ 0) (i₀ : Fin n) : ∃ a : GL (Fin n) E, ∀ k, a.1 k i₀ = v k := by
   obtain ⟨j, hj⟩ := Function.ne_iff.1 hv

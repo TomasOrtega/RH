@@ -9,29 +9,27 @@ namespace Formalism.FourierDecayAlt.P.PBH
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Rewrite using `[Dx2.SL.ptSize_append]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem point_size_append_single (h : C.LPt) (c : ℂ) : D.ptSize (h ++ [(1, c)]) = D.ptSize h + (0 + 1) := by
   rw [Dx2.SL.ptSize_append]
 
 /- English proof (translation)
-Establish `hP : D.ptSize (h ++ [(1, c)]) = D.ptSize h + (0 + 1)` using `point_size_append_single h c`. Establish `hspec` using `(Formalism.FourierDecayAlt.P.ptPerm_spec _ _ hloc).1`. Establish `hspec'` using `(Formalism.FourierDecayAlt.P.ptPerm_spec _ _ (Dx2.SL.isLocPt_head hloc)).1`. Establish `hσ : ∀ a : Fin (D.ptSize (h ++ [(1, c)])), ((Dx2.SL.sigP (n` using `0) (D.ptPerm h)) (Fin.cast hP a)).val = (D.ptPerm (h ++ [(1, c)]) a).val := by`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hspec a, Dx2.SL.partner_append 1 c h a.val (by have := a.isLt; omega)]`. Distinguish the cases in `h1 : a.val < D.ptSize h`. Rewrite using `[if_pos h1]`. Establish `e : Fin.cast hP a = Fin.castAdd (0 + 1) ⟨a.val, h1⟩` using `Fin.ext rfl`. Rewrite using `[e, Dx2.SL.blockPerm_castAdd]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hspec' ⟨a.val, h1⟩`. Rewrite using `[if_neg h1]`. Establish `e : Fin.cast hP a = Fin.natAdd (D.ptSize h) ⟨a.val - D.ptSize h, by have` using `a.isLt; omega⟩ := Fin.ext (by simp; omega)`. Rewrite using `[e, Dx2.SL.blockPerm_natAdd]`. Simplify using `only [Fin.val_natAdd, Fin.val_rev]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hd : ∀ a : Fin (D.ptSize (h ++ [(1, c)])), Dx2.SL.dP (n` using `0) (D.ptDiag h) c (Fin.cast hP a) = D.ptDiag (h ++ [(1, c)]) a := by`. Introduce `a`. Simplify using `only [D.ptDiag]`. Rewrite using `[Dx2.SL.scal_append 1 c h a.val (by have := a.isLt; omega)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : a.val < D.ptSize h`. Rewrite using `[if_pos h1]`. Establish `e : Fin.cast hP a = Fin.castAdd (0 + 1) ⟨a.val, h1⟩` using `Fin.ext rfl`. Rewrite using `[e, Dx2.SL.dP, Fin.addCases_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1]`. Establish `e : Fin.cast hP a = Fin.natAdd (D.ptSize h) ⟨a.val - D.ptSize h, by have` using `a.isLt; omega⟩ := Fin.ext (by simp; omega)`. Rewrite using `[e, Dx2.SL.dP, Fin.addCases_right]`. Establish `hσ' : ∀ b : Fin (D.ptSize h + (0 + 1)), (D.ptPerm (h ++ [(1, c)]) (Fin.cast hP.symm b)).val = ((Dx2.SL.sigP (n` using `0) (D.ptPerm h)) b).val := by`. Introduce `b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hσ (Fin.cast hP.symm b)` as an intermediate fact. Rewrite `this` using `[show Fin.cast hP (Fin.cast hP.symm b) = b from Fin.ext rfl]`. Conclude with `this.symm`. Establish `hd' : ∀ b : Fin (D.ptSize h + (0 + 1)), D.ptDiag (h ++ [(1, c)]) (Fin.cast hP.symm b) = Dx2.SL.dP (n` using `0) (D.ptDiag h) c b := by`. Introduce `b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hd (Fin.cast hP.symm b)` as an intermediate fact. Rewrite `this` using `[show Fin.cast hP (Fin.cast hP.symm b) = b from Fin.ext rfl]`. Conclude with `this.symm`. Establish `h1` using `JCTx6.Int.orbit_slice_integrable k (D.ptSize h) 0 (r - D.ptSize (h ++ [(1, c)])) (D.ptPerm h) (D.ptDiag h) c (D.castV (by have := point_size_append_single h c; omega) z) (D.castV (by have := point_size_append_single h c; omega) z') E (D.castF (by have := point_size_append_single …`. Establish `h2` using `(Dx2.SL.phi_transport (k := k) (ρ := r - D.ptSize (h ++ [(1, c)])) hP.symm _ _ hσ' _ _ hd' (D.castV (by have := point_size_append_single h c; omega) z) (D.castV (by have := point_size_append_single h c; omega) z') (D.castF (by have := point_size_append_single h c; omega) F) γ').1 …`.
-
-Simplify `h2` using `only [Dx2.SL.castV_castV, Dx2.SL.castF_castF]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem integrable_slice_append_single {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (z z' : Fin (2 * r + k + 1) → ℂ) (F : B.Mat k r → E) (h : C.LPt) (c : ℂ)

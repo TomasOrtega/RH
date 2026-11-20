@@ -9,7 +9,7 @@ open MeasureTheory
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Use `hh.hasFDerivAt.comp z (hasFDerivAt_apply (𝕜 := ℝ) (F' := fun _ : Fin 1 => ℂ) 0 z)` as an intermediate fact. Rewrite using `[show (fun w : Fin 1 → ℂ => h (w 0)) = h ∘ fun f => f 0 from rfl, this.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma fderiv_comp_coord_zero (h : ℂ → ℂ) (z : Fin 1 → ℂ) (hh : DifferentiableAt ℝ h (z 0))
     (v : Fin 1 → ℂ) :
@@ -19,13 +19,13 @@ lemma fderiv_comp_coord_zero (h : ℂ → ℂ) (z : Fin 1 → ℂ) (hh : Differe
   rfl
 
 /- English proof (translation)
-Establish `hd : Differentiable ℝ f` using `hf.differentiable (by norm_num)`. Establish `hd2 : Differentiable ℝ (fderiv ℝ f)` using `(hf.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)`. Establish `hdc : ∀ c : ℂ, Differentiable ℝ (fun x => fderiv ℝ f x c)` using `fun c x => (hd2 x).clm_apply (differentiableAt_const c)`. Establish `hdd : ∀ c v : ℂ, fderiv ℝ (fun x => fderiv ℝ f x c) z v = fderiv ℝ (fderiv ℝ f) z v c`. Introduce `c v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[fderiv_clm_apply (hd2 z) (differentiableAt_const c)]`. Simplify using the standard rewrite rules. Establish `hof : ∀ x : ℂ, HasFDerivAt (fun y : ℂ => ((f y : ℝ) : ℂ)) (Complex.ofRealCLM.comp (fderiv ℝ f x)) x` using `fun x => Complex.ofRealCLM.hasFDerivAt.comp x (hd x).hasFDerivAt`. Use `set g : ℂ → ℂ := fun x => (1 / 2 : ℂ) * (((fderiv ℝ f x 1 : ℝ) : ℂ) + Complex.I * ((fderiv ℝ f x Complex.I : ℝ) : ℂ)) with hg`. Establish `hbar : (fun w : Fin 1 → ℂ => wirtingerBar (fun u : Fin 1 → ℂ => ((f (u 0) : ℝ) : ℂ)) 0 w) = fun w => g (w 0)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[wirtingerBar, fderiv_comp_coord_zero _ w (hof (w 0)).differentiableAt, fderiv_comp_coord_zero _ w (hof (w 0)).differentiableAt, (hof (w 0)).fderiv]`. Simplify using `[hg]`. Establish `hga : ∀ c : ℂ, HasFDerivAt (fun x => ((fderiv ℝ f x c : ℝ) : ℂ)) (Complex.ofRealCLM.comp (fderiv ℝ (fun x => fderiv ℝ f x c) z)) z` using `fun c => Complex.ofRealCLM.hasFDerivAt.comp z (hdc c z).hasFDerivAt`. Establish `hgd : HasFDerivAt g ((1 / 2 : ℂ) • (Complex.ofRealCLM.comp (fderiv ℝ (fun x => fderiv ℝ f x 1) z) + Complex.I • Complex.ofRealCLM.comp (fderiv ℝ (fun x => fderiv ℝ f x Complex.I) z))) z` using `((hga 1).add ((hga Complex.I).const_mul Complex.I)).const_mul (1 / 2 : ℂ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `ddcDensity`. Rewrite using `[hbar, wirtinger, fderiv_comp_coord_zero g _ hgd.differentiableAt, fderiv_comp_coord_zero g _ hgd.differentiableAt, hgd.fderiv]`. Simplify using `only [InnerProductSpace.laplacianWithin_univ, InnerProductSpace.laplacian_eq_iteratedFDeriv_complexPlane, iteratedFDeriv_two_apply]`. Simplify using `[hdd]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 lemma ddcDensity_eq_laplacian (f : ℂ → ℝ) (hf : ContDiff ℝ 2 f) (z : ℂ) :
     ddcDensity f z = (2 * Real.pi)⁻¹ * InnerProductSpace.laplacianWithin f Set.univ z := by
@@ -67,25 +67,25 @@ lemma ddcDensity_eq_laplacian (f : ℂ → ℝ) (hf : ContDiff ℝ 2 f) (z : ℂ
   field_simp
 
 /- English proof (translation)
-Establish `hS : ∀ u : Fin 1 → ℂ, normSqSum u = ‖u 0‖ ^ 2` using `fun u => by simp [normSqSum]`. Use `set G : (Fin 1 → ℂ) → ℂ := fun u => ((Real.log (1 + normSqSum u) : ℝ) : ℂ) with hG`. Establish `hF : (fun u : Fin 1 → ℂ => (((1 / 2) * Real.log (1 + ‖u 0‖ ^ 2) : ℝ) : ℂ)) = fun u => (1 / 2 : ℂ) * G u`. Use function extensionality and compare the values at `u`. Simplify using `only [hG, hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set H : (Fin 1 → ℂ) → ℂ := fun u => (1 + normSqSum u)⁻¹ • u 0 with hH`. Establish `hbar : (fun w => wirtingerBar (fun u : Fin 1 → ℂ => (((1 / 2) * Real.log (1 + ‖u 0‖ ^ 2) : ℝ) : ℂ)) 0 w) = fun w => (1 / 2 : ℂ) * H w`. Use function extensionality and compare the values at `w`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h0` using `wirtingerBar_logPot (0 : Fin 1) w`. Rewrite `h0`, the goal using `[wirtingerBar]`. Rewrite using `[hF, fderiv_const_mul (hasFDerivAt_logPot w).differentiableAt]`. Simplify using `only [FunLike.coe_smul, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [hH, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hch` using `CP.chernCoeff_apply (N := 1) 0 (fun _ => z) 0 0`. Establish `hpot : (fun w => wirtingerBar (fun u => ((CP.kahlerPotential 0 u : ℝ) : ℂ)) 0 w) = H`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [CP.kahlerPotential_eq, hH, Complex.real_smul]`. Conclude with `wirtingerBar_logPot 0 w`. Rewrite `hch` using `[CP.chernCoeff, Matrix.of_apply, hpot]`. Establish `hHd : DifferentiableAt ℝ H (fun _ => z)` using `(hasFDerivAt_coordDiv 0 _).differentiableAt`. Establish `hW : wirtinger (fun w => (1 / 2 : ℂ) * H w) 0 (fun _ => z) = (1 / 2 : ℂ) * wirtinger H 0 (fun _ => z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[wirtinger, wirtinger, fderiv_const_mul hHd]`. Simplify using `only [FunLike.coe_smul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `ddcDensity`. Rewrite using `[hbar, hW]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `hSz : normSqSum (fun _ : Fin 1 => z) = ‖z‖ ^ 2` using `hS _`. Establish `hpos : (0 : ℝ) < 1 + ‖z‖ ^ 2` using `by positivity`. Establish `hWv : wirtinger H 0 (fun _ => z) = (((1 + ‖z‖ ^ 2) ^ 2)⁻¹ : ℝ)`. Establish `hc : ((1 / (2 * Real.pi) : ℝ) : ℂ) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (1 / (2 * Real.pi) : ℝ) ≠ 0` using `by positivity`. Conclude with `this` after adjusting the coercions. Rewrite `hch` using `[hSz, Matrix.one_apply_eq, Complex.conj_mul']`. Establish `hne : (1 + (‖z‖ : ℂ) ^ 2) ≠ 0` using `by exact_mod_cast hpos.ne'`. Apply `mul_left_cancel₀ hc` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hch]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hWv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `: ((1 / 2 : ℂ) * ((((1 + ‖z‖ ^ 2) ^ 2)⁻¹ : ℝ) : ℂ)).re = (1 / 2) * ((1 + ‖z‖ ^ 2) ^ 2)⁻¹`. Rewrite using `[show (1 / 2 : ℂ) * ((((1 + ‖z‖ ^ 2) ^ 2)⁻¹ : ℝ) : ℂ) = (((1 / 2) * ((1 + ‖z‖ ^ 2) ^ 2)⁻¹ : ℝ) : ℂ) by push_cast; ring]`. Conclude with `Complex.ofReal_re _`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 lemma ddcDensity_fubiniStudy (z : ℂ) :
     ddcDensity (fun w => (1 / 2) * Real.log (1 + ‖w‖ ^ 2)) z =
@@ -144,9 +144,9 @@ lemma ddcDensity_fubiniStudy (z : ℂ) :
   field_simp
 
 /- English proof (translation)
-Establish `h` using `(integral_complex_norm_pow_div 1 one_pos 0 0).2`. Simplify using `only [mul_zero, pow_zero, Nat.factorial_zero, Nat.cast_one, zero_add, one_pow, div_one, mul_one, Nat.reduceAdd, one_div] at h`. Establish `e : (fun z : ℂ => Real.pi⁻¹ / (1 + ‖z‖ ^ 2) ^ 2) = fun z => Real.pi⁻¹ * ((1 + ‖z‖ ^ 2) ^ 2)⁻¹`. Use function extensionality and compare the values at `z`. Rewrite using `[div_eq_mul_inv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, integral_const_mul, h, Nat.factorial_one, Nat.cast_one, inv_one, mul_one]`. Conclude with `inv_mul_cancel₀ Real.pi_ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma integral_fubiniStudy_density :
     ∫ z : ℂ, Real.pi⁻¹ / (1 + ‖z‖ ^ 2) ^ 2 = 1 := by
@@ -160,7 +160,7 @@ lemma integral_fubiniStudy_density :
   exact inv_mul_cancel₀ Real.pi_ne_zero
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ddcDensity_eq_laplacian, ddcDensity_fubiniStudy, integral_fubiniStudy_density⟩`.
+Supply the required witnesses or components.
 -/
 theorem CompactPairCurveForm.proof : CompactPairCurveForm.Statement :=
   ⟨ddcDensity_eq_laplacian, ddcDensity_fubiniStudy, integral_fubiniStudy_density⟩

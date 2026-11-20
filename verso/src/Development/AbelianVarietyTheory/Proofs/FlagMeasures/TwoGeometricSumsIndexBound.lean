@@ -8,39 +8,37 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `q ρ a hq hρ`. Establish `hQ : (2:ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hQ0 : (0:ℝ) < q` using `by linarith`. Establish `hQ1 : (1:ℝ) ≤ q` using `by linarith`. Use `set r : ℝ := (q:ℝ) ^ (1 - (ρ:ℤ)) with hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : 0 ≤ r` using `by positivity`. Establish `hr8 : r ≤ 1 / 8`. Establish `h1 : r ≤ (q:ℝ) ^ (-3:ℤ)` using `zpow_le_zpow_right₀ hQ1 (by omega)`. Establish `h2 : (q:ℝ) ^ (-3:ℤ) = ((q:ℝ) ^ 3)⁻¹` using `by norm_num [zpow_neg]`. Establish `h3 : (8:ℝ) ≤ (q:ℝ) ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pow_le_pow_left₀ (by norm_num) hQ 3` as an intermediate fact. Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : ((q:ℝ) ^ 3)⁻¹ ≤ (8:ℝ)⁻¹` using `inv_anti₀ (by norm_num) h3`. Rewrite `h1` using `[h2]`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[show (8:ℝ)⁻¹ = 1 / 8 by norm_num]`. Establish `key : ∀ i : ℕ, (q:ℝ) ^ i * (q:ℝ) ^ (-(i * ρ : ℤ)) = r ^ i`. Introduce `i`. Rewrite using `[hr, ← zpow_natCast ((q:ℝ)) i, ← zpow_natCast ((q:ℝ) ^ (1 - (ρ:ℤ))) i, ← zpow_mul, ← zpow_add₀ hQ0.ne']`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ i ∈ Finset.Icc 1 a, ((q:ℝ) ^ i - (q:ℝ) ^ (i - 1)) * (q:ℝ) ^ (-(i * ρ : ℤ)) ≤ r ^ i`. Introduce `i _`. Rewrite using `[← key i]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Establish `: (0:ℝ) ≤ (q:ℝ) ^ (i - 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgeom : ∑ i ∈ Finset.Icc 1 a, r ^ i ≤ r ^ 1 / (1 - r)`. Establish `hIcc : Finset.Icc 1 a = Finset.Ico 1 (a + 1)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Simplify using `only [Finset.mem_Icc, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hIcc]`. Conclude with `geom_sum_Ico_le_of_lt_one hr0 (by linarith)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfrac : r ^ 1 / (1 - r) ≤ 8 / 7 * r`. Rewrite using `[pow_one, div_le_iff₀ (by linarith)]`. Use polynomial arithmetic with `[mul_nonneg hr0 (show (0:ℝ) ≤ 1 / 8 - r by linarith)]`. Combine the linear relations using `[Finset.sum_le_sum hterm]`. Introduce `j`.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `main : ∀ n : ℕ, 1 + ∑ i ∈ Finset.Icc 1 n, ((q : ℝ) ^ i - (q : ℝ) ^ (i - 1)) * (q : ℝ) ^ (-(((i - j : ℕ) : ℤ) * ρ)) ≤ (q:ℝ) ^ (min n j) + 1 / 7 * (q:ℝ) ^ j * (1 - (1 / 8 : ℝ) ^ (n - j))`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Finset.sum_Icc_succ_top (by omega), ← add_assoc]`. Break down `Nat.lt_or_ge n j with h | h` into its components or cases. Establish `e1 : n + 1 - j = 0` using `by omega`. Establish `e2 : n - j = 0` using `by omega`. Establish `e3 : min (n + 1) j = n + 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : min n j = n` using `by omega`. Rewrite using `[e1, e3, Nat.add_sub_cancel]`. Rewrite `ih` using `[e2, e4]`. Simplify using `only [Nat.cast_zero, zero_mul, neg_zero, zpow_zero, mul_one, pow_zero, sub_self, mul_zero, add_zero] at ih ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : n + 1 - j = (n - j) + 1` using `by omega`. Establish `e3 : min (n + 1) j = j` using `by omega`. Establish `e4 : min n j = j` using `by omega`. Rewrite `ih` using `[e4]`. Rewrite using `[e3, Nat.add_sub_cancel]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : ((q:ℝ) ^ (n + 1) - (q:ℝ) ^ n) * (q:ℝ) ^ (-(((n + 1 - j : ℕ) : ℤ) * ρ)) ≤ (q:ℝ) ^ j * ((1 / 8 : ℝ) ^ (n - j) * (1 / 8))`. Establish `hk` using `key ((n - j) + 1)`. Rewrite `hk` using `[← e1]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: (0:ℝ) ≤ (q:ℝ) ^ n` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (q:ℝ) ^ j * ((q:ℝ) ^ (n + 1 - j) * (q:ℝ) ^ (-(((n + 1 - j : ℕ) : ℤ) * ρ))) := by`. Rewrite using `[← mul_assoc, ← pow_add]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `_ = (q:ℝ) ^ j * r ^ (n + 1 - j) := by rw [hk]`. Use `_ ≤ (q:ℝ) ^ j * ((1 / 8 : ℝ) ^ (n - j) * (1 / 8)) := by`. Rewrite using `[e1, ← pow_succ]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hr0 hr8 _) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8 : (1 / 8 : ℝ) ^ (n + 1 - j) = (1 / 8) ^ (n - j) * (1 / 8)`. Rewrite using `[e1, pow_succ]`. Rewrite using `[h8]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmin : (q:ℝ) ^ (min a j) ≤ (q:ℝ) ^ j` using `pow_le_pow_right₀ hQ1 (min_le_right _ _)`.
-
-Establish `hX : (0:ℝ) ≤ (q:ℝ) ^ j` using `by positivity`. Establish `hY : (0:ℝ) ≤ (1 / 8 : ℝ) ^ (a - j)` using `by positivity`. Use polynomial arithmetic with `[main a, mul_nonneg hX hY]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem two_geometric_sums_index_bound :
     ∀ (q ρ a : ℕ), 2 ≤ q → 4 ≤ ρ →

@@ -16,7 +16,7 @@ open IsDedekindDomain NumberField
 namespace GlobalTheory.Mem.LiteralAutomorphy
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LevelChars.heckeFin_of GlobalTheory.T.heckeChar_trivial_on_congruenceUnitIdeles GlobalTheory.T.rayClassGroup_idelic_finiteIndex`.
+A detailed English derivation is pending.
 -/
 theorem heckeFin : ∀ (L : Type) [Field L] [NumberField L] (I : Type) [Fintype I] (φ : I → L →+* ℂ) (n : I → ℤ)
     (S : Set (HeightOneSpectrum (𝓞 L))) (N : ℕ), S.Finite →
@@ -26,7 +26,7 @@ theorem heckeFin : ∀ (L : Type) [Field L] [NumberField L] (I : Type) [Fintype 
 namespace KeyFiniteness
 
 /- English proof (translation)
-Introduce `x hx hle` and use `h x hx (hle.trans (WithZero.exp_le_exp.2 (by norm_num)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levelLe_one_two {L : Type} [Field L] [NumberField L] {χ : Formalism.L2.Host.HChar L} {v : HeightOneSpectrum (𝓞 L)}
     (h : χ.LevelLe v 1) : χ.LevelLe v 2 := fun x hx hle =>
@@ -45,9 +45,9 @@ def KS (D : D7) (c : ℝ) : Set (HeightOneSpectrum (𝓞 D.host.F) × HeightOneS
   ⋃ v ∈ Q0 D, {v} ×ˢ ({w | w.under (𝓞 D.host.F) = v} ×ˢ Set.pi Set.univ (CS D c v))
 
 /- English proof (translation)
-Establish `hQ0 : (Q0 D).Finite`. Use `(Formalism.L2.DIV.primesOf ((GlobalTheory.ChiGrid.q0 D : ℕ) : 𝓞 D.host.F)).finite_toSet.subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Formalism.L2.DIV.mem_primesOf.2 ⟨Nat.cast_ne_zero.2 (GlobalTheory.ChiGrid.leastSplitAuxiliaryPrimeThetaChain_spec D).1.ne_zero, hv⟩`. Establish `hSv : ∀ v, (Sv D v).Finite` using `fun v => by`. Use `((Formalism.L2.Host.finite_aboveF (L := D.host.E) D.host.F v).union ((GlobalTheory.ChiGrid.S1 D).finite_toSet.biUnion fun u _ => Formalism.L2.Host.finite_aboveF (L := D.host.E) D.host.F u)).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `PP (h | h)`. Conclude with `Or.inl h`. Conclude with `Or.inr (Set.mem_biUnion (Finset.mem_coe.2 h) rfl)`. Conclude with `hQ0.biUnion fun v _ => (Set.finite_singleton v).prod ((Formalism.L2.Host.finite_aboveF (L := D.host.E) D.host.F v).prod (Set.Finite.pi fun a => heckeFin _ _ _ _ _ 2 (hSv v)))`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem KS_finite (D : D7) (c : ℝ) : (KS D c).Finite := by
   classical
@@ -65,9 +65,9 @@ theorem KS_finite (D : D7) (c : ℝ) : (KS D c).Finite := by
       (Set.Finite.pi fun a => heckeFin _ _ _ _ _ 2 (hSv v)))
 
 /- English proof (translation)
-Use `Set.mem_biUnion (x := G.pl.v0) G.pl.basePlace_over_qZero ⟨rfl, G.pl.under_w (G.pl.mem_S0_of_sum_eq.2 (Or.inl rfl)), fun a _ => ?_⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ a.1 + 1` using `by omega`. Establish `h2 : a.1 + 1 ≤ X.toD7.R.m` using `a.2`. Use `⟨G.ch.inf _ h1 h2, fun PP hPP => G.ch.unr _ h1 h2 PP fun h => hPP ?_, fun PP hPP => ?_⟩` and prove the remaining obligations. Break down `G.pl.mem_S0_of_sum_eq.1 h with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl h`. Conclude with `Or.inr h`. Break down `hPP with h | h` into its components or cases. Conclude with `levelLe_one_two (G.ch.lev0 _ h1 h2 PP h).1`. Conclude with `(G.ch.lev1 _ h1 h2 PP h).1`.
+Prove the first alternative. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mem_KS {X : Stages} {T : Type} {L : Formalism.IndefR.Links.LevCh X.toD7 T} {sc : GlobalTheory.ChiGrid.Consts}
     (G : GlobalTheory.ChiGrid.GridData L sc) : gkeyOf G ∈ KS X.toD7 sc.cGap := by
@@ -83,7 +83,7 @@ theorem mem_KS {X : Stages} {T : Type} {L : Formalism.IndefR.Links.LevCh X.toD7 
     · exact (G.ch.lev1 _ h1 h2 PP h).1
 
 /- English proof (translation)
-Take `⟨⟨P1⟩, C1, W1, V1, S1', N1, G1⟩` from `X`. Take `⟨⟨P0⟩, C0, W0, V0, S0, N0, G0⟩` from `X₀`. Express the relevant statement in the definitionally equal form `P1 = P0 at h`. Substitute `h` using the available equality. Conclude with `fun κ hκ => ⟨κ, hκ, HEq.rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem KS_transfer (X X₀ : Stages) (h : X.B.toPre = X₀.B.toPre) (c : ℝ) :
     ∀ κ ∈ KS X.toD7 c, ∃ κ' ∈ KS X₀.toD7 c, HEq κ κ' := by
@@ -97,9 +97,9 @@ end KeyFiniteness
 
 open KeyFiniteness in
 /- English proof (translation)
-Introduce `P c`. Distinguish the cases in `hP : ∃ X : Stages, X.B.toPre = P`. Use `swap`. Conclude with `⟨∅, Set.finite_empty, fun X _ _ _ _ h _ => (hP ⟨X, h⟩).elim⟩`. Take `⟨X₀, rfl⟩` from `hP`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨KS X₀.toD7 c, KS_finite _ _, ?_⟩` and prove the remaining obligations. Introduce and unpack `X T L sc G hX rfl`. Conclude with `KS_transfer X X₀ hX _ _ (mem_KS G)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem gKeyFin : GKeyFin := by
   intro P c

@@ -17,7 +17,7 @@ variable {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {𝔟 : Id
 include h𝔟
 
 /- English proof (translation)
-Rewrite using `[inf_eq_left.mpr h𝔟.isSubideal]`. Conclude with `h𝔟`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSubDPIdeal_inf : δ.IsSubDPIdeal (𝔟 ⊓ J) := by
   rw [inf_eq_left.mpr h𝔟.isSubideal]; exact h𝔟
@@ -26,24 +26,24 @@ def qdp : DividedPowers (J.map (Ideal.Quotient.mk 𝔟)) :=
   DividedPowers.Quotient.dividedPowers δ (isSubDPIdeal_inf δ h𝔟)
 
 /- English proof (translation)
-The claim follows from `DividedPowers.Quotient.dpow_apply δ (isSubDPIdeal_inf δ h𝔟) ha`.
+A detailed English derivation is pending.
 -/
 theorem qdp_apply {n : ℕ} {a : B} (ha : a ∈ J) :
     (qdp δ h𝔟).dpow n (Ideal.Quotient.mk 𝔟 a) = Ideal.Quotient.mk 𝔟 (δ.dpow n a) :=
   DividedPowers.Quotient.dpow_apply δ (isSubDPIdeal_inf δ h𝔟) ha
 
 /- English proof (translation)
-The claim follows from `DividedPowers.Quotient.isDPMorphism δ (isSubDPIdeal_inf δ h𝔟)`.
+A detailed English derivation is pending.
 -/
 theorem qdp_isDPMorphism : IsDPMorphism δ (qdp δ h𝔟) (Ideal.Quotient.mk 𝔟) :=
   DividedPowers.Quotient.isDPMorphism δ (isSubDPIdeal_inf δ h𝔟)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨[], by simp, rfl, by simp⟩`. Consider the case `cons p l ih`. Take `⟨l', h1, h2, h3⟩` from `ih fun q hq ↦ hl q (List.mem_cons_of_mem _ hq)`. Take `⟨a, ha, hpa⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 (hl p List.mem_cons_self)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(p.1, a) :: l', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Break down `List.mem_cons.1 hq with rfl | hq` into its components or cases. Conclude with `ha`. Conclude with `h1 q hq`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h2]`. Simplify using `only [List.map_cons, List.prod_cons, map_mul, h3]`. Rewrite using `[← hpa, qdp_apply δ h𝔟 ha]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_list (l : List (ℕ × (B ⧸ 𝔟))) (hl : ∀ p ∈ l, p.2 ∈ J.map (Ideal.Quotient.mk 𝔟)) :
     ∃ l' : List (ℕ × B), (∀ p ∈ l', p.2 ∈ J) ∧ l'.map Prod.fst = l.map Prod.fst ∧
@@ -65,7 +65,7 @@ theorem lift_list (l : List (ℕ × (B ⧸ 𝔟))) (hl : ∀ p ∈ l, p.2 ∈ J.
       rw [← hpa, qdp_apply δ h𝔟 ha]
 
 /- English proof (translation)
-Rewrite `hn`, the goal using `[isLev_iff_prod]`. Introduce `l hl hs`. Take `⟨l', h1, h2, h3⟩` from `lift_list δ h𝔟 l hl`. Rewrite using `[← h3, hn l' h1 (h2 ▸ hs), map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLev_qdp {n : ℕ} (hn : IsLev δ n) : IsLev (qdp δ h𝔟) n := by
   rw [isLev_iff_prod] at hn ⊢
@@ -74,7 +74,7 @@ theorem isLev_qdp {n : ℕ} (hn : IsLev δ n) : IsLev (qdp δ h𝔟) n := by
   rw [← h3, hn l' h1 (h2 ▸ hs), map_zero]
 
 /- English proof (translation)
-Rewrite `hδ`, the goal using `[isDPNilpotent_iff_exists_isLevel]`. Take `⟨n, hn⟩` from `hδ`. Conclude with `⟨n, isLev_qdp δ h𝔟 hn⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isDPNilpotent_quotient (hδ : IsNilDP δ) : IsNilDP (qdp δ h𝔟) := by
   rw [isDPNilpotent_iff_exists_isLevel] at hδ ⊢
@@ -146,7 +146,7 @@ section Main
 open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.CxCoh GlobalTheory.PDA GlobalTheory.PDForm GlobalTheory.SmoothLift
 
 /- English proof (translation)
-Introduce `R _ I κ X t T 𝔟 h𝔟`. Use `⟨quot T h𝔟, proj T h𝔟, Ideal.Quotient.mkₐ_surjective R 𝔟, fun b ↦ Ideal.Quotient.eq_zero_iff_mem, rfl, fun n hn ↦ isLev_qdp T.δ h𝔟 hn, fun S a ha ↦ ⟨desc T h𝔟 a ha, Thick.hom_ext fun _ ↦ rfl, fun g hg ↦ Thick.hom_ext fun b ↦ ?_⟩⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Conclude with `congrArg (fun f : T ⟶ S ↦ f.φ c) hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_quotient : ∀ (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPowers I) (X : Scheme.{0}) (t : X ⟶ Sp R) (T : Thick κ t) (𝔟 : Ideal T.B), T.δ.IsSubDPIdeal 𝔟 → ∃ (G : Thick κ t) (q : T ⟶ G), Function.Surjective q.φ ∧ (∀ b, q.φ b = 0 ↔ b ∈ 𝔟) ∧ G.J = T.J.map (q.φ : T.B →+* G.B) ∧ (∀ n, IsLev T.δ n → IsLev G.δ n) ∧ ∀ (S : Thick κ t) (a : T ⟶ S), (∀ b ∈ 𝔟, a.φ b = 0) → ∃! g : G ⟶ S, q ≫ g = a := by
   intro R _ I κ X t T 𝔟 h𝔟

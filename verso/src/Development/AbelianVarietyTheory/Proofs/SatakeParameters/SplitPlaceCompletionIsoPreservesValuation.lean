@@ -9,19 +9,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.SplitConjVal
 
 /- English proof (translation)
-Establish `ha0 : a ≠ 0` using `by rintro rfl; rw [map_zero] at ha; exact WithZero.exp_ne_zero ha.symm`. Establish `hb0 : b ≠ 0` using `by rintro rfl; rw [map_zero] at hb; exact WithZero.exp_ne_zero hb.symm`. Establish `hlt : ∀ r s : F, v1 r < v1 s ↔ v2 r < v2 s` using `fun r s => by`. Rewrite using `[← not_le, ← not_le, h s r]`. Establish `hval : ∀ y : F, y ≠ 0 → v2 y = WithZero.exp (WithZero.log (v2 y))` using `fun y hy => (WithZero.exp_log (by simpa using hy)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval1 : ∀ y : F, y ≠ 0 → v1 y = WithZero.exp (WithZero.log (v1 y))` using `fun y hy => (WithZero.exp_log (by simpa using hy)).symm`. Establish `ha2 : v2 a = WithZero.exp (-1)`. Establish `h1 : v2 a < 1`. Rewrite using `[← map_one v2, ← hlt, map_one, ha, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2 : v1 b < 1`. Rewrite using `[← map_one v1, hlt, map_one, hb, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Establish `h3 : ¬ v1 b < v1 a`. Introduce `h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h3` using `[hlt, hb]`. Rewrite `h1` using `[hval a ha0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite `h3` using `[hval a ha0, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Establish `h4 : v1 b = v1 a`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h2` using `[hval1 b hb0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite `h3` using `[hval1 b hb0, ha, WithZero.exp_lt_exp]`. Rewrite using `[hval1 b hb0, ha, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hb]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((h.eq_iff).1 h4).symm`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Use `set k := WithZero.log (v1 x)`. Establish `e1 : v1 x = v1 (a ^ (-k))`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_zpow₀, ha, ← WithZero.exp_zsmul, hval1 x hx]`. Use `congr 1`. Simplify using `[k]`. Rewrite using `[e1, (h.eq_iff).1 e1, map_zpow₀, map_zpow₀, ha, ha2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_isEquiv {F : Type} [Field F] (v1 v2 : Valuation F (WithZero (Multiplicative ℤ)))
     (h : v1.IsEquiv v2) (a b : F) (ha : v1 a = WithZero.exp (-1)) (hb : v2 b = WithZero.exp (-1))
@@ -61,13 +61,13 @@ theorem eq_of_isEquiv {F : Type} [Field F] (v1 v2 : Valuation F (WithZero (Multi
   rw [e1, (h.eq_iff).1 e1, map_zpow₀, map_zpow₀, ha, ha2]
 
 /- English proof (translation)
-Introduce `L _ _ _ s c hc hci x`. Use `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion (maximalRealSubfield L) s.v` as an intermediate fact. Establish `ho : IsOpenMap c` using `AddMonoidHom.isOpenMap_of_sigmaCompact c.toAddEquiv.toAddMonoidHom c.surjective hc`. Establish `hc' : Continuous c.symm` using `c.toEquiv.continuous_symm_iff.2 ho`. Set `v' : Valuation (s.v.adicCompletion (maximalRealSubfield L)) (WithZero (Multiplicative ℤ))` to `(Valued.v : Valuation (s.w.adicCompletion L) (WithZero (Multiplicative ℤ))).comap c.toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hE : v'.IsEquiv Valued.v`. Rewrite using `[Valuation.isEquiv_iff_val_lt_one]`. Introduce `y`. Use `⟨fun h => ?_, fun h => GlobalTheory.ConjParahoric.val_lt_one_map c.toRingHom hc h⟩` and prove the remaining obligations. Simplify using `using GlobalTheory.ConjParahoric.val_lt_one_map c.symm.toRingHom hc' h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨π, hπ⟩` from `s.v.valuation_exists_uniformizer (maximalRealSubfield L)`. Take `⟨ϖ, hϖ⟩` from `s.w.valuation_exists_uniformizer L`. Establish `h1 : v' (s.i ϖ) = WithZero.exp (-1)` using `by show Valued.v (c (s.i ϖ)) = _`. Rewrite using `[hci, ReciprocityTheory.Aut.adic_valued_algebraMap, hϖ]`. Establish `h2 : Valued.v (algebraMap (maximalRealSubfield L) (s.v.adicCompletion (maximalRealSubfield L)) π) = WithZero.exp (-1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ReciprocityTheory.Aut.adic_valued_algebraMap, hπ]`. Conclude with `eq_of_isEquiv v' Valued.v hE _ _ h1 h2 x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_eq : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L) (c : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L), Continuous c → (∀ x : L, c (s.i x) = algebraMap L (s.w.adicCompletion L) x) → ∀ x : s.v.adicCompletion (maximalRealSubfield L), Valued.v (c x) = Valued.v x := by
   intro L _ _ _ s c hc hci x

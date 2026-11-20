@@ -27,7 +27,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdTh.CoverVal
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -, -⟩` from `h`. Consider the cases of `X`. Consider the cases of `X'`. Simplify using `only at h1 h2 h3`. Substitute `h1 h2 h3` using the available equality.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -42,7 +42,7 @@ theorem perFr_cast {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Finset.ext fun τ => (h'.psi τ).trans (h.psi τ).symm, h'.model.1.trans h.model.1.symm, hp, h'.model.2.trans h.model.2.symm, h'.kap.trans h.kap.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem sameSp_of {D : D7} {W : HSp D} {r : ℕ} {hr : W.rank = r} {X' X : Data D.host.E r} (h' : IsMod W hr X')
     (h : IsMod W hr X) (hp : X'.p0 = X.p0) : SameSp X' X :=
@@ -50,7 +50,7 @@ theorem sameSp_of {D : D7} {W : HSp D} {r : ℕ} {hr : W.rank = r} {X' X : Data 
     h'.model.2.trans h.model.2.symm, h'.kap.trans h.kap.symm⟩
 
 /- English proof (translation)
-Establish `h1` using `hδ τ (θ hτ.choose) (by have h := hθ hτ.choose; rwa [← hτ.choose_spec] at h)`. Rewrite using `[realM, realM, dif_pos hτ, dif_pos hτ, ← h1]`. Express the relevant statement in the definitionally equal form `archM W _ (γ * k) = _ * archM W _ k`. Rewrite using `[archM, archM, archM, map_mul, Units.val_mul, Matrix.map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem realM_mul {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (W : HSp D) (γ k : GA D W)
     (δ : Matrix (Fin W.rank) (Fin W.rank) D.host.E)
@@ -65,9 +65,9 @@ theorem realM_mul {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (W : HSp D) (γ k
 open CategoryTheory MonObj in
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨u, hu, e'⟩` from `hc a ha`. Establish `hM : (l.M : E) ≠ 0` using `by have := l.three_le; exact_mod_cast (by omega : l.M ≠ 0)`. Establish `hadd : ∀ u v, pv X idx x (u + v) = pv X idx x u + pv X idx x v` using `fun u v => by`. Unfold `pv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[per_add]`. Both sides reduce to the same expression. Rewrite using `[h a ha, e', smul_add, ← Nat.cast_smul_eq_nsmul E, inv_smul_smul₀ hM, hadd, A.ex_add, (A.ex_ker _).2 ⟨u, hu, rfl⟩, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem marked_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} [Algebra c.F ℂ] {r g : ℕ} {X : Data E r}
@@ -84,34 +84,32 @@ theorem marked_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo
     (A.ex_ker _).2 ⟨u, hu, rfl⟩, _root_.mul_one]
 
 /- English proof (translation)
-Rewrite using `[smul_sub, ← h', ← Matrix.mulVec_smul, ← h, Matrix.mulVec_sub, sub_sub_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem move_congr {A : Type} [CommRing A] {n N : ℕ} (p q : Matrix (Fin n) (Fin n) A) {x x' b w w' : Fin n → A}
     (h : x - q *ᵥ b = N • w) (h' : x' - p *ᵥ (q *ᵥ b) = N • w') : p *ᵥ x - x' = N • (p *ᵥ w - w') := by
   rw [smul_sub, ← h', ← Matrix.mulVec_smul, ← h, Matrix.mulVec_sub, sub_sub_sub_cancel_right]
 
 /- English proof (translation)
-Set `_ : Algebra c.F ℂ` to `σ.toAlgebra`. Introduce `y A hA'`. Substitute `hr` using the available equality. Take `rfl : g = Wt.g` from `Fin.equiv_iff_eq.1 ⟨e.trans Wt.e.symm⟩`. Take `⟨π, rfl⟩ : ∃ π : Equiv.Perm (Fin Wt.g), e = π.trans Wt.e` from `⟨e.trans Wt.e.symm, Equiv.ext fun a => (Wt.e.apply_symm_apply _).symm⟩`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨idx, rfl⟩ : ∃ idx' : Fin Wt.g ≃ X.Ψ × Fin W.rank, idx = π.trans idx'` from `⟨π.symm.trans idx, Equiv.ext fun a => congrArg idx (π.symm_apply_apply a).symm⟩`. Establish `hsp : SameSp (U.X j) X` using `sameSp_of hm' hm ((hU.2.1 j).1.trans hp.symm)`. Take `⟨-, hsd, -⟩` from `uw_lattice _ H Dw l Xo c σ _ U hσ hU h1 Wt j`. Take `⟨Dc, hDc, -⟩` from `exists_dic _ H Dw l c σ _ Wt.g 0 (U.X j) 0 Wt.e hσ hU.1 (hU.2.1 j).1 (hU.2.1 j).2 hsd ⟨fun _ => antitone_const, Even.zero⟩`. Establish `hper` using `Dc.per_eq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hty` using `Dc.ty_eq`. Rewrite `hper`, `hty` using `[hDc]`. Take `⟨hd', hu', -⟩` from `hx_of_isONFr _ _ _ 0 (U.X j) Dc.bas Dc.idx Dc.sympl Even.zero x' hon`. Take `⟨A', hA'', -⟩` from `uw_anFib _ H Dw l Xo c σ _ U hσ hU h1 Wt j Dc.bas Dc.idx Dc.sympl hper hty ⟨x', hd'⟩ hu'`. Take `⟨δ, hδu, hδf, hδa⟩` from `GlobalTheory.MarkCoset.rational_matrix W γ hγ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hri : ∀ v, δ.1 *ᵥ ((δ⁻¹).1 *ᵥ v) = v` using `fun v => by rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hli : ∀ v, (δ⁻¹).1 *ᵥ (δ.1 *ᵥ v) = v` using `fun v => by rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `hG : X.Gm = -W.gram.transpose` using `hm.model.1`. Establish `hun : IsUn X δ⁻¹` using `fun u v => by rw [hG, ← hδu, hri, hri]`. Establish `hR : ∀ L : Lt D.host.E W.rank, latR rfl L = L` using `fun L => Submodule.map_id L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hL`, `hL'` using `[hR]`. Establish `hmem : ∀ v, v ∈ X.Λ ↔ δ.1 *ᵥ v ∈ (U.X j).Λ` using `fun v => by`. Rewrite using `[← hL, ← hL', GlobalTheory.Member.LatMove.mem_lat_iff, GlobalTheory.Member.LatMove.mem_lat_iff, GlobalTheory.Member.LatMove.move_iff W γ k, hδf]`. Take `⟨hd, -, hsd', A'', -, -, hM⟩` from `anFib_move _ H Dw l Xo c _ _ (U.X j) X hsp Dc.bas Dc.idx bas idx Wt.e x' _ _ A' δ⁻¹ Dc.sympl hs hd' hsd hun (fun v => funext fun a => by`. Take `⟨a, rfl⟩` from `π.surjective a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(hper x' v _).trans ((perFr_cast hsp _ _ _ _).trans (hi.1 _ v a).symm))`. Use the proof step `(fun a => by`. Take `⟨a, rfl⟩` from `π.surjective a`. Conclude with `(hty _).trans (hi.2 a).symm)`. Establish `hM'` using `hM _ hA''`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e1 : mapL δ⁻¹ (U.X j).Λ = X.Λ` using `Submodule.ext fun v => by`. Rewrite using `[Lev.mem_mapL, inv_inv, hmem]`. Both sides reduce to the same expression. Establish `e2 : lact δ⁻¹ (castFr hsp.psi x') = frMove θ W rfl X k fun τ => x₀ τ.1`. Use function extensionality and compare the values at `τ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx']`. Express the relevant statement in the definitionally equal form `(δ⁻¹).1.map τ.1 * (realM θ (Formalism.L2.Theta.mt W (γ * k)) τ.1 * x₀ τ.1) = realM θ (Formalism.L2.Theta.mt W k) τ.1 * x₀ τ.1`. Rewrite using `[realM_mul hθ W γ k δ.1 hδa τ.1 ((hm.psi _).1 τ.2), ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Use `revert A'' hd hsd'`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `hd hsd' A'' _ hM'`. Use `⟨hd', anFib_point_eq _ H Dw l Xo c hA _ _ X bas idx Wt.e _ _ _ y A'' (Cmp.anFibRen π A) hs hd hsd' mk hmk (marked_congr A'' hM' fun a ha => ?_) hA'⟩` and prove the remaining obligations. Take `⟨w, hw, ew⟩` from `hk a ha`. Take `⟨w', hw', ew'⟩` from `hk' a ha`. Establish `hM0 : l.M ≠ 0` using `by have := l.three_le; omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, eu⟩` from `GlobalTheory.MarkCoset.finVec_div W l.M hM0 (δ.1 *ᵥ mk a - Wt.mark j a) ((finHom W γ).1 *ᵥ w - w') (by`. Establish `e3 : finVec W (δ.1 *ᵥ mk a - Wt.mark j a) = finVec W (δ.1 *ᵥ mk a) - finVec W (Wt.mark j a)`. Use function extensionality and compare the values at `fun i => TensorProduct.tmul_sub _ _ _`. Rewrite using `[e3, ← hδf]`. Conclude with `move_congr _ _ ew (GlobalTheory.Member.LatMove.fin_mul W γ k _ ▸ ew'))`.
-
-Use `⟨(δ⁻¹).1 *ᵥ u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmem, hri, ← hL', GlobalTheory.Member.LatMove.mem_lat_iff, hu]`. Conclude with `sub_mem (GlobalTheory.Member.LatMove.move_mem W γ k w hw) hw'`. Rewrite using `[← Matrix.mulVec_smul, ← eu, Matrix.mulVec_sub, hli]`. Conclude with `(add_sub_cancel _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem point_eq {D : D7} {H : Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l}
     {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} (U : Formalism.L2.PjFree.Unf Xo c σ r) (hσ : GoodEmb c σ)
@@ -193,7 +191,7 @@ theorem point_eq {D : D7} {H : Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Geo.To
     exact (add_sub_cancel _ _).symm
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.WeightZeroValue.evR_conj E H Dw l Xo c σ (RingEquiv.refl ℂ) f hf y y' (h.trans ((CategoryTheory.Category.id_comp _).symm.trans (congrArg (CategoryTheory.CategoryStruct.comp · y.x) (AlgebraicGeometry.Spec.map_id _).symm)))`.
+A detailed English derivation is pending.
 -/
 theorem evR_eq_of_point {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} (σ : c.F →+* ℂ) {f : Rul Xo c} (hf : f ∈ sec Xo c 0 0)
@@ -203,15 +201,15 @@ theorem evR_eq_of_point {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
       (congrArg (CategoryTheory.CategoryStruct.comp · y.x) (AlgebraicGeometry.Spec.map_id _).symm)))
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hR hT i Tp tup O hO`. Take `⟨c0, ⟨m, hm0, hm⟩, hc⟩` from `hO.cxi`. Use `⟨c0, Complex.norm_eq_one_of_pow_eq_one hm hm0.ne', ?_⟩` and prove the remaining obligations. Introduce `t X g bas idx e k xk mk hX hp hs hi hL hxk hmk hk y₂ A₂ hA₂`. Take `⟨hU, hW, g', e', F', ik, φ, th, hth, hD, hval⟩` from `hc t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hlev, hA, -⟩` from `hO.cov t`. Take `⟨hX₀, hon₀, -, hp₀, -, -, h1, -, hΨ₀, -⟩` from `GlobalTheory.T.level_form_compat_base_embedding D G Pl0 T0 A T R F κ v₀ hR hT i O.s0 (sOv_eq _ _ _) (T.dict _ O.s0 1).1`. Establish `hσ : GoodEmb (O.dδ t).c₂ ((inC O.c').comp ((O.dδ t).eF.symm : (O.dδ t).c₂.F →+* O.c'.F))` using `rfl`. Establish `hmod : ∀ j, IsMod (Wc D i) (rank_Wc i) ((O.U₂ t).X j)` using `fun j => isMod_of _ _ _ (hW j) fun ρ => ((hU.2.1 j).2 _).2 ((hΨ₀ _).1 ((hX₀.psi _).2 ⟨ρ, rfl⟩))`. Establish `hor : ∀ j, IsOrthogonalFrame ((O.U₂ t).X j) (T.x₀ ((i : ℕ) + 1) O.s0)` using `fun j τ hτ => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsp` using `sameSp_of (hmod j) hX₀ ((hU.2.1 j).1.trans hp₀.symm)`. Rewrite using `[hsp.gm, hsp.p0]`. Conclude with `hon₀ ⟨τ, hsp.psi ▸ hτ⟩`. Take `⟨Wt⟩` from `nonempty_uw ((Formalism.L2.PjFree.isUnf_ofPj _).2 hU)`. Take `⟨hon, γ, ⟨hγ, hl, hf⟩, hma, -⟩` from `GlobalTheory.T.dictionary_component_frame_marking_uniformisation D _ _ _ _ _ _ _ (O.U₂ t) hσ hU h1 hA R.θ (Wc D i) (rank_Wc i) (O.dict₂ t) (iotaW T i) g' e' F' ik φ th _ hR.models.inf hmod hor hth hD Wt k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hd, hpt⟩` from `point_eq (Formalism.L2.PjFree.Unf.ofPj (O.U₂ t)) hσ hU h1 hA hR.models.inf (Wc D i) (rank_Wc i) (iotaW T i) _ Wt (O.dict₂ t k).1 (O.dict₂ t k).2 γ k hγ (hmod _) hl hf hon hma X g bas idx e mk hX hp hs hi hL hmk hk y₂ A₂ hA₂`. Take `⟨γ', hγ', h2, h3, -⟩` from `hD.2 k`. Take `⟨-, -, hrat, hmul⟩` from `GlobalTheory.Member.isDetRoot_laws D (Wc D i)`. Take `⟨a, ha⟩` from `hrat γ' hγ'`. Establish `hv` using `hval k γ' ⟨hγ', h2, h3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[(hO.tuple t).xi _ _ (hmul _ _ _ _ ha hxk), map_mul, (hR.lev.xi (tup t)).1.2 a, _root_.one_mul]`. Conclude with `(evR_eq_of_point _ hlev.2.2.2.2.2.2.2.1 _ y₂ hpt).trans ((dif_pos hd).symm.trans hv)`.
+A detailed English derivation is pending.
 -/
 theorem cover_value : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → TieIn T R κ v₀ → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ∃ c0 : ℂ, ‖c0‖ = 1 ∧ ∀ (t : Tp) (X : Data D.host.E D.R.r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin D.R.r) (e : Fin g ≃ Lt1 (T.Q.Dw ((i : ℕ) + 1))) (k : GA D (Wc D i)) (xk : (AE D)ˣ) (mk : (T.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (Fin D.R.r → D.host.E)), IsMod (Wc D i) (rank_Wc i) X → X.p0 = (T.Q.Dw ((i : ℕ) + 1)).q → IsSympl X bas → IdxIs O.c' (inC O.c') X idx e → latR (rank_Wc i) (latG (Wc D i) k) = X.Λ → IsDetRoot (Wc D i) k xk → IsMark (O.dδ t).l₂ X.Λ mk → MarkAd (O.dδ t).l₂ (Wc D i) (rank_Wc i) (iotaW T i) k mk → letI : Algebra (O.dδ t).c₂.F ℂ := ((inC O.c').comp ((O.dδ t).eF.symm : (O.dδ t).c₂.F →+* O.c'.F)).toAlgebra; ∀ (y₂ : FrPt (O.dδ t).Xo₂ (O.dδ t).c₂ ℂ) (A₂ : AnFib X bas idx e (frMove R.θ (Wc D i) (rank_Wc i) X k (fun τ => T.x₀ ((i : ℕ) + 1) O.s0 τ.1)) X.Λ y₂), A₂.Marked mk → evR (O.dδ t).Xo₂ (O.dδ t).c₂ (O.dδ t).cδ y₂ = c0 * ((R.xi (tup t) xk : Circle) : ℂ) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hR hT i Tp tup O hO

@@ -11,13 +11,13 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {g : SplitG M.L} {r : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hl`. Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨Pi.single a.castSucc 1, by simp [(Fin.castSucc_lt_last a).ne], ?_⟩` and prove the remaining obligations. Rewrite using `[← col_eq_mulVec]`. Consider the case `zero => exact ⟨0, rfl, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨w, hw, rfl⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw', rfl⟩` from `hy`. Conclude with `⟨w + w', by simp [hw, hw'], Matrix.mulVec_add _ _ _⟩`. Consider the case `smul s x _ hx`. Take `⟨w, hw, rfl⟩` from `hx`. Conclude with `⟨s • w, by simp [hw], Matrix.mulVec_smul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `mulVec_mem_headCols _ _ hw`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_headCols_iff (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) M.R) (l : Fin (r + 1) → M.R) :
     l ∈ headCols Z ↔ ∃ w : Fin (r + 1) → M.R, w (Fin.last r) = 0 ∧ Z.mulVec w = l := by
@@ -40,7 +40,7 @@ theorem mem_headCols_iff (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) M.R) (l : Fin (
     exact mulVec_mem_headCols _ _ hw
 
 /- English proof (translation)
-Use `show Z.Z.mulVec w - (TT * dgR hs (trO hs (w (Fin.last r)))) • eV r = _`. Rewrite using `[hw, map_zero, map_zero, mul_zero, zero_smul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem llMap_of_last (hs : M.split = some g) (Z : M.Mat (r + 1)) (TT : M.R) (w : Fin (r + 1) → M.R)
     (hw : w (Fin.last r) = 0) : llMap hs Z TT w = Z.Z.mulVec w := by
@@ -48,7 +48,7 @@ theorem llMap_of_last (hs : M.split = some g) (Z : M.Mat (r + 1)) (TT : M.R) (w 
   rw [hw, map_zero, map_zero, mul_zero, zero_smul, sub_zero]
 
 /- English proof (translation)
-Take `⟨w, hw, rfl⟩` from `(mem_headCols_iff Z.Z l).1 hl`. Conclude with `⟨w, llMap_of_last hs Z TT w hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem headCols_le_LL (hs : M.split = some g) (Z : M.Mat (r + 1)) (TT : M.R) {l : Fin (r + 1) → M.R}
     (hl : l ∈ headCols Z.Z) : l ∈ LL hs Z TT := by
@@ -56,7 +56,7 @@ theorem headCols_le_LL (hs : M.split = some g) (Z : M.Mat (r + 1)) (TT : M.R) {l
   exact ⟨w, llMap_of_last hs Z TT w hw⟩
 
 /- English proof (translation)
-Rewrite using `[mk1, QuotientAddGroup.eq_zero_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem firstQuotient_eq_zero_iff (hs : M.split = some g) (Z : M.Mat (r + 1)) (TT : M.R) (l : Fin (r + 1) → M.R) :
     mk1 hs Z TT l = 0 ↔ ∃ m, llMap hs Z TT m = l := by
@@ -64,23 +64,21 @@ theorem firstQuotient_eq_zero_iff (hs : M.split = some g) (Z : M.Mat (r + 1)) (T
   rfl
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `(firstQuotient_eq_zero_iff hs Z TT l).1 h1`. Rewrite `h2` using `[laG_llMap hs Zh T T' Z hZ hu]`. Establish `hq` using `q_ne g`. Establish `hd1` using `((isUnit_iff_ph (g := g) _).1 hu).1`. Establish `hd2` using `((isUnit_iff_ph (g := g) _).1 hu).2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG1` using `((isUnit_iff_ph (g := g) _).1 hG).1`. Establish `ecj : ∀ x : E, ph1 g (M.L.cj x) = ph2 g x` using `fun x => by`. Rewrite using `[firstProj_apply, secondProj_apply, g.e_cj]`. Both sides reduce to the same expression. Establish `eal1 : ∀ c : F, ph1 g (algebraMap F E c) = c` using `fun c => by rw [firstProj_apply, AlgEquiv.commutes]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `eal2 : ∀ c : F, ph2 g (algebraMap F E c) = c` using `fun c => by rw [secondProj_apply, AlgEquiv.commutes]; rfl`. Establish `et1 : ph1 g (tau0 g T T') = -T / (g.q : F)` using `by simp [firstProj_apply]`. Establish `et2 : ph2 g (tau0 g T T') = T' / (g.q : F)` using `by simp [secondProj_apply]`. Establish `eT1 : ph1 g (TT : E) = T` using `by rw [firstProj_apply, hTT]`. Establish `eT2 : ph2 g (TT : E) = T'` using `by rw [secondProj_apply, hTT]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a := ph1 g ((m (Fin.last r) : M.R) : E) with ha`. Use `set b := ph2 g ((m (Fin.last r) : M.R) : E) with hb`. Establish `etr : ((trO hs (m (Fin.last r)) : 𝒪[F]) : F) = (a - b) / (g.q : F)` using `by rw [trO_coe]; rfl`. Establish `H1` using `congrArg (ph1 g) h2`. Establish `H2` using `congrArg (ph2 g) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_sub, map_mul, map_one, map_zero, eal1, eal2, et1, et2, eT1, eT2, etr, cornerRatio_firstProj hs Zh T T' hu, cornerRatio_secondProj hs Zh T T' hu] at H1 H2`. Rewrite `H1` using `[← ha]`. Rewrite `H2` using `[← hb]`. Establish `E1 : a * ph1 g Zh.det + T * ph1 g (Zh.submatrix Fin.castSucc Fin.castSucc).det * b = 0`. Clear denominators, using `[hd1, hq] at H1` for the nonvanishing conditions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `H1`. Establish `E2 : b * ph2 g Zh.det + T' * ph2 g (Zh.submatrix Fin.castSucc Fin.castSucc).det * a = 0`. Clear denominators, using `[hd2, hq] at H2` for the nonvanishing conditions. Take the linear combination `H2`. Establish `hG1' : ph1 g Zh.det * ph2 g Zh.det - T * T' * (ph1 g (Zh.submatrix Fin.castSucc Fin.castSucc).det * ph2 g (Zh.submatrix Fin.castSucc Fin.castSucc).det) ≠ 0`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hG1` using `[map_sub, map_mul, ecj, eal1]`. Establish `ha0 : a = 0`. Establish `: a * (ph1 g Zh.det * ph2 g Zh.det - T * T' * (ph1 g (Zh.submatrix Fin.castSucc Fin.castSucc).det * ph2 g (Zh.submatrix Fin.castSucc Fin.castSucc).det)) = 0`. Take the linear combination `ph2 g Zh.det * E1 - T * ph1 g (Zh.submatrix Fin.castSucc Fin.castSucc).det * E2`. Conclude with `(mul_eq_zero.1 this).resolve_right hG1'`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb0 : b = 0`. Rewrite `E2` using `[ha0, mul_zero, add_zero]`. Conclude with `(mul_eq_zero.1 E2).resolve_right hd2`. Establish `hm : m (Fin.last r) = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[ZeroMemClass.coe_zero, map_zero]`. Conclude with `Prod.ext ha0 hb0`. Rewrite using `[llMap_of_last hs Z TT m hm]`. Conclude with `mulVec_mem_headCols _ _ hm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_fact (hs : M.split = some g) (T T' : F) (TT : M.R) (hTT : g.e (TT : E) = (T, T'))
     (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (Z : M.Mat (r + 1))

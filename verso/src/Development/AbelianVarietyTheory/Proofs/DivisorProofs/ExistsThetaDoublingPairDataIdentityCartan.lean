@@ -22,7 +22,7 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory.NormRatio
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.TH.gramAt`. Rewrite using `[h]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramAt_eq_one_of_gram {D : D7} (V : HSp D) (h : V.gram = 1) (τ : D.what₂.Tau) : gramAt D V τ = 1 := by
   unfold Formalism.BasicNotions.TH.gramAt
@@ -30,13 +30,11 @@ theorem gramAt_eq_one_of_gram {D : D7} (V : HSp D) (h : V.gram = 1) (τ : D.what
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `hV τ`. Establish `h1 : (V.gram.map τ).reindex e e = 1`. Rewrite using `[hg, Matrix.map_one _ (map_zero τ) (map_one τ)]`. Conclude with `Matrix.submatrix_one_equiv _`. Rewrite `hP` using `[h1, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hP' : (P.1)ᴴ * P.1 = Formalism.UG.Jpq (V.sig τ).1 (V.sig τ).2` using `hP`. Assume the negation of the conclusion as `hq`. Set `k : Fin (V.sig τ).2` to `⟨0, Nat.pos_of_ne_zero hq⟩`. Establish `hk` using `congrArg (fun M => (M (Sum.inr k) (Sum.inr k)).re) hP'`. Simplify using `only [Formalism.UG.Jpq, Matrix.fromBlocks_apply₂₂, Matrix.neg_apply, Matrix.one_apply_eq, Complex.neg_re, Complex.one_re] at hk`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: 0 ≤ (((P.1)ᴴ * P.1) (Sum.inr k) (Sum.inr k)).re`. Rewrite using `[Matrix.mul_apply, Complex.re_sum]`. Conclude with `Finset.sum_nonneg fun l _ => by`. Rewrite using `[Matrix.conjTranspose_apply, Complex.star_def, ← Complex.normSq_eq_conj_mul_self]`. Conclude with `Complex.normSq_nonneg _`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sig_snd_eq_zero_of_gram {D : D7} {V : HSp D} (hg : V.gram = 1) (hV : V.SigOK) (τ : D.host.E →+* ℂ) :
     (V.sig τ).2 = 0 := by
@@ -57,17 +55,17 @@ theorem sig_snd_eq_zero_of_gram {D : D7} {V : HSp D} (hg : V.gram = 1) (hV : V.S
   linarith
 
 /- English proof (translation)
-Introduce `D cc δ t0 Q P X hX h1 h2`. Take `⟨hF, hW⟩` from `hX`. Establish `gA` using `gramAt_eq_one_of_gram X.A hF.gramA`. Establish `gB` using `gramAt_eq_one_of_gram X.B hF.gramB`. Establish `hI : ∀ k : ℕ, IsCartanInv (1 : Matrix (Fin k) (Fin k) ℂ) 1` using `fun k => ⟨by simp, by simp, by simpa using Matrix.PosDef.one⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : X.A.SigOK` using `hF.defA.1`. Establish `hq` using `sig_snd_eq_zero_of_gram hF.gramA hA`. Take `⟨cA, hc⟩` from `GlobalTheory.Cusp.exists_isCartanFrame X.A hA`. Take `⟨ν, 𝓕, hν⟩` from `GlobalTheory.MixModel.exists_isCovolOne D X.B.rank X.A.rank`. Establish `hone : ∀ τ, compAt X.θ τ (1 : GL (Fin X.A.rank) (AE D)).1 = 1` using `fun τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Matrix.map_one ((X.θ τ).comp (infPart D)) (map_zero _) (map_one _)`. Establish `rA` using `X.rkA`. Establish `rB` using `X.rkB`. Use `⟨cA, 1, ν, 𝓕, ⟨by omega, by omega, by omega, hW.inf, hA, hc, fun τ => ?_, fun τ => ?_, fun τ => ?_⟩, (GlobalTheory.Doubling.isMaj_iff hW.inf).2 fun τ => ⟨fun _ => true, ?_⟩, fun τ => ?_, hW.weil, hν⟩` and prove the remaining obligations. Rewrite using `[gA]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hI _`. Rewrite using `[gB]`. Conclude with `hI _`. Establish `hJ : Formalism.UG.Jpq (X.A.sig (tauE D τ)).1 (X.A.sig (tauE D τ)).2 = 1`. Establish `: IsEmpty (Fin (X.A.sig (tauE D τ)).2)` using `by rw [hq]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.UG.Jpq, ← Matrix.fromBlocks_one]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`. Rewrite using `[hJ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hone, gA]`. Simplify using the standard rewrite rules. Rewrite using `[hone, gA]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_ipPair_one : ∀ {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : ℕ} (P : Pair D cc δ t0 Q) (X : Data P), IsDict P X → 1 ≤ P.a → P.a < P.d →
   ∃ (cA : GlobalTheory.Mem.Th.CptF X.A) (a : GL (Fin X.A.rank) (AE D)) (ν : Measure (WO X.A X.B)) (𝓕 : Set (WO X.A X.B)),

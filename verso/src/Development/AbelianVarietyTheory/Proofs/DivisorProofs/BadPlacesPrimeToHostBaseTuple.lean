@@ -11,7 +11,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.Ade
 namespace GlobalTheory.LowRow
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F h PP hP`. Break down `hP with hP | hP` into its components or cases. Conclude with `GlobalTheory.LiftScalarCompare.primeToHost h.lev PP hP`. Rewrite `hP` using `[GlobalTheory.LiftLower.Q_base h.lev]`. Simplify using `at hP`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem primeToHost_base : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Core5 R F → PrimeToHost R A.μ0 := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F h PP hP

@@ -12,14 +12,14 @@ namespace GlobalTheory.RowLin
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `[cA, incA, sigR, inclR]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cA_incA (x : D.host.E) : cA D (incA D x) = incA D (starRingEnd D.host.E x) := by
   simp [cA, incA, sigR, inclR]
   rfl
 
 /- English proof (translation)
-Simplify using `[toEAf, finPart, incA, inclR, Formalism.L2.DIV.oToS, Formalism.UG.inclE]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem toEAf_incA_bar (c : 𝓞 D.host.E) :
     toEAf D (incA D (starRingEnd D.host.E (c : D.host.E))) =
@@ -34,7 +34,7 @@ namespace GlobalTheory.RowLin
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[TensorProduct.tmul_add]`. Use `congr 1`. Simplify using `only [incA, inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Rewrite using `[mul_comm x c]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_smul_add (p : AF D.host.F) (c x y : D.host.E) :
     p ⊗ₜ[D.host.F] (c * x + y) = (p ⊗ₜ[D.host.F] x) * incA D c + p ⊗ₜ[D.host.F] y := by
@@ -45,9 +45,9 @@ theorem tmul_smul_add (p : AF D.host.F) (c x y : D.host.E) :
   rw [mul_comm x c]
 
 /- English proof (translation)
-Establish `hM : (Matrix.of fun (_ : Fin 1) (l : Fin T.rank) => ∑ k, cA D (cA D e * (pairA D.host.F 0 1) ⊗ₜ[D.host.F] (c • u + v) k) * incA D (T.gram k l)) = incA D (starRingEnd D.host.E c) • (Matrix.of fun (_ : Fin 1) (l : Fin T.rank) => ∑ k, cA D (cA D e * (pairA D.host.F 0 1) ⊗ₜ[D.host.F] …`. Use extensionality with `i l`. Simplify using `only [Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Pi.add_apply, Pi.smul_apply, tmul_smul_add, mul_add, map_add, map_mul, cA_incA, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `GlobalTheory.LiftDat.rowAdj`. Rewrite using `[hM]`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, Matrix.mul_apply, Matrix.map_apply, map_add, map_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -79,15 +79,15 @@ end GlobalTheory.RowLin
 namespace GlobalTheory.RowLin
 
 /- English proof (translation)
-Introduce `D T βT a e PP u v hu hv c`. Establish `hz` using `toEAf_incA_bar (D := D) c`. Establish `hrow` using `rowAdj_smul_add T βT a e u v (c : D.host.E)`. Establish `hzi : toEAf D (incA D (starRingEnd D.host.E (c : D.host.E))) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.property _`. Establish `hent : ∀ j, GlobalTheory.LiftDat.rowAdj T βT a e ((c : D.host.E) • u + v) 0 j = toEAf D (incA D (starRingEnd D.host.E (c : D.host.E))) * GlobalTheory.LiftDat.rowAdj T βT a e u 0 j + GlobalTheory.LiftDat.rowAdj T βT a e v 0 j`. Introduce `j`. Rewrite using `[hrow]`. Simplify using `[Matrix.add_apply, Matrix.smul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hint : IsIntM (GlobalTheory.LiftDat.rowAdj T βT a e ((c : D.host.E) • u + v))`. Introduce `i j`. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Rewrite using `[hent]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subring.add_mem _ (Subring.mul_mem _ hzi (hu 0 j)) (hv 0 j)`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `only [GlobalTheory.LiftDat.rowRed, redM, dif_pos (hint 0 j), dif_pos (hu 0 j), dif_pos (hv 0 j)]`. Establish `hsub : (⟨GlobalTheory.LiftDat.rowAdj T βT a e ((c : D.host.E) • u + v) 0 j, hint 0 j⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = Formalism.L2.DIV.oToS D.host.F D.host.E (GlobalTheory.SW.Lev.bar c) * ⟨_, hu 0 j⟩ + ⟨_, hv 0 j⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subring.coe_add, Subring.coe_mul, ← hz, hent]`. Rewrite using `[hsub, map_add, map_mul, Formalism.L2.DIV.resS_oToS]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowRed_smul_add : ∀ (D : D7) (T : HSp D) (βT : GL (Fin T.rank) (EAf D)) (a e : AE D) (PP : Formalism.L2.DIV.Pl D.host.E) (u v : Fin T.rank → D.host.E), IsIntM (GlobalTheory.LiftDat.rowAdj T βT a e u) → IsIntM (GlobalTheory.LiftDat.rowAdj T βT a e v) → ∀ c : 𝓞 D.host.E, IsIntM (GlobalTheory.LiftDat.rowAdj T βT a e ((c : D.host.E) • u + v)) ∧ GlobalTheory.LiftDat.rowRed T βT a e PP ((c : D.host.E) • u + v) = fun j => Ideal.Quotient.mk PP.asIdeal (GlobalTheory.SW.Lev.bar c) * GlobalTheory.LiftDat.rowRed T βT a e PP u j + GlobalTheory.LiftDat.rowRed T βT a e PP v j := by
   intro D T βT a e PP u v hu hv c

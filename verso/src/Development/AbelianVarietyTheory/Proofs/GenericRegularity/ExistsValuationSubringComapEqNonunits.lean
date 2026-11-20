@@ -10,19 +10,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Reg
 
 /- English proof (translation)
-Take `⟨W, hW, hloc⟩` from `IsLocalRing.exists_factor_valuationRing (f.comp U.subtype)`. Use `⟨W, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_comap]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Assume the negation of the conclusion as `hxU`. Establish `hx0 : x ≠ 0` using `fun h => hxU (h ▸ U.zero_mem)`. Establish `hinv : x⁻¹ ∈ U` using `(U.mem_or_inv_mem x).resolve_left hxU`. Establish `hnu : ¬ IsUnit (⟨x⁻¹, hinv⟩ : U)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hu`. Take `⟨⟨y, hy⟩, hyx⟩` from `isUnit_iff_exists_inv.mp hu`. Establish `hyx' : x⁻¹ * y = 1` using `congrArg Subtype.val hyx`. Establish `: y = x`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hxU (this ▸ hy)`. Apply `hnu` to reduce the goal to its premises. Apply `(hloc.map_nonunit (⟨x⁻¹, hinv⟩ : U))` to reduce the goal to its premises. Use `isUnit_iff_exists_inv.mpr ⟨⟨f x, hx⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `f x⁻¹ * f x = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hx0, map_one]`. Introduce `hx`. Conclude with `hW ⟨x, hx⟩`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hxU, hmax⟩` from `(ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal).mp hx`. Establish `hfx : f x ∈ W` using `hW ⟨x, hxU⟩`. Establish `key : (⟨f x, hfx⟩ : W) ∈ IsLocalRing.maximalIdeal W`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
-
-Apply `(IsLocalRing.mem_maximalIdeal _).mp hmax` to reduce the goal to its premises. Conclude with `hloc.map_nonunit (⟨x, hxU⟩ : U) hu`. Conclude with `(ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal).mpr ⟨hfx, key⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring_comap_eq_nonunits {K L : Type} [Field K] [Field L] (f : K →+* L)
     (U : ValuationSubring K) :
@@ -64,13 +62,13 @@ theorem exists_valuationSubring_comap_eq_nonunits {K L : Type} [Field K] [Field 
     exact (ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal).mpr ⟨hfx, key⟩
 
 /- English proof (translation)
-Establish `hbot : la.asIdeal ≠ ⊥` using `la.ne_bot`. Establish `hprime : la.asIdeal.IsPrime` using `la.isPrime`. Establish `main : ∀ n : ℕ, (n : 𝓞 K) ∈ la.asIdeal → n ≠ 0 → ∃ p : ℕ, p.Prime ∧ (p : 𝓞 K) ∈ la.asIdeal`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `_ n ih`. Introduce `hn hn0`. Establish `hn1 : n ≠ 1`. Introduce and unpack `rfl`. Conclude with `hprime.ne_top ((Ideal.eq_top_iff_one _).mpr (by simpa using hn))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, m, rfl⟩` from `Nat.exists_prime_and_dvd hn1`. Rewrite `hn` using `[Nat.cast_mul]`. Break down `hprime.mem_or_mem hn with h | h` into its components or cases. Conclude with `⟨p, hp, h⟩`. Establish `hm0 : m ≠ 0` using `by rintro rfl; simp at hn0`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ih m ?_ h hm0` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `main _ (Ideal.absNorm_mem la.asIdeal) (by rwa [Ne, Ideal.absNorm_eq_zero_iff])`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_prime_natCast_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) :
     ∃ p : ℕ, p.Prime ∧ (p : 𝓞 K) ∈ la.asIdeal := by
@@ -96,15 +94,15 @@ theorem exists_prime_natCast_mem {K : Type} [Field K] [NumberField K] (la : Heig
   exact main _ (Ideal.absNorm_mem la.asIdeal) (by rwa [Ne, Ideal.absNorm_eq_zero_iff])
 
 /- English proof (translation)
-Introduce `hI E _ _ _ H Dw hpq Xo l c la hgood`. Take `⟨-, hI⟩` from `hI`. Take `⟨Y, hY, -⟩` from `hI E H Dw hpq Xo`. Unfold `ModelAt`. Take `⟨p, hp, hpla⟩` from `exists_prime_natCast_mem la`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hcomap, hnon⟩` from `exists_valuationSubring_comap_eq_nonunits c.F.val.toRingHom (la.valuation c.F).valuationSubring`. Establish `hlt : la.valuation c.F (p : c.F) < 1`. Establish `h` using `(la.valuation_lt_one_iff_mem (K := c.F) (p : 𝓞 c.F)).mpr hpla`. Conclude with `h` after adjusting the coercions. Establish `hp0 : (p : c.F) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpU : (p : c.F) ∈ (la.valuation c.F).valuationSubring.nonunits`. Rewrite using `[ValuationSubring.mem_nonunits_iff_or]`. Use `right`. Introduce `hinv`. Rewrite `hinv` using `[Valuation.mem_valuationSubring_iff, map_inv₀]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < la.valuation c.F (p : c.F)` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr hp0)`. Conclude with `absurd ((inv_le_one₀ hpos).mp hinv) (not_le.mpr hlt)`. Establish `hW : (p : ℂ) ∈ W.nonunits`. Establish `h` using `hnon _ hpU`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `i : Idx H p` to `⟨l, c, hgood p hp hpla⟩`. Rewrite using `[← hcomap]`. Conclude with `⟨Y p W hp hW i, ((hY p W hp hW).1.1 i).2.2.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem modelAt_of_good_level : PartI → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (Xo : ∀ l : Level H, Moduli Dw l) (l : Level H) (c : Coeff l) (la : HeightOneSpectrum (𝓞 c.F)), (∀ p : ℕ, p.Prime → (p : 𝓞 c.F) ∈ la.asIdeal → l.GoodAt p) → ModelAt (Xo l) c la := by
   intro hI E _ _ _ H Dw hpq Xo l c la hgood

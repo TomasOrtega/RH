@@ -10,25 +10,25 @@ section blocks
 variable {k j ρ : ℕ}
 
 /- English proof (translation)
-Simplify using `[eB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_index_first_val_eq (a : Fin j) : ((eB k j ρ) (Sum.inl (Sum.inl a))).val = a.val := by
   simp [eB]
 
 /- English proof (translation)
-Simplify using `[eB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_index_middle_val_eq (v : Fin (2 * ρ + k + 1)) : ((eB k j ρ) (Sum.inl (Sum.inr v))).val = j + v.val := by
   simp [eB]
 
 /- English proof (translation)
-Simplify using `[eB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_index_last_val_eq (a : Fin j) : ((eB k j ρ) (Sum.inr a)).val = j + (2 * ρ + k + 1) + a.val := by
   simp [eB]
 
 /- English proof (translation)
-Simplify using `[blk3, Matrix.reindex_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block3_apply
     (A11 : Matrix (Fin j) (Fin j) ℂ) (A12 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ) (A13 : Matrix (Fin j) (Fin j) ℂ)
@@ -40,7 +40,7 @@ theorem block3_apply
   simp [blk3, Matrix.reindex_apply]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `using h ((eB k j ρ).symm a) ((eB k j ρ).symm b)`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ext_eB {M N : B.Mat k (j + ρ)} (h : ∀ x y : Ix k j ρ, M (eB k j ρ x) (eB k j ρ y) = N (eB k j ρ x) (eB k j ρ y)) :
     M = N := by
@@ -48,7 +48,7 @@ theorem ext_eB {M N : B.Mat k (j + ρ)} (h : ∀ x y : Ix k j ρ, M (eB k j ρ x
   simpa using h ((eB k j ρ).symm a) ((eB k j ρ).symm b)
 
 /- English proof (translation)
-Simplify using `only [blk3, Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`. Use `congr 1`. Apply the tactic sequence `ext ((a | a) | a) ((b | b) | b) <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.add_apply] <;> ring`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block3_mul
     (A11 : Matrix (Fin j) (Fin j) ℂ) (A12 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ) (A13 : Matrix (Fin j) (Fin j) ℂ)
@@ -67,7 +67,7 @@ theorem block3_mul
     simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.add_apply] <;> ring
 
 /- English proof (translation)
-Apply `ext_eB` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[block3_apply]`. Apply the tactic sequence `rcases x with ((a | a) | a) <;> rcases y with ((b | b) | b) <;>`. Simplify using `[Matrix.one_apply, (eB k j ρ).injective.eq_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem block3_one : (1 : B.Mat k (j + ρ)) = blk3 (k := k) (j := j) (ρ := ρ) 1 0 0 0 1 0 0 0 1 := by
   apply ext_eB
@@ -77,7 +77,7 @@ theorem block3_one : (1 : B.Mat k (j + ρ)) = blk3 (k := k) (j := j) (ρ := ρ) 
     simp [Matrix.one_apply, (eB k j ρ).injective.eq_iff]
 
 /- English proof (translation)
-Apply `ext_eB` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[block3_apply]`. Apply the tactic sequence `rcases x with ((a | a) | a) <;> rcases y with ((b | b) | b) <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block_three_zero_size_eq : blk3 (k := k) (j := j) (ρ := ρ) 0 0 0 0 0 0 0 0 0 = 0 := by
   apply ext_eB
@@ -86,7 +86,7 @@ theorem block_three_zero_size_eq : blk3 (k := k) (j := j) (ρ := ρ) 0 0 0 0 0 0
   rcases x with ((a | a) | a) <;> rcases y with ((b | b) | b) <;> simp
 
 /- English proof (translation)
-Apply `ext_eB` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[Matrix.add_apply, block3_apply, block3_apply, block3_apply]`. Apply the tactic sequence `rcases x with ((a | a) | a) <;> rcases y with ((b | b) | b) <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block3_add
     (A11 : Matrix (Fin j) (Fin j) ℂ) (A12 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ) (A13 : Matrix (Fin j) (Fin j) ℂ)
@@ -103,7 +103,7 @@ theorem block3_add
   rcases x with ((a | a) | a) <;> rcases y with ((b | b) | b) <;> simp
 
 /- English proof (translation)
-Apply `ext_eB` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[Matrix.conjTranspose_apply, block3_apply, block3_apply]`. Apply the tactic sequence `rcases x with ((a | a) | a) <;> rcases y with ((b | b) | b) <;> simp [Matrix.conjTranspose_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block3_conjTranspose
     (A11 : Matrix (Fin j) (Fin j) ℂ) (A12 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ) (A13 : Matrix (Fin j) (Fin j) ℂ)
@@ -117,11 +117,11 @@ theorem block3_conjTranspose
   rcases x with ((a | a) | a) <;> rcases y with ((b | b) | b) <;> simp [Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `(eB k j ρ).surjective i`. Take `⟨y, rfl⟩` from `(eB k j ρ).surjective b`. Rewrite using `[block3_apply]`. Break down `y with ((c | c) | c)` into its components or cases. Break down `x with ((a | a) | a)` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hi` using `[block_index_first_val_eq]`. Conclude with `absurd hi (not_le.2 a.isLt)`. Simplify using `[h21]`. Simplify using `[h31]`. Rewrite `hb` using `[block_index_middle_val_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hb` using `[block_index_last_val_eq]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem block3_lower_blocks_zero
     (A11 : Matrix (Fin j) (Fin j) ℂ) (A12 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ) (A13 : Matrix (Fin j) (Fin j) ℂ)
@@ -144,11 +144,11 @@ theorem block3_lower_blocks_zero
     omega
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [G.wMat, Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single a.rev]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Fin.rev_rev]`. Establish `h' : b ≠ a.rev.rev` using `by rw [Fin.rev_rev]; exact Ne.symm h`. Simplify using `[h, h', Ne.symm h]`. Introduce `c _ hc`. Simplify using `[hc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wMat_mul_self (d : ℕ) : G.wMat d * G.wMat d = 1 := by
   ext a b
@@ -165,9 +165,9 @@ theorem wMat_mul_self (d : ℕ) : G.wMat d * G.wMat d = 1 := by
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [G.wMat, Matrix.conjTranspose_apply, Matrix.of_apply]`. Distinguish the cases in `h : b = a.rev`. Substitute `h` using the available equality. Simplify using `[Fin.rev_rev]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h' : a ≠ b.rev`. Introduce `h'`. Apply `h` to reduce the goal to its premises. Rewrite using `[h', Fin.rev_rev]`. Simplify using `[h, h']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wMat_conjTranspose (d : ℕ) : (G.wMat d)ᴴ = G.wMat d := by
   ext a b
@@ -182,9 +182,9 @@ theorem wMat_conjTranspose (d : ℕ) : (G.wMat d)ᴴ = G.wMat d := by
     simp [h, h']
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.conjTranspose_apply, Hpk]`. Distinguish the cases in `hab : a = b`. Apply the tactic sequence `subst hab split_ifs <;> simp`. Establish `hba : b ≠ a` using `Ne.symm hab`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hv : a.val ≠ b.val` using `fun h => hab (Fin.ext h)`. Simplify using `only [hab, hba, and_false, if_false]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_conjTranspose (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
   ext a b
@@ -198,9 +198,9 @@ theorem hpk_conjTranspose (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
     split_ifs <;> first | (exfalso; omega) | simp
 
 /- English proof (translation)
-Introduce `k j ρ`. Apply `ext_eB` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[block3_apply]`. Apply the tactic sequence `rcases x with ((a | a) | a) <;> rcases y with ((b | b) | b) <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Simplify using `only [Hpk, G.wMat, Fin.ext_iff, block_index_first_val_eq, block_index_middle_val_eq, block_index_last_val_eq, Fin.val_rev, Matrix.of_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.fromRows_apply_inl, Matri …`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpkBlocks : HpkBlocks := by
   intro k j ρ
@@ -223,13 +223,13 @@ section rad
 variable {k j ρ : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, wMat_mul_self, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem w_w_mul (M : Matrix (Fin j) (Fin j) ℂ) : G.wMat j * (G.wMat j * M) = M := by
   rw [← Matrix.mul_assoc, wMat_mul_self, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, wMat_mul_self, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem w_w_mul' {n : ℕ} (M : Matrix (Fin j) (Fin n) ℂ) : G.wMat j * (G.wMat j * M) = M := by
   rw [← Matrix.mul_assoc, wMat_mul_self, Matrix.one_mul]
@@ -241,7 +241,7 @@ noncomputable def RnInv (x : RC k j ρ) : B.Mat k (j + ρ) :=
     0 1 (-(Matrix.of x.1)) 0 0 1
 
 /- English proof (translation)
-Rewrite using `[Rn, RnInv, block3_mul, block3_one]`. Apply the tactic sequence `congr 1 <;>`. Apply the tactic sequence `simp only [Matrix.mul_assoc, Matrix.mul_add, Matrix.mul_sub, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, neg_neg, smul_zero, sub_zero, neg_zero, zero_sub] <;> abel`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Rn_mul_RnInv (x : RC k j ρ) : Rn k j ρ x * RnInv x = 1 := by
   rw [Rn, RnInv, block3_mul, block3_one]
@@ -251,18 +251,18 @@ theorem Rn_mul_RnInv (x : RC k j ρ) : Rn k j ρ x * RnInv x = 1 := by
       Matrix.mul_zero, add_zero, zero_add, neg_neg, smul_zero, sub_zero, neg_zero, zero_sub] <;> abel
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv (Rn_mul_RnInv x)`.
+A detailed English derivation is pending.
 -/
 theorem Rn_inv_eq (x : RC k j ρ) : (Rn k j ρ x)⁻¹ = RnInv x := Matrix.inv_eq_right_inv (Rn_mul_RnInv x)
 
 /- English proof (translation)
-Rewrite using `[Rn_inv_eq, Rn_mul_RnInv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Rn_mul_inv (x : RC k j ρ) : Rn k j ρ x * (Rn k j ρ x)⁻¹ = 1 := by
   rw [Rn_inv_eq, Rn_mul_RnInv]
 
 /- English proof (translation)
-Unfold `mMap embG`. Rewrite using `[block3_mul]`. Apply the tactic sequence `congr 1 <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mMap_mul_embG (Z : Matrix (Fin j) (Fin j) ℂ) (γ y : B.Mat k ρ) :
     mMap k j ρ Z γ * embG k j ρ y = mMap k j ρ Z (γ * y) := by
@@ -271,7 +271,7 @@ theorem mMap_mul_embG (Z : Matrix (Fin j) (Fin j) ℂ) (γ y : B.Mat k ρ) :
   congr 1 <;> simp
 
 /- English proof (translation)
-Unfold `mMap embG`. Rewrite using `[block3_mul]`. Apply the tactic sequence `congr 1 <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embG_mul_mMap (Z : Matrix (Fin j) (Fin j) ℂ) (γ y : B.Mat k ρ) :
     embG k j ρ y * mMap k j ρ Z γ = mMap k j ρ Z (y * γ) := by
@@ -280,7 +280,7 @@ theorem embG_mul_mMap (Z : Matrix (Fin j) (Fin j) ℂ) (γ y : B.Mat k ρ) :
   congr 1 <;> simp
 
 /- English proof (translation)
-Unfold `mMap muP`. Rewrite using `[block3_mul]`. Apply the tactic sequence `congr 1 <;> simp [Matrix.mul_assoc, w_w_mul, Matrix.conjTranspose_mul, Matrix.mul_inv_rev]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mMap_mul_muP (Z W : Matrix (Fin j) (Fin j) ℂ) (γ : B.Mat k ρ) :
     mMap k j ρ Z γ * muP k j ρ W = mMap k j ρ (Z * W) γ := by
@@ -291,7 +291,7 @@ theorem mMap_mul_muP (Z W : Matrix (Fin j) (Fin j) ℂ) (γ : B.Mat k ρ) :
 end rad
 
 /- English proof (translation)
-Simplify using `only [blk2, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symmetricScalarBlockMatrix_mul {p s : ℕ} (A A' : Matrix (Fin p) (Fin p) ℂ) (B B' : Matrix (Fin p) (Fin s) ℂ)
     (C C' : Matrix (Fin s) (Fin p) ℂ) (D D' : Matrix (Fin s) (Fin s) ℂ) :
@@ -299,16 +299,16 @@ theorem symmetricScalarBlockMatrix_mul {p s : ℕ} (A A' : Matrix (Fin p) (Fin p
   simp only [blk2, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Rewrite using `[blk2, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem block2_det_upper_triangular {p s : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (B : Matrix (Fin p) (Fin s) ℂ) (D : Matrix (Fin s) (Fin s) ℂ) :
     (blk2 A B 0 D).det = A.det * D.det := by
   rw [blk2, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Establish `hU : blk2 1 (Matrix.of b) 0 1 * (blk2 1 (Matrix.of b) 0 1)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (by rw [block2_det_upper_triangular]; simp)`. Establish `hD : blk2 H 0 0 (Z * q) = blk2 H 0 0 Z * blk2 1 0 0 q`. Rewrite using `[symmetricScalarBlockMatrix_mul]`. Simplify using the standard rewrite rules. Unfold `Zj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hD]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (blk2 1 (Matrix.of b) 0 1) (blk2 1 (Matrix.of b) 0 1)⁻¹, hU, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem zj_mul {p s : ℕ} (a : Fin s → Fin p → ℂ) (b : Fin p → Fin s → ℂ) (H : Matrix (Fin p) (Fin p) ℂ)
     (Z q : Matrix (Fin s) (Fin s) ℂ) :
@@ -323,7 +323,7 @@ theorem zj_mul {p s : ℕ} (a : Fin s → Fin p → ℂ) (b : Fin p → Fin s �
   rw [← Matrix.mul_assoc (blk2 1 (Matrix.of b) 0 1) (blk2 1 (Matrix.of b) 0 1)⁻¹, hU, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `p s a b H CC`. Unfold `Zj`. Rewrite using `[symmetricScalarBlockMatrix_mul, symmetricScalarBlockMatrix_mul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ux_zjAffine : ZjAffine := by
   intro p s a b H CC
@@ -338,7 +338,7 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.P.Ux4
 
 /- English proof (translation)
-Introduce `k p s ρ σ d ξ Z γ y`. Unfold `gaXi`. Rewrite using `[← mMap_mul_embG]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Rn k (p + s) ρ ξ.1.2) (Rn k (p + s) ρ ξ.1.2)⁻¹, Rn_mul_inv, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem slice_right_coordinates : Formalism.FourierDecayAlt.U.SliceRight := by
   intro k p s ρ σ d ξ Z γ y
@@ -348,7 +348,7 @@ theorem slice_right_coordinates : Formalism.FourierDecayAlt.U.SliceRight := by
   rw [← Matrix.mul_assoc (Rn k (p + s) ρ ξ.1.2) (Rn k (p + s) ρ ξ.1.2)⁻¹, Rn_mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `k p s ρ σ d ξ Z γ y`. Unfold `gaXi`. Rewrite using `[← embG_mul_mMap]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Rn k (p + s) ρ ξ.1.1) (Rn k (p + s) ρ ξ.1.1)⁻¹, Rn_mul_inv, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem slice_left_coordinates : Formalism.FourierDecayAlt.U.SliceLeft := by
   intro k p s ρ σ d ξ Z γ y
@@ -358,9 +358,9 @@ theorem slice_left_coordinates : Formalism.FourierDecayAlt.U.SliceLeft := by
   rw [← Matrix.mul_assoc (Rn k (p + s) ρ ξ.1.1) (Rn k (p + s) ρ ξ.1.1)⁻¹, Rn_mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `k p s ρ σ d ξ Z q γ`. Unfold `gaXi`. Establish `hZ : ZjH σ d ξ.2 (Matrix.of Z * q) = ZjH σ d ξ.2 Z * ((blk2 1 (Matrix.of ξ.2.1.2) 0 1)⁻¹ * blk2 1 0 0 q * blk2 1 (Matrix.of ξ.2.1.2) 0 1)`. Unfold `ZjH`. Conclude with `zj_mul _ _ _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZ, ← mMap_mul_muP]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Rn k (p + s) ρ ξ.1.2) (Rn k (p + s) ρ ξ.1.2)⁻¹, Rn_mul_inv, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_z_coordinates : Formalism.FourierDecayAlt.U.SliceZ := by
   intro k p s ρ σ d ξ Z q γ
@@ -374,7 +374,7 @@ theorem slice_z_coordinates : Formalism.FourierDecayAlt.U.SliceZ := by
   rw [← Matrix.mul_assoc (Rn k (p + s) ρ ξ.1.2) (Rn k (p + s) ρ ξ.1.2)⁻¹, Rn_mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `ux_zjAffine`.
+A detailed English derivation is pending.
 -/
 theorem level_z_affine : Formalism.FourierDecayAlt.U.ZjAffine := ux_zjAffine
 
@@ -387,9 +387,9 @@ section lie
 variable {k j ρ : ℕ}
 
 /- English proof (translation)
-Unfold `skewOf`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_sub, Matrix.conjTranspose_conjTranspose, Matrix.diagonal_conjTranspose]`. Establish `: (star fun i => Complex.I * ((q.2 i : ℝ) : ℂ)) = (fun i => -(Complex.I * ((q.2 i : ℝ) : ℂ)))`. Use function extensionality and compare the values at `i`. Simplify using `[Complex.conj_ofReal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, ← Matrix.diagonal_neg]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem skewOf_conjTranspose (q : (G.UT j → ℂ) × (Fin j → ℝ)) : (skewOf q)ᴴ = -skewOf q := by
   unfold skewOf
@@ -402,9 +402,9 @@ theorem skewOf_conjTranspose (q : (G.UT j → ℂ) × (Fin j → ℝ)) : (skewOf
   abel
 
 /- English proof (translation)
-Rewrite using `[hpkBlocks k j ρ]`. Unfold `Rn`. Rewrite using `[block3_conjTranspose, block3_mul, block3_mul]`. Establish `hw` using `wMat_conjTranspose j`. Establish `hH` using `hpk_conjTranspose k ρ`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `skewOf_conjTranspose x.2`. Apply the tactic sequence `congr 1 <;> simp only [Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.conjTranspose_one, Matrix.conjTranspose_zero, Matrix.conjTranspose_neg, Matrix.conjTranspose_mul, Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.conjTr …`. Apply the tactic sequence `all_goals module`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Rn_unitary (x : RC k j ρ) : (Rn k j ρ x)ᴴ * Hpk k (j + ρ) * Rn k j ρ x = Hpk k (j + ρ) := by
   rw [hpkBlocks k j ρ]
@@ -421,11 +421,9 @@ theorem Rn_unitary (x : RC k j ρ) : (Rn k j ρ x)ᴴ * Hpk k (j + ρ) * Rn k j 
   all_goals module
 
 /- English proof (translation)
-Establish `h1 : H * n⁻¹ = nᴴ * H`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (n⁻¹)ᴴ * H = H * n`. Use `congrArg Matrix.conjTranspose h1` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, hH]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = nᴴ * (Mᴴ * H + H * M) * n := by`. Rewrite using `[h2, h1]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
-
-Use `_ = 0 := by rw [hM]; simp`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_lie {N : ℕ} (n M H : Matrix (Fin N) (Fin N) ℂ) (hu : nᴴ * H * n = H) (hH : Hᴴ = H)
     (hn : n * n⁻¹ = 1) (hM : Mᴴ * H + H * M = 0) :
@@ -443,7 +441,7 @@ theorem conj_lie {N : ℕ} (n M H : Matrix (Fin N) (Fin N) ℂ) (hu : nᴴ * H *
     _ = 0 := by rw [hM]; simp
 
 /- English proof (translation)
-Unfold `B.inLie at hY ⊢`. Rewrite using `[hpkBlocks k j ρ, block3_conjTranspose, block3_mul, block3_mul, block3_add, ← block_three_zero_size_eq]`. Apply the tactic sequence `congr 1 <;> simp only [Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.conjTranspose_zero, hY]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lie_Y (Y : B.Mat k ρ) (hY : B.inLie k ρ Y) :
     B.inLie k (j + ρ) (blk3 0 0 0 0 Y 0 0 0 0) := by
@@ -452,7 +450,7 @@ theorem lie_Y (Y : B.Mat k ρ) (hY : B.inLie k ρ Y) :
   congr 1 <;> simp only [Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.conjTranspose_zero, hY]
 
 /- English proof (translation)
-Unfold `B.inLie`. Establish `hw` using `wMat_conjTranspose j`. Rewrite using `[hpkBlocks k j ρ, block3_conjTranspose, block3_mul, block3_mul, block3_add, ← block_three_zero_size_eq]`. Apply the tactic sequence `congr 1 <;> simp only [Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.conjTranspose_zero, Matrix.conjTranspose_neg, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hw, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, w_w_mul, wMat_mul_ …`. Apply the tactic sequence `all_goals abel`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lie_Q (Q : Matrix (Fin j) (Fin j) ℂ) :
     B.inLie k (j + ρ) (blk3 (k := k) (ρ := ρ) Q 0 0 0 0 0 0 0 (-(G.wMat j * Qᴴ * G.wMat j))) := by
@@ -473,13 +471,13 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.P.Ux4
 
 /- English proof (translation)
-Introduce `k j ρ x`. Establish `hn` using `Rn_mul_inv x`. Prove the components needed by the constructor for the conclusion. Introduce `Y hY`. Use `⟨conj_lie _ _ _ (Rn_unitary x) (hpk_conjTranspose k (j + ρ)) hn (lie_Y Y hY), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i b hb hi`. Rewrite using `[Rn_inv_eq]`. Unfold `RnInv Rn`. Rewrite using `[block3_mul, block3_mul]`. Conclude with `block3_lower_blocks_zero _ _ _ _ _ _ _ _ _ (by simp) (by simp) i b hb hi`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Q`. Use `⟨conj_lie _ _ _ (Rn_unitary x) (hpk_conjTranspose k (j + ρ)) hn (lie_Q Q), ?_⟩` and prove the remaining obligations. Introduce `i b hb hi`. Rewrite using `[Rn_inv_eq]`. Unfold `RnInv Rn`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[block3_mul, block3_mul]`. Conclude with `block3_lower_blocks_zero _ _ _ _ _ _ _ _ _ (by simp) (by simp) i b hb hi`.
+A detailed English derivation is pending.
 -/
 theorem directions_in_parabolic : Formalism.FourierDecayAlt.U.DirectionsInP := by
   intro k j ρ x

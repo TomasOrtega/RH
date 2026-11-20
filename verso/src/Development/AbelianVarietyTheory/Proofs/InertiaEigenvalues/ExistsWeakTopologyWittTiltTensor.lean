@@ -17,13 +17,11 @@ section Val
 variable {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] [Valued K Γ]
 
 /- English proof (translation)
-Rewrite using `[Valued.mem_nhds]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ⟩`. Take `⟨c, hc⟩` from `MonoidWithZeroHom.ValueGroup₀.restrict₀_surjective (.ofClass (Valued.v : Valuation K Γ)) γ.1`. Establish `hc' : (Valued.v : Valuation K Γ).restrict c = γ.1` using `hc`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨c, ?_, fun y hy => hγ ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hc'` using `[map_zero]`. Conclude with `γ.ne_zero hc'.symm`. Express the relevant statement in the definitionally equal form `(Valued.v : Valuation K Γ).restrict (y - x) < γ.1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc', Valuation.restrict_lt_iff]`. Conclude with `hy`. Introduce and unpack `⟨c, hc, h⟩`. Establish `h' : (Valued.v : Valuation K Γ).restrict c ≠ 0` using `by simp [hc]`. Use `⟨Units.mk0 _ h', fun y hy => h ?_⟩` and prove the remaining obligations.
-
-Conclude with `(Valuation.restrict_lt_iff _).1 hy`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_nhds_iff_lt {s : Set K} {x : K} :
     s ∈ 𝓝 x ↔ ∃ c : K, c ≠ 0 ∧ {y | Valued.v (y - x) < Valued.v c} ⊆ s := by
@@ -45,13 +43,13 @@ theorem mem_nhds_iff_lt {s : Set K} {x : K} :
     exact (Valuation.restrict_lt_iff _).1 hy
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce and unpack `⟨g₀, x₀⟩ s hs`. Take `⟨c, hc, hs⟩` from `mem_nhds_iff_lt.1 hs`. Use `set b := (σ g₀).symm c with hb`. Establish `hb0 : b ≠ 0` using `by simpa [hb] using hc`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcb : σ g₀ b = c` using `by simp [hb]`. Establish `h1 : ∀ᶠ g in 𝓝 g₀, Valued.v (σ g b) = Valued.v c`. Use `(ho b).continuousAt (x := g₀) (hcb ▸ Valued.locally_const (x := c) (by simpa using hc))` as an intermediate fact. Rewrite using `[← hcb]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ᶠ g in 𝓝 g₀, Valued.v (σ g x₀ - σ g₀ x₀) < Valued.v c` using `(ho x₀).continuousAt (x := g₀) (mem_nhds_iff_lt.2 ⟨c, hc, subset_rfl⟩)`. Establish `h3 : ∀ᶠ x in 𝓝 x₀, Valued.v (x - x₀) < Valued.v b` using `mem_nhds_iff_lt.2 ⟨b, hb0, subset_rfl⟩`. Rewrite using `[mem_map, nhds_prod_eq]`. Use `filter_upwards [(h1.and h2).prod_mk h3] with ⟨g, x⟩ ⟨⟨a1, a2⟩, a3⟩`. Apply `hs` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e : σ g x - σ g₀ x₀ = σ g (x - x₀) + (σ g x₀ - σ g₀ x₀)` using `by rw [map_sub]; ring`. Express the relevant statement in the definitionally equal form `Valued.v (σ g x - σ g₀ x₀) < Valued.v c`. Rewrite using `[e]`. Conclude with `Valuation.map_add_lt _ (a1 ▸ hσ g _ _ a3) a2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_act_of_orbits {G : Type} [TopologicalSpace G] (σ : G → (K ≃+* K))
     (hσ : ∀ g x y, Valued.v x < Valued.v y → Valued.v (σ g x) < Valued.v (σ g y))
@@ -82,21 +80,21 @@ theorem continuous_act_of_orbits {G : Type} [TopologicalSpace G] (σ : G → (K 
 end Val
 
 /- English proof (translation)
-Use `letI V : Valued K (ValuationRing.ValueGroup A K) := Valued.mk' (ValuationRing.valuation A K)`. Establish `hle : ∀ x y : K, Valued.v x ≤ Valued.v y ↔ ∃ c : A, algebraMap A K c * y = x`. Introduce `x y`. Express the relevant statement in the definitionally equal form `(∃ c : A, c • y = x) ↔ _`. Simplify using `only [Algebra.smul_def]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `hinj` using `IsFractionRing.injective A K`. Use `⟨inferInstance, inferInstance, inferInstance, continuous_act_of_orbits σ ?_ ?_⟩` and prove the remaining obligations. Introduce `g x y`. Simplify using `only [← not_le, hle]`. Introduce and unpack `h ⟨c, hc⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `h ⟨(τ g).symm c, (σ g).injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hσ, RingEquiv.apply_symm_apply, hc]`. Establish `hA : ∀ x : A, Continuous fun g => σ g (algebraMap A K x)`. Introduce `x`. Rewrite using `[continuous_iff_continuousAt]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g₀ s hs`. Take `⟨c, hc, hs⟩` from `mem_nhds_iff_lt.1 hs`. Take `⟨a, d, hd, rfl⟩` from `IsFractionRing.div_surjective A c`. Establish `hd0 : algebraMap A K d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Establish `ha : a ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `at hc`. Rewrite using `[mem_map]`. Use `filter_upwards [ho x a g₀ ha] with g hg`. Apply `hs` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Valued.v (σ g (algebraMap A K x) - σ g₀ (algebraMap A K x)) < _`. Rewrite using `[← not_le, hle, hσ, hσ, ← map_sub]`. Introduce and unpack `⟨e, he⟩`. Use `hg ⟨e * d, hinj ?_⟩` and prove the remaining obligations. Rewrite `he` using `[eq_div_iff hd0]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x`. Take `⟨a, d, hd, rfl⟩` from `IsFractionRing.div_surjective A x`. Establish `hd0 : algebraMap A K d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_div₀]`. Conclude with `(hA a).div (hA d) fun g => by simpa using hd0`.
+A detailed English derivation is pending.
 -/
 theorem exists_top_frac {A K G : Type} [CommRing A] [IsDomain A] [ValuationRing A] [Field K]
     [Algebra A K] [IsFractionRing A K] [TopologicalSpace G] (τ : G → (A ≃+* A))
@@ -151,9 +149,9 @@ variable {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] [TopologicalSpace R]
   TopologicalSpace.induced WittVector.coeff inferInstance
 
 /- English proof (translation)
-Unfold `WittVector.peval`. Proceed by induction on `φ using MvPolynomial.induction_on with`. Consider the case `C a => simpa using continuous_const`. Consider the case `add φ ψ h1 h2`. Simplify using `only [map_add]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `h1.add h2`. Consider the case `mul_X φ i h`. Simplify using `only [map_mul, MvPolynomial.aeval_X]`. Conclude with `h.mul ((continuous_apply i.2).comp ((continuous_apply i.1).comp hf))`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_peval [IsTopologicalRing R] {k : ℕ} (φ : MvPolynomial (Fin k × ℕ) ℤ)
     {X : Type} [TopologicalSpace X] (f : X → Fin k → ℕ → R) (hf : Continuous f) :
@@ -169,15 +167,11 @@ theorem continuous_peval [IsTopologicalRing R] {k : ℕ} (φ : MvPolynomial (Fin
     exact h.mul ((continuous_apply i.2).comp ((continuous_apply i.1).comp hf))
 
 /- English proof (translation)
-Use `letI := wittTop p R`. Establish `hc : Continuous (WittVector.coeff : WittVector p R → ℕ → R)` using `continuous_induced_dom`. Establish `h2 : Continuous fun x : WittVector p R × WittVector p R => ![x.1.coeff, x.2.coeff]`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `fin_cases i`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hc.comp continuous_fst`. Conclude with `hc.comp continuous_snd`. Establish `h1 : Continuous fun x : WittVector p R => ![x.coeff]`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `fin_cases i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hc`. Use `{ continuous_add := ?_, continuous_mul := ?_, continuous_neg := ?_ }` and prove the remaining obligations. Use `continuous_induced_rng.2 (continuous_pi fun n => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, WittVector.add_coeff]`. Conclude with `continuous_peval _ _ h2`.
-
-Use `continuous_induced_rng.2 (continuous_pi fun n => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, WittVector.mul_coeff]`. Conclude with `continuous_peval _ _ h2`. Use `continuous_induced_rng.2 (continuous_pi fun n => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, WittVector.neg_coeff]`.
-
-Conclude with `continuous_peval _ _ h1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isTopologicalRing_witt [IsTopologicalRing R] :
     letI := wittTop p R
@@ -205,7 +199,7 @@ theorem isTopologicalRing_witt [IsTopologicalRing R] :
     exact continuous_peval _ _ h1
 
 /- English proof (translation)
-Use `letI := wittTop p R`. Conclude with `T2Space.of_injective_continuous (f := (WittVector.coeff : WittVector p R → ℕ → R)) (fun x y h => WittVector.ext fun n => congrFun h n) continuous_induced_dom`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem t2Space_wittVector_product [T2Space R] :
     letI := wittTop p R
@@ -215,7 +209,7 @@ theorem t2Space_wittVector_product [T2Space R] :
     (fun x y h => WittVector.ext fun n => congrFun h n) continuous_induced_dom
 
 /- English proof (translation)
-Use `letI := wittTop p R`. Establish `hc : Continuous (WittVector.coeff : WittVector p R → ℕ → R)` using `continuous_induced_dom`. Use `continuous_induced_rng.2 (continuous_pi fun n => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, WittVector.map_coeff]`. Conclude with `h.comp (continuous_fst.prodMk ((continuous_apply n).comp (hc.comp continuous_snd)))`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_map_witt {G : Type} [TopologicalSpace G] (σ : G → (R →+* R))
     (h : Continuous fun q : G × R => σ q.1 q.2) :
@@ -228,11 +222,11 @@ theorem continuous_map_witt {G : Type} [TopologicalSpace G] (σ : G → (R →+*
   exact h.comp (continuous_fst.prodMk ((continuous_apply n).comp (hc.comp continuous_snd)))
 
 /- English proof (translation)
-Use `letI := wittTop p R`. Use `continuous_induced_rng.2 (continuous_pi fun n => ?_)` and prove the remaining obligations. Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_)` and prove the remaining obligations. Establish `hp : (0 : ℝ) < (p : ℝ) ^ (-((n + 1 : ℕ) : ℤ))` using `zpow_pos (by exact_mod_cast (Fact.out : p.Prime).pos) _`. Use `filter_upwards [Metric.closedBall_mem_nhds x hp] with y hy`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[Metric.mem_closedBall, dist_eq_norm, PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton']`. Take `⟨z, hz⟩` from `hy`. Establish `h0 : WittVector.truncate (n + 1) (f y - f x) = 0`. Rewrite using `[← RingHom.mem_ker, WittVector.mem_ker_truncate]`. Introduce `i hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sub, ← hz, map_mul, map_pow, map_natCast]`. Conclude with `WittVector.mul_pow_charP_coeff_zero _ hi`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Use `congrArg (TruncatedWittVector.coeff (Fin.last n)) h0` as an intermediate fact. Simplify `this` using `[WittVector.coeff_truncate]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_padicInt_witt [CharP R p] (f : ℤ_[p] →+* WittVector p R) :
     letI := wittTop p R
@@ -270,18 +264,18 @@ def coords (W : Type) [CommRing W] [Algebra R W] (O : Type) [CommRing O] [Algebr
         (Finsupp.linearEquivFunOnFinite R W ι).toAddEquiv))
 
 /- English proof (translation)
-Simplify using `[coords]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coords_tmul (b : Module.Basis ι R T) (a : O) (w : W) (t : T) (i : ι) :
     coords W O b ((a ⊗ₜ[R] w) ⊗ₜ[O] t) i = b.repr (a • t) i • w := by
   simp [coords]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy, mul_add, Finset.sum_add_distrib]`. Consider the case `tmul r t`. Proceed by induction on `r using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy`. Simplify using `only [add_tmul, map_add, Pi.add_apply, hx, hy, mul_add, Finset.sum_add_distrib]`. Consider the case `tmul a w`. Simplify using `only [TensorProduct.map_tmul, AlgHom.toLinearMap_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, coords_tmul, map_smul σ]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_smul ρ]`. Generalize the expression as in `a • t = u`. Use `conv_lhs => rw [← b.sum_repr u]`. Simplify using `only [map_sum, LinearMap.map_smul_of_tower, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, Finset.sum_smul, smul_eq_mul, Algebra.smul_def, map_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coords_map (b : Module.Basis ι R T) (σ : W →ₐ[R] W) (ρ : T →ₗ[O] T)
     (x : (O ⊗[R] W) ⊗[O] T) (i : ι) :
@@ -308,13 +302,13 @@ theorem coords_map (b : Module.Basis ι R T) (σ : W →ₐ[R] W) (ρ : T →ₗ
       exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Use `letI τ : TopologicalSpace ((O ⊗[R] W) ⊗[O] T) := TopologicalSpace.induced (coords W O b) inferInstance`. Establish `h0 : Continuous (coords W O b)` using `continuous_induced_dom`. Use `haveI h2 : T2Space ((O ⊗[R] W) ⊗[O] T) := T2Space.of_injective_continuous (coords W O b).injective h0`. Establish `h1 : ∀ (t : T) i, coords W O b ((1 : O ⊗[R] W) ⊗ₜ[O] t) i = algebraMap R W (b.repr t i)`. Introduce `t i`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.one_def, coords_tmul, one_smul, Algebra.algebraMap_eq_smul_one]`. Use `⟨τ, h2, Topology.IsInducing.topologicalAddGroup (coords W O b) ⟨rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_induced_rng.2 (continuous_pi fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, coords_map]`. Use `continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((hc.comp (hρ i j)).comp continuous_fst).mul (hσ.comp (continuous_fst.prodMk ((continuous_apply j).comp (h0.comp continuous_snd))))`. Use `(Continuous.isClosedEmbedding ?_ ?_).isEmbedding` and prove the remaining obligations. Use `continuous_induced_rng.2 (continuous_pi fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, h1]`. Conclude with `hc.comp (hb i)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `s t h`. Use `b.ext_elem fun i => hi ?_` and prove the remaining obligations. Rewrite using `[← h1, ← h1]`. Conclude with `congrArg (fun x => coords W O b x i) h`.
+A detailed English derivation is pending.
 -/
 theorem exists_top_tensor [TopologicalSpace R] [TopologicalSpace W] [IsTopologicalRing W]
     [T2Space W] [TopologicalSpace T] [CompactSpace T] {G : Type} [TopologicalSpace G]
@@ -353,13 +347,13 @@ theorem exists_top_tensor [TopologicalSpace R] [TopologicalSpace W] [IsTopologic
 end Tensor
 
 /- English proof (translation)
-Establish `hF : Continuous (b.equivFun.symm : (ι → ℤ_[p]) → T)`. Establish `: (b.equivFun.symm : (ι → ℤ_[p]) → T) = fun c => ∑ i, c i • b i`. Use function extensionality and compare the values at `fun c => b.equivFun_symm_apply c`. Rewrite using `[this]`. Conclude with `continuous_finset_sum _ fun i _ => (h (b i)).comp (continuous_apply i)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b.equivFun.symm.surjective.compactSpace hF, fun U hU => ?_⟩` and prove the remaining obligations. Establish `h1 : b.equivFun.symm ⁻¹' U ∈ 𝓝 (0 : ι → ℤ_[p])` using `hF.continuousAt (by simpa using hU)`. Take `⟨ε, hε, hU'⟩` from `Metric.mem_nhds_iff.1 h1`. Take `⟨k, hk⟩` from `PadicInt.exists_pow_neg_lt p hε`. Use `⟨k, fun t => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `b.equivFun.symm.surjective t`. Rewrite using `[← map_nsmul]`. Apply `hU'` to reduce the goal to its premises. Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff hε]`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_lt ?_ hk` and prove the remaining obligations. Rewrite using `[PadicInt.norm_le_pow_iff_mem_span_pow, Pi.smul_apply, nsmul_eq_mul, Nat.cast_pow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compact_of_basis {p : ℕ} [Fact p.Prime] {T ι : Type} [AddCommGroup T] [Module ℤ_[p] T]
     [TopologicalSpace T] [ContinuousAdd T] [Fintype ι] (b : Module.Basis ι ℤ_[p] T)
@@ -390,11 +384,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l}
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (PreTilt.coeff n x)`. Establish `hc` using `GlobalTheory.Cyc.IsActC.continuous_orbit l AI.actC ⟨AI.actC_ext, AI.actC_norm⟩ (y : PadicComplex l)`. Establish `hl : ((l : ℕ) : PadicComplex l) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Take `⟨y₀, hy₀, e₀⟩` from `AI.actT_coeff g₀ x n y hy.symm`. Use `filter_upwards [hc.continuousAt (x := g₀) (Metric.ball_mem_nhds _ (norm_pos_iff.2 hl))] with g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y₁, hy₁, e₁⟩` from `AI.actT_coeff g x n y hy.symm`. Rewrite using `[e₀, e₁, Ideal.Quotient.eq, Ideal.mem_span_singleton, ← (PadicComplexInt.integers l).le_iff_dvd]`. Establish `hg' : ‖(y₁ : PadicComplex l) - y₀‖ ≤ ‖((l : ℕ) : PadicComplex l)‖`. Rewrite using `[hy₀, hy₁, ← dist_eq_norm]`. Conclude with `le_of_lt hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_natCast, map_sub]`. Rewrite `hg'` using `[PadicComplex.norm_eq_norm, PadicComplex.norm_eq_norm, Valuation.norm_def, Valuation.norm_def, NNReal.coe_le_coe, (Valuation.RankOne.strictMono _).le_iff_le, Valuation.restrict_le_iff]`. Conclude with `hg'`.
+A detailed English derivation is pending.
 -/
 theorem eventually_coeff_eq (AI : LocAinf l P) (x : OCb l) (n : ℕ) (g₀ : GQ l) :
     ∀ᶠ g in 𝓝 g₀, PreTilt.coeff n (AI.actT g x) = PreTilt.coeff n (AI.actT g₀ x) := by
@@ -416,9 +410,9 @@ theorem eventually_coeff_eq (AI : LocAinf l P) (x : OCb l) (n : ℕ) (g₀ : GQ 
   exact hg'
 
 /- English proof (translation)
-Use `haveI := (GlobalTheory.TiltAlgClosed.isAlgClosed_tilt_and_valuationRing l).2`. Use `exists_top_frac (fun g => AI.actT g) (fun g => autCb l (AI.actT g)) (fun g a => autCb_alg l _ a) fun x a g₀ ha => ?_` and prove the remaining obligations. Take `⟨n, hn⟩ : ∃ n, PreTilt.coeff n a ≠ 0` from `by by_contra! h`. Use `ha (Perfection.ext fun n => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PreTilt.coeff n a = PreTilt.coeff n 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, map_zero]`. Use `filter_upwards [eventually_coeff_eq AI x n g₀] with g hg`. Introduce and unpack `⟨c, hc⟩`. Apply `hn` to reduce the goal to its premises. Rewrite using `[hc, map_mul, map_sub, hg, sub_self, zero_mul]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_top_Cb (AI : LocAinf l P) :
     ∃ t : TopologicalSpace (Cb l), letI := t
@@ -438,21 +432,19 @@ theorem exists_top_Cb (AI : LocAinf l P) :
   rw [hc, map_mul, map_sub, hg, sub_self, zero_mul]
 
 /- English proof (translation)
-The claim follows from `(WittVector.map_injective _ (ZMod.castHom_injective R)).comp (WittVector.equiv l).symm.injective`.
+A detailed English derivation is pending.
 -/
 theorem zlW_injective (R : Type) [CommRing R] [CharP R l] : Function.Injective (zlW l R) :=
   (WittVector.map_injective _ (ZMod.castHom_injective R)).comp (WittVector.equiv l).symm.injective
 
 /- English proof (translation)
-Use `letI := Module.compHom ↥T.L.T (algebraMap ℤ_[l] O)`. Use `haveI : IsScalarTower ℤ_[l] O ↥T.L.T := ⟨fun c a x => by`. Rewrite using `[Algebra.smul_def, mul_smul]`. Use the proof step `rfl⟩`. Take `⟨d, ⟨b⟩⟩` from `GlobalTheory.Cyc.exists_basis_lat (R := ℤ_[l]) T`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hemb : Topology.IsInducing (algebraMap ℤ_[l] ℚ_[l])` using `Topology.IsInducing.subtypeVal`. Establish `hb : ∀ i, Continuous fun t : ↥T.L.T => b.repr t i`. Introduce `i`. Take `⟨φ, hφ⟩` from `GlobalTheory.Cyc.exists_form_lat hc T b i`. Establish `h1 : Continuous φ` using `GlobalTheory.Cyc.continuous_form_of_moduleTopology (L := L) φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hemb.continuous_iff.2 ((h1.comp continuous_subtype_val).congr hφ)`. Establish `hρ : ∀ i j, Continuous fun g : G => b.repr (T.actT g (b j)) i` using `fun i j => hemb.continuous_iff.2 (GlobalTheory.Cyc.continuous_coord_lat hc T b (b j) i)`. Establish `hs : ∀ t : ↥T.L.T, Continuous fun c : ℤ_[l] => c • t`. Introduce `t`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : ContinuousSMul L T.V := IsModuleTopology.toContinuousSMul _ _`. Establish `h1 : Continuous fun c : ℤ_[l] => algebraMap ℚ_[l] L (algebraMap ℤ_[l] ℚ_[l] c) • (t : T.V)` using `((continuous_algebraMap ℚ_[l] L).comp hemb.continuous).smul continuous_const`. Use `h1.congr fun c => ?_` and prove the remaining obligations. Rewrite using `[← hc, algebraMap_smul]`. Both sides reduce to the same expression.
-
-Use `haveI : ContinuousAdd ↥T.L.T := T.L.T.toAddSubmonoid.continuousAdd`. Take `⟨hcpt, hU⟩` from `compact_of_basis b hs`. Take `⟨τ, a1, a2, a3, a4⟩` from `exists_top_tensor (O := O) (W := W) b hb hW hi σ hσ (fun g => T.actT g) hρ`. Conclude with `⟨τ, a1, a2, a3, a4, hcpt, hU⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_top_lat {G L O W : Type} [Group G] [TopologicalSpace G] [Field L] [Algebra ℚ_[l] L]
     [CommRing O] [Algebra O L] [TopologicalSpace L] [Algebra ℤ_[l] O] [FiniteDimensional ℚ_[l] L]
@@ -499,7 +491,7 @@ theorem exists_top_lat {G L O W : Type} [Group G] [TopologicalSpace G] [Field L]
   exact ⟨τ, a1, a2, a3, a4, hcpt, hU⟩
 
 /- English proof (translation)
-Take `⟨t, h2, hr, ha⟩` from `exists_top_Cb AI`. Conclude with `⟨wittTop l (Cb l), t2Space_wittVector_product, isTopologicalRing_witt, continuous_padicInt_witt (zlW l (Cb l)), continuous_map_witt (fun g : GQ l => (autCb l (AI.actT g)).toRingHom) ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_top_WCb (AI : LocAinf l P) :
     ∃ t : TopologicalSpace (WCb l), letI := t
@@ -513,13 +505,11 @@ theorem exists_top_WCb (AI : LocAinf l P) :
 open GlobalTheory.HWL in
 
 /- English proof (translation)
-Introduce `l _ P AI K LL T`. Use `haveI := LL.2`. Use `haveI : Module.Free ℤ_[l] ↥(OL LL) := (GlobalTheory.Per.integers_completeDVR l LL).elim fun _ h => h.2.2.2.1`. Use `haveI : Module.Finite ℤ_[l] ↥(OL LL) := (GlobalTheory.Per.integers_completeDVR l LL).elim fun _ h => h.2.2.2.2.1`. Establish `hc : ∀ c : ℤ_[l], algebraMap ↥(OL LL) ↥LL.1 (algebraMap ℤ_[l] ↥(OL LL) c) = algebraMap ℚ_[l] ↥LL.1 (algebraMap ℤ_[l] ℚ_[l] c)` using `fun c => (IsScalarTower.algebraMap_apply ℤ_[l] ↥(OL LL) ↥LL.1 c).symm.trans (IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥LL.1 c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI t : TopologicalSpace (WCb l) := (exists_top_WCb AI).choose`. Establish `ht` using `(exists_top_WCb AI).choose_spec`. Use `haveI : T2Space (WCb l) := ht.1`. Use `haveI : IsTopologicalRing (WCb l) := ht.2.1`. Establish `hW` using `ht.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `ht.2.2.2`. Establish `hp : Continuous fun q : ↥(GK K) × WCb l => (((q.1 : GQ l), q.2) : GQ l × WCb l)` using `(continuous_subtype_val.comp continuous_fst).prodMk continuous_snd`. Establish `hσ` using `ha.comp hp`. Establish `hi : Function.Injective (algebraMap ℤ_[l] (WCb l))` using `zlW_injective (Cb l)`. Establish `key` using `exists_top_lat (G := ↥(GK K)) (L := ↥LL.1) (O := ↥(OL LL)) (W := WCb l) hc hW hi (fun g : ↥(GK K) => (AI.actWCbHom (g : GQ l)).toAlgHom) hσ T`.
-
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem exists_weakTop : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)), ∃ τ : TopologicalSpace (TW (RW LL) T), letI := τ; T2Space (TW (RW LL) T) ∧ IsTopologicalAddGroup (TW (RW LL) T) ∧ Continuous (fun p : ↥(GK K) × TW (RW LL) T => TWact (AI.gRW LL (p.1 : GQ l)) T p.1 p.2) ∧ Topology.IsEmbedding (fun t : ↥T.L.T => (1 : RW LL) ⊗ₜ[↥(OL LL)] t) ∧ CompactSpace ↥T.L.T ∧ ∀ U ∈ nhds (0 : ↥T.L.T), ∃ k : ℕ, ∀ t : ↥T.L.T, l ^ k • t ∈ U := by
   intro l _ P AI K LL T

@@ -22,9 +22,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable (Xo : Moduli Dw l) (c : Coeff l)
 
 /- English proof (translation)
-Take `⟨p, hp, hpa⟩` from `NumberField.RingOfIntegers.isIntegral a`. Use `IsIntegrallyClosed.isIntegral_iff.1 ⟨p.map (Int.castRingHom T.V), hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `hf : (algebraMap T.V T.Fr).comp (Int.castRingHom T.V) = (io.comp (embK c τ)).comp (algebraMap ℤ (𝓞 E))` using `RingHom.ext_int _ _`. Rewrite using `[hf]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `Polynomial.hom_eval₂ p (algebraMap ℤ (𝓞 E)) (io.comp (embK c τ)) a`. Rewrite `h3` using `[hpa, map_zero]`. Conclude with `h3.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_val (T : CDVR) (io : c.F →+* T.Fr) (τ : E →+* ℂ) (a : 𝓞 E) :
     ∃ z : T.V, algebraMap T.V T.Fr z = io (embK c τ a) := by
@@ -41,41 +41,37 @@ theorem int_val (T : CDVR) (io : c.F →+* T.Fr) (τ : E →+* ℂ) (a : 𝓞 E)
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `T io G t' x m1 m2 _ u₀ hu₀t hu₀e hu₀b`. Set `_` to `io.toAlgebra`. Use `G.semi.smooth` as an intermediate fact. Establish `: ∀ a, IsMonHom (G.act.act a)` using `G.act.hom`. Take `⟨n, xc, hxc⟩` from `univChartLoc G.G`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', hcomp⟩` from `tanBC_alg (R := T.V) (R' := T.Fr) G.G n xc hxc`. Establish `hpt : ∀ cc : Fin n → T.V, pushR G.G (tvec (x` using `x') (algebraMap T.V T.Fr ∘ cc)) = ReciprocityTheory.ChartRestriction.G.Chart.spMap (dualMapA T.V T.Fr) ≫ tvec (x := xc) cc := fun cc => Over.OverMorphism.ext (by rw [pushR_left, hcomp cc]; rfl)`. Establish `hM0 : ∀ (a : 𝓞 E) (cc : Fin n → T.V), tmap hx' ((Over.pullback (fB T.V T.Fr)).map (G.act.act a)) (algebraMap T.V T.Fr ∘ cc) = algebraMap T.V T.Fr ∘ tmap hxc (G.act.act a) cc`. Introduce `a cc`. Apply `tvec_inj hx'` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pushR_inj G.G` to reduce the goal to its premises. Rewrite using `[tvec_tmap hx', pushR_map, hpt, hpt, tvec_tmap hxc, Category.assoc]`. Establish `hM : ∀ (a : 𝓞 E) (cc : Fin n → T.V), tmap hx' ((Over.pullback (fB T.V T.Fr)).map (G.act.act a)) (fun j => algebraMap T.V T.Fr (cc j)) = fun j => algebraMap T.V T.Fr (tmap hxc (G.act.act a) cc j)` using `hM0`. Establish `h1` using `m1.cart`. Establish `h2 : IsGrpPullback t'.G G.G (fB T.V T.Fr) m2.φ` using `m2.cart`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose vA hvA using fun e : Fin n → T.Fr => relA_exists_v x h1 h2 (tvec (x := x') e)`. Establish `coordA : ∀ w, IsTanAt x w → ∃ e : Fin n → T.Fr, (vA e).left = w`. Introduce `w hw`. Set `v0 : epsAt x ⟶ Xo.univ.t.G` to `Over.homMk w hw.1`. Take `⟨y0, hy0⟩` from `relA_exists_y x h1 h2 v0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht : ReciprocityTheory.ChartRestriction.G.Chart.IsTan y0` using `(relA_tan x h1 h2 hy0).1 hw.2`. Use `⟨tcoord hx' y0 ht, ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun q => q.left) ((relA_uniq x h1 h2 (hvA _) hy0).2 (tcoord_spec hx' y0 ht).symm)`. Establish `tanA : ∀ e, IsTanAt x (vA e).left` using `fun e => ⟨Over.w (vA e), (relA_tan x h1 h2 (hvA e)).2 (isTan_tvec hx' e)⟩`. Establish `eigA : ∀ (τ : E →+* ℂ) e, IsEigAt c τ (vA e).left ↔ ∀ a, tmap hx' ((Over.pullback (fB T.V T.Fr)).map (G.act.act a)) e = io (embK c τ a) • e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `τ e`. Unfold `IsEigAt`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[← tvec_eig_iff hx']`. Conclude with `relA_eig x h1 h2 (hvA e) (t'.act.act a) (Xo.univ.t.act.act a) (G.act.act a) (m1.act a) (m2.act a) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `combA : ∀ {m : ℕ} (d : Fin m → Fin n → T.Fr) (cf : Fin m → T.Fr) (e : Fin n → T.Fr), IsCombAt x (fun i => (vA (d i)).left) cf (vA e).left ↔ e = ∑ i, cf i • d i`. Introduce `m d cf e`. Establish `hr : ∀ i, RelA x m1.φ m2.φ (sclA x (cf i) ≫ vA (d i)) (ReciprocityTheory.ChartRestriction.G.Chart.spMap (scaleD (cf i)) ≫ tvec (x` using `x') (d i)) := fun i => relA_scl x (hvA (d i)) (cf i)`. Establish `hp` using `relA_prod x h1 h2 _ _ hr`. Rewrite `hp` using `[prod_tvec hx']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hw⟩`. Establish `hu' : u = fun i => sclA x (cf i) ≫ vA (d i)` using `funext fun i => Over.OverMorphism.ext (hu i)`. Substitute `hu'` using the available equality. Conclude with `tvec_inj hx' ((relA_uniq x h1 h2 (hvA e) hp).1 (Over.OverMorphism.ext hw.symm))`.
+Substitute using the available equality. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `rfl`. Conclude with `⟨fun i => sclA x (cf i) ≫ vA (d i), fun i => rfl, congrArg (fun q => q.left) ((relA_uniq x h1 h2 hp (hvA _)).2 rfl)⟩`. Use `choose χ hχ using fun τ a => int_val c T io τ a`. Establish `key : ∀ τ : E →+* ℂ, ∃ (ub : Fin (Dw.mult τ) → (epsOver T.V T.V ⟶ G.G)) (u : Fin (Dw.mult τ) → (Sp (DualNumber T.Fr) ⟶ Xo.univ.t.G.left)), (∀ i, IsTan (ub i)) ∧ (∀ i, IsEigV c io G τ (ub i)) ∧ (∀ (w : epsOver T.V T.V ⟶ G.G), IsTan w → IsEigV c io G τ w → ∃! a : Fin (Dw.mult τ) → …`. Introduce `τ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `choose v hv using fun i => coordA (u₀ τ i) (hu₀t τ i)`. Establish `hu₀ : u₀ τ = fun i => (vA (v i)).left` using `funext fun i => (hv i).symm`. Establish `eigM : ∀ e, IsEigAt c τ (vA e).left ↔ ∀ a, tmap hx' ((Over.pullback (fB T.V T.Fr)).map (G.act.act a)) e = algebraMap T.V T.Fr (χ τ a) • e`. Introduce `e`. Rewrite using `[eigA τ e]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hχ τ]`. Establish `hvM : ∀ a i, tmap hx' ((Over.pullback (fB T.V T.Fr)).map (G.act.act a)) (v i) = algebraMap T.V T.Fr (χ τ a) • v i` using `fun a i => (eigM (v i)).1 (by rw [hv i]; exact hu₀e τ i) a`. Establish `hbM : ∀ w, (∀ a, tmap hx' ((Over.pullback (fB T.V T.Fr)).map (G.act.act a)) w = algebraMap T.V T.Fr (χ τ a) • w) → ∃! cf : Fin (Dw.mult τ) → T.Fr, w = ∑ i, cf i • v i`. Introduce `w hw`. Take `⟨cf, hcf, hu⟩` from `hu₀b τ (vA w).left (tanA w) ((eigM w).2 hw)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite `hcf`, `hu` using `[hu₀]`. Conclude with `⟨cf, (combA v cf w).1 hcf, fun cf' h' => hu cf' ((combA v cf' w).2 h')⟩`. Take `⟨b, hbe, hbb, hbt⟩` from `eig_basis (fun a => tmap hxc (G.act.act a)) (χ τ) (fun a => tmap hx' ((Over.pullback (fB T.V T.Fr)).map (G.act.act a))) hM v hvM hbM`. Use `choose C hCd hCz hCb using hbt`. Use `⟨fun i => cvV (tvec (x := xc) (b i)), fun i => (vA (fun j => algebraMap T.V T.Fr (b i j))).left, fun i => isTan_cvV (isTan_tvec hxc (b i)), fun i a z hz => ?_, fun w hw he => ?_, fun i => ?_, fun i => tanA _, fun i => ?_, fun w hw he => ?_, fun i => ⟨C i, isUnit_iff_ne_zero.2 (hC …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hz' : z = χ τ a` using `IsFractionRing.injective T.V T.Fr (hz.trans (hχ τ a).symm)`. Substitute `hz'` using the available equality. Conclude with `(eigV_iff hxc (G.act.act a) (b i) _).2 (hbe a i)`. Take `⟨cc, rfl⟩` from `tan_eq_cvV hxc hw`. Establish `hcc : ∀ a, tmap hxc (G.act.act a) cc = χ τ a • cc` using `fun a => (eigV_iff hxc (G.act.act a) cc _).1 (he a (χ τ a) (hχ τ a))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr, hru⟩` from `hbb cc hcc`. Conclude with `⟨r, (comb_iff hxc b r cc).2 hr, fun r' h' => hru r' ((comb_iff hxc b r' cc).1 h')⟩`. Take `⟨w, hw, hwl⟩` from `hvA (fun j => algebraMap T.V T.Fr (b i j))`. Establish `hw' : w.left ≫ m2.φ = (tvec (x` using `x') (fun j => algebraMap T.V T.Fr (b i j))).left ≫ pullback.fst G.G.hom (fB T.V T.Fr) := hw`. Use `⟨w.left, hwl.symm, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[cvV_left]`. Conclude with `hw'.trans (hcomp (b i))`. Use `(eigA τ _).2 fun a => ?_` and prove the remaining obligations. Rewrite using `[hM a (b i), hbe a i, ← hχ τ a]`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Simplify using `[Pi.smul_apply, smul_eq_mul, map_mul]`. Take `⟨e, rfl⟩` from `coordA w hw`. Establish `hP : ∀ a, tmap hx' ((Over.pullback (fB T.V T.Fr)).map (G.act.act a)) e = algebraMap T.V T.Fr (χ τ a) • e` using `(eigM e).1 he`. Take `⟨d, hd, hdu⟩` from `tri_basis (fun w => ∀ a, tmap hx' ((Over.pullback (fB T.V T.Fr)).map (G.act.act a)) w = algebraMap T.V T.Fr (χ τ a) • w) v hbM C hCz hCd e hP`. Establish `hCb' : ∀ i, (∑ j, C i j • v j) = fun j => algebraMap T.V T.Fr (b i j)` using `fun i => (hCb i).symm`.
-
-Simplify using `only [hCb'] at hd hdu`. Conclude with `⟨d, (combA _ d e).2 hd, fun d' h' => hdu d' ((combA _ d' e).1 h')⟩`. Rewrite using `[hu₀]`. Conclude with `(combA v (C i) _).2 (hCb i)`. Use `choose ub u hub using key`.
-
-Conclude with `⟨ub, u, ⟨fun τ i => (hub τ).1 i, fun τ i => (hub τ).2.1 i, fun τ w hw he => (hub τ).2.2.1 w hw he, fun τ i => (hub τ).2.2.2.1 i⟩, fun τ i => (hub τ).2.2.2.2.1 i, fun τ i => (hub τ).2.2.2.2.2.1 i, fun τ w hw he => (hub τ).2.2.2.2.2.2.1 w hw he, fun τ i => (hub τ).2.2.2.2.2.2.2 i⟩`.
+A detailed English derivation is pending.
 -/
 theorem lieFree : LieFreeSt Xo c := by
   intro T io G t' x m1 m2 _ u₀ hu₀t hu₀e hu₀b

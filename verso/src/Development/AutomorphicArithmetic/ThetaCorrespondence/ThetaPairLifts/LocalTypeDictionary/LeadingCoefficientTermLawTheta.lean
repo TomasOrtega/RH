@@ -14,9 +14,9 @@ end GlobalTheory.FirstRowTermLaw
 namespace GlobalTheory.FirstRowTermLaw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hP hS`. Take `⟨a₁, h₁⟩` from `_root_.GlobalTheory.T.endomorphism_law_from_first_row_twist hP hS`. Use `⟨a₁, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x₁, hc₁⟩` from `h₁ ε CF hC`. Use `⟨x₁, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hi hsc t a β hβ τ hτ k hkl hk c hc xs ys`. Take `⟨lam, hlam, hscal⟩` from `hc₁ D large₂ e hx Γ Pl0 T A Ks R F s ch hi hsc t a k hkl hk c hc`. Establish `hL : (τ.sum fun d a' => a' * (∏ j, (d.1 j).fn (xs j)) * ∏ i, Function.update (fun i => (d.2 i).fn) (GlobalTheory.FirstRowVertex.firstIx D) (fun y => (d.2 (GlobalTheory.FirstRowVertex.firstIx D)).fn ((actO (ch.G.pS (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (ch …` using `sum_update_comp τ (fun d j => (d.1 j).fn) (fun d i => (d.2 i).fn) (GlobalTheory.FirstRowVertex.firstIx D) (actO (ch.G.pS (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (ch.G.pT (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (ch.G.toPair (.chi (Glob …`. Rewrite using `[hL]`. Conclude with `law_gen ch.S.toGridChoice (Set.mem_univ t) hτ k lam hlam _ hscal xs ys`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_splits_locally : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) a, ∀ β ∈ ch.S.supp t (ch.Phi a), ∀ τ, ch.S.IsExpansion t (ch.Phi a) β τ →
@@ -53,7 +53,7 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.FirstRowTermLaw.lift_splits_locally | exact _root_.GlobalTheory.FirstRowTermLaw.lift_splits_locally | (intros; apply _root_.GlobalTheory.FirstRowTermLaw.lift_splits_locally <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.leading_coefficient_term_law_theta : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) a, ∀ β ∈ ch.S.supp t (ch.Phi a), ∀ τ, ch.S.IsExpansion t (ch.Phi a) β τ →

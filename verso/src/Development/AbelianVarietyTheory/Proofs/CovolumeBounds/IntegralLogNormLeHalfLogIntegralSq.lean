@@ -23,9 +23,7 @@ theorem coe_sphereRotation (θ : ℝ) (x : sphere (0 : E) 1) :
 
 omit [MeasurableSpace E] [BorelSpace E] in
 /- English proof (translation)
-Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Establish `e : (Subtype.val ∘ Function.uncurry (sphereRotation (E` using `E))) = fun q : ℝ × sphere (0 : E) 1 => circleMap 0 1 q.1 • (q.2 : E) := by`. Use function extensionality and compare the values at `q`. Conclude with `coe_sphereRotation q.1 q.2`. Rewrite using `[e]`.
-
-Conclude with `((continuous_circleMap 0 1).comp continuous_fst).smul (continuous_subtype_val.comp continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_sphereRotation :
     Continuous (Function.uncurry (sphereRotation (E := E))) := by
@@ -41,19 +39,17 @@ theorem continuous_sphereRotation :
 variable [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
 
 /- English proof (translation)
-Use `set ζ : ℂ := circleMap 0 1 θ with hζ_def`. Establish `hζ : ‖ζ‖ = 1` using `by simp [ζ, norm_circleMap_zero]`. Establish `hζ0 : ζ ≠ 0`. Rewrite using `[← norm_ne_zero_iff, hζ]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : Measurable (sphereRotation (E` using `E) θ) := (continuous_sphereRotation.comp (continuous_const.prodMk continuous_id)).measurable`. Use `⟨hm, Measure.ext fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm hs, Measure.toSphere_apply' μ (hm hs), Measure.toSphere_apply' μ hs]`. Use `congr 1`. Establish `hset : Ioo (0 : ℝ) 1 • ((↑) '' (sphereRotation θ ⁻¹' s) : Set E) = (fun v : E => ζ • v) ⁻¹' (Ioo (0 : ℝ) 1 • ((↑) '' s))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, _, ⟨w, hw, rfl⟩, rfl⟩`. Use `⟨t, ht, _, ⟨sphereRotation θ w, hw, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show t • ((sphereRotation θ w : sphere (0 : E) 1) : E) = ζ • (t • (w : E))`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[coe_sphereRotation]`. Conclude with `smul_comm t ζ (w : E)`. Introduce and unpack `⟨t, ht, _, ⟨u, hu, rfl⟩, huv⟩`. Establish `hwmem : ζ⁻¹ • (u : E) ∈ sphere (0 : E) 1`. Simplify using `[norm_smul, hζ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set w : sphere (0 : E) 1 := ⟨ζ⁻¹ • (u : E), hwmem⟩ with hw_def`. Establish `hw : sphereRotation θ w = u`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_sphereRotation]`. Use `show ζ • ζ⁻¹ • (u : E) = u`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, mul_inv_cancel₀ hζ0, one_smul]`. Use `⟨t, ht, _, ⟨w, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show sphereRotation θ w ∈ s`. Rewrite using `[hw]`. Conclude with `hu`.
-
-Establish `huv' : t • (u : E) = ζ • v` using `huv show t • (ζ⁻¹ • (u : E)) = v`. Rewrite using `[smul_comm t ζ⁻¹, huv', smul_smul, inv_mul_cancel₀ hζ0, one_smul]`. Rewrite using `[hset]`. Conclude with `(measurePreserving_smul_of_norm_eq_one μ hζ).measure_preimage_emb (MeasurableEquiv.smul₀ ζ hζ0).measurableEmbedding _`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_sphereRotation [FiniteDimensional ℂ E] (μ : Measure E)
     [μ.IsAddHaarMeasure] (θ : ℝ) :

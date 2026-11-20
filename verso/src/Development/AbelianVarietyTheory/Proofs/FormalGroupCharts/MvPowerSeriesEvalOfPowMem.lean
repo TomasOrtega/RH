@@ -10,14 +10,14 @@ namespace NilpotentEval
 variable {A : Type*} [CommRing A]
 
 /- English proof (translation)
-Rewrite using `[pow_mul]`. Conclude with `Ideal.pow_right_mono h n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_le {K J : Ideal A} {N : ℕ} (h : J ^ N ≤ K) (n : ℕ) : J ^ (N * n) ≤ K ^ n := by
   rw [pow_mul]
   exact Ideal.pow_right_mono h n
 
 /- English proof (translation)
-Use `⟨fun x hx => IsHausdorff.haus' (I := K) x fun n => ?_⟩` and prove the remaining obligations. Use `hx (N * n)` as an intermediate fact. Rewrite `this`, the goal using `[SModEq.zero]`. Simplify using `only [smul_eq_mul, Ideal.mul_top] at this ⊢`. Conclude with `pow_mul_le h n this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHausdorff_of_pow_le {K J : Ideal A} {N : ℕ} (h : J ^ N ≤ K) [IsHausdorff K A] :
     IsHausdorff J A := by
@@ -28,11 +28,11 @@ theorem isHausdorff_of_pow_le {K J : Ideal A} {N : ℕ} (h : J ^ N ≤ K) [IsHau
   exact pow_mul_le h n this
 
 /- English proof (translation)
-Establish `h' : J ^ (N + 1) ≤ K` using `(Ideal.pow_le_pow_right N.le_succ).trans h`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at hf ⊢`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := K) (fun n => f ((N + 1) * n)) fun {m n} hmn => by`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `pow_mul_le h' m (hf (Nat.mul_le_mul_left _ hmn))`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at hL`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `h1` using `hf (m := n) (n := (N + 1) * n) (Nat.le_mul_of_pos_left n N.succ_pos)`. Establish `h2` using `Ideal.pow_right_mono hKJ n (hL n)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using add_mem h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem isPrecomplete_of_pow_le {K J : Ideal A} {N : ℕ} (h : J ^ N ≤ K) (hKJ : K ≤ J)
     [IsPrecomplete K A] : IsPrecomplete J A := by
@@ -49,9 +49,7 @@ theorem isPrecomplete_of_pow_le {K J : Ideal A} {N : ℕ} (h : J ^ N ≤ K) (hKJ
   simpa using add_mem h1 h2
 
 /- English proof (translation)
-Take `⟨N, hN⟩ : ∃ N : ℕ, Ideal.span (Set.range a) ^ N ≤ K` from `Ideal.exists_pow_le_of_le_radical_of_fg (Ideal.span_le.2 (by rintro _ ⟨j, rfl⟩; exact ha j)) (Submodule.fg_span (Set.finite_range a))`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite `hN` using `[← Ideal.mk_ker (I := K), ← Ideal.map_eq_bot_iff_le_ker]`. Use `conv_rhs => rw [← Ideal.mk_ker (I := K)]`. Rewrite using `[← Ideal.map_eq_bot_iff_le_ker, Ideal.map_pow, Ideal.map_sup, Ideal.map_quotient_self, bot_sup_eq, ← Ideal.map_pow]`.
-
-Conclude with `hN`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_sup_span_le (K : Ideal A) {σ : Type*} [Finite σ] (a : σ → A)
     (ha : ∀ j, ∃ M : ℕ, a j ^ M ∈ K) : ∃ N : ℕ, (K ⊔ Ideal.span (Set.range a)) ^ N ≤ K := by
@@ -71,11 +69,9 @@ end NilpotentEval
 open NilpotentEval in
 
 /- English proof (translation)
-Introduce `A _ K σ _ a ha`. Take `⟨N, hN⟩` from `exists_pow_sup_span_le K a ha`. Establish `hmem : ∀ j, a j ∈ K ⊔ Ideal.span (Set.range a)` using `fun j => Ideal.mem_sup_right (Ideal.subset_span ⟨j, rfl⟩)`. Use `⟨fun hK R _ _ => ?_, fun hK T _ ψ ψ' hC hψ hψ' => ?_⟩` and prove the remaining obligations. Use `haveI : IsAdicComplete (K ⊔ Ideal.span (Set.range a)) A := { toIsHausdorff := isHausdorff_of_pow_le hN toIsPrecomplete := isPrecomplete_of_pow_le hN le_sup_left }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨mvEvalAdic R _ a hmem, mvEvalAdic_X _ a hmem⟩`. Use `haveI := isHausdorff_of_pow_le hN`. Use `letI : Algebra T A := (ψ.comp MvPowerSeries.C).toAlgebra`. Set `φ : MvPowerSeries σ T →ₐ[T] A` to `{ ψ with commutes' := fun _ => rfl }`. Set `φ' : MvPowerSeries σ T →ₐ[T] A` to `{ ψ' with commutes' := fun t => (hC t).symm }`.
-
-Establish `: φ = φ'` using `mvPowerSeries_algHom_ext_of_isHausdorff (K ⊔ Ideal.span (Set.range a)) (fun j => by change ψ _ ∈ _; rw [hψ]; exact hmem j) (fun j => (hψ j).trans (hψ' j).symm)`. Conclude with `RingHom.ext fun g => DFunLike.congr_fun this g`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mvPowerSeries_eval_of_pow_mem : ∀ (A : Type) [CommRing A] (K : Ideal A) (σ : Type) [Finite σ] (a : σ → A), (∀ j, ∃ M : ℕ, a j ^ M ∈ K) → (IsAdicComplete K A → ∀ (R : Type) [CommRing R] [Algebra R A], ∃ ψ : MvPowerSeries σ R →ₐ[R] A, ∀ j, ψ (MvPowerSeries.X j) = a j) ∧ (IsHausdorff K A → ∀ (T : Type) [CommRing T] (ψ ψ' : MvPowerSeries σ T →+* A), (∀ t, ψ (MvPowerSeries.C t) = ψ' (MvPowerSeries.C t)) → (∀ j, ψ (MvPowerSeries.X j) = a j) → (∀ j, ψ' (MvPowerSeries.X j) = a j) → ψ = ψ') := by
   intro A _ K σ _ a ha

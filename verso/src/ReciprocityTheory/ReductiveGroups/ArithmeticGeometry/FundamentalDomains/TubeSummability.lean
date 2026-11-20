@@ -10,13 +10,13 @@ open NumberField Complex MeasureTheory ReciprocityTheory.ChartRestriction.G.FD R
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Establish `hgeo : Summable (fun m : ℕ => Real.exp (-c) ^ m)` using `summable_geometric_of_lt_one (Real.exp_pos _).le (by simpa using Real.exp_lt_exp.2 (by linarith : -c < 0))`. Establish `h1 : Summable (fun m : ℤ => Real.exp (-c * |(m : ℝ)|))`. Apply `Summable.of_nat_of_neg` to reduce the goal to its premises. Use `hgeo.congr fun m => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, Int.cast_natCast, Nat.abs_cast]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Real.exp_nat_mul]`. Put the polynomial expressions in normal form. Use `hgeo.congr fun m => ?_` and prove the remaining obligations. Simplify using `only [Int.cast_neg, Int.cast_natCast, abs_neg, Nat.abs_cast]`. Rewrite using `[← Real.exp_nat_mul]`.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact Summable.of_finite`. Consider the case `succ n ih`.
+Put the polynomial expressions in normal form. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← (Fin.consEquiv fun _ : Fin (n + 1) => ℤ).summable_iff]`. Use `h1.mul_of_nonneg ih (fun _ => (Real.exp_pos _).le) (fun _ => (Real.exp_pos _).le) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using `[Fin.consEquiv, Fin.sum_univ_succ, mul_add, Real.exp_add]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma summable_exp_abs (c : ℝ) (hc : 0 < c) :
     ∀ n : ℕ, Summable (fun k : Fin n → ℤ => Real.exp (-c * ∑ j, |(k j : ℝ)|)) := by
@@ -55,14 +55,14 @@ noncomputable def hline (t : Fin n → ℂ) : ℂ := P (X.flow ξ (Lc X ω t) x)
 def Om : Set (Fin n → ℝ) := (Fintype.linearCombination ℝ ω) ⁻¹' admissibleImaginary X ξ x
 
 /- English proof (translation)
-Simplify using `[Fintype.linearCombination_apply, Finset.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma lincomb_apply (y : Fin n → ℝ) (τ : X.Ψ) :
     Fintype.linearCombination ℝ ω y τ = ∑ j, y j * ω j τ := by
   simp [Fintype.linearCombination_apply, Finset.sum_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Rewrite using `[lincomb_apply]`. Simplify using `[Lc, Complex.im_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma Lc_im (t : Fin n → ℂ) :
     (fun τ => (Lc X ω t τ).im) = Fintype.linearCombination ℝ ω (fun j => (t j).im) := by
@@ -73,7 +73,7 @@ lemma Lc_im (t : Fin n → ℂ) :
 variable {X ξ x}
 
 /- English proof (translation)
-Rewrite using `[flow_mem_dom_iff (X := X) hξ x hx, Lc_im]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma flow_Lc_mem_dom (hξ : herm X.Gm ξ ξ = 0) (hx : x ∈ X.dom) (t : Fin n → ℂ) :
     X.flow ξ (Lc X ω t) x ∈ X.dom ↔ t ∈ tube n (Om X ξ x ω) := by
@@ -81,7 +81,7 @@ lemma flow_Lc_mem_dom (hξ : herm X.Gm ξ ξ = 0) (hx : x ∈ X.dom) (t : Fin n 
   rfl
 
 /- English proof (translation)
-Establish `hc : Continuous (Fintype.linearCombination ℝ ω)` using `LinearMap.continuous_of_finiteDimensional _`. Take `⟨ho, hcv⟩` from `admissibleImaginary_open_convex (X := X) (ξ := ξ) x hx`. Conclude with `⟨ho.preimage hc, hcv.linear_preimage _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma Om_open_convex (hx : x ∈ X.dom) : IsOpen (Om X ξ x ω) ∧ Convex ℝ (Om X ξ x ω) := by
   have hc : Continuous (Fintype.linearCombination ℝ ω) := LinearMap.continuous_of_finiteDimensional _
@@ -89,7 +89,7 @@ lemma Om_open_convex (hx : x ∈ X.dom) : IsOpen (Om X ξ x ω) ∧ Convex ℝ (
   exact ⟨ho.preimage hc, hcv.linear_preimage _⟩
 
 /- English proof (translation)
-Establish `h0` using `(flow_mem_dom_iff (X := X) hξ x hx 0).1 (by rw [flow_zero]; exact hx)`. Use `show Fintype.linearCombination ℝ ω 0 ∈ admissibleImaginary X ξ x`. Rewrite using `[map_zero]`. Simplify using `only [Pi.zero_apply, Complex.zero_im] at h0`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma zero_mem_Om (hξ : herm X.Gm ξ ξ = 0) (hx : x ∈ X.dom) : (0 : Fin n → ℝ) ∈ Om X ξ x ω := by
   have h0 := (flow_mem_dom_iff (X := X) hξ x hx 0).1 (by rw [flow_zero]; exact hx)
@@ -101,7 +101,7 @@ lemma zero_mem_Om (hξ : herm X.Gm ξ ξ = 0) (hx : x ∈ X.dom) : (0 : Fin n �
 variable (X ξ x)
 
 /- English proof (translation)
-Introduce `t ht`. Establish `hmem : X.flow ξ (Lc X ω t) x ∈ X.dom` using `(flow_Lc_mem_dom ω hξ hx t).2 ht`. Establish `hLc : Differentiable ℂ (fun t : Fin n → ℂ => Lc X ω t)` using `differentiable_pi.2 fun τ => Differentiable.fun_sum fun j _ => (differentiable_apply j).mul_const _`. Establish `hd1 : DifferentiableAt ℂ (fun t => X.flow ξ (Lc X ω t) x) t` using `(flow_differentiable X ξ x).differentiableAt.comp t (hLc t)`. Conclude with `(hP.1 _ hmem).comp t hd1.differentiableWithinAt (fun t' ht' => (flow_Lc_mem_dom ω hξ hx t').2 ht')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma hline_diff (hP : X.IsSec la P) (hξ : herm X.Gm ξ ξ = 0) (hx : x ∈ X.dom) :
     DifferentiableOn ℂ (hline X P ξ x ω) (tube n (Om X ξ x ω)) := by
@@ -116,11 +116,9 @@ lemma hline_diff (hP : X.IsSec la P) (hξ : herm X.Gm ξ ξ = 0) (hx : x ∈ X.d
     (fun t' ht' => (flow_Lc_mem_dom ω hξ hx t').2 ht')
 
 /- English proof (translation)
-Introduce `t ht m`. Establish `hmem : X.flow ξ (Lc X ω t) x ∈ X.dom` using `(flow_Lc_mem_dom ω hξ hx t).2 ht`. Establish `hp : (∑ j, (m j : ℝ) • ω j) ∈ X.periods la` using `sum_mem fun j _ => by`. Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `zsmul_mem (hωp j) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLc : Lc X ω (t + fun j => (m j : ℂ)) = cR X (∑ j, (m j : ℝ) • ω j) + Lc X ω t`. Use function extensionality and compare the values at `τ`. Simplify using `[Lc, cR, add_mul, Finset.sum_add_distrib, Finset.sum_apply, add_comm]`. Simplify using `only [hline]`. Rewrite using `[hLc, ← flow_flow X hξ]`.
-
-Conclude with `sec_periodic X la P hP hξΛ hξ hp _ hmem`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hline_periodic (hP : X.IsSec la P) (hξΛ : ξ ∈ X.Λ) (hξ : herm X.Gm ξ ξ = 0)
     (hx : x ∈ X.dom) (hωp : ∀ j, ω j ∈ X.periods la) :

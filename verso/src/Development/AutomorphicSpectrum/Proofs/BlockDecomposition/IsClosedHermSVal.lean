@@ -11,7 +11,7 @@ open IsDedekindDomain NumberField
 namespace GlobalTheory.CompanionTheory.MuC
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _⟩` from `Formalism.IndefR.Eqv.ae_facts D`. Establish `hc : Continuous fun x : hermA D p => e • (x : Formalism.IndefR.Datum.Mx D p p)` using `(continuous_const_smul e).comp continuous_subtype_val`. Conclude with `isClosed_eq hc continuous_subtype_val`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_hermS_val (D : D7) (p : ℕ) (e : AE D) :
     IsClosed ((hermS D p e : AddSubgroup (hermA D p)) : Set (hermA D p)) := by
@@ -23,13 +23,11 @@ theorem isClosed_hermS_val (D : D7) (p : ℕ) (e : AE D) :
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D p e`. Take `⟨_, _, _, _, _⟩` from `Formalism.IndefR.Eqv.ae_facts D`. Establish `hS` using `isClosed_hermS_val D p e`. Establish `hA : IsClosed ((hermA D p : AddSubgroup (Formalism.IndefR.Datum.Mx D p p)) : Set (Formalism.IndefR.Datum.Mx D p p))` using `GlobalTheory.CompanionTheory.HermVol.isClosed_hermA`. Use `haveI : LocallyCompactSpace (Formalism.IndefR.Datum.Mx D p p) := show LocallyCompactSpace (Fin p → Fin p → AE D) from inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Use `haveI : SecondCountableTopology (Formalism.IndefR.Datum.Mx D p p) := show SecondCountableTopology (Fin p → Fin p → AE D) from inferInstance`. Use `haveI : BorelSpace (Formalism.IndefR.Datum.Mx D p p) := by first`. Consider the case `exact show BorelSpace (Fin p → Fin p → AE D) from inferInstance`. Consider the case `exact ⟨rfl⟩`. Consider the case `exact Matrix.borelSpace`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `haveI : SecondCountableTopology (hermA D p) := by first`. Consider the case `exact Topology.IsInducing.subtypeVal.secondCountableTopology`. Consider the case `exact Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Consider the case `exact show SecondCountableTopology ((hermA D p : Set (Formalism.IndefR.Datum.Mx D p p))) from inferInstance`. Use `haveI : SecondCountableTopology (hermS D p e) := by first`.
-
-Consider the case `exact Topology.IsInducing.subtypeVal.secondCountableTopology`. Consider the case `exact Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Consider the case `exact show SecondCountableTopology ((hermS D p e : Set (hermA D p))) from inferInstance`. Use `haveI : LocallyCompactSpace (hermA D p) := hA.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Conclude with `⟨hS.isClosedEmbedding_subtypeVal.locallyCompactSpace, inferInstance, inferInstance, inferInstance, inferInstance⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hermS_facts : ∀ (D : D7) (p : ℕ) (e : AE D), LocallyCompactSpace (hermS D p e) ∧ T2Space (hermS D p e) ∧
     SecondCountableTopology (hermS D p e) ∧ BorelSpace (hermS D p e) ∧ IsTopologicalAddGroup (hermS D p e) := by

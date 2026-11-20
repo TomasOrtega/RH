@@ -58,7 +58,7 @@ end Std
 def kap (R : Ranks) : ℕ := R.N 0 - 1
 
 /- English proof (translation)
-Establish `h : R.N 0 = R.k` using `by simp [Ranks.N]`. Use `R.m_add_three_le_k` as an intermediate fact. Unfold `kap`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem kap_succ (R : Ranks) : kap R + 1 = R.N 0 := by
   have h : R.N 0 = R.k := by simp [Ranks.N]
@@ -67,18 +67,18 @@ theorem kap_succ (R : Ranks) : kap R + 1 = R.N 0 := by
   omega
 
 /- English proof (translation)
-Simplify using `[Ranks.N]`.
+Simplify using the standard rewrite rules.
 -/
 theorem brz_N_zero (R : Ranks) : R.N 0 = R.k := by
   simp [Ranks.N]
 
 /- English proof (translation)
-The claim follows from `(kap_succ R).trans (brz_N_zero R)`.
+A detailed English derivation is pending.
 -/
 theorem kap_succ_k (R : Ranks) : kap R + 1 = R.k := (kap_succ R).trans (brz_N_zero R)
 
 /- English proof (translation)
-Conclude with `kap_succ_k R` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem kap_cast (R : Ranks) : (kap R : ℝ) + 1 = (R.k : ℝ) := by
   exact_mod_cast kap_succ_k R
@@ -86,7 +86,7 @@ theorem kap_cast (R : Ranks) : (kap R : ℝ) + 1 = (R.k : ℝ) := by
 def castW {n κ : ℕ} (h : κ + 1 = n) (lam : DomWeight n) : Fin (κ + 1) → ℤ := fun i => lam.w (Fin.cast h i)
 
 /- English proof (translation)
-Introduce `i j hij`. Use `show lam.w (Fin.cast h j) ≤ lam.w (Fin.cast h i)`. Conclude with `lam.anti (by rw [Fin.le_iff_val_le_val] at hij ⊢; simpa using hij)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem castW_anti {n κ : ℕ} (h : κ + 1 = n) (lam : DomWeight n) : Antitone (castW h lam) := by
   intro i j hij
@@ -100,19 +100,19 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
 def lamZ (u : Pr.Word) (τ : X.Tau) : Fin (kap R + 1) → ℤ := castW (kap_succ R) (W.lamTrue u 0 τ)
 
 /- English proof (translation)
-The claim follows from `castW_anti _ _`.
+A detailed English derivation is pending.
 -/
 theorem lamZ_anti (u : Pr.Word) (τ : X.Tau) : Antitone (lamZ W u τ) := castW_anti _ _
 
 /- English proof (translation)
-Simplify using `only [lamZ, castW, Wts.aTop, Wts.lamTrue, shiftW, Nat.cast_zero, zero_mul, neg_zero, add_zero]`. Apply the tactic sequence `congr 1 <;> exact Fin.ext (by simp)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lamZ_zero (u : Pr.Word) (τ : X.Tau) : lamZ W u τ 0 = W.aTop u τ := by
   simp only [lamZ, castW, Wts.aTop, Wts.lamTrue, shiftW, Nat.cast_zero, zero_mul, neg_zero, add_zero]
   congr 1 <;> exact Fin.ext (by simp)
 
 /- English proof (translation)
-Establish `hN : 0 < R.N 0` using `by rw [← kap_succ R]; omega`. Simplify using `only [lamZ, castW, Wts.bTop, DomWeight.detShift, dif_pos hN, neg_neg, Wts.lamTrue, shiftW, Nat.cast_zero, zero_mul, neg_zero, add_zero]`. Apply the tactic sequence `congr 1 <;> exact Fin.ext rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lamZ_last (u : Pr.Word) (τ : X.Tau) : lamZ W u τ (Fin.last (kap R)) = -W.bTop u τ := by
   have hN : 0 < R.N 0 := by rw [← kap_succ R]; omega
@@ -140,7 +140,7 @@ def NumbersC (u : Pr.Word) (C₀ a b' L eta S : ℝ) : Prop :=
 variable (Pr R) in
 
 /- English proof (translation)
-The claim follows from `hL one_le_v := hv log_av := hav one_le_b' := hb b'_le_a := hba logT_nonneg := Real.log_natCast_nonneg _ logT_le := hT logg_nonneg := by unfold loggC rw [← Nat.cast_mul] exact Real.log_natCast_nonneg _ logg_le := hg one_le_k := by have := R.m_add_three_le_k; omega one_le_m := by h …`.
+A detailed English derivation is pending.
 -/
 theorem numbersC_of (u : Pr.Word) {C₀ a b' L eta S : ℝ} (hL : 1 ≤ L) (hv : 1 ≤ vC X) (hav : Real.log (a * vC X) ≤ L)
     (hb : 1 ≤ b') (hba : b' ≤ a) (hT : logTC Pr u ≤ C₀ * R.m * L) (hg : loggC Pr ≤ C₀ * L) (he : 0 ≤ eta) (hS : 0 ≤ S)
@@ -212,7 +212,7 @@ def MaxSlopeNablaSharpBound (K : Type) [Field K] [NumberField K] [StarRing K] {n
     + ((κ : ℝ) + 1) * (κ : ℝ) / 2 * Real.log ((plus (castW h lam) 0 : ℝ) + (κ : ℝ) + 1)
 
 /- English proof (translation)
-Unfold `plus`. Conclude with `sub_nonneg.2 (hl (Fin.le_last i))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem brz_plus_nonneg {κ : ℕ} (lam : Fin (κ + 1) → ℤ) (hl : Antitone lam) (i : Fin (κ + 1)) : 0 ≤ plus lam i := by
   unfold plus
@@ -254,7 +254,7 @@ def MaxSlopeSummandAllData : Prop :=
 section Main
 
 /- English proof (translation)
-The claim follows from `haveI : NeZero (R.N 0) := ⟨(R.N_pos 0).ne'⟩ ⟨(colGSD W Ch u 0).cls (DecoSet.base X.E (R.N 0) (Pr.vT u) Pr.vGs)⟩`.
+A detailed English derivation is pending.
 -/
 theorem colCl_nonempty {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (u : Pr.Word) :
     Nonempty (colGSD W Ch u 0).Cl :=
@@ -262,9 +262,9 @@ theorem colCl_nonempty {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Wo
   ⟨(colGSD W Ch u 0).cls (DecoSet.base X.E (R.N 0) (Pr.vT u) Pr.vGs)⟩
 
 /- English proof (translation)
-Introduce `C₀ h0`. Take `⟨C, hC⟩` from `zeta_proposition_second C₀ h0`. Use `⟨C, fun {X Pr R} W Ch hX u a b' L eta S hN hW hM h5 hD hS h4 => ?_⟩` and prove the remaining obligations. Set `_ : Fintype (colGSD W Ch u 0).Cl` to `(colOk W Ch hX u 0).fintypeCl`. Use `colCl_nonempty W Ch u` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hN' : Numbers C₀ a b' L (vC X) (logTC Pr u) (loggC Pr) eta S (kap R + 1) R.m R.t (R.N R.m)`. Rewrite using `[kap_succ_k]`. Conclude with `hN`. Establish `key` using `hC X.Tau (colGSD W Ch u 0).Cl W.tops (kap R) R.m R.t (R.N R.m) (lamZ W u) (fun τ => (W.aTop u τ : ℝ)) (fun τ => (W.bTop u τ : ℝ)) a b' L (vC X) (logTC Pr u) (loggC Pr) eta S (Mu0H W Ch hX u).mu (fun c => ((colGSD W Ch u 0).valH ((colGSD W Ch u 0).outSec.rep c)).mu) (fun τ => (std …`. Simplify `key` using `only [kap_cast, ZiiC, Fields.f]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem propZ_ii_col : ∀ C₀ : ℝ, 0 ≤ C₀ → ∃ C : ℝ, ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
     (Ch : Chars X Pr R.m) (hX : X.Ok) (u : Pr.Word) (a b' L eta S : ℝ),
@@ -291,15 +291,13 @@ theorem propZ_ii_col : ∀ C₀ : ℝ, 0 ≤ C₀ → ∃ C : ℝ, ∀ {X : Fiel
   simpa only [kap_cast, ZiiC, Fields.f] using key
 
 /- English proof (translation)
-Introduce `C₀ h0`. Take `⟨C, hC⟩` from `zeta_proposition_third C₀ h0`. Use `⟨C, fun {X Pr R} W Ch hX u a b' L eta S hN hW hM h5 => ?_⟩` and prove the remaining obligations. Set `_ : Fintype (colGSD W Ch u 0).Cl` to `(colOk W Ch hX u 0).fintypeCl`. Use `colCl_nonempty W Ch u` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hN' : Numbers C₀ a b' L (vC X) (logTC Pr u) (loggC Pr) eta S (kap R + 1) R.m R.t (R.N R.m)`. Rewrite using `[kap_succ_k]`. Conclude with `hN`. Establish `e : ∀ p : ℝ, p + (kap R : ℝ) + 1 = p + (R.k : ℝ)` using `fun p => by rw [add_assoc, kap_cast]`. Establish `hl : ∀ τ, |((lamZ W u τ (Fin.last (kap R)) : ℤ) : ℝ)| = |(W.bTop u τ : ℝ)|` using `fun τ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lamZ_last]`. Use `push_cast`. Conclude with `abs_neg _`. Establish `key` using `hC X.Tau (colGSD W Ch u 0).Cl W.tops (kap R) R.m R.t (R.N R.m) (lamZ W u) (fun τ => (W.aTop u τ : ℝ)) (fun τ => (W.bTop u τ : ℝ)) a b' L (vC X) (logTC Pr u) (loggC Pr) eta S (Mu0H W Ch hX u).muMax (fun c => ((colGSD W Ch u 0).valH ((colGSD W Ch u 0).outSec.rep c)).muMax) hN' (lam …`. Rewrite using `[hl, abs_of_nonneg]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hW.top τ hτ).2.2.1`. Establish `h2` using `hN.one_le_b'`. Use the proof step `linarith)`. Use the proof step `(by simpa only [kap_cast] using hW.oth_plus) (fun τ hτ => by rw [hl]; exact hW.oth_last τ hτ)`. Use `hM (fun c => by simpa only [kap_cast, e, hl] using h5 _)`.
-
-Simplify `key` using `only [kap_cast, ZiiiC, Fields.f]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem propZ_iii_col : ∀ C₀ : ℝ, 0 ≤ C₀ → ∃ C : ℝ, ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
     (Ch : Chars X Pr R.m) (hX : X.Ok) (u : Pr.Word) (a b' L eta S : ℝ),
@@ -330,23 +328,23 @@ theorem propZ_iii_col : ∀ C₀ : ℝ, 0 ≤ C₀ → ∃ C : ℝ, ∀ {X : Fie
   simpa only [kap_cast, ZiiiC, Fields.f] using key
 
 /- English proof (translation)
-Introduce `C₀ h0`. Take `⟨C2, h2⟩` from `propZ_ii_col C₀ h0`. Take `⟨C3, h3⟩` from `propZ_iii_col C₀ h0`. Use `⟨max (max C2 C3) 0, le_max_right _ _, fun {X Pr R} W Ch hX u a b' L eta S hN hW hM hM' h5 h5' hD hS h4 => ?_⟩` and prove the remaining obligations. Establish `l2 : C2 ≤ max (max C2 C3) 0` using `le_trans (le_max_left _ _) (le_max_left _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `l3 : C3 ≤ max (max C2 C3) 0` using `le_trans (le_max_right _ _) (le_max_left _ _)`. Generalize the expression as in `max (max C2 C3) 0 = C at l2 l3`. Establish `hb : (0 : ℝ) ≤ b'` using `le_trans zero_le_one hN.one_le_b'`. Establish `ha : (0 : ℝ) ≤ a` using `le_trans hb hN.b'_le_a`. Establish `hSn` using `hN.S_nonneg`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : (0 : ℝ) ≤ L` using `le_trans zero_le_one hN.one_le_L`. Establish `hT` using `hN.logT_nonneg`. Establish `hk1 : (1 : ℝ) ≤ (R.k : ℝ)` using `by exact_mod_cast hN.one_le_k`. Establish `hk : (0 : ℝ) ≤ (R.k : ℝ)` using `le_trans zero_le_one hk1`. Establish `hlk : 0 ≤ Real.log (R.k : ℝ)` using `Real.log_nonneg hk1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlkv : 0 ≤ Real.log ((R.k : ℝ) * vC X)` using `Real.log_nonneg (by nlinarith [hN.one_le_v])`. Establish `hf : (0 : ℝ) ≤ (X.f : ℝ)` using `Nat.cast_nonneg _`. Establish `hc : (0 : ℝ) ≤ (W.tops.card : ℝ)` using `Nat.cast_nonneg _`. Prove the components needed by the constructor for the conclusion. Use `le_trans ?_ (h2 W Ch hX u a b' L eta S hN hW hM h5 hD hS h4)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `ZiiC`. Establish `e1 : C2 * W.tops.card * a * Real.log (R.k : ℝ) ≤ C * W.tops.card * a * Real.log (R.k : ℝ)`. Establish `: 0 ≤ (W.tops.card : ℝ) * a * Real.log (R.k : ℝ)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `e2 : C2 * X.f * (R.k : ℝ) * (b' + S) * Real.log (R.k : ℝ) ≤ C * X.f * (R.k : ℝ) * (b' + S) * Real.log (R.k : ℝ)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `: 0 ≤ (X.f : ℝ) * (R.k : ℝ) * (b' + S) * Real.log (R.k : ℝ)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `e3 : C2 * X.f * S * logTC Pr u ≤ C * X.f * S * logTC Pr u`. Establish `: 0 ≤ (X.f : ℝ) * S * logTC Pr u` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `e4 : C2 * X.f * (R.k : ℝ) ^ 2 * L ≤ C * X.f * (R.k : ℝ) ^ 2 * L`. Establish `: 0 ≤ (X.f : ℝ) * (R.k : ℝ) ^ 2 * L` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_trans (h3 W Ch hX u a b' L eta S hN hW hM' h5') ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `ZiiiC`. Establish `e1 : C3 * W.tops.card * a * Real.log ((R.k : ℝ) * vC X) ≤ C * W.tops.card * a * Real.log ((R.k : ℝ) * vC X)`. Establish `: 0 ≤ (W.tops.card : ℝ) * a * Real.log ((R.k : ℝ) * vC X)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `e2 : C3 * X.f * (b' + S) * ((R.k : ℝ) * Real.log ((R.k : ℝ) * vC X) + logTC Pr u) ≤ C * X.f * (b' + S) * ((R.k : ℝ) * Real.log ((R.k : ℝ) * vC X) + logTC Pr u)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `: 0 ≤ (X.f : ℝ) * (b' + S) * ((R.k : ℝ) * Real.log ((R.k : ℝ) * vC X) + logTC Pr u)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `e4 : C3 * X.f * (R.k : ℝ) ^ 2 * L ≤ C * X.f * (R.k : ℝ) ^ 2 * L`. Establish `: 0 ≤ (X.f : ℝ) * (R.k : ℝ) ^ 2 * L` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -414,7 +412,7 @@ def logOp {K : Type} [Field K] [NumberField K] [StarRing K] (A B : HLat K) (φ :
   Real.log (Formalism.HN.opNormAt A.b A.X B.b B.X v φ ^ 2)
 
 /- English proof (translation)
-Establish `h1 : R.k ≤ R.N j` using `Nat.le_add_right _ _`. Use `R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem brz_N_succ (R : Ranks) (j : ℕ) : R.N j - 1 + 1 = R.N j := by
   have h1 : R.k ≤ R.N j := Nat.le_add_right _ _

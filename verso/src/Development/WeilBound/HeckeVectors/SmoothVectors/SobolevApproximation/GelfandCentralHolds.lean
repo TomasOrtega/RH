@@ -19,9 +19,9 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Rewrite `hv` using `[mem_smD_iff]`. Introduce `m Xs hX`. Establish `hc` using `Formalism.IndefR.PeterssonHilbertSpace.sm_prod_exp_contDiff m Xs`. Establish `hmem : ∀ t : Fin m → ℝ, Formalism.QuantumDeterminants.inUH (Formalism.REAL.Jm ε) ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod)` using `fun t => Formalism.IndefR.PeterssonHilbertSpace.sm_prod_exp_mem _ m Xs (fun i => hX i) t`. Rewrite using `[contDiff_iff_contDiffAt]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `t0`. Take `⟨U, F, hU, h0, hF, hEq⟩` from `hv _ (hmem t0)`. Establish `hev : (fun t : Fin m → ℝ => σ ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod) v) =ᶠ[𝓝 t0] fun t => F ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod)` using `by filter_upwards [hc.continuous.continuousAt.preimage_mem_nhds (hU.mem_nhds h0)] with t ht`. Conclude with `hEq _ ht (hmem t)`. Conclude with `((hF.contDiffAt (hU.mem_nhds h0)).comp t0 hc.contDiffAt).congr_of_eventuallyEq hev`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothVec_of_smD_A {v : H} (hv : v ∈ smD ε σ) :
     Formalism.L2.Theta.SmoothVec (Formalism.IndefR.Tow.SobPf.lieG (Formalism.REAL.Jm ε)) σ v := by
@@ -41,16 +41,16 @@ theorem smoothVec_of_smD_A {v : H} (hv : v ∈ smD ε σ) :
   exact ((hF.contDiffAt (hU.mem_nhds h0)).comp t0 hc.contDiffAt).congr_of_eventuallyEq hev
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hσ.1.1, hσ.1.2, hσ.2.1, hσ.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGRep_A (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) :
     Formalism.IndefR.Tow.SobPf.IsGRep (Formalism.REAL.Jm ε) σ :=
   ⟨hσ.1.1, hσ.1.2, hσ.2.1, hσ.2.2⟩
 
 /- English proof (translation)
-Establish `h2 : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1`. Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Apply the tactic sequence `congr 1; funext a; split_ifs <;> norm_num`. Establish `hh : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε` using `Jm_conjTranspose_self`. Use `⟨h2, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hh, h2, Matrix.one_mul]`. Rewrite using `[h2]`. Conclude with `Matrix.PosDef.one`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cartan_A : Formalism.IndefR.Datum.IsCartanInv (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε) := by
   have h2 : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
@@ -62,7 +62,7 @@ theorem cartan_A : Formalism.IndefR.Datum.IsCartanInv (Formalism.REAL.Jm ε) (Fo
   · rw [h2]; exact Matrix.PosDef.one
 
 /- English proof (translation)
-Take `⟨W, hW, haW, hst⟩` from `h`. Use `⟨W, hW, haW, fun g hg x hx => hst g ⟨mem_UJset_of_mem_kset hg, hg.2⟩ x hx⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem kfin_of_kfinG_A {a : H}
     (h : Formalism.IndefR.Tow.SobPf.KFinG (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε) σ a) : Formalism.MainNotions.S.IsKFin ε σ a := by
@@ -70,7 +70,7 @@ theorem kfin_of_kfinG_A {a : H}
   refine ⟨W, hW, haW, fun g hg x hx => hst g ⟨mem_UJset_of_mem_kset hg, hg.2⟩ x hx⟩
 
 /- English proof (translation)
-Take `⟨a, -, haK, ha⟩` from `CompanionTheory.D.gk.HC.sobApprox_holds (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε) σ cartan_A (isGRep_A hσ) w (smoothVec_of_smD_A hw) [[]] (by simp) δ hδ`. Conclude with `⟨a, kfin_of_kfinG_A haK, by simpa [Formalism.IndefR.Tow.SobPf.dL] using ha [] (by simp)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_kfin_near_A [CompleteSpace H] (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) {w : H}
     (hw : w ∈ smD ε σ) {δ : ℝ} (hδ : 0 < δ) : ∃ a : H, Formalism.MainNotions.S.IsKFin ε σ a ∧ ‖a - w‖ < δ := by
@@ -79,11 +79,11 @@ theorem exists_kfin_near_A [CompleteSpace H] (hσ : Formalism.MainNotions.S.IsUR
   exact ⟨a, kfin_of_kfinG_A haK, by simpa [Formalism.IndefR.Tow.SobPf.dL] using ha [] (by simp)⟩
 
 /- English proof (translation)
-Use `norm_eq_zero.1 (le_antisymm (le_of_forall_pos_le_add fun δ hδ => ?_) (norm_nonneg _))` and prove the remaining obligations. Rewrite using `[zero_add]`. Take `⟨a, ha, hlt⟩` from `exists_kfin_near_A hσ hw hδ`. Establish `h1 : ‖w‖ ^ 2 = RCLike.re ⟪w - a, w⟫_ℂ`. Rewrite using `[inner_sub_left, map_sub, h a ha, map_zero, sub_zero, inner_self_eq_norm_sq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : RCLike.re ⟪w - a, w⟫_ℂ ≤ ‖w - a‖ * ‖w‖` using `(RCLike.re_le_norm _).trans (norm_inner_le_norm _ _)`. Rewrite `h2` using `[norm_sub_rev]`. Distinguish the cases in `h0 : ‖w‖ = 0`. Rewrite using `[h0]`. Conclude with `hδ.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < ‖w‖` using `lt_of_le_of_ne (norm_nonneg _) (Ne.symm h0)`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_perp_A [CompleteSpace H] (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) {w : H}
     (hw : w ∈ smD ε σ) (h : ∀ a : H, Formalism.MainNotions.S.IsKFin ε σ a → ⟪a, w⟫_ℂ = 0) : w = 0 := by
@@ -101,9 +101,9 @@ theorem eq_zero_of_perp_A [CompleteSpace H] (hσ : Formalism.MainNotions.S.IsURe
     nlinarith
 
 /- English proof (translation)
-Establish `hU` using `isInfUnitary_of_isDerivedOn hσ (isDerivedOn_smE hσ)`. Simplify using `only [casimir, LinearMap.sum_apply, Module.End.mul_apply, sum_inner, inner_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hU, hU, ← mul_assoc]`. Establish `: adjSign ε a b * adjSign ε b a = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `adjSign`. Distinguish the cases in `h : ε a = ε b`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Rewrite using `[this, one_mul]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem casimir_symm_A (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) (x y : smD ε σ) :
     ⟪casimir (smE ε σ) x, y⟫_ℂ = ⟪x, casimir (smE ε σ) y⟫_ℂ := by

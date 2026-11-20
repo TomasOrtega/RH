@@ -23,7 +23,7 @@ namespace GlobalTheory.PlaceIsometry
 open GlobalTheory.SplitScalar
 
 /- English proof (translation)
-Establish `: (c - 1) * z = 0` using `by rw [sub_mul, one_mul, ← h, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hc)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_eq_mul {c z : ℂ} (hc : c ≠ 1) (h : z = c * z) : z = 0 := by
   have : (c - 1) * z = 0 := by rw [sub_mul, one_mul, ← h, sub_self]
@@ -32,19 +32,19 @@ theorem eq_zero_of_eq_mul {c z : ℂ} (hc : c ≠ 1) (h : z = c * z) : z = 0 := 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.add_apply, mul_add, hx, hy]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_add {m n : ℕ} {a : AE D} {x y : Mx D m n} (hx : IsHalf a x) (hy : IsHalf a y) : IsHalf a (x + y) :=
   fun i j => by rw [Matrix.add_apply, mul_add, hx, hy]
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.sub_apply, mul_sub, hx, hy]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_sub {m n : ℕ} {a : AE D} {x y : Mx D m n} (hx : IsHalf a x) (hy : IsHalf a y) : IsHalf a (x - y) :=
   fun i j => by rw [Matrix.sub_apply, mul_sub, hx, hy]
 
 /- English proof (translation)
-Establish `h : ψ t * (starRingEnd ℂ) (ψ t) = 1` using `by rw [Complex.mul_conj', hψ.1.2.1]; simp`. Establish `h2 : ψ s = ψ (s - t) * ψ t` using `by rw [← AddChar.map_add_eq_mul, sub_add_cancel]`. Rewrite using `[h2, mul_assoc, h, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem char_mul_conj (hψ : IsStdChar D ψ (-1)) (s t : AF D.host.F) :
     ψ s * (starRingEnd ℂ) (ψ t) = ψ (s - t) := by
@@ -53,14 +53,14 @@ theorem char_mul_conj (hψ : IsStdChar D ψ (-1)) (s t : AF D.host.F) :
   rw [h2, mul_assoc, h, mul_one]
 
 /- English proof (translation)
-Rewrite using `[symplO_skew, symplO_sub_left, symplO_skew S T x y, symplO_skew S T x y']`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem symplO_sub_right (x y y' : WO S T) : symplO S T x (y - y') = symplO S T x y - symplO S T x y' := by
   rw [symplO_skew, symplO_sub_left, symplO_skew S T x y, symplO_skew S T x y']
   abel
 
 /- English proof (translation)
-Use `choose σ h1 h2 using fun z => h.2.1.surjOn (Set.mem_univ z)`. Conclude with `⟨σ, h1, h2, fun z t ht => h.2.1.injOn (h1 _) (isHalf_add (h1 z) ht) (by rw [h2, h.1, h2])⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_section {v : FinPl D} {m n : ℕ} {a : AE D} {Λ : AddSubgroup (WO S T)}
     {κ : WO S T → Matrix (Fin m) (Fin n) (Fv D.host.F v)} (h : IsCoord a Λ κ) :
@@ -72,9 +72,9 @@ theorem exists_section {v : FinPl D} {m n : ℕ} {a : AE D} {Λ : AddSubgroup (W
 variable {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `hn (GlobalTheory.LatVac.mem_of_char hψ hS hT (half_fin ha hd) fun u hu => ?_)` and prove the remaining obligations. Establish `hb` using `(isSplitIdem_conj ha).1`. Establish `h1` using `hc (cA D a • u) (GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, hb])) u hu) ((isHalf_iff _ _).2 (by rw [smul_smul, hb]))`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (isHalf_iff _ _).1 hd, symplO_smul, symplO_skew, AddChar.map_neg_eq_inv, h1, inv_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_pair_ne_one (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {a : AE D}
     (ha : IsSplitIdem D a) {d : WO S T} (hd : IsHalf a d) (hn : d ∉ latO S T ΛS ΛT fun _ => True) :
@@ -89,7 +89,7 @@ theorem exists_pair_ne_one (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) 
   rw [← (isHalf_iff _ _).1 hd, symplO_smul, symplO_skew, AddChar.map_neg_eq_inv, h1, inv_one]
 
 /- English proof (translation)
-Rewrite using `[heisO_comm ψ S T l y, heisO_comm ψ S T l x, h, heisO_smul, smul_smul, AddChar.map_add_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_eigen {l : WO S T} {f : WO S T → ℂ} (h : heisO ψ S T l f = f) (x y : WO S T) :
     heisO ψ S T l (heisO ψ S T y (heisO ψ S T x f)) =
@@ -99,17 +99,17 @@ theorem heisO_eigen {l : WO S T} {f : WO S T → ℂ} (h : heisO ψ S T l f = f)
 open Classical in
 
 /- English proof (translation)
-Establish `hb` using `isSplitIdem_conj ha`. Establish `h0 : cA D a * a = 0` using `by rw [mul_comm]; exact ha.2.1`. Establish `h0' : cA D (cA D a) * cA D a = 0` using `by rw [mul_comm]; exact hb.2.1`. Establish `th : ∀ w g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (heisO ψ S T w g)` using `fun w g hg => GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hg w`. Establish `I` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1` using `th y _ (th x _ hf)`. Establish `t2` using `th y' _ (th x' _ hf)`. Establish `key : ∀ l, heisO ψ S T l f = f → ψ (symplO S T l (y - y') + symplO S T l (x - x')) ≠ 1 → ipO μ 𝓕 (heisO ψ S T y (heisO ψ S T x f)) (heisO ψ S T y' (heisO ψ S T x' f)) = 0` using `fun l h hne => by`. Use `eq_zero_of_eq_mul hne ?_` and prove the remaining obligations. Establish `e` using `((I _ _ t1 t2).2.2.2.2.2.2.1 l).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[heisO_eigen h, heisO_eigen h, ((I _ _ t1 (GlobalTheory.WeilVacMove.isTheta_smul _ t2)).2.2.1 _).1, ((I _ _ t1 t2).2.2.1 _).2, ← mul_assoc, char_mul_conj hψ]`. Rewrite using `[symplO_sub_right, symplO_sub_right, sub_add_sub_comm, e]`. Use `split_ifs with h`. Establish `e1 : heisO ψ S T x f = heisO ψ S T x' f`. Rewrite using `[← add_sub_cancel x' x, heisO_add_of_orth ψ S T (symplO_eq_zero S T h0 hx' (isHalf_sub hx hx')), hl.2 a ha _ h.1 (isHalf_sub hx hx')]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : heisO ψ S T y (heisO ψ S T x' f) = ψ (symplO S T (y - y') x') • heisO ψ S T y' (heisO ψ S T x' f)`. Use `heisO_eigen (hl.2 _ hb _ h.2 (isHalf_sub hy hy')) x' y'` as an intermediate fact. Rewrite `this` using `[symplO_eq_zero S T h0' (isHalf_sub hy hy') hy', zero_add]`. Rewrite using `[← this, ← heisO_add_of_orth ψ S T (symplO_eq_zero S T h0' (isHalf_sub hy hy') hy'), sub_add_cancel]`. Rewrite using `[e1, e2, ((I _ _ t2 t2).2.2.1 _).1, ((I _ _ (th x' _ hf) (th x' _ hf)).2.2.2.2.2.2.1 y').1, ((I _ _ hf hf).2.2.2.2.2.2.1 x').1, (I _ _ hf hf).2.2.2.2.1, hn, Complex.ofReal_one, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `not_and_or.1 h with h | h` into its components or cases. Take `⟨l, hl1, hl2, hl3⟩` from `exists_pair_ne_one hψ hS hT ha (isHalf_sub hx hx') h`. Use `key l (hl.2 _ hb l hl1 hl2) ?_` and prove the remaining obligations. Rewrite using `[symplO_eq_zero S T h0' hl2 (isHalf_sub hy hy'), zero_add]` and apply the resulting hypothesis. Take `⟨l, hl1, hl2, hl3⟩` from `exists_pair_ne_one hψ hS hT hb (isHalf_sub hy hy') h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hl2` using `[GlobalTheory.DualPairCheck.cA_cA]`. Use `key l (hl.2 _ ha l hl1 hl2) ?_` and prove the remaining obligations. Rewrite using `[symplO_eq_zero S T h0 hl2 (isHalf_sub hx hx'), add_zero]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ipO_translates (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {a : AE D}
     (ha : IsSplitIdem D a) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (hμ : IsCovolOne (ratL T S) μ 𝓕)
@@ -155,7 +155,7 @@ theorem ipO_translates (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT 
       rwa [symplO_eq_zero S T h0 hl2 (isHalf_sub hx hx'), add_zero]
 
 /- English proof (translation)
-Unfold `halfInd`. Use `if_congr (and_congr (Λ.add_mem_cancel_right hl) ⟨fun h => ?_, fun h => isHalf_add h hl'⟩) rfl rfl` and prove the remaining obligations. Simplify using `using isHalf_sub h hl'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem halfInd_add {a : AE D} {Λ : AddSubgroup (WO S T)} {l : WO S T} (hl : l ∈ Λ) (hl' : IsHalf a l) (t : WO S T) :
     halfInd a Λ (t + l) = halfInd a Λ t := by
@@ -167,21 +167,19 @@ theorem halfInd_add {a : AE D} {Λ : AddSubgroup (WO S T)} {l : WO S T} (hl : l 
 open Classical in
 
 /- English proof (translation)
-Use `set Λ := latO S T ΛS ΛT fun _ => True with hΛ`. Set `F : WO S T → ℂ` to `fun t => ψ (symplO S T t (y - y')) * (halfInd a Λ (t + x) * (starRingEnd ℂ) (halfInd a Λ (t + x')))`. Establish `eF : ∀ t, (ψ (symplO S T t y) * halfInd a Λ (t + x)) * (starRingEnd ℂ) (ψ (symplO S T t y') * halfInd a Λ (t + x')) = F t` using `fun t => by`. Rewrite using `[map_mul, mul_mul_mul_comm, char_mul_conj hψ, ← symplO_sub_right]`. Establish `tr : ∀ t, IsHalf a t → ∫ z, F (σ z) ∂ν = ∫ z, F (σ z + t) ∂ν` using `fun t ht => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_add_right_eq_self (fun z => F (σ z)) (κ t)]`. Simplify using `only [h3 _ t ht]`. Simplify using `only [eF]`. Use `split_ifs with h`. Establish `hx0 : IsHalf a (-x')` using `fun i j => by rw [Matrix.neg_apply, mul_neg, hx']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[tr _ hx0]`. Establish `e : ∀ z, F (σ z + -x') = Set.indicator (κ '' {t | t ∈ Λ ∧ IsHalf a t}) (fun _ => ψ (symplO S T (y - y') x')) z` using `fun z => by`. Establish `e1 : σ z + -x' + x = σ z + (x - x')` using `by abel`. Simplify using `only [F]`. Rewrite using `[e1, neg_add_cancel_right, halfInd_add h.1 (isHalf_sub hx hx')]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hz : σ z ∈ Λ`. Rewrite using `[Set.indicator_of_mem (show z ∈ κ '' {t | t ∈ Λ ∧ IsHalf a t} from ⟨σ z, ⟨hz, h1 z⟩, h2 z⟩), halfInd, if_pos ⟨hz, h1 z⟩, map_one, mul_one, mul_one, ← sub_eq_add_neg, symplO_sub_left, sub_eq_add_neg (symplO S T (σ z) _), AddChar.map_add_eq_mul, GlobalTheory.LatVac.char_sympl_eq_on …`. Rewrite using `[Set.indicator_of_notMem, halfInd, if_neg fun h => hz h.1, zero_mul, mul_zero]`. Introduce and unpack `⟨t, ht, rfl⟩`. Conclude with `hz (by rw [h4 t ht.2]; exact ht.1)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [e]`. Rewrite using `[integral_indicator_const _ hm, Complex.real_smul]`. Both sides reduce to the same expression. Rewrite using `[mul_zero]`. Break down `not_and_or.1 h with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `(integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)).trans (integral_zero _ _)` and prove the remaining obligations. Simplify using `only [F, halfInd]`. Use `split_ifs with p q`. Conclude with `absurd (by simpa using sub_mem p.1 q.1) h`. Apply the tactic sequence `all_goals simp`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨l, hl1, hl2, hl3⟩` from `exists_pair_ne_one hψ hS hT (isSplitIdem_conj ha) (isHalf_sub hy hy') h`. Rewrite `hl2` using `[GlobalTheory.DualPairCheck.cA_cA]`. Use `eq_zero_of_eq_mul hl3 ?_` and prove the remaining obligations. Use `conv_lhs => rw [tr l hl2]`. Rewrite using `[← integral_const_mul]`.
-
-Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [F]`. Rewrite using `[add_right_comm _ l x, add_right_comm _ l x', halfInd_add hl1 hl2, halfInd_add hl1 hl2, GlobalTheory.LatVac.symplO_add_left, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_waves (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {a : AE D}
     (ha : IsSplitIdem D a) {G : Type} [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd G] (ν : Measure G)
@@ -240,29 +238,25 @@ theorem integral_waves (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT 
       ring
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ v a ha m n κ hκ Tm hTm ν hν`. Establish `hψ` using `base_std hB`. Establish `hS` using `hB.2.2.1`. Establish `hT` using `hB.2.2.2.1`. Use `letI := GlobalTheory.LocalData.complRel v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI := GlobalTheory.LocalData.isLocalField v`. Use `haveI : BorelSpace (Fv D.host.F v) := ⟨rfl⟩`. Use `haveI := GlobalTheory.SplitWeil.secondCountable (Fv D.host.F v)`. Use `haveI : BorelSpace (Matrix (Fin m) (Fin n) (Fv D.host.F v)) := inferInstanceAs (BorelSpace (Fin m → Fin n → Fv D.host.F v))`. Use `haveI : (GlobalTheory.SplitWeil.volM ν (Fin m) (Fin n)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : SecondCountableTopology (Matrix (Fin m) (Fin n) (Fv D.host.F v)) := inferInstanceAs (SecondCountableTopology (Fin m → Fin n → Fv D.host.F v))`. Take `⟨σ, h1, h2, h3⟩` from `exists_section hκ`. Establish `h4 : ∀ t, IsHalf a t → σ (κ t) = t` using `fun t ht => hκ.2.1.injOn (h1 _) ht (h2 _)`. Establish `hp : ∀ Φ, pull a κ Φ ∘ σ = Φ` using `fun Φ => funext fun z => by`. Simplify using `only [Function.comp, pull, if_pos (h1 z), h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Use `⟨(hκ.2.2.1.measure_pos _ ⟨κ 0, 0, ⟨zero_mem _, fun _ _ => mul_zero _⟩, rfl⟩).ne', hκ.2.2.2.measure_lt_top.ne, ?_⟩` and prove the remaining obligations. Take `⟨w1, w2⟩` from `GlobalTheory.T.schwartzBruhatHalf_span_modulated_translates D ψ S T ΛS ΛT hψ hS hT a ha.1 ha.2.1 (infPart_splitIdem ha)`. Take `⟨c1, c2⟩` from `GlobalTheory.T.isSchwartzBruhatHalf_iff_pullback_matrix D S T v m n a _ κ hκ`. Establish `I` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ`. Use `set W := {Ψ : WO S T → ℂ | ∃ x y : WO S T, IsHalf a x ∧ IsHalf (cA D a) y ∧ Ψ = fun t => ψ (symplO S T t y) * halfInd a (latO S T ΛS ΛT fun _ => True) (t + x)} with hW`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `good : ∀ Ψ ∈ Submodule.span ℂ W, IsThetaFunO ψ S T (Tm Ψ) ∧ Ψ ∘ σ ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin m) (Fin n) (Fv D.host.F v))` using `fun Ψ h => by`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem Ψ h`. Take `⟨x, y, hx, hy, rfl⟩` from `h`. Take `⟨Φ, hΦ, e⟩` from `c2 _ (w1 x y hx hy).1`.
+Treat this case separately. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨?_, by rw [e, hp]; exact hΦ⟩` and prove the remaining obligations. Rewrite using `[(w1 x y hx hy).2 f₀ Tm hTm]`. Conclude with `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ (base_theta hB) x) y`. Consider the case `zero => exact ⟨by rw [map_zero]; exact GlobalTheory.WeilVacMove.isTheta_zero, zero_mem _⟩`. Consider the case `add _ _ _ _ p q => exact ⟨by rw [map_add]; exact GlobalTheory.WeilVacMove.isTheta_add p.1 q.1, add_mem p.2 q.2⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `smul c _ _ p`. Conclude with `⟨by rw [map_smul]; exact GlobalTheory.WeilVacMove.isTheta_smul c p.1, Submodule.smul_mem _ c p.2⟩`. Establish `int : ∀ Ψ ∈ Submodule.span ℂ W, ∀ Ψ' ∈ Submodule.span ℂ W, Integrable (fun z => Ψ (σ z) * (starRingEnd ℂ) (Ψ' (σ z))) (GlobalTheory.SplitWeil.volM ν (Fin m) (Fin n))` using `fun Ψ h Ψ' h' => Continuous.integrable_of_hasCompactSupport ((good Ψ h).2.1.continuous.mul (Complex.continuous_conj.comp (good Ψ' h').2.1.continuous)) (HasCompactSupport.mul_right (good Ψ h).2.2)`. Establish `main : ∀ Ψ ∈ Submodule.span ℂ W, ∀ Ψ' ∈ Submodule.span ℂ W, ((GlobalTheory.SplitWeil.volM ν (Fin m) (Fin n) (κ '' {t | t ∈ (latO S T ΛS ΛT fun _ => True) ∧ IsHalf a t})).toReal : ℂ) * ipO μ 𝓕 (Tm Ψ) (Tm Ψ') = ∫ z, Ψ (σ z) * (starRingEnd ℂ) (Ψ' (σ z)) ∂(GlobalTheory.SplitWeil.volM …` using `fun Ψ h Ψ' h' => by`. Proceed by induction on `h, h' using Submodule.span_induction₂ with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem_mem Ψ Ψ' h h'`. Take `⟨x, y, hx, hy, rfl⟩` from `h`. Take `⟨x', y', hx', hy', rfl⟩` from `h'`. Rewrite using `[(w1 x y hx hy).2 f₀ Tm hTm, (w1 x' y' hx' hy').2 f₀ Tm hTm, ipO_translates hψ hS hT ha hμ (base_theta hB) hB.2.2.2.2.2.lat (restrictedTensorBasePoint_norm_sq hB hμ) hx hx' hy hy']`. Conclude with `(integral_waves hψ hS hT ha _ h1 h2 h3 h4 hκ.2.2.1.measurableSet hx hx' hy hy').symm`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero_left => simp [ipO]`. Consider the case `zero_right => simp [ipO]`. Consider the case `add_left x y z hx hy hz p q`. Rewrite using `[map_add, ((I _ _ (good x hx).1 (good z hz).1).2.2.2.1 _ (good y hy).1).1, mul_add, p, q, ← integral_add (int x hx z hz) (int y hy z hz)]`. Simplify using `only [Pi.add_apply, add_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add_right x y z hx hy hz p q`. Rewrite using `[map_add, ((I _ _ (good y hy).1 (good x hx).1).2.2.2.1 _ (good z hz).1).2, mul_add, p, q, ← integral_add (int x hx y hy) (int x hx z hz)]`. Simplify using `only [Pi.add_apply, map_add, mul_add]`. Consider the case `smul_left c x y hx hy p`. Rewrite using `[map_smul, ((I _ _ (good x hx).1 (good y hy).1).2.2.1 c).1, mul_left_comm, p, ← integral_const_mul]`.
-
-Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Consider the case `smul_right c x y hx hy p`. Rewrite using `[map_smul, ((I _ _ (good x hx).1 (good y hy).1).2.2.1 c).2, mul_left_comm, p, ← integral_const_mul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, mul_left_comm]`. Introduce `Φ₁ p Φ₂ q`.
-
-Rewrite using `[main _ (w2 _ (c1 _ p)) _ (w2 _ (c1 _ q))]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (fun s t => s * (starRingEnd ℂ) t) (congrFun (hp Φ₁) z) (congrFun (hp Φ₂) z)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem placeModel_isometry : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsBase ψ θ S T sS sT ΛS ΛT f₀ → IsCovolOne (ratL T S) μ 𝓕 → ∀ (v : FinPl D) (a : AE D), IsSplitIdem D a → ∀ (m n : ℕ) (κ : WO S T → Matrix (Fin m) (Fin n) (Fv D.host.F v)), IsCoord a (latO S T ΛS ΛT fun _ => True) κ → ∀ Tm, IsPlaceModel ψ (symplO S T) (heisO ψ S T) a (latO S T ΛS ΛT fun _ => True) 1 f₀ Tm → ∀ ν : Measure (Fv D.host.F v), ν.IsAddHaarMeasure → GlobalTheory.SplitWeil.volM ν (Fin m) (Fin n) (κ '' {t | t ∈ (latO S T ΛS ΛT fun _ => True) ∧ IsHalf a t}) ≠ 0 ∧ GlobalTheory.SplitWeil.volM ν (Fin m) (Fin n) (κ '' {t | t ∈ (latO S T ΛS ΛT fun _ => True) ∧ IsHalf a t}) ≠ ⊤ ∧ ∀ Φ₁ ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin m) (Fin n) (Fv D.host.F v)), ∀ Φ₂ ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin m) (Fin n) (Fv D.host.F v)), ((GlobalTheory.SplitWeil.volM ν (Fin m) (Fin n) (κ '' {t | t ∈ (latO S T ΛS ΛT fun _ => True) ∧ IsHalf a t})).toReal : ℂ) * ipO μ 𝓕 (Tm (pull a κ Φ₁)) (Tm (pull a κ Φ₂)) = GlobalTheory.SplitWeil.ip ν Φ₁ Φ₂ := by
   intro D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ v a ha m n κ hκ Tm hTm ν hν

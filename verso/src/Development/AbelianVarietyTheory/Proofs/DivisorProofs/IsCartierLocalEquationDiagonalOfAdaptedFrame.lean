@@ -8,13 +8,13 @@ open Classical
 namespace GlobalTheory.FlagPush
 
 /- English proof (translation)
-Introduce `F _ Y ι m E' gr B hB H y A hA`. Establish `par : ∀ {z : Y.X} {A : Mat m Y.Fn}, A ∈ E'.S z → Par m ⊤ (B * A⁻¹)` using `fun {z A} h => ((Fr.mem_iff (Fr.mem_genericPoint h)).1 hB).mono le_rfl le_top`. Use `⟨par hA, fun x => ?_⟩` and prove the remaining obligations. Take `⟨A', hA', t', ht', heq⟩` from `H y x`. Establish `hP : Par m ((ratOf Y).O y).toSubring (A' * A⁻¹)` using `(Fr.mem_iff hA).1 hA'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : B * A⁻¹ = (B * A'⁻¹) * (A' * A⁻¹)`. Rewrite using `[← mul_assoc, mul_assoc B, Mat.inv_mul (Fr.det_ne hA'), mul_one]`. Take `⟨hu0, hui, -, -⟩` from `GlobalTheory.T.parabolicMatrixFamily_diag_isUnit ι m Y.Fn _ (A' * A⁻¹) hP x`. Take `⟨-, -, -, hmul⟩` from `GlobalTheory.T.parabolicMatrixFamily_diag_isUnit ι m Y.Fn ⊤ (B * A'⁻¹) (par hA') x`. Take `⟨ht0, -⟩` from `GlobalTheory.T.parabolicMatrixFamily_diag_isUnit ι m Y.Fn ⊤ (B * A⁻¹) (par hA) x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hd : (B * A⁻¹) x.1 x.2 x.2 = t' * (A' * A⁻¹) x.1 x.2 x.2`. Rewrite using `[e, hmul _ (hP.mono le_rfl le_top), ht']`. Use `⟨Units.mk0 _ ht0, rfl, heq.iff_unitAt.2 ?_⟩` and prove the remaining obligations. Establish `hu : UnitAt y ((A' * A⁻¹) x.1 x.2 x.2)` using `(unitAt_iff hu0).2 ⟨mem_O_ratOf.1 ((hP x.1).1 x.2 x.2), mem_O_ratOf.1 hui⟩`. Use `hu using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[Units.val_mk0, hd]`. Conclude with `mul_div_cancel_left₀ _ t'.ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEqn_diag_of_frame : ∀ (F : Type) [Field F] (Y : Var F) (ι : Type) (m : ι → ℕ) (E' : Fr (ratOf Y) m m) (gr : Root m → Y.Dv), ∀ B ∈ E'.S (genericPoint Y.X), (∀ (y : Y.X) (x : Root m), ∃ A ∈ E'.S y, ∃ t : Y.Fnˣ, (B * A⁻¹) x.1 x.2 x.2 = t ∧ (gr x).IsEqn y t) → ∀ (y : Y.X), ∀ A ∈ E'.S y, Par m ⊤ (B * A⁻¹) ∧ ∀ x : Root m, ∃ t : Y.Fnˣ, (B * A⁻¹) x.1 x.2 x.2 = t ∧ (gr x).IsEqn y t := by
   intro F _ Y ι m E' gr B hB H y A hA

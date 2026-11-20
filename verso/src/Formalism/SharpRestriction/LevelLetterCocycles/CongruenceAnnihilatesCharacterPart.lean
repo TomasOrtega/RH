@@ -13,7 +13,7 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂
   {X' : Type} (T' : Subalgebra (N.O i) (X' → N.O i)) (rep : X' → (GE N →* MatN N i))
 
 /- English proof (translation)
-Use `⟨1, fun _ => f, fun _ => 1, fun _ => hf, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x'`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem inSpan_scal (f : X' → N.O i) (hf : f ∈ T') :
     InSpan N i T' rep (fun x' => f x' • (1 : MatN N i)) := by
@@ -22,7 +22,7 @@ theorem inSpan_scal (f : X' → N.O i) (hf : f ∈ T') :
   simp
 
 /- English proof (translation)
-Use `inSpan_scal N T' rep 1 T'.one_mem` as an intermediate fact. Simplify using `only [Pi.one_apply, one_smul] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inSpan_one : InSpan N i T' rep 1 := by
   have := inSpan_scal N T' rep 1 T'.one_mem
@@ -30,14 +30,14 @@ theorem inSpan_one : InSpan N i T' rep 1 := by
   exact this
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qj25.inSpan_add .. | (apply UpperTheory.Reformulated.B.Qj25.inSpan_add <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qj25.inSpan_add <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj25.inSpan_add <;> assumption) | (intr …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inSpan_add {a b : X' → MatN N i} (ha : InSpan N i T' rep a) (hb : InSpan N i T' rep b) :
     InSpan N i T' rep (a + b) := by
   first | exact UpperTheory.Reformulated.B.Qj25.inSpan_add .. | (apply UpperTheory.Reformulated.B.Qj25.inSpan_add <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qj25.inSpan_add <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj25.inSpan_add <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qj25.inSpan_add <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj25.inSpan_add <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' T' rep a b ha hb | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' T' rep a b ha | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' T' rep a b | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' T' rep a | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' T' rep | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' T' | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R
 
 /- English proof (translation)
-Take `⟨m, f', g, hf', rfl⟩` from `ha`. Use `⟨m, fun k => f * f' k, g, fun k => T'.mul_mem hf (hf' k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x'`. Simplify using `[Finset.smul_sum, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem inSpan_fmul {a : X' → MatN N i} (f : X' → N.O i) (hf : f ∈ T') (ha : InSpan N i T' rep a) :
     InSpan N i T' rep (fun x' => f x' • a x') := by
@@ -47,9 +47,9 @@ theorem inSpan_fmul {a : X' → MatN N i} (f : X' → N.O i) (hf : f ∈ T') (ha
   simp [Finset.smul_sum, mul_smul]
 
 /- English proof (translation)
-Take `⟨m, f, g, hf, rfl⟩` from `ha`. Take `⟨m', f', g', hf', rfl⟩` from `hb`. Set `e : Fin m × Fin m' ≃ Fin (m * m')` to `finProdFinEquiv`. Use `⟨m * m', fun q => f (e.symm q).1 * f' (e.symm q).2, fun q => g (e.symm q).1 * g' (e.symm q).2, fun q => T'.mul_mem (hf _) (hf' _), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul_sum, ← Fintype.sum_prod_type']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv e _ _ (fun x => ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `x'`. Simplify using `only [Equiv.symm_apply_apply, Pi.mul_apply, map_mul]`. Rewrite using `[smul_mul_smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inSpan_mul {a b : X' → MatN N i} (ha : InSpan N i T' rep a) (hb : InSpan N i T' rep b) :
     InSpan N i T' rep (a * b) := by
@@ -71,7 +71,7 @@ section Block
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) {i : N.Loc}
 
 /- English proof (translation)
-Use extensionality with `a b`. Use `congrFun (h (Pi.single b 1)) a` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Pi.single_apply, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mat_eq_of_mulVec {n : ℕ} (A B : Matrix (Fin n) (Fin n) (N.O i))
     (h : ∀ v, (A.map (toK N i)).mulVec v = (B.map (toK N i)).mulVec v) : A = B := by
@@ -80,7 +80,7 @@ theorem mat_eq_of_mulVec {n : ℕ} (A B : Matrix (Fin n) (Fin n) (N.O i))
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply, Matrix.map_apply] using this
 
 /- English proof (translation)
-Establish `hm : (∑ k, c k • M k).map (toK N i) = ∑ k, toK N i (c k) • (M k).map (toK N i)`. Use extensionality with `a b`. Simplify using `only [Matrix.sum_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul]`. Rewrite using `[hm, Matrix.sum_mulVec]`. Simplify using `only [Matrix.smul_mulVec]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mapSum_mulVec {n m : ℕ} (c : Fin m → N.O i) (M : Fin m → Matrix (Fin n) (Fin n) (N.O i))
     (v : Fin n → KK N i) :
@@ -95,15 +95,15 @@ variable (r : N.X i → (GE N →* GL (Fin R.nV) (N.O i))) (ρ : N.X i → (GE N
   (π : N.X i) (S : IdempotentChoiceData N i)
 
 /- English proof (translation)
-Take `⟨-, hdec, hR', -, -, -, -, -, -, ⟨hpπ, -⟩, -, -⟩` from `hG`. Use `set a : S.X' → MatN N i := ∑ k, fun x' => f k x' • rO N i r (S.p x') (g k) with ha`. Establish `hIn : InR' N r S a` using `⟨m, f, g, hf, rfl⟩`. Establish `h1` using `hR' a hIn`. Establish `hval : a S.π' = ∑ k, f k S.π' • rO N i r π (g k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, Finset.sum_apply, hpπ]`. Establish `hdec' : ∀ g u, S.e (((rO N i r π g).map (toK N i)).mulVec u) = (((rhoO N i ρ π g).map (toK N i)).mulVec (S.e u).1, fun c : Fin R.t => toK N i ((chiU N i ((c : ℕ) + 1) g : (N.O i)ˣ) : N.O i) * (S.e u).2 c)` using `hdec`. Establish `key : ∀ u, S.e (((a S.π').map (toK N i)).mulVec u) = ∑ k, toK N i (f k S.π') • (((rhoO N i ρ π (g k)).map (toK N i)).mulVec (S.e u).1, fun c : Fin R.t => toK N i ((chiU N i ((c : ℕ) + 1) (g k) : (N.O i)ˣ) : N.O i) * (S.e u).2 c)`. Introduce `u`. Rewrite using `[hval, mapSum_mulVec, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hdec']`. Prove the components needed by the constructor for the conclusion. Apply `mat_eq_of_mulVec` to reduce the goal to its premises. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Prod.fst ((h1 (S.e.symm (v, 0))).symm.trans (key _))`. Simplify using `only [LinearEquiv.apply_symm_apply, Prod.fst_sum, Prod.smul_fst] at h2`. Rewrite using `[h2, mapSum_mulVec]`. Introduce `c`. Establish `h2` using `congrFun (congrArg Prod.snd ((h1 (S.e.symm (0, Pi.single c 1))).symm.trans (key _))) c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.apply_symm_apply, Prod.snd_sum, Prod.smul_snd, Finset.sum_apply, Pi.smul_apply, Pi.single_eq_same, mul_one, smul_eq_mul] at h2`. Apply `IsFractionRing.injective (N.O i) (KK N i)` to reduce the goal to its premises. Rewrite using `[h2, map_sum]`. Simplify using `[map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psi_sum (hG : GoodCongruenceObjects N r ρ π S) (m : ℕ) (f : Fin m → S.X' → N.O i) (g : Fin m → GE N)
     (hf : ∀ k, f k ∈ S.T') :
@@ -150,7 +150,7 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂
   (π : N.X i) (S : IdempotentChoiceData N i)
 
 /- English proof (translation)
-Take `⟨m, f, g, hf, rfl⟩` from `ha`. Use `⟨m, fun k x' => f k (S.p x'), g, fun k => hT _ (hf k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x'`. Simplify using `[Finset.sum_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem inR'_of_inR (hT : ∀ f ∈ N.T i, (fun x' => f (S.p x')) ∈ S.T') {a : N.X i → MatN N i}
     (ha : InR N i r a) : InR' N r S (fun x' => a (S.p x')) := by
@@ -160,19 +160,17 @@ theorem inR'_of_inR (hT : ∀ f ∈ N.T i, (fun x' => f (S.p x')) ∈ S.T') {a :
   simp [Finset.sum_apply]
 
 /- English proof (translation)
-Take `⟨⟨hB, -⟩, -, -, -, -, -, ⟨hX0, -⟩, ⟨hTT, hrr, -⟩, -⟩` from `hG`. Establish `hB'` using `inR'_of_inR N r S hTT hB`. Establish `hX0'` using `inR'_of_inR N r S hTT hX0`. Establish `key : ∀ L : List ℕ, (∀ c ∈ L, c ∈ Finset.Icc 1 R.t) → InR' N r S (fun x' => (L.map fun c => S.X0 (S.p x') - S.rr c x' • S.eB (S.p x')).prod)`. Introduce `L`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `L with`. Consider the case `nil => intro _`. Conclude with `inSpan_one N S.T' (fun x' => rO N i r (S.p x'))`. Consider the case `cons c L ih`. Introduce `hL`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : S.rr c ∈ S.T'` using `hrr c (hL c (by simp))`. Establish `h1 : InR' N r S (fun x' => S.X0 (S.p x') - S.rr c x' • S.eB (S.p x'))`. Use `inSpan_add N S.T' (fun x' => rO N i r (S.p x')) hX0' (inSpan_fmul N S.T' (fun x' => rO N i r (S.p x')) (-S.rr c) (S.T'.neg_mem hc) hB')` as an intermediate fact. Establish `e1 : (fun x' => S.X0 (S.p x') - S.rr c x' • S.eB (S.p x')) = (fun x' => S.X0 (S.p x')) + fun x' => (-S.rr c) x' • S.eB (S.p x')`. Use function extensionality and compare the values at `x'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[sub_eq_add_neg, neg_smul]`. Rewrite using `[e1]`. Conclude with `this`. Establish `h2` using `inSpan_mul N S.T' (fun x' => rO N i r (S.p x')) h1 (ih fun c' hc' => hL c' (by simp [hc']))`. Establish `e2 : (fun x' => ((c :: L).map fun c => S.X0 (S.p x') - S.rr c x' • S.eB (S.p x')).prod) = (fun x' => S.X0 (S.p x') - S.rr c x' • S.eB (S.p x')) * fun x' => (L.map fun c => S.X0 (S.p x') - S.rr c x' • S.eB (S.p x')).prod`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x'`. Simplify using the standard rewrite rules. Rewrite using `[e2]`. Conclude with `h2`. Unfold `Eel`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `key` to reduce the goal to its premises. Introduce `c hc`. Rewrite `hc` using `[List.mem_range'_1]`. Rewrite using `[Finset.mem_Icc]`. Use `R.rank_add_five_le` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eel_inR' (hG : GoodCongruenceObjects N r ρ π S) : InR' N r S (Eel N S) := by
   obtain ⟨⟨hB, -⟩, -, -, -, -, -, ⟨hX0, -⟩, ⟨hTT, hrr, -⟩, -⟩ := hG
@@ -220,13 +218,13 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂
   (π : N.X i) (S : IdempotentChoiceData N i)
 
 /- English proof (translation)
-Establish `hIn` using `eel_inR' N r ρ π S hG`. Take `⟨-, -, hR', -, -, -, -, -, -, -, ⟨-, -, hEπ, -⟩, -⟩` from `hG`. Establish `h1` using `hR' (Eel N S) hIn`. Prove the components needed by the constructor for the conclusion. Apply `mat_eq_of_mulVec` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `v`. Establish `h2` using `congrArg Prod.fst ((h1 (S.e.symm (v, 0))).symm.trans (hEπ _))`. Simplify using `only [LinearEquiv.apply_symm_apply] at h2`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `c`. Establish `h2` using `congrFun (congrArg Prod.snd ((h1 (S.e.symm (0, Pi.single c 1))).symm.trans (hEπ _))) c`. Simplify using `only [LinearEquiv.apply_symm_apply, Pi.single_eq_same, mul_one] at h2`. Apply `IsFractionRing.injective (N.O i) (KK N i)` to reduce the goal to its premises. Use `split_ifs with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, if_pos hc]`. Rewrite using `[h2, if_neg hc, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_E (hG : GoodCongruenceObjects N r ρ π S) :
     S.ψρ (Eel N S) = 0 ∧
@@ -250,9 +248,9 @@ theorem psi_E (hG : GoodCongruenceObjects N r ρ π S) :
     · rw [h2, if_neg hc, map_zero]
 
 /- English proof (translation)
-Establish `e : (fun x' => f x' • (1 : MatN N i)) = ∑ k : Fin 1, fun x' => (fun _ : Fin 1 => f) k x' • rO N i r (S.p x') ((fun _ : Fin 1 => (1 : GE N)) k)`. Use function extensionality and compare the values at `x'`. Simplify using the standard rewrite rules. Take `⟨h1, h2⟩` from `psi_sum N r ρ π S hG 1 (fun _ => f) (fun _ => 1) (fun _ => hf)`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psi_scal (hG : GoodCongruenceObjects N r ρ π S) (f : S.X' → N.O i) (hf : f ∈ S.T') :
     S.ψρ (fun x' => f x' • (1 : MatN N i)) = f S.π' • 1 ∧
@@ -280,7 +278,7 @@ theorem matQ_mk (A : Matrix (Fin R.r) (Fin R.r) (N.O i)) (u : Fin R.r → KK N i
     matQ N A (Submodule.Quotient.mk u) = Submodule.Quotient.mk ((A.map (toK N i)).mulVec u) := rfl
 
 /- English proof (translation)
-Proceed by induction on `w using Submodule.Quotient.induction_on with`. Consider the case `H u => rw [matQ_mk, matQ_mk, matQ_mk, Matrix.map_mul, Matrix.mulVec_mulVec]`.
+Proceed by induction. Treat this case separately.
 -/
 theorem matQ_mul (A B : Matrix (Fin R.r) (Fin R.r) (N.O i)) (w : KOr N i) :
     matQ N (A * B) w = matQ N A (matQ N B w) := by
@@ -288,7 +286,7 @@ theorem matQ_mul (A B : Matrix (Fin R.r) (Fin R.r) (N.O i)) (w : KOr N i) :
   | H u => rw [matQ_mk, matQ_mk, matQ_mk, Matrix.map_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Proceed by induction on `w using Submodule.Quotient.induction_on with`. Consider the case `H u`. Rewrite using `[matQ_mk, matQ_mk, matQ_mk, ← Submodule.Quotient.mk_add, ← Matrix.add_mulVec]`. Use `congr 2`. Use extensionality with `a b`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -302,14 +300,14 @@ theorem matQ_add (A B : Matrix (Fin R.r) (Fin R.r) (N.O i)) (w : KOr N i) :
     simp
 
 /- English proof (translation)
-Proceed by induction on `w using Submodule.Quotient.induction_on with`. Consider the case `H u => rw [matQ_mk]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem matQ_zero (w : KOr N i) : matQ N 0 w = 0 := by
   induction w using Submodule.Quotient.induction_on with
   | H u => rw [matQ_mk]; simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [matQ_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, matQ_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem matQ_sum {ι : Type} (s : Finset ι) (A : ι → Matrix (Fin R.r) (Fin R.r) (N.O i)) (w : KOr N i) :
     matQ N (∑ k ∈ s, A k) w = ∑ k ∈ s, matQ N (A k) w := by
@@ -319,9 +317,9 @@ theorem matQ_sum {ι : Type} (s : Finset ι) (A : ι → Matrix (Fin R.r) (Fin R
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, matQ_add, ih]
 
 /- English proof (translation)
-Proceed by induction on `w using Submodule.Quotient.induction_on with`. Consider the case `H u`. Rewrite using `[matQ_mk, ← Submodule.Quotient.mk_smul]`. Use `congr 1`. Establish `hm : (c • (1 : Matrix (Fin R.r) (Fin R.r) (N.O i))).map (toK N i) = (toK N i c) • (1 : Matrix (Fin R.r) (Fin R.r) (KK N i))`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hm, Matrix.smul_mulVec, Matrix.one_mulVec, algebraMap_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem matQ_scal (c : N.O i) (w : KOr N i) : matQ N (c • (1 : Matrix (Fin R.r) (Fin R.r) (N.O i))) w = c • w := by
   induction w using Submodule.Quotient.induction_on with
@@ -347,9 +345,9 @@ def zz (m : ℕ) (t : Fin m → S.X' → N.O i) (γ : Fin m → GE N) : S.X' →
   ∑ k, (fun x' => (t k x' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) • (1 : MatN N i)) * yg N r S (γ k)
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, ⟨-, hrr, -⟩, -⟩` from `hG`. Establish `ht` using `R.rank_add_five_le`. Establish `h1 : S.rr 1 ∈ S.T'` using `hrr 1 (by rw [Finset.mem_Icc]; omega)`. Establish `e : del51 N S = ∏ c ∈ Finset.Ioc 1 R.t, (S.rr 1 - S.rr c)`. Use function extensionality and compare the values at `x'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[del51, Finset.prod_apply]`. Rewrite using `[e]`. Use `Subalgebra.prod_mem _ fun c hc => S.T'.sub_mem h1 (hrr c ?_)` and prove the remaining obligations. Rewrite `hc` using `[Finset.mem_Ioc]`. Rewrite using `[Finset.mem_Icc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -367,22 +365,22 @@ theorem congruence_discriminant_mem (hG : GoodCongruenceObjects N r ρ π S) : d
   omega
 
 /- English proof (translation)
-Use `⟨1, fun _ => 1, fun _ => γ, fun _ => inSpan_one N S.T' (fun x' => rO N i r (S.p x')), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem yg_inY (γ : GE N) : InY N r S (yg N r S γ) := by
   refine ⟨1, fun _ => 1, fun _ => γ, fun _ => inSpan_one N S.T' (fun x' => rO N i r (S.p x')), ?_⟩
   simp
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, ⟨-, hEE, -, -⟩, -⟩` from `hG`. Prove the components needed by the constructor for the conclusion. Use `⟨m, fun k x' => (t k x' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) • (1 : MatN N i), γ, fun k => inSpan_scal N S.T' _ _ (S.T'.mul_mem (ht k) (S.T'.algebraMap_mem _)), rfl⟩` and prove the remaining obligations. Establish `hz : ∀ x', zz N r S m t γ x' = (del51 N S x' - ∑ k, t k x' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) • Eel N S x'`. Introduce `x'`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hEx : Eel N S x' = ∑ k, t k x' • rO N i r (S.p x') (γ k)`. Rewrite using `[hE, Finset.sum_apply]`. Establish `step : ∀ k, ((fun x' => (t k x' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) • (1 : MatN N i)) * yg N r S (γ k)) x' = t k x' • (rO N i r (S.p x') (γ k) * Eel N S x') - (t k x' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) • Eel N S x'`. Introduce `k`. Simplify using `only [Pi.mul_apply, yg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_one_mul, smul_sub, smul_smul, Units.mul_inv_cancel_right]`. Unfold `zz`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [step]`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.sum_smul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : ∑ k, t k x' • (rO N i r (S.p x') (γ k) * Eel N S x') = Eel N S x' * Eel N S x'` using `by conv_rhs => rw [hEx]`. Rewrite using `[Finset.sum_mul]`. Simplify using `only [smul_mul_assoc]`. Rewrite using `[← hEx]`. Rewrite using `[hA, hEE, sub_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x'`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[hz, smul_one_mul, mul_smul_comm, hEE, smul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem zz_facts (hG : GoodCongruenceObjects N r ρ π S) (m : ℕ) (t : Fin m → S.X' → N.O i) (γ : Fin m → GE N)
     (ht : ∀ k, t k ∈ S.T') (hE : Eel N S = ∑ k, fun x' => t k x' • rO N i r (S.p x') (γ k)) :
@@ -418,21 +416,21 @@ theorem zz_facts (hG : GoodCongruenceObjects N r ρ π S) (m : ℕ) (t : Fin m �
     rw [hz, smul_one_mul, mul_smul_comm, hEE, smul_comm]
 
 /- English proof (translation)
-Establish `hEin` using `eel_inR' N r ρ π S hG`. Take `⟨m, t, γ, ht, hE⟩` from `hEin`. Take `⟨hY, hEz⟩` from `zz_facts N r ρ π S hG m t γ ht hE`. Take `⟨hψρ, hψχ⟩` from `psi_E N r ρ π S hG`. Take `⟨hsρ, hsχ⟩` from `psi_sum N r ρ π S hG m t γ ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hsρ`, `hsχ` using `[← hE]`. Establish `h0 : 0 < R.t` using `by have := R.rank_add_five_le; omega`. Establish `hsumρ : ∑ k, t k S.π' • rhoO N i ρ π (γ k) = 0` using `by rw [← hsρ, hψρ]`. Establish `hsumχ : ∑ k, t k S.π' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i) = del51 N S S.π'`. Use `hsχ ⟨0, h0⟩` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hψχ ⟨0, h0⟩]`. Simplify using `using this.symm`. Establish `hφz : φ (zz N r S m t γ) = (-(del51 N S S.π')) • w`. Unfold `zz`. Rewrite using `[map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : ∀ k, φ ((fun x' => (t k x' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) • (1 : MatN N i)) * yg N r S (γ k)) = matQ N (((t k S.π' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) • (1 : Matrix (Fin R.r) (Fin R.r) (N.O i))) * ((((chiU N i 1 (γ k))⁻¹ : (N.O i)ˣ) : N.O i) • rhoO N i ρ π …`. Introduce `k`. Establish `hmem : (fun x' => t k x' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) ∈ S.T'` using `S.T'.mul_mem (ht k) (S.T'.algebraMap_mem ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i))`. Rewrite using `[h1 _ (inSpan_scal N S.T' _ _ hmem) _ (yg_inY N r S (γ k)), (psi_scal N r ρ π S hG _ hmem).1, h2, matQ_mul]`. Simplify using `only [hk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← matQ_sum]`. Establish `hm : ∑ k, ((t k S.π' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) • (1 : Matrix (Fin R.r) (Fin R.r) (N.O i))) * ((((chiU N i 1 (γ k))⁻¹ : (N.O i)ˣ) : N.O i) • rhoO N i ρ π (γ k) - 1) = (-(del51 N S S.π')) • (1 : Matrix (Fin R.r) (Fin R.r) (N.O i))`. Establish `e1 : ∀ k, ((t k S.π' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) • (1 : Matrix (Fin R.r) (Fin R.r) (N.O i))) * ((((chiU N i 1 (γ k))⁻¹ : (N.O i)ˣ) : N.O i) • rhoO N i ρ π (γ k) - 1) = t k S.π' • rhoO N i ρ π (γ k) - (t k S.π' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) • (1 : Matri …`. Introduce `k`. Rewrite using `[smul_one_mul, smul_sub, smul_smul, Units.mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e1]`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.sum_smul, hsumρ, hsumχ, zero_sub, neg_smul]`. Rewrite using `[hm, matQ_scal]`. Establish `hA : φ (Eel N S * zz N r S m t γ) = 0`. Rewrite using `[h1 _ (eel_inR' N r ρ π S hG) _ hY, hψρ, matQ_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : φ ((fun x' => del51 N S x' • (1 : MatN N i)) * zz N r S m t γ) = del51 N S S.π' • φ (zz N r S m t γ)`. Rewrite using `[h1 _ (inSpan_scal N S.T' _ _ (congruence_discriminant_mem N r ρ π S hG)) _ hY, (psi_scal N r ρ π S hG _ (congruence_discriminant_mem N r ρ π S hG)).1, matQ_scal]`. Rewrite `hA` using `[hEz, hB, hφz, smul_smul]`. Rewrite using `[pow_two]`. Establish `: (del51 N S S.π' * del51 N S S.π') • w = -((del51 N S S.π' * -del51 N S S.π') • w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← neg_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hA, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem congruence_annihilates_rho_part (hG : GoodCongruenceObjects N r ρ π S) (φ : (S.X' → MatN N i) →ₗ[N.O i] KOr N i) (w : KOr N i)
     (h1 : ∀ a, InR' N r S a → ∀ y, InY N r S y → φ (a * y) = matQ N (S.ψρ a) (φ y))
@@ -492,21 +490,21 @@ theorem congruence_annihilates_rho_part (hG : GoodCongruenceObjects N r ρ π S)
   rw [this, hA, neg_zero]
 
 /- English proof (translation)
-Establish `hEin` using `eel_inR' N r ρ π S hG`. Take `⟨m, t, γ, ht, hE⟩` from `hEin`. Take `⟨hY, hEz⟩` from `zz_facts N r ρ π S hG m t γ ht hE`. Take `⟨-, hψχ⟩` from `psi_E N r ρ π S hG`. Take `⟨-, hsχ⟩` from `psi_sum N r ρ π S hG m t γ ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hsχ` using `[← hE]`. Establish `h0 : 0 < R.t` using `by have := R.rank_add_five_le; omega`. Establish `hsumc : ∑ k, t k S.π' * ((chiU N i ((c : ℕ) + 1) (γ k) : (N.O i)ˣ) : N.O i) = 0`. Rewrite using `[← hsχ c, hψχ c, if_neg hc]`. Establish `hsum1 : ∑ k, t k S.π' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i) = del51 N S S.π'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hsχ ⟨0, h0⟩` as an intermediate fact. Rewrite `this` using `[hψχ ⟨0, h0⟩]`. Simplify using `using this.symm`. Establish `hφz : φ (zz N r S m t γ) = (-(del51 N S S.π')) • w`. Unfold `zz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_sum]`. Establish `hk : ∀ k, φ ((fun x' => (t k x' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) • (1 : MatN N i)) * yg N r S (γ k)) = (t k S.π' * ((chiU N i ((c : ℕ) + 1) (γ k) : (N.O i)ˣ) : N.O i) - t k S.π' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) • w`. Introduce `k`. Establish `hmem : (fun x' => t k x' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i)) ∈ S.T'` using `S.T'.mul_mem (ht k) (S.T'.algebraMap_mem ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i))`. Rewrite using `[h1 _ (inSpan_scal N S.T' _ _ hmem) _ (yg_inY N r S (γ k)), (psi_scal N r ρ π S hG _ hmem).2 c, h2, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hu : ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i) * (((chiU N i 1 (γ k))⁻¹ : (N.O i)ˣ) : N.O i) = 1` using `Units.mul_inv _`. Simplify using `only [Units.val_mul]`. Use `show t k S.π' * ((chiU N i 1 (γ k) : (N.O i)ˣ) : N.O i) * (((chiU N i ((c : ℕ) + 1) (γ k) : (N.O i)ˣ) : N.O i) * (((chiU N i 1 (γ k))⁻¹ : (N.O i)ˣ) : N.O i) - 1) = _`. Take the linear combination `(t k S.π' * ((chiU N i ((c : ℕ) + 1) (γ k) : (N.O i)ˣ) : N.O i)) * hu`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [hk]`. Rewrite using `[← Finset.sum_smul, Finset.sum_sub_distrib, hsumc, hsum1, zero_sub]`. Establish `hA : φ (Eel N S * zz N r S m t γ) = 0`. Rewrite using `[h1 _ (eel_inR' N r ρ π S hG) _ hY, hψχ c, if_neg hc, zero_smul]`. Establish `hB : φ ((fun x' => del51 N S x' • (1 : MatN N i)) * zz N r S m t γ) = del51 N S S.π' • φ (zz N r S m t γ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1 _ (inSpan_scal N S.T' _ _ (congruence_discriminant_mem N r ρ π S hG)) _ hY, (psi_scal N r ρ π S hG _ (congruence_discriminant_mem N r ρ π S hG)).2 c]`. Rewrite `hA` using `[hEz, hB, hφz, smul_smul]`. Rewrite using `[pow_two]`. Establish `: (del51 N S S.π' * del51 N S S.π') • w = -((del51 N S S.π' * -del51 N S S.π') • w)`. Rewrite using `[← neg_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hA, neg_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congruence_annihilates_character_part (hG : GoodCongruenceObjects N r ρ π S) (c : Fin R.t) (hc : (c : ℕ) ≠ 0)
     (φ : (S.X' → MatN N i) →ₗ[N.O i] KmodO (N.O i)) (w : KmodO (N.O i))
@@ -569,7 +567,7 @@ open Formalism.MainNotions
 variable (D : D7)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun φ w h1 h2 => congruence_annihilates_rho_part D.nd r ρ π S hG φ w h1 h2, fun c hc φ w h1 h2 => congruence_annihilates_character_part D.nd r ρ π S hG c hc φ w h1 h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem congruence_annihilation_lemma (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (S : IdempotentChoiceData D.nd i)
@@ -585,7 +583,7 @@ def SupplierRemainingLemmas : Prop :=
     ∀ π ∈ D.nd.Z i, TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π → LargeLevelLemmas.SpanQuotientLemma i r ρ π ∧ LargeLevelLemmas.HomRelationsLemmaAllChoices i r ρ π
 
 /- English proof (translation)
-Introduce `i k hl hG r ρ hr`. Take `⟨h51, hrest⟩` from `h i k hl hG r ρ hr`. Use `⟨h51, fun π hπ hd => ?_⟩` and prove the remaining obligations. Take `⟨h52, h53⟩` from `hrest π hπ hd`. Conclude with `⟨hO i k hl hG r ρ hr π hπ hd, fun S hS _ => ⟨h52 hπ S hS, h53 hπ S hS, congruence_annihilation_lemma D i r ρ π S hS⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem supplier_of_choice_and_lemmas (hO : TypePrimeCongruences.TypePrimeWildIdempotentChoice D) (h : SupplierRemainingLemmas D) : TypePrimeCongruences.TypePrimeChoiceConclusions D := by
   intro i k hl hG r ρ hr

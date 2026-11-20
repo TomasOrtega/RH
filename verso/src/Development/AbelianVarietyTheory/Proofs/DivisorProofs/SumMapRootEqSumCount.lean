@@ -12,13 +12,13 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons p l ih`. Rewrite using `[List.map_cons, List.sum_cons, ih]`. Simplify using `only [List.count_cons, Nat.cast_add, add_smul, Finset.sum_add_distrib]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_comm]`. Use `congr 1`. Take `⟨x, y⟩` from `p`. Simplify using `only [beq_iff_eq, Prod.mk.injEq]`. Rewrite using `[Finset.sum_eq_single x]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single y]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `a _ ha`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Simplify using `[Ne.symm ha]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_map_root_eq_sum_count {n : ℕ} (l : List (Fin n × Fin n)) :
     (l.map fun p : Fin n × Fin n => root p.1 p.2).sum
@@ -41,11 +41,11 @@ theorem sum_map_root_eq_sum_count {n : ℕ} (l : List (Fin n × Fin n)) :
     · simp
 
 /- English proof (translation)
-Introduce `n ε μ Λ l hl hsum`. Use `⟨fun a b => l.count (b, a), ?_, ?_⟩` and prove the remaining obligations. Introduce `a b h`. Establish `hm : (b, a) ∈ l` using `List.count_pos_iff.mp (Nat.pos_of_ne_zero h)`. Conclude with `⟨(hl _ hm).2, (hl _ hm).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite `hsum` using `[sum_map_root_eq_sum_count]`. Establish `key : ∑ a, ∑ b, ((l.count (b, a) : ℕ) : ℝ) • root a b = - ∑ a, ∑ b, ((l.count (a, b) : ℕ) : ℝ) • root a b`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: root b a = - root a b`. Unfold `root`. Normalize the expressions using the abelian group laws. Rewrite using `[this, smul_neg]`. Rewrite using `[key, ← hsum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/

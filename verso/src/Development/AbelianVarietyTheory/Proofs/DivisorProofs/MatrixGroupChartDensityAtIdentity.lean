@@ -13,7 +13,7 @@ namespace GlobalTheory.SUVol.DensChart
 open scoped Pointwise
 
 /- English proof (translation)
-Rewrite using `[pi_norm_lt_iff hε]`. Simplify using `only [pi_norm_lt_iff hε]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_grpBall_iff_norm {ι : Type} [Fintype ι] {r : ℕ} (H : Subgroup (ι → GL (Fin r) ℂ)) {ε : ℝ}
     (hε : 0 < ε) (g : H) :
@@ -22,62 +22,60 @@ theorem mem_grpBall_iff_norm {ι : Type} [Fintype ι] {r : ℕ} (H : Subgroup (�
   rw [pi_norm_lt_iff hε]; simp only [pi_norm_lt_iff hε]; rfl
 
 /- English proof (translation)
-Use extensionality with `X`. Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff hε]`. Simplify using `only [pi_norm_lt_iff hε]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tanBall_eq_ball {ι : Type} [Fintype ι] {r : ℕ} {ε : ℝ} (hε : 0 < ε) :
     tanBall ι r ε = Metric.ball 0 ε := by
   ext X; rw [mem_ball_zero_iff, pi_norm_lt_iff hε]; simp only [pi_norm_lt_iff hε]; rfl
 
 /- English proof (translation)
-Introduce `ι _ r H _ μ W _ _ _ _ _ lam _ Q D h a ρ hD hQ0 hDi hon hh ha0 hat hρ hμ`. Use `set f : W → (ι → Fin r → Fin r → ℂ) := fun w τ i j => ((((Q w : H) : ι → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) i j with hf`. Use `set one : ι → Fin r → Fin r → ℂ := fun _ i j => (1 : Matrix (Fin r) (Fin r) ℂ) i j with hone`. Establish `hf0 : f 0 = one` using `by simp [hf, hone, hQ0]`. Establish `hD' : HasStrictFDerivAt f D 0` using `hD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K, -, hK⟩` from `(D : W →ₗ[ℝ] (ι → Fin r → Fin r → ℂ)).exists_antilipschitzWith (LinearMap.ker_eq_bot.2 hDi)`. Use `set K' : ℝ := (K : ℝ) + 1 with hK'`. Establish `hK'0 : 0 < K'` using `by positivity`. Establish `hnorm : ∀ w, ‖w‖ ≤ K' * ‖D w‖`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `h1` using `hK.le_mul_dist w 0`. Simplify using `only [dist_zero_right, map_zero] at h1`. Combine the equalities or inequalities in the displayed calculation. Establish `hcw : ∀ c : ℝ, 0 ≤ c → ∀ w, c / K' * ‖w‖ ≤ c * ‖D w‖`. Introduce `c hc w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `approx : ∀ κ : ℝ, 0 < κ → ∃ δ > 0, ∀ w : W, ‖w‖ < δ → ‖f w - one - D w‖ ≤ κ * ‖w‖`. Introduce `κ hκ`. Establish `h1` using `(hasFDerivAt_iff_isLittleO_nhds_zero.1 hD'.hasFDerivAt).def hκ`. Take `⟨δ, hδ, hh'⟩` from `Metric.eventually_nhds_iff.1 h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨δ, hδ, fun w hw => ?_⟩` and prove the remaining obligations. Use `hh' (y := w) (by rwa [dist_zero_right])` as an intermediate fact. Simplify `this` using `[hf0]`. Use `set V : ℝ → ℝ≥0∞ := fun ε => lam (D ⁻¹' Metric.ball 0 ε) with hVdef`. Use `set S : ℝ → Set W := fun ε => D ⁻¹' Metric.ball 0 ε ∩ Metric.ball 0 ρ with hSdef`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set F : ℝ → ℝ≥0∞ := fun ε => μ (Q '' S ε) with hFdef`. Establish `hV0 : ∀ ε : ℝ, 0 < ε → V ε ≠ 0` using `fun ε hε => (Metric.isOpen_ball.preimage D.continuous).measure_ne_zero lam ⟨0, by simp [hε]⟩`. Establish `hVt : ∀ ε : ℝ, V ε ≠ ⊤`. Introduce `ε`. Use `ne_top_of_le_ne_top (measure_closedBall_lt_top (μ := lam) (x := 0) (r := K' * ε)).ne (measure_mono fun w hw => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hw` using `[Set.mem_preimage, mem_ball_zero_iff]`. Rewrite using `[mem_closedBall_zero_iff]`. Combine the equalities or inequalities in the displayed calculation. Establish `hVhom : ∀ t ε : ℝ, 0 < t → 0 < ε → V (t * ε) = ENNReal.ofReal (t ^ Module.finrank ℝ W) * V ε`. Introduce `t ε ht _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hs : D ⁻¹' Metric.ball 0 (t * ε) = t • (D ⁻¹' Metric.ball 0 ε)`. Use extensionality with `w`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem₀ ht.ne']`. Simplify using `only [Set.mem_preimage, mem_ball_zero_iff, map_smul, norm_smul, Real.norm_eq_abs, abs_inv, abs_of_pos ht]`. Rewrite using `[inv_mul_lt_iff₀ ht]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hVdef]`. Rewrite using `[hs, Measure.addHaar_smul, abs_of_pos (pow_pos ht _)]`. Establish `hSmeas : ∀ ε, MeasurableSet (S ε)` using `fun ε => (measurableSet_ball.preimage D.measurable).inter measurableSet_ball`. Establish `hSeq : ∀ ε : ℝ, ε < ρ / K' → S ε = D ⁻¹' Metric.ball 0 ε`. Introduce `ε hε`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Set.inter_eq_left.2 fun w hw => ?_` and prove the remaining obligations. Rewrite `hw` using `[Set.mem_preimage, mem_ball_zero_iff]`. Rewrite using `[mem_ball_zero_iff]`. Combine the equalities or inequalities in the displayed calculation. Establish `hFint : ∀ ε : ℝ, F ε = ∫⁻ w in S ε, h w ∂lam` using `fun ε => hμ (S ε) (hSmeas ε) Set.inter_subset_right`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hF : Tendsto (fun ε => F ε / V ε) (𝓝[>] 0) (𝓝 a)`. Use `tendsto_order.2 ⟨fun b hb => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨a', hb', ha'⟩` from `exists_between hb`. Take `⟨δh, hδh, hδ⟩` from `Metric.eventually_nhds_iff.1 (hh.eventually (lt_mem_nhds ha'))`. Use `filter_upwards [Ioo_mem_nhdsGT (lt_min (div_pos hρ hK'0) (div_pos hδh hK'0))] with ε hε`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hε0, hε1⟩` from `hε`. Rewrite `hε1` using `[lt_min_iff]`. Establish `hle : a' * V ε ≤ F ε`. Rewrite using `[hFint, hSeq ε hε1.1, ← setLIntegral_const]`. Use `setLIntegral_mono' (measurableSet_ball.preimage D.measurable) fun w hw => (hδ ?_).le` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hw` using `[Set.mem_preimage, mem_ball_zero_iff]`. Rewrite using `[dist_zero_right]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Take `⟨a', ha', hb'⟩` from `exists_between hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨δh, hδh, hδ⟩` from `Metric.eventually_nhds_iff.1 (hh.eventually (gt_mem_nhds ha'))`. Use `filter_upwards [Ioo_mem_nhdsGT (lt_min (div_pos hρ hK'0) (div_pos hδh hK'0))] with ε hε`. Take `⟨hε0, hε1⟩` from `hε`. Rewrite `hε1` using `[lt_min_iff]`. Establish `hle : F ε ≤ a' * V ε`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hFint, hSeq ε hε1.1, ← setLIntegral_const]`. Use `setLIntegral_mono' (measurableSet_ball.preimage D.measurable) fun w hw => (hδ ?_).le` and prove the remaining obligations. Rewrite `hw` using `[Set.mem_preimage, mem_ball_zero_iff]`. Rewrite using `[dist_zero_right]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hA : ∀ t : ℝ, 1 < t → ∀ᶠ ε in 𝓝[>] (0 : ℝ), F (t⁻¹ * ε) ≤ μ (grpBall H ε) ∧ μ (grpBall H ε) ≤ F (t * ε)`. Introduce `t ht`. Establish `ht0 : 0 < t` using `by linarith`. Establish `hti : t⁻¹ < 1` using `inv_lt_one_of_one_lt₀ ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Establish `hti0 : 0 < t⁻¹` using `inv_pos.2 ht0`. Take `⟨δ1, hδ1, H1⟩` from `approx ((t - 1) / K') (div_pos (by linarith) hK'0)`. Take `⟨δ2, hδ2, H2⟩` from `approx ((1 - t⁻¹) / K') (div_pos (by linarith) hK'0)`. Take `⟨ε0, hε0, hon0⟩` from `hon (min ρ δ2) (lt_min hρ hδ2)`. Use `filter_upwards [Ioo_mem_nhdsGT (lt_min hε0 (lt_min (div_pos hδ1 hK'0) (div_pos hρ hK'0)))] with ε hε`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨hεp, hε1⟩` from `hε`. Simplify using `only [lt_min_iff] at hε1`. Take `⟨hεe, hεd, hερ⟩` from `hε1`. Prove the components needed by the constructor for the conclusion. Use `measure_mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨w, ⟨hw1, -⟩, rfl⟩`. Rewrite `hw1` using `[Set.mem_preimage, mem_ball_zero_iff]`. Rewrite using `[mem_grpBall_iff_norm H hεp]`. Express the relevant statement in the definitionally equal form `‖f w - one‖ < ε`. Establish `hDw : ‖D w‖ < ε`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hw : ‖w‖ < δ1`. Combine the equalities or inequalities in the displayed calculation. Establish `e1` using `H1 w hw`. Establish `e2` using `hcw (t - 1) (by linarith) w`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3 : ‖f w - one‖ ≤ ‖D w‖ + ‖f w - one - D w‖`. Combine the equalities or inequalities in the displayed calculation. Establish `e4 : t * ‖D w‖ < ε`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `measure_mono fun g hg => ?_` and prove the remaining obligations. Establish `hg0 : g ∈ grpBall H ε0` using `fun τ i j => (hg τ i j).trans hεe`. Take `⟨w, hw, rfl⟩` from `hon0 g hg0`. Rewrite `hw` using `[lt_min_iff]`. Rewrite `hg` using `[mem_grpBall_iff_norm H hεp]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Express the relevant statement in the definitionally equal form `‖f w - one‖ < ε at hg`. Use `⟨w, ⟨?_, mem_ball_zero_iff.2 hw.1⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, mem_ball_zero_iff]`. Establish `e1` using `H2 w hw.2`. Establish `e2` using `hcw (1 - t⁻¹) (by linarith) w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ‖D w‖ ≤ ‖f w - one‖ + ‖f w - one - D w‖`. Combine the equalities or inequalities in the displayed calculation. Establish `e4 : t⁻¹ * ‖D w‖ < ε` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hsq` using `GlobalTheory.CompactDualQuot.tendsto_div_of_squeeze (F := F) (V := V) (A := fun ε => μ (grpBall H ε)) (n := Module.finrank ℝ W) hat hVhom hF hA`.
-
-Use `hsq.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Establish `hε : (0 : ℝ) < ε` using `hε`. Simplify using `only [hVdef]`. Rewrite using `[tanBall_eq_ball hε, Measure.map_apply D.measurable measurableSet_ball]`.
+A detailed English derivation is pending.
 -/
 theorem density_at_one : ∀ (ι : Type) [Fintype ι] (r : ℕ) (H : Subgroup (ι → GL (Fin r) ℂ)) [MeasurableSpace H] (μ : Measure H) (W : Type) [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W] [MeasurableSpace W] [BorelSpace W] (lam : Measure W) [lam.IsAddHaarMeasure] (Q : W → H) (D : W →L[ℝ] (ι → Fin r → Fin r → ℂ)) (h : W → ℝ≥0∞) (a : ℝ≥0∞) (ρ : ℝ), HasStrictFDerivAt (fun w => fun τ i j => ((((Q w : H) : ι → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) i j) D 0 → Q 0 = 1 → Function.Injective D → (∀ δ : ℝ, 0 < δ → ∃ ε : ℝ, 0 < ε ∧ ∀ g ∈ grpBall H ε, ∃ w : W, ‖w‖ < δ ∧ Q w = g) → Tendsto h (𝓝 0) (𝓝 a) → a ≠ 0 → a ≠ ⊤ → 0 < ρ → (∀ A : Set W, MeasurableSet A → A ⊆ Metric.ball 0 ρ → μ (Q '' A) = ∫⁻ w in A, h w ∂lam) → Tendsto (fun ε : ℝ => μ (grpBall H ε) / (lam.map D) (tanBall ι r ε)) (𝓝[>] 0) (𝓝 a) := by
   intro ι _ r H _ μ W _ _ _ _ _ lam _ Q D h a ρ hD hQ0 hDi hon hh ha0 hat hρ hμ

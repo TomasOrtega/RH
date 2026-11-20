@@ -7,15 +7,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ _ n k σ W _ _ j H E op V h hr`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← Submodule.map_top, ← h.span, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Establish `hm : E.mulVec (Pi.single i 1) ∈ LinearMap.range V.mulVecLin`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← hr]`. Conclude with `⟨Pi.single i 1, rfl⟩`. Take `⟨y, hy⟩` from `hm`. Use `Submodule.subset_span ⟨y, ?_⟩` and prove the remaining obligations. Establish `hy' : V.mulVec y = E.mulVec (Pi.single i 1)` using `hy`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show j (V.mulVec y) = op (j (Pi.single i 1))`. Rewrite using `[h.op_eq, hy']`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `hm : V.mulVec y ∈ LinearMap.range E.mulVecLin`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Conclude with `⟨y, rfl⟩`. Take `⟨x, hx⟩` from `hm`. Establish `hx' : E.mulVec x = V.mulVec y` using `hx`. Use `⟨j x, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show op (j x) = j (V.mulVec y)`. Rewrite using `[h.op_eq, hx']`.
+A detailed English derivation is pending.
 -/
 theorem range_op_eq_span_of_formsTie :
     ∀ {K : Type} [Field K] [NumberField K] [StarRing K] {n k : ℕ} (σ : K →+* ℂ) {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] (j : (Fin n → K) →ₛₗ[σ] W) (H E : Matrix (Fin n) (Fin n) K) (op : W →ₗ[ℂ] W) (V : Matrix (Fin n) (Fin k) K), FormsTie σ j H E op → LinearMap.range E.mulVecLin = LinearMap.range V.mulVecLin → LinearMap.range op = Submodule.span ℂ (Set.range fun x => j (V.mulVec x)) := by

@@ -18,9 +18,9 @@ namespace GlobalTheory
 namespace TripleMap
 
 /- English proof (translation)
-Establish `hv : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (j : K → L.ι), gm r z (LB.wchart L φ j) (u.s j * (u'.s j)⁻¹) = gm r z (LB.wchart L φ j) (u.s j) * (gm r z (LB.wchart L φ j) (u'.s j))⁻¹` using `fun Z r z j => (map_mul _ _ _).trans (congrArg _ (map_inv _ _))`. Take `⟨a, ha⟩` from `glue_unit ⊤ (LB.wchart L φ) (fun _ => le_top) (fun y _ => by choose p hp using fun k => exists_chart hL (φ k y)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨p, Set.mem_iInter.2 hp⟩) (fun j => u.s j * (u'.s j)⁻¹)`. Use the proof step `(fun j j' y hy => by`. Rewrite using `[hv, hv, gen_trans hu (𝟙 Y) y hy.1 hy.2, gen_trans hu' (𝟙 Y) y hy.1 hy.2, mul_inv, _root_.mul_mul_mul_comm, mul_inv_cancel, _root_.one_mul])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, fun Z r z j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[← gm_res r z le_top hj a, ha j, hv, inv_mul_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem exists_ratio {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} {u u' : LB.Gen (LB.LinComb L φ ε)} (hu : u.IsGen) (hu' : u'.IsGen) :
@@ -41,9 +41,9 @@ theorem exists_ratio {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fin
   rw [← gm_res r z le_top hj a, ha j, hv, inv_mul_cancel_right]
 
 /- English proof (translation)
-Take `⟨ρ₀, h₀, H⟩` from `DegPull.exists_pmaps hw hL hL' (K := PUnit) (φ' := fun _ => e') (φ := fun _ => e) (ε := fun _ => 1) f (fun _ => he) ρ hρ`. Take `⟨a, ha⟩` from `exists_ratio hL' h₀ hρ'`. Set `w' : LB.Iso L' (L.pull F)` to `⟨fun j => res le_top (pullU p ⊤ a) * w.s j⟩`. Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) (j : L.ι) (k : L'.ι), F (r z) ∈ L.U j → r z ∈ L'.U k → gw w' r z j k = gm (r ≫ p) z ⊤ a * gw w r z j k` using `fun Z r z j k hj hk => (map_mul _ _ _).trans (congrArg (· * _) ((gm_res r z _ (show r z ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k from ⟨mem_pull.2 hj, hk⟩) _).trans (gm_pull r p z ⊤ trivial a)))`. Use `⟨w', fun Z r z j j' k k' hj hj' hk hk' => ?_, fun Z r z j k hj hk => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key Z r z j k hj hk, key Z r z j' k' hj' hk', hw Z r z j j' k k' hj hj' hk hk', mul_left_comm]`. Rewrite using `[H Z r z j k hj hk, ha Z r z k (Set.mem_iInter.2 hk), Fintype.prod_unique, Fintype.prod_unique, key Z (r ≫ e') z _ _ (hj _) (hk _), Category.assoc, hp, Category.comp_id, zpow_one, zpow_one, ← _root_.mul_assoc, mul_comm (gm r z ⊤ a)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_rigidified {X X' S S' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (hL : L.IsLB)
     (hL' : L'.IsLB) (w : LB.Iso L' (L.pull F)) (hw : PGen w) (e : S ⟶ X) (e' : S' ⟶ X') (p : X' ⟶ S')
@@ -67,15 +67,15 @@ theorem exists_rigidified {X X' S S' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : 
       ← _root_.mul_assoc, mul_comm (gm r z ⊤ a)]
 
 /- English proof (translation)
-Establish `hψ : ∀ I : thK, thφ G' (x3 G') I ≫ F = (cubeMapOf gp).F3 ≫ thφ G (x3 G) I` using `fun I => (cubeMapOf gp).psum_comm I.down`. Take `⟨t, ht, H⟩` from `DegPull.exists_pmaps hw L.isLB L'.isLB (ε := thε) (cubeMapOf gp).F3 hψ c.t c.isGen`. Take `⟨a, ha⟩` from `exists_ratio L'.isLB ht c'.isGen`. Establish `a1 : a = 1` using `rigid a fun y => by`. Take `⟨J, hJ⟩` from `DegPull.exists_good' L.isLB y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨J', hJ'⟩` from `DegPull.exists_good' L'.isLB y`. Set `o : 𝟙_ (Over S') ⟶ G'` to `1`. Establish `e` using `DegPull.pmaps_val hψ H (lift o (lift o o)).left y hJ hJ'`. Establish `q : (lift o (lift o o)).left ≫ (cubeMapOf gp).F3 = (lift (pushHom gp _ o) (lift (pushHom gp _ o) (pushHom gp _ o))).left` using `hom_ext_triple _ fun i => by`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, ← Over.comp_left, ← Over.comp_left]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> simp [x3] <;> rfl`. Rewrite `e` using `[q]`. Establish `e₁ : cubV c y J (pushHom gp _ o) (pushHom gp _ o) (pushHom gp _ o) = 1`. Rewrite using `[map_one]`. Conclude with `(isCub_cubV c (T := Over.mk ((𝟙_ (Over S')).hom ≫ f)) hJ).face _ _`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂` using `prod_cub o o o (fun q => gw w q y (J (q ≫ F)) (J' q))`. Establish `e₃ : cubV c' y J' o o o = 1` using `(isCub_cubV c' hJ').face _ _`. Establish `e₄` using `ha _ (lift o (lift o o)).left y _ (hJ'.mem (thφ G' (x3 G')) _)`. Establish `e₅` using `e₁.symm.trans (e.trans (congrArg₂ (· * ·) e₂ (e₄.trans (congrArg _ e₃))))`. Simplify using `only [o, _root_.mul_one, mul_inv_cancel, inv_mul_cancel_right, mul_inv_cancel_right, _root_.one_mul, inv_mul_cancel] at e₅`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `e₅.symm`. Introduce `Z r z p q hp hq`. Rewrite using `[H Z r z p q hp hq, ha Z r z q (Set.mem_iInter.2 hq), a1, map_one, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pmaps_cubical {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G']
     [IsCommMonObj G'] {f : S' ⟶ S} {F : G'.left ⟶ G.left} (gp : IsGrpPullback G' G f F) {L : RigLB G}
@@ -113,11 +113,11 @@ theorem pmaps_cubical {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G]
 end TripleMap
 
 /- English proof (translation)
-Introduce `E _ _ _ H X X' t t' f φ ⟨hr, hab⟩ gp hact ⟨w, hw⟩`. Take `⟨w', hw', Hr⟩` from `TripleMap.exists_rigidified t.PP.isLB t'.PP.isLB w ((isGen_iff w).1 hw) (eSec t.G) (eSec t'.G) t'.G.hom (Over.w _) f (cubeMapOf gp).e_comm t.PP.rig t.PP.rigGen t'.PP.rig t'.PP.rigGen`. Establish `sm` using `t'.semi.smooth`. Establish `gc` using `t'.semi.geomConnected`. Establish `gi` using `grpObj_geometricallyIntegral_of_smooth X' t'.G`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s₂, i₂, l₂⟩` from `smooth_geometricallyIntegral_abLocus_tensorObj X' t'.G t'.G sm sm gi gi`. Take `⟨s₃, i₃, l₃⟩` from `smooth_geometricallyIntegral_abLocus_tensorObj X' t'.G (t'.G ⊗ t'.G) sm s₂ gi i₂`. Use `⟨⟨cubeMapOf gp, gp, rfl, hact, (isPullCubical_iff _ _ _).2 ⟨w', hw', Hr, TripleMap.pmaps_cubical gp t.cub t'.cub hw' fun a ha => ?_⟩⟩, rfl⟩` and prove the remaining obligations. Set `o` to `lift (1 : 𝟙_ (Over X') ⟶ t'.G) (lift (1 : 𝟙_ (Over X') ⟶ t'.G) (1 : 𝟙_ (Over X') ⟶ t'.G))`. Establish `h₁ : pullU o.left ⊤ a = 1` using `unit_ext fun y _ => (gm_pull (𝟙 _) o.left y ⊤ trivial a).trans ((congrArg (fun q => gm q y ⊤ a) (Category.id_comp _)).trans ((ha y).trans (map_one _).symm))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Units.ext (eq_one_of_appLE_section_eq_one X' (G3 t'.G) o.left (Over.w o) s₃ i₃ ⟨hr, fun x hx => l₃ ⟨hab hx, l₂ ⟨hab hx, hab hx⟩⟩⟩ ⊤ a.val le_rfl ?_)` and prove the remaining obligations. Conclude with `(congrArg (fun q => q.hom a.val) (o.left.appLE_eq_app (U := ⊤))).trans (congrArg Units.val h₁)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_sabMap_of_lbIso : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X X' : Scheme.{0}) (t : SAB H X) (t' : SAB H X') (f : X' ⟶ X) (φ : t'.G.left ⟶ t.G.left), (IsReduced X' ∧ genericPoints X' ⊆ abLocus t'.G) → IsGrpPullback t'.G t.G f φ → (∀ a, (t'.act.act a).left ≫ φ = φ ≫ (t.act.act a).left) → LBIso t'.PP.L (t.PP.L.pull φ) → ∃ ν : SABMap t' t f, ν.φ = φ := by
   intro E _ _ _ H X X' t t' f φ ⟨hr, hab⟩ gp hact ⟨w, hw⟩

@@ -12,17 +12,17 @@ noncomputable section
 namespace GlobalTheory.ConeLawAChar
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G X om om' T t`. Take `⟨k, hk⟩` from `T.geo.even`. Establish `hlt` using `T.geo.lt`. Establish `hα : X.α (Units.map (cA σ : AE F E →* AE F E) t) = (X.α t)⁻¹` using `GlobalTheory.chrX_conj_inv F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV' T) t`. Establish `hβ : X.β (Units.map (cA σ : AE F E →* AE F E) t) = (X.β t)⁻¹` using `GlobalTheory.chrX_conj_inv F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV T) t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `habs : absE F E (Units.map (cA σ : AE F E →* AE F E) t) = absE F E t`. Establish `: Units.map (cA σ : AE F E →* AE F E) t = GlobalTheory.Doubling.conjUnit σ t`. Use `ext`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[this, GlobalTheory.Doubling.absE_conjUnit]`. Establish `hν : X.ν (Units.map (cA σ : AE F E →* AE F E) t) = X.β t / X.α t`. Rewrite using `[Chars.ν, MonoidHom.div_apply, hα, hβ, inv_div_inv]`. Establish `hpos : (0 : ℝ) < absE F E t`. Establish `h` using `map_mul (absE F E) t t⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[mul_inv_cancel, map_one]`. Establish `: absE F E t ≠ 0` using `left_ne_zero_of_mul_eq_one h.symm`. Conclude with `pos_iff_ne_zero.mpr this` after adjusting the coercions. Establish `hexp : ((b + 2 : ℕ) : ℝ) / 2 = (a' : ℝ) / 2 + (((b + 2 - a') / 2 : ℕ) : ℝ)`. Establish `h2 : 2 * ((b + 2 - a') / 2) + a' = b + 2` using `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (2 * (((b + 2 - a') / 2 : ℕ) : ℝ) + a' : ℝ) = ((b + 2 : ℕ) : ℝ)` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `GlobalTheory.ThK.LemF.fac`. Rewrite using `[hν, habs, hexp, Real.rpow_add hpos, Real.rpow_natCast, Complex.ofReal_mul, Complex.ofReal_pow, Circle.coe_div]`. Establish `h0 : ((absE F E t : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hpos.ne'`.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : (X.α t : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `hB : (X.β t : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fac_div_conj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

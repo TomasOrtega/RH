@@ -11,19 +11,19 @@ noncomputable section
 namespace PositivityTheory.Xgf
 
 /- English proof (translation)
-Establish `one_left : ∀ (Y : Over S), (1 : Y ⟶ G).left = Y.hom ≫ (η[G] : 𝟙_ (Over S) ⟶ G).left`. Introduce `Y`. Rewrite using `[Hom.one_def, Over.comp_left]`. Use `congr 1`. Establish `hmul : Spec.map (CommRingCat.ofHom (CompanionTheory.Ar.epsMul (0 : R))) = Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Apply the tactic sequence `ext <;> simp [CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hid : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hsec : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom) ≫ Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) = 𝟙 _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hid, CommRingCat.ofHom_id, Spec.map_id]`. Unfold `IsTanAt`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Over.comp_left, one_left]`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (CompanionTheory.Ar.epsMul (0 : R))) ≫ v.left = _`. Rewrite using `[hmul, Category.assoc, h, one_left]`. Simplify using `[epsAt]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[one_left]`. Establish `h2` using `congrArg Over.Hom.left h`. Rewrite `h2` using `[Over.comp_left, one_left]`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (CompanionTheory.Ar.epsMul (0 : R))) ≫ v.left = _ at h2`. Rewrite `h2` using `[hmul, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrArg (fun q => Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom) ≫ q) h2`. Simplify using `only [epsAt, Over.mk_hom, ← Category.assoc, hsec, Category.id_comp] at h3`. Rewrite using `[h3]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem isTanAt_iff_epsScale_zero_comp_eq_one {R : Type} [CommRing R] {S : Scheme} (x : Sp R ⟶ S) (G : Over S) [GrpObj G]
     (v : epsAt x ⟶ G) : IsTanAt G x v ↔ LieTangent.epsScale x 0 ≫ v = 1 := by
@@ -67,73 +67,63 @@ private theorem isTanAt_iff_epsScale_zero_comp_eq_one {R : Type} [CommRing R] {S
 
 open BaseChangeTangents in
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c K _ V _ _ _ y T tK m m' U _ _ M ρ σ I _ n r e uV u v hρ hσ huVt huVb hcorr hv hspan`. Establish `hinj : Function.Injective (algebraMap V K)` using `IsFractionRing.injective V K`. Set `P : (epsAt (𝟙 (Sp V)) ⟶ T.G) → (epsAt (under y) ⟶ Xo.univ.t.G)` to `fun w => BaseChangeTangents.push m.cart (BaseChangeTangents.bcTan (algebraMap V K) m'.cart w)`. Establish `hP1 : P 1 = 1`. Simplify using `only [P, BaseChangeTangents.bcTan_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `map_one (BaseChangeTangents.pushHom m.cart)`. Establish `hPscale : ∀ (a : V) w, P (LieTangent.epsScale (𝟙 (Sp V)) a ≫ w) = LieTangent.epsScale (under y) (algebraMap V K a) ≫ P w`. Introduce `a w`. Simplify using `only [P, BaseChangeTangents.bcTan_scale, BaseChangeTangents.push_scale]`. Establish `hPcomb : ∀ {N : ℕ} (cc : Fin N → V) (w : Fin N → (epsAt (𝟙 (Sp V)) ⟶ T.G)), P (List.ofFn fun i => LieTangent.epsScale (𝟙 (Sp V)) (cc i) ≫ w i).prod = (List.ofFn fun i => LieTangent.epsScale (under y) (algebraMap V K (cc i)) ≫ P (w i)).prod`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N cc w`. Simplify using `only [P, BaseChangeTangents.bcTan_comb, BaseChangeTangents.push_comb]`. Establish `hPact : ∀ (a : 𝓞 E) w, P (w ≫ T.act.act a) = P w ≫ Xo.univ.t.act.act a`. Introduce `a w`. Simplify using `only [P]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[BaseChangeTangents.bcTan_act _ m'.cart (tK.act.act a) (T.act.act a) (m'.act a), BaseChangeTangents.push_act m.cart (tK.act.act a) (Xo.univ.t.act.act a) (m.act a)]`. Establish `tprod : ∀ (L : List (epsAt (𝟙 (Sp V)) ⟶ T.G)), (∀ w ∈ L, IsTanAt T.G (𝟙 (Sp V)) w) → IsTanAt T.G (𝟙 (Sp V)) L.prod`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `_`. Simplify using `using LieTangent.isTanAt_one`. Consider the case `cons a L ih`. Introduce `h`. Rewrite using `[List.prod_cons]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `LieTangent.isTanAt_mul (h a (by simp)) (ih fun w hw => h w (by simp [hw]))`. Establish `tcomb : ∀ {N : ℕ} (cc : Fin N → V) (w : Fin N → (epsAt (𝟙 (Sp V)) ⟶ T.G)), (∀ k, IsTanAt T.G (𝟙 (Sp V)) (w k)) → IsTanAt T.G (𝟙 (Sp V)) (List.ofFn fun i => LieTangent.epsScale (𝟙 (Sp V)) (cc i) ≫ w i).prod`. Introduce `N cc w hw`. Apply `tprod` to reduce the goal to its premises. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [List.mem_ofFn] at hz`. Take `⟨i, rfl⟩` from `hz`. Conclude with `LieTangent.isTanAt_scale _ (hw i)`. Establish `hPinj : ∀ w w', IsTanAt T.G (𝟙 (Sp V)) w → IsTanAt T.G (𝟙 (Sp V)) w' → P w = P w' → w = w'`. Introduce `w w' hw hw' h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `BaseChangeTangents.bcTan_inj _ m'.cart hinj hw hw' (BaseChangeTangents.push_inj m.cart h)`. Establish `hM0 : M.pt 0 = 1`. Establish `h` using `M.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.mp h.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hMscale : ∀ (a : K) (z : U), M.pt (a • z) = LieTangent.epsScale (under y) a ≫ M.pt z`. Introduce `a z`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[M.smul, Over.comp_left]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hPu : ∀ k, P (uV k) = M.pt (u (e k))`. Introduce `k`. Take `⟨s, hs1, hs2⟩` from `hcorr k`. Establish `hs` using `BaseChangeTangents.eq_bcTan_left (algebraMap V K) m'.cart rfl (uV k) s hs2`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [P]`. Rewrite using `[BaseChangeTangents.push_left, ← hs]`. Conclude with `hs1`. Establish `hPsum : ∀ {N : ℕ} (cc : Fin N → V) (w : Fin N → (epsAt (𝟙 (Sp V)) ⟶ T.G)) (z : Fin N → U), (∀ k, P (w k) = M.pt (z k)) → P (List.ofFn fun i => LieTangent.epsScale (𝟙 (Sp V)) (cc i) ≫ w i).prod = M.pt (∑ i, algebraMap V K (cc i) • z i)`. Introduce `N cc w z hwz`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hPcomb]`. Simplify using `only [hwz]`. Conclude with `BaseChangeTangents.prod_pt M _ z`. Establish `hsmul : ∀ (a : V) (z : U), a • z = algebraMap V K a • z` using `fun a z => (algebraMap_smul K a z).symm`. Establish `hliV : LinearIndependent V u`.
+Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Set `cc : Fin n → V` to `fun k => g (e k)`. Establish `hsum : ∑ k, algebraMap V K (cc k) • u (e k) = 0`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomb1 : P (List.ofFn fun k => LieTangent.epsScale (𝟙 (Sp V)) (cc k) ≫ uV k).prod = P 1`. Rewrite using `[hPsum cc uV (fun k => u (e k)) hPu]`. Simplify using `only [hsum, hM0, hP1]`. Establish `heq1` using `hPinj _ _ (tcomb cc uV huVt) LieTangent.isTanAt_one hcomb1`. Take `⟨c0, _, huniq⟩` from `huVb 1 LieTangent.isTanAt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc1 : IsComb cc uV 1`. Rewrite using `[BaseChangeTangents.isComb_iff]`. Conclude with `heq1.symm`. Establish `hc0 : IsComb (fun _ => (0 : V)) uV 1`. Rewrite using `[BaseChangeTangents.isComb_iff]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `h0 : ∀ k, LieTangent.epsScale (𝟙 (Sp V)) (0 : V) ≫ uV k = 1` using `fun k => (isTanAt_iff_epsScale_zero_comp_eq_one _ _ _).mp (huVt k)`. Simplify using `only [h0, List.ofFn_const, List.prod_replicate, one_pow]`. Establish `hcc` using `(huniq cc hc1).trans (huniq _ hc0).symm`. Establish `hk` using `congrFun hcc (e.symm i)`. Simplify `hk` using `[cc]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hliK : LinearIndependent K u` using `LinearIndependent.localization K (nonZeroDivisors V) hliV`. Use `⟨hliK, ?_⟩` and prove the remaining obligations. Set `σV : 𝓞 E →+* V` to `(σ.comp (algebraMap (𝓞 E) E)).codRestrict V (fun a => hσ a)`. Establish `hσV : ∀ a, algebraMap V K (σV a) = σ (a : E)` using `fun a => rfl`. Establish `hvmem : ∀ a, v a ∈ Submodule.span V (Set.range u) ⊓ (HT.eigSp ρ σ).restrictScalars V`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Rewrite using `[hspan]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Use `choose d hd using fun a => (Submodule.mem_span_range_iff_exists_fun V).mp (hvmem a).1`. Set `vV : Fin r → (epsAt (𝟙 (Sp V)) ⟶ T.G)` to `fun a => (List.ofFn fun k => LieTangent.epsScale (𝟙 (Sp V)) (d a (e k)) ≫ uV k).prod`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPv : ∀ a, P (vV a) = M.pt (v a)`. Introduce `a`. Rewrite using `[hPsum (fun k => d a (e k)) uV (fun k => u (e k)) hPu, ← hd a]`. Use `congr 1`. Rewrite using `[← Equiv.sum_comp e (fun i => d a i • u i)]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => (hsmul _ _).symm`. Establish `hvVt : ∀ a, IsTanAt T.G (𝟙 (Sp V)) (vV a)` using `fun a => tcomb _ uV huVt`. Establish `heig : ∀ w (z : U), IsTanAt T.G (𝟙 (Sp V)) w → P w = M.pt z → (IsEigVec T.act (𝟙 (Sp V)) σV w ↔ z ∈ HT.eigSp ρ σ)`. Introduce `w z hw hwz`. Establish `key : ∀ a : 𝓞 E, (Over.Hom.left (w ≫ T.act.act a) = spMap (CompanionTheory.Ar.epsMul (σV a)) ≫ Over.Hom.left w) ↔ ρ a z = σ (a : E) • z`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Establish `e1 : (Over.Hom.left (w ≫ T.act.act a) = spMap (CompanionTheory.Ar.epsMul (σV a)) ≫ Over.Hom.left w) ↔ w ≫ T.act.act a = LieTangent.epsScale (𝟙 (Sp V)) (σV a) ≫ w`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h, Over.comp_left]`. Both sides reduce to the same expression. Introduce `h`. Rewrite using `[h, Over.comp_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Use `haveI := T.act.hom a`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `congrArg P h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[hPact, hPscale, hwz, hσV]`. Apply `M.inj` to reduce the goal to its premises. Rewrite using `[hMscale, ← h2]`. Conclude with `hρ a z`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hPinj _ _ (TransportLieModel.isTanAt_comp hw _) (LieTangent.isTanAt_scale _ hw)` to reduce the goal to its premises. Rewrite using `[hPact, hPscale, hwz, hσV, ← hMscale, ← h]`. Conclude with `(hρ a z).symm`. Simplify using `only [IsEigVec, hw, true_and, key]`. Simplify using `only [HT.eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨σV, vV, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `RingHom.ext fun a => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Conclude with `(heig (vV a) (v a) (hvVt a) (hPv a)).mpr ((Submodule.restrictScalars_mem _ _ _).mp (hvmem a).2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hwt : IsTanAt T.G (𝟙 (Sp V)) w` using `hw.1`. Take `⟨cc, hcc, _⟩` from `huVb w hwt`. Rewrite `hcc` using `[BaseChangeTangents.isComb_iff]`. Establish `hPw : P w = M.pt (∑ k, algebraMap V K (cc k) • u (e k))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hcc]`. Conclude with `hPsum cc uV (fun k => u (e k)) hPu`. Establish `hzE` using `(heig w _ hwt hPw).mp hw`. Establish `hzU : (∑ k, algebraMap V K (cc k) • u (e k)) ∈ Submodule.span V (Set.range u)`. Apply `Submodule.sum_mem` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `k _`. Rewrite using `[← hsmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨e k, rfl⟩)`. Establish `hzv : (∑ k, algebraMap V K (cc k) • u (e k)) ∈ Submodule.span V (Set.range v)`. Rewrite using `[← hspan]`.
-
-Conclude with `⟨hzU, hzE⟩`. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun V).mp hzv`. Establish `hPg : P (List.ofFn fun a => LieTangent.epsScale (𝟙 (Sp V)) (g a) ≫ vV a).prod = M.pt (∑ k, algebraMap V K (cc k) • u (e k))`. Rewrite using `[hPsum g vV v hPv, ← hg]`. Conclude with `congrArg M.pt (Finset.sum_congr rfl fun a _ => (hsmul _ _).symm)`.
-
-Use `⟨g, ?_, ?_⟩` and prove the remaining obligations. Use `show Fl.IsComb g vV w`. Rewrite using `[BaseChangeTangents.isComb_iff]`. Conclude with `hPinj _ _ hwt (tcomb g vV hvVt) (hPw.trans hPg.symm)`. Introduce `g' hg'`.
-
-Express the relevant statement in the definitionally equal form `Fl.IsComb g' vV w at hg'`. Rewrite `hg'` using `[BaseChangeTangents.isComb_iff]`. Establish `h1 : M.pt (∑ a, algebraMap V K (g' a) • v a) = M.pt (∑ a, algebraMap V K (g a) • v a)`. Rewrite using `[← hPsum g' vV v hPv, ← hg', hPw, ← hg]`. Conclude with `congrArg M.pt (Finset.sum_congr rfl fun a _ => hsmul _ _)`.
-
-Establish `h2` using `M.inj h1`. Use function extensionality and compare the values at `a`. Apply `hinj` to reduce the goal to its premises. Establish `h3` using `Fintype.linearIndependent_iff.mp hv (fun a => algebraMap V K (g' a) - algebraMap V K (g a)) (by simp only [sub_smul, Finset.sum_sub_distrib, h2, sub_self]) a`. Conclude with `sub_eq_zero.mp h3`.
-
-Introduce `a`. Use `⟨(BaseChangeTangents.bcTan (algebraMap V K) m'.cart (vV a)).left, ?_, BaseChangeTangents.bcTan_left _ _ _⟩` and prove the remaining obligations. Conclude with `(BaseChangeTangents.push_left m.cart _).symm.trans (congrArg Over.Hom.left (hPv a))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lie_model_extends_over_dvr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (K : Type) [Field K] (V : Subring K) [IsDomain V] [IsDiscreteValuationRing V] [IsFractionRing V K] (y : Sp K ⟶ Xo.XF c) (T : SAB H (Sp V)) (tK : SAB H (Sp K)) (m : SABMap tK Xo.univ.t (under y)) (m' : SABMap tK T (spMap (algebraMap V K))) (U : Type) [AddCommGroup U] [Module K U] (M : LieModel Xo.univ.t.G (under y) U) (ρ : 𝓞 E →+* Module.End K U) (σ : E →+* K) (I : Type) [Fintype I] (n r : ℕ) (e : Fin n ≃ I) (uV : Fin n → (epsAt (𝟙 (Sp V)) ⟶ T.G)) (u : I → U) (v : Fin r → U), M.IsActOf Xo.univ.t.act.act ρ → (∀ a : 𝓞 E, σ (a : E) ∈ V) → (∀ k, IsTanAt T.G _ (uV k)) → (∀ w, IsTanAt T.G _ w → ∃! cc : Fin n → V, IsComb cc uV w) → (∀ k, ∃ s : Sp (DualNumber K) ⟶ tK.G.left, s ≫ m.φ = (M.pt (u (e k))).left ∧ s ≫ m'.φ = spMap (dualMap (algebraMap V K)) ≫ (uV k).left) → LinearIndependent K v → Submodule.span V (Set.range u) ⊓ (HT.eigSp ρ σ).restrictScalars V = Submodule.span V (Set.range v) → LinearIndependent K u ∧ IsIntFrame m m' (σ.comp (algebraMap (𝓞 E) E)) (fun a => M.pt (v a)) := by
   intro E _ _ _ H D l Xo c K _ V _ _ _ y T tK m m' U _ _ M ρ σ I _ n r e uV u v hρ hσ huVt huVb hcorr hv hspan

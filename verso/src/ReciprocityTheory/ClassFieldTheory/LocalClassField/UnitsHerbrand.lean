@@ -20,19 +20,17 @@ noncomputable def uE (h : K ≤ L) [(subG p K L).Normal] :
   map_add' _ _ := Units.ext (Subtype.ext rfl)
 
 /- English proof (translation)
-Establish `: ProperSpace L` using `FiniteDimensional.proper ℚ_[p] L`. Establish `hc : IsCompact (Metric.closedBall (0 : L) 1)` using `isCompact_closedBall 0 1`. Take `⟨t, -, htf, hcov⟩` from `finite_cover_balls_of_compact hc (e := ε) hε`. Establish `hex : ∀ w : (layerU p K L).V, ∃ y : t, ‖uval w - ((y : L) : PadicAlgCl p)‖ < ε`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : (⟨uval w, uval_mem h w⟩ : L) ∈ Metric.closedBall (0 : L) 1`. Rewrite using `[mem_closedBall_zero_iff]`. Conclude with `(norm_uval w).le`. Take `⟨y, hy, hwy⟩` from `Set.mem_iUnion₂.1 (hcov hw)`. Rewrite `hwy` using `[Metric.mem_ball, dist_eq_norm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨y, hy⟩, hwy⟩`. Use `choose c hc' using hex`. Establish `hsub : ∀ w w', c w = c w' → w - w' ∈ X`. Introduce `w w' hww`. Apply `hX` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : uval (w - w') - 1 = (uval w - uval w') * (uval w')⁻¹`. Rewrite using `[uval_sub, sub_mul, mul_inv_cancel₀ (uval_ne_zero w')]`. Rewrite using `[h1, norm_mul, norm_inv, norm_uval, inv_one, mul_one]`. Establish `h2 : uval w - uval w' = (uval w - ((c w : L) : PadicAlgCl p)) - (uval w' - ((c w : L) : PadicAlgCl p))`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2, sub_eq_add_neg]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt (hc' w) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, hww]`. Conclude with `hc' w'`. Establish `: Finite t` using `htf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : Finite ((layerU p K L).V ⧸ X)`. Use `Finite.of_injective (fun q => c q.out) fun q q' hqq => ?_` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.out_eq' q, ← QuotientAddGroup.out_eq' q', QuotientAddGroup.eq]`. Use `hsub _ _ hqq.symm` as an intermediate fact. Rewrite `this` using `[sub_eq_neg_add]`. Then use the resulting hypothesis.
-
-Conclude with `AddSubgroup.finiteIndex_of_finite_quotient`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finiteIndex_of_ball (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) [(subG p K L).Normal]
     (X : AddSubgroup (layerU p K L).V) {ε : ℝ} (hε : 0 < ε) (hX : ∀ w, ‖uval w - 1‖ < ε → w ∈ X) :
@@ -68,35 +66,31 @@ theorem finiteIndex_of_ball (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) [(s
   exact AddSubgroup.finiteIndex_of_finite_quotient
 
 /- English proof (translation)
-Set `E : IntermediateField K (PadicAlgCl p)` to `IntermediateField.extendScalars h`. Establish `hfd : FiniteDimensional K E`. Establish `: FiniteDimensional ℚ_[p] E` using `hL`. Conclude with `FiniteDimensional.right ℚ_[p] K _`. Establish `hst : ∀ (σ : GK p K), ∀ x ∈ L, σ x ∈ L` using `(subG_normal_iff h).1 inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : Normal K E`. Rewrite using `[IntermediateField.normal_iff_forall_map_le']`. Introduce and unpack `σ _ ⟨x, hx, rfl⟩`. Conclude with `hst σ x hx`. Establish `hgal : IsGalois K E` using `⟨⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨S, hS1, hS2, ⟨ε, hε, hS3⟩, hS4, hS5⟩` from `exists_units_subgroup_padic hK E`. Set `r : GK p K →* (E ≃ₐ[K] E)` to `AlgEquiv.restrictNormalHom E`. Establish `hr : ∀ (σ : GK p K) (x : E), ((r σ x : E) : PadicAlgCl p) = σ x` using `fun σ x => AlgEquiv.restrictNormalHom_apply E σ x`. Establish `hrs : Surjective r` using `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := E) (PadicAlgCl p)`. Establish `hker : ∀ σ : GK p K, r σ = 1 ↔ σ ∈ subG p K L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `σ`. Prove the components needed by the constructor for the conclusion. Introduce `h1 x hx`. Use `hr σ ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `this.symm`. Introduce `hσ`. Use extensionality with `x`. Rewrite using `[hr]`. Conclude with `hσ x.1 x.2`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : GalLK p K L →* (E ≃ₐ[K] E)` to `QuotientGroup.lift (subG p K L) r fun σ hσ => (hker σ).2 hσ`. Establish `hf : ∀ σ : GK p K, f (QuotientGroup.mk σ) = r σ` using `fun σ => rfl`. Establish `hfb : Bijective f`. Use `⟨(injective_iff_map_eq_one f).2 fun q hq => ?_, fun τ => ?_⟩` and prove the remaining obligations. Proceed by induction on `q using QuotientGroup.induction_on with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Consider the case `H σ => exact (QuotientGroup.eq_one_iff σ).2 ((hker σ).1 hq)`. Take `⟨σ, rfl⟩` from `hrs τ`. Conclude with `⟨QuotientGroup.mk σ, rfl⟩`. Set `e : GalLK p K L ≃* (E ≃ₐ[K] E)` to `MulEquiv.ofBijective f hfb`. Set `ι : (layerU p K L).V → Eˣ` to `fun w => Additive.toMul (uE h w)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hι : ∀ w, (((ι w : Eˣ) : E) : PadicAlgCl p) = uval w` using `fun w => rfl`. Establish `hιrho : ∀ g w, ((ι ((layerU p K L).rho g w) : Eˣ) : E) = e g (ι w : E)`. Introduce `g w`. Proceed by induction on `g using QuotientGroup.induction_on with`. Consider the case `H σ`.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hι, uval_rho]`. Conclude with `(hr σ (ι w : E)).symm`. Establish `hιsurj : ∀ v ∈ S, ∃ w, ι w = v`. Introduce `v hv`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `exists_uval (K := K) (L := L) (x := ((v : E) : PadicAlgCl p)) (v : E).2 (hS2 v hv)`. Conclude with `⟨w, Units.ext (Subtype.ext hw)⟩`. Establish `hprod : ∀ w, uval (∑ g, (layerU p K L).rho g w) = ((∏ τ : E ≃ₐ[K] E, τ (ι w : E) : E) : PadicAlgCl p)`. Introduce `w`. Rewrite using `[uval_sum, ← Fintype.prod_equiv e.toEquiv (fun g => e g (ι w : E)) (fun τ => τ (ι w : E)) (fun _ => rfl), IntermediateField.coe_prod]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.prod_congr rfl fun g _ => by rw [← hιrho, hι]`. Set `X : AddSubgroup (layerU p K L).V` to `(Subgroup.toAddSubgroup S).comap (uE h)`. Establish `hX : ∀ w, w ∈ X ↔ ι w ∈ S` using `fun w => Iff.rfl`. Use `⟨AddSubgroup.toIntSubmodule X, fun g w hw => ?_, ?_, fun w hw hfix => ?_, fun g₀ hg₀ w hw hN => ?_⟩` and prove the remaining obligations. Conclude with `hS1 (e g) (ι w) _ hw (hιrho g w)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.toIntSubmodule_toAddSubgroup]`. Conclude with `finiteIndex_of_ball hL h X hε fun w hw => hS3 (ι w) hw`. Take `⟨v, hv, hvw⟩` from `hS4 (ι w) hw fun τ => by`. Take `⟨g, rfl⟩` from `e.surjective τ`. Rewrite using `[← hιrho, hfix]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨w', rfl⟩` from `hιsurj v hv`. Use `⟨w', hv, uval_injective ?_⟩` and prove the remaining obligations. Rewrite using `[hprod, hvw, hι]`. Take `⟨v, hv, hvw⟩` from `hS5 (e g₀) (fun τ => by`. Take `⟨g, rfl⟩` from `e.surjective τ`.
-
-Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.1 (hg₀ g)`. Rewrite using `[map_zpow]`. Conclude with `Subgroup.zpow_mem_zpowers _ _) (ι w) hw (by`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hprod, hN]`.
-
-Use the proof step `rfl)`. Take `⟨w', rfl⟩` from `hιsurj v hv`. Use `⟨w', hv, uval_injective ?_⟩` and prove the remaining obligations. Rewrite using `[uval_sub, ← hι, hιrho, hvw, MulMemClass.coe_mul, hι, hι, mul_assoc, mul_inv_cancel₀ (uval_ne_zero w'), mul_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_layerU_sub (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
     [(subG p K L).Normal] [Fintype (GalLK p K L)] :
@@ -185,25 +179,23 @@ theorem exists_layerU_sub (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensi
       mul_one]
 
 /- English proof (translation)
-Set `ρW : Representation ℤ G W` to `{ toFun := fun g => (ρ g).restrict (p := W) (q := W) (hW1 g) map_one' := LinearMap.ext fun x => Subtype.ext (by show ρ 1 x.1 = x.1`. Rewrite using `[map_one]`. Use the proof step `rfl)`. Use the proof step `map_mul' := fun a b => LinearMap.ext fun x => Subtype.ext (by show ρ (a * b) x.1 = ρ a (ρ b x.1)`. Rewrite using `[map_mul]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `rfl) }`. Establish `hρ : ∀ g (x : W), ((ρW g x : W) : M) = ρ g x.1` using `fun _ _ => rfl`. Establish `hsum : ∀ x : W, ((∑ g, ρW g x : W) : M) = ∑ g, ρ g x.1`. Introduce `x`. Rewrite using `[Submodule.coe_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Conclude with `Finset.sum_congr rfl fun g _ => hρ g x`. Establish `h0 : Subsingleton (Herbrand.TateZerothCohomology ρW g₀)`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using QuotientAddGroup.induction_on with`. Consider the case `H a`.
+Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `b using QuotientAddGroup.induction_on with`. Consider the case `H b`. Rewrite using `[Herbrand.mk_eq_mk_iff]`. Establish `hab : ((a : W) - (b : W)) ∈ (Herbrand.dHom ρW g₀).ker` using `(a - b).2`. Rewrite `hab` using `[Herbrand.mem_ker_dHom_iff ρW g₀ hg]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨w', hw', hw⟩` from `hW3 ((a : W) - (b : W) : W).1 ((a : W) - (b : W) : W).2 (fun g => congrArg Subtype.val (hab g))`. Use `⟨⟨w', hw'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Herbrand.nHom_apply]`. Conclude with `Subtype.ext ((hsum _).trans hw)`. Establish `h1 : Subsingleton (Herbrand.H1 ρW g₀)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using QuotientAddGroup.induction_on with`. Consider the case `H a`. Proceed by induction on `b using QuotientAddGroup.induction_on with`. Consider the case `H b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[Herbrand.mk_eq_mk_iff]`. Establish `hab : ((a : W) - (b : W)) ∈ (Herbrand.nHom ρW).ker` using `(a - b).2`. Rewrite `hab` using `[AddMonoidHom.mem_ker, Herbrand.nHom_apply]`. Take `⟨w', hw', hw⟩` from `hW4 ((a : W) - (b : W) : W).1 ((a : W) - (b : W) : W).2 ((hsum _).symm.trans (congrArg Subtype.val hab))`. Conclude with `⟨⟨w', hw'⟩, Subtype.ext hw⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨hf, hh⟩` from `Herbrand.h_of_subsingleton ρW g₀`. Establish `hfi : (W.subtype.toAddMonoidHom).range.FiniteIndex`. Establish `: (W.subtype.toAddMonoidHom).range = W.toAddSubgroup`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Rewrite using `[this]`.
-
-Conclude with `hW2`. Take `⟨hiff, heq⟩` from `Herbrand.h_eq_of_finiteIndex ρW ρ g₀ W.subtype.toAddMonoidHom Subtype.val_injective hfi (fun _ _ => rfl)`. Conclude with `⟨hiff.1 hf, (heq hf).symm.trans hh⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem herbrand_of_sub {G M : Type*} [Group G] [Fintype G] [AddCommGroup M] (ρ : Representation ℤ G M) (g₀ : G)
     (hg : ∀ g, g ∈ Subgroup.zpowers g₀) (W : Submodule ℤ M) (hW1 : ∀ g, ∀ w ∈ W, ρ g w ∈ W)
@@ -263,7 +255,7 @@ theorem herbrand_of_sub {G M : Type*} [Group G] [Fintype G] [AddCommGroup M] (ρ
   exact ⟨hiff.1 hf, (heq hf).symm.trans hh⟩
 
 /- English proof (translation)
-Take `⟨W, hW1, hW2, hW3, hW4⟩` from `exists_layerU_sub hK hL h`. Conclude with `herbrand_of_sub (layerU p K L).rho g₀ hg W hW1 hW2 hW3 (hW4 g₀ hg)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem herbrand_layerU (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
     [(subG p K L).Normal] [Fintype (GalLK p K L)] (g₀ : GalLK p K L) (hg : ∀ g, g ∈ Subgroup.zpowers g₀) :

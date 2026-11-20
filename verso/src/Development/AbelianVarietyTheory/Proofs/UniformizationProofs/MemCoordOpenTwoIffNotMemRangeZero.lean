@@ -18,15 +18,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.WeierstrassCurve
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨p, rfl⟩`. Conclude with `(zero_preimage_coordOpen_two W).le h`. Introduce `h`. Assume the negation of the conclusion as `ha`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h₀ : a ∈ originOpen W` using `((originOpen_sup_coordOpen_two W).ge (Set.mem_univ a)).resolve_right ha`. Set `g` to `(scheme W).fromSpecResidueField a`. Establish `hg : ∀ t, g t = a` using `fun t => Scheme.fromSpecResidueField_apply a t`. Establish `e` using `(eq_comp_zero_iff W g).2 ⟨fun t _ => by`. Express the relevant statement in the definitionally equal form `g t ∈ originOpen W`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hg], by` and apply the resulting hypothesis. Use `(basicOpen_eq_bot_iff _).1 ?_` and prove the remaining obligations. Rewrite using `[← Scheme.preimage_basicOpen, basicOpen_originParam]`. Use `le_bot_iff.1 fun t ht => ha ?_` and prove the remaining obligations. Establish `: g t ∈ coordOpen W 2` using `ht.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hg] at this⟩` and apply the resulting hypothesis. Use `h ⟨toSpec W a, ?_⟩` and prove the remaining obligations. Establish `t : Spec ((scheme W).residueField a)` using `Classical.arbitrary _`. Use `congrArg (fun f => f t) e` as an intermediate fact. Simplify using `only [Scheme.Hom.comp_apply, hg] at this`.
-
-Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_coordOpen_two_iff_notMem_range_zero {R : Type} [CommRing R] (W : WeierstrassCurve R)
     (a : scheme W) : a ∈ coordOpen W 2 ↔ a ∉ Set.range (zero W) := by
@@ -54,9 +52,9 @@ theorem mem_coordOpen_two_iff_notMem_range_zero {R : Type} [CommRing R] (W : Wei
     exact this.symm
 
 /- English proof (translation)
-Introduce `K _ W _`. Take `⟨G, hc, he, -⟩` from `exists_grpObj_weierstrass K W W.isUnit_Δ`. Take `⟨h₁, h₂, h₃, h₄⟩` from `originLB_polarisation K W hc he`. Set `A : PolAV (Spec (CommRingCat.of K))` to `{ A := schemeOver W grp := G isAb := isAbelianScheme_schemeOver K W W.isUnit_Δ hc g := 1 smoothDim := smoothOfRelativeDimension_toSpec W L := originLB W isLB := originLB_isLB W rigid := h₁ sym := h₂ ample := h₃ ktriv := h₄ }`. Use `⟨A, Iso.refl _, LB.finPowSec (originLB_isLB W) (n := 0) (secToPow (originSec W) 1) (𝟙 _), (Category.comp_id _).trans he, rfl, fun a => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `LB.nonzeroLocus_finPowSec (originLB_isLB W) (n := 0) (secToPow (originSec W) 1) (𝟙 _)`. Rewrite `e` using `[nonzeroLocus_secToPow _ le_rfl, nonzeroLocus_originSec]`. Conclude with `(Iff.of_eq (congrArg (fun U : (scheme W).Opens => (a : scheme W) ∈ U) e)).trans (mem_coordOpen_two_iff_notMem_range_zero W a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_polAV_section_origin : ∀ (K : Type) [Field K] (W : WeierstrassCurve K) [W.IsElliptic], ∃ (A : PolAV (Spec (CommRingCat.of K))) (e : A.A ≅ GlobalTheory.WeierstrassCurve.schemeOver W) (θ : H0 A.L 1), (η[A.A]).left ≫ e.hom.left = GlobalTheory.WeierstrassCurve.zero W ∧ A.g = 1 ∧ ∀ a : A.A.left, a ∈ nonzeroLocus θ ↔ e.hom.left a ∉ Set.range (GlobalTheory.WeierstrassCurve.zero W) := by
   intro K _ W _

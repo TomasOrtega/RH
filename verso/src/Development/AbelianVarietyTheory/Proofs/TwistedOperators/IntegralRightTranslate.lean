@@ -42,9 +42,9 @@ def iterConv : Submodule ℂ (WO M X → ℂ) where
 variable {ω j G ν 𝓕 μ 𝓔}
 
 /- English proof (translation)
-Establish `hγ' : γ.1 ∈ HFin (AF D.host.F) D.sp.cm.sig M.gram` using `hγ`. Consider the cases of `ε`. Conclude with `hγ'`. Establish `hm : γ.1 ∈ HFin (AF D.host.F) D.sp.cm.sig (-M.gram)`. Unfold `HFin at hγ' ⊢`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[UJ_neg]`. Conclude with `hγ'`. Rewrite `hm` using `[← neg_gram]`. Conclude with `hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofSgn_symm_mem_GQ (ε : Bool) {γ : GA D M} (hγ : γ ∈ GQ M) : (ofSgn ε M).symm γ ∈ GQ (sgn ε M) := by
   have hγ' : γ.1 ∈ HFin (AF D.host.F) D.sp.cm.sig M.gram := hγ
@@ -58,13 +58,13 @@ theorem ofSgn_symm_mem_GQ (ε : Bool) {γ : GA D M} (hγ : γ ∈ GQ M) : (ofSgn
     exact hm
 
 /- English proof (translation)
-Take `⟨hH, hFD⟩` from `h`. Take `⟨_, _, _, hB, hTG, _, hC⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D M`. Establish `: ν.IsMulRightInvariant` using `(GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D M ν hH).1`. Establish `hpres : MeasurePreserving (fun w => w * u) ν ν` using `measurePreserving_mul_right ν u`. Establish `hemb : MeasurableEmbedding (fun w : GA D M => w * u)` using `(MeasurableEquiv.mulRight u).measurableEmbedding`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S : Set (GA D M) := (fun w => w * u⁻¹) ⁻¹' 𝓕 with hSdef`. Establish `hS : IsFundamentalDomain (GQ M) S ν` using `hFD.preimage_of_equiv (measurePreserving_mul_right ν u⁻¹).quasiMeasurePreserving Function.bijective_id (fun g x => by simp only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc])`. Establish `hset : (fun w => w * u) ⁻¹' S = 𝓕`. Use extensionality with `w`. Simplify using `[hSdef]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinv : ∀ (g : GQ M) (x : GA D M), f (g • x) = f x` using `fun g x => hf g g.2 x`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hpres.integrableOn_comp_preimage hemb (f := f) (s := S)`. Rewrite `h1` using `[hset]`. Conclude with `h1.trans (hS.integrableOn_iff hFD hinv)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hpres.setIntegral_preimage_emb hemb f S`. Rewrite `h2` using `[hset]`. Conclude with `h2.trans (hS.setIntegral_eq hFD hinv)`.
+A detailed English derivation is pending.
 -/
 theorem integral_rightTranslate (h : IsHaarFD M ν 𝓕) {f : GA D M → ℂ} (hf : ∀ γ ∈ GQ M, ∀ w, f (γ * w) = f w) (u : GA D M) :
     (IntegrableOn (fun w => f (w * u)) 𝓕 ν ↔ IntegrableOn f 𝓕 ν) ∧ ∫ w in 𝓕, f (w * u) ∂ν = ∫ w in 𝓕, f w ∂ν := by

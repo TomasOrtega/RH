@@ -31,19 +31,19 @@ open GlobalTheory.Mem.AutSpace GlobalTheory.Mem.RealTranslate
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hPQ : P * Q = 1` using `mul_eq_one_comm.1 hQP`. Set `φ : Matrix (Fin n) (Fin n) ℂ →+* Matrix (Fin n) (Fin n) R` to `(algebraMap ℂ R).mapMatrix`. Establish `hc : ∀ (M : Matrix (Fin n) (Fin n) R) a b, (φ P * M * φ Q) a b = ∑ c, ∑ d, (P a c * Q d b) • M c d`. Introduce `M a b`. Simplify using `only [Matrix.mul_apply, φ, RingHom.mapMatrix_apply, Matrix.map_apply, Finset.sum_mul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, ← Algebra.commutes, ← Algebra.smul_def, smul_smul, mul_comm]`. Establish `h1 : Matrix.of (fun a b => ∑ c, ∑ d, (P a c * Q d b) • E c d) = φ P * Matrix.of E * φ Q`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hc]`. Both sides reduce to the same expression. Establish `hqp : φ Q * φ P = 1` using `by rw [← map_mul, hQP, map_one]`. Establish `h2 : ∀ m : ℕ, (φ P * Matrix.of E * φ Q) ^ m = φ P * Matrix.of E ^ m * φ Q`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, mul_one, ← map_mul, hPQ, map_one]`. Consider the case `succ m ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Simplify using `only [mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc (φ Q), hqp, one_mul]`. Rewrite using `[h1, h2]`. Simplify using `only [hc]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Establish `: ∀ d, ∑ a, (P a c * Q d a) • (Matrix.of E ^ m) c d = (Q * P) d c • (Matrix.of E ^ m) c d`. Introduce `d`. Rewrite using `[← Finset.sum_smul, Matrix.mul_apply]`. Simplify using `only [mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[this, hQP, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_pow_conj {R : Type} [Ring R] [Algebra ℂ R] {n : ℕ} (E : Fin n → Fin n → R)
     (P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1) (m : ℕ) :

@@ -13,26 +13,26 @@ section
 variable {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : Ideal R}
 
 /- English proof (translation)
-Introduce `N` and use `(hf N).comp (Ideal.quotientMap (J ^ N) φ ((Ideal.pow_right_mono h N).trans (Ideal.le_comap_pow φ N)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_map {S : Type} [CommRing S] {J : Ideal S} (φ : R →+* S) (h : I ≤ J.comap φ) {f : Γ → R}
     (hf : AdicCont I f) : AdicCont J fun g => φ (f g) := fun N =>
   (hf N).comp (Ideal.quotientMap (J ^ N) φ ((Ideal.pow_right_mono h N).trans (Ideal.le_comap_pow φ N)))
 
 /- English proof (translation)
-Introduce `N` and use `(hf N).mul (hg N)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_mul {f g : Γ → R} (hf : AdicCont I f) (hg : AdicCont I g) : AdicCont I fun x => f x * g x :=
   fun N => (hf N).mul (hg N)
 
 /- English proof (translation)
-Introduce `N` and use `(hf N).neg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_neg {f : Γ → R} (hf : AdicCont I f) : AdicCont I fun x => -f x :=
   fun N => (hf N).neg
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [tn] <;> first`. Consider the case `exact ac_mul (hf _ _) (ht _ _)`. Consider the case `exact ac_neg (ac_mul (hf _ _) (ht _ _))`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 -/
 private theorem ac_tn {f t : Γ → M2 R} (hf : ∀ i j, AdicCont I fun g => f g i j)
     (ht : ∀ i j, AdicCont I fun g => t g i j) (i j : Fin 4) : AdicCont I fun g => tn (f g) (t g) i j := by
@@ -44,7 +44,7 @@ private theorem ac_tn {f t : Γ → M2 R} (hf : ∀ i j, AdicCont I fun g => f g
 end
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ d T`. Establish `hc : Continuous (resQ T.F)` using `UpperTheory.V.Af.continuous_restrictScalarsHom ℚ T.F Ω`. Establish `hm : maximalIdeal d.c.O ≤ (maximalIdeal d.c₁.O).comap (inc d.h)` using `fun x hx => (UpperTheory.V.Fr.sc_norm l d.c₁ (inc d.h x)).2.2 ((UpperTheory.V.Fr.sc_norm l d.c x).2.1 hx)`. Establish `h1 : (d.Q T).Cont (maximalIdeal d.c₁.O)` using `fun i j N => (ac_mul (ac_map (inc d.h) hm d.tw.cont) (ac_tn d.mod.cont d.tau.cont i j) N).comp_continuous hc`. Conclude with `⟨h1, fun R _ f hf i j => ac_map (J := ⊥) f (fun y hy => Ideal.mem_comap.2 (Ideal.mem_bot.2 (hf y hy))) (h1 i j)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem contOf4 : ContOf4 := by
   intro Ω _ _ _ l _ d T

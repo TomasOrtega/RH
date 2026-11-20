@@ -20,19 +20,15 @@ open MeasureTheory Filter Topology
 namespace GlobalTheory.WeilL2Words
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (κ → FiniteAdeleRing (𝓞 F) F) := borel _`. Use `haveI : BorelSpace (κ → FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩`. Use `haveI : OpensMeasurableSpace (κ → mixedEmbedding.mixedSpace F) := Pi.opensMeasurableSpace`. Establish `hc : Continuous fun z : ℂ => ‖z‖ₑ ^ 2` using `(ENNReal.continuous_pow 2).comp continuous_enorm`. Establish `hin : ∀ y, (∫⁻ x, ‖D (GlobalTheory.WeilCont.adeleJoin F x y)‖ₑ ^ 2) ≤ liminf (fun n => ∫⁻ x, ‖G n (GlobalTheory.WeilCont.adeleJoin F x y)‖ₑ ^ 2) atTop`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Establish `hm : ∀ n, AEMeasurable (fun x => ‖G n (GlobalTheory.WeilCont.adeleJoin F x y)‖ₑ ^ 2) volume`. Introduce `n`. Take `⟨s, hs⟩` from `GlobalTheory.WeilCont.exists_slice F (hG n) y`. Establish `e : (fun x => ‖G n (GlobalTheory.WeilCont.adeleJoin F x y)‖ₑ ^ 2) = fun x => ‖s x‖ₑ ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[hs]`. Rewrite using `[e]`. Conclude with `(hc.comp s.continuous).measurable.aemeasurable`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Conclude with `(((hc.tendsto _).comp (hD _)).liminf_eq).symm`. Use `_ ≤ _ := lintegral_liminf_le' hm`. Establish `hmeas : ∀ n, AEMeasurable (fun y => ∫⁻ x, ‖G n (GlobalTheory.WeilCont.adeleJoin F x y)‖ₑ ^ 2) μ`. Introduce `n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨m, f, g, hg, he⟩` from `schA_exists_sum F (hG n)`. Establish `hlc : IsLocallyConstant (fun y => ∫⁻ x, ‖G n (GlobalTheory.WeilCont.adeleJoin F x y)‖ₑ ^ 2)`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `y`. Establish `hev : ∀ᶠ z in 𝓝 y, ∀ i, g i z = g i y` using `Filter.eventually_all.2 fun i => (hg i).1.eventually_eq y`.
-
-Use `filter_upwards [hev] with z hz`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [he, Finset.sum_apply, GlobalTheory.WeilCont.pureA_adeleJoin, hz]`. Conclude with `hlc.continuous.measurable.aemeasurable`. Use `le_antisymm ?_ (bot_le)` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem l2A_eq_zero_of_tendsto (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (μ : @MeasureTheory.Measure (κ → FiniteAdeleRing (𝓞 F) F) (borel _))

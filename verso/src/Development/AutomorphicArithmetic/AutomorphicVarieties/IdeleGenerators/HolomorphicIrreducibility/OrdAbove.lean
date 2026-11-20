@@ -28,9 +28,9 @@ section Loc
 variable {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Establish `h1` using `((GlobalTheory.CompletionNorm.norm_nabs_valuation F w).1 x).2.2`. Establish `h2 : Valued.v ((atFin w (Formalism.L2.Host.unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) = WithZero.exp (-1 : ℤ)` using `unif_spec w`. Establish `h3 : IsUnitAt w (x * (atFin w (Formalism.L2.Host.unif w) ^ GlobalTheory.SmGL.ord (w.adicCompletion F) x)⁻¹)`. Unfold `IsUnitAt`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, h1, h2, ← WithZero.exp_zsmul, ← WithZero.exp_neg, ← WithZero.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h4` using `hμ _ h3`. Rewrite `h4` using `[map_mul, map_inv, map_zpow, mul_inv_eq_one]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem unr_val (μ : (w.adicCompletion F)ˣ →* ℂˣ) (hμ : ∀ x, IsUnitAt w x → μ x = 1) (x : (w.adicCompletion F)ˣ) :
     μ x = μ (atFin w (Formalism.L2.Host.unif w)) ^ GlobalTheory.SmGL.ord (w.adicCompletion F) x := by
@@ -46,7 +46,7 @@ private theorem unr_val (μ : (w.adicCompletion F)ˣ →* ℂˣ) (hμ : ∀ x, I
   rwa [map_mul, map_inv, map_zpow, mul_inv_eq_one] at h4
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `(GlobalTheory.CompletionNorm.norm_nabs_valuation F w).1 x`. Rewrite using `[GlobalTheory.SmGL.val_absPow, ← h1, h2, Complex.cpow_neg_one]`. Use `push_cast`. Rewrite using `[zpow_neg, inv_inv]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem abs_val (x : (w.adicCompletion F)ˣ) :
     ((GlobalTheory.SmGL.absPow (w.adicCompletion F) (-1) x : ℂˣ) : ℂ) = ((normV w : ℕ) : ℂ) ^ GlobalTheory.SmGL.ord (w.adicCompletion F) x := by
@@ -58,9 +58,9 @@ private theorem abs_val (x : (w.adicCompletion F)ˣ) :
 end Loc
 
 /- English proof (translation)
-Establish `: IsGalois F Ω` using `IsAlgClosure.isGalois F Ω`. Establish `: Finite (G F Ω ⧸ ξ.ker)` using `Subgroup.quotient_finite_of_isOpen _ hξ`. Establish `h0 : ξ.ker.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `h1 : ξ (g ^ ξ.ker.index) = 1` using `Subgroup.pow_index_mem ξ.ker g`. Establish `h2 : ‖(ξ g : Qbar l)‖ ^ ξ.ker.index = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, ← map_pow, h1, Units.val_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) h0).1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_fin {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
     (ξ : G F Ω →* (Qbar l)ˣ) (hξ : IsOpen (ξ.ker : Set (G F Ω))) (g : G F Ω) : ‖(ξ g : Qbar l)‖ = 1 := by
@@ -73,7 +73,7 @@ private theorem norm_fin {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alg
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) h0).1 h2
 
 /- English proof (translation)
-Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; -1, 0] (by simp), fun s => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.det_fin_two] <;> ring`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dualTw_det {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (Fin 2) k) :
     DualTw r (Matrix.GeneralLinearGroup.det.comp r) := by
@@ -82,9 +82,9 @@ private theorem dualTw_det {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (F
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.det_fin_two] <;> ring
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Establish `h1 : Matrix.GeneralLinearGroup.det (g * r s * g⁻¹) = Matrix.GeneralLinearGroup.det (r s)`. Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Rewrite using `[← h1]`. Apply `Units.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two, (hg s).2 0, (hg s).2 1, (hg s).1 1 0 (by decide)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem det_flag {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (Fin 2) k) (κ : Fin 2 → Γ →* kˣ) (h : W.HasFlag r κ) (s : Γ) :
     Matrix.GeneralLinearGroup.det (r s) = κ 0 s * κ 1 s := by
@@ -97,20 +97,20 @@ private theorem det_flag {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (Fin
   simp
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CyclotomicCharacterContinuous.cont_cyc F Ω l`.
+A detailed English derivation is pending.
 -/
 private theorem cont_cyc (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime] :
     Continuous (cycBar F Ω l) :=
   _root_.UpperTheory.Reformulated.B.CyclotomicCharacterContinuous.cont_cyc F Ω l
 
 /- English proof (translation)
-Establish `e : Matrix.GeneralLinearGroup.det.comp r * cycBar F Ω l ^ (((2 : ℕ) : ℤ) - 1) = cycBar F Ω l ^ (s + 1) * ξ`. Rewrite using `[H.det, _root_.zpow_add, mul_right_comm]`. Evaluate the numerical expressions. Establish `hc : Continuous (cycBar F Ω l ^ (s + 1) * ξ : G F Ω →* (Qbar l)ˣ)`. Rewrite using `[← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Matrix.GeneralLinearGroup.continuous_det.comp H.cont).mul ((cont_cyc F Ω l).zpow _)`. Take `⟨χ, hχ⟩` from `(Af.algOfCyc hP F Ω l ι).1 _ hc fun v hv => by`. Establish `hA` using `isPlaceOver_placeOf Ω v`. Use `⟨_, hA, s + 1, 1, one_pos, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : ξ g = 1` using `(H.ram v _ hA).2 (Or.inr hv) hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_one, MonoidHom.mul_apply, h1, mul_one, MonoidHom.zpow_apply, ← _root_.zpow_add, add_neg_cancel, zpow_zero]`. Establish `hd` using `(Af.selfDualR hP F Ω l ι 2 one_le_two r π H.att _ χ (dualTw_det r) (e ▸ hχ)).1`. Establish `h1` using `UpperTheory.central_char_sq_eq_of_isSelfDualBy F π χ hd w σ hσ _ z hz`. Rewrite `h1` using `[UpperTheory.heckeChar_localArtin_eq_cyclotomic_twist hP.litN F Ω l ι χ ξ (s + 1) H.ξ_open hχ w hw A h ar har t]`. Establish `h2` using `congrArg (fun x => ‖ι.symm x‖) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_pow, map_mul, map_zpow₀, map_natCast, RingEquiv.symm_apply_apply, norm_pow, norm_mul, norm_zpow, norm_fin ξ H.ξ_open, mul_one] at h2`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (zpow_nonneg (norm_nonneg _) _) two_ne_zero).1 h2`.
+A detailed English derivation is pending.
 -/
 private theorem cent_weil (hP : Af.HypothesesH) {F Ω : Type} [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {ξ : G F Ω →* (Qbar l)ˣ} {s c m a π r}
@@ -142,33 +142,31 @@ end UpperTheory.V.Sd.OrdinaryAbove
 
 open UpperTheory.V.Sd.OrdinaryAbove in
 /- English proof (translation)
-Introduce `hP F Ω _ _ _ _ _ _ l _ hl _ ι ξ s c m a π r H w hw A h`. Take `⟨-, hm, hs, ha, ⟨lam, hU, hlam⟩, hinf⟩` from `H.above w hw`. Take `⟨χ₀, hpol⟩` from `H.pol`. Take `⟨⟨σ, hσ⟩, hiso⟩` from `Af.locCompR hP.toClassicalTheorems F 2 π w`. Establish `hiso` using `hiso σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ar, har⟩` from `Loc.laArtin hP.litN.aut.art h`. Establish `L` using `hP.litN.loc`. Take `⟨rc, hrc⟩` from `L.llc F _ _ w h`. Establish `hrc` using `GlobalTheory.LocLanglands.isRec_of_isRecLit L.dzc L.dzi L.exh L.multi L.cos L.zel L.geo L.bz F _ _ w h rc hrc`. Establish `hq0 : ((normV w : ℕ) : Qbar l) ≠ 0` using `Nat.cast_ne_zero.2 (one_lt_normV w).ne_bot`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqc : ((normV w : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (one_lt_normV w).ne_bot`. Establish `hqn : ‖((normV w : ℕ) : Qbar l)‖ ≠ 0` using `norm_ne_zero_iff.2 hq0`. Establish `hn : ‖ι.symm lam * (normV w : Qbar l) ^ m w 0‖ = 1`. Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := ι.symm lam * (normV w : Qbar l) ^ m w 0 - a w) (y := a w) (by rw [ha]; exact hlam.ne)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, ha, max_eq_right hlam.le]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hl0 : lam ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hn`. Establish `hn' : ‖ι.symm lam‖ = ‖((normV w : ℕ) : Qbar l)‖ ^ (-m w 0)`. Rewrite `hn` using `[norm_mul, norm_zpow]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[zpow_neg]`. Conclude with `eq_inv_of_mul_eq_one_left hn`. Take `⟨μ₁, μ₂, Lf, hL0, hunr, hval, hLf⟩` from `Sd.jacqOfU hP.toClassicalTheorems F w σ 1 (Units.mk0 lam hl0) one_ne_zero (UpperTheory.hasUEigenvalue_of_locIsotypic F w _ π.finPart σ hiso 1 lam hU)`. Take `⟨s1, s2, hsub, hcen⟩` from `UpperTheory.isSubquotient_principalSeries_of_borel_functional F w σ μ₁ μ₂ Lf hL0 hLf`. Use `set ω : Fin 2 → (w.adicCompletion F)ˣ →* ℂˣ := ![μ₁ * GlobalTheory.SmGL.absPow (w.adicCompletion F) (-1), μ₂] with hω`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hω0 : ∀ t : Weil h, (ω 0 (ar t) : ℂ) = lam ^ (-deg t)` using `fun t => by`. Express the relevant statement in the definitionally equal form `((μ₁ (ar t) * GlobalTheory.SmGL.absPow (w.adicCompletion F) (-1) (ar t) : ℂˣ) : ℂ) = _`. Rewrite using `[Units.val_mul, abs_val, unr_val w μ₁ hunr, har.ord_eq, Units.val_zpow_eq_zpow_val, ← mul_zpow, mul_comm, hval]`. Both sides reduce to the same expression. Establish `hsm : ∀ j, GlobalTheory.SmGL.IsSmoothChar (ω j)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Fin.forall_fin_two.2 ⟨?_, s2⟩` and prove the remaining obligations. Conclude with `Subgroup.isOpen_mono (H₁ := μ₁.ker ⊓ (GlobalTheory.SmGL.absPow (w.adicCompletion F) (-1)).ker) (fun x hx => by`. Express the relevant statement in the definitionally equal form `μ₁ x * GlobalTheory.SmGL.absPow (w.adicCompletion F) (-1) x = 1`. Rewrite using `[hx.1, hx.2, mul_one])`. Use the proof step `(IsOpen.inter s1 (GlobalTheory.SmGL.isSmoothChar_of_isUnram (GlobalTheory.SmGL.isUnram_absPow _ _)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : ∀ t : Weil h, ‖ι.symm (ω 0 (ar t) : ℂ)‖ = ‖((normV w : ℕ) : Qbar l)‖ ^ (m w 0 * deg t)` using `fun t => by`. Rewrite using `[hω0, map_zpow₀, norm_zpow, hn', ← zpow_mul, neg_mul_neg]`. Establish `hn1 : ∀ t : Weil h, ‖ι.symm (ω 1 (ar t) : ℂ)‖ = ‖((normV w : ℕ) : Qbar l)‖ ^ (m w 1 * deg t)` using `fun t => by`. Establish `h1` using `cent_weil hP H hw h har hiso t _ (hcen (ar t))`. Establish `h2 : ((μ₁ (ar t) * μ₂ (ar t) : ℂˣ) : ℂ) = (ω 0 (ar t) : ℂ) * (ω 1 (ar t) : ℂ) * ((normV w : ℕ) : ℂ) ^ deg t`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = ((μ₁ (ar t) * GlobalTheory.SmGL.absPow (w.adicCompletion F) (-1) (ar t) : ℂˣ) : ℂ) * (μ₂ (ar t) : ℂ) * _`. Rewrite using `[Units.val_mul, Units.val_mul, abs_val, har.ord_eq, zpow_neg]`. Clear the denominators using the available nonvanishing facts. Rewrite `h1` using `[h2, map_mul, map_mul, norm_mul, norm_mul, hn0, map_zpow₀, map_natCast, norm_zpow, ← hs, show (m w 0 + m w 1 + 1) * deg t = m w 0 * deg t + m w 1 * deg t + deg t by ring, zpow_add₀ hqn, zpow_add₀ hqn]`. Conclude with `mul_left_cancel₀ (zpow_ne_zero _ hqn) (mul_right_cancel₀ (zpow_ne_zero _ hqn) h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hcp` using `(Hi.psRec hP.litN F Ω 2 w A h ar har rc hrc σ ω hsm).1 hsub`. Establish `hdr` using `UpperTheory.local_global_compatibility_gl2 hP F Ω l hl ι 2 one_le_two r π χ₀ H.cont H.reg hpol H.att w (m w) hinf σ hσ A h rc hrc ((Lev.ssCalc F Ω A w h).1 2 _ (fun j => (ω j).comp ar) hcp)`. Rewrite `hdr` using `[funext hcp]`. Apply the tactic sequence `obtain ⟨κ, hκ, hv⟩ := UpperTheory.deRham_weights_of_localArtin_characters hP.litN F Ω l hl ι 2 w hw A h ar har _ (H.cont.comp continuous_subtype_val) (m w) (fun i j hij => by fin_cases i <;> fin_cases j <;> first | exact hm | exact absurd hij (by decide)) ω hsm (Fin.forall_fin_tw …`. Establish `k0 : ∀ g : ↥(Dec (F` using `F) A), (g : G F Ω) ∈ Ine (F := F) A → κ 0 g = cycBar F Ω l g ^ m w 0 := fun g hg => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hv 0 (ineIncl h ⟨g, hg⟩)`. Rewrite `h1` using `[hω0, deg_ineIncl, mul_zero, zpow_zero, neg_zero, zpow_zero, map_one, mul_one, one_mul]`. Conclude with `Units.ext (h1.trans (Units.val_zpow_eq_zpow_val _ _).symm)`. Use `⟨κ, hκ, Fin.forall_fin_two.2 ⟨k0, fun g hg => ?_⟩, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1` using `det_flag _ κ hκ g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : Matrix.GeneralLinearGroup.det (r g) = cycBar F Ω l g ^ s * ξ g` using `DFunLike.congr_fun H.det (g : G F Ω)`. Establish `h3 : ξ g = 1` using `(H.ram w A h).2 (Or.inr hw) hg`. Rewrite `h2` using `[h3, mul_one, ← hs, _root_.zpow_add]`. Rewrite `h1` using `[k0 g hg]`. Conclude with `mul_left_cancel (h1.symm.trans h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `t : Weil h` to `⟨g, mem_Weil_of_isFrob h hg⟩`. Establish `hd : deg t = 1` using `deg_eq_one_iff.2 hg`. Establish `h1` using `hv 0 t⁻¹`. Rewrite `h1` using `[hω0, deg_inv, hd, neg_neg, zpow_one, mul_neg_one, zpow_neg]`. Establish `h2 : (κ 0 g⁻¹ : Qbar l) * ((normV w : Qbar l) ^ m w 0)⁻¹ = ι.symm lam * (cycBar F Ω l (g : G F Ω)⁻¹ : Qbar l) ^ m w 0` using `h1`.
-
-Establish `h3 : ((κ 0 g⁻¹ * cycBar F Ω l (g : G F Ω) ^ m w 0 : (Qbar l)ˣ) : Qbar l) = ι.symm lam * (normV w : Qbar l) ^ m w 0`. Rewrite `h2` using `[mul_inv_eq_iff_eq_mul₀ (zpow_ne_zero _ hq0), map_inv (cycBar F Ω l), Units.val_inv_eq_inv_val (cycBar F Ω l _), inv_zpow]`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, h2, mul_right_comm _ _ (_ ^ _), inv_mul_cancel_right₀ (zpow_ne_zero _ (Units.ne_zero _))]`. Rewrite using `[h3]`. Conclude with `hlam`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.ordAbove :
     UpperTheory.V.Af.HypothesesH → UpperTheory.V.Sd.OrdAbove := by

@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.EisensteinResidues.Anisotrop
 import Mathlib
 
 /- English proof (translation)
-Introduce `D V h0 a ha hI μ b hμ hb s₁ φ hφ` and use `(h D V h0 a ha hI μ b hμ hb s₁ φ hφ).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ResidueKilled.sec_of_dm (h : ResidueKilled.DM) : GlobalTheory.Published.SiegelEisensteinContinuation :=
   fun D V h0 a ha hI μ b hμ hb s₁ φ hφ => (h D V h0 a ha hI μ b hμ hb s₁ φ hφ).1

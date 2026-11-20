@@ -8,9 +8,9 @@ namespace GlobalTheory.CuspRep.KFin
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use `set y : GL (Fin a) (Cinf E) := Unitary.toUnits k with hy`. Use `set Z : Lie E a := toL (y.val * Matrix.of X * y⁻¹.val) with hZ`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lieD X ψ.1 (g * infGL E a y) = lieD Z (fun x => ψ.1 (x * infGL E a y)) g`. Rewrite using `[← chart_val (lieD X ψ.1) g y, chart_lieD ψ.2 X g (val_mem_invSet y), lieD, chart_rt_inf]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : rmul (toL y.val) (oneL E a) = toL y.val` using `one_mul (Matrix.of (toL y.val))`. Rewrite using `[fderiv_comp _ (by rw [e1]; exact (contDiffAt_chart ψ.2 g (val_mem_invSet y)).differentiableAt (by simp)) (rmul (toL y.val)).differentiableAt, ContinuousLinearMap.fderiv, ContinuousLinearMap.comp_apply, e1]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(y.val : Matrix (Fin a) (Fin a) (Cinf E)) * Matrix.of X = (y.val * Matrix.of X * y⁻¹.val) * (y.val : Matrix (Fin a) (Fin a) (Cinf E))`. Rewrite using `[mul_assoc, Units.inv_mul, mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cptRep_lie (k : Kinf E a) (X : Lie E a) (ψ : Sm E a) :
     cptRep E a k (lie E a X ψ) =
@@ -28,9 +28,9 @@ theorem cptRep_lie (k : Kinf E a) (X : Lie E a) (ψ : Sm E a) :
   rw [mul_assoc, Units.inv_mul, mul_one]
 
 /- English proof (translation)
-Use `set V := Submodule.span ℂ (Set.range fun k => cptRep E a k φ)`. Set `b` to `Module.finBasis ℝ (Lie E a)`. Use `Submodule.finiteDimensional_of_le (S₂ := ⨆ i, V.map (lie E a (b i))) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[SetLike.mem_coe]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `cptRep E a k (lie E a X φ) ∈ _`. Rewrite using `[cptRep_lie, ← b.sum_repr (toL _), map_sum, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply]`. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.mem_iSup_of_mem i (Submodule.mem_map_of_mem (Submodule.subset_span ⟨k, rfl⟩)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kfin_lie (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (X : Lie E a) (φ : Sm E a)
     (hφ : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E a k φ))) :

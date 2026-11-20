@@ -4,11 +4,11 @@ open GlobalTheory.KZ GlobalTheory.CyclotomicQExpansion
 namespace GlobalTheory.CyclotomicQExpansion
 
 /- English proof (translation)
-Establish `hcm : ∀ (c : ℚ → Ω) (ψ : HahnSeries ℚ Ω) (r : ℚ), (cm c ψ).coeff r = c r * ψ.coeff r` using `fun _ _ _ => rfl`. Establish `hsc : ∀ (ψ : HahnSeries ℚ Ω) (r : ℚ), (scale (a / d) ψ).coeff (a / d * r) = ψ.coeff r`. Introduce `ψ r`. Rewrite using `[scale, dif_pos hk]`. Conclude with `HahnSeries.embDomain_coeff (f := (OrderIso.mulLeft₀ (a / d) hk).toOrderEmbedding) (a := r)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HahnSeries.C_mul_eq_smul]`. Use extensionality with `s`. Take `⟨r, rfl⟩ : ∃ r, s = a / d * r` from `⟨s / (a / d), (mul_div_cancel₀ s hk.ne').symm⟩`. Rewrite using `[HahnSeries.coeff_smul]`. Simplify using `only [qD, sub]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcm, hsc, hsc, hcm, hcm, hcm, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem qD_sub (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (a b d : ℚ) (hk : 0 < a / d)
     (φ : HahnSeries ℚ Ω) :

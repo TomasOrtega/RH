@@ -15,11 +15,11 @@ namespace GlobalTheory.GrpConj
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hcc : (M.map c).map c = M` using `Matrix.ext fun i j => hc _`. Establish `hB : B = (-Aᵀ).submatrix e.symm e.symm`. Rewrite using `[hAB, neg_neg]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h2 : Mᵀ * Aᵀ * M.map c = Aᵀ`. Use `congrArg Matrix.transpose hM` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Rewrite using `[← Matrix.submatrix_map, hcc, Matrix.transpose_submatrix]`. Use `conv_rhs => rw [hB]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.mul_neg, Matrix.neg_mul, h2]`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem {R : Type} [CommRing R] {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (c : R →+* R) (hc : ∀ x, c (c x) = x) (e : m ≃ n) (A : Matrix m m R) (B : Matrix n n R)
@@ -36,9 +36,9 @@ theorem conj_mem {R : Type} [CommRing R] {m n : Type} [Fintype m] [DecidableEq m
   rw [hB, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.mul_neg, Matrix.neg_mul, h2]
 
 /- English proof (translation)
-Establish `hB : B = (-Aᵀ).submatrix e.symm e.symm`. Rewrite using `[hAB, neg_neg]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[hB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem symm_hyp {R : Type} [CommRing R] {m n : Type} (e : m ≃ n) (A : Matrix m m R) (B : Matrix n n R)
     (hAB : Aᵀ = -(B.submatrix e e)) : Bᵀ = -(A.submatrix e.symm e.symm) := by
@@ -51,7 +51,7 @@ def gmap {R : Type} [CommRing R] {m n : Type} [Fintype m] [DecidableEq m] [Finty
   (Units.map (Matrix.reindexAlgEquiv R R e).toRingEquiv.toRingHom.toMonoidHom).comp (GeneralLinearGroup.map c)
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `k` using `congrArg (fun X => incA D (X i j)) h`. Simplify `k` using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, Matrix.transpose_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem incM_hyp {V W : HSp D} (e : Fin V.rank ≃ Fin W.rank) (h : V.gramᵀ = -(W.gram.submatrix e e)) :
     (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM V.gram)ᵀ = -((GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM W.gram).submatrix e e) := by
@@ -99,7 +99,7 @@ theorem mt_conjEquiv (V W : HSp D) (e : Fin V.rank ≃ Fin W.rank) (h : V.gram�
     mt W (conjEquiv V W e h g) = ((mt V g).map (cA D)).submatrix e.symm e.symm := rfl
 
 /- English proof (translation)
-Establish `h1 : Continuous (matHom V)` using `continuous_subtype_val`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `((Units.continuous_val.comp h1).matrix_map (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conj D)).matrix_submatrix _ _`. Conclude with `((Units.continuous_coe_inv.comp h1).matrix_map (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conj D)).matrix_submatrix _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_conjEquiv (V W : HSp D) (e : Fin V.rank ≃ Fin W.rank) (h : V.gramᵀ = -(W.gram.submatrix e e)) :
     Continuous (conjEquiv V W e h) := by
@@ -109,21 +109,19 @@ theorem continuous_conjEquiv (V W : HSp D) (e : Fin V.rank ≃ Fin W.rank) (h : 
   · exact ((Units.continuous_coe_inv.comp h1).matrix_map (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conj D)).matrix_submatrix _ _
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)`.
+A detailed English derivation is pending.
 -/
 theorem inclR_inj : Function.Injective (inclR (F := D.host.F) (E := D.host.E) (AF D.host.F)) :=
   Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)
 
 /- English proof (translation)
-Take `⟨y, -, ey⟩` from `hγ`. Establish `e' : mt V γ = (y : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (F` using `D.host.F) (AF D.host.F)) := (congrArg Units.val ey).symm`. Use `set Z := ((y : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (D.sp.cm.sig : D.host.E →+* D.host.E)).submatrix e.symm e.symm with hZdef`. Establish `hZ : mt W (conjEquiv V W e h γ) = Z.map (inclR (F` using `D.host.F) (AF D.host.F)) := by`. Rewrite using `[mt_conjEquiv, e']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Use `⟨gmap (D.sp.cm.sig : D.host.E →+* D.host.E) e y, ?_, Units.ext ?_⟩` and prove the remaining obligations. Establish `hm` using `(conjEquiv V W e h γ).2`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (mt W (conjEquiv V W e h γ)) * JR (AF D.host.F) W.gram * mt W (conjEquiv V W e h γ) = JR (AF D.host.F) W.gram at hm`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[hZ]`. Establish `hcT : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (Z.map (inclR (F` using `D.host.F) (AF D.host.F))) = (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Z).map (inclR (F := D.host.F) (AF D.host.F)) := by`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite `hm` using `[hcT]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Z * W.gram * Z = W.gram`. Apply `Matrix.map_injective inclR_inj` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Conclude with `hm`.
-
-Conclude with `hZ.symm`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_conjEquiv (V W : HSp D) (e : Fin V.rank ≃ Fin W.rank) (h : V.gramᵀ = -(W.gram.submatrix e e)) (γ : GA D V)
     (hγ : γ ∈ GQ V) : conjEquiv V W e h γ ∈ GQ W := by
@@ -151,9 +149,9 @@ theorem rat_conjEquiv (V W : HSp D) (e : Fin V.rank ≃ Fin W.rank) (h : V.gram�
   · exact hZ.symm
 
 /- English proof (translation)
-Introduce `i j`. Establish `k : (mt W (conjEquiv V W e h g) - 1) i j = cA D ((mt V g - 1) (e.symm i) (e.symm j))`. Rewrite using `[mt_conjEquiv]`. Simplify using `only [Matrix.sub_apply, Matrix.one_apply, Matrix.submatrix_apply, Matrix.map_apply, map_sub, EmbeddingLike.apply_eq_iff_eq]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[k]`. Use `congrArg (cA D) (hs (e.symm i) (e.symm j))` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, Formalism.L2.Theta.cA_cA, add_comm]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppAt_conjEquiv (V W : HSp D) (e : Fin V.rank ≃ Fin W.rank) (h : V.gramᵀ = -(W.gram.submatrix e e)) (a : AE D)
     (g : GA D V) (hs : SuppAt a V g) : SuppAt a W (conjEquiv V W e h g) := by
@@ -169,7 +167,7 @@ theorem suppAt_conjEquiv (V W : HSp D) (e : Fin V.rank ≃ Fin W.rank) (h : V.gr
   exact this
 
 /- English proof (translation)
-Rewrite using `[mt_conjEquiv, Matrix.det_submatrix_equiv_self, GlobalTheory.ConjAdjWeil.det_inv_eq]`. Conclude with `(RingHom.map_det (cA D) _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_conjEquiv (V W : HSp D) (e : Fin V.rank ≃ Fin W.rank) (h : V.gramᵀ = -(W.gram.submatrix e e)) (g : GA D V) :
     (mt W (conjEquiv V W e h g)).det = (mt V g⁻¹).det := by
@@ -177,7 +175,7 @@ theorem det_conjEquiv (V W : HSp D) (e : Fin V.rank ≃ Fin W.rank) (h : V.gram�
   exact (RingHom.map_det (cA D) _).symm
 
 /- English proof (translation)
-Introduce `D S T' e₁ h`. Use `⟨conjEquiv T' S e₁ h, continuous_conjEquiv T' S e₁ h, rat_conjEquiv T' S e₁ h, fun g => ?_, fun a g hs => suppAt_conjEquiv T' S e₁ h a g hs, det_conjEquiv T' S e₁ h⟩` and prove the remaining obligations. Rewrite using `[mt_conjEquiv]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_conj_equiv : ∀ (D : D7) (S T' : HSp D) (e₁ : Fin T'.rank ≃ Fin S.rank), T'.gramᵀ = -(S.gram.submatrix e₁ e₁) →
     ∃ φ' : GA D T' ≃* GA D S, Continuous φ' ∧ (∀ γ ∈ GQ T', φ' γ ∈ GQ S) ∧

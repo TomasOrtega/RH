@@ -17,9 +17,7 @@ namespace GlobalTheory.CompanionTheory.HCRep
 open AutomorphicForm GlobalTheory.CompanionTheory.ArchSmooth
 
 /- English proof (translation)
-Use `⟨fun t => (Matrix.isUnit_exp (t • S)).unit, Units.ext (by simp), ?_, fun hS t => ?_⟩` and prove the remaining obligations. Use `open scoped Matrix.Norms.Operator in`. Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) S (0 : ℝ)`. Rewrite `h` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Conclude with `h`.
-
-Rewrite using `[IsUnit.unit_spec, Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, hS, star_trivial, smul_neg, ← Matrix.exp_add_of_commute _ _ (Commute.refl (t • S)).neg_left, neg_add_cancel, NormedSpace.exp_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_skew_curve {E : Type} [Field E] [NumberField E] {a : ℕ} (S : Matrix (Fin a) (Fin a) (Cinf E)) :
     ∃ c : ℝ → GL (Fin a) (Cinf E), c 0 = 1 ∧ HasDerivAt (fun t => toL (c t).val) (toL S) 0 ∧
@@ -34,19 +32,17 @@ theorem exists_skew_curve {E : Type} [Field E] [NumberField E] {a : ℕ} (S : Ma
       ← Matrix.exp_add_of_commute _ _ (Commute.refl (t • S)).neg_left, neg_add_cancel, NormedSpace.exp_zero]
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ Z hZ hfd ψ hψ`. Use `set W := Submodule.span ℂ (Set.range fun k => cptRep E a k φ) with hW`. Establish `hst : ∀ k : Kinf E a, ∀ w ∈ W, cptRep E a k w ∈ W`. Introduce `k w hw`. Use `Submodule.span_induction (p := fun w _ => cptRep E a k w ∈ W) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k', rfl⟩`. Use `Submodule.subset_span ⟨k * k', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cptRep E a (k * k') φ = cptRep E a k (cptRep E a k' φ)`. Rewrite using `[map_mul, Module.End.mul_apply]`. Rewrite using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `W.zero_mem`. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `W.add_mem hx hy`. Introduce `r x _ hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[map_smul]`. Conclude with `W.smul_mem r hx`. Set `S : Matrix (Fin a) (Fin a) (Cinf E)` to `Matrix.of (mMap E a (Z : ArchMatrix E a))`. Establish `hS : S.conjTranspose = -S`. Use extensionality with `i j w`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `h` using `congrFun (congrFun hZ i) j`. Establish `h2` using `congrFun (congrArg Prod.snd h) ⟨w, IsTotallyComplex.isComplex w⟩`. Conclude with `h2`. Take `⟨c, h0, hc, hu⟩` from `exists_skew_curve S`. Set `W' : Submodule ℂ (GA E a → ℂ)` to `W.map (Sm E a).subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hW' : FiniteDimensional ℂ W'` using `inferInstance`. Establish `hF : ∀ t, (fun g => ψ.1 (g * infGL E a (c t))) ∈ W'` using `fun t => ⟨cptRep E a ⟨(c t).val, hu hS t⟩ ψ, hst _ _ hψ, funext fun g => by`. Establish `e : Unitary.toUnits (⟨(c t).val, hu hS t⟩ : Kinf E a) = c t` using `Units.ext rfl`. Express the relevant statement in the definitionally equal form `ψ.1 (g * infGL E a (Unitary.toUnits _)) = _`. Rewrite using `[e]⟩`.
-
-Establish `hd : ∀ g : GA E a, HasDerivAt (fun t : ℝ => ψ.1 (g * infGL E a (c t))) ((liB Z ψ).1 g) 0` using `fun g => hasDerivAt_curve ψ g c (toL S) h0 hc`. Take `⟨w, hw, e⟩` from `AutomorphicForm.mem_of_hasDerivAt W' hF hd`. Rewrite using `[show liB Z ψ = w from Subtype.ext e.symm]` and apply the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem liB_skew_mem_span : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a)
     (Z : (AutomorphicForm.isExpLieAlgebra E a).lieSubalgebra),

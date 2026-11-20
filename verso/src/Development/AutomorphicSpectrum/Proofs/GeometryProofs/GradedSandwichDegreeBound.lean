@@ -10,43 +10,39 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.RootHt
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J y G _ Li _ _ M V r b₀ m i a e₀ _hb₀ hS hD p c hc`. Take `⟨b, π, hf, hfr, hm, hπ, hr⟩` from `hS p`. Establish `hker : flagStep Ω b₀ i ≤ LinearMap.ker (π i)`. Rewrite using `[← hf]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨k, hk, rfl⟩`. Establish `hne : i ≠ k`. Introduce and unpack `rfl`. Simplify using `at hk`. Simplify using `[hπ, hne]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hkill : ∀ (e : Li) (t : Ω), e - t • b₀ i ∈ flagStep Ω b₀ i → π i e = t * π i (b₀ i)`. Introduce `e t h`. Establish `h1 : π i (e - t • b₀ i) = 0` using `hker h`. Simplify `h1` using `[sub_eq_zero]`. Establish `hbi : b i ∈ flagStep Ω b₀ (i + 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← hf]`. Conclude with `Submodule.subset_span ⟨i, by simp, rfl⟩`. Rewrite `hbi` using `[Flag.step_succ]`. Take `⟨z, hz, w, hw, hzw⟩` from `Submodule.mem_sup.1 hbi`. Take `⟨u', rfl⟩` from `Submodule.mem_span_singleton.1 hw`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hone : u' * π i (b₀ i) = 1`. Establish `h1 : π i (b i) = 1` using `by simp [hπ]`. Establish `h2 : π i z = 0` using `hker hz`. Rewrite `h1` using `[← hzw]`. Simplify `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hu' : u' ≠ 0` using `left_ne_zero_of_mul_eq_one hone`. Establish `hw0 : π i (b₀ i) ≠ 0` using `right_ne_zero_of_mul_eq_one hone`. Establish `hcls : b i - u' • b₀ i ∈ flagStep Ω b₀ i`. Establish `: b i - u' • b₀ i = z` using `by rw [← hzw]; abel`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hz`. Establish `hreg : ∀ e ∈ V p, π i e ∈ regAt ξ p`. Introduce `e he`. Rewrite `he` using `[hfr.2]`. Proceed by induction on `he using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Rewrite using `[hπ]`. Use `split_ifs`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Consider the case `zero => simp [zero_mem]`. Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`. Consider the case `smul s x _ hx`. Establish `: π i (s • x) = (s : Ω) * π i x` using `(π i).map_smul (s : Ω) x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `mul_mem s.2 hx`. Establish `hgen : (V.gr b₀ i) p = Submodule.span (regAt ξ p) {u'}`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `s ⟨e, he, hs⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1` using `hkill e s hs`. Use `Submodule.mem_span_singleton.2 ⟨⟨π i e, hreg e he⟩, ?_⟩` and prove the remaining obligations. Use `show π i e * u' = s`. Rewrite using `[h1, _root_.mul_assoc, mul_comm (π i (b₀ i)), hone, _root_.mul_one]`. Introduce and unpack `_ rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨b i, by rw [hfr.2]; exact Submodule.subset_span ⟨i, rfl⟩, hcls⟩`. Establish `hdeg : (V.gr b₀ i) p = Submodule.span (regAt ξ p) {gen y a e₀ c}`. Use `hD.2 p (Set.mem_univ p) c hc` as an intermediate fact. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hspan : Submodule.span (regAt ξ p) {u'} = Submodule.span (regAt ξ p) {gen y a e₀ c}`. Rewrite using `[← hgen, hdeg]`. Establish `a1 : u' ∈ Submodule.span (regAt ξ p) {gen y a e₀ c}`. Rewrite using `[← hspan]`. Conclude with `Submodule.mem_span_singleton_self _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `a2 : gen y a e₀ c ∈ Submodule.span (regAt ξ p) {u'}`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_span_singleton_self _`. Take `⟨α, hα⟩` from `Submodule.mem_span_singleton.1 a1`. Take `⟨β, hβ⟩` from `Submodule.mem_span_singleton.1 a2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hα' : (α : Ω) * gen y a e₀ c = u'` using `hα`. Establish `hβ' : (β : Ω) * u' = gen y a e₀ c` using `hβ`. Establish `hg0 : gen y a e₀ c ≠ 0`. Introduce `h0`. Rewrite `hα'` using `[h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu' hα'.symm`. Establish `hκ : u' / gen y a e₀ c = α`. Rewrite using `[← hα']`. Clear the denominators using the available nonvanishing facts. Establish `hκi : (u' / gen y a e₀ c)⁻¹ = β`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_div, ← hβ']`. Clear the denominators using the available nonvanishing facts. Use `⟨b, π, u' / gen y a e₀ c, hf, hfr, hm, hπ, hr, div_ne_zero hu' hg0, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hκ]`. Conclude with `α.2`.
-
-Rewrite using `[hκi]`. Conclude with `β.2`. Introduce `e t _ hcl`. Establish `h1` using `hkill e t hcl`. Establish `h2 : t = π i e * u'`.
-
-Rewrite using `[h1, _root_.mul_assoc, mul_comm (π i (b₀ i)), hone, _root_.mul_one]`. Rewrite using `[h2, mul_div_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem cls_frame : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     (y : (Σ k, J k) → Ω) (G : Over X) [GrpObj G]

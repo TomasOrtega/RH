@@ -9,25 +9,23 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.JSW Filter T
 namespace GlobalTheory.RSNonvan
 
 /- English proof (translation)
-Introduce `E _ _ _ a σ w B hu hB`. Take `⟨ω, hωu, hω⟩` from `hu`. Proceed by induction on `σ using Quotient.inductionOn with | _ π => ?_`. Express the relevant statement in the definitionally equal form `GlobalTheory.LFun.HasSatGL w (π.locRep w) B at hB`. Express the relevant statement in the definitionally equal form `π.HasCentChar ω at hω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨x, hx⟩` from `hB.exists_vec`. Take `⟨ϖ, hϖ⟩` from `GlobalTheory.LFun.exists_isUnifV w`. Establish `hϖ0 : ϖ ≠ 0` using `fun h0 => by simp [IsUnifV, h0] at hϖ`. Set `u : (w.adicCompletion E)ˣ` to `Units.mk0 ϖ hϖ0`. Set `S : GL (Fin a) (w.adicCompletion E)` to `Matrix.GeneralLinearGroup.scalar (Fin a) u`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `K` to `GlobalTheory.LFun.KGL w a`. Establish `hS : ((S : GL (Fin a) (w.adicCompletion E)) : Matrix (Fin a) (Fin a) (w.adicCompletion E)) = diagJ a ϖ a`. Use extensionality with `i j`. Simplify using `[S, u, diagJ, Matrix.GeneralLinearGroup.scalar, Matrix.diagonal_apply]`. Establish `hT : Tj ℂ a (Ov E w) ϖ a = dosetInd ℂ K S`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `Tj dosetInd`. Use `congr 1`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, DoubleCoset.mem_doubleCoset, SetLike.mem_coe]`. Use `exists_congr fun y => and_congr_right fun _ => exists_congr fun z => and_congr_right fun _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.ext_iff, Units.val_mul, Units.val_mul, hS]`. Establish `hc : ∀ g ∈ DoubleCoset.doubleCoset S (K : Set _) K, ∃! γ, γ ∈ ({S} : Finset _) ∧ γ⁻¹ * g ∈ K`. Introduce `g hg`. Take `⟨y, hy, z, hz, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hg`. Use `⟨S, ⟨Finset.mem_singleton_self _, ?_⟩, fun γ hγ => Finset.mem_singleton.1 hγ.1⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : S⁻¹ * (y * S * z) = y * z`. Rewrite using `[show y * S = S * y from (scalar_comm u y).symm]`. Use `group`. Rewrite using `[e]`. Conclude with `K.mul_mem hy hz`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR : ∀ γ ∈ ({S} : Finset _), γ ∈ DoubleCoset.doubleCoset S (K : Set _) K`. Introduce `γ hγ`. Rewrite using `[Finset.mem_singleton.1 hγ]`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨1, K.one_mem, 1, K.one_mem, by group⟩`. Establish `h1` using `hx.2.2.2 ϖ hϖ a le_rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hT, GlobalTheory.LFun.heckeVec_dosetInd hx.2.1 hR hc, Finset.sum_singleton]`. Establish `h2 : π.locRep w S x = ((ω.1 (finId E (Units.map (corner (sLoc E w)) u)) : ℂˣ) : ℂ) • x`. Establish `e : locGL E a w S = Matrix.GeneralLinearGroup.scalar (Fin a) (Units.map (corner (sLoc E w)) u)` using `cornerGL_scalar (sLoc E w) u`. Express the relevant statement in the definitionally equal form `π.finPart (locGL E a w S) x = _`. Rewrite using `[e]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hω _ x`. Rewrite `h1` using `[h2]`. Establish `h3` using `smul_left_injective ℂ hx.1 h1`. Establish `hcard : (B.map fun b : ℂˣ => (b : ℂ)).card = a` using `by rw [Multiset.card_map]; exact hx.2.2.1`. Establish `h4 : GlobalTheory.LFun.satEig (qV E w) a B a = ((B.prod : ℂˣ) : ℂ)`.
-
-Rewrite using `[GlobalTheory.LFun.satEig, sub_self, mul_zero, zero_div, Complex.cpow_zero, one_mul, Multiset.esymm, ← hcard, Multiset.powersetCard_self, Multiset.map_singleton, Multiset.sum_singleton]`. Conclude with `(map_multiset_prod (Units.coeHom ℂ) B).symm`. Rewrite using `[← h4, ← h3]`. Conclude with `hωu _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_prod_sat_eq_one : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (σ : CG E a)
     (w : HeightOneSpectrum (𝓞 E)) (B : Multiset ℂˣ), σ.IsUnitary → σ.HasSat w B → ‖((B.prod : ℂˣ) : ℂ)‖ = 1 := by

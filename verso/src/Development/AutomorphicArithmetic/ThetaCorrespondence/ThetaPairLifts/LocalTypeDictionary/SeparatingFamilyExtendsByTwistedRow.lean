@@ -14,25 +14,23 @@ variable {D : D7}
 end GlobalTheory.RowArrow
 open GlobalTheory.RowArrow in
 /- English proof (translation)
-Introduce `pr hE _ D _ hS T L μ0 hL sc hc G W M hM i hi S S' MA MB e e' cA cB`. Take `⟨X, hX, -, -, h3, h4, h5⟩` from `GlobalTheory.RealPlaceTheta.exists_record_theta_all pr.discreteSeriesCover pr.harishChandraModules`. Establish `I` using `GlobalTheory.PairLift.inputs_of_chosenSeries pr.discreteSeriesCover pr.harishChandraModules pr.cuspRapidDecay pr.casselmanWallach D X hX`. Establish `hP` using `GlobalTheory.PairLift.RuleLift.pairLifts D X I (GlobalTheory.PairLift.cuspAll_of_lowAll D X I (GlobalTheory.PairLift.lowAll_of_lowFock D X I (GlobalTheory.LowerMembersRule.lowFock D X I)))`. Establish `rA : (Node.grid i 0).InRange D.R.m` using `⟨hi.le, Nat.zero_le _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `rB : (Node.grid (i + 1) 0).InRange D.R.m` using `⟨hi, Nat.zero_le _⟩`. Take `⟨FA, a1, a2⟩` from `exists_frame _ _ _ (W.onb_is _ rA)`. Take `⟨FB, b1, b2⟩` from `exists_frame _ _ _ (W.onb_is _ rB)`. Establish `b3 : (frSgn true FB).cart = G.cartS W.cart (.chi i 0)` using `funext fun τ => by`. Rewrite using `[cart_frSgn, b1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `b4 : (frSgn true FB).onb = G.onS W.onb (.chi i 0)` using `b2`. Establish `hR : ∀ τ, PairPar (GlobalTheory.SignedHC.flip (S' τ)) (S τ) (att (GlobalTheory.Grid.cen D τ (D.R.m - i)) (GlobalTheory.Grid.rkV D (i + 1) 0)) (att (GlobalTheory.Grid.cen D τ (D.R.m - i)) (GlobalTheory.Grid.rkV D i 0))` using `fun τ => by`. Rewrite using `[e, e', hc, parRow_eq, parRow_eq]`. Conclude with `GlobalTheory.GridParD.pairPar_X D hS i 0 τ hi (Nat.zero_le _)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hη : ∀ τ, HasInfExp D L.eta τ (1 / 2)` using `fun τ => GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hL.eta (StepVac.hasInfQ_tau (a := fun _ => 1 / 2) ⟨_, fun _ => by norm_num, L.C.isEta.inf⟩) τ`. Establish `hχ : ∀ τ, HasInfExp D (G.ch.chi (D.R.m - i)) τ (GlobalTheory.Grid.cen D τ (D.R.m - i))` using `fun τ => GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ (fun τ => GlobalTheory.Grid.cen D τ (D.R.m - i)) (G.ch.chi_eq _ (by omega) (by omega)) ⟨_, fun τ => by simp only [cen_eq, hc]; push_cast; rfl, G.ch.inf _ (by omega) (by omega)⟩ τ`. Establish `hω : IsWeilExp W.ψ (GlobalTheory.Grid.sgn true (G.V (.grid (i + 1) 0))) (G.V (.grid i 0)) (fun τ => att (GlobalTheory.Grid.cen D τ (D.R.m - i)) (GlobalTheory.Grid.rkV D (i + 1) 0)) (fun τ => att (GlobalTheory.Grid.cen D τ (D.R.m - i)) (GlobalTheory.Grid.rkV D i 0)) (W.om (.chi i …`. Use `⟨_, _, W.om_is (.chi i 0) rB, fun τ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `r : (G.pS (.chi i 0)).rank = GlobalTheory.Grid.rkV D (i + 1) 0` using `(node_isV G hL rB).rank`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GridData.chrS, r]`. Conclude with `exp_att (hχ τ) (hη τ) _`. Establish `r : (G.pT (.chi i 0)).rank = GlobalTheory.Grid.rkV D i 0` using `(node_isV G hL rA).rank`. Rewrite using `[GridData.chrT, r]`. Conclude with `exp_att (hχ τ) (hη τ) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `(W.vac_is i hi).2`. Establish `v0 : IsVacF W.ψ W.θ (frSgn true FB) FA (W.vac i)` using `⟨hv.theta, fun τ => by rw [b3, a1]; exact hv.fock τ⟩`. Establish `n0 : W.vac i ≠ 0` using `fun h => by`. Take `⟨⟨p, hp⟩, h2⟩` from `hv.norm`. Use `h2 p hp` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `[nrm2, h] at this`. Establish `v1 : ∀ κ, IsVacF W.ψ W.θ (frSgn true FB) FA (W.cosVec i κ)` using `fun κ => by`. Take `⟨u, hu, h⟩` from `W.cosVec_is`. Establish `th` using `GlobalTheory.VecTheta.isThetaFunO_of_thetaAt W.ψ_std W.θ_is (h i hi κ) hv.theta`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum hu`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨th, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[b3, a1]`. Conclude with `GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt W.ψ_std.1.1 W.θ_is ho.infPart_eq ho.conj.infPart_eq (h i hi κ) hv.theta th (hv.fock τ)`. Take `⟨hν, h𝓕⟩` from `(hM.row i hi.le).haar_fund`. Take `⟨It, hIt⟩` from `lifts_neg h3 h4 h5 hP hE W.θ_is W.ψ_std MA MB hR FA FB (cA.trans a1.symm) (cB.trans b1.symm) hω v0 n0 hν h𝓕`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨It, fun F hF κ => ?_⟩` and prove the remaining obligations. Take `⟨F', hF', h⟩` from `hIt _ (v1 κ) F hF`. Establish `ef : ∀ P, ptF W.ψ W.θ (frSgn true FB) FA (W.cosVec i κ) P = W.fock (.chi i 0) (W.cosVec i κ) P` using `fun P => by`. Unfold `ptF`. Rewrite using `[b3, b4, a1, a2]`.
-
-Both sides reduce to the same expression. Simplify using `only [ef] at h`. Conclude with `⟨F', hF', fun P v => ⟨fun g => (h P v g).1, funext fun g => (h P v g).2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowArrow.separatingFamily_extends_by_twisted_row : _root_.GlobalTheory.FunPr.ThetaLocalInputs → PairEx → RowModels → RowStep := by
   intro pr hE _ D _ hS T L μ0 hL sc hc G W M hM i hi S S' MA MB e e' cA cB
@@ -104,7 +102,7 @@ open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RowArrow.separatingFamily_extends_by_twisted_row | exact _root_.GlobalTheory.RowArrow.separatingFamily_extends_by_twisted_row | (intros; apply _root_.GlobalTheory.RowArrow.separatingFamily_extends_by_twisted_row <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.separating_family_extend_by_twist : _root_.GlobalTheory.FunPr.ThetaLocalInputs → PairEx → RowModels → RowStep := by
   first | exact @_root_.GlobalTheory.RowArrow.separatingFamily_extends_by_twisted_row | exact _root_.GlobalTheory.RowArrow.separatingFamily_extends_by_twisted_row | (intros; apply _root_.GlobalTheory.RowArrow.separatingFamily_extends_by_twisted_row <;> assumption)

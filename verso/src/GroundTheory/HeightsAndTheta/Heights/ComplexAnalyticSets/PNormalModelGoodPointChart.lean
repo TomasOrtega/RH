@@ -11,51 +11,47 @@ open MvPolynomial Topology ComplexSets
 noncomputable section
 
 /- English proof (translation)
-Introduce `n d J u M w hgood`. Take `⟨hw, c, f, h, g, a, b, k, hc, hfJ, hh, hsat, hg, hli, hk, ha, hb, hrel, himm⟩` from `hgood`. Set `Φ : ((Fin n ⊕ Fin M.m → ℂ) →L[ℂ] ℂ) →ₗ[ℂ] (Fin n ⊕ Fin M.m → ℂ)` to `{ toFun := fun L s => L (Pi.single s 1), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Set `D : Fin (c + 1) → (Fin n ⊕ Fin M.m → ℂ) →L[ℂ] ℂ` to `Fin.cons (fderiv ℂ (fun z => eval z g) w) (fun j => fderiv ℂ (fun z => eval z (f j)) w)`. Establish `hDli : LinearIndependent ℂ D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `LinearIndependent.of_comp Φ ?_` and prove the remaining obligations. Use `hli using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i s`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[D, Φ, NormalModelGoodPointChart.fderiv_eval_apply, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[D, Φ, NormalModelGoodPointChart.fderiv_eval_apply, Pi.single_apply]`. Take `⟨A, hA⟩` from `NormalModelGoodPointChart.exists_clm_ker_inf (LinearMap.pi fun i => (D i : (Fin n ⊕ Fin M.m → ℂ) →ₗ[ℂ] ℂ)) (IndefiniteRowSideFullHecke.ComplexSets.AnalyticImplicitChart.pi_surjective_of_linearIndependent hDli) d (by simp [Module.finrank_fintype_fun_eq_card]; omega)`. Set `q : Fin (d + 1) ⊕ Fin c → (Fin n ⊕ Fin M.m → ℂ) → ℂ` to `Sum.elim (Fin.cons (fun z => eval z g) (fun i z => A (z - w) i)) (fun j z => eval z (f j))`. Establish `hq0 : q (Sum.inl 0) = fun z => eval z g` using `by simp [q]`. Establish `hqs : ∀ i : Fin d, q (Sum.inl i.succ) = fun z => A (z - w) i` using `fun i => by simp [q]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAd : ∀ (i : Fin d) x, HasFDerivAt (fun z => A (z - w) i) ((ContinuousLinearMap.proj i).comp A) x` using `fun i x => by`. Establish `e : (fun z => A (z - w) i) = fun z => ((ContinuousLinearMap.proj i).comp A) z - A w i`. Use function extensionality and compare the values at `z`. Simplify using `[map_sub]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((ContinuousLinearMap.proj i).comp A).hasFDerivAt.sub_const _`. Establish `hqan : ∀ k x, AnalyticAt ℂ (q k) x`. Introduce `k x`. Break down `k with i | j` into its components or cases. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq0]`. Conclude with `AnalyticOnNhd.eval_mvPolynomial g x trivial`. Rewrite using `[hqs]`. Establish `e : (fun z => A (z - w) i) = fun z => ((ContinuousLinearMap.proj i).comp A) z - A w i`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[map_sub]`. Rewrite using `[e]`. Conclude with `(((ContinuousLinearMap.proj i).comp A).analyticAt x).sub analyticAt_const`. Conclude with `AnalyticOnNhd.eval_mvPolynomial (f j) x trivial`. Use `set W : Set (Fin n ⊕ Fin M.m → ℂ) := {z | eval z h ≠ 0 ∧ eval z a ≠ 0 ∧ eval z b ≠ 0} with hWdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hWo : IsOpen W` using `(isOpen_ne_fun (continuous_eval h) continuous_const).inter ((isOpen_ne_fun (continuous_eval a) continuous_const).inter (isOpen_ne_fun (continuous_eval b) continuous_const))`. Take `⟨V, O, φ, hVo, hwV, hVW, hOo, hφan, hφV, hφl, hφr, hback, hder⟩` from `NormalModelGoodPointChart.exists_coordChart q w W (fun k => hqan k w) (by`. Introduce `v hv`. Use `hA v ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `hv (Sum.inl i.succ)` as an intermediate fact. Rewrite `this` using `[hqs, (hAd i w).fderiv]`. Simplify using `using this`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `hv (Sum.inl 0)` as an intermediate fact. Rewrite `this` using `[hq0]`. Simplify `this` using `[D]`. Use `hv (Sum.inr j)` as an intermediate fact. Express the relevant statement in the definitionally equal form `fderiv ℂ (fun z => eval z (f j)) w v = 0 at this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify `this)` using `[D]`. Use the proof step `(by simp; omega) (hWo.mem_nhds ⟨hh, ha, hb⟩)`. Establish `hZf : ∀ z ∈ V, (∀ j, eval z (f j) = 0) → z ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal`. Introduce `z hz hfz p hp`. Take `⟨e, he⟩` from `hsat p hp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hker : Ideal.span (Set.range f) ≤ RingHom.ker (eval z)` using `Ideal.span_le.2 (by rintro _ ⟨j, rfl⟩; exact RingHom.mem_ker.2 (hfz j))`. Establish `h0` using `RingHom.mem_ker.1 (hker he)`. Rewrite `h0` using `[map_mul, map_pow]`. Conclude with `(mul_eq_zero.1 h0).resolve_left (pow_ne_zero _ (hVW hz).1)`. Establish `hφZ : ∀ t ∈ O, φ t ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal` using `fun t ht => hZf _ (hφV t ht) (hφr t ht)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp0 : (fun i => q (Sum.inl i) w) = 0`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify `hg` using `[hq0]`. Simplify using `[hqs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hO0, hφ0⟩` from `hback w hwV (fun j => hw _ (hfJ j))`. Rewrite `hO0`, `hφ0` using `[hp0]`. Take `⟨r, hr, hrO⟩` from `Metric.isOpen_iff.1 hOo 0 hO0`. Establish `hpc : Continuous fun z i => q (Sum.inl i) z` using `continuous_pi fun i => continuous_iff_continuousAt.2 fun x => (hqan _ x).continuousAt`. Use `⟨r, φ, k, hr, fun t ht => (hφan t (hrO ht)).differentiableAt.differentiableWithinAt, fun x hx y hy hxy => funext fun i => by rw [← hφl x (hrO hx) i, ← hφl y (hrO hy) i, hxy], hφ0, fun t ht => hφZ t (hrO ht), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Use `⟨V ∩ (fun z i => q (Sum.inl i) z) ⁻¹' Metric.ball 0 s, Filter.inter_mem (hVo.mem_nhds hwV) (hpc.continuousAt.preimage_mem_nhds (by` and prove the remaining obligations. Rewrite using `[hp0]`. Conclude with `Metric.ball_mem_nhds 0 hs)), ?_⟩`. Introduce and unpack `z ⟨hzZ, hzV, hzs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨_, hzs, (hback z hzV fun j => hzZ _ (hfJ j)).2⟩`. Use `⟨fun t => eval (φ t) a / eval (φ t) b, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Establish `hφt` using `(hφan t (hrO ht)).differentiableAt`. Establish `h1 : DifferentiableAt ℂ (fun t => eval (φ t) a) t` using `(AnalyticOnNhd.eval_mvPolynomial a (φ t) trivial).differentiableAt.comp t hφt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : DifferentiableAt ℂ (fun t => eval (φ t) b) t` using `(AnalyticOnNhd.eval_mvPolynomial b (φ t) trivial).differentiableAt.comp t hφt`. Establish `h3 : DifferentiableAt ℂ (fun t => eval (φ t) a * (eval (φ t) b)⁻¹) t` using `h1.mul (h2.inv (hVW (hφV t (hrO ht))).2.2)`. Simplify `h3.differentiableWithinAt` using `only [div_eq_mul_inv]`. Introduce `t ht`. Establish `hW'` using `hVW (hφV t (hrO ht))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `div_ne_zero hW'.2.1 hW'.2.2`. Introduce `t ht`. Establish `hW'` using `hVW (hφV t (hrO ht))`. Establish `hz` using `hφZ t (hrO ht) _ hrel`. Establish `hgt : eval (φ t) g = t 0` using `by simpa [hq0] using hφl t (hrO ht) 0`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hl : eval (φ t) (rename (Sum.inl : Fin n → Fin n ⊕ Fin M.m) (linForm u)) = linEval u (IndefiniteRowSideFullHecke.ComplexSets.firstCoords (φ t))`. Simplify using `[linForm, linEval, IndefiniteRowSideFullHecke.ComplexSets.firstCoords, map_sum]`. Simplify using `only [map_sub, map_mul, map_pow, hl, hgt] at hz`. Clear denominators, using `[hW'.2.2]` for the nonvanishing conditions. Take the linear combination `hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `v hv0 hν`. Establish `hDd` using `hder 0 hO0 v`. Rewrite `hDd` using `[hφ0]`. Use `set x := fderiv ℂ φ 0 v with hx`. Set `πL : (Fin n ⊕ Fin M.m → ℂ) →L[ℂ] (Fin n → ℂ)` to `ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n ⊕ Fin M.m => ℂ) (Sum.inl i)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hπ : HasFDerivAt (fun t => IndefiniteRowSideFullHecke.ComplexSets.firstCoords (φ t)) (πL.comp (fderiv ℂ φ 0)) 0` using `πL.hasFDerivAt.comp 0 (hφan 0 hO0).differentiableAt.hasFDerivAt`. Rewrite `hν` using `[hπ.fderiv]`. Establish `hx0 : x = 0`. Use `himm x (fun i => by simpa [πL, hx] using congrFun hν i) ?_ ?_` and prove the remaining obligations. Use `hDd.1 0` as an intermediate fact.
-
-Rewrite `this` using `[hq0, NormalModelGoodPointChart.fderiv_eval_apply]`. Rewrite using `[this, hv0]`. Introduce `j`. Use `hDd.2 j` as an intermediate fact. Rewrite `this` using `[show q (Sum.inr j) = fun z => eval z (f j) from rfl, NormalModelGoodPointChart.fderiv_eval_apply]`. Then use the resulting hypothesis.
-
-Use function extensionality and compare the values at `i`. Use `hDd.1 i` as an intermediate fact. Rewrite `this` using `[hx0, map_zero]`. Simplify using `using this.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem NormalModelGoodPointChart.proof : NormalModelGoodPointChart.Statement := by
   classical

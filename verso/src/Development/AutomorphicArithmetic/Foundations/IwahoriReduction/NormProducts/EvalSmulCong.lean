@@ -12,7 +12,7 @@ section Calc
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Simplify using `only [CgF, map_sub, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cgF_iff (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (a b : X.Fn l) :
     CgF X l n a b ↔ ∀ u, AdicCompletion.eval (idl l) (X.Kl l) n (a u) =
@@ -20,7 +20,7 @@ private theorem cgF_iff (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (a 
   simp only [CgF, map_sub, sub_eq_zero]
 
 /- English proof (translation)
-Rewrite `*` using `[cgF_iff]`. Conclude with `fun u => (h u).trans (h' u)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem cg_trans {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n : ℕ} {a b c : X.Fn l}
     (h : CgF X l n a b) (h' : CgF X l n b c) : CgF X l n a c := by
@@ -28,7 +28,7 @@ private theorem cg_trans {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n : ℕ} {a
   exact fun u => (h u).trans (h' u)
 
 /- English proof (translation)
-Rewrite `*` using `[cgF_iff]`. Conclude with `fun u => (h u).symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem cg_symm {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n : ℕ} {a b : X.Fn l}
     (h : CgF X l n a b) : CgF X l n b a := by
@@ -36,7 +36,7 @@ private theorem cg_symm {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n : ℕ} {a 
   exact fun u => (h u).symm
 
 /- English proof (translation)
-Rewrite using `[cgF_iff]`. Introduce `u`. Simplify using `only [Finset.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun i hi => (cgF_iff X l n _ _).1 (h i hi) u`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cg_sum {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n : ℕ} {ι : Type} (s : Finset ι) {f g : ι → X.Fn l}
     (h : ∀ i ∈ s, CgF X l n (f i) (g i)) : CgF X l n (∑ i ∈ s, f i) (∑ i ∈ s, g i) := by
@@ -46,7 +46,7 @@ private theorem cg_sum {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n : ℕ} {ι 
   exact Finset.sum_congr rfl fun i hi => (cgF_iff X l n _ _).1 (h i hi) u
 
 /- English proof (translation)
-Establish `e : ∀ z : X.Khat l, AdicCompletion.eval (idl l) (X.Kl l) n (X.kmap l φ z) = (LinearMap.baseChange ℤ_[l] (AddMonoidHom.toIntLinearMap (MonoidHom.toAdditive (Units.map φ.toMonoidHom)))).reduceModIdeal (idl l ^ n) (AdicCompletion.eval (idl l) (X.Kl l) n z)` using `fun _ => rfl`. Rewrite using `[e, e, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eval_kmap_eq (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (φ : X.K ≃+* X.K) {y y' : X.Khat l}
     (h : AdicCompletion.eval (idl l) (X.Kl l) n y = AdicCompletion.eval (idl l) (X.Kl l) n y') :
@@ -59,7 +59,7 @@ private theorem eval_kmap_eq (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ
   rw [e, e, h]
 
 /- English proof (translation)
-Unfold `Rep at *`. Establish `e : AdicCompletion.eval (idl l) (X.Kl l) n (X.kmap l φ x) = (LinearMap.baseChange ℤ_[l] (AddMonoidHom.toIntLinearMap (MonoidHom.toAdditive (Units.map φ.toMonoidHom)))).reduceModIdeal (idl l ^ n) (AdicCompletion.eval (idl l) (X.Kl l) n x)` using `rfl`. Rewrite using `[e, h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem rep_kmap {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n : ℕ} {a : X.Kˣ} {x : X.Khat l}
     (h : Rep X l n a x) (φ : X.K ≃+* X.K) : Rep X l n (Units.map φ.toMonoidHom a) (X.kmap l φ x) := by
@@ -72,7 +72,7 @@ private theorem rep_kmap {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n : ℕ} {a
   rfl
 
 /- English proof (translation)
-Unfold `Tower.cls`. Rewrite using `[← Submodule.Quotient.mk_add, ← TensorProduct.tmul_add]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cls_mul (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (a b : X.Kˣ) :
     X.cls l n (a * b) = X.cls l n a + X.cls l n b := by
@@ -81,7 +81,7 @@ private theorem cls_mul (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (a 
   rfl
 
 /- English proof (translation)
-Unfold `Tower.cls`. Rewrite using `[ofMul_one, TensorProduct.tmul_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cls_one (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) : X.cls l n 1 = 0 := by
   unfold Tower.cls
@@ -89,7 +89,7 @@ private theorem cls_one (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) : X
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using cls_one X l n`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, cls_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem cls_prod (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) {ι : Type} (s : Finset ι) (f : ι → X.Kˣ) :
     X.cls l n (∏ i ∈ s, f i) = ∑ i ∈ s, X.cls l n (f i) := by
@@ -99,7 +99,7 @@ private theorem cls_prod (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) {�
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, cls_mul, ih]
 
 /- English proof (translation)
-Unfold `Tower.cls`. Rewrite using `[← Submodule.Quotient.mk_smul]`. Use `congr 1`. Rewrite using `[ofMul_zpow, TensorProduct.tmul_smul, Int.cast_smul_eq_zsmul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cls_zpow (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (a : X.Kˣ) (z : ℤ) :
     X.cls l n (a ^ z) = (z : ℤ_[l]) • X.cls l n a := by
@@ -109,9 +109,9 @@ private theorem cls_zpow (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (a
   rw [ofMul_zpow, TensorProduct.tmul_smul, Int.cast_smul_eq_zsmul]
 
 /- English proof (translation)
-Establish `e : h ^ l ^ n = h ^ (((l ^ n : ℕ)) : ℤ)` using `(zpow_natCast h _).symm`. Rewrite using `[e, cls_zpow]`. Unfold `Tower.cls`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem cls_pow (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (h : X.Kˣ) : X.cls l n (h ^ l ^ n) = 0 := by
   have e : h ^ l ^ n = h ^ (((l ^ n : ℕ)) : ℤ) := (zpow_natCast h _).symm
@@ -123,7 +123,7 @@ private theorem cls_pow (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (h 
   simp
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (idl l) (X.Kl l) n y)`. Rewrite using `[map_smul, map_smul, ← hx, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, ← sub_smul]`. Use `Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem eval_smul_cong (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) {r r' : ℤ_[l]}
     (h : (l : ℤ_[l]) ^ n ∣ r - r') (y : X.Khat l) :
@@ -135,7 +135,7 @@ private theorem eval_smul_cong (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : �
   rwa [Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Use `show X.kmap l _ (_ • _) = _`. Rewrite using `[map_smul, toGQ_coe_SL]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem act_sec_apply (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w : ℕ) (lam : Fin 2 → ℤ) (x : X.Khat l)
     (δ : SL(2, ℤ)) (u : Fin 2 → ℤ_[l]) :
@@ -147,13 +147,13 @@ private theorem act_sec_apply (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w : �
   rw [map_smul, toGQ_coe_SL]
 
 /- English proof (translation)
-Rewrite using `[cgF_iff]`. Introduce `u`. Rewrite using `[act_sec_apply]`. Use `show _ = AdicCompletion.eval (idl l) (X.Kl l) n (((lam 0 : ℤ_[l]) * u 0 + (lam 1 : ℤ_[l]) * u 1) ^ w • _)`. Use `eval_smul_cong X l n ?_ _` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Dvd.dvd.trans ?_ (sub_dvd_pow_sub_pow _ _ w)` and prove the remaining obligations. Rewrite `hδ` using `[CongruenceSubgroup.Gamma_mem]`. Establish `hd : ∀ a : ℤ, (a : ZMod (l ^ n)) = 0 → (l : ℤ_[l]) ^ n ∣ (a : ℤ_[l])` using `fun a h => by`. Establish `h1` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ (l ^ n)).1 h`. Establish `e` using `map_dvd (Int.castRingHom ℤ_[l]) h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using e`. Establish `e : ((lam 0 : ℤ_[l]) * (mZl l (δ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 0 + (lam 1 : ℤ_[l]) * (mZl l (δ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 1) - ((lam 0 : ℤ_[l]) * u 0 + (lam 1 : ℤ_[l]) * u 1) = (lam 0 : ℤ_[l]) * (((δ 0 0 - 1 : ℤ) : ℤ_[l]) * u 0 + ((δ 0 1 : ℤ) : ℤ_[l]) * u 1) + (lam 1 : …`. Simplify using `[mZl, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h00` using `hd (δ 0 0 - 1) (by push_cast; rw [hδ.1, sub_self])`. Establish `h01` using `hd (δ 0 1) hδ.2.1`. Establish `h10` using `hd (δ 1 0) hδ.2.2.1`. Establish `h11` using `hd (δ 1 1 - 1) (by push_cast; rw [hδ.2.2.2, sub_self])`. Conclude with `dvd_add (Dvd.dvd.mul_left (dvd_add (h00.mul_right _) (h01.mul_right _)) _) (Dvd.dvd.mul_left (dvd_add (h10.mul_right _) (h11.mul_right _)) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem act_sec_cg (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ) (lam : Fin 2 → ℤ) (x : X.Khat l)
     {δ : SL(2, ℤ)} (hδ : δ ∈ CongruenceSubgroup.Gamma (l ^ n)) :
@@ -186,7 +186,7 @@ private theorem act_sec_cg (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ
     (Dvd.dvd.mul_left (dvd_add (h10.mul_right _) (h11.mul_right _)) _)
 
 /- English proof (translation)
-Rewrite using `[cgF_iff]`. Introduce `u`. Use `show AdicCompletion.eval (idl l) (X.Kl l) n (_ • y) = AdicCompletion.eval (idl l) (X.Kl l) n (_ • y')`. Rewrite using `[map_smul, map_smul, h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sec_cong (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ) (lam : Fin 2 → ℤ) {y y' : X.Khat l}
     (h : AdicCompletion.eval (idl l) (X.Kl l) n y = AdicCompletion.eval (idl l) (X.Kl l) n y') :
@@ -197,7 +197,7 @@ private theorem sec_cong (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ) 
   rw [map_smul, map_smul, h]
 
 /- English proof (translation)
-Rewrite `*` using `[cgF_iff]`. Introduce `u`. Conclude with `eval_kmap_eq X l n _ (h _)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem act_cg (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (m : Matrix (Fin 2) (Fin 2) ℤ) {a b : X.Fn l}
     (h : CgF X l n a b) : CgF X l n (X.act l m a) (X.act l m b) := by
@@ -206,9 +206,9 @@ private theorem act_cg (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (m :
   exact eval_kmap_eq X l n _ (h _)
 
 /- English proof (translation)
-Rewrite using `[← act_act_SL]`. Use `act_cg X l n _ (cg_trans (act_sec_cg X l w n lam x' (hH hh)) (sec_cong X l w n lam ?_))` and prove the remaining obligations. Take `⟨t, ht⟩` from `ha h hh`. Establish `e : Units.map (X.sl (ofSL h)).toRingEquiv.toMonoidHom a = a * t ^ l ^ n` using `Units.ext (by simpa using ht)`. Establish `h1` using `rep_kmap hx' (X.sl (ofSL h)).toRingEquiv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Rep at h1 hx`. Rewrite using `[h1, e, cls_mul, cls_pow, add_zero, hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_coset {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n w : ℕ} {H : Subgroup SL(2, ℤ)}
     (hH : H ≤ CongruenceSubgroup.Gamma (l ^ n)) {a : X.Kˣ} (ha : InvH X H (l ^ n) a) {x x' : X.Khat l}
@@ -224,15 +224,15 @@ private theorem act_coset {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n w : ℕ}
   rw [h1, e, cls_mul, cls_pow, add_zero, hx]
 
 /- English proof (translation)
-Use `choose σ hσ hσ' using fun j => hγ.2 (γ' j) (hγ'.1 j)`. Establish `bij : Function.Bijective σ`. Prove the components needed by the constructor for the conclusion. Introduce `j j' e`. Establish `h1 : γ' j * (γ (σ j))⁻¹ ∈ H` using `hσ j`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : γ' j' * (γ (σ j))⁻¹ ∈ H` using `e ▸ hσ j'`. Take `⟨k, -, hk⟩` from `hγ'.2 (γ' j') (hγ'.1 j')`. Establish `h3 : γ' j' * (γ' j)⁻¹ ∈ H`. Use `H.mul_mem h2 (H.inv_mem h1)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h4 : γ' j' * (γ' j')⁻¹ ∈ H` using `by simpa using H.one_mem`. Conclude with `(hk j h3).trans (hk j' h4).symm`. Introduce `i`. Take `⟨j, hj, -⟩` from `hγ'.2 (γ i) (hγ.1 i)`. Use `⟨j, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : γ' j * (γ i)⁻¹ ∈ H`. Use `H.inv_mem hj` as an intermediate fact. Simplify using `using this`. Conclude with `(hσ' j i h1).symm`. Unfold `trH`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Function.Bijective.sum_comp bij]`. Use `cg_symm (cg_sum _ fun j _ => ?_)` and prove the remaining obligations. Use `act_coset (w := w) hH ha hx hx' lam (hσ j) (γ (σ j))` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem tr_cg {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n w : ℕ} {H G : Subgroup SL(2, ℤ)}
     (hH : H ≤ CongruenceSubgroup.Gamma (l ^ n)) {a : X.Kˣ} (ha : InvH X H (l ^ n) a) {x x' : X.Khat l}
@@ -266,9 +266,9 @@ private theorem tr_cg {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n w : ℕ} {H 
   rwa [inv_mul_cancel_right] at this
 
 /- English proof (translation)
-Use `⟨fun i => G.mul_mem (hγ.1 i) hg, fun d hd => ?_⟩` and prove the remaining obligations. Take `⟨i, hi, hi'⟩` from `hγ.2 (d * g⁻¹) (G.mul_mem hd (G.inv_mem hg))`. Use `⟨i, ?_, fun j hj => hi' j ?_⟩` and prove the remaining obligations. Use `show d * (γ i * g)⁻¹ ∈ H`. Rewrite using `[mul_inv_rev, ← mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hi`. Establish `: d * (γ j * g)⁻¹ ∈ H` using `hj`. Rewrite `this` using `[mul_inv_rev, ← mul_assoc]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isTr_mul {H G : Subgroup SL(2, ℤ)} {ι : Type} {γ : ι → SL(2, ℤ)} (hγ : IsTr H G γ) {g : SL(2, ℤ)}
     (hg : g ∈ G) : IsTr H G fun i => γ i * g := by
@@ -283,13 +283,13 @@ private theorem isTr_mul {H G : Subgroup SL(2, ℤ)} {ι : Type} {γ : ι → SL
     exact this
 
 /- English proof (translation)
-Use `⟨fun p => G.mul_mem (hH (hδ.1 p.1)) (hγ.1 p.2), fun d hd => ?_⟩` and prove the remaining obligations. Take `⟨i, hi, hi'⟩` from `hγ.2 d hd`. Take `⟨k, hk, hk'⟩` from `hδ.2 _ hi`. Use `⟨(k, i), ?_, ?_⟩` and prove the remaining obligations. Use `show d * (δ k * γ i)⁻¹ ∈ H'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_rev, ← mul_assoc]`. Conclude with `hk`. Introduce and unpack `⟨k2, i2⟩ h`. Establish `h0 : d * (δ k2 * γ i2)⁻¹ ∈ H'` using `h`. Establish `h' : d * (γ i2)⁻¹ * (δ k2)⁻¹ ∈ H'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[mul_inv_rev, ← mul_assoc]`. Conclude with `h0`. Establish `hi2 : d * (γ i2)⁻¹ ∈ H`. Use `H.mul_mem (hHH h') (hδ.1 k2)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e1 : i2 = i` using `hi' i2 hi2`. Substitute `e1` using the available equality. Establish `e2 : k2 = k` using `hk' k2 h'`. Substitute `e2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem isTr_comp {H H' G : Subgroup SL(2, ℤ)} {ι κ : Type} {γ : ι → SL(2, ℤ)} {δ : κ → SL(2, ℤ)}
     (hHH : H' ≤ H) (hH : H ≤ G) (hγ : IsTr H G γ) (hδ : IsTr H' H δ) :
@@ -316,15 +316,13 @@ private theorem isTr_comp {H H' G : Subgroup SL(2, ℤ)} {ι κ : Type} {γ : ι
     rfl
 
 /- English proof (translation)
-Unfold `trH`. Rewrite using `[Fintype.sum_prod_type_right]`. Use `cg_sum _ fun i _ => ?_` and prove the remaining obligations. Simplify using `only [← act_act_SL]`. Rewrite using `[← map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `act_cg X l n _ ?_` and prove the remaining obligations. Rewrite using `[cgF_iff]`. Introduce `u`. Rewrite using `[Finset.sum_apply, map_sum]`. Use `set r : ℤ_[l] := ((lam 0 : ℤ_[l]) * u 0 + (lam 1 : ℤ_[l]) * u 1) ^ w with hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : ∀ k, AdicCompletion.eval (idl l) (X.Kl l) n (X.act l (δ k : Matrix (Fin 2) (Fin 2) ℤ) (sec X l w lam x') u) = r • X.cls l n (Units.map (X.sl (ofSL (δ k))).toRingEquiv.toMonoidHom a')`. Introduce `k`. Rewrite using `[(cgF_iff X l n _ _).1 (act_sec_cg X l w n lam x' (hH (hδ.1 k))) u]`. Use `show AdicCompletion.eval (idl l) (X.Kl l) n (r • _) = _`. Rewrite using `[map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `rep_kmap hx' _`. Rewrite using `[Finset.sum_congr rfl fun k _ => hk k, ← Finset.smul_sum, ← cls_prod]`. Establish `e : ∏ k, Units.map (X.sl (ofSL (δ k))).toRingEquiv.toMonoidHom a' = a * h ^ l ^ n` using `Units.ext (by simpa [Units.coe_prod] using hp)`. Rewrite using `[e, cls_mul, cls_pow, add_zero]`.
-
-Use `show _ = AdicCompletion.eval (idl l) (X.Kl l) n (r • x)`. Rewrite using `[map_smul, hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tr_comp {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n w : ℕ} {H H' : Subgroup SL(2, ℤ)}
     (hH : H ≤ CongruenceSubgroup.Gamma (l ^ n)) {a a' h : X.Kˣ} {x x' : X.Khat l}
@@ -360,7 +358,7 @@ private theorem tr_comp {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n w : ℕ} {
   rw [map_smul, hx]
 
 /- English proof (translation)
-The claim follows from `let ⟨φ, h1, h2⟩ := X.j_hol ⟨φ, h2, h1⟩`.
+A detailed English derivation is pending.
 -/
 private theorem jHol (X : Tower Ω ε) : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero) :=
   let ⟨φ, h1, h2⟩ := X.j_hol
@@ -373,17 +371,17 @@ private def unS [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (m : ℕ) : Subgroup X.K
   inv_mem' := fun {f} hf => (GlobalTheory.T.localPowerUnitsTower_closure_properties ε X ε.injective (jHol X) m).2.2.1 f hf
 
 /- English proof (translation)
-Set `b : ι → X.Kˣ` to `fun i => Units.map (X.sl (ofSL (γ i))).toRingEquiv.toMonoidHom a`. Set `p : ι → ℤ` to `fun i => lam 0 * γ i 0 0 + lam 1 * γ i 1 0`. Set `q : ι → ℤ` to `fun i => lam 0 * γ i 0 1 + lam 1 * γ i 1 1`. Set `z : ι → ℕ → ℤ` to `fun i k => p i ^ k * q i ^ (w - k) * (w.choose k : ℤ)`. Establish `hb : ∀ i, b i ∈ X.Un (l ^ n)` using `fun i => (GlobalTheory.T.modularFunctionTower_unitGroup_stable_slash_galois ε X ε.injective (jHol X) (l ^ n) a ha).1 (ofSL (γ i)) (b i) rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hr : ∀ i, Rep X l n (b i) (X.kmap l (X.sl (ofSL (γ i))).toRingEquiv x)` using `fun i => rep_kmap hx _`. Use `⟨fun k => ∑ i, ((z i k : ℤ) : ℤ_[l]) • X.kmap l (X.sl (ofSL (γ i))).toRingEquiv x, fun k => ⟨∏ i, b i ^ z i k, ?_, ?_⟩, fun u => ?_⟩` and prove the remaining obligations. Conclude with `(unS X (l ^ n)).prod_mem fun i _ => (unS X (l ^ n)).zpow_mem (hb i) _`. Unfold `Rep`. Rewrite using `[map_sum, cls_prod]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, cls_zpow, hr i]`. Unfold `trH`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[act_sec_apply]`. Establish `e : (lam 0 : ℤ_[l]) * (mZl l (γ i : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 0 + (lam 1 : ℤ_[l]) * (mZl l (γ i : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 1 = (p i : ℤ_[l]) * u 0 + (q i : ℤ_[l]) * u 1`. Simplify using `[mZl, Matrix.mulVec, dotProduct, Fin.sum_univ_two, p, q]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, add_pow, Finset.sum_smul, Fin.sum_univ_eq_sum_range (fun k => (u 0 ^ k * u 1 ^ (w - k)) • ((z i k : ℤ) : ℤ_[l]) • X.kmap l (X.sl (ofSL (γ i))).toRingEquiv x) (w + 1)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [z]`. Use `push_cast`. Rewrite using `[mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem polMod_tr [IsAlgClosure ℚ Ω] {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n w : ℕ} {a : X.Kˣ}
     {x : X.Khat l} (hx : Rep X l n a x) (ha : a ∈ X.Un (l ^ n)) (lam : Fin 2 → ℤ) {ι : Type} [Fintype ι]
@@ -429,9 +427,9 @@ end Calc
 end UpperTheory.Kd.K4
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ N w n H hH ι _ γ hγ lam a x hx`. Establish `hH1 : H ≤ CongruenceSubgroup.Gamma (l ^ n)` using `hH.trans inf_le_right`. Establish `hH2 : H ≤ Gam N l` using `hH.trans inf_le_left`. Use `⟨fun ha => polMod_tr hx ha lam γ, fun hi g hg => ?_, fun hi ι' _ γ' hγ' x' hx' => tr_cg hH1 hi hx hx' lam hγ hγ', fun H' κ _ δ hHH hδ => ⟨isTr_comp hHH hH2 hγ hδ, fun a' h x' hx' hp => tr_comp hH1 hx hx' lam γ hδ hp⟩⟩` and prove the remaining obligations. Establish `e : X.act l (g : Matrix (Fin 2) (Fin 2) ℤ) (trH X l w γ lam x) = trH X l w (fun i => γ i * g) lam x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `trH`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => act_act_SL X l _ _ _`. Rewrite using `[e]`. Conclude with `tr_cg hH1 hi hx hx lam (isTr_mul hγ hg) hγ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.K4.trc :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), ∀ (l : ℕ) [Fact l.Prime] (N w n : ℕ) (H : Subgroup SL(2, ℤ)), H ≤ Gam N l ⊓ CongruenceSubgroup.Gamma (l ^ n) →

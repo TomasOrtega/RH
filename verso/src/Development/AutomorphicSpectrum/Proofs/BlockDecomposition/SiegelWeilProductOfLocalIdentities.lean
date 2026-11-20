@@ -17,21 +17,19 @@ namespace GlobalTheory.CompanionTheory.WeilSiegel.Free.FibCpt
 open GlobalTheory.CompanionTheory.WeilSiegel.Free.Scale
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Use `set p : Fv F v := algebraMap F (Fv F v) π with hp`. Establish `hval : Valued.v p = WithZero.exp (-1 : ℤ)`. Establish `h0 : Valued.v (algebraMap F (Fv F v) π) = v.valuation F π` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v π`. Rewrite using `[hp, h0, hπ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Establish `hlt : Valued.v p < 1`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 
-Rewrite using `[hval]`. Evaluate the decidable proposition. Establish `hpO : p ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `hlt.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : ‖p‖ < 1` using `Valued.toNormedField.norm_lt_one_iff.2 hlt`. Establish `hlim : Filter.Tendsto (fun k : ℕ => p ^ k) Filter.atTop (𝓝 0)` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one hnorm`. Establish `hOopen : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`. Establish `hmem : ∀ (k : ℕ) (X : Fin n → Fin M → Fv F v ⊗[F] E), X ∈ latV (scaleB b (π ^ k) (pow_ne_zero k hπ0)) v ↔ ∀ a i l, p ^ k * (Algebra.TensorProduct.basis (Fv F v) b).repr (X a i) l ∈ v.adicCompletionIntegers F`. Introduce `k X`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [latV, Set.mem_setOf_eq, repr_scaleB, map_pow, hp]`. Set `U : ℕ → Set (Fin n → Fin M → Fv F v ⊗[F] E)` to `fun k => latV (scaleB b (π ^ k) (pow_ne_zero k hπ0)) v`. Establish `hUo : ∀ k, IsOpen (U k)` using `fun k => (((GlobalTheory.T.adelic_tuple_projections F E σ hcm d (scaleB b (π ^ k) (pow_ne_zero k hπ0)) n M).2.2.2.1 v).2)`. Establish `hcov : C ⊆ ⋃ k, U k`. Introduce `X _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ∀ a i l, ∀ᶠ k : ℕ in Filter.atTop, p ^ k * (Algebra.TensorProduct.basis (Fv F v) b).repr (X a i) l ∈ (v.adicCompletionIntegers F : Set (Fv F v))`. Introduce `a i l`. Establish `h2 : Filter.Tendsto (fun k : ℕ => p ^ k * (Algebra.TensorProduct.basis (Fv F v) b).repr (X a i) l) Filter.atTop (𝓝 0)`. Simplify using `using hlim.mul_const ((Algebra.TensorProduct.basis (Fv F v) b).repr (X a i) l)`. Conclude with `h2 (hOopen.mem_nhds (zero_mem _))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : ∀ᶠ k : ℕ in Filter.atTop, ∀ a i l, p ^ k * (Algebra.TensorProduct.basis (Fv F v) b).repr (X a i) l ∈ (v.adicCompletionIntegers F : Set (Fv F v))` using `Filter.eventually_all.2 fun a => Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun l => h1 a i l`. Take `⟨k, hk⟩` from `h3.exists`. Conclude with `Set.mem_iUnion.2 ⟨k, (hmem k X).2 hk⟩`. Establish `hmono : Monotone U` using `monotone_nat_of_le_succ fun k X hX => by`. Use `(hmem (k + 1) X).2 fun a i l => ?_` and prove the remaining obligations.
-
-Establish `h` using `(hmem k X).1 hX a i l`. Rewrite using `[pow_succ', mul_assoc]`. Conclude with `mul_mem hpO h`. Take `⟨k, hk⟩` from `hC.elim_directed_cover U hUo hcov hmono.directed_le`. Conclude with `⟨π ^ k, pow_ne_zero k hπ0, hk⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scale_cover {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ)
@@ -95,21 +93,19 @@ theorem exists_scale_cover {F E : Type} [Field F] [NumberField F] [Field E] [Num
   exact ⟨π ^ k, pow_ne_zero k hπ0, hk⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm M J hJ n T hT hSW d b laminf lam hinf hv v m hm C hC`. Take `⟨c, hc, hCc⟩` from `exists_scale_cover σ hcm b n M v C hC`. Use `set b' := scaleB b c hc with hb'`. Establish `hrV : ∀ w, IsLocR (Fv F w)` using `GlobalTheory.T.completion_is_local_ring F`. Use `haveI : ∀ w, BorelSpace (Fv F w) := fun _ => ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk0, hk⟩` from `coord_rescale σ hcm J (Fv F v) (hrV v) b b' (lam v) (hv v).1 n m hm`. Establish `hBi : BorelSpace (Ainf F)` using `⟨rfl⟩`. Take `⟨-, hWi, hHi⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hcm (Ainf F) _ b' laminf hinf.1`. Take `⟨minf, hminf⟩` from `GlobalTheory.T.exists_fibreMeasures_archimedeanGramMap F E σ hcm M n J hJ (coordW (Ainf F) b' laminf n M) (coordHerm (Ainf F) σ b' laminf n) (hWi n M) (hHi n)`. Establish `hfV : ∀ w : HeightOneSpectrum (𝓞 F), ∃ fib : HermR (Fv F w) σ n → Measure (Fin n → Fin M → Fv F w ⊗[F] E), IsGramFibFree (Fv F w) σ J n (coordW (Fv F w) b' (lam w) n M) (coordHerm (Fv F w) σ b' (lam w) n) fib` using `fun w => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `PI.VolStabS.secondCountable_Fv F w` as an intermediate fact. Use `PI.VolStabS.locallyCompact_Fv F w` as an intermediate fact. Take `⟨-, hWv, hHv⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hcm (Fv F w) _ b' (lam w) (hv w).1`. Conclude with `PI.OmFibreUniq.W.gram_map_fibre_existence σ J w n hcm hJ _ _ (hWv n M) (hHv n)`. Use `choose m₀ hm₀ using hfV`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Set `m₂ : ∀ w : HeightOneSpectrum (𝓞 F), HermR (Fv F w) σ n → Measure (Fin n → Fin M → Fv F w ⊗[F] E)` to `Function.update m₀ v (fun S => k • m S)`. Establish `hm₂v : m₂ v = fun S => k • m S` using `Function.update_self _ _ _`. Establish `hm₂ : ∀ w, IsGramFibFree (Fv F w) σ J n (coordW (Fv F w) b' (lam w) n M) (coordHerm (Fv F w) σ b' (lam w) n) (m₂ w)` using `fun w => by`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hm₂v]`. Conclude with `hk`. Establish `: m₂ w = m₀ w` using `Function.update_of_ne h _ _`. Rewrite using `[this]`. Conclude with `hm₀ w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨⟨μ₁, hμ₁⟩, hFV⟩` from `GlobalTheory.T.unitary_group_finite_volume F E σ hcm M J hJ`. Take `⟨⟨𝓕₁, h𝓕₁⟩, -⟩` from `hFV μ₁ hμ₁`. Establish `hE` using `hSW d b' laminf lam hinf hv μ₁ 𝓕₁ hμ₁ h𝓕₁ minf m₂ hminf hm₂`. Establish `h1 : (k • m (hermOf (Fv F v) σ T hT)) (latV b' v) < ⊤`. Establish `h2 : m₂ v (hermOf (Fv F v) σ T hT) (latV b' v) < ⊤` using `hE.1 v`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h2` using `[hm₂v]`. Then use the resulting hypothesis. Establish `h3 : m (hermOf (Fv F v) σ T hT) (latV b' v) < ⊤`. Assume the negation of the conclusion as `hx`. Establish `hs : (k • m (hermOf (Fv F v) σ T hT)) (latV b' v) = (k : ℝ≥0∞) * m (hermOf (Fv F v) σ T hT) (latV b' v)`. Rewrite using `[Measure.smul_apply]`.
-
-Both sides reduce to the same expression. Rewrite `h1` using `[hs, not_lt_top_iff.1 hx, ENNReal.mul_top (by exact_mod_cast hk0)]`. Conclude with `lt_irrefl _ h1`. Conclude with `(measure_mono hCc).trans_lt h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_compact_lt_top : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n : ℕ) (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), SWFree σ J T hT → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (laminf : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), IsStdInf laminf → (∀ v, IsStdV v (lam v)) → ∀ (v : HeightOneSpectrum (𝓞 F)) (m : HermR (Fv F v) σ n → Measure (Fin n → Fin M → Fv F v ⊗[F] E)), IsGramFibFree (Fv F v) σ J n (coordW (Fv F v) b (lam v) n M) (coordHerm (Fv F v) σ b (lam v) n) m → ∀ C : Set (Fin n → Fin M → Fv F v ⊗[F] E), IsCompact C → m (hermOf (Fv F v) σ T hT) C < ⊤ := by
   intro F E _ _ _ _ _ σ hcm M J hJ n T hT hSW d b laminf lam hinf hv v m hm C hC

@@ -17,11 +17,11 @@ open scoped LaurentSeries
 namespace GlobalTheory.ArcDetect
 
 /- English proof (translation)
-Establish `hne : (Ideal.span {(p : (⊥ : Subring ℂ))}) ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Take `⟨n, hn⟩` from `Subring.mem_bot.1 v.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ((p : ℤ) * n : ℤ) = 1`. Use `congrArg Subtype.val hv` as an intermediate fact. Simplify using `only [Subring.coe_mul, Subring.coe_natCast, Subring.coe_one] at this`. Rewrite `this` using `[← hn]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Int.isUnit_iff_natAbs_eq.1 (IsUnit.of_mul_eq_one _ h1)` as an intermediate fact. Simplify using `at this`. Conclude with `hp.one_lt.ne' this`. Take `⟨W, -, hW⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hne`. Conclude with `⟨W, hW ⟨p, Ideal.mem_span_singleton_self _, by simp⟩⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_place (p : ℕ) (hp : p.Prime) : ∃ W : ValuationSubring ℂ, (p : ℂ) ∈ W.nonunits := by
   have hne : (Ideal.span {(p : (⊥ : Subring ℂ))}) ≠ ⊤ := by
@@ -41,7 +41,7 @@ theorem exists_place (p : ℕ) (hp : p.Prime) : ∃ W : ValuationSubring ℂ, (p
   exact ⟨W, hW ⟨p, Ideal.mem_span_singleton_self _, by simp⟩⟩
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩`. Use `ciSup_le h1` as an intermediate fact. Use `le_ciInf h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem iSup_sub_iInf_le {r : ℕ} (hr : 0 < r) (x : Fin r → ℝ) (A B : ℝ) (h1 : ∀ i, x i ≤ A) (h2 : ∀ i, -B ≤ x i) :
     (⨆ i, x i) - ⨅ i, x i ≤ A + B := by
@@ -55,11 +55,9 @@ section Weight
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_add_sum_compl X.Ψ g]`. Establish `hc : X.Ψᶜ = X.Ψ.image NumberField.ComplexEmbedding.conjugate`. Use extensionality with `σ`. Simplify using `only [Finset.mem_compl, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `⟨NumberField.ComplexEmbedding.conjugate σ, (X.cmType _).2 (by simpa using h), by simp⟩`. Introduce and unpack `⟨τ, hτ, rfl⟩`. Conclude with `(X.cmType τ).1 hτ`. Rewrite using `[hc, Finset.sum_image (fun a _ b _ h => by simpa using congrArg NumberField.ComplexEmbedding.conjugate h), ← Finset.sum_add_distrib]`.
-
-Conclude with `Finset.sum_coe_sort X.Ψ (fun τ => g τ + g (ComplexEmbedding.conjugate τ))`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_cm {r : ℕ} (X : Data E r) (g : (E →+* ℂ) → ℕ) :
     ∑ τ : X.Ψ, (g τ.1 + g (conjEmb τ.1)) = ∑ τ, g τ := by
@@ -78,7 +76,7 @@ theorem sum_cm {r : ℕ} (X : Data E r) (g : (E →+* ℂ) → ℕ) :
   exact Finset.sum_coe_sort X.Ψ (fun τ => g τ + g (ComplexEmbedding.conjugate τ))
 
 /- English proof (translation)
-Establish `h` using `sum_cm X (fun _ => (1 : ℕ))`. Simplify using `only [Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one] at h`. Unfold `fdeg`. Rewrite using `[← NumberField.Embeddings.card E ℂ]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_cm {r : ℕ} (X : Data E r) : Fintype.card X.Ψ = fdeg E := by
   have h := sum_cm X (fun _ => (1 : ℕ))
@@ -90,13 +88,13 @@ theorem card_cm {r : ℕ} (X : Data E r) : Fintype.card X.Ψ = fdeg E := by
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨fun i j hij hj => ?_, fun i j hi hij => ?_, fun i j hi hj => ?_⟩` and prove the remaining obligations. Establish `hij' : (i : ℕ) ≤ j` using `hij`. Use `h.1 (Function.invFun (relab c σ) (conjEmb τ.1)) (show (U.X k).p0 - 1 - (j : ℕ) ≤ (U.X k).p0 - 1 - (i : ℕ) by omega)` as an intermediate fact. Unfold `laU`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg (by omega), if_neg (by omega)]`. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Establish `hij' : (i : ℕ) ≤ j` using `hij`. Use `h.1 (Function.invFun (relab c σ) τ.1) (show (i : ℕ) - (U.X k).p0 ≤ (j : ℕ) - (U.X k).p0 by omega)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `laU`. Rewrite using `[if_pos (by omega), if_pos (by omega)]`. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Unfold `laU`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg (by omega), if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem laU_dominant {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (h : Dom a n)
     (k : U.Comp) : (U.X k).IsDominant (laU U a n k) := by
@@ -121,7 +119,7 @@ theorem laU_dominant {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) {a : (E 
     omega
 
 /- English proof (translation)
-Establish `h : ∀ τ : E →+* ℂ, relab c c.F.val.toRingHom τ = τ` using `fun τ => RingHom.ext fun _ => rfl`. Establish `h2 : relab c c.F.val.toRingHom (Function.invFun (relab c c.F.val.toRingHom) τ) = τ` using `Function.invFun_eq ⟨τ, h τ⟩`. Rewrite `h2` using `[h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem invFun_relab (τ : E →+* ℂ) : Function.invFun (relab c c.F.val.toRingHom) τ = τ := by
   have h : ∀ τ : E →+* ℂ, relab c c.F.val.toRingHom τ = τ := fun τ => RingHom.ext fun _ => rfl
@@ -130,17 +128,17 @@ theorem invFun_relab (τ : E →+* ℂ) : Function.invFun (relab c c.F.val.toRin
   rwa [h] at h2
 
 /- English proof (translation)
-Take `⟨hrk, hk, -⟩` from `hU`. Take `⟨hp, hΨ⟩` from `hk k`. Set `B : (E →+* ℂ) → ℕ` to `fun τ => ∑ i : Fin (Dw.mult τ), a (τ, (i : ℕ))`. Establish `hB : ∀ τ i, i < Dw.mult τ → a (τ, i) ≤ B τ` using `fun τ i hi => Finset.single_le_sum (f := fun i : Fin (Dw.mult τ) => a (τ, (i : ℕ))) (fun _ _ => Nat.zero_le _) (Finset.mem_univ ⟨i, hi⟩)`. Establish `h1 : ∀ τ : (U.X k).Ψ, (U.X k).spread (laU U a n k) τ ≤ ((B τ.1 + B (conjEmb τ.1) : ℕ) : ℝ) + n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ`. Establish `m1 : Dw.mult τ.1 = Dw.p` using `if_pos ((hΨ _).1 τ.2)`. Establish `m2 : Dw.mult (conjEmb τ.1) = Dw.q` using `if_neg fun h => ((U.X k).cmType τ.1).1 τ.2 ((hΨ _).2 h)`. Establish `hn : ((n / 2 : ℕ) : ℝ) + ((n / 2 : ℕ) : ℝ) ≤ n`. Establish `: n / 2 + n / 2 ≤ n` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `key : ∀ i, -((B (conjEmb τ.1) : ℤ) + ((n / 2 : ℕ) : ℤ)) ≤ laU U a n k τ i ∧ laU U a n k τ i ≤ (B τ.1 : ℤ) + ((n / 2 : ℕ) : ℤ)`. Introduce `i`. Establish `hi` using `i.2`. Unfold `laU`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[invFun_relab, invFun_relab]`. Use `split_ifs with h`. Establish `a1` using `hB τ.1 ((i : ℕ) - (U.X k).p0) (by omega)`. Apply the tactic sequence `constructor <;> omega`. Establish `a2` using `hB (conjEmb τ.1) ((U.X k).p0 - 1 - (i : ℕ)) (by omega)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `constructor <;> omega`. Use `(iSup_sub_iInf_le hr _ ((B τ.1 : ℝ) + ((n / 2 : ℕ) : ℝ)) ((B (conjEmb τ.1) : ℝ) + ((n / 2 : ℕ) : ℝ)) (fun i => ?_) (fun i => ?_)).trans ?_` and prove the remaining obligations. Establish `h1` using `(Int.cast_le (R := ℝ)).2 (key i).2`. Rewrite `h1` using `[Int.cast_add, Int.cast_natCast, Int.cast_natCast]`. Then use the resulting hypothesis. Conclude with `(key i).1` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.cast_add]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(Finset.sum_le_sum fun τ _ => h1 τ).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, ← Nat.cast_sum, sum_cm (U.X k) B, Finset.sum_const, Finset.card_univ, card_cm, nsmul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_spread_le {r : ℕ} (hr : 0 < r) (U : Unf Xo c c.F.val.toRingHom r) (hU : IsUnf U)
     (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (k : U.Comp) :
@@ -182,11 +180,11 @@ theorem sum_spread_le {r : ℕ} (hr : 0 < r) (U : Unf Xo c c.F.val.toRingHom r) 
   rfl
 
 /- English proof (translation)
-Substitute `hX hq hg` using the available equality. Take `⟨ξ, ν, hξ, hν, -, -, h⟩` from `GlobalTheory.FJDetect.exists_fj_ne_zero_at_split_point' X la P c₁ w hdom hc hw hspr hr (fun gm hgm _ => hχ gm hgm) hP hP'`. Take `⟨x, hx, lam, h1, h2, h3, h4, h5, h6, h7, h8⟩` from `h (nQ E r X.g X.NA X.NC c₁ w) (by`. Unfold `nQ`. Use `push_cast`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Conclude with `(Nat.le_ceil _).trans (le_add_of_nonneg_right zero_le_one))`. Use `⟨ξ, ν, x, lam, hξ, hν, hx, ⟨h1, h2, h3, h4, h5, fun j τ => (h6 j τ).trans ?_⟩, h7, h8⟩` and prove the remaining obligations. Use `pow_le_pow_left₀ ?_ (le_max_right _ _) 2` and prove the remaining obligations. Establish `hw0 : 0 < w` using `by linarith`. Unfold `d6La ReciprocityTheory.MultiplicativeHeights.approxR d5mu d6rh dE`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 theorem exists_split {r : ℕ} (X₀ : Data E r) (X : DataX E r) (hX : X.toData = X₀) (la : Wt X₀.Ψ r)
     (P : Frame X₀.Ψ r → ℂ) (c₁ w : ℝ) (q g : ℕ) (hq : X₀.p0 = q) (hg : X.g = g)
@@ -213,7 +211,7 @@ theorem exists_split {r : ℕ} (X₀ : Data E r) (X : DataX E r) (hX : X.toData 
 end Weight
 
 /- English proof (translation)
-Substitute `hσ` using the available equality. Conclude with `GlobalTheory.T.exists_coeff_ne_zero_of_fourierJacobi_arcDatum hK E H Dw l Xo c K₁ d n' La c₁ s em r U Uw k ξ' x a' n`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem detect_of_tie (hK : Known) {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
@@ -231,15 +229,15 @@ theorem detect_of_tie (hK : Known) {E : Type} [Field E] [NumberField E] [IsCMFie
   exact GlobalTheory.T.exists_coeff_ne_zero_of_fourierJacobi_arcDatum hK E H Dw l Xo c K₁ d n' La c₁ s em r U Uw k ξ' x a' n
 
 /- English proof (translation)
-Introduce `hK E _ _ _ H Dw l Xo c r U k Xx hX 𝔄 a' n c₁ w hM hU hA hr hP hD hχ h𝔄 hΛ hg hc hw F hF hS hS'`. Use `letI : Algebra (FractionRing ℂ) ℂ := FractionRing.liftAlgebra ℂ ℂ`. Use `haveI : IsScalarTower ℂ (FractionRing ℂ) ℂ := FractionRing.isScalarTower_liftAlgebra ℂ ℂ`. Establish `hr3 : (3 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `h0 : (0 : ℝ) ≤ (absA Dw a' : ℝ) + (fdeg E : ℝ) * n` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ξ, ν, x, lam, hξ, hν, hx, hsp, htor, hfj⟩` from `exists_split (U.X k) Xx hX (laU U a' n k) (rdU U F k) c₁ w Dw.q l.M (hU.2.1 k).1 hg (laU_dominant U hD k) hc (by linarith) ((sum_spread_le (by omega) U hU a' n k).trans (by linarith)) (by linarith) (hχ k) (hS k) hS'`. Take `⟨ν₀, hν1, hν2, hν3, hν4⟩` from `GlobalTheory.FjFreq.freq_real_nonneg_integral E r (U.X k) _ _ (hS k).1 ξ hξ ν x hx hfj`. Take `rfl : ν = fun τ => (τ.1 ν₀).re` from `funext hν2`. Rewrite `hν` using `[GlobalTheory.sum_re_cmType_eq_half_trace]`. Take `⟨Uw⟩` from `GlobalTheory.ArcQ.nonempty_unfWit_of_isUnf E H Dw l Xo c _ r U hU`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htv` using `GlobalTheory.TransvPrinc.transvIn_of_hasPrinc E H Dw l Xo c _ r U a' n hP hχ k`. Take `⟨K₁, _, _, _, em, a, e, th, jj, s, hem, hs, htie⟩` from `GlobalTheory.T.exists_cmArcData_at_splitIsotropicPoint hK E H Dw l Xo c r U Uw k ξ x Xx hX 𝔄 _ _ c₁ lam (nQ E r l.M Xx.NA Xx.NC c₁ w) ν₀ hU hA hr hξ hx h𝔄 hΛ hsp le_rfl (Nat.succ_pos _) htor hν1 hν3 (fun s h1 h2 => hν4 s h1 (htv ξ hξ s h1 h2)) hν`. Take `⟨Wp, hWp⟩` from `exists_place 2 Nat.prime_two`. Take `⟨Y, hY, hYp⟩` from `hM 2 Wp Nat.prime_two hWp`. Take `⟨χ, W, -, hd⟩` from `GlobalTheory.ArcDatumExists.exists_arcDatum hK.laws hK.laws2 E H Dw l Xo c K₁ Wp Y hY a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, d1, d2, d3, d4, d5, -, d7, d8, d9⟩` from `hd e (GlobalTheory.T.cmLetters_isLieBasis_along_arc hK E H Dw l Xo c K₁ a e th jj _ _ c₁ s _ _ Y χ W) th s.th_nz.ne_zero 0 jj`. Take `⟨Wp', Y', a₁, χ', W', e', yF, th', i12, i3, mu, jj'⟩` from `d`. Simplify using `only at d1 d2 d3 d4 d5 d7`. Substitute `d1 d3 d7` using the available equality. Consider the cases of `d2`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `d4`. Consider the cases of `d5`. Take `⟨mo, hmo⟩` from `detect_of_tie hK ⟨Wp', Y', a₁, χ', W', e', yF, th', i12, i3, mu, jj'⟩ s em _ hem U Uw k ξ x a' n ⟨d8, d9, hYp⟩ rfl hU hP hD hχ hξ hx htie F hF (fun k' => (hS k').1) (by rw [hs]; exact hfj)`. Conclude with `⟨K₁, _, _, _, ⟨Wp', Y', a₁, χ', W', e', yF, th', i12, i3, mo, jj'⟩, ⟨⟨d8, d9, hYp⟩, ⟨s⟩⟩, hmo⟩`.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fam_cfOf_ne_zero : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : Unf Xo c c.F.val.toRingHom r) (k : U.Comp) (Xx : DataX E r) (hX : Xx.toData = U.X k) (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (a' : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (c₁ w : ℝ), ModelsAt Xo c → IsUnf U → l.A = 1 → 3 ≤ r → GlobalTheory.FrameNorm.HasPrinc U l.M → Dom a' n → (∀ k, ∀ gm ∈ (U.X k).Γ, (U.X k).χ (laU U a' n k) gm = 1) → 𝔄 ≠ 0 → Xx.Λ = Submodule.span (𝓞 E) {v | ∃ a ∈ 𝔄, ∃ u ∈ Xx.L', v = a • u} → Xx.g = l.M → 0 < c₁ → ((absA Dw a' : ℝ) + (fdeg E : ℝ) * n + r ≤ w) → ∀ F ∈ sec Xo c a' n, (∀ k', rdU U F k' ∈ (U.X k').SS (laU U a' n k')) → rdU U F k ∉ (U.X k).SSgt (laU U a' n k) c₁ → ∃ (K₁ : Type) (_ : Field K₁) (_ : NumberField K₁) (_ : Algebra c.F K₁) (d : ArcDatum Xo c K₁), Fam (nQ E r l.M Xx.NA Xx.NC c₁ w) (LaQ E r Dw.q l.M Xx.NA Xx.NC c₁ w) c₁ d ∧ cfOf d.yF d.μ d.jj F ≠ 0 := by
   intro hK E _ _ _ H Dw l Xo c r U k Xx hX 𝔄 a' n c₁ w hM hU hA hr hP hD hχ h𝔄 hΛ hg hc hw F hF hS hS'

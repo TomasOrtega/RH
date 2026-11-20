@@ -17,11 +17,11 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hG, hD⟩`. Use `⟨fun l hl => ?_, hG⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos l.val with h0 | hpos` into its components or cases.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: l = ⟨0, by omega⟩` using `Fin.ext h0`. Rewrite using `[this, show Dmin k r Bs.z Bs.z' g ⟨0, by omega⟩ = 1 by unfold Dmin; exact Matrix.det_isEmpty]`. Conclude with `one_ne_zero`. Use `hD ⟨l.val - 1, by omega⟩` as an intermediate fact. Establish `e : (⟨(l.val - 1) + 1, by omega⟩ : Fin (r + 2)) = l` using `Fin.ext (by simp; omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[e]`. Introduce and unpack `⟨hD, hG⟩`. Conclude with `⟨hG, fun a => hD ⟨a.val + 1, by omega⟩ (by show a.val + 1 ≤ r; have := a.isLt; omega)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem omB_eq {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) : Gauge.OmB Bs = Q.OmPlus k r Bs.z Bs.z' := by
   ext g
@@ -39,15 +39,15 @@ theorem omB_eq {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) : Gauge.OmB Bs = Q.O
     exact ⟨hG, fun a => hD ⟨a.val + 1, by omega⟩ (by show a.val + 1 ≤ r; have := a.isLt; omega)⟩
 
 /- English proof (translation)
-Take `⟨μ, _, rfl⟩` from `(Formalism.FourierDecayAlt.P.TwoByOneBlock.UWb_iff g).1 (Formalism.FourierDecayAlt.P5.Rad.glev_last_uwb hg)`. Establish `e : wCell k r (Fin.last r) c * B2.embWb k r μ = bigCell k r c μ`. Rewrite using `[Formalism.FourierDecayAlt.P5.Rad.wCell_last_eq, ← (Formalism.FourierDecayAlt.P.bruhat_big_cell_factorization k r c μ).1]`. Establish `hmin` using `big_cell_minors_holds k r Bs.z Bs.z' c μ Bs.z_mem Bs.z'_mem`. Establish `hζ : herm (Hpk k r) (bigCell k r c μ *ᵥ Bs.z') Bs.z = zetaL k r Bs.z Bs.z' (Fin.last r) (B2.embWb k r μ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Formalism.FourierDecayAlt.P5.Rad.zetaL_last, ← Formalism.FourierDecayAlt.P.TwoByOneBlock.jV_wbPart Bs.z'_mem, Formalism.FourierDecayAlt.P.BigCellHermitian.bigCell_mulVec_jV, Formalism.FourierDecayAlt.P.TwoByOneBlock.emb_mulVec_jV]`. Establish `hr : Dmin k r Bs.z Bs.z' (bigCell k r c μ) ⟨r, by omega⟩ = ∏ a, c a`. Establish `h` using `hmin.1 (Fin.last r)`. Simplify using `only [Fin.val_last] at h`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hP0 : (∏ a, c a) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hc a`. Establish `hlast : Dmin k r Bs.z Bs.z' (bigCell k r c μ) (Fin.last (r + 1)) = (∏ a, c a) * zetaL k r Bs.z Bs.z' (Fin.last r) (B2.embWb k r μ)`. Establish `hzeta` using `hmin.2.2 hc`. Rewrite `hzeta` using `[hζ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `Formalism.QuantumDeterminants.zeta at hzeta`. Rewrite `hzeta` using `[hr]`. Rewrite using `[← hzeta, mul_div_cancel₀ _ hP0]`. Establish `hGf : Gf k r Bs.z Bs.z' (bigCell k r c μ) = Complex.normSq (∏ a, c a) * GGl k r Bs.z Bs.z' (B2.embWb k r μ)`. Unfold `Gf GGl`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hlast, hr, Complex.normSq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hcg.1`. Rewrite `h1` using `[e, hGf]`. Conclude with `pos_of_mul_pos_right h1 (Complex.normSq_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gg_pos {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) {c : Fin r → ℂ} (hc : c ∈ OmX r)
     {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r)) (hcg : wCell k r (Fin.last r) c * g ∈ Gauge.OmB Bs) :
@@ -82,23 +82,21 @@ theorem gg_pos {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) {c : Fin r → ℂ} 
   exact pos_of_mul_pos_right h1 (Complex.normSq_nonneg _)
 
 /- English proof (translation)
-Establish `hRR` using `Formalism.FourierDecayAlt.P.right_rule_derivative`. Establish `hLR` using `Formalism.FourierDecayAlt.P.left_rule_cell`. Establish `hTC` using `Formalism.FourierDecayAlt.P.torus_cell`. Establish `hGP` using `Formalism.FourierDecayAlt.P.gauge_positivity`. Use `set D := OmPlus k r Bs.z Bs.z' with hDdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : IsOpen D` using `Formalism.FourierDecayAlt.P.SmoothnessOnGoodSet.isOpen_OmPlus Bs.z Bs.z'`. Establish `h1N : (1 : Mx k r) ∈ Nlev k r 0` using `⟨(Formalism.QuantumDeterminants.unipotent_subgroup_holds k r).1, by simp [Glev, UH]⟩`. Establish `hN : ∀ g ∈ Glev k r 0 ∩ D, ∀ n ∈ Nlev k r 0, n * g ∈ D`. Introduce `g hg n hn`. Establish `hDom` using `Formalism.FourierDecayAlt.P.JCx2.rma_isDom_omPlus (k := k) (r := r) Bs.z_mem Bs.z'_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hDom.2 g hg n ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one Bs.z, n, hn, (one_mul n).symm⟩ 1 ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one Bs.z', 1, h1N, (one_mul 1).symm⟩` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Use `set v₀ : VS k r 0 D (Wq →L[ℂ] Wp) := ⟨cut k r 0 D J, cut_mem hD hf⟩ with hv₀`. Establish `hcellB : ∀ c ∈ OmX r, wCell k r (Fin.last r) c * x.2 ∈ C6.bigPos Bs` using `fun c hc => (Formalism.FourierDecayAlt.P.big_cell_values k r Wp Wq Bs (c, x.2) ⟨hc, hx.2.1, hx.2.2⟩).1`. Establish `hcell : ∀ c ∈ OmX r, wCell k r (Fin.last r) c * x.2 ∈ Glev k r 0 ∩ D`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c hc`. Establish `h` using `hcellB c hc`. Conclude with `⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 h.1, fun l _ => h.2.2 l (by simp), h.2.1⟩`. Establish `hdiff : ∀ x' : SA (Wq →L[ℂ] Wp) hD, ∀ c ∈ OmX r, DifferentiableAt ℝ (fun c' => ((x' : Module.End ℂ (VS k r 0 D (Wq →L[ℂ] Wp))) v₀ : Mx k r → (Wq →L[ℂ] Wp)) (wCell k r (Fin.last r) c' * x.2)) c` using `fun x' c hc => cell_diff Bs ((x' : Module.End ℂ (VS k r 0 D (Wq →L[ℂ] Wp))) v₀).2.1 hx.2.1 hx.2.2 hc`. Establish `hWS : ∀ x' : SA (Wq →L[ℂ] Wp) hD, resW ((x' : Module.End ℂ (VS k r 0 D (Wq →L[ℂ] Wp))) v₀ : Mx k r → (Wq →L[ℂ] Wp)) x.2 ∈ WSm r (Wq →L[ℂ] Wp)` using `fun x' => resG_wsm Bs ((x' : Module.End ℂ (VS k r 0 D (Wq →L[ℂ] Wp))) v₀).2.1 hx.2.1 hx.2.2`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcl` using `claim hD v₀ x.2 y hRR hLR hTC hGP Bs.z Bs.z' Bs.z_mem Bs.z'_mem hN hf hLf hRf rfl hx.2.1 hcell hdiff hWS r le_rfl 1 (Subalgebra.one_mem _) x.1 hx.1`. Rewrite `hcl` using `[mul_one]`. Establish `eR : Q.crd (Q.vAB r y r).1 (Q.resG k r (Fin.last r) J) x.1 x.2 = (Q.vAB r y r).1 (fun c' => Q.resG k r (Fin.last r) (((1 : SA (Wq →L[ℂ] Wp) hD) : Module.End ℂ (VS k r 0 D (Wq →L[ℂ] Wp))) v₀ : Mx k r → (Wq →L[ℂ] Wp)) c' x.2) x.1`. Use `(vAB_loc y r _ _ (fun c' hc' => ?_) x.1 hx.1).1` and prove the remaining obligations. Rewrite using `[resG_last, resG_last]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `(cut_of_mem _ (hcell c' hc')).symm`. Rewrite using `[eR, ← hcl, resG_last, resG_last]`. Use `congr 1`. Establish `hγ` using `hcell x.1 hx.1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : ((qminor (EA (E` using `Wq →L[ℂ] Wp) hD) (C3.xR k r r le_rfl) (C3.xR k r r le_rfl) (y + ((2 * r + k : ℕ) : ℂ) / 2) : SA (Wq →L[ℂ] Wp) hD) : Module.End ℂ (VS k r 0 D (Wq →L[ℂ] Wp))) = qminor (Eh (E := Wq →L[ℂ] Wp) (i := 0) hD) (cI ∘ C3.xR k r r le_rfl) (cI ∘ C3.xR k r r le_rfl) (y + ((2 * r + k : ℕ) : ℂ) …`. Use `map_qminor (SA (Wq →L[ℂ] Wp) hD).val (EA hD) (C3.xR k r r le_rfl) (C3.xR k r r le_rfl) (y + ((2 * r + k : ℕ) : ℂ) / 2)` as an intermediate fact. Rewrite `this` using `[Subalgebra.coe_val]`. Rewrite using `[this]`. Conclude with `qminor_reindex (Eh hD) cI cI_inj _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1, rep_qminor hD _ _ _ v₀ _ hγ]`. Establish `hpos : posL k r 0 ∘ (cI ∘ C3.xR k r r le_rfl) = C3.xR k r r le_rfl` using `funext fun l => posL_cI _`. Establish `hloc` using `(good_qminor (E := Wq →L[ℂ] Wp) hD (cI ∘ C3.xR k r r le_rfl) (cI ∘ C3.xR k r r le_rfl) (y + ((2 * r + k : ℕ) : ℂ) / 2)).loc (cut k r 0 D J) J (fun x' hx' => cut_of_mem _ hx') _ hγ`. Rewrite `hloc` using `[hpos]`. Rewrite using `[hpos]`.
-
-Conclude with `hloc.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minorCell_of {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) {J : Mx k r → (Wq →L[ℂ] Wp)}
     (hf : SmoothLev k r 0 (OmPlus k r Bs.z Bs.z') J) (hLf : LeftEq k r Bs.z 0 (OmPlus k r Bs.z Bs.z') J)
@@ -167,7 +165,7 @@ theorem minorCell_of {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) {J : Mx k r �
   exact hloc.symm
 
 /- English proof (translation)
-Simplify using `only [Q.uC, Q.mdim, Fin.val_zero, Nat.sub_zero]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem uC_zero (k r : ℕ) (y : ℂ) : Q.uC k r 0 y = y + ((2 * r + k : ℕ) : ℂ) / 2 := by
   simp only [Q.uC, Q.mdim, Fin.val_zero, Nat.sub_zero]
@@ -183,11 +181,11 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs hpl hk y J hJ c hc g hg hcg`. Establish `hGG` using `JDAToda.gg_pos Bs hc hg hcg`. Establish `hx : (c, g) ∈ Q.DomR P.k P.r Bs.z Bs.z'` using `⟨hc, hg, hGG⟩`. Take `⟨hf, hLf, hRf, -⟩` from `hJ`. Rewrite `hf`, `hLf`, `hRf` using `[JDAToda.omB_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm` using `JDAToda.minorCell_of Bs hf hLf hRf y (c, g) hx`. Establish `hcell` using `Formalism.FourierDecayAlt.P.raising_cell P.k P.r (Wq →L[ℂ] Wp) J (Q.uC P.k P.r 0 y) c g hg`. Simplify using `only [dMul, drF, Q.crd, Q.cmp, ↓reduceIte] at hm ⊢`. Rewrite using `[← hm]`. Simplify using `only [Q.resG, capA]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcell, JDAToda.uC_zero, smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jda_capelli_toda_proof : JDACapToda := by
   intro Wp Wq _ _ _ _ _ _ P Bs hpl hk y J hJ c hc g hg hcg

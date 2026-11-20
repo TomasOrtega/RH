@@ -8,11 +8,11 @@ open PositivityTheory.LowerBoundConstant GlobalTheory GlobalTheory.Published Glo
 namespace GlobalTheory.CompanionTheory.MoyPrasad
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n s d e g hg`. Take `⟨u, hu, h, hh, rfl⟩` from `GlobalTheory.T.parahoric_unipotent_times_kernel k n s d e g hg`. Take `⟨m, hLm, x, hx, c, hc, hdec⟩` from `GlobalTheory.T.iwahori_levi_unipotent_factor k n s d e h hh`. Establish `hm : GlobalTheory.SmGL.leviEmb k e m ∈ PositivityTheory.LowerBoundConstant.Gx k e`. Unfold `PositivityTheory.LowerBoundConstant.Gx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Subgroup.mem_sup_left hLm`. Establish `hconj : (GlobalTheory.SmGL.leviEmb k e m)⁻¹ * u * GlobalTheory.SmGL.leviEmb k e m ∈ GlobalTheory.SmGL.unipRad k e`. Establish `hn` using `GlobalTheory.SmGL.leviEmb_mem_normalizer k e m⁻¹`. Rewrite `hn` using `[map_inv]`. Establish `h'` using `(Subgroup.mem_normalizer_iff.mp hn u).mp hu.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h'` using `[inv_inv]`. Then use the resulting hypothesis. Use `⟨m, Subgroup.mem_comap.mpr hm, (GlobalTheory.SmGL.leviEmb k e m)⁻¹ * u * GlobalTheory.SmGL.leviEmb k e m * x, mul_mem hconj hx.1, c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[hdec]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_Gx : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n), ∀ g ∈ Gx k e,
     ∃ m ∈ (Gx k e).comap (leviEmb k e), ∃ x ∈ unipRad k e, ∃ c ∈ lowC k e, g = leviEmb k e m * x * c := by

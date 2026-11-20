@@ -8,11 +8,11 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Introduce `n R _ J hJ b`. Set `M : Matrix (Fin n) (Fin n) (MvPowerSeries (Fin n) R)` to `Matrix.of J`. Establish `hM : (MvPowerSeries.constantCoeff (σ` using `Fin n) (R := R)).mapMatrix M = 1 := by`. Use extensionality with `i j`. Simplify using `[M, Matrix.one_apply, hJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hdet : IsUnit M.det`. Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff, RingHom.map_det, hM, Matrix.det_one]`. Conclude with `isUnit_one`. Use `⟨M⁻¹ *ᵥ b, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (Matrix.mulVec_mulVec b M M⁻¹) i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Rewrite using `[← h]`. Simplify using `only [Matrix.mulVec, dotProduct, M, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl (fun j _ => mul_comm _ _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem powerSeries_matrix_solve : ∀ (n : ℕ) (R : Type) [CommRing R] (J : Fin n → Fin n → MvPowerSeries (Fin n) R), (∀ i j, MvPowerSeries.constantCoeff (J i j) = if i = j then 1 else 0) → ∀ b : Fin n → MvPowerSeries (Fin n) R, ∃ G : Fin n → MvPowerSeries (Fin n) R, ∀ i, ∑ j, G j * J i j = b i := by
   intro n R _ J hJ b

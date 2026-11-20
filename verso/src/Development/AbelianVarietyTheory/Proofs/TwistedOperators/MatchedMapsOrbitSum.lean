@@ -22,7 +22,7 @@ namespace GlobalTheory.PolKerCpt
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.RealActs Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.div' h'.1, fun x => by simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_self']⟩`.
+Supply the required witnesses or components.
 -/
 private theorem hecke_div {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {χ χ' : Chr F E} (h : GlobalTheory.LFun.IsHecke F E χ) (h' : GlobalTheory.LFun.IsHecke F E χ') :
@@ -30,9 +30,9 @@ private theorem hecke_div {F E : Type} [Field F] [NumberField F] [Field E] [Numb
   ⟨h.1.div' h'.1, fun x => by simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_self']⟩
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Introduce `a`. Establish `e` using `h a`. Establish `e'` using `h' a`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, e, e']`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[pow_add]`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℂ m with hm | hm <;> rw [hm] <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem resEta_div {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {K : Subgroup Rˣ}
     {χ χ' : Aˣ →* Circle} {n m k : ℕ} (h : ResEtaPow K χ n) (h' : ResEtaPow K χ' m) (hk : k = n + m) :
@@ -53,7 +53,7 @@ private def indMap {U V : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V]
     (π.quotKerEquivOfSurjective hπ).symm.toLinearMap
 
 /- English proof (translation)
-Establish `e : (π.quotKerEquivOfSurjective hπ).symm (π u) = Submodule.Quotient.mk u`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [indMap, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, e, Submodule.mapQ_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem indMap_apply {U V : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V] (π : U →ₗ[ℂ] V)
     (hπ : Function.Surjective π) (D : U →ₗ[ℂ] U) (hD : ∀ u, π u = 0 → π (D u) = 0) (u : U) :
@@ -64,7 +64,7 @@ private theorem indMap_apply {U V : Type} [AddCommGroup U] [Module ℂ U] [AddCo
   rfl
 
 /- English proof (translation)
-Introduce `r _`. Establish `e : tens (evI F) (⇑(0 : SInf F κ)) r = 0` using `by funext y; simp [tens]`. Rewrite using `[e, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem acts_zero' {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (T : Module.End ℂ ((κ → AF F) → ℂ)) :
@@ -74,19 +74,17 @@ private theorem acts_zero' {F : Type} [Field F] [NumberField F] {κ : Type} [Fin
   rw [e, map_zero]
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM k hk Φ hZ`. Take `⟨T, hT, m, f, φ, hf, rfl, hz⟩` from `hZ`. Establish `hTr` using `hM.triple`. Establish `hPV : IsPair Bs G.M Xc.β (Xc.β / Xc.α) om (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q)` using `⟨hTr.base, hTr.geo.hV, hTr.geo.hW, hTr.geo.hM, hTr.chars.heckeβ, hecke_div hTr.chars.heckeβ hTr.chars.heckeα, hTr.chars.resβ, resEta_div hTr.chars.resβ hTr.chars.resα rfl, hTr.weil⟩`. Establish `actV` using `GlobalTheory.T.polynomial_datum_action_of_pair hP F E σ Bs a (a + a') G.V G.W G.M _ _ om _ _ _ _ hPV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨D, hDm, hDi⟩` from `actV.2.2.2 k hk`. Establish `hA : ∀ g ∈ G.M.Pol Bs.ψ Bs.emb, Acts (evI F) (⇑(om (1, k))) (⇑g) (⇑(D g))` using `fun g hg => (hDi g hg (D g)).2 rfl`. Establish `hpure : ∀ i, om (1, k) (pure (f i) (φ i)) = pure (D (f i)) (φ i)`. Introduce `i`. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ i v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers F} 1` using `by filter_upwards [T.finite_toSet.compl_mem_cofinite, hTr.geo.hM.std] with v hv hv'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[(hf i).2.2 v hv, hv']`. Conclude with `hA (f i) (hf i).1 _ (GlobalTheory.ThK.EvUniqInf.rest_pure (f i) (φ i) (hf i).2.1 hstd)`. Set `N` to `G.M.Pol Bs.ψ Bs.emb`. Set `π : N →ₗ[ℂ] R.Pi` to `R.p ∘ₗ N.subtype`. Establish `hπ : Function.Surjective π` using `fun y => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: y ∈ N.map R.p` using `hM.real.quot.onto ▸ Submodule.mem_top`. Take `⟨g, hg, e⟩` from `Submodule.mem_map.1 this`. Conclude with `⟨⟨g, hg⟩, e⟩`. Establish `ker0 : ∀ u : N, π u = 0 → π ((D.restrict hDm) u) = 0`. Introduce `u hu`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hM.real.cpt k hk u.1 u.2 0 (zero_mem _) (D u.1) 0 (hA u.1 u.2) (acts_zero' _) (by rw [map_zero]; exact hu)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `this`. Set `ρ` to `indMap π hπ (D.restrict hDm) ker0`. Establish `hρ : ∀ i, R.p (D (f i)) = ρ (R.p (f i))` using `fun i => (indMap_apply π hπ (D.restrict hDm) ker0 ⟨f i, (hf i).1⟩).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨T, hT, m, fun i => D (f i), φ, fun i => ⟨hDm _ (hf i).1, (hf i).2⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hpure i`. Use `congrArg (LinearMap.rTensor _ ρ) hz` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`.
-
-Simplify `this` using `only [LinearMap.rTensor_tmul, hρ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem polZero_cpt : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

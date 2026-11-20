@@ -5,11 +5,11 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlice
 open NumberField UpperTheory.ConvolutionTheory.BW
 
 /- English proof (translation)
-Establish `h : ∑ l, d.size l = n`. Use `Finset.card_eq_sum_card_fiberwise (s := Finset.univ) (t := Finset.univ) (f := d.idx) (fun _ _ => Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Conclude with `this.symm`. Establish `h' : ∀ s : Finset (Fin d.len), 0 ≤ ∑ l ∈ s, (d.size l : ℝ) ∧ ∑ l ∈ s, (d.size l : ℝ) ≤ n` using `fun s => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _, ?_⟩` and prove the remaining obligations. Use `(Finset.sum_le_sum_of_subset (f := d.size) (Finset.subset_univ s)).trans h.le` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, Dat.rho, abs_le]`. Establish `h1` using `h' (Finset.Iio j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2` using `h' (Finset.Ioi j)`. Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]`.
+A detailed English derivation is pending.
 -/
 private theorem rho_le {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ} {S : Set (Pl E)}
     (d : Dat S n) (j : Fin d.len) : ‖(d.rho j : ℂ)‖ ≤ n := by
@@ -28,11 +28,11 @@ private theorem rho_le {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
   constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]
 
 /- English proof (translation)
-Introduce `E _ _ _ n C hC`. Take `⟨B, hB⟩` from `absFar (E →+* ℂ) n C (∑ _p : (E →+* ℂ) × Fin n, (n : ℝ))`. Use `⟨B + n, fun S d φ hφ hs ⟨τ, i, hi⟩ => ?_⟩` and prove the remaining obligations. Take `⟨A, _, _, _, _, Z, H, I, t, -, -, h⟩` from `exists_sys d hC`. Establish `h0` using `hB _ A _ d.len Z H I t _ _ _ _ _ h (fun j => ?_) ⟨(τ, i), ?_⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `LinearMap.congr_fun h0 ⟨φ, hφ, hs⟩`. Simplify using `only [Dat.lamR]`. Rewrite using `[Finset.sum_add_distrib, ((datBasics E).2 S n d).2.2.1 j, zero_add]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_sum fun p _ => rho_le d _).trans ?_)` and prove the remaining obligations. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun _ _ _ => Nat.cast_nonneg _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `norm_sub_le (d.lamR (τ, i)) (d.rho (d.idx i) : ℂ)`. Establish `h2 : d.lamR (τ, i) - (d.rho (d.idx i) : ℂ) = d.lam τ i` using `add_sub_cancel_right _ _`. Rewrite `h1` using `[h2]`. Combine the linear relations using `[rho_le d (d.idx i)]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.far :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.Far E := by

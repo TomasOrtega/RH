@@ -37,14 +37,14 @@ def Exact (f : F →+* F') (A : ArcF D R F) (A' : ArcF D R' F') : Prop :=
     ∀ n a, 0 < n → (A'.q n a).1.1.toAdd = I.e (A.q n a).1.1.toAdd ∧ I.Rel (A.q n a).1.2 (A'.q n a).1.2
 
 /- English proof (translation)
-Take `⟨I, h₁, h₂, h₃, h₄⟩` from `h`. Conclude with `⟨I, h₁, h₂, h₃, fun n a hn => ⟨_, (h₄ n a hn).1, (h₄ n a hn).2, (A'.N.qEq_equivalence n).refl _⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Exact.over {f : F →+* F'} {A : ArcF D R F} {A' : ArcF D R' F'} (h : Exact f A A') : A.Over f A' := by
   obtain ⟨I, h₁, h₂, h₃, h₄⟩ := h
   exact ⟨I, h₁, h₂, h₃, fun n a hn => ⟨_, (h₄ n a hn).1, (h₄ n a hn).2, (A'.N.qEq_equivalence n).refl _⟩⟩
 
 /- English proof (translation)
-Take `⟨I, h₁, h₂, h₃, h₄⟩` from `h`. Take `⟨I', k₁, k₂, k₃, k₄⟩` from `h'`. Conclude with `⟨HomCalc.comp I I', (congrArg g h₁).trans k₁, fun n hn => (congrArg g (h₂ n hn)).trans (k₂ n hn), fun a y => (congrArg I'.e (h₃ a y)).trans (k₃ a _), fun n a hn => ⟨(k₄ n a hn).1.trans (congrArg I'.e (h₄ n a hn).1), HomCalc.comp_rel (h₄ n a hn).2 (k₄ n a hn).2⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Exact.comp {f : F →+* F'} {g : F' →+* F''} {A : ArcF D R F} {A' : ArcF D R' F'} {A'' : ArcF D R'' F''}
     (h : Exact f A A') (h' : Exact g A' A'') : Exact (g.comp f) A A'' := by
@@ -60,11 +60,11 @@ variable {R K F : Type} [CommRing R] [IsDomain R] [Field K] [Field F] [Algebra (
   [Algebra (FractionRing K) F] {φ : R →+* K}
 
 /- English proof (translation)
-Take `⟨I, he, hr⟩` from `GlobalTheory.T.exists_degenerationValuesIso_fieldPullback hG R K φ _ _ hD F hF _ _ A.ν A'.ν`. Establish `act : ∀ a y, I.e (A'.act a y) = A.act a (I.e y)` using `fun a y => A.ν.eX.injective (by`. Rewrite using `[he, ArcF.act, ArcF.act, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, he, hx])`. Establish `hq : ∀ n a, (A.q n a).1.1.toAdd = I.e (A'.q n a).1.1.toAdd ∧ I.Rel (A'.q n a).1.2 (A.q n a).1.2` using `fun n a => by`. Take `⟨a₁, a₂⟩` from `(eq_pullQk_iff hD hG hF _ _ _ _).1 (hev n a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨A.ν.eX.injective ?_, hr _ _ _ _ (A.hq n a).2 (A'.hq n a).2 a₂⟩` and prove the remaining obligations. Rewrite using `[he, (A.hq n a).1, (A'.hq n a).1, a₁, AddEquiv.apply_symm_apply]`. Use `⟨⟨HomCalc.inv I, hρ, fun n _ => congrArg (fun z => ((z n : Fˣ) : F)) hζ, fun a y => ?_, fun n a _ => ⟨I.e.eq_symm_apply.2 (hq n a).1.symm, HomCalc.inv_rel (hq n a).2⟩⟩, ⟨TateInh.homOfIso I, hρ.symm, fun n _ => congrArg (fun z => ((z n : Fˣ) : F)) hζ.symm, act, fun n a _ => hq n a …` and prove the remaining obligations. Use `I.e.symm_apply_eq.2 ?_` and prove the remaining obligations. Rewrite using `[act]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (A.act a) (I.e.apply_symm_apply y).symm`.
+A detailed English derivation is pending.
 -/
 theorem exact_of_pull (hG : GlobalFnsSt) {A : ArcF D R F} {A' : ArcF D K F} (hD : IsPullDeg φ A.D₀ A'.D₀)
     (hF : ArcPull.Compat φ F) (hx : ∀ (a : 𝓞 E) y, hD.xe (a • y) = a • hD.xe y) (hρ : A.ρ = A'.ρ) (hζ : A.I.ζ = A'.I.ζ)
@@ -85,13 +85,11 @@ theorem exact_of_pull (hG : GlobalFnsSt) {A : ArcF D R F} {A' : ArcF D K F} (hD 
   exact congrArg (A.act a) (I.e.apply_symm_apply y).symm
 
 /- English proof (translation)
-Set `_` to `H.starRing`. Use `choose ev hev using fun n a => pullQk_surjective hD hG hF hB hB' (I'.ev n a)`. Use `⟨{ ζ := I'.ζ, ζ_prim := I'.ζ_prim, ζ_pow := I'.ζ_pow, ev := ev, add := fun n hn a b => ?_, lin := fun n hn x a => ?_, ker := fun n hn a b => ?_, onto := fun n hn p => ?_, tower := fun n m hn hm a => ?_, isom := fun n hn a b => ?_ }, rfl, fun n a => (hev n a).symm⟩` and prove the remaining obligations. Rewrite using `[qkAdd_pullQk_iff hD hG hF hB hB', hev, hev, hev]`. Conclude with `I'.add n hn a b`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[qkAct_pullQk_iff hD hG hF hB hB' hx ho, hev, hev]`. Conclude with `I'.lin n hn x a`. Rewrite using `[← equiv_pullQk hD hG hF hB hB', hev, hev]`. Conclude with `I'.ker n hn a b`. Take `⟨a, ha⟩` from `I'.onto n hn (pullQk hD hG hF hB hB' p)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨a, by rw [← equiv_pullQk hD hG hF hB hB', hev]; exact ha⟩`. Take `⟨q', h₁, h₂, h₃⟩` from `I'.tower n m hn hm a`. Take `⟨q, rfl⟩` from `pullQk_surjective hD hG hF hB hB' q'`. Rewrite `h₁`, `h₂`, `h₃` using `[← hev]`. Use `⟨q, hD.xe.symm.injective h₁, (isNsmul_iff_eq _ _ _).2 (pullGt_injective hD hG hF ?_), (equiv_pullQk hD hG hF hB hB' _ _).1 h₃⟩` and prove the remaining obligations.
-
-Rewrite using `[map_nsmul]`. Conclude with `(isNsmul_iff_eq _ _ _).1 h₂`. Rewrite using `[weilQkIs_pullQk_iff hD hG hF hB hB', hev, hev]`. Conclude with `I'.isom n hn a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pushTate (hG : GlobalFnsSt) {D₀ : DegPre R} {D' : DegPre K} (hD : IsPullDeg φ D₀ D')
     [Module (𝓞 E) D₀.X] [Module (𝓞 E) D'.X]
@@ -119,7 +117,7 @@ theorem exists_pushTate (hG : GlobalFnsSt) {D₀ : DegPre R} {D' : DegPre K} (hD
   · rw [weilQkIs_pullQk_iff hD hG hF hB hB', hev, hev]; exact I'.isom n hn a b
 
 /- English proof (translation)
-Set `_` to `H.starRing`. Use `exists_congr fun n => and_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[LiePull.lieMult_pull _ _ _ _ _ _ _ (ofRingAct oa.onB.toRingAct) _ (pull_grp hD) ho F _ τ n, ← spMap_comp, show ((algebraMap (FractionRing K) F).comp (algebraMap K _)).comp φ = (algebraMap (FractionRing R) F).comp (algebraMap R _) from RingHom.ext fun r => (hF r).symm]`. Rewrite using `[(({ hD.xe with map_smul' := hx } : D'.X ≃ₗ[𝓞 E] D₀.X)).finrank_eq]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_iff {D₀ : DegPre R} {D' : DegPre K} (hD : IsPullDeg φ D₀ D') [Module (𝓞 E) D₀.X] [Module (𝓞 E) D'.X]
     {oa : letI := H.starRing; D₀.OAct (𝓞 E)} {oa' : letI := H.starRing; D'.OAct (𝓞 E)}
@@ -138,7 +136,7 @@ theorem det_iff {D₀ : DegPre R} {D' : DegPre K} (hD : IsPullDeg φ D₀ D') [M
   · rw [(({ hD.xe with map_smul' := hx } : D'.X ≃ₗ[𝓞 E] D₀.X)).finrank_eq]
 
 /- English proof (translation)
-Take `⟨N, ν, -⟩` from `GlobalTheory.T.exists_integral_degeneration_values hL K D' he hB F ⊤ fun _ => trivial`. Conclude with `⟨N, ν, fun k p => (((hGt K D' he hB F N ν).2.2.2.2 k).1 p).exists⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_values (hL : Laws) (hGt : BrGtSt) [IsAlgClosed F] (D' : DegPre K) (he : D'.PsiEven) (hB : D'.TauBimult) :
     ∃ (N : NumD F) (ν : NumOf D' F N), ∀ k (p : QkPt D' F k), ∃ q, ν.QPt p q := by
@@ -146,13 +144,13 @@ theorem exists_values (hL : Laws) (hGt : BrGtSt) [IsAlgClosed F] (D' : DegPre K)
   exact ⟨N, ν, fun k p => (((hGt K D' he hB F N ν).2.2.2.2 k).1 p).exists⟩
 
 /- English proof (translation)
-Set `_` to `H.starRing`. Establish `hG` using `hL.globalFns`. Establish `hφ : Function.Injective φ` using `fun x y h => IsFractionRing.injective R (FractionRing R) ((algebraMap (FractionRing R) F).injective ((hF x).trans (h ▸ (hF y).symm)))`. Take `⟨W, hW, hψ⟩` from `PsiSpread.exists_psiOn A.D₀ A.bimult`. Take `⟨D', hD, -, -⟩` from `DegPull.exists_isPullDeg hL.polBaseChange R K φ A.D₀ W hψ (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: (specOf φ).base (genericPoint (Spec (CommRingCat.of K))) = genericPoint (Spec (CommRingCat.of R))`. Rewrite using `[genericPoint_eq_bot_of_affine, genericPoint_eq_bot_of_affine]`. Conclude with `PrimeSpectrum.ext (Ideal.comap_bot_of_injective φ hφ)`. Rewrite using `[this]`. Conclude with `hW)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `_ : Module (𝓞 E) D'.X` to `hD.xe.module (𝓞 E)`. Establish `hx : ∀ (a : 𝓞 E) y, hD.xe (a • y) = a • hD.xe y` using `fun a y => hD.xe.apply_symm_apply _`. Establish `hB'` using `TauPull.tauBimult_pull hG hD A.bimult`. Establish `he'` using `psiEven_pull hG _ _ φ _ _ hD A.even`. Take `⟨oa', ho⟩` from `exists_oAct hD hG hφ A.oa hx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨N, ν, hq⟩` from `exists_values (F := F) hL hGt D' he' hB'`. Use `choose q hq using hq`. Set `A' : ArcF D K F` to `{ D₀ := D', oa := oa', even := he', bimult := hB', w0 := traceFormTwistIso_of_pullback hD hφ hx ho A.w0, ρ := A.ρ, ρ_sq := A.ρ_sq, det := fun τ => (det_iff hD hx ho hF τ _).2 (A.det τ), I := pullTate hG hD hx ho A.bimult hB' hF A.I, N := N, ν := ν, q := fun n a => q n _, hq := fu …`. Conclude with `⟨A', (exact_of_pull hG (A := A) (A' := A') hD hF hx rfl rfl fun _ _ => rfl).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_up (hL : Laws) (hGt : BrGtSt) [IsAlgClosed F] (hF : ArcPull.Compat φ F) (A : ArcF D R F) :
     ∃ A' : ArcF D K F, Exact (RingHom.id F) A' A := by
@@ -182,9 +180,9 @@ theorem exists_up (hL : Laws) (hGt : BrGtSt) [IsAlgClosed F] (hF : ArcPull.Compa
 end Pull
 
 /- English proof (translation)
-Set `_` to `H.starRing`. Establish `hG` using `hL.globalFns`. Take `⟨K₁, _, _, _, β, D₁, hD, _, oa, hx, ho, he, hB, hw⟩` from `exists_data hL A'.D₀ A'.oa`. Set `_ : Algebra (FractionRing K₁) F` to `((algebraMap (FractionRing K) F).comp (fracMap β.injective)).toAlgebra`. Establish `hF : ArcPull.Compat β F` using `fun x => congrArg (algebraMap (FractionRing K) F) (fracMap_algebraMap β.injective x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨I, hζ, hev⟩` from `exists_pushTate hG hD hx ho (hB A'.bimult) A'.bimult hF A'.I`. Take `⟨N, ν, hq⟩` from `exists_values (F := F) hL hGt D₁ (he A'.even) (hB A'.bimult)`. Use `choose q hq using hq`. Set `A : ArcF D K₁ F` to `{ D₀ := D₁, oa := oa, even := he A'.even, bimult := hB A'.bimult, w0 := hw _ A'.w0, ρ := A'.ρ, ρ_sq := A'.ρ_sq, det := fun τ => (det_iff hD hx ho hF τ _).1 (A'.det τ), I := I, N := N, ν := ν, q := fun n a => q n _, hq := fun n a => hq n _, closed := inferInstance }`. Conclude with `⟨K₁, inferInstance, inferInstance, inferInstance, inferInstance, A, (exact_of_pull hG (A := A) (A' := A') hD hF hx rfl hζ hev).1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_down (hL : Laws) (hGt : BrGtSt) {K F : Type} [Field K] [IsAlgClosed K] [Field F] [IsAlgClosed F]
     [Algebra (FractionRing K) F] (A' : ArcF D K F) :
@@ -206,7 +204,7 @@ theorem exists_down (hL : Laws) (hGt : BrGtSt) {K F : Type} [Field K] [IsAlgClos
     (exact_of_pull hG (A := A) (A' := A') hD hF hx rfl hζ hev).1⟩
 
 /- English proof (translation)
-The claim follows from `(IsAlgClosed.splits (Polynomial.X ^ n - Polynomial.C c)).mem_range_of_isRoot (Polynomial.X_pow_sub_C_ne_zero hn c) (i := f) (x := x) (by simp [h])`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_of_pow_eq {F F' : Type} [Field F] [IsAlgClosed F] [Field F'] (f : F →+* F') {n : ℕ} (hn : 0 < n)
     {x : F'} {c : F} (h : x ^ n = f c) : ∃ y, f y = x :=
@@ -214,31 +212,25 @@ theorem mem_range_of_pow_eq {F F' : Type} [Field F] [IsAlgClosed F] [Field F'] (
     (Polynomial.X_pow_sub_C_ne_zero hn c) (i := f) (x := x) (by simp [h])
 
 /- English proof (translation)
-Set `_` to `H.starRing`. Establish `hG` using `hL.globalFns`. Establish `hB` using `A'.bimult`. Take `⟨N, ν, I, he, hr⟩` from `GlobalTheory.T.exists_degenerationValues_over_subfield hG R A'.D₀ A'.even hB F F' f hf _ A'.ν`. Use `choose q hq using fun k (p : QkPt A'.D₀ F k) => (((hGt R _ A'.even hB F N ν).2.2.2.2 k).1 p).exists`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ⟩` from `mem_range_of_pow_eq f two_pos (c := -(H.d : F)) (A'.ρ_sq.trans (by simp))`. Establish `: ∀ n, ∃ z : Fˣ, 0 < n → f z = A'.I.ζ n` using `fun n => by`. Break down `n.eq_zero_or_pos with rfl | hn` into its components or cases. Conclude with `⟨1, fun h => absurd h (lt_irrefl _)⟩`. Take `⟨y, hy⟩` from `mem_range_of_pow_eq f hn (x := A'.I.ζ n) (c := 1) (by`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_pow_eq_pow_val, (A'.I.ζ_prim n hn).pow_eq_one, map_one, Units.val_one])`. Conclude with `⟨Units.mk0 y fun h => (A'.I.ζ n).ne_zero (by rw [← hy, h, map_zero]), fun _ => hy⟩`. Use `choose ζ hζ using this`. Establish `hζ' : ∀ n, 0 < n → Units.map f.toMonoidHom (ζ n) = A'.I.ζ n` using `fun n hn => Units.ext (hζ n hn)`. Establish `inj : Function.Injective (Units.map f.toMonoidHom)` using `Units.map_injective f.injective`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: ∀ n a, ∃ p : QkPt A'.D₀ F n, 0 < n → qkExt hB f hf p = A'.I.ev n a` using `fun n a => by`. Break down `n.eq_zero_or_pos with rfl | hn` into its components or cases. Conclude with `⟨qkZero hB F 0, fun h => absurd h (lt_irrefl _)⟩`. Take `⟨p, hp⟩` from `GlobalTheory.T.exists_torsionPair_descent_algClosed_subfield hL R _ hB F F' f hf n hn (A'.I.ev n a)`. Conclude with `⟨p, fun _ => ((qkExt_iff hB f hf _ _).1 hp).symm⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose ev hev using this`. Establish `eqv : ∀ {n} (p p' : QkPt A'.D₀ F n), QkPt.Equiv _ F' (qkExt hB f hf p) (qkExt hB f hf p') ↔ QkPt.Equiv _ F p p'` using `fun p p' => ⟨fun h => by`. Take `⟨z, h₁, h₂⟩` from `(equiv_iff hB _ _).1 h`. Use `(equiv_iff hB _ _).2 ⟨z, h₁, Balanced.gtExt_injective f hf _ ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, gtExt_iota]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h₂, qkExt_congr hB f hf⟩`. Establish `rel : ∀ n a, 0 < n → (A'.q n a).1.1.toAdd = I.e (q n (ev n a)).1.1.toAdd ∧ I.Rel (q n (ev n a)).1.2 (A'.q n a).1.2` using `fun n a hn => ⟨A'.ν.eX.injective (by rw [he, (hq n _).1, (A'.hq n a).1, ← hev n a hn]; rfl), hr n _ _ _ _ ((qkExt_iff hB f hf _ _).2 (hev n a hn).symm) (hq n _).2 (A'.hq n a).2⟩`. Set `T : TateIsoQ D A'.D₀ A'.oa F` to `{ ζ := ζ ζ_prim := fun n hn => IsPrimitiveRoot.of_map_of_injective (hζ' n hn ▸ A'.I.ζ_prim n hn) inj ζ_pow := fun n m hn hm => inj (by`. Rewrite using `[map_pow, hζ' _ (Nat.mul_pos hn hm), hζ' n hn, A'.I.ζ_pow n m hn hm])`. Use `ev := ev`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `add := fun n hn a b => by`. Rewrite using `[qkAdd_iff hB, ← eqv, qkExt_qkAdd, ← qkAdd_iff hB, hev n _ hn, hev n _ hn, hev n _ hn]`. Conclude with `A'.I.add n hn a b`. Use `lin := fun n hn x a => by`. Rewrite using `[qkAct_iff hB hG, ← eqv, qkExt_qkSmul, ← qkAct_iff hB hG, hev n _ hn, hev n _ hn]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `A'.I.lin n hn x a`. Use `ker := fun n hn a b => by rw [← eqv, hev n _ hn, hev n _ hn]; exact A'.I.ker n hn a b`. Use `onto := fun n hn p => by`. Take `⟨a, ha⟩` from `A'.I.onto n hn (qkExt hB f hf p)`. Conclude with `⟨a, by rw [← eqv, hev n _ hn]; exact ha⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `tower := fun n m hn hm a => by`. Take `⟨q', h₁, h₂, h₃⟩` from `A'.I.tower n m hn hm a`. Rewrite `h₁`, `h₂` using `[← hev _ _ (Nat.mul_pos hn hm)]`. Rewrite `h₃` using `[← hev _ _ hn]`. Set `p` to `qkMk hB (k := n) (ev (n * m) a).y (m • (ev (n * m) a).g) (by rw [← mul_nsmul', qk_nsmul hB])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : qkExt hB f hf p = q'` using `qk_ext h₁.symm ((map_nsmul (gtExt _ f hf) _ _).trans ((isNsmul_iff_eq _ _ _).1 h₂).symm)`. Conclude with `⟨p, rfl, (isNsmul_iff_eq _ _ _).2 rfl, (eqv _ _).1 (e ▸ h₃)⟩`. Use `isom := fun n hn a b => by`. Use `(hWp R _ A'.even hB F N ν n hn _ _ _ _ _ (hq n _) (hq n _)).2 (congrArg Units.val (inj ?_))` and prove the remaining obligations. Establish `u` using `(hWp R _ A'.even hB F' _ A'.ν n hn _ _ _ _ _ (A'.hq n a) (A'.hq n b)).1 (A'.I.isom n hn a b)`.
-
-Rewrite using `[map_zpow, hζ' n hn, Units.ext u]`. Conclude with `(NumD.hom_transport _ _ f _ _ I).2.2.2.1 n _ _ _ _ (rel n a hn).1 (rel n a hn).2 (rel n b hn).1 (rel n b hn).2 }`. Set `A : ArcF D R F` to `{ D₀ := A'.D₀, oa := A'.oa, even := A'.even, bimult := hB, w0 := A'.w0, ρ := ρ ρ_sq := f.injective (by rw [map_pow, hρ, A'.ρ_sq]; simp) det := fun τ => by`. Take `⟨n, h₁, h₂⟩` from `A'.det (f.comp τ)`. Use `A'.D₀.P.isAb.smooth` as an intermediate fact.
-
-Use `⟨n, (DetExtend.lieMult_extend f _ _ τ n).1 ?_, h₂.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← spMap_comp, ← RingHom.comp_assoc, hf]`. Conclude with `h₁`. Rewrite using `[← hρ, RingHom.comp_apply, f.injective.eq_iff]`. Use `I := T, N := N, ν := ν, q := fun n a => q n _, hq := fun n a => hq n _, closed := inferInstance }`.
-
-Use `⟨A, I, hρ, hζ, fun a y => A'.ν.eX.injective ?_, rel⟩` and prove the remaining obligations. Rewrite using `[he, ArcF.act, ArcF.act, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub (hL : Laws) (hGt : BrGtSt) (hWp : BrWpSt) {R F F' : Type} [CommRing R] [IsDomain R]
     [IsNoetherianRing R] [Field F] [IsAlgClosed F] [CharZero F] [Field F'] [IsAlgClosed F'] [Algebra (FractionRing R) F]
@@ -319,9 +311,9 @@ theorem exists_sub (hL : Laws) (hGt : BrGtSt) (hWp : BrWpSt) {R F F' : Type} [Co
   rw [he, ArcF.act, ArcF.act, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, he]
 
 /- English proof (translation)
-Introduce `hL hGt hWp E _ _ _ H D R _ _ F _ _ _ _ A`. Set `_ : Algebra (FractionRing F) F` to `(FractionRing.algEquiv F F).toRingHom.toAlgebra`. Take `⟨A₃, h₃⟩` from `exists_up (K := F) (φ := (algebraMap (FractionRing R) F).comp (algebraMap R _)) hL hGt (fun r => ((FractionRing.algEquiv F F).commutes _).symm) A`. Take `⟨K₁, _, _, _, _, A₂, h₂⟩` from `exists_down hL hGt A₃`. Set `_ : Algebra (FractionRing K₁) K₁` to `(FractionRing.algEquiv K₁ K₁).toRingHom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `f : K₁ →+* F` to `(algebraMap (FractionRing K₁) F).comp (FractionRing.algEquiv K₁ K₁).symm.toRingHom`. Establish `: CharZero K₁` using `f.charZero`. Take `⟨A₁, h₁⟩` from `exists_sub hL hGt hWp f (RingHom.ext fun x => congrArg (algebraMap (FractionRing K₁) F) ((FractionRing.algEquiv K₁ K₁).symm_apply_apply x)) A₂`. Conclude with `⟨K₁, K₁, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, _, A₁, ((h₁.comp h₂).comp h₃).over⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_countable_model : Laws → BrGtSt → BrWpSt → AllD fun D => ∀ (R : Type) [CommRing R] [IsDomain R] (F : Type) [Field F] [IsAlgClosed F] [CharZero F] [Algebra (FractionRing R) F] (A : ArcF D R F), ∃ (R₁ F₁ : Type) (_ : CommRing R₁) (_ : IsDomain R₁) (_ : Field F₁) (_ : IsAlgClosed F₁) (_ : Countable F₁) (_ : Algebra (FractionRing R₁) F₁) (f : F₁ →+* F) (A₁ : ArcF D R₁ F₁), A₁.Over f A := by
   intro hL hGt hWp E _ _ _ H D R _ _ F _ _ _ _ A

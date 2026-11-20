@@ -23,7 +23,7 @@ noncomputable section
 namespace SliceRegMassLimit
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [chartDens, sheetSum, Pi.sub_apply]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfin y), finsum_mem_eq_finite_toFinset_sum _ (hfin y), finsum_mem_eq_finite_toFinset_sum _ (hfin y), ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chartDens_one_sub {n k : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin k) (Fin n) ℂ}
     (hfin : ∀ y, (fibre J A y).Finite) (f : (Fin n → ℂ) → ℝ) (φ : Fin k → (Fin n → ℂ) → ℝ) :
@@ -36,13 +36,11 @@ theorem chartDens_one_sub {n k : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A 
   split_ifs <;> ring
 
 /- English proof (translation)
-Unfold `varInt`. Use `split_ifs with h`. Use `set A := h.choose`. Establish `hA : IsFiniteProjection J A` using `h.choose_spec`. Establish `hd` using `VarIntAdd.ringKrullDim_of_isFiniteProjection hA`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : ∀ y, (fibre J A y).Finite` using `fun y => (FibreBound.proof n k J A hJ hd hA y).2.1`. Establish `hint : ∀ w : (Fin n → ℂ) → ℝ, Measurable w → Integrable (chartAbsDens J A w φ) → Integrable (chartDens J A w φ)`. Introduce `w hw habs`. Use `habs.mono' (SheetSumMeasurable.proof n k J A w φ hJ hd hA hw hφ).1.aestronglyMeasurable (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `VarIntAdd.abs_chartDens_le hfin w φ y`. Unfold `chartInt`. Rewrite using `[chartDens_one_sub hfin]`. Simplify using `only [Pi.sub_apply]`. Rewrite using `[integral_sub (hint _ measurable_const (h1 A hA)) (hint f hf.continuous.measurable (hCM n k J A f φ hJ hd hA hf.continuous.continuousOn hφ (Or.inl hfc)))]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem varInt_one_sub (hCM : ChartMassCompact.Statement) {n k : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {φ : Fin k → (Fin n → ℂ) → ℝ} {f : (Fin n → ℂ) → ℝ} (hJ : J.IsPrime)
@@ -71,13 +69,13 @@ theorem varInt_one_sub (hCM : ChartMassCompact.Statement) {n k : ℕ} {J : Ideal
   · simp
 
 /- English proof (translation)
-Take `⟨hJ, hdim, -⟩` from `SliceIdeal.proof n (e + 1) W F ℓ hW hF hℓ`. Establish `hnear : ∀ G : (Fin n → ℂ) → ℝ, ContDiffOn ℝ ∞ G {x | x ≠ 0} → SmoothNear (zeroSet (W ⊔ Ideal.span {linForm ℓ - 1})) G` using `fun G hG => ⟨{x | x ≠ 0}, isOpen_ne, fun x hx => ne_zero_of_mem_zeroSet_slice hx, hG⟩`. Take `⟨χ, hχs, hχc, hlim⟩` from `hC n e h W F ℓ hW hF hℓ`. Take `⟨h1, h2⟩` from `hlim (fun _ => 1) (fsLogReg h u' ε) (fun _ _ _ => rfl) (fsLogReg_smul h u' ε) contDiffOn_const (contDiffOn_fsLogReg h u' hε)`. Establish `hma : ∀ (s : (Fin (e + 1) → ℂ) → Fin n → ℂ) (y : Fin (e + 1) → ℂ), ReciprocityTheory.AnForm.maDens (fun k => (vecCons (fun _ => (1 : ℝ)) fun _ x => Real.log (h.dualNorm x)) k ∘ s) y = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `s y`. Establish `hH : ReciprocityTheory.AnForm.hessC ((fun _ => (1 : ℝ)) ∘ s) y = 0`. Use extensionality with `i j`. Simplify using `[ReciprocityTheory.AnForm.hessC, Function.comp_def]`. Unfold `ReciprocityTheory.AnForm.maDens`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[LelongRegularise.mdisc_eq_zero_of_eq_zero _ (by simpa using hH)]`. Simplify using the standard rewrite rules. Establish `h0 : varInt (W ⊔ Ideal.span {linForm ℓ - 1}) (e + 1) (fsLogReg h u' ε) (vecCons (fun _ => 1) fun _ x => Real.log (h.dualNorm x)) = 0`. Simplify using `[varInt, chartInt, chartDens, sheetSum, hma]`. Use `(tendsto_nhds_unique h1 (h2.congr fun k => ?_)).trans h0` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hS n e _ (fun x => χ k x * 1) (fsLogReg h u' ε) (fun _ x => Real.log (h.dualNorm x)) hJ hdim (hnear _ ((hχs k).contDiffOn.mul contDiffOn_const)) (hnear _ (contDiffOn_fsLogReg h u' hε)) (fun _ => hnear _ h.contDiffOn_log_dualNorm) (Or.inl (hχc k).mul_right)).symm`.
+A detailed English derivation is pending.
 -/
 theorem varInt_one_fsLogReg (hC : SliceCutOffLimit.Statement) (hS : StokesOnVariety.Statement) {n e : ℕ}
     (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ)) (F : MvPolynomial (Fin (e + 2) × Fin n) ℂ)
@@ -113,19 +111,19 @@ theorem varInt_one_fsLogReg (hC : SliceCutOffLimit.Statement) (hS : StokesOnVari
 end SliceRegMassLimit
 
 /- English proof (translation)
-Introduce `n e h W F u' ℓ f hW hF hu hℓ hℓP hf hfc`. Take `⟨hJ, -, -⟩` from `SliceIdeal.proof n (e + 1) W F ℓ hW hF hℓ`. Take `⟨-, himg, -⟩` from `SliceComponents.proof n W u' ℓ hW hℓP`. Establish `hω` using `smoothNear_log_dualNorm_slice h W ℓ`. Establish `hlinG : ∀ ε : ℝ, 0 < ε → varInt (W ⊔ Ideal.span {linForm ℓ - 1}) (e + 1) (fun x => 1 - f x) (vecCons (fsLogReg h u' ε) fun _ x => Real.log (h.dualNorm x)) = varInt (W ⊔ Ideal.span {linForm ℓ - 1}) (e + 1) (fun _ => 1) (vecCons (fsLogReg h u' ε) fun _ x => Real.log (h.dualNorm x)) …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ε hε`. Use `SliceRegMassLimit.varInt_one_sub hCM hJ (fun i => Fin.cases ?_ (fun _ => hω) i) hf hfc fun A hA => ?_` and prove the remaining obligations. Use `hM n e h W F ℓ A (fun _ => 1) (Fin.cons 0 fun _ => 1) (Fin.cons (fsLogReg h u' ε) fun _ _ => 0) hW hF hℓ hA (fun _ _ _ => rfl) continuousOn_const (fun k => Fin.cases (fsLogReg_smul h u' ε) (fun _ _ _ _ => rfl) k) (fun k => Fin.cases (contDiffOn_fsLogReg h u' hε) (fun _ => contDif …` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) k <;> simp`. Conclude with `⟨{x | x ≠ 0}, isOpen_ne, fun x hx => ne_zero_of_mem_zeroSet_slice hx, contDiffOn_fsLogReg h u' hε⟩`. Establish `hlinω : varInt (W ⊔ Ideal.span {linForm ℓ - 1}) (e + 1) (fun x => 1 - f x) (fun _ x => Real.log (h.dualNorm x)) = varInt (W ⊔ Ideal.span {linForm ℓ - 1}) (e + 1) (fun _ => 1) (fun _ x => Real.log (h.dualNorm x)) - varInt (W ⊔ Ideal.span {linForm ℓ - 1}) (e + 1) f (fun _ x => Real …`. Use `SliceRegMassLimit.varInt_one_sub hCM hJ (fun _ => hω) hf hfc fun A hA => ?_` and prove the remaining obligations. Use `hM n e h W F ℓ A (fun _ => 1) (fun _ => 1) (fun _ _ => 0) hW hF hℓ hA (fun _ _ _ => rfl) continuousOn_const (fun _ _ _ _ => rfl) (fun _ => contDiffOn_const)` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k x`. Simplify using the standard rewrite rules. Establish `hlinP : ∀ P ∈ (divCycle W u').support, varInt (P ⊔ Ideal.span {linForm ℓ - 1}) e (fun x => 1 - f x) (fun _ x => Real.log (h.dualNorm x)) = varInt (P ⊔ Ideal.span {linForm ℓ - 1}) e (fun _ => 1) (fun _ x => Real.log (h.dualNorm x)) - varInt (P ⊔ Ideal.span {linForm ℓ - 1}) e f (fu …`. Introduce `P hP`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmin : P ⊔ Ideal.span {linForm ℓ - 1} ∈ (W ⊔ Ideal.span {linForm ℓ - 1} ⊔ Ideal.span {linForm u'}).minimalPrimes` using `himg ▸ Set.mem_image_of_mem _ (Finset.mem_coe.mpr hP)`. Establish `hPp : (P ⊔ Ideal.span {linForm ℓ - 1}).IsPrime` using `hmin.1.1`. Use `SliceRegMassLimit.varInt_one_sub hCM hPp (fun _ => smoothNear_log_dualNorm_slice h P ℓ) hf hfc fun A hA => ?_` and prove the remaining obligations. Conclude with `SliceMassFinite.proof hM n e h _ ℓ A hPp (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) (VarIntAdd.ringKrullDim_of_isFiniteProjection hA) hA`. Establish `hL` using `hLC n e h W F u' ℓ f hW hF hu hℓ hℓP (smoothNear_of_contDiff hf) hfc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSM` using `hSec n e h W F u' ℓ hW hF hu hℓ hℓP`. Establish `key` using `hL.neg.add_const (varInt (W ⊔ Ideal.span {linForm ℓ - 1}) (e + 1) (fun _ => 1) (fun _ x => Real.log (h.dualNorm x)) - varInt (W ⊔ Ideal.span {linForm ℓ - 1}) (e + 1) f (fun _ x => Real.log (h.dualNorm x)))`. Use `key.congr' ?_ using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hSM, Finset.sum_congr rfl fun P hP => by rw [hlinP P hP]]`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [self_mem_nhdsWithin] with ε (hε : (0 : ℝ) < ε)`. Rewrite using `[hlinG ε hε, hlinω, SliceRegMassLimit.varInt_one_fsLogReg hC hS h W F u' ℓ hW hF hℓ hε]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem SliceRegMassLimit.proof (hC : SliceCutOffLimit.Statement) (hS : StokesOnVariety.Statement)
     (hLC : SliceFormLelongCompact.Statement) (hSec : SliceSectionMass.Statement) (hM : SliceFormMass.Statement)

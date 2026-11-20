@@ -13,7 +13,7 @@ namespace GlobalTheory.Mem.AtPtTransport
 variable {hL : GlobalTheory.Published.LocalLanglandsGL}
 
 /- English proof (translation)
-Introduce `K B f T w Z Wt p0 t nch n xd c h` and use `(hN K B f T w Z Wt p0 t nch n xd c h).elim fun x => ⟨x.1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem overNE_of_NEb {N : NExt hL}
     (hN : ∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (NEb hL K B f T w Z Wt p0 t nch n xd c)) :
@@ -21,9 +21,9 @@ theorem overNE_of_NEb {N : NExt hL}
   fun K B f T w Z Wt p0 t nch n xd c h => (hN K B f T w Z Wt p0 t nch n xd c h).elim fun x => ⟨x.1⟩
 
 /- English proof (translation)
-Introduce `hL N S Γ H hN`. Establish `hN'` using `overNE_of_NEb hN`. Use `⟨fun p hp => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.NRows.AtPt.linkedBundleProperty_after_largeBaseCoreProperty (GlobalTheory.NRows.AtPt.largeBasePropertyG_memberProperty hp _) ?_` and prove the remaining obligations. Use `RowE.of_all fun κ K β c b hk hβ _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, hq, _, hw⟩` from `GlobalTheory.NRows.AtPt.exists_wit hN' H β hβ`. Conclude with `⟨K, hk, β.sc, β.p.pt_val β.val, q, hq, hw⟩`. Conclude with `GlobalTheory.NRows.AtPt.lg1_entryPred_of_atMem_witMv hP hN' H (r := fun D O => P D O.ex.nch) (fun K q _ t => t) _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem atMem_at_wit : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), WitMv (prmR N S Γ).s →
     (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (NEb hL K B f T w Z Wt p0 t nch n xd c)) →

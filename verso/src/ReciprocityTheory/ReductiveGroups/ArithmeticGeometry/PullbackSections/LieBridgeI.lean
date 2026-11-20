@@ -14,7 +14,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem dualMapR_eq {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') :
     ReciprocityTheory.ChartRestriction.G.Chart.dualMapR φ = dualMap φ := RingHom.ext fun _ => rfl
@@ -24,7 +24,7 @@ section BC
 variable {S T : Type} [CommRing S] [Algebra c.F S] [Field T] [Algebra c.F T] (ψ : S →ₐ[c.F] T) (y : FrPt Xo c S)
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Over.w (uS y i)]`. Use `show spMap _ ≫ spMap (algebraMap S (DualNumber S)) = spMap (algebraMap T (DualNumber T)) ≫ spMap _`. Rewrite using `[spMap_comp_spMap, spMap_comp_spMap, dualMapR_eq, dualMap_comp_alg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hw0 (i : Fin (Fintype.card (IxB Dw))) :
     (spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR ψ.toRingHom) ≫ (uS y i).left) ≫

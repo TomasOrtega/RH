@@ -9,17 +9,15 @@ open scoped ENNReal
 noncomputable section
 
 /- English proof (translation)
-Establish `hw : AEMeasurable (fun x => ENNReal.ofReal (‖F x - f x‖ * Real.exp (-ψ x / 2))) (vol n z)` using `ENNReal.measurable_ofReal.comp_aemeasurable ((hF.sub hf).norm.aemeasurable.mul (hψ.neg.div_const 2).exp.aemeasurable)`. Establish `hv : AEMeasurable (fun x => ENNReal.ofReal (‖g x‖ * Real.exp (ψ x / 2))) (vol n z)` using `ENNReal.measurable_ofReal.comp_aemeasurable (hg.norm.aemeasurable.mul (hψ.div_const 2).exp.aemeasurable)`. Establish `hpt : ∀ x, ‖(f x - F x) * g x‖ₑ = ENNReal.ofReal (‖F x - f x‖ * Real.exp (-ψ x / 2)) * ENNReal.ofReal (‖g x‖ * Real.exp (ψ x / 2))`. Introduce `x`. Rewrite using `[← ENNReal.ofReal_mul (by positivity : (0:ℝ) ≤ ‖F x - f x‖ * Real.exp (-ψ x / 2)), ← ofReal_norm_eq_enorm, norm_mul, norm_sub_rev (f x) (F x)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `h1 : Real.exp (-ψ x / 2) * Real.exp (ψ x / 2) = 1`. Rewrite using `[← Real.exp_add, show -ψ x / 2 + ψ x / 2 = 0 by ring, Real.exp_zero]`. Combine the equalities or inequalities in the displayed calculation. Establish `hw2 : ∀ x, ENNReal.ofReal (‖F x - f x‖ * Real.exp (-ψ x / 2)) ^ (2:ℝ) = ENNReal.ofReal (‖F x - f x‖ ^ 2 * Real.exp (-ψ x))`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[ENNReal.ofReal_rpow_of_nonneg (by positivity) (by norm_num), Real.rpow_two, mul_pow, sq (Real.exp _), ← Real.exp_add]`. Apply the tactic sequence `congr 3 <;> ring`. Establish `hv2 : ∀ x, ENNReal.ofReal (‖g x‖ * Real.exp (ψ x / 2)) ^ (2:ℝ) = ENNReal.ofReal (‖g x‖ ^ 2 * Real.exp (ψ x))`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ENNReal.ofReal_rpow_of_nonneg (by positivity) (by norm_num), Real.rpow_two, mul_pow, sq (Real.exp _), ← Real.exp_add]`. Apply the tactic sequence `congr 3 <;> ring`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact enorm_integral_le_lintegral_enorm _`. Consider the case `exact ennnorm_integral_le_lintegral_ennnorm _`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately.
 
-Use `_ = ∫⁻ x, ((fun x => ENNReal.ofReal (‖F x - f x‖ * Real.exp (-ψ x / 2))) * (fun x => ENNReal.ofReal (‖g x‖ * Real.exp (ψ x / 2)))) x ∂vol n z := lintegral_congr (fun x => hpt x)`. Use `_ ≤ (∫⁻ x, ENNReal.ofReal (‖F x - f x‖ * Real.exp (-ψ x / 2)) ^ (2:ℝ) ∂vol n z) ^ (1 / (2:ℝ)) * (∫⁻ x, ENNReal.ofReal (‖g x‖ * Real.exp (ψ x / 2)) ^ (2:ℝ) ∂vol n z) ^ (1 / (2:ℝ)) := ENNReal.lintegral_mul_le_Lp_mul_Lq _ (by first`. Consider the case `exact Real.HolderConjugate.two_two`. Consider the case `exact Real.IsConjExponent.two`. Consider the case `(constructor <;> norm_num)) hw hv`.
-
-Use `_ = _ := by simp only [hw2, hv2, wint]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem enorm_integral_sub_mul_le (n : ℕ) {M : Type*} [MeasurableSpace M] (z : M → V n)
     (ψ : M → ℝ) (hψ : Measurable ψ) (f F g : M → ℂ) (hf : AEStronglyMeasurable f (vol n z))
@@ -74,29 +72,25 @@ theorem enorm_integral_sub_mul_le (n : ℕ) {M : Type*} [MeasurableSpace M] (z :
     _ = _ := by simp only [hw2, hv2, wint]
 
 /- English proof (translation)
-Introduce `z hz ψ hψ F f hF hfm hlim`. Use `haveI := vol_isFiniteMeasureOnCompacts n z hz`. Establish `hψm : Measurable ψ` using `hψ.measurable`. Establish `hFc : ∀ k, Continuous (F k)` using `fun k => Smooth.continuous n z hz _ (Holo.smooth n z _ (hF k))`. Choose the witnesses or unpack the hypotheses as in `⟨k₀, hk₀⟩ : ∃ k₀, ∀ k ≥ k₀, wint n z (fun x => F k x - f x) ψ < ⊤ := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k₀, hk⟩` from `Filter.eventually_atTop.1 ((ENNReal.tendsto_nhds_zero.1 hlim) 1 one_pos)`. Conclude with `⟨k₀, fun k hk' => lt_of_le_of_lt (hk k hk') ENNReal.one_lt_top⟩`. Establish `hwsym : ∀ k, wint n z (fun x => f x - F k x) ψ = wint n z (fun x => F k x - f x) ψ`. Introduce `k`. Unfold `wint`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[norm_sub_rev]`. Apply the tactic sequence `have hLoc : LocalL2Isometry (vol n z) (fun x => f x - F k₀ x) := by`. Use `⟨hfm.sub (hFc k₀).aestronglyMeasurable, fun C hC => ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_lintegral_compact_le n z ψ hψ C hC`. Use `lt_of_le_of_lt (hc _) (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_)` and prove the remaining obligations. Rewrite using `[hwsym]`. Conclude with `hk₀ k₀ le_rfl`. Establish `hweak : ∀ φ : M → ℂ, IsTest n z φ → ∀ j : Fin n, ∫ x, (f x - F k₀ x) * db n z j φ x ∂vol n z = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `φ hφ j`. Establish `hDc : Continuous (db n z j φ)` using `Smooth.continuous n z hz _ (Smooth.db n z j φ hφ.1)`. Establish `hDs : HasCompactSupport (db n z j φ)` using `hφ.2.mono' ((subset_tsupport _).trans (tsupport_db_subset n z j φ))`. Establish `hFD : ∀ k, Integrable (fun x => F k x * db n z j φ x) (vol n z)` using `fun k => ((hFc k).mul hDc).integrable_of_hasCompactSupport hDs.mul_left`. Distinguish the cases in `hgi : Integrable (fun x => (f x - F k₀ x) * db n z j φ x) (vol n z)`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `swap`. Conclude with `integral_undef hgi`. Establish `key : ∀ k, ∫ x, (f x - F k x) * db n z j φ x ∂vol n z = ∫ x, (f x - F k₀ x) * db n z j φ x ∂vol n z`. Introduce `k`. Establish `h0k` using `integral_holo_mul_db n z hz _ (hF k) φ hφ j`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h00` using `integral_holo_mul_db n z hz _ (hF k₀) φ hφ j`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = ∫ x, (f x - F k₀ x) * db n z j φ x ∂vol n z - ∫ x, (F k x * db n z j φ x - F k₀ x * db n z j φ x) ∂vol n z := integral_sub hgi ((hFD k).sub (hFD k₀))`. Use `_ = ∫ x, (f x - F k₀ x) * db n z j φ x ∂vol n z - (∫ x, F k x * db n z j φ x ∂vol n z - ∫ x, F k₀ x * db n z j φ x ∂vol n z) := congrArg (fun s => ∫ x, (f x - F k₀ x) * db n z j φ x ∂vol n z - s) (integral_sub (hFD k) (hFD k₀))`. Use `_ = ∫ x, (f x - F k₀ x) * db n z j φ x ∂vol n z := by`. Rewrite using `[h0k, h00, sub_zero, sub_zero]`. Establish `hB` using `lintegral_db_test_lt_top n z hz ψ hψ φ hφ j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hbound : ∀ k, ‖∫ x, (f x - F k₀ x) * db n z j φ x ∂vol n z‖ₑ ≤ wint n z (fun x => F k x - f x) ψ ^ (1 / 2 : ℝ) * (∫⁻ x, ENNReal.ofReal (‖db n z j φ x‖ ^ 2 * Real.exp (ψ x)) ∂vol n z) ^ (1 / 2 : ℝ)`. Introduce `k`. Rewrite using `[← key k]`. Conclude with `enorm_integral_sub_mul_le n z ψ hψm f (F k) (db n z j φ) hfm (hFc k).aestronglyMeasurable hDc.aestronglyMeasurable`. Establish `hlim2 : Tendsto (fun k => wint n z (fun x => F k x - f x) ψ ^ (1 / 2 : ℝ) * (∫⁻ x, ENNReal.ofReal (‖db n z j φ x‖ ^ 2 * Real.exp (ψ x)) ∂vol n z) ^ (1 / 2 : ℝ)) atTop (𝓝 0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Tendsto (fun k => wint n z (fun x => F k x - f x) ψ ^ (1 / 2 : ℝ)) atTop (𝓝 0)`. Use `((ENNReal.continuous_rpow_const (y := (1 / 2 : ℝ))).tendsto 0).comp hlim` as an intermediate fact. Rewrite `this` using `[ENNReal.zero_rpow_of_pos (by norm_num : (0 : ℝ) < 1 / 2)]`. Then use the resulting hypothesis. Establish `h2` using `ENNReal.Tendsto.mul_const h1 (Or.inr (ENNReal.rpow_ne_top_of_nonneg (by norm_num : (0 : ℝ) ≤ 1 / 2) hB.ne))`. Rewrite `h2` using `[zero_mul]`. Then use the resulting hypothesis.
-
-Establish `h0 : ‖∫ x, (f x - F k₀ x) * db n z j φ x ∂vol n z‖ₑ = 0` using `le_antisymm (ge_of_tendsto' hlim2 hbound) (zero_le')`. Conclude with `enorm_eq_zero.1 h0`. Take `⟨G, hG, hfG⟩` from `hReg z hz _ hLoc hweak`. Use `⟨fun x => G x + F k₀ x, fun e he => (hG e he).add (hF k₀ e he), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hfG] with x hx`.
-
-Rewrite using `[← hx]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem closedCore_of_regM (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (hReg : RegMStatement n M) :

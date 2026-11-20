@@ -27,7 +27,7 @@ variable {Γ B : Type} [Group Γ] [CommGroup B] {H : Subgroup Γ} [H.FiniteIndex
 end Group
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite F`. Assume the negation of the conclusion as `hlt`. Use `FiniteField.X_pow_card_sub_X_ne_zero F hn (Polynomial.eq_zero_of_natDegree_lt_card_of_eval_eq_zero _ Function.injective_id (fun x => by simp [h]) ?_)` and prove the remaining obligations. Rewrite using `[FiniteField.X_pow_card_sub_X_natDegree_eq F hn, ← Nat.card_eq_fintype_card]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_le_of_pow_eq {F : Type} [Field F] [Finite F] {n : ℕ} (hn : 1 < n) (h : ∀ x : F, x ^ n = x) :
     Nat.card F ≤ n := by
@@ -44,7 +44,7 @@ variable {K L Ω : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Fi
 
 omit [NumberField L] in
 /- English proof (translation)
-Establish `h : IsIntegral A (algebraMap L Ω (x : L))` using `(x.isIntegral_coe.map (algebraMap L Ω).toIntAlgHom).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_mem (A : ValuationSubring Ω) (x : 𝓞 L) : algebraMap L Ω (x : L) ∈ A := by
   have h : IsIntegral A (algebraMap L Ω (x : L)) :=
@@ -56,7 +56,7 @@ theorem int_mem (A : ValuationSubring Ω) (x : 𝓞 L) : algebraMap L Ω (x : L)
 variable [Algebra K L] [IsScalarTower K L Ω]
 
 /- English proof (translation)
-Introduce `x` and use `by rw [IsScalarTower.algebraMap_apply K L Ω] exact h (algebraMap (𝓞 K) (𝓞 L) x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isPlaceOver_under {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 L)}
     (h : IsPlaceOver A w) : IsPlaceOver A (w.under (𝓞 K)) := fun x => by
@@ -64,19 +64,17 @@ theorem isPlaceOver_under {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞
   exact h (algebraMap (𝓞 K) (𝓞 L) x)
 
 /- English proof (translation)
-Use `set v := w.under (𝓞 K)`. Establish `h2 : normV w = normV v ^ w.asIdeal.inertiaDeg (𝓞 K)`. Simplify using `only [normV, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply]`. Conclude with `(Ideal.absNorm_pow_inertiaDeg v.asIdeal w.asIdeal).symm`. Use `set f := w.asIdeal.inertiaDeg (𝓞 K)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI := w.isMaximal`. Use `haveI := v.isMaximal`. Use `letI := Ideal.Quotient.field w.asIdeal`. Use `letI := Ideal.Quotient.field v.asIdeal`. Use `haveI : Finite (𝓞 L ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use `haveI : Finite (𝓞 K ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Establish `hq : 1 < normV v` using `Finite.one_lt_card`. Establish `hw : 1 < normV w` using `Finite.one_lt_card`. Establish `hf : 0 < f` using `Nat.pos_of_ne_zero fun h => by`. Rewrite `h2` using `[h, pow_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨s, hs⟩` from `exists_isFrob hA`. Establish `hs' : IsFrob A (normV v ^ f) (galEmb K L Ω s)` using `h2 ▸ ⟨hs.1, hs.2⟩`. Establish `h3 : m ∣ f`. Rewrite using `[← hm]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hI (inv_mul_mem_Ine_of_isFrob hs' (GlobalTheory.FrobRestrict.isFrob_pow hσ f))` as an intermediate fact. Conclude with `((galOf K L Ω).mul_mem_cancel_left ((galOf K L Ω).inv_mem (galEmb_mem K L Ω s))).1 this`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hf.ne' (zero_dvd_iff.1 h3)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : normV w ≤ normV v ^ m`. Use `card_le_of_pow_eq (Nat.one_lt_pow hm0 hq) fun x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `h5` using `(GlobalTheory.FrobRestrict.isFrob_pow hσ m).2 _ ((A.valuation_le_one_iff _).2 (int_mem A x))`. Rewrite `h5` using `[(hm m).2 dvd_rfl x]`.
-
-Rewrite using `[← map_pow, eq_comm, Ideal.Quotient.eq, ← hA]`. Simplify using `using h5`. Rewrite `h4`, the goal using `[h2]`. Rewrite using `[le_antisymm ((pow_le_pow_iff_right₀ hq).1 h4) (Nat.le_of_dvd hf h3)]`.
+A detailed English derivation is pending.
 -/
 theorem normV_eq_pow [IsAlgClosure L Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 L)} (hA : IsPlaceOver A w)
     {σ : G K Ω} (hσ : IsFrob A (normV (w.under (𝓞 K))) σ) (hI : Ine (F := K) A ≤ galOf K L Ω) {m : ℕ}
@@ -134,7 +132,7 @@ def infPart : AdeleRing (𝓞 K) K →* InfiniteAdeleRing K where
 
 variable {K} in
 /- English proof (translation)
-Conclude with `Pi.mulSingle_eq_same v _`.
+A detailed English derivation is pending.
 -/
 theorem loc_same (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCompletion K)ˣ) : (localIdele K v x).val.2 v = x := by
   classical
@@ -142,7 +140,7 @@ theorem loc_same (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCompletion K)ˣ) :
 
 variable {K} in
 /- English proof (translation)
-Conclude with `Pi.mulSingle_eq_of_ne h _`.
+A detailed English derivation is pending.
 -/
 theorem loc_ne {v w : HeightOneSpectrum (𝓞 K)} (h : w ≠ v) (x : (v.adicCompletion K)ˣ) :
     (localIdele K v x).val.2 w = 1 := by
@@ -156,7 +154,7 @@ theorem ideleMap_apply (a : Ideles K) (w : HeightOneSpectrum (𝓞 L)) :
     (ideleMap K L a).val.2 w = finiteCompletionMap K L w (a.val.2 (w.under (𝓞 K))) := rfl
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `ha`. Establish `hc : Continuous (infiniteAdeleMap K L)` using `continuous_fst.comp ((GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.continuous_adeleMap K L).comp (Continuous.prodMk_left 0))`. Use `⟨Units.map (infiniteAdeleMap K L).toMonoidHom y, ?_, Units.ext (Prod.ext rfl (map_one (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap K L)).symm)⟩` and prove the remaining obligations. Use `(Continuous.units_map (infiniteAdeleMap K L).toMonoidHom hc).image_connectedComponent_subset 1 ⟨y, hy, rfl⟩` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ideleMap_mem_infConn {a : Ideles K} (ha : a ∈ infConn K) : ideleMap K L a ∈ infConn L := by
   obtain ⟨y, hy, rfl⟩ := ha
@@ -177,15 +175,13 @@ variable {K L Ω B : Type} [Field K] [NumberField K] [Field L] [NumberField L] [
 variable [Algebra K L]
 
 /- English proof (translation)
-Set `ψ : Ideles K →* B` to `μ.comp (artL.comp (ideleMap K L))`. Establish `hψ : Continuous ψ` using `hμ.comp (hL.quot.continuous.comp (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.continuous_ideleMap K L))`. Establish `hk : ∀ z ∈ (diagUnits L).range ⊔ infConn L, μ (artL z) = 1` using `fun z hz => by`. Establish `: z ∈ artL.ker` using `hL.ker ▸ Subgroup.le_topologicalClosure _ hz`. Rewrite using `[MonoidHom.mem_ker.1 this, map_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : artK.ker ≤ ψ.ker`. Rewrite using `[hK.ker]`. Use `Subgroup.topologicalClosure_minimal _ (sup_le ?_ ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hk _ (Subgroup.mem_sup_left ⟨_, (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap_principalIdele K L k).symm⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Conclude with `hk _ (Subgroup.mem_sup_right (ideleMap_mem_infConn K L hy))`. Conclude with `isClosed_singleton.preimage hψ`. Set `f : Gab K Ω →* B` to `artK.liftOfSurjective hK.quot.surjective ⟨ψ, hle⟩`. Establish `hf : ∀ x, f (artK x) = ψ x` using `fun x => MonoidHom.liftOfRightInverse_comp_apply artK _ _ ⟨ψ, hle⟩ x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : Continuous f`. Rewrite using `[hK.quot.isQuotientMap.continuous_iff]`. Conclude with `hψ.congr fun x => (hf x).symm`. Use `⟨f.comp (toAb K Ω), hc.comp continuous_quot_mk, fun x σ h => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, ← h, hf]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem descend [TopologicalSpace B] [T1Space B] {artK : Ideles K →* Gab K Ω} {artL : Ideles L →* Gab L Ω}
     (hK : IsGlobalArtin artK) (hL : IsGlobalArtin artL) (μ : Gab L Ω →* B) (hμ : Continuous μ) :

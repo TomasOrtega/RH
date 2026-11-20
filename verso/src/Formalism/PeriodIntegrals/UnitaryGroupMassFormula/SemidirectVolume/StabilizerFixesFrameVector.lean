@@ -14,7 +14,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Rewrite `hg` using `[S0, mem_stabT]`. Use `hg (Fin.castSucc a)` as an intermediate fact. Simplify `this` using `[F0, Fin.snoc_castSucc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stabilizer_fixes_frame_vector {r : ℕ} (P : Frame E M r) {g : HA R σ J} (hg : g ∈ S0 R σ J P) (a : Fin r) :
     lin R σ J g (ratV (F := F) R (P.e a)) = ratV (F := F) R (P.e a) := by
@@ -23,9 +23,9 @@ theorem stabilizer_fixes_frame_vector {r : ℕ} (P : Frame E M r) {g : HA R σ J
   simpa [F0, Fin.snoc_castSucc] using this
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, _, rfl⟩` from `hy`. Conclude with `stabilizer_fixes_frame_vector R σ J P hg a`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul c x _ hx => rw [map_smul, hx]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem stabilizer_fixes_frame_span {r : ℕ} (P : Frame E M r) {g : HA R σ J} (hg : g ∈ S0 R σ J P)
     (x : Fin M → R ⊗[F] E) (hx : x ∈ spanR (F := F) R P.e Set.univ) : lin R σ J g x = x := by
@@ -38,13 +38,13 @@ theorem stabilizer_fixes_frame_span {r : ℕ} (P : Frame E M r) {g : HA R σ J} 
   | smul c x _ hx => rw [map_smul, hx]
 
 /- English proof (translation)
-Establish `hHS` using `heisenberg_le_stabilizer R σ J P hh`. Rewrite `hn`, the goal using `[FrameUnipotentSubgroup, Subgroup.mem_inf]`. Establish `hS : h * n * h⁻¹ ∈ S0 R σ J P` using `(S0 R σ J P).mul_mem ((S0 R σ J P).mul_mem hHS hn.2) ((S0 R σ J P).inv_mem hHS)`. Use `⟨?_, hS⟩` and prove the remaining obligations. Establish `hnN` using `hn.1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show UniC R σ J P.e (h * n * h⁻¹) ∧ ∀ v, InXperp R σ J P v → lin R σ J (h * n * h⁻¹) v - v ∈ spanR (F := F) R P.e Set.univ`. Use `⟨fun b => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[stabilizer_fixes_frame_vector R σ J P hS b, sub_self]`. Conclude with `Submodule.zero_mem _`. Establish `hu : InXperp R σ J P (lin R σ J h⁻¹ v)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Establish `e1` using `stabilizer_fixes_frame_vector R σ J P ((S0 R σ J P).inv_mem hHS) a`. Rewrite using `[← e1, hR_lin]`. Conclude with `hv a`. Establish `hnu : lin R σ J n (lin R σ J h⁻¹ v) - lin R σ J h⁻¹ v ∈ spanR (F` using `F) R P.e Set.univ := hnN.2 _ hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : lin R σ J (h * n * h⁻¹) v - v = lin R σ J h (lin R σ J n (lin R σ J h⁻¹ v) - lin R σ J h⁻¹ v)`. Rewrite using `[map_sub, lin_mul, lin_mul, lin_lin_inv]`. Rewrite using `[key, stabilizer_fixes_frame_span R σ J P hHS _ hnu]`. Conclude with `hnu`.
+A detailed English derivation is pending.
 -/
 theorem norm_gen {r : ℕ} (P : Frame E M r) (h : HA R σ J) (hh : h ∈ Hsub R σ J P)
     (n : HA R σ J) (hn : n ∈ FrameUnipotentSubgroup R σ J P) : h * n * h⁻¹ ∈ FrameUnipotentSubgroup R σ J P := by
@@ -75,7 +75,7 @@ theorem norm_gen {r : ℕ} (P : Frame E M r) (h : HA R σ J) (hh : h ∈ Hsub R 
 end Gen
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ M J _ r P T _ _ h hh n hn`. Conclude with `norm_gen (AF F) σ J P h hh n hn`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem normal_subgroup_holds : NormStep := by
   intro F E _ _ _ _ _ σ _ M J _ r P T _ _ h hh n hn

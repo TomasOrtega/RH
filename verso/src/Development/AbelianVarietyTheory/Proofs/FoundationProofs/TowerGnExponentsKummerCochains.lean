@@ -6,19 +6,19 @@ open GlobalTheory.K5 GlobalTheory.KumDlog
 namespace GlobalTheory.KumExpo
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ T n m hm lz lq hz hq g hg`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Establish `h1 : (g (T.ζ (2 * n + k))) ^ (p ^ (2 * n + k)) = 1`. Rewrite using `[← map_pow, (T.prim _).pow_eq_one, map_one]`. Take `⟨i, -, hi⟩` from `(T.prim _).eq_pow_of_pow_eq_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hqne` using `qq_ne T (2 * n + k)`. Establish `h2 : (g (T.qq (2 * n + k)) / T.qq (2 * n + k)) ^ (p ^ (2 * n + k)) = 1`. Rewrite using `[div_pow, ← map_pow, kummerTower_qq_pow_level_eq_q, AlgEquiv.commutes, ← kummerTower_qq_pow_level_eq_q T (2 * n + k), div_self (pow_ne_zero _ hqne)]`. Take `⟨j, -, hj⟩` from `(T.prim _).eq_pow_of_pow_eq_one h2`. Establish `hj' : g (T.qq (2 * n + k)) = T.ζ (2 * n + k) ^ j * T.qq (2 * n + k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hj, div_mul_cancel₀ _ hqne]`. Establish `ez : T.ζ (2 * n + k) ^ (p ^ k) = T.ζ (2 * n)` using `zeta_pow T (2 * n) k`. Establish `eq' : T.qq (2 * n + k) ^ (p ^ k) = T.qq (2 * n)` using `qq_pow T (2 * n) k`. Establish `ezn : T.ζ (2 * n) ^ (p ^ n) = T.ζ n`. Use `zeta_pow T n n` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← two_mul]`. Then use the resulting hypothesis. Establish `gz : g (T.ζ (2 * n)) = T.ζ (2 * n) ^ i`. Rewrite using `[← ez, map_pow, ← hi, ← pow_mul, ← pow_mul, Nat.mul_comm i]`. Establish `gq : g (T.qq (2 * n)) = T.ζ (2 * n) ^ j * T.qq (2 * n)`. Rewrite using `[← eq', map_pow, hj', mul_pow, ← pow_mul, mul_comm j, pow_mul, ez]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `kz` using `hz g hg`. Establish `kq` using `hq g hg`. Rewrite `kz` using `[gz, ← ezn, ← pow_mul, ← pow_succ]`. Rewrite `kq` using `[gq, ← ezn, ← pow_mul]`. Establish `kq'` using `mul_right_cancel₀ (qq_ne T (2 * n)) kq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `kz`, `kq'` using `[GlobalTheory.K5.Basic.zeta_pow_eq_iff]`. Rewrite `kz`, `kq'` using `[Nat.modEq_iff_dvd]`. Take `⟨s, hs⟩` from `kz`. Take `⟨t, ht⟩` from `kq'`. Use `⟨i, j, -s, -t, hi.symm, hj', ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Move the coercions through the operations in `at hs ⊢`. Take the linear combination `-hs`. Move the coercions through the operations in `at ht ⊢`. Take the linear combination `-ht`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exponents : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], ∀ (T : Tower p Ω) (n m : ℕ), 2 * n ≤ m → ∀ lz lq : Gal p Ω → ZMod (p ^ n),
   IsKum T n (Gn T n) (T.ζ (2 * n)) lz → IsKum T n (Gn T n) (T.qq (2 * n)) lq → ∀ g ∈ Gn T n,

@@ -10,18 +10,18 @@ namespace PositivityTheory.Xgf.HermitianFormSum
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Over.comp_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem one_left (G : Over S) [GrpObj G] (Y : Over S) : (1 : Y ⟶ G).left = Y.hom ≫ (η[G] : 𝟙_ (Over S) ⟶ G).left := by
   rw [Hom.one_def, Over.comp_left]
   congr 1
 
 /- English proof (translation)
-Simplify using `only [hermForm, dotProduct, mulVec, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.star_apply, star_sum, star_mul', Finset.mul_sum, Finset.sum_mul]`. Establish `e1 : ∀ x x1, (∑ x_2 : Fin m, ∑ i : Fin n, a i * W i x * (Hm x x1 * (star (b x_2) * star (W' x_2 x1)))) = ∑ i : Fin n, ∑ x_2 : Fin m, a i * W i x * (Hm x x1 * (star (b x_2) * star (W' x_2 x1)))` using `fun x x1 => Finset.sum_comm`. Simplify using `only [e1]`. Establish `e2 : ∀ x, (∑ x1 : Fin g, ∑ i : Fin n, ∑ x_2 : Fin m, a i * W i x * (Hm x x1 * (star (b x_2) * star (W' x_2 x1)))) = ∑ i : Fin n, ∑ x1 : Fin g, ∑ x_2 : Fin m, a i * W i x * (Hm x x1 * (star (b x_2) * star (W' x_2 x1)))` using `fun x => Finset.sum_comm`. Simplify using `only [e2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm (f := fun (x : Fin g) (i : Fin n) => ∑ x1 : Fin g, ∑ x_2 : Fin m, a i * W i x * (Hm x x1 * (star (b x_2) * star (W' x_2 x1))))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e3 : ∀ x, (∑ x1 : Fin g, ∑ x_2 : Fin m, a i * W i x * (Hm x x1 * (star (b x_2) * star (W' x_2 x1)))) = ∑ x_2 : Fin m, ∑ x1 : Fin g, a i * W i x * (Hm x x1 * (star (b x_2) * star (W' x_2 x1)))` using `fun x => Finset.sum_comm`. Simplify using `only [e3]`. Rewrite using `[Finset.sum_comm (f := fun (x : Fin g) (x_2 : Fin m) => ∑ x1 : Fin g, a i * W i x * (Hm x x1 * (star (b x_2) * star (W' x_2 x1))))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermForm_sum {g n m : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (a : Fin n → ℂ) (b : Fin m → ℂ)
     (W : Fin n → Fin g → ℂ) (W' : Fin m → Fin g → ℂ) :
@@ -49,31 +49,29 @@ namespace PositivityTheory.Xgf
 
 open PositivityTheory.Xgf.HermitianFormSum in
 /- English proof (translation)
-Introduce `S G _ L x n n' v v' Γ A hT hG hC`. Take `⟨Q, ψ, v₁, u, Hm, χ, W, hPB, hLB, hAH, hv, hΓ⟩` from `hG`. Establish `hη : (η[Q.A] : 𝟙_ (Over (Sp ℂ)) ⟶ Q.A).left ≫ ψ = x ≫ (η[G] : 𝟙_ (Over S) ⟶ G).left`. Establish `hw : ((1 : 𝟙_ (Over (Sp ℂ)) ⟶ Q.A).left ≫ ψ) ≫ G.hom = (Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ x)).hom`. Rewrite using `[Category.assoc, hPB.1.w, ← Category.assoc, Over.w]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `a₀ : Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ x) ⟶ G` to `Over.homMk ((1 : 𝟙_ (Over (Sp ℂ)) ⟶ Q.A).left ≫ ψ) hw`. Establish `hm` using `hPB.2 (𝟙_ (Over (Sp ℂ))) 1 1 a₀ a₀ rfl rfl`. Rewrite `hm` using `[_root_.mul_one]`. Establish `h1 : a₀ * a₀ = a₀ * 1`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[_root_.mul_one]`. Conclude with `Over.OverMorphism.ext hm`. Establish `h2` using `congrArg (fun h => h.left) (mul_left_cancel h1)`. Simplify using `only [a₀, Over.homMk_left, one_left] at h2`. Simplify using `using h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hunit : ∀ T : Over (Sp ℂ), (1 : T ⟶ Q.A).left ≫ ψ = (1 : Over.mk (T.hom ≫ x) ⟶ G).left`. Introduce `T`. Rewrite using `[one_left, one_left, Category.assoc, hη]`. Simplify using the standard rewrite rules. Establish `hprod : ∀ (k : ℕ) (uu : Fin k → (epsR ℂ ⟶ Q.A)) (dd : Fin k → (epsAt x ⟶ G)), (∀ i, (dd i).left = (uu i).left ≫ ψ) → (List.ofFn dd).prod.left = (List.ofFn uu).prod.left ≫ ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro uu dd _`. Simplify using `using (hunit (epsR ℂ)).symm`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `uu dd h`. Rewrite using `[List.ofFn_succ, List.prod_cons, List.ofFn_succ, List.prod_cons]`. Conclude with `hPB.2 (epsR ℂ) _ _ _ _ (h 0) (ih _ _ fun i => h i.succ)`. Establish `hsp : ∀ (c : ℂ), spMap (epsScaleR c) ≫ (epsR ℂ).hom = (epsR ℂ).hom`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [epsR, Over.mk_hom, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `z`. Simplify using `[epsScaleR]`. Simplify using `[epsScaleR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htan : ∀ i, IsTangent (v₁ i)`. Introduce `i`. Apply `hPB.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, (hv i).1, hT i, one_left, hη]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Category.assoc, Over.w, Over.w]`. Simplify using `only [epsR, Over.mk_hom, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `e : ((TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom).comp (algebraMap ℂ (DualNumber ℂ)) = RingHom.id ℂ`. Use extensionality with `z`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Use `erw [e, CommRingCat.ofHom_id, Spec.map_id]`. Both sides reduce to the same expression. Use `choose u' hu' hv' using hC`. Set `uu : ∀ k, Fin n → (epsR ℂ ⟶ Q.A)` to `fun k i => Over.homMk (spMap (epsScaleR (A k i)) ≫ (v₁ i).left) (by rw [Category.assoc, Over.w]; exact hsp _)`. Use `⟨Q, ψ, fun k => (List.ofFn (uu k)).prod, u, Hm, χ, fun k => ∑ i, A k i • W i, hPB, hLB, hAH, fun k => ⟨?_, ?_⟩, fun k l => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv' k]`. Conclude with `(hprod n (uu k) (u' k) fun i => by`. Rewrite using `[hu' k i]`. Use `show _ = (spMap (epsScaleR (A k i)) ≫ (v₁ i).left) ≫ ψ`. Rewrite using `[Category.assoc, (hv i).1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use the proof step `rfl).symm`. Conclude with `GlobalTheory.isDiff_sum_smul_of_isLieComb Q.A Q.isAb Q.L Q.g n u v₁ W (A k) _ htan (fun i => (hv i).2) ⟨uu k, fun i => rfl, rfl⟩`. Rewrite using `[hermForm_sum]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, hΓ, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
-
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hodge_gram_linear_combination : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left) (x : Sp ℂ ⟶ S) (n n' : ℕ) (v : Fin n → (epsAt x ⟶ G)) (v' : Fin n' → (epsAt x ⟶ G)) (Γ : Matrix (Fin n) (Fin n) ℂ) (A : Matrix (Fin n') (Fin n) ℂ), (∀ k, IsTanAt G x (v k)) → IsHodgeGram G L x v Γ → (∀ k, IsComb (A k) v (v' k)) → IsHodgeGram G L x v' (A * Γ * Aᴴ) := by
   intro S G _ L x n n' v v' Γ A hT hG hC

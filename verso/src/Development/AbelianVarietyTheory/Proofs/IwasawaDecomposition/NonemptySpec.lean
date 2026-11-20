@@ -19,12 +19,12 @@ def trO : OOf B i ≃+* B.Oc j w := by obtain ⟨rfl, rfl⟩ := h; exact RingEqu
 def trK : FractionRing (OOf B i) ≃+* FractionRing (B.Oc j w) := by obtain ⟨rfl, rfl⟩ := h; exact RingEquiv.refl _
 
 /- English proof (translation)
-Take `⟨rfl, rfl⟩` from `h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem trK_alg (z : OOf B i) : trK h (algebraMap _ _ z) = algebraMap _ _ (trO h z) := by obtain ⟨rfl, rfl⟩ := h; rfl
 
 /- English proof (translation)
-Take `⟨rfl, rfl⟩` from `h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem trK_ec (x : what₂.LL) : trK h (B.ec _ _ x) = B.ec j w x := by obtain ⟨rfl, rfl⟩ := h; rfl
 
@@ -35,12 +35,12 @@ def trPsi : TensorProduct (OOf B i) (FractionRing (OOf B i)) (MtSub B hC i) →�
   exact { toFun := PsiC B hC hL i, map_add' := map_add _, map_smul' := fun c z => map_smul (PsiC B hC hL i) c z }
 
 /- English proof (translation)
-Take `⟨rfl, rfl⟩` from `h`. Conclude with `PsiC_inj B hC hL i`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem trPsi_inj : Function.Injective (trPsi h hC hL) := by obtain ⟨rfl, rfl⟩ := h; exact PsiC_inj B hC hL i
 
 /- English proof (translation)
-Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[mxC_self]`. Conclude with `PsiC_range B hC hL i y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trPsi_range (y : B.V j w) : y ∈ NCov.part (heckeAlg0 B j w) (mxC B j w i) ↔ ∃ z, trPsi h hC hL z = y := by
   obtain ⟨rfl, rfl⟩ := h
@@ -48,7 +48,7 @@ theorem trPsi_range (y : B.V j w) : y ∈ NCov.part (heckeAlg0 B j w) (mxC B j w
   exact PsiC_range B hC hL i y
 
 /- English proof (translation)
-Take `⟨rfl, rfl⟩` from `h`. Take `rfl` from `eq_of_heq hx`. Rewrite using `[mxC_self]`. Conclude with `PsiC_pr B hC hL i _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trPsi_pr (x : what₂.MtL (what₂.muTw (wOf B i)) (jOf B i)) (x' : what₂.MtL (what₂.muTw w) j) (hx : HEq x' x) :
     trPsi h hC hL (prMtC B hC hL i x) - B.iV j w x' ∈ NCov.off (heckeAlg0 B j w) (mxC B j w i) := by
@@ -64,7 +64,7 @@ def trX : XOf B i ≃ {ψ : heckeAlg0 B j w →ₐ[B.Oc j w] B.Oc j w //
     fun _ => rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨rfl, rfl⟩` from `h`. Conclude with `ptX_val B i v k hvk x`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem trX_hT (x : XOf B i) (v : PlE H) (k : ℕ) (hvk : GenAt0 H (what₂.places.resChar w) (B.Qw w) v k) :
     trO h ((hTOf B i v k : XOf B i → OOf B i) x) = (trX h x).1 ⟨B.hK j w v k, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩ := by
@@ -72,7 +72,7 @@ theorem trX_hT (x : XOf B i) (v : PlE H) (k : ℕ) (hvk : GenAt0 H (what₂.plac
   exact ptX_val B i v k hvk x
 
 /- English proof (translation)
-Take `⟨rfl, rfl⟩` from `h`. Conclude with `hA i v k hvk z`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem trPsi_act (hs : HeckeStd0 B) (hd : FinDimV B) (hL : MtLoc B (partCompl_of hs hd)) (hAct : ActEx B (partCompl_of hs hd))
     (hA : ActHK B hs hd hL hAct) (v : PlE H) (k : ℕ) (hvk : GenAt0 H (what₂.places.resChar w) (B.Qw w) v k) (z) :
@@ -83,7 +83,7 @@ theorem trPsi_act (hs : HeckeStd0 B) (hd : FinDimV B) (hL : MtLoc B (partCompl_o
 
 include h in
 /- English proof (translation)
-Take `⟨rfl, rfl⟩` from `h`. Conclude with `mxC_max B i`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tr_max : (mxC B j w i).IsMaximal := by obtain ⟨rfl, rfl⟩ := h; exact mxC_max B i
 
@@ -137,7 +137,7 @@ attribute [local instance] LocBase0.algOc
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ iq i := iq (jOf B0 i) (wOf B0 i) iq_alg i := hiA _ _ iq_LL i := hiL _ _ iq_big i := hBig _ _ B := recBase M B0 hdef hO hc Q_eq j w i h := congrArg B0.Qw ((locsC_mem B0 (locsFin_of hs hd) j w i).1 h).2 mx := mxC B0 mx_max j w i h := tr_max ((locsC_mem B0 (locsFin_of hs hd) j w …`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_spec
     (hTwE : ∀ (a : LocT B0) (x : D.LL0) (y : D.ntw.O0 (C.twI (wOf B0 a))),

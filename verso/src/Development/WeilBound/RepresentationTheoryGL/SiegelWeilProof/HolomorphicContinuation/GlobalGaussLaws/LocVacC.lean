@@ -10,25 +10,25 @@ namespace PositivityTheory.Rg.Sw.Glob.Vac
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `InG`. Rewrite using `[JJ_conjTranspose, Matrix.mul_assoc, JJ_sq, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_one, neg_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inG_JJ : InG (JJ n) := by
   unfold InG
   rw [JJ_conjTranspose, Matrix.mul_assoc, JJ_sq, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_one, neg_neg]
 
 /- English proof (translation)
-Simplify using `[nU, fromBlocks_multiply, add_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nU_mul (b c : Matrix (Fin n) (Fin n) ℂ) : nU b * nU c = nU (b + c) := by
   simp [nU, fromBlocks_multiply, add_comm]
 
 /- English proof (translation)
-Simplify using `[nU, fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nU_zero : nU (0 : Matrix (Fin n) (Fin n) ℂ) = 1 := by simp [nU, fromBlocks_one]
 
 /- English proof (translation)
-Unfold `InG`. Simplify using `[nU, JJ, fromBlocks_conjTranspose, fromBlocks_multiply, hb.eq]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem inG_nU {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) : InG (nU b) := by
   unfold InG; simp [nU, JJ, fromBlocks_conjTranspose, fromBlocks_multiply, hb.eq]
@@ -41,18 +41,18 @@ def nuE (b : Matrix (Fin n) (Fin n) ℂ) (hb : b.IsHermitian) : GR n :=
 def nbar (s : ℝ) : M2 n := fromBlocks 1 0 ((s : ℂ) • 1) 1
 
 /- English proof (translation)
-Simplify using `[nbar, fromBlocks_multiply, add_smul, add_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nbar_mul (s t : ℝ) : nbar (n := n) s * nbar t = nbar (s + t) := by
   simp [nbar, fromBlocks_multiply, add_smul, add_comm]
 
 /- English proof (translation)
-Simplify using `[nbar, fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nbar_zero : nbar (n := n) 0 = 1 := by simp [nbar, fromBlocks_one]
 
 /- English proof (translation)
-Unfold `InG`. Simplify using `[nbar, JJ, fromBlocks_conjTranspose, fromBlocks_multiply, Matrix.conjTranspose_smul, Complex.conj_ofReal]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem inG_nbar (s : ℝ) : InG (nbar (n := n) s) := by
   unfold InG
@@ -62,12 +62,12 @@ def nbE (s : ℝ) : GR n :=
   ⟨⟨nbar s, nbar (-s), by rw [nbar_mul, add_neg_cancel, nbar_zero], by rw [nbar_mul, neg_add_cancel, nbar_zero]⟩, inG_nbar s⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext nbar_zero)`.
+A detailed English derivation is pending.
 -/
 theorem nbE_zero : nbE (n := n) 0 = 1 := Subtype.ext (Units.ext nbar_zero)
 
 /- English proof (translation)
-Unfold `nbar`. Conclude with `Continuous.matrix_fromBlocks continuous_const continuous_const (Complex.continuous_ofReal.smul continuous_const) continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_nbar : Continuous (nbar (n := n)) := by
   unfold nbar
@@ -75,7 +75,7 @@ theorem cont_nbar : Continuous (nbar (n := n)) := by
     (Complex.continuous_ofReal.smul continuous_const) continuous_const
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `Units.continuous_iff.mpr ⟨cont_nbar, ?_⟩` and prove the remaining obligations. Conclude with `cont_nbar.comp continuous_neg`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_nbE : Continuous (nbE (n := n)) := by
   refine Continuous.subtype_mk ?_ _
@@ -83,7 +83,7 @@ theorem cont_nbE : Continuous (nbE (n := n)) := by
   exact cont_nbar.comp continuous_neg
 
 /- English proof (translation)
-Rewrite using `[mR_mul]`. Use `conv_lhs => rw [← fromBlocks_toBlocks (mR g)]`. Use `show (fromBlocks _ _ _ _ * nbar s).toBlocks₂₁ = _`. Simplify using `[nbar, fromBlocks_multiply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lower_left_block_mul_lowering (g : GR n) (s : ℝ) :
     (mR (g * nbE s)).toBlocks₂₁ = (mR g).toBlocks₂₁ + (s : ℂ) • (mR g).toBlocks₂₂ := by
@@ -93,17 +93,15 @@ theorem lower_left_block_mul_lowering (g : GR n) (s : ℝ) :
   simp [nbar, fromBlocks_multiply]
 
 /- English proof (translation)
-Use `set C := (mR g).toBlocks₂₁`. Use `set D := (mR g).toBlocks₂₂`. Use `set P : Polynomial ℂ := det (C.map Polynomial.C + (Polynomial.X : Polynomial ℂ) • D.map Polynomial.C) with hP`. Establish `hev : ∀ z : ℂ, P.eval z = (C + z • D).det`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[hP, ← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hP0 : P ≠ 0`. Introduce `h0`. Establish `hz` using `hev Complex.I`. Rewrite `hz` using `[h0, Polynomial.eval_zero]`. Take `⟨v, hv, hv0⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr hz.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hv` to reduce the goal to its premises. Apply `vec_zero g (-Complex.I) (by simp) v` to reduce the goal to its premises. Establish `hm : (-Complex.I) • C + D = (-Complex.I) • (C + Complex.I • D)`. Rewrite using `[smul_add, smul_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hm, Matrix.vecMul_smul, hv0, smul_zero]`. Apply `((P.roots.toFinset.finite_toSet).preimage Complex.ofReal_injective.injOn).subset` to reduce the goal to its premises. Introduce `s hs`. Simplify using `only [Set.mem_setOf_eq] at hs`. Simplify using `only [Set.mem_preimage, Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_roots hP0, Polynomial.IsRoot, hev]`.
-
-Conclude with `hs`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_bad (g : GR n) :
     {s : ℝ | ((mR g).toBlocks₂₁ + (s : ℂ) • (mR g).toBlocks₂₂).det = 0}.Finite := by
@@ -136,11 +134,11 @@ theorem finite_bad (g : GR n) :
   exact hs
 
 /- English proof (translation)
-Introduce `g`. Establish `hT : Tendsto (fun s : ℝ => g * nbE s) (𝓝[≠] 0) (𝓝 g)`. Establish `hc : Continuous fun s : ℝ => g * nbE s` using `continuous_const.mul cont_nbE`. Establish `h` using `hc.tendsto 0`. Rewrite `h` using `[nbE_zero, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.mono_left nhdsWithin_le_nhds`. Use `mem_closure_of_tendsto hT ?_` and prove the remaining obligations. Establish `hfin` using `finite_bad g`. Establish `hZ : IsClosed ({s : ℝ | ((mR g).toBlocks₂₁ + (s : ℂ) • (mR g).toBlocks₂₂).det = 0} \ {0})` using `(hfin.subset Set.sdiff_subset).isClosed`. Establish `h0 : (0 : ℝ) ∉ ({s : ℝ | ((mR g).toBlocks₂₁ + (s : ℂ) • (mR g).toBlocks₂₂).det = 0} \ {0})` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (hZ.isOpen_compl.mem_nhds h0), self_mem_nhdsWithin] with s hs hs0`. Use `show ((mR (g * nbE s)).toBlocks₂₁).det ≠ 0`. Rewrite using `[lower_left_block_mul_lowering]`. Introduce `hdet`. Conclude with `hs ⟨hdet, hs0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dense_cell : Dense {g : GR n | ((mR g).toBlocks₂₁).det ≠ 0} := by
   intro g
@@ -161,13 +159,13 @@ theorem dense_cell : Dense {g : GR n | ((mR g).toBlocks₂₁).det ≠ 0} := by
   exact hs ⟨hdet, hs0⟩
 
 /- English proof (translation)
-Use `set C := (mR g).toBlocks₂₁ with hC`. Use `set D := (mR g).toBlocks₂₂ with hD`. Establish `hu : IsUnit C.det` using `isUnit_iff_ne_zero.mpr hγ`. Establish `huH : IsUnit Cᴴ.det`. Rewrite using `[det_conjTranspose]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `isUnit_iff_ne_zero.mpr (star_ne_zero.mpr hγ)`. Establish `hb : (C⁻¹ * D).IsHermitian`. Unfold `Matrix.IsHermitian`. Rewrite using `[conjTranspose_mul, conjTranspose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g * (jjE * nuE (C⁻¹ * D) hb)⁻¹, jjE * nuE (C⁻¹ * D) hb, C⁻¹ * D, ?_, hb, ?_, by group⟩` and prove the remaining obligations. Establish `hinv : mR (jjE * nuE (C⁻¹ * D) hb)⁻¹ = nU (-(C⁻¹ * D)) * (-JJ n)`. Rewrite using `[_root_.mul_inv_rev, mR_mul]`. Both sides reduce to the same expression. Rewrite using `[mR_mul, hinv]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← fromBlocks_toBlocks (mR g)]`. Simplify using `[nU, JJ, fromBlocks_multiply, fromBlocks_neg, ← hC, ← hD]`. Rewrite using `[mul_nonsing_inv_cancel_left C D hu, neg_add_cancel]`. Rewrite using `[mR_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bigcell (g : GR n) (hγ : ((mR g).toBlocks₂₁).det ≠ 0) :
     ∃ (y h : GR n) (b : Matrix (Fin n) (Fin n) ℂ), (mR y).toBlocks₂₁ = 0 ∧ b.IsHermitian ∧ mR h = JJ n * nU b ∧

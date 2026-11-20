@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.ArchTransportHost
 
 /- English proof (translation)
-Introduce `D ψ m n JA JB ξ κ _ co om hom`. Conclude with `GlobalTheory.ArchTransportDir.archDir_transport D.host.F D.host.E D.sp.cm.sig ψ m n JA JB ξ κ co om hom`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem archDir_transport_host : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (m n : ℕ) (JA : Matrix (Fin m) (Fin m) D.host.E)
     (JB : Matrix (Fin n) (Fin n) D.host.E) (ξ : AF D.host.F ⊗[D.host.F] D.host.E) (κ : Type) [Fintype κ]

@@ -17,7 +17,7 @@ namespace GlobalTheory.SeeSaw.TupModel
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `: LocallyCompactSpace (GfC V)` using `(GlobalTheory.Ker.CongTop.isClosed_GfC V).locallyCompactSpace`. Conclude with `⟨Measure.haar, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_haar_fin (V : HSp D) : ∃ μ : Measure (GfC V), μ.IsHaarMeasure := by
   obtain ⟨i1, i2, i3, i4, i5, -, -⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V
@@ -25,7 +25,7 @@ theorem exists_haar_fin (V : HSp D) : ∃ μ : Measure (GfC V), μ.IsHaarMeasure
   exact ⟨Measure.haar, inferInstance⟩
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `: LocallyCompactSpace (GfC V)` using `(GlobalTheory.Ker.CongTop.isClosed_GfC V).locallyCompactSpace`. Establish `hc : IsClosed ((R.subgroupOf (GfC V) : Subgroup (GfC V)) : Set (GfC V))` using `hR.preimage continuous_subtype_val`. Establish `: LocallyCompactSpace (R.subgroupOf (GfC V))` using `hc.locallyCompactSpace`. Conclude with `⟨Measure.haar, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_haar_sub (V : HSp D) (R : Subgroup (GA D V)) (hR : IsClosed (R : Set (GA D V))) :
     ∃ μ : Measure (R.subgroupOf (GfC V)), μ.IsHaarMeasure := by
@@ -36,7 +36,7 @@ theorem exists_haar_sub (V : HSp D) (R : Subgroup (GA D V)) (hR : IsClosed (R : 
   exact ⟨Measure.haar, inferInstance⟩
 
 /- English proof (translation)
-Consider the cases of `a`. Consider the cases of `b`. Consider the cases of `h`. Consider the cases of `h'`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem vol_ext {V : HSp D} {a b : Vol V} (h : a.μ = b.μ) (h' : a.𝓕 = b.𝓕) : a = b := by
   cases a; cases b; cases h; cases h'; rfl
@@ -47,12 +47,12 @@ def vol (j : ℕ) : Vol (d.st j).V :=
   if h : j < D.R.m then ⟨(d.st j).ν, (d.st j).fd, (hb.st j h).haar, (hb.st j h).fund⟩ else (GlobalTheory.Unf.Inhab.nonempty_vol _).some
 
 /- English proof (translation)
-Rewrite using `[vol, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vol_μ {j : ℕ} (h : j < D.R.m) : (vol d hb j).μ = (d.st j).ν := by rw [vol, dif_pos h]
 
 /- English proof (translation)
-Rewrite using `[vol, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vol_F {j : ℕ} (h : j < D.R.m) : (vol d hb j).𝓕 = (d.st j).fd := by rw [vol, dif_pos h]
 
@@ -84,7 +84,7 @@ theorem vol_F {j : ℕ} (h : j < D.R.m) : (vol d hb j).𝓕 = (d.st j).fd := by 
   Fr j := (D.mem u).C.Y j
 
 /- English proof (translation)
-The claim follows from `hb.com.std inf := hb.com.inf x := hb.x cpt := hT μf j := (exists_haar_fin _).choose_spec ρJ j ρ h := (exists_haar_sub _ _ (GlobalTheory.QuotZero.jac_haar_inv ((d.jac j ρ h).lev (d.x (j + 1)).vol)).1).choose_spec ρB j ρ h := (exists_haar_sub _ _ (GlobalTheory.QuotZero.bes_haar_inv …`.
+A detailed English derivation is pending.
 -/
 theorem comm_is (hT : CoCpt D.sp.X') (hg : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D)
     (hs : GlobalTheory.ChainOnto.ForStep D fun _ _ s s' p => GlobalTheory.Core.Mi.ItSpans s.M s'.M p.It) : (comm d hb).Is where
@@ -131,7 +131,7 @@ open Classical in
   cP := 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(hb.sBF j ρ h).1, vol_ext ((hb.sBF j ρ h).2.1.trans (vol_μ d hb (by omega)).symm) ((hb.sBF j ρ h).2.2.trans (vol_F d hb (by omega)).symm)⟩ sFB j σ h := ⟨(hb.sFB j σ h).1, vol_ext ((hb.sFB j σ h).2.1.trans (vol_μ d hb (by omega)).symm) ((hb.sFB j σ h).2.2.trans (vol_F d hb (by om …`.
+Supply the required witnesses or components.
 -/
 theorem tup_is (hst : d.Stab) : (tup d hb).Is where
   sBF j ρ h := ⟨(hb.sBF j ρ h).1, vol_ext ((hb.sBF j ρ h).2.1.trans (vol_μ d hb (by omega)).symm)
@@ -164,19 +164,19 @@ theorem tup_is (hst : d.Stab) : (tup d hb).Is where
   stabS := hst.2.1
 
 /- English proof (translation)
-Rewrite using `[trc, Finsupp.support_single _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trc_single {V : HSp D} (g : GA D V) (f : GA D V → ℂ) : trc (Finsupp.single g 1) f = rTrans g f := by
   rw [trc, Finsupp.support_single _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]
 
 /- English proof (translation)
-Rewrite using `[trc_single]`. Use function extensionality and compare the values at `g`. Simplify using `[rTrans]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem trc_one {V : HSp D} (f : GA D V → ℂ) : trc (Finsupp.single 1 1) f = f := by
   rw [trc_single]; funext g; simp [rTrans]
 
 /- English proof (translation)
-Unfold `Tup.per Tup.perF`. Rewrite using `[Fintype.sum_unique, trc_single]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem per_eq (j ρ h ψ G y v) :
     (tup d hb).per j ρ h ψ G y v = (d.B j ρ h).per d.c.ψ (d.rd j ψ y) (rTrans (d.t j) (G.1 v)) := by
@@ -184,7 +184,7 @@ theorem per_eq (j ρ h ψ G y v) :
   rw [Fintype.sum_unique, trc_single]
 
 /- English proof (translation)
-Unfold `Tup.two`. Rewrite using `[Fintype.sum_unique, Fintype.sum_unique]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem two_eq (j φ C β) : (tup d hb).two j (fun _ => φ) C β = d.two j φ C := by
   unfold Tup.two
@@ -192,12 +192,12 @@ theorem two_eq (j φ C β) : (tup d hb).two j (fun _ => φ) C β = d.two j φ C 
   rfl
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem realEq : RealEq fun _ : Unit => tup d hb := fun _ _ _ _ _ _ _ _ _ _ => rfl
 
 /- English proof (translation)
-Introduce `j hj y P`. Take `⟨a, ha⟩` from `h j hj y P`. Use `⟨a, fun _ ψ hψ γ => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_unique, one_smul]`. Conclude with `ha ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerX (h : d.KerLift) : KerX fun _ : Unit => tup d hb := by
   intro j hj y P
@@ -207,7 +207,7 @@ theorem kerX (h : d.KerLift) : KerX fun _ : Unit => tup d hb := by
   exact ha ψ hψ
 
 /- English proof (translation)
-Introduce `j hj`. Take `⟨χ, hχ⟩` from `h j hj`. Conclude with `⟨χ, fun _ ψ hψ _ y => hχ ψ hψ y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rdX (h : d.RdLaw) : RdX fun _ : Unit => tup d hb := by
   intro j hj
@@ -215,11 +215,11 @@ theorem rdX (h : d.RdLaw) : RdX fun _ : Unit => tup d hb := by
   exact ⟨χ, fun _ ψ hψ _ y => hχ ψ hψ y⟩
 
 /- English proof (translation)
-Introduce `n hn y v`. Substitute `hn` using the available equality. Take `⟨a, ha⟩` from `h y v`. Use `⟨a, fun _ ψ hψ F => ?_⟩` and prove the remaining obligations. Establish `hF : ∃ F', d.eT F' = F` using `ho F`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `ha ψ hψ hF.choose`. Rewrite `e` using `[hF.choose_spec]`. Unfold `Tup.perT`. Rewrite using `[Fintype.sum_unique, trc_one, one_mul]`. Use `e.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[dif_pos hF]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem perX (h : d.PerLast) (ho : d.TopOnto) : PerX fun _ : Unit => tup d hb := by
   intro n hn y v
@@ -236,9 +236,9 @@ theorem perX (h : d.PerLast) (ho : d.TopOnto) : PerX fun _ : Unit => tup d hb :=
   rw [dif_pos hF]
 
 /- English proof (translation)
-Introduce `j hj P₁ P₂`. Take `⟨C, hC, h⟩` from `h j hj P₁ P₂`. Use `⟨C, hC, fun _ ψ hψ y F v => ?_⟩` and prove the remaining obligations. Establish `e` using `h ψ hψ y F v`. Rewrite `e` using `[← vol_μ d hb (j := j + 1) (by omega), ← vol_F d hb (j := j + 1) (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `Tup.perF Tup.perT`. Rewrite using `[Fintype.sum_unique, Fintype.sum_unique, trc_single, trc_one, one_mul, two_eq]`. Conclude with `e`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valLastX (h : d.ValLastS) : ValLastX fun _ : Unit => tup d hb := by
   intro j hj P₁ P₂
@@ -251,7 +251,7 @@ theorem valLastX (h : d.ValLastS) : ValLastX fun _ : Unit => tup d hb := by
   exact e
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨comm d l.base, tup d l.base, comm_is d l.base l.topOK hg hs, tup_is d l.base l.stab, rfl, fun _ => ⟨()⟩, one_ne_zero, fun _ => ⟨one_ne_zero, one_ne_zero⟩, realEq d _, kerX d _ l.kerLift, rdX d _ l.rdLaw, perX d _ l.perLast l.topOnto, valLastX d _ l.valLast⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_of_lawsT (l : d.LawsT) (hg : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D)
     (hs : GlobalTheory.ChainOnto.ForStep D fun _ _ s s' p => GlobalTheory.Core.Mi.ItSpans s.M s'.M p.It) :
@@ -267,9 +267,9 @@ section Ind
 variable {c : Comm D} {𝒯 : Type} (t : 𝒯 → Tup c)
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => exact fun _ => hψ`. Consider the case `succ i ih`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ht.stabK (2 * i + 1) (by omega) _ (ht.stabK (2 * i) (by omega) _ (ht.stabS (2 * i) (by omega) _ (ih (by omega))))`.
+A detailed English derivation is pending.
 -/
 theorem up_mem {t : Tup c} (ht : t.Is) {ψ : t.Col 0} (hψ : ψ ∈ t.Ram 0) : ∀ i, 2 * i ≤ D.R.m → t.up i ψ ∈ t.Ram (2 * i) := by
   intro i
@@ -280,13 +280,13 @@ theorem up_mem {t : Tup c} (ht : t.Is) {ψ : t.Col 0} (hψ : ψ ∈ t.Ram 0) : �
     exact ht.stabK (2 * i + 1) (by omega) _ (ht.stabK (2 * i) (by omega) _ (ht.stabS (2 * i) (by omega) _ (ih (by omega))))
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `ρ h α G hyp y v`. Take `rfl : ρ = n` from `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hyp y v`. Consider the case `succ k ih`. Introduce `ρ h α G hyp y v`. Establish `h' : 2 * k + 2 * (ρ + 1) + 2 = D.R.m` using `by omega`. Establish `e` using `hS (2 * k) ρ h' I s (fun i => α i * ∏ l ∈ Finset.range k, (t (s i)).cV (2 * l) * (t (s i)).cK (2 * l) * (t (s i)).cK (2 * l + 1)) (fun i => (t (s i)).up k (ψ i)) G (fun i => up_mem (ht _) (hψ i) k (by omega)) (fun y v => by`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (hyp y v)` and prove the remaining obligations. Rewrite using `[Finset.prod_range_succ, mul_assoc (α i)]`. Use the proof step `rfl)`. Establish `e2` using `ih (ρ + 1) h' (fun i => α i * ((t (s i)).cI (2 * k) * (t (s i)).cI (2 * k + 1))) (fun i => (t (s i)).io (2 * k) ((t (s i)).io (2 * k + 1) (G i))) (fun y v => by`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (e y v)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use the proof step `ring) y v`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) e2` and prove the remaining obligations. Rewrite using `[show Finset.range (2 * (k + 1)) = Finset.range (2 * k + 1 + 1) from rfl, Finset.prod_range_succ, Finset.prod_range_succ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem down (ht : ∀ s, (t s).Is) (hS : StepX t) (n : ℕ) (h₀ : 0 + 2 * n + 2 = D.R.m) (I : Type) [Fintype I] (s : I → 𝒯)
     (ψ : ∀ i, (t (s i)).Col 0) (hψ : ∀ i, ψ i ∈ (t (s i)).Ram 0) :
@@ -319,11 +319,11 @@ theorem down (ht : ∀ s, (t s).Is) (hS : StepX t) (n : ℕ) (h₀ : 0 + 2 * n +
     ring
 
 /- English proof (translation)
-Introduce `n h h₀ I _ s α ψ F hψ hyp y v`. Establish `e` using `hL (2 * n) h I s (fun i => α i * ∏ l ∈ Finset.range n, (t (s i)).cV (2 * l) * (t (s i)).cK (2 * l) * (t (s i)).cK (2 * l + 1)) (fun i => (t (s i)).up n (ψ i)) F (fun i => up_mem (ht _) (hψ i) n (by omega)) (by`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) hyp` and prove the remaining obligations. Rewrite using `[Tup.cTop, Finset.prod_range_succ, mul_assoc (α i), ← mul_assoc _ _ (t (s i)).cP]`. Use the proof step `rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `down t ht hS n h₀ I s ψ hψ n 0 h (fun i => α i * ((t (s i)).cI (2 * n) * (t (s i)).cI (2 * n + 1))) (fun i => (t (s i)).io (2 * n) ((t (s i)).ioT (2 * n) h (F i))) (fun y v => by`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (e y v)` and prove the remaining obligations. Use the proof step `ring) y v`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) e2` and prove the remaining obligations. Rewrite using `[Tup.cBot, ← h, show Finset.range (2 * n + 2 * 0 + 2) = Finset.range (2 * n + 1 + 1) from rfl, Finset.prod_range_succ, Finset.prod_range_succ]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mainX_of_steps (ht : ∀ s, (t s).Is) (hS : StepX t) (hL : LastX t) : MainX t := by
   intro n h h₀ I _ s α ψ F hψ hyp y v
@@ -346,9 +346,9 @@ theorem mainX_of_steps (ht : ∀ s, (t s).Is) (hS : StepX t) (hL : LastX t) : Ma
 end Ind
 
 /- English proof (translation)
-Introduce `j σ hj ψ hψ G hv y v`. Establish `e` using `h j σ hj Unit id (fun _ => 1) (fun _ => ψ) (fun _ => G) (fun _ => hψ) (fun y v => by`. Rewrite using `[Fintype.sum_unique, per_eq]`. Conclude with `mul_eq_zero_of_right _ (hv y v)) y v`. Rewrite `e` using `[Fintype.sum_unique, per_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using e`.
+A detailed English derivation is pending.
 -/
 theorem stepVan_of_stepX (h : StepX fun _ : Unit => tup d hb) : d.StepVan := by
   intro j σ hj ψ hψ G hv y v
@@ -359,9 +359,9 @@ theorem stepVan_of_stepX (h : StepX fun _ : Unit => tup d hb) : d.StepVan := by
   simpa using e
 
 /- English proof (translation)
-Unfold `Iter2`. Simplify using `only [isQuotIntL1_bot, integral_dirac]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f₁, ⟨-, h1⟩, h2⟩`. Rewrite using `[h1, (h2 ()).2]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `⟨fun _ => f () (), ⟨integrable_const _, rfl⟩, fun q => ⟨Integrable.of_finite, rfl⟩⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 example (f : Unit → Unit → ℂ) (z : ℂ) :
     Iter2 (G₁ := Unit) (G₂ := Unit) (R₁ := ⊥) (R₂ := ⊥) (Measure.dirac 1) (Measure.dirac ()) (Measure.dirac 1) (Measure.dirac ()) f z ↔
@@ -375,9 +375,9 @@ example (f : Unit → Unit → ℂ) (z : ℂ) :
     exact ⟨fun _ => f () (), ⟨integrable_const _, rfl⟩, fun q => ⟨Integrable.of_finite, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `j σ h P₁ P₂`. Establish `hL1` using `hLL hg d.c hb.com j (by omega) (d.st j) (d.st (j + 1)) (hb.st j (by omega)) (hb.st (j + 1) (by omega)) (d.p j) (hb.p j (by omega)) P₁`. Establish `hL2` using `hLL hg d.c hb.com (j + 1) (by omega) (d.st (j + 1)) (d.st (j + 1 + 1)) (hb.st (j + 1) (by omega)) (hb.st (j + 1 + 1) (by omega)) (d.p (j + 1)) (hb.p (j + 1) (by omega)) P₂`. Use `⟨Lev.levG (d.st (j + 1)).V (d.st (j + 1)).β (d.st (j + 1)).L, {d.t (j + 1)}, fun k hk => hk.1, GlobalTheory.ParahoricCompact.isCompact_levG _ _ _, ?_, fun q hq => Finset.mem_singleton.1 hq ▸ hb.t _, fun k hk => ⟨_, Units.ne_zero _, hL1.2 k hk, hL2.1 k hk⟩, fun _ g hg' h₁ hne => ⟨ …` and prove the remaining obligations. Use `(GlobalTheory.ParahoricCompact.isOpen_comap_lev (d.st (j + 1)).V (d.st (j + 1)).β (d.st (j + 1)).L).preimage (continuous_subtype_val (p := fun x => x ∈ GfC (d.st (j + 1)).V)) using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `k`. Conclude with `⟨fun hk => hk.2, fun hk => ⟨k.2, hk⟩⟩`. Take `rfl` from `Finset.mem_singleton.1 (Finsupp.support_single_subset hg')`. Conclude with `h1 j σ h P₁ h₁ hne`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locFin (hg : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D) (hLL : GlobalTheory.ChainOnto.LevelLaw D) (h1 : d.Supp1) : (tup d hb).LocFin := by
   intro j σ h P₁ P₂

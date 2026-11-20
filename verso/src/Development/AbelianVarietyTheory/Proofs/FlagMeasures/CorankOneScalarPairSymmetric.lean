@@ -11,21 +11,19 @@ namespace GlobalTheory.ScalSymm
 open Formalism.L2.SG.NGCut
 
 /- English proof (translation)
-Introduce `D X Y u u' t t' hG hG' hs hsc`. Establish `hdim` using `Formalism.L2.SG.Corank.finrank_VS D`. Establish `hGv : ∀ t : TauC Y u u', t.G ≠ 0 → Gval (lf D (X.Fu u)) t.frame ≠ 0` using `fun t h => (Formalism.L2.SG.Pf.SatGram.gterm_G Y t) ▸ h`. Establish `hlat : ∀ t : TauC Y u u', Submodule.IsLattice D.host.E t.lam` using `fun t => ((Y.rowsOK u).1 t.lam t.mem).2.1.1`. Establish `hLF : ∀ t : TauC Y u u', IsLift t.lam (lf D (X.Fu u))` using `fun t => ((Y.rowsOK u).1 t.lam t.mem).2.1.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLt : ∀ t : TauC Y u u', IsLift t.lam t.frame` using `fun t => t.rep.2.2.2.2.1`. Take `⟨⟨hlam, hlam'⟩, -, hIS⟩` from `(show Formalism.L2.SG.TermOp.scalT t t' from hsc)`. Establish `h1' : Formalism.L2.SG.TermOp.s0T t t' = 1` using `hs`. Unfold `Formalism.L2.SG.TermOp.s0T at h1'`. Rewrite `h1'` using `[if_pos ⟨hlam, hlam'⟩]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hth` using `(CorankRelation.s0_eq_one_iff_Th_eq_Hp D.R.k hdim t.lam (hlat t) _ t.frame t'.frame _ (hLF t) (hLt t) (hGv t hG)).1 h1'`. Establish `hL' : IsLift t.lam t'.frame` using `by rw [hlam]; exact hLt t'`. Establish `hsym` using `CorankRelation.Th_symm D.R.k hdim t.lam (hlat t) _ t.frame t'.frame (t'.lin * t.lin⁻¹) (hLF t) (hLt t) hL' (hGv t hG) (hGv t' hG') (CorankRelation.frame_mem_iff t t') hth`. Establish `hinv : (t'.lin * t.lin⁻¹)⁻¹ = t.lin * t'.lin⁻¹` using `by group`. Rewrite `hsym` using `[hinv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs' : s0 t.lam (lf D (X.Fu u)) t'.frame t.frame (t.lin * t'.lin⁻¹) D.R.k = 1` using `(CorankRelation.s0_eq_one_iff_Th_eq_Hp D.R.k hdim t.lam (hlat t) _ t'.frame t.frame _ (hLF t) hL' (hGv t' hG')).2 hsym`. Establish `hback : ∀ y : (VS D).V, (t'.lin * t.lin⁻¹) ((t.lin * t'.lin⁻¹) y) = y` using `fun y => by show t'.lin (t.lin.symm (t.lin (t'.lin.symm y))) = y`. Simplify using the standard rewrite rules. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show Formalism.L2.SG.TermOp.s0T t' t = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.L2.SG.TermOp.s0T`. Rewrite using `[if_pos ⟨hlam.symm, hlam'.symm⟩, ← hlam]`. Conclude with `hs'`. Use `show Formalism.L2.SG.TermOp.scalT t' t`. Use `⟨⟨hlam.symm, hlam'.symm⟩, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hlam]`. Conclude with `hs'`. Rewrite using `[← hlam]`. Introduce `y2 hy2 y1 hy1 y2'' hy2'' y1' hy1' hd hd' al al'`. Establish `hd1 : y1 - y2 ∈ Xsp (lf D (X.Fu u))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Xsp (lf D (X.Fu u))).neg_mem hd` as an intermediate fact. Simplify using `using this`. Establish `hd2 : y2'' - (t'.lin * t.lin⁻¹) y1' ∈ Xsp t'.frame`. Establish `h` using `(CorankRelation.frame_mem_iff t t' _).1 hd'`. Rewrite `h` using `[map_sub, hback]`.
-
-Use `(Xsp t'.frame).neg_mem h` as an intermediate fact. Simplify using `using this`. Conclude with `(hIS y1 hy1 y2 hy2 y1' hy1' y2'' hy2'' hd1 hd2 al al').symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem scal_symm : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ t t' : TauC Y u u', t.G ≠ 0 → t'.G ≠ 0 → (Y.tO u u').s0 t t' = 1 → (Y.tO u u').scal t t' → (Y.tO u u').s0 t' t = 1 ∧ (Y.tO u u').scal t' t := by
   intro D X Y u u' t t' hG hG' hs hsc

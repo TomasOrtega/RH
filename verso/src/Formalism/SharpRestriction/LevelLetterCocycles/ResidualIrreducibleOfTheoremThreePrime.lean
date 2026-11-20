@@ -10,9 +10,9 @@ namespace Formalism.MainNotions.AdmissibleThreePrime
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
 /- English proof (translation)
-Take `⟨P, -, hBC⟩` from `hx`. Use `⟨fun p hp => ?_, ?_⟩` and prove the remaining obligations. Establish `hm : (⟨p.a, D.naut.tw p.π D.naut.etaTinv, p.d⟩ : Formalism.BasicNotions.Part D.naut.CG) ∈ twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv` using `List.mem_map.2 ⟨p, List.mem_append_left _ hp, rfl⟩`. Conclude with `⟨(hBC.1 _ hm).1, (hBC.1 _ hm).2.1⟩`. Establish `h` using `hBC.2.2.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e : rankIso D.nd D.naut (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv) = rankIso D.nd D.naut Sig + D.R.t`. Simplify using `[rankIso, twistIso, muPart, List.map_map, Function.comp_def]`. Rewrite `h` using `[e]`. Establish `: D.R.nV = D.R.r + D.R.t` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem parts_of (D : D7) (i : D.nd.Loc) (x : D.nd.X i) (Sig : List (Formalism.BasicNotions.Part D.naut.CG))
     (hx : HasParamX D.nd D.naut i x Sig) :
@@ -32,25 +32,23 @@ theorem parts_of (D : D7) (i : D.nd.Loc) (x : D.nd.X i) (Sig : List (Formalism.B
     omega
 
 /- English proof (translation)
-Take `⟨hpos, hrank⟩` from `parts_of D i x Sig hx`. Set `k : Fin 2` to `0`. Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Take `⟨h1, h2, -, -, h5, -⟩` from `(hg k).1`. Establish `: Nonempty (D.nd.PlG k)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Fintype.card_pos_iff, D.nd.card_PlG k]`. Use `show 0 < 2 * D.R.n`. Use `D.R.ord_pos` as an intermediate fact. Use `show 0 < 2 * D.R.ord`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : 1 ≤ D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Use `show 1 ≤ D.R.k + D.R.m - 1`. Use linear arithmetic over natural numbers and integers. Establish `hf : ∀ v, D.naut.items₂ k (D.naut.plGw k v) (isoLoc D.nd D.naut Sig (D.naut.plGw k v)) = ∏ j : Fin Sig.length, D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG (Sig.get j).π (D.naut.plGw k v)) ^ (Sig.get j).d`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[SumRepresentations.inertiaCharpoly_eq_of_iso D.nd D.naut hT k v Sig, SumRepresentations.list_prod_fin Sig (fun p => D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG p.π (D.naut.plGw k v)) ^ p.d)]`. Establish `hrk : ∑ j : Fin Sig.length, (Sig.get j).a * (Sig.get j).d = D.R.r`. Rewrite using `[← hrank, rankIso, SumRepresentations.list_sum_fin Sig (fun p => p.a * p.d)]`. Establish `hd : ∀ j : Fin Sig.length, 1 ≤ (Sig.get j).a ∧ 1 ≤ (Sig.get j).d` using `fun j => hpos _ (List.get_mem Sig j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdeg : ∀ v (j : Fin Sig.length), (D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG (Sig.get j).π (D.naut.plGw k v))).natDegree = (Sig.get j).a`. Introduce `v`. Establish `hne : ∀ j ∈ (Finset.univ : Finset (Fin Sig.length)), D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG (Sig.get j).π (D.naut.plGw k v)) ^ (Sig.get j).d ≠ 0`. Rewrite using `[← Finset.prod_ne_zero_iff, ← hf v]`. Conclude with `(h1 v).1.ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : ∑ j : Fin Sig.length, (D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG (Sig.get j).π (D.naut.plGw k v))).natDegree * (Sig.get j).d = ∑ j : Fin Sig.length, (Sig.get j).a * (Sig.get j).d`. Establish `h1' : (D.naut.items₂ k (D.naut.plGw k v) (isoLoc D.nd D.naut Sig (D.naut.plGw k v))).natDegree = D.R.r` using `(h1 v).2.1`. Rewrite using `[hrk, ← h1', hf v, natDegree_prod _ _ hne]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[natDegree_pow, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hle : ∀ j ∈ (Finset.univ : Finset (Fin Sig.length)), (D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG (Sig.get j).π (D.naut.plGw k v))).natDegree * (Sig.get j).d ≤ (Sig.get j).a * (Sig.get j).d`. Introduce `j _`. Use `Nat.mul_le_mul_right _ ?_` and prove the remaining obligations. Use `hT.2 k v (D.naut.locG (Sig.get j).π (D.naut.plGw k v))` as an intermediate fact. Rewrite `this` using `[D.naut.locG_dim]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce `j`. Use `(Finset.sum_eq_sum_iff_of_le hle).1 hsum j (Finset.mem_univ j)` as an intermediate fact. Conclude with `Nat.eq_of_mul_eq_mul_right (hd j).2 this`. Take `⟨hc, hall⟩` from `Formalism.IrreducibleCountingLemmas.Z.good_cuspidal_multiplicity_one (ZMod (D.host.g k)) (D.nd.PlG k) D.R.r (fun v => D.naut.items₂ k (D.naut.plGw k v) (isoLoc D.nd D.naut Sig (D.naut.plGw k v))) (Fin Sig.length) (fun j => (Sig.get j).a) (fun j => (Sig.get j).d) (fun v j => D.nau …`. Introduce and unpack `⟨a, ha1, ha2, ha⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `h5 a ha1 ha2`. Conclude with `hv (ha v))`. Rewrite `hc` using `[Fintype.card_fin]`. Take `⟨p, rfl⟩` from `List.length_eq_one_iff.1 hc`. Take `⟨hd1, ha1⟩` from `hall ⟨0, by simp⟩`.
-
-Take `⟨a, π, d⟩` from `p`. Simplify using `only [List.get_eq_getElem, List.getElem_cons_zero] at hd1 ha1`. Substitute `hd1 ha1` using the available equality. Conclude with `⟨π, rfl⟩`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cusp_of (D : D7) (hT : SumRepresentations.tieLab D) (i : D.nd.Loc) (x : D.nd.X i)
     (Sig : List (Formalism.BasicNotions.Part D.naut.CG)) (hx : HasParamX D.nd D.naut i x Sig)
@@ -124,7 +122,7 @@ theorem cusp_of (D : D7) (hT : SumRepresentations.tieLab D) (i : D.nd.Loc) (x : 
   exact ⟨π, rfl⟩
 
 /- English proof (translation)
-Rewrite `h` using `[IsRoot, eval_multiset_prod, Multiset.prod_eq_zero_iff, Multiset.map_map]`. Take `⟨y, hy, e⟩` from `Multiset.mem_map.1 h`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply, eval_sub, eval_X, eval_C] at e`. Conclude with `(sub_eq_zero.1 e).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_root_prod {K A : Type} [Field K] (s : Multiset A) (F : A → K) (a : K)
     (h : ((s.map fun x => X - C (F x)).prod).IsRoot a) : ∃ x ∈ s, F x = a := by
@@ -135,7 +133,7 @@ theorem eq_of_root_prod {K A : Type} [Field K] (s : Multiset A) (F : A → K) (a
   exact (sub_eq_zero.1 e).symm
 
 /- English proof (translation)
-Take `⟨r, σ, -, hmap, hσ⟩` from `Formalism.CyclotomicNorms.CycleTypeFiniteOrder.exists_index hf`. Rewrite `hx` using `[← hmap]`. Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 hx`. Conclude with `Formalism.CyclotomicNorms.CycleTypeFiniteOrder.isOfFinOrder_of_index hσ j (Formalism.CyclotomicNorms.CycleTypeFiniteOrder.ne_zero_of_mem hf (hmap ▸ Multiset.mem_map_of_mem _ (Finset.mem_univ_val j)))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isOfFinOrder_root {g : ℕ} [Fact g.Prime] {N : ℕ} {f : (ZMod g)[X]} (hf : Formalism.CyclotomicNorms.CycleTypeFiniteOrder.GoodPoly N f)
     {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ∈ Formalism.CyclotomicNorms.rootsBar f) : IsOfFinOrder x := by
@@ -145,7 +143,7 @@ theorem isOfFinOrder_root {g : ℕ} [Fact g.Prime] {N : ℕ} {f : (ZMod g)[X]} (
   exact Formalism.CyclotomicNorms.CycleTypeFiniteOrder.isOfFinOrder_of_index hσ j (Formalism.CyclotomicNorms.CycleTypeFiniteOrder.ne_zero_of_mem hf (hmap ▸ Multiset.mem_map_of_mem _ (Finset.mem_univ_val j)))
 
 /- English proof (translation)
-Establish `hu : IsOfFinOrder u` using `isOfFinOrder_of_finite u`. Conclude with `(MonoidHom.isOfFinOrder ((algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).toMonoidHom.comp (Units.coeHom (ZMod g))) hu)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOfFinOrder_alg {g : ℕ} [Fact g.Prime] (u : (ZMod g)ˣ) :
     IsOfFinOrder (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) (u : ZMod g)) := by
@@ -153,9 +151,9 @@ theorem isOfFinOrder_alg {g : ℕ} [Fact g.Prime] (u : (ZMod g)ˣ) :
   exact (MonoidHom.isOfFinOrder ((algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).toMonoidHom.comp (Units.coeHom (ZMod g))) hu)
 
 /- English proof (translation)
-Establish `ho : orderOf c⁻¹ = orderOf c`. Set `u : Kˣ` to `Units.mk0 c hc`. Establish `h1 : (u : K) = c` using `rfl`. Rewrite using `[← h1, ← Units.val_inv_eq_inv_val, orderOf_units, orderOf_units, orderOf_inv]`. Unfold `Formalism.CyclotomicNorms.primeToPart`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[ho, inv_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem primeToPart_inv {K : Type} [Field K] (ℓ : ℕ) (c : K) (hc : c ≠ 0) :
     Formalism.CyclotomicNorms.primeToPart ℓ c⁻¹ = (Formalism.CyclotomicNorms.primeToPart ℓ c)⁻¹ := by
@@ -167,19 +165,17 @@ theorem primeToPart_inv {K : Type} [Field K] (ℓ : ℕ) (c : K) (hc : c ≠ 0) 
   rw [ho, inv_pow]
 
 /- English proof (translation)
-Introduce `hroot`. Take `⟨y, hy, hyeq⟩` from `eq_of_root_prod _ (fun x => ι (Formalism.CyclotomicNorms.primeToPart ℓ x) ^ e₁) _ hroot`. Take `⟨h1, h2, -, h3, -, -⟩` from `hG1`. Establish `h3'` using `hG2.2.2.2.1`. Establish `gp : Formalism.CyclotomicNorms.CycleTypeFiniteOrder.GoodPoly N (f v)` using `⟨(h1 v).1, (h1 v).2.1, (h1 v).2.2, h2 v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0` using `Formalism.CyclotomicNorms.CycleTypeFiniteOrder.ne_zero_of_mem gp hy`. Establish `hyfin` using `isOfFinOrder_root gp hy`. Use `set c := algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) (χ v j : ZMod g) with hcdef`. Establish `hc0 : c ≠ 0` using `(_root_.map_ne_zero _).2 (χ v j).ne_zero`. Establish `hcfin : IsOfFinOrder c` using `isOfFinOrder_alg (χ v j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcinv : c⁻¹ = algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) (((χ v j)⁻¹ : (ZMod g)ˣ) : ZMod g)`. Rewrite using `[hcdef, Units.val_inv_eq_inv_val, map_inv₀]`. Establish `hcifin : IsOfFinOrder c⁻¹` using `hcinv ▸ isOfFinOrder_alg (χ v j)⁻¹`. Establish `ppne : ∀ z : Formalism.CyclotomicNorms.Fbar g, z ≠ 0 → Formalism.CyclotomicNorms.primeToPart ℓ z ≠ 0` using `fun z hz => by`. Unfold `Formalism.CyclotomicNorms.primeToPart`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `pow_ne_zero _ hz`. Establish `cop : ∀ z : Formalism.CyclotomicNorms.Fbar g, IsOfFinOrder z → (orderOf (Formalism.CyclotomicNorms.primeToPart ℓ z)).Coprime ℓ` using `fun z hz => Formalism.CyclotomicNorms.CycleTypeFiniteOrder.primeToPart_coprime hℓ.out z hz`. Establish `hιinv : ∀ z : Formalism.CyclotomicNorms.Fbar g, z ≠ 0 → ι z⁻¹ = (ι z)⁻¹` using `fun z hz => eq_inv_of_mul_eq_one_right (by rw [← map_mul, mul_inv_cancel₀ hz, map_one])`. Establish `case1 : ι (Formalism.CyclotomicNorms.primeToPart ℓ y) = ι (Formalism.CyclotomicNorms.primeToPart ℓ c) → False` using `fun e => h3 ℓ hℓ.out hℓg v j y hy (hinj _ _ (ppne y hy0) (ppne c hc0) (cop y hyfin) (cop c hcfin) e)`. Establish `case2 : ι (Formalism.CyclotomicNorms.primeToPart ℓ y) = (ι (Formalism.CyclotomicNorms.primeToPart ℓ c))⁻¹ → False` using `fun e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[← hιinv _ (ppne c hc0), ← primeToPart_inv _ _ hc0]`. Use `hinj _ _ (ppne y hy0) (ppne _ (inv_ne_zero hc0)) (cop y hyfin) (cop _ hcifin) e` as an intermediate fact. Rewrite `this` using `[hcinv]`. Conclude with `h3' ℓ hℓ.out hℓg v j y hy this`. Apply the tactic sequence `rcases he₁ with rfl | rfl <;> rcases he₂ with rfl | rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [zpow_one] at hyeq`. Conclude with `case1 hyeq`. Simplify using `only [zpow_one, zpow_neg] at hyeq`. Conclude with `case2 hyeq`. Simplify using `only [zpow_one, zpow_neg] at hyeq`.
-
-Conclude with `case2 (by rw [← hyeq, inv_inv])`. Simplify using `only [zpow_neg, zpow_one, inv_inj] at hyeq`. Conclude with `case1 hyeq`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_root_of {g ℓ : ℕ} [Fact g.Prime] [hℓ : Fact ℓ.Prime] (hℓg : ℓ ≠ g) {N : ℕ} {PP J : Type}
     (f : PP → (ZMod g)[X]) (χ : PP → J → (ZMod g)ˣ) (hG1 : Formalism.CyclotomicNorms.IsGood N g f χ)
@@ -226,17 +222,15 @@ theorem not_root_of {g ℓ : ℕ} [Fact g.Prime] [hℓ : Fact ℓ.Prime] (hℓg 
   · simp only [zpow_neg, zpow_one, inv_inj] at hyeq; exact case1 hyeq
 
 /- English proof (translation)
-Introduce and unpack `⟨hT, hG⟩ hBB i Sig ⟨x, hx⟩ hdz hgood`. Establish `hcusp` using `cusp_of D hT i x Sig hx hgood`. Use `⟨hcusp, fun ρ hρ => ?_⟩` and prove the remaining obligations. Establish `hG'` using `hG i Sig ⟨x, hx⟩ hdz hcusp ρ hρ`. Establish `hfact : ∀ j : Fin 2, Fact (D.host.g j).Prime` using `fun j => ⟨D.host.g_prime j⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBB' : Formalism.CyclotomicNorms.BB D.R.r (D.host.g 0) ∩ Formalism.CyclotomicNorms.BB D.R.r (D.host.g 1) = ∅` using `Set.disjoint_iff_inter_eq_empty.mp hBB`. Establish `hne : ∀ k : Fin 2, D.nd.l i ∉ Formalism.CyclotomicNorms.BB D.R.r (D.host.g k) → D.nd.l i ≠ D.host.g k` using `fun k hk h => hk (Or.inl h)`. Establish `key : ∀ k : Fin 2, D.nd.l i ∉ Formalism.CyclotomicNorms.BB D.R.r (D.host.g k) → Formalism.CyclotomicNorms.IrredOn (redF D i ρ) ⊤ ∧ (∀ (H : Subgroup (G D.host.E D.nd.Om)) [H.Normal], Finite (G D.host.E D.nd.Om ⧸ H) → Group.IsSolvable (G D.host.E D.nd.Om ⧸ H) → (∀ v, D.ntypes.tg k …`. Introduce `k hk`. Establish `hA` using `(hG' k (hne k hk)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose ι hι using hA`. Use `choose φ hφ using fun v => (hι v).2.2`. Establish `T` using `Formalism.CyclotomicNorms.irreducibility_of_good_tuple D.R.r D.host.g D.nd.PlG (Fin D.R.m) (fun j v => D.naut.items₂ j (D.naut.plGw j v) (isoLoc D.nd D.naut Sig (D.naut.plGw j v))) D.nd.chiT hBB' (fun j => (hgood j).1) (D.nd.l i) k hk (G D.host.E D.nd.Om) (redF D i ρ) (fun v => D …`. Conclude with `⟨T.1, T.2.1⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : D.nd.l i ∈ Formalism.CyclotomicNorms.BB D.R.r (D.host.g 0)`. Establish `h1 : D.nd.l i ∉ Formalism.CyclotomicNorms.BB D.R.r (D.host.g 1)` using `fun h1 => by`. Establish `hm : D.nd.l i ∈ Formalism.CyclotomicNorms.BB D.R.r (D.host.g 0) ∩ Formalism.CyclotomicNorms.BB D.R.r (D.host.g 1)` using `⟨h0, h1⟩`. Rewrite `hm` using `[hBB']`. Conclude with `hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(key 1 h1).1`. Conclude with `(key 0 h0).1`. Introduce `k hk Hs _ hopen hsolv hIne`. Establish `: Finite (G D.host.E D.nd.Om ⧸ Hs)` using `Subgroup.quotient_finite_of_isOpen Hs hopen`. Conclude with `(key k hk).2 Hs inferInstance hsolv (fun v => hIne _ (D.naut.plGw_over k v) (D.ntypes.tg_mem k v))`.
-
-Introduce `k hk w hw hTG`. Take `⟨v, j, ι, e₁, e₂, he₁, he₂, hinj, hcp, hchi⟩` from `(hG' k hk).2 w hw hTG`. Use `show ¬ (Matrix.charpoly ((redF D i ρ (D.nd.gam0 i w) : GL (Fin D.R.r) _) : Matrix (Fin D.R.r) (Fin D.R.r) (Formalism.CyclotomicNorms.Fbar (D.nd.l i)))).IsRoot _`. Rewrite using `[hcp, hchi]`. Conclude with `not_root_of hk (fun v => D.naut.items₂ k (D.naut.plGw k v) (isoLoc D.nd D.naut Sig (D.naut.plGw k v))) (D.nd.chiT k) (hgood k).1 (hgood k).2 v j ι hinj e₁ e₂ he₁ he₂`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theorem_three_prime_holds (D : D7) : ThreePrimeTheorem D := by
   rintro ⟨hT, hG⟩ hBB i Sig ⟨x, hx⟩ hdz hgood
@@ -283,7 +277,7 @@ theorem theorem_three_prime_holds (D : D7) : ThreePrimeTheorem D := by
       (D.nd.chiT k) (hgood k).1 (hgood k).2 v j ι hinj e₁ e₂ he₁ he₂
 
 /- English proof (translation)
-The claim follows from `residual_irreducible_of_theorem D (theorem_three_prime_holds D h) hAN hBN hrho hdz`.
+A detailed English derivation is pending.
 -/
 theorem residual_irreducible_of_theorem_three_prime (D : D7) (h : Adm3p D) (hAN : SumRepresentations.adm5 D) (hBN : LitBNIrr (G D.host.E D.nd.Om))
     (hrho : GlobalDatumResidualRepCondition D) (hdz : GlobalDatumDepthZeroCondition D) : ResidualIrreducibleRankR D :=

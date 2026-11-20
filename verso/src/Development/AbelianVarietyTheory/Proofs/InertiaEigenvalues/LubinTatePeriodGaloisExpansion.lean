@@ -18,9 +18,9 @@ open GlobalTheory.Per.AinfComplete
 variable {A : Type} [CommRing A] {P : A} {l f : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, f = k + 1` from `⟨f - 1, by omega⟩`. Establish `h1 : a ^ l - b ^ l ∈ Ideal.span {P} ^ (n + 1 + 1)` using `GlobalTheory.LTTilt.pow_l_sub_mem (j := n + 1) (Ideal.span {P}) (Ideal.mem_span_singleton.2 hP) (by omega) (by rw [Ideal.span_singleton_pow]; exact Ideal.mem_span_singleton.2 h)`. Establish `h2` using `GlobalTheory.LTTilt.pow_sub_mem _ h1 (l ^ k)`. Rewrite `h2` using `[← pow_mul, ← pow_mul, ← pow_succ', Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Establish `h3 : P ^ (n + 2) ∣ P * (a - b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_succ' P (n + 1)]`. Conclude with `mul_dvd_mul_left P h`. Use `dvd_add h3 h2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem step (hP : P ∣ (l : A)) (hf : 0 < f) {a b : A} {n : ℕ} (h : P ^ (n + 1) ∣ a - b) :
     P ^ (n + 2) ∣ (P * a + a ^ l ^ f) - (P * b + b ^ l ^ f) := by
@@ -38,7 +38,7 @@ theorem step (hP : P ∣ (l : A)) (hf : 0 < f) {a b : A} {n : ℕ} (h : P ^ (n +
 
 omit [Fact l.Prime] in
 /- English proof (translation)
-Establish `h1 : F.symm P = P` using `by rw [RingEquiv.symm_apply_eq, hF]`. Use `map_dvd F.symm h` as an intermediate fact. Rewrite `this` using `[map_pow, h1, F.symm_apply_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dvd_of_map (F : A ≃+* A) (hF : F P = P) {n : ℕ} {a : A} (h : P ^ n ∣ F a) : P ^ n ∣ a := by
   have h1 : F.symm P = P := by rw [RingEquiv.symm_apply_eq, hF]
@@ -46,9 +46,9 @@ theorem dvd_of_map (F : A ≃+* A) (hF : F P = P) {n : ℕ} {a : A} (h : P ^ n �
   rwa [map_pow, h1, F.symm_apply_apply] at this
 
 /- English proof (translation)
-Establish `key : ∀ n, P ^ (n + 1) ∣ a - b` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using hab`. Consider the case `succ n ih`. Use `dvd_of_map F hF ?_` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, ha, hb]`. Conclude with `step hP hf ih`. Conclude with `sub_eq_zero.1 (eq_zero_of_haus P _ fun n => Ideal.mem_span_singleton.2 ((pow_dvd_pow P n.le_succ).trans (key n)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unique_lift [IsHausdorff (Ideal.span {P}) A] (hP : P ∣ (l : A)) (hf : 0 < f) (F : A ≃+* A) (hF : F P = P)
     {a b : A} (hab : P ∣ a - b) (ha : F a = P * a + a ^ l ^ f) (hb : F b = P * b + b ^ l ^ f) : a = b := by
@@ -63,17 +63,17 @@ theorem unique_lift [IsHausdorff (Ideal.span {P}) A] (hP : P ∣ (l : A)) (hf : 
     Ideal.mem_span_singleton.2 ((pow_dvd_pow P n.le_succ).trans (key n)))
 
 /- English proof (translation)
-Set `y : ℕ → A` to `fun n => (fun t => F.symm (P * t + t ^ l ^ f))^[n] x`. Establish `hy : ∀ n, F (y (n + 1)) = P * y n + y n ^ l ^ f` using `fun n => by`. Simplify using `only [y, Function.iterate_succ_apply', RingEquiv.apply_symm_apply]`. Establish `hd : ∀ n, P ^ (n + 1) ∣ y (n + 1) - y n` using `fun n => by`. Proceed by induction on `n with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero`. Use `dvd_of_map F hF ?_` and prove the remaining obligations. Rewrite using `[map_sub, hy, zero_add, pow_one]`. Use `dvd_sub (dvd_mul_right P (y 0)) (hq (y 0)) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `succ n ih`. Use `dvd_of_map F hF ?_` and prove the remaining obligations. Rewrite using `[map_sub, hy, hy]`. Conclude with `step hP hf ih`. Use `choose b hb using hd`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨L, hL⟩` from `summ_of_precomplete P b`. Establish `hs : ∀ n, y n = x + P * ∑ i ∈ Finset.range n, P ^ i * b i` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp [y]`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[Finset.sum_range_succ]`. Take the linear combination `ih + hb n`. Establish `hω : ∀ n, P ^ (n + 1) ∣ x + P * L - y n` using `fun n => by`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 (hL n)`. Conclude with `⟨c, by rw [hs n]; linear_combination P * hc⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨x + P * L, ⟨L, by ring⟩, sub_eq_zero.1 (eq_zero_of_haus P _ fun n => Ideal.mem_span_singleton.2 ((pow_dvd_pow P (by omega : n ≤ n + 2)).trans ?_))⟩` and prove the remaining obligations. Establish `h1` using `map_dvd F (hω (n + 1))`. Rewrite `h1` using `[map_pow, hF, map_sub, hy]`. Use `dvd_sub h1 (step hP hf (hω n)) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_lift [IsAdicComplete (Ideal.span {P}) A] (hP : P ∣ (l : A)) (hf : 0 < f) (F : A ≃+* A) (hF : F P = P)
     (hq : ∀ x, P ∣ F x - x ^ l ^ f) (x : A) : ∃ ω, P ∣ ω - x ∧ F ω = P * ω + ω ^ l ^ f := by
@@ -118,9 +118,9 @@ open PowerSeries
 variable {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
 
 /- English proof (translation)
-Establish `h1 : (Polynomial.X : Polynomial R) ^ n ∣ p - r`. Rewrite using `[Polynomial.X_pow_dvd_iff]`. Introduce `d hd`. Use `X_pow_dvd_iff.1 h d hd` as an intermediate fact. Rewrite `this` using `[← Polynomial.coe_sub, Polynomial.coeff_coe]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `map_dvd (Polynomial.aeval w) h1` as an intermediate fact. Rewrite `this` using `[map_pow, Polynomial.aeval_X, map_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dvd_aeval_sub {p r : Polynomial R} {n : ℕ} (h : (X : R⟦X⟧) ^ n ∣ (p : R⟦X⟧) - (r : R⟦X⟧)) (w : A) :
     w ^ n ∣ Polynomial.aeval w p - Polynomial.aeval w r := by
@@ -133,7 +133,7 @@ theorem dvd_aeval_sub {p r : Polynomial R} {n : ℕ} (h : (X : R⟦X⟧) ^ n ∣
   rwa [map_pow, Polynomial.aeval_X, map_sub] at this
 
 /- English proof (translation)
-Rewrite using `[trunc_apply, map_sum, Finset.range_eq_Ico]`. Conclude with `Finset.sum_congr rfl fun j _ => Polynomial.aeval_monomial w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_trunc (φ : R⟦X⟧) (n : ℕ) (w : A) :
     Polynomial.aeval w (trunc n φ) = ∑ j ∈ Finset.range n, algebraMap R A (coeff j φ) * w ^ j := by
@@ -141,15 +141,13 @@ theorem aeval_trunc (φ : R⟦X⟧) (n : ℕ) (w : A) :
   exact Finset.sum_congr rfl fun j _ => Polynomial.aeval_monomial w
 
 /- English proof (translation)
-Use `set p := trunc n φ with hp`. Use `set e : R⟦X⟧ := C π * X + X ^ q with he`. Establish `hs : HasSubst e` using `HasSubst.of_constantCoeff_zero' (by simp [he, hq])`. Establish `hd : (X : R⟦X⟧) ^ n ∣ φ - (p : R⟦X⟧)`. Rewrite using `[X_pow_dvd_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Rewrite using `[map_sub, Polynomial.coeff_coe, hp, coeff_trunc, if_pos hm, sub_self]`. Set `E : Polynomial R` to `Polynomial.C π * Polynomial.X + Polynomial.X ^ q`. Establish `hE : (E : R⟦X⟧) = e` using `by simp [E, he]`. Establish `h1 : ((p.comp E : Polynomial R) : R⟦X⟧) = subst e (p : R⟦X⟧)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[subst_coe hs, Polynomial.comp_eq_aeval, ← hE]`. Conclude with `(Polynomial.aeval_algHom_apply (Polynomial.coeToPowerSeries.algHom R) E p).symm`. Establish `h2 : (X : R⟦X⟧) ^ n ∣ subst e φ - subst e (p : R⟦X⟧)`. Use `map_dvd (substAlgHom (S := R) hs) hd` as an intermediate fact. Rewrite `this` using `[map_pow, map_sub, substAlgHom_X, coe_substAlgHom]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(pow_dvd_pow_of_dvd ?_ n).trans this` and prove the remaining obligations. Conclude with `dvd_add (dvd_mul_left _ _) (dvd_pow_self _ hq)`. Establish `h3 : (X : R⟦X⟧) ^ n ∣ φ ^ q - (p : R⟦X⟧) ^ q` using `hd.trans (sub_dvd_pow_sub_pow _ _ _)`. Establish `h4` using `dvd_aeval_sub (p := Polynomial.C π * p + p ^ q) (r := p.comp E) (n := n) (by`. Rewrite using `[h1, Polynomial.coe_add, Polynomial.coe_mul, Polynomial.coe_pow, Polynomial.coe_C]`.
-
-Use `dvd_sub (dvd_sub h2 h3) (Dvd.dvd.mul_left hd (C π)) using 1` and compare the differences between its conclusion and the goal. Take the linear combination `h) w`. Simplify `h4` using `[Polynomial.aeval_comp, E]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem trunc_comm {π : R} {q : ℕ} (hq : q ≠ 0) {φ : R⟦X⟧}
     (h : C π * φ + φ ^ q = subst (C π * X + X ^ q : R⟦X⟧) φ) (n : ℕ) (w : A) :
@@ -189,7 +187,7 @@ open scoped Formalism.Per
 variable {l : ℕ} [Fact l.Prime] {K : FinExt l} {π : ↥(OL K)}
 
 /- English proof (translation)
-Establish `hk : ∀ n, ‖(x : ℂ_[l])‖ ≤ ‖(p : ℂ_[l])‖ ^ n` using `fun n => by`. Use `(mem_span_iff_norm _ _).1 (Ideal.mem_span_singleton.2 (h n))` as an intermediate fact. Rewrite `this` using `[SubmonoidClass.coe_pow, norm_pow]`. Then use the resulting hypothesis. Establish `hlim` using `tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) (norm_lt_one_of_not_isUnit p hp)`. Conclude with `Subtype.ext (norm_le_zero_iff.1 (ge_of_tendsto' hlim hk))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pow_dvd {p x : OC l} (hp : ¬ IsUnit p) (h : ∀ n, p ^ n ∣ x) : x = 0 := by
   have hk : ∀ n, ‖(x : ℂ_[l])‖ ≤ ‖(p : ℂ_[l])‖ ^ n := fun n => by
@@ -199,7 +197,7 @@ theorem eq_zero_of_pow_dvd {p x : OC l} (hp : ¬ IsUnit p) (h : ∀ n, p ^ n ∣
   exact Subtype.ext (norm_le_zero_iff.1 (ge_of_tendsto' hlim hk))
 
 /- English proof (translation)
-The claim follows from `Nat.pos_of_ne_zero (NeZero.ne (fK K))`.
+A detailed English derivation is pending.
 -/
 theorem fK_pos : 0 < fK K := Nat.pos_of_ne_zero (NeZero.ne (fK K))
 
@@ -211,13 +209,11 @@ Both sides reduce to the same expression.
 theorem frobE_apply (x : AK K) : frobE K x = frobq K x := rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Simplify using `only [Ideal.mem_span_singleton] at hcon`. Take `⟨m, hm⟩ : ∃ m, l ^ fK K = m + 2` from `⟨l ^ fK K - 2, by`. Use `GlobalTheory.PZ.LTModel.two_le_resCard K` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `2 ≤ l ^ fK K at this`. Use the proof step `omega⟩`. Establish `key : ∀ k n, intToOC K π ^ k ∣ v n` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ k ih`. Introduce `n`. Establish `e : v n = v (n + 1) * (intToOC K π + v (n + 1) * v (n + 1) ^ m)`. Rewrite using `[← hv n, hm]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e, pow_succ]`. Conclude with `mul_dvd_mul (ih _) (dvd_add dvd_rfl ((hcon _).mul_right _))`. Conclude with `h1 (eq_zero_of_pow_dvd (not_isUnit_intToOC K hπ) fun k => key k 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_not_mem (hπ : Irreducible π) {v : ℕ → OC l} (h1 : v 1 ≠ 0)
     (hv : ∀ n, intToOC K π * v (n + 1) + v (n + 1) ^ l ^ fK K = v n) : ∃ n, v n ∉ Ideal.span {intToOC K π} := by
@@ -240,17 +236,17 @@ theorem exists_not_mem (hπ : Irreducible π) {v : ℕ → OC l} (h1 : v 1 ≠ 0
   exact h1 (eq_zero_of_pow_dvd (not_isUnit_intToOC K hπ) fun k => key k 1)
 
 /- English proof (translation)
-Set `w : ℕ → AK K` to `fun n => (frobE K).symm^[n] ω`. Establish `hw : ∀ n, frobq K (w (n + 1)) = w n` using `fun n => by`. Simplify using `only [w, Function.iterate_succ_apply']`. Conclude with `(frobE K).apply_symm_apply _`. Establish `hwe : ∀ n, frobq K (w n) = inO K π * w n + w n ^ l ^ fK K` using `fun n => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => exact hω`. Consider the case `succ n ih`. Apply `(frobq_bijective K).1` to reduce the goal to its premises. Rewrite using `[map_add, map_mul, map_pow, frobq_inO, hw, ih]`.
+Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr : ∀ n, red K ω = red K (w n) ^ l ^ (fK K * n)` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp [w]`. Consider the case `succ n ih => rw [ih, ← hw n, red_frobq, ← pow_mul, ← pow_add, Nat.mul_succ, add_comm (fK K)]`. Establish `hl` using `natCast_mem_span_intToOC K hπ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ n, intToOC K π ∣ thetaK K (w n) - v n` using `fun n => by`. Take `⟨y, hy, hyv⟩` from `hx n`. Establish `h1` using `coeff_eq_pow (red K (w n)) 0 (fK K * n)`. Rewrite `h1` using `[zero_add, ← map_pow, ← hr, hy, ← PreTilt.mk_untilt_eq_coeff_zero, Ideal.Quotient.eq]`. Establish `h2` using `Ideal.mem_span_singleton.1 (Ideal.span_le.2 (Set.singleton_subset_iff.2 hl) h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `dvd_add (dvd_add (dvd_thetaK_sub hπ (w n)) h2) (Ideal.mem_span_singleton.1 hyv) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ k n, intToOC K π ^ (k + 1) ∣ thetaK K (w n) - v n` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simpa using h0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `n`. Rewrite using `[← hw n, hwe, map_add, map_mul, map_pow, thetaK_inO, ← hv n]`. Conclude with `step (Ideal.mem_span_singleton.1 hl) fK_pos (ih (n + 1))`. Conclude with `sub_eq_zero.1 (eq_zero_of_pow_dvd (not_isUnit_intToOC K hπ) fun k => (pow_dvd_pow _ k.le_succ).trans (key k 0))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaK_eq (hπ : Irreducible π) {v : ℕ → OC l}
     (hv : ∀ n, intToOC K π * v (n + 1) + v (n + 1) ^ l ^ fK K = v n) {ω : AK K}
@@ -289,21 +285,21 @@ theorem thetaK_eq (hπ : Irreducible π) {v : ℕ → OC l}
     (pow_dvd_pow _ k.le_succ).trans (key k 0))
 
 /- English proof (translation)
-Establish `hl` using `natCast_mem_span_intToOC K hπ`. Establish `hu` using `not_isUnit_intToOC K hπ`. Take `⟨x, hx, -⟩` from `existsUnique_isTiltOf (fK K) fK_pos (intToOC K π) hu hl v fun n => Ideal.mem_span_singleton.2 ⟨-v (n + 1), by rw [← hv n]; ring⟩`. Take `⟨m, hm⟩` from `exists_not_mem hπ h1 hv`. Establish `hx0 : x ≠ 0` using `ne_zero_of_isTiltOf hl hx m hm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxu : ¬ IsUnit x` using `not_isUnit_of_isTiltOf hl hu hx (by rw [h0]; exact zero_mem _)`. Use `complete_pi hπ` as an intermediate fact. Take `⟨x', rfl⟩` from `red_surjective K x`. Take `⟨ω, hωx, hω⟩` from `exists_lift (dvd_l hπ) fK_pos (frobE K) (frobq_inO K π) (dvd_frobq_sub hπ) x'`. Rewrite `hx`, `hx0`, `hxu` using `[← (red_eq_iff hπ _ _).2 hωx]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hω` using `[frobE_apply]`. Use `⟨ω, fun h => hx0 (by rw [h, map_zero]), (thetaK_eq hπ hv hx hω).trans h0, hω, fun g φ hφ hg => ?_⟩` and prove the remaining obligations. Establish `hc` using `complete_single hxu`. Take `⟨y, hy⟩` from `summ_of_precomplete ω fun j => inO K (PowerSeries.coeff j φ)`. Simplify using `only [Ideal.mem_span_singleton, mul_comm (ω ^ _)] at hy`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-It suffices to establish `gal K g ω = y by rwa [this]`. Use `unique_lift (dvd_l hπ) (fK_pos (K := K)) (frobE K) (frobq_inO K π) ((red_eq_iff hπ _ _).1 ?_) ?_ ?_` and prove the remaining obligations. Establish `hn : IsNilpotent (Perfection.coeff (ModP (OC l) l) l 0 (red K ω))` using `nilpotent_of_not_isUnit l _ fun h => hxu (perfection_isUnit (p := l) _ h)`. Use `sub_eq_zero.1 (perfection_haus (p := l) (R := ModP (OC l) l) hn (red K (gal K g ω) - red K y) fun n => ?_)` and prove the remaining obligations. Establish `e1` using `Ideal.mem_span_singleton.1 (isTiltOf_eval K hπ hx hx0 φ hg (isTiltOf_σF hx (g : GQ l)) n)`.
+Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `map_dvd (red K) (hy n)`. Simplify using `only [map_pow, map_sub, map_sum, map_mul] at e2`. Establish `e3` using `dvd_sub e1 e2`. Rewrite `e3` using `[sub_sub_sub_cancel_right, ← red_gal]`. Then use the resulting hypothesis. Rewrite using `[frobE_apply, ← gal_frobq, hω]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_mul, map_pow, gal_inO]`. Rewrite using `[frobE_apply]`. Use `sub_eq_zero.1 (eq_zero_of_haus ω _ fun n => Ideal.mem_span_singleton.2 ?_)` and prove the remaining obligations. Establish `hq : l ^ fK K ≠ 0` using `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`. Establish `e0` using `hy n`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e0` using `[← aeval_trunc]`. Establish `e1` using `map_dvd (frobq K) e0`. Simplify using `only [map_pow, map_sub] at e1`. Rewrite `e1` using `[← Polynomial.aeval_algHom_apply (frobq K) ω]`. Simplify using `only [hω] at e1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2` using `(pow_dvd_pow_of_dvd (dvd_add (dvd_mul_left ω (inO K π)) (dvd_pow_self ω hq)) n).trans e1`. Establish `e3` using `trunc_comm hq hφ n ω`. Establish `e4` using `e0.trans (sub_dvd_pow_sub_pow _ _ (l ^ fK K))`. Use `dvd_sub (dvd_sub (dvd_sub e2 e3) e4) (e0.mul_left (inO K π)) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem core (hπ : Irreducible π) {v : ℕ → OC l} (h0 : v 0 = 0) (h1 : v 1 ≠ 0)
     (hv : ∀ n, intToOC K π * v (n + 1) + v (n + 1) ^ l ^ fK K = v n) :
@@ -362,19 +358,19 @@ end Core
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct GlobalTheory.PZ GlobalTheory.AinfK GlobalTheory.Prism GlobalTheory.LTTilt in
 
 /- English proof (translation)
-Introduce `l _ K χ π z ⟨hπ, hz0, hz1, hz, hg⟩`. Establish `hq` using `GlobalTheory.PZ.LTModel.two_le_resCard K`. Establish `hb : ∀ n, ‖z n‖ ≤ 1` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp [hz0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_le]`. Establish `e : z (n + 1) ^ resCard K = z n + -(((π : ↥K.1) : Om l) * z (n + 1))` using `by rw [← hz n]; ring`. Establish `h1` using `IsUltrametricDist.norm_add_le_max (z n) (-(((π : ↥K.1) : Om l) * z (n + 1)))`.
+Treat this case separately. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← e, norm_pow, norm_neg, norm_mul]`. Establish `h2 : ‖z (n + 1)‖ < ‖z (n + 1)‖ ^ resCard K` using `lt_self_pow₀ h (by omega)`. Establish `h3` using `mul_le_of_le_one_left (norm_nonneg (z (n + 1))) (norm_le_one_of_mem_OL K π)`. Conclude with `absurd (h1.trans (max_le (ih.trans h.le) h3)) h2.not_ge`. Set `v : ℕ → OC l` to `fun n => ⟨algebraMap (Om l) ℂ_[l] (z n), (GlobalTheory.RingBasics.mem_OC _).2 ((PadicComplex.norm_extends l _).trans_le (hb n))⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcoe : ∀ c : ↥(OL K), ((intToOC K c : OC l) : ℂ_[l]) = algebraMap (Om l) ℂ_[l] ((c : ↥K.1) : Om l)` using `fun _ => rfl`. Establish `hvc : ∀ n, (v n : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (z n)` using `fun _ => rfl`. Take `⟨ω, hω0, hθ, hF, hG⟩` from `core (K := K) hπ (v := v) (Subtype.ext (by rw [hvc, hz0, map_zero]; rfl)) (fun h => hz1 ((algebraMap (Om l) ℂ_[l]).injective (by rw [← hvc, h, map_zero]; rfl))) fun n => Subtype.ext (by`. Use `push_cast`. Rewrite using `[hcoe, hvc, hvc, ← hz n, map_add, map_mul, map_pow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `rfl)`. Use `⟨ω, hω0, hθ, hF, fun g a φ ha hφ n => ?_⟩` and prove the remaining obligations. Take `⟨a', ha', φ', hφ', hs⟩` from `hg g`. Take `rfl : a = a'` from `Subtype.ext (ha.trans ha'.symm)`. Take `rfl` from `GlobalTheory.PZ.LTModel.IsLTEndo_unique hπ hφ hφ'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hG g φ hφ.2.2 (fun m => by`. Establish `h` using `(hs m).map (algebraMap (Om l) ℂ_[l]) (UniformSpace.Completion.continuous_coe _)`. Establish `e : ((Per.σO (g : GQ l) (v m) : OC l) : ℂ_[l]) = algebraMap (Om l) ℂ_[l] ((g : GQ l) (z m))` using `(GlobalTheory.RingIface.sigO_coe l (g : GQ l) (v m)).trans (GlobalTheory.RingBasics.σC_coe (g : GQ l) (z m))`. Rewrite using `[e]`. Use `h using 2 with i` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[hcoe, hvc, Function.comp_apply, map_mul, map_pow]) n`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hθ n)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ) (π : ↥(OL K)) (z : ℕ → Om l),
     LTData K χ π z →

@@ -9,7 +9,7 @@ namespace GlobalTheory.CovTop
 open Formalism.L2.DIV
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.finset_prod_apply, ← Finset.prod_pow]`. Conclude with `Finset.prod_eq_one fun i _ => h i x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_hom_pow_eq_one {H M ι : Type} [Group H] [CommMonoid M] (s : Finset ι) (f : ι → H →* M) (N : ℕ)
     (h : ∀ i x, f i x ^ N = 1) (x : H) : (∏ i ∈ s, f i) x ^ N = 1 := by
@@ -17,7 +17,7 @@ theorem prod_hom_pow_eq_one {H M ι : Type} [Group H] [CommMonoid M] (s : Finset
   exact Finset.prod_eq_one fun i _ => h i x
 
 /- English proof (translation)
-The claim follows from `prod_hom_pow_eq_one (H := Subgroup.pi Set.univ Hl) Finset.univ _ N (fun PP x => h PP _) g`.
+A detailed English derivation is pending.
 -/
 theorem ofLocal_chi_pow {E : Type} [Field E] [NumberField E] {Pg : Finset (Pl E)} {r : ℕ} {LL : Type} [CommRing LL]
     (Hl : (PP : Pg) → Subgroup (GL (Fin r) (kP PP.1))) (cl : (PP : Pg) → Hl PP →* LLˣ) (N : ℕ)
@@ -25,7 +25,7 @@ theorem ofLocal_chi_pow {E : Type} [Field E] [NumberField E] {Pg : Finset (Pl E)
   prod_hom_pow_eq_one (H := Subgroup.pi Set.univ Hl) Finset.univ _ N (fun PP x => h PP _) g
 
 /- English proof (translation)
-Use `ofLocal_chi_pow _ _ N (fun PP x => ?_) g` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [addCharHom, Units.val_pow_eq_pow_val, MonoidHom.coe_toHomUnits, Units.val_one, MonoidHom.comp_apply, AddChar.toMonoidHom_apply]`. Rewrite using `[← AddChar.map_nsmul_eq_pow, nsmul_eq_mul, hN PP, zero_mul, AddChar.map_zero_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unipotentTypeLevel_char_pow_eq_one {E : Type} [Field E] [NumberField E] {LL : Type} [CommRing LL] (Pg : Finset (Pl E)) (r : ℕ)
     (ψ : (PP : Pl E) → AddChar (kP PP) LL) (N : ℕ) (hN : ∀ PP : Pg, (N : kP PP.1) = 0)
@@ -37,7 +37,7 @@ theorem unipotentTypeLevel_char_pow_eq_one {E : Type} [Field E] [NumberField E] 
   rw [← AddChar.map_nsmul_eq_pow, nsmul_eq_mul, hN PP, zero_mul, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Units.val_one, Matrix.det_of_upperTriangular (fun i j hij => hg.1 hij)]`. Conclude with `Finset.prod_eq_one fun i _ => hg.2 i`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_of_mem_unip {κ : Type} [CommRing κ] {r : ℕ} {g : GL (Fin r) κ} (hg : g ∈ unip κ r) :
     Matrix.GeneralLinearGroup.det g = 1 := by
@@ -51,25 +51,23 @@ variable {D : Formalism.BasicNotions.D7} {L : Formalism.BasicNotions.SizeData₂
   {ex : Formalism.BasicNotions.Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}
 
 /- English proof (translation)
-Introduce `_ _ u`. Establish `hB` using `p.charW.base`. Take `⟨ψ0, -, hlev, -⟩` from `hB.grp.levels`. Establish `hL` using `hB.lev`. Establish `hN0 : p.T.Q.l.M' ≠ 0` using `Nat.lcm_ne_zero (by have := p.T.Q.l.three_le; omega) p.T.Q.l.A_pos.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : p.T.Q.l.M = D.host.g 0 * D.host.g 1` using `p.fw.laws.pins.2.1.1`. Establish `hN : ∀ PP : p.R.Pg, (p.T.Q.l.M' : kP PP.1) = 0`. Introduce `PP`. Take `⟨k, hk⟩` from `(hL.Pg PP.1).1 PP.2`. Establish `h2 : ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (PP.1.under (𝓞 D.host.K)).asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hk]`. Conclude with `p.R.C.P.pb_over k`. Establish `h1 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.1.asIdeal`. Express the relevant statement in the definitionally equal form `_ ∈ Ideal.comap (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) PP.1.asIdeal at h2`. Rewrite `h2` using `[Ideal.mem_comap, map_natCast]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h3 : ((D.host.g k : ℕ) : kP PP.1) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk PP.1.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 h1`. Establish `hk' : D.host.g k ∣ p.T.Q.l.M'`. Use `dvd_trans ?_ (Nat.dvd_lcm_left p.T.Q.l.M p.T.Q.l.A)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hM]`. Use `fin_cases k`. Use `exacts [dvd_mul_right _ _, dvd_mul_left _ _]`. Take `⟨c, hc⟩` from `hk'`. Rewrite using `[hc, Nat.cast_mul, h3, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hu : p.R.eG u ∈ (p.R.levR p.F.lv2 false).H` using `by show p.R.eG.symm.toMonoidHom (p.R.eG u) ∈ (p.F.lv2.lvl false).P`. Simplify using the standard rewrite rules. Establish `key : ∀ X : LevelP p.R.Pg D.R.r ℂ, X = P0 p.R.Pg D.R.r ψ0 → ∀ g (hg : g ∈ X.H), (∀ PP, g PP ∈ unip (kP PP.1) D.R.r) ∧ X.chi ⟨g, hg⟩ ^ p.T.Q.l.M' = 1`. Introduce and unpack `X rfl g hg`. Conclude with `⟨fun PP => (Subgroup.mem_pi _).1 hg PP (Set.mem_univ _), unipotentTypeLevel_char_pow_eq_one _ _ ψ0 _ hN _⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Take `⟨hun, hpow⟩` from `key _ hlev _ hu`. Establish `e1 : (p.R.levR p.F.lv2 false).chi ⟨p.R.eG u, hu⟩ = Units.map (D.what₂.embLL : D.what₂.LL →* ℂ) ((p.F.lv2.lvl false).ψ u)` using `by show Units.map _ ((p.F.lv2.lvl false).ψ _) = _`. Use `congr 2`. Conclude with `Subtype.ext (by show p.R.eG.symm (p.R.eG u) = u; exact p.R.eG.symm_apply_apply _)`. Establish `h5 : (((p.F.lv2.lvl false).ψ u : D.what₂.LLˣ) : D.what₂.LL) ^ p.T.Q.l.M' = 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Use `congrArg (fun z : ℂˣ => (z : ℂ)) (e1 ▸ hpow)` as an intermediate fact. Simplify using `using this`. Establish `hchi : (p.R.toRealDat.FW i).chi u = 1`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[hB.grp.chiW i u, Finset.prod_eq_one (fun PP _ => by rw [det_of_mem_unip (hun PP), map_one, Units.val_one]), Units.val_one, map_one]`. Rewrite using `[hchi, one_mul]`. Establish `hy : (((p.F.lv2.lvl false).ψ⁻¹ u : D.what₂.LLˣ) : D.what₂.LL) ^ p.T.Q.l.M' = 1`. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, inv_pow, h5, inv_one]`.
-
-Establish `hz : IsPrimitiveRoot (⟨ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta p.T.Q.l.M', p.T.Q.c.zeta_mem⟩ : p.T.Q.c.F) p.T.Q.l.M'` using `IsPrimitiveRoot.of_map_of_injective (f := p.T.Q.c.F.val) (Complex.isPrimitiveRoot_exp _ hN0) Subtype.val_injective`. Establish `hz'` using `hz.map_of_injective (f := algebraMap p.T.Q.c.F D.what₂.LL) (algebraMap p.T.Q.c.F D.what₂.LL).injective`. Use `haveI : NeZero p.T.Q.l.M' := ⟨hN0⟩`. Take `⟨k, -, hk⟩` from `hz'.eq_pow_of_pow_eq_one hy`. Conclude with `⟨_ ^ k, by rw [map_pow, hk]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chi_mul_psi_inv_mem_core (p : GlobalTheory.BigTop.PtAt ex Csz) (i : Fin D.R.m) : p.Rows → RecTied D L →
     ∀ u : (p.F.lv2.lvl false).P, (((p.R.toRealDat.FW i).chi u * (p.F.lv2.lvl false).ψ⁻¹ u : D.what₂.LLˣ) : D.what₂.LL) ∈

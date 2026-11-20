@@ -15,7 +15,7 @@ def blocks (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) (C : Matrix (Fin b
   (Matrix.fromBlocks A B C D).submatrix finSumFinEquiv.symm finSumFinEquiv.symm
 
 /- English proof (translation)
-Use `⟨(M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₁, (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂, (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁, (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₂, ?_⟩` and prove the remaining obligations. Rewrite using `[blocks, Matrix.fromBlocks_toBlocks]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_blocks (M : Mt g (a + b)) : ∃ A B C D, M = blocks A B C D := by
   refine ⟨(M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₁, (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂,
@@ -28,7 +28,7 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] {a b : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GLm.DerClass.blocks`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.GLm.DerClass.blocks_mul (A A' : _root_.GlobalTheory.GLq.Mt g a)
     (B B' : Matrix (Fin a) (Fin b) (ZMod g)) (C C' : Matrix (Fin b) (Fin a) (ZMod g))
@@ -43,7 +43,7 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] {a b : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GLm.DerClass.blocks`. Rewrite using `[Matrix.fromBlocks_one]`. Conclude with `Matrix.submatrix_one_equiv _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GLm.DerClass.blocks_one :
     _root_.GlobalTheory.GLm.DerClass.blocks (1 : _root_.GlobalTheory.GLq.Mt g a) 0 0 (1 : _root_.GlobalTheory.GLq.Mt g b) = 1 := by
@@ -52,9 +52,9 @@ theorem _root_.GlobalTheory.GLm.DerClass.blocks_one :
   exact Matrix.submatrix_one_equiv _
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Rewrite using `[tl, entN, dif_pos ⟨by omega, by omega⟩]`. Express the relevant statement in the definitionally equal form `blocks A B C D (Fin.castAdd b i) (Fin.castAdd b j) = _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[blocks]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tl_blocks (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) (C : Matrix (Fin b) (Fin a) (ZMod g))
     (D : Mt g b) : tl a (blocks A B C D) = A := by
@@ -66,9 +66,9 @@ theorem tl_blocks (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) (C : Matrix
   simp [blocks]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Rewrite using `[br, entN, dif_pos ⟨by omega, by omega⟩]`. Express the relevant statement in the definitionally equal form `blocks A B C D (Fin.natAdd a i) (Fin.natAdd a j) = _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[blocks]`.
+Simplify using the standard rewrite rules.
 -/
 theorem br_blocks (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) (C : Matrix (Fin b) (Fin a) (ZMod g))
     (D : Mt g b) : br a b (blocks A B C D) = D := by
@@ -80,11 +80,11 @@ theorem br_blocks (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) (C : Matrix
   simp [blocks]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Use `h (Fin.natAdd a i) (Fin.castAdd b j) (by simp) (by simp)` as an intermediate fact. Simplify `this` using `[blocks]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `rfl i j hj hi`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i => have := i.2`. Simplify using `at hi`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `right i`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left j => simp [blocks]`. Consider the case `right j => simp at hj`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem inPar_blocks (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) (C : Matrix (Fin b) (Fin a) (ZMod g))
     (D : Mt g b) : InPar a (blocks A B C D) ↔ C = 0 := by
@@ -102,13 +102,13 @@ theorem inPar_blocks (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) (C : Mat
       | right j => simp at hj
 
 /- English proof (translation)
-Introduce `i j hi`. Rewrite using `[← blocks_one]`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i => have := i.2`. Simplify using `at hi`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `right i`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left j => simp [blocks]`. Consider the case `right j`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hj` using `j.2`. Simplify using `only [Fin.val_natAdd] at hi`. Simplify using `only [blocks, Matrix.submatrix_apply, finSumFinEquiv_symm_apply_natAdd, Matrix.fromBlocks_apply₂₂]`. Distinguish the cases in `h : i = j`. Rewrite using `[(hD i j).2 h, h, Matrix.one_apply_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne h]`. Use `(hD i j).1 ?_` and prove the remaining obligations. Establish `: (i : ℕ) ≠ j` using `fun e => h (Fin.ext e)`. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem inMir_blocks (hb : 0 < b) (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod g)) {D : Mt g b} (hD : IsUniUp D) :
     InMir (blocks A B 0 D) := by
@@ -132,7 +132,7 @@ theorem inMir_blocks (hb : 0 < b) (A : Mt g a) (B : Matrix (Fin a) (Fin b) (ZMod
         omega
 
 /- English proof (translation)
-Introduce `i j` and use `⟨fun h => Matrix.one_apply_ne h.ne', fun h => by rw [h, Matrix.one_apply_eq]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isUniUp_one : IsUniUp (1 : Mt g b) := fun i j =>
   ⟨fun h => Matrix.one_apply_ne h.ne', fun h => by rw [h, Matrix.one_apply_eq]⟩
@@ -144,7 +144,7 @@ def dg (b : ℕ) (y : Gn g a) : Gn g (a + b) where
   inv_val := by rw [blocks_mul]; simpa using blocks_one
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `blocks y.val 0 0 1 * x.val * blocks (y⁻¹).val 0 0 1 = _`. Rewrite using `[hx, blocks_mul, blocks_mul]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_val (y : Gn g a) (x : Gn g (a + b)) {A : Mt g a} {B : Matrix (Fin a) (Fin b) (ZMod g)}
     {C : Matrix (Fin b) (Fin a) (ZMod g)} {D : Mt g b} (hx : x.val = blocks A B C D) :
@@ -154,15 +154,15 @@ theorem conj_val (y : Gn g a) (x : Gn g (a + b)) {A : Mt g a} {B : Matrix (Fin a
   simp
 
 /- English proof (translation)
-Unfold `res`. Use `congr 1`. Use `symm`. Use `Fintype.sum_equiv (MulAut.conj (dg b y)).toEquiv _ _ fun x => ?_` and prove the remaining obligations. Take `⟨A, B, C, D, hx⟩` from `exists_blocks x.val`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e` using `conj_val y x hx`. Express the relevant statement in the definitionally equal form `_ = if InPar a (dg b y * x * (dg b y)⁻¹).val ∧ tl a (dg b y * x * (dg b y)⁻¹).val = (y * h * y⁻¹).val ∧ br a b (dg b y * x * (dg b y)⁻¹).val = u.val then F (dg b y * x * (dg b y)⁻¹) else 0`. Rewrite using `[e, hx, inPar_blocks, inPar_blocks, tl_blocks, tl_blocks, br_blocks, br_blocks]`. Establish `h1 : C * (y⁻¹).val = 0 ↔ C = 0`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hc`. Use `congrArg (· * y.val) hc` as an intermediate fact. Simplify `this` using `[Matrix.mul_assoc]`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `h2 : y.val * A * (y⁻¹).val = (y * h * y⁻¹).val ↔ A = h.val`. Rewrite using `[Units.val_mul, Units.val_mul, Units.mul_left_inj, Units.mul_right_inj]`. Simplify using `only [h1, h2]`. Use `split_ifs with hc`. Take `⟨rfl, -, rfl⟩` from `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hF _ _ ?_ ?_).symm` and prove the remaining obligations. Conclude with `inMir_blocks hb _ _ isUniUp_one`. Rewrite using `[hx]`. Conclude with `inMir_blocks hb _ _ hu`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem res_conj (hb : 0 < b) {F : Gn g (a + b) → ℂ} (hF : IsMirClass F) (h y : Gn g a) (u : Gn g b)
     (hu : IsUniUp (u : Mt g b)) : res a b F (y * h * y⁻¹) u = res a b F h u := by
@@ -194,11 +194,11 @@ theorem res_conj (hb : 0 < b) {F : Gn g (a + b) → ℂ} (hF : IsMirClass F) (h 
   · rfl
 
 /- English proof (translation)
-Unfold `wh tr`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Distinguish the cases in `hu : IsUniUp (u : Mt g b)`. Rewrite using `[h u hu]`. Establish `: (eU g b ψ).coeff u = 0`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [eU, eDat, MonoidAlgebra.coeff_smul, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single, Finsupp.smul_apply, Finsupp.finsetSum_apply]`. Rewrite using `[Finset.sum_eq_zero, smul_zero]`. Introduce `v hv`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hu (Finset.mem_filter.1 hv).2`. Rewrite using `[this, zero_mul, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wh_congr (ψ : AddChar (ZMod g) ℂ) {α β : Gn g b → ℂ} (h : ∀ u : Gn g b, IsUniUp (u : Mt g b) → α u = β u) :
     wh ψ α = wh ψ β := by
@@ -217,7 +217,7 @@ theorem wh_congr (ψ : AddChar (ZMod g) ℂ) {α β : Gn g b → ℂ} (h : ∀ u
     rw [this, zero_mul, zero_mul]
 
 /- English proof (translation)
-Introduce `g _ ψ i n F hin hF h y`. Take `⟨b, rfl⟩` from `Nat.exists_eq_add_of_le hin.le`. Unfold `der`. Rewrite using `[Nat.add_sub_cancel_left]`. Conclude with `wh_congr ψ fun u hu => res_conj (by omega) hF h y u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClass_der : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) (i n : ℕ) (F : Gn g n → ℂ), i < n →
     IsMirClass F → IsClass (der ψ i F) := by

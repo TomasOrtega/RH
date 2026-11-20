@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.BcB.E2.P
 namespace Jointrep
 
 /- English proof (translation)
-Establish `h2 : (∑' j : ℕ, (2 : ℝ≥0∞)⁻¹ ^ j) ≠ ⊤`. Rewrite using `[ENNReal.tsum_geometric, ENNReal.one_sub_inv_two, inv_inv]`. Conclude with `ENNReal.ofNat_ne_top`. Use `ne_top_of_le_ne_top h2 (ENNReal.tsum_le_tsum fun j => ?_)` and prove the remaining obligations. Conclude with `pow_le_of_le_one (by simp) (pow_le_one₀ (by simp) (ENNReal.inv_le_one.2 one_le_two)) two_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem geom : (∑' j : ℕ, ((2 : ℝ≥0∞)⁻¹ ^ j) ^ 2) ≠ ⊤ := by
   have h2 : (∑' j : ℕ, (2 : ℝ≥0∞)⁻¹ ^ j) ≠ ⊤ := by
@@ -20,17 +20,15 @@ theorem geom : (∑' j : ℕ, ((2 : ℝ≥0∞)⁻¹ ^ j) ^ 2) ≠ ⊤ := by
   exact pow_le_of_le_one (by simp) (pow_le_one₀ (by simp) (ENNReal.inv_le_one.2 one_le_two)) two_ne_zero
 
 /- English proof (translation)
-Set `g : ℕ → S → ℝ≥0∞` to `fun j s => ‖(v j : S → ℂ) s - h s‖ₑ ^ (2:ℝ)`. Establish `gm : ∀ j, Measurable (g j)` using `fun j => (((Lp.stronglyMeasurable (v j)).measurable.sub (Lp.stronglyMeasurable h).measurable).enorm).pow_const _`. Establish `hint : ∀ j, ∫⁻ s, g j s ∂ν ≤ ((2⁻¹ : ℝ≥0∞) ^ j) ^ 2`. Introduce `j`. Establish `e1 : ∫⁻ s, g j s ∂ν = eLpNorm' (fun s => (v j : S → ℂ) s - h s) 2 ν ^ (2:ℝ)` using `lintegral_rpow_enorm_eq_rpow_eLpNorm' two_pos`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2 : eLpNorm' (fun s => (v j : S → ℂ) s - h s) 2 ν = edist (v j) h`. Rewrite using `[Lp.edist_def, eLpNorm_eq_eLpNorm' two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `only [ENNReal.toReal_ofNat]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, ENNReal.rpow_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Rewrite using `[edist_comm]`. Conclude with `(hv j).le`. Establish `hsum : ∫⁻ s, ∑' j, g j s ∂ν ≠ ⊤`. Rewrite using `[lintegral_tsum fun j => (gm j).aemeasurable]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ne_top_of_le_ne_top geom (ENNReal.tsum_le_tsum hint)`. Use `filter_upwards [ae_lt_top (Measurable.ennreal_tsum gm) hsum] with s hs`. Establish `h0 : Tendsto (fun j => g j s) atTop (𝓝 0)` using `ENNReal.tendsto_atTop_zero_of_tsum_ne_top hs.ne`. Establish `h1 : Tendsto (fun j => (g j s) ^ (2⁻¹ : ℝ)) atTop (𝓝 0)`. Use `((ENNReal.continuous_rpow_const (y := (2⁻¹:ℝ))).tendsto 0).comp h0` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[Function.comp_def]`. Rewrite using `[tendsto_iff_edist_tendsto_0]`. Use `h1.congr fun j => ?_` and prove the remaining obligations. Simplify using `only [g, edist_eq_enorm_sub]`. Rewrite using `[← ENNReal.rpow_mul]`.
-
-Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem ae_tendsto {S : Type} [MeasurableSpace S] {ν : Measure S} (h : Lp ℂ 2 ν) (v : ℕ → Lp ℂ 2 ν)
     (hv : ∀ j, edist h (v j) < (2⁻¹ : ℝ≥0∞) ^ j) :
@@ -67,13 +65,11 @@ end Jointrep
 
 open Jointrep in
 /- English proof (translation)
-Introduce `S _ ν _ _ _`. Use `set u := TopologicalSpace.denseSeq (Lp ℂ 2 ν) with hu`. Establish `hex : ∀ (j : ℕ) (h : Lp ℂ 2 ν), ∃ n, edist h (u n) < (2⁻¹ : ℝ≥0∞) ^ j`. Introduce `j h`. Take `⟨y, ⟨n, rfl⟩, hy⟩` from `EMetric.mem_closure_iff.1 (TopologicalSpace.denseRange_denseSeq (Lp ℂ 2 ν) h) _ (ENNReal.pow_pos (ENNReal.inv_pos.2 (by simp : (2 : ℝ≥0∞) ≠ ⊤)) j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, hy⟩`. Set `N : ℕ → Lp ℂ 2 ν → ℕ` to `fun j h => Nat.find (hex j h)`. Establish `hN : ∀ j, Measurable (N j)` using `fun j => measurable_find (hex j) fun n => Metric.isOpen_eball.measurableSet`. Use `⟨fun h s => limUnder atTop (fun j => (u (N j h) : S → ℂ) s), ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `hf : ∀ j, StronglyMeasurable (fun p : Lp ℂ 2 ν × S => (u (N j p.1) : S → ℂ) p.2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `m : Measurable (fun q : S × ℕ => (u q.2 : S → ℂ) q.1)` using `measurable_from_prod_countable_left fun n => (Lp.stronglyMeasurable (u n)).measurable`. Conclude with `(m.comp (measurable_snd.prodMk ((hN j).comp measurable_fst))).stronglyMeasurable`. Conclude with `(StronglyMeasurable.limUnder (l := atTop) hf).measurable`. Use `filter_upwards [ae_tendsto h (fun j => u (N j h)) fun j => Nat.find_spec (hex j h)] with s hs`.
-
-Conclude with `hs.limUnder_eq`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jointrep : JointRep := by
   classical

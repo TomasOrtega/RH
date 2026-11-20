@@ -16,23 +16,19 @@ namespace UpperTheory.Gal.InertialTypesAlt.L
 open PositivityTheory.Rg.Tf.Loc UpperTheory.V.Z.Tf.Orb
 
 /- English proof (translation)
-Take `⟨hLC, hSC, hT2, -, -⟩` from `gLTop_holds k n`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`. Take `⟨hKo, hKc, -⟩` from `unitSB_holds k n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `haveI : ValuativeExtension k k := ⟨fun _ _ => Iff.rfl⟩`. Take `⟨hgen, hσ1, hTw, -⟩` from `untwist_holds k n μk γ`. Establish `hT : Subgroup.centralizer {γ} = GlobalTheory.BCT.twCent (MonoidHom.id (GL (Fin n) k)) γ`. Use extensionality with `g`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff]`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Iff.rfl`. Establish `hTcl : IsClosed (Subgroup.centralizer {γ} : Set (GL (Fin n) k))`. Rewrite using `[hT]`. Use `show IsClosed {g : GL (Fin n) k | g * γ = γ * (MonoidHom.id (GL (Fin n) k)) g}`. Conclude with `isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul continuous_id)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcommA : ∀ t ∈ Subgroup.centralizer {γ}, Commute t γ` using `fun t ht => Subgroup.mem_centralizer_singleton_iff.1 ht`. Establish `hcomm : ∀ a ∈ Subgroup.centralizer {γ}, ∀ b ∈ Subgroup.centralizer {γ}, Commute a b`. Introduce `a ha b hb`. Establish `hm : ∀ t ∈ Subgroup.centralizer {γ}, Commute (t : Matrix (Fin n) (Fin n) k) (γ : Matrix (Fin n) (Fin n) k)`. Introduce `t ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h` using `Subgroup.mem_centralizer_singleton_iff.1 ht`. Use `show (t : Matrix (Fin n) (Fin n) k) * γ = γ * t`. Rewrite using `[← Units.val_mul, ← Units.val_mul, h]`. Establish `h` using `centComm_holds k n (γ : Matrix (Fin n) (Fin n) k) a b hγ (hm a ha) (hm b hb)`. Use `show a * b = b * a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ext (by rw [Units.val_mul, Units.val_mul]; exact h.eq)`. Establish `hC` using `cptCpt k n γ _ hγ hTcl hcommA`. Establish `hcm : CptMod (Subgroup.centralizer {γ}) (fun x => f (x⁻¹ * γ * (MonoidHom.id (GL (Fin n) k)) x))`. Take `⟨D, hD, hDp⟩` from `orbProper_holds k k 1 hgen n γ (hTw hγ) (tsupport f) hH.1`. Use `⟨D, hD, fun g hg => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hg' : twConj (sigmaGL (1 : Gal(k/k))) g γ ∈ tsupport f`. Establish `he : twConj (sigmaGL (1 : Gal(k/k))) g γ = g⁻¹ * γ * g` using `by show g⁻¹ * γ * (sigmaGL (1 : Gal(k/k))) g = g⁻¹ * γ * g`. Rewrite using `[hσ1 g]`. Rewrite using `[he]`. Conclude with `subset_tsupport f hg`.
-
-Take `⟨t, ht, d, hd, rfl⟩` from `hDp g hg'`. Use `⟨t, ?_, d, hd, rfl⟩` and prove the remaining obligations. Establish `h1` using `(mem_twCent _ _ _).1 ht`. Rewrite `h1` using `[hσ1 t]`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff]`.
-
-Combine the equalities or inequalities in the displayed calculation. Take `⟨hne, heq⟩` from `orbSum (GL (Fin n) k) μk hμ (unitGL k) hKo hKc hk1 (MonoidHom.id _) continuous_id γ (Subgroup.centralizer {γ}) hT hcomm hC μγ hh U f hL hH hcm`. Conclude with `⟨hC, hne, heq⟩`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem kSide (k : Type) [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) [MeasurableSpace (GL (Fin n) k)] [BorelSpace (GL (Fin n) k)]
@@ -100,27 +96,23 @@ private theorem kSide (k : Type) [Field k] [CharZero k] [ValuativeRel k] [Topolo
   exact ⟨hC, hne, heq⟩
 
 /- English proof (translation)
-Unfold `MatchOfSum`. Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ hgen n _ _ _ _ μE μk hμE hμk hE1 hk1 UE Uk φ f hLE hLk hHE hHk hmatch hsurj`. Take `⟨hgal, hnorm, htw, -, hpair, hnormOf⟩` from `dict k E σ hgen n`. Take `⟨hLCE, hSCE, hT2E, -, -⟩` from `gLTop_holds E n`. Use `haveI := hLCE`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hSCE`. Use `haveI := hT2E`. Take `⟨hLCk, hSCk, hT2k, -, -⟩` from `gLTop_holds k n`. Use `haveI := hLCk`. Use `haveI := hSCk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hT2k`. Take `⟨hKo, hKc, -⟩` from `unitSB_holds E n`. Take `⟨-, -, hcontE⟩` from `extCont_holds k E`. Establish `hgalg : ∀ g : GL (Fin n) E, (GlobalTheory.LBC.galAct σ n) g = (sigmaGL σ) g` using `fun g => DFunLike.congr_fun hgal g`. Establish `hθc : Continuous (GlobalTheory.LBC.galAct σ n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `(hcontE n).2 σ`. Establish `he : (⇑(GlobalTheory.LBC.galAct σ n)) = ⇑(sigmaGL (n` using `Fin n) σ) := funext hgalg`. Rewrite using `[he]`. Conclude with `h`. Establish `hpow : (sigmaGL (n` using `Fin n) σ) ^ Module.finrank k E = 1 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← sigmaGL_pow, ← IsGalois.card_aut_eq_finrank, pow_card_eq_one', sigmaGL_one]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `δ γ h μδ μγ hTw hnh hδ hγh hmap`. Take `⟨hγ, hchar, hmem⟩` from `hpair δ h γ hTw hnh`. Take `⟨hCk, -, heqk⟩` from `kSide k n μk hμk hk1 Uk f hLk hHk γ hγ μγ hγh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hTcl, hcomm⟩` from `twCent_holds k E σ hgen n δ hTw`. Establish `hT : PositivityTheory.Rg.Tf.Loc.twCent (sigmaGL σ) δ = GlobalTheory.BCT.twCent (GlobalTheory.LBC.galAct σ n) δ`. Rewrite using `[hgal]`. Conclude with `htw δ`. Establish `hCE : IsCompact (GlobalTheory.BCT.cptPart (PositivityTheory.Rg.Tf.Loc.twCent (sigmaGL σ) δ) : Set (GL (Fin n) E))` using `cptCpt E n (normGL σ δ) _ hTw hTcl (fun t ht => twCent_commute_twNorm (sigmaGL σ) hpow δ ht)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcm : CptMod (PositivityTheory.Rg.Tf.Loc.twCent (sigmaGL σ) δ) (fun x => φ (x⁻¹ * δ * (GlobalTheory.LBC.galAct σ n) x))`. Take `⟨D, hD, hDp⟩` from `orbProper_holds k E σ hgen n δ hTw (tsupport φ) hHE.1`. Use `⟨D, hD, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hg2 : φ (g⁻¹ * δ * (sigmaGL σ) g) ≠ 0`. Rewrite using `[← hgalg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hg`. Conclude with `hDp g (subset_tsupport φ hg2)`. Take `⟨-, heqE⟩` from `orbSum (GL (Fin n) E) μE hμE (unitGL E) hKo hKc hE1 (GlobalTheory.LBC.galAct σ n) hθc δ _ hT hcomm hCE μδ hδ UE φ hLE hHE hcm`. Establish `hvol` using `cptConj (GL (Fin n) E) (GL (Fin n) k) incl (inclClosed_holds k E n) (PositivityTheory.Rg.Tf.Loc.twCent (sigmaGL σ) δ) (Subgroup.centralizer {γ}) h hmem hCk μδ μγ hmap`. Establish `hO : GlobalTheory.BCT.twOrb (GlobalTheory.LBC.galAct σ n) (unitGL E) δ φ = GlobalTheory.BCT.twOrb (MonoidHom.id (GL (Fin n) k)) (unitGL k) γ f` using `hmatch δ (by rw [hnorm]; exact hTw) γ (by rw [hnorm]; exact hchar)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hL : twOrbIntegralC (sigmaGL σ) μE δ μδ φ = quotIntegral μE _ μδ (fun x => φ (x⁻¹ * δ * (GlobalTheory.LBC.galAct σ n) x))`. Use `congrArg (quotIntegral μE _ μδ) (funext fun x => ?_)` and prove the remaining obligations. Use `show φ (x⁻¹ * δ * (sigmaGL σ) x) = φ (x⁻¹ * δ * (GlobalTheory.LBC.galAct σ n) x)`. Rewrite using `[hgalg]`. Rewrite using `[heqk, hL, heqE, hO, hvol]`.
-
-Introduce `γ μγ hγ hno hγh`. Take `⟨-, -, heqk⟩` from `kSide k n μk hμk hk1 Uk f hLk hHk γ hγ μγ hγh`. Rewrite using `[heqk]`. Establish `h0 : GlobalTheory.BCT.twOrb (MonoidHom.id (GL (Fin n) k)) (unitGL k) γ f = 0`. Assume the negation of the conclusion as `hne`.
-
-Take `⟨δ, hδ⟩` from `hsurj γ hγ hne`. Conclude with `hno ⟨δ, hnormOf δ γ hγ (by rw [← hnorm]; exact hδ)⟩`. Rewrite using `[h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matchOfSum : MatchOfSum := by
   unfold MatchOfSum

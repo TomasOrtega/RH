@@ -10,14 +10,14 @@ section
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_comp {F : Shv R} {W V U : Scheme.{0}} (h : W ⟶ V) (g : V ⟶ U) (y : Sec F U) :
     Sec.res (h ≫ g) y = Sec.res h (Sec.res g y) := by
   simp [Sec.res]
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Set `T : ∀ ⦃V : Scheme.{0}⦄ ⦃f : V ⟶ U⦄, S.arrows f → Sieve V` to `fun V f hf => Classical.choose (hPQ V f (hP V f hf))`. Use `⟨Sieve.bind S.arrows T, (Scheme.etaleTopology.{0}).bind_covering hS (fun V f hf => (Classical.choose_spec (hPQ V f (hP V f hf))).1), ?_⟩` and prove the remaining obligations. Introduce and unpack `W _ ⟨V, k, f, hf, hk, rfl⟩`. Conclude with `(Classical.choose_spec (hPQ V f (hP V f hf))).2 W k hk`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem loc_trans {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P)
     (hPQ : ∀ V g, P V g → Loc V fun W k => Q W (k ≫ g)) : Loc U Q := by
@@ -31,9 +31,9 @@ theorem loc_trans {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop
   exact (Classical.choose_spec (hPQ V f (hP V f hf))).2 W k hk
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Set `e : ModuleCat.of (ULift.{1} R) (ULift.{1} R) ⟶ F.obj.obj (op U)` to `ModuleCat.ofHom (LinearMap.toSpanSingleton _ _ y)`. Use `F.property.hom_ext ⟨S, hS⟩ e 0 (fun I => by ext1; apply LinearMap.ext_ring` as an intermediate fact. Use `hP _ I.f I.hf` as an intermediate fact. Simplify `this)` using `[e]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom this) 1`. Simplify `h2` using `[e]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_loc {F : Shv R} {U : Scheme.{0}} (y : Sec F U) (h : Loc U fun _ g => Sec.res g y = 0) : y = 0 := by
   obtain ⟨S, hS, hP⟩ := h
@@ -47,9 +47,9 @@ theorem eq_zero_of_loc {F : Shv R} {U : Scheme.{0}} (y : Sec F U) (h : Loc U fun
   simpa [e] using h2
 
 /- English proof (translation)
-Establish `: Mono ((sheafToPresheaf _ _).map f)`. Establish `hm : ∀ U, Mono (((sheafToPresheaf Scheme.etaleTopology (ModuleCat (ULift.{1, 0} R))).map f).app U)`. Introduce `U`. Rewrite using `[ModuleCat.mono_iff_injective, injective_iff_map_eq_zero]`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `eq_zero_of_loc y (h U.unop y hy)`. Conclude with `NatTrans.mono_of_mono_app _`. Conclude with `(sheafToPresheaf _ _).mono_of_mono_map this`.
+A detailed English derivation is pending.
 -/
 theorem mono_of_loc {F G : Shv R} (f : F ⟶ G)
     (h : ∀ (U : Scheme.{0}) (y : Sec F U), Sec.map f y = 0 → Loc U fun _ g => Sec.res g y = 0) : Mono f := by
@@ -63,9 +63,9 @@ theorem mono_of_loc {F G : Shv R} (f : F ⟶ G)
   exact (sheafToPresheaf _ _).mono_of_mono_map this
 
 /- English proof (translation)
-Establish `: (μ.lift V w).comp (Tens.res g w) = ((K.X w).obj.map g.op).hom.comp (μ.lift U w)`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pair.lift, Tens.res]`. Conclude with `(μ.nat g _ _ _ p.2 a b).symm`. Conclude with `LinearMap.congr_fun this x`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_res {I J K : Cx R} (μ : Pair I J K) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : Tens I J U w) :
     μ.lift V w (Tens.res g w x) = Sec.res g (μ.lift U w x) := by
@@ -77,9 +77,9 @@ theorem lift_res {I J K : Cx R} (μ : Pair I J K) {V U : Scheme.{0}} (g : V ⟶ 
   exact LinearMap.congr_fun this x
 
 /- English proof (translation)
-Establish `: ((ι.f w).hom.app (op U)).hom.comp (σ.lift U w) = ν.lift U w`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pair.lift]`. Conclude with `h U _ _ _ p.2 a b`. Conclude with `LinearMap.congr_fun this x`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_compat {I J K K' : Cx R} (σ : Pair I J K) (ν : Pair I J K') (ι : K ⟶ K')
     (h : ∀ (U : Scheme.{0}) (s t w : ℤ) (hw : s + t = w) (a : Sec (I.X s) U) (b : Sec (J.X t) U),
@@ -104,11 +104,11 @@ def LeafPreTensLocInj : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ) {T : Cx (ZMod
   (pre τ (resAug (tw q 0))).lift U w x = 0 → Loc U fun _ g => Tens.res g w x = 0
 
 /- English proof (translation)
-Introduce `q _ i S T σ τ hσ hτ ι hι n`. Apply `mono_of_loc` to reduce the goal to its premises. Introduce `U y hy`. Establish `hc` using `lift_compat σ (pre τ (resAug (tw q 0))) ι (fun U s t w hw a b => hι U s t w hw a b)`. Use `loc_trans (hσ.1 U n y) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `V g ⟨x, hx⟩`. Establish `h0 : (pre τ (resAug (tw q 0))).lift V n x = 0`. Rewrite using `[← hc, hx, ← res_map, hy]`. Simplify using the standard rewrite rules. Take `⟨S', hS', hP'⟩` from `hL q i τ hτ V n x h0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨S', hS', fun W k hk => by show Sec.res (k ≫ g) y = 0`. Establish `hk' : Tens.res k n x = 0` using `hP' W k hk`. Rewrite using `[res_comp, ← hx, ← lift_res, hk', map_zero]⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem LeafTensMono_of (hL : LeafPreTensLocInj) : LateralTheory.E.LeafExtTensPf.LeafTensMono := by
   intro q _ i S T σ τ hσ hτ ι hι n

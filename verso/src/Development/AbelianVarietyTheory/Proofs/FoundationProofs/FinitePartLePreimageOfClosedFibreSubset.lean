@@ -11,17 +11,17 @@ open IsLocalRing TensorProduct CategoryTheory Limits AlgebraicGeometry
 universe u
 
 /- English proof (translation)
-Take `⟨R', _, _, _, P, _, _, e, he, P', _, _, hP'q, heP', hbij, hfin, -⟩` from `Algebra.exists_etale_isIdempotentElem_forall_liesOver_eq (maximalIdeal R) q`. Set `ε : (maximalIdeal R).ResidueField ≃ₐ[R] P.ResidueField` to `.ofBijective _ hbij`. Set `ε' : (R ⧸ maximalIdeal R) ≃ₐ[R] (maximalIdeal R).ResidueField` to `.ofBijective (IsScalarTower.toAlgHom _ _ _) (Ideal.bijective_algebraMap_quotient_residueField _)`. Take `⟨σ, hσ⟩` from `exists_algHom_lift_of_etale_of_isLocalRing (maximalIdeal R) ((ε'.trans ε).symm.toAlgHom.comp (IsScalarTower.toAlgHom R R' P.ResidueField))`. Establish `hσP : ∀ a, σ a ∈ maximalIdeal R ↔ a ∈ P` using `fun a ↦ by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, hσ, ← Ideal.algebraMap_residueField_eq_zero (I := P)]`. Simplify using the standard rewrite rules. Set `τ : R' ⊗[R] S →ₐ[R] S` to `Algebra.TensorProduct.lift ((Algebra.ofId R S).comp σ) (.id R S) fun _ _ ↦ .all _ _`. Establish `hlies : (q.comap τ).LiesOver P` using `⟨by`. Use extensionality with `a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← hσP, q.over_def (maximalIdeal R)]`. Simplify using `[τ, Ideal.under, Algebra.TensorProduct.algebraMap_apply]⟩`. Establish `hcomap : (q.comap τ).comap Algebra.TensorProduct.includeRight.toRingHom = q`. Use extensionality with `a`. Simplify using `[τ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hP' : q.comap τ = P'` using `Ideal.eq_of_comap_eq_comap_of_bijective_residueFieldMap hbij _ _ (by rw [hcomap, hP'q])`. Use `⟨τ e, he.map τ, by rw [← hP'] at heP'; exact heP', ?_⟩` and prove the remaining obligations. Establish `hτ : Function.Surjective τ` using `fun s ↦ ⟨1 ⊗ₜ s, by simp [τ]⟩`. Establish `h1 : (Localization.awayMap τ.toRingHom e).Finite` using `.of_surjective _ (Localization.awayMap_surjective_iff.2 fun s ↦ by`. Take `⟨a, rfl⟩` from `hτ s`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, 0, by simp⟩)`. Establish `h2` using `h1.comp (RingHom.finite_algebraMap.2 hfin)`. Establish `h3 : (Localization.awayMap τ.toRingHom e).comp (algebraMap R' (Localization.Away e)) = (algebraMap R (Localization.Away (τ e))).comp σ.toRingHom`. Use extensionality with `a`. Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply R' (R' ⊗[R] S), Localization.awayMap, IsLocalization.Away.map, IsLocalization.map_eq, RingHom.comp_apply, IsScalarTower.algebraMap_apply R S]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[τ]`. Rewrite `h2` using `[h3]`. Conclude with `RingHom.finite_algebraMap.1 h2.of_comp_finite`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idempotent_finite_away_of_henselian (R : Type*) {S : Type*} [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Algebra.FiniteType R S]
@@ -71,7 +71,7 @@ section General
 variable {X Y Z S : Scheme.{u}}
 
 /- English proof (translation)
-Establish `: i.opensRange.ι ≫ f = i.isoOpensRange.inv ≫ i ≫ f` using `by simp`. Rewrite using `[this]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinite_opensRange_ι_comp (i : Y ⟶ X) [IsOpenImmersion i] (f : X ⟶ S)
     [IsFinite (i ≫ f)] : IsFinite (i.opensRange.ι ≫ f) := by
@@ -80,7 +80,7 @@ theorem isFinite_opensRange_ι_comp (i : Y ⟶ X) [IsOpenImmersion i] (f : X ⟶
   infer_instance
 
 /- English proof (translation)
-Establish `: IsFinite U.ι` using `.of_comp _ f`. Simplify using `using U.ι.isClosedMap.isClosed_range`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isClosed_of_isFinite_ι_comp (f : X ⟶ S) [IsSeparated f] (U : X.Opens)
     [IsFinite (U.ι ≫ f)] : IsClosed (U : Set X) := by
@@ -88,9 +88,9 @@ theorem isClosed_of_isFinite_ι_comp (f : X ⟶ S) [IsSeparated f] (U : X.Opens)
   simpa using U.ι.isClosedMap.isClosed_range
 
 /- English proof (translation)
-Establish `: UniversallyClosed f` using `.of_comp_surjective p _`. Establish `: LocallyQuasiFinite f`. Use `.of_finite_preimage_singleton _ fun s ↦ ?_` and prove the remaining obligations. Use `(((p ≫ f).finite_preimage_singleton s).image p).subset fun x hx ↦ ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `p.surjective x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, by simpa using hx, rfl⟩`. Establish `: IsProper f` using `{}`. Conclude with `.of_isProper_of_locallyQuasiFinite _`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFinite_of_comp_surjective (p : Y ⟶ X) [Surjective p] (f : X ⟶ S) [IsSeparated f]
     [LocallyOfFiniteType f] [IsFinite (p ≫ f)] : IsFinite f := by
@@ -104,11 +104,11 @@ theorem isFinite_of_comp_surjective (p : Y ⟶ X) [Surjective p] (f : X ⟶ S) [
   exact .of_isProper_of_locallyQuasiFinite _
 
 /- English proof (translation)
-Set `a : U.toScheme ⟶ (U ⊔ V).toScheme` to `X.homOfLE le_sup_left`. Set `b : V.toScheme ⟶ (U ⊔ V).toScheme` to `X.homOfLE le_sup_right`. Establish `ha : a ≫ (U ⊔ V).ι = U.ι` using `X.homOfLE_ι _`. Establish `hb : b ≫ (U ⊔ V).ι = V.ι` using `X.homOfLE_ι _`. Establish `hsurj : Surjective (coprod.desc a b)` using `⟨by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, hx | hx⟩`. Conclude with `⟨(coprod.inl : _ ⟶ U.toScheme ⨿ V.toScheme) ⟨x, hx⟩, (U ⊔ V).ι.isOpenEmbedding.injective congr($(show coprod.inl ≫ coprod.desc a b ≫ (U ⊔ V).ι = U.ι by rw [coprod.inl_desc_assoc, ha]) ⟨x, hx⟩)⟩`. Conclude with `⟨(coprod.inr : _ ⟶ U.toScheme ⨿ V.toScheme) ⟨x, hx⟩, (U ⊔ V).ι.isOpenEmbedding.injective congr($(show coprod.inr ≫ coprod.desc a b ≫ (U ⊔ V).ι = V.ι by rw [coprod.inr_desc_assoc, hb]) ⟨x, hx⟩)⟩⟩`. Establish `hfin : IsFinite (coprod.desc a b ≫ (U ⊔ V).ι ≫ f)`. Rewrite using `[coprod.desc_comp, reassoc_of% ha, reassoc_of% hb]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Conclude with `isFinite_of_comp_surjective (coprod.desc a b) _`.
+A detailed English derivation is pending.
 -/
 theorem isFinite_sup_ι_comp (f : X ⟶ S) [IsSeparated f] [LocallyOfFiniteType f] (U V : X.Opens)
     [IsFinite (U.ι ≫ f)] [IsFinite (V.ι ≫ f)] : IsFinite ((U ⊔ V).ι ≫ f) := by
@@ -130,7 +130,7 @@ theorem isFinite_sup_ι_comp (f : X ⟶ S) [IsSeparated f] [LocallyOfFiniteType 
   exact isFinite_of_comp_surjective (coprod.desc a b) _
 
 /- English proof (translation)
-The claim follows from `have : IsEmpty (⊥ : X.Opens).toScheme := ⟨fun x ↦ x.2⟩ inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isFinite_bot_ι_comp (f : X ⟶ S) : IsFinite ((⊥ : X.Opens).ι ≫ f) :=
   have : IsEmpty (⊥ : X.Opens).toScheme := ⟨fun x ↦ x.2⟩
@@ -141,14 +141,14 @@ def finitePart (f : X ⟶ S) : X.Opens := sSup {U : X.Opens | IsFinite (U.ι ≫
 def finitePartCompl (f : X ⟶ S) : X.Opens := ⟨interior (finitePart f : Set X)ᶜ, isOpen_interior⟩
 
 /- English proof (translation)
-The claim follows from `TopologicalSpace.Opens.mem_sSup`.
+A detailed English derivation is pending.
 -/
 theorem mem_finitePart {f : X ⟶ S} {x : X} :
     x ∈ finitePart f ↔ ∃ U : X.Opens, IsFinite (U.ι ≫ f) ∧ x ∈ U :=
   TopologicalSpace.Opens.mem_sSup
 
 /- English proof (translation)
-The claim follows from `le_sSup h`.
+A detailed English derivation is pending.
 -/
 theorem le_finitePart (f : X ⟶ S) (U : X.Opens) [h : IsFinite (U.ι ≫ f)] : U ≤ finitePart f :=
   le_sSup h
@@ -160,9 +160,9 @@ section Local
 variable {R : CommRingCat.{u}} [IsLocalRing R] {X Y Z : Scheme.{u}}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hne : (g '' (V : Set Y)ᶜ).Nonempty`. Use `Set.Nonempty.image _ (Set.nonempty_compl.2 fun h' ↦ h ?_)` and prove the remaining obligations. Conclude with `TopologicalSpace.Opens.ext h'`. Take `⟨s, hs⟩` from `hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcl : IsClosed (g '' (V : Set Y)ᶜ)` using `g.isClosedMap _ V.isOpen.isClosed_compl`. Take `⟨y, hy, e⟩` from `(specializes_closedPoint (R := R) s).mem_closed hcl hs`. Conclude with `hy (hV y e)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem opens_eq_top_of_closedFibre_subset (g : Y ⟶ Spec R) [UniversallyClosed g] (V : Y.Opens)
     (hV : ∀ y : Y, g y = closedPoint R → y ∈ V) : V = ⊤ := by
@@ -176,7 +176,7 @@ theorem opens_eq_top_of_closedFibre_subset (g : Y ⟶ Spec R) [UniversallyClosed
   exact hy (hV y e)
 
 /- English proof (translation)
-The claim follows from `opens_eq_top_of_closedFibre_subset (h ≫ f) _ fun y hy ↦ hU (h y) (by simpa using hy)`.
+A detailed English derivation is pending.
 -/
 theorem preimage_eq_top_of_closedFibre_subset (f : X ⟶ Spec R) (U : X.Opens)
     (hU : ∀ x : X, f x = closedPoint R → x ∈ U) (h : Y ⟶ X) [UniversallyClosed (h ≫ f)] :
@@ -184,7 +184,7 @@ theorem preimage_eq_top_of_closedFibre_subset (f : X ⟶ Spec R) (U : X.Opens)
   opens_eq_top_of_closedFibre_subset (h ≫ f) _ fun y hy ↦ hU (h y) (by simpa using hy)
 
 /- English proof (translation)
-Use `sSup_le fun V hV x hx ↦ ?_` and prove the remaining obligations. Establish `: IsFinite ((V.ι ≫ h) ≫ f)` using `by rwa [Category.assoc]`. Use `(preimage_eq_top_of_closedFibre_subset f U hU (V.ι ≫ h)).ge (Set.mem_univ ⟨x, hx⟩)` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finitePart_le_preimage_of_closedFibre_subset (f : X ⟶ Spec R) (U : X.Opens)
     (hU : ∀ x : X, f x = closedPoint R → x ∈ U) (h : Y ⟶ X) :
@@ -195,7 +195,7 @@ theorem finitePart_le_preimage_of_closedFibre_subset (f : X ⟶ Spec R) (U : X.O
   exact this
 
 /- English proof (translation)
-The claim follows from `le_antisymm (by simpa using finitePart_le_preimage_of_closedFibre_subset f U hU (𝟙 X)) (le_finitePart f U)`.
+A detailed English derivation is pending.
 -/
 theorem finitePart_eq_of_closedFibre_subset (f : X ⟶ Spec R) (U : X.Opens) [IsFinite (U.ι ≫ f)]
     (hU : ∀ x : X, f x = closedPoint R → x ∈ U) : finitePart f = U :=
@@ -209,15 +209,13 @@ section Henselian
 variable {R : CommRingCat.{u}} [HenselianLocalRing R] {X Y Z : Scheme.{u}}
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨A, i, _, y, rfl⟩ : ∃ (A : CommRingCat.{u}) (i : Spec A ⟶ X), IsOpenImmersion i ∧ ∃ y, i y = x := by`. Take `⟨j, y, hy⟩` from `X.affineOpenCover.openCover.exists_eq x`. Conclude with `⟨_, X.affineOpenCover.f j, X.affineOpenCover.map_prop j, y, hy⟩`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (i ≫ f)`. Establish `h₁ : φ.hom.FiniteType`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType), hφ]`. Use `infer_instance`. Establish `h₂ : φ.hom.QuasiFinite`. Rewrite using `[← HasRingHomProperty.Spec_iff (P := @LocallyQuasiFinite), hφ]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `algebraize [φ.hom]`. Establish `: y.asIdeal.LiesOver (maximalIdeal R)`. Establish `: Spec.map φ y = closedPoint R` using `by rw [hφ]; simpa using hx`. Conclude with `⟨congr(($this).asIdeal).symm⟩`. Use `y.isPrime` as an intermediate fact.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨e, -, hey, hfin⟩` from `exists_idempotent_finite_away_of_henselian R y.asIdeal`. Set `j : Spec (.of (Localization.Away e)) ⟶ Spec A` to `Spec.map (CommRingCat.ofHom (algebraMap A _))`. Establish `: IsFinite ((j ≫ i) ≫ f)`. Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp, IsFinite.SpecMap_iff]`. Conclude with `RingHom.finite_algebraMap.2 hfin`.
-
-Use `mem_finitePart.2 ⟨(j ≫ i).opensRange, isFinite_opensRange_ι_comp _ f, ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩ : y ∈ Set.range j` from `(PrimeSpectrum.localization_away_comap_range (Localization.Away e) e).ge hey`. Conclude with `⟨z, by simp [hz]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_finitePart_of_eq_closedPoint (f : X ⟶ Spec R) [LocallyOfFiniteType f]
     [LocallyQuasiFinite f] (x : X) (hx : f x = closedPoint R) : x ∈ finitePart f := by
@@ -269,7 +267,7 @@ instance isFinite_finitePart : IsFinite ((finitePart f).ι ≫ f) := by
   rwa [finitePart_eq_of_closedFibre_subset f U hU]
 
 /- English proof (translation)
-The claim follows from `isClosed_of_isFinite_ι_comp f _`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_finitePart : IsClosed (finitePart f : Set X) :=
   isClosed_of_isFinite_ι_comp f _
@@ -279,13 +277,13 @@ instance isClosedImmersion_finitePart_ι : IsClosedImmersion (finitePart f).ι :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(isClosed_finitePart f).isOpen_compl.interior_eq`.
+A detailed English derivation is pending.
 -/
 theorem coe_finitePartCompl : (finitePartCompl f : Set X) = (finitePart f : Set X)ᶜ :=
   (isClosed_finitePart f).isOpen_compl.interior_eq
 
 /- English proof (translation)
-Rewrite using `[isCompl_iff, disjoint_iff, codisjoint_iff]`. Apply the tactic sequence `constructor <;> ext1 <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isCompl_finitePart : IsCompl (finitePart f) (finitePartCompl f) := by
   rw [isCompl_iff, disjoint_iff, codisjoint_iff]
@@ -311,7 +309,7 @@ instance isIso_coprodDesc_finitePart :
 omit [IsSeparated f] [QuasiCompact f] in
 
 /- English proof (translation)
-The claim follows from `preimage_eq_top_of_closedFibre_subset f _ (mem_finitePart_of_eq_closedPoint f) h`.
+A detailed English derivation is pending.
 -/
 theorem preimage_finitePart_eq_top (h : Y ⟶ X) [IsFinite (h ≫ f)] : h ⁻¹ᵁ finitePart f = ⊤ :=
   preimage_eq_top_of_closedFibre_subset f _ (mem_finitePart_of_eq_closedPoint f) h
@@ -319,7 +317,7 @@ theorem preimage_finitePart_eq_top (h : Y ⟶ X) [IsFinite (h ≫ f)] : h ⁻¹�
 omit [IsSeparated f] [QuasiCompact f] in
 
 /- English proof (translation)
-The claim follows from `finitePart_le_preimage_of_closedFibre_subset f _ (mem_finitePart_of_eq_closedPoint f) h`.
+A detailed English derivation is pending.
 -/
 theorem finitePart_le_preimage (h : Y ⟶ X) : finitePart (h ≫ f) ≤ h ⁻¹ᵁ finitePart f :=
   finitePart_le_preimage_of_closedFibre_subset f _ (mem_finitePart_of_eq_closedPoint f) h
@@ -339,14 +337,14 @@ def finitePartLift (f : X ⟶ Spec R) [LocallyOfFiniteType f] [LocallyQuasiFinit
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem finitePartLift_ι (f : X ⟶ Spec R) [LocallyOfFiniteType f] [LocallyQuasiFinite f]
     (h : Y ⟶ X) [IsFinite (h ≫ f)] : finitePartLift f h ≫ (finitePart f).ι = h :=
   IsOpenImmersion.lift_fac _ _ _
 
 /- English proof (translation)
-Substitute `w` using the available equality. Conclude with `⟨finitePartLift f h, finitePartLift_ι f h, fun l hl ↦ by`. Rewrite using `[← cancel_mono (finitePart f).ι, hl, finitePartLift_ι]⟩`.
+Substitute using the available equality. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_lift_finitePart (f : X ⟶ Spec R) [LocallyOfFiniteType f]
     [LocallyQuasiFinite f] (g : Y ⟶ Spec R) [IsFinite g] (h : Y ⟶ X) (w : h ≫ f = g) :
@@ -362,7 +360,7 @@ def finitePartMap (g : Y ⟶ Spec R) (f : X ⟶ Spec R) [LocallyOfFiniteType f]
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `h.resLE_comp_ι _ @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem finitePartMap_ι (g : Y ⟶ Spec R) (f : X ⟶ Spec R) [LocallyOfFiniteType f]
     [LocallyQuasiFinite f] (h : Y ⟶ X) (w : h ≫ f = g) :
@@ -371,7 +369,7 @@ theorem finitePartMap_ι (g : Y ⟶ Spec R) (f : X ⟶ Spec R) [LocallyOfFiniteT
 
 @[simp]
 /- English proof (translation)
-Simplify using `[← cancel_mono (finitePart f).ι]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finitePartMap_id (f : X ⟶ Spec R) [LocallyOfFiniteType f] [LocallyQuasiFinite f] :
     finitePartMap f f (𝟙 X) (Category.id_comp f) = 𝟙 _ := by
@@ -384,13 +382,13 @@ section Pullback
 variable {R : CommRingCat.{u}} [HenselianLocalRing R] {P X Y Z : Scheme.{u}}
 
 /- English proof (translation)
-Establish `hr (s : PullbackCone (U.ι ≫ a) (V.ι ≫ b)) : Set.range (H.lift (s.fst ≫ U.ι) (s.snd ≫ V.ι) (by simpa using s.condition)) ⊆ Set.range W.ι`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι, hW]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p _ ∈ U`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Scheme.Hom.comp_apply, H.lift_fst]`. Conclude with `(s.fst x).2`. Express the relevant statement in the definitionally equal form `q _ ∈ V`. Rewrite using `[← Scheme.Hom.comp_apply, H.lift_snd]`. Conclude with `(s.snd x).2`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨by simp [H.w]⟩, ⟨PullbackCone.IsLimit.mk _ (fun s ↦ IsOpenImmersion.lift W.ι _ (hr s)) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `s`. Simplify using `[← cancel_mono U.ι]`. Introduce `s`. Simplify using `[← cancel_mono V.ι]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `s m h₁ h₂`. Rewrite using `[← cancel_mono W.ι, IsOpenImmersion.lift_fac]`. Apply `H.hom_ext` to reduce the goal to its premises. Simplify using `[← h₁]`. Simplify using `[← h₂]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPullback_opens_inf {a : X ⟶ Z} {b : Y ⟶ Z} {p : P ⟶ X} {q : P ⟶ Y}
     (H : IsPullback p q a b) (U : X.Opens) (V : Y.Opens) (W : P.Opens)

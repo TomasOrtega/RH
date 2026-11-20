@@ -16,21 +16,21 @@ namespace SnapperSubquotientFinite
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Use `⟨Finset.univ.image (fun l => x l / x i) ∪ I.1.image (fun j => x i / x j), ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Algebra.adjoin_le_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Simplify using `only [Finset.coe_union, Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_union, Set.mem_range, Set.mem_image, Finset.mem_coe] at ha`. Break down `ha with ⟨l, rfl⟩ | ⟨j, hj, rfl⟩` into its components or cases. Conclude with `⟨X l, X i, 1, X_mem_monos hi, isHomogeneous_X S l, isHomogeneous_X S i, by simp⟩`. Conclude with `⟨X i, X j, 1, X_mem_monos hj, isHomogeneous_X S i, isHomogeneous_X S j, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce and unpack `a ⟨f, s, e, hs, hf, hse, rfl⟩ set T := Algebra.adjoin S ((Finset.univ.image (fun l => x l / x i) ∪ I.1.image (fun j => x i / x j) : Finset Ω) : Set Ω) with hT`. Establish `h1 : aeval x f / x i ^ e ∈ T`. Establish `hc : aeval x f / x i ^ e ∈ chartRing S x (singleChart hxi)` using `⟨f, X i ^ e, e, pow_mem (X_mem_monos (Finset.mem_singleton_self i)) e, hf, isHomogeneous_X_pow _ _, by simp⟩`. Use `Algebra.adjoin_mono ?_ (mem_ampleBase_of_mem_chartRing hxi hc)` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Establish `h2 : ∀ s ∈ monos (S` using `S) I.1, ∃ e', s.IsHomogeneous e' ∧ x i ^ e' / aeval x s ∈ T := by`. Introduce `s hs`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem a ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨j, hj, rfl⟩` from `ha`. Use `⟨1, isHomogeneous_X S j, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_X, pow_one]`. Conclude with `Algebra.subset_adjoin (by simp only [Finset.coe_union, Finset.coe_image, Set.mem_union, Set.mem_image, Finset.mem_coe]; exact Or.inr ⟨j, hj, rfl⟩)`. Consider the case `one => exact ⟨0, isHomogeneous_one _ _, by simp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `mul a b _ _ ha hb`. Take `⟨ea, ha1, ha2⟩` from `ha`. Take `⟨eb, hb1, hb2⟩` from `hb`. Use `⟨ea + eb, ha1.mul hb1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, pow_add, mul_div_mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `T.mul_mem ha2 hb2`. Take `⟨e', hse', h2'⟩` from `h2 s hs`. Establish `hs0 : aeval x s ≠ 0` using `eval_ne_zero_of_mem_monos I hs`. Establish `hs0' : s ≠ 0` using `by rintro rfl; exact hs0 (map_zero _)`. Take `rfl : e = e'` from `hse.inj_right hse' hs0'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxe : x i ^ e ≠ 0` using `pow_ne_zero _ hxi`. Establish `: aeval x f / aeval x s = (aeval x f / x i ^ e) * (x i ^ e / aeval x s)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `T.mul_mem h1 h2'`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartRing_fg (I : Chart x) : (chartRing S x I).FG := by
   classical
@@ -82,7 +82,7 @@ theorem chartRing_fg (I : Chart x) : (chartRing S x I).FG := by
     exact T.mul_mem h1 h2'
 
 /- English proof (translation)
-Establish `: Algebra.FiniteType S (chartRing S x I)` using `⟨(Subalgebra.fg_top _).mpr (chartRing_fg I)⟩`. Conclude with `Algebra.FiniteType.isNoetherianRing S _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isNoetherianRing_chart [IsNoetherianRing S] (I : Chart x) : IsNoetherianRing (chartRing S x I) := by
   have : Algebra.FiniteType S (chartRing S x I) := ⟨(Subalgebra.fg_top _).mpr (chartRing_fg I)⟩
@@ -94,19 +94,17 @@ set_option maxHeartbeats 1000000 in
 open SnapperQuotientAdditivity SnapperSubquotientFinite in
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x E _ _ _ _ F F₁ F₂ hfg h1 h21 i`. Establish `hfg1 : ∀ I, (F₁.sub I).FG` using `fun I => by`. Use `isNoetherianRing_chart (S := k) I` as an intermediate fact. Conclude with `(hfg I).of_le (h1 I)`. Establish `hfg2 : ∀ I, (F₂.sub I).FG` using `fun I => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isNoetherianRing_chart (S := k) I` as an intermediate fact. Conclude with `(hfg I).of_le ((h21 I).trans (h1 I))`. Establish `hH : ∀ (G : SubFamily k x E), (∀ I, (G.sub I).FG) → ∀ j, FiniteDimensional k (Cech.Hdeg (fun I : Chart x => (G.sub I : Type v)) (fun _ => ⊤) G.toSubSystem.res j)`. Introduce `G hG j`. Establish `h` using `hfin k Ω N x E G hG 0 Fin.elim0 Fin.elim0 0 j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `FiniteDimensional k ((G.toSubSystem.twist (twistSys k x 0)).H j) at h`. Rewrite `h` using `[SubSystem.twist_twistSys_zero]`. Establish `: FiniteDimensional k (Cech.H (fun I : Chart x => (G.sub I : Type v)) G.toSubSystem.res j)` using `h`. Conclude with `(hdegTopEquiv _ _ j).symm.finiteDimensional`. Establish `hdd` using `CechDSq.proof (N + 1) (support x) k (fun I : Chart x => (F₁.sub I : Type v)) F₁.toSubSystem.res (fun _ _ _ _ _ => LinearMap.ext fun _ => rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : ∀ I : Chart x, F₂.sub I →ₗ[k] F₁.sub I` to `fun I => { toFun := fun y => ⟨y, h21 I y.2⟩, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Set `ψ : ∀ I : Chart x, F₁.sub I →ₗ[k] F₁.sub I ⧸ SubSystem.quotSub F₁.toSubSystem F₂.toSubSystem I` to `fun I => (SubSystem.quotSub F₁.toSubSystem F₂.toSubSystem I).mkQ`. Establish `L` using `Cech.longExact (R := k) (U := support x) (A := fun I : Chart x => (F₂.sub I : Type v)) (B := fun I : Chart x => (F₁.sub I : Type v)) (C := fun I : Chart x => F₁.sub I ⧸ SubSystem.quotSub F₁.toSubSystem F₂.toSubSystem I) (ρA := F₂.toSubSystem.res) (ρB := F₁.toSubSystem.res) (ρC := …`. Establish `L1` using `L (fun _ _ _ _ => rfl)`. Establish `L2` using `L1 (fun _ _ _ _ => rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `L3` using `L2 (fun _ _ _ => Submodule.mem_top) (fun _ _ _ => Submodule.mem_top)`. Establish `L4` using `L3 (fun I a b hab => Subtype.ext (congrArg (fun z : F₁.sub I => (z : E)) hab))`. Establish `L5` using `L4 (fun I y => (Submodule.Quotient.mk_eq_zero _).2 y.2)`. Establish `L6` using `L5 (fun I m _ hm => ⟨⟨m, (Submodule.Quotient.mk_eq_zero (SubSystem.quotSub F₁.toSubSystem F₂.toSubSystem I)).1 hm⟩, Submodule.mem_top, rfl⟩)`. Establish `L7` using `L6 (fun I z _ => (Submodule.Quotient.mk_surjective _ z).imp fun y hy => ⟨Submodule.mem_top, hy⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `L8` using `L7 (fun _ _ _ _ _ => Submodule.mem_top)`. Establish `liftZP_newton` using `L8 hdd`. Take `⟨δ, hgδ, -⟩` from `(liftZP_newton.2 i).2`. Use `hH F₁ hfg1 i` as an intermediate fact. Use `hH F₂ hfg2 (i + 1)` as an intermediate fact.
-
-Establish `hC` using `Module.Finite.of_exact (f := Cech.mapHdeg _ _ ψ _ _ i) (g := δ.rangeRestrict) (LinearMap.exact_iff.2 (by rw [LinearMap.ker_rangeRestrict]; exact LinearMap.exact_iff.1 hgδ)) δ.surjective_rangeRestrict`. Conclude with `(hdegTopEquiv _ _ i).finiteDimensional`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem SnapperSubquotFinite.proof (hfin : SnapperFinite.Statement.{u, v, w}) :
     SnapperSubquotFinite.Statement.{u, v, w} := by

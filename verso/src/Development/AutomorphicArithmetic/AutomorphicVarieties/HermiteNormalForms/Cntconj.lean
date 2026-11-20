@@ -5,17 +5,17 @@ open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `L _ _ R`. Establish `hq : 2 * R + 1 ≠ 0` using `by omega`. Establish `hsep : ∀ a ∈ {a : 𝓞 L | ∀ w, ‖embO w a‖ ≤ R}, ∀ b ∈ {a : 𝓞 L | ∀ w, ‖embO w a‖ ≤ R}, ∀ x : 𝓞 L, a - b = (2 * R + 1) • x → a = b`. Introduce `a ha b hb x hab`. Distinguish the cases in `hx : x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite `hab` using `[hx, smul_zero, sub_eq_zero]`. Conclude with `hab`. It suffices to derive a contradiction. Establish `key : ∀ w : InfinitePlace L, w (x : L) < 1`. Introduce `w`.
+Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ‖embO w (a - b)‖ ≤ 2 * R`. Rewrite using `[map_sub]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[hab, map_nsmul, nsmul_eq_mul, norm_mul, Complex.norm_natCast]`. Establish `hn : ‖embO w x‖ = w (x : L)` using `InfinitePlace.norm_embedding_eq w (x : L)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hn]`. Move the coercions through the operations in `at h1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: (2 * (R : ℝ) + 1) * 1 ≤ (2 * (R : ℝ) + 1) * w (x : L)` using `mul_le_mul_of_nonneg_left hc (by positivity)`.
+Move the embeddings inside the algebraic operations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨w0⟩` from `(inferInstance : Nonempty (InfinitePlace L))`. Use `InfinitePlace.one_le_of_lt_one (w := w0) hx (fun z _ => key z)` as an intermediate fact. Combine the linear relations using `[key w0]`. Take `⟨hfin, hcard⟩` from `cardsep (𝓞 L) (2 * R + 1) hq _ hsep`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨hfin, ?_⟩` and prove the remaining obligations. Rewrite `hcard` using `[RingOfIntegers.rank]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.cntconj :
     ∀ (L : Type) [Field L] [NumberField L] (R : ℕ),

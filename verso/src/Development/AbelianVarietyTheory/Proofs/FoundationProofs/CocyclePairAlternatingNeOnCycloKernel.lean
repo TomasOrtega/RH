@@ -12,7 +12,7 @@ section Abstract
 variable {Γ k : Type} [Group Γ] [Field k]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : v 0 = 0`. Establish `h1 : v 1 ≠ 0`. Apply the tactic sequence `intro h1; apply hv; funext i; fin_cases i <;> simp [h0, h1]`. Conclude with `⟨![1, 0], by simp [h1]⟩`. Conclude with `⟨![0, 1], by simp [h0]⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem alt_left_nondeg {v : Fin 2 → k} (hv : v ≠ 0) : ∃ a : Fin 2 → k, v 0 * a 1 - v 1 * a 0 ≠ 0 := by
   by_cases h0 : v 0 = 0
@@ -22,7 +22,7 @@ theorem alt_left_nondeg {v : Fin 2 → k} (hv : v ≠ 0) : ∃ a : Fin 2 → k, 
   · exact ⟨![0, 1], by simp [h0]⟩
 
 /- English proof (translation)
-The claim follows from `hirr.2.2 U le_top (by intro g v hv; exact hU g g.2 v hv)`.
+A detailed English derivation is pending.
 -/
 theorem stable_cases {W : Γ →* GL (Fin 2) k} {H : Subgroup Γ} (hirr : UpperTheory.V.Af.IsIrr (W.comp H.subtype))
     (U : Submodule k (Fin 2 → k)) (hU : ∀ s ∈ H, ∀ v ∈ U, (W s : Matrix (Fin 2) (Fin 2) k) *ᵥ v ∈ U) :
@@ -30,7 +30,7 @@ theorem stable_cases {W : Γ →* GL (Fin 2) k} {H : Subgroup Γ} (hirr : UpperT
   hirr.2.2 U le_top (by intro g v hv; exact hU g g.2 v hv)
 
 /- English proof (translation)
-Establish `h1 : y 1 = 0` using `by simpa using hy 1 1`. Establish `h2 : y s + (ρ s : Matrix (Fin n) (Fin n) k) *ᵥ y s⁻¹ = 0` using `by rw [← hy, mul_inv_cancel, h1]`. Rewrite using `[hy, hy, map_mul, hg, mul_one, add_right_comm, h2, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coc_conj {n : ℕ} (ρ : Γ →* GL (Fin n) k) (y : Γ → Fin n → k)
     (hy : ∀ g h, y (g * h) = y g + (ρ g : Matrix (Fin n) (Fin n) k) *ᵥ y h) (s g : Γ) (hg : ρ g = 1) :
@@ -47,53 +47,47 @@ namespace GlobalTheory.Ord2.PairSpan
 variable {Γ k : Type} [Group Γ] [Field k]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Set `Sig : Submodule k ((Fin 2 → k) × (Fin 2 → k))` to `Submodule.span k ((fun g => (y g, z g)) '' N)`. Establish `hgen : ∀ g ∈ N, (y g, z g) ∈ Sig` using `fun g hg => Submodule.subset_span ⟨g, hg, rfl⟩`. Establish `hinv : ∀ s ∈ H, ∀ σ ∈ Sig, ((W s : Matrix (Fin 2) (Fin 2) k) *ᵥ σ.1, (W s : Matrix (Fin 2) (Fin 2) k) *ᵥ σ.2) ∈ Sig`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs σ hσ`. Proceed by induction on `hσ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, hg, rfl⟩` from `hx`. Rewrite using `[← hy s hs g hg, ← hz s hs g hg]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `hgen _ (hN s hs g hg)`. Consider the case `zero`. Simplify using `only [Prod.fst_zero, Prod.snd_zero, Matrix.mulVec_zero, Prod.mk_zero_zero]`. Conclude with `Sig.zero_mem`. Consider the case `add x x' _ _ ihx ihx' => simpa [Matrix.mulVec_add] using Sig.add_mem ihx ihx'`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul a x _ ihx => simpa [Matrix.mulVec_smul] using Sig.smul_mem a ihx`. Establish `hB : ∀ g ∈ N, ∀ σ ∈ Sig, y g 0 * σ.2 1 - y g 1 * σ.2 0 = σ.1 0 * z g 1 - σ.1 1 * z g 0`. Introduce `g hg σ hσ`. Proceed by induction on `hσ using Submodule.span_induction with`. Consider the case `mem x hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Take `⟨h, hh, rfl⟩` from `hx`. Conclude with `(hcon g hg h hh).symm`. Consider the case `zero => simp`. Consider the case `add x x' _ _ ihx ihx'`. Simplify using `only [Prod.fst_add, Prod.snd_add, Pi.add_apply]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `ihx + ihx'`. Consider the case `smul a x _ ihx`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `a * ihx`. Set `K' : Submodule k (Fin 2 → k)` to `Sig.comap (LinearMap.inr k (Fin 2 → k) (Fin 2 → k))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hK' : K' = ⊥`. Break down `stable_cases hirr K' (by` into its components or cases. Introduce `s hs v hv`. Use `hinv s hs _ hv` as an intermediate fact. Simplify `this) with h | h` using `[K', Matrix.mulVec_zero]`.
+Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h`. It suffices to derive a contradiction. Take `⟨g, hg, hyg⟩` from `hy0`. Take `⟨a, ha⟩` from `alt_left_nondeg hyg`. Establish `hmem : ((0 : Fin 2 → k), a) ∈ Sig`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: a ∈ K'` using `h ▸ Submodule.mem_top`. Simplify `this` using `[K']`. Conclude with `ha ((hB g hg _ hmem).trans (by simp))`. Set `P : Submodule k (Fin 2 → k)` to `Sig.map (LinearMap.fst k (Fin 2 → k) (Fin 2 → k))`. Establish `hP : P = ⊤`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `stable_cases hirr P (by` into its components or cases. Introduce and unpack `s hs v ⟨σ, hσ, rfl⟩`. Conclude with `⟨_, hinv s hs σ hσ, rfl⟩) with h | h`. It suffices to derive a contradiction. Take `⟨g, hg, hyg⟩` from `hy0`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: y g ∈ P` using `⟨_, hgen g hg, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hyg this`. Conclude with `h`. Set `f : Sig →ₗ[k] (Fin 2 → k)` to `(LinearMap.fst k (Fin 2 → k) (Fin 2 → k)).comp Sig.subtype`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfi : Function.Injective f`. Use `(injective_iff_map_eq_zero f).2 fun σ hσ => ?_` and prove the remaining obligations. Establish `h1 : (σ : (Fin 2 → k) × (Fin 2 → k)).1 = 0` using `hσ`. Establish `h2 : (σ : (Fin 2 → k) × (Fin 2 → k)).2 ∈ K'` using `by show LinearMap.inr k _ _ (σ : (Fin 2 → k) × (Fin 2 → k)).2 ∈ Sig`. Apply the tactic sequence `have : LinearMap.inr k (Fin 2 → k) (Fin 2 → k) (σ : (Fin 2 → k) × (Fin 2 → k)).2 = σ := by ext1 <;> simp [h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Rewrite using `[this]`. Conclude with `σ.2`. Rewrite `h2` using `[hK', Submodule.mem_bot]`. Conclude with `Subtype.ext (Prod.ext h1 h2)`. Establish `hfs : Function.Surjective f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Establish `: a ∈ P` using `hP ▸ Submodule.mem_top`. Take `⟨σ, hσ, rfl⟩` from `this`. Conclude with `⟨⟨σ, hσ⟩, rfl⟩`. Set `e` to `LinearEquiv.ofBijective f ⟨hfi, hfs⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `φ : Module.End k (Fin 2 → k)` to `(LinearMap.snd k (Fin 2 → k) (Fin 2 → k)).comp (Sig.subtype.comp e.symm.toLinearMap)`. Establish `hφmem : ∀ a, (a, φ a) ∈ Sig`. Introduce `a`. Establish `h1 : ((e.symm a : Sig) : (Fin 2 → k) × (Fin 2 → k)).1 = a` using `e.apply_symm_apply a`. Establish `: (a, φ a) = ((e.symm a : Sig) : (Fin 2 → k) × (Fin 2 → k))` using `Prod.ext h1.symm rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `(e.symm a).2`. Establish `hφ : ∀ σ ∈ Sig, φ σ.1 = σ.2`. Introduce `σ hσ`. Establish `: e.symm σ.1 = ⟨σ, hσ⟩` using `e.symm_apply_eq.2 rfl`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `show ((e.symm σ.1 : Sig) : (Fin 2 → k) × (Fin 2 → k)).2 = σ.2`. Rewrite using `[this]`. Establish `hφW : ∀ s ∈ H, ∀ a, φ ((W s : Matrix (Fin 2) (Fin 2) k) *ᵥ a) = (W s : Matrix (Fin 2) (Fin 2) k) *ᵥ φ a` using `fun s hs a => hφ _ (hinv s hs _ (hφmem a))`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue φ`. Establish `hE : Module.End.eigenspace φ c = ⊤`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Break down `stable_cases hirr (Module.End.eigenspace φ c) (by` into its components or cases. Introduce `s hs v hv`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[hφW s hs, hv, Matrix.mulVec_smul]) with h | h`. Conclude with `absurd h (Module.End.hasEigenvalue_iff.1 hc)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hφc : ∀ a, φ a = c • a` using `fun a => Module.End.mem_eigenspace_iff.1 (hE ▸ Submodule.mem_top)`. Establish `hzy : ∀ g ∈ N, z g = c • y g` using `fun g hg => by rw [← hφc]; exact (hφ _ (hgen g hg)).symm`. Take `⟨g1, hg1, hzg1⟩` from `hz0`. Establish `hc0 : c ≠ 0` using `by rintro rfl; apply hzg1; rw [hzy g1 hg1, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨g0, hg0, hyg0⟩` from `hy0`. Establish `horth : ∀ h ∈ N, y g0 0 * y h 1 - y g0 1 * y h 0 = 0`. Introduce `h hh`. Use `hcon h hh g0 hg0` as an intermediate fact. Rewrite `this` using `[hzy h hh, hzy g0 hg0]`.
+Treat this case separately. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Establish `h2 : (2 * c) * (y g0 0 * y h 1 - y g0 1 * y h 0) = 0` using `by linear_combination this`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Use the proof step `exfalso; exact hc0 (by simpa using h3)`. Conclude with `h3`.
-
-Establish `hall : ∀ σ ∈ Sig, y g0 0 * σ.1 1 - y g0 1 * σ.1 0 = 0`. Introduce `σ hσ`. Proceed by induction on `hσ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, hh, rfl⟩` from `hx`.
-
-Conclude with `horth h hh`. Consider the case `zero => simp`. Consider the case `add x x' _ _ ihx ihx'`. Simplify using `only [Prod.fst_add, Pi.add_apply]`. Take the linear combination `ihx + ihx'`.
-
-Consider the case `smul a x _ ihx`. Simplify using `only [Prod.smul_fst, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `a * ihx`. Take `⟨a, ha⟩` from `alt_left_nondeg hyg0`. Conclude with `ha (hall _ (hφmem a))`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_pair_ne [IsAlgClosed k] [CharZero k] {W : Γ →* GL (Fin 2) k} {H : Subgroup Γ}
     (hirr : UpperTheory.V.Af.IsIrr (W.comp H.subtype)) {N : Set Γ}
@@ -233,15 +227,15 @@ namespace GlobalTheory.Ord2
 open PairSpan in
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ e S A W hW y hyZ z hzZ hy0 hz0`. Establish `hy' : ∀ g h, y (g * h) = y g + (W g : Matrix (Fin 2) (Fin 2) (Qbar l)) *ᵥ y h` using `fun g h => by`. Rewrite using `[hyZ.2 g h]`. Both sides reduce to the same expression. Establish `hz' : ∀ g h, z (g * h) = z g + (dual1 W g : Matrix (Fin 2) (Fin 2) (Qbar l)) *ᵥ z h` using `fun g h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hzZ.2 g h]`. Both sides reduce to the same expression. Establish `hnorm : (N0g W).Normal` using `by unfold N0g; infer_instance`. Establish `hdual : ∀ s, cycBar ℚ Ω l s = 1 → dt W s = 1 → dual1 W s = W s`. Introduce `s h1 h2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[dual1, tw_val]`. Simplify using `[h1, h2]`. Establish `hN1 : ∀ g ∈ N0g W, W g = 1` using `fun g hg => (Subgroup.mem_inf.1 hg).2`. Establish `hNd : ∀ g ∈ N0g W, dual1 W g = 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `h1 : cycBar ℚ Ω l g = 1` using `(Subgroup.mem_inf.1 hg).1`. Establish `h2 : dt W g = 1` using `by show Matrix.GeneralLinearGroup.det (W g) = 1`. Rewrite using `[hN1 g hg, map_one]`. Rewrite using `[hdual g h1 h2, hN1 g hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hH : ∀ s ∈ H0g W, dual1 W s = W s` using `fun s hs => hdual s (Subgroup.mem_inf.1 hs).1 (Subgroup.mem_inf.1 hs).2`. Take `⟨g, hg, h, hh, hne⟩` from `exists_pair_ne (k := Qbar l) (W := W) (H := H0g W) (N := (N0g W : Set (G ℚ Ω))) hW.irr (fun s _ g hg => hnorm.conj_mem g hg s) (y := y) (z := z) (fun s _ g hg => coc_conj W y hy' s g (hN1 g hg)) (fun s hs g hg => by rw [coc_conj (dual1 W) z hz' s g (hNd g hg), hH s hs]) hy0 hz0`. Conclude with `⟨g, hg, h, hh, hne⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_om_ne_swap_on_N0g : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ)
     (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W → ∀ y ∈ Z1 (Loc.colRep W),

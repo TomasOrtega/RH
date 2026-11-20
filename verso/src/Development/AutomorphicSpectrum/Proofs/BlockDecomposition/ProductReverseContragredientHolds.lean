@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.ProdIota
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun _ => Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem typeTame_invTranspose (n : ℕ) (k : Type) [Field k] :
     GlobalTheory.TypeTame.invTranspose (R := k) n = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorLiftConclusion.invTranspose n k :=
@@ -24,11 +24,11 @@ section Reverse
 open GlobalTheory.TypeTame GlobalTheory.InvTransposeProd
 
 /- English proof (translation)
-Use `set π' : ∀ a, Representation ℂ (GL (Fin (d (Fin.rev a))) k) (X (Fin.rev a)) := fun a => (π (Fin.rev a)).comp (invTranspose (d (Fin.rev a))) with hπ'`. Establish `key : ∀ (q : parab k e) (hq : invTranspose n (q : GL (Fin n) k) ∈ parab k (revPlace e)), ((twist (revRep π') (deltaHalf k _)).comp (leviProj k (revPlace e))) ⟨invTranspose n q, hq⟩ = ((twist (piTensor π) (deltaHalf k _)).comp (leviProj k e)) q`. Introduce `q hq`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, twist_apply, twist_apply, deltaHalf_revPlace e q hq, hπ', revRep_leviProj e π q hq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨A⟩ : Nonempty ((parInd (revPlace e) (revRep π')).Equiv ((multiProd e π).comp (invTranspose n))) := by`. Use `Relabel.smInd_equiv_comp (P := parab k (revPlace e)) (Q := parab k e) (σ := (twist (revRep π') (deltaHalf k _)).comp (leviProj k (revPlace e))) (τ := (twist (piTensor π) (deltaHalf k _)).comp (leviProj k e)) (invTranspose n) (invTranspose n) (continuous_invTranspose n) (continuou …` and prove the remaining obligations. Establish `hp : invTranspose n (invTranspose n (p : GL (Fin n) k)) ∈ parab k (revPlace e)`. Rewrite using `[invTranspose_invTranspose]`. Conclude with `p.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, mem_parab_of_revPlace e p.2⟩, rfl, ?_⟩` and prove the remaining obligations. Use `(key ⟨_, mem_parab_of_revPlace e p.2⟩ hp).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg _ (Subtype.ext (invTranspose_invTranspose n (p : GL (Fin n) k)))`. Take `⟨B⟩` from `GlobalTheory.PlacingProd.multiProd_placing_equiv k h n (fun a => d (Fin.rev a)) (revPlace e) e' (fun a => X (Fin.rev a)) π'`. Conclude with `⟨A.symm.trans ((parIndEquiv (revPlace e) (revRepEquiv π')).trans B)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem multiProd_comp_rev (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (h n : ℕ) (d : Fin h → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n) (e' : (Σ a, Fin (d (Fin.rev a))) ≃ Fin n) (X : Fin h → Type)
@@ -68,7 +68,7 @@ end Reverse
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[typeTame_invTranspose]`. Conclude with `GlobalTheory.GelfandKazhdan.equiv_contra k _ _ _ (hA k _ _ _ y.2.rep.smooth y.2.rep.irr) y.2.rep.irr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_gk (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (y : IrrGL k) :
     Nonempty (Representation.Equiv (y.rep.comp (GlobalTheory.TypeTame.invTranspose y.1)) (contra y.rep)) := by
@@ -76,7 +76,7 @@ theorem step_gk (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (y : IrrGL
   exact GlobalTheory.GelfandKazhdan.equiv_contra k _ _ _ (hA k _ _ _ y.2.rep.smooth y.2.rep.irr) y.2.rep.irr
 
 /- English proof (translation)
-Take `⟨A⟩` from `multiProd_comp_rev k h N d (stdBlocks d hd) (stdBlocks (fun a => d (Fin.rev a)) hrev) X π`. Conclude with `⟨A.trans (multiProdEquiv _ fun a => (φ a).some)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem step_general {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hrev : ∑ a, d (Fin.rev a) = N)
     {X : Fin h → Type} [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)]
@@ -91,7 +91,7 @@ theorem step_general {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hrev
   exact ⟨A.trans (multiProdEquiv _ fun a => (φ a).some)⟩
 
 /- English proof (translation)
-The claim follows from `step_general (fun a => (x a).1) hd hrev (fun a => (x a).rep) (fun a => contra (x (Fin.rev a)).rep) fun a => step_gk hA (x (Fin.rev a))`.
+A detailed English derivation is pending.
 -/
 theorem step_contra (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N)
     (hrev : ∑ a, (x (Fin.rev a)).1 = N) :
@@ -101,7 +101,7 @@ theorem step_contra (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h N :
     (fun a => contra (x (Fin.rev a)).rep) fun a => step_gk hA (x (Fin.rev a))
 
 /- English proof (translation)
-The claim follows from `A.map fun A => A.trans (prodIrrEquiv hd σ hs hi)`.
+A detailed English derivation is pending.
 -/
 theorem step_class {N h : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ (GL (Fin N) k) V}
     (d : Fin h → ℕ) (hd : ∑ a, d a = N) {Y : Fin h → Type} [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)]
@@ -111,7 +111,7 @@ theorem step_class {N h : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : 
   A.map fun A => A.trans (prodIrrEquiv hd σ hs hi)
 
 /- English proof (translation)
-The claim follows from `step_class (fun a => (x (Fin.rev a)).1) hrev (fun a => contra (x (Fin.rev a)).rep) hs hi (step_contra hA x hd hrev)`.
+A detailed English derivation is pending.
 -/
 theorem contragredient_product_reversed (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N)
     (hrev : ∑ a, (x (Fin.rev a)).1 = N) (hs : ∀ a, IsSmooth (contra (x (Fin.rev a)).rep))
@@ -121,7 +121,7 @@ theorem contragredient_product_reversed (hA : GlobalTheory.Published.Irreducible
   step_class (fun a => (x (Fin.rev a)).1) hrev (fun a => contra (x (Fin.rev a)).rep) hs hi (step_contra hA x hd hrev)
 
 /- English proof (translation)
-Rewrite using `[← typeTame_invTranspose]`. Conclude with `A`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_invTranspose_congr {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ (GL (Fin N) k) V} {τ : Representation ℂ (GL (Fin N) k) W}
@@ -131,7 +131,7 @@ theorem comp_invTranspose_congr {N : ℕ} {V W : Type} [AddCommGroup V] [Module 
   exact A
 
 /- English proof (translation)
-Substitute `hzy` using the available equality. Conclude with `⟨hy, E⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_prodIrr_of_eq {h N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin N) k) V} (y z : Fin h → IrrGL k) (hzy : z = y) (hy : ∑ a, (y a).1 = N)
@@ -140,9 +140,9 @@ theorem exists_prodIrr_of_eq {h N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ
   exact ⟨hy, E⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA h N x hd`. Establish `hrev : ∑ a, (x (Fin.rev a)).1 = N`. Rewrite using `[← hd]`. Conclude with `Equiv.sum_comp Fin.revPerm fun a => (x a).1`. Establish `hi : ∀ a, (contra (x (Fin.rev a)).rep).IsIrreducible` using `fun a => GlobalTheory.CompanionTheory.ZcDual.isIrreducible_contra hA _ (x (Fin.rev a)).2.rep.smooth (x (Fin.rev a)).2.rep.irr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ a, IsSmooth (contra (x (Fin.rev a)).rep)` using `fun a => isSmooth_contra _`. Conclude with `exists_prodIrr_of_eq (fun a => IrrGL.of (contra (x (Fin.rev a)).rep) (hs a) (hi a)) (fun a => Zc.dualCl (x (Fin.rev a))) (funext fun a => GlobalTheory.CompanionTheory.ZcDual.dualCl_eq hA _) hrev (comp_invTranspose_congr (contragredient_product_reversed hA x hd hrev hs hi))`.
+A detailed English derivation is pending.
 -/
 theorem prodIotaRev : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.IrreducibleAdmissibleGL → GlobalTheory.BZSeg.ProdIotaRev k := by

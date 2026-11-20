@@ -153,7 +153,7 @@ variable {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing 
     (H : Formalism.MainNotions.S.Loc.HermSp M V)
 
 /- English proof (translation)
-Establish `h1 : H.h x (c • y) = M.L.cj (H.h (c • y) x)` using `H.h_herm (c • y) x`. Establish `h2 : H.h x y = M.L.cj (H.h y x)` using `H.h_herm y x`. Rewrite using `[h1, H.h_smul_left, map_mul, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem h_smul_right' (c : E) (x y : V) : H.h x (c • y) = M.L.cj c * H.h x y := by
   have h1 : H.h x (c • y) = M.L.cj (H.h (c • y) x) := H.h_herm (c • y) x
@@ -163,13 +163,13 @@ theorem h_smul_right' (c : E) (x y : V) : H.h x (c • y) = M.L.cj c * H.h x y :
 def hL (y : V) : V →+ E := AddMonoidHom.mk' (fun x => H.h x y) (fun x x' => H.h_add_left x x' y)
 
 /- English proof (translation)
-The claim follows from `map_sum (hL H y) x s`.
+A detailed English derivation is pending.
 -/
 theorem h_sum_left {ι : Type} (s : Finset ι) (x : ι → V) (y : V) :
     H.h (∑ i ∈ s, x i) y = ∑ i ∈ s, H.h (x i) y := map_sum (hL H y) x s
 
 /- English proof (translation)
-Rewrite using `[H.h_herm, h_sum_left, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← H.h_herm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem h_sum_right {ι : Type} (s : Finset ι) (x : V) (y : ι → V) :
     H.h x (∑ i ∈ s, y i) = ∑ i ∈ s, H.h x (y i) := by
@@ -178,7 +178,7 @@ theorem h_sum_right {ι : Type} (s : Finset ι) (x : V) (y : ι → V) :
   rw [← H.h_herm]
 
 /- English proof (translation)
-Simplify using `only [h_sum_left, h_sum_right, H.h_smul_left, h_smul_right', Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_comb {ι : Type} [Fintype ι] [DecidableEq ι] (v : ι → V) (A : Matrix ι ι E) (a b : ι) :
     H.h (∑ i, A i b • v i) (∑ k, A k a • v k) =
@@ -197,15 +197,15 @@ theorem gz_eq (D : Formalism.BasicNotions.D7) {T T' : D.host.E} (F : LFlag (VS D
     Gval F F' = GZ T T' (ZhatL F F') := rfl
 
 /- English proof (translation)
-Establish `hs : ∀ x y : (VS D).V, star ((VS D).hT x y) = (VS D).hT y x` using `fun x y => (VS D).herm.eq x y`. Establish `key : ∀ {S : ℕ} {U : D.host.E} (G : FlagG (VS D) D.R.rS U) (a b : Fin (D.R.rS + 1)), (VS D).hT (G.fvec a) (G.fvec b) = if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then -U else 0`. Introduce `S U G a b`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [FlagG.fvec, G.z_norm]`. Consider the case `cast j`. Simplify using `only [FlagG.fvec, Fin.snoc_last, Fin.snoc_castSucc]`. Rewrite using `[← hs, G.z_orth j]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `cast i`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [FlagG.fvec, G.z_orth]`. Consider the case `cast j => simp [FlagG.fvec, G.e_iso]`.
+Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using `only [Ga, Matrix.fromBlocks_apply₁₁, Matrix.of_apply, Sum.elim_inl, brS]`. Rewrite using `[key (S := 0) F a b]`. Both sides reduce to the same expression. Simplify using `only [Ga, Matrix.fromBlocks_apply₂₁, Matrix.conjTranspose_apply, Zhat, brS, Sum.elim_inl, Sum.elim_inr]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Conclude with `hs _ _`. Simplify using `only [Ga, Matrix.fromBlocks_apply₂₂, Matrix.of_apply, Sum.elim_inr, brS]`. Rewrite using `[key (S := 0) F' a b]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ga_gram (D : Formalism.BasicNotions.D7) {T T' : D.host.E} (F : FlagG (VS D) D.R.rS T) (F' : FlagG (VS D) D.R.rS T')
     (a b : Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) :
@@ -235,7 +235,7 @@ theorem ga_gram (D : Formalism.BasicNotions.D7) {T T' : D.host.E} (F : FlagG (VS
     rw [key (S := 0) F' a b]
 
 /- English proof (translation)
-Rewrite using `[(L.H p).h_smul_left, h_smul_right' (L.H p), L.bc_form]`. Simplify using `only [GaLoc, Matrix.of_apply]`. Rewrite using `[ga_gram]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gaLoc_gram (D : Formalism.BasicNotions.D7) {M : ∀ p : PlF D, Formalism.MainNotions.S.Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (L : LocSp D M) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) {T T' : D.host.E}
@@ -248,11 +248,11 @@ theorem gaLoc_gram (D : Formalism.BasicNotions.D7) {M : ∀ p : PlF D, Formalism
   ring
 
 /- English proof (translation)
-Introduce `x x' mm`. Establish `hG : GaLoc M δ p T T' (Zhat F F') = Matrix.of (fun a b => (L.H p).h (Sum.elim x x' b) (Sum.elim x x' a))`. Use extensionality with `a b`. Rewrite using `[gaLoc_gram D L]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hmm : ∀ b, mm b = ∑ i, (Matrix.fromBlocks 1 (-(algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹)) • (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep)) 0 (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹) • (1 : Matrix (Fin (D.R. …`. Introduce `b`. Break down `b with b | b` into its components or cases. Simplify using `[mm, Fintype.sum_sum_type, Matrix.one_apply]`. Simplify using `[mm, Fintype.sum_sum_type, Matrix.one_apply, sub_eq_neg_add, neg_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Rewrite using `[hmm, hmm, gram_comb, ← hG]`. Simplify using `only [GaPlus, hg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gaPlus_gram_G (D : Formalism.BasicNotions.D7) {M : ∀ p : PlF D, Formalism.MainNotions.S.Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (L : LocSp D M) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) {T T' : D.host.E}
@@ -282,9 +282,9 @@ theorem gaPlus_gram_G (D : Formalism.BasicNotions.D7) {M : ∀ p : PlF D, Formal
   simp only [GaPlus, hg]
 
 /- English proof (translation)
-Use extensionality with `a b`. Consider the cases of `hs : (M p).split with`. Consider the case `none`. Simplify using `only [GaPlus, hs, Formalism.MainNotions.S.Loc.HermSp.gram, Formalism.MainNotions.S.Loc.HermSp.MMfam, Matrix.of_apply]`. Rewrite using `[gaLoc_gram D L]`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rfl`. Consider the case `some g`. Rewrite using `[gaPlus_gram_G D L δ p F F' g hs]`. Simplify using `only [Formalism.MainNotions.S.Loc.HermSp.gram, Formalism.MainNotions.S.Loc.HermSp.MMfam, hs, Matrix.of_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gaPlus_eq_gram (D : Formalism.BasicNotions.D7) {M : ∀ p : PlF D, Formalism.MainNotions.S.Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (L : LocSp D M) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) {T T' : D.host.E}
@@ -305,7 +305,7 @@ theorem gaPlus_eq_gram (D : Formalism.BasicNotions.D7) {M : ∀ p : PlF D, Forma
     simp only [Formalism.MainNotions.S.Loc.HermSp.gram, Formalism.MainNotions.S.Loc.HermSp.MMfam, hs, Matrix.of_apply]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [ZhatLoc, Formalism.MainNotions.S.Loc.HermSp.Zhat, Matrix.of_apply]`. Rewrite using `[(L.H p).h_smul_left, h_smul_right' (L.H p), L.bc_form]`. Simplify using `only [Zhat]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zhatLoc_eq (D : Formalism.BasicNotions.D7) {M : ∀ p : PlF D, Formalism.MainNotions.S.Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (L : LocSp D M) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) {T T' : D.host.E}
@@ -319,9 +319,9 @@ theorem zhatLoc_eq (D : Formalism.BasicNotions.D7) {M : ∀ p : PlF D, Formalism
   ring
 
 /- English proof (translation)
-Establish `hE : ∀ Λ, EZ T' F0 Λ Z = ∅`. Introduce `Λ`. Use extensionality with `F'`. Simplify using `only [EZ, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨⟨_, _, hG⟩, _, _, _, hZ'⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `hG (by rw [gz_eq, hZ', hZ])`. Establish `hc : ∀ Λ, cntE T' F0 Λ Z = 0`. Introduce `Λ`. Simplify using `only [cntE, hE Λ, Set.mem_empty_iff_false, false_and, exists_false, Set.ofPred_false, Set.encard_empty]`. Simplify using `[Formalism.L2.SG.CntLocal.nu, hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nu_eq_zero_of_GZ (D : Formalism.BasicNotions.D7) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)) (Z : MatZ D) (hZ : GZ T T' Z = 0) :

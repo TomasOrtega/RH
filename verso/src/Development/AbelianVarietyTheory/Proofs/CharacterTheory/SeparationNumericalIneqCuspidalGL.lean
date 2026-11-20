@@ -6,7 +6,7 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base => norm_num`. Consider the case `succ k hk ih => rw [pow_succ]`. Use linear arithmetic over natural numbers and integers.
+Proceed by induction. Treat this case separately. Treat this case separately. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sepIneq_four_mul_add_five_le (k : ℕ) (hk : 5 ≤ k) : 4 * k + 5 ≤ 2 ^ k := by
   induction k, hk using Nat.le_induction with
@@ -14,11 +14,11 @@ theorem sepIneq_four_mul_add_five_le (k : ℕ) (hk : 5 ≤ k) : 4 * k + 5 ≤ 2 
   | succ k hk ih => rw [pow_succ]; omega
 
 /- English proof (translation)
-Establish `hinj : Set.InjOn (fun p => n / p) (n.primeFactors : Set ℕ)`. Introduce `a ha b hb hab`. Establish `ha'` using `Nat.mem_primeFactors.1 (Finset.mem_coe.1 ha)`. Establish `hb'` using `Nat.mem_primeFactors.1 (Finset.mem_coe.1 hb)`. Establish `h1` using `Nat.div_div_self ha'.2.1 ha'.2.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Nat.div_div_self hb'.2.1 hb'.2.2`. Simplify using `only at hab`. Rewrite using `[← h1, ← h2, hab]`. Combine the equalities or inequalities in the displayed calculation. Apply `Nat.geomSum_lt hq` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k hk`. Take `⟨p, hp, rfl⟩` from `Finset.mem_image.1 hk`. Establish `hp2` using `(Nat.prime_of_mem_primeFactors hp).two_le`. Conclude with `Nat.lt_succ_of_le (Nat.div_le_div_left hp2 (by norm_num))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sepIneq_sum_lt (q n : ℕ) (hq : 2 ≤ q) :
     ∑ p ∈ n.primeFactors, (q ^ (n / p) - 2) < q ^ (n / 2 + 1) := by
@@ -42,15 +42,15 @@ theorem sepIneq_sum_lt (q n : ℕ) (hq : 2 ≤ q) :
         exact Nat.lt_succ_of_le (Nat.div_le_div_left hp2 (by norm_num))
 
 /- English proof (translation)
-Establish `hS` using `sepIneq_sum_lt q n hq`. Use `set S := ∑ p ∈ n.primeFactors, (q ^ (n / p) - 2)`. Take `⟨k, hk⟩ : ∃ k, n = (n / 2 + 1) + k` from `⟨n - (n / 2 + 1), by omega⟩`. Establish `hk5 : 5 ≤ k` using `by omega`. Establish `h1 : 2 * n + 1 ≤ q ^ k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sepIneq_four_mul_add_five_le k hk5` as an intermediate fact. Establish `h2 : 2 ^ k ≤ q ^ k` using `Nat.pow_le_pow_left hq k`. Use linear arithmetic over natural numbers and integers. Establish `h2 : q ^ k ≤ q ^ (n / 2 + 1)` using `Nat.pow_le_pow_right (by omega) (by omega)`. Establish `h3 : q ^ n = q ^ (n / 2 + 1) * q ^ k` using `by rw [← pow_add, ← hk]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Use `set Q := q ^ (n / 2 + 1)`. Use `set R := q ^ k`. Establish `h4 : Q * (2 * n + 1) ≤ Q * R` using `Nat.mul_le_mul_left _ h1`. Take `⟨T, hT⟩ : ∃ T, Q * R = T + 1` from `⟨Q * R - 1, by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `: 0 < Q * R` using `Nat.mul_pos (by omega) (by omega)`. Use the proof step `omega⟩`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Rewrite `h4`, the goal using `[hT]`. Simplify using `only [Nat.add_sub_cancel]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : 2 * (m + 1) + 1 ≤ Q` using `le_trans h1 h2`. Establish `h6 : 2 * (m + 1) * (Q * (2 * (m + 1) + 1)) ≤ 2 * (m + 1) * (T + 1)` using `Nat.mul_le_mul_left _ h4`. Establish `h7 : 4 * (m + 1) ^ 2 * S ≤ 4 * (m + 1) ^ 2 * Q` using `Nat.mul_le_mul_left _ hS.le`. Establish `h8 : 2 * (m + 1) * (2 * (m + 1) + 1) ≤ 2 * (m + 1) * Q` using `Nat.mul_le_mul_left _ h5`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sepIneq_large (q n : ℕ) (hq : 2 ≤ q) (hn : 11 ≤ n) :
     (n - 1) ^ 2 + 4 * n ^ 2 * ∑ p ∈ n.primeFactors, (q ^ (n / p) - 2) < 2 * n * (q ^ n - 1) := by
@@ -81,7 +81,7 @@ theorem sepIneq_large (q n : ℕ) (hq : 2 ≤ q) (hn : 11 ≤ n) :
   nlinarith
 
 /- English proof (translation)
-Establish `: 2 ≤ (2 + t) ^ k` using `le_trans (by omega) (Nat.le_self_pow hk.ne' _)`. Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem sepIneq_sub (t k c : ℕ) (hc : c ≤ 2) (hk : 0 < k) : (((2 + t) ^ k - c : ℕ) : ℤ) = (2 + (t : ℤ)) ^ k - c := by
   have : 2 ≤ (2 + t) ^ k := le_trans (by omega) (Nat.le_self_pow hk.ne' _)
@@ -90,25 +90,25 @@ theorem sepIneq_sub (t k c : ℕ) (hc : c ≤ 2) (hk : 0 < k) : (((2 + t) ^ k - 
   rfl
 
 /- English proof (translation)
-Introduce `q n hq hn hex`. Break down `le_or_gt 11 n with h | h` into its components or cases. Conclude with `sepIneq_large q n hq h`. Take `⟨t, rfl⟩ : ∃ t, q = 2 + t` from `⟨q - 2, by omega⟩`. Establish `e1 : Nat.primeFactors 1 = ∅` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Nat.primeFactors 2 = {2}` using `by decide +kernel`. Establish `e3 : Nat.primeFactors 3 = {3}` using `by decide +kernel`. Establish `e4 : Nat.primeFactors 4 = {2}` using `by decide +kernel`. Establish `e5 : Nat.primeFactors 5 = {5}` using `by decide +kernel`. Establish `e6 : Nat.primeFactors 6 = {2, 3}` using `by decide +kernel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e7 : Nat.primeFactors 7 = {7}` using `by decide +kernel`. Establish `e8 : Nat.primeFactors 8 = {2}` using `by decide +kernel`. Establish `e9 : Nat.primeFactors 9 = {3}` using `by decide +kernel`. Establish `e10 : Nat.primeFactors 10 = {2, 5}` using `by decide +kernel`. Establish `ht : (0 : ℤ) ≤ t` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1` using `fun k hk => sepIneq_sub t k 1 (by omega) hk`. Establish `s2` using `fun k hk => sepIneq_sub t k 2 (by omega) hk`. Establish `ht1 : n = 4 ∨ n = 6 → (1 : ℤ) ≤ t` using `by omega`. Establish `p2 : (0:ℤ) ≤ t^2` using `by positivity`. Establish `p3 : (0:ℤ) ≤ t^3` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p4 : (0:ℤ) ≤ t^4` using `by positivity`. Establish `p5 : (0:ℤ) ≤ t^5` using `by positivity`. Establish `p6 : (0:ℤ) ≤ t^6` using `by positivity`. Establish `p7 : (0:ℤ) ≤ t^7` using `by positivity`. Establish `p8 : (0:ℤ) ≤ t^8` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p9 : (0:ℤ) ≤ t^9` using `by positivity`. Establish `p10 : (0:ℤ) ≤ t^10` using `by positivity`. Use `interval_cases n`. Rewrite using `[e1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[e2, Finset.sum_singleton]; zify; rw [s1 _ (by norm_num), s2 _ (by norm_num)]; norm_num`. Use polynomial arithmetic with `[sq_nonneg ((t:ℤ))]`. Rewrite using `[e3, Finset.sum_singleton]; zify; rw [s1 _ (by norm_num), s2 _ (by norm_num)]; norm_num`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e4, Finset.sum_singleton]; zify; rw [s1 _ (by norm_num), s2 _ (by norm_num)]; norm_num`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `ht1 (by norm_num)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e5, Finset.sum_singleton]; zify; rw [s1 _ (by norm_num), s2 _ (by norm_num)]; norm_num`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e6, Finset.sum_pair (by norm_num)]; zify; rw [s1 _ (by norm_num), s2 _ (by norm_num), s2 _ (by norm_num)]; norm_num`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `ht1 (by norm_num)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e7, Finset.sum_singleton]; zify; rw [s1 _ (by norm_num), s2 _ (by norm_num)]; norm_num`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e8, Finset.sum_singleton]; zify; rw [s1 _ (by norm_num), s2 _ (by norm_num)]; norm_num`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e9, Finset.sum_singleton]; zify; rw [s1 _ (by norm_num), s2 _ (by norm_num)]; norm_num`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e10, Finset.sum_pair (by norm_num)]; zify; rw [s1 _ (by norm_num), s2 _ (by norm_num), s2 _ (by norm_num)]; norm_num`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sep_numerical_ineq : ∀ q n : ℕ, 2 ≤ q → 0 < n → ¬ (q = 2 ∧ (n = 4 ∨ n = 6)) → (n - 1) ^ 2 + 4 * n ^ 2 * ∑ p ∈ n.primeFactors, (q ^ (n / p) - 2) < 2 * n * (q ^ n - 1) := by
   intro q n hq hn hex

@@ -10,11 +10,11 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Introduce `p _ K _ h G r`. Use `haveI : CharP K p := (CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).2 h`. Establish `hN : Module.finrank K (G.A r) = p ^ (r * G.height)`. Use `G.rank_eq r (IsLocalRing.closedPoint K)` as an intermediate fact. Rewrite `this` using `[Module.rankAtStalk_eq_finrank_of_free]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hdim` using `(GlobalTheory.T.finrank_rigidExtensions_eq_height_and_dim_add_dual p K h G).2.2.2`. Establish `hord` using `GlobalTheory.T.finrank_le_frobeniusKernel_mul_span_primePowers p K (G.A r) r`. Establish `hspan` using `GlobalTheory.T.finrank_span_pow_pDivGroup_level_le p K h G r`. Establish `hpos : 0 < (p ^ r) ^ Module.finrank K G.dual.omega` using `pow_pos (pow_pos (Fact.out : p.Prime).pos _) _`. Establish `key : (p ^ r) ^ Module.finrank K G.omega * (p ^ r) ^ Module.finrank K G.dual.omega ≤ Module.finrank K (G.A r ⧸ frobKerIdeal (p ^ r) K (G.A r)) * (p ^ r) ^ Module.finrank K G.dual.omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_add, hdim, ← pow_mul, ← hN]`. Conclude with `hord.trans (Nat.mul_le_mul_left _ hspan)`. Conclude with `Nat.le_of_mul_le_mul_right key hpos`.
+A detailed English derivation is pending.
 -/
 theorem pow_finrank_omega_le_finrank_frobKer : ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (h : (p : K) = 0)
     (G : PDivGroup p K), ∀ r : ℕ,

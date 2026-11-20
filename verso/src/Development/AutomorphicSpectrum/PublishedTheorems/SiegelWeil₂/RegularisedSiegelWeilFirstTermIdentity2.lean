@@ -94,7 +94,7 @@ def relatDec' (d : HypDec T T' t) (l' : Lvl T') (hl : l'.Good) : HypDec T (relat
   ⟨d.e, d.e', d.i₀, d.ee, d.e'e', d.e'e, d.iso, d.i₀e, d.i₀e', d.rank_add⟩
 
 /- English proof (translation)
-Take `⟨l, hl, hc⟩` from `GlobalTheory.RegSch.exists_good_compat D T T' t d _ (Lvl.good_frameLat T' hb)`. Use `⟨l, hl, hl.2.2, hb, ?_, hasIw_of_good _ ⟨_, l.c⟩ (Lvl.good_frameLat (relat T l hl) hl.2.2)⟩` and prove the remaining obligations. Rewrite using `[frameLat_relat]`. Conclude with `hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stdPos (d : HypDec T T' t) {b' : GL (Fin T'.rank) (AE D)} (hb : IsMaj T' b') :
     ∃ (l : Lvl T) (hl : l.Good), StdPos (relatDec d l hl) l.c b' := by
@@ -104,7 +104,7 @@ theorem exists_stdPos (d : HypDec T T' t) {b' : GL (Fin T'.rank) (AE D)} (hb : I
   exact hc
 
 /- English proof (translation)
-Take `⟨b', hb⟩` from `exists_isMaj (diagSp D 1 ![false] 1 0)`. Take `⟨l, hl, h⟩` from `exists_stdPos (hypDecThree D) hb`. Conclude with `⟨diagSp D 2 ![false, false] 2 0, _, _, 1, _, _, _, rfl, (by decide : 1 < 3), Nat.one_pos, h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (D : D7) : ∃ (V T T' : HSp D) (t : ℕ) (d : HypDec T T' t) (b : GL (Fin T.rank) (AE D)) (b' : GL (Fin T'.rank) (AE D)),
     T.rank + T'.rank = 2 * V.rank ∧ T'.rank < T.rank ∧ 0 < T'.rank ∧ StdPos d b b' := by

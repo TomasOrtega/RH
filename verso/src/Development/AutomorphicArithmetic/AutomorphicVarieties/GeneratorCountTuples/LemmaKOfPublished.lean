@@ -8,7 +8,7 @@ open Formalism.GaloisCohomology
 namespace UpperTheory.V.K
 
 /- English proof (translation)
-The claim follows from `lemmaK_of hP hF hT hK UpperTheory.V.KT.torsMain`.
+A detailed English derivation is pending.
 -/
 theorem lemmaK (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK) (hT : LocalTateDualityK) (hK : KBridge) :
     ∃ CK : ℝ, 0 < CK ∧ LemmaK CK :=

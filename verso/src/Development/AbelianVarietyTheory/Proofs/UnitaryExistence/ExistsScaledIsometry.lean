@@ -20,17 +20,15 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory.SelfDualIsom
 
 /- English proof (translation)
-Establish `h1 : ∀ v : V, ∃ n : ℕ, 0 < n ∧ (n : 𝓞 E) • v ∈ LinearMap.range φ₂`. Introduce `v`. Establish `hv : v ∈ Submodule.span E (Set.range φ₂)` using `by rw [hspan]; trivial`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (𝓞 E)⁰ E _ v hv`. Rewrite `ht` using `[← LinearMap.coe_range, Submodule.span_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht0 : (t : 𝓞 E) ≠ 0` using `nonZeroDivisors.ne_zero t.2`. Establish `hm` using `Ideal.absNorm_mem (Ideal.span {(t : 𝓞 E)})`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hm`. Use `⟨Ideal.absNorm (Ideal.span {(t : 𝓞 E)}), Nat.pos_of_ne_zero ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht0`. Rewrite using `[← hc, mul_smul]`. Conclude with `Submodule.smul_mem _ _ ht`. Use `choose n hn hmem using h1`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := 𝓞 E) (M := M₁)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Use `⟨∏ x ∈ s, n (φ₁ x), Finset.prod_pos fun x _ => hn _, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span (𝓞 E) (s : Set M₁)` using `by rw [hs]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem (fun x => n (φ₁ x)) (Finset.mem_coe.1 hy)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hk, Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hmem _)`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, smul_add]`. Conclude with `Submodule.add_mem _ ha hb`.
-
-Consider the case `smul c a _ ha => rw [map_smul, smul_comm]`. Conclude with `Submodule.smul_mem _ _ ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_nat_smul_mem {E : Type} [Field E] [NumberField E] {M₁ M₂ V : Type}
     [AddCommGroup M₁] [Module (𝓞 E) M₁] [Module.Finite (𝓞 E) M₁]
@@ -66,17 +64,17 @@ theorem exists_nat_smul_mem {E : Type} [Field E] [NumberField E] {M₁ M₂ V : 
   | smul c a _ ha => rw [map_smul, smul_comm]; exact Submodule.smul_mem _ _ ha
 
 /- English proof (translation)
-Introduce `hH E _ _ _ H D₁ D₂ hp hq`. Establish `hL` using `GlobalTheory.LocalQuad.landherrSt_of_hasseNormSt hH`. Establish `hξ` using `GlobalTheory.OneSpace.cc_rt H`. Take `⟨Gm, φ₂, hM₂⟩` from `GlobalTheory.exists_herm_coord_of_datum E H D₂ (H.rt : E) hξ (GlobalTheory.OneSpace.rt_ne H) _ rfl`. Take `⟨φ₁, hinj₁, -, -, -, hEF₁⟩` from `GlobalTheory.model_in_same_space hL hH E H D₂ D₁ _ (H.rt : E) Gm φ₂ hp hq hξ hM₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hinj₂, hspan₂, -, -, hEF₂⟩` from `hM₂`. Use `D₁.fin` as an intermediate fact. Take `⟨N, hN, hmem⟩` from `exists_nat_smul_mem φ₁ φ₂ hspan₂`. Set `g : D₁.La →ₗ[𝓞 E] LinearMap.range φ₂` to `((N : 𝓞 E) • φ₁).codRestrict _ hmem`. Set `f : D₁.La →ₗ[𝓞 E] D₂.La` to `(LinearEquiv.ofInjective φ₂ hinj₂).symm.toLinearMap ∘ₗ g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hf : ∀ x, φ₂ (f x) = (N : E) • φ₁ x`. Introduce `x`. Establish `h1 : φ₂ (f x) = (N : 𝓞 E) • φ₁ x` using `LinearEquiv.ofInjective_symm_apply φ₂ (h := hinj₂) (g x)`. Rewrite using `[h1, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Establish `hN0 : (N : E) ≠ 0` using `by exact_mod_cast hN.ne'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨N, f, hN, fun x y hxy => hinj₁ ?_, fun x y => ?_⟩` and prove the remaining obligations. Use `congrArg φ₂ hxy` as an intermediate fact. Rewrite `this` using `[hf, hf]`. Conclude with `smul_right_injective _ hN0 this`. Establish `h2` using `hEF₂ (f x) (f y)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hf, hf, GlobalTheory.HermModel.herm_smul_left, GlobalTheory.HermModel.herm_smul_right]`. Establish `hc : FD.cc (N : E) = N` using `by simp [FD.cc]`. Establish `h3 : (H.rt : E) * ((N : E) * (FD.herm Gm (φ₁ x) (φ₁ y) * FD.cc (N : E))) = ((N : ℚ) ^ 2) • ((H.rt : E) * FD.herm Gm (φ₁ x) (φ₁ y))`. Rewrite using `[hc, Algebra.smul_def]`. Simplify using `only [map_pow, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3, map_smul, ← hEF₁, smul_eq_mul]`. Conclude with `h2` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scaled_isometry : GlobalTheory.Published.HasseNormSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D₁ D₂ : Datum H), D₁.p = D₂.p → D₁.q = D₂.q → ∃ (N : ℕ) (f : D₁.La →ₗ[𝓞 E] D₂.La), 0 < N ∧ Function.Injective f ∧ ∀ x y, D₂.EF (f x) (f y) = (N : ℤ) ^ 2 * D₁.EF x y := by
   intro hH E _ _ _ H D₁ D₂ hp hq

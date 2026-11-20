@@ -10,9 +10,9 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `h`. Use `⟨InfinitePlace.mk σ, fun a => ?_⟩` and prove the remaining obligations. Break down `InfinitePlace.embedding_mk_eq σ with e | e` into its components or cases. Rewrite using `[e]`. Conclude with `hσ a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[hσ a]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isConjAt_of_embedding (K : Type) [Field K] [NumberField K] [StarRing K]
     (h : ∃ σ : K →+* ℂ, ∀ x : K, σ (star x) = starRingEnd ℂ (σ x)) :
@@ -26,7 +26,7 @@ theorem exists_isConjAt_of_embedding (K : Type) [Field K] [NumberField K] [StarR
     rw [hσ a]
 
 /- English proof (translation)
-Introduce `K _ _ _ h` and use `exists_isConjAt_of_embedding K h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isConjAt_exists_main : ∀ (K : Type) [Field K] [NumberField K] [StarRing K],
     (∃ σ : K →+* ℂ, ∀ x : K, σ (star x) = starRingEnd ℂ (σ x)) →

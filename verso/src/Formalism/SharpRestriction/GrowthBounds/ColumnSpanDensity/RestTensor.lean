@@ -8,7 +8,7 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.MainNotions.G.LatticeSystems
 
 /- English proof (translation)
-Introduce `p n' R m e he s`. Take `⟨gs, hgs, -, h2, -⟩` from `edgeLat_RS R e he`. Use `⟨_, ?_, h2 s⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Conclude with `(hgs s).mul (lb_D_det (m + 1) 1 _ (RS.w_ne R))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restLeLat : RestLeLat := by
   intro p n' R m e he s
@@ -18,7 +18,7 @@ theorem restLeLat : RestLeLat := by
   exact (hgs s).mul (lb_D_det (m + 1) 1 _ (RS.w_ne R))
 
 /- English proof (translation)
-The claim follows from `restTensor_of restLeLat`.
+A detailed English derivation is pending.
 -/
 theorem restTensor : RestTensor := restTensor_of restLeLat
 

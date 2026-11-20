@@ -15,7 +15,7 @@ def entryL (a : Fin m) (i : Fin n) : (Fin m → Fin n → ℂ) →L[ℝ] ℂ :=
     (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => Fin n → ℂ) a)
 
 /- English proof (translation)
-Take `⟨a, i, b⟩` from `k`. Consider the cases of `b`. Conclude with `(entryL a i).hasTemperateGrowth`. Conclude with `((Complex.conjCLE : ℂ →L[ℝ] ℂ).comp (entryL a i)).hasTemperateGrowth`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem coord_temperate (k : Fin m × Fin n × Bool) :
     Function.HasTemperateGrowth (coord k) := by
@@ -25,13 +25,13 @@ theorem coord_temperate (k : Fin m × Fin n × Bool) :
   · exact ((Complex.conjCLE : ℂ →L[ℝ] ℂ).comp (entryL a i)).hasTemperateGrowth
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `: (fun u : Fin m → Fin n → ℂ => MvPolynomial.eval (fun k => coord k u) (MvPolynomial.C a)) = fun _ => a`. Use function extensionality and compare the values at `u`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `Function.HasTemperateGrowth.const a`. Consider the case `add p q hp hq`. Establish `: (fun u : Fin m → Fin n → ℂ => MvPolynomial.eval (fun k => coord k u) (p + q)) = fun u => MvPolynomial.eval (fun k => coord k u) p + MvPolynomial.eval (fun k => coord k u) q`. Use function extensionality and compare the values at `u`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hp.add hq`. Consider the case `mul_X p k hp`. Establish `: (fun u : Fin m → Fin n → ℂ => MvPolynomial.eval (fun k => coord k u) (p * MvPolynomial.X k)) = fun u => MvPolynomial.eval (fun k => coord k u) p * coord k u`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `u`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hp.mul (coord_temperate k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_temperate (P : MvPolynomial (Fin m × Fin n × Bool) ℂ) :
     Function.HasTemperateGrowth (fun u => MvPolynomial.eval (fun k => coord k u) P) := by
@@ -61,7 +61,7 @@ def toEuclid (m n : ℕ) : (Fin m → Fin n → ℂ) ≃L[ℝ] PiLp 2 (fun _ : F
       (LinearEquiv.smulOfNeZero ℝ _ (√2) (by positivity)))
 
 /- English proof (translation)
-Establish `h : toEuclid m n u = (√2 : ℝ) • (WithLp.toLp 2 (fun p : Fin m × Fin n => u p.1 p.2) : PiLp 2 (fun _ : Fin m × Fin n => ℂ))` using `rfl`. Rewrite using `[h, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, Real.sq_sqrt (by positivity), PiLp.norm_sq_eq_of_L2, Fintype.sum_prod_type]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_toEuclid_sq (u : Fin m → Fin n → ℂ) :
     ‖toEuclid m n u‖ ^ 2 = 2 * ∑ a, ∑ i, ‖u a i‖ ^ 2 := by
@@ -71,7 +71,7 @@ theorem norm_toEuclid_sq (u : Fin m → Fin n → ℂ) :
     PiLp.norm_sq_eq_of_L2, Fintype.sum_prod_type]
 
 /- English proof (translation)
-Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (toEuclid m n) (GroundTheory.Global.gaussianSchwartz (PiLp 2 (fun _ : Fin m × Fin n => ℂ))), fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, GroundTheory.Global.gaussianSchwartz_apply, norm_toEuclid_sq, Complex.ofReal_exp]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_gauss : ∃ g : SchwartzMap (Fin m → Fin n → ℂ) ℂ, ∀ u,
     g u = Complex.exp (-(2 * Real.pi * ∑ a, ∑ i, ‖u a i‖ ^ 2 : ℝ)) := by
@@ -84,7 +84,7 @@ theorem exists_gauss : ∃ g : SchwartzMap (Fin m → Fin n → ℂ) ℂ, ∀ u,
   ring
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_gauss (m := m) (n := n)`. Use `⟨SchwartzMap.smulLeftCLM ℂ (fun u => MvPolynomial.eval (fun k => coord k u) P) g, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (eval_temperate P), hg, smul_eq_mul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_schwartz_poly_mul_gauss (m n : ℕ) (P : MvPolynomial (Fin m × Fin n × Bool) ℂ) :
     ∃ φ : SchwartzMap (Fin m → Fin n → ℂ) ℂ,
@@ -97,7 +97,7 @@ theorem exists_schwartz_poly_mul_gauss (m n : ℕ) (P : MvPolynomial (Fin m × F
   rfl
 
 /- English proof (translation)
-The claim follows from `exists_schwartz_poly_mul_gauss`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (m n : ℕ) (P : MvPolynomial (Fin m × Fin n × Bool) ℂ), ∃ φ : SchwartzMap (Fin m → Fin n → ℂ) ℂ,
     ⇑φ = fun u => MvPolynomial.eval (fun k => if k.2.2 then star (u k.1 k.2.1) else u k.1 k.2.1) P *

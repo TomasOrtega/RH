@@ -23,7 +23,7 @@ def embO : 𝓞 E →+ (Ψ → ℂ) where
 def phi1 : ℝ ⊗[ℤ] 𝓞 E →ₗ[ℝ] (Ψ → ℂ) := LinearMap.liftBaseChange ℝ (embO Ψ).toIntLinearMap
 
 /- English proof (translation)
-Use extensionality with `τ`. Simplify using `[phi1, LinearMap.liftBaseChange_tmul, embO, Complex.real_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem phi1_tmul (x : ℝ) (e : 𝓞 E) :
     phi1 Ψ (x ⊗ₜ e) = fun τ : Ψ => (x : ℂ) * (τ : E →+* ℂ) (e : E) := by
@@ -33,7 +33,7 @@ theorem phi1_tmul (x : ℝ) (e : 𝓞 E) :
 variable {Ψ}
 
 /- English proof (translation)
-Rewrite using `[hΨ]`. Simplify using `[ComplexEmbedding.conjugate]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_mem_iff (hΨ : ∀ σ : E →+* ℂ, σ ∈ Ψ ↔ ComplexEmbedding.conjugate σ ∉ Ψ)
     (σ : E →+* ℂ) : ComplexEmbedding.conjugate σ ∈ Ψ ↔ σ ∉ Ψ := by
@@ -41,7 +41,7 @@ theorem conj_mem_iff (hΨ : ∀ σ : E →+* ℂ, σ ∈ Ψ ↔ ComplexEmbedding
   simp [ComplexEmbedding.conjugate]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_third_variant.goal1 .. | (apply Bl.general_b_fact_third_variant.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third_variant.goal1 <;> assumption) | (apply @Bl.general_b_fact_third_variant.goal1 <;> assumption) | (intros; apply @Bl.genera …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem li1 (hΨ : ∀ σ : E →+* ℂ, σ ∈ Ψ ↔ ComplexEmbedding.conjugate σ ∉ Ψ)
     (x : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → ℝ)
@@ -49,13 +49,13 @@ theorem li1 (hΨ : ∀ σ : E →+* ℂ, σ ∈ Ψ ↔ ComplexEmbedding.conjugat
   first | exact Bl.general_b_fact_third_variant.goal1 .. | (apply Bl.general_b_fact_third_variant.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third_variant.goal1 <;> assumption) | (apply @Bl.general_b_fact_third_variant.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_third_variant.goal1 <;> assumption) | (apply @Bl.general_b_fact_third_variant.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_third_variant.goal1 E ‹_› ‹_› Ψ hΨ x hx | exact @Bl.general_b_fact_third_variant.goal1 E ‹_› ‹_› Ψ hΨ x | exact @Bl.general_b_fact_third_variant.goal1 E ‹_› ‹_› Ψ hΨ | exact @Bl.general_b_fact_third_variant.goal1 E ‹_› ‹_› Ψ | exact @Bl.general_b_fact_third_variant.goal1 E ‹_› ‹_› | exact @Bl.general_b_fact_third_variant.goal1 E ‹_› | exact @Bl.general_b_fact_third_variant.goal1 E
 
 /- English proof (translation)
-Establish `h1 : Ψᶜ = Ψ.image ComplexEmbedding.conjugate`. Use extensionality with `σ`. Simplify using `only [Finset.mem_compl, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨ComplexEmbedding.conjugate σ, (conj_mem_iff hΨ σ).2 h, by simp [ComplexEmbedding.conjugate]⟩`. Introduce and unpack `⟨τ, hτ, rfl⟩`. Conclude with `(hΨ τ).1 hτ`. Establish `hinj : Function.Injective (ComplexEmbedding.conjugate : (E →+* ℂ) → (E →+* ℂ))`. Introduce `a c h`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `congrArg star h` using `[ComplexEmbedding.conjugate]`. Establish `h2 : (Ψ.image ComplexEmbedding.conjugate).card = Ψ.card` using `Finset.card_image_of_injective _ hinj`. Establish `h3` using `Finset.card_compl Ψ`. Establish `h4` using `Embeddings.card E ℂ`. Establish `h5` using `Finset.card_le_univ Ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[h1, h2]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem two_card (hΨ : ∀ σ : E →+* ℂ, σ ∈ Ψ ↔ ComplexEmbedding.conjugate σ ∉ Ψ) :
     2 * Ψ.card = Module.finrank ℚ E := by
@@ -79,13 +79,13 @@ theorem two_card (hΨ : ∀ σ : E →+* ℂ, σ ∈ Ψ ↔ ComplexEmbedding.con
   omega
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (phi1 Ψ)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `t ht`. Set `B` to `Algebra.TensorProduct.basis ℝ (RingOfIntegers.basis E)`. Establish `hx` using `li1 hΨ (fun k => B.repr t k) (fun τ hτ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `congrFun ht ⟨τ, hτ⟩`. Rewrite `h1` using `[← B.sum_repr t, map_sum]`. Simplify `h1)` using `[B, Algebra.TensorProduct.basis_apply, phi1_tmul, Finset.sum_apply, Complex.real_smul]`. Establish `: B.repr t = 0`. Use extensionality with `k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `congrFun hx k`. Simplify using `using B.repr.injective (this.trans (map_zero _).symm)`. Use `⟨hinj, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.injective_iff_surjective_of_finrank_eq_finrank]` and apply the resulting hypothesis. Rewrite using `[Module.finrank_baseChange, RingOfIntegers.rank, Module.finrank_pi_fintype]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, smul_eq_mul, Fintype.card_coe]`. Rewrite using `[← two_card hΨ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem phi1_bijective (hΨ : ∀ σ : E →+* ℂ, σ ∈ Ψ ↔ ComplexEmbedding.conjugate σ ∉ Ψ) :
     Function.Bijective (phi1 Ψ) := by
@@ -128,7 +128,7 @@ def theta : ℝ ⊗[ℤ] M →ₗ[ℝ] (Ψ → ι → ℂ) :=
   LinearMap.liftBaseChange ℝ (coordO b Ψ M).toIntLinearMap
 
 /- English proof (translation)
-Use extensionality with `τ i`. Simplify using `[theta, LinearMap.liftBaseChange_tmul, coordO, Complex.real_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem theta_tmul (x : ℝ) (v : M) :
     theta b Ψ M (x ⊗ₜ v) = fun (τ : Ψ) i => (x : ℂ) * (τ : E →+* ℂ) (b.repr v i) := by
@@ -144,7 +144,7 @@ def phiI : ℝ ⊗[ℤ] (ι → 𝓞 E) →ₗ[ℝ] (Ψ → ι → ℂ) :=
   LinearMap.liftBaseChange ℝ (embI (ι := ι) Ψ).toIntLinearMap
 
 /- English proof (translation)
-Use extensionality with `τ i`. Simplify using `[phiI, LinearMap.liftBaseChange_tmul, embI, Complex.real_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem phiI_tmul (x : ℝ) (n : ι → 𝓞 E) :
     phiI Ψ (x ⊗ₜ n) = fun (τ : Ψ) i => (x : ℂ) * (τ : E →+* ℂ) (n i : E) := by
@@ -152,7 +152,7 @@ theorem phiI_tmul (x : ℝ) (n : ι → 𝓞 E) :
   simp [phiI, LinearMap.liftBaseChange_tmul, embI, Complex.real_smul]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x n => simp [phiI_tmul, phi1_tmul, TensorProduct.piRightHom_tmul]`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem phiI_eq (t : ℝ ⊗[ℤ] (ι → 𝓞 E)) (τ : Ψ) (i : ι) :
     phiI Ψ t τ i = phi1 Ψ (TensorProduct.piRight ℤ ℝ ℝ (fun _ : ι => 𝓞 E) t i) τ := by
@@ -164,11 +164,11 @@ theorem phiI_eq (t : ℝ ⊗[ℤ] (ι → 𝓞 E)) (τ : Ψ) (i : ι) :
 variable {Ψ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `t t' h`. Apply `(TensorProduct.piRight ℤ ℝ ℝ (fun _ : ι => 𝓞 E)).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Apply `(phi1_bijective hΨ).1` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `τ`. Rewrite using `[← phiI_eq, ← phiI_eq, h]`. Introduce `u choose y hy using fun i => (phi1_bijective hΨ).2 (fun τ => u τ i)`. Use `⟨(TensorProduct.piRight ℤ ℝ ℝ (fun _ : ι => 𝓞 E)).symm y, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[phiI_eq, LinearEquiv.apply_symm_apply, hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiI_bijective (hΨ : ∀ σ : E →+* ℂ, σ ∈ Ψ ↔ ComplexEmbedding.conjugate σ ∉ Ψ) :
     Function.Bijective (phiI (ι := ι) Ψ) := by
@@ -186,7 +186,7 @@ theorem phiI_bijective (hΨ : ∀ σ : E →+* ℂ, σ ∈ Ψ ↔ ComplexEmbeddi
     rw [phiI_eq, LinearEquiv.apply_symm_apply, hy]
 
 /- English proof (translation)
-Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot]`. Conclude with `Submodule.isTorsionFree_iff_torsion_eq_bot.1 inferInstance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_real : Module.Flat ℤ ℝ := by
   rw [IsDedekindDomain.flat_iff_torsion_eq_bot]
@@ -195,7 +195,7 @@ theorem flat_real : Module.Flat ℤ ℝ := by
 variable {b M}
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.FirstBlockLemmaH.goal1 .. | (apply Bl.FirstBlockLemmaH.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaH.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaH.goal1 <;> assumption) | (intros; apply @Bl.FirstBlockLemmaH.goal1 <;> assumption) | (apply @Bl.Fi …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_den (hfg : Module.Finite (𝓞 E) M) :
     ∃ s ∈ (𝓞 E)⁰, ∀ v ∈ M, ∀ i,
@@ -209,7 +209,7 @@ def kapF (s : 𝓞 E) (hs : ∀ v ∈ M, ∀ i,
   (hs v v.2 i).choose
 
 /- English proof (translation)
-The claim follows from `(hs v v.2 i).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem kapF_spec (s : 𝓞 E) (hs) (v : M) (i : ι) :
     algebraMap (𝓞 E) E (kapF b M s hs v i) = algebraMap (𝓞 E) E s * b.repr v i :=
@@ -231,7 +231,7 @@ def kap (s : 𝓞 E) (hs : ∀ v ∈ M, ∀ i,
     simp [mul_add]
 
 /- English proof (translation)
-The claim follows from `kapF_spec b M s hs v i`.
+A detailed English derivation is pending.
 -/
 theorem kap_spec (s : 𝓞 E) (hs) (v : M) (i : ι) :
     algebraMap (𝓞 E) E (kap b M s hs v i) = algebraMap (𝓞 E) E s * b.repr v i :=
@@ -243,7 +243,7 @@ def iota1 (s' : 𝓞 E) (hs' : ∀ i, s' • b i ∈ M) : (ι → 𝓞 E) →+ M
   map_add' x y := by ext; simp [add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `e : ((iota1 b M s' hs' n : M) : V) = ∑ k, (algebraMap (𝓞 E) E (n k) * algebraMap (𝓞 E) E s') • b k`. Simplify using `only [iota1, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← map_mul, algebraMap_smul]`. Rewrite using `[e, b.repr_sum_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem iota1_repr (s' : 𝓞 E) (hs') (n : ι → 𝓞 E) (i : ι) :
     b.repr (iota1 b M s' hs' n) i = algebraMap (𝓞 E) E (n i) * algebraMap (𝓞 E) E s' := by
@@ -255,31 +255,31 @@ theorem iota1_repr (s' : 𝓞 E) (hs') (n : ι → 𝓞 E) (i : ι) :
   rw [e, b.repr_sum_self]
 
 /- English proof (translation)
-Establish `hne : ∀ s ∈ (𝓞 E)⁰, ∀ τ : Ψ, (τ : E →+* ℂ) (algebraMap (𝓞 E) E s) ≠ 0`. Introduce `s hs τ`. Rewrite using `[map_ne_zero]`. Conclude with `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hs`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsI⟩` from `exists_den (b := b) hfg`. Set `κ` to `(kap b M s hsI).toIntLinearMap`. Establish `hκ : Function.Injective κ`. Introduce `v w h`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Establish `h1` using `congrArg (fun n => algebraMap (𝓞 E) E (n i)) h`. Simplify using `only [κ, AddMonoidHom.coe_toIntLinearMap, kap_spec] at h1`. Conclude with `mul_left_cancel₀ (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hs) h1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκR : Function.Injective (LinearMap.baseChange ℝ κ)`. Use `flat_real` as an intermediate fact. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap κ hκ`. Establish `E2 : ∀ t τ i, phiI Ψ (LinearMap.baseChange ℝ κ t) τ i = (τ : E →+* ℂ) (algebraMap (𝓞 E) E s) * theta b Ψ M t τ i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => intro τ i`. Simplify using the standard rewrite rules. Consider the case `tmul x v`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ i`. Simplify using `only [LinearMap.baseChange_tmul, phiI_tmul, theta_tmul, κ, AddMonoidHom.coe_toIntLinearMap]`. Rewrite using `[show ((kap b M s hsI v i : 𝓞 E) : E) = algebraMap (𝓞 E) E (kap b M s hsI v i) from rfl, kap_spec, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy => intro τ i`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [map_add, Pi.add_apply, hx, hy, mul_add]`. Introduce `t t' h`. Apply `hκR` to reduce the goal to its premises. Apply `(phiI_bijective hΨ).1` to reduce the goal to its premises. Use function extensionality and compare the values at `τ i`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[E2, E2, h]`. Use `choose sf hsf hsfM using hsm`. Set `s' : 𝓞 E` to `∏ i, sf (b i)`. Establish `hs' : s' ∈ (𝓞 E)⁰` using `prod_mem fun i _ => hsf (b i)`. Establish `hs'M : ∀ i, s' • b i ∈ M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `i`. Establish `: s' = sf (b i) * ∏ k ∈ Finset.univ.erase i, sf (b k)` using `(Finset.mul_prod_erase _ _ (Finset.mem_univ i)).symm`. Rewrite using `[this, mul_comm, mul_smul]`. Conclude with `M.smul_mem _ (hsfM (b i))`. Set `ι₁` to `(iota1 b M s' hs'M).toIntLinearMap`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Establish `E1 : ∀ t τ i, theta b Ψ M (LinearMap.baseChange ℝ ι₁ t) τ i = (τ : E →+* ℂ) (algebraMap (𝓞 E) E s') * phiI Ψ t τ i`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => intro τ i`. Simplify using the standard rewrite rules.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul x n`. Introduce `τ i`. Simplify using `only [LinearMap.baseChange_tmul, phiI_tmul, theta_tmul, ι₁, AddMonoidHom.coe_toIntLinearMap]`. Rewrite using `[iota1_repr, map_mul]`. Rewrite using `[show ((n i : 𝓞 E) : E) = algebraMap (𝓞 E) E (n i) from rfl]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy => intro τ i`. Simplify using `only [map_add, Pi.add_apply, hx, hy, mul_add]`. Introduce `u`. Take `⟨t, ht⟩` from `(phiI_bijective (ι := ι) hΨ).2 (fun τ i => ((τ : E →+* ℂ) (algebraMap (𝓞 E) E s'))⁻¹ * u τ i)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨LinearMap.baseChange ℝ ι₁ t, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i`. Rewrite using `[E1, ht]`. Simplify using `only`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ (hne s' hs' τ), one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem theta_bijective (hΨ : ∀ σ : E →+* ℂ, σ ∈ Ψ ↔ ComplexEmbedding.conjugate σ ∉ Ψ)
     (hfg : Module.Finite (𝓞 E) M) (hsm : ∀ v : V, ∃ s ∈ (𝓞 E)⁰, s • v ∈ M) :

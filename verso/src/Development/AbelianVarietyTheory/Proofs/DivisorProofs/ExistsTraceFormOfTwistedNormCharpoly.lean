@@ -10,7 +10,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.TwTraceForm
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.antidiag_twisted_norm L (RingEquiv.refl L) (fun _ => rfl) a (GlobalTheory.Tw.Phi a L) (by ext i j simp only [GlobalTheory.Tw.Phi, Matrix.of_apply] have : ((i : ℕ) + (j : ℕ) + 1 = a) ↔ j = i.rev := by rw [Fin.ext_iff, Fin.val_rev]; omega simp only [this])).1`.
+A detailed English derivation is pending.
 -/
 theorem phi_transpose (a : ℕ) (L : Type) [Field L] :
     (GlobalTheory.Tw.Phi a L)ᵀ = (-1 : L) ^ (a - 1) • GlobalTheory.Tw.Phi a L :=
@@ -22,7 +22,7 @@ theorem phi_transpose (a : ℕ) (L : Type) [Field L] :
     simp only [this])).1
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [GlobalTheory.Tw.Phi, Matrix.map_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phi_map (a : ℕ) (L : Type) [Field L] (c : L →+* L) :
     (GlobalTheory.Tw.Phi a L).map c = GlobalTheory.Tw.Phi a L := by
@@ -31,14 +31,14 @@ theorem phi_map (a : ℕ) (L : Type) [Field L] (c : L →+* L) :
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.1 (GlobalTheory.CuspRep.Phi_mul_transpose a L)`.
+A detailed English derivation is pending.
 -/
 theorem phi_transpose_mul (a : ℕ) (L : Type) [Field L] :
     (GlobalTheory.Tw.Phi a L)ᵀ * GlobalTheory.Tw.Phi a L = 1 :=
   mul_eq_one_comm.1 (GlobalTheory.CuspRep.Phi_mul_transpose a L)
 
 /- English proof (translation)
-Establish `h : (δ.val * GlobalTheory.Tw.Phi a L)⁻¹ = (GlobalTheory.Tw.Phi a L)ᵀ * (δ⁻¹ : GL (Fin a) L).val`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (δ⁻¹ : GL (Fin a) L).val, Units.inv_mul, Matrix.one_mul, phi_transpose_mul]`. Rewrite using `[h, Matrix.transpose_mul, Matrix.transpose_transpose]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_eq (a : ℕ) (L : Type) [Field L] (δ : GL (Fin a) L) :
     ((δ.val * GlobalTheory.Tw.Phi a L)⁻¹)ᵀ = ((δ⁻¹ : GL (Fin a) L).val)ᵀ * GlobalTheory.Tw.Phi a L := by
@@ -49,7 +49,7 @@ theorem gram_eq (a : ℕ) (L : Type) [Field L] (δ : GL (Fin a) L) :
   rw [h, Matrix.transpose_mul, Matrix.transpose_transpose]
 
 /- English proof (translation)
-Rewrite using `[gram_eq, Matrix.transpose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (GlobalTheory.Tw.Phi a L), GlobalTheory.CuspRep.Phi_mul_transpose, Matrix.one_mul, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_mul_transpose (a : ℕ) (L : Type) [Field L] (δ : GL (Fin a) L) :
     ((δ.val * GlobalTheory.Tw.Phi a L)⁻¹)ᵀ * (δ.val * GlobalTheory.Tw.Phi a L)ᵀ = 1 := by
@@ -58,11 +58,9 @@ theorem gram_mul_transpose (a : ℕ) (L : Type) [Field L] (δ : GL (Fin a) L) :
     Matrix.transpose_one]
 
 /- English proof (translation)
-Establish `hθ : (thetaGL a c δ).val = GlobalTheory.Tw.Phi a L * (((δ⁻¹ : GL (Fin a) L).val).map c)ᵀ * (GlobalTheory.Tw.Phi a L)ᵀ` using `rfl`. Rewrite using `[gram_eq, Units.val_mul, hθ, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.map_mul, Matrix.transpose_map, phi_map]`. Use `set Φ := GlobalTheory.Tw.Phi a L`. Use `set Di := (δ⁻¹ : GL (Fin a) L).val`. Use `set X := (Di.map c)ᵀ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = X * Φᵀ := by`. Rewrite using `[Units.inv_mul, Matrix.mul_one, phi_transpose_mul, Matrix.one_mul]`. Use `_ = (-1 : L) ^ (a - 1) • (X * Φ) := by`.
-
-Rewrite using `[phi_transpose, Matrix.mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_norm (a : ℕ) (L : Type) [Field L] (c : L →+* L) (δ : GL (Fin a) L) :
     (((δ.val * GlobalTheory.Tw.Phi a L)⁻¹)ᵀ)ᵀ * (δ * thetaGL a c δ).val
@@ -83,9 +81,9 @@ theorem gram_norm (a : ℕ) (L : Type) [Field L] (c : L →+* L) (δ : GL (Fin a
         rw [phi_transpose, Matrix.mul_smul]
 
 /- English proof (translation)
-Establish `h1 : σ (v ⬝ᵥ S *ᵥ (fun j => σ (u j))) = (fun j => σ (v j)) ⬝ᵥ S.map σ *ᵥ u`. Rewrite using `[show σ (v ⬝ᵥ S *ᵥ (fun j => σ (u j))) = (σ : k →+* k) (v ⬝ᵥ S *ᵥ (fun j => σ (u j))) from rfl, RingHom.map_dotProduct]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, RingHom.map_mulVec]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[hσ]`. Rewrite using `[h1, h, Matrix.smul_mulVec, dotProduct_smul, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, smul_dotProduct, dotProduct_comm, smul_eq_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_asym {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] (σ : k ≃+* k)
     (hσ : ∀ x, σ (σ x) = x) (S N : Matrix n n k) (ε : k) (h : S.map σ = ε • (Sᵀ * N))
@@ -108,37 +106,31 @@ end GlobalTheory.TwTraceForm
 namespace GlobalTheory.TwTraceForm
 
 /- English proof (translation)
-Introduce `K B L _ e c hec hcc hg a Q hBP hQs hQd δ hδ`. Set `f : L →+* K.E` to `e.symm.toRingHom`. Establish `hf : ∀ x, f (c x) = K.c (f x)`. Introduce `x`. Apply `e.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show e (e.symm (c x)) = e (K.c (e.symm x))`. Rewrite using `[hec, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Use `set G := ((δ.val * GlobalTheory.Tw.Phi a L)⁻¹)ᵀ with hG`. Use `set N := (δ * thetaGL a c δ).val with hN`. Use `set S := G.map f with hS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set N' := N.map f with hN'`. Use `set ε : K.E := (-1) ^ (a - 1) with hε`. Establish `hεε : ε * ε = 1` using `by rw [hε, ← mul_pow]; simp`. Establish `hkey : Sᵀ * N' = ε • S.map K.c`. Establish `h0` using `congrArg f.mapMatrix (gram_norm a L c δ)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite `h0` using `[map_mul]`. Simplify using `only [RingHom.mapMatrix_apply] at h0`. Rewrite `h0` using `[Matrix.transpose_map]`. Express the relevant statement in the definitionally equal form `Sᵀ * N' = _ at h0`. Rewrite using `[h0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[f, hf, hε, Matrix.map_apply, Matrix.smul_apply]`. Conclude with `hf _`. Establish `hSc : S.map K.c = ε • (Sᵀ * N')` using `by rw [hkey, smul_smul, hεε, one_smul]`. Use `set Y := ((δ.val * GlobalTheory.Tw.Phi a L)ᵀ).map f with hY`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hSY : S * Y = 1`. Establish `h0` using `congrArg f.mapMatrix (gram_mul_transpose a L δ)`. Rewrite `h0` using `[map_mul, map_one]`. Conclude with `h0`. Establish `hsep : (LinearMap.mulLeft K.E B.g).charpoly.Separable` using `by show B.P.Separable`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hBP]`. Conclude with `hQs.map`. Establish `hchar : (LinearMap.mulLeft K.E B.g).charpoly = (Matrix.toLin' N').charpoly`. Rewrite using `[Matrix.charpoly_toLin', hN', Matrix.charpoly_map, hδ]`. Conclude with `hBP`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨ψ, hψ⟩` from `GlobalTheory.UnitLemma.PairClass.exists_intertwine K.E B.A (Fin a → K.E) (LinearMap.mulLeft K.E B.g) (Matrix.toLin' N') hsep hchar`. Establish `hψ' : ∀ y, ψ (B.g * y) = N' *ᵥ ψ y` using `fun y => by simpa using hψ y`. Establish `hc1 : ∀ j : Fin a, (fun k => K.c ((Pi.single j (1 : K.E) : Fin a → K.E) k)) = (Pi.single j 1 : Fin a → K.E)`. Introduce `j`. Use function extensionality and compare the values at `k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Set `s : B.A → B.A → K.E` to `fun y z => ψ y ⬝ᵥ S *ᵥ (fun j => K.c (ψ z j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hadd : ∀ x y z, s (x + y) z = s x z + s y z`. Introduce `x y z`. Simplify using `only [s, map_add, add_dotProduct]`. Establish `hlin : ∀ (r : K.E) x z, s (r • x) z = r * s x z`. Introduce `r x z`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [s, map_smul, smul_dotProduct, smul_eq_mul]`. Establish `hnd : ∀ y, (∀ z, s y z = 0) → y = 0`. Introduce `y hy`. Establish `hv : ψ y ᵥ* S = 0`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hy (ψ.symm (Pi.single j 1))`. Simplify using `only [s, LinearEquiv.apply_symm_apply] at h1`. Rewrite `h1` using `[hc1 j, Matrix.dotProduct_mulVec, dotProduct_single, mul_one]`. Conclude with `h1`. Establish `h2 : ψ y = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.vecMul_one (ψ y), ← hSY, ← Matrix.vecMul_vecMul, hv, Matrix.zero_vecMul]`. Conclude with `ψ.injective (by rw [h2, map_zero])`. Establish `hsym : ∀ y z, K.c (s z y) = s ((-1 : B.A) ^ (a - 1) * B.g * y) z`. Introduce `y z`. Establish `hψε : ψ ((-1 : B.A) ^ (a - 1) * B.g * y) = ε • N' *ᵥ ψ y`.
-
-Establish `h1 : (-1 : B.A) ^ (a - 1) = algebraMap K.E B.A ε` using `by simp [hε]`. Rewrite using `[h1, mul_assoc, ← Algebra.smul_def, map_smul, hψ']`. Simplify using `only [s]`. Rewrite using `[hψε]`. Conclude with `form_asym K.c K.c_c S N' ε hSc (ψ y) (ψ z)`.
-
-Take `⟨β, hβ, hs⟩` from `(GlobalTheory.SesqAsym.sesq_asym K B hg hsep ((-1) ^ (a - 1)) (neg_one_pow_eq_or B.A (a - 1))).2 s hadd hlin hnd hsym`. Use `⟨β, hβ, (Pi.basisFun K.E (Fin a)).map ψ.symm, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Module.Basis.map_apply, Pi.basisFun_apply]`. Rewrite using `[← hs]`.
-
-Simplify using `only [s, LinearEquiv.apply_symm_apply]`. Rewrite using `[hc1 j, Matrix.mulVec_single_one, single_dotProduct, one_mul, Matrix.col_apply, hS, Matrix.map_apply]`. Conclude with `(e.apply_symm_apply _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_trace_form : ∀ (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (L : Type) [Field L] (e : K.E ≃+* L) (c : L →+* L), (∀ x, e (K.c x) = c (e x)) → (∀ x, c (c x) = x) → B.g * B.σ B.g = 1 → ∀ (a : ℕ) (Q : L[X]), B.P = Q.map e.symm.toRingHom → Q.Separable → Q.natDegree = a → ∀ δ : GL (Fin a) L, (δ * thetaGL a c δ).val.charpoly = Q → ∃ β : B.Aˣ, B.σ (β : B.A) = β * ((-1) ^ (a - 1) * B.g) ∧ ∃ b : Module.Basis (Fin a) K.E B.A, ((δ.val * GlobalTheory.Tw.Phi a L)⁻¹)ᵀ = (Matrix.of fun i j => e (B.herm β (b i) (b j))) := by
   intro K B L _ e c hec hcc hg a Q hBP hQs hQd δ hδ

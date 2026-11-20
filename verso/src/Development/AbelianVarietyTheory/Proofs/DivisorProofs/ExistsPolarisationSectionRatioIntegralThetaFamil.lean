@@ -13,7 +13,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D C F₁`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.exists_map_thetaExpansion_all_traits R hR D C 0`. Use `⟨Φ F₁, fun W _ _ _ T => ?_⟩` and prove the remaining obligations. Take `⟨a, b, ha, hb, h⟩` from `hΦ W T`. Conclude with `⟨a, b, ha, hb, h F₁⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sec_exp_intFam_one : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (F₁ : IntFam (maximalIdeal R) D.toPre 1), ∃ θ₀ : SecK C.P.L.L C.α 1, ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W), ∃ a b : W, a ≠ 0 ∧ b ≠ 0 ∧ T.Exp a b θ₀ F₁ := by
   intro R _ _ _ hR D C F₁

@@ -1,6 +1,6 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockHarmonicSplitting.MinusPartOfMem
 
 /- English proof (translation)
-The claim follows from `PI.FHS.harmSplit`.
+A detailed English derivation is pending.
 -/
 theorem harmonicSplitting_holds : PI.FockDegreeTwoParts.HarmSplit := PI.FHS.harmSplit

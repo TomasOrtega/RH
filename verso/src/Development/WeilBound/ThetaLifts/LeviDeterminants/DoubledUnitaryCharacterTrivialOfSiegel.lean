@@ -25,7 +25,7 @@ def split (s : A ≃ₐ[F] R₁ × R₂) : A ⊗[F] E ≃ₐ[F] (R₁ ⊗[F] E) 
 variable {E}
 
 /- English proof (translation)
-Establish `h : (Algebra.TensorProduct.comm F (R₁ × R₂) E) (s a ⊗ₜ[F] e) = e ⊗ₜ[F] s a` using `rfl`. Establish `h0 : Algebra.TensorProduct.congr s (AlgEquiv.refl : E ≃ₐ[F] E) (a ⊗ₜ[F] e) = s a ⊗ₜ[F] e` using `rfl`. Simplify using `only [split, AlgEquiv.trans_apply, h0, h, Algebra.TensorProduct.prodRight_tmul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem split_tmul (s : A ≃ₐ[F] R₁ × R₂) (a : A) (e : E) :
     split E s (a ⊗ₜ[F] e) = ((s a).1 ⊗ₜ[F] e, (s a).2 ⊗ₜ[F] e) := by
@@ -35,9 +35,9 @@ theorem split_tmul (s : A ≃ₐ[F] R₁ × R₂) (a : A) (e : E) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Both sides reduce to the same expression. Consider the case `tmul a e`. Rewrite using `[Algebra.TensorProduct.map_tmul, split_tmul, split_tmul]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, hx, hy, map_add]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem split_conj (s : A ≃ₐ[F] R₁ × R₂) (σ : E →ₐ[F] E) (x : A ⊗[F] E) :
     split E s (Algebra.TensorProduct.map (AlgHom.id A A) σ x) =
@@ -59,7 +59,7 @@ section Piece
 variable {R S : Type} [CommRing R] [CommRing S] [Algebra R S] {c : S →ₐ[R] S} {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `h1 : f * (1 - f) = 0` using `by linear_combination -hf`. Establish `h2 : (1 - f) * f = 0` using `by linear_combination -hf`. Establish `h3 : (1 - f) * (1 - f) = 1 - f` using `by linear_combination hf`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, hf, h1, h2, h3, zero_smul, add_zero, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mix_mul {f : S} (hf : f * f = f) (A B C D : Matrix ι ι S) :
     (f • A + (1 - f) • B) * (f • C + (1 - f) • D) = f • (A * C) + (1 - f) • (B * D) := by
@@ -70,7 +70,7 @@ theorem mix_mul {f : S} (hf : f * f = f) (A B C D : Matrix ι ι S) :
     zero_smul, add_zero, zero_add]
 
 /- English proof (translation)
-Rewrite using `[← add_smul, add_sub_cancel, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mix_self (f : S) (A : Matrix ι ι S) : f • A + (1 - f) • A = A := by
   rw [← add_smul, add_sub_cancel, one_smul]
@@ -104,7 +104,7 @@ def toRS (S : Finset (HeightOneSpectrum (𝓞 F))) : AF F →ₐ[F] RS F S :=
   (AlgHom.fst F (Ainf F) (Af F)).prod (Pi.algHom F _ fun v : S => (evalV F v.1).comp (AlgHom.snd F (Ainf F) (Af F)))
 
 /- English proof (translation)
-Use `Prod.ext rfl (funext fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV F v.1 (ind S) = 1`. Rewrite using `[ev_ind, if_pos v.2]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toRS_eps (S : Finset (HeightOneSpectrum (𝓞 F))) : toRS S (eps S) = 1 := by
   refine Prod.ext rfl (funext fun v => ?_)
@@ -112,9 +112,9 @@ theorem toRS_eps (S : Finset (HeightOneSpectrum (𝓞 F))) : toRS S (eps S) = 1 
   rw [ev_ind, if_pos v.2]
 
 /- English proof (translation)
-Establish `h1 : a.1 = 0` using `congrArg Prod.fst h`. Use `Prod.ext ?_ (fin_ext fun u => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `1 * a.1 = 0`. Rewrite using `[h1, mul_zero]`. Express the relevant statement in the definitionally equal form `evalV F u (ind S * a.2) = evalV F u 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, ev_ind, map_zero]`. Use `split_ifs with hu`. Establish `h2 : evalV F u a.2 = 0` using `congrFun (congrArg Prod.snd h) ⟨u, hu⟩`. Rewrite using `[h2, mul_zero]`. Rewrite using `[zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_mul_of (S : Finset (HeightOneSpectrum (𝓞 F))) {a : AF F} (h : toRS S a = 0) : eps S * a = 0 := by
   have h1 : a.1 = 0 := congrArg Prod.fst h
@@ -129,11 +129,9 @@ theorem eps_mul_of (S : Finset (HeightOneSpectrum (𝓞 F))) {a : AF F} (h : toR
     · rw [zero_mul]
 
 /- English proof (translation)
-Introduce `r`. Set `y : Af F` to `⟨fun u => if h : u ∈ S then r.2 ⟨u, h⟩ else 0, by`. Use `Filter.eventually_cofinite.mpr (S.finite_toSet.subset fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hvS`. Apply `hv` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hvS' : v ∉ S` using `fun h => hvS (Finset.mem_coe.mpr h)`. Use `beta_reduce`. Rewrite using `[dif_neg hvS']`. Conclude with `zero_mem (v.adicCompletionIntegers F)⟩`. Use `⟨pairA F r.1 y, Prod.ext rfl (funext fun v => ?_)⟩` and prove the remaining obligations.
-
-Conclude with `dif_pos v.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem toRS_surj (S : Finset (HeightOneSpectrum (𝓞 F))) : Function.Surjective (toRS S) := by
   classical
@@ -171,7 +169,7 @@ def splitS (S : Finset (HeightOneSpectrum (𝓞 F))) : AF F ≃ₐ[F] RS F S × 
       ring⟩
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 theorem splitS_eps (S : Finset (HeightOneSpectrum (𝓞 F))) : (splitS S (eps S)).2 = 0 :=
   Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)
@@ -179,13 +177,13 @@ theorem splitS_eps (S : Finset (HeightOneSpectrum (𝓞 F))) : (splitS S (eps S)
 variable {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `GlobalTheory.CompanionTheory.Ar.RT.ArchRing.exists_moved hσ`. Establish `hi` using `GlobalTheory.CompanionTheory.Ar.RT.ArchRing.sigma_invol hσ`. Establish `hξ : x - σ x ≠ 0` using `sub_ne_zero.mpr (Ne.symm hx)`. Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; omega)`. Establish `: IsArtinianRing (Ainf F)` using `GlobalTheory.CompanionTheory.Ar.RT.ArchRing.isArtinian_inf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsArtinianRing (RS F S ⊗[F] E)` using `IsArtinianRing.of_finite (RS F S) _`. Use `GlobalTheory.T.hermitian_darboux_split_product F (AF F) (AE F E) (RS F S ⊗[F] E) ((AF F ⧸ Ideal.span {eps S}) ⊗[F] E) (cA σ) (Algebra.TensorProduct.map (AlgHom.id F _) σ) (Algebra.TensorProduct.map (AlgHom.id F _) σ).toRingHom (1 ⊗ₜ[F] (x - σ x)) (split E (splitS S)).toRingEquiv …` and prove the remaining obligations. Use `IsUnit.of_mul_eq_one ((1 : RS F S) ⊗ₜ[F] (x - σ x)⁻¹) ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_inv_cancel₀ hξ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, map_sub, hi, ← TensorProduct.tmul_neg, neg_sub]`. Both sides reduce to the same expression. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [hi]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Take `⟨y, hy⟩` from `hg i j`. Express the relevant statement in the definitionally equal form `(split E (splitS S) ((g.1.1 - 1 : Matrix _ _ (AE F E)) i j)).2 = 0`. Establish `e : algebraMap (AF F) (AE F E) (eps S) = eps S ⊗ₜ[F] (1 : E)` using `rfl`. Rewrite using `[hy, map_mul, Prod.snd_mul, e, split_tmul, splitS_eps, TensorProduct.zero_tmul, zero_mul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_piece (hσ : IsCMExt F E σ) {β : Type} [Fintype β] [DecidableEq β] (J : Matrix β β (AE F E)) (hJ : IsUnit J.det)
     (lam : UG (cA σ) (dbl J) →* ℂˣ)
@@ -218,9 +216,9 @@ theorem triv_piece (hσ : IsCMExt F E σ) {β : Type} [Fintype β] [DecidableEq 
     rw [hy, map_mul, Prod.snd_mul, e, split_tmul, splitS_eps, TensorProduct.zero_tmul, zero_mul]
 
 /- English proof (translation)
-Establish `: ContinuousAdd (AE F E)` using `IsModuleTopology.toContinuousAdd (AF F) _`. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Establish `h` using `(tendsto_eps_tens ((M - 1) i j)).add_const ((1 : Matrix ι ι (AE F E)) i j)`. Rewrite `h` using `[Matrix.sub_apply, sub_add_cancel]`. Use `h.congr fun S => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tendsto_mix' {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι (AE F E)) :
     Tendsto (fun S : Finset (HeightOneSpectrum (𝓞 F)) => algebraMap (AF F) (AE F E) (eps S) • M +
@@ -237,9 +235,9 @@ end PositivityTheory.ThKF0.Sg
 
 open PositivityTheory.ThKF0.Sg GlobalTheory.LocalGlobalChar in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ ι _ _ J₀ g`. Establish `he : ∀ S : Finset (HeightOneSpectrum (𝓞 F)), algebraMap (AF F) (AE F E) (eps S) * algebraMap (AF F) (AE F E) (eps S) = algebraMap (AF F) (AE F E) (eps S)` using `fun S => by rw [← map_mul, eps_mul_self]`. Use `⟨fun S => piece (he S) ((cA σ).commutes _) g, fun S => rfl, ?_⟩` and prove the remaining obligations. Use `(IsEmbedding.subtypeVal.tendsto_nhds_iff).2 ?_` and prove the remaining obligations. Use `(Units.isEmbedding_embedProduct.tendsto_nhds_iff).2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(tendsto_mix' g.1.1).prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp (tendsto_mix' (g.1⁻¹).1))`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.ThKF0.local_global_character_interpolation : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {ι : Type} [Fintype ι] [DecidableEq ι] (J₀ : Matrix ι ι (AE F E)) (g : UG (cA σ) J₀), ∃ q : Finset (HeightOneSpectrum (𝓞 F)) → UG (cA σ) J₀, (∀ S, ((q S).1.1 : Matrix ι ι (AE F E)) = algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S) • (g.1.1 : Matrix ι ι (AE F E)) + (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S)) • (1 : Matrix ι ι (AE F E))) ∧ Tendsto q atTop (𝓝 g) := by
   intro F E _ _ _ _ _ σ ι _ _ J₀ g
@@ -252,11 +250,11 @@ theorem PositivityTheory.ThKF0.local_global_character_interpolation : ∀ (F E :
 
 open PositivityTheory.ThKF0.Sg GlobalTheory.LocalGlobalChar in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n J ε _ hdet c hc hP`. Establish `hJ : IsUnit (incM F J).det`. Establish `h` using `(isUnit_iff_ne_zero.mpr hdet).map (inclR (F := F) (AF F))`. Rewrite `h` using `[RingHom.map_det]`. Then use the resulting hypothesis. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, hq, hlim⟩` from `PositivityTheory.ThKF0.local_global_character_interpolation F E σ (dbl (incM F J)) g`. Establish `h1 : ∀ S, c (q S) = 1` using `fun S => triv_piece hσ _ hJ c hP S (q S) fun i j => ⟨(g.1.1 - 1 : Matrix _ _ (AE F E)) i j, by`. Rewrite using `[hq S]`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Use the proof step `ring⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : Tendsto (fun S => c (q S)) atTop (𝓝 (c g))` using `(hc.tendsto g).comp hlim`. Simplify using `only [h1] at h2`. Conclude with `(tendsto_nhds_unique tendsto_const_nhds h2).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.ThKF0.parabolic_character_trivial_on_diagonal : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (ε : ℤˣ), (∀ i j, σ (J j i) = ((ε : ℤ) : E) * J i j) → J.det ≠ 0 → ∀ c : UG (cA σ) (dbl (incM F J)) →* ℂˣ, Continuous c → (∀ (p : UG (cA σ) (dbl (incM F J))) (t : GL (Fin n) (AE F E)), (p.1.1 : Matrix _ _ (AE F E)) * diagCols (Fin n) = diagCols (Fin n) * t.1 → c p = 1) → c = 1 := by
   intro F E _ _ _ _ _ σ hσ n J ε _ hdet c hc hP

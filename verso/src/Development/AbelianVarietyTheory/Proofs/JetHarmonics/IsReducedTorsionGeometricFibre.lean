@@ -12,19 +12,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.TorsionReduced
 
 /- English proof (translation)
-Establish `hs : Subsingleton (KaehlerDifferential F B)`. Assume the negation of the conclusion as `hne`. Establish `: Nontrivial (KaehlerDifferential F B)` using `not_subsingleton_iff_nontrivial.mp hne`. Take `⟨P, hP, -⟩` from `(eq_top_or_exists_le_coatom (⊥ : Submodule B (KaehlerDifferential F B))).resolve_left bot_ne_top`. Establish `hsimple : IsSimpleModule B (KaehlerDifferential F B ⧸ P)` using `isSimpleModule_iff_isCoatom.mpr hP`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp hsimple`. Use `letI : Field (B ⧸ m) := Ideal.Quotient.field m`. Establish `hb : Function.Bijective (algebraMap F (B ⧸ m))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`. Set `u : (B ⧸ m) ≃ₐ[F] F` to `(AlgEquiv.ofBijective (Algebra.ofId F (B ⧸ m)) hb).symm`. Set `l : KaehlerDifferential F B →ₗ[B] (B ⧸ m)` to `e.toLinearMap ∘ₗ P.mkQ`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `D : Derivation F B (B ⧸ m)` to `l.compDer (KaehlerDifferential.D F B)`. Apply the tactic sequence `let φ : B →ₐ[F] DualNumber F := { toFun := fun b => TrivSqZeroExt.inl (u (Ideal.Quotient.mk m b)) + TrivSqZeroExt.inr (u (D b)) map_one' := by ext <;> simp map_mul' := fun a b => by`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `[Algebra.smul_def, mul_comm, TrivSqZeroExt.algebraMap_eq_inl]`.
+Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `map_zero' := by ext <;> simp`. Apply the tactic sequence `map_add' := fun a b => by ext <;> simp`. Use the proof step `commutes' := fun r => by`. Use `ext`. Simplify `u.commutes r` using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `[TrivSqZeroExt.algebraMap_eq_inl] }`. Establish `hD : ∀ b, l (KaehlerDifferential.D F B b) = 0` using `fun b => by`. Use `h φ b` as an intermediate fact. Simplify `this` using `[φ, D]`. Establish `hl : l = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext_on (KaehlerDifferential.span_range_derivation F B) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `hD b`. Apply `hP.1` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x _`. Use `LinearMap.congr_fun hl x` as an intermediate fact. Simplify `this` using `[l]`. Establish `: Algebra.FormallyUnramified F B` using `⟨hs⟩`. Conclude with `Algebra.FormallyUnramified.isReduced_of_field F B`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_of_forall_dualNumber (F B : Type) [Field F] [IsAlgClosed F] [CommRing B]
     [Algebra F B] [Module.Finite F B]
@@ -74,7 +74,7 @@ theorem isReduced_of_forall_dualNumber (F B : Type) [Field F] [IsAlgClosed F] [C
 variable {O : Type} [CommRing O] {R : Type} [CommRing R] [Algebra O R]
 
 /- English proof (translation)
-Rewrite using `[TangentPow.scale, TangentPow.scale, TangentPow.ptMap_comp_ptMap, TangentPow.scale]`. Use `congr 1`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [_root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scale_comp_scale (a b : R) :
     TangentPow.scale O a ≫ TangentPow.scale O b = TangentPow.scale O (a * b) := by
@@ -84,11 +84,11 @@ theorem scale_comp_scale (a b : R) :
   ext <;> simp [_root_.mul_assoc]
 
 /- English proof (translation)
-Use `set c := ptMap (TrivSqZeroExt.inlAlgHom O R R) ≫ ptMap (TrivSqZeroExt.fstHom O R R) ≫ y with hc`. Establish `h0 : ptMap (TrivSqZeroExt.fstHom O R R) ≫ ptMap (TrivSqZeroExt.inlAlgHom O R R) = 𝟙 _`. Rewrite using `[TangentPow.ptMap_comp_ptMap, ← TangentPow.ptMap_id']`. Use `congr 1`. Establish `h1 : ptMap (TrivSqZeroExt.fstHom O R R) ≫ (y * c⁻¹) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_mul, GrpObj.comp_inv, hc, ← Category.assoc, h0, Category.id_comp, mul_inv_cancel]`. Establish `h2 : c ^ N = 1`. Rewrite using `[hc, ← MonObj.comp_pow, ← MonObj.comp_pow, hy, comp_one, comp_one]`. Establish `h3 : (y * c⁻¹) ^ N = 1`. Rewrite using `[mul_pow, inv_pow, hy, h2, inv_one, _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[TangentPow.pow_eq_scale_comp h1]`. Take `⟨a, ha⟩` from `hN.exists_left_inv`. Establish `h4` using `congrArg (TangentPow.scale O a ≫ ·) h3`. Simplify using `only [← Category.assoc, scale_comp_scale, ha, TangentPow.scale_one, Category.id_comp, comp_one] at h4`. Conclude with `mul_inv_eq_one.mp h4`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_const_of_pow_eq_one {G : Over (Spec (CommRingCat.of O))} [GrpObj G] [IsCommMonObj G]
     {N : ℕ} (hN : IsUnit (N : R)) (y : specO O (DualNumber R) ⟶ G) (hy : y ^ N = 1) :
@@ -115,19 +115,19 @@ end GlobalTheory.TorsionReduced
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O F _ _ _ _ G _ _ N hN hfin`. Establish `: IsAffine (torsion G N).left` using `isAffine_of_isAffineHom (torsion G N).hom`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective ((torsion G N).left.isoSpec.inv ≫ (torsion G N).hom)`. Use `letI : Algebra O Γ((torsion G N).left, ⊤) := ψ.hom.toAlgebra`. Set `e : specO O Γ((torsion G N).left, ⊤) ≅ torsion G N` to `Over.isoMk (torsion G N).left.isoSpec.symm hψ.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `h1 : IsFinite (Spec.map ψ)` using `by rw [hψ]; infer_instance`. Establish `: Module.Finite O Γ((torsion G N).left, ⊤)` using `(IsFinite.SpecMap_iff ψ).mp h1`. Establish `hred : _root_.IsReduced (TensorProduct O F Γ((torsion G N).left, ⊤))`. Use `TorsionReduced.isReduced_of_forall_dualNumber F _ fun φ b => ?_` and prove the remaining obligations. Set `χ : Γ((torsion G N).left, ⊤) →ₐ[O] DualNumber F` to `(φ.restrictScalars O).comp Algebra.TensorProduct.includeRight`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hy : ((ptMap χ ≫ e.hom) ≫ torsion.ι G N) ^ N = 1`. Rewrite using `[← MonObj.comp_pow, KernelNoTorsion.torsionι_pow, comp_one]`. Establish `h2` using `TorsionReduced.eq_const_of_pow_eq_one hN.isUnit _ hy`. Simplify using `only [← Category.assoc] at h2`. Establish `h3` using `(cancel_mono e.hom).mp (KernelNoTorsion.torsion_hom_ext h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h3` using `[TangentPow.ptMap_comp_ptMap, TangentPow.ptMap_comp_ptMap]`. Establish `h4` using `Spec.map_injective (congrArg Over.Hom.left h3)`. Establish `h5 : ∀ a, (χ a).snd = 0` using `fun a => by`. Use `congrArg TrivSqZeroExt.snd (congrArg (fun f => f.hom a) h4)` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Proceed by induction on `b with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [hx, hy]`. Consider the case `tmul f a`. Establish `: f ⊗ₜ[O] a = f • ((1 : F) ⊗ₜ[O] a)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[this, map_smul, TrivSqZeroExt.snd_smul]`. Conclude with `smul_eq_zero_of_right f (h5 a)`. Establish `h4 : IsReduced (Spec (CommRingCat.of (TensorProduct O F Γ((torsion G N).left, ⊤))))` using `(affine_isReduced_iff _).mpr hred`. Establish `h3 : IsReduced (specO O F ⊗ specO O Γ((torsion G N).left, ⊤)).left` using `@isReduced_of_isOpenImmersion _ _ (pullbackSpecIso O F Γ((torsion G N).left, ⊤)).hom _ h4`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : IsIso (specO O F ◁ e.inv).left` using `inferInstanceAs (IsIso ((Over.forget _).map (specO O F ◁ e.inv)))`. Conclude with `isReduced_of_isOpenImmersion (specO O F ◁ e.inv).left`.
+A detailed English derivation is pending.
 -/
 theorem isReduced_torsion_geometric_fibre :
     ∀ (O F : Type) [CommRing O] [Field F] [IsAlgClosed F] [Algebra O F] (G : Over (Spec (CommRingCat.of O))) [GrpObj G] [IsCommMonObj G] (N : ℕ), (N : F) ≠ 0 → IsFinite (torsion G N).hom → IsReduced (specO O F ⊗ torsion G N).left := by

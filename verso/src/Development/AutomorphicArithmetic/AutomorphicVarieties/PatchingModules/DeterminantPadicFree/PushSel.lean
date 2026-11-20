@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `N`. Establish `hN : I ^ N ≤ (J ^ N).comap j`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h N`. Conclude with `(hf N).comp (Ideal.quotientMap (J ^ N) j hN)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adicCont_map {Γ R S : Type} [TopologicalSpace Γ] [CommRing R] [CommRing S] (j : R →+* S)
     (I : Ideal R) (J : Ideal S) (h : I.map j ≤ J) (f : Γ → R) (hf : AdicCont I f) :
@@ -14,7 +14,7 @@ private theorem adicCont_map {Γ R S : Type} [TopologicalSpace Γ] [CommRing R] 
   exact (hf N).comp (Ideal.quotientMap (J ^ N) j hN)
 
 /- English proof (translation)
-Introduce `i k`. Use `⟨fun e => ?_, fun _ => Submodule.mem_top⟩` and prove the remaining obligations. Use `(h i k).1 e` as an intermediate fact. Rewrite `this`, the goal using `[Submodule.mem_bot]`. Simplify using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem od_map {R S : Type} [CommRing R] [CommRing S] (j : R →+* S) {n a : ℕ}
     {Z : Matrix (Fin n) (Fin n) R} (h : Z ∈ Od R R n a) : Z.map j ∈ Od S S n a := by
@@ -25,27 +25,27 @@ private theorem od_map {R S : Type} [CommRing R] [CommRing S] (j : R →+* S) {n
   simp [this]
 
 /- English proof (translation)
-Introduce `l _ F n x x' j hE`. Take `⟨⟨-, hloc, -, hρ, ha, -⟩, hw, -⟩` from `hE`. Establish `eρ : ∀ g, x'.ρX x'.A g = j.mapMatrix (x.ρX x.A g)`. Introduce `g`. Use extensionality with `i k : 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [NP.ρX, hρ]`. Both sides reduce to the same expression. Establish `ew : ∀ v, x'.wX x'.A v = j.mapMatrix (x.wX x.A v)`. Introduce `v`. Use extensionality with `i k : 1`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [NP.wX, hw]`. Both sides reduce to the same expression. Establish `ewi : ∀ v, x'.wiX x'.A v = j.mapMatrix (x.wiX x.A v)`. Introduce `v`. Use extensionality with `i k : 1`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [NP.wiX, hw, ← map_inv]`. Both sides reduce to the same expression. Establish `ed : ∀ Y g, dY F (x'.ρX x'.A) (Y.map j) g = j.mapMatrix (dY F (x.ρX x.A) Y g)`. Introduce `Y g`. Simplify using `only [dY, eρ, map_sub, map_mul]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hL : ∀ z v Y, LocAt F (x.ρX x.A) (x.wX x.A) (x.wiX x.A) z v Y → LocAt F (x'.ρX x'.A) (x'.wX x'.A) (x'.wiX x'.A) (fun g => (z g).map j) v (Y.map j)`. Introduce `z v Y h g`. Establish `key : x'.wiX x'.A v * ((z (F.φ v g)).map j - dY F (x'.ρX x'.A) (Y.map j) (F.φ v g)) * x'.wX x'.A v = j.mapMatrix (x.wiX x.A v * (z (F.φ v g) - dY F (x.ρX x.A) Y (F.φ v g)) * x.wX x.A v)`. Rewrite using `[ed, ew, ewi, map_mul, map_mul, map_sub]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨fun i k hik => ?_, fun hg i => ?_⟩` and prove the remaining obligations. Simplify using `only [key, RingHom.mapMatrix_apply, Matrix.map_apply, (h g).1 i k hik, map_zero]`. Simplify using `only [key, RingHom.mapMatrix_apply, Matrix.map_apply, (h g).2 hg i, map_zero]`. Establish `ht : (Ideal.span {algebraMap x.A x.A x.t}).map j ≤ Ideal.span {algebraMap x'.A x'.A x'.t}`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem, Ideal.mem_span_singleton]`. Express the relevant statement in the definitionally equal form `(PowerSeries.X : PowerSeries x'.K) ∣ j PowerSeries.X`. Rewrite using `[PowerSeries.X_dvd_iff]`. Assume the negation of the conclusion as `hne`. Establish `hu : IsUnit (j PowerSeries.X)` using `PowerSeries.isUnit_iff_constantCoeff.2 (Ne.isUnit hne)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hX` using `PowerSeries.isUnit_iff_constantCoeff.1 (hloc.map_nonunit _ hu)`. Simplify using `at hX`. Use `⟨?_, ?_, hL⟩` and prove the remaining obligations. Introduce and unpack `z ⟨h1, h2, h3, h4, h5, h6⟩`. Use `⟨fun g => ha ▸ od_map j (h1 g), fun i k => adicCont_map j _ _ ht _ (h2 i k), fun g h => ?_, fun g => ?_, fun u g hg => ?_, fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `j.mapMatrix (z (g * h)) = j.mapMatrix (z g) + _ * j.mapMatrix (z h) * _`. Rewrite using `[h3, eρ, eρ, map_add, map_mul, map_mul]`. Use extensionality with `i k : 1`. Simplify using `[h4]`. Simplify using `[h5 u g hg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨Y, hY, hl⟩` from `h6 v`. Conclude with `⟨Y.map j, ha ▸ od_map j hY, hL z v Y hl⟩`. Introduce and unpack `z ⟨Y, hY, hT, rfl⟩`. Use `⟨Y.map j, ha ▸ od_map j hY, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.transpose_map, hT]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i k : 1`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `g`. Conclude with `(ed Y g).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.pushSel :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x x' : NP F n) (j : x.A →+* x'.A), x.Ext2 x' j → (∀ z ∈ SelZ F x.t (x.ρX x.A) (x.wX x.A) (x.wiX x.A) (Od x.A x.A n x.a), (fun g => (z g).map j) ∈ SelZ F x'.t (x'.ρX x'.A) (x'.wX x'.A) (x'.wiX x'.A) (Od x'.A x'.A n x'.a)) ∧ (∀ z ∈ Bd F (x.ρX x.A) (Od x.A x.A n x.a), (fun g => (z g).map j) ∈ Bd F (x'.ρX x'.A) (Od x'.A x'.A n x'.a)) ∧ ∀ z v Y, LocAt F (x.ρX x.A) (x.wX x.A) (x.wiX x.A) z v Y → LocAt F (x'.ρX x'.A) (x'.wX x'.A) (x'.wiX x'.A) (fun g => (z g).map j) v (Y.map j) := by

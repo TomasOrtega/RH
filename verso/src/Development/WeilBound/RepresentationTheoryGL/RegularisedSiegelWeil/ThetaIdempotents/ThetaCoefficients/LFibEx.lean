@@ -22,15 +22,15 @@ variable {D : D7} {r : ℕ}
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.CompanionTheory.SiegelND in
 /- English proof (translation)
-Introduce `D r V hr ψ hψ θ hθ μ hμ lam hlam b₀ hb₀`. Establish `hCM` using `GlobalTheory.DefiniteQuotient.cmExt D`. Establish `hJ` using `GlobalTheory.DefiniteQuotient.gram_hermND V`. Take `⟨μH, 𝓕, hμH, h𝓕, -⟩` from `GlobalTheory.Published.SiegelOneVector.exists_normalised D.sp.cm.sig V.gram hCM hJ`. Take `⟨dx, db, hdx, hdb, hW⟩` from `GlobalTheory.T.exists_self_dual_siegel_weil_measures D r V ψ hψ μ hμ lam hlam`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hT : ∀ a b, D.sp.cm.sig (b₀.1 b a) = b₀.1 a b` using `fun a b => by`. Use `congrFun (congrFun b₀.2 a) b` as an intermediate fact. Simplify `this` using `[Matrix.transpose_apply, Matrix.map_apply]`. Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable D.host.F`. Take `⟨_, _, _, _, -, -, -, hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring _ _ D.sp.cm.sig hCM (AF D.host.F)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hB r V.rank` as an intermediate fact. Take `⟨_, _, _, _, _, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact _ _ D.sp.cm.sig hCM V.rank V.gram hJ (AF D.host.F)`. Take `⟨ac, -, -, -⟩` from `hact r`. Establish `hTI` using `PositivityTheory.PlacePermOperatorBicommutantSpan.theta_inv D.host.F D.host.E D.sp.cm.sig hCM V.rank V.gram hJ μH 𝓕 hμH h𝓕 r b₀.1`. Establish `hfin` using `thFin V hr μH 𝓕 hμH h𝓕 b₀.1 hT hb₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(thM V μH 𝓕 b₀.1).map (tupE D V.rank r), finE _, suppE V b₀.1 _ hTI.2, fun h => invE V _ h (ac.comp (continuous_const.prodMk continuous_id)).measurable (hTI.1 h), fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hSB` using `GlobalTheory.T.schwartz_function_schwartz_bruhat D θ hθ V.rank r φ hφ`. Establish `hI` using `thInt V hr μH 𝓕 hμH h𝓕 b₀.1 hT hb₀ _ hSB`. Use `⟨(tupE D V.rank r).measurableEmbedding.integrable_map_iff.2 hI, ?_⟩` and prove the remaining obligations. Rewrite using `[hW φ b₀, (tupE D V.rank r).measurableEmbedding.integral_map]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.siegel_weil_hermitian_formula D.host.F D.host.E D.sp.cm.sig hCM V.rank V.gram hJ r hr ψ hψ dx hdx db hdb μH 𝓕 hμH h𝓕 _ hSB b₀.1 hT hb₀`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.Rg.Rsw.L.fibEx : FibEx := by
   intro D r V hr ψ hψ θ hθ μ hμ lam hlam b₀ hb₀

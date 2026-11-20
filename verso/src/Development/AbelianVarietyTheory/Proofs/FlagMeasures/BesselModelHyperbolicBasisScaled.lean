@@ -10,7 +10,7 @@ namespace GlobalTheory.TypeAsm.FramePf
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `h0 : 0 < D.host.rdE` using `GlobalTheory.TypeAsm.GramPf.rdE_pos' D`. Establish `hπ : Real.pi ≠ 0` using `Real.pi_ne_zero`. Simplify using `only [Formalism.BasicNotions.Host.ka, Formalism.BasicNotions.Host.v]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem ka_div (D : D7) : D.host.ka / (2 * Real.pi) = (2 * D.host.v)⁻¹ := by
   have h0 : 0 < D.host.rdE := GlobalTheory.TypeAsm.GramPf.rdE_pos' D
@@ -19,7 +19,7 @@ theorem ka_div (D : D7) : D.host.ka / (2 * Real.pi) = (2 * D.host.v)⁻¹ := by
   field_simp
 
 /- English proof (translation)
-Establish `h0 : 0 < D.host.rdE` using `GlobalTheory.TypeAsm.GramPf.rdE_pos' D`. Simplify using `only [Formalism.BasicNotions.Host.v]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem two_v_pos (D : D7) : 0 < 2 * D.host.v := by
   have h0 : 0 < D.host.rdE := GlobalTheory.TypeAsm.GramPf.rdE_pos' D
@@ -27,13 +27,13 @@ theorem two_v_pos (D : D7) : 0 < 2 * D.host.v := by
   linarith
 
 /- English proof (translation)
-Take `⟨hQiQ, _, _, hfr⟩` from `C.isT τ`. Take `⟨h1, h2⟩` from `hfr a a rfl`. Establish `hc : ((2 * D.host.v) ^ (D.R.rS - a.val) : ℝ) ≠ 0` using `pow_ne_zero _ (two_v_pos D).ne'`. Establish `hfp : frS D ^ (D.R.rS - a.val) = ((((2 * D.host.v) ^ (D.R.rS - a.val))⁻¹ : ℝ) : ℂ)`. Unfold `frS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[ka_div, ← Complex.ofReal_pow, inv_pow]`. Unfold `GlobalTheory.TypeAsm.phiV`. Prove the components needed by the constructor for the conclusion. Establish `e : rv X.B.I (vOf X τ) (X.crd (X.eX a)) = ((((2 * D.host.v) ^ (D.R.rS - a.val)) : ℝ) : ℂ) • (C.Q τ *ᵥ Pi.single (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a) 1)`. Rewrite using `[h1, hfp, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hc, Complex.ofReal_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hQiQ, Matrix.one_mulVec]`. Both sides reduce to the same expression. Establish `e : rv X.B.I (vOf X τ) (X.crd (X.fY a)) = ((((2 * D.host.v) ^ (D.R.rS - a.val))⁻¹ : ℝ) : ℂ) • (C.Q τ *ᵥ Pi.single (Formalism.QuantumDeterminants.esI D.R.k D.R.rS a) 1)`. Rewrite using `[h2, hfp, Complex.star_def, Complex.conj_ofReal, ← Complex.ofReal_inv, inv_inv, smul_smul, ← Complex.ofReal_mul, inv_mul_cancel₀ hc, Complex.ofReal_one, one_smul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hQiQ, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phiV_frame (D : D7) (X : HidaSetting D) (C : Choice X 1) (τ : D.what₂.Tau) (a : Fin D.R.rS) :
     GlobalTheory.TypeAsm.phiV C τ (X.eX a) =

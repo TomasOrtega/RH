@@ -15,11 +15,11 @@ def TGood (w : σ → ℕ) (c d : ℕ) (F : Polynomial (MvPolynomial σ ℂ)) : 
   ∀ j m, coeff m (F.coeff j) ≠ 0 → Finsupp.weight w m + j * c = d
 
 /- English proof (translation)
-Introduce `j m h`. Rewrite `h` using `[Polynomial.coeff_C]`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Rewrite `h` using `[if_pos rfl, coeff_C]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hm : 0 = m`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules. Rewrite `h` using `[if_neg hm]`. Conclude with `absurd rfl h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[if_neg hj, coeff_zero]`. Conclude with `absurd rfl h`.
+A detailed English derivation is pending.
 -/
 theorem tgood_CC (w : σ → ℕ) (c : ℕ) (r : ℂ) : TGood w c 0 (Polynomial.C (C r)) := by
   classical
@@ -34,9 +34,9 @@ theorem tgood_CC (w : σ → ℕ) (c : ℕ) (r : ℂ) : TGood w c 0 (Polynomial.
   · rw [if_neg hj, coeff_zero] at h; exact absurd rfl h
 
 /- English proof (translation)
-Introduce `j m h`. Rewrite `h` using `[Polynomial.coeff_mul, coeff_sum]`. Take `⟨x, hx, hx0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Rewrite `hx0` using `[coeff_mul]`. Take `⟨y, hy, hy0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hF x.1 y.1 (left_ne_zero_of_mul hy0)`. Establish `h2` using `hG x.2 y.2 (right_ne_zero_of_mul hy0)`. Rewrite `hx`, `hy` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[← hx, ← hy, map_add, ← h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tgood_mul (w : σ → ℕ) (c : ℕ) {d₁ d₂ : ℕ} {F G : Polynomial (MvPolynomial σ ℂ)}
     (hF : TGood w c d₁ F) (hG : TGood w c d₂ G) : TGood w c (d₁ + d₂) (F * G) := by
@@ -53,14 +53,14 @@ theorem tgood_mul (w : σ → ℕ) (c : ℕ) {d₁ d₂ : ℕ} {F G : Polynomial
   ring
 
 /- English proof (translation)
-Use `tgood_CC w c 1` as an intermediate fact. Rewrite `this` using `[C_1, Polynomial.C_1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tgood_one (w : σ → ℕ) (c : ℕ) : TGood w c 0 (1 : Polynomial (MvPolynomial σ ℂ)) := by
   have := tgood_CC w c 1
   rwa [C_1, Polynomial.C_1] at this
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, zero_mul]`. Conclude with `tgood_one w c`. Consider the case `succ k ih => rw [pow_succ, Nat.succ_mul]`. Conclude with `tgood_mul w c ih hF`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tgood_pow (w : σ → ℕ) (c : ℕ) {d : ℕ} {F : Polynomial (MvPolynomial σ ℂ)}
     (hF : TGood w c d F) (k : ℕ) : TGood w c (k * d) (F ^ k) := by
@@ -69,9 +69,7 @@ theorem tgood_pow (w : σ → ℕ) (c : ℕ) {d : ℕ} {F : Polynomial (MvPolyno
   | succ k ih => rw [pow_succ, Nat.succ_mul]; exact tgood_mul w c ih hF
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.prod_empty]`. Conclude with `tgood_one w c`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`.
-
-Conclude with `tgood_mul w c (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tgood_prod {α : Type*} (w : σ → ℕ) (c : ℕ) (s : Finset α) (d : α → ℕ)
     (F : α → Polynomial (MvPolynomial σ ℂ)) (h : ∀ i ∈ s, TGood w c (d i) (F i)) :
@@ -85,7 +83,7 @@ theorem tgood_prod {α : Type*} (w : σ → ℕ) (c : ℕ) (s : Finset α) (d : 
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Rewrite using `[aeval_monomial, Finsupp.weight_apply, Finsupp.prod, Finsupp.sum, Polynomial.algebraMap_apply, MvPolynomial.algebraMap_eq]`. Establish `h1` using `tgood_CC w c r`. Establish `h2` using `tgood_prod w c m.support (fun i => m i • w i) (fun i => f i ^ m i) (fun i _ => by simpa only [smul_eq_mul] using tgood_pow w c (hf i) (m i))`. Use `tgood_mul w c h1 h2` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tgood_aeval_monomial (w : σ → ℕ) (c : ℕ) (f : σ → Polynomial (MvPolynomial σ ℂ))
     (hf : ∀ v, TGood w c (w v) (f v)) (m : σ →₀ ℕ) (r : ℂ) :
@@ -99,7 +97,7 @@ theorem tgood_aeval_monomial (w : σ → ℕ) (c : ℕ) (f : σ → Polynomial (
   rwa [zero_add] at this
 
 /- English proof (translation)
-Rewrite `h` using `[P.as_sum, map_sum, Polynomial.finsetSum_coeff, coeff_sum]`. Take `⟨m, hm, hm0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Conclude with `⟨m, mem_support_iff.mp hm, tgood_aeval_monomial w c f hf m _ j m' hm0⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem aeval_support (w : σ → ℕ) (c : ℕ) (f : σ → Polynomial (MvPolynomial σ ℂ))
     (hf : ∀ v, TGood w c (w v) (f v)) (P : MvPolynomial σ ℂ) (j : ℕ) (m' : σ →₀ ℕ)
@@ -112,17 +110,17 @@ theorem aeval_support (w : σ → ℕ) (c : ℕ) (f : σ → Polynomial (MvPolyn
 end Grade
 
 /- English proof (translation)
-Introduce `j m h`. Rewrite `h` using `[Polynomial.coeff_add, coeff_add]`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Apply the tactic sequence `have h0 : coeff m ((if v.1 = τ ∧ v.2.1 = b then Polynomial.X * Polynomial.C (X (τ, a, v.2.2)) else 0 : Polynomial (MvPolynomial (ι × Fin n × Fin n) ℂ)).coeff 0) = 0 := by split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h` using `[h0, add_zero, Polynomial.coeff_C_zero, coeff_X]`. Distinguish the cases in `hm : Finsupp.single v 1 = m`. Substitute `hm` using the available equality. Simplify using `[Finsupp.weight_single]`. Rewrite `h` using `[if_neg hm]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd rfl h`. Rewrite `h` using `[Polynomial.coeff_C, if_neg hj, coeff_zero, zero_add]`. Distinguish the cases in `hc : v.1 = τ ∧ v.2.1 = b`. Rewrite `h` using `[if_pos hc, Polynomial.X_mul_C, Polynomial.coeff_C_mul_X]`. Distinguish the cases in `hj1 : j = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hj1` using the available equality. Rewrite `h` using `[if_pos rfl, coeff_X]`. Distinguish the cases in `hm : Finsupp.single (τ, a, v.2.2) 1 = m`. Substitute `hm` using the available equality. Rewrite using `[Finsupp.weight_single, smul_eq_mul, one_mul, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : (v.2.1 : ℕ) = b` using `congrArg Fin.val hc.2`. Establish `hab' : (a : ℕ) < b` using `hab`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[if_neg hm]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd rfl h`. Rewrite `h` using `[if_neg hj1, coeff_zero]`. Conclude with `absurd rfl h`. Rewrite `h` using `[if_neg hc, Polynomial.coeff_zero, coeff_zero]`. Conclude with `absurd rfl h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tgood_gen {ι : Type} [DecidableEq ι] {n : ℕ} (τ : ι) (a b : Fin n) (hab : a < b)
     (v : ι × Fin n × Fin n) :
@@ -159,7 +157,7 @@ theorem tgood_gen {ι : Type} [DecidableEq ι] {n : ℕ} (τ : ι) (a b : Fin n)
     · rw [if_neg hc, Polynomial.coeff_zero, coeff_zero] at h; exact absurd rfl h
 
 /- English proof (translation)
-The claim follows from `aeval_support _ _ _ (tgood_gen τ a b hab) P k m' h`.
+A detailed English derivation is pending.
 -/
 theorem bigDiv_support {ι : Type} [DecidableEq ι] {n : ℕ} (τ : ι) (a b : Fin n) (hab : a < b) (k : ℕ)
     (P : MvPolynomial (ι × Fin n × Fin n) ℂ) (m' : ι × Fin n × Fin n →₀ ℕ)
@@ -169,15 +167,15 @@ theorem bigDiv_support {ι : Type} [DecidableEq ι] {n : ℕ} (τ : ι) (a b : F
   aeval_support _ _ _ (tgood_gen τ a b hab) P k m' h
 
 /- English proof (translation)
-Introduce `ι _ _ n M hM hne`. Establish `key : ∀ e : ℕ, ∀ P ∈ M, P ≠ 0 → (∀ m, coeff m P ≠ 0 → Finsupp.weight (fun v : ι × Fin n × Fin n => (v.2.1 : ℕ)) m < e) → ∃ Q ∈ M, Q ≠ 0 ∧ ∀ (τ : ι) (a b : Fin n), a < b → ∀ k, 1 ≤ k → bigDiv τ a b k Q = 0`. Introduce `e`. Proceed by induction on `e with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `P _ hP0 hb`. Take `⟨m, hm⟩` from `ne_zero_iff.mp hP0`. Conclude with `absurd (hb m hm) (Nat.not_lt_zero _)`. Consider the case `succ e ih`. Introduce `P hPM hP0 hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hall : ∀ (τ : ι) (a b : Fin n), a < b → ∀ k, 1 ≤ k → bigDiv τ a b k P = 0`. Conclude with `⟨P, hPM, hP0, hall⟩`. Use `push Not at hall`. Take `⟨τ, a, b, hab, k, hk, hQ⟩` from `hall`. Use `ih _ (hM τ a b k P hPM) hQ ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `m' hm'`. Take `⟨m, hm, heq⟩` from `bigDiv_support τ a b hab k P m' hm'`. Establish `h1` using `hb m hm`. Establish `hab' : (a : ℕ) < b` using `hab`. Establish `h2 : 1 ≤ k * ((b : ℕ) - a)` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 
-Generalize the expression as in `k * ((b : ℕ) - a) = t at heq h2`. Use linear arithmetic over natural numbers and integers. Take `⟨P, hPM, hP0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Conclude with `key (P.support.sup (Finsupp.weight (fun v : ι × Fin n × Fin n => (v.2.1 : ℕ))) + 1) P hPM hP0 fun m hm => Nat.lt_succ_of_le (Finset.le_sup (mem_support_iff.mpr hm))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem high_existence_holds : HiEx := by
   intro ι _ _ n M hM hne

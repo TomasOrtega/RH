@@ -10,11 +10,9 @@ namespace PositivityTheory.Pf1.CLGD.K
 namespace SupremumMembership
 
 /- English proof (translation)
-Take `⟨g, hg2, hg1⟩` from `SetLike.exists_of_lt h12`. Establish `hg : g ∈ ((H ⊔ N : Subgroup Γ) : Set Γ)` using `by rw [hHN]; exact Subgroup.mem_top g`. Rewrite `hg` using `[Subgroup.mul_normal H N]`. Take `⟨x, hx, y, hy, rfl⟩` from `Set.mem_mul.mp hg`. Establish `hx1 : x ∈ H₁` using `h1 hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨y, ?_, ?_, hy⟩` and prove the remaining obligations. Establish `: y = x⁻¹ * (x * y)` using `by group`. Rewrite using `[this]`. Conclude with `H₂.mul_mem (H₂.inv_mem (h12.le hx1)) hg2`. Introduce `hy1`.
-
-Conclude with `hg1 (H₁.mul_mem hx1 hy1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_mem_of_sup {Γ : Type*} [Group Γ] (H N : Subgroup Γ) [N.Normal] (hHN : H ⊔ N = ⊤)
     (H₁ H₂ : Subgroup Γ) (h1 : H ≤ H₁) (h12 : H₁ < H₂) : ∃ n ∈ H₂, n ∉ H₁ ∧ n ∈ N := by
@@ -34,11 +32,11 @@ end SupremumMembership
 
 open SupremumMembership in
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l a _ ha r hr`. Establish `hcont : Continuous fun g : G E Ω => (r g : Matrix (Fin a) (Fin a) (Qbar l)).trace` using `(Units.continuous_val.comp hr).matrix_trace`. Use `set U : Set (G E Ω) := {g | (r g : Matrix (Fin a) (Fin a) (Qbar l)).trace ≠ 0} with hU`. Establish `hUo : IsOpen U` using `isOpen_ne.preimage hcont`. Establish `h1U : (1 : G E Ω) ∈ U` using `by show (r 1 : Matrix (Fin a) (Fin a) (Qbar l)).trace ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one, Units.val_one, Matrix.trace_one, Fintype.card_fin]`. Conclude with `(Nat.one_le_iff_ne_zero.mp ha)` after adjusting the coercions. Take `⟨N, hN⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hUo h1U`. Establish `: N.toSubgroup.Normal` using `N.isNormal'`. Use `⟨N.toSubgroup, N.isNormal', N.isOpen', fun H hHN H₁ H₂ h1 h12 => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨n, hn2, hn1, hnN⟩` from `exists_mem_of_sup H N.toSubgroup hHN H₁ H₂ h1 h12`. Conclude with `⟨n, hn2, hn1, hN hnN⟩`.
+A detailed English derivation is pending.
 -/
 theorem place_membership_of_sup : KillingPolyConst := by
   intro E Ω _ _ _ _ _ l a _ ha r hr

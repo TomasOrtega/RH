@@ -27,7 +27,7 @@ open GlobalTheory.ArchMetricCompare
 variable {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] {L : LB A.left} {L' : LB A'.left} {g : ℕ}
 
 /- English proof (translation)
-Rewrite using `[le_pull_iff, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem le_pull_id (x : Sp ℂ ⟶ A.left) (j : (L.pull (𝟙 A.left)).ι) :
     ⊤ ≤ x ⁻¹ᵁ (L.pull (𝟙 A.left)).U j ↔ ⊤ ≤ x ⁻¹ᵁ L.U (j PUnit.unit) := by
@@ -58,7 +58,7 @@ def pullId (u : HolUnif A L g) : HolUnif A (L.pull (𝟙 A.left)) g where
 variable {ψ : A'.left ⟶ A.left} (h : IsGrpPullback A' A cj ψ)
 
 /- English proof (translation)
-Use `(le_pull_iff L _ _ j).trans ?_` and prove the remaining obligations. Rewrite using `[cjPt_comp]`. Conclude with `le_cj_iff _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_le (x : 𝟙_ (Over (Sp ℂ)) ⟶ A) (j : (L.pull ψ).ι) :
     ⊤ ≤ (cjPt h x).left ⁻¹ᵁ (L.pull ψ).U j ↔ ⊤ ≤ x.left ⁻¹ᵁ L.U (j PUnit.unit) := by
@@ -91,7 +91,7 @@ def conjPull (u : HolUnif A L g) : HolUnif A' (L.pull ψ) g where
     exact ((congrArg (fun x => valAt' x _ _) (cjPt_comp h (u.ex (star z)))).trans (val_cj _ _ _)).symm
 
 /- English proof (translation)
-Establish `h0 : (pullId u).IsAH Hm χ` using `⟨hA.1, hA.2.1, hA.2.2.1, fun l j z hj => hA.2.2.2 l _ z ((le_pull_id _ j).1 hj)⟩`. Establish `h1` using `cj_isAH h _ h0`. Conclude with `⟨h1.1, h1.2.1, h1.2.2.1, fun l j z hj => h1.2.2.2 l j z ((cj_le_pull h _ j).2 ((le_pull_id _ j).2 ((cj_le h _ j).1 hj)))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem conjPull_isAH (u : HolUnif A L g) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (hA : u.IsAH Hm χ) :
     (conjPull h u).IsAH (Hm.map star) fun l => star (χ ⟨star l.1, l.2⟩) := by
@@ -102,11 +102,11 @@ theorem conjPull_isAH (u : HolUnif A L g) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ 
     h1.2.2.2 l j z ((cj_le_pull h _ j).2 ((le_pull_id _ j).2 ((cj_le h _ j).1 hj)))⟩
 
 /- English proof (translation)
-Establish `le : ∀ p : M.ι × N.ι, M.U p.1 ⊓ N.U p.2 ≤ N.U p.2 ⊓ M.U p.1` using `fun p y hy => ⟨hy.2, hy.1⟩`. Use `⟨⟨fun p => (res (le p) (w.s (p.2, p.1)))⁻¹⟩, fun p q => unit_ext fun y hy => ?_, fun x j i hx => ?_⟩` and prove the remaining obligations. Establish `hm : (𝟙 X : X ⟶ X) y ∈ N.U p.2 ⊓ M.U p.1 ⊓ (N.U q.2 ⊓ M.U q.1)` using `⟨le p hy.1, le q hy.2⟩`. Establish `e` using `congrArg (gm (𝟙 X) y (N.U p.2 ⊓ M.U p.1 ⊓ (N.U q.2 ⊓ M.U q.1))) (hw (p.2, p.1) (q.2, q.1))`. Establish `e'` using `(gm_res _ y _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div M N (𝟙 X) y (p.2, p.1) (q.2, q.1) hm) (gm_res _ y _ hm _))))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v : ∀ p : M.ι × N.ι, y ∈ M.U p.1 ⊓ N.U p.2 → gm (𝟙 X) y (M.U p.1 ⊓ N.U p.2) (res (le p) (w.s (p.2, p.1)))⁻¹ = (gm (𝟙 X) y (N.U p.2 ⊓ M.U p.1) (w.s (p.2, p.1)))⁻¹` using `fun p hp => (map_inv _ _).trans (congrArg (·⁻¹) (gm_res _ y _ hp _))`. Use `((gm_res _ y _ hy _).trans ((v p hy.1).trans (congrArg (·⁻¹) e'))).trans (Eq.symm ?_)` and prove the remaining obligations. Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div N M (𝟙 X) y p q hy) ((gm_res _ y _ hy _).trans (v q hy.2)))).trans ?_` and prove the remaining obligations. Rewrite using `[mul_inv, mul_inv, inv_inv, mul_comm (gm (𝟙 X) y _ (M.g p.1 q.1))]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hx' : ⊤ ≤ x ⁻¹ᵁ (M.U i ⊓ N.U j)` using `by rwa [inf_comm]`. Conclude with `(valAt'_units_inv x hx' _).trans (congrArg _ (valAt'_res x (le (i, j)) _ hx'))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_inv {X : Scheme.{0}} {M N : LB X} (w : LB.Iso M N) (hw : w.IsGen) :
     ∃ w' : LB.Iso N M, w'.IsGen ∧ ∀ (x : Sp ℂ ⟶ X) (j : N.ι) (i : M.ι), ⊤ ≤ x ⁻¹ᵁ (N.U j ⊓ M.U i) →
@@ -130,27 +130,25 @@ theorem exists_inv {X : Scheme.{0}} {M N : LB X} (w : LB.Iso M N) (hw : w.IsGen)
     exact (valAt'_units_inv x hx' _).trans (congrArg _ (valAt'_res x (le (i, j)) _ hx'))
 
 /- English proof (translation)
-Introduce and unpack `x x' ⟨φ, he, w, hg', F, hφ, hw, hrig, hth, hF, hε, hv⟩ hg g u Hm χ θ Fd ⟨hA, hR, hθ, hFd⟩`. Rewrite `hv` using `[KeyFibre.eq_dualMapR_of_algebraMap _ F hF hε]`. Take `⟨w', hw', hinv⟩` from `exists_inv w hw`. Establish `hP` using `pull_isLB x.P.isLB φ`. Set `u₁` to `conjPull hφ u`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `me : MeasurableEmbedding (star : (Fin g → ℂ) → Fin g → ℂ)` using `(starL' ℝ (A := Fin g → ℂ)).toHomeomorph.measurableEmbedding`. Establish `fr : ∀ (j : x.P.L.ι) (i : x'.P.L.ι) (z : Fin g → ℂ), ⊤ ≤ (u₁.ex z).left ⁻¹ᵁ ((x.P.L.pull φ).U (fun _ => j) ⊓ x'.P.L.U i) → valAt' (u₁.ex z).left ((x.P.L.pull φ).U (fun _ => j) ⊓ x'.P.L.U i) (w.s (fun _ => j, i)).val * (carry u₁ hP x'.P.isLB hw').fr i z = star (u.fr j (star z))`. Introduce `j i z hz`. Take `⟨hj, hi⟩` from `(top_le_preimage_inf _ _ _).1 hz`. Rewrite using `[carry_fr u₁ hP x'.P.isLB hw' i (fun _ => j) z hi hj, hinv _ _ _ hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_inv_cancel_left₀ (valAt'_unit_ne_zero _ hz (w.s (fun _ => j, i))) _`. Use `⟨carry u₁ hP x'.P.isLB hw', _, fun z => star (θ (star z)), star ⁻¹' Fd, carry_isAH hP x'.P.isLB hw' (conjPull_isAH hφ u hA), ?_, ?_, cj_domain hφ (pullId u) hFd, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Establish `h0 : (u₁.ex 0).left = eSec x'.P.A`. Rewrite using `[(u₁.ker 0).2 u₁.Λ.zero_mem, Hom.one_def]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[eSec]`. Establish `h0' : (u.ex 0).left = eSec x.P.A`. Rewrite using `[(u.ker 0).2 u.Λ.zero_mem, Hom.one_def]`. Simplify using `[eSec]`. Take `⟨j, hj⟩` from `exists_chart_at hP (u₁.ex 0).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi' : ⊤ ≤ (u₁.ex 0).left ⁻¹ᵁ x'.P.L.U (i PUnit.unit)`. Rewrite using `[h0]`. Conclude with `fun p hp => mem_pull.1 (hi hp)`. Establish `hz` using `(top_le_preimage_inf _ _ _).2 ⟨hj, hi'⟩`. Establish `e` using `fr (j PUnit.unit) (i PUnit.unit) 0 hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj' : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ x.P.L.U (j PUnit.unit)`. Use `(cj_le hφ _ j).1 hj` as an intermediate fact. Rewrite `this` using `[star_zero]`. Then use the resulting hypothesis. Rewrite `hj'` using `[h0']`. Establish `hj'' : ⊤ ≤ (x.P.L.pull (eSec x.P.A)).U fun _ => j PUnit.unit` using `fun p hp => mem_pull.2 (hj' hp)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[star_zero, hR _ hj'', ← val_cj, Category.comp_id, h0]`. Rewrite `hz` using `[h0]`. Conclude with `mul_left_cancel₀ (valAt'_unit_ne_zero _ hz _) (e.trans (val_rig he w x'.rig x.rig hrig (j PUnit.unit) (i PUnit.unit) hz))`. Introduce `i z hi`. Take `⟨j, hj⟩` from `exists_chart_at hP (u₁.ex z).left`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz` using `(top_le_preimage_inf _ _ _).2 ⟨hj, hi⟩`. Establish `e` using `fr (j PUnit.unit) i z hz`. Establish `e₁` using `val_via w x.th x'.th hth (u₁.ex z).left (j PUnit.unit) i hz`. Establish `e₂ : valAt' ((u₁.ex z).left ≫ φ) (x.P.L.U (j PUnit.unit)) (x.th.f (j PUnit.unit)) = star (θ (star z)) * star (u.fr (j PUnit.unit) (star z))` using `(congrArg (fun x => valAt' x _ _) (cjPt_comp hφ (u.ex (star z)))).trans ((val_cj _ _ _).trans ((congrArg star (hθ _ (star z) ((cj_le hφ _ j).1 hj))).trans (star_mul' _ _)))`. Use `mul_left_cancel₀ (valAt'_unit_ne_zero _ hz (w.s (fun _ => j PUnit.unit, i))) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `e₁.symm.trans (e₂.trans ?_)` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `mul_left_comm _ _ _`. Rewrite using `[measurePreserving_star.measure_preimage_emb me Fd, ← measurePreserving_star.setIntegral_preimage_emb me _ Fd]`. Use `congrArg (fun t : (Fin g → ℂ) → ℝ => (∫ z in star ⁻¹' Fd, t z) / (volume Fd).toReal) (funext fun z => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[norm_star]`. Conclude with `congrArg (fun t : ℝ => ‖θ (star z)‖ ^ 2 * Real.exp (-Real.pi * t)) (hermSq_star Hm z)`. Introduce `cf v v' W h₁ h₂ hd`. Establish `h₃ : ∀ (n : ℕ) (e : n = x.P.g), IsLieComb (fun i => cf (i.cast e)) (fun i : Fin n => x.v (i.cast e)) v`. Introduce and unpack `_ rfl`.
-
-Conclude with `h₁`. Establish `e` using `(lieComb_baseChange ℂ ℂ _ _ _ φ hφ _ _ v _ x'.v v' hv (h₃ _ hg)).2 h₂`. Conclude with `cj_isDiff hφ (pullId u) (GlobalTheory.Reg.isTangent_of_isLieComb x.basis.1 h₁) e hd`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_conj_unif : ∀ (x x' : KeyIn ℂ), KeyPB x' x (starRingEnd ℂ) → ∀ (hg : x'.P.g = x.P.g) (g : ℕ) (u : HolUnif x.P.A x.P.L g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ) (θ : (Fin g → ℂ) → ℂ) (Fd : Set (Fin g → ℂ)), u.IsAH Hm χ ∧ u.IsRig x.rig ∧ u.IsFn x.th θ ∧ IsAddFundamentalDomain u.Λ Fd volume → ∃ (u' : HolUnif x'.P.A x'.P.L g) (χ' : u'.Λ → ℂ) (θ' : (Fin g → ℂ) → ℂ) (Fd' : Set (Fin g → ℂ)), u'.IsAH (Hm.map (starRingEnd ℂ)) χ' ∧ u'.IsRig x'.rig ∧ u'.IsFn x'.th θ' ∧ IsAddFundamentalDomain u'.Λ Fd' volume ∧ (∫ z in Fd', ‖θ' z‖ ^ 2 * Real.exp (-Real.pi * (hermForm (Hm.map (starRingEnd ℂ)) z z).re)) / (volume Fd').toReal = (∫ z in Fd, ‖θ z‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hm z z).re)) / (volume Fd).toReal ∧ ∀ (cf : Fin x.P.g → ℂ) (w : epsR ℂ ⟶ x.P.A) (w' : epsR ℂ ⟶ x'.P.A) (W : Fin g → ℂ), IsLieComb cf x.v w → IsLieComb (fun i => (starRingEnd ℂ) (cf (i.cast hg))) x'.v w' → u.IsDiff W w → u'.IsDiff (fun i => (starRingEnd ℂ) (W i)) w' := by
   rintro x x' ⟨φ, he, w, hg', F, hφ, hw, hrig, hth, hF, hε, hv⟩ hg g u Hm χ θ Fd ⟨hA, hR, hθ, hFd⟩

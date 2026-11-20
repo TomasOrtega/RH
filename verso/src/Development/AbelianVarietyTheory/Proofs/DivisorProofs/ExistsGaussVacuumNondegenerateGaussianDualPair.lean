@@ -15,11 +15,11 @@ namespace GlobalTheory.GaussVacPair
 open GlobalTheory.GaussFockJ GlobalTheory.ThK.EvAt0.PolD
 
 /- English proof (translation)
-Take `⟨R, hR0, hR⟩` from `GlobalTheory.ArchRest.exists_rest_arch (F := F) κ`. Use extensionality with `y`. Establish `hr` using `hR f`. Set `x : κ → AF F` to `fun i => liftA (y i)`. Establish `hx : At (evI F) x` using `fun c hc => funext fun i => smul_liftA hc (y i)`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e` using `(h1 R hr x).unique (h2 R hr x)`. Establish `hRx : R x = R 0`. Use `hr.1 0 x hx` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Establish `hl : (fun i => evI F (x i)) = y` using `funext fun i => evI_liftA (y i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Simplify using `only [tens, hl, hRx] at e`. Conclude with `mul_right_cancel₀ hR0 e`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actsD_unique {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     {T : ℝ → ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {f f₁ f₂ : SInf F κ}
@@ -38,17 +38,17 @@ theorem actsD_unique {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype �
   exact mul_right_cancel₀ hR0 e
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Take `⟨J₀, hJJ, hJω, hJpos, hJrel⟩` from `GlobalTheory.T.exists_positive_complex_structure_darboux_pair F E σ B n d X W M χX χW om r s r' s' hP`. Establish `hsym : ∀ x y : (Fin n × Fin d → mixedEmbedding.mixedSpace F), GlobalTheory.GaussLine.pairInf F (Fin n × Fin d) x y = GlobalTheory.GaussLine.pairInf F (Fin n × Fin d) y x`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [GlobalTheory.GaussLine.pairInf_apply, mul_comm]`. Take `⟨Q, c, hc, hQc, hQs, hQJ⟩` from `GlobalTheory.T.exists_siegel_fock_form_of_complex_structure (Fin n × Fin d → mixedEmbedding.mixedSpace F) (GlobalTheory.GaussLine.pairInf F (Fin n × Fin d)) J₀ hsym hJJ hJω hJpos`. Take `⟨g, hg, hgd⟩` from `GlobalTheory.T.exists_schwartz_eq_cexp_neg_form (Fin n × Fin d → mixedEmbedding.mixedSpace F) Q c hc hQc`. Use `⟨g, ⟨fun _ => 1, ?_⟩, Q, c, hc, hQc, hg⟩` and prove the remaining obligations. Introduce `u u' hu hu' hrel f f' hf hf'`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrel' : ∀ w, u'.map (piInf (B.emb w)) = Complex.I • (X.θ w * u.map (piInf (B.emb w)) * (W.θ w)ᵀ)`. Introduce `w`. Rewrite using `[hrel w]`. Simplify using the standard rewrite rules. Establish `key : ∀ v : Matrix (Fin n) (Fin d) (AE F E), At (evI F) v → ∀ h : SInf F (Fin n × Fin d), ActsD (evI F) (M.heisLine B.ψ v) g h → ∀ x, h x = GlobalTheory.GaussLine.dHeis (GlobalTheory.GaussLine.pairInf F (Fin n × Fin d)) (Psi M v) g x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `v hv h hh x`. Establish `h0` using `actsD_Phi hψ M (Psi M v) g`. Rewrite `h0` using `[Phi_Psi M hv]`. Rewrite using `[actsD_unique hh h0, dHeis_eq_dOp]`. Establish `hJ : Psi M u' = J₀ (Psi M u)` using `hJrel u u' hu hu' hrel'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ∀ (w : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)) x, GlobalTheory.GaussLine.dHeis (GlobalTheory.GaussLine.pairInf F (Fin n × Fin d)) w g x = -2 * (Q x w.1 + (Real.pi : ℂ) * Complex.I * (GlobalTheory.GaussLine.pairInf F (Fin …`. Introduce `w x`. Rewrite using `[GlobalTheory.GaussLine.dHeis, hgd x w.1, hQs w.1 x]`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components.
 
-Rewrite using `[SchwartzMap.smul_apply, key u' hu' f' hf' x, key u hu f hf x, hJ, hd, hd, hQJ, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_gauss_vacuum : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

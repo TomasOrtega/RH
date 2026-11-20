@@ -22,11 +22,11 @@ namespace GlobalTheory.JacSuppCount
 open GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ χ ω h`. Choose the witnesses or unpack the hypotheses as in `⟨ϖ, hϖ⟩ : ∃ ϖ : kˣ, valuation k (ϖ : k) = uniformizer k := by`. Take `⟨x, hx⟩` from `valuation_surjective (K := k) (uniformizer k)`. Establish `h0 : x ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `uniformizer_ne_zero (R := k) (by simpa using hx.symm)`. Conclude with `⟨Units.mk0 x h0, hx⟩`. Establish `hu : IsUnram (χ⁻¹ * ω)` using `fun u hu => by`. Simplify using `[h u hu]`. Use `⟨(χ⁻¹ * ω) ϖ, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← eq_unrChar hu hϖ]`. Use extensionality with `u`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_mul_unrChar_of_eq_on_units : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (χ ω : kˣ →* ℂˣ), (∀ u : kˣ, ValuativeRel.valuation k (u : k) = 1 → ω u = χ u) → ∃ α : ℂˣ, ω = χ * GlobalTheory.SmGL.unrChar k α := by
   intro k _ _ _ _ χ ω h
@@ -46,11 +46,11 @@ theorem eq_mul_unrChar_of_eq_on_units : ∀ (k : Type) [Field k] [ValuativeRel k
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.ProdSupport Matrix ValuativeRel TensorProduct in
 
 /- English proof (translation)
-Establish `hz' : ValuativeRel.valuation k ((z⁻¹ : kˣ) : k) = 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hz, inv_one]`. Establish `h1 : (z : k) ∈ 𝒪[k]` using `(Valuation.mem_integer_iff _ _).2 hz.le`. Establish `h2 : ((z⁻¹ : kˣ) : k) ∈ 𝒪[k]` using `(Valuation.mem_integer_iff _ _).2 hz'.le`. Use `(GlobalTheory.SplitFlip.mem_KO_iff _).2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify `h1` using `[GeneralLinearGroup.scalar]`. Simplify using `[GeneralLinearGroup.scalar, h, zero_mem]`. Rewrite using `[← map_inv]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify `h2` using `[GeneralLinearGroup.scalar]`. Simplify using `[GeneralLinearGroup.scalar, h, zero_mem]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem scalar_mem_KO_of_val {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m : Type) [Fintype m] [DecidableEq m] {z : kˣ} (hz : ValuativeRel.valuation k (z : k) = 1) :
@@ -71,29 +71,23 @@ theorem scalar_mem_KO_of_val {k : Type} [Field k] [ValuativeRel k] [TopologicalS
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.ProdSupport Matrix ValuativeRel TensorProduct in
 
 /- English proof (translation)
-Introduce `_ hG k _ _ _ _ n s s' χ π d σ d' e A x hχ hcs hA hx hact`. Take `⟨-, hσ, e₀, hsub⟩` from `hcs`. Take `⟨Y, _, _, τ, y, hτ, hτs, hy, hτy⟩` from `GlobalTheory.T.irreducible_subquotient_eigenvector _ _ (jac e π.π) x hx`. Establish `hτP : IsSubquotient τ (jac e (multiProd e₀ fun a => (σ a).π))` using `hτs.trans (GlobalTheory.JacquetExact.isSubquotient_jac e (isSmooth_parInd _ _) hsub)`. Take `⟨b, f, g, t, hrow, hcol⟩` from `exists_cell_of_isSubquotient (hG k).1 (hG k).2 e₀ e (fun a => (σ a).smooth) (fun a => hasFiniteLength_of_isIrreducible (σ a).irr) hτ hτP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcolj : ∀ j ∈ A, ∃ i, b.1 i j = 1 ∧ ∀ i', i' ≠ i → b.1 i' j = 0`. Introduce `j hj`. Establish `hsum : ∑ i, b.1 i j = 1` using `by simpa [hA j hj] using b.2.2 j`. Take `⟨i, -, hi0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (hsum.trans_ne one_ne_zero)`. Establish `hsplit` using `Finset.add_sum_erase Finset.univ (fun i => b.1 i j) (Finset.mem_univ i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : ∑ i' ∈ Finset.univ.erase i, b.1 i' j = 0` using `by simp only at hsplit; omega`. Use `⟨i, by simp only at hsplit; omega, fun i' hi' => ?_⟩` and prove the remaining obligations. Conclude with `Finset.sum_eq_zero_iff.1 h0 i' (Finset.mem_erase.2 ⟨hi', Finset.mem_univ i'⟩)`. Break down `A.eq_empty_or_nonempty with rfl | ⟨j₀, hj₀⟩` into its components or cases. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `haveI : Nonempty (Fin s) := ⟨(hcolj j₀ hj₀).choose⟩`. Use `choose! ι hι1 hι0 using hcolj`. Establish `hrow1 : ∀ i j j', 0 < b.1 i j → 0 < b.1 i j' → j = j'` using `fun i => GlobalTheory.T.cuspidal_jacquet_subquotient_at_most_one_nonempty_block k (d i) _ (σ i).π s' (b.1 i) (f i) _ (fun j => (t i j).ρ) (hσ i).2.2 (fun j => Model.nontrivial_of_isIrreducible (t i j).irr) (hrow i)`. Establish `hd1 : ∀ j ∈ A, d (ι j) = 1`. Introduce `j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h` using `b.2.1 (ι j)`. Rewrite using `[Fintype.card_fin, Finset.sum_eq_single j (fun j' _ hj' => by`. Assume the negation of the conclusion as `hne`. Conclude with `hj' (hrow1 _ _ _ (Nat.pos_of_ne_zero hne) (by rw [hι1 j hj]; exact one_pos)))`. Use the proof step `(by simp), hι1 j hj] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.symm`. Establish `hinj : Set.InjOn ι (A : Set (Fin s'))`. Introduce `j hj j' hj' h`. Use `hrow1 (ι j) j j' (by rw [hι1 j hj]; exact one_pos) ?_` and prove the remaining obligations. Rewrite using `[h, hι1 j' hj']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `one_pos`. Establish `hmem : ∀ j ∈ A, ι j ∈ {a | d a = 1 ∧ ∃ α : ℂˣ, Nonempty ((σ a).π.Equiv (GlobalTheory.SmGL.detRep (Fin (d a)) (χ * GlobalTheory.SmGL.unrChar k α)))}`. Introduce `j hj`. Use `set i := ι j with hi`. Take `⟨ω, -, hω⟩` from `GlobalTheory.LocGL.exists_smooth_hasCentralChar (σ i).smooth (σ i).irr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : ∀ (z : kˣ) (v : ⨂[ℂ] j', (t i j').V), piTensor (fun j' => (t i j').ρ) (Pi.mulSingle j (GeneralLinearGroup.scalar (Fin (b.1 i j)) z)) v = (ω z : ℂ) • v` using `fun z v => Model.scalar_of_isSubquotient (hrow i) (GlobalTheory.T.jacquet_rank_one_central k (d i) _ (σ i).π ω s' (b.1 i) (f i) j (hd1 j hj) (hι1 j hj) hω z) v`. Establish `hωt : HasCentralChar (t i j).ρ ω`. Take `⟨ω', -, hω'⟩` from `GlobalTheory.LocGL.exists_smooth_hasCentralChar (t i j).smooth (t i j).irr`. Use `nontrivial_piTensor _ fun j' => Model.nontrivial_of_isIrreducible (t i j').irr` as an intermediate fact. Take `⟨v, hv⟩` from `exists_ne (0 : ⨂[ℂ] j', (t i j').V)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ω' = ω` using `MonoidHom.ext fun z => Units.ext (smul_left_injective ℂ hv ((piTensor_mulSingle (fun j' => (t i j').ρ) j _ _ (hω' z) v).symm.trans (hT z v)))`. Conclude with `this ▸ hω'`. Establish `hz : ∀ i', i' ≠ i → IsEmpty (Fin (b.1 i' j))` using `fun i' h' => by`. Rewrite using `[hι0 j hj i' h']`. Use `infer_instance`.
-
-Establish `hcen` using `hasCentralChar_multiProd (g j) (fun i' => (t i' j).ρ) i hz hωt`. Establish `hωχ : ∀ u : kˣ, ValuativeRel.valuation k (u : k) = 1 → ω u = χ u`. Introduce `u hu`. Establish `h1` using `Model.scalar_of_isSubquotient hcol (piTensor_mulSingle (fun j => multiProd (g j) fun i => (t i j).ρ) j _ _ (hcen u)) y`. Establish `h2` using `hτy _ _ (hact j hj _ (scalar_mem_KO_of_val (Fin (d' j)) hu))`.
-
-Rewrite `h2` using `[det_scalar_one (hA j hj)]`. Conclude with `Units.ext (smul_left_injective ℂ hy (h1.symm.trans h2))`. Take `⟨α, hα⟩` from `eq_mul_unrChar_of_eq_on_units k χ ω hωχ`. Conclude with `⟨hd1 j hj, α, hα ▸ GlobalTheory.T.irreducible_gl1_iso_det k (d i) _ (σ i).π ω (hd1 j hj) (σ i).irr hω⟩`. Rewrite using `[← Set.ncard_coe_finset]`.
-
-Conclude with `Set.ncard_le_ncard_of_injOn ι hmem hinj (Set.toFinite _)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_le_ncard_unrTwist : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemma → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n s s' : ℕ) (χ : kˣ →* ℂˣ) (π : Irr k n) (d : Fin s → ℕ) (σ : ∀ a, Irr k (d a)) (d' : Fin s' → ℕ) (e : (Σ j, Fin (d' j)) ≃ Fin n) (A : Finset (Fin s')) (x : GlobalTheory.PRep.Jacquet π.π (GlobalTheory.SmGL.unipRad k e)), GlobalTheory.SmGL.IsSmoothChar χ → GlobalTheory.SmGL.IsCuspSupport π.π d (fun a => (σ a).π) → (∀ j ∈ A, d' j = 1) → x ≠ 0 → (∀ j ∈ A, ∀ g ∈ GlobalTheory.SplitWeil.KO k (Fin (d' j)), GlobalTheory.SmGL.jac e π.π (Pi.mulSingle j g) x = (χ (Matrix.GeneralLinearGroup.det g) : ℂ) • x) → A.card ≤ Set.ncard {a | d a = 1 ∧ ∃ α : ℂˣ, Nonempty ((σ a).π.Equiv (GlobalTheory.SmGL.detRep (Fin (d a)) (χ * GlobalTheory.SmGL.unrChar k α)))} := by
   intro _ hG k _ _ _ _ n s s' χ π d σ d' e A x hχ hcs hA hx hact

@@ -17,9 +17,9 @@ noncomputable section
 namespace PositivityTheory.Rg.BcB.SpectralAccumulation.FiniteDiscreteTypes
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `h`. Use `⟨T.symm, fun o φ ψ e => ?_⟩` and prove the remaining obligations. Establish `hm : act o (T.symm φ).1 ∈ V` using `hV o _ (T.symm φ).2`. Establish `h1` using `hT o (T.symm φ) ⟨_, hm⟩ rfl`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply, ← e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : T ⟨_, hm⟩ = ψ` using `Subtype.ext h1`. Rewrite using `[← h2, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isoV_symm {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ} {V V' : Submodule ℂ (Sm E N)}
     (hV : IsStable V) (h : IsoV V V') : IsoV V' V := by
@@ -32,41 +32,37 @@ theorem isoV_symm {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ} {
   rw [← h2, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Introduce `E _ _ _ N _ _ μ _ K W R ε hK hW hε hRep`. Use `set D : Submodule ℂ (Sm E N) → Prop := fun V => IsDiscrete V ∧ HasType K W V ∧ InfBdd R V ∧ ∀ r, 0 < r → r < N → ∀ c ∈ ExpV r V, pE E N r c ≤ -ε * (r * ((N : ℝ) - r)) with hD`. Distinguish the cases in `hne : ∃ V, D V`. Use `swap`. Conclude with `⟨∅, fun V h1 h2 h3 h4 => (hne ⟨V, h1, h2, h3, h4⟩).elim⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V₁, h₁⟩` from `hne`. Take `⟨F, hF⟩` from `GlobalTheory.T.exists_fundamental_domain_GL E N μ _ (h₁.1.sqInt 0 (zero_mem _))`. Take `⟨α, δ, hαc, hαs, hδ, hα⟩` from `hRep`. Take `⟨Ω, hΩ, hconc⟩` from `GlobalTheory.CompanionTheory.Conc.conc E N μ K W R ε δ α F hK hW hε hαc hαs hδ hF`. Take `⟨B, hB, hbes⟩` from `GlobalTheory.T.kernel_sum_bound_uniform E N μ δ α F Ω hαc hαs hδ hF hΩ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (n : ℕ) (Vs : Fin n → Submodule ℂ (Sm E N)), (∀ i, D (Vs i)) → (∀ i j, i ≠ j → ¬ IsoV (Vs i) (Vs j)) → (n : ENNReal) ≤ 2 * B`. Introduce `n Vs hVs hne`. Establish `hsel : ∀ i, ∃ ψ : Sm E N, ψ ∈ Vs i ∧ TypeB K W ψ ∧ (∫⁻ x in F, ‖ψ.1 x‖ₑ ^ 2 ∂μ) = 1`. Introduce `i`. Take `⟨hd, ⟨φ, hφ, h0, hty⟩, -, -⟩` from `hVs i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hT, hZ⟩` from `GlobalTheory.T.automorphic_norm_finite_nonzero E N μ F hF φ (hd.aut φ hφ) (hd.sqInt φ hφ) h0`. Use `set L := ∫⁻ x in F, ‖φ.1 x‖ₑ ^ 2 ∂μ with hL`. Establish `hLr : 0 < L.toReal` using `ENNReal.toReal_pos hZ hT`. Use `set c : ℝ := (Real.sqrt L.toReal)⁻¹ with hc`. Establish `hc0 : 0 < c` using `inv_pos.2 (Real.sqrt_pos.2 hLr)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨(c : ℂ) • φ, (Vs i).smul_mem _ hφ, ⟨fun u hu g => ?_, fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Use `hty.1 u hu g` as an intermediate fact. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, this]`. Conclude with `W.smul_mem (c : ℂ) (hty.2 g)`. Establish `e : ∀ x, ‖(((c : ℂ) • φ : Sm E N)).1 x‖ₑ ^ 2 = ENNReal.ofReal (c ^ 2) * ‖φ.1 x‖ₑ ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Establish `h2 : ((((c : ℂ) • φ : Sm E N)).1 x) = (c : ℂ) * φ.1 x` using `rfl`. Rewrite using `[h2, enorm_mul, mul_pow]`. Use `congr 1`. Rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hc0, ENNReal.ofReal_pow hc0.le]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← hL]`. Establish `: c ^ 2 = (L.toReal)⁻¹`. Rewrite using `[hc, inv_pow, Real.sq_sqrt hLr.le]`. Rewrite using `[this, ENNReal.ofReal_inv_of_pos hLr, ENNReal.ofReal_toReal hT]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `ENNReal.inv_mul_cancel hZ hT`. Use `choose ψ hψV hψT hψ1 using hsel`. Establish `hcont : ∀ i, Continuous (ψ i).1` using `fun i => ContAut.continuous_of_isOpen_stab E N (ψ i) ((hVs i).1.aut _ (hψV i)).level`. Establish `hleft : ∀ i, ∀ γ ∈ latticeGL E N, ∀ x, (ψ i).1 (γ * x) = (ψ i).1 x`. Introduce `i γ hγ x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, m, rfl⟩` from `GlobalTheory.CuspRep.CuspidalL2GL.mem_latticeGL_iff.1 hγ`. Establish `h1` using `((hVs i).1.sqInt _ (hψV i)).1`. Rewrite using `[mul_assoc, ((hVs i).1.aut _ (hψV i)).left, ← GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_intCast, h1]`. Establish `hs : ∀ i, ∃ s : ℂ, δ ≤ ‖s‖ ∧ ∀ x, ∫ y, α y * (ψ i).1 (x * y) ∂μ = s * (ψ i).1 x`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hα (ψ i) ((hVs i).1.aut _ (hψV i)) (hψT i) fun τ => ?_` and prove the remaining obligations. Take `⟨m, hm, hb⟩` from `(hVs i).2.2.1 τ`. Use `⟨m, ⟨hm.1, fun u φ hφ => ?_⟩, hb⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hφ`. Rewrite using `[map_smul, hm.2 u _ (hψV i), smul_comm]`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hcB` using `hbes n (fun i => (ψ i).1) hcont hleft hs hψ1 (fun i j hij => GlobalTheory.T.orthogonal_of_non_isomorphic E N μ F hF (Vs i) (Vs j) (hVs i).1 (hVs j).1 (hne i j hij) _ (hψV i) _ (hψV j))`. Establish `h1 : ∀ i, 1 ≤ 2 * ∫⁻ x in Ω, ‖(ψ i).1 x‖ₑ ^ 2 ∂μ` using `fun i => hconc (Vs i) (ψ i) (hVs i).1 (hψV i) (hψT i) (hVs i).2.2.1 (hVs i).2.2.2 (hs i) (hψ1 i)`. Combine the equalities or inequalities in the displayed calculation. Choose the witnesses or unpack the hypotheses as in `⟨n₀, hn₀⟩ : ∃ n₀ : ℕ, 2 * B ≤ (n₀ : ENNReal) := by`. Establish `h2B : 2 * B ≠ ⊤` using `ENNReal.mul_ne_top (by simp) hB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `ENNReal.exists_nat_gt h2B |>.imp fun _ h => h.le`. Use `set P : ℕ → Prop := fun n => ∃ Vs : Fin n → Submodule ℂ (Sm E N), (∀ i, D (Vs i)) ∧ ∀ i j, i ≠ j → ¬ IsoV (Vs i) (Vs j) with hP`. Establish `hbd : ∀ n, P n → n ≤ n₀`. Introduce and unpack `n ⟨Vs, h1, h2⟩`. Conclude with `(key n Vs h1 h2).trans hn₀` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hP0 : P 0` using `⟨Fin.elim0, fun i => i.elim0, fun i => i.elim0⟩`. Use `set n := Nat.findGreatest P n₀ with hn`. Take `⟨Vs, hVs, hpw⟩ : P n` from `Nat.findGreatest_spec (P := P) (Nat.zero_le _) hP0`. Use `⟨Finset.univ.image Vs, fun V h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hno`.
+Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Establish `hDV : D V` using `⟨h1, h2, h3, h4⟩`. Establish `hno' : ∀ i, ¬ IsoV V (Vs i)` using `fun i hi => hno ⟨Vs i, Finset.mem_image_of_mem _ (Finset.mem_univ i), hi⟩`. Establish `hnext : P (n + 1)`. Use `⟨Fin.cons V Vs, fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `using hDV`. Simplify using `using hVs i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `zero => exact (hij rfl).elim`. Consider the case `succ j => simpa using hno' j`. Consider the case `succ i`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero`.
-
-Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Conclude with `fun h => hno' i (isoV_symm (hVs i).1.stable h)`. Consider the case `succ j`. Simplify using `using hpw i j fun e => hij (by rw [e])`. Use `Nat.le_findGreatest (hbd _ hnext) hnext` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem finDisc : FinDisc := by
   intro E _ _ _ N _ _ μ _ K W R ε hK hW hε hRep

@@ -115,18 +115,18 @@ structure Rows (D : D7) : Prop where
   rank : ∀ L : SizeData₂ D, TwistedPlaces.adm3 L
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Iff.rfl, Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem an_iff {D : D7} : (T2.SumRepresentations.StrongMultiplicityOneCuspidalSums D.nd D.naut ↔ IsobaricCuspidalStrongMultiplicityOne D.nd D.naut) ∧ (T2.SumRepresentations.IsobaricMultiplicityOne D.nd D.naut ↔ IsobaricDiscreteSelfDualStrongMultiplicityOne D.nd D.naut) :=
   ⟨Iff.rfl, Iff.rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem analyticRigidity_of_admissible {D : D7} (h : SumRepresentations.adm5 D) : T2.SumRepresentations.StrongMultiplicityOneCuspidalSums D.nd D.naut ∧ T2.SumRepresentations.IsobaricMultiplicityOne D.nd D.naut := ⟨h.1, h.2.1⟩
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Conclude with `h μ hμ ⟨k, by omega⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem LamUsed.at {D : D7} (h : LamUsed D) {μ} (hμ : μ = D.what₂.mu0 ∨ ∃ w, μ = D.what₂.muAt w) {j : ℕ}
     (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : LamPos D μ j := by
@@ -134,26 +134,26 @@ theorem LamUsed.at {D : D7} (h : LamUsed D) {μ} (hμ : μ = D.what₂.mu0 ∨ �
   exact h μ hμ ⟨k, by omega⟩
 
 /- English proof (translation)
-The claim follows from `h.at (Or.inr ⟨D.nd.w i, (D.nd.mu_w i).trans ((D.what₂.muAt_or _).resolve_left (D.nd.w_tw i)).symm⟩) (D.nd.j_range i).1 (D.nd.j_range i).2`.
+A detailed English derivation is pending.
 -/
 theorem LamUsed.loc {D : D7} (h : LamUsed D) (i : D.nd.Loc) : LamPos D (D.nd.mu i) (D.nd.j i) :=
   h.at (Or.inr ⟨D.nd.w i, (D.nd.mu_w i).trans ((D.what₂.muAt_or _).resolve_left (D.nd.w_tw i)).symm⟩)
     (D.nd.j_range i).1 (D.nd.j_range i).2
 
 /- English proof (translation)
-Introduce `i σ' F hF hg` and use `(PlaceLabelTeichmuller.idempotent_action_on_forms D (D.ntypes.cenMt (D.nd.mu i) (D.nd.j i)) σ' F fun k v f hf => h i σ' k v f F hF hf).1 hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem goodIdempotentFixes_of_onlySeriesOfLabelActs {D : D7} (h : GlobalTheory.TypeLeaf.SerLoc D) : GoodIdempotentFixesLocalisationForms D := fun i σ' F hF hg =>
   (PlaceLabelTeichmuller.idempotent_action_on_forms D (D.ntypes.cenMt (D.nd.mu i) (D.nd.j i)) σ' F fun k v f hf => h i σ' k v f F hF hf).1 hg
 
 /- English proof (translation)
-Introduce `i σ' F hF hg` and use `(h.2.2.2.2.1 _ _ (D.nd.j_range i).1 (D.nd.j_range i).2 σ' F hF).1 hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem goodIdempotent_of_goodProjector {D : D7} (h : ArithmeticCylinders.Conclusion4 D) : GoodIdempotentFixesLocalisationForms D :=
   fun i σ' F hF hg => (h.2.2.2.2.1 _ _ (D.nd.j_range i).1 (D.nd.j_range i).2 σ' F hF).1 hg
 
 /- English proof (translation)
-Introduce `a t s hk l th g` and use `⟨(SumRepresentations.proposition_families_iff D a.1.2.2.2.2.2.2 a.1.2.1).2 (h1 a), g, (SumRepresentations.proposition_parameters_iff_reduced D t).2 (h2 a s hk l th)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem partsGive_of {D : D7} (h1 : SumRepresentations.AdmAt D → SumRepresentations.ReducedFamilyProposition D)
     (h2 : SumRepresentations.AdmAt D → RowSize D → HeckeSplitOne D → (∀ i : D.nd.Loc, LamPos D (D.nd.mu i) (D.nd.j i)) → ThetaOne D →
@@ -166,65 +166,65 @@ variable {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (I : Inputs hL 
 include I
 
 /- English proof (translation)
-The claim follows from `I.named.hypO`.
+A detailed English derivation is pending.
 -/
 theorem hypO : SumRepresentations.hypO D := I.named.hypO
 
 /- English proof (translation)
-The claim follows from `I.named.c1`.
+A detailed English derivation is pending.
 -/
 theorem c1 : GlobalDatumCompatibility D := I.named.c1
 
 /- English proof (translation)
-The claim follows from `I.named.bc`.
+A detailed English derivation is pending.
 -/
 theorem bc : SphericalInertData.Conclusion1 D := I.named.bc
 
 /- English proof (translation)
-The claim follows from `I.named.lam`.
+A detailed English derivation is pending.
 -/
 theorem lam : LamUsed D := I.named.lam
 
 /- English proof (translation)
-The claim follows from `I.named.isot`.
+A detailed English derivation is pending.
 -/
 theorem isot : SumRepresentations.adm8 D := I.named.isot
 
 /- English proof (translation)
-The claim follows from `I.named.ser`.
+A detailed English derivation is pending.
 -/
 theorem ser : GlobalTheory.TypeLeaf.SerLoc D := I.named.ser
 
 /- English proof (translation)
-The claim follows from `I.named.typeNZ`.
+A detailed English derivation is pending.
 -/
 theorem typeNZ : ∀ j t, GlobalTheory.DownLift.TypeNZ I.X.R j t := I.named.typeNZ
 
 /- English proof (translation)
-The claim follows from `goodIdempotentFixes_of_onlySeriesOfLabelActs I.ser`.
+A detailed English derivation is pending.
 -/
 theorem e0loc : GoodIdempotentFixesLocalisationForms D := goodIdempotentFixes_of_onlySeriesOfLabelActs I.ser
 
 set_option linter.unusedSectionVars false in
 
 /- English proof (translation)
-The claim follows from `D.mtpar_tie`.
+A detailed English derivation is pending.
 -/
 theorem mtPar : MtParTie D.nd D.naut D.ntypes := D.mtpar_tie
 
 /- English proof (translation)
-The claim follows from `base_change_automorphic_of D I.bc I.c1`.
+A detailed English derivation is pending.
 -/
 theorem adm1 : SumRepresentations.adm1 D := base_change_automorphic_of D I.bc I.c1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨a.tie0, I.hypO, I.adm1, a.a2, b.a3, b.a4, a.a5⟩, a.temp⟩`.
+Supply the required witnesses or components.
 -/
 theorem admAt (a : RowsA D) (b : RowsB D) : SumRepresentations.AdmAt D :=
   ⟨⟨a.tie0, I.hypO, I.adm1, a.a2, b.a3, b.a4, a.a5⟩, a.temp⟩
 
 /- English proof (translation)
-The claim follows from `h (I.admAt a b) a.tieLab b.rowSize a.hecke I.lam.loc b.thetaOne a.g4p`.
+A detailed English derivation is pending.
 -/
 theorem Conclusion1 (h : PartsGive D) (a : RowsA D) (b : RowsB D) : SumRepresentations.Conclusion1 D :=
   h (I.admAt a b) a.tieLab b.rowSize a.hecke I.lam.loc b.thetaOne a.g4p
@@ -232,23 +232,23 @@ theorem Conclusion1 (h : PartsGive D) (a : RowsA D) (b : RowsB D) : SumRepresent
 end Inputs
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨I⟩ => ⟨I.toRowSideFamily, I.named⟩, fun ⟨T, h⟩ => ⟨⟨T, h⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_inputs_iff {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} :
     Nonempty (Inputs hL D) ↔ ∃ T : Tied hL D, Named T :=
   ⟨fun ⟨I⟩ => ⟨I.toRowSideFamily, I.named⟩, fun ⟨T, h⟩ => ⟨⟨T, h⟩⟩⟩
 
 /- English proof (translation)
-Introduce `μ _ j σ` and use `⟨fun f _ => by rw [h, h1, Complex.ofReal_one, one_smul], fun _ => by rw [h1]; exact one_pos⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example (D : D7) (h : ∀ μ j f, D.what₂.thetaP μ j (D.what₂.thetaT μ j f) = f) (h1 : ∀ μ j σ, D.what₂.lamP μ j σ = 1) :
     LamUsed D := fun μ _ j σ =>
   ⟨fun f _ => by rw [h, h1, Complex.ofReal_one, one_smul], fun _ => by rw [h1]; exact one_pos⟩
 
 /- English proof (translation)
-Introduce `h`. Take `⟨f, hf, hne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ`. Establish `h1` using `(h _ (Or.inl rfl) j σ).1 f hf`. Establish `hl : ((D.what₂.lamP D.what₂.mu0 (j.1 + 1) σ : ℝ) : ℂ) ≠ 0`. Conclude with `((h _ (Or.inl rfl) j σ).2 hσ).ne'` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h0, LinearMap.zero_apply]`. Conclude with `hne ((smul_eq_zero.1 h1.symm).resolve_left hl)`.
+A detailed English derivation is pending.
 -/
 example (D : D7) (j : Fin D.R.m) (σ : D.what₂.FT) (hσ : D.what₂.isot (j.1 + 1) σ ≠ ⊥)
     (h0 : D.what₂.thetaP D.what₂.mu0 (j.1 + 1) = 0) : ¬ LamUsed D := by
@@ -261,13 +261,13 @@ example (D : D7) (j : Fin D.R.m) (σ : D.what₂.FT) (hσ : D.what₂.isot (j.1 
   exact hne ((smul_eq_zero.1 h1.symm).resolve_left hl)
 
 /- English proof (translation)
-The claim follows from `(T.X.IL.jMt μ hμ j f).2.1`.
+A detailed English derivation is pending.
 -/
 example {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (T : Tied hL D) {μ} (hμ : Formalism.IndefR.RecTie.Used0 D μ) (j : Fin D.R.m)
     (f : D.what₂.Mt μ (j.1 + 1)) : ∃ y, T.X.R.extV j (T.X.tupT μ) y = T.X.fn hμ j f := (T.X.IL.jMt μ hμ j f).2.1
 
 /- English proof (translation)
-Introduce `h` and use `h0 ((h i σ' F hF hg).symm.trans (by rw [← D.nStage_trivialCharacter_compat.2]; exact hk))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (D : D7) (i : D.nd.Loc) (σ' : D.ntypes.Par) (F) (hF : F ∈ D.ntypes.MtPar (D.nd.mu i) (D.nd.j i) σ') (h0 : F ≠ 0)
     (hg : D.ntypes.goodPar σ') (hk : D.what₂.eMt (D.nd.mu i) (D.nd.j i) F = 0) : ¬ GoodIdempotentFixesLocalisationForms D := fun h =>

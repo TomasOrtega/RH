@@ -9,19 +9,19 @@ open MvPolynomial Finset Equiv Comb
 noncomputable section
 
 /- English proof (translation)
-Introduce `m n l hl`. Establish `hA : alternantPsum m (List.replicate n 1) = alt (stair m) * psum (Fin m) ℚ 1 ^ n`. Simplify using `only [alternantPsum, List.map_replicate, List.prod_replicate, vandermondeOf_X_eq_alt]`. Establish `hterm : ∀ σ : Perm (Fin m), cf l (monomial (ex (stair m ∘ σ.symm)) (1 : ℚ) * psum (Fin m) ℚ 1 ^ n) = ((n.factorial : ℚ) / ∏ i, ((l i).factorial : ℚ)) * ∏ i, ((l i).descFactorial (stair m (σ.symm i)) : ℚ)`. Introduce `σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1]`. Establish `hsum : ∑ i, l i = ∑ i, (stair m ∘ σ.symm) i + n`. Rewrite using `[hl, Function.comp_def, Equiv.sum_comp σ.symm (stair m)]`. Distinguish the cases in `hle : ∀ i, (stair m ∘ σ.symm) i ≤ l i`. Rewrite using `[if_pos ⟨hle, hsum⟩]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ∀ i, ((l i).descFactorial (stair m (σ.symm i)) : ℚ) = ((l i).factorial : ℚ) / ((l i - stair m (σ.symm i)).factorial : ℚ)`. Introduce `i`. Rewrite using `[eq_div_iff (by positivity), mul_comm]`. Conclude with `Nat.factorial_mul_descFactorial (hle i)` after adjusting the coercions. Simplify using `only [hd, Finset.prod_div_distrib, Function.comp_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp : (∏ i, ((l i).factorial : ℚ)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => by positivity`. Establish `hq : (∏ i, ((l i - stair m (σ.symm i)).factorial : ℚ)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => by positivity`. Clear the denominators using the available nonvanishing facts. Rewrite `hle` using `[if_neg (fun h => hle h.1)] push Not`. Take `⟨i, hi⟩` from `hle`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply] at hi`. Establish `h0 : ∏ j, ((l j).descFactorial (stair m (σ.symm j)) : ℚ) = 0` using `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [Nat.descFactorial_eq_zero_iff_lt.mpr hi])`. Rewrite using `[h0, mul_zero]`. Establish `hdet : ∑ σ : Perm (Fin m), ((Perm.sign σ : ℤ) : ℚ) * ∏ i, ((l i).descFactorial (stair m (σ.symm i)) : ℚ) = vandermondeOf (fun i => (l i : ℚ))`. Rewrite using `[← h2 m l, Matrix.det_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul, ← Equiv.prod_comp σ]`. Simplify using the standard rewrite rules. Rewrite using `[hA, alt_eq_sum, Finset.sum_mul, cf_sum]`. Repeatedly rewrite using `[smul_mul_assoc, cf_zsmul, hterm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring`. Use `_ = _ := by rw [hdet]; ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CombCfVandermondePsumOne.proof (h1 : CombCfMonomialPsumOne.Statement)
     (h2 : CombDetDescFactorial.Statement) : CombCfVandermondePsumOne.Statement := by

@@ -59,13 +59,13 @@ def HasChars (χ χ' : HChar D.host.E) : Prop :=
     ∀ x, P.W.chV'.f x ^ P.W.ep' = χ'.1 (GlobalTheory.Mem.Col2.SplitChar.finIdl D x)
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, trivial, x, h, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_hatId_top {x : AE D} (h : x ∈ OhE D) : x ∈ hatId D ⊤ :=
   AddSubgroup.subset_closure ⟨1, trivial, x, h, by simp⟩
 
 /- English proof (translation)
-Establish `: (D.host.conj • ⊤ : Ideal (𝓞 D.host.E)) = ⊤`. Rewrite using `[← Ideal.one_eq_top, smul_one]`. Simplify using `[skewLat, stdL, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem skewLat_top (N : ℕ) : skewLat D ⊤ N = stdL D N := by
   have : (D.host.conj • ⊤ : Ideal (𝓞 D.host.E)) = ⊤ := by
@@ -73,11 +73,11 @@ theorem skewLat_top (N : ℕ) : skewLat D ⊤ N = stdL D N := by
   simp [skewLat, stdL, this]
 
 /- English proof (translation)
-Use `AddSubgroup.subset_closure ⟨δ, AddSubgroup.subset_closure ⟨1, trivial, by simp⟩, _, ?_, rfl⟩` and prove the remaining obligations. Use `Submodule.subset_span ⟨1, ?_, _, Submodule.subset_span fun x hx i _ => ?_, (one_smul _ _).symm⟩` and prove the remaining obligations. Use `FractionalIdeal.one_mem_inv_coe_ideal fun h => ?_` and prove the remaining obligations. Establish `h2` using `D.host.𝔟_spec.2`. Rewrite `h2` using `[h, Ideal.smul_bot, sup_bot_eq]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `bot_ne_top h2`. Establish `: ∑ j, unitBlock D o a d i j * x j ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)` using `sum_mem fun j _ => by`. Use `hx j trivial` as an intermediate fact. Distinguish the cases in `h : i.1 = o + j.1`. Simplify `this` using `[unitBlock, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `[unitBlock, h]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem pt_unitBlock_mem (δ : ℂ) (o a d : ℕ) : pt D (tor0 D ⊤ δ) δ (unitBlock D o a d) ∈ La0 D (tor0 D ⊤ δ) a d := by
   refine AddSubgroup.subset_closure ⟨δ, AddSubgroup.subset_closure ⟨1, trivial, by simp⟩, _, ?_, rfl⟩
@@ -94,9 +94,9 @@ theorem pt_unitBlock_mem (δ : ℂ) (o a d : ℕ) : pt D (tor0 D ⊤ δ) δ (uni
     exact this
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `e : cosetVec P ⊤ o = P.e0`. Rewrite using `[cosetVec, skewLat_top, show La D _ _ _ = La0 D (tor0 D ⊤ δ) P.a P.d from rfl, VacMove.iop_self D _ (La0 D _ _ _) P.vac.1, VacMove.wd_fix h1 P.crv (VacMove.klat _ (VacMove.moves_one D _) (VacMove.moves_one D _)) P.vac.1 (pt_unitBlock_mem δ o _ _)]`. Simplify using the standard rewrite rules. Use `⟨⟨{1}, by simp, fun k hk => ⟨1, ⟨by simp, fun i j => mem_hatId_top ?_⟩, fun r hr => by simpa using hr.1⟩, ?_⟩, fun h => ⟨fun hh => ⟨hJ ▸ hh, fun i j _ _ => mem_hatId_top (((mem_intG h).1 (hJ ▸ hh)) i j).1⟩, fun hh => hJ ▸ hh.1⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inv_one, one_mul, Matrix.sub_apply]`. Conclude with `sub_mem ((mem_intG k).1 hk i j).1 ((mem_intG 1).1 (one_mem _) i j).1`. Rewrite using `[Finset.sum_singleton, e, P.W.one _ (VacMove.vac_TT h1 P.crv P.vac.1), hF]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isStdDatum_top (P : Pair D ⊤ δ t0 Q) (hF : P.F = P.e0) (hJ : P.J = intG D P.d) (o a : ℕ) :
     IsStdDatum P ⊤ o ∧ IsBlockLevel P ⊤ a := by
@@ -127,7 +127,7 @@ variable {σ}
 omit [NumberField K] in
 
 /- English proof (translation)
-Set `` to `σ.toAlgebra`. Conclude with `minpoly.eq_of_irreducible_of_monic h.2.1 h.2.2 h.1`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem IsMinPol.eq_minpoly {β : ℂ} {p : K[X]} (h : IsMinPol σ β p) : p = @minpoly K ℂ _ _ σ.toAlgebra β := by
   let := σ.toAlgebra
@@ -136,7 +136,7 @@ theorem IsMinPol.eq_minpoly {β : ℂ} {p : K[X]} (h : IsMinPol σ β p) : p = @
 omit [NumberField K] in
 
 /- English proof (translation)
-Set `` to `σ.toAlgebra`. Establish `: IsScalarTower ℚ K ℂ` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `hi : IsIntegral K β` using `(h.tower_top K).isIntegral`. Conclude with `⟨minpoly K β, minpoly.monic hi, minpoly.irreducible hi, minpoly.aeval K β⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_isMinPol {β : ℂ} (h : IsAlgebraic ℚ β) [Algebra ℚ K] : ∃ p, IsMinPol σ β p := by
   let := σ.toAlgebra
@@ -147,7 +147,7 @@ theorem exists_isMinPol {β : ℂ} (h : IsAlgebraic ℚ β) [Algebra ℚ K] : �
 omit [NumberField K] in
 
 /- English proof (translation)
-Use `⟨fun hc => h0 ?_, h.2.1.natDegree_pos.ne'⟩` and prove the remaining obligations. Establish `e : p = X` using `eq_of_monic_of_associated h.1 monic_X (irreducible_X.associated_of_dvd h.2.1 (X_dvd_iff.2 hc)).symm`. Simplify `h.2.2` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsMinPol.ne_zero {β : ℂ} {p : K[X]} (h : IsMinPol σ β p) (h0 : β ≠ 0) : p.coeff 0 ≠ 0 ∧ p.natDegree ≠ 0 := by
   refine ⟨fun hc => h0 ?_, h.2.1.natDegree_pos.ne'⟩
@@ -156,7 +156,7 @@ theorem IsMinPol.ne_zero {β : ℂ} {p : K[X]} (h : IsMinPol σ β p) (h0 : β �
   simpa [e] using h.2.2
 
 /- English proof (translation)
-Establish `h' : IsMinPol σ (σ b) (X - C b)` using `⟨monic_X_sub_C b, irreducible_X_sub_C b, by simp⟩`. Establish `e : FractionalIdeal.spanSingleton (𝓞 K)⁰ (-b) = FractionalIdeal.spanSingleton (𝓞 K)⁰ b` using `FractionalIdeal.spanSingleton_eq_spanSingleton.2 ⟨-1, by simp⟩`. Rewrite using `[h.eq_minpoly.trans h'.eq_minpoly.symm]`. Simplify using `[meanVal_vw, vw, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem meanVal_of_mem {b : K} {p : K[X]} (h : IsMinPol σ (σ b) p) (w : Formalism.PairingDivisionLocalBalance.Pl K) : meanVal_vw w p = vw w b := by
   have h' : IsMinPol σ (σ b) (X - C b) := ⟨monic_X_sub_C b, irreducible_X_sub_C b, by simp⟩
@@ -166,7 +166,7 @@ theorem meanVal_of_mem {b : K} {p : K[X]} (h : IsMinPol σ (σ b) p) (w : Formal
   simp [meanVal_vw, vw, e]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `e`. Take `⟨x, y, e'⟩` from `(Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hl hl').2 e)).map (Int.castRingHom (𝓞 K))`. Use `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[← e']`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (by simpa using h)) (Ideal.mul_mem_left _ _ (by simpa using h'))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_unique {w : Formalism.PairingDivisionLocalBalance.Pl K} {l l' : ℕ} (hl : l.Prime) (hl' : l'.Prime) (h : (l : 𝓞 K) ∈ w.asIdeal)
     (h' : (l' : 𝓞 K) ∈ w.asIdeal) : l = l' := by
@@ -177,7 +177,7 @@ theorem prime_unique {w : Formalism.PairingDivisionLocalBalance.Pl K} {l l' : �
   exact add_mem (Ideal.mul_mem_left _ _ (by simpa using h)) (Ideal.mul_mem_left _ _ (by simpa using h'))
 
 /- English proof (translation)
-Use `(h.biUnion (t := fun w => {l : ℕ | l.Prime ∧ (l : 𝓞 K) ∈ w.asIdeal}) fun w _ => Set.Subsingleton.finite fun l hl l' hl' => prime_unique hl.1 hl'.1 hl.2 hl'.2).subset ?_` and prove the remaining obligations. Introduce and unpack `l ⟨hl, w, h, h'⟩`. Conclude with `Set.mem_biUnion (x := w) h ⟨hl, h'⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem finite_primes_under {p : Formalism.PairingDivisionLocalBalance.Pl K → Prop} (h : {w | p w}.Finite) :
     {l : ℕ | l.Prime ∧ ∃ w, p w ∧ (l : 𝓞 K) ∈ w.asIdeal}.Finite := by
@@ -187,7 +187,7 @@ theorem finite_primes_under {p : Formalism.PairingDivisionLocalBalance.Pl K → 
   exact Set.mem_biUnion (x := w) h ⟨hl, h'⟩
 
 /- English proof (translation)
-Use `(Set.finite_iUnion fun i => (Set.finite_Icc (1 : ℤ) (u i)).biUnion fun s _ => c i s).subset ?_` and prove the remaining obligations. Introduce and unpack `l ⟨hl, i, s, h⟩`. Use `Set.mem_iUnion.2 ⟨i, Set.mem_biUnion (x := s) (by_contra fun hs => h ?_) ⟨hl, h⟩⟩` and prove the remaining obligations. Rewrite using `[b i s hs]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finite_primes_den {ι : Type} [Finite ι] {n : ι → ℤ → ℕ → ℝ} {u : ι → ℤ}
     (b : ∀ i s, ¬ (1 ≤ s ∧ s ≤ u i) → n i s = 0) (c : ∀ i s, {l | l.Prime ∧ n i s l ≠ 0}.Finite) :
@@ -198,7 +198,7 @@ theorem finite_primes_den {ι : Type} [Finite ι] {n : ι → ℤ → ℕ → �
   rw [b i s hs]; rfl
 
 /- English proof (translation)
-Establish `h1 : n - a ≤ ⌊y⌋` using `Int.le_floor.2 (by push_cast; linarith)`. Establish `h2` using `Int.floor_le_ceil y`. Unfold `truncZero`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem le_add_truncZero {n a : ℤ} {y : ℝ} (h : (n : ℝ) ≤ a + y) : n ≤ a + truncZero y := by
   have h1 : n - a ≤ ⌊y⌋ := Int.le_floor.2 (by push_cast; linarith)
@@ -217,9 +217,9 @@ def botSmall (i j : ℕ) : ℕ := rankV D i j - 2 * ((D.R.m - j) / 2)
 def halfRank (i j : ℕ) : ℕ := (rankV D (i + 1) (j + 1) + rankV D i j) / 2
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `D.R.t_odd`. Take `⟨v, hv⟩` from `odd_sLen D`. Establish `e : rankV D (i + 1) (j + 1) = rankV D i j + D.R.t + sLen D` using `by simp only [rankV]; ring`. Establish `h1 : D.R.r ≤ rankV D i j` using `by simp only [rankV]; omega`. Establish `h2 : D.R.m ≤ D.R.r` using `by have := D.R.m_add_three_le_k; unfold Ranks.r; omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [botBig, botSmall, halfRank]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ranks_exact (i j : ℕ) : botBig D i j + 2 * ((D.R.m - (j + 1)) / 2) = rankV D (i + 1) (j + 1) ∧
     botSmall D i j + 2 * ((D.R.m - j) / 2) = rankV D i j ∧
@@ -243,7 +243,7 @@ def wtA' (C : ℝ) (i j : ℕ) (τ : D.what₂.Tau) : ℤ :=
   (-2 * cen D C τ (D.R.m - i) - (rankV D i j % 2 : ℕ) + botBig D i j) / 2
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `ranks_exact D i j`. Simplify using `only [wtA, wtA']`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_mul_wtA_sub (C : ℝ) (i j : ℕ) (τ : D.what₂.Tau) : 2 * (wtA D C i j τ - wtA' D C i j τ) =
     2 * ((num D C τ).e (j + 1) + cen D C τ (D.R.m - i)) - (botBig D i j + botSmall D i j : ℕ) := by
@@ -269,12 +269,12 @@ def condE (P : Places L) : Ideal (𝓞 D.host.E) := ∏ v ∈ P.S0, (P.w v).asId
 def levQ (P : Places L) : ℕ := ∏ v ∈ P.S0, Ideal.absNorm v.asIdeal ^ condExp P v
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (P.w v).ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem condE_ne_bot (P : Places L) : condE P ≠ ⊥ := Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (P.w v).ne_bot
 
 /- English proof (translation)
-Rewrite using `[levQ, Nat.cast_prod, Real.log_prod fun v _ => by`. Conclude with `pow_ne_zero _ (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)]` after adjusting the coercions. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem log_levQ (P : Places L) :
     Real.log (levQ P) = ∑ v ∈ P.S0, (condExp P v : ℝ) * Real.log (Ideal.absNorm v.asIdeal) := by
@@ -293,18 +293,18 @@ def alphaH (L : LevCh D T) (t : T) (i j : Fin D.R.m) : HChar D.host.E := L.C.mu0
 def betaH : HChar D.host.E := G.ch.chiH (D.R.m - i) * L.C.eta ^ (rankV D i j % 2)
 
 /- English proof (translation)
-The claim follows from `mul_div_mul_right_eq_div _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem alphaH_div_betaH : alphaH L t i j / betaH G i j = nuH G t i j := mul_div_mul_right_eq_div _ _ _
 
 open Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum in
 
 /- English proof (translation)
-Establish `h1` using `hL.mu0 j`. Establish `h2` using `hL.xi t`. Establish `h3` using `G.ch.chi_eq (D.R.m - i) (by omega) (by omega)`. Use `⟨⟨(h1.1.1.mul h2.1.1).div' h3.1.1, fun x => ?_⟩, fun P e he k x hx => ?_⟩` and prove the remaining obligations. Use `show L.mu0 (j + 1) _ * L.xi t _ / G.ch.chi (D.R.m - i) _ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1.1.2, h2.1.2, h3.1.2]`. Simplify using the standard rewrite rules. Establish `e1 : G.nu t i (j + 1) x = L.mu0 (j + 1) x * L.xi t x / G.ch.chi (D.R.m - i) x` using `rfl`. Establish `e2 : (nuH G t i j).locK P k = (L.C.mu0 j).locK P k * (L.xiH t).locK P k / (G.ch.chiH (D.R.m - i)).locK P k` using `rfl`. Rewrite using `[e1, e2, Circle.coe_div, Circle.coe_mul, h1.2 P e he k x hx, h2.2 P e he k x hx, h3.2 P e he k x hx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem chrEq_nu {μ₀ : T} (hL : L.Is μ₀) : ChrEq (G.nu t i (j + 1)) (nuH G t i j) := by
   have h1 := hL.mu0 j
@@ -360,7 +360,7 @@ def IsIntExp (C : ℝ) (dl : Formalism.PairingDivisionLocalBalance.Pl D.what₂.
 variable {G t i j}
 
 /- English proof (translation)
-Take `⟨x, h1, h0, h2, -⟩` from `h`. Take `⟨x', h1', -, h2', -⟩` from `h'`. Take `rfl` from `h1.2.unique h1'.2`. Conclude with `funext fun c => D.what₂.embLL.injective (mul_right_cancel₀ h0 ((h2 c).2.unique (h2' c).2))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsTorVal.coord_unique {s : ℕ} {zd zd' g g'} (h : IsTorVal G t i j s zd g) (h' : IsTorVal G t i j s zd' g') :
     zd = zd' := by
@@ -370,7 +370,7 @@ theorem IsTorVal.coord_unique {s : ℕ} {zd zd' g g'} (h : IsTorVal G t i j s zd
   exact funext fun c => D.what₂.embLL.injective (mul_right_cancel₀ h0 ((h2 c).2.unique (h2' c).2))
 
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `h`. Use `⟨C, hC, fun D T L sc G h1 h2 h3 => ?_⟩` and prove the remaining obligations. Establish `hN : 1 ≤ bigN D` using `by have := D.R.m_add_three_le_k; unfold bigN; omega`. Take `⟨S, del, h4, h5, h6⟩` from `h D _ (bigN D) (maxWt D sc.cGap) _ h1 hN (by exact_mod_cast le_max_left _ _) h2 h3`. Conclude with `⟨_, S, del, h4, h5, h6, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isIntExp (h : GlobalTheory.NormSum.IntSt) : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7) (T : Type) (L : LevCh D T) (sc : Consts)
     (G : GridData L sc), GlobalTheory.NormSum.GoodLevel D (levQ G.pl) → 1 ≤ Real.log sc.b → Real.log D.host.rdE ≤ Real.log sc.b →
@@ -424,14 +424,14 @@ variable {W : G.Weil} {B : Frames G} {ρ : RealMatch W} {C : ℝ} {μ₀ : T} {�
 include h
 
 /- English proof (translation)
-Take `⟨c, h0, hc⟩` from `h.ratio ij`. Conclude with `D.what₂.embLL.injective (mul_right_cancel₀ h0 (by rw [(hc _ (Or.inl rfl)).2.2, map_one, one_mul]))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rq_base (ij : Fin D.R.m × Fin D.R.m) : rq μ₀ ij = 1 := by
   obtain ⟨c, h0, hc⟩ := h.ratio ij
   exact D.what₂.embLL.injective (mul_right_cancel₀ h0 (by rw [(hc _ (Or.inl rfl)).2.2, map_one, one_mul]))
 
 /- English proof (translation)
-Take `⟨c', -, hc⟩` from `h.ratio ij`. Rewrite using `[h₀.unique (hc _ (Or.inl rfl)).1 (hc _ (Or.inl rfl)).2.1, h₁.unique (hc t ht).1 (hc t ht).2.1, (hc t ht).2.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rq_mul {ij : Fin D.R.m × Fin D.R.m} {t : T} (ht : t = μ₀ ∨ ∃ w, μ w = t) {c₀ c : ℂ}
     (h₀ : IsSquareConst W B ρ μ₀ ij.1 ij.2 c₀) (h₁ : IsSquareConst W B ρ t ij.1 ij.2 c) : D.what₂.embLL (rq t ij) * c₀ = c := by
@@ -439,9 +439,9 @@ theorem rq_mul {ij : Fin D.R.m × Fin D.R.m} {t : T} (ht : t = μ₀ ∨ ∃ w, 
   rw [h₀.unique (hc _ (Or.inl rfl)).1 (hc _ (Or.inl rfl)).2.1, h₁.unique (hc t ht).1 (hc t ht).2.1, (hc t ht).2.2]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Host.CharFrame.delAt`. Use `split_ifs with e`. Rewrite using `[(h.choice w).2 (e ▸ hw)]`. Both sides reduce to the same expression. Establish `: ch w = false` using `Bool.eq_false_iff.2 fun hc => e (prime_unique hl D.host.pde_prime hw ((h.choice w).1 hc))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem delOf_ch {l : ℕ} (hl : l.Prime) {w : Formalism.PairingDivisionLocalBalance.Pl D.what₂.LL} (hw : (l : 𝓞 D.what₂.LL) ∈ w.asIdeal) :
     delOf L (ch w) = L.C.delAt l := by
@@ -456,11 +456,11 @@ end IsSqOf
 open Classical in
 
 /- English proof (translation)
-Establish `H : ∀ (ij : Fin D.R.m × Fin D.R.m) (s : ℤ), ∃ (zd : Bool → D.what₂.LL) (g : Formalism.PairingDivisionLocalBalance.Pl D.what₂.LL → ℤ) (n : ℕ → ℝ), (∀ s' : ℕ, s = s' → 1 ≤ s' → s' ≤ halfRank D ij.1 ij.2 → IsTorVal G μ₀ ij.1 ij.2 s' zd g ∧ IsDenom G ij.1 ij.2 s' n) ∧ (¬ (1 ≤ s ∧ s ≤ …`. Introduce `ij s`. Distinguish the cases in `hs : 1 ≤ s ∧ s ≤ halfRank D ij.1 ij.2`. Take `⟨zd, g, n, a, b, c⟩` from `h3 ij s.toNat (by omega) (by omega)`. Use `⟨zd, g, n, fun s' e _ _ => ?_, fun h => absurd hs h, c⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : s' = s.toNat` from `by omega`. Conclude with `⟨a, b⟩`. Conclude with `⟨1, 0, 0, fun s' e _ _ => absurd ⟨by omega, by omega⟩ hs, fun _ => ⟨fun _ => rfl, rfl, rfl⟩, by simp⟩`. Use `choose zd g n a b c using H`. Establish `f1` using `finite_primes_den (fun ij s hs => (b ij s hs).2.2) c`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f2` using `finite_primes_under h5`. Conclude with `⟨fun _ _ => 1, fun ij c s => zd ij s c, g, fun w => decide (((D.host.pde : ℕ) : 𝓞 D.what₂.LL) ∈ w.asIdeal), n, f1.toFinset, f2.toFinset, _, h1, h2, fun _ _ => rfl, fun ij s => a ij s s rfl, b, fun _ => decide_eq_true_iff, fun _ => f1.mem_toFinset, fun _ => f2.mem_toFinset, h4, rf …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isSqOf {W : G.Weil} {B : Frames G} {ρ : RealMatch W} {C : ℝ} {μ₀ : T} {μ : Formalism.PairingDivisionLocalBalance.Pl D.what₂.LL → T}
     {rq : T → Fin D.R.m × Fin D.R.m → D.what₂.LL} {zA zA' : Fin D.R.m × Fin D.R.m → D.what₂.LL} {dl}
@@ -492,12 +492,12 @@ theorem exists_isSqOf {W : G.Weil} {B : Frames G} {ρ : RealMatch W} {C : ℝ} {
     fun _ => f1.mem_toFinset, fun _ => f2.mem_toFinset, h4, rfl⟩
 
 /- English proof (translation)
-Simplify using `[unitBlock]`.
+Simplify using the standard rewrite rules.
 -/
 example : unitBlock D 1 1 2 1 0 = 1 ∧ unitBlock D 1 1 2 0 0 = 0 := by simp [unitBlock]
 
 /- English proof (translation)
-Simplify using `[meanVal_vw]`.
+Simplify using the standard rewrite rules.
 -/
 example {K : Type} [Field K] [NumberField K] (w : Formalism.PairingDivisionLocalBalance.Pl K) (a : K) :
     meanVal_vw w (X ^ 2 + C a) = vw w a / 2 := by simp [meanVal_vw]

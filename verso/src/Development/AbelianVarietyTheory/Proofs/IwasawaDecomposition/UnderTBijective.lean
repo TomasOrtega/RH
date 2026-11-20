@@ -16,15 +16,13 @@ def underT {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (u : Pr.Word) (P : Pr.vT u
     exact T_mem_vT hPr u P⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `P Q h`. Establish `h1 : P.1.asIdeal.under (𝓞 Z.X.F) = Q.1.asIdeal.under (𝓞 Z.X.F)` using `congrArg (fun v => v.1.asIdeal) h`. Break down `GlobalTheory.CharVal.eq_or_eq_conjP hX (GlobalTheory.CharVal.splitOver_vT hX hPr u Q.2).ne h1 with e | e` into its components or cases. Conclude with `Subtype.ext e`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `absurd ?_ (conj_piT_notMem hPr u Q)` and prove the remaining obligations. Use `decoFin_mem_of_mem_divs P.2` as an intermediate fact. Rewrite `this` using `[e, mem_conjP]`. Conclude with `this`. Introduce and unpack `⟨v, hv⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, hQv⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 Z.X.E) v.asIdeal`. Establish `hT : ((Z.Pr.T u : ℕ) : 𝓞 Z.X.E) ∈ Q`. Rewrite `hv` using `[hQv.over, Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hne : Q ≠ ⊥` using `fun e => by`. Rewrite `hT` using `[e, Ideal.mem_bot]`. Conclude with `(hPr.T_prime u).ne_zero (by exact_mod_cast hT)`. Set `P : HeightOneSpectrum (𝓞 Z.X.E)` to `⟨Q, hQ.isPrime, hne⟩`. Rewrite `hT` using `[← hPr.piT_norm u]`.
-
-Break down `hQ.isPrime.mem_or_mem hT with h | h` into its components or cases. Conclude with `⟨⟨P, (mem_divs (hPr.piT_ne_zero u) P).2 h⟩, Subtype.ext (HeightOneSpectrum.ext hQv.over.symm)⟩`. Conclude with `⟨⟨conjPrime₂ P, (mem_divs (hPr.piT_ne_zero u) _).2 ((mem_conjP P _).2 h)⟩, Subtype.ext (HeightOneSpectrum.ext ((GlobalTheory.CharVal.under_conjP hX P).trans hQv.over.symm))⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem underT_bijective {Z : Dat} (hX : Z.X.Ok) (hPr : Z.Pr.Ok) (u : Z.Pr.Word) : Function.Bijective (underT hPr u) := by
   constructor
@@ -54,7 +52,7 @@ theorem underT_bijective {Z : Dat} (hX : Z.X.Ok) (hPr : Z.Pr.Ok) (u : Z.Pr.Word)
         Subtype.ext (HeightOneSpectrum.ext ((GlobalTheory.CharVal.under_conjP hX P).trans hQv.over.symm))⟩
 
 /- English proof (translation)
-Rewrite `hw` using `[← map_natCast (X.embO τ), ← hPr.piT_norm u, map_mul]`. Use `(w.isPrime.mem_or_mem hw).resolve_left fun h => hs fun τ' => ?_` and prove the remaining obligations. Rewrite using `[show X.embO τ' (Pr.piT u) = X.embO τ (Pr.piT u) from RingOfIntegers.ext (hPr.piT_Kq u _ _)]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seenBar_of_not {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (u : Pr.Word) {w : HeightOneSpectrum (𝓞 X.K)}
     (hw : ((Pr.T u : ℕ) : 𝓞 X.K) ∈ w.asIdeal) (hs : ¬ seenC Pr u w) (τ : X.Tau) :
@@ -65,13 +63,13 @@ theorem seenBar_of_not {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (u : Pr.Word) 
   exact h
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 theorem mk_surj {X : Fields} (P : HeightOneSpectrum (𝓞 X.E)) : Function.Surjective (Ideal.Quotient.mk P.asIdeal) :=
   Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.eq_zero_iff_mem.symm`.
+A detailed English derivation is pending.
 -/
 theorem mk_zero {X : Fields} (P : HeightOneSpectrum (𝓞 X.E)) (x : 𝓞 X.E) : x ∈ P.asIdeal ↔ Ideal.Quotient.mk P.asIdeal x = 0 :=
   Ideal.Quotient.eq_zero_iff_mem.symm
@@ -115,7 +113,7 @@ def atTTied {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Late
       exact h3 ▸ h2
 
 /- English proof (translation)
-Introduce `I _ _ l Z u` and use `⟨atTTied I l Z u, fun _ => rfl, rfl, by unfold atTTied; rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_atTTied : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ u : B.Word, ∃ A : AtTTied (D := (I.rec7 l Z)) u, I.IdV l u I.mu0 A.eV ∧ A.piU = X.piT u ∧ A.res = I.resT l u I.mu0 :=
   fun I _ _ l Z u => ⟨atTTied I l Z u, fun _ => rfl, rfl, by unfold atTTied; rfl⟩

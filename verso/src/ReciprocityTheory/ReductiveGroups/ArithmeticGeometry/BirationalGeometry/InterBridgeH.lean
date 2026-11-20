@@ -15,9 +15,9 @@ def goodT (A : FinHolAtlas e X) (q : X → Fin e → ℂ) (j : Fin A.n) : Set (F
     LinearMap.det (fderiv ℂ (q ∘ (A.chart j).symm) u : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) ≠ 0}
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `u ⟨hut, han, hdet⟩`. Establish `h1 : ∀ᶠ v in 𝓝 u, v ∈ (A.chart j).target` using `(A.chart j).open_target.mem_nhds hut`. Establish `h2 : ∀ᶠ v in 𝓝 u, AnalyticAt ℂ (q ∘ (A.chart j).symm) v` using `han.eventually_analyticAt`. Establish `hc : ContinuousAt (fun v => ContinuousLinearMap.det (fderiv ℂ (q ∘ (A.chart j).symm) v)) u` using `ContinuousLinearMap.continuous_det.continuousAt.comp han.fderiv.continuousAt`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ᶠ v in 𝓝 u, ContinuousLinearMap.det (fderiv ℂ (q ∘ (A.chart j).symm) v) ≠ 0` using `hc.eventually_ne hdet`. Use `filter_upwards [h1, h2, h3] with v a b c`. Conclude with `⟨a, b, c⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isOpen_goodT (A : FinHolAtlas e X) (q : X → Fin e → ℂ) (j : Fin A.n) :
     IsOpen (goodT A q j) := by
@@ -33,9 +33,9 @@ theorem isOpen_goodT (A : FinHolAtlas e X) (q : X → Fin e → ℂ) (j : Fin A.
   exact ⟨a, b, c⟩
 
 /- English proof (translation)
-Introduce and unpack `u ⟨hut, hug⟩`. Use `⟨hut, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hS`. Apply `hug` to reduce the goal to its premises. Establish `hx` using `(A.chart j).map_target hut`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hr : (A.chart j) ((A.chart j).symm u) = u` using `(A.chart j).right_inv hut`. Take `⟨h1, h2⟩` from `hq _ hS j hx`. Rewrite `h1`, `h2` using `[hr]`. Conclude with `⟨hut, h1, h2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem target_diff_goodT_subset (A : FinHolAtlas e X) (q : X → Fin e → ℂ) (S : Set X)
     (hq : ∀ x ∉ S, ∀ j, x ∈ (A.chart j).source →
@@ -54,13 +54,13 @@ theorem target_diff_goodT_subset (A : FinHolAtlas e X) (q : X → Fin e → ℂ)
   exact ⟨hut, h1, h2⟩
 
 /- English proof (translation)
-Establish `hχc : ContinuousOn (fun u => Pt.χ j ((A.chart j).symm u)) (A.chart j).target`. Use `((Pt.smooth j) j).continuousOn` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `hKc : IsCompact ((A.chart j) '' tsupport (Pt.χ j))` using `(isClosed_tsupport _).isCompact.image_of_continuousOn ((A.chart j).continuousOn.mono (Pt.tsupport_subset j))`. Establish `hKt : (A.chart j) '' tsupport (Pt.χ j) ⊆ (A.chart j).target`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(A.chart j).map_source (Pt.tsupport_subset j hx)`. Establish `hI` using `hg j _ hKt hKc`. Establish `hI2 : IntegrableOn (fun u => Pt.χ j ((A.chart j).symm u) * (g ((A.chart j).symm u) * locDens A Φ j u)) ((A.chart j) '' tsupport (Pt.χ j))` using `by first`. Consider the case `exact hI.continuousOn_mul (hχc.mono hKt) hKc`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact IntegrableOn.continuousOn_mul (hχc.mono hKt) hI hKc`. Simplify using `only [mul_assoc]`. Use `hI2.of_forall_diff_eq_zero (A.chart j).open_target.measurableSet ?_` and prove the remaining obligations. Introduce and unpack `u ⟨hut, huK⟩`. Establish `hn : (A.chart j).symm u ∉ tsupport (Pt.χ j)` using `fun h => huK ⟨_, h, (A.chart j).right_inv hut⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Pt.χ j ((A.chart j).symm u) = 0` using `by first`. Consider the case `exact image_eq_zero_of_nmem_tsupport hn`. Consider the case `exact image_eq_zero_of_notMem_tsupport hn`. Rewrite using `[h0, zero_mul]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_chart [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
     (Pt : ChartPartition A) (Φ : Fin e → LocPot X) (g : X → ℝ) (hg : MIntegrable A Φ g)
@@ -94,11 +94,11 @@ theorem integrableOn_chart [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
   rw [h0, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hu, hy'⟩`. Establish `hx` using `(A.chart j).map_target hu.1`. Establish `hxS : (A.chart j).symm u ∉ S` using `fun hS => hy ⟨u, ⟨hu, hS⟩, hy'⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨(A.chart j).symm u, ⟨hx, hy', hxS⟩, (A.chart j).right_inv hu.1⟩`. Introduce and unpack `⟨x, ⟨hx, hqx, hxS⟩, rfl⟩`. Establish `hl : (A.chart j).symm (A.chart j x) = x` using `(A.chart j).left_inv hx`. Take `⟨h1, h2⟩` from `hq x hxS j hx`. Use `⟨⟨(A.chart j).map_source hx, h1, h2⟩, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show q ((A.chart j).symm (A.chart j x)) ∈ ({y} : Set (Fin e → ℂ))`. Rewrite using `[hl]`. Conclude with `hqx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodT_fibre_eq (A : FinHolAtlas e X) (q : X → Fin e → ℂ) (S : Set X)
     (hq : ∀ x ∉ S, ∀ j, x ∈ (A.chart j).source →
@@ -123,19 +123,19 @@ theorem goodT_fibre_eq (A : FinHolAtlas e X) (q : X → Fin e → ℂ) (S : Set 
     exact hqx
 
 /- English proof (translation)
-Establish `hxc : x ∈ (A.chart (chartIdx A x)).source` using `Classical.choose_spec (A.cover x)`. Establish `hl : (A.chart j).symm (A.chart j x) = x` using `(A.chart j).left_inv hx`. Establish `hut : A.chart j x ∈ (A.chart j).target` using `(A.chart j).map_source hx`. Establish `hmem : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart (chartIdx A x)).source` using `⟨hut, by show (A.chart j).symm (A.chart j x) ∈ (A.chart (chartIdx A x)).source`. Rewrite using `[hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxc⟩`. Establish `hD` using `locDensChart A Φ hΦ j (chartIdx A x) (A.chart j x) hut hmem.2`. Rewrite `hD` using `[hl]`. Establish `hTan : AnalyticAt ℂ (A.chart (chartIdx A x) ∘ (A.chart j).symm) (A.chart j x)` using `A.holo j (chartIdx A x) _ hmem`. Establish `hTu : (A.chart (chartIdx A x) ∘ (A.chart j).symm) (A.chart j x) = A.chart (chartIdx A x) x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hl]`. Take `⟨hqc, -⟩` from `hq x hxS (chartIdx A x) hxc`. Take `⟨-, hdj⟩` from `hq x hxS j hx`. Establish `heq : (q ∘ (A.chart j).symm) =ᶠ[𝓝 (A.chart j x)] (q ∘ (A.chart (chartIdx A x)).symm) ∘ (A.chart (chartIdx A x) ∘ (A.chart j).symm)`. Establish `hopen : (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart (chartIdx A x)).source ∈ 𝓝 (A.chart j x)` using `((A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target (A.chart (chartIdx A x)).open_source).mem_nhds hmem`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hopen] with y hy`. Simplify using `only [Function.comp_apply]`. Rewrite using `[(A.chart (chartIdx A x)).left_inv hy.2]`. Establish `hfd : fderiv ℂ (q ∘ (A.chart j).symm) (A.chart j x) = (fderiv ℂ (q ∘ (A.chart (chartIdx A x)).symm) (A.chart (chartIdx A x) x)).comp (fderiv ℂ (A.chart (chartIdx A x) ∘ (A.chart j).symm) (A.chart j x))`. Rewrite using `[heq.fderiv_eq, fderiv_comp _ (by rw [hTu]; exact hqc.differentiableAt) hTan.differentiableAt, hTu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : LinearMap.det (fderiv ℂ (q ∘ (A.chart j).symm) (A.chart j x) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) = LinearMap.det (fderiv ℂ (q ∘ (A.chart (chartIdx A x)).symm) (A.chart (chartIdx A x) x) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) * LinearMap.det (fderiv ℂ (A.chart (chartIdx A x) ∘ (A.ch …`. Rewrite using `[hfd]`. Conclude with `LinearMap.det_comp _ _`. Establish `hT0 : ‖LinearMap.det (fderiv ℂ (A.chart (chartIdx A x) ∘ (A.chart j).symm) (A.chart j x) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hdj` using `[hdet, h, mul_zero]`. Conclude with `hdj rfl`. Establish `hQ0 : ‖LinearMap.det (fderiv ℂ (q ∘ (A.chart (chartIdx A x)).symm) (A.chart (chartIdx A x) x) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Introduce `h`. Rewrite `hdj` using `[hdet, h, zero_mul]`. Conclude with `hdj rfl`. Rewrite using `[hl, jacN, pushDens, hD, hdet, norm_mul, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem fib_term (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i))
     (q : X → Fin e → ℂ) (S : Set X)

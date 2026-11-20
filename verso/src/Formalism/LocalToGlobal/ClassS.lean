@@ -78,12 +78,12 @@ def LinkedFamiliesAligned : FamClass := fun {_} Fm =>
     Formalism.MainNotions.TameDistinctF Fm
 
 /- English proof (translation)
-The claim follows from `h.1.1`.
+A detailed English derivation is pending.
 -/
 theorem LinkedFamiliesAligned.c2s {eps : ℝ} {Fm : FamP eps} (h : LinkedFamiliesAligned Fm) : LinkedFamiliesLevelClass Fm := h.1.1
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx hx0 i => let ⟨T, _⟩ := h x hx hx0 i; ⟨T⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LinkedFamiliesOneLevel.c2s {eps : ℝ} {Fm : FamP eps} (h : LinkedFamiliesOneLevel Fm) : LinkedFamiliesLevelClass Fm := by
   obtain ⟨x0, h⟩ := h

@@ -13,7 +13,7 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory.LocalStabiliserHaar
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gramR, gramE, hE, hR, Formalism.UG.hform, ratTup, JR, sigR, inclR, Matrix.map_apply, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramR_ratTup {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] (σ : E →ₐ[F] E) {n a : ℕ} (J : Matrix (Fin n) (Fin n) E)
@@ -23,7 +23,7 @@ theorem gramR_ratTup {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [
   simp [gramR, gramE, hE, hR, Formalism.UG.hform, ratTup, JR, sigR, inclR, Matrix.map_apply, mul_assoc]
 
 /- English proof (translation)
-Establish `hker : LinearMap.ker (lin R σ J g) = ⊥`. Use `LinearMap.ker_eq_bot.2 fun x y hxy => ?_` and prove the remaining obligations. Rewrite using `[← lin_inv_lin R σ J g x, hxy, lin_inv_lin]`. Conclude with `hX.map' (lin R σ J g) hker`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_smul {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type)
     [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {n a : ℕ} (J : Matrix (Fin n) (Fin n) E)
@@ -35,21 +35,15 @@ theorem linearIndependent_smul {F E : Type} [Field F] [Field E] [Algebra F E] (R
   exact hX.map' (lin R σ J g) hker
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J hJ v r P T hP hT μ ν hμ hν fib hfib μG hμG`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `GlobalTheory.T.localUnitaryGroup_tuples_topological_facts F E σ hCM n J hJ v`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := h4`. Use `haveI := h5`. Use `haveI := h6`. Use `haveI := h7`. Use `haveI := h8`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : BorelSpace (HA (Fv F v) σ J) := ⟨rfl⟩`. Take `⟨-, -, -, -, hfree⟩` from `GlobalTheory.T.standardFrame_gram_det_ne_zero F E σ hCM n J hJ r P T hP`. Establish `hx0` using `hfree v`. Use `set x0 := ratTup (F := F) (Fv F v) (F0 P) with hx0def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set S := hermOf (Fv F v) σ (gramE σ J (F0 P)) hT with hS`. Establish `hgram : gramR (Fv F v) σ J x0 = (S : Matrix (Fin (r + 1)) (Fin (r + 1)) (Fv F v ⊗[F] E))` using `gramR_ratTup (Fv F v) σ J (F0 P)`. Take `⟨hne, hfin⟩` from `GlobalTheory.T.gramFibreMeasure_freeTuple_ne_zero_finite F E σ hCM n J hJ v (r + 1) μ ν hμ hν fib hfib x0 S hx0 hgram`. Establish `hinv` using `GlobalTheory.T.gramMap_fibreMeasure_localUnitary_invariant F E σ hCM n J hJ v (r + 1) μ ν hμ hν fib hfib S`. Establish `hcont` using `(h9 (r + 1)).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hnull : (fib S) {y | ¬ ∃ g : HA (Fv F v) σ J, g • x0 = y} = 0`. Use `measure_mono_null (fun y hy => ?_) (hfib.1 S)` and prove the remaining obligations. Introduce `hmem`. Conclude with `hy (GlobalTheory.T.exists_smul_localWitt_free_tuple_gram F E σ hCM n J hJ v r P T hP y hmem.2 hmem.1)`. Establish `hsmul : ∀ g : HA (Fv F v) σ J, Continuous (fun y : Fin (r + 1) → Fin n → Fv F v ⊗[F] E => g • y)` using `fun g => hcont.comp (Continuous.prodMk continuous_const continuous_id)`.
-
-Establish `hinv' : ∀ (g : HA (Fv F v) σ J) (s : Set (Fin (r + 1) → Fin n → Fv F v ⊗[F] E)), MeasurableSet s → (fib S) ((fun y => g • y) ⁻¹' s) = (fib S) s`. Introduce `g s hs`. Rewrite using `[← Measure.map_apply (hsmul g).measurable hs, hinv g]`. Establish `hcpt : ∀ K : Set (HA (Fv F v) σ J), IsCompact K → (fib S) ((fun g => g • x0) '' K) < ⊤`. Introduce `K hK`.
-
-Use `hfin _ (hK.image ?_) ?_` and prove the remaining obligations. Conclude with `hcont.comp (Continuous.prodMk continuous_id continuous_const)`. Introduce and unpack `_ ⟨g, -, rfl⟩`. Conclude with `linearIndependent_smul (Fv F v) σ J g hx0`. Take `⟨μ0, hμ0, hw⟩` from `GlobalTheory.T.weil_integration_formula_orbit (HA (Fv F v) σ J) (Fin (r + 1) → Fin n → Fv F v ⊗[F] E) x0 hcont μG hμG (fib S) hnull hinv' hcpt hne`.
-
-Conclude with `⟨μ0, hμ0, hnull, hw⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_haar_stabiliser : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ (r : ℕ) (P : Frame E n r) (T : F), P.IsStd σ J T → ∀ (hT : ∀ i j, σ (gramE σ J (F0 P) j i) = gramE σ J (F0 P) i j), ∀ (μ : Measure (Fin (r + 1) → Fin n → Fv F v ⊗[F] E)) (ν : Measure (HermR (Fv F v) σ (r + 1))), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → ∀ fib : HermR (Fv F v) σ (r + 1) → Measure (Fin (r + 1) → Fin n → Fv F v ⊗[F] E), IsFibreFamily μ (gramR (Fv F v) σ J) Subtype.val {X | LinearIndependent (Fv F v ⊗[F] E) X} ν Set.univ fib → ∀ μG : Measure (HA (Fv F v) σ J), μG.IsHaarMeasure → ∃ μ0 : Measure (S0 (Fv F v) σ J P), μ0.IsHaarMeasure ∧ ((fib (hermOf (Fv F v) σ (gramE σ J (F0 P)) hT)) {y | ¬ ∃ g : HA (Fv F v) σ J, g • ratTup (Fv F v) (F0 P) = y} = 0 ∧ ∀ f : HA (Fv F v) σ J → ℝ≥0∞, Measurable f → ∀ s : (Fin (r + 1) → Fin n → Fv F v ⊗[F] E) → HA (Fv F v) σ J, (∀ y, (∃ g : HA (Fv F v) σ J, g • ratTup (Fv F v) (F0 P) = y) → s y • ratTup (Fv F v) (F0 P) = y) → ∫⁻ g, f g ∂μG = ∫⁻ y, ∫⁻ h', f (s y * (h' : HA (Fv F v) σ J)) ∂μ0 ∂(fib (hermOf (Fv F v) σ (gramE σ J (F0 P)) hT))) := by
   intro F E _ _ _ _ _ σ hCM n J hJ v r P T hP hT μ ν hμ hν fib hfib μG hμG

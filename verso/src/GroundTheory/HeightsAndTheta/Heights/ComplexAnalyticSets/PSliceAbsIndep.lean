@@ -16,9 +16,9 @@ open scoped ENNReal
 noncomputable section
 
 /- English proof (translation)
-Establish `hsupp : (Function.support fun x => c * ENNReal.ofReal (g x)) = Function.support g`. Use extensionality with `x`. Simplify using `only [Function.mem_support, ne_eq, mul_eq_zero, hc, false_or, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `⟨fun h => h.ne', fun h => lt_of_le_of_ne (hg x) (Ne.symm h)⟩`. Distinguish the cases in `hfin : (Function.support g).Finite`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[finsum_eq_sum _ hfin, finsum_eq_sum_of_support_subset _ (s := hfin.toFinset) (by simp [hsupp]), ← Finset.mul_sum, ENNReal.ofReal_sum_of_nonneg fun i _ => hg i]`. Rewrite using `[finsum_of_infinite_support hfin, finsum_of_infinite_support (by rwa [hsupp]), ENNReal.ofReal_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finsum_const_mul_ofReal {α : Type*} (c : ℝ≥0∞) (hc : c ≠ 0) (g : α → ℝ) (hg : ∀ x, 0 ≤ g x) :
     ∑ᶠ x, c * ENNReal.ofReal (g x) = c * ENNReal.ofReal (∑ᶠ x, g x) := by
@@ -33,7 +33,7 @@ theorem finsum_const_mul_ofReal {α : Type*} (c : ℝ≥0∞) (hc : c ≠ 0) (g 
       ENNReal.ofReal_zero, mul_zero]
 
 /- English proof (translation)
-Establish `hw : (Fin.cons (0 : Fin n → ℂ) (fun _ : Fin e => (0 : Fin n → ℂ)) : Fin (e + 1) → Fin n → ℂ) = 0`. Use extensionality with `a i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) a <;> simp`. Establish `hM0 : (Matrix.of fun _ _ => (0 : ℂ) : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ) = 0` using `rfl`. Simplify using `[gramVol, hw, hM0, Matrix.det_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem gramVol_zero_map {e n : ℕ} (y : Fin e → ℂ) :
     gramVol (fun _ : Fin e → ℂ => (0 : Fin n → ℂ)) y = 0 := by
@@ -44,21 +44,19 @@ theorem gramVol_zero_map {e n : ℕ} (y : Fin e → ℂ) :
   simp [gramVol, hw, hM0, Matrix.det_zero]
 
 /- English proof (translation)
-Establish `hg : ∀ (t : ℂ) (x : Fin n → ℂ), t ≠ 0 → (fun x => |w x|) (t • x) = (fun x => |w x|) x` using `fun t x ht => by simp only [hw t x ht]`. Establish `key` using `integral_line_gram e h (fun x => |w x|) hg x hx G`. Establish `hdet : IsUnit (h.matᵀ).det` using `by rw [det_transpose]; exact h.isUnit_det`. Establish `hinv : h.matᵀ *ᵥ ((h.matᵀ)⁻¹ *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set ρ := ‖WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x)‖ with hρ_def`. Establish `hρ : 0 < ρ`. Rewrite using `[hρ_def, norm_pos_iff]`. Introduce `h0`. Apply `hx` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← hinv, show (h.matᵀ)⁻¹ *ᵥ x = 0 by simpa using congrArg WithLp.ofLp h0, Matrix.mulVec_zero]`. Establish `hpt : ∀ t : ℂ, h.pointOf (t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x)) = t • x`. Introduce `t`. Establish `: (fun i => (t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x)) i) = t • ((h.matᵀ)⁻¹ *ᵥ x)`. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [HermNorm.pointOf, this, Matrix.mulVec_smul, hinv]`. Establish `hae : (fun t : ℂ => (ball (0 : EuclideanSpace ℂ (Fin n)) 1).indicator (fun z => |w (h.pointOf z)|) (t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x)) * (‖t‖ ^ (2 * e) * G)) =ᵐ[volume] fun t => (|w x| * G) * (ball (0 : ℂ) (1 / ρ)).indicator (fun t => ‖t‖ ^ (2 * e)) t`. Establish `h0 : ∀ᵐ t : ℂ, t ≠ 0`. Rewrite using `[ae_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `filter_upwards [h0] with t ht`. Establish `hiff : ‖t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x)‖ < 1 ↔ ‖t‖ < 1 / ρ`. Rewrite using `[norm_smul, lt_div_iff₀ hρ]`. Distinguish the cases in `hb : ‖t‖ < 1 / ρ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[indicator_of_mem (mem_ball_zero_iff.2 (hiff.2 hb)), indicator_of_mem (mem_ball_zero_iff.2 hb), hpt, hw t x ht]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[indicator_of_notMem (fun h => hb (hiff.1 (mem_ball_zero_iff.1 h))), indicator_of_notMem (fun h => hb (mem_ball_zero_iff.1 h))]`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : Integrable (fun t : ℂ => (ball (0 : EuclideanSpace ℂ (Fin n)) 1).indicator (fun z => |w (h.pointOf z)|) (t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x)) * (‖t‖ ^ (2 * e) * G))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(((integrable_indicator_iff measurableSet_ball).2 ?_).const_mul (|w x| * G)).congr hae.symm` and prove the remaining obligations. Conclude with `((continuous_norm.pow _).continuousOn.integrableOn_compact (isCompact_closedBall (0 : ℂ) (1 / ρ))).mono_set ball_subset_closedBall`. Establish `hfun : (fun t : ℂ => ENNReal.ofReal ((ball (0 : EuclideanSpace ℂ (Fin n)) 1).indicator (fun z => |w (h.pointOf z)|) (t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x))) * ENNReal.ofReal (‖t‖ ^ (2 * e) * G)) = fun t => ENNReal.ofReal ((ball (0 : EuclideanSpace ℂ (Fin n)) 1).indicator (fun z => …`. Use function extensionality and compare the values at `fun t => (ENNReal.ofReal_mul (indicator_nonneg (fun _ _ => abs_nonneg _) _)).symm`. Rewrite using `[hfun, ← ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun t => mul_nonneg (indicator_nonneg (fun _ _ => abs_nonneg _) _) (by positivity))]`.
-
-Conclude with `congrArg ENNReal.ofReal key`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_line_gram_abs {n : ℕ} (e : ℕ) (h : HermNorm n) (w : (Fin n → ℂ) → ℝ)
     (hw : ∀ (t : ℂ) (x : Fin n → ℂ), t ≠ 0 → w (t • x) = w x) (x : Fin n → ℂ) (hx : x ≠ 0) (G : ℝ)
@@ -118,19 +116,17 @@ theorem lintegral_line_gram_abs {n : ℕ} (e : ℕ) (h : HermNorm n) (w : (Fin n
   exact congrArg ENNReal.ofReal key
 
 /- English proof (translation)
-Establish `hc : ENNReal.ofReal (Real.pi ^ (e + 1 + 1) / ((e + 1 + 1).factorial : ℝ)) ≠ 0`. Rewrite using `[ne_eq, ENNReal.ofReal_eq_zero, not_le]`. Check the signs of the components of the expression. Unfold `chartAbsDens sheetSum`. Rewrite using `[finsum_mem_def, finsum_mem_def, ← finsum_const_mul_ofReal _ hc _ (fun x => indicator_nonneg (fun x _ => by dsimp only; split_ifs; exacts [abs_nonneg _, le_rfl]) x)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_congr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ ComplexSets.fibre (J ⊔ Ideal.span {linForm ℓ - 1}) A y`. Rewrite using `[indicator_of_mem hx, indicator_of_mem hx]`. Distinguish the cases in `hs : ∃ s, IsSheetAt (J ⊔ Ideal.span {linForm ℓ - 1}) A x s`. Establish `hsT : sheetThrough (J ⊔ Ideal.span {linForm ℓ - 1}) A x = hs.choose`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Unfold `sheetThrough`. Rewrite using `[dif_pos hs]`. Take `⟨-, -, -, -, hsx, -⟩` from `hs.choose_spec`. Establish `hy : hs.choose y = x` using `by rw [← hx.2]; exact hsx`. Establish `hx0 : x ≠ 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Establish `hmem` using `hx.1 (linForm ℓ - 1) (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Simplify using `[linForm] at hmem`. Establish `hG` using `gramVol_nonneg (fun y' => (h.matᵀ)⁻¹ *ᵥ hs.choose y') y`. Establish `hd : 0 ≤ h.dualNorm x ^ (2 * (e + 1 + 1))` using `pow_nonneg (by unfold HermNorm.dualNorm; positivity) _`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `maDens_log_dualNorm_sheet h J ℓ A y x hs.choose hx hs.choose_spec`. Use `beta_reduce at hm`. Rewrite using `[dif_pos hs, hsT, hy, lintegral_line_gram_abs (e + 1) h w hw x hx0 _ hG]`. Use `beta_reduce`. Rewrite using `[hm, abs_mul, abs_of_nonneg (div_nonneg (mul_nonneg (by positivity) hG) hd), ← ENNReal.ofReal_mul (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hsT : sheetThrough (J ⊔ Ideal.span {linForm ℓ - 1}) A x = 0`. Unfold `sheetThrough`. Rewrite using `[dif_neg hs]`. Rewrite using `[dif_neg hs, hsT]`. Simplify using `only [Pi.zero_apply, Matrix.mulVec_zero, gramVol_zero_map, mul_zero, ENNReal.ofReal_zero, lintegral_zero]`.
-
-Simplify using `[indicator_of_notMem hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sheetSum_lintegral_eq {n e : ℕ} (h : HermNorm n) (J : Ideal (MvPolynomial (Fin n) ℂ))
     (ℓ : Fin n → ℂ) (A : Matrix (Fin (e + 1)) (Fin n) ℂ) (w : (Fin n → ℂ) → ℝ)
@@ -178,13 +174,13 @@ theorem sheetSum_lintegral_eq {n e : ℕ} (h : HermNorm n) (J : Ideal (MvPolynom
   · simp [indicator_of_notMem hx]
 
 /- English proof (translation)
-Introduce `n e h J F ℓ ℓ' A A' w hJ hF hℓ hℓ' hA hA' hwm hw`. Establish `hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = ((e + 1 + 1 : ℕ) : WithBot ℕ∞)` using `hD ℂ n (e + 2) J F hJ hF`. Establish `hpm : Continuous fun z : EuclideanSpace ℂ (Fin n) => h.pointOf z`. Unfold `HermNorm.pointOf`. Conclude with `continuous_const.matrix_mulVec (PiLp.continuous_ofLp 2 _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hFm : Measurable fun z : EuclideanSpace ℂ (Fin n) => ENNReal.ofReal ((ball (0 : EuclideanSpace ℂ (Fin n)) 1).indicator (fun z => |w (h.pointOf z)|) z)` using `ENNReal.measurable_ofReal.comp ((continuous_abs.measurable.comp (hwm.comp hpm.measurable)).indicator measurableSet_ball)`. Establish `hc0 : ENNReal.ofReal (Real.pi ^ (e + 1 + 1) / ((e + 1 + 1).factorial : ℝ)) ≠ 0`. Rewrite using `[ne_eq, ENNReal.ofReal_eq_zero, not_le]`. Check the signs of the components of the expression. Establish `hR : ∀ (ℓ : Fin n → ℂ) (A : Matrix (Fin (e + 1)) (Fin n) ℂ), (∫⁻ y, ∑ᶠ x ∈ ComplexSets.fibre (J ⊔ Ideal.span {linForm ℓ - 1}) A y, ∫⁻ t : ℂ, ENNReal.ofReal ((ball (0 : EuclideanSpace ℂ (Fin n)) 1).indicator (fun z => |w (h.pointOf z)|) (t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ sheetThrou …` using `fun ℓ A => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `lintegral_congr fun y => sheetSum_lintegral_eq h J ℓ A w hw y`. Establish `k1` using `(hL n (e + 1) h J ℓ A _ hJ hdim hℓ hA hFm).2`. Establish `k2` using `(hL n (e + 1) h J ℓ' A' _ hJ hdim hℓ' hA' hFm).2`. Rewrite `k1`, `k2` using `[hR]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hM0, hMtop⟩` from `coordBall_mass (n := n) (m := e + 1 + 1) (le_of_ringKrullDim_quotient J hdim)`. Establish `key` using `k1.symm.trans k2`. Rewrite `key` using `[ENNReal.mul_right_inj hM0.ne' hMtop.ne, ENNReal.mul_right_inj hc0 ENNReal.ofReal_ne_top]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem SliceAbsIndep.proof (hL : ConeSheetGramLintegral.Statement) (hD : ConeDimOfChowForm.Statement) :
     SliceAbsIndep.Statement := by

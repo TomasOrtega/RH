@@ -9,7 +9,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `h0 : B.valuation x ≠ 0` using `by simpa using hx`. Rewrite using `[← B.valuation_le_one_iff, map_inv₀, not_le, one_lt_inv₀ (zero_lt_iff.mpr h0)]`. Simplify using `[hx]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem valuation_lt_one_iff_eq_zero_or_inv_notMem {L : Type} [Field L] (B : ValuationSubring L) (x : L) :
     B.valuation x < 1 ↔ x = 0 ∨ x⁻¹ ∉ B := by
@@ -20,9 +20,9 @@ private theorem valuation_lt_one_iff_eq_zero_or_inv_notMem {L : Type} [Field L] 
     simp [hx]
 
 /- English proof (translation)
-Use `open scoped Pointwise in`. Rewrite `hg`, the goal using `[ValuationSubring.decompositionSubgroup, MulAction.mem_stabilizer_iff]`. Use `open scoped Pointwise in`. Use extensionality with `x`. Use `open scoped Pointwise in`.
+Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_comap, ValuationSubring.mem_comap, ← map_inv, AlgEquiv.smul_def, conjGal_apply]`. Simplify using `only [RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply]`. Use `open scoped Pointwise in`. Rewrite using `[← AlgEquiv.smul_def, ← ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, hg]`.
+A detailed English derivation is pending.
 -/
 private theorem conjGal_mem_decompositionSubgroup_comap {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {τ : K ≃+* K}
     {σ : Ω ≃+* Ω} (h : IsLift τ σ) (A : ValuationSubring Ω) (g : G K Ω)
@@ -40,7 +40,7 @@ private theorem conjGal_mem_decompositionSubgroup_comap {K Ω : Type} [Field K] 
   rw [← AlgEquiv.smul_def, ← ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, hg]
 
 /- English proof (translation)
-Rewrite using `[ValuationSubring.valuation_le_one_iff, ValuationSubring.valuation_le_one_iff, ValuationSubring.mem_comap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem valuation_comap_le_one_iff {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (σ : Ω ≃+* Ω) (x : Ω) :
     (A.comap (σ : Ω →+* Ω)).valuation x ≤ 1 ↔ A.valuation (σ x) ≤ 1 := by
@@ -49,7 +49,7 @@ private theorem valuation_comap_le_one_iff {Ω : Type} [Field Ω] (A : Valuation
   rfl
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff_eq_zero_or_inv_notMem, valuation_lt_one_iff_eq_zero_or_inv_notMem, ValuationSubring.mem_comap]`. Simplify using `[map_inv₀]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem valuation_comap_lt_one_iff {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (σ : Ω ≃+* Ω) (x : Ω) :
     (A.comap (σ : Ω →+* Ω)).valuation x < 1 ↔ A.valuation (σ x) < 1 := by
@@ -57,7 +57,7 @@ private theorem valuation_comap_lt_one_iff {Ω : Type} [Field Ω] (A : Valuation
   simp [map_inv₀]
 
 /- English proof (translation)
-Use `⟨conjGal_mem_decompositionSubgroup_comap h A g hg.1, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[valuation_comap_le_one_iff]`. Rewrite using `[valuation_comap_lt_one_iff, map_sub, map_pow, conjGal_apply, RingEquiv.apply_symm_apply]`. Conclude with `hg.2 (σ x) hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isFrob_comap_conjGal {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {τ : K ≃+* K}
     {σ : Ω ≃+* Ω} (h : IsLift τ σ) (A : ValuationSubring Ω) (q : ℕ) (g : G K Ω)
@@ -68,9 +68,7 @@ private theorem isFrob_comap_conjGal {K Ω : Type} [Field K] [Field Ω] [Algebra
   exact hg.2 (σ x) hx
 
 /- English proof (translation)
-Establish `hg' : g ∈ Inertia A` using `hg`. Use `show conjGal h g ∈ Inertia (A.comap (σ : Ω →+* Ω))`. Use `⟨conjGal_mem_decompositionSubgroup_comap h A g hg'.1, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[valuation_comap_le_one_iff]`. Rewrite using `[valuation_comap_lt_one_iff, map_sub, conjGal_apply, RingEquiv.apply_symm_apply]`.
-
-Conclude with `hg'.2 (σ x) hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conjGal_mem_ine_comap {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω]
     {τ : K ≃+* K} {σ : Ω ≃+* Ω} (h : IsLift τ σ) (A : ValuationSubring Ω) (g : G K Ω)
@@ -83,29 +81,25 @@ private theorem conjGal_mem_ine_comap {K Ω : Type} [Field K] [NumberField K] [F
   exact hg'.2 (σ x) hx
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ τ σ h g`. Use `set ψ : G K Ω →* ClassGroup (𝓞 K) := (clMap τ).comp ((artCl K Ω).comp (conjGal h)) with hψ`. Establish `hker : (artCl K Ω).ker ≤ ψ.ker`. Use `artKer K Ω _ ψ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.coe_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlc : IsLocallyConstant ψ` using `((artSurj K Ω).2.comp_continuous (continuous_conjGal h)).comp (clMap τ)`. Conclude with `hlc.isOpen_fiber 1`. Introduce `A x hx`. Rewrite using `[MonoidHom.mem_ker]`. Use `show clMap τ (artCl K Ω (conjGal h x)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(artIne K Ω).1 (A.comap (σ : Ω →+* Ω)) _ (conjGal_mem_ine_comap h A x hx), map_one]`. Introduce `c hc show clMap τ (artCl K Ω (conjGal h c)) = 1`. Take `⟨j, hj⟩` from `hc`. Establish `hc' : IsConjOm (conjGal h c).toRingEquiv`. Use `⟨j.comp (σ : Ω →+* Ω), fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [RingHom.comp_apply, RingEquiv.coe_toRingHom, AlgEquiv.coe_ringEquiv, conjGal_apply, RingEquiv.apply_symm_apply]`. Conclude with `hj (σ x)`. Rewrite using `[(artIne K Ω).2 _ hc', map_one]`. Establish `hsame : ∀ g₁ g₂, artCl K Ω g₁ = artCl K Ω g₂ → ψ g₁ = ψ g₂`. Introduce `g₁ g₂ he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : g₁ * g₂⁻¹ ∈ (artCl K Ω).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, he, mul_inv_cancel]`. Establish `hm'` using `hker hm`. Rewrite `hm'` using `[MonoidHom.mem_ker, map_mul, map_inv, mul_inv_eq_one]`. Conclude with `hm'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hall : ∀ c : ClassGroup (𝓞 K), ∃ x, artCl K Ω x = c ∧ ψ x = c`. Introduce `c`. Establish `hc : c ∈ Subgroup.closure (primeCl '' (Set.univ : Set (HeightOneSpectrum (𝓞 K))))`. Establish `hu` using `clSubUniv K`. Rewrite `hu` using `[clSub]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hu]`. Conclude with `Subgroup.mem_top c`. Use `Subgroup.closure_induction (p := fun c _ => ∃ x, artCl K Ω x = c ∧ ψ x = c) ?_ ?_ ?_ ?_ hc` and prove the remaining obligations. Introduce and unpack `_ ⟨v, -, rfl⟩`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω v`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf⟩` from `exists_isFrob hA`. Use `⟨f, artFrob K Ω A v f hA hf, ?_⟩` and prove the remaining obligations. Set `τO` to `RingOfIntegers.mapRingEquiv τ`. Set `v' : HeightOneSpectrum (𝓞 K)` to `v.comap (τO : 𝓞 K →+* 𝓞 K) τO.surjective`. Establish `hA' : IsPlaceOver (A.comap (σ : Ω →+* Ω)) v'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[valuation_comap_lt_one_iff, h]`. Conclude with `hA (τO x)`. Establish `hn : normV v' = normV v` using `Nat.card_congr (Ideal.quotientEquiv v'.asIdeal v.asIdeal τO (Ideal.map_comap_of_surjective _ τO.surjective _).symm).toEquiv`. Establish `hF' : IsFrob (A.comap (σ : Ω →+* Ω)) (normV v') (conjGal h f)`.
+Reduce the equality to equality of the corresponding arguments. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hn]`. Conclude with `isFrob_comap_conjGal h A _ f hf`. Use `show clMap τ (artCl K Ω (conjGal h f)) = primeCl v`. Rewrite using `[artFrob K Ω _ v' _ hA' hF', primeCl, primeCl, class_map_mk0]`. Use `congr 1`.
-
-Conclude with `Subtype.ext (Ideal.map_comap_of_surjective _ τO.surjective _)`. Conclude with `⟨1, map_one _, map_one _⟩`. Introduce and unpack `a b - - ⟨ga, ha1, ha2⟩ ⟨gb, hb1, hb2⟩`. Conclude with `⟨ga * gb, by rw [map_mul, ha1, hb1], by rw [map_mul, ha2, hb2]⟩`. Introduce and unpack `a - ⟨ga, h1, h2⟩`.
-
-Conclude with `⟨ga⁻¹, by rw [map_inv, h1], by rw [map_inv, h2]⟩`. Take `⟨g₀, h1, h2⟩` from `hall (artCl K Ω g)`. Use `show artCl K Ω g = ψ g`. Rewrite using `[hsame g g₀ h1.symm, h2]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.artConj :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (τ : K ≃+* K) (σ : Ω ≃+* Ω) (h : IsLift τ σ) (g : G K Ω), artCl K Ω g = clMap τ (artCl K Ω (conjGal h g)) := by

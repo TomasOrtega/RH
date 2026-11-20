@@ -5,11 +5,9 @@ universe u_3 u_4
 namespace Bl.general_b_fact_upper_form
 
 /- English proof (translation)
-Introduce `LL M _ _ _ T W hW p`. Use `Polynomial.induction_on p ?_ ?_ ?_` and prove the remaining obligations. Introduce `a x hx`. Rewrite using `[Polynomial.aeval_C, Module.algebraMap_end_apply]`. Conclude with `W.smul_mem a hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p q hp hq x hx`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `W.add_mem (hp x hx) (hq x hx)`. Introduce `n a h x hx`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, Module.End.mul_apply]`.
-
-Conclude with `h (T x) (hW x hx)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {LL : Type u_3} {M : Type u_4} [inst : Field.{u_3} LL] [inst_1 : AddCommGroup.{u_4} M]

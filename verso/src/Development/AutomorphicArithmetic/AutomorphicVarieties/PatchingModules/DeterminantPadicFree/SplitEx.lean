@@ -4,19 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaDvr
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Use `set pL := p.map (algebraMap A L) with hpL`. Establish `hmL : pL.Monic` using `hm.map _`. Establish `hroots : pL = (pL.roots.map fun x => Polynomial.X - Polynomial.C x).prod` using `hs.eq_prod_roots_of_monic hmL`. Establish `hnd : pL.roots.Nodup` using `Polynomial.nodup_roots hsep`. Use `set s := pL.roots.toFinset with hsdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : s.card = n`. Rewrite using `[hsdef, Multiset.toFinset_card_of_nodup hnd, ← hs.natDegree_eq_card_roots, hn]`. Establish `hint : ∀ x ∈ s, x ∈ integralClosure A L`. Introduce `x hx`. Rewrite `hx` using `[hsdef, Multiset.mem_toFinset, Polynomial.mem_roots hmL.ne_zero, Polynomial.IsRoot, hpL, Polynomial.eval_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨p, hm, hx⟩`. Set `e : Fin n ≃ s` to `(s.equivFin.trans (finCongr hcard)).symm`. Use `⟨fun b => ⟨(e b : L), hint _ (e b).2⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `b b' h`. Establish `h2` using `congrArg Subtype.val h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.injective (Subtype.ext h2)`. Apply `Polynomial.map_injective (integralClosure A L).val.toRingHom Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[Polynomial.map_map, Polynomial.map_prod]`. Establish `h1 : ((integralClosure A L).val.toRingHom).comp (algebraMap A (integralClosure A L)) = algebraMap A L`. Use extensionality with `a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Both sides reduce to the same expression. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `pL = _`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Rewrite using `[hroots]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h3 : ∏ b : Fin n, (Polynomial.X - Polynomial.C ((e b : L))) = ∏ x ∈ s, (Polynomial.X - Polynomial.C x)`. Rewrite using `[Equiv.prod_comp e (fun x : s => Polynomial.X - Polynomial.C (x : L))]`. Conclude with `Finset.prod_coe_sort s (fun x => Polynomial.X - Polynomial.C x)`. Use `h3.symm using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.prod_eq_multiset_prod, hsdef, Multiset.toFinset_val, hnd.dedup]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem exists_injective_roots_in_integral_closure {A L : Type} [CommRing A] [Field L] [Algebra A L] {n : ℕ} (p : Polynomial A)
     (hm : p.Monic) (hn : (p.map (algebraMap A L)).natDegree = n) (hsep : (p.map (algebraMap A L)).Separable)
@@ -61,23 +59,17 @@ private theorem exists_injective_roots_in_integral_closure {A L : Type} [CommRin
     · rfl
 
 /- English proof (translation)
-Introduce `l _ K _ _ _ q n P hP`. Establish `hQ0 : (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K)))) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun a _ => ((hP a).1.map _).ne_zero`. Use `haveI hsepE : Algebra.IsSeparable (FractionRing (PowerSeries K)) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))))) := by`. Rewrite using `[← IntermediateField.isSeparable_top, ← (isSplittingField_iff_intermediateField.mp (inferInstance : Polynomial.IsSplittingField (FractionRing (PowerSeries K)) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))))) (∏ a, (P a).map …`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0` using `Polynomial.aeval_eq_zero_of_mem_rootSet hx`. Rewrite `h0` using `[map_prod, Finset.prod_eq_zero_iff]`. Take `⟨a, _, ha⟩` from `h0`. Conclude with `(hP a).2.2.of_dvd (minpoly.dvd (FractionRing (PowerSeries K)) x ha)`. Use `haveI hcA : IsAdicComplete (IsLocalRing.maximalIdeal (PowerSeries K)) (PowerSeries K) := by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Use `infer_instance`. Establish `hfinA : Finite (IsLocalRing.ResidueField (PowerSeries K))` using `Finite.of_equiv K (PowerSeries.residueFieldOfPowerSeries).symm.toEquiv`. Use `set_option synthInstance.maxHeartbeats 400000 in`. Take `⟨hfin, _, _, hdvr, hcB, hloc, hres⟩` from `UpperTheory.V.AlgebraTools.integralClosure_complete_dvr (PowerSeries K) (FractionRing (PowerSeries K)) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))))) ↥(integralClosure (PowerSeries K) (Polynomial.SplittingField (∏ a, (P a) …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hinjAE : Function.Injective (algebraMap (PowerSeries K) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))))))`. Rewrite using `[IsScalarTower.algebraMap_eq (PowerSeries K) (FractionRing (PowerSeries K)) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K)))))]`. Conclude with `(algebraMap (FractionRing (PowerSeries K)) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K)))))).injective.comp (IsFractionRing.injective (PowerSeries K) (FractionRing (PowerSeries K)))`. Establish `hj : Function.Injective (algebraMap (PowerSeries K) ↥(integralClosure (PowerSeries K) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K)))))))`. Introduce `x y h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hinjAE` to reduce the goal to its premises. Conclude with `congrArg Subtype.val h`. Use `haveI hcharA : CharP (PowerSeries K) l := charP_of_injective_ringHom (PowerSeries.C (R := K)).injective l`. Use `haveI hcharB : CharP ↥(integralClosure (PowerSeries K) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K)))))) l := charP_of_injective_ringHom hj l`. Establish `hal : ∀ a, ∃ al : Fin n → ↥(integralClosure (PowerSeries K) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K)))))), Function.Injective al ∧ (P a).map (algebraMap (PowerSeries K) ↥(integralClosure (PowerSeries K) (Polynomial.Split …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Establish `hdeg : ((P a).map (algebraMap (PowerSeries K) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))))))).natDegree = n`. Rewrite using `[(hP a).1.natDegree_map]`. Conclude with `(hP a).2.1`. Establish `hmapE : (P a).map (algebraMap (PowerSeries K) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K)))))) = ((P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K)))).map (algebraMap (FractionRing (PowerSeries K)) (Polyno …`.
-
-Rewrite using `[Polynomial.map_map, ← IsScalarTower.algebraMap_eq]`. Establish `hsepa : ((P a).map (algebraMap (PowerSeries K) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))))))).Separable`. Rewrite using `[hmapE]`. Conclude with `(hP a).2.2.map`. Establish `hspl : ((P a).map (algebraMap (PowerSeries K) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))))))).Splits`.
-
-Rewrite using `[hmapE]`. Use `Polynomial.Splits.of_dvd (Polynomial.SplittingField.splits (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))))) (Polynomial.map_ne_zero hQ0) ?_` and prove the remaining obligations. Conclude with `Polynomial.map_dvd _ (Finset.dvd_prod_of_mem _ (Finset.mem_univ a))`. Conclude with `exists_injective_roots_in_integral_closure (P a) (hP a).1 hdeg hsepa hspl`. Use `choose al hal1 hal2 using hal`.
-
-Conclude with `⟨↥(integralClosure (PowerSeries K) (Polynomial.SplittingField (∏ a, (P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K)))))), inferInstance, inferInstance, hdvr, ⟨hcB, hres hfinA, hcharB⟩, algebraMap (PowerSeries K) ↥(integralClosure (PowerSeries K) (Polynomial.Sp …`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.splitEx :
     ∀ (l : ℕ) [Fact l.Prime] {K : Type} [Field K] [Finite K] [CharP K l] {q n : ℕ} (P : Fin q → Polynomial (PowerSeries K)), (∀ a, (P a).Monic ∧ (P a).natDegree = n ∧ ((P a).map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K)))).Separable) → ∃ (A' : Type) (_ : CommRing A') (_ : IsDomain A') (_ : IsDiscreteValuationRing A') (_ : IsEqDVR l A') (j : PowerSeries K →+* A') (al : Fin q → Fin n → A'), Function.Injective j ∧ IsLocalHom j ∧ j.Finite ∧ ∀ a, Function.Injective (al a) ∧ (P a).map j = ∏ b, (Polynomial.X - Polynomial.C (al a b)) := by

@@ -9,13 +9,13 @@ namespace LateralTheory.E.KernelLocalization
 
 abbrev PP (q : ℕ) (i n : ℤ) {A B : CommRingCat.{0}} (f : A ⟶ B) := pull (ZMod q) (sch.map (Spec.map f)) (tw q i) n
 /- English proof (translation)
-Rewrite using `[PP, Spec.map_comp, Functor.map_comp, pull_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem PP_comp (q : ℕ) (i n : ℤ) {A B C : CommRingCat.{0}} (f : A ⟶ B) (g : B ⟶ C) (x) :
     PP q i n (f ≫ g) x = PP q i n g (PP q i n f x) := by
   rw [PP, Spec.map_comp, Functor.map_comp, pull_comp]
 /- English proof (translation)
-Simplify using `using h.map f.hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_of {q : ℕ} {A B : CommRingCat.{0}} (f : A ⟶ B) (h : IsUnit (q : A)) : IsUnit (q : B) := by
   simpa using h.map f.hom
@@ -27,7 +27,7 @@ abbrev RP (q : ℕ) (i n : ℤ) {D Y E Z : CommRingCat.{0}} (φ : D ⟶ Y) (e : 
   rpl q i (Spec.map φ) (Spec.map ψ) (Spec.map u) (Spec.map e) (by rw [← Spec.map_comp, ← Spec.map_comp, h]) n
 
 /- English proof (translation)
-The claim follows from `rpull_comp _ _ _ _ _ _ _ _ _ _ _ _ _ _ (by rw [← hu, Spec.map_comp, Functor.map_comp]) (by rw [← he, Spec.map_comp, Functor.map_comp]) n z`.
+A detailed English derivation is pending.
 -/
 theorem RP_comp (q : ℕ) (i n : ℤ) {D Y E Z E' Z' : CommRingCat.{0}} (φ : D ⟶ Y) (e : D ⟶ E) (u : Y ⟶ Z) (ψ : E ⟶ Z)
     (h : φ ≫ u = e ≫ ψ) (e' : E ⟶ E') (u' : Z ⟶ Z') (ψ' : E' ⟶ Z') (h' : ψ ≫ u' = e' ≫ ψ') (e2 : D ⟶ E') (u2 : Y ⟶ Z')
@@ -37,27 +37,27 @@ theorem RP_comp (q : ℕ) (i n : ℤ) {D Y E Z E' Z' : CommRingCat.{0}} (φ : D 
     (by rw [← he, Spec.map_comp, Functor.map_comp]) n z
 
 /- English proof (translation)
-The claim follows from `rpull_bd ..`.
+A detailed English derivation is pending.
 -/
 theorem RP_bd (q : ℕ) (i m n : ℤ) (hm : 1 + m = n) {D Y E Z : CommRingCat.{0}} (φ : D ⟶ Y) (e : D ⟶ E) (u : Y ⟶ Z)
     (ψ : E ⟶ Z) (h : φ ≫ u = e ≫ ψ) (y) :
     RP q i n φ e u ψ h (bd _ _ _ m n hm y) = bd _ _ _ m n hm (PP q i m u y) := rpull_bd ..
 
 /- English proof (translation)
-The claim follows from `relNat _ _ _ _ _ _ _ n z`.
+A detailed English derivation is pending.
 -/
 theorem fgt_RP (q : ℕ) (i n : ℤ) {D Y E Z : CommRingCat.{0}} (φ : D ⟶ Y) (e : D ⟶ E) (u : Y ⟶ Z)
     (ψ : E ⟶ Z) (h : φ ≫ u = e ≫ ψ) (z : HR q i n φ) :
     fgt _ _ _ n (RP q i n φ e u ψ h z) = PP q i n e (fgt _ _ _ n z) := relNat _ _ _ _ _ _ _ n z
 
 /- English proof (translation)
-Establish `: IsConnected J` using `IsFiltered.isConnected J`. Set `F : J ⥤ Under A` to `D.toUnder A (fun j => t.app j) (fun {j k} g => by`. Use `t.naturality g` as an intermediate fact. Simplify using `only [Functor.const_obj_obj, Functor.const_obj_map, Category.id_comp] at this`. Conclude with `this.symm)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `cU : Cocone F` to `{ pt := Under.mk c ι := { app := fun j => Under.homMk (s.app j) (ht j) naturality := fun j k g => by`. Apply `Under.UnderMorphism.ext` to reduce the goal to its premises. Conclude with `s.naturality g } }`. Establish `hcU : IsColimit cU` using `isColimitOfReflects (Under.forget A) (by exact hc)`. Establish `h2` using `isColimitOfPreserves (Under.pushout φ ⋙ Under.forget Y) hcU`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `E : J ⥤ CommRingCat.{0}` to `F ⋙ Under.pushout φ ⋙ Under.forget Y`. Set `e : E ⟶ (Functor.const J).obj Y'` to `((Under.pushout φ ⋙ Under.forget Y).mapCocone cU).ι ≫ (Functor.const J).map hpo.flip.isoPushout.inv`. Establish `hE : IsColimit (Cocone.mk _ e)` using `h2.ofIsoColimit (Cocone.ext hpo.flip.isoPushout.symm (fun j => rfl))`. Set `p : D ⟶ E` to `{ app := fun j => (pushout.inl (t.app j) φ : D.obj j ⟶ pushout (t.app j) φ) naturality := fun j k g => by`. Conclude with `(pushout.inl_desc _ _ _).symm }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨E, p, e, fun j => pushout.inr (t.app j) φ, ⟨hE⟩, fun j => (IsPushout.of_hasPushout (t.app j) φ).flip, fun j => ?_, fun j k f => pushout.inr_desc _ _ _⟩` and prove the remaining obligations. Establish `key : ∀ h, pushout.inl (t.app j) φ ≫ (pushout.desc (s.app j ≫ pushout.inl c φ) (pushout.inr c φ) h ≫ hpo.flip.isoPushout.inv) = s.app j ≫ φ'`. Introduce `h`. Rewrite using `[← Category.assoc, pushout.inl_desc, Category.assoc, hpo.flip.inl_isoPushout_inv]`. Conclude with `key _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pushColim {A Y C Y' : CommRingCat.{0}} (φ : A ⟶ Y) (c : A ⟶ C) (w : Y ⟶ Y') (φ' : C ⟶ Y')
     (hpo : IsPushout φ c w φ') {J : Type} [SmallCategory J] [IsFiltered J] (D : J ⥤ CommRingCat.{0})
@@ -96,19 +96,17 @@ theorem pushColim {A Y C Y' : CommRingCat.{0}} (φ : A ⟶ Y) (c : A ⟶ C) (w :
   exact key _
 
 /- English proof (translation)
-Take `⟨J, _, _, F, t, s, hc, hts⟩` from `hIE`. Establish `hZ` using `IsPushout.of_hasPushout φ' o`. Use `set ψ := pushout.inr φ' o`. Establish `hRE` using `hBC _ _ _ hZ`. Take `⟨G, p, e, v, ⟨hG⟩, hpo, hpe, hv⟩` from `pushColim φ' o _ ψ hZ F t s hc (fun j => (hts j).2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnat : ∀ {j k} (f : j ⟶ k), t.app j ≫ F.map f = t.app k` using `fun f => by simpa using (t.naturality f).symm`. Establish `hs : ∀ {j k} (f : j ⟶ k), F.map f ≫ s.app k = s.app j` using `fun f => by simpa using s.naturality f`. Establish `he : ∀ {j k} (f : j ⟶ k), G.map f ≫ e.app k = e.app j` using `fun f => by simpa using e.naturality f`. Establish `hxO : PP q i n o (fgt _ _ _ n z) = 0`. Apply `(hRE n).1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `PP q i n ψ _ = _`. Rewrite using `[map_zero, ← PP_comp, ← hZ.w, PP_comp, hz, map_zero]`. Take `⟨j0⟩ : Nonempty J` from `IsFiltered.nonempty`. Take `⟨k, f, hk⟩` from `(hB1 q F _ hc n i).2 j0 (PP q i n (t.app j0) (fgt _ _ _ n z)) (unit_of (t.app j0) hq) (by`. Express the relevant statement in the definitionally equal form `PP q i n (s.app j0) _ = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PP_comp, (hts j0).2, hxO])`. Express the relevant statement in the definitionally equal form `PP q i n (F.map f) _ = 0 at hk`. Rewrite `hk` using `[← PP_comp, hnat]`. Establish `hm : 1 + (n - 1) = n` using `by omega`. Take `⟨y, hy⟩` from `exists_bd _ _ _ (n - 1) n hm (RP q i n φ' (t.app k) (v k) (p.app k) (hpo k).w z) (by rw [fgt_RP]; exact hk)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `(hRE (n - 1)).2 (PP q i (n - 1) (e.app k) y)`. Take `⟨j, b, rfl⟩` from `(hB1 q F _ hc (n - 1) i).1 a (unit_of o hq)`. Express the relevant statement in the definitionally equal form `PP q i (n - 1) ψ (PP q i (n - 1) (s.app j) b) = _ at ha`. Take `⟨l, g, hl⟩` from `(hB1 q G _ hG (n - 1) i).2 (IsFiltered.max j k) (PP q i (n - 1) (G.map (IsFiltered.rightToMax j k)) y - PP q i (n - 1) (F.map (IsFiltered.leftToMax j k) ≫ p.app _) b) (unit_of (t.app _ ≫ p.app _) hq) (by`. Express the relevant statement in the definitionally equal form `PP q i (n - 1) (e.app _) _ = 0`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, ← PP_comp, ← PP_comp, he, Category.assoc, hpe, ← Category.assoc, hs, PP_comp, ha, sub_self])`. Express the relevant statement in the definitionally equal form `PP q i (n - 1) (G.map g) _ = 0 at hl`. Rewrite `hl` using `[map_sub, sub_eq_zero, ← PP_comp, ← PP_comp, ← G.map_comp, Category.assoc, ← p.naturality g, ← Category.assoc, PP_comp q i (n - 1) _ (p.app l)]`. Use `⟨F.obj l, t.app l, s.app l, G.obj l, v l, p.app l, hpo l, (hts l).1, (hts l).2, ?_⟩` and prove the remaining obligations. Rewrite using `[RP_comp q i n φ' (t.app k) (v k) (p.app k) (hpo k).w (F.map (IsFiltered.rightToMax j k ≫ g)) (G.map (IsFiltered.rightToMax j k ≫ g)) (p.app l) (p.naturality _).symm _ _ _ (hnat _) (hv _ _ _), ← hy, RP_bd, hl]`.
-
-Conclude with `bd_pull ..`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relAt (hB1 : B1) (q : ℕ) (i n : ℤ) {D Y' O : CommRingCat.{0}} (φ' : D ⟶ Y') (hq : IsUnit (q : D)) (o : D ⟶ O)
     (hIE : IE o) (hBC : BC q i φ' o) (z : HR q i n φ') (hz : PP q i n φ' (fgt _ _ _ n z) = 0) :

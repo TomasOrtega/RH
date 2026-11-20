@@ -22,7 +22,7 @@ variable {D : D7} {X : Formalism.L2.Herm.Herm0 D} {u : D.what₂.Word} {w : D.wh
   (B : GL (Fin (D.sp.X (i + 1)).rank) D.host.E)
 
 /- English proof (translation)
-The claim follows from `congrArg ((locJ hi t B).eQ v).symm ((X.g u w hg).spl_F _ ((X.g u w hg).pl v).2 a)`.
+A detailed English derivation is pending.
 -/
 theorem locJ_iw_F (v : Fin (gatCh (gatJ Lv (i + 1)) em).P.nV) (a : D.host.F) :
     (locJ hi t B).iw v (algebraMap D.host.F D.host.E a) =
@@ -30,7 +30,7 @@ theorem locJ_iw_F (v : Fin (gatCh (gatJ Lv (i + 1)) em).P.nV) (a : D.host.F) :
   congrArg ((locJ hi t B).eQ v).symm ((X.g u w hg).spl_F _ ((X.g u w hg).pl v).2 a)
 
 /- English proof (translation)
-The claim follows from `(K.tie u w hg).pos_emb v s x`.
+A detailed English derivation is pending.
 -/
 theorem locJ_pos_emb {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {c : LatCmp D} (K : CmpTied D X T Gt c)
     (v : Fin (D.gat u w hg).P.nV) (s : Fin ((D.gat u w hg).P.n' v)) (x : D.host.E) :

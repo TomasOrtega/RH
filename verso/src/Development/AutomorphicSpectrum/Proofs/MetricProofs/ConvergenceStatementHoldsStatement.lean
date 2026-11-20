@@ -6,7 +6,7 @@ open MeasureTheory Metric Filter Topology ReciprocityTheory.AnForm ReciprocityTh
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.Giv.convergence_holds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FConvergenceStatementHolds.lean&line=234#L234)
 -/

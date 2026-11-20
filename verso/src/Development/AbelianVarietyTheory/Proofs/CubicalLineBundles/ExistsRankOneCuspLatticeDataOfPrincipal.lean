@@ -15,28 +15,28 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor F
 namespace GlobalTheory.LatticeData
 
 /- English proof (translation)
-The claim follows from `bridge_star_holds D.R D.host x`.
+A detailed English derivation is pending.
 -/
 theorem cc_eq_conj (D : D7) (x : D.host.E) : ReciprocityTheory.ChartRestriction.G.FD.cc x = D.host.conj x :=
   bridge_star_holds D.R D.host x
 
 /- English proof (translation)
-The claim follows from `conj_xi0_alt D`.
+A detailed English derivation is pending.
 -/
 theorem flagDomainConj_hostXi_eq_neg (D : D7) : ReciprocityTheory.ChartRestriction.G.FD.cc D.host.xi0 = -D.host.xi0 :=
   conj_xi0_alt D
 
 /- English proof (translation)
-Introduce `h`. Conclude with `(bB_ne D).1 (by rw [h]; simp)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem halfDifferent_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
   intro h
   exact (bB_ne D).1 (by rw [h]; simp)
 
 /- English proof (translation)
-Establish `ht : differentIdeal ℤ (𝓞 D.host.E) = differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) * (differentIdeal ℤ (𝓞 D.host.K)).map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))` using `differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 D.host.K) (𝓞 D.host.E)`. Establish `hdvd : D.host.𝔟 ∣ differentIdeal ℤ (𝓞 D.host.E)`. Rewrite using `[ht, D.host.𝔟_spec.1, mul_assoc]`. Conclude with `dvd_mul_right _ _`. Establish `h1` using `map_dvd Ideal.absNorm hdvd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[NumberField.absNorm_differentIdeal D.host.E (𝓞 D.host.E)]`. Establish `h2` using `Nat.le_of_dvd (Int.natAbs_pos.2 (NumberField.discr_ne_zero D.host.E)) h1`. Rewrite using `[← Int.cast_abs, ← Nat.cast_natAbs]`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_halfDifferent_le (D : D7) :
     (Ideal.absNorm D.host.𝔟 : ℝ) ≤ |(NumberField.discr D.host.E : ℝ)| := by
@@ -53,7 +53,7 @@ theorem absNorm_halfDifferent_le (D : D7) :
   exact_mod_cast h2
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Host.AA Formalism.BasicNotions.Host.AA0 at ha`. Rewrite `ha` using `[← div_eq_mul_inv, FractionalIdeal.mem_div_iff_of_ne_zero (bB_ne D).1]`. Take `⟨w, -, hw⟩` from `(FractionalIdeal.mem_coeIdeal _).1 (ha _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨_, Ideal.absNorm_mem D.host.𝔟, rfl⟩))`. Conclude with `⟨w, by rw [hw, map_natCast, mul_comm]⟩`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem absNorm_mul_mem_one (D : D7) {a : D.host.E} (ha : a ∈ D.host.AA) :
     ∃ z : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E z = (Ideal.absNorm D.host.𝔟 : D.host.E) * a := by
@@ -64,9 +64,9 @@ theorem absNorm_mul_mem_one (D : D7) {a : D.host.E} (ha : a ∈ D.host.AA) :
   exact ⟨w, by rw [hw, map_natCast, mul_comm]⟩
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Host.AA Formalism.BasicNotions.Host.AA0`. Rewrite using `[← div_eq_mul_inv, FractionalIdeal.mem_div_iff_of_ne_zero (bB_ne D).1]`. Introduce `y hy`. Take `⟨z, -, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hy`. Establish `h : ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∈ D.host.ccE`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) (Ideal.absNorm_mem D.host.ccK)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Conclude with `(FractionalIdeal.mem_coeIdeal _).2 ⟨_, Ideal.mul_mem_right z _ h, by rw [map_mul, map_natCast]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem absNorm_ccK_mem (D : D7) : (Ideal.absNorm D.host.ccK : D.host.E) ∈ D.host.AA := by
   unfold Formalism.BasicNotions.Host.AA Formalism.BasicNotions.Host.AA0
@@ -79,19 +79,17 @@ theorem absNorm_ccK_mem (D : D7) : (Ideal.absNorm D.host.ccK : D.host.E) ∈ D.h
   exact (FractionalIdeal.mem_coeIdeal _).2 ⟨_, Ideal.mul_mem_right z _ h, by rw [map_mul, map_natCast]⟩
 
 /- English proof (translation)
-Introduce `D T h j hj σ hσ hP k`. Take `⟨-, -, -, hx0, hx1, -⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q h.pins`. Establish `habs` using `h.xiAbs j hj σ hσ k`. Establish `hperf` using `GlobalTheory.traceForm_integral_perfect_of_isUnf _ _ _ _ _ _ σ _ (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) ((Formalism.L2.PjFree.isUnf_ofPj _).2 (h.unf j hj σ hσ)) k`. Establish `hξ` using `GlobalTheory.eq_or_eq_neg_of_purelyImaginary_of_norm_eq _ D.host.xi0 ((T.U j σ).X k).ξ0 D.host.φ₀ (flagDomainConj_hostXi_eq_neg D) ((T.U j σ).X k).ξ0_im (habs _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) ((T.U j σ).X k).ξ0 * D.host.AA * D.host.AAbar * (differentIdeal ℤ (𝓞 D.host.E) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) = 1`. Establish `h1` using `Formalism.IndefR.Fin.factPrincipalDatum D.R D.host`. Break down `hξ with e | e` into its components or cases. Rewrite using `[e]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, show -D.host.xi0 = (-1 : (𝓞 D.host.E)ˣ) • D.host.xi0 by simp, ← (FractionalIdeal.spanSingleton_eq_spanSingleton.2 ⟨-1, rfl⟩)]`. Conclude with `h1`. Establish `hM : 0 < T.Q.l.M` using `by have := T.Q.l.three_le; omega`. Take `⟨Xx, h1, h2, h3⟩` from `GlobalTheory.exists_dataX_of_perfect_traceForm _ _ ((T.U j σ).X k) D.host.AA D.host.AAbar (xiR D) T.Q.l.M (fun a => by`. Rewrite using `[cc_eq_conj]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨conj_mem_AA D, fun ha => by simpa only [conj_conj] using conj_mem_AAbar D ha⟩)`. Use `hone habs hx1 hperf.1 hperf.2 hM (hP k)`. Use `⟨{ Xx with k0 := 2 * xiR D minWeight_pos := by positivity k0_le := by linarith ξ0_abs := fun τ => by rw [show Xx.ξ0 = ((T.U j σ).X k).ξ0 from congrArg _ h1, habs]; ring NA := Ideal.absNorm D.host.𝔟 NC := Ideal.absNorm D.host.ccK NA_pos := Nat.pos_of_ne_zero fun e => halfDifferent …` and prove the remaining obligations. Rewrite `hx` using `[h3]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `mem v hv`. Take `⟨a, ha, u, hu, rfl⟩` from `hv`. Take `⟨z, hz⟩` from `absNorm_mul_mem_one D ha`. Rewrite using `[smul_smul, ← hz, algebraMap_smul]`. Conclude with `Xx.L'.smul_mem z hu`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `add v w _ _ hv hw => rw [smul_add]`. Conclude with `add_mem hv hw`. Consider the case `smul c v _ hv => rw [smul_comm]`. Conclude with `Xx.L'.smul_mem c hv`.
-
-Rewrite using `[h3]`. Conclude with `Submodule.subset_span ⟨_, absNorm_ccK_mem D, x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_dataX_of_hasPrinc : ∀ (D : D7) (T : Core D) (h : LawsCore T) (j : ℕ) (hj : InR D j), ∀ σ, GoodEmb T.Q.c σ → GlobalTheory.FrameNorm.HasPrinc (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) T.Q.l.M → ∀ k : (T.U j σ).Comp, ∃ Xx : ReciprocityTheory.ChartRestriction.G.FD.DataX D.host.E D.R.r, Xx.toData = (T.U j σ).X k ∧ Xx.g = T.Q.l.M ∧ Xx.Λ = Submodule.span (𝓞 D.host.E) {v | ∃ a ∈ D.host.AA, ∃ u ∈ Xx.L', v = a • u} ∧ Xx.k0 = 2 * xiR D ∧ (Xx.NA : ℝ) ≤ |(NumberField.discr D.host.E : ℝ)| ∧ Xx.NC ≤ Ideal.absNorm D.host.ccK := by
   intro D T h j hj σ hσ hP k

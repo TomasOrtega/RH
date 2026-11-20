@@ -15,14 +15,14 @@ def IsCrd (T : Forms0 D u) (B : GL (Fin (D.R.N 0)) D.host.E) (x : ((D.fm u).lat 
     (atInf (embT D) (B⁻¹ : GL (Fin (D.R.N 0)) D.host.E).1) Q (T.val0.eY z)
 
 /- English proof (translation)
-Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 ((Units.isUnit B).map (RingHom.mapMatrix (embT D τ)))`.
+A detailed English derivation is pending.
 -/
 theorem atInf_unit (B : GL (Fin (D.R.N 0)) D.host.E) (τ : D.what₂.Tau) :
     IsUnit (atInf (embT D) (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ).det := by
   exact (Matrix.isUnit_iff_isUnit_det _).1 ((Units.isUnit B).map (RingHom.mapMatrix (embT D τ)))
 
 /- English proof (translation)
-Apply `polynomial_function_frames_injective _ _ _ (atInf_unit (B⁻¹))` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Take `⟨z, rfl⟩` from `T.val0.eY.surjective y`. Rewrite using `[← h z, h' z]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCrd_unique (T : Forms0 D u) (B : GL (Fin (D.R.N 0)) D.host.E) (x : ((D.fm u).lat 0).V)
     (c : (D.mem u).C.cls 0) {Q Q' : MvPolynomial (D.what₂.Tau × Fin (D.R.N 0) × Fin (D.R.N 0)) ℂ}
@@ -33,9 +33,9 @@ theorem isCrd_unique (T : Forms0 D u) (B : GL (Fin (D.R.N 0)) D.host.E) (x : ((D
   rw [← h z, h' z]
 
 /- English proof (translation)
-Take `⟨P, -, hP⟩` from `((T.val0.5 ((D.fm u).emb 0 x)).1 ⟨x, rfl⟩).2 c`. Use `⟨MvPolynomial.C (∏ τ, (atInf (embT D) (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ).det ^ shiftOf (lamT u 0) τ) * subP (atInf (embT D) (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E)) P, fun z => ?_⟩` and prove the remaining obligations. Establish `hN : (fun τ => atInf (embT D) (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ * atInf (embT D) (B⁻¹ : GL (Fin (D.R.N 0)) D.host.E).1 τ) = 1`. Use function extensionality and compare the values at `τ`. Simplify using `only [atInf, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), Pi.one_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hP z, ← fnOf_mul _ _ (atInf (embT D) (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E)), hN]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isCrd_exists (T : Forms0 D u) (B : GL (Fin (D.R.N 0)) D.host.E) (x : ((D.fm u).lat 0).V)
     (c : (D.mem u).C.cls 0) : ∃ Q, IsCrd T B x c Q := by
@@ -49,7 +49,7 @@ theorem isCrd_exists (T : Forms0 D u) (B : GL (Fin (D.R.N 0)) D.host.E) (x : ((D
   rw [hP z, ← fnOf_mul _ _ (atInf (embT D) (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E)), hN]
 
 /- English proof (translation)
-Introduce `z`. Rewrite using `[map_add, Pi.add_apply, Pi.add_apply, h z, h' z, map_add, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCrd_add (T : Forms0 D u) (B : GL (Fin (D.R.N 0)) D.host.E) {x y : ((D.fm u).lat 0).V}
     {c : (D.mem u).C.cls 0} {Q Q' : MvPolynomial (D.what₂.Tau × Fin (D.R.N 0) × Fin (D.R.N 0)) ℂ}
@@ -58,7 +58,7 @@ theorem isCrd_add (T : Forms0 D u) (B : GL (Fin (D.R.N 0)) D.host.E) {x y : ((D.
   rw [map_add, Pi.add_apply, Pi.add_apply, h z, h' z, map_add, Pi.add_apply]
 
 /- English proof (translation)
-Introduce `z`. Rewrite using `[LinearMap.map_smulₛₗ, Pi.smul_apply, Pi.smul_apply, h z, map_smul, Pi.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCrd_smul (T : Forms0 D u) (B : GL (Fin (D.R.N 0)) D.host.E) {x : ((D.fm u).lat 0).V}
     {c : (D.mem u).C.cls 0} {Q : MvPolynomial (D.what₂.Tau × Fin (D.R.N 0) × Fin (D.R.N 0)) ℂ}
@@ -71,14 +71,14 @@ def crd (T : Forms0 D u) (B : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)) D.host.E)
   fun c => Classical.choose (isCrd_exists T (B c) x c)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (isCrd_exists T (B c) x c)`.
+A detailed English derivation is pending.
 -/
 theorem crd_spec (T : Forms0 D u) (B : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)) D.host.E) (x : ((D.fm u).lat 0).V)
     (c : (D.mem u).C.cls 0) : IsCrd T (B c) x c (crd T B x c) :=
   Classical.choose_spec (isCrd_exists T (B c) x c)
 
 /- English proof (translation)
-The claim follows from `isCrd_unique T (B c) x c (crd_spec T B x c) h`.
+A detailed English derivation is pending.
 -/
 theorem crd_eq (T : Forms0 D u) (B : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)) D.host.E) {x : ((D.fm u).lat 0).V}
     {c : (D.mem u).C.cls 0} {Q : MvPolynomial (D.what₂.Tau × Fin (D.R.N 0) × Fin (D.R.N 0)) ℂ}
@@ -94,14 +94,14 @@ theorem owEquiv_coe (w : D.what₂.places.Pl) (r : Ow D w) :
   rfl
 
 /- English proof (translation)
-The claim follows from `funext fun c => crd_eq T B (isCrd_add T (B c) (crd_spec T B x c) (crd_spec T B y c))`.
+A detailed English derivation is pending.
 -/
 theorem crd_add (T : Forms0 D u) (B : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)) D.host.E) (x y : ((D.fm u).lat 0).V) :
     crd T B (x + y) = crd T B x + crd T B y :=
   funext fun c => crd_eq T B (isCrd_add T (B c) (crd_spec T B x c) (crd_spec T B y c))
 
 /- English proof (translation)
-The claim follows from `crd_eq T B (isCrd_smul T (B c) (crd_spec T B x c) r)`.
+A detailed English derivation is pending.
 -/
 theorem crd_smul (T : Forms0 D u) (B : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)) D.host.E) (r : D.what₂.LL)
     (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) : crd T B (r • x) c = D.what₂.embLL r • crd T B x c :=
@@ -124,7 +124,7 @@ theorem crdL_apply (T : Forms0 D u) (B : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)
     (x : Vl D u 0) : crdL T B w x = crd T B x := rfl
 
 /- English proof (translation)
-Introduce `x y hxy`. Apply `(D.fm u).emb_inj 0` to reduce the goal to its premises. Use function extensionality and compare the values at `c z`. Establish `hc : crd T B x c = crd T B y c` using `congrFun hxy c`. Rewrite using `[crd_spec T B x c z, crd_spec T B y c z, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem crdL_inj (T : Forms0 D u) (B : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)) D.host.E) (w : D.what₂.places.Pl) :
     Function.Injective (crdL T B w) := by

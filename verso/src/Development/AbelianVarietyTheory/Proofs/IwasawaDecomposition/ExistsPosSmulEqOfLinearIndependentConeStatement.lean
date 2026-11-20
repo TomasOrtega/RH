@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPosSmu
 import Mathlib
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_pos_smul_eq_of_linearIndependent_cone | exact GlobalTheory.exists_pos_smul_eq_of_linearIndependent_cone | (intros; apply GlobalTheory.exists_pos_smul_eq_of_linearIndependent_cone <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_pos_smul_eq_of_linearIndependent_cone' : ∀ {L : Type} [AddCommGroup L] {m m' : ℕ} (δ : Fin m → L) (γ : Fin m' → L) (i : Fin m) (k : ℕ)
     (a : Fin m' → ℕ), LinearIndependent ℤ δ → 0 < k → k • δ i = ∑ j, a j • γ j →

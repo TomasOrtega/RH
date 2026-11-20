@@ -66,9 +66,9 @@ open MvPolynomial
 variable {X : Scheme.{0}} {R : Type} [CommRing R] {H : LB X} {m : ℕ}
 
 /- English proof (translation)
-Rewrite using `[eval₂_eq, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `hd : ∑ j ∈ a.support, a j = e`. Use `hF (mem_support_iff.1 ha)` as an intermediate fact. Rewrite using `[← this, Finsupp.weight_apply, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ThetaDeform.eval₂_scale {σ A : Type} [CommRing A] (φ : R →+* A) (c : A) (x : σ → A) {F : MvPolynomial σ R}
     {e : ℕ} (hF : F.IsHomogeneous e) : eval₂ φ (fun j => x j * c) F = c ^ e * eval₂ φ x F := by
@@ -85,15 +85,15 @@ def ThetaDeform.germAt (y : X) (U : X.Opens) (h : y ∈ U) : Γ(X, U) →+* X.pr
   (X.presheaf.germ U y h).hom
 
 /- English proof (translation)
-The claim follows from `(gs_eq (𝟙 X) y U h a).symm`.
+A detailed English derivation is pending.
 -/
 theorem ThetaDeform.germAt_eq (y : X) (U : X.Opens) (h : y ∈ U) (a : Γ(X, U)) :
     ThetaDeform.germAt y U h a = gs (𝟙 X) y U a := (gs_eq (𝟙 X) y U h a).symm
 
 /- English proof (translation)
-Rewrite using `[← ThetaDeform.germAt_eq y U h, coe_eval₂Hom, eval₂_comp_left]`. Use `congr 1`. Use extensionality with `a`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, ThetaDeform.germAt_eq, ThetaDeform.germAt_eq, ← AbLaw.rs_cst f (le_top : U ≤ ⊤) a, gs_res _ y _ h]`. Use extensionality with `j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `ThetaDeform.germAt_eq y U h _`.
+A detailed English derivation is pending.
 -/
 theorem ThetaDeform.gs_eval (f : X ⟶ Sp R) (y : X) (U : X.Opens) (h : y ∈ U) (x : Fin (m + 1) → Γ(X, U))
     (F : MvPolynomial (Fin (m + 1)) R) : gs (𝟙 X) y U (eval₂Hom (AbLaw.cst f U) x F) =
@@ -109,7 +109,7 @@ theorem ThetaDeform.gs_eval (f : X ⟶ Sp R) (y : X) (U : X.Opens) (h : y ∈ U)
 variable {s : Fin (m + 1) → H.Sec} {i : Fin (m + 1)} {r : Fin (m + 1) → Γ(X, Out.nonzeroLocus (s i))}
 
 /- English proof (translation)
-Establish `h : y ∈ Out.nonzeroLocus (s i) ⊓ H.U k` using `⟨hy, hk⟩`. Establish `e` using `congrArg (gs (𝟙 X) y _) (hr j k)`. Rewrite `e` using `[gs_res _ y _ h, gs_mul _ y _ h, gs_res _ y _ h, gs_res _ y _ h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsRatioFamily.gs_eq (hr : IsRatioFamily s i r) {y : X} (hy : y ∈ Out.nonzeroLocus (s i)) {k : H.ι}
     (hk : y ∈ H.U k) (j : Fin (m + 1)) :
@@ -119,7 +119,7 @@ theorem IsRatioFamily.gs_eq (hr : IsRatioFamily s i r) {y : X} (hy : y ∈ Out.n
   rwa [gs_res _ y _ h, gs_mul _ y _ h, gs_res _ y _ h, gs_res _ y _ h] at e
 
 /- English proof (translation)
-The claim follows from `funext fun j => fn_ext fun y hy => by obtain ⟨k, hk⟩ := exists_chart_of_mem_nonzeroLocus hy exact ((mem_nonzeroLocus_iff_isUnit _ hk).1 hy).mul_right_cancel ((hr.gs_eq hy hk j).symm.trans (hr'.gs_eq hy hk j))`.
+A detailed English derivation is pending.
 -/
 theorem IsRatioFamily.unique {r' : Fin (m + 1) → Γ(X, Out.nonzeroLocus (s i))} (hr : IsRatioFamily s i r)
     (hr' : IsRatioFamily s i r') : r = r' := funext fun j => fn_ext fun y hy => by
@@ -128,7 +128,7 @@ theorem IsRatioFamily.unique {r' : Fin (m + 1) → Γ(X, Out.nonzeroLocus (s i))
     ((hr.gs_eq hy hk j).symm.trans (hr'.gs_eq hy hk j))
 
 /- English proof (translation)
-The claim follows from `fn_ext fun y hy => by obtain ⟨k, hk⟩ := exists_chart_of_mem_nonzeroLocus hy refine ((mem_nonzeroLocus_iff_isUnit _ hk).1 hy).mul_right_cancel ((hr.gs_eq hy hk i).symm.trans ?_) rw [← ThetaDeform.germAt_eq y _ hy 1, map_one, _root_.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem IsRatioFamily.self_eq_one (hr : IsRatioFamily s i r) : r i = 1 := fn_ext fun y hy => by
   obtain ⟨k, hk⟩ := exists_chart_of_mem_nonzeroLocus hy
@@ -136,7 +136,7 @@ theorem IsRatioFamily.self_eq_one (hr : IsRatioFamily s i r) : r i = 1 := fn_ext
   rw [← ThetaDeform.germAt_eq y _ hy 1, map_one, _root_.one_mul]
 
 /- English proof (translation)
-Rewrite using `[ThetaDeform.gs_eval f y _ hk, ThetaDeform.gs_eval f y _ hy, ← ThetaDeform.eval₂_scale _ _ _ hF]`. Use `congr 1`. Conclude with `funext fun j => hr.gs_eq hy hk j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem IsRatioFamily.gs_form (f : X ⟶ Sp R) (hr : IsRatioFamily s i r) {y : X} (hy : y ∈ Out.nonzeroLocus (s i))
     {k : H.ι} (hk : y ∈ H.U k) {F : MvPolynomial (Fin (m + 1)) R} {e : ℕ} (hF : F.IsHomogeneous e) :
@@ -147,7 +147,7 @@ theorem IsRatioFamily.gs_form (f : X ⟶ Sp R) (hr : IsRatioFamily s i r) {y : X
   exact funext fun j => hr.gs_eq hy hk j
 
 /- English proof (translation)
-The claim follows from `fn_ext fun y hy => by obtain ⟨k, hk⟩ := exists_chart_of_mem_nonzeroLocus hy have e := hr.gs_form f hy hk hF.1 rw [hF.2 k, LBGerm.gs_zero _ y _ hk] at e rw [LBGerm.gs_zero _ y _ hy] exact (((mem_nonzeroLocus_iff_isUnit _ hk).1 hy).pow d).mul_right_eq_zero.1 e.symm`.
+A detailed English derivation is pending.
 -/
 theorem IsRatioFamily.eval_eq_zero (f : X ⟶ Sp R) (hr : IsRatioFamily s i r) {F : MvPolynomial (Fin (m + 1)) R}
     {d : ℕ} (hF : F ∈ vanishingForms f s d) : eval₂Hom (AbLaw.cst f _) r F = 0 := fn_ext fun y hy => by
@@ -158,7 +158,7 @@ theorem IsRatioFamily.eval_eq_zero (f : X ⟶ Sp R) (hr : IsRatioFamily s i r) {
   exact (((mem_nonzeroLocus_iff_isUnit _ hk).1 hy).pow d).mul_right_eq_zero.1 e.symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hF, fun k => fn_ext fun y hk => by obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 (hc.ge (Set.mem_univ y)) rw [(hr i).gs_form f hi hk hF, h i, LBGerm.gs_zero _ y _ hi, LBGerm.gs_zero _ y _ hk, mul_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_vanishingForms_of_ratios (f : X ⟶ Sp R) (hc : ⨆ i, Out.nonzeroLocus (s i) = ⊤)
     (r : ∀ i, Fin (m + 1) → Γ(X, Out.nonzeroLocus (s i))) (hr : ∀ i, IsRatioFamily s i (r i))
@@ -169,11 +169,11 @@ theorem mem_vanishingForms_of_ratios (f : X ⟶ Sp R) (hc : ⨆ i, Out.nonzeroLo
     rw [(hr i).gs_form f hi hk hF, h i, LBGerm.gs_zero _ y _ hi, LBGerm.gs_zero _ y _ hk, mul_zero]⟩
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Use `Filter.Eventually.of_forall fun d => ⟨C a * MvPolynomial.X i ^ d, by simpa using (isHomogeneous_C _ a).mul (isHomogeneous_X_pow i d), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_sub_one]`. Conclude with `(sub_one_dvd_pow_sub_one _ d).mul_left _`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add p q hp hq => filter_upwards [hp, hq] with d ⟨F, hF, e⟩ ⟨G, hG, e'⟩`. Conclude with `⟨F + G, hF.add hG, by rw [add_sub_add_comm]; exact e.add e'⟩`. Consider the case `mul_X p j hp`. Take `⟨e, he⟩` from `Filter.eventually_atTop.1 hp`. Use `Filter.eventually_atTop.2 ⟨e + 1, fun d hd => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨d, rfl⟩ : ∃ d', d = d' + 1` from `⟨d - 1, by omega⟩`. Take `⟨F, hF, h⟩` from `he d (by omega)`. Conclude with `⟨F * MvPolynomial.X j, hF.mul (isHomogeneous_X _ j), by rw [← sub_mul]; exact h.mul_right _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ThetaDeform.exists_homogeneous (i : Fin (m + 1)) (p : MvPolynomial (Fin (m + 1)) R) :
     ∀ᶠ d in Filter.atTop, ∃ F : MvPolynomial (Fin (m + 1)) R, F.IsHomogeneous d ∧ MvPolynomial.X i - 1 ∣ F - p := by
@@ -200,9 +200,7 @@ section Families
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `hφ` using `h.2.1.1`. Establish `w : (spMap f ≫ x.left) ≫ P.A.hom = 𝟙 _ ≫ spMap f`. Rewrite using `[Category.assoc, Over.w x]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`. Use `⟨Over.homMk (hφ.lift _ _ w) (hφ.lift_snd _ _ w), hφ.lift_fst _ _ w, fun v' h => ?_⟩` and prove the remaining obligations.
-
-Conclude with `Over.OverMorphism.ext (hφ.hom_ext (h.trans (hφ.lift_fst _ _ w).symm) ((Over.w v').trans (hφ.lift_snd _ _ w).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsPolFibre.existsUnique_point {R' : Type} [CommRing R'] {f : R →+* R'} {P : Out.PolAV (Sp R)}
     {P' : Out.PolAV (Sp R')} {φ : P'.A.left ⟶ P.A.left} (h : IsPolFibre f P P' φ)
@@ -241,13 +239,13 @@ variable {X Y Z : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K'] 
   {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun u => res _ (pullU h _ u)) (ht j)).trans ((congrArg (res _) (map_one _)).trans (map_one _))`.
+A detailed English derivation is pending.
 -/
 theorem ThetaDeform.pullGen_one (ht : ∀ j, t.s j = 1) (h : Z ⟶ Y) (j) : (LB.pullGen L φ ε t h).s j = 1 :=
   (congrArg (fun u => res _ (pullU h _ u)) (ht j)).trans ((congrArg (res _) (map_one _)).trans (map_one _))
 
 /- English proof (translation)
-The claim follows from `(congrArg₂ (· * ·) ((congrArg (res _) (ht _)).trans (map_one _)) ((congrArg (res _) (ht' _)).trans (map_one _))).trans (_root_.mul_one _)`.
+A detailed English derivation is pending.
 -/
 theorem ThetaDeform.mulGen_one (ht : ∀ j, t.s j = 1) (ht' : ∀ j, t'.s j = 1) (j) :
     (LB.mulGen L φ ε φ' ε' t t').s j = 1 :=
@@ -255,13 +253,13 @@ theorem ThetaDeform.mulGen_one (ht : ∀ j, t.s j = 1) (ht' : ∀ j, t'.s j = 1)
     ((congrArg (res _) (ht' _)).trans (map_one _))).trans (_root_.mul_one _)
 
 /- English proof (translation)
-The claim follows from `(congrArg (·⁻¹) (ht j)).trans inv_one`.
+A detailed English derivation is pending.
 -/
 theorem ThetaDeform.invGen_one (ht : ∀ j, t.s j = 1) (j) : (LB.invGen L φ ε t).s j = 1 :=
   (congrArg (·⁻¹) (ht j)).trans inv_one
 
 /- English proof (translation)
-Introduce `j j' _ _ _` and use `((congrArg (res _) (ht j)).trans (map_one _)).trans ((congrArg (res _) (ht' j')).trans (map_one _)).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ThetaDeform.corr_one (ht : ∀ j, t.s j = 1) (ht' : ∀ j, t'.s j = 1) : LB.Gen.Corr L φ ε φ' ε' t t' :=
   fun j j' _ _ _ => ((congrArg (res _) (ht j)).trans (map_one _)).trans
@@ -272,19 +270,15 @@ end Ones
 open ThetaDeform in
 
 /- English proof (translation)
-Use `⟨oneSec S 1 T, oneSec S _ T, ⟨fun _ => 1⟩, one1 S T 1 _, fun _ => theta1 S T _, fun _ => oneSec S _ T, fun _ => 1, 1, ?_, ?_, ?_, ?_, fun i => ⟨toUnit_unique _ _, ?_, ⟨fun _ => 1⟩, ?_, ?_⟩, fun i => ?_, fun i => ?_, fun _ => (_root_.one_mul _).symm⟩` and prove the remaining obligations. Introduce `s`. Establish `hU : ∀ j, (LPow (zeroPolAV S).A (zeroPolAV S).L 1 T).U j = ⊤` using `fun j => top_unique fun _ _ => Set.mem_iInter.2 fun _ => trivial`. Establish `h₀ : IsIso (fst T (𝟙_ (Over S)))`. Rewrite using `[← rightUnitor_hom]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `: IsIso (fst T (zeroPolAV S).A).left` using `inferInstanceAs (IsIso ((Over.forget S).map (fst T (𝟙_ (Over S)))))`. Take `⟨r, hr⟩` from `surj_appLE (fst T (zeroPolAV S).A).left _ (hU fun _ => PUnit.unit) le_top (s.f fun _ => PUnit.unit)`. Conclude with `⟨r, fun j => hr.symm.trans (_root_.mul_one _).symm⟩`. Introduce `i j erw [linComb_triv_g, _root_.one_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Repeat the step `erw [map_one]` while it applies. Introduce `i j erw [linComb_triv_g, _root_.one_mul]`. Simplify using `only [one1]`. Repeat the step `erw [map_one]` while it applies. Introduce `j`.
+Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Simplify using `only [oneSec, Units.val_one]`. Use the proof step `(repeat erw [map_one])`. Apply the tactic sequence `(try erw [_root_.one_mul])`. Use `corr_one _ (fun j => ?_) fun _ => rfl dsimp only [powGen]` and prove the remaining obligations. Apply `Finset.prod_eq_one` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a _`. Conclude with `(congrArg (res _) (pullGen_one _ (t := (theta1 S T _).φ) (fun _ => rfl) _ _)).trans (map_one _)`. Introduce `i j erw [linComb_triv_g, _root_.one_mul]`. Repeat the step `erw [map_one]` while it applies. Conclude with `corr_one _ (mulGen_one _ (mulGen_one _ (pullGen_one _ (fun _ => rfl) _) fun _ => rfl) (mulGen_one _ (pullGen_one _ (fun _ => rfl) _) (invGen_one _ (pullGen_one _ (fun _ => rfl) _)))) fun _ => rfl`.
-
-Introduce `j`. Simplify using `only [oneSec]`. Use the proof step `(repeat erw [map_one])`. Apply the tactic sequence `(try erw [_root_.one_mul])`. Introduce `j`.
-
-Simplify using `only [oneSec, one1, Units.val_one]`. Use the proof step `(repeat erw [map_one])`. Apply the tactic sequence `(try erw [_root_.one_mul])`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ThetaDeform.zero_isThetaPtOver (S : Scheme.{0}) (q : ℕ) (T : Over S) {I : Type}
     (x : I → (T ⟶ (zeroPolAV S).A)) : IsThetaPtOver (zeroPolAV S) q x (fun _ => 1) := by

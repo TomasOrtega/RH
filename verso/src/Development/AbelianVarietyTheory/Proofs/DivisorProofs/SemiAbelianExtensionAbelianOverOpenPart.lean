@@ -11,15 +11,13 @@ open Classical
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ S ρ M U₀ EE FinalForm hO z hz`. Rewrite using `[FinalForm.ab]`. Use `show S.TT M z = ⊥`. Establish `hle : M.ringOn U₀ ≤ M.O z` using `RatModel.ringOn_le_O hz`. Establish `hsub : {x | S.th x ≠ 0} ⊆ S.supI M z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Use `⟨hx, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_mem (hle (hO.le (S.th_mem y))) (hle (hO.th_unit x hx))`. Establish `hHH : S.HH M z = ⊤`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff, ← S.supp]`. Conclude with `AddSubgroup.closure_mono hsub`. Rewrite using `[ThetaSys.TT, hHH, eq_bot_iff]`. Introduce `a ha`. Rewrite using `[AddSubgroup.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h` using `fun b => ha b (AddSubgroup.mem_top b)`. Use function extensionality and compare the values at `j`. Break down `j with i | i` into its components or cases. Use `h (Pi.single (Sum.inr i) 1)` as an intermediate fact. Simplify `this` using `[eStd, Pi.single_apply]`.
-
-Use `h (Pi.single (Sum.inl i) 1)` as an intermediate fact. Simplify `this` using `[eStd, Pi.single_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem abLocus_of_over₀ : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), S.Over₀ M U₀ → (U₀ : Set M.Z) ⊆ abLocus FinalForm.G := by
   intro o Ω _ _ _ S ρ M U₀ EE FinalForm hO z hz

@@ -55,7 +55,7 @@ def PiTLevel (D : D7) (lev : LevelData D) (X : ErrX D) : Prop :=
 open scoped TensorProduct in
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inl ⟨⟨_, ⟨X.piT u, rfl⟩⟩, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem piT_mem_intV (D : D7) (X : ErrX D) (u : D.what₂.Word) (v : (D.mem u).A.vT) :
     ((X.piT u : 𝓞 D.host.E) : D.host.E) ⊗ₜ[D.host.F] (1 : (X.vPl u v).adicCompletion D.host.F) ∈
@@ -78,7 +78,7 @@ def DGamDef (D : D7) : Prop :=
   ∀ u μ, GamMult D (D.chTw u μ).DGam ∧ (D.chTw u μ).DGam = (D.mem D.u₀).C.DGam
 
 /- English proof (translation)
-Rewrite using `[← D.memberColumns_twistedChain_base u]`. Conclude with `(h u' μ).2.trans (h u D.what₂.mu0).2.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DGamDef.one {D : D7} (h : DGamDef D) (u u' : D.what₂.Word) (μ : D.what₂.Tup) :
     (D.chTw u' μ).DGam = (D.mem u).C.DGam := by
@@ -149,7 +149,7 @@ def EatX {D : D7} (L : SizeData₂ D) (c : ErrC) (j p : ℕ) : ℝ :=
   else 0
 
 /- English proof (translation)
-The claim follows from `if_neg h`.
+A detailed English derivation is pending.
 -/
 theorem EatX_of_not {D : D7} (L : SizeData₂ D) (c : ErrC) (j : ℕ) {p : ℕ} (h : ¬ IsCs D p) : EatX L c j p = 0 := if_neg h
 
@@ -181,9 +181,9 @@ def SizeData₂.EDef {D : D7} (L : SizeData₂ D) (X : ErrX D) (K : Consts) (c :
   ∀ u, ∀ j ∈ SizeData₂.lifts D, ∀ w, L.E u j w = Eval L X K c u j w
 
 /- English proof (translation)
-Establish `h0 : D.what₂.places.resChar w ≠ D.host.g 0` using `fun h => hg (by simp [h])`. Establish `h1 : D.what₂.places.resChar w ≠ D.host.g 1` using `fun h => hg (by simp [h])`. Establish `h2 : D.host.cls (D.what₂.places.resChar w) ≠ PrimeClass.ramD` using `fun h => hd (cls_ramD h)`. Establish `h3 : ¬ ((IsResidueClassZero D (D.what₂.places.resChar w) ∨ IsSg D (D.what₂.places.resChar w)) ∧ (D.what₂.places.resChar w : ℝ) ≤ L.sc.X'' D.R.n)` using `fun h => absurd h.2 (not_le.2 hX)`. Unfold `Eval`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [if_neg h0, if_neg h1, if_neg hT, if_neg h2, if_neg h3, padicValNat.eq_zero_of_not_dvd hG]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Eval_above {D : D7} (L : SizeData₂ D) (X : ErrX D) (K : Consts) (c : ErrC) (u : D.what₂.Word) (j : ℕ)
     (w : D.what₂.places.Pl) (hX : L.sc.X'' D.R.n < (D.what₂.places.resChar w : ℝ))
@@ -207,14 +207,14 @@ def SizeData₂.withEval {D : D7} (L : SizeData₂ D) (X : ErrX D) (K : Consts) 
     E_supp := hs }
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem SizeData₂.withEval_EDef {D : D7} (L : SizeData₂ D) (X : ErrX D) (K : Consts) (c : ErrC)
     (hs : ∀ u j w, w ∉ L.supp → Eval L X K c u j w = 0) : (L.withEval X K c hs).EDef X K c :=
   fun _ _ _ _ => rfl
 
 /- English proof (translation)
-Rewrite using `[h u j hj w]`. Conclude with `Eval_above L X K c u j w hX hT hg hd hG`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SizeData₂.EDef.zeroAbove {D : D7} {L : SizeData₂ D} {X : ErrX D} {K : Consts} {c : ErrC} (h : L.EDef X K c)
     (u : D.what₂.Word) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (w : D.what₂.places.Pl)

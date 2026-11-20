@@ -13,13 +13,11 @@ namespace GlobalTheory.TwV.Xc.OrdA
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n p : ℕ} {G : GAtP p}
 
 /- English proof (translation)
-Use `haveI := (G.P.setting v).frac_alt`. Establish `key : RInt F E ≤ (algebraMap (G.P.W v) (G.P.Qq v)).range.comap (phiA A v)` using `by show Subring.closure _ ≤ _`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨⟨e, he⟩, rfl⟩ | ⟨⟨c, hc⟩, rfl⟩)`. Take `⟨a, rfl⟩` from `he show phiA A v ((algebraMap (𝓞 E) E a) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[phiA_incl]`. Establish `hint : IsIntegral ℤ (A.iw v (algebraMap (𝓞 E) E a))` using `(RingOfIntegers.isIntegral_coe a).map (A.iw v).toIntAlgHom`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (hint.tower_top (A := G.P.W v))`. Conclude with `⟨y, hy⟩`. Use `show phiA A v ((1 : E) ⊗ₜ[F] c) ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : phiA A v ((1 : E) ⊗ₜ[F] c) = (A.eQ v).symm (c (A.pl v).1)`. Establish `h2 : prV (E` using `E) (A.pl v).1 ((1 : E) ⊗ₜ[F] c) = (1 : E) ⊗ₜ[F] c (A.pl v).1 := rfl`. Establish `h3 : A.ph v ((1 : E) ⊗ₜ[F] c (A.pl v).1) = c (A.pl v).1` using `by show (A.spl v ((1 : E) ⊗ₜ[F] c (A.pl v).1)).1 = _`. Rewrite using `[hS v]`. Use `show (A.eQ v).symm (A.ph v (prV (E := E) (A.pl v).1 ((1 : E) ⊗ₜ[F] c))) = _`.
-
-Rewrite using `[h2, h3]`. Rewrite using `[h1]`. Conclude with `(hI v _).2 (by rw [RingEquiv.apply_symm_apply]; exact hc (A.pl v).1)`. Conclude with `key hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiA_mem_range (A : LocAt F E n G) (hI : LocInt A) (hS : SplAlg A) (v : Fin G.P.nV)
     {x : AfE F E} (hx : x ∈ RInt F E) : phiA A v x ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range := by
@@ -48,9 +46,9 @@ theorem phiA_mem_range (A : LocAt F E n G) (hI : LocInt A) (hS : SplAlg A) (v : 
   exact key hx
 
 /- English proof (translation)
-Use `haveI := (G.P.setting v).frac_alt`. Take `⟨a, ha⟩` from `phiA_mem_range A hI hS v (x := (k : AfE F E)) hk.1`. Take `⟨b, hb⟩` from `phiA_mem_range A hI hS v (x := ((k⁻¹ : (AfE F E)ˣ) : AfE F E)) hk.2`. Establish `hab : a * b = 1`. Apply `IsFractionRing.injective (G.P.W v) (G.P.Qq v)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ha, hb, ← map_mul, Units.mul_inv, map_one, map_one]`. Conclude with `⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ha.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem phiA_intU (A : LocAt F E n G) (hI : LocInt A) (hS : SplAlg A) (v : Fin G.P.nV) {k : (AfE F E)ˣ}
     (hk : k ∈ intU F E) : ∃ u : (G.P.W v)ˣ, phiA A v (k : AfE F E) = algebraMap (G.P.W v) (G.P.Qq v) u := by
@@ -63,9 +61,9 @@ theorem phiA_intU (A : LocAt F E n G) (hI : LocInt A) (hS : SplAlg A) (v : Fin G
   exact ⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ha.symm⟩
 
 /- English proof (translation)
-Use `haveI := (G.P.setting v).frac_alt`. Establish `hp` using `(G.P.setting v).p_unif`. Take `⟨a, u, ha⟩` from `exists_eq_unit_mul_zpow₂ hp (x.isUnit.map (phiA A v)).ne_zero`. Take `⟨b, u', hb⟩` from `exists_eq_unit_mul_zpow₂ hp (y.isUnit.map (phiA A v)).ne_zero`. Unfold `ordA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, map_mul, ha, hb, ordP_eq hp, ordP_eq hp, ← ordP_eq (Qq := G.P.Qq v) hp (a + b) (u * u')]`. Use `congr 1`. Rewrite using `[zpow_add₀ (pQ_ne hp), Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ordA_mul (A : LocAt F E n G) (v : Fin G.P.nV) (x y : (AfE F E)ˣ) :
     ordA A v (x * y) = ordA A v x + ordA A v y := by
@@ -79,7 +77,7 @@ theorem ordA_mul (A : LocAt F E n G) (v : Fin G.P.nV) (x y : (AfE F E)ˣ) :
   rw [zpow_add₀ (pQ_ne hp), Units.val_mul, map_mul]; ring
 
 /- English proof (translation)
-Use `haveI := (G.P.setting v).frac_alt`. Use `ordP_eq (Qq := G.P.Qq v) (G.P.setting v).p_unif 0 u` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ordP_unit (v : Fin G.P.nV) (u : (G.P.W v)ˣ) :
     ordP (G.P.W v) p (algebraMap (G.P.W v) (G.P.Qq v) u) = 0 := by
@@ -88,11 +86,11 @@ theorem ordP_unit (v : Fin G.P.nV) (u : (G.P.W v)ˣ) :
   simpa using this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n p _ G A hI hS v`. Use `⟨ordA_mul A v, fun k hk => ?_, fun z => ?_, fun v' hv x hx => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `phiA_intU A hI hS v hk`. Unfold `ordA`. Rewrite using `[hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ordP_unit v u`. Unfold `ordA`. Rewrite using `[← phiA_incl A v (z : E)]`. Both sides reduce to the same expression. Establish `hne : (A.pl v).1 ≠ (A.pl v').1` using `fun h => hv (A.pl.injective (Subtype.ext h)).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : phiA A v (x : AfE F E) = 1`. Simplify using `only [phiA, RingHom.comp_apply, hx _ hne, map_one]`. Unfold `ordA`. Rewrite using `[h1, ← map_one (algebraMap (G.P.W v) (G.P.Qq v)), ← Units.val_one]`. Conclude with `ordP_unit v 1`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordA_props : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n p : ℕ) [Fact p.Prime]
     (G : GAtP p) (A : LocAt F E n G), LocInt A → SplAlg A → ∀ v, (∀ x y, ordA A v (x * y) = ordA A v x + ordA A v y) ∧

@@ -21,11 +21,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Establish `key : colSpan F X I ≤ (colSpan F X I).comap (matHom _ σ J g).1.mulVecLin`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Establish `h1` using `(Subgroup.mem_iInf.1 hg.1 i).2 _ (Submodule.subset_span ⟨i, rfl, rfl⟩)`. Establish `h2 : colSpan F X {l | ∃ k ∈ T, l ≤ k ∧ k < i} ≤ colSpan F X I`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.span_mono (Set.image_mono ?_)` and prove the remaining obligations. Introduce and unpack `l ⟨k, -, hlk, hki⟩`. Conclude with `hI i hi l (lt_of_le_of_lt hlk hki)`. Establish `h3 : (fun i => (adMat F X)ᵀ i) i ∈ colSpan F X I` using `Submodule.subset_span ⟨i, hi, rfl⟩`. Use `show (matHom _ σ J g).1 *ᵥ _ ∈ colSpan F X I`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `add_mem (h2 h1) h3` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `key hy`.
+A detailed English derivation is pending.
 -/
 theorem unip_maps_colSpan {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ unip σ J X T) {I : Set (Fin r)}
     (hI : ∀ i ∈ I, ∀ l, l < i → l ∈ I) {y : Fin n → AF F ⊗[F] E} (hy : y ∈ colSpan F X I) :
@@ -45,7 +45,7 @@ theorem unip_maps_colSpan {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ unip �
   exact key hy
 
 /- English proof (translation)
-Use `⟨unip_maps_colSpan hg hI, fun h => ?_⟩` and prove the remaining obligations. Use `unip_maps_colSpan (inv_mem hg) hI h` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, one_mulVec]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unip_iff_colSpan {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ unip σ J X T) {I : Set (Fin r)}
     (hI : ∀ i ∈ I, ∀ l, l < i → l ∈ I) (y : Fin n → AF F ⊗[F] E) :
@@ -57,13 +57,13 @@ theorem unip_iff_colSpan {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ unip σ
 end DimensionMonotonicity
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ n J _ r X Y _ S T hTS g hg`. Use `⟨Subgroup.mem_iInf.2 fun j => ⟨unip_iff_colSpan hg ?_, fun y hy => ?_⟩, ⟨unip_iff_colSpan hg ?_, fun y hy => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `i ⟨k, hk, hik, hkj⟩ l hl`. Conclude with `⟨k, hk, (le_of_lt (lt_of_lt_of_le hl hik)), hkj⟩`. Use `Submodule.span_mono (Set.image_mono ?_) ((Subgroup.mem_iInf.1 hg.1 j).2 y hy)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `l ⟨k, hk, h1, h2⟩`. Conclude with `⟨k, hTS hk, h1, h2⟩`. Introduce and unpack `i ⟨k, hk, hik⟩ l hl`. Conclude with `⟨k, hk, le_of_lt (lt_of_lt_of_le hl hik)⟩`. Establish `hy' : y ∈ colPerp σ J X {i | ∃ k ∈ T, i ≤ k}`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `only [colPerp, Submodule.mem_iInf] at hy ⊢`. Introduce and unpack `i ⟨k, hk, hik⟩`. Conclude with `hy i ⟨k, hTS hk, hik⟩`. Use `Submodule.span_mono (Set.image_mono ?_) (hg.2.2 y hy')` and prove the remaining obligations. Introduce and unpack `l ⟨k, hk, h1⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨k, hTS hk, h1⟩`.
+A detailed English derivation is pending.
 -/
 theorem unip_mono_of_subset : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y →

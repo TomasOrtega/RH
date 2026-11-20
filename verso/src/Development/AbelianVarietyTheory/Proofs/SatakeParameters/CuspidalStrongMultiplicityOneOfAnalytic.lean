@@ -16,21 +16,21 @@ noncomputable section
 namespace GlobalTheory.RowRepOcc
 
 /- English proof (translation)
-Introduce `w a χ χ' h1 h2` and use `let H := h.1 w a a χ χ' 0 h1 h2 ⟨H.2.2.2.1, H.2.2.2.2.1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem charLaws_of_tie (D : D7) (h : Formalism.MainNotions.SumRepresentations.tie0 D) : GlobalTheory.TypeLeaf.CharLaws D := fun w a χ χ' h1 h2 =>
   let H := h.1 w a a χ χ' 0 h1 h2
   ⟨H.2.2.2.1, H.2.2.2.2.1⟩
 
 /- English proof (translation)
-Simplify using `[isoLoc, spehLoc, D.naut.lpSum_zero, D.naut.lpTw_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isoLoc_one (D : D7) {a : ℕ} (π : D.naut.CG a) (w : PlE D.host) :
     isoLoc D.nd D.naut [⟨a, π, 1⟩] w = D.naut.locG π w := by
   simp [isoLoc, spehLoc, D.naut.lpSum_zero, D.naut.lpTw_zero]
 
 /- English proof (translation)
-Introduce `a π π' ha hloc`. Establish `hp` using `h.1 [⟨a, π, 1⟩] [⟨a, π', 1⟩] (by simp [ha]) (by simp [ha]) (Filter.Eventually.of_forall fun w => by rw [isoLoc_one, isoLoc_one, hloc w])`. Rewrite `hp` using `[List.singleton_perm_singleton]`. Conclude with `eq_of_heq (Formalism.BasicNotions.Part.mk.inj hp).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspidalStrongMultiplicityOne_of_analytic (D : D7) (h : Formalism.MainNotions.SumRepresentations.adm5 D) : GlobalTheory.TypeLeaf.MultOne D := by
   intro a π π' ha hloc
@@ -40,9 +40,9 @@ theorem cuspidalStrongMultiplicityOne_of_analytic (D : D7) (h : Formalism.MainNo
   exact eq_of_heq (Formalism.BasicNotions.Part.mk.inj hp).2.1
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨h1, h2⟩` from `h.2.1.2.1 τ`. Take `⟨c, hc⟩` from `D.R.t_odd`. Establish `hc' : (D.R.t : ℂ) = 2 * c + 1` using `by exact_mod_cast hc`. Rewrite `hz` using `[h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rcases h1 with e | e <;> rw [e] at hz <;> simp at hz <;> subst hz`. Conclude with `⟨-(c + 1), by push_cast; rw [hc']; ring⟩`. Conclude with `⟨-c, by push_cast; rw [hc']; ring⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem etaShift (D : D7) (h : Formalism.MainNotions.SumRepresentations.tie0 D) (τ : D.host.E →+* ℂ) :
     ∀ z ∈ D.naut.infG D.naut.etaTinv τ, ∃ k : ℤ, z + ((-(D.R.t : ℝ) / 2 : ℝ) : ℂ) = (k : ℂ) := by
@@ -56,7 +56,7 @@ theorem etaShift (D : D7) (h : Formalism.MainNotions.SumRepresentations.tie0 D) 
   · exact ⟨-c, by push_cast; rw [hc']; ring⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TypeLeaf.pointPar_of_twist D (GlobalTheory.TypeLeaf.twistInv_of_charLaws_multOne D (charLaws_of_tie D hT) (cuspidalStrongMultiplicityOne_of_analytic D h5)) hT.2.1.1.1 (etaShift D hT)`.
+A detailed English derivation is pending.
 -/
 theorem pointPar (D : D7) (hT : Formalism.MainNotions.SumRepresentations.tie0 D) (h5 : Formalism.MainNotions.SumRepresentations.adm5 D) : GlobalTheory.TypeLeaf.PointPar D :=
   GlobalTheory.TypeLeaf.pointPar_of_twist D
@@ -70,7 +70,7 @@ noncomputable section
 namespace GlobalTheory.RowRepOcc
 
 /- English proof (translation)
-Use extensionality with `x i j`. Simplify using `[mapRep]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapRep_mapRep {Γ : Type} [Group Γ] {A B C : Type} [CommRing A] [CommRing B] [CommRing C] {a : ℕ}
     (f : A →+* B) (g : B →+* C) (ρ : Γ →* GL (Fin a) A) :
@@ -79,7 +79,7 @@ theorem mapRep_mapRep {Γ : Type} [Group Γ] {A B C : Type} [CommRing A] [CommRi
   simp [mapRep]
 
 /- English proof (translation)
-Simplify using `[mapRep]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_mapRep {Γ : Type} [Group Γ] {A B : Type} [CommRing A] [CommRing B] {a : ℕ}
     (f : A →+* B) (ρ : Γ →* GL (Fin a) A) (x : Γ) :
@@ -87,7 +87,7 @@ theorem coe_mapRep {Γ : Type} [Group Γ] {A B : Type} [CommRing A] [CommRing B]
   simp [mapRep]
 
 /- English proof (translation)
-Use `letI : Algebra K L := f.toAlgebra`. Conclude with `ssAscent K L Γ a ρ h`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isSSRep_map {Γ : Type} [Group Γ] {K L : Type} [Field K] [CharZero K] [Field L] {a : ℕ}
     (f : K →+* L) (ρ : Γ →* GL (Fin a) K) (h : IsSSRep ρ) : IsSSRep (mapRep f ρ) := by
@@ -105,19 +105,19 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂
 include A in
 
 /- English proof (translation)
-The claim follows from `(RingHom.charZero_iff (ϕ := A.iotaQ i) (A.iotaQ i).injective).2 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem charZero_Kf (i : N.Loc) : CharZero (Kf N i) :=
   (RingHom.charZero_iff (ϕ := A.iotaQ i) (A.iotaQ i).injective).2 inferInstance
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [coe_mapRep]`. Conclude with `h1.matrix_map hφc`. Use `haveI := charZero_Kf N A i'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : Kf N i' ≃+* Kf N i` to `IsFractionRing.ringEquivOfRingEquiv φ`. Establish `e : mapRep (algebraMap (N.O i) (Kf N i)) (mapRep φ.toRingHom ρ₀) = mapRep ψ.toRingHom (mapRep (algebraMap (N.O i') (Kf N i')) ρ₀)`. Rewrite using `[mapRep_mapRep, mapRep_mapRep]`. Use `congr 1`. Use extensionality with `z`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ψ]`. Rewrite using `[e]`. Conclude with `isSSRep_map ψ.toRingHom _ h2`. Use `h3.mono fun w hw B σ hB hσ => ?_` and prove the remaining obligations. Rewrite using `[coe_mapRep, Matrix.charpoly_map, Polynomial.map_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `: (iotaO N A i).comp φ.toRingHom = iotaO N A i'`. Use extensionality with `z`. Conclude with `hφι z`. Rewrite using `[this]`. Conclude with `hw B σ hB hσ`.
+A detailed English derivation is pending.
 -/
 theorem isRepOfSig_transport {i i' : N.Loc} (φ : N.O i' ≃+* N.O i) (hφc : Continuous φ)
     (hφι : ∀ z, iotaO N A i (φ z) = iotaO N A i' z) (Sig : List (Formalism.BasicNotions.Part A.CG))
@@ -152,17 +152,17 @@ noncomputable section
 namespace GlobalTheory.RowRepOcc
 
 /- English proof (translation)
-Take `⟨r, hrc, hrss, hraway, -⟩` from `(h2 i).1 D.R.r hr1 π hc hr`. Establish `hι` using `GlobalTheory.TypeLeaf.iotaOQ_continuous_injective D i`. Use `haveI := charZero_Kf D.nd D.naut i`. Establish `hQc : Continuous fun g => ((mapRep (iotaOQ D.nd D.naut i) ρ g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (D.nd.l i)))`. Simplify using `only [coe_mapRep]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hρ.1.matrix_map hι.1`. Establish `hQss : IsSSRep (mapRep (iotaOQ D.nd D.naut i) ρ)`. Establish `e : mapRep (iotaOQ D.nd D.naut i) ρ = mapRep (D.naut.iotaQ i) (mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) ρ)`. Rewrite using `[mapRep_mapRep]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `isSSRep_map _ _ hρ.2.1`. Establish `hfin : (placesOver D.host.E (D.nd.l i)).Finite` using `placesOver_finite_joint_conditions_zpowers D.host.E (D.nd.l i) (D.nd.lPrime i).out.ne_zero`. Establish `hall` using `hρ.2.2.and ((D.naut.locG_unr_ae π).and hfin.eventually_cofinite_notMem)`. Establish `hdense` using `dense_iff_closure_eq.2 (h5.2.2.1 _ (Filter.eventually_cofinite.1 hall))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hcp` using `GlobalTheory.TypeLeaf.charpoly_eq_of_dense _ (Qbar (D.nd.l i)) D.R.r (fun g => ((r g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (D.nd.l i)))) (fun g => ((mapRep (iotaOQ D.nd D.naut i) ρ g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (D.nd.l i)))) _ hdense hrc hQc (by`. Introduce and unpack `σ ⟨w', hw', -, B, hB, hσ⟩`. Take `⟨h1, hu, hwl⟩` from `not_not.1 hw'`. Apply `Polynomial.map_injective (D.naut.iotaQC i).toRingHom (D.naut.iotaQC i).injective` to reduce the goal to its premises. Establish `hunr : D.naut.unr (D.naut.wdOf i r w')`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[(hraway w' hwl).1]`. Conclude with `(D.naut.unr_tw _ _).2 hu`. Rewrite using `[D.naut.wdOf_frob i r w' hwl hrc hunr B σ hB hσ, (hraway w' hwl).1]`. Simplify using `only [coe_mapRep]`. Rewrite using `[Matrix.charpoly_map, Polynomial.map_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (D.naut.iotaQC i).toRingHom.comp (iotaOQ D.nd D.naut i) = iotaO D.nd D.naut i` using `rfl`. Rewrite using `[e, h1 B σ hB hσ, isoLoc_one]`. Use the proof step `rfl)`. Take `⟨Pm, hPm⟩` from `h5.2.2.2 (Qbar (D.nd.l i)) D.R.r r _ hrss hQss hcp`. Rewrite using `[((hT.2.2.2.2.2 i).2.1 D.R.r r _ hrc Pm hPm).2.1 w (Or.inl hw), (hraway w hw).1]`.
+A detailed English derivation is pending.
 -/
 theorem wdOf_of_isRepOfSig (D : D7) (hT : Formalism.MainNotions.SumRepresentations.tie0 D) (h2 : Formalism.MainNotions.SumRepresentations.adm2 D) (h5 : Formalism.MainNotions.SumRepresentations.adm5 D)
     (i : D.nd.Loc) (π : D.naut.CG D.R.r) (hc : D.naut.csd π) (hr : D.naut.ralg π) (hr1 : 1 ≤ D.R.r)
@@ -213,13 +213,13 @@ noncomputable section
 namespace GlobalTheory.RowRepOcc
 
 /- English proof (translation)
-Introduce `D hT h2 h5 h42 hJ hsp hRP i σ hne hg`. Take `⟨i', hj, hl, hloc, ⟨φ, hφc, hφι⟩, P, x, hθ, hPx⟩` from `hRP i σ hne`. Establish `hne' : D.what₂.isot (D.nd.j i') σ ≠ ⊥` using `by rw [hj]; exact hne`. Take `⟨-, ⟨Sig, hW', hBC⟩, hcusp⟩` from `h42 i' σ hne'`. Establish `hB` using `hBC P hθ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hX : HasParamX D.nd D.naut i' x Sig` using `⟨P, hPx, hB⟩`. Establish `hgs : goodSig D.nd D.naut Sig` using `(GlobalTheory.Proof.SplitPlaceGoodSignature.goodRow_iff_goodSig D.nd D.naut hW'.2.2).1 hg`. Establish `hZ : x ∈ ZgoodN D.nd D.naut i'` using `⟨⟨P, hPx, _, hB, List.mem_map.2 ⟨muPart D.nd D.naut i', by simp, rfl⟩⟩, Sig, hX, hgs⟩`. Take `⟨ρ₀, -, hρ₀, -, -⟩` from `hJ i' x hZ Sig hX hgs`. Take `⟨π, rfl⟩` from `hcusp hg Sig hW'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hr1 : 1 ≤ D.R.r` using `(hW'.1 _ (List.mem_singleton_self _)).1`. Take `⟨hc, hr⟩` from `pointPar D hT h5 i' x π hX`. Establish `hW : HasParamW D.nd D.naut i σ [⟨D.R.r, π, 1⟩]` using `⟨hW'.1, hW'.2.1, fun w hw => (hW'.2.2 w hw).trans (hloc w hw)⟩`. Establish `hρ` using `isRepOfSig_transport D.nd D.naut φ hφc hφι _ ρ₀ hρ₀`. Use `⟨_, _, hW, hρ, fun k v hkl => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv : D.naut.plGw k v ∉ placesOver D.host.E (D.nd.l i)` using `Formalism.MainNotions.N.placesOver_disj D.host.E (D.host.g_prime k) (D.nd.lPrime i).out (Ne.symm hkl) _ (D.naut.plGw_over k v)`. Rewrite using `[wdOf_of_isRepOfSig D hT h2 h5 i π hc hr hr1 _ hρ _ hv, ← hW.2.2 _ (hsp k v), isoLoc_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowRepAtG_of_rowPoint : ∀ D : D7, Formalism.MainNotions.SumRepresentations.tie0 D → Formalism.MainNotions.SumRepresentations.adm2 D → Formalism.MainNotions.SumRepresentations.adm5 D →
     Formalism.MainNotions.SumRepresentations.Conclusion42 D → Formalism.MainNotions.N.GlobalDatumResidualRepCondition D →

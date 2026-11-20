@@ -19,7 +19,7 @@ def SequenceOfBlowups.schemeAtIsoOfEq (s : SequenceOfBlowups X) {i j : ℕ} (h :
   eqToIso (congrArg s.schemeAt h)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `[SequenceOfBlowups.schemeAtIsoOfEq]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem SequenceOfBlowups.schemeAtIsoOfEq_hom_projectionToBase (s : SequenceOfBlowups X) {i j : ℕ} (h : i = j) :
     (s.schemeAtIsoOfEq h).hom ≫ s.projectionToBase j = s.projectionToBase i := by
@@ -45,9 +45,9 @@ structure BlowupSequencePullbackComparison {S T : Scheme.{u}} (φ : T ⟶ S) (s'
         ((iso i h.le).hom ≫ pullback.snd φ (s.projectionToBase (reindex i)))
 
 /- English proof (translation)
-Unfold `IsPullbackBlowupSequence at h`. Take `⟨r, e, hlt, hmono, hlen, hret, hfst, hblow, hcen⟩` from `h`. Establish `hret' : ∀ i : ℕ, i < s.length → ((∃ j : ℕ, ∃ _ : j < s'.length, r j = i) ↔ ∃ x, x ∈ ((s.center i).comap (pullback.snd φ (s.projectionToBase i))).support)`. Introduce `i hi`. Use `⟨fun hj => (hret i hi).2 ?_, fun hx => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨j, hj1, hj2⟩` from `hj`. Conclude with `⟨j, hj1, hj2⟩`. Take `⟨j, hj1, hj2⟩` from `(hret i hi).1 hx`. Conclude with `⟨j, hj1, hj2⟩`. Conclude with `⟨⟨r, e, hlen, hret', hfst, hcen⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem nonempty_pullbackComparison_of_isPullback {S T : Scheme.{u}} (φ : T ⟶ S) (s' : SequenceOfBlowups T)
     (s : SequenceOfBlowups S) (h : IsPullbackBlowupSequence φ s' s) : Nonempty (BlowupSequencePullbackComparison φ s' s) := by
@@ -91,14 +91,14 @@ def schemeAtIsoPullback (d : LocalResolutionData k f s) (i : d.cover.I₀) (j : 
   (d.comparison i).iso j hj
 
 /- English proof (translation)
-The claim follows from `(d.comparison i).reindex_length`.
+A detailed English derivation is pending.
 -/
 theorem reindex_length (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     d.reindex i (d.seq i).length = s.length :=
   (d.comparison i).reindex_length
 
 /- English proof (translation)
-The claim follows from `(d.comparison i).iso_hom_fst j hj`.
+A detailed English derivation is pending.
 -/
 theorem schemeAtIsoPullback_hom_fst (d : LocalResolutionData k f s) (i : d.cover.I₀) (j : ℕ)
     (hj : j ≤ (d.seq i).length) :
@@ -107,7 +107,7 @@ theorem schemeAtIsoPullback_hom_fst (d : LocalResolutionData k f s) (i : d.cover
   (d.comparison i).iso_hom_fst j hj
 
 /- English proof (translation)
-The claim follows from `(d.comparison i).center_eq j hj`.
+A detailed English derivation is pending.
 -/
 theorem localSequence_center_eq_comap (d : LocalResolutionData k f s) (i : d.cover.I₀) (j : ℕ)
     (hj : j < (d.seq i).length) :
@@ -118,7 +118,7 @@ theorem localSequence_center_eq_comap (d : LocalResolutionData k f s) (i : d.cov
   (d.comparison i).center_eq j hj
 
 /- English proof (translation)
-The claim follows from `(d.comparison i).retention j hj`.
+A detailed English derivation is pending.
 -/
 theorem exists_reindex_eq_iff_exists_mem_support (d : LocalResolutionData k f s) (i : d.cover.I₀) (j : ℕ) (hj : j < s.length) :
     ((∃ l : ℕ, ∃ _ : l < (d.seq i).length, d.reindex i l = j) ↔
@@ -126,7 +126,7 @@ theorem exists_reindex_eq_iff_exists_mem_support (d : LocalResolutionData k f s)
   (d.comparison i).retention j hj
 
 /- English proof (translation)
-Establish `h1 : (pullback (d.cover.f i) (s.projectionToBase (d.reindex i (d.seq i).length)) : Scheme.{u}) = (pullback (d.cover.f i) (s.projectionToBase s.length) : Scheme.{u})` using `congrArg (fun n : ℕ => (pullback (d.cover.f i) (s.projectionToBase n) : Scheme.{u})) (d.reindex_length i)`. Establish `h2 : (pullback (d.cover.f i) (s.projectionToBase s.length) : Scheme.{u}) = (pullback (d.cover.f i) s.lastStructMap : Scheme.{u})` using `congrArg (fun g : s.lastObj ⟶ X => (pullback (d.cover.f i) g : Scheme.{u})) s.lastStructMap_eq_projectionToBase.symm`. Conclude with `h1.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pullback_projectionToBase_eq_pullback_lastStructMap (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     (pullback (d.cover.f i) (s.projectionToBase (d.reindex i (d.seq i).length)) : Scheme.{u})
@@ -146,7 +146,7 @@ def lastObjIsoPullback (d : LocalResolutionData k f s) (i : d.cover.I₀) :
   (d.schemeAtIsoPullback i (d.seq i).length le_rfl).trans (eqToIso (d.pullback_projectionToBase_eq_pullback_lastStructMap i))
 
 /- English proof (translation)
-Substitute `hY` using the available equality. Simplify using `only [eqToHom_refl, Category.id_comp] at hg`. Substitute `hg` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem eqToHom_comp_pullback_fst {X₀ X₁ Y₀ Y₁ : Scheme.{u}} (φ : X₁ ⟶ X₀)
     {g : Y₀ ⟶ X₀} {g' : Y₁ ⟶ X₀} (hY : Y₀ = Y₁) (hg : eqToHom hY ≫ g' = g)
@@ -165,9 +165,9 @@ private theorem base_comp_apply {A B C : Scheme.{u}} (a : A ⟶ B) (b : B ⟶ C)
   simp
 
 /- English proof (translation)
-Establish `hg : eqToHom (congrArg s.schemeAt (d.reindex_length i)) ≫ s.lastStructMap = s.projectionToBase (d.reindex i (d.seq i).length)`. Rewrite using `[s.lastStructMap_eq_projectionToBase]`. Conclude with `s.schemeAtIsoOfEq_hom_projectionToBase (d.reindex_length i)`. Establish `key` using `eqToHom_comp_pullback_fst (d.cover.f i) (congrArg s.schemeAt (d.reindex_length i)) hg (d.pullback_projectionToBase_eq_pullback_lastStructMap i)`. Establish `e1 : (d.lastObjIsoPullback i).hom = (d.schemeAtIsoPullback i (d.seq i).length le_rfl).hom ≫ eqToHom (d.pullback_projectionToBase_eq_pullback_lastStructMap i)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Category.assoc, key, d.schemeAtIsoPullback_hom_fst i (d.seq i).length le_rfl, (d.seq i).lastStructMap_eq_projectionToBase]`.
+A detailed English derivation is pending.
 -/
 theorem lastObjIsoPullback_hom_fst (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     (d.lastObjIsoPullback i).hom ≫ pullback.fst (d.cover.f i) s.lastStructMap = (d.seq i).lastStructMap := by
@@ -193,7 +193,7 @@ theorem chartToLastObj_eq (d : LocalResolutionData k f s) (i : d.cover.I₀) :
   rfl
 
 /- English proof (translation)
-Establish `: IsOpenImmersion (d.cover.f i)` using `d.cover.map_prop i`. Rewrite using `[d.chartToLastObj_eq i]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_chartToLastObj (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     IsOpenImmersion (d.chartToLastObj i) := by
@@ -206,7 +206,7 @@ instance instIsOpenImmersionChartEmbedding (d : LocalResolutionData k f s) (i : 
   d.isOpenImmersion_chartToLastObj i
 
 /- English proof (translation)
-Rewrite using `[d.chartToLastObj_eq i, Category.assoc, ← pullback.condition, ← Category.assoc, d.lastObjIsoPullback_hom_fst i]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chartToLastObj_comp_lastStructMap (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     d.chartToLastObj i ≫ s.lastStructMap = (d.seq i).lastStructMap ≫ d.cover.f i := by
@@ -214,9 +214,9 @@ theorem chartToLastObj_comp_lastStructMap (d : LocalResolutionData k f s) (i : d
     d.lastObjIsoPullback_hom_fst i]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `d.cover.covers (s.lastStructMap.base x)`. Take `⟨p, hp1, hp2⟩` from `Scheme.Pullback.exists_preimage_pullback w x hw`. Use `⟨d.cover.idx (s.lastStructMap.base x), (d.lastObjIsoPullback _).inv.base p, ?_⟩` and prove the remaining obligations. Establish `h2 : (d.lastObjIsoPullback (d.cover.idx (s.lastStructMap.base x))).inv ≫ d.chartToLastObj (d.cover.idx (s.lastStructMap.base x)) = pullback.snd (d.cover.f (d.cover.idx (s.lastStructMap.base x))) s.lastStructMap`. Rewrite using `[d.chartToLastObj_eq, ← Category.assoc, Iso.inv_hom_id, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `congrArg (fun m : (pullback (d.cover.f (d.cover.idx (s.lastStructMap.base x))) s.lastStructMap : Scheme.{u}) ⟶ s.lastObj => m.base p) h2`. Simplify using `only [base_comp_apply] at h3`. Conclude with `h3.trans hp2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_chartToLastObj_eq (d : LocalResolutionData k f s) (x : ↥(s.lastObj)) :
     ∃ (i : d.cover.I₀) (y : ↥((d.seq i).lastObj)), (d.chartToLastObj i).base y = x := by
@@ -234,7 +234,7 @@ theorem exists_chartToLastObj_eq (d : LocalResolutionData k f s) (x : ↥(s.last
   exact h3.trans hp2
 
 /- English proof (translation)
-Introduce `x` and use `d.exists_chartToLastObj_eq x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem exists_chartToLastObj_apply_eq (d : LocalResolutionData k f s) :
     ∀ x : ↥(s.lastObj), ∃ (i : d.cover.I₀) (y : ↥((d.seq i).lastObj)), (d.chartToLastObj i) y = x :=
@@ -246,7 +246,7 @@ def lastObjCover (d : LocalResolutionData k f s) : Scheme.OpenCover.{u, u} s.las
     (fun i => d.isOpenImmersion_chartToLastObj i)
 
 /- English proof (translation)
-Establish `: IsOpenImmersion (d.cover.f i)` using `d.cover.map_prop i`. Conclude with `Scheme.Hom.preimage_smoothLocus_eq _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem preimage_smoothLocus_cover_map (d : LocalResolutionData k f s) (i : d.cover.I₀)
     [LocallyOfFinitePresentation f] [LocallyOfFinitePresentation (d.cover.f i ≫ f)] :
@@ -255,7 +255,7 @@ theorem preimage_smoothLocus_cover_map (d : LocalResolutionData k f s) (i : d.co
   exact Scheme.Hom.preimage_smoothLocus_eq _ _
 
 /- English proof (translation)
-Establish `h : ((d.cover.f i).base ⁻¹' (f.smoothLocus : Set ↥X)) = ((d.cover.f i ≫ f).smoothLocus : Set ↥(d.cover.X i))` using `congrArg (fun U : TopologicalSpace.Opens ↥(d.cover.X i) => (U : Set ↥(d.cover.X i))) (d.preimage_smoothLocus_cover_map i)`. Use `show (d.cover.f i).base ⁻¹' ((f.smoothLocus : Set ↥X))ᶜ = ((d.cover.f i ≫ f).smoothLocus : Set ↥(d.cover.X i))ᶜ`. Rewrite using `[Set.preimage_compl, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preimage_smoothLocusComplement_cover_map (d : LocalResolutionData k f s) (i : d.cover.I₀)
     [LocallyOfFinitePresentation f] [LocallyOfFinitePresentation (d.cover.f i ≫ f)] :

@@ -19,7 +19,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Aff.Glue
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [torsMap_val]`. Rewrite using `[← Category.assoc, spOver_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem torsMap_comp' {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {N : ℕ}
     {B C D : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] [CommRing D] [Algebra R D]
@@ -29,7 +29,7 @@ theorem torsMap_comp' {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCo
   rw [← Category.assoc, spOver_comp]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [torsMap_val]`. Rewrite using `[GlobalTheory.PDiv.spOver_id, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem torsMap_id' {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {N : ℕ}
     {B : Type} [CommRing B] [Algebra R B] (z : Tors G N B) : torsMap (AlgHom.id R B) z = z := by
@@ -38,19 +38,19 @@ theorem torsMap_id' {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsComm
   rw [GlobalTheory.PDiv.spOver_id, Category.id_comp]
 
 /- English proof (translation)
-Set `E : Set c.C` to `{e | ∃ θ : c'.C →ₐ[R] Localization.Away e, torsMap θ c'.j = torsMap (IsScalarTower.toAlgHom R c.C (Localization.Away e)) c.j}`. Establish `hzW : Set.range (torsMap ψ c.j).1.left ⊆ c'.W`. Rewrite using `[h]`. Conclude with `(c'.bij D).1 (Set.mem_univ ψ')`. Rewrite using `[← sub_eq_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.eq_zero_of_local_covering D (ψ '' E) ?_ _ ?_` and prove the remaining obligations. Introduce `P`. Take `⟨e, he, hW⟩` from `GlobalTheory.T.torsion_point_open_localization R G N c.C D ψ c.j c'.W P (hzW ⟨P, rfl⟩)`. Take `⟨θ, -, hθ⟩` from `(c'.bij (Localization.Away e)).2.2 hW`. Conclude with `⟨ψ e, ⟨e, ⟨θ, hθ⟩, rfl⟩, he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨e, ⟨θ, hθ⟩, rfl⟩`. Establish `h0 : algebraMap c.C (Localization.Away e) a = θ a'`. Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.T.eq_zero_of_algHom_localizationAway_vanish R K c.C hsep e _ ?_` and prove the remaining obligations. Introduce `χ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, sub_eq_zero]`. Establish `e1 : χ (algebraMap c.C _ a) = (χ.comp (IsScalarTower.toAlgHom R c.C (Localization.Away e))) a` using `rfl`. Establish `e2 : χ (θ a') = (χ.comp θ) a'` using `rfl`. Rewrite using `[e1, e2, ha, ha', ← torsMap_comp', ← torsMap_comp', hθ]`. Set `ψe : Localization.Away e →ₐ[R] Localization.Away (ψ e)` to `IsLocalization.Away.mapₐ (Aₚ := Localization.Away e) (Bₚ := Localization.Away (ψ e)) ψ e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcomm : ψe.comp (IsScalarTower.toAlgHom R c.C (Localization.Away e)) = (IsScalarTower.toAlgHom R D (Localization.Away (ψ e))).comp ψ`. Use extensionality with `x`. Simplify using `[ψe, IsLocalization.Away.mapₐ, IsLocalization.Away.map, IsLocalization.map_eq]`. Establish `hinj : ψe.comp θ = (IsScalarTower.toAlgHom R D (Localization.Away (ψ e))).comp ψ'`. Apply `(c'.bij (Localization.Away (ψ e))).injOn (Set.mem_univ _) (Set.mem_univ _)` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show torsMap (ψe.comp θ) c'.j = torsMap ((IsScalarTower.toAlgHom R D (Localization.Away (ψ e))).comp ψ') c'.j`. Rewrite using `[← torsMap_comp' θ ψe, hθ, torsMap_comp', hcomm, ← torsMap_comp' ψ (IsScalarTower.toAlgHom R D (Localization.Away (ψ e))), h, torsMap_comp']`. Establish `k1 : algebraMap D (Localization.Away (ψ e)) (ψ a) = ψe (algebraMap c.C _ a)`. Simplify using `using (DFunLike.congr_fun hcomm a).symm`. Establish `k2 : ψe (θ a') = algebraMap D (Localization.Away (ψ e)) (ψ' a')`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using DFunLike.congr_fun hinj a'`. Rewrite using `[map_sub, k1, h0, k2, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem agree_charts {R K : Type} [CommRing R] [Field K] [Algebra R K] {G : Over (Sp R)} [GrpObj G]
     [IsCommMonObj G] {N : ℕ} {q q' : PrimeSpectrum R} (c : PreChart G N q) (c' : PreChart G N q')
@@ -95,39 +95,37 @@ theorem agree_charts {R K : Type} [CommRing R] [Field K] [Algebra R K] {G : Over
     rw [map_sub, k1, h0, k2, sub_self]
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N hN Idx q c hcov g ha`. Use `choose a ha using ha`. Establish `hsep : ∀ i, ∀ x : (c i).C, (∀ ψ : (c i).C →ₐ[R] K, ψ x = 0) → x = 0` using `fun i => (GlobalTheory.T.torsion_prechart_points_separate R K G hG N hN (q i) (c i)).2`. Establish `agr : ∀ (i i' : Idx) (D : Type) [CommRing D] [Algebra R D] (ψ : (c i).C →ₐ[R] D) (ψ' : (c i').C →ₐ[R] D), torsMap ψ (c i).j = torsMap ψ' (c i').j → ψ (a i) = ψ' (a i')` using `fun i i' D _ _ ψ ψ' h => agree_charts (c i) (c i') (hsep i) g (a i) (ha i) (a i') (ha i') D ψ ψ' h`. Establish `loc : ∀ (B : Type) [CommRing B] [Algebra R B] (z : Tors G N B) (P : PrimeSpectrum B), ∃ f : B, f ∉ P.asIdeal ∧ ∃ i, ∃ ψ : (c i).C →ₐ[R] Localization.Away f, torsMap ψ (c i).j = torsMap (IsScalarTower.toAlgHom R B (Localization.Away f)) z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B _ _ z P`. Take `⟨y, hy⟩` from `GlobalTheory.T.torsion_point_generic_fibre_range R G N B z P`. Take `⟨i, hi⟩` from `hcov _ (torsMap (IsScalarTower.toAlgHom R B (FractionRing (B ⧸ P.asIdeal))) z)`. Establish `hP : (torsMap (AlgHom.id R B) z).1.left P ∈ (c i).W`. Rewrite using `[torsMap_id']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hi ⟨y, hy⟩`. Take `⟨f, hf, hW⟩` from `GlobalTheory.T.torsion_point_open_localization R G N B B (AlgHom.id R B) z (c i).W P hP`. Take `⟨ψ, -, hψ⟩` from `((c i).bij (Localization.Away f)).2.2 hW`. Conclude with `⟨f, hf, i, ψ, hψ⟩`. Set `Good : ∀ (B : Type) [CommRing B] [Algebra R B], Tors G N B → B → Prop` to `fun B _ _ z b => ∀ (D : Type) [CommRing D] [Algebra R D] (φ : B →ₐ[R] D) (i : Idx) (ψ : (c i).C →ₐ[R] D), torsMap ψ (c i).j = torsMap φ z → φ b = ψ (a i)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `uniqG : ∀ (B : Type) [CommRing B] [Algebra R B] (z : Tors G N B) (b b' : B), Good B z b → Good B z b' → b = b'`. Introduce `B _ _ z b b' hb hb'`. Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.T.eq_zero_of_local_covering B {f | ∃ i, ∃ ψ : (c i).C →ₐ[R] Localization.Away f, torsMap ψ (c i).j = torsMap (IsScalarTower.toAlgHom R B (Localization.Away f)) z} ?_ _ ?_` and prove the remaining obligations. Introduce `P`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨f, hf, h⟩` from `loc B z P`. Conclude with `⟨f, h, hf⟩`. Introduce and unpack `f ⟨i, ψ, hψ⟩`. Establish `e1` using `hb _ (IsScalarTower.toAlgHom R B (Localization.Away f)) i ψ hψ`. Establish `e2` using `hb' _ (IsScalarTower.toAlgHom R B (Localization.Away f)) i ψ hψ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [IsScalarTower.coe_toAlgHom'] at e1 e2`. Rewrite using `[map_sub, e1, e2, sub_self]`. Establish `exG : ∀ (B : Type) [CommRing B] [Algebra R B] (z : Tors G N B), ∃ b, Good B z b`. Introduce `B _ _ z`. Set `S : Set B` to `{f | ∃ i, ∃ ψ : (c i).C →ₐ[R] Localization.Away f, torsMap ψ (c i).j = torsMap (IsScalarTower.toAlgHom R B (Localization.Away f)) z}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS : ∀ P : PrimeSpectrum B, ∃ f ∈ S, f ∉ P.asIdeal` using `fun P => by`. Take `⟨f, hf, h⟩` from `loc B z P`. Conclude with `⟨f, h, hf⟩`. Set `I : S → Idx` to `fun f => f.2.choose`. Set `Ψ : ∀ f : S, (c (I f)).C →ₐ[R] Localization.Away (f : B)` to `fun f => f.2.choose_spec.choose`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hΨ : ∀ f : S, torsMap (Ψ f) (c (I f)).j = torsMap (IsScalarTower.toAlgHom R B (Localization.Away (f : B))) z` using `fun f => f.2.choose_spec.choose_spec`. Take `⟨b, hb⟩` from `GlobalTheory.T.glue_local_elements B S hS (fun f => Ψ f (a (I f))) (by`. Introduce `f f' D _ _ α β`. Use `letI : Algebra R D := ((algebraMap B D).comp (algebraMap R B)).toAlgebra`. Use `haveI : IsScalarTower R B D := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `agr (I f) (I f') D ((α.restrictScalars R).comp (Ψ f)) ((β.restrictScalars R).comp (Ψ f')) ?_` and prove the remaining obligations. Establish `e1 : torsMap ((α.restrictScalars R).comp (Ψ f)) (c (I f)).j = torsMap ((α.restrictScalars R).comp (IsScalarTower.toAlgHom R B _)) z`. Rewrite using `[← torsMap_comp', hΨ, torsMap_comp']`. Establish `e2 : torsMap ((β.restrictScalars R).comp (Ψ f')) (c (I f')).j = torsMap ((β.restrictScalars R).comp (IsScalarTower.toAlgHom R B _)) z`. Rewrite using `[← torsMap_comp', hΨ, torsMap_comp']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[e1, e2]`. Use `congr 1`. Use extensionality with `x`. Use the proof step `simp)`. Use `⟨b, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `D _ _ φ i ψ hψ`. Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.T.eq_zero_of_local_covering D (φ '' S) ?_ _ ?_` and prove the remaining obligations. Introduce `P`. Take `⟨f, hf, hP⟩` from `hS (PrimeSpectrum.comap (φ : B →+* D) P)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨φ f, ⟨f, hf, rfl⟩, hP⟩`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Set `φf : Localization.Away f →ₐ[R] Localization.Away (φ f)` to `IsLocalization.Away.mapₐ (Aₚ := Localization.Away f) (Bₚ := Localization.Away (φ f)) φ f`. Establish `hcomm : φf.comp (IsScalarTower.toAlgHom R B (Localization.Away f)) = (IsScalarTower.toAlgHom R D (Localization.Away (φ f))).comp φ`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[φf, IsLocalization.Away.mapₐ, IsLocalization.Away.map, IsLocalization.map_eq]`. Establish `h2` using `agr (I ⟨f, hf⟩) i _ (φf.comp (Ψ ⟨f, hf⟩)) ((IsScalarTower.toAlgHom R D (Localization.Away (φ f))).comp ψ) (by`. Rewrite using `[← torsMap_comp', hΨ, torsMap_comp', hcomm, ← torsMap_comp', ← hψ, torsMap_comp'])`. Establish `h1 : algebraMap D (Localization.Away (φ f)) (φ b) = φf (algebraMap B _ b)`. Use `congrArg (fun h : B →ₐ[R] Localization.Away (φ f) => h b) hcomm` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this.symm`. Rewrite using `[map_sub, h1, hb ⟨f, hf⟩]`. Simplify using `only [AlgHom.comp_apply, IsScalarTower.coe_toAlgHom'] at h2`. Rewrite using `[h2, sub_self]`. Set `σ : ∀ (B : Type) [CommRing B] [Algebra R B], Tors G N B → B` to `fun B _ _ z => (exG B z).choose`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hσ : ∀ (B : Type) [CommRing B] [Algebra R B] (z : Tors G N B), Good B z (σ B z)` using `fun B _ _ z => (exG B z).choose_spec`. Use `⟨σ, ?_, ?_⟩` and prove the remaining obligations. Introduce `B C _ _ _ _ φ z`. Use `uniqG C (torsMap φ z) _ _ (hσ C _) ?_` and prove the remaining obligations. Introduce `D _ _ χ i ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hψ` using `[torsMap_comp']`. Conclude with `hσ B z D (χ.comp φ) i ψ hψ`. Introduce `x`. Take `⟨i, hi⟩` from `hcov K x`. Take `⟨ψ, -, hψ⟩` from `((c i).bij K).2.2 hi`.
-
-Use `hσ K x K (AlgHom.id R K) i ψ (by rw [torsMap_id']; exact hψ)` as an intermediate fact. Rewrite `this` using `[AlgHom.id_apply]`. Rewrite using `[this, ha i ψ]`. Conclude with `congrArg g hψ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isNatFn_of_charts : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∀ (Idx : Type) (q : Idx → PrimeSpectrum R) (c : ∀ i, PreChart G N (q i)), (∀ (k : Type) [Field k] [Algebra R k] (z : Tors G N k), ∃ i, Set.range z.1.left ⊆ (c i).W) → ∀ g : Tors G N K → K, (∀ i, ∃ a : (c i).C, ∀ ψ : (c i).C →ₐ[R] K, ψ a = g (torsMap ψ (c i).j)) → ∃ σ, IsNatFn G N σ ∧ ∀ x, σ K x = g x := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N hN Idx q c hcov g ha

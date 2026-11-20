@@ -22,7 +22,7 @@ open GlobalTheory.AbCoh
 variable {R : Type} [CommRing R] {X : Scheme.{0}}
 
 /- English proof (translation)
-Use `hU R X s (𝟙 X) ?_` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_self, Cris.spMap_id]`. Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem globalFunctionsConstant_of_constant_after_baseChange (s : X ⟶ Sp R) (hU : UConst s) : CohomZeroIsConstants (OAff s) := by
   refine hU R X s (𝟙 X) ?_
@@ -32,7 +32,7 @@ theorem globalFunctionsConstant_of_constant_after_baseChange (s : X ⟶ Sp R) (h
 variable {s : X ⟶ Sp R} {n : ℕ} (fr : Frame (OAff s) n) (hc : CohomZeroIsConstants (OAff s))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T T' φ`. Rewrite using `[amitsur_d0_apply, ω.2 φ, fr.nat]`. Conclude with `sub_self _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coboundaryZero_frame_vectorField_globalForm_eq_zero (i : Fin n) (ω : GlobForm s) : d0 (OAff s) (fun T ↦ fr.δ i T (ω.1 T)) = 0 := by
   funext T T' φ
@@ -42,14 +42,14 @@ theorem coboundaryZero_frame_vectorField_globalForm_eq_zero (i : Fin n) (ω : Gl
 def coef (i : Fin n) (ω : GlobForm s) : R := (hc _ (coboundaryZero_frame_vectorField_globalForm_eq_zero fr i ω)).exists.choose
 
 /- English proof (translation)
-The claim follows from `(hc _ (coboundaryZero_frame_vectorField_globalForm_eq_zero fr i ω)).exists.choose_spec T`.
+A detailed English derivation is pending.
 -/
 theorem coef_spec (i : Fin n) (ω : GlobForm s) (T : AffOp X) :
     fr.δ i T (ω.1 T) = algebraMap R ((OAff s).obj T) (coef fr hc i ω) :=
   (hc _ (coboundaryZero_frame_vectorField_globalForm_eq_zero fr i ω)).exists.choose_spec T
 
 /- English proof (translation)
-The claim follows from `(hc _ (coboundaryZero_frame_vectorField_globalForm_eq_zero fr i ω)).unique (coef_spec fr hc i ω) h`.
+A detailed English derivation is pending.
 -/
 theorem coef_eq (i : Fin n) (ω : GlobForm s) (r : R)
     (h : ∀ T, fr.δ i T (ω.1 T) = algebraMap R ((OAff s).obj T) r) : coef fr hc i ω = r :=
@@ -71,9 +71,9 @@ def sumL : (Fin n → R) →ₗ[R] GlobForm s where
   map_smul' r c := by simp [Finset.smul_sum, mul_smul]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `T`. Use `conv_rhs => rw [fr.sum T (ω.1 T)]`. Simplify using `only [sumL, coefL, LinearMap.coe_mk, AddHom.coe_mk, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coef_spec, algebraMap_smul]`.
+A detailed English derivation is pending.
 -/
 theorem sumL_coefL (ω : GlobForm s) : sumL fr (coefL fr hc ω) = ω := by
   apply Subtype.ext
@@ -87,7 +87,7 @@ theorem sumL_coefL (ω : GlobForm s) : sumL fr (coefL fr hc ω) = ω := by
 include fr hc in
 
 /- English proof (translation)
-The claim follows from `Module.Projective.of_split (coefL fr hc) (sumL fr) (LinearMap.ext (sumL_coefL fr hc))`.
+A detailed English derivation is pending.
 -/
 theorem projective : Module.Projective R (GlobForm s) :=
   Module.Projective.of_split (coefL fr hc) (sumL fr) (LinearMap.ext (sumL_coefL fr hc))
@@ -96,7 +96,7 @@ def back (U : AffOp X) (x : Ω[Sec s U.unop.1⁄R]) : Sec s U.unop.1 ⊗[R] Glob
   ∑ i, (fr.δ i U x : Sec s U.unop.1) ⊗ₜ[R] fr.w i
 
 /- English proof (translation)
-Simplify using `only [back, map_add, TensorProduct.add_tmul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem back_add (U : AffOp X) (x y : Ω[Sec s U.unop.1⁄R]) : back fr U (x + y) = back fr U x + back fr U y := by
   simp only [back, map_add, TensorProduct.add_tmul, Finset.sum_add_distrib]
@@ -104,13 +104,13 @@ theorem back_add (U : AffOp X) (x y : Ω[Sec s U.unop.1⁄R]) : back fr U (x + y
 include fr hc in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Function.Bijective (TensorProduct.lift _)`. Rewrite using `[Function.bijective_iff_has_inverse]`. Use `⟨back fr U, fun t ↦ ?_, fun x ↦ ?_⟩` and prove the remaining obligations. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp [back]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a ω`. Simplify using `only [TensorProduct.lift.tmul, LinearMap.restrictScalars_apply, LinearMap.flip_apply, Algebra.linearMap_apply, Module.algebraMap_end_apply, LinearMap.smul_apply]`. Use `conv_rhs => rw [← sumL_coefL fr hc ω]`. Simplify using `only [back, sumL, coefL, LinearMap.coe_mk, AddHom.coe_mk, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← TensorProduct.smul_tmul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `fr.δ i U (a • ω.1 U) = coef fr hc i ω • a`. Rewrite using `[(fr.δ i U).map_smul a (ω.1 U), coef_spec fr hc i ω U, Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `add t t' ht ht' => rw [map_add, back_add, ht, ht']`. Use `conv_rhs => rw [fr.sum U x]`. Simplify using `only [back, map_sum, TensorProduct.lift.tmul, LinearMap.restrictScalars_apply, LinearMap.flip_apply, Algebra.linearMap_apply, Module.algebraMap_end_apply, LinearMap.smul_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem par (U : AffOp X) : IsBaseChange (Sec s U.unop.1) (evForm s U) := by
   change Function.Bijective (TensorProduct.lift _)
@@ -142,9 +142,9 @@ namespace GlobalTheory.FormsOnAb
 open GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R₀ _ A _ g hA hs`. Take `⟨⟨n, ⟨fr⟩⟩, hU, hP⟩` from `H R₀ A g hA hs`. Establish `hc` using `globalFunctionsConstant_of_constant_after_baseChange A.hom hU`. Use `⟨fun U ↦ par fr hc U, projective fr hc, fun w wm w₁ w₂ hm h1 h2 ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hm.eq_pullForm, h1.eq_pullForm, h2.eq_pullForm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP w`.
+A detailed English derivation is pending.
 -/
 theorem formSt_of (H : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom →

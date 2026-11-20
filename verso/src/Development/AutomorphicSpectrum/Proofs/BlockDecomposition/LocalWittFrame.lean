@@ -7,7 +7,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.KFin.FrameLoc
 
 /- English proof (translation)
-Establish `hs : ∀ t : E, sigR (Fv F v) σ (inclR (F` using `F) (Fv F v) t) = inclR (F := F) (Fv F v) (σ t) := by`. Introduce `t`. Simplify using `[sigR, inclR]`. Simplify using `only [hR, Formalism.UG.hform, colV, JR, Matrix.map_apply, hs, Matrix.mul_apply, cT, Matrix.transpose_apply, map_sum, map_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -23,9 +23,9 @@ theorem hR_colV {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y _ _ hW v`. Use `⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hR_colV, hW.xx]`. Simplify using the standard rewrite rules. Rewrite using `[hR_colV, hW.yy]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `rw [hR_colV, hW.xy, Matrix.one_apply]; split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isFrame_colV : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}, IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → ∀ (v : HeightOneSpectrum (𝓞 F)), IsFrame (hR (Fv F v) σ J) (colV v X) (colV v Y) := by
   intro F E _ _ _ _ _ σ n J r X Y _ _ hW v

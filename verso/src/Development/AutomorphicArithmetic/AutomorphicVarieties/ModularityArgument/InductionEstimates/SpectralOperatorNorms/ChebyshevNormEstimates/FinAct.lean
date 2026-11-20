@@ -16,7 +16,7 @@ local notation "pf" => MultiplicityOne.finProj K (2 + 2)
 local notation "GF" => AdelicGLn.FiniteAdelicGL K (2 + 2)
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hβ.isCompact.bddBelow`. Use `(locFin {g} R isCompact_singleton).subset fun q hq => ⟨g, rfl, hR (subset_tsupport _ fun h0 => hq ?_)⟩` and prove the remaining obligations. Simplify using `only [bf, h0, zero_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem bf_fin {β : ℝ → ℂ} (hβ : HasCompactSupport β) (f : G1 K (2 + 2) → ℂ) (g : G1 K (2 + 2)) :
     (Function.support fun q : Cos K => bf β f ((q.out : G1 K (2 + 2)) * g)).Finite := by
@@ -25,7 +25,7 @@ theorem bf_fin {β : ℝ → ℂ} (hβ : HasCompactSupport β) (f : G1 K (2 + 2)
   simp only [bf, h0, zero_mul]
 
 /- English proof (translation)
-Simplify using `only [th]`. Rewrite using `[finsum_sum_comm s _ fun i hi => (h i hi).subset fun q hq h0 => hq (by simp only [h0, mul_zero])]`. Conclude with `Finset.sum_congr rfl fun i hi => mul_finsum' _ _ (h i hi)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (F : ι → G1 K (2 + 2) → ℂ) (g : G1 K (2 + 2))
     (h : ∀ i ∈ s, (Function.support fun q : Cos K => F i ((q.out : G1 K (2 + 2)) * g)).Finite) :
@@ -35,7 +35,7 @@ theorem th_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (F : ι → G1 K (2 
   exact Finset.sum_congr rfl fun i hi => mul_finsum' _ _ (h i hi)
 
 /- English proof (translation)
-Simplify using `only [lin_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun h hh => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single_of_mem _ (hT h hh x) fun t _ ht => by simp only [if_neg ht.symm, mul_zero, zero_mul], if_pos rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem regroup (s : Finset GF) (c : GF → ℂ) (T : Finset ℝ) (hT : ∀ h ∈ s, ∀ x, dl x h ∈ T) (w γ : ℝ → ℂ) (f : G1 K (2 + 2) → ℂ)
     (x : G1 K (2 + 2)) : ∑ t ∈ T, γ t * lin s c (fun r => if r = t then w r else 0) f x =
@@ -47,13 +47,13 @@ theorem regroup (s : Finset GF) (c : GF → ℂ) (T : Finset ℝ) (hT : ∀ h �
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `hβt : ∀ t : ℝ, HasCompactSupport fun x => β (x + t)` using `fun t => hβc.comp_homeomorph (Homeomorph.addRight t)`. Establish `e1 : ∀ h : GF, theta β f (y * pf h) = th (fun x => bf β f (x * pf h)) y` using `fun h => by`. Simplify using `only [theta_eq, th, mul_assoc]`. Simplify using `only [e1, theta_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[th_sum s c _ y fun h _ => by simpa only [mul_assoc] using bf_fin hβc f (y * pf h), th_sum T _ _ y fun t _ => bf_fin (hβt t) _ y]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Use `regroup s c T hT (fun r => Complex.exp (2 * (r : ℂ))) (fun t => β (HP 2 2 x + t) * Complex.exp ((((2 + 2 : ℕ) : ℝ) / 2 * HP 2 2 x : ℝ) : ℂ)) f x` as an intermediate fact. Establish `hH : ∀ (h : GF), HP 2 2 (x * pf h) = HP 2 2 x + dl x h` using `fun h => by rw [dl]; ring`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [bf, hU, one_mul, hH]`. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc (β _) (Complex.exp _) (Complex.exp _), ← Complex.exp_add]`. Use `congr 4`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem theta_id {β : ℝ → ℂ} (hβc : HasCompactSupport β) (s : Finset GF) (c : GF → ℂ) (T : Finset ℝ) (hT : ∀ h ∈ s, ∀ x, dl x h ∈ T)
     (f : G1 K (2 + 2) → ℂ) (fU : ℝ → G1 K (2 + 2) → ℂ)
@@ -80,11 +80,11 @@ theorem theta_id {β : ℝ → ℂ} (hβc : HasCompactSupport β) (s : Finset GF
   ring
 
 /- English proof (translation)
-Establish `h2` using `regroup s c T hT (fun r => Complex.exp (2 * (r : ℂ))) (fun t => Complex.exp (z * t)) f x`. Establish `hH : ∀ (h : GF), HP 2 2 (x * pf h) = HP 2 2 x + dl x h` using `fun h => by rw [dl]; ring`. Simplify using `only [flat, hU, hH, smul_eq_mul]`. Rewrite using `[h2, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : Complex.exp ((z + 2) * ((HP 2 2 x + dl x h : ℝ) : ℂ)) = Complex.exp ((z + 2) * (HP 2 2 x : ℂ)) * (Complex.exp (z * (dl x h : ℂ)) * Complex.exp (2 * (dl x h : ℂ)))`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem flat_id (z : ℂ) (s : Finset GF) (c : GF → ℂ) (T : Finset ℝ) (hT : ∀ h ∈ s, ∀ x, dl x h ∈ T)
     (f : G1 K (2 + 2) → ℂ) (fU : ℝ → G1 K (2 + 2) → ℂ)
@@ -105,13 +105,11 @@ theorem flat_id (z : ℂ) (s : Finset GF) (c : GF → ℂ) (T : Finset ℝ) (hT 
   ring
 
 /- English proof (translation)
-Establish `h0 : ∀ y : L V, (0 : V →L[ℂ] V).compLpL 2 volume y = 0` using `fun y => by`. Use `Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [(0 : V →L[ℂ] V).coeFn_compLpL (p := 2) (μ := volume) y, Lp.coeFn_zero V 2 (volume : Measure ℝ)] with x h1 h2`. Rewrite using `[h1, h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hc : ∀ y : L V, conv (0 : ℝ → V →L[ℂ] V) y = 0` using `fun y => by`. Use `Classical.epsilon_spec (p := fun C : L V →L[ℂ] L V => ∀ u, ∀ᵐ x : ℝ, C u x = ∫ t : ℝ, (0 : ℝ → V →L[ℂ] V) t (u (x + t))) ⟨0, fun u => (Lp.coeFn_zero V 2 (volume : Measure ℝ)).mono fun x hx => by simpa using hx⟩ y` as an intermediate fact. Use `Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [this, Lp.coeFn_zero V 2 (volume : Measure ℝ)] with x h1 h2`. Rewrite using `[h2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.trans (by simp)`. Use `⟨Finsupp.onFinset T (fun t => if t ∈ T then U t else 0) fun t ht => by_contra fun hn => ht (if_neg hn), 0, ⟨continuous_const, HasCompactSupport.zero⟩, fun x => ?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.onFinset_sum (g := fun (t : ℝ) (c : V →L[ℂ] V) => c.compLpL 2 volume (sh V t x)) _ fun t => h0 _, hc, add_zero, h, map_sum]`. Conclude with `Finset.sum_congr rfl fun t ht => by rw [if_pos ht]`. Rewrite using `[Finsupp.onFinset_sum (g := fun (t : ℝ) (c : V →L[ℂ] V) => Complex.exp (z * t) • c) _ fun t => smul_zero _]`.
-
-Simplify using `only [symb, Pi.zero_apply, smul_zero, integral_zero, add_zero]`. Conclude with `Finset.sum_congr rfl fun t ht => by rw [if_pos ht]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_of {H V : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (J : L V →ₗᵢ[ℂ] H) (Y : H →L[ℂ] H) (T : Finset ℝ) (U : ℝ → V →L[ℂ] V)
@@ -137,7 +135,7 @@ theorem act_of {H V : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [No
     exact Finset.sum_congr rfl fun t ht => by rw [if_pos ht]
 
 /- English proof (translation)
-The claim follows from `UnitaryRep.integrated_ccToL1_apply _ m e w`.
+A detailed English derivation is pending.
 -/
 theorem ofin_apply {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure]
     (e : TF K n) (w : L2 μ) : Ofin μ m e w = ∫ h, e h • rightRegularRep (Gam K n) μ (MultiplicityOne.finProj K n h) w ∂m :=
@@ -145,27 +143,23 @@ theorem ofin_apply {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (m : Mea
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Take `⟨s, c, hr⟩` from `rule_ex hL hle m e fun k hk h => (he k hk h).2`. Establish `hsec : ∀ v, IsSec τ₁ τ₂ (A.sec v) ∧ D.Fix (A.sec v)` using `fun v => (A.onto _).1 ⟨v, rfl⟩`. Establish `hU : ∀ ω : ℝ → ℂ, ∃ U : Eu d →L[ℂ] Eu d, ∀ v, A.sec (U v) = lin s c ω (A.sec v)` using `fun ω => by`. Establish `hm : ∀ v, (lin s c ω ∘ₗ A.sec) v ∈ LinearMap.range A.sec` using `fun v => by`. Establish `hf` using `lin_fix hL hle (fun k hk h => (he k hk h).1) hr ω (hsec v).1.cont (hsec v).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(A.onto _).2 ⟨lin_sec h₁ h₂ s c ω (hsec v).1 (hsec v).2 hf, hf⟩`. Use `⟨LinearMap.toContinuousLinearMap ((LinearEquiv.ofInjective A.sec A.inj).symm.toLinearMap ∘ₗ (lin s c ω ∘ₗ A.sec).codRestrict _ hm), fun v => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val ((LinearEquiv.ofInjective A.sec A.inj).apply_symm_apply ⟨_, hm v⟩)`. Use `choose U hU using fun t : ℝ => hU fun r => if r = t then Complex.exp (2 * (r : ℂ)) else 0`. Use `set T : Finset ℝ := s.biUnion fun h => (dl_fin h).toFinset with hTdef`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ h ∈ s, ∀ x, dl x h ∈ T` using `fun h hh x => Finset.mem_biUnion.2 ⟨h, hh, (Set.Finite.mem_toFinset _).2 ⟨x, rfl⟩⟩`. Establish `hH : ∀ (x : G1 K (2 + 2)) (h : GF), HP 2 2 (x * pf h) = HP 2 2 x + dl x h` using `fun x h => by rw [dl]; ring`. Establish `hHk : ∀ (x : G1 K (2 + 2)), ∀ k ∈ Kf, HP 2 2 (x * pf k) = HP 2 2 x` using `fun x k hk => (hpSpec.2.1 _ (pf_mem (hle hk))).2 x`. Establish `key : ∀ x, Ofin μ m e (A.J x) = ∑ t ∈ T, A.J ((U t).compLpL 2 volume (sh (Eu d) t x))`. Establish `: Ofin μ m e ∘L A.J.toContinuousLinearMap = ∑ t ∈ T, A.J.toContinuousLinearMap ∘L (U t).compLpL 2 volume ∘L sh (Eu d) t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ContinuousLinearMap.ext_on (denseCc d).1 ?_` and prove the remaining obligations. Introduce and unpack `u ⟨β, v, hβ, hβc, hu⟩`. Establish `hw` using `A.spec β v u hβ hβc hu`. Establish `hinv : ∀ k ∈ Kf, rightRegularRep (Gam K (2 + 2)) μ (pf k) (A.J u) = A.J u` using `fun k hk => by`. Use `reps_ext (reps_right hw _) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (fun y => theta β (A.sec v) (y * pf k)) = theta β (A.sec v)`. Use function extensionality and compare the values at `y`. Simplify using `only [theta, ← mul_assoc, hHk _ k hk, fix_inv hL hle (hsec v).2 _ hk]`. Rewrite using `[this]`. Conclude with `hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Ofin μ m e (A.J u) = ∑ h ∈ s, c h • rightRegularRep (Gam K (2 + 2)) μ (pf h) (A.J u)`. Rewrite using `[ofin_apply]`. Conclude with `hr _ (fun h => rightRegularRep (Gam K (2 + 2)) μ (pf h) (A.J u)) fun h k hk => by`. Rewrite using `[(pf).map_mul, UnitaryRep.map_mul_apply]`. Conclude with `congrArg (rightRegularRep (Gam K (2 + 2)) μ (pf h)) (hinv k hk)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hβt : ∀ t : ℝ, HasCompactSupport fun x => β (x + t)` using `fun t => hβc.comp_homeomorph (Homeomorph.addRight t)`. Establish `h2 : ∀ t : ℝ, Reps μ (A.J ((U t).compLpL 2 volume (sh (Eu d) t u))) (theta (fun x => β (x + t)) (A.sec (U t v)))` using `fun t => by`. Use `A.spec _ _ _ (hβ.comp (continuous_id.add continuous_const)) (hβt t) ?_` and prove the remaining obligations. Use `filter_upwards [(U t).coeFn_compLpL (p := 2) (μ := volume) (sh (Eu d) t u), sh_ae (Eu d) t u, (measurePreserving_add_right volume t).quasiMeasurePreserving.ae hu] with x a1 a2 a3`. Conclude with `(a1.trans (congrArg (U t) (a2.trans a3))).trans ((U t).map_smul _ _)`.
+Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3` using `reps_sum T (fun _ => 1) fun t _ => h2 t`. Establish `h4` using `reps_sum s c fun h _ => reps_right hw (pf h)`. Rewrite `h4` using `[theta_id hβc s c T hT (A.sec v) (fun t => A.sec (U t v)) (fun t => hU t v)]`. Establish `h5 : ∑ t ∈ T, A.J ((U t).compLpL 2 volume (sh (Eu d) t u)) = ∑ t ∈ T, (1 : ℂ) • A.J ((U t).compLpL 2 volume (sh (Eu d) t u))` using `Finset.sum_congr rfl fun _ _ => (one_smul ℂ _).symm`. Use `(h1.trans (reps_ext h4 h3)).trans (h5.symm.trans ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Conclude with `ContinuousLinearMap.sum_apply _ _ _`. Introduce `x`. Conclude with `(DFunLike.congr_fun this x).trans (ContinuousLinearMap.sum_apply _ _ _)`. Use `⟨⟨_, act_of A.J _ T U key, fun z v x => ?_⟩, fun u => ⟨_, (key u).trans (map_sum A.J _ _).symm⟩⟩` and prove the remaining obligations.
-
-Establish `h1` using `hr ℂ (fun h => flat z (A.sec v) (x * pf h)) fun h k hk => by`. Simplify using `only [flat, map_mul, ← mul_assoc, hHk _ k hk, fix_inv hL hle (hsec v).2 _ hk]`. Establish `hs : A.sec ((∑ t ∈ T, Complex.exp (z * t) • U t) v) = fun x => ∑ t ∈ T, Complex.exp (z * t) * A.sec (U t v) x`. Use function extensionality and compare the values at `x`. Rewrite using `[ContinuousLinearMap.sum_apply, map_sum, Finset.sum_apply]`.
-
-Conclude with `Finset.sum_congr rfl fun t _ => by rw [ContinuousLinearMap.smul_apply, map_smul, Pi.smul_apply, smul_eq_mul]`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[flat, hs]`. Conclude with `flat_id z s c T hT (A.sec v) (fun t => A.sec (U t v)) (fun t => hU t v) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actEx [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] {μ₂ : Measure (G1 K 2)} [μ₂.IsHaarMeasure]
     {τ₁ τ₂ : Submodule ℂ (L2 μ₂)} (h₁ : CuspIrr μ₂ τ₁) (h₂ : CuspIrr μ₂ τ₂) {D : TypeDat K (2 + 2)} {d : ℕ} (A : Line μ τ₁ τ₂ D d)
@@ -234,11 +228,9 @@ theorem actEx [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasu
   exact flat_id z s c T hT (A.sec v) (fun t => A.sec (U t v)) (fun t => hU t v) x
 
 /- English proof (translation)
-Use `haveI := Whittaker.isMulRightInvariant_finite K n m`. Use `haveI := isInvInvariant_of_isMulRightInvariant m`. Set `e' : TF K n` to `⟨⟨fun h => starRingEnd ℂ (e h⁻¹), Complex.continuous_conj.comp (e.continuous.comp continuous_inv)⟩, (e.hasCompactSupport.comp_homeomorph (Homeomorph.inv _)).comp_left (g := starRingEnd ℂ) (map_zero _)⟩`. Use `⟨e', fun _ => rfl, ?_⟩` and prove the remaining obligations. It suffices to establish `hs : UnitaryRep.involution m (UnitaryRep.ccToL1 m e) = UnitaryRep.ccToL1 m e' from (UnitaryRep.adjoint_integrated ((rightRegularRep (rationalGLOne K n) μ).compHom (MultiplicityOne.finProj K n) MultiplicityOne.continuous_finProj) m (UnitaryRep.ccToL1 m e)).trans (congrArg _ hs)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (UnitaryRep.ccToL1 m e : _ → ℂ) =ᵐ[m] e` using `MemLp.coeFn_toLp _`. Establish `h2 : (UnitaryRep.ccToL1 m e' : _ → ℂ) =ᵐ[m] e'` using `MemLp.coeFn_toLp _`. Use `Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [h2, UnitaryRep.coeFn_involution m (UnitaryRep.ccToL1 m e), (Measure.measurePreserving_inv m).quasiMeasurePreserving.ae h1] with g ha hb hc`. Rewrite using `[hb, hc, ha]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ofin_adj {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure]
     (e : TF K n) : ∃ e' : TF K n, (∀ h, e' h = starRingEnd ℂ (e h⁻¹)) ∧ ContinuousLinearMap.adjoint (Ofin μ m e) = Ofin μ m e' := by
@@ -261,9 +253,9 @@ theorem ofin_adj {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (m : Measu
 end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.FinA
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hp D d d' A A' Kf hL hle m _ e he`. Use `⟨(FinA.actEx μ hp.irr₁ hp.irr₂ A hL hle m e he).1, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨e', he', hadj⟩` from `FinA.ofin_adj μ m e`. Establish `he2 : ∀ k ∈ Kf, ∀ h, e' (k * h) = e' h ∧ e' (h * k) = e' h` using `fun k hk h => by`. Simplify using `only [he', mul_inv_rev, he k⁻¹ (Kf.inv_mem hk) h⁻¹, and_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(Hecke₃ K μ μ₂ τ₁ τ₂ hp D d d' A A' P hP).1 _ (FinA.actEx μ hp.irr₁ hp.irr₂ A hL hle m e he).2 (FinA.actEx μ hp.irr₂ hp.irr₁ A' hL hle m e he).2 ?_ ?_` and prove the remaining obligations. Rewrite using `[hadj]`. Conclude with `(FinA.actEx μ hp.irr₁ hp.irr₂ A hL hle m e' he2).2`. Rewrite using `[hadj]`. Conclude with `(FinA.actEx μ hp.irr₂ hp.irr₁ A' hL hle m e' he2).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.finAct :
     ForAllC fun K _ _ μ _ _ _ _ _ D d _ A A' => ∀ (Kf : Subgroup (AdelicGLn.FiniteAdelicGL K (2 + 2))), D.Level Kf → Kf ≤ AdelicGLn.integralFiniteGL K (2 + 2) →

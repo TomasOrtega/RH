@@ -21,9 +21,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Establish `hv : ValuativeCriterion f`. Rewrite `hp` using `[IsProper.eq_valuativeCriterion]`. Conclude with `hp.1.1.1`. Set `S : ValuativeCommSq f` to `{ R := V, K := FractionRing V, i₁ := y, i₂ := s, commSq := ⟨h⟩ }`. Take `⟨U⟩` from `hv S`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨U.default.l, U.default.fac_left.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_extend_of_isProper {X B : Scheme.{0}} (f : X ⟶ B) (hp : IsProper f) {V : Type} [CommRing V] [IsDomain V]
     [ValuationRing V] (y : Sp (FractionRing V) ⟶ X) (s : Sp V ⟶ B) (h : y ≫ f = spMap (algebraMap V (FractionRing V)) ≫ s) :
@@ -36,35 +36,33 @@ theorem exists_extend_of_isProper {X B : Scheme.{0}} (f : X ⟶ B) (hp : IsPrope
   exact ⟨U.default.l, U.default.fac_left.symm⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle Z la p _ Xw hc _ T io e y₀ ho halg k y hy`. Use `letI := io.toAlgebra`. Establish `hfin : T.FinRes` using `halg.1`. Take `⟨hOI, hW, -, -, -, -, -, -, hlift⟩` from `hc`. Choose the witnesses or unpack the hypotheses as in `⟨kO, hk⟩ : ∃ kO : T.V →+* 𝓞_ℂ_[p], ∀ a, algebraMap 𝓞_ℂ_[p] ℂ_[p] (kO a) = k (algebraMap T.V T.Fr a) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `letI := H.starRing`. Take `⟨-, kO, P, _, _, hP, -⟩` from `hy`. Conclude with `⟨kO, hP.1⟩`. Set `kk : T.Fr →+* ℂ_[p]` to `k.toRingHom`. Use `letI algT : Algebra T.Fr ℂ_[p] := kk.toAlgebra`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Set `K : IntermediateField T.Fr ℂ_[p]` to `algebraicClosure T.Fr ℂ_[p]`. Use `haveI hKc : IsAlgClosure T.Fr K := algebraicClosure.isAlgClosure T.Fr ℂ_[p]`. Use `haveI : IsAlgClosed K := hKc.isAlgClosed`. Establish `hKa : Algebra.IsAlgebraic T.Fr K` using `hKc.isAlgebraic`. Set `O : ValuationSubring K` to `(𝓞_ℂ_[p]).comap K.val.toRingHom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hO : ∀ x : K, x ∈ O ↔ ‖(x : ℂ_[p])‖ ≤ 1` using `fun x => by show (Valued.v (x : ℂ_[p]) ≤ 1) ↔ _`. Rewrite using `[← coe_valued]`. Conclude with `NNReal.coe_le_one.symm`. Set `g : c.F →+* K` to `(algebraMap T.Fr K).comp io`. Establish `hg : ∀ x : c.F, (x : ℂ) ∈ W ↔ g x ∈ O` using `fun x => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hW, hO, ← GlobalTheory.T.p_adic_norm_le_one_iff_valuation la p T io e ho kk kO hk x]`. Both sides reduce to the same expression. Take `⟨fK, hfK1, hfK2⟩` from `GlobalTheory.T.exists_valuation_extension_field c.F c'.F hle c'.fin W K O g hg`. Establish `hgf : (algebraMap T.Fr K).comp (algebraMap c.F T.Fr) = fK.comp (IntermediateField.inclusion hle).toRingHom` using `RingHom.ext fun x => (hfK1 x).symm`. Take `⟨yy, hyy1, hyy2, hyy3⟩` from `hlift K fK (spMap (algebraMap T.Fr K) ≫ ptF y₀.1) (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, ptF, pullback.lift_snd, spMap_spMap, hgf]) (by`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `halg.2 _)`. Take `⟨L, yL, hLfin, hyL1, hyL2⟩` from `GlobalTheory.T.exists_finite_subextension_point _ _ r (GlobalTheory.T.level_change_locally_finite_type r hle hOI) T.Fr K hKa yy (ptF y₀.1) hyy2`. Take `⟨kL, hkL⟩ : ∃ kL : L →+* ℂ_[p], kL = K.val.toRingHom.comp L.val.toRingHom` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hkL1 : ∀ x : L, kL x = ((x : K) : ℂ_[p])` using `fun x => by rw [hkL]; rfl`. Take `⟨T', i, iF, ψ, kO', hT'fin, hkO'inj, hi, hψ, hkO', hint⟩` from `GlobalTheory.T.exists_finite_dvr_extension p T hfin kO kk hk L kL (fun a => by rw [hkL1]; rfl)`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (yL ≫ pullback.snd _ _ : Sp L ⟶ Sp c'.F)`. Take `⟨fL, hfLφ⟩ : ∃ fL : c'.F →+* L, fL = φ.hom` from `⟨_, rfl⟩`. Establish `hφ' : yL ≫ pullback.snd _ _ = spMap fL` using `by rw [← hφ, hfLφ]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfL : ∀ x, ((fL x : K)) = fK x` using `fun x => by`. Establish `e1 : spMap ((algebraMap L K).comp fL) = spMap fK`. Rewrite using `[← spMap_spMap, ← hφ', ← Category.assoc, hyL1, hyy1]`. Establish `e2` using `congrArg (fun f => (CommRingCat.Hom.hom f) x) (Spec.map_injective e1)`. Conclude with `e2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨β', hβ'⟩` from `hint (c'.V W) (fL.comp (c'.V W).subtype) (fun a => by`. Rewrite using `[RingHom.comp_apply, hkL1, hfL, ← hO]`. Conclude with `hfK2 a a.2)`. Take `⟨yyT, hyyT⟩ : ∃ t : Sp T'.Fr ⟶ Xo'.XF c', t = spMap ψ.toRingHom ≫ yL` from `⟨_, rfl⟩`. Establish `hring : ψ.toRingHom.comp (fL.comp (c'.V W).subtype) = (algebraMap T'.V T'.Fr).comp β'` using `RingHom.ext fun a => (hβ' a).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsq : (yyT ≫ Y.j) ≫ Y.s = spMap (algebraMap T'.V (FractionRing T'.V)) ≫ spMap β'`. Establish `hj : Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap (c'.V W).subtype`. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`. Rewrite using `[hyyT, Category.assoc, Category.assoc, hj, ← Category.assoc yL, hφ', spMap_spMap, spMap_spMap, spMap_spMap, hring]`. Take `⟨yT, hyT⟩` from `exists_extend_of_isProper Y.s (projProper _ _ _ Y.proj) (yyT ≫ Y.j) (spMap β') hsq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨k', hk'⟩ : ∃ k' : T'.Fr →+* ℂ_[p], k' = kL.comp ψ.symm.toRingHom` from `⟨_, rfl⟩`. Establish `hk'iF : ∀ a, k' (iF a) = k a` using `fun a => by`. Rewrite using `[hk', RingHom.comp_apply, ← hψ a]`. Use `show kL (ψ.symm (ψ _)) = _`. Rewrite using `[RingEquiv.symm_apply_apply, hkL1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hkO'' : ∀ a, algebraMap 𝓞_ℂ_[p] ℂ_[p] (kO' a) = k' (algebraMap T'.V T'.Fr a)` using `fun a => by`. Rewrite using `[hk', hkO' a]`. Both sides reduce to the same expression. Establish `hψi : ψ.toRingHom.comp (algebraMap T.Fr L) = iF` using `RingHom.ext hψ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyyTr : yyT ≫ r = spMap iF ≫ ptF y₀.1`. Rewrite using `[hyyT, Category.assoc, hyL2, ← Category.assoc, spMap_spMap, hψi]`. Take `⟨P, π, ψ2, hHT⟩` from `hC E H Dw l l' Xo Xo' c c' W Y r ν hle hOI p T T' i iF hi io y₀ k y hy k' kO' hkO'' hk'iF yT yyT hyT.symm hyyTr`. Use `⟨spMap kO' ≫ yT, spMap k' ≫ yyT, ⟨⟨T', kO', yT, hT'fin, hkO'inj, rfl⟩, ?_⟩, P, π, ψ2, hHT⟩` and prove the remaining obligations. Establish `hrk : (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp kO' = k'.comp (algebraMap T'.V T'.Fr)` using `RingHom.ext hkO''`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e3 : spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ spMap kO' ≫ yT = (spMap k' ≫ spMap ψ.toRingHom) ≫ yL ≫ Y.j`. Rewrite using `[← Category.assoc, spMap_spMap, hrk, ← spMap_spMap, Category.assoc, ← hyT, hyyT]`. Simplify using `only [Category.assoc]`. Rewrite using `[e3]`. Introduce and unpack `_ ⟨q, rfl⟩`.
-
-Take `⟨q0⟩ : Nonempty (Sp K)` from `inferInstance`. Establish `hq : (spMap k' ≫ spMap ψ.toRingHom) q = spMap (algebraMap L K) q0` using `Subsingleton.elim (α := PrimeSpectrum L) _ _`. Rewrite using `[Scheme.Hom.comp_apply, hq, ← Scheme.Hom.comp_apply, ← Category.assoc, hyL1]`. Conclude with `hyy3 ⟨q0, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftSt_of_cmpSt (hC : CmpSt) : LiftSt := by
   intro E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle Z la p _ Xw hc _ T io e y₀ ho halg k y hy

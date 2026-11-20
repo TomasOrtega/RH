@@ -12,9 +12,9 @@ open Formalism.MainNotions.S (AutInst uMat)
 open Formalism.L2.SG.AdBridge
 
 /- English proof (translation)
-Establish `h1 : x ⊗ₜ[I.F] (1 : Formalism.MainNotions.S.Af I.F) ∈ Formalism.MainNotions.S.IntAf I.F I.E`. Use `Subring.subset_closure ?_` and prove the remaining obligations. Conclude with `Or.inl ⟨⟨x, hx⟩, rfl⟩`. Establish `h2 : (1 : I.E) ⊗ₜ[I.F] a ∈ Formalism.MainNotions.S.IntAf I.F I.E`. Use `Subring.subset_closure ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the first alternative. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Or.inr ⟨⟨a, ha⟩, rfl⟩`. Establish `h3` using `mul_mem h1 h2`. Rewrite `h3` using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Then use the resulting hypothesis.
+Prove the second alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tmul_mem_IntAf (I : AutInst) {x : I.E} (hx : x ∈ Formalism.UG.intOE I.E)
     {a : Formalism.MainNotions.S.Af I.F} (ha : a ∈ Formalism.UG.intAd I.F) :
@@ -29,7 +29,7 @@ theorem tmul_mem_IntAf (I : AutInst) {x : I.E} (hx : x ∈ Formalism.UG.intOE I.
   rwa [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul] at h3
 
 /- English proof (translation)
-Rewrite using `[← nsmul_eq_mul, ← nsmul_eq_mul, TensorProduct.tmul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_natCast_mul (I : AutInst) (N : ℕ) (b : I.E) (z : Formalism.MainNotions.S.Af I.F) :
     b ⊗ₜ[I.F] ((N : Formalism.MainNotions.S.Af I.F) * z) = (N : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) * (b ⊗ₜ[I.F] z) := by

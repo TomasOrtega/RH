@@ -22,9 +22,9 @@ def SameWt (h : n = n') (lam : ι → DomWeight n) (lam' : ι → DomWeight n') 
   ∀ τ i, (lam' τ).w i = (lam τ).w (Fin.cast h.symm i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Consider the cases of `h1 : lam' τ with`. Consider the case `mk w a`. Consider the cases of `h2 : lam τ with`. Consider the case `mk w' a'`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `: w = w'` using `funext fun i => by`. Use `hl τ i` as an intermediate fact. Rewrite `this` using `[h1, h2]`. Simplify using `using this`. Substitute `this` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -53,7 +53,7 @@ section CastLemmas
 variable {E K ι : Type} [Field E] [Field K] [Fintype ι] {n n' : ℕ}
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem vvCast_self (lam : ι → DomWeight n) (hl : SameWt rfl lam lam) :
     vvCast (K := K) rfl lam lam hl = LinearEquiv.refl K (VV K lam) := by
@@ -61,9 +61,9 @@ theorem vvCast_self (lam : ι → DomWeight n) (hl : SameWt rfl lam lam) :
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e` using `sameWt_eq lam lam' hl`. Substitute `e` using the available equality. Establish `hg' : g' = g` using `Units.ext (Matrix.ext fun i j => hg.2 i j i j rfl rfl)`. Substitute `hg'` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[vvCast_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vvCast_rhoV (emb : ι → E →+* K) (h : n = n') (lam : ι → DomWeight n) (lam' : ι → DomWeight n')
     (hl : SameWt h lam lam') (g : GL (Fin n) E) (g' : GL (Fin n') E) (hg : MatEq g' g) (v : VV K lam) :
@@ -83,16 +83,16 @@ section CastLemmas2
 variable {E K ι : Type} [Field E] [Field K] [Fintype ι] {n n' : ℕ}
 
 /- English proof (translation)
-Use extensionality with `x i`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem castSp_self : castSp (E := E) (rfl : n = n) = LinearEquiv.refl E (Fin n → E) := by
   ext x i
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e` using `sameWt_eq lam lam' hl`. Substitute `e` using the available equality. Establish `hJ' : J' = J` using `Matrix.ext fun i j => hJ i j`. Substitute `hJ'` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[vvCast_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vvCast_pairV [StarRing K] (emb : ι → E →+* K) (h : n = n') (lam : ι → DomWeight n) (lam' : ι → DomWeight n')
     (hl : SameWt h lam lam') (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin n') (Fin n') E)
@@ -107,9 +107,9 @@ theorem vvCast_pairV [StarRing K] (emb : ι → E →+* K) (h : n = n') (lam : �
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e` using `sameWt_eq lam lam' hl`. Substitute `e` using the available equality. Rewrite using `[vvCast_self, LinearEquiv.refl_apply, Module.Basis.repr_self]`. Distinguish the cases in `hij : i = j`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Rewrite using `[Finsupp.single_eq_same]`. Conclude with `(Formalism.DivisionValues.cmMax K).one_mem`. Rewrite using `[Finsupp.single_eq_of_ne (Ne.symm hij)]`. Conclude with `(Formalism.DivisionValues.cmMax K).zero_mem`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vvCast_bVV_repr [StarRing K] (h : n = n') (lam : ι → DomWeight n) (lam' : ι → DomWeight n')
     (hl : SameWt h lam lam') (i : VVIdx lam) (j : VVIdx lam') :
@@ -126,7 +126,7 @@ theorem vvCast_bVV_repr [StarRing K] (h : n = n') (lam : ι → DomWeight n) (la
     exact (Formalism.DivisionValues.cmMax K).zero_mem
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e` using `sameWt_eq lam lam' hl`. Substitute `e` using the available equality. Rewrite using `[vvCast_self, castSp_self]`. Simplify using `only [LinearEquiv.refl_toLinearMap, LinearMap.restrictScalars_id, Submodule.map_id]`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vvCast_nabAt [NumberField K] (emb : ι → E →+* K) (h : n = n') (lam : ι → DomWeight n)
     (lam' : ι → DomWeight n') (hl : SameWt h lam lam') (N : Submodule (𝓞 E) (Fin n → E)) :
@@ -139,7 +139,7 @@ theorem vvCast_nabAt [NumberField K] (emb : ι → E →+* K) (h : n = n') (lam 
   simp only [LinearEquiv.refl_toLinearMap, LinearMap.restrictScalars_id, Submodule.map_id]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e` using `sameWt_eq lam lam' hl`. Substitute `e` using the available equality. Rewrite using `[vvCast_self, castSp_self]`. Simplify using `only [LinearEquiv.refl_toLinearMap, LinearMap.restrictScalars_id, Submodule.map_id]`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vvCast_delAt [NumberField K] (emb : ι → E →+* K) (h : n = n') (lam : ι → DomWeight n)
     (lam' : ι → DomWeight n') (hl : SameWt h lam lam') (N : Submodule (𝓞 E) (Fin n → E)) :
@@ -158,7 +158,7 @@ section CastLemmas3
 variable {E K ι : Type} [Field E] [Field K] [Fintype ι] {n n' : ℕ}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e` using `sameWt_eq lam lam' hl`. Substitute `e` using the available equality. Conclude with `⟨Equiv.refl _, fun i => by rw [vvCast_self]; rfl⟩`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem vvCast_bVV (h : n = n') (lam : ι → DomWeight n) (lam' : ι → DomWeight n') (hl : SameWt h lam lam') :
     ∃ f : VVIdx lam ≃ VVIdx lam', ∀ i, vvCast (K := K) h lam lam' hl (bVV K lam i) = bVV K lam' (f i) := by
@@ -168,7 +168,7 @@ theorem vvCast_bVV (h : n = n') (lam : ι → DomWeight n) (lam' : ι → DomWei
   exact ⟨Equiv.refl _, fun i => by rw [vvCast_self]; rfl⟩
 
 /- English proof (translation)
-Simplify using `only [Matrix.one_apply, Fin.cast_inj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_cast (h : n = n') (i j : Fin n') :
     (1 : Matrix (Fin n') (Fin n') E) i j = (1 : Matrix (Fin n) (Fin n) E) (Fin.cast h.symm i) (Fin.cast h.symm j) := by
@@ -181,7 +181,7 @@ section Gram
 open GlobalTheory.Mem GlobalTheory.Mem.Col2
 
 /- English proof (translation)
-Take `⟨hs, -, h2, -⟩` from `h.spaces`. Express the relevant statement in the definitionally equal form `X.B.sp.X'.gram = 1`. Rewrite using `[h2]`. Use `Matrix.ext fun i i' => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ i i').trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gram_X'_eq_one (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (h : I.Ok) : X.toD7.sp.X'.gram = 1 := by
   obtain ⟨hs, -, h2, -⟩ := h.spaces
@@ -202,7 +202,7 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 namespace GlobalTheory.Mem.R3.RowStd
 
 /- English proof (translation)
-The claim follows from `RowWeight.lamRdef_eq_sgTrue X`.
+A detailed English derivation is pending.
 -/
 theorem sameWt_true (X : Stages) :
     SameWt (RowAd.rank_X' X).symm X.B.wts.sgTrue (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) :=
@@ -215,23 +215,19 @@ def wtCast (X : Stages) :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `X px I hX U Xg tr L hI cX gramR c0R hc hgr hM hin`. Establish `hw` using `sameWt_true X`. Set `e0 : VV X.toD7.what₂.LL X.B.wts.sgTrue ≃ₗ[X.toD7.what₂.LL] VV X.toD7.what₂.LL (fun τ => Bridge.lamRdef (Ptw X.toD7) τ)` to `vvCast (RowAd.rank_X' X).symm _ _ hw`. Set `c : VV X.B.fields.K X.B.wts.sgTrue →ₛₗ[X.B.embLL] cX.W` to `(by with_unfolding_all exact (c0R.comp e0.toLinearMap :))`. Establish `hgram` using `gram_X'_eq_one X I hI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpair : ∀ x y, pairV (labLL X.toD7) (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) gramR (e0 x) (e0 y) = pairV X.B.fields.emb X.B.wts.sgTrue 1 x y`. Introduce `x y`. Rewrite using `[GlobalTheory.RowsSign.pairV_gramR_eq X px I hI cX gramR c0R hc hgr hM hin, hgram]`. Conclude with `vvCast_pairV (labLL X.toD7) _ _ _ hw 1 1 (one_cast (RowAd.rank_X' X).symm) x y`. Establish `hInter : ∀ (γ : GQ X.toD7.sp.X') (γE : GL (Fin X.toD7.sp.X'.rank) X.toD7.host.E) (g : GL (Fin (X.B.R.N X.B.R.m - 1)) X.B.fields.E), Bridge.IsRatMat X.toD7.sp.X' γ γE → MatEq γE g → ∀ v, c (rhoV X.B.fields.emb X.B.wts.sgTrue g v) = cX.coef.ρ γ (c v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ γE g hγ hm v`. Establish `key` using `vvCast_rhoV (labLL X.toD7) _ _ _ hw g γE hm v`. Conclude with `(congrArg c0R key).trans (hM.1 γ γE hγ _)`. Take `⟨f, hf⟩` from `vvCast_bVV (K := X.toD7.what₂.LL) (RowAd.rank_X' X).symm _ _ hw`. Establish `hcf : (fun i => c (bVV X.B.fields.K X.B.wts.sgTrue i)) = (fun j => c0R (bVV X.toD7.what₂.LL (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) j)) ∘ f`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `congrArg c0R (hf i)`. Establish `hli : LinearIndependent ℂ (fun i => c (bVV X.B.fields.K X.B.wts.sgTrue i))`. Rewrite using `[hcf]`. Conclude with `hM.2.1.comp f f.injective`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsp : Submodule.span ℂ (Set.range fun i => c (bVV X.B.fields.K X.B.wts.sgTrue i)) = ⊤`. Establish `h2` using `f.surjective.range_comp (fun j => c0R (bVV X.toD7.what₂.LL (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) j))`. Rewrite using `[hcf]`. Use `Eq.trans ?_ hM.2.2` and prove the remaining obligations. Conclude with `congrArg (Submodule.span ℂ) h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinn : ∀ x y, inner ℂ (c x) (c y) = X.B.embLL (pairV X.B.fields.emb X.B.wts.sgTrue 1 x y)`. Introduce `x y`. Conclude with `(hin _ _).trans (congrArg X.toD7.what₂.embLL (hpair x y))`. Use `⟨c, fun v => rfl, hInter, hli, hsp, hinn, fun t P hPc hPy => ⟨e0, ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `vvCast_bVV_repr _ _ _ hw i j`. Introduce `x`. Conclude with `hPc x`. Introduce `x x'`. Conclude with `hpair x x'`.
-
-Introduce `c'`. Rewrite using `[RowLat.hLat_eq_decoAd_N X px I hX hI U t (P.y c'), hPy c']`. Conclude with `vvCast_nabAt (labLL X.toD7) _ _ _ hw _`. Introduce `c'`. Rewrite using `[RowLat.hLat_eq_decoAd_N X px I hX hI U t (P.y c'), hPy c']`.
-
-Conclude with `vvCast_delAt (labLL X.toD7) _ _ _ hw _`.
+A detailed English derivation is pending.
 -/
 theorem exists_coef : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → ∀ (cX : CoefA X.toD7.sp.X') (gramR : Matrix (Fin X.toD7.sp.X'.rank) (Fin X.toD7.sp.X'.rank) X.toD7.host.E)
     (c0R : VV X.toD7.what₂.LL (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) →ₛₗ[X.toD7.what₂.embLL] cX.W),

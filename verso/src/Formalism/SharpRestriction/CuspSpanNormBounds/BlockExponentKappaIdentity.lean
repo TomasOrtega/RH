@@ -27,13 +27,13 @@ def frGE (r acc s : ℕ) : ℕ := 2 * (r + 1 - (acc + s)) + (s - 1)
 def frTri (d : ℕ) : ℕ := ∑ j ∈ range d, (d - j)
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing acc with`. Consider the case `nil => simp [ptWeightFrom, scaleBlocks, frameBlockSum]`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Simplify using `only [scaleBlocks, ptWeightFrom, frameBlockSum]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih (acc + s)]`. Distinguish the cases in `h : s = 1 ∧ acc + 1 = r + 1`. Rewrite using `[if_pos h, if_pos h]`. Take `⟨rfl, h2⟩` from `h`. Establish `e1 : 2 * (r + 1 - (acc + 1)) + (1 - 1) = 0` using `by omega`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : frGE r acc 1 = 0` using `by unfold frGE; omega`. Establish `e3 : 2 * frGN k r acc 1 = 4 * (k - 1)` using `by unfold frGN Ml; omega`. Establish `hbase : Complex.normSq (((τ ^ 2 * κ ^ 0 : ℝ) : ℂ) * t) - τ ^ 2 * T * (τ ^ 2 * T') = τ ^ 4 * (Complex.normSq t - T * T')`. Rewrite using `[Complex.normSq_mul, Complex.normSq_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, hbase, e2, e3, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg h, norm_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Unfold `frGE frGN`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ptWeightFrom_scale (hκ : 0 < κ) (hτ : 0 < τ) (T T' : ℝ) (acc : ℕ) (bs : List (ℂ × ℕ)) :
     ptWeightFrom k r (τ ^ 2 * T) (τ ^ 2 * T') acc (scaleBlocks κ τ r acc bs) =
@@ -61,11 +61,11 @@ theorem ptWeightFrom_scale (hκ : 0 < κ) (hτ : 0 < τ) (T T' : ℝ) (acc : ℕ
       ring
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing acc with`. Consider the case `nil => simp [frameBlockSum]`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Simplify using `only [List.map_cons, List.sum_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_range_add, frameBlockSum, ← ih (acc + s)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p < s` using `Finset.mem_range.mp hp`. Simplify using `only [frStart, if_pos hp', Nat.sub_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [frStart]`. Rewrite using `[if_neg (show ¬ (s + p < s) by omega), show s + p - s = p by omega, show acc + (s + p) = acc + s + p by omega, show s + p - (s + frStart bs p) = p - frStart bs p by omega]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_pos_blocks (f : ℕ → ℕ → ℕ) (acc : ℕ) (bs : List (ℂ × ℕ)) :
     ∑ p ∈ range (bs.map Prod.snd).sum, f (acc + p) (p - frStart bs p) =
@@ -87,9 +87,9 @@ theorem sum_pos_blocks (f : ℕ → ℕ → ℕ) (acc : ℕ) (bs : List (ℂ × 
         show s + p - (s + frStart bs p) = p - frStart bs p by omega]
 
 /- English proof (translation)
-Establish `h1` using `sum_rootPat (fun a b => b - a) γ`. Establish `h2` using `sum_pos_blocks (fun _ d => frTri d) 0 γ.1`. Rewrite `h2` using `[γ.2.2]`. Rewrite using `[h1, ← h2]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_Ico_eq_sum_range]`. Unfold `frTri`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Use `Finset.mem_range.mp hj` as an intermediate fact. Use `frStart_le γ.1 b` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -108,7 +108,7 @@ theorem sum_rootPat_diff (γ : Point ℂ (r + 1)) :
   omega
 
 /- English proof (translation)
-Unfold `Wbig`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun a => tF r κ τ a ^ (4 * (2 * (r - a) + k - 1)))]`. Repeatedly rewrite using `[tF, mul_pow, ← pow_mul]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Finset.prod_pow_eq_pow_sum]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Wbig_eq : Wbig k r κ τ = τ ^ (∑ a ∈ range (r + 1), 4 * (2 * (r - a) + k - 1)) *
     κ ^ (∑ a ∈ range (r + 1), (r - a) * (4 * (2 * (r - a) + k - 1))) := by
@@ -118,15 +118,15 @@ theorem Wbig_eq : Wbig k r κ τ = τ ^ (∑ a ∈ range (r + 1), 4 * (2 * (r - 
   rw [Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Finset.prod_pow_eq_pow_sum]
 
 /- English proof (translation)
-Establish `h1 : ∀ p ∈ rootPat γ, (tF r κ τ p.2.val / tF r κ τ p.1.val) ^ 2 * κ ^ (2 * (p.2.val - p.1.val)) = 1`. Introduce `p hp`. Establish `hlt : p.1 < p.2` using `(Finset.mem_filter.mp hp).2.1`. Establish `hlt' : p.1.val < p.2.val` using `hlt`. Establish `hle : p.2.val ≤ r` using `Nat.lt_succ_iff.mp p.2.isLt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : tF r κ τ p.1.val = tF r κ τ p.2.val * κ ^ (p.2.val - p.1.val)`. Unfold `tF`. Rewrite using `[mul_assoc, ← pow_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2` using `tF_pos (r := r) hκ hτ p.2.val`. Establish `h3 : 0 < κ ^ (p.2.val - p.1.val)` using `pow_pos hκ _`. Establish `h4 : tF r κ τ p.2.val / (tF r κ τ p.2.val * κ ^ (p.2.val - p.1.val)) * κ ^ (p.2.val - p.1.val) = 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, pow_mul', ← mul_pow, h4, one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Use `set P := ∏ p ∈ rootPat γ, (tF r κ τ p.2.val / tF r κ τ p.1.val) ^ 2 with hP`. Use `set S := ∑ p ∈ rootPat γ, (p.2.val - p.1.val) with hS`. Establish `hPS : P * κ ^ (2 * S) = 1`. Rewrite using `[hS, Finset.mul_sum, ← Finset.prod_pow_eq_pow_sum, hP, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `alphaPt`. Rewrite using `[← hP, show (κ ^ (rootPat γ).card * P) ^ 2 * κ ^ (4 * S) = κ ^ (2 * (rootPat γ).card) * (P * κ ^ (2 * S)) ^ 2 by ring, hPS]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem alphaPt_sq_mul (hκ : 0 < κ) (hτ : 0 < τ) (γ : Point ℂ (r + 1)) :
     alphaPt κ τ γ ^ 2 * κ ^ (4 * ∑ p ∈ rootPat γ, (p.2.val - p.1.val)) = κ ^ (2 * (rootPat γ).card) := by
@@ -154,7 +154,7 @@ theorem alphaPt_sq_mul (hκ : 0 < κ) (hτ : 0 < τ) (γ : Point ℂ (r + 1)) :
   ring
 
 /- English proof (translation)
-Unfold `frTri`. Rewrite using `[Finset.sum_range_succ']`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => by omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem frTri_succ (d : ℕ) : frTri (d + 1) = frTri d + (d + 1) := by
   unfold frTri
@@ -163,7 +163,7 @@ theorem frTri_succ (d : ℕ) : frTri (d + 1) = frTri d + (d + 1) := by
   · exact Finset.sum_congr rfl fun j _ => by omega
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => simp [frTri]`. Consider the case `succ n ih => rw [frTri_succ, mul_add, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem two_mul_frTri (d : ℕ) : 2 * frTri d = d * (d + 1) := by
   induction d with
@@ -171,7 +171,7 @@ theorem two_mul_frTri (d : ℕ) : 2 * frTri d = d * (d + 1) := by
   | succ n ih => rw [frTri_succ, mul_add, ih]; ring
 
 /- English proof (translation)
-Proceed by induction on `s' with`. Consider the case `zero => simp only [zero_add, add_zero, Finset.sum_range_one]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ n ih => rw [Finset.sum_range_succ, ← ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem block_exponent_tau_identity (m k' s' : ℕ) :
     2 * (2 * (s' + 1) * (2 * m + k' + s')) = ∑ i ∈ range (s' + 1), 4 * (2 * (m + i) + k') := by
@@ -180,9 +180,9 @@ theorem block_exponent_tau_identity (m k' s' : ℕ) :
   | succ n ih => rw [Finset.sum_range_succ, ← ih]; ring
 
 /- English proof (translation)
-Proceed by induction on `s' with`. Consider the case `zero`. Simplify using `only [zero_add, add_zero, Finset.sum_range_one, frTri, Finset.range_zero, Finset.sum_empty, mul_zero]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Rewrite using `[Finset.sum_range_succ frTri (n + 1), Finset.sum_range_succ (fun i => (m + i) * (4 * (2 * (m + i) + k'))) (n + 1), ← ih]`. Establish `h` using `two_mul_frTri (n + 1)`. Use polynomial arithmetic with `[h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem block_exponent_kappa_identity (m k' s' : ℕ) :
     (2 * m + s') * (2 * (s' + 1) * (2 * m + k' + s')) + 4 * ∑ i ∈ range (s' + 1), frTri i =
@@ -197,11 +197,11 @@ theorem block_exponent_kappa_identity (m k' s' : ℕ) :
     nlinarith [h]
 
 /- English proof (translation)
-Break down `s with _ | s'` into its components or cases. Simplify using `[frGN]`. Take `⟨m, hm⟩ : ∃ m, m = r + 1 - (a + (s' + 1))` from `⟨_, rfl⟩`. Establish `hN : frGN k r a (s' + 1) = 2 * (s' + 1) * (2 * m + (k - 1) + s')`. Unfold `frGN Ml`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hN, block_exponent_tau_identity m (k - 1) s', ← Finset.sum_range_reflect (fun i => 4 * (2 * (r - (a + i)) + k - 1)) (s' + 1)]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `Finset.mem_range.mp hi` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `try dsimp only`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem blk_tau (hk : 1 ≤ k) (a s : ℕ) (h : a + s ≤ r + 1) :
     2 * frGN k r a s = ∑ i ∈ range s, 4 * (2 * (r - (a + i)) + k - 1) := by
@@ -218,11 +218,11 @@ theorem blk_tau (hk : 1 ≤ k) (a s : ℕ) (h : a + s ≤ r + 1) :
   omega
 
 /- English proof (translation)
-Break down `s with _ | s'` into its components or cases. Simplify using `[frGN]`. Take `⟨m, hm⟩ : ∃ m, m = r + 1 - (a + (s' + 1))` from `⟨_, rfl⟩`. Establish `hN : frGN k r a (s' + 1) = 2 * (s' + 1) * (2 * m + (k - 1) + s')`. Unfold `frGN Ml`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hE : frGE r a (s' + 1) = 2 * m + s'` using `by unfold frGE; omega`. Rewrite using `[hN, hE, block_exponent_kappa_identity m (k - 1) s', ← Finset.sum_range_reflect (fun i => (r - (a + i)) * (4 * (2 * (r - (a + i)) + k - 1))) (s' + 1)]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.mem_range.mp hi` as an intermediate fact. Apply the tactic sequence `try dsimp only`. Establish `e1 : r - (a + (s' + 1 - 1 - i)) = m + i` using `by omega`. Establish `e2 : 2 * (m + i) + k - 1 = 2 * (m + i) + (k - 1)` using `by omega`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_kappa (hk : 1 ≤ k) (a s : ℕ) (h : a + s ≤ r + 1) :
     frGE r a s * frGN k r a s + 4 * ∑ i ∈ range s, frTri i =
@@ -243,9 +243,9 @@ theorem blk_kappa (hk : 1 ≤ k) (a s : ℕ) (h : a + s ≤ r + 1) :
   rw [e1, e2]
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing acc with`. Consider the case `nil => rfl`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Simplify using `only [List.map_cons, List.sum_cons] at hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [frameBlockSum]`. Rewrite using `[h acc s (by omega), ih (acc + s) (by omega)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_block_sum_congr {g₁ g₂ : ℕ → ℕ → ℕ} {R : ℕ} (h : ∀ a s, a + s ≤ R → g₁ a s = g₂ a s) (acc : ℕ)
     (bs : List (ℂ × ℕ)) (hb : acc + (bs.map Prod.snd).sum ≤ R) : frameBlockSum g₁ acc bs = frameBlockSum g₂ acc bs := by
@@ -258,9 +258,9 @@ theorem frame_block_sum_congr {g₁ g₂ : ℕ → ℕ → ℕ} {R : ℕ} (h : �
     rw [h acc s (by omega), ih (acc + s) (by omega)]
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing acc with`. Consider the case `nil => rfl`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Simplify using `only [frameBlockSum]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih (acc + s)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frame_block_sum_add (g₁ g₂ : ℕ → ℕ → ℕ) (acc : ℕ) (bs : List (ℂ × ℕ)) :
     frameBlockSum (fun a s => g₁ a s + g₂ a s) acc bs = frameBlockSum g₁ acc bs + frameBlockSum g₂ acc bs := by
@@ -272,9 +272,9 @@ theorem frame_block_sum_add (g₁ g₂ : ℕ → ℕ → ℕ) (acc : ℕ) (bs : 
     rw [ih (acc + s)]; ring
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing acc with`. Consider the case `nil => rfl`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Simplify using `only [frameBlockSum]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih (acc + s)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frame_block_sum_mul (c : ℕ) (g : ℕ → ℕ → ℕ) (acc : ℕ) (bs : List (ℂ × ℕ)) :
     frameBlockSum (fun a s => c * g a s) acc bs = c * frameBlockSum g acc bs := by
@@ -286,13 +286,13 @@ theorem frame_block_sum_mul (c : ℕ) (g : ℕ → ℕ → ℕ) (acc : ℕ) (bs 
     rw [ih (acc + s)]; ring
 
 /- English proof (translation)
-Establish `hsum : 0 + (γ.1.map Prod.snd).sum ≤ r + 1` using `by rw [γ.2.2]; omega`. Establish `hU` using `sum_pos_blocks (fun p _ => 4 * (2 * (r - p) + k - 1)) 0 γ.1`. Establish `hV` using `sum_pos_blocks (fun p _ => (r - p) * (4 * (2 * (r - p) + k - 1))) 0 γ.1`. Rewrite `hU`, `hV` using `[γ.2.2]`. Simplify using `only [zero_add] at hU hV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hA : frameBlockSum (fun a s => 2 * frGN k r a s) 0 γ.1 = ∑ a ∈ range (r + 1), 4 * (2 * (r - a) + k - 1)`. Rewrite using `[hU]`. Use `frame_block_sum_congr ?_ 0 γ.1 hsum` and prove the remaining obligations. Introduce `a s h`. Conclude with `blk_tau hk a s h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hB : frameBlockSum (fun a s => frGE r a s * frGN k r a s) 0 γ.1 + 4 * ∑ p ∈ rootPat γ, (p.2.val - p.1.val) = ∑ a ∈ range (r + 1), (r - a) * (4 * (2 * (r - a) + k - 1))`. Rewrite using `[hV, sum_rootPat_diff, ← frame_block_sum_mul, ← frame_block_sum_add]`. Use `frame_block_sum_congr ?_ 0 γ.1 hsum` and prove the remaining obligations. Introduce `a s h`. Conclude with `blk_kappa hk a s h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hα` using `alphaPt_sq_mul hκ hτ γ`. Unfold `ptWeight`. Rewrite using `[ptTr_val, ptWeightFrom_scale hκ hτ, Wbig_eq, hA, ← hB, ← hα, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ptWeight_ptTr (hk : 1 ≤ k) (hκ : 0 < κ) (hτ : 0 < τ) (T T' : ℝ) (γ : Point ℂ (r + 1)) :
     ptWeight k r (τ ^ 2 * T) (τ ^ 2 * T') (ptTr κ τ hκ hτ γ) * κ ^ (2 * (rootPat γ).card) =

@@ -13,21 +13,19 @@ namespace GlobalTheory.ArchFrameConj
 open GlobalTheory.MaxCptConj GlobalTheory.UAut
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ K' hK k w τ`. Use `choose c ε hc using Frames.exists_arch_frame h hJ`. Take `⟨a, -, e⟩` from `exists_conj_majCpt h (fun w => ⟨ε w, hc w⟩) hK`. Take `⟨b, hb⟩ : ∃ b : GAd σ J, b = a * k⁻¹` from `⟨_, rfl⟩`. Use `set m : GL (Fin n) (w.Completion ⊗[F] E) := matHom _ σ J (projArch σ J w b) with hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C' : GL (Fin n) (w.Completion ⊗[F] E) := m⁻¹ * c w with hC'`. Establish `inj` using `Matrix.map_injective (m := Fin n) (n := Fin n) (infEmb_bijective h τ).1`. Establish `one : (1 : Matrix (Fin n) (Fin n) (w.Completion ⊗[F] E)).map (infEmb τ) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hC : ∀ x : GL (Fin n) (w.Completion ⊗[F] E), (Formalism.UG.bc (infEmb τ) x).1 = x.1.map (infEmb τ)` using `fun x => rfl`. Establish `hJR : (JR w.Completion J).map (infEmb τ) = J.map τ.1` using `by ext r s; simp [JR, inclR]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmU : Formalism.UG.cT (sigR _ σ) (m⁻¹).1 * JR w.Completion J * (m⁻¹).1 = JR w.Completion J`. Use `((projArch σ J w b)⁻¹).2` as an intermediate fact. Rewrite using `[hm, ← map_inv]`. Conclude with `this`. Establish `hC'J : Formalism.UG.cT (sigR _ σ) C'.1 * JR w.Completion J * C'.1 = Matrix.diagonal fun i => if ε w i then 1 else -1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hc w, hC', Units.val_mul, Formalism.UG.cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hmU]`. Use `⟨Formalism.UG.bc (infEmb τ) C', ε w, ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC, ← hJR, ← Frames.map_cT_sigR h, ← Matrix.map_mul, ← Matrix.map_mul, hC'J, Matrix.diagonal_map (map_zero _)]`. Apply the tactic sequence `congr 1; funext i; split_ifs <;> simp`. Rewrite using `[e, show a * (k⁻¹ * embArch σ J w y * k) * a⁻¹ = b * embArch σ J w y * b⁻¹ by rw [hb]; group, mem_majCpt]`. Use `⟨?_, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_infPts]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[map_mul, map_inv]`. Break down `eq_or_ne u w with rfl | hu` into its components or cases. Rewrite using `[map_mul, map_mul, map_inv, projArch_embArch_self, mem_stabArch]`. Establish `hX : (c u)⁻¹ * matHom _ σ J (projArch σ J u b * y * (projArch σ J u b)⁻¹) * c u = C'⁻¹ * matHom _ σ J y * C'`. Rewrite using `[hC', map_mul, map_mul, map_inv, ← hm]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `group`. Rewrite using `[hX]`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ (C'⁻¹ * matHom _ σ J y * C').1 * 1 * (C'⁻¹ * matHom _ σ J y * C').1 = 1`. Use `inj ?_` and prove the remaining obligations. Simplify using `only [mul_one, Matrix.map_mul, Frames.map_cT_sigR h, Units.val_mul, one]`.
-
-Establish `hCi : ((Formalism.UG.bc (infEmb τ) C')⁻¹).1 = (C'⁻¹).1.map (infEmb τ)` using `by rw [← map_inv]; rfl`. Simplify `hy` using `only [hCi, hC, GlobalTheory.Orb.archMat_apply, Matrix.map_mul]`. Rewrite using `[map_mul, map_mul, map_inv, projArch_embArch_ne σ J hu, mul_one, mul_inv_cancel]`. Conclude with `one_mem _`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame_mem_conj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ K' : Subgroup (GAd σ J), GlobalTheory.UAut.IsMaxCpt σ J K' →

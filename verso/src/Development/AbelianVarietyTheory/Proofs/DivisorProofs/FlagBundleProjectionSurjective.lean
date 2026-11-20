@@ -20,7 +20,7 @@ namespace GlobalTheory.FlagSurj
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Use `(SheafOfModules.freeFunctor (R := X.ringCatSheaf)).map_comp (↾f) (↾g)` as an intermediate fact. Simplify using `only [SheafOfModules.freeFunctor_map] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem freeMap_comp {I J K : Type} (f : I → J) (g : J → K) :
     SheafOfModules.freeMap (R := X.ringCatSheaf) f ≫ SheafOfModules.freeMap g =
@@ -30,7 +30,7 @@ theorem freeMap_comp {I J K : Type} (f : I → J) (g : J → K) :
   exact this.symm
 
 /- English proof (translation)
-Use `(SheafOfModules.freeFunctor (R := X.ringCatSheaf)).map_id I` as an intermediate fact. Simplify using `only [SheafOfModules.freeFunctor_map] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem freeMap_id (I : Type) :
     SheafOfModules.freeMap (R := X.ringCatSheaf) (id : I → I) = 𝟙 _ := by
@@ -54,7 +54,7 @@ def splitIso {i r : ℕ} (h : i ≤ r) : freeModule X (Fin i) ⊞ freeModule X (
   biprod.isoCoprod _ _ ≪≫ SheafOfModules.freeSumIso _ _ ≪≫ freeIso (finSplit h)
 
 /- English proof (translation)
-Simplify using `only [splitIso, Iso.trans_hom]`. Use `erw [biprod_isoCoprod_hom, biprod.inl_desc_assoc, SheafOfModules.inl_freeSumIso_hom_assoc]`. Use `erw [freeMap_comp]`. Use `congr 1`. Apply the tactic sequence `all_goals (funext x; ext; simp [finSplit])`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem inl_splitIso_hom {i r : ℕ} (h : i ≤ r) :
     biprod.inl ≫ (splitIso X h).hom = SheafOfModules.freeMap (R := X.ringCatSheaf) (Fin.castLE h) := by
@@ -65,7 +65,7 @@ theorem inl_splitIso_hom {i r : ℕ} (h : i ≤ r) :
   all_goals (funext x; ext; simp [finSplit])
 
 /- English proof (translation)
-The claim follows from `have := hi.mono have ⟨_, s, hs⟩ := hi ⟨inferInstance, s, hs.of_iso (cokernelCompIsIso _ _).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem isSubbundle_comp_iso {F G H : X.Modules} {i : G ⟶ F} (hi : IsSubbundle i) (e : F ≅ H) :
     IsSubbundle (i ≫ e.hom) :=
@@ -76,7 +76,7 @@ theorem isSubbundle_comp_iso {F G H : X.Modules} {i : G ⟶ F} (hi : IsSubbundle
 variable (X) in
 
 /- English proof (translation)
-Rewrite using `[← inl_splitIso_hom]`. Conclude with `isSubbundle_comp_iso (isSubbundle_inl (F := freeModule X (Fin i)) (isVB_freeModule_fin X (r - i))) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSubbundle_freeMap_castLE {i r : ℕ} (h : i ≤ r) :
     IsSubbundle (SheafOfModules.freeMap (R := X.ringCatSheaf) (Fin.castLE h)) := by
@@ -97,11 +97,11 @@ def freeFlag (r : ℕ) : Vert.Flag (freeModule X (Fin r)) r where
     exact h ▸ inferInstance
 
 /- English proof (translation)
-Introduce `B Y π ι _ E r fl hE hfl b`. Use `choose U e hb he using fun a => hE a b`. Set `V : B.Opens` to `Finset.univ.inf U`. Establish `hle : ∀ a, V ≤ U a` using `fun a => Finset.inf_le (Finset.mem_univ a)`. Establish `hbV : b ∈ V`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← SetLike.mem_coe, TopologicalSpace.Opens.coe_finset_inf]`. Simplify using `using hb`. Establish `hfr (a : ι)` using `(isFrame_restrict_iff V.ι _).2 ((he a).res ((V.ι_image_le ⊤).trans (hle a)))`. Set `φ : ∀ a, freeModule V.toScheme (Fin (r a)) ≅ (Scheme.Modules.pullback V.ι).obj (E a)` to `fun a => (isFrame_freeFrame _ _).iso (hfr a) ≪≫ (Scheme.Modules.restrictFunctorIsoPullback V.ι).app (E a)`. Take `⟨g', ⟨w, -⟩, -⟩` from `hfl V.toScheme V.ι (fun a => (freeFlag V.toScheme (r a)).ofIso (φ a))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g' ⟨b, hbV⟩, ?_⟩` and prove the remaining obligations. Establish `h : (g' ≫ π) ⟨b, hbV⟩ = V.ι ⟨b, hbV⟩` using `by rw [w]`. Conclude with `(Scheme.Hom.comp_apply g' π _).symm.trans (h.trans (Scheme.Opens.ι_apply V _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFlagBundle_surjective : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι] (E : ι → B.Modules)
     (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)),

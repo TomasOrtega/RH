@@ -15,9 +15,9 @@ open CommPairing GlobalLift VVRank ThetaCoord
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : Over S}
 
 /- English proof (translation)
-Establish `h1 : (LB.oneGen L (Y` using `(T ⊗ A).left)).IsGen := SymLiftOdd.isGen_of_gm fun y j j' _ _ => by`. Rewrite using `[trF, Fintype.prod_empty, _root_.one_mul]`. Conclude with `(map_one _).trans (map_one _).symm`. Take `⟨t, ht, hv⟩` from `exists_gen hL (φ' := ![(snd T A).left, (translPt A (1 : T ⟶ A)).left]) (ε' := ![k, -k]) (fun U _ f => by`. Rewrite using `[Fintype.prod_empty, Fin.prod_univ_two, ThetaAct.translPt_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `simp) (LB.oneGen L) h1`. Establish `hv' : ∀ (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ A).left) (z : Z) (J), Good L z J → tval (⟨1, t, ht⟩ : ThetaGrp A L k T) r z J = 1` using `fun Z r z J hJ => (hv Z r z J hJ).trans (val_one _)`. Use `⟨⟨1, t, ht⟩, symLift_of_tval hL rfl hν (fun T' π z J hJ p => ?_) (fun T' π z J hJ p => ?_), hv'⟩` and prove the remaining obligations. Conclude with `Finset.prod_eq_one fun _ _ => hv' _ _ _ _ hJ`. Rewrite using `[hv' _ _ _ _ hJ, hv' _ _ _ _ hJ, MonObj.comp_one, inv_one, _root_.one_mul, _root_.one_mul, _root_.one_mul, mul_inv_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_symLift_one (hL : L.IsLB) {k : ℤ} {ν : LB.Gen (negLB A L k T)} (hν : ν.IsGen) :
     ∃ θ : ThetaGrp A L k T, SymLift A L k 1 1 θ ∧
@@ -37,11 +37,11 @@ theorem exists_symLift_one (hL : L.IsLB) {k : ℤ} {ν : LB.Gen (negLB A L k T)}
       mul_inv_cancel]
 
 /- English proof (translation)
-Use `hA.comm` as an intermediate fact. Take `⟨θ₁, h₁, v₁⟩` from `exists_symLift_one hL hν`. Take `⟨θ', h', v'⟩` from `exists_symLift_mulPull hA hL (one_dvd q) hα hy (hm.symm ▸ h₁)`. Establish `hc` using `SymLiftOdd.symLift_unique hG hA hL hq θ θ' H h'`. Use `isTwistPull_of_sv A hL θ.isGen fun z J hJ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : tval θ (𝟙 _) z J = tval θ' (𝟙 _) z J` using `val_corr hJ hc _`. Establish `e₁` using `sv_mulPull hs (fst T A) hJ (snd T A)`. Establish `e₂` using `sv_mulPull hs (fst T A) hJ ((fst T A ≫ y) * snd T A)`. Establish `e₃` using `v' _ (fst T A) z J hJ (snd T A)`. Rewrite `e₃` using `[v₁ _ _ _ _ hJ, _root_.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e₂` using `[mul_pow, ← MonObj.comp_pow, hm, MonObj.comp_one, _root_.one_mul]`. Express the relevant statement in the definitionally equal form `_ = (tval θ (𝟙 _) z J).val * _`. Rewrite using `[e, SymLiftOdd.id_eq_lift, ThetaCoord.lift_translT, H.pt_eq, e₃, e₁, e₂, Units.val_mul, _root_.mul_assoc, Units.inv_mul_cancel_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isActOf_self (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB)
     {ν : LB.Gen (negLB A L 1 T)} (hν : ν.IsGen) {a : ℤ} {m q : ℕ} (hq : Odd q)
@@ -66,9 +66,9 @@ theorem isActOf_self (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB)
     Units.inv_mul_cancel_left]
 
 /- English proof (translation)
-Use `ThetaAct.sv_ext hL fun z J hJ => ?_` and prove the remaining obligations. Establish `e₁` using `sv_act Hx.pt_eq h₂ (fst T A) hJ (snd T A)`. Establish `e₂` using `sv_act Hy.pt_eq h₁ (fst T A) hJ ((fst T A ≫ x) * snd T A)`. Establish `e₃` using `sv_act H.pt_eq h₃ (fst T A) hJ (snd T A)`. Establish `e₄` using `tval_mul hG hA hL hq hy Hx Hy H hc (fst T A) hJ (snd T A)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₂` using `[← _root_.mul_assoc, ← MonObj.comp_mul]`. Rewrite using `[ThetaAct.sv_smul _ _ _ _ hJ, Category.id_comp, gs_unit _ _ ⊤ trivial, map_pow, SymLiftOdd.id_eq_lift]`. Use `e₁.trans ?_` and prove the remaining obligations. Rewrite using `[e₂, ← _root_.mul_assoc, ← Units.val_mul, e₄, Units.val_mul, _root_.mul_assoc, ← e₃]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem act_act (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB) {k : ℤ} {q : ℕ} (hq : Odd q) {x y : T ⟶ A}
     (hy : y ^ q = 1) {θx θy θ : ThetaGrp A L k T} (Hx : SymLift A L k q x θx) (Hy : SymLift A L k q y θy)
@@ -88,7 +88,7 @@ theorem act_act (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB) {k : �
   rfl
 
 /- English proof (translation)
-Establish `e : ∀ j, (∑ i, c i • s i : SecM A L k T).1 j = ∑ i, liftFun A _ (c i) * (SecM.toSec A (s i)).f j` using `fun j => by`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Both sides reduce to the same expression. Conclude with `⟨fun h => Subtype.ext (funext fun j => (h j).trans (e j).symm), fun h j => (congrArg (fun q => q.1 j) h).trans (e j)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 theorem sum_iff {k : ℤ} {κ : Type} [Fintype κ] (σ : LB.Sec (LPow A L k T)) (s : κ → SecM A L k T)
     (c : κ → Γ(T.left, ⊤)) :
@@ -100,7 +100,7 @@ theorem sum_iff {k : ℤ} {κ : Type} [Fintype κ] (σ : LB.Sec (LPow A L k T)) 
     fun h j => (congrArg (fun q => q.1 j) h).trans (e j)⟩
 
 /- English proof (translation)
-Simplify using `only [sum_iff]`. Conclude with `⟨s.equivFun (SecM.ofSec A σ), (s.sum_equivFun _).symm, fun c hc => by`. Rewrite using `[hc, ← s.equivFun_symm_apply, LinearEquiv.apply_symm_apply]⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_of_basis {k : ℤ} {κ : Type} [Fintype κ] (s : Module.Basis κ Γ(T.left, ⊤) (SecM A L k T))
     (σ : LB.Sec (LPow A L k T)) :
@@ -110,7 +110,7 @@ theorem existsUnique_of_basis {k : ℤ} {κ : Type} [Fintype κ] (s : Module.Bas
     rw [hc, ← s.equivFun_symm_apply, LinearEquiv.apply_symm_apply]⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h T (𝟙 T)`. Conclude with `⟨c, fun i => (hc i).trans (pullM_id P.A P.isLB n _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UnivBasis.exists_basis {P : PolAV S} [IsAffine T.left] {n : ℤ} {κ : Type} {b : κ → SecM P.A P.L n T}
     (h : UnivBasis P n b) : ∃ c : Module.Basis κ Γ(T.left, ⊤) (SecM P.A P.L n T), ∀ i, c i = b i := by
@@ -118,7 +118,7 @@ theorem UnivBasis.exists_basis {P : PolAV S} [IsAffine T.left] {n : ℤ} {κ : T
   exact ⟨c, fun i => (hc i).trans (pullM_id P.A P.isLB n _)⟩
 
 /- English proof (translation)
-Introduce `T' _ u` and use `by obtain ⟨c, hc⟩ := h T' u refine ⟨c.reindex (Equiv.ofUnique κ (Fin 1)), fun i => ?_⟩ rw [Module.Basis.reindex_apply, hc, Subsingleton.elim ((Equiv.ofUnique κ (Fin 1)).symm i) default]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UnivBasis.unique {P : PolAV S} {n : ℤ} {κ : Type} [Unique κ] {b : κ → SecM P.A P.L n T}
     (h : UnivBasis P n b) : UnivBasis P n (fun _ : Fin 1 => b default) := fun T' _ u => by

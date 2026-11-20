@@ -24,13 +24,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l l' : Level H} {Xo : Moduli Dw l} {Xo' : Moduli Dw l'} {c : Coeff l} {c' : Coeff l'} {W : ValuationSubring ℂ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ha0`. Set `M : Matrix (Fin n) (Fin n) K` to `fun k k' => ∑ b, φ (h k' b) * φ (U k b)`. Establish `hM : φ (pairDet h U) = M.det`. Rewrite using `[pairDet, RingHom.map_det]`. Use `congr 1`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `k k'`. Simplify using `[M, map_sum, map_mul]`. Establish `hdet : M.det = 0`. Use `Matrix.exists_vecMul_eq_zero_iff.1 ⟨a, ha0, ?_⟩` and prove the remaining obligations. Use extensionality with `k'`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.vecMul, dotProduct, M, Pi.zero_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 0 := by rw [ha b, mul_zero]`. Conclude with `(hu.map φ).ne_zero (hM.trans hdet)`.
+A detailed English derivation is pending.
 -/
 theorem rows_indep {A K : Type} [CommRing A] [Field K] (φ : A →+* K) {n g : ℕ} (h U : Fin n → Fin g → A)
     (hu : IsUnit (pairDet h U)) (a : Fin n → K) (ha : ∀ b, ∑ i, a i * φ (U i b) = 0) : a = 0 := by
@@ -53,29 +53,25 @@ theorem rows_indep {A K : Type} [CommRing A] [Field K] (φ : A →+* K) {n g : �
   exact (hu.map φ).ne_zero (hM.trans hdet)
 
 /- English proof (translation)
-Establish `hb` using `isTanBasis_bc hbas φ`. Set `Eb : Fin g → PullbackSections.TanM (spMap φ ≫ ξ) Y.t.G` to `fun b => GlobalTheory.LieMet.tanOf (hb.1 b)`. Set `C : Fin (Dw.mult ρ) → PullbackSections.TanM (spMap φ ≫ ξ) Y.t.G` to `fun i => ∑ b, φ (U i b) • Eb b`. Set `Pm` to `GlobalTheory.LieMet.pushE Y.m yy hyy`. Set `Pν` to `GlobalTheory.LieMet.pushE ν yy hyx`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `N : Fin (Dw.mult ρ) → PullbackSections.TanM y.x Xo.univ.t.G` to `fun i => Pν (Pm.symm (C i))`. Establish `hCc : ∀ i, IsCombAtG Y.t (spMap φ ≫ ξ) (bcV Y.t φ e) (fun b => φ (U i b)) (PullbackSections.tv (C i)).left` using `fun i => (GlobalTheory.LieMet.isComb_iff Eb _ (C i)).2 rfl`. Establish `hsm : ∀ (a : K) (v : PullbackSections.TanM (spMap φ ≫ ξ) Y.t.G), (PullbackSections.tv (a • v)).left = spMap (epsMul a) ≫ (PullbackSections.tv v).left` using `fun _ _ => rfl`. Establish `hact : ∀ (a : 𝓞 E) (v : PullbackSections.TanM (spMap φ ≫ ξ) Y.t.G), (PullbackSections.tv (PullbackSections.actR Y.t.act a v)).left = (PullbackSections.tv v).left ≫ (Y.t.act.act a).left` using `fun _ _ => rfl`. Establish `hCe : ∀ i (a : 𝓞 E), PullbackSections.actR Y.t.act a (C i) = φ (β (embV c' W ρ a)) • C i` using `fun i a => GlobalTheory.LieMet.tan_ext (by rw [hact, hsm]; exact heig i _ (hCc i) a)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNe : ∀ i (a : 𝓞 E), PullbackSections.actR Xo.univ.t.act a (N i) = φ (β (embV c' W ρ a)) • N i`. Introduce `i a`. Establish `h1 : PullbackSections.actR Y.oF.t.act a (Pm.symm (C i)) = φ (β (embV c' W ρ a)) • Pm.symm (C i)`. Apply `Pm.injective` to reduce the goal to its premises. Use `(GlobalTheory.LieMet.pushE_act Y.m yy hyy a _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul]`. Simplify using `only [Pm, LinearEquiv.apply_symm_apply]`. Conclude with `hCe i a`. Use `show PullbackSections.actR Xo.univ.t.act a (Pν (Pm.symm (C i))) = _`. Use `(GlobalTheory.LieMet.pushE_act ν yy hyx a _).symm.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show Pν _ = _`. Rewrite using `[h1, map_smul]`. Establish `hN : ∀ i, ∃! a, IsCombAt y.x (y.u ρ) a (PullbackSections.tv (N i)).left` using `fun i => y.basis ρ _ (GlobalTheory.LieMet.isTan_tv (N i)) fun a => by`. Rewrite using `[← hσ]`. Conclude with `congrArg (fun v => (PullbackSections.tv v).left) (hNe i a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `choose G hG using fun i => (hN i).exists`. Use `⟨fun i => (PullbackSections.tv (Pm.symm (C i))).left, G, fun i => ?_, fun i => ?_, fun h hu hd => ?_⟩` and prove the remaining obligations. Rewrite using `[hyy, ← GlobalTheory.LieMet.left_pushE Y.m yy hyy, LinearEquiv.apply_symm_apply]`. Conclude with `hCc i`. Rewrite using `[← GlobalTheory.LieMet.left_pushE ν yy hyx]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG i`. Take `⟨a, ha0, ha⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 hd`. Set `Ub : Fin (Dw.mult ρ) → PullbackSections.TanM y.x Xo.univ.t.G` to `fun j => GlobalTheory.LieMet.tanOf (y.tan ρ j)`. Establish `hNi : ∀ i, N i = ∑ j, G i j • Ub j` using `fun i => (GlobalTheory.LieMet.isComb_iff Ub (G i) (N i)).1 (hG i)`. Establish `h0 : ∑ i, a i • N i = 0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hNi, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `congrFun ha j` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply] at this`. Rewrite using `[this, zero_smul]`. Establish `h1 : ∑ i, a i • C i = 0`. Establish `: Pν (Pm.symm (∑ i, a i • C i)) = 0`. Rewrite using `[← h0]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_smul]`. Both sides reduce to the same expression. Conclude with `Pm.symm.injective (Pν.injective (this.trans ((congrArg Pν (map_zero Pm.symm)).trans (map_zero Pν)).symm))`. Set `cv : Fin g → K` to `fun b => ∑ i, a i * φ (U i b)`. Establish `h2 : ∑ i, a i • C i = ∑ b, cv b • Eb b`.
-
-Simplify using `only [C, cv, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `h3 : cv = 0`. Establish `hz` using `(GlobalTheory.LieMet.isComb_iff Eb cv 0).2 (h2.symm.trans h1).symm`. Establish `hz'` using `(GlobalTheory.LieMet.isComb_iff Eb 0 0).2 (by simp only [Pi.zero_apply, zero_smul, Finset.sum_const_zero])`.
-
-Conclude with `(hbas.2 K φ _ (GlobalTheory.LieMet.isTan_tv 0)).unique hz hz'`. Conclude with `ha0 (rows_indep φ h U hu a fun b => congrFun h3 b)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rows_data (Y : Model Xo' c' (c'.V W).subtype) (r : Xo'.XF c' ⟶ Xo.XF c)
     (ν : SABMap Y.oF.t Xo.univ.t (r ≫ pullback.fst _ _)) {A K : Type} [CommRing A] [Field K] [Algebra c.F K]
@@ -155,27 +151,23 @@ end GlobalTheory.FlatModel.GenUniq
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Introduce `_ _ _ E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle r₀ U x _ Z τ s la p Xw hp hcov A _ _ _ ξ β _ hξs _ hξX g e U₁ h₁ U₂ h₂ hbas heig hu₁ hu₂`. Set `K` to `FractionRing A`. Set `φ : A →+* K` to `algebraMap A K`. Use `⟨K, inferInstance, φ, IsFractionRing.injective A K, fun v v' hv hv' => ?_⟩` and prove the remaining obligations. Establish `hsc : ∀ {R₁ R₂ R₃ : Type} [CommRing R₁] [CommRing R₂] [CommRing R₃] (f : R₁ →+* R₂) (f' : R₂ →+* R₃), spMap (f'.comp f) = spMap f' ≫ spMap f` using `fun f f' => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[spMap, spMap, spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `hinj : ∀ {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] (f f' : R₁ →+* R₂), spMap f = spMap f' → f = f'` using `fun f f' h => congrArg CommRingCat.Hom.hom (Spec.map_inj.1 h)`. Establish `hj : IsOpenImmersion Y.j` using `GlobalTheory.LocM.BaseMdl.isOpenImmersion_j hp hcov.2.2.1 Y`. Establish `hrange : Set.range (spMap φ ≫ ξ) ⊆ Set.range Y.j`. Introduce and unpack `_ ⟨z, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `hcov.2.2.2.2.1 ?_` and prove the remaining obligations. Establish `hz : (spMap φ).base z = (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum A)`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Use `show Ideal.comap φ (z : PrimeSpectrum K).asIdeal = ⊥`. Use `haveI := (z : PrimeSpectrum K).isPrime`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.eq_bot_of_prime (z : PrimeSpectrum K).asIdeal, ← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective A K)`. Use `show ξ.base ((spMap φ).base z) ∈ Xw`. Rewrite using `[hz]`. Conclude with `hξX`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Set `yy` to `IsOpenImmersion.lift Y.j (spMap φ ≫ ξ) hrange`. Establish `hyy : yy ≫ Y.j = spMap φ ≫ ξ` using `IsOpenImmersion.lift_fac _ _ _`. Set `ψ : c'.F →+* K` to `(Spec.preimage (yy ≫ pullback.snd _ _)).hom`. Establish `hψ : spMap ψ = yy ≫ pullback.snd _ _` using `Spec.map_preimage _`. Use `letI : Algebra c.F K := (ψ.comp (IntermediateField.inclusion hle).toRingHom).toAlgebra`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hψβ : ψ.comp (c'.V W).subtype = φ.comp β`. Use `hinj _ _ ?_` and prove the remaining obligations. Rewrite using `[hsc, hsc, hψ, Category.assoc, ← GlobalTheory.LocM.BaseMdl.j_s, ← Category.assoc, hyy, Category.assoc, hξs]`. Establish `hsnd : yy ≫ r ≫ pullback.snd _ _ = spMap (algebraMap c.F K)`. Rewrite using `[hcov.1, ← Category.assoc, ← hψ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hsc _ _).symm`. Establish `hx : (yy ≫ r ≫ pullback.fst _ _) ≫ Xo.s = sOf c K`. Rewrite using `[sOf, hsc, ← hsnd]`. Simplify using `only [Category.assoc, pullback.condition]`. Take `⟨y, hyx⟩` from `GlobalTheory.NonIntegralFrameExample.exists_framed (yy ≫ r ≫ pullback.fst _ _) hx`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : Tested y` using `GlobalTheory.NonIntegralFrameExample.spread_holds Xo c K y`. Establish `hpt : GlobalTheory.AllWt.ptF y = yy ≫ r`. Unfold `GlobalTheory.AllWt.ptF`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, hyx, Category.assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pullback.lift_snd, Category.assoc, hsnd]`. Establish `hσ : ∀ (ρ : E →+* ℂ) (a : 𝓞 E), φ (β (embV c' W ρ a)) = algebraMap c.F K (embK c ρ a)`. Introduce `ρ a`. Rewrite using `[← RingHom.comp_apply φ β, ← hψβ]`. Use `show ψ ((embV c' W ρ a : c'.V W) : c'.F) = ψ (IntermediateField.inclusion hle (embK c ρ a))`.
-
-Use `congr 1`. Take `⟨w₁, G₁, hw₁, hg₁, hd₁⟩` from `GenUniq.rows_data Y r ν ξ β φ e hbas yy hyy y hyx.symm τ.1 U₁ (heig K φ).1 (hσ τ.1)`. Take `⟨w₂, G₂, hw₂, hg₂, -⟩` from `GenUniq.rows_data Y r ν ξ β φ e hbas yy hyy y hyx.symm (conjEmb τ.1) U₂ (heig K φ).2 (hσ _)`. Establish `e₁` using `hv inferInstance yy hyy y hT hpt w₁ w₂ G₁ G₂ hw₁ hw₂ hg₁ hg₂`. Establish `e₂` using `hv' inferInstance yy hyy y hT hpt w₁ w₂ G₁ G₂ hw₁ hw₂ hg₁ hg₂`.
-
-Conclude with `mul_right_cancel₀ (hd₁ h₁ hu₁) (e₁.trans e₂.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secValAt_unique_generic : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.CanonicalExtensionRankOne → GlobalTheory.Published.DeRhamCanonicalExtension →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)

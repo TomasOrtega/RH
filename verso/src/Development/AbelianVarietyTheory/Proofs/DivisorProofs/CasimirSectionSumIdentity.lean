@@ -12,11 +12,9 @@ namespace GlobalTheory.SteepMult.CasDom
 variable {R S : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use `set s : (Fin k → NC R S) → ℂ := fun g' => B (factorOp k i Z Ψ g') (L (Ψ g')) with hs`. Establish `h1 : ∀ g (h : Fin 1 → NC R S), B (factorOp 1 0 Z (section1 Ψ i g) h) (L (section1 Ψ i g h)) = s (Function.update g i (h 0))`. Introduce `g h`. Simplify using `[hs, factorOp, section1]`. Establish `h2 : ∀ g, ∑ h : Fin 1 → NC R S, s (Function.update g i (h 0)) = ∑ y, s (Function.update g i y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Conclude with `Fintype.sum_equiv (Equiv.funUnique (Fin 1) (NC R S)) _ _ (fun h => rfl)`. Simplify using `only [formT_apply, h1, h2]`. Use `sum_update_swap i (fun (_ g' : Fin k → NC R S) => s g')` as an intermediate fact. Rewrite using `[this]`.
-
-Simplify using `[Finset.sum_const, Finset.mul_sum, hs]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem position_section (k : ℕ) (i : Fin k) (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (Z : Mat R S) (L : Module.End ℂ W)
     (Ψ : (Fin k → NC R S) → W) :
@@ -37,7 +35,7 @@ theorem position_section (k : ℕ) (i : Fin k) (B : W →ₗ⋆[ℂ] W →ₗ[�
   simp [Finset.sum_const, Finset.mul_sum, hs]
 
 /- English proof (translation)
-Conclude with `GlobalTheory.T.adjoint_block_orthogonality R S z w`.
+A detailed English derivation is pending.
 -/
 theorem adCoeff_casimir (z w : NC R S) :
     ∑ a, ∑ b, (if sameBlock a b then
@@ -46,7 +44,7 @@ theorem adCoeff_casimir (z w : NC R S) :
   exact GlobalTheory.T.adjoint_block_orthogonality R S z w
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`. Use `_ = _ := by rw [Finset.sum_comm]; exact Finset.sum_congr rfl fun a _ => Finset.sum_comm`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum4' {α β γ δ M : Type} [Fintype α] [Fintype β] [Fintype γ] [Fintype δ] [AddCommMonoid M]
     (f : α → β → γ → δ → M) :
@@ -56,23 +54,21 @@ lemma sum4' {α β γ δ M : Type} [Fintype α] [Fintype β] [Fintype γ] [Finty
     _ = _ := by rw [Finset.sum_comm]; exact Finset.sum_congr rfl fun a _ => Finset.sum_comm
 
 /- English proof (translation)
-Use `set X : NC R S → W := fun z => x (fun _ => z) with hX`. Establish `hu : ∀ (h : Fin 1 → NC R S) z, Function.update h (0 : Fin 1) z = fun _ => z`. Introduce `h z`. Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j 0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hx : ∀ h : Fin 1 → NC R S, x h = X (h 0)`. Introduce `h`. Simplify using `only [hX]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j 0]`. Establish `hsum : ∀ F : NC R S → ℂ, ∑ h : Fin 1 → NC R S, F (h 0) = ∑ y, F y` using `fun F => Fintype.sum_equiv (Equiv.funUnique (Fin 1) (NC R S)) _ _ (fun h => rfl)`. Establish `hform : ∀ Z : Mat R S, formT 1 B (factorOp 1 0 Z x) (factorOp 1 0 Z x) = ∑ z, ∑ w, (∑ y, (starRingEnd ℂ) (adP Z y z) * adP Z y w) * B (X z) (X w)`. Introduce `Z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : ∀ h : Fin 1 → NC R S, factorOp 1 0 Z x h = ∑ z, adP Z (h 0) z • X z`. Introduce `h`. Simplify using `[factorOp, hu, hX]`. Simplify using `only [formT_apply, e]`. Rewrite using `[hsum (fun y => B (∑ z, adP Z y z • X z) (∑ w, adP Z y w • X w))]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hr : formT 1 B x x = ∑ y, B (X y) (X y)`. Simplify using `only [formT_apply, hx]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hsum (fun y => B (X y) (X y))`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : sameBlock a b`. Simplify using `only [if_pos h, hform]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h]`. Use `_ = ∑ z, ∑ w, ∑ a, ∑ b, (if sameBlock a b then ∑ y, (starRingEnd ℂ) (adP (Eab b a) y z) * adP (Eab b a) y w else 0) * B (X z) (X w) := sum4' _`. Use `_ = ∑ z, ∑ w, (if z = w then ((R + S : ℕ) : ℂ) else 0) * B (X z) (X w) := by`. Use `Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← hC z w, Finset.sum_mul]`.
-
-Conclude with `Finset.sum_congr rfl fun a _ => (Finset.sum_mul _ _ _).symm`. Use `_ = _ := by`. Rewrite using `[hr, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `[ite_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem position_cas_of (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (x : (Fin 1 → NC R S) → W)
     (hC : ∀ z w : NC R S, ∑ a, ∑ b, (if sameBlock a b then
@@ -125,7 +121,7 @@ theorem position_cas_of (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (x : (Fin 1 →
         simp [ite_mul]
 
 /- English proof (translation)
-The claim follows from `position_cas_of B x adCoeff_casimir`.
+A detailed English derivation is pending.
 -/
 theorem position_cas (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (x : (Fin 1 → NC R S) → W) :
     ∑ a, ∑ b, (if sameBlock a b then formT 1 B (factorOp 1 0 (Eab b a) x) (factorOp 1 0 (Eab b a) x) else 0) =
@@ -133,13 +129,13 @@ theorem position_cas (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (x : (Fin 1 → NC
   position_cas_of B x adCoeff_casimir
 
 /- English proof (translation)
-Apply the tactic sequence `cases a <;> cases b <;> simp_all [sameBlock]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma same_symm' {a b : Ix R S} (h : sameBlock a b) : sameBlock b a := by
   cases a <;> cases b <;> simp_all [sameBlock]
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[tAct_apply, factorOp, LinearMap.sum_apply, Finset.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma tAct_split (k : ℕ) (actW : Mat R S →ₗ[ℂ] Module.End ℂ W) (Z : Mat R S) (Ψ : (Fin k → NC R S) → W) :
     tAct k actW Z Ψ = (fun g => actW Z (Ψ g)) + (∑ i, factorOp k i Z) Ψ := by
@@ -147,7 +143,7 @@ lemma tAct_split (k : ℕ) (actW : Mat R S →ₗ[ℂ] Module.End ℂ W) (Z : Ma
   simp [tAct_apply, factorOp, LinearMap.sum_apply, Finset.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[formT_apply, formT_apply, Complex.re_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[← hU.1 (Ψ g) (Φ g)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma formT_herm (k : ℕ) {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ}
     (hU : IsUnitary actW B) (Ψ Φ : (Fin k → NC R S) → W) : (formT k B Φ Ψ).re = (formT k B Ψ Φ).re := by
@@ -157,7 +153,7 @@ lemma formT_herm (k : ℕ) {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : W 
   simp
 
 /- English proof (translation)
-Rewrite using `[formT_apply, Complex.re_sum]`. Use `Finset.sum_nonneg fun g _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : Ψ g = 0`. Simplify using `[h]`. Conclude with `(hU.2.1 _ h).le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma formT_nonneg (k : ℕ) {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ}
     (hU : IsUnitary actW B) (Ψ : (Fin k → NC R S) → W) : 0 ≤ (formT k B Ψ Ψ).re := by
@@ -168,7 +164,7 @@ lemma formT_nonneg (k : ℕ) {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : 
   · exact (hU.2.1 _ h).le
 
 /- English proof (translation)
-The claim follows from `(isUnitary_tAct R S k W actW B hU).2.2 a b hab Ψ Φ`.
+A detailed English derivation is pending.
 -/
 lemma tAct_adj (k : ℕ) {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ}
     (hU : IsUnitary actW B) {a b : Ix R S} (hab : sameBlock a b) (Ψ Φ : (Fin k → NC R S) → W) :
@@ -176,9 +172,9 @@ lemma tAct_adj (k : ℕ) {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : W �
   (isUnitary_tAct R S k W actW B hU).2.2 a b hab Ψ Φ
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.BlockReps.casK, LinearMap.sum_apply, Module.End.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : sameBlock a b`. Simplify using `only [GlobalTheory.BlockReps.unitK, if_pos h, if_pos (same_symm' h)]`. Conclude with `(tAct_adj k hU (same_symm' h) _ _).symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.BlockReps.unitK, h]`.
+A detailed English derivation is pending.
 -/
 lemma casK_form (k : ℕ) {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ}
     (hU : IsUnitary actW B) (Ψ : (Fin k → NC R S) → W) :
@@ -192,9 +188,9 @@ lemma casK_form (k : ℕ) {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : W �
   · simp [GlobalTheory.BlockReps.unitK, h]
 
 /- English proof (translation)
-Simplify using `only [formT_apply, GlobalTheory.BlockReps.casK, LinearMap.sum_apply, Module.End.mul_apply, map_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : sameBlock a b`. Simplify using `only [GlobalTheory.BlockReps.unitK, if_pos h, if_pos (same_symm' h)]`. Conclude with `Finset.sum_congr rfl fun g _ => (hU.2.2 b a (same_symm' h) _ _).symm`. Simplify using `[GlobalTheory.BlockReps.unitK, h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma casK_pt (k : ℕ) {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ}
     (hU : IsUnitary actW B) (Ψ : (Fin k → NC R S) → W) :
@@ -211,9 +207,9 @@ lemma casK_pt (k : ℕ) {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : W →
   · simp [GlobalTheory.BlockReps.unitK, h]
 
 /- English proof (translation)
-Rewrite using `[casK_form k hU, casK_pt k hU, Complex.re_sum, Complex.re_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_sum, Complex.re_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : sameBlock a b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_pos h, tAct_split, map_add, LinearMap.add_apply, Complex.add_re]`. Rewrite using `[formT_herm k hU ((∑ i, factorOp k i (Eab b a)) Ψ) (fun g => actW (Eab b a) (Ψ g))]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 lemma diff_eq (k : ℕ) {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ}
     (hU : IsUnitary actW B) (Ψ : (Fin k → NC R S) → W) :
@@ -232,9 +228,9 @@ lemma diff_eq (k : ℕ) {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : W →
   · simp [h]
 
 /- English proof (translation)
-Establish `h2 : ∑ a, ∑ b, (if sameBlock a b then (formT 1 B (factorOp 1 0 (Eab b a) x) (factorOp 1 0 (Eab b a) x)).re else 0) = ((R + S : ℕ) : ℝ) * (formT 1 B x x).re`. Use `congrArg Complex.re (position_cas B x)` as an intermediate fact. Simplify `this` using `[Complex.re_sum, apply_ite Complex.re]`. Establish `h1` using `diff_eq 1 hU x`. Simplify using `only [Fin.sum_univ_one] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[sub_right_comm, h1, ← h2, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma bracket_eq {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ}
     (hU : IsUnitary actW B) (x : (Fin 1 → NC R S) → W) :
@@ -256,15 +252,15 @@ lemma bracket_eq {actW : Mat R S →ₗ[ℂ] Module.End ℂ W} {B : W →ₗ⋆[
   split_ifs <;> ring
 
 /- English proof (translation)
-Establish `hL : ∑ i, ∑ g, ((formT 1 B (section1 Ψ i g) (GlobalTheory.BlockReps.casK (tAct 1 actW) (section1 Ψ i g))).re - ((R + S : ℕ) : ℝ) * (formT 1 B (section1 Ψ i g) (section1 Ψ i g)).re - (formT 1 B (section1 Ψ i g) (fun h => GlobalTheory.BlockReps.casK actW (section1 Ψ i g h))).re) = …`. Simplify using `only [bracket_eq hU]`. Rewrite using `[sum4', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : sameBlock a b`. Simplify using `only [if_pos h]`. Establish `e : ∑ i, ∑ g, formT 1 B (factorOp 1 0 (Eab b a) (section1 Ψ i g)) (fun h => actW (Eab b a) (section1 Ψ i g h)) = ((Fintype.card (NC R S) : ℝ) : ℂ) * formT k B ((∑ i, factorOp k i (Eab b a)) Ψ) (fun g => actW (Eab b a) (Ψ g))`. Simplify using `only [position_section, ← Finset.mul_sum, LinearMap.sum_apply, map_sum, LinearMap.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `e2` using `congrArg Complex.re e`. Rewrite `e2` using `[Complex.re_ofReal_mul, Complex.re_sum]`. Simplify using `only [Complex.re_sum] at e2`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Finset.mul_sum, e2]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`. Rewrite using `[hL, diff_eq k hU Ψ]`. Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun b _ => ?_) (Nat.cast_nonneg _)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Combine the linear relations using `[formT_nonneg k hU ((∑ i, factorOp k i (Eab b a)) Ψ)]`. Conclude with `le_rfl`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem casDom (R S k : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] (actW : Mat R S →ₗ[ℂ] Module.End ℂ W)
     (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (hU : IsUnitary actW B) (Ψ : (Fin k → NC R S) → W) :

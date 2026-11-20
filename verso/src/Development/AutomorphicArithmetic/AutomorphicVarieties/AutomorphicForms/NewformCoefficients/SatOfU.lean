@@ -7,9 +7,9 @@ noncomputable section
 open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual UpperTheory.V UpperTheory.V.Sd Matrix GlobalTheory.LFun Formalism.UG
 
 /- English proof (translation)
-Establish `hfin : (MulAction.orbit K (a : G ⧸ K)).Finite` using `hf.subset fun c hc => by`. Rewrite using `[Set.mem_setOf_eq, h1 _ (by rwa [QuotientGroup.out_eq'])]; exact one_ne_zero`. Use `letI := hfin.fintype`. Rewrite using `[Hi.dc, finsum_eq_sum_of_fintype, LinearMap.sum_apply, ← finsum_eq_sum_of_fintype, finsum_set_coe_eq_finsum_mem (f := fun c : G ⧸ K => ρ c.out x), heckeVec]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hc : c ∈ MulAction.orbit K (a : G ⧸ K)`. Rewrite using `[h1 _ (by rwa [QuotientGroup.out_eq'])]; simp [hc]`. Rewrite using `[h2 _ (by rwa [QuotientGroup.out_eq'])]; simp [hc]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hecke_eq_dc {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (K : Subgroup G)
     (a : G) (h : G → ℂ) (h1 : ∀ g : G, (g : G ⧸ K) ∈ MulAction.orbit K (a : G ⧸ K) → h g = 1)
@@ -29,7 +29,7 @@ private theorem hecke_eq_dc {G V : Type} [Group G] [AddCommGroup V] [Module ℂ 
 variable {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Use extensionality with `g`. Use `⟨fun ⟨k, _, e⟩ => ⟨k, e⟩, fun ⟨k, e⟩ => ⟨k, ?_, e⟩⟩` and prove the remaining obligations. Use `haveI : Subsingleton (w.adicCompletionIntegers F ⧸ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ 0) := Ideal.Quotient.subsingleton_iff.2 (by simp)`. Conclude with `Subsingleton.elim _ _`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem iwahori_level_zero_eq : K1 w 0 = KGL w 2 := by
   ext g
@@ -39,11 +39,11 @@ private theorem iwahori_level_zero_eq : K1 w 0 = KGL w 2 := by
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Use `hecke_eq_dc ρ _ a _ (fun g hg => ?_) (fun g hg => ?_) (Formalism.UG.P.finite_support_cosets (Final.GLintComm F w 2) (Tj_mem_hecke (unif_spec w) j).2) x` and prove the remaining obligations. Take `⟨k, hk⟩` from `hg`. Establish `h : ((k : GL (Fin 2) (w.adicCompletion F)) * a)⁻¹ * g ∈ KGL w 2` using `QuotientGroup.eq.1 hk`. Rewrite using `[Tj, Set.indicator_of_mem, Pi.one_apply]`. Use `⟨k, k.2, _, h, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ha, ← Units.val_mul, ← Units.val_mul, mul_inv_cancel_left]`. Rewrite using `[Tj, Set.indicator_of_notMem]`. Introduce and unpack `⟨k, hk, k', hk', e⟩`. Use `hg ⟨⟨k, hk⟩, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[← ha, ← Units.val_mul, ← Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Units.ext e]`. Conclude with `(QuotientGroup.mk_mul_of_mem (k * a) hk').symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hecke_Tj {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin 2) (w.adicCompletion F)) V)
     (j : ℕ) (a : GL (Fin 2) (w.adicCompletion F)) (ha : a.val = diagJ 2 (atFin w (unif w) : w.adicCompletion F) j) (x : V) :
@@ -63,15 +63,15 @@ private theorem hecke_Tj {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Repres
     exact (QuotientGroup.mk_mul_of_mem (k * a) hk').symm
 
 /- English proof (translation)
-Introduce `F _ _ w V _ _ ρ x α β h0 hx hU hz`. Rewrite `hx` using `[iwahori_level_zero_eq]`. Establish `hx' : x ∈ GlobalTheory.PRep.fixed ρ (KGL w 2)` using `GlobalTheory.LGrp.mem_fixed.2 hx`. Use `⟨h0, hx', rfl, fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[ExSatGL.Tj_indep j (ϖ := (atFin w (unif w) : w.adicCompletion F)) (unif_spec w) hϖ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `interval_cases j`. Rewrite using `[ExSatGL.heckeVec_Tj_zero ρ _ hx']`. Simplify using `[satEig, Multiset.esymm]`. Apply the tactic sequence `rw [Uop, iwahori_level_zero_eq, ← hecke_Tj w ρ 1 _ (by ext i j; fin_cases i <;> fin_cases j <;> simp [aff, diagJ])] at hU`. Rewrite using `[hU]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Complex.ofReal_cpow (by positivity)]`. Establish `: qV F w = normV w` using `rfl`. Simplify using `[satEig, Multiset.esymm, Multiset.powersetCard_one, this]`. Evaluate the numerical expressions using `[add_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `set z := GeneralLinearGroup.scalar (Fin 2) (atFin w (unif w))`. Apply the tactic sequence `rw [hecke_Tj w ρ 2 z (by ext i j; fin_cases i <;> fin_cases j <;> simp [z, diagJ])]`. Establish `ho : ∀ q ∈ MulAction.orbit (KGL w 2) (z : _ ⧸ KGL w 2), q = z`. Introduce and unpack `_ ⟨k, rfl⟩`. Express the relevant statement in the definitionally equal form `(((k : GL (Fin 2) (w.adicCompletion F)) * z : GL (Fin 2) (w.adicCompletion F)) : _ ⧸ KGL w 2) = _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.CuspRep.scalar_comm]`. Conclude with `QuotientGroup.mk_mul_of_mem _ k.2`. Rewrite using `[(Hi.dcSum ℂ _ V ρ _ _ z ((Set.finite_singleton _).subset ho)).1 {z} (fun y hy => by rw [Finset.mem_singleton.1 hy]; exact MulAction.mem_orbit_self _) (fun q hq => ⟨z, ⟨Finset.mem_singleton_self _, (ho q hq).symm⟩, fun y hy => Finset.mem_singleton.1 hy.1⟩) x hx, Finset.sum_single …`. Simplify using `[satEig, Multiset.esymm, Multiset.powersetCard_cons, Multiset.powersetCard_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Nf.satOfU :
     UpperTheory.V.Af.Nf.SatOfU := by

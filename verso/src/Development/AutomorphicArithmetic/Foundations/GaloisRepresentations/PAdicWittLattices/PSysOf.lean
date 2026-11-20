@@ -8,49 +8,45 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Introduce `hNu p _ D G L g hI`. Use `set A := L.actG g with hA`. Use `set B := L.actG g⁻¹ with hB`. Establish `hBA : ∀ v, B (A v) = v` using `fun v => by`. Rewrite using `[hA, hB, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAB : ∀ v, A (B v) = v` using `fun v => by`. Rewrite using `[hA, hB, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hAint : ∀ v ∈ LaHat D, A v ∈ LaHat D` using `hI`. Take `⟨j₁, hj₁, hj₁p, hj₁B⟩` from `GlobalTheory.T.exists_coprime_nsmul_endomorphism_preserves_completion p D B`. Use `set ν : AfP p := UpperTheory.Gal.G3.mul g with hν`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set ν' : AfP p := ((((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2)⁻¹ : (AfP p)ˣ) : AfP p) with hν'`. Establish `hνν' : ν * ν' = 1` using `Units.mul_inv _`. Establish `hνint : IsIntAf ν` using `hNu p D G L g hI`. Take `⟨j₃, hj₃, hj₃p, hj₃ν⟩` from `GlobalTheory.T.exists_coprime_nat_mul_finiteAdeleAwayP_integral p ν'`. Use `set k := j₁ * j₃ with hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkp : k.Coprime p` using `Nat.Coprime.mul_left hj₁p hj₃p`. Establish `hk0 : 0 < k` using `Nat.mul_pos hj₁ hj₃`. Use `set h₀ : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D) := k • B with hh₀`. Establish `hh₀v : ∀ v, h₀ v = k • B v` using `fun v => rfl`. Establish `hh₀int : ∀ v ∈ LaHat D, h₀ v ∈ LaHat D` using `fun v hv => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hh₀v, hk, mul_comm, mul_smul]`. Conclude with `nsmul_mem (hj₁B v hv) _`. Establish `hh₀A : ∀ v, h₀ (A v) = k • v` using `fun v => by`. Rewrite using `[hh₀v, hBA]`. Establish `hAh₀ : ∀ v, A (h₀ v) = k • v` using `fun v => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hh₀v, map_nsmul, hAB]`. Establish `hh₀O : ∀ (c : D.O) v, h₀ (actAf D c v) = actAf D c (h₀ v)` using `fun c v => by`. Rewrite using `[hh₀v, hh₀v, hB, actG_actAf, map_nsmul]`. Use `set mu : AfP p := (k : AfP p) ^ 2 * ν' with hmu`. Establish `hh₀sim : ∀ v w, fAf D (h₀ v) (h₀ w) = mu * fAf D v w` using `fun v w => by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hh₀v, map_nsmul, LinearMap.smul_apply]`. Rewrite using `[hB, GlobalTheory.T.harrisTaylor_action_form_eq_similitude_mul p D G L g⁻¹ v w]`. Simplify using `only [nsmul_eq_mul, hmu, hν']`. Rewrite using `[show (((g⁻¹ : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2 : AfP p) = ((((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2)⁻¹ : (AfP p)ˣ) : AfP p) from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hmuint : IsIntAf mu`. Establish `e : mu = ((j₁ : AfP p) ^ 2 * j₃) * ((j₃ : AfP p) * ν')` using `by rw [hmu, hk]; push_cast; ring`. Rewrite using `[e]; exact isInt_mul (isInt_mul (by rw [sq]; exact isInt_mul (isInt_natCast _) (isInt_natCast _)) (isInt_natCast _)) hj₃ν`. Establish `hmuν : mu * ν = ((k ^ 2 : ℕ) : AfP p)`. Rewrite using `[hmu]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `push_cast`. Take the linear combination `((k : AfP p) ^ 2) * hνν'`. Take `⟨c, ε, ε', hcp, hck, hε, hε', hεε', hmuε⟩` from `GlobalTheory.T.exists_divisor_mul_integralUnit_finiteAdelesAwayP p mu ν (k ^ 2) (pow_pos hk0 2) (Nat.Coprime.pow_left 2 hkp) hmuint hνint hmuν`. Take `⟨u, hut, hu⟩` from `GlobalTheory.T.integral_adele_unit_congruence_sequence p ε ε' hε hε' hεε'`. Take `⟨f, hf⟩` from `GlobalTheory.T.lattice_endomorphism_integral_approximation p D h₀ hh₀int`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfe : ∀ n, 0 < n → n.Coprime p → ∀ x, ∃ w ∈ LaHat D, inAf D (f n x) = h₀ (inAf D x) - n • w` using `fun n hn hnp x => by`. Take `⟨w, hw, e⟩` from `hf n hn hnp x`. Conclude with `⟨w, hw, by rw [e]; abel⟩`. Establish `hmult : IsMult ν (k ^ 2 / c)`. Use `⟨ε', ε, hε', hε, by rw [mul_comm]; exact hεε', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc0 : c ≠ 0` using `fun h0 => by`. Rewrite `hck` using `[h0, zero_dvd_iff]`. Conclude with `(pow_pos hk0 2).ne' hck`. Establish `hcu : IsUnit (c : AfP p)`. Establish `: IsUnit (algebraMap ℚ (AfP p) (c : ℚ))` using `(IsUnit.mk0 (c : ℚ) (Nat.cast_ne_zero.mpr hc0)).map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this`. Establish `e1 : ((k ^ 2 : ℕ) : AfP p) = (c : AfP p) * ((k ^ 2 / c : ℕ) : AfP p)`. Rewrite using `[← Nat.cast_mul, Nat.mul_div_cancel' hck]`. Apply `hcu.mul_left_cancel` to reduce the goal to its premises. Establish `e2 : (c : AfP p) * ε * ν = (c : AfP p) * ((k ^ 2 / c : ℕ) : AfP p)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hmuε, hmuν, e1]`. Take the linear combination `ε' * e2 - ((c : AfP p) * ν) * hεε'`. Use `⟨f, u, c, k, ⟨hcp, hkp, hck, ?_, ?_, ?_, ?_⟩, hmult, fun v hv => hh₀int v hv, ?_⟩` and prove the remaining obligations. Introduce `n hn hnp a x`. Take `⟨w₁, hw₁, e₁⟩` from `hfe n hn hnp (a • x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w₂, hw₂, e₂⟩` from `hfe n hn hnp x`. Take `⟨z, hz⟩` from `LatDiv.eq_nsmul_of_inAf_eq_nsmul p D (f n (a • x) - a • f n x) n hn hnp (actAf D a w₂ - w₁) (sub_mem (actAf_mem_laHat D a hw₂) hw₁) (by`. Rewrite using `[inAf_sub, ← actAf_inAf, e₁, e₂, ← actAf_inAf, hh₀O, map_sub, map_nsmul, smul_sub]`. Use the proof step `abel)`. Conclude with `⟨z, by rw [← hz]; abel⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n m hn hm hnm`. Establish `hnp : n.Coprime p` using `Nat.Coprime.coprime_dvd_left (dvd_mul_right n m) hnm`. Use `⟨fun x => ?_, hut n m hn hm hnm⟩` and prove the remaining obligations. Take `⟨w₁, hw₁, e₁⟩` from `hfe (n * m) (Nat.mul_pos hn hm) hnm x`. Take `⟨w₂, hw₂, e₂⟩` from `hfe n hn hnp x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `LatDiv.eq_nsmul_of_inAf_eq_nsmul p D (f (n * m) x - f n x) n hn hnp (w₂ - m • w₁) (sub_mem hw₂ (nsmul_mem hw₁ m)) (by`. Rewrite using `[inAf_sub, e₁, e₂, smul_sub, smul_smul]`. Use the proof step `abel)`. Conclude with `⟨z, by rw [← hz]; abel⟩`. Introduce `n hn hnp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hco, β, hβ, hεβ⟩` from `hu n hn hnp`. Use `⟨hco, fun x y => ?_⟩` and prove the remaining obligations. Take `⟨w₁, hw₁, e₁⟩` from `hfe n hn hnp x`. Take `⟨w₂, hw₂, e₂⟩` from `hfe n hn hnp y`. Establish `hX` using `hh₀int _ (inAf_mem D x)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hY` using `hh₀int _ (inAf_mem D y)`. Use `IntDvdAdele.dvd_of_eq_mul_int p n hn hnp _ ((c : AfP p) * β * (D.EF x y : AfP p) - fAf D (h₀ (inAf D x)) w₂ - fAf D w₁ (h₀ (inAf D y)) + (n : AfP p) * fAf D w₁ w₂) (isInt_add (isInt_sub (isInt_sub (isInt_mul (isInt_mul (isInt_natCast c) hβ) (isInt_intCast _)) (formInt_laHat p D _ …` and prove the remaining obligations. Establish `e : ((D.EF (f n x) (f n y) : ℤ) : AfP p) = fAf D (inAf D (f n x)) (inAf D (f n y))` using `(form_inAf D _ _).symm`. Use `push_cast`. Rewrite using `[e, e₁, e₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, map_nsmul, LinearMap.sub_apply, LinearMap.smul_apply, nsmul_eq_mul]`. Rewrite using `[hh₀sim, hmuε, hεβ, form_inAf]`. Expand and normalize the polynomial expressions, which then agree. Introduce `n hn hnp x`. Take `⟨y, w, hw, e⟩` from `exists_inAf_add_nsmul_of_mem_laHat p D n hn hnp (A (inAf D x)) (hAint _ (inAf_mem D x))`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w', hw', e'⟩` from `hfe n hn hnp y`. Establish `e2 : h₀ (inAf D y) = k • inAf D x - n • h₀ w`. Rewrite using `[← hh₀A, e, map_add, map_nsmul]`. Normalize the expressions using the abelian group laws. Take `⟨z, hz⟩` from `LatDiv.eq_nsmul_of_inAf_eq_nsmul p D (f n y - k • x) n hn hnp (-(w' + h₀ w)) (neg_mem (add_mem hw' (hh₀int w hw))) (by`.
-
-Rewrite using `[inAf_sub, e', e2, inAf_nsmul, smul_neg, smul_add]`. Use the proof step `abel)`. Conclude with `⟨y, z, by rw [← hz]; abel⟩`. Introduce `n hn hnp x`. Take `⟨w, hw, e⟩` from `hfe n hn hnp x`.
-
-Use `⟨-(A w), neg_mem (hAint w hw), ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_sub, map_nsmul, hAh₀, smul_neg]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pSysOf :
     NuInt → SysOf := by

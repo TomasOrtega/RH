@@ -14,7 +14,7 @@ section Conj
 variable {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {c : Ω ≃+* Ω}
 
 /- English proof (translation)
-Take `⟨⟨j, hj⟩, -⟩` from `hc`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, hj]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_conj (hc : IsCMConjOm E Ω c) (x : Ω) : c (c x) = x := by
   obtain ⟨⟨j, hj⟩, -⟩ := hc
@@ -23,7 +23,7 @@ theorem conj_conj (hc : IsCMConjOm E Ω c) (x : Ω) : c (c x) = x := by
   simp
 
 /- English proof (translation)
-Rewrite using `[RingEquiv.symm_apply_eq, conj_conj hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_symm (hc : IsCMConjOm E Ω c) (x : Ω) : c.symm x = c x := by
   rw [RingEquiv.symm_apply_eq, conj_conj hc]
@@ -59,7 +59,7 @@ def scalGL : Aˣ →* GL (Fin n) A :=
   Units.map (Matrix.scalar (Fin n) : A →+* Matrix (Fin n) (Fin n) A).toMonoidHom
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `(Matrix.scalar_commute (a : A) (fun b => mul_comm _ b) (M : Matrix (Fin n) (Fin n) A)).eq`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem scalGL_comm (a : Aˣ) (M : GL (Fin n) A) : Commute (scalGL a) M := by
   apply Units.ext
@@ -91,12 +91,12 @@ def IsoLat (ρ ρ' : Γ →* GL (Fin n) A) : Prop :=
   ∃ P : GL (Fin n) A, ∀ g, P * ρ g = ρ' g * P
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun g => by simp [twist]⟩`.
+Supply the required witnesses or components.
 -/
 example (ρ : Γ →* GL (Fin n) A) : IsoLat (twist ρ 1) ρ := ⟨1, fun g => by simp [twist]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun g => by apply Units.ext; simp [dual, transGL]⟩`.
+Supply the required witnesses or components.
 -/
 example (ρ : Γ →* GL (Fin n) A) : IsoLat (dual (dual ρ)) ρ :=
   ⟨1, fun g => by apply Units.ext; simp [dual, transGL]⟩
@@ -156,7 +156,7 @@ def SettingHypotheses (i : D.ntw.Tw) : Prop :=
 def Row : Prop := ∀ i : D.ntw.Tw, D.ntw.NonzeroIndexPlace i → SettingHypotheses D i
 
 /- English proof (translation)
-The claim follows from `Or.inl rfl`.
+Prove the first alternative.
 -/
 example : NC D 2 := Or.inl rfl
 

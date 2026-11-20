@@ -18,13 +18,13 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.PsiUnitAb
 
 /- English proof (translation)
-Establish `hI1` using `@GlobalTheory.T.torsion_fixed_unramified_complete_trait`. Establish `hI2` using `@GlobalTheory.T.closedPoint_mem_abelianLocus_of_fixedTorsion`. Introduce `R _ _ _ hR D A G _ _ hG U W hW x hx`. Use `hR.1.1` as an intermediate fact. Use `hR.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨n, hn, hu⟩ : ∃ n : ℕ, 2 ≤ n ∧ IsUnit (n : R) := by`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add (a := (3 : R)) (b := -2) (by norm_num) with h | h` into its components or cases. Conclude with `⟨3, by norm_num, by exact_mod_cast h⟩`. Conclude with `⟨2, le_rfl, by exact_mod_cast (IsUnit.neg_iff _).1 h⟩`. Use `x.isPrime` as an intermediate fact.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨V, _, _, _, φ, hV, hφ, hc⟩` from `GlobalTheory.PrimeUnif.exists_cdvr R x.asIdeal`. Establish `hcx : spMap φ (closedPoint V) = x` using `PrimeSpectrum.ext hc`. Establish `huV : IsUnit (n : V)` using `by simpa using hu.map φ`. Establish `h1` using `hI1 R hR D A G hG U W hW V φ hV hφ (hcx ▸ hx) n hn huV`. Establish `h2` using `hI2 R hR D A G hG U V φ hV hφ n hn huV h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `abLocus_pullback (G' := (Over.pullback (spMap φ)).obj G) abLocusOne hG (isGrpPullback_pullback G (spMap φ)).1 (closedPoint V)`. Rewrite using `[← hcx]`. Conclude with `key.2 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subset_abLocus_of_psiUnitOn : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → Unif (maximalIdeal R) D A G → ∀ W : (Sp R).Opens, (∀ y, PsiUnitOn D.toPre y W) → (W : Set (Sp R)) ⊆ abLocus G := by
   have hI1 := @GlobalTheory.T.torsion_fixed_unramified_complete_trait

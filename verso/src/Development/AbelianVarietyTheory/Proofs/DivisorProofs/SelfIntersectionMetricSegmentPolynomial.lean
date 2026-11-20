@@ -17,9 +17,9 @@ namespace GlobalTheory.HSAmp.SelfPoly
 open MvPolynomial
 
 /- English proof (translation)
-Rewrite using `[add_pow, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: (C t * X 0) ^ i * X 1 ^ (D + 1 - i) * ((D + 1).choose i : MvPolynomial (Fin 2) ℝ) = C (t ^ i * (D + 1).choose i) * (X 0 ^ i * X 1 ^ (D + 1 - i))`. Rewrite using `[C_mul, C_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, C_mul', LinearMap.map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_pow_expand (Θ : MvPolynomial (Fin 2) ℝ →ₗ[ℝ] ℝ) (D : ℕ) (t : ℝ) :
     Θ ((C t * X 0 + X 1) ^ (D + 1)) = ∑ i ∈ Finset.range (D + 2),
@@ -32,9 +32,9 @@ theorem eval_pow_expand (Θ : MvPolynomial (Fin 2) ℝ →ₗ[ℝ] ℝ) (D : ℕ
   rw [this, C_mul', LinearMap.map_smul, smul_eq_mul]; ring
 
 /- English proof (translation)
-Rewrite using `[add_pow, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: X 0 * ((C t * X 0) ^ j * X 1 ^ (D - j) * (D.choose j : MvPolynomial (Fin 2) ℝ)) = C (t ^ j * D.choose j) * (X 0 ^ (j + 1) * X 1 ^ (D - j))`. Rewrite using `[C_mul, C_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, C_mul', LinearMap.map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_mul_pow_expand (Θ : MvPolynomial (Fin 2) ℝ →ₗ[ℝ] ℝ) (D : ℕ) (t : ℝ) :
     Θ (X 0 * (C t * X 0 + X 1) ^ D) = ∑ j ∈ Finset.range (D + 1),
@@ -51,7 +51,7 @@ def poly (Θ : MvPolynomial (Fin 2) ℝ →ₗ[ℝ] ℝ) (D : ℕ) : Polynomial 
     Polynomial.C ((D + 1).choose i * Θ (X 0 ^ i * X 1 ^ (D + 1 - i))) * Polynomial.X ^ i
 
 /- English proof (translation)
-Rewrite using `[eval_pow_expand, poly, Polynomial.eval_finsetSum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem poly_eval (Θ : MvPolynomial (Fin 2) ℝ →ₗ[ℝ] ℝ) (D : ℕ) (t : ℝ) :
     (poly Θ D).eval t = Θ ((C t * X 0 + X 1) ^ (D + 1)) := by
@@ -61,9 +61,9 @@ theorem poly_eval (Θ : MvPolynomial (Fin 2) ℝ →ₗ[ℝ] ℝ) (D : ℕ) (t :
   ring
 
 /- English proof (translation)
-Rewrite using `[eval_mul_pow_expand, poly, map_sum, Polynomial.eval_finsetSum, Finset.sum_range_succ', Finset.mul_sum]`. Simplify using `only [Polynomial.derivative_C_mul_X_pow, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, Nat.cast_zero, mul_zero, zero_mul, add_zero]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e₁ : D + 1 - (j + 1) = D - j` using `Nat.add_sub_add_right D 1 j`. Establish `e₂ : (((D + 1).choose (j + 1) : ℕ) : ℝ) * ((j + 1 : ℕ) : ℝ) = ((D : ℝ) + 1) * (D.choose j : ℝ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Nat.add_one_mul_choose_eq D j).symm` after adjusting the coercions. Rewrite using `[e₁, Nat.add_sub_cancel]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem poly_derivative_eval (Θ : MvPolynomial (Fin 2) ℝ →ₗ[ℝ] ℝ) (D : ℕ) (t : ℝ) :
     (poly Θ D).derivative.eval t = ((D : ℝ) + 1) * Θ (X 0 * (C t * X 0 + X 1) ^ D) := by
@@ -86,23 +86,21 @@ namespace GlobalTheory.HSAmp.SelfPoly
 open MvPolynomial HermLB
 
 /- English proof (translation)
-Introduce `H k _ X _ p D hX L u a a' ha ha'`. Take `⟨Θ, hΘ⟩` from `((H.arExists k X p D hX).2 _ ![fnB u.u u.cInf u.conj, L]).1`. Use `⟨poly Θ D, ?_, ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[poly_eval, map_zero, zero_mul, zero_add]`. Conclude with `(ha.unique hX (((H.arIso k X p D hX).2 _ _ _ hΘ).1 1)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[poly_eval, map_one, one_mul]`. Establish `i : (comb ![fnB u.u u.cInf u.conj, L] fun _ => 1).Isometric (up L u)` using `icls_eq_iff.1 (by show _ = (L.raise u.u u.cInf u.conj).icls`. Rewrite using `[← icls_eq_iff.2 (isometric_tens_fnB _ _ _ _), icls_tens, icls_comb, Fin.sum_univ_two, one_smul, one_smul, add_comm]`. Use the proof step `rfl)`. Rewrite using `[ha'.unique hX (i.isSelfInter hX (hΘ.1 _))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[lin, Fin.sum_univ_two]`. Rewrite using `[poly_derivative_eval]`. Establish `hd : (t.den : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 t.den_nz`. Establish `hq : (t.den : ℝ) * (t : ℝ) = t.num`. Rewrite using `[Rat.cast_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Introduce a local definition for the expression.
 
-Clear the denominators using the available nonvanishing facts. Set `n : Fin 2 → ℤ` to `![t.num, t.den]`. Establish `h₁` using `GlobalTheory.SelfCont.mixed_eq H hX u.cInf u.conj L hΘ n`. Establish `h₂` using `(GlobalTheory.SelfCont.isometric_comb_raise u.cInf u.conj L n).chInt_eq D u.u`. Establish `h₃ : ((zp L (n 1)).raise (fun σ y => (n 0 : ℝ) * u.u σ y) (fun σ y => (u.cInf σ y).const_mul _) (GlobalTheory.SelfCont.isConj_mul u.conj _)).Isometric ((up L (u.smul t)).pow t.den)` using `icls_eq_iff.1 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← icls_eq_iff.2 (isometric_tens_fnB _ _ _ _), icls_tens, icls_pow]`. Use `show _ = t.den • ((L.raise (u.smul t).u (u.smul t).cInf (u.smul t).conj).icls)`. Rewrite using `[← icls_eq_iff.2 (isometric_tens_fnB _ _ _ _), icls_tens, icls_zp, smul_add, ← natCast_zsmul, ← natCast_zsmul, ← GlobalTheory.SelfCont.icls_fnB_mul (u.smul t).cInf (u.smul t).conj]`. Use `congr 1`. Use `icls_eq_iff.2 (isometric_of_eqOn fun σ _ y _ => ?_)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `show (t.den : ℤ) * ((t : ℝ) * u.u σ y) = (t.num : ℝ) * u.u σ y`. Rewrite using `[← hq]`. Use `push_cast`. Use the proof step `ring)`. Establish `h₄` using `GlobalTheory.T.chernFormPowerIntegral_hermLineBundle_pow k X p D hX (up L (u.smul t)) t.den u.u`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h₅ : (lin fun i => (n i : ℝ)) = C (t.den : ℝ) * (C (t : ℝ) * MvPolynomial.X 0 + MvPolynomial.X 1)`. Simplify using `only [lin, Fin.sum_univ_two, n, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`. Rewrite using `[mul_add, ← mul_assoc, ← C_mul, hq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h₆ : Θ (MvPolynomial.X 0 * (lin fun i => (n i : ℝ)) ^ D) = (t.den : ℝ) ^ D * Θ (MvPolynomial.X 0 * (C (t : ℝ) * MvPolynomial.X 0 + MvPolynomial.X 1) ^ D)`. Rewrite using `[h₅, mul_pow, ← C_pow, mul_left_comm, C_mul', LinearMap.map_smul, smul_eq_mul]`. Establish `key : (t.den : ℝ) ^ D * chInt (up L (u.smul t)) D u.u = (t.den : ℝ) ^ D * (2 * Θ (MvPolynomial.X 0 * (C (t : ℝ) * MvPolynomial.X 0 + MvPolynomial.X 1) ^ D))`. Rewrite using `[← h₄, ← h₃.chInt_eq, ← h₂]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `mul_left_cancel₀ (pow_ne_zero D hd) key` as an intermediate fact. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem selfInter_poly : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k)
     (D : ℕ), IsArithVar p D → ∀ (L : HermLB p) (u : SmFn p) (a a' : ℝ), L.IsSelfInter a → (up L u).IsSelfInter a' →

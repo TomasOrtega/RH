@@ -118,20 +118,20 @@ def GsD (i : ℕ) (v : X.A.vT) : Fn X i →ₗ[ℂ] Fn X i :=
   ∑ a : (X.A.Fv v)ˣ, X.A.psiT v (-(a : X.A.Fv v)) • dia X i v a⁻¹
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`. Use function extensionality and compare the values at `c`. Rewrite using `[X.fm.rhoT_dil v a φ c]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dia_zero (v : X.A.vT) (a : (X.A.Fv v)ˣ) : dia X 0 v a = X.A.rhoT v a := by
   apply LinearMap.ext; intro φ; funext c
   rw [X.fm.rhoT_dil v a φ c]; rfl
 
 /- English proof (translation)
-Unfold `Nm ColumnsAtT.Nm`. Conclude with `Finset.sum_congr rfl (fun a _ => dia_zero X v a)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Nm_zero (v : X.A.vT) : Nm X 0 v = X.A.Nm v := by
   unfold Nm ColumnsAtT.Nm; exact Finset.sum_congr rfl (fun a _ => dia_zero X v a)
 
 /- English proof (translation)
-Unfold `Gs ColumnsAtT.gauss Formalism.ThetaLiftIndependence.gaussOp`. Conclude with `Finset.sum_congr rfl (fun a _ => by rw [dia_zero])`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Gs_zero (v : X.A.vT) : Gs X 0 v = X.A.gauss v := by
   unfold Gs ColumnsAtT.gauss Formalism.ThetaLiftIndependence.gaussOp
@@ -140,7 +140,7 @@ theorem Gs_zero (v : X.A.vT) : Gs X 0 v = X.A.gauss v := by
 def MramI (i : ℕ) : Submodule ℂ (Fn X i) := X.fm.Fi i ⊓ ⨅ v, LinearMap.ker (Nm X i v)
 
 /- English proof (translation)
-Unfold `MramI ColumnsAtT.Mram`. Rewrite using `[X.fm.Fi_zero]`. Simplify using `only [Nm_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem MramI_zero : MramI X 0 = X.A.Mram := by
   unfold MramI ColumnsAtT.Mram; rw [X.fm.Fi_zero]; simp only [Nm_zero]
@@ -378,7 +378,7 @@ def lamTr (τ : D.what₂.Tau) : DomWeight (D.R.N D.R.m) := wSh (X.fm.lam D.R.m 
 def sgTr (τ : D.what₂.Tau) : DomWeight (D.R.N D.R.m - 1) := wSh (X.fm.sg τ) (cTw D.R)
 
 /- English proof (translation)
-Introduce `i` and use `⟨sub_le_sub_right (h τ i).1 _, sub_le_sub_right (h τ i).2 _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem interlaceTr (h : X.fm.SgInterlace) (τ : D.what₂.Tau) :
     Formalism.MainNotions.PrimeDegreeVariant.Interlace (Nm_succ D.R) (lamTr X τ) (sgTr X τ) :=
@@ -409,7 +409,7 @@ def EveryLevelLiftProperties : Prop :=
   ∃ h : X.fm.PRat, X.fm.PtilIntegral h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1.elim fun hP hh => ⟨hP, hh.1⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem everyLevelPart_of_full (h : Conclusion6 X) : EveryLevelLiftProperties X :=
   ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1.elim fun hP hh => ⟨hP, hh.1⟩⟩
@@ -447,7 +447,7 @@ def NatComp (cl : letI := D.host.cmStar; ∀ i, X.C.cls i → Submodule (𝓞 D.
         ∃ a ∈ cl i c, ∃ b ∈ Formalism.HermitianLatticesTheory.dual (D.sp.X i).hT (cl i c), y = a + D.host.conj (π : D.host.E) • b
 
 /- English proof (translation)
-Take `⟨π, h1, h2, h3, h4⟩` from `h`. Use `⟨hcl, O.c13, π, h1, h2, h3, fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨co, a, b, c⟩` from `h4 i hi`. Conclude with `⟨co, O.L0 i, a, b, fun d => ⟨O.lat i d, c d, O.dt_lat i d⟩⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissibleBasis_of_naturalComparison (cl : letI := D.host.cmStar; ∀ i, X.C.cls i → Submodule (𝓞 D.host.E) (D.sp.X i).V)
     (hcl : letI := D.host.cmStar; ∀ i c, Submodule.IsLattice D.host.E (cl i c))
@@ -462,7 +462,7 @@ section Indep
 variable (Y : Ch D u)
 
 /- English proof (translation)
-Establish `h` using `(X.fm.lam_eq j hj τ a).trans (Y.fm.lam_eq j hj τ a).symm`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lam_indep (j : ℕ) (hj : j ≤ D.R.m) (τ : D.what₂.Tau) (a : Fin (D.R.N j)) :
     (X.fm.lam j τ).w a = (Y.fm.lam j τ).w a := by
@@ -470,7 +470,7 @@ theorem lam_indep (j : ℕ) (hj : j ≤ D.R.m) (τ : D.what₂.Tau) (a : Fin (D.
   exact_mod_cast h
 
 /- English proof (translation)
-Unfold `Wt TauWeight`. Use `Finset.sup_congr rfl fun i hi => Finset.sup_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[lam_indep X Y i (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)) τ a]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Wt_indep (τ : D.what₂.Tau) : Wt X τ = Wt Y τ := by
   unfold Wt TauWeight
@@ -478,19 +478,19 @@ theorem Wt_indep (τ : D.what₂.Tau) : Wt X τ = Wt Y τ := by
   rw [lam_indep X Y i (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)) τ a]
 
 /- English proof (translation)
-Unfold `ETpi`. Simplify using `only [Wt_indep X Y]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ETpi_indep : ETpi X = ETpi Y := by
   unfold ETpi; simp only [Wt_indep X Y]
 
 /- English proof (translation)
-The claim follows from `funext fun τ => lam_indep X Y 0 (Nat.zero_le _) τ _`.
+A detailed English derivation is pending.
 -/
 theorem aTop_indep : X.fm.aTop = Y.fm.aTop :=
   funext fun τ => lam_indep X Y 0 (Nat.zero_le _) τ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Unfold `MemberForms.bTop DomWeight.detShift`. Rewrite using `[dif_pos (D.R.N_pos 0), dif_pos (D.R.N_pos 0), lam_indep X Y 0 (Nat.zero_le _)]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bTop_indep : X.fm.bTop = Y.fm.bTop := by
   funext τ
@@ -498,9 +498,9 @@ theorem bTop_indep : X.fm.bTop = Y.fm.bTop := by
   rw [dif_pos (D.R.N_pos 0), dif_pos (D.R.N_pos 0), lam_indep X Y 0 (Nat.zero_le _)]
 
 /- English proof (translation)
-Establish `hA : Alcove X ↔ Alcove Y`. Unfold `Alcove`. Use `forall_congr' fun j => forall_congr' fun hj => forall_congr' fun τ => forall_congr' fun a => forall_congr' fun b => ?_` and prove the remaining obligations. Rewrite using `[lam_indep X Y j hj τ a, lam_indep X Y j hj τ b, hT]`. Unfold `HidaSetting amax`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hA, hT, aTop_indep X Y, bTop_indep X Y]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levelSetting_indep_chain (hT : X.A.T = Y.A.T) : HidaSetting X ↔ HidaSetting Y := by
   have hA : Alcove X ↔ Alcove Y := by
@@ -514,7 +514,7 @@ theorem levelSetting_indep_chain (hT : X.A.T = Y.A.T) : HidaSetting X ↔ HidaSe
 end Indep
 
 /- English proof (translation)
-Rewrite using `[← (X.fm.emb_basis i).2, ← (X.fm.lat i).b.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_mem_Fi (i : ℕ) (x : Vl X i) : X.fm.emb i x ∈ X.fm.Fi i := by
   rw [← (X.fm.emb_basis i).2, ← (X.fm.lat i).b.sum_repr x, map_sum]
@@ -527,7 +527,7 @@ def UComm : Prop :=
   ∀ v v', v ≠ v' → ∀ φ ∈ X.fm.Fi 0, Uop X 0 v (Uop X 0 v' φ) = Uop X 0 v' (Uop X 0 v φ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun v φ hφ => (h.1 0 (Nat.zero_le _) v φ hφ).1, h.2.1 0 (Nat.zero_le _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem upCommute_of_firstProperty (h : Conclusion1 X) : UComm X :=
   ⟨fun v φ hφ => (h.1 0 (Nat.zero_le _) v φ hφ).1, h.2.1 0 (Nat.zero_le _)⟩
@@ -537,7 +537,7 @@ def Ulist (l : List X.A.vT) : Fn X 0 →ₗ[ℂ] Fn X 0 := l.foldr (fun v g => (
 variable {X}
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hφ`. Consider the case `cons v l ih => exact h.1 v _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem Ulist_mem (h : UComm X) (l : List X.A.vT) {φ : Fn X 0} (hφ : φ ∈ X.fm.Fi 0) : Ulist X l φ ∈ X.fm.Fi 0 := by
   induction l with
@@ -545,9 +545,9 @@ theorem Ulist_mem (h : UComm X) (l : List X.A.vT) {φ : Fn X 0} (hφ : φ ∈ X.
   | cons v l ih => exact h.1 v _ ih
 
 /- English proof (translation)
-Proceed by induction on `p with`. Consider the case `nil => rfl`. Consider the case `cons v _ ih => exact congrArg (Uop X 0 v) ih`. Consider the case `swap v v' l`. Distinguish the cases in `hv : v' = v`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Substitute `hv` using the available equality. Both sides reduce to the same expression. Conclude with `h.2 v' v hv _ (Ulist_mem h l hφ)`. Consider the case `trans _ _ ih1 ih2 => exact ih1.trans ih2`.
+Substitute using the available equality. Both sides reduce to the same expression. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Ulist_perm (h : UComm X) {l l' : List X.A.vT} (p : l.Perm l') {φ : Fn X 0} (hφ : φ ∈ X.fm.Fi 0) :
     Ulist X l φ = Ulist X l' φ := by
@@ -579,7 +579,7 @@ def Shared (X Y : Ch D u) (e : Fn X 0 ≃ₗ[ℂ] Fn Y 0) (eL : Vl X 0 ≃ₗ[D.
   ∃ (ev : X.A.vT ≃ Y.A.vT) (eF : ∀ v, X.A.Fv v ≃+* Y.A.Fv (ev v)), SharedBy X Y e eL ev eF
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun _ => rfl, fun _ => Iff.rfl, fun _ _ _ _ => rfl, fun _ _ => rfl, fun _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ _ _ => Iff.rfl, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem SharedBy.refl (X : Ch D u) : SharedBy X X (LinearEquiv.refl ℂ _) (LinearEquiv.refl _ _) (Equiv.refl _)
     (fun _ => RingEquiv.refl _) :=
@@ -587,13 +587,13 @@ theorem SharedBy.refl (X : Ch D u) : SharedBy X X (LinearEquiv.refl ℂ _) (Line
     fun _ _ _ _ _ => Iff.rfl, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, SharedBy.refl X⟩`.
+Supply the required witnesses or components.
 -/
 theorem Shared.refl (X : Ch D u) : Shared X X (LinearEquiv.refl ℂ _) (LinearEquiv.refl _ _) :=
   ⟨_, _, SharedBy.refl X⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : e = LinearEquiv.refl ℂ _` from `LinearEquiv.ext fun φ => eq_of_heq (he φ)`. Take `rfl : eL = LinearEquiv.refl _ _` from `LinearEquiv.ext fun x => Y.fm.emb_inj 0 (hL x)`. Conclude with `Shared.refl Y`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Shared.of_eq {X Y : Ch D u} (h : Y = X) (e : Fn X 0 ≃ₗ[ℂ] Fn Y 0) (eL : Vl X 0 ≃ₗ[D.what₂.LL] Vl Y 0)
     (he : ∀ φ, HEq (e φ) φ) (hL : ∀ x, Y.fm.emb 0 (eL x) = e (X.fm.emb 0 x)) : Shared X Y e eL := by
@@ -609,21 +609,19 @@ variable {Y : Ch D u} {e : Fn X 0 ≃ₗ[ℂ] Fn Y 0} {eL : Vl X 0 ≃ₗ[D.what
 include h
 
 /- English proof (translation)
-Unfold `OverT`. Rewrite using `[h.T_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem overT_iff (w : D.what₂.places.Pl) : OverT Y w ↔ OverT X w := by
   unfold OverT; rw [h.T_eq]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `key : ∀ y ∈ Y.fm.S 0 w, eL.symm y ∈ X.fm.S 0 w`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem z hz => exact Submodule.subset_span ((h.lat_iff _).mpr (by rw [eL.apply_symm_apply]; exact hz))`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul r a _ ha`. Rewrite using `[Subring.smul_def, map_smul]`. Conclude with `Submodule.smul_mem _ r ha`. Simplify using `using key _ hx`. Introduce `hx`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz => exact Submodule.subset_span ((h.lat_iff z).mp hz)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`.
-
-Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul r a _ ha`. Rewrite using `[Subring.smul_def, map_smul]`. Conclude with `Submodule.smul_mem _ r ha`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem S_iff (w : D.what₂.places.Pl) (x : Vl X 0) : eL x ∈ Y.fm.S 0 w ↔ x ∈ X.fm.S 0 w := by
   constructor
@@ -648,7 +646,7 @@ theorem S_iff (w : D.what₂.places.Pl) (x : Vl X 0) : eL x ∈ Y.fm.S 0 w ↔ x
       exact Submodule.smul_mem _ r ha
 
 /- English proof (translation)
-Unfold `Nm`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Conclude with `Fintype.sum_equiv (Units.mapEquiv (eF v).toMulEquiv).toEquiv _ _ fun a => h.dia_eq v a φ hφ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Nm_eq (v : X.A.vT) {φ : Fn X 0} (hφ : φ ∈ X.fm.Fi 0) : e (Nm X 0 v φ) = Nm Y 0 (ev v) (e φ) := by
   unfold Nm
@@ -656,9 +654,9 @@ theorem Nm_eq (v : X.A.vT) {φ : Fn X 0} (hφ : φ ∈ X.fm.Fi 0) : e (Nm X 0 v 
   exact Fintype.sum_equiv (Units.mapEquiv (eF v).toMulEquiv).toEquiv _ _ fun a => h.dia_eq v a φ hφ
 
 /- English proof (translation)
-Use `show Y.fm.emb 0 (eL x) ∈ Y.A.Mram ↔ X.fm.emb 0 x ∈ X.A.Mram`. Rewrite using `[← MramI_zero X, ← MramI_zero Y]`. Unfold `MramI`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, emb_mem_Fi, true_and]`. Rewrite using `[h.emb_eq, ← ev.forall_congr_right]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[← h.Nm_eq v (emb_mem_Fi X 0 x), e.map_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramSub_iff (x : Vl X 0) : eL x ∈ Y.fm.ramSub ↔ x ∈ X.fm.ramSub := by
   show Y.fm.emb 0 (eL x) ∈ Y.A.Mram ↔ X.fm.emb 0 x ∈ X.A.Mram
@@ -670,15 +668,15 @@ theorem ramSub_iff (x : Vl X 0) : eL x ∈ Y.fm.ramSub ↔ x ∈ X.fm.ramSub := 
   rw [← h.Nm_eq v (emb_mem_Fi X 0 x), e.map_eq_zero_iff]
 
 /- English proof (translation)
-The claim follows from `and_congr (h.S_iff w x) (h.ramSub_iff x)`.
+A detailed English derivation is pending.
 -/
 theorem Sram_iff (w : D.what₂.places.Pl) (x : Vl X 0) : eL x ∈ Sram Y w ↔ x ∈ Sram X w :=
   and_congr (h.S_iff w x) (h.ramSub_iff x)
 
 /- English proof (translation)
-Unfold `VVT`. Rewrite using `[h.seen_eq w hw]`. Use `split_ifs`. Use extensionality with `y`. Take `⟨v, rfl⟩` from `ev.surjective y`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[h.tau_eq w hw]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem VVT_eq {w : D.what₂.places.Pl} (hw : OverT X w) : VVT Y w = (VVT X w).map ev.toEmbedding := by
   unfold VVT
@@ -690,7 +688,7 @@ theorem VVT_eq {w : D.what₂.places.Pl} (hw : OverT X w) : VVT Y w = (VVT X w).
   · rfl
 
 /- English proof (translation)
-Unfold `expT`. Rewrite using `[h.VVT_eq hw, Finset.sum_map, bTop_indep Y X]`. Simplify using `only [Equiv.coe_toEmbedding, h.tau_eq w hw]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem expT_eq {w : D.what₂.places.Pl} (hw : OverT X w) : expT Y w = expT X w := by
   unfold expT
@@ -698,13 +696,13 @@ theorem expT_eq {w : D.what₂.places.Pl} (hw : OverT X w) : expT Y w = expT X w
   simp only [Equiv.coe_toEmbedding, h.tau_eq w hw]
 
 /- English proof (translation)
-Unfold `ET`. Rewrite using `[h.seen_eq w hw, ETpi_indep Y X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ET_eq {w : D.what₂.places.Pl} (hw : OverT X w) : ET Y w = ET X w := by
   unfold ET; rw [h.seen_eq w hw, ETpi_indep Y X]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons v l ih => exact (h.U_eq v _ (Ulist_mem hU l hφ)).trans (congrArg (Uop Y 0 (ev v)) ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem Ulist_eq (hU : UComm X) (l : List X.A.vT) {φ : Fn X 0} (hφ : φ ∈ X.fm.Fi 0) :
     e (Ulist X l φ) = Ulist Y (l.map ev) (e φ) := by
@@ -713,9 +711,9 @@ theorem Ulist_eq (hU : UComm X) (l : List X.A.vT) {φ : Fn X 0} (hφ : φ ∈ X.
   | cons v l ih => exact (h.U_eq v _ (Ulist_mem hU l hφ)).trans (congrArg (Uop Y 0 (ev v)) ih)
 
 /- English proof (translation)
-Establish `p : (VVT X w).toList.Perm ((VVT Y w).toList.map ev.symm)`. Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.map_coe, Finset.coe_toList, Finset.coe_toList, h.VVT_eq hw]`. Simplify using `[Multiset.map_map]`. Use `show e (Ulist X _ φ) = Ulist Y _ (e φ)`. Rewrite using `[Ulist_perm hU p hφ, h.Ulist_eq hU _ hφ, List.map_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem Uprod_eq (hU : UComm X) {w : D.what₂.places.Pl} (hw : OverT X w) {φ : Fn X 0} (hφ : φ ∈ X.fm.Fi 0) :
     e (Uprod X 0 w φ) = Uprod Y 0 w (e φ) := by
@@ -727,7 +725,7 @@ theorem Uprod_eq (hU : UComm X) {w : D.what₂.places.Pl} (hw : OverT X w) {φ :
   simp
 
 /- English proof (translation)
-Proceed by induction on `n generalizing φ with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ← h.Uprod_eq hU hw hφ]`. Conclude with `ih (Ulist_mem hU _ hφ)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Uprod_pow_eq (hU : UComm X) {w : D.what₂.places.Pl} (hw : OverT X w) (n : ℕ) {φ : Fn X 0}
     (hφ : φ ∈ X.fm.Fi 0) : e ((Uprod X 0 w ^ n) φ) = (Uprod Y 0 w ^ n) (e φ) := by
@@ -738,9 +736,9 @@ theorem Uprod_pow_eq (hU : UComm X) {w : D.what₂.places.Pl} (hw : OverT X w) (
     exact ih (Ulist_mem hU _ hφ)
 
 /- English proof (translation)
-Establish `key : ∀ z : Vl X 0, Y.fm.emb 0 (eL x) = (((Y.A.T : ℂ) ^ expT Y w) • (Uprod Y 0 w) ^ D.R.m) (Y.fm.emb 0 (eL z)) ↔ X.fm.emb 0 x = (((X.A.T : ℂ) ^ expT X w) • (Uprod X 0 w) ^ D.R.m) (X.fm.emb 0 z)`. Introduce `z`. Rewrite using `[h.emb_eq, h.emb_eq, LinearMap.smul_apply, LinearMap.smul_apply, ← h.Uprod_pow_eq hU hw _ (emb_mem_Fi X 0 z), h.T_eq, h.expT_eq hw, ← map_smul, e.injective.eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hh⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨z, rfl⟩` from `eL.surjective y`. Conclude with `⟨z, (h.Sram_iff w z).mp hy, (key z).mp hh⟩`. Introduce and unpack `⟨z, hz, hh⟩`. Conclude with `⟨eL z, (h.Sram_iff w z).mpr hz, (key z).mpr hh⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem Nlam_iff (hU : UComm X) {w : D.what₂.places.Pl} (hw : OverT X w) (x : Vl X 0) :
     eL x ∈ Nlam Y w ↔ x ∈ Nlam X w := by
@@ -762,26 +760,26 @@ def TwTie (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) : Prop :=
   Shared (own D u) (tw Tw u μ) (D.e0Tw u μ) (Tw.e0 u μ)
 
 /- English proof (translation)
-The claim follows from `Shared.of_eq h _ _ he (Tw.embed_mul_block_embedding u μ)`.
+A detailed English derivation is pending.
 -/
 theorem TwTie.of_copy (Tw : TwForms D) (μ : D.what₂.Tup) (h : tw Tw u μ = own D u)
     (he : ∀ φ, HEq (D.e0Tw u μ φ) φ) : TwTie Tw u μ :=
   Shared.of_eq h _ _ he (Tw.embed_mul_block_embedding u μ)
 
 /- English proof (translation)
-The claim follows from `Wt_indep (tw Tw u μ) (own D u) τ`.
+A detailed English derivation is pending.
 -/
 theorem Wt_tw (Tw : TwForms D) (μ : D.what₂.Tup) (τ : D.what₂.Tau) : Wt (tw Tw u μ) τ = Wtau D u τ :=
   Wt_indep (tw Tw u μ) (own D u) τ
 
 /- English proof (translation)
-The claim follows from `levelSetting_indep_chain (tw Tw u μ) (own D u) (Tw.A_T u μ)`.
+A detailed English derivation is pending.
 -/
 theorem levelSetting_twist_iff (Tw : TwForms D) (μ : D.what₂.Tup) : HidaSetting (tw Tw u μ) ↔ Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u :=
   levelSetting_indep_chain (tw Tw u μ) (own D u) (Tw.A_T u μ)
 
 /- English proof (translation)
-Use `show D.what₂.places.resChar w = (Tw.A u μ).T ↔ _`. Rewrite using `[Tw.A_T]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem OverT_tw (Tw : TwForms D) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) :
     OverT (tw Tw u μ) w ↔ Formalism.MainNotions.product_first_zeroth_parts.OverT D u w := by
@@ -789,14 +787,14 @@ theorem OverT_tw (Tw : TwForms D) (μ : D.what₂.Tup) (w : D.what₂.places.Pl)
   rw [Tw.A_T]; rfl
 
 /- English proof (translation)
-The claim follows from `h.elim fun _ h => h.elim fun _ h => h.ET_eq hw`.
+A detailed English derivation is pending.
 -/
 theorem TwTie.ET_eq {Tw : TwForms D} {μ : D.what₂.Tup} (h : TwTie Tw u μ) {w : D.what₂.places.Pl}
     (hw : Formalism.MainNotions.product_first_zeroth_parts.OverT D u w) : ET (tw Tw u μ) w = EatT D u w :=
   h.elim fun _ h => h.elim fun _ h => h.ET_eq hw
 
 /- English proof (translation)
-The claim follows from `h.elim fun _ h => h.elim fun _ h => h.Nlam_iff hU hw x`.
+A detailed English derivation is pending.
 -/
 theorem TwTie.Nlam_iff {Tw : TwForms D} {μ : D.what₂.Tup} (h : TwTie Tw u μ) (hU : UComm (own D u))
     {w : D.what₂.places.Pl} (hw : Formalism.MainNotions.product_first_zeroth_parts.OverT D u w) (x : ((D.fm u).lat 0).V) :
@@ -804,9 +802,9 @@ theorem TwTie.Nlam_iff {Tw : TwForms D} {μ : D.what₂.Tup} (h : TwTie Tw u μ)
   h.elim fun _ h => h.elim fun _ h => h.Nlam_iff hU hw x
 
 /- English proof (translation)
-Use extensionality with `y`. Take `⟨x, rfl⟩` from `(Tw.e0 u μ).surjective y`. Rewrite using `[h.Nlam_iff hU hw x]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun hx => ⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, hz, e⟩`. Take `rfl : z = x` from `(Tw.e0 u μ).injective e`. Conclude with `hz`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem TwTie.Nlam_eq_map {Tw : TwForms D} {μ : D.what₂.Tup} (h : TwTie Tw u μ) (hU : UComm (own D u))
     {w : D.what₂.places.Pl} (hw : Formalism.MainNotions.product_first_zeroth_parts.OverT D u w) :
@@ -821,11 +819,11 @@ theorem TwTie.Nlam_eq_map {Tw : TwForms D} {μ : D.what₂.Tup} (h : TwTie Tw u 
     exact hz
 
 /- English proof (translation)
-Use `forall_congr' fun w => ?_` and prove the remaining obligations. Rewrite using `[OverT_tw]`. Use `forall_congr' fun hw => forall_congr' fun c => forall_congr' fun n => forall_congr' fun _ => ?_` and prove the remaining obligations. Rewrite using `[h.ET_eq hw]`. Use `forall_congr' fun _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H x hx`. Take `⟨y, hy, e⟩` from `H (Tw.e0 u μ x) ((h.Nlam_iff hU hw x).mpr hx)`. Conclude with `⟨y, hy, by rw [← Tw.embed_mul_block_embedding]; exact e⟩`. Introduce `H x' hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, rfl⟩` from `(Tw.e0 u μ).surjective x'`. Take `⟨y, hy, e⟩` from `H x ((h.Nlam_iff hU hw x).mp hx)`. Rewrite `e` using `[← Tw.embed_mul_block_embedding]`. Conclude with `⟨y, hy, e⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem TwTie.sharpBound_twist_iff {Tw : TwForms D} {μ : D.what₂.Tup} (h : TwTie Tw u μ) (hU : UComm (own D u)) :
     Conclusion5Sharp (tw Tw u μ) ↔ TupleChainSharpColumnValuation Tw u μ := by
@@ -849,107 +847,107 @@ section Reformulated
 variable (D u)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem Alcove_own : Alcove (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.Alcove D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem levelSetting_chain_iff : HidaSetting (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem upDownIncidence_chain_iff : UpDownIncidenceInverse (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.UpDownIncidenceInverse D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem stabilizersTrivial_chain_iff : admS (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.admS D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem RoundUp_own : RoundUp (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.RoundUp D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem RoundDn_own : RoundDn (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.RoundDn D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem TrIso_own : TrIso (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.TrIso D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem DiaMul_own : DiaMul (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.DiaMul D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem admissibleTorus_chain_iff : admT (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.admT D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem firstProperty_chain_iff : Conclusion1 (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.Conclusion1 D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem secondProperty_chain_iff : Conclusion2 (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.Conclusion2 D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem fourthPropertyExtended_chain_iff : LevelChainUOperatorCommutation (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.LevelChainUOperatorCommutation D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem levelChainSharpColumnValuation_ownChain_iff : Conclusion5Sharp (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.Conclusion5Sharp D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem sixthProperty_chain_iff : Conclusion6 (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.Conclusion6 D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem seventhProperty_chain_iff : division_rows_rational_lattice (own D u) ↔ Formalism.MainNotions.product_first_zeroth_parts.division_rows_rational_lattice D u := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem thirdProperty_chain_iff (C : ℝ) : PointsLemma (own D u) C ↔ Formalism.MainNotions.product_first_zeroth_parts.PointsLemma D u C := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem fourthProperty_chain_iff (C : ℝ) : Conclusion4 (own D u) C ↔ Formalism.MainNotions.product_first_zeroth_parts.Conclusion4 D u C := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem fifthProperty_chain_iff (C : ℝ) : Conclusion5 (own D u) C ↔ Formalism.MainNotions.product_first_zeroth_parts.Conclusion5 D u C := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem weightBudget_chain_iff (L : SizeData₂ D) (C : ℝ) : WeightBudgetBound (own D u) L C ↔ Formalism.MainNotions.product_first_zeroth_parts.WeightBudgetBound D u L C := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem OverT_own (w) : OverT (own D u) w ↔ Formalism.MainNotions.product_first_zeroth_parts.OverT D u w := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem BaseDet_own : BaseDet (own D u) (D.clsLat u) (D.detCls u) ↔ Formalism.MainNotions.product_first_zeroth_parts.admB D u := Iff.rfl
 
@@ -1034,7 +1032,7 @@ Both sides reduce to the same expression.
 theorem MramI_own (i) : MramI (own D u) i = Formalism.MainNotions.product_first_zeroth_parts.MramI D u i := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.2.2, fun h => ⟨D.clsLat_lat u, Formalism.MainNotions.GL3Theta.member_chain_has_characters D u, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissibleBasis_chain_iff : admB (own D u) (D.clsLat u) D.muTil (D.detCls u) ↔ Formalism.MainNotions.product_first_zeroth_parts.admB D u :=
   ⟨fun h => h.2.2, fun h => ⟨D.clsLat_lat u, Formalism.MainNotions.GL3Theta.member_chain_has_characters D u, h⟩⟩
@@ -1042,18 +1040,18 @@ theorem admissibleBasis_chain_iff : admB (own D u) (D.clsLat u) D.muTil (D.detCl
 end Reformulated
 
 /- English proof (translation)
-Simplify using `[ET, h]`.
+Simplify using the standard rewrite rules.
 -/
 example (w : D.what₂.places.Pl) (h : X.fm.seenP w = false) : ET X w = 0 := by simp [ET, h]
 
 /- English proof (translation)
-Simplify using `[Uprod, VVT, h]`.
+Simplify using the standard rewrite rules.
 -/
 example (w : D.what₂.places.Pl) (h : X.fm.seenP w = false) (i : ℕ) : Uprod X i w = LinearMap.id := by
   simp [Uprod, VVT, h]
 
 /- English proof (translation)
-Introduce and unpack `⟨_, _, h⟩`. Use `h.seen_eq w hw` as an intermediate fact. Simplify using `at this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example (w : D.what₂.places.Pl) (hw : OverT X w) (e) (eL) :
     ¬ Shared X ⟨X.C, X.A, X.P, { X.fm with seenP := fun w => !X.fm.seenP w }⟩ e eL := by

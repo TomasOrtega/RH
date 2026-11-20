@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.CharacterGerms.BiadditiveInSingleVariables
 open Formalism.L2.FormalSeriesBounds
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.blockValue_rows | exact GlobalTheory.blockValue_rows | (intros; apply GlobalTheory.blockValue_rows <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.blockValue_on_rows_eq : BiValue := by
   first | exact @GlobalTheory.blockValue_rows | exact GlobalTheory.blockValue_rows | (intros; apply GlobalTheory.blockValue_rows <;> assumption)

@@ -7,7 +7,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.Chart
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `GlobalTheory.ClosedDiscontinuity.propDisc_and_la1GG.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem propDisc_of_flagDomainData :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r), PropDisc X :=

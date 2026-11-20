@@ -4,13 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuat
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `A _ _ _ _ F K _ _ _ _ _ _ _ _ _ B _ _ _ _ _ _`. Establish `hinjK : Function.Injective (algebraMap A K)`. Rewrite using `[IsScalarTower.algebraMap_eq A F K]`. Conclude with `(algebraMap F K).injective.comp (IsFractionRing.injective A F)`. Establish `hinj : Function.Injective (algebraMap A B)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hinjK` using `[IsScalarTower.algebraMap_eq A B K, RingHom.coe_comp]`. Conclude with `hinjK.of_comp`. Use `haveI : FaithfulSMul A B := (faithfulSMul_iff_algebraMap_injective A B).2 hinj`. Use `haveI hfin : Module.Finite A B := IsIntegralClosure.finite A F K B`. Use `haveI hfree : Module.Free A B := Module.free_of_finite_type_torsion_free'`.
-
-Establish `hfr : IsFractionRing B K` using `IsIntegralClosure.isFractionRing_of_finite_extension A F K B`. Use `haveI := GlobalTheory.FormalIsogeny.isDiscreteValuationRing_integralClosure A F K`. Use `haveI hdvr : IsDiscreteValuationRing B := IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing (IsIntegralClosure.equiv A (integralClosure A K) K B)`. Use `haveI hloc : IsLocalHom (algebraMap A B) := inferInstance`. Use `⟨hfin, hfree, hfr, hdvr, GlobalTheory.FormalIsogeny.isAdicComplete_maximalIdeal_of_finite A B, hloc, fun h => ?_⟩` and prove the remaining obligations.
-
-Conclude with `IsLocalRing.ResidueField.finite_of_finite h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.integralClosure_complete_dvr :
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [IsAdicComplete (maximalIdeal A) A]

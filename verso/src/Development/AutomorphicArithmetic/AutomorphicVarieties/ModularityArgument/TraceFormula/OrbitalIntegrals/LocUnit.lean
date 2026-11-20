@@ -11,7 +11,7 @@ def UnitSplit : Prop :=
     MatchAt σ v 1 ((unitSet E n v).indicator 1) ((GLnLocal.integralGL (v.adicCompletion F) n : Set _).indicator 1)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ hp n hn v hu`. Distinguish the cases in `h : Split E v`. Conclude with `hS F E σ hσ hp n hn v h`. Take `⟨w, hw⟩` from `placeUniq_holds F E hp v h`. Conclude with `placeUnit_holds hU F E σ hσ v w hw (hu w) n`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locUnit_of (hU : PositivityTheory.Rg.Tf.Loc.BCFLUnit) (hS : UnitSplit) : LocUnit := by
   intro F E _ _ _ _ _ _ σ hσ hp n hn v hu

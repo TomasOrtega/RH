@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.FC
 
 /- English proof (translation)
-Establish `h : (mConeMap w : MRing ι →+* MvPolynomial K ℂ) f = 0` using `RingHom.mem_ker.mp hf`. Establish `key : ((MvPolynomial.eval (fun _ : K => (1 : ℂ))).comp (mConeMap w : MRing ι →+* MvPolynomial K ℂ) : MRing ι →+* ℂ) = (MvPolynomial.eval w).comp (MvPolynomial.map (Int.castRingHom ℂ))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[mConeMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p`. Simplify using `[mConeMap]`. Use `RingHom.congr_fun key f` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[← this, h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_eq_zero_of_mem_mCoordIdeal {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {w : (Σ k, ι k) → ℂ} {f : MRing ι} (hf : f ∈ mCoordIdeal w) : eval w (map (Int.castRingHom ℂ) f) = 0 := by
@@ -30,15 +30,13 @@ theorem eval_eq_zero_of_mem_mCoordIdeal {K : Type} [Fintype K] {ι : K → Type}
   rw [← this, h, map_zero]
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n BM l b hb`. Establish `hgood : M.GoodAt (BM.F l) (mCoordIdeal (BM.Rb.lift b b))` using `BM.good l b hb`. Establish `hne : ∀ k, BM.Rb.lift b b ⟨k, (BM.F l).c k⟩ ≠ 0` using `fun k => GlobalTheory.CompanionTheory.Ar.PB.FibreCount.chart_ne (hgood.1 k)`. Establish `hbv : ∀ q, GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.bvec BM l b q = (BM.Rb.lift b b ⟨q.1, (BM.F l).c q.1⟩)⁻¹ * BM.Rb.lift b b q` using `fun q => by`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.bvec, div_eq_inv_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `horb : SameOrbit (GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.bvec BM l b) (BM.Rb.lift b b)`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.SameOrbit`. Conclude with `⟨fun k => (BM.Rb.lift b b ⟨k, (BM.F l).c k⟩)⁻¹, fun k => inv_ne_zero (hne k), funext hbv⟩`. Establish `hideal : mCoordIdeal (GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.bvec BM l b) = mCoordIdeal (BM.Rb.lift b b)` using `GlobalTheory.CompanionTheory.Ar.PB.FibreCount.mCoordIdeal_eq_of_orbit horb`. Establish `hone : ∀ k, GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.bvec BM l b ⟨k, (BM.F l).c k⟩ = 1` using `fun k => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hbv]`. Conclude with `inv_mul_cancel₀ (hne k)`. Establish `hmem : BM.Rb.lift b b ∈ mcPts (mCoordIdeal M.x)` using `BM.Rb.mem b b (BM.Rb.mem_U b)`. Establish `hpt : GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.bvec BM l b ∈ mcPts (mCoordIdeal M.x)`. Simplify using `only [mcPts, Set.mem_ofPred_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k => ⟨(BM.F l).c k, by rw [hone k]; exact one_ne_zero⟩, fun f hf => ?_⟩` and prove the remaining obligations. Apply `eval_eq_zero_of_mem_mCoordIdeal` to reduce the goal to its premises. Rewrite using `[hideal]`. Conclude with `GlobalTheory.CompanionTheory.Ar.PB.CPts.mCoordIdeal_le hmem hf`. Use `⟨hpt, ?_, hone, horb⟩` and prove the remaining obligations.
-
-Rewrite using `[hideal]`. Conclude with `hgood`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bvec_good : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (BM : BaseMetric M n) (l : Fin BM.q), ∀ b ∈ BM.O l, FC.bvec BM l b ∈ mcPts (mCoordIdeal M.x) ∧ M.GoodAt (BM.F l) (mCoordIdeal (FC.bvec BM l b)) ∧ (∀ k, FC.bvec BM l b ⟨k, (BM.F l).c k⟩ = 1) ∧ SameOrbit (FC.bvec BM l b) (BM.Rb.lift b b) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n BM l b hb

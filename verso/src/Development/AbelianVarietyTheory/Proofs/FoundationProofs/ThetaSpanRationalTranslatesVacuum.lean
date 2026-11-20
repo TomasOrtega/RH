@@ -18,9 +18,9 @@ section
 variable {V : Type*} [AddCommGroup V] {F : Type} [AddCommGroup F] [Module ℂ F]
 
 /- English proof (translation)
-Set `q₀ : A ⧸ A₀.addSubgroupOf A` to `QuotientAddGroup.mk ⟨a, ha⟩`. Rewrite using `[← Equiv.sum_comp (Equiv.addLeft q₀) (fun q => g (rep q))]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Take `⟨l, hl0, hl, h3⟩` from `rep_add q₀ q`. Take `⟨l', hl0', hl', h4⟩` from `rep_mk (B := A₀) (⟨a, ha⟩ : A)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `show _ = g (rep (q₀ + q))`. Rewrite using `[h3, hg _ (add_mem (rep_mem _) (rep_mem _)) _ hl0 hl, h4, add_right_comm, hg _ (add_mem ha (rep_mem _)) _ hl0' hl']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_translate {M : Type} [AddCommMonoid M] {A₀ A : AddSubgroup V} [Fintype (A ⧸ A₀.addSubgroupOf A)]
     (g : V → M) (hg : ∀ x ∈ A, ∀ l ∈ A, l ∈ A₀ → g (x + l) = g x) {a : V} (ha : a ∈ A) :
@@ -37,41 +37,37 @@ theorem sum_translate {M : Type} [AddCommMonoid M] {A₀ A : AddSubgroup V} [Fin
 variable {W : V → F →ₗ[ℂ] F} {c : V → V → ℂ}
 
 /- English proof (translation)
-Take `⟨H1, H2, H3, H4⟩` from `H`. Establish `c0 : ∀ y, c 0 y = 1` using `fun y => by`. Use `H2 0 0 y` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left₀ (H4 0 y)).1 this.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `c0' : ∀ y, c y 0 = 1` using `fun y => by`. Use `H3 y 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left₀ (H4 y 0)).1 this.symm`. Establish `cm : ∀ (k : ℕ) x y, c (k • x) y = c x (k • y)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `k x y`. Proceed by induction on `k with`. Consider the case `zero => rw [zero_smul, zero_smul, c0, c0']`. Consider the case `succ k ih => rw [succ_nsmul, succ_nsmul, H2, H3, ih]`. Establish `cs : ∀ x y, c (s x) y = c x (s y)` using `fun x y => by conv_lhs => rw [← hs y, ← cm, hs]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `comm : ∀ x y g, W x (W y g) = (c x y / c y x) • W y (W x g)`. Introduce `x y g`. Rewrite using `[H1, H1, smul_smul, div_mul_cancel₀ _ (H4 _ _), add_comm]`. Establish `hA0 : ∀ l ∈ subLa m A, ∃ x ∈ A, l = m • x`. Introduce and unpack `l ⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨x, hx, rfl⟩`. Set `G : V → F` to `fun a => ∑ q : A ⧸ (subLa m A).addSubgroupOf A, W (rep q) (W (s (-a)) f)`. Establish `hG : ∀ a ∈ A, ∃ t : ℂ, G a = t • e`. Introduce `a ha`. Use `line _ (P.sum_mem fun q _ => hP _ _ (hP _ _ hfP)) fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `sum_translate (A₀ := subLa m A) (fun y => W y (W (s (-a)) f)) (fun y hy l hl hl' => by` as an intermediate fact. Take `⟨b, hb, rfl⟩` from `hA0 l hl'`. Establish `h1 : W (m • b) (W (s (-a)) f) = W (s (-a)) f`. Rewrite using `[comm, hf b hb, cm, ← cm m (s _), hs, cA _ hb _ (neg_mem ha), cA _ (neg_mem ha) _ hb]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `H1 y (m • b) (W (s (-a)) f)`. Rewrite `h2` using `[h1, cA _ hy _ hl, one_smul]`. Conclude with `h2.symm) hx`. Simplify using `only [G, map_sum]`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[H1, cA _ hx _ (rep_mem q), one_smul]`. Establish `hWG : ∀ a, (c (s a) (s (-a)))⁻¹ • W (s a) (G a) = ∑ q : A ⧸ (subLa m A).addSubgroupOf A, (c a (s (rep q)) / c (s (rep q)) a) • W (rep q) f`. Introduce `a`. Simplify using `only [G, map_sum, Finset.smul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[comm, H1 (s a), ← map_add, add_neg_cancel, map_zero, W0, map_smul, smul_smul, smul_smul, cs a (rep q), ← cs (rep q) a]`. Use `congr 1`. Use `H4 (s a) (s (-a))` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hχ : ∀ q : A ⧸ (subLa m A).addSubgroupOf A, (∑ u : A ⧸ (subLa m A).addSubgroupOf A, c (rep u) (s (rep q)) / c (s (rep q)) (rep u)) • W (rep q) f = if q = 0 then (Fintype.card (A ⧸ (subLa m A).addSubgroupOf A) : ℂ) • f else 0`. Introduce `q`. Use `split_ifs with h`. Take `⟨l, -, hl, h3⟩` from `rep_mk (B := subLa m A) (0 : A)`. Take `⟨b, hb, rfl⟩` from `hA0 l hl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : rep q = m • b` using `by rw [h]; simpa using h3`. Establish `h5 : s (rep q) = b` using `by rw [h4, hs']`. Rewrite using `[h5, h4, hf b hb, Finset.sum_congr rfl (g := fun _ => (1 : ℂ)) fun u _ => by`. Rewrite using `[cA _ hb _ (rep_mem u), cA _ (rep_mem u) _ hb, div_one]]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : s (rep q) ∉ A`. Introduce `hv`. Apply `h` to reduce the goal to its premises. Rewrite using `[← QuotientAddGroup.out_eq' q, QuotientAddGroup.eq_zero_iff]`. Conclude with `⟨_, hv, hs _⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀, hne⟩ : ∃ x ∈ A, c x (s (rep q)) ≠ c (s (rep q)) x := by`. Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Conclude with `hv (hsd _ hh)`. Use `sum_translate (A₀ := subLa m A) (fun y => c y (s (rep q)) / c (s (rep q)) y) (fun y hy l hl hl' => by` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb, rfl⟩` from `hA0 l hl'`. Simplify using `only [H2, H3]`. Rewrite using `[cm, ← cm m (s _), hs, cA _ hb _ (rep_mem q), cA _ (rep_mem q) _ hb, mul_one, mul_one]) hx₀`. Simplify using `only [H2, H3, mul_div_mul_comm, ← Finset.mul_sum] at this`. Establish `h1 : c x₀ (s (rep q)) / c (s (rep q)) x₀ ≠ 1`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ne, div_eq_one_iff_eq (H4 _ _)]`. Conclude with `hne`. Establish `h2 : ∑ u : A ⧸ (subLa m A).addSubgroupOf A, c (rep u) (s (rep q)) / c (s (rep q)) (rep u) = 0`. Assume the negation of the conclusion as `h0`. Conclude with `h1 ((mul_eq_right₀ h0).1 this)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, zero_smul]`. Establish `hsum : ∑ u : A ⧸ (subLa m A).addSubgroupOf A, (c (s (rep u)) (s (-rep u)))⁻¹ • W (s (rep u)) (G (rep u)) = (Fintype.card (A ⧸ (subLa m A).addSubgroupOf A) : ℂ) • f`. Simplify using `only [hWG]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, hχ]`.
-
-Simplify using the standard rewrite rules. Establish `hc : (Fintype.card (A ⧸ (subLa m A).addSubgroupOf A) : ℂ) ≠ 0`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Rewrite using `[← Submodule.smul_mem_iff _ hc, ← hsum]`. Use `Submodule.sum_mem _ fun u _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
-
-Take `⟨t, ht⟩` from `hG _ (rep_mem u)`. Rewrite using `[ht, map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rep_mem u, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_translates (H : (∀ x y f, W x (W y f) = c x y • W (x + y) f) ∧
       (∀ x x' y, c (x + x') y = c x y * c x' y) ∧ (∀ x y y', c x (y + y') = c x y * c x y') ∧
@@ -178,7 +174,7 @@ theorem mem_span_translates (H : (∀ x y f, W x (W y f) = c x y • W (x + y) f
 end
 
 /- English proof (translation)
-Unfold `Wd U Hf`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wd_differentiable (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') {G : VC D N N' → ℂ}
     (hG : Differentiable ℂ G) : Differentiable ℂ (Wd D T x G) := by
@@ -186,23 +182,19 @@ theorem wd_differentiable (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') {G :
   fun_prop
 
 /- English proof (translation)
-Introduce `D cc δ hc N N' e0 he he0 F hF`. Take `⟨hFd, m, hm, hF⟩` from `hF`. Establish `hSD : ∀ n, SD D (stdL D n)` using `fun n => by`. Take `⟨Lt, h1, h2, -⟩` from `exists_lattice_of_adelic_point D n`. Rewrite using `[← h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h1 _).2`. Establish `k : KLat D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N')` using `Or.inr ⟨_, _, hSD N, hSD N', rfl⟩`. Establish `hg` using `(GlobalTheory.InducedType.induced_type D).1`. Take `⟨l1, l2, -, l4, l5, -, -⟩` from `GlobalTheory.ThetaLine.theta_line D hg cc δ hc N N' _ k`. Establish `hrat` using `fun x hx => GlobalTheory.ThetaInter.klat_rat hg.1 k (x := x) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `e0 ∈ ThSp D _ (La0 D (tor0 D cc δ) N N') at he`. Use `set A := La0 D (tor0 D cc δ) N N'`. Use `haveI : Finite (A ⧸ (subLa m A).addSubgroupOf A) := GlobalTheory.ThetaInter.finite_quot l5 fun x hx => ⟨m, hm, x, hx, rfl⟩`. Use `letI : Fintype (A ⧸ (subLa m A).addSubgroupOf A) := Fintype.ofFinite _`. Establish `H` using `wLin_heis D (tor0 D cc δ) (N := N) (N' := N')`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `fix : ∀ x ∈ A, wLin D (tor0 D cc δ) x e0 = e0` using `fun x hx => by show Wd D _ x e0 = e0`. Rewrite using `[l2 x hx]`. Conclude with `funext (he.2 x hx)`. Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Set `P : Submodule ℂ (VC D N N' → ℂ)` to `{ carrier := {G | Differentiable ℂ G} add_mem' := fun ha hb => Differentiable.add ha hb zero_mem' := differentiable_const _ smul_mem' := fun a _ h => Differentiable.const_smul h a }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `mem_span_translates (c := fun x y => Complex.exp (cocExp D (tor0 D cc δ) x y)) H (fun f => wd_zero D _ f) (A := A) m (DistribSMul.toAddMonoidHom _ (m : ℂ)⁻¹) (fun v => by simp [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, hm']) (fun v => by simp [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, …`. Use `H.1 x y e0` as an intermediate fact. Rewrite `this` using `[fix y hy, fix x hx, fix _ (A.add_mem hx hy)]`. Conclude with `smul_left_injective ℂ he0 (this.symm.trans (one_smul ℂ e0).symm))`. Use the proof step `(fun v hv => l4 v fun y hy => im_int_of_comm D _ y v (hv y hy))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `P (fun x f hf => wd_differentiable D _ x hf) e0`. Use the proof step `(fun g hg hfix => l1 g ⟨hg, fun x hx z => by`. Use `hfix x hx` as an intermediate fact. Express the relevant statement in the definitionally equal form `Wd D _ x g = g at this`. Rewrite `this` using `[l2 x hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun this z⟩ e0 he he0)`. Use `F hFd hF`. Take `⟨n, r, g, hsum⟩` from `Submodule.mem_span_set'.1 key`. Establish `: ∀ i, ∃ z, (g i : VC D N N' → ℂ) = Wd D (tor0 D cc δ) (pt D (tor0 D cc δ) δ z) e0`. Introduce `i`.
-
-Take `⟨a, ha, h⟩` from `(g i).2`. Take `⟨B, rfl⟩` from `hrat a ha`. Use `⟨((m : D.host.K)⁻¹) • B, h.trans ?_⟩` and prove the remaining obligations. Unfold `pt`. Rewrite using `[GlobalTheory.ThetaInter.embV_smul hg.1, smul_comm δ]`.
-
-Simplify using `[wLin]`. Use `choose z hz using this`. Conclude with `⟨n, r, z, by rw [← hsum]; simp only [hz]⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem theta_span : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ), ∀ e0 ∈ Th D (tor0 D cc δ) (stdL D N) (stdL D N'), e0 ≠ 0 → ∀ F ∈ TT D (tor0 D cc δ) N N', ∃ (k : ℕ) (r : Fin k → ℂ) (z : Fin k → Matrix (Fin N') (Fin N) D.host.E), F = ∑ i, r i • Wd D (tor0 D cc δ) (pt D (tor0 D cc δ) δ (z i)) e0 := by
   intro D cc δ hc N N' e0 he he0 F hF

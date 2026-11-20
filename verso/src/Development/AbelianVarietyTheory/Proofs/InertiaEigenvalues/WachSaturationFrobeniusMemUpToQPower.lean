@@ -16,7 +16,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Use `W.φD_smul T (algebraMap (LetA O n) W.EE a) y` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.φE_ext, algebraMap_smul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem φD_smulA (T : LocLat G Qp LL O) (a : LetA O n) (y : W.DD T) :
     W.φD T (a • y) = W.φA a • W.φD T y := by
@@ -25,9 +25,9 @@ theorem φD_smulA (T : LocLat G Qp LL O) (a : LetA O n) (y : W.DD T) :
   exact this
 
 /- English proof (translation)
-Take `⟨n₁, hn₁, rfl⟩` from `hy`. Take `⟨j, hj⟩` from `W.N_φ T₁ n₁ hn₁`. Use `⟨j, W.Q ^ j • W.φD T₁ n₁, hj, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `W.map_φ π n₁`.
+A detailed English derivation is pending.
 -/
 theorem φD_map_Q {T₁ T₂ : LocLat G Qp LL O} (π : LatHom T₁.L T₂.L) (y : W.DD T₂)
     (hy : y ∈ (W.N T₁).map (mapA W π)) : ∃ j : ℕ, W.Q ^ j • W.φD T₂ y ∈ (W.N T₁).map (mapA W π) := by
@@ -39,31 +39,27 @@ theorem φD_map_Q {T₁ T₂ : LocLat G Qp LL O} (π : LatHom T₁.L T₂.L) (y 
   exact W.map_φ π n₁
 
 /- English proof (translation)
-Use `set N'' := (W.N T₁).map (mapA W π) with hN''`. Take `⟨hxN, k, hk1, hk2⟩` from `hx`. Set `J : Ideal (LetA O n)` to `{ carrier := {a | ∃ j : ℕ, W.Q ^ j • a • W.φD T₂ x ∈ N''} add_mem' := by`. Introduce and unpack `a b ⟨i, hi⟩ ⟨j, hj⟩`. Use `⟨i + j, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_smul, smul_add, pow_add]`. Use `N''.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `N''.smul_mem _ hi`. Rewrite using `[mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `N''.smul_mem _ hj`. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨j, hj⟩`. Use `⟨j, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, mul_smul, smul_comm]`. Conclude with `N''.smul_mem c hj }`. Establish `hJ : ∀ (a : LetA O n) (j : ℕ), W.Q ^ j • a • W.φD T₂ x ∈ N'' → ∀ (b : LetA O n) (E : ℕ), j ≤ E → W.Q ^ E • (b * a) • W.φD T₂ x ∈ N''`. Introduce `a j hj b E hjE`. Establish `: W.Q ^ E • (b * a) • W.φD T₂ x = (W.Q ^ (E - j) * b) • (W.Q ^ j • a • W.φD T₂ x)`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Use `conv_lhs => rw [← Nat.sub_add_cancel hjE, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `N''.smul_mem _ hj`. Establish `hl : ((l : ℕ) : LetA O n) ^ k ∈ J`. Take `⟨j, hj⟩` from `φD_map_Q W π _ hk1`. Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite `hj` using `[φD_smulA, map_pow, map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `hj`. Establish `hπq : (letπ * W.q) ^ k ∈ J`. Take `⟨j, hj⟩` from `φD_map_Q W π _ hk2`. Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite `hj` using `[φD_smulA, map_pow, W.φA_π]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `hj`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hlp (letπ : LetA O n) 1`. Establish `hq : letπ * W.q = (letπ + 1 : LetA O n) ^ l - 1`. Use function extensionality and compare the values at `i`. Use `W.q₀_def` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hp]`. Simplify using `[letπ, LocWach.q, this, add_comm]`. Establish `hπl : (letπ : LetA O n) ^ l = letπ * W.q - (l : LetA O n) * (letπ * r)`. Rewrite using `[hq, hr]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrad : (letπ : LetA O n) ^ l ∈ J.radical`. Rewrite using `[hπl]`. Use `Ideal.sub_mem _ (Ideal.mem_radical_of_pow_mem (Ideal.le_radical hπq)) ?_` and prove the remaining obligations. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_radical_of_pow_mem (Ideal.le_radical hl))`. Take `⟨m, j₁, hj₁⟩` from `hrad`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j₂, hj₂⟩` from `hl`. Take `⟨a, ha⟩` from `W.N_φ T₂ x hxN`. Express the relevant statement in the definitionally equal form `W.Q ^ a • W.φD T₂ x ∈ W.N T₂ at ha`. Use `⟨a + j₁ + j₂, ?_, k + l * m, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_assoc, pow_add, mul_comm, mul_smul]`.
-
-Conclude with `(W.N T₂).smul_mem _ ha`. Use `hJ _ j₂ hj₂ ((l : LetA O n) ^ (l * m)) (a + j₁ + j₂) (by omega)` as an intermediate fact. Rewrite `this` using `[← pow_add, Nat.add_comm (l * m) k]`. Rewrite using `[smul_comm]`. Conclude with `this`.
-
-Use `hJ _ j₁ hj₁ ((letπ : LetA O n) ^ k) (a + j₁ + j₂) (by omega)` as an intermediate fact. Rewrite `this` using `[← pow_mul, ← pow_add]`. Rewrite using `[smul_comm]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem φD_satM_gen (l : ℕ) (hlp : l.Prime) (hp : PD.p = l) {T₁ T₂ : LocLat G Qp LL O}
     (π : LatHom T₁.L T₂.L) (x : W.DD T₂)
@@ -135,7 +131,7 @@ theorem φD_satM_gen (l : ℕ) (hlp : l.Prime) (hp : PD.p = l) {T₁ T₂ : LocL
     exact this
 
 /- English proof (translation)
-Introduce `D HW F l _ K s LL h W T₁ T₂ π _hc₁ _hc₂ x hx`. Conclude with `φD_satM_gen W l Fact.out ((D.loc l).PD_p K) π x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem φD_satM_Q : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ (T₁ T₂ : Lt K LL) (π : LatHom T₁.L T₂.L), IsCrys ((D.loc l).PD K) T₁.ρ → IsCrys ((D.loc l).PD K) T₂.ρ → ∀ x ∈ GlobalTheory.NL.Coker.satM l ((W.N T₁).map (mapA W π)) (W.N T₂), ∃ k : ℕ, W.Q ^ k • W.φD T₂ x ∈ GlobalTheory.NL.Coker.satM l ((W.N T₁).map (mapA W π)) (W.N T₂) := by
   intro D HW F l _ K s LL h W T₁ T₂ π _hc₁ _hc₂ x hx

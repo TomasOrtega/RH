@@ -37,7 +37,7 @@ def IsPull {φ₁ : K → (Y₁ ⟶ X)} {φ : K → (Y ⟶ X)} (a : Y₁ ⟶ Y) 
     gs r z (LB.wchart L φ₁ j) (t.f j) = gs (r ≫ a) z (LB.wchart L φ j) (s.f j)
 
 /- English proof (translation)
-Unfold `IsPull`. Conclude with `⟨hφ, fun _ r z j hj => gs_pullOver hp hφ s r z j hj⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem isPull_pullOver {R R' : Type} [CommRing R] [CommRing R'] {φ : K → (Y ⟶ X)}
     {π : Y ⟶ Spec (CommRingCat.of R)} {π' : Y' ⟶ Spec (CommRingCat.of R')}
@@ -50,9 +50,9 @@ variable {φ : K → (Y ⟶ X)} {φ₁ : K → (Y₁ ⟶ X)} {φ₂ : K → (Y�
   {s : LB.Sec (LB.LinComb L φ ε)} {t : LB.Sec (LB.LinComb L φ₁ ε)} {v : LB.Sec (LB.LinComb L φ₂ ε)}
 
 /- English proof (translation)
-Unfold `IsPull at h₁ h₂ ⊢`. Take `⟨h₁φ, h₁g⟩` from `h₁`. Take `⟨h₂φ, h₂g⟩` from `h₂`. Substitute `hc` using the available equality. Use `⟨fun κ => by rw [h₁φ κ, h₂φ κ, Category.assoc], fun Z r z j hj => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h₁g Z r z j hj, h₂g Z (r ≫ b) z j ?_, Category.assoc]`. Introduce `κ`. Establish `hκ` using `hj κ`. Rewrite `hκ` using `[h₁φ κ, Scheme.Hom.comp_apply]`. Rewrite using `[Scheme.Hom.comp_apply]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem IsPull.comp (h₁ : IsPull b v t) (h₂ : IsPull a t s) {c : Y₁' ⟶ Y} (hc : b ≫ a = c) : IsPull c v s := by
   unfold IsPull at h₁ h₂ ⊢
@@ -67,7 +67,7 @@ theorem IsPull.comp (h₁ : IsPull b v t) (h₂ : IsPull a t s) {c : Y₁' ⟶ Y
   rwa [Scheme.Hom.comp_apply]
 
 /- English proof (translation)
-Unfold `IsPull at h`. Establish `hmem : ∀ k, φ₁ k (r z) ∈ L.U (J (r ≫ φ₁ k))` using `fun k => by`. Simplify `hJ (r ≫ φ₁ k)` using `only [Scheme.Hom.comp_apply]`. Rewrite using `[sval_of t r z J (fun k => J (r ≫ φ₁ k)) (fun _ => rfl), h.2 Z r z _ hmem]`. Conclude with `(sval_of s (r ≫ a) z J _ (fun k => by rw [h.1 k, Category.assoc])).symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsPull.sval (h : IsPull a t s) {Z : Scheme.{0}} (r : Z ⟶ Y₁) {z : Z} {J} (hJ : Good L z J) :
     sval t r z J = sval s (r ≫ a) z J := by
@@ -78,7 +78,7 @@ theorem IsPull.sval (h : IsPull a t s) {Z : Scheme.{0}} (r : Z ⟶ Y₁) {z : Z}
   exact (sval_of s (r ≫ a) z J _ (fun k => by rw [h.1 k, Category.assoc])).symm
 
 /- English proof (translation)
-Establish `h1 : ∀ y : Y₁, gs (𝟙 Y₁) y ⊤ (1 : Γ(Y₁, ⊤)) = 1` using `fun y => by`. Rewrite using `[gs_eq _ _ _ (by simp), map_one, map_one]`. Simplify using `only [secScal_iff_val hL, h1, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem secScal_one_iff (hL : L.IsLB) : GeneratorPullback.SecScal L φ₁ ε t φ ε s a 1 ↔
     ∀ y J, Good L y J → Geo.Tor.sval s (𝟙 Y₁ ≫ a) y J = Geo.Tor.sval t (𝟙 Y₁) y J := by
@@ -87,7 +87,7 @@ theorem secScal_one_iff (hL : L.IsLB) : GeneratorPullback.SecScal L φ₁ ε t �
   simp only [secScal_iff_val hL, h1, _root_.one_mul]
 
 /- English proof (translation)
-Apply `sec_ext' hL` to reduce the goal to its premises. Introduce `y J hJ`. Rewrite using `[sval_pullOver hp hφ s (𝟙 Y₁) hJ]`. Conclude with `(secScal_one_iff hL).1 h y J hJ`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_pullOver_of_secScal (hL : L.IsLB) {R R' : Type} [CommRing R] [CommRing R']
     {π : Y ⟶ Spec (CommRingCat.of R)} {π' : Y₁ ⟶ Spec (CommRingCat.of R')}
@@ -101,9 +101,9 @@ theorem eq_pullOver_of_secScal (hL : L.IsLB) {R R' : Type} [CommRing R] [CommRin
 variable {w : LB.Iso L' (L.pull Φ)} {φ' : K → (Y' ⟶ X')} {s' : LB.Sec (LB.LinComb L' φ' ε)}
 
 /- English proof (translation)
-Unfold `IsPull at H`. Substitute `e` using the available equality. Unfold `PSec`. Use `forall_congr' fun Z => forall_congr' fun r => forall_congr' fun z => forall_congr' fun p => forall_congr' fun q => imp_congr_right fun hp => imp_congr_right fun _ => ?_` and prove the remaining obligations. Establish `hmem : ∀ κ, φ₁ κ ((r ≫ h₁) z) ∈ L.U (p κ)` using `fun κ => by`.
+Replace the relevant objects with their definitions. Substitute using the available equality. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hκ` using `congrArg (fun g : Y' ⟶ X => g (r z)) (hc κ)`. Simplify using `only [Scheme.Hom.comp_apply] at hκ`. Rewrite using `[Scheme.Hom.comp_apply, ← hκ]`. Conclude with `hp κ`. Rewrite using `[H.2 Z (r ≫ h₁) z p hmem, Category.assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psec_iff_of_isPull {h₁ : Y' ⟶ Y₁} (hc : ∀ κ, φ' κ ≫ Φ = h₁ ≫ φ₁ κ) (H : IsPull a t s) {h : Y' ⟶ Y}
     (e : h₁ ≫ a = h) : PSec w φ' φ₁ ε h₁ s' t ↔ PSec w φ' φ ε h s' s := by
@@ -120,13 +120,13 @@ theorem psec_iff_of_isPull {h₁ : Y' ⟶ Y₁} (hc : ∀ κ, φ' κ ≫ Φ = h�
   rw [H.2 Z (r ≫ h₁) z p hmem, Category.assoc]
 
 /- English proof (translation)
-Unfold `IsPull at H'`. Unfold `PSec at H ⊢`. Introduce `Z r z p q hp hq`. Establish `hp' : ∀ κ, Φ (φ' κ ((r ≫ a') z)) ∈ L.U (p κ)` using `fun κ => by`. Establish `hκ` using `hp κ`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hκ` using `[H'.1 κ, Scheme.Hom.comp_apply]`. Rewrite using `[Scheme.Hom.comp_apply]` and apply the resulting hypothesis. Establish `hq' : ∀ κ, φ' κ ((r ≫ a') z) ∈ L'.U (q κ)` using `fun κ => by`. Establish `hκ` using `hq κ`. Rewrite `hκ` using `[H'.1 κ, Scheme.Hom.comp_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Scheme.Hom.comp_apply]` and apply the resulting hypothesis. Establish `e : ∀ κ, r ≫ φ₁' κ = (r ≫ a') ≫ φ' κ` using `fun κ => by rw [H'.1 κ, Category.assoc]`. Establish `key` using `H Z (r ≫ a') z p q hp' hq'`. Rewrite `key` using `[Category.assoc]`. Rewrite using `[H'.2 Z r z q hq, key]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e]`.
+Simplify using the standard rewrite rules.
 -/
 theorem PSec.pull_left {h : Y' ⟶ Y} (H : PSec w φ' φ ε h s' s) {φ₁' : K → (Y₁' ⟶ X')} {a' : Y₁' ⟶ Y'}
     {t' : LB.Sec (LB.LinComb L' φ₁' ε)} (H' : IsPull a' t' s') : PSec w φ₁' φ ε (a' ≫ h) t' s := by
@@ -148,19 +148,17 @@ theorem PSec.pull_left {h : Y' ⟶ Y} (H : PSec w φ' φ ε h s' s) {φ₁' : K 
   simp only [e]
 
 /- English proof (translation)
-Unfold `Tri at T`. Unfold `PSec at H H'' ⊢`. Introduce `Z r z p q hp hq`. Take `⟨J, hJ, -⟩` from `exists_good L hL z (K := Empty) Empty.elim Empty.elim (fun a => a.elim) (fun a => a.elim)`. Use `set P : K → L.ι := fun κ => J (r ≫ φ'' κ ≫ Φ' ≫ Φ)`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hPmem : ∀ κ, Φ (Φ' (φ'' κ (r z))) ∈ L.U (P κ)` using `fun κ => by`. Simplify `hJ (r ≫ φ'' κ ≫ Φ' ≫ Φ)` using `only [Scheme.Hom.comp_apply]`. Establish `pt : ∀ κ, φ' κ (h' (r z)) = Φ' (φ'' κ (r z))` using `fun κ => by`. Establish `hκ` using `congrArg (fun g : Y'' ⟶ X' => g (r z)) (hc κ)`. Simplify using `only [Scheme.Hom.comp_apply] at hκ`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hκ.symm`. Establish `hP' : ∀ κ, Φ (φ' κ ((r ≫ h') z)) ∈ L.U (P κ)` using `fun κ => by`. Rewrite using `[Scheme.Hom.comp_apply, pt κ]`. Conclude with `hPmem κ`. Establish `hp' : ∀ κ, φ' κ ((r ≫ h') z) ∈ L'.U (p κ)` using `fun κ => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.comp_apply, pt κ]`. Conclude with `hp κ`. Establish `hP'' : ∀ κ, (Φ' ≫ Φ) (φ'' κ (r z)) ∈ L.U (P κ)` using `fun κ => by`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hPmem κ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∀ κ, (r ≫ φ'' κ) ≫ Φ' = (r ≫ h') ≫ φ' κ` using `fun κ => by`. Rewrite using `[Category.assoc, hc κ, Category.assoc]`. Establish `hprod : (∏ κ, gw w'' (r ≫ φ'' κ) z (P κ) (q κ) ^ ε κ) = (∏ κ, gw w ((r ≫ h') ≫ φ' κ) z (P κ) (p κ) ^ ε κ) * ∏ κ, gw w' (r ≫ φ'' κ) z (p κ) (q κ) ^ ε κ`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun κ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `m1 : Φ (Φ' ((r ≫ φ'' κ) z)) ∈ L.U (P κ)` using `by rw [Scheme.Hom.comp_apply]; exact hPmem κ`. Establish `m2 : Φ' ((r ≫ φ'' κ) z) ∈ L'.U (p κ)` using `by rw [Scheme.Hom.comp_apply]; exact hp κ`. Establish `m3 : (r ≫ φ'' κ) z ∈ L''.U (q κ)` using `by rw [Scheme.Hom.comp_apply]; exact hq κ`. Rewrite using `[← mul_zpow, T Z (r ≫ φ'' κ) z (P κ) (p κ) (q κ) m1 m2 m3, e κ]`. Establish `k1` using `H Z (r ≫ h') z P p hP' hp'`.
-
-Establish `k2` using `H'' Z r z P q hP'' hq`. Rewrite `k1` using `[Category.assoc]`. Rewrite `k2` using `[k1, hprod, Units.val_mul, _root_.mul_assoc]`. Conclude with `(Units.mul_right_inj _).1 k2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PSec.cancel {w' : LB.Iso L'' (L'.pull Φ')} {w'' : LB.Iso L'' (L.pull (Φ' ≫ Φ))} (T : Tri w w' w'')
     (hL : L.IsLB) {φ'' : K → (Y'' ⟶ X'')} {h : Y' ⟶ Y} {h' : Y'' ⟶ Y'} (hc : ∀ k, φ'' k ≫ Φ' = h' ≫ φ' k)
@@ -211,11 +209,9 @@ variable {S₀ S₁ : Scheme.{0}} {G : Over S₀} [GrpObj G] {A : Over S₁} [Gr
 include hp hτ in
 
 /- English proof (translation)
-Substitute `hπ₀ hπ` using the available equality. Take `⟨ψ, hψpb, hψsnd, hψeq⟩` from `exists_psi hp (T := Over.mk t) (T₀ := Over.mk t₀) (Spec.map (CommRingCat.ofHom g)) hτ`. Take `⟨θ, hθpt, hact⟩` from `exists_theta_side hp (T := Over.mk t) (T₀ := Over.mk t₀) (Spec.map (CommRingCat.ofHom g)) hτ hL₀ hL₁ w hw k x θ₀ hx hψeq`. Take `⟨mv, hmv⟩` from `exists_moveMap (w := w) (φ' := fun _ : Fin 1 => (snd (Over.mk t) A).left) (φ := fun _ : Fin 1 => (snd (Over.mk t₀) G).left) (ε := fun _ => k) (π := (fst (Over.mk t₀) G).left) (π' := (fst (Over.mk t) A).left) (fS := g) hL₀ hL₁ hw (fun _ => hψsnd.symm) hψpb.w`. Use `⟨θ, mv, hθpt, fun s s' hs => ?_, fun s σ hs => ?_, fun hflat n c hc a e i => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hact s s' (mv s) (mv s') ((hmv s (mv s)).2 rfl) ((hmv s' (mv s')).2 rfl) hs`. Conclude with `(psec_iff_of_isPull (fun _ => hψsnd.symm) hs hψsnd).1 ((hmv s (mv s)).2 rfl)`. Use `hflat` as an intermediate fact. Establish `hfl : Flat (fst (Over.mk t₀) G).left`. Rewrite using `[Over.fst_left]`.
-
-Use `infer_instance`. Conclude with `move_indep hL₀ hL₁ (fun _ => hψsnd.symm) hψpb mv (fun s => (hmv s (mv s)).2 rfl) n c hc a e i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_side_map (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (w : LB.Iso L₁ (L₀.pull φ)) (hw : w.IsGen) (k : ℤ)
     (x : Over.mk t ⟶ A) (θ₀ : ThetaGrp G L₀ k (Over.mk t₀))
@@ -257,9 +253,9 @@ section Fam
 variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Establish `hL : D.P.L.IsLB` using `D.P.isLB`. Establish `hpZ : (DegPre.prB D (FractionRing R)).left ≫ specZIsTerminal.from _ = specZIsTerminal.from _ ≫ Spec.map (CommRingCat.ofHom (RingHom.id ℤ))` using `specZIsTerminal.hom_ext _ _`. Establish `hφE : ∀ i, DegPre.famφ D (FractionRing R) α i = (DegPre.prB D (FractionRing R)).left ≫ D.famφB α i` using `famφ_prB D (FractionRing R) α`. Establish `h₁ : IsPull (DegPre.prB D (FractionRing R)).left (F₀.s α) f`. Establish `key` using `isPull_pullOver (L := D.P.L) (ε := DegPre.famε k) hpZ hφE f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `key` using `[eq_pullOver_of_secScal hL hpZ hφE h]`. Then use the resulting hypothesis. Establish `h₂` using `isPull_pullOver (L := D.P.L) (ε := DegPre.famε k) (isPullback_famMap D (FractionRing R) F).w (famφ_famMap D (FractionRing R) F α) (F₀.s α)`. Establish `hc : (famMap D (FractionRing R) F).left ≫ (DegPre.prB D (FractionRing R)).left = (DegPre.prB D F).left`. Rewrite using `[← Over.comp_left, famMap_snd]`. Conclude with `IsPull.comp h₂ h₁ hc`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPull_famPull (hG : GlobalFnsSt) {k : ℕ} (F₀ : Fam D (FractionRing R) k) (α : D.X) (f : D.SecB k α)
     (h : GeneratorPullback.SecScal D.P.L (DegPre.famφ D (FractionRing R) α) (DegPre.famε k) (F₀.s α) (D.famφB α) (DegPre.famε k) f
@@ -285,13 +281,11 @@ end Fam
 section Points
 
 /- English proof (translation)
-Establish `hdom : IsDominant (Spec.map (CommRingCat.ofHom g))`. Rewrite using `[isDominant_iff]`. Establish `hd : DenseRange (PrimeSpectrum.comap g)`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical]`. Introduce `a ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ha` using `[RingHom.mem_ker]`. Establish `ha0 : a = 0` using `hg (by rw [ha, map_zero])`. Rewrite using `[ha0]`. Conclude with `zero_mem _`. Conclude with `hd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ρ ≫ x ^ k = ρ ≫ 1` using `by rw [MonObj.comp_pow, h, MonObj.comp_one]`. Establish `: IsReduced (Over.mk t₀).left` using `show IsReduced (Spec (CommRingCat.of S)) from inferInstance`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `e'` using `congrArg (fun m => m.left) e`. Simplify using `only [Over.comp_left, hρ] at e'`.
-
-Conclude with `ext_of_isDominant_of_isSeparated G.hom (by simp only [Over.w]) (Spec.map (CommRingCat.ofHom g)) e'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_injective {S₀ : Scheme.{0}} {G : Over S₀} [GrpObj G] [IsSeparated G.hom] {S F : Type}
     [CommRing S] [IsDomain S] [CommRing F] {g : S →+* F} (hg : Function.Injective g)

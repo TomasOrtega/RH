@@ -6,23 +6,23 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Arithmet
 namespace GlobalTheory.BadCount
 
 /- English proof (translation)
-Introduce `K Γ V _ _ _ _ _ _ ρ H n hE a ha hidem`. Take `⟨j, hj, hjρ⟩` from `hE`. Set `ψ` to `MonoidAlgebra.mapDomainAlgHom K K H.subtype`. Establish `hψinj : Function.Injective ψ` using `MonoidAlgebra.mapDomain_injective Subtype.val_injective`. Set `a' : MonoidAlgebra K H` to `MonoidAlgebra.ofCoeff (Finsupp.comapDomain Subtype.val a.coeff Subtype.val_injective.injOn)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hψa : ψ a' = a`. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use `show Finsupp.mapDomain Subtype.val (Finsupp.comapDomain Subtype.val a.coeff Subtype.val_injective.injOn) = a.coeff`. Apply `Finsupp.mapDomain_comapDomain _ Subtype.val_injective` to reduce the goal to its premises. Introduce `g hg`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨g, ha g (by simpa using hg)⟩, rfl⟩`. Establish `hidem' : a' * a' = a'` using `hψinj (by rw [map_mul, hψa, hidem])`. Establish `hc1 : a'.coeff 1 = a.coeff 1` using `rfl`. Establish `key : ∀ (b : MonoidAlgebra K H) (v : V) (i : Fin n), j (ρ.asAlgebraHom (ψ b) v) i = b * j v i`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `b using MonoidAlgebra.induction_on with`. Consider the case `of h`. Introduce `v i`. Establish `: ψ (MonoidAlgebra.of K H h) = MonoidAlgebra.of K Γ (h : Γ)`. Simplify using `[ψ]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Representation.asAlgebraHom_of, hjρ h v i]`. Both sides reduce to the same expression. Consider the case `add b c hb hc => intro v i`. Simplify using `[map_add, LinearMap.add_apply, hb, hc, add_mul]`. Consider the case `smul r b hb => intro v i`.
+Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[map_smul, LinearMap.smul_apply, hb, smul_mul_assoc]`. Use `⟨finrank K (LinearMap.range (LinearMap.mulLeft K a')), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.finrank_range_mulLeft_idempotent_groupAlgebra K H a' hidem', hc1]`. Set `R` to `LinearMap.range (LinearMap.mulLeft K a')`. Set `g : LinearMap.range (ρ.asAlgebraHom a) →ₗ[K] (Fin n → R)` to `LinearMap.pi fun i => LinearMap.codRestrict R ((LinearMap.proj i).comp (j.comp (LinearMap.range (ρ.asAlgebraHom a)).subtype)) (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, v, rfl⟩`. Use `⟨j v i, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.proj_apply, LinearMap.mulLeft_apply]`. Rewrite using `[← hψa, key])`. Establish `hg : Function.Injective g`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Apply `Subtype.val_injective` to reduce the goal to its premises. Apply `hj` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrArg (fun f => ((f i : R) : MonoidAlgebra K H)) hxy` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[g]`. Use `LinearMap.finrank_le_finrank_of_injective hg` as an intermediate fact. Rewrite `this` using `[Module.finrank_pi_fintype]`. Simplify `this` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_range_idem_le_of_embReg : ∀ (K Γ V : Type) [Field K] [CharZero K] [Group Γ] [Finite Γ] [AddCommGroup V]
     [Module K V] (ρ : Representation K Γ V) (H : Subgroup Γ) (n : ℕ), EmbReg ρ H n → ∀ a : MonoidAlgebra K Γ,

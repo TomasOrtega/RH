@@ -20,39 +20,33 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 open ReciprocityTheory.AnForm (levi)
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `K _ J _ II Ψ _ Ω _ _ W _ _ D M P κ hS`. Take `⟨hκ, -, hS3⟩` from `hS`. Use `choose g0 hg0s hg0b hg0one hg0c hg0t using fun j => LevelTowerAlt.exists_bumps P j`. Establish `hstarMid : ∀ j t, t ∈ P.chartMid (κ j) → star t ∈ P.chartMid j`. Introduce `j t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ht1, ht2⟩` from `ht`. Take `⟨z, hz, hzx⟩` from `M.surj ((P.chart (κ j)).symm t)`. Take `⟨hsrc, hmid, -, hch⟩` from `hS3 (κ j) z hz`. Rewrite `hsrc`, `hmid`, `hch` using `[hκ]`. Establish `hx : M.proj z ∈ P.mid (κ j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzx]`. Conclude with `ht2`. Establish `hx' : M.proj (conjVec z) ∈ P.mid j` using `hmid.2 hx`. Establish `hxs : M.proj z ∈ (P.chart (κ j)).source` using `P.closure_mid _ (subset_closure hx)`. Establish `hx's : M.proj (conjVec z) ∈ (P.chart j).source` using `P.closure_mid _ (subset_closure hx')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : P.chart j (M.proj (conjVec z)) = star t`. Rewrite using `[hch hxs, hzx, (P.chart (κ j)).right_inv ht1]`. Use `show star t ∈ (P.chart j).target ∩ (P.chart j).symm ⁻¹' P.mid j`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← heq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(P.chart j).map_source hx's`. Use `show (P.chart j).symm (star t) ∈ P.mid j`. Rewrite using `[← heq, (P.chart j).left_inv hx's]`. Conclude with `hx'`. Set `g : Fin P.N → (Fin D.n → ℂ) → ℝ` to `fun j t => (g0 j t + g0 (κ j) (star t)) / 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hsm : ∀ j, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (g j)` using `fun j => ((hg0s j).add ((hg0s (κ j)).comp (LevelTowerAlt.contDiff_star _))).div_const 2`. Establish `hbd : ∀ j y, 0 ≤ g j y ∧ g j y ≤ 1`. Introduce `j y`. Establish `h1` using `hg0b j y`. Establish `h2` using `hg0b (κ j) (star y)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Use `show 0 ≤ (g0 j y + g0 (κ j) (star y)) / 2`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show (g0 j y + g0 (κ j) (star y)) / 2 ≤ 1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : ∀ j, ∀ x ∈ P.inner j, g j (P.chart j x) = 1`. Introduce `j x hx`. Take `⟨z, hz, rfl⟩` from `M.surj x`. Take `⟨-, -, hinn, hch⟩` from `hS3 j z hz`. Establish `hmid : M.proj z ∈ P.mid j` using `P.closure_inner _ (subset_closure hx)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsrc : M.proj z ∈ (P.chart j).source` using `P.closure_mid _ (subset_closure hmid)`. Establish `h1 : g0 j (P.chart j (M.proj z)) = 1` using `hg0one j _ ⟨_, subset_closure hx, rfl⟩`. Establish `h2 : g0 (κ j) (star (P.chart j (M.proj z))) = 1`. Rewrite using `[← hch hsrc]`. Conclude with `hg0one (κ j) _ ⟨_, subset_closure (hinn.2 hx), rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (g0 j (P.chart j (M.proj z)) + g0 (κ j) (star (P.chart j (M.proj z)))) / 2 = 1`. Rewrite using `[h1, h2]`. Evaluate the numerical expressions. Establish `hK : ∀ j, tsupport (g j) ⊆ tsupport (g0 j) ∪ star '' tsupport (g0 (κ j))`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Apply `closure_minimal _ (((hg0c j).union ((hg0c (κ j)).image continuous_star)).isClosed)` to reduce the goal to its premises. Introduce `t ht`. Rewrite `ht` using `[Function.mem_support]`. Distinguish the cases in `h1 : g0 j t = 0`. Use `right`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨star t, subset_tsupport _ ?_, star_star t⟩` and prove the remaining obligations. Rewrite using `[Function.mem_support]`. Introduce `h2`. Apply `ht` to reduce the goal to its premises. Use `show (g0 j t + g0 (κ j) (star t)) / 2 = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h1, h2]`. Evaluate the numerical expressions. Use `left`. Conclude with `subset_tsupport _ h1`. Establish `hcpt : ∀ j, IsCompact (tsupport (g j))` using `fun j => ((hg0c j).union ((hg0c (κ j)).image continuous_star)).of_isClosed_subset (isClosed_tsupport _) (hK j)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsub : ∀ j, tsupport (g j) ⊆ P.chartMid j`. Introduce `j t ht`. Break down `hK j ht with h | ⟨u, hu, rfl⟩` into its components or cases. Conclude with `hg0t j h`. Conclude with `hstarMid j u (hg0t (κ j) hu)`.
-
-Take `⟨C, hC⟩` from `LevelTowerAlt.cutoff_of_bumps P g hsm hbd hone hcpt hsub`. Use `⟨_, C, hC, ?_⟩` and prove the remaining obligations. Introduce `j z hz`. Take `⟨hsrc, -, -, hch⟩` from `hS3 j z hz`. Simplify using `only [ReciprocityTheory.AnForm.M.PLAux.chartPush]`.
-
-Distinguish the cases in `hx : M.proj z ∈ (P.chart j).source`. Rewrite using `[Set.indicator_of_mem (hsrc.2 hx), Set.indicator_of_mem hx]`. Simplify using `only [Function.comp]`. Rewrite using `[hch hx]`. Use `show (g0 (κ j) (star (P.chart j (M.proj z))) + g0 (κ (κ j)) (star (star (P.chart j (M.proj z))))) / 2 - 1 = (g0 j (P.chart j (M.proj z)) + g0 (κ j) (star (P.chart j (M.proj z)))) / 2 - 1`.
-
-Rewrite using `[hκ, star_star]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem (mt hsrc.1 hx), Set.indicator_of_notMem hx]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.exists_cutoff_family_symmetric : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (M : XModel D) (P : GroundTheory.Heights₂.Heights.Regular.PotentialCharts M.atlas) (κ : Equiv.Perm (Fin P.N)), SymmCharts M P κ → ∃ (cut : Fin P.N → M.Xc → ℝ) (C : ℝ), P.IsCutoffFamily cut C ∧ ∀ j, ∀ z ∈ mcPts (mCoordIdeal D.y), cut (κ j) (M.proj (conjVec z)) = cut j (M.proj z) := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D M P κ hS

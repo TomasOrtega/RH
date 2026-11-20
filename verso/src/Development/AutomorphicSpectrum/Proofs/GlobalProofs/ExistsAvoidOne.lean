@@ -24,13 +24,13 @@ def classSeries {F : Type} [Field F] [NumberField F] (𝔣 𝔞 : Ideal (𝓞 F)
   ∑' I : {I : Ideal (𝓞 F) // CoprimeTo F 𝔣 I ∧ RayRel F 𝔣 I 𝔞}, ((Ideal.absNorm I.1 : ℕ) : ℂ) ^ (-s)
 
 /- English proof (translation)
-Take `⟨𝔟, J, _, r', y, v', hP⟩` from `GlobalTheory.T.ray_class_cone_parametrization F 𝔣 h𝔣 ι r v hv 𝔞 h𝔞`. Use `⟨Finset.univ.biUnion fun j : J => Finset.univ.image (v' j), ?_, GlobalTheory.T.partial_zeta_ray_class_summable F 𝔣 𝔞 𝔟 J r' y v' hP, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Finset.mem_biUnion, Finset.mem_image, Finset.mem_univ, true_and] at hx`. Take `⟨j, i, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Establish `hpos` using `(hP.2.2.1 j i).2`. Take `⟨φ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Use `hpos ((NumberField.InfinitePlace.mk φ).embedding_of_isReal (IsTotallyReal.isReal _))` as an intermediate fact. Simplify using `[h0] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `𝔠 hpr hl hav`. Use `GlobalTheory.T.partial_zeta_twisted_entire_difference GlobalTheory.T.abel_continuation F 𝔣 𝔞 𝔟 𝔠 J r' y v' hP hpr hl fun j i hmem => ?_` and prove the remaining obligations. Establish `hle : 𝔠 * 𝔟 ≤ 𝔠` using `Ideal.mul_le_left`. Use `hav (v' j i) ?_ (hle hmem)` and prove the remaining obligations. Simplify using `only [Finset.mem_biUnion, Finset.mem_image, Finset.mem_univ, true_and]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `⟨j, i, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_avoid_one (𝔣 𝔞 : Ideal (𝓞 F)) (h𝔣 : 𝔣 ≠ ⊥) (h𝔞 : CoprimeTo F 𝔣 𝔞) (ι : Type) [Fintype ι] (r : ι → ℕ)
     (v : ∀ c, Fin (r c) → F) (hv : IsConeDomain 𝔣 r v) :
@@ -61,9 +61,9 @@ theorem exists_avoid_one (𝔣 𝔞 : Ideal (𝓞 F)) (h𝔣 : 𝔣 ≠ ⊥) (h�
     exact ⟨j, i, rfl⟩
 
 /- English proof (translation)
-Take `⟨ι, _, r, v, hv⟩` from `GlobalTheory.T.exists_shintani_cone_domain F 𝔣 h𝔣`. Establish `h` using `fun c : S => exists_avoid_one F 𝔣 c.1 h𝔣 (hS _ c.2) ι r v hv`. Use `choose W hW0 hWs hWt using h`. Use `⟨Finset.univ.biUnion W, ?_, hWs, fun 𝔠 hpr hl hav c => hWt c 𝔠 hpr hl fun x hx => hav x ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -, hc⟩` from `Finset.mem_biUnion.1 hx`. Conclude with `hW0 c x hc`. Conclude with `Finset.mem_biUnion.2 ⟨c, Finset.mem_univ _, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_avoid (𝔣 : Ideal (𝓞 F)) (h𝔣 : 𝔣 ≠ ⊥) (S : Finset (Ideal (𝓞 F))) (hS : ∀ a ∈ S, CoprimeTo F 𝔣 a) :
     ∃ W : Finset (𝓞 F), (∀ x ∈ W, x ≠ 0) ∧
@@ -85,13 +85,13 @@ theorem exists_avoid (𝔣 : Ideal (𝓞 F)) (h𝔣 : 𝔣 ≠ ⊥) (S : Finset 
   · exact Finset.mem_biUnion.2 ⟨c, Finset.mem_univ _, hx⟩
 
 /- English proof (translation)
-Take `⟨W, hW0, hsum, hWt⟩` from `exists_avoid F 𝔣 h𝔣 S hS`. Establish `key : ∀ B : ℕ, ∃ 𝔠 : Ideal (𝓞 F), (Ideal.absNorm 𝔠).Prime ∧ B < Ideal.absNorm 𝔠 ∧ ∃ (τ : Equiv.Perm S) (T : S → ℂ → ℂ), (∀ c, Differentiable ℂ (T c)) ∧ (∀ c s, 1 < s.re → ((Ideal.absNorm 𝔠 : ℕ) : ℂ) ^ (1 - s) * classSeries 𝔣 (τ c).1 s - classSeries 𝔣 c.1 s = T c s) ∧ ∀ c, ∀ k : ℕ …`. Introduce `B`. Take `⟨𝔠, hpr, hl, hB, hcop, hav⟩` from `GlobalTheory.T.exists_prime_degree_one_avoiding F 𝔣 h𝔣 W B hW0`. Establish `h𝔠0 : 𝔠 ≠ ⊥`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `only [Ideal.absNorm_bot] at hl`. Conclude with `Nat.not_prime_zero hl`. Take `⟨τ, hτ⟩` from `GlobalTheory.T.ray_class_prime_multiplication_permutation F 𝔣 𝔠 S h𝔣 hpr h𝔠0 hcop hS hd hc`. Use `choose T hTd hTs hTq using hWt 𝔠 hpr hl hav`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨𝔠, hl, hB, τ, T, hTd, fun c s hs => ?_, hTq⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `hτ c`. Conclude with `GlobalTheory.T.partial_zeta_prime_twist_summable F 𝔣 𝔠 (τ c).1 c.1 hl e he s _ hs (hsum _ s hs) (hsum _ s hs) (hTs c s hs)`. Take `⟨𝔠, hl, -, τ, T, hTd, hTr, hTq⟩` from `key 0`. Take `⟨𝔠', hl', hB', τ', T', hTd', hTr', -⟩` from `key (Ideal.absNorm 𝔠)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Z, hZd, hZD, hZq⟩` from `GlobalTheory.T.partial_zeta_meromorphic_from_twists S (fun c => classSeries 𝔣 c.1) T T' _ _ τ τ' hl hl' hB'.ne hTd hTd' hTr hTr'`. Use `⟨Z, fun c => ⟨⟨hZd c, fun s hs => ?_⟩, fun k hk => hZq k hk (fun c => hTq c k hk) c⟩⟩` and prove the remaining obligations. Rewrite using `[hZD c s hs]`. Conclude with `(hsum c s hs).hasSum`.
+A detailed English derivation is pending.
 -/
 theorem exists_classZeta (𝔣 : Ideal (𝓞 F)) (h𝔣 : 𝔣 ≠ ⊥) (S : Finset (Ideal (𝓞 F))) (hS : ∀ a ∈ S, CoprimeTo F 𝔣 a)
     (hd : ∀ a ∈ S, ∀ b ∈ S, RayRel F 𝔣 a b → a = b) (hc : ∀ I, CoprimeTo F 𝔣 I → ∃ a ∈ S, RayRel F 𝔣 I a) :
@@ -127,17 +127,17 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂
 open GlobalTheory.CompanionTheory.Hypotheses₂.Shintani in
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔣 h𝔣 ε hε`. Take `⟨S, hS, hd, hc⟩` from `GlobalTheory.T.ray_class_group_finite_representatives F 𝔣 h𝔣`. Take `⟨Z, hZ⟩` from `exists_classZeta F 𝔣 h𝔣 S hS hd hc`. Establish `hZ' : ∀ c : S, IsRayL 𝔣 (rayIndicator 𝔣 c.1) (Z c)` using `fun c => isRayZeta_iff.1 (hZ c).1`. Establish `hind : ∀ I : {I : Ideal (𝓞 F) // CoprimeTo F 𝔣 I}, ∑ c : S, (ε c.1 : ℂ) * ((rayIndicator 𝔣 c.1 I.1 : ℚ) : ℂ) = (ε I.1 : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `I`. Take `⟨a, ha, hIa⟩` from `hc I.1 I.2`. Rewrite using `[Finset.sum_eq_single (⟨a, ha⟩ : S)]`. Establish `: ε a = ε I.1` using `hε _ _ (hS a ha) I.2 (rayRel_symm hIa)`. Simplify using `[rayIndicator, hIa, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Establish `: ¬ RayRel F 𝔣 I.1 b.1` using `fun h => hb (Subtype.ext (hd _ b.2 _ ha (rayRel_trans (rayRel_symm h) hIa)))`. Simplify using `[rayIndicator, this]`. Simplify using the standard rewrite rules. Use `⟨fun s => ∑ c : S, (ε c.1 : ℂ) * Z c s, ⟨?_, fun s hs => ?_⟩, fun k hk => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s hs`. Use `DifferentiableWithinAt.fun_sum fun c _ => ?_` and prove the remaining obligations. Conclude with `(differentiableWithinAt_const _).mul ((hZ' c).1 s hs)`. Establish `h1` using `hasSum_sum (s := Finset.univ) fun c (_ : c ∈ (Finset.univ : Finset S)) => ((hZ' c).2 s hs).mul_left (ε c.1 : ℂ)`. Establish `he : (fun I : {I : Ideal (𝓞 F) // CoprimeTo F 𝔣 I} => (ε I.1 : ℂ) * ((Ideal.absNorm I.1 : ℕ) : ℂ) ^ (-s)) = fun I => ∑ c : S, (ε c.1 : ℂ) * (((rayIndicator 𝔣 c.1 I.1 : ℚ) : ℂ) * ((Ideal.absNorm I.1 : ℕ) : ℂ) ^ (-s))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `I`. Rewrite using `[← hind I, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`. Rewrite using `[he]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `choose q hq using fun c : S => (hZ c).2 k hk`. Use `⟨∑ c : S, ε c.1 * q c, ?_⟩` and prove the remaining obligations. Simplify using `only [hq]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem siegelKlingen : GlobalTheory.Published.SiegelKlingen := by
   classical

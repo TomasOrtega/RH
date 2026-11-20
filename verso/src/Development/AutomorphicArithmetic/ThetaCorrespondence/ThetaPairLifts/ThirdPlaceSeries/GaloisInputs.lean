@@ -17,9 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 800000
 namespace GlobalTheory.TwGalInputs
 /- English proof (translation)
-Introduce `hC hArt hTor D G hGH`. Establish `h2 : BlochKatoReduction.adm2 D` using `_root_.GlobalTheory.TripleAdm.adm2_of_isTriple_wildOne D G.triple (GlobalTheory.T.full_degree_label_forces_trivial_wild_inertia D G.wd G.lab)`. Establish `hF : GlobalTheory.TypeLeaf.FrobDense D` using `GlobalTheory.SplitFrobDense.frobDense D (GlobalTheory.Published.chebotarevDegreeOne_iff_cheb.1 hC)`. Establish `hg` using `_root_.GlobalTheory.TripleLocal.adm1_adm8_selfDual_noJump_of_isTriple G.chr hF hGH h2 G.triple`. Establish `hs` using `_root_.GlobalTheory.Triple.adm8_allGood_sig_of_isTriple D G.triple`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `GlobalTheory.LamTie.isToricElt_of_isLamTie D _ D.ntw G.lam G.lamOk G.lamTie`. Take `⟨N0, h9, h10, -⟩` from `GlobalTheory.ToricAssembly.toric_properties hArt hTor D hL.1`. Conclude with `⟨hg.1, h2, hg.2.1, hs.2.1, hs.2.2, ⟨N0, h9⟩, h10, _root_.GlobalTheory.SettingHypotheses.setHyp_of_isTriple_of_nonzeroIndexPlace hC D G.wd G.cf G.chr hGH h2 G.triple G.lam G.lamOk G.lamTie G.rank G.primes⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem galois_inputs_alt : GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator → ∀ (D : D7) (G : _root_.GlobalTheory.TwInputs.GalSideAlt D), _root_.UpperTheory.GalS.GalHodgeN D G.wd → BlochKatoReduction.adm1 (BlochKatoReduction.bk0 D) ∧ BlochKatoReduction.adm2 D ∧ BlochKatoReduction.adm8 D ∧ AllGood D.nexp ∧ D.nexp.sig_all ∧ (∃ N0, BlochKatoReduction.adm9 D N0) ∧ BlochKatoReduction.adm10 D ∧ ∀ i, D.ntw.NonzeroIndexPlace i → BlochKatoReduction.Gen.SetHyp (BlochKatoReduction.bk0 D) i := by
   intro hC hArt hTor D G hGH

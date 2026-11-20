@@ -17,29 +17,29 @@ section PK7
 open GlobalTheory.CuspRep.CuspidalL2GL GlobalTheory.AutomorphicL2Unitary GlobalTheory.LFun Formalism.UG Formalism.L2.Host
 
 /- English proof (translation)
-Introduce `hL7 hL12 hG0 hG5 E _ _ _ a ψ hψ w hc`. Use `⟨WeilJacquetShalikaLaw.psiW ψ w, WeilJacquetShalikaLaw.psiOK hψ hc, fun y => rfl, ?_⟩` and prove the remaining obligations. Introduce `z φ hφ hsat h hh u`. Establish `hcomm` using `(hG0 E a).2.2.2.2.2.2.2.1 w h hh`. Take `⟨hΛ, hrt, hgood, hreg⟩` from `hG5 E a ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `hsat with rfl | hsat` into its components or cases. Establish `h0 : ∀ g, Wh ψ (0 : XB E a) g = 0` using `fun g => by`. Take `⟨Λ, hΛ'⟩` from `hΛ g`. Rewrite using `[← hΛ' 0 hφ, map_zero]`. Rewrite using `[h0, h0, zero_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `v : GL (Fin a) (w.adicCompletion E) → ℂ` to `fun x => Wh ψ φ (h * fl a w x)`. Establish `hfix : ∀ k ∈ KGL w a, Rt E a (fl a w k) φ = φ` using `fun k hk => GlobalTheory.LGrp.mem_fixed.1 hsat.2.1 k hk`. Establish `hv : v ∈ WeilJacquetShalikaLaw.WS (WeilJacquetShalikaLaw.psiW ψ w) a`. Introduce `n hn x`. Express the relevant statement in the definitionally equal form `Wh ψ φ (h * fl a w (n * x)) = _ * Wh ψ φ (h * fl a w x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, ← mul_assoc, hcomm n, mul_assoc]`. Conclude with `WeilJacquetShalikaLaw.law (hreg φ hφ).2.2 w n hn _`. Set `vs : WeilJacquetShalikaLaw.WS (WeilJacquetShalikaLaw.psiW ψ w) a` to `⟨v, hv⟩`. Establish `hv1 : (vs : GL (Fin a) (w.adicCompletion E) → ℂ) 1 = Wh ψ φ h`. Express the relevant statement in the definitionally equal form `Wh ψ φ (h * fl a w 1) = _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one, mul_one]`. Distinguish the cases in `h0 : vs = 0`. Establish `e : ∀ x, (vs : GL (Fin a) (w.adicCompletion E) → ℂ) x = 0` using `fun x => congrFun (congrArg Subtype.val h0) x`. Establish `e1 : Wh ψ φ (h * fl a w u) = 0` using `e u`. Rewrite using `[e1, ← hv1, e 1, zero_mul]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hK` using `Final.GLintComm E w a`. Establish `hsv : IsSatVecGL w (WeilJacquetShalikaLaw.rhoW (WeilJacquetShalikaLaw.psiW ψ w) a) vs (Finset.univ.val.map z)`. Use `⟨h0, GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, by simp, fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Wh ψ φ (h * fl a w (x * k)) = Wh ψ φ (h * fl a w x)`. Rewrite using `[map_mul, ← mul_assoc, ← hrt, hfix k hk]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e` using `map_heckeVec (ρ := WeilJacquetShalikaLaw.rhoW (WeilJacquetShalikaLaw.psiW ψ w) a) (ρ' := GlobalTheory.PRep.rightReg ℂ (GL (Fin a) (w.adicCompletion E)) ℂ) hK (Tj_mem_hecke hϖ j) (WeilJacquetShalikaLaw.WS (WeilJacquetShalikaLaw.psiW ψ w) a).subtype (fun _ _ => rfl) vs`. Rewrite `e` using `[Submodule.subtype_apply, Submodule.subtype_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Submodule.coe_smul]`. Use function extensionality and compare the values at `x`. Take `⟨Λ, hΛ'⟩` from `hΛ (h * fl a w x)`. Establish `hfin` using `finite_heckeVec hK (Tj_mem_hecke hϖ j) (GlobalTheory.PRep.rightReg ℂ (GL (Fin a) (w.adicCompletion E)) ℂ) v`. Establish `hfin2` using `finite_heckeVec hK (Tj_mem_hecke hϖ j) (repW a w) φ`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `(LinearMap.proj (R := ℂ) (φ := fun _ : GL (Fin a) (w.adicCompletion E) => ℂ) x).toAddMonoidHom.map_finsum hfin`. Establish `e2` using `(Λ : XB E a →L[ℂ] ℂ).toLinearMap.toAddMonoidHom.map_finsum hfin2`. Establish `e3` using `hsat.2.2.2 ϖ hϖ j hj`. Establish `key : ∀ c : GL (Fin a) (w.adicCompletion E) ⧸ KGL w a, (Tj ℂ a (Ov E w) ϖ j c.out • GlobalTheory.PRep.rightReg ℂ (GL (Fin a) (w.adicCompletion E)) ℂ c.out v) x = Λ (Tj ℂ a (Ov E w) ϖ j c.out • repW a w c.out φ)`. Introduce `c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, hΛ' (repW a w c.out φ) (hgood φ (fl a w c.out) hφ)]`. Express the relevant statement in the definitionally equal form `_ * v (x * c.out) = _ • Wh ψ (Rt E a (fl a w c.out) φ) (h * fl a w x)`. Rewrite using `[hrt, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `_ * Wh ψ φ (h * fl a w (x * c.out)) = _`. Rewrite using `[map_mul, mul_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `LHS : heckeVec (GlobalTheory.PRep.rightReg ℂ (GL (Fin a) (w.adicCompletion E)) ℂ) (KGL w a) (Tj ℂ a (Ov E w) ϖ j) v x = Λ (heckeVec (repW a w) (KGL w a) (Tj ℂ a (Ov E w) ϖ j) φ)`. Rewrite using `[heckeVec, heckeVec]`. Conclude with `e1.trans ((finsum_congr key).trans e2.symm)`. Use `LHS.trans ?_` and prove the remaining obligations. Rewrite using `[e3, map_smul, hΛ' φ hφ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `heig` using `(hL12 E w).2 a _ (WeilJacquetShalikaLaw.rhoW (WeilJacquetShalikaLaw.psiW ψ w) a) vs z hsv`. Use `hL7 (w.adicCompletion E) (WeilJacquetShalikaLaw.psiW ψ w) (WeilJacquetShalikaLaw.psiOK hψ hc) a _ (WeilJacquetShalikaLaw.rhoW (WeilJacquetShalikaLaw.psiW ψ w) a) vs z heig (WeilJacquetShalikaLaw.ev _ a) (WeilJacquetShalikaLaw.whitW w _) u` as an intermediate fact. Rewrite `this` using `[WeilJacquetShalikaLaw.ev_apply, WeilJacquetShalikaLaw.ev_apply, WeilJacquetShalikaLaw.rhoW_apply, one_mul, hv1]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_unramified_of : JacquetShalikaLocal.L7 → JacquetShalikaLocal.lift_levelP_alt₂ → jumpWindows.G0 → jumpWindows.G5 → K7 := by
   intro hL7 hL12 hG0 hG5 E _ _ _ a ψ hψ w hc

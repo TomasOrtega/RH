@@ -56,7 +56,7 @@ namespace DualStackedExcResidueExample
 open DualTopSimpleSubExample DualStackedExcExample
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨m, hm⟩` from `coord_of_mem_two hx`. Use `⟨(m : 𝓞 ℚ), ?_⟩` and prove the remaining obligations. Simplify using `[dotProduct, hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem half_mem : (fun _ : Fin 1 => (1 / 2 : ℚ)) ∈ dualLattice HermLattice.twiceStandardExample := by
   intro x hx
@@ -67,7 +67,7 @@ theorem half_mem : (fun _ : Fin 1 => (1 / 2 : ℚ)) ∈ dualLattice HermLattice.
 def halfDual : dualLattice HermLattice.twiceStandardExample := ⟨fun _ => 1 / 2, half_mem⟩
 
 /- English proof (translation)
-Use `linearIndependent_unique_iff.mpr fun h => ?_` and prove the remaining obligations. Establish `h1 : ((halfDual : dualLattice HermLattice.twiceStandardExample) : Fin 1 → ℚ) 0 = 0`. Rewrite using `[h]`. Both sides reduce to the same expression. Evaluate the numerical expressions using `[halfDual] at h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Evaluate the numerical expressions.
 -/
 theorem halfDual_linearIndependent : LinearIndependent ℤ (fun _ : Unit => halfDual) := by
   refine linearIndependent_unique_iff.mpr fun h => ?_
@@ -76,13 +76,11 @@ theorem halfDual_linearIndependent : LinearIndependent ℤ (fun _ : Unit => half
   norm_num [halfDual] at h1
 
 /- English proof (translation)
-Introduce and unpack `⟨φ, hφ⟩ -`. Take `⟨c, hc⟩` from `hφ twoVecExample (Submodule.subset_span rfl)`. Establish `h0 : φ 0 = (Rat.ringOfIntegersEquiv c : ℚ) / 2`. Rewrite using `[Rat.ringOfIntegersEquiv_apply_coe]`. Establish `: φ ⬝ᵥ twoVecExample = 2 * φ 0` using `by simp [dotProduct, twoVecExample, mul_comm]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc` using `[this]`. Express the relevant statement in the definitionally equal form `(c : ℚ) = 2 * φ 0 at hc`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Set.range_const]`. Use `Submodule.mem_span_singleton.mpr ⟨Rat.ringOfIntegersEquiv c, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Use `show ((Rat.ringOfIntegersEquiv c : ℤ) : ℚ) * (1 / 2) = φ 0`. Rewrite using `[h0]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem halfDual_span : ⊤ ≤ Submodule.span ℤ (Set.range fun _ : Unit => halfDual) := by
   rintro ⟨φ, hφ⟩ -
@@ -106,7 +104,7 @@ def halfBasis : Module.Basis Unit ℤ (dualLattice HermLattice.twiceStandardExam
   Module.Basis.mk halfDual_linearIndependent halfDual_span
 
 /- English proof (translation)
-Simplify using `[halfBasis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem halfBasis_apply (t : Unit) : halfBasis t = halfDual := by
   simp [halfBasis]

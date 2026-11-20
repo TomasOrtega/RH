@@ -23,7 +23,7 @@ def TN (k r : ℕ) (p : (Mt k r × (U.RC k r 0 × (G.UT r → ℂ))) × (Mt k r 
   ((p.1.1, psiR k r p.1.2), (p.2.1, psiR k r p.2.2))
 
 /- English proof (translation)
-Unfold `TN`. Conclude with `((measurable_fst.comp measurable_fst).prodMk ((psiR_meas r).comp (measurable_snd.comp measurable_fst))).prodMk ((measurable_fst.comp measurable_snd).prodMk ((psiR_meas r).comp (measurable_snd.comp measurable_snd)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem TN_meas : Measurable (TN k r) := by
   unfold TN
@@ -31,7 +31,7 @@ theorem TN_meas : Measurable (TN k r) := by
     ((measurable_fst.comp measurable_snd).prodMk ((psiR_meas r).comp (measurable_snd.comp measurable_snd)))
 
 /- English proof (translation)
-Establish `hW : SigmaFinite S.μW` using `Dx2.MN.sigma_of_haar S.haarW`. Establish `hW' : SigmaFinite S.μW'` using `Dx2.MN.sigma_of_haar S.haarW'`. Establish `hN' : S.μN = (QN k r).map (psiR k r)` using `by rw [hN]; exact muN_rev (k := k) r`. Unfold `B.RealPlaceData.μSS`. Rewrite using `[hN', ← Measure.map_id (μ := S.μW), Measure.map_prod_map _ _ measurable_id (psiR_meas r), ← Measure.map_id (μ := S.μW'), Measure.map_prod_map _ _ measurable_id (psiR_meas r), Measure.map_prod_map _ _ (measurable_id.prodMap (psiR_meas r)) (measurable_id.prodMap (psiR_meas r)), Mea …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -54,9 +54,9 @@ section utrans
 variable {r : ℕ} {X : Type} [MeasurableSpace X]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [G.upper, G.strictUpper, StabilizerDisintegration.utc, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply]`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Rewrite using `[if_neg (ne_of_lt h), dif_pos h, zero_add]`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl, dif_neg (lt_irrefl _), add_zero, hA.2 i]`. Rewrite using `[if_neg (ne_of_gt h), dif_neg (not_lt.2 h.le), add_zero, hA.1 i j h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ut_of_mem {A : Matrix (Fin r) (Fin r) ℂ} (hA : A ∈ C2.UTset r) : G.upper (StabilizerDisintegration.utc A) = A := by
   ext i j
@@ -68,11 +68,11 @@ theorem ut_of_mem {A : Matrix (Fin r) (Fin r) ℂ} (hA : A ∈ C2.UTset r) : G.u
   · rw [if_neg (ne_of_gt h), dif_neg (not_lt.2 h.le), add_zero, hA.1 i j h]
 
 /- English proof (translation)
-Establish `hT : Matrix.BlockTriangular A id` using `fun i j hij => hA.1 i j hij`. Establish `hu : IsUnit A.det`. Rewrite using `[Matrix.det_of_upperTriangular hT]`. Simplify using `[hA.2]`. Use `haveI := Matrix.invertibleOfIsUnitDet A hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hTi : Matrix.BlockTriangular A⁻¹ id` using `Matrix.blockTriangular_inv_of_blockTriangular hT`. Use `⟨fun i j hij => hTi hij, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : (A * A⁻¹) i i = 1` using `by rw [Matrix.mul_nonsing_inv _ hu, Matrix.one_apply_eq]`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite `h1` using `[hA.2, one_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hA.1 i k h, zero_mul]`. Rewrite using `[hTi h, mul_zero]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ut_inv_mem {A : Matrix (Fin r) (Fin r) ℂ} (hA : A ∈ C2.UTset r) : A⁻¹ ∈ C2.UTset r := by
   have hT : Matrix.BlockTriangular A id := fun i j hij => hA.1 i j hij
@@ -92,7 +92,7 @@ theorem ut_inv_mem {A : Matrix (Fin r) (Fin r) ℂ} (hA : A ∈ C2.UTset r) : A�
   · simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => hA.1 i j hij)]`. Simplify using `[hA.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ut_det {A : Matrix (Fin r) (Fin r) ℂ} (hA : A ∈ C2.UTset r) : IsUnit A.det := by
   rw [Matrix.det_of_upperTriangular (fun i j hij => hA.1 i j hij)]
@@ -131,7 +131,7 @@ def uTransE (A : X → Matrix (Fin r) (Fin r) ℂ) (hA : ∀ x, A x ∈ C2.UTset
     · exact ((StabilizerDisintegration.UC.cont_upper.matrix_elem _ _).measurable).comp measurable_snd
 
 /- English proof (translation)
-Establish `h` using `MeasurePreserving.skew_product (f := id) (g := fun x u => StabilizerDisintegration.utc ((A x)⁻¹ * G.upper u)) (MeasurePreserving.id μ) (measurable_snd.comp (uTransE A hA hAc hAi).measurable) (Filter.Eventually.of_forall fun x => (StabilizerDisintegration.utLeft r _ (ut_inv_mem (h …`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uTransE_mp (A : X → Matrix (Fin r) (Fin r) ℂ) (hA : ∀ x, A x ∈ C2.UTset r) (hAc : ∀ i j, Measurable fun x => A x i j)
     (hAi : ∀ i j, Measurable fun x => (A x)⁻¹ i j)

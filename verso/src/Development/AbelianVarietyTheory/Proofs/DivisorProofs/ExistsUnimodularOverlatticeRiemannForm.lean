@@ -31,7 +31,7 @@ theorem imForm_apply {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (y w : Fin g �
     imForm Hm y w = (hermForm Hm y w).im := rfl
 
 /- English proof (translation)
-Simplify using `only [hermForm, dotProduct, Matrix.mulVec, star_sum, star_mul', star_star, Pi.star_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hH.apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem hermForm_swap_eq_star_of_isHermitian {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
     (y w : Fin g → ℂ) : hermForm Hm w y = star (hermForm Hm y w) := by
@@ -43,7 +43,7 @@ private theorem hermForm_swap_eq_star_of_isHermitian {g : ℕ} {Hm : Matrix (Fin
   ring
 
 /- English proof (translation)
-Rewrite using `[imForm_apply, imForm_apply, hermForm_swap_eq_star_of_isHermitian hH y w]`. Conclude with `Complex.conj_im _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imForm_swap {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (y w : Fin g → ℂ) :
     imForm Hm w y = - imForm Hm y w := by
@@ -51,7 +51,7 @@ theorem imForm_swap {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermi
   exact Complex.conj_im _
 
 /- English proof (translation)
-Establish `hI : star Complex.I = -Complex.I` using `Complex.conj_I`. Simplify using `only [imForm_apply, hermForm, star_smul, hI, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.I_re, Complex.I_im]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem imForm_I {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (y : Fin g → ℂ) :
     imForm Hm y (Complex.I • y) = - (hermForm Hm y y).re := by
@@ -61,7 +61,7 @@ theorem imForm_I {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (y : Fin g → ℂ)
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h1` using `hy (Complex.I • y)`. Rewrite `h1` using `[imForm_I]`. Establish `h2` using `hpos y h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem imForm_sepLeft {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ}
     (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) (y : Fin g → ℂ)
@@ -73,7 +73,7 @@ theorem imForm_sepLeft {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ}
   linarith
 
 /- English proof (translation)
-Unfold `LinearMap.BilinForm.Nondegenerate LinearMap.Nondegenerate`. Use `⟨fun y hy => imForm_sepLeft hpos y hy, fun y hy => imForm_sepLeft hpos y fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[imForm_swap hH w y, hy w, neg_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem imForm_nondegenerate {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
     (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) : (imForm Hm).Nondegenerate := by
@@ -86,17 +86,17 @@ end GlobalTheory.Overlattice
 namespace GlobalTheory.Overlattice
 
 /- English proof (translation)
-Establish `hself : ∀ x, B x x = 0` using `fun x => by have := hB x x; linarith`. Set `S : Set (Submodule ℤ V)` to `{M | ∀ a ∈ M, ∀ b ∈ M, ∃ n : ℤ, B a b = n}`. Establish `hchain : ∀ c ⊆ S, IsChain (· ≤ ·) c → ∀ y ∈ c, ∃ ub ∈ S, ∀ z ∈ c, z ≤ ub`. Introduce `c hcS hc y hy`. Use `⟨sSup c, fun a ha b hb => ?_, fun z hz => le_sSup hz⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : c.Nonempty` using `⟨y, hy⟩`. Take `⟨p, hp, hap⟩` from `(Submodule.mem_sSup_of_directed hne hc.directedOn).mp ha`. Take `⟨q, hq, hbq⟩` from `(Submodule.mem_sSup_of_directed hne hc.directedOn).mp hb`. Break down `hc.total hp hq with h | h` into its components or cases. Conclude with `hcS hq a (h hap) b hbq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `hcS hp a hap b (h hbq)`. Take `⟨Λ₁, hle, hmax⟩` from `zorn_le_nonempty₀ S hchain Λ hΛ`. Use `⟨Λ₁, hle, hmax.prop, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hM : Λ₁ ⊔ Submodule.span ℤ {x} ∈ S`. Introduce `a ha b hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, ha₁, a₂, ha₂, rfl⟩` from `Submodule.mem_sup.mp ha`. Take `⟨b₁, hb₁, b₂, hb₂, rfl⟩` from `Submodule.mem_sup.mp hb`. Take `⟨m, rfl⟩` from `Submodule.mem_span_singleton.mp ha₂`. Take `⟨k, rfl⟩` from `Submodule.mem_span_singleton.mp hb₂`. Take `⟨n₁, h₁⟩` from `hmax.prop a₁ ha₁ b₁ hb₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n₂, h₂⟩` from `hx b₁ hb₁`. Take `⟨n₃, h₃⟩` from `hx a₁ ha₁`. Establish `e : B (a₁ + m • x) (b₁ + k • x) = B a₁ b₁ + k * B a₁ x + m * B x b₁ + m * k * B x x`. Simplify using `only [← Int.cast_smul_eq_zsmul ℝ, map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨n₁ - k * n₃ + m * n₂, ?_⟩` and prove the remaining obligations. Rewrite using `[e, hself, hB x a₁, h₁, h₂, h₃]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hmax.2 hM le_sup_left (Submodule.mem_sup_right (Submodule.mem_span_singleton_self x))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_selfDual_overlattice {V : Type*} [AddCommGroup V] [Module ℝ V] (B : LinearMap.BilinForm ℝ V)
     (hB : ∀ x y, B y x = - B x y) (Λ : Submodule ℤ V) (hΛ : ∀ a ∈ Λ, ∀ b ∈ Λ, ∃ n : ℤ, B a b = n) :
@@ -136,31 +136,25 @@ theorem exists_selfDual_overlattice {V : Type*} [AddCommGroup V] [Module ℝ V] 
   exact hmax.2 hM le_sup_left (Submodule.mem_sup_right (Submodule.mem_span_singleton_self x))
 
 /- English proof (translation)
-Use `haveI : IsZLattice ℝ Λ := ⟨hsp⟩`. Use `haveI := ZLattice.module_finite ℝ Λ`. Use `haveI := ZLattice.module_free ℝ Λ`. Use `set b := Module.Free.chooseBasis ℤ Λ with hb_def`. Use `set e := b.ofZLatticeBasis ℝ Λ with he_def`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : ∀ i, e i = (b i : Fin g → ℂ)` using `fun i => b.ofZLatticeBasis_apply ℝ Λ i`. Establish `hG : ∀ i j, ∃ n : ℤ, imForm Hm (e j) (e i) = n` using `fun i j => by`. Rewrite using `[he, he]`. Conclude with `hint _ (b j).2 _ (b i).2`. Use `choose Gf hGe using hG`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set G : Matrix (Module.Free.ChooseBasisIndex ℤ Λ) (Module.Free.ChooseBasisIndex ℤ Λ) ℤ := Matrix.of Gf with hG_def`. Use `set GR : Matrix _ _ ℝ := (Int.castRingHom ℝ).mapMatrix G with hGR`. Establish `hGRe : ∀ i j, GR i j = imForm Hm (e j) (e i)` using `fun i j => by`. Rewrite using `[hGe]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `key : ∀ (c : _ → ℝ) i, imForm Hm (∑ j, c j • e j) (e i) = (Matrix.mulVec GR c) i`. Introduce `c i`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, hGRe]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hd : G.det ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Establish `h0' : GR.det = 0` using `by rw [hGR, ← RingHom.map_det, h0, map_zero]`. Take `⟨v, hv, hGv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0'`. Establish `hy : (∑ j, v j • e j) = 0`. Apply `imForm_sepLeft hpos` to reduce the goal to its premises.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0f : imForm Hm (∑ j, v j • e j) = 0` using `e.ext fun i => by`. Rewrite using `[key, hGv]`. Simplify using the standard rewrite rules. Introduce `w`. Rewrite using `[h0f]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `hv (funext fun j => Fintype.linearIndependent_iff.mp e.linearIndependent v hy j)`. Use `⟨G.det.natAbs, Int.natAbs_pos.mpr hd, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hm : ∀ i, ∃ n : ℤ, (Matrix.mulVec GR ⇑(e.repr x)) i = n` using `fun i => by`. Rewrite using `[← key, e.sum_repr x]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Conclude with `hx (e i) (by rw [he]; exact (b i).2)`. Use `choose m hm using hm`. Establish `hdc : ∀ j, ∃ k : ℤ, (G.det : ℝ) * e.repr x j = k`. Introduce `j`. Use `⟨(Matrix.mulVec G.adjugate m) j, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Matrix.mulVec GR ⇑(e.repr x) = fun i => (m i : ℝ)` using `funext hm`. Establish `h2 : Matrix.mulVec GR.adjugate (Matrix.mulVec GR ⇑(e.repr x)) = GR.det • ⇑(e.repr x)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `h3` using `congrFun h2 j`. Rewrite `h3` using `[h1, hGR, ← RingHom.map_adjugate, ← RingHom.map_det, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show (G.det : ℝ) * e.repr x j = _ from h3.symm]`. Simplify using `only [Matrix.mulVec, dotProduct, RingHom.mapMatrix_apply, Matrix.map_apply, Int.coe_castRingHom]`. Use `push_cast`. Both sides reduce to the same expression. Use `choose k hk using hdc`.
-
-Establish `hdx : G.det • x ∈ Λ`. Establish `hsum : G.det • x = ∑ j, k j • (b j : Fin g → ℂ)` using `by conv_lhs => rw [← e.sum_repr x]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← he, ← Int.cast_smul_eq_zsmul ℝ, ← Int.cast_smul_eq_zsmul ℝ, smul_smul, hk]`.
-
-Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (b j).2`. Break down `Int.natAbs_eq G.det with h | h` into its components or cases. Rewrite `hdx` using `[h, natCast_zsmul]`. Conclude with `hdx`.
-
-Rewrite `hdx` using `[h, neg_smul, natCast_zsmul, neg_mem_iff]`. Conclude with `hdx`.
+A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem_of_dual {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
     (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) (Λ : Submodule ℤ (Fin g → ℂ))
@@ -235,29 +229,25 @@ end GlobalTheory.Overlattice
 namespace GlobalTheory.Overlattice
 
 /- English proof (translation)
-Introduce `g Λ Hm hdisc hsp hH hpos hint`. Establish `hint' : ∀ a ∈ Λ, ∀ b ∈ Λ, ∃ n : ℤ, imForm Hm a b = n` using `fun a ha b hb => by`. Rewrite using `[imForm_apply]`. Conclude with `hint a ha b hb`. Take `⟨Λ₁, hle, hint₁, hdual₁⟩` from `exists_selfDual_overlattice (imForm Hm) (fun x y => imForm_swap hH x y) Λ hint'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hdisc`. Take `⟨N, hN, hNx⟩` from `exists_nsmul_mem_of_dual hH hpos Λ hsp hint'`. Establish `hNΛ₁ : ∀ x ∈ Λ₁, N • x ∈ Λ` using `fun x hx => hNx x fun l hl => hint₁ x hx l (hle hl)`. Establish `hdisc₁ : DiscreteTopology Λ₁`. Set `f : Λ₁ → Λ` to `fun x => ⟨N • (x : Fin g → ℂ), hNΛ₁ x x.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `DiscreteTopology.of_continuous_injective (f := f) ?_ ?_` and prove the remaining obligations. Conclude with `Continuous.subtype_mk (continuous_subtype_val.nsmul N) _`. Introduce `x y hxy`. Establish `hxy' : N • (x : Fin g → ℂ) = N • (y : Fin g → ℂ)` using `congrArg Subtype.val hxy`. Rewrite `hxy'` using `[← Nat.cast_smul_eq_nsmul ℝ, ← Nat.cast_smul_eq_nsmul ℝ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (smul_right_injective _ (by exact_mod_cast hN.ne') hxy')`. Establish `hsp₁ : Submodule.span ℝ (Λ₁ : Set (Fin g → ℂ)) = ⊤`. Rewrite using `[eq_top_iff, ← hsp]`. Conclude with `Submodule.span_mono hle`. Establish `hF : ∀ a b : Λ₁, ∃ n : ℤ, imForm Hm a b = n` using `fun a b => hint₁ a a.2 b b.2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `choose F hF using hF`. Establish `inj : Function.Injective (Int.cast : ℤ → ℝ)` using `Int.cast_injective`. Set `Ef : LinearMap.BilinForm ℤ Λ₁` to `LinearMap.mk₂ ℤ F (fun a a' b => inj (by`. Rewrite using `[Int.cast_add, ← hF, ← hF, ← hF, Submodule.coe_add, map_add, LinearMap.add_apply]))`. Use the proof step `(fun c a b => inj (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, Int.cast_mul, ← hF, ← hF, Submodule.coe_smul, ← Int.cast_smul_eq_zsmul ℝ, map_smul, LinearMap.smul_apply, smul_eq_mul]))`. Use the proof step `(fun a b b' => inj (by`. Rewrite using `[Int.cast_add, ← hF, ← hF, ← hF, Submodule.coe_add, map_add]))`. Use the proof step `(fun c a b => inj (by`. Rewrite using `[smul_eq_mul, Int.cast_mul, ← hF, ← hF, Submodule.coe_smul, ← Int.cast_smul_eq_zsmul ℝ, map_smul, smul_eq_mul]))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hEf : ∀ a b : Λ₁, (Ef a b : ℝ) = imForm Hm a b` using `fun a b => (hF a b).symm`. Establish `hnd` using `imForm_nondegenerate hH hpos`. Use `⟨Λ₁, Ef, N, hle, hdisc₁, hsp₁, fun a b => by rw [hEf, imForm_apply], ⟨?_, ?_⟩, hN, hNΛ₁⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : imForm Hm (a : Fin g → ℂ) = 0` using `LinearMap.ext_on hsp₁ fun w hw => by`. Use `congrArg (fun φ : Λ₁ →ₗ[ℤ] ℤ => ((φ ⟨w, hw⟩ : ℤ) : ℝ)) ha` as an intermediate fact. Simplify using `only [hEf, LinearMap.zero_apply, Int.cast_zero] at this`. Simplify using `using this`. Conclude with `Subtype.ext (imForm_sepLeft hpos a fun w => by rw [h0]; rfl)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `φ haveI : IsZLattice ℝ Λ₁ := ⟨hsp₁⟩ haveI := ZLattice.module_finite ℝ Λ₁ haveI := ZLattice.module_free ℝ Λ₁ set b := Module.Free.chooseBasis ℤ Λ₁ with hb_def set e := b.ofZLatticeBasis ℝ Λ₁ with he_def`. Establish `he : ∀ i, e i = (b i : Fin g → ℂ)` using `fun i => b.ofZLatticeBasis_apply ℝ Λ₁ i`. Use `set D := (imForm Hm).dualBasis hnd e with hD`. Use `set x : Fin g → ℂ := ∑ i, (φ (b i) : ℝ) • D i with hx_def`. Establish `hxe : ∀ j, imForm Hm x (e j) = φ (b j)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[hx_def, map_sum, LinearMap.sum_apply]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul, hD, LinearMap.BilinForm.apply_dualBasis_left, mul_ite, mul_one, mul_zero]`. Simplify using the standard rewrite rules. Establish `hmaps : ((imForm Hm x).restrictScalars ℤ).comp Λ₁.subtype = (Algebra.linearMap ℤ ℝ).comp φ` using `b.ext fun j => by`.
-
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.restrictScalars_apply, Algebra.linearMap_apply, ← he, hxe, eq_intCast]`. Establish `hxl : ∀ l : Λ₁, imForm Hm x l = φ l` using `fun l => by`. Use `LinearMap.congr_fun hmaps l` as an intermediate fact. Simplify using `using this`. Establish `hxmem : x ∈ Λ₁` using `hdual₁ x fun l hl => ⟨φ ⟨l, hl⟩, hxl ⟨l, hl⟩⟩`.
-
-Use `⟨⟨x, hxmem⟩, LinearMap.ext fun l => inj ?_⟩` and prove the remaining obligations. Rewrite using `[hEf]`. Conclude with `hxl l`.
+A detailed English derivation is pending.
 -/
 theorem exists_unimodular_overlattice : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ),
     DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → Hm.IsHermitian →

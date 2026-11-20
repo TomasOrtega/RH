@@ -15,13 +15,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.Hodge.WedgeFieldGeo
 
 /- English proof (translation)
-Introduce `hD hL hS hH1 hV hHopf hHF R _ A _ g hA hg hR`. Use `haveI : IsAbelianScheme A := hA`. Use `haveI : IsProper A.hom := IsAbelianScheme.proper`. Use `haveI : CompactSpace (Sp R) := by`. Unfold `Sp`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `infer_instance`. Use `haveI : CompactSpace A.left := QuasiCompact.compactSpace_of_compactSpace A.hom`. Take `⟨P, iP, hfin, ⟨S⟩⟩` from `exists_finite_sys A.hom`. Use `letI := iP`. Use `haveI := hfin`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : AllQIso (resSys A.hom S)` using `hD R A.left A.hom inferInstance P S`. Take `⟨h1, h2, hSt⟩` from `hL R _ _ _ _ (resSys A.hom S) hQ`. Establish `hStein : Stein (OSys A.hom S)` using `hSt.mp (hS R A g hA hg)`. Establish `hvb : VB R (H1 (OSys A.hom S)) g` using `vb_of_bijective (resSys A.hom S) h1 (hH1 R A g hA hg hR)`. Establish `hvan : ∀ n : ℕ, g ≤ n → Function.Exact (dn (OSys A.hom S) n) (dn (OSys A.hom S) (n + 1))` using `fun n hn => hV R A g hA hg hR P S n hn`.
-
-Establish `hh : Hopf (OSys A.hom S) (IsField R)` using `hHopf R A g hA hg P S`. Rewrite `hh` using `[eq_true hR]`. Conclude with `wedge_of_bijective (resSys A.hom S) h1 h2 (hHF R P (OSys A.hom S) g hR hStein hvb hvan hh)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wedgeField_of_field :
     DescentSt → LowSt → SteinSt → H1StructureFieldDim → VanSt → HopfSt → HopfFieldSt → WedgeFieldSt := by

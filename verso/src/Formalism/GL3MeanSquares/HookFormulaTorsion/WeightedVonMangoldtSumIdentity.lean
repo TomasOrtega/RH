@@ -6,13 +6,13 @@ open Finset ArithmeticFunction
 namespace Formalism.HermitianLattices.ZeroFreeRegionGL2
 
 /- English proof (translation)
-Introduce `d N p`. Establish `r1 : (1 : QuadraticAlgebra ℤ (-(((d + 1) / 4 : ℕ) : ℤ)) 1).re = 1` using `rfl`. Establish `i1 : (1 : QuadraticAlgebra ℤ (-(((d + 1) / 4 : ℕ) : ℤ)) 1).im = 0` using `rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, v, ⟨a, ha⟩, ⟨b, hb⟩, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨u, v⟩, ⟨⟨a, b⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify `ha` using `[r1]`. Simplify `hb` using `[i1]`. Rewrite using `[QuadraticAlgebra.norm_def, h]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨π, ⟨w, hw⟩, h⟩`. Establish `h1` using `congrArg QuadraticAlgebra.re hw`. Establish `h2` using `congrArg QuadraticAlgebra.im hw`. Use `⟨π.re, π.im, ⟨w.re, by simpa [r1] using h1⟩, ⟨w.im, by simpa [i1] using h2⟩, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h, QuadraticAlgebra.norm_def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem is_norm_one_iff : IsNormOneIff := by
   intro d N p
@@ -32,17 +32,17 @@ theorem is_norm_one_iff : IsNormOneIff := by
     rw [← h, QuadraticAlgebra.norm_def]; ring
 
 /- English proof (translation)
-Introduce `q _ χ a w M ha hw hM`. Unfold `Gchi`. Establish `hsub : Icc 1 ⌊a / w⌋₊ ⊆ Icc 1 M` using `Icc_subset_Icc le_rfl hM`. Rewrite using `[← Finset.sum_subset hsub (f := fun n => ((Λ n : ℝ) : ℂ) * χ (n : ZMod q) * ((max (a / n - w) 0 : ℝ) : ℂ))]`. Rewrite using `[mul_add, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n hn`. Rewrite `hn` using `[mem_Icc]`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn.1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : (n : ℝ) ≤ a / w` using `(Nat.le_floor_iff (by positivity)).1 hn.2`. Establish `h1 : w ≤ a / n` using `by rw [le_div_iff₀ hn0]; rw [le_div_iff₀ hw] at hle; linarith`. Rewrite using `[max_eq_left (by linarith)]`. Establish `: w * (a / w / n - 1) = a / n - w` using `by field_simp`. Rewrite using `[← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `: (w : ℂ) ≠ 0` using `by exact_mod_cast hw.ne' push_cast; field_simp`. Introduce `n hn hn'`. Rewrite `hn`, `hn'` using `[mem_Icc]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn.1`. Establish `: a / w < n`. Assume the negation of the conclusion as `hc`. Conclude with `hn' ⟨hn.1, Nat.le_floor (not_lt.1 hc)⟩`. Establish `h1 : a / n ≤ w` using `by rw [div_le_iff₀ hn0]; rw [div_lt_iff₀ hw] at this; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[max_eq_right (by linarith)]; simp`.
+A detailed English derivation is pending.
 -/
 theorem weighted_sum_identity : WGIdentity := by
   intro q _ χ a w M ha hw hM
@@ -72,17 +72,17 @@ theorem weighted_sum_identity : WGIdentity := by
     rw [max_eq_right (by linarith)]; simp
 
 /- English proof (translation)
-Introduce `q _ χ x z hx hxz`. Unfold `Gchi Sz tailL cN`. Establish `hsub : Icc 1 ⌊x⌋₊ ⊆ Icc 1 ⌊z⌋₊` using `Icc_subset_Icc le_rfl (Nat.floor_le_floor hxz)`. Establish `e1 : (∑ n ∈ Icc 1 ⌊x⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod q) * ((x / n - 1 : ℝ) : ℂ)) = ∑ n ∈ Icc 1 ⌊z⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod q) * ((x / n - min 1 (x / n) : ℝ) : ℂ)`. Rewrite using `[← Finset.sum_subset hsub]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n hn`. Rewrite `hn` using `[mem_Icc]`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn.1`. Establish `hle : (n : ℝ) ≤ x` using `(Nat.le_floor_iff hx.le).1 hn.2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[min_eq_left ((one_le_div hn0).2 hle)]`. Introduce `n hn hn'`. Rewrite `hn`, `hn'` using `[mem_Icc]`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn.1`. Establish `: x < n`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hn' ⟨hn.1, Nat.le_floor (not_lt.1 hc)⟩`. Rewrite using `[min_eq_right ((div_le_one hn0).2 this.le)]`. Simplify using the standard rewrite rules. Rewrite using `[e1]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∀ n ∈ Icc 1 ⌊z⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod q) * ((x / n - min 1 (x / n) : ℝ) : ℂ) = (x : ℂ) * (((Λ n : ℝ) : ℂ) * χ (n : ZMod q) / (n : ℂ)) - ((Λ n * min 1 (x / n) : ℝ) : ℂ) * χ (n : ZMod q)`. Introduce `n _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_sub_distrib, ← Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem finite_splitting_of_group : GFiniteSplit := by
   intro q _ χ x z hx hxz
@@ -112,17 +112,15 @@ theorem finite_splitting_of_group : GFiniteSplit := by
   ring
 
 /- English proof (translation)
-Introduce `P B J S V t ht hS hlt`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hcov : P ⊆ B ∪ (Finset.univ.biUnion fun j => P.filter fun q => t < |S j q|)`. Introduce `q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hB : q ∈ B`. Conclude with `mem_union_left _ hB`. Take `⟨j, hj⟩` from `hcon q hq hB`. Conclude with `mem_union_right _ (mem_biUnion.2 ⟨j, mem_univ _, mem_filter.2 ⟨hq, hj⟩⟩)`. Establish `hj : ∀ j, (((P.filter fun q => t < |S j q|).card : ℕ) : ℝ) ≤ V / t ^ 2 * P.card`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `j`. Establish `h1 : (((P.filter fun q => t < |S j q|).card : ℕ) : ℝ) * t ^ 2 ≤ ∑ q ∈ P, S j q ^ 2`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `q hq`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(mem_filter.1 hq).2` as an intermediate fact. Rewrite using `[← sq_abs (S j q)]`. Conclude with `pow_le_pow_left₀ ht.le this.le 2`. Use `_ ≤ ∑ q ∈ P, S j q ^ 2 := Finset.sum_le_sum_of_subset_of_nonneg (filter_subset _ _) (fun _ _ _ => sq_nonneg _)`. Establish `h2` using `h1.trans (hS j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ (by positivity)]`. Conclude with `h2`. Establish `hc : (P.card : ℝ) ≤ B.card + ∑ j : Fin J, (((P.filter fun q => t < |S j q|).card : ℕ) : ℝ)`. Use `(Finset.card_le_card hcov).trans ((card_union_le _ _).trans (Nat.add_le_add_left card_biUnion_le _))` as an intermediate fact. Conclude with `this` after adjusting the coercions.
-
-Establish `: ∑ j : Fin J, (((P.filter fun q => t < |S j q|).card : ℕ) : ℝ) ≤ J * (V / t ^ 2 * P.card)`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem markov_discard_bound : MarkovDiscard := by
   intro P B J S V t ht hS hlt
@@ -158,11 +156,11 @@ theorem markov_discard_bound : MarkovDiscard := by
   nlinarith
 
 /- English proof (translation)
-Introduce `d N p h`. Establish `key : ((p : ℤ) ≡ 1 [ZMOD (N : ℤ)])`. Take `⟨u, v, ⟨a, ha⟩, ⟨b, hb⟩, h⟩` from `h`. Establish `hu : u = 1 + N * a` using `by linarith`. Rewrite using `[h, hu, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Int.modEq_iff_dvd.2` to reduce the goal to its premises. Use `⟨-(2 * a + N * a ^ 2 + b + N * a * b + (((d + 1) / 4 : ℕ) : ℤ) * N * b ^ 2), ?_⟩` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `⟨key, fun χ => ?_⟩` and prove the remaining obligations. Establish `: ((p : ℕ) : ZMod N) = 1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(ZMod.intCast_eq_intCast_iff (p : ℤ) 1 N).2 key` as an intermediate fact. Simplify using `using this`. Rewrite using `[this, map_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_one_congruence : NormOneCongr := by
   intro d N p h
@@ -180,17 +178,17 @@ theorem norm_one_congruence : NormOneCongr := by
   rw [this, map_one]
 
 /- English proof (translation)
-Introduce `y q₁ d hq hd hM`. Establish `h4 : 4 * ((d + 1) / 4) = d + 1` using `by omega`. Establish `main : ∀ p : ℕ, p.Prime → p ∣ (d + 1) / 4 → SplitsIn d p`. Introduce `p hp hdiv`. Use `Fact.mk hp` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `refine ⟨0, 1, zero_ne_one, ?_, ?_⟩ <;> simp [(ZMod.natCast_eq_zero_iff _ _).2 hdiv]`. Establish `odd : ∀ p : ℕ, p.Prime → p ∣ d + 1 → p ∣ (d + 1) / 4`. Introduce `p hp hdiv`. Distinguish the cases in `h2 : p = 2`. Substitute `h2` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hdiv` using `[← h4]`. Break down `(Nat.Prime.dvd_mul hp).1 hdiv with h | h` into its components or cases. It suffices to derive a contradiction. Establish `: p ∣ 2 ^ 2` using `by simpa using h`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 (hp.dvd_of_dvd_pow this))`. Conclude with `h`. Use `⟨main _ hq (odd _ hq ((Dvd.intro _ rfl).trans hM)), fun p hp hpy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h2 : p = 2`. Substitute `h2; exact main 2 hp (by omega)` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `main _ hp (odd _ hp _)` to reduce the goal to its premises. Use `Dvd.dvd.trans ?_ hM` and prove the remaining obligations. Apply `Dvd.dvd.mul_left` to reduce the goal to its premises. Apply `Finset.dvd_prod_of_mem (fun p => p)` to reduce the goal to its premises. Simplify using `only [mem_filter, mem_Icc]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨?_, Nat.le_floor hpy⟩, hp⟩` and prove the remaining obligations. Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem class_splits : ClassSplit := by
   intro y q₁ d hq hd hM
@@ -221,15 +219,13 @@ theorem class_splits : ClassSplit := by
     have := hp.two_le; omega
 
 /- English proof (translation)
-Introduce `y q₁ hy hq`. Unfold `oddM`. Establish `h1 : (∏ p ∈ (Icc 3 ⌊y⌋₊).filter Nat.Prime, p) ≤ primorial ⌊y⌋₊`. Unfold `primorial`. Apply `Finset.prod_le_prod_of_subset_of_one_le'` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p hp`. Simplify using `only [mem_filter, mem_Icc, mem_range] at hp ⊢`. Conclude with `⟨by omega, hp.2⟩`. Introduce `p hp _`. Conclude with `(mem_filter.1 hp).2.one_lt.le`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ((∏ p ∈ (Icc 3 ⌊y⌋₊).filter Nat.Prime, p : ℕ) : ℝ) ≤ Real.exp (2 * y)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h1.trans (primorial_le_four_pow _)` after adjusting the coercions. Use `_ = (4 : ℝ) ^ (⌊y⌋₊ : ℝ) := by push_cast; rw [Real.rpow_natCast]`. Use `_ ≤ (4 : ℝ) ^ y := Real.rpow_le_rpow_of_exponent_le (by norm_num) (Nat.floor_le hy)`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Real.exp (Real.log 4 * y) := by rw [Real.rpow_def_of_pos (by norm_num)]`. Use `_ ≤ Real.exp (2 * y) := by`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `: Real.log 4 ≤ 2`. Establish `: Real.log 4 = 2 * Real.log 2`.
-
-Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem primorial_upper_bound : PrimorialBound := by
   intro y q₁ hy hq
@@ -262,15 +258,15 @@ theorem primorial_upper_bound : PrimorialBound := by
     _ = Real.exp (3 * y) := by rw [← Real.exp_add]; ring_nf
 
 /- English proof (translation)
-Introduce `q _ χ a w w' ha hw hww`. Establish `hw' : 0 < w'` using `lt_of_lt_of_le hw hww`. Establish `hW : WGIdentity` using `weighted_sum_identity`. Establish `hfl : ⌊a / w'⌋₊ ≤ ⌊a / w⌋₊` using `Nat.floor_le_floor (div_le_div_of_nonneg_left ha.le hw hww)`. Rewrite using `[hW q χ a w' ⌊a / w⌋₊ ha hw' hfl, hW q χ a w ⌊a / w⌋₊ ha hw le_rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_sub_add_right_eq_sub, ← Finset.sum_sub_distrib]`. Establish `hpsi : Chebyshev.psi (a / w) = ∑ n ∈ Icc 1 ⌊a / w⌋₊, Λ n`. Unfold `Chebyshev.psi`. Both sides reduce to the same expression. Rewrite using `[hpsi, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun n _ => ?_)` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul, norm_mul, ← Complex.ofReal_sub, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg vonMangoldt_nonneg]`. Establish `h1 : ‖χ (n : ZMod q)‖ ≤ 1` using `DirichletCharacter.norm_le_one χ _`. Establish `h2 : ‖max (a / n - w') 0 - max (a / n - w) 0‖ ≤ w' - w`. Use `abs_max_sub_max_le_abs (a / n - w') (a / n - w) 0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.norm_eq_abs]`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[show a / n - w' - (a / n - w) = -(w' - w) by ring, abs_neg, abs_of_nonneg (by linarith)]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul_of_nonneg_left h1 vonMangoldt_nonneg) h2 (norm_nonneg _)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Use `_ = Λ n * (w' - w) := by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weighted_sum_lipschitz : WGLipschitz := by
   intro q _ χ a w w' ha hw hww
@@ -298,11 +294,11 @@ theorem weighted_sum_lipschitz : WGLipschitz := by
     _ = Λ n * (w' - w) := by ring
 
 /- English proof (translation)
-Introduce `q₁ d _ _ h1 h2 hdvd`. Establish `o1 : Odd q₁` using `Nat.odd_iff.2 (by omega)`. Establish `o2 : Odd d` using `Nat.odd_iff.2 (by omega)`. Establish `h : jacobiSym (-(d : ℤ)) q₁ = 1`. Establish `: (-(d : ℤ)) % (q₁ : ℤ) = 1 % (q₁ : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Int.modEq_iff_dvd.2` to reduce the goal to its premises. Establish `: ((q₁ : ℕ) : ℤ) ∣ ((d + 1 : ℕ) : ℤ)` using `by exact_mod_cast hdvd`. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[jacobiSym.mod_left' this, jacobiSym.one_left]`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[jacobiSym.neg _ o1, ZMod.χ₄_nat_three_mod_four (by omega)]`. Rewrite using `[jacobiSym.neg _ o2, ZMod.χ₄_nat_three_mod_four (by omega), jacobiSym.quadratic_reciprocity_three_mod_four (by omega) (by omega)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem type_sign_formula : TypeSign := by
   intro q₁ d _ _ h1 h2 hdvd
@@ -322,13 +318,13 @@ theorem type_sign_formula : TypeSign := by
   linarith
 
 /- English proof (translation)
-Establish `hsub : Icc 1 ⌊a / w⌋₊ ⊆ Icc 1 M` using `Icc_subset_Icc le_rfl hM`. Rewrite using `[← Finset.sum_subset hsub (f := fun n => Λ n * max (a / n - w) 0), Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n hn`. Rewrite `hn` using `[mem_Icc]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn.1`. Establish `hle : (n : ℝ) ≤ a / w` using `(Nat.le_floor_iff (by positivity)).1 hn.2`. Establish `h1 : w ≤ a / n` using `by rw [le_div_iff₀ hn0]; rw [le_div_iff₀ hw] at hle; linarith`. Rewrite using `[max_eq_left (by linarith)]`. Establish `: w * (a / w / n - 1) = a / n - w` using `by field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Introduce `n hn hn'`. Rewrite `hn`, `hn'` using `[mem_Icc]`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn.1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: a / w < n`. Assume the negation of the conclusion as `hc`. Conclude with `hn' ⟨hn.1, Nat.le_floor (not_lt.1 hc)⟩`. Establish `h1 : a / n ≤ w` using `by rw [div_le_iff₀ hn0]; rw [div_lt_iff₀ hw] at this; linarith`. Rewrite using `[max_eq_right (by linarith)]; simp`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weighted_von_mangoldt_sum_identity (a w : ℝ) (M : ℕ) (ha : 0 < a) (hw : 0 < w) (hM : ⌊a / w⌋₊ ≤ M) :
     w * (∑ n ∈ Icc 1 ⌊a / w⌋₊, Λ n * (a / w / n - 1)) = ∑ n ∈ Icc 1 M, Λ n * max (a / n - w) 0 := by
@@ -353,19 +349,19 @@ theorem weighted_von_mangoldt_sum_identity (a w : ℝ) (M : ℕ) (ha : 0 < a) (h
     rw [max_eq_right (by linarith)]; simp
 
 /- English proof (translation)
-Introduce `a w w' ha hw hww`. Establish `hw' : 0 < w'` using `lt_of_lt_of_le hw hww`. Establish `hfl : ⌊a / w'⌋₊ ≤ ⌊a / w⌋₊` using `Nat.floor_le_floor (div_le_div_of_nonneg_left ha.le hw hww)`. Unfold `G1`. Establish `e1` using `weighted_von_mangoldt_sum_identity a w' ⌊a / w⌋₊ ha hw' hfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e2` using `weighted_von_mangoldt_sum_identity a w ⌊a / w⌋₊ ha hw le_rfl`. Establish `hpsi : Chebyshev.psi (a / w) = ∑ n ∈ Icc 1 ⌊a / w⌋₊, Λ n`. Unfold `Chebyshev.psi`. Both sides reduce to the same expression. Establish `hS : |(∑ n ∈ Icc 1 ⌊a / w⌋₊, Λ n * max (a / n - w') 0) - ∑ n ∈ Icc 1 ⌊a / w⌋₊, Λ n * max (a / n - w) 0| ≤ Chebyshev.psi (a / w) * (w' - w)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_sub_distrib, hpsi, Finset.sum_mul]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun n _ => ?_)` and prove the remaining obligations. Rewrite using `[← mul_sub, abs_mul, abs_of_nonneg vonMangoldt_nonneg]`. Apply `mul_le_mul_of_nonneg_left _ vonMangoldt_nonneg` to reduce the goal to its premises. Use `(abs_max_sub_max_le_abs (a / n - w') (a / n - w) 0).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show a / n - w' - (a / n - w) = -(w' - w) by ring, abs_neg, abs_of_nonneg (by linarith)]`. Establish `hlog : |a * (Real.log (a / w) - Real.log (a / w'))| ≤ a / w * (w' - w)`. Rewrite using `[Real.log_div ha.ne' hw.ne', Real.log_div ha.ne' hw'.ne']`. Establish `h0 : 0 ≤ Real.log w' - Real.log w` using `sub_nonneg.2 (Real.log_le_log hw hww)`. Establish `h1 : Real.log w' - Real.log w ≤ (w' - w) / w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.log_div hw'.ne' hw.ne']`. Use `Real.log_le_sub_one_of_pos (div_pos hw' hw)` as an intermediate fact. Establish `e : w' / w - 1 = (w' - w) / w` using `by field_simp`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[show Real.log a - Real.log w - (Real.log a - Real.log w') = Real.log w' - Real.log w by ring, abs_of_nonneg (mul_nonneg ha.le h0)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmain : w' * ((∑ n ∈ Icc 1 ⌊a / w'⌋₊, Λ n * (a / w' / n - 1)) - a / w' * (Real.log (a / w') - 1 - Real.eulerMascheroniConstant)) - w * ((∑ n ∈ Icc 1 ⌊a / w⌋₊, Λ n * (a / w / n - 1)) - a / w * (Real.log (a / w) - 1 - Real.eulerMascheroniConstant)) = ((∑ n ∈ Icc 1 ⌊a / w⌋₊, Λ n * m …`. Rewrite using `[← e1, ← e2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hmain, add_mul]`. Conclude with `(abs_add_le _ _).trans (add_le_add hS hlog)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_one_sum_lipschitz : WeightedSumLipschitzTrivial := by
   intro a w w' ha hw hww
@@ -405,27 +401,25 @@ theorem weight_one_sum_lipschitz : WeightedSumLipschitzTrivial := by
   exact (abs_add_le _ _).trans (add_le_add hS hlog)
 
 /- English proof (translation)
-Introduce `y z q₁ hy hq h8 hz`. Use `set M := oddM y q₁ with hMdef`. Establish `hMpf : ∀ p : ℕ, p.Prime → p ∣ M → p = q₁ ∨ (3 ≤ p ∧ (p : ℝ) ≤ y)`. Introduce `p hp hdiv`. Break down `(Nat.Prime.dvd_mul hp).1 hdiv with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inl ((Nat.prime_dvd_prime_iff_eq hp hq).1 h)`. Take `⟨r, hr, hpr⟩` from `(Prime.dvd_finsetProd_iff hp.prime _).1 h`. Simplify using `only [mem_filter, mem_Icc] at hr`. Establish `: p = r` using `(Nat.prime_dvd_prime_iff_eq hp hr.2).1 hpr`. Substitute `this` using the available equality.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Prove the second alternative.
 
-Conclude with `Or.inr ⟨hr.1.1, (Nat.le_floor_iff (by linarith)).1 hr.1.2⟩`. Establish `hMpos : 0 < M`. Apply `Nat.mul_pos hq.pos` to reduce the goal to its premises. Conclude with `Finset.prod_pos fun p hp => (mem_filter.1 hp).2.pos`. Establish `hcop : Nat.Coprime 16 M`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[show (16 : ℕ) = 2 ^ 4 by norm_num]`. Apply `Nat.Coprime.pow_left` to reduce the goal to its premises. Rewrite using `[Nat.Prime.coprime_iff_not_dvd Nat.prime_two]`. Introduce `h`. Break down `hMpf 2 Nat.prime_two h with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Take `⟨a₀, h16, hM⟩` from `Nat.chineseRemainder hcop 7 (M - 1)`. Establish `h16' : a₀ % 16 = 7` using `h16`. Establish `hM' : M ∣ a₀ + 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: a₀ + 1 ≡ (M - 1) + 1 [MOD M]` using `Nat.ModEq.add_right 1 hM`. Rewrite `this` using `[Nat.sub_add_cancel hMpos]`. Conclude with `(Nat.modEq_zero_iff_dvd).1 (this.trans (by simp [Nat.ModEq]))`. Establish `hcM : a₀.Coprime M`. Establish `: Nat.Coprime a₀ (a₀ + 1)` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Nat.Coprime.coprime_dvd_right hM' this`. Establish `hc16 : a₀.Coprime 16`. Rewrite using `[show (16 : ℕ) = 2 ^ 4 by norm_num]`. Apply `Nat.Coprime.pow_right` to reduce the goal to its premises. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd Nat.prime_two]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨a₀, h16', hM', Nat.Coprime.mul_right hc16 hcM, by omega, Dvd.dvd.mul_right (by norm_num) _, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp hdiv`. Break down `(Nat.Prime.dvd_mul hp).1 hdiv with h | h` into its components or cases. Establish `: p ∣ 2 ^ 4` using `by simpa using h`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Use `(Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 (hp.dvd_of_dvd_pow this)` as an intermediate fact. Substitute `this` using the available equality. Use `left`. Conclude with `hy` after adjusting the coercions. Break down `hMpf p hp h with h | h` into its components or cases.
+Prove the second alternative. Prove the first alternative. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Conclude with `Or.inr hz`. Conclude with `Or.inl h.2`. Introduce `d hd`. Establish `hd' : d ≡ a₀ [MOD 16 * M]` using `hd`.
-
-Establish `d16 : d ≡ a₀ [MOD 16]` using `Nat.ModEq.of_mul_right M hd'`. Establish `dM : d ≡ a₀ [MOD M]` using `Nat.ModEq.of_mul_left 16 hd'`. Use `⟨d16.trans h16, ?_⟩` and prove the remaining obligations. Conclude with `(Nat.modEq_zero_iff_dvd).1 ((Nat.ModEq.add_right 1 dM).trans ((Nat.modEq_zero_iff_dvd).2 hM'))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem class_admissible : ClassAdmissible := by
   intro y z q₁ hy hq h8 hz
@@ -481,11 +475,11 @@ theorem class_admissible : ClassAdmissible := by
     exact (Nat.modEq_zero_iff_dvd).1 ((Nat.ModEq.add_right 1 dM).trans ((Nat.modEq_zero_iff_dvd).2 hM'))
 
 /- English proof (translation)
-Introduce `hpsi`. Use `⟨fun q _ χ a w w' ha hw hww => ?_, fun a w w' ha hw hww => ?_⟩` and prove the remaining obligations. Use `(weighted_sum_lipschitz q χ a w w' ha hw hww).trans ?_` and prove the remaining obligations. Establish `h1` using `hpsi (a / w) (by positivity)`. Establish `h2 : 0 ≤ a / w` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_le_mul_of_nonneg_right _ (by linarith)` to reduce the goal to its premises. Rewrite using `[mul_div_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(weight_one_sum_lipschitz a w w' ha hw hww).trans ?_` and prove the remaining obligations. Establish `h1` using `hpsi (a / w) (by positivity)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `mul_le_mul_of_nonneg_right _ (by linarith)` to reduce the goal to its premises. Rewrite using `[mul_div_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem character_sum_of_hypothesis : CharacterSumLipschitzOfChebyshev := by
   intro hpsi
@@ -501,17 +495,17 @@ theorem character_sum_of_hypothesis : CharacterSumLipschitzOfChebyshev := by
     rw [mul_div_assoc]; linarith
 
 /- English proof (translation)
-Introduce `t θ q _ n`. Distinguish the cases in `hu : IsUnit (n : ZMod (t * q))`. Unfold `tw`. Rewrite using `[MulChar.mul_apply]`. Take `⟨u, hu'⟩` from `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hu', DirichletCharacter.changeLevel_eq_cast_of_dvd, DirichletCharacter.changeLevel_eq_cast_of_dvd, hu']`. Establish `h1 : (ZMod.cast ((n : ZMod (t * q))) : ZMod t) = (n : ZMod t)`. Establish `: (ZMod.castHom (Dvd.intro q rfl : t ∣ t * q) (ZMod t)) (n : ZMod (t*q)) = (n : ZMod t)` using `map_natCast _ n`. Simplify using `using this`. Establish `h2 : (ZMod.cast ((n : ZMod (t * q))) : ZMod q) = (n : ZMod q)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `: (ZMod.castHom (Dvd.intro_left t rfl : q ∣ t * q) (ZMod q)) (n : ZMod (t*q)) = (n : ZMod q)` using `map_natCast _ n`. Simplify using `using this`. Rewrite using `[h1, h2]`. Use `congr 1`. Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[qc, legendreSym]`. Rewrite using `[MulChar.map_nonunit _ hu]`. Establish `hc : ¬ n.Coprime (t * q)` using `fun h => hu ((ZMod.isUnit_iff_coprime n _).2 h)`. Distinguish the cases in `h1 : n.Coprime t`. Establish `h2 : ¬ n.Coprime q` using `fun h => hc (Nat.Coprime.mul_right h1 h)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `: jacobiSym (n : ℤ) q = 0`. Establish `: NeZero q` using `⟨(Fact.out : q.Prime).ne_zero⟩`. Rewrite using `[jacobiSym.eq_zero_iff_not_coprime]`. Simplify `h2` using `[Int.gcd_natCast_natCast]`. Simplify using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `: θ (n : ZMod t) = 0` using `MulChar.map_nonunit _ (fun h => h1 ((ZMod.isUnit_iff_coprime n _).1 h))`. Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem twist_evaluation_formula : TwEval := by
   intro t θ q _ n
@@ -543,35 +537,31 @@ theorem twist_evaluation_formula : TwEval := by
       simp [this]
 
 /- English proof (translation)
-Introduce `d p hp hd`. Establish `h4 : 4 * ((d + 1) / 4) = d + 1` using `by omega`. Use `⟨fun hp2 => ?_, ?_⟩` and prove the remaining obligations. Use `Fact.mk hp` as an intermediate fact. Establish `h4' : (4 : ZMod p) * (((d + 1) / 4 : ℕ) : ZMod p) = (d : ZMod p) + 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (Nat.cast : ℕ → ZMod p) h4` after adjusting the coercions. Establish `two : (2 : ZMod p) ≠ 0`. Introduce `h`. Establish `: ((2 : ℕ) : ZMod p) = 0` using `by exact_mod_cast h`. Rewrite `this` using `[ZMod.natCast_eq_zero_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hp2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 this)`. Establish `four : (4 : ZMod p) ≠ 0`. Establish `: (4 : ZMod p) = 2 * 2` using `by norm_num`. Rewrite using `[this]`. Conclude with `mul_ne_zero two two`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym]`. Establish `cast : (((-(d : ℤ)) : ℤ) : ZMod p) = -(d : ZMod p)` using `by push_cast; rfl`. Unfold `SplitsIn`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, s, hrs, hr, hs⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sqr : (2 * r - 1) * (2 * r - 1) = -(d : ZMod p)` using `by linear_combination 4 * hr - h4'`. Establish `sqs : (2 * s - 1) * (2 * s - 1) = -(d : ZMod p)` using `by linear_combination 4 * hs - h4'`. Establish `hne : (((-(d : ℤ)) : ℤ) : ZMod p) ≠ 0`. Rewrite using `[cast]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `sqr`, `sqs` using `[h0]`. Establish `a` using `mul_self_eq_zero.1 sqr`. Establish `b` using `mul_self_eq_zero.1 sqs`. Apply `hrs` to reduce the goal to its premises. Establish `: 2 * (r - s) = 0` using `by linear_combination a - b`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `absurd h two`. Conclude with `sub_eq_zero.1 h`. Rewrite using `[legendreSym.eq_one_iff p hne, cast]`. Conclude with `⟨2 * r - 1, sqr.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Establish `hne : (((-(d : ℤ)) : ℤ) : ZMod p) ≠ 0`. Introduce `h0`. Rewrite using `[(legendreSym.eq_zero_iff p _).2 h0] at h; exact absurd h (by norm_num)`. Take `⟨t, ht⟩` from `(legendreSym.eq_one_iff p hne).1 h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ht`, `hne` using `[cast]`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (by simpa using ht)`. Establish `hr2 : 2 * ((1 + t) / 2) = 1 + t` using `by field_simp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hs2 : 2 * ((1 - t) / 2) = 1 - t` using `by field_simp`. Use `⟨(1 + t) / 2, (1 - t) / 2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `he`. Establish `e : 1 + t = 1 - t` using `by rw [← hr2, ← hs2, he]`. Establish `: 2 * t = 0` using `by linear_combination e`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `two h`. Conclude with `ht0 h`. Apply `(mul_eq_zero.1 (?_ : (4 : ZMod p) * _ = 0)).resolve_left four` to reduce the goal to its premises. Take the linear combination `(2 * ((1 + t) / 2) + t - 1) * hr2 + h4' - ht`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `(mul_eq_zero.1 (?_ : (4 : ZMod p) * _ = 0)).resolve_left four` to reduce the goal to its premises. Take the linear combination `(2 * ((1 - t) / 2) - t - 1) * hs2 + h4' - ht`. Unfold `SplitsIn`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, -, -, hr, -⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Establish `hodd : ((d + 1) / 4) % 2 = 1` using `by omega`. Establish `: (((d + 1) / 4 : ℕ) : ZMod 2) = 1`. Rewrite using `[← ZMod.natCast_mod, hodd]`. Both sides reduce to the same expression.
-
-Rewrite `hr` using `[this]`. Use `revert hr`. Use `revert r`. Evaluate the decidable proposition. Introduce `h`.
-
-Establish `: (((d + 1) / 4 : ℕ) : ZMod 2) = 0` using `(ZMod.natCast_eq_zero_iff _ _).2 (by omega)`. Conclude with `⟨0, 1, by decide, by simp [this], by simp [this]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem splits_iff_jacobi_symbol : SplitsIffJacobi := by
   intro d p hp hd
@@ -643,11 +633,11 @@ theorem splits_iff_jacobi_symbol : SplitsIffJacobi := by
       exact ⟨0, 1, by decide, by simp [this], by simp [this]⟩
 
 /- English proof (translation)
-Introduce `c v lam hc hv hl`. Establish `hs` using `Real.sqrt_nonneg v`. Establish `hsq : Real.sqrt v * Real.sqrt v = v` using `Real.mul_self_sqrt hv`. Break down `le_total (Real.sqrt v) lam with h | h` into its components or cases. Establish `: Real.exp (-c * v / (lam + Real.sqrt v)) ≤ Real.exp (-c * v / (2 * lam))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity)]`. Use polynomial arithmetic with `[mul_nonneg hc.le hv, mul_nonneg (mul_nonneg hc.le hv) (sub_nonneg.mpr h)]`. Combine the linear relations using `[Real.exp_pos (-c * Real.sqrt v / 2)]`. Establish `: Real.exp (-c * v / (lam + Real.sqrt v)) ≤ Real.exp (-c * Real.sqrt v / 2)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity)]`. Use polynomial arithmetic with `[mul_nonneg hc.le hs, mul_nonneg (mul_nonneg hc.le hs) (sub_nonneg.mpr h)]`. Combine the linear relations using `[Real.exp_pos (-c * v / (2 * lam))]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exponential_sum_split : ExpSplit := by
   intro c v lam hc hv hl
@@ -666,9 +656,9 @@ theorem exponential_sum_split : ExpSplit := by
     linarith [Real.exp_pos (-c * v / (2 * lam))]
 
 /- English proof (translation)
-Introduce `c₁ Q q _ χ hQ hc hbox hreal`. Use `⟨by simp, by simp, ?_⟩` and prove the remaining obligations. Introduce `s hs hz`. It suffices to derive a contradiction. Establish `him` using `hreal s hs hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : 1 - c₁ / Real.log ((q : ℝ) * (|s.im| + 2)) ≤ s.re` using `hs`. Rewrite `h1` using `[him]`. Establish `h2 : (q : ℝ) * (|(0:ℝ)| + 2) = 2 * q` using `by simp; ring`. Rewrite `h1` using `[h2]`. Conclude with `hbox s (by linarith) (by rw [him]; simpa using hQ) hz.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem no_exceptional_zero_of_box_count : NoExcOfBox := by
   intro c₁ Q q _ χ hQ hc hbox hreal
@@ -683,7 +673,7 @@ theorem no_exceptional_zero_of_box_count : NoExcOfBox := by
   exact hbox s (by linarith) (by rw [him]; simpa using hQ) hz.2
 
 /- English proof (translation)
-Introduce `q₁ d h1 h2 h`. Establish `o1 : Odd q₁` using `Nat.odd_iff.2 (by omega)`. Establish `o2 : Odd d` using `Nat.odd_iff.2 (by omega)`. Rewrite `h` using `[jacobiSym.neg _ o1, ZMod.χ₄_nat_three_mod_four h1]`. Rewrite using `[jacobiSym.neg _ o2, ZMod.χ₄_nat_three_mod_four h2, jacobiSym.quadratic_reciprocity_three_mod_four h1 h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

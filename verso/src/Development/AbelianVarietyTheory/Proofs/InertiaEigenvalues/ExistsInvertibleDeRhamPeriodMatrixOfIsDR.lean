@@ -11,19 +11,17 @@ noncomputable section
 namespace GlobalTheory.DRMat
 
 /- English proof (translation)
-Establish `hex : ∃ k, ∃ v ∈ N, v ≠ 0 ∧ (Finset.univ.filter fun j => v j ≠ 0).card = k` using `⟨_, v₀, hv₀, h0, rfl⟩`. Take `⟨w, hwN, hw0, hwk⟩` from `Nat.find_spec hex`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j, w j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hw0 (funext h)`. Use `set v := (w j₀)⁻¹ • w with hv`. Establish `hvN : v ∈ N` using `N.smul_mem _ hwN`. Establish `hvj : v j₀ = 1` using `by simp [hv, hj₀]`. Establish `hsupp : ∀ j, v j ≠ 0 ↔ w j ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j`. Simplify using `[hv, hj₀]`. Use `⟨v, hvN, fun h => by simp [h] at hvj, fun σ hσ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set u : ι → F := (fun j => σ (v j)) - v with hu`. Establish `huN : u ∈ N` using `N.sub_mem (hN σ hσ v hvN) hvN`. Establish `hu0 : u ≠ 0`. Take `⟨j, hj⟩` from `hne`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hj` to reduce the goal to its premises. Use `congrFun h j` as an intermediate fact. Simplify `this` using `[hu, sub_eq_zero]`. Establish `hlt : (Finset.univ.filter fun j => u j ≠ 0).card < Nat.find hex`. Rewrite using `[← hwk]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `Finset.card_lt_card` to reduce the goal to its premises. Rewrite using `[Finset.ssubset_iff_of_subset]`. Conclude with `⟨j₀, by simp [hj₀], by simp [hu, hvj]⟩`. Introduce `j hj`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hj ⊢`.
-
-Rewrite using `[← hsupp]`. Introduce `hvj0`. Apply `hj` to reduce the goal to its premises. Simplify using `[hu, hvj0]`. Conclude with `Nat.find_min hex hlt ⟨u, huN, hu0, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_fixed_of_stable {F ι : Type} [Field F] [Fintype ι] [DecidableEq ι]
     (S : Set (F →+* F)) (N : Submodule F (ι → F))
@@ -59,49 +57,43 @@ theorem exists_fixed_of_stable {F ι : Type} [Field F] [Fintype ι] [DecidableEq
   exact Nat.find_min hex hlt ⟨u, huN, hu0, rfl⟩
 
 /- English proof (translation)
-Introduce `l _ P AI T n _ _ K V _ _ b ρ hDR`. Use `set M : ↥(GK K) → Matrix n n P.R.BdR := fun g => (LinearMap.toMatrix b b (ρ g)).map (algebraMap ℚ_[l] P.R.BdR) with hM`. Establish `hKact : ∀ (g : ↥(GK K)) (k : ↥K.1) (x : P.R.BdR), P.actQdR (g : GQ l) (algebraMap ↥K.1 P.R.BdR k * x) = algebraMap ↥K.1 P.R.BdR k * P.actQdR (g : GQ l) x`. Introduce `g k x`. Rewrite using `[← P.PD_actdR, ← P.PD_actdR, map_mul, AlgEquiv.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `D : Submodule ↥K.1 (n → P.R.BdR)` to `{ carrier := {c | ∀ g : ↥(GK K), M g *ᵥ (fun i => P.actQdR (g : GQ l) (c i)) = c} add_mem' := by`. Introduce `x y hx hy g`. Simplify using `only [Set.mem_setOf_eq] at hx hy ⊢`. Establish `: (fun i => P.actQdR (g : GQ l) ((x + y) i)) = (fun i => P.actQdR (g : GQ l) (x i)) + (fun i => P.actQdR (g : GQ l) (y i))`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mulVec_add, hx g, hy g]`. Use the proof step `zero_mem' := by`. Introduce `g`. Simplify using `only [Set.mem_setOf_eq, Pi.zero_apply, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Matrix.mulVec_zero _`. Use the proof step `smul_mem' := by`. Introduce `k x hx g`. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Establish `: (fun i => P.actQdR (g : GQ l) ((k • x) i)) = k • (fun i => P.actQdR (g : GQ l) (x i))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, hKact]`. Rewrite using `[this, Matrix.mulVec_smul, hx g] }`. Establish `hmemD : ∀ c, c ∈ D ↔ ∀ g : ↥(GK K), M g *ᵥ (fun i => P.actQdR (g : GQ l) (c i)) = c` using `fun c => Iff.rfl`. Set `e : V ⊗[ℚ_[l]] P.R.BdR ≃ₗ[ℚ_[l]] (n → P.R.BdR)` to `TensorProduct.congr b.equivFun (LinearEquiv.refl ℚ_[l] P.R.BdR) ≪≫ₗ TensorProduct.comm ℚ_[l] (n → ℚ_[l]) P.R.BdR ≪≫ₗ TensorProduct.piScalarRight ℚ_[l] ℚ_[l] P.R.BdR n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `he_tmul : ∀ v β, e (v ⊗ₜ β) = fun i => b.repr v i • β`. Introduce `v β`. Simplify using `[e]`. Establish `he : ∀ (g : ↥(GK K)) x, e (actVdR (P.PD K) ρ g x) = M g *ᵥ fun i => P.actQdR (g : GQ l) (e x i)`. Introduce `g x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, Pi.zero_apply]`. Conclude with `(Matrix.mulVec_zero _).symm`. Consider the case `tmul v β`. Establish `h1 : actVdR (P.PD K) ρ g (v ⊗ₜ β) = ρ g v ⊗ₜ P.actQdR (g : GQ l) β`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[actVdR, P.PD_actdR]`. Rewrite using `[h1, he_tmul, he_tmul]`. Use function extensionality and compare the values at `i`. Rewrite using `[← LinearMap.toMatrix_mulVec_repr b b (ρ g) v]`. Simplify using `only [hM, Matrix.mulVec, dotProduct, Matrix.map_apply, Algebra.smul_def, map_mul, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => by rw [map_mul]; ring` and prove the remaining obligations. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, hx, hy, ← Matrix.mulVec_add]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `hmap : (DdR (P.PD K) ρ).map (e : V ⊗[ℚ_[l]] P.R.BdR →ₗ[ℚ_[l]] (n → P.R.BdR)) = D.restrictScalars ℚ_[l]`. Use extensionality with `y`. Rewrite using `[Submodule.mem_map_equiv, Submodule.restrictScalars_mem, hmemD]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← e.injective.eq_iff, he, LinearEquiv.apply_symm_apply]`. Establish `hfr : Module.finrank ℚ_[l] ↥D = Module.finrank ℚ_[l] K.1 * Fintype.card n`. Establish `h1` using `hDR`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Unfold `Formalism.MainNotions.N.IsDR at h1`. Rewrite `h1` using `[Module.finrank_eq_card_basis b, LinearEquiv.finrank_eq (e.submoduleMap (DdR (P.PD K) ρ)), hmap]`. Conclude with `h1`. Break down `Nat.eq_zero_or_pos (Fintype.card n) with hn | hn` into its components or cases. Use `haveI : IsEmpty n := Fintype.card_eq_zero_iff.mp hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨1, fun g => ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Conclude with `isEmptyElim i`. Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Establish `hKpos : 0 < Module.finrank ℚ_[l] ↥K.1` using `Module.finrank_pos`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `haveI : Module.Finite ℚ_[l] ↥D := Module.finite_of_finrank_pos (by rw [hfr]; positivity)`. Use `haveI : Module.Finite ↥K.1 ↥D := Module.Finite.of_restrictScalars_finite ℚ_[l] ↥K.1 ↥D`. Establish `hrank : Module.finrank ↥K.1 ↥D = Fintype.card n`. Use `Module.finrank_mul_finrank ℚ_[l] ↥K.1 ↥D` as an intermediate fact. Rewrite `this` using `[hfr]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `Nat.eq_of_mul_eq_mul_left hKpos this`. Set `bK : Module.Basis n ↥K.1 ↥D` to `(Module.finBasisOfFinrankEq ↥K.1 ↥D hrank).reindex (Fintype.equivFin n).symm`. Set `Q0 : Matrix n n P.R.BdR` to `Matrix.of fun i j => (bK j : n → P.R.BdR) i`. Establish `hQ : ∀ g : ↥(GK K), M g * Q0.map (P.actQdR (g : GQ l)) = Q0`. Introduce `g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Establish `h` using `congrFun ((hmemD _).1 (bK j).2 g) i`. Simplify `h` using `[Q0, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Establish `hdet : IsUnit Q0.det`. Use `letI : Field P.R.BdR := (GlobalTheory.T.deRhamPeriodRing_field_tPow_filtration_units l P AI T).1.toField`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `isUnit_iff_ne_zero.mpr fun h0 => ?_` and prove the remaining obligations. Take `⟨v, hv0, hQv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Set `S : Set (P.R.BdR →+* P.R.BdR)` to `Set.range fun g : ↥(GK K) => ((P.actQdR (g : GQ l)) : P.R.BdR →+* P.R.BdR)`. Establish `hstab : ∀ σ ∈ S, ∀ u ∈ LinearMap.ker (Matrix.mulVecLin Q0), (fun j => σ (u j)) ∈ LinearMap.ker (Matrix.mulVecLin Q0)`. Introduce and unpack `σ ⟨g, rfl⟩ u hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hu`, the goal using `[LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Rewrite using `[← hQ g, ← Matrix.mulVec_mulVec]`. Establish `: (Q0.map (P.actQdR (g : GQ l)) *ᵥ fun j => (P.actQdR (g : GQ l) : P.R.BdR →+* P.R.BdR) (u j)) = 0`. Use function extensionality and compare the values at `i`. Use `congrArg (P.actQdR (g : GQ l)) (congrFun hu i)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`. Rewrite using `[this, Matrix.mulVec_zero]`. Take `⟨w, hwN, hw0, hwfix⟩` from `exists_fixed_of_stable S (LinearMap.ker (Matrix.mulVecLin Q0)) hstab v (by simpa using hQv) hv0`. Establish `hwK : ∀ j, ∃ c : ↥K.1, algebraMap ↥K.1 P.R.BdR c = w j` using `fun j => (P.PD K).invdR (w j) fun g => by rw [P.PD_actdR]; exact hwfix _ ⟨g, rfl⟩ j`. Use `choose c hc using hwK`.
-
-Establish `hQw : Q0 *ᵥ w = 0` using `by simpa using hwN`. Establish `hsum : ∑ j, c j • bK j = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun hQw i` as an intermediate fact.
-
-Simplify using `only [Matrix.mulVec, dotProduct, Q0, Matrix.of_apply, Pi.zero_apply] at this`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, Algebra.smul_def, Submodule.coe_zero, Pi.zero_apply]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun j _ => by rw [← hc j]; exact mul_comm _ _` and prove the remaining obligations. Establish `hc0` using `Fintype.linearIndependent_iff.mp bK.linearIndependent c hsum`.
-
-Conclude with `hw0 (funext fun j => by rw [← hc j, hc0 j, map_zero]; rfl)`. Use `⟨((Matrix.isUnit_iff_isUnit_det Q0).mpr hdet).unit, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec]`. Conclude with `hQ g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_period_matrix_of_isDR : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] (b : Module.Basis n ℚ_[l] V) (ρ : Representation ℚ_[l] ↥(GK K) V), Formalism.MainNotions.N.IsDR (P.PD K) ρ → ∃ Q : GL n P.R.BdR, ∀ g : ↥(GK K), (LinearMap.toMatrix b b (ρ g)).map (algebraMap ℚ_[l] P.R.BdR) * (Q : Matrix n n P.R.BdR).map (P.actQdR (g : GQ l)) = Q := by
   intro l _ P AI T n _ _ K V _ _ b ρ hDR

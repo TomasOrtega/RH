@@ -27,9 +27,9 @@ open GlobalTheory.Dict
 namespace GlobalTheory.Dict.ShortPt
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => ext x m`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Rewrite using `[iteratedFDeriv_succ_eq_comp_left, iteratedFDeriv_succ_eq_comp_left, ih, fderiv_const_smul_field]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Pi.smul_apply, map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem iteratedFDeriv_smul_all {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] (a : ℂ) (F : W → ℂ) (k : ℕ) :
     iteratedFDeriv ℂ k (a • F) = a • iteratedFDeriv ℂ k F := by
@@ -41,9 +41,9 @@ theorem iteratedFDeriv_smul_all {W : Type} [NormedAddCommGroup W] [NormedSpace �
     simp only [Function.comp_apply, Pi.smul_apply, map_smul]
 
 /- English proof (translation)
-Establish `h : thA X bas idx (a • φ) x = a • thA X bas idx φ x`. Use function extensionality and compare the values at `z`. Simplify using `only [thA, SW.thS, Pi.smul_apply, smul_eq_mul, _root_.mul_assoc a, tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree. Unfold `thP I2.polyDeriv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_smul_all]`. Simplify using `only [Pi.smul_apply, ContinuousMultilinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem theta_smul₂ {E : Type} [Field E] [NumberField E] [IsCMField E] {r g q0 n : ℕ} (X : Data E r)
     (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (a : ℂ) (φ : TF n g)
@@ -61,9 +61,9 @@ theorem theta_smul₂ {E : Type} [Field E] [NumberField E] [IsCMField E] {r g q0
   ring
 
 /- English proof (translation)
-Establish `hne : l.Mb ≠ ⊥`. Introduce `h`. Establish `hp` using `l.prod`. Rewrite `hp` using `[h, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]`. Use `l.three_le` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `haveI : Finite (𝓞 E ⧸ l.Mb) := Ideal.finiteQuotientOfFreeOfNeBot _ hne`. Use `haveI := Dw.fin`. Conclude with `Submodule.finite_quotient_smul l.Mb (N := (⊤ : Submodule (𝓞 E) Dw.La)) Module.Finite.fg_top`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finite_levQ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H)
     (l : Geo.Tor.Level H) : Finite (LevQ Dw l) := by
@@ -78,7 +78,7 @@ theorem finite_levQ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
   exact Submodule.finite_quotient_smul l.Mb (N := (⊤ : Submodule (𝓞 E) Dw.La)) Module.Finite.fg_top
 
 /- English proof (translation)
-Take `⟨h1, h2, s, hs, -, h3⟩` from `h`. Conclude with `⟨h1, h2, s, hs, Nat.coprime_one_right s, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vset_one {E : Type} [Field E] [NumberField E] [IsCMField E] {n M : ℕ} {Λ : Lt E n}
     (h : Λ ∈ Vset E n M) : Λ ∈ Vset E n 1 := by
@@ -86,27 +86,23 @@ theorem vset_one {E : Type} [Field E] [NumberField E] [IsCMField E] {n M : ℕ} 
   exact ⟨h1, h2, s, hs, Nat.coprime_one_right s, h3⟩
 
 /- English proof (translation)
-Introduce `hCI E _ _ _ H Dw l Xo c n d _ _ hcomp hlev hnab hcδ ph ψ x₀ hpin r g q0 X a Dc D hn hev hr htie v₀ hv₀ x0`. Take `⟨_, hnab⟩` from `hnab`. Take `⟨ρ₁, s, hρ₁, hg⟩` from `GlobalTheory.Dict.GPhi.gphi_eq_smul_phiF E H Dw l Xo c n d hcomp hlev ph ψ x₀ hpin r g X Dc.bas Dc.idx D hn Dc.sympl hev hr htie v₀ hv₀ x0`. Establish `hwi : IsIntegral ℤ (H.w0 : E)` using `htie.w ▸ D.w_int`. Establish `hwt : (H.w0 : E) + cc (H.w0 : E) = 1` using `htie.w ▸ D.w_tr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΛ0 : SelfD X X.Λ` using `(GlobalTheory.SW.level_laws E r X g Dc.bas Dc.idx n Dc.sympl hev D hn).1.1`. Use `⟨fun Λ N => algebraMap d.c₂.F ℂ ((d.eF (betaH (Dw := Dw) c (⟨Λ⟩ : GenLat E n)))⁻¹ * (((⟨Λ⟩ : GenLat E n).mIdx N r : d.c₂.F))⁻¹ * ((Nat.card (Fin n → LevQ Dw d.l₂) : d.c₂.F))⁻¹ * ((⟨Λ⟩ : GenLat E n).zCard N r : d.c₂.F)) * (((if 0 < s Λ then s Λ else 1 : ℝ)) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Introduce `Λ hΛ N hN`. Take `⟨-, -, -, hz, hm, -⟩` from `GlobalTheory.Dict.ZLat.exists_reps_sum E r X g Dc.bas Dc.idx n Dc.sympl hev _ hwi hwt X.Λ hΛ0 Λ (vset_one hΛ) N hN.1 (hN.2.2.trans inf_le_left)`. Use `haveI := finite_levQ Dw d.l₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : betaH (Dw` using `Dw) c (⟨Λ⟩ : GenLat E n) ≠ 0 := by`. Unfold `betaH`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : 0 < Nat.card (Fin n → LevQ Dw d.l₂)` using `Nat.card_pos`. Use `mul_ne_zero ((_root_.map_ne_zero _).2 ?_) ?_` and prove the remaining obligations. Use `mul_ne_zero (mul_ne_zero (mul_ne_zero (inv_ne_zero ?_) (inv_ne_zero ?_)) (inv_ne_zero ?_)) ?_` and prove the remaining obligations. Conclude with `(_root_.map_ne_zero _).2 hb`. Conclude with `Nat.cast_ne_zero.2 hm.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Nat.cast_ne_zero.2 hc.ne'`. Conclude with `Nat.cast_ne_zero.2 hz.ne'`. Rewrite using `[Complex.ofReal_ne_zero] split_ifs with h`. Conclude with `h.ne'`. Conclude with `one_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `L hL mk δ hmk hδ hx0`. Establish `hLs : SelfD X L` using `hL.1`. Take `⟨v, hv⟩` from `(GlobalTheory.SW.TensVac.vacua E r X g Dc.bas Dc.idx n Dc.sympl hev _ hwi hwt L hLs 1 _ (Base.stdL_mem_Vset (E := E) n 1)).1`. Take `⟨ρ₀, hρ₀, hnorm⟩` from `GlobalTheory.Dict.VacNorm.norm_factor_eq E r X g Dc.bas Dc.idx n Dc.sympl hev _ hwi hwt L hLs v hv`. Use `⟨ρ₀ * ρ₁, mul_pos hρ₀ hρ₁, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx hux y A θ hA hθ hmean`. Take `⟨y₂, hy₂⟩` from `hlev.2.2.2.2.2.2.1 ℂ hcomp y`. Take `⟨A₂, hA₂, mk₂, hmk₂, hA₂m, hover⟩` from `GlobalTheory.Dict.Lift.anFib_lift E H Dw l Xo c n d hcomp hlev r g X Dc.bas Dc.idx Dc.e x L y A Dc.sympl hx hLs y₂ hy₂ mk hA`. Establish `hth` using `GlobalTheory.Dict.isTheta1_of_reads_generator E H Dw l Xo c r g X Dc.bas Dc.idx Dc.e x L y A Dc.sympl hx hLs θ hθ`. Take `⟨κ₀, hκ₀⟩` from `GlobalTheory.Dict.VacProd.prod_eq_mul_thA E r X g Dc.bas Dc.idx n Dc.sympl hev _ hwi hwt L hLs v hv x hx θ hth`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht, hgt⟩` from `hg L hL mk mk₂ δ v hmk hmk₂ hover hδ hx0 hv`. Use `⟨evR d.Xo₂ d.c₂ d.cδ y₂ * κ₀ * t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hcδ y₂, hnorm x hx hux θ κ₀ hth hmean hκ₀, ht, _root_.one_mul]`. Introduce `Λ hΛ N hN P hP f hf`. Take `⟨hs, hgt⟩` from `hgt Λ hΛ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hM : d.l₂.M ≠ 0` using `by have := d.l₂.three_le; omega`. Take `⟨Y, hY⟩` from `(GlobalTheory.Dict.DualMark.dual_marking E H Dw d.l₂ r X L mk₂ _ hLs hmk₂ (Complex.isPrimitiveRoot_exp _ hM)).2.2.2.2 n N hN.1.pos`. Take `⟨v0, hv0, hfv⟩` from `hf ℂ hcomp y y₂ hy₂`. Establish `hval` using `GlobalTheory.Dict.shortValAt_eq_thP hCI E H Dw d.l₂ d.Xo₂ d.c₂ r g X Dc.bas Dc.idx Dc.e x L y₂ A₂ Dc.sympl hx hLs q0 n Dc.hr Dc.eL hr hev Dc.dir_eq d.nab₂ hnab θ v κ₀ (hA₂ θ hθ) hv hκ₀ mk₂ hmk₂ hA₂m Λ hΛ N hN Y hY a _ ((GlobalTheory.admissible_columns_le_and_harmonic_map_cover E …`. Establish `hmap : MvPolynomial.map (algebraMap d.c₂.F ℂ) (MvPolynomial.map (d.eF : c.F →+* d.c₂.F) P) = MvPolynomial.map (algebraMap c.F ℂ) P`.
-
-Rewrite using `[MvPolynomial.map_map]`. Use `congr 2`. Conclude with `RingHom.ext hcomp`. Rewrite `hval` using `[hgt N hN Y hY, theta_smul₂, hmap]`. Use `beta_reduce`.
-
-Rewrite using `[hfv, hval, if_pos hs]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem shortRule_value : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) [Algebra c.F ℂ] [Algebra d.c₂.F ℂ], (∀ t : c.F, algebraMap d.c₂.F ℂ (d.eF t) = algebraMap c.F ℂ t) → d.IsLev → (∃ _ : StarRing (𝓞 E), IsNab d.Xo₂ d.c₂ d.nab₂) → (∀ y₂ : FrPt d.Xo₂ d.c₂ ℂ, ‖evR d.Xo₂ d.c₂ d.cδ y₂‖ = 1) → ∀ (ph : (Fin n → LaJ Xo c d) → c.F) (ψ : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ) (x₀ : Fin n → LaJ Xo c d), d.PhiPin ph ψ x₀ → ∀ (r g q0 : ℕ) (X : Data E r) (a : (E →+* ℂ) × ℕ → ℕ) (Dc : Dic Dw c (algebraMap c.F ℂ) X g q0 n a) (D : SW.Level X) (hn : r ≤ n), Even n → r = Dw.p + Dw.q → LevTie d (algebraMap c.F ℂ) ph D hn → ∀ v₀ : Lt E r → TF n g, (∀ L ∈ D.lats, IsVac X Dc.bas D.w (tens (stdL E n) (D.sh L)) (v₀ L)) → ∀ x0 : Fin n → Dw.La, ∃ u : Lt E n → ℕ → ℂ, (∀ Λ ∈ Vset E n d.l₂.M, ∀ N, NOK Λ N d.l₂.M → u Λ N ≠ 0) ∧ ∀ L ∈ D.lats, ∀ mk δ : Dw.La →ₗ[𝓞 E] (Fin r → E), IsMark l L mk → IsDual X l (algebraMap c.F ℂ (zetaM c)) L mk δ → IsBaseClassLevelAdapted d D hn x0 δ → ∃ ρ : ℝ, 0 < ρ ∧ ∀ x ∈ X.dom, IsUnitFr X x → ∀ (y : FrPt Xo c ℂ) (A : AnFib X Dc.bas Dc.idx Dc.e x L y) (θ : (Fin g → ℂ) → ℂ), A.Marked mk → A.Reads 1 y.s θ → MeanOne X Dc.bas Dc.idx x L θ → ∃ κ : ℂ, ‖κ‖ = ρ ∧ ∀ Λ ∈ Vset E n d.l₂.M, ∀ N, NOK Λ N d.l₂.M → ∀ P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)), ∀ f : Rul Xo c, IsShortRule Xo c d (⟨Λ⟩ : GenLat E n) N x0 P f → evR Xo c f y = κ * u Λ N * thP X Dc.hr Dc.bas Dc.idx (phiF Dc.bas D (Mfr l) hn v₀ L Λ) (MvPolynomial.rename Dc.eL (MvPolynomial.map (algebraMap c.F ℂ) P)) x := by
   intro hCI E _ _ _ H Dw l Xo c n d _ _ hcomp hlev hnab hcδ ph ψ x₀ hpin r g q0 X a Dc D hn hev hr htie v₀ hv₀ x0

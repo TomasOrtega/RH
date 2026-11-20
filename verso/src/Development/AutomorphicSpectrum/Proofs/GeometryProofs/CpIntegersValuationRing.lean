@@ -13,17 +13,17 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap', Padic.norm_p]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_prime_padicComplex (p : Nat.Primes) : ‖((p : ℕ) : ℂ_[p])‖ = ((p : ℕ) : ℝ)⁻¹ := by
   rw [← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap', Padic.norm_p]
 
 /- English proof (translation)
-Introduce `p`. Establish `hI : (NormedField.valuation (K` using `ℂ_[p])).Integers (GlobalTheory.CompanionTheory.Ar.Flat.CPoint.OCp p) := Valuation.valuationSubring.integers _`. Use `⟨hI, ⟨((p : ℕ) : ℂ_[p]), ?_, ?_⟩, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[NormedField.valuation_apply, ← NNReal.coe_lt_coe, coe_nnnorm, NNReal.coe_zero, GlobalTheory.CompanionTheory.Ar.Flat.CPoint.norm_prime_padicComplex]`. Conclude with `inv_pos.2 (by exact_mod_cast p.2.pos)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[NormedField.valuation_apply, ← NNReal.coe_lt_coe, coe_nnnorm, NNReal.coe_one, GlobalTheory.CompanionTheory.Ar.Flat.CPoint.norm_prime_padicComplex]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast p.2.one_lt)`. Take `⟨y, rfl⟩` from `RingHom.mem_range.1 hx`. Establish `h` using `hI.map_le_one y`. Rewrite `h` using `[NormedField.valuation_apply, ← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `RingHom.mem_range.2 (hI.exists_of_le_one ?_)` and prove the remaining obligations. Rewrite using `[NormedField.valuation_apply, ← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem ocp_integers : ∀ p : Nat.Primes, (NormedField.valuation (K := ℂ_[p])).Integers (OCp p) ∧
     (∃ x : ℂ_[p], 0 < NormedField.valuation (K := ℂ_[p]) x ∧ NormedField.valuation (K := ℂ_[p]) x < 1) ∧

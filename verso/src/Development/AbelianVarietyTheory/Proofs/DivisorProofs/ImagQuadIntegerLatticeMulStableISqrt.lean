@@ -11,13 +11,13 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.IntLatMul
 
 /- English proof (translation)
-Introduce `d Λ hd hΛ`. Use `set w : ℂ := Complex.I * (Real.sqrt d : ℝ) with hw`. Establish `hw2 : w ^ 2 = -(d : ℂ)`. Rewrite using `[hw, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg d)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hwi : IsIntegral ℤ w`. Use `⟨Polynomial.X ^ 2 + Polynomial.C (d : ℤ), by monicity!, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_C, algebraMap_int_eq, eq_intCast, Int.cast_natCast, hw2]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨hxi, a, b, hab⟩` from `(hΛ x).1 hx`. Use `(hΛ _).2 ⟨hwi.mul hxi, -(b * d), a, ?_⟩` and prove the remaining obligations. Rewrite using `[hab]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(b : ℂ) * hw2`. Establish `hs : 0 < Real.sqrt d` using `Real.sqrt_pos.2 (by exact_mod_cast hd)`. Simplify using `[hw, hs.ne']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ (d : ℕ) (Λ : PeriodPair), 0 < d → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsIntLattice d Λ →
     MulStable Λ (Complex.I * (Real.sqrt d : ℝ)) ∧ (Complex.I * (Real.sqrt d : ℝ)).im ≠ 0 := by

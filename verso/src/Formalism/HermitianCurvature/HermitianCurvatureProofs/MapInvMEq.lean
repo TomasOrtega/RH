@@ -17,7 +17,7 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `B.gN`. Conclude with `Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => Complex.continuous_normSq.comp (continuous_apply_apply i j))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gN_cont : Continuous (fun g : Mx k r => B.gN g) := by
   unfold B.gN
@@ -25,11 +25,11 @@ theorem gN_cont : Continuous (fun g : Mx k r => B.gN g) := by
     Complex.continuous_normSq.comp (continuous_apply_apply i j))
 
 /- English proof (translation)
-Establish `hpos : ∀ g ∈ B.GV k r, 0 < B.gN g` using `fun g hg => lt_of_lt_of_le one_pos ((hNI k r).2 g hg).2`. Establish `hf : ContinuousOn (fun g : Mx k r => ((B.gN g ^ (-b) : ℝ) : ℂ)) (B.GV k r)`. Use `Complex.continuous_ofReal.comp_continuousOn ?_` and prove the remaining obligations. Conclude with `gN_cont.continuousOn.rpow_const (fun g hg => Or.inl (hpos g hg).ne')`. Use `⟨1, ckOn_zero_of_contOn _ hf, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `uu vv _ _ hlen g hg`. Establish `hu : uu = []` using `List.eq_nil_of_length_eq_zero (by omega)`. Establish `hv : vv = []` using `List.eq_nil_of_length_eq_zero (by omega)`. Substitute `hu` using the available equality. Substitute `hv` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact.
 
-Use `show B.gN g ^ b * ‖((B.gN g ^ (-b) : ℝ) : ℂ) • (1 : ℂ →L[ℂ] ℂ)‖ ≤ 1`. Establish `hgN : 0 ≤ B.gN g` using `Real.sqrt_nonneg _`. Rewrite using `[norm_smul, norm_one, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg hgN _)]`. Use `rpow_bound (B.gN g) 1 b hgN hb` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gNpow_inCC (hNI : NormInv) (b : ℝ) (hb : b ≠ 0) :
     B.InCC b 0 (fun g : B.Mat k r => ((B.gN g ^ (-b) : ℝ) : ℂ) • (1 : ℂ →L[ℂ] ℂ)) := by
@@ -53,29 +53,29 @@ def invP (p : B.SS k r) : B.SS k r :=
   ((B2.invM p.1.1, B2.invM p.1.2), (B2.invM p.2.1, B2.invM p.2.2))
 
 /- English proof (translation)
-Establish `h` using `B2x1.invM_meas (k := k) (r := r)`. Conclude with `(h.prodMap h).prodMap (h.prodMap h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_componentwiseInv : Measurable (invP (k := k) (r := r)) := by
   have h := B2x1.invM_meas (k := k) (r := r)
   exact (h.prodMap h).prodMap (h.prodMap h)
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.haar_measure_inversion k r U μ hU hμ`.
+A detailed English derivation is pending.
 -/
 theorem map_invM_eq {U : Set (B.Mat k r)} (hU : B2.IsClosedSubgroup U) {μ : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (hμ : B.IsHaarOn U μ) : μ.map B2.invM = μ := Formalism.FourierDecayAlt.P.haar_measure_inversion k r U μ hU hμ
 
 /- English proof (translation)
-Rewrite using `[ae_iff]`. Conclude with `hμ.conc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ae_of_haarB {U : Set (B.Mat k r)} {μ : Measure (Formalism.QuantumDeterminants.Mt k r)} (hμ : B.IsHaarOn U μ) :
     ∀ᵐ x ∂μ, Matrix.of x ∈ U := by
   rw [ae_iff]; exact hμ.conc
 
 /- English proof (translation)
-Establish `hW` using `ae_of_haarB D.haarW`. Establish `hN` using `ae_of_haarB D.haarN`. Establish `hW'` using `ae_of_haarB D.haarW'`. Establish `e1 : ∀ᵐ p ∂D.μSS, Matrix.of p.1.1 ∈ Formalism.QuantumDeterminants.UWset k r D.z` using `Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_fst.ae hW)`. Establish `e2 : ∀ᵐ p ∂D.μSS, Matrix.of p.1.2 ∈ Formalism.QuantumDeterminants.Nset k r` using `Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_snd.ae hN)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ∀ᵐ p ∂D.μSS, Matrix.of p.2.1 ∈ Formalism.QuantumDeterminants.UWset k r D.z'` using `Measure.quasiMeasurePreserving_snd.ae (Measure.quasiMeasurePreserving_fst.ae hW')`. Establish `e4 : ∀ᵐ p ∂D.μSS, Matrix.of p.2.2 ∈ Formalism.QuantumDeterminants.Nset k r` using `Measure.quasiMeasurePreserving_snd.ae (Measure.quasiMeasurePreserving_snd.ae hN)`. Use `filter_upwards [e1, e2, e3, e4] with p h1 h2 h3 h4`. Conclude with `⟨h1, h2, h3, h4⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ae_SS {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq)
@@ -97,9 +97,9 @@ theorem ae_SS {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   exact ⟨h1, h2, h3, h4⟩
 
 /- English proof (translation)
-Establish `hm` using `B2x1.invM_meas (k := k) (r := r)`. Establish `hW` using `map_invM_eq (weyl_subgroup_closed k r D.z) D.haarW`. Establish `hN` using `map_invM_eq (unipotent_radical_closed k r) D.haarN`. Establish `hW'` using `map_invM_eq (weyl_subgroup_closed k r D.z') D.haarW'`. Use `show ((D.μW.prod D.μN).prod (D.μW'.prod D.μN)).map (Prod.map (Prod.map B2.invM B2.invM) (Prod.map B2.invM B2.invM)) = (D.μW.prod D.μN).prod (D.μW'.prod D.μN)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Measure.map_prod_map _ _ (hm.prodMap hm) (hm.prodMap hm), ← Measure.map_prod_map _ _ hm hm, ← Measure.map_prod_map _ _ hm hm, hW, hN, hW']`.
+A detailed English derivation is pending.
 -/
 theorem map_invP {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq)
@@ -115,19 +115,17 @@ theorem map_invP {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ W
     ← Measure.map_prod_map _ _ hm hm, hW, hN, hW']
 
 /- English proof (translation)
-Use `set F : B.Mat k r → (ℂ →L[ℂ] ℂ) := fun g => ((B.gN g ^ (-b) : ℝ) : ℂ) • (1 : ℂ →L[ℂ] ℂ) with hF`. Establish `hJC` using `Formalism.FourierDecayAlt.P.bessel_integral_converges k r ℂ ℂ (triv D) b F hb (gNpow_inCC hNI b hb0)`. Take `⟨bb, hbb, hbd⟩` from `hJC.2 {γ} isCompact_singleton (Set.singleton_subset_iff.mpr hγ)`. Use `set G : B.SS k r → ℝ≥0∞ := fun p => ‖B.gN (B.sgs p γ) ^ (-b)‖ₑ with hG`. Establish `h1 : ∫⁻ p, G p ∂D.μSS < ⊤`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hbd γ rfl] with p hp`. Establish `e : ‖B.gN (B.sgs p γ) ^ (-b)‖ = ‖B.rho (triv D) p F γ‖`. Rewrite using `[rho_triv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hF]`. Simplify using `only [hG]`. Rewrite using `[← ofReal_norm, ← ofReal_norm, e]`. Conclude with `ENNReal.ofReal_le_ofReal (hp.trans (Real.le_norm_self _))`. Use `_ < ⊤ := hbb.hasFiniteIntegral`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ᵐ p ∂D.μSS, invP (invP p) = p ∧ G (invP p) = ‖B.gN (Matrix.of p.1.1 * Matrix.of p.1.2 * γ * (Matrix.of p.2.2)⁻¹ * (Matrix.of p.2.1)⁻¹) ^ (-b)‖ₑ` using `by filter_upwards [ae_SS D] with p hp`. Establish `u1` using `(weyl_subgroup_closed k r D.z).unit _ hp.1`. Establish `u2` using `(unipotent_radical_closed k r).unit _ hp.2.1`. Establish `u3` using `(weyl_subgroup_closed k r D.z').unit _ hp.2.2.1`. Establish `u4` using `(unipotent_radical_closed k r).unit _ hp.2.2.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `ii : ∀ x : Formalism.QuantumDeterminants.Mt k r, IsUnit (Matrix.of x).det → B2.invM (B2.invM x) = x`. Introduce `x hx`. Use `show (((Matrix.of x)⁻¹)⁻¹ : B.Mat k r) = Matrix.of x`. Conclude with `Matrix.nonsing_inv_nonsing_inv _ hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [invP]`. Rewrite using `[ii _ u1, ii _ u2, ii _ u3, ii _ u4]`. Simplify using `only [hG, invP, B.sgs]`. Establish `j1 : (Matrix.of (B2.invM p.1.1))⁻¹ = Matrix.of p.1.1` using `ii _ u1`. Establish `j2 : (Matrix.of (B2.invM p.1.2))⁻¹ = Matrix.of p.1.2` using `ii _ u2`.
-
-Rewrite using `[j1, j2]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem la_fin (hNI : NormInv) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq)

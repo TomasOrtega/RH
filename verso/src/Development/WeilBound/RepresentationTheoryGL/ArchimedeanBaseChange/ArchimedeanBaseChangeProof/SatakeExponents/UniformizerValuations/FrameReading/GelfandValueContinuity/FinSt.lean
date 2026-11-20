@@ -12,7 +12,7 @@ attribute [local instance] PositivityTheory.Rg.BcB.F.borelG PositivityTheory.Rg.
 namespace PositivityTheory.Rg.BcB.F.Rd.B
 
 /- English proof (translation)
-Introduce `E _ _ _ B K₁ K₂ o₁ c₁ o₂ c₂ cK ψ₀ hc hψ`. Conclude with `⟨fun A f hf => ⟨convF_idem B K₁ K₂ o₁ o₂ cK hc ψ₀ hψ f hf, fun ψ hψ' => convF_mulF_idem B K₁ K₂ o₁ c₁ o₂ c₂ cK hc ψ₀ hψ ψ hψ' f hf⟩, fun ψ _ => mulF_idem_rinv B K₁ K₂ cK ψ₀ hψ ψ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem finSt : FinSt := by
   intro E _ _ _ B K₁ K₂ o₁ c₁ o₂ c₂ cK ψ₀ hc hψ

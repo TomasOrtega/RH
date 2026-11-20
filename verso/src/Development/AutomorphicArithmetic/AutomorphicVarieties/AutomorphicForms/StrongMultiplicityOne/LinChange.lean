@@ -10,9 +10,9 @@ open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 
 /- English proof (translation)
-Set `e : V ≃L[ℝ] V` to `ContinuousLinearEquiv.equivOfInverse A B h1 h2`. Establish `hd : LinearMap.det (A : V →ₗ[ℝ] V) ≠ 0` using `(LinearEquiv.isUnit_det' e.toLinearEquiv).ne_zero`. Establish `hm : MeasurableEmbedding (A : V →ₗ[ℝ] V)` using `e.toHomeomorph.measurableEmbedding`. Use `hm.integral_map (μ := μ) f` as an intermediate fact. Rewrite `this` using `[Measure.map_linearMap_addHaar_eq_smul_addHaar μ hd, integral_smul_measure, ENNReal.toReal_ofReal (abs_nonneg _)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Complex.real_smul, this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem linearMap_comp_eq_on_smul_of_eq {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (A B : V →L[ℝ] V)
@@ -28,9 +28,9 @@ private theorem linearMap_comp_eq_on_smul_of_eq {V : Type} [NormedAddCommGroup V
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ n`. Use `⟨fun s => ((|(LinearMap.det (lmul (toL s.val) : Lie E n →ₗ[ℝ] Lie E n))⁻¹| : ℝ) : ℂ), ?_, fun s f => ?_⟩` and prove the remaining obligations. Establish `: (lmul (toL (1 : GL (Fin n) (Cinf E)).val) : Lie E n →ₗ[ℝ] Lie E n) = LinearMap.id` using `LinearMap.ext fun x => one_mul (Matrix.of x)`. Simplify using `only [this]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `haveI : (volume : Measure (Cinf E)).IsAddHaarMeasure := inferInstance haveI : (volume : Measure (Fin n → Cinf E)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _ haveI : (volume : Measure (Lie E n)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Conclude with `linearMap_comp_eq_on_smul_of_eq volume (lmul (toL s.val)) (lmul (toL (s⁻¹).val)) (fun x => s.inv_mul_cancel_left (Matrix.of x)) (fun x => s.mul_inv_cancel_left (Matrix.of x)) f`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.linChange :
     UpperTheory.V.Af.StrongMultiplicityOne.LinChange := by

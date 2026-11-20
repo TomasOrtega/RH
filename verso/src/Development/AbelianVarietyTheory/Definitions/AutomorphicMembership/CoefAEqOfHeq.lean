@@ -88,7 +88,7 @@ structure Ext (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' T' Wt
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `HEq.refl _ l := HEq.refl _ c := HEq.refl _ Dw := HEq.refl _ Xo := HEq.refl _ U := HEq.refl _ V := HEq.refl _ dict := HEq.refl _ mu := HEq.refl _ Kf := HEq.refl _ cE := HEq.refl _ chiW := HEq.refl _ x₀ := HEq.refl _ iota := HEq.refl _ ψ := HEq.refl _ θ := HEq.refl _ βW := HEq.refl …`.
+A detailed English derivation is pending.
 -/
 example (z : Dat (w.st Z) w.I hX T Wt) : Ext z z where
   H := HEq.refl _
@@ -178,7 +178,7 @@ def DatExt : Prop := StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.
       ∃ z' : Dat (w'.st Z') w'.I hX' T' {v | B'.places.resChar v ∈ T'.pl}, Fine z' ∧ Ext z z'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.2.2.1.2.2.2, h.2.2.2⟩`.
+Supply the required witnesses or components.
 -/
 example (z : Dat (w.st Z) w.I hX T Wt) (h : Fine z) : z.core.pb = f.P.pb ∧ z.Std := ⟨h.2.2.1.2.2.2, h.2.2.2⟩
 

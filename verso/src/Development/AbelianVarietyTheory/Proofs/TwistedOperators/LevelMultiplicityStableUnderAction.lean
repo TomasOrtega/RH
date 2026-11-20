@@ -13,13 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FlagAct
 
 /- English proof (translation)
-Introduce `D V S θ M β L g0 T hT`. Distinguish the cases in `hk : ∃ κ, IsLevelLift V β L g0 κ`. Establish `hκ` using `hk.choose_spec`. Rewrite `hT` using `[GlobalTheory.MultMem.mem_mult_iff]`. Establish `hact : ∀ v, ((levChi V β (flagL L) hk.choose)⁻¹ • heckeOn M {hk.choose} T) v = actG0 V β L g0 (T v)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `v`. Unfold `actG0`. Rewrite using `[dif_pos hk]`. Use function extensionality and compare the values at `g`. Simplify using `[heckeOn, postOn_apply, heckeLin_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h0 : IsMultMap θ M ∅ (levChi V β (flag1L L)) ((levChi V β (flagL L) hk.choose)⁻¹ • heckeOn M {hk.choose} T)`. Rewrite using `[← GlobalTheory.MultMem.mem_mult_iff]`. Conclude with `Submodule.smul_mem _ _ ((GlobalTheory.MultMem.mem_mult_iff ..).2 (GlobalTheory.SphericalOps.isMultMap_single hT hκ.1))`. Use `⟨_, Submodule.subset_span ⟨h0.aut, h0.cusp, fun v k hk' g => ?_, h0.equiv, h0.cont⟩, hact⟩` and prove the remaining obligations. Rewrite using `[hact]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.FlagAction.act_hasType (fun k hk => hT.lev v k hk) hk k hk' g`. Use `⟨0, Submodule.zero_mem _, fun v => ?_⟩` and prove the remaining obligations. Unfold `actG0`. Rewrite using `[dif_neg hk]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finiteGroupAction_preserves_principalFlagMultiplicity : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (g0 : Formalism.L2.DIV.G0 L.Pg L.r), ∀ T ∈ Mult θ M (levG V β (flag1L L) : Set (GA D V)) (levChi V β (flag1L L)), ∃ T' ∈ Mult θ M (levG V β (flag1L L) : Set (GA D V)) (levChi V β (flag1L L)), ∀ v, T' v = actG0 V β L g0 (T v) := by
   intro D V S θ M β L g0 T hT

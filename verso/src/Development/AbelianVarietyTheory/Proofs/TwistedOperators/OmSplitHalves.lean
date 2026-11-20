@@ -22,16 +22,16 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Conclude with `e.injective (Prod.ext ((he _).1.trans (h1.trans (he _).1.symm)) ((he _).2.trans (h2.trans (he _).2.symm)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem parts_ext {x y : AE D} (h1 : infPart D x = infPart D y) (h2 : finPart D x = finPart D y) : x = y := by
   obtain ⟨e, he, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E
   exact e.injective (Prod.ext ((he _).1.trans (h1.trans (he _).1.symm)) ((he _).2.trans (h2.trans (he _).2.symm)))
 
 /- English proof (translation)
-Take `⟨α, rfl, h1, h0⟩` from `hε`. Use `⟨TensorProduct.zero_tmul _ _, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV D.host.F v α ⊗ₜ[D.host.F] (1 : D.host.E) = 1`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `evalV D.host.F w α ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Rewrite using `[h0 w hw, TensorProduct.zero_tmul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem place_comp {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) :
     infPart D (algebraMap (AF D.host.F) (AE D) ε) = 0 ∧
@@ -45,11 +45,11 @@ theorem place_comp {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h
     rw [h0 w hw, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Take `⟨hi, h1, h0⟩` from `place_comp hε`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨by rw [← h, RingHom.map_mul, hi, zero_mul], fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← h, RingHom.map_mul, RingHom.map_mul, h0 w hw, zero_mul]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a, b⟩`. Use `parts_ext (by rw [RingHom.map_mul, hi, zero_mul, a]) (GlobalTheory.LatticeLocalGlobal.ext_components _ _ fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `compFin D w _ = compFin D w _`. Rewrite using `[RingHom.map_mul, RingHom.map_mul]`. Distinguish the cases in `hw : w = v`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Rewrite using `[h1, one_mul]`. Rewrite using `[b w hw, mul_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem supp_iff {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) (z : AE D) :
     algebraMap (AF D.host.F) (AE D) ε * z = z ↔
@@ -68,9 +68,9 @@ theorem supp_iff {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε
     · rw [b w hw, mul_zero]
 
 /- English proof (translation)
-Introduce `x hx h1 h2`. Take `⟨a, b⟩` from `(supp_iff hε _).1 hx`. Use `hχ x ?_ (fun w hw => ?_) h1 h2` and prove the remaining obligations. Rewrite `a` using `[RingHom.map_sub, RingHom.map_one, sub_eq_zero]`. Then use the resulting hypothesis. Use `b w hw` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[RingHom.map_sub, RingHom.map_one, RingHom.map_sub, RingHom.map_one, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unramAt_of {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε)
     {χ : (AE D)ˣ →* Circle} (hχ : CharUnramAt D χ v) : UnramAt ε χ := by
@@ -82,7 +82,7 @@ theorem unramAt_of {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h
     rwa [RingHom.map_sub, RingHom.map_one, RingHom.map_sub, RingHom.map_one, sub_eq_zero] at this
 
 /- English proof (translation)
-Establish `h1 : φ (M i j) = (1 : Matrix n n R') i j` using `congrFun (congrFun h i) j`. Rewrite using `[Matrix.sub_apply, map_sub, h1, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_sub_one {R R' n : Type} [CommRing R] [CommRing R'] [DecidableEq n] (φ : R →+* R') (M : Matrix n n R)
     (h : M.map φ = 1) (i j : n) : φ ((M - 1) i j) = 0 := by
@@ -91,7 +91,7 @@ theorem map_sub_one {R R' n : Type} [CommRing R] [CommRing R'] [DecidableEq n] (
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `i j` and use `(supp_iff hε _).2 ⟨map_sub_one _ _ hk.1 i j, fun w hw => map_sub_one ((compFin D w).comp (finPart D)) _ (hk.2.1 w hw) i j⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem suppPl_of {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) {V : HSp D}
     {L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} {k : GA D V} (hk : InStabAt V L v k) : SuppPl ε V k :=
@@ -99,7 +99,7 @@ theorem suppPl_of {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h�
     fun w hw => map_sub_one ((compFin D w).comp (finPart D)) _ (hk.2.1 w hw) i j⟩
 
 /- English proof (translation)
-Establish `hd : finPart D (Formalism.L2.Theta.mt V g).det = (finMat D.sp.cm.sig V.gram g).det` using `RingHom.map_det (finPart D) (Formalism.L2.Theta.mt V g)`. Rewrite using `[hd, GlobalTheory.CharFin.integralFiniteAdeles_eq_adelicCompletion_integers]`. Conclude with `GlobalTheory.DetTranslate.det_mem_int D.host.F L _ hL.fg hL.span_eq_top h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_int {V : HSp D} {L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hL : Submodule.IsLattice D.host.E L) (g : GA D V)
@@ -112,7 +112,7 @@ theorem det_int {V : HSp D} {L : Submodule (𝓞 D.host.E) (Fin V.rank → D.hos
   exact GlobalTheory.DetTranslate.det_mem_int D.host.F L _ hL.fg hL.span_eq_top h
 
 /- English proof (translation)
-Use `hχ _ ?_ (GlobalTheory.Mem.DetUnit.part_mem_intAE he (det_int hL g fun y hy => (h y).1 hy)) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * (e * (Formalism.L2.Theta.mt V g).det + (1 - e) - 1) = e * (Formalism.L2.Theta.mt V g).det + (1 - e) - 1`. Take the linear combination `((Formalism.L2.Theta.mt V g).det - 1) * hs`. Rewrite using `[← MonoidHom.map_inv]`. Conclude with `GlobalTheory.Mem.DetUnit.part_mem_intAE he (det_int hL g⁻¹ (GlobalTheory.LocalLatStab.inv_keeps V _ g h))`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unram_detAt {V : HSp D} {L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hL : Submodule.IsLattice D.host.E L) {g : GA D V}
@@ -129,21 +129,21 @@ theorem unram_detAt {V : HSp D} {L : Submodule (𝓞 D.host.E) (Fin V.rank → D
 open GlobalTheory.SplitScalar GlobalTheory.SplitHecke in
 
 /- English proof (translation)
-Distinguish the cases in `hf0 : f = 0`. Substitute `hf0` using the available equality. Simplify using `only [map_zero, smul_zero]`. Establish `he'` using `isSplitIdem_conj he`. Establish `hψ` using `hW.std.1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hW.std hS hT).1`. Establish `hst` using `@GlobalTheory.SplitScalar.idem_smul_mem D S T (ΛS : Set _) (ΛT : Set _) _ he.1`. Establish `hstc` using `@GlobalTheory.SplitScalar.idem_smul_mem D S T (ΛS : Set _) (ΛT : Set _) _ he'.1`. Establish `hfin` using `@latO_fin D S T (ΛS : Set _) (ΛT : Set _)`. Generalize the expression as in `latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True) = Λ at *`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hL' : ∀ u, actO S T g⁻¹ h⁻¹ u ∈ Λ ↔ u ∈ Λ` using `fun u => ⟨fun hu => by`. Use `(hL _ hu).1` as an intermediate fact. Rewrite using `[GlobalTheory.AdelicLatMove.actO_actO_inv] at this, fun hu => (hL u hu).2⟩` and apply the resulting hypothesis. Establish `hd : ∀ y, IsHalf e y → y ∉ Λ → ∃ l ∈ Λ, IsHalf (cA D e) l ∧ ψ (symplO S T l y) ≠ 1` using `fun y hy hn => exists_dual_half he hdual hstc hy hn`. Establish `hd' : ∀ y, IsHalf (cA D e) y → y ∉ Λ → ∃ l ∈ Λ, IsHalf e l ∧ ψ (symplO S T l y) ≠ 1` using `fun y hy hn => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `exists_dual_half he' hdual (by rw [GlobalTheory.DualPairCheck.cA_cA]; exact hst) hy hn` as an intermediate fact. Rewrite `this` using `[GlobalTheory.DualPairCheck.cA_cA]`. Then use the resulting hypothesis. Take `⟨r, hr, hom⟩` from `om_eq_smul_sum hW he (fun u hu => (hdual u (hfin hu)).1 hu) hd hd' hg hh hx hy (R := {0}) (fun u hu => by`. Rewrite using `[Finset.mem_singleton.1 hu]`. Conclude with `⟨(hL' 0).2 (zero_mem _), isHalf_zero e⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use the proof step `(fun w hw _ => ⟨0, ⟨Finset.mem_singleton_self _, by rw [sub_zero]; exact (hL' w).1 hw⟩, fun v hv => Finset.mem_singleton.1 hv.1⟩)`. Use the proof step `(fun w hw _ => (hL' w).2 hw)`. Simplify using `only [Finset.sum_singleton, heisO_zero] at hom`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨⟨μ, 𝓕, hμ⟩, c, hc⟩` from `GlobalTheory.exists_normalise_meanSquare_of_cocompact (WO S T) (ratL T S) K hK hKc f hf.cont hf0 (by`. Introduce and unpack `_ ⟨γ, rfl⟩ w`. Conclude with `(congrArg norm (hf.quasi γ w)).trans (by rw [norm_mul, hψ.2.1, one_mul]))`. Establish `hn : nrm2 μ 𝓕 (c • f) = 1` using `hc μ 𝓕 hμ.1 hμ.2.1 hμ.2.2`. Establish `hcf` using `GlobalTheory.WeilVacMove.isTheta_smul c hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hom _ hcf (fun u hu hh => by rw [heisO_smul, v1 u hu hh]) fun u hu hh => by rw [heisO_smul, v2 u hu hh]`. Establish `h2 : nrm2 μ 𝓕 (om (g, h) (c • f)) = 1`. Rewrite using `[← hn, nrm2, nrm2, integral_normSq_eq _ (hW.om_pres _ _ hcf).cont.measurable, integral_normSq_eq _ hcf.cont.measurable, hW.om_unit μ 𝓕 hμ.1 hμ.2.1 _ _ hcf]`. Establish `h3 : nrm2 μ 𝓕 ((splitFacO χS χT x y : ℂ) • c • f) = 1`. Rewrite using `[← hn, nrm2, nrm2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, Circle.norm_coe, one_mul]`. Rewrite `h2` using `[h1, mul_smul, pairNorm_smul, h3, mul_one]`. Establish `h4 : r = 1`. Rewrite using `[← Real.sqrt_sq hr.le, h2, Real.sqrt_one]`. Rewrite using `[hom f hf v1 v2, h4, Complex.ofReal_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_split_halves {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
@@ -206,7 +206,7 @@ theorem om_split_halves {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
   rw [hom f hf v1 v2, h4, Complex.ofReal_one, one_mul]
 
 /- English proof (translation)
-Use `(GlobalTheory.VecInvInert.mem_place_iff hε u).2 ⟨hu, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * u i j = u i j`. Rewrite using `[← hh i j, ← mul_assoc, hs]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem half_mem_place {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) {e : AE D}
@@ -217,15 +217,15 @@ theorem half_mem_place {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : 
   rw [← hh i j, ← mul_assoc, hs]
 
 /- English proof (translation)
-Introduce `ψ S T χS χT om hW uS uT LS LT hS hT f hf hvac k k' hk hk'`. Take `⟨ε, hε⟩ : ∃ ε, IsPlaceIdem D v ε` from `⟨_, singleV D.host.F v 1, rfl, GlobalTheory.SplitIdem.evalV_singleV_same _ _ _, fun w hw => GlobalTheory.SplitIdem.evalV_singleV_ne _ _ _ hw⟩`. Establish `uS'` using `unramAt_of hε uS`. Establish `uT'` using `unramAt_of hε uT`. Establish `sk` using `suppPl_of hε hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sk'` using `suppPl_of hε hk'`. Distinguish the cases in `hsp : ∃ e : AE D, IsSplitIdem D e ∧ e + cA D e = algebraMap (AF D.host.F) (AE D) ε`. Take `⟨e, he, hb⟩` from `hsp`. Establish `he'` using `GlobalTheory.SplitScalar.isSplitIdem_conj he`. Establish `s1 : algebraMap (AF D.host.F) (AE D) ε * e = e`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hb]`. Take the linear combination `he.1 + he.2.1`. Establish `s2 : algebraMap (AF D.host.F) (AE D) ε * cA D e = cA D e`. Rewrite using `[← hb]`. Take the linear combination `he'.1 + he.2.1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `key` using `om_split_halves hW hS hT he (fun i j => by rw [hb]; exact sk i j) (fun i j => by rw [hb]; exact sk' i j) (fun u hu => ⟨GlobalTheory.LocalLatStab.actO_mem S T _ _ _ k k' (fun y hy => (hk.2.2 y).1 hy) (fun y hy => (hk'.2.2 y).1 hy) u hu, GlobalTheory.LocalLatStab.actO_mem S T _ _ _ …`. Rewrite `key` using `[splitFacO, unram_detAt hS.1 hk.2.2 he.1 s1 uT', unram_detAt hT.1 hk'.2.2 he.1 s1 uS', inv_one, mul_one, Circle.coe_one, one_smul]`. Then use the resulting hypothesis. Establish `hv : NonSplitAt D v ε` using `⟨hε, hsp⟩`. Take `⟨η, e1, e2, e3, e4⟩` from `GlobalTheory.Mem.EtaTilde.exists_etaTilde D`. Use `GlobalTheory.T.weilDatum_fixes_vacuum_nonSplitPlace_unramified D ψ hW.std S T LS LT hS hT χS χT om ⟨η, e1, e4, e3, e2⟩ hW v ε hv uS' uT' k k' sk sk' (GlobalTheory.LocalLatStab.mem_latO_place_iff_actO D S T LS LT hS hT v ε hε k k' hk.2.2 hk'.2.2) f hf fun u hu => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, ha2⟩` from `GlobalTheory.FinWeilO.exists_half_of_nonSplit hv`. Establish `h1 : 2 • (a • u) = u`. Rewrite using `[two_nsmul, ← add_smul, ← two_mul, ha2, GlobalTheory.VecInvInert.idem_smul_eq hε hu]`. Establish `h2` using `hvac.1 (a • u) (GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ a ha u hu)`. Rewrite `h2` using `[h1]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem vacFixedAt (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : VacFixedAt D v := by
   intro ψ S T χS χT om hW uS uT LS LT hS hT f hf hvac k k' hk hk'
@@ -264,7 +264,7 @@ theorem vacFixedAt (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : VacFixedAt
     rwa [h1] at h2
 
 /- English proof (translation)
-Introduce `v _` and use `vacFixedAt D v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vacFixed (D : D7) : VacFixed D := fun v _ => vacFixedAt D v
 

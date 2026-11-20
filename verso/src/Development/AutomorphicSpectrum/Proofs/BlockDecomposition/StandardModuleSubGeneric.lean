@@ -29,7 +29,7 @@ def Emb {p q : ℕ} (a : Fin p → IrrGL k) (b : Fin q → IrrGL k) : Prop :=
     (f : (prodIrr a ha).IntertwiningMap (prodIrr b hb)), Function.Injective f
 
 /- English proof (translation)
-Take `⟨E⟩` from `h`. Conclude with `⟨N, ha, hb, E.toIntertwiningMap, E.toLinearEquiv.injective⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Emb.of_equiv {p q N : ℕ} {a : Fin p → IrrGL k} {b : Fin q → IrrGL k} (ha : ∑ i, (a i).1 = N)
     (hb : ∑ i, (b i).1 = N) (h : Nonempty ((prodIrr a ha).Equiv (prodIrr b hb))) : Emb a b := by
@@ -37,7 +37,7 @@ theorem Emb.of_equiv {p q N : ℕ} {a : Fin p → IrrGL k} {b : Fin q → IrrGL 
   exact ⟨N, ha, hb, E.toIntertwiningMap, E.toLinearEquiv.injective⟩
 
 /- English proof (translation)
-Take `⟨N, ha, hb, f, hf⟩` from `h`. Take `⟨N', hb', hc, g, hg⟩` from `h'`. Take `rfl : N = N'` from `hb.symm.trans hb'`. Conclude with `⟨N, ha, hc, g.comp f, hg.comp hf⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Emb.trans {p q r : ℕ} {a : Fin p → IrrGL k} {b : Fin q → IrrGL k} {c : Fin r → IrrGL k} (h : Emb a b)
     (h' : Emb b c) : Emb a c := by
@@ -47,7 +47,7 @@ theorem Emb.trans {p q r : ℕ} {a : Fin p → IrrGL k} {b : Fin q → IrrGL k} 
   exact ⟨N, ha, hc, g.comp f, hg.comp hf⟩
 
 /- English proof (translation)
-Establish `hι : Function.Injective (GlobalTheory.ParIndExact.extTensorMapRight σ g)` using `Module.Flat.lTensor_preserves_injective_linearMap g.toLinearMap hg`. Establish `hι' : Function.Injective (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ g) (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom)` using `hι`. Conclude with `⟨parIndMap (two (stdSum rfl)) (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ g) (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom), GlobalTheory.ParIndExact.parIndMap_injective _ _ hι'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem prod₂_map_injective_right {r t : ℕ} {U W W' : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup W'] [Module ℂ W'] (σ : Representation ℂ (GL (Fin r) k) U) {ρ : Representation ℂ (GL (Fin t) k) W}

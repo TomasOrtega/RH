@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Formalism.IndefR.DatumF
 /- English proof (citation)
-Apply `GlobalTheory.HeckeSplitBase.heckeChar_eq_one_of_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitaryHeckeCharEqOneOfTrivialOverSplitPlacesCm.lean&line=14#L14)
 -/

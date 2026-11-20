@@ -14,11 +14,11 @@ namespace GlobalTheory.AnPer.Charts
 variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ}
 
 /- English proof (translation)
-Proceed by induction on `hρ with`. Consider the case `refl => intro hc`. Both sides reduce to the same expression. Consider the case `@tail ρ₁ ρ₂ hab s ih`. Introduce `hc₂`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n, h1, h2, h3⟩` from `s`. Establish `hc₁ : ∀ f, ρ₁ (K.cst k f) = algebraMap (Hol F.V) T.C f` using `fun f ↦ by`. Rewrite using `[← hc₂ f, h3]`. Simplify using `[dw_cst]`. Rewrite using `[← ih hc₁]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨χ, hdeg, e0, e1, -⟩` from `GlobalTheory.AnPer.Charts.exists_jet_factor K (fromTriv T hle ρ₁ hc₁ hab) (fromTriv T hle ρ₂ hc₂ (Relation.ReflTransGen.tail hab ⟨n, h1, h2, h3⟩)) n rfl h1 h2 (fun x ↦ h3 x)`. Rewrite using `[← e0, ← e1]`. Conclude with `(H k T χ hdeg).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cochain_fromTriv_eq (K : Charts F) (h : C1 K.Oc) (l : Λ)
     (H : ∀ (k : K.K) (T : K.Obj) (χ : K.jet k ⟶ T), χ.deg = l → h _ _ (jet0 k ≫ χ) = h _ _ (jet1 k ≫ χ))
@@ -41,7 +41,7 @@ theorem cochain_fromTriv_eq (K : Charts F) (h : C1 K.Oc) (l : Λ)
     exact (H k T χ hdeg).symm
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Use `letI := (K.triv k).alg`. Conclude with `cochain_fromTriv_eq K h f.deg H T (Charts.Hom.le f) f.φ.toRingHom (Charts.Hom.close f) (fun x ↦ f.φ.commutes x)`.
+Substitute using the available equality. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem cochain_eq_ptHom {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ}
     (K : Charts F) (h : C1 K.Oc) (l : Λ)

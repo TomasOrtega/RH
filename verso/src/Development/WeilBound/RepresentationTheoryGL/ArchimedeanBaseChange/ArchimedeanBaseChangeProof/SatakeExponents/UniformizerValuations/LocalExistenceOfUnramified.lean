@@ -31,42 +31,34 @@ structure Loc0 (π : Submodule ℂ (UA E n → ℂ)) (S : Finset (Pl E)) (μ : H
   off : ∀ w, w ∉ d₀.Bad → d₀.KB w = KL n w ∧ ∀ a, d₀.fix a w = 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Subgroup.isOpen_mono h.2.1 h.1, le_rfl, fun _ hk => hk⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLevel_KL (w : Pl E) {K : Subgroup (UL n w)} (h : GlobalTheory.BCT.IsLevel (MonoidHom.id _) (KL n w) K) :
     GlobalTheory.BCT.IsLevel (MonoidHom.id _) (KL n w) (KL n w) :=
   ⟨Subgroup.isOpen_mono h.2.1 h.1, le_rfl, fun _ hk => hk⟩
 
 /- English proof (translation)
-Use `set S₀ := S.filter IsSplitAt with hS₀`. Take `⟨Sec, hsec, hS₀S, hinS⟩` from `hSec E S₀ ((Finset.card_filter_le _ _).trans hS1)`. Establish `hfin : {w : Pl E | ¬ (IsUnramU π w ∧ μ.UnrAt w)}.Finite` using `Filter.eventually_cofinite.1 (hun.and hae)`. Use `set Bad := (hfin.toFinset.filter (· ∈ Sec)) \ S₀ with hBad`. Establish `memBad : ∀ w, w ∈ Bad ↔ (¬ (IsUnramU π w ∧ μ.UnrAt w) ∧ w ∈ Sec) ∧ w ∉ S₀` using `fun w => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hBad, Finset.mem_sdiff, Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_ofPred_eq]`. Take `⟨K₀, m, -, hm, hfam, hgood, hcong, hlev⟩` from `hLev E n π hπ Sec hsec (S₀ ∪ Bad) 1`. Use `choose ϖ hϖ using hU E hE`. Establish `h1 : ∀ w : Pl E, ∃ (K' : Subgroup (GLw n w)) (X : Finset (GLw n w)) (e : GLw n w → ℂ) (L : ∀ a : ℕ, Subgroup (GLw a w × GLw (n - a) w)), w ∈ S₀ → K'.subgroupOf (UL n w) = K₀ w ∧ IsOpen (K' : Set (GLw n w)) ∧ K' ≤ KGL w n ∧ (∀ k ∈ KGL w n, ∀ k' ∈ K', k * k' * k⁻¹ ∈ K') ∧ (∀ x ∈ X, …` using `fun w => by`. Distinguish the cases in `hw : w ∈ S₀`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨K', X, e, L, h⟩` from `hS E n w (Finset.mem_filter.1 hw).2 (μ.loc w) (hop w) m hm (K₀ w) (hcong w (Or.inr (Finset.mem_union_left _ hw)))`. Conclude with `⟨K', X, e, L, fun _ => h⟩`. Conclude with `⟨⊥, ∅, 0, fun _ => ⊥, fun h => absurd h hw⟩`. Use `choose K' X e LS hSp using h1`. Set `fx : ∀ (a : ℕ) (w : Pl E), LF a (n - a) w` to `fun a w => fixFn n a w (μ.loc w) m (K₀ w)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h2 : ∀ (a : ℕ) (w : Pl E), ∃ L : Subgroup (GLw a w × GLw (n - a) w), a ≤ n → w ∈ Bad → IsPairLevel L ∧ IsHecke L (fx a w) ∧ Match n a (n - a) w (μ.loc w) (U.lone (K₀ w)) (fx a w)` using `fun a w => by`. Distinguish the cases in `hw : a ≤ n ∧ w ∈ Bad`. Take `⟨L, h⟩` from `hB E hE n a hw.1 w (μ.loc w) (hop w) m hm (K₀ w) (hcong w (Or.inr (Finset.mem_union_right _ hw.2)))`. Conclude with `⟨L, fun _ _ => h⟩`. Conclude with `⟨⊥, fun h h' => absurd ⟨h, h'⟩ hw⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose LB hBd using h2`. Set `d : LocData E n` to `⟨∅, S₀, Bad, fun w => μ.loc w, ϖ, 0, K', X, e, fun a w => if w ∈ S₀ then LS w a else LB a w, fun a w => if w ∈ Bad then fx a w else 0, fun _ => 1, fun w => if w ∈ Bad then K₀ w else KL n w⟩`. Establish `dK : ∀ w ∈ Bad, d.KB w = K₀ w` using `fun w hw => if_pos hw`. Establish `dF : ∀ a, ∀ w ∈ Bad, d.fix a w = fx a w` using `fun a w hw => if_pos hw`. Establish `hKU : ∀ w, d.KU w = if w ∈ S₀ ∪ Bad then K₀ w else KL n w` using `fun w => by show (if w ∈ (∅ : Finset (Pl E)) then _ else if w ∈ S₀ then (K' w).subgroupOf (UL n w) else if w ∈ Bad then (if w ∈ Bad then K₀ w else KL n w) else KL n w) = _`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Distinguish the cases in `a1 : w ∈ S₀`. Simplify using `[a1, (hSp w a1).1]`. Apply the tactic sequence `by_cases a2 : w ∈ Bad <;> simp [a1, a2]`. Establish `hgd : ∀ w ∈ Sec, w ∉ S₀ → w ∉ Bad → IsUnramU π w ∧ μ.UnrAt w` using `fun w a1 a2 a3 => by`. Assume the negation of the conclusion as `h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a3 ((memBad w).2 ⟨⟨h, a1⟩, a2⟩)`. Use `⟨Sec, d, hsec, hinS, ⟨⟨Finset.disjoint_empty_left _, Finset.disjoint_empty_left _, Finset.disjoint_sdiff⟩, fun w => (hϖ w).1.1, fun w hw => absurd hw (Finset.notMem_empty w), fun w hw => ?_, fun a ha w hw => ?_, fun a ha w hw y hy => ?_, fun a ha w hw => ?_⟩, rfl, fun _ => rfl, h …` and prove the remaining obligations. Take `⟨-, b1, b2, b3, b4, b5, b6, -⟩` from `hSp w hw`. Conclude with `⟨b1, b2, b3, b4, b5, b6⟩`. Use `show IsPairLevel (if w ∈ S₀ then LS w a else LB a w)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `a1 : w ∈ S₀`. Rewrite using `[if_pos a1]`. Conclude with `((hSp w a1).2.2.2.2.2.2.2 a ha).1`. Rewrite using `[if_neg a1]`. Conclude with `(hBd a w ha ((Finset.mem_union.1 hw).resolve_left a1)).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : y ∈ (if w ∈ S₀ then LS w a else LB a w)` using `hy`. Rewrite `hy'` using `[if_pos (show w ∈ S₀ from hw)]`. Conclude with `((hSp w hw).2.2.2.2.2.2.2 a ha).2 y hy'`. Rewrite using `[dF a w hw] show IsHecke (if w ∈ S₀ then LS w a else LB a w) (fx a w)`. Rewrite using `[if_neg ((memBad w).1 hw).2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hBd a w ha hw).2.1`. Rewrite using `[hKU] split_ifs`. Conclude with `hfam.1 w`. Conclude with `isLevel_KL w (hfam.1 w)`. Use `filter_upwards [(S₀ ∪ Bad).eventually_cofinite_notMem] with w hw`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hKU, if_neg hw]`. Take `⟨φ, a1, a2, a3⟩` from `hlev (fun w => if w ∈ Sec then K'' w else K₀ w) fun w => by split_ifs with hw`. Use `(hK'' w).trans ?_` and prove the remaining obligations. Rewrite using `[hKU]`. Use `split_ifs with hR`.
-
-Conclude with `le_rfl`. Rewrite `hR` using `[Finset.mem_union, not_or]`. Rewrite using `[hgood w (hgd w hw hR.1 hR.2).1 (by rw [Finset.mem_union, not_or]; exact hR)]`. Conclude with `le_rfl`. Conclude with `⟨φ, a1, a2, fun w hw x hx hk => a3 w hw x hx (by simpa only [if_pos hw] using hk)⟩`.
-
-Establish `hs : IsSplitAt w` using `(Finset.mem_filter.1 hw).2`. Use `⟨hs, fun g => by simp [UL, hs], ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.BCT.IsLevel _ _ ((K' w).subgroupOf (UL n w))`. Rewrite using `[(hSp w hw).1]`. Conclude with `hfam.1 w`.
-
-Rewrite using `[dF a w hw, dK w hw] show fixFn n a w (μ.loc w) m (K₀ w) = _`. Rewrite using `[fixFn, dif_pos ha, if_pos hs]`. Rewrite using `[dK w hw]`. Conclude with `hcong w (Or.inr (Finset.mem_union_right _ hw)) γ`. Rewrite using `[dF a w hw, dK w hw] show fixFn n a w (μ.loc w) m (K₀ w) = _`.
-
-Rewrite using `[fixFn, dif_pos ha, if_neg hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_existence_of_unramified (hSec : SecEx) (hU : UnifEx) (hLev : LevelEx) (hS : SplitEx) (hB : BadEx2) (hE : GlobalTheory.BCT.Unr E)
     (π : Submodule ℂ (UA E n → ℂ)) (hπ : IsAutRepU π) (hun : ∀ᶠ w : Pl E in cofinite, IsUnramU π w) (S : Finset (Pl E))

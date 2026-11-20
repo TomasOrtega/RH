@@ -12,7 +12,7 @@ namespace PI.WfEndProof
 open PI
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, AddIntG.flog, PowerSeries.coeff_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem flog_constantCoeff' {p : ℕ} [Fact p.Prime] (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     PowerSeries.constantCoeff (AddIntG.flog W wq) = 0 := by
@@ -20,9 +20,7 @@ theorem flog_constantCoeff' {p : ℕ} [Fact p.Prime] (W : WeierstrassCurve ℂ_[
   simp
 
 /- English proof (translation)
-Introduce `n`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul, MvPowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `(Wp p).one_mem`.
-
-Conclude with `(Wp p).zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefWf_X (p : ℕ) [Fact p.Prime] : CoefWf (MvPowerSeries.X () : MvPowerSeries Unit ℂ_[p]) := by
   intro n
@@ -33,9 +31,9 @@ theorem coefWf_X (p : ℕ) [Fact p.Prime] : CoefWf (MvPowerSeries.X () : MvPower
   · exact (Wp p).zero_mem
 
 /- English proof (translation)
-Introduce `p _ W wq ex h1 h2 h3 h4 h6 hW hex hsub c hc hI n`. Take `⟨hl, hx⟩` from `hL p W wq ex h1 h2 h3 h4 h6 hW hex hsub`. Establish `hX : CoefWf (MvPowerSeries.X () : MvPowerSeries Unit ℂ_[p])` using `coefWf_X p`. Establish `hX0 : MvPowerSeries.constantCoeff (MvPowerSeries.X () : MvPowerSeries Unit ℂ_[p]) = 0` using `by simp`. Establish `hA` using `hS p Unit (AddIntG.flog W wq) (MvPowerSeries.X ()) hl hX hX0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `(hR p Unit _ _ hA hA).2.2.2 c hc`. Establish `hB0 : MvPowerSeries.constantCoeff (MvPowerSeries.C c * PowerSeries.subst (MvPowerSeries.X () : MvPowerSeries Unit ℂ_[p]) (AddIntG.flog W wq)) = 0`. Rewrite using `[map_mul, PowerSeries.constantCoeff_subst_eq_zero hX0 _ (flog_constantCoeff' W wq), mul_zero]`. Establish `hM` using `hS p Unit ex _ hx hB hB0`. Conclude with `PI.ExpIntWProof.stepIII_of_key PI.ExpIntWProof.keyW p _ (hM n) (hI n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wfEnd_of (hR : WfRing) (hS : WfSubst) (hL : WfLog) : WfEnd := by
   intro p _ W wq ex h1 h2 h3 h4 h6 hW hex hsub c hc hI n
@@ -51,9 +49,9 @@ theorem wfEnd_of (hR : WfRing) (hS : WfSubst) (hL : WfLog) : WfEnd := by
   exact PI.ExpIntWProof.stepIII_of_key PI.ExpIntWProof.keyW p _ (hM n) (hI n)
 
 /- English proof (translation)
-Establish `hp'` using `hp.out`. Use `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hp').2 ?_)` and prove the remaining obligations. Introduce `h`. Establish `h2 : p ∣ p ^ 2` using `dvd_pow_self p two_ne_zero`. Establish `h3 : p ∣ p ^ 2 - (p ^ 2 - 1)` using `Nat.dvd_sub h2 h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : p ^ 2 - (p ^ 2 - 1) = 1`. Establish `: 1 ≤ p ^ 2` using `Nat.one_le_pow _ _ hp'.pos`. Use linear arithmetic over natural numbers and integers. Rewrite `h3` using `[h4]`. Conclude with `hp'.one_lt.ne' (Nat.dvd_one.1 h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coprime_sq_sub_one (p : ℕ) [hp : Fact p.Prime] : Nat.Coprime (p ^ 2 - 1) p := by
   have hp' := hp.out
@@ -68,11 +66,9 @@ theorem coprime_sq_sub_one (p : ℕ) [hp : Fact p.Prime] : Nat.Coprime (p ^ 2 - 
   exact hp'.one_lt.ne' (Nat.dvd_one.1 h3)
 
 /- English proof (translation)
-Introduce `p _ α hα`. Establish `hpos : 0 < p ^ 2 - 1`. Use `(Fact.out : p.Prime).two_le` as an intermediate fact. Establish `: 4 ≤ p ^ 2` using `by nlinarith`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hle : Subring.closure {x : ℂ_[p] × ℂ_[p] | ∃ ζ : ℂ_[p], ζ ^ (p ^ 2 - 1) = 1 ∧ x = (ζ, ζ ^ p)} ≤ (Wp p).comap (RingHom.fst ℂ_[p] ℂ_[p])`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ ⟨ζ, hζ, rfl⟩`. Use `show ζ ∈ (Subring.closure {ζ : ℂ_[p] | ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ ζ ^ n = 1}).topologicalClosure`. Conclude with `Subring.le_topologicalClosure _ (Subring.subset_closure ⟨_, hpos, coprime_sq_sub_one p, hζ⟩)`.
-
-Establish `hclosed : IsClosed (Prod.fst ⁻¹' (Wp p : Set ℂ_[p]))` using `IsClosed.preimage (continuous_fst : Continuous (Prod.fst : ℂ_[p] × ℂ_[p] → ℂ_[p])) (show IsClosed (Wp p : Set ℂ_[p]) from Subring.isClosed_topologicalClosure _)`. Conclude with `closure_minimal (fun x hx => hle hx) hclosed hα`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pairW : PairW := by
   intro p _ α hα

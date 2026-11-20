@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open Matrix UpperTheory.V.Weyl
 
 /- English proof (translation)
-Introduce `n Ξ c X h0 hd i j`. Establish `hγ : HasDerivAt (fun t => (of.symm (c t) : Fin n → Fin n → ℂ)) (of.symm X) 0`. Rewrite using `[hasDerivAt_pi]`. Introduce `a`. Rewrite using `[hasDerivAt_pi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Conclude with `hd a b`. Establish `hγ0 : (of.symm (c 0) : Fin n → Fin n → ℂ) = oneM n`. Rewrite using `[h0]`. Establish `hf : HasFDerivAt (Ξ.coef i j) (fderiv ℂ (Ξ.coef i j) (oneM n)) ((fun t => (of.symm (c t) : Fin n → Fin n → ℂ)) 0)` using `by show HasFDerivAt (Ξ.coef i j) (fderiv ℂ (Ξ.coef i j) (oneM n)) (of.symm (c 0))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγ0]`. Conclude with `((coefDiff n Ξ i j) (oneM n)).hasFDerivAt`. Conclude with `hf.comp_hasDerivAt (0 : ℂ) hγ`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Weyl.curve :
     ∀ (n : ℕ) (Ξ : Pre n) (c : ℂ → Matrix (Fin n) (Fin n) ℂ) (X : Matrix (Fin n) (Fin n) ℂ), c 0 = 1 →

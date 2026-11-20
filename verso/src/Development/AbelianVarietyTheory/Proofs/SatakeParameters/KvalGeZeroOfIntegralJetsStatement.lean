@@ -5,7 +5,7 @@ import Formalism.GaussJetBounds.StatementN
 open Formalism.MainNotions Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Proof.kvalGe_zero_of_integral_jets.kvalGe_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FKvalGeZeroOfIntegralJets.lean&line=8#L8)
 -/

@@ -22,13 +22,13 @@ def Dat (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] : Type :=
   {p : SInf F κ × ∀ v : Pl F, (κ → Fv F v) → ℂ // ∀ᶠ v in cofinite, p.2 v = stdL F κ v}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h1 : ∑ j ∈ s, (c j * ∏ᶠ v, φ j v fun i => evFin F v (x i)) • f j = 0`. Use `DFunLike.ext _ _ fun y => ?_` and prove the remaining obligations. Set `z : κ → AF F` to `fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i), (x i).2)`. Use `congrFun h z` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : (fun i => evI F (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i), (x i).2) : AF F)) = y`. Use function extensionality and compare the values at `fun i => (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _`. Rewrite using `[SchwartzMap.sum_apply, SchwartzMap.zero_apply]`. Use `Eq.trans ?_ this` and prove the remaining obligations. Use `Eq.trans ?_ (Finset.sum_apply z s fun j => c j • pureT (f j) (φ j)).symm` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[SchwartzMap.smul_apply, smul_eq_mul, mul_assoc, mul_comm _ (f j y)]`. Conclude with `congrArg (fun z => c j * (f j z * ∏ᶠ v, φ j v fun i => evFin F v (x i))) e.symm`. Establish `h2` using `DFunLike.congr_fun (congrArg ei h1) fun i => evI F (x i)`. Rewrite `h2` using `[map_sum, map_zero, SchwartzMap.sum_apply, SchwartzMap.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply, Pi.zero_apply, ← h2]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, SchwartzMap.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc, mul_comm (ei (f j) _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_inf (ei : SInf F κ →ₗ[ℂ] SInf F κ) {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → SInf F κ)
     (φ : ι → ∀ v : Pl F, (κ → Fv F v) → ℂ) (h : ∑ j ∈ s, c j • pureT (f j) (φ j) = 0) :
@@ -54,17 +54,17 @@ theorem rel_inf (ei : SInf F κ →ₗ[ℂ] SInf F κ) {ι : Type} (s : Finset �
     mul_comm (ei (f j) _)]
 
 /- English proof (translation)
-Establish `key : ∀ T : Finset (Pl F), ∑ j ∈ s, c j • pureT (f j) (fun v => if v ∈ T then ev v (φ j v) else φ j v) = 0`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using h`. Consider the case `insert v T hv ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1` using `congrArg (opL v (ev v)) ih`. Rewrite `h1` using `[map_sum, map_zero]`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h2 : ∀ᶠ w in cofinite, (fun w => if w ∈ T then ev w (φ j w) else φ j w) w = stdL F κ w` using `by filter_upwards [hφ j, T.eventually_cofinite_notMem] with w e1 e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [if_neg e2, e1]`. Rewrite using `[map_smul, opL_pure (vac := stdL F κ) (Eventually.of_forall fun _ => rfl) h2]`. Use `congr 2`. Use function extensionality and compare the values at `w`. Break down `eq_or_ne w v with rfl | e` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[hv]`. Simplify using `[Function.update_of_ne e, e]`. Establish `hfin : {v | ¬ (ev v (stdL F κ v) = stdL F κ v ∧ ∀ j ∈ s, φ j v = stdL F κ v)}.Finite` using `eventually_cofinite.1 (hev.and ((eventually_all_finset s).2 fun j _ => hφ j))`. Rewrite using `[← key hfin.toFinset]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Use function extensionality and compare the values at `v`. Use `split_ifs with e`. Both sides reduce to the same expression. Rewrite `e` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e.2 j hj, e.1]`.
+A detailed English derivation is pending.
 -/
 theorem rel_fin (ev : ∀ v : Pl F, ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ → Fv F v) → ℂ)) (hev : ∀ᶠ v in cofinite, ev v (stdL F κ v) = stdL F κ v)
     {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → SInf F κ) (φ : ι → ∀ v : Pl F, (κ → Fv F v) → ℂ)
@@ -101,9 +101,9 @@ theorem rel_fin (ev : ∀ v : Pl F, ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ �
     rw [e.2 j hj, e.1]
 
 /- English proof (translation)
-Set `a : (Dat F κ →₀ ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)` to `Finsupp.linearCombination ℂ fun p => pureT p.1.1 p.1.2`. Set `b : (Dat F κ →₀ ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)` to `Finsupp.linearCombination ℂ fun p => pureT (ei p.1.1) fun v => ev v (p.1.2 v)`. Establish `hk : LinearMap.ker a ≤ LinearMap.ker b` using `fun z hz => rel_fin ev hev z.support z (fun p => ei p.1.1) (fun p => p.1.2) (fun p => p.2) (rel_inf ei z.support z _ _ hz)`. Take `⟨e, he⟩` from `((LinearMap.ker a).liftQ b hk ∘ₗ a.quotKerEquivRange.symm.toLinearMap).exists_extend`. Use `⟨e, fun f φ hφ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : a (Finsupp.single ⟨(f, φ), hφ⟩ 1) = pureT f φ` using `(Finsupp.linearCombination_single ℂ 1 _).trans (one_smul _ _)`. Establish `h2` using `LinearMap.congr_fun he ⟨_, LinearMap.mem_range_self a (Finsupp.single ⟨(f, φ), hφ⟩ 1)⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearEquiv.coe_coe, LinearMap.quotKerEquivRange_symm_apply_image, Submodule.mkQ_apply, Submodule.liftQ_apply] at h2`. Rewrite using `[← h1, h2]`. Conclude with `(Finsupp.linearCombination_single ℂ 1 _).trans (one_smul _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_glue (ei : SInf F κ →ₗ[ℂ] SInf F κ) (ev : ∀ v : Pl F, ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ → Fv F v) → ℂ))
     (hev : ∀ᶠ v in cofinite, ev v (stdL F κ v) = stdL F κ v) : ∃ e : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ),
@@ -122,15 +122,13 @@ theorem exists_glue (ei : SInf F κ →ₗ[ℂ] SInf F κ) (ev : ∀ v : Pl F, (
   exact (Finsupp.linearCombination_single ℂ 1 _).trans (one_smul _ _)
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ S hS`. Take `⟨ev, hb, hi, hs⟩` from `hF F ψ hψ κ S hS`. Take `⟨ei, hei⟩` from `hI F κ S hS`. Take `⟨e, he'⟩` from `exists_glue (ei : SInf F κ →L[ℂ] SInf F κ).toLinearMap ev hs`. Establish `he : ∀ f φ, (∀ᶠ v in cofinite, φ v = stdL F κ v) → e (pureT f φ) = pureT (ei f) fun v => ev v (φ v)` using `he'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hstd : ∀ φ : ∀ v : Pl F, (κ → Fv F v) → ℂ, (∀ᶠ v in cofinite, φ v = stdL F κ v) → ∀ᶠ v in cofinite, ev v (φ v) = stdL F κ v` using `fun φ h => by filter_upwards [h, hs] with v e1 e2`. Rewrite using `[e1, e2]`. Use `⟨e, ei, ev, fun Φ hΦ => schA_le ((schA F κ).comap e) (fun f φ h1 h2 => ?_) hΦ, fun w Φ hΦ => ?_, hb, fun v w hw φ hφ φ₁ h₁ => ?_, hs, fun f φ _ h => he f φ h⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, he f φ h2]`. Conclude with `pure_mem_schA _ _ (fun v => (hb v).1 (h1 v)) (hstd φ h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `L : ∀ u : (κ → AF F) × (κ → AF F), ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)` to `fun u => { toFun := schr ψ u map_add' := fun _ _ => funext fun _ => by simp [schr, mul_add] map_smul' := fun _ _ => funext fun _ => by simp [schr, mul_left_comm] }`. Use `schA_le (LinearMap.eqLocus (e ∘ₗ L w) (L (S w) ∘ₗ e)) (fun f φ h1 h2 => ?_) hΦ` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (schr ψ w _) = schr ψ (S w) (e _)`. Take `⟨⟨g, hg⟩, h⟩` from `hP F ψ hψ κ w f`. Rewrite using `[(h φ h2).2 g hg, he _ _ (h φ h2).1, he f φ h2, ((hP F ψ hψ κ (S w) (ei f)).2 _ (hstd φ h2)).2 _ (hei w f g hg)]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `hi v w _ (h1 v)`. Establish `hw' : At (evFin F v) (S w)` using `fun u hu => by rw [← map_smul, hw u hu, map_zero]`. Rewrite using `[action_uniqueness F κ v _ φ hφ _ _ h₁ (adjoint_statement.Heisenberg₂ F κ ψ v w hw φ), hi v w φ hφ]`.
-
-Conclude with `adjoint_statement.Heisenberg₂ F κ ψ v _ hw' _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelSt_of (hP : PureSt) (hF : FinSt) (hI : InfSt) : AdelSt := by
   intro F _ _ ψ hψ κ _ S hS

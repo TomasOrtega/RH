@@ -16,13 +16,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 
 /- English proof (translation)
-Introduce `X P Q hPs hQs hPi hQi`. Use `haveI := _root_.GlobalTheory.geometricallyConnected_of_geometricallyIntegral P.hom`. Use `haveI := _root_.GlobalTheory.geometricallyConnected_of_geometricallyIntegral Q.hom`. Use `⟨_root_.GlobalTheory.smooth_tensorObj_hom P Q, _root_.GlobalTheory.geometricallyIntegral_tensorObj_hom P Q, ?_⟩` and prove the remaining obligations. Introduce `s hs'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.abLocus, Set.mem_inter_iff, Set.mem_setOf_eq] at hs' ⊢`. Take `⟨hP, hQ⟩` from `hs'`. Introduce `K _ _ t hs`. Use `haveI : IsProper ((Over.pullback t).obj P).hom := hP K t hs`. Use `haveI : IsProper ((Over.pullback t).obj Q).hom := hQ K t hs`.
-
-Use `haveI : IsIso (CartesianMonoidalCategory.prodComparison (Over.pullback t) P Q).left := Functor.map_isIso (Over.forget (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K)) (CartesianMonoidalCategory.prodComparison (Over.pullback t) P Q)`. Establish `h : IsProper ((CartesianMonoidalCategory.prodComparison (Over.pullback t) P Q).left ≫ ((Over.pullback t).obj P ⊗ (Over.pullback t).obj Q).hom)`. Rewrite using `[Over.tensorObj_hom]`. Use `infer_instance`. Rewrite `h` using `[Over.w]`.
-
-Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.smooth_geometricallyIntegral_abLocus_tensorObj : ∀ (X : Scheme.{0}) (P Q : Over X), Smooth P.hom → Smooth Q.hom → GeometricallyIntegral P.hom → GeometricallyIntegral Q.hom → Smooth (P ⊗ Q).hom ∧ GeometricallyIntegral (P ⊗ Q).hom ∧ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.abLocus P ∩ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.abLocus Q ⊆ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.abLocus (P ⊗ Q) := by
   intro X P Q hPs hQs hPi hQi

@@ -16,23 +16,19 @@ noncomputable section
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `B X I hI hP l Z H F hS hC`. Establish `hseen` using `GlobalTheory.T.hermitianSeenPrimeCondition_hermitianSide I hI hP l Z H F hS hC`. Establish `hdisc` using `GlobalTheory.T.dual_mod_class_lattice_equiv_quotient I hI hP l Z H F hS hC`. Establish `hlvc` using `GlobalTheory.T.middleStep_oneLevel_projection_eq_chart_projection I hI hP l Z H F hS hC`. Establish `hstab` using `GlobalTheory.T.stabiliserMap_hyperplane_eq_conj_classMap I hI hP l Z H F hS hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose upG hup using GlobalTheory.T.hermitianUpMove_at_levelPrime_place I hI hP l Z H F hS hC`. Use `choose dnG hdn using GlobalTheory.T.exists_hermitianDownMove_at_levelPrime_place I hI hP l Z H F hS hC`. Use `choose dilG hdil using GlobalTheory.T.diamondOperator_hermitian_side_levelPrime I hI hP l Z H F hS hC`. Use `choose lattice₂ levP clsP hcar hlat using GlobalTheory.T.hermitianSide_classes_eq_formClasses I hI hP l Z H F hS hC`. Set `A : ∀ u, Formalism.L2.Herm.AtT (I.rec7 l Z) u (H.vT u) (H.Fv u)` to `fun u => mkAtT (F u).atT (F u).lv (hC.eV u) (hC.fv u) (hseen u) (hdisc u) (upG u) (fun i hi v c y h => (hup u i v c y hi h).1) (dnG u) (fun i hi v c g h => (hdn u i v c g hi h).1) (dilG u) (fun i hi v a c => (hdil u i v a c hi).1) (lattice₂ u) (levP u) (clsP u) (F u).til (hlat u)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : CarT H F A`. Use `⟨fun _ => rfl, fun _ => rfl, hcar, hlat, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u i hi v c z z' h`. Conclude with `(congrArg _ (Subtype.ext h)).trans (prH_eq (F u).atT (F u).lv hi v c z).symm`. Introduce `u i hi v c z z' h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg _ (Subtype.ext h)).trans (prkH_eq (F u).atT (F u).lv hi v c z).symm`. Introduce `u i h1 h2 v c z z' h`. Use `((hlvc u i h1 h2 v c).1 (toLd i (le_of_succ_m h2) c z) z' h).trans (prH_eq (F u).atT (F u).lv (le_of_succ_m h2) v c z).symm` and prove the remaining obligations. Introduce `u`. Conclude with `((crdN (I.rec7 l Z) _ le_rfl).apply_symm_apply _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Introduce `u c`. Conclude with `(reGL_lin _ (rankN (I.rec7 l Z) _ le_rfl) _).symm`. Use `⟨A, hT, ⟨?_, ?_, ?_, ?_, ?_, ?_⟩, hstab A hT⟩` and prove the remaining obligations. Introduce `u v c y h`. Conclude with `(hup u 0 v c y (Nat.zero_le _) h).2`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Introduce `u i h1 hm v c y h`. Consider the cases of `i with`. Consider the case `zero => omega`. Consider the case `succ i => exact (hup u (i + 1) v c y hm h).2 hm`. Introduce `u v c g h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Conclude with `(hdn u 0 v c g (Nat.zero_le _) h).2`. Introduce `u i h1 hm v c g h`. Consider the cases of `i with`. Consider the case `zero => omega`. Consider the case `succ i => exact (hdn u (i + 1) v c g hm h).2 hm`.
-
-Introduce `u v a c`. Conclude with `(hdil u 0 v a c (Nat.zero_le _)).2`. Introduce `u i h1 hm v a c`. Consider the cases of `i with`. Consider the case `zero => omega`.
-
-Consider the case `succ i => exact (hdil u (i + 1) v a c hm).2 hm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Col2.TC.hermitian_data_at_level_prime : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → ∃ A, CarT H F A ∧ Formalism.L2.Herm.SymmetricAdelicCompatibility (I.rec7 l Z) H A ∧ Formalism.L2.Herm.SymmetricStabilizerMapCompatibility (I.rec7 l Z) H A := by
   intro B X I hI hP l Z H F hS hC

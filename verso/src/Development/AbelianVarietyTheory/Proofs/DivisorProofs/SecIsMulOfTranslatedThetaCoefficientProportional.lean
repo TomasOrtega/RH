@@ -17,9 +17,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.PsiRing
 
 /- English proof (translation)
-Introduce `R _ _ D χ u th g₁ g₂ b₁ b₂ q h₁ h₂ hb`. Use `GlobalTheory.IndivisibleSection.secIsMul_of_sval D.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Establish `e : lift (toUnit (𝟙_ _ ⊗ D.P.A)) (snd (𝟙_ _) D.P.A) = 𝟙 _`. Rewrite using `[toUnit_unique (toUnit _) (fst (𝟙_ _) D.P.A), lift_fst_snd]`. Establish `e₁` using `h₁ (𝟙_ _ ⊗ D.P.A) (snd _ _) y J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂` using `h₂ (𝟙_ _ ⊗ D.P.A) (snd _ _) y J hJ`. Rewrite `e₁`, `e₂` using `[e]`. Use `e₁.trans (Eq.trans ?_ (congrArg (_ * ·) e₂.symm))` and prove the remaining obligations. Rewrite using `[hb, GlobalTheory.IndivisibleSection.cst_mul', _root_.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem secIsMul_of_coef : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (χ : D.X) (u : LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1))) (th : GlobalTheory.UU.SecBT D (𝟙_ _) 1 0) (g₁ g₂ : GlobalTheory.UU.SecBT D (𝟙_ _) 1 χ) (b₁ b₂ q : R), GlobalTheory.PsiRing.Coef D χ u th g₁ b₁ → GlobalTheory.PsiRing.Coef D χ u th g₂ b₂ → b₁ = q * b₂ → ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul (𝟙_ _ ⊗ D.P.A).hom q g₁ g₂ := by
   intro R _ _ D χ u th g₁ g₂ b₁ b₂ q h₁ h₂ hb

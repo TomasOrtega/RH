@@ -11,9 +11,9 @@ section
 variable {E K K' : Type} [Field E] [NumberField E] [Field K] [NumberField K] [Field K'] [NumberField K']
 
 /- English proof (translation)
-Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Establish `: (RingHom.ker τ).IsPrime` using `RingHom.ker_isPrime τ`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := ℤ)` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `n hn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[Ideal.mem_comap, RingHom.mem_ker]`. Simplify using `using hn`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ringOfIntegers_hom_injective (τ : 𝓞 E →+* 𝓞 K) : Function.Injective τ := by
   rw [RingHom.injective_iff_ker_eq_bot]
@@ -25,9 +25,9 @@ theorem ringOfIntegers_hom_injective (τ : 𝓞 E →+* 𝓞 K) : Function.Injec
   simpa using hn
 
 /- English proof (translation)
-Establish `hi : Function.Injective ((algebraMap (𝓞 K) K).comp τ)` using `(RingOfIntegers.coe_injective).comp (ringOfIntegers_hom_injective τ)`. Establish `hl : ∀ a : 𝓞 E, (IsFractionRing.lift hi : E →+* K) (algebraMap (𝓞 E) E a) = algebraMap (𝓞 K) K (τ a)` using `fun a => IsFractionRing.lift_algebraMap (A := 𝓞 E) (K := E) hi a`. Generalize the expression as in `(IsFractionRing.lift hi : E →+* K) = σ₀ at hl`. Use `⟨σ₀, hl, fun σ hσ => ?_⟩` and prove the remaining obligations. Use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hσ a).trans (hl a).symm`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_extend_ringOfIntegers_hom (τ : 𝓞 E →+* 𝓞 K) :
     ∃! τ' : E →+* K, ∀ a : 𝓞 E, τ' a = τ a := by
@@ -41,9 +41,9 @@ theorem existsUnique_extend_ringOfIntegers_hom (τ : 𝓞 E →+* 𝓞 K) :
   exact (hσ a).trans (hl a).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `σ σ' h`. Use `(existsUnique_extend_ringOfIntegers_hom (RingOfIntegers.mapRingHom σ)).unique (fun a => rfl) fun a => ?_` and prove the remaining obligations. Establish `h' : RingOfIntegers.mapRingHom σ = RingOfIntegers.mapRingHom σ'` using `h`. Rewrite using `[h']`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `τ`. Take `⟨σ, hσ⟩` from `(existsUnique_extend_ringOfIntegers_hom τ).exists`. Conclude with `⟨σ, RingHom.ext fun a => RingOfIntegers.ext (hσ a)⟩`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mapRingHom_bijective :
     Function.Bijective fun σ : E →+* K => (RingOfIntegers.mapRingHom σ : 𝓞 E →+* 𝓞 K) := by
@@ -58,20 +58,20 @@ theorem mapRingHom_bijective :
     exact ⟨σ, RingHom.ext fun a => RingOfIntegers.ext (hσ a)⟩
 
 /- English proof (translation)
-Rewrite using `[Splits, ← Nat.card_eq_of_bijective _ (mapRingHom_bijective (E := E) (K := K))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem splits_iff_card : Splits E K ↔ Nat.card (E →+* K) = Module.finrank ℚ E := by
   rw [Splits, ← Nat.card_eq_of_bijective _ (mapRingHom_bijective (E := E) (K := K))]
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (RingHom.equivRatAlgHom E K)]`. Conclude with `card_algHom_le_finrank ℚ E K`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_ringHom_le_finrank : Nat.card (E →+* K) ≤ Module.finrank ℚ E := by
   rw [Nat.card_congr (RingHom.equivRatAlgHom E K)]
   exact card_algHom_le_finrank ℚ E K
 
 /- English proof (translation)
-Establish `: Finite (E →+* K')` using `Finite.of_equiv _ (RingHom.equivRatAlgHom E K').symm`. Establish `hi : Function.Injective fun σ : E →+* K => j.comp σ` using `fun σ σ' e => RingHom.ext fun a => j.injective (DFunLike.congr_fun e a)`. Use `hi.bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[splits_iff_card.1 h]`. Conclude with `card_ringHom_le_finrank`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_bijective_of_splits (j : K →+* K') (h : Splits E K) :
     Function.Bijective fun σ : E →+* K => j.comp σ := by
@@ -85,11 +85,9 @@ theorem comp_bijective_of_splits (j : K →+* K') (h : Splits E K) :
 end
 
 /- English proof (translation)
-Introduce `E _ _`. Use `⟨⟨IntermediateField.normalClosure ℚ E ℂ, inferInstance, fun τ a => ?_⟩, fun k _ hk => ?_, fun K _ _ => ⟨splits_iff_card, existsUnique_extend_ringOfIntegers_hom, fun K' _ _ j h => ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `AlgHom.fieldRange_le_normalClosure τ.toRatAlgHom ⟨a, rfl⟩`. Rewrite using `[splits_iff_card, ← Embeddings.card E ℂ, ← Nat.card_eq_fintype_card]`. Use `Nat.card_eq_of_bijective (fun σ => (algebraMap k ℂ).comp σ) ⟨fun σ σ' e => ?_, fun τ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `RingHom.ext fun a => (algebraMap k ℂ).injective (DFunLike.congr_fun e a)`. Conclude with `⟨τ.codRestrict k (hk τ), RingHom.ext fun a => rfl⟩`. Rewrite using `[splits_iff_card, ← Nat.card_eq_of_bijective _ (comp_bijective_of_splits j h)]`. Conclude with `splits_iff_card.1 h`. Establish `e : ((fun τ : 𝓞 E →+* 𝓞 K => (RingOfIntegers.mapRingHom j).comp τ) ∘ fun σ : E →+* K => (RingOfIntegers.mapRingHom σ : 𝓞 E →+* 𝓞 K)) = (fun σ : E →+* K' => (RingOfIntegers.mapRingHom σ : 𝓞 E →+* 𝓞 K')) ∘ fun σ : E →+* K => j.comp σ`.
-
-Use function extensionality and compare the values at `σ`. Conclude with `RingHom.ext fun a => rfl`. Rewrite using `[← Function.Bijective.of_comp_iff _ (mapRingHom_bijective (E := E) (K := K)), e]`. Conclude with `mapRingHom_bijective.comp (comp_bijective_of_splits j h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splits_basic : ∀ (E : Type) [Field E] [NumberField E], (∃ k : IntermediateField ℚ ℂ, FiniteDimensional ℚ k ∧ ∀ (τ : E →+* ℂ) a, τ a ∈ k) ∧ (∀ (k : IntermediateField ℚ ℂ) [NumberField k], (∀ (τ : E →+* ℂ) a, τ a ∈ k) → Splits E k) ∧ ∀ (K : Type) [Field K] [NumberField K], (Splits E K ↔ Nat.card (E →+* K) = Module.finrank ℚ E) ∧ (∀ τ : 𝓞 E →+* 𝓞 K, ∃! τ' : E →+* K, ∀ a : 𝓞 E, τ' a = τ a) ∧ ∀ (K' : Type) [Field K'] [NumberField K'] (j : K →+* K'), Splits E K → Splits E K' ∧ Function.Bijective fun τ : 𝓞 E →+* 𝓞 K => (RingOfIntegers.mapRingHom j).comp τ := by
   intro E _ _

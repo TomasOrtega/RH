@@ -19,9 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UMin.ThBdl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hlft : LocallyOfFiniteType t.G.hom` using `by haveI := t.semi.smooth infer_instance`. Take `⟨σ, hσ, hσnz⟩` from `GlobalTheory.T.extend_regularThetaSection_any_fractionField E H S t g m N R K χ θ pt c hodd hm3 hm hpol hth hu`. Take `⟨s, hs, hsgen, hsfib⟩` from `GlobalTheory.T.exists_localSection_of_openImmersion_spec S t.G t.PP.L R χ σ hlft hσnz`. Use `⟨s, hs, ?_, hsfib⟩` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hsgen K (algebraMap R K)` as an intermediate fact. Rewrite `this` using `[hσ]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locSec_of_openImmersion (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S)
     (g m N : ℕ) (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R]
@@ -42,15 +42,15 @@ theorem exists_locSec_of_openImmersion (E : Type) [Field E] [NumberField E] [IsC
   exact this
 
 /- English proof (translation)
-Introduce `E _ _ _ H k Ω _ _ _ _ _ M t g m n c h θ pt hN hodd hm3 hmu hpol hgen hth hcrd a z hz`. Take `⟨hca, hdiv⟩` from `GlobalTheory.T.projective_chart_coordinate_ratio_mem_model_ring k Ω M n c h a z hcrd hz`. Take `⟨W, hWa, hzW, hWV, hnoeth, hic⟩` from `GlobalTheory.T.exists_affine_nbhd_noetherian_integrallyClosed k Ω M hN (h ⁻¹ᵁ chart k n a) z hz`. Establish `hne : (W : Set M.Z).Nonempty` using `⟨z, hzW⟩`. Take `⟨χ, hoi, hrange, hgenpt⟩` from `GlobalTheory.T.exists_openImmersion_spec_ringOn_affine k Ω M W hWa hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := M.isFractionRing_ringOn hWa hne`. Set `c'' : Fin (n + 1) → M.ringOn W` to `fun b => ⟨c b / c a, RatModel.mem_ringOn.2 fun z' hz' => hdiv z' (hWV hz') b⟩`. Set `θ' : SecAt t.G t.PP.L M.pt` to `SecM.toSec t.G ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (c a)⁻¹ • SecM.ofSec t.G θ)`. Establish `hmΩ : (m : Ω) ≠ 0`. Use `hmu.map (algebraMap k Ω)` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Establish `hth' : ThList t.G t.PP.L t.PP.rig m M.pt θ' pt (fun b => algebraMap (M.ringOn W) Ω (c'' b))`. Use `⟨hth.1, fun b => ?_, hth.2.2⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.UMin.thG_smul_iff M.Z t.G t.PP.L t.PP.rig t.PP.isLB t.PP.rigGen g m Ω M.pt θ θ' (pt b) (c a)⁻¹ (c b) (c b / c a) hodd hmΩ hpol rfl (hth.2.1 b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key.2 (by rw [div_eq_inv_mul])`. Establish `hmR : IsUnit (m : M.ringOn W)`. Use `hmu.map (algebraMap k (M.ringOn W))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hunit : ∃ b, IsUnit (c'' b)` using `⟨a, by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: c'' a = 1` using `Subtype.ext (by simp [c'', div_self hca])`. Rewrite using `[this]`. Conclude with `isUnit_one⟩`. Take `⟨s, hs, hsgen, hsfib⟩` from `exists_locSec_of_openImmersion E H M.Z t g m (n + 1) (M.ringOn W) Ω χ M.pt hgenpt θ' pt c'' hodd hm3 hmR hpol hth' hunit`. Conclude with `⟨χ.opensRange, by rw [hrange]; exact hzW, by rw [hrange]; exact hWV, s, hs, hsgen, hsfib⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_locSec_theta_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k Ω : Type) [CommRing k]
     [IsNoetherianRing k] [Field Ω] [CharZero Ω] [Algebra k Ω] (M : RatModel k Ω) (t : SAB H M.Z) (g m n : ℕ)

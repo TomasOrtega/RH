@@ -7,15 +7,15 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 universe u
 
 /- English proof (translation)
-Introduce `A _ _ _ x hx W`. Prove the components needed by the constructor for the conclusion. Introduce `hW`. Establish `hWp : W.IsPrime` using `hW.isPrime`. Establish `hxW : x ∈ W` using `hW.1.2 (Ideal.mem_span_singleton_self x)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hWp, ?_, hxW⟩` and prove the remaining obligations. Establish `hle : W.height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes (Ideal.span {x}) W hW`. Establish `hne : W.height ≠ 0`. Rewrite using `[Ne, Ideal.height_eq_zero_iff_eq_bot]`. Introduce `hbot`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hxW` using `[hbot, Ideal.mem_bot]`. Conclude with `hx hxW`. Conclude with `le_antisymm hle (Order.one_le_iff_ne_zero.mpr hne)`. Introduce and unpack `⟨hWp, hh, hxW⟩`. Use `⟨⟨hWp, (Ideal.span_singleton_le_iff_mem W).mpr hxW⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce and unpack `Q ⟨hQp, hxQ⟩ hQW`. Assume the negation of the conclusion as `hWQ`. Establish `hlt : Q < W` using `lt_of_le_of_ne hQW (fun h => hWQ (h ▸ le_refl Q))`. Establish `hfin : W.FiniteHeight` using `W.finiteHeight_iff.mpr (Or.inr (by rw [hh]; exact ENat.one_ne_top))`. Establish `hQh : Q.height < 1` using `hh ▸ Ideal.height_strict_mono_of_isPrime_of_isPrime hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hQ0 : Q.height = 0` using `Order.lt_one_iff.mp hQh`. Rewrite `hQ0` using `[Ideal.height_eq_zero_iff_eq_bot]`. Establish `hx0 : x ∈ (⊥ : Ideal A)` using `hQ0 ▸ (Ideal.span_singleton_le_iff_mem Q).mp hxQ`. Conclude with `hx ((Ideal.mem_bot).mp hx0)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem MinimalPrimesSpanSingleton.proof : MinimalPrimesSpanSingleton.Statement.{u} := by
   intro A _ _ _ x hx W

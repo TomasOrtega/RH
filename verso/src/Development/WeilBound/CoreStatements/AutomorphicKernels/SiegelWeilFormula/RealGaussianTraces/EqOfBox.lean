@@ -9,15 +9,15 @@ open scoped TensorProduct Matrix NNReal
 
 open Topology in
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `set c := g1 t - g2 t with hc`. Establish `hc0 : c ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hcpos : 0 < ‖c‖` using `norm_pos_iff.mpr hc0`. Establish `hcont : ContinuousAt (fun x => g1 x - g2 x) t` using `(h1.sub h2).continuousAt (hB.mem_nhds ht)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : {x | ‖(g1 x - g2 x) - c‖ < ‖c‖ / 2} ∈ 𝓝 t`. Use `hcont.eventually (Metric.ball_mem_nhds c (by positivity : (0 : ℝ) < ‖c‖ / 2))` as an intermediate fact. Use `filter_upwards [this] with x hx`. Simplify `hx` using `[Metric.mem_ball, dist_eq_norm]`. Take `⟨S, hSc, hSU, hSB, hSt, hint⟩` from `hbox _ hU`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSfin : ν S < ⊤` using `hSc.measure_lt_top`. Establish `hSpos : 0 < ν S` using `Measure.measure_pos_of_mem_nhds (μ := ν) hSt`. Establish `hSr : 0 < ν.real S` using `ENNReal.toReal_pos hSpos.ne' hSfin.ne`. Establish `hi1 : IntegrableOn g1 S ν` using `(h1.mono hSB).integrableOn_compact hSc`. Establish `hi2 : IntegrableOn g2 S ν` using `(h2.mono hSB).integrableOn_compact hSc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi12 : IntegrableOn (fun x => g1 x - g2 x) S ν` using `hi1.sub hi2`. Establish `hic : IntegrableOn (fun _ : X => c) S ν` using `integrableOn_const hSfin.ne`. Establish `h0 : ∫ x in S, (g1 x - g2 x - c) ∂ν = -(ν.real S • c)`. Rewrite using `[integral_sub hi12 hic, integral_sub hi1 hi2, hint, sub_self, setIntegral_const, zero_sub]`. Establish `hle : ‖∫ x in S, (g1 x - g2 x - c) ∂ν‖ ≤ ‖c‖ / 2 * ν.real S` using `norm_setIntegral_le_of_norm_le_const hSfin (fun x hx => (hSU hx).le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `hle` using `[h0, norm_neg, norm_smul, Real.norm_of_nonneg hSr.le]`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem eq_of_box {X : Type} [TopologicalSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X] (ν : Measure X)
     [ν.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts ν] (B : Set X) (hB : IsOpen B) (g1 g2 : X → ℂ)

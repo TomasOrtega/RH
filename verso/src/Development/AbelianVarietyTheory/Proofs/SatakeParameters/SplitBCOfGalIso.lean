@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
 /- English proof (translation)
-Unfold `spehLoc`. Proceed by induction on `List.range p.d with`. Consider the case `nil => exact A.lpZero_unr w`. Consider the case `cons k l ih => exact (A.unr_sum _ _).2 ⟨(A.unr_tw _ _).2 h, ih⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem spehLoc_unr (p : Part A.CG) (w : PlE H) (h : A.unr (A.locG p.π w)) : A.unr (spehLoc N A p w) := by
   unfold spehLoc
@@ -21,7 +21,7 @@ theorem spehLoc_unr (p : Part A.CG) (w : PlE H) (h : A.unr (A.locG p.π w)) : A.
   | cons k l ih => exact (A.unr_sum _ _).2 ⟨(A.unr_tw _ _).2 h, ih⟩
 
 /- English proof (translation)
-Proceed by induction on `P with`. Consider the case `nil => exact Filter.Eventually.of_forall fun w => A.lpZero_unr w`. Consider the case `cons p P ih => filter_upwards [ih, A.locG_unr_ae p.π] with w h1 h2`. Conclude with `(A.unr_sum _ _).2 ⟨spehLoc_unr N A p w h2, h1⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isoLoc_unr_ae (P : List (Part A.CG)) : ∀ᶠ w in Filter.cofinite, A.unr (isoLoc N A P w) := by
   induction P with
@@ -37,23 +37,21 @@ namespace GlobalTheory.RowTie
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `R H what₂ N A i hG hC hAN P P' hag Pa Pa' hB hB'`. Take `⟨r, hrc, -, hr⟩` from `hG P Pa hB`. Take `⟨r', hrc', -, hr'⟩` from `hG P' Pa' hB'`. Establish `hfin : (placesOver H.E (N.l i)).Finite`. Establish `h0 : Ideal.span {((N.l i : ℕ) : 𝓞 H.E)} ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using (Fact.out : (N.l i).Prime).ne_zero`. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.2 hv`. Establish `hinj : Function.Injective (Polynomial.map (A.iotaQC i).toRingHom)` using `Polynomial.map_injective _ (A.iotaQC i).injective`. Establish `hgood : ∀ᶠ w in Filter.cofinite, (w ∉ placesOver H.E (N.l i) ∧ A.unr (isoLoc N A Pa w) ∧ A.unr (isoLoc N A Pa' w)) ∧ (IsSplitPl H w → A.locV i P w = A.locV i P' w)` using `by filter_upwards [hfin.eventually_cofinite_notMem, GlobalTheory.SplitDetermines.isoLoc_unr_ae N A Pa, GlobalTheory.SplitDetermines.isoLoc_unr_ae N A Pa', hag] with w h1 h2 h3 h4`. Conclude with `⟨⟨h1, h2, h3⟩, h4⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hS` using `Filter.eventually_cofinite.1 hgood`. Establish `hd` using `hC hS.toFinset`. Establish `hu : ∀ w, w ∉ placesOver H.E (N.l i) → A.unr (isoLoc N A Pa w) → A.unr (A.wdOf i r w)` using `fun w h1 h2 => by`. Rewrite using `[hr w h1]`. Conclude with `(A.unr_tw _ _).2 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu' : ∀ w, w ∉ placesOver H.E (N.l i) → A.unr (isoLoc N A Pa' w) → A.unr (A.wdOf i r' w)` using `fun w h1 h2 => by`. Rewrite using `[hr' w h1]`. Conclude with `(A.unr_tw _ _).2 h2`. Establish `key` using `GlobalTheory.TypeLeaf.charpoly_eq_of_dense (G H.E N.Om) (Qbar (N.l i)) R.nV (fun g => ((r g : GL (Fin R.nV) (Qbar (N.l i))) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))) (fun g => ((r' g : GL (Fin R.nV) (Qbar (N.l i))) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))) _ hd hrc hr …`. Introduce and unpack `g ⟨w, hw, hsp, B, hBw, hg⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hw' : ¬ ¬ ((w ∉ placesOver H.E (N.l i) ∧ A.unr (isoLoc N A Pa w) ∧ A.unr (isoLoc N A Pa' w)) ∧ (IsSplitPl H w → A.locV i P w = A.locV i P' w))`. Simplify using `using hw`. Take `⟨⟨h1, h2, h3⟩, h4⟩` from `not_not.1 hw'`. Apply `hinj` to reduce the goal to its premises. Establish `e : A.wdOf i r w = A.wdOf i r' w`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hr w h1, hr' w h1, hB.2.2.2.1 w hsp, hB'.2.2.2.1 w hsp, h4 hsp]`. Rewrite using `[A.wdOf_frob i r w h1 hrc (hu w h1 h2) B g hBw hg, A.wdOf_frob i r' w h1 hrc' (hu' w h1 h3) B g hBw hg, e])`. Use `hAN Pa Pa' hB.1 hB'.1 ?_` and prove the remaining obligations. Use `filter_upwards [hgood] with w hw`. Take `⟨⟨h1, h2, h3⟩, -⟩` from `hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩` from `exists_isFrob (N.plOm.2 w)`. Establish `e1` using `A.wdOf_frob i r w h1 hrc (hu w h1 h2) _ σ (N.plOm.2 w) hσ`. Establish `e2` using `A.wdOf_frob i r' w h1 hrc' (hu' w h1 h3) _ σ (N.plOm.2 w) hσ`. Establish `hm : A.frobEig (A.wdOf i r w) = A.frobEig (A.wdOf i r' w)`. Establish `e3` using `congrArg Polynomial.roots (e1.symm.trans ((congrArg _ (key σ)).trans e2))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e3` using `[Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Then use the resulting hypothesis. Establish `e4 : A.wdOf i r w = A.wdOf i r' w`. Rewrite using `[A.unr_eq_lpUnr _ (hu w h1 h2), hm, ← A.unr_eq_lpUnr _ (hu' w h1 h3)]`. Rewrite `e4` using `[hr w h1, hr' w h1]`. Establish `e5` using `congrArg (fun a => A.lpTw a (-((1 - (R.nV : ℝ)) / 2))) e4`.
-
-Simplify `e5` using `only [A.lpTw_add, add_neg_cancel, A.lpTw_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem splitBC_of_galIso : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N)
     (i : N.Loc), GlobalTheory.RowTie.GalIso N A i → GlobalTheory.RowTie.ChebSplit N → GlobalTheory.RowCopy.IsobaricDiscreteSelfDualStrongMultiplicityOne N A →

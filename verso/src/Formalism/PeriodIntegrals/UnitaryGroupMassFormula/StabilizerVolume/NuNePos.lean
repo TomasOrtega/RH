@@ -12,43 +12,33 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct ENNReal Pointwise
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet μ hμ 𝓕 h𝓕`. Use `haveI : MeasurableMul (HA (AF F) σ J) := (hMG F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet).1`. Use `haveI : MeasurableInv (HA (AF F) σ J) := (hMG F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet).2`. Use `haveI : μ.IsHaarMeasure := hμ`. Use `haveI : μ.IsInvInvariant := (hI F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet).1 μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Countable (HFinIn (AF F) σ J) := um_countable_HFinIn F E σ M J`. Use `haveI hΓc : Countable (GamA σ J) := um_countable_HFinIn F E σ M J`. Take `⟨φ, hφ0, hadm, U, hUo, hUne, hUpos⟩` from `hTN F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet`. Use `⟨φ, hφ0, hadm, ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `gram_orbit_equiv σ J X0 (hW F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : orbS (GamA σ J) (ratTup (F` using `F) (AF F) X0) ⊆ Set.range (fun γ : GamA σ J => (γ : HA (AF F) σ J) • ratTup (F := F) (AF F) X0) := by`. Introduce and unpack `x ⟨γ, hγ, e⟩`. Conclude with `⟨⟨γ, hγ⟩, e⟩`. Use `haveI hcO : Countable (orbS (GamA σ J) (ratTup (F := F) (AF F) X0)) := ((Set.countable_range _).mono hsub).to_subtype`. Establish `hmφ : Measurable fun g : HA (AF F) σ J => φ (g • ratTup (F` using `F) (AF F) X0) := by`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `hMO F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet _ hadm.adm` as an intermediate fact. Establish `h2` using `Complex.measurable_re.comp this`. Simplify using `only [Function.comp_def, Complex.ofReal_re] at h2`. Conclude with `h2`. Set `θp : HA (AF F) σ J → ℝ≥0∞` to `fun h => ∑' x : orbS (GamA σ J) (ratTup (F := F) (AF F) X0), ENNReal.ofReal (φ (h⁻¹ • (x : Fin a → Fin M → AF F ⊗[F] E)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hθS : ∀ h : HA (AF F) σ J, θp h = ∑' X : {X : Fin a → Fin M → E | gramE σ J X = gramE σ J X0}, ENNReal.ofReal (φ (h⁻¹ • ratTup (F` using `F) (AF F) (X : Fin a → Fin M → E))) := by`. Introduce `h`. Use `show ∑' x : orbS (GamA σ J) (ratTup (F := F) (AF F) X0), _ = _`. Rewrite using `[← e.tsum_eq (fun x => ENNReal.ofReal (φ (h⁻¹ • (x : Fin a → Fin M → AF F ⊗[F] E))))]`. Conclude with `tsum_congr fun X => by rw [he X]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hθm : Measurable θp`. Use `Measurable.ennreal_tsum fun x => ?_` and prove the remaining obligations. Establish `hx : (fun h : HA (AF F) σ J => ENNReal.ofReal (φ (h⁻¹ • (x : Fin a → Fin M → AF F ⊗[F] E)))) = fun h => ENNReal.ofReal (φ ((h⁻¹ * repO _ _ x) • ratTup (F` using `F) (AF F) X0)) := by`. Use function extensionality and compare the values at `h`. Rewrite using `[mul_smul, repO_smul]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx]`. Conclude with `(hmφ.comp (measurable_inv.mul_const _)).ennreal_ofReal`. Establish `hθeq : ∀ h, thetaS F E σ M J (fun X => (φ X : ℂ)) {X | gramE σ J X = gramE σ J X0} h = (((θp h).toReal : ℝ) : ℂ)`. Introduce `h`. Unfold `thetaS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Complex.ofReal_tsum, hθS h, ENNReal.tsum_toReal_eq (fun _ => ENNReal.ofReal_ne_top)]`. Use `congr 1`. Conclude with `tsum_congr fun X => (ENNReal.toReal_ofReal (hφ0 _)).symm`. Establish `hfinI : ∫⁻ h in 𝓕, θp h ∂μ ≠ ⊤`. Use `hFin F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet μ hμ 𝓕 h𝓕 φ hφ0 hadm.adm` as an intermediate fact.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lintegral_congr hθS]`. Conclude with `this.ne`. Establish `hI1 : ∫ h in 𝓕, thetaS F E σ M J (fun X => (φ X : ℂ)) {X | gramE σ J X = gramE σ J X0} h ∂μ = (((∫⁻ h in 𝓕, θp h ∂μ).toReal : ℝ) : ℂ)`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hθeq), integral_complex_ofReal, integral_toReal hθm.aemeasurable (ae_lt_top hθm hfinI)]`. Establish `hinv : ∀ γ ∈ GamA σ J, ∀ h, θp (γ * h) = θp h`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `γ hγ h`. Set `T : orbS (GamA σ J) (ratTup (F` to `F) (AF F) X0) ≃ orbS (GamA σ J) (ratTup (F := F) (AF F) X0) := { toFun := fun x => ⟨γ⁻¹ • (x : Fin a → Fin M → AF F ⊗[F] E), by`. Take `⟨γ', hγ', e'⟩` from `x.2`. Conclude with `⟨γ⁻¹ * γ', (GamA σ J).mul_mem ((GamA σ J).inv_mem hγ) hγ', by rw [mul_smul, e']⟩⟩`. Use `invFun := fun x => ⟨γ • (x : Fin a → Fin M → AF F ⊗[F] E), by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨γ', hγ', e'⟩` from `x.2`. Conclude with `⟨γ * γ', (GamA σ J).mul_mem hγ hγ', by rw [mul_smul, e']⟩⟩`. Use `left_inv := fun x => Subtype.ext (smul_inv_smul γ _)`. Use `right_inv := fun x => Subtype.ext (inv_smul_smul γ _) }`. Use `show ∑' x : orbS (GamA σ J) (ratTup (F := F) (AF F) X0), _ = ∑' x : orbS (GamA σ J) (ratTup (F := F) (AF F) X0), _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← T.tsum_eq (fun x => ENNReal.ofReal (φ (h⁻¹ • (x : Fin a → Fin M → AF F ⊗[F] E))))]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Use `show _ = ENNReal.ofReal (φ (h⁻¹ • γ⁻¹ • (x : Fin a → Fin M → AF F ⊗[F] E)))`. Rewrite using `[mul_inv_rev, mul_smul]`. Set `V : Set (HA (AF F) σ J)` to `Inv.inv ⁻¹' U`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hVm : MeasurableSet V` using `hUo.measurableSet.preimage measurable_inv`. Establish `hVpos : 0 < μ V` using `by show 0 < μ (Inv.inv ⁻¹' U)`. Rewrite using `[Measure.measure_preimage_inv]`. Conclude with `hUo.measure_pos μ hUne`. Establish `hθpos : ∀ h ∈ V, 0 < θp h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h hV`. Set `x0 : orbS (GamA σ J) (ratTup (F` to `F) (AF F) X0) := ⟨ratTup (F := F) (AF F) X0, ⟨1, (GamA σ J).one_mem, one_smul _ _⟩⟩`. Use `lt_of_lt_of_le ?_ (ENNReal.le_tsum x0)` and prove the remaining obligations. Conclude with `ENNReal.ofReal_pos.2 (hUpos h⁻¹ hV)`. Establish `h𝓕' : IsFundamentalDomain (GamA σ J) 𝓕 μ` using `h𝓕`.
-
-Establish `hL0 : ∫⁻ h in 𝓕, θp h ∂μ ≠ 0`. Introduce `hL`. Establish `hz : ∫⁻ g, V.indicator θp g ∂μ = 0`. Rewrite using `[h𝓕'.lintegral_eq_tsum'']`. Use `ENNReal.tsum_eq_zero.2 fun γ => le_antisymm ?_ zero_le` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun h => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `_ = 0 := hL`. Rewrite `hz` using `[lintegral_eq_zero_iff (hθm.indicator hVm)]`.
-
-Establish `: μ V = 0`. Use `measure_mono_null (fun g hg => ?_) (ae_iff.1 hz)` and prove the remaining obligations. Use `show V.indicator θp g ≠ (0 : HA (AF F) σ J → ℝ≥0∞) g`. Rewrite using `[indicator_of_mem hg]`. Conclude with `(hθpos g hg).ne'`.
-
-Conclude with `hVpos.ne' this`. Establish `hμ0 : (μ 𝓕).toReal ≠ 0`. Use `ENNReal.toReal_ne_zero.2 ⟨fun h0 => hL0 ?_, ((ha.2 μ hμ).2 𝓕 h𝓕).ne⟩` and prove the remaining obligations. Rewrite using `[Measure.restrict_eq_zero.2 h0, lintegral_zero_measure]`. Unfold `meanC`.
-
-Rewrite using `[hI1]`. Use `smul_ne_zero (inv_ne_zero hμ0) ?_` and prove the remaining obligations. Conclude with `Complex.ofReal_ne_zero.2 (ENNReal.toReal_ne_zero.2 ⟨hL0, hfinI⟩)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem thetaPos_of (hFin : ThetaFin) (hW : Witt) (hI : InvInv) (hMO : MeasOrb) (hMG : MeasGrp)
     (hTN : TestNear) : ThetaPos := by
@@ -164,7 +154,7 @@ theorem thetaPos_of (hFin : ThetaFin) (hW : Witt) (hI : InvInv) (hMO : MeasOrb) 
   exact Complex.ofReal_ne_zero.2 (ENNReal.toReal_ne_zero.2 ⟨hL0, hfinI⟩)
 
 /- English proof (translation)
-The claim follows from `nuNeZero_of hS (thetaPos_of hFin hW hI hMO hMG hTN)`.
+A detailed English derivation is pending.
 -/
 theorem nuNeZero_of_fin (hFin : ThetaFin) (hS : SWeqOm) (hW : Witt) (hI : InvInv) (hMO : MeasOrb)
     (hMG : MeasGrp) (hTN : TestNear) : NuNeZero :=

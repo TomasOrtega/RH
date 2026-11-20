@@ -5,9 +5,9 @@ namespace PI.UnitaryGroupMassFormula.EfRankSum
 open Formalism.MainNotions.Gaps.EtaleWeightGaps
 
 /- English proof (translation)
-Use `⟨fun r hr a b hab => ?_⟩` and prove the remaining obligations. Establish `hab' : r • a = r • b` using `hab`. Establish `hr0 : r ≠ 0` using `hr.ne_zero`. Establish `hK : algebraMap O K r ≠ 0`. Simplify using `using (IsFractionRing.injective O K).ne hr0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : (algebraMap O K r) • a = (algebraMap O K r) • b`. Rewrite using `[algebraMap_smul, algebraMap_smul]`. Conclude with `hab'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isTorsionFree_alg (O : Type) [CommRing O] [IsDomain O]
     (K : Type) [Field K] [Algebra O K] [IsFractionRing O K]
@@ -26,9 +26,9 @@ theorem isTorsionFree_alg (O : Type) [CommRing O] [IsDomain O]
     _ = b := by rw [inv_mul_cancel₀ hK, one_smul]
 
 /- English proof (translation)
-Take `⟨h⟩` from `isTorsionFree_alg O K A`. Use `⟨fun r hr a b hab => ?_⟩` and prove the remaining obligations. Establish `hab' : r • (a : A) = r • (b : A)`. Establish `h2` using `congrArg (fun x : ↥(As O A) => (x : A)) hab`. Simplify using `using h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Subtype.ext (h hr hab')`.
+A detailed English derivation is pending.
 -/
 theorem isTorsionFree_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (K : Type) [Field K] [Algebra O K] [IsFractionRing O K]
@@ -42,7 +42,7 @@ theorem isTorsionFree_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuati
   exact Subtype.ext (h hr hab')
 
 /- English proof (translation)
-Use `haveI := isTorsionFree_as O K A`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+A detailed English derivation is pending.
 -/
 theorem free_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (K : Type) [Field K] [Algebra O K] [IsFractionRing O K]
@@ -52,15 +52,15 @@ theorem free_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   exact Module.free_of_finite_type_torsion_free'
 
 /- English proof (translation)
-Take `⟨htf⟩` from `isTorsionFree_alg O K A`. Use `IsLocalizedModule.mk ?_ ?_ ?_` and prove the remaining obligations. Introduce `s`. Establish `hs : algebraMap O K s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Rewrite using `[Module.End.isUnit_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Simplify using `only [Module.algebraMap_end_apply] at hxy`. Conclude with `htf (isRegular_of_ne_zero (nonZeroDivisors.ne_zero s.2)) hxy`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(algebraMap O K s)⁻¹ • y, ?_⟩` and prove the remaining obligations. Simplify using `only [Module.algebraMap_end_apply]`. Rewrite using `[← algebraMap_smul K (s : O), smul_smul, mul_inv_cancel₀ hs, one_smul]`. Introduce `y`. Establish `hy : IsAlgebraic K y` using `Algebra.IsAlgebraic.isAlgebraic y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyO : IsAlgebraic O y` using `(IsFractionRing.isAlgebraic_iff O K A).mpr hy`. Take `⟨c, hc0, hc⟩` from `hyO.exists_integral_multiple`. Use `⟨(⟨c • y, hc⟩, ⟨c, mem_nonZeroDivisors_of_ne_zero hc0⟩), ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Introduce `x₁ x₂ h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨1, by rw [Subtype.ext h]⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (K : Type) [Field K] [Algebra O K] [IsFractionRing O K]
@@ -89,7 +89,7 @@ theorem isLocalizedModule_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteVal
     exact ⟨1, by rw [Subtype.ext h]⟩
 
 /- English proof (translation)
-Use `haveI : Module.Free O ↥(As O A) := free_as O K A`. Use `haveI := isLocalizedModule_as O K A`. Set `b` to `Module.Free.chooseBasis O ↥(As O A)`. Set `b'` to `b.ofIsLocalizedModule K (nonZeroDivisors O) ((As O A).val.toLinearMap)`. Rewrite using `[Module.finrank_eq_card_basis b, Module.finrank_eq_card_basis b']`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (K : Type) [Field K] [Algebra O K] [IsFractionRing O K]

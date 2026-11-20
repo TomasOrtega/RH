@@ -7,9 +7,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 namespace GlobalTheory.OpenImmDim
 
 /- English proof (translation)
-Introduce `F _ X V _ p ℓ _ _ _`. Establish `hne : ((ℓ.opensRange : X.Opens) : Set X).Nonempty`. Take `⟨v⟩` from `‹Nonempty V›`. Conclude with `⟨ℓ v, by rw [Scheme.Hom.coe_opensRange]; exact ⟨v, rfl⟩⟩`. Rewrite using `[← GlobalTheory.OpenDim.topologicalKrullDim_open F p ℓ.opensRange hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.topologicalKrullDim_eq_of_isEmbedding ℓ.isOpenEmbedding.isEmbedding (by rw [Scheme.Hom.coe_opensRange])).symm`.
+A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_eq_of_isOpenImmersion : ∀ (F : Type) [Field F] (X V : Scheme.{0})
     [IsIntegral X] (p : X ⟶ Sp F) (ℓ : V ⟶ X) [LocallyOfFiniteType p] [IsOpenImmersion ℓ]

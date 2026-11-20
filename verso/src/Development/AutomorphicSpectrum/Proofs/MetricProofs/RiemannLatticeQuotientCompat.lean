@@ -5,15 +5,15 @@ open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTh
 namespace GlobalTheory.CompanionTheory.Ar.Cusp
 
 /- English proof (translation)
-Introduce `E _ _ _ g g' Λ Λ' _ _ _ _ R R₁ D π q Hm' B' hsurj hadd hsmul hker hB hHm hpos hform`. Use `choose s hsD hs using hsurj`. Establish `hwd : ∀ x ∈ D, ∀ y ∈ D, π x = π y → q (R.P x) = q (R.P y)`. Introduce `x hx y hy hxy`. Establish `hxy' : x - y ∈ D` using `D.sub_mem hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hadd (x - y) hxy' y hy`. Rewrite `h1` using `[sub_add_cancel, hxy]`. Establish `h2 : π (x - y) = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `hker _ hxy' h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h3` using `[map_sub, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Set `P' : Λ' →+ (Fin g' → ℂ)` to `AddMonoidHom.mk' (fun x' => q (R.P (s x'))) (fun x' y' => by show q (R.P (s (x' + y'))) = q (R.P (s x')) + q (R.P (s y'))`. Establish `hD : s x' + s y' ∈ D` using `D.add_mem (hsD x') (hsD y')`. Establish `h` using `hwd _ (hsD (x' + y')) _ hD (by rw [hs, hadd _ (hsD x') _ (hsD y'), hs, hs])`. Rewrite using `[h, map_add, map_add])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP' : ∀ x ∈ D, P' (π x) = q (R.P x)` using `fun x hx => hwd _ (hsD (π x)) _ hx (hs (π x))`. Use `⟨⟨R₁.1, R₁.2, R₁.3, R₁.form, R₁.5, R₁.6, R₁.7, P', Hm', hHm, hpos, ?_, B', ?_⟩, rfl, rfl, hP'⟩` and prove the remaining obligations. Introduce `x' y'`. Establish `h` using `hform _ (hsD x') _ (hsD y')`. Rewrite `h` using `[hs, hs]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h`. Introduce `a x'`. Establish `hax : a • s x' ∈ D` using `(hsmul a _ (hsD x')).1`. Establish `h1 : π (a • s x') = a • x'` using `by rw [(hsmul a _ (hsD x')).2, hs]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem riemLat_assemble_of_quot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g g' : ℕ) (Λ Λ' : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] [AddCommGroup Λ'] [Module (𝓞 E) Λ'] (R : RiemLat E g Λ) (R₁ : RiemLat E g' Λ') (D : AddSubgroup Λ) (π : Λ → Λ') (q : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)) (Hm' : Matrix (Fin g') (Fin g') ℂ) (B' : 𝓞 E →+* Module.End ℂ (Fin g' → ℂ)), (∀ x', ∃ x ∈ D, π x = x') → (∀ x ∈ D, ∀ y ∈ D, π (x + y) = π x + π y) → (∀ (a : 𝓞 E), ∀ x ∈ D, a • x ∈ D ∧ π (a • x) = a • π x) → (∀ x ∈ D, π x = 0 → q (R.P x) = 0) → (∀ a z, B' a (q z) = q (R.B a z)) → Hm'.IsHermitian → (∀ z : Fin g' → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm' *ᵥ star z).re) → (∀ x ∈ D, ∀ y ∈ D, (q (R.P x) ⬝ᵥ Hm' *ᵥ star (q (R.P y))).im = R₁.form (π x) (π y)) → ∃ R' : RiemLat E g' Λ', R'.form = R₁.form ∧ R'.Hm = Hm' ∧ ∀ x ∈ D, R'.P (π x) = q (R.P x) := by
   intro E _ _ _ g g' Λ Λ' _ _ _ _ R R₁ D π q Hm' B' hsurj hadd hsmul hker hB hHm hpos hform

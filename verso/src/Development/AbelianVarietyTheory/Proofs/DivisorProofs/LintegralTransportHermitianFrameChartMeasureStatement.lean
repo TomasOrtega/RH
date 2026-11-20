@@ -6,7 +6,7 @@ open NumberField MeasureTheory ReciprocityTheory.ChartRestriction.G.FD Reciproci
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FlagTransport.lintegral_trF_cpt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLintegralTransportHermitianFrameChartMeasure.lean&line=130#L130)
 -/

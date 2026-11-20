@@ -12,15 +12,13 @@ noncomputable section
 namespace GlobalTheory.ConvSeries
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ M hM hℓ b c hb hc hg h u hu`. Establish `ht : ∀ j, ∃ t ∈ M, ∀ y, t y = term b c h j y`. Introduce `j`. Take `⟨t, htM, ht⟩` from `GlobalTheory.T.gaussian_mul_multilinear_diagonal_mem_schwartzSubmodule E M hℓ c hc hg j (coef b c h j)`. Use `⟨(((2 * c) ^ j / (j.factorial : ℝ) : ℝ) : ℂ) • t, M.smul_mem _ htM, fun y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [SchwartzMap.smul_apply, ht, term, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `choose t htM hty using ht`. Establish `hs : Summable t` using `GlobalTheory.T.summable_schwartz_of_summable_seminorms E t (GlobalTheory.T.summable_seminorm_gaussianConvolutionSeriesTerm E b c hb hc h t hty)`. Establish `hL` using `hs.hasSum`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ y, (∑' j, t j) y = u y`. Introduce `y`. Set `φ : SchwartzMap E ℂ →L[ℂ] ℂ` to `(BoundedContinuousFunction.evalCLM ℂ y).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ E ℂ)`. Establish `h1 : HasSum (fun j => t j y) ((∑' j, t j) y)` using `hL.mapL φ`. Establish `h2 : HasSum (fun j => t j y) (u y)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu y]`. Conclude with `(GlobalTheory.T.hasSum_gaussianConvolutionSeriesTerm_integral E b c hb hc h y).congr_fun (fun j => hty j y)`. Conclude with `h1.unique h2`. Establish `hLu : (∑' j, t j) = u` using `SchwartzMap.ext hev`. Rewrite using `[← hLu]`.
-
-Conclude with `hM.mem_of_tendsto hL (Eventually.of_forall fun s => M.sum_mem fun j _ => htM j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_conv_gaussian : ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
     (M : Submodule ℂ (SchwartzMap E ℂ)), IsClosed (M : Set (SchwartzMap E ℂ)) →

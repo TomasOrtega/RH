@@ -11,7 +11,7 @@ open PositivityTheory.RgUd.Form
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `split_ifs with hx`. Conclude with `(Equiv.symm_apply_eq _).2 (Fin.ext (by simp))`. Conclude with `(Equiv.symm_apply_eq _).2 (Fin.ext (by simp; omega))`.
+A detailed English derivation is pending.
 -/
 private theorem blkAt_apply_lemma {n m : ℕ} (x : Fin (n + m)) :
     finSumFinEquiv.symm x =
@@ -21,9 +21,9 @@ private theorem blkAt_apply_lemma {n m : ℕ} (x : Fin (n + m)) :
   · exact (Equiv.symm_apply_eq _).2 (Fin.ext (by simp; omega))
 
 /- English proof (translation)
-Simplify using `only [blkAt, blkGL, glCongr, blkHom, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_comp, MonoidHom.coe_mk, OneHom.coe_mk, Function.comp_apply]`. Simplify using `[reindexAlgEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply, blkAt_apply_lemma]`. Apply the tactic sequence `split_ifs with ha hb hab <;> simp_all [Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.one_apply_ne]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Rewrite `e` using `[Fin.ext_iff]`. Simplify using `only at e`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem blkAt_apply (n N : ℕ) (h : n ≤ N) (g : GL (Fin n) k) (a b : Fin N) :
     ((blkAt k n N h g : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) a b =

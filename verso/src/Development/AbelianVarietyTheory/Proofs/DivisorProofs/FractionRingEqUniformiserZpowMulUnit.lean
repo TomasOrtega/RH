@@ -12,13 +12,13 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ ϖ hϖ y hy`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := V) y`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha : a ≠ 0` using `by rintro rfl; simp at hy`. Take `⟨n₁, u₁, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n₂, u₂, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hϖ`. Use `⟨(n₁ : ℤ) - n₂, u₁ * u₂⁻¹, ?_⟩` and prove the remaining obligations. Establish `hϖ0 : algebraMap V (FractionRing V) ϖ ≠ 0`. Rewrite using `[Ne, ← map_zero (algebraMap V (FractionRing V)), (IsFractionRing.injective V (FractionRing V)).eq_iff]`. Conclude with `hϖ.ne_zero`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : ∀ u : Vˣ, algebraMap V (FractionRing V) (u : V) ≠ 0` using `fun u => by`. Rewrite using `[Ne, ← map_zero (algebraMap V (FractionRing V)), (IsFractionRing.injective V (FractionRing V)).eq_iff]`. Conclude with `u.ne_zero`. Establish `h2` using `hu u₂`. Establish `h1` using `hu u₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : algebraMap V (FractionRing V) ((u₂⁻¹ : Vˣ) : V) = (algebraMap V (FractionRing V) (u₂ : V))⁻¹`. Conclude with `eq_inv_of_mul_eq_one_left (by rw [← map_mul, Units.inv_mul, map_one])`. Simplify using `only [Units.val_mul, map_mul, map_pow, key, zpow_sub₀ hϖ0, zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem DVR.fractionRing_eq_zpow_mul_unit : ∀ {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}, Irreducible ϖ → ∀ (y : FractionRing V), y ≠ 0 → ∃ (v : ℤ) (w : Vˣ), y = algebraMap V (FractionRing V) ϖ ^ v * algebraMap V (FractionRing V) (w : V) := by
   intro V _ _ _ ϖ hϖ y hy

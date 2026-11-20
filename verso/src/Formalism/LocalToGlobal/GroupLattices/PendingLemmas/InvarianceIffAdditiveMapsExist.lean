@@ -15,11 +15,11 @@ open Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Introduce `m hm b hb`. Take `⟨d, hd, hw⟩` from `vtOddDeg X j G hG b.1 b.2 hb`. Establish `h1 : Finsupp.weight (wBk X j b.1 b.2) m = d` using `hw (MvPolynomial.mem_support_iff.1 hm)`. Rewrite using `[← hd, ← h1, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (fun _ => by simp)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Unfold `wBk blkJ`. Distinguish the cases in `hx : (⟨(idxJ X j x).1, (idxJ X j x).2.1⟩ : Σ v : X.Pl, Fin (X.G.P.n' v)) = b`. Establish `hx' : (⟨(idxJ X j x).1, (idxJ X j x).2.1⟩ : Σ v : X.Pl, Fin (X.G.P.n' v)) = ⟨b.1, b.2⟩` using `hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos hx, if_pos hx']`. Simplify using the standard rewrite rules. Establish `hx' : ¬ (⟨(idxJ X j x).1, (idxJ X j x).2.1⟩ : Σ v : X.Pl, Fin (X.G.P.n' v)) = ⟨b.1, b.2⟩` using `hx`. Rewrite using `[if_neg hx, if_neg hx']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem oddDeg_of_vt (X : Sys p) (j : ℕ) (G : (X.Pj j).Xsp) (hG : G ∈ (X.Pj j).Vtup) : OddDeg X j G := by
   classical
@@ -43,13 +43,13 @@ def GdC (X : Sys p) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (j : ℕ) (G : (X
   GoodG X Kc j G ∧ OddDeg X j G
 
 /- English proof (translation)
-Introduce `j G hG` and use `⟨vtGood X Kc j G hG, oddDeg_of_vt X j G hG⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem vtIn_GdC (X : Sys p) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] : VtIn X (GdC X Kc) :=
   fun j G hG => ⟨vtGood X Kc j G hG, oddDeg_of_vt X j G hG⟩
 
 /- English proof (translation)
-Introduce `j A G f hG` and use `(delEquivH X Kc j A G f hG.1 hG.2).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem delEquivOn_GdC (X : Sys p) (Kc : Type) [Field Kc] [Algebra (K0 p) Kc] [Algebra X.G.Kf Kc] :
     DelEquivOn X Kc (GdC X Kc) :=
@@ -67,12 +67,12 @@ variable (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : CEmbC X.G)
 abbrev pendT : Pend X := pendR X E.toCEmb hfin hst (beLT hLT) (thFOf X pos F)
 
 /- English proof (translation)
-The claim follows from `up_down_adjoint D X _`.
+A detailed English derivation is pending.
 -/
 theorem adm6_pendT (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.FormalGroupSystem.adm6 D X (pendT X E hfin hst hLT pos F) := up_down_adjoint D X _
 
 /- English proof (translation)
-Set `_` to `wittFractionAlgebraCp p`. Set `_` to `algKfC E.toCEmb`. Conclude with `invariance_representatives X E.toCEmb hfin hst (beLT hLT) D (thFOf X pos F) (delEquivOn_GdC X ℂ_[p]) (vtIn_GdC X ℂ_[p])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem invariance_of_stable_geometry (D : Formalism.BasicNotions.D7) :
     letI := wittFractionAlgebraCp p
@@ -83,7 +83,7 @@ theorem invariance_of_stable_geometry (D : Formalism.BasicNotions.D7) :
   exact invariance_representatives X E.toCEmb hfin hst (beLT hLT) D (thFOf X pos F) (delEquivOn_GdC X ℂ_[p]) (vtIn_GdC X ℂ_[p])
 
 /- English proof (translation)
-Set `_` to `wittFractionAlgebraCp p`. Set `_` to `algKfC E.toCEmb`. Conclude with `invariance_representatives_trivial X E.toCEmb hfin hst (beLT hLT) D (thFOf X pos F) hT (delEquivOn_GdC X ℂ_[p]) (vtIn_GdC X ℂ_[p])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem invariance_of_trivial_stabilisers (D : Formalism.BasicNotions.D7) (hT : ∀ j c, (X.Lv.lev j c).TrivStab) :
     Formalism.MainNotions.FormalGroupSystem.MinkowskiCounting D X (pendT X E hfin hst hLT pos F) := by
@@ -92,7 +92,7 @@ theorem invariance_of_trivial_stabilisers (D : Formalism.BasicNotions.D7) (hT : 
   exact invariance_representatives_trivial X E.toCEmb hfin hst (beLT hLT) D (thFOf X pos F) hT (delEquivOn_GdC X ℂ_[p]) (vtIn_GdC X ℂ_[p])
 
 /- English proof (translation)
-The claim follows from `condition_iff_additive_maps X E.toCEmb hfin hst (beLT hLT) _ _ _ D`.
+A detailed English derivation is pending.
 -/
 theorem invariance_iff_additive_maps_exist (D : Formalism.BasicNotions.D7) :
     Formalism.MainNotions.FormalGroupSystem.adm5 D X (pendT X E hfin hst hLT pos F) ↔

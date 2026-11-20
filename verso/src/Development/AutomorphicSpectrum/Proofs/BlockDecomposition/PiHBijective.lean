@@ -21,33 +21,33 @@ theorem pull_tup (F : ι → (C ⥤ ModuleCat.{w} R)) (n : ℕ) (g : ∀ i, Cn (
     (piProj F i).pullC n (tup F n g) = g i := rfl
 
 /- English proof (translation)
-The claim follows from `funext fun s => funext fun i => congrFun (h i) s`.
+A detailed English derivation is pending.
 -/
 theorem cochain_ext (F : ι → (C ⥤ ModuleCat.{w} R)) (n : ℕ) {a b : Cn (piF F) n}
     (h : ∀ i, (piProj F i).pullC n a = (piProj F i).pullC n b) : a = b :=
   funext fun s => funext fun i => congrFun (h i) s
 
 /- English proof (translation)
-The claim follows from `((piProj F i).d_pullC n a).symm`.
+A detailed English derivation is pending.
 -/
 theorem pull_d (F : ι → (C ⥤ ModuleCat.{w} R)) (n : ℕ) (a : Cn (piF F) n) (i : ι) :
     (piProj F i).pullC (n + 1) (d (piF F) n a) = d (F i) n ((piProj F i).pullC n a) :=
   ((piProj F i).d_pullC n a).symm
 
 /- English proof (translation)
-Introduce `R _ C _ ι F n`. Establish `hz : ∀ (i : ι) (a : Cn (piF F) n), d (piF F) n a = 0 → d (F i) n ((piProj F i).pullC n a) = 0` using `fun i a ha => by`. Rewrite using `[← pull_d, ha, map_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx (piF F)) n).1 x`. Take `⟨b, hb, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx (piF F)) n).1 y`. Establish `hi : ∀ i, (piProj F i).pullC n a - (piProj F i).pullC n b ∈ (cx (F i)).B n` using `fun i => by`. Establish `h` using `congrFun hxy i`. Establish `h' : (cx (F i)).cls ((piProj F i).pullC n a) (hz i a ha) = (cx (F i)).cls ((piProj F i).pullC n b) (hz i b hb)` using `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((CrystallineSemistableComparison.P.cls_surj (cx (F i)) n).2.2.1 _ _ _ _).1 h'`. Use `((CrystallineSemistableComparison.P.cls_surj (cx (piF F)) n).2.2.1 a b ha hb).2 ?_` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero`. Establish `h0 : a - b = 0`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `cochain_ext F 0 fun i => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_zero]`. Conclude with `hi i`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `succ n`. Establish `hi' : ∀ i, ∃ c : Cn (F i) n, d (F i) n c = (piProj F i).pullC (n + 1) a - (piProj F i).pullC (n + 1) b` using `hi`. Use `choose c hc using hi'`. Use `⟨tup F n c, cochain_ext F (n + 1) fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(piProj F i).pullC (n + 1) (d (piF F) n (tup F n c)) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pull_d, pull_tup, hc, map_sub]`. Introduce `y`. Establish `hy : ∀ i, ∃ (a : Cn (F i) n) (ha : d (F i) n a = 0), y i = (cx (F i)).cls a ha` using `fun i => (CrystallineSemistableComparison.P.cls_surj (cx (F i)) n).1 (y i)`. Use `choose a ha e using hy`. Establish `hd : d (piF F) n (tup F n a) = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `cochain_ext F (n + 1) fun i => ?_` and prove the remaining obligations. Rewrite using `[pull_d, pull_tup, ha, map_zero]`. Use `⟨(cx (piF F)).cls (tup F n a) hd, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[e i]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem piH_bijective : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {ι : Type w}
     (F : ι → (C ⥤ ModuleCat.{w} R)) (n : ℕ),

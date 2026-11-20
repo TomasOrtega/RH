@@ -26,7 +26,7 @@ def canMap (p : ℕ) {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] (hA : 
   Classical.choose (GlobalTheory.T.exists_linear_canonical_map_primitiveDeRham_rigExt R A p G t hA)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (GlobalTheory.T.exists_linear_canonical_map_primitiveDeRham_rigExt R A p G t hA) c x`.
+A detailed English derivation is pending.
 -/
 theorem isCan_iff_canMap (p : ℕ) {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
     (hA : IsAbelianScheme A) {G : PDivGroup p R} (t : G.TorsionTower A) (c : primDR A)
@@ -34,7 +34,7 @@ theorem isCan_iff_canMap (p : ℕ) {R : Type} [CommRing R] {A : Over (Sp R)} [Gr
   Classical.choose_spec (GlobalTheory.T.exists_linear_canonical_map_primitiveDeRham_rigExt R A p G t hA) c x
 
 /- English proof (translation)
-The claim follows from `(isCan_iff_canMap p hA t c _).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem isCan_canMap (p : ℕ) {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
     (hA : IsAbelianScheme A) {G : PDivGroup p R} (t : G.TorsionTower A) (c : primDR A) :
@@ -42,7 +42,7 @@ theorem isCan_canMap (p : ℕ) {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj
   (isCan_iff_canMap p hA t c _).2 rfl
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `GlobalTheory.T.exists_relativeDimension_abelian_torsionTower hP p R hR A hA G t`. Conclude with `GlobalTheory.T.deRham_to_rigidified_extension_bijective_p_nilpotent hP p R hR A g hA hg G t _ (isCan_canMap p hA t)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem canMap_bijective (hP : GlobalTheory.Published.AbelianHodgeDeRham) (p : ℕ) [Fact p.Prime] {R : Type}
     [CommRing R] (hR : IsNilpotent (p : R)) {A : Over (Sp R)} [GrpObj A] (hA : IsAbelianScheme A)
@@ -55,11 +55,9 @@ def canFamily (hP : GlobalTheory.Published.AbelianHodgeDeRham) (p : ℕ) [Fact p
   fun _ _ hR _ _ hA _ t => LinearEquiv.ofBijective (canMap p hA t) (canMap_bijective hP p hR hA t)
 
 /- English proof (translation)
-Introduce `hP p _`. Use `⟨canFamily hP p, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `R R' _ _ hR hR' A _ A' _ hA hA' G G' t t' σ φ m c`. Conclude with `((isCan_iff_canMap p hA' t' _ _).1 (GlobalTheory.T.canonicalRigidifiedExtension_pullback_naturality p R R' A A' G G' t t' σ φ m c _ (isCan_canMap p hA t c)))`. Introduce `R _ hR A _ hA G t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `hR`. Conclude with `GlobalTheory.T.canonical_iso_hodge_filtration_eq_range_invariant_forms p R N hN A hA G t (canMap p hA t) (canMap_bijective hP p ⟨N, hN⟩ hA t).2 (isCan_canMap p hA t)`. Introduce `R _ hR A _ hA G t h v`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_relativeDimension_abelian_torsionTower hP p R hR A hA G t`. Conclude with `GlobalTheory.T.lie_image_iff_lie_correspondence_deRham_extension hP p R hR A g hA hg G t (canFamily hP p hR hA t) (isCan_canMap p hA t) h v`.
-
-Introduce `R _ hR A _ hA G t c`. Conclude with `isCan_canMap p hA t c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_canonical_family : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (p : ℕ) [Fact p.Prime],
     ∃ e : GlobalTheory.Published.DeRhamVectorExtension.Family p, e.Natural ∧ e.Filtered ∧ e.Tangent ∧

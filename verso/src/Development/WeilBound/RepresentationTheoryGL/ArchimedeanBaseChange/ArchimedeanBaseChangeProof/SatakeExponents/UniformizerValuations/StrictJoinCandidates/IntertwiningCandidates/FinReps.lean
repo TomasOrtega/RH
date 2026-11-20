@@ -15,7 +15,7 @@ namespace PositivityTheory.Rg.BcB.F.FX.Bo.He2
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.RS PositivityTheory.Rg.BcB.CG
 
 /- English proof (translation)
-Take `⟨k, ⟨ε⟩⟩` from `Finite.exists_equiv_fin {x // ∃ D, Q x D}`. Use `⟨k, fun j => (ε.symm j).2.choose, fun x D h => ⟨ε ⟨x, D, h⟩, ?_⟩⟩` and prove the remaining obligations. Use `(ε.symm (ε ⟨x, D, h⟩)).2.choose_spec` as an intermediate fact. Simplify using `only [Equiv.symm_apply_apply] at this ⊢`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fin_reps {X : Type} {α : Type 1} [Finite X] (Q : X → α → Prop) :
     ∃ (k : ℕ) (Dl : Fin k → α), ∀ x D, Q x D → ∃ j, Q x (Dl j) := by
@@ -37,9 +37,9 @@ def ClauseB {hR : Rd.ReadLimit} {E : Type} [Field E] [NumberField E] [IsCMField 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `w hw`. Take `⟨k, Dl, hD⟩` from `fin_reps (X := Σ i : F₀.C.ι, Fin (kA i) × Fin (kB i)) (α := Pre E n) fun x D => ∃ Pa Pb, IsJoin (F₀.μ ^ (n - F₀.C.a x.1)) (F₀.μ ^ F₀.C.a x.1) Pa Pb D ∧ Strict Pa (PA x.1 x.2.1) ∧ Strict Pb (PB x.1 x.2.2)`. Use `⟨k, Dl, fun i s₁ s₂ Pa Pb D hc => ?_⟩` and prove the remaining obligations. Take `⟨⟨ja, ha⟩, ⟨jb, hb⟩⟩` from `hcls i s₁ s₂ Pa Pb D hc`. Take `⟨j, Pa', Pb', hj, ha', hb'⟩` from `hD ⟨i, ja, jb⟩ D ⟨Pa, Pb, hc.ctx.join, ha, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs : Strict D (Dl j)` using `hSJ E n _ _ _ _ Pa Pa' Pb Pb' D _ hc.ctx.join hj ((hEq E _ Pa _ Pa').2 ha ((hEq E _ Pa' _ Pa').1 ha')) ((hEq E _ Pb _ Pb').2 hb ((hEq E _ Pb' _ Pb').1 hb'))`. Establish `hI` using `hII _ _ _ (prodAt D w) (prodAt (Dl j) w) (hSPr E n D (Dl j) hs w) (F₀.d₀.K' w)`. Conclude with `⟨j, fun τ => hI.1 τ.V τ.ρ, hI.2.1, hAd E n (Dl j) w _ (F₀.ok₀.K' w hw).1 (F₀.ok₀.K' w hw).2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem candB (hEq : StrictEqv) (hSPr : StrictProd) (hSJ : StrictJoin) (hII : IsoInv) (hAd : AdmProd)
     {hR : Rd.ReadLimit} {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {π : Submodule ℂ (UA E n → ℂ)}

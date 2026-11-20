@@ -7,35 +7,33 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `hTD hFA hCC E _ _ _ d hd Z Y sZ s' c₁ c₂ h₁ h₂ B s v₀ hB hv hs hs' hflat G G' hG hGv hev y hy0 A hT`. Take `⟨U, W, hW1, hW2, t, hy, hU, hW, φ, hφ1, hφ2, hφ3, hφ4⟩` from `hT`. Take `⟨ψ, hψ1, hψ2⟩` from `hTD E Y s' B s v₀ hB hv hs hs' y hy0 W hy`. Set `e₁ : Fin d → Sec s' W` to `fun l => Sec.res s' hW1 (appSec sZ s' c₁ U (t l))`. Set `e₂ : Fin d → Sec s' W` to `fun l => Sec.res s' hW2 (appSec sZ s' c₂ U (t l))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hφ2' : ∀ l, φ (KaehlerDifferential.D ℂ (Sec s' W) (e₁ l)) = Pi.single l 1` using `hφ2`. Establish `hφ3' : ∀ j, φ (KaehlerDifferential.D ℂ (Sec s' W) (e₂ j)) = fun l => A j l` using `hφ3`. Set `N : Set E` to `{v | v ∈ B ∧ ⊤ ≤ s v ⁻¹ᵁ W}`. Establish `hNo : IsOpen N` using `(hs W 0).1`. Establish `hv₀N : v₀ ∈ N`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hv, ?_⟩` and prove the remaining obligations. Use `hy` as an intermediate fact. Simplify using `only [CxPts.ptsIn, Set.mem_setOf_eq] at this`. Rewrite `this` using `[hy0]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hNn : N ∈ 𝓝 v₀` using `hNo.mem_nhds hv₀N`. Establish `hK : ∀ ω, ψ ω = ∑ l, (φ ω) l • ψ (KaehlerDifferential.D ℂ (Sec s' W) (e₁ l))`. Introduce `ω`. Use `set ω' := ω - ∑ l, (φ ω) l • KaehlerDifferential.D ℂ (Sec s' W) (e₁ l) with hω'`. Establish `hφω' : φ ω' = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hω', map_sub, map_sum]`. Simplify using `only [map_smul, hφ2']`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Take `⟨m, b, ω'', hb0, hωeq⟩` from `hφ4 ω' hφω'`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hψω' : ψ ω' = 0`. Rewrite using `[hωeq, map_sum]`. Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hψ1, hb0 i, zero_smul]`. Establish `hω : ω = ω' + ∑ l, (φ ω) l • KaehlerDifferential.D ℂ (Sec s' W) (e₁ l)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hω']`. Normalize the expressions using the abelian group laws. Use `conv_lhs => rw [hω]`. Rewrite using `[map_add, hψω', zero_add, map_sum]`. Simplify using `only [map_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `τ : E →ₗ[ℂ] Fin d → ℂ` to `LinearMap.pi (fun l => ((ψ (KaehlerDifferential.D ℂ (Sec s' W) (e₁ l)) : E →L[ℂ] ℂ) : E →ₗ[ℂ] ℂ))`. Establish `hτ : ∀ w l, τ w l = ψ (KaehlerDifferential.D ℂ (Sec s' W) (e₁ l)) w` using `fun w l => rfl`. Establish `hinj : Function.Injective τ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `hflat` to reduce the goal to its premises. Use `hFA E Y B s v₀ w hB hv hs W hW hv₀N.2 (fun f => ?_)` and prove the remaining obligations. Establish `hf : fderiv ℂ (fun v => valAt' (s v) W f) v₀ = ψ (KaehlerDifferential.D ℂ (Sec s' W) f)` using `(hψ2 f).symm`. Rewrite using `[hf, hK, ContinuousLinearMap.sum_apply]`. Use `Finset.sum_eq_zero (fun l _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[ContinuousLinearMap.smul_apply, ← hτ, hw]`. Simplify using the standard rewrite rules. Establish `hval : ∀ (c : Y ⟶ Z) (hc : W ≤ c ⁻¹ᵁ U) (f : Sec sZ U) (v : E), ⊤ ≤ s v ⁻¹ᵁ W → valAt' (s v) W (Sec.res s' hc (appSec sZ s' c U f)) = valAt' (s v ≫ c) U f`. Introduce `c hc f v hvW`. Conclude with `(valAt'_res (s v) hc _ hvW).trans (valAt'_comp (s v) c U f)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hrel : ∀ w, τ (G' w) = A *ᵥ τ w`. Introduce `w`. Use function extensionality and compare the values at `j`. Establish `hd1 : DifferentiableAt ℂ (fun v => valAt' (s v) W (e₁ j)) v₀` using `((hs W (e₁ j)).2).differentiableAt hNn`. Establish `hGN : ∀ᶠ v in 𝓝 v₀, G v ∈ N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hNn' : N ∈ 𝓝 (G v₀)` using `by rw [hGv]; exact hNn`. Conclude with `hG.continuousAt.preimage_mem_nhds hNn'`. Establish `heq : (fun v => valAt' (s v) W (e₂ j)) =ᶠ[𝓝 v₀] (fun v => valAt' (s v) W (e₁ j)) ∘ G` using `by filter_upwards [hNn, hGN, hev] with v hvN hGvN hevv`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hval c₂ hW2 (t j) v hvN.2, hval c₁ hW1 (t j) (G v) hGvN.2, hevv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd1' : HasFDerivAt (fun v => valAt' (s v) W (e₁ j)) (fderiv ℂ (fun v => valAt' (s v) W (e₁ j)) v₀) (G v₀)`. Rewrite using `[hGv]`. Conclude with `hd1.hasFDerivAt`. Establish `hcomp` using `hd1'.comp v₀ hG`. Establish `hfd : fderiv ℂ (fun v => valAt' (s v) W (e₂ j)) v₀ = (fderiv ℂ (fun v => valAt' (s v) W (e₁ j)) v₀).comp G'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq.fderiv_eq]`. Conclude with `hcomp.fderiv`. Establish `h2 : ψ (KaehlerDifferential.D ℂ (Sec s' W) (e₂ j)) w = ∑ l, A j l * τ w l`. Rewrite using `[hK, hφ3', ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[ContinuousLinearMap.smul_apply, smul_eq_mul, hτ]`. Rewrite using `[Matrix.mulVec, dotProduct, ← h2, hψ2, hfd, hτ, hψ2]`. Both sides reduce to the same expression. Conclude with `hCC E d hd τ (G' : E →ₗ[ℂ] E) A hinj hrel`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.tanChart_of :
     UpperTheory.Gal.W2.TanDeriv → UpperTheory.Gal.W2.FlatAffine → UpperTheory.Gal.W2.ConjCharpoly → UpperTheory.Gal.W2.TanChart := by

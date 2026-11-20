@@ -14,13 +14,13 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 open Cartier
 
 /- English proof (translation)
-Introduce `i`. Use `isRegularFn_iff_germ.2 fun y hy => ?_` and prove the remaining obligations. Use `haveI := hN y`. Use `mem_nonZeroDivisors_of_ne_zero fun h0 => ?_` and prove the remaining obligations. Establish `e : (N.presheaf.germ (ν ⁻¹ᵁ D.U i) y hy).hom ((ν.app (D.U i)).hom (D.f i)) = (N.presheaf.germ (ν ⁻¹ᵁ D.U i) y hy).hom 0` using `by rw [h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, i₁, i₂, e'⟩` from `N.presheaf.germ_eq y hy hy _ _ e`. Take `⟨z, hzW, hzO⟩` from `hd.inter_open_nonempty W W.isOpen ⟨y, hW⟩`. Use `haveI := hN z`. Establish `hzU : z ∈ ν ⁻¹ᵁ D.U i` using `i₁.le hzW`. Establish `hz0 : (N.presheaf.germ _ z hzU).hom ((ν.app (D.U i)).hom (D.f i)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (N.presheaf.germ W z hzW).hom e'` as an intermediate fact. Simplify using `using this`. Establish `hunit : IsUnit ((X'.presheaf.germ (D.U i) (ν z) hzU).hom (D.f i))`. Establish `h1 : ν z ∈ X'.basicOpen (D.f i)`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hzO ((D.mem_support_iff i hzU).2 h)`. Conclude with `(X'.mem_basicOpen _ _ hzU).1 h1`. Establish `hu` using `hunit.map (ν.stalkMap z).hom`. Rewrite `hu` using `[← EffCartierData.germ_app ν (D.f i) z hzU, hz0]`. Conclude with `not_isUnit_zero hu`.
+A detailed English derivation is pending.
 -/
 theorem EffCartierData.keepsRegular_of_dense {X' N : Scheme.{0}} (D : EffCartierData X')
     (ν : N ⟶ X') (hN : ∀ y : N, IsDomain (N.presheaf.stalk y))
@@ -56,9 +56,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `_ _ hbl _ hN _ hd`. Take `⟨D, hD⟩` from `EffCartierData.exists_idealSheaf_eq hbl.1`. Establish `hK : D.KeepsRegular ν`. Use `D.keepsRegular_of_dense ν (fun y => (hN y).1) (hd.mono fun z hz => ?_)` and prove the remaining obligations. Use `show ν z ∉ D.idealSheaf.support`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD, Scheme.IdealSheafData.support_comap]`. Conclude with `hz`. Use `⟨D.pull ν hK, ?_⟩` and prove the remaining obligations. Rewrite using `[EffCartierData.idealSheaf_pull, hD, Scheme.IdealSheafData.comap_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem effCartier_comap_blowup_normal (K : Type) [Field K] [NumberField K] (X X' N : Scheme.{0})
     (s : X ⟶ Sp (𝓞 K)) (J : X.IdealSheafData) (b : X' ⟶ X) (ν : N ⟶ X') :

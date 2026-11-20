@@ -15,9 +15,9 @@ namespace GlobalTheory.CombTw
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Prod.fst_sub, Prod.fst_add, Prod.smul_fst, Prod.fst_neg, Pi.sub_apply, Pi.add_apply, Pi.smul_apply, Pi.neg_apply]`. Simplify using `only [wtOf, parWt, Pi.zero_apply, Pi.neg_apply, Pi.add_apply, nsmul_eq_mul]`. Apply the tactic sequence `split_ifs <;> ring`. Simplify using `only [Prod.snd_sub, Prod.snd_add, Prod.smul_snd, Prod.snd_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [wtOf, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wt_diff_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) (u : GlobalTheory.AllWt.Weight Dw) (w₀ : Psi H → ℤ) (m : ℕ) :
@@ -35,11 +35,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ}
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact ⟨s.copy (by simp), by simp [TwSec.copy], by simp [TwSec.copy]⟩`. Consider the case `succ n ih`. Take `⟨z, hlo, hhi⟩` from `ih`. Use `⟨(z.mul t.symm).copy (by rw [succ_nsmul, add_assoc]), ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show z.lo + -t.hi = _`. Rewrite using `[hlo]`. Use `push_cast`. Rewrite using `[add_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `show z.hi + -t.lo = _`. Rewrite using `[hhi]`. Use `push_cast`. Rewrite using `[add_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_mul_inv_pow {Z : Comp Xo c} {G₀ G₁ : WTZ E} (s : TwSec U x Z G₀) (t : TwSec U x Z G₁) (m : ℕ) :
     ∃ z : TwSec U x Z (G₀ + m • (-G₁)), z.lo = s.lo - (m : ℝ) • t.hi ∧ z.hi = s.hi - (m : ℝ) • t.lo := by
@@ -54,11 +54,11 @@ theorem exists_mul_inv_pow {Z : Comp Xo c} {G₀ G₁ : WTZ E} (s : TwSec U x Z 
       rw [hhi]; push_cast; rw [add_smul, one_smul]; abel
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U _ x B Z u w₀ m k s t hs hslo hthi hk`. Take `⟨z, hlo, hhi⟩` from `exists_mul_inv_pow s t m`. Use `⟨z.copy (wt_diff_eq Dw u w₀ m).symm, ?_, ?_⟩` and prove the remaining obligations. Use `show IntOff B z.lo`. Rewrite using `[hlo]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Take `⟨a, ha⟩` from `hslo w hw`. Take `⟨b, hb⟩` from `hthi w hw`. Conclude with `⟨a - m * b, by simp [ha, hb]⟩`. Introduce `w show z.hi w - z.lo w ≤ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hhi, hlo]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, hs]`. Use `hk w` as an intermediate fact. Establish `hm : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_twSec_comb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → ∀ (x : ℝ) (B : Finset ℕ) (Z : Comp Xo c) (u : GlobalTheory.AllWt.Weight Dw) (w₀ : Psi H → ℤ) (m : ℕ) (k : HeightOneSpectrum (𝓞 c.F) → ℝ) (s : TwSec U x Z (wtOf Dw (parWt Dw (-w₀)) 0)) (t : TwSec U x Z (wtOf Dw 0 1)), s.hi = s.lo → IntOff B s.lo → IntOff B t.hi → (∀ w, t.hi w - t.lo w ≤ k w) → ∃ z : TwSec U x Z (wtOf Dw u 0 - wtOf Dw (u + parWt Dw w₀) m), IntOff B z.lo ∧ ∀ w, z.hi w - z.lo w ≤ m * k w := by
   intro E _ _ _ H Dw l Xo c r U _ x B Z u w₀ m k s t hs hslo hthi hk

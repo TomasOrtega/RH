@@ -7,9 +7,9 @@ open IsLocalRing
 namespace GlobalTheory.PrincipalDescent
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hd`. Take `⟨⟨r, t⟩, hrt⟩` from `IsLocalization.surj P.primeCompl z`. Establish `e : algebraMap R (Localization.AtPrime P) (x * t) = algebraMap R (Localization.AtPrime P) (y * r)`. Rewrite using `[map_mul, map_mul, hz, ← hrt, mul_assoc]`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists P.primeCompl _).mp e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨c * t, P.primeCompl.mul_mem c.2 t.2, ⟨c * r, ?_⟩⟩` and prove the remaining obligations. Take the linear combination `hc`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_not_mem_dvd_of_algebraMap_dvd {R : Type} [CommRing R] (P : Ideal R) [P.IsPrime]
     {x y : R}
@@ -25,7 +25,7 @@ theorem exists_not_mem_dvd_of_algebraMap_dvd {R : Type} [CommRing R] (P : Ideal 
   linear_combination hc
 
 /- English proof (translation)
-Rewrite `hx` using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem algebraMap_dvd_of_mem_map_span {R : Type} [CommRing R] (P : Ideal R) [P.IsPrime]
     {x y : R} (hx : algebraMap R (Localization.AtPrime P) x ∈
@@ -38,31 +38,27 @@ end GlobalTheory.PrincipalDescent
 namespace GlobalTheory.PrincipalDescent
 
 /- English proof (translation)
-Establish `hinj : Function.Injective φ` using `GlobalTheory.CdvrExt.injective_of_flat_local φ hfl`. Establish `hqP : (Q.comap φ).IsPrime` using `Ideal.comap_isPrime φ Q`. Establish `hdiv : ∀ (p : Ideal A) (n : ℕ) (P : Ideal R) [P.IsPrime], (Ideal.span {h}).map (algebraMap R (Localization.AtPrime P)) = (p ^ n).map ((algebraMap R (Localization.AtPrime P)).comp φ) → ∀ c ∈ p ^ n, ∃ s ∉ P, h ∣ s * φ c`. Introduce `p n P _ hn c hc`. Use `exists_not_mem_dvd_of_algebraMap_dvd P (algebraMap_dvd_of_mem_map_span P ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mem_map_of_mem ((algebraMap R (Localization.AtPrime P)).comp φ) hc` as an intermediate fact. Rewrite `this` using `[← hn]`. Then use the resulting hypothesis. Establish `hnotle : ∀ (P : Ideal R) [P.IsPrime], P.comap φ ≠ ⊥ → P.comap φ ≤ Q.comap φ → P.comap φ = Q.comap φ`. Introduce `P _ hne hle`. Assume the negation of the conclusion as `hne'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `letI := φ.toAlgebra`. Use `haveI : Module.Flat A R := hfl`. Use `haveI : Q.LiesOver (Q.comap φ) := ⟨rfl⟩`. Take `⟨P', hP'Q, hP', hlo⟩` from `Ideal.exists_ideal_lt_liesOver_of_lt (p := P.comap φ) Q (lt_of_le_of_ne hle hne')`. Establish `hlt` using `Ideal.height_strict_mono_of_isPrime hP'Q`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hlt` using `[hQ1, ENat.lt_one_iff_eq_zero, Ideal.height_eq_zero_iff_eq_bot]`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hlo.over, hlt]`. Use extensionality with `x`. Simplify using `only [Ideal.under, Ideal.mem_comap, Ideal.mem_bot]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun hx => hinj (by rw [map_zero]; exact hx), fun hx => by rw [hx, map_zero]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg1, s₁, hs₁, hg2⟩ : ∃ g : A, (∀ (P : Ideal R) [P.IsPrime], P.height = 1 → P.comap φ = Q.comap φ → ∃ s ∉ P, h ∣ s * φ g) ∧ ∃ s₁ ∉ Q, φ g ∣ s₁ * h := by`. Distinguish the cases in `hq : Q.comap φ = ⊥`. Use `⟨1, fun P _ hP hPq => ⟨h, h1 P hP (hPq.trans hq), by simp⟩, 1, ?_, by simp⟩` and prove the remaining obligations. Conclude with `fun h0 => hQ.ne_top ((Ideal.eq_top_iff_one _).mpr h0)`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `h2 _ hq`. Establish `hh' : algebraMap R (Localization.AtPrime Q) h ≠ 0` using `IsLocalization.to_map_ne_zero_of_mem_nonZeroDivisors _ Q.primeCompl_le_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hh)`. Take `⟨g, hg, hga⟩` from `GlobalTheory.DivDescent.exists_mem_associated_of_map_eq ((algebraMap R (Localization.AtPrime Q)).comp φ) (Q.comap φ ^ n) hh' (by rw [← hn Q hQ1 rfl, Ideal.map_span, Set.image_singleton])`. Use `⟨g, fun P _ hP hPq => hdiv _ n P (hn P hP hPq) g hg, ?_⟩` and prove the remaining obligations. Conclude with `exists_not_mem_dvd_of_algebraMap_dvd Q hga.dvd`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hc : ∀ P : PrimeSpectrum R, ∃ c : A, c ∉ Q.comap φ ∧ (P.asIdeal.height = 1 → h ∈ P.asIdeal → P.asIdeal.comap φ ≠ Q.comap φ → ∃ s ∉ P.asIdeal, h ∣ s * φ c)`. Introduce `P`. Distinguish the cases in `hb : P.asIdeal.height = 1 ∧ h ∈ P.asIdeal ∧ P.asIdeal.comap φ ≠ Q.comap φ`. Take `⟨hP, hhP, hPq⟩` from `hb`. Establish `hne : P.asIdeal.comap φ ≠ ⊥` using `fun e => h1 P.asIdeal hP e hhP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `h2 _ hne`. Take `⟨b, hbP, hbq⟩ : ∃ b ∈ P.asIdeal.comap φ, b ∉ Q.comap φ` from `by by_contra! H`. Conclude with `hPq (hnotle P.asIdeal hne H)`. Use `⟨b ^ n, fun hm => hbq (hqP.mem_of_pow_mem n hm), fun _ _ _ => hdiv _ n P.asIdeal (hn P.asIdeal hP rfl) _ (Ideal.pow_mem_pow hbP n)⟩` and prove the remaining obligations. Conclude with `⟨1, fun h0 => hqP.ne_top ((Ideal.eq_top_iff_one _).mpr h0), fun hP hhP hPq => absurd ⟨hP, hhP, hPq⟩ hb⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose c hcq hcd using hc`. Use `set T := (GlobalTheory.finite_height_eq_one_mem hh).toFinset`. Use `set b := ∏ P ∈ T, c P with hb`. Establish `hbq : b ∉ Q.comap φ`. Rewrite using `[hb, Ideal.IsPrime.prod_mem_iff]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨P, -, hP⟩`. Conclude with `hcq P hP`. Use `⟨g * b, ?_, φ b * s₁, fun hm => (hQ.mem_or_mem hm).elim hbq hs₁, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.dvd_of_forall_height_eq_one hh fun P _ hP hhP => ?_` and prove the remaining obligations. Distinguish the cases in `hPq : P.comap φ = Q.comap φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, hsd⟩` from `hg1 P hP hPq`. Use `⟨s, hs, hsd.trans ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_dvd_mul_left s (dvd_mul_right _ _)`. Establish `hmem : (⟨P, inferInstance⟩ : PrimeSpectrum R) ∈ T`.
-
-Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨hP, hhP⟩`. Take `⟨s, hs, hsd⟩` from `hcd ⟨P, inferInstance⟩ hP hhP hPq`. Use `⟨s, hs, hsd.trans (mul_dvd_mul_left s ?_)⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
-
-Conclude with `(map_dvd φ (Finset.dvd_prod_of_mem c hmem)).trans (dvd_mul_left _ _)`. Rewrite using `[map_mul, mul_comm (φ g), mul_assoc]`. Conclude with `mul_dvd_mul_left _ hg2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dvd_dvd_of_height_eq_one {A R : Type} [CommRing A] [IsDomain A] [IsLocalRing A]
     [IsNoetherianRing A] [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]

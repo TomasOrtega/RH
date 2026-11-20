@@ -3,16 +3,16 @@ import Mathlib
 namespace PrecompleteLimitOfPowDvd
 
 /- English proof (translation)
-Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma memPow {R : Type*} [CommRing R] (π x : R) (m : ℕ) :
     x ∈ ((Ideal.span {π}) ^ m • (⊤ : Submodule R R)) ↔ π ^ m ∣ x := by
   rw [smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `h2 : π ^ m ∣ f (m + k + 1) - f (m + k)` using `(pow_dvd_pow π (Nat.le_add_right m k)).trans (h (m + k))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `: f (m + (k + 1)) - f m = (f (m + k + 1) - f (m + k)) + (f (m + k) - f m)`. Rewrite using `[← add_assoc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `dvd_add h2 ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma tele {R : Type*} [CommRing R] (π : R) (f : ℕ → R)
     (h : ∀ n : ℕ, π ^ n ∣ f (n + 1) - f n) (m : ℕ) : ∀ k : ℕ, π ^ m ∣ f (m + k) - f m := by
@@ -29,11 +29,11 @@ private lemma tele {R : Type*} [CommRing R] (π : R) (f : ℕ → R)
 end PrecompleteLimitOfPowDvd
 
 /- English proof (translation)
-Introduce `R _ π hP f h`. Take `⟨L, hL⟩` from `hP.prec' f (by`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, PrecompleteLimitOfPowDvd.memPow]`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `PrecompleteLimitOfPowDvd.tele π f h m k` as an intermediate fact. Rewrite using `[← neg_sub]`. Conclude with `(dvd_neg).2 this)`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Use `hL n` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[SModEq.sub_mem, PrecompleteLimitOfPowDvd.memPow]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yra6.main.{u_1} :
     ∀ {R : Type u_1} [inst : CommRing R] {π : R},

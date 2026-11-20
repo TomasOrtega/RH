@@ -27,13 +27,13 @@ lemma pbE_symm_apply (e : X ≃+ Y) (f : X → C) (y : Y) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.det_submatrix_equiv_self e.toEquiv B`.
+A detailed English derivation is pending.
 -/
 lemma det_sub (e : X ≃+ Y) (B : Matrix Y Y C) : (B.submatrix e e).det = B.det :=
   Matrix.det_submatrix_equiv_self e.toEquiv B
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Establish `h : (fun j x => (B.submatrix e e) x j) = ((pbE (C` using `C) (R := R) e : (Y → C) →ₗ[R] (X → C)) ∘ fun j y => B y j) ∘ e := by`. Use function extensionality and compare the values at `j x`. Both sides reduce to the same expression. Rewrite using `[h, e.surjective.range_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 lemma map_cols (e : X ≃+ Y) (B : Matrix Y Y C) :
     (Submodule.span R (Set.range fun j y => B y j)).map (pbE (C := C) (R := R) e : (Y → C) →ₗ[R] (X → C)) =
@@ -46,7 +46,7 @@ lemma map_cols (e : X ≃+ Y) (B : Matrix Y Y C) :
   rw [h, e.surjective.range_comp]
 
 /- English proof (translation)
-Take `⟨B, hM, hc⟩` from `h`. Conclude with `⟨B.submatrix e e, by rw [hM, map_cols], by rw [det_sub, hc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma hasColen_map (v : Valuation C NNReal) (e : X ≃+ Y) (M : Submodule R (Y → C)) (c : NNReal)
     (h : HasColen R v M c) : HasColen R v (M.map (pbE (C := C) (R := R) e : (Y → C) →ₗ[R] (X → C))) c := by
@@ -54,7 +54,7 @@ lemma hasColen_map (v : Valuation C NNReal) (e : X ≃+ Y) (M : Submodule R (Y �
   exact ⟨B.submatrix e e, by rw [hM, map_cols], by rw [det_sub, hc]⟩
 
 /- English proof (translation)
-Rewrite using `[← Submodule.map_comp]`. Establish `h : ((pbE (C` using `C) (R := R) e.symm : (X → C) →ₗ[R] (Y → C)).comp (pbE (C := C) (R := R) e : (Y → C) →ₗ[R] (X → C))) = LinearMap.id := by`. Use `LinearMap.ext fun f => funext fun y => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, pbE_apply, LinearMap.id_apply, AddEquiv.apply_symm_apply]`. Rewrite using `[h, Submodule.map_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma map_pbE_symm (e : X ≃+ Y) (M : Submodule R (Y → C)) :
     (M.map (pbE (C := C) (R := R) e : (Y → C) →ₗ[R] (X → C))).map (pbE (C := C) (R := R) e.symm : (X → C) →ₗ[R] (Y → C)) = M := by
@@ -114,7 +114,7 @@ def hopfPull (e : X ≃+ Y) (A : HopfOrder (C := C) R Y) : HopfOrder (C := C) R 
     simp only [pbE_symm_apply, map_neg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [pbE_symm_apply, Pi.pow_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem pbE_symm_pow (e : X ≃+ Y) (f : X → C) (n : ℕ) :
     (pbE (C := C) (R := R) e).symm (f ^ n) = ((pbE (C := C) (R := R) e).symm f) ^ n := by
@@ -122,7 +122,7 @@ private theorem pbE_symm_pow (e : X ≃+ Y) (f : X → C) (n : ℕ) :
   simp only [pbE_symm_apply, Pi.pow_apply]
 
 /- English proof (translation)
-Rewrite using `[show (hopfPull e A).carrier = A.carrier.map (pbE (C := C) (R := R) e : (Y → C) →ₗ[R] (X → C)) from rfl]`. Simplify using `only [ReciprocityTheory.PGsh.L2.augIdeal, Submodule.mem_inf, LinearMap.mem_ker, LinearMap.proj_apply, Submodule.mem_map_equiv, pbE_symm_apply, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma mem_augIdeal_pull (e : X ≃+ Y) (A : HopfOrder (C := C) R Y) (f : X → C) :
     f ∈ augIdeal (hopfPull e A).carrier ↔ (pbE (C := C) (R := R) e).symm f ∈ augIdeal A.carrier := by
@@ -134,9 +134,9 @@ lemma mem_augIdeal_pull (e : X ≃+ Y) (A : HopfOrder (C := C) R Y) (f : X → C
 end Transport
 
 /- English proof (translation)
-Introduce `k`. Simplify using `only [ReciprocityTheory.PGsh.L2.augIdeal, Submodule.mem_inf, LinearMap.mem_ker, LinearMap.proj_apply] at hx ⊢`. Use `⟨?_, by rw [Pi.pow_apply, hx.2, zero_pow (Nat.succ_ne_zero k)]⟩` and prove the remaining obligations. Proceed by induction on `k with`. Consider the case `zero => rw [zero_add, pow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Conclude with `hx.1`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `A.mul_mem _ _ ih hx.1`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma pow_mem_aug {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C] {X : Type}
     [AddCommGroup X] [Fintype X] [DecidableEq X] (A : HopfOrder (C := C) R X) {x : X → C}
@@ -149,27 +149,25 @@ lemma pow_mem_aug {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C] {X 
   | succ k ih => rw [pow_succ]; exact A.mul_mem _ _ ih hx.1
 
 /- English proof (translation)
-Take `⟨x, _, δ, hx, hx0, -, -, -, hxp, hδ, -, haug, -, hcol⟩` from `hU3 p C v R hv hp (hopfPull e AK)`. Establish `hxa : x ∈ ReciprocityTheory.PGsh.L2.augIdeal (hopfPull e AK).carrier`. Simplify using `only [ReciprocityTheory.PGsh.L2.augIdeal, Submodule.mem_inf, LinearMap.mem_ker, LinearMap.proj_apply]`. Conclude with `⟨hx, hx0⟩`. Establish `hxK` using `(mem_augIdeal_pull e AK x).1 hxa`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨(pbE (C := C) (R := R) e).symm x, δ, x 1, hxK, ?_, hδ, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Establish `h` using `congrFun hxp (e.symm k)`. Simplify using `only [Pi.pow_apply] at h ⊢`. Rewrite using `[pbE_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `key : ∀ F ∈ Submodule.span R {y | ∃ j : ℕ, 1 ≤ j ∧ j < p ∧ y = x ^ j}, ∃ r : R, (pbE (C` using `C) (R := R) e).symm F - r • (pbE (C := C) (R := R) e).symm x ∈ ReciprocityTheory.PGsh.L2.augIdeal AK.carrier * ReciprocityTheory.PGsh.L2.augIdeal AK.carrier := by`. Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj1, -, rfl⟩` from `hy`. Break down `Nat.lt_or_ge j 2 with hj | hj` into its components or cases. Take `rfl : j = 1` from `by omega`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, one_smul, sub_self]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_mem _`. Take `⟨m, rfl⟩ : ∃ m, j = m + 2` from `⟨j - 2, by omega⟩`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[zero_smul, sub_zero, pbE_symm_pow, show m + 2 = (m + 1) + 1 from rfl, pow_succ]`. Conclude with `Submodule.mul_mem_mul (pow_mem_aug AK hxK m) hxK`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, zero_smul, sub_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Take `⟨r1, h1⟩` from `ha`. Take `⟨r2, h2⟩` from `hb`. Use `⟨r1 + r2, ?_⟩` and prove the remaining obligations. Use `add_mem h1 h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_add, add_smul]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Consider the case `smul c a _ ha`. Take `⟨r1, h1⟩` from `ha`. Use `⟨c * r1, ?_⟩` and prove the remaining obligations. Use `Submodule.smul_mem _ c h1 using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, smul_sub, mul_smul]`. Introduce `f hf`. Establish `hF : pbE (C` using `C) (R := R) e f ∈ ReciprocityTheory.PGsh.L2.augIdeal (hopfPull e AK).carrier := by`. Rewrite using `[mem_augIdeal_pull, LinearEquiv.symm_apply_apply]`. Conclude with `hf`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `hF` using `[haug]`. Take `⟨r, hr⟩` from `key _ hF`. Rewrite `hr` using `[LinearEquiv.symm_apply_apply]`. Conclude with `⟨r, hr⟩`. Establish `hc` using `hasColen_map v e.symm _ _ hcol`.
-
-Rewrite `hc` using `[show (hopfPull e AK).carrier = AK.carrier.map (pbE (C := C) (R := R) e : (K → C) →ₗ[R] (ZMod p → C)) from rfl, map_pbE_symm]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem primeHopfOrder_of_addEquiv (hU3 : PrimeHopfOrderStatement) (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
     [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C]

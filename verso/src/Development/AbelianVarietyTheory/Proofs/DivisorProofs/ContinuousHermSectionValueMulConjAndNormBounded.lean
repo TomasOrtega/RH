@@ -15,15 +15,15 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun y₀ => ?_` and prove the remaining obligations. Use `set i := pick (P.L.φ σ).isLB y₀`. Use `set j := pick (P.A.φ σ).isLB y₀`. Establish `hi : y₀ ∈ ptsIn p σ (P.L.B.U i)` using `mem_pick _ y₀`. Establish `hj : y₀ ∈ ptsIn p σ (P.A.B.U j)` using `mem_pick _ y₀`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : IsOpen (ptsIn p σ (P.L.B.U i) ∩ ptsIn p σ (P.A.B.U j))` using `(isOpen_ptsIn _).inter (isOpen_ptsIn _)`. Establish `hWn` using `hW.mem_nhds ⟨hi, hj⟩`. Establish `hrf : ContinuousAt (fun y : CxPts p σ => ratVal (P.loc a b f i j) y) y₀` using `(GlobalTheory.T.sectionLocalFunction_continuousOn_holomorphicChart k X p P a b σ f hf i j).1.continuousAt hWn`. Establish `hrg : ContinuousAt (fun y : CxPts p σ => ratVal (P.loc a b g i j) y) y₀` using `(GlobalTheory.T.sectionLocalFunction_continuousOn_holomorphicChart k X p P a b σ g hg i j).1.continuousAt hWn`. Establish `hφ : ContinuousAt ((P.L.φ σ).φ i) y₀` using `CInfAt.continuousAt (P.L.cInf σ i y₀ hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : ContinuousAt ((P.A.φ σ).φ j) y₀` using `CInfAt.continuousAt (P.A.cInf σ j y₀ hj)`. Establish `he : ContinuousAt (fun y : CxPts p σ => ((Real.exp (-(a * (P.L.φ σ).φ i y + b * (P.A.φ σ).φ j y) / 2) : ℝ) : ℂ)) y₀` using `Complex.continuous_ofReal.continuousAt.comp (Real.continuous_exp.continuousAt.comp (((continuousAt_const.mul hφ).add (continuousAt_const.mul hψ)).neg.div_const 2))`. Establish `hF : ContinuousAt (fun y : CxPts p σ => ratVal (P.loc a b f i j) y * ((Real.exp (-(a * (P.L.φ σ).φ i y + b * (P.A.φ σ).φ j y) / 2) : ℝ) : ℂ) * (starRingEnd ℂ) (ratVal (P.loc a b g i j) y * ((Real.exp (-(a * (P.L.φ σ).φ i y + b * (P.A.φ σ).φ j y) / 2) : ℝ) : ℂ))) y₀` using `(hrf.mul he).mul (Complex.continuous_conj.continuousAt.comp (hrg.mul he))`. Use `hF.congr ?_` and prove the remaining obligations. Use `filter_upwards [hWn] with y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨θ, hθ, hv⟩` from `GlobalTheory.T.sectionValueUnitFrame_eq_localFunction_unitScalar k X p P a b σ y i j hy.1 hy.2`. Establish `h1 : θ * (starRingEnd ℂ) θ = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hθ]`. Simplify using the standard rewrite rules. Rewrite using `[hv f hf, hv g hg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `ratVal (P.loc a b f i j) y * ((Real.exp (-(a * (P.L.φ σ).φ i y + b * (P.A.φ σ).φ j y) / 2) : ℝ) : ℂ) = A`. Generalize the expression as in `ratVal (P.loc a b g i j) y * ((Real.exp (-(a * (P.L.φ σ).φ i y + b * (P.A.φ σ).φ j y) / 2) : ℝ) : ℂ) = B`. Rewrite using `[map_mul]`. Take the linear combination `(-(A * (starRingEnd ℂ) B)) * h1`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem continuous_val_mul_conj (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (P : Pair p)
     (a b : ℤ) (σ : k →+* ℂ) (f : X.functionField) (hf : f ∈ P.H a b) (g : X.functionField) (hg : g ∈ P.H a b) :
@@ -62,7 +62,7 @@ theorem continuous_val_mul_conj (k : Type) [CommRing k] (X : Scheme.{0}) [IsInte
   linear_combination (-(A * (starRingEnd ℂ) B)) * h1
 
 /- English proof (translation)
-Rewrite using `[← norm_val, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nu_eq_sqrt {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} (P : Pair p)
     (a b : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (f : X.functionField) :
@@ -70,11 +70,11 @@ theorem nu_eq_sqrt {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : 
   rw [← norm_val, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX P a b`. Use `⟨fun σ f hf g hg => continuous_val_mul_conj k X p P a b σ f hf g hg, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ σ, Continuous fun y : CxPts p σ => P.nu a b σ y f` using `fun σ => by`. Repeatedly rewrite using `[nu_eq_sqrt]`. Conclude with `Real.continuous_sqrt.comp (Complex.continuous_re.comp (continuous_val_mul_conj k X p P a b σ f hf f hf))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hc, ?_⟩` and prove the remaining obligations. Establish `hb : ∀ σ : k →+* ℂ, ∃ C : ℝ, ∀ y : CxPts p σ, P.nu a b σ y f ≤ C` using `fun σ => by haveI := hX.compactSpace σ`. Take `⟨C, hC⟩` from `(isCompact_range (hc σ)).bddAbove`. Conclude with `⟨C, fun y => hC ⟨y, rfl⟩⟩`. Use `choose C hC using hb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI := hX.finite_emb`. Take `⟨M, hM⟩` from `(Set.finite_range C).bddAbove`. Conclude with `⟨M, fun σ y => (hC σ y).trans (hM ⟨σ, rfl⟩)⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_val_and_bounded : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (P : Pair p), ∀ (a b : ℤ),

@@ -31,17 +31,17 @@ def entSub (D : D7) (a b : ℕ) (S : Submodule (𝓞 D.host.E) D.host.E) :
   smul_mem' o A hA i j := by simpa using S.smul_mem o (hA i j)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_entSub {a b : ℕ} {S : Submodule (𝓞 D.host.E) D.host.E}
     {A : Matrix (Fin b) (Fin a) D.host.E} : A ∈ entSub D a b S ↔ ∀ i j, A i j ∈ S := Iff.rfl
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce `A hA i j`. Establish `hj : (Pi.single j (1 : D.host.E) : Fin a → D.host.E) ∈ Formalism.MainNotions.StandardLatticesGL3.stdL D a`. Simplify using `only [Formalism.MainNotions.StandardLatticesGL3.stdL, Submodule.mem_pi, Set.mem_univ, true_implies]`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[Submodule.one_eq_range]`. Simplify using `[Pi.single_apply, hk]`. Establish `h` using `hA _ hj`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Formalism.MainNotions.StandardLatticesGL3.stdL, Submodule.mem_pi, Set.mem_univ, true_implies] at h`. Use `h i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem homL_le {a b : ℕ} :
     homL D (Formalism.MainNotions.StandardLatticesGL3.stdL D a) (Formalism.MainNotions.StandardLatticesGL3.stdL D b) ≤ entSub D a b 1 := by
@@ -59,9 +59,7 @@ theorem homL_le {a b : ℕ} :
   simpa [Matrix.mulVec_single] using this
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `B ⟨x, hx, A, hA, rfl⟩ i j`. Take `⟨o, ho⟩` from `(Submodule.mem_one).1 (homL_le hA i j)`. Use `show x * A i j ∈ _`. Rewrite using `[← ho, mul_comm, ← Algebra.smul_def]`.
-
-Conclude with `Submodule.smul_mem _ o hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem YYl_le {a b : ℕ} :
     YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D a) (Formalism.MainNotions.StandardLatticesGL3.stdL D b)
@@ -74,7 +72,7 @@ theorem YYl_le {a b : ℕ} :
   exact Submodule.smul_mem _ o hx
 
 /- English proof (translation)
-Use `show _ ∈ (D.host.ccE : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) * D.host.AA0`. Use `FractionalIdeal.mul_mem_mul ?_ hx` and prove the remaining obligations. Rewrite using `[FractionalIdeal.mem_coeIdeal]`. Conclude with `⟨_, Ideal.mem_map_of_mem _ hc, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem K_mul_mem_AA {c : 𝓞 D.host.K} (hc : c ∈ D.host.ccK) {x : D.host.E}
     (hx : x ∈ D.host.AA0) : ((c : D.host.K) : D.host.E) * x ∈ D.host.AA := by
@@ -84,13 +82,13 @@ theorem K_mul_mem_AA {c : 𝓞 D.host.K} (hc : c ∈ D.host.ccK) {x : D.host.E}
   exact ⟨_, Ideal.mem_map_of_mem _ hc, rfl⟩
 
 /- English proof (translation)
-Introduce `D δ a b x hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨w, hw, A, hA, rfl⟩` from `hz`. Take `⟨c, hc, rfl⟩` from `FL.lam_mem D D.host.ccK δ w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨((c : D.host.K) : D.host.E) • A, fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `using K_mul_mem_AA hc (YYl_le hA i j)`. Rewrite using `[GlobalTheory.MomSetup.embV_smulK, smul_smul]`. Consider the case `zero => exact ⟨0, fun i j => (D.host.AA : Submodule (𝓞 D.host.E) D.host.E).zero_mem, by rw [GlobalTheory.MomSetup.embV_zero, smul_zero]⟩`. Consider the case `add x y _ _ h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Take `⟨A, hA, rfl⟩` from `h1`. Take `⟨B, hB, rfl⟩` from `h2`. Conclude with `⟨A + B, fun i j => (D.host.AA : Submodule (𝓞 D.host.E) D.host.E).add_mem (hA i j) (hB i j), by rw [GlobalTheory.MomSetup.embV_add, smul_add]⟩`. Consider the case `neg x _ h`. Take `⟨A, hA, rfl⟩` from `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨-A, fun i j => (D.host.AA : Submodule (𝓞 D.host.E) D.host.E).neg_mem (hA i j), by rw [GlobalTheory.MomSetup.embV_neg, smul_neg]⟩`.
+Supply the required witnesses or components.
 -/
 theorem La_std_rep : ∀ {D : D7} (δ : ℂ) {a b : ℕ} (x : Formalism.MainNotions.TaylorLogMetric.VC D a b),
     x ∈ Formalism.MainNotions.TaylorLogMetric.La D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) (Formalism.MainNotions.StandardLatticesGL3.stdL D a) (Formalism.MainNotions.StandardLatticesGL3.stdL D b) →

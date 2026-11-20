@@ -16,7 +16,7 @@ noncomputable section
 open ExtInhabitants
 
 /- English proof (translation)
-The claim follows from `let ⟨X, Z, h1, h2, h3⟩ := extDelta_hyp ⟨X, Z, h1, h2, h3, one_pos, one_pos⟩`.
+A detailed English derivation is pending.
 -/
 theorem extTwist_hyp : ∃ (X : EmbDatum 1) (Z : ZeroDatum X), 1 ≤ 1 ∧ 2 ≤ 2 ∧ Z.S.Nonempty ∧
     (0 : ℝ) < 1 ∧ (0 : ℝ) < 1 :=
@@ -24,9 +24,9 @@ theorem extTwist_hyp : ∃ (X : EmbDatum 1) (Z : ZeroDatum X), 1 ≤ 1 ∧ 2 ≤
   ⟨X, Z, h1, h2, h3, one_pos, one_pos⟩
 
 /- English proof (translation)
-Use `⟨isOpen_univ, subset_univ _, fun k => continuousOn_const, fun k l x _ => ?_, fun x _ => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[exOne, jac_flat, trivLB]`. Express the relevant statement in the definitionally equal form `(1 : ℂ) = 1 * sJac (flatAtlas 1) (fun i => lin exE (exC i)) _ x`. Rewrite using `[exSJac, one_mul]`. Take `⟨X, Z, -, -, h⟩` from `extDelta_hyp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, by`. Express the relevant statement in the definitionally equal form `(0 : Fin 1 → ℂ) ∈ zeroSet (flatAtlas 1) (fun i => lin exE (exC i))`. Rewrite using `[exZero]`. Use the proof step `rfl⟩`.
+Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extShell_hyp : IsOpen (univ : Set exEmb.U) ∧ exZ.S ⊆ univ ∧
     (∀ k, ContinuousOn (exOne k ∘ (exEmb.A.chart k).symm)
@@ -46,15 +46,15 @@ theorem extShell_hyp : IsOpen (univ : Set exEmb.U) ∧ exZ.S ⊆ univ ∧
       rw [exZero]; rfl⟩
 
 /- English proof (translation)
-Use `⟨fun k => ?_, fun k l x _ => ?_, fun k => continuousOn_const, fun k l x _ => by simp [exOne, jac_flat, trivLB], ?_, fun h => ?_⟩` and prove the remaining obligations. Apply `Continuous.continuousOn` to reduce the goal to its premises. Establish `h1 : ∀ y, (∑ i : Fin 1, ‖exE₂ i k y‖ ^ 2) = 1` using `fun y => by simp [exE₂]`. Establish `h2 : ∀ y, (∑ i : Fin 2, ‖exE i k y‖ ^ 2) = 1 + ‖y 0‖ ^ 2` using `fun y => by`. Simplify using `[exE, Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : exEmb.wt 2 k ∘ (exEmb.A.chart k).symm = fun y => Real.log 1 + ((2 : ℕ) : ℝ) * Real.log (1 + ‖y 0‖ ^ 2)`. Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `Real.log (∑ i : Fin 1, ‖exE₂ i k y‖ ^ 2) + ((2 : ℕ) : ℝ) * Real.log (∑ i : Fin 2, ‖exE i k y‖ ^ 2) = _`. Rewrite using `[h1, h2]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_const.add (continuous_const.mul ((continuous_const.add ((continuous_apply 0).norm.pow 2)).log fun y => (by positivity : (0 : ℝ) < 1 + ‖y 0‖ ^ 2).ne'))`. Establish `hkl : k = l` using `Subsingleton.elim k l`. Substitute `hkl` using the available equality. Simplify using `[trivLB]`. Express the relevant statement in the definitionally equal form `chartIntegral (flatAtlas 1) _ < ⊤`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chartIntegral_flat]`. Simplify using `only [exOne, norm_one, one_pow, mul_one]`. Simplify using `only [exp_neg_wt]`. Simplify using `using lintegral_inv_one_add_sq_sq_lt_top 2`. Use `congr_fun (congr_fun h c0) 0` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[exOne] at this`.
+A detailed English derivation is pending.
 -/
 theorem bergmanProj_hyp :
     (∀ k, ContinuousOn (exEmb.wt 2 k ∘ (exEmb.A.chart k).symm) (exEmb.A.chart k).target) ∧

@@ -13,7 +13,7 @@ namespace Formalism.FourierDecayAlt.P.PhaseFunctionDerivatives
 open Formalism.FourierDecayAlt.G
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[g0, div_eq_mul_inv, Finset.prod_inv_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem phase_function_eq_sum_add_prod_inv {n : ℕ} (D' : ℂ) :
     g0 (n := n) D' = (fun x => ∑ k, x k) + D' • (fun x : Fin n → ℂ => ∏ k, (x k)⁻¹) := by
@@ -21,7 +21,7 @@ theorem phase_function_eq_sum_add_prod_inv {n : ℕ} (D' : ℂ) :
   simp [g0, div_eq_mul_inv, Finset.prod_inv_distrib]
 
 /- English proof (translation)
-Establish `: {x : Fin n → ℂ | ∀ k, x k ≠ 0} = ⋂ k, {x | x k ≠ 0}` using `by ext; simp`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_ne_fun (continuous_apply k) continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem a_isOpen (n : ℕ) : IsOpen {x : Fin n → ℂ | ∀ k, x k ≠ 0} := by
   have : {x : Fin n → ℂ | ∀ k, x k ≠ 0} = ⋂ k, {x | x k ≠ 0} := by ext; simp
@@ -29,14 +29,14 @@ theorem a_isOpen (n : ℕ) : IsOpen {x : Fin n → ℂ | ∀ k, x k ≠ 0} := by
   exact isOpen_iInter_of_finite fun k => isOpen_ne_fun (continuous_apply k) continuous_const
 
 /- English proof (translation)
-The claim follows from `((contDiff_apply ℂ ℂ k).contDiffAt).inv hx`.
+A detailed English derivation is pending.
 -/
 theorem a_contDiffAt_inv {n : ℕ} (N : WithTop ℕ∞) (k : Fin n) (x : Fin n → ℂ) (hx : x k ≠ 0) :
     ContDiffAt ℂ N (fun y : Fin n → ℂ => (y k)⁻¹) x :=
   ((contDiff_apply ℂ ℂ k).contDiffAt).inv hx
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => by simpa using norm_le_pi_norm v k`.
+A detailed English derivation is pending.
 -/
 theorem a_norm_proj_le {n : ℕ} (k : Fin n) :
     ‖(ContinuousLinearMap.proj k : (Fin n → ℂ) →L[ℂ] ℂ)‖ ≤ 1 :=
@@ -44,7 +44,7 @@ theorem a_norm_proj_le {n : ℕ} (k : Fin n) :
     simpa using norm_le_pi_norm v k
 
 /- English proof (translation)
-Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_eq_iterate, iter_deriv_inv, zpow_sub₀ hw, _root_.zpow_neg_one, zpow_natCast]`. Simplify using `[div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_iteratedFDeriv_inv (c : ℕ) (w : ℂ) (hw : w ≠ 0) :
     ‖iteratedFDeriv ℂ c (Inv.inv : ℂ → ℂ) w‖ = c.factorial * (‖w‖⁻¹ * ‖w‖⁻¹ ^ c) := by
@@ -53,11 +53,11 @@ theorem norm_iteratedFDeriv_inv (c : ℕ) (w : ℂ) (hw : w ≠ 0) :
   simp [div_eq_mul_inv]
 
 /- English proof (translation)
-Establish `hs : IsOpen ({0}ᶜ : Set ℂ)` using `isOpen_compl_singleton`. Take `⟨g, hg⟩ : ∃ g : (Fin n → ℂ) →L[ℂ] ℂ, g = ContinuousLinearMap.proj k` from `⟨_, rfl⟩`. Establish `hgx : g x = x k` using `by rw [hg]; rfl`. Establish `hs' : IsOpen (g ⁻¹' ({0}ᶜ : Set ℂ))` using `hs.preimage g.continuous`. Establish `hmem : g x ∈ ({0}ᶜ : Set ℂ)` using `by rw [hgx]; simpa using hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcd : ContDiffOn ℂ c (Inv.inv : ℂ → ℂ) {0}ᶜ` using `fun w hw => (contDiffAt_inv ℂ (by simpa using hw)).contDiffWithinAt`. Establish `h` using `g.iteratedFDerivWithin_comp_right hcd hs.uniqueDiffOn hs'.uniqueDiffOn (x := x) hmem (i := c) le_rfl`. Rewrite `h` using `[iteratedFDerivWithin_of_isOpen c hs' hmem, iteratedFDerivWithin_of_isOpen c hs hmem]`. Establish `h2 : (fun y : Fin n → ℂ => (y k)⁻¹) = Inv.inv ∘ g` using `by rw [hg]; rfl`. Rewrite using `[h2, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hgx, norm_iteratedFDeriv_inv c _ hx]`. Establish `h3 : ∏ _i : Fin c, ‖g‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun _ _ => hg ▸ a_norm_proj_le k)`. Conclude with `mul_le_of_le_one_right (by positivity) h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem a_norm_inv {n : ℕ} (c : ℕ) (k : Fin n) (x : Fin n → ℂ) (hx : x k ≠ 0) :
     ‖iteratedFDeriv ℂ c (fun y : Fin n → ℂ => (y k)⁻¹) x‖ ≤ c.factorial * (‖x k‖⁻¹ * ‖x k‖⁻¹ ^ c) := by
@@ -80,11 +80,11 @@ theorem a_norm_inv {n : ℕ} (c : ℕ) (k : Fin n) (x : Fin n → ℂ) (hx : x k
   exact mul_le_of_le_one_right (by positivity) h3
 
 /- English proof (translation)
-Take `⟨L, hL⟩ : ∃ L : (Fin n → ℂ) →L[ℂ] ℂ, L = ∑ k, ContinuousLinearMap.proj k` from `⟨_, rfl⟩`. Establish `h : (fun x : Fin n → ℂ => ∑ k, x k) = L`. Use function extensionality and compare the values at `y`. Rewrite using `[hL]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, iteratedFDeriv_succ_eq_comp_right]`. Establish `h2 : (fun y => fderiv ℂ (L : (Fin n → ℂ) → ℂ) y) = fun _ => L`. Use function extensionality and compare the values at `y`. Conclude with `L.fderiv`. Rewrite using `[h2, Function.comp_apply, iteratedFDeriv_const_of_ne (by omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem a_lin_zero {n : ℕ} (j : ℕ) (hj : 1 ≤ j) (x : Fin n → ℂ) :
     iteratedFDeriv ℂ (j + 1) (fun x : Fin n → ℂ => ∑ k, x k) x = 0 := by
@@ -98,20 +98,20 @@ theorem a_lin_zero {n : ℕ} (j : ℕ) (hj : 1 ≤ j) (x : Fin n → ℂ) :
   simp
 
 /- English proof (translation)
-The claim follows from `contDiffAt_prod fun k _ => a_contDiffAt_inv N k x (hx k)`.
+A detailed English derivation is pending.
 -/
 theorem a_contDiffAt_prod {n : ℕ} (N : WithTop ℕ∞) (x : Fin n → ℂ) (hx : ∀ k, x k ≠ 0) :
     ContDiffAt ℂ N (fun y : Fin n → ℂ => ∏ k, (y k)⁻¹) x :=
   contDiffAt_prod fun k _ => a_contDiffAt_inv N k x (hx k)
 
 /- English proof (translation)
-The claim follows from `ContDiff.sum fun k _ => contDiff_apply ℂ ℂ k`.
+A detailed English derivation is pending.
 -/
 theorem a_contDiff_lin {n : ℕ} (N : WithTop ℕ∞) : ContDiff ℂ N (fun x : Fin n → ℂ => ∑ k, x k) :=
   ContDiff.sum fun k _ => contDiff_apply ℂ ℂ k
 
 /- English proof (translation)
-Rewrite using `[phase_function_eq_sum_add_prod_inv]`. Conclude with `(a_contDiff_lin N).contDiffAt.add ((a_contDiffAt_prod N x hx).const_smul D')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffAt_phase_function {n : ℕ} (N : WithTop ℕ∞) (D' : ℂ) (x : Fin n → ℂ) (hx : ∀ k, x k ≠ 0) :
     ContDiffAt ℂ N (g0 D') x := by
@@ -123,19 +123,19 @@ noncomputable def a_cst (n N : ℕ) : ℝ :=
     ∏ k, ((Multiset.count k (p : Multiset (Fin n))).factorial : ℝ)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => by positivity`.
+A detailed English derivation is pending.
 -/
 theorem a_cst_nonneg (n N : ℕ) : 0 ≤ a_cst n N :=
   Finset.sum_nonneg fun _ _ => by positivity
 
 /- English proof (translation)
-Establish `hS` using `a_isOpen n`. Establish `hxS : x ∈ {x : Fin n → ℂ | ∀ k, x k ≠ 0}` using `hx`. Rewrite using `[← iteratedFDerivWithin_of_isOpen N hS hxS]`. Establish `hcd : ∀ k ∈ (univ : Finset (Fin n)), ContDiffOn ℂ N (fun y : Fin n → ℂ => (y k)⁻¹) {x : Fin n → ℂ | ∀ k, x k ≠ 0}` using `fun k _ y hy => (a_contDiffAt_inv N k y (hy k)).contDiffWithinAt`. Use `(norm_iteratedFDerivWithin_prod_le hcd hS.uniqueDiffOn hxS le_rfl).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[a_cst, Finset.sum_mul]`. Use `Finset.sum_le_sum fun p _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations. Establish `hcard : ∑ k, Multiset.count k (p : Multiset (Fin n)) = N`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Multiset.sum_count_eq_card (fun a _ => Finset.mem_univ a)]`. Conclude with `p.2`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[iteratedFDerivWithin_of_isOpen _ hS hxS]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(a_norm_inv _ k x (hx k)).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `hb k`. Use `_ = _ := by`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hcard]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem a_prod_bound {n : ℕ} (N : ℕ) (x : Fin n → ℂ) (hx : ∀ k, x k ≠ 0) (b : ℝ)
     (hb : ∀ k, ‖x k‖⁻¹ ≤ b) :
@@ -168,9 +168,7 @@ theorem a_prod_bound {n : ℕ} (N : ℕ) (x : Fin n → ℂ) (hx : ∀ k, x k �
         rw [Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hcard]
 
 /- English proof (translation)
-Establish `hd : DifferentiableAt ℂ (g0 D') x` using `(contDiffAt_phase_function 1 D' x hx).differentiableAt (by norm_num)`. Establish `h1 : HasFDerivAt (g0 D') (fderiv ℂ (g0 D') x) (Function.update x k (x k))`. Rewrite using `[Function.update_eq_self]`. Conclude with `hd.hasFDerivAt`. Establish `h2` using `h1.comp_hasDerivAt (x k) (hasDerivAt_update x k (x k))`.
-
-Conclude with `h2.unique ((phase_function_deriv n D' x hx).1 k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem a_fderiv_single {n : ℕ} (D' : ℂ) (x : Fin n → ℂ) (hx : ∀ k, x k ≠ 0) (k : Fin n) :
     fderiv ℂ (g0 D') x (Pi.single k 1) = dg0 D' x k := by
@@ -181,9 +179,9 @@ theorem a_fderiv_single {n : ℕ} (D' : ℂ) (x : Fin n → ℂ) (hx : ∀ k, x 
   exact h2.unique ((phase_function_deriv n D' x hx).1 k)
 
 /- English proof (translation)
-Use `conv_lhs => rw [pi_eq_sum_univ v]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: (fun j => if k = j then (1 : ℂ) else 0) = Pi.single k 1`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[this, map_smul, a_fderiv_single D' x hx, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem a_fderiv_apply {n : ℕ} (D' : ℂ) (x : Fin n → ℂ) (hx : ∀ k, x k ≠ 0) (v : Fin n → ℂ) :
     fderiv ℂ (g0 D') x v = ∑ k, v k * dg0 D' x k := by
@@ -201,25 +199,23 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.G Formalism.FourierDecayAlt.P.PhaseFunctionDerivatives
 
 /- English proof (translation)
-Introduce `m`. Use `⟨fun D' x hx => ⟨?_, ?_⟩, fun j hj => ⟨a_cst (m + 1) (j + 1), fun D' x r hr hxr => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[pi_norm_le_iff_of_nonneg (norm_nonneg _)]`. Introduce `k`. Rewrite using `[← a_fderiv_single D' x hx k]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(ContinuousLinearMap.le_opNorm _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Pi.norm_single]`. Simplify using the standard rewrite rules. Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun v => ?_` and prove the remaining obligations. Rewrite using `[a_fderiv_apply D' x hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (norm_le_pi_norm v k) (norm_le_pi_norm _ k) (norm_nonneg _) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = ((m : ℝ) + 1) * ‖dg0 D' x‖ * ‖v‖ := by`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hx : ∀ k, x k ≠ 0` using `fun k h => by`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hxr k` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨k0, -, hk0⟩` from `Finset.exists_min_image (univ : Finset (Fin (m + 1))) (fun k => ‖x k‖) ⟨0, Finset.mem_univ _⟩`. Establish `hpos : ∀ k, 0 < ‖x k‖` using `fun k => norm_pos_iff.2 (hx k)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ k, ‖x k‖⁻¹ ≤ ‖x k0‖⁻¹` using `fun k => inv_anti₀ (hpos k0) (hk0 k (Finset.mem_univ k))`. Establish `h1 : iteratedFDeriv ℂ (j + 1) (g0 D') x = D' • iteratedFDeriv ℂ (j + 1) (fun y : Fin (m + 1) → ℂ => ∏ k, (y k)⁻¹) x`. Establish `hsm : ContDiffAt ℂ ((j + 1 : ℕ) : WithTop ℕ∞) (D' • fun y : Fin (m + 1) → ℂ => ∏ k, (y k)⁻¹) x` using `(a_contDiffAt_prod _ x hx).const_smul D'`. Rewrite using `[phase_function_eq_sum_add_prod_inv, iteratedFDeriv_add_apply (a_contDiff_lin _).contDiffAt hsm, a_lin_zero j hj, zero_add, iteratedFDeriv_const_smul_apply (a_contDiffAt_prod _ x hx)]`. Rewrite using `[h1, norm_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `a_prod_bound (j + 1) x hx _ hb`. Establish `h3 : ‖D'‖ * ((∏ k, ‖x k‖⁻¹) * ‖x k0‖⁻¹) ≤ 1 + ‖dg0 D' x‖`. Establish `e : D' / (∏ k, x k) / x k0 = 1 - dg0 D' x k0` using `by unfold dg0; ring`. Establish `e2 : ‖D'‖ * ((∏ k, ‖x k‖⁻¹) * ‖x k0‖⁻¹) = ‖D' / (∏ k, x k) / x k0‖`. Rewrite using `[norm_div, norm_div, norm_prod, Finset.prod_inv_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, e]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_one]`. Combine the linear relations using `[norm_le_pi_norm (dg0 D' x) k0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ‖x k0‖⁻¹ ^ j ≤ (r ^ j)⁻¹`. Rewrite using `[inv_pow]`. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_left₀ hr.le (hxr k0) j)`. Establish `hc` using `a_cst_nonneg (m + 1) (j + 1)`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `h5 : 0 ≤ ‖D'‖ * ((∏ k, ‖x k‖⁻¹) * ‖x k0‖⁻¹)` using `by positivity`. Establish `h6 : 0 ≤ ‖x k0‖⁻¹ ^ j` using `by positivity`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left h3 hc) h4 h6 (mul_nonneg hc (h5.trans h3))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem phase_relative_deriv : Formalism.FourierDecayAlt.G.PhaseFunctionRelativeDeriv := by
   intro m
@@ -294,9 +290,9 @@ namespace Formalism.FourierDecayAlt.P.PhaseFunctionDerivatives
 open Formalism.FourierDecayAlt.G
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Establish `e : ω ^ (i + 1) - 1 = ω * (ω ^ i - 1) + (ω - 1)` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hω, one_mul]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem b_pow_sub_one (ω : ℂ) (hω : ‖ω‖ = 1) (i : ℕ) : ‖ω ^ i - 1‖ ≤ i * ‖ω - 1‖ := by
   induction i with
@@ -310,19 +306,17 @@ theorem b_pow_sub_one (ω : ℂ) (hω : ‖ω‖ = 1) (i : ℕ) : ‖ω ^ i - 1�
     linarith
 
 /- English proof (translation)
-Take `⟨ω, hω⟩ : ∃ ω, ω = z' / z` from `⟨_, rfl⟩`. Establish `hz' : z' = ω * z` using `by rw [hω]; field_simp`. Establish `hzs : z ^ s ≠ 0` using `pow_ne_zero _ hz`. Establish `hω1 : ω ^ s = 1` using `by rw [hω, div_pow, h, div_self hzs]`. Establish `hωne : ω - 1 ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hz', sub_eq_zero.1 h0, one_mul]`. Establish `hn : ‖ω‖ = 1`. Establish `: ‖ω‖ ^ s = 1` using `by rw [← norm_pow, hω1, norm_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hs.ne').1 this`. Establish `hsum : ∑ i ∈ range s, ω ^ i = 0`. Use `mul_geom_sum ω s` as an intermediate fact. Rewrite `this` using `[hω1, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left hωne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (s : ℂ) = -∑ i ∈ range s, (ω ^ i - 1)`. Rewrite using `[Finset.sum_sub_distrib, hsum]`. Simplify using the standard rewrite rules. Establish `h2 : (s : ℝ) ≤ ∑ i ∈ range s, (s : ℝ) * ‖ω - 1‖`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun i hi => (b_pow_sub_one ω hn i).trans ?_` and prove the remaining obligations. Establish `: (i : ℝ) ≤ s` using `by exact_mod_cast (Finset.mem_range.1 hi).le`. Conclude with `mul_le_mul_of_nonneg_right this (norm_nonneg _)`. Rewrite `h2` using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Establish `hs' : (0 : ℝ) < s` using `by exact_mod_cast hs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h3 : 1 ≤ (s : ℝ) * ‖ω - 1‖`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : z' - z = (ω - 1) * z` using `by rw [hz']; ring`.
-
-Rewrite using `[h4, norm_mul, ← mul_assoc]`. Conclude with `le_mul_of_one_le_left (norm_nonneg _) h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem b_root_sep (s : ℕ) (hs : 0 < s) (z z' : ℂ) (hz : z ≠ 0) (h : z' ^ s = z ^ s) (hne : z' ≠ z) :
     ‖z‖ ≤ s * ‖z' - z‖ := by
@@ -363,7 +357,7 @@ theorem b_root_sep (s : ℕ) (hs : 0 < s) (z z' : ℂ) (hz : z ≠ 0) (h : z' ^ 
   exact le_mul_of_one_le_left (norm_nonneg _) h3
 
 /- English proof (translation)
-Establish `hP : (∏ k, x k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hx k`. Unfold `g0`. Use `fun_prop (disch := assumption)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem b_differentiableAt {n : ℕ} (D' : ℂ) (x : Fin n → ℂ) (hx : ∀ k, x k ≠ 0) :
     DifferentiableAt ℂ (g0 D') x := by
@@ -372,29 +366,29 @@ theorem b_differentiableAt {n : ℕ} (D' : ℂ) (x : Fin n → ℂ) (hx : ∀ k,
   fun_prop (disch := assumption)
 
 /- English proof (translation)
-Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Establish `hs : (0 : ℝ) < (m : ℝ) + 2` using `by linarith`. Establish `hzpos : 0 < ‖z‖` using `lt_of_lt_of_le (by positivity) hz`. Establish `hz0 : z ≠ 0` using `norm_pos_iff.1 hzpos`. Establish `hD : z ^ (m + 2) ≠ 0` using `pow_ne_zero _ hz0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδz : 2 * δ ≤ ‖z‖ / (50 * ((m : ℝ) + 2))`. Rewrite using `[le_div_iff₀ (by positivity)]; linarith`. Take `⟨η₀, hη₀⟩ : ∃ η₀, η₀ = ‖dg0 (z ^ (m + 2)) x‖` from `⟨_, rfl⟩`. Rewrite using `[← hη₀]`. Establish `hη₀0 : 0 ≤ η₀` using `hη₀ ▸ norm_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `le_or_gt (1 / (16 * ((m : ℝ) + 2))) η₀ with hbig | hsmall` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_iff₀ (by positivity)]`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
 
-Use `_ ≤ 6 * ‖z‖ * η₀ := by gcongr`. Use `le_of_forall_pos_le_add fun e he => ?_` and prove the remaining obligations. Take `⟨d, hd⟩ : ∃ d, d = min (e / (6 * ‖z‖)) (1 / (16 * ((m : ℝ) + 2)))` from `⟨_, rfl⟩`. Establish `hd0 : 0 < d` using `by rw [hd]; exact lt_min (by positivity) (by positivity)`. Establish `hd1 : d ≤ e / (6 * ‖z‖)` using `hd ▸ min_le_left _ _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd2 : d ≤ 1 / (16 * ((m : ℝ) + 2))` using `hd ▸ min_le_right _ _`. Establish `h8 : η₀ + d ≤ 1 / (8 * ((m : ℝ) + 2))`. Establish `: 1 / (8 * ((m : ℝ) + 2)) = 1 / (16 * ((m : ℝ) + 2)) + 1 / (16 * ((m : ℝ) + 2))` using `by field_simp; norm_num`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : η₀ + d ≤ 1 / (4 * ((m : ℝ) + 2))`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h8.trans ?_` and prove the remaining obligations. Apply `one_div_le_one_div_of_le (by positivity)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨z', hz', hxz'⟩` from `G1.gradSmall6 m _ hD x hx0 (η₀ + d) (by linarith) h4 (fun k => lt_of_le_of_lt (hη₀ ▸ norm_le_pi_norm _ k) (by linarith))`. Establish `hnz' : ‖z'‖ = ‖z‖`.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ‖z'‖ ^ (m + 2) = ‖z‖ ^ (m + 2)` using `by rw [← norm_pow, hz', norm_pow]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) (by omega)).1 this`. Establish `hzz : z' = z`. Assume the negation of the conclusion as `hne`. Establish `hsep` using `b_root_sep (m + 2) (by omega) z z' hz0 hz' hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : ‖z' - z‖ ≤ ‖x k - z‖ + ‖x k - z'‖`. Establish `: z' - z = (x k - z) - (x k - z')` using `by ring`. Rewrite using `[this]`. Conclude with `norm_sub_le _ _`. Establish `h6` using `hxz' k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h6` using `[hnz']`. Establish `h7 : 6 * (η₀ + d) * ‖z‖ ≤ 6 * (1 / (8 * ((m : ℝ) + 2))) * ‖z‖` using `by gcongr`. Establish `h9 : ‖z' - z‖ ≤ ‖z‖ / (50 * ((m : ℝ) + 2)) + 6 * (1 / (8 * ((m : ℝ) + 2))) * ‖z‖`. Combine the linear relations using `[hx k]`. Establish `h10 : ((m + 2 : ℕ) : ℝ) * (‖z‖ / (50 * ((m : ℝ) + 2)) + 6 * (1 / (8 * ((m : ℝ) + 2))) * ‖z‖) = (77 / 100) * ‖z‖`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Establish `h11 : ((m + 2 : ℕ) : ℝ) * ‖z' - z‖ ≤ (77 / 100) * ‖z‖`. Rewrite using `[← h10]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left h9 (Nat.cast_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6` using `hxz' k`. Rewrite `h6` using `[hzz]`. Establish `h12 : 6 * d * ‖z‖ ≤ e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `mul_le_mul_of_nonneg_right hd1 (by positivity : (0 : ℝ) ≤ 6 * ‖z‖)` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ _ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem b_near (m : ℕ) (δ : ℝ) (hδ : 0 < δ) (z : ℂ) (hz : 100 * ((m : ℝ) + 2) * δ ≤ ‖z‖)
     (x : Fin (m + 1) → ℂ) (hx : ∀ k, ‖x k - z‖ ≤ 2 * δ) (hx0 : ∀ k, x k ≠ 0) (k : Fin (m + 1)) :
@@ -469,29 +463,29 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.G
 
 /- English proof (translation)
-Introduce `m δ Rz hδ`. Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Use `⟨(2 * ((m : ℝ) + 1) + 2 ^ (m + 1) + 6) * |Rz| + 1, by positivity, ?_⟩` and prove the remaining obligations. Introduce `z hz hzR`. Establish `hzpos : 0 < ‖z‖` using `lt_of_lt_of_le (by positivity) hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hzR' : ‖z‖ ≤ |Rz|` using `hzR.trans (le_abs_self _)`. Establish `hδz : 4 * δ ≤ ‖z‖ / 2` using `by nlinarith`. Establish `hball : ∀ x ∈ Metric.ball (fun _ : Fin (m + 1) => z) (2 * (2 * δ)), ∀ k, ‖z‖ / 2 ≤ ‖x k‖ ∧ ‖x k‖ ≤ 2 * ‖z‖`. Introduce `x hx k`. Rewrite `hx` using `[mem_ball_iff_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ‖x k - z‖ ≤ ‖x - fun _ => z‖` using `norm_le_pi_norm (x - fun _ => z) k`. Establish `h2 : ‖z‖ - ‖x k - z‖ ≤ ‖x k‖`. Establish `: ‖z‖ ≤ ‖x k‖ + ‖x k - z‖`. Establish `e : z = x k - (x k - z)` using `by ring`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : ‖x k‖ ≤ ‖z‖ + ‖x k - z‖`. Establish `e : x k = z + (x k - z)` using `by ring`. Combine the equalities or inequalities in the displayed calculation. Apply the tactic sequence `constructor <;> linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hne : ∀ x ∈ Metric.ball (fun _ : Fin (m + 1) => z) (2 * (2 * δ)), ∀ k, x k ≠ 0`. Introduce `x hx k`. Use `(hball x hx k).1` as an intermediate fact. Conclude with `norm_pos_iff.1 (by linarith)`. Use `⟨fun x hx => ⟨hne x hx, ?_⟩, fun x hx => (PhaseFunctionDerivatives.b_differentiableAt _ x (hne x hx)).differentiableWithinAt, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `g0`. Establish `h1 : ‖∑ k, x k‖ ≤ 2 * ((m : ℝ) + 1) * ‖z‖`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun k _ => (hball x hx k).2).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (‖z‖ / 2) ^ (m + 1) ≤ ‖∏ k, x k‖`. Rewrite using `[norm_prod]`. Use `Finset.prod_le_prod (s := Finset.univ) (f := fun _ : Fin (m + 1) => ‖z‖ / 2) (g := fun k => ‖x k‖) (fun _ _ => by positivity) (fun k _ => (hball x hx k).1)` as an intermediate fact. Rewrite `this` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h3 : ‖z ^ (m + 2) / ∏ k, x k‖ ≤ 2 ^ (m + 1) * ‖z‖`. Rewrite using `[norm_div, norm_pow, div_le_iff₀ (lt_of_lt_of_le (by positivity) h2)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Establish `h4 : (2 * ((m : ℝ) + 1) + 2 ^ (m + 1) + 6) * ‖z‖ ≤ (2 * ((m : ℝ) + 1) + 2 ^ (m + 1) + 6) * |Rz|` using `by gcongr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce `x hx`. Establish `hx' : x ∈ Metric.ball (fun _ : Fin (m + 1) => z) (2 * (2 * δ))` using `Metric.closedBall_subset_ball (by linarith) hx`. Rewrite `hx` using `[mem_closedBall_iff_norm]`. Establish `hxk : ∀ k, ‖x k - z‖ ≤ 2 * δ` using `fun k => (norm_le_pi_norm (x - fun _ => z) k).trans hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd0 : 0 ≤ ‖dg0 (z ^ (m + 2)) x‖` using `norm_nonneg _`. Rewrite using `[pi_norm_le_iff_of_nonneg (by positivity)]`. Introduce `k`. Use `(PhaseFunctionDerivatives.b_near m δ hδ z hz x hxk (hne x hx') k).trans ?_` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_right _ hd0` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: (0 : ℝ) ≤ 2 ^ (m + 1)` using `by positivity`. Establish `h0 : 0 ≤ |Rz|` using `abs_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem phase_near_critical : Formalism.FourierDecayAlt.G.PhaseFunctionNearCritical := by
   intro m δ Rz hδ
@@ -571,17 +565,15 @@ namespace Formalism.FourierDecayAlt.P.PhaseFunctionDerivatives
 open Formalism.FourierDecayAlt.G
 
 /- English proof (translation)
-Establish `hM1 : (1 : ℝ) ≤ max 1 a` using `le_max_left _ _`. Establish `h1a : (0 : ℝ) < 1 + a` using `by linarith`. Establish `hM2 : (1 + a) / 2 ≤ max 1 a`. Break down `le_total a 1 with h | h` into its components or cases. Rewrite using `[max_eq_left h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[max_eq_right h]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨p, hp⟩ : ∃ p : ℝ, p = (E' : ℝ) + d + 1` from `⟨_, rfl⟩`. Establish `hp0 : 0 ≤ p` using `by rw [hp]; positivity`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hA`, the goal using `[← hp]`. Establish `s1 : (max 1 a) ^ (-A) ≤ (max 1 a) ^ (-p)` using `Real.rpow_le_rpow_of_exponent_le hM1 (by linarith)`. Establish `s2 : (max 1 a) ^ (-p) ≤ ((1 + a) / 2) ^ (-p)` using `Real.rpow_le_rpow_of_nonpos (by positivity) hM2 (by linarith)`. Establish `s3 : ((1 + a) / 2) ^ (-p) = 2 ^ p * (1 + a) ^ (-p)`. Rewrite using `[Real.div_rpow h1a.le (by norm_num), Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2), div_inv_eq_mul, mul_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `s4 : (1 + a) ^ E' * (1 + a) ^ (-p) = (1 + a) ^ (-(d + 1))`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add h1a]`. Use `congr 1`. Rewrite using `[hp]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Rewrite using `[← s3]`. Conclude with `s1.trans s2`. Use `_ = 2 ^ p * ((1 + a) ^ E' * (1 + a) ^ (-p)) := by ring`.
-
-Use `_ = _ := by rw [s4]`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_le (a : ℝ) (ha : 0 ≤ a) (E' : ℕ) (d A : ℝ) (hd : 0 ≤ d) (hA : (E' : ℝ) + d + 1 ≤ A) :
     (1 + a) ^ E' * (max 1 a) ^ (-A) ≤ 2 ^ ((E' : ℝ) + d + 1) * (1 + a) ^ (-(d + 1)) := by
@@ -608,9 +600,9 @@ theorem c_le (a : ℝ) (ha : 0 ≤ a) (E' : ℕ) (d A : ℝ) (hd : 0 ≤ d) (hA 
     _ = _ := by rw [s4]
 
 /- English proof (translation)
-Establish `hτ0 : 0 < τ` using `by linarith`. Establish `ha0 : 0 < a` using `by linarith`. Establish `h1 : 1 ≤ τ * a` using `by nlinarith`. Rewrite using `[max_eq_right h1, max_eq_right ha, Real.mul_rpow hτ0.le ha0.le, Real.rpow_sub hτ0, Real.rpow_natCast, Real.rpow_neg hτ0.le]`. Establish `h2 : (1 + τ * a) ^ E' ≤ (τ * (1 + a)) ^ E'` using `pow_le_pow_left₀ (by positivity) (by nlinarith) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[mul_pow]`. Establish `h3 : 0 ≤ (τ ^ A)⁻¹ * a ^ (-A)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem c_scale (a τ : ℝ) (ha : 1 ≤ a) (hτ : 1 ≤ τ) (E' : ℕ) (A : ℝ) :
     (1 + τ * a) ^ E' * (max 1 (τ * a)) ^ (-A) ≤
@@ -628,27 +620,25 @@ theorem c_scale (a τ : ℝ) (ha : 1 ≤ a) (hτ : 1 ≤ τ) (E' : ℕ) (A : ℝ
     _ = _ := by rw [div_eq_mul_inv]; ring
 
 /- English proof (translation)
-Take `⟨d, hd⟩ : ∃ d : ℝ, d = (Module.finrank ℝ E : ℝ)` from `⟨_, rfl⟩`. Establish `hd0 : 0 ≤ d` using `hd ▸ Nat.cast_nonneg _`. Take `⟨G, hG⟩ : ∃ G : E → ℝ, G = fun y => 2 ^ ((E' : ℝ) + d + 1) * (1 + ‖y‖) ^ (-(d + 1))` from `⟨_, rfl⟩`. Establish `hGi : Integrable G ν`. Rewrite using `[hG]; exact (integrable_one_add_norm (by rw [← hd]; linarith)).const_mul _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG0 : ∀ y, 0 ≤ G y` using `fun y => by rw [hG]; positivity`. Use `⟨κ * ∫ y, G y ∂ν, fun A hA => ?_⟩` and prove the remaining obligations. Rewrite `hA`, the goal using `[← hd]`. Take `⟨F, hF⟩ : ∃ F : E → ℝ, F = fun y : E => (1 + ‖y‖) ^ E' * (max 1 ‖y‖) ^ (-A)` from `⟨_, rfl⟩`. Rewrite using `[← hF]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hF0 : ∀ y : E, 0 ≤ F y` using `fun y => by rw [hF]; positivity`. Establish `hFG : ∀ y : E, F y ≤ G y` using `fun y => by`. Rewrite using `[hF, hG]`. Conclude with `c_le ‖y‖ (norm_nonneg _) E' d A hd0 hA`. Establish `hFm : Measurable F` using `by rw [hF]; fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFi : Integrable F ν` using `hGi.mono' hFm.aestronglyMeasurable (Filter.Eventually.of_forall fun y => by`. Rewrite using `[Real.norm_of_nonneg (hF0 y)]`. Conclude with `hFG y)`. Use `⟨hFi.smul_measure_nnreal, ?_, fun τ hτ => ?_⟩` and prove the remaining obligations. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (integral_mono hFi hGi hFG) κ.coe_nonneg`. Establish `hτ0 : 0 < τ` using `by linarith`. Establish `hS : MeasurableSet {y : E | τ ≤ ‖y‖}` using `measurableSet_le measurable_const measurable_norm`. Rewrite using `[Measure.restrict_smul, integral_smul_nnreal_measure, NNReal.smul_def, smul_eq_mul, mul_assoc]`. Apply `mul_le_mul_of_nonneg_left _ κ.coe_nonneg` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← integral_indicator hS]`. Establish `key` using `Measure.integral_comp_smul ν ({y : E | τ ≤ ‖y‖}.indicator F) τ`. Rewrite `key` using `[abs_of_pos (by positivity), smul_eq_mul]`. Establish `key2 : ∫ y, {y : E | τ ≤ ‖y‖}.indicator F y ∂ν = τ ^ Module.finrank ℝ E * ∫ w, {y : E | τ ≤ ‖y‖}.indicator F (τ • w) ∂ν`. Rewrite using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Establish `bd : ∫ w, {y : E | τ ≤ ‖y‖}.indicator F (τ • w) ∂ν ≤ ∫ w, τ ^ ((E' : ℝ) - A) * G w ∂ν`. Use `integral_mono_of_nonneg (Filter.Eventually.of_forall fun w => Set.indicator_nonneg (fun y _ => hF0 y) _) (hGi.const_mul _) (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Establish `hpos : 0 ≤ τ ^ ((E' : ℝ) - A)` using `by positivity`. Distinguish the cases in `hw : τ ≤ ‖τ • w‖`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn : ‖τ • w‖ = τ * ‖w‖` using `by rw [norm_smul, Real.norm_of_nonneg hτ0.le]`. Establish `hw1 : 1 ≤ ‖w‖`. Rewrite `hw` using `[hn]`. Conclude with `le_of_mul_le_mul_left (by linarith) hτ0`. Simplify using `only [Set.indicator_of_mem (show τ • w ∈ {y : E | τ ≤ ‖y‖} from hw)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h1 : F (τ • w) ≤ τ ^ ((E' : ℝ) - A) * F w`. Rewrite using `[hF]`. Simplify using `only [hn]`. Conclude with `c_scale ‖w‖ τ hw1 hτ E' A`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left (hFG w) hpos)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Set.indicator_of_notMem (show τ • w ∉ {y : E | τ ≤ ‖y‖} from hw)]`. Conclude with `mul_nonneg hpos (hG0 w)`. Rewrite `bd` using `[integral_const_mul]`. Rewrite using `[key2]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← Real.rpow_natCast, ← hd, ← mul_assoc, ← Real.rpow_add hτ0, mul_comm]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem c_general {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (ν : Measure E) [ν.IsAddHaarMeasure] (κ : NNReal) (E' : ℕ) :
@@ -719,9 +709,9 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.G
 
 /- English proof (translation)
-Introduce `m E' β`. Establish `hfr : (Module.finrank ℝ (UT (m + 2) → ℂ) : ℝ) = ((m : ℝ) + 2) * ((m : ℝ) + 1)`. Rewrite using `[G7.finrank_pi, (dimension_count (m + 2)).1]`. Move the coercions through the operations in `[Nat.add_sub_cancel]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Establish `h` using `PhaseFunctionDerivatives.c_general (volume : Measure (UT (m + 2) → ℂ)) ((Real.toNNReal (‖β‖ / (2 * Real.pi))) ^ Fintype.card (UT (m + 2))) E'`. Rewrite `h` using `[hfr, ← G7.muPi_eq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem majorant_y : Formalism.FourierDecayAlt.G.MajorantY := by
   intro m E' β
@@ -747,7 +737,7 @@ namespace Formalism.FourierDecayAlt.P.PhaseFunctionDerivatives
 open Formalism.FourierDecayAlt.G
 
 /- English proof (translation)
-Unfold `triXY`. Conclude with `continuous_const.add (G7.continuous_strictUpper _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem d_continuous_tri (m : ℕ) (x : Fin (m + 1) → ℂ) :
     Continuous (fun y : UT (m + 2) → ℂ => triXY x y) := by
@@ -755,7 +745,7 @@ theorem d_continuous_tri (m : ℕ) (x : Fin (m + 1) → ℂ) :
   exact continuous_const.add (G7.continuous_strictUpper _)
 
 /- English proof (translation)
-Establish `h : ∀ i j, Continuous (fun y : UT (m + 2) → ℂ => triXY x y i j)` using `fun i j => (d_continuous_tri m x).matrix_elem i j`. Unfold `redOf`. Conclude with `Continuous.prodMk (h _ _) (Continuous.prodMk (continuous_pi fun k => h _ _) (Continuous.prodMk (continuous_pi fun q => h _ _) (continuous_pi fun i => h _ _)))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem d_continuous_red (m : ℕ) (x : Fin (m + 1) → ℂ) :
     Continuous (fun y : UT (m + 2) → ℂ => redOf m (x, y)) := by
@@ -770,11 +760,9 @@ noncomputable def d_M (m : ℕ) (t : ℂ) (x : Fin (m + 1) → ℂ) (q : ℂ × 
     (Fin.cons q.1 (redOf m (x, q.2)).2.1) (redOf m (x, q.2)).1
 
 /- English proof (translation)
-Establish `hred : Continuous (fun q : ℂ × (UT (m + 2) → ℂ) => redOf m (x, q.2))` using `(d_continuous_red m x).comp continuous_snd`. Establish `hX : Continuous (fun q : ℂ × (UT (m + 2) → ℂ) => strictUpper (redOf m (x, q.2)).2.2.1)` using `(G7.continuous_strictUpper _).comp (continuous_fst.comp (continuous_snd.comp (continuous_snd.comp hred)))`. Establish `hB : Continuous (fun q : ℂ × (UT (m + 2) → ℂ) => (redOf m (x, q.2)).2.2.2)` using `continuous_snd.comp (continuous_snd.comp (continuous_snd.comp hred))`. Establish `hρ : Continuous (fun q : ℂ × (UT (m + 2) → ℂ) => (Fin.cons q.1 (redOf m (x, q.2)).2.1 : Fin (m + 1) → ℂ))`. Use `continuous_pi fun k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `using continuous_fst`. Simplify using `only [Fin.cons_succ]`. Conclude with `(continuous_apply k).comp (continuous_fst.comp (continuous_snd.comp hred))`. Unfold `d_M Mcoord`.
-
-Conclude with `G7.continuous_blk (continuous_const.matrix_mul (continuous_const.add hX)) (Continuous.matrix_mulVec continuous_const hB) hρ (continuous_fst.comp hred)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem d_continuous_M (m : ℕ) (t : ℂ) (x : Fin (m + 1) → ℂ) : Continuous (d_M m t x) := by
   have hred : Continuous (fun q : ℂ × (UT (m + 2) → ℂ) => redOf m (x, q.2)) :=
@@ -802,7 +790,7 @@ theorem d_MXY_eq (m : ℕ) (D t : ℂ) (x : Fin (m + 1) → ℂ) (y : UT (m + 2)
     MXY m D t (x, y) = d_M m t x (rhoXY m D t (x, y), y) := rfl
 
 /- English proof (translation)
-Unfold `cutM chi0`. Use `continuous_finsetProd _ fun i _ => continuous_finsetProd _ fun j _ => ?_` and prove the remaining obligations. Use `Real.smoothTransition.continuous.comp ?_` and prove the remaining obligations. Establish `h : Continuous fun Z : Mat s => Z i j` using `(continuous_apply j).comp (continuous_apply i)`. Conclude with `continuous_const.sub ((h.norm.pow 2).div_const _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem d_continuous_cutM {s : ℕ} (τ : ℝ) : Continuous (cutM (s := s) τ) := by
   unfold cutM chi0
@@ -812,15 +800,13 @@ theorem d_continuous_cutM {s : ℕ} (τ : ℝ) : Continuous (cutM (s := s) τ) :
   exact continuous_const.sub ((h.norm.pow 2).div_const _)
 
 /- English proof (translation)
-Take `⟨Z, hZd⟩ : ∃ Z : Mat (m + 1 + 1), Z = Mcoord t (strictUpper x) B (Fin.cons ρ₁ ρ') σ` from `⟨_, rfl⟩`. Establish `hZ : ‖Z‖ ≤ T`. Rewrite using `[pi_norm_le_iff_of_nonneg hT]`. Introduce `i`. Rewrite using `[pi_norm_le_iff_of_nonneg hT]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[hZd]`. Conclude with `h i j`. Establish `hco` using `(G7.norm_coord_le t σ x B (Fin.cons ρ₁ ρ') Z hZd).trans hZ`. Establish `h1 : ‖(Fin.cons ρ₁ ρ' : Fin (m + 1) → ℂ)‖ ≤ T` using `(norm_fst_le _).trans hco`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖x‖ ≤ T` using `((norm_fst_le _).trans (norm_snd_le _)).trans hco`. Establish `h3 : ‖B‖ ≤ T` using `((norm_snd_le _).trans (norm_snd_le _)).trans hco`. Use `⟨fun i j => ?_, fun i => (norm_le_pi_norm B i).trans h3, ?_, fun k => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hij : i < j`. Simplify using `only [strictUpper, Matrix.of_apply, hij, dif_pos]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(norm_le_pi_norm x _).trans h2`. Simplify using `only [strictUpper, Matrix.of_apply, hij, dif_neg, not_false_iff, norm_zero]`. Conclude with `hT`. Simplify using `using (norm_le_pi_norm (Fin.cons ρ₁ ρ' : Fin (m + 1) → ℂ) 0).trans h1`. Simplify using `using (norm_le_pi_norm (Fin.cons ρ₁ ρ' : Fin (m + 1) → ℂ) k.succ).trans h1`.
-
-Use `h (Fin.last (m + 1)) (Fin.last (m + 1))` as an intermediate fact. Rewrite `this` using `[Mcoord, G2.blk_ll]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem d_entries {m : ℕ} (t σ ρ₁ : ℂ) (ρ' : Fin m → ℂ) (x : UT (m + 1) → ℂ) (B : Fin (m + 1) → ℂ) (T : ℝ)
     (hT : 0 ≤ T) (h : ∀ i j, ‖Mcoord t (strictUpper x) B (Fin.cons ρ₁ ρ') σ i j‖ ≤ T) :
@@ -849,9 +835,9 @@ theorem d_entries {m : ℕ} (t σ ρ₁ : ℂ) (ρ' : Fin m → ℂ) (x : UT (m 
     rwa [Mcoord, G2.blk_ll] at this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Apply `hne` to reduce the goal to its premises. Unfold `cutM`. Use `Finset.prod_eq_zero (Finset.mem_univ i) (Finset.prod_eq_zero (Finset.mem_univ j) ?_)` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `chi0`. Apply `Real.smoothTransition.zero_of_nonpos` to reduce the goal to its premises. Establish `h2 : (2 * τ) ^ 2 < ‖Z i j‖ ^ 2` using `pow_lt_pow_left₀ hlt (by positivity) two_ne_zero`. Rewrite using `[sub_nonpos, le_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `[sq_nonneg τ]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem d_cutM_entries {s : ℕ} (τ : ℝ) (hτ : 0 < τ) (Z : Mat s) (hne : cutM τ Z ≠ 0) (i j : Fin s) :
     ‖Z i j‖ ≤ 2 * τ := by
@@ -867,25 +853,23 @@ theorem d_cutM_entries {s : ℕ} (τ : ℝ) (hτ : 0 < τ) (Z : Mat s) (hne : cu
   nlinarith [sq_nonneg τ]
 
 /- English proof (translation)
-Introduce `m β Kc hK h0 ε hε hε'`. Take `⟨t₀, c₀, ht₀, hc₀, hlow⟩` from `hC m Kc hK h0 2 (by norm_num)`. Use `⟨t₀, ht₀, ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ Φ bd hΦ t D z ht htt hD hz`. Establish `htn : 0 < ‖t‖` using `norm_pos_iff.2 ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hτ0 : 0 < ‖t‖ ^ (-ε)` using `Real.rpow_pos_of_pos htn _`. Establish `hred` using `d_continuous_red m (fun _ => z)`. Establish `hcof : Continuous (fun y : UT (m + 2) → ℂ => cofXY m t (fun _ => z, y))`. Unfold `cofXY`. Conclude with `(G7.continuous_cof m t).comp ((continuous_fst.comp (continuous_snd.comp (continuous_snd.comp hred))).prodMk (continuous_snd.comp (continuous_snd.comp (continuous_snd.comp hred))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hthr : 0 < c₀ * ‖t‖ ^ ε` using `mul_pos hc₀ (Real.rpow_pos_of_pos htn _)`. Establish `hvan : ∀ y : UT (m + 2) → ℂ, ‖cofXY m t (fun _ => z, y)‖ < c₀ * ‖t‖ ^ ε → ampIn β m ε Φ D t (fun _ => z, y) = 0`. Introduce `y hy`. Distinguish the cases in `hc : cofXY m t (fun _ => z, y) = 0`. Simplify using `[ampIn, amp, hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcut : cutM (‖t‖ ^ (-ε)) (MXY m D t (fun _ => z, y)) = 0`. Assume the negation of the conclusion as `hne`. Establish `hent` using `d_cutM_entries _ hτ0 _ hne`. Take `⟨e1, e2, e3, e4, e5⟩` from `d_entries t _ _ _ _ _ (2 * ‖t‖ ^ (-ε)) (by positivity) hent`. Establish `hc' : Cof (strictUpper (redOf m (fun _ => z, y)).2.2.1) (redOf m (fun _ => z, y)).2.2.2 t ≠ 0` using `hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrel : t ^ (m + 1) * (redOf m (fun _ => z, y)).1 = D + Cof (strictUpper (redOf m (fun _ => z, y)).2.2.1) (redOf m (fun _ => z, y)).2.2.2 t * rhoXY m D t (fun _ => z, y) + R0 (strictUpper (redOf m (fun _ => z, y)).2.2.1) (redOf m (fun _ => z, y)).2.2.2 (redOf m (fun _ => z, y)).2. …`. Rewrite using `[rhoXY, rho1, mul_div_cancel₀ _ hc']`. Expand and normalize the polynomial expressions, which then agree. Use `hlow ε hε hε' D hD t ht htt _ _ _ _ _ (G7.isStrictUpper_strictUpper _) e1 e2 e3 e4 e5 hrel` as an intermediate fact. Conclude with `absurd hy (not_lt.2 this)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ampIn, amp, cutPhi, hcut]`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `y`. Distinguish the cases in `hc : cofXY m t (fun _ => z, y) = 0`. Establish `hW : ∀ᶠ y' in 𝓝 y, ‖cofXY m t (fun _ => z, y')‖ < c₀ * ‖t‖ ^ ε` using `(hcof.norm.continuousAt (x := y)).eventually_lt continuousAt_const (by simpa [hc] using hthr)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : (fun y' => ampIn β m ε Φ D t (fun _ => z, y')) =ᶠ[𝓝 y] fun _ => (0 : V)` using `hW.mono fun y' h => hvan y' h`. Conclude with `continuousAt_const.congr hE.symm`. Establish `hrho : ContinuousAt (fun y' : UT (m + 2) → ℂ => rhoXY m D t (fun _ => z, y')) y`. Unfold `rhoXY rho1`. Use `ContinuousAt.div ?_ hcof.continuousAt hc` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(((continuous_const.mul (continuous_fst.comp hred)).sub continuous_const).sub ((G7.continuous_remainder m t).comp (continuous_snd.comp hred))).continuousAt`. Establish `hM : ContinuousAt (fun y' : UT (m + 2) → ℂ => MXY m D t (fun _ => z, y')) y`. Simplify using `only [d_MXY_eq]`. Conclude with `ContinuousAt.comp (f := fun y' : UT (m + 2) → ℂ => (rhoXY m D t (fun _ => z, y'), y')) (d_continuous_M m t (fun _ => z)).continuousAt (hrho.prodMk continuousAt_id)`. Establish `hΦc : ContinuousAt Φ (MXY m D t (fun _ => z, y))` using `(hΦ _ ⟨D, hD, (hDet m D t _ hc).symm⟩).1.continuousAt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : ContinuousAt (fun y' : UT (m + 2) → ℂ => gRem m D t (fun _ => z, y')) y`. Unfold `gRem`. Conclude with `(hrho.sub continuousAt_const).div_const _`. Establish `hinv : ContinuousAt (fun y' : UT (m + 2) → ℂ => (‖cofXY m t (fun _ => z, y')‖ ^ 2)⁻¹) y` using `ContinuousAt.inv₀ (hcof.norm.pow 2).continuousAt (by simpa using hc)`. Unfold `ampIn amp cutPhi`.
-
-Use `ContinuousAt.smul (ContinuousAt.mul ((G7.continuous_psi β).continuousAt.comp hg) (Complex.continuous_ofReal.continuousAt.comp hinv)) (ContinuousAt.smul ?_ (ContinuousAt.comp (f := fun y' : UT (m + 2) → ℂ => MXY m D t (fun _ => z, y')) hΦc hM))` and prove the remaining obligations. Conclude with `Complex.continuous_ofReal.continuousAt.comp (ContinuousAt.comp (f := fun y' : UT (m + 2) → ℂ => MXY m D t (fun _ => z, y')) (d_continuous_cutM _).continuousAt hM)`.
+A detailed English derivation is pending.
 -/
 theorem d_ampCrit_of (hC : CofLowerR) (hDet : DetMXY) : AmpCritContinuous := by
   intro m β Kc hK h0 ε hε hε'
@@ -958,7 +942,7 @@ end Formalism.FourierDecayAlt.P.PhaseFunctionDerivatives
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `PhaseFunctionDerivatives.d_ampCrit_of cofactor_lower_bound_radius det_matrix_xy`.
+A detailed English derivation is pending.
 -/
 theorem amplitude_continuous_at_critical : Formalism.FourierDecayAlt.G.AmpCritContinuous :=
   PhaseFunctionDerivatives.d_ampCrit_of cofactor_lower_bound_radius det_matrix_xy

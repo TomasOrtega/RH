@@ -14,9 +14,9 @@ def padZero {m N : ℕ} (v : Fin m → R) : Fin N → R := fun i => if h : (i : 
 def restrFirst {m N : ℕ} (h : m ≤ N) (x : Fin N → R) : Fin m → R := fun i => x (Fin.castLE h i)
 
 /- English proof (translation)
-Unfold `dotProduct`. Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE h) (Fin.castLE_injective h) _ _ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [padZero]`.
+Replace the relevant objects with their definitions. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_neg, mul_zero]`. Introduce `hlt`. Conclude with `hi ⟨⟨i, hlt⟩, Fin.ext rfl⟩`. Introduce `i`. Simplify using `[restrFirst, padZero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma dotProduct_padZero {m N : ℕ} (h : m ≤ N) (F : Fin N → R) (v : Fin m → R) :
     F ⬝ᵥ padZero v = restrFirst h F ⬝ᵥ v := by
@@ -32,14 +32,14 @@ lemma dotProduct_padZero {m N : ℕ} (h : m ≤ N) (F : Fin N → R) (v : Fin m 
     simp [restrFirst, padZero]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[restrFirst, padZero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma restrFirst_padZero {m N : ℕ} (h : m ≤ N) (v : Fin m → R) : restrFirst h (padZero v) = v := by
   ext i
   simp [restrFirst, padZero]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [padZero, restrFirst]`. Use `split_ifs with hi`. Both sides reduce to the same expression. Conclude with `(hx i (not_lt.mp hi)).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma padZero_restrFirst {m N : ℕ} (h : m ≤ N) (x : Fin N → R) (hx : ∀ i : Fin N, m ≤ (i : ℕ) → x i = 0) :
     padZero (restrFirst h x) = x := by
@@ -50,9 +50,9 @@ lemma padZero_restrFirst {m N : ℕ} (h : m ≤ N) (x : Fin N → R) (hx : ∀ i
   · exact (hx i (not_lt.mp hi)).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf⟩`. Use `⟨fun i => if h : i < l.length then f ⟨i, h⟩ else 0, fun i j hi hj => ?_⟩` and prove the remaining obligations. Use `hf ⟨i, hi⟩ ⟨j, hj⟩` as an intermediate fact. Simplify using `only [dif_pos hi]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[Fin.ext_iff]`. Introduce and unpack `⟨f, hf⟩`. Use `⟨fun i => f i, fun i j => ?_⟩` and prove the remaining obligations. Use `hf i j i.2 j.2` as an intermediate fact. Simplify `this` using `[Fin.ext_iff]`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma mem_uniSeq_iff {n : ℕ} (l : List (Fin n → R)) :
     l ∈ uniSeq R n ↔ ∃ f : ℕ → Fin n → R, ∀ i j (hi : i < l.length) (hj : j < l.length),
@@ -69,11 +69,9 @@ lemma mem_uniSeq_iff {n : ℕ} (l : List (Fin n → R)) :
     simpa [Fin.ext_iff] using this
 
 /- English proof (translation)
-Rewrite using `[mem_uniSeq_iff, mem_uniSeq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf⟩`. Use `⟨fun i => A (f i), fun i j hi hj => ?_⟩` and prove the remaining obligations. Use `hf i j (by simpa using hi) (by simpa using hj)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[List.getElem_map, hA]`. Conclude with `this`. Introduce and unpack `⟨f, hf⟩`. Use `⟨fun i => B (f i), fun i j hi hj => ?_⟩` and prove the remaining obligations. Rewrite using `[List.getElem_map, hB]`.
-
-Conclude with `hf i j (by simpa using hi) (by simpa using hj)`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma map_mem_uniSeq {m N : ℕ} (e : (Fin m → R) → (Fin N → R)) (A : (Fin N → R) → (Fin m → R))
     (B : (Fin m → R) → (Fin N → R)) (hA : ∀ F v, F ⬝ᵥ e v = A F ⬝ᵥ v)
@@ -96,37 +94,33 @@ end GlobalTheory.SeqCx.LinkCol
 open GlobalTheory.SeqCx.LinkCol
 
 /- English proof (translation)
-Introduce `R _ s hs N m q ρ hρ hN hsm hex`. Establish `hmN : m ≤ N` using `by omega`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_GL_splitSeq_standard_of_stableRangeLe R s hs N ρ hρ (by omega) (fun j => ⟨m + j, by omega⟩) (by intro a b h; simp [Fin.ext_iff] at h; exact Fin.ext h)`. Use `set G : Matrix (Fin N) (Fin N) R := (g : Matrix (Fin N) (Fin N) R) with hGdef`. Use `set Gi : Matrix (Fin N) (Fin N) R := ((g⁻¹ : GL (Fin N) R) : Matrix (Fin N) (Fin N) R) with hGidef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGGi : G * Gi = 1` using `Units.mul_inv g`. Establish `hGiG : Gi * G = 1` using `Units.inv_mul g`. Set `e : (Fin m → R) → (Fin N → R)` to `fun v => Gi *ᵥ padZero v`. Establish `he : Function.Injective e`. Introduce `a b hab`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : G *ᵥ (Gi *ᵥ padZero a) = G *ᵥ (Gi *ᵥ padZero b)`. Simplify using `only [e] at hab`. Rewrite using `[hab]`. Rewrite `h1` using `[mulVec_mulVec, mulVec_mulVec, hGGi, one_mulVec, one_mulVec]`. Establish `h2` using `congrArg (restrFirst hmN) h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h2` using `[restrFirst_padZero, restrFirst_padZero]`. Then use the resulting hypothesis. Establish `hdot : ∀ (u : Fin N → R) (j : Fin ρ.length), (ρ.get j).2 ⬝ᵥ u = (G *ᵥ u) ⟨m + j, by omega⟩`. Introduce `u j`. Establish `h1 : u = Gi *ᵥ (G *ᵥ u)` using `by rw [mulVec_mulVec, hGiG, one_mulVec]`. Use `conv_lhs => rw [h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dotProduct_mulVec, (hg j).2, single_dotProduct, one_mul]`. Establish `hkey : ∀ u : Fin N → R, (∀ y ∈ ρ, y.2 ⬝ᵥ u = 0) ↔ e (restrFirst hmN (G *ᵥ u)) = u`. Introduce `u`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz : ∀ i : Fin N, m ≤ (i : ℕ) → (G *ᵥ u) i = 0`. Introduce `i hi`. Establish `hi2` using `i.2`. Establish `h3` using `h (ρ.get ⟨i - m, by omega⟩) (List.get_mem _ _)`. Rewrite `h3` using `[hdot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `h3 using 2` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Simplify using `only [e]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[padZero_restrFirst hmN _ hz, mulVec_mulVec, hGiG, one_mulVec]`. Introduce `h y hy`. Take `⟨j, rfl⟩` from `List.mem_iff_get.mp hy`. Rewrite using `[hdot]`. Establish `h1 : G *ᵥ u = padZero (restrFirst hmN (G *ᵥ u))` using `by conv_lhs => rw [← h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e]`. Rewrite using `[mulVec_mulVec, hGGi, one_mulVec]`. Rewrite using `[h1]`. Simplify using `[padZero]`. Establish `hA : ∀ F v, F ⬝ᵥ e v = restrFirst hmN (F ᵥ* Gi) ⬝ᵥ v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `F v`. Simplify using `only [e]`. Rewrite using `[dotProduct_mulVec, dotProduct_padZero hmN]`. Establish `hB : ∀ f v, (padZero f ᵥ* G) ⬝ᵥ e v = f ⬝ᵥ v`. Introduce `f v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e]`. Rewrite using `[dotProduct_mulVec, vecMul_vecMul, hGGi, vecMul_one, dotProduct_padZero hmN, restrFirst_padZero]`. Establish `hset : {w | w ∈ uniSeq R N ∧ ∀ y ∈ ρ, ∀ u ∈ w, y.2 ⬝ᵥ u = 0} = List.map e '' uniSeq R m`. Use extensionality with `w`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, h⟩`. Establish `hw' : w.map (fun u => e (restrFirst hmN (G *ᵥ u))) = w` using `by conv_rhs => rw [← List.map_id w]`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `u hu`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `(hkey u).mp (fun y hy => h y hy u hu)`. Use `⟨w.map (fun u => restrFirst hmN (G *ᵥ u)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mem_uniSeq e _ _ hA hB, List.map_map]`. Use `hw using 1` and compare the differences between its conclusion and the goal. Conclude with `hw'`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[List.map_map]`. Conclude with `hw'`. Introduce and unpack `⟨vs, hvs, rfl⟩`. Use `⟨(map_mem_uniSeq e _ _ hA hB vs).mpr hvs, ?_⟩` and prove the remaining obligations. Introduce `y hy u hu`.
-
-Take `⟨v, -, rfl⟩` from `List.mem_map.mp hu`. Establish `h1 : restrFirst hmN (G *ᵥ e v) = v`. Simplify using `only [e]`. Rewrite using `[mulVec_mulVec, hGGi, one_mulVec, restrFirst_padZero]`. Conclude with `(hkey (e v)).mpr (by rw [h1]) y hy`.
-
-Rewrite using `[hset]`. Conclude with `(GlobalTheory.T.seqChain_exactAt_map_iff _ _ e he _ q).mpr hex`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SeqCx.exactAt_uniSeq_killed_by_split : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s →
     ∀ (N m q : ℕ) (ρ : List ((Fin N → R) × (Fin N → R))), ρ ∈ splitSeq R N → ρ.length + m = N →
@@ -215,7 +209,7 @@ theorem GlobalTheory.SeqCx.exactAt_uniSeq_killed_by_split : ∀ (R : Type) [Comm
 section
 open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.SeqCx.exactAt_uniSeq_killed_by_split`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.exactAt_uniSeq_orthogonal_splitSeq_of_exactAt_uniSeq : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ (N m q : ℕ) (ρ : List ((Fin N → R) × (Fin N → R))), ρ ∈ splitSeq R N → ρ.length + m = N → s ≤ m → ExactAt (uniSeq R m) q → ExactAt {w | w ∈ uniSeq R N ∧ ∀ y ∈ ρ, ∀ u ∈ w, y.2 ⬝ᵥ u = 0} q := by
   first

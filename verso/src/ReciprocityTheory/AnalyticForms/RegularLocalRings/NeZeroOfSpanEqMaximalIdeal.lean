@@ -9,13 +9,13 @@ variable {K : Type} [Fintype K] [Nonempty K] {ι : K → Type} [∀ k, Fintype (
 variable {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} {hP : IsMultiHomogIdeal P}
 
 /- English proof (translation)
-Introduce `h0`. Establish `hfin : (Set.range v \ {0}).Finite` using `(Set.finite_range v).sdiff`. Establish `hncard : (Set.range v \ {0}).ncard < d`. Establish `h1 : (Set.range v \ {0}).ncard < (Set.range v).ncard` using `Set.ncard_sdiff_singleton_lt_of_mem ⟨l, h0⟩ (Set.finite_range v)`. Establish `h2 : (Set.range v).ncard ≤ d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Set.image_univ]`. Conclude with `Set.ncard_image_le (Set.finite_univ)`. Use `_ = d := by simp`. Use linear arithmetic over natural numbers and integers.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hspan : Ideal.span (Set.range v \ {0}) = maximalIdeal R`. Rewrite using `[Ideal.span_sdiff_singleton_zero, hv]`. Establish `hle : (maximalIdeal R).spanFinrank ≤ (Set.range v \ {0}).ncard`. Rewrite using `[← hspan]`. Conclude with `Submodule.spanFinrank_span_le_ncard_of_finite hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdim` using `ringKrullDim_le_spanFinrank_maximalIdeal R`. Rewrite `hdim` using `[hd]`. Establish `: (d : WithBot ℕ∞) ≤ ((Set.range v \ {0}).ncard : WithBot ℕ∞)` using `hdim.trans (by exact_mod_cast hle)`. Use `(Nat.cast_le (α := WithBot ℕ∞)).mp this` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_span_eq_maximalIdeal {R : Type*} [CommRing R] [IsRegularLocalRing R] {d : ℕ}
     (hd : ringKrullDim R = d) (v : Fin d → R) (hv : Ideal.span (Set.range v) = maximalIdeal R)
@@ -42,35 +42,27 @@ theorem ne_zero_of_span_eq_maximalIdeal {R : Type*} [CommRing R] [IsRegularLocal
   omega
 
 /- English proof (translation)
-Generalize the expression as in `hp : Q.coord x.1 hxV = p at h𝔮x hG`. Use `w.regular x.1` as an intermediate fact. Use `haveI hregL : IsRegularLocalRing (locRing Q.K p) := by`. Rewrite using `[← hp]`. Conclude with `(Q.isRegularLocalRing_stalk_iff x.1 hxV x.2).mp (w.regular x.1)`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsDomain (locRing Q.K p) := ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isDomain _`. Use `set d := (maximalIdeal (w.W.presheaf.stalk x.1)).spanFinrank with hdd`. Establish `hd : ringKrullDim (w.W.presheaf.stalk x.1) = d` using `(IsRegularLocalRing.spanFinrank_maximalIdeal).symm`. Take `⟨S, -, -⟩` from `exists_sncData w.snc_Zb Q w.compEquiv d x.1 hxV x.2 hd`. Rewrite `S` using `[hp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hdL : ringKrullDim (locRing Q.K p) = d`. Rewrite using `[← hp, ← Q.ringKrullDim_stalk x.1 hxV x.2]`. Conclude with `hd`. Establish `hmax : Ideal.map (algebraMap _ (locRing Q.K p)) (ptIdeal p) = maximalIdeal (locRing Q.K p)`. Substitute `hp` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Q.map_maximalIdeal_stalk x.1 hxV x.2]`. Conclude with `map_ringEquiv_maximalIdeal _`. Use `set 𝔮' := RingHom.ker (algebraMap (MvPolynomial (Fin Q.n) ℂ) (locRing Q.K p)) with h𝔮'`. Establish `h𝔮'prime : 𝔮'.IsPrime` using `RingHom.ker_isPrime _`. Establish `hK𝔮' : Q.K ≤ 𝔮'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `f hf`. Rewrite using `[h𝔮', RingHom.mem_ker, IsScalarTower.algebraMap_apply (MvPolynomial (Fin Q.n) ℂ) (locPt p), Ideal.Quotient.algebraMap_eq]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_map_of_mem _ hf)`. Establish `h𝔮'p : 𝔮' ≤ ptIdeal p`. Introduce `f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hfp`. Rewrite `hf` using `[h𝔮', RingHom.mem_ker, IsScalarTower.algebraMap_apply (MvPolynomial (Fin Q.n) ℂ) (locPt p), Ideal.Quotient.algebraMap_eq]`. Establish `hu : IsUnit (algebraMap (MvPolynomial (Fin Q.n) ℂ) (locPt p) f)` using `IsLocalization.map_units (locPt p) (⟨f, hfp⟩ : (ptIdeal p).primeCompl)`. Use `(hu.map (Ideal.Quotient.mk (Ideal.map (algebraMap _ (locPt p)) Q.K))).ne_zero` as an intermediate fact. Conclude with `this hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h𝔮𝔮' : 𝔮 ≤ 𝔮'`. Take `⟨Q', hQ'min, hQ'le⟩` from `Ideal.exists_minimalPrimes_le hK𝔮'`. Take `⟨q0, -, -, hu, -⟩` from `regular_point_unique_minimalPrime Q.K p`. Rewrite using `[hu 𝔮 h𝔮min h𝔮x, ← hu Q' hQ'min (hQ'le.trans h𝔮'p)]`. Conclude with `hQ'le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h𝔮prime : 𝔮.IsPrime` using `h𝔮min.1.1`. Use `set F := S.h * ∏ l ∈ S.J, S.r l with hF`. Establish `hFbd : F ∈ Q.bdIdeal w.Zb` using `S.mem_bd`. Establish `hFq : F ∉ 𝔮`. Introduce `hmem`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `h𝔮prime.mem_or_mem hmem with hh | hprod` into its components or cases. Conclude with `S.eval_h (by simpa [ptIdeal, RingHom.mem_ker] using h𝔮x hh)`. Use `haveI := h𝔮prime`. Take `⟨l, -, hl⟩` from `Ideal.IsPrime.prod_mem_iff.mp hprod`. Establish `h0 : algebraMap _ (locRing Q.K p) (S.r l) = 0` using `h𝔮𝔮' hl`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ne_zero_of_span_eq_maximalIdeal hdL (fun l => algebraMap _ (locRing Q.K p) (S.r l)) (S.span_eq.trans hmax) l h0`. Establish `hGq : G ∉ 𝔮` using `fun hG𝔮 => hG (by simpa [ptIdeal, RingHom.mem_ker] using h𝔮x hG𝔮)`. Establish `hFGq : F * G ∉ 𝔮` using `fun hm => (h𝔮prime.mem_or_mem hm).elim hFq hGq`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy𝔮, hyFG⟩ : ∃ y : Fin Q.n → ℂ, (∀ f ∈ 𝔮, eval y f = 0) ∧ eval y (F * G) ≠ 0 := by`. Assume the negation of the conclusion as `hno`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at hno`. Apply `hFGq` to reduce the goal to its premises. Establish `: F * G ∈ vanishingIdeal ℂ (zeroLocus ℂ 𝔮)`. Rewrite using `[mem_vanishingIdeal_iff]`. Introduce `y hy`.
-
-Conclude with `hno y (fun f hf => by simpa using hy f hf)`. Rewrite `this` using `[vanishingIdeal_zeroLocus_eq_radical, h𝔮prime.radical]`. Then use the resulting hypothesis. Take `⟨x'', ⟨hx''V, hcl, hco⟩, -⟩` from `Q.existsUnique_closed_coord y (fun f hf => hy𝔮 f (h𝔮min.1.2 hf))`. Establish `hyF : eval y F ≠ 0` using `fun h0 => hyFG (by rw [eval_mul, h0, zero_mul])`. Establish `hyG : eval y G ≠ 0` using `fun h0 => hyFG (by rw [eval_mul, h0, mul_zero])`.
-
-Use `⟨⟨x'', hcl⟩, hx''V, ?_, ?_, by rw [hco]; exact hyG⟩` and prove the remaining obligations. Introduce `f hf show f ∈ ptIdeal (Q.coord x'' hx''V)`. Rewrite using `[hco, ptIdeal, RingHom.mem_ker]`. Conclude with `hy𝔮 f hf`. Introduce `hB`.
-
-Establish `hsupp : x'' ∈ (w.Zb.support : Set w.W)`. Rewrite using `[w.support_Zb]`. Conclude with `hB`. Use `(Q.zero_bdIdeal_iff w.Zb x'' hx''V hcl).mpr hsupp F hFbd` as an intermediate fact. Rewrite `this` using `[hco]`.
-
-Conclude with `hyF this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem WData.exists_closed_off (w : WData P D hP) (Q : AffPres (w.π ≫ toSpecC hP)) (x : w.M) (hxV : x.1 ∈ Q.V)
     (𝔮 : Ideal (MvPolynomial (Fin Q.n) ℂ)) (h𝔮min : 𝔮 ∈ Q.K.minimalPrimes)
@@ -159,11 +151,11 @@ theorem WData.exists_closed_off (w : WData P D hP) (Q : AffPres (w.π ≫ toSpec
 set_option backward.isDefEq.respectTransparency.types false in
 
 /- English proof (translation)
-Use `w.lft` as an intermediate fact. Use `w.isIso_off` as an intermediate fact. Establish `hU : y.1 ∈ w.π ⁻¹ᵁ projBCompl P D hP` using `hy`. Establish `hiso : IsIso (w.π.stalkMap y.1)`. Establish `h` using `(MorphismProperty.isomorphisms CommRingCat).arrow_mk_iso_iff (morphismRestrictStalkMap w.π (projBCompl P D hP) ⟨y.1, hU⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hoi : IsOpenImmersion (w.π ∣_ projBCompl P D hP) := IsOpenImmersion.of_isIso _`. Establish `h2 : IsIso ((w.π ∣_ projBCompl P D hP).stalkMap ⟨y.1, hU⟩)` using `inferInstance`. Conclude with `h.mp h2`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv (asIso (w.π.stalkMap y.1)).commRingCatIsoToRingEquiv]`. Establish `hcl : IsClosed ({w.π.base y.1} : Set (projX P hP))` using `(val_comp (w.π ≫ toSpecC hP) (toSpecC hP) w.π rfl (U := ⊤) (V := ⊤) (by simp) 0 y.1 trivial y.2).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `chartOpen_cover hP (w.π.base y.1)`. Take `⟨z, hz, -, ⟨ψ⟩⟩` from `exists_closedPoint_stalk hP p _ hp hcl`. Rewrite using `[ringKrullDim_eq_of_ringEquiv ψ]`. Conclude with `hdim p z hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem WData.ringKrullDim_stalk_off (w : WData P D hP) (e : ℕ)
     (hdim : ∀ (p : (k : K) → ι k) (z : (Σ k, ι k) → ℂ), (∀ h ∈ chartIdeal P p, eval z h = 0) →
@@ -189,11 +181,11 @@ theorem WData.ringKrullDim_stalk_off (w : WData P D hP) (e : ℕ)
   exact hdim p z hz
 
 /- English proof (translation)
-Establish `offB : ∀ y : w.M, w.π.base y.1 ∉ (projB P D hP : Set (projX P hP)) → ringKrullDim (w.W.presheaf.stalk y.1) = e` using `w.ringKrullDim_stalk_off e hdim`. Introduce `x`. Take `⟨c, hc⟩` from `w.cover x`. Establish `hxV : x.1 ∈ (w.pres c.1 c.2).V` using `hc`. Rewrite using `[(w.pres c.1 c.2).ringKrullDim_stalk x.1 hxV x.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `((w.pres c.1 c.2).isRegularLocalRing_stalk_iff x.1 hxV x.2).mp (w.regular x.1)` as an intermediate fact. Take `⟨𝔮, h𝔮min, h𝔮x, -, -⟩` from `regular_point_unique_minimalPrime (w.pres c.1 c.2).K ((w.pres c.1 c.2).coord x.1 hxV)`. Take `⟨x', hx'V, h𝔮x', hx'B, -⟩` from `w.exists_closed_off (w.pres c.1 c.2) x hxV 𝔮 h𝔮min h𝔮x 1 (by simp)`. Use `((w.pres c.1 c.2).isRegularLocalRing_stalk_iff x'.1 hx'V x'.2).mp (w.regular x'.1)` as an intermediate fact. Rewrite using `[ringKrullDim_locRing_eq_of_minimalPrime (w.pres c.1 c.2).K _ _ 𝔮 h𝔮min h𝔮x h𝔮x', ← (w.pres c.1 c.2).ringKrullDim_stalk x'.1 hx'V x'.2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `offB x' hx'B`.
+A detailed English derivation is pending.
 -/
 theorem WData.ringKrullDim_stalk (w : WData P D hP) (e : ℕ) (hD : IsMultiHomogIdeal D)
     (hcomp : ∀ Q ∈ P.minimalPrimes, IsRelevant Q → ¬ D ≤ Q)
@@ -220,7 +212,7 @@ theorem WData.ringKrullDim_stalk (w : WData P D hP) (e : ℕ) (hD : IsMultiHomog
   exact offB x' hx'B
 
 /- English proof (translation)
-Establish `h1 : w.coord c x = (w.pres c.1 c.2).coord x.1 hx`. Unfold `WData.coord`. Conclude with `dif_pos hx`. Rewrite using `[h1, ← (w.pres c.1 c.2).ringKrullDim_stalk x.1 hx x.2]`. Conclude with `he x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem WData.dim_coord (w : WData P D hP) {e : ℕ}
     (he : ∀ x : w.M, ringKrullDim (w.W.presheaf.stalk x.1) = e) (c : w.Idx) (x : w.M)

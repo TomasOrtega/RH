@@ -12,17 +12,15 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.GaugeEx.SelfDualAE
 
 /- English proof (translation)
-Establish `hmeas : MeasurableSet (L : Set V)` using `ho.measurableSet`. Establish `hfun : (fun x => (L : Set V).indicator (fun _ => (1 : ℂ)) x * χ x y) = (L : Set V).indicator (fun x => χ x y)`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : x ∈ (L : Set V) <;> simp [hx]`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hy : y ∈ L`. Establish `hone : ∀ x ∈ (L : Set V), χ x y = 1` using `fun x hx => (hL y).2 hy x hx`. Rewrite using `[Set.indicator_of_mem (show y ∈ (L : Set V) from hy), integral_indicator hmeas, setIntegral_congr_fun hmeas hone, setIntegral_const]`. Simplify using `[Measure.real]`. Rewrite using `[Set.indicator_of_notMem (show y ∉ (L : Set V) from hy)]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hex : ∃ x0 ∈ L, χ x0 y ≠ 1`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hy ((hL y).1 hcon)`. Take `⟨x0, hx0, hne⟩` from `hex`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set f : V → ℂ := (L : Set V).indicator (fun x => χ x y) with hf`. Establish `hshift : ∀ x, f (x0 + x) = χ x0 y * f x`. Introduce `x`. Distinguish the cases in `hx : x ∈ L`. Establish `hx' : x0 + x ∈ L` using `L.add_mem hx0 hx`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hf, Set.indicator_of_mem (show x0 + x ∈ (L : Set V) from hx'), Set.indicator_of_mem (show x ∈ (L : Set V) from hx), hadd]`. Establish `hx' : x0 + x ∉ L` using `fun h => hx ((L.add_mem_cancel_left hx0).1 h)`. Simplify using `only [hf, Set.indicator_of_notMem (show x0 + x ∉ (L : Set V) from hx'), Set.indicator_of_notMem (show x ∉ (L : Set V) from hx), mul_zero]`. Establish `hinv : ∫ x, f (x0 + x) ∂ν = ∫ x, f x ∂ν` using `integral_add_left_eq_self f x0`. Rewrite `hinv` using `[hshift]`.
-
-Rewrite `hinv` using `[integral_const_mul]`. Establish `h0 : (χ x0 y - 1) * ∫ x, f x ∂ν = 0` using `by rw [sub_mul, hinv, one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 h0).resolve_left (sub_ne_zero.2 hne)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem integral_indicator_mul_char_eq_indicator_measure {V : Type} [AddCommGroup V] [TopologicalSpace V]
     [IsTopologicalAddGroup V] [MeasurableSpace V] [BorelSpace V]
@@ -67,19 +65,17 @@ private theorem integral_indicator_mul_char_eq_indicator_measure {V : Type} [Add
     exact (mul_eq_zero.1 h0).resolve_left (sub_ne_zero.2 hne)
 
 /- English proof (translation)
-Establish `hcl : IsClosed (L : Set V)` using `AddSubgroup.isClosed_of_isOpen L ho`. Use `haveI : μ₀.IsAddHaarMeasure := h₀.1`. Establish `hmeas : MeasurableSet (L : Set V)` using `ho.measurableSet`. Establish `hft` using `integral_indicator_mul_char_eq_indicator_measure μ₀ L ho hadd hL`. Establish `hfin : μ₀ (L : Set V) ≠ ⊤` using `hc.measure_lt_top.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦc : Continuous ((L : Set V).indicator (fun _ => (1 : ℂ)))` using `IsClopen.continuous_indicator ⟨hcl, ho⟩ continuous_const`. Establish `hΦs : HasCompactSupport ((L : Set V).indicator (fun _ => (1 : ℂ)))` using `HasCompactSupport.intro' hc hcl (fun x hx => Set.indicator_of_notMem hx _)`. Establish `hI : Integrable (fun y => ∫ x, (L : Set V).indicator (fun _ => (1 : ℂ)) x * χ x y ∂μ₀) μ₀`. Repeatedly rewrite using `[hft]`. Conclude with `(integrable_indicator_iff hmeas).2 (integrableOn_const hfin)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Establish `key` using `h₀.2 _ hΦc hΦs hI 0`. Rewrite `key` using `[hft, hz, mul_one]`. Rewrite `key` using `[integral_indicator hmeas, setIntegral_const, neg_zero, Set.indicator_of_mem (show (0 : V) ∈ (L : Set V) from L.zero_mem)]`. Establish `hc0 : (μ₀ (L : Set V)).toReal * (μ₀ (L : Set V)).toReal = 1`. Use `key` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Measure.real, Complex.real_smul] at this`. Conclude with `this` after adjusting the coercions. Establish `hc1 : (μ₀ (L : Set V)).toReal = 1`. Establish `hnn : 0 ≤ (μ₀ (L : Set V)).toReal` using `ENNReal.toReal_nonneg`. Use polynomial arithmetic with `[sq_nonneg ((μ₀ (L : Set V)).toReal - 1)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hμ₀L : μ₀ (L : Set V) = 1`. Rewrite using `[← ENNReal.ofReal_toReal hfin, hc1, ENNReal.ofReal_one]`. Set `K : TopologicalSpace.PositiveCompacts V` to `⟨⟨(L : Set V), hc⟩, by show (interior (L : Set V)).Nonempty`. Rewrite using `[ho.interior_eq]`. Conclude with `⟨0, L.zero_mem⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `Measure.addHaarMeasure_unique μ K`. Establish `e2` using `Measure.addHaarMeasure_unique μ₀ K`. Establish `hK : ((K : Set V)) = (L : Set V)` using `rfl`. Establish `heq : μ = μ₀`. Rewrite using `[e1, e2, hK, h1, hμ₀L]`.
-
-Rewrite using `[heq]`. Conclude with `h₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_of_lattice {V : Type} [AddCommGroup V] [TopologicalSpace V]
     [IsTopologicalAddGroup V] [LocallyCompactSpace V] [SecondCountableTopology V]
@@ -132,7 +128,7 @@ section Char
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `h : pairA F 0 (singleV F v 0) = 0`. Simplify using `only [pairA, singleV, RestrictedProduct.single_zero]`. Both sides reduce to the same expression. Rewrite using `[psiV, h, AddChar.map_zero_eq_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiV_zero (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) : psiV F ψ v 0 = 1 := by
   have h : pairA F 0 (singleV F v 0) = 0 := by
@@ -141,9 +137,7 @@ theorem psiV_zero (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) : p
   rw [psiV, h, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Establish `h : pairA F 0 (singleV F v (x + y)) = pairA F 0 (singleV F v x) + pairA F 0 (singleV F v y)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `(add_zero (0 : Ainf F)).symm`. Conclude with `RestrictedProduct.single_add _ _ _ _`. Rewrite using `[psiV, h, AddChar.map_add_eq_mul]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem psiV_add (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (x y : Fv F v) :
     psiV F ψ v (x + y) = psiV F ψ v x * psiV F ψ v y := by
@@ -157,7 +151,7 @@ theorem psiV_add (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (x y
   rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GaugeEx.IntBasis.ev_int a`.
+A detailed English derivation is pending.
 -/
 theorem ev_int (a : F) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite,
     algebraMap F (Fv F v) a ∈ v.adicCompletionIntegers F := GlobalTheory.GaugeEx.IntBasis.ev_int a
@@ -169,7 +163,7 @@ section Alg
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h : Algebra.lmul R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e) = (Algebra.lmul F E e).baseChange R`. Apply `TensorProduct.AlgebraTensorModule.curry_injective` to reduce the goal to its premises. Use extensionality with `r x`. Simplify using the standard rewrite rules. Rewrite using `[Algebra.trace_apply, h, LinearMap.trace_baseChange, Algebra.trace_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_one_tmul (R : Type) [CommRing R] [Algebra F R] (e : E) :
     Algebra.trace R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e) = algebraMap F R (Algebra.trace F E e) := by
@@ -183,9 +177,9 @@ theorem trace_one_tmul (R : Type) [CommRing R] [Algebra F R] (e : E) :
 variable {d : ℕ} (b : Module.Basis (Fin d) F E)
 
 /- English proof (translation)
-Use `conv_lhs => rw [GlobalTheory.GaugeEx.IntBasis.eq_sum b R y]`. Rewrite using `[Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h1 : inclR R e * ((Algebra.TensorProduct.basis R b).repr y k ⊗ₜ[F] b k) = (Algebra.TensorProduct.basis R b).repr y k • ((1 : R) ⊗ₜ[F] (e * b k))`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[inclR, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[h1, LinearMap.map_smul, trace_one_tmul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_mul_eq (R : Type) [CommRing R] [Algebra F R] (e : E) (y : R ⊗[F] E) :
     Algebra.trace R (R ⊗[F] E) (inclR R e * y) =
@@ -201,7 +195,7 @@ theorem trace_mul_eq (R : Type) [CommRing R] [Algebra F R] (e : E) (y : R ⊗[F]
   rw [h1, LinearMap.map_smul, trace_one_tmul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[trace_mul_eq b R (b.traceDual k) y]`. Simplify using `[Module.Basis.trace_traceDual_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_dual_mul (R : Type) [CommRing R] [Algebra F R] (k : Fin d) (y : R ⊗[F] E) :
     Algebra.trace R (R ⊗[F] E) (inclR R (b.traceDual k) * y) =
@@ -210,7 +204,7 @@ theorem trace_dual_mul (R : Type) [CommRing R] [Algebra F R] (k : Fin d) (y : R 
   simp [Module.Basis.trace_traceDual_mul]
 
 /- English proof (translation)
-Use `filter_upwards [GlobalTheory.GaugeEx.IntBasis.ev_int_coord b e] with v hv`. Conclude with `GlobalTheory.GaugeEx.IntBasis.tmul_mem b v (one_mem _) hv`.
+A detailed English derivation is pending.
 -/
 theorem ev_incl (e : E) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite,
     inclR (Fv F v) e ∈ intV b v := by
@@ -238,7 +232,7 @@ theorem coe_latGrp (v : HeightOneSpectrum (𝓞 F)) (n M : ℕ) :
       Set.univ.pi fun _ => Set.univ.pi fun _ => intV b v := rfl
 
 /- English proof (translation)
-Rewrite using `[← SetLike.mem_coe, coe_latGrp]`. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_latGrp (v : HeightOneSpectrum (𝓞 F)) (n M : ℕ) (Y : Fin n → Fin M → Fv F v ⊗[F] E) :
     Y ∈ latGrp b v n M ↔ ∀ a i, Y a i ∈ intV b v := by
@@ -249,7 +243,7 @@ variable (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `only [BR, hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem BR_add (R : Type) [CommRing R] [Algebra F R] {n : ℕ} (X X' Y : Fin n → Fin M → R ⊗[F] E) :
     BR R σ J (X + X') Y = BR R σ J X Y + BR R σ J X' Y := by
@@ -257,7 +251,7 @@ theorem BR_add (R : Type) [CommRing R] [Algebra F R] {n : ℕ} (X X' Y : Fin n �
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `[BR, hR, Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem BR_zero (R : Type) [CommRing R] [Algebra F R] {n : ℕ} (X : Fin n → Fin M → R ⊗[F] E) :
     BR R σ J X 0 = 0 := by
@@ -265,7 +259,7 @@ theorem BR_zero (R : Type) [CommRing R] [Algebra F R] {n : ℕ} (X : Fin n → F
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR, TensorProduct.smul_tmul']`. Consider the case `add y₁ y₂ h₁ h₂ => rw [smul_add, map_add, map_add, h₁, h₂, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_smul (R : Type) [CommRing R] [Algebra F R] (t : R) (y : R ⊗[F] E) :
     sigR R σ (t • y) = t • sigR R σ y := by
@@ -276,9 +270,9 @@ theorem sigR_smul (R : Type) [CommRing R] [Algebra F R] (t : R) (y : R ⊗[F] E)
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `only [BR, hR, Formalism.UG.hform, Pi.smul_apply, sigR_smul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Rewrite using `[← smul_eq_mul, ← LinearMap.map_smul_of_tower]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Finset.smul_sum, smul_mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem BR_smul (R : Type) [CommRing R] [Algebra F R] {n : ℕ} (t : R)
     (X Y : Fin n → Fin M → R ⊗[F] E) : BR R σ J (t • X) Y = BR R σ J X Y * t := by
@@ -290,17 +284,17 @@ theorem BR_smul (R : Type) [CommRing R] [Algebra F R] {n : ℕ} (t : R)
   simp only [Finset.smul_sum, smul_mul_assoc]
 
 /- English proof (translation)
-Establish `hsur : Function.Surjective σ` using `(AlgHom.bijective σ).2`. Use `choose τ hτ using hsur`. Establish `key : ∀ j' : Fin M, (∑ i, b.traceDual k * J⁻¹ j i * J i j') = if j = j' then b.traceDual k else 0`. Introduce `j'`. Simplify using `only [mul_assoc, ← Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (∑ i, J⁻¹ j i * J i j') = (J⁻¹ * J) j j'` using `by simp [Matrix.mul_apply]`. Rewrite using `[h2, Matrix.nonsing_inv_mul J (Ne.isUnit hJ), Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨fun i => τ (b.traceDual k * J⁻¹ j i), ?_⟩` and prove the remaining obligations. Introduce `R _ _ Y`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : ∀ i, sigR R σ (inclR R (τ (b.traceDual k * J⁻¹ j i))) = inclR R (b.traceDual k * J⁻¹ j i)`. Introduce `i`. Simplify using `[sigR, inclR, hτ]`. Establish `hrow : ∀ j' : Fin M, (∑ i, inclR R (b.traceDual k * J⁻¹ j i) * inclR R (J i j') * Y 0 j') = inclR R (if j = j' then b.traceDual k else 0) * Y 0 j'`. Introduce `j'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key j', map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul]`. Establish `hsum : hR R σ J (fun i => inclR R (τ (b.traceDual k * J⁻¹ j i))) (Y 0) = inclR R (b.traceDual k) * Y 0 j`. Simplify using `only [hR, Formalism.UG.hform, JR, Matrix.map_apply, hs]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [hrow]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `j' _ hj'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Ne.symm hj']`. Simplify using the standard rewrite rules. Simplify using `only [BR, Fin.sum_univ_one]`. Rewrite using `[hsum, trace_dual_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BR_test (hJ : J.det ≠ 0) (j : Fin M) (k : Fin d) : ∃ x : Fin M → E,
     ∀ (R : Type) [CommRing R] [Algebra F R] (Y : Fin 1 → Fin M → R ⊗[F] E),
@@ -340,21 +334,19 @@ theorem BR_test (hJ : J.det ≠ 0) (j : Fin M) (k : Fin d) : ∃ x : Fin M → E
   rw [hsum, trace_dual_mul]
 
 /- English proof (translation)
-Use `choose x hx using fun j k => BR_test b σ J hJ j k`. Establish `h1` using `(GlobalTheory.GaugeEx.IntBasis.main F E σ d b).2.1`. Establish `h2 : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ j k i, inclR (Fv F v) (x j k i) ∈ intV b v`. Simplify using `only [Filter.eventually_all]`. Introduce `j k i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `ev_incl b (x j k i)`. Establish `h3 : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ i j, inclR (Fv F v) (J i j) ∈ intV b v`. Simplify using `only [Filter.eventually_all]`. Introduce `i j`. Conclude with `ev_incl b (J i j)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h4 : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ k, algebraMap F (Fv F v) (Algebra.trace F E (1 * b k)) ∈ v.adicCompletionIntegers F`. Simplify using `only [Filter.eventually_all]`. Introduce `k`. Conclude with `ev_int F _`. Use `filter_upwards [h1, h2, h3, h4] with v hv1 hv2 hv3 hv4`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hone, hmul, hsig⟩` from `hv1`. Introduce `Y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[mem_latGrp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a j k`. Establish `ha : a = 0` using `Subsingleton.elim _ _`. Substitute `ha` using the available equality. Establish `hX : (fun (_ : Fin 1) i => inclR (Fv F v) (x j k i)) ∈ latGrp b v 1 M` using `(mem_latGrp b v 1 M _).2 fun _ i => hv2 j k i`. Use `h _ hX` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hx j k (Fv F v) Y]`. Conclude with `this`. Introduce `hY X hX`. Rewrite `hX`, `hY` using `[mem_latGrp]`. Establish `key : ∀ y ∈ intV b v, Algebra.trace (Fv F v) (Fv F v ⊗[F] E) y ∈ v.adicCompletionIntegers F`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Use `trace_mul_eq b (Fv F v) 1 y` as an intermediate fact. Rewrite `this` using `[map_one, one_mul]`. Rewrite using `[this]`. Conclude with `sum_mem fun k _ => mul_mem (hy k) (hv4 k)`.
-
-Unfold `BR`. Use `sum_mem fun a _ => key _ ?_` and prove the remaining obligations. Unfold `hR Formalism.UG.hform`. Use `GlobalTheory.GaugeEx.IntBasis.sum_mem' b v _ _ fun i _ => GlobalTheory.GaugeEx.IntBasis.sum_mem' b v _ _ fun j _ => ?_` and prove the remaining obligations. Conclude with `hmul _ (hmul _ (hsig _ (hX a i)) _ (hv3 i j)) _ (hY a j)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ev_dual (hJ : J.det ≠ 0) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite,
     ∀ Y, (∀ X ∈ latGrp b v 1 M, BR (Fv F v) σ J X Y ∈ v.adicCompletionIntegers F) ↔
@@ -403,31 +395,27 @@ theorem ev_dual (hJ : J.det ≠ 0) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Fi
 end Alg
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM d b s ψ hψ M J hJ`. Use `haveI : IsTotallyReal F := hCM.1`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Take `⟨-, hloc, -⟩` from `GlobalTheory.T.localComponents_nontrivial_adelic_character F ψ hψ`. Establish `hex` using `GlobalTheory.T.existsUnique_selfDual_measures_finitePlace F E σ hCM ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [hloc, ev_dual b σ J hJ.2] with v hv hdv`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨ν0, hν0, -⟩` from `(hex v).1`. Establish `hc : IsCompact ((v.adicCompletionIntegers F : Set (Fv F v)))`. Establish `he : ((v.adicCompletionIntegers F : Set (Fv F v))) = Metric.closedBall 0 1`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `y`. Simplify using `[Valued.toNormedField.norm_le_one_iff, HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite using `[he]`. Conclude with `isCompact_closedBall 0 1`. Use `selfDual_of_lattice hν0 (s.haar_nuV v) (v.adicCompletionIntegers F).toSubring.toAddSubgroup hc (Valued.isOpen_valuationSubring _) ?_ ?_ ?_ (s.nuV_int v)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x x' y show psiV F ψ v ((x + x') * y) = psiV F ψ v (x * y) * psiV F ψ v (x' * y)`. Rewrite using `[add_mul, psiV_add]`. Introduce `y show psiV F ψ v (y * 0) = 1`. Rewrite using `[mul_zero, psiV_zero]`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hvy` using `hv y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `hvy.1` to reduce the goal to its premises. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_comm]`. Conclude with `h t ht`. Introduce `h t ht`. Rewrite using `[mul_comm]`. Conclude with `hvy.2 h t ht`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨μ0, hμ0, -⟩` from `(hex v).2 M J hJ haveI := s.haar_lamV v haveI hsf : SigmaFinite (s.lamV v) := by infer_instance haveI hH1 : (Measure.pi fun _ : Fin M => s.lamV v).IsAddHaarMeasure := by infer_instance haveI : SigmaFinite (Measure.pi fun _ : Fin M => s.lamV v) := by infer_instance`. Establish `hH : (tupMeas (s.lamV v) 1 M).IsAddHaarMeasure`. Unfold `tupMeas`. Use `infer_instance`. Establish `hsm : ∀ t ∈ v.adicCompletionIntegers F, ∀ X ∈ latGrp b v 1 M, t • X ∈ latGrp b v 1 M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `t ht X hX`. Rewrite `hX`, the goal using `[mem_latGrp]`. Introduce `a i k`. Use `hX a i k` as an intermediate fact. Simplify using `only [Pi.smul_apply, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem ht this`. Use `selfDual_of_lattice hμ0 hH (latGrp b v 1 M) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[coe_latGrp]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => (GlobalTheory.GaugeEx.IntBasis.compact_open b v).1`. Rewrite using `[coe_latGrp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => (GlobalTheory.GaugeEx.IntBasis.compact_open b v).2`. Introduce `X X' Y show psiV F ψ v (BR (Fv F v) σ J (X + X') Y) = psiV F ψ v (BR (Fv F v) σ J X Y) * psiV F ψ v (BR (Fv F v) σ J X' Y)`. Rewrite using `[BR_add, psiV_add]`. Introduce `Y show psiV F ψ v (BR (Fv F v) σ J Y 0) = 1`. Rewrite using `[BR_zero, psiV_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `Y show (∀ X ∈ latGrp b v 1 M, psiV F ψ v (BR (Fv F v) σ J X Y) = 1) ↔ Y ∈ latGrp b v 1 M`. Rewrite using `[← hdv Y]`. Prove the components needed by the constructor for the conclusion. Introduce `h X hX`. Rewrite using `[← hv]`.
-
-Introduce `t ht`. Rewrite using `[← BR_smul]`. Conclude with `h _ (hsm t ht X hX)`. Introduce `h X hX`. Use `(hv _).2 (h X hX) 1 (one_mem _)` as an intermediate fact.
-
-Simplify using `using this`. Unfold `tupMeas`. Rewrite using `[coe_latGrp, Measure.pi_pi]`. Simplify using `[Measure.pi_pi, s.lamV_int v]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (s : StdMeas b) (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, SdR (Fv F v) (psiV F ψ v) (s.nuV v) ∧ SdW F E σ M J (Fv F v) (psiV F ψ v) 1 (tupMeas (s.lamV v) 1 M) := by
   intro F E _ _ _ _ _ σ hCM d b s ψ hψ M J hJ

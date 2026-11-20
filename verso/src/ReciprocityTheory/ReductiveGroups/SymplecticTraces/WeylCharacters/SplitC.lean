@@ -11,7 +11,7 @@ namespace ReciprocityTheory.ChartRestriction.TR.Weyl
 open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7 ReciprocityTheory.ChartRestriction.DS.HW
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m y => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sp_coef_map {M N : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
     (f : M →ₗ[ℂ] M) (ψ : N →ₗ[ℂ] ℂ) (x : M ⊗[ℂ] N) :
@@ -23,7 +23,7 @@ theorem sp_coef_map {M N : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (TensorProduct.equivFinsuppOfBasisRight (Module.finBasis ℂ N)).symm_apply_apply x]`. Rewrite using `[TensorProduct.equivFinsuppOfBasisRight_symm_apply, Finsupp.sum_fintype _ _ (fun i => by simp)]`. Repeatedly rewrite using `[TensorProduct.equivFinsuppOfBasisRight_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sp_expand {M N : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
     [Module.Finite ℂ N] (x : M ⊗[ℂ] N) :
@@ -35,7 +35,7 @@ theorem sp_expand {M N : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup N]
   simp_rw [TensorProduct.equivFinsuppOfBasisRight_apply]
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun u => TensorProduct.lid ℂ N (((innerSL ℂ w : E →L[ℂ] ℂ) : E →ₗ[ℂ] ℂ).rTensor N u)) h`. Simplify `e` using `[hw]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sp_tmul_cancel {E N : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [AddCommGroup N]
     [Module ℂ N] {w : E} (hw : ‖w‖ = 1) {y z : N} (h : w ⊗ₜ[ℂ] y = w ⊗ₜ[ℂ] z) : y = z := by
@@ -46,11 +46,11 @@ theorem sp_tmul_cancel {E N : Type*} [NormedAddCommGroup E] [InnerProductSpace �
 variable {p q : ℕ} {Λ1 : Fin p → ℝ} {Λ2 : Fin q → ℝ}
 
 /- English proof (translation)
-Establish `hcoef : ∀ i, ∃ c : ℂ, TensorProduct.rid ℂ _ (((Module.finBasis ℂ N).coord i).lTensor _ x) = c • T1.w`. Introduce `i`. Distinguish the cases in `hm : TensorProduct.rid ℂ _ (((Module.finBasis ℂ N).coord i).lTensor _ x) = 0`. Conclude with `⟨0, by rw [hm, zero_smul]⟩`. Establish `h : IsKHWVec (fun _ : Fin p => true) (kunits T1) ν (TensorProduct.rid ℂ _ (((Module.finBasis ℂ N).coord i).lTensor _ x))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨fun r => ?_, fun r s hrs _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← sp_coef_map, hw r, map_smul, map_smul]`. Rewrite using `[← sp_coef_map, hr r s hrs, map_zero, map_zero]`. Take `⟨-, c, hc⟩` from `KType.hw_unique T1 hm h`. Conclude with `⟨c, hc⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose c hc using hcoef`. Use `⟨∑ i, c i • (Module.finBasis ℂ N) i, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [sp_expand x]`. Repeatedly rewrite using `[hc, TensorProduct.smul_tmul, TensorProduct.tmul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sp_left (T1 : KType (fun _ : Fin p => true) Λ1) {N : Type*} [AddCommGroup N] [Module ℂ N]
     [Module.Finite ℂ N] (x : T1.V ⊗[ℂ] N) (ν : Fin p → ℝ)
@@ -75,11 +75,11 @@ theorem sp_left (T1 : KType (fun _ : Fin p => true) Λ1) {N : Type*} [AddCommGro
   simp_rw [hc, TensorProduct.smul_tmul, TensorProduct.tmul_sum]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `sp_left T1 x ν1 hw1 hr1`. Establish `hy0 : y ≠ 0` using `by rintro rfl; exact hx0 (TensorProduct.tmul_zero _ _)`. Establish `h : IsKHWVec (fun _ : Fin q => true) (kunits T2) ν2 y`. Use `⟨fun r => ?_, fun r s hrs _ => ?_⟩` and prove the remaining obligations. Establish `e` using `hw2 r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[TensorProduct.map_tmul, LinearMap.id_apply, ← TensorProduct.tmul_smul]`. Conclude with `sp_tmul_cancel T1.w_norm e`. Establish `e` using `hr2 r s hrs`. Rewrite `e` using `[TensorProduct.map_tmul, LinearMap.id_apply, ← TensorProduct.tmul_zero T2.V T1.w]`. Conclude with `sp_tmul_cancel T1.w_norm e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨-, c, hc⟩` from `KType.hw_unique T2 hy0 h`. Conclude with `⟨c, by rw [hc, TensorProduct.tmul_smul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem sp_ker (T1 : KType (fun _ : Fin p => true) Λ1) (T2 : KType (fun _ : Fin q => true) Λ2)
     (x : T1.V ⊗[ℂ] T2.V) (hx0 : x ≠ 0) (ν1 : Fin p → ℝ) (ν2 : Fin q → ℝ)

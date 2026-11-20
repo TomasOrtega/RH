@@ -8,11 +8,11 @@ namespace PIW.AdelClassFin
 open NumberField NumberField.Units
 
 /- English proof (translation)
-Set `g : torsion F × (Fin (rank F) → Fin 2) → F` to `fun p => algebraMap (𝓞 F) F (((p.1 : (𝓞 F)ˣ) * ∏ i, fundSystem F i ^ (((p.2 i : ℕ) : ℤ)) : (𝓞 F)ˣ) : 𝓞 F)`. Use `⟨Set.range g, Set.finite_range g, fun c => ?_⟩` and prove the remaining obligations. Take `⟨⟨ζ, e⟩, he, -⟩` from `exist_unique_eq_mul_prod F c`. Simplify using `only at he`. Set `f : Fin (rank F) → Fin 2` to `fun i => ⟨(e i % 2).toNat, by omega⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Introduce a local definition for the expression.
 
-Use `⟨g (ζ, f), Set.mem_range_self _, ∏ i, fundSystem F i ^ (e i / 2), ?_⟩` and prove the remaining obligations. Establish `key : c = ((ζ : (𝓞 F)ˣ) * ∏ i, fundSystem F i ^ (((f i : ℕ) : ℤ))) * (∏ i, fundSystem F i ^ (e i / 2)) ^ 2`. Rewrite using `[he, mul_assoc, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sq, ← zpow_add, ← zpow_add]`. Use `congr 1`. Establish `h2 : (((f i : ℕ) : ℤ)) = e i % 2` using `Int.toNat_of_nonneg (Int.emod_nonneg _ (by norm_num))`. Use linear arithmetic over natural numbers and integers. Rewrite using `[key, Units.val_mul, map_mul, Units.val_pow_eq_pow_val, map_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem units_mod_sq (F : Type) [Field F] [NumberField F] :
     ∃ U : Set F, U.Finite ∧ ∀ c : (𝓞 F)ˣ, ∃ w ∈ U, ∃ v : (𝓞 F)ˣ,
@@ -37,31 +37,27 @@ theorem units_mod_sq (F : Type) [Field F] [NumberField F] :
   rw [key, Units.val_mul, map_mul, Units.val_pow_eq_pow_val, map_pow]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc C`. Take `⟨U, hUf, hU⟩` from `units_mod_sq F`. Set `S : Set (Ideal (𝓞 E))` to `{I | Ideal.absNorm I ≤ ⌊C⌋₊}`. Establish `hSf : S.Finite` using `Ideal.finite_setOfPred_absNorm_le _`. Set `P : Ideal (𝓞 E) → Prop` to `fun I => ∃ y : 𝓞 E, I = Ideal.span {y} ∧ star (algebraMap (𝓞 E) E y) = algebraMap (𝓞 E) E y ∧ y ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `rep : Ideal (𝓞 E) → E` to `fun I => if h : P I then algebraMap (𝓞 E) E h.choose else 1`. Use `⟨Set.image2 (fun w I => algebraMap F E w * rep I) U S \ {0}, (hUf.image2 _ hSf).sdiff, fun h => h.2 rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨x, rfl⟩ hstar ha hN`. Establish `hinj : Function.Injective (algebraMap (𝓞 E) E)` using `RingOfIntegers.coe_injective`. Establish `hx0 : x ≠ 0` using `by rintro rfl; exact ha (map_zero _)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxS : Ideal.span {x} ∈ S` using `by show Ideal.absNorm _ ≤ _`. Rewrite using `[Ideal.absNorm_span_singleton]`. Apply `Nat.le_floor` to reduce the goal to its premises. Establish `h1` using `Algebra.coe_norm_int x`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `hN`. Establish `hP : P (Ideal.span {x})` using `⟨x, rfl, hstar, hx0⟩`. Take `⟨hyI, hys, hy0⟩` from `hP.choose_spec`. Establish `hrep : rep (Ideal.span {x}) = algebraMap (𝓞 E) E hP.choose` using `dif_pos hP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩ : Associated hP.choose x` from `Ideal.span_singleton_eq_span_singleton.mp hyI.symm`. Establish `hyE : algebraMap (𝓞 E) E hP.choose ≠ 0` using `fun h => hy0 (hinj (h.trans (map_zero _).symm))`. Establish `h1 : algebraMap (𝓞 E) E x = algebraMap (𝓞 E) E hP.choose * algebraMap (𝓞 E) E (w : 𝓞 E)`. Rewrite using `[← map_mul]`. Conclude with `congrArg _ hw.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hWs : star (algebraMap (𝓞 E) E (w : 𝓞 E)) = algebraMap (𝓞 E) E (w : 𝓞 E)`. Use `mul_left_cancel₀ hyE ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hys]`. Use `_ = star (algebraMap (𝓞 E) E hP.choose * algebraMap (𝓞 E) E (w : 𝓞 E)) := (star_mul' _ _).symm`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [← h1, hstar, h1]`. Take `⟨c, hcW⟩` from `(hc.fixed _).1 hWs`. Establish `hWW' : algebraMap (𝓞 E) E (w : 𝓞 E) * algebraMap (𝓞 E) E ((w⁻¹ : (𝓞 E)ˣ) : 𝓞 E) = 1`. Rewrite using `[← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]`. Establish `hc0 : c ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `hWW'` using `[← hcW, map_zero, zero_mul]`. Conclude with `zero_ne_one hWW'`. Establish `hW' : algebraMap (𝓞 E) E ((w⁻¹ : (𝓞 E)ˣ) : 𝓞 E) = algebraMap F E c⁻¹`. Rewrite using `[map_inv₀, hcW]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `eq_inv_of_mul_eq_one_right hWW'`. Establish `hci : IsIntegral ℤ c`. Use `(isIntegral_algebraMap_iff (B := E) (algebraMap F E).injective).mp ?_` and prove the remaining obligations. Rewrite using `[hcW]`. Conclude with `(w : 𝓞 E).2`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hci' : IsIntegral ℤ c⁻¹`. Use `(isIntegral_algebraMap_iff (B := E) (algebraMap F E).injective).mp ?_` and prove the remaining obligations. Rewrite using `[← hW']`. Conclude with `((w⁻¹ : (𝓞 E)ˣ) : 𝓞 E).2`. Set `cu : (𝓞 F)ˣ` to `{ val := ⟨c, hci⟩ inv := ⟨c⁻¹, hci'⟩ val_inv := RingOfIntegers.ext (show c * c⁻¹ = 1 from mul_inv_cancel₀ hc0) inv_val := RingOfIntegers.ext (show c⁻¹ * c = 1 from inv_mul_cancel₀ hc0) }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨w0, hw0U, v, hv⟩` from `hU cu`. Establish `hcv : c = w0 * algebraMap (𝓞 F) F (v : 𝓞 F) ^ 2` using `hv`. Set `u : (𝓞 E)ˣ` to `Units.map (RingOfIntegers.mapRingHom (algebraMap F E)).toMonoidHom v`. Establish `hu : algebraMap (𝓞 E) E (u : 𝓞 E) = algebraMap F E (algebraMap (𝓞 F) F (v : 𝓞 F))` using `rfl`. Establish `hus : star (algebraMap (𝓞 E) E (u : 𝓞 E)) = algebraMap (𝓞 E) E (u : 𝓞 E)` using `(hc.fixed _).2 ⟨_, hu.symm⟩`.
-
-Establish `main : algebraMap (𝓞 E) E x = star (algebraMap (𝓞 E) E (u : 𝓞 E)) * algebraMap (𝓞 E) E (u : 𝓞 E) * (algebraMap F E w0 * rep (Ideal.span {x}))`. Rewrite using `[hus, hrep, h1, ← hcW, hcv, map_mul, map_pow, hu]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨u, algebraMap F E w0 * rep (Ideal.span {x}), ⟨Set.mem_image2_of_mem hw0U hxS, fun h0 => ha ?_⟩, main⟩` and prove the remaining obligations. Rewrite using `[main]`.
-
-Rewrite using `[Set.mem_singleton_iff.mp h0, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partUnits : PartUnits := by
   intro F E _ _ _ _ _ _ hc C

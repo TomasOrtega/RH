@@ -4,17 +4,17 @@ open scoped ContDiff
 namespace GlobalTheory.PolyOfDeriv
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => intro G _ hN t`. Simplify using `[hN]`. Consider the case `succ N ih`. Introduce `G hG hN t`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ s, G 1 s = ∑ k ∈ Finset.range N, G (k+1) 0 * ((s ^ k / k.factorial : ℝ) : ℂ)` using `fun s => ih (fun k => G (k+1)) (fun k t => hG (k+1) t) hN s`. Establish `hm : ∀ (k : ℕ) (s : ℝ), HasDerivAt (fun s : ℝ => ((s ^ (k+1) / (k+1).factorial : ℝ) : ℂ)) ((s ^ k / k.factorial : ℝ) : ℂ) s`. Introduce `k s`. Establish `h` using `(hasDerivAt_pow (k+1) s).div_const ((k+1).factorial : ℝ)`. Establish `e : ((k+1 : ℕ) : ℝ) * s ^ (k + 1 - 1) / ((k+1).factorial : ℝ) = s ^ k / k.factorial`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.factorial_succ, Nat.add_sub_cancel, Nat.cast_mul]`. Establish `: ((k+1 : ℕ) : ℝ) ≠ 0` using `by positivity`. Establish `: ((k.factorial : ℕ) : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Rewrite `h` using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.ofReal_comp`. Establish `hH : ∀ s, HasDerivAt (fun s => G 0 s - ∑ k ∈ Finset.range N, G (k+1) 0 * ((s ^ (k+1) / (k+1).factorial : ℝ) : ℂ)) 0 s`. Introduce `s`. Establish `h2 : HasDerivAt (fun s : ℝ => ∑ k ∈ Finset.range N, G (k+1) 0 * ((s ^ (k+1) / (k+1).factorial : ℝ) : ℂ)) (G 1 s) s`. Rewrite using `[h1 s]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `HasDerivAt.fun_sum fun k _ => (hm k s).const_mul _`. Establish `h3` using `(hG 0 s).fun_sub h2`. Rewrite `h3` using `[zero_add, sub_self]`. Then use the resulting hypothesis. Establish `hc` using `is_const_of_deriv_eq_zero (fun s => (hH s).differentiableAt) (fun s => (hH s).deriv) t 0`. Rewrite using `[Finset.sum_range_succ']`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ne_eq, Nat.add_eq_zero_iff, one_ne_zero, and_false, not_false_eq_true, zero_pow, zero_div, Complex.ofReal_zero, mul_zero, Finset.sum_const_zero, sub_zero] at hc`. Rewrite using `[← hc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem taylor_of_chain (N : ℕ) : ∀ (G : ℕ → ℝ → ℂ) (_ : ∀ k t, HasDerivAt (G k) (G (k+1) t) t)
     (_ : G N = 0) (t : ℝ),
@@ -57,9 +57,9 @@ theorem taylor_of_chain (N : ℕ) : ∀ (G : ℕ → ℝ → ℂ) (_ : ∀ k t, 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /- English proof (translation)
-Establish `hk : (k : WithTop ℕ∞) < ∞` using `by exact_mod_cast ENat.coe_lt_top k`. Establish `hd` using `((hu.differentiable_iteratedFDeriv hk) (y + t • x)).hasFDerivAt`. Establish `hl : HasDerivAt (fun t : ℝ => y + t • x) x t`. Simplify using `using ((hasDerivAt_id t).smul_const x).const_add y`. Establish `h1` using `hd.comp_hasDerivAt t hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `(ContinuousMultilinearMap.apply ℝ (fun _ : Fin k => E) ℂ (fun _ => x)).hasFDerivAt.comp_hasDerivAt t h1`. Rewrite using `[iteratedFDeriv_succ_apply_left]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_iter {u : E → ℂ} (hu : ContDiff ℝ ∞ u) (k : ℕ) (y x : E) (t : ℝ) :
     HasDerivAt (fun t : ℝ => iteratedFDeriv ℝ k u (y + t • x) (fun _ => x))
@@ -75,9 +75,9 @@ theorem hasDerivAt_iter {u : E → ℂ} (hu : ContDiff ℝ ∞ u) (k : ℕ) (y x
   exact h2
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => funext y`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Rewrite using `[List.replicate_succ, List.foldr_cons, ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `y`. Use `(hasDerivAt_iter hu k y x 0).deriv` as an intermediate fact. Simplify using `using this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem foldr_replicate {u : E → ℂ} (hu : ContDiff ℝ ∞ u) (x : E) (k : ℕ) :
     (List.replicate k x).foldr
@@ -92,11 +92,11 @@ theorem foldr_replicate {u : E → ℂ} (hu : ContDiff ℝ ∞ u) (x : E) (k : �
     simpa using this
 
 /- English proof (translation)
-Use `⟨∑ r : Fin k → ι, MvPolynomial.C (M (fun j => Pi.single (r j) (1:ℝ))) * ∏ j, MvPolynomial.X (r j), ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `hx : (fun _ : Fin k => x) = fun _ => ∑ i, x i • (Pi.single i (1:ℝ) : ι → ℝ)`. Use function extensionality and compare the values at `_`. Use extensionality with `l`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Simplify using `[Pi.single_apply]`. Rewrite using `[hx, M.map_sum]`. Simplify using `only [map_sum, map_mul, MvPolynomial.eval_C, map_prod, MvPolynomial.eval_X]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[M.map_smul_univ (fun j => x (r j)) (fun j => Pi.single (r j) 1)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.real_smul, Complex.ofReal_prod, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem multilinear_diag_poly {ι : Type} [Fintype ι] [DecidableEq ι] {k : ℕ}
     (M : ContinuousMultilinearMap ℝ (fun _ : Fin k => ι → ℝ) ℂ) :
@@ -114,11 +114,11 @@ theorem multilinear_diag_poly {ι : Type} [Fintype ι] [DecidableEq ι] {k : ℕ
   rw [Complex.real_smul, Complex.ofReal_prod, mul_comm]
 
 /- English proof (translation)
-Introduce `ι _ _ N u hu hL`. Use `choose q hq using fun k => multilinear_diag_poly (iteratedFDeriv ℝ k u 0)`. Use `⟨∑ k ∈ Finset.range N, MvPolynomial.C ((k.factorial : ℂ)⁻¹) * q k, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `hrep` using `hL (List.replicate N x) List.length_replicate`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hrep` using `[foldr_replicate hu]`. Establish `key` using `taylor_of_chain N (fun k t => iteratedFDeriv ℝ k u (0 + t • x) (fun _ => x)) (fun k t => hasDerivAt_iter hu k 0 x t) (by funext t; exact congrFun hrep _) 1`. Simplify using `only [zero_add, one_smul, zero_smul, iteratedFDeriv_zero_apply, hq] at key`. Rewrite using `[key]`. Simplify using `only [map_sum, map_mul, MvPolynomial.eval_C]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_eval_of_dirDeriv_vanish : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ)
     (u : (ι → ℝ) → ℂ), ContDiff ℝ ∞ u →

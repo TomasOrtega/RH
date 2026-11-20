@@ -5,13 +5,13 @@ namespace GlobalTheory
 open Module
 
 /- English proof (translation)
-Use `set S := f.toLinearEquiv.toLinearMap ∘ₗ T ∘ₗ e.toLinearEquiv.toLinearMap with hS`. Establish `hadj : LinearMap.adjoint S = e.symm.toLinearEquiv.toLinearMap ∘ₗ LinearMap.adjoint T ∘ₗ f.symm.toLinearEquiv.toLinearMap`. Use `symm`. Rewrite using `[LinearMap.eq_adjoint_iff]`. Introduce `x y`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hS, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearIsometryEquiv.coe_toLinearEquiv]`. Rewrite using `[← LinearIsometryEquiv.inner_map_map e, LinearIsometryEquiv.apply_symm_apply, LinearMap.adjoint_inner_left, ← LinearIsometryEquiv.inner_map_map f.symm, LinearIsometryEquiv.symm_apply_apply]`. Establish `hA : LinearMap.adjoint S ∘ₗ S = e.symm.toLinearEquiv.conj (LinearMap.adjoint T ∘ₗ T)`. Rewrite using `[hadj]`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hS, LinearEquiv.conj_apply]`. Establish `hn : finrank ℂ E' = finrank ℂ E` using `e.toLinearEquiv.finrank_eq`. Use extensionality with `i`. Distinguish the cases in `hi : i < finrank ℂ E`. Rewrite using `[S.singularValues_of_lt hn hi, T.singularValues_of_lt rfl hi]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heig : S.isSymmetric_adjoint_comp_self.eigenvalues hn = T.isSymmetric_adjoint_comp_self.eigenvalues rfl`. Rewrite using `[LinearMap.IsSymmetric.eigenvalues_eq_eigenvalues_iff, hA, LinearEquiv.charpoly_conj]`. Rewrite using `[heig]`. Use `push_neg at hi`. Rewrite using `[S.singularValues_of_finrank_le (hn ▸ hi), T.singularValues_of_finrank_le hi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem singularValues_linearIsometryEquiv_comp {E E' F F' : Type}
     [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
@@ -47,7 +47,7 @@ theorem singularValues_linearIsometryEquiv_comp {E E' F F' : Type}
     rw [S.singularValues_of_finrank_le (hn ▸ hi), T.singularValues_of_finrank_le hi]
 
 /- English proof (translation)
-Use extensionality with `x i`. Simplify using `[Matrix.toEuclideanLin, LinearIsometryEquiv.piLpCongrLeft_apply, Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toEuclideanLin_submatrix (p q : ℕ) (ι κ : Type) [Fintype ι] [DecidableEq ι] [Fintype κ]
     [DecidableEq κ] (α : ι ≃ Fin p) (β : κ ≃ Fin q) (B : Matrix (Fin p) (Fin q) ℂ) :
@@ -59,7 +59,7 @@ theorem toEuclideanLin_submatrix (p q : ℕ) (ι κ : Type) [Fintype ι] [Decida
   simp [Matrix.toEuclideanLin, LinearIsometryEquiv.piLpCongrLeft_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Introduce `p q ι κ _ _ _ _ α β B`. Rewrite using `[toEuclideanLin_submatrix]`. Conclude with `singularValues_linearIsometryEquiv_comp _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem singularValues_submatrix : ∀ (p q : ℕ) (ι κ : Type) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (α : ι ≃ Fin p) (β : κ ≃ Fin q) (B : Matrix (Fin p) (Fin q) ℂ), (Matrix.toEuclideanLin (B.submatrix α β) : EuclideanSpace ℂ κ →ₗ[ℂ] EuclideanSpace ℂ ι).singularValues = (Matrix.toEuclideanLin B : EuclideanSpace ℂ (Fin q) →ₗ[ℂ] EuclideanSpace ℂ (Fin p)).singularValues := by
   intro p q ι κ _ _ _ _ α β B

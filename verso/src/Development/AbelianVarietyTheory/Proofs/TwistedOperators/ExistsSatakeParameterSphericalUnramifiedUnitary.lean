@@ -9,7 +9,7 @@ namespace GlobalTheory.LFun.ExSatU
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.UG GlobalTheory.PRep GlobalTheory.AdelicU GlobalTheory.LFun
 
 /- English proof (translation)
-Introduce `E _ _ w ϖ σ q n hU V _ _ ρ hi ha hs`. Take `⟨ho, hc⟩` from `GlobalTheory.T.isOpen_isCompact_unitaryIntegralPoints (w.adicCompletion E) ϖ σ q n hU`. Conclude with `GlobalTheory.LFun.SatCompare.exists_hasSatU hU ⟨ha.1, hi⟩ (ha.2 _ ho hc) hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_hasSatU : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (ϖ : w.adicCompletion E) (σ : w.adicCompletion E →+* w.adicCompletion E) (q n : ℕ),

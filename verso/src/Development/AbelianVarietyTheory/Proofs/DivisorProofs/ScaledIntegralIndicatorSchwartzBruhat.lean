@@ -17,19 +17,17 @@ open scoped Classical
 namespace GlobalTheory.EvAdm
 
 /- English proof (translation)
-Introduce `F _ _ κ _ a r ha`. Use `haveI : T2Space (FiniteAdeleRing (𝓞 F) F) := inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite))`. Use `set U : Set (κ → FiniteAdeleRing (𝓞 F) F) := (scaledInt F κ a : Set (κ → FiniteAdeleRing (𝓞 F) F)) with hU`. Establish `hUo : IsOpen U` using `isOpen_scaledInt a`. Establish `hUc : IsClosed U` using `AddSubgroup.isClosed_of_isOpen _ hUo`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : U ⊆ (fun z : κ → FiniteAdeleRing (𝓞 F) F => fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) a * z i) '' GlobalTheory.SchANonzero.intPts F κ`. Introduce `z hz`. Use `⟨fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) a⁻¹ * z i, fun i _ v => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `map_mul (evalV F v) (algebraMap F (FiniteAdeleRing (𝓞 F) F) a⁻¹) (z i)`. Rewrite `h1` using `[AlgHom.commutes, map_inv₀ (algebraMap F (v.adicCompletion F))]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show (algebraMap F (FiniteAdeleRing (𝓞 F) F) a⁻¹ * z i) v ∈ _`. Conclude with `h1 ▸ (mem_scaledInt.mp hz i v)`. Use function extensionality and compare the values at `i show algebraMap F (FiniteAdeleRing (𝓞 F) F) a * (algebraMap F (FiniteAdeleRing (𝓞 F) F) a⁻¹ * z i) = z i`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ ha, map_one, one_mul]`. Establish `hUk : IsCompact U` using `((GlobalTheory.SchANonzero.isCompact_intPts F κ).image (continuous_pi fun i => continuous_const.mul (continuous_apply i))).of_isClosed_subset hUc hsub`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S : Set (κ → FiniteAdeleRing (𝓞 F) F) := {y | y - r ∈ GlobalTheory.EvAdm.scaledInt F κ a} with hS`. Establish `hSe : S = (fun y => y - r) ⁻¹' U` using `rfl`. Establish `hcont : Continuous fun y : κ → FiniteAdeleRing (𝓞 F) F => y - r` using `continuous_id.sub continuous_const`. Establish `hSo : IsOpen S` using `hSe ▸ hUo.preimage hcont`. Establish `hSc : IsClosed S` using `hSe ▸ hUc.preimage hcont`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hSk : IsCompact S`. Establish `: S = (fun y => y + r) '' U`. Use extensionality with `y`. Simplify using `only [hSe, Set.mem_preimage, Set.mem_image]`. Conclude with `⟨fun h => ⟨y - r, h, sub_add_cancel y r⟩, fun ⟨x, hx, hxy⟩ => by rw [← hxy, add_sub_cancel_right]; exact hx⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[this]`. Conclude with `hUk.image (continuous_id.add continuous_const)`. Use `⟨?_, HasCompactSupport.intro' hSk hSc fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`.
-
-Distinguish the cases in `hx : x ∈ S`. Conclude with `⟨S, hSo, hx, fun y hy => by rw [Set.indicator_of_mem hy, Set.indicator_of_mem hx]⟩`. Conclude with `⟨Sᶜ, hSc.isOpen_compl, hx, fun y hy => by rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem indicator_sub_mem_scaledInt_mem_SB : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F)
     (r : κ → FiniteAdeleRing (𝓞 F) F), a ≠ 0 →

@@ -12,27 +12,25 @@ namespace GlobalTheory.SkewComplementSig
 open Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ r s i₀ i₁ W W₁ H hB hW hH w hL`. Take `⟨P, hP⟩` from `hL`. Use `set τ : E →+* ℂ := (B.emb w).1 with hτ`. Establish `hcm : ∀ z : E, τ (σ z) = star (τ z)` using `fun z => hB.cm.2.2.2 τ z`. Use `set J' : Matrix (Fin n) (Fin n) ℂ := W.J.map τ with hJ'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set X : Fin n → ℂ := fun i => τ (H.x i) with hX`. Use `set Y0 : Fin n → ℂ := fun i => τ (H.y i) with hY0`. Use `set ι' : Matrix (Fin n) (Fin n₁) ℂ := H.ι.map τ with hι'`. Establish `hform : ∀ a b : Fin n → E, τ (form σ W.J a b) = (fun i => τ (a i)) ⬝ᵥ J' *ᵥ star (fun i => τ (b i))`. Introduce `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hs : (star fun i => τ (b i)) = τ ∘ fun i => σ (b i)` using `by ext i; simp [hcm]`. Rewrite using `[hs, form, RingHom.map_dotProduct]`. Use `show (τ ∘ a) ⬝ᵥ _ = (τ ∘ a) ⬝ᵥ _`. Use `congr 1`. Use extensionality with `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `RingHom.map_mulVec τ W.J _ i`. Establish `hsm : ∀ u v : Fin n → ℂ, u ⬝ᵥ (Complex.I • J') *ᵥ v = Complex.I * (u ⬝ᵥ J' *ᵥ v)`. Introduce `u v`. Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`. Establish `hst : star (Complex.I • Y0) = (-Complex.I) • star Y0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_smul]`. Use `congr 1`. Simplify using `[Complex.star_def]`. Establish `hXX : X ⬝ᵥ (Complex.I • J') *ᵥ star X = 0`. Rewrite using `[hsm, ← hform, hH.xx, map_zero, mul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hYY : (Complex.I • Y0) ⬝ᵥ (Complex.I • J') *ᵥ star (Complex.I • Y0) = 0`. Rewrite using `[hsm, hst, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, ← hform, hH.yy]`. Simplify using the standard rewrite rules. Establish `hXY : X ⬝ᵥ (Complex.I • J') *ᵥ star (Complex.I • Y0) = 1`. Rewrite using `[hsm, hst, Matrix.mulVec_smul, dotProduct_smul, ← hform, hH.xy]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hMh : (Complex.I • J')ᴴ = Complex.I • J'`. Use extensionality with `i j`. Establish `h` using `hW.skew i j`. Establish `h2 : star (τ (W.J j i)) = - τ (W.J i j)` using `by rw [← hcm, h, map_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[conjTranspose_apply, hJ', h2, Complex.star_def]`. Establish `hιv : ∀ b : Fin n → E, (∀ u, form σ W.J (H.ι *ᵥ u) b = 0) → ι'ᵀ *ᵥ ((Complex.I • J') *ᵥ star (fun i => τ (b i))) = 0`. Introduce `b hb`. Use extensionality with `j`. Establish `h1` using `congrArg τ (hb (Pi.single j 1))`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_zero, hform, Matrix.mulVec_single_one]`. Rewrite using `[Matrix.smul_mulVec, Matrix.mulVec_smul, Pi.smul_apply, Pi.zero_apply, smul_eq_mul]`. Use `mul_zero Complex.I using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← h1]`. Simplify using `[Matrix.mulVec, hι', dotProduct]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hιX : ι'ᵀ *ᵥ ((Complex.I • J') *ᵥ star X) = 0` using `hιv H.x fun u => (hH.orth u).1`. Establish `hιY : ι'ᵀ *ᵥ ((Complex.I • J') *ᵥ star (Complex.I • Y0)) = 0`. Rewrite using `[hst, Matrix.mulVec_smul, Matrix.mulVec_smul, hιv H.y fun u => (hH.orth u).2, smul_zero]`. Establish `hPι : P * ι' = 1` using `hP`. Establish `hc` using `GlobalTheory.PlaneSig.hasSig_complement_plane n n₁ (Complex.I • J') X (Complex.I • Y0) ι' P r s hH.rank hMh hXX hYY hXY hιX hιY hPι (hW.sig w)`.
-
-Establish `hg : ι'ᵀ * (Complex.I • J') * ι'.map star = Complex.I • W₁.J.map τ`. Establish `hs : ι'.map star = (H.ι.map σ).map τ` using `by ext i j; simp [hι', hcm]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, hs, hι', hJ', ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hH.gram]`. Rewrite `hc` using `[hg]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hasSig_of_leftInverse : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d d₁ r' s' i₀ i₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁), B.IsGood σ → W.IsSkew σ B r' s' → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ w : InfinitePlace F,

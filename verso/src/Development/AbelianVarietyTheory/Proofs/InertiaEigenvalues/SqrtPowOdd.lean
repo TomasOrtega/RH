@@ -21,13 +21,13 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.ClassScalarIn
 
 /- English proof (translation)
-Introduce `v`. Establish `h` using `(GlobalTheory.MovedLat.isSelfDualC_hLat V g).2 v`. Rewrite using `[h]`. Use `forall_congr' fun w => imp_congr_right fun _ => ?_` and prove the remaining obligations. Simplify using `only [hg, Matrix.one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e : ∑ j, (IsCMField.complexConj D.host.E) (v j) * w j = IsCMField.complexConj D.host.E (∑ x, star (w x) * v x)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, show star (w x) = IsCMField.complexConj D.host.E (w x) from rfl, IsCMField.complexConj_apply_apply, mul_comm]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`. Conclude with `⟨(Formalism.L2.Pj.hostOfRecord D).bar b, by rw [← hb]; exact (Formalism.L2.Pj.hostOfRecord D).bar_eq b⟩`. Introduce and unpack `⟨b, hb⟩`. Use `⟨(Formalism.L2.Pj.hostOfRecord D).bar b, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(Formalism.L2.Pj.hostOfRecord D).bar_eq]`. Establish `hb' : ((b : 𝓞 D.host.E) : D.host.E) = IsCMField.complexConj D.host.E (∑ x, star (w x) * v x)` using `hb`. Rewrite using `[hb', IsCMField.complexConj_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem unimod_hLat {D : D7} (V : HSp D) (hg : V.gram = 1) (g : Bridge.Gf V) :
     (⟨Bridge.hLat V g⟩ : GenLat D.host.E V.rank).Unimod := by
@@ -53,7 +53,7 @@ theorem unimod_hLat {D : D7} (V : HSp D) (hg : V.gram = 1) (g : Bridge.Gf V) :
     rw [hb', IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[show (((N * k ^ 2 : ℕ) : ℝ)) ^ (2 * s + 1) = (((N ^ s * k ^ (2 * s + 1) : ℕ) : ℝ)) ^ 2 * N by push_cast; ring, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (Nat.cast_nonneg _)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem sqrt_pow_odd (N k s : ℕ) : Real.sqrt (((N * k ^ 2 : ℕ) : ℝ) ^ (2 * s + 1)) =
     ((N ^ s * k ^ (2 * s + 1) : ℕ) : ℝ) * Real.sqrt N := by
@@ -63,37 +63,33 @@ theorem sqrt_pow_odd (N k s : ℕ) : Real.sqrt (((N * k ^ 2 : ℕ) : ℝ) ^ (2 *
 end GlobalTheory.ClassScalarIn
 
 /- English proof (translation)
-Introduce `D V W B hB hstd χ hχ p bad O hp hpb hPl hO hval h Λ e' Ps y he hPs hsupp hy hΛ`. Establish `hg : V.gram = 1` using `hstd.1`. Establish `hL : Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank` using `SetLike.coe_injective ((GlobalTheory.Equiv.StdSpace.identityClassLattice_eq_selfDualFrameLattice V).trans (hstd.2.2.1.symm.trans hstd.2.2.2.2))`. Take `⟨hu, hr⟩` from `GlobalTheory.T.character_unramified_off_bad D V W B hB χ hχ bad hPl`. Take `⟨cc, c0, c1, c2, c3, c4⟩` from `GlobalTheory.ClassScalarValue.exists_ideal V hg hL h e' Ps y he hsupp hy bad hPs (B.mu * 1 * B.eta⁻¹) χ (by rwa [mul_one]) hu hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set L := Bridge.hLat V (finPt V h) with hLdef`. Set `H` to `Formalism.L2.Pj.hostOfRecord D`. Establish `hbar : (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = (GlobalTheory.IdemSupport.cO D : 𝓞 D.host.E →+* 𝓞 D.host.E)` using `RingHom.ext fun a => RingOfIntegers.ext (H.bar_eq a)`. Take `⟨m, m0, m1, m2, m3⟩` from `GlobalTheory.T.exists_elem_stdLattice_sandwich_splitSupport D V hg hL h e' Ps bad he hPs hsupp`. Establish `hS : GenLat.SplitSupp H (⟨L⟩ : GenLat D.host.E V.rank)` using `⟨m, m0, m1, m2, fun P hP hm => by rw [hbar]; exact (m3 P hP hm).1⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `GlobalTheory.ClassScalarIn.unimod_hLat V hg (finPt V h)`. Take `⟨k, k0, hk⟩` from `GlobalTheory.LawOfSquares.index_eq H L cc hU hS (by show cc ⊔ cc.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = ⊤; rw [hbar]; exact c1) (by show Submodule.span _ (detSet L) * idlE (cc.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)) = idlE cc`. Rewrite using `[hbar]`. Conclude with `c3)`. Establish `hΛL : Λ = GlobalTheory.ClassScalarCompare.conjLat L`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `Λ with`. Consider the case `mk La`. Use `congr 1`. Use extensionality with `v`. Conclude with `(hΛ v).trans GlobalTheory.ClassScalarCompare.mem_conjLat.symm`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hidx : ((Λ.La ⊓ Formalism.L2.Pj.stdLat D.host.E V.rank).toAddSubgroup.addSubgroupOf Λ.La.toAddSubgroup).index = Ideal.absNorm cc * k ^ 2`. Use `GlobalTheory.ClassScalarCompare.stdIndex_conjLat L` as an intermediate fact. Rewrite `this` using `[← hΛL]`. Conclude with `this.trans hk`. Establish `hmp : ∃ a b : 𝓞 D.host.E, a * m + b * (p : 𝓞 D.host.E) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htop : Ideal.span {m, (p : 𝓞 D.host.E)} = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hm : m ∈ P` using `hle (Ideal.subset_span (Set.mem_insert _ _))`. Establish `hpP : (p : 𝓞 D.host.E) ∈ P` using `hle (Ideal.subset_span (Set.mem_insert_of_mem _ rfl))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(m3 P hP.isPrime hm).2 ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `hpb`. Rewrite using `[ht, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hpP`. Take `⟨a, b, hab⟩` from `Ideal.mem_span_pair.1 (htop ▸ Submodule.mem_top : (1 : 𝓞 D.host.E) ∈ Ideal.span {m, (p : 𝓞 D.host.E)})`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `⟨a, b, hab⟩`. Establish `hcop : Nat.Coprime (Ideal.absNorm cc * k ^ 2) p`. Take `⟨a, b, hab⟩` from `hmp`. Establish `h0 : Ideal.absNorm cc * k ^ 2 ≠ 0` using `mul_ne_zero (fun h0 => c0 (Ideal.absNorm_eq_zero_iff.1 h0)) (pow_ne_zero _ k0)`. Rewrite `h0`, the goal using `[← hk]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := Fact.mk hp`. Use `haveI : Finite (L.toAddSubgroup ⧸ (L ⊓ Formalism.L2.Pj.stdLat D.host.E V.rank).toAddSubgroup.addSubgroupOf L.toAddSubgroup) := Nat.finite_of_card_ne_zero h0`. Use `((Nat.Prime.coprime_iff_not_dvd hp).2 fun hd => ?_).symm` and prove the remaining obligations. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' p hd`. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpy : p • (QuotientAddGroup.mk y : L.toAddSubgroup ⧸ (L ⊓ Formalism.L2.Pj.stdLat D.host.E V.rank).toAddSubgroup.addSubgroupOf L.toAddSubgroup) = 0`. Rewrite using `[← hx]`. Conclude with `addOrderOf_nsmul_eq_zero _`. Rewrite `hpy` using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`. Establish `h1 : ((p • y : L.toAddSubgroup) : Fin V.rank → D.host.E) ∈ Formalism.L2.Pj.stdLat D.host.E V.rank` using `(AddSubgroup.mem_addSubgroupOf.1 hpy).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (m • (y : Fin V.rank → D.host.E)) ∈ Formalism.L2.Pj.stdLat D.host.E V.rank` using `m1 (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self m) y.2)`. Establish `h3 : (y : Fin V.rank → D.host.E) ∈ Formalism.L2.Pj.stdLat D.host.E V.rank`. Establish `e : (y : Fin V.rank → D.host.E) = a • (m • (y : Fin V.rank → D.host.E)) + b • ((p • y : L.toAddSubgroup) : Fin V.rank → D.host.E)`. Rewrite using `[AddSubgroupClass.coe_nsmul, ← Nat.cast_smul_eq_nsmul (𝓞 D.host.E), smul_smul, smul_smul, ← add_smul, hab, one_smul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `add_mem (Submodule.smul_mem _ _ h2) (Submodule.smul_mem _ _ h1)`. Establish `h4 : (QuotientAddGroup.mk y : L.toAddSubgroup ⧸ (L ⊓ Formalism.L2.Pj.stdLat D.host.E V.rank).toAddSubgroup.addSubgroupOf L.toAddSubgroup) = 0` using `(QuotientAddGroup.eq_zero_iff _).2 (AddSubgroup.mem_addSubgroupOf.2 ⟨y.2, h3⟩)`. Rewrite `hx` using `[h4, addOrderOf_zero]`. Conclude with `hp.one_lt.ne hx`. Establish `hNcop : Nat.Coprime (Ideal.absNorm cc) p` using `Nat.Coprime.coprime_dvd_left (dvd_mul_right _ _) hcop`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hkcop : Nat.Coprime k p` using `(Nat.coprime_pow_left_iff two_pos _ _).1 (Nat.Coprime.coprime_dvd_left (dvd_mul_left _ _) hcop)`. Establish `hv` using `GlobalTheory.T.heckeChar_onId_mul_sqrt_absNorm_inv_mem_subring D.host.E χ O cc c0 fun P hP => by`. Establish `hb : ((bad : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `fun hb => P.isPrime.ne_top (eq_top_iff.2 (c2 ▸ sup_le hP ((Ideal.span_singleton_le_iff_mem _).2 hb)))`. Establish `hc : GlobalTheory.IdemSupport.cP P ≠ P` using `fun hc => by`. Use `P.isPrime.ne_top (eq_top_iff.2 (c1 ▸ sup_le hP ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Establish `h1 : x ∈ P.asIdeal` using `hP hx`. Rewrite `h1` using `[← hc]`. Conclude with `Ideal.mem_comap.2 ((GlobalTheory.IdemSupport.mem_cP P x).1 h1)`.
-
-Conclude with `(hval P hb hc).2`. Take `⟨s, hs⟩` from `hB.odd`. Establish `hq : ((((Ideal.absNorm cc) ^ s * k ^ (2 * s + 1) : ℕ) : ℂ))⁻¹ ∈ O` using `hO _ (Nat.Coprime.mul (hNcop.pow_left _) (hkcop.pow_left _))`. Unfold `clsScal`. Rewrite using `[hidx, hs, GlobalTheory.ClassScalarIn.sqrt_pow_odd, c4]`.
-
-Use `O.mul_mem hv hq using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Rewrite using `[mul_inv, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SingleDatum.clsScal_mem : ∀ (D : D7) (V W : HSp D) (B : Base V W), B.Good → StdBase B → ∀ χ : Formalism.L2.Host.HChar D.host.E, ChrEq (B.mu * B.eta⁻¹) χ → ∀ (p bad : ℕ) (O : Subring ℂ), p.Prime → p ∣ bad → (∀ PP, PP ∈ B.G.Pg ∨ PP ∈ B.de.Q → (bad : 𝓞 D.host.E) ∈ PP.asIdeal) → (∀ k : ℕ, Nat.Coprime k p → (k : ℂ)⁻¹ ∈ O) → (∀ P : HeightOneSpectrum (𝓞 D.host.E), (bad : 𝓞 D.host.E) ∉ P.asIdeal → GlobalTheory.IdemSupport.cP P ≠ P → ((χ.val P : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm P.asIdeal) : ℝ) : ℂ) ∈ O ∧ (((χ.val P : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm P.asIdeal) : ℝ) : ℂ))⁻¹ ∈ O) → ∀ (h : GA D V) (Λ : GenLat D.host.E V.rank) (e' : AE D) (Ps : Finset (Formalism.L2.DIV.Pl D.host.E)) (y : (AE D)ˣ), IsIdemSum e' Ps → (∀ PP ∈ Ps, ((bad : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → SuppAt e' V h → IsDetAt e' V h y → (∀ v, v ∈ Λ.La ↔ (fun j => star (v j)) ∈ Bridge.hLat V (finPt V h)) → clsScal (B.mu * 1 * B.eta⁻¹) y Λ W.rank ∈ O := by
   intro D V W B hB hstd χ hχ p bad O hp hpb hPl hO hval h Λ e' Ps y he hPs hsupp hy hΛ

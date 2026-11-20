@@ -35,7 +35,7 @@ def pullbackIndex (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `pullbackOverFieldIndex_val T Y k' q g j`.
+A detailed English derivation is pending.
 -/
 theorem pullbackIndex_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme) (j : Fin T.boundary.length) :
@@ -49,7 +49,7 @@ def pullbackIndexSymm (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : T
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem pullbackIndexSymm_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -59,7 +59,7 @@ theorem pullbackIndexSymm_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
 
 @[simp]
 /- English proof (translation)
-Apply `Fin.val_injective` to reduce the goal to its premises. Rewrite using `[pullbackIndexSymm_val, pullbackIndex_val]`. Use the proof step `@[simp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullbackIndexSymm_pullbackIndex (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme) (j : Fin T.boundary.length) :
@@ -69,7 +69,7 @@ theorem pullbackIndexSymm_pullbackIndex (T : MarkedIdealWithBoundary.{u}) (Y : S
 
 @[simp]
 /- English proof (translation)
-Apply `Fin.val_injective` to reduce the goal to its premises. Rewrite using `[pullbackIndex_val, pullbackIndexSymm_val]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullbackIndex_pullbackIndexSymm (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -85,7 +85,7 @@ def pullbackAlongIndex (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
 
 @[simp]
 /- English proof (translation)
-The claim follows from `EmbeddedResolution.pullbackAlongIndex_val T Y q g j`.
+A detailed English derivation is pending.
 -/
 theorem pullbackAlongIndex_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (g : Y ⟶ T.scheme) (j : Fin T.boundary.length) :
@@ -118,7 +118,7 @@ structure IsComponentCompatiblePullback (T : MarkedIdealWithBoundary.{u}) (Y : S
   orderAtComap : ∀ (I : T.scheme.IdealSheafData) (y : ↥Y), orderAt (I.comap g) y = orderAt I (g y)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem centerInvariant_le_iff {Y Y' : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ) (L : List Y.IdealSheafData)
     (I' : Y'.IdealSheafData) (m' : ℕ) (L' : List Y'.IdealSheafData) :
@@ -129,19 +129,19 @@ theorem centerInvariant_le_iff {Y Y' : Scheme.{u}} (I : Y.IdealSheafData) (m : �
   Iff.rfl
 
 /- English proof (translation)
-Take `⟨J', C', hcard', hmem', hord'⟩` from `exists_isCandidateComponent_minIndexCard (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary h0`. Establish `hinj : Function.Injective (pullbackIndexSymm T Y k' q g)`. Introduce `a b hab`. Apply `Fin.val_injective` to reduce the goal to its premises. Establish `h` using `congrArg (fun z : Fin T.boundary.length => (z : ℕ)) hab`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hJ : Finset.image (pullbackIndex T Y k' q g) (Finset.image (pullbackIndexSymm T Y k' q g) J') = J'`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 ha`. Rewrite using `[pullbackIndex_pullbackIndexSymm]` and apply the resulting hypothesis. Introduce `hx`. Conclude with `Finset.mem_image.2 ⟨pullbackIndexSymm T Y k' q g x, Finset.mem_image.2 ⟨x, hx, rfl⟩, pullbackIndex_pullbackIndexSymm T Y k' q g x⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC, -, hgen⟩` from `hP.componentsDown (Finset.image (pullbackIndexSymm T Y k' q g) J') C' (by rw [hJ]; exact hmem')`. Establish `h4 : g (isIrreducible_of_mem_intersectionComponents hmem').genericPoint = (isIrreducible_of_mem_intersectionComponents hC).genericPoint` using `hgen _ _ (isGenericPoint_genericPoint_of_mem_intersectionComponents hmem') (isGenericPoint_genericPoint_of_mem_intersectionComponents hC)`. Establish `heq : orderAlong (T.pullbackOverField Y k' q g).ideal C' = orderAlong T.ideal C`. Establish `e1 : orderAlong (T.pullbackOverField Y k' q g).ideal C' = orderAt (T.pullbackOverField Y k' q g).ideal (isIrreducible_of_mem_intersectionComponents hmem').genericPoint` using `orderAlong_eq_orderAt_of_mem_intersectionComponents _ hmem'`. Establish `e2 : orderAt (T.pullbackOverField Y k' q g).ideal (isIrreducible_of_mem_intersectionComponents hmem').genericPoint = orderAt T.ideal (g (isIrreducible_of_mem_intersectionComponents hmem').genericPoint)` using `hP.orderAtComap T.ideal _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : orderAlong T.ideal C = orderAt T.ideal (isIrreducible_of_mem_intersectionComponents hC).genericPoint` using `orderAlong_eq_orderAt_of_mem_intersectionComponents _ hC`. Rewrite using `[e1, e2, h4, e3]`. Establish `hord2 : (T.mult : ℕ∞) ≤ orderAlong T.ideal C`. Establish `hx : (T.mult : ℕ∞) ≤ orderAlong (T.pullbackOverField Y k' q g).ideal C'` using `hord'`. Rewrite `hx` using `[heq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx`. Establish `hcardJ : (Finset.image (pullbackIndexSymm T Y k' q g) J').card = J'.card` using `Finset.card_image_of_injective J' hinj`. Establish `hcand : IsCandidateComponent T.ideal T.mult T.boundary (minIndexCard (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary) (Finset.image (pullbackIndexSymm T Y k' q g) J') C` using `⟨hcardJ.trans hcard', hC, hord2⟩`. Establish `hone : 1 ≤ minIndexCard (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary` using `Nat.pos_of_ne_zero h0`. Establish `hex : ∃ r : ℕ, 1 ≤ r ∧ ∃ (J : Finset (Fin T.boundary.length)) (C : Set ↥T.scheme), IsCandidateComponent T.ideal T.mult T.boundary r J C` using `⟨minIndexCard (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary, hone, Finset.image (pullbackIndexSymm T Y k' q g) J', C, hcand⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hspec` using `minIndexCard_spec T.ideal T.mult T.boundary hex`. Use `⟨?_, hspec.2.2 _ hone _ _ hcand⟩` and prove the remaining obligations. Establish `h1` using `hspec.1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem minIndexCard_ne_zero_and_le_pullbackOverField (_hGeom : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -217,23 +217,19 @@ theorem minIndexCard_ne_zero_and_le_pullbackOverField (_hGeom : MonomialGeometry
   omega
 
 /- English proof (translation)
-Establish `h0' : minIndexCard (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary ≠ 0`. Rewrite using `[hmin]`. Conclude with `h0`. Take `⟨J', C', hcand', hord'⟩` from `(maxCandidateOrder_spec hGeom hT' h0').1`. Establish `hcandSplit : J'.card = minIndexCard (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary ∧ C' ∈ intersectionComponents (T.pullbackOverField Y k' q g).boundary J' ∧ ((T.pullbackOverField Y k' q g).mult : ℕ∞) ≤ orderAlong …` using `hcand'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hcard', hmemC', hmult'⟩` from `hcandSplit`. Establish `hback_inj : Function.Injective (pullbackIndexSymm T Y k' q g)`. Introduce `a b hab`. Apply `Fin.val_injective` to reduce the goal to its premises. Establish `h` using `congrArg Fin.val hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[pullbackIndexSymm_val, pullbackIndexSymm_val]`. Then use the resulting hypothesis. Establish `himg : Finset.image (pullbackIndex T Y k' q g) (Finset.image (pullbackIndexSymm T Y k' q g) J') = J'`. Apply `Finset.ext` to reduce the goal to its premises. Introduce `j`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hj`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hj`. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 ha`. Rewrite using `[pullbackIndex_pullbackIndexSymm]`. Conclude with `hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hj`. Conclude with `Finset.mem_image.2 ⟨pullbackIndexSymm T Y k' q g j, Finset.mem_image.2 ⟨j, hj, rfl⟩, pullbackIndex_pullbackIndexSymm T Y k' q g j⟩`. Establish `hmem : C' ∈ intersectionComponents (T.pullbackOverField Y k' q g).boundary (Finset.image (pullbackIndex T Y k' q g) (Finset.image (pullbackIndexSymm T Y k' q g) J'))`. Rewrite using `[himg]`. Conclude with `hmemC'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨C, hC, _hmaps, hgen⟩` from `hP.componentsDown (Finset.image (pullbackIndexSymm T Y k' q g) J') C' hmem`. Establish `hg : g (isIrreducible_of_mem_intersectionComponents hmemC').genericPoint = (isIrreducible_of_mem_intersectionComponents hC).genericPoint` using `hgen _ _ (isGenericPoint_genericPoint_of_mem_intersectionComponents hmemC') (isGenericPoint_genericPoint_of_mem_intersectionComponents hC)`. Establish `hord : orderAlong (T.pullbackOverField Y k' q g).ideal C' = orderAlong T.ideal C`. Rewrite using `[orderAlong_eq_orderAt_of_mem_intersectionComponents (T.pullbackOverField Y k' q g).ideal hmemC', orderAlong_eq_orderAt_of_mem_intersectionComponents T.ideal hC, ← hg]`. Conclude with `hP.orderAtComap T.ideal (isIrreducible_of_mem_intersectionComponents hmemC').genericPoint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcardJ : (Finset.image (pullbackIndexSymm T Y k' q g) J').card = minIndexCard T.ideal T.mult T.boundary`. Rewrite using `[Finset.card_image_of_injective _ hback_inj, hcard']`. Conclude with `hmin`. Establish `hmultC : (T.mult : ℕ∞) ≤ orderAlong T.ideal C`. Establish `hb` using `hmult'`.
-
-Rewrite `hb` using `[hord]`. Conclude with `hb`. Establish `hcandT : IsCandidateComponent T.ideal T.mult T.boundary (minIndexCard T.ideal T.mult T.boundary) (Finset.image (pullbackIndexSymm T Y k' q g) J') C` using `And.intro hcardJ (And.intro hC hmultC)`. Establish `hmaxOrd` using `(maxCandidateOrder_spec hGeom hT h0).2.1 _ _ hcandT`. Rewrite using `[← hord', hord]`.
-
-Conclude with `hmaxOrd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maxCandidateOrder_le_of_minIndexCard_eq (hGeom : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -305,7 +301,7 @@ theorem maxCandidateOrder_le_of_minIndexCard_eq (hGeom : MonomialGeometryHypothe
   exact hmaxOrd
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem centerInvariant_lt_iff_lex {Y Y' : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (I' : Y'.IdealSheafData) (m' : ℕ)
@@ -320,7 +316,7 @@ private theorem centerInvariant_lt_iff_lex {Y Y' : Scheme.{u}} (I : Y.IdealSheaf
   Iff.rfl
 
 /- English proof (translation)
-Introduce `a b h`. Apply `Fin.val_injective` to reduce the goal to its premises. Rewrite using `[← pullbackIndexSymm_val T Y k' q g a, ← pullbackIndexSymm_val T Y k' q g b, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pullbackIndexSymm_injective (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme) :
@@ -330,7 +326,7 @@ private theorem pullbackIndexSymm_injective (T : MarkedIdealWithBoundary.{u}) (Y
   rw [← pullbackIndexSymm_val T Y k' q g a, ← pullbackIndexSymm_val T Y k' q g b, h]
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h : (a : ℕ) < (b : ℕ)` using `Fin.lt_def.mp hab`. Rewrite using `[Fin.lt_def, pullbackIndex_val, pullbackIndex_val]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pullbackIndex_strictMono (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme) :
@@ -341,7 +337,7 @@ private theorem pullbackIndex_strictMono (T : MarkedIdealWithBoundary.{u}) (Y : 
   exact h
 
 /- English proof (translation)
-Rewrite using `[sortedIndices_image_of_strictMono (pullbackIndex T Y k' q g) (pullbackIndex_strictMono T Y k' q g) J]`. Simplify using `only [pullbackIndex_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem sortedIndices_image_pullbackIndex (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -353,7 +349,7 @@ private theorem sortedIndices_image_pullbackIndex (T : MarkedIdealWithBoundary.{
   rfl
 
 /- English proof (translation)
-Establish `h1` using `orderAlong_eq_orderAt_of_mem_intersectionComponents (T.pullbackOverField Y k' q g).ideal hC'`. Establish `h2` using `orderAlong_eq_orderAt_of_mem_intersectionComponents T.ideal hC`. Establish `hg` using `hgen (isIrreducible_of_mem_intersectionComponents hC').genericPoint (isIrreducible_of_mem_intersectionComponents hC).genericPoint (isGenericPoint_genericPoint_of_mem_intersectionComponents hC') (isGenericPoint_genericPoint_of_mem_intersectionComponents hC)`. Establish `h3` using `hP.orderAtComap T.ideal (isIrreducible_of_mem_intersectionComponents hC').genericPoint`. Conclude with `h1.trans (h3.trans ((congrArg (orderAt T.ideal) hg).trans h2.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem orderAlong_pullbackOverField_eq_orderAlong (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -374,25 +370,23 @@ private theorem orderAlong_pullbackOverField_eq_orderAlong (T : MarkedIdealWithB
   exact h1.trans (h3.trans ((congrArg (orderAt T.ideal) hg).trans h2.symm))
 
 /- English proof (translation)
-Distinguish the cases in `h0' : minIndexCard (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary = 0`. Conclude with `Or.inl h0'`. Use `Or.inr ?_` and prove the remaining obligations. Take `⟨h0, hle⟩` from `minIndexCard_ne_zero_and_le_pullbackOverField hGeom T Y k' q g hT hT' hP h0'`. Rewrite using `[centerInvariant_le_iff, centerInvariant_lt_iff_lex]`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_eq_of_le hle with hlt | heq` into its components or cases. Conclude with `Or.inl (Or.inl hlt)`. Establish `hmaxle` using `maxCandidateOrder_le_of_minIndexCard_eq hGeom T Y k' q g hT hT' hP heq.symm h0`. Break down `lt_or_eq_of_le hmaxle with hmlt | hmeq` into its components or cases. Conclude with `Or.inl (Or.inr ⟨heq, Or.inl hmlt⟩)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Establish `hoptT` using `lexMaxIndices_spec hGeom hT h0`. Establish `hoptT'` using `lexMaxIndices_spec hGeom hT' h0'`. Establish `hbest' : ∃ C : Set ↥Y, IsCandidateComponent (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary (minIndexCard (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).bound …` using `And.left hoptT'`. Take `⟨C', hcand', hordC'⟩` from `hbest'`. Establish `hmemC' : C' ∈ intersectionComponents (T.pullbackOverField Y k' q g).boundary (lexMaxIndices (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary)` using `And.left (And.right hcand')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmultC' : ((T.pullbackOverField Y k' q g).mult : ℕ∞) ≤ orderAlong (T.pullbackOverField Y k' q g).ideal C'` using `And.right (And.right hcand')`. Establish `hex : ∃ B : Finset (Fin T.boundary.length), Finset.image (pullbackIndex T Y k' q g) B = lexMaxIndices (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary ∧ B.card = (lexMaxIndices (T.pullbackOverField Y k' q g).ideal (T …`. Use `⟨Finset.image (pullbackIndexSymm T Y k' q g) (lexMaxIndices (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.image_image]`. Establish `hcomp : (pullbackIndex T Y k' q g) ∘ (pullbackIndexSymm T Y k' q g) = id`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `(pullbackIndex_pullbackIndexSymm T Y k' q g)`. Rewrite using `[hcomp, Finset.image_id]`. Conclude with `Finset.card_image_of_injective _ (pullbackIndexSymm_injective T Y k' q g)`. Take `⟨B, hBim, hBcard⟩` from `hex`. Establish `hmemB : C' ∈ intersectionComponents (T.pullbackOverField Y k' q g).boundary (Finset.image (pullbackIndex T Y k' q g) B)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBim]`. Conclude with `hmemC'`. Take `⟨C, hC, -, hgenericPt⟩` from `hP.componentsDown B C' hmemB`. Establish `hordEq : orderAlong (T.pullbackOverField Y k' q g).ideal C' = orderAlong T.ideal C` using `orderAlong_pullbackOverField_eq_orderAlong T Y k' q g hP B C' C hmemB hC hgenericPt`. Establish `hcardB : B.card = minIndexCard T.ideal T.mult T.boundary`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hBcard, card_lexMaxIndices hGeom hT' h0']`. Conclude with `heq.symm`. Establish `hmultC : (T.mult : ℕ∞) ≤ orderAlong T.ideal C`. Rewrite using `[← hordEq]`. Conclude with `hmultC'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmaxC : orderAlong T.ideal C = maxCandidateOrder T.ideal T.mult T.boundary`. Rewrite using `[← hordEq, hordC']`. Conclude with `hmeq`. Establish `hbestB : IsMaxOrderIndexSet T.ideal T.mult T.boundary B` using `Exists.intro C (And.intro (And.intro hcardB (And.intro hC hmultC)) hmaxC)`. Establish `hnotlex` using `And.right hoptT B hbestB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Establish `hsp : sortedIndices (lexMaxIndices (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary) = sortedIndices B`. Rewrite using `[← hBim]`. Conclude with `sortedIndices_image_pullbackIndex T Y k' q g B`. Break down `trichotomous_of (List.Lex (· < ·)) (sortedIndices (lexMaxIndices T.ideal T.mult T.boundary)) (sortedIndices (lexMaxIndices (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary)) with hlex | hlexeq | hlex` into its components or cases. Conclude with `Or.inl (Or.inr ⟨heq, Or.inr ⟨hmeq.symm, hlex⟩⟩)`.
-
-Conclude with `Or.inr ⟨heq, hmeq.symm, hlexeq⟩`. Rewrite `hlex` using `[hsp]`. Conclude with `absurd hlex hnotlex`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minIndexCard_pullbackOverField_eq_zero_or_centerInvariant_le (hGeom : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -483,15 +477,13 @@ theorem minIndexCard_pullbackOverField_eq_zero_or_centerInvariant_le (hGeom : Mo
     exact absurd hlex hnotlex
 
 /- English proof (translation)
-Apply `Finset.ext` to reduce the goal to its premises. Introduce `j'`. Prove the components needed by the constructor for the conclusion. Introduce `hj'`. Establish `hmem : ((j' : ℕ)) ∈ sortedIndices (lexMaxIndices (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary)` using `(mem_sortedIndices _ _).2 ⟨j', hj', rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hmem` using `[← h]`. Take `⟨j, hj, hval⟩` from `(mem_sortedIndices _ _).1 hmem`. Use `Finset.mem_image.2 ⟨j, hj, ?_⟩` and prove the remaining obligations. Apply `Fin.val_injective` to reduce the goal to its premises. Rewrite using `[pullbackIndex_val]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hval`. Introduce `hj'`. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.1 hj'`. Establish `hmem : ((j : ℕ)) ∈ sortedIndices (lexMaxIndices T.ideal T.mult T.boundary)` using `(mem_sortedIndices _ _).2 ⟨j, hj, rfl⟩`. Rewrite `hmem` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j2, hj2, hval⟩` from `(mem_sortedIndices _ _).1 hmem`. Establish `hj2eq : j2 = pullbackIndex T Y k' q g j`. Apply `Fin.val_injective` to reduce the goal to its premises. Rewrite using `[pullbackIndex_val]`. Conclude with `hval`.
-
-Rewrite `hj2` using `[hj2eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lexMaxIndices_pullbackOverField_eq_image (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -527,7 +519,7 @@ theorem lexMaxIndices_pullbackOverField_eq_image (T : MarkedIdealWithBoundary.{u
     rwa [hj2eq] at hj2
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Substitute `h𝒞` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem componentUnionIdeal_congr {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J J' : Finset (Fin L.length)) (𝒞 𝒞' : Set (Set ↥Y)) (hJ : J = J') (h𝒞 : 𝒞 = 𝒞')
@@ -539,23 +531,19 @@ private theorem componentUnionIdeal_congr {Y : Scheme.{u}} (L : List Y.IdealShea
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h0 : minIndexCard T.ideal T.mult T.boundary = 0`. Establish `h0' : minIndexCard (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary = 0` using `by rw [hmin]; exact h0`. Rewrite using `[monomialCenter_eq_top_of_minIndexCard_eq_zero _ _ _ h0']`. Rewrite using `[monomialCenter_eq_top_of_minIndexCard_eq_zero _ _ _ h0]`. Conclude with `(Scheme.IdealSheafData.comap_top g).symm`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0' : minIndexCard (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary ≠ 0` using `by rw [hmin]; exact h0`. Take `⟨hop', heq⟩` from `hP.comapCenter (lexMaxIndices T.ideal T.mult T.boundary) (centerComponents T.ideal T.mult T.boundary) (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary) (isOpen_preimage_sUnion_centerComponents hGeom hT)`. Establish `hSet : centerComponents (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary = {C' | C' ∈ intersectionComponents (T.pullbackOverField Y k' q g).boundary (Finset.image (pullbackIndex T Y k' q g) (lexMaxIndices T.ideal T.m …`. Use extensionality with `C'`. Simplify using `only [Set.mem_ofPred_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hmem`. Take `⟨hcand, hordC'⟩` from `(mem_centerComponents_iff _ _ _ C').1 hmem`. Take `⟨hcardJ', hmemC', hmultC'⟩` from `hcand`. Rewrite `hmemC'` using `[hch]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hmemC', ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hmaps, hgen⟩` from `hP.componentsDown (lexMaxIndices T.ideal T.mult T.boundary) C' hmemC'`. Establish `hord : orderAlong (T.pullbackOverField Y k' q g).ideal C' = orderAlong T.ideal C` using `orderAlong_pullbackOverField_eq_orderAlong T Y k' q g hP (lexMaxIndices T.ideal T.mult T.boundary) C' C hmemC' hC hgen`. Use `⟨C, (mem_centerComponents_iff _ _ _ C).2 ⟨⟨card_lexMaxIndices hGeom hT h0, hC, ?_⟩, ?_⟩, hmaps⟩` and prove the remaining obligations. Rewrite using `[← hord]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmultC'`. Rewrite using `[← hord, hordC']`. Conclude with `hmax`. Introduce and unpack `⟨hmemC', C, hCopt, hmaps⟩`. Take `⟨hcandC, hordC⟩` from `(mem_centerComponents_iff _ _ _ C).1 hCopt`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hcardJ, hCmem, hmultC⟩` from `hcandC`. Take `⟨C₀, hC₀, hmaps₀, hgen⟩` from `hP.componentsDown (lexMaxIndices T.ideal T.mult T.boundary) C' hmemC'`. Take `⟨x, hx⟩` from `(isIrreducible_of_mem_intersectionComponents hmemC').nonempty`. Establish `hCC₀ : C₀ = C`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.disjoint_left.1 (hGeom.components_disjoint T hT.valid _ C₀ hC₀ C hCmem hne) (hmaps₀ hx) (hmaps hx)`. Establish `hord : orderAlong (T.pullbackOverField Y k' q g).ideal C' = orderAlong T.ideal C₀` using `orderAlong_pullbackOverField_eq_orderAlong T Y k' q g hP (lexMaxIndices T.ideal T.mult T.boundary) C' C₀ hmemC' hC₀ hgen`. Use `(mem_centerComponents_iff _ _ _ C').2 ⟨⟨card_lexMaxIndices hGeom hT' h0', ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hch]`. Conclude with `hmemC'`.
-
-Rewrite using `[hord, hCC₀]`. Conclude with `hmultC`. Rewrite using `[hord, hCC₀, hordC]`. Conclude with `hmax.symm`. Rewrite using `[monomialCenter_eq_componentUnionIdeal hGeom hT' h0', monomialCenter_eq_componentUnionIdeal hGeom hT h0, heq]`.
-
-Conclude with `componentUnionIdeal_congr _ _ _ _ _ hch hSet _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomialCenter_pullbackOverField_eq_comap (hGeom : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -634,23 +622,21 @@ theorem monomialCenter_pullbackOverField_eq_comap (hGeom : MonomialGeometryHypot
     exact componentUnionIdeal_congr _ _ _ _ _ hch hSet _ _
 
 /- English proof (translation)
-Use `Blowup.comap_eq_top_of_notMem_support g (monomialCenter T.ideal T.mult T.boundary) ?_` and prove the remaining obligations. Introduce `y hy`. Establish `hmem : g y ∈ monomialCenterSet T.ideal T.mult T.boundary`. Rewrite using `[← support_monomialCenter hGeom hT h0]`. Conclude with `hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[monomialCenterSet_eq_sUnion_centerComponents, Set.mem_sUnion]`. Take `⟨C, hCopt, hgyC⟩` from `hmem`. Take `⟨hcandC, hordC⟩` from `(mem_centerComponents_iff T.ideal T.mult T.boundary C).1 hCopt`. Take `⟨-, hmemC, hmultC⟩` from `hcandC`. Take `⟨C', hC'mem, -, hgen⟩` from `hP.componentsUp (lexMaxIndices T.ideal T.mult T.boundary) C hmemC y hgyC`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hordEq : orderAlong (T.pullbackOverField Y k' q g).ideal C' = orderAlong T.ideal C` using `orderAlong_pullbackOverField_eq_orderAlong T Y k' q g hP (lexMaxIndices T.ideal T.mult T.boundary) C' C hC'mem hmemC hgen`. Establish `hinj : Function.Injective (pullbackIndex T Y k' q g)` using `(pullbackIndex_strictMono T Y k' q g).injective`. Establish `hcard' : (Finset.image (pullbackIndex T Y k' q g) (lexMaxIndices T.ideal T.mult T.boundary)).card = minIndexCard T.ideal T.mult T.boundary`. Rewrite using `[Finset.card_image_of_injective _ hinj]`. Conclude with `card_lexMaxIndices hGeom hT h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmultC' : ((T.pullbackOverField Y k' q g).mult : ℕ∞) ≤ orderAlong (T.pullbackOverField Y k' q g).ideal C'`. Rewrite using `[hordEq]`. Conclude with `hmultC`. Establish `hcand' : IsCandidateComponent (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary (minIndexCard T.ideal T.mult T.boundary) (Finset.image (pullbackIndex T Y k' q g) (lexMaxIndices T.ideal T.mult T.boundary)) C'` using `⟨hcard', hC'mem, hmultC'⟩`. Establish `hone : 1 ≤ minIndexCard T.ideal T.mult T.boundary` using `Nat.pos_of_ne_zero h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspec` using `minIndexCard_spec (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary ⟨minIndexCard T.ideal T.mult T.boundary, hone, Finset.image (pullbackIndex T Y k' q g) (lexMaxIndices T.ideal T.mult T.boundary), C', hcand'⟩`. Establish `hle : minIndexCard (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary ≤ minIndexCard T.ideal T.mult T.boundary` using `hspec.2.2 _ hone _ _ hcand'`. Establish `hgeone` using `hspec.1`. Break down `hkey with hzero | hlt` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hlt` using `[centerInvariant_lt_iff_lex]`. Establish `h0' : minIndexCard (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary ≠ 0` using `by omega`. Break down `hlt with hml | ⟨hmeq, hrest⟩` into its components or cases. Use linear arithmetic over natural numbers and integers. Establish `hcand'' : IsCandidateComponent (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary (minIndexCard (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary) (Finset. …`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmeq]`. Conclude with `hcand'`. Establish `hordC' : orderAlong (T.pullbackOverField Y k' q g).ideal C' = maxCandidateOrder T.ideal T.mult T.boundary`. Rewrite using `[hordEq]`. Conclude with `hordC`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hrest with hmax | ⟨hmaxeq, hlex⟩` into its components or cases. Establish `hb` using `(maxCandidateOrder_spec hGeom hT' h0').2.1 _ _ hcand''`. Rewrite `hb` using `[hordC']`. Conclude with `absurd hmax (not_lt.mpr hb)`. Establish `hbest : IsMaxOrderIndexSet (T.pullbackOverField Y k' q g).ideal (T.pullbackOverField Y k' q g).mult (T.pullbackOverField Y k' q g).boundary (Finset.image (pullbackIndex T Y k' q g) (lexMaxIndices T.ideal T.mult T.boundary))` using `⟨C', hcand'', hordC'.trans hmaxeq⟩`.
-
-Establish `hnot` using `(lexMaxIndices_spec hGeom hT' h0').2 _ hbest`. Rewrite `hnot` using `[sortedIndices_image_pullbackIndex T Y k' q g (lexMaxIndices T.ideal T.mult T.boundary)]`. Conclude with `hnot hlex`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_monomialCenter_eq_top (hGeom : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))

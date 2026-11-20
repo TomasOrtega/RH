@@ -14,14 +14,14 @@ variable {M : Type*} [TopologicalSpace M] [SecondCountableTopology M] [Measurabl
   [BorelSpace M] {n : ℕ} {z : M → V n} {e : OpenPartialHomeomorph M (V n)}
 
 /- English proof (translation)
-The claim follows from `e.continuousOn_symm.aemeasurable e.open_target.measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem chT_aem_symm : AEMeasurable (e.symm : V n → M) (volume.restrict e.target) := e.continuousOn_symm.aemeasurable e.open_target.measurableSet
 
 /- English proof (translation)
-Establish `hsub : Function.support f ⊆ e.source` using `fun x hx => by`. Assume the negation of the conclusion as `h`. Conclude with `hx (hs x h)`. Rewrite using `[← setLIntegral_eq_of_support_subset hsub, vol_restrict_source n z hz e he]`. Establish `hf' : AEMeasurable f (Measure.map e.symm (volume.restrict e.target))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← vol_restrict_source n z hz e he]`. Conclude with `hf.restrict`. Conclude with `lintegral_map' hf' (chT_aem_symm (e := e))`.
+A detailed English derivation is pending.
 -/
 theorem chT_lint (hz : IsLocalHomeomorph z) (he : IsChart n z e) (f : M → ℝ≥0∞)
     (hf : AEMeasurable f (vol n z)) (hs : ∀ x, x ∉ e.source → f x = 0) :
@@ -34,7 +34,7 @@ theorem chT_lint (hz : IsLocalHomeomorph z) (he : IsChart n z e) (f : M → ℝ�
   exact lintegral_map' hf' (chT_aem_symm (e := e))
 
 /- English proof (translation)
-Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero hs, vol_restrict_source n z hz e he]`. Establish `hf' : AEStronglyMeasurable f (Measure.map e.symm (volume.restrict e.target))`. Rewrite using `[← vol_restrict_source n z hz e he]`. Conclude with `hf.restrict`. Conclude with `integral_map (chT_aem_symm (e := e)) hf'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chT_int {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (hz : IsLocalHomeomorph z)
     (he : IsChart n z e) (f : M → E)
@@ -46,7 +46,7 @@ theorem chT_int {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (hz : IsL
   exact integral_map (chT_aem_symm (e := e)) hf'
 
 /- English proof (translation)
-Establish `hf' : AEStronglyMeasurable f (Measure.map e.symm (volume.restrict e.target))`. Rewrite using `[← vol_restrict_source n z hz e he]`. Conclude with `hf.restrict`. Conclude with `(aestronglyMeasurable_indicator_iff e.open_target.measurableSet).2 (hf'.comp_aemeasurable (chT_aem_symm (e := e)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chT_aesm {E : Type*} [NormedAddCommGroup E] (hz : IsLocalHomeomorph z)
     (he : IsChart n z e) (f : M → E) (hf : AEStronglyMeasurable f (vol n z)) :
@@ -57,13 +57,13 @@ theorem chT_aesm {E : Type*} [NormedAddCommGroup E] (hz : IsLocalHomeomorph z)
     (hf'.comp_aemeasurable (chT_aem_symm (e := e)))
 
 /- English proof (translation)
-Establish `hae` using `chT_aesm hz he f hf.1`. Use `⟨hae, ?_⟩` and prove the remaining obligations. Rewrite using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `only [ENNReal.toReal_ofNat, ENNReal.rpow_two]`. Establish `hz0 : ∀ x, x ∉ tsupport f → f x = 0` using `fun x hx => image_eq_zero_of_notMem_tsupport hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : ∀ x, x ∉ e.source → ‖f x‖ₑ ^ 2 = 0`. Introduce `x hx`. Simplify using `[hz0 x (fun h => hx (hsub h))]`. Establish `e1 : ∫⁻ y, ‖e.target.indicator (f ∘ e.symm) y‖ₑ ^ 2 = ∫⁻ y in e.target, ‖f (e.symm y)‖ₑ ^ 2`. Rewrite using `[← lintegral_indicator e.open_target.measurableSet]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Apply the tactic sequence `by_cases hy : y ∈ e.target <;> simp [hy]`. Rewrite using `[e1, ← chT_lint hz he (fun x => ‖f x‖ₑ ^ 2) (hf.1.enorm.pow_const 2) hs]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[setLIntegral_eq_of_support_subset]`. Introduce `x hx`. Assume the negation of the conclusion as `h`. Conclude with `hx (by simp [hz0 x h])`. Use `_ < ⊤ := hf.2 _ hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem chartTransport_indicator_memLp_two {E : Type*} [NormedAddCommGroup E] [T2Space M] (hz : IsLocalHomeomorph z)
     (he : IsChart n z e) (f : M → E) (hf : LocalL2Isometry (vol n z) f) (hc : HasCompactSupport f)
@@ -93,15 +93,15 @@ theorem chartTransport_indicator_memLp_two {E : Type*} [NormedAddCommGroup E] [T
 end Tr
 
 /- English proof (translation)
-Take `⟨δ, hδ, hδU⟩` from `hK.exists_cthickening_subset_open hU hKU`. Take `⟨t, htK, htf, hcov⟩` from `hK.finite_cover_balls (e := δ / 3) (by positivity)`. Set `bx : ∀ x : V n, ContDiffBump x` to `fun x => ⟨δ / 3, 2 * δ / 3, by positivity, by linarith⟩`. Set `ψ : V n → ℝ` to `fun y => ∑ x ∈ htf.toFinset, bx x y`. Set `ρ : V n → ℝ` to `fun y => Real.smoothTransition (ψ y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hψd : ContDiff ℝ ∞ ψ` using `ContDiff.sum fun x _ => (bx x).contDiff`. Establish `hρd : ContDiff ℝ ∞ ρ` using `Real.smoothTransition.contDiff.comp hψd`. Establish `hsuppψ : ∀ y, ψ y ≠ 0 → y ∈ Metric.cthickening (2 * δ / 3) K`. Introduce `y hy`. Take `⟨x, hx, hxy⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hb : y ∈ Metric.ball x (bx x).rOut` using `by rw [← (bx x).support_eq]; exact hxy`. Conclude with `Metric.thickening_subset_cthickening _ _ (Metric.ball_subset_thickening (htK (htf.mem_toFinset.1 hx)) _ hb)`. Establish `hsuppρ : ∀ y, y ∉ Metric.cthickening (2 * δ / 3) K → ρ y = 0`. Introduce `y hy`. Establish `: ψ y = 0` using `by by_contra h; exact hy (hsuppψ y h)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ρ, this, Real.smoothTransition.zero]`. Establish `hts : tsupport ρ ⊆ Metric.cthickening (2 * δ / 3) K` using `closure_minimal (fun y hy => by by_contra h; exact hy (hsuppρ y h)) Metric.isClosed_cthickening`. Use `⟨ρ, hρd, HasCompactSupport.intro hK.cthickening hsuppρ, hts.trans ((Metric.cthickening_mono (by linarith) K).trans hδU), ⋃ x ∈ t, Metric.ball x (δ / 3), isOpen_biUnion fun _ _ => Metric.isOpen_ball, hcov, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Simplify using `only [Set.mem_iUnion] at hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hxy⟩` from `hy`. Establish `h1 : bx x y = 1` using `(bx x).one_of_mem_closedBall (Metric.ball_subset_closedBall hxy)`. Establish `h2 : 1 ≤ ψ y`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Real.smoothTransition.one_of_one_le h2`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem chT_plateau {n : ℕ} (K U : Set (V n)) (hK : IsCompact K) (hU : IsOpen U) (hKU : K ⊆ U) :
     ∃ ρ : V n → ℝ, ContDiff ℝ ∞ ρ ∧ HasCompactSupport ρ ∧ tsupport ρ ⊆ U ∧
@@ -139,7 +139,7 @@ theorem chT_plateau {n : ℕ} (K U : Set (V n)) (hK : IsCompact K) (hU : IsOpen 
   exact Real.smoothTransition.one_of_one_le h2
 
 /- English proof (translation)
-The claim follows from `(EuclideanSpace.proj (𝕜 := ℂ) j).continuous.comp_aestronglyMeasurable hG`.
+A detailed English derivation is pending.
 -/
 theorem chT_comp {n : ℕ} {M : Type*} [MeasurableSpace M] (μ : Measure M) (G : M → V n)
     (hG : AEStronglyMeasurable G μ) (j : Fin n) : AEStronglyMeasurable (fun x => G x j) μ := (EuclideanSpace.proj (𝕜 := ℂ) j).continuous.comp_aestronglyMeasurable hG
@@ -150,9 +150,9 @@ variable {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M
   [MeasurableSpace M] [BorelSpace M] {n : ℕ} {z : M → V n} {e : OpenPartialHomeomorph M (V n)}
 
 /- English proof (translation)
-Take `⟨h1, h2, -, h4⟩` from `hExt z hz e ψ he hψd hψc hψt`. Use `⟨⟨h1, h2⟩, fun y hy => ?_, fun j y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (e.map_target hy), Function.comp_apply, e.right_inv hy]`. Use `h4 j (e.symm y) (e.map_target hy)` as an intermediate fact. Rewrite `this` using `[e.right_inv hy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem chT_test (hExt : ExtendStatement n M) (hz : IsLocalHomeomorph z) (he : IsChart n z e)
     (ψ : V n → ℂ) (hψd : ContDiff ℝ ∞ ψ) (hψc : HasCompactSupport ψ)
@@ -169,7 +169,7 @@ theorem chT_test (hExt : ExtendStatement n M) (hz : IsLocalHomeomorph z) (he : I
     exact this
 
 /- English proof (translation)
-Use `⟨(Complex.ofRealCLM.contDiff.comp hρd).mul hφd, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hρc.comp_left Complex.ofReal_zero).mul_right`. Conclude with `tsupport_mul_subset_left.trans ((tsupport_comp_subset Complex.ofReal_zero ρ).trans hρt)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chT_mulρ (ρ : V n → ℝ) (hρd : ContDiff ℝ ∞ ρ) (hρc : HasCompactSupport ρ)
     (U : Set (V n)) (hρt : tsupport ρ ⊆ U) (φ : V n → ℂ) (hφd : ContDiff ℝ ∞ φ) :
@@ -180,9 +180,9 @@ theorem chT_mulρ (ρ : V n → ℝ) (hρd : ContDiff ℝ ∞ ρ) (hρc : HasCom
   · exact tsupport_mul_subset_left.trans ((tsupport_comp_subset Complex.ofReal_zero ρ).trans hρt)
 
 /- English proof (translation)
-Establish `hev : (fun y => (ρ y : ℂ) * φ y) =ᶠ[𝓝 y] φ` using `by filter_upwards [hOo.mem_nhds hy] with w hw`. Rewrite using `[h1 w hw]`. Simplify using the standard rewrite rules. Use `hev.fderiv_eq (𝕜 := ℝ)` as an intermediate fact. Unfold `wd wdb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[this]`. Conclude with `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem chT_wd (ρ : V n → ℝ) (φ : V n → ℂ) (O : Set (V n)) (hOo : IsOpen O)
     (h1 : ∀ y ∈ O, ρ y = 1) (y : V n) (hy : y ∈ O) (j : Fin n) :

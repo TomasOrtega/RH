@@ -15,35 +15,35 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 def diffFun (f : SchwartzMap V ℂ) (y : V) : V → ℂ := fun x => f (x + y) * conj (f x)
 
 /- English proof (translation)
-The claim follows from `(f.smooth ⊤).comp (contDiff_id.add contDiff_const)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_translate (f : SchwartzMap V ℂ) (y : V) :
     ContDiff ℝ (⊤ : ℕ∞) (fun x => f (x + y)) :=
   (f.smooth ⊤).comp (contDiff_id.add contDiff_const)
 
 /- English proof (translation)
-The claim follows from `Complex.conjCLE.contDiff.comp (f.smooth ⊤)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_conj (f : SchwartzMap V ℂ) :
     ContDiff ℝ (⊤ : ℕ∞) (fun x => conj (f x)) :=
   Complex.conjCLE.contDiff.comp (f.smooth ⊤)
 
 /- English proof (translation)
-The claim follows from `(contDiff_translate f y).mul (contDiff_conj f)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_diffFun (f : SchwartzMap V ℂ) (y : V) :
     ContDiff ℝ (⊤ : ℕ∞) (diffFun f y) :=
   (contDiff_translate f y).mul (contDiff_conj f)
 
 /- English proof (translation)
-The claim follows from `Complex.conjLIE.norm_iteratedFDeriv_comp_left (𝕜 := ℝ) f x i`.
+A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_conj (f : SchwartzMap V ℂ) (i : ℕ) (x : V) :
     ‖iteratedFDeriv ℝ i (fun x => conj (f x)) x‖ = ‖iteratedFDeriv ℝ i f x‖ :=
   Complex.conjLIE.norm_iteratedFDeriv_comp_left (𝕜 := ℝ) f x i
 
 /- English proof (translation)
-Establish `h : ‖y‖ ≤ ‖x + y‖ + ‖x‖`. Use `norm_sub_le (x + y) x` as an intermediate fact. Simplify using `using this`. Use polynomial arithmetic with `[norm_nonneg (x + y), norm_nonneg x, mul_nonneg (norm_nonneg (x + y)) (norm_nonneg x)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem peetre (x y : V) : 1 + ‖y‖ ≤ (1 + ‖x + y‖) * (1 + ‖x‖) := by
   have h : ‖y‖ ≤ ‖x + y‖ + ‖x‖ := by
@@ -52,17 +52,15 @@ theorem peetre (x y : V) : 1 + ‖y‖ ≤ (1 + ‖x + y‖) * (1 + ‖x‖) := 
   nlinarith [norm_nonneg (x + y), norm_nonneg x, mul_nonneg (norm_nonneg (x + y)) (norm_nonneg x)]
 
 /- English proof (translation)
-Use `set M : ℝ := 2 ^ (K + k) * ((Finset.Iic (K + k, n)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) f with hM`. Establish `hM0 : 0 ≤ M`. Rewrite using `[hM]; exact mul_nonneg (by positivity) (apply_nonneg _ _)`. Establish `hA : ∀ i, i ≤ n → ∀ z : V, (1 + ‖z‖) ^ (K + k) * ‖iteratedFDeriv ℝ i f z‖ ≤ M`. Introduce `i hi z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (K + k, n)) le_rfl hi f z`. Establish `hB : ∀ i, i ≤ n → ∀ z : V, (1 + ‖z‖) ^ K * ‖iteratedFDeriv ℝ i f z‖ ≤ M`. Introduce `i hi z`. Use `le_trans ?_ (hA i hi z)` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ 1 + ‖z‖` using `by linarith [norm_nonneg z]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_right₀ h1 (Nat.le_add_right _ _)) (norm_nonneg _)`. Use `⟨∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * (M * M), by positivity, fun x y => ?_⟩` and prove the remaining obligations. Establish `hL` using `norm_iteratedFDeriv_mul_le (𝕜 := ℝ) (N := ((⊤ : ℕ∞) : WithTop ℕ∞)) (contDiff_translate f y) (contDiff_conj f) x (n := n) (by exact_mod_cast le_top)`. Establish `hw : ‖x‖ ^ k * (1 + ‖y‖) ^ K ≤ (1 + ‖x + y‖) ^ K * (1 + ‖x‖) ^ (K + k)`. Establish `h1 : ‖x‖ ^ k ≤ (1 + ‖x‖) ^ k` using `pow_le_pow_left₀ (norm_nonneg _) (by linarith) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h2 : (1 + ‖y‖) ^ K ≤ ((1 + ‖x + y‖) * (1 + ‖x‖)) ^ K` using `pow_le_pow_left₀ (by positivity) (peetre x y) _`. Combine the equalities or inequalities in the displayed calculation. Establish `hw0 : 0 ≤ ‖x‖ ^ k * (1 + ‖y‖) ^ K` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_conj, iteratedFDeriv_comp_add_right]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * (M * M) := by`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations.
-
-Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem diffFun_bound (f : SchwartzMap V ℂ) (k n K : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ x y : V,
@@ -130,9 +128,9 @@ theorem diffS_apply (f : SchwartzMap V ℂ) (y x : V) :
     diffS f y x = f (x + y) * conj (f x) := rfl
 
 /- English proof (translation)
-Take `⟨C, hC0, hC⟩` from `diffFun_bound f k n K`. Use `⟨C, hC0, fun y => ?_⟩` and prove the remaining obligations. Establish `hy : 0 < (1 + ‖y‖) ^ K` using `by positivity`. Use `SchwartzMap.seminorm_le_bound ℂ k n _ (by positivity) fun x => ?_` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hC x y`.
+A detailed English derivation is pending.
 -/
 theorem seminorm_diffS_le (f : SchwartzMap V ℂ) (k n K : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ y : V,
@@ -145,9 +143,9 @@ theorem seminorm_diffS_le (f : SchwartzMap V ℂ) (k n K : ℕ) :
   exact hC x y
 
 /- English proof (translation)
-Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ V ℂ) p hp`. Use `choose D hD0 hD using fun m : ℕ × ℕ => seminorm_diffS_le f m.1 m.2 K`. Use `⟨C * ∑ m ∈ s, D m, mul_nonneg C.2 (Finset.sum_nonneg fun m _ => hD0 m), fun y => ?_⟩` and prove the remaining obligations. Establish `hw : 0 ≤ ((1 + ‖y‖) ^ K)⁻¹` using `by positivity`. Establish `hsup : (s.sup (schwartzSeminormFamily ℂ V ℂ)) (diffS f y) ≤ (∑ m ∈ s, D m) * ((1 + ‖y‖) ^ K)⁻¹`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Seminorm.finset_sup_apply_le (mul_nonneg (Finset.sum_nonneg fun m _ => hD0 m) hw) fun m hm => ?_` and prove the remaining obligations. Use `(hD m y).trans (mul_le_mul_of_nonneg_right ?_ hw)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := D) (fun i _ => hD0 i) hm`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem continuous_seminorm_diffS_le (f : SchwartzMap V ℂ) (K : ℕ)
     (p : Seminorm ℂ (SchwartzMap V ℂ)) (hp : Continuous p) :
@@ -176,13 +174,13 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   [MeasurableSpace V] [BorelSpace V]
 
 /- English proof (translation)
-Establish `hp : ∀ m : ℕ × ℕ, ∃ C : ℝ, 0 ≤ C ∧ ∀ y : V, SchwartzMap.seminorm ℂ m.1 m.2 (𝓕 (diffS f y)) ≤ C * ((1 + ‖y‖) ^ K)⁻¹`. Introduce `m`. Use `continuous_seminorm_diffS_le f K ((SchwartzMap.seminorm ℂ m.1 m.2).comp (SchwartzMap.fourierTransformCLM ℂ (V := V) (E := ℂ)).toLinearMap) ?_` and prove the remaining obligations. Conclude with `((schwartz_withSeminorms ℂ V ℂ).continuous_seminorm m).comp (SchwartzMap.fourierTransformCLM ℂ (V := V) (E := ℂ)).continuous`. Use `choose D hD0 hD using hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set s := Finset.Iic ((K, 0) : ℕ × ℕ)`. Use `⟨2 ^ K * ∑ m ∈ s, D m, mul_nonneg (by positivity) (Finset.sum_nonneg fun m _ => hD0 m), fun y ξ => ?_⟩` and prove the remaining obligations. Establish `hy : 0 ≤ ((1 + ‖y‖) ^ K)⁻¹` using `by positivity`. Establish `hξ : 0 < (1 + ‖ξ‖) ^ K` using `by positivity`. Establish `h1` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (K, 0)) (k := K) (n := 0) le_rfl le_rfl (𝓕 (diffS f y)) ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsup : (s.sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) (𝓕 (diffS f y)) ≤ (∑ m ∈ s, D m) * ((1 + ‖y‖) ^ K)⁻¹`. Use `Seminorm.finset_sup_apply_le (mul_nonneg (Finset.sum_nonneg fun m _ => hD0 m) hy) fun m hm => ?_` and prove the remaining obligations. Use `(hD m y).trans (mul_le_mul_of_nonneg_right ?_ hy)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := D) (fun i _ => hD0 i) hm`. Rewrite `h1` using `[norm_iteratedFDeriv_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2 : (1 + ‖ξ‖) ^ K * ‖𝓕 (diffS f y) ξ‖ ≤ 2 ^ K * ((∑ m ∈ s, D m) * ((1 + ‖y‖) ^ K)⁻¹)` using `h1.trans (mul_le_mul_of_nonneg_left hsup (by positivity))`. Establish `h3 : ‖𝓕 (diffS f y) ξ‖ ≤ 2 ^ K * ((∑ m ∈ s, D m) * ((1 + ‖y‖) ^ K)⁻¹) / (1 + ‖ξ‖) ^ K`. Rewrite using `[le_div_iff₀ hξ]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fourier_diffS_decay (f : SchwartzMap V ℂ) (K : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ y ξ : V,
@@ -220,7 +218,7 @@ theorem fourier_diffS_decay (f : SchwartzMap V ℂ) (K : ℕ) :
 def ee (t : ℝ) : ℂ := Complex.exp (2 * Real.pi * Complex.I * ((t : ℝ) : ℂ))
 
 /- English proof (translation)
-Simplify using `only [ee, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ee_add (s t : ℝ) : ee (s + t) = ee s * ee t := by
   simp only [ee, ← Complex.exp_add]
@@ -229,7 +227,7 @@ theorem ee_add (s t : ℝ) : ee (s + t) = ee s * ee t := by
   ring
 
 /- English proof (translation)
-Establish `: 2 * (Real.pi : ℂ) * Complex.I * ((t : ℝ) : ℂ) = ((2 * Real.pi * t : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[ee, this, Complex.norm_exp_ofReal_mul_I]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_ee (t : ℝ) : ‖ee t‖ = 1 := by
   have : 2 * (Real.pi : ℂ) * Complex.I * ((t : ℝ) : ℂ) = ((2 * Real.pi * t : ℝ) : ℂ) * Complex.I := by
@@ -237,7 +235,7 @@ theorem norm_ee (t : ℝ) : ‖ee t‖ = 1 := by
   rw [ee, this, Complex.norm_exp_ofReal_mul_I]
 
 /- English proof (translation)
-Rewrite using `[ee, ee, ← Complex.exp_conj]`. Use `congr 1`. Simplify using `only [map_mul, Complex.conj_ofReal, Complex.conj_I, map_ofNat]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_ee (t : ℝ) : conj (ee t) = ee (-t) := by
   rw [ee, ee, ← Complex.exp_conj]
@@ -247,28 +245,28 @@ theorem conj_ee (t : ℝ) : conj (ee t) = ee (-t) := by
   ring
 
 /- English proof (translation)
-Unfold `ee`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_ee : Continuous ee := by
   unfold ee
   fun_prop
 
 /- English proof (translation)
-Use `set v : V → ℂ := fun x => f x * ee (q x) with hv`. Use `set u : V → ℂ := fun x => conj (v x) with hu`. Establish `hvc : Continuous v` using `f.continuous.mul (continuous_ee.comp hq)`. Establish `hvi : Integrable v`. Use `f.integrable.mono hvc.aestronglyMeasurable (ae_of_all _ fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hv, norm_ee]`. Establish `hui : Integrable u`. Use `hvi.mono (Complex.continuous_conj.comp hvc).aestronglyMeasurable (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `[hu]`. Establish `hh : Integrable (fun z : V × V => u z.1 * v z.2) (volume.prod volume)` using `hui.mul_prod hvi`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mp` using `measurePreserving_prod_add (volume : Measure V) (volume : Measure V)`. Use `set F : V × V → ℂ := fun z => u z.1 * v (z.1 + z.2) with hF`. Establish `hFi : Integrable F (volume.prod volume)` using `mp.integrable_comp_of_integrable hh`. Establish `e1 : ∫ z : V × V, u z.1 * v z.2 ∂(volume.prod volume) = ∫ z : V × V, F z ∂(volume.prod volume)` using `by conv_lhs => rw [← mp.map_eq]`. Conclude with `integral_map mp.measurable.aemeasurable (by rw [mp.map_eq]; exact hh.aestronglyMeasurable)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : ∀ y : V, ∫ x, F (x, y) = ee (q y) * 𝓕 (diffS f y) (-(T y))`. Introduce `y`. Rewrite using `[SchwartzMap.fourier_coe, Real.fourier_eq', ← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Establish `hx : Complex.exp (((-2 * Real.pi * inner ℝ x (-(T y)) : ℝ) : ℂ) * Complex.I) = ee (inner ℝ x (T y))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[ee]`. Use `congr 1`. Rewrite using `[inner_neg_right]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hF, hu, hv, hx, diffS_apply, smul_eq_mul, map_mul, conj_ee, hT x y, ee_add]`. Establish `h1 : ee (-q x) * ee (q x) = 1`. Rewrite using `[← ee_add]`. Simplify using `[ee]`. Take the linear combination `(conj (f x) * f (x + y) * ee (q y) * ee (inner ℝ x (T y))) * h1`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : conj (∫ x, v x) * ∫ x, v x = ∫ y, ee (q y) * 𝓕 (diffS f y) (-(T y))`. Rewrite using `[← integral_conj, ← integral_prod_mul u v, e1, integral_prod_symm F hFi]`. Conclude with `integral_congr_ae (ae_of_all _ e2)`. Establish `e4 : ENNReal.ofReal (‖∫ x, v x‖ ^ 2) = ‖conj (∫ x, v x) * ∫ x, v x‖ₑ`. Rewrite using `[← ofReal_norm, norm_mul, Complex.norm_conj, sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e4, e3]`. Use `(enorm_integral_le_lintegral_enorm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul, ← ofReal_norm (ee _), norm_ee]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem enorm_sq_le (f : SchwartzMap V ℂ) (q : V → ℝ) (T : V →ₗ[ℝ] V) (hq : Continuous q)
     (hT : ∀ x y, q (x + y) = q x + q y + inner ℝ x (T y)) :
@@ -317,9 +315,9 @@ theorem enorm_sq_le (f : SchwartzMap V ℂ) (q : V → ℝ) (T : V →ₗ[ℝ] V
   simp
 
 /- English proof (translation)
-Take `⟨C, hC0, hC⟩` from `fourier_diffS_decay f K`. Use `⟨C, hC0, fun q T hq hT => (enorm_sq_le f q T hq hT).trans ?_⟩` and prove the remaining obligations. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono fun y => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul hC0, ← ofReal_norm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Simplify using `using hC y (-(T y))`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem weyl_differencing (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]

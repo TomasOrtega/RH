@@ -7,9 +7,9 @@ namespace Formalism.FourierDecayAlt.P.SignAntidiagonal
 open Formalism.FourierDecayAlt.C3 Formalism.REAL Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Introduce `p q hpq`. Apply `Fin.ext` to reduce the goal to its premises. Establish `hp` using `p.isLt`. Establish `hq` using `q.isLt`. Unfold `keyS at hpq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs at hpq <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem keyS_inj (k r : ℕ) : Function.Injective (keyS k r) := by
   intro p q hpq
@@ -20,7 +20,7 @@ theorem keyS_inj (k r : ℕ) : Function.Injective (keyS k r) := by
   split_ifs at hpq <;> omega
 
 /- English proof (translation)
-Establish `hx` using `x.isLt`. Establish `c : r + k < 2 * r + k - x.val` using `by omega`. Simplify using `only [keyS, Formalism.QuantumDeterminants.esI, c, if_true]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem keyS_esI (k r : ℕ) (x : Fin r) : keyS k r (esI k r x) = x.val := by
   have hx := x.isLt
@@ -29,20 +29,20 @@ theorem keyS_esI (k r : ℕ) (x : Fin r) : keyS k r (esI k r x) = x.val := by
   omega
 
 /- English proof (translation)
-Simplify using `[sgnW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_sgnW (m : ℕ) : star (sgnW m) = sgnW m := by
   simp [sgnW]
 
 /- English proof (translation)
-Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem neg_one_sq' (s : ℕ) : ((-1 : ℂ) ^ s) * ((-1) ^ s) = 1 := by
   rw [← pow_add, ← two_mul, pow_mul]
   norm_num
 
 /- English proof (translation)
-Unfold `Zb`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zb_col_zero (i0 s' : ℕ) (h : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ) (a : ℕ) (ha : a < i0 + s') :
     Zb i0 (s' + 1) h t a i0 = 0 := by
@@ -50,9 +50,9 @@ theorem zb_col_zero (i0 s' : ℕ) (h : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ) (
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Unfold `sgnW`. Rewrite using `[← pow_add]`. Use `congr 1`. Consider the cases of `s with`. Consider the case `zero => rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ k`. Establish `e : (k + 1 + 1) * (k + 1 + 1 - 1) = (k + 1) * (k + 1 - 1) + 2 * (k + 1)`. Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Nat.add_mul_div_left _ _ (by norm_num : 0 < 2)]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -70,33 +70,31 @@ private theorem sgnW_succ' (s : ℕ) : sgnW (s + 1) = (-1) ^ s * sgnW s := by
     ring
 
 /- English proof (translation)
-Introduce `A _ _ M _ _ k r z' E La xi i0 s h t u hs hj hR hdet ht hxi`. Take `⟨s', rfl⟩ : ∃ s', s = s' + 1` from `⟨s - 1, by omega⟩`. Establish `hm : i0 + s' ≤ r` using `by omega`. Rewrite using `[AAx_congr k r E xi (show i0 + (s' + 1) - 1 = i0 + s' by omega) _ hm u]`. Establish `hhead : AAx k r E xi i0 (by omega) u = h.det • qminor E (xR k r i0 (by omega)) (xR k r i0 (by omega)) u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `AAx_head` to reduce the goal to its premises. Introduce `a p ha hp`. Rewrite using `[hxi a p (by omega)]`. Use `split_ifs with hp'`. Unfold `Zb`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos ha, dif_neg (by omega)]`. Both sides reduce to the same expression. Introduce `a b`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxi _ _ (by simp only [Fin.coe_castLE]; omega)]`. Rewrite using `[if_pos (by simp only [xR, Formalism.QuantumDeterminants.eI, Fin.coe_castLE]; omega)]`. Simplify using `[Zb, xR, Formalism.QuantumDeterminants.eI, ha, hb]`. Establish `he : StrictMono (fun l : Fin (i0 + s') => xR k r (i0 + s' + 1) (by omega) ((⟨i0, by omega⟩ : Fin (i0 + s' + 1)).succAbove l))`. Introduce `a b hab`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(Fin.strictMono_succAbove (⟨i0, by omega⟩ : Fin (i0 + s' + 1))) hab` as an intermediate fact. Rewrite `this`, the goal using `[Fin.lt_def]`. Simplify `this` using `[xR, Formalism.QuantumDeterminants.eI]`. Establish `hmain : AAx k r E xi (i0 + s') hm u = (h.det * t ^ s' * sgnW s') • qminor E (xR k r (i0 + s') hm) (fun l => xR k r (i0 + s' + 1) (by omega) ((⟨i0, by omega⟩ : Fin (i0 + s' + 1)).succAbove l)) u` using `by classical`. Establish `hX : ∀ (a : Fin (i0 + s')) (p : Fin (2 * r + k + 1)), p ∉ {p : Fin (2 * r + k + 1) | p.val < i0 + s' + 1 ∧ p.val ≠ i0} → xi (Fin.castLE hm a) p = 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a p hp`. Simplify using `only [Set.mem_setOf_eq, not_and, not_not] at hp`. Establish `ha` using `a.isLt`. Rewrite using `[hxi _ p (by simp only [Fin.coe_castLE]; omega)]`. Use `split_ifs with hp1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hp (by omega)]`. Conclude with `zb_col_zero i0 s' h t _ (by simp only [Fin.coe_castLE]; omega)`. Both sides reduce to the same expression. Establish `hu : ∀ c : Fin (i0 + s') → Fin (2 * r + k + 1), StrictMono c → (∀ l, c l ∈ {p : Fin (2 * r + k + 1) | p.val < i0 + s' + 1 ∧ p.val ≠ i0}) → c = fun l => xR k r (i0 + s' + 1) (by omega) ((⟨i0, by omega⟩ : Fin (i0 + s' + 1)).succAbove l)`. Introduce `c hc hS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `uniq_mono _ _ he hc` to reduce the goal to its premises. Introduce `l`. Take `⟨h1, h2⟩` from `hS l`. Establish `hne : (⟨(c l).val, h1⟩ : Fin (i0 + s' + 1)) ≠ ⟨i0, by omega⟩` using `fun e => h2 (congrArg Fin.val e)`. Take `⟨j, hj'⟩` from `Fin.exists_succAbove_eq hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `⟨j, ?_⟩` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [xR, Formalism.QuantumDeterminants.eI, Fin.coe_castLE, hj']`. Establish `hs` using `sum_single (M := A) StrictMono (fun a p => xi (Fin.castLE hm a) p) {p : Fin (2 * r + k + 1) | p.val < i0 + s' + 1 ∧ p.val ≠ i0} hX _ he hu (fun c => qminor E (xR k r (i0 + s') hm) c u)`. Establish `hdet' : (Matrix.of fun a l : Fin (i0 + s') => xi (Fin.castLE hm a) (xR k r (i0 + s' + 1) (by omega) ((⟨i0, by omega⟩ : Fin (i0 + s' + 1)).succAbove l))).det = h.det * t ^ s' * sgnW s'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hp` using `minors_first_case i0 s' h t ⟨i0, by omega⟩`. Rewrite `hp` using `[if_pos rfl]`. Rewrite using `[← hp]`. Use `congr 1`. Use extensionality with `a l`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ha` using `a.isLt`. Establish `hl` using `((⟨i0, by omega⟩ : Fin (i0 + s' + 1)).succAbove l).isLt`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[hxi _ _ (by simp only [Fin.coe_castLE]; omega)]`. Rewrite using `[if_pos (by simp only [xR, Formalism.QuantumDeterminants.eI, Fin.coe_castLE]; omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [xR, Formalism.QuantumDeterminants.eI, Fin.coe_castLE]`. Unfold `AAx`. Rewrite using `[← hdet']`. Use `hs using 1` and compare the differences between its conclusion and the goal. Establish `hpeel` using `first_peeling_identity A k r z' E (i0 + s') (by omega) ⟨i0, by omega⟩ u`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL` using `la_congr hR hpeel`. Establish `hsc : (h.det * t ^ (s' + 1) * sgnW (s' + 1))⁻¹ * (h.det * t ^ s' * sgnW s') = (-1 : ℂ) ^ (s' + 1 - 1) * t⁻¹ * (h.det⁻¹ * h.det)`. Rewrite using `[sgnW_succ', Nat.add_sub_cancel, scal_E _ _ _ _ s' hdet ht (sgnW_sq s') (neg_one_sq' s')]`. Rewrite using `[hmain, hhead, map_smul, map_smul, hL, (derivative_leading_zb i0 (s' + 1) h t).2, (derivative_leading_zb i0 (s' + 1) h t).1, smul_smul, smul_smul, smul_smul]`. Use `congr 1`.
-
-Rewrite using `[hsc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem first_expansion_identity : ExpansionOmittedColumn := by
   intro A _ _ M _ _ k r z' E La xi i0 s h t u hs hj hR hdet ht hxi

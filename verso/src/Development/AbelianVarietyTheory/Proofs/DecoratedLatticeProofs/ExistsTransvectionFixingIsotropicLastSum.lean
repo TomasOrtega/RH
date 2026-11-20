@@ -17,7 +17,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h : (fun i => cA D ((N *ᵥ y) i)) = N.map (cA D) *ᵥ (fun i => cA D (y i))`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (cA D) N y i`. Rewrite using `[form, h, ← Matrix.vecMul_transpose (N.map (cA D)), ← Matrix.dotProduct_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem form_mulVec (S : HSp D) {k l : ℕ} (M : Mx D S.rank k) (N : Mx D S.rank l) (x : Fin k → AE D)
     (y : Fin l → AE D) :
@@ -29,7 +29,7 @@ theorem form_mulVec (S : HSp D) {k l : ℕ} (M : Mx D S.rank k) (N : Mx D S.rank
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conj_smul {n : ℕ} (c : AE D) (y : Fin n → AE D) :
     (fun i => cA D ((c • y) i)) = cA D c • fun i => cA D (y i) := by
@@ -37,20 +37,20 @@ theorem conj_smul {n : ℕ} (c : AE D) (y : Fin n → AE D) :
   simp only [Pi.smul_apply, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-The claim follows from `funext fun i => GlobalTheory.DualPairCheck.cA_incA (z i)`.
+A detailed English derivation is pending.
 -/
 theorem conj_ratV {n : ℕ} (z : Fin n → D.host.E) : (fun i => cA D (ratV z i)) = ratV (star z) :=
   funext fun i => GlobalTheory.DualPairCheck.cA_incA (z i)
 
 /- English proof (translation)
-Simplify using `only [dotProduct, map_sum, map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ratV_dotProduct {n : ℕ} (x y : Fin n → D.host.E) : ratV x ⬝ᵥ ratV y = incA D (x ⬝ᵥ y) := by
   simp only [dotProduct, map_sum, map_mul]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← map_mul, inv_mul_cancel₀ hx, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem incA_inv_mul {x : D.host.E} (hx : x ≠ 0) : incA D x⁻¹ * incA D x = 1 := by
   rw [← map_mul, inv_mul_cancel₀ hx, map_one]
@@ -60,25 +60,25 @@ section Lemmas
 variable {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ)
 
 /- English proof (translation)
-Rewrite using `[vecX, form_mulVec, d.gram_0X, Matrix.zero_mulVec, dotProduct_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermSpaceAdelicForm_isotropic_anisotropic_zero (b : Fin ρ → AE D) (y : Fin V₀.rank → AE D) : form V (vecX d b) (d.j0 *ᵥ y) = 0 := by
   rw [vecX, form_mulVec, d.gram_0X, Matrix.zero_mulVec, dotProduct_zero]
 
 /- English proof (translation)
-Rewrite using `[vecX, vecX, form_mulVec, d.gram_XX, Matrix.zero_mulVec, dotProduct_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_vecX_vecX (b b' : Fin ρ → AE D) : form V (vecX d b) (vecX d b') = 0 := by
   rw [vecX, vecX, form_mulVec, d.gram_XX, Matrix.zero_mulVec, dotProduct_zero]
 
 /- English proof (translation)
-Rewrite using `[vecX, form_mulVec, d.wittDecomp_gram_X_anisotropic, Matrix.zero_mulVec, dotProduct_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermSpaceAdelicForm_anisotropic_isotropic_zero (y : Fin V₀.rank → AE D) (b : Fin ρ → AE D) : form V (d.j0 *ᵥ y) (vecX d b) = 0 := by
   rw [vecX, form_mulVec, d.wittDecomp_gram_X_anisotropic, Matrix.zero_mulVec, dotProduct_zero]
 
 /- English proof (translation)
-Rewrite using `[form_mulVec, d.gram_00, conj_smul, smul_dotProduct, conj_ratV, gA, ← GlobalTheory.MixPer.ratV_mulVec, ratV_dotProduct, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermSpaceAdelicForm_anisotropic_rational_smul (z : Fin V₀.rank → D.host.E) (c : AE D) :
     form V (d.j0 *ᵥ ratV z) (d.j0 *ᵥ (c • ratV z)) = cA D c * incA D (star z ⬝ᵥ V₀.gram *ᵥ z) := by
@@ -86,7 +86,7 @@ theorem hermSpaceAdelicForm_anisotropic_rational_smul (z : Fin V₀.rank → D.h
     smul_eq_mul]
 
 /- English proof (translation)
-Use `Matrix.ext_of_mulVec_single fun i => ?_` and prove the remaining obligations. Establish `h : act V u (vecX d (Pi.single i 1)) = transv V w v (vecX d (Pi.single i 1))` using `hu _`. Rewrite `h` using `[transv, hv, hw, zero_smul, zero_smul, mul_zero, zero_smul, add_zero, sub_zero, sub_zero]`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mt_jX_of_isTransv {w v : VA V} {u : GA D V} (hu : IsTransv V w v u)
     (hw : ∀ b, form V (vecX d b) w = 0) (hv : ∀ b, form V (vecX d b) v = 0) : mt V u ⬝ d.jX = d.jX := by
@@ -97,7 +97,7 @@ theorem mt_jX_of_isTransv {w v : VA V} {u : GA D V} (hu : IsTransv V w v u)
   exact h
 
 /- English proof (translation)
-Establish `h : act S u y = transv S w v y` using `hu _`. Rewrite `h` using `[transv, hy, zero_smul, mul_zero, zero_smul, sub_zero, sub_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mt_of_isTransv {S : HSp D} {w v y : VA S} {u : GA D S} (hu : IsTransv S w v u) (hy : form S y w = 0) :
     mt S u *ᵥ y = y + form S y v • w := by
@@ -106,7 +106,7 @@ theorem mt_of_isTransv {S : HSp D} {w v y : VA S} {u : GA D S} (hu : IsTransv S 
   exact h
 
 /- English proof (translation)
-Rewrite using `[simpleSum, blockX, hX, d.pX_jX, upSum_one, zero_add, coefX, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hy, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, d.pX_j0, d.pX_jX, Matrix.zero_mulVec, Matrix.one_mulVec, zero_add, dotProduct_smul, …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem simpleSum_of {z : Fin V₀.rank → D.host.E} {u : GA D V} {c : Fin ρ → AE D} (s : AE D)
     (hX : mt V u ⬝ d.jX = d.jX) (hy : mt V u *ᵥ (d.j0 *ᵥ ratV z) = d.j0 *ᵥ ratV z + s • (d.jX *ᵥ c)) :
@@ -116,7 +116,7 @@ theorem simpleSum_of {z : Fin V₀.rank → D.host.E} {u : GA D V} {c : Fin ρ �
     d.pX_jX, Matrix.zero_mulVec, Matrix.one_mulVec, zero_add, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[mem_fixer]`. Use extensionality with `k l`. Establish `h` using `congrFun (congrFun hX k) i`. Rewrite `h` using `[Matrix.mul_apply]`. Simplify `h` using `only [Matrix.mul_apply, Matrix.submatrix_apply, id]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fixer_column {u : GA D V} (hX : mt V u ⬝ d.jX = d.jX) (i : Fin ρ) :
     u ∈ fixer V (d.jX.submatrix id fun _ : Fin 1 => i) := by
@@ -127,9 +127,9 @@ theorem mem_fixer_column {u : GA D V} (hX : mt V u ⬝ d.jX = d.jX) (i : Fin ρ)
   simpa only [Matrix.mul_apply, Matrix.submatrix_apply, id] using h
 
 /- English proof (translation)
-Rewrite using `[dotProduct, Finset.sum_eq_single j]`. Simplify using `[ell, hj, ratVec, haj]`. Introduce `i _ hij`. Establish `: ¬ (i.1 + 1 = ρ)` using `fun h => hij (Fin.ext (Nat.add_right_cancel (h.trans hj.symm)))`. Simplify using `[ell, this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ell_dotProduct_last {j : Fin ρ} (hj : j.1 + 1 = ρ) {a : Fin ρ → D.host.E} (haj : a j = 1) :
     ell D ρ ⬝ᵥ ratVec a = 1 := by
@@ -144,9 +144,9 @@ theorem ell_dotProduct_last {j : Fin ρ} (hj : j.1 + 1 = ρ) {a : Fin ρ → D.h
 end Lemmas
 
 /- English proof (translation)
-Introduce `D V V₀ ρ d z hz j a haj _ hj s`. Use `⟨d.j0 *ᵥ (cA D (s * incA D (star z ⬝ᵥ V₀.gram *ᵥ z)⁻¹) • ratV z), hermSpaceAdelicForm_isotropic_anisotropic_zero d _ _, fun i k _ => by rw [hermSpaceAdelicForm_isotropic_anisotropic_zero, zero_mul], fun u hu => ?_⟩` and prove the remaining obligations. Establish `hX` using `mt_jX_of_isTransv d hu (fun b => form_vecX_vecX d b _) (fun b => hermSpaceAdelicForm_isotropic_anisotropic_zero d b _)`. Establish `hy` using `mt_of_isTransv hu (hermSpaceAdelicForm_anisotropic_isotropic_zero d (ratV z) (ratVec a))`. Rewrite `hy` using `[hermSpaceAdelicForm_anisotropic_rational_smul, cA_cA, mul_assoc, incA_inv_mul hz, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨fun i => mem_fixer_column d hX i.1, (simpleSum_of d s hX hy).trans (by rw [ell_dotProduct_last hj haj, mul_one])⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_transv_simpleSum_last : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (z : Fin V₀.rank → D.host.E), star z ⬝ᵥ V₀.gram *ᵥ z ≠ 0 → ∀ (j : Fin ρ) (a : Fin ρ → D.host.E), a j = 1 → (∀ i, j < i → a i = 0) → j.1 + 1 = ρ → ∀ s : AE D, ∃ v : GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.VA V, GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.form V (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.vecX d (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.ratVec a)) v = 0 ∧ (∀ i k : Fin ρ, k ≤ i → GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.form V (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.vecX d (Pi.single k 1)) v * GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.ratVec a i = 0) ∧ ∀ u : GA D V, GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.IsTransv V (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.vecX d (GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.ratVec a)) v u → (∀ i : {i : Fin ρ // i ≤ j}, u ∈ fixer V (d.jX.submatrix id fun _ : Fin 1 => i.1)) ∧ simpleSum d z u = s := by
   intro D V V₀ ρ d z hz j a haj _ hj s

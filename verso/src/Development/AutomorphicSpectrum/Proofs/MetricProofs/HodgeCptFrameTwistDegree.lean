@@ -19,7 +19,7 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB GlobalTh
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `h1 : IsUnit (Tᵀ).det` using `by rwa [Matrix.det_transpose]`. Use `symm`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ h1, Matrix.map_one _ (map_zero i) (map_one i)]`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_transpose_inv {Ω Φ : Type} [Field Ω] [Field Φ] (i : Ω →+* Φ) {r : ℕ} (T : Matrix (Fin r) (Fin r) Ω)
     (hT : IsUnit T.det) : (Tᵀ⁻¹).map i = (T.map i)ᵀ⁻¹ := by
@@ -31,7 +31,7 @@ theorem map_transpose_inv {Ω Φ : Type} [Field Ω] [Field Φ] (i : Ω →+* Φ)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `e : (Matrix.of fun a b => M a (Fin.rev b)) = M.submatrix id (Fin.revPerm : Equiv.Perm (Fin r))`. Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.det_permute']`. Conclude with `IsUnit.mul ((Units.isUnit _).map (Int.castRingHom R)) hM`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_rev {R : Type} [CommRing R] {r : ℕ} (M : Matrix (Fin r) (Fin r) R) (hM : IsUnit M.det) :
     IsUnit (Matrix.of fun a b => M a (Fin.rev b)).det := by
@@ -43,9 +43,9 @@ theorem isUnit_det_rev {R : Type} [CommRing R] {r : ℕ} (M : Matrix (Fin r) (Fi
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Unfold `Lat.IsFrameAt at h ⊢`. Unfold `Lat.map at h`. Use `⟨LinearIndependent.of_comp f h.1, ?_⟩` and prove the remaining obligations. Establish `e2 : Submodule.map (f.restrictScalars (regAt ξ p)) (Submodule.span (regAt ξ p) (Set.range b)) = Submodule.span (regAt ξ p) (Set.range fun a => f (b a))`. Rewrite using `[Submodule.map_span]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules. Conclude with `Submodule.map_injective_of_injective (f := f.restrictScalars (regAt ξ p)) hf (h.2.trans e2.symm)`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFrameAt_of_map {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {E E' : Type} [AddCommGroup E] [Module Ω E] [AddCommGroup E'] [Module Ω E'] {L : Lat ξ E} {f : E →ₗ[Ω] E'}
@@ -65,17 +65,15 @@ theorem isFrameAt_of_map {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (Com
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨Y₀, hY₀⟩ : ∃ Y₀ : Matrix (Fin n) (Fin r) Ω, Y₀ = Matrix.of fun k b => (A * T) k b / t` from `⟨_, rfl⟩`. Establish `hCY : C₀ * Y₀ = 1`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply, hY₀]`. Conclude with `hinv a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hX : ∀ a b, (A.map i * u * U) a b / i t = (Y₀.map i * R₂) a b`. Introduce `a b`. Rewrite using `[Matrix.mul_assoc, hu, ← Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_apply, Matrix.mul_apply, Finset.sum_div]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, Matrix.map_apply, hY₀, Matrix.of_apply, map_div₀, div_mul_eq_mul_div]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR : R₂' * R₂ = 1`. Rewrite using `[← Matrix.inv_eq_right_inv h1]`. Conclude with `Matrix.nonsing_inv_mul _ (Matrix.isUnit_det_of_right_inverse h1)`. Use `⟨R₂' * C₀.map i, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hX, Matrix.mul_apply]`. Use `R.sum_mem fun k _ => R.mul_mem ?_ (h2 k b)` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, hY₀, Matrix.of_apply]`. Conclude with `hi _ (hreg a k)`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Conclude with `R.sum_mem fun k _ => R.mul_mem (h2' a k) (hi _ (hC₀ k b))`. Introduce `a b`. Repeatedly rewrite using `[hX]`. Establish `e : (R₂' * C₀.map i) * (Y₀.map i * R₂) = 1`.
-
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (C₀.map i), ← Matrix.map_mul, hCY, Matrix.map_one _ (map_zero i) (map_one i), Matrix.one_mul, hR]`. Establish `e2` using `congrFun (congrFun e a) b`. Rewrite `e2` using `[Matrix.mul_apply, Matrix.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem forms_quotient {Ω Φ : Type} [Field Ω] [Field Φ] (i : Ω →+* Φ) (R₀ : Subring Ω) (R : Subring Φ)
     (hi : ∀ a ∈ R₀, i a ∈ R) {n r : ℕ} (A : Matrix (Fin n) (Fin r) Ω) (T : Matrix (Fin r) (Fin r) Ω)
@@ -118,7 +116,7 @@ theorem forms_quotient {Ω Φ : Type} [Field Ω] [Field Φ] (i : Ω →+* Φ) (R
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg a`. Establish `h1` using `congrArg (B a) hg`. Simplify using `only [map_sum, map_smul, hBv, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, map_zero] at h1`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem linearIndependent_of_dual_pairing {Ω W : Type} [Field Ω] [AddCommGroup W] [Module Ω W] {r : ℕ}
     (B : Fin r → Module.Dual Ω W) (v : Fin r → W) (hBv : ∀ a b, B a (v b) = if a = b then 1 else 0) :
@@ -133,19 +131,17 @@ private theorem linearIndependent_of_dual_pairing {Ω W : Type} [Field Ω] [AddC
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Establish `hli` using `linearIndependent_of_dual_pairing B v hBv`. Establish `hBmem : ∀ a, B a ∈ L.dual p` using `fun a => by rw [hB]; exact Submodule.subset_span ⟨a, rfl⟩`. Use `⟨hli, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce `e he`. Establish `hc : ∀ a, B a e ∈ regAt ξ p` using `fun a => (hmem e).1 he _ (hBmem a)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `htop : Submodule.span Ω (Set.range v) = ⊤` using `Submodule.eq_top_of_finrank_eq (by rw [finrank_span_eq_card hli, Fintype.card_fin, hr])`. Take `⟨bv, hbv⟩ : ∃ bv : Module.Basis (Fin r) Ω W, ⇑bv = v` from `⟨Module.Basis.mk hli htop.ge, Module.Basis.coe_mk _ _⟩`. Establish `hs` using `bv.sum_repr e`. Rewrite `hs` using `[hbv]`. Establish `hco : ∀ b, bv.repr e b = B b e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `b`. Use `conv_rhs => rw [← hs]`. Simplify using `only [map_sum, map_smul, hBv, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← hs]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : bv.repr e b • v b = (⟨B b e, hc b⟩ : regAt ξ p) • v b` using `by rw [hco]; rfl`. Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hmem (v b)).2 fun w hw => ?_` and prove the remaining obligations. Rewrite `hw` using `[hB]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hBv]`. Use `split_ifs`. Conclude with `(regAt ξ p).one_mem`. Conclude with `(regAt ξ p).zero_mem`. Consider the case `zero => rw [LinearMap.zero_apply]`.
-
-Conclude with `(regAt ξ p).zero_mem`. Consider the case `add x y _ _ hx hy => rw [LinearMap.add_apply]`. Conclude with `(regAt ξ p).add_mem hx hy`. Consider the case `smul a x _ hx => rw [LinearMap.smul_apply]`. Conclude with `(regAt ξ p).mul_mem a.2 hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem isFrameAt_of_dual_basis {X : Scheme.{0}} {Ω W : Type} [Field Ω] [AddCommGroup W] [Module Ω W]
     [FiniteDimensional Ω W] {ξ : Spec (CommRingCat.of Ω) ⟶ X} (L : Lat ξ W) (p : Cpt ξ) {r : ℕ}
@@ -193,35 +189,33 @@ private theorem isFrameAt_of_dual_basis {X : Scheme.{0}} {Ω W : Type} [Field Ω
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 bW bO n m φ hF 𝔐' pr j Fl hO hV hC τ p' hp c₁ hI`. Unfold `FormsOK at hF`. Unfold `HodgeOver at hO`. Unfold `ColFlags at hC`. Take `⟨hd, -, -, hj, -⟩` from `hO`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨T, C₀, hT, hfr, hreg, hC₀, hinv⟩` from `GlobalTheory.T.exists_local_twist_trivialization 𝔐.X Ω 𝔐.ξ (EE 𝔐) (∀ k, J₀ k) (seg x₀) (LL 𝔐 (.inr τ)) (m (.inr τ)) _ (n (.inr τ)) (VV 𝔐 (.inr τ)) (φ (.inr τ)) (cc 𝔐 bW bO (.inr τ)) (hF.2.2.1 _) (hF.1 _) (hF.2.1 _).1 (hF.2.1 _).2 ⟨pr p'.1, hp⟩ c₁ hI`. Establish `e1 : colFrame (cc 𝔐 bW bO (.inr τ)) T = fun a => inO 𝔐 τ (colFrame (bO τ) T a)`. Use function extensionality and compare the values at `a`. Simplify using `only [colFrame, cc, map_sum, map_smul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite `hfr` using `[e1]`. Establish `hom : (omBundle 𝔐 τ).IsFrameAt (colFrame (bO τ) T) ⟨pr p'.1, hp⟩` using `isFrameAt_of_map (GenBases.inO_injective 𝔐 τ) hfr`. Establish `hvb` using `𝔐.vb (.inr τ)`. Take `⟨hcVB, hcmap⟩` from `Lat.restrict_isVBOn _ _ _ _ _ _ _ _ hvb`. Establish `hbid` using `(Lat.isVBOn_dual_and_bidual _ _ _ _ _ _ _ hcVB).2 ⟨pr p'.1, hp⟩ (Set.mem_univ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U', hpU, b₀, hb₀span, hb₀fr⟩` from `hcVB ⟨pr p'.1, hp⟩ (Set.mem_univ _)`. Establish `hb₀` using `(hb₀fr ⟨pr p'.1, hp⟩ (Set.mem_univ _) hpU).1`. Establish `: FiniteDimensional Ω (𝔐.Vgen (.inr τ))` using `Module.Finite.of_basis (Module.Basis.mk hb₀ hb₀span.ge)`. Establish `hrank : Module.finrank Ω (𝔐.Vgen (.inr τ)) = D.q`. Rewrite using `[← Subspace.dual_finrank_eq, Module.finrank_eq_card_basis (bO τ), Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : Fin (rk (CMType H) D.p D.q (.inr τ)) → 𝔐.Vgen (.inr τ), ∀ a b : Fin (rk (CMType H) D.p D.q (.inr τ)), bO τ a (v b) = if a = b then 1 else 0 := by`. Use `⟨fun b => (Module.evalEquiv Ω _).symm ((bO τ).dualBasis b), fun a b => ?_⟩` and prove the remaining obligations. Simplify using `only [Module.apply_evalEquiv_symm_apply]`. Conclude with `(bO τ).dualBasis_apply_self b a`. Establish `hTt : IsUnit Tᵀ.det` using `by rwa [Matrix.det_transpose]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBv : ∀ a b : Fin (rk (CMType H) D.p D.q (.inr τ)), colFrame (r` using `rk (CMType H) D.p D.q (.inr τ)) (bO τ) T a (colFrame v Tᵀ⁻¹ b) = if a = b then 1 else 0 := by`. Introduce `a b`. Establish `hm` using `congrFun (congrFun (Matrix.mul_nonsing_inv _ hTt) a) b`. Rewrite `hm` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [colFrame, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, hv, smul_eq_mul, Matrix.transpose_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Apply the tactic sequence `try exact Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Establish `hLc` using `isFrameAt_of_dual_basis ((𝔐.V (.inr τ)).comap (𝔐.Vgen (.inr τ)).subtype) ⟨pr p'.1, hp⟩ hrank hbid (colFrame (bO τ) T) hom.2 (colFrame v Tᵀ⁻¹) hBv`. Establish `hVfr : (𝔐.V (.inr τ)).IsFrameAt (fun k => ((colFrame v Tᵀ⁻¹ k : 𝔐.Vgen (.inr τ)) : 𝔐.Li)) ⟨pr p'.1, hp⟩`. Use `⟨hLc.1.map' _ (Submodule.ker_subtype _), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc2 : ((𝔐.V (.inr τ)).comap (𝔐.Vgen (.inr τ)).subtype).map (𝔐.Vgen (.inr τ)).subtype ⟨pr p'.1, hp⟩ = 𝔐.V (.inr τ) ⟨pr p'.1, hp⟩` using `hcmap _ (Set.mem_univ _)`. Rewrite using `[← hc2]`. Unfold `Lat.map`. Rewrite using `[hLc.2, Submodule.map_span]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Conclude with `Iff.rfl`. Establish `hpull` using `FlagPull.pull_isFrameAt hd hj p' hp hVfr`. Rewrite `hpull` using `[← hV (.inr τ)]`.
+Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcol : (fun k => j ((colFrame v Tᵀ⁻¹ k : 𝔐.Vgen (.inr τ)) : 𝔐.Li)) = colFrame (fun a => j (v a : 𝔐.Li)) ((Tᵀ⁻¹).map (algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q))))`. Use function extensionality and compare the values at `k`. Simplify using `only [colFrame, Submodule.coe_sum, Submodule.coe_smul, map_sum, hj.1, Matrix.map_apply]`. Rewrite `hpull` using `[hcol, map_transpose_inv _ T hT]`. Establish `hgdet : IsUnit (Matrix.of fun a b => (genU Ω (rk (CMType H) D.p D.q) (.inr τ))ᵀ⁻¹ a (Fin.rev b)).det`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `isUnit_det_rev` to reduce the goal to its premises. Apply `Matrix.isUnit_nonsing_inv_det` to reduce the goal to its premises. Rewrite using `[Matrix.det_transpose, DetG.det_genU]`. Conclude with `isUnit_one`. Establish `hFl : Fl.b (.inr τ) = colFrame (fun a => j (v a : 𝔐.Li)) (Matrix.of fun a b => (genU Ω (rk (CMType H) D.p D.q) (.inr τ))ᵀ⁻¹ a (Fin.rev b))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[hC.2 τ v hv k, DetG.omBlock_gMat]`. Both sides reduce to the same expression. Establish `hw : LinearIndependent (GenField Ω (rk (CMType H) D.p D.q)) (fun a => j (v a : 𝔐.Li))` using `hj.2 _ (fun a => (v a : 𝔐.Li)) ((linearIndependent_of_dual_pairing _ v hv).map' _ (Submodule.ker_subtype _))`. Establish `hsub : (𝔐'.V (.inr τ)).IsFlagVBOn Set.univ (colFrame (fun a => j (v a : 𝔐.Li)) (Matrix.of fun a b => (genU Ω (rk (CMType H) D.p D.q) (.inr τ))ᵀ⁻¹ a (Fin.rev b)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hFl]`. Conclude with `Fl.sub (.inr τ)`. Take `⟨U₀, Rm, Rm', hU₀, hRm, hRm', hRR, hgU, hgr⟩` from `GlobalTheory.T.exists_triangular_regular_frame_change 𝔐'.X _ 𝔐'.ξ 𝔐'.Li (𝔐'.V (.inr τ)) _ (fun a => j (v a : 𝔐.Li)) _ _ p' hw hgdet hpull hsub`. Establish `hTi : IsUnit (T.map (algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q)))).det`. Establish `h` using `hT.map (algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[RingHom.map_det]`. Conclude with `h`. Take `⟨U₂, R₂, R₂', hU₂, hU₂d, hR₂, hR₂', hRR₂, hu⟩` from `GlobalTheory.T.exists_reversed_triangular_frame_change _ (regAt 𝔐'.ξ p') _ (genU Ω (rk (CMType H) D.p D.q) (.inr τ)) _ U₀ Rm Rm' (by rw [DetG.det_genU]; exact isUnit_one) hTi hU₀ (fun l => (hgr l).1) hRm hRm' hRR hgU`. Take `⟨C, hC1, hC2, hC3⟩` from `forms_quotient (algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q))) (regAt 𝔐.ξ ⟨pr p'.1, hp⟩) (regAt 𝔐'.ξ p') (fun a ha => LatModel.dominates_regAt hd p' hp ha) (aOf 𝔐 bW bO φ (.inr τ)) T C₀ (seg x₀ c₁ ^ m (.inr τ)) _ U₂ R₂ R₂' hreg hC₀ hinv hR₂ hR₂' hRR₂ hu`. Use `⟨U₂, C, hU₂, hC1, hC2, hC3, fun l => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hU₂d l, inv_inv, hFl]`. Conclude with `hgr l.rev`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adapted_frame_om : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (K₀ : Type) [Fintype K₀] (J₀ : K₀ → Type) [∀ k, Fintype (J₀ k)] (x₀ : (Σ k, J₀ k) → Ω) (𝔐 : HodgeCpt Y S x₀) (bW : WBases 𝔐) (bO : OmBases 𝔐) (n m : CMType H ⊕ CMType H → ℕ) (φ : ∀ s, Fin (n s) → Module.Dual Ω (EE 𝔐)), FormsOK 𝔐 bW bO m φ → ∀ (𝔐' : HodgeCpt Y S (yv (p := D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀)) (pr : 𝔐'.X ⟶ 𝔐.X) (j : 𝔐.Li →+ 𝔐'.Li) (Fl : 𝔐'.Flag), HodgeOver 𝔐' 𝔐 pr (algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q))) j → (∀ s, 𝔐'.V s = (𝔐.V s).pull 𝔐'.ξ pr j) → ColFlags 𝔐 bW bO j Fl → ∀ (τ : CMType H) (p' : Cpt 𝔐'.ξ) (hp : genPt 𝔐.ξ ⤳ pr p'.1) (c₁ : ∀ k, J₀ k), InChart 𝔐.ξ (seg x₀) c₁ ⟨pr p'.1, hp⟩ → ∃ (U : Matrix (Fin (rk (CMType H) D.p D.q (.inr τ))) (Fin (rk (CMType H) D.p D.q (.inr τ))) (GenField Ω (rk (CMType H) D.p D.q))) (C : Matrix (Fin (rk (CMType H) D.p D.q (.inr τ))) (Fin (n (.inr τ))) (GenField Ω (rk (CMType H) D.p D.q))), U.BlockTriangular id ∧ (∀ a b, (fMat (aOf 𝔐 bW bO φ) (.inr τ) * U) a b / algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q)) (seg x₀ c₁ ^ m (.inr τ)) ∈ regAt 𝔐'.ξ p') ∧ (∀ a b, C a b ∈ regAt 𝔐'.ξ p') ∧ (∀ a b, ∑ k, C a k * ((fMat (aOf 𝔐 bW bO φ) (.inr τ) * U) k b / algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q)) (seg x₀ c₁ ^ m (.inr τ))) = if a = b then 1 else 0) ∧ ∀ l : Fin D.q, ((𝔐'.V (.inr τ)).gr (Fl.b (.inr τ)) l.rev).IsGenAt p' (U l l)⁻¹ := by
   intro E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 bW bO n m φ hF 𝔐' pr j Fl hO hV hC τ p' hp c₁ hI

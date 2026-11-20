@@ -8,24 +8,22 @@ noncomputable section
 namespace GlobalTheory.DecFrobPow
 
 /- English proof (translation)
-Rewrite using `[AlgHom.coe_pow, FiniteField.coe_frobeniusAlgHom, pow_iterate]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_pow_apply {F R : Type} [Field F] [Fintype F] [CommRing R] [Algebra F R] (n : ℕ) (x : R) :
     ((FiniteField.frobeniusAlgHom F R) ^ n) x = x ^ (Fintype.card F ^ n) := by
   rw [AlgHom.coe_pow, FiniteField.coe_frobeniusAlgHom, pow_iterate]
 
 /- English proof (translation)
-Use `set q := Fintype.card F with hq`. Set `S : Subalgebra F k` to `AlgHom.equalizer ((FiniteField.frobeniusAlgHom F k) ^ a) (AlgHom.id F k)`. Establish `hS : ∀ x, x ∈ S ↔ x ^ (q ^ a) = x`. Introduce `x`. Use `show ((FiniteField.frobeniusAlgHom F k) ^ a) x = (AlgHom.id F k) x ↔ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[frob_pow_apply]`. Both sides reduce to the same expression. Set `L : IntermediateField F k` to `S.toIntermediateField (fun x hx => by`. Rewrite `hx`, the goal using `[hS]`. Rewrite using `[inv_pow, hx])`.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : ∀ x, x ∈ L ↔ x ^ (q ^ a) = x` using `hS`. Establish `hq1 : 1 < q` using `Fintype.one_lt_card`. Establish `hfin : (L : Set k).Finite`. Establish `hP : (X ^ q ^ a - X : k[X]) ≠ 0` using `FiniteField.X_pow_card_pow_sub_X_ne_zero k ha.ne' hq1`. Use `(Polynomial.finite_setOfPred_isRoot hP).subset fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(hL x).mp hx` as an intermediate fact. Simplify using `[Polynomial.IsRoot, this]`. Use `haveI : Finite L := hfin.to_subtype`. Set `σ : L →ₐ[F] L` to `(τ.comp L.val).codRestrict L.toSubalgebra fun x => by show τ (x : k) ∈ L`. Rewrite using `[hL, ← map_pow, (hL x).mp x.2]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `(FiniteField.bijective_frobeniusAlgHom_pow F L).2 σ`. Use `⟨n, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun f : L →ₐ[F] L => ((f ⟨x, (hL x).mpr hx⟩ : L) : k)) hn`. Simplify using `only [frob_pow_apply] at h1`. Establish `h2 : ((σ ⟨x, (hL x).mpr hx⟩ : L) : k) = τ x` using `rfl`.
-
-Rewrite using `[← h2, ← h1, SubmonoidClass.coe_pow]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_of_algHom {k F : Type} [Field k] [Field F] [Fintype F] [Algebra F k]
     (τ : k →ₐ[F] k) {a : ℕ} (ha : 0 < a) :
@@ -61,11 +59,11 @@ end GlobalTheory.DecFrobPow
 namespace GlobalTheory.DecFrobPow
 
 /- English proof (translation)
-Set `g : 𝓞 K →+* A` to `((algebraMap K Ω).comp (algebraMap (𝓞 K) K)).codRestrict A fun x => ReciprocityTheory.Gal.mem_of_isIntegral_int A (x.2.algebraMap (B := Ω))`. Set `P : Ideal (𝓞 K)` to `(IsLocalRing.maximalIdeal A).comap g`. Establish `hmem : ∀ x : 𝓞 K, x ∈ P ↔ A.valuation (algebraMap K Ω (x : K)) < 1` using `fun x => A.valuation_lt_one_iff (g x)`. Establish `hne : P ≠ ⊥`. Introduce `h0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpP : ((p : ℕ) : 𝓞 K) ∈ P`. Rewrite using `[hmem]`. Simplify using `using hpA`. Rewrite `hpP` using `[h0, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hpP)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨P, Ideal.comap_isPrime g _, hne⟩, fun x => (hmem x).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_place {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω]
     (A : ValuationSubring Ω) {p : ℕ} (hp : p.Prime) (hpA : A.valuation (p : Ω) < 1) :
@@ -84,13 +82,11 @@ theorem exists_place {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra
   exact ⟨⟨P, Ideal.comap_isPrime g _, hne⟩, fun x => (hmem x).symm⟩
 
 /- English proof (translation)
-Take `⟨wK, hwK⟩` from `exists_place (K := K) A hp hpA`. Take `⟨φ, hφD, hφ⟩` from `exists_isFrob (F := K) hwK`. Take `⟨p', c, hp', hc, hN, hp'A⟩` from `GlobalTheory.FrobTeich.exists_prime_pow_normV A wK hwK`. Establish `hchar : ∀ r : ℕ, r.Prime → A.valuation (r : Ω) < 1 → CharP (IsLocalRing.ResidueField A) r`. Introduce `r hr hrA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(CharP.charP_iff_prime_eq_zero hr).2 ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (IsLocalRing.residue A), IsLocalRing.residue_eq_zero_iff, A.valuation_lt_one_iff]`. Simplify using `using hrA`. Establish `hpp : p' = p` using `by haveI := hchar p hp hpA haveI := hchar p' hp' hp'A`. Conclude with `CharP.eq (IsLocalRing.ResidueField A) ‹CharP _ p'› ‹CharP _ p›`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hpp` using the available equality. Use `⟨c, hc, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h1` using `hφ _ hz`. Rewrite `h1` using `[hN, φ.commutes]`. Rewrite using `[← Valuation.map_neg, neg_sub]`.
-
-Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_cong_of_mem {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω]
     [IsAlgClosure K Ω] (A : ValuationSubring Ω) {p : ℕ} (hp : p.Prime) (hpA : A.valuation (p : Ω) < 1) :
@@ -121,7 +117,7 @@ end GlobalTheory.DecFrobPow
 namespace GlobalTheory.DecFrobPow
 
 /- English proof (translation)
-Proceed by induction on `b with`. Consider the case `zero => simp`. Consider the case `succ b ih => rw [pow_succ, pow_mul, ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_pow_eq_self {R : Type} [Monoid R] {r : R} {M : ℕ} (h : r ^ M = r) (b : ℕ) :
     r ^ (M ^ b) = r := by
@@ -130,25 +126,19 @@ theorem pow_pow_eq_self {R : Type} [Monoid R] {r : R} {M : ℕ} (h : r ^ M = r) 
   | succ b ih => rw [pow_succ, pow_mul, ih, h]
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h d hd y`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Use `haveI : Algebra.IsAlgebraic E Ω := IsAlgClosure.isAlgebraic`. Use `set K := IntermediateField.adjoin E ({y} : Set Ω) with hK`. Use `haveI hKfin : FiniteDimensional E K := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral y)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : FiniteDimensional ℚ K := Module.Finite.trans E K`. Use `haveI : NumberField K := ⟨⟩`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed E, Algebra.IsAlgebraic.tower_top (K := E) K⟩`. Use `⟨K, hKfin, IntermediateField.mem_adjoin_simple_self E y, ?_⟩` and prove the remaining obligations. Take `⟨p, b, hp, hb, hq, hpA⟩` from `GlobalTheory.FrobTeich.exists_prime_pow_normV A w h`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc, hcK⟩` from `exists_pow_cong_of_mem (K := K) A hp hpA`. Use `haveI : w.asIdeal.IsMaximal := w.isMaximal`. Use `letI : Field (𝓞 E ⧸ w.asIdeal) := Ideal.Quotient.field _`. Use `haveI : Finite (𝓞 E ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Use `letI : Fintype (𝓞 E ⧸ w.asIdeal) := Fintype.ofFinite _`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card (𝓞 E ⧸ w.asIdeal) = normV w` using `Fintype.card_eq_nat_card`. Set `gE : 𝓞 E →+* A` to `((algebraMap E Ω).comp (algebraMap (𝓞 E) E)).codRestrict A fun x => ReciprocityTheory.Gal.mem_of_isIntegral_int A (x.2.algebraMap (B := Ω))`. Set `ι : 𝓞 E ⧸ w.asIdeal →+* IsLocalRing.ResidueField A` to `Ideal.Quotient.lift w.asIdeal ((IsLocalRing.residue A).comp gE) (fun x hx => by show IsLocalRing.residue A (gE x) = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, A.valuation_lt_one_iff]`. Conclude with `(h x).mpr hx)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `letI : Algebra (𝓞 E ⧸ w.asIdeal) (IsLocalRing.ResidueField A) := ι.toAlgebra`. Set `D : A.decompositionSubgroup E` to `⟨d, hd⟩`. Set `τ0 : IsLocalRing.ResidueField A →+* IsLocalRing.ResidueField A` to `MulSemiringAction.toRingHom (A.decompositionSubgroup E) (IsLocalRing.ResidueField A) D`. Establish `hτ0 : ∀ a : A, τ0 (IsLocalRing.residue A a) = IsLocalRing.residue A (D • a)` using `fun a => (IsLocalRing.ResidueField.residue_smul (g := D) (r := a)).symm`. Establish `hval : ∀ a : A, ((D • a : A) : Ω) = d a` using `fun a => rfl`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `τ : IsLocalRing.ResidueField A →ₐ[𝓞 E ⧸ w.asIdeal] IsLocalRing.ResidueField A` to `{ τ0 with commutes' := fun c => by`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Use `show τ0 (ι (Ideal.Quotient.mk _ x)) = ι (Ideal.Quotient.mk _ x)`. Establish `e1 : ι (Ideal.Quotient.mk _ x) = IsLocalRing.residue A (gE x)` using `Ideal.Quotient.lift_mk _ _ _`. Rewrite using `[e1, hτ0]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hval]`. Conclude with `d.commutes _ }`. Take `⟨j, hj⟩` from `exists_pow_of_algHom τ hc`.
-
-Rewrite `hj` using `[hcard]`. Use `⟨j, fun z hzK hz => ?_⟩` and prove the remaining obligations. Set `a : A` to `⟨z, (A.valuation_le_one_iff z).mp hz⟩`. Establish `h1 : A.valuation (z ^ (p ^ c) - z) < 1` using `hcK ⟨z, hzK⟩ hz`. Establish `h2 : IsLocalRing.residue A a ^ (p ^ c) = IsLocalRing.residue A a`.
-
-Rewrite using `[← sub_eq_zero, ← map_pow, ← map_sub, IsLocalRing.residue_eq_zero_iff, A.valuation_lt_one_iff]`. Conclude with `h1`. Establish `h3 : IsLocalRing.residue A a ^ (normV w ^ c) = IsLocalRing.residue A a`. Rewrite using `[hq, ← pow_mul, mul_comm, pow_mul]`. Conclude with `pow_pow_eq_self h2 b`.
-
-Establish `h4` using `hj _ h3`. Establish `h5 : τ (IsLocalRing.residue A a) = IsLocalRing.residue A (D • a)` using `hτ0 a`. Rewrite `h4` using `[h5, ← sub_eq_zero, ← map_pow, ← map_sub, IsLocalRing.residue_eq_zero_iff, A.valuation_lt_one_iff]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_field_cong_pow : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (_h : IsPlaceOver A w),

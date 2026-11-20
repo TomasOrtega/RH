@@ -36,7 +36,7 @@ variable {H : Type} [AddCommGroup H] [Module O H] {c : Ideal (OF E)}
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Establish `h` using `(Module.Flat.rTensor_preserves_injective_linearMap (M := H) (Algebra.linearMap O K) (IsFractionRing.injective O K)).comp (TensorProduct.lid O H).symm.injective`. Introduce `x y hxy`. Apply `h` to reduce the goal to its premises. Simplify `hxy` using `[inK]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inK_injective [Module.Free O H] : Function.Injective (inK (O := O) K H) := by
   have h := (Module.Flat.rTensor_preserves_injective_linearMap (M := H) (Algebra.linearMap O K)
@@ -46,7 +46,7 @@ theorem inK_injective [Module.Free O H] : Function.Injective (inK (O := O) K H) 
   simpa [inK] using hxy
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[bar]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bar_bar (σ : E →+* K) : bar (bar σ) = σ := by
   ext x; simp [bar]
@@ -54,7 +54,7 @@ theorem bar_bar (σ : E →+* K) : bar (bar σ) = σ := by
 omit [IsDomain O] [IsFractionRing O K] in
 
 /- English proof (translation)
-Simplify using `[inK, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem baseChange_inK (B : LinearMap.BilinForm O H) (x y : H) :
     B.baseChange K (inK K H x) (inK K H y) = algebraMap O K (B x y) := by
@@ -63,7 +63,7 @@ theorem baseChange_inK (B : LinearMap.BilinForm O H) (x y : H) :
 omit [IsCMField E] [IsDomain O] [IsFractionRing O K] in
 
 /- English proof (translation)
-Establish `h : inK K H f ∈ eigK ρ σ` using `hf`. Establish `h1` using `Module.End.mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 h a)`. Establish `h2 : (ρ a).baseChange K (inK K H f) = inK K H (ρ a f)` using `by simp [inK]`. Rewrite using `[← baseChange_inK, ← baseChange_inK, ← h2, h1, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_act (ρ : orderC c →+* Module.End O H) (B : LinearMap.BilinForm O H) {σ : E →+* K} {f : H}
     (hf : f ∈ eigLat ρ σ) (a : orderC c) (x : H) : algebraMap O K (B x (ρ a f)) = σ a * algebraMap O K (B x f) := by
@@ -73,15 +73,15 @@ theorem form_act (ρ : orderC c →+* Module.End O H) (B : LinearMap.BilinForm O
   rw [← baseChange_inK, ← baseChange_inK, ← h2, h1, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `key : ∀ h ∈ ⨆ σ : E →+* K, eigLat ρ σ, B e f • M h = (D * B h f) • f`. Introduce `h hh`. Proceed by induction on `hh using Submodule.iSup_induction' with`. Consider the case `mem σ h hh`. Distinguish the cases in `hσ : σ = τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Substitute `hσ` using the available equality. Rewrite `hh` using `[he]`. Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.1 hh`. Establish `hMe : M e = D • f` using `inK_injective (K := K) (by rw [hM, hN.1, map_smul, algebraMap_smul])`. Simplify using `only [map_smul, hMe, LinearMap.smul_apply, smul_eq_mul, smul_smul]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : M h = 0` using `inK_injective (K := K) (by rw [hM, hN.2 σ hσ _ hh, smul_zero, map_zero])`. Establish `h2 : B h f = 0` using `IsFractionRing.injective O K (by`. Rewrite using `[← baseChange_inK, map_zero]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `horth σ (bar τ) (fun h' ↦ hσ (by rw [← bar_bar σ, ← h', bar_bar])) _ hh _ hf)`. Simplify using `[h1, h2]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp only [map_add, LinearMap.add_apply, smul_add, mul_add, add_smul, hx, hy]`. Establish `h` using `key _ (hsup x)`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `smul_right_injective H hD` to reduce the goal to its premises. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul] at h ⊢`. Rewrite using `[smul_comm D, h, smul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_eq [Module.Free O H] (ρ : orderC c →+* Module.End O H) (B : LinearMap.BilinForm O H) {D : O} (hD : D ≠ 0)
     {τ : E →+* K} {e f : H} (he : eigLat ρ τ = O ∙ e) (hf : f ∈ eigLat ρ (bar τ))
@@ -113,11 +113,11 @@ theorem lower_eq [Module.Free O H] (ρ : orderC c →+* Module.End O H) (B : Lin
   rw [smul_comm D, h, smul_smul]
 
 /- English proof (translation)
-Establish `hn' : (n : O) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `h1 : B e (ρ a f) * B x f = B x (ρ a f) * B e f` using `IsFractionRing.injective O K (by`. Rewrite using `[map_mul, map_mul, form_act ρ B hf, form_act ρ B hf]`. Use the proof step `ring)`. Establish `h2 : B' e f * B x f = B' x f * B e f` using `mul_left_cancel₀ hn' (by linear_combination B x f * hB e f - B e f * hB x f + 2 * h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ : B e f ≠ 0` using `fun hβ ↦ h0 (mul_left_cancel₀ hn' (by`. Establish `: B e (ρ a f) = 0` using `IsFractionRing.injective O K (by rw [form_act ρ B hf, hβ]; simp)`. Rewrite using `[hB, this]`. Use the proof step `simp))`. Apply `smul_right_injective H hβ` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[smul_comm, lower_eq ρ B hD he hf hsup horth hN hM, smul_smul, smul_smul]`. Use `congr 1`. Take the linear combination `D * h2`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lower_eq_of_scale [CharZero O] [Module.Free O H] (ρ : orderC c →+* Module.End O H) (B B' : LinearMap.BilinForm O H)
     {D : O} (hD : D ≠ 0)
@@ -144,11 +144,11 @@ theorem lower_eq_of_scale [CharZero O] [Module.Free O H] (ρ : orderC c →+* Mo
 end Lin
 
 /- English proof (translation)
-Take `⟨ψ', ⟨n, a, b, hch, he⟩, h'⟩` from `IsPolForm.pull_comp m (X.isLB c) (π := (lift (𝟙 X.A) (𝟙 X.A)).left) (L := X.P c) hψ`. Take `⟨φ₂, hsq, hiso⟩` from `hX.pol`. Establish `e : (lift (𝟙 X'.A) (𝟙 X'.A)).left ≫ φ₂ = p ≫ (lift (𝟙 X.A) (𝟙 X.A)).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst X.A X.A).left = _ ≫ (fst X.A X.A).left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `_ ≫ (snd X.A X.A).left = _ ≫ (snd X.A X.A).left`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hI : LBIso (X'.diag c) ((X.P c).pull (p ≫ (lift (𝟙 X.A) (𝟙 X.A)).left))` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso (hiso c) _ e.symm`. Conclude with `⟨ψ', ⟨n, a, b, (isChern_existsUnique_and_iso _ _ _ _ _).2 _ _ (pull_isLB (X.isLB c) _) (pull_isLB (X'.isLB c) _) hI.symm _ hch, he⟩, h'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_polForm_baseChange {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R R' : Type} [CommRing R] [CommRing R']
     (σ : R →+* R') {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')} {p : X'.A.left ⟶ X.A.left}
@@ -175,15 +175,15 @@ theorem exists_polForm_baseChange {F : Type} [Field F] [NumberField F] {𝔠 : F
     (pull_isLB (X'.isLB c) _) hI.symm _ hch, he⟩, h'⟩
 
 /- English proof (translation)
-Take `⟨k, t, hk, ht⟩` from `GlobalTheory.RealMult.PolScale.exists_nat_mul_polForm_eq hDR (FR E) 𝔠 R X₀ c₁ c₀ hc₀ ψR _ hψR hψ₀`. Establish `hact : act (dp0 R) (𝟙 _) X₀.rm t = act (dp0 R) (𝟙 _) cm (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.ofF c t)` using `by haveI := X₀.rm.hom t haveI := cm.hom (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.ofF c t)`. Rewrite using `[act_apply, act_apply]`. Conclude with `push_congr _ _ (hrm t).symm`. Establish `hγ` using `hψ _ _ _ _ hev hyv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `lower_eq_of_scale (eH.conjRingEquiv.toRingHom.comp (act (dp0 R) (𝟙 _) cm)) (ψ₀.compl₁₂ eH.symm.toLinearMap eH.symm.toLinearMap) (ψR.compl₁₂ eH.symm.toLinearMap eH.symm.toLinearMap) hD he hf hsup horth hN hM hk (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations. …`. Use `ht (eH.symm x) (eH.symm y)` as an intermediate fact. Rewrite `this` using `[hact]`. Simplify using `using this) (fun h ↦ h0 (by`. Establish `h' : ψR (eH.symm e) (eH.symm f) = 0` using `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγ, h', map_zero])) (eH x₀)`. Establish `h2 : ψR (eH.symm e) (eH.symm f) • eH.symm (M (eH x₀)) = (D * ψR x₀ (eH.symm f)) • eH.symm f`. Use `congrArg eH.symm h1` as an intermediate fact. Simplify using `using this`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (algebraMap R ℂ) (LinearMap.congr_fun h2 z)`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, map_mul] at h3`. Establish `h4 : eH.symm.conjRingEquiv M x₀ = eH.symm (M (eH x₀))` using `rfl`. Rewrite using `[h4]`. Simplify using `only [LinearMap.smul_apply, LinearMap.smulRight_apply, LinearMap.flip_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h5 : ψ.flip yv x = algebraMap R ℂ (ψR x₀ (eH.symm f))` using `hψ _ _ _ _ hx hyv`. Rewrite using `[hyv z, h5, div_mul_eq_mul_div, div_eq_iff h0, hγ]`. Establish `h6 : algebraMap R ℂ D = (D : ℂ)` using `rfl`. Rewrite `h3` using `[h6]`. Take the linear combination `-h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem corr_lower (hDR : GlobalTheory.Published.AbelianDeRham) {E : Type} [Field E] [NumberField E] [IsCMField E] {c : Ideal (OF E)}
     {𝔠 : FracId (FR E)} {R : Subring ℂ} {K : Type} [Field K] [Algebra R K] [IsFractionRing R K]
@@ -238,11 +238,11 @@ theorem corr_lower (hDR : GlobalTheory.Published.AbelianDeRham) {E : Type} [Fiel
   linear_combination -h3
 
 /- English proof (translation)
-Establish `hx' : algebraMap R (FractionRing R) x ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hx`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.val_vp at h ⊢`. Rewrite `h` using `[if_neg hx']`. Rewrite using `[if_neg (inv_ne_zero hx')]`. Establish `ho : GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.ord_vw R ((algebraMap R (FractionRing R) x)⁻¹) = - GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.ord_vw R (algebraMap R (FractionRing R) x)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.ord_vw`. Rewrite using `[map_inv₀, WithZero.log_inv, neg_neg]`. Rewrite using `[ho]`. Establish `h'` using `WithTop.coe_le_coe.1 h`. Use `WithTop.coe_le_coe.2 ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Rewrite using `[neg_div]`. Conclude with `neg_le_neg h'`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_le_val_inv {R : Subring ℂ} [IsDiscreteValuationRing R] (l : ℕ) (x : R) (q : ℚ) (hx : x ≠ 0)
     (h : GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.val_vp R l (algebraMap R (FractionRing R) x) ≤ (q : WithTop ℚ)) :

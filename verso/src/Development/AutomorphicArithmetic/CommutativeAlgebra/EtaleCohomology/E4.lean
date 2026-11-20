@@ -3,6 +3,6 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.Etal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleDescentPicardGroupStatement
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Et.EtaleTopology.top GlobalTheory.T.etale_descent_picard_group`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Et.e4 : LateralTheory.E.EtaleChapterEFour := UpperTheory.Et.EtaleTopology.top GlobalTheory.T.etale_descent_picard_group

@@ -20,29 +20,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LocalFactorFree
 
 /- English proof (translation)
-Set `f : LinearMap.range (LinearMap.mulLeft R e) →ₗ[R] (S ⧸ Ideal.span {1 - e})` to `(Ideal.Quotient.mkₐ R (Ideal.span {1 - e})).toLinearMap ∘ₗ (Submodule.subtype _)`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨_, s, rfl⟩ hs`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h1 : e * s ∈ Ideal.span {1 - e}` using `Ideal.Quotient.eq_zero_iff_mem.1 hs`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 h1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `e * s = 0`. Establish `h2 : e * (e * s) = e * s` using `by rw [← _root_.mul_assoc, he.eq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[← h2, ← ht]`. Take the linear combination `t * he.mul_one_sub_self`. Introduce `a`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Use `⟨⟨e * s, s, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (e * s) = Ideal.Quotient.mk _ s`. Rewrite using `[Ideal.Quotient.eq]`. Conclude with `Ideal.mem_span_singleton'.2 ⟨-s, by ring⟩`. Set `bA : Module.Basis I R (S ⧸ Ideal.span {1 - e})` to `b.map (LinearEquiv.ofBijective f hf)`. Use `haveI : Module.Finite R (S ⧸ Ideal.span {1 - e}) := Module.Finite.of_basis bA`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `haveI : Module.Free R (S ⧸ Ideal.span {1 - e}) := Module.Free.of_basis bA`. Set `N : Submodule S M` to `Submodule.torsionBy S M (1 - e)`. Use `haveI : Module.Finite R N := Module.Finite.of_injective (N.subtype.restrictScalars R) Subtype.val_injective`. Use `letI : Module (S ⧸ Ideal.span {1 - e}) N := inferInstanceAs (Module (S ⧸ Submodule.span S {1 - e}) (Submodule.torsionBy S M (1 - e)))`. Establish `hsm : ∀ (s : S) (n : N), (Ideal.Quotient.mk (Ideal.span {1 - e}) s) • n = s • n` using `fun _ _ => rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : IsScalarTower R (S ⧸ Ideal.span {1 - e}) N := ⟨fun r a n => by`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `: r • Ideal.Quotient.mk (Ideal.span {1 - e}) s = Ideal.Quotient.mk (Ideal.span {1 - e}) (r • s)` using `rfl`. Rewrite using `[this, hsm, hsm, smul_assoc]⟩`. Use `haveI : Module.Finite (S ⧸ Ideal.span {1 - e}) N := Module.Finite.of_restrictScalars_finite R _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Module.IsTorsionFree (S ⧸ Ideal.span {1 - e}) N := by`. Apply `Module.IsTorsionFree.of_smul_eq_zero` to reduce the goal to its premises. Introduce `a n han`. Distinguish the cases in `ha : a = 0`. Conclude with `Or.inl ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `right`. Take `⟨r, hr, c, hc⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := R) a).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero ha)`. Establish `h1 : r • n = 0`. Rewrite using `[← algebraMap_smul (S ⧸ Ideal.span {1 - e}) r n, hc, mul_comm, mul_smul, han, smul_zero]`. Establish `h2 : r • (n : M) = 0` using `congrArg Subtype.val h1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext ((smul_eq_zero.1 h2).resolve_left hr)`. Set `y` to `Module.finBasis (S ⧸ Ideal.span {1 - e}) N`. Set `B` to `bA.smulTower y`. Establish `hB : (fun q : I × Fin _ => (b q.1 : S) • (y q.2 : M)) = (N.subtype.restrictScalars R) ∘ B`. Use function extensionality and compare the values at `q`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Simplify using `only [B, Function.comp, Module.Basis.smulTower_apply]`. Both sides reduce to the same expression. Use `⟨_, fun j => (y j : M), ?_, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[hB]`. Conclude with `B.linearIndependent.map' _ (LinearMap.ker_eq_bot.2 Subtype.val_injective)`.
-
-Rewrite using `[hB, Set.range_comp, ← Submodule.map_span, B.span_eq, Submodule.map_top]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, rfl⟩`. Conclude with `n.2`. Introduce `hm`.
-
-Conclude with `⟨⟨m, hm⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem aux {R S M I : Type} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R] [CommRing S] [Algebra R S]
     [AddCommGroup M] [Module R M] [Module S M] [IsScalarTower R S M] [Module.Finite R M] [Module.Free R M]
@@ -111,11 +107,11 @@ private theorem aux {R S M I : Type} [CommRing R] [IsDomain R] [IsPrincipalIdeal
       exact ⟨⟨m, hm⟩, rfl⟩
 
 /- English proof (translation)
-Use `letI : Module S (κ → R) := Module.compHom (κ → R) (ρ : S →+* Matrix κ κ R)`. Establish `hsm : ∀ (s : S) (v : κ → R), s • v = ρ s *ᵥ v` using `fun _ _ => rfl`. Use `haveI : IsScalarTower R S (κ → R) := ⟨fun r s v => by`. Rewrite using `[hsm, hsm, map_smul, Matrix.smul_mulVec]⟩`. Take `⟨h, y, h1, h2⟩` from `aux (M := κ → R) e he b`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h, y, h1, ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Use `(h2 m).trans ⟨fun hm => ⟨m, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e • m = m`. Rewrite `hm` using `[sub_smul, one_smul, sub_eq_zero]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hm.symm`. Introduce and unpack `⟨v, rfl⟩`. Express the relevant statement in the definitionally equal form `(1 - e) • e • v = 0`. Rewrite using `[← mul_smul, he.one_sub_mul_self, zero_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aux2 {R S I κ : Type} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R] [CommRing S] [Algebra R S]
     [Fintype κ] [DecidableEq κ]
@@ -141,7 +137,7 @@ private theorem aux2 {R S I κ : Type} [CommRing R] [IsDomain R] [IsPrincipalIde
     rw [← mul_smul, he.one_sub_mul_self, zero_smul]
 
 /- English proof (translation)
-Introduce `p _ OE _ _ _ _ _ w b κ _ _ ρ`. Take `⟨h1, h2, -⟩` from `GlobalTheory.T.padic_unit_quotient_principal_basis p OE w`. Conclude with `aux2 w.e w.idem b ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_free_generators : ∀ (p : ℕ) [Fact p.Prime] (OE : Type) [CommRing OE] [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] (w : PlaceU p OE) (b : Module.Basis (Fin w.n) ℤ_[p] (LinearMap.range (LinearMap.mulLeft ℤ_[p] w.e))) (κ : Type) [Fintype κ] [DecidableEq κ] (ρ : (ℤ_[p] ⊗[ℤ] OE) →ₐ[ℤ_[p]] Matrix κ κ ℤ_[p]), ∃ (h : ℕ) (y : Fin h → κ → ℤ_[p]), LinearIndependent ℤ_[p] (fun q : Fin w.n × Fin h => ρ (b q.1 : ℤ_[p] ⊗[ℤ] OE) *ᵥ y q.2) ∧ Submodule.span ℤ_[p] (Set.range fun q : Fin w.n × Fin h => ρ (b q.1 : ℤ_[p] ⊗[ℤ] OE) *ᵥ y q.2) = LinearMap.range (Matrix.mulVecLin (ρ w.e)) := by
   intro p _ OE _ _ _ _ _ w b κ _ _ ρ

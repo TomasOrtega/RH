@@ -7,7 +7,7 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.GoodBdd
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [add_mul, one_mul, Pi.single_add, ← add_assoc, hv, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem periodic_mul {r l : ℕ} {v : (Fin r → ℕ) → ℚ}
     (hv : ∀ i, ∀ m, v (m + (Pi.single i l : Fin r → ℕ)) = v m) (i : Fin r) (k : ℕ)
@@ -17,11 +17,11 @@ theorem periodic_mul {r l : ℕ} {v : (Fin r → ℕ) → ℚ}
   | succ k ih => rw [add_mul, one_mul, Pi.single_add, ← add_assoc, hv, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `@insert a s ha ih`. Rewrite using `[ih]`. Establish `hfun : (fun i => if i ∈ s then m i % l else m i) = (fun i => if i ∈ insert a s then m i % l else m i) + (Pi.single a (m a / l * l) : Fin r → ℕ)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = a`. Substitute `hj` using the available equality. Simplify using `[ha, Nat.mod_add_div']`. Simplify using `[hj, Pi.single_eq_of_ne hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfun, GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.GoodBdd.periodic_mul hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reduce_on {r l : ℕ} {v : (Fin r → ℕ) → ℚ}
     (hv : ∀ i, ∀ m, v (m + (Pi.single i l : Fin r → ℕ)) = v m) (s : Finset (Fin r))
@@ -41,9 +41,9 @@ theorem reduce_on {r l : ℕ} {v : (Fin r → ℕ) → ℚ}
     rw [hfun, GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.GoodBdd.periodic_mul hv]
 
 /- English proof (translation)
-Introduce `r l v hl hv`. Use `⟨∑ f : Fin r → Fin l, |((v fun i => (f i : ℕ) : ℚ) : ℝ)|, fun m => ?_⟩` and prove the remaining obligations. Establish `hm : v m = v fun i => ((⟨m i % l, Nat.mod_lt _ hl⟩ : Fin l) : ℕ)`. Simplify using `using GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.GoodBdd.reduce_on hv Finset.univ m`. Rewrite using `[hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.single_le_sum (f := fun f : Fin r → Fin l => |((v fun i => (f i : ℕ) : ℚ) : ℝ)|) (fun f _ => abs_nonneg _) (Finset.mem_univ fun i => (⟨m i % l, Nat.mod_lt _ hl⟩ : Fin l))`.
+A detailed English derivation is pending.
 -/
 theorem bddW_of_periodic : ∀ (r l : ℕ) (v : (Fin r → ℕ) → ℚ), 0 < l →
     (∀ i, ∀ m, v (m + (Pi.single i l : Fin r → ℕ)) = v m) → BddW v := by

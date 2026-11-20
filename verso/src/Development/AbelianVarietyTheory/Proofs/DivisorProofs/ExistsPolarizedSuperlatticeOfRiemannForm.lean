@@ -16,7 +16,7 @@ section General
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
 
 /- English proof (translation)
-Use `haveI : IsZLattice ℝ Λ := ⟨hs⟩`. Use `haveI : Module.Free ℤ Λ := ZLattice.module_free ℝ Λ`. Set `b` to `(Module.Free.chooseBasis ℤ Λ).reindex (Fintype.equivFin _)`. Conclude with `⟨_, b.ofZLatticeBasis ℝ Λ, b.ofZLatticeBasis_span ℝ Λ⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_basis (Λ : Submodule ℤ V) [DiscreteTopology Λ]
     (hs : Submodule.span ℝ (Λ : Set V) = ⊤) :
@@ -27,7 +27,7 @@ theorem exists_basis (Λ : Submodule ℤ V) [DiscreteTopology Λ]
   exact ⟨_, b.ofZLatticeBasis ℝ Λ, b.ofZLatticeBasis_span ℝ Λ⟩
 
 /- English proof (translation)
-Take `⟨n, b, hb⟩` from `exists_basis Λ hs`. Rewrite using `[← hb, LinearMap.BilinForm.dualSubmodule_span_of_basis B hB b]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discrete_dual (B : LinearMap.BilinForm ℝ V) (hB : B.Nondegenerate)
     (Λ : Submodule ℤ V) [DiscreteTopology Λ] (hs : Submodule.span ℝ (Λ : Set V) = ⊤) :
@@ -38,14 +38,14 @@ theorem discrete_dual (B : LinearMap.BilinForm ℝ V) (hB : B.Nondegenerate)
   infer_instance
 
 /- English proof (translation)
-The claim follows from `DiscreteTopology.of_continuous_injective (continuous_inclusion h) (Set.inclusion_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem discrete_of_le {L M : Submodule ℤ V} [DiscreteTopology M] (h : L ≤ M) :
     DiscreteTopology L :=
   DiscreteTopology.of_continuous_injective (continuous_inclusion h) (Set.inclusion_injective h)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← hs]`. Conclude with `Submodule.span_mono h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_of_le {L M : Submodule ℤ V} (hs : Submodule.span ℝ (L : Set V) = ⊤) (h : L ≤ M) :
     Submodule.span ℝ (M : Set V) = ⊤ := by
@@ -53,9 +53,7 @@ theorem span_of_le {L M : Submodule ℤ V} (hs : Submodule.span ℝ (L : Set V) 
   exact Submodule.span_mono h
 
 /- English proof (translation)
-Use `haveI := discrete_of_le h`. Use `haveI : IsZLattice ℝ L := ⟨hs⟩`. Use `haveI : IsZLattice ℝ M := ⟨span_of_le hs h⟩`. Establish `hr : finrank ℤ (L.comap M.subtype) = finrank ℤ M`. Rewrite using `[(Submodule.comapSubtypeEquivOfLe h).finrank_eq, ZLattice.rank ℝ L, ZLattice.rank ℝ M]`.
-
-Use `haveI hfin : Finite (M ⧸ L.comap M.subtype) := Submodule.finiteQuotientOfFreeOfRankEq _ hr`. Use `⟨Nat.card (M ⧸ L.comap M.subtype), Nat.card_pos, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `(L.comap M.subtype).toAddSubgroup.nsmul_index_mem ⟨x, hx⟩`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem {L M : Submodule ℤ V} [DiscreteTopology M]
     (hs : Submodule.span ℝ (L : Set V) = ⊤) (h : L ≤ M) :
@@ -71,19 +69,17 @@ theorem exists_nsmul_mem {L M : Submodule ℤ V} [DiscreteTopology M]
   exact h1
 
 /- English proof (translation)
-Use `haveI := discrete_dual B hB Λ hs`. Use `set D := B.dualSubmodule Λ with hD`. Use `haveI : IsZLattice ℝ D := ⟨span_of_le hs hint⟩`. Use `haveI : IsNoetherian ℤ D := inferInstance`. Establish `anti : ∀ {L M : Submodule ℤ V}, L ≤ M → B.dualSubmodule M ≤ B.dualSubmodule L` using `fun h _ hy x hx => hy x (h hx)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨M, ⟨h1, h2⟩, hmax⟩` from `(set_has_maximal_iff_noetherian.2 this) {M : Submodule ℤ D | Λ ≤ M.map D.subtype ∧ M.map D.subtype ≤ B.dualSubmodule (M.map D.subtype)} ⟨Λ.comap D.subtype, by`. Simplify using `only [Set.mem_setOf_eq, Submodule.map_comap_subtype, inf_eq_right.2 hint]`. Conclude with `⟨le_rfl, hint⟩⟩`. Use `⟨M.map D.subtype, h1, Submodule.map_subtype_le _ _, le_antisymm ?_ h2⟩` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hwD : w ∈ D` using `anti h1 hw`. Establish `hle : M ≤ M ⊔ Submodule.span ℤ {⟨w, hwD⟩}` using `le_sup_left`. Establish `heq : M = M ⊔ Submodule.span ℤ {⟨w, hwD⟩}`. Assume the negation of the conclusion as `hne`. Use `hmax _ ⟨h1.trans (Submodule.map_mono hle), ?_⟩ (lt_of_le_of_ne hle hne)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`. Take `⟨x₁, hx₁, x₂, hx₂, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨y₁, hy₁, y₂, hy₂, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hx₂`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `h2 ⟨x₁, hx₁, rfl⟩ _ ⟨y₁, hy₁, rfl⟩`. Establish `e2` using `hw _ ⟨y₁, hy₁, rfl⟩`. Establish `e3` using `hw _ ⟨x₁, hx₁, rfl⟩`. Establish `e4 : B (x₁ : V) w = - B w (x₁ : V)` using `(hA.neg_eq _ _).symm`. Establish `e5 : B w w = 0` using `hA w`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e6 : B (D.subtype (x₁ + a • ⟨w, hwD⟩)) (D.subtype (y₁ + c • ⟨w, hwD⟩)) = B (D.subtype x₁) (D.subtype y₁) + a • B w (D.subtype y₁) - c • B w (D.subtype x₁)`. Simplify using `only [Submodule.subtype_apply, Submodule.coe_add, Submodule.coe_smul, map_add, map_zsmul, LinearMap.add_apply, LinearMap.smul_apply, e4, e5, smul_zero, smul_neg, add_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e6]`. Conclude with `sub_mem (add_mem e1 (Submodule.smul_mem _ _ e2)) (Submodule.smul_mem _ _ e3)`.
-
-Establish `: (⟨w, hwD⟩ : D) ∈ M`. Rewrite using `[heq]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Conclude with `⟨_, this, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_selfDual (B : LinearMap.BilinForm ℝ V) (hB : B.Nondegenerate) (hA : B.IsAlt)
     (Λ : Submodule ℤ V) [DiscreteTopology Λ] (hs : Submodule.span ℝ (Λ : Set V) = ⊤)
@@ -131,13 +127,13 @@ theorem exists_selfDual (B : LinearMap.BilinForm ℝ V) (hB : B.Nondegenerate) (
   exact ⟨_, this, rfl⟩
 
 /- English proof (translation)
-Take `⟨n, b, hb⟩` from `exists_basis Λ hs`. Establish `hbmem : ∀ i, b i ∈ Λ` using `fun i => hb ▸ Submodule.subset_span ⟨i, rfl⟩`. Introduce `φ`. Use `set y : V := ∑ i, (φ ⟨b i, hbmem i⟩ : ℤ) • B.dualBasis hB b i with hy`. Establish `hymem : y ∈ B.dualSubmodule Λ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hb, LinearMap.BilinForm.dualSubmodule_span_of_basis B hB b]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hLI : LinearIndependent ℤ b` using `b.linearIndependent.restrict_scalars' ℤ`. Set `bΛ : Module.Basis (Fin n) ℤ Λ` to `(Module.Basis.span hLI).map (LinearEquiv.ofEq _ _ hb)`. Establish `hbΛ : ∀ i, (bΛ i : V) = b i` using `fun i => by simp [bΛ, Module.Basis.span_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨⟨y, hymem⟩, bΛ.ext fun j => ?_⟩` and prove the remaining obligations. Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Establish `hspec` using `LinearMap.BilinForm.dualSubmoduleParing_spec B ⟨y, hymem⟩ (bΛ j)`. Simplify using `only [algebraMap_int_eq, Int.coe_castRingHom] at hspec`. Rewrite using `[LinearMap.BilinForm.dualSubmoduleToDual_apply_apply, hspec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [hbΛ, hy, map_sum, LinearMap.sum_apply, map_zsmul, LinearMap.smul_apply, LinearMap.BilinForm.apply_dualBasis_left, smul_ite, smul_zero, zsmul_eq_mul, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `congr 2`. Conclude with `Subtype.ext (hbΛ j).symm`.
+A detailed English derivation is pending.
 -/
 theorem dualSubmoduleToDual_surjective (B : LinearMap.BilinForm ℝ V) (hB : B.Nondegenerate)
     (Λ : Submodule ℤ V) [DiscreteTopology Λ] (hs : Submodule.span ℝ (Λ : Set V) = ⊤) :
@@ -165,9 +161,9 @@ theorem dualSubmoduleToDual_surjective (B : LinearMap.BilinForm ℝ V) (hB : B.N
   exact Subtype.ext (hbΛ j).symm
 
 /- English proof (translation)
-Take `⟨M, h1, h2, h3⟩` from `exists_selfDual B hB hA Λ hs hint`. Use `haveI := discrete_dual B hB Λ hs`. Use `haveI : DiscreteTopology M := discrete_of_le h2`. Establish `hsM` using `span_of_le hs h1`. Take `⟨N, hN, hNM⟩` from `exists_nsmul_mem hs h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `e` to `LinearEquiv.ofEq _ _ h3.symm`. Use `⟨M, N, (B.dualSubmoduleToDual M).comp e.toLinearMap, h1, hN, hNM, this, hsM, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Conclude with `B.dualSubmoduleParing_spec (e a) b`. Conclude with `Function.Bijective.comp (g := B.dualSubmoduleToDual M) (f := e) ⟨B.dualSubmoduleToDual_injective hB M hsM, dualSubmoduleToDual_surjective B hB M hsM⟩ e.bijective`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_unimodular (B : LinearMap.BilinForm ℝ V) (hB : B.Nondegenerate) (hA : B.IsAlt)
     (Λ : Submodule ℤ V) [DiscreteTopology Λ] (hs : Submodule.span ℝ (Λ : Set V) = ⊤)
@@ -205,9 +201,9 @@ theorem imForm_apply {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g �
     imForm Hm z w = (z ⬝ᵥ Hm.mulVec (star w)).im := rfl
 
 /- English proof (translation)
-Establish `key : ∀ u : Fin g → ℂ, star (star u ⬝ᵥ Hm.mulVec u) = star u ⬝ᵥ Hm.mulVec u`. Introduce `u`. Rewrite using `[← Matrix.star_dotProduct (Hm.mulVec u) u, Matrix.star_mulVec, h.eq, ← Matrix.dotProduct_mulVec]`. Introduce `z`. Rewrite using `[imForm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hq` using `key (star z)`. Rewrite `hq` using `[star_star]`. Conclude with `Complex.conj_eq_iff_im.mp hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imForm_isAlt {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h : Hm.IsHermitian) :
     (imForm Hm).IsAlt := by
@@ -221,13 +217,13 @@ theorem imForm_isAlt {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h : Hm.IsHermi
   exact Complex.conj_eq_iff_im.mp hq
 
 /- English proof (translation)
-Establish `hL : ∀ z : Fin g → ℂ, (∀ w, imForm Hm z w = 0) → z = 0`. Introduce `z hz`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hz (Complex.I • z)`. Rewrite `h1` using `[imForm_apply, star_smul, Complex.star_def, Complex.conj_I, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hp z hne`. Simplify using `[Complex.mul_im] at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR : ∀ w : Fin g → ℂ, (∀ z, imForm Hm z w = 0) → w = 0`. Introduce `w hw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Establish `h1` using `hw (Complex.I • w)`. Rewrite `h1` using `[imForm_apply, smul_dotProduct, smul_eq_mul]`. Establish `h2` using `hp w hne`. Simplify using `[Complex.mul_im] at h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `first`. Consider the case `exact ⟨hL, hR⟩`. Consider the case `exact hL`.
+Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem imForm_nondegenerate {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h : Hm.IsHermitian)
     (hp : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm.mulVec (star z)).re) :
@@ -254,9 +250,9 @@ theorem imForm_nondegenerate {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h : Hm
     | exact hL
 
 /- English proof (translation)
-Introduce `g Λ Hm hd hs hH hp hint`. Take `⟨M, N, Ef, h1, h2, h3, h4, h5, h6, h7⟩` from `exists_unimodular (imForm Hm) (imForm_nondegenerate hH hp) (imForm_isAlt hH) Λ hs (fun x hx y hy => by`. Take `⟨n, hn⟩` from `hint x hx y hy`. Conclude with `Submodule.mem_one.2 ⟨n, by rw [imForm_apply, hn]; simp⟩)`. Use `⟨M, N, Ef, h1, h2, fun x hx => ?_, h4, h5, h6, h7⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `h3 x hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_unimodular_overlattice :
     ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ),

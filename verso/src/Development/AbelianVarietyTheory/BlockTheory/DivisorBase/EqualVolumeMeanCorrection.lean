@@ -48,7 +48,7 @@ def SlopesMean (C : ℝ) : Prop :=
       -(C * bracket Y u g) ≤ meanC Y sl
 
 /- English proof (translation)
-The claim follows from `tendsto_nhds_unique ha.2 hb.2`.
+A detailed English derivation is pending.
 -/
 theorem IsSlope.unique {B : ℝ} {u : D.what₂.Tau → Fin Y.N → ℝ} {c : Y.Comp} {a b : ℝ}
     (ha : IsSlope Y B u c a) (hb : IsSlope Y B u c b) : a = b :=

@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.SS.OrdTwist
 
 /- English proof (translation)
-Establish `key : ∀ (E : I → Derivation K B B) (v : I → B), (Matrix.of fun i j => E i (v j)).det = (Matrix.of fun i k => (E i).liftKaehlerDifferential (b k)).det * (Matrix.of fun k j => b.repr (KaehlerDifferential.D K B (v j)) k).det`. Introduce `E v`. Rewrite using `[← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.mul_apply, Matrix.of_apply, ← Derivation.liftKaehlerDifferential_comp_D (E i) (v j)]`. Use `conv_lhs => rw [← b.sum_repr (KaehlerDifferential.D K B (v j))]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, Matrix.of_apply, mul_comm]`. Rewrite using `[key D' t, key D u, key D' u, key D t]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem det_cross {K B : Type} [CommRing K] [CommRing B] [Algebra K B] {I : Type} [Fintype I] [DecidableEq I]
     (b : Module.Basis I B Ω[B⁄K]) (D D' : I → Derivation K B B) (t u : I → B) :
@@ -43,14 +43,14 @@ abbrev rs {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) : Γ(X, U) →+* Γ(X, 
   (X.presheaf.map (homOfLE h).op).hom
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rs_rs {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)) :
     rs h' (rs h a) = rs (h'.trans h) a := by
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]; rfl
 
 /- English proof (translation)
-Unfold `jac`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `((D i).res U V h (t j)).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem rs_jac (D : I → VF A) {U V : A.left.Opens} (h : V ≤ U) (t : I → Γ(A.left, U)) :
     rs h (jac D U t) = jac D V (fun i => rs h (t i)) := by
@@ -61,14 +61,14 @@ theorem rs_jac (D : I → VF A) {U V : A.left.Opens} (h : V ≤ U) (t : I → Γ
   exact ((D i).res U V h (t j)).symm
 
 /- English proof (translation)
-Conclude with `congr($(Scheme.Hom.appLE_map A.hom (U := ⊤) (V := U) le_top (homOfLE h).op) ((Scheme.ΓSpecIso (CommRingCat.of K)).inv c))`.
+A detailed English derivation is pending.
 -/
 theorem rs_cstK {U V : A.left.Opens} (h : V ≤ U) (c : K) : rs h (cstK A U c) = cstK A V c := by
   exact congr($(Scheme.Hom.appLE_map A.hom (U := ⊤) (V := U) le_top (homOfLE h).op)
     ((Scheme.ΓSpecIso (CommRingCat.of K)).inv c))
 
 /- English proof (translation)
-Use `choose V e hx hV using h`. Use `X.sheaf.eq_of_locally_eq' (fun x : U => V x.1 x.2) U (fun x => homOfLE (e x.1 x.2)) ?_ a b (fun x => hV x.1 x.2)` and prove the remaining obligations. Introduce `x hxU`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hxU⟩, hx x hxU⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_of_locally {X : Scheme.{0}} {U : X.Opens} (a b : Γ(X, U))
     (h : ∀ x ∈ U, ∃ (V : X.Opens) (e : V ≤ U), x ∈ V ∧ rs e a = rs e b) : a = b := by
@@ -79,13 +79,11 @@ theorem eq_of_locally {X : Scheme.{0}} {U : X.Opens} (a b : Γ(X, U))
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hxU⟩, hx x hxU⟩
 
 /- English proof (translation)
-Take `⟨W, -, V, hV, hxV, e, hf⟩` from `hA.exists_isStandardSmoothOfRelativeDimension x`. Choose the witnesses or unpack the hypotheses as in `rfl : W = ⊤ := by`. Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Establish `: y = A.hom x` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e hxV`. Take `⟨g, hgU, hxg⟩` from `hV.exists_basicOpen_le ⟨x, hx⟩ hxV`. Use `⟨A.left.basicOpen g, hgU, hxg, ?_⟩` and prove the remaining obligations. Use `hV.isLocalization_basicOpen g` as an intermediate fact. Establish `h1 : (algebraMap Γ(A.left, V) Γ(A.left, A.left.basicOpen g)).IsStandardSmoothOfRelativeDimension 0` using `RingHom.IsStandardSmoothOfRelativeDimension.algebraMap_isLocalizationAway g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (cstK A V).IsStandardSmoothOfRelativeDimension n` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv hf`. Establish `h3` using `h1.comp h2`. Rewrite `h3` using `[zero_add]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `c`.
-
-Conclude with `(rs_cstK _ c).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_std {n : ℕ} (hA : SmoothOfRelativeDimension n A.hom) (U : A.left.Opens) (x : A.left) (hx : x ∈ U) :
     ∃ V : A.left.Opens, V ≤ U ∧ x ∈ V ∧ (cstK A V).IsStandardSmoothOfRelativeDimension n := by
@@ -121,11 +119,11 @@ def toDer (D : VF A) (V : A.left.Opens) :
     (fun a b => D.leibniz V a b)
 
 /- English proof (translation)
-Use `eq_of_locally _ _ fun x hx => ?_` and prove the remaining obligations. Take `⟨V, e, hxV, hs⟩` from `exists_std hA U x hx`. Use `⟨V, e, hxV, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, rs_jac]`. Use `letI := (cstK A V).toAlgebra`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Equip the data with the indicated structure.
 
-Establish `: Algebra.IsStandardSmoothOfRelativeDimension (Fintype.card I) K Γ(A.left, V)` using `hs`. Use `Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth (Fintype.card I) (R := K) (S := Γ(A.left, V))` as an intermediate fact. Establish `: Nonempty V` using `⟨⟨x, hxV⟩⟩`. Establish `: Module.finrank Γ(A.left, V) Ω[Γ(A.left, V)⁄K] = Fintype.card I`. Rewrite using `[Module.finrank, Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential (Fintype.card I)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `det_cross ((Module.finBasisOfFinrankEq _ _ this).reindex (Fintype.equivFin I).symm) (fun i => toDer (D i) V) (fun i => toDer (D' i) V) _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jac_cross (hA : SmoothOfRelativeDimension (Fintype.card I) A.hom) (D D' : I → VF A)
     (U : A.left.Opens) (t u : I → Γ(A.left, U)) :
@@ -144,15 +142,15 @@ theorem jac_cross (hA : SmoothOfRelativeDimension (Fintype.card I) A.hom) (D D' 
   exact det_cross ((Module.finBasisOfFinrankEq _ _ this).reindex (Fintype.equivFin I).symm) (fun i => toDer (D i) V) (fun i => toDer (D' i) V) _ _
 
 /- English proof (translation)
-Take `⟨hA, hD⟩` from `hD`. Use `choose V u hx hu using hD`. Establish `hu' : ∀ x, ∃ w, jac D (V x) (u x) * w = 1` using `fun x => (hu x).exists_right_inv`. Use `choose w hw using hu'`. Establish `key : ∀ x (U : A.left.Opens) (e : U ≤ V x) (t : I → Γ(A.left, U)), jac D' U t = rs e (jac D' (V x) (u x) * w x) * jac D U t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x U e t`. Establish `h1` using `congrArg (rs e) (hw x)`. Establish `h2` using `jac_cross hA D D' U t (fun i => rs e (u x i))`. Simplify using `only [map_mul, map_one, rs_jac] at h1 ⊢`. Take the linear combination `(rs e (w x)) * h2 - jac D' U t * h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h, hh, -⟩` from `A.left.sheaf.existsUnique_gluing' V ⊤ (fun x => homOfLE le_top) (fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hx x⟩) (fun x => jac D' (V x) (u x) * w x) (by`. Introduce `x y`. Use `show rs (inf_le_left : V x ⊓ V y ≤ V x) _ = rs (inf_le_right : V x ⊓ V y ≤ V y) _`. Establish `h1` using `key x (V x ⊓ V y) inf_le_left (fun i => rs inf_le_right (u y i))`. Establish `h2` using `congrArg (rs (inf_le_right : V x ⊓ V y ≤ V y)) (hw y)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `rs (inf_le_left : V x ⊓ V y ≤ V x) (jac D' (V x) (u x) * w x) = z at h1 ⊢`. Simplify using `only [map_mul, map_one, rs_jac] at h2 ⊢`. Rewrite using `[h1, _root_.mul_assoc, h2, _root_.mul_one])`. Use `revert hh`. Express the relevant statement in the definitionally equal form `Γ(A.left, ⊤) at h`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hh`. Use `⟨h, fun U t => eq_of_locally _ _ fun x hxU => ⟨U ⊓ V x, inf_le_left, ⟨hxU, hx x⟩, ?_⟩⟩` and prove the remaining obligations. Establish `h3 : rs (le_top : V x ≤ ⊤) h = jac D' (V x) (u x) * w x` using `hh x`. Rewrite using `[map_mul, rs_jac, rs_jac, key x _ inf_le_right, ← h3, rs_rs, rs_rs]`.
+A detailed English derivation is pending.
 -/
 theorem exists_ratio (D D' : I → VF A) (hD : IsFrame D) :
     ∃ h : Γ(A.left, ⊤), ∀ (U : A.left.Opens) (t : I → Γ(A.left, U)), jac D' U t = rs le_top h * jac D U t := by
@@ -187,14 +185,14 @@ section Pull
 variable {A' : Over (Sp K)} (g : A ⟶ A')
 
 /- English proof (translation)
-The claim follows from `congr($(g.naturality (homOfLE h).op) a)`.
+A detailed English derivation is pending.
 -/
 theorem app_rs {X Y : Scheme.{0}} (g : X ⟶ Y) {U V : Y.Opens} (h : V ≤ U) (a : Γ(Y, U)) :
     (g.app V).hom (rs h a) = rs (g.preimage_mono h) ((g.app U).hom a) :=
   congr($(g.naturality (homOfLE h).op) a)
 
 /- English proof (translation)
-Establish `h : A'.hom.appLE ⊤ V le_top ≫ g.left.app V = A.hom.appLE ⊤ (g.left ⁻¹ᵁ V) le_top`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Use `(Scheme.Hom.appLE_comp_appLE g.left A'.hom ⊤ V _ le_top le_rfl).trans ?_` and prove the remaining obligations. Simplify using `only [Over.w g]`. Conclude with `congr($h ((Scheme.ΓSpecIso (CommRingCat.of K)).inv c))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem app_cstK (V : A'.left.Opens) (c : K) : (g.left.app V).hom (cstK A' V c) = cstK A _ c := by
   have h : A'.hom.appLE ⊤ V le_top ≫ g.left.app V = A.hom.appLE ⊤ (g.left ⁻¹ᵁ V) le_top := by
@@ -214,7 +212,7 @@ Both sides reduce to the same expression.
 theorem appE_apply (V : A'.left.Opens) (a : Γ(A'.left, V)) : appE g V a = (g.left.app V).hom a := rfl
 
 /- English proof (translation)
-The claim follows from `(appE g V).apply_symm_apply a`.
+A detailed English derivation is pending.
 -/
 theorem app_symm (V : A'.left.Opens) (a : Γ(A.left, g.left ⁻¹ᵁ V)) :
     (g.left.app V).hom ((appE g V).symm a) = a := (appE g V).apply_symm_apply a
@@ -235,7 +233,7 @@ def transport (D : VF A) : VF A' where
     exact D.res _ _ _ _
 
 /- English proof (translation)
-Unfold `jac`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `app_symm g V _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem app_jac (D : I → VF A) (V : A'.left.Opens) (t : I → Γ(A'.left, V)) :
     (g.left.app V).hom (jac (fun i => transport g (D i)) V t) =
@@ -249,17 +247,17 @@ theorem app_jac (D : I → VF A) (V : A'.left.Opens) (t : I → Γ(A'.left, V)) 
 end Pull
 
 /- English proof (translation)
-Establish `: IsIso f.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map f.inv))`. Take `⟨h, hh⟩` from `exists_ratio D (fun i => transport f.inv (D i)) hD`. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: GeometricallyIntegral A.hom` using `GlobalTheory.geometricallyIntegral_of_smooth _`. Establish `: IsIntegral A.left` using `GeometricallyIntegral.isIntegral_of_subsingleton A.hom`. Establish `: IsIso A.hom.appTop` using `GlobalTheory.ProperFunctions.isIso_appTop_of_field A.hom`. Take `⟨c', rfl⟩` from `(ConcreteCategory.bijective_of_isIso A.hom.appTop).2 h`. Take `⟨c, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).2 c'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ (V : A.left.Opens) (t : I → Γ(A.left, V)), jac D _ (fun i => (f.inv.left.app V).hom (t i)) = cstK A _ c * (f.inv.left.app V).hom (jac D V t)`. Introduce `V t`. Rewrite using `[← app_jac, hh, map_mul, ← app_cstK f.inv V c]`. Both sides reduce to the same expression. Use `⟨c, ?_, key⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Take `⟨x⟩ : Nonempty A.left` from `inferInstance`. Take `⟨U, t, hx, hu⟩` from `hD.2 x`. Establish `e : f.inv.left ⁻¹ᵁ (f.hom.left ⁻¹ᵁ U) = U`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Over.comp_left, f.inv_hom_id]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h1` using `key (f.hom.left ⁻¹ᵁ U) (fun i => (appE f.inv _).symm (rs e.le (t i)))`. Simplify using `only [app_symm, map_zero, zero_mul] at h1`. Establish `h2` using `hu.map (rs e.le)`. Rewrite `h2` using `[rs_jac, h1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: Nonempty (f.inv.left ⁻¹ᵁ (f.hom.left ⁻¹ᵁ U) : A.left.Opens)` using `⟨⟨x, e.ge hx⟩⟩`. Conclude with `not_isUnit_zero h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_const [GrpObj A] (hA : IsAbelianScheme A) (D : I → VF A) (hD : IsFrame D) (f : A ≅ A) :
     ∃ c : K, c ≠ 0 ∧ ∀ (V : A.left.Opens) (t : I → Γ(A.left, V)),
@@ -296,9 +294,9 @@ def cstR {R : Type} [CommRing R] [Algebra R K] (M : Model R A) (U : M.Y.left.Ope
   (M.Y.hom.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom
 
 /- English proof (translation)
-Establish `h : M.Y.hom.appLE ⊤ U le_top ≫ M.j.app U = (spMap (algebraMap R K)).appTop ≫ A.hom.appLE ⊤ (M.j ⁻¹ᵁ U) le_top`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Use `(Scheme.Hom.appLE_comp_appLE M.j M.Y.hom ⊤ U _ le_top le_rfl).trans ?_` and prove the remaining obligations. Simplify using `only [M.j_hom]`. Conclude with `Scheme.Hom.comp_appLE _ _ _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun q => q.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R K)))`. Use `Eq.trans congr($h ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)) ?_` and prove the remaining obligations. Conclude with `congrArg (A.hom.appLE ⊤ (M.j ⁻¹ᵁ U) le_top).hom e.symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem app_cstR {R : Type} [CommRing R] [Algebra R K] (M : Model R A) (U : M.Y.left.Opens) (r : R) :
     (M.j.app U).hom (cstR M U r) = cstK A _ (algebraMap R K r) := by
@@ -313,13 +311,13 @@ theorem app_cstR {R : Type} [CommRing R] [Algebra R K] (M : Model R A) (U : M.Y.
   exact congrArg (A.hom.appLE ⊤ (M.j ⁻¹ᵁ U) le_top).hom e.symm
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ π hπ A _ hA I _ _ D hD f`. Take `⟨c₀, hc₀, key⟩` from `exists_const hA D hD f`. Take `⟨c, u, hc⟩` from `IsDiscreteValuationRing.exists_units_eq_smul_zpow_of_irreducible hπ hc₀`. Establish `hπ0 : algebraMap R K π ≠ 0` using `by simpa using hπ.ne_zero`. Use `⟨c, fun M n hM => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `step : ∀ (j : A.left ⟶ M.Y.left), j = f.inv.left ≫ M.j → ∀ (U : M.Y.left.Opens) (t : I → Γ(M.Y.left, U)) (s : Γ(M.Y.left, U)), jac D (M.j ⁻¹ᵁ U) (fun i => (M.j.app U).hom (t i)) = cstK A _ (algebraMap R K π ^ n) * (M.j.app U).hom s → jac D (j ⁻¹ᵁ U) (fun i => (j.app U).hom (t i)) …`. Introduce and unpack `j rfl U t s h`. Establish `h1` using `key (M.j ⁻¹ᵁ U) (fun i => (M.j.app U).hom (t i))`. Rewrite `h1` using `[h, map_mul, app_cstK]`. Use `Eq.trans h1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ = cstK A (f.inv.left ⁻¹ᵁ M.j ⁻¹ᵁ U) _ * (f.inv.left.app (M.j ⁻¹ᵁ U)).hom ((M.j.app U).hom (cstR M U u * s))`. Rewrite using `[map_mul, map_mul, app_cstR, app_cstK, hc, zpow_add₀ hπ0, Units.smul_def, Algebra.smul_def]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hj : (M.twist f).j = f.inv.left ≫ M.j` using `by simp [Model.j, Model.twist]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun U t => ?_, ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hM.1 U t`. Conclude with `⟨_, step _ hj U t s hs⟩`. Take `⟨U, t, s, hU, hs, h⟩` from `hM.2`. Conclude with `⟨U, t, _, hU, (u.isUnit.map _).mul hs, step _ hj U t s h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (π : R), Irreducible π → ∀ (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (I : Type) [Fintype I] [DecidableEq I] (D : I → VF A), IsFrame D → ∀ f : A ≅ A, ∃ c : ℤ, ∀ (M : Model R A) (n : ℤ), HasOrd M D π n → HasOrd (M.twist f) D π (n + c) := by
   intro R K _ _ _ _ _ _ π hπ A _ hA I _ _ D hD f

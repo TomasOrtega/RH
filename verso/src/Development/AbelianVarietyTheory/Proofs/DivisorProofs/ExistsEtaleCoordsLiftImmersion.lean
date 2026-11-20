@@ -10,9 +10,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.EtLift
 
 /- English proof (translation)
-Take `⟨U, hU, V, hV, hxV, e, hs⟩` from `Smooth.exists_isStandardSmooth f x`. Take `⟨n, g, hgC, hg⟩` from `RingHom.IsStandardSmooth.exists_etale_mvPolynomial hs`. Establish `hmap : Etale (AffineSpace.map (Fin n) hU.fromSpec)` using `MorphismProperty.of_isPullback (P := @Etale) (AffineSpace.isPullback_map (n := Fin n) hU.fromSpec).flip inferInstance`. Establish `hSg : Etale (Spec.map (CommRingCat.ofHom g))` using `HasRingHomProperty.Spec_iff.mpr hg`. Use `⟨V, n, hV.isoSpec.hom ≫ Spec.map (CommRingCat.ofHom g) ≫ (AffineSpace.SpecIso (Fin n) _).inv ≫ AffineSpace.map (Fin n) hU.fromSpec, hxV, inferInstance, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Category.assoc, AffineSpace.map_over, AffineSpace.SpecIso_inv_over_assoc, ← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp, hgC]`. Rewrite using `[CommRingCat.ofHom_hom, IsAffineOpen.SpecMap_appLE_fromSpec f hU hV e, hV.isoSpec_hom_fromSpec_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_etale_to_affineSpace {k : CommRingCat.{0}} {X : Scheme.{0}} (f : X ⟶ Spec k) [Smooth f]
     (x : X) : ∃ (V : X.Opens) (n : ℕ) (u : V.toScheme ⟶ 𝔸(Fin n; Spec k)), x ∈ V ∧ Etale u ∧
@@ -29,21 +29,19 @@ theorem exists_etale_to_affineSpace {k : CommRingCat.{0}} {X : Scheme.{0}} (f : 
   rw [CommRingCat.ofHom_hom, IsAffineOpen.SpecMap_appLE_fromSpec f hU hV e, hV.isoSpec_hom_fromSpec_assoc]
 
 /- English proof (translation)
-Take `⟨O, hO, hOU⟩` from `j.isEmbedding.isInducing.isOpen_iff.mp U.isOpen`. Establish `hyC : j y ∈ (j.coborderRange : Set P)` using `subset_coborder ⟨y, rfl⟩`. Establish `hyO : j y ∈ O`. Rewrite using `[← Set.mem_preimage, hOU]`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWs⟩` from `P.isBasis_affineOpens.exists_subset_of_mem_open (show j y ∈ O ∩ (j.coborderRange : Set P) from ⟨hyO, hyC⟩) (hO.inter j.coborderRange.isOpen)`. Use `⟨W, hxW, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz show z ∈ (U : Set Y)`. Rewrite using `[← hOU]`. Conclude with `(hWs hz).1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsAffine W` using `hW`. Establish `key : Set.range (j ∣_ W) = (Scheme.Opens.ι W) ⁻¹' closure (Set.range j)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `subset_closure` to reduce the goal to its premises. Use `⟨(j ⁻¹ᵁ W).ι z, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← morphismRestrict_ι, Scheme.Hom.comp_apply]`. Introduce `hx`. Establish `hxW' : (Scheme.Opens.ι W) x ∈ (W : Set P)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← Scheme.Opens.range_ι]`. Conclude with `⟨x, rfl⟩`. Establish `hxC : (Scheme.Opens.ι W) x ∈ (j.coborderRange : Set P)` using `(hWs hxW').2`. Establish `h3 : (Scheme.Opens.ι W) x ∈ closure (Set.range j) ∩ coborder (Set.range j)` using `⟨hx, hxC⟩`. Rewrite `h3` using `[closure_inter_coborder]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `h3`. Establish `hzW : z ∈ j ⁻¹ᵁ W` using `by show j z ∈ W; rw [hz]; exact hxW'`. Choose the witnesses or unpack the hypotheses as in `⟨z', hz'⟩ : z ∈ Set.range (j ⁻¹ᵁ W).ι := by`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hzW`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨z', (Scheme.Opens.ι W).isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, morphismRestrict_ι, Scheme.Hom.comp_apply, hz', hz]`. Establish `: IsClosedImmersion (j ∣_ W)`. Use `.of_isPreimmersion _ ?_` and prove the remaining obligations. Rewrite using `[key]`.
-
-Conclude with `isClosed_closure.preimage (Scheme.Opens.ι W).continuous`. Conclude with `(IsClosedImmersion.isAffine_surjective_of_isAffine (j ∣_ W)).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_surjective_appTop {Y P : Scheme.{0}} (j : Y ⟶ P) [IsImmersion j] (y : Y) (U : Y.Opens)
     (hy : y ∈ U) : ∃ W : P.Opens, j y ∈ W ∧ j ⁻¹ᵁ W ≤ U ∧ Function.Surjective (j ∣_ W).appTop := by
@@ -90,17 +88,17 @@ end GlobalTheory.Mum.EtLift
 open GlobalTheory.Mum.EtLift in
 
 /- English proof (translation)
-Introduce `R _ _ N Y hsm j hj hjs y`. Establish `: Smooth Y.hom` using `hsm`. Take `⟨V, g, u, hyV, hu, huo⟩` from `exists_etale_to_affineSpace (k := CommRingCat.of (ResidueField R)) Y.hom y`. Establish `huo' : u ≫ (𝔸(Fin g; Sp (ResidueField R)) ↘ Sp (ResidueField R)) = V.ι ≫ Y.hom` using `huo`. Take `⟨W, hyW, hWV, hsurj⟩` from `exists_surjective_appTop j y V hyV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `u' : (j ⁻¹ᵁ W).toScheme ⟶ 𝔸(Fin g; Sp (ResidueField R))` to `Y.left.homOfLE hWV ≫ u`. Establish `hu' : Etale u'`. Establish `: Etale (Y.left.homOfLE hWV)` using `inferInstance`. Conclude with `inferInstanceAs (Etale (Y.left.homOfLE hWV ≫ u))`. Use `choose s hs using fun i : Fin g => hsurj (u'.appTop (AffineSpace.coord (Sp (ResidueField R)) i))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `τ0 : W.toScheme ⟶ 𝔸(Fin g; Sp R)` to `AffineSpace.homOfVector (W.ι ≫ PSpace.str R N) s`. Establish `hP` using `AffineSpace.isPullback_map (n := Fin g) (spMap (residue R))`. Establish `hfst : u' ≫ AffineSpace.map (Fin g) (spMap (residue R)) = (j ∣_ W) ≫ τ0`. Apply `AffineSpace.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, AffineSpace.map_over, τ0, AffineSpace.homOfVector_over, u']`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[reassoc_of% huo', Scheme.homOfLE_ι_assoc, ← Category.assoc (j ∣_ W), morphismRestrict_ι, Category.assoc, hjs]`. Introduce `i`. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.comp_apply, AffineSpace.map_appTop_coord, τ0, AffineSpace.homOfVector_appTop_coord]`. Conclude with `(hs i).symm`. Use `⟨W, g, τ0, j ⁻¹ᵁ W, u' ≫ hP.isoPullback.hom, hyW, fun z hz => hz, AffineSpace.homOfVector_over _ _, inferInstance, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Category.assoc, IsPullback.isoPullback_hom_snd, u']`. Rewrite using `[huo', Scheme.homOfLE_ι_assoc]`. Introduce `T t w hw`. Establish `hfst' : Y.left.homOfLE hWV ≫ u ≫ AffineSpace.map (Fin g) (spMap (residue R)) = (j ∣_ W) ≫ τ0`. Rewrite using `[← Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hfst`. Rewrite using `[Category.assoc, Category.assoc, IsPullback.isoPullback_hom_fst]`. Rewrite using `[hfst', ← Category.assoc]`. Use `congr 1`. Rewrite using `[← cancel_mono W.ι, Category.assoc, morphismRestrict_ι, hw]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.exists_etale_coords_lift_immersion : ∀ (R : Type) [CommRing R] [IsLocalRing R] (N : ℕ) (Y : Over (Sp (ResidueField R))), Smooth Y.hom → ∀ (j : Y.left ⟶ PSpace R N), IsImmersion j → j ≫ PSpace.str R N = Y.hom ≫ spMap (residue R) → ∀ y : Y.left, ∃ (W0 : (PSpace R N).Opens) (g : ℕ) (τ0 : W0.toScheme ⟶ 𝔸(Fin g; Sp R)) (O : Y.left.Opens) (e : O.toScheme ⟶ pullback (𝔸(Fin g; Sp R) ↘ Sp R) (spMap (residue R))), y ∈ O ∧ (O : Set Y.left) ⊆ j ⁻¹' W0 ∧ τ0 ≫ (𝔸(Fin g; Sp R) ↘ Sp R) = W0.ι ≫ PSpace.str R N ∧ Etale e ∧ e ≫ pullback.snd _ _ = O.ι ≫ Y.hom ∧ ∀ (T : Scheme.{0}) (t : T ⟶ O.toScheme) (w : T ⟶ W0.toScheme), w ≫ W0.ι = t ≫ O.ι ≫ j → t ≫ e ≫ pullback.fst _ _ = w ≫ τ0 := by
   intro R _ _ N Y hsm j hj hjs y

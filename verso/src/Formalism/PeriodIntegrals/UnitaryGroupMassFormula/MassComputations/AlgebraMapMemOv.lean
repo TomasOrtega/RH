@@ -16,9 +16,9 @@ def crd (R : Type) [CommRing R] [Algebra F R] (z : R ⊗[F] E) : Fin (Module.fin
   (Algebra.TensorProduct.basis R (Module.finBasis F E)).equivFun z
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp [crd]`. Consider the case `tmul r e`. Simplify using `[crd, tensMap, Algebra.TensorProduct.basis_repr_tmul, Algebra.smul_def]`. Consider the case `add x y hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [map_add] at *`. Simplify using `only [crd, map_add, Pi.add_apply] at *`. Rewrite using `[hx, hy]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem crd_tens {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (φ : R →ₐ[F] R')
     (z : R ⊗[F] E) (k : Fin (Module.finrank F E)) : crd R' (tensMap (E := E) φ z) k = φ (crd R z k) := by
@@ -35,7 +35,7 @@ def Bint (n : ℕ) : Set (Fin n → E) :=
   {x | ∀ i k, IsIntegral ℤ ((Module.finBasis F E).repr (x i) k)}
 
 /- English proof (translation)
-Take `⟨x, rfl⟩ : ∃ x : 𝓞 F, (x : F) = c` from `⟨⟨c, hc⟩, rfl⟩`. Conclude with `IsDedekindDomain.HeightOneSpectrum.coe_algebraMap_mem (𝓞 F) F v x`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_Ov (v : HeightOneSpectrum (𝓞 F)) {c : F} (hc : IsIntegral ℤ c) :
     algebraMap F (Fv F v) c ∈ v.adicCompletionIntegers F := by
@@ -43,11 +43,11 @@ theorem algebraMap_mem_Ov (v : HeightOneSpectrum (𝓞 F)) {c : F} (hc : IsInteg
   exact IsDedekindDomain.HeightOneSpectrum.coe_algebraMap_mem (𝓞 F) F v x
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`. Establish `h` using `algebraMap_mem_Ov v (hx i k)`. Simplify `h` using `[crd, ratV, inclR, Algebra.TensorProduct.basis_repr_tmul, Algebra.TensorProduct.one_def]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `zero => simp [crd]`. Consider the case `add a b _ _ ha hb`. Simplify using `only [Pi.add_apply, crd, map_add] at ha hb ⊢`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [crd] at ha ⊢`. Establish `e : (c • a) i = (c : Fv F v) • a i` using `rfl`. Rewrite using `[e, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_mem c.2 ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_mem_of_latLoc {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) {y : Fin n → Fv F v ⊗[F] E}
     (hy : y ∈ latLoc (E := E) v (Bint (F := F) n)) (i : Fin n) (k : Fin (Module.finrank F E)) :

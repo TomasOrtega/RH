@@ -16,7 +16,7 @@ open GlobalTheory.SplitHecke GlobalTheory.LFun.ConjPlace GlobalTheory.AdelicU Gl
 namespace GlobalTheory.ConjSplitIdem
 
 /- English proof (translation)
-Introduce `D v w w' hne hw hw' ε hε`. Break down `GlobalTheory.GridPlaces.eq_or_eq_conjP (P := w) (Q := w') (by rw [hw, hw']) with h | h` into its components or cases. Conclude with `absurd h.symm hne`. Substitute `h` using the available equality. Conclude with `GlobalTheory.MovedIdem.isIdemAt_conj hε (fun x => Iff.rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isIdemAt_cA_of_ne : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w w' : HeightOneSpectrum (𝓞 D.host.E)), w ≠ w' → w.under (𝓞 D.host.F) = v → w'.under (𝓞 D.host.F) = v → ∀ ε : AE D, Formalism.L2.NTheta.IsIdemAt ε w → Formalism.L2.NTheta.IsIdemAt (cA D ε) w' := by
   intro D v w w' hne hw hw' ε hε

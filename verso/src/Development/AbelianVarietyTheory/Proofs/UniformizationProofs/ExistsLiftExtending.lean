@@ -26,13 +26,13 @@ section General
 variable {S : Scheme.{0}} {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Set `e` to `Module.Free.chooseBasis ℤ X`. Use `choose r hr using h`. Set `l : X →ₗ[ℤ] Additive Γ(Z.left, ⊤)ˣ` to `e.constr ℤ fun k => Additive.ofMul (r (chV t (e k)))`. Set `m : X →ₗ[ℤ] Additive Γ(Z'.left, ⊤)ˣ` to `(MonoidHom.toAdditiveRight (splitTorusPointsEquiv S X Z' t)).toIntLinearMap`. Set `n : Additive Γ(Z.left, ⊤)ˣ →ₗ[ℤ] Additive Γ(Z'.left, ⊤)ˣ` to `(MonoidHom.toAdditive (Units.map ρ.left.appTop.hom.toMonoidHom)).toIntLinearMap`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hl : n ∘ₗ l = m` using `e.ext fun k => by`. Rewrite using `[LinearMap.comp_apply, Module.Basis.constr_basis]`. Conclude with `congrArg Additive.ofMul (Units.ext (hr _))`. Set `t'` to `(splitTorusPointsEquiv S X Z).symm (AddMonoidHom.toMultiplicativeLeft l.toAddMonoidHom)`. Establish `ht' : ∀ χ, chV t' χ = Additive.toMul (l χ)` using `fun χ => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[chV, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Use `⟨t', (splitTorusPointsEquiv S X Z').injective (MonoidHom.ext fun χ => Units.ext ?_)⟩` and prove the remaining obligations. Establish `e₁ : (chV (ρ ≫ t') (Multiplicative.toAdd χ)).val = ρ.left.appTop.hom (chV t' (Multiplicative.toAdd χ)).val`. Rewrite using `[chV_val, chV_val, Rosenlicht.over_appTop_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `e₁.trans ?_` and prove the remaining obligations. Rewrite using `[ht']`. Conclude with `congrArg (fun a => (Additive.toMul a).val) (LinearMap.congr_fun hl (Multiplicative.toAdd χ))`.
+A detailed English derivation is pending.
 -/
 theorem exists_torus_lift [Module.Free ℤ X] {Z' Z : Over S} (ρ : Z' ⟶ Z)
     (h : ∀ a : Γ(Z'.left, ⊤)ˣ, ∃ r : Γ(Z.left, ⊤)ˣ, ρ.left.appTop.hom r.val = a.val)
@@ -58,9 +58,9 @@ theorem exists_torus_lift [Module.Free ℤ X] {Z' Z : Over S} (ρ : Z' ⟶ Z)
   exact congrArg (fun a => (Additive.toMul a).val) (LinearMap.congr_fun hl (Multiplicative.toAdd χ))
 
 /- English proof (translation)
-Establish `: IsLocalHom f` using `IsLocalHom.of_surjective f hf`. Take `⟨c, hc⟩` from `hf ((Scheme.ΓSpecIso (CommRingCat.of A')).hom.hom a.val)`. Establish `hu : IsUnit c` using `IsUnit.of_map f c (hc ▸ a.isUnit.map _)`. Use `⟨(hu.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom).unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrArg (fun q => q.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Rewrite using `[← e, hc]`. Conclude with `congrArg (fun q => q.hom a.val) (Scheme.ΓSpecIso (CommRingCat.of A')).hom_inv_id`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_lift {A A' : Type} [CommRing A] [CommRing A'] [IsLocalRing A] [IsLocalRing A'] (f : A →+* A')
     (hf : Function.Surjective f) (a : Γ(Spec (CommRingCat.of A'), ⊤)ˣ) :
@@ -76,13 +76,13 @@ theorem units_lift {A A' : Type} [CommRing A] [CommRing A'] [IsLocalRing A] [IsL
   exact congrArg (fun q => q.hom a.val) (Scheme.ΓSpecIso (CommRingCat.of A')).hom_inv_id
 
 /- English proof (translation)
-Use `Q.q_hom` as an intermediate fact. Use `Q.i_hom` as an intermediate fact. Set `b' : Over.mk (b ≫ Q.B.hom) ⟶ Q.B` to `Over.homMk b rfl`. Set `y' : Over.mk (y ≫ G.hom) ⟶ G` to `Over.homMk y rfl`. Set `ρ : Over.mk (y ≫ G.hom) ⟶ Over.mk (b ≫ Q.B.hom)` to `Over.homMk (Spec.map (CommRingCat.ofHom f)) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom f) ≫ b ≫ Q.B.hom = y ≫ G.hom`. Rewrite using `[← Category.assoc, ← hy, Category.assoc, Over.w])`. Establish `hy' : y' ≫ Q.q = ρ ≫ b'` using `Over.OverMorphism.ext hy`. Take `⟨g, hg⟩` from `Q.exists_lift b'`. Establish `h₁ : (y' * (ρ ≫ g)⁻¹) ≫ Q.q = toUnit _ ≫ η[Q.B]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, Category.assoc, hg, hy', mul_inv_cancel, Hom.one_def]`. Take `⟨t, ht⟩` from `exists_torus_lift ρ (units_lift f hf) (Q.isKernel.lift _ _ h₁)`. Establish `h₃ : (t ≫ Q.i) ≫ Q.q = 1`. Rewrite using `[Category.assoc, Q.isKernel.w, ← Category.assoc, Hom.one_def, toUnit_unique (t ≫ toUnit _) (toUnit _)]`. Establish `a₁ : ((t ≫ Q.i) * g) ≫ Q.q = b'` using `by rw [MonObj.mul_comp, h₃, _root_.one_mul, hg]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a₂ : ρ ≫ ((t ≫ Q.i) * g) = y'`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ht, IsPullback.lift_fst, inv_mul_cancel_right]`. Conclude with `⟨((t ≫ Q.i) * g).left, congrArg (fun q => q.left) a₁, congrArg (fun q => q.left) a₂⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_lift_extending [Module.Free ℤ X] [Module.Finite ℤ X] {G : Over S} [GrpObj G] (Q : TQ G X)
     {A A' : Type} [CommRing A] [CommRing A'] [IsLocalRing A] [IsLocalRing A'] (f : A →+* A')
@@ -113,23 +113,21 @@ end General
 open GlobalTheory.FormalPoint
 
 /- English proof (translation)
-Introduce `V _ _ _ A G _ _ s t a W _ _ _ hW _ b`. Set `I` to `IsLocalRing.maximalIdeal V`. Set `φ` to `algebraMap V W`. Set `J` to `I.map φ`. Establish `hJ : J ≠ ⊤` using `ne_top_of_isHausdorff J`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hloc` using `isLocalRing_quotient_pow hJ`. Establish `hbw : b.left ≫ a.B.hom = Spec.map (CommRingCat.ofHom φ)` using `Over.w b`. Establish `pb : ∀ e, IsPullback (a.b e) (t.l e).Q.B.hom a.B.hom (thick V I e)` using `fun e => (a.b_pb e).1.1`. Establish `w : ∀ e, (adicLevelι J (e + 1) ≫ b.left) ≫ a.B.hom = levelMap I φ e ≫ thick V I e` using `fun e => (Category.assoc _ _ _).trans ((congrArg _ hbw).trans (levelMap_thick I φ e).symm)`. Set `c : ∀ e, Spec (CommRingCat.of (W ⧸ J ^ (e + 1))) ⟶ (t.l e).Q.B.left` to `fun e => (pb e).lift _ _ (w e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `c₁ : ∀ e, c e ≫ a.b e = adicLevelι J (e + 1) ≫ b.left` using `fun e => (pb e).lift_fst _ _ _`. Establish `c₂ : ∀ e, c e ≫ (t.l e).Q.B.hom = levelMap I φ e` using `fun e => (pb e).lift_snd _ _ _`. Establish `mth : ∀ e, Mono (thick V I e)` using `fun e => have := isClosedImmersion_red (I ^ (e + 1))`. Use `inferInstance`. Establish `mono : ∀ e, Mono (a.b e)` using `fun e => (MorphismProperty.monomorphisms _).of_isPullback (pb e).flip (mth e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cc : ∀ e, c e ≫ t.β e = adicLevelMap J (Nat.le_succ (e + 1)) ≫ c (e + 1)` using `fun e => by`. Use `mono (e + 1)` as an intermediate fact. Rewrite using `[← cancel_mono (a.b (e + 1)), Category.assoc, Category.assoc, a.b_β, c₁, c₁, adicLevelMap_ι_assoc]`. Set `P` to `fun e => {x : Spec (CommRingCat.of (W ⧸ J ^ (e + 1))) ⟶ (thickObj V I e G).left // x ≫ (t.l e).Q.q.left = c e}`. Establish `base : Nonempty (P 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `(t.l 0).Q.exists_lift (Over.homMk (c 0) rfl : Over.mk (c 0 ≫ (t.l 0).Q.B.hom) ⟶ (t.l 0).Q.B)`. Conclude with `⟨⟨g.left, congrArg (fun q => q.left) hg⟩⟩`. Establish `step : ∀ e (x : P e), ∃ x' : P (e + 1), adicLevelMap J (Nat.le_succ (e + 1)) ≫ x'.1 = x.1 ≫ thickMap V I e G` using `fun e x => by`. Take `⟨g, h₁, h₂⟩` from `exists_lift_extending (t.l (e + 1)).Q (Ideal.Quotient.factorPow J (Nat.le_succ (e + 1))) (Ideal.Quotient.factor_surjective _) (c (e + 1)) (x.1 ≫ thickMap V I e G) (by rw [Category.assoc, ← t.β_q, ← Category.assoc, x.2, cc])`. Conclude with `⟨⟨g, h₁⟩, h₂⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `choose nx hnx using step`. Set `x : ∀ e, P e` to `fun e => Nat.rec base.some nx e`. Establish `hx : ∀ e, adicLevelMap J (Nat.le_succ (e + 1)) ≫ (x (e + 1)).1 = (x e).1 ≫ thickMap V I e G` using `fun e => hnx e (x e)`. Establish `tm : ∀ e, thickMap V I e G ≫ (fstG I (e + 1) G).left = (fstG I e G).left` using `fun e => (pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Establish `fam : IsAdicFamily J fun e => (x e).1 ≫ (fstG I e G).left` using `fun e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hx, Category.assoc, tm]`. Establish `fw : ∀ e, (fstG I e G).left ≫ G.hom = (thickObj V I e G).hom ≫ thick V I e` using `fun e => pullback.condition`. Take `⟨g, ⟨g₁, g₂⟩, -⟩` from `existsUnique_over_of_isAdicFamily (Spec.map (CommRingCat.ofHom φ)) G.hom fam fun e => by`. Rewrite using `[Category.assoc, fw, ← Over.w (t.l e).Q.q, Category.assoc, ← Category.assoc, (x e).2, ← Category.assoc, c₂]`. Conclude with `levelMap_thick I φ e`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Over.homMk g g₁, fun e Z r xe h => ?_⟩` and prove the remaining obligations. Use `replace h : xe ≫ (fstG I e G).left = r ≫ g := h`. Take `⟨l, rfl⟩` from `exists_factor_level I φ r (xe ≫ (thickObj V I e G).hom) (by`. Rewrite using `[Category.assoc, ← fw, ← Category.assoc, h, Category.assoc, g₁])`. Establish `: Mono (fstG I e G).left` using `have := mth e`.
-
-Use the proof step `(inferInstance : Mono (pullback.fst G.hom (thick V I e)))`. Establish `hxe : xe = l ≫ (x e).1`. Rewrite using `[← cancel_mono (fstG I e G).left, h, Category.assoc, Category.assoc, g₂]`. Rewrite using `[hxe, Category.assoc, Category.assoc, ← c₁, ← Category.assoc (x e).1, (x e).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : AllSet fun {V} _ _ _ {A} {G} _ _ s => ∀ (t : Tower s) (a : t.Alg) (W : Type) [CommRing W] [IsLocalRing W] [Algebra V W], IsAdicComplete ((IsLocalRing.maximalIdeal V).map (algebraMap V W)) W → IsLocalHom (algebraMap V W) → ∀ b : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ a.B, ∃ x : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ G, (∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of W)) (xe : Z ⟶ (thickObj V (IsLocalRing.maximalIdeal V) e G).left), xe ≫ (fstG _ e G).left = r ≫ (x).left → xe ≫ (t.l e).Q.q.left ≫ a.b e = r ≫ (b).left) := by
   intro V _ _ _ A G _ _ s t a W _ _ _ hW _ b

@@ -20,9 +20,9 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 end
 /- English proof (translation)
-Establish `h3` using `P.au (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 (P.H.av.rep i Q) sp σ hσ`. Establish `h3'` using `P.au (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 (P.H.av.rep i Q') sp σ' hσ'`. Rewrite `h3` using `[← P.H.emb i Q, ← D.nbc.embAV_loc i Q sp.w]`. Rewrite `h3'` using `[← P.H.emb i Q', ← D.nbc.embAV_loc i Q' sp.w]`. Rewrite `h3` using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `first | (have hOpn := UpperTheory.One.M.opn _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 sp.w)); obtain ⟨a, ha, ε, hlaws⟩ := hOpn) | obtain ⟨a, ha, ε, -, hlaws⟩ := _root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 sp.w)`. Conclude with `_root_.UpperTheory.One.M.LawsM.inj hlaws _ _ hg (h3.symm.trans h3')`.
+A detailed English derivation is pending.
 -/
 theorem local_component_class_eq_of_good (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (i : D.nd.Loc) (Q Q' : D.naut.AV i)
     (sp : SplitPlace D.host.E) (σ σ' : GlobalTheory.SmGL.IrrRep (GL (Fin D.R.nV) (sp.w.adicCompletion D.host.E)))

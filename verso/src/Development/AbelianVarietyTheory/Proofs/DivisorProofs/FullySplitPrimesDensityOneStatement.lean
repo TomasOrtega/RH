@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.TrivialOfDensi
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DensitySplit.hasDirichletDensity_splitsFully | exact GlobalTheory.DensitySplit.hasDirichletDensity_splitsFully | (intros; apply GlobalTheory.DensitySplit.hasDirichletDensity_splitsFully <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.fully_split_primes_density_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], IsGalois ℚ E → ∀ T : Finset (HeightOneSpectrum (𝓞 F)), NumberField.Set.HasDirichletDensity {w : HeightOneSpectrum (𝓞 E) | w.under (𝓞 F) ∉ T ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SplitsFully E (w.under (𝓞 F))} 1 := by
   first | exact @GlobalTheory.DensitySplit.hasDirichletDensity_splitsFully | exact GlobalTheory.DensitySplit.hasDirichletDensity_splitsFully | (intros; apply GlobalTheory.DensitySplit.hasDirichletDensity_splitsFully <;> assumption)

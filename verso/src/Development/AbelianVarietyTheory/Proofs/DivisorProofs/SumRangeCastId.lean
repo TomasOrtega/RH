@@ -19,7 +19,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.LieSlopeProof
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [Finset.sum_range_succ, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_range_cast_id (n : ℕ) : ∑ i ∈ Finset.range (n + 1), (i : ℝ) = n * (n + 1) / 2 := by
   induction n with
@@ -29,7 +29,7 @@ theorem sum_range_cast_id (n : ℕ) : ∑ i ∈ Finset.range (n + 1), (i : ℝ) 
 noncomputable def cJ (g : ℕ) : ℝ := (Real.log (4 / Real.pi) + Real.log (15 + 14 * Real.log (Nat.factorial g))) / 2
 
 /- English proof (translation)
-Unfold `cJ`. Establish `h1 : 0 ≤ Real.log (4 / Real.pi)` using `Real.log_nonneg (by rw [le_div_iff₀ Real.pi_pos]; linarith [Real.pi_le_four])`. Establish `h2 : 0 ≤ Real.log (Nat.factorial g : ℝ)` using `Real.log_natCast_nonneg _`. Establish `h3 : 0 ≤ Real.log (15 + 14 * Real.log (Nat.factorial g))` using `Real.log_nonneg (by linarith)`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem cJ_nonneg (g : ℕ) : 0 ≤ cJ g := by
   unfold cJ
@@ -39,9 +39,9 @@ theorem cJ_nonneg (g : ℕ) : 0 ≤ cJ g := by
   positivity
 
 /- English proof (translation)
-Unfold `jetBd`. Establish `ha : 0 < √(Real.exp 1 * n * i) ^ i`. Break down `Nat.eq_zero_or_pos i with rfl | hi` into its components or cases. Simplify using the standard rewrite rules. Conclude with `pow_pos (Real.sqrt_pos.2 (by positivity)) _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hb : 0 < √(Real.exp 1 * (g.factorial : ℝ))` using `Real.sqrt_pos.2 (by positivity)`. Establish `hc : 0 < √(n : ℝ) ^ g` using `pow_pos (Real.sqrt_pos.2 (by exact_mod_cast hn)) _`. Conclude with `mul_pos (mul_pos ha hb) (lt_of_lt_of_le hc (le_max_right _ _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jetBd_pos (g n i : ℕ) (ρ : ℝ) (hn : 0 < n) (hρ : 0 < ρ) : 0 < jetBd g n i ρ := by
   unfold jetBd
@@ -54,27 +54,25 @@ theorem jetBd_pos (g n i : ℕ) (ρ : ℝ) (hn : 0 < n) (hρ : 0 < ρ) : 0 < jet
   exact mul_pos (mul_pos ha hb) (lt_of_lt_of_le hc (le_max_right _ _))
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `GlobalTheory.T.log_height_bound_from_inequality g' (cJ g') (cJ_nonneg g')`. Use `⟨C, ?_⟩` and prove the remaining obligations. Introduce `K _ _ F hg hgpos h hh K' _ _ _ h' x hbc hx`. Substitute `hg` using the available equality. Take `⟨hfull, -, -, hρex⟩` from `GlobalTheory.T.semi_fibration_lie_lattice_full K F`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ, hρpos⟩` from `hρex hgpos`. Establish `hMat` using `hM K F h ρ hh hρ`. Use `set H := max (F.falt h) 0 with hH`. Establish `hH0 : 0 ≤ H` using `le_max_right _ _`. Establish `hlg : 0 ≤ Real.log (F.P₀.g.factorial : ℝ)` using `Real.log_natCast_nonneg _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMat' : (∑ σ, (ρ σ ^ 2)⁻¹) / (Module.finrank ℚ K : ℝ) ≤ 14 * (1 + H + Real.log (Nat.factorial F.P₀.g))`. Use `hMat.trans (mul_le_mul_of_nonneg_left ?_ (by norm_num))` and prove the remaining obligations. Establish `hx1 : F.falt h - (F.P₀.g : ℝ) / 2 * Real.log Real.pi ≤ H`. Establish `: 0 ≤ (F.P₀.g : ℝ) / 2 * Real.log Real.pi` using `mul_nonneg (by positivity) (Real.log_nonneg (by linarith [Real.pi_gt_three]))`. Combine the linear relations using `[le_max_left (F.falt h) 0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `max_le (by linarith) (max_le (by linarith) (by linarith))` and prove the remaining obligations. Apply `hC H _ hH0` to reduce the goal to its premises. Introduce `n' hn2 _`. Take `⟨K'', _, _, _, _, _, h'', hbc'', hjet⟩` from `hJ K F h ρ hh hρ K' x hx n' hn2`. Take `⟨hfull'', hline⟩` from `GlobalTheory.T.lattice_base_change_line_degree K K' K'' F.P₀.g h h' h'' F.lieLat x hfull hbc hbc''`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx'' : (fun i => algebraMap K' K'' (x i)) ≠ 0`. Introduce `e`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun e i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hn' : 0 < 4 * n'` using `by omega`. Establish `hslope` using `GlobalTheory.T.jet_slope_degree_inequality K'' F.P₀.g h'' (latBC K'' F.lieLat) _ n' _ _ hfull'' hx'' (fun i σ _ => jetBd_pos _ _ _ _ hn' (hρpos _)) hjet`. Rewrite `hslope` using `[hline]`. Use `set s := deg h' (lineLat (latBC K' F.lieLat) x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set T := 1 / 2 + Real.log (Nat.factorial F.P₀.g) / 2 + ((F.P₀.g : ℝ) / 2) * Real.log (4 * n') + F.P₀.g * cJ F.P₀.g + ((F.P₀.g : ℝ) / 2) * Real.log (2 + H)`. Use `set large₂ := Real.log (Real.exp 1 * (4 * n') * n')`. Establish `hterm : ∀ i ∈ Finset.range (n' + 1), meanLog K'' (fun σ => jetBd F.P₀.g (4 * n') i (ρ (σ.comp (algebraMap K K'')))) ≤ (i : ℝ) / 2 * large₂ + T`. Introduce `i hi`. Unfold `meanLog`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.average_embeddings_field_extension K K'' (fun τ => Real.log (jetBd F.P₀.g (4 * n') i (ρ τ)))]`. Conclude with `GlobalTheory.T.jet_bound_log_average_le F.P₀.g K ρ H n' i hH0 hρpos hMat' (by omega) (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))`. Establish `hsum` using `Finset.sum_le_sum hterm`. Rewrite `hsum` using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, ← Finset.sum_mul, ← Finset.sum_div, sum_range_cast_id]`. Rewrite `hslope` using `[Finset.sum_add_distrib, ← Finset.sum_mul, Finset.sum_neg_distrib, sum_range_cast_id]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hν : ((n' : ℝ) + 1) * (-H / 2 - (F.P₀.g / 4) * Real.log (2 * Real.pi)) ≤ ((n' : ℝ) + 1) * (-F.falt h / 2 + (F.P₀.g : ℝ) / 4 * Real.log ((4 * n' : ℕ) / (2 * Real.pi)))`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Establish `h4 : 0 ≤ Real.log ((4 * n' : ℕ) : ℝ)` using `Real.log_natCast_nonneg _`. Rewrite using `[Real.log_div (by positivity) (by positivity)]`. Establish `: 0 ≤ (F.P₀.g : ℝ) / 4 * Real.log ((4 * n' : ℕ) : ℝ)` using `by positivity`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: -F.falt h / 2 ≥ -H / 2` using `by linarith [le_max_left (F.falt h) 0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hT : T = 1 / 2 + Real.log (Nat.factorial F.P₀.g) / 2 + ((F.P₀.g : ℝ) / 2) * Real.log (4 * n') + F.P₀.g * cJ F.P₀.g + ((F.P₀.g : ℝ) / 2) * Real.log (2 + H)` using `rfl`. Establish `e1 : (n' : ℝ) * (n' + 1) / 2 / 2 * large₂ = (n' : ℝ) * (n' + 1) / 4 * large₂` using `by ring`. Rewrite `hsum` using `[e1]`.
-
-Move the coercions through the operations in `at hsum`. Establish `hfin : ((n' : ℝ) + 1) * (-H / 2 - (F.P₀.g / 4) * Real.log (2 * Real.pi)) ≤ -((n' : ℝ) * (n' + 1) / 2) * s + (n' : ℝ) * (n' + 1) / 4 * large₂ + ((n' : ℝ) + 1) * T`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hfin`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem line_bound (hM : GlobalTheory.Published.MatrixLemma) (hJ : SecJets4) (g' : ℕ) : ∃ C : ℝ,
     ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K), F.P₀.g = g' → 0 < F.P₀.g → ∀ h, F.IsHerm h →
@@ -144,21 +142,21 @@ theorem line_bound (hM : GlobalTheory.Published.MatrixLemma) (hJ : SecJets4) (g'
   exact hfin
 
 /- English proof (translation)
-Introduce `hM hS hJ g`. Use `choose C hC using line_bound hM hJ`. Use `set C0 : ℝ := ∑ g' ∈ Finset.range (g + 1), |C g'| with hC0`. Establish `hC00 : 0 ≤ C0` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogg : 0 ≤ Real.log g` using `Real.log_natCast_nonneg _`. Use `set X := C0 + Real.log g / 2 + 1 with hX`. Establish `hX0 : 0 ≤ X` using `by positivity`. Use `⟨1 + X / Real.log 2, by positivity, ?_⟩` and prove the remaining obligations. Introduce `K _ _ F hg h hh`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hfull, -, hconj, -⟩` from `GlobalTheory.T.semi_fibration_lie_lattice_full K F`. Use `⟨hfull, ?_⟩` and prove the remaining obligations. Introduce `W hW`. Use `set ℓ := Real.log (2 + max (F.falt h) 0) with hℓ`. Establish `hℓ2 : Real.log 2 ≤ ℓ` using `Real.log_le_log (by norm_num) (by linarith [le_max_right (F.falt h) 0])`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos (latRank K W) with h0 | hpos` into its components or cases. Establish `hWb : W = ⊥`. Establish `h1 : Submodule.span K (W : Set (Fin F.P₀.g → K)) = ⊥` using `Submodule.finrank_eq_zero.1 h0`. Rewrite using `[eq_bot_iff]`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `: w ∈ Submodule.span K (W : Set (Fin F.P₀.g → K))` using `Submodule.subset_span hw`. Rewrite `this` using `[h1]`. Simplify using `using this`. Rewrite using `[h0, hWb, HadamardFrameExtension.deg_bot]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Take `⟨K', _, _, _, h', x, hbc, hx, hdeg⟩` from `GlobalTheory.T.exists_line_degree_lower_bound hS K F.P₀.g h F.lieLat W hfull (hconj h hh) hW hpos`. Establish `hig : latRank K W ≤ F.P₀.g`. Unfold `latRank`. Conclude with `(Submodule.finrank_le _).trans (by simp)`. Establish `hgpos : 0 < F.P₀.g` using `lt_of_lt_of_le hpos hig`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `hC F.P₀.g K F rfl hgpos h hh K' h' x hbc hx`. Establish `hCle : C F.P₀.g ≤ C0` using `(le_abs_self _).trans (Finset.single_le_sum (f := fun g' => |C g'|) (fun _ _ => abs_nonneg _) (Finset.mem_range.2 (Nat.lt_succ_of_le hg)))`. Establish `hlogi : Real.log (latRank K W) ≤ Real.log g` using `Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hig.trans hg)`. Establish `hi : (0 : ℝ) < latRank K W` using `by exact_mod_cast hpos`. Establish `hA : deg h W / latRank K W ≤ ℓ + X` using `by rw [hX]; linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hXℓ : X ≤ X / Real.log 2 * ℓ`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hl2]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite `hA` using `[div_le_iff₀ hi]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem lieSlope : GlobalTheory.Published.MatrixLemma → GlobalTheory.Published.AbsoluteSiegel → SecJets4 → LieSlope := by
   intro hM hS hJ g

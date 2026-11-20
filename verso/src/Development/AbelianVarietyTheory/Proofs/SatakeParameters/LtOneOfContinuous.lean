@@ -17,9 +17,9 @@ section Val
 variable {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M]
 
 /- English proof (translation)
-Rewrite using `[(Valued.hasBasis_nhds_zero _ _).tendsto_right_iff]`. Introduce `γ _`. Establish `hne : MonoidWithZeroHom.ValueGroup₀.embedding γ.1 ≠ 0` using `by simp`. Take `⟨n, hn⟩` from `exists_pow_lt₀ h (Units.mk0 _ hne)`. Use `filter_upwards [eventually_ge_atTop n] with m hm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.restrict_lt_iff_lt_embedding, map_pow]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' h.le hm) hn`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_pow {v : HeightOneSpectrum (𝓞 K)} (x : v.adicCompletion K) (h : Valued.v x < 1) :
     Tendsto (fun n : ℕ => x ^ n) atTop (𝓝 0) := by
@@ -32,9 +32,9 @@ theorem tendsto_pow {v : HeightOneSpectrum (𝓞 K)} (x : v.adicCompletion K) (h
   exact lt_of_le_of_lt (pow_le_pow_right_of_le_one' h.le hm) hn
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun n : ℕ => s z ^ n) atTop (𝓝 0)`. Use `(hs.tendsto 0).comp (tendsto_pow z hz)` as an intermediate fact. Simplify `this` using `[Function.comp_def, map_pow]`. Establish `hU : {y : w.adicCompletion M | Valued.v y < 1} ∈ 𝓝 (0 : w.adicCompletion M)` using `Valued.mem_nhds_zero.2 ⟨1, fun y hy => by simpa using hy⟩`. Take `⟨N, hN⟩` from `(h1.eventually hU).exists`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt]`. Establish `hN' : Valued.v (s z ^ N) < 1` using `hN`. Rewrite `hN'` using `[map_pow]`. Conclude with `absurd hN' (not_lt.2 (one_le_pow₀ hc))`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lt_one_of_continuous {v : HeightOneSpectrum (𝓞 K)} {w : HeightOneSpectrum (𝓞 M)}
     (s : v.adicCompletion K →+* w.adicCompletion M) (hs : Continuous s) {z : v.adicCompletion K}
@@ -52,7 +52,7 @@ theorem lt_one_of_continuous {v : HeightOneSpectrum (𝓞 K)} {w : HeightOneSpec
   exact absurd hN' (not_lt.2 (one_le_pow₀ hc))
 
 /- English proof (translation)
-Establish `h : Valued.v (algebraMap K (v.adicCompletion K) (x : K)) = v.valuation K (algebraMap (𝓞 K) K x)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`. Rewrite using `[h, HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_iff_lt_one (v : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) :
     x ∈ v.asIdeal ↔ Valued.v (algebraMap K (v.adicCompletion K) (x : K)) < 1 := by
@@ -61,9 +61,9 @@ theorem mem_iff_lt_one (v : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) :
   rw [h, HeightOneSpectrum.valuation_lt_one_iff_mem]
 
 /- English proof (translation)
-Establish `h1 : v.asIdeal ≤ (src e w).asIdeal`. Introduce `x hx`. Rewrite using `[ringEquivPlaceCorrespondence_placeUnder e w x, mem_iff_lt_one]`. Rewrite `hx` using `[mem_iff_lt_one]`. Use `lt_one_of_continuous i hi hx` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[he]`. Conclude with `this`. Establish `h2 : v = src e w` using `HeightOneSpectrum.ext (v.isMaximal.eq_of_le (src e w).isPrime.ne_top h1)`. Rewrite using `[h2]`. Conclude with `ringEquivPlaceCorrespondence_placeUnder e w`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_of_continuous (e : K ≃+* M) {v : HeightOneSpectrum (𝓞 K)} {w : HeightOneSpectrum (𝓞 M)}
     (i : v.adicCompletion K →+* w.adicCompletion M) (hi : Continuous i)
@@ -80,14 +80,14 @@ theorem over_of_continuous (e : K ≃+* M) {v : HeightOneSpectrum (𝓞 K)} {w :
   exact ringEquivPlaceCorrespondence_placeUnder e w
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem normV_eq_absNorm (v : HeightOneSpectrum (𝓞 K)) : normV v = Ideal.absNorm v.asIdeal := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
   rfl
 
 /- English proof (translation)
-Rewrite using `[normV_eq_absNorm]`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_le_normV (v : HeightOneSpectrum (𝓞 K)) : 2 ≤ normV v := by
   rw [normV_eq_absNorm]
@@ -107,15 +107,15 @@ variable {K M : Type} [Field K] [NumberField K] [IsTotallyComplex K] [Field M] [
   {a : ℕ}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun g => congrArg φ.1 (mapA_symm e g)`.
+A detailed English derivation is pending.
 -/
 theorem pull_pull (e : K ≃+* M) (φ : Sm K a) : pull a e (pull a e.symm φ) = φ :=
   Subtype.ext <| funext fun g => congrArg φ.1 (mapA_symm e g)
 
 /- English proof (translation)
-Use `CuspSub.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(π.V.map (pull a e.symm).toLinearMap).map (pull a e).toLinearMap = π.V`. Rewrite using `[← Submodule.map_comp]`. Use `Submodule.map_id π.V` and compare the differences between its conclusion and the goal. Use `LinearMap.ext fun φ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pull_pull e φ`.
+A detailed English derivation is pending.
 -/
 theorem pullSub_pullSub (e : K ≃+* M) (π : CuspSub K a) : pullSub e (pullSub e.symm π) = π := by
   refine CuspSub.ext ?_
@@ -137,7 +137,7 @@ def SmIrr.comap {G H : Type} [Group G] [TopologicalSpace G] [Group H] [Topologic
     exact hW g x hx
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `Eq.trans ?_ (pull_act e.symm (.fin (locGL K a v g)) x.1).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = act (.fin (GeneralLinearGroup.map (cFin e) (locGL K a v g))) (pull a e.symm x.1)`. Rewrite using `[cFin_locGL hO]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem locRep_pullSub (e : K ≃+* M) {v : HeightOneSpectrum (𝓞 K)} {w : HeightOneSpectrum (𝓞 M)} (hO : Over e v w)
     (π : CuspSub K a) (g : GL (Fin a) (v.adicCompletion K)) (x : π.V) :
@@ -152,31 +152,27 @@ theorem locRep_pullSub (e : K ≃+* M) {v : HeightOneSpectrum (𝓞 K)} {w : Hei
 end Rep
 
 /- English proof (translation)
-Introduce `K M _ _ _ _ _ _ _ h1 a π`. Set `e : K ≃+* M` to `RingEquiv.ofBijective (algebraMap K M) (Algebra.finrank_eq_one_iff_bijective_algebraMap.1 h1)`. Establish `he : ∀ x, e x = algebraMap K M x` using `fun _ => rfl`. Use `⟨pullSub e.symm π, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w f B hf hB`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hO : Over e.symm w (w.under (𝓞 K))` using `fun x => by`. Rewrite using `[HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap]`. Establish `: algebraMap (𝓞 K) (𝓞 M) (RingOfIntegers.mapRingEquiv e.symm x) = x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap K M (e.symm (x : M)) = x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← he]`. Conclude with `e.apply_symm_apply _`. Rewrite using `[this]`. Establish `hq : normV w = normV (w.under (𝓞 K))`. Rewrite using `[normV_eq_absNorm, normV_eq_absNorm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(qV_eq hO).symm`. Establish `h2` using `two_le_normV (w.under (𝓞 K))`. Establish `hf1 : f = 1` using `Nat.pow_right_injective h2 (by`. Express the relevant statement in the definitionally equal form `normV (w.under (𝓞 K)) ^ f = normV (w.under (𝓞 K)) ^ 1`. Rewrite using `[pow_one, ← hf, hq])`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hf1` using the available equality. Simplify using `only [pow_one, Multiset.map_id']`. Conclude with `hasSat_pullSub e.symm hO hB`. Introduce `τ`. Establish `hτ : (τ.comp e.toRingHom).comp e.symm.toRingHom = τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `key : ∀ m, (CG.mk π).HasInfChar (τ.comp (algebraMap K M)) m ↔ (CG.mk (pullSub e.symm π)).HasInfChar τ m`. Introduce `m`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `hasInfChar_pullSub e.symm (π := π) (σ := τ) h`. Introduce `h`. Establish `h3 : (pullSub e (pullSub e.symm π)).HasInfChar (τ.comp e.toRingHom) m` using `hasInfChar_pullSub e (σ := τ.comp e.toRingHom) (by rw [hτ]; exact h)`. Rewrite `h3` using `[pullSub_pullSub]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h3`. Distinguish the cases in `h : ∃ m, (CG.mk π).HasInfChar (τ.comp (algebraMap K M)) m`. Take `⟨m, hm⟩` from `h`. Rewrite using `[((key m).1 hm).infChar_eq, hm.infChar_eq]`. Establish `h' : ¬ ∃ m, (CG.mk (pullSub e.symm π)).HasInfChar τ m` using `fun ⟨m, hm⟩ => h ⟨m, (key m).2 hm⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `CG.infChar`. Rewrite using `[dif_neg h, dif_neg h']`. Introduce `v w i hi hie σ σ' hσ hσ'`. Establish `hO : Over e v w` using `over_of_continuous e i.toRingHom hi fun x => hie x`. Establish `hiL : ∀ y, i y = cLoc hO y` using `fun y => congrFun ((HeightOneSpectrum.denseRange_algebraMap (K := K) v).equalizer hi (continuous_cLoc hO) (funext fun x => (hie x).trans (cLoc_algebraMap hO x).symm)) y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsurj : Function.Surjective (GeneralLinearGroup.map (n` using `Fin a) (cLoc hO)) := fun g => ⟨GeneralLinearGroup.map (locEquiv hO).symm.toRingHom g, Units.ext (Matrix.ext fun _ _ => (locEquiv hO).apply_symm_apply _)⟩`. Set `σ''` to `SmIrr.comap σ' (GeneralLinearGroup.map (n := Fin a) (cLoc hO)) (continuous_mapGL _ (continuous_cLoc hO)) hsurj`. Set `T` to `(pull a e.symm).submoduleMap π.V`. Establish `h'' : π.IsLocComp v σ''`. Take `⟨f, h0, hf⟩` from `hσ'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T.symm.toLinearMap ∘ₗ f, fun hz => h0 (LinearMap.ext fun x => T.symm.injective ?_), fun g x => ?_⟩` and prove the remaining obligations. Conclude with `(LinearMap.congr_fun hz x).trans (map_zero T.symm).symm`. Establish `e1` using `hf (GeneralLinearGroup.map (cLoc hO) g) x`. Establish `e2 : (pullSub e.symm π).locRep w (GeneralLinearGroup.map (cLoc hO) g) (T (T.symm (f x))) = T (π.locRep v g (T.symm (f x)))` using `locRep_pullSub e hO π g (T.symm (f x))`. Establish `e3 : (pullSub e.symm π).locRep w (GeneralLinearGroup.map (cLoc hO) g) (f x) = T (π.locRep v g (T.symm (f x)))`.
-
-Use `Eq.trans ?_ e2` and prove the remaining obligations. Conclude with `congrArg _ (T.apply_symm_apply (f x)).symm`. Conclude with `(congrArg T.symm (e1.trans e3)).trans (T.symm_apply_apply _)`. Take `⟨E⟩` from `GlobalTheory.CuspRep.LocUniq.isLocComp_unique π v σ σ'' hσ h''`. Use `⟨E.toLinearEquiv, fun g x => ?_⟩` and prove the remaining obligations.
-
-Establish `hg : GeneralLinearGroup.map i.toRingHom g = GeneralLinearGroup.map (cLoc hO) g` using `Units.ext (Matrix.ext fun _ _ => hiL _)`. Rewrite using `[hg]`. Conclude with `LinearMap.congr_fun (E.isIntertwining' g) x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLift : ∀ (K M : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field M] [NumberField M] [IsTotallyComplex M] [Algebra K M], Module.finrank K M = 1 → ∀ (a : ℕ) (π : CuspSub K a), ∃ P : CuspSub M a, GlobalTheory.GalCut.IsLift π P := by
   intro K M _ _ _ _ _ _ _ h1 a π

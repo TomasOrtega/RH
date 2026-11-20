@@ -18,9 +18,9 @@ section LA
 variable {m m' : Type} [Fintype m] [DecidableEq m] [Fintype m'] [DecidableEq m']
 
 /- English proof (translation)
-Establish `hXi : X⁻¹.PosDef` using `hX.inv`. Use `haveI : Invertible Y := hY.isUnit.invertible`. Use `haveI : Invertible X⁻¹ := hXi.isUnit.invertible`. Establish `hii : X⁻¹⁻¹ = X` using `Matrix.nonsing_inv_nonsing_inv X ((Matrix.isUnit_iff_isUnit_det X).1 hX.isUnit)`. Establish `h1` using `(Matrix.PosDef.fromBlocks₂₂ Y (1 : Matrix m m ℂ) hXi).2 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h)` using `[hii]`. Establish `h2` using `(Matrix.PosDef.fromBlocks₁₁ (1 : Matrix m m ℂ) X⁻¹ hY).1 (by simpa using h1)`. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inv_anti {X Y : Matrix m m ℂ} (hX : X.PosDef) (hY : Y.PosDef) (h : (Y - X).PosSemidef) :
     (X⁻¹ - Y⁻¹).PosSemidef := by
@@ -34,19 +34,19 @@ theorem inv_anti {X Y : Matrix m m ℂ} (hX : X.PosDef) (hY : Y.PosDef) (h : (Y 
   simpa using h2
 
 /- English proof (translation)
-The claim follows from `Matrix.PosDef.one.smul (by exact_mod_cast ha)`.
+A detailed English derivation is pending.
 -/
 theorem scal_posDef {a : ℝ} (ha : 0 < a) : ((a : ℂ) • (1 : Matrix m m ℂ)).PosDef :=
   Matrix.PosDef.one.smul (by exact_mod_cast ha)
 
 /- English proof (translation)
-The claim follows from `Matrix.PosSemidef.one.smul (by exact_mod_cast ha)`.
+A detailed English derivation is pending.
 -/
 theorem scal_psd {a : ℝ} (ha : 0 ≤ a) : ((a : ℂ) • (1 : Matrix m m ℂ)).PosSemidef :=
   Matrix.PosSemidef.one.smul (by exact_mod_cast ha)
 
 /- English proof (translation)
-Establish `hne : (a : ℂ) ≠ 0` using `by exact_mod_cast ha.ne'`. Rewrite using `[Matrix.inv_eq_left_inv]`. Rewrite using `[smul_mul_smul_comm, Matrix.one_mul]`. Use `push_cast`. Rewrite using `[inv_mul_cancel₀ hne, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem scal_inv {a : ℝ} (ha : 0 < a) : ((a : ℂ) • (1 : Matrix m m ℂ))⁻¹ = ((a⁻¹ : ℝ) : ℂ) • 1 := by
   have hne : (a : ℂ) ≠ 0 := by exact_mod_cast ha.ne'
@@ -59,9 +59,9 @@ def Btw (a b : ℝ) (X : Matrix m m ℂ) : Prop :=
   X.PosDef ∧ (X - (a : ℂ) • (1 : Matrix m m ℂ)).PosSemidef ∧ ((b : ℂ) • (1 : Matrix m m ℂ) - X).PosSemidef
 
 /- English proof (translation)
-Take `⟨hX, h1, h2⟩` from `h`. Use `⟨hX.inv, ?_, ?_⟩` and prove the remaining obligations. Use `inv_anti hX (scal_posDef (m := m) hb) h2` as an intermediate fact. Rewrite `this` using `[scal_inv hb]`. Then use the resulting hypothesis. Use `inv_anti (scal_posDef (m := m) ha) hX h1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[scal_inv ha]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Btw.inv {a b : ℝ} (ha : 0 < a) (hb : 0 < b) {X : Matrix m m ℂ} (h : Btw a b X) : Btw b⁻¹ a⁻¹ X⁻¹ := by
   obtain ⟨hX, h1, h2⟩ := h
@@ -72,11 +72,11 @@ theorem Btw.inv {a b : ℝ} (ha : 0 < a) (hb : 0 < b) {X : Matrix m m ℂ} (h : 
     rwa [scal_inv ha] at this
 
 /- English proof (translation)
-Take `⟨h0, h1, h2⟩` from `h`. Use `⟨h0, ?_, ?_⟩` and prove the remaining obligations. Establish `e : X - (a' : ℂ) • (1 : Matrix m m ℂ) = (X - (a : ℂ) • 1) + ((a - a' : ℝ) : ℂ) • 1`. Use `push_cast`. Rewrite using `[sub_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `h1.add (scal_psd (by linarith))`. Establish `e : (b' : ℂ) • (1 : Matrix m m ℂ) - X = ((b : ℂ) • 1 - X) + ((b' - b : ℝ) : ℂ) • 1`. Use `push_cast`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `h2.add (scal_psd (by linarith))`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Btw.mono {a b a' b' : ℝ} (ha : a' ≤ a) (hb : b ≤ b') {X : Matrix m m ℂ} (h : Btw a b X) : Btw a' b' X := by
   obtain ⟨h0, h1, h2⟩ := h
@@ -95,11 +95,11 @@ theorem Btw.mono {a b a' b' : ℝ} (ha : a' ≤ a) (hb : b ≤ b') {X : Matrix m
     exact h2.add (scal_psd (by linarith))
 
 /- English proof (translation)
-Take `⟨h0, h1, h2⟩` from `h`. Establish `h1'` using `h1.submatrix e`. Establish `h2'` using `h2.submatrix e`. Establish `e1 : (X - (a : ℂ) • (1 : Matrix m m ℂ)).submatrix e e = X.submatrix e e - (a : ℂ) • (1 : Matrix m' m' ℂ)`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.one_apply, he.eq_iff]`. Establish `e2 : ((b : ℂ) • (1 : Matrix m m ℂ) - X).submatrix e e = (b : ℂ) • (1 : Matrix m' m' ℂ) - X.submatrix e e`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, he.eq_iff]`. Rewrite `h1'` using `[e1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2'` using `[e2]`. Conclude with `⟨h0.submatrix he, h1', h2'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem Btw.sub {a b : ℝ} {X : Matrix m m ℂ} (h : Btw a b X) (e : m' → m) (he : Function.Injective e) :
     Btw a b (X.submatrix e e) := by
@@ -117,9 +117,9 @@ theorem Btw.sub {a b : ℝ} {X : Matrix m m ℂ} (h : Btw a b X) (e : m' → m) 
   exact ⟨h0.submatrix he, h1', h2'⟩
 
 /- English proof (translation)
-Take `⟨h0, h1, h2⟩` from `h`. Use `⟨h0.transpose, ?_, ?_⟩` and prove the remaining obligations. Use `h1.transpose` as an intermediate fact. Simplify `this` using `[Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_one]`. Use `h2.transpose` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_one]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Btw.tr {a b : ℝ} {X : Matrix m m ℂ} (h : Btw a b X) : Btw a b Xᵀ := by
   obtain ⟨h0, h1, h2⟩ := h
@@ -130,9 +130,9 @@ theorem Btw.tr {a b : ℝ} {X : Matrix m m ℂ} (h : Btw a b X) : Btw a b Xᵀ :
     simpa [Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_one] using this
 
 /- English proof (translation)
-Rewrite using `[Matrix.posSemidef_iff_dotProduct_mulVec]`. Use `⟨hX.1.fromBlocks (by simp) hY.1, fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `hX.dotProduct_mulVec_nonneg (x ∘ Sum.inl)`. Establish `h2` using `hY.dotProduct_mulVec_nonneg (x ∘ Sum.inr)`. Establish `e : star x ⬝ᵥ (Matrix.fromBlocks X 0 0 Y *ᵥ x) = star (x ∘ Sum.inl) ⬝ᵥ (X *ᵥ (x ∘ Sum.inl)) + star (x ∘ Sum.inr) ⬝ᵥ (Y *ᵥ (x ∘ Sum.inr))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.fromBlocks_mulVec]`. Simplify using `[dotProduct, Fintype.sum_sum_type]`. Rewrite using `[e]`. Conclude with `add_nonneg h1 h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psd_blocks {X : Matrix m m ℂ} {Y : Matrix m' m' ℂ} (hX : X.PosSemidef) (hY : Y.PosSemidef) :
     (Matrix.fromBlocks X 0 0 Y).PosSemidef := by
@@ -148,29 +148,29 @@ theorem psd_blocks {X : Matrix m m ℂ} {Y : Matrix m' m' ℂ} (hX : X.PosSemide
   exact add_nonneg h1 h2
 
 /- English proof (translation)
-Establish `dX : ∀ k, 0 ≤ (X k k).re ∧ (X k k).im = 0`. Introduce `k`. Use `hX.diag_nonneg (i := k)` as an intermediate fact. Rewrite `this` using `[Complex.nonneg_iff]`. Conclude with `⟨this.1, this.2.symm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `dN : ∀ k, (X k k).re ≤ b`. Introduce `k`. Use `h.diag_nonneg (i := k)` as an intermediate fact. Simplify using `[Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply] at this`. Simplify using `using (Complex.le_def.mp this).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `e : X i i = ((X i i).re : ℂ)` using `Complex.ext (by simp) (by simp [(dX i).2])`. Rewrite using `[e, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (dX i).1]`. Conclude with `dN i`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩ : ∃ s, s = X i j` from `⟨_, rfl⟩`. Rewrite using `[← hs]`. Distinguish the cases in `h0 : s = 0`. Rewrite using `[h0, norm_zero]`. Conclude with `(dX i).1.trans (dN i)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : 0 < ‖s‖` using `norm_pos_iff.mpr h0`. Establish `hrc : (‖s‖ : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`. Establish `hss : s * star s = ((‖s‖ : ℂ)) ^ 2` using `by show s * (starRingEnd ℂ) s = _`. Rewrite using `[Complex.mul_conj']`. Take `⟨w, hw⟩ : ∃ w : ℂ, w = star s / (‖s‖ : ℂ)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsw : s * w = (‖s‖ : ℂ)`. Rewrite using `[hw, mul_div_assoc', hss]`. Clear the denominators using the available nonvanishing facts. Establish `hji : X j i = star s`. Rewrite using `[hs]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hX.1.apply j i).symm`. Establish `hws : star w = s / (‖s‖ : ℂ)`. Rewrite using `[hw, star_div₀, star_star]`. Use `congr 1`. Simplify using `[Complex.star_def]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hww : star w * w = 1`. Rewrite using `[hws, hw, div_mul_div_comm, hss]`. Clear the denominators using the available nonvanishing facts. Establish `e2 : star w * star s = (‖s‖ : ℂ)`. Rewrite using `[← star_mul, hsw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Complex.star_def]`. Establish `key : ∀ (N : Matrix m m ℂ), star (Pi.single i 1 + Pi.single j w : m → ℂ) ⬝ᵥ (N *ᵥ (Pi.single i 1 + Pi.single j w)) = N i i + N i j * w + star w * N j i + star w * N j j * w`. Introduce `N`. Simplify using `[Matrix.mulVec_add, dotProduct_add, add_dotProduct, Matrix.mulVec_single, Pi.star_single, single_dotProduct, hij, Ne.symm hij, Pi.single_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `Q` using `h.dotProduct_mulVec_nonneg (Pi.single i 1 + Pi.single j w)`. Rewrite `Q` using `[key]`. Establish `n1 : ((b : ℂ) • (1 : Matrix m m ℂ) - X) i i = b - X i i` using `by simp [Matrix.sub_apply]`. Establish `n2 : ((b : ℂ) • (1 : Matrix m m ℂ) - X) j j = b - X j j` using `by simp [Matrix.sub_apply]`. Establish `n3 : ((b : ℂ) • (1 : Matrix m m ℂ) - X) i j = - s` using `by simp [Matrix.sub_apply, Matrix.one_apply, hij, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `n4 : ((b : ℂ) • (1 : Matrix m m ℂ) - X) j i = - star s`. Simplify using `[Matrix.sub_apply, Matrix.one_apply, Ne.symm hij, hji]`. Rewrite `Q` using `[n1, n2, n3, n4]`. Establish `eQ : (b : ℂ) - X i i + -s * w + star w * -star s + star w * ((b : ℂ) - X j j) * w = 2 * (b : ℂ) - X i i - X j j - 2 * (‖s‖ : ℂ)`. Take the linear combination `((b : ℂ) - X j j) * hww - hsw - e2`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `Q` using `[eQ, Complex.nonneg_iff]`. Use `Q.1` as an intermediate fact. Simplify using `at this`. Combine the linear relations using `[(dX i).1, (dX j).1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_entry_le {b : ℝ} {X : Matrix m m ℂ} (hX : X.PosSemidef)
     (h : ((b : ℂ) • (1 : Matrix m m ℂ) - X).PosSemidef) (i j : m) : ‖X i j‖ ≤ b := by
@@ -243,7 +243,7 @@ section An
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {m : Type} [Fintype m] [DecidableEq m]
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply]`. Use `ContDiffAt.sum fun σ _ => ?_` and prove the remaining obligations. Use `ContDiffAt.const_smul _ ?_` and prove the remaining obligations. Conclude with `contDiffAt_prod fun i _ => h _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiffAt_det {A : V → Matrix m m ℂ} {w : V}
     (h : ∀ a b, ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun w' => A w' a b) w) :
@@ -254,11 +254,9 @@ theorem contDiffAt_det {A : V → Matrix m m ℂ} {w : V}
   exact contDiffAt_prod fun i _ => h _ _
 
 /- English proof (translation)
-Establish `e : (fun w' => (A w')⁻¹ a b) = fun w' => ((A w').det)⁻¹ * ((A w').updateRow b (Pi.single a 1)).det`. Use function extensionality and compare the values at `w'`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, Matrix.adjugate_apply, Ring.inverse_eq_inv', smul_eq_mul]`. Rewrite using `[e]`. Use `ContDiffAt.mul ((contDiffAt_det h).inv hd) (contDiffAt_det fun i j => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : i = b`. Substitute `hi` using the available equality. Simplify using `only [Matrix.updateRow_self]`. Conclude with `contDiffAt_const`. Simplify using `only [Matrix.updateRow_ne hi]`.
-
-Conclude with `h i j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffAt_inv {A : V → Matrix m m ℂ} {w : V}
     (h : ∀ a b, ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun w' => A w' a b) w) (hd : (A w).det ≠ 0) (a b : m) :
@@ -276,19 +274,17 @@ theorem contDiffAt_inv {A : V → Matrix m m ℂ} {w : V}
     exact h i j
 
 /- English proof (translation)
-Use `set E : m → m → V →L[ℝ] ℂ := fun i j => fderiv ℝ (fun w' => (A w')⁻¹ i j) w with hEdef`. Use `set D : m → m → V →L[ℝ] ℂ := fun i j => fderiv ℝ (fun w' => A w' i j) w with hDdef`. Establish `hdA : ∀ i j, DifferentiableAt ℝ (fun w' => A w' i j) w` using `fun i j => (h i j).differentiableAt (by simp)`. Establish `hdB : ∀ i j, DifferentiableAt ℝ (fun w' => (A w')⁻¹ i j) w` using `fun i j => (contDiffAt_inv h hd i j).differentiableAt (by simp)`. Establish `hev : ∀ᶠ w' in nhds w, (A w').det ≠ 0` using `(contDiffAt_det h).continuousAt.eventually_ne hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ i j, ∑ c, A w i c • E c j = -∑ c, (A w)⁻¹ c j • D i c`. Introduce `i j`. Establish `h0` using `HasFDerivAt.sum (u := Finset.univ) fun c _ => (hdA i c).hasFDerivAt.mul (hdB c j).hasFDerivAt`. Establish `h1 : HasFDerivAt (fun w' => ∑ c, A w' i c * (A w')⁻¹ c j) (∑ c, (A w i c • E c j + (A w)⁻¹ c j • D i c)) w` using `h0.congr_of_eventuallyEq (Filter.Eventually.of_forall fun w' => by simp [Finset.sum_apply])`. Establish `hc : (fun w' => ∑ c, A w' i c * (A w')⁻¹ c j) =ᶠ[nhds w] fun _ => (1 : Matrix m m ℂ) i j` using `by filter_upwards [hev] with w' hw'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_apply, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hw')]`. Establish `h2` using `(hasFDerivAt_const (𝕜 := ℝ) ((1 : Matrix m m ℂ) i j) w).congr_of_eventuallyEq hc`. Establish `h3` using `h1.unique h2`. Rewrite `h3` using `[Finset.sum_add_distrib]`. Conclude with `eq_neg_of_add_eq_zero_left h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hBM : (A w)⁻¹ * A w = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hd)`. Establish `hE : E a b = -∑ i, ∑ c, ((A w)⁻¹ a i * (A w)⁻¹ c b) • D i c`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hBM]`. Simplify using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = ∑ i, (A w)⁻¹ a i • ∑ c, A w i c • E c b := by`. Simplify using `only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `_ = _ := by`. Simplify using `only [key, Finset.smul_sum, smul_neg, smul_smul, Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hβ0 : 0 ≤ β` using `(norm_nonneg _).trans (hβ a b)`. Use `show ‖E a b‖ ≤ _`. Rewrite using `[hE, norm_neg]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations.
-
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, norm_mul, sq]`. Conclude with `mul_le_mul (mul_le_mul (hβ a i) (hβ c b) (norm_nonneg _) hβ0) (hδ i c) (norm_nonneg _) (mul_nonneg hβ0 hβ0)`. Use `_ = _ := by simp [Finset.sum_const, Finset.card_univ]; ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_fderiv_inv {A : V → Matrix m m ℂ} {w : V}
     (h : ∀ a b, ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun w' => A w' a b) w) (hd : (A w).det ≠ 0) {β δ : ℝ}
@@ -337,11 +333,11 @@ theorem norm_fderiv_inv {A : V → Matrix m m ℂ} {w : V}
     _ = _ := by simp [Finset.sum_const, Finset.card_univ]; ring
 
 /- English proof (translation)
-Establish `he : (2 : ℝ) ≤ Real.exp 1`. Use `Real.add_one_le_exp (1 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : 0 < r` using `by linarith`. Establish `hsplit : r ^ x = r ^ (x - 1) * r`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_add_one h0.ne', sub_add_cancel]`. Establish `h2 : Real.exp (x - 1) ≤ r ^ (x - 1)`. Rewrite using `[← Real.exp_one_rpow]`. Conclude with `Real.rpow_le_rpow (Real.exp_pos 1).le hr (by linarith)`. Establish `h3 : x ≤ Real.exp (x - 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.add_one_le_exp (x - 1)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem point_lemma {r x : ℝ} (hr : Real.exp 1 ≤ r) (hx : 1 ≤ x) : r * x ≤ r ^ x := by
   have he : (2 : ℝ) ≤ Real.exp 1 := by
@@ -360,11 +356,11 @@ private theorem point_lemma {r x : ℝ} (hr : Real.exp 1 ≤ r) (hx : 1 ≤ x) :
     _ = r ^ x := by rw [hsplit]; ring
 
 /- English proof (translation)
-Take `⟨_, h1, h2⟩` from `h`. Establish `hR : 0 < R` using `by nlinarith`. Prove the components needed by the constructor for the conclusion. Establish `e1 : (R : ℂ) • (1 : Matrix n n ℂ) - Z = ((b : ℂ) • 1 - Z) + ((R - b : ℝ) : ℂ) • 1`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Conclude with `h2.add (scal_psd (by linarith))`. Establish `e2 : (R : ℂ) • Z - 1 = (R : ℂ) • (Z - (a : ℂ) • 1) + ((R * a - 1 : ℝ) : ℂ) • 1`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[smul_sub, smul_smul, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e2]`. Conclude with `(h1.smul (Complex.zero_le_real.mpr hR.le)).add (scal_psd (by linarith))`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem point_lemma_2 {n : Type} [Fintype n] [DecidableEq n] {a b R : ℝ} (ha : 0 < a)
     {Z : Matrix n n ℂ} (h : Btw a b Z) (hb : b ≤ R) (haR : 1 ≤ R * a) :
@@ -386,45 +382,43 @@ private theorem point_lemma_2 {n : Type} [Fintype n] [DecidableEq n] {a b R : �
     exact (h1.smul (Complex.zero_le_real.mpr hR.le)).add (scal_psd (by linarith))
 
 /- English proof (translation)
-Establish `he : (2 : ℝ) ≤ Real.exp 1`. Use `Real.add_one_le_exp (1 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨2 + C + c⁻¹ + (q : ℝ) ^ 2 * C ^ 3, ?_⟩` and prove the remaining obligations. Introduce `r hr Γ w hP hlo hhi hd`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr1 : 1 ≤ r` using `by linarith`. Establish `hr0 : 0 < r` using `by linarith`. Establish `hCr : 0 < C * r` using `by positivity`. Establish `hom : Function.Injective (omEmb p q)`. Introduce `a b h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [omEmb] at this`. Conclude with `Fin.ext this`. Establish `hwm : Function.Injective (wEmb p q)`. Introduce `a b h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [wEmb] at this`. Conclude with `Fin.ext (by omega)`. Establish `hB : Btw (C * r)⁻¹ c⁻¹ (Γ w)`. Establish `h0 : Btw c (C * r) (Γ w)⁻¹` using `⟨hP.inv, hlo, hhi⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `h0.inv hc hCr`. Rewrite `h1` using `[Matrix.nonsing_inv_nonsing_inv _ (isUnit_iff_ne_zero.mpr hP.det_pos.ne')]`. Then use the resulting hypothesis. Establish `hY : Btw (C * r)⁻¹ c⁻¹ (wBlock (Γ w))` using `hB.sub (wEmb p q) hwm`. Establish `hO : Btw (C * r)⁻¹ c⁻¹ (omBlock (Γ w))ᵀ` using `(hB.sub (omEmb p q) hom).tr`. Establish `hX : Btw c (C * r) ((omBlock (Γ w))ᵀ⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1` using `hO.inv (inv_pos.mpr hCr) (inv_pos.mpr hc)`. Simplify `h1` using `only [inv_inv]`. Establish `hA : ∀ a b, ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun w' => (omBlock (Γ w'))ᵀ a b) w` using `fun a b => (hd (omEmb p q b) (omEmb p q a)).1`. Establish `hdet : ((omBlock (Γ w))ᵀ).det ≠ 0` using `hO.1.det_pos.ne'`. Establish `hβ : ∀ a b, ‖((omBlock (Γ w))ᵀ)⁻¹ a b‖ ≤ C * r` using `norm_entry_le hX.1.posSemidef (by exact_mod_cast hX.2.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ : ∀ a b, ‖fderiv ℝ (fun w' => (omBlock (Γ w'))ᵀ a b) w‖ ≤ C * Real.exp (r / 2)` using `fun a b => (hd (omEmb p q b) (omEmb p q a)).2`. Establish `key : ∀ i j : Fin q ⊕ Fin p, ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun w' => Matrix.fromBlocks ((omBlock (Γ w'))ᵀ⁻¹) 0 0 (wBlock (Γ w')) i j) w ∧ ‖fderiv ℝ (fun w' => Matrix.fromBlocks ((omBlock (Γ w'))ᵀ⁻¹) 0 0 (wBlock (Γ w')) i j) w‖ ≤ max ((q : ℝ) ^ 2 * ((C * r) ^ 2 * (C * Real …`. Establish `hpos : 0 ≤ max ((q : ℝ) ^ 2 * ((C * r) ^ 2 * (C * Real.exp (r / 2)))) (C * Real.exp (r / 2))` using `le_max_of_le_right (by positivity)`. Introduce `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.fromBlocks_apply₁₁]`. Use `⟨contDiffAt_inv hA hdet i j, le_max_of_le_left ?_⟩` and prove the remaining obligations. Use `norm_fderiv_inv hA hdet hβ hδ i j` as an intermediate fact. Simplify using `using this`. Simplify using `only [Matrix.fromBlocks_apply₁₂, Matrix.zero_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨contDiffAt_const, ?_⟩` and prove the remaining obligations. Simplify using `using hpos`. Simplify using `only [Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]`. Use `⟨contDiffAt_const, ?_⟩` and prove the remaining obligations. Simplify using `using hpos`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [Matrix.fromBlocks_apply₂₂]`. Conclude with `⟨(hd (wEmb p q i) (wEmb p q j)).1, le_max_of_le_right (hd (wEmb p q i) (wEmb p q j)).2⟩`. Use `⟨fun a b => (key ((blockEquiv p q).symm a) ((blockEquiv p q).symm b)).1, ?_⟩` and prove the remaining obligations. Introduce `C' hC'`. Establish `hc' : 0 < c⁻¹` using `inv_pos.mpr hc`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : 0 ≤ (q : ℝ) ^ 2 * C ^ 3` using `by positivity`. Establish `hC'1 : 1 ≤ C'` using `by linarith`. Establish `hrC` using `point_lemma hr hC'1`. Establish `hR0 : 0 < r ^ C'` using `Real.rpow_pos_of_pos hr0 C'`. Establish `hR1 : C * r ≤ r ^ C'` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR2 : c⁻¹ ≤ r ^ C'` using `by nlinarith`. Establish `hRc : 1 ≤ r ^ C' * c`. Use `mul_le_mul_of_nonneg_right hR2 hc.le` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ hc.ne']`. Then use the resulting hypothesis. Establish `hRcr : 1 ≤ r ^ C' * (C * r)⁻¹`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hCr]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr2 : r ^ 2 ≤ r ^ C'`. Use `Real.rpow_le_rpow_of_exponent_le hr1 (show (2 : ℝ) ≤ C' by linarith)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hX1, hX2⟩` from `point_lemma_2 hc hX hR1 hRc`. Take `⟨hY1, hY2⟩` from `point_lemma_2 (inv_pos.mpr hCr) hY hR2 hRcr`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : ((r ^ C' : ℝ) : ℂ) • (1 : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) - blockG (Γ w) = (Matrix.fromBlocks (((r ^ C' : ℝ) : ℂ) • 1 - (omBlock (Γ w))ᵀ⁻¹) 0 0 (((r ^ C' : ℝ) : ℂ) • 1 - wBlock (Γ w))).submatrix (blockEquiv p q).symm (blockEquiv p q).symm`. Rewrite using `[← Matrix.submatrix_one_equiv (blockEquiv p q).symm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Simplify using `only [blockG, Matrix.sub_apply, Matrix.smul_apply, Matrix.submatrix_apply]`. Generalize the expression as in `(blockEquiv p q).symm a = i`. Generalize the expression as in `(blockEquiv p q).symm b = j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [Matrix.one_apply]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `(psd_blocks hX1 hY1).submatrix _`. Establish `e2 : ((r ^ C' : ℝ) : ℂ) • blockG (Γ w) - 1 = (Matrix.fromBlocks (((r ^ C' : ℝ) : ℂ) • (omBlock (Γ w))ᵀ⁻¹ - 1) 0 0 (((r ^ C' : ℝ) : ℂ) • wBlock (Γ w) - 1)).submatrix (blockEquiv p q).symm (blockEquiv p q).symm`. Rewrite using `[← Matrix.submatrix_one_equiv (blockEquiv p q).symm]`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [blockG, Matrix.sub_apply, Matrix.smul_apply, Matrix.submatrix_apply]`. Generalize the expression as in `(blockEquiv p q).symm a = i`. Generalize the expression as in `(blockEquiv p q).symm b = j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [Matrix.one_apply]`. Rewrite using `[e2]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(psd_blocks hX2 hY2).submatrix _`. Introduce `a b`. Use `(key ((blockEquiv p q).symm a) ((blockEquiv p q).symm b)).2.trans (max_le ?_ ?_)` and prove the remaining obligations. Establish `hE` using `Real.exp_pos (r / 2)`. Establish `h1 : (q : ℝ) ^ 2 * C ^ 3 * r ^ 2 ≤ C' * r ^ C'`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (q : ℝ) ^ 2 * C ^ 3 ≤ C'` using `by linarith [inv_pos.mpr hc]`. Conclude with `mul_le_mul this hr2 (by positivity) (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `hE` using `Real.exp_pos (r / 2)`. Establish `h1 : C ≤ C' * r ^ C'` using `by nlinarith`.
-
-Conclude with `mul_le_mul_of_nonneg_right h1 hE.le`.
+A detailed English derivation is pending.
 -/
 theorem point (p q : ℕ) {c C : ℝ} (hc : 0 < c) (hC : 0 < C) : ∃ C₀ : ℝ, ∀ (r : ℝ), Real.exp 1 ≤ r →
     ∀ (Γ : V → Matrix (Fin (p + q)) (Fin (p + q)) ℂ) (w : V), (Γ w).PosDef →
@@ -552,9 +546,9 @@ end An
 end PositivityTheory.Xgp.c_bm_exists_bounds
 
 /- English proof (translation)
-Use `choose! ε hε D hD using h`. Take `⟨t, hts, hcov⟩` from `hs.elim_nhds_subcover (fun w₀ => Metric.ball w₀ (ε w₀)) (fun w₀ hw₀ => Metric.ball_mem_nhds w₀ (hε w₀ hw₀))`. Use `⟨∑ w₀ ∈ t, |D w₀|, fun w hw C hC => ?_⟩` and prove the remaining obligations. Take `⟨w₀, hw₀t, hww₀⟩` from `Set.mem_iUnion₂.mp (hcov hw)`. Apply `hD w₀ (hts w₀ hw₀t) w hww₀ C` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem t_c_bm_exists_bounds_lemma {E : Type} [PseudoMetricSpace E] {s : Set E} (Q : E → ℝ → Prop)
     (hs : IsCompact s) (h : ∀ w₀ ∈ s, ∃ ε > 0, ∃ D : ℝ, ∀ w, dist w w₀ < ε → ∀ C ≥ D, Q w C) :
@@ -570,31 +564,27 @@ private theorem t_c_bm_exists_bounds_lemma {E : Type} [PseudoMetricSpace E] {s :
     _ ≤ C := hC
 
 /- English proof (translation)
-Introduce `n p q X _ _ _ A B Z Cl U r Γ hAB hball2 hcov hZ hCl hU hUCl hr hloc`. Establish `key : ∀ x ∈ U \ Z, ∃ k : Fin B.n, x ∈ (B.chart k).source ∧ ∀ a b, ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun w' => blockG (Γ ((B.chart k).symm w')) a b) (B.chart k x)`. Introduce `x hx`. Take `⟨k, hxs, hxb⟩` from `hcov x`. Use `⟨k, hxs, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx' : (B.chart k).symm (B.chart k x) = x` using `(B.chart k).left_inv hxs`. Establish `hw : B.chart k x ∈ Metric.closedBall (0 : Fin n → ℂ) (3 / 2)`. Rewrite `hxb` using `[Metric.mem_ball]`. Rewrite using `[Metric.mem_closedBall]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨ε, c, C, hε, hc, hC, hl⟩` from `hloc k _ hw (by rw [hx']; exact hUCl hx.1)`. Take `⟨hpd, h1, h2, h3⟩` from `hl (B.chart k x) (by simpa using hε) (by rw [hx']; exact hx.2)`. Take `⟨D, hD⟩` from `PositivityTheory.Xgp.c_bm_exists_bounds.point (V := Fin n → ℂ) p q hc hC`. Conclude with `(hD _ (hr _ (by rw [hx']; exact hx.2)) (fun w' => Γ ((B.chart k).symm w')) (B.chart k x) hpd h1 h2 h3).1`. Establish `hsm : ∀ a b, A.SmoothOn (U \ Z) (fun x => (blockG (Γ x) a b).re) ∧ A.SmoothOn (U \ Z) (fun x => (blockG (Γ x) a b).im)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Establish `gen : ∀ (L : ℂ →L[ℝ] ℝ), A.SmoothOn (U \ Z) (fun x => L (blockG (Γ x) a b))`. Introduce `L j v hv`. Take `⟨hvt, hvU⟩` from `hv`. Take `⟨k, hxs, hk⟩` from `key _ hvU`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφ : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) ((B.chart k) ∘ (A.chart j).symm) v` using `((hAB.1 j k v ⟨hvt, hxs⟩).contDiffAt).restrict_scalars ℝ`. Establish `hg : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun w' => L (blockG (Γ ((B.chart k).symm w')) a b)) (((B.chart k) ∘ (A.chart j).symm) v)` using `L.contDiff.contDiffAt.comp _ (hk a b)`. Establish `hev : (fun x => L (blockG (Γ x) a b)) ∘ (A.chart j).symm =ᶠ[nhds v] (fun w' => L (blockG (Γ ((B.chart k).symm w')) a b)) ∘ ((B.chart k) ∘ (A.chart j).symm)` using `by filter_upwards [((A.chart j).continuousAt_symm hvt).preimage_mem_nhds ((B.chart k).open_source.mem_nhds hxs)] with y hy`. Simplify using `only [Function.comp_apply]`. Rewrite using `[(B.chart k).left_inv hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `((hg.comp v hφ).congr_of_eventuallyEq hev).contDiffWithinAt`. Conclude with `⟨gen Complex.reCLM, gen Complex.imCLM⟩`. Use `⟨hsm, ?_⟩` and prove the remaining obligations. Establish `hK : ∀ k : Fin B.n, ∃ D : ℝ, ∀ w ∈ Metric.closedBall (0 : Fin n → ℂ) (3 / 2) ∩ (B.chart k).symm ⁻¹' Cl, ∀ C ≥ D, (B.chart k).symm w ∉ Z → (((((r ((B.chart k).symm w)) ^ C : ℝ) : ℂ) • (1 : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) - blockG (Γ ((B.chart k).symm w))).PosSemidef ∧ ((((r …`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `t_c_bm_exists_bounds_lemma` to reduce the goal to its premises. Use `(isCompact_closedBall (0 : Fin n → ℂ) (3 / 2)).of_isClosed_subset ?_ Set.inter_subset_left` and prove the remaining obligations. Establish `hsub : Metric.closedBall (0 : Fin n → ℂ) (3 / 2) ⊆ (B.chart k).target` using `(Metric.closedBall_subset_closedBall (by norm_num)).trans (hball2 k)`. Conclude with `((B.chart k).continuousOn_symm.mono hsub).preimage_isClosed_of_isClosed Metric.isClosed_closedBall hCl`. Introduce `w₀ hw₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ε, c, C, hε, hc, hC, hl⟩` from `hloc k w₀ hw₀.1 hw₀.2`. Take `⟨D, hD⟩` from `PositivityTheory.Xgp.c_bm_exists_bounds.point (V := Fin n → ℂ) p q hc hC`. Use `⟨ε, hε, D, fun w hw C' hC' hz => ?_⟩` and prove the remaining obligations. Take `⟨hpd, h1, h2, h3⟩` from `hl w (by rw [← dist_eq_norm]; exact hw) hz`. Conclude with `(hD _ (hr _ hz) (fun w' => Γ ((B.chart k).symm w')) w hpd h1 h2 h3).2 C' hC'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose D hD using hK`. Use `⟨∑ k, |D k|, fun C hC => ?_⟩` and prove the remaining obligations. Establish `hDk : ∀ k, D k ≤ C` using `fun k => (le_abs_self _).trans ((Finset.single_le_sum (fun i _ => abs_nonneg (D i)) (Finset.mem_univ k)).trans hC)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hxs, hxb⟩` from `hcov x`. Establish `hx' : (B.chart k).symm (B.chart k x) = x` using `(B.chart k).left_inv hxs`. Establish `hw : B.chart k x ∈ Metric.closedBall (0 : Fin n → ℂ) (3 / 2)`. Rewrite `hxb` using `[Metric.mem_ball]`. Rewrite using `[Metric.mem_closedBall]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm : B.chart k x ∈ Metric.closedBall (0 : Fin n → ℂ) (3 / 2) ∩ (B.chart k).symm ⁻¹' Cl`. Use `⟨hw, ?_⟩` and prove the remaining obligations. Use `show (B.chart k).symm (B.chart k x) ∈ Cl`. Rewrite using `[hx']`.
-
-Conclude with `hx.1`. Use `hD k (B.chart k x) hm C (hDk k) (by rw [hx']; exact hx.2)` as an intermediate fact. Rewrite `this` using `[hx']`. Conclude with `this.1`. Introduce `a b k w hw hwZ`.
-
-Establish `hw' : w ∈ Metric.closedBall (0 : Fin n → ℂ) (3 / 2)` using `Metric.ball_subset_closedBall hw`. Conclude with `(hD k w ⟨hw', hwZ.1⟩ C (hDk k) hwZ.2).2 a b`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_c_bm_exists_bounds : ∀ (n p q : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A B : FinHolAtlas n X) (Z Cl U : Set X) (r : X → ℝ) (Γ : X → Matrix (Fin (p + q)) (Fin (p + q)) ℂ), A.Compatible B → (∀ k, Metric.closedBall (0 : Fin n → ℂ) 2 ⊆ (B.chart k).target) → (∀ x, ∃ k, x ∈ (B.chart k).source ∧ B.chart k x ∈ Metric.ball (0 : Fin n → ℂ) 1) → IsClosed Z → IsClosed Cl → IsOpen U → U ⊆ Cl → (∀ x, x ∉ Z → Real.exp 1 ≤ r x) → (∀ (k : Fin B.n) (w₀ : Fin n → ℂ), w₀ ∈ Metric.closedBall (0 : Fin n → ℂ) (3 / 2) → (B.chart k).symm w₀ ∈ Cl → ∃ ε c C : ℝ, 0 < ε ∧ 0 < c ∧ 0 < C ∧ ∀ w : Fin n → ℂ, ‖w - w₀‖ < ε → (B.chart k).symm w ∉ Z → (Γ ((B.chart k).symm w)).PosDef ∧ ((Γ ((B.chart k).symm w))⁻¹ - (c : ℂ) • (1 : Matrix (Fin (p + q)) (Fin (p + q)) ℂ)).PosSemidef ∧ (((C * r ((B.chart k).symm w) : ℝ) : ℂ) • (1 : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) - (Γ ((B.chart k).symm w))⁻¹).PosSemidef ∧ ∀ a b, ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun w' => Γ ((B.chart k).symm w') a b) w ∧ ‖fderiv ℝ (fun w' => Γ ((B.chart k).symm w') a b) w‖ ≤ C * Real.exp (r ((B.chart k).symm w) / 2)) → (∀ a b, A.SmoothOn (U \ Z) (fun x => (blockG (Γ x) a b).re) ∧ A.SmoothOn (U \ Z) (fun x => (blockG (Γ x) a b).im)) ∧ ∃ C₀ : ℝ, ∀ C : ℝ, C₀ ≤ C → (∀ x ∈ Cl \ Z, (((r x ^ C : ℝ) : ℂ) • (1 : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) - blockG (Γ x)).PosSemidef ∧ (((r x ^ C : ℝ) : ℂ) • blockG (Γ x) - 1).PosSemidef) ∧ ∀ (a b : Fin (p + q)) (k : Fin B.n), ∀ w ∈ Metric.ball (0 : Fin n → ℂ) (3 / 2), (B.chart k).symm w ∈ Cl \ Z → ‖fderiv ℝ (fun w' => blockG (Γ ((B.chart k).symm w')) a b) w‖ ≤ C * r ((B.chart k).symm w) ^ C * Real.exp (r ((B.chart k).symm w) / 2) := by
   intro n p q X _ _ _ A B Z Cl U r Γ hAB hball2 hcov hZ hCl hU hUCl hr hloc

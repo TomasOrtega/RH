@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.HighWtEmb
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_smul _ _, fun x => by simp⟩`. Consider the case `insert τ s hτ ih`. Take `⟨e, he, hex⟩` from `ih`. Take `⟨p, hp, -⟩` from `exists_unique_isProj O N ι lam τ (w τ)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `pA : alg O N lam` to `⟨p, Algebra.subset_adjoin (Or.inr ⟨τ, w τ, hp⟩)⟩`. Use `⟨pA * e, by rw [mul_smul, he]; exact hz τ pA hp, fun x => ?_⟩` and prove the remaining obligations. Use `show p ((e : Module.End O (NablaT O N lam)) _) = _`. Rewrite using `[hex]`. Rewrite using `[hp _ (rowProj O N (res N (lam τ)) (w τ) (x τ)) (by simp [hτ, rowProj])]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update_of_ne h, h]`.
+A detailed English derivation is pending.
 -/
 theorem exists_prodProj (O : Type) [CommRing O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (lam : ι → ℕ → ℕ)
     (Gm : Type) [AddCommGroup Gm] [Module (alg O N lam) Gm] (w : ι → Fin N → ℕ) (z₀ : Gm)
@@ -42,9 +42,9 @@ theorem exists_prodProj (O : Type) [CommRing O] (N : ℕ) (ι : Type) [Fintype �
     · simp [Function.update_of_ne h, h]
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [LinearMap.compMultilinearMap_apply, Module.End.mul_apply, LinearMap.zero_apply]`. Rewrite using `[ha x (rowProj O N (res N (lam τ)) v (x τ)) (by simp [rowProj]), he]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(PiTensorProduct.tprod O).map_coord_zero τ ?_` and prove the remaining obligations. Simplify using `only [Function.update_self]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [rowProj, LinearMap.restrict_apply, ZeroMemClass.coe_zero]`. Rewrite using `[weightedHomogeneousComponent_of_mem (weightedHomogeneousComponent_isWeightedHomogeneous _ _), if_neg hv.symm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodProj_mul_eq_zero (O : Type) [CommRing O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (lam : ι → ℕ → ℕ)
     (w : ι → Fin N → ℕ) (e : Module.End O (NablaT O N lam))
@@ -65,17 +65,15 @@ theorem prodProj_mul_eq_zero (O : Type) [CommRing O] (N : ℕ) (ι : Type) [Fint
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `O _ _ _ N ι _ _ lam ϖ hϖ Gm _ _ hSQ w z₀ hz0 hfix`. Establish `hkill : ∀ z : Gm, algebraMap O (alg O N lam) ϖ • z = 0`. Take `⟨U, π, hπ, h0⟩` from `hSQ`. Introduce `z`. Take `⟨x, rfl⟩` from `hπ z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_smul]`. Conclude with `h0 _ x rfl`. Use `letI iO : Module O Gm := Module.compHom Gm (algebraMap O (alg O N lam))`. Establish `hT : Module.IsTorsionBySet O Gm (Ideal.span {ϖ} : Ideal O)` using `(Module.isTorsionBySet_span_singleton_iff ϖ).2 fun z => hkill z`. Use `haveI hmax : (Ideal.span {ϖ} : Ideal O).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hϖ`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI kF : Field (O ⧸ Ideal.span {ϖ}) := Ideal.Quotient.field _`. Use `letI iK : Module (O ⧸ Ideal.span {ϖ}) Gm := hT.module`. Take `⟨f, hf⟩` from `Module.Projective.exists_dual_ne_zero (O ⧸ Ideal.span {ϖ}) hz0`. Take `⟨e, he, hex⟩` from `exists_prodProj O N ι lam Gm w z₀ hfix Finset.univ`. Set `φ : Gm →+ O ⧸ Ideal.span {ϖ}` to `{ toFun := fun z => f (e • z) map_zero' := by simp map_add' := fun y z => by simp [smul_add] }`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨φ, ?_, fun c z => ?_, fun τ v a ha hv z => ?_⟩` and prove the remaining obligations. Use `show f (e • z₀) ≠ 0`. Rewrite using `[he]`. Conclude with `hf`. Use `show f (e • (algebraMap O (alg O N lam) c • z)) = _ * f (e • z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← mul_smul, ← Algebra.commutes, mul_smul]`. Establish `: algebraMap O (alg O N lam) c • (e • z) = (Ideal.Quotient.mk (Ideal.span {ϖ}) c) • (e • z)` using `rfl`. Rewrite using `[this, map_smul, smul_eq_mul]`. Use `show f (e • (a • z)) = 0`. Establish `h0 : e * a = 0`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `prodProj_mul_eq_zero O N ι lam w (e : Module.End O (NablaT O N lam)) (fun x => by rw [hex]; simp) τ v a ha hv`. Rewrite using `[← mul_smul, h0, zero_smul, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weightForm : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (lam : ι → ℕ → ℕ) (ϖ : O), Irreducible ϖ → ∀ (Gm : Type) [AddCommGroup Gm] [Module (alg O N lam) Gm], SubQ O N lam ϖ Gm → ∀ (w : ι → Fin N → ℕ) (z₀ : Gm), z₀ ≠ 0 → (∀ τ (a : alg O N lam), IsProj O N lam τ (w τ) a → a • z₀ = z₀) → ∃ φ : Gm →+ O ⧸ Ideal.span {ϖ}, φ z₀ ≠ 0 ∧ (∀ (c : O) (z : Gm), φ (algebraMap O (alg O N lam) c • z) = Ideal.Quotient.mk (Ideal.span {ϖ}) c * φ z) ∧ ∀ τ (v : Fin N → ℕ) (a : alg O N lam), IsProj O N lam τ v a → v ≠ w τ → ∀ z, φ (a • z) = 0 := by
   intro O _ _ _ N ι _ _ lam ϖ hϖ Gm _ _ hSQ w z₀ hz0 hfix

@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.RealGal
 
 /- English proof (translation)
-Take `⟨m, hm, -, hz⟩` from `hπ v`. Use `⟨m.attach.map fun z => -(hz z.1 z.2).choose, m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.attach_map_val m, Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `(hz z.1 z.2).choose_spec`. Simplify using `only [Function.comp_apply, Int.cast_neg]`. Take the linear combination `h`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_hodgeTate {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {a : ℕ} (π : TR.CuspSub F a)
     (hπ : π.IsRegAlg) (v : InfinitePlace F) :
@@ -32,7 +32,7 @@ theorem exists_hodgeTate {F : Type} [Field F] [NumberField F] [IsTotallyReal F] 
   linear_combination h
 
 /- English proof (translation)
-Rewrite using `[IsCMField.complexConj_eq_self_iff, mem_maximalRealSubfield_iff]`. Introduce `φ`. Establish `h` using `ComplexEmbedding.isReal_iff.mp (InfinitePlace.isReal_mk_iff.mp (IsTotallyReal.isReal (InfinitePlace.mk (φ.comp (algebraMap F K)))))`. Rewrite using `[RCLike.star_def, ← ComplexEmbedding.conjugate_coe_eq]`. Conclude with `RingHom.congr_fun h x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem complexConj_algebraMap {F K : Type} [Field F] [NumberField F] [IsTotallyReal F] [Field K] [NumberField K]
     [IsCMField K] [Algebra F K] (x : F) :
@@ -45,19 +45,17 @@ theorem complexConj_algebraMap {F K : Type} [Field F] [NumberField F] [IsTotally
   exact RingHom.congr_fun h x
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ l _ ι a π hπ`. Use `choose HTF hHTF using fun τ : F →+* Qbar l => exists_hodgeTate π hπ (InfinitePlace.mk (ι.toRingHom.comp τ))`. Establish `key : ∀ (τ : F →+* Qbar l) (m : Multiset ℂ), π.HasInfChar (InfinitePlace.mk (ι.toRingHom.comp τ)) m → (HTF τ).map (fun n : ℤ => (n : ℂ)) = m.map fun z => ((a : ℂ) - 1) / 2 - z`. Introduce `τ m hm`. Take `⟨m0, hm0, e⟩` from `hHTF τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, TR.CuspSub.HasInfChar.unique hm0 hm]`. Use `⟨HTF, fun τ => ?_, key, ?_⟩` and prove the remaining obligations. Take `⟨m0, hm0, e⟩` from `hHTF τ`. Use `congrArg Multiset.card e` as an intermediate fact. Simplify `this` using `[hm0.1]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `K _ _ _ _ _ _ _ h2 P hBC χ r wt HT hG`. Establish `hK : ∀ τ : K →+* Qbar l, HT τ = HTF (τ.comp (algebraMap F K))`. Introduce `τ`. Take `⟨m0, hm0, e⟩` from `hHTF (τ.comp (algebraMap F K))`. Establish `h1 : P.HasInfChar (ι.toRingHom.comp τ) m0` using `hBC.inf _ _ hm0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (CG.mk P).infChar (ι.toRingHom.comp τ) = m0` using `CG.HasInfChar.infChar_eq h1`. Apply `Multiset.map_injective (f := fun n : ℤ => (n : ℂ)) Int.cast_injective` to reduce the goal to its premises. Rewrite using `[hG.weights τ, h3, e]`. Use `⟨hK, fun τ => ?_⟩` and prove the remaining obligations. Use `letI : Algebra F (Qbar l) := τ.toAlgebra`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : Module.Finite F K := Module.finite_of_finrank_pos (by omega)`. Use `haveI : Algebra.IsAlgebraic F K := Algebra.IsAlgebraic.of_finite F K`. Set `τ' : K →ₐ[F] Qbar l` to `IsAlgClosed.lift`. Establish `hτ' : (τ' : K →+* Qbar l).comp (algebraMap F K) = τ` using `RingHom.ext fun x => τ'.commutes x`. Establish `hc : ((τ' : K →+* Qbar l).comp (IsCMField.complexConj K).toRingEquiv.toRingHom).comp (algebraMap F K) = τ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hτ']`. Use extensionality with `x`. Simplify using `only [RingHom.comp_apply]`. Conclude with `congrArg τ' (complexConj_algebraMap (K := K) x)`. Use `hG.weights_conj (τ' : K →+* Qbar l)` as an intermediate fact.
-
-Rewrite `this` using `[hK, hK, hc, hτ']`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hodgeTate_of_regAlg : ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : TR.CuspSub F a), π.IsRegAlg → ∃ HTF : (F →+* Qbar l) → Multiset ℤ, (∀ τ, (HTF τ).card = a) ∧ (∀ (τ : F →+* Qbar l) (m : Multiset ℂ), π.HasInfChar (InfinitePlace.mk (ι.toRingHom.comp τ)) m → (HTF τ).map (fun n : ℤ => (n : ℂ)) = m.map fun z => ((a : ℂ) - 1) / 2 - z) ∧ ∀ (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω], Module.finrank F K = 2 → ∀ (P : CuspSub K a), IsBC π P → ∀ (χ : HChar (maximalRealSubfield K)) (r : G K Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (K →+* Qbar l) → Multiset ℤ), IsGalRepOf P χ ι r wt HT → (∀ τ : K →+* Qbar l, HT τ = HTF (τ.comp (algebraMap F K))) ∧ ∀ τ : F →+* Qbar l, HTF τ = (HTF τ).map (wt - ·) := by
   intro F Ω _ _ _ _ _ _ l _ ι a π hπ

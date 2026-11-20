@@ -9,15 +9,15 @@ open scoped ENNReal
 namespace QPK
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ muG _ μ _ hinv β hβ hβ1 F hF`. Establish `hFm : Measurable (fun p : G × G => F (p.1 * p.2))` using `hF.comp measurable_mul`. Establish `hin : Measurable (fun x => ∫⁻ s, F (s * x) ∂μ)` using `hFm.lintegral_prod_left'`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ hβ hin]`. Simplify using `only [Pi.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `step1 : ∀ x, β x * ∫⁻ s, F (s * x) ∂μ = ∫⁻ s, β x * F (s * x) ∂μ` using `fun x => (lintegral_const_mul (β x) (hF.comp (measurable_id.mul_const x))).symm`. Repeatedly rewrite using `[step1]`. Rewrite using `[lintegral_lintegral_swap (μ := muG) (ν := μ) (f := fun x s => β x * F (s * x)) ((hβ.comp measurable_fst).mul (hF.comp (measurable_snd.mul measurable_fst))).aemeasurable]`. Establish `step2 : ∀ s, ∫⁻ x, β x * F (s * x) ∂muG = ∫⁻ x, β (s⁻¹ * x) * F x ∂muG`. Introduce `s`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `lintegral_mul_left_eq_self (μ := muG) (fun x => β (s⁻¹ * x) * F x) s`. Simplify using `only [inv_mul_cancel_left] at key`. Conclude with `key`. Repeatedly rewrite using `[step2]`. Rewrite using `[lintegral_lintegral_swap (μ := μ) (ν := muG) (f := fun s x => β (s⁻¹ * x) * F x) ((hβ.comp (measurable_fst.inv.mul measurable_snd)).mul (hF.comp measurable_snd)).aemeasurable]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `step3 : ∀ x, ∫⁻ s, β (s⁻¹ * x) * F x ∂μ = F x`. Introduce `x`. Rewrite using `[lintegral_mul_const (F x) (f := fun s => β (s⁻¹ * x)) (hβ.comp (measurable_inv.mul_const x))]`. Establish `hsym : ∫⁻ s, β (s⁻¹ * x) ∂μ = ∫⁻ s, β (s * x) ∂μ` using `by conv_rhs => rw [← hinv]`. Rewrite using `[lintegral_map (f := fun s => β (s * x)) (hβ.comp (measurable_id.mul_const x)) measurable_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsym, hβ1 x, one_mul]`. Repeatedly rewrite using `[step3]`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_weil_representation : LocWeil := by
   intro G _ _ _ _ _ _ _ _ muG _ μ _ hinv β hβ hβ1 F hF

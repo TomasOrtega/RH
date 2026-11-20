@@ -7,15 +7,13 @@ namespace Formalism.WachCohomologyFacts.PLenBound
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Establish `hker : ∀ i, Ideal.span {a} ≤ LinearMap.ker (LinearMap.toSpanSingleton O P (v i))` using `fun i => by`. Use `Ideal.span_le.2 (Set.singleton_subset_iff.2 ?_)` and prove the remaining obligations. Use `show LinearMap.toSpanSingleton O P (v i) a = 0`. Rewrite using `[LinearMap.toSpanSingleton_apply]`. Conclude with `hv i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : ι → (O ⧸ Ideal.span {a} →ₗ[O] P)` to `fun i => (Ideal.span {a}).liftQ (LinearMap.toSpanSingleton O P (v i)) (hker i)`. Set `g : (ι → O ⧸ Ideal.span {a}) →ₗ[O] P` to `∑ i, f i ∘ₗ LinearMap.proj i`. Establish `hg : ∀ i, g (Pi.single i (Submodule.Quotient.mk 1)) = v i`. Introduce `i`. Use `show (∑ j, f j ∘ₗ LinearMap.proj j) (Pi.single i (Submodule.Quotient.mk 1)) = v i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.sum_apply, Finset.sum_eq_single i]`. Rewrite using `[LinearMap.comp_apply, LinearMap.proj_apply, Pi.single_eq_same] show LinearMap.toSpanSingleton O P (v i) 1 = v i`. Rewrite using `[LinearMap.toSpanSingleton_apply, one_smul]`. Introduce `j _ hj`. Rewrite using `[LinearMap.comp_apply, LinearMap.proj_apply, Pi.single_eq_of_ne hj, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Establish `hsurj : Function.Surjective g`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
-
-Conclude with `⟨_, hg i⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Module.length_pi, ENat.card_eq_coe_fintype_card]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_le_of_span {P : Type} [AddCommGroup P] [Module O P] {ι : Type} [Fintype ι]
     (v : ι → P) (a : O) (hspan : Submodule.span O (Set.range v) = ⊤) (hv : ∀ i, a • v i = 0) :
@@ -50,21 +48,17 @@ theorem length_le_of_span {P : Type} [AddCommGroup P] [Module O P] {ι : Type} [
         rw [Module.length_pi, ENat.card_eq_coe_fintype_card]
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero`. Rewrite using `[pow_zero, Ideal.span_singleton_one, Nat.cast_zero, zero_mul]`. Use `haveI : Subsingleton (O ⧸ (⊤ : Ideal O)) := ⟨fun x y => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `(Submodule.Quotient.eq _).2 Submodule.mem_top⟩`. Conclude with `le_of_eq (Module.length_eq_zero)`. Consider the case `succ e ih`. Establish `hle : Ideal.span {a ^ (e + 1)} ≤ Ideal.span {a ^ e}` using `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow a (Nat.le_succ e))`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hex` using `Module.length_eq_add_of_exact (LinearMap.ker (Submodule.factor hle)).subtype (Submodule.factor hle) (Submodule.injective_subtype _) (Submodule.factor_surjective hle) (LinearMap.exact_subtype_ker_map _)`. Set `f0 : O →ₗ[O] O ⧸ Ideal.span {a ^ (e + 1)}` to `(Ideal.span {a ^ (e + 1)}).mkQ ∘ₗ LinearMap.mulLeft O (a ^ e)`. Establish `hf0 : Ideal.span {a} ≤ LinearMap.ker f0`. Use `Ideal.span_le.2 (Set.singleton_subset_iff.2 ?_)` and prove the remaining obligations. Use `show (Ideal.span {a ^ (e + 1)}).mkQ (a ^ e * a) = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, ← pow_succ]`. Conclude with `Ideal.subset_span rfl`. Set `f` to `(Ideal.span {a}).liftQ f0 hf0`. Establish `hfk : ∀ x, f x ∈ LinearMap.ker (Submodule.factor hle)`. Introduce `x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[LinearMap.mem_ker]`. Use `show (Submodule.Quotient.mk (a ^ e * y) : O ⧸ Ideal.span {a ^ e}) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `Ideal.mem_span_singleton'.2 ⟨y, mul_comm _ _⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `f' : O ⧸ Ideal.span {a} →ₗ[O] LinearMap.ker (Submodule.factor hle)` to `LinearMap.codRestrict _ f hfk`. Establish `hf'surj : Function.Surjective f'`. Introduce and unpack `⟨z, hz⟩`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Establish `hy : y ∈ Ideal.span {a ^ e}`.
-
-Rewrite `hz` using `[LinearMap.mem_ker]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 hz`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Use `⟨Submodule.Quotient.mk c, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (Submodule.Quotient.mk (a ^ e * c) : O ⧸ Ideal.span {a ^ (e + 1)}) = Submodule.Quotient.mk (c * a ^ e)`.
-
-Rewrite using `[mul_comm]`. Establish `hk` using `Module.length_le_of_surjective f' hf'surj`. Rewrite using `[hex, Nat.cast_succ, add_mul, one_mul]`. Conclude with `(add_le_add hk ih).trans (le_of_eq (add_comm _ _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quot_pow_le (a : O) (e : ℕ) :
     Module.length O (O ⧸ Ideal.span {a ^ e}) ≤ (e : ℕ∞) * Module.length O (O ⧸ Ideal.span {a}) := by
@@ -116,21 +110,19 @@ end PLenBound
 
 open PLenBound in
 /- English proof (translation)
-Introduce `O M _ _ _ ℓ g e Z Bc I s hs hZ hBI hkill`. Establish `hsZ : ∀ x ∈ s, x ∈ Z` using `fun x hx => hZ ▸ Submodule.mem_sup_left (Submodule.subset_span hx)`. Set `v : s → ↥Z ⧸ I.comap Z.subtype` to `fun x => Submodule.Quotient.mk ⟨x.1, hsZ x.1 x.2⟩`. Establish `hspan : Submodule.span O (Set.range v) = ⊤`. Establish `hle' : Submodule.span O (s : Set M) ⊔ Bc ≤ ((Submodule.span O (Set.range v)).comap (I.comap Z.subtype).mkQ).map Z.subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sup_le_iff, Submodule.span_le]`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Use `⟨⟨x, hsZ x hx⟩, ?_, rfl⟩` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Establish `hbZ : b ∈ Z` using `hZ ▸ Submodule.mem_sup_right hb`. Use `⟨⟨b, hbZ⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show Submodule.Quotient.mk _ ∈ Submodule.span O (Set.range v)`. Rewrite using `[(Submodule.Quotient.mk_eq_zero _).2 (show (⟨b, hbZ⟩ : Z) ∈ I.comap Z.subtype from hBI hb)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Establish `hle` using `hZ.symm.le.trans hle'`. Rewrite using `[eq_top_iff]`. Introduce and unpack `q -`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht, htz⟩` from `hle z.2`. Establish `htz' : t = z` using `Subtype.ext htz`. Rewrite using `[← htz']`. Conclude with `ht`. Establish `hv : ∀ i, ((ℓ : O) ^ e) • v i = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `i`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `show ((ℓ : O) ^ e) • (i.1 : M) ∈ I`. Use `hkill i.1 (hsZ i.1 i.2)` as an intermediate fact. Rewrite `this` using `[← Nat.cast_smul_eq_nsmul O, Nat.cast_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h1` using `length_le_of_span v ((ℓ : O) ^ e) hspan hv`. Establish `h2` using `length_quot_pow_le (ℓ : O) e`. Establish `hcard : (Fintype.card s : ℕ∞) ≤ g`. Rewrite using `[Fintype.card_coe]`. Conclude with `hs` after adjusting the coercions.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem quotientLengthBound_holds : Formalism.WachCohomologyFacts.LenBound := by
   intro O M _ _ _ ℓ g e Z Bc I s hs hZ hBI hkill

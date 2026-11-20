@@ -14,11 +14,11 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem.DuInt
 
 /- English proof (translation)
-Use `haveI : NeZero g := ⟨hg.ne_zero⟩`. Establish `h1 : Nat.card {A : GL (Fin k) (ZMod g) // StandardLattice.IsUnitri (A : Matrix (Fin k) (Fin k) (ZMod g))} = Nat.card (HU (ZMod g) k)`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun A => ⟨fun h => ?_, fun h => isUpperUni_of_mem_uniUT le_rfl h⟩)` and prove the remaining obligations. Establish `: A ∈ uSet (ZMod g) (fun i j : Fin k => i < j)` using `⟨h.2, fun i j hne hij => h.1 i j (lt_of_le_of_ne (not_lt.1 hij) hne.symm)⟩`. Rewrite `this` using `[← uniUT_full_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h2` using `(HU (ZMod g) k).card_mul_index`. Establish `h3` using `card_HU (ZMod g) k`. Rewrite `h3` using `[Nat.card_zmod]`. Use `⟨(HU (ZMod g) k).index, Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite, ?_, by rw [← h2, h3]⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `StandardLattice.idxColLoc StandardLattice.idxLoc`. Rewrite using `[h1, ← h2]`. Establish `h4 : (0 : ℝ) < Nat.card (HU (ZMod g) k)` using `by exact_mod_cast Nat.card_pos`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem idx_eq (g k : ℕ) (hg : g.Prime) :
     ∃ n : ℕ, 0 < n ∧ (n : ℝ) = StandardLattice.idxColLoc g k ∧ Nat.card (GL (Fin k) (ZMod g)) = g ^ (k * (k - 1) / 2) * n := by
@@ -41,27 +41,23 @@ theorem idx_eq (g k : ℕ) (hg : g.Prime) :
   field_simp
 
 /- English proof (translation)
-Establish `hk : 0 < R.k` using `by have := R.m_add_three_le_k; omega`. Establish `hanti : StrictAnti P.u`. Establish `key : ∀ d : ℕ, ∀ (a : ℕ) (h : a + d + 1 < R.k), P.u ⟨a + d + 1, h⟩ < P.u ⟨a, by omega⟩`. Introduce `d`. Proceed by induction on `d with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro a h; exact (P.v_gt_u ⟨a, by omega⟩).trans (P.u_gt_v ⟨a, by omega⟩)`. Consider the case `succ d ih`. Introduce `a h`. Conclude with `((P.v_gt_u ⟨a + d + 1, by omega⟩).trans (P.u_gt_v ⟨a + d + 1, by omega⟩)).trans (ih a (by omega))`. Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩ hab`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt (show a < b from hab)`. Conclude with `key d a hb`. Use `choose z hz using P.u_half`. Establish `gen : ∀ (N : ℕ) (_ : 0 < N) (u : Fin N → ℚ) (z : Fin N → ℤ), StrictAnti u → (∀ i, u i = z i + 1 / 2) → ∃ n : ℕ, 0 < n ∧ (n : ℝ) = StandardLattice.dimV fun i => ((u i : ℚ) : ℝ)`. Introduce `N hN u z hu hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Take `⟨c, hc⟩` from `Matrix.superFactorial_dvd_vandermonde_det (fun i => - z i)`. Establish `e1 : StandardLattice.vand (fun i => ((u i : ℚ) : ℝ)) = ((Matrix.vandermonde fun i => - z i).det : ℤ)`. Rewrite using `[Matrix.det_vandermonde]`. Unfold `StandardLattice.vand`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr (by ext; simp) fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hz a, hz b]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : StandardLattice.facProd (M + 1) = (M.superFactorial : ℕ)`. Unfold `StandardLattice.facProd`. Rewrite using `[← Nat.prod_range_succ_factorial]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (0 : ℝ) < (M.superFactorial : ℕ)`. Rewrite using `[← e2]`. Conclude with `Finset.prod_pos fun i _ => by positivity`. Establish `h4 : 0 < StandardLattice.vand (fun i => ((u i : ℚ) : ℝ))`. Use `Finset.prod_pos fun a _ => Finset.prod_pos fun b hb => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `hu (Finset.mem_filter.1 hb).2` as an intermediate fact. Establish `: ((u b : ℚ) : ℝ) < u a` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e5 : StandardLattice.dimV (fun i => ((u i : ℚ) : ℝ)) = c`. Unfold `StandardLattice.dimV`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, hc]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `h6 : (0 : ℝ) < c`. Rewrite using `[← e5]`.
-
-Conclude with `div_pos h4 (e2 ▸ h3)`. Establish `h7 : 0 < c` using `by exact_mod_cast h6`. Use `⟨c.toNat, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[e5]`. Conclude with `congrArg (fun x : ℤ => (x : ℝ)) (Int.toNat_of_nonneg h7.le)` after adjusting the coercions.
-
-Conclude with `gen R.k hk P.u z hanti hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dimV_nat {R : Ranks} (P : HCParam R) :
     ∃ n : ℕ, 0 < n ∧ (n : ℝ) = StandardLattice.dimV fun i => ((P.u i : ℚ) : ℝ) := by
@@ -129,13 +125,13 @@ def resHom (N : Submodule (𝓞 E) V) : autLat (E := E) N →* Module.End (𝓞 
   map_mul' a b := by ext x; rfl
 
 /- English proof (translation)
-Establish `: Module.Finite (𝓞 E) N` using `Module.Finite.iff_fg.2 (Submodule.IsLattice.fg (self := hN))`. Establish `: Module.IsTorsionFree (𝓞 E) V` using `Module.IsTorsionFree.trans_faithfulSMul (𝓞 E) E V`. Establish `: Module.Flat (𝓞 E) N` using `inferInstance`. Establish `hr : Module.finrank (𝓞 E) N = Module.finrank E V`. Establish `: IsLocalizedModule (nonZeroDivisors (𝓞 E)) N.subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun s => ?_, fun y => ?_, fun {a b} hab => ⟨1, by simpa using hab⟩⟩` and prove the remaining obligations. Use `isLocalizedModule_id (nonZeroDivisors (𝓞 E)) V E` as an intermediate fact. Conclude with `IsLocalizedModule.map_units (S := nonZeroDivisors (𝓞 E)) (LinearMap.id : V →ₗ[𝓞 E] V) s`. Establish `hy : y ∈ Submodule.span E (N : Set V)` using `hN.span_eq_top ▸ Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 E)) E _ y hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨(⟨_, ht⟩, t), rfl⟩`. Rewrite using `[← IsLocalizedModule.finrank_eq (nonZeroDivisors (𝓞 E)) N.subtype le_rfl, IsFractionRing.finrank_right_eq (𝓞 E) E V]`. Use `letI : Field (𝓞 E ⧸ w) := Ideal.Quotient.field _`. Establish `h1` using `Module.rankAtStalk_baseChange (R := 𝓞 E) (M := N) (S := 𝓞 E ⧸ w) ⊥`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Module.rankAtStalk_eq_finrank_of_free, Module.rankAtStalk_eq, Ideal.finrank_fiber_eq_finrank, hr]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem finrank_red (N : Submodule (𝓞 E) V) (hN : Submodule.IsLattice E N) (w : Ideal (𝓞 E)) [w.IsMaximal] :
     Module.finrank (𝓞 E ⧸ w) ((𝓞 E ⧸ w) ⊗[𝓞 E] N) = Module.finrank E V := by
@@ -159,15 +155,15 @@ theorem finrank_red (N : Submodule (𝓞 E) V) (hN : Submodule.IsLattice E N) (w
   exact h1
 
 /- English proof (translation)
-Establish `: Module.Finite (𝓞 E) N` using `Module.Finite.iff_fg.2 (Submodule.IsLattice.fg (self := hN))`. Establish `: Module.IsTorsionFree (𝓞 E) V` using `Module.IsTorsionFree.trans_faithfulSMul (𝓞 E) E V`. Use `letI : Field (𝓞 E ⧸ w) := Ideal.Quotient.field _`. Establish `hc : Nat.card (𝓞 E ⧸ w) = g` using `by rw [← hn, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 E ⧸ w) := Nat.finite_of_card_ne_zero (hc ▸ hg.ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : Fintype (𝓞 E ⧸ w) := Fintype.ofFinite _`. Use `haveI : NeZero g := ⟨hg.ne_zero⟩`. Set `e : ZMod g ≃+* 𝓞 E ⧸ w` to `ZMod.ringEquivOfPrime _ hg (by rw [← hc, Nat.card_eq_fintype_card])`. Set `b` to `Module.finBasisOfFinrankEq (𝓞 E ⧸ w) ((𝓞 E ⧸ w) ⊗[𝓞 E] N) (finrank_red N hN w)`. Set `φ : Module.End (𝓞 E ⧸ w) ((𝓞 E ⧸ w) ⊗[𝓞 E] N) ≃* Matrix (Fin (Module.finrank E V)) (Fin (Module.finrank E V)) (ZMod g)` to `(LinearMap.toMatrixAlgEquiv b).toMulEquiv.trans e.symm.mapMatrix.toMulEquiv`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `ρ : Γ →* Module.End (𝓞 E ⧸ w) ((𝓞 E ⧸ w) ⊗[𝓞 E] N)` to `((Module.End.baseChangeHom (𝓞 E) (𝓞 E ⧸ w) N : _ →* _).comp (resHom N)).comp (Subgroup.inclusion hΓ)`. Use `Subgroup.card_dvd_of_injective (φ.toMonoidHom.comp ρ).toHomUnits ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_one]`. Introduce `γ hγ`. Establish `h1 : ρ γ = 1` using `φ.injective (by rw [map_one]; exact congrArg Units.val hγ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Subtype.ext (stab0 hw.ne_top hN.fg hN.span_eq_top hg hgw hbig ⟨hΓ γ.2, 1, fun x hx => ?_⟩ (Submonoid.isOfFinOrder_coe.mpr (isOfFinOrder_of_finite γ)))` and prove the remaining obligations. Establish `h2 : (1 : 𝓞 E ⧸ w) ⊗ₜ[𝓞 E] (resHom N ⟨γ.1, hΓ γ.2⟩ ⟨x, hx⟩) = (1 : 𝓞 E ⧸ w) ⊗ₜ[𝓞 E] (⟨x, hx⟩ : N)` using `LinearMap.congr_fun h1 ((1 : 𝓞 E ⧸ w) ⊗ₜ[𝓞 E] (⟨x, hx⟩ : N))`. Establish `h3` using `congrArg (TensorProduct.quotTensorEquivQuotSMul N w) h2`. Rewrite `h3` using `[TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, Submodule.Quotient.eq]`. Establish `h4` using `Submodule.mem_map_of_mem (f := N.subtype) h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h4` using `[Submodule.map_smul'', Submodule.map_subtype_top]`. Rewrite using `[pow_one]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem card_dvd_card_GL (N : Submodule (𝓞 E) V) (hN : Submodule.IsLattice E N) (w : Ideal (𝓞 E)) [hw : w.IsMaximal]
     {g : ℕ} (hg : g.Prime) (hgw : (g : 𝓞 E) ∈ w) (hn : Ideal.absNorm w = g)
@@ -204,15 +200,15 @@ theorem card_dvd_card_GL (N : Submodule (𝓞 E) V) (hN : Submodule.IsLattice E 
   exact h4
 
 /- English proof (translation)
-Take `⟨⟨s, hs₀⟩, hm, hp⟩` from `Formalism.HermitianLatticesTheory.final_massBasic E V h hs hpos L hL`. Take `⟨m, hm0, hm1, hm2⟩` from `idx_eq g (Module.finrank E V) hg`. Establish `key : ∀ M ∈ s, ((m / Nat.card (Formalism.ThetaLiftIndependence.autL h M) : ℕ) : ℝ) = ((Nat.card (Formalism.ThetaLiftIndependence.autL h M) : ℕ) : ℝ)⁻¹ * m`. Introduce `M hM`. Establish `hMl` using `(hs₀.1 M hM).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfin` using `Formalism.HermitianLatticesTheory.autFinite E V h hs hpos M hMl`. Establish `: Finite (Formalism.HermitianLatticesTheory.isom h ⊓ autLat M : Subgroup (V ≃ₗ[E] V))` using `hfin.to_subtype`. Establish `e : Nat.card (Formalism.ThetaLiftIndependence.autL h M) = Nat.card (Formalism.HermitianLatticesTheory.isom h ⊓ autLat M : Subgroup (V ≃ₗ[E] V))` using `rfl`. Establish `h1` using `card_dvd_card_GL M hMl w hg hgw hn hbig (Formalism.HermitianLatticesTheory.isom h ⊓ autLat M) inf_le_right`. Establish `h2 : (Nat.card (Formalism.HermitianLatticesTheory.isom h ⊓ autLat M : Subgroup (V ≃ₗ[E] V))).Coprime g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.coprime_comm, hg.coprime_iff_not_dvd]`. Introduce `hd`. Use `prime_le_of_dvd_card _ hg hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[hm2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `(h2.pow_right _).dvd_of_dvd_mul_left h1`. Rewrite using `[e, Nat.cast_div h3 (by exact_mod_cast Nat.card_pos.ne'), div_eq_inv_mul]`. Establish `e : ((∑ M ∈ s, m / Nat.card (Formalism.ThetaLiftIndependence.autL h M) : ℕ) : ℝ) = Formalism.HermitianLatticesTheory.mass h L * StandardLattice.idxColLoc g (Module.finrank E V)`. Rewrite using `[hm s hs₀, ← hm1, Finset.sum_mul, Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, ?_, e⟩` and prove the remaining obligations. Establish `: (0 : ℝ) < Formalism.HermitianLatticesTheory.mass h L * StandardLattice.idxColLoc g (Module.finrank E V)` using `mul_pos hp (by rw [← hm1]; exact_mod_cast hm0)`. Rewrite `this` using `[← e]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_mul_idx [StarRing E] (h : V →ₗ⋆[E] V →ₗ[E] E) (hs : h.IsSymm)
     (hpos : ∀ x : V, x ≠ 0 → 0 < Algebra.trace ℚ E (h x x))
@@ -250,25 +246,23 @@ theorem mass_mul_idx [StarRing E] (h : V →ₗ⋆[E] V →ₗ[E] E) (hs : h.IsS
 end Lat
 
 /- English proof (translation)
-Introduce `R H hc hmod hbig`. Use `letI := H.cmStar`. Establish `hg` using `H.g_prime 0`. Establish `hdeg : Module.finrank ℚ H.E = 4 * R.ord` using `H.finrank_cmField`. Establish `hdeg' : Module.finrank ℚ H.E = 2 * R.f`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hdeg, show R.f = 2 * R.ord from rfl]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : SplitsC H.E (H.g 0)`. Use `splitsC_of_modEq_one R H _ hg ?_` and prove the remaining obligations. Use `Nat.mod_modEq (H.g 0) (H.QS * H.q * H.d)` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hmod 0]`. Conclude with `this.symm`. Take `⟨v, hv⟩ : {v : HeightOneSpectrum (𝓞 H.E) | ((H.g 0 : ℕ) : 𝓞 H.E) ∈ v.asIdeal}.Nonempty` from `Set.nonempty_of_ncard_ne_zero (by rw [show Set.ncard _ = _ from hs]; exact Module.finrank_pos.ne')`. Establish `hn` using `(splitsC_main R H _ hg hs v hv).1`. Use `haveI := v.isMaximal`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := H.isCMField_hostE`. Establish `hconj : ∀ (φ : H.E →+* ℂ) (x : H.E), φ (star x) = starRingEnd ℂ (φ x)` using `fun φ x => IsCMField.complexEmbedding_complexConj H.E φ x`. Establish `hsym : (StandardLattice.stdForm H.E R.k).IsSymm`. Use `LinearMap.isSymm_def.mpr fun x y => ?_` and prove the remaining obligations. Use `show starRingEnd H.E (∑ i, star (x i) * y i) = ∑ i, star (y i) * x i`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_sum, starRingEnd_apply, star_mul, star_star]`. Establish `hpos : ∀ x : Fin R.k → H.E, x ≠ 0 → 0 < Algebra.trace ℚ H.E (StandardLattice.stdForm H.E R.k x x)` using `fun x hx => by`. Use `hStd_trace_pos hconj x hx` as an intermediate fact. Rewrite `this` using `[hStd_apply]`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hL : Submodule.IsLattice H.E (StandardLattice.stdLat H.E R.k)`. Use `⟨Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Rewrite using `[StandardLattice.stdLat, Submodule.span_span_of_tower, ← (Pi.basisFun H.E (Fin R.k)).span_eq]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Take `⟨n₁, p₁, e₁⟩` from `mass_mul_idx _ hsym hpos _ hL v.asIdeal hg hv hn (by rw [Module.finrank_fin_fun, hdeg']; have := hbig 0; omega)`. Rewrite `e₁` using `[Module.finrank_fin_fun]`. Take `⟨n₂, p₂, e₂, -⟩` from `idx_eq (H.g 0) R.k hg`. Take `⟨n₃, p₃, e₃, -⟩` from `idx_eq (H.g 1) R.k (H.g_prime 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `choose d pd ed using fun τ => dimV_nat (hc τ)`. Take `⟨f, hf⟩ : ∃ f, R.f = f + 1` from `⟨R.f - 1, by`. Establish `: 0 < R.f` using `Nat.mul_pos two_pos R.ord_pos`. Use the proof step `omega⟩`. Use `⟨n₁ * n₂ ^ f * n₃ ^ R.f * ∏ τ, d τ, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.prod_pos (s := Finset.univ) fun τ _ => pd τ` as an intermediate fact. Check the signs of the components of the expression. Unfold `duStarOf`. Use `push_cast`. Simplify using `only [ed]`.
-
-Rewrite using `[e₁, e₂, e₃, hf]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem duStarOf_nat : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (hc : Tau R → HCParam R), (∀ i, H.g i % (H.QS * H.q * H.d) = 1) → (∀ i, 2 * R.f * R.k < H.g i - 1) → ∃ n : ℕ, 0 < n ∧ (n : ℝ) = duStarOf H hc := by
   intro R H hc hmod hbig

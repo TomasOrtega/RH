@@ -7,9 +7,9 @@ namespace ReciprocityTheory.ChartRestriction.G.Key.Chi
 variable {g : ℕ}
 
 /- English proof (translation)
-Establish `h` using `SymplecticGroup.transpose_mem hA`. Rewrite `h` using `[SymplecticGroup.mem_iff, Matrix.transpose_transpose]`. Rewrite using `[← h]`. Simplify using `only [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.transpose_apply]`. Simplify using `[Matrix.J, Matrix.fromBlocks, Matrix.one_apply, Finset.sum_sub_distrib, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_add_distrib, Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem symplectic_sum_pair_eq_J {A : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hA : A ∈ symplecticGroup (Fin g) ℤ) (p q : Fin g ⊕ Fin g) :
@@ -23,7 +23,7 @@ private theorem symplectic_sum_pair_eq_J {A : Matrix (Fin g ⊕ Fin g) (Fin g �
   rw [Finset.sum_add_distrib, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Establish `h` using `symplectic_sum_pair_eq_J hA (Sum.inr i) (Sum.inl m)`. Take `⟨-, h2⟩` from `hF i hi`. Simplify `h` using `[h2, Matrix.one_apply, Matrix.J, Matrix.fromBlocks, Ne.symm hm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem symplectic_inl_inl_eq_zero_of_colsFixed {k : ℕ} {A : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hA : A ∈ symplecticGroup (Fin g) ℤ) (hF : ColsFixed k A) {i m : Fin g} (hi : (i : ℕ) < k)
@@ -33,35 +33,31 @@ private theorem symplectic_inl_inl_eq_zero_of_colsFixed {k : ℕ} {A : Matrix (F
   simpa [h2, Matrix.one_apply, Matrix.J, Matrix.fromBlocks, Ne.symm hm] using h
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `M hM hF hbot hsum`. Distinguish the cases in `hone : ∀ i j, M (Sum.inl i) (Sum.inl k) ≠ 0 → M (Sum.inl j) (Sum.inl k) ≠ 0 → i = j`. Conclude with `⟨1, (spH g).one_mem, colsFixed_one _, by simpa using hbot, by simpa using hone⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Use `push_neg at hone`. Take `⟨a, b, ha, hb, hab⟩` from `hone`. Use `wlog hle : (M (Sum.inl b) (Sum.inl k)).natAbs ≤ (M (Sum.inl a) (Sum.inl k)).natAbs generalizing a b`. Conclude with `this b a hb ha (Ne.symm hab) (by omega)`. Establish `hak : (k : ℕ) ≤ a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `ha (symplectic_inl_inl_eq_zero_of_colsFixed hM hF hlt (fun h => by subst h; exact lt_irrefl _ hlt))`. Establish `hbk : (k : ℕ) ≤ b`. Assume the negation of the conclusion as `hlt`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `push_neg at hlt`. Conclude with `hb (symplectic_inl_inl_eq_zero_of_colsFixed hM hF hlt (fun h => by subst h; exact lt_irrefl _ hlt))`. Set `t : ℤ` to `M (Sum.inl a) (Sum.inl k) / M (Sum.inl b) (Sum.inl k)`. Set `E : Matrix (Fin g) (Fin g) ℤ` to `Matrix.of fun c u => (if c = u then (1 : ℤ) else 0) - if c = a ∧ u = b then t else 0`. Set `E' : Matrix (Fin g) (Fin g) ℤ` to `Matrix.of fun c u => (if c = u then (1 : ℤ) else 0) + if c = a ∧ u = b then t else 0`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hEE' : E * E' = 1`. Use extensionality with `c d`. Simplify using `[E, E', Matrix.mul_apply, Matrix.one_apply, sub_mul, mul_add, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_and]`. Apply the tactic sequence `split_ifs <;> simp_all`. Establish `hE'E : E' * E = 1`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `c d`. Simplify using `[E, E', Matrix.mul_apply, Matrix.one_apply, add_mul, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_and]`. Apply the tactic sequence `split_ifs <;> simp_all`. Set `U : (Matrix (Fin g) (Fin g) ℤ)ˣ` to `⟨E, E', hEE', hE'E⟩`. Establish `hO1 : spDiag U ∈ spH g` using `spDiag_mem U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `hF1 : ColsFixed k (spDiag U)`. Introduce `i hi`. Establish `hia : i ≠ a` using `fun h => by subst h; omega`. Establish `hib : i ≠ b` using `fun h => by subst h; omega`. Establish `e1 : ∀ c : Fin g, (i = c ↔ c = i)` using `fun c => eq_comm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> intro r <;> rcases r with c | c <;>`. Simplify using `[spDiag, U, E, E', Matrix.fromBlocks, Matrix.one_apply, hia, hib, e1]`. Establish `hnew : ∀ c, (spDiag U * M) (Sum.inl c) (Sum.inl k) = M (Sum.inl c) (Sum.inl k) - if c = a then t * M (Sum.inl b) (Sum.inl k) else 0`. Introduce `c`. Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[spDiag, U, E, Matrix.fromBlocks, hbot, sub_mul, Finset.sum_sub_distrib, ite_and]`. Establish `hbot1 : ∀ j, (spDiag U * M) (Sum.inr j) (Sum.inl k) = 0`. Introduce `j`. Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `[spDiag, Matrix.fromBlocks, hbot]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hkey : (M (Sum.inl a) (Sum.inl k) - t * M (Sum.inl b) (Sum.inl k)).natAbs < (M (Sum.inl a) (Sum.inl k)).natAbs`. Establish `he : M (Sum.inl a) (Sum.inl k) - t * M (Sum.inl b) (Sum.inl k) = M (Sum.inl a) (Sum.inl k) % M (Sum.inl b) (Sum.inl k)`. Rewrite using `[Int.emod_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `Int.natAbs_lt_natAbs_of_nonneg_of_lt (Int.emod_nonneg (M (Sum.inl a) (Sum.inl k)) hb) (Int.emod_lt (M (Sum.inl a) (Sum.inl k)) hb)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (M (Sum.inl a) (Sum.inl k) % M (Sum.inl b) (Sum.inl k)).natAbs < (M (Sum.inl b) (Sum.inl k)).natAbs`. Simplify using `only [Int.natCast_natAbs] at h1`. Rewrite `h1` using `[Int.natAbs_abs]`. Then use the resulting hypothesis. Rewrite using `[he]`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hlt : ∑ j, ((spDiag U * M) (Sum.inl j) (Sum.inl k)).natAbs < n`. Rewrite using `[← hsum]`. Apply `Finset.sum_lt_sum` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[hnew]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hja : j = a`. Substitute `hja` using the available equality. Simplify using `only [if_true]`. Conclude with `hkey.le`. Simplify using `[hja]`.
-
-Conclude with `⟨a, Finset.mem_univ _, by rw [hnew]; simpa using hkey⟩`. Establish `hM1 : spDiag U * M ∈ symplecticGroup (Fin g) ℤ` using `(symplecticGroup (Fin g) ℤ).mul_mem (spH_le g hO1) hM`. Take `⟨O2, hO2, hF2, hb2, hone2⟩` from `ih _ hlt (spDiag U * M) hM1 (colsFixed_mul hF1 hF) hbot1 rfl`. Use `⟨O2 * spDiag U, (spH g).mul_mem hO2 hO1, colsFixed_mul hF2 hF1, ?_, ?_⟩` and prove the remaining obligations. Simplify `hb2` using `[Matrix.mul_assoc]`.
-
-Simplify `hone2` using `[Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem phase2 (k : Fin g) (n : ℕ) : ∀ M ∈ symplecticGroup (Fin g) ℤ, ColsFixed k M →
     (∀ j, M (Sum.inr j) (Sum.inl k) = 0) → ∑ j, (M (Sum.inl j) (Sum.inl k)).natAbs = n →
@@ -151,15 +147,15 @@ theorem phase2 (k : Fin g) (n : ℕ) : ∀ M ∈ symplecticGroup (Fin g) ℤ, Co
   · simpa [Matrix.mul_assoc] using hone2
 
 /- English proof (translation)
-Set `P : Matrix (Fin g) (Fin g) ℤ` to `Matrix.of fun a b => if Equiv.swap j k a = b then 1 else 0`. Establish `hP : P * P = 1`. Use extensionality with `a b`. Simplify using `only [P, Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single (Equiv.swap j k a)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Equiv.swap_apply_self, eq_comm]`. Introduce `c _ hc`. Simplify using `[Ne.symm hc]`. Simplify using the standard rewrite rules. Set `U : (Matrix (Fin g) (Fin g) ℤ)ˣ` to `⟨P, P, hP, hP⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `⟨spDiag U, spDiag_mem U, fun i hi => ?_, fun r => ?_⟩` and prove the remaining obligations. Establish `hik : i ≠ k` using `fun h => by subst h; exact lt_irrefl _ hi`. Establish `hij : i ≠ j` using `fun h => by subst h; omega`. Establish `hsw : Equiv.swap j k i = i` using `Equiv.swap_apply_of_ne_of_ne hij hik`. Apply the tactic sequence `constructor <;> intro r <;> rcases r with a | a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1 : (Equiv.swap j k a = i) ↔ (a = i)` using `by rw [Equiv.swap_apply_eq_iff, hsw]`. Simplify using `[spDiag, U, P, Matrix.one_apply, Matrix.fromBlocks, h1]`. Simplify using `[spDiag, U, P, Matrix.one_apply, Matrix.fromBlocks]`. Simplify using `[spDiag, U, P, Matrix.one_apply, Matrix.fromBlocks]`. Establish `h1 : (i = a) ↔ (a = i)` using `eq_comm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[spDiag, U, P, Matrix.one_apply, Matrix.fromBlocks, Matrix.transpose_apply, hsw, h1]`. Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Apply the tactic sequence `rcases r with a | a <;>`. Apply the tactic sequence `simp [spDiag, U, P, hsupp, Matrix.one_apply, Matrix.fromBlocks, Equiv.swap_apply_eq_iff] <;>`. Apply the tactic sequence `try (split_ifs <;> simp_all)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem move_col (k j : Fin g) (hjk : (k : ℕ) ≤ j) (hne : j ≠ k) (s : ℤ)
     (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)
@@ -193,13 +189,13 @@ theorem move_col (k j : Fin g) (hjk : (k : ℕ) ≤ j) (hne : j ≠ k) (s : ℤ)
       try (split_ifs <;> simp_all)
 
 /- English proof (translation)
-Break down `hs with rfl | rfl` into its components or cases. Use `⟨1, (spH g).one_mem, colsFixed_one _, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_mul, hsupp r, Matrix.one_apply]`. Set `D : Matrix (Fin g) (Fin g) ℤ` to `Matrix.diagonal fun i => if i = k then -1 else 1`. Establish `hD : D * D = 1`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [D, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> norm_num`. Set `U : (Matrix (Fin g) (Fin g) ℤ)ˣ` to `⟨D, D, hD, hD⟩`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Use `⟨spDiag U, spDiag_mem U, fun i hi => ?_, fun r => ?_⟩` and prove the remaining obligations. Establish `hik : i ≠ k` using `fun h => by subst h; exact lt_irrefl _ hi`. Apply the tactic sequence `constructor <;> intro r <;> rcases r with a | a <;>`. Apply the tactic sequence `simp [spDiag, U, D, Matrix.one_apply, Matrix.diagonal_apply, Matrix.fromBlocks] <;>`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Apply the tactic sequence `rcases r with a | a <;>`. Apply the tactic sequence `simp [spDiag, U, D, hsupp, Matrix.one_apply, Matrix.diagonal_apply, Matrix.fromBlocks] <;>`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sign_col (k : Fin g) (s : ℤ) (hs : s = 1 ∨ s = -1)
     (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)
@@ -228,21 +224,21 @@ theorem sign_col (k : Fin g) (s : ℤ) (hs : s = 1 ∨ s = -1)
         split_ifs <;> simp_all
 
 /- English proof (translation)
-Take `⟨O1, hO1, hF1, hb1⟩` from `phase1 k _ M hM hF rfl`. Establish `hM1 : O1 * M ∈ symplecticGroup (Fin g) ℤ` using `(symplecticGroup (Fin g) ℤ).mul_mem (spH_le g hO1) hM`. Take `⟨O2, hO2, hF2, hb2, hone2⟩` from `phase2 k _ (O1 * M) hM1 (colsFixed_mul hF1 hF) hb1 rfl`. Establish `hA : O2 * (O1 * M) ∈ symplecticGroup (Fin g) ℤ` using `(symplecticGroup (Fin g) ℤ).mul_mem (spH_le g hO2) hM1`. Establish `hFA : ColsFixed k (O2 * (O1 * M))` using `colsFixed_mul hF2 (colsFixed_mul hF1 hF)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid` using `symplectic_sum_pair_eq_J hA (Sum.inl k) (Sum.inr k)`. Simplify using `only [hb2, zero_mul, zero_sub] at hid`. Simplify using `[Matrix.J, Matrix.fromBlocks, Finset.sum_neg_distrib] at hid`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, (O2 * (O1 * M)) (Sum.inl j) (Sum.inl k) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Simplify using `[hcon] at hid`. Establish `hz : ∀ c, c ≠ j → (O2 * (O1 * M)) (Sum.inl c) (Sum.inl k) = 0`. Introduce `c hc`. Assume the negation of the conclusion as `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hc (hone2 c j h hj)`. Establish `hsupp : ∀ r, (O2 * (O1 * M)) r (Sum.inl k) = if r = Sum.inl j then (O2 * (O1 * M)) (Sum.inl j) (Sum.inl k) else 0`. Introduce `r`. Break down `r with c | c` into its components or cases. Distinguish the cases in `hc : c = j`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hc, hz c hc]`. Simplify using `[hb2]`. Rewrite `hid` using `[Finset.sum_eq_single j (fun c _ hc => by rw [hz c hc, zero_mul]) (by simp)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `Int.eq_one_or_neg_one_of_mul_eq_one hid`. Establish `hjk : (k : ℕ) ≤ j`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `hj (symplectic_inl_inl_eq_zero_of_colsFixed hA hFA hlt (fun h => by subst h; exact lt_irrefl _ hlt))`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `eq_or_ne j k with hjk' | hjk'` into its components or cases. Rewrite `hsupp`, `hs` using `[hjk']`. Take `⟨O3, hO3, hF3, h3⟩` from `sign_col k _ hs _ hsupp`. Use `⟨O3 * O2 * O1, (spH g).mul_mem ((spH g).mul_mem hO3 hO2) hO1, colsFixed_mul (colsFixed_mul hF3 hF2) hF1, fun r => ?_⟩` and prove the remaining obligations. Simplify `h3 r` using `[Matrix.mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨O3, hO3, hF3, h3⟩` from `move_col k j hjk hjk' _ _ hsupp`. Take `⟨O4, hO4, hF4, h4⟩` from `sign_col k _ hs _ h3`. Use `⟨O4 * O3 * O2 * O1, (spH g).mul_mem ((spH g).mul_mem ((spH g).mul_mem hO4 hO3) hO2) hO1, colsFixed_mul (colsFixed_mul (colsFixed_mul hF4 hF3) hF2) hF1, fun r => ?_⟩` and prove the remaining obligations. Simplify `h4 r` using `[Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem col_inl_step (k : Fin g) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)
     (hM : M ∈ symplecticGroup (Fin g) ℤ) (hF : ColsFixed k M) :

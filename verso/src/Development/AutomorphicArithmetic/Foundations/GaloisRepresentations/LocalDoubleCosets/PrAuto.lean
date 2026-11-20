@@ -4,19 +4,17 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Local
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL ValuativeRel Matrix MeasureTheory UpperTheory.ConvolutionTheory.Loc MulAction UpperTheory.Gal.LocD
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ B hB _ _ μ _ χ s p hp hs hper hsB hχ`. Establish `hit : ∀ n (b : G), b ∈ B → s^[n] b ∈ B`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `using hb`. Consider the case `succ n ih`. Introduce `b hb`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `hsB _ (ih b hb)`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hleft : ∀ g, s^[p - 1] (s g) = g`. Introduce `g`. Rewrite using `[← Function.iterate_succ_apply, Nat.succ_eq_add_one, Nat.sub_add_cancel hp]`. Conclude with `hper g`. Establish `hright : ∀ g, s (s^[p - 1] g) = g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[← Function.iterate_succ_apply' s, Nat.succ_eq_add_one, Nat.sub_add_cancel hp]`. Conclude with `hper g`. Set `σ : B ≃ₜ* B` to `{ toFun := fun b => ⟨s b, hsB _ b.2⟩ invFun := fun b => ⟨s^[p - 1] b, hit _ _ b.2⟩ left_inv := fun b => Subtype.ext (hleft b) right_inv := fun b => Subtype.ext (hright b) map_mul' := fun a b => Subtype.ext (map_mul s (a : G) (b : G)) continuous_toFun := (hs.comp continuous_subtyp …`. Use `haveI : LocallyCompactSpace B := hB.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : SecondCountableTopology B := inferInstanceAs (SecondCountableTopology {x // x ∈ (B : Set G)})`. Use `haveI hν : (Measure.map σ μ).IsHaarMeasure := σ.isHaarMeasure_map μ`. Establish `heq` using `Measure.isMulLeftInvariant_eq_smul (Measure.map σ μ) μ`. Use `⟨Measure.haarScalarFactor (Measure.map σ μ) μ, Measure.haarScalarFactor_pos_of_isHaarMeasure _ _, fun f g => ?_⟩` and prove the remaining obligations. Establish `hint : ∀ b : B, (χ b : ℂ) * (f ∘ s) ((b : G)⁻¹ * g) = (χ (σ b) : ℂ) * f (((σ b : B) : G)⁻¹ * s g)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `b`. Rewrite using `[hχ b (σ b) rfl]`. Simplify using `[σ, map_mul, map_inv]`. Establish `hm : ∫ c, (χ c : ℂ) * f ((c : G)⁻¹ * s g) ∂(Measure.map σ μ) = ∫ b, (χ (σ b) : ℂ) * f (((σ b : B) : G)⁻¹ * s g) ∂μ` using `integral_map_equiv σ.toHomeomorph.toMeasurableEquiv (fun c : B => (χ c : ℂ) * f ((c : G)⁻¹ * s g))`. Unfold `pr`.
-
-Repeatedly rewrite using `[hint]`. Rewrite using `[← hm]`. Use `conv_lhs => rw [heq]`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocD.prAuto :
     PrAuto := by

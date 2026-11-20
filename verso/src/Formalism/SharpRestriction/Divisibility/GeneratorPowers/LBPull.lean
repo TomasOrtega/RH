@@ -32,7 +32,7 @@ section Sec
 variable {S0 : Scheme.{0}} (A : Over S0) [GrpObj A] (L : LB A.left) (a : ℤ)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `Iff.rfl`.
+Substitute using the available equality. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isPullSec_congr {T T' : Over S0} {h₁ h₂ : T' ⊗ A ⟶ T ⊗ A} (e : h₁ = h₂)
     (hh₁ : h₁ ≫ snd T A = snd T' A) (hh₂ : h₂ ≫ snd T A = snd T' A)
@@ -42,7 +42,7 @@ theorem isPullSec_congr {T T' : Over S0} {h₁ h₂ : T' ⊗ A ⟶ T ⊗ A} (e :
   exact Iff.rfl
 
 /- English proof (translation)
-Take `⟨f1, c1⟩` from `s'`. Take `⟨f2, c2⟩` from `s''`. Establish `hf : f1 = f2` using `funext fun j => (h' j).trans (h'' j).symm`. Substitute `hf` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem isPullSec_unique {T T' : Over S0} {h : T' ⊗ A ⟶ T ⊗ A} {hh : h ≫ snd T A = snd T' A}
     {s : LB.Sec (LPow A L a T)} {s' s'' : LB.Sec (LPow A L a T')}
@@ -60,7 +60,7 @@ section Val
 variable {S0 : Scheme.{0}} (A : Over S0) [GrpObj A] (L : LB A.left) (a : ℤ)
 
 /- English proof (translation)
-Establish `e : ptSecT A (g ≫ z) ≫ (g ▷ A) = g ≫ ptSecT A z`. Unfold `ptSecT`. Apply the tactic sequence `ext <;> simp`. Establish `e'` using `congrArg CommaMorphism.left e`. Simplify using `using e'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ptSecT_whisker {T T' : Over S0} (g : T' ⟶ T) (z : T ⟶ A) :
     (ptSecT A (g ≫ z)).left ≫ (g ▷ A).left = g.left ≫ (ptSecT A z).left := by
@@ -71,11 +71,11 @@ theorem ptSecT_whisker {T T' : Over S0} (g : T' ⟶ T) (z : T ⟶ A) :
   simpa using e'
 
 /- English proof (translation)
-Introduce `j`. Establish `hW : ∀ x ∈ LB.wchart L (fun _ : Fin 1 => (g ≫ z).left) j, g.left x ∈ LB.wchart L (fun _ : Fin 1 => z.left) j` using `fun x hx => Set.mem_iInter.2 fun k => by`. Establish `h1` using `Set.mem_iInter.1 hx k`. Simplify `h1` using `[Over.comp_left, Scheme.Hom.comp_base]`. Apply `fn_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Establish `hx'` using `hW x hx`. Establish `hPz` using `val_le A L z j hx'`. Establish `hPgz` using `val_le A L (g ≫ z) j hx`. Use `erw [gs_res _ x _ hx, gs_pull (𝟙 _) _ x _ hPgz, Category.id_comp, hs j, gs_res _ x _ hPgz, gs_pull (ptSecT A (g ≫ z)).left (g ▷ A).left x ((LPow A L a T).U j) (chart_le_res A L (g ▷ A) (whiskerRight_snd g A) a j (show (ptSecT A (g ≫ z)).left x ∈ (LPow A L a T').U j from hPgz)), p …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use `erw [gs_mul _ x _ hx, gs_res _ x le_top hx, gs_pull (𝟙 T'.left) g.left x ⊤ (by simp), Category.id_comp]`. Use `congr 1`. Simplify using `only`. Use `show gs g.left x (LB.wchart L (fun _ : Fin 1 => z.left) j) (τ.s j).val = gs (𝟙 _) x _ (((T'.left.presheaf.map (homOfLE _).op).hom ((g.left.app _).hom (τ.s j).val)))`. Use `erw [gs_res _ x _ hx, gs_pull (𝟙 _) g.left x _ hx', Category.id_comp]`.
+Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem isValueAt_pull {T T' : Over S0} (g : T' ⟶ T) (z : T ⟶ A) {s : LB.Sec (LPow A L a T)}
     {s' : LB.Sec (LPow A L a T')} (hs : IsPullSec A L a (g ▷ A) (whiskerRight_snd g A) s s')
@@ -113,7 +113,7 @@ end Val
 section Rig
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(X, U)ˣ) :
     res h2 (res h1 x) = res (h2.trans h1) x := by
@@ -123,7 +123,7 @@ private theorem res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) 
   rfl
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Establish `hA : V ≤ (g ≫ f) ⁻¹ᵁ U` using `fun y hy => hW (hV hy)`. Simplify using `only [map_zpow]`. Use `congr 1`. Rewrite using `[← DVR.res_pullU_comp' g f hW hV hA x, res_res_lemma, res_res_lemma]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem shape_rig {X T T' : Scheme.{0}} (g : T' ⟶ T) (f : T ⟶ X) (f' : T' ⟶ X) (hf : g ≫ f = f')
     {U : X.Opens} {W : T.Opens} (hW : W ≤ f ⁻¹ᵁ U) {V : T'.Opens} (hV : V ≤ g ⁻¹ᵁ W) {V' : T'.Opens}
@@ -138,9 +138,7 @@ theorem shape_rig {X T T' : Scheme.{0}} (g : T' ⟶ T) (f : T ⟶ X) (f' : T' �
 variable {S0 : Scheme.{0}} (A : Over S0) [GrpObj A] (L : LB A.left)
 
 /- English proof (translation)
-Unfold `LB.Gen.Corr`. Introduce `j j' _ _ hjj`. Establish `hj : j = j'` using `funext fun i => by fin_cases i`. Conclude with `hjj 0 0 (by rw [← Category.assoc, Over.w g])`. Substitute `hj` using the available equality.
-
-Conclude with `shape_rig g.left T.hom T'.hom (Over.w g) _ _ _ _ _ _ k`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem corr_rigT_pull (rig : LB.Gen (L.pull (eSec A))) {T T' : Over S0} (g : T' ⟶ T) (k : ℤ) :
     LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ (rigT A L rig T k) g.left) (rigT A L rig T' k) := by
@@ -159,7 +157,7 @@ section SecComp
 variable {S0 : Scheme.{0}} (A : Over S0) [GrpObj A] (L : LB A.left) (a : ℤ)
 
 /- English proof (translation)
-Introduce `j`. Rewrite using `[h2 j, h1 j]`. Simplify using `only [Over.comp_left, Scheme.Hom.comp_app, Scheme.Hom.app_eq_appLE, ← CommRingCat.comp_apply, Category.assoc, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_map_assoc, Scheme.Hom.appLE_comp_appLE_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isPullSec_comp {T T' T'' : Over S0} {h : T' ⊗ A ⟶ T ⊗ A} {hh : h ≫ snd T A = snd T' A}
     {h' : T'' ⊗ A ⟶ T' ⊗ A} {hh' : h' ≫ snd T' A = snd T'' A}
@@ -173,9 +171,7 @@ theorem isPullSec_comp {T T' T'' : Over S0} {h : T' ⊗ A ⟶ T ⊗ A} {hh : h �
     Scheme.Hom.appLE_map_assoc, Scheme.Hom.appLE_comp_appLE_assoc]
 
 /- English proof (translation)
-Introduce `j`. Simplify using `only [Over.id_left, Scheme.Hom.id_app, CommRingCat.id_apply]`. Rewrite using `[show (homOfLE (chart_le_res A L (𝟙 (T ⊗ A)) hh a j)).op = 𝟙 _ from Subsingleton.elim _ _]`. Use `erw [CategoryTheory.Functor.map_id]`. Use `erw [CommRingCat.hom_id]`.
-
-Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isPullSec_id {T : Over S0} (hh : 𝟙 (T ⊗ A) ≫ snd T A = snd T A) (s : LB.Sec (LPow A L a T)) :
     IsPullSec A L a (𝟙 (T ⊗ A)) hh s s := by

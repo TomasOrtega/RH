@@ -24,13 +24,11 @@ namespace GlobalTheory.DetLine.ExtendNormal
 open FromGeneric
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ x ⁻¹ᵁ U` using `fun z _ => hx ⟨z, rfl⟩`. Establish `h' : ⊤ ≤ x' ⁻¹ᵁ U` using `fun z _ => hx' ⟨z, rfl⟩`. Establish `h0 : (x.appLE U ⊤ h).hom (f - 1) = 0`. Rewrite `hf` using `[valR, dif_pos h]`. Apply `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).hom).1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_sub, map_sub, map_one, map_one, map_zero]`. Conclude with `sub_eq_zero.2 hf`. Establish `h1 : f - 1 = 0`. Use `eq_zero_of_basicOpen_eq_bot _ (eq_bot_iff.2 fun z hz => ?_)` and prove the remaining obligations. Establish `h2 : x (IsLocalRing.closedPoint K) ∈ X.basicOpen (f - 1)` using `(hd z (X.basicOpen_le _ hz)).mem_open (X.basicOpen _).isOpen hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Scheme.basicOpen_appLE x ⊤ U h (f - 1)`. Rewrite `h3` using `[show (x.appLE U ⊤ h) (f - 1) = 0 from h0, Scheme.basicOpen_zero]`. Establish `h4 : IsLocalRing.closedPoint K ∈ (⊤ ⊓ x ⁻¹ᵁ X.basicOpen (f - 1) : (Sp K).Opens)` using `⟨trivial, h2⟩`. Rewrite `h4` using `[← h3]`. Conclude with `h4.elim`.
-
-Rewrite using `[sub_eq_zero.1 h1, valR, dif_pos h', map_one, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_eq_one {X : Scheme.{0}} [IsReduced X] {U : X.Opens} {K : Type} [Field K] (x : Sp K ⟶ X)
     (hx : Set.range x ⊆ U) (hd : ∀ z ∈ U, x (IsLocalRing.closedPoint K) ⤳ z) {f : Γ(X, U)} (hf : valR x U f = 1)
@@ -56,9 +54,9 @@ theorem valR_eq_one {X : Scheme.{0}} [IsReduced X] {U : X.Opens} {K : Type} [Fie
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-Take `⟨W, hW, j, v, w, hz, h⟩` from `hcov _ hx`. Establish `: IsOpenImmersion (show Sp Γ(X, W) ⟶ X from hW.fromSpec)` using `inferInstanceAs (IsOpenImmersion hW.fromSpec)`. Take `⟨m, hm⟩` from `exists_lift (show Sp Γ(X, W) ⟶ X from hW.fromSpec) x (range_subset _ (show Sp Γ(X, W) ⟶ X from hW.fromSpec).isOpenEmbedding.isOpen_range (by`. Rewrite using `[show Set.range _ = _ from hW.range_fromSpec]`. Conclude with `hz))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v', w', h', -⟩` from `exists_pull m h hm`. Conclude with `⟨_, v', w', h'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frame_local {S X : Scheme.{0}} {c : Coeff l} {t : SAB H S} {π : X ⟶ S} {s : X ⟶ Sp c.F} {V : Set X}
     {τ : E →+* ℂ} {p q : ℕ} (hcov : FrameCover t π s V (HermitianCompactForm.chi c τ) p q) {R : Type} [CommRing R] [IsLocalRing R]
@@ -74,15 +72,15 @@ theorem exists_frame_local {S X : Scheme.{0}} {c : Coeff l} {t : SAB H S} {π : 
   exact ⟨_, v', w', h'⟩
 
 /- English proof (translation)
-Take `⟨j, v, w, h⟩` from `exists_frame_local hcov (locPt B y ≫ io) (by rw [locPt_comp_closedPoint]; exact hio y)`. Take `⟨-, M, N, hc⟩` from `exists_chg (algebraMap (B.presheaf.stalk y) B.functionField) h h₀ (by rw [genPt_eq y, Category.assoc])`. Take `⟨hM, hN⟩` from `chg_isUnit h h₀ hc`. Establish `hφ : M.det * δ / N.det ≠ 0` using `div_ne_zero (mul_ne_zero hM.ne_zero hδ) hN.ne_zero`. Establish `key : ∀ z : B, z ⤳ y → IsDiscreteValuationRing (B.presheaf.stalk z) → ∃ u : (B.presheaf.stalk z)ˣ, algebraMap _ B.functionField (u : B.presheaf.stalk z) = M.det * δ / N.det`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz _`. Set `g : B.presheaf.stalk y →+* B.presheaf.stalk z` to `(B.presheaf.stalkSpecializes hz).hom`. Establish `hg : (algebraMap (B.presheaf.stalk z) B.functionField).comp g = algebraMap (B.presheaf.stalk y) B.functionField` using `congrArg CommRingCat.Hom.hom (B.presheaf.stalkSpecializes_comp ((genericPoint_spec B).specializes trivial) hz)`. Take `⟨v', w', h', a, b⟩` from `exists_pull g h rfl`. Take `⟨u, hu⟩` from `hdvr _ _ _ v' w' M N h' ⟨by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Category.assoc, ← DetExtendZero.spMap_comp, hg]; exact hc.1, fun i => by`. Simplify using `only [a, ← Category.assoc, ← DetExtendZero.dual_comp, hg]; exact hc.2.1 i, fun i => by`. Simplify using `only [b, ← Category.assoc, ← DetExtendZero.dual_comp, hg]`. Conclude with `hc.2.2 i⟩`. Conclude with `⟨u, by rw [← hu, mul_div_cancel_left₀ _ hN.ne_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `GlobalTheory.Hartogs.regAt_of_forall_dvr B hB (M.det * δ / N.det) y fun z hz hz' => by`. Take `⟨u, hu⟩` from `key z hz hz'`. Conclude with `⟨u, hu⟩`. Take `⟨b, hb⟩` from `GlobalTheory.Hartogs.regAt_of_forall_dvr B hB (M.det * δ / N.det)⁻¹ y fun z hz hz' => by`. Take `⟨u, hu⟩` from `key z hz hz'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(u⁻¹ : (B.presheaf.stalk z)ˣ), by rw [← hu, map_units_inv]⟩`. Establish `hab : a * b = 1` using `IsFractionRing.injective (B.presheaf.stalk y) B.functionField (by`. Rewrite using `[map_mul, map_one, ha, hb, mul_inv_cancel₀ hφ])`. Use `⟨j, v, w, M, N, Units.mkOfMulEqOne a b hab, h, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mkOfMulEqOne, ha, mul_div_cancel₀ _ hN.ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAtPt_of_dvr {S X : Scheme.{0}} {c : Coeff l} {t : SAB H S} {π : X ⟶ S} {s : X ⟶ Sp c.F} {V : Set X}
     {τ : E →+* ℂ} {p q : ℕ} (hcov : FrameCover t π s V (HermitianCompactForm.chi c τ) p q) {B : Scheme.{0}} [IsIntegral B]
@@ -125,29 +123,27 @@ theorem unitAtPt_of_dvr {S X : Scheme.{0}} {c : Coeff l} {t : SAB H S} {π : X �
   rw [Units.val_mkOfMulEqOne, ha, mul_div_cancel₀ _ hN.ne_zero]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y O' _ β' Z U τ σZ σ hn hcl hU hτ hσZ hZ hσ hres`. Take `⟨V, hV, hint⟩` from `GlobalTheory.T.genericFibre_componentClosure_open_isIntegral E H D l Xo c O β Y U hn hcl hU`. Use `Y.jQ_open` as an intermediate fact. Establish `: IsProper (genStr Y)` using `isProper_genStr Y`. Establish `: IsLocallyNoetherian (gen Y)` using `LocallyOfFiniteType.isLocallyNoetherian (genStr Y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsReduced (gen Y)`. Use `fun y => (hn y).1` as an intermediate fact. Conclude with `isReduced_of_isReduced_stalk _`. Establish `: IsReduced (Xo.XF c)` using `isReduced_of_isOpenImmersion Y.jQ`. Establish `hB : ∀ y : V.toScheme, IsIntegrallyClosed (V.toScheme.presheaf.stalk y)` using `fun y => haveI := (hn (V.ι y)).2 IsIntegrallyClosed.of_equiv (asIso (V.ι.stalkMap y)).commRingCatIsoToRingEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcov` using `frameCover_gen E H D l Xo c O β Y V τ hτ`. Rewrite `hcov` using `[hV]`. Establish `hio : ∀ y, V.ι y ∈ compactOf Y U` using `fun y => hV ▸ y.2`. Establish `hpt : (genPt V.toScheme ≫ V.ι) (IsLocalRing.closedPoint _) = V.ι (genericPoint V.toScheme)` using `locPt_comp_closedPoint V.ι _`. Establish `hsp : ∀ z ∈ compactOf Y U, V.ι (genericPoint V.toScheme) ⤳ z` using `fun z hz => (genericPoint_specializes (α := V.toScheme) (⟨z, (hV ▸ hz : z ∈ (V : Set (gen Y)))⟩ : V.toScheme)).map V.ι.continuous`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen : V.ι (genericPoint V.toScheme) ∈ Y.jQ '' (U : Set (Xo.XF c))`. Take `⟨z, hz⟩` from `closure_nonempty_iff.1 ⟨_, hio (genericPoint V.toScheme)⟩`. Conclude with `(hsp z (subset_closure hz)).mem_open (Y.jQ.isOpenEmbedding.isOpenMap _ U.isOpen) hz`. Take `⟨j₀, v₀, w₀, h₀⟩` from `exists_frame_local hcov (genPt V.toScheme ≫ V.ι) (by rw [hpt]; exact hio _)`. Establish `main : ∀ (K : Type) [Field K] (xb : Sp K ⟶ gen Y) (j₀ : c.F →+* K) v₀ w₀, xb (IsLocalRing.closedPoint K) = V.ι (genericPoint V.toScheme) → FrY Y (compactOf Y U) τ j₀ xb v₀ w₀ → ∃ δ : K, δ ≠ 0 ∧ (∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Algebra R K] [IsF …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `K _ xb j₀ v₀ w₀ hxb h₀`. Take `⟨x, rfl⟩ : ∃ x : Sp K ⟶ Xo.XF c, x ≫ Y.jQ = xb` from `⟨IsOpenImmersion.lift Y.jQ xb (range_subset _ Y.jQ.isOpenEmbedding.isOpen_range (hxb ▸ Set.image_subset_range _ _ hgen)), IsOpenImmersion.lift_fac _ _ _⟩`. Establish `hxb' : Y.jQ (x (IsLocalRing.closedPoint K)) = V.ι (genericPoint V.toScheme)` using `(Scheme.Hom.comp_apply _ _ _).symm.trans hxb`. Establish `hxU : Set.range x ⊆ U` using `range_subset _ U.isOpen (by`. Take `⟨z, hz, e⟩` from `hgen`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Y.jQ.isOpenEmbedding.injective (hxb'.trans e.symm)])` and apply the resulting hypothesis. Take `⟨v, w, h, sv, sw⟩` from `(frame_transfer E H D l Xo c O β Y U τ K j₀ x).2 _ v₀ w₀ hxU h₀`. Use `⟨σ K x v w, ?_, fun R _ _ _ _ _ j xR vR wR M N hR hc => ?_, fun σb hb hnz e => ?_⟩` and prove the remaining obligations. Take `⟨vz, wz, hz, a, b⟩` from `(frame_transfer E H D l Xo c O' β' Z U τ K j₀ x).1 v w h`. Rewrite using `[← hres K j₀ x v w vz wz h hz a b]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(hZ K j₀ _ vz wz hz).ne_zero`. Take `⟨vb, wb, hb, a, b⟩` from `exists_pull (algebraMap R K) hR hc.1`. Take `⟨v', w', h', sv', sw'⟩` from `(frame_transfer E H D l Xo c O β Y U τ K _ x).2 _ vb wb hxU hb`. Take `⟨u, hu⟩` from `GlobalTheory.T.determinantSection_unit_integral_frames_dvr E H D l Xo c O β Y O' β' Z U τ σZ σ hσZ hZ hres R K j xR x _ vR wR v' w' vb wb hR h' hc.1 sv' sw' a b`. Establish `hid : x = spMap (RingHom.id K) ≫ x` using `by rw [DetExtendZero.spMap_id, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu]`. Use `sec_chg (g := RingHom.id K) hσ h' h ⟨hid, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `(isCombination_iff_of_sameVecs E H D l Xo c O β Y K K _ x x _ v' vb v v₀ hid sv' sv _ i).2 ?_` and prove the remaining obligations. Simplify using `only [DetExtendZero.dual_id, Category.id_comp, a]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hc.2.1 i`. Use `(isCombination_iff_of_sameVecs E H D l Xo c O β Y K K _ x x _ w' wb w w₀ hid sw' sw _ i).2 ?_` and prove the remaining obligations. Simplify using `only [DetExtendZero.dual_id, Category.id_comp, b]`. Conclude with `hc.2.2 i`. Take `⟨σ₁, h1, h2, h3⟩` from `GlobalTheory.T.exists_determinantLine_section_restriction E H D l Xo c O β Y U τ σb hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf⟩` from `GlobalTheory.detLine_exists_ratio E H l c _ _ _ _ _ τ _ _ U σ₁ σ (frameCover_univ E H D l Xo c U τ hτ) h1 (h3 hnz) hσ`. Establish `e1 : valR x U f = 1`. Establish `e2` using `hf K j₀ x v w h`. Rewrite `e2` using `[← e, h2 K j₀ x v w v₀ w₀ h h₀ sv sw]`. Conclude with `((h3 hnz K j₀ x v w h).mul_right_cancel ((_root_.one_mul _).trans e2)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `R _ j x' v' w' vb wb h' hb' a b`. Rewrite using `[h2 R j x' v' w' vb wb h' hb' a b, hf R j x' v' w' h', valR_eq_one x hxU (fun z hz => ?_) e1 x' h'.2.1, _root_.one_mul]`. Rewrite using `[← Y.jQ.isOpenEmbedding.isInducing.specializes_iff, hxb']`. Conclude with `hsp _ (subset_closure ⟨z, hz, rfl⟩)`. Take `⟨δ, hδ, hdvr, hfin⟩` from `main _ _ j₀ v₀ w₀ hpt h₀`.
-
-Take `⟨σb, h1, h2, h3⟩` from `exists_section E H l c _ _ _ _ _ τ _ _ V.toScheme V.ι _ inferInstance (V.range_ι.trans hV) hcov j₀ v₀ w₀ δ h₀ (unitAtPt_of_dvr hcov hB V.ι hio h₀ hδ hdvr)`. Conclude with `⟨σb, h1, h2, hfin σb h1 h2 h3⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_extension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (O' : Type) [CommRing O'] (β' : O' →+* c.F) (Z : Model Xo c β') (U : (Xo.XF c).Opens) (τ : E →+* ℂ) (σZ : RuleY Z) (σ : RuleU Xo c), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (gen Y) → IsClosed (U : Set (Xo.XF c)) → GeometricallyConnected (U.ι ≫ toF Xo c) → τ (H.rt : E) = H.rt0 → SecY Z (compactOf Z U) τ σZ → NzY Z (compactOf Z U) τ σZ → SecU Xo c U τ σ → Restricts Z U τ σZ σ → ∃ σb : RuleY Y, SecY Y (compactOf Y U) τ σb ∧ NzY Y (compactOf Y U) τ σb ∧ Restricts Y U τ σb σ := by
   intro E _ _ _ H D l Xo c O _ β Y O' _ β' Z U τ σZ σ hn hcl hU hτ hσZ hZ hσ hres

@@ -17,13 +17,13 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.AlgStable
 
 /- English proof (translation)
-Use `⟨fun g hg Φ hΦ => ?_, fun τ Y hY Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span ℂ s ≤ (Submodule.span ℂ s).comap (ρ g)` using `Submodule.span_le.2 (h1 g hg)`. Conclude with `hle hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx => exact h2 τ Y hY x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero`. Use `⟨0, zero_mem _, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [map_zero]`. Conclude with `hasDerivAt_const _ _`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', dx⟩` from `hx`. Take `⟨y', hy', dy⟩` from `hy`. Use `⟨x' + y', add_mem hx' hy', fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add]`. Conclude with `(dx z).add (dy z)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `smul a x _ hx`. Take `⟨x', hx', dx⟩` from `hx`. Use `⟨a • x', Submodule.smul_mem _ a hx', fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul]`. Conclude with `(dx z).const_mul a`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isStable_span {D : D7} (θ : InfFam D) (X : HSp D) {Z : Type} (ρ : GA D X → Module.End ℂ (Z → ℂ))
     (s : Set (Z → ℂ)) (h1 : ∀ g ∈ GfC X, ∀ Φ ∈ s, ρ g Φ ∈ Submodule.span ℂ s)
@@ -51,9 +51,9 @@ theorem isStable_span {D : D7} (θ : InfFam D) (X : HSp D) {Z : Type} (ρ : GA D
       exact (dx z).const_mul a
 
 /- English proof (translation)
-Establish `e : ∀ τ z, Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z (om (g, h) f) = om (g, h) (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f)`. Introduce `τ z`. Rewrite using `[GlobalTheory.OrientedHeis.om_dRho hW hθ g h τ z hf.1, GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ T hh, GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ S (inv_mem hg), Matrix.one_mul, Matrix.mul_one]`. Use `⟨hW.om_pres _ f hf.1, fun τ z => ?_⟩` and prove the remaining obligations. Establish `h0` using `hf.2 τ z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `annih at h0 ⊢`. Rewrite using `[e, e, ← map_smul, ← map_add, h0, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isVacF_om {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) {S T : HSp D} (A : Fr S)
     (B : Fr T) {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
@@ -70,21 +70,19 @@ theorem isVacF_om {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ
   rw [e, e, ← map_smul, ← map_add, h0, map_zero]
 
 /- English proof (translation)
-Introduce `D ψ θ _ hθ ε M X A B χ χ' ω hW`. Establish `hW' : IsWeilDatumO ψ (sgn ε M) X χ χ' (ω.toSgn ε)` using `hW`. Establish `hmem : ∀ f P, IsFinF ψ θ ε A B f → fockF ψ θ ε A B f P ∈ algF ψ θ ε A B` using `fun f P hf => Submodule.subset_span ⟨f, P, hf, rfl⟩`. Establish `e0 : ∀ (g : GA D (sgn ε M)) (h : GA D X), (ω.toSgn ε) (g, h) = ω (ofSgn ε M g, h)` using `fun _ _ => rfl`. Establish `hfin : ∀ g ∈ GfC M, ∀ h ∈ GfC X, ∀ f P, IsFinF ψ θ ε A B f → ω (g, h) (fockF ψ θ ε A B f P) ∈ algF ψ θ ε A B`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg h hh f P hf`. Establish `hg' : (ofSgn ε M).symm g ∈ GfC (sgn ε M)`. Rewrite using `[GlobalTheory.SgnIdent.mem_GfC_sgn, MulEquiv.apply_symm_apply]`. Conclude with `hg`. Establish `ht` using `GlobalTheory.OrientedHeis.om_fin_pureTensorO ψ (sgn ε M) X χ χ' (ω.toSgn ε) hW' θ hθ _ hg' h hh (frSgn ε A).cart B.cart A.onb B.onb f P hf.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `isVacF_om hθ (frSgn ε A) B hW' hg' hh hf`. Rewrite `ht`, `hv` using `[e0, MulEquiv.apply_symm_apply]`. Establish `: ω (g, h) (fockF ψ θ ε A B f P) = fockF ψ θ ε A B (ω (g, h) f) P` using `ht`. Rewrite using `[this]`. Conclude with `hmem _ _ hv`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL` using `fun τ => GlobalTheory.LieFock.lieFockUpTo D (sgn ε M) X (frSgn ε A) B θ ψ χ χ' (ω.toSgn ε) τ hθ hW'`. Use `⟨isStable_span θ M _ _ ?_ ?_, isStable_span θ X _ _ ?_ ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg _ ⟨f, P, hf, rfl⟩`. Conclude with `hfin g hg 1 (one_mem _) f P hf`. Introduce and unpack `τ Z hZ _ ⟨f, P, hf, rfl⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨κS, κT, hκ⟩` from `hL τ`. Establish `hZ' : Z ∈ lieAt (sgn ε M) τ` using `by rw [GlobalTheory.SgnIdent.lieAt_sgn]; exact hZ`. Establish `e : ∀ t : ℝ, (ω.toSgn ε) (oneP θ (sgn ε M) τ Z t, 1) = ω (oneP θ M τ Z t, 1)`. Introduce `t`. Rewrite using `[e0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `oneP`. Rewrite using `[GlobalTheory.SgnIdent.atTau_sgn θ hθ]`. Establish `h` using `(hκ f hf).1 Z hZ' P`. Simplify using `only [e] at h`. Conclude with `⟨_, hmem f _ hf, h⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `h hh _ ⟨f, P, hf, rfl⟩`. Conclude with `hfin 1 (one_mem _) h hh f P hf`. Introduce and unpack `τ Y hY _ ⟨f, P, hf, rfl⟩`. Take `⟨κS, κT, hκ⟩` from `hL τ`. Establish `e1 : ∀ h : GA D X, (ω.toSgn ε) (1, h) = ω (1, h)` using `fun h => by rw [e0, map_one]`.
-
-Establish `h` using `(hκ f hf).2 Y hY P`. Simplify using `only [e1] at h`. Conclude with `⟨_, hmem f _ hf, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem algF_isStable : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (ε : Bool) (M X : HSp D) (Am : Fr M) (Bx : Fr X) (χ χ' : (AE D)ˣ →* Circle) (ω : WRep M X), IsWeil ψ ε M X χ χ' ω →

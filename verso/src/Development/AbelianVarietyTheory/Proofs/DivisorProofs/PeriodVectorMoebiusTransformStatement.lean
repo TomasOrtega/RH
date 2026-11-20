@@ -6,7 +6,7 @@ open Matrix MeasureTheory Set GlobalTheory.IndefiniteRowSideFullHecke.SiegelRefr
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TorsionForm.per_vecMul_den_inv_eq_per_moeb` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPeriodVectorMoebiusTransform.lean&line=32#L32)
 -/

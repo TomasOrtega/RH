@@ -5,15 +5,15 @@ open Matrix MeasureTheory ValuativeRel GlobalTheory.SplitFlip GlobalTheory.SmGL 
 namespace GlobalTheory.RankFibreKer
 
 /- English proof (translation)
-Introduce and unpack `⟨J, hJ, hZ⟩ ⟨J', hJ', hgZ⟩`. Establish `m1 : minor Z J = 1` using `by rw [minor, hJ, det_one]`. Establish `m1' : minor (g.val * Z) J' = 1` using `by rw [minor, hJ', det_one]`. Establish `e1 : valuation k (g.val.det) * valuation k (minor Z J') = 1`. Rewrite using `[← map_mul, ← minor_mul, m1', map_one]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : valuation k (g.val.det) ≤ 1`. Use `(hgZ J).1` as an intermediate fact. Rewrite `this` using `[minor_mul, m1, mul_one]`. Then use the resulting hypothesis. Establish `hZJ' : valuation k (minor Z J') = 1`. Use `le_antisymm (hZ J').1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hg1 : valuation k (g.val.det) = 1` using `by rwa [hZJ', mul_one] at e1`. Establish `hJJ : J = J'`. Break down `lt_trichotomy (idx J') (idx J) with h | h | h` into its components or cases. Conclude with `absurd ((hZ J').2 h) (by rw [hZJ']; exact lt_irrefl _)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `(idx.injective h).symm`. Use `(hgZ J).2 h` as an intermediate fact. Rewrite `this` using `[minor_mul, m1, mul_one, hg1]`. Conclude with `absurd this (lt_irrefl _)`. Substitute `hJJ` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hsub : (g.val * Z).submatrix id J = g.val * Z.submatrix id J`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, submatrix_apply]`. Rewrite `hJ'` using `[hsub, hJ, Matrix.mul_one]`. Conclude with `Units.ext hJ'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_mem_slice_of_mul_mem_slice (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a d : ℕ) (Z : Matrix (Fin a) (Fin d) k) (g : GL (Fin a) k) :

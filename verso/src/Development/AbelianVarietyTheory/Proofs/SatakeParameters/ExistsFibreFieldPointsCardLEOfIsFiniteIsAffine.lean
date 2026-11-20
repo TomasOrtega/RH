@@ -5,19 +5,19 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace GlobalTheory.EtC.Tr
 
 /- English proof (translation)
-Use `letI := g.toAlgebra`. Establish `hfin : Module.Finite A B` using `hg`. Take `⟨S, hS⟩` from `hfin.fg_top`. Use `⟨S.card, fun K _ ψ φ hφ hinj => ?_⟩` and prove the remaining obligations. Set `L : (Fin (S.card + 1) → K) →ₗ[K] (S → K)` to `{ toFun := fun c s => ∑ j, c j * φ j (s : B) map_add' := by intro c d; funext s; simp [add_mul, Finset.sum_add_distrib] map_smul' := by intro a c; funext s; simp [Finset.mul_sum, mul_assoc] }`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hker : LinearMap.ker L ≠ ⊥` using `LinearMap.ker_ne_bot_of_finrank_lt (by simp)`. Take `⟨c, hc, hc0⟩` from `(Submodule.ne_bot_iff _).1 hker`. Establish `hcS : ∀ s ∈ S, ∑ j, c j * φ j s = 0`. Introduce `s hs`. Use `congrFun (LinearMap.mem_ker.1 hc) ⟨s, hs⟩` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[L]`. Establish `hall : ∀ b : B, ∑ j, c j * φ j b = 0`. Introduce `b`. Establish `hb : b ∈ Submodule.span A (S : Set B)` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hb using Submodule.span_induction with`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem x hx => exact hcS x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [mul_add, Finset.sum_add_distrib, hx, hy]`. Consider the case `smul a x _ hx`. Establish `e : ∀ j, φ j (a • x) = ψ a * φ j x`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[Algebra.smul_def, map_mul, ← hφ j]`. Both sides reduce to the same expression. Simplify using `only [e]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Use `_ = 0 := by rw [hx, mul_zero]`. Establish `hli` using `(linearIndependent_monoidHom B K).comp (fun j => (φ j : B →* K)) (fun i j h => hinj (RingHom.ext fun b => DFunLike.congr_fun h b))`. Use `(Fintype.linearIndependent_iff.1 hli) c (by` as an intermediate fact. Use function extensionality and compare the values at `b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hall b)` using `[Finset.sum_apply, smul_eq_mul]`. Conclude with `hc0 (funext this)`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_count_bound {A B : Type} [CommRing A] [CommRing B] (g : A →+* B)
     (hg : g.Finite) : ∃ n : ℕ, ∀ (K : Type) [Field K] (ψ : A →+* K) (φ : Fin (n + 1) → (B →+* K)),
@@ -60,11 +60,9 @@ theorem ringHom_count_bound {A B : Type} [CommRing A] [CommRing B] (g : A →+* 
   exact hc0 (funext this)
 
 /- English proof (translation)
-Introduce `Z X f _ _`. Use `haveI := isAffine_of_isAffineHom f`. Take `⟨n, hn⟩` from `ringHom_count_bound f.appTop.hom f.finite_appTop`. Use `⟨n, fun K _ y s hs hinj => ?_⟩` and prove the remaining obligations. Use `hn K (y.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of K)).hom).hom (fun j => ((s j).appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of K)).hom).hom) (fun j => ?_) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs j, Scheme.Hom.comp_appTop, Category.assoc]`. Simplify using `only [CommRingCat.hom_comp]`. Introduce `i j h`. Apply `hinj` to reduce the goal to its premises. Apply `ext_of_isAffine` to reduce the goal to its premises.
-
-Conclude with `(cancel_mono (Scheme.ΓSpecIso (CommRingCat.of K)).hom).1 (CommRingCat.hom_ext h)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem finite_fibrePointsLE_of_isAffine : ∀ {Z X : Scheme.{0}} (f : Z ⟶ X) [IsFinite f] [IsAffine X],
     ∃ n, GlobalTheory.EtC.Tr.FibrePointsLE f n := by

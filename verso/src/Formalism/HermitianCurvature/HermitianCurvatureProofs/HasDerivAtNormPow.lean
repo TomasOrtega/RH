@@ -9,15 +9,15 @@ namespace Formalism.FourierDecayAlt.P.GaugeNormPower
 open Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Establish `hz' : ‖z‖ ≠ 0` using `norm_ne_zero_iff.mpr hz`. Establish `hline : HasDerivAt (fun t : ℝ => z + t • v) v 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const v).const_add z`. Establish `hsq : HasDerivAt (fun t : ℝ => ‖z + t • v‖ ^ 2) (2 * (v * conj z).re) 0`. Use `hline.norm_sq` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Complex.inner]`. Establish `h0 : (fun t : ℝ => ‖z + t • v‖ ^ 2) 0 ≠ 0` using `by simpa using pow_ne_zero 2 hz'`. Establish `hsqrt` using `hsq.sqrt h0`. Establish `hn : (fun t : ℝ => √(‖z + t • v‖ ^ 2)) = fun t => ‖z + t • v‖`. Use function extensionality and compare the values at `t`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Real.sqrt_sq (norm_nonneg _)]`. Rewrite `hsqrt` using `[hn]`. Establish `hv : (n : ℝ) * ‖z + (0 : ℝ) • v‖ ^ (n - 1) * (2 * (v * conj z).re / (2 * √(‖z + (0 : ℝ) • v‖ ^ 2))) = (n : ℝ) * ‖z‖ ^ n * ((v * conj z).re / ‖z‖ ^ 2)`. Simplify using `only [zero_smul, add_zero, Real.sqrt_sq (norm_nonneg _)]`. Break down `n with _ | m` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Simplify using `only [Nat.add_sub_cancel]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hp` using `(hsqrt.pow n).congr_deriv hv`. Conclude with `hp`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_normPow (z v : ℂ) (hz : z ≠ 0) (n : ℕ) :
     HasDerivAt (fun t : ℝ => ‖z + t • v‖ ^ n)
@@ -46,11 +46,9 @@ theorem hasDerivAt_normPow (z v : ℂ) (hz : z ≠ 0) (n : ℕ) :
   exact hp
 
 /- English proof (translation)
-Establish `h` using `HasDerivAt.fun_finsetProd (u := Finset.univ) (f := fun a (t : ℝ) => ‖c a + t • (Pi.single l v : Fin r → ℂ) a‖ ^ n a) (fun a _ => hasDerivAt_normPow (c a) ((Pi.single l v : Fin r → ℂ) a) (hc a) (n a))`. Establish `hv : (∑ i, (∏ j ∈ Finset.univ.erase i, ‖c j + (0 : ℝ) • (Pi.single l v : Fin r → ℂ) j‖ ^ n j) • ((n i : ℝ) * ‖c i‖ ^ n i * (((Pi.single l v : Fin r → ℂ) i * conj (c i)).re / ‖c i‖ ^ 2))) = (n l : ℝ) * (∏ a, ‖c a‖ ^ n a) * ((v * conj (c l)).re / ‖c l‖ ^ 2)`. Rewrite using `[Finset.sum_eq_single l]`. Simplify using `only [Pi.single_eq_same, zero_smul, add_zero, smul_eq_mul]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun a => ‖c a‖ ^ n a) (Finset.mem_univ l)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ l) h`.
-
-Conclude with `h.congr_deriv hv`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_prodPow (r : ℕ) (n : Fin r → ℕ) (c : Fin r → ℂ) (hc : c ∈ OmX r) (l : Fin r) (v : ℂ) :
     HasDerivAt (fun t : ℝ => ∏ a, ‖(c + t • (Pi.single l v : Fin r → ℂ)) a‖ ^ n a)
@@ -72,11 +70,11 @@ theorem hasDerivAt_prodPow (r : ℕ) (n : Fin r → ℕ) (c : Fin r → ℂ) (hc
   exact h.congr_deriv hv
 
 /- English proof (translation)
-Establish `hd : DifferentiableAt ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c`. Use `HasFDerivAt.finsetProd (u := Finset.univ) (x := c) (g := fun a (x : Fin r → ℂ) => ‖x a‖ ^ n a) (fun a _ => (((differentiableAt_apply (𝕜 := ℝ) a c).norm ℂ (hc a)).pow (n a)).hasFDerivAt)` as an intermediate fact. Conclude with `this.differentiableAt`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Establish `hline : HasDerivAt (fun t : ℝ => c + t • (Pi.single l v : Fin r → ℂ)) (Pi.single l v) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const (Pi.single l v : Fin r → ℂ)).const_add c`. Establish `hc0 : c + (0 : ℝ) • (Pi.single l v : Fin r → ℂ) = c` using `by simp`. Establish `h1 : HasDerivAt ((fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) ∘ fun t : ℝ => c + t • (Pi.single l v : Fin r → ℂ)) (fderiv ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c (Pi.single l v)) 0`. Establish `hd'` using `hd.hasFDerivAt`. Rewrite `hd'` using `[← hc0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hd'.comp_hasDerivAt (0 : ℝ) hline` as an intermediate fact. Rewrite `this` using `[hc0]`. Then use the resulting hypothesis. Conclude with `h1.unique (hasDerivAt_prodPow r n c hc l v)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fderiv_prodPow (r : ℕ) (n : Fin r → ℕ) (c : Fin r → ℂ) (hc : c ∈ OmX r) (l : Fin r) (v : ℂ) :
     DifferentiableAt ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c ∧
@@ -101,11 +99,11 @@ theorem fderiv_prodPow (r : ℕ) (n : Fin r → ℕ) (c : Fin r → ℂ) (hc : c
   exact h1.unique (hasDerivAt_prodPow r n c hc l v)
 
 /- English proof (translation)
-Establish `h1 : (1 * conj z).re = z.re` using `by simp`. Establish `h2 : (Complex.I * conj z).re = z.im` using `by simp`. Apply the tactic sequence `have hc : ((z.re : ℂ)) - Complex.I * (z.im : ℂ) = conj z := by apply Complex.ext <;> simp`. Establish `hzz : z * conj z = (‖z‖ : ℂ) ^ 2`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hN0 : (‖z‖ : ℂ) ^ 2 ≠ 0` using `by exact_mod_cast pow_ne_zero 2 (norm_ne_zero_iff.mpr hz)`. Rewrite using `[h1, h2]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hN1 : (‖z‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.mpr hz`. Rewrite using `[hc, hzz]`. Clear the denominators using the available nonvanishing facts.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem gauge_scalar (z : ℂ) (hz : z ≠ 0) (m : ℕ) (P : ℝ) :
     z * ((1 / 2 : ℂ) * ((((m : ℝ) * P * ((1 * conj z).re / ‖z‖ ^ 2) : ℝ) : ℂ) -
@@ -130,13 +128,13 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.P.GaugeNormPower
 
 /- English proof (translation)
-Introduce `E _ _ r n H c hc hH l`. Take `⟨hψ, hψ'⟩` from `fderiv_prodPow r n c hc l 1`. Take `⟨-, hψI⟩` from `fderiv_prodPow r n c hc l Complex.I`. Establish `hfun : (fun c' : Fin r → ℂ => ((∏ a, ‖c' a‖ ^ n a : ℝ) : ℂ) • H c') = (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) • H`. Use function extensionality and compare the values at `c'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Complex.coe_smul _ _`. Rewrite using `[hfun]`. Establish `hD : ∀ w, fderiv ℝ ((fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) • H) c w = (∏ a, ‖c a‖ ^ n a) • fderiv ℝ H c w + fderiv ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c w • H c`. Introduce `w`. Rewrite using `[(hψ.hasFDerivAt.smul hH.hasFDerivAt).fderiv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hs : c l * ((1 / 2 : ℂ) * (((fderiv ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c (Pi.single l 1) : ℝ) : ℂ) - Complex.I * ((fderiv ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c (Pi.single l Complex.I) : ℝ) : ℂ))) = ((∏ a, ‖c a‖ ^ n a : ℝ) : ℂ) * ((n l : ℂ) / 2)`. Rewrite using `[hψ', hψI]`. Conclude with `gauge_scalar (c l) (hc l) (n l) _`. Simplify using `only [pOp, if_pos hc, wirt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hD, hD]`. Simplify using `only [← Complex.coe_smul]`. Take the linear combination `(norm := module) hs • H c`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gauge_positivity : PBN.GaugeP := by
   intro E _ _ r n H c hc hH l

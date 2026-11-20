@@ -12,11 +12,11 @@ namespace UpperTheory.ConvolutionTheory.RankTwoDescent.TorCoPf
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `p hp`. Establish `hp' : (Valued.v p.1 : Γ) < Valued.v p.2` using `not_le.1 hp`. Establish `hne : (Valued.v p.2 : Γ) ≠ 0` using `(lt_of_le_of_lt zero_le' hp').ne'`. Establish `hB : IsOpen {x : K | (Valued.v x : Γ) < Valued.v p.2}`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Valued.isOpen_ball K (Valued.v.restrict p.2)` as an intermediate fact. Simplify `this` using `only [Valuation.restrict_lt_iff]`. Establish `hN : ({x : K | (Valued.v x : Γ) < Valued.v p.2} ×ˢ {y : K | (Valued.v y : Γ) = Valued.v p.2}) ∈ 𝓝 p` using `prod_mem_nhds (hB.mem_nhds hp') (Valued.locally_const hne)`. Use `filter_upwards [hN] with q hq`. Establish `h1 : (Valued.v q.1 : Γ) < Valued.v p.2` using `hq.1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (Valued.v q.2 : Γ) = Valued.v p.2` using `hq.2`. Use `show ¬ (Valued.v q.2 : Γ) ≤ Valued.v q.1`. Rewrite using `[h2]`. Conclude with `not_le.2 h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isClosed_vle {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] [Valued K Γ] :
     IsClosed {p : K × K | (Valued.v p.2 : Γ) ≤ Valued.v p.1} := by
@@ -43,32 +43,30 @@ private def pF (h : G1 E) (w : HeightOneSpectrum (𝓞 E)) : w.adicCompletion E 
   if Valued.v ((h 1 1).2 w) ≤ Valued.v ((h 1 0).2 w) then (h 1 0).2 w else (h 1 1).2 w
 
 /- English proof (translation)
-Use `h.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem det_eq (h : G1 E) : h 0 0 * h 1 1 - h 0 1 * h 1 0 = 1 := by
   have := h.2
   rwa [Matrix.det_fin_two] at this
 
 /- English proof (translation)
-The claim follows from `congrArg (fun x : A E => x.1 v) (det_eq h)`.
+A detailed English derivation is pending.
 -/
 private theorem det_I (h : G1 E) (v : InfinitePlace E) :
     (h 0 0).1 v * (h 1 1).1 v - (h 0 1).1 v * (h 1 0).1 v = 1 :=
   congrArg (fun x : A E => x.1 v) (det_eq h)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun x : A E => x.2 w) (det_eq h)`.
+A detailed English derivation is pending.
 -/
 private theorem det_F (h : G1 E) (w : HeightOneSpectrum (𝓞 E)) :
     (h 0 0).2 w * (h 1 1).2 w - (h 0 1).2 w * (h 1 0).2 w = 1 :=
   congrArg (fun x : A E => x.2 w) (det_eq h)
 
 /- English proof (translation)
-Unfold `pI`. Use `split_ifs with hc`. Introduce `h0`. Rewrite `hc` using `[h0, norm_zero]`. Establish `hd : (h 1 1).1 v = 0` using `norm_le_zero_iff.1 hc`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `det_I h v` as an intermediate fact. Rewrite `this` using `[h0, hd]`. Simplify using `at this`. Introduce `h0`. Rewrite `hc` using `[h0, norm_zero]`.
-
-Conclude with `hc (norm_nonneg _)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pI_ne (h : G1 E) (v : InfinitePlace E) : pI h v ≠ 0 := by
   unfold pI
@@ -84,11 +82,9 @@ private theorem pI_ne (h : G1 E) (v : InfinitePlace E) : pI h v ≠ 0 := by
     exact hc (norm_nonneg _)
 
 /- English proof (translation)
-Unfold `pF`. Use `split_ifs with hc`. Introduce `h0`. Rewrite `hc` using `[h0, map_zero]`. Establish `hd : (h 1 1).2 w = 0` using `(map_eq_zero _).1 (le_zero_iff.1 hc)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `det_F h w` as an intermediate fact. Rewrite `this` using `[h0, hd]`. Simplify using `at this`. Introduce `h0`. Rewrite `hc` using `[h0, map_zero]`.
-
-Conclude with `hc zero_le'`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pF_ne (h : G1 E) (w : HeightOneSpectrum (𝓞 E)) : pF h w ≠ 0 := by
   unfold pF
@@ -104,15 +100,13 @@ private theorem pF_ne (h : G1 E) (w : HeightOneSpectrum (𝓞 E)) : pF h w ≠ 0
     exact hc zero_le'
 
 /- English proof (translation)
-Use `filter_upwards [(h 0 0).2.2, (h 0 1).2.2, (h 1 0).2.2, (h 1 1).2.2] with w ha hb hc hd`. Establish `ha' : Valued.v ((h 0 0).2 w) ≤ 1` using `ha`. Establish `hb' : Valued.v ((h 0 1).2 w) ≤ 1` using `hb`. Establish `hc' : Valued.v ((h 1 0).2 w) ≤ 1` using `hc`. Establish `hd' : Valued.v ((h 1 1).2 w) ≤ 1` using `hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmax : ¬ (Valued.v ((h 1 0).2 w) < 1 ∧ Valued.v ((h 1 1).2 w) < 1)`. Introduce and unpack `⟨h1, h2⟩`. Establish `e1 : Valued.v ((h 0 0).2 w * (h 1 1).2 w) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ha') h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : Valued.v ((h 0 1).2 w * (h 1 0).2 w) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hb') h1`. Use `Valuation.map_sub_lt _ e1 e2` as an intermediate fact. Rewrite `this` using `[det_F h w, map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `lt_irrefl _ this`. Unfold `pF`. Use `split_ifs with hle`. Assume the negation of the conclusion as `hne`. Conclude with `hmax ⟨lt_of_le_of_ne hc' hne, lt_of_le_of_lt hle (lt_of_le_of_ne hc' hne)⟩`.
-
-Assume the negation of the conclusion as `hne`. Conclude with `hmax ⟨lt_of_lt_of_le (not_le.1 hle) hd', lt_of_le_of_ne hd' hne⟩`.
+A detailed English derivation is pending.
 -/
 private theorem pF_one (h : G1 E) : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite, Valued.v (pF h w) = 1 := by
   filter_upwards [(h 0 0).2.2, (h 0 1).2.2, (h 1 0).2.2, (h 1 1).2.2] with w ha hb hc hd
@@ -158,7 +152,7 @@ private def co (x : IdeleGroup E) :
   (((x⁻¹ : IdeleGroup E) : A E).1, fun w => ((x⁻¹ : IdeleGroup E) : A E).2 w)
 
 /- English proof (translation)
-Establish `h0 : Continuous fun x : IdeleGroup E => ((x⁻¹ : IdeleGroup E) : A E)` using `Units.continuous_val.comp continuous_inv`. Use `Continuous.prodMk (continuous_fst.comp h0) (continuous_pi fun w => ?_)` and prove the remaining obligations. Conclude with `(RestrictedProduct.continuous_eval w).comp (continuous_snd.comp h0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_co : Continuous (co : IdeleGroup E → _) := by
   have h0 : Continuous fun x : IdeleGroup E => ((x⁻¹ : IdeleGroup E) : A E) :=
@@ -167,9 +161,9 @@ private theorem continuous_co : Continuous (co : IdeleGroup E → _) := by
   exact (RestrictedProduct.continuous_eval w).comp (continuous_snd.comp h0)
 
 /- English proof (translation)
-Introduce `x y hxy`. Establish `h1` using `congrArg Prod.fst hxy`. Establish `h2` using `congrArg Prod.snd hxy`. Apply `inv_injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Prod.ext h1 (Subtype.ext <| funext fun w => congrFun h2 w)`.
+A detailed English derivation is pending.
 -/
 private theorem injective_co : Function.Injective (co : IdeleGroup E → _) := by
   intro x y hxy
@@ -180,29 +174,27 @@ private theorem injective_co : Function.Injective (co : IdeleGroup E → _) := b
   exact Prod.ext h1 (Subtype.ext <| funext fun w => congrFun h2 w)
 
 /- English proof (translation)
-The claim follows from `Continuous.matrix_elem continuous_subtype_val i j`.
+A detailed English derivation is pending.
 -/
 private theorem cont_e (i j : Fin 2) : Continuous fun h : G1 E => (h i j : A E) :=
   Continuous.matrix_elem continuous_subtype_val i j
 
 /- English proof (translation)
-The claim follows from `(continuous_apply v).comp (continuous_fst.comp (cont_e i j))`.
+A detailed English derivation is pending.
 -/
 private theorem cont_I (i j : Fin 2) (v : InfinitePlace E) : Continuous fun h : G1 E => (h i j).1 v :=
   (continuous_apply v).comp (continuous_fst.comp (cont_e i j))
 
 /- English proof (translation)
-The claim follows from `(RestrictedProduct.continuous_eval w).comp (continuous_snd.comp (cont_e i j))`.
+A detailed English derivation is pending.
 -/
 private theorem cont_F (i j : Fin 2) (w : HeightOneSpectrum (𝓞 E)) : Continuous fun h : G1 E => (h i j).2 w :=
   (RestrictedProduct.continuous_eval w).comp (continuous_snd.comp (cont_e i j))
 
 /- English proof (translation)
-Use `letI : ∀ v : InfinitePlace E, MeasurableSpace v.Completion := fun _ => borel _`. Use `haveI : ∀ v : InfinitePlace E, BorelSpace v.Completion := fun _ => ⟨rfl⟩`. Use `letI : ∀ w : HeightOneSpectrum (𝓞 E), MeasurableSpace (w.adicCompletion E) := fun _ => borel _`. Use `haveI : ∀ w : HeightOneSpectrum (𝓞 E), BorelSpace (w.adicCompletion E) := fun _ => ⟨rfl⟩`. Establish `hc` using `comap_eq_borel_of_continuous_injective (continuous_co (E := E)) (injective_co (E := E))`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : Measurable ((co : IdeleGroup E → _) ∘ (al : G1 E → IdeleGroup E))`. Use `Measurable.prodMk (measurable_pi_iff.2 fun v => ?_) (measurable_pi_iff.2 fun w => ?_)` and prove the remaining obligations. Establish `hS : MeasurableSet {h : G1 E | ‖(h 1 1).1 v‖ ≤ ‖(h 1 0).1 v‖}` using `(isClosed_le (cont_I 1 1 v).norm (cont_I 1 0 v).norm).measurableSet`. Conclude with `Measurable.ite hS (cont_I 1 0 v).measurable (cont_I 1 1 v).measurable`. Establish `hS : MeasurableSet {h : G1 E | Valued.v ((h 1 1).2 w) ≤ Valued.v ((h 1 0).2 w)}` using `(isClosed_vle.preimage ((cont_F 1 0 w).prodMk (cont_F 1 1 w))).measurableSet`.
-
-Conclude with `Measurable.ite hS (cont_F 1 0 w).measurable (cont_F 1 1 w).measurable`. Establish `h2` using `measurable_comap_iff.2 hm`. Rewrite `h2` using `[hc, ← BorelSpace.measurable_eq]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem measurable_al : Measurable (al : G1 E → IdeleGroup E) := by
   letI : ∀ v : InfinitePlace E, MeasurableSpace v.Completion := fun _ => borel _
@@ -223,14 +215,14 @@ private theorem measurable_al : Measurable (al : G1 E → IdeleGroup E) := by
   exact h2
 
 /- English proof (translation)
-Use `show ((nU u).1 * h.1) 1 j = h.1 1 j`. Simplify using `[nU, Matrix.mul_apply, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem e_nU (u : A E) (h : G1 E) (j : Fin 2) : (nU u * h) 1 j = h 1 j := by
   show ((nU u).1 * h.1) 1 j = h.1 1 j
   simp [nU, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use `show ((mD t).1 * h.1) 1 j = ((t⁻¹ : (A E)ˣ) : A E) * h.1 1 j`. Simplify using `[mD, Matrix.mul_apply, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem e_mD (t : (A E)ˣ) (h : G1 E) (j : Fin 2) :
     (mD t * h) 1 j = ((t⁻¹ : (A E)ˣ) : A E) * h 1 j := by
@@ -238,11 +230,11 @@ private theorem e_mD (t : (A E)ˣ) (h : G1 E) (j : Fin 2) :
   simp [mD, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `hI : pI (nU u * h) = pI h`. Use function extensionality and compare the values at `v`. Simplify using `only [pI, e_nU]`. Establish `hF : pF (nU u * h) = pF h`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [pF, e_nU]`. Apply `Units.ext` to reduce the goal to its premises. Use `Prod.ext (funext fun v => ?_) (Subtype.ext <| funext fun w => ?_)` and prove the remaining obligations. Use `show (pI (nU u * h) v)⁻¹ = (pI h v)⁻¹`. Rewrite using `[hI]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (pF (nU u * h) w)⁻¹ = (pF h w)⁻¹`. Rewrite using `[hF]`.
+A detailed English derivation is pending.
 -/
 private theorem al_nU (u : A E) (h : G1 E) : al (nU u * h) = al h := by
   have hI : pI (nU u * h) = pI h := by
@@ -259,23 +251,23 @@ private theorem al_nU (u : A E) (h : G1 E) : al (nU u * h) = al h := by
     rw [hF]
 
 /- English proof (translation)
-The claim follows from `congrArg (fun x : A E => x.1 v) (Units.inv_mul t)`.
+A detailed English derivation is pending.
 -/
 private theorem tI (t : (A E)ˣ) (v : InfinitePlace E) :
     ((t⁻¹ : (A E)ˣ) : A E).1 v * (t : A E).1 v = 1 :=
   congrArg (fun x : A E => x.1 v) (Units.inv_mul t)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun x : A E => x.2 w) (Units.inv_mul t)`.
+A detailed English derivation is pending.
 -/
 private theorem tF (t : (A E)ˣ) (w : HeightOneSpectrum (𝓞 E)) :
     ((t⁻¹ : (A E)ˣ) : A E).2 w * (t : A E).2 w = 1 :=
   congrArg (fun x : A E => x.2 w) (Units.inv_mul t)
 
 /- English proof (translation)
-Establish `hs : ((t⁻¹ : (A E)ˣ) : A E).1 v ≠ 0` using `left_ne_zero_of_mul_eq_one (tI t v)`. Establish `e : ∀ j, (mD t * h) 1 j = ((t⁻¹ : (A E)ˣ) : A E) * h 1 j` using `e_mD t h`. Establish `e' : ∀ j, ((mD t * h) 1 j).1 v = ((t⁻¹ : (A E)ˣ) : A E).1 v * (h 1 j).1 v` using `fun j => by rw [e j]; rfl`. Establish `key : ‖((mD t * h) 1 1).1 v‖ ≤ ‖((mD t * h) 1 0).1 v‖ ↔ ‖(h 1 1).1 v‖ ≤ ‖(h 1 0).1 v‖`. Rewrite using `[e', e', norm_mul, norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_iff_of_pos_left (norm_pos_iff.2 hs)`. Unfold `pI`. Distinguish the cases in `hc : ‖(h 1 1).1 v‖ ≤ ‖(h 1 0).1 v‖`. Rewrite using `[if_pos hc, if_pos (key.2 hc), e']`. Rewrite using `[if_neg hc, if_neg (fun x => hc (key.1 x)), e']`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pI_mD (t : (A E)ˣ) (h : G1 E) (v : InfinitePlace E) :
     pI (mD t * h) v = ((t⁻¹ : (A E)ˣ) : A E).1 v * pI h v := by
@@ -291,13 +283,13 @@ private theorem pI_mD (t : (A E)ˣ) (h : G1 E) (v : InfinitePlace E) :
   · rw [if_neg hc, if_neg (fun x => hc (key.1 x)), e']
 
 /- English proof (translation)
-Establish `hs : ((t⁻¹ : (A E)ˣ) : A E).2 w ≠ 0` using `left_ne_zero_of_mul_eq_one (tF t w)`. Establish `hs' : Valued.v (((t⁻¹ : (A E)ˣ) : A E).2 w) ≠ 0` using `(Valuation.ne_zero_iff _).2 hs`. Establish `e : ∀ j, (mD t * h) 1 j = ((t⁻¹ : (A E)ˣ) : A E) * h 1 j` using `e_mD t h`. Establish `e' : ∀ j, ((mD t * h) 1 j).2 w = ((t⁻¹ : (A E)ˣ) : A E).2 w * (h 1 j).2 w` using `fun j => by rw [e j]; rfl`. Establish `key : Valued.v (((mD t * h) 1 1).2 w) ≤ Valued.v (((mD t * h) 1 0).2 w) ↔ Valued.v ((h 1 1).2 w) ≤ Valued.v ((h 1 0).2 w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e', e', map_mul, map_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Use `mul_le_mul_right x (Valued.v (((t⁻¹ : (A E)ˣ) : A E).2 w))⁻¹` as an intermediate fact. Simplify `this` using `[inv_mul_cancel_left₀ hs']`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x`. Conclude with `mul_le_mul_right x _`. Unfold `pF`. Distinguish the cases in `hc : Valued.v ((h 1 1).2 w) ≤ Valued.v ((h 1 0).2 w)`. Rewrite using `[if_pos hc, if_pos (key.2 hc), e']`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hc, if_neg (fun x => hc (key.1 x)), e']`.
+A detailed English derivation is pending.
 -/
 private theorem pF_mD (t : (A E)ˣ) (h : G1 E) (w : HeightOneSpectrum (𝓞 E)) :
     pF (mD t * h) w = ((t⁻¹ : (A E)ˣ) : A E).2 w * pF h w := by
@@ -320,9 +312,7 @@ private theorem pF_mD (t : (A E)ˣ) (h : G1 E) (w : HeightOneSpectrum (𝓞 E)) 
   · rw [if_neg hc, if_neg (fun x => hc (key.1 x)), e']
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `Prod.ext (funext fun v => ?_) (Subtype.ext <| funext fun w => ?_)` and prove the remaining obligations. Use `show (pI (mD t * h) v)⁻¹ = (t : A E).1 v * (pI h v)⁻¹`. Rewrite using `[pI_mD, mul_inv, inv_eq_of_mul_eq_one_right (tI t v)]`. Use `show (pF (mD t * h) w)⁻¹ = (t : A E).2 w * (pF h w)⁻¹`.
-
-Rewrite using `[pF_mD, mul_inv, inv_eq_of_mul_eq_one_right (tF t w)]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem al_mD (t : (A E)ˣ) (h : G1 E) : al (mD t * h) = t * al h := by
   apply Units.ext
@@ -336,7 +326,7 @@ end UpperTheory.ConvolutionTheory.RankTwoDescent.TorCoPf
 
 open UpperTheory.ConvolutionTheory.RankTwoDescent.TorCoPf in
 /- English proof (translation)
-Introduce `E _ _`. Conclude with `⟨al, measurable_al, al_nU, al_mD⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.torCo :
     TorCo := by

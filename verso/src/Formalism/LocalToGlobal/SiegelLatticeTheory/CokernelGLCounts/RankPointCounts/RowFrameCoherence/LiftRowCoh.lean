@@ -37,9 +37,7 @@ namespace LiftCoherence
 variable {X Y u u'}
 
 /- English proof (translation)
-Use `show rowOf Y.TR (Y.cs u) (Y.cs u') s' = rowOf Y.TR (Y.cs u) (Y.cs u') s`. Unfold `rowOf`. Rewrite using `[hi]`. Use `congr 1`. Conclude with `Subtype.ext hl`.
-
-Use `congr 1`. Conclude with `Subtype.ext hl'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem liftRowCoh_rowOf_eq {s s' : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')}
     (hl : s'.lam = s.lam) (hl' : s'.lam' = s.lam')
@@ -58,17 +56,15 @@ end LiftCoherence
 open LiftCoherence
 
 /- English proof (translation)
-Introduce `s t hs ht hst`. Take `⟨⟨pl, pm, y₁, y₂, hy₁, hy₂, β, hβ⟩, hp₁, hp₂, hsp⟩` from `hst`. Set `x₁ : Carrier (PD D s.lam (lf D (X.Fu u)) u')` to `⟨s.frame, s.rep.2.2.2.2⟩`. Establish `hp₁' : (Term.mk pl pm (TermDef.mk _ _ _ y₁) : Term D u u' (X.Fu u) (Y.what₂ u)) = Term.mk s.lam s.mem (TermDef.mk _ _ _ x₁)` using `hp₁`. Take `⟨hpl, e₁⟩` from `Term.mk.inj hp₁'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Substitute `hpl` using the available equality. Establish `hRL : IsRowLat D (X.Fu u) s.lam` using `(Y.rowsOK u).1 s.lam s.mem`. Establish `hEq` using `Formalism.L2.SG.Closed.TermEqIff_holds D u u' (X.Fu u) s.lam hRL`. Establish `hGF` using `(Formalism.L2.SG.Closed.TermFun_holds D u u' (X.Fu u) s.lam hRL).1`. Establish `gv : ∀ x : Carrier (PD D s.lam (lf D (X.Fu u)) u'), Gt s.lam (lf D (X.Fu u)) (PD D s.lam (lf D (X.Fu u)) u') (TermDef.mk _ _ _ x) = Gval (lf D (X.Fu u)) x.1`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Conclude with `hGF _ _ ((hEq _ _).1 (Quot.out_eq (TermDef.mk s.lam (lf D (X.Fu u)) (PD D s.lam (lf D (X.Fu u)) u') x)))`. Establish `hx₁ : Gval (lf D (X.Fu u)) x₁.1 ≠ 0`. Rewrite using `[← gv]`. Conclude with `hs.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r₁` using `(hEq y₁ x₁).1 (eq_of_heq e₁)`. Establish `hSE` using `Formalism.L2.SG.Closed.ScalarEquiv_holds D u u' (X.Fu u) s.lam hRL`. Establish `hRF` using `Formalism.L2.SG.Closed.ScalarRepFree_holds D u u' (X.Fu u) s.lam hRL`. Establish `a1 : Formalism.L2.SG.Corank.ScalRelD D u' (X.Fu u) s.lam ⟨y₁, hy₁⟩ ⟨y₂, hy₂⟩` using `⟨β, hβ, hsp.1, hsp.2⟩`. Establish `a2` using `hRF ⟨y₂, hy₂⟩ ⟨y₁, hy₁⟩ ⟨x₁, hx₁⟩ r₁ (hSE.symm a1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β', hβ', h1, h2⟩` from `hSE.symm a2`. Take `⟨s', hl, hl', hs't, hic⟩` from `hT s y₂ β' hs hy₂ hβ' h1 h2`. Establish `hs't' : s'.toTerm = t` using `hs't.trans hp₂`. Use `⟨s', hs't', ?_⟩` and prove the remaining obligations. Establish `hE' : Formalism.L2.SG.DataInst.Elig s'.toTerm` using `hs't' ▸ ht`.
-
-Establish `hi` using `hD s s' hs.2 hE'.2 hs.1 hE'.1 hl.symm hl'.symm hic`. Conclude with `liftRowCoh_rowOf_eq hl hl' hi.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftRowCohC_of (hT : LiftTransNeed X Y u u') (hD : IotaDictNeed X Y u u') : LiftRowCohC X Y u u' := by
   intro s t hs ht hst

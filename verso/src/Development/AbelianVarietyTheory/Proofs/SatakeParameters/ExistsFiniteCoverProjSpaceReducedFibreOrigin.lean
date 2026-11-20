@@ -15,11 +15,11 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 namespace GlobalTheory.PD.FibRed
 
 /- English proof (translation)
-Use `set g := (X.presheaf.germ U (genericPoint X) hg).hom`. Establish `hinj : Function.Injective g` using `germ_injective_of_isIntegral X _ hg`. Set `g' : Γ(X, U) →+* rB ℂ X.functionField x {0}` to `g.codRestrict (rB ℂ X.functionField x {0}).toSubring fun f => (hring _).2 ⟨f, rfl⟩`. Establish `hbij : Function.Bijective g'`. Use `⟨fun a b h => hinj (congrArg Subtype.val h), fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `(hring y).1 y.2`. Conclude with `⟨f, Subtype.ext hf⟩`. Set `e` to `RingEquiv.ofBijective g' hbij`. Use `⟨Ideal.quotientEquiv _ _ e ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.map_span, ← Set.range_comp]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use function extensionality and compare the values at `j`. Conclude with `Subtype.ext (ht j).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem quotEquiv_of_germ {X : Scheme.{0}} [IsIntegral X] [Algebra ℂ X.functionField] {F : Type} [Field F] [Algebra ℂ F]
     [Algebra F X.functionField] [IsScalarTower ℂ F X.functionField] {d : ℕ} (x : Fin (d + 1) → F) (U : X.Opens)
@@ -45,23 +45,19 @@ theorem quotEquiv_of_germ {X : Scheme.{0}} [IsIntegral X] [Algebra ℂ X.functio
   exact Subtype.ext (ht j).symm
 
 /- English proof (translation)
-Introduce `X _ p d _ inst hinst hproj S`. Take `⟨N, ι, hι, hιp⟩` from `hproj`. Take `⟨n, f, hf, hn, hcov, hgen, hS, htr⟩` from `GlobalTheory.T.exists_forms_transversal_at_complexPoints X p d N ι hι hιp S`. Take `⟨F, x, hFC, hAC, hx⟩` from `GlobalTheory.T.exists_finiteCover_affineCover_of_forms_no_commonZero X p d hinst N ι hι hιp n f hf hn hcov hgen`. Use `set U0 := GlobalTheory.EtProj.fOpen ι (f 0) with hU0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set t : Fin d → Γ(X, U0) := fun j => GlobalTheory.EtProj.fRatio ι (f j.succ) (f 0) (hf j.succ) (hf 0) with ht_def`. Establish `hx0 : x 0 = 1`. Apply `(algebraMap F X.functionField).injective` to reduce the goal to its premises. Rewrite using `[hx 0, GlobalTheory.EtProj.fRatio_self, map_one, map_one]`. Establish `ht : ∀ j, (X.presheaf.germ U0 (genericPoint X) (hgen 0)).hom (t j) = algebraMap F X.functionField (x j.succ / x 0)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[hx0, div_one, hx j.succ]`. Establish `hring : ∀ y, y ∈ rB ℂ X.functionField x {0} ↔ ∃ g : Γ(X, U0), (X.presheaf.germ U0 (genericPoint X) (hgen 0)).hom g = y`. Introduce `y`. Establish `hle : ({0} : Finset (Fin (d + 1))).inf (fun i => GlobalTheory.EtProj.fOpen ι (f i)) = U0` using `by simp [hU0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hAC.ring {0} (Finset.singleton_nonempty 0) y]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Use `⟨X.presheaf.map (homOfLE hle.ge).op g, ?_⟩` and prove the remaining obligations. Conclude with `X.presheaf.germ_res_apply (homOfLE hle.ge) _ _ g`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨g, rfl⟩`. Use `⟨X.presheaf.map (homOfLE hle.le).op g, ?_⟩` and prove the remaining obligations. Conclude with `X.presheaf.germ_res_apply (homOfLE hle.le) _ _ g`. Take `⟨E⟩` from `quotEquiv_of_germ x U0 (hgen 0) t hring ht`. Establish `hU0aff : IsAffineOpen U0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify `hAC.affine {0} (Finset.singleton_nonempty 0)` using `[hU0]`. Use `haveI : Smooth p := SmoothOfRelativeDimension.smooth d p`. Use `haveI hart : IsArtinianRing (Γ(X, U0) ⧸ Ideal.span (Set.range t)) := by haveI := GlobalTheory.T.isArtinianRing_rB_quot_span_tco_of_isFinCover ℂ X.functionField F d x hFC`. Conclude with `RingEquiv.isArtinianRing E.symm`. Establish `hred : IsReduced (Γ(X, U0) ⧸ Ideal.span (Set.range t))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `GlobalTheory.T.isReduced_quotient_of_artinian_of_maximal_le' _ _ hart fun m hm hIm => ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `GlobalTheory.T.exists_complexPoint_ker_eval_eq_maximal X p U0 hU0aff m hm`. Use `htr y hy fun j => ?_` and prove the remaining obligations. Conclude with `hIm (Ideal.subset_span ⟨j, rfl⟩)`. Use `⟨F, x, fun i => GlobalTheory.EtProj.fOpen ι (f i), hFC, hAC, ?_, fun y hyS => ⟨(hS y hyS).1, ?_⟩⟩` and prove the remaining obligations.
-
-Use `haveI := hred`. Conclude with `isReduced_of_injective E.symm E.symm.injective`. Introduce `j hg g hgj`. Establish `: g = t j`. Apply `germ_injective_of_isIntegral X _ hg` to reduce the goal to its premises.
-
-Conclude with `hgj.trans (ht j).symm`. Rewrite using `[this]`. Conclude with `(hS y hyS).2 j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finCover_fibre_reduced : ∀ (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d p] [inst : Algebra ℂ X.functionField], inst = ffAlg p → IsProjOver p → ∀ S : Finset (CxPts p (RingHom.id ℂ)), ∃ (F : IntermediateField ℂ X.functionField) (x : Fin (d + 1) → F) (U : Fin (d + 1) → X.Opens), IsFinCover ℂ X.functionField x ∧ IsAffCover p U (rB ℂ X.functionField x) ∧ IsReduced ((rB ℂ X.functionField x {0}) ⧸ (Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ X.functionField x j⟩ : rB ℂ X.functionField x {0})))) ∧ ∀ y ∈ S, y ∈ CxPts.ptsIn p (RingHom.id ℂ) (U 0) ∧ ∀ j : Fin d, ∀ (hg : genericPoint X ∈ U 0) (f : Sec p (U 0)), (X.presheaf.germ (U 0) (genericPoint X) hg).hom f = algebraMap F X.functionField (x j.succ / x 0) → CxPts.ev p (RingHom.id ℂ) (U 0) f y = 0 := by
   intro X _ p d _ inst hinst hproj S

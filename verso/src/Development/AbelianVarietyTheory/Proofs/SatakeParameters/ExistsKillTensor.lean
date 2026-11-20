@@ -21,14 +21,14 @@ def aug (ψ : K →* ℂˣ) : MonoidAlgebra ℂ K →ₐ[ℂ] ℂ :=
   MonoidAlgebra.lift ℂ ℂ K ((Units.coeHom ℂ).comp ψ)
 
 /- English proof (translation)
-Simplify using `[aug]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aug_single (ψ : K →* ℂˣ) (g : K) (r : ℂ) :
     aug ψ (MonoidAlgebra.single g r) = r * (ψ g : ℂ) := by
   simp [aug]
 
 /- English proof (translation)
-Proceed by induction on `c using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add, LinearMap.add_apply, ha, hb, add_smul]`. Consider the case `single g r => rw [aug_single, Representation.asAlgebraHom_single, LinearMap.smul_apply, hy, smul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_eigen (σ : Representation ℂ K X) (ψ : K →* ℂˣ) (y : X)
     (hy : ∀ g, σ g y = (ψ g : ℂ) • y) (c : MonoidAlgebra ℂ K) :
@@ -39,7 +39,7 @@ theorem act_eigen (σ : Representation ℂ K X) (ψ : K →* ℂˣ) (y : X)
   | single g r => rw [aug_single, Representation.asAlgebraHom_single, LinearMap.smul_apply, hy, smul_smul]
 
 /- English proof (translation)
-Proceed by induction on `c using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb]`. Consider the case `single g r => simp only [Representation.asAlgebraHom_single, LinearMap.smul_apply, map_smul, hf]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_comm (σ : Representation ℂ K X) (τ : Representation ℂ K Y) (f : X →ₗ[ℂ] Y)
     (hf : ∀ g x, f (σ g x) = τ g (f x)) (c : MonoidAlgebra ℂ K) (x : X) :
@@ -50,21 +50,19 @@ theorem act_comm (σ : Representation ℂ K X) (τ : Representation ℂ K Y) (f 
   | single g r => simp only [Representation.asAlgebraHom_single, LinearMap.smul_apply, map_smul, hf]
 
 /- English proof (translation)
-Set `π` to `twist σ ψ⁻¹`. Establish `hπ : IsSmooth π` using `isSmooth_twist hσ hψ.inv`. Establish `hlc : IsLocallyConstant fun g : K => π g z`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Establish `h : {g : K | π g z = z} ∈ nhds ((fun y => x⁻¹ * y) x)` using `IsOpen.mem_nhds (hπ z) (by simp)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [(continuous_const_mul x⁻¹).continuousAt.preimage_mem_nhds h] with y hy`. Establish `hy' : π (x⁻¹ * y) z = z` using `hy`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Use `_ = π x z := by rw [hy']`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hfin` using `hlc.range_finite`. Set `O : Finset X` to `hfin.toFinset`. Establish `hO : ∀ w, w ∈ O ↔ ∃ g, π g z = w` using `fun w => by simp [O]`. Establish `hmem : ∀ g, ∀ w ∈ O, π g w ∈ O` using `fun g w hw => by`. Take `⟨x, rfl⟩` from `(hO w).1 hw`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hO _).2 ⟨g * x, by rw [map_mul, Module.End.mul_apply]⟩`. Establish `hinv : ∀ g, π g (∑ w ∈ O, w) = ∑ w ∈ O, w` using `fun g => by`. Rewrite using `[map_sum]`. Use `Finset.sum_nbij' (fun w => π g w) (fun w => π g⁻¹ w) (hmem g) (hmem g⁻¹) (fun w _ => ?_) (fun w _ => ?_) (fun _ _ => rfl)` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hz : ∑ w ∈ O, w = 0` using `h0 _ fun g => by`. Establish `h1` using `hinv g`. Establish `h2 : π g (∑ w ∈ O, w) = ((ψ g)⁻¹ : ℂˣ).val • σ g (∑ w ∈ O, w)` using `rfl`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← h1]`. Rewrite using `[smul_smul, Units.mul_inv, one_smul]`. Use `choose s hs using fun w : O => (hO w).1 w.2`. Use `⟨∑ w : O, MonoidAlgebra.single (s w) ((ψ (s w))⁻¹ : ℂˣ).val, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [aug_single, Units.inv_mul]`. Establish `: O.Nonempty` using `⟨z, (hO z).2 ⟨1, by simp⟩⟩`. Simplify using `using this.ne_empty`. Rewrite using `[map_sum, LinearMap.sum_apply, ← hz, ← Finset.sum_coe_sort O]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Representation.asAlgebraHom_single, LinearMap.smul_apply]`. Conclude with `hs w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_kill [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K]
     (σ : Representation ℂ K X) (ψ : K →* ℂˣ) (hσ : IsSmooth σ) (hψ : IsSmoothChar ψ)
@@ -123,9 +121,9 @@ def viaFactor : Representation ℂ K (⨂[ℂ] j, X j) :=
   (piTensor ρ).comp ((MonoidHom.mulSingle Γ a).comp i)
 
 /- English proof (translation)
-Use `show piTensor ρ (Pi.mulSingle a (i g)) _ = _`. Rewrite using `[piTensor_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne h, Function.update_of_ne h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem viaFactor_tprod (x : ∀ j, X j) (g : K) (z : X a) :
     viaFactor ρ a i g (PiTensorProduct.tprod ℂ (Function.update x a z)) =
@@ -139,7 +137,7 @@ theorem viaFactor_tprod (x : ∀ j, X j) (g : K) (z : X a) :
   · simp [Pi.mulSingle_eq_of_ne h, Function.update_of_ne h]
 
 /- English proof (translation)
-The claim follows from `(act_comm ((ρ a).comp i) (viaFactor ρ a i) ((PiTensorProduct.tprod ℂ).toLinearMap x a) (fun g z => (viaFactor_tprod ρ a i x g z).symm) c z).symm`.
+A detailed English derivation is pending.
 -/
 theorem viaFactor_alg (x : ∀ j, X j) (c : MonoidAlgebra ℂ K) (z : X a) :
     (viaFactor ρ a i).asAlgebraHom c (PiTensorProduct.tprod ℂ (Function.update x a z)) =
@@ -149,11 +147,11 @@ theorem viaFactor_alg (x : ∀ j, X j) (c : MonoidAlgebra ℂ K) (z : X a) :
     (fun g z => (viaFactor_tprod ρ a i x g z).symm) c z).symm
 
 /- English proof (translation)
-Proceed by induction on `v using PiTensorProduct.induction_on generalizing b with`. Consider the case `smul_tprod r x`. Take `⟨c, hc, hc'⟩` from `h (Representation.asAlgebraHom ((ρ a).comp i) b (x a))`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← Function.update_eq_self a x, map_smul, map_smul, viaFactor_alg, viaFactor_alg, hc', MultilinearMap.map_update_zero, smul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add v w hv hw`. Take `⟨c, hc, hc'⟩` from `hv b`. Take `⟨d, hd, hd'⟩` from `hw (c * b)`. Use `⟨d * c, by rw [map_mul]; exact mul_ne_zero hd hc, ?_⟩` and prove the remaining obligations. Rewrite `hd'` using `[map_mul, Module.End.mul_apply]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, Module.End.mul_apply, map_add, map_add, hc', zero_add, hd']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_kill_tensor (ψ : K →* ℂˣ)
     (h : ∀ z, ∃ c, aug ψ c ≠ 0 ∧ Representation.asAlgebraHom ((ρ a).comp i) c z = 0)
@@ -176,13 +174,13 @@ theorem exists_kill_tensor (ψ : K →* ℂˣ)
 end Tensor
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `haveI : CompactSpace (KO k (m a)) := isCompact_iff_compactSpace.1 GlobalTheory.SplitFlip.isCompact_KO`. Set `i` to `(KO k (m a)).subtype`. Set `ψ : KO k (m a) →* ℂˣ` to `χ.comp (Matrix.GeneralLinearGroup.det.comp i)`. Establish `hψ : IsSmoothChar ψ` using `hχ.comp _ (Matrix.GeneralLinearGroup.continuous_det.comp continuous_subtype_val)`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `exists_kill ((ρ a).comp i) ψ (isSmooth_comp (hρ a) i continuous_subtype_val) hψ fun z hz => by`. Assume the negation of the conclusion as `h`. Conclude with `hne ⟨z, h, fun g hg => hz ⟨g, hg⟩⟩`. Take `⟨S, f, hf⟩` from `hs`. Take `⟨v, rfl⟩` from `hf y`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc, hc'⟩` from `exists_kill_tensor ρ a i ψ h1 v.1 1`. Rewrite `hc'` using `[map_one, Module.End.one_apply]`. Set `e : KO k (m a) →* Levi k m` to `(MonoidHom.mulSingle (fun j => GL (m j) k) a).comp i`. Establish `h2` using `act_comm (S.toRepresentation.comp e) (viaFactor ρ a i) S.toSubmodule.subtype (fun _ _ => rfl) c v`. Establish `h3 : Representation.asAlgebraHom (S.toRepresentation.comp e) c v = 0` using `Subtype.ext (h2.trans hc')`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `act_comm (S.toRepresentation.comp e) (τ.comp e) f.toLinearMap (fun g x => f.isIntertwining _ _ (e g) x) c v`. Rewrite `h4` using `[h3, map_zero, act_eigen (τ.comp e) ψ (f.toLinearMap v) (fun g => he g.1 g.2)]`. Conclude with `hy ((smul_eq_zero.1 h4.symm).resolve_left hc)`.
+A detailed English derivation is pending.
 -/
 theorem exists_eigenvector (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (β : Type) [Fintype β] [DecidableEq β] (m : β → Type)

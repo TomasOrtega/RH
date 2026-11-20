@@ -28,17 +28,15 @@ namespace GlobalTheory.LieDual
 variable {R R' : Type} [CommRing R] [CommRing R']
 
 /- English proof (translation)
-Set `E` to `SqExt.dual R`. Set `E'` to `SqExt.dual R'`. Establish `hy` using `pt_w v`. Establish `hy'` using `pt_w v'`. Establish `hc : ∀ r : R, Chart.dualMapR σ (algebraMap R (DualNumber R) r) = algebraMap R' (DualNumber R') (σ r)` using `fun r => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `e₀ : spMap σ ≫ spMap (E.π : E.C →+* E.B) ≫ v.left = (spMap (E'.π : E'.C →+* E'.B) ≫ v'.left) ≫ φ`. Rewrite using `[Category.assoc, e, ← Category.assoc, ← Category.assoc, ← Cris.spMap_comp, ← Cris.spMap_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, E, E', TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `Φ : E.thick _ (E.red_w hy) ⟶ m.obj (E'.thick _ (E'.red_w hy'))` to `{ φ := { Chart.dualMapR σ with commutes' := hc } φ₀ := σ comm := fun b => by`. Express the relevant statement in the definitionally equal form `σ b.fst = (Chart.dualMapR σ b).fst`. Simplify using `[Chart.dualMapR]`. Use `dp := isDPMorphism_sqDP E.sq E'.sq _ fun a ha => by`. Establish `ha' : a.fst = 0` using `ha`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(Chart.dualMapR σ a).fst = 0`. Simplify using `[Chart.dualMapR, ha']`. Use `pt := e₀ }`. Set `a : Thick.triv E.C _ hy ⟶ m.obj (Thick.triv E'.C _ hy')` to `Thick.trivHom { Chart.dualMapR σ with commutes' := hc } e.symm`. Set `b : Thick.triv E.B _ (E.red_w hy) ⟶ m.obj (Thick.triv E'.B _ (E'.red_w hy'))` to `Thick.trivHom { σ with commutes' := fun _ => rfl } e₀`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k1` using `Form.ev_sq f a (m.functor.map (E'.idHom hy')) (E.idHom hy) Φ rfl rfl fun _ => rfl`. Establish `k2` using `Form.ev_sq f b (m.functor.map (E'.secHom (E'.red_w hy') E'.i E'.π_i)) (E.secHom (E.red_w hy) E.i E.π_i) Φ rfl rfl fun c => (hc c).symm`. Establish `k : E'.val v'.left hy' (m.pullForm f).1 = Chart.dualMapR σ (E.val v.left hy f.1)` using `(congrArg₂ (fun u v : E'.C => u - v) k2 k1).trans ((add_sub_add_right_eq_sub (G := E'.C) _ _ _).trans (map_sub (Chart.dualMapR σ) _ _).symm)`. Rewrite using `[tanVal_apply, tanVal_apply]`. Use `(congrArg (TrivSqZeroExt.snd (R := R')) k).trans ?_` and prove the remaining obligations.
-
-Conclude with `zero_add _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tanVal_pullForm_baseChange {σ : R →+* R'} {A : Over (Sp R)} {B : Over (Sp R')}
     {φ : B.left ⟶ A.left}
@@ -83,7 +81,7 @@ theorem tanVal_pullForm_baseChange {σ : R →+* R'} {A : Over (Sp R)} {B : Over
   exact zero_add _
 
 /- English proof (translation)
-The claim follows from `| [], _ => by refine ⟨?_, by rw [List.prod_nil]; exact tanVal_one f⟩ rw [List.prod_nil, GrpTangent.isTangent_iff, MonObj.comp_one] | u :: l, h => by obtain ⟨hu, hu0⟩ := h u (List.mem_cons_self ..) obtain ⟨hl, hl0⟩ := tanVal_list_prod_eq_zero f l fun w hw => h w (List.mem_cons_of_ …`.
+A detailed English derivation is pending.
 -/
 theorem tanVal_list_prod_eq_zero {A : Over (Sp R)} [GrpObj A] (f : Form (A.hom ≫ 𝟙 _)) :
     ∀ l : List (epsR R ⟶ A), (∀ u ∈ l, IsTangent u ∧ tanVal u f = 0) →
@@ -100,9 +98,9 @@ theorem tanVal_list_prod_eq_zero {A : Over (Sp R)} [GrpObj A] (f : Form (A.hom �
     rw [MonObj.comp_mul, hu, hl, _root_.mul_one]
 
 /- English proof (translation)
-Introduce `R _ B _ _ hs n y hy f hf R' _ σ B' _ _ φ hφ m v hv`. Take `⟨y', hy', e⟩` from `GlobalTheory.exists_isLieBasis_baseChange R R' σ B B' φ hφ hs n y hy`. Establish `h0 : ∀ i, tanVal (y' i) (m.pullForm f) = 0` using `fun i => by`. Rewrite using `[tanVal_pullForm_baseChange m (e i) f, hf i, map_zero]`. Take `⟨c, ⟨u, hu, rfl⟩, -⟩` from `hy'.2 v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hu' : ∀ i, u i = GrpTangent.epsScale (c i) ≫ y' i` using `fun i => Over.OverMorphism.ext (hu i)`. Use `(tanVal_list_prod_eq_zero (m.pullForm f) _ fun w hw => ?_).2` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hw`. Rewrite using `[hu' i]`. Conclude with `⟨GrpTangent.isTangent_epsScale _ (hy'.1 i), by rw [tanVal_epsScale, h0 i, mul_zero]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem tanVal_pullForm_eq_zero_of_lieBasis : ∀ (R : Type) [CommRing R] (B : Over (Sp R)) [GrpObj B] [IsCommMonObj B], Smooth B.hom → ∀ (n : ℕ) (y : Fin n → (epsR R ⟶ B)), IsLieBasis y → ∀ f : Form (B.hom ≫ 𝟙 (Sp R)), (∀ i, tanVal (y i) f = 0) → ∀ (R' : Type) [CommRing R'] (σ : R →+* R') (B' : Over (Sp R')) [GrpObj B'] [IsCommMonObj B'] (φ : B'.left ⟶ B.left), IsGrpPullback B' B (spMap σ) φ → ∀ (m : IsMor (dp0 R) (B.hom ≫ 𝟙 (Sp R)) (dp0 R') (B'.hom ≫ 𝟙 (Sp R')) σ φ) (v : epsR R' ⟶ B'), IsTangent v → tanVal v (m.pullForm f) = 0 := by
   intro R _ B _ _ hs n y hy f hf R' _ σ B' _ _ φ hφ m v hv

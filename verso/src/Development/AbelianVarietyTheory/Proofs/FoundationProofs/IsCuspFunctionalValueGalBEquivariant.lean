@@ -11,16 +11,16 @@ namespace GlobalTheory.ThGal
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `[X.gal_exp]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exp_gal (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (f : X.K) :
     X.exp (X.gal s f) = HahnSeries.map (X.exp f) (s : Ω →+* Ω) := by
   ext r; simp [X.gal_exp]
 
 /- English proof (translation)
-Apply `X.exp.toRingHom.injective` to reduce the goal to its premises. Use `show X.exp _ = X.exp _`. Rewrite using `[exp_gal, AlgHom.commutes, AlgHom.commutes]`. Use extensionality with `r`. Establish `hC : ∀ c : Ω, algebraMap Ω (HahnSeries ℚ Ω) c = HahnSeries.single 0 c` using `fun c => by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HahnSeries.algebraMap_apply']`. Simplify using `[PowerSeries.algebraMap_apply, HahnSeries.ofPowerSeries_C, HahnSeries.C_apply]`. Simplify using `only [HahnSeries.map_coeff, hC, HahnSeries.coeff_single]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem gal_algebraMap (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (c : Ω) :
     X.gal s (algebraMap Ω X.K c) = algebraMap Ω X.K (s c) := by
@@ -35,28 +35,28 @@ theorem gal_algebraMap (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (c : Ω) :
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `HahnSeries.map_mul (s : Ω →+* Ω).toNonUnitalRingHom`.
+A detailed English derivation is pending.
 -/
 theorem map_mul_gal (s : Ω ≃ₐ[ℚ] Ω) (x y : HahnSeries ℚ Ω) :
     HahnSeries.map (x * y) (s : Ω →+* Ω) = HahnSeries.map x (s : Ω →+* Ω) * HahnSeries.map y (s : Ω →+* Ω) :=
   HahnSeries.map_mul (s : Ω →+* Ω).toNonUnitalRingHom
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_sub_gal (s : Ω ≃ₐ[ℚ] Ω) (x y : HahnSeries ℚ Ω) :
     HahnSeries.map (x - y) (s : Ω →+* Ω) = HahnSeries.map x (s : Ω →+* Ω) - HahnSeries.map y (s : Ω →+* Ω) := by
   ext r; simp
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `[theta]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem theta_map (s : Ω ≃ₐ[ℚ] Ω) (q : ℚ) (φ : HahnSeries ℚ Ω) :
     theta q (HahnSeries.map φ (s : Ω →+* Ω)) = HahnSeries.map (theta q φ) (s : Ω →+* Ω) := by
   ext r; simp [theta]
 
 /- English proof (translation)
-Take `⟨z, hz, e⟩` from `h`. Conclude with `⟨s z, (hA z).1 hz, by rw [← map_sub, e, map_mul, map_pow, map_natCast]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cgA_map (A : ValuationSubring Ω) (s : Ω ≃ₐ[ℚ] Ω) (hA : ∀ x, x ∈ A ↔ s x ∈ A) (l n : ℕ) (x y : Ω)
     (h : CgA A l n x y) : CgA A l n (s x) (s y) := by
@@ -64,7 +64,7 @@ theorem cgA_map (A : ValuationSubring Ω) (s : Ω ≃ₐ[ℚ] Ω) (hA : ∀ x, x
   exact ⟨s z, (hA z).1 hz, by rw [← map_sub, e, map_mul, map_pow, map_natCast]⟩
 
 /- English proof (translation)
-Take `⟨h1, r, hr, hu⟩` from `h`. Use `⟨fun r => by simpa using (hA _).1 (h1 r), r, by simpa using hr, ?_⟩` and prove the remaining obligations. Simplify `(hA _).1 hu` using `[← map_inv₀]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prim_map (A : ValuationSubring Ω) (s : Ω ≃ₐ[ℚ] Ω) (hA : ∀ x, x ∈ A ↔ s x ∈ A) (φ : HahnSeries ℚ Ω)
     (h : Prim A φ) : Prim A (HahnSeries.map φ (s : Ω →+* Ω)) := by
@@ -73,11 +73,11 @@ theorem prim_map (A : ValuationSubring Ω) (s : Ω ≃ₐ[ℚ] Ω) (hA : ∀ x, 
   simpa [← map_inv₀] using (hA _).1 hu
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : NeZero (M : Ω) := ⟨Nat.cast_ne_zero.2 hM.ne'⟩`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω M`. Establish `hs : IsPrimitiveRoot (s ζ) M` using `hζ.map_of_injective s.injective`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, -, hi⟩` from `hζ.eq_pow_of_pow_eq_one hs.pow_eq_one`. Establish `hc : i.Coprime M` using `(hζ.pow_iff_coprime hM i).1 (hi ▸ hs)`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 hc`. Use `⟨ζ, i, u, hζ, by rw [zpow_natCast, hi], ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : ℤ => (z : ZMod M)) huv` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at this`. Rewrite `this` using `[ZMod.natCast_self, mul_zero, add_zero]`. Rewrite using `[mul_comm]`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem exists_root [IsAlgClosed Ω] (s : Ω ≃ₐ[ℚ] Ω) (M : ℕ) (hM : 0 < M) :
     ∃ (ζ : Ω) (d e : ℤ), IsPrimitiveRoot ζ M ∧ s ζ = ζ ^ d ∧ (d : ZMod M) * e = 1 := by
@@ -96,7 +96,7 @@ theorem exists_root [IsAlgClosed Ω] (s : Ω ≃ₐ[ℚ] Ω) (M : ℕ) (hM : 0 <
   rw [mul_comm]; exact_mod_cast this
 
 /- English proof (translation)
-Apply `X.recip M f hM hf ζ hζ s d hd δ' δ` to reduce the goal to its premises. Use `⟨h00.symm, ?_, h10.symm, h11.symm⟩` and prove the remaining obligations. Rewrite using `[h01, ← mul_assoc, hde, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem recip_zmod (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (M : ℕ) (hM : 0 < M) (f : X.K)
     (hf : ∀ γ ∈ CongruenceSubgroup.Gamma M, X.sl (ofSL γ) f = f) (ζ : Ω) (hζ : IsPrimitiveRoot ζ M)
@@ -109,15 +109,15 @@ theorem recip_zmod (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (M : ℕ) (hM : 0 <
   rw [h01, ← mul_assoc, hde, one_mul]
 
 /- English proof (translation)
-Introduce `γ hγ`. Rewrite `hγ` using `[CongruenceSubgroup.Gamma1_mem]`. Choose the witnesses or unpack the hypotheses as in `⟨M1, hM1, hlev, h00, h11, h10⟩ : ∃ M1 : ℕ, 0 < M1 ∧ (∀ g ∈ CongruenceSubgroup.Gamma M1, X.sl (ofSL g) f = f) ∧ ((en γ 0 0 : ℤ) : ZMod M1) = 1 ∧ ((en γ 1 1 : ℤ) : ZMod M1) = 1 ∧ ((en γ 1 0 : ℤ) : ZMod M1) = 0 := by`. Break down `Nat.eq_zero_or_pos M with h | h` into its components or cases. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Take `⟨M0, h0, hl⟩` from `X.level f`. Take `⟨a, b, c⟩` from `hγ`. Establish `a' : en γ 0 0 = 1` using `by simpa [en] using a`. Establish `b' : en γ 1 1 = 1` using `by simpa [en] using b`. Establish `c' : en γ 1 0 = 0` using `by simpa [en] using c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨M0, h0, hl, by simp [a'], by simp [b'], by simp [c']⟩`. Use `⟨M, h, fun g hg => hf g ?_, hγ⟩` and prove the remaining obligations. Rewrite `hg` using `[CongruenceSubgroup.Gamma_mem]`. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`. Conclude with `⟨hg.1, hg.2.2.2, hg.2.2.1⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨ζ, d, e, hζ, hd, hde⟩` from `exists_root s M1 hM1`. Establish `hT : ModularGroup.T ^ (e * en γ 0 1) ∈ CongruenceSubgroup.Gamma1 M`. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`. Simplify using `[ModularGroup.coe_T_zpow]`. Establish `key` using `recip_zmod X s M1 hM1 f hlev ζ hζ d e hd hde γ (ModularGroup.T ^ (e * en γ 0 1)) (by simp [en, ModularGroup.coe_T_zpow]; exact h00.symm) (by simp [en, ModularGroup.coe_T_zpow]) (by simp [en, ModularGroup.coe_T_zpow]; rw [show (((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ℤ) : ZMod M1) = …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `key` using `[hf _ hT]`. Conclude with `key.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_gal [IsAlgClosed Ω] (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (M : ℕ) (f : X.K)
     (hf : Inv X (CongruenceSubgroup.Gamma1 M) f) : Inv X (CongruenceSubgroup.Gamma1 M) (X.gal s f) := by
@@ -155,44 +155,42 @@ namespace GlobalTheory.ThGal
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-The claim follows from `(ZMod.intCast_eq_intCast_iff_dvd_sub x y a).2 (dvd_trans (Int.natCast_dvd_natCast.2 h) ((ZMod.intCast_eq_intCast_iff_dvd_sub x y b).1 hxy))`.
+A detailed English derivation is pending.
 -/
 theorem cast_of_dvd {a b : ℕ} (h : a ∣ b) (x y : ℤ) (hxy : (x : ZMod b) = y) : (x : ZMod a) = y :=
   (ZMod.intCast_eq_intCast_iff_dvd_sub x y a).2
     (dvd_trans (Int.natCast_dvd_natCast.2 h) ((ZMod.intCast_eq_intCast_iff_dvd_sub x y b).1 hxy))
 
 /- English proof (translation)
-Rewrite `h1` using `[CongruenceSubgroup.Gamma1_mem]`. Rewrite `h2` using `[CongruenceSubgroup.Gamma_mem]`. Simplify using `only [Matrix.SpecialLinearGroup.coe_neg, Matrix.neg_apply, Int.cast_neg] at h2`. Take `⟨g00, g01, g10, g11⟩` from `h2`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hN` using the available equality. Take `⟨M0, h0, hlev⟩` from `X.level f`. Take `⟨ζ, d, e, hζ, hd, hde⟩` from `exists_root s M0 h0`. Take `⟨a, b, c⟩` from `h1`. Establish `a' : (δ : Matrix (Fin 2) (Fin 2) ℤ) 0 0 = 1` using `by simpa using a`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `b' : (δ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 = 1` using `by simpa using b`. Establish `c' : (δ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 = 0` using `by simpa using c`. Use `⟨ModularGroup.T ^ (e * en δ 0 1), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`. Simplify using `[ModularGroup.coe_T_zpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Rewrite `g00` using `[a']`. Simplify using `only [Matrix.SpecialLinearGroup.coe_neg, Matrix.neg_apply, ModularGroup.coe_T_zpow, en]`. Use `⟨by simpa using g00, ?_, by simp, by simpa using g00⟩` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, Int.cast_neg, Int.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm, ← neg_mul, g01, zero_mul]`. Apply `recip_zmod X s M0 h0 f hlev ζ hζ d e hd hde δ` to reduce the goal to its premises. Simplify using `[en, ModularGroup.coe_T_zpow, a']`. Simplify using `[en, ModularGroup.coe_T_zpow]`. Simplify using `[en, ModularGroup.coe_T_zpow, c']`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[en, ModularGroup.coe_T_zpow, b']`. Use `set M1 := N * l ^ n with hM1def`. Establish `hM1 : 0 < M1` using `Nat.mul_pos hN (pow_pos hl n)`. Establish `hlev : ∀ g ∈ CongruenceSubgroup.Gamma M1, X.sl (ofSL g) f = f`. Introduce `g hg`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hf g` to reduce the goal to its premises. Rewrite `hg` using `[CongruenceSubgroup.Gamma_mem]`. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`. Conclude with `⟨hg.1, hg.2.2.2, hg.2.2.1⟩`. Take `⟨ζ, d, e, hζ, hd, hde⟩` from `exists_root s M1 hM1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `m : Matrix (Fin 2) (Fin 2) (ZMod M1)` to `!![(en δ 0 0 : ZMod M1), e * en δ 0 1; d * en δ 1 0, en δ 1 1]`. Establish `hm : m.det = 1`. Rewrite using `[Matrix.det_fin_two_of]`. Establish `hdet : en δ 0 0 * en δ 1 1 - en δ 0 1 * en δ 1 0 = 1`. Use `δ.det_coe` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`. Use `congrArg (fun z : ℤ => (z : ZMod M1)) hdet` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `this - ((en δ 0 1 : ZMod M1) * en δ 1 0) * hde`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ', hδ'⟩` from `GlobalTheory.specialLinearGroup_map_intCast_zmod_surjective M1 ⟨m, hm⟩`. Establish `he : ∀ i j, (((δ' : Matrix (Fin 2) (Fin 2) ℤ) i j : ℤ) : ZMod M1) = m i j` using `fun i j => by`. Use `congrArg (fun g : SL(2, ZMod M1) => (g : Matrix (Fin 2) (Fin 2) (ZMod M1)) i j) hδ'` as an intermediate fact. Simplify `this` using `[Matrix.SpecialLinearGroup.map_apply_coe]`. Establish `e00 : (en δ' 0 0 : ZMod M1) = en δ 0 0` using `he 0 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e01 : (en δ' 0 1 : ZMod M1) = ((e * en δ 0 1 : ℤ) : ZMod M1)` using `by rw [Int.cast_mul]; exact he 0 1`. Establish `e10 : (en δ' 1 0 : ZMod M1) = ((d * en δ 1 0 : ℤ) : ZMod M1)` using `by rw [Int.cast_mul]; exact he 1 0`. Establish `e11 : (en δ' 1 1 : ZMod M1) = en δ 1 1` using `he 1 1`. Establish `dN : N ∣ M1` using `Dvd.intro _ rfl`. Establish `dl : l ^ n ∣ M1` using `Dvd.intro_left _ rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨δ', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`. Take `⟨a, b, c⟩` from `h1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(cast_of_dvd dN _ _ e00).trans a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(cast_of_dvd dN _ _ e11).trans b`. Use `(cast_of_dvd dN _ _ e10).trans ?_` and prove the remaining obligations. Rewrite using `[Int.cast_mul, show ((en δ 1 0 : ℤ) : ZMod N) = 0 from c, mul_zero]`. Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Simplify using `only [Matrix.SpecialLinearGroup.coe_neg, Matrix.neg_apply, Int.cast_neg]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show (((δ' : Matrix (Fin 2) (Fin 2) ℤ) 0 0 : ℤ) : ZMod (l ^ n)) = en δ 0 0 from cast_of_dvd dl _ _ e00]`. Conclude with `g00`. Rewrite using `[show (((δ' : Matrix (Fin 2) (Fin 2) ℤ) 0 1 : ℤ) : ZMod (l ^ n)) = ((e * en δ 0 1 : ℤ) : ZMod (l ^ n)) from cast_of_dvd dl _ _ e01] push_cast`. Rewrite using `[← mul_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show -((en δ 0 1 : ℤ) : ZMod (l ^ n)) = 0 from g01, mul_zero]`. Rewrite using `[show (((δ' : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ℤ) : ZMod (l ^ n)) = ((d * en δ 1 0 : ℤ) : ZMod (l ^ n)) from cast_of_dvd dl _ _ e10] push_cast`. Rewrite using `[← mul_neg]`. Rewrite using `[show -((en δ 1 0 : ℤ) : ZMod (l ^ n)) = 0 from g10, mul_zero]`. Rewrite using `[show (((δ' : Matrix (Fin 2) (Fin 2) ℤ) 1 1 : ℤ) : ZMod (l ^ n)) = en δ 1 1 from cast_of_dvd dl _ _ e11]`.
-
-Conclude with `g11`. Conclude with `recip_zmod X s M1 hM1 f hlev ζ hζ d e hd hde δ δ' e00 (by rw [e01]; push_cast; rfl) (by rw [e10]; push_cast; rfl) e11`.
+A detailed English derivation is pending.
 -/
 theorem exists_twist [IsAlgClosed Ω] (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (N l n : ℕ) (hl : 0 < l) (f : X.K)
     (hf : Inv X (CongruenceSubgroup.Gamma1 (N * l ^ n)) f) (δ : SL(2, ℤ))
@@ -284,19 +282,17 @@ namespace GlobalTheory
 open GlobalTheory.KZ GlobalTheory.Glue
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X A N l _ n w s _ hA b _ φ hb`. Take `⟨f, hfI, hcls, hδ, hdl⟩` from `hb`. Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Establish `hf : ((Units.map (X.gal s).toMonoidHom f : X.Kˣ) : X.K) = X.gal s f` using `rfl`. Use `⟨Units.map (X.gal s).toMonoidHom f, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hf]`. Conclude with `ThGal.inv_gal X s _ _ hfI`. Establish `hu : (![(![1, 0] : Fin 2 → ℤ_[l]) 0, (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) * (![1, 0] : Fin 2 → ℤ_[l]) 1] : Fin 2 → ℤ_[l]) = ![1, 0]`. Apply the tactic sequence `funext i; fin_cases i <;> simp`. Establish `hg : X.galB l s b ![1, 0] = X.kmap l (X.gal s) (b ![(![1, 0] : Fin 2 → ℤ_[l]) 0, (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) * (![1, 0] : Fin 2 → ℤ_[l]) 1])` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[hu]`. Rewrite `hcls` using `[AdicCompletion.eval_apply]`. Rewrite using `[hg, AdicCompletion.eval_apply, Tower.kmap]`. Use `erw [AdicCompletion.map_val_apply]`. Rewrite using `[hcls]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Tower.cls, LinearMap.reduceModIdeal_apply]`. Introduce `δ hδ1 hδ2`. Take `⟨δ', h1, h2, hrec⟩` from `ThGal.exists_twist X s N l n hl f hfI δ hδ1 hδ2`. Take `⟨g, hg, hfg⟩` from `hδ δ' h1 h2`. Use `⟨X.gal s g, ThGal.inv_gal X s _ _ hg, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hf, ← hrec, ← map_mul, hfg, map_pow]`. Take `⟨hφ, a, c, κ, hκ, hfa, ha, hc, hcg⟩` from `hdl`. Use `⟨fun r => by simpa using (hA _).1 (hφ r), X.gal s a, X.gal s c, s κ, by simpa using hκ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, ← ThGal.gal_algebraMap, ← map_mul, ← map_mul, hfa]`. Rewrite using `[ThGal.exp_gal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ThGal.prim_map A s hA _ ha`. Rewrite using `[ThGal.exp_gal]`. Conclude with `ThGal.prim_map A s hA _ hc`. Introduce `r`. Rewrite using `[ThGal.exp_gal, ThGal.exp_gal, ← ThGal.map_mul_gal, ← ThGal.map_mul_gal, ThGal.theta_map, ThGal.theta_map, ← ThGal.map_mul_gal, ← ThGal.map_mul_gal, ← ThGal.map_sub_gal, HahnSeries.map_coeff, HahnSeries.map_coeff]`.
-
-Conclude with `ThGal.cgA_map A s hA l n _ _ (hcg r)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isThB_galB : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime] (n w : ℕ) (s : Ω ≃ₐ[ℚ] Ω), (l : Ω) ∈ A.nonunits → (∀ x, x ∈ A ↔ s x ∈ A) → ∀ b : X.Fn l, b ∈ X.B N l w → ∀ φ : HahnSeries ℚ Ω,
   IsThB X A N l n b φ → IsThB X A N l n (X.galB l s b) (HahnSeries.map φ (s : Ω →+* Ω)) := by

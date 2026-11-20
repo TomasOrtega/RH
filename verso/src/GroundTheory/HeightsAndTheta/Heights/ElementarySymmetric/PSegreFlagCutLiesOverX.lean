@@ -6,7 +6,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.NumbersDVR
 
 /- English proof (translation)
-The claim follows from `SegreFlagCutLiesOver.proof SegreFlagCutChartSection.proof`.
+A detailed English derivation is pending.
 -/
 theorem SegreFlagCutLiesOver.closed : SegreFlagCutLiesOver.Statement :=
   SegreFlagCutLiesOver.proof SegreFlagCutChartSection.proof

@@ -35,7 +35,7 @@ variable (II : IntersectionSystem)
   (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2])
 
 /- English proof (translation)
-Take `⟨t, -, ht, hs, -⟩` from `NineStatements.NbarChartSemiposFam.hyps_of_setting (projLineFamilySetting II hII) one_pos`. Conclude with `⟨t, ht, hs, LowerBoundFree.Line.discL_mem 0, LowerBoundFree.Line.isConeTangent_velL, (0 : Fin 2), LowerBoundFree.Line.projL_discL_mem_mid⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem NbarLeviChartFam.hyps_inhabited :
     ∃ t : ℝ, 0 < t ∧ (projLineFamilySetting II hII).M.atlas.Smooth ((projLineFamilySetting II hII).S.regWeight t) ∧

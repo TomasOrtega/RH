@@ -18,13 +18,11 @@ noncomputable section
 namespace GlobalTheory.MixPer
 
 /- English proof (translation)
-Introduce `D S S₀ A L ρ d o ν 𝓝 hν`. Establish `hNc : IsClosed (flagN d : Set (GA D S))` using `GlobalTheory.Mem.TrueRecord.isClosed_NFlag S (isIsoSub_e d)`. Establish `hνH : ν.IsHaarMeasure` using `hν.1`. Establish `hcA : Continuous (embA d o)`. Establish `h1 : Continuous (fun h : GA D A => o.emb (h, 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `o.continuous_emb` as an intermediate fact. Use `fun_prop`. Conclude with `d.continuous_embed.comp h1`. Establish `hnA : ∀ n ∈ flagN d, ∀ h, embA d o h * n * (embA d o h)⁻¹ ∈ flagN d` using `fun n hn h => GlobalTheory.MixPer.witt_anisotropic_group_normalizes_flag_unipotent D S S₀ ρ d n hn (o.emb (h, 1))`. Establish `hmA : ∀ h, ν.map (fun n : flagN d => embA d o h * n.1 * (embA d o h)⁻¹) = ν.map Subtype.val` using `fun h => GlobalTheory.FlagModulus.map_conj_smallerUnitary_flagUnipotent_haar D S S₀ ρ d ν hνH (o.emb (h, 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨GlobalTheory.jacGrp_isClosed D S S₀ ρ d, fun μ hμ => ?_⟩, GlobalTheory.BesClosed.besGrp_isClosed D S S₀ A L ρ d o, fun μ hμ => ?_⟩` and prove the remaining obligations. Establish `a` using `GlobalTheory.MixPer.semiMeas_isMulLeftInvariant (flagN d) d.emb0 hNc d.continuous_embed (GlobalTheory.MixPer.witt_anisotropic_group_normalizes_flag_unipotent D S S₀ ρ d) (GlobalTheory.JacProj.exists_continuous_proj D S S₀ ρ d) μ ν hμ hνH (GlobalTheory.FlagModulus.map_conj_smaller …`. Take `⟨b, c⟩` from `GlobalTheory.MixPer.semiMeas_finite_on_compacts_and_open_pos (flagN d) d.emb0 hNc d.continuous_embed (GlobalTheory.MixPer.witt_anisotropic_group_normalizes_flag_unipotent D S S₀ ρ d) (GlobalTheory.JacProj.exists_continuous_proj D S S₀ ρ d) μ ν hμ hνH (GlobalTheory.FlagModulus.map …`. Conclude with `{ toIsFiniteMeasureOnCompacts := b, toIsMulLeftInvariant := a, toIsOpenPosMeasure := c }`. Establish `a` using `GlobalTheory.MixPer.semiMeas_isMulLeftInvariant (flagN d) (embA d o) hNc hcA hnA (GlobalTheory.BesProj.exists_continuous_proj D S S₀ A L ρ d o) μ ν hμ hνH hmA`.
-
-Take `⟨b, c⟩` from `GlobalTheory.MixPer.semiMeas_finite_on_compacts_and_open_pos (flagN d) (embA d o) hNc hcA hnA (GlobalTheory.BesProj.exists_continuous_proj D S S₀ A L ρ d o) μ ν hμ hνH hmA`. Conclude with `{ toIsFiniteMeasureOnCompacts := b, toIsMulLeftInvariant := a, toIsOpenPosMeasure := c }`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jacGrp_besGrp_haar : ∀ (D : D7) (S S₀ A L : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L) (ν : Measure (flagN d)) (𝓝 : Set (flagN d)), GlobalTheory.Per.IsUnitN S d.e ν 𝓝 → (IsClosed (jacGrp d : Set (GA D S)) ∧ ∀ μ : Measure (GA D S₀), μ.IsHaarMeasure → (semiMeas (flagN d) d.emb0 μ ν).IsHaarMeasure) ∧ IsClosed (besGrp d o : Set (GA D S)) ∧ ∀ μ : Measure (GA D A), μ.IsHaarMeasure → (semiMeas (flagN d) (embA d o) μ ν).IsHaarMeasure := by
   intro D S S₀ A L ρ d o ν 𝓝 hν

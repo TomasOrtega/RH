@@ -13,18 +13,18 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Desc.SLF PositivityTheory.R
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {N : ℕ}
 
 /- English proof (translation)
-Use `haveI := (tdk : TotallyDisconnectedSpace k)`. Conclude with `(inferInstance : TotallyDisconnectedSpace (Fin N → Fin N → k))`.
+A detailed English derivation is pending.
 -/
 theorem tdM : TotallyDisconnectedSpace (Matrix (Fin N) (Fin N) k) := by
   haveI := (tdk : TotallyDisconnectedSpace k)
   exact (inferInstance : TotallyDisconnectedSpace (Fin N → Fin N → k))
 
 /- English proof (translation)
-Establish `hmem : ∀ a, a ∈ S ↔ a ∈ Submodule.span k (Set.range b)` using `fun a => by`. Rewrite using `[← hb]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Conclude with `fun h i => h _ ((hmem _).2 (Submodule.subset_span ⟨i, rfl⟩))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce `h a ha`. Establish `key : ∀ a ∈ Submodule.span k (Set.range b), a * y = y * a`. Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `h i`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul, mul_add, hx, hy]`. Consider the case `smul c x _ hx => rw [smul_mul_assoc, mul_smul_comm, hx]`. Conclude with `key a ((hmem a).1 ha)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem comm_span_iff {r : ℕ} {S : Subalgebra k (Matrix (Fin N) (Fin N) k)} {b : Fin r → Matrix (Fin N) (Fin N) k}
     (hb : S.toSubmodule = Submodule.span k (Set.range b)) (y : Matrix (Fin N) (Fin N) k) :
@@ -44,9 +44,9 @@ theorem comm_span_iff {r : ℕ} {S : Subalgebra k (Matrix (Fin N) (Fin N) k)} {b
     exact key a ((hmem a).1 ha)
 
 /- English proof (translation)
-Unfold `cj`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h, mul_assoc, Units.mul_inv, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_eq_self_iff (g : GL (Fin N) k) (x : Matrix (Fin N) (Fin N) k) : cj g x = x ↔ x * g.val = g.val * x := by
   unfold cj
@@ -58,7 +58,7 @@ theorem cj_eq_self_iff (g : GL (Fin N) k) (x : Matrix (Fin N) (Fin N) k) : cj g 
     rw [← h, mul_assoc, Units.mul_inv, mul_one]
 
 /- English proof (translation)
-Conclude with `(show g ∈ GzS S ↔ ∀ a ∈ S, a * g.val = g.val * a from Iff.rfl).trans ((comm_span_iff hb _).trans (forall_congr' fun i => (cj_eq_self_iff g (b i)).symm))`.
+A detailed English derivation is pending.
 -/
 theorem mem_GzS_iff {r : ℕ} {S : Subalgebra k (Matrix (Fin N) (Fin N) k)} {b : Fin r → Matrix (Fin N) (Fin N) k}
     (hb : S.toSubmodule = Submodule.span k (Set.range b)) (g : GL (Fin N) k) :
@@ -70,13 +70,13 @@ def Orb {r : ℕ} (b : Fin r → Matrix (Fin N) (Fin N) k) : Set (Fin r → Matr
   {w | ∃ g : GL (Fin N) k, ∀ i, w i = cj g (b i)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun i => (cj_one _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem self_mem_orb {r : ℕ} (b : Fin r → Matrix (Fin N) (Fin N) k) : b ∈ Orb b :=
   ⟨1, fun i => (cj_one _).symm⟩
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `hw`. Conclude with `⟨g * h, fun i => by show cj g (w i) = _; rw [hh, cj_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cj_mem_orb {r : ℕ} {b w : Fin r → Matrix (Fin N) (Fin N) k} (hw : w ∈ Orb b) (g : GL (Fin N) k) :
     (fun i => cj g (w i)) ∈ Orb b := by
@@ -87,9 +87,9 @@ abbrev cr_commRing {S : Subalgebra k (Matrix (Fin N) (Fin N) k)} (hS : CR S) : C
   { (inferInstance : Ring S) with mul_comm := fun a b => Subtype.ext (hS.1 a a.2 b b.2) }
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Establish `hx : (x : Matrix (Fin N) (Fin N) k) ∈ Submodule.span k (Set.range b)`. Rewrite using `[← hb]`. Conclude with `x.2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun k).1 hx`. Use `(Submodule.mem_span_range_iff_exists_fun k).2 ⟨c, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hc]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_top_of {r : ℕ} {S : Subalgebra k (Matrix (Fin N) (Fin N) k)} {b : Fin r → Matrix (Fin N) (Fin N) k}
     (hb : S.toSubmodule = Submodule.span k (Set.range b)) :
@@ -107,7 +107,7 @@ theorem span_top_of {r : ℕ} {S : Subalgebra k (Matrix (Fin N) (Fin N) k)} {b :
   simp
 
 /- English proof (translation)
-Use `letI : CommRing S := cr_commRing hS`. Use `haveI : IsReduced S := hS.2`. Conclude with `hO N r S hS.2 _ (span_top_of hb) S.val`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isClosed_orb (hO : OrbClosed k) {r : ℕ} {S : Subalgebra k (Matrix (Fin N) (Fin N) k)} (hS : CR S)
     {b : Fin r → Matrix (Fin N) (Fin N) k} (hb : S.toSubmodule = Submodule.span k (Set.range b)) :
@@ -122,9 +122,9 @@ def actO {r : ℕ} (b : Fin r → Matrix (Fin N) (Fin N) k) : MulAction (GL (Fin
   mul_smul g h w := Subtype.ext (funext fun i => cj_mul g h _)
 
 /- English proof (translation)
-Use `letI := actO b`. Use `⟨?_⟩` and prove the remaining obligations. Use `show Continuous (fun p : GL (Fin N) k × Orb b => (⟨fun i => cj p.1 (p.2.1 i), cj_mem_orb p.2.2 p.1⟩ : Orb b))`. Establish `hc : ∀ i : Fin r, Continuous (fun p : GL (Fin N) k × Orb b => cj p.1 (p.2.1 i))`. Introduce `i`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : Continuous (fun p : GL (Fin N) k × Orb b => p.2.1 i)` using `(continuous_apply i).comp (continuous_subtype_val.comp continuous_snd)`. Establish `h2 : Continuous (fun p : GL (Fin N) k × Orb b => (p.1, p.2.1 i))` using `continuous_fst.prodMk h1`. Conclude with `(continuous_cj (n := N)).comp h2`. Conclude with `Continuous.subtype_mk (continuous_pi hc) _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousSMul_actO {r : ℕ} (b : Fin r → Matrix (Fin N) (Fin N) k) :
     @ContinuousSMul (GL (Fin N) k) (Orb b) (actO b).toSMul _ _ := by
@@ -140,9 +140,9 @@ theorem continuousSMul_actO {r : ℕ} (b : Fin r → Matrix (Fin N) (Fin N) k) :
   exact Continuous.subtype_mk (continuous_pi hc) _
 
 /- English proof (translation)
-Use `letI := actO b`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `x.2`. Take `⟨h, hh⟩` from `y.2`. Use `⟨h * g⁻¹, Subtype.ext (funext fun i => ?_)⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show cj (h * g⁻¹) (x.1 i) = y.1 i`. Rewrite using `[hg i, hh i, ← cj_mul, mul_assoc, inv_mul_cancel, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPretransitive_actO {r : ℕ} (b : Fin r → Matrix (Fin N) (Fin N) k) :
     @MulAction.IsPretransitive (GL (Fin N) k) (Orb b) (actO b).toSMul := by
@@ -155,13 +155,11 @@ theorem isPretransitive_actO {r : ℕ} (b : Fin r → Matrix (Fin N) (Fin N) k) 
   rw [hg i, hh i, ← cj_mul, mul_assoc, inv_mul_cancel, mul_one]
 
 /- English proof (translation)
-Use `letI := actO b`. Use `haveI := continuousSMul_actO b`. Use `haveI := isPretransitive_actO b`. Use `haveI : LocallyCompactSpace (Orb b) := (isClosed_orb hO hS hb).locallyCompactSpace`. Take `⟨e, he⟩` from `exists_quotient_homeo (G := GL (Fin N) k) (⟨b, self_mem_orb b⟩ : Orb b)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hst : MulAction.stabilizer (GL (Fin N) k) (⟨b, self_mem_orb b⟩ : Orb b) = GzS S`. Use extensionality with `g`. Rewrite using `[MulAction.mem_stabilizer_iff, mem_GzS_iff hb]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `congrFun (congrArg Subtype.val h) i`. Introduce `h`. Conclude with `Subtype.ext (funext h)`. Establish `key : ∀ H : Subgroup (GL (Fin N) k), MulAction.stabilizer (GL (Fin N) k) (⟨b, self_mem_orb b⟩ : Orb b) = H → ∃ e : GL (Fin N) k ⧸ H ≃ₜ Orb b, ∀ g : GL (Fin N) k, ((e g : Orb b) : Fin r → Matrix (Fin N) (Fin N) k) = fun i => cj g (b i)`. Introduce and unpack `H rfl`.
-
-Conclude with `⟨e, fun g => by rw [he g]; rfl⟩`. Conclude with `key _ hst`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_orb_homeo (hO : OrbClosed k) {r : ℕ} {S : Subalgebra k (Matrix (Fin N) (Fin N) k)} (hS : CR S)
     {b : Fin r → Matrix (Fin N) (Fin N) k} (hb : S.toSubmodule = Submodule.span k (Set.range b)) :
@@ -189,15 +187,13 @@ theorem exists_orb_homeo (hO : OrbClosed k) {r : ℕ} {S : Subalgebra k (Matrix 
   exact key _ hst
 
 /- English proof (translation)
-Establish `hE : (e + f) * e = e` using `by rw [add_mul, he.eq, hfe, add_zero]`. Establish `hF : (e + f) * f = f` using `by rw [add_mul, hef, hf.eq, zero_add]`. Establish `hsup : LinearMap.range (e + f).mulVecLin = LinearMap.range e.mulVecLin ⊔ LinearMap.range f.mulVecLin`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Matrix.mulVecLin_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.range_add_le _ _`. Use `sup_le ?_ ?_` and prove the remaining obligations. Use `conv_lhs => rw [← hE]`. Rewrite using `[Matrix.mulVecLin_mul]`. Conclude with `LinearMap.range_comp_le_range _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← hF]`. Rewrite using `[Matrix.mulVecLin_mul]`. Conclude with `LinearMap.range_comp_le_range _ _`. Establish `hinf : LinearMap.range e.mulVecLin ⊓ LinearMap.range f.mulVecLin = ⊥`. Rewrite using `[eq_bot_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Simplify using `only [Submodule.mem_inf, LinearMap.mem_range, Matrix.mulVecLin_apply] at hx`. Take `⟨⟨u, rfl⟩, ⟨w, hw⟩⟩` from `hx`. Rewrite using `[Submodule.mem_bot]`. Establish `hu : e *ᵥ u = e *ᵥ (e *ᵥ u)` using `by rw [Matrix.mulVec_mulVec, he.eq]`.
-
-Rewrite using `[hu, ← hw, Matrix.mulVec_mulVec, hef, Matrix.zero_mulVec]`. Establish `h` using `Submodule.finrank_sup_add_finrank_inf_eq (LinearMap.range e.mulVecLin) (LinearMap.range f.mulVecLin)`. Rewrite `h` using `[hinf, finrank_bot, add_zero, ← hsup]`. Unfold `Matrix.rank`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rank_add_of_orth {e f : Matrix (Fin N) (Fin N) k} (he : IsIdempotentElem e) (hf : IsIdempotentElem f)
     (hef : e * f = 0) (hfe : f * e = 0) : (e + f).rank = e.rank + f.rank := by
@@ -229,11 +225,9 @@ theorem rank_add_of_orth {e f : Matrix (Fin N) (Fin N) k} (he : IsIdempotentElem
   exact h
 
 /- English proof (translation)
-Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> simp [IsIdempotentElem, Matrix.rank_zero]`. Introduce `a s ha ih`. Establish `h1 : e a * ∑ t ∈ s, e t = 0`. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun t ht => ho a t (fun h => ha (by rw [h]; exact ht))`. Establish `h2 : (∑ t ∈ s, e t) * e a = 0`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun t ht => ho t a (fun h => ha (by rw [← h]; exact ht))`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`.
-
-Conclude with `⟨(he a).add ih.1 (by rw [h1, h2, add_zero]), by rw [rank_add_of_orth (he a) ih.1 h1 h2, ih.2]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rank_sum_orth {ι : Type*} [DecidableEq ι] (e : ι → Matrix (Fin N) (Fin N) k) (he : ∀ t, IsIdempotentElem (e t))
     (ho : ∀ t t', t ≠ t' → e t * e t' = 0) (T : Finset ι) :
@@ -251,15 +245,15 @@ theorem rank_sum_orth {ι : Type*} [DecidableEq ι] (e : ι → Matrix (Fin N) (
     exact ⟨(he a).add ih.1 (by rw [h1, h2, add_zero]), by rw [rank_add_of_orth (he a) ih.1 h1 h2, ih.2]⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a ha b hb`. Take `⟨c, rfl⟩` from `Algebra.mem_bot.1 ha`. Conclude with `Algebra.commutes c b`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `hx`. Take `⟨c, hc⟩` from `Algebra.mem_bot.1 x.2`. Establish `hn' : (x : Matrix (Fin N) (Fin N) k) ^ n = 0`. Use `congrArg Subtype.val hn` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn'` using `[← hc, ← map_pow]`. Distinguish the cases in `h0 : c = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hc, h0, map_zero]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1 : (1 : Matrix (Fin N) (Fin N) k) = 0`. Establish `hcn : c ^ n ≠ 0` using `pow_ne_zero _ h0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel₀ hcn, map_one]`. Use `_ = 0 := by rw [map_mul, hn', mul_zero]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x : Matrix (Fin N) (Fin N) k) = 0`. Rewrite using `[← mul_one (x : Matrix (Fin N) (Fin N) k), h1, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem cr_bot : CR (⊥ : Subalgebra k (Matrix (Fin N) (Fin N) k)) := by
   refine ⟨?_, ?_⟩
@@ -296,7 +290,7 @@ def glEquivBot : GL (Fin N) k ≃ₜ* GzS (⊥ : Subalgebra k (Matrix (Fin N) (F
   continuous_invFun := continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `isUnimod_of_equiv glEquivBot (hU N ⊥ cr_bot)`.
+A detailed English derivation is pending.
 -/
 theorem isUnimod_GL (hU : PositivityTheory.RgUd.T.Desc.SLF.Unimod (k := k)) : PositivityTheory.PfBern.Frob.IsUnimod (GL (Fin N) k) :=
   isUnimod_of_equiv glEquivBot (hU N ⊥ cr_bot)

@@ -14,25 +14,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gmap_one (Λ : LV D) : Formalism.HermitianLatticesTheory.gmap (1 : GV D) Λ = Λ := by
   ext x; simp [Formalism.HermitianLatticesTheory.gmap]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gmap_mul (a b : GV D) (Λ : LV D) : Formalism.HermitianLatticesTheory.gmap (a * b) Λ = Formalism.HermitianLatticesTheory.gmap a (Formalism.HermitianLatticesTheory.gmap b Λ) := by
   ext x; simp [Formalism.HermitianLatticesTheory.gmap]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Subgroup.one_mem _, fun a => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem adapt_one {T : D.host.E} (F : LFlag (VS D) D.R.rS T) : Adapt (1 : GV D) F F :=
   ⟨Subgroup.one_mem _, fun a => by simp⟩
 
 /- English proof (translation)
-Use `⟨hg, fun a => ?_⟩` and prove the remaining obligations. Establish `: frame (mapLF g F) a = g (frame F a)`. Simplify using `only [mapLF, dif_pos hg, frame, FlagG.fvec, mapFlag]`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) a <;> simp`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -45,7 +45,7 @@ theorem adapt_mapLF {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (g : GV D) (hg : 
   rw [this]; simp
 
 /- English proof (translation)
-Use `h.2 0` as an intermediate fact. Simplify `this` using `[Xflag, FlagG.Xa, sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem adapt_zero {T : D.host.E} {F G : LFlag (VS D) D.R.rS T} {g : GV D} (h : Adapt g F G) :
     g (frame F 0) = frame G 0 := by
@@ -53,15 +53,15 @@ theorem adapt_zero {T : D.host.E} {F G : LFlag (VS D) D.R.rS T} {g : GV D} (h : 
   simpa [Xflag, FlagG.Xa, sub_eq_zero] using this
 
 /- English proof (translation)
-Introduce and unpack `n ⟨⟨h1, h2⟩, h3, h4⟩`. Use `⟨⟨h1, fun a => ?_⟩, h2⟩` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Establish `hz : frame F (Fin.last _) ∈ orth (VS D) (Xsp F)`. Simplify using `only [orth, Submodule.mem_iInf, frame, FlagG.fvec, Fin.snoc_last, LinearMap.mem_ker]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Use `Submodule.span_induction (p := fun x _ => (VS D).hT x F.fl.z = 0) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `F.fl.z_orth a`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y _ _ a b`. Simplify using `[a, b]`. Introduce `c x _ a`. Simplify using `[a]`. Use `h4 _ hz` as an intermediate fact.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Xflag F (Fin.last D.R.rS).val = Xsp F`. Simplify using `only [Xflag, FlagG.Xa, Xsp, FlagG.X, Fin.val_last]`. Use `congr 1`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[e]` and apply the resulting hypothesis. Apply `h3` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨i, by simp, by simp [frame, FlagG.fvec]⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unitriangular_lattice_stabiliser_sub_frame_automorphisms {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (Λ : LV D) : NLam Λ F ⊆ Aut0 F Λ := by
   rintro n ⟨⟨h1, h2⟩, h3, h4⟩
@@ -102,12 +102,12 @@ def StabilizingSubgroup : Subgroup (GV D) where
       simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(StabilizingSubgroup F F').one_mem, by rw [gmap_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_stabL (Λ : LV D) : (1 : GV D) ∈ stabL F F' Λ := ⟨(StabilizingSubgroup F F').one_mem, by rw [gmap_one]⟩
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `hx; exact ⟨_, hx, by simp⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem mem_gmap (h : GV D) (Λ : LV D) (x) : x ∈ Formalism.HermitianLatticesTheory.gmap h Λ ↔ h.symm x ∈ Λ := by
   simp only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map]
@@ -116,21 +116,21 @@ theorem mem_gmap (h : GV D) (Λ : LV D) (x) : x ∈ Formalism.HermitianLatticesT
   · intro hx; exact ⟨_, hx, by simp⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[mem_gmap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gmap_inf (h : GV D) (A B : LV D) : Formalism.HermitianLatticesTheory.gmap h (A ⊓ B) = Formalism.HermitianLatticesTheory.gmap h A ⊓ Formalism.HermitianLatticesTheory.gmap h B := by
   ext x; simp [mem_gmap]
 
 /- English proof (translation)
-The claim follows from `Submodule.map_sup _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem gmap_sup (h : GV D) (A B : LV D) : Formalism.HermitianLatticesTheory.gmap h (A ⊔ B) = Formalism.HermitianLatticesTheory.gmap h A ⊔ Formalism.HermitianLatticesTheory.gmap h B :=
   Submodule.map_sup _ _ _
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun v _ => h v = v) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Simplify `hf a.castSucc` using `[frame, FlagG.fvec]`. Simplify using the standard rewrite rules. Introduce `x y _ _ a b`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[a, b]`. Introduce `c x _ a`. Simplify using `[a]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem fix_X {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {h : GV D} (hf : ∀ a, h (frame F a) = frame F a) {x}
     (hx : x ∈ Xsp F) : h x = x := by
@@ -141,9 +141,9 @@ theorem fix_X {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {h : GV D} (hf : ∀ a,
   · intro c x _ a; simp [a]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `fix_X F hf hx` as an intermediate fact. Rewrite using `[← h.injective this]`. Conclude with `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Rewrite using `[fix_X F hf hx]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_X_iff {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {h : GV D} (hf : ∀ a, h (frame F a) = frame F a) (x) :
     h x ∈ Xsp F ↔ x ∈ Xsp F := by
@@ -154,7 +154,7 @@ theorem mem_X_iff {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {h : GV D} (hf : �
   · intro hx; rw [fix_X F hf hx]; exact hx
 
 /- English proof (translation)
-Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Use `forall₂_congr fun v hv => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← fix_X F hf hv, hi]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_orth_iff {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {h : GV D} (hi : h ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (hf : ∀ a, h (frame F a) = frame F a) (x) : h x ∈ orth (VS D) (Xsp F) ↔ x ∈ orth (VS D) (Xsp F) := by
@@ -163,7 +163,7 @@ theorem mem_orth_iff {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {h : GV D} (hi :
   conv_lhs => rw [← fix_X F hf hv, hi]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_gmap]`. Use `mem_X_iff F hf (h.symm x)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmap_X {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {h : GV D} (hf : ∀ a, h (frame F a) = frame F a) :
     Formalism.HermitianLatticesTheory.gmap h (toO (VS D) (Xsp F)) = toO (VS D) (Xsp F) := by
@@ -173,7 +173,7 @@ theorem gmap_X {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {h : GV D} (hf : ∀ a
   exact this.symm
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_gmap]`. Use `mem_orth_iff F hi hf (h.symm x)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmap_orth {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {h : GV D} (hi : h ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (hf : ∀ a, h (frame F a) = frame F a) :
@@ -184,21 +184,21 @@ theorem gmap_orth {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {h : GV D} (hi : h 
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[Lrep, Lrep, gmap_inf, gmap_orth F hi hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Lrep_gmap {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {h : GV D} (hi : h ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (hf : ∀ a, h (frame F a) = frame F a) (Λ : LV D) : Lrep (Formalism.HermitianLatticesTheory.gmap h Λ) F = Formalism.HermitianLatticesTheory.gmap h (Lrep Λ F) := by
   rw [Lrep, Lrep, gmap_inf, gmap_orth F hi hf]
 
 /- English proof (translation)
-Rewrite using `[Lsub, Lsub, gmap_inf, gmap_sup, gmap_orth F hi hf, gmap_X F hf, Lrep_gmap F hi hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Lsub_gmap {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {h : GV D} (hi : h ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (hf : ∀ a, h (frame F a) = frame F a) (Λ : LV D) : Lsub (Formalism.HermitianLatticesTheory.gmap h Λ) F = Formalism.HermitianLatticesTheory.gmap h (Lsub Λ F) := by
   rw [Lsub, Lsub, gmap_inf, gmap_sup, gmap_orth F hi hf, gmap_X F hf, Lrep_gmap F hi hf]
 
 /- English proof (translation)
-Rewrite using `[NgX, NgX, gmap_sup, gmap_sup, XLam, XLam, XLam, XLam, gmap_inf, gmap_inf, gmap_X F hh.2.1, gmap_X F' hh.2.2]`. Use `congr 2`. Conclude with `(Submodule.map_smul'' _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem NgX_gmap {h : GV D} (hh : h ∈ H0 F F') (Λ : LV D) (g : ℕ) :
     NgX (Formalism.HermitianLatticesTheory.gmap h Λ) g F F' = Formalism.HermitianLatticesTheory.gmap h (NgX Λ g F F') := by
@@ -207,13 +207,13 @@ theorem NgX_gmap {h : GV D} (hh : h ∈ H0 F F') (Λ : LV D) (g : ℕ) :
   exact (Submodule.map_smul'' _ _ _).symm
 
 /- English proof (translation)
-Simplify using `only [gdat, Lsub_gmap F hh.1 hh.2.1, Lsub_gmap F' hh.1 hh.2.2, Lrep_gmap F hh.1 hh.2.1, Lrep_gmap F' hh.1 hh.2.2, NgX_gmap F F' hh, mem_gmap, Prod.mk.injEq, true_and]`. Use extensionality with `p`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l', h1, l, h2, h3, h4, h5⟩`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨_, h1, _, h2, ?_, ?_, by rwa [map_sub] at h5⟩` and prove the remaining obligations. Rewrite using `[← mem_X_iff F' hh.2.2]`. Simplify using `using h3`. Rewrite using `[← mem_X_iff F hh.2.1]`. Simplify using `using h4`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨l', h1, l, h2, h3, h4, h5⟩`. Use `⟨h l', by simpa using h1, h l, by simpa using h2, ?_, ?_, by simpa using h5⟩` and prove the remaining obligations. Rewrite `h3` using `[← mem_X_iff F' hh.2.2]`. Simplify using `using h3`. Rewrite `h4` using `[← mem_X_iff F hh.2.1]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h4`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gdat_gmap {h : GV D} (hh : h ∈ H0 F F') (Λ : LV D) :
     gdat F F' (Formalism.HermitianLatticesTheory.gmap h Λ) = (Formalism.HermitianLatticesTheory.gmap h (gdat F F' Λ).1, Formalism.HermitianLatticesTheory.gmap h (gdat F F' Λ).2.1,
@@ -233,16 +233,16 @@ theorem gdat_gmap {h : GV D} (hh : h ∈ H0 F F') (Λ : LV D) :
     · rw [← mem_X_iff F hh.2.1] at h4; simpa using h4
 
 /- English proof (translation)
-Rewrite using `[gdat_gmap F F' hh, gdat_gmap F F' hh, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gdat_congr {h : GV D} (hh : h ∈ H0 F F') {Λ₁ Λ₂ : LV D} (e : gdat F F' Λ₁ = gdat F F' Λ₂) :
     gdat F F' (Formalism.HermitianLatticesTheory.gmap h Λ₁) = gdat F F' (Formalism.HermitianLatticesTheory.gmap h Λ₂) := by
   rw [gdat_gmap F F' hh, gdat_gmap F F' hh, e]
 
 /- English proof (translation)
-Use `⟨fun Λ => ⟨1, one_mem_stabL F F' Λ⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a b ⟨h, hh, e⟩`. Establish `hi : h⁻¹ ∈ H0 F F'` using `(StabilizingSubgroup F F').inv_mem hh`. Use `⟨h⁻¹, hi, ?_⟩` and prove the remaining obligations. Rewrite using `[← gdat_congr F F' hi e, ← gmap_mul, inv_mul_cancel, gmap_one]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `a b c ⟨h, hh, e⟩ ⟨k, hk, e'⟩`. Use `⟨k * h, (StabilizingSubgroup F F').mul_mem hk hh, ?_⟩` and prove the remaining obligations. Rewrite using `[gmap_mul, gdat_congr F F' hk e, e']`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lrel_equivalence : Equivalence (LRel F F') := by
   refine ⟨fun Λ => ⟨1, one_mem_stabL F F' Λ⟩, ?_, ?_⟩
@@ -255,14 +255,14 @@ theorem lrel_equivalence : Equivalence (LRel F F') := by
     rw [gmap_mul, gdat_congr F F' hk e, e']
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, hh, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem lrel_gmap (Λ : LV D) {h : GV D} (hh : h ∈ H0 F F') : LRel F F' Λ (Formalism.HermitianLatticesTheory.gmap h Λ) := ⟨h, hh, rfl⟩
 
 variable {Z : LocDat D} {FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS}
 
 /- English proof (translation)
-Apply `LinearEquiv.toLinearMap_injective` to reduce the goal to its premises. Apply `LinearMap.ext_on_range (span_baseChange_eq_top p)` to reduce the goal to its premises. Introduce `x`. Simplify using `[ha x, hb x]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ext_unique (p : PlF D) (g : GV D) (a b : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (ha : Ext p g a) (hb : Ext p g b) : a = b := by
   apply LinearEquiv.toLinearMap_injective
@@ -271,9 +271,9 @@ theorem ext_unique (p : PlF D) (g : GV D) (a b : Vp D p ≃ₗ[(D.s.atP p).Ep] V
   simp [ha x, hb x]
 
 /- English proof (translation)
-Use `⟨fun x y h => ?_, fun x y h => ?_, fun x' y' x y h' h => ?_⟩` and prove the remaining obligations. Establish `e : y = x` using `Subtype.ext h`. Rewrite using `[e]`. Establish `e : y = x` using `Subtype.ext h`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : y = x` using `Subtype.ext h`. Establish `e' : y' = x'` using `Subtype.ext h'`. Rewrite using `[e, e']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem moves_one' {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] {E : Type} [CommRing E] [Algebra K E]
     [TopologicalSpace E] [MeasurableSpace E] {M : Loc.Model K E} {V : Type} [AddCommGroup V] [Module E V]
@@ -288,24 +288,24 @@ theorem moves_one' {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] {E
     rw [e, e']
 
 /- English proof (translation)
-The claim follows from `moves_one' d`.
+A detailed English derivation is pending.
 -/
 theorem moves_one {p : PlF D} (d : LocNG.Datum (FP p)) : LocNG.Datum.Moves 1 d d := moves_one' d
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(StabilizingSubgroup F F').one_mem, fun p => ⟨1, fun _ => rfl, moves_one _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_stabY (y : Dat Z FP) : (1 : GV D) ∈ stabY F F' y :=
   ⟨(StabilizingSubgroup F F').one_mem, fun p => ⟨1, fun _ => rfl, moves_one _⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun p => ⟨1, Subgroup.one_mem _, moves_one _⟩, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem inGen_self (y : Dat Z FP) : InGen y y :=
   ⟨fun p => ⟨1, Subgroup.one_mem _, moves_one _⟩, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[ENNReal.inv_le_one]`. Establish `: (1 : ℕ∞) ≤ (stabY F F' y).encard` using `Set.one_le_encard_iff_nonempty.2 ⟨1, one_mem_stabY F F' y⟩`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weight_le_one (y : Dat Z FP) : (((stabY F F' y).encard : ℝ≥0∞))⁻¹ ≤ 1 := by
   rw [ENNReal.inv_le_one]
@@ -313,11 +313,9 @@ theorem weight_le_one (y : Dat Z FP) : (((stabY F F' y).encard : ℝ≥0∞))⁻
   exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨h, hh, hm⟩` from `h`. Use `⟨h⁻¹, (StabilizingSubgroup F F').inv_mem hh, fun p => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, m1, m2, m3⟩` from `hm p`. Use `⟨g⁻¹, fun x => ?_, fun x y e => ?_, fun x y e => ?_, fun x' y' x y e' e => ?_⟩` and prove the remaining obligations. Use `hg (h⁻¹ x)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [LinearEquiv.coe_inv, LinearEquiv.apply_symm_apply] at this ⊢`. Rewrite using `[← this]`. Simplify using the standard rewrite rules. Conclude with `(m1 y x (by rw [e]; simp)).symm`. Conclude with `(m2 y x (by rw [e]; simp)).symm`.
-
-Conclude with `(m3 y' x' y x (by rw [e']; simp) (by rw [e]; simp)).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem grel_symm {y y' : Dat Z FP} (h : GRel F F' y y') : GRel F F' y' y := by
   obtain ⟨h, hh, hm⟩ := h
@@ -332,11 +330,11 @@ theorem grel_symm {y y' : Dat Z FP} (h : GRel F F' y y') : GRel F F' y' y := by
   · exact (m3 y' x' y x (by rw [e']; simp) (by rw [e]; simp)).symm
 
 /- English proof (translation)
-Introduce `v hv`. Establish `hv' : g v = v`. Use `Submodule.span_induction (p := fun v _ => g v = v) ?_ ?_ ?_ ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `hf _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `x y _ _ a b`. Simplify using `[a, b]`. Introduce `c x _ a`. Simplify using `[a]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv', hu]`. Conclude with `hx v hv`.
+A detailed English derivation is pending.
 -/
 theorem perp_of_fix {p : PlF D} (f : Fin (D.R.rS + 1) → Vp D p) (g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p)
     (hu : LocNG.IsUnitary (locH Z p) g) (hf : ∀ a, g (f a) = f a) (x : Vp D p)
@@ -351,14 +349,14 @@ theorem perp_of_fix {p : PlF D} (f : Fin (D.R.rS + 1) → Vp D p) (g : Vp D p �
   rw [← hv', hu]; exact hx v hv
 
 /- English proof (translation)
-Use `show LocFacts₂ _ _ _ _ = LocFacts₂ _ _ _ _ + LocFacts₂ _ _ _ _`. Simplify using `only [LocFacts₂, Pi.add_apply, map_add, add_mul, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem h_add_right (p : PlF D) (x y y' : Vp D p) : (locH Z p).h x (y + y') = (locH Z p).h x y + (locH Z p).h x y' := by
   show LocFacts₂ _ _ _ _ = LocFacts₂ _ _ _ _ + LocFacts₂ _ _ _ _
   simp only [LocFacts₂, Pi.add_apply, map_add, add_mul, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use `show LocFacts₂ _ _ _ _ = _ * LocFacts₂ _ _ _ _`. Simplify using `only [LocFacts₂, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem h_smul_right (p : PlF D) (c) (x y : Vp D p) : (locH Z p).h x (c • y) = (Z.M p).L.cj c * (locH Z p).h x y := by
   show LocFacts₂ _ _ _ _ = _ * LocFacts₂ _ _ _ _
@@ -367,17 +365,17 @@ theorem h_smul_right (p : PlF D) (c) (x y : Vp D p) : (locH Z p).h x (c • y) =
   ring
 
 /- English proof (translation)
-Establish `key : ∀ a b, (locH Z p).h (g (baseChange₂ D p a)) (g (baseChange₂ D p b)) = (locH Z p).h (baseChange₂ D p a) (baseChange₂ D p b)`. Introduce `a b`. Rewrite using `[hg, hg]`. Use `show LocFacts₂ _ _ _ _ = LocFacts₂ _ _ _ _`. Rewrite using `[baseChangeAt_form _ _ (Z.hcj p), baseChangeAt_form _ _ (Z.hcj p)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [brS]`. Rewrite using `[hh]`. Establish `z1 : ∀ y, (locH Z p).h 0 y = 0` using `fun y => by`. Use `(locH Z p).h_smul_left 0 0 y` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `z2 : ∀ x, (locH Z p).h x 0 = 0` using `fun x => by`. Use `h_smul_right (Z := Z) p 0 x 0` as an intermediate fact. Simplify using `using this`. Introduce `x y`. Establish `hx : x ∈ Submodule.span (D.s.atP p).Ep (Set.range (baseChange₂ D p))` using `by rw [span_baseChange_eq_top]; trivial`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : y ∈ Submodule.span (D.s.atP p).Ep (Set.range (baseChange₂ D p))` using `by rw [span_baseChange_eq_top]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `zero => rw [map_zero, z1, z1]`. Consider the case `add a b _ _ ha hb => rw [map_add, (locH Z p).h_add_left, (locH Z p).h_add_left, ha, hb]`. Consider the case `smul c a _ ha => rw [map_smul, (locH Z p).h_smul_left, (locH Z p).h_smul_left, ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem a ha`. Take `⟨a, rfl⟩` from `ha`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `zero => rw [map_zero, z2, z2]`. Consider the case `add a b _ _ ha hb => rw [map_add, h_add_right, h_add_right, ha, hb]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c a _ ha => rw [map_smul, h_smul_right, h_smul_right, ha]`. Consider the case `mem b hb => obtain ⟨b, rfl⟩ := hb`. Conclude with `key a b`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ext_unitary {p : PlF D} {h : GV D} (hh : h ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) {g} (hg : Ext p h g) :
     LocNG.IsUnitary (locH Z p) g := by
@@ -413,13 +411,13 @@ variable {Z : LocDat D} {FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS} {Tn 
   {F : LFlag (VS D) D.R.rS (Tn : D.host.E)} {F' : LFlag (VS D) D.R.rS (T'n : D.host.E)}
 
 /- English proof (translation)
-Use `⟨fun y => ⟨1, one_mem_stabY F F' y⟩, grel_symm F F', ?_⟩` and prove the remaining obligations. Introduce and unpack `y₁ y₂ y₃ ⟨h, hh, hm⟩ ⟨k, hk, km⟩`. Use `⟨k * h, (StabilizingSubgroup F F').mul_mem hk hh, fun p => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, m1, m2, m3⟩` from `hm p`. Take `⟨g', hg', n1, n2, n3⟩` from `km p`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hu : LocNG.IsUnitary (locH Z p) g` using `ext_unitary hh.1 hg`. Establish `hA : ∀ a, g ((FP p).A.f a) = (FP p).A.f a` using `fun a => by`. Rewrite using `[(hB p).1]`. Simplify using `only [map_smul]`. Rewrite using `[hg, hh.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hB' : ∀ a, g ((FP p).B.f a) = (FP p).B.f a` using `fun a => by`. Rewrite using `[(hB p).2.1]`. Simplify using `only [map_smul]`. Rewrite using `[hg, hh.2.2]`. Use `⟨g' * g, fun x => ?_, fun x y e => ?_, fun x y e => ?_, fun x' y' x y e' e => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show g' (g _) = baseChange₂ D p (k (h x))`. Rewrite using `[hg, hg']`. Conclude with `(m1 x ⟨g x, perp_of_fix _ g hu hA x x.2⟩ rfl).trans (n1 _ y e)`. Conclude with `(m2 x ⟨g x, perp_of_fix _ g hu hB' x x.2⟩ rfl).trans (n2 _ y e)`. Conclude with `(m3 x' ⟨g x', perp_of_fix _ g hu hB' x' x'.2⟩ x ⟨g x, perp_of_fix _ g hu hA x x.2⟩ rfl rfl).trans (n3 _ y' _ y e' e)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grel_equivalence (hB : Based Z FP Tn T'n F F') : Equivalence (GRel (Z := Z) (FP := FP) F F') := by
   refine ⟨fun y => ⟨1, one_mem_stabY F F' y⟩, grel_symm F F', ?_⟩
@@ -440,7 +438,7 @@ theorem grel_equivalence (hB : Based Z FP Tn T'n F F') : Equivalence (GRel (Z :=
       (n3 _ y' _ y e' e)
 
 /- English proof (translation)
-The claim follows from `((grel_equivalence hB).eqvGen_iff).1 (Quot.eqvGen_exact (Quot.out_eq _))`.
+A detailed English derivation is pending.
 -/
 theorem grel_out (hB : Based Z FP Tn T'n F F') (y : Dat Z FP) :
     GRel F F' (Quot.mk (GRel (Z := Z) (FP := FP) F F') y).out y :=
@@ -451,17 +449,17 @@ end
 section
 variable {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, adapt_one _, adapt_one _, (gmap_one _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem tg_self (t : TauC Y u u') : TG (lf D (X.Fu u)) t.frame t t.lam :=
   ⟨1, adapt_one _, adapt_one _, (gmap_one _).symm⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _` and use `Iff.rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem clsRow_row (TS : Set (TauC Y u u')) : ClsRow TS (Y.tO u u').rowOf := fun _ _ _ _ _ => Iff.rfl
 /- English proof (translation)
-Introduce `t _ t' _ h` and use `by simp [key, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem clsRow_key (TS : Set (TauC Y u u')) : ClsRow TS key := fun t _ t' _ h => by
   simp [key, h]

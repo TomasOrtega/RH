@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.ThK.InfComp
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B b a' G G₁ H H' _ e _ ei ev _ X om om' om₁ om₁' hT _ k hk g hg f`. Establish `hS` using `IsUWeilPair.isUSplitting hT.weil`. Establish `hex : ∀ x ∈ UAt σ G.V (evI F), ∀ f : SInf F (Fin (b + 2) × Fin (b + 2 + a')), ∃ f₁ : SInf F (Fin (b + 2) × Fin (b + 2 + a')), Acts (evI F) (om (x, 1)) f f₁` using `fun x hx f => GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ (b + 2) (b + 2 + a') G.V G.W G.M B.ψ X.β (X.β / X.α) om hT.base.cm hT.base.std hT.weil x hx f`. Conclude with `(GlobalTheory.ThK.InfB.locOpInf_mul hex (fun x Φ hΦ => hS.pres x Φ hΦ) hk hg f).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locOpInf_comp : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

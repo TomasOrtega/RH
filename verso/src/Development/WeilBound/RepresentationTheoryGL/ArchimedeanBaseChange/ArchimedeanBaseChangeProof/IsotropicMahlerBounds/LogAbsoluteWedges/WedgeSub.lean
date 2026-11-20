@@ -54,7 +54,7 @@ def PairI : Prop := ∀ (ι κ : Type) [Fintype ι] [Fintype κ] [DecidableEq κ
   ‖(Uᴴ * W).det‖ ^ 2 ≤ nI U * nI W
 
 /- English proof (translation)
-Simplify using `[nF]`.
+Simplify using the standard rewrite rules.
 -/
 example : nF (1 : Matrix (Fin 0) (Fin 0) ℝ) = 1 := by simp [nF]
 

@@ -9,7 +9,7 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C r => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ThroughPointIncIdeal.eval_aeval {F K : Type*} [Field F] [Field K] [Algebra F K] {σ τ : Type*}
     (s : σ → MvPolynomial τ K) (a : τ → K) (g : MvPolynomial σ F) :
@@ -20,7 +20,7 @@ theorem ThroughPointIncIdeal.eval_aeval {F K : Type*} [Field F] [Field K] [Algeb
   | mul_X p i hp => simp [hp]
 
 /- English proof (translation)
-Establish `h : ∀ j, eval a (genSubst (k` using `k) x c (i, j)) = a (i, j) - (∑ l, a (i, l) * x l) * c j := fun j => by simp [genSubst]`. Repeatedly rewrite using `[h, sub_mul, Finset.sum_sub_distrib, mul_assoc, ← Finset.mul_sum, hc, mul_one, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem ThroughPointIncIdeal.eval_genSubst_vanish {K : Type*} [Field K] {n k : ℕ} (x c : Fin n → K)
     (hc : ∑ j, c j * x j = 1) (a : Fin k × Fin n → K) (i : Fin k) :
@@ -30,9 +30,9 @@ theorem ThroughPointIncIdeal.eval_genSubst_vanish {K : Type*} [Field K] {n k : �
   simp_rw [h, sub_mul, Finset.sum_sub_distrib, mul_assoc, ← Finset.mul_sum, hc, mul_one, sub_self]
 
 /- English proof (translation)
-Introduce `F _ n k Q x c hc hinc g hg`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `a`. Rewrite using `[map_zero, ThroughPointIncIdeal.eval_aeval]`. Establish `hu` using `hinc (fun ij => eval a (genSubst (k := k) x c ij)) (ThroughPointIncIdeal.eval_genSubst_vanish x c hc a)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [incIdeal, Submodule.mem_iInf, RingHom.mem_ker] at hg`. Conclude with `hg _ hu`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ThroughPointIncIdeal.proof : ThroughPointIncIdeal.Statement := by
   intro F _ n k Q x c hc hinc g hg

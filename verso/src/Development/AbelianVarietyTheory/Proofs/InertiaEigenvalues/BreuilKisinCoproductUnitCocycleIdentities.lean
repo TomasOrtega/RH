@@ -12,15 +12,13 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `l _ K bk d ρ τ s ht En ε hε B f₀ ι tb`. Establish `H` using `GlobalTheory.T.toDisc_injective_and_nonZeroDivisors_of_topBasis l K bk B.A (BK.hf f₀) ι tb`. Establish `hinj` using `H.1`. Establish `hE` using `H.2.1`. Establish `key : ∀ k : Hom En.Q B, ht.Rel (BK.hf f₀ X) (k.comp En.inl) (k.comp En.inr) ((ε.map k.f).map (toDisc l (BK.hf f₀ X) bk.ρ₀))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Establish `H2` using `GlobalTheory.T.discPeriod_comparison_relation_map_prismHom l K bk d ρ τ s ht En.Q B En.inl En.inl En.inr f₀ k (ε.map (toDisc l (BK.hf En.inl X) bk.ρ₀)) hε`. Use `H2.1.elim fun Fk hFk => ?_` and prove the remaining obligations. Establish `h` using `H2.2`. Establish `e : (ε.map (toDisc l (BK.hf En.inl X) bk.ρ₀)).map Fk = (ε.map k.f).map (toDisc l (BK.hf f₀ X) bk.ρ₀)` using `Matrix.ext fun i j => hFk.ext (ε i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e ▸ h Fk hFk`. Establish `inj : ∀ M N : Matrix (Fin d) (Fin d) B.A, M.map (toDisc l (BK.hf f₀ X) bk.ρ₀) = N.map (toDisc l (BK.hf f₀ X) bk.ρ₀) → M = N` using `fun M N h => Matrix.ext fun i j => hinj (congrFun (congrFun h i) j)`. Establish `tr : ∀ (f f' g g' : Hom bk.prism B) (M : Matrix (Fin d) (Fin d) (Disc l (BK.hf f₀ X) bk.ρ₀)), f = f' → g = g' → ht.Rel (BK.hf f₀ X) f g M → ht.Rel (BK.hf f₀ X) f' g' M` using `fun _ _ _ _ _ hf hg h => hf ▸ hg ▸ h`. Use `⟨fun k hk => ?_, fun k₁ k₂ k₃ h₁ h₂ h₃ => ?_⟩` and prove the remaining obligations. Establish `h : ht.Rel (BK.hf f₀ X) (k.comp En.inr) (k.comp En.inr) ((ε.map k.f).map (toDisc l (BK.hf f₀ X) bk.ρ₀))` using `tr _ _ _ _ _ hk rfl (key k)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `GlobalTheory.T.discPeriod_comparison_matrix_mul l K bk d ρ τ s ht B f₀ hE _ _ _ 1 1 _ (ht.rel_one _ _) (ht.rel_one _ _) h`. Conclude with `inj _ _ ((e.symm.trans (mul_one 1)).trans (Matrix.map_one _ (map_zero _) (map_one _)).symm)`. Establish `e1 : ht.Rel (BK.hf f₀ X) (k₁.comp En.inl) (k₂.comp En.inl) ((ε.map k₁.f).map (toDisc l (BK.hf f₀ X) bk.ρ₀))` using `tr _ _ _ _ _ rfl h₁ (key k₁)`. Establish `e3 : ht.Rel (BK.hf f₀ X) (k₁.comp En.inl) (k₂.comp En.inr) ((ε.map k₃.f).map (toDisc l (BK.hf f₀ X) bk.ρ₀))` using `tr _ _ _ _ _ h₂.symm h₃.symm (key k₃)`. Establish `e` using `GlobalTheory.T.discPeriod_comparison_matrix_mul l K bk d ρ τ s ht B f₀ hE _ _ _ _ _ _ e1 (key k₂) e3`.
-
-Conclude with `inj _ _ (Matrix.map_mul.trans e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem height_rel_unit_cocycle : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ)
     (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (τ : Ainf l) (s : Seed bk d ρ τ) (ht : Height s)

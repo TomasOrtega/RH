@@ -22,18 +22,18 @@ attribute [local instance] scTop finite_of_isQuadraticExtension isModuleTopology
   isTopologicalRing_tensor
 
 /- English proof (translation)
-The claim follows from `t2Space_tensor R`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_tensor_product [T2Space R] : T2Space (R ⊗[K] E) := t2Space_tensor R
 
 /- English proof (translation)
-The claim follows from `(tensorCoordsHomeomorph R (Module.finBasis K E)).isClosedEmbedding.locallyCompactSpace`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompactSpace_A [LocallyCompactSpace R] : LocallyCompactSpace (R ⊗[K] E) :=
   (tensorCoordsHomeomorph R (Module.finBasis K E)).isClosedEmbedding.locallyCompactSpace
 
 /- English proof (translation)
-The claim follows from `(tensorCoordsHomeomorph R (Module.finBasis K E)).isEmbedding.secondCountableTopology`.
+A detailed English derivation is pending.
 -/
 theorem secondCountableTopology_A [SecondCountableTopology R] :
     SecondCountableTopology (R ⊗[K] E) :=
@@ -54,20 +54,20 @@ def ofMulMat (M : Matrix (Fin (Module.finrank K E)) (Fin (Module.finrank K E)) R
   (bA K E R).equivFun.symm (M *ᵥ (bA K E R).equivFun 1)
 
 /- English proof (translation)
-Rewrite using `[ofMulMat, Module.Basis.equivFun_apply, Algebra.leftMulMatrix_mulVec_repr, mul_one, ← Module.Basis.equivFun_apply, LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ofMulMat_mulMat (z : R ⊗[K] E) : ofMulMat (mulMat (K := K) (E := E) z) = z := by
   rw [ofMulMat, Module.Basis.equivFun_apply, Algebra.leftMulMatrix_mulVec_repr, mul_one,
     ← Module.Basis.equivFun_apply, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (mulMat (K := K) (E := E) (R := R)).toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mulMat : Continuous (mulMat (K := K) (E := E) (R := R)) :=
   IsModuleTopology.continuous_of_linearMap (mulMat (K := K) (E := E) (R := R)).toLinearMap
 
 /- English proof (translation)
-Establish `h1 : Continuous (fun v : Fin (Module.finrank K E) → R ↦ (bA K E R).equivFun.symm v)` using `IsModuleTopology.continuous_of_linearMap (bA K E R).equivFun.symm.toLinearMap`. Conclude with `h1.comp (continuous_id.matrix_mulVec continuous_const)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_ofMulMat : Continuous (ofMulMat (K := K) (E := E) (R := R)) := by
   have h1 : Continuous (fun v : Fin (Module.finrank K E) → R ↦ (bA K E R).equivFun.symm v) :=
@@ -75,9 +75,9 @@ theorem continuous_ofMulMat : Continuous (ofMulMat (K := K) (E := E) (R := R)) :
   exact h1.comp (continuous_id.matrix_mulVec continuous_const)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (hz.map _)`. Introduce `hd set M := mulMat (K := K) (E := E) z`. Establish `h : z * ofMulMat M⁻¹ = 1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(bA K E R).equivFun.injective` to reduce the goal to its premises. Rewrite using `[Module.Basis.equivFun_apply (bA K E R) (z * _), ← Algebra.leftMulMatrix_mulVec_repr, ← Module.Basis.equivFun_apply, ofMulMat, LinearEquiv.apply_symm_apply, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hd, Matrix.one_mulVec]`. Conclude with `⟨⟨z, ofMulMat M⁻¹, h, by rw [mul_comm]; exact h⟩, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isUnit_iff_isUnit_det_mulMat (z : R ⊗[K] E) :
     IsUnit z ↔ IsUnit (mulMat (K := K) (E := E) z).det := by
@@ -94,9 +94,9 @@ theorem isUnit_iff_isUnit_det_mulMat (z : R ⊗[K] E) :
     exact ⟨⟨z, ofMulMat M⁻¹, h, by rw [mul_comm]; exact h⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hz`. Rewrite using `[Ring.inverse_unit]`. Establish `: (mulMat (K` using `K) (E := E) (u : R ⊗[K] E))⁻¹ = mulMat (K := K) (E := E) (↑u⁻¹ : R ⊗[K] E) := by`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ofMulMat_mulMat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ringInverse_eq (z : R ⊗[K] E) (hz : IsUnit z) :
     Ring.inverse z = ofMulMat (mulMat (K := K) (E := E) z)⁻¹ := by
@@ -111,7 +111,7 @@ variable (hRu : IsOpen {r : R | IsUnit r}) (hRi : ∀ r : R, IsUnit r → Contin
 include hRu in
 
 /- English proof (translation)
-Establish `: {z : R ⊗[K] E | IsUnit z} = (fun z ↦ (mulMat (K` using `K) (E := E) z).det) ⁻¹' {r : R | IsUnit r} := by`. Use extensionality with `z`. Conclude with `isUnit_iff_isUnit_det_mulMat z`. Rewrite using `[this]`. Conclude with `hRu.preimage (continuous_mulMat.matrix_det)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_units_A : IsOpen {z : R ⊗[K] E | IsUnit z} := by
   have : {z : R ⊗[K] E | IsUnit z} =
@@ -124,9 +124,7 @@ theorem isOpen_units_A : IsOpen {z : R ⊗[K] E | IsUnit z} := by
 include hRu hRi in
 
 /- English proof (translation)
-Establish `hd` using `(isUnit_iff_isUnit_det_mulMat z).1 hz`. Establish `h1 : ContinuousAt (fun w : R ⊗[K] E ↦ ofMulMat (mulMat (K` using `K) (E := E) w)⁻¹) z := by`. Use `continuous_ofMulMat.continuousAt.comp ?_` and prove the remaining obligations. Conclude with `(continuousAt_matrix_inv _ (hRi _ hd)).comp continuous_mulMat.continuousAt`. Use `h1.congr ?_` and prove the remaining obligations.
-
-Use `filter_upwards [(isOpen_units_A hRu).mem_nhds hz] with w hw`. Conclude with `(ringInverse_eq w hw).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousAt_inverse_A (z : R ⊗[K] E) (hz : IsUnit z) : ContinuousAt Ring.inverse z := by
   have hd := (isUnit_iff_isUnit_det_mulMat z).1 hz
@@ -140,7 +138,7 @@ theorem continuousAt_inverse_A (z : R ⊗[K] E) (hz : IsUnit z) : ContinuousAt R
 include hRu in
 
 /- English proof (translation)
-The claim follows from `(isOpen_units_A hRu).preimage (continuous_id.matrix_det)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_isUnit_det {n : Type*} [Fintype n] [DecidableEq n] :
     IsOpen {M : Matrix n n (R ⊗[K] E) | IsUnit M.det} :=
@@ -149,7 +147,7 @@ theorem isOpen_isUnit_det {n : Type*} [Fintype n] [DecidableEq n] :
 include hRu hRi in
 
 /- English proof (translation)
-The claim follows from `continuousAt_matrix_inv M (continuousAt_inverse_A hRu hRi _ hM)`.
+A detailed English derivation is pending.
 -/
 theorem continuousAt_matrix_inv_A {n : Type*} [Fintype n] [DecidableEq n]
     (M : Matrix n n (R ⊗[K] E)) (hM : IsUnit M.det) : ContinuousAt Inv.inv M :=
@@ -178,7 +176,7 @@ instance instSecondCountableTopologyFrameSp : SecondCountableTopology (FrameSp K
   exact inferInstanceAs (SecondCountableTopology (ι → Fin p → R ⊗[K] E))
 
 /- English proof (translation)
-Use `t2Space_tensor_product (K := K) (E := E) (R := R)` as an intermediate fact. Conclude with `isClosed_eq ((continuous_id.matrix_map (continuous_conjBase R)).matrix_transpose) continuous_id`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_hermSub :
     IsClosed (hermSub K E R p : Set (Matrix (Fin p) (Fin p) (R ⊗[K] E))) := by
@@ -204,7 +202,7 @@ instance instSecondCountableTopologyHermSp : SecondCountableTopology (HermSp K E
   exact (Topology.IsEmbedding.subtypeVal (p := fun S ↦ S ∈ hermSub K E R p)).secondCountableTopology
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_hermSpMat : Continuous (fun S : HermSp K E R p ↦ S.mat) :=
   continuous_subtype_val

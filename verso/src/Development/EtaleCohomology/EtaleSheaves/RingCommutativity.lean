@@ -3,7 +3,7 @@ import Development.EtaleCohomology.EtaleSheaves.TwPairExists
 namespace LateralTheory.E.RingCommutativity
 
 /- English proof (translation)
-The claim follows from `LateralTheory.Fix.CupProductTensor.ringComm'`.
+A detailed English derivation is pending.
 -/
 theorem goal_of : LateralTheory.E.CupProductRingLaws.LeafRingComm := LateralTheory.Fix.CupProductTensor.ringComm'
 

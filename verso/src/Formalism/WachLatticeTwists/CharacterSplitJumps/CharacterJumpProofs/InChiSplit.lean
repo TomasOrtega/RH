@@ -12,7 +12,7 @@ namespace Formalism.RepresentationBoundsCohomology.JT
 open Formalism.NG Formalism.RepresentationBoundsCohomology.BR Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
 /- English proof (translation)
-Introduce `ℓ _ O _ X _ _ F x B u w s m e d U h`. Take `⟨a1, a2, a3, a4, a5, hd, L, K, T, i1, i2, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16⟩` from `h`. Establish `h'` using `B.map_f _ (tbFull ℓ u w s m e d a1 a2 a3 a4 a5 U B.D L K T i1 i2 hd b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 b11 b12 b13 b14 b15 b16)`. Rewrite `h'` using `[transport O, B.map_y]`. Conclude with `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tb1Full : StatTB1Full := by
   intro ℓ _ O _ X _ _ F x B u w s m e d U h
@@ -24,17 +24,17 @@ theorem tb1Full : StatTB1Full := by
   exact h'
 
 /- English proof (translation)
-Introduce `O _ _ _ X _ _ Hc F deg hQ ℓ c`. Take `⟨Cy, _, _, ι, π, hι, hex, hcy⟩` from `hQ`. Use `set B : Submodule O X := Hc ⊓ divBy F ((ℓ : O) ^ c) with hB`. Set `N : Submodule O (Hc ⧸ F.comap Hc.subtype)` to `LinearMap.ker (LinearMap.lsmul O (Hc ⧸ F.comap Hc.subtype) ((ℓ : O) ^ c))`. Set `f : B →ₗ[O] (Hc ⧸ F.comap Hc.subtype)` to `(F.comap Hc.subtype).mkQ ∘ₗ Submodule.inclusion (inf_le_left : B ≤ Hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf0 : ∀ x : B, f x = 0 ↔ (x : X) ∈ F`. Introduce `x`. Simplify using `only [f, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion]`. Establish `hN : ∀ x, f x ∈ N`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx : ((ℓ : O) ^ c) • (x : X) ∈ F` using `x.2.2`. Use `show ((ℓ : O) ^ c) • f x = 0`. Rewrite using `[← map_smul, hf0]`. Conclude with `hx`. Set `g : (B ⧸ F.comap B.subtype) →ₗ[O] N` to `(F.comap B.subtype).liftQ (f.codRestrict N hN) (by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Rewrite using `[LinearMap.mem_ker]`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hf0 x).2 hx)`. Establish `hg : Function.Injective g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← LinearMap.ker_eq_bot]`. Apply `Submodule.ker_liftQ_eq_bot` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker]`. Conclude with `(hf0 x).1 (congrArg Subtype.val hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1` using `Module.length_le_of_injective g hg`. Establish `h2` using `tbLen O (Fin deg) _ Cy ι π hι hex hcy N ℓ c (fun x hx => hx)`. Use `h1.trans (h2.trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem tb2 : StatTB2 := by
   intro O _ _ _ X _ _ Hc F deg hQ ℓ c
@@ -73,7 +73,7 @@ theorem tb2 : StatTB2 := by
   ring
 
 /- English proof (translation)
-Introduce `ℓ t e what₂ s m gK U he w hw`. Establish `h1 : cTB ℓ (s w) (m w) e (gK w) (U w) ≤ cB ℓ (s w) (m w) t (gK w) (U w)` using `Finset.le_sup (f := fun e => cTB ℓ (s w) (m w) e (gK w) (U w)) (Finset.mem_range.2 he)`. Conclude with `h1.trans (Finset.le_sup (f := fun w => cB ℓ (s w) (m w) t (gK w) (U w)) hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cBle : StatCB := by
   intro ℓ t e what₂ s m gK U he w hw
@@ -82,9 +82,9 @@ theorem cBle : StatCB := by
   exact h1.trans (Finset.le_sup (f := fun w => cB ℓ (s w) (m w) t (gK w) (U w)) hw)
 
 /- English proof (translation)
-Introduce `ℓ _ O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ r χ E D what₂ deg Hc F t e u wm s m d U he h w hw`. Take `⟨h1, h2, h3⟩` from `h w hw`. Use `⟨h1, cBle ℓ t e what₂ s m (fun w => padicValNat ℓ (d w)) U he w hw, ?_, tb2 O _ (Hc w) (F w) (deg w) h3 ℓ _⟩` and prove the remaining obligations. Introduce `ψ hψ z hz`. Take `⟨B, hB⟩` from `h2 ψ hψ z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `tb1Full ℓ O _ (F w) _ B (u w) (wm w) (s w) (m w) e (d w) (U w) hB`.
+A detailed English derivation is pending.
 -/
 theorem rowsJ : StatRows := by
   intro ℓ _ O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ r χ E D what₂ deg Hc F t e u wm s m d U he h w hw

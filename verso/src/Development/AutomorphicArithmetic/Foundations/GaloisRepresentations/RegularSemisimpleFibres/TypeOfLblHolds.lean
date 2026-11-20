@@ -79,29 +79,29 @@ import Mathlib
 namespace UpperTheory.Gal.InertialTypesAlt
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.shintani_lift_kills_product_of_cusp_forms`.
+A detailed English derivation is pending.
 -/
 theorem killsAll_holds : KillsAll := GlobalTheory.T.shintani_lift_kills_product_of_cusp_forms
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.shintaniLift_harishChandraInduction_eq_twisted`.
+A detailed English derivation is pending.
 -/
 theorem liftHc_holds : LiftHc := GlobalTheory.T.shintaniLift_harishChandraInduction_eq_twisted
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.twistedHarishChandra_isotypic_part`.
+A detailed English derivation is pending.
 -/
 theorem killsHc_holds : KillsHc := GlobalTheory.T.twistedHarishChandra_isotypic_part
 
 /- English proof (translation)
-Introduce `F _ _ θ` and use `(GlobalTheory.T.harishChandraProductCuspidalGL_list_properties F θ).2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jAppend_holds : JAppend := fun F _ _ θ => (GlobalTheory.T.harishChandraProductCuspidalGL_list_properties F θ).2.1
 
 /- English proof (translation)
-Introduce `F F' _ _ _ _ s hs t δ`. Use `haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective`. Use `haveI : Fintype F := Fintype.ofFinite F`. Use `GlobalTheory.T.every_element_is_norm F F' s (fun τ => ?_) t δ` and prove the remaining obligations. Establish `e : s = FiniteField.frobeniusAlgEquivOfAlgebraic F F'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `z`. Rewrite using `[hs z, Nat.card_eq_fintype_card]`. Both sides reduce to the same expression. Take `⟨⟨i, _⟩, hi⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow F F').2 τ`. Conclude with `⟨(i : ℤ), by rw [e]; simpa using hi⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem normEx_holds : NormEx := by
   intro F F' _ _ _ _ s hs t δ
@@ -114,49 +114,49 @@ theorem normEx_holds : NormEx := by
   exact ⟨(i : ℤ), by rw [e]; simpa using hi⟩
 
 /- English proof (translation)
-The claim follows from `frobL frobTwo resCl parCons`.
+A detailed English derivation is pending.
 -/
 theorem frobL_holds : FrobL := frobL frobTwo resCl parCons
 
 /- English proof (translation)
-The claim follows from `lblIso (jdIso cuspIso)`.
+A detailed English derivation is pending.
 -/
 theorem lblIso_holds : LblIso := lblIso (jdIso cuspIso)
 
 /- English proof (translation)
-The claim follows from `leTop liftOk liftBlocks (leRank liftOk)`.
+A detailed English derivation is pending.
 -/
 theorem leTop_holds : LeTop := leTop liftOk liftBlocks (leRank liftOk)
 
 /- English proof (translation)
-The claim follows from `baseQ cardRes`.
+A detailed English derivation is pending.
 -/
 theorem baseQ_holds : BaseQ := baseQ cardRes
 
 /- English proof (translation)
-The claim follows from `jdChar hcChar`.
+A detailed English derivation is pending.
 -/
 theorem jdChar_holds : JDChar := jdChar hcChar
 
 /- English proof (translation)
-The claim follows from `typeOfLbl meetsIff frobL_holds jdEq`.
+A detailed English derivation is pending.
 -/
 theorem typeOfLbl_holds : TypeOfLbl := typeOfLbl meetsIff frobL_holds jdEq
 
 /- English proof (translation)
-The claim follows from `lblOf meetsIff frobL_holds jdEq cuspChar tensTr cuspIrr tensFix (subqMap finSec UpperTheory.Gal.TypesAndIwahori.paraFactor) suppStd`.
+A detailed English derivation is pending.
 -/
 theorem lblOf_holds : LblOf :=
   lblOf meetsIff frobL_holds jdEq cuspChar tensTr cuspIrr tensFix (subqMap finSec UpperTheory.Gal.TypesAndIwahori.paraFactor) suppStd
 
 /- English proof (translation)
-The claim follows from `killsTrue (killsNil killsAll_holds) liftHc_holds killsHc_holds normEx_holds liftOk jdEq jdChar_holds liftDet`.
+A detailed English derivation is pending.
 -/
 theorem killsTrue_holds : KillsOn fun _ => True :=
   killsTrue (killsNil killsAll_holds) liftHc_holds killsHc_holds normEx_holds liftOk jdEq jdChar_holds liftDet
 
 /- English proof (translation)
-The claim follows from `lblOn (baseCase resEmbCompat lblIso_holds) liftsFix placeEx resEmbEx unrOfIne P₀ h₁ (stepSplit stableOf resEmbCompat lblIso_holds P₀) (stepInert hT stableOf resEmbCompat (resDeg cardRes) liftOk jdEq P₀ h₂)`.
+A detailed English derivation is pending.
 -/
 theorem lblOn_of (hT : FinTrace) (P₀ : Lbl → Prop) (h₁ : ∀ a l, P₀ a → P₀ (a.lift l)) (h₂ : KillsOn P₀) : LblOn P₀ :=
   lblOn (baseCase resEmbCompat lblIso_holds) liftsFix placeEx resEmbEx unrOfIne P₀ h₁
@@ -164,12 +164,12 @@ theorem lblOn_of (hT : FinTrace) (P₀ : Lbl → Prop) (h₁ : ∀ a l, P₀ a �
     (stepInert hT stableOf resEmbCompat (resDeg cardRes) liftOk jdEq P₀ h₂)
 
 /- English proof (translation)
-The claim follows from `lblOn_of hT _ (fun _ _ _ => trivial) killsTrue_holds`.
+A detailed English derivation is pending.
 -/
 theorem lblTrue_of (hT : FinTrace) : LblOn fun _ => True := lblOn_of hT _ (fun _ _ _ => trivial) killsTrue_holds
 
 /- English proof (translation)
-The claim follows from `suppAny (lblOn_of hT _ (fun a l h => by simp only [Lbl.lift, h, List.map_nil]) (killsNil killsAll_holds)) lblOf_holds typeOfLbl_holds UpperTheory.Gal.TypesAndIwahori.suppOfType_holds UpperTheory.Gal.TypesAndIwahori.blockCount tameChars leTop_holds polTop polBot resEmbEx (unifTowe …`.
+A detailed English derivation is pending.
 -/
 theorem suppAny_of (hT : FinTrace) : SuppAny :=
   suppAny (lblOn_of hT _ (fun a l h => by simp only [Lbl.lift, h, List.map_nil]) (killsNil killsAll_holds)) lblOf_holds
@@ -177,7 +177,7 @@ theorem suppAny_of (hT : FinTrace) : SuppAny :=
     (unifTower liftsFix placeEx unrOfIne) baseQ_holds cardRes artRead (cuspIne tameRead typeChar nameOf baseQ_holds) suppIne
 
 /- English proof (translation)
-The claim follows from `lblMixed lblOf_holds group1 cuspFrob (inertOf typeChar baseQ_holds) unlFull (jdPair jAppend_holds hcOne (hcPair hcChar hcOne) (detPair frobL_holds jdEq) jdChar_holds) jdChar_holds (lblFull meetsIff frobL_holds jdEq tensTr avgMap (indMap UpperTheory.Gal.TypesAndIwahori.indSupp Upp …`.
+A detailed English derivation is pending.
 -/
 theorem lblMixed_holds : LblMixed :=
   lblMixed lblOf_holds group1 cuspFrob (inertOf typeChar baseQ_holds) unlFull
@@ -185,23 +185,23 @@ theorem lblMixed_holds : LblMixed :=
     (lblFull meetsIff frobL_holds jdEq tensTr avgMap (indMap UpperTheory.Gal.TypesAndIwahori.indSupp UpperTheory.Gal.TypesAndIwahori.paraFactor) tensInc)
 
 /- English proof (translation)
-The claim follows from `mixType (lblTrue_of hT) lblMixed_holds sepOf leTop_holds polTop typeOfLbl_holds resEmbEx baseQ_holds cardRes`.
+A detailed English derivation is pending.
 -/
 theorem mixType_of (hT : FinTrace) : MixType :=
   mixType (lblTrue_of hT) lblMixed_holds sepOf leTop_holds polTop typeOfLbl_holds resEmbEx baseQ_holds cardRes
 
 /- English proof (translation)
-The claim follows from `suppAny_of (L.finTrace_of_matching h)`.
+A detailed English derivation is pending.
 -/
 theorem suppAny_holds (h : GlobalTheory.DZA.InflMatching) : SuppAny := suppAny_of (L.finTrace_of_matching h)
 
 /- English proof (translation)
-The claim follows from `mixType_of (L.finTrace_of_matching h)`.
+A detailed English derivation is pending.
 -/
 theorem mixType_holds (h : GlobalTheory.DZA.InflMatching) : MixType := mixType_of (L.finTrace_of_matching h)
 
 /- English proof (translation)
-The claim follows from `suppBC_of_mix (suppAny_holds h) (mixUnlinked (mixType_holds h))`.
+A detailed English derivation is pending.
 -/
 theorem suppBC_holds (h : GlobalTheory.DZA.InflMatching) : SuppBC := suppBC_of_mix (suppAny_holds h) (mixUnlinked (mixType_holds h))
 

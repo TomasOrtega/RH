@@ -14,11 +14,11 @@ Both sides reduce to the same expression.
 theorem norm_eq_spectralValue (x : PadicAlgCl l) : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
 
 /- English proof (translation)
-Establish `halg : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `hmon` using `minpoly.monic halg`. Rewrite using `[norm_eq_spectralValue, spectralValue_le_one_iff hmon]`. Prove the components needed by the constructor for the conclusion. Introduce `hx n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hx, Polynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one _`. Introduce `h`. Establish `hl : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Conclude with `⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl hmon`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_iff_norm_le (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
   have halg : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
@@ -40,7 +40,7 @@ theorem isIntegral_iff_norm_le (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖
 variable (LL : FinExt l)
 
 /- English proof (translation)
-Unfold `OL`. Rewrite using `[mem_integralClosure_iff, ← isIntegral_iff_norm_le]`. Conclude with `(isIntegral_algHom_iff ((IntermediateField.val LL.1).restrictScalars ℤ_[l]) Subtype.val_injective).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_OL (x : ↥LL.1) : x ∈ OL LL ↔ ‖(x : PadicAlgCl l)‖ ≤ 1 := by
   unfold OL
@@ -51,35 +51,33 @@ theorem mem_OL (x : ↥LL.1) : x ∈ OL LL ↔ ‖(x : PadicAlgCl l)‖ ≤ 1 :=
 def nrm (a : ↥(OL LL)) : ℝ := ‖((a : ↥LL.1) : PadicAlgCl l)‖
 
 /- English proof (translation)
-Conclude with `(mem_OL LL a.1).mp a.2`.
+A detailed English derivation is pending.
 -/
 theorem nrm_le (a : ↥(OL LL)) : nrm LL a ≤ 1 := by
   exact (mem_OL LL a.1).mp a.2
 
 /- English proof (translation)
-Simplify using `only [nrm, MulMemClass.coe_mul, norm_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_mul (a b : ↥(OL LL)) : nrm LL (a * b) = nrm LL a * nrm LL b := by
   simp only [nrm, MulMemClass.coe_mul, norm_mul]
 
 /- English proof (translation)
-Simplify using `[nrm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_eq_zero (a : ↥(OL LL)) : nrm LL a = 0 ↔ a = 0 := by
   simp [nrm]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Rewrite using `[nrm_mul]`. Establish `h1` using `nrm_le LL c`. Establish `h0 : 0 ≤ nrm LL a` using `norm_nonneg _`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce `h`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Establish `h0 : nrm LL b = 0` using `le_antisymm (by simpa [nrm] using h) (norm_nonneg _)`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[(nrm_eq_zero LL b).mp h0]`. Establish `ha' : ((a : ↥LL.1) : PadicAlgCl l) ≠ 0`. Introduce `h0`. Apply `ha` to reduce the goal to its premises. Conclude with `(nrm_eq_zero LL a).mp (by simp [nrm, h0])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `ha'' : (a : ↥LL.1) ≠ 0` using `fun h0 => ha' (by simp [h0])`. Establish `hc : (b : ↥LL.1) / (a : ↥LL.1) ∈ OL LL`. Rewrite using `[mem_OL]`. Establish `hpos : 0 < ‖((a : ↥LL.1) : PadicAlgCl l)‖` using `norm_pos_iff.mpr ha'`. Simplify using `only [IntermediateField.coe_div, norm_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_one hpos]`. Conclude with `h`. Use `⟨⟨_, hc⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [MulMemClass.coe_mul]`.
-
-Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem dvd_iff (a b : ↥(OL LL)) : a ∣ b ↔ nrm LL b ≤ nrm LL a := by
   constructor
@@ -110,9 +108,9 @@ theorem dvd_iff (a b : ↥(OL LL)) : a ∣ b ↔ nrm LL b ≤ nrm LL a := by
       field_simp
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_dvd_one, dvd_iff]`. Establish `h1 : nrm LL 1 = 1` using `by simp [nrm]`. Rewrite using `[h1]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_antisymm (nrm_le LL a) h`. Introduce `h`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_iff (a : ↥(OL LL)) : IsUnit a ↔ nrm LL a = 1 := by
   rw [isUnit_iff_dvd_one, dvd_iff]
@@ -131,9 +129,9 @@ instance : IsLocalRing ↥(OL LL) := .of_nonunits_add fun a b ha hb => by
   exact ((PadicAlgCl.isNonarchimedean l _ _).trans_lt (max_lt h1 h2)).ne
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `lt_of_le_of_ne (nrm_le LL a) h`. Introduce `h h'`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h']`. Conclude with `lt_irrefl _ h`.
+A detailed English derivation is pending.
 -/
 theorem mem_max (a : ↥(OL LL)) : a ∈ maximalIdeal ↥(OL LL) ↔ nrm LL a < 1 := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_iff]
@@ -150,9 +148,7 @@ instance OL_finite : Module.Finite ℤ_[l] ↥(OL LL) :=
   IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)
 
 /- English proof (translation)
-Rewrite using `[mem_max]`. Use `show ‖(((l : ↥(OL LL)) : ↥LL.1) : PadicAlgCl l)‖ < 1`. Establish `h1 : (((l : ↥(OL LL)) : ↥LL.1) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])`. Simplify using the standard rewrite rules. Rewrite using `[h1, norm_eq_spectralValue, minpoly.eq_X_sub_C (PadicAlgCl l) (l : ℚ_[l]), spectralValue_X_sub_C]`.
-
-Conclude with `Padic.norm_p_lt_one`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_mem_max : ((l : ℕ) : ↥(OL LL)) ∈ maximalIdeal ↥(OL LL) := by
   rw [mem_max]

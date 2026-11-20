@@ -19,17 +19,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BotDict
 
 /- English proof (translation)
-Introduce `D T A A' WW X ψ θ α β νH S hA hW hX t`. Establish `hv` using `hX.isVac`. Establish `hν : Formalism.L2.Theta.IsHeckeChar D (α t / β t)`. Establish `h` using `(hX.weil t).hecT`. Rewrite using `[← inv_div]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `continuous_inv.comp h.1`. Use `show ((β t / α t) _)⁻¹ = 1`. Rewrite using `[h.2 x, inv_one]`. Establish `hI : X.ideal S t ≠ ⊥`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Tri.ideal`. Rewrite using `[← Ideal.zero_eq_bot]`. Use `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ ?_` and prove the remaining obligations. Rewrite using `[Ideal.zero_eq_bot]`. Conclude with `w.ne_bot`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f₁, h1, h1t⟩` from `GlobalTheory.Adopt.first_standard_pair_member_has_theta_function D ψ θ A WW X.rA X.rW (α t / β t) (X.e t) (S t) (X.ideal S t) X.vac hX.rigA hX.rigW hν (hX.idem t) hI hv`. Establish `heq : X.f t = f₁`. Take `⟨⟨Tm, hT⟩, hall⟩` from `hX.fst t`. Rewrite using `[hall Tm hT, h1.2 Tm hT]`. Establish `hft : IsThetaFunO ψ (GlobalTheory.Grid.neg A) WW (X.f t)` using `heq ▸ h1t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hft, fun τ => ?_⟩` and prove the remaining obligations. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hX.idem t)`. Establish `hF` using `GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hv.1.1.1 hv.2.inf ho.infPart_eq ho.conj.infPart_eq (hX.fst t) hv.2.theta hft (hv.2.fock τ)`. Rewrite using `[cart_frSgn_true_stdFr, cart_stdFr]`. Establish `e1 : X.rA.s τ = 1` using `(hA.2.2 τ).1`.
-
-Establish `e2 : X.rW.s τ = 1` using `(hW.2.2 τ).1`. Simplify using `only [e1, e2] at hF`. Conclude with `hF`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fst_isFinF : ∀ {D : D7} {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (α β : T → ((AE D)ˣ →* Circle)) (νH : T → Formalism.L2.Host.HChar D.host.E) (S : T → Finset (HeightOneSpectrum (𝓞 D.host.E))) (hA : X.rA.IsStd) (hW : X.rW.IsStd), X.Is ψ θ α β νH S → ∀ t, IsFinF ψ θ true (GlobalTheory.BotDict.stdFr A hA.1) (GlobalTheory.BotDict.stdFr WW hW.1) (X.f t) := by
   intro D T A A' WW X ψ θ α β νH S hA hW hX t

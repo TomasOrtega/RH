@@ -27,7 +27,7 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
 variable {η : (AEF F E)ˣ →* Circle} {ε : AEF F E} {of oi : GAF σ JS × GAF σ JT →* Module.End ℂ (WOF F E nS nT → ℂ)}
 
 /- English proof (translation)
-Break down `hε.split e he with ⟨a1, a2⟩ | ⟨a1, a2⟩` into its components or cases. Rewrite using `[GlobalTheory.SplitDetCharF.cutDet_same ε hε.idem a1 a2 hg hx]`. Conclude with `GlobalTheory.SplitDetCharF.char_eq_of_mul_conj hB.cm hres _ x (GlobalTheory.SplitDetCharF.cutDet_conj hJ ε hε.idem he.1 a1 a2 hg hx)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cut_char (hB : B.IsGood σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     {χ : (AEF F E)ˣ →* Circle} {m : ℕ} (hres : ResEtaF χ m) (hε : IsHalfF σ ε) {e : AEF F E} (he : IsSplitIdemF σ e)
@@ -39,19 +39,17 @@ theorem cut_char (hB : B.IsGood σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ
       (GlobalTheory.SplitDetCharF.cutDet_conj hJ ε hε.idem he.1 a1 a2 hg hx)
 
 /- English proof (translation)
-Establish `hB` using `C.good`. Establish `hreal` using `GlobalTheory.T.latticeIntertwinerRep_trivial_realPoints F E σ B hB nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ hc Λ w lam Om hO`. Establish `hheis` using `GlobalTheory.T.latticeIntertwinerRep_normalizes_heisenberg_finite F E σ B hB nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ hc Λ w lam Om hO`. Establish `hcont` using `GlobalTheory.T.latticeIntertwinerRep_continuous_group F E σ B hB nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ hc Λ w lam Om hO`. Establish `hunit` using `GlobalTheory.T.lintegral_sq_latticeModelRep_fundamentalDomain F E σ B hB nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ hc Λ w lam Om hO`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit` using `GlobalTheory.T.latticeIntertwinerRep_splitPlace_positive_scalar F E σ B hB nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ hc Λ w lam Om hO`. Set `z : GAF σ JS × GAF σ JT → Circle` to `zF σ JS JT η ε hε.idem`. Establish `z1 : z 1 = 1` using `by simp [z, zF]`. Establish `z2 : ∀ p q, z (p * q) = z p * z q` using `fun p q => by`. Simplify using `only [z, zF, Prod.fst_mul, Prod.snd_mul, map_mul, _root_.mul_inv]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_mul_mul_comm _ _ _ _`. Establish `z3 : Continuous z` using `by show Continuous fun p : GAF σ JS × GAF σ JT => ((η ^ nT) (GlobalTheory.SplitDetCharF.cutDet σ JS ε hε.idem p.1))⁻¹ * (η ^ nS) (GlobalTheory.SplitDetCharF.cutDet σ JT ε hε.idem p.2)`. Conclude with `((isHeckeCharF_pow h1 nT).1.comp ((GlobalTheory.SplitDetCharF.continuous_cutDet ε hε.idem).comp continuous_fst)).inv.mul ((isHeckeCharF_pow h1 nS).1.comp ((GlobalTheory.SplitDetCharF.continuous_cutDet ε hε.idem).comp continuous_snd))`. Take `⟨om, hom⟩` from `exists_extend (thetaSubF σ JS JT ξ₀ B.ψ) ({ toFun := fun p => (z p : ℂ) • Om p map_one' := by rw [z1, Circle.coe_one, one_smul, map_one] map_mul' := fun p q => by rw [z2, map_mul, Circle.coe_mul, smul_mul_smul_comm] } : GAF σ JS × GAF σ JT →* Module.End ℂ (thetaSubF σ JS JT ξ₀ B. …`. Establish `ho : ∀ p f (hf : IsThetaFunOF σ JS JT ξ₀ B.ψ f), om p f = (z p : ℂ) • (Om p ⟨f, hf⟩ : WOF F E nS nT → ℂ)` using `fun p f hf => hom p ⟨f, hf⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨om, ⟨⟨fun p f hf => ?_, fun f hf u => ?_, fun μ 𝓕 hμ h𝓕 p f hf => ?_⟩, fun g hg k hk f hf => ?_, fun g hg k hk u f hf => ?_, fun e he g k hg hk x y hx hy => ?_⟩, fun p f => hom p f⟩` and prove the remaining obligations. Rewrite using `[ho p f hf]`. Conclude with `(thetaSubF σ JS JT ξ₀ B.ψ).smul_mem _ (Om p ⟨f, hf⟩).2`. Simplify using `only [ho _ f hf, Pi.smul_apply, smul_eq_mul]`. Conclude with `(continuous_subtype_val.comp z3).mul (hcont ⟨f, hf⟩ u)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hunit μ 𝓕 hμ h𝓕 p ⟨f, hf⟩, ho p f hf]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, enorm_smul, ← ofReal_norm_eq_enorm (z p : ℂ), Circle.norm_coe, ENNReal.ofReal_one, one_mul]`. Rewrite using `[ho _ f hf, hreal g hg k hk, show z (g, k) = 1 by`. Simplify using `[z, zF, GlobalTheory.SplitDetCharF.cutDet_real ε hε.idem hε.fin g hg, GlobalTheory.SplitDetCharF.cutDet_real ε hε.idem hε.fin k hk],`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `Circle.coe_one, one_smul]`. Establish `hf'` using `GlobalTheory.T.heisenbergOperatorF_preserves_isThetaFunction F E σ nS nT JS JT ξ₀ B.ψ hB.std.1 u f hf`. Rewrite using `[ho _ f hf, ho _ _ hf', heisOF_smul, hheis g hg k hk u ⟨f, hf⟩ ⟨_, hf'⟩ rfl]`. Take `⟨r, hr, h1⟩` from `hsplit e he g k hg hk`. Use `⟨r, hr, fun ℓ hℓ f hf => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[ho _ f hf, map_smul, h1 ℓ hℓ, smul_eq_mul, show z (g, k) = splitFacOF (η ^ nS) (η ^ nT) x y by`. Simplify using `only [z, zF, splitFacOF, cut_char hB C.hS (resEtaF_pow h2 nT) hε he hg hx, cut_char hB C.hT (resEtaF_pow h2 nS) hε he hk hy]]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_fin_A (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om) (h1 : IsHeckeCharF η)
     (h2 : ResEtaF η 1) (hε : IsHalfF σ ε) : ∃ of, IsFinWeilF σ JS JT ξ₀ B.ψ (η ^ nS) (η ^ nT) of ∧
@@ -103,11 +101,11 @@ theorem exists_fin_A (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS JT �
     ring
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hof p`. Establish `hσ : ∀ x, σ (σ x) = x` using `LatA.sig_sig C.good`. Take `⟨a, ha, k, hk, e1, -⟩` from `GlobalTheory.T.unitaryAdelicPoint_eq_real_mul_finite_both_orders F E σ nS JS q.1`. Take `⟨b, hb, l, hl, e2, -⟩` from `GlobalTheory.T.unitaryAdelicPoint_eq_real_mul_finite_both_orders F E σ nT JT q.2`. Establish `hoi : ∀ f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → oi q f = oi (a, b) f` using `fun f h => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[show q = (a, b) * (k, l) from Prod.ext e1 e2, map_mul, Module.End.mul_apply, hi.triv k hk l hl f h]`. Set `L : thetaSubF σ JS JT ξ₀ B.ψ →ₗ[ℂ] thetaSubF σ JS JT ξ₀ B.ψ` to `(oi q).restrict fun f hf => hi.pres q f hf`. Establish `hL : ∀ m, (L m : WOF F E nS nT → ℂ) = oi q m` using `fun _ => rfl`. Use `congrArg Subtype.val ((LatA.rep hO).comm (LatA.sys hσ C.hS C.hT C.hξ hO) L (fun x v => Subtype.ext (by` as an intermediate fact. Establish `e3 : actOF σ JS JT a b x = x`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun y : XFF F E nS nT => (y : WOF F E nS nT)) (LatA.rhoFF_real ha hb x)` as an intermediate fact. Rewrite `this` using `[coe_rhoFF]`. Then use the resulting hypothesis. Rewrite using `[hL, coe_opFF, coe_opFF, hL, map_smul, hoi _ (hc _ _ v.2), hi.Heisenberg₂ a ha b hb _ _ v.2, e3, ← hoi _ v.2])) p ⟨f, hf⟩)`. Rewrite using `[hz ⟨f, hf⟩, map_smul, ← hL, ← this]`. Conclude with `hz (L ⟨f, hf⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_inf_comm_A (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (hof : ∀ p, ∃ z : ℂ, ∀ f : thetaSubF σ JS JT ξ₀ B.ψ, of p f = z • (Om p f : WOF F E nS nT → ℂ))
@@ -130,7 +128,7 @@ theorem fin_inf_comm_A (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS JT
   exact hz (L ⟨f, hf⟩)
 
 /- English proof (translation)
-Use `filter_upwards [LatA.eventually_fix (LatA.sig_sig C.good) C.hS C.hT C.hξ hO ⟨f, h1⟩] with p hp`. Take `⟨c, hc'⟩` from `hof p`. Conclude with `⟨c, by rw [hc' ⟨f, h1⟩, hp]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_smul_A (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (hof : ∀ p, ∃ z : ℂ, ∀ f : thetaSubF σ JS JT ξ₀ B.ψ, of p f = z • (Om p f : WOF F E nS nT → ℂ))
@@ -141,13 +139,13 @@ theorem eventually_smul_A (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS
   exact ⟨c, by rw [hc' ⟨f, h1⟩, hp]⟩
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)`. Use `haveI : IsTopologicalGroup (GAF σ JS) := inferInstanceAs (IsTopologicalGroup (HR (AF F) σ JS))`. Use `haveI : IsTopologicalGroup (GAF σ JT) := inferInstanceAs (IsTopologicalGroup (HR (AF F) σ JT))`. Use `continuous_iff_continuousAt.2 fun q => ?_` and prove the remaining obligations. Establish `h2 : Filter.Tendsto (fun p => p * q⁻¹) (𝓝 q) (𝓝 1)` using `(continuous_id.mul continuous_const).tendsto' q 1 (mul_inv_cancel q)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3` using `hf.pres q f h1`. Establish `h4 : ∀ᶠ p in 𝓝 q, ∃ c : ℂ, of p f = c • of q f` using `by filter_upwards [h2.eventually (eventually_smul_A C hO hof h3)] with p hp`. Rewrite `hp` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`. Then use the resulting hypothesis. Distinguish the cases in `h0 : of q f = 0`. Use `continuousAt_const.congr (f := fun _ => (0 : ℂ)) ?_ filter_upwards [h4] with p hp` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨c, hc'⟩` from `hp`. Rewrite using `[fin_inf_comm_A C hO hof hi p p f h1, hc', h0, smul_zero, map_zero]`. Both sides reduce to the same expression. Take `⟨x, hx⟩` from `Function.ne_iff.1 h0`. Establish `hx' : of q f x ≠ 0` using `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `(((hf.cont f h1 x).div_const (of q f x)).mul (hi.cont _ h3 u)).continuousAt.congr ?_` and prove the remaining obligations. Use `filter_upwards [h4] with p hp`. Take `⟨c, hc'⟩` from `hp`. Use `show of p f x / of q f x * oi p (of q f) u = _`. Rewrite using `[fin_inf_comm_A C hO hof hi p p f h1, hc', map_smul, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_div_cancel_right₀ _ hx']`.
+A detailed English derivation is pending.
 -/
 theorem continuous_product_A (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (hf : IsFinWeilF σ JS JT ξ₀ B.ψ (η ^ nS) (η ^ nT) of)
@@ -180,19 +178,19 @@ theorem continuous_product_A (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ
       mul_div_cancel_right₀ _ hx']
 
 /- English proof (translation)
-Establish `hB` using `C.good`. Establish `hψ` using `GlobalTheory.T.standardTraceAddChar_isStandardChar_of_admissibleCMBase F E σ B hB`. Establish `hcomm : ∀ p q f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → of p (oi q f) = oi q (of p f)` using `fun p q f h => fin_inf_comm_A C hO hof hi p q f h`. Establish `hth : ∀ (w₀ : WOF F E nS nT) f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → IsThetaFunOF σ JS JT ξ₀ B.ψ (heisOF σ JS JT ξ₀ B.ψ w₀ f)` using `fun w₀ f h => GlobalTheory.T.heisenbergOperatorF_preserves_isThetaFunction F E σ nS nT JS JT ξ₀ B.ψ hB.std.1 w₀ f h`. Set `Th` to `thetaSubF σ JS JT ξ₀ B.ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Om2 : GAF σ JS × GAF σ JT →* Module.End ℂ Th` to `{ toFun := fun p => (of p * oi p).restrict (p := Th) (q := Th) fun f h1 => hf.pres p _ (hi.pres p f h1) map_one' := LinearMap.ext fun f => Subtype.ext (by show of 1 (oi 1 f) = f`. Simplify using `only [map_one, Module.End.one_apply])`. Use the proof step `map_mul' := fun p q => LinearMap.ext fun f => Subtype.ext (by show of (p * q) (oi (p * q) f) = of p (oi p (of q (oi q (f : WOF F E nS nT → ℂ))))`. Simplify using `only [map_mul, Module.End.mul_apply]`. Rewrite using `[hcomm q p _ (hi.pres q _ f.2)]) }`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨om, hom⟩` from `exists_extend Th Om2`. Establish `ho : ∀ p f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → om p f = of p (oi p f)` using `fun p f h1 => hom p ⟨f, h1⟩`. Establish `hp : ∀ p f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → IsThetaFunOF σ JS JT ξ₀ B.ψ (om p f)` using `fun p f h1 => by`. Rewrite using `[ho p f h1]`. Conclude with `hf.pres p _ (hi.pres p f h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨om, hψ, isHeckeCharF_pow hη _, isHeckeCharF_pow hη _, resEtaF_pow hres _, resEtaF_pow hres _, hp, fun g h w₀ f h1 => ?_, fun γ hγ γ' hγ' f h1 => ?_, fun f h1 w => ?_, fun μ 𝓕 hμ h𝓕 p f h1 => ?_, fun e he g h hg hh x y hx hy => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, k, hk, e1, e1'⟩` from `GlobalTheory.T.unitaryAdelicPoint_eq_real_mul_finite_both_orders F E σ nS JS g`. Take `⟨b, hb, l, hl, e2, e2'⟩` from `GlobalTheory.T.unitaryAdelicPoint_eq_real_mul_finite_both_orders F E σ nT JT h`. Establish `key : ∀ x, IsThetaFunOF σ JS JT ξ₀ B.ψ x → om (g, h) x = of (k, l) (oi (a, b) x)` using `fun x hx => by`. Rewrite using `[ho _ x hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E1 : ((g, h) : GAF σ JS × GAF σ JT) = (a, b) * (k, l)` using `Prod.ext e1 e2`. Establish `E2 : ((g, h) : GAF σ JS × GAF σ JT) = (k, l) * (a, b)` using `Prod.ext e1' e2'`. Establish `E3 : oi (g, h) x = oi (a, b) x` using `by rw [E1, map_mul, Module.End.mul_apply, hi.triv k hk l hl x hx]`. Rewrite using `[E3, E2, map_mul, Module.End.mul_apply, hf.triv a ha b hb _ (hi.pres _ x hx)]`. Rewrite using `[key _ (hth w₀ f h1), key f h1, hi.Heisenberg₂ a ha b hb w₀ f h1, hf.Heisenberg₂ k hk l hl _ _ (hi.pres _ f h1), ← actOF_mul, ← e1', ← e2']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ho _ f h1]`. Conclude with `haut γ hγ γ' hγ' f h1`. Establish `e : (fun p => om p f w) = fun p => of p (oi p f) w` using `funext fun p => by rw [ho p f h1]`. Rewrite using `[e]`. Conclude with `continuous_product_A C hO hf hof hi h1 w`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ho p f h1, hf.unit μ 𝓕 hμ h𝓕 p _ (hi.pres p f h1), hi.unit μ 𝓕 hμ h𝓕 p f h1]`. Take `⟨r, hr, h2⟩` from `hf.split e he g h hg hh x y hx hy`. Use `⟨r, hr, fun ℓ hℓ f h1 => ?_⟩` and prove the remaining obligations. Rewrite using `[ho _ f h1, hi.triv g (mem_GfCF_of_suppAt he hg) h (mem_GfCF_of_suppAt he hh) f h1]`. Conclude with `h2 ℓ hℓ f h1`.
+A detailed English derivation is pending.
 -/
 theorem datum_of_aut_A (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (hη : IsHeckeCharF η) (hres : ResEtaF η 1) (hf : IsFinWeilF σ JS JT ξ₀ B.ψ (η ^ nS) (η ^ nT) of)

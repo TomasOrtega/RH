@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.CharacterGerms.NondegenerateCharts
 open Formalism.L2.FormalSeriesBounds
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AlphaPair.ndg_at_chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FBiextensionNondegenerateModMaximalIdealIntegralC.lean&line=173#L173)
 -/

@@ -30,7 +30,7 @@ theorem cochainOf_cupPairingCochains (μ : A ⊗ B ⟶ C) {r s n : ℕ} (h : r +
   rfl
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cochainOf_add, cochainOf_smul]`. Conclude with `(cochainOf_d _).trans ((d_cupCochain h _ _).trans (by`. Rewrite using `[← cochainOf_d, ← cochainOf_d]`. Use the proof step `rfl))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_cupLocallyConstant {r s n : ℕ} (h : r + s = n) (x : (cochainsComplex A).X r)
     (y : (cochainsComplex B).X s) :
@@ -57,9 +57,9 @@ noncomputable def cupLeibniz (μ : A ⊗ B ⟶ C) :
       d_cupLocallyConstant, map_add, map_smul]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `homologyπ_hom_surjective _ r x`. Take `⟨y, rfl⟩` from `homologyπ_hom_surjective _ s y`. Use `((cupLeibniz μ).homology_homologyπ h x y).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (cupPairing_cohomologyπ μ h x y).symm` and prove the remaining obligations. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Apply `iCycles_hom_injective` to reduce the goal to its premises. Rewrite using `[LeibnizPairing.iCycles_cycles, iCycles_cyclesMap_apply]`. Conclude with `congrArg ((cochainsMap μ).f n).hom (cocycleι_cupCocycles h x y).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupLeibniz_homology (μ : A ⊗ B ⟶ C) {r s n : ℕ} (h : r + s = n) (x : cohomology A r)
     (y : cohomology B s) : (cupLeibniz μ).homology h x y = cupPairing μ h x y := by
@@ -103,9 +103,9 @@ theorem pi_μ_apply {r s n : ℕ} (h : r + s = n) (x : (piComplex K).X r) (y : (
   rfl
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `homologyπ_hom_surjective _ r x`. Take `⟨y, rfl⟩` from `homologyπ_hom_surjective _ s y`. Rewrite using `[piHomologyIso_hom_apply, piHomologyIso_hom_apply, piHomologyIso_hom_apply, homology_homologyπ, homologyMap_homologyπ_apply, homologyMap_homologyπ_apply, homologyMap_homologyπ_apply, homology_homologyπ]`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[iCycles_cyclesMap_apply, iCycles_cycles, iCycles_cycles, iCycles_cyclesMap_apply, iCycles_cyclesMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem piHomologyIso_hom_pi_homology {r s n : ℕ} (h : r + s = n)
     (x : (piComplex K).homology r) (y : (piComplex N).homology s) (v : ι) :
@@ -135,9 +135,9 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   {b : ∀ v, Rep.res (φ v).toMonoidHom B ⟶ Bᵥ v} {c : ∀ v, Rep.res (φ v).toMonoidHom C ⟶ Cᵥ v}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Express the relevant statement in the definitionally equal form `(c v).hom (μ.hom (cupCochain h (cochainOf A x) (cochainOf B z) (⇑(φ v).toMonoidHom ∘ σ))) = (μᵥ v).hom (cupCochain h (fun τ => (a v).hom (cochainOf A x (⇑(φ v).toMonoidHom ∘ τ))) (fun τ => (b v).hom (cochainOf B z (⇑(φ v).toMonoidHom ∘ τ))) σ)`. Rewrite using `[cupCochain_apply, cupCochain_apply, ← Rep.hom_comm_apply, partialProd_comp_monoidHom]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun F : Rep.res (φ v).toMonoidHom (A ⊗ B) ⟶ Cᵥ v => F.hom ((cochainOf A x fun i => (⇑(φ v).toMonoidHom ∘ σ) ⟨i, by omega⟩) ⊗ₜ[k] B.ρ ((φ v).toMonoidHom (Fin.partialProd σ ⟨r, by omega⟩)) (cochainOf B z fun j => (⇑(φ v).toMonoidHom ∘ σ) ⟨r + j, by omega⟩) : (A ⊗ B : Rep …`.
+A detailed English derivation is pending.
 -/
 theorem localRes_cupPairingCochains (μ : A ⊗ B ⟶ C) (μᵥ : ∀ v, Aᵥ v ⊗ Bᵥ v ⟶ Cᵥ v)
     (hμ : ∀ v, (Rep.resFunctor (φ v).toMonoidHom).map μ ≫ c v =

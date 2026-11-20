@@ -6,20 +6,20 @@ open NumberField IsDedekindDomain Polynomial
 namespace PI.LocalEndW
 
 /- English proof (translation)
-Rewrite using `[aeval_def, aeval_def, hom_eval₂, RingHom.ext_rat (φ.comp (algebraMap ℚ L)) (algebraMap ℚ M)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem aeval_ringHom_apply_lemma {L M : Type*} [Field L] [Field M] [Algebra ℚ L] [Algebra ℚ M]
     (φ : L →+* M) (p : ℚ[X]) (x : L) : aeval (φ x) p = φ (aeval x p) := by
   rw [aeval_def, aeval_def, hom_eval₂, RingHom.ext_rat (φ.comp (algebraMap ℚ L)) (algebraMap ℚ M)]
 
 /- English proof (translation)
-Use `set K := v.adicCompletion F`. Establish `: CharZero K` using `charZero_of_injective_algebraMap (algebraMap F K).injective`. Set `_ : Algebra ℚ K` to `DivisionRing.toRatAlgebra`. Use `set p := minpoly ℚ a with hp`. Establish `hp0 : p ≠ 0` using `minpoly.ne_zero (IsIntegral.of_finite ℚ a)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set S : Set K := p.rootSet K`. Establish `hmem : ∀ x : K, x ∈ S ↔ aeval x p = 0` using `fun x => by`. Rewrite using `[mem_rootSet]`. Conclude with `⟨fun h => h.2, fun h => ⟨hp0, h⟩⟩`. Establish `haS : algebraMap F K a ∈ S`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hmem, aeval_ringHom_apply_lemma (algebraMap F K) p a, hp, minpoly.aeval, map_zero]`. Establish `hmaps : Set.MapsTo τ S S` using `fun x hx => by`. Rewrite `hx`, the goal using `[hmem]`. Rewrite using `[aeval_ringHom_apply_lemma τ p x, hx, map_zero]`. Establish `: Finite S` using `(rootSet_finite p K).to_subtype`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `g : S → S` to `hmaps.restrict τ S S`. Establish `hg : Function.Injective g` using `fun x y h => Subtype.ext (τ.injective (congrArg Subtype.val h))`. Take `⟨r, hr⟩` from `Finite.surjective_of_injective hg ⟨algebraMap F K a, haS⟩`. Conclude with `⟨r.1, congrArg Subtype.val hr⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_range {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)}
     (τ : v.adicCompletion F →+* v.adicCompletion F) (a : F) :
@@ -45,16 +45,16 @@ theorem algebraMap_mem_range {F : Type} [Field F] [NumberField F] {v : HeightOne
   exact ⟨r.1, congrArg Subtype.val hr⟩
 
 /- English proof (translation)
-Conclude with `HeightOneSpectrum.denseRange_algebraMap F v`.
+A detailed English derivation is pending.
 -/
 private theorem denseRange_algebraMap_adicCompletion_lemma_2 {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) : DenseRange (algebraMap F (v.adicCompletion F)) := by
   exact HeightOneSpectrum.denseRange_algebraMap F v
 
 /- English proof (translation)
-Introduce `F _ _ v τ hτ y`. Establish `hclosed : IsClosed (Set.range τ)` using `(isUniformInducing_of_val τ hτ).isComplete_range.isClosed`. Establish `hdense : Dense (Set.range τ)` using `(denseRange_algebraMap_adicCompletion_lemma_2 v).mono (by`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `algebraMap_mem_range τ a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `huniv` using `hdense.closure_eq`. Rewrite `huniv` using `[hclosed.closure_eq]`. Establish `hy : y ∈ Set.range τ` using `huniv ▸ Set.mem_univ y`. Conclude with `hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valSurjective : ValSurjective := by
   intro F _ _ v τ hτ y

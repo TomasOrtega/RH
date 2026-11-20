@@ -21,13 +21,13 @@ noncomputable section
 namespace GlobalTheory.KSLin
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem valR_eq_evAt {A : Type} [CommRing A] {Y : Scheme.{0}} (x : Sp A ⟶ Y) (U : Y.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(Y, U)) : valR x U f = GlobalTheory.TanDeriv.evAt x U h f := dif_pos h
 
 /- English proof (translation)
-Rewrite using `[valR_eq_evAt x U h, valR_eq_evAt _ U (GlobalTheory.TanDeriv.comp_top_le φ x U h)]`. Conclude with `GlobalTheory.TanDeriv.evAt_comp φ x U h _ f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_spMap_comp {R A : Type} [CommRing R] [CommRing A] (φ : R →+* A) {Y : Scheme.{0}} (x : Sp R ⟶ Y)
     (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(Y, U)) : valR (spMap φ ≫ x) U f = φ (valR x U f) := by
@@ -35,7 +35,7 @@ theorem valR_spMap_comp {R A : Type} [CommRing R] [CommRing A] (φ : R →+* A) 
   exact GlobalTheory.TanDeriv.evAt_comp φ x U h _ f
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (φ : A →+* B) (ψ : B →+* C) :
     spMap ψ ≫ spMap φ = spMap (ψ.comp φ) := by
@@ -45,9 +45,9 @@ theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (
 variable {X0 : Scheme.{0}} {S : Type} [CommRing S] {x0 : Sp S ⟶ X0} {G : Over X0} [GrpObj G]
 
 /- English proof (translation)
-Use `GlobalTheory.TanDeriv.top_le_of_comp (TrivSqZeroExt.fstHom S S S).toRingHom ?_ ?_ _ O h` and prove the remaining obligations. Introduce `y`. Conclude with `⟨TrivSqZeroExt.inl y, rfl⟩`. Introduce `x hx`. Establish `h1 : x.fst = 0` using `hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp [h1]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem top_le_of_fst (z : overAt x0 (DualNumber S) ⟶ G) (O : G.left.Opens)
     (h : ⊤ ≤ (spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ z.left) ⁻¹ᵁ O) :
@@ -60,9 +60,9 @@ theorem top_le_of_fst (z : overAt x0 (DualNumber S) ⟶ G) (O : G.left.Opens)
     ext <;> simp [h1]
 
 /- English proof (translation)
-Establish `h1 : (smT x0 0 z).left = spMap (epsMul 0) ≫ z.left` using `rfl`. Establish `h2` using `congrArg (fun φ => spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ φ) (hz ▸ h1)`. Rewrite `h2` using `[hg, ← Category.assoc, ← Category.assoc, spMap_comp_spMap, spMap_comp_spMap]`. Establish `e1 : (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S` using `by ext; simp`. Establish `e2 : (TrivSqZeroExt.fstHom S S S).toRingHom.comp (epsMul (0 : S)) = (TrivSqZeroExt.fstHom S S S).toRingHom` using `RingHom.ext fun x => by simp [epsMul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[e1, e2]`. Rewrite using `[← h2]`. Simplify using `[spMap]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fst_comp_of_smT_zero (g₀ : Sp S ⟶ G.left) (g' : overAt x0 (DualNumber S) ⟶ G)
     (hg : g'.left = spMap (algebraMap S (DualNumber S)) ≫ g₀) (z : overAt x0 (DualNumber S) ⟶ G)
@@ -80,7 +80,7 @@ theorem fst_comp_of_smT_zero (g₀ : Sp S ⟶ G.left) (g' : overAt x0 (DualNumbe
   simp [spMap]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h1 : (smT x0 a g').left = spMap (epsMul a) ≫ g'.left` using `rfl`. Rewrite using `[h1, hg, ← Category.assoc, spMap_comp_spMap]`. Use `congr 2`. Conclude with `RingHom.ext fun x => by simp [epsMul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem smT_const (g₀ : Sp S ⟶ G.left) (g' : overAt x0 (DualNumber S) ⟶ G)
     (hg : g'.left = spMap (algebraMap S (DualNumber S)) ≫ g₀) (a : S) : smT x0 a g' = g' := by
@@ -91,7 +91,7 @@ theorem smT_const (g₀ : Sp S ⟶ G.left) (g' : overAt x0 (DualNumber S) ⟶ G)
   exact RingHom.ext fun x => by simp [epsMul]
 
 /- English proof (translation)
-Establish `h1 : (smT x0 a w).left = spMap (epsMul a) ≫ w.left` using `rfl`. Rewrite using `[h1, valR_spMap_comp _ _ O hw f]`. Simplify using `[epsMul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem valR_smT (a : S) (w : overAt x0 (DualNumber S) ⟶ G) (O : G.left.Opens)
     (hw : ⊤ ≤ (show Sp (DualNumber S) ⟶ G.left from w.left) ⁻¹ᵁ O) (f : Γ(G.left, O)) :
@@ -101,7 +101,7 @@ theorem valR_smT (a : S) (w : overAt x0 (DualNumber S) ⟶ G) (O : G.left.Opens)
   simp [epsMul]
 
 /- English proof (translation)
-Rewrite using `[hg, valR_spMap_comp _ _ O hO f]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem valR_const_snd (g₀ : Sp S ⟶ G.left) (g' : overAt x0 (DualNumber S) ⟶ G)
     (hg : g'.left = spMap (algebraMap S (DualNumber S)) ≫ g₀) (O : G.left.Opens) (hO : ⊤ ≤ g₀ ⁻¹ᵁ O)
@@ -110,19 +110,19 @@ theorem valR_const_snd (g₀ : Sp S ⟶ G.left) (g' : overAt x0 (DualNumber S) �
   simp [TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Establish `hz : (0 : S →ₗ[S] S) = (0 : S) • (LinearMap.id : S →ₗ[S] S)` using `by simp`. Set `P : overAt x0 (TrivSqZeroExt S (S × S)) ⟶ G` to `(homAt x0 (tm (LinearMap.inl S S S)) ≫ u) * (homAt x0 (tm (LinearMap.inr S S S)) ≫ v)`. Establish `e1 : homAt x0 (tm (LinearMap.fst S S S)) ≫ P = u`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, LinearMap.fst_comp_inl, LinearMap.fst_comp_inr, hz, TrivSqZeroExt.map_id, homAt_id, Category.id_comp]`. Express the relevant statement in the definitionally equal form `_ * smT x0 0 v = _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hv0, _root_.mul_one]`. Establish `e2 : homAt x0 (tm (LinearMap.snd S S S)) ≫ P = smT x0 0 u * v`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, LinearMap.snd_comp_inl, LinearMap.snd_comp_inr, hz, TrivSqZeroExt.map_id, homAt_id, Category.id_comp]`. Both sides reduce to the same expression. Establish `e3 : homAt x0 (tm (LinearMap.coprod LinearMap.id LinearMap.id : S × S →ₗ[S] S)) ≫ P = u * v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, LinearMap.coprod_inl, LinearMap.coprod_inr, TrivSqZeroExt.map_id, homAt_id, Category.id_comp, Category.id_comp]`. Establish `f1 : spMap (tm (LinearMap.fst S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S) ≫ P.left = u.left` using `congrArg (fun φ => φ.left) e1`. Establish `f2 : spMap (tm (LinearMap.snd S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S) ≫ P.left = (smT x0 0 u * v).left` using `congrArg (fun φ => φ.left) e2`. Establish `f3 : spMap (tm (LinearMap.coprod LinearMap.id LinearMap.id : S × S →ₗ[S] S) : TrivSqZeroExt S (S × S) →+* DualNumber S) ≫ P.left = (u * v).left` using `congrArg (fun φ => φ.left) e3`. Establish `hP : ⊤ ≤ (show Sp (TrivSqZeroExt S (S × S)) ⟶ G.left from P.left) ⁻¹ᵁ O`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.TanDeriv.top_le_of_comp (tm (LinearMap.fst S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S) ?_ ?_ _ O ?_` and prove the remaining obligations. Introduce `y`. Use `⟨tm (LinearMap.inl S S S) y, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : x.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst hx`. Apply the tactic sequence `ext <;> simp [h1]`. Conclude with `f1 ▸ hu`. Establish `k1` using `valR_spMap_comp (tm (LinearMap.fst S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S) P.left O hP f`. Establish `k2` using `valR_spMap_comp (tm (LinearMap.snd S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S) P.left O hP f`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k3` using `valR_spMap_comp (tm (LinearMap.coprod LinearMap.id LinearMap.id : S × S →ₗ[S] S) : TrivSqZeroExt S (S × S) →+* DualNumber S) P.left O hP f`. Rewrite `k1` using `[f1]`. Rewrite `k2` using `[f2]`. Rewrite `k3` using `[f3]`. Rewrite using `[k1, k2, k3]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem snd_valR_mul (u v : overAt x0 (DualNumber S) ⟶ G) (hv0 : smT x0 0 v = 1) (O : G.left.Opens)
     (hu : ⊤ ≤ (show Sp (DualNumber S) ⟶ G.left from u.left) ⁻¹ᵁ O) (f : Γ(G.left, O)) :
@@ -175,7 +175,7 @@ theorem snd_valR_mul (u v : overAt x0 (DualNumber S) ⟶ G) (hv0 : smT x0 0 v = 
   simp
 
 /- English proof (translation)
-Use `top_le_of_fst z O ?_` and prove the remaining obligations. Rewrite using `[fst_comp_of_smT_zero g₀ g' hg z hz]`. Conclude with `hO`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_le_of_smT_zero (g₀ : Sp S ⟶ G.left) (g' : overAt x0 (DualNumber S) ⟶ G)
     (hg : g'.left = spMap (algebraMap S (DualNumber S)) ≫ g₀) (O : G.left.Opens) (hO : ⊤ ≤ g₀ ⁻¹ᵁ O)
@@ -186,13 +186,13 @@ theorem top_le_of_smT_zero (g₀ : Sp S ⟶ G.left) (g' : overAt x0 (DualNumber 
   exact hO
 
 /- English proof (translation)
-Establish `hg0 : smT x0 0 g' = g'` using `smT_const g₀ g' hg 0`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `y r _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.ofFn_zero, List.prod_nil, smT_one', _root_.mul_one, valR_const_snd g₀ g' hg O hO f]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `y r hy`. Take `⟨h0, hs⟩` from `ih (fun c => y c.succ) (fun c => r c.succ) (fun c => hy c.succ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `ha : smT x0 0 (smT x0 (r 0) (y 0)) = 1` using `by rw [smT_smT, zero_mul, hy 0]`. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Use `⟨by rw [smT_mul, ha, h0, _root_.mul_one], ?_⟩` and prove the remaining obligations. Establish `hu : smT x0 0 (g' * smT x0 (r 0) (y 0)) = g'` using `by rw [smT_mul, hg0, ha, _root_.mul_one]`. Establish `hy0 : smT x0 0 (g' * y 0) = g'` using `by rw [smT_mul, hg0, hy 0, _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgy : g' * smT x0 (r 0) (y 0) = smT x0 (r 0) (g' * y 0)`. Rewrite using `[smT_mul, smT_const g₀ g' hg]`. Rewrite using `[← _root_.mul_assoc, snd_valR_mul _ _ h0 O (top_le_of_smT_zero g₀ g' hg O hO _ hu) f, hu, hs, hgy, valR_smT _ _ O (top_le_of_smT_zero g₀ g' hg O hO _ hy0) f, Fin.sum_univ_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem snd_sectionValue_translate_list_prod_induction (g₀ : Sp S ⟶ G.left) (g' : overAt x0 (DualNumber S) ⟶ G)
     (hg : g'.left = spMap (algebraMap S (DualNumber S)) ≫ g₀) (O : G.left.Opens) (hO : ⊤ ≤ g₀ ⁻¹ᵁ O)
@@ -222,7 +222,7 @@ theorem snd_sectionValue_translate_list_prod_induction (g₀ : Sp S ⟶ G.left) 
       valR_smT _ _ O (top_le_of_smT_zero g₀ g' hg O hO _ hy0) f, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Introduce `X0 S _ x0 G _ g₀ g' hg m y r hy O f hO`. Conclude with `(snd_sectionValue_translate_list_prod_induction g₀ g' hg O hO f m y r hy).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem snd_valR_translate_prod : ∀ {X0 : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (G : Over X0) [GrpObj G]
     (g₀ : Sp S ⟶ G.left) (g' : overAt x0 (DualNumber S) ⟶ G),

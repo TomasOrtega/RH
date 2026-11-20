@@ -29,17 +29,17 @@ open GlobalTheory.StdUnn
 namespace GlobalTheory.StdUnn.Inhab
 
 /- English proof (translation)
-Introduce `D n V ψ hψ lam hlam χ hχ hr θ hθ μ 𝓕 hμ`. Set `A : HSp D` to `Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n`. Establish `hlamE : algebraMap D.host.F D.host.E lam ≠ 0` using `(map_ne_zero _).2 hlam`. Establish `hxi : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Use `set μ' : D.host.E := -D.host.xi0 / algebraMap D.host.F D.host.E lam with hμ'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsk : IsSkew μ'`. Use `⟨div_ne_zero (neg_ne_zero.2 hxi) hlamE, ?_⟩` and prove the remaining obligations. Rewrite using `[hμ', star_div₀, star_neg, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, Formalism.IndefR.Eqv.star_algebraMapF]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl : algebraMap D.host.F D.host.E lam = -D.host.xi0 / μ'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hμ']`. Clear the denominators using the available nonvanishing facts. Take `⟨κ, hκ⟩` from `GlobalTheory.StdUnn.chart_exists D A μ' hsk`. Take `⟨hχi, hri⟩` from `GlobalTheory.StdUnn.isHeckeChar_resEta_inv D χ V.rank hχ hr`. Establish `hr1 : ResEta D 1 (dblSp A).rank`.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.Eis.SimplePoleModel.resEta_one_two_mul D A.rank` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `[GlobalTheory.Doubling.dblSp]`. Use linear arithmetic over natural numbers and integers. Take `⟨omh, homh⟩` from `GlobalTheory.weilRepresentationUnitaryPair D ψ (dblSp A) V 1 χ⁻¹ hψ ⟨continuous_const, fun _ => rfl⟩ hχi hr1 hri`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨omS, hS⟩` from `GlobalTheory.StdUnn.exists_transport_std D ψ A V χ⁻¹ omh homh μ 𝓕 hμ θ hθ κ`. Use `⟨omS, ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `g a hg Φ x`. Use `GlobalTheory.StdUnn.transport_levi D ψ A V χ⁻¹ omh homh μ 𝓕 hμ θ hθ μ' hsk κ hκ omS hS lam hl g a hg Φ x` as an intermediate fact. Rewrite `this` using `[inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Introduce `g b hg Φ x`. Conclude with `GlobalTheory.StdUnn.Unip.transport_unip D ψ A V χ⁻¹ omh homh μ 𝓕 hμ θ hθ μ' hsk κ hκ omS hS lam hl g b hg Φ x`. Introduce `g hg Φ x`. Conclude with `GlobalTheory.StdUnn.WeylStd.main D ψ A V χ⁻¹ omh homh μ 𝓕 hμ θ hθ μ' hsk κ hκ omS hS lam hl g hg Φ x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weil_exists : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ lam : D.host.F, lam ≠ 0 → ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → ResEta D χ V.rank → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n)), IsCovolOne (ratMx D V.rank n) μ 𝓕 → ∃ ω : G D n →* Module.End ℂ (schwartzA θ V.rank n), IsWeilSch (shift ψ lam) χ θ V μ ω := by
   intro D n V ψ hψ lam hlam χ hχ hr θ hθ μ 𝓕 hμ
@@ -74,17 +74,15 @@ theorem weil_exists : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.hos
     exact GlobalTheory.StdUnn.WeylStd.main D ψ A V χ⁻¹ omh homh μ 𝓕 hμ θ hθ μ' hsk κ hκ omS hS lam hl g hg Φ x
 
 /- English proof (translation)
-Introduce `D n V θ l hl s hs U hUo hUc h0`. Take `⟨f, hf⟩` from `hg D n V l hl s hs`. Use `set g : (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ := U.indicator 1 with hgdef`. Establish `hgSB : g ∈ GlobalTheory.WeilM.SB (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(LocallyConstant.indicator (1 : LocallyConstant _ ℂ) hUo).isLocallyConstant`. Conclude with `HasCompactSupport.intro' hUc hUo.isClosed (fun x hx => Set.indicator_of_notMem hx _)`. Establish `hmem : (fun x : Mx D V.rank n => gauss V l s (fun τ => compAt θ τ x) * g (fun i j => finPart D (x i j))) ∈ schwartzA θ V.rank n`. Use `Submodule.subset_span ⟨f, g, hgSB, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hf]`. Both sides reduce to the same expression. Use `⟨⟨_, hmem⟩, rfl, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.subset_span ⟨1, g, hgSB, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[evalPoly]`. Use `show gauss V l s (fun τ => compAt θ τ 0) * g (fun i j => finPart D ((0 : Mx D V.rank n) i j)) ≠ 0`. Establish `h1 : (fun τ => compAt θ τ (0 : Mx D V.rank n)) = fun _ => 0`. Use function extensionality and compare the values at `τ`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[compAt]`. Establish `h2 : (fun i j => finPart D ((0 : Mx D V.rank n) i j)) = 0`. Use function extensionality and compare the values at `i j`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, hgdef, Set.indicator_of_mem h0]`.
-
-Simplify using `[gauss]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_gauss (hg : ∀ (D : D7) (n : ℕ) (V : HSp D) (l : D.what₂.Tau → ℝ), (∀ τ, l τ ≠ 0) → ∀ s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ, IsCartanInv (gramAt D V τ) (s τ)) → ∃ f : SchwartzMap (D.what₂.Tau → Fin V.rank → Fin n → ℂ) ℂ, ∀ z, f z = gauss V l s (fun τ => Matrix.of (z τ))) : ∀ (D : D7) (n : ℕ) (V : HSp D) (θ : InfFam D) (l : D.what₂.Tau → ℝ), (∀ τ, l τ ≠ 0) → ∀ s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ, IsCartanInv (gramAt D V τ) (s τ)) → ∀ U : Set (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E), IsClopen U → IsCompact U → (0 : Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) ∈ U → ∃ Φ : schwartzA θ V.rank n, Φ.1 = (fun x => gauss V l s (fun τ => compAt θ τ x) * U.indicator 1 (fun i j => finPart D (x i j))) ∧ Φ.1 ∈ fockA θ V n l s ∧ Φ.1 0 ≠ 0 := by
   intro D n V θ l hl s hs U hUo hUc h0
@@ -112,7 +110,7 @@ theorem fock_gauss (hg : ∀ (D : D7) (n : ℕ) (V : HSp D) (l : D.what₂.Tau �
     simp [gauss]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.StdUnn.exists_height, GlobalTheory.StdUnn.exists_realPar_of_isCharAF, weil_exists, fock_gauss GlobalTheory.GaussSchwartz.exists_schwartz_gauss, GlobalTheory.AfTensNbhd.exists_clopen_compact_nbhd_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem hyps_satisfiable :
     (∀ (D : D7) (n : ℕ), ∃ H : G D n → ℝ≥0, IsHeight H) ∧ (∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ θ : InfFam D, IsInfFam θ → ∃ l : D.what₂.Tau → ℝ, HasRealPar ψ θ l) ∧ (∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ lam : D.host.F, lam ≠ 0 → ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → ResEta D χ V.rank → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n)), IsCovolOne (ratMx D V.rank n) μ 𝓕 → ∃ ω : G D n →* Module.End ℂ (schwartzA θ V.rank n), IsWeilSch (shift ψ lam) χ θ V μ ω) ∧ (∀ (D : D7) (n : ℕ) (V : HSp D) (θ : InfFam D) (l : D.what₂.Tau → ℝ), (∀ τ, l τ ≠ 0) → ∀ s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ, IsCartanInv (gramAt D V τ) (s τ)) → ∀ U : Set (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E), IsClopen U → IsCompact U → (0 : Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) ∈ U → ∃ Φ : schwartzA θ V.rank n, Φ.1 = (fun x => gauss V l s (fun τ => compAt θ τ x) * U.indicator 1 (fun i j => finPart D (x i j))) ∧ Φ.1 ∈ fockA θ V n l s ∧ Φ.1 0 ≠ 0) ∧ (∀ (D : D7) (m n : ℕ), ∃ U : Set (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E), IsClopen U ∧ IsCompact U ∧ (0 : Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) ∈ U) :=

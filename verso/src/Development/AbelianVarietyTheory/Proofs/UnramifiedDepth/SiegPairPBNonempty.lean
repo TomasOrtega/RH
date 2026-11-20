@@ -19,9 +19,9 @@ namespace GlobalTheory
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Pdiv in
 
 /- English proof (translation)
-Introduce `S S' h M₁ B _ ζ s o f`. Establish `hab : IsAbelianScheme ((Over.pullback f).obj o.A)` using `{ comm := by have := o.ab.comm; infer_instance smooth := by have := o.ab.smooth; show Smooth (Limits.pullback.snd _ _); infer_instance proper := by have := o.ab.proper; show IsProper (Limits.pullback.snd _ _); infer_instance geomConnected := by`. Use `o.ab.geomConnected` as an intermediate fact. Use `show GeometricallyConnected (Limits.pullback.snd _ _)`. Use `infer_instance }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hP` using `pull_isLB o.isLB (PullbackComparison.pφ₂ f o.A)`. Take `⟨t₁, ht₁⟩` from `o.rig₁`. Take `⟨t₂, ht₂⟩` from `o.rig₂`. Conclude with `⟨{ A := (Over.pullback f).obj o.A ab := hab φ := PullbackComparison.pφ f o.A φ₂ := PullbackComparison.pφ₂ f o.A pb := PullbackComparison.isGrpPullback f o.A sq := PullbackComparison.isSquare f o.A P := o.P.pull (PullbackComparison.pφ₂ f o.A) isLB := hP iso := PullbackComparison.g …`. Use symmetry as in `:= LBIso.chartPull (chartPullPull o.P _ _ rfl) (chartPullLinComb o.P _ _ _ _ (PullbackComparison.pφ₂ f o.A) (fun _ => PullbackComparison.lift_swap f o.A)) o.symm }⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 theorem siegPairPB_nonempty : ReciprocityTheory.ChartRestriction.G.Pdiv.StSiegPull := by
   intro S S' h M₁ B _ ζ s o f

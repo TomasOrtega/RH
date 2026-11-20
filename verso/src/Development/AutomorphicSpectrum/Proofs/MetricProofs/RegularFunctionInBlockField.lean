@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.CovGraph.RegField
 
 /- English proof (translation)
-Use `conv_lhs => rw [MvPolynomial.as_sum f]`. Use `conv_rhs => rw [MvPolynomial.as_sum f]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial, MvPolynomial.aeval_monomial]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `key : (m.prod fun q e => (t q.1 * w q) ^ e) = (∏ k, t k ^ d k) * m.prod fun q e => w q ^ e`. Repeatedly rewrite using `[mul_pow]`. Rewrite using `[Finsupp.prod_mul]`. Use `congr 1`. Rewrite using `[Finsupp.prod_fintype _ _ (fun i => pow_zero _), Fintype.prod_sigma]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, t k ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hf m hm k]`. Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem aeval_mul_scale_of_homog {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {S : Type} [CommRing S] [Algebra ℤ S] (f : MvPolynomial (Σ k, ι k) ℤ) (d : K → ℕ)
@@ -37,9 +37,9 @@ private theorem aeval_mul_scale_of_homog {K : Type} [Fintype K] {ι : K → Type
   ring
 
 /- English proof (translation)
-Establish `e : (fun p : Σ k, ι k => MvPolynomial.C (y p) * (MvPolynomial.X p.1 : MvPolynomial K Ω)) = fun p => (MvPolynomial.X p.1 : MvPolynomial K Ω) * MvPolynomial.C (y p)`. Use function extensionality and compare the values at `p`. Expand and normalize the polynomial expressions, which then agree. Use `show MvPolynomial.aeval _ h = _`. Rewrite using `[e, aeval_mul_scale_of_homog h d hh (fun k => (MvPolynomial.X k : MvPolynomial K Ω)) (fun p => MvPolynomial.C (y p))]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `MvPolynomial.aeval_algebraMap_apply (MvPolynomial K Ω) y h`.
+A detailed English derivation is pending.
 -/
 private theorem mConeMap_eq_prod_X_pow_mul_C {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (h : MvPolynomial (Σ k, ι k) ℤ) (d : K → ℕ)
@@ -56,25 +56,23 @@ private theorem mConeMap_eq_prod_X_pow_mul_C {K : Type} [Fintype K] {ι : K → 
   exact MvPolynomial.aeval_algebraMap_apply (MvPolynomial K Ω) y h
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ _ y Ψ N j M zb s hzb hreg`. Take `⟨d, g, h, hg, hh, hQ, hgs⟩` from `hreg`. Take `⟨-, hzv⟩` from `hzb`. Establish `hxh : MvPolynomial.aeval M.x h ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hQ` to reduce the goal to its premises. Establish `hker : h ∈ mCoordIdeal M.x`. Rewrite using `[mCoordIdeal, RingHom.mem_ker, mConeMap_eq_prod_X_pow_mul_C M.x h d hh, h0, map_zero, mul_zero]`. Establish `hz` using `hzv h hker`. Establish `hz' : MvPolynomial.aeval zb h = 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.aeval_def, algebraMap_int_eq, ← MvPolynomial.eval_map]`. Conclude with `hz`. Rewrite using `[mCoordIdeal, RingHom.mem_ker, mConeMap_eq_prod_X_pow_mul_C zb h d hh, hz', map_zero, mul_zero]`. Establish `hs : s = MvPolynomial.aeval M.x g / MvPolynomial.aeval M.x h` using `eq_div_of_mul_eq hxh hgs.symm`. Rewrite using `[hs, map_div₀, ← MvPolynomial.aeval_algebraMap_apply, ← MvPolynomial.aeval_algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ∀ k, ∃ i, (⇑(algebraMap M.Ω Φ) ∘ M.x) ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `M.x_ne k`. Conclude with `⟨i, (map_ne_zero _).mpr hi⟩`. Use `choose c hc using hne`. Establish `hYy : ∀ q, (⇑(algebraMap M.Ω Φ) ∘ M.x) q = y ⟨q.1.val, q.2⟩` using `fun q => (M.y_base q).symm`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `(⇑(algebraMap M.Ω Φ) ∘ M.x) = Y at hYy hc ⊢`. Establish `hsc : ∀ p : MvPolynomial (Σ k, baseIdx ι M.blk k) ℤ, (∀ m ∈ p.support, ∀ k, ∑ i, m ⟨k, i⟩ = d k) → MvPolynomial.aeval Y p = (∏ k, Y ⟨k, c k⟩ ^ d k) * MvPolynomial.aeval (fun q => Y q / Y ⟨q.1, c q.1⟩) p`. Introduce `p hp`. Establish `eY : Y = fun q : Σ k, baseIdx ι M.blk k => Y ⟨q.1, c q.1⟩ * (Y q / Y ⟨q.1, c q.1⟩)`. Use function extensionality and compare the values at `q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, div_mul_cancel₀ _ (hc q.1)]`. Use `conv_lhs => rw [eY]`. Conclude with `aeval_mul_scale_of_homog p d hp (fun k => Y ⟨k, c k⟩) (fun q => Y q / Y ⟨q.1, c q.1⟩)`. Establish `hP : (∏ k, Y ⟨k, c k⟩ ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Rewrite using `[hsc g hg, hsc h hh, mul_div_mul_left _ _ hP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hw : ∀ q, Y q / Y ⟨q.1, c q.1⟩ ∈ blockFnField y`. Introduce `q`. Rewrite using `[hYy, hYy]`. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises. Conclude with `⟨⟨q.1.val, q.2⟩, ⟨q.1.val, c q.1⟩, rfl, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hmem : ∀ p : MvPolynomial (Σ k, baseIdx ι M.blk k) ℤ, MvPolynomial.aeval (fun q => Y q / Y ⟨q.1, c q.1⟩) p ∈ blockFnField y`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.aeval_C, algebraMap_int_eq, eq_intCast]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `intCast_mem _ a`. Consider the case `add p q hp hq`. Rewrite using `[map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p n hp`.
-
-Rewrite using `[map_mul, MvPolynomial.aeval_X]`. Conclude with `mul_mem hp (hw n)`. Conclude with `div_mem (hmem g) (hmem h)`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_blockFnField :
     ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] [CharZero Φ]

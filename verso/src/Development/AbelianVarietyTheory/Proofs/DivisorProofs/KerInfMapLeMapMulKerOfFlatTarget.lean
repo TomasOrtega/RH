@@ -4,7 +4,7 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hz (fun r hr m _ => ⟨1, fun _ => r, fun _ => m, fun _ => hr, by simp⟩) ?_` and prove the remaining obligations. Introduce and unpack `x y ⟨n, b, p, hb, rfl⟩ ⟨n', b', p', hb', rfl⟩`. Use `⟨n + n', Fin.append b b', Fin.append p p', fun i => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> simp [hb, hb']`. Simplify using `[Fin.sum_univ_add]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem exists_fin_sum_of_mem_ideal_smul_top {B P : Type} [CommRing B] [AddCommGroup P]
     [Module B P] (I : Ideal B) {z : P} (hz : z ∈ I • (⊤ : Submodule B P)) :
@@ -17,15 +17,15 @@ theorem exists_fin_sum_of_mem_ideal_smul_top {B P : Type} [CommRing B] [AddCommG
   · simp [Fin.sum_univ_add]
 
 /- English proof (translation)
-Introduce `B P A _ _ _ _ _ _ Ψ hΨ I z hz`. Establish `hz1 : Ψ z = 0` using `RingHom.mem_ker.1 hz.1`. Establish `hz2 : z ∈ I • (⊤ : Submodule B P)`. Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `hz.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, b, p, hb, rfl⟩` from `exists_fin_sum_of_mem_ideal_smul_top I hz2`. Establish `h0 : ∑ i, b i • Ψ (p i) = 0`. Simplify `hz1` using `[map_sum, map_smul]`. Take `⟨k, c, a, hx, hc⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (R := B) (M := A) (f := b) (x := fun i => Ψ (p i)) h0`. Use `choose q hq using fun j => hΨ (a j)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzero : ∑ i, ∑ j, (b i * c i j) • q j = 0`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, hc j, zero_smul]`. Establish `key : ∑ i, b i • p i = ∑ i, b i • (p i - ∑ j, c i j • q j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_sub, Finset.sum_sub_distrib, Finset.smul_sum, smul_smul, hzero, sub_zero]`. Rewrite using `[key]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Use `Ideal.mul_mem_mul (Ideal.mem_map_of_mem _ (hb i)) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[RingHom.mem_ker]`. Simplify using `only [map_sub, map_sum, map_smul, hq, ← hx i, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem ker_inf_map_le_map_mul_ker_of_flat :
     ∀ (B P A : Type) [CommRing B] [CommRing P] [CommRing A] [Algebra B P] [Algebra B A]

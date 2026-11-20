@@ -143,7 +143,7 @@ def fibrePi (σ : L →+* ℂ) : Fibre σ (∀ i, E i) ≃ₗ[ℂ] ∀ i, Fibre 
 variable {E}
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, Pi.zero_apply]`. Consider the case `tmul z v => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, Pi.add_apply, hx, hy, map_add, Pi.add_apply, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem fibrePi_conjMap (σ : L →+* ℂ) (x : Fibre σ (∀ i, E i)) (i : ι) :
     fibrePi E (conjugate σ) (conjMap σ (∀ i, E i) x) i = conjMap σ (E i) (fibrePi E σ x i) := by

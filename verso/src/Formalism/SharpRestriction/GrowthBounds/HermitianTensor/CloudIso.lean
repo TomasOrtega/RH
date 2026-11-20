@@ -11,7 +11,7 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.CountingSumsFrames Formalism.GradedWeylDivisibility MvPolynomial Formalism.MainNotions.G.LatticeSystems
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `a1 : lam (Fin.last m) ≤ lam t` using `h1 (Fin.le_last t)`. Establish `a2 : mu (Fin.last m) ≤ mu t` using `h2 (Fin.le_last t)`. Simplify using `only [nuOf, Pi.add_apply]`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem nuOf_add {m : ℕ} (lam mu : Fin (m + 1) → ℤ) (h1 : Antitone lam) (h2 : Antitone mu) :
     nuOf (lam + mu) = nuOf lam + nuOf mu := by
@@ -26,13 +26,13 @@ section One
 variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K]
 
 /- English proof (translation)
-The claim follows from `(algebraMap_smul K a F).symm`.
+A detailed English derivation is pending.
 -/
 theorem smulO_eq {σ : Type} (a : O) (F : MvPolynomial σ K) : a • F = algebraMap O K a • F :=
   (algebraMap_smul K a F).symm
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.DualWeylPullback.goal1 .. | (apply Bl.DualWeylPullback.goal1 <;> assumption) | (intros; apply Bl.DualWeylPullback.goal1 <;> assumption) | (apply @Bl.DualWeylPullback.goal1 <;> assumption) | (intros; apply @Bl.DualWeylPullback.goal1 <;> assumption) | (apply @Bl.Du …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_pow_mem (w : O) (hw : Irreducible w) (m : ℕ) (mu : Fin (m + 1) → ℤ) (hmu : Antitone mu)
     (g : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (hg : IsUnit g.det) (F : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K)
@@ -40,15 +40,13 @@ theorem exists_pow_mem (w : O) (hw : Irreducible w) (m : ℕ) (mu : Fin (m + 1) 
   first | exact Bl.DualWeylPullback.goal1 .. | (apply Bl.DualWeylPullback.goal1 <;> assumption) | (intros; apply Bl.DualWeylPullback.goal1 <;> assumption) | (apply @Bl.DualWeylPullback.goal1 <;> assumption) | (intros; apply @Bl.DualWeylPullback.goal1 <;> assumption) | (apply @Bl.DualWeylPullback.goal1 <;> first | assumption | infer_instance) | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› w hw m mu hmu g hg F hF | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› w hw m mu hmu g hg F | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› w hw m mu hmu g hg | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› w hw m mu hmu g | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› w hw m mu hmu | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› w hw m mu | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› w hw m | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› w hw | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› w | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› ‹_› ‹_› | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› ‹_› | exact @Bl.DualWeylPullback.goal1 O K ‹_› ‹_› | exact @Bl.DualWeylPullback.goal1 O K ‹_› | exact @Bl.DualWeylPullback.goal1 O K | exact @Bl.DualWeylPullback.goal1 O
 
 /- English proof (translation)
-Establish `hwK : algebraMap O K w ≠ 0`. Introduce `h`. Conclude with `hw.ne_zero ((IsFractionRing.injective O K) (by rw [h, map_zero]))`. Establish `key : ∀ n : ℕ, ∀ F : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K, w ^ n • F ∈ H0 O m mu Λ → z * F ∈ H0 O m (mu + ze) Λ → F ∈ H0 O m mu Λ`. Introduce `n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => intro F h _`. Simplify using `using h`. Consider the case `succ n ih`. Introduce `F h1 h2`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ih F _ h2` to reduce the goal to its premises. Establish `hX : (w ^ (n + 1) • F) * z = w • (w ^ n • (z * F))`. Rewrite using `[smul_mul_assoc, pow_succ', mul_smul, mul_comm F z]`. Break down `hCD O K w hw m mu ze Λ hΛ hmu hze _ h1 z hz ⟨_, Submodule.smul_mem _ _ h2, hX⟩ with ⟨F', hF', he⟩ | h` into its components or cases. Establish `: w ^ n • F = F'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[pow_succ', mul_smul, smulO_eq w, smulO_eq w F']`. Conclude with `smul_right_injective _ hwK he`. Rewrite using `[this]`. Conclude with `hF'`. Conclude with `absurd h hprim`.
-
-Take `⟨g, hg, rfl⟩` from `hΛ`. Take `⟨n, hn⟩` from `exists_pow_mem w hw m mu hmu g hg F hF`. Conclude with `key n F hn hzF`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem iso_one (hCD : CartanDomain) (w : O) (hw : Irreducible w) (m : ℕ) (mu ze : Fin (m + 1) → ℤ) (hmu : Antitone mu)
     (hze : Antitone ze) (Λ : Submodule O (Fin (m + 1) → K)) (hΛ : IsLattice O Λ)
@@ -79,35 +77,33 @@ theorem iso_one (hCD : CartanDomain) (w : O) (hw : Irreducible w) (m : ℕ) (mu 
   exact key n F hn hzF
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Establish `hΛ'` using `hΛ`. Take `⟨g, hg, rfl⟩` from `hΛ`. Establish `hsum : Antitone (mu + ze)` using `hmu.add hze`. Take `⟨B, -, hB1, hB3, hB2⟩` from `la_basis hinj m mu g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨B', -, hB1', hB3', hB2'⟩` from `la_basis hinj m (mu + ze) g hg`. Rewrite `hB1` using `[← H0_eq_twisted_nabla (la_indep hinj) m mu hmu g hg]`. Rewrite `hB1'` using `[← H0_eq_twisted_nabla (la_indep hinj) m (mu + ze) hsum g hg]`. Establish `: Fintype ↥(ssIdx (m + 1) (m + 1) (nuOf mu))` using `(sSIdxFinite _ _ _).fintype`. Establish `: Fintype ↥(ssIdx (m + 1) (m + 1) (nuOf (mu + ze)))` using `(sSIdxFinite _ _ _).fintype`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b : Module.Basis _ K (dualWeyl K (m + 1) (m + 1) (nuOf mu))` to `(Module.Basis.span hB3).map (LinearEquiv.ofEq _ _ hB2)`. Set `b' : Module.Basis _ K (dualWeyl K (m + 1) (m + 1) (nuOf (mu + ze)))` to `(Module.Basis.span hB3').map (LinearEquiv.ofEq _ _ hB2')`. Establish `hb : ∀ i, (b i : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K) = B i`. Introduce `i`. Simplify using `[b, Module.Basis.span_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hb' : ∀ i, (b' i : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K) = B' i`. Introduce `i`. Simplify using `[b', Module.Basis.span_apply]`. Establish `hmem : ∀ F : dualWeyl K (m + 1) (m + 1) (nuOf mu), F ∈ Submodule.span O (Set.range b) ↔ (F : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K) ∈ H0 O m mu (colSpan O g)`. Introduce `F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (Submodule.span O (Set.range b)).map ((dualWeyl K (m + 1) (m + 1) (nuOf mu)).subtype.restrictScalars O) = H0 O m mu (colSpan O g)`. Rewrite using `[Submodule.map_span, ← Set.range_comp, ← hB1]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `hb i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨F, h, rfl⟩`. Introduce and unpack `⟨F', h, he⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: F' = F` using `Subtype.ext he`. Rewrite using `[← this]` and apply the resulting hypothesis. Establish `hmem' : ∀ F : dualWeyl K (m + 1) (m + 1) (nuOf (mu + ze)), F ∈ Submodule.span O (Set.range b') ↔ (F : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K) ∈ H0 O m (mu + ze) (colSpan O g)`. Introduce `F`. Establish `e : (Submodule.span O (Set.range b')).map ((dualWeyl K (m + 1) (m + 1) (nuOf (mu + ze))).subtype.restrictScalars O) = H0 O m (mu + ze) (colSpan O g)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_span, ← Set.range_comp, ← hB1']`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `hb' i`. Rewrite using `[← e]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨F, h, rfl⟩`. Introduce and unpack `⟨F', h, he⟩`. Establish `: F' = F` using `Subtype.ext he`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← this]` and apply the resulting hypothesis. Establish `hzK : z ∈ dualWeyl K (m + 1) (m + 1) (nuOf ze)` using `la_nablaLTw_le m ze g hg z (H0_le_twisted_nabla m ze hze g hg hz)`. Set `io : dualWeyl K (m + 1) (m + 1) (nuOf mu) →ₗ[K] dualWeyl K (m + 1) (m + 1) (nuOf (mu + ze))` to `LinearMap.codRestrict _ ((LinearMap.mulLeft K z) ∘ₗ (dualWeyl K (m + 1) (m + 1) (nuOf mu)).subtype) (by`. Introduce `F`. Rewrite using `[nuOf_add mu ze hmu hze, add_comm (nuOf mu) (nuOf ze)]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `dualWeyl_mul K _ _ _ _ hzK F.2)`. Establish `hio : ∀ F, (io F : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K) = z * F` using `fun F => rfl`. Take `⟨ret, hr1, hr2⟩` from `KP.latRetract b b' io (by`. Introduce `F`. Rewrite using `[hmem, hmem', hio]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `iso_one hCD w hw m mu ze hmu hze _ hΛ' z hz hprim F F.2 h`. Introduce `h`. Rewrite using `[hCO O K m mu ze _ hΛ' hmu hze]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.subset_span ⟨F, h, z, hz, mul_comm _ _⟩)`. Take `⟨ρ, hρ⟩` from `LinearMap.exists_extend ((dualWeyl K (m + 1) (m + 1) (nuOf mu)).subtype ∘ₗ ret)`. Establish `hρ' : ∀ G : dualWeyl K (m + 1) (m + 1) (nuOf (mu + ze)), ρ (G : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K) = (ret G : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K)` using `fun G => LinearMap.congr_fun hρ G`. Use `⟨ρ, ?_, ?_⟩` and prove the remaining obligations. Introduce `G hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hGK : G ∈ dualWeyl K (m + 1) (m + 1) (nuOf (mu + ze))` using `la_nablaLTw_le m _ g hg G (H0_le_twisted_nabla m _ hsum g hg hG)`. Rewrite using `[hρ' ⟨G, hGK⟩, ← hmem]`. Conclude with `hr2 _ ((hmem' ⟨G, hGK⟩).2 hG)`. Introduce `F hF`. Use `hρ' (io ⟨F, hF⟩)` as an intermediate fact.
-
-Rewrite `this` using `[hio]`. Rewrite using `[this, hr1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem retract_one (hCD : CartanDomain) (hCO : CartanOnto) (w : O) (hw : Irreducible w) (m : ℕ)
     (mu ze : Fin (m + 1) → ℤ) (hmu : Antitone mu)
@@ -203,19 +199,17 @@ theorem retract_one (hCD : CartanDomain) (hCO : CartanOnto) (w : O) (hw : Irredu
 end One
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `KP.tensorMap (K := K) (S := S) (α := Fin k × Fin n) (fun s => (blockEmb K (k := k) (n := n) s).toLinearMap ∘ₗ ρ s)`. Establish `hT' : ∀ P : S → MvPolynomial (Fin k × Fin n) K, T (∏ s, blockEmb K s (P s)) = ∏ s, blockEmb K s (ρ s (P s))` using `fun P => hT P`. Establish `hA : ∀ G ∈ tensorLat O K Np, T G ∈ tensorLat O K N`. Introduce `G hG`. Unfold `tensorLat at hG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `Submodule.span_induction (p := fun G _ => T G ∈ tensorLat O K N) ?_ ?_ ?_ ?_ hG` and prove the remaining obligations. Introduce and unpack `_ ⟨P, hP, rfl⟩`. Rewrite using `[hT']`. Conclude with `Submodule.subset_span ⟨fun s => ρ s (P s), fun s => h1 s _ (hP s), rfl⟩`. Rewrite using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.zero_mem _`. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Introduce `c x _ hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← algebraMap_smul K c x, map_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hB : ∀ F ∈ tensorLat K K V, T ((∏ s, blockEmb K s (z s)) * F) = F`. Introduce `F hF`. Unfold `tensorLat at hF`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.span_induction (p := fun F _ => T ((∏ s, blockEmb K s (z s)) * F) = F) ?_ ?_ ?_ ?_ hF` and prove the remaining obligations. Introduce and unpack `_ ⟨P, hP, rfl⟩`. Rewrite using `[← Finset.prod_mul_distrib]`. Establish `: (∏ s, blockEmb K s (z s) * blockEmb K s (P s)) = ∏ s, blockEmb K s (z s * P s)` using `Finset.prod_congr rfl fun s _ => (map_mul _ _ _).symm`. Rewrite using `[this, hT']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.prod_congr rfl fun s _ => by rw [h2 s _ (hP s)]`. Rewrite using `[mul_zero, map_zero]`. Introduce `x y _ _ hx hy`. Rewrite using `[mul_add, map_add, hx, hy]`. Introduce `c x _ hx`.
-
-Rewrite using `[mul_smul_comm, map_smul, hx]`. Rewrite using `[← hB F hF]`. Conclude with `hA _ hzF`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iso_ten {O K : Type} [CommRing O] [Field K] [Algebra O K] {S : Type} [Fintype S] [DecidableEq S] {k n : ℕ}
     (V : S → Submodule K (MvPolynomial (Fin k × Fin n) K)) (N Np : S → Submodule O (MvPolynomial (Fin k × Fin n) K))
@@ -260,7 +254,7 @@ theorem iso_ten {O K : Type} [CommRing O] [Field K] [Algebra O K] {S : Type} [Fi
   exact hA _ hzF
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ w hw n' m mu ze hmu hze M hM z hz hprim F hF hzF`. Use `choose ρ hρ1 hρ2 using fun s => retract_one hCD hCO w hw m (mu s) (ze s) (hmu s) (hze s) (M s) (hM s) (z s) (hz s) (hprim s)`. Conclude with `iso_ten (fun s => dualWeyl K (m + 1) (m + 1) (nuOf (mu s))) (fun s => H0 O m (mu s) (M s)) (fun s => H0 O m (mu s + ze s) (M s)) z ρ hρ1 hρ2 F hF hzF`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cloudIso (hCD : CartanDomain) (hCO : CartanOnto) : CloudIsoP := by
   classical

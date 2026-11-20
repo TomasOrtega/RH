@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Substitute `h1 h2 h3` using the available equality. Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Establish `hk' : (k : ℂ) ≠ 0` using `by exact_mod_cast hk.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 private theorem alg {g e c k : ℝ} (hc : 0 < c) (hk : 0 < k) {A B C S K : ℂ} (h1 : A = g * (S + e * K)) (h2 : B = c * S) (h3 : C = k * K) :
     A = ((g / c : ℝ) : ℂ) * B + ((g * e / k : ℝ) : ℂ) * C := by
@@ -17,11 +17,11 @@ private theorem alg {g e c k : ℝ} (hc : 0 < c) (hk : 0 < k) {A B C S K : ℂ} 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Unfold `TFId0`. Introduce `F iF iN Δ D hD x₀ hx`. Take `⟨cG, hG⟩` from `@sideG F iF iN Δ D hD`. Take `⟨e, hG⟩` from `hG`. Take `⟨cK, hK⟩` from `@sideK F iF iN Δ D hD`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hS⟩` from `@split_side_identity_unitary F iF iN Δ D hD x₀ hx`. Take `⟨x, hS⟩` from `hS`. Take `⟨cS, hS⟩` from `hS`. Use `⟨n, x, cG / cS, cG * e / cK, hS.1, hS.2.1, div_pos hG.1 hS.2.2.1, ?_⟩` and prove the remaining obligations. Introduce `VG VS VK a1 a2 a3 a4 a5 a6 a7 a8 a9 ch BG s BS BK hBG hBS hBK t ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `alg hS.2.2.1 hK.1 (@hG.2 VG a1 a2 a3 ch BG s hBG t ht) (@hS.2.2.2 VS a4 a5 a6 ch BS hBS t ht) (@hK.2 VK a7 a8 a9 ch BK hBK t ht)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Glob.tFId0 : TFId0 := by
   unfold TFId0

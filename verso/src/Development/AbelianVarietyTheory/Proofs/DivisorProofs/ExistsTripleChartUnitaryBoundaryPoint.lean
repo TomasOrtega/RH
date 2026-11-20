@@ -10,7 +10,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UChart
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_tripleChart_unitary_boundary_pointRigid Xo c φ hpq hφ hns zs i OZ N d J π j BD hP hS x hx`.
+A detailed English derivation is pending.
 -/
 theorem uPre_of_boundary {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)) (hpq : 1 ≤ Dw.p + Dw.q)

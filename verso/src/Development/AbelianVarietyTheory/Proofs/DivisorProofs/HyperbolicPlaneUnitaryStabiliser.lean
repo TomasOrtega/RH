@@ -31,11 +31,9 @@ open Formalism.UG (cT UJ hform stabGL)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `choose N hN0 hNv using fun i => hN (v i)`. Set `K : AddSubgroup (Fin n → A)` to `AddSubgroup.pi Set.univ fun _ => R.toAddSubgroup`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 (isCompact_univ_pi fun _ => hc)`. Establish `hv : ((∏ i, N i : ℕ) : A) • v ∈ K` using `fun i _ => by`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ i), Pi.smul_apply, smul_eq_mul, Nat.cast_mul, mul_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_mem (natCast_mem R _) (hNv i)`. Set `U` to `L.toAddSubgroup.addSubgroupOf K`. Use `haveI : Finite (K ⧸ U) := AddSubgroup.quotient_finite_of_isOpen U (hL.preimage continuous_subtype_val)`. Use `⟨U.index * ∏ i, N i, mul_ne_zero AddSubgroup.index_ne_zero_of_finite (Finset.prod_ne_zero_iff.2 fun i _ => hN0 i), ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, mul_smul, Nat.cast_smul_eq_nsmul]`.
-
-Conclude with `U.nsmul_index_mem ⟨_, hv⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_smul_mem {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] {R : Subring A}
     (hc : IsCompact (R : Set A)) (hN : ∀ a : A, ∃ N : ℕ, N ≠ 0 ∧ (N : A) * a ∈ R) {n : ℕ} {L : Submodule R (Fin n → A)}
@@ -54,7 +52,7 @@ theorem exists_nat_smul_mem {A : Type} [CommRing A] [TopologicalSpace A] [IsTopo
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `[hform, JR, map_sum, sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_map (R : Type) [CommRing R] [Algebra F R] {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     hform (sigR R σ) (JR R J) (fun i => inclR R (x i)) (fun i => inclR R (y i)) =
@@ -62,19 +60,17 @@ theorem hform_map (R : Type) [CommRing R] [Algebra F R] {n : ℕ} (J : Matrix (F
   simp [hform, JR, map_sum, sigR, inclR]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Af F ⊗[F] E) := IsModuleTopology.isTopologicalRing (Af F) _`. Use `haveI : T2Space (Af F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (Af F)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : T2Space (Af F ⊗[F] E) := e.isEmbedding.t2Space`. Take `⟨R, ι, hι, hc, ho, hR, hN⟩` from `GlobalTheory.T.exists_maximal_order_finite_adeles F E σ`. Establish `hm : ∀ a, ι.symm a ∈ R ↔ a ∈ {a : FiniteAdeleRing (𝓞 E) E | ∀ P : HeightOneSpectrum (𝓞 E), Valued.v (a P) ≤ 1}` using `fun a => by rw [hι, ι.apply_symm_apply]; rfl`. Take `⟨hB, hQ, hS⟩` from `GlobalTheory.T.finite_adele_order_bezout E _ (fun _ => Iff.rfl)`. Establish `hσ' : ∀ a, sigR (Af F) σ (sigR (Af F) σ a) = a` using `fun a => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, hσ]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `hu : ∀ N : ℕ, N ≠ 0 → IsUnit (N : Af F ⊗[F] E)` using `fun N h => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using (isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 h : (N : E) ≠ 0)).map (inclR (F := F) (Af F))`. Establish `hJ' : ∀ i j, sigR (Af F) σ (JR (F` using `F) (Af F) J j i) = JR (F := F) (Af F) J i j := fun i j => by`. Simplify using `[sigR, JR, inclR, hJ.1]`. Take `⟨L, hfg, hLo, hLc, hL, hE, hmax⟩` from `GlobalTheory.T.exists_self_dual_lattice_adelic _ (sigR (Af F) σ) hσ' R hc ho hR hN hu n (JR (Af F) J) hJ' (by`. Rewrite using `[show JR (F := F) (Af F) J = (inclR (F := F) (Af F)).mapMatrix J from rfl, ← RingHom.map_det]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isUnit_iff_ne_zero.2 hJ.2).map _)`. Establish `hfull : ∀ v, ∃ c : (Af F ⊗[F] E)ˣ, c.1 • v ∈ L` using `fun v => by`. Take `⟨N, hN0, h⟩` from `exists_nat_smul_mem hc hN hLo v`. Conclude with `⟨(hu N hN0).unit, h⟩`. Take `⟨h1, h2⟩` from `GlobalTheory.EvenLatIwasawa.isOpen_isCompact_stab (J := JR (Af F) J) (GlobalTheory.AdelicUnitaryTop.continuous_sigR (Af F) σ) hfg hfull hLo hLc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨(stabGL L).subgroupOf _, h1, h2, fun g => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.EvenLatIwasawa.iwasawa_line (x := fun i => inclR (Af F) (x i)) (y := fun i => inclR (Af F) (y i)) hσ' hJ' hR (fun a b => ?_) (fun p hp q hq => ?_) (fun c hc => ?_) hL hE hfg hfull hmax (by rw [hform_map, hxx, map_zero]) (by rw [hform_map, hxy, map_one]) g.2).elim fu …` and prove the remaining obligations. Take `⟨u, hu, v, hv, r, hr, r', hr', e1, e2⟩` from `hB (ι a) (ι b)`. Conclude with `⟨_, (hm u).2 hu, _, (hm v).2 hv, _, (hm r).2 hr, _, (hm r').2 hr', ι.injective (by simpa using e1), ι.injective (by simpa using e2)⟩`. Take `⟨u, hu, v, hv, r, hr, r', hr', e1, e2⟩` from `hQ (ι p) ((hι p).1 hp) (ι q) ((hι q).1 hq)`.
-
-Conclude with `⟨_, (hm u).2 hu, _, (hm v).2 hv, _, (hm r).2 hr, _, (hm r').2 hr', ι.injective (by simpa using e1), ι.injective (by simpa using e2)⟩`. Take `⟨u, hu, v, hv, e1, e2, h⟩` from `hS (ι c) ((hι c).1 hc)`. Use `⟨_, (hm u).2 hu, _, (hm v).2 hv, ι.injective (by simpa using e1), ι.injective (by simpa using e2), fun m hm1 m' hm' e3 a ha => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, e4⟩` from `h _ ((hι m).1 hm1) _ ((hι m').1 hm') (by rw [← map_mul, e3, map_one]) _ ((hι a).1 ha)`. Conclude with `⟨_, (hm d).2 hd, ι.injective (by simpa using e4)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fin_iwasawa (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) {x y : Fin n → E}
     (hxx : hform (σ : E →+* E) J x x = 0) (hxy : hform (σ : E →+* E) J x y = 1) :
@@ -125,25 +121,23 @@ theorem fin_iwasawa (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (
     exact ⟨_, (hm d).2 hd, ι.injective (by simpa using e4)⟩
 
 /- English proof (translation)
-Take `⟨K, hKo, hKc, hK⟩` from `fin_iwasawa hσ hJ hxx hxy`. Use `⟨K.map (ofFin σ J), by rw [Subgroup.coe_map]; exact hKc.image (continuous_ofFin σ J), ?_, ⟨K.comap (projFin σ J), hKo.preimage (continuous_projFin σ J), fun g hg => ⟨_, hg.1, ?_⟩⟩, fun g => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, -, rfl⟩`. Conclude with `mem_finPts.2 (by simp)`. Conclude with `ext_inf_fin σ J (by simp [mem_finPts.1 hg.2]) (by simp)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `C : Matrix (Fin n) (Fin 1) E` to `Matrix.of fun i _ => x i`. Set `D : Matrix (Fin 1) (Fin n) E` to `Matrix.of fun _ j => ∑ i, σ (y i) * J i j`. Establish `hD : D * C = 1`. Use `GlobalTheory.EvenLatIwasawa.hform_swap (σ := (σ : E →+* E)) hσ hJ.1 x y` as an intermediate fact. Rewrite `this` using `[hxy, map_one, hform, Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i j, Matrix.one_apply_eq, ← this]`. Simplify using `[D, C, Matrix.mul_apply, Finset.sum_mul]`. Establish `hCC : cT (σ : E →+* E) C * J * C = 0`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.zero_apply, ← hxx, hform, Finset.sum_comm]`. Simplify using `[C, cT, Matrix.mul_apply, Finset.sum_mul]`. Establish `hloc : ∀ w : InfinitePlace F, ∃ k ∈ stabArch σ J w (c w), GlobalTheory.EisMaxCompare.Keeps w.Completion C (projArch σ J w g * k⁻¹)` using `fun w => by`. Take `⟨ε, hε⟩` from `hc w`. Establish `h0 : cT (sigR w.Completion σ) (C.map (inclR (F` using `F) w.Completion)) * JR (F := F) w.Completion J * C.map (inclR (F := F) w.Completion) = 0 := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.cT_map (σ : E →+* E) _ _ (fun x => by simp [sigR, inclR]), JR, ← Matrix.map_mul, ← Matrix.map_mul, hCC, Matrix.map_zero _ (map_zero _)]`. Take `⟨k, hk, hk', β, hβ⟩` from `GlobalTheory.Core.Rk.IwIso.local_at_arch hcm J w _ ε hε _ h0 (matHom w.Completion σ J (projArch σ J w g)) (projArch σ J w g).2`. Conclude with `⟨⟨k, hk⟩, GlobalTheory.Core.Rk.IwIso.mem_stabArch_of σ J w _ ⟨k, hk⟩ hk', β, hβ⟩`. Use `choose kk hkk hβ using hloc`. Take `⟨k₂, hk₂, s, hs⟩` from `hK (projFin σ J g)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `k` to `ofInf σ J (embArchPi σ J kk)`. Establish `hp : g * (k * ofFin σ J k₂)⁻¹ ∈ GlobalTheory.UAut.parFlag σ J C fun _ => 0`. Use `GlobalTheory.EisMaxCompare.mem_parFlag_of_local hD _ (fun w => ?_) fun v => ?_` and prove the remaining obligations. Simplify `hβ w` using `[k]`. Establish `e : proj σ J v (g * (k * ofFin σ J k₂)⁻¹) = projFinLoc σ J v (projFin σ J g * k₂⁻¹)` using `by simp [k]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[e]`. Set `φ : Af F ⊗[F] E →+* Fv F v ⊗[F] E` to `(Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F E)).toRingHom`. Establish `hφ : ∀ a, φ (inclR (Af F) a) = inclR _ a` using `fun a => by simp [φ, inclR]`. Use `⟨Matrix.of fun _ _ => φ s, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congrArg φ (congrFun hs i)` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, hφ, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, C, Matrix.of_apply, Fin.sum_univ_one]`. Rewrite using `[mul_comm _ (φ s), ← this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨B, hB⟩` from `(GlobalTheory.IndefiniteRowSideFullHecke.DeterminantHeightFlags.mem_parFlag_iff σ J hD _).1 hp`. Use `⟨_, Matrix.GeneralLinearGroup.det B, ?_, k, GlobalTheory.UAut.mem_majCpt.2 ⟨mem_infPts.2 (by simp [k]), fun w => by` and prove the remaining obligations. Simplify `hkk w⟩, _, ⟨k₂, hk₂, rfl⟩, (inv_mul_cancel_right _ _).symm⟩` using `[k]`. Use function extensionality and compare the values at `i`. Use `congrFun (congrFun hB i) 0` as an intermediate fact.
-
-Simplify using `only [Matrix.mul_apply, Fin.sum_univ_one] at this`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_one, Pi.smul_apply, smul_eq_mul, mul_comm]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelic_iwasawa (hcm : IsCMExt F E σ) (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     {x y : Fin n → E} (hxx : hform (σ : E →+* E) J x x = 0) (hxy : hform (σ : E →+* E) J x y = 1)
@@ -209,11 +203,11 @@ theorem adelic_iwasawa (hcm : IsCMExt F E σ) (hσ : ∀ x, σ (σ x) = x) {n : 
   exact this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hJ₁ hJ M hM hML _ r Xf Yf _ X' Y' hW hX _ _ _ _ _ _ K₁ hK₁ _ _`. Take `⟨K, hKi, hKc, hKe⟩` from `GlobalTheory.T.hyperbolic_plane_isotropic_basis F E σ hcm hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hJ₁ hJ M hM hML K₁ hK₁.1.1 hK₁.1.2`. Take `⟨c, hc, hKle⟩` from `GlobalTheory.CptMajorant.exists_frame_le_majCpt F E σ hcm n _ hJ K hKi hKc`. Establish `hmax` using `GlobalTheory.UAut.isMaxCpt_majCpt hcm hc`. Establish `key : ∀ Z : Matrix (Fin n) (Fin (r + 1)) E, hform (σ : E →+* E) (c₀ • W.J.map σ) H.x (fun k => Z k 0) = (cT (σ : E →+* E) X' * (c₀ • W.J.map σ) * Z) 0 0` using `fun Z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hform, Finset.sum_comm]`. Simplify using `only [cT, Matrix.mul_apply, Finset.sum_mul, Matrix.transpose_apply, Matrix.map_apply, hX]`. Take `⟨Kf, h1, h2, h3, h4⟩` from `adelic_iwasawa hcm hσ hJ (x := H.x) (y := fun k => Y' k 0) (by have := key X'; rw [hW.1, funext hX] at this; exact this) (by rw [key, hW.3, Matrix.one_apply_eq]) hc`. Use `⟨_, hmax, fun y hy => hKle (hKe y hy), GlobalTheory.T.hyperbolic_plane_complement_decomposition F E σ hcm hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hJ₁ hJ M hM hML r X' Y' hW hX K₁ hK₁ _ hmax.1.1 hmax.1.2 fun y hy => hKle (hKe y hy), Kf, h1, h2, h3, fun g => ?_⟩` and prove the remaining obligations. Take `⟨p, t, ht, h⟩` from `h4 g`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `GlobalTheory.T.hyperbolic_plane_witt_index F E σ hcm hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hJ₁ hJ M hM hML r X' Y' hW hX p t ht`. Conclude with `⟨t, y, p, hy, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iwasawa : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →

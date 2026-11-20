@@ -17,7 +17,7 @@ open GlobalTheory.Mem.R3.RowAd
 variable (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px)
 
 /- English proof (translation)
-Take `⟨hs, -, h2, -⟩` from `hI.spaces`. Express the relevant statement in the definitionally equal form `X.B.sp.X'.gram = 1`. Rewrite using `[h2]`. Use `Matrix.ext fun i i' => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ i i').trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gram_X'_eq_one (hI : I.Ok) : X.toD7.sp.X'.gram = 1 := by
   obtain ⟨hs, -, h2, -⟩ := hI.spaces
@@ -27,7 +27,7 @@ theorem gram_X'_eq_one (hI : I.Ok) : X.toD7.sp.X'.gram = 1 := by
   simp [Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]
 
 /- English proof (translation)
-Unfold `ptE`. Rewrite using `[Subgroup.coe_mul, map_mul, map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ptE_mul (h k : Bridge.Gf X.toD7.sp.X') : ptE X (h * k) = ptE X h * ptE X k := by
   unfold ptE
@@ -35,7 +35,7 @@ theorem ptE_mul (h k : Bridge.Gf X.toD7.sp.X') : ptE X (h * k) = ptE X h * ptE X
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[ColAd.finN_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ptE_finHom (g : GA X.toD7 X.toD7.sp.X') :
     ptE X ⟨finHom X.toD7.sp.X' g, g, rfl⟩ = ColAd.finN X.toD7.sp.X' (rank_X' X) g := by
@@ -45,7 +45,7 @@ theorem ptE_finHom (g : GA X.toD7 X.toD7.sp.X') :
   rfl
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h.2`. Establish `e : h = ⟨finHom X.toD7.sp.X' g, g, rfl⟩` using `Subtype.ext hg.symm`. Rewrite using `[e, ptE_finHom]`. Conclude with `ColAd.finN_mem (rank_X' X) (gram_X'_eq_one X I hI) g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptE_mem_UAd (hI : I.Ok) (h : Bridge.Gf X.toD7.sp.X') :
     ptE X h ∈ Formalism.L2.Col.UAd X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) := by
@@ -62,11 +62,9 @@ open GlobalTheory.Mem.R3.RowAd
 variable (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px)
 
 /- English proof (translation)
-Establish `hh` using `ptE_mem_UAd X I hI h`. Establish `hq` using `ptE_mem_UAd X I hI q`. Unfold `decoAd Formalism.L2.Col.decoOf`. Rewrite using `[ptE_mul]`. Use `split_ifs with h1 h2 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Formalism.L2.Col.DecoSet.smul_val]`. Conclude with `ColAd.LevGrp.decoRaw_mul_levelIwahori_reduction X.toD7.sp.cm (ptE X h) (ptE X q) hz`. Conclude with `absurd (Formalism.L2.Col.decorated_lattice_exists X.toD7.sp.cm _ _ _ _ hh) h2`. Conclude with `absurd (Formalism.L2.Col.decorated_lattice_exists X.toD7.sp.cm _ _ _ _ (mul_mem hh hq)) h1`.
-
-Conclude with `absurd (Formalism.L2.Col.decorated_lattice_exists X.toD7.sp.cm _ _ _ _ (mul_mem hh hq)) h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decoAd_mul (hI : I.Ok) {U : Set I.ι} (t : TupU I U) (h q : Bridge.Gf X.toD7.sp.X')
     (hz : ptE X q ∈ Formalism.L2.Col.J0 X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅) :
@@ -95,7 +93,7 @@ open GlobalTheory.Mem.R3.RowAd
 variable (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px)
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Use `⟨Units.map (Matrix.reindexAlgEquiv (Formalism.L2.Herm.intAf F E) (Formalism.L2.Herm.intAf F E) e).toMonoidHom y, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[Formalism.L2.DIV.frGL, Formalism.L2.DIV.intGL]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -116,9 +114,9 @@ open GlobalTheory.Mem.R3.RowAd
 variable (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px)
 
 /- English proof (translation)
-Use `⟨⟨ptE_mem_UAd X I hI _, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hSt` using `Formalism.L2.DIV.parLev_St (RowAct.parLev_of_Q X.toD7.sp.X' L.βX (L.datXt t) q)`. Establish `e : Formalism.L2.DIV.St L.βX = Formalism.L2.DIV.St 1` using `by rw [hL.beta.2]`. Rewrite `hSt` using `[e]`. Conclude with `reindex_mem_St_one _ hSt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.mem_iInf.2 fun P => Subgroup.mem_iInf.2 fun hP => ?_` and prove the remaining obligations. Conclude with `absurd hP (Finset.notMem_empty _)`.
+A detailed English derivation is pending.
 -/
 theorem unitaryFiniteAdelicPointAsMatrix_mem_flagIwahori (hI : I.Ok) {U : Set I.ι} (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hL : LevOf X I U L) (t : TupU I U)
     (q : (levEnv X.toD7.sp.X' L.βX (L.datXt t)).Q) :
@@ -137,11 +135,11 @@ namespace GlobalTheory.Mem.R3.RowDeco
 open GlobalTheory.Mem.R3.RowAd
 
 /- English proof (translation)
-Substitute `hβ` using the available equality. Take `⟨y, rfl⟩` from `hx`. Establish `hy : Units.map (Matrix.reindexAlgEquiv (E ⊗[F] Formalism.L2.Herm.Af F) (E ⊗[F] Formalism.L2.Herm.Af F) e).toMonoidHom (Formalism.L2.DIV.frGL 1 y) = Formalism.L2.DIV.frGL 1 (Units.map (Matrix.reindexAlgEquiv (Formalism.L2.Herm.intAf F E) (Formalism.L2.Herm.intAf F E) e).toMonoidHo …`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `[Formalism.L2.DIV.frGL, Formalism.L2.DIV.intGL]`. Both sides reduce to the same expression. Establish `hred : ∀ (z : GL (Fin b) (E ⊗[F] Formalism.L2.Herm.Af F)) (hz : z ∈ Formalism.L2.DIV.St 1) (y' : GL (Fin b) (Formalism.L2.Herm.intAf F E)) (hzy : Formalism.L2.DIV.frGL 1 y' = z), Formalism.L2.DIV.redAt 1 PP ⟨z, hz⟩ = Formalism.UG.bc (Formalism.L2.DIV.resS F PP) y'`. Introduce `z hz y' hzy`. Substitute `hzy` using the available equality.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `congrArg (Formalism.UG.bc (Formalism.L2.DIV.resS F PP)) (Formalism.L2.DIV.pullFr_frGL 1 y')`. Rewrite using `[hred _ hx' _ hy.symm, Formalism.L2.DIV.redFn_frGL]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem redAt_reindex {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {a b : ℕ} (e : Fin a ≃ Fin b)
     (β : GL (Fin a) (E ⊗[F] Formalism.L2.Herm.Af F)) (hβ : β = 1)
@@ -173,7 +171,7 @@ theorem redAt_reindex {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
 variable (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px)
 
 /- English proof (translation)
-The claim follows from `redAt_reindex (finCongr (rank_X' X)) L.βX hL.beta.2 _ (Formalism.L2.DIV.parLev_St (RowAct.parLev_of_Q X.toD7.sp.X' L.βX (L.datXt t) q)) (Formalism.L2.Col.congruence_subgroup_le_stabilizer _ _ _ hz) w.1`.
+A detailed English derivation is pending.
 -/
 theorem redG_ptE {U : Set I.ι} (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hL : LevOf X I U L) (t : TupU I U)
     (q : (levEnv X.toD7.sp.X' L.βX (L.datXt t)).Q)

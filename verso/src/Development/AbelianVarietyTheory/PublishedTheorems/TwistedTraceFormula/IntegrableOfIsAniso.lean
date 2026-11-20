@@ -20,13 +20,13 @@ namespace GlobalTheory.ThetaMean.Model
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.BesselConvDefinite.isAniso_of_isDefinite _ (Examples₂.posSpace_sigOK _ _) fun _ => .inl rfl`.
+A detailed English derivation is pending.
 -/
 theorem isAniso_posSpace (m : ℕ) : IsAniso (D := D) (Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral m) :=
   GlobalTheory.BesselConvDefinite.isAniso_of_isDefinite _ (Examples₂.posSpace_sigOK _ _) fun _ => .inl rfl
 
 /- English proof (translation)
-Use `⟨⟨fun _ _ => by simp, ⟨⊤, isOpen_univ, fun u _ _ => funext fun w => by simp [heisO]⟩, continuous_const, fun _ _ _ _ _ => contDiff_const⟩, ?_⟩` and prove the remaining obligations. Establish `: Submodule.span ℂ {f : WO S T → ℂ | ∃ k ∈ K, f = ω (k, 1) 0} = ⊥` using `Submodule.span_eq_bot.2 (by rintro _ ⟨k, -, rfl⟩; exact map_zero _)`. Rewrite using `[IsKFinVec, this]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_vec (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ))
     (K : Subgroup (GA D S)) : IsThetaFunO ψ S T 0 ∧ IsKFinVec ω K 0 := by
@@ -38,15 +38,15 @@ theorem zero_vec (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ω : GA D S × 
   infer_instance
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `GlobalTheory.StdAdelicChar.exists_isStdChar D`. Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Set `A : HSp D` to `Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral n`. Set `B : HSp D` to `Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral m`. Establish `h1 : IsHeckeChar D (η ^ m)` using `⟨by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: ((η ^ m : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => η x ^ m` using `by funext x; simp`. Rewrite using `[this]; exact hη.1.1.pow m, fun x => by rw [MonoidHom.pow_apply, hη.1.2 x, one_pow]⟩`. Establish `hr` using `hη.2.2.1`. Establish `h2 : ResEta D (η ^ m) B.rank` using `⟨hr.1, fun e he a => by rw [MonoidHom.pow_apply, hr.2 e he a, pow_one]; rfl⟩`. Establish `h3 : ResEta D 1 (dblSp A).rank` using `⟨hr.1, fun e he a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `he.2.2.1 (idF D a)`. Establish `h5 : Units.map (Algebra.norm (AF D.host.F) : AE D →* AF D.host.F) (idF D a) = a ^ 2` using `Units.ext (by`. Express the relevant statement in the definitionally equal form `Algebra.norm (AF D.host.F) (algebraMap (AF D.host.F) (AE D) a.1) = _`. Use `t2Space_adeleRing' (F := D.host.F)` as an intermediate fact. Establish `: Nontrivial (AF D.host.F)` using `(NumberField.AdeleRing.algebraMap_injective (NumberField.RingOfIntegers D.host.F) D.host.F).nontrivial`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.norm_algebraMap, Module.finrank_baseChange, D.sp.cm.deg2, Units.val_pow_eq_pow_val])`. Rewrite `h4` using `[h5, map_pow]`. Express the relevant statement in the definitionally equal form `(1 : Circle) = e a ^ (n + n)`. Rewrite using `[← two_mul, pow_mul, h4, one_pow]⟩`. Take `⟨ω, hω⟩` from `H D ψ (dblSp A) B 1 (η ^ m) hψ ⟨continuous_const, fun _ => rfl⟩ h1 h3 h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `exists_isMaj A`. Take `⟨μ, 𝓨, hμ⟩` from `exists_isCovolOne D B.rank A.rank`. Conclude with `⟨ψ, A, B, _, ω, a, μ, 𝓨, Measure.haar, rfl, rfl, isAniso_posSpace m, hω, ha, hμ, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hypotheses_inhabited (H : GlobalTheory.Published.WeilRepresentationUnitaryPair) (D : D7) (n m : ℕ) :
     ∃ (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle)
@@ -80,7 +80,7 @@ theorem hypotheses_inhabited (H : GlobalTheory.Published.WeilRepresentationUnita
   exact ⟨ψ, A, B, _, ω, a, μ, 𝓨, Measure.haar, rfl, rfl, isAniso_posSpace m, hω, ha, hμ, inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `integrable_theta hω hf (GlobalTheory.Mem.AnisoQuotient.exists_compact D T hT) g`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_isAniso {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χ χ' : (AE D)ˣ →* Circle}
     {ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hω : IsWeilDatumO ψ S T χ χ' ω) (hT : IsAniso T)
@@ -89,17 +89,17 @@ theorem integrable_of_isAniso {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χ
   integrable_theta hω hf (GlobalTheory.Mem.AnisoQuotient.exists_compact D T hT) g
 
 /- English proof (translation)
-The claim follows from `average_const _ c`.
+A detailed English derivation is pending.
 -/
 theorem average_const_aut (T : HSp D) (ν : Measure (GA D T)) [ν.IsHaarMeasure] (c : ℂ) :
     ⨍ _, c ∂autMeasure T ν = c := average_const _ c
 
 /- English proof (translation)
-Establish `h1 : flat A a (swSec A B ω μ 𝓨 0) (sZero A B) = fun _ _ => 0`. Use function extensionality and compare the values at `s g`. Use `(flatH_apply _ _ _ _).trans ?_` and prove the remaining obligations. Simplify using `[swSec, evZero]`. Establish `h2 : thetaMean ω ν 0 = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Simplify using `[thetaMean, thetaKO, AutomorphicL2Unitary.descend]`. Rewrite using `[h1, h2, smul_zero]`. Use `⟨fun s _ => ⟨fun _ _ _ => rfl, fun g => ?_⟩, fun g => ?_⟩` and prove the remaining obligations. Simplify using `[Eis.EisConv, Eis.CosetConv, Eis.term, summable_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `: Eis.eisSer A (fun _ _ => (0 : ℂ)) g = fun _ => 0`. Use function extensionality and compare the values at `s`. Simplify using `[Eis.eisSer, Eis.eis, Eis.cosetSum, Eis.term]`. Rewrite using `[this]`. Conclude with `GlobalTheory.Cont.holValueAt_const 0 _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conclusion_zero (A B : HSp D) (ω : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ))
     (a : GL (Fin A.rank) (AE D)) (μ : Measure (WO A B)) (𝓨 : Set (WO A B)) (ν : Measure (GA D B)) :

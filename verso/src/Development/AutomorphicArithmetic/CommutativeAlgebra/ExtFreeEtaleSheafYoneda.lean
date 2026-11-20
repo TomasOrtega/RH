@@ -10,7 +10,7 @@ universe w v u
 variable {C : Type u} [Category.{v} C] [Abelian C] [HasDerivedCategory.{w} C]
 
 /- English proof (translation)
-Establish `h` using `(DerivedCategory.quotientCompQhIso C).hom.naturality u`. Establish `e : (DerivedCategory.quotientCompQhIso C).inv.app K ≫ (DerivedCategory.quotientCompQhIso C).hom.app K = 𝟙 _` using `by simp`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc, ← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma Q_map_eq {K L : CochainComplex C ℤ} (u : K ⟶ L) :
     DerivedCategory.Q.map u = (DerivedCategory.quotientCompQhIso C).inv.app K ≫
@@ -28,7 +28,7 @@ private noncomputable def tr {K T : CochainComplex C ℤ} {n : ℤ} (x : Cocycle
   DerivedCategory.Q.map (Cocycle.equivHomShift.symm x) ≫ (DerivedCategory.Q.commShiftIso n).hom.app T
 
 /- English proof (translation)
-Rewrite using `[tr, Q_map_eq, CohomologyClass.toHom_mk]`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma tr_eq {K T : CochainComplex C ℤ} {n : ℤ} (x : Cocycle K T n) :
     tr x = (DerivedCategory.quotientCompQhIso C).inv.app K ≫
@@ -38,14 +38,14 @@ private lemma tr_eq {K T : CochainComplex C ℤ} {n : ℤ} (x : Cocycle K T n) :
   simp only [Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[tr_eq, tr_eq, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma tr_congr {K T : CochainComplex C ℤ} {n : ℤ} {x x' : Cocycle K T n}
     (h : CohomologyClass.mk x = CohomologyClass.mk x') : tr x = tr x' := by
   rw [tr_eq, tr_eq, h]
 
 /- English proof (translation)
-Rewrite `h` using `[tr_eq, tr_eq]`. Establish `h1` using `(cancel_epi _).1 h`. Establish `h2` using `(cancel_mono ((DerivedCategory.quotientCompQhIso C).hom.app (T⟦n⟧) ≫ (DerivedCategory.Q.commShiftIso n).hom.app T)).1 h1`. Conclude with `(CohomologyClass.toHom_bijective K T n).1 ((CochainComplex.IsKInjective.Qh_map_bijective _ (T⟦n⟧)).1 h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma tr_inj {K T : CochainComplex C ℤ} [T.IsKInjective] {n : ℤ} {x x' : Cocycle K T n}
     (h : tr x = tr x') : CohomologyClass.mk x = CohomologyClass.mk x' := by
@@ -55,7 +55,7 @@ private lemma tr_inj {K T : CochainComplex C ℤ} [T.IsKInjective] {n : ℤ} {x 
   exact (CohomologyClass.toHom_bijective K T n).1 ((CochainComplex.IsKInjective.Qh_map_bijective _ (T⟦n⟧)).1 h2)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `(CochainComplex.IsKInjective.Qh_map_bijective ((HomotopyCategory.quotient C _).obj K) (T⟦n⟧)).2 ((DerivedCategory.quotientCompQhIso C).hom.app K ≫ z ≫ (DerivedCategory.Q.commShiftIso n).inv.app T ≫ (DerivedCategory.quotientCompQhIso C).inv.app (T⟦n⟧))`. Take `⟨c, rfl⟩` from `(CohomologyClass.toHom_bijective K T n).2 g`. Take `⟨x, rfl⟩` from `c.mk_surjective`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[tr_eq, hg]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -76,7 +76,7 @@ private noncomputable def dm (A : C) (T : CochainComplex C ℤ) (n : ℤ) (f : A
   (DerivedCategory.singleFunctorIsoCompQ C 0).hom.app A ≫ tr (Cocycle.fromSingleMk f (zero_add n) (n + 1) rfl hf)
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, ← Cocycle.fromSingleMk_sub _ _ _ _ _ hf hf', Cocycle.fromSingleMk_mem_coboundaries_iff _ _ _ _ _ (n - 1) (by lia)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma mk_eq_iff {A : C} {T : CochainComplex C ℤ} {n : ℤ} {f f' : A ⟶ T.X n}
     (hf : f ≫ T.d n (n + 1) = 0) (hf' : f' ≫ T.d n (n + 1) = 0) :
@@ -88,7 +88,7 @@ private lemma mk_eq_iff {A : C} {T : CochainComplex C ℤ} {n : ℤ} {f f' : A �
     Cocycle.fromSingleMk_mem_coboundaries_iff _ _ _ _ _ (n - 1) (by lia)]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private lemma dm_congr {A : C} {T : CochainComplex C ℤ} {n : ℤ} {f f' : A ⟶ T.X n}
     (hf : f ≫ T.d n (n + 1) = 0) (hf' : f' ≫ T.d n (n + 1) = 0) (h : f = f') : dm A T n f hf = dm A T n f' hf' := by
@@ -96,7 +96,7 @@ private lemma dm_congr {A : C} {T : CochainComplex C ℤ} {n : ℤ} {f f' : A �
   rfl
 
 /- English proof (translation)
-Rewrite using `[dm, dm, tr_congr ((mk_eq_iff hf hf').2 h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma dm_eq {A : C} {T : CochainComplex C ℤ} {n : ℤ} {f f' : A ⟶ T.X n}
     (hf : f ≫ T.d n (n + 1) = 0) (hf' : f' ≫ T.d n (n + 1) = 0)
@@ -104,7 +104,7 @@ private lemma dm_eq {A : C} {T : CochainComplex C ℤ} {n : ℤ} {f f' : A ⟶ T
   rw [dm, dm, tr_congr ((mk_eq_iff hf hf').2 h)]
 
 /- English proof (translation)
-Rewrite `h` using `[dm, dm]`. Conclude with `(mk_eq_iff hf hf').1 (tr_inj ((cancel_epi _).1 h))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma dm_inj {A : C} {T : CochainComplex C ℤ} [T.IsKInjective] {n : ℤ} {f f' : A ⟶ T.X n}
     (hf : f ≫ T.d n (n + 1) = 0) (hf' : f' ≫ T.d n (n + 1) = 0)
@@ -113,7 +113,7 @@ private lemma dm_inj {A : C} {T : CochainComplex C ℤ} [T.IsKInjective] {n : �
   exact (mk_eq_iff hf hf').1 (tr_inj ((cancel_epi _).1 h))
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `tr_surj (K := (CochainComplex.singleFunctor C 0).obj A) (T := T) (n := n) ((DerivedCategory.singleFunctorIsoCompQ C 0).inv.app A ≫ z)`. Take `⟨f, hf, rfl⟩` from `Cocycle.fromSingleMk_surjective x n (zero_add n) (n + 1) rfl`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[dm, hx]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma dm_surj {A : C} {T : CochainComplex C ℤ} [T.IsKInjective] {n : ℤ}
     (z : (DerivedCategory.singleFunctor C 0).obj A ⟶ (CategoryTheory.shiftFunctor _ n).obj (DerivedCategory.Q.obj T)) :
@@ -126,7 +126,7 @@ private lemma dm_surj {A : C} {T : CochainComplex C ℤ} [T.IsKInjective] {n : �
   simp
 
 /- English proof (translation)
-Establish `h` using `Cocycle.fromSingleMk_precomp a f (zero_add n) (n + 1) rfl hf`. Rewrite using `[dm, dm, tr, tr, h, Cocycle.equivHomShift_symm_precomp, Functor.map_comp]`. Establish `h2` using `(DerivedCategory.singleFunctorIsoCompQ C 0).hom.naturality a`. Simplify using `only [Category.assoc]`. Conclude with `(by simpa using congrArg (fun t => t ≫ DerivedCategory.Q.map (Cocycle.equivHomShift.symm (Cocycle.fromSingleMk f (zero_add n) (n + 1) rfl hf)) ≫ (DerivedCategory.Q.commShiftIso n).hom.app T) h2.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma dm_pre {A A' : C} (a : A' ⟶ A) {T : CochainComplex C ℤ} {n : ℤ} (f : A ⟶ T.X n)
     (hf : f ≫ T.d n (n + 1) = 0) (hf' : (a ≫ f) ≫ T.d n (n + 1) = 0) :
@@ -138,7 +138,7 @@ private lemma dm_pre {A A' : C} (a : A' ⟶ A) {T : CochainComplex C ℤ} {n : �
   exact (by simpa using congrArg (fun t => t ≫ DerivedCategory.Q.map (Cocycle.equivHomShift.symm (Cocycle.fromSingleMk f (zero_add n) (n + 1) rfl hf)) ≫ (DerivedCategory.Q.commShiftIso n).hom.app T) h2.symm)
 
 /- English proof (translation)
-Establish `h` using `Cocycle.fromSingleMk_postcomp f (zero_add n) (n + 1) rfl hf φ`. Rewrite using `[dm, dm, tr, tr, h, Cocycle.equivHomShift_symm_postcomp, Functor.map_comp]`. Establish `h2` using `(DerivedCategory.Q.commShiftIso n).hom.naturality φ`. Simplify using `only [Category.assoc]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 private lemma dm_post {A : C} {T T' : CochainComplex C ℤ} (φ : T ⟶ T') {n : ℤ} (f : A ⟶ T.X n)
     (hf : f ≫ T.d n (n + 1) = 0) (hf' : (f ≫ φ.f n) ≫ T'.d n (n + 1) = 0) :
@@ -165,7 +165,7 @@ private noncomputable def tau (U : B.Etale) : ((Z0 B q).obj U).obj (op U) :=
   ModuleCat.freeMk (ULift.up (𝟙 U))
 
 /- English proof (translation)
-Establish `h` using `ModuleCat.free_map_apply (R := ULift.{1} (ZMod q)) (uliftFunctor.{1, 0}.map ((yoneda.obj U).map a.op)) (ULift.up (𝟙 U))`. Use `h.trans ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 -/
 private lemma tau_map {U U' : B.Etale} (a : U' ⟶ U) :
     ((((Z0 B q).obj U).map a.op).hom (tau U) : ((Z0 B q).obj U).obj (op U')) = ModuleCat.freeMk (ULift.up a) := by
@@ -174,18 +174,18 @@ private lemma tau_map {U U' : B.Etale} (a : U' ⟶ U) :
   congr 1
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom (η.naturality a.op) x`.
+A detailed English derivation is pending.
 -/
 private lemma nat_ap {M N : B.Etaleᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} (ZMod q))} (η : M ⟶ N) {U U' : B.Etale} (a : U' ⟶ U)
     (x : M.obj (op U)) : (η.app (op U')).hom ((M.map a.op).hom x) = (N.map a.op).hom ((η.app (op U)).hom x) :=
   ConcreteCategory.congr_hom (η.naturality a.op) x
 
 /- English proof (translation)
-Apply `NatTrans.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `V`. Proceed by induction on `V using Opposite.rec with | _ V => ?_`. Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨k⟩`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Establish `e` using `tau_map (q := q) (k : V ⟶ U)`. Establish `h1` using `nat_ap η (k : V ⟶ U) (tau U)`. Establish `h2` using `nat_ap γ (k : V ⟶ U) (tau U)`. Rewrite `h1` using `[e, h]`. Rewrite `h2` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.trans h2.symm`.
+A detailed English derivation is pending.
 -/
 private lemma pre_inj {U : B.Etale} {N : B.Etaleᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} (ZMod q))} {η γ : (Z0 B q).obj U ⟶ N}
     (h : (η.app (op U)).hom (tau U) = (γ.app (op U)).hom (tau U)) : η = γ := by
@@ -206,7 +206,7 @@ private noncomputable def pD {U : B.Etale} {N : B.Etaleᵒᵖ ⥤ ModuleCat.{1} 
   ModuleCat.freeDesc (↾fun k : ULift.{1} (V.unop ⟶ U) => (N.map k.down.op).hom s)
 
 /- English proof (translation)
-The claim follows from `ModuleCat.freeDesc_apply (↾fun k : ULift.{1} (V.unop ⟶ U) => (N.map k.down.op).hom s) (ULift.up k)`.
+A detailed English derivation is pending.
 -/
 private lemma pD_mk {U : B.Etale} {N : B.Etaleᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} (ZMod q))} (s : N.obj (op U))
     (V : B.Etaleᵒᵖ) (k : V.unop ⟶ U) :
@@ -214,7 +214,7 @@ private lemma pD_mk {U : B.Etale} {N : B.Etaleᵒᵖ ⥤ ModuleCat.{1} (ULift.{1
   ModuleCat.freeDesc_apply (↾fun k : ULift.{1} (V.unop ⟶ U) => (N.map k.down.op).hom s) (ULift.up k)
 
 /- English proof (translation)
-Establish `h` using `ModuleCat.free_map_apply (R := ULift.{1} (ZMod q)) (uliftFunctor.{1, 0}.map ((yoneda.obj U).map g)) (ULift.up k)`. Use `h.trans ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 -/
 private lemma fm_map {U : B.Etale} {V V' : B.Etaleᵒᵖ} (g : V ⟶ V') (k : V.unop ⟶ U) :
     ((((Z0 B q).obj U).map g).hom (ModuleCat.freeMk (ULift.up k) : ((Z0 B q).obj U).obj V) : ((Z0 B q).obj U).obj V') =
@@ -224,13 +224,13 @@ private lemma fm_map {U : B.Etale} {V V' : B.Etaleᵒᵖ} (g : V ⟶ V') (k : V.
   congr 1
 
 /- English proof (translation)
-Use `⟨{ app := pD s, naturality := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `V V' g`. Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨k⟩`. Establish `e1` using `fm_map (q := q) g (k : V.unop ⟶ U)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e2` using `pD_mk s V' (g.unop ≫ (k : V.unop ⟶ U))`. Establish `e3` using `pD_mk s V (k : V.unop ⟶ U)`. Express the relevant statement in the definitionally equal form `(pD s V').hom ((((Z0 B q).obj U).map g).hom (ModuleCat.freeMk (ULift.up (k : V.unop ⟶ U)) : ((Z0 B q).obj U).obj V)) = (N.map g).hom ((pD s V).hom (ModuleCat.freeMk (ULift.up (k : V.unop ⟶ U)) : ((Z0 B q).obj U).obj V))`. Use `(congrArg (fun x => (pD s V').hom x) e1).trans (e2.trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun x => (N.map g).hom x) e3.symm)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[op_comp, Functor.map_comp]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(pD s (op U)).hom (ModuleCat.freeMk (ULift.up (𝟙 U)) : ((Z0 B q).obj U).obj (op U)) = s`. Establish `e` using `pD_mk s (op U) (𝟙 U)`. Use `e.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(N.map (𝟙 U).op).hom s = s`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private lemma pre_surj {U : B.Etale} {N : B.Etaleᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} (ZMod q))} (s : N.obj (op U)) :
     ∃ η : (Z0 B q).obj U ⟶ N, (η.app (op U)).hom (tau U) = s := by
@@ -260,7 +260,7 @@ private noncomputable def ev (F : SShv B q) (U : B.Etale) (f : (ZS B q).obj U �
   (f.hom.app (op U)).hom (gen U)
 
 /- English proof (translation)
-Establish `e2` using `Adjunction.homEquiv_unit (sheafificationAdjunction (EtTop B) (ModuleCat.{1} (ULift.{1} (ZMod q)))) (X := (Z0 B q).obj U) (Y := F) (f := f)`. Conclude with `(congrArg (fun η : (Z0 B q).obj U ⟶ F.obj => (η.app (op U)).hom (tau U)) e2).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma ev_eq (F : SShv B q) (U : B.Etale) (f : (ZS B q).obj U ⟶ F) :
     ev F U f = ((((sheafificationAdjunction (EtTop B) (ModuleCat.{1} (ULift.{1} (ZMod q)))).homEquiv ((Z0 B q).obj U) F f).app (op U)).hom (tau U)) := by
@@ -268,9 +268,9 @@ private lemma ev_eq (F : SShv B q) (U : B.Etale) (f : (ZS B q).obj U ⟶ F) :
   exact (congrArg (fun η : (Z0 B q).obj U ⟶ F.obj => (η.app (op U)).hom (tau U)) e2).symm
 
 /- English proof (translation)
-Establish `hA` using `((sheafificationAdjunction (EtTop B) (ModuleCat.{1} (ULift.{1} (ZMod q)))).homEquiv ((Z0 B q).obj U) F).bijective`. Prove the components needed by the constructor for the conclusion. Introduce `f g h`. Rewrite `h` using `[ev_eq, ev_eq]`. Conclude with `hA.1 (pre_inj h)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Take `⟨η, hη⟩` from `pre_surj (N := F.obj) s`. Take `⟨f, rfl⟩` from `hA.2 η`. Conclude with `⟨f, (ev_eq F U f).trans hη⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma ev_bij (F : SShv B q) (U : B.Etale) : Function.Bijective (ev F U) := by
   have hA := ((sheafificationAdjunction (EtTop B) (ModuleCat.{1} (ULift.{1} (ZMod q)))).homEquiv ((Z0 B q).obj U) F).bijective
@@ -296,9 +296,9 @@ private lemma ev_sub (F : SShv B q) (U : B.Etale) (f g : (ZS B q).obj U ⟶ F) :
     ev F U (f - g) = ev F U f - ev F U g := rfl
 
 /- English proof (translation)
-Establish `h` using `toSheafify_naturality (EtTop B) ((Z0 B q).map a)`. Establish `h2` using `ConcreteCategory.congr_hom (congrArg (fun t => t.app (op U')) h) (tau U')`. Establish `h3 : (((Z0 B q).map a).app (op U')).hom (tau U') = (((Z0 B q).obj U).map a.op).hom (tau U)`. Rewrite using `[tau_map]`. Use `(ModuleCat.free_map_apply (R := ULift.{1} (ZMod q)) (uliftFunctor.{1, 0}.map ((yoneda.map a).app (op U'))) (ULift.up (𝟙 U'))).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Establish `h4` using `nat_ap (toSheafify (EtTop B) ((Z0 B q).obj U)) a (tau U)`. Conclude with `h2.symm.trans ((congrArg (fun x => ((toSheafify (EtTop B) ((Z0 B q).obj U)).app (op U')).hom x) h3).trans h4)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma gen_map {U U' : B.Etale} (a : U' ⟶ U) :
     ((((ZS B q).map a).hom.app (op U')).hom (gen U') : Sc ((ZS B q).obj U) U') =
@@ -313,7 +313,7 @@ private lemma gen_map {U U' : B.Etale} (a : U' ⟶ U) :
   exact h2.symm.trans ((congrArg (fun x => ((toSheafify (EtTop B) ((Z0 B q).obj U)).app (op U')).hom x) h3).trans h4)
 
 /- English proof (translation)
-Establish `h` using `nat_ap f.hom a (gen U)`. Use `Eq.trans ?_ h` and prove the remaining obligations. Conclude with `congrArg (fun x => (f.hom.app (op U')).hom x) (gen_map a)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma ev_pre {F : SShv B q} {U U' : B.Etale} (a : U' ⟶ U) (f : (ZS B q).obj U ⟶ F) :
     ev F U' ((ZS B q).map a ≫ f) = (F.obj.map a.op).hom (ev F U f) := by
@@ -325,19 +325,19 @@ private noncomputable def ee (F : SShv B q) (U : B.Etale) : Sc F U → ((ZS B q)
   (Equiv.ofBijective _ (ev_bij F U)).symm
 
 /- English proof (translation)
-The claim follows from `(Equiv.ofBijective _ (ev_bij F U)).apply_symm_apply s`.
+A detailed English derivation is pending.
 -/
 private lemma ev_ee (F : SShv B q) (U : B.Etale) (s : Sc F U) : ev F U (ee F U s) = s :=
   (Equiv.ofBijective _ (ev_bij F U)).apply_symm_apply s
 
 /- English proof (translation)
-The claim follows from `(Equiv.ofBijective _ (ev_bij F U)).symm_apply_apply f`.
+A detailed English derivation is pending.
 -/
 private lemma ee_ev (F : SShv B q) (U : B.Etale) (f : (ZS B q).obj U ⟶ F) : ee F U (ev F U f) = f :=
   (Equiv.ofBijective _ (ev_bij F U)).symm_apply_apply f
 
 /- English proof (translation)
-Apply `(ev_bij G U).1` to reduce the goal to its premises. Rewrite using `[ev_ee, ev_post, ev_ee]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma ee_post {F G : SShv B q} (φ : F ⟶ G) (U : B.Etale) (s : Sc F U) :
     ee G U ((φ.hom.app (op U)).hom s) = ee F U s ≫ φ := by
@@ -345,7 +345,7 @@ private lemma ee_post {F G : SShv B q} (φ : F ⟶ G) (U : B.Etale) (s : Sc F U)
   rw [ev_ee, ev_post, ev_ee]
 
 /- English proof (translation)
-Apply `(ev_bij F U).1` to reduce the goal to its premises. Rewrite using `[ev_ee, ev_sub, ev_ee, ev_ee]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma ee_sub (F : SShv B q) (U : B.Etale) (s s' : Sc F U) :
     ee F U (s - s') = ee F U s - ee F U s' := by
@@ -353,7 +353,7 @@ private lemma ee_sub (F : SShv B q) (U : B.Etale) (s s' : Sc F U) :
   rw [ev_ee, ev_sub, ev_ee, ev_ee]
 
 /- English proof (translation)
-Apply `(ev_bij F U').1` to reduce the goal to its premises. Rewrite using `[ev_ee, ev_pre, ev_ee]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma ee_pre {F : SShv B q} {U U' : B.Etale} (a : U' ⟶ U) (s : Sc F U) :
     ee F U' ((F.obj.map a.op).hom s) = (ZS B q).map a ≫ ee F U s := by
@@ -361,7 +361,7 @@ private lemma ee_pre {F : SShv B q} {U U' : B.Etale} (a : U' ⟶ U) (s : Sc F U)
   rw [ev_ee, ev_pre, ev_ee]
 
 /- English proof (translation)
-Apply `(ev_bij F U).1` to reduce the goal to its premises. Rewrite using `[ev_ee]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma ee_zero (F : SShv B q) (U : B.Etale) : ee F U (0 : Sc F U) = 0 := by
   apply (ev_bij F U).1
@@ -369,7 +369,7 @@ private lemma ee_zero (F : SShv B q) (U : B.Etale) : ee F U (0 : Sc F U) = 0 := 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← ee_post]`. Express the relevant statement in the definitionally equal form `ee (T.X m) U (dS T n m U s) = 0`. Rewrite using `[h, ee_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private lemma ee_closed {T : CochainComplex (SShv B q) ℤ} {n m : ℤ} {U : B.Etale} {s : Sc (T.X n) U}
     (h : dS T n m U s = 0) : ee (T.X n) U s ≫ T.d n m = 0 := by
@@ -383,17 +383,15 @@ end UpperTheory.YonedaTruncation
 
 open UpperTheory.YonedaTruncation in
 /- English proof (translation)
-Introduce `B q`. Use `⟨fun T U n s hs => dm ((ZS B q).obj U) T n (ee (T.X n) U s) (ee_closed hs), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `T U n s hs s' hs' ⟨b, hb⟩`. Use `dm_eq _ _ ⟨ee (T.X (n - 1)) U b, ?_⟩` and prove the remaining obligations. Rewrite using `[← ee_post, ← ee_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (ee (T.X n) U) hb`. Introduce `T hT U n`. Use `⟨fun s hs s' hs' h => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `dm_inj _ _ h`. Use `⟨ev _ U g, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(Equiv.ofBijective _ (ev_bij (T.X n) U)).symm.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ee (T.X n) U (((T.d (n - 1) n).hom.app (op U)).hom (ev _ U g)) = ee (T.X n) U (s - s')`. Rewrite using `[ee_post, ee_ev, ee_sub, hg]`. Take `⟨f, hf, h⟩` from `dm_surj (A := (ZS B q).obj U) (T := T) (n := n) x`. Use `⟨ev _ U f, ?_, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ev _ U (f ≫ T.d n (n + 1)) = 0`. Rewrite using `[hf]`. Both sides reduce to the same expression. Conclude with `(dm_congr _ _ (ee_ev _ U f)).trans h`. Introduce `T U U' a n s hs hs'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ((ZS B q).map a ≫ ee (T.X n) U s) ≫ T.d n (n + 1) = 0`. Rewrite using `[Category.assoc, ee_closed hs, comp_zero]`. Conclude with `(dm_congr _ hc (ee_pre a s)).trans (dm_pre ((ZS B q).map a) _ (ee_closed hs) hc)`. Introduce `T T' φ U n s hs hs'`. Establish `hc : (ee (T.X n) U s ≫ φ.f n) ≫ T'.d n (n + 1) = 0`.
-
-Rewrite using `[Category.assoc, φ.comm, ← Category.assoc, ee_closed hs, zero_comp]`. Conclude with `(dm_congr _ hc (ee_post (φ.f n) U s)).trans (dm_post φ _ (ee_closed hs) hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ext_free_etale_sheaf_yoneda :
     ∀ (B : Scheme.{0}) (q : ℕ), Yon B q := by

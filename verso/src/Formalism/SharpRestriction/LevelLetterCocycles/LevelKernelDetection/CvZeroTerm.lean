@@ -11,9 +11,9 @@ variable {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
 def cv (f : PowerSeries R) (g : ℤ → M) (k : ℤ) : M := ∑ᶠ j : ℕ, coeff j f • g (k - j)
 
 /- English proof (translation)
-Unfold `cv`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `j hj`. Rewrite `hj` using `[Function.mem_support]`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hjN`. Conclude with `hj (by rw [hg _ (by omega), smul_zero])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem cv_eq_sum (f : PowerSeries R) (g : ℤ → M) (m : ℤ) (hg : ∀ k < m, g k = 0) (k : ℤ) (N : ℕ)
     (hN : k - m < N) : cv f g k = ∑ j ∈ Finset.range N, coeff j f • g (k - j) := by
@@ -26,14 +26,14 @@ theorem cv_eq_sum (f : PowerSeries R) (g : ℤ → M) (m : ℤ) (hg : ∀ k < m,
   exact hj (by rw [hg _ (by omega), smul_zero])
 
 /- English proof (translation)
-Rewrite using `[cv_eq_sum f g m hg k 0 (by omega), Finset.sum_range_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cv_low (f : PowerSeries R) (g : ℤ → M) (m : ℤ) (hg : ∀ k < m, g k = 0) (k : ℤ) (hk : k < m) :
     cv f g k = 0 := by
   rw [cv_eq_sum f g m hg k 0 (by omega), Finset.sum_range_zero]
 
 /- English proof (translation)
-Rewrite using `[cv_eq_sum f g 0 hg k N (by omega)]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j hj`. Rewrite using `[PowerSeries.X_pow_dvd_iff.mp hf j (Finset.mem_range.mp hj), zero_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem cv_vanish (f : PowerSeries R) (g : ℤ → M) (hg : ∀ k < 0, g k = 0) (N : ℕ)
     (hf : (X : PowerSeries R) ^ N ∣ f) (k : ℤ) (hk : k < N) : cv f g k = 0 := by
@@ -43,7 +43,7 @@ theorem cv_vanish (f : PowerSeries R) (g : ℤ → M) (hg : ∀ k < 0, g k = 0) 
   rw [PowerSeries.X_pow_dvd_iff.mp hf j (Finset.mem_range.mp hj), zero_smul]
 
 /- English proof (translation)
-Rewrite using `[cv_eq_sum f g 0 hg 0 1 (by omega), Finset.sum_range_one]`. Simplify using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cv_zero_term (f : PowerSeries R) (g : ℤ → M) (hg : ∀ k < 0, g k = 0) :
     cv f g 0 = constantCoeff f • g 0 := by
@@ -51,9 +51,9 @@ theorem cv_zero_term (f : PowerSeries R) (g : ℤ → M) (hg : ∀ k < 0, g k = 
   simp [PowerSeries.coeff_zero_eq_constantCoeff_apply]
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_nat_gt (k - m)`. Establish `hs : ∀ j < m, (g + g') j = 0` using `fun j hj => by`. Rewrite using `[Pi.add_apply, hg j hj, hg' j hj, add_zero]`. Rewrite using `[cv_eq_sum f (g + g') m hs k N hN, cv_eq_sum f g m hg k N hN, cv_eq_sum f g' m hg' k N hN, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.add_apply, smul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cv_add (f : PowerSeries R) (g g' : ℤ → M) (m : ℤ) (hg : ∀ k < m, g k = 0)
     (hg' : ∀ k < m, g' k = 0) (k : ℤ) : cv f (g + g') k = cv f g k + cv f g' k := by
@@ -66,7 +66,7 @@ theorem cv_add (f : PowerSeries R) (g g' : ℤ → M) (m : ℤ) (hg : ∀ k < m,
   rw [Pi.add_apply, smul_add]
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_nat_gt (k - m)`. Rewrite using `[cv_eq_sum f g m hg k N hN, cv_eq_sum f (fun j => L (g j)) m (fun j hj => by rw [hg j hj, map_zero]) k N hN, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cv_map {M' : Type} [AddCommGroup M'] [Module R M'] (L : M →ₗ[R] M') (f : PowerSeries R) (g : ℤ → M)
     (m : ℤ) (hg : ∀ k < m, g k = 0) (k : ℤ) : L (cv f g k) = cv f (fun k => L (g k)) k := by
@@ -78,13 +78,13 @@ theorem cv_map {M' : Type} [AddCommGroup M'] [Module R M'] (L : M →ₗ[R] M') 
   rw [map_smul]
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_nat_gt (k - m)`. Establish `hc : ∀ j < m, cv f' g j = 0` using `fun j hj => cv_low f' g m hg j hj`. Rewrite using `[cv_eq_sum (f * f') g m hg k N hN, cv_eq_sum f (cv f' g) m hc k N hN]`. Establish `inner : ∀ a ∈ Finset.range N, coeff a f • cv f' g (k - a) = ∑ b ∈ Finset.range (N - a), coeff a f • coeff b f' • g (k - a - b)`. Introduce `a _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[cv_eq_sum f' g m hg (k - a) N (by omega), Finset.smul_sum]`. Use `symm`. Apply `Finset.sum_subset (fun x hx => Finset.mem_range.mpr (lt_of_lt_of_le (Finset.mem_range.mp hx) (Nat.sub_le N a)))` to reduce the goal to its premises. Introduce `b _ hb`. Rewrite `hb` using `[Finset.mem_range]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hg (k - a - b) (by omega), smul_zero, smul_zero]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_mul, Finset.sum_smul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun a b => (coeff a f * coeff b f') • g (k - j)) j]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha'` using `Finset.mem_range.mp ha`. Rewrite using `[mul_smul, show k - (a : ℤ) - ((j - a : ℕ) : ℤ) = k - j by omega]`. Use `_ = ∑ a ∈ Finset.range N, ∑ b ∈ Finset.range (N - a), coeff a f • coeff b f' • g (k - a - b) := Finset.sum_range_diag_flip N (fun a b => coeff a f • coeff b f' • g (k - a - b))`. Use `_ = ∑ a ∈ Finset.range N, coeff a f • cv f' g (k - a) := (Finset.sum_congr rfl inner).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cv_mul (f f' : PowerSeries R) (g : ℤ → M) (m : ℤ) (hg : ∀ k < m, g k = 0) (k : ℤ) :
     cv (f * f') g k = cv f (cv f' g) k := by
@@ -126,11 +126,11 @@ open PowerSeries
 variable {R M : Type} [Field R] [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_nat_gt (k - m)`. Establish `hL : ∀ j < m, c ^ j • L (g j) = 0` using `fun j hj => by rw [hg j hj, map_zero, smul_zero]`. Rewrite using `[cv_map L f g m hg k, cv_eq_sum f (fun j => L (g j)) m (fun j hj => by rw [hg j hj, map_zero]) k N hN, cv_eq_sum (rescale c f) (fun j => c ^ j • L (g j)) m hL k N hN, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_rescale, smul_smul, smul_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hp : c ^ j * c ^ (k - (j : ℤ)) = c ^ k`. Rewrite using `[← zpow_natCast, ← zpow_add₀ hc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hp]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cv_twist (L : M →ₗ[R] M) (c : R) (hc : c ≠ 0) (f : PowerSeries R) (g : ℤ → M) (m : ℤ)
     (hg : ∀ k < m, g k = 0) (k : ℤ) :

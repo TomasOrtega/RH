@@ -13,15 +13,15 @@ noncomputable section
 namespace GlobalTheory.KeyOriginEnlargePoint
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ _ _ hAIC P _ φ hφ hSH hP q hq hqT A _ _ _ _ _ _ i EA _ _ _ _ _ QA _ jA ψA DA _ _ actA hFits ρ hRet`. Take `⟨hi, _hil, _hqA, _hQA, _hjA, _hψA, hTor⟩` from `hFits`. Establish `hu : ∀ y : Algebra.algebraMapSubmonoid (Localization.AtPrime QA) (nonZeroDivisors A), IsUnit (((algebraMap A (FractionRing A)).comp ρ) (y : Localization.AtPrime QA))`. Introduce and unpack `⟨y, a, ha, rfl⟩`. Establish `h1 : ρ (algebraMap A (Localization.AtPrime QA) a) = a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `using congrArg (fun f => f a) hRet.1`. Simplify using `only [RingHom.comp_apply, h1]`. Conclude with `IsLocalization.map_units (FractionRing A) (⟨a, ha⟩ : nonZeroDivisors A)`. Set `ρK : GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA) →+* FractionRing A` to `IsLocalization.lift hu`. Establish `hρK : ρK.comp (algebraMap (Localization.AtPrime QA) (GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA))) = (algebraMap A (FractionRing A)).comp ρ` using `IsLocalization.lift_comp hu`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨L, _, _, _, _, σL, hσL⟩` from `GlobalTheory.T.zmodTorsor_exists_point_finite_separable _ (FractionRing A) ρK DA q hq actA hTor`. Take `⟨A₁, _, _, _, _, _, _, j, i₁, hj, hi₁, hl₁, hji, κ, hκ⟩` from `GlobalTheory.T.exists_normal_local_between_alt T hAIC A i hi L`. Take `⟨EA₁, _, _, _, _, _, QA₁, _, jA₁, ψA₁, DA₁, _, _, actA₁, ρ₁, hF₁, hR₁, β, h, hβ, hh, hσ⟩` from `GlobalTheory.T.exists_baseChange_fittingDatum_retraction T O P φ hφ hSH hP q hq A i EA QA jA ψA DA actA ⟨hi, _hil, _hqA, _hQA, _hjA, _hψA, hTor⟩ ρ hRet A₁ j i₁ hj hi₁ hl₁ hji`. Take `⟨σ₁, hσ₁⟩` from `hσ (κ.comp σL) (by`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun f => f (algebraMap (Localization.AtPrime QA) (GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)) x)) hσL`. Establish `h2` using `congrArg (fun f => f x) hρK`. Establish `h3` using `congrArg (fun f => f (ρ x)) hκ`. Simplify using `only [RingHom.comp_apply] at h1 h2 h3 ⊢`. Rewrite using `[h1, h2, h3])`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A₁, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, i₁, EA₁, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, QA₁, inferInstance, jA₁, ψA₁, DA₁, inferInstance, inferInstance, actA₁, hF₁, ⟨ρ₁, hR₁, ?_⟩, β, h, hβ, …` and prove the remaining obligations. Use `letI := GlobalTheory.KeyOriginNoeth.closureAlg A₁ (Localization.AtPrime QA₁) DA₁`. Use `⟨σ₁.comp (GlobalTheory.KeyOriginNoeth.closure A₁ (Localization.AtPrime QA₁) DA₁).subtype, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Conclude with `congrArg (fun f => f r) hσ₁`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem enlarge_point : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O], GlobalTheory.LocAcyc.AbsIntClosed T →

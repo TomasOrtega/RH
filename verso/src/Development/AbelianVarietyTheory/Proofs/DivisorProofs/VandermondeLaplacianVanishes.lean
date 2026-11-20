@@ -21,11 +21,11 @@ namespace GlobalTheory.VdmHarm
 open MvPolynomial
 
 /- English proof (translation)
-Use `Finset.sup_le fun m hm => ?_` and prove the remaining obligations. Establish `hc : coeff (m + Finsupp.single i 1) Q ≠ 0`. Rewrite `hm` using `[mem_support_iff, coeff_pderiv]`. Introduce `h`. Rewrite `hm` using `[h, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hm rfl`. Establish `h1` using `le_totalDegree (mem_support_iff.2 hc)`. Establish `h2 : ((m + Finsupp.single i 1).sum fun _ e => e) = (m.sum fun _ e => e) + 1`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `show (m.sum fun _ e => e) ≤ Q.totalDegree - 1`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem totalDegree_pderiv_le_pred {σ : Type} (i : σ) (Q : MvPolynomial σ ℝ) :
     (pderiv i Q).totalDegree ≤ Q.totalDegree - 1 := by
@@ -43,13 +43,13 @@ theorem totalDegree_pderiv_le_pred {σ : Type} (i : σ) (Q : MvPolynomial σ ℝ
   omega
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Option.map (Equiv.swap a b))` using `Option.map_injective (Equiv.injective _)`. Establish `hmd : m.mapDomain (Option.map (Equiv.swap a b)) = m`. Use extensionality with `x`. Establish `hx : Option.map (Equiv.swap a b) (Option.map (Equiv.swap a b) x) = x`. Apply the tactic sequence `cases x <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `conv_lhs => rw [← hx]`. Rewrite using `[Finsupp.mapDomain_apply hinj]`. Break down `x with _ | i` into its components or cases. Both sides reduce to the same expression. Distinguish the cases in `ha : i = a`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `ha` using the available equality. Simplify using `[hm]`. Distinguish the cases in `hb : i = b`. Substitute `hb` using the available equality. Simplify using `[hm]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Equiv.swap_apply_of_ne_of_ne ha hb]`. Establish `h` using `coeff_rename_mapDomain _ hinj P m`. Rewrite `h` using `[hmd, hP, coeff_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero_of_swap {r : ℕ} {a b : Fin r} (P : MvPolynomial (Option (Fin r)) ℝ)
     (hP : rename (Option.map (Equiv.swap a b)) P = -P) (m : Option (Fin r) →₀ ℕ)
@@ -73,9 +73,9 @@ theorem coeff_eq_zero_of_swap {r : ℕ} {a b : Fin r} (P : MvPolynomial (Option 
   linarith
 
 /- English proof (translation)
-Establish `h1 : (∏ i : Fin r, ∏ i' ∈ Finset.Ioi i, (X (some i') - X (some i)) : MvPolynomial (Option (Fin r)) ℝ) = (Matrix.vandermonde (fun i : Fin r => (X (some i) : MvPolynomial (Option (Fin r)) ℝ))).det` using `(Matrix.det_vandermonde _).symm`. Establish `h2 : rename (Option.map (Equiv.swap a b)) (∏ i : Fin r, ∏ i' ∈ Finset.Ioi i, (X (some i') - X (some i)) : MvPolynomial (Option (Fin r)) ℝ) = (Matrix.vandermonde ((fun i : Fin r => (X (some i) : MvPolynomial (Option (Fin r)) ℝ)) ∘ Equiv.swap a b)).det`. Rewrite using `[Matrix.det_vandermonde]`. Simplify using `[map_prod]`. Establish `h3 : Matrix.vandermonde ((fun i : Fin r => (X (some i) : MvPolynomial (Option (Fin r)) ℝ)) ∘ Equiv.swap a b) = (Matrix.vandermonde (fun i : Fin r => (X (some i) : MvPolynomial (Option (Fin r)) ℝ))).submatrix (Equiv.swap a b) id`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Matrix.vandermonde_apply]`. Rewrite using `[h2, h3, Matrix.det_permute, Equiv.Perm.sign_swap hab, ← h1]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rename_swap_vdm {r : ℕ} {a b : Fin r} (hab : a ≠ b) :
     rename (Option.map (Equiv.swap a b))
@@ -98,11 +98,11 @@ theorem rename_swap_vdm {r : ℕ} {a b : Fin r} (hab : a ≠ b) :
   simp
 
 /- English proof (translation)
-Use `(totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations. Establish `h (i : Fin r) : (∏ i' ∈ Finset.Ioi i, (X (some i') - X (some i)) : MvPolynomial (Option (Fin r)) ℝ).totalDegree ≤ (r - 1 - (i : ℕ))`. Use `(totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum (g := fun _ => (1 : ℕ)) fun i' _ => (totalDegree_sub _ _).trans (by simp [totalDegree_X])).trans ?_` and prove the remaining obligations. Simplify using `[Fin.card_Ioi]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(Finset.sum_le_sum fun i _ => h i).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `e : ∑ i : Fin r, (r - 1 - (i : ℕ)) = ∑ i : Fin r, (i : ℕ)`. Rewrite using `[← Equiv.sum_comp Fin.revPerm (fun i : Fin r => (i : ℕ))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Fin.val_rev]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[e, Fin.sum_univ_eq_sum_range (fun i => i) r, Finset.sum_range_id]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem totalDegree_vdm_le (r : ℕ) :
     (∏ i : Fin r, ∏ i' ∈ Finset.Ioi i, (X (some i') - X (some i)) : MvPolynomial (Option (Fin r)) ℝ).totalDegree ≤
@@ -122,21 +122,21 @@ theorem totalDegree_vdm_le (r : ℕ) :
   rw [e, Fin.sum_univ_eq_sum_range (fun i => i) r, Finset.sum_range_id]
 
 /- English proof (translation)
-Introduce `r`. Prove the components needed by the constructor for the conclusion. Establish `hmul : ∀ p q : MvPolynomial (Option (Fin r)) ℝ, ∑ a : Fin r, MvPolynomial.pderiv (some a) p = 0 → ∑ a : Fin r, MvPolynomial.pderiv (some a) q = 0 → ∑ a : Fin r, MvPolynomial.pderiv (some a) (p * q) = 0`. Introduce `p q hp hq`. Simplify using `only [Derivation.leibniz, Finset.sum_add_distrib, ← Finset.smul_sum, hp, hq, smul_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_induction _ (fun p => ∑ a : Fin r, MvPolynomial.pderiv (some a) p = 0) hmul (by simp) fun i _ => ?_` and prove the remaining obligations. Use `Finset.prod_induction _ (fun p => ∑ a : Fin r, MvPolynomial.pderiv (some a) p = 0) hmul (by simp) fun i' _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply]`. Use `set V : MvPolynomial (Option (Fin r)) ℝ := ∏ i : Fin r, ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (some i') - MvPolynomial.X (some i)) with hV set L := ∑ a : Fin r, MvPolynomial.pderiv (some a) (MvPolynomial.pderiv (some a) V) with hL`. Establish `halt : ∀ a b : Fin r, a ≠ b → MvPolynomial.rename (Option.map (Equiv.swap a b)) L = -L`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Establish `hinj : Function.Injective (Option.map (Equiv.swap a b))` using `Option.map_injective (Equiv.injective _)`. Establish `hVs : MvPolynomial.rename (Option.map (Equiv.swap a b)) V = -V` using `rename_swap_vdm hab`. Rewrite using `[hL, map_sum]`. Simplify using `only [← MvPolynomial.pderiv_rename hinj, hVs, map_neg, Option.map_some]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Equiv.sum_comp (Equiv.swap a b) (fun c => -(MvPolynomial.pderiv (some c) (MvPolynomial.pderiv (some c) V)))`. Establish `hdegV : V.totalDegree ≤ r * (r - 1) / 2` using `totalDegree_vdm_le r`. Distinguish the cases in `h0 : V.totalDegree = 0`. Establish `h1 : ∀ a : Fin r, MvPolynomial.pderiv (some a) V = 0` using `fun a => by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[MvPolynomial.totalDegree_eq_zero_iff_eq_C.1 h0, MvPolynomial.pderiv_C]`. Simplify using `[hL, h1]`. Establish `hdegL : L.totalDegree ≤ V.totalDegree - 2`. Use `MvPolynomial.totalDegree_finsetSum_le fun a _ => ?_` and prove the remaining obligations. Establish `h1` using `totalDegree_pderiv_le_pred (some a) (MvPolynomial.pderiv (some a) V)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2` using `totalDegree_pderiv_le_pred (some a) V`. Use linear arithmetic over natural numbers and integers. Use extensionality with `m`. Rewrite using `[MvPolynomial.coeff_zero]`. Assume the negation of the conclusion as `hc`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle` using `MvPolynomial.le_totalDegree (MvPolynomial.mem_support_iff.2 hc)`. Establish `hsum : (m.sum fun _ e => e) = m none + ∑ i : Fin r, m (some i)`. Rewrite using `[Finsupp.sum_fintype _ _ (by simp), Fintype.sum_option]`. Distinguish the cases in `hinj : Function.Injective (fun i : Fin r => m (some i))`. Establish `hN` using `GlobalTheory.FlagAnti.le_sum_of_injective hinj`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 
-Generalize the expression as in `r * (r - 1) / 2 = N at hN hdegV`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Function.Injective, not_forall] at hinj`. Take `⟨a, b, h, hne⟩` from `hinj`. Conclude with `hc (coeff_eq_zero_of_swap L (halt a b hne) m h)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vdm_pderiv_sum_and_laplacian : ∀ r : ℕ, ∑ a : Fin r, MvPolynomial.pderiv (some a) (∏ i : Fin r, ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (some i') - MvPolynomial.X (some i)) : MvPolynomial (Option (Fin r)) ℝ) = 0 ∧ ∑ a : Fin r, MvPolynomial.pderiv (some a) (MvPolynomial.pderiv (some a) (∏ i : Fin r, ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (some i') - MvPolynomial.X (some i)) : MvPolynomial (Option (Fin r)) ℝ)) = 0 := by
   intro r

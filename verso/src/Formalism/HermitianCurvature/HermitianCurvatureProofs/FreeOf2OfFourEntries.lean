@@ -11,7 +11,7 @@ section Core
 variable {B : Type} [Ring B] [StarRing B] [Algebra ℂ B]
 
 /- English proof (translation)
-Use `show xi * g = g * xi`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma comm_inv {x xi g : B} (h1 : x * xi = 1) (h2 : xi * x = 1) (h : Commute x g) : Commute xi g := by
   show xi * g = g * xi
@@ -20,19 +20,19 @@ lemma comm_inv {x xi g : B} (h1 : x * xi = 1) (h2 : xi * x = 1) (h : Commute x g
     _ = g * xi := by rw [← mul_assoc xi x g, h2, one_mul]
 
 /- English proof (translation)
-Establish `hFl : ∀ X : B, X * F * Fi = X` using `fun X => by rw [mul_assoc, hF, mul_one]`. Establish `h3l : ∀ X : B, X * τ' * τi' = X` using `fun X => by rw [mul_assoc, hτ1, mul_one]`. Establish `hT11 : RR * T11 = star F * (d * τ) * F`. Rewrite using `[hRR, mul_assoc (star F * d) F T11, h11]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hT10 : RR * T10 = star F * (d * τ * l) * F`. Rewrite using `[hRR, mul_assoc (star F * d) F T10, h10]`. Simplify using `only [mul_assoc]`. Establish `hT01 : RR * T01 = star F * (star l * (d * τ)) * F`. Rewrite using `[← herm, hT10, star_mul, star_mul, star_star, star_mul, hdτ]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Establish `hU11 : U11 = Fi * τ' * F`. Combine the equalities or inequalities in the displayed calculation. Establish `hUi : U11 * (Fi * τi' * F) = 1`. Rewrite using `[hU11]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← mul_assoc, hFl, h3l, hF']`. Establish `hFU10 : F * U10 = l * F * U11`. Establish `e : τ * (F * U10) = τ * (l * F * U11)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Establish `e2 : T00 * U11 = q • (1 : B) + T01 * U10` using `by rw [← quantum_determinant_shifted, sub_add_cancel]`. Establish `hT00 : T00 = (q • (1 : B) + T01 * U10) * (Fi * τi' * F)`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : RR * (q • (1 : B)) * (Fi * τi' * F) = star F * (q • (d * τi')) * F`. Rewrite using `[mul_smul_comm, mul_one, smul_mul_assoc, mul_smul_comm, smul_mul_assoc, hRR]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [← mul_assoc, hFl]`. Establish `hB : RR * (T01 * U10) * (Fi * τi' * F) = star F * (star l * (d * τ) * l) * F`. Rewrite using `[← mul_assoc RR T01 U10, hT01, mul_assoc (star F * (star l * (d * τ))) F U10, hFU10, mul_assoc (star F * (star l * (d * τ))) (l * F * U11), mul_assoc (l * F) U11, hUi, mul_one]`. Simplify using `only [mul_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨hT11, hT10, hT01, ?_⟩` and prove the remaining obligations. Rewrite using `[hT00, ← mul_assoc RR, mul_add, add_mul, hA, hB, mul_add, add_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma core (F Fi d τ τi τ' τi' l RR T00 T01 T10 T11 U10 U11 : B) (q : ℂ)
     (hRR : RR = star F * d * F) (hF : F * Fi = 1) (hF' : Fi * F = 1)
@@ -90,7 +90,7 @@ section Slots
 variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact map_mul (Matrix.scalar (Ix S)) x y`. Consider the case `simp [io]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma io_mul (x y : A) : (io (x * y) : SlopeTestRemainingChoices S A) = io x * io y := by
   first
@@ -98,7 +98,7 @@ lemma io_mul (x y : A) : (io (x * y) : SlopeTestRemainingChoices S A) = io x * i
   | simp [io]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact map_one (Matrix.scalar (Ix S))`. Consider the case `simp [io]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma io_one : (io (1 : A) : SlopeTestRemainingChoices S A) = 1 := by
   first
@@ -106,7 +106,7 @@ lemma io_one : (io (1 : A) : SlopeTestRemainingChoices S A) = 1 := by
   | simp [io]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Matrix.diagonal_conjTranspose (fun _ : Ix S => x)`. Consider the case `(show star (Matrix.scalar (Ix S) x) = Matrix.scalar (Ix S) (star x)`. Simplify using `[Matrix.scalar_apply, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]`. Use the proof step `rfl)`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma io_star (x : A) : star (io x : SlopeTestRemainingChoices S A) = io (star x) := by
   first
@@ -115,14 +115,14 @@ lemma io_star (x : A) : star (io x : SlopeTestRemainingChoices S A) = io (star x
      simp [Matrix.scalar_apply, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]; rfl)
 
 /- English proof (translation)
-Use `show (io x : SlopeTestRemainingChoices S A) * io y = io y * io x`. Rewrite using `[← io_mul, ← io_mul, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma io_comm {x y : A} (h : x * y = y * x) : Commute (io x : SlopeTestRemainingChoices S A) (io y) := by
   show (io x : SlopeTestRemainingChoices S A) * io y = io y * io x
   rw [← io_mul, ← io_mul, h]
 
 /- English proof (translation)
-Use extensionality with `k l`. Rewrite using `[Matrix.scalar_apply, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Apply the tactic sequence `rcases hM k l with h | h <;> rw [h] <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma mul_scalar_comm_of_entries_zero_or_one {n : Type} [Fintype n] [DecidableEq n] (M : Matrix n n A) (x : A)
     (hM : ∀ k l, M k l = 0 ∨ M k l = 1) : M * Matrix.scalar n x = Matrix.scalar n x * M := by
@@ -131,7 +131,7 @@ private lemma mul_scalar_comm_of_entries_zero_or_one {n : Type} [Fintype n] [Dec
   rcases hM k l with h | h <;> rw [h] <;> simp
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `mul_scalar_comm_of_entries_zero_or_one (eU a i j) x (fun k l => by first`. Consider the case `(simp only [eU, Matrix.of_apply]; split_ifs <;> simp)`. Consider the case `(rw [eU]; simp only [Matrix.of_apply]; split_ifs <;> simp))`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma free_io (a : S) (x : A) : FreeOf a (io x : SlopeTestRemainingChoices S A) := by
   intro i j
@@ -141,39 +141,39 @@ lemma free_io (a : S) (x : A) : FreeOf a (io x : SlopeTestRemainingChoices S A) 
     | (rw [eU]; simp only [Matrix.of_apply]; split_ifs <;> simp))
 
 /- English proof (translation)
-Introduce `i j` and use `(hx i j).mul_right (hy i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma free_mul {a : S} {x y : SlopeTestRemainingChoices S A} (hx : FreeOf a x) (hy : FreeOf a y) : FreeOf a (x * y) := fun i j => (hx i j).mul_right (hy i j)
 
 /- English proof (translation)
-Introduce `i j` and use `(hx i j).add_right (hy i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma free_add {a : S} {x y : SlopeTestRemainingChoices S A} (hx : FreeOf a x) (hy : FreeOf a y) : FreeOf a (x + y) := fun i j => (hx i j).add_right (hy i j)
 
 /- English proof (translation)
-Introduce `i j` and use `(hx i j).smul_right c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma free_smul {a : S} (c : ℂ) {x : SlopeTestRemainingChoices S A} (hx : FreeOf a x) : FreeOf a (c • x) := fun i j => (hx i j).smul_right c
 
 /- English proof (translation)
-Introduce `_ _` and use `Commute.zero_right _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma free_zero (a : S) : FreeOf a (0 : SlopeTestRemainingChoices S A) := fun _ _ => Commute.zero_right _
 
 /- English proof (translation)
-Introduce `_ _` and use `Commute.one_right _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma free_one (a : S) : FreeOf a (1 : SlopeTestRemainingChoices S A) := fun _ _ => Commute.one_right _
 
 /- English proof (translation)
-Introduce `i j` and use `(hx i j).pow_right n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma free_pow {a : S} {x : SlopeTestRemainingChoices S A} (hx : FreeOf a x) (n : ℕ) : FreeOf a (x ^ n) := fun i j => (hx i j).pow_right n
 
 /- English proof (translation)
-Establish `key : ∀ k l : Ix S, star ((eU a i j : SlopeTestRemainingChoices S A) l k) = (eU a j i : SlopeTestRemainingChoices S A) k l`. Introduce `k l`. Simplify using `only [eU, Matrix.of_apply]`. Distinguish the cases in `h1 : l a = i ∧ k a = j ∧ ∀ b, b ≠ a → l b = k b`. Establish `h2 : k a = j ∧ l a = i ∧ ∀ b, b ≠ a → k b = l b` using `⟨h1.2.1, h1.1, fun b hb => (h1.2.2 b hb).symm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos h1, if_pos h2, star_one]`. Establish `h2 : ¬ (k a = j ∧ l a = i ∧ ∀ b, b ≠ a → k b = l b)` using `fun h => h1 ⟨h.2.1, h.1, fun b hb => (h.2.2 b hb).symm⟩`. Rewrite using `[if_neg h1, if_neg h2, star_zero]`. Conclude with `Matrix.ext key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma star_eU_eq_eU_swap (a : S) (i j : Fin 2) : star (eU a i j : SlopeTestRemainingChoices S A) = eU a j i := by
   have key : ∀ k l : Ix S, star ((eU a i j : SlopeTestRemainingChoices S A) l k) = (eU a j i : SlopeTestRemainingChoices S A) k l := by
@@ -189,9 +189,9 @@ private lemma star_eU_eq_eU_swap (a : S) (i j : Fin 2) : star (eU a i j : SlopeT
   exact Matrix.ext key
 
 /- English proof (translation)
-Introduce `i j`. Establish `e1 : star (eU a j i : SlopeTestRemainingChoices S A) = eU a i j` using `star_eU_eq_eU_swap a j i`. Use `first`. Consider the case `(have h3 := (hx j i).star_star`. Rewrite `h3` using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Conclude with `h3)`. Consider the case `(show eU a i j * star x = star x * eU a i j`. Rewrite using `[← e1, ← star_mul, ← star_mul, (hx j i).eq])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma free_star {a : S} {x : SlopeTestRemainingChoices S A} (hx : FreeOf a x) : FreeOf a (star x) := by
   intro i j
@@ -204,7 +204,7 @@ lemma free_star {a : S} {x : SlopeTestRemainingChoices S A} (hx : FreeOf a x) : 
      rw [← e1, ← star_mul, ← star_mul, (hx j i).eq])
 
 /- English proof (translation)
-Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | exact hx | exact hy | exact hz | exact hw | simp [hx, hy, hz, hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma freeOf2_of_four_entries {a : S} {x y z w : SlopeTestRemainingChoices S A} (hx : FreeOf a x) (hy : FreeOf a y) (hz : FreeOf a z)
     (hw : FreeOf a w) : FreeOf2 a !![x, y; z, w] := by
@@ -212,7 +212,7 @@ lemma freeOf2_of_four_entries {a : S} {x y z w : SlopeTestRemainingChoices S A} 
   fin_cases i <;> fin_cases j <;> first | exact hx | exact hy | exact hz | exact hw | simp [hx, hy, hz, hw]
 
 /- English proof (translation)
-Use `first`. Consider the case `(refine Matrix.ext fun i j => ?_ fin_cases i <;> fin_cases j <;> rfl)`. Consider the case `(refine Matrix.ext fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [d0])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma d0_eq_diagonal (b : SlopeTestRemainingChoices S A) : d0 b = !![b, 0; 0, b] := by
   first
@@ -222,7 +222,7 @@ private lemma d0_eq_diagonal (b : SlopeTestRemainingChoices S A) : d0 b = !![b, 
      fin_cases i <;> fin_cases j <;> simp [d0])
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [d0_eq_diagonal, Matrix.mul_fin_two, mul_one, one_mul, mul_zero, zero_mul, add_zero, zero_add, mul_add, add_mul, mul_assoc]; done)`. Consider the case `(refine Matrix.ext fun i j => ?_ fin_cases i <;> fin_cases j <;>`. Simplify using `[d0, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal, mul_add, add_mul, mul_assoc])`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma gauss_entries (Fs dd ls l p t F : SlopeTestRemainingChoices S A) :
     d0 Fs * !![1, ls; 0, 1] * d0 dd * !![p, 0; 0, t] * !![1, 0; l, 1] * d0 F =
@@ -236,7 +236,7 @@ lemma gauss_entries (Fs dd ls l p t F : SlopeTestRemainingChoices S A) :
        simp [d0, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal, mul_add, add_mul, mul_assoc])
 
 /- English proof (translation)
-Use `first`. Consider the case `(refine Matrix.ext fun i j => ?_ fin_cases i <;> fin_cases j <;> simp)`. Consider the case `(ext i j; fin_cases i <;> fin_cases j <;> simp)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma lam_conj (l : SlopeTestRemainingChoices S A) : (!![1, 0; l, 1] : M2 (SlopeTestRemainingChoices S A))ᴴ = !![1, star l; 0, 1] := by
   first
@@ -245,7 +245,7 @@ lemma lam_conj (l : SlopeTestRemainingChoices S A) : (!![1, 0; l, 1] : M2 (Slope
   | (ext i j; fin_cases i <;> fin_cases j <;> simp)
 
 /- English proof (translation)
-Use `first`. Consider the case `(refine Matrix.ext fun i j => ?_ fin_cases i <;> fin_cases j <;> simp)`. Consider the case `(ext i j; fin_cases i <;> fin_cases j <;> simp)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma diag_conj (x y : SlopeTestRemainingChoices S A) : (!![x, 0; 0, y] : M2 (SlopeTestRemainingChoices S A))ᴴ = !![star x, 0; 0, star y] := by
   first
@@ -260,7 +260,7 @@ section Level
 variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S] {r : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact L.16 g (Set.mem_union_right _ hg) h (Set.mem_union_right _ hh)`. Consider the case `exact L.16 g (Or.inr hg) h (Or.inr hh)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma fn_comm (L : LevelData A r) {g h : A} (hg : g ∈ zfns L) (hh : h ∈ zfns L) : g * h = h * g := by
   first
@@ -268,45 +268,45 @@ lemma fn_comm (L : LevelData A r) {g h : A} (hg : g ∈ zfns L) (hh : h ∈ zfns
   | exact L.16 g (Or.inr hg) h (Or.inr hh)
 
 /- English proof (translation)
-Simplify using `[zfns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_ζ (L : LevelData A r) : L.ζ ∈ zfns L := by
   simp [zfns]
 /- English proof (translation)
-Simplify using `[zfns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_ζi (L : LevelData A r) : L.ζi ∈ zfns L := by
   simp [zfns]
 /- English proof (translation)
-Simplify using `[zfns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_ζb (L : LevelData A r) : L.ζb ∈ zfns L := by
   simp [zfns]
 /- English proof (translation)
-Simplify using `[zfns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_ζbi (L : LevelData A r) : L.ζbi ∈ zfns L := by
   simp [zfns]
 /- English proof (translation)
-Simplify using `[zfns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_GG (L : LevelData A r) : L.GG ∈ zfns L := by
   simp [zfns]
 /- English proof (translation)
-Simplify using `[zfns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_GGi (L : LevelData A r) : L.GGi ∈ zfns L := by
   simp [zfns]
 
 /- English proof (translation)
-Establish `h' : star L.ζ = L.ζb ∧ star L.nab = L.nabs ∧ star L.TT = L.TT` using `h`. Rewrite using `[← h'.1, star_star]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma star_ζb {L : LevelData A r} (h : IsStarLevel L) : star L.ζb = L.ζ := by
   have h' : star L.ζ = L.ζb ∧ star L.nab = L.nabs ∧ star L.TT = L.TT := h
   rw [← h'.1, star_star]
 
 /- English proof (translation)
-Establish `h' : star L.ζ = L.ζb ∧ star L.nab = L.nabs ∧ star L.TT = L.TT` using `h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma star_ζi {L : LevelData A r} (h : IsStarLevel L) : star L.ζi = L.ζbi := by
   have h' : star L.ζ = L.ζb ∧ star L.nab = L.nabs ∧ star L.TT = L.TT := h
@@ -315,15 +315,15 @@ lemma star_ζi {L : LevelData A r} (h : IsStarLevel L) : star L.ζi = L.ζbi := 
     _ = L.ζbi := by rw [L.ζ_ζi, star_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[← star_ζi h, star_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma star_ζbi {L : LevelData A r} (h : IsStarLevel L) : star L.ζbi = L.ζi := by
   rw [← star_ζi h, star_star]
 
 /- English proof (translation)
-Establish `h' : star L.ζ = L.ζb ∧ star L.nab = L.nabs ∧ star L.TT = L.TT` using `h`. Establish `e : star (L.ζ * L.ζb) = L.ζ * L.ζb` using `by rw [star_mul, star_ζb h, h'.1]`. Rewrite using `[L.GG_def, star_sub, e]`. Use `first`. Consider the case `rw [← algebraMap_star_comm, h'.2.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [Algebra.algebraMap_eq_smul_one, star_smul, star_one, h'.2.2]`.
+A detailed English derivation is pending.
 -/
 lemma star_GG {L : LevelData A r} (h : IsStarLevel L) : star L.GG = L.GG := by
   have h' : star L.ζ = L.ζb ∧ star L.nab = L.nabs ∧ star L.TT = L.TT := h
@@ -334,7 +334,7 @@ lemma star_GG {L : LevelData A r} (h : IsStarLevel L) : star L.GG = L.GG := by
   | rw [Algebra.algebraMap_eq_smul_one, star_smul, star_one, h'.2.2]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma star_GGi {L : LevelData A r} (h : IsStarLevel L) : star L.GGi = L.GGi := by
   calc star L.GGi = star L.GGi * (L.GG * L.GGi) := by rw [L.GG_GGi, mul_one]
@@ -342,9 +342,9 @@ lemma star_GGi {L : LevelData A r} (h : IsStarLevel L) : star L.GGi = L.GGi := b
     _ = L.GGi := by rw [L.GG_GGi, star_one, one_mul]
 
 /- English proof (translation)
-Establish `h' : star L.ζ = L.ζb ∧ star L.nab = L.nabs ∧ star L.TT = L.TT` using `h`. Establish `k1 : Commute L.GGi L.ζ` using `fn_comm L (mem_GGi L) (mem_ζ L)`. Establish `k2 : Commute L.GGi L.ζb` using `fn_comm L (mem_GGi L) (mem_ζb L)`. Use `show star (io (L.ζ * L.ζb * L.GGi) : SlopeTestRemainingChoices S A) = io (L.ζ * L.ζb * L.GGi)`. Rewrite using `[io_star, star_mul, star_mul, star_GGi h, star_ζb h, h'.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `(k1.mul_right k2).eq`.
+A detailed English derivation is pending.
 -/
 lemma star_wt {L : LevelData A r} (h : IsStarLevel L) : star (wt L : SlopeTestRemainingChoices S A) = wt L := by
   have h' : star L.ζ = L.ζb ∧ star L.nab = L.nabs ∧ star L.TT = L.TT := h
@@ -356,46 +356,46 @@ lemma star_wt {L : LevelData A r} (h : IsStarLevel L) : star (wt L : SlopeTestRe
   exact (k1.mul_right k2).eq
 
 /- English proof (translation)
-Use `show (io (L.ζ * L.ζb * L.GGi) : SlopeTestRemainingChoices S A) = _`. Rewrite using `[io_mul, io_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma wt_eq (L : LevelData A r) : (wt L : SlopeTestRemainingChoices S A) = io L.ζ * io L.ζb * io L.GGi := by
   show (io (L.ζ * L.ζb * L.GGi) : SlopeTestRemainingChoices S A) = _
   rw [io_mul, io_mul]
 
 /- English proof (translation)
-Rewrite using `[wt_eq]`. Conclude with `((h _ (mem_ζ L)).mul_right (h _ (mem_ζb L))).mul_right (h _ (mem_GGi L))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma comm_wt (L : LevelData A r) {b : SlopeTestRemainingChoices S A} (h : ∀ g ∈ zfns L, Commute b (io g)) : Commute b (wt L) := by
   rw [wt_eq]
   exact ((h _ (mem_ζ L)).mul_right (h _ (mem_ζb L))).mul_right (h _ (mem_GGi L))
 
 /- English proof (translation)
-Introduce `_ hh` and use `io_comm (fn_comm L hg hh)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma io_fn_comm (L : LevelData A r) {g : A} (hg : g ∈ zfns L) :
     ∀ h ∈ zfns L, Commute (io g : SlopeTestRemainingChoices S A) (io h) := fun _ hh => io_comm (fn_comm L hg hh)
 
 /- English proof (translation)
-The claim follows from `free_io a _`.
+A detailed English derivation is pending.
 -/
 lemma free_wt (L : LevelData A r) (a : S) : FreeOf a (wt L : SlopeTestRemainingChoices S A) := free_io a _
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, hee⟩` from `h`. Conclude with `free_add (free_io a _) (free_mul (free_io a _) (hee Y))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma free_l (L : LevelData A r) (f : FrameData S A) {a : S} (h : f.Free a) (Y : ℂ) : FreeOf a (f.l L Y) := by
   obtain ⟨-, -, -, -, -, -, -, -, hee⟩ := h
   exact free_add (free_io a _) (free_mul (free_io a _) (hee Y))
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, hc, -, -⟩` from `h`. Conclude with `free_mul (free_pow (free_wt L a) _) hc`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma free_d (L : LevelData A r) (f : FrameData S A) {a : S} (h : f.Free a) : FreeOf a (f.d L) := by
   obtain ⟨-, -, -, -, -, -, hc, -, -⟩ := h
   exact free_mul (free_pow (free_wt L a) _) hc
 
 /- English proof (translation)
-Establish `e : f.d L = wt L ^ f.N * f.c` using `rfl`. Rewrite using `[e, star_mul, star_pow, star_wt hs, h.c_star]`. Conclude with `((comm_wt L h.c_fn).pow_right f.N).eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma star_d {L : LevelData A r} {f : FrameData S A} (hs : IsStarLevel L) (h : IsFrame L f) :
     star (f.d L) = f.d L := by
@@ -404,7 +404,7 @@ lemma star_d {L : LevelData A r} {f : FrameData S A} (hs : IsStarLevel L) (h : I
   exact ((comm_wt L h.c_fn).pow_right f.N).eq
 
 /- English proof (translation)
-Establish `e : f.d L = wt L ^ f.N * f.c` using `rfl`. Rewrite using `[e]`. Conclude with `((comm_wt L h1).pow_right f.N).mul_right h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma comm_d (L : LevelData A r) (f : FrameData S A) {b : SlopeTestRemainingChoices S A} (h1 : ∀ g ∈ zfns L, Commute b (io g))
     (h2 : Commute b f.c) : Commute b (f.d L) := by
@@ -419,33 +419,31 @@ section Main
 variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S] {r : ℕ}
 
 /- English proof (translation)
-Take `⟨hs, h, hfree, hreal, hYa, hYa1, hq⟩` from `H`. Take `⟨fRR, fTT, fF, fFi, fx, fxi, fc, fci, fee⟩` from `hfree`. Establish `hfree : f.Free a` using `⟨fRR, fTT, fF, fFi, fx, fxi, fc, fci, fee⟩`. Establish `rYa` using `h.inv_reg hYa`. Establish `rYa1` using `h.inv_reg hYa1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGx : ∀ Y, Commute (io L.GG) (f.x Y)` using `fun Y => (h.x_fn Y _ (mem_GG L)).symm`. Establish `hτs : star (io L.GG * f.x Ya) = io L.GG * f.x Ya`. Rewrite using `[star_mul, io_star, star_GG hs, h.x_star Ya hreal]`. Conclude with `(hGx Ya).eq.symm`. Establish `hτd : Commute (io L.GG * f.x Ya) (f.d L)` using `(comm_d L f (io_fn_comm L (mem_GG L)) (h.c_fn _ (mem_GG L)).symm).mul_left (comm_d L f (h.x_fn Ya) (h.x_c Ya))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdτ : star (f.d L * (io L.GG * f.x Ya)) = f.d L * (io L.GG * f.x Ya)`. Rewrite using `[star_mul, hτs, star_d hs h]`. Conclude with `hτd.eq`. Establish `hGG1 : (io L.GG : SlopeTestRemainingChoices S A) * io L.GGi = 1` using `by rw [← io_mul, L.GG_GGi, io_one]`. Establish `hGG2 : (io L.GGi : SlopeTestRemainingChoices S A) * io L.GG = 1` using `by rw [← io_mul, L.GGi_GG, io_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinv1 : ∀ Y ∈ f.inv, (io L.GGi * f.xi Y) * (io L.GG * f.x Y) = 1`. Introduce `Y hY`. Combine the equalities or inequalities in the displayed calculation. Establish `hinv2 : ∀ Y ∈ f.inv, (io L.GG * f.x Y) * (io L.GGi * f.xi Y) = 1`. Introduce `Y hY`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[(hGx Y).eq]`. Simplify using `only [mul_assoc]`. Use `_ = 1 := by rw [hGG1, mul_one, (h.x_xi Y hY).1]`. Establish `herm : star (f.RR * f.TT Ya 1 0) = f.RR * f.TT Ya 0 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e` using `congrFun (congrFun (h.module.herm Ya rYa hreal) 0) 1`. Unfold `d0 at e`. Rewrite `e` using `[Matrix.conjTranspose_apply, Matrix.diagonal_mul, Matrix.diagonal_mul]`. Then use the resulting hypothesis. Establish `hdet` using `(h.module.det Ya rYa rYa1).2`. Establish `quantum_determinant_shifted : f.TT Ya 0 0 * f.TT (Ya + 1) 1 1 - f.TT Ya 0 1 * f.TT (Ya + 1) 1 0 = f.q Ya • (1 : SlopeTestRemainingChoices S A)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e` using `congrFun (congrFun hdet 0) 1`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Formalism.YangianSpanCharacter.T.J, Matrix.transpose_apply, Matrix.smul_apply] at e`. Simplify using `at e`. Rewrite using `[Algebra.smul_def, mul_one, ← e]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `upper_block_det_one : f.TT Ya 1 0 * f.TT (Ya + 1) 1 1 = f.TT Ya 1 1 * f.TT (Ya + 1) 1 0`. Establish `e` using `congrFun (congrFun hdet 1) 1`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Formalism.YangianSpanCharacter.T.J, Matrix.transpose_apply, Matrix.smul_apply] at e`. Simplify using `at e`. Rewrite using `[← sub_eq_zero, ← e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Take `⟨e11, e10, e01, e00⟩` from `core f.F f.Fi (f.d L) (io L.GG * f.x Ya) (io L.GGi * f.xi Ya) (io L.GG * f.x (Ya + 1)) (io L.GGi * f.xi (Ya + 1)) (f.l L Ya) f.RR (f.TT Ya 0 0) (f.TT Ya 0 1) (f.TT Ya 1 0) (f.TT Ya 1 1) (f.TT (Ya + 1) 1 0) (f.TT (Ya + 1) 1 1) (f.q Ya) h.form h.F_Fi h.Fi_F hdτ (hinv1 Ya hYa) (hinv …`. Establish `fl` using `free_l L f hfree Ya`. Establish `fd` using `free_d L f hfree`. Establish `fΛ : FreeOf2 a !![1, 0; f.l L Ya, 1]` using `freeOf2_of_four_entries (free_one a) (free_zero a) fl (free_one a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fΛs : FreeOf2 a !![1, star (f.l L Ya); 0, 1]` using `freeOf2_of_four_entries (free_one a) (free_star fl) (free_zero a) (free_one a)`. Establish `fD : FreeOf2 a !![f.q Ya • (io L.GGi * f.xi (Ya + 1)), 0; 0, io L.GG * f.x Ya]` using `freeOf2_of_four_entries (free_smul _ (free_mul (free_io a _) (fxi _))) (free_zero a) (free_zero a) (free_mul (free_io a _) (fx _))`. Establish `f1` using `Wd4.freeOf_diagScalar (free_star fF)`. Establish `f2` using `Wd4.freeOf2_mul f1 fΛs`. Establish `f3` using `Wd4.freeOf2_mul f2 (Wd4.freeOf_diagScalar fd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f4` using `Wd4.freeOf2_mul f3 fD`. Establish `f5` using `Wd4.freeOf2_mul f4 fΛ`. Establish `R : star (ins a !![1, 0; f.l L Ya, 1] * f.F) * (f.d L * ins a !![f.q Ya • (io L.GGi * f.xi (Ya + 1)), 0; 0, io L.GG * f.x Ya]) * (ins a !![1, 0; f.l L Ya, 1] * f.F) = ins a (d0 (star f.F) * !![1, star (f.l L Ya); 0, 1] * d0 (f.d L) * !![f.q Ya • (io L.GGi * f.xi (Ya + 1)), 0; 0, …`. Rewrite using `[Wd1.ins_mul a _ _ f5, Wd1.ins_mul a _ _ f4, Wd1.ins_mul a _ _ f3, Wd1.ins_mul a _ _ f2, Wd1.ins_mul a _ _ f1, Wd1.insert_diagonal_extract, Wd1.insert_diagonal_extract, Wd1.insert_diagonal_extract, star_mul, Wd1.ins_star a _ fΛ, lam_conj]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `Lh : f.RR * ins a (f.TT Ya) = ins a (d0 f.RR * f.TT Ya)`. Rewrite using `[Wd1.ins_mul a _ _ (Wd4.freeOf_diagScalar fRR), Wd1.insert_diagonal_extract]`. Rewrite using `[R, Lh, gauss_entries]`. Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Unfold `d0`. Rewrite using `[Matrix.diagonal_mul]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify `e00` using `[mul_smul_comm]`. Simplify using `using e01`.
-
-Simplify using `using e10`. Simplify using `using e11`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gaussFormPlus (L : LevelData A r) (f : FrameData S A) (a : S) (Ya : ℂ) (H : PlusHyp L f a Ya) :
     f.RR * ins a (f.TT Ya) = star (ins a !![1, 0; f.l L Ya, 1] * f.F) *
@@ -533,9 +531,9 @@ theorem gaussFormPlus (L : LevelData A r) (f : FrameData S A) (a : S) (Ya : ℂ)
   · simpa using e11
 
 /- English proof (translation)
-Establish `c1 : L.ζbi * L.ζ = L.ζ * L.ζbi` using `fn_comm L (mem_ζbi L) (mem_ζ L)`. Establish `c2 : L.GGi * L.ζi = L.ζi * L.GGi` using `fn_comm L (mem_GGi L) (mem_ζi L)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc L.ζbi, ← mul_assoc L.ζbi, c1]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = L.GGi := by rw [L.ζbi_ζb, mul_one, c2, ← mul_assoc, L.ζ_ζi, one_mul]`.
+A detailed English derivation is pending.
 -/
 lemma w1 (L : LevelData A r) : L.ζbi * (L.ζ * L.ζb * L.GGi) * L.ζi = L.GGi := by
   have c1 : L.ζbi * L.ζ = L.ζ * L.ζbi := fn_comm L (mem_ζbi L) (mem_ζ L)
@@ -545,7 +543,7 @@ lemma w1 (L : LevelData A r) : L.ζbi * (L.ζ * L.ζb * L.GGi) * L.ζi = L.GGi :
     _ = L.GGi := by rw [L.ζbi_ζb, mul_one, c2, ← mul_assoc, L.ζ_ζi, one_mul]
 
 /- English proof (translation)
-Establish `c3 : L.ζb * L.GGi = L.GGi * L.ζb` using `fn_comm L (mem_ζb L) (mem_GGi L)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma w2 (L : LevelData A r) : L.GG * L.ζi * (L.ζ * L.ζb * L.GGi) * (L.ζbi * L.GG) = L.GG := by
   have c3 : L.ζb * L.GGi = L.GGi * L.ζb := fn_comm L (mem_ζb L) (mem_GGi L)
@@ -555,7 +553,7 @@ lemma w2 (L : LevelData A r) : L.GG * L.ζi * (L.ζ * L.ζb * L.GGi) * (L.ζbi *
     _ = L.GG := by rw [L.GG_GGi, L.ζb_ζbi, one_mul, one_mul]
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [d0_eq_diagonal, Matrix.mul_fin_two, mul_one, one_mul, mul_zero, zero_mul, add_zero, zero_add, mul_assoc]; done)`. Consider the case `(refine Matrix.ext fun i j => ?_ fin_cases i <;> fin_cases j <;>`. Simplify using `[d0, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal, mul_assoc])`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma diag_entries (p1 p2 w c1 c2 e1 e2 : SlopeTestRemainingChoices S A) :
     !![p1, 0; 0, p2] * d0 w * !![c1, 0; 0, c2] * !![e1, 0; 0, e2] =
@@ -568,33 +566,31 @@ lemma diag_entries (p1 p2 w c1 c2 e1 e2 : SlopeTestRemainingChoices S A) :
        simp [d0, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal, mul_assoc])
 
 /- English proof (translation)
-Establish `hG` using `gaussFormPlus L f a Ya H`. Establish `hfree0` using `H.2.2.1`. Take `⟨hs, hf, hfree, hY, hYi, hY1i, -⟩` from `H`. Take `⟨-, -, -, -, fx, fxi, fc, -, -⟩` from `hfree0`. Take `⟨hx1, hx1'⟩` from `hf.x_xi (Ya + 1) hY1i`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hd : f.d L = (wt L : SlopeTestRemainingChoices S A) ^ f.N * f.c` using `rfl`. Establish `gW : ∀ g ∈ zfns L, Commute (io g : SlopeTestRemainingChoices S A) (wt L)` using `fun g hg => comm_wt L (io_fn_comm L hg)`. Establish `gc : ∀ g ∈ zfns L, Commute (io g : SlopeTestRemainingChoices S A) f.c` using `fun g hg => (hf.c_fn g hg).symm`. Establish `cW : Commute f.c (wt L : SlopeTestRemainingChoices S A)` using `comm_wt L hf.c_fn`. Establish `xiζi : Commute (f.xi (Ya + 1)) (io L.ζi)` using `comm_inv hx1 hx1' (hf.x_fn (Ya + 1) _ (mem_ζi L))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `xζbi : Commute (f.x Ya) (io L.ζbi)` using `hf.x_fn Ya _ (mem_ζbi L)`. Establish `xG : Commute (f.x Ya) (io L.GG)` using `hf.x_fn Ya _ (mem_GG L)`. Establish `cb1 : Commute L.ζbi L.ζ` using `fn_comm L (mem_ζbi L) (mem_ζ L)`. Establish `cb2 : Commute L.ζbi L.ζb` using `fn_comm L (mem_ζbi L) (mem_ζb L)`. Establish `cb3 : Commute L.ζbi L.GGi` using `fn_comm L (mem_ζbi L) (mem_GGi L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k1 : L.ζ * L.ζb * L.GGi * L.ζbi * L.ζi = L.GGi`. Rewrite using `[← ((cb1.mul_right cb2).mul_right cb3).eq]`. Conclude with `w1 L`. Establish `hw : (wt L : SlopeTestRemainingChoices S A) * io L.ζbi * io L.ζi = io L.GGi` using `by show (io (L.ζ * L.ζb * L.GGi) : SlopeTestRemainingChoices S A) * io L.ζbi * io L.ζi = io L.GGi`. Rewrite using `[← io_mul, ← io_mul, k1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw2 : (io L.GG : SlopeTestRemainingChoices S A) * (io L.ζi * (wt L * (io L.ζbi * io L.GG))) = io L.GG` using `by show (io L.GG : SlopeTestRemainingChoices S A) * (io L.ζi * (io (L.ζ * L.ζb * L.GGi) * (io L.ζbi * io L.GG))) = io L.GG`. Rewrite using `[← io_mul, ← io_mul, ← io_mul, ← io_mul]`. Use `congr 1`. Rewrite using `[← mul_assoc L.GG L.ζi, ← mul_assoc (L.GG * L.ζi)]`. Conclude with `w2 L`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `E1 : io L.ζbi * (wt L ^ (f.N + 1) * f.c) * (f.q Ya • f.xi (Ya + 1)) * io L.ζi = f.d L * (f.q Ya • (io L.GGi * f.xi (Ya + 1)))`. Rewrite using `[mul_smul_comm, smul_mul_assoc, mul_smul_comm]`. Use `congr 1`. Rewrite using `[hd, pow_succ]`. Simplify using `only [mul_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[((gW _ (mem_ζbi L)).pow_right f.N).left_comm, (gW _ (mem_ζbi L)).left_comm, (gc _ (mem_ζbi L)).left_comm, cW.symm.left_comm, xiζi.eq]`. Rewrite using `[← mul_assoc (io L.ζbi) (io L.ζi) (f.xi (Ya + 1)), ← mul_assoc (wt L) (io L.ζbi * io L.ζi) (f.xi (Ya + 1)), ← mul_assoc (wt L) (io L.ζbi) (io L.ζi), hw]`. Establish `E2 : io L.GG * io L.ζi * (wt L ^ (f.N + 1) * f.c) * f.x Ya * (io L.ζbi * io L.GG) = f.d L * (io L.GG * f.x Ya)`. Rewrite using `[hd, pow_succ]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[xζbi.left_comm, xG.eq]`. Rewrite using `[((gW _ (mem_ζi L)).pow_right f.N).left_comm, ((gW _ (mem_GG L)).pow_right f.N).left_comm]`. Rewrite using `[cW.symm.left_comm, (gc _ (mem_ζi L)).left_comm, (gc _ (mem_GG L)).left_comm]`. Rewrite using `[← mul_assoc (io L.ζbi) (io L.GG) (f.x Ya), ← mul_assoc (wt L) (io L.ζbi * io L.GG) (f.x Ya), ← mul_assoc (io L.ζi) (wt L * (io L.ζbi * io L.GG)) (f.x Ya), ← mul_assoc (io L.GG) (io L.ζi * (wt L * (io L.ζbi * io L.GG))) (f.x Ya), hw2]`. Establish `fd : FreeOf a (f.d L)` using `free_d L f hfree`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fX : FreeOf a ((wt L : SlopeTestRemainingChoices S A) ^ (f.N + 1) * f.c)` using `free_mul (free_pow (free_wt L a) _) fc`. Establish `fd0 : ∀ X : SlopeTestRemainingChoices S A, FreeOf a X → FreeOf2 a (d0 X)` using `fun X hX => by`. Rewrite using `[d0_eq_diagonal]`. Conclude with `freeOf2_of_four_entries hX (free_zero a) (free_zero a) hX`. Establish `fZ2 : FreeOf2 a !![(io L.ζi : SlopeTestRemainingChoices S A), 0; 0, io L.ζbi * io L.GG]` using `freeOf2_of_four_entries (free_io a _) (free_zero a) (free_zero a) (free_mul (free_io a _) (free_io a _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fZh : FreeOf2 a !![(io L.ζbi : SlopeTestRemainingChoices S A), 0; 0, io L.GG * io L.ζi]` using `freeOf2_of_four_entries (free_io a _) (free_zero a) (free_zero a) (free_mul (free_io a _) (free_io a _))`. Establish `fC : FreeOf2 a !![f.q Ya • f.xi (Ya + 1), 0; 0, f.x Ya]` using `freeOf2_of_four_entries (free_smul _ (fxi _)) (free_zero a) (free_zero a) (fx _)`. Establish `key : ins a !![(io L.ζbi : SlopeTestRemainingChoices S A), 0; 0, io L.GG * io L.ζi] * (wt L ^ (f.N + 1) * (f.c * ins a !![f.q Ya • f.xi (Ya + 1), 0; 0, f.x Ya])) * ins a !![io L.ζi, 0; 0, io L.ζbi * io L.GG] = f.d L * ins a !![f.q Ya • (io L.GGi * f.xi (Ya + 1)), 0; 0, io L.GG * …`. Rewrite using `[← mul_assoc ((wt L : SlopeTestRemainingChoices S A) ^ (f.N + 1)) f.c, ← Wd1.insert_diagonal_extract a ((wt L : SlopeTestRemainingChoices S A) ^ (f.N + 1) * f.c), ← Wd1.insert_diagonal_extract a (f.d L)]`. Simplify using `only [mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Wd1.ins_mul a _ _ fC, ← Wd1.ins_mul a _ _ (fd0 _ fX), ← Wd1.ins_mul a _ _ fZh, ← Wd1.ins_mul a _ _ (fd0 _ fd)]`. Use `congr 1`. Simplify using `only [← mul_assoc]`. Rewrite using `[diag_entries, d0_eq_diagonal, Matrix.mul_fin_two]`. Simplify using `only [mul_zero, zero_mul, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[E1, E2]`. Establish `key' : ∀ Y : SlopeTestRemainingChoices S A, ins a !![(io L.ζbi : SlopeTestRemainingChoices S A), 0; 0, io L.GG * io L.ζi] * (wt L ^ (f.N + 1) * (f.c * (ins a !![f.q Ya • f.xi (Ya + 1), 0; 0, f.x Ya] * (ins a !![io L.ζi, 0; 0, io L.ζbi * io L.GG] * Y)))) = f.d L * (ins a !![f.q Ya …`. Introduce `Y`. Establish `e` using `congrArg (· * Y) key`. Simplify using `only [mul_assoc] at e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `e`. Establish `hZ : (!![io L.ζi, 0; 0, io L.ζbi] * !![1, 0; io L.GG * f.l L Ya, io L.GG] : M2 (SlopeTestRemainingChoices S A)) = !![io L.ζi, 0; 0, io L.ζbi * io L.GG] * !![1, 0; f.l L Ya, 1]`. Rewrite using `[Matrix.mul_fin_two, Matrix.mul_fin_two]`. Simplify using `only [mul_one, mul_zero, zero_mul, add_zero, zero_add, one_mul, mul_assoc]`. Use `show f.RR * ins a (f.TT Ya) = star (ins a (!![io L.ζi, 0; 0, io L.ζbi] * !![1, 0; io L.GG * f.l L Ya, io L.GG]) * f.F) * ((wt L : SlopeTestRemainingChoices S A) ^ (f.N + 1) * (f.c * ins a !![f.q Ya • f.xi (Ya + 1), 0; 0, f.x Ya])) * (ins a (!![io L.ζi, 0; 0, io L.ζbi] * !![1, 0; …`.
-
-Rewrite using `[hG, hZ, Wd1.ins_mul a _ _ fZ2, star_mul, star_mul, star_mul, Wd1.ins_star a _ fZ2, diag_conj, io_star, star_mul, io_star, io_star, star_ζi hs, star_GG hs, star_ζbi hs]`. Simplify using `only [mul_assoc]`. Rewrite using `[key']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plusForm (L : LevelData A r) (f : FrameData S A) (a : S) (Ya : ℂ) (H : PlusHyp L f a Ya) :
     (f.plus L a Ya).RR = star (f.plus L a Ya).F * (f.plus L a Ya).d L * (f.plus L a Ya).F := by
@@ -697,14 +693,14 @@ end Formalism.FourierDecayAlt.P.Fr5
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `A S _ _ _ _ _ _ r L f a Ya H`. Conclude with `Fr5.gaussFormPlus L f a Ya H`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gauss_form_plus_letter : Formalism.FourierDecayAlt.Fr.GaussFormPlus := by
   intro A S _ _ _ _ _ _ r L f a Ya H
   exact Fr5.gaussFormPlus L f a Ya H
 
 /- English proof (translation)
-Introduce `A S _ _ _ _ _ _ r L f a Ya H`. Conclude with `Fr5.plusForm L f a Ya H`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem plus_letter_form : Formalism.FourierDecayAlt.Fr.PlusForm := by
   intro A S _ _ _ _ _ _ r L f a Ya H

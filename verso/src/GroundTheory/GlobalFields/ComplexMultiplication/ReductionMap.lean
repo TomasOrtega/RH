@@ -19,7 +19,7 @@ def pointMapRing : V.toAffine.Point →+ (V.map f).toAffine.Point :=
   Point.map (W' := V) (Algebra.ofId F L)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem pointMapRing_some {x y : F} (h : V.toAffine.Nonsingular x y) :
     ∃ h' : (V.map f).toAffine.Nonsingular (f x) (f y),
@@ -38,14 +38,14 @@ variable {𝒪₁ 𝒪₂ : Type*} [CommRing 𝒪₁] [IsDomain 𝒪₁] [IsDisc
 
 include hσ in
 /- English proof (translation)
-Rewrite using `[WeierstrassCurve.map_map, WeierstrassCurve.map_map, hσ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_curveK_eq :
     (W.map (algebraMap 𝒪₁ K₁)).map σ = (W.map f).map (algebraMap 𝒪₂ K₂) := by
   rw [WeierstrassCurve.map_map, WeierstrassCurve.map_map, hσ]
 
 /- English proof (translation)
-Rewrite using `[WeierstrassCurve.map_map, WeierstrassCurve.map_map, ResidueField.map_comp_residue]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_curveRed_eq :
     (W.map (residue 𝒪₁)).map (ResidueField.map f) = (W.map f).map (residue 𝒪₂) := by
@@ -54,9 +54,9 @@ theorem map_curveRed_eq :
 include hσ in
 
 /- English proof (translation)
-Introduce and unpack `⟨s, hs⟩`. Take `⟨t, htm, ht⟩` from `exists_inv_mem_of_notMem_range K₁ hX`. Establish `hX0 : X ≠ 0` using `fun h => hX ⟨0, by rw [h, map_zero]⟩`. Establish `h1 : algebraMap 𝒪₂ K₂ (s * f t) = 1`. Rewrite using `[map_mul, hs, ← RingHom.comp_apply, ← hσ, RingHom.comp_apply, ht, ← map_mul, mul_inv_cancel₀ hX0, map_one]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit (f t)` using `isUnit_iff_exists_inv.mpr ⟨s, IsFractionRing.injective 𝒪₂ K₂ (by rw [mul_comm, h1, map_one])⟩`. Conclude with `(mem_maximalIdeal _).1 htm (isUnit_of_map_unit f t hu)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_notMem_range {X : K₁} (hX : X ∉ Set.range (algebraMap 𝒪₁ K₁)) :
     σ X ∉ Set.range (algebraMap 𝒪₂ K₂) := by
@@ -74,13 +74,13 @@ variable [W.IsElliptic] [DecidableEq K₁] [DecidableEq K₂] [DecidableEq (Resi
   [DecidableEq (ResidueField 𝒪₂)]
 
 /- English proof (translation)
-Break down `point_cases K₁ W P with rfl | ⟨X, Y, h, rfl, hX⟩ | ⟨x, y, h, rfl⟩` into its components or cases. Rewrite using `[reducePoint_zero, map_zero, map_zero, map_zero, map_zero, reducePoint_zero]`. Take `⟨h', e⟩` from `pointMapRing_some σ (W.map (algebraMap 𝒪₁ K₁)) h`. Rewrite using `[e, pointCongr_some, reducePoint_some_notMem K₂ (W.map f) _ (map_notMem_range K₁ K₂ hσ hX), reducePoint_some_notMem K₁ W h hX, map_zero, map_zero]`. Take `⟨h', e⟩` from `pointMapRing_some σ (W.map (algebraMap 𝒪₁ K₁)) h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hx : σ (algebraMap 𝒪₁ K₁ x) = algebraMap 𝒪₂ K₂ (f x)`. Rewrite using `[← RingHom.comp_apply, hσ, RingHom.comp_apply]`. Establish `hy : σ (algebraMap 𝒪₁ K₁ y) = algebraMap 𝒪₂ K₂ (f y)`. Rewrite using `[← RingHom.comp_apply, hσ, RingHom.comp_apply]`. Establish `h₂ : (curveK K₂ (W.map f)).Nonsingular (algebraMap 𝒪₂ K₂ (f x)) (algebraMap 𝒪₂ K₂ (f y))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(map_curveK_eq K₁ K₂ hσ W) ▸ h'` as an intermediate fact. Rewrite `this` using `[hx, hy]`. Then use the resulting hypothesis. Establish `n₁` using `nonsingular_residue_of_isElliptic K₁ W h.1`. Establish `n₂` using `nonsingular_residue_of_isElliptic K₂ (W.map f) h₂.1`. Take `⟨n₁', e₁⟩` from `pointMapRing_some (ResidueField.map f) (W.map (residue 𝒪₁)) n₁`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e₂ : pointCongr (map_curveK_eq K₁ K₂ hσ W) (.some _ _ h') = .some _ _ h₂`. Rewrite using `[pointCongr_some, Point.some.injEq]`. Conclude with `⟨hx, hy⟩`. Rewrite using `[e, e₂, reducePoint_some_integral K₂ (W.map f) h₂ n₂, reducePoint_some_integral K₁ W h n₁, e₁, pointCongr_some, Point.some.injEq, ResidueField.map_residue, ResidueField.map_residue]`. Conclude with `⟨rfl, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem reducePoint_pointMapRing (P : (curveK K₁ W).Point) :
     reducePoint K₂ (W.map f) (pointCongr (map_curveK_eq K₁ K₂ hσ W)
@@ -121,7 +121,7 @@ variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing
 abbrev gaussCurve : WeierstrassCurve (gaussRing W) := W'.map (algebraMap 𝒪 (gaussRing W))
 
 /- English proof (translation)
-Use `show W'.map ((algebraMap (gaussRing W) _).comp (algebraMap 𝒪 (gaussRing W))) = W'.map ((algebraMap K _).comp (algebraMap 𝒪 K))`. Rewrite using `[← IsScalarTower.algebraMap_eq, ← IsScalarTower.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussCurve_map_functionField :
     (gaussCurve W W').map (algebraMap (gaussRing W) (W.baseChange K).toAffine.FunctionField) =
@@ -131,7 +131,7 @@ theorem gaussCurve_map_functionField :
   rw [← IsScalarTower.algebraMap_eq, ← IsScalarTower.algebraMap_eq]
 
 /- English proof (translation)
-Simplify using `only [gaussCurve, WeierstrassCurve.baseChange, WeierstrassCurve.map_map]`. Use `congr 1`. Use extensionality with `c`. Simplify using `[gaussResidue_residue_algebraMap, ← IsScalarTower.algebraMap_apply]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gaussCurve_map_residue :
     ((gaussCurve W W').map (residue (gaussRing W))).map (gaussResidue W) =

@@ -19,9 +19,9 @@ section
 variable {Z : Subalgebra k (Matrix (Fin N) (Fin N) k)} {x : Matrix (Fin N) (Fin N) k}
 
 /- English proof (translation)
-Introduce `a ha b hb`. Break down `Set.mem_insert_iff.1 ha with h1 | h1` into its components or cases. Break down `Set.mem_insert_iff.1 hb with h2 | h2` into its components or cases. Rewrite using `[h1, h2]`. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hx b h2).symm`. Break down `Set.mem_insert_iff.1 hb with h2 | h2` into its components or cases. Rewrite using `[h2]`. Conclude with `hx a h1`. Conclude with `hZ.1 a h1 b h2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cx_gens (hZ : CR Z) (hx : x ∈ Bz Z) :
     ∀ a ∈ insert x (Z : Set (Matrix (Fin N) (Fin N) k)), ∀ b ∈ insert x (Z : Set (Matrix (Fin N) (Fin N) k)),
@@ -38,9 +38,9 @@ theorem cx_gens (hZ : CR Z) (hx : x ∈ Bz Z) :
     · exact hZ.1 a h1 b h2
 
 /- English proof (translation)
-Introduce `a ha b hb`. Establish `key` using `cx_gens hZ hx`. Establish `h : Commute a b`. Use `Algebra.commute_of_mem_adjoin_of_forall_mem_commute hb ?_` and prove the remaining obligations. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Algebra.commute_of_mem_adjoin_of_forall_mem_commute ha ?_).symm` and prove the remaining obligations. Introduce `d hd`. Conclude with `key c hc d hd`. Conclude with `h.eq`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cx_comm (hZ : CR Z) (hx : x ∈ Bz Z) : ∀ a ∈ Cx Z x, ∀ b ∈ Cx Z x, a * b = b * a := by
   intro a ha b hb
@@ -54,17 +54,17 @@ theorem cx_comm (hZ : CR Z) (hx : x ∈ Bz Z) : ∀ a ∈ Cx Z x, ∀ b ∈ Cx Z
   exact h.eq
 
 /- English proof (translation)
-Introduce `_ h` and use `Algebra.subset_adjoin (Set.mem_insert_of_mem _ h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem z_le_cx : Z ≤ Cx Z x := fun _ h => Algebra.subset_adjoin (Set.mem_insert_of_mem _ h)
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin (Set.mem_insert _ _)`.
+A detailed English derivation is pending.
 -/
 theorem x_mem_cx : x ∈ Cx Z x := Algebra.subset_adjoin (Set.mem_insert _ _)
 
 /- English proof (translation)
-The claim follows from `Subalgebra.sum_mem _ fun l _ => Subalgebra.mul_mem _ (z_le_cx (hc l)) (Subalgebra.pow_mem _ x_mem_cx _)`.
+A detailed English derivation is pending.
 -/
 theorem pe_mem {d : ℕ} {c : Fin d → Matrix (Fin N) (Fin N) k} (hc : ∀ l, c l ∈ Z) : pe c x ∈ Cx Z x :=
   Subalgebra.sum_mem _ fun l _ => Subalgebra.mul_mem _ (z_le_cx (hc l)) (Subalgebra.pow_mem _ x_mem_cx _)

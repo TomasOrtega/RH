@@ -3,21 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Ar
 open Matrix Filter ReciprocityTheory.Gal UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.Pa.B2
 
 /- English proof (translation)
-Substitute `hw` using the available equality. Establish `h1 : Ideal.span {u} ≤ Submodule.comap (LinearMap.mulLeft R v) (Ideal.span {v * u})`. Introduce `x hx`. Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Use `show v * (t * u) ∈ Ideal.span {v * u}`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_span_singleton]`. Conclude with `⟨t, by ring⟩`. Establish `h2 : Ideal.span {v * u} ≤ Submodule.comap (LinearMap.id : R →ₗ[R] R) (Ideal.span {v})`. Rewrite using `[Submodule.comap_id]`. Conclude with `Ideal.span_singleton_le_span_singleton.mpr (dvd_mul_right v u)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f` to `Submodule.mapQ (Ideal.span {u}) (Ideal.span {v * u}) (LinearMap.mulLeft R v) h1`. Set `g` to `Submodule.mapQ (Ideal.span {v * u}) (Ideal.span {v}) (LinearMap.id : R →ₗ[R] R) h2`. Establish `hf : ∀ x, f (Submodule.Quotient.mk x) = Submodule.Quotient.mk (v * x)` using `fun x => rfl`. Establish `hg : ∀ x, g (Submodule.Quotient.mk x) = Submodule.Quotient.mk x` using `fun x => rfl`. Use `⟨f, g, ?_, ?_, ?_, fun x => rfl, fun x => rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `a ha`. Proceed by induction on `a using Submodule.Quotient.induction_on with`. Consider the case `H x`. Rewrite `ha` using `[hf, Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton]`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton]`. Conclude with `(mul_dvd_mul_iff_left hv).mp ha`. Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hg, Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨Submodule.Quotient.mk t, hf t⟩`. Introduce and unpack `⟨a, ha⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `a using Submodule.Quotient.induction_on with`. Consider the case `H t`. Rewrite `ha` using `[hf, Submodule.Quotient.eq, Ideal.mem_span_singleton]`. Take `⟨s, hs⟩` from `ha`. Conclude with `⟨t - u * s, by linear_combination -hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x => exact ⟨Submodule.Quotient.mk x, hg x⟩`.
+A detailed English derivation is pending.
 -/
 private theorem quotient_multiplication_exact {R : Type} [CommRing R] [IsDomain R] (u v w : R) (hv : v ≠ 0)
     (hw : w = v * u) :
@@ -66,9 +66,9 @@ private theorem quotient_multiplication_exact {R : Type} [CommRing R] [IsDomain 
     | H x => exact ⟨Submodule.Quotient.mk x, hg x⟩
 
 /- English proof (translation)
-Introduce `K _ e m h`. Establish `hX : (PowerSeries.X : PowerSeries K) ≠ 0` using `PowerSeries.X_ne_zero`. Take `⟨f, g, hfi, hfg, hgs, hf, -⟩` from `quotient_multiplication_exact ((PowerSeries.X : PowerSeries K) ^ (m - e)) (PowerSeries.X ^ e) (PowerSeries.X ^ m) (pow_ne_zero _ hX) (by rw [← pow_add, Nat.add_sub_cancel' h])`. Take `⟨k, r, hki, hkr, hrs, -, hr⟩` from `quotient_multiplication_exact ((PowerSeries.X : PowerSeries K) ^ e) (PowerSeries.X ^ (m - e)) (PowerSeries.X ^ m) (pow_ne_zero _ hX) (by rw [← pow_add, Nat.sub_add_cancel h])`. Use `⟨f, g, k, r, hfi, hfg, hgs, hki, hkr, hrs, fun y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x => exact (congrArg f (hr x)).trans (hf x)`.
+Proceed by induction. Treat this case separately.
 -/
 theorem UpperTheory.V.Pa.B2.amMaps :
     ∀ (K : Type) [Field K] (e m : ℕ), e ≤ m → ∃ (f : (PowerSeries K ⧸ Ideal.span {(PowerSeries.X : PowerSeries K) ^ (m - e)}) →ₗ[PowerSeries K] (PowerSeries K ⧸ Ideal.span {(PowerSeries.X : PowerSeries K) ^ m})) (g : (PowerSeries K ⧸ Ideal.span {(PowerSeries.X : PowerSeries K) ^ m}) →ₗ[PowerSeries K] (PowerSeries K ⧸ Ideal.span {(PowerSeries.X : PowerSeries K) ^ e})) (k : (PowerSeries K ⧸ Ideal.span {(PowerSeries.X : PowerSeries K) ^ e}) →ₗ[PowerSeries K] (PowerSeries K ⧸ Ideal.span {(PowerSeries.X : PowerSeries K) ^ m})) (r : (PowerSeries K ⧸ Ideal.span {(PowerSeries.X : PowerSeries K) ^ m}) →ₗ[PowerSeries K] (PowerSeries K ⧸ Ideal.span {(PowerSeries.X : PowerSeries K) ^ (m - e)})), Function.Injective f ∧ Function.Exact f g ∧ Function.Surjective g ∧ Function.Injective k ∧ Function.Exact k r ∧ Function.Surjective r ∧ ∀ y, f (r y) = (PowerSeries.X : PowerSeries K) ^ e • y := by

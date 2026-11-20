@@ -17,9 +17,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Take `⟨X, _, _, _, ⟨Q⟩⟩` from `h`. Set `t` to `thick R (maximalIdeal R) 0`. Establish `h2` using `(isGrpPullback_pullback G₁ t).comp hφ`. Establish `h3` using `isGrpPullback_pullback G' t`. Set `ψ : (thickObj R (maximalIdeal R) 0 G₁).left ⟶ (thickObj R (maximalIdeal R) 0 G').left` to `pullback.lift (pullback.fst G₁.hom t ≫ φ) (pullback.snd G₁.hom t) (by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc, hφ.1.w, Category.comp_id, pullback.condition])`. Establish `hc : IsGrpPullback (thickObj R (maximalIdeal R) 0 G₁) (thickObj R (maximalIdeal R) 0 G') (𝟙 _) ψ` using `IsGrpPullback.cancel h3 (h2.congr (by rw [Category.comp_id, Category.id_comp]) (pullback.lift_fst _ _ _).symm) (by rw [Category.comp_id]; exact pullback.lift_snd _ _ _)`. Take `⟨Q', -⟩` from `GlobalTheory.UU.exists_tq_baseChange _ _ (𝟙 _) X _ _ ψ hc Q`. Conclude with `⟨X, inferInstance, inferInstance, inferInstance, ⟨Q'⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem splitClosed_of_isGrpPullback_id {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {G' G₁ : Over (Sp R)}
     [GrpObj G'] [GrpObj G₁] {φ : G₁.left ⟶ G'.left} (hφ : IsGrpPullback G₁ G' (𝟙 _) φ) (h : SplitClosed G') :
@@ -40,19 +40,15 @@ theorem splitClosed_of_isGrpPullback_id {R : Type} [CommRing R] [IsDomain R] [Is
 noncomputable section
 
 /- English proof (translation)
-Introduce `R _ _ _ hR G _ _ hG A gen hgen`. Take `⟨K', _, _, hK'fin, H⟩` from `GlobalTheory.T.exists_finite_ext_two_torsion_rational_pullbacks R G A gen hgen`. Use `haveI : IsDiscreteValuationRing R := hR.1`. Use `haveI : IsAdicComplete (maximalIdeal R) R := hR.2.1`. Use `haveI : CharZero R := hR.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CharZero (FractionRing R) := (algebraMap R (FractionRing R)).charZero_iff (IsFractionRing.injective R _) |>.1 inferInstance`. Take `⟨W, _, _, _, hWc, _, _, _, hc, hWfin, hWinj, hWloc, -, -⟩` from `GlobalTheory.SS.exists_complete_dvr_finite_extension R (FractionRing R) K'`. Use `haveI : CharZero W := (algebraMap R W).charZero_iff hWinj |>.1 inferInstance`. Establish `hWd : GlobalTheory.LN.CDvr W` using `⟨inferInstance, hWc, inferInstance⟩`. Establish `hGW : IsSemiAbelian ((Over.pullback (spMap (algebraMap R W))).obj G)` using `IsSemiAbelian.pullback _ G hG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨R₂, _, _, _, ρ₂, G', _, _, β', X, _, _, _, hfin₂, hpb', ⟨Q⟩⟩` from `GlobalTheory.Mum.exists_finExt_tq_closedFibre W ⟨⟨inferInstance, inferInstance, inferInstance, hWc⟩, inferInstance⟩ _ hGW`. Establish `hsp : spMap (ρ₂.comp (algebraMap R W)) = spMap ρ₂ ≫ spMap (algebraMap R W)`. Rewrite using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Use `⟨R₂, inferInstance, inferInstance, inferInstance, ρ₂.comp (algebraMap R W), GlobalTheory.T.isCompleteDVRCharZero_of_finiteInjectiveExtension W R₂ ρ₂ hWd hfin₂, ⟨hfin₂.1, hfin₂.2.1.comp hWinj, hfin₂.2.2.comp (RingHom.finite_algebraMap.2 hWfin)⟩, ?_⟩` and prove the remaining obligations. Introduce `G₁ _ _ β hβ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hGWp` using `isGrpPullback_pullback G (spMap (algebraMap R W))`. Set `gam : G₁.left ⟶ ((Over.pullback (spMap (algebraMap R W))).obj G).left` to `pullback.lift β (G₁.hom ≫ spMap ρ₂) (by rw [hβ.1.w, hsp, Category.assoc])`. Establish `hgam : IsGrpPullback G₁ _ (spMap ρ₂) gam` using `IsGrpPullback.cancel hGWp (hβ.congr hsp (pullback.lift_fst _ _ _).symm) (pullback.lift_snd _ _ _)`. Take `⟨e, he, -⟩` from `grpPullback_iso hgam hpb'`. Use `haveI := he`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsplit' : SplitClosed G'` using `⟨X, inferInstance, inferInstance, inferInstance, ⟨Q⟩⟩`. Use `⟨splitClosed_of_isGrpPullback_id (isGrpPullback_of_iso e) hsplit', ?_⟩` and prove the remaining obligations. Set `j : FractionRing W →+* FractionRing R₂` to `IsLocalization.map (M := nonZeroDivisors W) (T := nonZeroDivisors R₂) (FractionRing R₂) ρ₂ (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective ρ₂ hfin₂.2.1)`. Set `i : K' →+* FractionRing R₂` to `j.comp (FractionRing.algEquiv W K').symm.toRingHom`. Use `H R₂ (ρ₂.comp (algebraMap R W)) i (fun r => ?_) G₁ β hβ` and prove the remaining obligations.
-
-Establish `h1` using `congrArg (fun f => f r) hc`. Simplify using `only [RingHom.comp_apply] at h1`. Rewrite using `[← h1]`. Use `show j ((FractionRing.algEquiv W K').symm (algebraMap W K' (algebraMap R W r))) = _`. Rewrite using `[AlgEquiv.commutes]`.
-
-Conclude with `IsLocalization.map_eq _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finExt_splitClosed_twoTorsRat : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.LN.CDvr R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (A : PolAV (Sp (FractionRing R))) (gen : ((Over.pullback (jK R)).obj G) ≅ A.A), IsMonHom gen.hom → ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (ρ : R →+* R'), GlobalTheory.LN.CDvr R' ∧ FinExt ρ ∧ ∀ (G₁ : Over (Sp R')) [GrpObj G₁] [IsCommMonObj G₁] (β : G₁.left ⟶ G.left), IsGrpPullback G₁ G (spMap ρ) β → SplitClosed G₁ ∧ TwoTorsRat G₁ := by
   intro R _ _ _ hR G _ _ hG A gen hgen

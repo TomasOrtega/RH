@@ -27,16 +27,16 @@ theorem coe_toCircle (ψ : AddChar (AF F) ℂ) (h : ∀ x, ‖ψ x‖ = 1) (x : 
     ((toCircle ψ h x : Circle) : ℂ) = ψ x := rfl
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk hc _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toCircle (ψ : AddChar (AF F) ℂ) (h : ∀ x, ‖ψ x‖ = 1) (hc : Continuous ψ) :
     Continuous (toCircle ψ h) :=
   Continuous.subtype_mk hc _
 
 /- English proof (translation)
-Take `⟨hc, hn, hF, x₀, hx₀⟩` from `hψ`. Take `⟨ξ, hξ, -⟩` from `GroundTheory.Global.existsUnique_eq_adelicChar_mul (toCircle ψ hn) (continuous_toCircle ψ hn hc) (fun k => Circle.ext (by simpa [coe_toCircle] using hF k))`. Establish `key : ∀ x : AF F, ψ x = ((GroundTheory.Global.adelicChar F (algebraMap F (AF F) ξ * x) : Circle) : ℂ)` using `fun x => by`. Rewrite using `[← hξ x, coe_toCircle]`. Use `⟨ξ, ?_, key⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Apply `hx₀` to reduce the goal to its premises. Rewrite using `[key x₀]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_eq_adelicChar_mul (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) :
     ∃ ξ : F, ξ ≠ 0 ∧ ∀ x : AF F,
@@ -54,7 +54,7 @@ theorem exists_eq_adelicChar_mul (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ)
   simp
 
 /- English proof (translation)
-Take `⟨ξ, hξ0, hξ⟩` from `exists_eq_adelicChar_mul ψ hψ`. Take `⟨η, hη0, hη⟩` from `exists_eq_adelicChar_mul ψ' hψ'`. Use `⟨η / ξ, div_ne_zero hη0 hξ0, fun x => ?_⟩` and prove the remaining obligations. Establish `hc : ξ * (η / ξ) = η` using `by field_simp`. Rewrite using `[hη x, hξ, ← mul_assoc, ← map_mul, hc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_scalar (ψ ψ' : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) (hψ' : IsCharAF F ψ') :
     ∃ a : F, a ≠ 0 ∧ ∀ x, ψ' x = ψ (algebraMap F (AF F) a * x) := by
@@ -67,7 +67,7 @@ theorem exists_scalar (ψ ψ' : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) (hψ' 
 end GlobalTheory.CompanionTheory.SW.CharDual
 
 /- English proof (translation)
-Introduce `_ _ _ ψ ψ' hψ hψ'` and use `GlobalTheory.CompanionTheory.SW.CharDual.exists_scalar ψ ψ' hψ hψ'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SW.char_dual : ∀ (F : Type) [Field F] [NumberField F] (ψ ψ' : AddChar (AF F) ℂ),
     IsCharAF F ψ → IsCharAF F ψ' →

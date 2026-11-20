@@ -15,15 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.IdemOrth
 
 /- English proof (translation)
-Take `⟨⟨a1, a2, v, ε, hε, a3⟩, a4⟩` from `ha`. Take `⟨⟨b1, b2, v', ε', hε', b3⟩, b4⟩` from `hb`. Distinguish the cases in `hv : v = v'`. It suffices to derive a contradiction. Rewrite `hε'` using `[← hv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hab : a + cA D a = b + cA D b` using `a3.trans (GlobalTheory.PlaceDatum.placeIdem_eq hε hε' ▸ b3.symm)`. Establish `hn : ((n : ℕ) : 𝓞 D.host.E) ≠ 0` using `fun h => hj (h ▸ zero_mem _)`. Establish `h1` using `not_not.1 (mt (b4 _ hn).2 hj)`. Establish `h2` using `GlobalTheory.MovedIdem.finPart_conj_mem h1`. Establish `hs : star ((((n : ℕ) : 𝓞 D.host.E) : D.host.E)⁻¹) = (((n : ℕ) : 𝓞 D.host.E) : D.host.E)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[star_inv₀]`. Use `congr 1`. Conclude with `star_natCast (R := D.host.E) n`. Rewrite `h2` using `[hs]`. Establish `h3` using `not_not.1 (mt (a4 1 one_ne_zero).2 ((Ideal.ne_top_iff_one _).1 i.isPrime.ne_top))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : incA D (((1 : 𝓞 D.host.E) : D.host.E)⁻¹) = 1`. Rewrite using `[show ((1 : 𝓞 D.host.E) : D.host.E) = 1 from rfl, inv_one, RingHom.map_one]`. Rewrite `h3` using `[h4, mul_one]`. Establish `h5` using `GlobalTheory.SplitLatBasis.mul_mem_intAE D h3 (add_mem h1 h2)`. Rewrite `h5` using `[← RingHom.map_add, ← RingHom.map_mul, ← add_mul, ← mul_assoc, ← hab, mul_add, a1, a2, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(a4 _ hn).1 hi h5`. Rewrite using `[a3, b3, ← RingHom.map_mul, GlobalTheory.PlaceDatum.placeIdem_mul hε hε' hv, RingHom.map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem idemAt_orth {D : D7} {a b : AE D} {i j : Formalism.L2.DIV.Pl D.host.E} {n : ℕ} (ha : Formalism.L2.NTheta.IsIdemAt a i)
     (hb : Formalism.L2.NTheta.IsIdemAt b j) (hi : ((n : ℕ) : 𝓞 D.host.E) ∈ i.asIdeal)
@@ -52,7 +52,7 @@ theorem idemAt_orth {D : D7} {a b : AE D} {i j : Formalism.L2.DIV.Pl D.host.E} {
   · rw [a3, b3, ← RingHom.map_mul, GlobalTheory.PlaceDatum.placeIdem_mul hε hε' hv, RingHom.map_zero]
 
 /- English proof (translation)
-Rewrite using `[map_sum, map_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib, Finset.sum_mul_sum]`. Conclude with `Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => h i hi j hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_orth {R ι : Type} [CommRing R] (c : R →+* R) (p q : ι → R) (s t : Finset ι)
     (h : ∀ i ∈ s, ∀ j ∈ t, (p i + c (p i)) * (q j + c (q j)) = 0) :
@@ -61,7 +61,7 @@ theorem sum_orth {R ι : Type} [CommRing R] (c : R →+* R) (p q : ι → R) (s 
   exact Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => h i hi j hj
 
 /- English proof (translation)
-Introduce and unpack `D e e' P P' n ⟨⟨es, hes, rfl⟩, -⟩ ⟨⟨fs, hfs, rfl⟩, -⟩ hP hP'`. Conclude with `sum_orth (R := AE D) (cA D) es fs P P' fun i hi j hj => idemAt_orth (hes i hi) (hfs j hj) (hP i hi) (hP' j hj)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem idemSum_orth : ∀ (D : D7) (e e' : AE D) (P P' : Finset (Formalism.L2.DIV.Pl D.host.E)) (n : ℕ), IsIdemSum e P → IsIdemSum e' P' → (∀ PP ∈ P, ((n : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) → (∀ PP ∈ P', ((n : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → (e + cA D e) * (e' + cA D e') = 0 := by
   rintro D e e' P P' n ⟨⟨es, hes, rfl⟩, -⟩ ⟨⟨fs, hfs, rfl⟩, -⟩ hP hP'

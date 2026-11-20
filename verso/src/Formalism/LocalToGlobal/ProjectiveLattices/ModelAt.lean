@@ -18,27 +18,23 @@ def PartIAt (Xo : Moduli Dw l) (c : Coeff l) : Prop :=
     ∃ Y : Model Xo c (c.V W).subtype, Y.N3 ∧ PushInvertible Y.t.G Y.t.PP.L
 
 /- English proof (translation)
-Use `set V := (la.valuation c.F).valuationSubring with hVdef`. Set `g : V →+* ℂ` to `c.F.val.toRingHom.comp V.subtype`. Establish `hg : Function.Injective g` using `fun a b h => Subtype.ext (c.F.val.injective h)`. Set `e : V ≃+* g.range` to `RingEquiv.ofBijective g.rangeRestrict ⟨fun a b h => hg (congrArg (fun z : g.range => (z : ℂ)) h), g.rangeRestrict_surjective⟩`. Establish `hmax : ((IsLocalRing.maximalIdeal V).map e).IsMaximal` using `Ideal.map_isMaximal_of_equiv e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hAW, hIW⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hmax.ne_top`. Establish `hnon : ∀ y : V, y ∈ IsLocalRing.maximalIdeal V → g y ∈ W.nonunits` using `fun y hy => hIW ⟨e y, Ideal.mem_map_of_mem _ hy, rfl⟩`. Use `⟨W, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxV : algebraMap (𝓞 c.F) c.F x ∈ V`. Rewrite using `[hVdef, Valuation.mem_valuationSubring_iff, HeightOneSpectrum.valuation_of_algebraMap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `la.intValuation_le_one x`. Establish `hxm : (⟨_, hxV⟩ : V) ∈ IsLocalRing.maximalIdeal V`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨w, hw⟩` from `isUnit_iff_exists_inv.1 hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : la.valuation c.F (algebraMap (𝓞 c.F) c.F x) < 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(la.intValuation_lt_one_iff_mem x).2 hx`. Establish `h2 : la.valuation c.F ((w : V) : c.F) ≤ 1` using `w.2`. Establish `h3` using `congrArg (fun z : V => la.valuation c.F (z : c.F)) hw`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [MulMemClass.coe_mul, OneMemClass.coe_one, map_mul, map_one] at h3`. Establish `h4 : la.valuation c.F (algebraMap (𝓞 c.F) c.F x) * la.valuation c.F ((w : V) : c.F) < 1` using `lt_of_lt_of_le (mul_lt_one_of_nonneg_of_lt_one_left zero_le h1 h2) le_rfl`. Rewrite `h4` using `[h3]`. Conclude with `lt_irrefl _ h4`. Conclude with `hnon _ hxm`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hv push_neg at hv`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at hv`. Establish `hiV : x⁻¹ ∈ V`. Rewrite using `[hVdef, Valuation.mem_valuationSubring_iff, map_inv₀]`. Conclude with `(inv_lt_one_of_one_lt₀ hv).le`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `him : (⟨x⁻¹, hiV⟩ : V) ∈ IsLocalRing.maximalIdeal V`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨w, hw⟩` from `isUnit_iff_exists_inv.1 hu`. Establish `h1 : (w : c.F) = x`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun z : V => (z : c.F)) hw` as an intermediate fact. Simplify using `only [MulMemClass.coe_mul, OneMemClass.coe_one] at this`. Clear denominators, using `at this` for the nonvanishing conditions. Conclude with `this`. Establish `h2 : la.valuation c.F ((w : V) : c.F) ≤ 1` using `w.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1]`. Conclude with `absurd h2 (not_le.2 hv)`. Establish `h5` using `hnon _ him`. Rewrite `h5` using `[ValuationSubring.mem_nonunits_iff]`. Establish `h6` using `(ValuationSubring.valuation_le_one_iff W _).2 hx`.
-
-Establish `h7 : g ⟨x⁻¹, hiV⟩ = ((x : ℂ))⁻¹` using `by show ((x⁻¹ : c.F) : ℂ) = _`. Conclude with `map_inv₀ c.F.val x`. Rewrite `h5` using `[h7, map_inv₀]`. Establish `hW0 : W.valuation (x : ℂ) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`.
-
-Conclude with `hx0` after adjusting the coercions. Conclude with `absurd ((inv_lt_one₀ (zero_lt_iff.2 hW0)).1 h5) (not_lt.2 h6)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lieElement_middleBlockPart (c : Coeff l) (la : HeightOneSpectrum (𝓞 c.F)) :
     ∃ W : ValuationSubring ℂ, (∀ x : 𝓞 c.F, x ∈ la.asIdeal → (((algebraMap (𝓞 c.F) c.F x : c.F) : ℂ)) ∈ W.nonunits) ∧
@@ -100,21 +96,21 @@ theorem exists_lieElement_middleBlockPart (c : Coeff l) (la : HeightOneSpectrum 
     exact absurd ((inv_lt_one₀ (zero_lt_iff.2 hW0)).1 h5) (not_lt.2 h6)
 
 /- English proof (translation)
-Take `⟨W, hWnon, hWkey⟩` from `exists_lieElement_middleBlockPart c la`. Establish `hp : (Formalism.MainNotions.WeightAlgebra.resCh la).Prime` using `resCh_prime la`. Establish `hmem : ((Formalism.MainNotions.WeightAlgebra.resCh la : ℕ) : 𝓞 c.F) ∈ la.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpW : ((Formalism.MainNotions.WeightAlgebra.resCh la : ℕ) : ℂ) ∈ W.nonunits`. Use `hWnon _ hmem` as an intermediate fact. Simplify using `using this`. Take `⟨Y, hN3, hPI⟩` from `hI _ W hp hpW (hgood _ hp)`. Use `⟨c.V W, inferInstance, (c.V W).subtype, Y, hN3, hPI, fun Tc io e ho => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hint : ∀ x : c.V W, io (x : c.F) ∈ (algebraMap Tc.V Tc.Fr).range`. Introduce `x`. Establish `hx : la.valuation c.F (x : c.F) ≤ 1` using `hWkey _ x.2`. Apply `HeightOneSpectrum.mem_integers_of_valuation_le_one` to reduce the goal to its premises. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv : v = IsDiscreteValuationRing.maximalIdeal Tc.V` using `HeightOneSpectrum.ext (IsLocalRing.eq_maximalIdeal v.isMaximal)`. Substitute `hv` using the available equality. Distinguish the cases in `hx0 : (x : c.F) = 0`. Rewrite using `[hx0, map_zero, map_zero]`. Conclude with `zero_le`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvx0 : la.valuation c.F (x : c.F) ≠ 0` using `(Valuation.ne_zero_iff _).2 hx0`. Establish `hla : 0 ≤ vLa la (x : c.F)`. Unfold `vLa`. Rewrite `hx` using `[← WithZero.exp_log hvx0, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvV : 0 ≤ vV Tc.V (io (x : c.F))`. Rewrite using `[ho.2 (x : c.F)]`. Check the signs of the components of the expression. Establish `hio0 : io (x : c.F) ≠ 0` using `(map_ne_zero io).2 hx0`. Establish `hval0 : valV Tc.V (io (x : c.F)) ≠ 0` using `valV_ne_zero hio0`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show valV Tc.V (io (x : c.F)) ≤ 1`. Unfold `vV at hvV`. Rewrite using `[← WithZero.exp_log hval0, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `f : c.V W →+* (algebraMap Tc.V Tc.Fr).range` to `(io.comp (c.V W).subtype).codRestrict _ hint`.
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Set `eq : Tc.V ≃+* (algebraMap Tc.V Tc.Fr).range` to `RingEquiv.ofBijective (algebraMap Tc.V Tc.Fr).rangeRestrict ⟨fun a b h => IsFractionRing.injective Tc.V Tc.Fr (congrArg (fun z : (algebraMap Tc.V Tc.Fr).range => (z : Tc.Fr)) h), (algebraMap Tc.V Tc.Fr).rangeRestrict_surjective⟩`. Use `⟨eq.symm.toRingHom.comp f, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Use `congrArg (fun z : (algebraMap Tc.V Tc.Fr).range => (z : Tc.Fr)) (eq.apply_symm_apply (f x))` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem modelAtSt_of {Xo : Moduli Dw l} {c : Coeff l} (hI : PartIAt Xo c) (hgood : ∀ p : ℕ, p.Prime → l.GoodAt p)
     (la : HeightOneSpectrum (𝓞 c.F)) : ModelAtSt Xo c la := by
@@ -162,17 +158,17 @@ theorem modelAtSt_of {Xo : Moduli Dw l} {c : Coeff l} (hI : PartIAt Xo c) (hgood
   exact this
 
 /- English proof (translation)
-Unfold `Level.GoodAt`. Establish `hodd : Odd (g0 * g1)` using `hM ▸ l.odd`. Establish `h3 : 3 ≤ g0 * g1` using `hM ▸ l.three_le`. Establish `o0 : Odd g0` using `(Nat.odd_mul.1 hodd).1`. Establish `o1 : Odd g1` using `(Nat.odd_mul.1 hodd).2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t0 : 3 ≤ g0`. Use `h0.two_le` as an intermediate fact. Use `Nat.odd_iff.1 o0` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `t1 : 3 ≤ g1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `h1.two_le` as an intermediate fact. Use `Nat.odd_iff.1 o1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hM, Nat.factorization_mul h0.ne_zero h1.ne_zero, Finsupp.add_apply, h0.factorization, h1.factorization]`. Distinguish the cases in `e0 : p = g0`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `e : (Finsupp.single g0 1 : ℕ →₀ ℕ) p + (Finsupp.single g1 1 : ℕ →₀ ℕ) p = 1`. Simplify using `[Finsupp.single_apply, e0, hne, hne.symm]`. Rewrite using `[e, pow_one, e0, Nat.mul_div_cancel_left g1 h0.pos]`. Conclude with `t1`. Distinguish the cases in `e1 : p = g1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e : (Finsupp.single g0 1 : ℕ →₀ ℕ) p + (Finsupp.single g1 1 : ℕ →₀ ℕ) p = 1`. Simplify using `[Finsupp.single_apply, e1, hne, hne.symm]`. Rewrite using `[e, pow_one, e1, Nat.mul_div_cancel g0 h1.pos]`. Conclude with `t0`. Establish `e : (Finsupp.single g0 1 : ℕ →₀ ℕ) p + (Finsupp.single g1 1 : ℕ →₀ ℕ) p = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.single_apply, e0, e1, Ne.symm e0, Ne.symm e1]`. Rewrite using `[e, pow_zero, Nat.div_one]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem goodAt_of_two_primes {g0 g1 : ℕ} (hM : l.M = g0 * g1) (h0 : g0.Prime) (h1 : g1.Prime)
     (hne : g0 ≠ g1) (p : ℕ) (hp : p.Prime) : l.GoodAt p := by
@@ -206,11 +202,11 @@ theorem goodAt_of_two_primes {g0 g1 : ℕ} (hM : l.M = g0 * g1) (h0 : g0.Prime) 
       exact h3
 
 /- English proof (translation)
-Take `⟨-, hI⟩` from `hP`. Set `Xf : ∀ l' : Level H, Moduli Dw l'` to `fun l' => if h : l' = l then h ▸ Xo else Classical.choice (hN E H Dw l' hpq)`. Take `⟨Y, hY, -⟩` from `hI E H Dw hpq Xf`. Introduce `p W hp hW hg`. Take `⟨hN2, hrest⟩` from `hY p W hp hW`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `i : Idx H p` to `⟨l, c, hg⟩`. Establish `hPIi` using `(hN2.1 i).2.2.1`. Establish `hN3` using `(hrest i).2.1`. Establish `hX : Xf l = Xo` using `by simp [Xf]`. Establish `key : ∀ (X' : Moduli Dw l), X' = Xo → ∀ Y' : Model X' c (c.V W).subtype, Y'.N3 → PushInvertible Y'.t.G Y'.t.PP.L → ∃ Y : Model Xo c (c.V W).subtype, Y.N3 ∧ PushInvertible Y.t.G Y.t.PP.L`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `X' rfl Y' h1 h2`. Conclude with `⟨Y', h1, h2⟩`. Conclude with `key (Xf l) hX (Y p W hp hW i) hN3 hPIi`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem partIAt_of (hP : PartI) (hN : N1ab) (Xo : Moduli Dw l) (c : Coeff l) (hpq : 1 ≤ Dw.p + Dw.q) : PartIAt Xo c := by
   classical

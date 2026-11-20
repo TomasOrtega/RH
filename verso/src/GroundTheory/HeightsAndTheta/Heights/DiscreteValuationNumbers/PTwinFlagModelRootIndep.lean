@@ -10,20 +10,20 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1
 
 /- English proof (translation)
-Simplify using `[monoList, List.flatMap, List.ofFn_eq_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem monoList_eq_flatten {r : ℕ} {A : Type*} (deg : Fin r → A) (μ : Fin r →₀ ℕ) :
     monoList deg μ = (List.ofFn fun s => List.replicate (μ s) (deg s)).flatten := by
   simp [monoList, List.flatMap, List.ofFn_eq_map]
 
 /- English proof (translation)
-Establish `he : Function.Injective (fun i : Fin m => Fin.natAdd (m + 1) i.castSucc)` using `fun i j h => Fin.castSucc_injective m ((Fin.natAdd_inj (m + 1)).mp h)`. Establish `h1 : ∀ i : Fin (m + 1), Finsupp.mapDomain (fun i : Fin m => Fin.natAdd (m + 1) i.castSucc) ν (Fin.castLE (Nat.le_add_right (m + 1) (m + 1)) i) = 0` using `fun i => Finsupp.mapDomain_of_notMem_range _ _ (by`. Introduce and unpack `⟨j, hj⟩`. Use `congrArg Fin.val hj` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `omega)`. Establish `h2 : Finsupp.mapDomain (fun i : Fin m => Fin.natAdd (m + 1) i.castSucc) ν (Fin.natAdd (m + 1) (Fin.last m)) = 0` using `Finsupp.mapDomain_of_notMem_range _ _ (by`. Introduce and unpack `⟨j, hj⟩`. Use `congrArg Fin.val hj` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `omega)`. Establish `h3 : ∀ i : Fin m, Finsupp.mapDomain (fun i : Fin m => Fin.natAdd (m + 1) i.castSucc) ν (Fin.natAdd (m + 1) i.castSucc) = ν i` using `fun i => Finsupp.mapDomain_apply he ν i`. Establish `hA : (List.ofFn fun i : Fin (m + 1) => List.replicate (Finsupp.mapDomain (fun i : Fin m => Fin.natAdd (m + 1) i.castSucc) ν (Fin.castLE (Nat.le_add_right (m + 1) (m + 1)) i)) (deg (Fin.castLE (Nat.le_add_right (m + 1) (m + 1)) i))).flatten = []`. Simplify using `only [h1, List.replicate_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : (List.ofFn fun i : Fin (m + 1) => List.replicate (Finsupp.mapDomain (fun i : Fin m => Fin.natAdd (m + 1) i.castSucc) ν (Fin.natAdd (m + 1) i)) (deg (Fin.natAdd (m + 1) i))).flatten = (List.ofFn fun s => List.replicate (ν s) ((deg ∘ fun i : Fin m => Fin.natAdd (m + 1) i.castS …`. Rewrite using `[List.ofFn_succ']`. Simplify using `only [h2, h3, List.replicate_zero, List.concat_eq_append, List.flatten_append, Function.comp]`. Simplify using the standard rewrite rules. Rewrite using `[monoList_eq_flatten, monoList_eq_flatten, List.ofFn_add, List.flatten_append, hA, hB, List.nil_append]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monoList_mapDomain {m : ℕ} {A : Type*} (deg : Fin ((m + 1) + (m + 1)) → A) (ν : Fin m →₀ ℕ) :
     monoList deg (Finsupp.mapDomain (fun i : Fin m => Fin.natAdd (m + 1) i.castSucc) ν) =
@@ -63,9 +63,9 @@ theorem monoList_mapDomain {m : ℕ} {A : Type*} (deg : Fin ((m + 1) + (m + 1)) 
   rw [monoList_eq_flatten, monoList_eq_flatten, List.ofFn_add, List.flatten_append, hA, hB, List.nil_append]
 
 /- English proof (translation)
-Unfold `polyNum`. Rewrite using `[support_rename_of_injective he, Finset.sum_image fun a _ b _ h => Finsupp.mapDomain_injective he h]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_rename_mapDomain e he]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `congrArg (fun l : List (K → ℤ) => if h : l.length = n then I W n (fun j => l.get (Fin.cast h.symm j)) else 0) (hl ν)`.
+A detailed English derivation is pending.
 -/
 theorem polyNum_rename {F : Type*} [Field F] {K : Type} [Fintype K] {κ : K → Type} [∀ k, Fintype (κ k)]
     (I : IFamily F κ) (W : Ideal (MRingOver F κ)) (n : ℕ) {m r : ℕ} (deg : Fin r → K → ℤ)
@@ -83,13 +83,13 @@ theorem polyNum_rename {F : Type*} [Field F] {K : Type} [Fintype K] {κ : K → 
     else 0) (hl ν)
 
 /- English proof (translation)
-Establish `hcs : Function.Injective (Fin.castSucc : Fin m → Fin (m + 1))` using `Fin.castSucc_injective m`. Unfold `divDiff`. Rewrite using `[support_mul_X, support_rename_of_injective hcs, Finset.sum_map, Finset.sum_image fun a _ b _ h => Finsupp.mapDomain_injective hcs h]`. Use `conv_rhs => rw [P.as_sum, map_sum]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hl : Finsupp.mapDomain Fin.castSucc ν (Fin.last m) = 0` using `Finsupp.mapDomain_of_notMem_range _ _ (by`. Introduce and unpack `⟨j, hj⟩`. Conclude with `(Fin.castSucc_lt_last j).ne hj)`. Establish `hc : ∀ i : Fin m, Finsupp.mapDomain Fin.castSucc ν i.castSucc = ν i` using `fun i => Finsupp.mapDomain_apply hcs ν i`. Establish `hs : ∀ i : Fin m, Finsupp.single (Fin.last m) 1 i.castSucc = 0` using `fun i => by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.single_apply, if_neg (Fin.castSucc_lt_last i).ne']`. Establish `hemp : (Finset.univ.filter fun j : Fin (m + 1) => Fin.last m < j) = ∅` using `Finset.filter_false_of_mem fun j _ => not_lt.mpr (Fin.le_last j)`. Simplify using `only [addRightEmbedding_apply, coeff_mul_X, coeff_rename_mapDomain _ hcs, Finsupp.add_apply, Finsupp.single_eq_same, hl, zero_add, hemp, Finset.prod_empty, mul_one, Finset.range_one, Finset.sum_singleton, pow_zero, Nat.sub_self, Nat.zero_sub]`. Rewrite using `[Finset.prod_filter, Fin.prod_univ_castSucc]`. Simplify using `only [Fin.castSucc_lt_last, if_true, lt_irrefl, if_false, mul_one, hc, hs, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[monomial_eq, map_mul, rename_C, Finsupp.prod_fintype _ _ (fun i => pow_zero _), map_prod]`. Simplify using `only [map_pow, rename_X]`.
+A detailed English derivation is pending.
 -/
 theorem divDiff_last {m : ℕ} (P : MvPolynomial (Fin m) ℤ) :
     divDiff (Fin.last m) (rename Fin.castSucc P * X (Fin.last m)) =
@@ -120,9 +120,9 @@ theorem divDiff_last {m : ℕ} (P : MvPolynomial (Fin m) ℤ) :
   simp only [map_pow, rename_X]
 
 /- English proof (translation)
-Use extensionality with `W`. Simplify using `only [divCycle, Finsupp.ofSupportFinite_coe, Finsupp.coe_zero, Pi.zero_apply]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h, -⟩`. Rewrite `h` using `[Ideal.span_singleton_one, sup_top_eq, Ideal.minimalPrimes_top]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem divCycle_one {R : Type*} [CommRing R] [IsNoetherianRing R] {K : Type} [Fintype K] {κ : K → Type}
     [∀ k, Fintype (κ k)] (P : Ideal (MRingOver R κ)) : divCycle P 1 = 0 := by
@@ -137,9 +137,9 @@ theorem divCycle_one {R : Type*} [CommRing R] [IsNoetherianRing R] {K : Type} [F
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Establish `h1 : IsMultiHomog (1 : MRingOver O κ) 0` using `by simpa using isMultiHomog_C O (ι := κ) (1 : O)`. Establish `hnot : ∀ Q : Ideal (MRingOver O κ), Q.comap (C : O →+* MRingOver O κ) = ⊥ → C c ∉ Q`. Introduce `Q hQ h`. Establish `: c ∈ Q.comap (C : O →+* MRingOver O κ)` using `h`. Rewrite `this` using `[hQ, Ideal.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc this`. Use `⟨⟨0, 0, isMultiHomog_C O c, h1, by simp⟩, hnot P hflat, fun h => hP.ne_top ((Ideal.eq_top_iff_one P).mpr h), fun Q hQ _ hQf => ⟨1, C c, ⟨0, h1⟩, ⟨0, isMultiHomog_C O c⟩, fun h => hQ.1.ne_top ((Ideal.eq_top_iff_one Q).mpr h), hnot Q hQf, by simp⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isVertDiv_C {K : Type} [Fintype K] {κ : K → Type} [∀ k, Fintype (κ k)]
     {P : Ideal (MRingOver O κ)} (hP : P.IsPrime) (hflat : P.comap (C : O →+* MRingOver O κ) = ⊥)
@@ -186,7 +186,7 @@ def selfModel {x : (Σ k, ι k) → Ω} {d N : ℕ} {V : Type} [AddCommGroup V] 
   flag := selfPair F.flag F.model.2.1.1 F.model.2.2.1
 
 /- English proof (translation)
-Proceed by induction on `s using Fin.addCases with`. Consider the case `left i`. Rewrite using `[show (Fin.castAdd q i).castSucc = Fin.castAdd (q + 1) i from Fin.ext rfl, Fin.append_left, Fin.append_left]`. Consider the case `right j`. Rewrite using `[show (Fin.natAdd N j).castSucc = Fin.natAdd N j.castSucc from Fin.ext rfl, Fin.append_right, Fin.append_right, Fin.snoc_castSucc]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem append_snoc_castSucc {N q : ℕ} {K₁ K' : Type} (u : Fin N → K₁ ⊕ K' → ℤ) (L : Fin q → K₁ → ℤ)
     (s : Fin (N + q)) :
@@ -201,11 +201,11 @@ theorem append_snoc_castSucc {N q : ℕ} {K₁ K' : Type} (u : Fin N → K₁ �
       Fin.append_right, Fin.snoc_castSucc]
 
 /- English proof (translation)
-Establish `hH : (rename (Fin.castAdd (q + 1)) G * rename (Fin.natAdd N) (rename Fin.castSucc Q * X (Fin.last q)) : MvPolynomial (Fin (N + (q + 1))) ℤ) = rename Fin.castSucc (rename (Fin.castAdd q) G * rename (Fin.natAdd N) Q) * X (Fin.last (N + q))`. Establish `e1 : (Fin.castSucc ∘ Fin.castAdd q : Fin N → Fin (N + q + 1)) = Fin.castAdd (q + 1)`. Use function extensionality and compare the values at `fun i => Fin.ext rfl`. Establish `e2 : (Fin.castSucc ∘ Fin.natAdd N : Fin q → Fin (N + q + 1)) = Fin.natAdd N ∘ Fin.castSucc`. Use function extensionality and compare the values at `fun i => Fin.ext rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e3 : (Fin.natAdd N (Fin.last q) : Fin (N + q + 1)) = Fin.last (N + q)` using `Fin.ext rfl`. Rewrite using `[map_mul, map_mul, rename_X, rename_rename, rename_rename, rename_rename, e1, e2, e3, mul_assoc]`. Establish `hD : divDiff (Fin.natAdd N (Fin.last q)) (rename (Fin.castAdd (q + 1)) G * rename (Fin.natAdd N) (rename Fin.castSucc Q * X (Fin.last q))) = rename (fun i : Fin (N + q) => Fin.natAdd (N + (q + 1)) i.castSucc) (rename (Fin.castAdd q) G * rename (Fin.natAdd N) Q)`. Rewrite using `[hH]`. Conclude with `divDiff_last _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD]`. Use `(polyNum_rename I W n (Fin.append A A) (fun i : Fin (N + q) => Fin.natAdd (N + (q + 1)) i.castSucc) (fun i j h => Fin.castSucc_injective _ ((Fin.natAdd_inj _).mp h)) (fun ν => monoList_mapDomain (m := N + q) (Fin.append A A) ν) _).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `s`. Conclude with `Fin.append_right A A s.castSucc`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem polyNum_divDiff_last {F : Type*} [Field F] {K₀ : Type} [Fintype K₀] {κ : K₀ → Type}
     [∀ k, Fintype (κ k)] (I : IFamily F κ) (W : Ideal (MRingOver F κ)) (n : ℕ) {N q : ℕ}
@@ -237,13 +237,13 @@ theorem polyNum_divDiff_last {F : Type*} [Field F] {K₀ : Type} [Fintype K₀] 
   exact Fin.append_right A A s.castSucc
 
 /- English proof (translation)
-Establish `h0 : ∀ (J : Ideal (MRingOver (kap O) (Sum.elim ι F.ι')) → ℤ) (h : MRingOver O (Sum.elim ι F.ι')), vEval O J (ratCyc O (mcIdeal O (joinCoord x F.z)) h h) = 0`. Introduce `J h`. Rewrite using `[ratCyc, sub_self, vEval, Finsupp.sum_zero_index]`. Simplify using `only [FlagModel.value, pairNum, selfModel, selfPair]`. Rewrite using `[Fin.sum_univ_add, Fin.sum_univ_castSucc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.append_left, Fin.append_right, Fin.snoc_castSucc, Fin.snoc_last]`. Establish `e : ∀ u v w t : ℤ, u = 0 → v = 0 → w = t → u + (v + w) = t`. Introduce `u v w t hu hv hw`. Rewrite using `[hu, hv, hw, zero_add, zero_add]`. Establish `hr : ratCyc O (mcIdeal O (joinCoord x F.z)) (rename (liftVar F.ι') (C a)) (rename (liftVar F.ι') 1) = Finsupp.mapRange (fun n : ℕ => (n : ℤ)) Nat.cast_zero (divCycle (mcIdeal O (joinCoord x F.z)) (C a))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ratCyc, rename_C, map_one, divCycle_one, Finsupp.mapRange_zero, sub_zero]`. Use `e _ _ _ _ (Finset.sum_eq_zero fun i _ => h0 _ _) (Finset.sum_eq_zero fun j _ => h0 _ _) ?_` and prove the remaining obligations. Use `(congrArg (vEval O _) hr).trans (congrArg (fun J => vEval O J _) (funext fun W => ?_))` and prove the remaining obligations. Use `(polyNum_divDiff_last I W d _ G Q).trans ?_` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `s`. Conclude with `append_snoc_castSucc _ _ s`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem value_self {x : (Σ k, ι k) → Ω} {d N : ℕ} {V : Type} [AddCommGroup V] [Module Ω V]
     {E E' : ChartBundle O (mseg x) N V} (F : FlagModel O x d N E E')
@@ -285,11 +285,11 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 (IFamily IsFieldIntersection)
 open IndefiniteRowSideFullHecke.NumbersDVR.Bundles.FlagModelRootIndep (selfModel value_self isVertDiv_C)
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ ι _ x d N V _ _ E E' hW _ F₁ F₂ I₁ I₂ hI₁ hI₂ c G hsym hG hcd q L Q hQ a ha`. Establish `hsame : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.SameGeneric O x E E` using `fun s _ => ⟨fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩, fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩⟩`. Establish `hvert : ∀ l : Fin (q + 1), IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsVertDiv O (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcIdeal O x) (Fin.snoc (α` using `fun _ => K → ℤ) L 0 l - Fin.snoc (α := fun _ => K → ℤ) L 0 l) (C (Fin.snoc (α := fun _ => O) (fun _ => 1) a l)) 1 := by`. Introduce `l`. Rewrite using `[sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `isVertDiv_C hW.2.1.1 hW.2.2.1 ?_` and prove the remaining obligations. Proceed by induction on `l using Fin.lastCases with`. Consider the case `last => simpa using ha`. Consider the case `cast j => simp`. Establish `hQ' : (rename Fin.castSucc Q * X (Fin.last q) : MvPolynomial (Fin (q + 1)) ℤ).IsHomogeneous (d + 1 - c)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[show d + 1 - c = d - c + 1 by omega]`. Conclude with `(hQ.rename_isHomogeneous).mul (isHomogeneous_X ℤ (Fin.last q))`. Establish `key` using `h O Ω K ι x d N V E E hW hsame (selfModel F₁) (selfModel F₂) I₁ I₂ hI₁ hI₂ G hsym (q + 1) (Fin.snoc (α := fun _ => K → ℤ) L 0) (Fin.snoc (α := fun _ => K → ℤ) L 0) (fun l => C (Fin.snoc (α := fun _ => O) (fun _ => 1) a l)) (fun _ => 1) hvert c (rename Fin.castSucc Q * X (Fin.last …`. Conclude with `(value_self F₁ I₁ G L Q a).symm.trans (key.trans (value_self F₂ I₂ G L Q a))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FlagModelRootIndependence.proof (h : FlagModelValueIndependence.Statement) :
     FlagModelRootIndependence.Statement := by

@@ -9,7 +9,7 @@ open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNoti
 namespace GlobalTheory.TripleGal.Jumps
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `R.k_even`. Take `⟨b, hb⟩` from `R.m_even`. Establish `h2` using `R.two_le_m`. Conclude with `⟨a + b - 1, by simp only [Ranks.r]; omega⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem odd_rank (R : Ranks) : Odd R.r := by
   obtain ⟨a, ha⟩ := R.k_even
@@ -18,7 +18,7 @@ theorem odd_rank (R : Ranks) : Odd R.r := by
   exact ⟨a + b - 1, by simp only [Ranks.r]; omega⟩
 
 /- English proof (translation)
-Rewrite using `[Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.map_id S]`. Use `Multiset.map_congr rfl fun z hz => ?_` and prove the remaining obligations. Take `⟨n, rfl⟩` from `h z hz`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_round_cast (S : Multiset ℂ) (h : ∀ z ∈ S, ∃ n : ℤ, z = (n : ℂ)) :
     (S.map fun z => ⌊z.re⌋).map (fun n : ℤ => (n : ℂ)) = S := by
@@ -29,23 +29,23 @@ theorem map_round_cast (S : Multiset ℂ) (h : ∀ z ∈ S, ∃ n : ℤ, z = (n 
   simp
 
 /- English proof (translation)
-Introduce and unpack `D bkP i s ⟨ι, π₁, π, -, hA, hR, -⟩`. Set `S : (D.host.E →+* ℂ) → Multiset ℂ` to `fun τc => (D.naut.infG π τc).map fun z => -z - ((((1 - (D.R.t : ℝ)) / 2 : ℝ)) : ℂ)`. Establish `hint : ∀ τc, ∀ w ∈ S τc, ∃ n : ℤ, w = (n : ℂ)`. Introduce `τc w hw`. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.1 hw`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rfl⟩` from `(((D.naut.ralg_def π).1 hR.ralg) τc).2 z hz`. Take `⟨a, ha⟩` from `odd_rank D.R`. Take `⟨b, hb⟩` from `D.R.t_odd`. Use `⟨-n - a + b, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hinj : Function.Injective (fun n : ℤ => (n : ℂ))` using `Int.cast_injective`. Establish `hcast : ∀ τc, ((S τc).map fun z => ⌊z.re⌋).map (fun n : ℤ => (n : ℂ)) = S τc` using `fun τc => map_round_cast _ (hint τc)`. Use `⟨ι, fun τc => (S τc).map fun z => ⌊z.re⌋, ?_, ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv τ τc hτ a`. Rewrite using `[hA.jumps v hv τ τc hτ a]`. Use `Multiset.count_map_eq_count' (fun n : ℤ => (n : ℂ)) ((S τc).map fun z => ⌊z.re⌋) hinj a` as an intermediate fact. Rewrite `this` using `[hcast]`. Rewrite using `[← this]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `τc`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [S, Multiset.card_map, D.naut.infG_card]`. Apply `Multiset.map_injective hinj` to reduce the goal to its premises. Rewrite using `[hcast]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `: (((S τc).map fun z => ⌊z.re⌋).map (fun a => (D.R.t : ℤ) - 1 - a)).map (fun n : ℤ => (n : ℂ)) = (((S τc).map fun z => ⌊z.re⌋).map (fun n : ℤ => (n : ℂ))).map (fun w => (D.R.t : ℂ) - 1 - w)`. Simplify using `only [Multiset.map_map, Function.comp_def]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[this, hcast]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [S, hR.anti τc, Multiset.map_map, Function.comp_def]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `a ha`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (a : ℂ) ∈ S τc`. Rewrite using `[← hcast τc]`. Conclude with `Multiset.mem_map_of_mem _ ha`. Take `⟨z, hz, hza⟩` from `Multiset.mem_map.1 h1`. Use `hR.window τc z hz a ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hza]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_jumpsAre_goodJ : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i),
     TripleAtt D.naut bkP i s → ∃ ι J, JumpsAre bkP i s ι J ∧ GoodJ D J := by

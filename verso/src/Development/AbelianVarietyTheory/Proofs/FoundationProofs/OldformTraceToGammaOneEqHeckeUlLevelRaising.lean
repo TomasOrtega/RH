@@ -9,7 +9,7 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.HeckeFamilyMatrices
 
 /- English proof (translation)
-Use extensionality with `i m`. Apply the tactic sequence `fin_cases i <;> fin_cases m <;>`. Apply the tactic sequence `simp [wOld, gaOld, mat, Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma wOld_mul_ulFam (N l : ℕ) (a b : ℤ) (h : (l : ℤ) * b - N * a = 1) (j : ℕ) :
     wOld N l a b * !![1, (j : ℤ); 0, (l : ℤ)] = (l : ℤ) • mat (gaOld N l a b h j) := by
@@ -18,20 +18,20 @@ lemma wOld_mul_ulFam (N l : ℕ) (a b : ℤ) (h : (l : ℤ) * b - N * a = 1) (j 
     simp [wOld, gaOld, mat, Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
 /- English proof (translation)
-Rewrite using `[wOld, Matrix.det_fin_two_of]`. Take the linear combination `(l : ℤ) * h`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma wOld_det (N l : ℕ) (a b : ℤ) (h : (l : ℤ) * b - N * a = 1) : (wOld N l a b).det = l := by
   rw [wOld, Matrix.det_fin_two_of]; linear_combination (l : ℤ) * h
 
 /- English proof (translation)
-Simplify using `[mat]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mat_det_pos (γ : SL(2, ℤ)) : 0 < (mat γ).det := by simp [mat]
 
 /- English proof (translation)
-Introduce `N l k a b h G hl`. Establish `hW : 0 < (wOld N l a b).det` using `by rw [wOld_det N l a b h]; exact_mod_cast hl`. Establish `hl' : (l : ℂ) ≠ 0` using `by exact_mod_cast hl.ne'`. Unfold `trOld`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[UlF, hkF, Finset.smul_sum, ← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← SlashAction.slash_mul, ← toGL_mul _ _ hW.ne' (ulFam_det l hl j).ne']`. Establish `e : wOld N l a b * ulFam l j = (l : ℤ) • mat (gaOld N l a b h j)` using `wOld_mul_ulFam N l a b h j`. Rewrite using `[e, slash_toGL_smul k l hl _ (mat_det_pos _), smul_smul, ← zpow_add₀ hl', slash_SL_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

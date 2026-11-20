@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.ArtSch
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ValuationGluing.ValbLeOfCoeffEqZero
 
 /- English proof (translation)
-The claim follows from `PI.ArtSch.Glue.tiltGlue`.
+A detailed English derivation is pending.
 -/
 theorem tiltSurjectiveOfParts : PI.ArtSch.TiltGlue := PI.ArtSch.Glue.tiltGlue

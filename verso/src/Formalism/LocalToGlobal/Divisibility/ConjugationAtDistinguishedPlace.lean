@@ -19,7 +19,7 @@ def conjQb (ι : Qb →+* ℂ) : Qb ≃ₐ[ℚ] Qb :=
   AlgEquiv.ofRingEquiv (f := (algC ((starRingEnd ℂ).comp ι)).trans (algC ι).symm) (fun r => by simp)
 
 /- English proof (translation)
-Establish `key : conjQb ι x = (algC ι).symm (algC ((starRingEnd ℂ).comp ι) x)` using `rfl`. Apply the tactic sequence `rw [key, ← algC_coe ι ((algC ι).symm (algC ((starRingEnd ℂ).comp ι) x)), RingEquiv.apply_symm_apply, algC_coe] <;> rfl`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conjQb_spec (ι : Qb →+* ℂ) (x : Qb) : ι (conjQb ι x) = starRingEnd ℂ (ι x) := by
   have key : conjQb ι x = (algC ι).symm (algC ((starRingEnd ℂ).comp ι) x) := rfl
@@ -27,7 +27,7 @@ theorem conjQb_spec (ι : Qb →+* ℂ) (x : Qb) : ι (conjQb ι x) = starRingEn
     RingEquiv.apply_symm_apply, algC_coe] <;> rfl
 
 /- English proof (translation)
-Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[conjQb_spec, conjQb_spec, Complex.conj_conj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjQb_conjQb (ι : Qb →+* ℂ) (x : Qb) : conjQb ι (conjQb ι x) = x := by
   apply ι.injective
@@ -36,7 +36,7 @@ theorem conjQb_conjQb (ι : Qb →+* ℂ) (x : Qb) : conjQb ι (conjQb ι x) = x
 def cLL (ι : Qb →+* ℂ) (LL : Fld) [Normal ℚ LL] : LL ≃ₐ[ℚ] LL := (conjQb ι).restrictNormal LL
 
 /- English proof (translation)
-Use `first`. Consider the case `exact AlgEquiv.restrictNormal_commutes (conjQb ι) LL x`. Consider the case `exact AlgEquiv.restrictNormal_commutes (conjQb ι) x`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cLL_coe (ι : Qb →+* ℂ) (LL : Fld) [Normal ℚ LL] (x : LL) : ((cLL ι LL x : LL) : Qb) = conjQb ι x := by
   first
@@ -44,7 +44,7 @@ theorem cLL_coe (ι : Qb →+* ℂ) (LL : Fld) [Normal ℚ LL] (x : LL) : ((cLL 
   | exact AlgEquiv.restrictNormal_commutes (conjQb ι) x
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[cLL_coe, cLL_coe, conjQb_conjQb]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cLL_cLL (ι : Qb →+* ℂ) (LL : Fld) [Normal ℚ LL] (x : LL) : cLL ι LL (cLL ι LL x) = x := by
   apply Subtype.ext
@@ -73,14 +73,14 @@ instance [Normal ℚ LL] : StarRing (CoF ι LL) := starLL ι LL
 def val : CoF ι LL →+* Qb := LL.val.toRingHom
 
 /- English proof (translation)
-Introduce `a b hab`. Conclude with `Subtype.ext hab`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem val_injective : Function.Injective (val ι LL) := by
   intro a b hab
   exact Subtype.ext hab
 
 /- English proof (translation)
-The claim follows from `(show LL from x).property`.
+A detailed English derivation is pending.
 -/
 theorem val_mem (x : CoF ι LL) : val ι LL x ∈ LL := (show LL from x).property
 
@@ -92,7 +92,7 @@ Both sides reduce to the same expression.
 @[simp] theorem val_mk (x : Qb) (hx : x ∈ LL) : val ι LL (mk ι LL x hx) = x := rfl
 
 /- English proof (translation)
-The claim follows from `cLL_coe ι LL x`.
+A detailed English derivation is pending.
 -/
 theorem val_star [Normal ℚ LL] (x : CoF ι LL) : val ι LL (star x) = conjQb ι (val ι LL x) := cLL_coe ι LL x
 
@@ -124,9 +124,9 @@ def tauLL {L LL : Fld} [Normal ℚ LL] (h : L ≤ LL) (s : L →ₐ[ℚ] Qb) : L
   ((s.liftNormal Qb).restrictNormal LL).comp (inclusion h)
 
 /- English proof (translation)
-Establish `h1 : algebraMap LL Qb ((s.liftNormal Qb).restrictNormal LL (inclusion h x)) = (s.liftNormal Qb) (algebraMap LL Qb (inclusion h x))` using `by first`. Consider the case `exact AlgHom.restrictNormal_commutes _ _ _`. Consider the case `exact AlgHom.restrictNormal_commutes _ _`. Establish `h2 : (s.liftNormal Qb) (algebraMap L Qb x) = algebraMap Qb Qb (s x)` using `by first`. Consider the case `exact AlgHom.liftNormal_commutes _ _ _`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact AlgHom.liftNormal_commutes _ _`. Conclude with `h1.trans h2`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tauLL_coe {L LL : Fld} [Normal ℚ LL] (h : L ≤ LL) (s : L →ₐ[ℚ] Qb) (x : L) :
     ((tauLL h s x : LL) : Qb) = s x := by
@@ -145,7 +145,7 @@ def tauCo (ι : Qb →+* ℂ) {L LL : Fld} [Normal ℚ LL] (h : L ≤ LL) (s : L
   (tauLL h s).toRingHom
 
 /- English proof (translation)
-The claim follows from `tauLL_coe h s x`.
+A detailed English derivation is pending.
 -/
 theorem val_tauCo (ι : Qb →+* ℂ) {L LL : Fld} [Normal ℚ LL] (h : L ≤ LL) (s : L →ₐ[ℚ] Qb) (x : L) :
     CoF.val ι LL (tauCo ι h s x) = s x := tauLL_coe h s x

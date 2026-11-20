@@ -22,23 +22,23 @@ def unshear : A ⊗ A ⟶ A ⊗ A := lift (fst A A) (fst A A * snd A A)
 def unitPair : A ⟶ A ⊗ A := lift (𝟙 A) (toUnit A ≫ η[A])
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext (by simp [pullback.diagonal]) (by simp [pullback.diagonal])`.
+A detailed English derivation is pending.
 -/
 theorem lift_id_id_left : (lift (𝟙 A) (𝟙 A)).left = pullback.diagonal A.hom :=
   pullback.hom_ext (by simp [pullback.diagonal]) (by simp [pullback.diagonal])
 
 /- English proof (translation)
-The claim follows from `lift_fst _ _`.
+A detailed English derivation is pending.
 -/
 theorem shear_fst : shear A ≫ fst A A = fst A A := lift_fst _ _
 
 /- English proof (translation)
-The claim follows from `lift_fst _ _`.
+A detailed English derivation is pending.
 -/
 theorem unshear_fst : unshear A ≫ fst A A = fst A A := lift_fst _ _
 
 /- English proof (translation)
-Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Simplify using `[shear, unshear]`. Simplify using `[shear, unshear, comp_mul, ← mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem shear_unshear : shear A ≫ unshear A = 𝟙 _ := by
   refine CartesianMonoidalCategory.hom_ext _ _ ?_ ?_
@@ -46,7 +46,7 @@ theorem shear_unshear : shear A ≫ unshear A = 𝟙 _ := by
   · simp [shear, unshear, comp_mul, ← mul_assoc]
 
 /- English proof (translation)
-Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Simplify using `[shear, unshear]`. Simplify using `[shear, unshear, comp_mul, GrpObj.comp_inv, ← mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem unshear_shear : unshear A ≫ shear A = 𝟙 _ := by
   refine CartesianMonoidalCategory.hom_ext _ _ ?_ ?_
@@ -54,7 +54,7 @@ theorem unshear_shear : unshear A ≫ shear A = 𝟙 _ := by
   · simp [shear, unshear, comp_mul, GrpObj.comp_inv, ← mul_assoc]
 
 /- English proof (translation)
-Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Simplify using `[shear, unitPair]`. Simplify using `[shear, unitPair, comp_mul, GrpObj.comp_inv, Hom.one_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diag_shear : lift (𝟙 A) (𝟙 A) ≫ shear A = unitPair A := by
   refine CartesianMonoidalCategory.hom_ext _ _ ?_ ?_
@@ -62,7 +62,7 @@ theorem diag_shear : lift (𝟙 A) (𝟙 A) ≫ shear A = unitPair A := by
   · simp [shear, unitPair, comp_mul, GrpObj.comp_inv, Hom.one_def]
 
 /- English proof (translation)
-Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Simplify using `[unshear, unitPair]`. Simplify using `[unshear, unitPair, comp_mul, ← Hom.one_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem unitPair_unshear : unitPair A ≫ unshear A = lift (𝟙 A) (𝟙 A) := by
   refine CartesianMonoidalCategory.hom_ext _ _ ?_ ?_
@@ -76,37 +76,37 @@ namespace GlobalTheory.RelCotAb
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A]
 
 /- English proof (translation)
-The claim follows from `congrArg Over.Hom.left (lift_fst (𝟙 A) (toUnit A ≫ η[A]))`.
+A detailed English derivation is pending.
 -/
 theorem unitPair_fst : (unitPair A).left ≫ pullback.fst A.hom A.hom = 𝟙 A.left :=
   congrArg Over.Hom.left (lift_fst (𝟙 A) (toUnit A ≫ η[A]))
 
 /- English proof (translation)
-The claim follows from `(congrArg (·.left) (lift_snd (𝟙 A) (toUnit A ≫ η[A]))).trans (by simp [unitSec, sec])`.
+A detailed English derivation is pending.
 -/
 theorem unitPair_snd : (unitPair A).left ≫ pullback.snd A.hom A.hom = A.hom ≫ unitSec A :=
   (congrArg (·.left) (lift_snd (𝟙 A) (toUnit A ≫ η[A]))).trans (by simp [unitSec, sec])
 
 /- English proof (translation)
-The claim follows from `congrArg (·.left) (shear_fst A)`.
+A detailed English derivation is pending.
 -/
 theorem shear_left_fst : (shear A).left ≫ pullback.fst A.hom A.hom = pullback.fst A.hom A.hom :=
   congrArg (·.left) (shear_fst A)
 
 /- English proof (translation)
-The claim follows from `congrArg (·.left) (unshear_fst A)`.
+A detailed English derivation is pending.
 -/
 theorem unshear_left_fst : (unshear A).left ≫ pullback.fst A.hom A.hom = pullback.fst A.hom A.hom :=
   congrArg (·.left) (unshear_fst A)
 
 /- English proof (translation)
-Rewrite using `[← lift_id_id_left]`. Conclude with `congrArg (·.left) (diag_shear A)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_shear_left : pullback.diagonal A.hom ≫ (shear A).left = (unitPair A).left := by
   rw [← lift_id_id_left]; exact congrArg (·.left) (diag_shear A)
 
 /- English proof (translation)
-Rewrite using `[← lift_id_id_left]`. Conclude with `congrArg (·.left) (unitPair_unshear A)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitPair_unshear_left : (unitPair A).left ≫ (unshear A).left = pullback.diagonal A.hom := by
   rw [← lift_id_id_left]; exact congrArg (·.left) (unitPair_unshear A)
@@ -143,9 +143,7 @@ variable {S : Scheme.{0}} (A : Over S) [GrpObj A] [QuasiSeparated A.hom]
 abbrev divMap : pullback A.hom A.hom ⟶ A.left := (shear A).left ≫ pullback.snd A.hom A.hom
 
 /- English proof (translation)
-Establish `h₁ : T ≤ (unitPair A).left ⁻¹ᵁ (pullback.snd A.hom A.hom ⁻¹ᵁ W)` using `(Conormal.le_preimage_of_comp (unitPair_snd A)).2 (hT.trans (A.hom.preimage_mono hU))`. Establish `k' : W' ≤ (shear A).left ⁻¹ᵁ (pullback.snd A.hom A.hom ⁻¹ᵁ W)` using `k`. Express the relevant statement in the definitionally equal form `(shearIso A).hom.app T ((baseIso A).hom.app T _) = _`. Use `erw [Conormal.baseMap_d (sec_hom η[A]) (unitPair_fst A) pullback.condition.symm (unitPair_snd A) hU hT h₁ le_rfl a]`. Use `erw [Conormal.map_d (unitPair_fst A) (pullback.diagonal_fst A.hom) (shear_left_fst A) (diag_shear_left A) h₁ hW' k']`.
-
-Conclude with `congrArg _ (Conormal.appLE_appLE rfl _ _ _ a)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem relCotIso_hom_d {V : S.Opens} {W : A.left.Opens} (hU : V ≤ unitSec A ⁻¹ᵁ W) {T : A.left.Opens}
     (hT : T ≤ A.hom ⁻¹ᵁ V) {W' : (pullback A.hom A.hom).Opens} (hW' : T ≤ pullback.diagonal A.hom ⁻¹ᵁ W')
@@ -169,7 +167,7 @@ namespace GlobalTheory.RelCotAb
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A]
 
 /- English proof (translation)
-Establish `e : lift x y ≫ shear A ≫ snd A A = t`. Rewrite using `[shear, lift_snd, comp_mul, GrpObj.comp_inv, lift_fst, lift_snd, ← h, inv_mul_cancel_left]`. Conclude with `congrArg Over.Hom.left e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_divMap {T : Scheme.{0}} {y₀ : T ⟶ S} (x y t : Over.mk y₀ ⟶ A) (h : x * t = y) :
     pullback.lift x.left y.left (by rw [Over.w x, Over.w y]) ≫ divMap A = t.left := by

@@ -16,7 +16,7 @@ abbrev phi0 : (Fin 2 → F) → ℂ := Set.indicator {x : Fin 2 → F | ∀ i, x
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Apply the tactic sequence `by_cases h0 : v 0 ∈ 𝒪[F] <;> by_cases h1 : v 1 ∈ 𝒪[F] <;>`. Simplify using `[phi0, Set.indicator_apply, Fin.forall_fin_two, h0, h1]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem characteristic_function_integral_apply (v : Fin 2 → F) :
     phi0 F v = (𝒪[F] : Set F).indicator 1 (v 0) * (𝒪[F] : Set F).indicator 1 (v 1) := by
@@ -25,9 +25,9 @@ theorem characteristic_function_integral_apply (v : Fin 2 → F) :
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Establish `hs : {x : Fin 2 → F | ∀ i, x i ∈ 𝒪[F]} = (GodementSectionLocal.box F 0 : Set (Fin 2 → F))`. Use extensionality with `x`. Simplify using `[GodementSectionLocal.mem_box, mem_valBall_zero_iff]`. Simplify using `only [phi0]`. Rewrite using `[hs]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : v ∈ GodementSectionLocal.box F 0`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem ((GodementSectionLocal.vecMul_mem_box_iff hk 0 v).2 h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (mt (GodementSectionLocal.vecMul_mem_box_iff hk 0 v).1 h)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem characteristic_function_integral_invariant {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.integralGL F 2) (v : Fin 2 → F) :
     phi0 F (v ᵥ* (k : Matrix (Fin 2) (Fin 2) F)) = phi0 F v := by
@@ -45,7 +45,7 @@ theorem characteristic_function_integral_invariant {k : GL (Fin 2) F} (hk : k �
 
 omit [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hu.2 0, hu.2 1, hu.1 (show id (0 : Fin 2) < id 1 by decide)⟩`.
+Supply the required witnesses or components.
 -/
 theorem unip_entries {u : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2) :
     (u : Matrix (Fin 2) (Fin 2) F) 0 0 = 1 ∧ (u : Matrix (Fin 2) (Fin 2) F) 1 1 = 1 ∧
@@ -54,9 +54,9 @@ theorem unip_entries {u : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2) :
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, ← vecMul_vecMul, characteristic_function_integral_invariant hk, ← vecMul_vecMul, Iwasawa.coe_torusPow, characteristic_function_integral_apply]`. Take `⟨h00, h11, h10⟩` from `unip_entries hu`. Simplify using `only [vecMul_diagonal]`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two, h00, h11, h10]`. Use `left`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem vec_eq {u k : GL (Fin 2) F} (hu : u ∈ Iwasawa.unipotent F 2)
     (hk : k ∈ GLnLocal.integralGL F 2) (l : Fin 2 → ℤ) (h x : F) :

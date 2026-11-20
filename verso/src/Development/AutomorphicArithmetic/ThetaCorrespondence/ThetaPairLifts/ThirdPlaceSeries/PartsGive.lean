@@ -49,53 +49,53 @@ namespace Inputs
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} (I : _root_.GlobalTheory.NRows.LinkedInputs hL D)
 include I
 /- English proof (translation)
-The claim follows from `I.named.hypO`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NRows.LinkedInputs.hypO : SumRepresentations.hypO D := I.named.hypO
 /- English proof (translation)
-The claim follows from `I.named.c1`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NRows.LinkedInputs.c1 : GlobalDatumCompatibility D := I.named.c1
 /- English proof (translation)
-The claim follows from `I.named.bc`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NRows.LinkedInputs.bc : SphericalInertData.Conclusion1 D := I.named.bc
 /- English proof (translation)
-The claim follows from `I.named.lam`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NRows.LinkedInputs.lam : LamUsed D := I.named.lam
 /- English proof (translation)
-The claim follows from `I.named.isot`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NRows.LinkedInputs.isot : SumRepresentations.adm8 D := I.named.isot
 /- English proof (translation)
-The claim follows from `I.named.ser`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NRows.LinkedInputs.ser : GlobalTheory.TypeLeaf.SerLoc D := I.named.ser
 /- English proof (translation)
-The claim follows from `I.named.typeNZ`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NRows.LinkedInputs.typeNZ : ∀ j t, GlobalTheory.DownLift.TypeNZ I.X.R j t := I.named.typeNZ
 /- English proof (translation)
-The claim follows from `goodIdempotentFixes_of_onlySeriesOfLabelActs I.ser`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NRows.LinkedInputs.e0loc : GoodIdempotentFixesLocalisationForms D := goodIdempotentFixes_of_onlySeriesOfLabelActs I.ser
 set_option linter.unusedSectionVars false in
 /- English proof (translation)
-The claim follows from `D.mtpar_tie`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NRows.LinkedInputs.mtPar : MtParTie D.nd D.naut D.ntypes := D.mtpar_tie
 /- English proof (translation)
-The claim follows from `base_change_automorphic_of D I.bc I.c1`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NRows.LinkedInputs.adm1 : SumRepresentations.adm1 D := base_change_automorphic_of D I.bc I.c1
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨a.tie0, I.hypO, I.adm1, a.a2, b.a3, b.a4, a.a5⟩, a.temp⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.NRows.LinkedInputs.admAt (a : _root_.GlobalTheory.NRows.RowsAAlt D) (b : RowsB D) : _root_.Formalism.MainNotions.SumRepresentations.AdmAtAlt D :=
   ⟨⟨a.tie0, I.hypO, I.adm1, a.a2, b.a3, b.a4, a.a5⟩, a.temp⟩
 /- English proof (translation)
-The claim follows from `h (I.admAt a b) a.tieLab b.rowSize a.hecke I.lam.loc b.thetaOne a.g4p`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.NRows.LinkedInputs.Conclusion1 (h : _root_.GlobalTheory.NRows.SummandsSuffice D) (a : _root_.GlobalTheory.NRows.RowsAAlt D) (b : RowsB D) : _root_.Formalism.MainNotions.SumRepresentations.provisionFirst D :=
   h (I.admAt a b) a.tieLab b.rowSize a.hecke I.lam.loc b.thetaOne a.g4p

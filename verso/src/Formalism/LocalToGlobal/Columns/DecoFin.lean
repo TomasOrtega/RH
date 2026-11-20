@@ -22,13 +22,11 @@ variable (E) in
 def PosStar : Prop := ∀ a : E, a ≠ 0 → 0 < Algebra.trace ℚ E (star a * a)
 
 /- English proof (translation)
-Introduce `a ha`. Establish `h1 : ((Algebra.trace ℚ E (star a * a) : ℚ) : ℂ) = ((∑ τ : E →ₐ[ℚ] ℂ, Complex.normSq (τ a) : ℝ) : ℂ)`. Use `trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := star a * a)` as an intermediate fact. Rewrite `this` using `[eq_ratCast]`. Rewrite using `[this, Complex.ofReal_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, show τ (star a) = starRingEnd ℂ (τ a) from h τ.toRingHom a, mul_comm, Complex.mul_conj]`. Establish `h2 : (0 : ℝ) < ∑ τ : E →ₐ[ℚ] ℂ, Complex.normSq (τ a)`. Apply `Finset.sum_pos` to reduce the goal to its premises. Introduce `τ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Complex.normSq_pos.2 (by simpa using ha)`. Establish `: Nonempty (E →ₐ[ℚ] ℂ)` using `⟨IsAlgClosed.lift⟩`. Conclude with `Finset.univ_nonempty`. Establish `h3 : ((Algebra.trace ℚ E (star a * a) : ℚ) : ℝ) = ∑ τ : E →ₐ[ℚ] ℂ, Complex.normSq (τ a)`. Conclude with `h1` after adjusting the coercions.
-
-Rewrite `h2` using `[← h3]`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posStar_of_conj (h : ∀ (τ : E →+* ℂ) (a : E), τ (star a) = starRingEnd ℂ (τ a)) :
     PosStar E := by
@@ -53,11 +51,9 @@ theorem posStar_of_conj (h : ∀ (τ : E →+* ℂ) (a : E), τ (star a) = starR
   exact_mod_cast h2
 
 /- English proof (translation)
-Simplify using `only [hStd, LinearMap.mk₂'ₛₗ_apply, map_sum]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, x i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (funext h)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_lt_of_le (hE (x i) hi) ?_` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun j => Algebra.trace ℚ E (star (x j) * x j)) ?_ (Finset.mem_univ i)` and prove the remaining obligations. Introduce `j _`. Distinguish the cases in `hj : x j = 0`. Simplify using `[hj]`.
-
-Conclude with `(hE (x j) hj).le`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hStd_pos (hE : PosStar E) (x : Sp E n) (hx : x ≠ 0) :
     0 < Algebra.trace ℚ E (hStd E n x x) := by
@@ -74,28 +70,26 @@ theorem hStd_pos (hE : PosStar E) (x : Sp E n) (hx : x ≠ 0) :
   · exact (hE (x j) hj).le
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨RingOfIntegers.mapRingHom (starRingEnd E) r, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem star_range (r : 𝓞 E) : star (algebraMap (𝓞 E) E r) ∈ Set.range (algebraMap (𝓞 E) E) := ⟨RingOfIntegers.mapRingHom (starRingEnd E) r, rfl⟩
 
 /- English proof (translation)
-Establish `hpos` using `hStd_pos hE (n := n)`. Take `⟨m, ι, hι, hmul, hlat⟩` from `final_traceReal E (Sp E n) (hStd E n) hStd_isSymm hpos`. Use `set h := hStd E n with hh`. Use `set e : ℤ := NumberField.discr E with he`. Establish `he0 : e ≠ 0` using `NumberField.discr_ne_zero E`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ecast : ((e.natAbs ^ 2 : ℕ) : E) = ((e : E)) * (e : E)`. Establish `h0 : ((e.natAbs ^ 2 : ℕ) : ℤ) = e * e` using `by rw [Nat.cast_pow, Int.natAbs_sq, sq]`. Rewrite using `[← Int.cast_natCast, h0, Int.cast_mul]`. Take `⟨s, hs1, hs2⟩` from `classSetFinite_core final_shortVectors final_finIntermediate final_isomOfTrace h hpos m ι hι hmul 1 one_pos (Real.sqrt (((e.natAbs ^ 2 : ℕ) : ℝ) ^ m)) {M | Submodule.IsLattice E M ∧ IsUnimodular h M} (by`. Introduce and unpack `M ⟨-, hM⟩ x hx y hy`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Nat.cast_one, one_mul]`. Rewrite `hy` using `[← hM]`. Conclude with `(mem_dual M y).1 hy x hx)`. Use the proof step `(fun M hM => hlat M hM.1)`. Use the proof step `(by`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `M ⟨-, hM⟩ _ _`. Apply `genusCovolBound_covol_le h m ι hι M (e.natAbs ^ 2) (pow_pos (Int.natAbs_pos.mpr he0) 2)` to reduce the goal to its premises. Establish `hdualmem : ∀ y, (∀ x ∈ M, ∃ z : ℤ, Algebra.trace ℚ E (h x y) = z) → ((e : E) • y) ∈ dual h M`. Introduce `y hy`. Rewrite using `[mem_dual]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Rewrite using `[LinearMap.map_smul, smul_eq_mul]`. Apply `genusCovolBound_discr` to reduce the goal to its premises. Introduce `r`. Take `⟨s, hs'⟩` from `star_range r`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz⟩` from `hy (s • x) (M.smul_mem s hx)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`. Use `congr 1`. Rewrite using `[← algebraMap_smul E s x, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, hs', star_star, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y y' hy hy'`. Establish `h1` using `hdualmem y hy`. Rewrite `h1` using `[hM]`. Establish `hm` using `(mem_dual M _).1 (hdualmem y' hy') _ h1`. Establish `key : h ((e : E) • y) ((e : E) • y') = algebraMap ℚ E ((e.natAbs ^ 2 : ℕ) : ℚ) * h y y'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_natCast, ecast]`. Simplify using `only [LinearMap.map_smulₛₗ₂, LinearMap.map_smul, starRingEnd_apply, star_intCast, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hm` using `[key]`. Take `⟨r, hr⟩` from `Submodule.mem_one.mp hm`.
-
-Take `⟨z, hz⟩` from `genusCovolBound_trace_int r`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, hr, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul])`. Conclude with `⟨s, hs1, fun M h1 h2 => hs2 M ⟨h1, h2⟩⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unimod_finite (hE : PosStar E) (n : ℕ) :
     ∃ s : Finset (Submodule (𝓞 E) (Sp E n)),
@@ -166,18 +160,18 @@ instance finite_quot (P : HeightOneSpectrum (𝓞 E)) : Finite (𝓞 E ⧸ P.asI
   Ideal.finiteQuotientOfFreeOfNeBot P.asIdeal P.ne_bot
 
 /- English proof (translation)
-The claim follows from `show ∃ s ∈ Q.asIdeal.primeCompl, s • x ∈ N from ⟨1, Q.asIdeal.primeCompl.one_mem, by rwa [one_smul]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem mem_localized_of_mem (Q : HeightOneSpectrum (𝓞 E)) (N : Submodule (𝓞 E) (Sp E n))
     {x : Sp E n} (hx : x ∈ N) : x ∈ localization₂ Q.asIdeal N :=
   show ∃ s ∈ Q.asIdeal.primeCompl, s • x ∈ N from ⟨1, Q.asIdeal.primeCompl.one_mem, by rwa [one_smul]⟩
 
 /- English proof (translation)
-Establish `hm : ∀ y ∈ Submodule.span (𝓞 E) S, y ∈ d.at P.1 ∧ y ∈ d'.at P.1` using `fun y hy => ⟨mem_localized_of_mem P.1 d.N (hS ▸ hy), mem_localized_of_mem P.1 d'.N (hN ▸ hS ▸ hy)⟩`. Establish `z0 : ∀ e : Deco E n ST SG, e.Ok → e.f P 0 = 0` using `fun e he => by`. Establish `h0` using `he.f_smul P 0 0 (Submodule.zero_mem _)`. Simplify using `using h0`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact h y hy`. Consider the case `zero => rw [z0 d hd, z0 d' hd']`. Consider the case `add y z hy hz ihy ihz`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hd.f_add P y (hm y hy).1 z (hm z hz).1, hd'.f_add P y (hm y hy).2 z (hm z hz).2, ihy, ihz]`. Consider the case `smul a y hy ih`. Rewrite using `[hd.f_smul P a y (hm y hy).1, hd'.f_smul P a y (hm y hy).2, ih]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem Deco.Ok.f_eq_of_span {d d' : Deco E n ST SG} (hd : d.Ok) (hd' : d'.Ok) (hN : d.N = d'.N)
     {S : Set (Sp E n)} (hS : Submodule.span (𝓞 E) S = d.N) (P : ST)
@@ -198,11 +192,11 @@ theorem Deco.Ok.f_eq_of_span {d d' : Deco E n ST SG} (hd : d.Ok) (hd' : d'.Ok) (
     rw [hd.f_smul P a y (hm y hy).1, hd'.f_smul P a y (hm y hy).2, ih]
 
 /- English proof (translation)
-Establish `hm : ∀ y ∈ Submodule.span (𝓞 E) S, y ∈ d.at w.1 ∧ y ∈ d'.at w.1` using `fun y hy => ⟨mem_localized_of_mem w.1 d.N (hS ▸ hy), mem_localized_of_mem w.1 d'.N (hN ▸ hS ▸ hy)⟩`. Establish `z0 : ∀ e : Deco E n ST SG, e.Ok → e.be w 0 = 0` using `fun e he => by`. Establish `h0` using `he.be_smul w 0 0 (Submodule.zero_mem _)`. Simplify using `using h0`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact h y hy`. Consider the case `zero => rw [z0 d hd, z0 d' hd']`. Consider the case `add y z hy hz ihy ihz`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hd.be_add w y (hm y hy).1 z (hm z hz).1, hd'.be_add w y (hm y hy).2 z (hm z hz).2, ihy, ihz]`. Consider the case `smul a y hy ih`. Rewrite using `[hd.be_smul w a y (hm y hy).1, hd'.be_smul w a y (hm y hy).2, ih]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem Deco.Ok.be_eq_of_span {d d' : Deco E n ST SG} (hd : d.Ok) (hd' : d'.Ok) (hN : d.N = d'.N)
     {S : Set (Sp E n)} (hS : Submodule.span (𝓞 E) S = d.N) (w : SG)
@@ -223,11 +217,11 @@ theorem Deco.Ok.be_eq_of_span {d d' : Deco E n ST SG} (hd : d.Ok) (hd' : d'.Ok) 
     rw [hd.be_smul w a y (hm y hy).1, hd'.be_smul w a y (hm y hy).2, ih]
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hN`. Set `Φ : {d : DecoSet E n ST SG | d.1.N = N} → (∀ P : ST, S → 𝓞 E ⧸ P.1.asIdeal) × (∀ w : SG, S → Fin n → 𝓞 E ⧸ w.1.asIdeal)` to `fun d => (fun P b => d.1.1.f P b.1, fun w b => d.1.1.be w b.1)`. Establish `hΦ : Function.Injective Φ`. Introduce and unpack `⟨d, hd⟩ ⟨d', hd'⟩ hdd`. Establish `hd0 : d.1.N = N` using `hd`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hd0' : d'.1.N = N` using `hd'`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e1` using `congrArg Prod.fst hdd`. Establish `e2` using `congrArg Prod.snd hdd`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Deco.Ok.ext_on d.2 d'.2 (hd0.trans hd0'.symm) (fun P => ?_) (fun w => ?_)` and prove the remaining obligations. Conclude with `Deco.Ok.f_eq_of_span d.2 d'.2 (hd0.trans hd0'.symm) (hS.trans hd0.symm) P fun b hb => congrFun (congrFun e1 P) ⟨b, hb⟩`. Conclude with `Deco.Ok.be_eq_of_span d.2 d'.2 (hd0.trans hd0'.symm) (hS.trans hd0.symm) w fun b hb => congrFun (congrFun e2 w) ⟨b, hb⟩`. Conclude with `Set.finite_coe_iff.1 (Finite.of_injective Φ hΦ)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem DecoSet.finite_fibre (N : Submodule (𝓞 E) (Sp E n)) (hN : N.FG) :
     {d : DecoSet E n ST SG | d.1.N = N}.Finite := by
@@ -251,13 +245,13 @@ theorem DecoSet.finite_fibre (N : Submodule (𝓞 E) (Sp E n)) (hN : N.FG) :
   exact Set.finite_coe_iff.1 (Finite.of_injective Φ hΦ)
 
 /- English proof (translation)
-Take `⟨S, hS, hrep⟩` from `unimod_finite hE n`. Establish `key : ∀ (h : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)), gmap h.symm (gmap h L) = L`. Introduce `h L`. Use extensionality with `x`. Simplify using `only [gmap, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨z, hz, rfl⟩, rfl⟩`. Simplify using `using hz`. Introduce `hx`. Conclude with `⟨h x, ⟨x, hx, rfl⟩, by simp⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `⟨⋃ N ∈ (S : Set (Submodule (𝓞 E) (Sp E n))), {d : DecoSet E n ST SG | d.1.N = N}, ?_, ?_⟩` and prove the remaining obligations. Conclude with `S.finite_toSet.biUnion fun N hN => DecoSet.finite_fibre N (hS N hN).1.fg`. Introduce `d`. Take `⟨N, hN, g, hg, hgN⟩` from `hrep d.1.N d.2.lat d.2.uni`. Use `⟨((⟨g, hg⟩ : UF E n), (1 : GLG E n SG))⁻¹ • d, Set.mem_biUnion (Finset.mem_coe.mpr hN) ?_, ⟨g, hg⟩, (smul_inv_smul _ d).symm⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (((⟨g, hg⟩ : UF E n), (1 : GLG E n SG))⁻¹ • d).1.N = N`. Rewrite using `[DecoSet.smul_val]`. Use `show gmap g.symm d.1.N = N`. Rewrite using `[← hgN]`. Conclude with `key g N`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DecoSet.finite_reps (hE : PosStar E) :
     ∃ s : Set (DecoSet E n ST SG), s.Finite ∧
@@ -286,9 +280,9 @@ theorem DecoSet.finite_reps (hE : PosStar E) :
     exact key g N
 
 /- English proof (translation)
-Take `⟨s, hs, hrep⟩` from `DecoSet.finite_reps (E := E) (n := n) (ST := ST) (SG := SG) hE`. Use `haveI : Finite s := hs.to_subtype`. Use `Finite.of_surjective (fun x : s => (Quotient.mk _ x.1 : MulAction.orbitRel.Quotient Γ (DecoSet E n ST SG))) ?_` and prove the remaining obligations. Introduce `z`. Proceed by induction on `z using Quotient.inductionOn with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `h d`. Take `⟨d0, hd0, g, rfl⟩` from `hrep d`. Use `⟨⟨d0, hd0⟩, ?_⟩` and prove the remaining obligations. Establish `hmem : (g, (1 : GLG E n SG)) • d0 ∈ MulAction.orbit Γ d0` using `⟨⟨(g, 1), hΓ g⟩, rfl⟩`. Conclude with `(Quotient.sound (s := MulAction.orbitRel Γ (DecoSet E n ST SG)) hmem).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem DecoSet.finite_orbits (hE : PosStar E) (Γ : Subgroup (UF E n × GLG E n SG))
     (hΓ : ∀ g : UF E n, (g, (1 : GLG E n SG)) ∈ Γ) :
@@ -306,13 +300,13 @@ theorem DecoSet.finite_orbits (hE : PosStar E) (Γ : Subgroup (UF E n × GLG E n
     exact (Quotient.sound (s := MulAction.orbitRel Γ (DecoSet E n ST SG)) hmem).symm
 
 /- English proof (translation)
-Take `⟨a1, a2⟩` from `a`. Take `⟨b1, b2⟩` from `b`. Simplify using `only at hab`. Substitute `hab` using the available equality. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises. Establish `hA : ∀ x, (a2 w).1.mulVec (d.1.be w (a1.1.symm x)) = d.1.be w x` using `fun x => by`. Establish `h1` using `congrArg (fun e : DecoSet E n ST SG => e.1.be w x) ha`. Simplify `h1` using `[DecoSet.smul_val, Deco.act]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hB : ∀ x, (b2 w).1.mulVec (d.1.be w (a1.1.symm x)) = d.1.be w x` using `fun x => by`. Establish `h1` using `congrArg (fun e : DecoSet E n ST SG => e.1.be w x) hb`. Simplify `h1` using `[DecoSet.smul_val, Deco.act]`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c`. Take `⟨x, hx, hxc⟩` from `d.2.be_surj w c`. Simplify using `only [Matrix.toLin'_apply]`. Rewrite using `[← hxc, ← LinearEquiv.symm_apply_apply a1.1 x, hA, hB]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem DecoSet.stab_fst_injective (d : DecoSet E n ST SG) {a b : UF E n × GLG E n SG}
     (ha : a • d = d) (hb : b • d = d) (hab : a.1 = b.1) : a = b := by
@@ -337,9 +331,9 @@ theorem DecoSet.stab_fst_injective (d : DecoSet E n ST SG) {a b : UF E n × GLG 
   rw [← hxc, ← LinearEquiv.symm_apply_apply a1.1 x, hA, hB]
 
 /- English proof (translation)
-Establish `hA` using `final_autFinite E (Sp E n) (hStd E n) hStd_isSymm (hStd_pos hE) d.1.N d.2.lat`. Establish `: Finite {g : Sp E n ≃ₗ[E] Sp E n | g ∈ isom (hStd E n) ∧ gmap g d.1.N = d.1.N}` using `hA`. Set `Φ : MulAction.stabilizer (UF E n × GLG E n SG) d → {g : Sp E n ≃ₗ[E] Sp E n | g ∈ isom (hStd E n) ∧ gmap g d.1.N = d.1.N}` to `fun a => ⟨a.1.1.1, a.1.1.2, congrArg (fun d : DecoSet E n ST SG => d.1.N) a.2⟩`. Use `Finite.of_injective Φ ?_` and prove the remaining obligations. Introduce `a b hab`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `DecoSet.stab_fst_injective d a.2 b.2 (Subtype.ext (show a.1.1.1 = b.1.1.1 from congrArg (fun g : {g : Sp E n ≃ₗ[E] Sp E n | g ∈ isom (hStd E n) ∧ gmap g d.1.N = d.1.N} => g.1) hab))`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem DecoSet.finite_stabilizer (hE : PosStar E) (d : DecoSet E n ST SG) :
     Finite (MulAction.stabilizer (UF E n × GLG E n SG) d) := by
@@ -370,18 +364,18 @@ Both sides reduce to the same expression.
 theorem algebraMap_cO (r : 𝓞 E) : algebraMap (𝓞 E) E (cO E r) = star (algebraMap (𝓞 E) E r) := rfl
 
 /- English proof (translation)
-Apply `IsFractionRing.injective (𝓞 E) E` to reduce the goal to its premises. Rewrite using `[algebraMap_cO, algebraMap_cO, star_star]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cO_cO (r : 𝓞 E) : cO E (cO E r) = r := by
   apply IsFractionRing.injective (𝓞 E) E
   rw [algebraMap_cO, algebraMap_cO, star_star]
 
 /- English proof (translation)
-Establish `hset : {r : 𝓞 E | ∃ s ∈ P, algebraMap (𝓞 E) E r = star (algebraMap (𝓞 E) E s)} = (P.comap (cO E) : Set (𝓞 E))`. Use extensionality with `r`. Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, Ideal.mem_comap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hrs : cO E r = s`. Apply `IsFractionRing.injective (𝓞 E) E` to reduce the goal to its premises. Rewrite using `[algebraMap_cO, h, star_star]`. Rewrite using `[hrs]`. Conclude with `hs`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨cO E r, h, by rw [algebraMap_cO, star_star]⟩`. Use `show Ideal.span {r : 𝓞 E | ∃ s ∈ P, algebraMap (𝓞 E) E r = star (algebraMap (𝓞 E) E s)} = _`. Rewrite using `[hset, Ideal.span_eq]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjIdeal_eq (P : Ideal (𝓞 E)) : conjIdeal (K := E) P = P.comap (cO E) := by
   have hset : {r : 𝓞 E | ∃ s ∈ P, algebraMap (𝓞 E) E r = star (algebraMap (𝓞 E) E s)} =
@@ -401,15 +395,15 @@ theorem conjIdeal_eq (P : Ideal (𝓞 E)) : conjIdeal (K := E) P = P.comap (cO E
   rw [hset, Ideal.span_eq]
 
 /- English proof (translation)
-Rewrite using `[conjIdeal_eq, Ideal.mem_comap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_conjIdeal (P : Ideal (𝓞 E)) (r : 𝓞 E) : r ∈ conjIdeal (K := E) P ↔ cO E r ∈ P := by
   rw [conjIdeal_eq, Ideal.mem_comap]
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `h1` using `hx (Pi.single i 1)`. Simplify `h1` using `[hStd, Pi.single_apply]`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `hy (Pi.single i 1)`. Simplify using `only [hStd, LinearMap.mk₂'ₛₗ_apply] at h1`. Rewrite `h1` using `[Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, star_zero, zero_mul]) (fun h => absurd (Finset.mem_univ i) h), Pi.single_eq_same, star_one, one_mul]`. Conclude with `h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hStd_nondeg : (hStd E n).Nondegenerate := by
   refine ⟨fun x hx => ?_, fun y hy => ?_⟩
@@ -424,7 +418,7 @@ theorem hStd_nondeg : (hStd E n).Nondegenerate := by
     exact h1
 
 /- English proof (translation)
-Simplify using `only [hStd, LinearMap.mk₂'ₛₗ_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, Algebra.smul_def, star_mul', algebraMap_cO]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hStd_osmul_left (r : 𝓞 E) (x y : Sp E n) : hStd E n (r • x) y = hStd E n x (cO E r • y) := by
   simp only [hStd, LinearMap.mk₂'ₛₗ_apply]
@@ -433,7 +427,7 @@ theorem hStd_osmul_left (r : 𝓞 E) (x y : Sp E n) : hStd E n (r • x) y = hSt
   ring
 
 /- English proof (translation)
-Establish `hs : hStd E n y x = star (hStd E n x y)`. Simplify using `only [hStd, LinearMap.mk₂'ₛₗ_apply, star_sum, star_mul', star_star]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Take `⟨r, hr⟩` from `Submodule.mem_one.mp h`. Conclude with `Submodule.mem_one.mpr ⟨cO E r, by rw [hs, ← hr, algebraMap_cO]⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hStd_mem_one_symm {x y : Sp E n} (h : hStd E n x y ∈ (1 : Submodule (𝓞 E) E)) :
     hStd E n y x ∈ (1 : Submodule (𝓞 E) E) := by
@@ -444,7 +438,7 @@ theorem hStd_mem_one_symm {x y : Sp E n} (h : hStd E n x y ∈ (1 : Submodule (�
   exact Submodule.mem_one.mpr ⟨cO E r, by rw [hs, ← hr, algebraMap_cO]⟩
 
 /- English proof (translation)
-Simplify using `only [dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_dual_lemma_2 (L : Submodule (𝓞 E) (Sp E n)) (y : Sp E n) :
     y ∈ dual (hStd E n) L ↔ ∀ x ∈ L, hStd E n x y ∈ (1 : Submodule (𝓞 E) E) := by
@@ -452,7 +446,7 @@ private theorem mem_dual_lemma_2 (L : Submodule (𝓞 E) (Sp E n)) (y : Sp E n) 
     LinearMap.restrictScalars_apply]
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hy`, the goal using `[mem_dual_lemma_2]`. Conclude with `fun x hx => hy x (h hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dual_anti {L M : Submodule (𝓞 E) (Sp E n)} (h : L ≤ M) :
     dual (hStd E n) M ≤ dual (hStd E n) L := by
@@ -461,9 +455,7 @@ theorem dual_anti {L M : Submodule (𝓞 E) (Sp E n)} (h : L ≤ M) :
   exact fun x hx => hy x (h hx)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact fun x y => by`. Simplify using `only [hStd, LinearMap.mk₂'ₛₗ_apply, map_sum, map_mul, starRingEnd_apply, star_star]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Consider the case `exact ⟨fun x y => by`.
-
-Simplify using `only [hStd, LinearMap.mk₂'ₛₗ_apply, map_sum, map_mul, starRingEnd_apply, star_star]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _⟩`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hStd_symm_lemma_8 : (hStd E n).IsSymm := by
   first
@@ -475,23 +467,23 @@ private theorem hStd_symm_lemma_8 : (hStd E n).IsSymm := by
       exact Finset.sum_congr rfl fun i _ => mul_comm _ _⟩
 
 /- English proof (translation)
-Conclude with `(dualLattice (𝓞 E) E (Sp E n) (hStd E n) hStd_symm_lemma_8 hStd_nondeg star_range L hL).2.1`.
+A detailed English derivation is pending.
 -/
 theorem dual_dual {L : Submodule (𝓞 E) (Sp E n)} (hL : Submodule.IsLattice E L) :
     dual (hStd E n) (dual (hStd E n) L) = L := by
   exact (dualLattice (𝓞 E) E (Sp E n) (hStd E n) hStd_symm_lemma_8 hStd_nondeg star_range L hL).2.1
 
 /- English proof (translation)
-Conclude with `(dualLattice (𝓞 E) E (Sp E n) (hStd E n) hStd_symm_lemma_8 hStd_nondeg star_range L hL).1`.
+A detailed English derivation is pending.
 -/
 theorem dual_lattice {L : Submodule (𝓞 E) (Sp E n)} (hL : Submodule.IsLattice E L) :
     Submodule.IsLattice E (dual (hStd E n) L) := by
   exact (dualLattice (𝓞 E) E (Sp E n) (hStd E n) hStd_symm_lemma_8 hStd_nondeg star_range L hL).1
 
 /- English proof (translation)
-Rewrite using `[mem_dual_lemma_2, mem_dual_lemma_2, mem_dual_lemma_2]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun x hx => h x (Submodule.mem_sup_left hx), fun x hx => h x (Submodule.mem_sup_right hx)⟩`. Introduce and unpack `⟨h1, h2⟩ x hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hx`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ (h1 a ha) (h2 b hb)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_dual_sup (L M : Submodule (𝓞 E) (Sp E n)) (y : Sp E n) :
     y ∈ dual (hStd E n) (L ⊔ M) ↔ y ∈ dual (hStd E n) L ∧ y ∈ dual (hStd E n) M := by
@@ -505,11 +497,11 @@ theorem mem_dual_sup (L M : Submodule (𝓞 E) (Sp E n)) (y : Sp E n) :
     exact Submodule.add_mem _ (h1 a ha) (h2 b hb)
 
 /- English proof (translation)
-Rewrite using `[mem_dual_lemma_2]`. Prove the components needed by the constructor for the conclusion. Introduce `h p hp`. Rewrite using `[mem_dual_lemma_2]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hStd_osmul_left]`. Conclude with `h _ (Submodule.smul_mem_smul hp hx)`. Introduce `h z hz`. Use `Submodule.smul_induction_on hz ?_ ?_` and prove the remaining obligations. Introduce `p hp x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hStd_osmul_left]`. Conclude with `(mem_dual_lemma_2 D _).mp (h p hp) x hx`. Introduce `a b ha hb`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_dual_smul (I : Ideal (𝓞 E)) (D : Submodule (𝓞 E) (Sp E n)) (y : Sp E n) :
     y ∈ dual (hStd E n) (I • D) ↔ ∀ p ∈ I, cO E p • y ∈ dual (hStd E n) D := by
@@ -530,7 +522,7 @@ theorem mem_dual_smul (I : Ideal (𝓞 E)) (D : Submodule (𝓞 E) (Sp E n)) (y 
       exact Submodule.add_mem _ ha hb
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Submodule.FG.of_le hD.fg h2, by rw [eq_top_iff, ← hB.span_eq_top] exact Submodule.span_mono h1⟩`.
+Supply the required witnesses or components.
 -/
 theorem lattice_between {B M D : Submodule (𝓞 E) (Sp E n)} (hB : Submodule.IsLattice E B)
     (hD : Submodule.IsLattice E D) (h1 : B ≤ M) (h2 : M ≤ D) : Submodule.IsLattice E M :=
@@ -539,19 +531,19 @@ theorem lattice_between {B M D : Submodule (𝓞 E) (Sp E n)} (hB : Submodule.Is
     exact Submodule.span_mono h1⟩
 
 /- English proof (translation)
-Use `set D := dual (hStd E n) B with hD`. Establish `hND : N ≤ D`. Use `dual_anti hBN` as an intermediate fact. Rewrite `this` using `[show dual (hStd E n) N = N from hN]`. Then use the resulting hypothesis. Establish `hJD : ∀ p ∈ J, ∀ u ∈ D, p • u ∈ N`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp u hu`. Rewrite using `[← show dual (hStd E n) N = N from hN, mem_dual]`. Introduce `y hy`. Establish `e : hStd E n y (p • u) = hStd E n (cO E p • y) u`. Rewrite using `[hStd_osmul_left, cO_cO]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(mem_dual B u).1 hu _ (hIN (Submodule.smul_mem_smul (hJI p hp) hy))`. Establish `hDD : dual (hStd E n) D = B` using `dual_dual hB`. Establish `hID : I • D ≤ D` using `Submodule.smul_le.2 fun r _ u hu => D.smul_mem r hu`. Use `⟨lattice_between hB (dual_lattice hB) le_sup_left (sup_le (hBN.trans hND) hID), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `dual (hStd E n) (B ⊔ I • D) = B ⊔ I • D`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨hy1, hy2⟩` from `(mem_dual_sup _ _ y).1 hy`. Rewrite `hy2` using `[mem_dual_smul, hDD]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he, e', he', hee⟩` from `hcop`. Establish `: y = e' • y + e • y` using `by rw [← add_smul, add_comm e' e, hee, one_smul]`. Rewrite using `[this]`. Use `Submodule.add_mem_sup ?_ (Submodule.smul_mem_smul he hy1)` and prove the remaining obligations. Use `hy2 (cO E e') (hJI e' he')` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[cO_cO]`. Then use the resulting hypothesis. Use `sup_le ?_ (Submodule.smul_le.2 ?_)` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[mem_dual_sup, mem_dual_smul, hDD]`. Conclude with `⟨hND (hBN hy), fun p _ => B.smul_mem _ hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `p' hp' u hu`. Rewrite using `[mem_dual_sup, mem_dual_smul, hDD]`. Use `⟨D.smul_mem _ hu, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `hIN (Submodule.smul_mem_smul hp' (hJD _ (hIJ p hp) u hu))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_unimodular {I J : Ideal (𝓞 E)} (hIJ : ∀ p ∈ I, cO E p ∈ J) (hJI : ∀ p ∈ J, cO E p ∈ I)
     (hcop : ∃ e ∈ I, ∃ e' ∈ J, e + e' = 1) {N B : Submodule (𝓞 E) (Sp E n)}
@@ -615,19 +607,19 @@ def conjPrime₂ (P : HeightOneSpectrum (𝓞 E)) : HeightOneSpectrum (𝓞 E) w
     rw [← cO_cO p, h1, map_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_conjP (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) :
     r ∈ (conjPrime₂ P).asIdeal ↔ cO E r ∈ P.asIdeal := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `conjIdeal_eq P.asIdeal`.
+A detailed English derivation is pending.
 -/
 theorem conjIdeal_asIdeal (P : HeightOneSpectrum (𝓞 E)) :
     conjIdeal (K := E) P.asIdeal = (conjPrime₂ P).asIdeal := conjIdeal_eq P.asIdeal
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Conclude with `HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top hc)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_mem_notMem {P Q : HeightOneSpectrum (𝓞 E)} (h : P ≠ Q) :
     ∃ s ∈ P.asIdeal, s ∉ Q.asIdeal := by
@@ -637,9 +629,9 @@ theorem exists_mem_notMem {P Q : HeightOneSpectrum (𝓞 E)} (h : P ≠ Q) :
   exact HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top hc)
 
 /- English proof (translation)
-Establish `hne : P.asIdeal ≠ Q.asIdeal` using `fun e => h (HeightOneSpectrum.ext e)`. Establish `h1 : P.asIdeal ⊔ Q.asIdeal = ⊤` using `Ideal.IsMaximal.coprime_of_ne P.isMaximal Q.isMaximal hne`. Establish `h2 : (1 : 𝓞 E) ∈ P.asIdeal ⊔ Q.asIdeal`. Rewrite using `[h1]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, e', he', hsum⟩` from `Submodule.mem_sup.mp h2`. Conclude with `⟨e, he, e', he', hsum⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coprime {P Q : HeightOneSpectrum (𝓞 E)} (h : P ≠ Q) :
     ∃ e ∈ P.asIdeal, ∃ e' ∈ Q.asIdeal, e + e' = 1 := by
@@ -655,9 +647,7 @@ def SameAt (Q : HeightOneSpectrum (𝓞 E)) (N N' : Submodule (𝓞 E) (Sp E n))
   ∃ a ∉ Q.asIdeal, ∃ a' ∉ Q.asIdeal, (∀ x ∈ N', a • x ∈ N) ∧ ∀ x ∈ N, a' • x ∈ N'
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `(show ∃ s ∈ Q.asIdeal.primeCompl, s • x ∈ M from hx)`. Use `show ∃ s ∈ Q.asIdeal.primeCompl, s • x ∈ N`. Use `⟨a * s, Q.asIdeal.primeCompl.mul_mem (Ideal.mem_primeCompl_iff.mpr ha) hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`.
-
-Conclude with `h _ hsx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization_le_of_smul_mem {Q : HeightOneSpectrum (𝓞 E)} {M N : Submodule (𝓞 E) (Sp E n)} {a : 𝓞 E}
     (ha : a ∉ Q.asIdeal) (h : ∀ x ∈ M, a • x ∈ N) : localization₂ Q.asIdeal M ≤ localization₂ Q.asIdeal N := by
@@ -669,7 +659,7 @@ theorem localization_le_of_smul_mem {Q : HeightOneSpectrum (𝓞 E)} {M N : Subm
   exact h _ hsx
 
 /- English proof (translation)
-Take `⟨a, ha, a', ha', h1, h2⟩` from `h`. Conclude with `le_antisymm (localization_le_of_smul_mem ha h1) (localization_le_of_smul_mem ha' h2)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem SameAt.localization_eq {Q : HeightOneSpectrum (𝓞 E)} {N N' : Submodule (𝓞 E) (Sp E n)}
     (h : SameAt Q N N') : localization₂ Q.asIdeal N' = localization₂ Q.asIdeal N := by
@@ -677,7 +667,7 @@ theorem SameAt.localization_eq {Q : HeightOneSpectrum (𝓞 E)} {N N' : Submodul
   exact le_antisymm (localization_le_of_smul_mem ha h1) (localization_le_of_smul_mem ha' h2)
 
 /- English proof (translation)
-Take `⟨t, q, hq, hst⟩` from `Q.isMaximal.exists_inv hs`. Establish `hx' : x = t • (s • x) + q • x`. Rewrite using `[← mul_smul, ← add_smul, hst, one_smul]`. Rewrite using `[hx']`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ t h) (Submodule.smul_mem_smul hq hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smul_of_loc {Q : HeightOneSpectrum (𝓞 E)} {M : Submodule (𝓞 E) (Sp E n)} {x : Sp E n}
     (hx : x ∈ M) {s : 𝓞 E} (hs : s ∉ Q.asIdeal) (h : s • x ∈ Q.asIdeal • M) : x ∈ Q.asIdeal • M := by
@@ -688,9 +678,9 @@ theorem mem_smul_of_loc {Q : HeightOneSpectrum (𝓞 E)} {M : Submodule (𝓞 E)
   exact Submodule.add_mem _ (Submodule.smul_mem _ t h) (Submodule.smul_mem_smul hq hx)
 
 /- English proof (translation)
-Use `⟨Submodule.FG.of_le hD.fg hBD, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hN.span_eq_top, Submodule.span_le]`. Introduce `x hx`. Establish `hp' : algebraMap (𝓞 E) E p ≠ 0`. Rewrite using `[Ne, FaithfulSMul.algebraMap_eq_zero_iff]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `: x = (algebraMap (𝓞 E) E p)⁻¹ • (p • x)`. Rewrite using `[← algebraMap_smul E p x, smul_smul, inv_mul_cancel₀ hp', one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (h x hx))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_of_smul {N B D : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E N)
     (hD : Submodule.IsLattice E D) (hBD : B ≤ D) {p : 𝓞 E} (hp : p ≠ 0) (h : ∀ x ∈ N, p • x ∈ B) :
@@ -706,9 +696,9 @@ theorem lattice_of_smul {N B D : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.Is
   exact Submodule.smul_mem _ _ (Submodule.subset_span (h x hx))
 
 /- English proof (translation)
-Establish `hN' : dual (hStd E n) N = N` using `hN`. Rewrite using `[← hN', mem_dual_lemma_2]`. Introduce `x hx`. Establish `e : hStd E n x (p • u) = hStd E n (cO E p • x) u`. Rewrite using `[hStd_osmul_left, cO_cO]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(mem_dual_lemma_2 B u).mp hu _ (hIN (Submodule.smul_mem_smul hp hx))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_smul_dual_mem {I : Ideal (𝓞 E)} {N B : Submodule (𝓞 E) (Sp E n)}
     (hN : IsUnimodular (hStd E n) N) (hIN : I • N ≤ B) {p : 𝓞 E} (hp : cO E p ∈ I) {u : Sp E n}
@@ -728,46 +718,40 @@ def Deco.repl (d : Deco E n ST SG) (P : ST) (N' : Submodule (𝓞 E) (Sp E n))
   be := d.be
 
 /- English proof (translation)
-Establish `h0` using `hd.f_smul P 0 0 (Submodule.zero_mem _)`. Simplify using `using h0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Deco.Ok.f_zero {d : Deco E n ST SG} (hd : d.Ok) (P : ST) : d.f P 0 = 0 := by
   have h0 := hd.f_smul P 0 0 (Submodule.zero_mem _)
   simpa using h0
 
 /- English proof (translation)
-Establish `hfne : ∀ Q : ST, Q ≠ P → (d.repl P N' f').f Q = d.f Q` using `fun Q hQ => by`. Simplify using `[Deco.repl, hQ]`. Establish `hfP : (d.repl P N' f').f P = f'`. Simplify using `[Deco.repl]`. Establish `hloc : ∀ Q : ST, Q ≠ P → localization₂ Q.1.asIdeal N' = localization₂ Q.1.asIdeal d.N` using `fun Q hQ => (hST Q hQ).localization_eq`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨hlat, huni, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Q x hx y hy`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[hfP]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `f_add x hx y hy`. Establish `hx' : x ∈ localization₂ Q.1.asIdeal d.N` using `by rw [← hloc Q hQ]; exact hx`. Establish `hy' : y ∈ localization₂ Q.1.asIdeal d.N` using `by rw [← hloc Q hQ]; exact hy`. Rewrite using `[hfne Q hQ]`. Conclude with `hd.f_add Q x hx' y hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `Q c x hx`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[hfP]`. Conclude with `f_smul c x hx`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx' : x ∈ localization₂ Q.1.asIdeal d.N` using `by rw [← hloc Q hQ]; exact hx`. Rewrite using `[hfne Q hQ]`. Conclude with `hd.f_smul Q c x hx'`. Introduce `Q x hx`. Distinguish the cases in `hQ : Q = P`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hQ` using the available equality. Rewrite using `[hfP]`. Conclude with `f_off x hx`. Rewrite using `[hfne Q hQ]`. Use `hd.f_off Q x fun hx' => hx ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `show x ∈ localization₂ Q.1.asIdeal N'`. Rewrite using `[hloc Q hQ]`. Conclude with `hx'`. Introduce `Q`. Distinguish the cases in `hQ : Q = P`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hQ` using the available equality. Rewrite using `[hfP]`. Conclude with `f_ne`. Take `⟨a, ha, a', ha', h1, h2⟩` from `hST Q hQ`. Take `⟨x, hx, hfx⟩` from `hd.f_ne Q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨a' • x, h2 x hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hfne Q hQ, hd.f_smul Q a' x (mem_localized_of_mem _ _ hx)]`. Conclude with `mul_ne_zero (fun h0 => ha' (Ideal.Quotient.eq_zero_iff_mem.mp h0)) hfx`. Introduce `w x hx y hy`. Establish `hl` using `(hSG w).localization_eq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : x ∈ localization₂ w.1.asIdeal d.N` using `by rw [← hl]; exact hx`. Establish `hy' : y ∈ localization₂ w.1.asIdeal d.N` using `by rw [← hl]; exact hy`. Conclude with `hd.be_add w x hx' y hy'`. Introduce `w c x hx`. Establish `hl` using `(hSG w).localization_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx' : x ∈ localization₂ w.1.asIdeal d.N` using `by rw [← hl]; exact hx`. Conclude with `hd.be_smul w c x hx'`. Introduce `w x hx`. Establish `hl` using `(hSG w).localization_eq`. Use `hd.be_off w x fun hx' => hx ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show x ∈ localization₂ w.1.asIdeal N'`. Rewrite using `[hl]`. Conclude with `hx'`. Introduce `w c`. Take `⟨a, ha, a', ha', h1, h2⟩` from `hSG w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := w.1.isMaximal`. Use `letI := Ideal.Quotient.field w.1.asIdeal`. Establish `hne : Ideal.Quotient.mk w.1.asIdeal a' ≠ 0` using `fun h0 => ha' (Ideal.Quotient.eq_zero_iff_mem.mp h0)`. Take `⟨x, hx, hbx⟩` from `hd.be_surj w ((Ideal.Quotient.mk w.1.asIdeal a')⁻¹ • c)`. Use `⟨a' • x, h2 x hx, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show d.be w (a' • x) = c`. Rewrite using `[hd.be_smul w a' x (mem_localized_of_mem _ _ hx), hbx, smul_smul, mul_inv_cancel₀ hne, one_smul]`. Introduce `w x hx hbx`. Take `⟨a, ha, a', ha', h1, h2⟩` from `hSG w`. Establish `hl` using `(hSG w).localization_eq`.
-
-Establish `hxl : x ∈ localization₂ w.1.asIdeal d.N` using `by rw [← hl]; exact mem_localized_of_mem _ _ hx`. Establish `hb : d.be w (a • x) = 0`. Establish `hbx' : d.be w x = 0` using `hbx`. Rewrite using `[hd.be_smul w a x hxl, hbx', smul_zero]`. Establish `hax : a • x ∈ w.1.asIdeal • d.N` using `hd.be_ker w _ (h1 x hx) hb`.
-
-Establish `key : (a' * a) • x ∈ w.1.asIdeal • N'`. Rewrite using `[mul_smul]`. Use `Submodule.smul_induction_on hax ?_ ?_` and prove the remaining obligations. Introduce `p hp y hy`. Rewrite using `[smul_comm]`.
-
-Conclude with `Submodule.smul_mem_smul hp (h2 y hy)`. Introduce `u v hu hv`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hu hv`. Conclude with `mem_smul_of_loc hx (fun hm => (w.1.isPrime.mem_or_mem hm).elim ha' ha) key`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.repl {d : Deco E n ST SG} (hd : d.Ok) (P : ST) {N' : Submodule (𝓞 E) (Sp E n)}
     {f' : Sp E n → 𝓞 E ⧸ P.1.asIdeal} (hlat : Submodule.IsLattice E N')
@@ -867,11 +851,11 @@ theorem Deco.Ok.repl {d : Deco E n ST SG} (hd : d.Ok) (P : ST) {N' : Submodule (
     exact mem_smul_of_loc hx (fun hm => (w.1.isPrime.mem_or_mem hm).elim ha' ha) key
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hy`. Consider the case `zero => exact ⟨Submodule.zero_mem _, hd.f_zero P⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Use `⟨Submodule.add_mem _ hy.1 hz.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hd.f_add P y (mem_localized_of_mem P.1 d.N hy.1) z (mem_localized_of_mem P.1 d.N hz.1), hy.2, hz.2, add_zero]`. Consider the case `smul a y _ hy`. Use `⟨Submodule.smul_mem _ a hy.1, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hd.f_smul P a y (mem_localized_of_mem P.1 d.N hy.1), hy.2, mul_zero]`. Introduce `hx`. Conclude with `Submodule.subset_span hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.mem_kerAt {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (x : Sp E n) :
     x ∈ d.kerAt P ↔ x ∈ d.N ∧ d.f P x = 0 := by
@@ -895,17 +879,17 @@ structure MoveHyp (ST SG : Finset (HeightOneSpectrum (𝓞 E))) (P : ST) : Prop 
   sg : ∀ w : SG, w.1 ≠ P.1 ∧ w.1 ≠ conjPrime₂ P.1
 
 /- English proof (translation)
-Establish `hBN : d.kerAt P ≤ d.N` using `fun x hx => ((hd.mem_kerAt P x).1 hx).1`. Establish `hIN : P.1.asIdeal • d.N ≤ d.kerAt P`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr y hy`. Rewrite using `[hd.mem_kerAt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Submodule.smul_mem _ r hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hd.f_smul P r y (le_locP _ _ hy), Ideal.Quotient.eq_zero_iff_mem.2 hr, zero_mul]`. Take `⟨p, hp, hp0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.1.ne_bot`. Establish `hB : Submodule.IsLattice E (d.kerAt P)` using `lattice_of_smul hd.lat hd.lat hBN hp0 fun x hx => hIN (Submodule.smul_mem_smul hp hx)`. Take `⟨e, he, e', he', hee⟩` from `exists_coprime hne.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `glue_unimodular (I := P.1.asIdeal) (J := (conjPrime₂ P.1).asIdeal) (fun p hp => by rw [mem_conjP, cO_cO]; exact hp) (fun p hp => hp) ⟨e, he, e', he', hee⟩ hd.uni hB hBN hIN`. Establish `hbar : ∀ a ∈ (conjPrime₂ P.1).asIdeal, ∀ x ∈ d.dnN P, a • x ∈ d.kerAt P`. Introduce `a ha x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[smul_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.add_mem _ (Submodule.smul_mem _ a hy) ?_` and prove the remaining obligations. Use `Submodule.smul_induction_on hz (fun r hr u hu => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `hIN (Submodule.smul_mem_smul hr (conj_smul_dual_mem hd.uni hIN ha hu))`. Rewrite using `[smul_add]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.add_mem _ hu hv`. Use `⟨h1, h2, ?_, ?_⟩` and prove the remaining obligations. Introduce `Q hQ hQ'`. Take `⟨a, ha, haQ⟩` from `exists_mem_notMem (Ne.symm hQ')`. Take `⟨a', ha', haQ'⟩` from `exists_mem_notMem (Ne.symm hQ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, haQ, a', haQ', fun x hx => hBN (hbar a ha x hx), fun x hx => (le_sup_left : d.kerAt P ≤ d.dnN P) (hIN (Submodule.smul_mem_smul ha' hx))⟩`. Take `⟨a, ha, haP⟩` from `exists_mem_notMem hne`. Conclude with `le_antisymm (localization_le_of_smul_mem haP (hbar a ha)) (localization_le_of_smul_mem (one_notMem P.1) fun x hx => by`. Rewrite using `[one_smul]`. Conclude with `(le_sup_left : d.kerAt P ≤ d.dnN P) hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.dnN_spec {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hne : conjPrime₂ P.1 ≠ P.1) :
     Submodule.IsLattice E (d.dnN P) ∧ IsUnimodular (hStd E n) (d.dnN P) ∧
@@ -947,7 +931,7 @@ theorem Deco.Ok.dnN_spec {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hne : conjPr
         rw [one_smul]; exact (le_sup_left : d.kerAt P ≤ d.dnN P) hx)
 
 /- English proof (translation)
-Establish `hs` using `hd.dnN_spec P hP.ne`. Conclude with `hd.repl P hs.1 hs.2.1 (fun Q hQ => hs.2.2.1 Q.1 (fun h => hQ (Subtype.ext h)) (hP.st Q)) (fun w => hs.2.2.1 w.1 (hP.sg w).1 (hP.sg w).2) f_add f_smul f_off f_ne`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.dn {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp ST SG P)
     {f' : Sp E n → 𝓞 E ⧸ P.1.asIdeal}
@@ -969,15 +953,13 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Unfold `upA at hz`. Take `⟨y, hy, w, hw, rfl⟩` from `Submodule.mem_sup.mp hz`. Rewrite using `[smul_add]`. Use `Submodule.add_mem _ (Submodule.smul_mem _ p hy) ?_` and prove the remaining obligations. Use `clear hz`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, rfl⟩` from `hv`. Take `⟨r, hr⟩` from `(neighbourConstruct_mem_inv.mp ha) p hp`. Establish `e : p • a • x = r • x`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul E r x, hr, ← algebraMap_smul E p (a • x), smul_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ r hx`. Consider the case `zero`. Rewrite using `[smul_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add v v' _ _ hv hv'`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hv hv'`. Consider the case `smul c v _ hv`.
-
-Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ c hv`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_upA_mem {P : Ideal (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} {x : Sp E n} (hx : x ∈ N)
     {p : 𝓞 E} (hp : p ∈ P) {z : Sp E n} (hz : z ∈ upA P N x) : p • z ∈ N := by
@@ -1005,17 +987,17 @@ theorem smul_upA_mem {P : Ideal (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} {x :
     exact Submodule.smul_mem _ c hv
 
 /- English proof (translation)
-Use `set A := upA P.asIdeal N x with hA`. Establish `hNA : N ≤ A` using `le_sup_left`. Establish `hdN : dual (hStd E n) N = N` using `huni`. Take `⟨pb, hpb, hpb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (conjPrime₂ P).ne_bot`. Establish `hPN : Submodule.IsLattice E ((conjPrime₂ P).asIdeal • N)` using `lattice_of_smul hlat hlat (Submodule.smul_le.2 fun r _ y hy => N.smul_mem r hy) hpb0 fun y hy => Submodule.smul_mem_smul hpb hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAle : A ≤ dual (hStd E n) ((conjPrime₂ P).asIdeal • N)`. Introduce `z hz`. Rewrite using `[mem_dual_smul, hdN]`. Introduce `p hp`. Conclude with `smul_upA_mem hx ((mem_conjP P p).1 hp) hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAlat : Submodule.IsLattice E A` using `lattice_between hlat (dual_lattice hPN) hNA hAle`. Establish `hBN : dual (hStd E n) A ≤ N`. Use `dual_anti hNA` as an intermediate fact. Rewrite `this` using `[hdN]`. Then use the resulting hypothesis. Establish `hIN : (conjPrime₂ P).asIdeal • N ≤ dual (hStd E n) A`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `dual_anti hAle` as an intermediate fact. Rewrite `this` using `[dual_dual hPN]`. Then use the resulting hypothesis. Take `⟨e, he, e', he', hee⟩` from `exists_coprime hne`. Take `⟨h1, h2⟩` from `glue_unimodular (I := (conjPrime₂ P).asIdeal) (J := P.asIdeal) (fun p hp => hp) (fun p hp => by rw [mem_conjP, cO_cO]; exact hp) ⟨e, he, e', he', hee⟩ huni (dual_lattice hAlat) hBN hIN`. Rewrite `h1`, `h2` using `[dual_dual hAlat]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN' : upN P.asIdeal N x = dual (hStd E n) A ⊔ (conjPrime₂ P).asIdeal • A`. Rewrite using `[upN, conjIdeal_asIdeal]`. Rewrite using `[hN']`. Establish `hle : dual (hStd E n) A ⊔ (conjPrime₂ P).asIdeal • A ≤ A` using `sup_le (hBN.trans hNA) (Submodule.smul_le.2 fun r _ y hy => A.smul_mem r hy)`. Use `⟨h1, h2, ?_, hle, le_sup_right⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `Q hQ hQ'`. Take `⟨a, ha, haQ⟩` from `exists_mem_notMem (Ne.symm hQ)`. Take `⟨a', ha', haQ'⟩` from `exists_mem_notMem (Ne.symm hQ')`. Conclude with `⟨a, haQ, a', haQ', fun y hy => smul_upA_mem hx ha (hle hy), fun y hy => (le_sup_right : (conjPrime₂ P).asIdeal • A ≤ _) (Submodule.smul_mem_smul ha' (hNA hy))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem upN_spec {N : Submodule (𝓞 E) (Sp E n)} (hlat : Submodule.IsLattice E N)
     (huni : IsUnimodular (hStd E n) N) (P : HeightOneSpectrum (𝓞 E)) (hne : conjPrime₂ P ≠ P)
@@ -1061,13 +1043,13 @@ theorem upN_spec {N : Submodule (𝓞 E) (Sp E n)} (hlat : Submodule.IsLattice E
     (le_sup_right : (conjPrime₂ P).asIdeal • A ≤ _) (Submodule.smul_mem_smul ha' (hNA hy))⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `H`. Use `push Not at H`. Apply `hq2` to reduce the goal to its premises. Establish `hkey` using `neighbourConstruct_key (K := E) (V := E) P.asIdeal P.ne_bot (Submodule.map (Algebra.linearMap (𝓞 E) E) P.asIdeal) (algebraMap (𝓞 E) E q) (by`. Introduce `a ha`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `neighbourConstruct_mem_inv.1 ha q hq`. Establish `hr'` using `H a ha r`. Use `⟨r, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hrP`. Conclude with `hr' hrP hr.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Algebra.linearMap_apply, hr, smul_eq_mul, mul_comm])`. Rewrite `hkey` using `[← Submodule.map_smul'']`. Take `⟨r, hr, hrq⟩` from `hkey`. Establish `: r = q`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hrq`. Rewrite using `[← this, sq]`. Simplify using `using hr`.
+A detailed English derivation is pending.
 -/
 theorem exists_inv_unif (P : HeightOneSpectrum (𝓞 E)) {q : 𝓞 E} (hq : q ∈ P.asIdeal)
     (hq2 : q ∉ P.asIdeal ^ 2) :
@@ -1094,19 +1076,17 @@ theorem exists_inv_unif (P : HeightOneSpectrum (𝓞 E)) {q : 𝓞 E} (hq : q �
   simpa using hr
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `upN_spec hd.lat hd.uni P.1 hP.ne hx`. Establish `hloc : ∀ y ∈ localization₂ P.1.asIdeal (upN P.1.asIdeal d.N x), q • y ∈ d.at P.1`. Introduce `y hy`. Take `⟨s, hs, hsy⟩` from `(mem_locP _ _ _).1 hy`. Use `(mem_locP _ _ _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_comm]`. Conclude with `smul_upA_mem hx hq (h4 hsy)`. Use `hd.repl P h1 h2 (fun Q hQ => h3 Q.1 (fun h => hQ (Subtype.ext h)) (hP.st Q)) (fun w => h3 w.1 (hP.sg w).1 (hP.sg w).2) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `y hy z hz`. Rewrite using `[if_pos hy, if_pos hz, if_pos (Submodule.add_mem _ hy hz), smul_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hd.f_add P _ (hloc y hy) _ (hloc z hz)`. Introduce `a y hy`. Rewrite using `[if_pos hy, if_pos (Submodule.smul_mem _ a hy), smul_comm]`. Conclude with `hd.f_smul P a _ (hloc y hy)`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_neg hy]`. Take `⟨a, ha, r, hr, har⟩` from `exists_inv_unif P.1 hq hq2`. Take `⟨e, he, e', he', hee⟩` from `exists_coprime hP.ne`. Establish `hax : a • x ∈ upA P.1.asIdeal d.N x` using `(le_sup_right : _ ≤ upA P.1.asIdeal d.N x) (Submodule.subset_span ⟨a, ha, rfl⟩)`. Establish `hy : e • (a • x) ∈ upN P.1.asIdeal d.N x` using `h5 (Submodule.smul_mem_smul he hax)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨e • (a • x), hy, ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos (le_locP _ _ hy)]`. Establish `e1 : q • e • a • x = (e * r) • x`. Rewrite using `[smul_comm q e, ← algebraMap_smul E q (a • x), smul_smul, har, algebraMap_smul, mul_smul]`. Rewrite using `[e1, hd.f_smul P _ x (le_locP _ _ hx), hfx, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `mk_ne_zero` to reduce the goal to its premises. Introduce `hm`. Break down `P.1.isPrime.mem_or_mem hm with h | h` into its components or cases. Apply `one_notMem P.1` to reduce the goal to its premises. Rewrite using `[← hee]`.
-
-Conclude with `Ideal.add_mem _ h he'`. Conclude with `hr h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.up {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp ST SG P) {q : 𝓞 E}
     (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) {x : Sp E n} (hx : x ∈ d.N)
@@ -1148,7 +1128,7 @@ theorem Deco.Ok.up {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp ST SG
     · exact hr h
 
 /- English proof (translation)
-Establish `hok : (d.1.up P q x).Ok` using `Deco.Ok.up d.2 P hP hq hq2 hx hfx`. Unfold `DecoSet.up`. Rewrite using `[dif_pos hok]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem DecoSet.up_val (d : DecoSet E n ST SG) (P : ST) (hP : MoveHyp ST SG P) {q : 𝓞 E}
     (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) {x : Sp E n} (hx : x ∈ d.1.N)
@@ -1158,9 +1138,9 @@ theorem DecoSet.up_val (d : DecoSet E n ST SG) (P : ST) (hP : MoveHyp ST SG P) {
   rw [dif_pos hok]
 
 /- English proof (translation)
-Take `⟨x, hx, hfx⟩` from `d.2.f_ne P`. Use `haveI := P.1.isMaximal`. Use `letI := Ideal.Quotient.field P.1.asIdeal`. Take `⟨c, hc⟩` from `Ideal.Quotient.mk_surjective ((d.1.f P x)⁻¹)`. Establish `hx1 : d.1.f P (c • x) = 1`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[d.2.f_smul P c x (mem_localized_of_mem _ _ hx), hc, inv_mul_cancel₀ hfx]`. Conclude with `⟨⟨d.1.up P q (c • x), d.2.up P hP hq hq2 (Submodule.smul_mem _ c hx) hx1⟩, c • x, Submodule.smul_mem _ c hx, hx1, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem DecoSet.upSet_nonempty (d : DecoSet E n ST SG) (P : ST) (hP : MoveHyp ST SG P) {q : 𝓞 E}
     (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) : (d.upSet P q).Nonempty := by
@@ -1181,13 +1161,13 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Simplify using `[incl]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem incl_castSucc (y : Sp E n) (i : Fin n) : incl E n y i.castSucc = y i := by
   simp [incl]
 
 /- English proof (translation)
-Simplify using `[incl]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem incl_last (y : Sp E n) : incl E n y (Fin.last n) = 0 := by
   simp [incl]
@@ -1198,33 +1178,33 @@ Both sides reduce to the same expression.
 @[simp] theorem initL_apply (x : Sp E (n + 1)) (i : Fin n) : initL E n x i = x i.castSucc := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[initL_apply, incl_castSucc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem initL_incl (y : Sp E n) : initL E n (incl E n y) = y := by
   funext i
   rw [initL_apply, incl_castSucc]
 
 /- English proof (translation)
-Simplify using `[eLast]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem eLast_last : eLast E n (Fin.last n) = 1 := by
   simp [eLast]
 
 /- English proof (translation)
-Simplify using `[eLast, Pi.single_apply, Fin.castSucc_ne_last]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem eLast_castSucc (i : Fin n) : eLast E n i.castSucc = 0 := by
   simp [eLast, Pi.single_apply, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem initL_eLast : initL E n (eLast E n) = 0 := by
   funext i
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `induction i using Fin.lastCases <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sp_decomp (x : Sp E (n + 1)) :
     x = incl E n (initL E n x) + x (Fin.last n) • eLast E n := by
@@ -1237,14 +1217,14 @@ Both sides reduce to the same expression.
 theorem initL_osmul (s : 𝓞 E) (x : Sp E (n + 1)) : initL E n (s • x) = s • initL E n x := rfl
 
 /- English proof (translation)
-Simplify using `[hStd, Fin.sum_univ_castSucc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hStd_succ (x y : Sp E (n + 1)) : hStd E (n + 1) x y =
     hStd E n (initL E n x) (initL E n y) + star (x (Fin.last n)) * y (Fin.last n) := by
   simp [hStd, Fin.sum_univ_castSucc]
 
 /- English proof (translation)
-Simplify using `[hStd, z0, Fin.sum_univ_castSucc, algebraMap_cO, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermStd_lastVector_apply (pi : 𝓞 E) (x : Sp E (n + 1)) :
     hStd E (n + 1) (z0 E n (algebraMap (𝓞 E) E pi)) x =
@@ -1252,11 +1232,11 @@ theorem hermStd_lastVector_apply (pi : 𝓞 E) (x : Sp E (n + 1)) :
   simp [hStd, z0, Fin.sum_univ_castSucc, algebraMap_cO, Algebra.smul_def]
 
 /- English proof (translation)
-Unfold `tilN`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp hx`. Take `⟨y', hy', rfl⟩` from `Submodule.mem_map.mp hy`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hz`. Use `⟨?_, c, ?_⟩` and prove the remaining obligations. Simplify `hy'` using `[initL_osmul]`. Simplify using `[Algebra.smul_def]`. Introduce and unpack `⟨hN, r, hr⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Rewrite using `[sp_decomp x, ← hr, algebraMap_smul]`. Conclude with `Submodule.add_mem_sup (Submodule.mem_map_of_mem hN) (Submodule.mem_span_singleton.mpr ⟨r, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_tilN (N : Submodule (𝓞 E) (Sp E n)) (x : Sp E (n + 1)) :
     x ∈ tilN N ↔ initL E n x ∈ N ∧ ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = x (Fin.last n) := by
@@ -1275,13 +1255,11 @@ theorem mem_tilN (N : Submodule (𝓞 E) (Sp E n)) (x : Sp E (n + 1)) :
       (Submodule.mem_span_singleton.mpr ⟨r, rfl⟩)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨s, hs, hsx⟩` from `(show ∃ s ∈ Q.asIdeal.primeCompl, s • x ∈ tilN N from hx)`. Rewrite `hsx` using `[mem_tilN]`. Take `⟨h1, r, hr⟩` from `hsx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨show ∃ s ∈ Q.asIdeal.primeCompl, s • initL E n x ∈ N from ⟨s, hs, by rwa [← initL_osmul]⟩, r, s, Ideal.mem_primeCompl_iff.mp hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, Pi.smul_apply, Algebra.smul_def]`. Introduce and unpack `⟨hx1, r, t, ht, hr⟩`. Take `⟨s, hs, hsx⟩` from `(show ∃ s ∈ Q.asIdeal.primeCompl, s • initL E n x ∈ N from hx1)`. Use `show ∃ s ∈ Q.asIdeal.primeCompl, s • x ∈ tilN N`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s * t, Q.asIdeal.primeCompl.mul_mem hs (Ideal.mem_primeCompl_iff.mpr ht), ?_⟩` and prove the remaining obligations. Rewrite using `[mem_tilN]`. Use `⟨?_, s * r, ?_⟩` and prove the remaining obligations. Rewrite using `[initL_osmul, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ t hsx`.
-
-Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul, map_mul, mul_assoc, hr]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_localization_tilN (Q : HeightOneSpectrum (𝓞 E)) (N : Submodule (𝓞 E) (Sp E n))
     (x : Sp E (n + 1)) :
@@ -1305,11 +1283,9 @@ theorem mem_localization_tilN (Q : HeightOneSpectrum (𝓞 E)) (N : Submodule (�
     · rw [Pi.smul_apply, Algebra.smul_def, map_mul, map_mul, mul_assoc, hr]
 
 /- English proof (translation)
-Use `⟨(hN.fg.map _).sup (Submodule.fg_span_singleton _), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[sp_decomp x]`. Use `Submodule.add_mem _ ?_ (Submodule.smul_mem _ _ (Submodule.subset_span ((le_sup_right : _ ≤ tilN N) (Submodule.mem_span_singleton_self _))))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Submodule.map (incl E n) ⊤ ≤ Submodule.span E (tilN N : Set (Sp E (n + 1)))`. Rewrite using `[← hN.span_eq_top, Submodule.map_span]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(le_sup_left : _ ≤ tilN N) (Submodule.mem_map_of_mem hy)`.
-
-Conclude with `h1 (Submodule.mem_map_of_mem Submodule.mem_top)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem tilN_lattice {N : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E N) :
     Submodule.IsLattice E (tilN N) := by
@@ -1327,13 +1303,13 @@ theorem tilN_lattice {N : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice
   exact h1 (Submodule.mem_map_of_mem Submodule.mem_top)
 
 /- English proof (translation)
-Establish `hN' : dual (hStd E n) N = N` using `hN`. Use `show dual (hStd E (n + 1)) (tilN N) = tilN N`. Use extensionality with `y`. Rewrite using `[mem_dual_lemma_2 (tilN N) y, mem_tilN N y]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hN', mem_dual_lemma_2]`. Introduce `u hu`. Establish `h1` using `h (incl E n u) ((mem_tilN N _).mpr ⟨by rwa [initL_incl], 0, by rw [incl_last, map_zero]⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[hStd_succ, initL_incl, incl_last, star_zero, zero_mul, add_zero]`. Then use the resulting hypothesis. Establish `h1` using `h (eLast E n) ((mem_tilN N _).mpr ⟨by rw [initL_eLast]; exact Submodule.zero_mem _, 1, by rw [eLast_last, map_one]⟩)`. Rewrite `h1` using `[hStd_succ, initL_eLast, map_zero, LinearMap.zero_apply, zero_add, eLast_last, star_one, one_mul]`. Conclude with `Submodule.mem_one.mp h1`. Introduce and unpack `⟨h1, r, hr⟩ x hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[← hN']`. Take `⟨hx1, c, hc⟩` from `(mem_tilN N x).mp hx`. Rewrite using `[hStd_succ, ← hr, ← hc]`. Use `Submodule.add_mem _ ((mem_dual_lemma_2 N _).mp h1 _ hx1) ?_` and prove the remaining obligations. Conclude with `Submodule.mem_one.mpr ⟨cO E c * r, by rw [map_mul, algebraMap_cO]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tilN_unimodular {N : Submodule (𝓞 E) (Sp E n)} (hN : IsUnimodular (hStd E n) N) :
     IsUnimodular (hStd E (n + 1)) (tilN N) := by
@@ -1362,11 +1338,11 @@ theorem tilN_unimodular {N : Submodule (𝓞 E) (Sp E n)} (hN : IsUnimodular (hS
     exact Submodule.mem_one.mpr ⟨cO E c * r, by rw [map_mul, algebraMap_cO]⟩
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `ha`. Establish `hpi0 : algebraMap (𝓞 E) E pi ≠ 0`. Introduce `h0`. Apply `hpi` to reduce the goal to its premises. Establish `hz : pi = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `IsFractionRing.injective (𝓞 E) E` to reduce the goal to its premises. Rewrite using `[h0, map_zero]`. Rewrite using `[hz]`. Conclude with `Submodule.zero_mem _`. Use `⟨r, s * pi, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun hmem => (Q.isPrime.mem_or_mem hmem).elim hs hpi`. Establish `e : algebraMap (𝓞 E) E pi * (a / algebraMap (𝓞 E) E pi) = a`. Clear the denominators using the available nonvanishing facts. Rewrite using `[map_mul, mul_assoc, e, h]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntAt.div_of_notMem {Q : HeightOneSpectrum (𝓞 E)} {a : E} (ha : IntAt Q a) {pi : 𝓞 E}
     (hpi : pi ∉ Q.asIdeal) : IntAt Q (a / algebraMap (𝓞 E) E pi) := by
@@ -1386,7 +1362,7 @@ theorem IntAt.div_of_notMem {Q : HeightOneSpectrum (𝓞 E)} {a : E} (ha : IntAt
     rw [map_mul, mul_assoc, e, h]
 
 /- English proof (translation)
-The claim follows from `tilN_lattice hd.lat uni := tilN_unimodular hd.uni f_add P x hx y hy := by replace hx : x ∈ localization₂ P.1.asIdeal (tilN d.N) := hx replace hy : y ∈ localization₂ P.1.asIdeal (tilN d.N) := hy simp only [Deco.til] rw [if_pos hx, if_pos hy, if_pos (Submodule.add_mem _ hx hy), map …`.
+A detailed English derivation is pending.
 -/
 theorem Deco.Ok.til {d : Deco E n ∅ SG} (hd : d.Ok) {pi : 𝓞 E}
     (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal) (hG : ∀ w : SG, pi ∉ w.1.asIdeal) :
@@ -1504,7 +1480,7 @@ theorem Deco.Ok.til {d : Deco E n ∅ SG} (hd : d.Ok) {pi : 𝓞 E}
     exact h3 (Submodule.mem_map_of_mem h2)
 
 /- English proof (translation)
-Establish `hok : (d.1.til (ST` using `ST) pi).Ok := Deco.Ok.til d.2 hT hG`. Unfold `DecoSet.til`. Rewrite using `[dif_pos hok]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem DecoSet.til_val (d : DecoSet E n ∅ SG) {pi : 𝓞 E}
     (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal) (hG : ∀ w : SG, pi ∉ w.1.asIdeal) :
@@ -1521,11 +1497,11 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hy`. Consider the case `zero => exact ⟨Submodule.zero_mem _, fun P => hd.f_zero P⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Use `⟨Submodule.add_mem _ hy.1 hz.1, fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[hd.f_add P y (mem_localized_of_mem P.1 d.N hy.1) z (mem_localized_of_mem P.1 d.N hz.1), hy.2 P, hz.2 P, add_zero]`. Consider the case `smul a y _ hy`. Use `⟨Submodule.smul_mem _ a hy.1, fun P => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hd.f_smul P a y (mem_localized_of_mem P.1 d.N hy.1), hy.2 P, mul_zero]`. Introduce `hx`. Conclude with `Submodule.subset_span hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.mem_L {d : Deco E n ST SG} (hd : d.Ok) (x : Sp E n) :
     x ∈ d.L ↔ x ∈ d.N ∧ ∀ P : ST, d.f P x = 0 := by
@@ -1545,12 +1521,12 @@ theorem Deco.Ok.mem_L {d : Deco E n ST SG} (hd : d.Ok) (x : Sp E n) :
     exact Submodule.subset_span hx
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.mpr fun x hx => hx.1`.
+A detailed English derivation is pending.
 -/
 theorem Deco.Ok.L_le_N {d : Deco E n ST SG} (hd : d.Ok) : d.L ≤ d.N := Submodule.span_le.mpr fun x hx => hx.1
 
 /- English proof (translation)
-Establish `hu : dual (hStd E n) d.N = d.N` using `hd.uni`. Establish `h1 : dual (hStd E n) d.N ≤ dual (hStd E n) d.L` using `dual_anti hd.L_le_N`. Rewrite `h1` using `[hu]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.N_le_Lsh {d : Deco E n ST SG} (hd : d.Ok) : d.N ≤ d.Lsh := by
   have hu : dual (hStd E n) d.N = d.N := hd.uni
@@ -1559,12 +1535,12 @@ theorem Deco.Ok.N_le_Lsh {d : Deco E n ST SG} (hd : d.Ok) : d.N ≤ d.Lsh := by
   exact h1
 
 /- English proof (translation)
-The claim follows from `le_trans hd.L_le_N hd.N_le_Lsh`.
+A detailed English derivation is pending.
 -/
 theorem Deco.Ok.L_le_Lsh {d : Deco E n ST SG} (hd : d.Ok) : d.L ≤ d.Lsh := le_trans hd.L_le_N hd.N_le_Lsh
 
 /- English proof (translation)
-Use `Submodule.subset_span ⟨Submodule.smul_mem _ a hx, fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[hd.f_smul P a x (mem_localized_of_mem P.1 d.N hx), Ideal.Quotient.eq_zero_iff_mem.mpr (ha P), zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Deco.Ok.smul_N_mem_L {d : Deco E n ST SG} (hd : d.Ok) {a : 𝓞 E}
     (ha : ∀ P : ST, a ∈ P.1.asIdeal) {x : Sp E n} (hx : x ∈ d.N) : a • x ∈ d.L := by
@@ -1572,9 +1548,9 @@ theorem Deco.Ok.smul_N_mem_L {d : Deco E n ST SG} (hd : d.Ok) {a : 𝓞 E}
   rw [hd.f_smul P a x (mem_localized_of_mem P.1 d.N hx), Ideal.Quotient.eq_zero_iff_mem.mpr (ha P), zero_mul]
 
 /- English proof (translation)
-Establish `hu : dual (hStd E n) d.N = d.N` using `hd.uni`. Rewrite using `[← hu, mem_dual_lemma_2]`. Introduce `y hy`. Establish `e : hStd E n y (a • x) = hStd E n (cO E a • y) x`. Rewrite using `[hStd_osmul_left, cO_cO]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(mem_dual_lemma_2 d.L x).mp hx _ (hd.smul_N_mem_L ha hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.smul_Lsh_mem_N {d : Deco E n ST SG} (hd : d.Ok) {a : 𝓞 E}
     (ha : ∀ P : ST, cO E a ∈ P.1.asIdeal) {x : Sp E n} (hx : x ∈ d.Lsh) : a • x ∈ d.N := by
@@ -1587,7 +1563,7 @@ theorem Deco.Ok.smul_Lsh_mem_N {d : Deco E n ST SG} (hd : d.Ok) {a : 𝓞 E}
   exact (mem_dual_lemma_2 d.L x).mp hx _ (hd.smul_N_mem_L ha hy)
 
 /- English proof (translation)
-Rewrite using `[mul_smul]`. Use `hd.smul_N_mem_L ha ?_` and prove the remaining obligations. Conclude with `hd.smul_Lsh_mem_N (fun P => by rw [cO_cO]; exact ha P) hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.smul_Lsh_mem_L {d : Deco E n ST SG} (hd : d.Ok) {pi : 𝓞 E}
     (ha : ∀ P : ST, pi ∈ P.1.asIdeal) {x : Sp E n} (hx : x ∈ d.Lsh) :
@@ -1597,9 +1573,9 @@ theorem Deco.Ok.smul_Lsh_mem_L {d : Deco E n ST SG} (hd : d.Ok) {pi : 𝓞 E}
   exact hd.smul_Lsh_mem_N (fun P => by rw [cO_cO]; exact ha P) hx
 
 /- English proof (translation)
-Establish `hex : ∀ P : ST, ∃ p ∈ P.1.asIdeal, p ≠ 0` using `fun P => Submodule.exists_mem_ne_zero_of_ne_bot P.1.ne_bot`. Use `choose g hg hg0 using hex`. Use `lattice_of_smul hd.lat hd.lat hd.L_le_N (p := ∏ P, g P) ?_ ?_` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.mpr fun P _ => hg0 P`. Introduce `x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hd.smul_N_mem_L (fun P => ?_) hx` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ P)]`. Conclude with `Ideal.mul_mem_right _ _ (hg P)`.
+A detailed English derivation is pending.
 -/
 theorem Deco.Ok.L_lattice {d : Deco E n ST SG} (hd : d.Ok) : Submodule.IsLattice E d.L := by
   classical
@@ -1614,24 +1590,22 @@ theorem Deco.Ok.L_lattice {d : Deco E n ST SG} (hd : d.Ok) : Submodule.IsLattice
     exact Ideal.mul_mem_right _ _ (hg P)
 
 /- English proof (translation)
-The claim follows from `dual_lattice hd.L_lattice`.
+A detailed English derivation is pending.
 -/
 theorem Deco.Ok.Lsh_lattice {d : Deco E n ST SG} (hd : d.Ok) : Submodule.IsLattice E d.Lsh := dual_lattice hd.L_lattice
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨s, hs, hsx⟩` from `(show ∃ s ∈ P.1.asIdeal.primeCompl, s • x ∈ d.L from hx)`. Establish `hxN : x ∈ d.at P.1` using `show ∃ s ∈ P.1.asIdeal.primeCompl, s • x ∈ d.N from ⟨s, hs, hd.L_le_N hsx⟩`. Use `⟨hxN, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : d.f P (s • x) = 0` using `((hd.mem_L _).mp hsx).2 P`. Rewrite `h0` using `[hd.f_smul P s x hxN]`. Conclude with `(mul_eq_zero.mp h0).resolve_left (fun h => Ideal.mem_primeCompl_iff.mp hs (Ideal.Quotient.eq_zero_iff_mem.mp h))`. Introduce and unpack `⟨hxN, hfx⟩`. Take `⟨s, hs, hsx⟩` from `(show ∃ s ∈ P.1.asIdeal.primeCompl, s • x ∈ d.N from hxN)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : ∀ Q : ST, ∃ s : 𝓞 E, (Q ≠ P → s ∈ Q.1.asIdeal) ∧ s ∉ P.1.asIdeal`. Introduce `Q`. Distinguish the cases in `hQ : Q = P`. Conclude with `⟨1, fun h => absurd hQ h, fun h1 => P.1.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)⟩`. Take `⟨s, hs1, hs2⟩` from `exists_mem_notMem (P := Q.1) (Q := P.1) (fun h => hQ (Subtype.ext h))`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨s, fun _ => hs1, hs2⟩`. Use `choose u huQ huP using hu`. Establish `htP : (∏ Q, u Q) ∉ P.1.asIdeal`. Establish `hm : (∏ Q, u Q) ∈ P.1.asIdeal.primeCompl` using `Submonoid.prod_mem _ fun Q _ => Ideal.mem_primeCompl_iff.mpr (huP Q)`. Conclude with `Ideal.mem_primeCompl_iff.mp hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htQ : ∀ Q : ST, Q ≠ P → (∏ Q', u Q') ∈ Q.1.asIdeal` using `fun Q hQ => by`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ Q)]`. Conclude with `Ideal.mul_mem_right _ _ (huQ Q hQ)`. Use `show ∃ s ∈ P.1.asIdeal.primeCompl, s • x ∈ d.L`. Use `⟨(∏ Q, u Q) * s, P.1.asIdeal.primeCompl.mul_mem (Ideal.mem_primeCompl_iff.mpr htP) hs, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[mul_smul]`. Use `(hd.mem_L _).mpr ⟨Submodule.smul_mem _ _ hsx, fun Q => ?_⟩` and prove the remaining obligations. Rewrite using `[hd.f_smul Q _ _ (mem_localized_of_mem _ _ hsx)]`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality.
-
-Rewrite using `[hd.f_smul Q s x hxN, hfx, mul_zero, mul_zero]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr (htQ Q hQ), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.mem_locP_L {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (x : Sp E n) :
     x ∈ localization₂ P.1.asIdeal d.L ↔ x ∈ d.at P.1 ∧ d.f P x = 0 := by
@@ -1680,24 +1654,24 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-The claim follows from `Submodule.map_sup A B _`.
+A detailed English derivation is pending.
 -/
 theorem gmap_sup (g : Sp E n ≃ₗ[E] Sp E n) (A B : Submodule (𝓞 E) (Sp E n)) :
     gmap g (A ⊔ B) = gmap g A ⊔ gmap g B := Submodule.map_sup A B _
 
 /- English proof (translation)
-Simplify using `only [gmap, Submodule.map_smul'']`.
+Simplify using the standard rewrite rules.
 -/
 theorem gmap_smul (g : Sp E n ≃ₗ[E] Sp E n) (I : Ideal (𝓞 E)) (A : Submodule (𝓞 E) (Sp E n)) :
     gmap g (I • A) = I • gmap g A := by
   simp only [gmap, Submodule.map_smul'']
 
 /- English proof (translation)
-Unfold `upA`. Rewrite using `[gmap_sup]`. Use `congr 1`. Unfold `gmap`. Rewrite using `[Submodule.map_span]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a • x, ⟨a, ha, rfl⟩, map_smul g a x⟩`. Introduce and unpack `⟨y, ⟨a, ha, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, map_smul g a x⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem upA_gmap (g : Sp E n ≃ₗ[E] Sp E n) (P : Ideal (𝓞 E)) (N : Submodule (𝓞 E) (Sp E n))
     (x : Sp E n) : upA P (gmap g N) (g x) = gmap g (upA P N x) := by
@@ -1716,11 +1690,11 @@ theorem upA_gmap (g : Sp E n ≃ₗ[E] Sp E n) (P : Ideal (𝓞 E)) (N : Submodu
     exact ⟨a, ha, map_smul g a x⟩
 
 /- English proof (translation)
-Establish `hg' : ∀ x y, hStd E n (g x) (g y) = hStd E n x y` using `hg`. Use extensionality with `y`. Rewrite using `[mem_dual_lemma_2]`. Simplify using `only [gmap, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `⟨g.symm y, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[mem_dual_lemma_2]`. Introduce `x hx`. Establish `h1` using `h (g x) ⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hg' x (g.symm y), LinearEquiv.apply_symm_apply]` and apply the resulting hypothesis. Introduce and unpack `⟨z, hz, rfl⟩ x ⟨x', hx', rfl⟩`. Rewrite using `[hg']`. Conclude with `(mem_dual_lemma_2 L z).mp hz x' hx'`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dual_gmap_lemma_3 {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n)
     (L : Submodule (𝓞 E) (Sp E n)) :
@@ -1741,7 +1715,7 @@ private theorem dual_gmap_lemma_3 {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E
     exact (mem_dual_lemma_2 L z).mp hz x' hx'
 
 /- English proof (translation)
-Unfold `upN`. Rewrite using `[upA_gmap, dual_gmap_lemma_3 hg, gmap_sup, gmap_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem upN_gmap {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n) (P : Ideal (𝓞 E))
     (N : Submodule (𝓞 E) (Sp E n)) (x : Sp E n) :
@@ -1750,11 +1724,11 @@ theorem upN_gmap {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n) (P : Ideal (�
   rw [upA_gmap, dual_gmap_lemma_3 hg, gmap_sup, gmap_smul]
 
 /- English proof (translation)
-Establish `hsm : ∀ (s : 𝓞 E) (v : Sp E n), g.symm (s • v) = s • g.symm v` using `fun s v => ((g.symm : Sp E n →ₗ[E] Sp E n).restrictScalars (𝓞 E)).map_smul s v`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨s, hs, hsx⟩` from `(show ∃ s ∈ Q.asIdeal.primeCompl, s • x ∈ gmap g L from hx)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.mp hsx`. Use `Submodule.mem_map.mpr ⟨g.symm x, show ∃ s ∈ Q.asIdeal.primeCompl, s • g.symm x ∈ L from ⟨s, hs, ?_⟩, by simp⟩` and prove the remaining obligations. Rewrite using `[← hsm, ← hyx]`. Simplify using `using hy`. Introduce `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hx`. Take `⟨s, hs, hsy⟩` from `(show ∃ s ∈ Q.asIdeal.primeCompl, s • y ∈ L from hy)`. Use `show ∃ s ∈ Q.asIdeal.primeCompl, s • ((g : Sp E n →ₗ[E] Sp E n).restrictScalars (𝓞 E)) y ∈ gmap g L`. Conclude with `⟨s, hs, Submodule.mem_map.mpr ⟨s • y, hsy, ((g : Sp E n →ₗ[E] Sp E n).restrictScalars (𝓞 E)).map_smul s y⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem localization_gmap_eq_gmap_localization (g : Sp E n ≃ₗ[E] Sp E n) (Q : HeightOneSpectrum (𝓞 E))
     (L : Submodule (𝓞 E) (Sp E n)) :
@@ -1778,7 +1752,7 @@ private theorem localization_gmap_eq_gmap_localization (g : Sp E n ≃ₗ[E] Sp 
       ((g : Sp E n →ₗ[E] Sp E n).restrictScalars (𝓞 E)).map_smul s y⟩⟩
 
 /- English proof (translation)
-Simplify using `[Deco.up]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem up_f_lemma_5 (d : Deco E n ST SG) (P : ST) (q : 𝓞 E) (x y : Sp E n) :
     (d.up P q x).f P y = open Classical in
@@ -1786,24 +1760,24 @@ private theorem up_f_lemma_5 (d : Deco E n ST SG) (P : ST) (q : 𝓞 E) (x y : S
   simp [Deco.up]
 
 /- English proof (translation)
-Simplify using `[Deco.up, hQ]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem up_f_ne_lemma_6 (d : Deco E n ST SG) (P : ST) (q : 𝓞 E) (x : Sp E n) {Q : ST}
     (hQ : Q ≠ P) : (d.up P q x).f Q = d.f Q := by
   simp [Deco.up, hQ]
 
 /- English proof (translation)
-Establish `hsm : ∀ (s : 𝓞 E) (v : Sp E n), g.symm (s • v) = s • g.symm v` using `fun s v => ((g.symm : Sp E n →ₗ[E] Sp E n).restrictScalars (𝓞 E)).map_smul s v`. Establish `mg : ∀ (L : Submodule (𝓞 E) (Sp E n)) (v : Sp E n), v ∈ gmap g L ↔ g.symm v ∈ L`. Introduce `L v`. Simplify using `only [gmap, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨w, hw, rfl⟩`. Simplify using `using hw`. Introduce `hv`. Conclude with `⟨g.symm v, hv, by simp⟩`. Establish `e1 : (d.act g h).N = gmap g d.N` using `rfl`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Apply `Deco.ext` to reduce the goal to its premises. Use `show upN P.1.asIdeal (gmap g d.N) (g x) = gmap g (upN P.1.asIdeal d.N x)`. Conclude with `upN_gmap hg _ _ _`. Use function extensionality and compare the values at `Q y`. Distinguish the cases in `hQ : Q = P`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition.
 
-Substitute `hQ` using the available equality. Express the relevant statement in the definitionally equal form `_ = (d.up Q q x).f Q (g.symm y)`. Rewrite using `[up_f_lemma_5, up_f_lemma_5]`. Establish `hm' : y ∈ localization₂ Q.1.asIdeal (upN Q.1.asIdeal (d.act g h).N (g x)) ↔ g.symm y ∈ localization₂ Q.1.asIdeal (upN Q.1.asIdeal d.N x)`. Rewrite using `[e1, upN_gmap hg, localization_gmap_eq_gmap_localization, mg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hm : g.symm y ∈ localization₂ Q.1.asIdeal (upN Q.1.asIdeal d.N x)`. Rewrite using `[if_pos (hm'.mpr hm), if_pos hm]`. Express the relevant statement in the definitionally equal form `d.f Q (g.symm (q • y)) = _`. Rewrite using `[hsm]`. Rewrite using `[if_neg (fun h' => hm (hm'.mp h')), if_neg hm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = (d.up P q x).f Q (g.symm y)`. Rewrite using `[up_f_ne_lemma_6 _ _ _ _ hQ, up_f_ne_lemma_6 _ _ _ _ hQ]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Deco.up_act (d : Deco E n ST SG) {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n)
     (h : GLG E n SG) (P : ST) (q : 𝓞 E) (x : Sp E n) :
@@ -1841,7 +1815,7 @@ theorem Deco.up_act (d : Deco E n ST SG) {g : Sp E n ≃ₗ[E] Sp E n} (hg : g �
   · rfl
 
 /- English proof (translation)
-Take `⟨x, hx, hfx, rfl⟩` from `hdd`. Use `⟨g x, Submodule.mem_map.mpr ⟨x, hx, rfl⟩, ?_, (Deco.up_act d hg h P q x).symm⟩` and prove the remaining obligations. Use `show d.f P (g.symm (g x)) = 1`. Rewrite using `[LinearEquiv.symm_apply_apply, hfx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.IsUp.act {P : ST} {q : 𝓞 E} {d d' : Deco E n ST SG} (hdd : Deco.IsUp P q d d')
     {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n) (h : GLG E n SG) :
@@ -1852,9 +1826,9 @@ theorem Deco.IsUp.act {P : ST} {q : 𝓞 E} {d d' : Deco E n ST SG} (hdd : Deco.
   rw [LinearEquiv.symm_apply_apply, hfx]
 
 /- English proof (translation)
-Use `show Submodule.span (𝓞 E) {x | x ∈ gmap g d.N ∧ d.f P (g.symm x) = 0} = (Submodule.span (𝓞 E) {x | x ∈ d.N ∧ d.f P x = 0}).map ((g : Sp E n →ₗ[E] Sp E n).restrictScalars (𝓞 E))`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [gmap, Submodule.mem_map, Set.mem_setOf_eq, Set.mem_image, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨y, hy, rfl⟩, hf⟩`. Conclude with `⟨y, ⟨hy, by simpa using hf⟩, rfl⟩`. Introduce and unpack `⟨y, ⟨hy, hf⟩, rfl⟩`. Conclude with `⟨⟨y, hy, rfl⟩, by simpa using hf⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Deco.kerAt_act (d : Deco E n ST SG) (g : Sp E n ≃ₗ[E] Sp E n) (h : GLG E n SG) (P : ST) :
     (d.act g h).kerAt P = gmap g (d.kerAt P) := by
@@ -1873,7 +1847,7 @@ theorem Deco.kerAt_act (d : Deco E n ST SG) (g : Sp E n ≃ₗ[E] Sp E n) (h : G
     exact ⟨⟨y, hy, rfl⟩, by simpa using hf⟩
 
 /- English proof (translation)
-Unfold `Deco.dnN`. Rewrite using `[Deco.kerAt_act, gmap_sup, gmap_smul, dual_gmap_lemma_3 hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Deco.dnN_act (d : Deco E n ST SG) {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n)
     (h : GLG E n SG) (P : ST) : (d.act g h).dnN P = gmap g (d.dnN P) := by
@@ -1881,9 +1855,9 @@ theorem Deco.dnN_act (d : Deco E n ST SG) {g : Sp E n ≃ₗ[E] Sp E n} (hg : g 
   rw [Deco.kerAt_act, gmap_sup, gmap_smul, dual_gmap_lemma_3 hg]
 
 /- English proof (translation)
-Apply `Deco.ext` to reduce the goal to its premises. Conclude with `Deco.dnN_act d hg h P`. Use function extensionality and compare the values at `Q y`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Deco.dn, Deco.act]`. Simplify using `[Deco.dn, Deco.act, hQ]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Deco.dn_act (d : Deco E n ST SG) {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n)
     (h : GLG E n SG) (P : ST) (f' : Sp E n → 𝓞 E ⧸ P.1.asIdeal) :
@@ -1898,11 +1872,9 @@ theorem Deco.dn_act (d : Deco E n ST SG) {g : Sp E n ≃ₗ[E] Sp E n} (hg : g �
   · rfl
 
 /- English proof (translation)
-Establish `hsm : ∀ (s : 𝓞 E) (v : Sp E n), g.symm (s • v) = s • g.symm v` using `fun s v => ((g.symm : Sp E n →ₗ[E] Sp E n).restrictScalars (𝓞 E)).map_smul s v`. Take `⟨h1, h2⟩` from `hdd`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [h1]`. Conclude with `(Deco.dn_act d hg h P (d'.f P)).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `e he hfe`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp he`. Establish `hfe' : d.f P y = 1`. Establish `h3` using `hfe`. Simplify using `only [Deco.act, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply] at h3`.
-
-Conclude with `h3`. Use `show d'.f P (g.symm (q • g y)) = 1`. Rewrite using `[hsm, LinearEquiv.symm_apply_apply]`. Conclude with `h2 y hy hfe'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.IsDn.act {P : ST} {q : 𝓞 E} {d d' : Deco E n ST SG} (hdd : Deco.IsDn P q d d')
     {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n) (h : GLG E n SG) :
@@ -1925,9 +1897,9 @@ theorem Deco.IsDn.act {P : ST} {q : 𝓞 E} {d d' : Deco E n ST SG} (hdd : Deco.
     exact h2 y hy hfe'
 
 /- English proof (translation)
-Establish `key : ∀ (b : UF E n × GLG E n SG) (e e' : DecoSet E n ST SG), Deco.IsUp P q e.1 e'.1 → Deco.IsUp P q (b • e).1 (b • e').1`. Introduce `b e e' h`. Rewrite using `[DecoSet.smul_val, DecoSet.smul_val]`. Conclude with `h.act b.1.2 b.2`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h2` using `key a⁻¹ _ _ h`. Rewrite `h2` using `[inv_smul_smul, inv_smul_smul]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `key a _ _ h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DecoSet.smul_mem_upSet (a : UF E n × GLG E n SG) (P : ST) (q : 𝓞 E)
     (d d' : DecoSet E n ST SG) : a • d' ∈ (a • d).upSet P q ↔ d' ∈ d.upSet P q := by
@@ -1944,9 +1916,9 @@ theorem DecoSet.smul_mem_upSet (a : UF E n × GLG E n SG) (P : ST) (q : 𝓞 E)
     exact key a _ _ h
 
 /- English proof (translation)
-Establish `key : ∀ (b : UF E n × GLG E n SG) (e e' : DecoSet E n ST SG), Deco.IsDn P q e.1 e'.1 → Deco.IsDn P q (b • e).1 (b • e').1`. Introduce `b e e' h`. Rewrite using `[DecoSet.smul_val, DecoSet.smul_val]`. Conclude with `h.act b.1.2 b.2`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h2` using `key a⁻¹ _ _ h`. Rewrite `h2` using `[inv_smul_smul, inv_smul_smul]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `key a _ _ h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DecoSet.smul_mem_dnSet (a : UF E n × GLG E n SG) (P : ST) (q : 𝓞 E)
     (d d' : DecoSet E n ST SG) : a • d' ∈ (a • d).dnSet P q ↔ d' ∈ d.dnSet P q := by
@@ -1963,9 +1935,9 @@ theorem DecoSet.smul_mem_dnSet (a : UF E n × GLG E n SG) (P : ST) (q : 𝓞 E)
     exact key a _ _ h
 
 /- English proof (translation)
-Establish `hs` using `d.2.dnN_spec P hne`. Use `(DecoSet.finite_fibre (d.1.dnN P) hs.1.fg).subset ?_` and prove the remaining obligations. Introduce and unpack `d' ⟨h1, _⟩`. Use `show d'.1.N = d.1.dnN P`. Rewrite using `[h1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem DecoSet.dnSet_finite (d : DecoSet E n ST SG) (P : ST) (hne : conjPrime₂ P.1 ≠ P.1) (q : 𝓞 E) :
     (d.dnSet P q).Finite := by
@@ -1984,7 +1956,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Establish `hM' : dual (hStd E n) M = M` using `hM`. Establish `hN' : dual (hStd E n) N = N` using `hN`. Establish `h2` using `dual_anti (E := E) (n := n) h`. Rewrite `h2` using `[hM', hN']`. Conclude with `le_antisymm h h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimodular_eq_of_le {M N : Submodule (𝓞 E) (Sp E n)} (hM : IsUnimodular (hStd E n) M)
     (hN : IsUnimodular (hStd E n) N) (h : M ≤ N) : M = N := by
@@ -1995,7 +1967,7 @@ theorem unimodular_eq_of_le {M N : Submodule (𝓞 E) (Sp E n)} (hM : IsUnimodul
   exact le_antisymm h h2
 
 /- English proof (translation)
-Simplify using `[Deco.up]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Deco.up_f (d : Deco E n ST SG) (P : ST) (q : 𝓞 E) (x y : Sp E n) :
     (d.up P q x).f P y = open Classical in
@@ -2003,23 +1975,23 @@ theorem Deco.up_f (d : Deco E n ST SG) (P : ST) (q : 𝓞 E) (x y : Sp E n) :
   simp [Deco.up]
 
 /- English proof (translation)
-Rewrite using `[Deco.up_f, if_pos (mem_localized_of_mem _ _ hy)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Deco.up_f_of_mem (d : Deco E n ST SG) (P : ST) (q : 𝓞 E) (x : Sp E n) {y : Sp E n}
     (hy : y ∈ upN P.1.asIdeal d.N x) : (d.up P q x).f P y = d.f P (q • y) := by
   rw [Deco.up_f, if_pos (mem_localized_of_mem _ _ hy)]
 
 /- English proof (translation)
-Simplify using `[Deco.up, hQ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Deco.up_f_ne (d : Deco E n ST SG) (P : ST) (q : 𝓞 E) (x : Sp E n) {Q : ST} (hQ : Q ≠ P) :
     (d.up P q x).f Q = d.f Q := by
   simp [Deco.up, hQ]
 
 /- English proof (translation)
-Take `⟨a, ha, r, hr, har⟩` from `exists_inv_unif P hq hq2`. Take `⟨t, p, hp, e⟩` from `P.isMaximal.exists_inv hr`. Take `⟨c1, hc1⟩` from `neighbourConstruct_mem_inv.1 hb p hp`. Take `⟨c2, hc2⟩` from `neighbourConstruct_mem_inv.1 ha β hβ`. Use `⟨t * c2 + c1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e' : algebraMap (𝓞 E) E t * algebraMap (𝓞 E) E r + algebraMap (𝓞 E) E p = 1`. Rewrite using `[← map_mul, ← map_add, e, map_one]`. Rewrite using `[map_add, map_mul, hc1, hc2, ← h]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_integral (P : HeightOneSpectrum (𝓞 E)) {q : 𝓞 E} (hq : q ∈ P.asIdeal)
     (hq2 : q ∉ P.asIdeal ^ 2) {b : E} (hb : b ∈ invIdeal (K := E) P.asIdeal) {β : 𝓞 E}
@@ -2038,7 +2010,7 @@ theorem inv_integral (P : HeightOneSpectrum (𝓞 E)) {q : 𝓞 E} (hq : q ∈ P
     _ = b := by rw [har, e', one_mul]
 
 /- English proof (translation)
-Use `Submodule.subset_span ⟨Submodule.smul_mem _ p hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hd.f_smul P p y (mem_localized_of_mem P.1 d.N hy), Ideal.Quotient.eq_zero_iff_mem.mpr hp, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Deco.Ok.smul_mem_kerAt {d : Deco E n ST SG} (hd : d.Ok) (P : ST) {p : 𝓞 E}
     (hp : p ∈ P.1.asIdeal) {y : Sp E n} (hy : y ∈ d.N) : p • y ∈ d.kerAt P := by
@@ -2046,9 +2018,9 @@ theorem Deco.Ok.smul_mem_kerAt {d : Deco E n ST SG} (hd : d.Ok) (P : ST) {p : �
   rw [hd.f_smul P p y (mem_localized_of_mem P.1 d.N hy), Ideal.Quotient.eq_zero_iff_mem.mpr hp, zero_mul]
 
 /- English proof (translation)
-Establish `hIN : P.1.asIdeal • d.N ≤ d.kerAt P` using `Submodule.smul_le.2 fun r hr y hy => hd.smul_mem_kerAt P hr hy`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[smul_add]`. Use `Submodule.add_mem _ (Submodule.smul_mem _ a hy) ?_` and prove the remaining obligations. Use `Submodule.smul_induction_on hz (fun r hr u hu => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_comm]`. Conclude with `hIN (Submodule.smul_mem_smul hr (conj_smul_dual_mem hd.uni hIN ha hu))`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hu hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.conj_smul_dnN_mem {d : Deco E n ST SG} (hd : d.Ok) (P : ST) {a : 𝓞 E}
     (ha : a ∈ (conjPrime₂ P.1).asIdeal) {x : Sp E n} (hx : x ∈ d.dnN P) : a • x ∈ d.kerAt P := by
@@ -2064,17 +2036,15 @@ theorem Deco.Ok.conj_smul_dnN_mem {d : Deco E n ST SG} (hd : d.Ok) (P : ST) {a :
     exact Submodule.add_mem _ hu hv
 
 /- English proof (translation)
-Establish `hd'` using `hd.up P hP hq hq2 hx hfx`. Take `⟨-, -, -, h4, h5⟩` from `upN_spec hd.lat hd.uni P.1 hP.ne hx`. Use `unimodular_eq_of_le (hd'.dnN_spec P hP.ne).2.1 hd.uni (sup_le ?_ ?_)` and prove the remaining obligations. Introduce `y hy`. Take `⟨hy1, hy2⟩` from `(hd'.mem_kerAt P y).1 hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `replace hy1 : y ∈ upN P.1.asIdeal d.N x := hy1`. Rewrite `hy2` using `[d.up_f_of_mem P q x hy1]`. Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.1 (h4 hy1)`. Take `⟨b, hb, rfl⟩` from `neighbourConstruct_mem_span.1 hv`. Take `⟨β, hβ⟩` from `neighbourConstruct_mem_inv.1 hb q hq`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : q • (b • x) = β • x`. Rewrite using `[← algebraMap_smul E q (b • x), smul_smul, ← hβ, algebraMap_smul]`. Rewrite `hy2` using `[smul_add, e1, hd.f_add P _ (le_locP _ _ (d.N.smul_mem q hu)) _ (le_locP _ _ (d.N.smul_mem β hx)), hd.f_smul P q u (le_locP _ _ hu), hd.f_smul P β x (le_locP _ _ hx), hfx, Ideal.Quotient.eq_zero_iff_mem.2 hq, zero_mul, zero_add, mul_one]`. Take `⟨r, hr⟩` from `inv_integral P.1 hq hq2 hb (Ideal.Quotient.eq_zero_iff_mem.1 hy2) hβ.symm`. Rewrite using `[← hr, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem _ hu (Submodule.smul_mem _ r hx)`. Establish `hIN : (conjPrime₂ P.1).asIdeal • d.N ≤ (d.up P q x).kerAt P`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr y hy`. Establish `h1 : r • y ∈ upN P.1.asIdeal d.N x` using `h5 (Submodule.smul_mem_smul hr ((le_sup_left : d.N ≤ upA P.1.asIdeal d.N x) hy))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hd'.mem_kerAt]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[d.up_f_of_mem P q x h1, hd.f_smul P q _ (le_locP _ _ (d.N.smul_mem r hy)), Ideal.Quotient.eq_zero_iff_mem.2 hq, zero_mul]`. Rewrite using `[Submodule.smul_le]`. Introduce `p hp u hu`.
-
-Conclude with `conj_smul_dual_mem hd.uni hIN (by rw [mem_conjP, cO_cO]; exact hp) hu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.dnN_up {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp ST SG P) {q : 𝓞 E}
     (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) {x : Sp E n} (hx : x ∈ d.N)
@@ -2112,9 +2082,9 @@ theorem Deco.Ok.dnN_up {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp S
     exact conj_smul_dual_mem hd.uni hIN (by rw [mem_conjP, cO_cO]; exact hp) hu
 
 /- English proof (translation)
-Take `⟨x, hx, hfx, rfl⟩` from `h`. Use `⟨?_, fun e he h1 => ?_⟩` and prove the remaining obligations. Use `ext1`. Conclude with `(hd.dnN_up P hP hq hq2 hx hfx).symm`. Simplify using `[Deco.dn, Deco.up]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Both sides reduce to the same expression. Rewrite `h1` using `[d.up_f_of_mem P q x he]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem Deco.IsUp.isDn {d d' : Deco E n ST SG} (hd : d.Ok) {P : ST} (hP : MoveHyp ST SG P)
     {q : 𝓞 E} (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) (h : Deco.IsUp P q d d') :
@@ -2129,35 +2099,33 @@ theorem Deco.IsUp.isDn {d d' : Deco E n ST SG} (hd : d.Ok) {P : ST} (hP : MoveHy
   · rwa [d.up_f_of_mem P q x he] at h1
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Establish `hN : d.N = d'.dnN P` using `congrArg Deco.N h1`. Establish `hf : ∀ Q : ST, Q ≠ P → d.f Q = d'.f Q` using `fun Q hQ => (congrFun (congrArg Deco.f h1) Q).trans (Function.update_of_ne hQ _ _)`. Establish `hbe : d.be = d'.be`. Use `congrArg Deco.be h1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hBN : d'.kerAt P ≤ d.N`. Rewrite using `[hN]`. Conclude with `le_sup_left`. Take `⟨e0, he0, hne⟩` from `hd'.f_ne P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `P.1.isMaximal` as an intermediate fact. Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv hne`. Take `⟨t0, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Use `set e := t0 • e0 with hedef`. Establish `he : e ∈ d'.N` using `Submodule.smul_mem _ t0 he0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfe : d'.f P e = 1`. Rewrite using `[hd'.f_smul P t0 e0 (le_locP _ _ he0), mul_comm, hb]`. Establish `hx : q • e ∈ d.N` using `hBN (hd'.smul_mem_kerAt P hq he)`. Establish `hfx : d.f P (q • e) = 1` using `h2 e he hfe`. Establish `hup` using `hd.up P hP hq hq2 hx hfx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, huni, -, h4, h5⟩` from `upN_spec hd.lat hd.uni P.1 hP.ne hx`. Establish `hdec : ∀ y ∈ d'.N, ∃ c : 𝓞 E, Ideal.Quotient.mk P.1.asIdeal c = d'.f P y ∧ y - c • e ∈ d'.kerAt P`. Introduce `y hy`. Take `⟨c, hc⟩` from `Ideal.Quotient.mk_surjective (d'.f P y)`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hd'.mem_kerAt]`. Use `⟨Submodule.sub_mem _ hy (Submodule.smul_mem _ c he), ?_⟩` and prove the remaining obligations. Establish `e1 : y - c • e = y + (-c) • e` using `by rw [neg_smul, sub_eq_add_neg]`. Rewrite using `[e1, hd'.f_add P y (le_locP _ _ hy) _ (le_locP _ _ (Submodule.smul_mem _ _ he)), hd'.f_smul P (-c) e (le_locP _ _ he), hfe, mul_one, map_neg, hc, add_neg_cancel]`. Establish `heA : e ∈ upA P.1.asIdeal d.N (q • e)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha, r, hr, har⟩` from `exists_inv_unif P.1 hq hq2`. Take `⟨t, p, hp, etp⟩` from `P.1.isMaximal.exists_inv hr`. Establish `e1 : e = p • e + (t • a) • (q • e)`. Establish `: (t • a) • (q • e) = (t * r) • e`. Rewrite using `[← algebraMap_smul E q e, smul_smul, smul_mul_assoc, mul_comm a, har, ← algebraMap_smul E t, smul_eq_mul, ← map_mul, algebraMap_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[this, ← add_smul, add_comm, etp, one_smul]`. Establish `h3 : p • e + (t • a) • (q • e) ∈ upA P.1.asIdeal d.N (q • e)` using `Submodule.add_mem_sup (hBN (hd'.smul_mem_kerAt P hp he)) (Submodule.subset_span ⟨t • a, Submodule.smul_mem _ t ha, rfl⟩)`. Rewrite `h3` using `[← e1]`. Then use the resulting hypothesis. Establish `hN'A : d'.N ≤ upA P.1.asIdeal d.N (q • e)`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, -, hc⟩` from `hdec y hy`. Establish `: y = (y - c • e) + c • e` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ ((le_sup_left : d.N ≤ upA P.1.asIdeal d.N (q • e)) (hBN hc)) (Submodule.smul_mem _ c heA)`. Establish `hNeq : upN P.1.asIdeal d.N (q • e) = d'.N`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `unimodular_eq_of_le huni hd'.uni (sup_le ?_ ?_)` and prove the remaining obligations. Use `dual_anti hN'A` as an intermediate fact. Rewrite `this` using `[show dual (hStd E n) d'.N = d'.N from hd'.uni]`. Then use the resulting hypothesis. Rewrite using `[conjIdeal_asIdeal, Submodule.smul_le]`. Introduce `r hr z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.1 hz`. Take `⟨b, hb, rfl⟩` from `neighbourConstruct_mem_span.1 hv`. Take `⟨β, hβ⟩` from `neighbourConstruct_mem_inv.1 hb q hq`. Establish `e1 : b • (q • e) = β • e`. Rewrite using `[← algebraMap_smul E q e, smul_smul, mul_comm, ← hβ, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_add, e1]`. Rewrite `hu` using `[hN]`. Conclude with `Submodule.add_mem _ ((hd'.mem_kerAt P _).1 (hd'.conj_smul_dnN_mem P hr hu)).1 (Submodule.smul_mem _ r (Submodule.smul_mem _ β he))`. Use `⟨q • e, hx, hfx, ?_⟩` and prove the remaining obligations. Use `Deco.Ok.ext_on hd' hup hNeq.symm (fun Q y hy => ?_) (fun w y _ => ?_)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[d.up_f_of_mem Q q _ (hNeq.symm ▸ hy)]`. Take `⟨c, hc1, hc2⟩` from `hdec y hy`. Establish `e1 : q • y = q • (y - c • e) + c • (q • e)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_comm c q e, ← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, hd.f_add Q _ (le_locP _ _ (d.N.smul_mem q (hBN hc2))) _ (le_locP _ _ (d.N.smul_mem c hx)), hd.f_smul Q q _ (le_locP _ _ (hBN hc2)), hd.f_smul Q c _ (le_locP _ _ hx), hfx, Ideal.Quotient.eq_zero_iff_mem.2 hq, zero_mul, zero_add, mul_one, hc1]`. Rewrite using `[d.up_f_ne P q _ hQ, hf Q hQ]`.
-
-Express the relevant statement in the definitionally equal form `d'.be w y = d.be w y`. Rewrite using `[hbe]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.IsDn.isUp {d d' : Deco E n ST SG} (hd : d.Ok) (hd' : d'.Ok) {P : ST}
     (hP : MoveHyp ST SG P) {q : 𝓞 E} (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2)
@@ -2249,7 +2217,7 @@ theorem Deco.IsDn.isUp {d d' : Deco E n ST SG} (hd : d.Ok) (hd' : d'.Ok) {P : ST
     rw [hbe]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Deco.IsUp.isDn d.2 hP hq hq2 h, fun h => Deco.IsDn.isUp d.2 d'.2 hP hq hq2 h⟩`.
+Supply the required witnesses or components.
 -/
 theorem DecoSet.mem_upSet_iff_mem_dnSet {P : ST} (hP : MoveHyp ST SG P) {q : 𝓞 E}
     (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) (d d' : DecoSet E n ST SG) :
@@ -2263,11 +2231,9 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Establish `ha'` using `neighbourConstruct_mem_inv.mp ha`. Use `Submodule.smul_induction_on hz ?_ ?_` and prove the remaining obligations. Introduce `p hp y hy`. Take `⟨r, hr⟩` from `ha' p hp`. Establish `e : a • p • y = r • y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul E r y, hr, ← algebraMap_smul E p y, smul_smul, mul_comm]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ r hy`. Introduce `y y' hy hy'`. Rewrite using `[smul_add]`.
-
-Conclude with `Submodule.add_mem _ hy hy'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_smul_mem {P : Ideal (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} {a : E}
     (ha : a ∈ invIdeal (K := E) P) {z : Sp E n} (hz : z ∈ P • N) : a • z ∈ N := by
@@ -2284,9 +2250,9 @@ theorem inv_smul_mem {P : Ideal (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} {a :
     exact Submodule.add_mem _ hy hy'
 
 /- English proof (translation)
-Unfold `upA`. Apply `sup_le le_sup_left` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `z ⟨a, ha, rfl⟩`. Establish `e : a • x = a • x' + a • (x - x')`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_right (Submodule.subset_span ⟨a, ha, rfl⟩)) (Submodule.mem_sup_left (inv_smul_mem ha h))`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upA_le_of_sub {P : Ideal (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} {x x' : Sp E n}
     (h : x - x' ∈ P • N) : upA P N x ≤ upA P N x' := by
@@ -2302,13 +2268,13 @@ theorem upA_le_of_sub {P : Ideal (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} {x 
     (Submodule.mem_sup_left (inv_smul_mem ha h))
 
 /- English proof (translation)
-The claim follows from `le_antisymm (upA_le_of_sub h) (upA_le_of_sub (by rw [← neg_sub]; exact Submodule.neg_mem _ h))`.
+A detailed English derivation is pending.
 -/
 theorem upA_congr {P : Ideal (𝓞 E)} {N : Submodule (𝓞 E) (Sp E n)} {x x' : Sp E n}
     (h : x - x' ∈ P • N) : upA P N x = upA P N x' := le_antisymm (upA_le_of_sub h) (upA_le_of_sub (by rw [← neg_sub]; exact Submodule.neg_mem _ h))
 
 /- English proof (translation)
-Establish `h' : upN P.1.asIdeal d.N x = upN P.1.asIdeal d.N x'`. Unfold `upN`. Rewrite using `[upA_congr h]`. Unfold `Deco.up`. Rewrite using `[h']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Deco.up_congr (d : Deco E n ST SG) (P : ST) (q : 𝓞 E) {x x' : Sp E n}
     (h : x - x' ∈ P.1.asIdeal • d.N) : d.up P q x = d.up P q x' := by
@@ -2319,19 +2285,19 @@ theorem Deco.up_congr (d : Deco E n ST SG) (P : ST) (q : 𝓞 E) {x x' : Sp E n}
   rw [h']
 
 /- English proof (translation)
-Establish `hN : upN P.1.asIdeal d.N x = upN P.1.asIdeal d.N x'` using `congrArg Deco.N h`. Take `⟨-, -, -, h4, -⟩` from `upN_spec hd.lat hd.uni P.1 hP.ne hx'`. Take `⟨-, -, -, -, h5⟩` from `upN_spec hd.lat hd.uni P.1 hP.ne hx`. Take `⟨a, ha, r, hr, har⟩` from `exists_inv_unif P.1 hq hq2`. Take `⟨e, he, e', he', hee⟩` from `exists_coprime hP.ne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `heP : e ∉ P.1.asIdeal`. Introduce `h'`. Apply `one_notMem P.1` to reduce the goal to its premises. Rewrite using `[← hee]`. Conclude with `Ideal.add_mem _ h' he'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : e • (a • x) ∈ upA P.1.asIdeal d.N x'`. Apply `h4` to reduce the goal to its premises. Rewrite using `[← hN]`. Conclude with `h5 (Submodule.smul_mem_smul he ((le_sup_right : _ ≤ upA P.1.asIdeal d.N x) (Submodule.subset_span ⟨a, ha, rfl⟩)))`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 h1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, rfl⟩` from `neighbourConstruct_mem_span.1 hv`. Take `⟨β, hβ⟩` from `neighbourConstruct_mem_inv.1 hb q hq`. Establish `e1 : q • (e • (a • x)) = (e * r) • x`. Rewrite using `[smul_comm q e, ← algebraMap_smul E q (a • x), smul_smul, har, algebraMap_smul, mul_smul]`. Establish `e2 : q • (b • x') = β • x'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul E q (b • x'), smul_smul, ← hβ, algebraMap_smul]`. Establish `e3 : (e * r) • x = q • u + β • x'`. Rewrite using `[← e1, ← huv, smul_add, e2]`. Establish `e4 : Ideal.Quotient.mk P.1.asIdeal (e * r) = Ideal.Quotient.mk P.1.asIdeal β`. Use `congrArg (d.f P) e3` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hd.f_smul P _ x (le_locP _ _ hx), hfx, mul_one, hd.f_add P _ (le_locP _ _ (d.N.smul_mem q hu)) _ (le_locP _ _ (d.N.smul_mem β hx')), hd.f_smul P q u (le_locP _ _ hu), hd.f_smul P β x' (le_locP _ _ hx'), hfx', Ideal.Quotient.eq_zero_iff_mem.2 hq, zero_mul, zero_add, mul_one]`. Then use the resulting hypothesis. Establish `e5 : β - e * r ∈ P.1.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, e4, sub_self]`. Use `mem_smul_of_loc (Submodule.sub_mem _ hx hx') (s := e * r) (fun hm => (P.1.isPrime.mem_or_mem hm).elim heP hr) ?_` and prove the remaining obligations. Establish `e6 : (e * r) • (x - x') = q • u + (β - e * r) • x'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[smul_sub, e3, sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e6]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem_smul hq hu) (Submodule.smul_mem_smul e5 hx')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.up_inj {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp ST SG P) {q : 𝓞 E}
     (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) {x x' : Sp E n} (hx : x ∈ d.N)
@@ -2378,15 +2344,13 @@ theorem Deco.Ok.up_inj {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp S
   exact Submodule.add_mem _ (Submodule.smul_mem_smul hq hu) (Submodule.smul_mem_smul e5 hx')
 
 /- English proof (translation)
-Take `⟨-, -, -, -, h5⟩` from `upN_spec hd.lat hd.uni P.1 hP.ne hx`. Take `⟨a, ha, r, hr, har⟩` from `exists_inv_unif P.1 hq hq2`. Take `⟨e, he, e', he', hee⟩` from `exists_coprime hP.ne`. Establish `heP : e ∉ P.1.asIdeal`. Introduce `h'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `one_notMem P.1` to reduce the goal to its premises. Rewrite using `[← hee]`. Conclude with `Ideal.add_mem _ h' he'`. Establish `hq0 : algebraMap (𝓞 E) E q ≠ 0`. Introduce `h0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `har` using `[h0, zero_mul]`. Apply `hr` to reduce the goal to its premises. Rewrite using `[(FaithfulSMul.algebraMap_eq_zero_iff (𝓞 E) E).1 har.symm]`. Conclude with `Ideal.zero_mem _`. Establish `hmem : (algebraMap (𝓞 E) E q)⁻¹ • x ∈ localization₂ P.1.asIdeal (upN P.1.asIdeal d.N x)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(mem_locP _ _ _).2 ⟨e * r, fun hm => (P.1.isPrime.mem_or_mem hm).elim heP hr, ?_⟩` and prove the remaining obligations. Establish `: (e * r) • ((algebraMap (𝓞 E) E q)⁻¹ • x) = e • (a • x)`. Rewrite using `[mul_smul, ← algebraMap_smul E r, smul_smul, ← har, mul_comm (algebraMap (𝓞 E) E q) a, mul_assoc, mul_inv_cancel₀ hq0, mul_one]`. Rewrite using `[this]`. Conclude with `h5 (Submodule.smul_mem_smul he ((le_sup_right : _ ≤ upA P.1.asIdeal d.N x) (Submodule.subset_span ⟨a, ha, rfl⟩)))`.
-
-Rewrite using `[Deco.up_f, if_pos hmem, ← algebraMap_smul E q, smul_smul, mul_inv_cancel₀ hq0, one_smul, hfx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.up_f_inv {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp ST SG P) {q : 𝓞 E}
     (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) {x : Sp E n} (hx : x ∈ d.N)
@@ -2416,11 +2380,11 @@ theorem Deco.Ok.up_f_inv {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp
   rw [Deco.up_f, if_pos hmem, ← algebraMap_smul E q, smul_smul, mul_inv_cancel₀ hq0, one_smul, hfx]
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hN`. Use `⟨Set.range fun φ : S → 𝓞 E ⧸ P.asIdeal => ∑ b : S, (Quotient.out (φ b) : 𝓞 E) • b.1, Set.finite_range _, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[← hS]`. Take `⟨c, rfl⟩` from `Submodule.mem_span_finset'.1 hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨_, ⟨fun b => Ideal.Quotient.mk P.asIdeal (c b), rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul]`. Use `Submodule.smul_mem_smul ?_ (hS ▸ Submodule.subset_span b.2)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `(Quotient.out_eq' _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_reps {N : Submodule (𝓞 E) (Sp E n)} (hN : N.FG)
     (P : HeightOneSpectrum (𝓞 E)) :
@@ -2441,9 +2405,9 @@ theorem exists_finite_reps {N : Submodule (𝓞 E) (Sp E n)} (hN : N.FG)
   exact (Quotient.out_eq' _).symm
 
 /- English proof (translation)
-Take `⟨R, hR, hrep⟩` from `exists_finite_reps d.2.lat.fg P.1`. Establish `hfin : ((fun r => d.1.up P q r) '' R).Finite` using `hR.image _`. Use `(hfin.preimage Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `d' ⟨x, hx, _, hd'⟩`. Take `⟨r, hr, hxr⟩` from `hrep x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `show ∃ r, r ∈ R ∧ d.1.up P q r = d'.1`. Conclude with `⟨r, hr, by rw [hd', Deco.up_congr d.1 P q hxr]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem DecoSet.upSet_finite (d : DecoSet E n ST SG) (P : ST) (q : 𝓞 E) : (d.upSet P q).Finite := by
   obtain ⟨R, hR, hrep⟩ := exists_finite_reps d.2.lat.fg P.1
@@ -2462,19 +2426,19 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Establish `hok` using `hd.til (ST := ST) hT hG`. Establish `hf : ∀ (P : ST) (x : Sp E (n + 1)) (r : 𝓞 E), x ∈ tilN d.N → algebraMap (𝓞 E) E r = x (Fin.last n) → (d.til (ST` using `ST) pi).f P x = Ideal.Quotient.mk P.1.asIdeal (cO E pi * r) := by`. Introduce `P x r hx hr`. Establish `: (d.til (ST` using `ST) pi).f P x = redP P.1 (hStd E (n + 1) (z0 E n (algebraMap (𝓞 E) E pi)) x) := if_pos (le_locP _ _ hx)`. Rewrite using `[this, hermStd_lastVector_apply, ← hr, ← map_mul, reduction_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Rewrite using `[hok.mem_L]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, h0⟩ replace hx : x ∈ tilN d.N := hx`. Take `⟨h1, r, hr⟩` from `(mem_tilN _ _).1 hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `hdvd r fun P => by`. Use `h0 P` as an intermediate fact. Rewrite `this` using `[hf P x r hx hr, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `(P.1.isPrime.mem_or_mem this).resolve_left (hT P)`. Rewrite using `[sp_decomp x, ← hr]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem_sup (Submodule.mem_map_of_mem h1) ?_` and prove the remaining obligations. Establish `: algebraMap (𝓞 E) E (pi * c) • eLast E n = c • z0 E n (algebraMap (𝓞 E) E pi)`. Rewrite using `[z0, ← algebraMap_smul E c, smul_smul, map_mul, mul_comm]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c (Submodule.mem_span_singleton_self _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨y0, hy0, rfl⟩` from `Submodule.mem_map.1 hy`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Establish `hlast : algebraMap (𝓞 E) E (c * pi) = ((incl E n).restrictScalars (𝓞 E) y0 + c • z0 E n (algebraMap (𝓞 E) E pi)) (Fin.last n)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[z0, Algebra.smul_def]`. Establish `hmem : (incl E n).restrictScalars (𝓞 E) y0 + c • z0 E n (algebraMap (𝓞 E) E pi) ∈ tilN d.N`. Rewrite using `[mem_tilN]`. Use `⟨?_, c * pi, hlast⟩` and prove the remaining obligations. Rewrite using `[map_add, initL_osmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hy0` using `[z0]`. Use `⟨hmem, fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[hf P _ _ hmem hlast, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ (hpi P))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.til_L {d : Deco E n ∅ SG} (hd : d.Ok) {pi : 𝓞 E}
     (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal) (hG : ∀ w : SG, pi ∉ w.1.asIdeal)
@@ -2530,7 +2494,7 @@ section AtBase
 variable {X : Fields} {Pr : Primes X}
 
 /- English proof (translation)
-Unfold `divs at h`. Use `split_ifs at h with hf`. Conclude with `(Set.Finite.mem_toFinset hf).mp h`. Simplify using `at h`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem decoFin_mem_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A}
     {P : HeightOneSpectrum A} (h : P ∈ divs a) : a ∈ P.asIdeal := by
@@ -2540,9 +2504,9 @@ theorem decoFin_mem_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a 
   · simp at h
 
 /- English proof (translation)
-Introduce `h`. Take `⟨a, b, hab⟩` from `hPr.piT_cop u`. Establish `h1 : Pr.piT u ∈ P.1.asIdeal` using `decoFin_mem_of_mem_divs P.2`. Apply `P.1.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h)`.
+A detailed English derivation is pending.
 -/
 theorem conj_piT_notMem (hPr : Pr.Ok) (u : Pr.Word) (P : Pr.vT u) :
     cO X.E (Pr.piT u) ∉ P.1.asIdeal := by
@@ -2554,11 +2518,9 @@ theorem conj_piT_notMem (hPr : Pr.Ok) (u : Pr.Word) (P : Pr.vT u) :
   exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h)
 
 /- English proof (translation)
-Establish `h2 : w.1 ∈ Pr.vG 0 ∨ w.1 ∈ Pr.vG 1`. Establish `h3` using `w.2`. Simplify using `only [Primes.vGs, Finset.mem_union] at h3`. Conclude with `h3`. Break down `h2 with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hPr.piG_norm 0]`. Conclude with `Ideal.mul_mem_left _ _ (decoFin_mem_of_mem_divs h)`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hPr.piG_norm 1]`.
-
-Conclude with `Ideal.mul_mem_left _ _ (decoFin_mem_of_mem_divs h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_g_mem (hPr : Pr.Ok) (w : Pr.vGs) : ∃ i, (Pr.g i : 𝓞 X.E) ∈ w.1.asIdeal := by
   classical
@@ -2575,9 +2537,9 @@ theorem exists_g_mem (hPr : Pr.Ok) (w : Pr.vGs) : ∃ i, (Pr.g i : 𝓞 X.E) ∈
     exact Ideal.mul_mem_left _ _ (decoFin_mem_of_mem_divs h)
 
 /- English proof (translation)
-Apply `hI` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : (((Nat.gcd a b : ℕ) : ℤ) : R) ∈ I`. Rewrite using `[Nat.gcd_eq_gcd_ab]`. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ ha) (Ideal.mul_mem_right _ _ hb)`. Rewrite `h1` using `[Nat.Coprime.gcd_eq_one hab, Nat.cast_one, Int.cast_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem natCast_coprime_lemma_7 {R : Type} [CommRing R] {I : Ideal R} (hI : I ≠ ⊤) {a b : ℕ}
     (hab : Nat.Coprime a b) (ha : (a : R) ∈ I) (hb : (b : R) ∈ I) : False := by
@@ -2590,9 +2552,7 @@ private theorem natCast_coprime_lemma_7 {R : Type} [CommRing R] {I : Ideal R} (h
   rwa [Nat.Coprime.gcd_eq_one hab, Nat.cast_one, Int.cast_one] at h1
 
 /- English proof (translation)
-Introduce `h`. Take `⟨i, hi⟩` from `exists_g_mem hPr w`. Establish `hT : (Pr.T u : 𝓞 X.E) ∈ w.1.asIdeal`. Rewrite using `[← hPr.piT_norm u]`. Conclude with `Ideal.mul_mem_right _ _ h`.
-
-Conclude with `natCast_coprime_lemma_7 w.1.isPrime.ne_top ((Nat.coprime_primes (hPr.T_prime u) (hPr.g_prime i)).mpr (hPr.T_ne_g u i)) hT hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piT_notMem_vGs (hPr : Pr.Ok) (u : Pr.Word) (w : Pr.vGs) : Pr.piT u ∉ w.1.asIdeal := by
   intro h
@@ -2604,7 +2564,7 @@ theorem piT_notMem_vGs (hPr : Pr.Ok) (u : Pr.Word) (w : Pr.vGs) : Pr.piT u ∉ w
     ((Nat.coprime_primes (hPr.T_prime u) (hPr.g_prime i)).mpr (hPr.T_ne_g u i)) hT hi
 
 /- English proof (translation)
-Establish `h` using `decoFin_mem_of_mem_divs P.2`. Rewrite using `[← hPr.piT_norm u]`. Conclude with `Ideal.mul_mem_right _ _ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_mem (hPr : Pr.Ok) (u : Pr.Word) (P : Pr.vT u) : (Pr.T u : 𝓞 X.E) ∈ P.1.asIdeal := by
   have h := decoFin_mem_of_mem_divs P.2
@@ -2612,7 +2572,7 @@ theorem T_mem (hPr : Pr.Ok) (u : Pr.Word) (P : Pr.vT u) : (Pr.T u : 𝓞 X.E) �
   exact Ideal.mul_mem_right _ _ h
 
 /- English proof (translation)
-Introduce `hT`. Take `⟨i, hi⟩` from `exists_g_mem hPr w`. Conclude with `natCast_coprime_lemma_7 w.1.isPrime.ne_top ((Nat.coprime_primes (hPr.T_prime u) (hPr.g_prime i)).mpr (hPr.T_ne_g u i)) hT hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem T_notMem_vGs (hPr : Pr.Ok) (u : Pr.Word) (w : Pr.vGs) : (Pr.T u : 𝓞 X.E) ∉ w.1.asIdeal := by
   intro hT
@@ -2621,13 +2581,11 @@ theorem T_notMem_vGs (hPr : Pr.Ok) (u : Pr.Word) (w : Pr.vGs) : (Pr.T u : 𝓞 X
     ((Nat.coprime_primes (hPr.T_prime u) (hPr.g_prime i)).mpr (hPr.T_ne_g u i)) hT hi
 
 /- English proof (translation)
-Establish `hpi : Pr.piT u ∈ P.1.asIdeal` using `decoFin_mem_of_mem_divs P.2`. Establish `hc` using `conj_piT_notMem hPr u P`. Establish `hTP` using `T_mem hPr u P`. Establish `hTc : (Pr.T u : 𝓞 X.E) ∈ (conjPrime₂ P.1).asIdeal`. Rewrite using `[mem_conjP, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hTP`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← mem_conjP, h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hpi`. Introduce `Q h`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← mem_conjP, ← h]`. Conclude with `decoFin_mem_of_mem_divs Q.2`.
-
-Introduce `w`. Conclude with `⟨fun h => T_notMem_vGs hPr u w (by rw [h]; exact hTP), fun h => T_notMem_vGs hPr u w (by rw [h]; exact hTc)⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem moveHyp_of_ok (hPr : Pr.Ok) (u : Pr.Word) (P : Pr.vT u) : MoveHyp (Pr.vT u) Pr.vGs P := by
   have hpi : Pr.piT u ∈ P.1.asIdeal := decoFin_mem_of_mem_divs P.2
@@ -2650,11 +2608,11 @@ theorem moveHyp_of_ok (hPr : Pr.Ok) (u : Pr.Word) (P : Pr.vT u) : MoveHyp (Pr.vT
       fun h => T_notMem_vGs hPr u w (by rw [h]; exact hTc)⟩
 
 /- English proof (translation)
-Introduce `hT`. Apply `h` to reduce the goal to its premises. Establish `hpi : Pr.piT u ∈ P.1.asIdeal` using `decoFin_mem_of_mem_divs P.2`. Establish `hc` using `conj_piT_notMem hPr u P`. Take `⟨t, p, hp, htp⟩` from `P.1.isMaximal.exists_inv hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htp' : t * X.conjO (Pr.piT u) + p = 1` using `htp`. Establish `e : Pr.piT u = t * (Pr.T u : 𝓞 X.E) + p * Pr.piT u`. Rewrite using `[← hPr.piT_norm u]`. Take the linear combination `(-Pr.piT u) * htp'`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hT) ?_` and prove the remaining obligations. Rewrite using `[sq]`. Conclude with `Ideal.mul_mem_mul hp hpi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_notMem_sq (hPr : Pr.Ok) (u : Pr.Word) (P : Pr.vT u)
     (h : Pr.piT u ∉ P.1.asIdeal ^ 2) : (Pr.T u : 𝓞 X.E) ∉ P.1.asIdeal ^ 2 := by
@@ -2680,7 +2638,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact h2`. Consider the case `cast j => exact congrFun h1 j`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sp_ext {x y : Sp E (n + 1)} (h1 : initL E n x = initL E n y)
     (h2 : x (Fin.last n) = y (Fin.last n)) : x = y := by
@@ -2693,14 +2651,14 @@ def extL (g : Sp E n →ₗ[E] Sp E n) : Sp E (n + 1) →ₗ[E] Sp E (n + 1) :=
   (incl E n).comp (g.comp (initL E n)) + (LinearMap.proj (Fin.last n)).smulRight (eLast E n)
 
 /- English proof (translation)
-Simplify using `[extL]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem initL_extL (g : Sp E n →ₗ[E] Sp E n) (x : Sp E (n + 1)) :
     initL E n (extL g x) = g (initL E n x) := by
   simp [extL]
 
 /- English proof (translation)
-Simplify using `[extL]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem extL_last (g : Sp E n →ₗ[E] Sp E n) (x : Sp E (n + 1)) :
     extL g x (Fin.last n) = x (Fin.last n) := by
@@ -2712,31 +2670,31 @@ def extE (g : Sp E n ≃ₗ[E] Sp E n) : Sp E (n + 1) ≃ₗ[E] Sp E (n + 1) :=
     (by ext1 i; apply LinearMap.ext; intro c; apply sp_ext <;> simp)
 
 /- English proof (translation)
-The claim follows from `initL_extL (g : Sp E n →ₗ[E] Sp E n) x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem initL_extE (g : Sp E n ≃ₗ[E] Sp E n) (x : Sp E (n + 1)) :
     initL E n (extE g x) = g (initL E n x) := initL_extL (g : Sp E n →ₗ[E] Sp E n) x
 
 /- English proof (translation)
-The claim follows from `extL_last (g : Sp E n →ₗ[E] Sp E n) x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem extE_last (g : Sp E n ≃ₗ[E] Sp E n) (x : Sp E (n + 1)) :
     extE g x (Fin.last n) = x (Fin.last n) := extL_last (g : Sp E n →ₗ[E] Sp E n) x
 
 /- English proof (translation)
-The claim follows from `initL_extL (g.symm : Sp E n →ₗ[E] Sp E n) x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem initL_extE_symm (g : Sp E n ≃ₗ[E] Sp E n) (x : Sp E (n + 1)) :
     initL E n ((extE g).symm x) = g.symm (initL E n x) := initL_extL (g.symm : Sp E n →ₗ[E] Sp E n) x
 
 /- English proof (translation)
-The claim follows from `extL_last (g.symm : Sp E n →ₗ[E] Sp E n) x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem extE_symm_last (g : Sp E n ≃ₗ[E] Sp E n) (x : Sp E (n + 1)) :
     (extE g).symm x (Fin.last n) = x (Fin.last n) := extL_last (g.symm : Sp E n →ₗ[E] Sp E n) x
 
 /- English proof (translation)
-Use `show ∀ x y, hStd E (n + 1) (extE g x) (extE g y) = hStd E (n + 1) x y`. Introduce `x y`. Rewrite using `[hStd_succ, hStd_succ, initL_extE, initL_extE, extE_last, extE_last, show hStd E n (g (initL E n x)) (g (initL E n y)) = hStd E n (initL E n x) (initL E n y) from hg _ _]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extE_mem_UF {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n) : extE g ∈ UF E (n + 1) := by
   show ∀ x y, hStd E (n + 1) (extE g x) (extE g y) = hStd E (n + 1) x y
@@ -2779,7 +2737,7 @@ def padM (R : Type) [CommRing R] (n : ℕ) :
       simp [Matrix.mul_apply, Fin.sum_univ_castSucc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp [padM, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc]`. Consider the case `cast j => simp [padM, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem padM_mulVec_snoc {R : Type} [CommRing R] (A : Matrix (Fin n) (Fin n) R) (v : Fin n → R)
     (c : R) : (padM R n A).mulVec (Fin.snoc (α := fun _ => R) v c) =
@@ -2800,11 +2758,11 @@ theorem extG_apply (h : GLG E n SG) (w : SG) :
       padM (𝓞 E ⧸ w.1.asIdeal) n (h w).1 := rfl
 
 /- English proof (translation)
-Establish `h1 : ∀ y, extE g (incl E n y) = incl E n (g y)` using `fun y => sp_ext (by rw [initL_extE, initL_incl, initL_incl]) (by rw [extE_last, incl_last, incl_last])`. Establish `h2 : extE g (eLast E n) = eLast E n` using `sp_ext (by rw [initL_extE, initL_eLast, map_zero]) (by rw [extE_last])`. Unfold `tilN`. Rewrite using `[gmap_sup]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `z`. Simplify using `only [gmap, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨incl E n y, ⟨y, hy, rfl⟩, h1 y⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨w, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨g y, ⟨y, hy, rfl⟩, (h1 y).symm⟩`. Unfold `gmap`. Rewrite using `[Submodule.map_span, Set.image_singleton]`. Simplify using `only [LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, h2]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tilN_gmap (g : Sp E n ≃ₗ[E] Sp E n) (N : Submodule (𝓞 E) (Sp E n)) :
     tilN (gmap g N) = gmap (extE g) (tilN N) := by
@@ -2827,15 +2785,15 @@ theorem tilN_gmap (g : Sp E n ≃ₗ[E] Sp E n) (N : Submodule (𝓞 E) (Sp E n)
     simp only [LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, h2]
 
 /- English proof (translation)
-Establish `mg : ∀ (L : Submodule (𝓞 E) (Sp E (n + 1))) (v : Sp E (n + 1)), v ∈ gmap (extE g) L ↔ (extE g).symm v ∈ L`. Introduce `L v`. Simplify using `only [gmap, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `using hw`. Introduce `hv`. Conclude with `⟨(extE g).symm v, hv, by simp⟩`. Establish `hloc : ∀ (Q : HeightOneSpectrum (𝓞 E)) (x : Sp E (n + 1)), x ∈ localization₂ Q.asIdeal (tilN (gmap g d.N)) ↔ (extE g).symm x ∈ localization₂ Q.asIdeal (tilN d.N)`. Introduce `Q x`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[tilN_gmap, localization_gmap_eq_gmap_localization, mg]`. Apply `Deco.ext` to reduce the goal to its premises. Conclude with `tilN_gmap g d.N`. Use function extensionality and compare the values at `P x`. Express the relevant statement in the definitionally equal form `(open Classical in if x ∈ localization₂ P.1.asIdeal (tilN (gmap g d.N)) then redP P.1 (hStd E (n + 1) (z0 E n (algebraMap (𝓞 E) E pi)) x) else 0) = (open Classical in if (extE g).symm x ∈ localization₂ P.1.asIdeal (tilN d.N) then redP P.1 (hStd E (n + 1) (z0 E n (algebraMap (𝓞 E) …`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hermStd_lastVector_apply, hermStd_lastVector_apply, extE_symm_last]`. Distinguish the cases in `hm : (extE g).symm x ∈ localization₂ P.1.asIdeal (tilN d.N)`. Rewrite using `[if_pos ((hloc P.1 x).mpr hm), if_pos hm]`. Rewrite using `[if_neg (fun h' => hm ((hloc P.1 x).mp h')), if_neg hm]`. Use function extensionality and compare the values at `w x`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(open Classical in if x ∈ localization₂ w.1.asIdeal (tilN (gmap g d.N)) then Fin.snoc (α := fun _ => 𝓞 E ⧸ w.1.asIdeal) ((h w).1.mulVec (d.be w (g.symm (initL E n x)))) (redP w.1 (x (Fin.last n) / algebraMap (𝓞 E) E pi)) else 0) = (padM (𝓞 E ⧸ w.1.asIdeal) n (h w).1).mulVec (open …`. Distinguish the cases in `hm : (extE g).symm x ∈ localization₂ w.1.asIdeal (tilN d.N)`. Rewrite using `[if_pos ((hloc w.1 x).mpr hm), if_pos hm, padM_mulVec_snoc, initL_extE_symm, extE_symm_last]`. Rewrite using `[if_neg (fun h' => hm ((hloc w.1 x).mp h')), if_neg hm, Matrix.mulVec_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.til_act (d : Deco E n ∅ SG) (g : Sp E n ≃ₗ[E] Sp E n) (h : GLG E n SG) (pi : 𝓞 E) :
     (d.act g h).til (ST := ST) pi = (d.til (ST := ST) pi).act (extE g) (extG h) := by
@@ -2876,7 +2834,7 @@ theorem Deco.til_act (d : Deco E n ∅ SG) (g : Sp E n ≃ₗ[E] Sp E n) (h : GL
     · rw [if_neg (fun h' => hm ((hloc w.1 x).mp h')), if_neg hm, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[DecoSet.smul_val, DecoSet.til_val (a • d) hT hG, DecoSet.til_val d hT hG, DecoSet.smul_val, Deco.til_act]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem DecoSet.til_smul (a : UF E n × GLG E n SG) (d : DecoSet E n ∅ SG) {pi : 𝓞 E}
     (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal) (hG : ∀ w : SG, pi ∉ w.1.asIdeal) :
@@ -2894,7 +2852,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quot_smul_def (P : HeightOneSpectrum (𝓞 E)) (a : 𝓞 E) (c : 𝓞 E ⧸ P.asIdeal) :
     a • c = Ideal.Quotient.mk P.asIdeal a * c := by
@@ -2909,17 +2867,15 @@ def Deco.Ok.fLin {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (M : Submodule (𝓞 
     exact hd.f_smul P a _ (hM y.2)
 
 /- English proof (translation)
-Establish `hex : ∀ P : ST, ∃ e ∈ d.N, d.f P e = 1 ∧ ∀ Q : ST, Q ≠ P → d.f Q e = 0`. Introduce `P`. Establish `hu : ∀ Q : ST, ∃ s : 𝓞 E, (Q ≠ P → s ∈ Q.1.asIdeal) ∧ s ∉ P.1.asIdeal`. Introduce `Q`. Distinguish the cases in `hQ : Q = P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨1, fun h => absurd hQ h, fun h1 => P.1.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)⟩`. Take `⟨s, hs1, hs2⟩` from `exists_mem_notMem (P := Q.1) (Q := P.1) (fun h => hQ (Subtype.ext h))`. Conclude with `⟨s, fun _ => hs1, hs2⟩`. Use `choose s huQ huP using hu`. Establish `htP : (∏ Q, s Q) ∉ P.1.asIdeal`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (∏ Q, s Q) ∈ P.1.asIdeal.primeCompl` using `Submonoid.prod_mem _ fun Q _ => Ideal.mem_primeCompl_iff.mpr (huP Q)`. Conclude with `Ideal.mem_primeCompl_iff.mp hm`. Establish `htQ : ∀ Q : ST, Q ≠ P → (∏ Q', s Q') ∈ Q.1.asIdeal` using `fun Q hQ => by`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ Q)]`. Conclude with `Ideal.mul_mem_right _ _ (huQ Q hQ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Take `⟨x, hx, hfx⟩` from `hd.f_ne P`. Use `haveI := P.1.isMaximal`. Use `letI := Ideal.Quotient.field P.1.asIdeal`. Establish `hy : d.f P ((∏ Q, s Q) • x) ≠ 0`. Rewrite using `[hd.f_smul P _ x (mem_localized_of_mem _ _ hx)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (fun h0 => htP (Ideal.Quotient.eq_zero_iff_mem.mp h0)) hfx`. Take `⟨c, hc⟩` from `Ideal.Quotient.mk_surjective ((d.f P ((∏ Q, s Q) • x))⁻¹)`. Establish `hyN : (∏ Q, s Q) • x ∈ d.N` using `Submodule.smul_mem _ _ hx`. Use `⟨c • (∏ Q, s Q) • x, Submodule.smul_mem _ c hyN, ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Rewrite using `[hd.f_smul P c _ (mem_localized_of_mem _ _ hyN), hc, inv_mul_cancel₀ hy]`.
-
-Rewrite using `[hd.f_smul Q c _ (mem_localized_of_mem _ _ hyN), hd.f_smul Q _ x (mem_localized_of_mem _ _ hx), Ideal.Quotient.eq_zero_iff_mem.mpr (htQ Q hQ), zero_mul, mul_zero]`. Use `choose e he1 he2 he3 using hex`. Conclude with `⟨e, he1, he2, fun P Q hQP => he3 P Q hQP⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.exists_dualBasis {d : Deco E n ST SG} (hd : d.Ok) :
     ∃ e : ST → Sp E n, (∀ P, e P ∈ d.N) ∧ (∀ P, d.f P (e P) = 1) ∧
@@ -2957,11 +2913,11 @@ theorem Deco.Ok.exists_dualBasis {d : Deco E n ST SG} (hd : d.Ok) :
   exact ⟨e, he1, he2, fun P Q hQP => he3 P Q hQP⟩
 
 /- English proof (translation)
-Establish `hle : ∀ y ∈ d.N, y ∈ d.at Q.1` using `fun y hy => mem_localized_of_mem Q.1 d.N hy`. Establish `hsum : ∀ s : Finset ST, (∑ P ∈ s, c P • e P) ∈ d.N` using `fun s => Submodule.sum_mem _ fun P _ => Submodule.smul_mem _ _ (h1 P)`. Establish `key : ∀ s : Finset ST, d.f Q (∑ P ∈ s, c P • e P) = ∑ P ∈ s, Ideal.Quotient.mk Q.1.asIdeal (c P) * d.f Q (e P)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `empty => simp [hd.f_zero Q]`. Consider the case `@insert P s hP ih`. Rewrite using `[Finset.sum_insert hP, Finset.sum_insert hP, hd.f_add Q _ (hle _ (Submodule.smul_mem _ _ (h1 P))) _ (hle _ (hsum s)), hd.f_smul Q _ _ (hle _ (h1 P)), ih]`. Rewrite using `[key, Finset.sum_eq_single Q]`. Rewrite using `[h2, mul_one]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `P _ hPQ`. Rewrite using `[h3 P Q (Ne.symm hPQ), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ Q) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.f_sum_dualBasis {d : Deco E n ST SG} (hd : d.Ok) {e : ST → Sp E n}
     (h1 : ∀ P, e P ∈ d.N) (h2 : ∀ P, d.f P (e P) = 1) (h3 : ∀ P Q, Q ≠ P → d.f Q (e P) = 0)
@@ -2988,7 +2944,7 @@ theorem Deco.Ok.f_sum_dualBasis {d : Deco E n ST SG} (hd : d.Ok) {e : ST → Sp 
     exact absurd (Finset.mem_univ Q) h
 
 /- English proof (translation)
-Establish `surj : Function.Surjective (cO E)` using `fun r => ⟨cO E r, cO_cO r⟩`. Establish `inj : Function.Injective (cO E)` using `fun a b h => by`. Rewrite using `[← cO_cO a, h, cO_cO]`. Conclude with `Nat.card_congr (Ideal.quotientEquiv (conjPrime₂ P).asIdeal P.asIdeal (RingEquiv.ofBijective (cO E) ⟨inj, surj⟩) (Ideal.map_comap_of_surjective (cO E) surj P.asIdeal).symm).toEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_conjP (P : HeightOneSpectrum (𝓞 E)) :
     Nat.card (𝓞 E ⧸ (conjPrime₂ P).asIdeal) = Nat.card (𝓞 E ⧸ P.asIdeal) := by
@@ -3000,73 +2956,65 @@ theorem card_quot_conjP (P : HeightOneSpectrum (𝓞 E)) :
     (Ideal.map_comap_of_surjective (cO E) surj P.asIdeal).symm).toEquiv
 
 /- English proof (translation)
-Take `⟨e, h1, h2, h3⟩` from `hd.exists_dualBasis`. Establish `hdN : dual (hStd E n) d.N = d.N` using `hd.uni`. Establish `hle : ∀ P : ST, d.Lsh ≤ d.at P.1`. Introduce `P`. Establish `hex : ∀ Q : ST, ∃ a : 𝓞 E, a ∉ P.1.asIdeal ∧ a ∈ (conjPrime₂ Q.1).asIdeal`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Q`. Take `⟨a, ha, ha'⟩` from `exists_mem_notMem (P := conjPrime₂ Q.1) (Q := P.1) (hc Q P).symm`. Conclude with `⟨a, ha', ha⟩`. Use `choose a ha ha' using hex`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_locP _ _ _).2 ⟨∏ Q : ST, a Q, fun h' => ?_, hd.smul_Lsh_mem_N (fun Q => ?_) hy⟩` and prove the remaining obligations. Take `⟨Q, -, hQ⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := P.1.isPrime)).1 h'`. Conclude with `ha Q hQ`. Establish `: (∏ Q : ST, a Q) ∈ (conjPrime₂ Q.1).asIdeal` using `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem a (Finset.mem_univ Q)) (ha' Q)`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hunif : ∀ P : ST, ∃ t ∈ (conjPrime₂ P.1).asIdeal, t ∉ (conjPrime₂ P.1).asIdeal ^ 2`. Introduce `P`. Take `⟨t, ht, ht'⟩` from `Ideal.exists_mem_pow_notMem_pow_succ (conjPrime₂ P.1).asIdeal (conjPrime₂ P.1).ne_bot (conjPrime₂ P.1).isPrime.ne_top 1`. Conclude with `⟨t, by simpa using ht, ht'⟩`. Use `choose t ht ht2 using hunif`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpe : ∀ (P : ST) (p : 𝓞 E), p ∈ P.1.asIdeal → p • e P ∈ d.L`. Introduce `P p hp`. Rewrite using `[hd.mem_L]`. Use `⟨Submodule.smul_mem _ p (h1 P), fun Q => ?_⟩` and prove the remaining obligations. Rewrite using `[hd.f_smul Q p _ (le_locP _ _ (h1 P))]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hp, zero_mul]`. Rewrite using `[h3 P Q hQ, mul_zero]`. Establish `hinv : ∀ (P : ST), ∀ y ∈ d.Lsh, hStd E n (e P) y ∈ invIdeal (K` using `E) (conjPrime₂ P.1).asIdeal := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `P y hy`. Rewrite using `[neighbourConstruct_mem_inv]`. Introduce `p hp`. Establish `e1 : algebraMap (𝓞 E) E p * hStd E n (e P) y = hStd E n (cO E p • e P) y`. Rewrite using `[hStd_osmul_left, cO_cO, ← algebraMap_smul E p y, LinearMap.map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1]`. Conclude with `Submodule.mem_one.1 ((mem_dual _ y).1 hy _ (hpe P _ hp))`. Establish `hint : ∀ (P : ST), ∀ y ∈ d.Lsh, ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = algebraMap (𝓞 E) E (t P) * hStd E n (e P) y` using `fun P y hy => neighbourConstruct_mem_inv.1 (hinv P y hy) (t P) (ht P)`. Set `ψ : d.Lsh →ₗ[𝓞 E] (∀ P : ST, 𝓞 E ⧸ (conjPrime₂ P.1).asIdeal)` to `{ toFun := fun y P => redP (conjPrime₂ P.1) (algebraMap (𝓞 E) E (t P) * hStd E n (e P) y.1) map_add' := by`. Introduce `y z`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `P`. Take `⟨r, hr⟩` from `hint P y.1 y.2`. Take `⟨r', hr'⟩` from `hint P z.1 z.2`. Express the relevant statement in the definitionally equal form `redP _ (_ * hStd E n (e P) (y.1 + z.1)) = redP _ _ + redP _ _`. Rewrite using `[map_add, mul_add, ← hr, ← hr']`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `reduction_add (IntAt.coe _ _) (IntAt.coe _ _)`. Use the proof step `map_smul' := by`. Introduce `a y`. Use function extensionality and compare the values at `P`. Take `⟨r, hr⟩` from `hint P y.1 y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `redP _ (_ * hStd E n (e P) (a • y.1)) = a • redP _ _`. Rewrite using `[LinearMap.map_smul_of_tower, mul_smul_comm, ← hr, quot_smul_def]`. Conclude with `redP_osmul a (IntAt.coe _ _) }`. Establish `hψ : ∀ (y : d.Lsh) (P : ST), ψ y P = redP (conjPrime₂ P.1) (algebraMap (𝓞 E) E (t P) * hStd E n (e P) y.1)` using `fun _ _ => rfl`. Establish `hdec : ∀ x ∈ d.N, ∃ c : ST → 𝓞 E, x - ∑ P, c P • e P ∈ d.L`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Use `choose c hcx using fun P : ST => Ideal.Quotient.mk_surjective (d.f P x)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hs : ∑ P, c P • e P ∈ d.N` using `Submodule.sum_mem _ fun P _ => Submodule.smul_mem _ _ (h1 P)`. Rewrite using `[hd.mem_L]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Submodule.sub_mem _ hx hs, fun Q => ?_⟩` and prove the remaining obligations. Establish `e1 : x - ∑ P, c P • e P = x + (-1 : 𝓞 E) • ∑ P, c P • e P`. Rewrite using `[neg_smul, one_smul, sub_eq_add_neg]`. Rewrite using `[e1, hd.f_add Q x (le_locP _ _ hx) _ (le_locP _ _ (Submodule.smul_mem _ _ hs)), hd.f_smul Q _ _ (le_locP _ _ hs), hd.f_sum_dualBasis h1 h2 h3, hcx]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmemN : ∀ y ∈ d.Lsh, (∀ P : ST, hStd E n (e P) y ∈ (1 : Submodule (𝓞 E) E)) → y ∈ d.N`. Introduce `y hy H`. Rewrite using `[← hdN, mem_dual]`. Introduce `x hx`. Take `⟨c, hcx⟩` from `hdec x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : x = (x - ∑ P, c P • e P) + ∑ P, c P • e P` using `by abel`. Rewrite using `[e1, map_add, LinearMap.add_apply, map_sum, LinearMap.sum_apply]`. Use `Submodule.add_mem _ ((mem_dual _ y).1 hy _ hcx) (Submodule.sum_mem _ fun P _ => ?_)` and prove the remaining obligations. Rewrite using `[hStd_osmul_left, LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ _ (H P)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hker1 : ∀ (y : d.Lsh) (P : ST), ψ y P = 0 → hStd E n (e P) y.1 ∈ (1 : Submodule (𝓞 E) E)`. Introduce `y P h0`. Take `⟨r, hr⟩` from `hint P y.1 y.2`. Rewrite `h0` using `[hψ, ← hr, reduction_coe, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Submodule.mem_one.2 (inv_integral (conjPrime₂ P.1) (ht P) (ht2 P) (hinv P y.1 y.2) h0 hr.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hψN : ∀ (y : d.Lsh), y.1 ∈ d.N → ψ y = 0`. Introduce `y hy`. Use function extensionality and compare the values at `P`. Establish `h4 : hStd E n (e P) y.1 ∈ (1 : Submodule (𝓞 E) E)`. Rewrite `hy` using `[← hdN]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mem_dual _ _).1 hy _ (h1 P)`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 h4`. Rewrite using `[hψ, ← hr, ← map_mul, reduction_coe]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mul_mem_right _ _ (ht P))`. Establish `hψbasis : ∀ P : ST, ∃ y : d.Lsh, ψ y P = 1 ∧ ∀ Q, Q ≠ P → ψ y Q = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `P`. Establish `hBlat : Submodule.IsLattice E (d.kerAt P)`. Take `⟨p, hp, hp0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.1.ne_bot`. Conclude with `lattice_of_smul hd.lat hd.lat (fun x hx => ((hd.mem_kerAt P x).1 hx).1) hp0 fun x hx => hd.smul_mem_kerAt P hp hx`. Establish `hnot : ¬ dual (hStd E n) (d.kerAt P) ≤ d.N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce `hle'`. Use `dual_anti hle'` as an intermediate fact. Rewrite `this` using `[hdN, dual_dual hBlat]`. Establish `h5` using `((hd.mem_kerAt P _).1 (this (h1 P))).2`. Rewrite `h5` using `[h2]`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `one_ne_zero h5`. Take `⟨y, hy, hyN⟩` from `SetLike.not_le_iff_exists.1 hnot`. Establish `hLB : d.L ≤ d.kerAt P` using `fun x hx => (hd.mem_kerAt P x).2 ⟨((hd.mem_L x).1 hx).1, ((hd.mem_L x).1 hx).2 P⟩`. Establish `hyL : y ∈ d.Lsh` using `dual_anti hLB hy`. Establish `hQ0 : ∀ Q, Q ≠ P → hStd E n (e Q) y ∈ (1 : Submodule (𝓞 E) E)` using `fun Q hQ => (mem_dual _ y).1 hy _ ((hd.mem_kerAt P _).2 ⟨h1 Q, h3 Q P (Ne.symm hQ)⟩)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hP0 : ψ ⟨y, hyL⟩ P ≠ 0`. Introduce `h0`. Apply `hyN` to reduce the goal to its premises. Use `hmemN y hyL fun Q => ?_` and prove the remaining obligations. Distinguish the cases in `hQ : Q = P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Substitute `hQ` using the available equality. Conclude with `hker1 ⟨y, hyL⟩ Q h0`. Conclude with `hQ0 Q hQ`. Use `(conjPrime₂ P.1).isMaximal` as an intermediate fact. Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv hP0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Use `⟨s • ⟨y, hyL⟩, ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, quot_smul_def, mul_comm, hb]`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 (hQ0 Q hQ)`. Rewrite using `[map_smul, Pi.smul_apply, hψ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `s • redP _ (_ * hStd E n (e Q) y) = 0`. Rewrite using `[← hr, ← map_mul, reduction_coe, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mul_mem_right _ _ (ht Q)), smul_zero]`. Use `choose yb hyb1 hyb2 using hψbasis`. Establish `hψsurj : Function.Surjective ψ`. Introduce `c`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose r hr using fun P : ST => Ideal.Quotient.mk_surjective (c P)`. Use `⟨∑ P, r P • yb P, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Q`. Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_eq_single Q]`. Rewrite using `[map_smul, Pi.smul_apply, hyb1, quot_smul_def, mul_one, hr]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P _ hP`. Rewrite using `[map_smul, Pi.smul_apply, hyb2 P Q hP.symm, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ Q) h`. Set `φ : d.Lsh →ₗ[𝓞 E] (∀ P : ST, 𝓞 E ⧸ P.1.asIdeal)` to `LinearMap.pi fun P => hd.fLin P d.Lsh (hle P)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hφ : ∀ (y : d.Lsh) (P : ST), φ y P = d.f P y.1` using `fun _ _ => rfl`. Set `Θ` to `φ.prod ψ`. Establish `hΘker : LinearMap.ker Θ = d.L.submoduleOf d.Lsh`. Use extensionality with `y`. Rewrite using `[LinearMap.mem_ker]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Θ y = 0 ↔ y.1 ∈ d.L`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `h01 : φ y = 0` using `congrArg Prod.fst h0`. Establish `h02 : ψ y = 0` using `congrArg Prod.snd h0`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hd.mem_L]`. Use `⟨hmemN y.1 y.2 fun P => hker1 y P (congrFun h02 P), fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ, h01]`. Both sides reduce to the same expression. Introduce `hy`.
-
-Take `⟨hy1, hy2⟩` from `(hd.mem_L _).1 hy`. Use `Prod.ext ?_ (hψN y hy1)` and prove the remaining obligations. Use function extensionality and compare the values at `P`. Conclude with `hy2 P`. Establish `hΘsurj : Function.Surjective Θ`.
-
-Introduce and unpack `⟨c, c'⟩`. Take `⟨y1, hy1⟩` from `hψsurj c'`. Use `choose r hr using fun P : ST => Ideal.Quotient.mk_surjective (c P - φ y1 P)`. Establish `hs : ∑ P, r P • e P ∈ d.N` using `Submodule.sum_mem _ fun P _ => Submodule.smul_mem _ _ (h1 P)`. Set `y2 : d.Lsh` to `⟨∑ P, r P • e P, hd.N_le_Lsh hs⟩`.
-
-Establish `hφ2 : ∀ Q, φ y2 Q = Ideal.Quotient.mk Q.1.asIdeal (r Q)` using `fun Q => (hφ y2 Q).trans (hd.f_sum_dualBasis h1 h2 h3 r Q)`. Establish `hψ2 : ψ y2 = 0` using `hψN y2 hs`. Use `⟨y1 + y2, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Q`. Express the relevant statement in the definitionally equal form `φ (y1 + y2) Q = c Q`.
-
-Rewrite using `[map_add, Pi.add_apply, hφ2, hr]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `ψ (y1 + y2) = c'`. Rewrite using `[map_add, hψ2, add_zero, hy1]`. Conclude with `⟨(Submodule.quotEquivOfEq _ _ hΘker.symm).trans (Θ.quotKerEquivOfSurjective hΘsurj)⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.Lsh_quot_L {d : Deco E n ST SG} (hd : d.Ok) (hc : ∀ P Q : ST, Q.1 ≠ conjPrime₂ P.1) :
     Nonempty ((d.Lsh ⧸ d.L.submoduleOf d.Lsh) ≃ₗ[𝓞 E]
@@ -3266,7 +3214,7 @@ theorem Deco.Ok.Lsh_quot_L {d : Deco E n ST SG} (hd : d.Ok) (hc : ∀ P Q : ST, 
   exact ⟨(Submodule.quotEquivOfEq _ _ hΘker.symm).trans (Θ.quotKerEquivOfSurjective hΘsurj)⟩
 
 /- English proof (translation)
-Take `⟨ε⟩` from `hd.Lsh_quot_L hc`. Rewrite using `[Nat.card_congr ε.toEquiv, Nat.card_prod, Nat.card_pi, Nat.card_pi, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[card_quot_conjP, sq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Deco.Ok.card_Lsh_quot_L {d : Deco E n ST SG} (hd : d.Ok)
     (hc : ∀ P Q : ST, Q.1 ≠ conjPrime₂ P.1) :
@@ -3277,7 +3225,7 @@ theorem Deco.Ok.card_Lsh_quot_L {d : Deco E n ST SG} (hd : d.Ok)
   rw [card_quot_conjP, sq]
 
 /- English proof (translation)
-Rewrite using `[Deco.Ok.card_Lsh_quot_L d.2 (fun P Q => (moveHyp_of_ok hPr u P).st Q)]`. Establish `h1 : ∀ P : Pr.vT u, Nat.card (𝓞 X.E ⧸ P.1.asIdeal) = Pr.T u` using `fun P => by`. Rewrite using `[← hPr.vT_norm u P.1 P.2, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Simplify using `only [h1, Finset.prod_const, Finset.card_univ, Fintype.card_coe, hPr.vT_card u, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_Lsh_quot_L_of_ok {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (u : Pr.Word) {n : ℕ}
     (d : ColDeco X Pr u n) :
@@ -3315,33 +3263,31 @@ section AtBase2
 variable {X : Fields} {Pr : Primes X}
 
 /- English proof (translation)
-The claim follows from `posStar_of_conj hX.conjE`.
+A detailed English derivation is pending.
 -/
 theorem posStar_of_ok (hX : X.Ok) : PosStar X.E := posStar_of_conj hX.conjE
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨T_mem hPr u P, T_notMem_sq hPr u P (hPr.piT_notMem_sq hX u P.2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem T_unif (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (P : Pr.vT u) :
     (Pr.T u : 𝓞 X.E) ∈ P.1.asIdeal ∧ (Pr.T u : 𝓞 X.E) ∉ P.1.asIdeal ^ 2 :=
   ⟨T_mem hPr u P, T_notMem_sq hPr u P (hPr.piT_notMem_sq hX u P.2)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨DecoSet.upSet_finite d P _, DecoSet.upSet_nonempty d P (moveHyp_of_ok hPr u P) (T_unif hX hPr u P).1 (T_unif hX hPr u P).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem upD_finite_nonempty (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) {n : ℕ} (P : Pr.vT u)
     (d : ColDeco X Pr u n) : (upD u P d).Finite ∧ (upD u P d).Nonempty := ⟨DecoSet.upSet_finite d P _, DecoSet.upSet_nonempty d P (moveHyp_of_ok hPr u P) (T_unif hX hPr u P).1 (T_unif hX hPr u P).2⟩
 
 /- English proof (translation)
-Establish `hbase : (↑(Pr.vT u) : Set (HeightOneSpectrum (𝓞 X.E))).Pairwise (Function.onFun IsCoprime fun Q => Q.asIdeal)`. Introduce `Q _ Q' _ hne`. Express the relevant statement in the definitionally equal form `IsCoprime Q.asIdeal Q'.asIdeal`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `Ideal.IsMaximal.coprime_of_ne Q.isMaximal Q'.isMaximal fun h => hne (HeightOneSpectrum.ext h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∏ Q ∈ Pr.vT u, Q.asIdeal ∣ Ideal.span {Pr.piT u}` using `Finset.prod_dvd_of_coprime hbase fun Q hQ => by`. Rewrite using `[Ideal.dvd_span_singleton]`. Conclude with `decoFin_mem_of_mem_divs hQ`. Establish `h2 : ∏ Q ∈ Pr.vT u, Q.asIdeal ∣ Ideal.span {r}` using `Finset.prod_dvd_of_coprime hbase fun Q hQ => by`. Rewrite using `[Ideal.dvd_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hr ⟨Q, hQ⟩`. Establish `hN : Ideal.absNorm (∏ Q ∈ Pr.vT u, Q.asIdeal) = Pr.T u ^ X.f`. Rewrite using `[map_prod, Finset.prod_congr rfl fun Q hQ => hPr.vT_norm u Q hQ, Finset.prod_const, hPr.vT_card]`. Take `⟨J, hJ⟩` from `h1`. Establish `hJ1 : Ideal.absNorm J = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg Ideal.absNorm hJ` as an intermediate fact. Rewrite `this` using `[map_mul, hN, hPr.absNorm_piT hX u]`. Conclude with `(Nat.eq_of_mul_eq_mul_left (pow_pos (hPr.T_prime u).pos _) (by rw [mul_one]; exact this)).symm`. Rewrite `hJ` using `[Ideal.absNorm_eq_one_iff.1 hJ1, Ideal.mul_top]`. Rewrite `h2` using `[← hJ]`.
-
-Rewrite `h2` using `[Ideal.dvd_span_singleton, Ideal.mem_span_singleton]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piT_dvd_of_mem (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (r : 𝓞 X.E)
     (hr : ∀ P : Pr.vT u, r ∈ P.1.asIdeal) : Pr.piT u ∣ r := by
@@ -3381,9 +3327,9 @@ section Bridge
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Formalism.UG.gram, hStd, LinearMap.mk₂'ₛₗ_apply]`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by rw [Pi.single_eq_of_ne hk, star_zero, zero_mul]) (fun h => absurd (Finset.mem_univ i) h), Pi.single_eq_same, star_one, one_mul, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne hij, if_neg hij]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem decoFin_gram_hStd : Formalism.UG.gram (hStd E n) = 1 := by
   ext i j
@@ -3396,7 +3342,7 @@ theorem decoFin_gram_hStd : Formalism.UG.gram (hStd E n) = 1 := by
   · rw [Pi.single_eq_of_ne hij, if_neg hij]
 
 /- English proof (translation)
-Rewrite using `[← decoFin_gram_hStd]`. Conclude with `Formalism.UG.Final.HermBridge E (Fin n) (hStd E n) g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_UJ_iff (g : GL (Fin n) E) :
     g ∈ Formalism.UG.UJ (starRingEnd E) (1 : Matrix (Fin n) (Fin n) E) ↔ Formalism.UG.glEquiv g ∈ UF E n := by
@@ -3411,17 +3357,17 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hr : c - 1 ≠ 0` using `sub_ne_zero.2 hne`. Establish `hbase : (↑ST : Set (HeightOneSpectrum (𝓞 E))).Pairwise (Function.onFun IsCoprime fun Q => Q.asIdeal)`. Introduce `Q _ Q' _ hne`. Express the relevant statement in the definitionally equal form `IsCoprime Q.asIdeal Q'.asIdeal`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `Ideal.IsMaximal.coprime_of_ne Q.isMaximal Q'.isMaximal fun h => hne (HeightOneSpectrum.ext h)`. Establish `h1 : ∏ Q ∈ ST, Q.asIdeal ∣ Ideal.span {c - 1}` using `Finset.prod_dvd_of_coprime hbase fun Q hQ => by`. Rewrite using `[Ideal.dvd_span_singleton]`. Conclude with `hP Q hQ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `map_dvd Ideal.absNorm h1`. Rewrite `h2` using `[map_prod]`. Establish `h3 : Ideal.absNorm (Ideal.span {c - 1}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `Nat.le_of_dvd (Nat.pos_of_ne_zero h3) h2`. Establish `h5 : (Ideal.absNorm (Ideal.span {c - 1}) : ℝ) ≤ 2 ^ Module.finrank ℚ E`. Rewrite using `[Ideal.absNorm_span_singleton]`. Establish `e1 : ((Algebra.norm ℤ (c - 1)).natAbs : ℝ) = ‖algebraMap ℚ ℂ (Algebra.norm ℚ (algebraMap (𝓞 E) E (c - 1)))‖`. Establish `e0 : Algebra.norm ℚ (algebraMap (𝓞 E) E (c - 1)) = ((Algebra.norm ℤ (c - 1) : ℤ) : ℚ)` using `(Algebra.coe_norm_int (c - 1)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0, Nat.cast_natAbs]`. Simplify using the standard rewrite rules. Rewrite using `[e1, Algebra.norm_eq_prod_embeddings, norm_prod, ← AlgHom.card ℚ E ℂ, ← Finset.card_univ, ← Finset.prod_const]`. Use `Finset.prod_le_prod (fun σ _ => norm_nonneg _) fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, map_one, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h6 : (Ideal.absNorm (Ideal.span {c - 1})) ≤ 2 ^ Module.finrank ℚ E` using `by exact_mod_cast h5`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem int_eq_one_of_small {c : 𝓞 E}
     (hc : ∀ σ : E →ₐ[ℚ] ℂ, ‖σ (algebraMap (𝓞 E) E c)‖ ≤ 1)
@@ -3466,25 +3412,23 @@ theorem int_eq_one_of_small {c : 𝓞 E}
   omega
 
 /- English proof (translation)
-Establish `he : eLast E n ∈ tilN d₁.N` using `(mem_tilN _ _).2 ⟨by simp, 1, by simp⟩`. Establish `hN : gmap γ (tilN d₁.N) = tilN d₂.N` using `congrArg Deco.N H`. Establish `hy : γ (eLast E n) ∈ tilN d₂.N`. Rewrite using `[← hN, mem_gmap]`. Simplify using `using he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨-, c, hcl⟩` from `(mem_tilN _ _).1 hy`. Establish `hcP : ∀ P ∈ ST, c - 1 ∈ P.asIdeal`. Introduce `P hP`. Establish `h1 : (d₁.til (ST` using `ST) pi).f ⟨P, hP⟩ (γ.symm (γ (eLast E n))) = (d₂.til (ST := ST) pi).f ⟨P, hP⟩ (γ (eLast E n)) := congrFun (congrFun (congrArg Deco.f H) ⟨P, hP⟩) (γ (eLast E n))`. Rewrite `h1` using `[LinearEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (d₁.til (ST` using `ST) pi).f ⟨P, hP⟩ (eLast E n) = redP P (hStd E (n + 1) (z0 E n (algebraMap (𝓞 E) E pi)) (eLast E n)) := if_pos (le_locP _ _ he)`. Establish `h3 : (d₂.til (ST` using `ST) pi).f ⟨P, hP⟩ (γ (eLast E n)) = redP P (hStd E (n + 1) (z0 E n (algebraMap (𝓞 E) E pi)) (γ (eLast E n))) := if_pos (le_locP _ _ hy)`. Rewrite `h1` using `[h2, h3, hermStd_lastVector_apply, hermStd_lastVector_apply, eLast_last, mul_one, ← hcl, ← map_mul, reduction_coe, reduction_coe]`. Establish `h4 : cO E pi * (c - 1) ∈ P.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, mul_sub, mul_one, map_sub, ← h1, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(P.isPrime.mem_or_mem h4).resolve_left (hT ⟨P, hP⟩)`. Establish `hnorm : hStd E n (initL E n (γ (eLast E n))) (initL E n (γ (eLast E n))) + star (algebraMap (𝓞 E) E c) * algebraMap (𝓞 E) E c = 1`. Establish `h1` using `hγ (eLast E n) (eLast E n)`. Rewrite `h1` using `[hStd_succ, hStd_succ, ← hcl]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hcσ : ∀ σ : E →ₐ[ℚ] ℂ, ‖σ (algebraMap (𝓞 E) E c)‖ ≤ 1`. Introduce `σ`. Establish `h1` using `congrArg σ hnorm`. Rewrite `h1` using `[map_add, map_mul, map_one, hStd_apply, map_sum, show σ (star (algebraMap (𝓞 E) E c)) = starRingEnd ℂ (σ (algebraMap (𝓞 E) E c)) from hconj σ.toRingHom _, mul_comm (starRingEnd ℂ _), Complex.mul_conj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ i, σ (star (initL E n (γ (eLast E n)) i) * initL E n (γ (eLast E n)) i) = ((Complex.normSq (σ (initL E n (γ (eLast E n)) i)) : ℝ) : ℂ)`. Introduce `i`. Rewrite using `[map_mul, show σ (star (initL E n (γ (eLast E n)) i)) = starRingEnd ℂ (σ (initL E n (γ (eLast E n)) i)) from hconj σ.toRingHom _, mul_comm, Complex.mul_conj]`. Rewrite `h1` using `[Finset.sum_congr rfl fun i _ => h2 i, ← Complex.ofReal_sum, ← Complex.ofReal_add]`. Establish `h3 : (∑ i, Complex.normSq (σ (initL E n (γ (eLast E n)) i))) + Complex.normSq (σ (algebraMap (𝓞 E) E c)) = 1` using `by exact_mod_cast h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 0 ≤ ∑ i, Complex.normSq (σ (initL E n (γ (eLast E n)) i))` using `Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _`. Establish `h5 : Complex.normSq (σ (algebraMap (𝓞 E) E c)) ≤ 1` using `by linarith`. Rewrite `h5` using `[Complex.normSq_eq_norm_sq]`. Conclude with `(sq_le_one_iff₀ (norm_nonneg _)).1 h5`. Establish `hc1 : c = 1` using `int_eq_one_of_small hcσ hcP hbig`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hnorm` using `[hc1, map_one, star_one, one_mul]`. Establish `h0 : hStd E n (initL E n (γ (eLast E n))) (initL E n (γ (eLast E n))) = 0`. Use `hnorm` as an intermediate fact. Rewrite `this` using `[add_eq_right]`. Then use the resulting hypothesis. Establish `hl : initL E n (γ (eLast E n)) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Use `hStd_pos (posStar_of_conj hconj) _ hne` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `lt_irrefl _ this`. Apply `sp_ext` to reduce the goal to its premises.
-
-Rewrite using `[hl, initL_eLast]`. Rewrite using `[← hcl, hc1, map_one, eLast_last]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem til_fix_eLast (hconj : ∀ (τ : E →+* ℂ) (a : E), τ (star a) = starRingEnd ℂ (τ a))
     (hbig : 2 ^ Module.finrank ℚ E < ∏ P ∈ ST, Ideal.absNorm P.asIdeal)
@@ -3556,25 +3500,25 @@ theorem til_fix_eLast (hconj : ∀ (τ : E →+* ℂ) (a : E), τ (star a) = sta
   · rw [← hcl, hc1, map_one, eLast_last]
 
 /- English proof (translation)
-Establish `hlast : ∀ (g : UF E (n + 1)), g.1 (eLast E n) = eLast E n → ∀ x : Sp E n, g.1 (incl E n x) (Fin.last n) = 0`. Introduce `g hg x`. Establish `h1` using `g.2 (eLast E n) (incl E n x)`. Rewrite `h1` using `[hg, hStd_succ, hStd_succ]`. Simplify using `using h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hinv : γ⁻¹.1 (eLast E n) = eLast E n`. Express the relevant statement in the definitionally equal form `γ.1.symm (eLast E n) = eLast E n`. Rewrite using `[LinearEquiv.symm_apply_eq, h]`. Establish `hincl : ∀ (g : UF E (n + 1)), g.1 (eLast E n) = eLast E n → ∀ x : Sp E n, g.1 (incl E n x) = incl E n (initL E n (g.1 (incl E n x)))`. Introduce `g hg x`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `sp_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[hlast g hg x, incl_last]`. Set `A : Sp E n →ₗ[E] Sp E n` to `(initL E n).comp ((γ.1 : Sp E (n + 1) →ₗ[E] _).comp (incl E n))`. Set `B : Sp E n →ₗ[E] Sp E n` to `(initL E n).comp ((γ⁻¹.1 : Sp E (n + 1) →ₗ[E] _).comp (incl E n))`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hA : ∀ x, A x = initL E n (γ.1 (incl E n x))` using `fun _ => rfl`. Establish `hB : ∀ x, B x = initL E n (γ⁻¹.1 (incl E n x))` using `fun _ => rfl`. Establish `hAB : A.comp B = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.comp_apply, hA, hB, ← hincl γ⁻¹ hinv x]`. Express the relevant statement in the definitionally equal form `initL E n (γ.1 (γ.1.symm (incl E n x))) = x`. Simplify using the standard rewrite rules. Establish `hBA : B.comp A = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Rewrite using `[LinearMap.comp_apply, hA, hB, ← hincl γ h x]`. Express the relevant statement in the definitionally equal form `initL E n (γ.1.symm (γ.1 (incl E n x))) = x`. Simplify using the standard rewrite rules. Set `g' : Sp E n ≃ₗ[E] Sp E n` to `LinearEquiv.ofLinearMap A B hAB hBA`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hg' : ∀ x, g' x = initL E n (γ.1 (incl E n x))` using `fun _ => rfl`. Establish `hU : g' ∈ UF E n`. Introduce `x y`. Establish `h1` using `γ.2 (incl E n x) (incl E n y)`. Rewrite `h1` using `[hStd_succ, hStd_succ, hlast γ h x, hlast γ h y]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h1` using `[hg']`. Use `⟨⟨g', hU⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `x`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `γ.1 x = extE g' x`. Use `conv_lhs => rw [sp_decomp x, map_add, map_smul, h, hincl γ h]`. Apply `sp_ext` to reduce the goal to its premises. Rewrite using `[initL_extE, hg', map_add, map_smul]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[extE_last]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_extU_of_fix (γ : UF E (n + 1)) (h : γ.1 (eLast E n) = eLast E n) :
     ∃ γ' : UF E n, γ = extU γ' := by
@@ -3630,17 +3574,15 @@ theorem exists_extU_of_fix (γ : UF E (n + 1)) (h : γ.1 (eLast E n) = eLast E n
     simp
 
 /- English proof (translation)
-Establish `hN : d₁.N = d₂.N`. Establish `hT : tilN d₁.N = tilN d₂.N` using `congrArg Deco.N H`. Use extensionality with `x`. Establish `key : ∀ M : Submodule (𝓞 E) (Sp E n), x ∈ M ↔ incl E n x ∈ tilN M` using `fun M => by`. Rewrite using `[mem_tilN, initL_incl, incl_last]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => ⟨h, 0, map_zero _⟩, fun h => h.1⟩`. Rewrite using `[key, key, hT]`. Apply `Deco.ext` to reduce the goal to its premises. Conclude with `hN`. Use function extensionality and compare the values at `P`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `absurd P.2 (Finset.notMem_empty _)`. Use function extensionality and compare the values at `w y`. Distinguish the cases in `hy : y ∈ localization₂ w.1.asIdeal d₁.N`. Establish `hbe` using `congrArg (fun e : Deco E (n + 1) ST SG => e.be w (incl E n y)) H`. Establish `hy' : incl E n y ∈ localization₂ w.1.asIdeal (tilN d₁.N)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[mem_localization_tilN, initL_incl, incl_last]`. Conclude with `⟨hy, 0, 1, fun h1 => w.1.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1), by simp⟩`. Establish `hy'' : incl E n y ∈ localization₂ w.1.asIdeal (tilN d₂.N)`. Rewrite using `[← hN]`. Conclude with `hy'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Deco.til, if_pos hy', if_pos hy'', initL_incl] at hbe`. Establish `h2` using `congrArg Fin.init hbe`. Simplify using `only [Fin.init_snoc] at h2`. Conclude with `h2`. Establish `hy2 : y ∉ localization₂ w.1.asIdeal d₂.N`.
-
-Rewrite using `[← hN]`. Conclude with `hy`. Rewrite using `[h₁.be_off w y hy, h₂.be_off w y hy2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.til_injective {d₁ d₂ : Deco E n ∅ SG} (h₁ : d₁.Ok) (h₂ : d₂.Ok) {pi : 𝓞 E}
     (H : d₁.til (ST := ST) pi = d₂.til (ST := ST) pi) : d₁ = d₂ := by
@@ -3674,9 +3616,9 @@ theorem Deco.til_injective {d₁ d₂ : Deco E n ∅ SG} (h₁ : d₁.Ok) (h₂ 
       rw [h₁.be_off w y hy, h₂.be_off w y hy2]
 
 /- English proof (translation)
-Establish `H1 : (d₁.1.til (ST` using `ST) pi).act γ.1 (extG h) = d₂.1.til (ST := ST) pi := by`. Use `congrArg Subtype.val H` as an intermediate fact. Rewrite `this` using `[DecoSet.smul_val, DecoSet.til_val _ hT hG, DecoSet.til_val _ hT hG]`. Then use the resulting hypothesis. Take `⟨γ', rfl⟩` from `exists_extU_of_fix γ (til_fix_eLast hconj hbig hT γ.2 H1)`. Use `⟨γ', rfl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `H` using `[← DecoSet.til_smul (γ', h) d₁ hT hG]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `H2` using `congrArg Subtype.val H`. Rewrite `H2` using `[DecoSet.til_val _ hT hG, DecoSet.til_val _ hT hG]`. Conclude with `Deco.til_injective ((γ', h) • d₁).2 d₂.2 H2`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DecoSet.til_class_inj (hconj : ∀ (τ : E →+* ℂ) (a : E), τ (star a) = starRingEnd ℂ (τ a))
     (hbig : 2 ^ Module.finrank ℚ E < ∏ P ∈ ST, Ideal.absNorm P.asIdeal) {pi : 𝓞 E}
@@ -3709,37 +3651,33 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Establish `hd` using `d.2`. Establish `hmax` using `P.1.isMaximal`. Take `⟨x0, hx0, hne⟩` from `hd.f_ne P`. Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv hne`. Take `⟨t0, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set e1 := t0 • x0 with he1def`. Establish `he1 : e1 ∈ d.1.N` using `Submodule.smul_mem _ t0 hx0`. Establish `hfe1 : d.1.f P e1 = 1`. Rewrite using `[hd.f_smul P t0 x0 (le_locP _ _ hx0), mul_comm, hb]`. Establish `hBlat : Submodule.IsLattice E (d.1.kerAt P)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hp0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.1.ne_bot`. Conclude with `lattice_of_smul hd.lat hd.lat (fun x hx => ((hd.mem_kerAt P x).1 hx).1) hp0 fun x hx => hd.smul_mem_kerAt P hp hx`. Establish `hqe : q • e1 ∈ d.1.kerAt P` using `hd.smul_mem_kerAt P hq he1`. Establish `hpair : ∀ w ∈ dual (hStd E n) (d.1.kerAt P), ∀ y ∈ d.1.kerAt P, hStd E n w y ∈ (1 : Submodule (𝓞 E) E)` using `fun w hw y hy => hStd_mem_one_symm ((mem_dual _ w).1 hw y hy)`. Establish `hex : ∃ w ∈ dual (hStd E n) (d.1.kerAt P), ∃ r : 𝓞 E, r ∉ P.1.asIdeal ∧ algebraMap (𝓞 E) E r = hStd E n w (q • e1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `H`. Use `push Not at H`. Establish `hkey : q • e1 ∈ P.1.asIdeal • d.1.kerAt P`. Use `neighbourConstruct_key (K := E) P.1.asIdeal P.1.ne_bot _ _ fun a ha => ?_` and prove the remaining obligations. Rewrite using `[← dual_dual hBlat, mem_dual]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w hw`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 (hpair w hw _ hqe)`. Establish `hrP : r ∈ P.1.asIdeal`. Assume the negation of the conclusion as `hrP`. Conclude with `H w hw r hrP hr`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.map_smul, smul_eq_mul, ← hr, mul_comm]`. Conclude with `Submodule.mem_one.2 (neighbourConstruct_mem_inv.1 ha r hrP)`. Take `⟨a, ha, r, hr, har⟩` from `exists_inv_unif P.1 hq hq2`. Establish `h1` using `inv_smul_mem ha hkey`. Establish `e2 : a • (q • e1) = r • e1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← algebraMap_smul E q e1, smul_smul, mul_comm, har, algebraMap_smul]`. Rewrite `h1` using `[e2]`. Establish `h2` using `((hd.mem_kerAt P _).1 h1).2`. Rewrite `h2` using `[hd.f_smul P r e1 (le_locP _ _ he1), hfe1, mul_one]`. Conclude with `hr (Ideal.Quotient.eq_zero_iff_mem.1 h2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w0, hw0, r, hr, hrw⟩` from `hex`. Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv (mk_ne_zero hr)`. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Use `set w := cO E t • w0 with hwdef`. Establish `hw : w ∈ dual (hStd E n) (d.1.kerAt P)` using `Submodule.smul_mem _ _ hw0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hwq : hStd E n w (q • e1) = algebraMap (𝓞 E) E (t * r)`. Rewrite using `[hwdef, hStd_osmul_left, cO_cO, LinearMap.map_smul_of_tower, ← hrw, Algebra.smul_def, map_mul]`. Take `⟨-, -, -, hloc⟩` from `hd.dnN_spec P hP.ne`. Establish `hint : ∀ y ∈ localization₂ P.1.asIdeal (d.1.dnN P), IntAt P.1 (hStd E n w y)`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hy` using `[hloc]`. Take `⟨s, hs, hsy⟩` from `(mem_locP _ _ _).1 hy`. Take `⟨r', hr'⟩` from `Submodule.mem_one.1 (hpair w hw _ hsy)`. Conclude with `⟨r', s, hs, by rw [hr', LinearMap.map_smul_of_tower, Algebra.smul_def]⟩`. Set `f' : Sp E n → 𝓞 E ⧸ P.1.asIdeal` to `fun y => if y ∈ localization₂ P.1.asIdeal (d.1.dnN P) then redP P.1 (hStd E n w y) else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hf' : ∀ y ∈ localization₂ P.1.asIdeal (d.1.dnN P), f' y = redP P.1 (hStd E n w y)` using `fun y hy => if_pos hy`. Establish `hBle : d.1.kerAt P ≤ localization₂ P.1.asIdeal (d.1.dnN P)` using `fun y hy => le_locP _ _ ((le_sup_left : d.1.kerAt P ≤ d.1.dnN P) hy)`. Establish `hf'q : f' (q • e1) = 1`. Rewrite using `[hf' _ (hBle hqe), hwq, reduction_coe, map_mul, mul_comm, hb]`. Establish `f_add : ∀ x ∈ localization₂ P.1.asIdeal (d.1.dnN P), ∀ y ∈ localization₂ P.1.asIdeal (d.1.dnN P), f' (x + y) = f' x + f' y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx y hy`. Rewrite using `[hf' _ hx, hf' _ hy, hf' _ (Submodule.add_mem _ hx hy), map_add]`. Conclude with `reduction_add (hint x hx) (hint y hy)`. Establish `f_smul : ∀ (a : 𝓞 E), ∀ x ∈ localization₂ P.1.asIdeal (d.1.dnN P), f' (a • x) = Ideal.Quotient.mk P.1.asIdeal a * f' x`. Introduce `a x hx`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hf' _ hx, hf' _ (Submodule.smul_mem _ a hx), LinearMap.map_smul_of_tower]`. Conclude with `redP_osmul a (hint x hx)`. Establish `hok : (d.1.dn P f').Ok` using `hd.dn P hP f_add f_smul (fun x hx => if_neg hx) ⟨q • e1, (le_sup_left : d.1.kerAt P ≤ d.1.dnN P) hqe, by rw [hf'q]; exact one_ne_zero⟩`. Establish `hfP : (d.1.dn P f').f P = f'` using `by simp [Deco.dn]`. Use `⟨⟨d.1.dn P f', hok⟩, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `d.1.dn P f' = d.1.dn P ((d.1.dn P f').f P)`. Rewrite using `[hfP]`. Introduce `e he hfe`. Express the relevant statement in the definitionally equal form `(d.1.dn P f').f P (q • e) = 1`. Rewrite using `[hfP]`.
-
-Establish `hb' : e - e1 ∈ d.1.kerAt P`. Rewrite using `[hd.mem_kerAt]`. Use `⟨Submodule.sub_mem _ he he1, ?_⟩` and prove the remaining obligations. Establish `e3 : e - e1 = e + (-1 : 𝓞 E) • e1` using `by rw [neg_smul, one_smul, sub_eq_add_neg]`. Rewrite using `[e3, hd.f_add P e (le_locP _ _ he) _ (le_locP _ _ (Submodule.smul_mem _ _ he1)), hd.f_smul P _ e1 (le_locP _ _ he1), hfe, hfe1]`.
-
-Simplify using the standard rewrite rules. Establish `e4 : q • e = q • (e - e1) + q • e1` using `by rw [← smul_add, sub_add_cancel]`. Rewrite using `[e4, f_add _ (Submodule.smul_mem _ q (hBle hb')) _ (hBle hqe), f_smul q _ (hBle hb'), hf'q, Ideal.Quotient.eq_zero_iff_mem.2 hq, zero_mul, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DecoSet.dnSet_nonempty (d : DecoSet E n ST SG) (P : ST) (hP : MoveHyp ST SG P) {q : 𝓞 E}
     (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) : (d.dnSet P q).Nonempty := by

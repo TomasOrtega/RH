@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Establish `hn : ∀ n : ℕ, φ (n : ℤ_[l]) = 0` using `fun n => by`. Rewrite using `[← nsmul_one, map_nsmul, h1, smul_zero]`. Establish `hmem` using `PadicInt.sub_zmodRepr_mem c`. Rewrite `hmem` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc : c = (c.zmodRepr : ℤ_[l]) + l • a`. Rewrite using `[nsmul_eq_mul, mul_comm, ha]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, map_add, hn, map_nsmul, hM, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 private theorem padic_hom_zero {l : ℕ} [Fact l.Prime] {M : Type} [AddCommGroup M] (hM : ∀ y : M, l • y = 0)
     (φ : ℤ_[l] →+ M) (h1 : φ 1 = 0) (c : ℤ_[l]) : φ c = 0 := by
@@ -21,9 +21,9 @@ private theorem padic_hom_zero {l : ℕ} [Fact l.Prime] {M : Type} [AddCommGroup
   rw [hc, map_add, hn, map_nsmul, hM, add_zero]
 
 /- English proof (translation)
-Establish `e1 : ∀ i c, f (Pi.single i c, 0) = 0` using `fun i c => padic_hom_zero hM (f.comp ((AddMonoidHom.inl _ _).comp (AddMonoidHom.single (fun _ : Fin d => ℤ_[l]) i))) (h1 i) c`. Establish `e2 : ∀ c, f (0, c) = 0` using `fun c => padic_hom_zero hM (f.comp (AddMonoidHom.inr _ _)) h2 c`. Take `⟨u, w⟩` from `v`. Establish `hs : ((u, w) : (Fin d → ℤ_[l]) × ℤ_[l]) = (∑ i, ((Pi.single i (u i), 0) : (Fin d → ℤ_[l]) × ℤ_[l])) + (0, w)`. Use extensionality with `j`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Prod.fst_sum, Finset.univ_sum_single]`. Simplify using `[Prod.snd_sum]`. Rewrite using `[hs, map_add, map_sum, e2, add_zero]`. Conclude with `Finset.sum_eq_zero fun i _ => e1 i (u i)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem free_hom_zero {l : ℕ} [Fact l.Prime] {M : Type} [AddCommGroup M] (hM : ∀ y : M, l • y = 0)
     {d : ℕ} (f : ((Fin d → ℤ_[l]) × ℤ_[l]) →+ M) (h1 : ∀ i, f (Pi.single i 1, 0) = 0) (h2 : f (0, 1) = 0)
@@ -42,32 +42,28 @@ private theorem free_hom_zero {l : ℕ} [Fact l.Prime] {M : Type} [AddCommGroup 
   exact Finset.sum_eq_zero fun i _ => e1 i (u i)
 
 /- English proof (translation)
-Use `congrArg (fun x => x - a) h` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eq_zero_of_eq_self_add_self {M : Type} [AddCommGroup M] (a : M) (h : a = a + a) : a = 0 := by
   have := congrArg (fun x => x - a) h
   simpa using this.symm
 
 /- English proof (translation)
-Establish `hz1 : z 1 = 0`. Use `hm 1 1` as an intermediate fact. Rewrite `this` using `[one_mul]`. Conclude with `eq_zero_of_eq_self_add_self _ this`. Set `χ : D →* Multiplicative M` to `{ toFun := fun g => Multiplicative.ofAdd (z g) map_one' := by simp [hz1] map_mul' := fun g h => by simp [hm] }`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hP : IsPGroup l (Multiplicative M)` using `fun g => ⟨1, by`. Rewrite using `[pow_one]`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Simplify using `[toAdd_pow, hM]⟩`. Establish `hχ : ∀ g, g ∈ χ.ker ↔ z g = 0` using `fun g => by`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_ker]`. Use `show Multiplicative.ofAdd (z g) = 1 ↔ _`. Conclude with `ofAdd_eq_one`. Establish `hopen : IsOpen (χ.ker : Set D)`. Establish `: (χ.ker : Set D) = z ⁻¹' {0}`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `g`. Conclude with `hχ g`. Rewrite using `[this]`. Conclude with `hz.isOpen_fiber 0`. Establish `hmu : muG l D ≤ χ.ker` using `fun g hg => (hχ g).mpr (hμ g hg)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hker` using `A.univ (Multiplicative M) hP χ hopen hmu`. Establish `dep : ∀ g g', A.a g = A.a g' → z g = z g'`. Introduce `g g' h`. Establish `hk : g⁻¹ * g' ∈ A.a.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, h, inv_mul_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h0` using `(hχ _).mp (hker hk)`. Use `hm g (g⁻¹ * g')` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left, h0, add_zero]`. Conclude with `this.symm`. Set `pre : (Fin d → ℤ_[l]) × ℤ_[l] → D` to `fun v => Classical.choose (A.surj (Multiplicative.ofAdd v))`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hpre : ∀ v, A.a (pre v) = Multiplicative.ofAdd v` using `fun v => Classical.choose_spec (A.surj _)`. Set `φ : ((Fin d → ℤ_[l]) × ℤ_[l]) →+ M` to `AddMonoidHom.mk' (fun v => z (pre v)) (by`. Introduce `v w`. Rewrite using `[← hm]`. Apply `dep` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, hpre, hpre, hpre]`. Use the proof step `rfl)`. Establish `hφ` using `free_hom_zero hM φ (fun i => by show z (pre _) = 0`. Rewrite using `[dep _ (s i) (by rw [hpre, hs])]`. Conclude with `h1 i)`.
-
-Use the proof step `(by show z (pre _) = 0`. Rewrite using `[dep _ t (by rw [hpre, ht])]`. Conclude with `h2)`. Use the proof step `(Multiplicative.toAdd (A.a g))`. Establish `: φ (Multiplicative.toAdd (A.a g)) = z g` using `by show z (pre _) = z g`.
-
-Apply `dep` to reduce the goal to its premises. Rewrite using `[hpre]`. Both sides reduce to the same expression. Rewrite using `[← this, hφ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem char_zero {l : ℕ} [Fact l.Prime] {M : Type} [AddCommGroup M] [Finite M] (hM : ∀ y : M, l • y = 0)
     {D : Type} [Group D] [TopologicalSpace D] [IsTopologicalGroup D] {I : Subgroup D} {d : ℕ} (A : LocAb l D I d)
@@ -132,17 +128,13 @@ private theorem char_zero {l : ℕ} [Fact l.Prime] {M : Type} [AddCommGroup M] [
   rw [← this, hφ]
 
 /- English proof (translation)
-Introduce `l _ F n x D _ _ _ I d m A`. Take `⟨hfin, hcard, -, hl, -⟩` from `finAm l F n x m 0`. Use `haveI := hfin`. Establish `hs : ∀ i, A.a (Classical.choose (A.surj (Multiplicative.ofAdd ((Pi.single i 1, 0) : (Fin d → ℤ_[l]) × ℤ_[l])))) = Multiplicative.ofAdd ((Pi.single i 1, 0) : (Fin d → ℤ_[l]) × ℤ_[l])` using `fun i => Classical.choose_spec (A.surj _)`. Establish `ht : A.a (Classical.choose (A.surj (Multiplicative.ofAdd ((0, 1) : (Fin d → ℤ_[l]) × ℤ_[l])))) = Multiplicative.ofAdd ((0, 1) : (Fin d → ℤ_[l]) × ℤ_[l])` using `Classical.choose_spec (A.surj _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set s : Fin d → D := fun i => Classical.choose (A.surj (Multiplicative.ofAdd ((Pi.single i 1, 0) : (Fin d → ℤ_[l]) × ℤ_[l]))) with hs_def`. Use `set t : D := Classical.choose (A.surj (Multiplicative.ofAdd ((0, 1) : (Fin d → ℤ_[l]) × ℤ_[l]))) with ht_def`. Use `set S := {z : D → x.Am m | IsLocallyConstant z ∧ (∀ g h, z (g * h) = z g + z h) ∧ ∀ g ∈ muG l D, z g = 0} with hS`. Set `ev : (D → x.Am m) → (Fin d → x.Am m) × x.Am m` to `fun z => (fun i => z (s i), z t)`. Establish `hinj : Set.InjOn ev S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `z hz z' hz' he`. Use function extensionality and compare the values at `g`. Establish `key` using `char_zero hl A s t hs ht (z - z') (hz.1.sub hz'.1) (fun g h => by`. Simplify using `only [Pi.sub_apply, hz.2.1, hz'.2.1]`. Use the proof step `abel)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun g hg => by simp [hz.2.2 g hg, hz'.2.2 g hg])`. Use the proof step `(fun i => by`. Simplify using `only [Pi.sub_apply, sub_eq_zero]`. Conclude with `congrFun (congrArg Prod.fst he) i)`. Use the proof step `(by`.
-
-Simplify using `only [Pi.sub_apply, sub_eq_zero]`. Conclude with `congrArg Prod.snd he) g`. Conclude with `sub_eq_zero.mp key`. Use `⟨Set.Finite.of_finite_image (Set.toFinite _) hinj, ?_⟩` and prove the remaining obligations. Rewrite using `[← hinj.ncard_image]`.
-
-Use `(Set.ncard_le_card _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Nat.card_prod, Nat.card_fun, Nat.card_fin, hcard, ← pow_succ, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.homCount :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (x : NP F n) (D : Type) [Group D] [TopologicalSpace D] [IsTopologicalGroup D] (I : Subgroup D) (d m : ℕ), LocAb l D I d → {z : D → x.Am m | IsLocallyConstant z ∧ (∀ g h, z (g * h) = z g + z h) ∧ ∀ g ∈ muG l D, z g = 0}.Finite ∧ {z : D → x.Am m | IsLocallyConstant z ∧ (∀ g h, z (g * h) = z g + z h) ∧ ∀ g ∈ muG l D, z g = 0}.ncard ≤ Nat.card x.K ^ (m * (d + 1)) := by

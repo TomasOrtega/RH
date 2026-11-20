@@ -20,20 +20,20 @@ namespace GlobalTheory.TypeCharRead
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-The claim follows from `(Valuation.integer.integers (Valued.v (R := v.adicCompletion K))).isUnit_iff_valuation_eq_one.2 h`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_val_eq_one (v : HeightOneSpectrum (𝓞 K)) (x : v.adicCompletionIntegers K)
     (h : Valued.v (x : v.adicCompletion K) = 1) : IsUnit x :=
   (Valuation.integer.integers (Valued.v (R := v.adicCompletion K))).isUnit_iff_valuation_eq_one.2 h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `ht : (red x)⁻¹ * red x = 1` using `inv_mul_cancel₀ h`. Use `set n : ℕ := ((red x)⁻¹ : ZMod p).val with hn`. Use `set z : v.adicCompletionIntegers K := 1 - (n : v.adicCompletionIntegers K) * x with hz`. Establish `hrz : red z = 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hz, map_sub, map_mul, map_one, map_natCast, hn, ZMod.natCast_zmod_val, ht, sub_self]`. Establish `hnv : Valued.v (((n : v.adicCompletionIntegers K) : v.adicCompletion K)) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (n : v.adicCompletionIntegers K).2`. Establish `hlt : Valued.v (((n : v.adicCompletionIntegers K) : v.adicCompletion K) * (x : v.adicCompletion K)) < 1`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvz : Valued.v (z : v.adicCompletion K) = 1`. Establish `e : (z : v.adicCompletion K) = 1 - ((n : v.adicCompletionIntegers K) : v.adicCompletion K) * (x : v.adicCompletion K)`. Rewrite using `[hz]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Valuation.map_one_sub_of_lt _ hlt`. Establish `hu` using `(isUnit_of_val_eq_one v z hvz).map red`. Rewrite `hu` using `[hrz]`. Conclude with `not_isUnit_zero hu`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_eq_zero_of_val_lt_one (v : HeightOneSpectrum (𝓞 K)) {p : ℕ} [Fact p.Prime]
     (red : v.adicCompletionIntegers K →+* ZMod p) (x : v.adicCompletionIntegers K)
@@ -68,31 +68,27 @@ open Formalism.IndefR.Links (IsRes)
 namespace GlobalTheory.TypeCharRead
 
 /- English proof (translation)
-Introduce `hGAR D cf Rw low Pq S hL eig θ Bs hV τ hτ j kv s hsw χ hχ red`. Use `haveI : Fact (D.host.g kv.1).Prime := ⟨D.host.g_prime kv.1⟩`. Take `⟨-, -, -, h4⟩` from `GlobalTheory.T.stdMaximalCompact_reduction_properties D 0`. Take `⟨φ, hφs, hφ0, hφa, -⟩` from `h4 s`. Establish `hker : RingHom.ker φ ≤ RingHom.ker red` using `fun x hx => (RingHom.mem_ker).2 (red_eq_zero_of_val_lt_one s.v red x ((hφ0 x).1 ((RingHom.mem_ker).1 hx)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ι := φ.liftOfSurjective hφs ⟨red, hker⟩ with hι`. Establish `hιφ : ∀ x, ι (φ x) = red x` using `fun x => RingHom.liftOfSurjective_comp_apply φ hφs ⟨red, hker⟩ x`. Establish `hred0 : ∀ x, red x = 0 → Valued.v (x : s.v.adicCompletion (maximalRealSubfield D.host.E)) < 1`. Introduce `x hx`. Use `lt_of_le_of_ne ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 x.2) (fun h1 => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu` using `(isUnit_of_val_eq_one s.v x h1).map red`. Rewrite `hu` using `[hx]`. Conclude with `not_isUnit_zero hu`. Set `c : (kP s.w)ˣ →* ℂˣ` to `(Units.map (embLL0 D).toMonoidHom).comp ((τ (j.1 + 1) kv).comp (Units.map ι.toMonoidHom))`. Establish `hres : IsRes (cf.mu0 j * χ) s.w c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a k u hk hu`. Establish `ha : a ∉ s.w.asIdeal`. Introduce `hm`. Establish `: (u : kP s.w) = 0` using `by rw [hu]; exact Ideal.Quotient.eq_zero_iff_mem.2 hm`. Conclude with `u.ne_zero this`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha0 : ((a : 𝓞 D.host.E) : D.host.E) ≠ 0` using `hk ▸ k.ne_zero`. Take `⟨hia, hφia⟩` from `hφa a`. Use `set x : (ZMod (D.host.g kv.1))ˣ := Units.map ι.toMonoidHom u with hx`. Establish `hxv : (x : ZMod (D.host.g kv.1)) = red ⟨_, hia⟩` using `by show ι (u : kP s.w) = _`. Rewrite using `[hu, ← hφia, hιφ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmem : (((x : ZMod (D.host.g kv.1)).val : 𝓞 D.host.E) - a) ∈ (NX.pG D kv).asIdeal`. Rewrite using `[← hsw]`. Take `⟨hib, hφib⟩` from `hφa (((x : ZMod (D.host.g kv.1)).val : 𝓞 D.host.E) - a)`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← hφib]`. Apply `(hφ0 _).2` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Apply `hred0` to reduce the goal to its premises. Establish `e : (⟨_, hib⟩ : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)) = (((x : ZMod (D.host.g kv.1)).val : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E))) - ⟨_, hia⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show s.i (((((x : ZMod (D.host.g kv.1)).val : 𝓞 D.host.E) - a : 𝓞 D.host.E)) : D.host.E) = _`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_natCast]`. Rewrite using `[e, map_sub, map_natCast, ZMod.natCast_zmod_val, hxv, sub_self]`. Establish `h61` using `GlobalTheory.T.levelCharacters_typePlaces_eq_local_components hGAR D cf Rw low Pq S hL eig θ Bs hV τ hτ j kv x a ha0 hmem`. Establish `hunit : IsUnitAt s.w (atFin s.w k)`. Establish `e` using `GlobalTheory.ChainOnto.TameRes.val_alg s.w (k : D.host.E)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `show Valued.v (algebraMap D.host.E (s.w.adicCompletion D.host.E) (k : D.host.E)) = 1`. Rewrite using `[e, hk]`. Conclude with `GlobalTheory.ChainOnto.TameRes.valuation_eq_one_of_not_mem s.w a ha`. Establish `h2 : χ.locK s.w k = 1` using `hχ _ hunit`. Establish `hk' : Units.mk0 ((a : 𝓞 D.host.E) : D.host.E) ha0 = k` using `Units.ext hk.symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h61` using `[hk', ← hsw]`. Apply `Units.ext` to reduce the goal to its premises. Establish `e : (cf.mu0 j * χ).locK s.w k = (cf.mu0 j).locK s.w k * χ.locK s.w k` using `rfl`. Rewrite using `[e, h2, mul_one, ← h61]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ξ, hξc, hξr⟩` from `GlobalTheory.T.exists_splitPlaceComponent_heckeChar_residue D s φ hφs hφ0 hφa _ c hres`. Use `⟨ξ, hξc, fun y hy uu huu => ?_⟩` and prove the remaining obligations. Establish `hyv : Valued.v (y : s.v.adicCompletion (maximalRealSubfield D.host.E)) = 1`. Use `le_antisymm ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 y.2) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Establish `h0` using `red_eq_zero_of_val_lt_one s.v red y hlt`.
-
-Rewrite `hy` using `[h0]`. Conclude with `not_isUnit_zero hy`. Establish `hyu : IsUnit (φ y)` using `(isUnit_of_val_eq_one s.v y hyv).map φ`. Rewrite using `[hξr uu y hyu.unit huu.symm hyu.unit_spec.symm]`. Establish `hw : Units.map ι.toMonoidHom hyu.unit = hy.unit`.
-
-Apply `Units.ext` to reduce the goal to its premises. Use `show ι ((hyu.unit : kP s.w)) = red y`. Rewrite using `[hyu.unit_spec, hιφ]`. Use `show (embLL0 D) ((τ (j.1 + 1) kv (Units.map ι.toMonoidHom hyu.unit) : (↥D.LL0)ˣ) : ↥D.LL0) = _`. Rewrite using `[hw]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_baseCharacter_mul_unramified_eq_typeCharacter_alt : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (Rw : RowSide D) (low : Finset ℕ)
     (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw)

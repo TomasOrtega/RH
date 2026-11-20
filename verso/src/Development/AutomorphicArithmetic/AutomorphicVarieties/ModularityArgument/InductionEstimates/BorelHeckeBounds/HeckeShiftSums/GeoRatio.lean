@@ -13,7 +13,7 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use the polynomial consequences of the given equalities and inequalities.
+Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem geo_div {d X B : ℝ} (hd : 1 ≤ d) (hB : 0 ≤ B) (h : d * X ≤ B) : X ≤ B := by
   by_contra hn
@@ -21,19 +21,19 @@ private theorem geo_div {d X B : ℝ} (hd : 1 ≤ d) (hB : 0 ≤ B) (h : d * X �
   nlinarith
 
 /- English proof (translation)
-Take `⟨h1a, h1b⟩` from `abs_le.1 h1`. Establish `hmE : E ≤ m * E` using `by nlinarith`. Establish `hl0 : 0 < l` using `by linarith`. Establish `hε0 : 0 < ε`. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hn`. Use the polynomial consequences of the given equalities and inequalities. Establish `hε1 : 6 * ε ≤ 1` using `by nlinarith`. Establish `hεl : 0 < ε * l` using `mul_pos hε0 hl0`. Establish `hεl' : 6 * (ε * l) ≤ l` using `by nlinarith`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhl : 0 < h * l` using `mul_pos hh hl0`. Establish `b1 : |a₁| ≤ ε * l + E` using `abs_le.2 ⟨by linarith, by linarith⟩`. Establish `b3 : |a₃| ≤ ε * l + E` using `abs_le.2 ⟨by linarith, by linarith⟩`. Establish `x1 : -(a₁ / 2 + a₂ + a₃ / 2) ≤ E` using `geo_div hd hE (by linarith)`. Establish `x2 : a₁ / 2 + a₂ + a₃ / 2 ≤ h * l + 2 * E` using `geo_div hd (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2 : |a₂| ≤ a₂ + 2 * E + ε * l` using `abs_le.2 ⟨by linarith, by linarith⟩`. Establish `s1 : m * (|a₁| + |a₂| + |a₃|) ≤ m * (a₂ + 4 * E + 3 * (ε * l))` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Establish `e1 : m * (3 * (ε * l)) = l / 2`. Establish `: m * (3 * (ε * l)) = (6 * m * ε) * l / 2` using `by ring`. Rewrite using `[this, hε, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `s2 : l / 4 ≤ m * a₂`. Establish `: m * (a₂ + 4 * E + 3 * (ε * l)) = m * a₂ + 4 * (m * E) + m * (3 * (ε * l))` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm0 : 0 < m` using `by linarith`. Establish `s3 : E < a₂` using `lt_of_mul_lt_mul_left (by linarith : m * E < m * a₂) hm0.le`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨le_of_mul_le_mul_left ?_ hm0, s3, ?_⟩` and prove the remaining obligations. Establish `: 12 * (m * c) * l ≤ 1 * l` using `mul_le_mul_of_nonneg_right hcm hl0.le`. Establish `e : m * (c * l) = 12 * (m * c) * l / 12` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[abs_of_nonneg (by linarith : 0 ≤ a₂)]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (h + 2) * l = h * l + 2 * l` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem geo_good {m h E ε c d H a₁ a₂ a₃ l : ℝ} (hm : 1 ≤ m) (hh : 0 < h) (hE : 0 ≤ E) (hε : 6 * m * ε = 1)
     (hcm : 12 * (m * c) ≤ 1) (hd : 1 ≤ d) (hl : 100 * (m * E) + 1 ≤ l)
@@ -75,17 +75,17 @@ private theorem geo_good {m h E ε c d H a₁ a₂ a₃ l : ℝ} (hm : 1 ≤ m) 
     linarith
 
 /- English proof (translation)
-Take `⟨h1a, h1b⟩` from `abs_le.1 h1`. Take `⟨r, hr⟩ : ∃ r, r = |a₁| + |a₂| + |a₃|` from `⟨_, rfl⟩`. Rewrite `h2`, the goal using `[← hr]`. Establish `hmE : E ≤ m * E` using `by nlinarith`. Establish `hl0 : 0 < l` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : 0 < m` using `by linarith`. Establish `hhl : 0 < h * l` using `mul_pos hh hl0`. Establish `s1 : 50 * E < r` using `lt_of_mul_lt_mul_left (by linarith : m * (50 * E) < m * r) hm0.le`. Establish `hc1 : 12 * c ≤ 1` using `by nlinarith`. Establish `hcr : 12 * (c * r) ≤ r` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcr0 : 0 ≤ c * r` using `mul_nonneg hc0.le (by linarith)`. Use `⟨le_of_mul_le_mul_left ?_ hm0, fun k1 k3 => ?_⟩` and prove the remaining obligations. Establish `: 12 * (m * c) * l ≤ 1 * l` using `mul_le_mul_of_nonneg_right hcm hl0.le`. Establish `e : m * (c * l) = 12 * (m * c) * l / 12` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `b1 : |a₁| ≤ c * r + E` using `abs_le.2 ⟨by linarith, by linarith⟩`. Establish `b3 : |a₃| ≤ c * r + E` using `abs_le.2 ⟨by linarith, by linarith⟩`. Establish `b2 : r / 2 ≤ a₂`. Apply the tactic sequence `rcases abs_cases a₂ with ⟨e, -⟩ | ⟨e, -⟩ <;> linarith`. Establish `x2 : a₁ / 2 + a₂ + a₃ / 2 ≤ h * l + 2 * E` using `geo_div hd (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `⟨by linarith, ?_⟩` and prove the remaining obligations. Establish `s2 : r ≤ (4 * h + 1) * l`. Establish `e : (4 * h + 1) * l = 4 * (h * l) + l` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `s3 : c * r ≤ c * ((4 * h + 1) * l)` using `mul_le_mul_of_nonneg_left s2 hc0.le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e : ε * l = 2 * (c * ((4 * h + 1) * l))` using `by rw [← hc]; ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem geo_bad {m h E ε c d H a₁ a₂ a₃ l : ℝ} (hm : 1 ≤ m) (hh : 0 < h) (hE : 0 ≤ E) (hc0 : 0 < c)
     (hc : 2 * c * (4 * h + 1) = ε) (hcm : 12 * (m * c) ≤ 1) (hd : 1 ≤ d) (hl : 100 * (m * E) + 1 ≤ l)
@@ -122,11 +122,11 @@ private theorem geo_bad {m h E ε c d H a₁ a₂ a₃ l : ℝ} (hm : 1 ≤ m) (
     linarith
 
 /- English proof (translation)
-Rewrite using `[← Real.log_le_iff_le_exp (div_pos (hρ i) (hρ j))]`. Simplify using `only [Real.log_div (hρ _).ne' (hρ _).ne']`. Establish `a1` using `le_abs_self (Real.log (ρ 0) - Real.log (ρ 1))`. Establish `a2` using `le_abs_self (Real.log (ρ 1) - Real.log (ρ 2))`. Establish `a3` using `le_abs_self (Real.log (ρ 2) - Real.log (ρ 3))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1` using `neg_abs_le (Real.log (ρ 0) - Real.log (ρ 1))`. Establish `b2` using `neg_abs_le (Real.log (ρ 1) - Real.log (ρ 2))`. Establish `b3` using `neg_abs_le (Real.log (ρ 2) - Real.log (ρ 3))`. Establish `c1` using `abs_nonneg (Real.log (ρ 0) - Real.log (ρ 1))`. Establish `c2` using `abs_nonneg (Real.log (ρ 1) - Real.log (ρ 2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c3` using `abs_nonneg (Real.log (ρ 2) - Real.log (ρ 3))`. Establish `hi : ∀ k : Fin (2 + 2), k = 0 ∨ k = 1 ∨ k = 2 ∨ k = 3` using `by decide`. Apply the tactic sequence `rcases hi i with rfl | rfl | rfl | rfl <;> rcases hi j with rfl | rfl | rfl | rfl <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem geo_ratio {ρ : Fin (2 + 2) → ℝ} (hρ : ∀ i, 0 < ρ i) (i j : Fin (2 + 2)) :
     ρ i / ρ j ≤ Real.exp (|Real.log (ρ 0 / ρ 1)| + |Real.log (ρ 1 / ρ 2)| + |Real.log (ρ 2 / ρ 3)|) := by
@@ -145,7 +145,7 @@ private theorem geo_ratio {ρ : Fin (2 + 2) → ℝ} (hρ : ∀ i, 0 < ρ i) (i 
   rcases hi i with rfl | rfl | rfl | rfl <;> rcases hi j with rfl | rfl | rfl | rfl <;> linarith
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `abs_le.1 hE`. Rewrite using `[← le_div_iff₀ hb, ← Real.log_le_log_iff ht (div_pos ha hb)]`. Conclude with `⟨fun h => by linarith, fun h => by linarith⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem geo_step {t E a b : ℝ} (ht : 0 < t) (ha : 0 < a) (hb : 0 < b) (hE : |Real.log t| ≤ E) :
     (t * b ≤ a → -E ≤ Real.log (a / b)) ∧ (E < Real.log (a / b) → t * b ≤ a) := by
@@ -154,7 +154,7 @@ private theorem geo_step {t E a b : ℝ} (ht : 0 < t) (ha : 0 < a) (hb : 0 < b) 
   exact ⟨fun h => by linarith, fun h => by linarith⟩
 
 /- English proof (translation)
-Use `⟨fun h => ⟨⟨h 0 1 rfl, h 2 3 rfl⟩, h 1 2 rfl⟩, fun ⟨⟨h1, h3⟩, h2⟩ i j hij => ?_⟩` and prove the remaining obligations. Establish `hi : ∀ i j : Fin (2 + 2), (j : ℕ) = i + 1 → (i = 0 ∧ j = 1) ∨ (i = 1 ∧ j = 2) ∨ (i = 2 ∧ j = 3)` using `by decide`. Apply the tactic sequence `rcases hi i j hij with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> assumption`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem geo_full {t : ℝ} {ρ : Fin (2 + 2) → ℝ} : Full t ρ ↔ Rel t ρ ∧ t * ρ 2 ≤ ρ 1 := by
   refine ⟨fun h => ⟨⟨h 0 1 rfl, h 2 3 rfl⟩, h 1 2 rfl⟩, fun ⟨⟨h1, h3⟩, h2⟩ i j hij => ?_⟩
@@ -162,7 +162,7 @@ private theorem geo_full {t : ℝ} {ρ : Fin (2 + 2) → ℝ} : Full t ρ ↔ Re
   rcases hi i j hij with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> assumption
 
 /- English proof (translation)
-The claim follows from `|HH (γ * x) - (Module.finrank ℚ K : ℝ) * (Real.log (ρ 0 / ρ 1) / 2 + Real.log (ρ 1 / ρ 2) + Real.log (ρ 2 / ρ 3) / 2)| ≤ E ∧ Real.log (qht x) ≤ E + m * (|Real.log (ρ 0 / ρ 1)| + |Real.log (ρ 1 / ρ 2)| + |Real.log (ρ 2 / ρ 3)|) ∧ HH (γ * x) ≤ h * Real.log (qht x) + E := by obtain …`.
+A detailed English derivation is pending.
 -/
 private theorem geo_logs {K : Type} [Field K] [NumberField K] (ω : Set (AdelicGLn.AdelicGL K (2 + 2))) (hω : Bor ω) :
     ∃ m h E : ℝ, 1 ≤ m ∧ 0 < h ∧ 0 ≤ E ∧ ∀ (ρ : Fin (2 + 2) → ℝ) (x : G1 K (2 + 2)), ∀ γ ∈ Gam K (2 + 2), Sg ω ρ (γ * x) →
@@ -206,14 +206,14 @@ private theorem geo_logs {K : Type} [Field K] [NumberField K] (ω : Set (AdelicG
     linarith [le_abs_self D]
 
 /- English proof (translation)
-Take `⟨y, -, rfl⟩` from `h`. Conclude with `y.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem geo_pk {K : Type} [Field K] [NumberField K] {δ : G1 K (2 + 2)} (h : δ ∈ PK K) : δ ∈ Gam K (2 + 2) := by
   obtain ⟨y, -, rfl⟩ := h
   exact y.2
 
 /- English proof (translation)
-Take `⟨y, hy, e⟩` from `h`. Establish `e' : y = q'.out * q.out⁻¹` using `Subtype.ext e`. Rewrite using `[← q.out_eq, ← q'.out_eq]`. Conclude with `Quotient.sound (QuotientGroup.rightRel_apply.2 (e' ▸ hy))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem geo_cos {K : Type} [Field K] [NumberField K] {q q' : Cos K}
     (h : (q'.out : G1 K (2 + 2)) * (q.out : G1 K (2 + 2))⁻¹ ∈ PK K) : q = q' := by
@@ -223,49 +223,43 @@ private theorem geo_cos {K : Type} [Field K] [NumberField K] {q q' : Cos K}
   exact Quotient.sound (QuotientGroup.rightRel_apply.2 (e' ▸ hy))
 
 /- English proof (translation)
-Introduce `K _ _ ω t hred`. Take `⟨m, h, E₀, hm, hh, hE₀, hlog⟩` from `geo_logs ω hred.bor`. Take `⟨G, hG⟩` from `gain ω t hred.bor hred.pos`. Take `⟨E, hE⟩ : ∃ E, E = E₀ + |G| + |Real.log t|` from `⟨_, rfl⟩`. Establish `hG0` using `abs_nonneg G`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG1` using `le_abs_self G`. Establish `ht0` using `abs_nonneg (Real.log t)`. Establish `hEt : |Real.log t| ≤ E` using `by linarith`. Establish `hE0 : 0 ≤ E` using `by linarith`. Establish `hEE : E₀ ≤ E` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGE : G ≤ E` using `by linarith`. Establish `hm0 : 0 < m` using `by linarith`. Establish `hd : (1 : ℝ) ≤ (Module.finrank ℚ K : ℝ)` using `Nat.one_le_cast.2 Module.finrank_pos`. Establish `hε : 6 * m * (1 / (6 * m)) = 1` using `by field_simp`. Establish `hc : 2 * (1 / (12 * m * (4 * h + 1))) * (4 * h + 1) = 1 / (6 * m)` using `by field_simp; norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcm : 12 * (m * (1 / (12 * m * (4 * h + 1)))) ≤ 1`. Establish `: 12 * (m * (1 / (12 * m * (4 * h + 1)))) = 1 / (4 * h + 1)` using `by field_simp`. Rewrite using `[this, div_le_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hε0 : 0 < 1 / (6 * m)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hc0 : 0 < 1 / (12 * m * (4 * h + 1))` using `by positivity`. Generalize the expression as in `1 / (6 * m) = ε at hε hc hε0`. Generalize the expression as in `1 / (12 * m * (4 * h + 1)) = c at hc hcm hc0`. Use `⟨ε, c, Real.exp (100 * (m * E) + 1), ⌈h + 2⌉₊, hε0, hc0, fun T x hT hQ hOm => ?_⟩` and prove the remaining obligations. Establish `hq0 : 0 < qht x` using `(Real.exp_pos _).trans_le hQ`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hl : 100 * (m * E) + 1 ≤ Real.log (qht x)` using `(Real.le_log_iff_exp_le hq0).2 hQ`. Establish `hl0 : 0 ≤ Real.log (qht x)` using `Real.log_nonneg ((qhtBasic K (2 + 2)).1 x)`. Establish `hPK` using `(hpSpec (K := K)).2.2.1`. Establish `hin : ∀ ρ : Fin (2 + 2) → ℝ, (∀ i, 0 < ρ i) → (qht x ^ ε ≤ inR ρ ↔ ε * Real.log (qht x) ≤ Real.log (ρ 0 / ρ 1) + Real.log (ρ 2 / ρ 3))` using `fun ρ hρ => by`. Establish `p1` using `div_pos (hρ 0) (hρ 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p2` using `div_pos (hρ 2) (hρ 3)`. Rewrite using `[inR, ← Real.log_le_log_iff (Real.rpow_pos_of_pos hq0 _) (mul_pos p1 p2), Real.log_rpow hq0, Real.log_mul p1.ne' p2.ne']`. Set `Good : Cos K → Prop` to `fun q => T < HH (qx q x) ∧ ∃ δ ∈ PK K, ∃ ρ, Sg ω ρ (δ * qx q x) ∧ Rel t ρ ∧ Real.log (ρ 0 / ρ 1) + Real.log (ρ 2 / ρ 3) < ε * Real.log (qht x)`. Establish `hfar : ∀ q, ¬ Good q → T < HH (qx q x) → Far ω t ε (qx q x)` using `fun q hq hT' => by`. Take `⟨δ, hδ, ρ, hS, hR⟩` from `hred.rel (qx q x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨δ, hδ, ρ, hS, hR, ?_⟩` and prove the remaining obligations. Rewrite using `[(qhtBasic K (2 + 2)).2.1 _ q.out.2 x, hin ρ hS.1]`. Assume the negation of the conclusion as `hn`. Conclude with `hq ⟨hT', δ, hδ, ρ, hS, hR, not_le.1 hn⟩`. Establish `hgood : ∀ (q : Cos K), ∀ δ ∈ PK K, ∀ ρ, T < HH (qx q x) → Sg ω ρ (δ * qx q x) → Rel t ρ → Real.log (ρ 0 / ρ 1) + Real.log (ρ 2 / ρ 3) < ε * Real.log (qht x) → c * Real.log (qht x) ≤ Real.log (ρ 1 / ρ 2) ∧ E < Real.log (ρ 1 / ρ 2) ∧ |Real.log (ρ 0 / ρ 1)| + |Real.log (ρ 1 / ρ 2)| …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q δ hδ ρ hT' hS hR hlt`. Establish `hρ : ∀ i, 0 < ρ i` using `hS.1`. Establish `hH : 0 < HH (δ * (q.out : G1 K (2 + 2)) * x)`. Rewrite using `[mul_assoc, hPK δ hδ]`. Conclude with `hT.trans_lt hT'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hS` using `[qx, ← mul_assoc]`. Take `⟨u1, u2, u3⟩` from `hlog ρ x _ (mul_mem (geo_pk hδ) q.out.2) hS`. Take `⟨v1, v2, v3⟩` from `geo_good hm hh hE0 hε hcm hd hl (u1.trans hEE) (by linarith) (by linarith) ((geo_step hred.pos (hρ 0) (hρ 1) hEt).1 hR.1) ((geo_step hred.pos (hρ 2) (hρ 3) hEt).1 hR.2) hH hlt`. Conclude with `⟨v1, v2, v3, geo_full.2 ⟨hR, (geo_step hred.pos (hρ 1) (hρ 2) hEt).2 v2⟩⟩`. Establish `hgain : ∀ ρ z γ, Sg ω ρ z → Full t ρ → γ ∈ Gam K (2 + 2) → γ ∉ PK K → E < Real.log (ρ 1 / ρ 2) → HH (γ * z) < HH z` using `fun ρ z γ hS hF hγ hn hlt => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `hG ρ z γ hS hF hγ hn` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Distinguish the cases in `hex : ∃ q, Good q`. Take `⟨q₀, hT₀, δ, hδ, ρ, hS, hR, hlt⟩` from `hex`. Establish `hρ : ∀ i, 0 < ρ i` using `hS.1`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v1, v2, v3, hF⟩` from `hgood q₀ δ hδ ρ hT₀ hS hR hlt`. Use `Or.inl ⟨q₀, δ, hδ, ρ, hS, hF, hT₀, ?_, fun i j _ => ?_, fun q hq hT' => hfar q ?_ hT'⟩` and prove the remaining obligations. Rewrite using `[← Real.log_le_log_iff (Real.rpow_pos_of_pos hq0 _) (div_pos (hρ 1) (hρ 2)), Real.log_rpow hq0]`. Conclude with `v1`. Use `(geo_ratio hρ i j).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Real.le_log_iff_exp_le (pow_pos hq0 _), Real.log_pow]`. Conclude with `v3.trans (mul_le_mul_of_nonneg_right (Nat.le_ceil _) hl0)`. Introduce and unpack `⟨-, δ', hδ', ρ', hS', hR', hlt'⟩`. Take `⟨-, w2, -, hF'⟩` from `hgood q δ' hδ' ρ' hT' hS' hR' hlt'`. Establish `hγ : δ' * (q.out : G1 K (2 + 2)) * (δ * (q₀.out : G1 K (2 + 2)))⁻¹ ∈ Gam K (2 + 2)` using `mul_mem (mul_mem (geo_pk hδ') q.out.2) (inv_mem (mul_mem (geo_pk hδ) q₀.out.2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hn : δ' * (q.out : G1 K (2 + 2)) * (δ * (q₀.out : G1 K (2 + 2)))⁻¹ ∉ PK K` using `fun hk => by`. Use `mul_mem (mul_mem (inv_mem hδ') hk) hδ` as an intermediate fact. Use `hq (geo_cos (q := q₀) (q' := q) ?_).symm` and prove the remaining obligations. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `k1` using `hgain ρ _ _ hS hF hγ hn v2`. Establish `k2` using `hgain ρ' _ _ hS' hF' (inv_mem hγ) (fun hk => hn (inv_mem_iff.1 hk)) w2`. Establish `e1 : δ' * (q.out : G1 K (2 + 2)) * (δ * (q₀.out : G1 K (2 + 2)))⁻¹ * (δ * qx q₀ x) = δ' * qx q x`. Simplify using `only [qx]`. Use `group`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : (δ' * (q.out : G1 K (2 + 2)) * (δ * (q₀.out : G1 K (2 + 2)))⁻¹)⁻¹ * (δ' * qx q x) = δ * qx q₀ x`. Simplify using `only [qx]`. Use `group`. Rewrite `k1` using `[e1]`. Rewrite `k2` using `[e2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_asymm k1 k2`. Take `⟨γ, hγ, ρ, hS, hF⟩` from `hred.full x`. Establish `hρ : ∀ i, 0 < ρ i` using `hS.1`. Take `⟨hR, hmid⟩` from `geo_full.1 hF`. Take `⟨u1, u2, u3⟩` from `hlog ρ x γ hγ hS`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v1, v2⟩` from `geo_bad hm hh hE0 hc0 hc hcm hd hl (u1.trans hEE) (by linarith) (by linarith) ((geo_step hred.pos (hρ 0) (hρ 1) hEt).1 hR.1) ((geo_step hred.pos (hρ 2) (hρ 3) hEt).1 hR.2) ((geo_step hred.pos (hρ 1) (hρ 2) hEt).1 hmid)`. Use `Or.inr ⟨γ, hγ, ρ, _, hS, hF, Real.one_le_exp (by positivity), fun i j _ => geo_ratio hρ i j, ?_, ?_, fun q => hfar q fun hq => hex ⟨q, hq⟩⟩` and prove the remaining obligations. Rewrite using `[← Real.log_le_iff_le_exp (Real.rpow_pos_of_pos hq0 _), Real.log_rpow hq0]`. Conclude with `v1`. Rewrite using `[← Real.exp_mul, ← Real.le_log_iff_exp_le (div_pos (hρ 0) (hρ 1)), ← Real.le_log_iff_exp_le (div_pos (hρ 2) (hρ 3)), mul_comm _ c]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Take `⟨w1, w2⟩` from `v2 hn.1 hn.2`. Take `⟨q, hq⟩` from `not_forall.1 hOm`. Establish `hT' : T < HH (γ * x)`.
-
-Establish `e : qx q x = (q.out : G1 K (2 + 2)) * γ⁻¹ * (γ * x)`. Simplify using `only [qx]`. Use `group`. Rewrite `hq` using `[not_le, e]`. Distinguish the cases in `hk : (q.out : G1 K (2 + 2)) * γ⁻¹ ∈ PK K`.
-
-Rewrite `hq` using `[hPK _ hk]`. Then use the resulting hypothesis. Conclude with `hq.trans (hgain ρ _ _ hS hF (mul_mem q.out.2 (inv_mem hγ)) hk w1)`. Take `⟨δ, hδ, e⟩` from `(pkLaws (K := K)).2.2.2 ⟨γ, hγ⟩`. Use `hex ⟨Quotient.mk _ ⟨γ, hγ⟩, ?_, δ⁻¹, inv_mem hδ, ρ, ?_, hR, w2⟩` and prove the remaining obligations. Rewrite using `[qx, e, mul_assoc, hPK δ hδ]`.
-
-Conclude with `hT'`. Rewrite using `[qx, e, mul_assoc, inv_mul_cancel_left]`. Conclude with `hS`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.geo :
     ∀ {K : Type} [Field K] [NumberField K] (ω : Set (AdelicGLn.AdelicGL K (2 + 2))) (t : ℝ), Red ω t → ∃ (ε c Q : ℝ) (M : ℕ), 0 < ε ∧ 0 < c ∧ ∀ (T : ℝ) (x : G1 K (2 + 2)), 0 ≤ T → Q ≤ qht x → ¬ Om T x →

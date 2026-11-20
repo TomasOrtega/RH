@@ -7,25 +7,23 @@ namespace PositivityTheory.RgUd.TP.Desc.Piece.PSect
 open Module Polynomial
 
 /- English proof (translation)
-Establish `: IsArtinianRing S` using `IsArtinianRing.of_finite k S`. Use `haveI : Fintype (MaximalSpectrum S) := Fintype.ofFinite _`. Use `set φ := IsArtinianRing.equivPi S with hφ`. Set `σ` to `(Fintype.equivFin (MaximalSpectrum S)).symm`. Use `⟨Fintype.card (MaximalSpectrum S), fun t => φ.symm (Pi.single (σ t) 1), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `t show _ * _ = _`. Rewrite using `[← map_mul]`. Use `congr 1`. Use extensionality with `M`. Distinguish the cases in `h : M = σ t`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_sum, map_one]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AlgEquiv.apply_symm_apply]`. Rewrite using `[Equiv.sum_comp σ (fun M => (Pi.single M 1 : ∀ M : MaximalSpectrum S, S ⧸ M.asIdeal))]`. Conclude with `Finset.univ_sum_single (1 : ∀ M : MaximalSpectrum S, S ⧸ M.asIdeal)`. Introduce `t t' htt`. Rewrite using `[← map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hne : σ t ≠ σ t'` using `fun h => htt (σ.injective h)`. Establish `: (Pi.single (σ t) 1 * Pi.single (σ t') 1 : ∀ M : MaximalSpectrum S, S ⧸ M.asIdeal) = 0`. Use extensionality with `M`. Distinguish the cases in `h1 : M = σ t`. Substitute `h1` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hne.symm]`. Simplify using `[h1]`. Rewrite using `[this, map_zero]`. Introduce `t s`. Use `(σ t).isMaximal` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha : φ s (σ t) = 0`. Use `left`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, AlgEquiv.apply_symm_apply, map_zero]`. Use extensionality with `M`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h1 : M = σ t`. Substitute `h1` using the available equality. Simplify using `[ha]`. Simplify using `[h1]`. Use `right`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv ha`. Use `⟨φ.symm (Pi.single (σ t) b), ?_⟩` and prove the remaining obligations. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]`. Use extensionality with `M`.
-
-Distinguish the cases in `h1 : M = σ t`. Substitute `h1` using the available equality. Simplify using `only [Pi.mul_apply, Pi.single_eq_same, mul_one]`. Conclude with `hb`. Simplify using `[h1]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem idem {k S : Type*} [Field k] [CommRing S] [Algebra k S] [FiniteDimensional k S] [IsReduced S] :
     ∃ (m : ℕ) (e : Fin m → S), (∀ t, IsIdempotentElem (e t)) ∧ ∑ t, e t = 1 ∧
@@ -79,17 +77,17 @@ theorem idem {k S : Type*} [Field k] [CommRing S] [Algebra k S] [FiniteDimension
       · simp [h1]
 
 /- English proof (translation)
-Use `set ε := Submodule.IsPrincipal.generator (nilradical R) with hε`. Establish `hspan : Ideal.span {ε} = nilradical R` using `Ideal.span_singleton_generator _`. Establish `hεn : IsNilpotent ε` using `mem_nilradical.mp (Submodule.IsPrincipal.generator_mem _)`. Use `⟨ε, hεn, fun r => ?_⟩` and prove the remaining obligations. Establish `key : ∀ n : ℕ, ∃ σ : Fin n → R, (∀ l, σ l ∈ S) ∧ ∃ u : R, r = ∑ l, σ l * ε ^ (l : ℕ) + ε ^ n * u`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨Fin.elim0, fun l => l.elim0, r, by simp⟩`. Consider the case `succ n ih`. Take `⟨σ, hσ, u, hu⟩` from `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hn⟩` from `hS u`. Establish `hm : u - s ∈ Ideal.span {ε}` using `by rw [hspan]; exact mem_nilradical.mpr hn`. Take `⟨v, hv⟩` from `Ideal.mem_span_singleton'.mp hm`. Use `⟨Fin.snoc σ s, fun l => ?_, v, ?_⟩` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun i => ?_) l` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hs`. Simplify using `using hσ i`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last, Fin.val_castSucc, Fin.val_last]`. Rewrite using `[hu]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: u = s + v * ε` using `by rw [hv]; ring`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨σ, hσ, u, hu⟩` from `key q`. Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, hnil ε hεn, zero_mul, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem sEps {k R : Type*} [Field k] [CommRing R] [Algebra k R] [IsPrincipalIdealRing R] (S : Subalgebra k R)
     (hS : ∀ r : R, ∃ s ∈ S, IsNilpotent (r - s)) (q : ℕ) (hnil : ∀ r : R, IsNilpotent r → r ^ q = 0) :

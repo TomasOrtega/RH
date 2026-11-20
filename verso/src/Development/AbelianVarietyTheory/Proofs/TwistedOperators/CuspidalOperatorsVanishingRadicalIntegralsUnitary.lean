@@ -24,11 +24,11 @@ variable {H K : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Complet
   [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
 
 /- English proof (translation)
-Take `⟨n, B, C, hB, hC, rfl⟩` from `hT`. Establish `e : S ∘L (∑ i, B i ∘L C i) ∘L P = ∑ i, (S ∘L B i) ∘L (C i ∘L P)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `t : ∀ i, trace ((S ∘L B i) ∘L (C i ∘L P)) = trace (B i ∘L C i)` using `fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[trace_comp_comm ((hB i).comp_left S) ((hC i).comp_right P), trace_comp_comm (hB i) (hC i)]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[hPS]`. Establish `h1 : HasSum (fun j => ⟪stdBasis H j, (S ∘L (∑ i, B i ∘L C i) ∘L P) (stdBasis H j)⟫_ℂ) (∑ i, trace (B i ∘L C i))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e]`. Simplify `hasSum_sum fun i (_ : i ∈ Finset.univ) => hasSum_trace_comp (stdBasis H) ((hB i).comp_left S) ((hC i).comp_right P)` using `only [ContinuousLinearMap.sum_apply, inner_sum, t]`. Establish `h2 : HasSum (fun j => ⟪stdBasis K j, (∑ i, B i ∘L C i) (stdBasis K j)⟫_ℂ) (∑ i, trace (B i ∘L C i))`. Simplify `hasSum_sum fun i (_ : i ∈ Finset.univ) => hasSum_trace_comp (stdBasis K) (hB i) (hC i)` using `only [ContinuousLinearMap.sum_apply, inner_sum]`. Conclude with `h1.tsum_eq.trans h2.tsum_eq.symm`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem trace_comp_comp_of_comp_eq_id (S : K →L[ℂ] H) (P : H →L[ℂ] K) (hPS : ∀ y, P (S y) = y)
     {T : K →L[ℂ] K} (hT : IsTraceClass T) : trace (S ∘L T ∘L P) = trace T := by
@@ -53,13 +53,13 @@ theorem trace_comp_comp_of_comp_eq_id (S : K →L[ℂ] H) (P : H →L[ℂ] K) (h
 end Compress
 
 /- English proof (translation)
-Introduce `hCT D V μ _ _ f hf h1 h2`. Establish `c` using `GlobalTheory.Orb.continuous_of_mem_ccAd hf`. Establish `m1 : GlobalTheory.IndefiniteRowSideFullHecke.TraceKernelDecomposition.MapsIntoCusp V μ f` using `GlobalTheory.T.unitaryAutomorphicConvolution_mem_cuspidal_of_radical_zero D V μ f hf h1`. Establish `m2 : GlobalTheory.IndefiniteRowSideFullHecke.TraceKernelDecomposition.MapsIntoCusp V μ (starFn f)` using `GlobalTheory.T.unitaryAutomorphicConvolution_mem_cuspidal_of_radical_zero D V μ (starFn f) (GlobalTheory.Orb.starFn_mem_ccAd hf) h2`. Establish `hd` using `GlobalTheory.CuspSpectrum.traceIsDiagonal (μ := μ) hCT hf m2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `fun (F : DividedPowerChartLift V μ) (x : GA D V) => GlobalTheory.AutomorphicL2KernelIntegral.convR_eq_integral_kernelQ (GA D V) (GQ V) μ f c.1 c.2 F x`. Take `⟨t1, t2, t3⟩` from `GlobalTheory.T.hasSum_cuspidalMultiplicity_trace hCT D V μ f hf`. Establish `etr : trace (RopG V μ f) = trace (RcuspOp V μ f)`. Rewrite using `[GlobalTheory.TraceDiagonal.RopG_eq_comp c.1 c.2 m2]`. Conclude with `trace_comp_comp_of_comp_eq_id _ _ (fun y => Submodule.orthogonalProjection_mem_subspace_eq_self y) (hCT D V μ f hf)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m1, fun F hF => ?_, hd.1, fun F p => ?_, fun F => ?_, hd.2.1, hd.2.2, fun c' => ?_, t1, t2, etr ▸ t3⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.TraceDiagonal.RopG_eq_comp c.1 c.2 m2]`. Simplify using `[Submodule.orthogonalProjection_eq_zero_iff.2 hF]`. Proceed by induction on `p using Quotient.inductionOn with`. Consider the case `h x => exact (hk F x).1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `ae_quotMeasure_iff.2 ?_ filter_upwards [(AutomorphicL2Pointwise.lift_Rop_eq_convR (GA D V) (GQ V) μ f (c.1.integrable_of_hasCompactSupport c.2) F).2] with x hx` and prove the remaining obligations. Conclude with `hx.trans (hk F x).2`. Conclude with `GlobalTheory.CuspSpectrum.multIn_L2cusp_lt (GlobalTheory.Published.cuspDiscreteDecomposition_of_traceClass hCT D V μ) c'.rep.isIrr`.
+A detailed English derivation is pending.
 -/
 theorem cuspidalOperators : GlobalTheory.Published.CuspTraceClass → ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V))
     [μ.IsHaarMeasure] [μ.IsMulRightInvariant], CuspidalOperators V μ := by

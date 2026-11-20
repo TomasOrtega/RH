@@ -34,9 +34,9 @@ def genO {B : Block E} {Γ : Type} (g : Γ → BGen B) (X : B.Hb →L[ℂ] B.Hb)
   fun o => o.elim X fun x => (g x).op
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, rfl⟩`. Consider the cases of `o with`. Consider the case `none => exact Or.inr rfl`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some x => exact Or.inl ⟨x, rfl⟩`. Introduce and unpack `(⟨x, rfl⟩ | rfl)`. Conclude with `⟨some x, rfl⟩`. Conclude with `⟨none, rfl⟩`.
+Treat this case separately. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem range_genO {B : Block E} {Γ : Type} (g : Γ → BGen B) (X : B.Hb →L[ℂ] B.Hb) :
     Set.range (genO g X) = gOps g ∪ {X} := by
@@ -57,13 +57,13 @@ def letter {B : Block E} {Γ : Type} (g : Γ → BGen B) (tX : PT B) : Option Γ
   | (some x, true) => (g x).adj
 
 /- English proof (translation)
-Establish `hadj` using `(hW E B [] t₀ 0 (by simp) h₀ le_rfl (by simp)).2.2.2.2.1`. Take `⟨o, s⟩` from `p`. Consider the cases of `o with`. Consider the case `none`. Consider the cases of `s with`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `false => exact ⟨htX, hX.symm⟩`. Consider the case `true`. Use `hO E B tX tX htX htX` as an intermediate fact. Use `⟨this.2.2.2.2.1, ?_⟩` and prove the remaining obligations. Use `show tX.adj.op = star X`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this.2.2.2.2.2.1, hX, ContinuousLinearMap.star_eq_adjoint]`. Consider the case `some x`. Consider the cases of `s with`. Consider the case `false => exact ⟨hg x, rfl⟩`. Consider the case `true`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(hadj (g x) (hg x)).1, ?_⟩` and prove the remaining obligations. Use `show (g x).adj.op = star (g x).op`. Rewrite using `[(hadj (g x) (hg x)).2, ContinuousLinearMap.star_eq_adjoint]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem letter_ok (hO : BlockOperatorsProductAdjoint) (hW : BlockWordOperators) {B : Block E} {Γ : Type} (g : Γ → BGen B)
     (X : B.Hb →L[ℂ] B.Hb) (tX t₀ : PT B) (hg : ∀ x, (g x).Ok) (htX : tX.Ok) (hX : X = tX.op) (h₀ : t₀.Ok)
@@ -89,23 +89,19 @@ theorem letter_ok (hO : BlockOperatorsProductAdjoint) (hW : BlockWordOperators) 
       rw [(hadj (g x) (hg x)).2, ContinuousLinearMap.star_eq_adjoint]
 
 /- English proof (translation)
-Establish `hy : (y : B.Hb →L[ℂ] B.Hb) ∈ StarAlgebra.adjoin ℂ (Set.range (genO g X))`. Rewrite using `[range_genO]`. Conclude with `y.2`. Take `⟨J, hJ, c, w, L, -, hyw, -⟩` from `hA (B.Hb →L[ℂ] B.Hb) (Option Γ) (genO g X) _ hy`. Establish `hl` using `letter_ok hO hW g X tX t₀ hg htX hX h₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `bw : J → List (BGen B)` to `fun j => (w j).map (letter g tX)`. Establish `bok : ∀ j, ∀ b ∈ bw j, b.Ok` using `fun j b hb => by`. Take `⟨p, -, rfl⟩` from `List.mem_map.1 hb`. Conclude with `(hl p).1`. Establish `bop : ∀ j, ((bw j).map BGen.op).prod = wdVal (genO g X) (w j)` using `fun j => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [bw, wdVal, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `p _`. Conclude with `(hl p).2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `R : J → ℝ` to `fun j => ((bw j).map fun b => Sum.elim (fun _ => (0 : ℝ)) (fun s => |s.T| + |s.r + B.c|) b).sum`. Establish `hR0 : ∀ j, 0 ≤ R j` using `fun j => by`. Apply `List.sum_nonneg` to reduce the goal to its premises. Introduce `z hz`. Take `⟨b, -, rfl⟩` from `List.mem_map.1 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `b with _ | s` into its components or cases. Conclude with `le_rfl`. Conclude with `add_nonneg (abs_nonneg _) (abs_nonneg _)`. Establish `hRs : ∀ j, ∀ s, Sum.inr s ∈ bw j → s.T ≤ R j ∧ s.r + B.c ≤ R j` using `fun j s hs => by`. Establish `hle : |s.T| + |s.r + B.c| ≤ R j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `List.single_le_sum (l := (bw j).map fun b => Sum.elim (fun _ => (0 : ℝ)) (fun s => |s.T| + |s.r + B.c|) b) (fun z hz => by` as an intermediate fact. Take `⟨b, -, rfl⟩` from `List.mem_map.1 hz`. Break down `b with _ | s` into its components or cases. Conclude with `le_rfl`. Conclude with `add_nonneg (abs_nonneg _) (abs_nonneg _))`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `_ (List.mem_map.2 ⟨Sum.inr s, hs, rfl⟩)`. Conclude with `this`. Conclude with `⟨(le_abs_self _).trans ((le_add_of_nonneg_right (abs_nonneg _)).trans hle), (le_abs_self _).trans ((le_add_of_nonneg_left (abs_nonneg _)).trans hle)⟩`. Establish `hwd` using `fun j => hW E B (bw j) t₀ (R j) (bok j) h₀ (hR0 j) (hRs j)`. Establish `hsum` using `hS E B.a B.b B.D B.I J Finset.univ (fun j => c j * BGen.sc (bw j)) (fun j => (BGen.wd (bw j) t₀).Φ) (fun j => (BGen.wd (bw j) t₀).op) (fun j _ => by`.
-
-Use `hO E B _ _ (hwd j).1 (hwd j).1` as an intermediate fact. Conclude with `⟨this.1, this.2.1⟩)`. Use `⟨_, hsum.1, ?_⟩` and prove the remaining obligations. Use `hsum.2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hyw, Finset.sum_mul]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, ← bop, (hwd j).2.1, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiEx (hO : BlockOperatorsProductAdjoint) (hW : BlockWordOperators) (hS : BlockLinearCombinations) (hA : AdjWords) {B : Block E} {Γ : Type} (g : Γ → BGen B)
     (X : B.Hb →L[ℂ] B.Hb) (tX t₀ : PT B) (hg : ∀ x, (g x).Ok) (htX : tX.Ok) (hX : X = tX.op) (h₀ : t₀.Ok)

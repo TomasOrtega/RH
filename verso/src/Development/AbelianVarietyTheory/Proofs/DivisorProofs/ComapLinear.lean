@@ -11,11 +11,11 @@ open Filter Topology TopologicalSpace CategoryTheory GlobalTheory.AnPer GlobalTh
 namespace GlobalTheory.AnPer
 
 /- English proof (translation)
-Introduce `I I' _ _ g g' W W' C _ J ρ₁ ρ₂ ψ M hψ h`. Proceed by induction on `h with`. Consider the case `refl => exact Relation.ReflTransGen.refl`. Consider the case `@tail σ τ _ s ih`. Take `⟨n, h1, h2, h3⟩` from `s`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `Relation.ReflTransGen.tail ih ⟨fun b ↦ ∑ a, σ (algebraMap ℂ (Hol W') (M b a)) * n a, fun b ↦ J.sum_mem fun a _ ↦ J.mul_mem_left _ (h1 a), fun b c ↦ ?_, fun f ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_eq_zero fun a _ ↦ Finset.sum_eq_zero fun a' _ ↦ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [RingHom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3 (ψ f)]`. Use `congr 1`. Repeatedly rewrite using `[hψ, map_sum, Algebra.smul_def, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ ↦ Finset.sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

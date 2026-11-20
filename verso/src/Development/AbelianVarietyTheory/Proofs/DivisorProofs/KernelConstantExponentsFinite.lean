@@ -7,9 +7,9 @@ open scoped ComplexOrder Pointwise
 namespace GlobalTheory.ExponentsFinite
 
 /- English proof (translation)
-Establish `hsP : ((s : ℕ) : 𝓞 K) ∉ P.asIdeal`. Introduce `h`. Take `⟨a, b, hab⟩` from `(Nat.isCoprime_iff_coprime.2 hs).map (Int.castRingHom (𝓞 K))`. Simplify using `only [eq_intCast, Int.cast_natCast] at hab`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ h) (P.asIdeal.mul_mem_left _ hp)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `(P.valuation_eq_one_iff_notMem (K := K)).2 hsP`. Establish `h2` using `P.valuation_le_one (K := K) (⟨_, hx⟩ : 𝓞 K)`. Rewrite `h1` using `[map_natCast]`. Express the relevant statement in the definitionally equal form `P.valuation K ((s : K) * x) ≤ 1 at h2`. Rewrite `h2` using `[map_mul, h1, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem val_le_one {K : Type} [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) {p s : ℕ}
     (hp : ((p : ℕ) : 𝓞 K) ∈ P.asIdeal) (hs : Nat.Coprime s p) {x : K} (hx : IsIntegral ℤ ((s : K) * x)) :
@@ -27,9 +27,7 @@ theorem val_le_one {K : Type} [Field K] [NumberField K] (P : HeightOneSpectrum (
   rwa [map_mul, h1, one_mul] at h2
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.det_toMatrix', Matrix.det_apply']`. Establish `: ∑ σ : Equiv.Perm ι, ((Equiv.Perm.sign σ : ℤ) : K) * ∏ i, LinearMap.toMatrix' f (σ i) i ∈ v.integer`. Use `Subring.sum_mem _ fun σ _ => Subring.mul_mem _ (intCast_mem _ _) (Subring.prod_mem _ fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_apply]`. Conclude with `hf _ _`.
-
-Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_det_le_one {K ι Γ : Type} [Field K] [Fintype ι] [DecidableEq ι] [LinearOrderedCommGroupWithZero Γ]
     (v : Valuation K Γ) (f : (ι → K) →ₗ[K] (ι → K)) (hf : ∀ i j, v (f (Pi.single j 1) i) ≤ 1) :
@@ -42,9 +40,9 @@ theorem val_det_le_one {K ι Γ : Type} [Field K] [Fintype ι] [DecidableEq ι] 
   exact this
 
 /- English proof (translation)
-Establish `h1` using `val_det_le_one v (f : (ι → K) →ₗ[K] (ι → K)) hf`. Establish `h2` using `val_det_le_one v (f.symm : (ι → K) →ₗ[K] (ι → K)) hf'`. Establish `h3` using `congrArg v (LinearEquiv.det_mul_det_symm f)`. Rewrite `h3` using `[map_mul, map_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem val_det_eq_one {K ι Γ : Type} [Field K] [Fintype ι] [DecidableEq ι] [LinearOrderedCommGroupWithZero Γ]
     (v : Valuation K Γ) (f : (ι → K) ≃ₗ[K] (ι → K)) (hf : ∀ i j, v (f (Pi.single j 1) i) ≤ 1)
@@ -60,9 +58,9 @@ theorem val_det_eq_one {K ι Γ : Type} [Field K] [Fintype ι] [DecidableEq ι] 
     _ = _ := mul_one _
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (L := K) (Finset.univ.image c)`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy0, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `hy (c i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Rewrite `h` using `[zsmul_eq_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Int.natAbs_eq y with h1 | h1` into its components or cases. Rewrite `h` using `[h1, Int.cast_natCast]`. Conclude with `h`. Rewrite `h` using `[h1, Int.cast_neg, Int.cast_natCast, neg_mul]`. Simplify using `using h.neg`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_den {K ι : Type} [Field K] [NumberField K] [Finite ι] (c : ι → K) :
     ∃ n : ℕ, 0 < n ∧ ∀ i, IsIntegral ℤ ((n : K) * c i) := by
@@ -77,11 +75,11 @@ theorem exists_den {K ι : Type} [Field K] [NumberField K] [Finite ι] (c : ι �
   · rw [h1, Int.cast_neg, Int.cast_natCast, neg_mul] at h; simpa using h.neg
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hA`. Take `⟨n, hn, h⟩` from `exists_den (fun t : S × κ × ι => g (Pi.single t.2.1 (t.1 : E)) t.2.2)`. Use `⟨n, hn, fun x hx w => ?_⟩` and prove the remaining obligations. Establish `key : ∀ a, ∀ y ∈ Submodule.span ℤ (S : Set E), IsIntegral ℤ ((n : K) * g (Pi.single a y) w)`. Introduce `a y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact h (⟨y, hy⟩, a, w)`. Consider the case `zero => simpa using isIntegral_zero`. Consider the case `add y z _ _ hy hz => rw [Pi.single_add, map_add, Pi.add_apply, mul_add]`. Conclude with `hy.add hz`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c y _ hy`. Rewrite using `[Pi.single_smul, map_zsmul, Pi.smul_apply, mul_smul_comm]`. Conclude with `hy.zsmul c`. Rewrite using `[← Finset.univ_sum_single x, map_sum, Finset.sum_apply, Finset.mul_sum]`. Conclude with `IsIntegral.sum _ fun a _ => key a _ (hS ▸ hx a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_fg {K E ι κ : Type} [Field K] [NumberField K] [AddCommGroup E] [Finite ι] [Fintype κ]
     (A : Submodule ℤ E) (hA : A.FG) (g : (κ → E) →+ (ι → K)) :
@@ -102,9 +100,9 @@ theorem exists_den_fg {K E ι κ : Type} [Field K] [NumberField K] [AddCommGroup
   exact IsIntegral.sum _ fun a _ => key a _ (hS ▸ hx a)
 
 /- English proof (translation)
-Establish `hb : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 fun h => by`. Establish `h3 : D.host.𝔟 ⊔ D.host.conj • D.host.𝔟 = ⊤` using `D.host.𝔟_spec.2`. Simplify using `[h] at h3`. Use `(FractionalIdeal.mem_inv_iff hb).2 fun y hy => ?_` and prove the remaining obligations. Rewrite using `[one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `FractionalIdeal.coeIdeal_le_one hy`.
+A detailed English derivation is pending.
 -/
 theorem one_mem (D : D7) : (1 : D.host.E) ∈ D.host.AA0 := by
   have hb : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0 :=
@@ -115,21 +113,21 @@ theorem one_mem (D : D7) : (1 : D.host.E) ∈ D.host.AA0 := by
   rw [one_mul]; exact FractionalIdeal.coeIdeal_le_one hy
 
 /- English proof (translation)
-Introduce `D γ₀ k`. Establish `hfg : ((D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E).restrictScalars ℤ).FG` using `(FractionalIdeal.fg_of_isNoetherianRing le_rfl D.host.AA0).restrictScalars`. Take `⟨n, hn, hnx⟩` from `exists_den_fg _ hfg γ₀.g.toLinearMap.toAddMonoidHom`. Take `⟨m, hm, hmx⟩` from `exists_den (fun t : (Fin 4 × D.what₂.Tau) × Fin 4 => γ₀.g.symm (Pi.single t.1 1) t.2)`. Use `(Set.finite_le_nat (n * m)).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `p ⟨hp, hsp, hy⟩`. Assume the negation of the conclusion as `hlt`. Establish `hlt' : n * m < p` using `not_le.1 hlt`. Establish `hcop : Nat.Coprime (n * m) p` using `(Nat.coprime_of_lt_prime (by positivity) hlt' hp).symm`. Establish `hcn : Nat.Coprime n p` using `Nat.Coprime.coprime_mul_right hcop`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcm : Nat.Coprime m p` using `Nat.Coprime.coprime_mul_left hcop`. Take `⟨h1, h2⟩` from `k.gaP_at p hp hsp`. Establish `hP` using `k.pp_over p hp hsp`. Apply `hy` to reduce the goal to its premises. Unfold `KapChoice.yP ordK IsoK.detRel`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Rewrite using `[val_det_eq_one]`. Simplify using the standard rewrite rules. Introduce `i j`. Take `⟨s, hs, hsx⟩` from `h1 (m • γ₀.g.symm (Pi.single j 1)) (fun a => by`. Use `(D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E).smul_mem ⟨_, hmx (j, a)⟩ (one_mem D)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `((m : D.host.E) * γ₀.g.symm (Pi.single j 1) a) * 1 ∈ D.host.AA0 at this`. Simplify using `using this)`. Take `⟨r, hr⟩` from `hsx i`. Use `val_le_one _ hP (Nat.Coprime.mul_left hs hcm) ?_` and prove the remaining obligations. Establish `hi : IsIntegral ℤ (algebraMap (𝓞 D.host.K) D.host.K r)` using `r.2`.
+Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hi` using `[hr, map_nsmul, Pi.smul_apply, nsmul_eq_mul, ← mul_assoc]`. Simplify using `using hi`. Introduce `i j`. Take `⟨s, hs, hsx⟩` from `h2 (Pi.single j 1) (fun w => by`. Distinguish the cases in `hw : w = j`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hw])`. Establish `hi` using `hnx (s • (k.gaP p).g.symm (Pi.single j 1)) (fun a => by`. Use `hsx a` as an intermediate fact.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this) i`. Use `val_le_one _ hP (Nat.Coprime.mul_left hcn hs) ?_` and prove the remaining obligations. Rewrite `hi` using `[map_nsmul, Pi.smul_apply, nsmul_eq_mul, ← mul_assoc]`. Simplify using `using hi`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem yFinite : ∀ (D : D7) (γ₀ : IsoK D) (k : KapChoice γ₀), k.YFinite := by
   classical

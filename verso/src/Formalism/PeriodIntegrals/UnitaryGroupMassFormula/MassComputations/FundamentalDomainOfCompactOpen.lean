@@ -15,29 +15,29 @@ section Level
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-The claim follows from `(Formalism.UG.stabGL X.B.I.Lf).mul_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem kset_mul {x y : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (hy : y ∈ X.B.I.Kset) : x * y ∈ X.B.I.Kset :=
   (Formalism.UG.stabGL X.B.I.Lf).mul_mem hx hy
 
 /- English proof (translation)
-The claim follows from `(Formalism.UG.stabGL X.B.I.Lf).inv_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem kset_inv {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) : x⁻¹ ∈ X.B.I.Kset :=
   (Formalism.UG.stabGL X.B.I.Lf).inv_mem hx
 
 /- English proof (translation)
-Take `⟨g, -, hinf, hfin⟩` from `hδ`. Take `v` from `(inferInstance : Nonempty (InfinitePlace X.B.I.F)).some`. Establish `hdet : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `hP' : X.B.I.P v * (X.B.I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `hv` using `hinf v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hv` using `[h1]`. Establish `hone : Formalism.MainNotions.S.uMat ((1 : X.B.I.Ginf) v) = 1` using `rfl`. Rewrite `hv` using `[hone]`. Establish `hM : (g : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v) = 1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc, hP', Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, hP', Matrix.one_mul]`. Use `_ = 1 := by rw [← hv, Matrix.mul_one, hP']`. Establish `hg : (g : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = 1`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrFun (congrFun hM i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply, Matrix.one_apply]`. Rewrite using `[Matrix.one_apply]`. Apply `(X.B.I.φ v).injective` to reduce the goal to its premises. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Use `Prod.ext h1 ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show X.B.I.fmat δ.2 = 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[hfin, hg]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem gf_eq_one (hb : AdBridgeIso X.B.I) (δ : X.B.I.GA) (hδ : δ ∈ X.B.I.GFset) (h1 : δ.1 = 1) : δ = 1 := by
   obtain ⟨g, -, hinf, hfin⟩ := hδ
@@ -75,39 +75,35 @@ theorem gf_eq_one (hb : AdBridgeIso X.B.I) (δ : X.B.I.GA) (hδ : δ ∈ X.B.I.G
 end Level
 
 /- English proof (translation)
-Introduce `hSA hNL hBK hS D X hb hK u FdN hTie hL hF`. Establish `: BorelSpace (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)` using `⟨rfl⟩`. Establish `: BorelSpace (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)` using `⟨rfl⟩`. Establish `: BorelSpace (HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J)` using `⟨rfl⟩`. Establish `core : ∀ γ : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J, γ ∈ (HFinIn (AF X.B.I.F) X.B.I.cm.sig X.B.I.J : Subgroup (HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J)) → γ ∈ Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u) → ∀ (n : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) (s s' : X.B.I.Ginf), s ∈ F …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `γ hγF hγN n s s' hs hs' h1 h2 h1' h2'`. Use `set δ := (toHA X.B.I hb).symm γ with hδdef`. Establish `hδ : toHA X.B.I hb δ = γ` using `(toHA X.B.I hb).apply_symm_apply γ`. Take `⟨hGF, hinf, hfin⟩` from `(hRB X hb u δ).1 ⟨by rw [hδ]; exact hγF, by rw [hδ]; exact hγN⟩`. Establish `hsp : splitA X.B.I.cm.sig X.B.I.J γ = (X.toInf hb δ.1, finHA X hb δ.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hδ]`. Conclude with `split_toHA X hb hS δ`. Establish `hmul : splitA X.B.I.cm.sig X.B.I.J (γ * n) = splitA X.B.I.cm.sig X.B.I.J γ * splitA X.B.I.cm.sig X.B.I.J n` using `map_mul _ _ _`. Rewrite `hmul` using `[hsp]`. Establish `hfinK : finHA X hb δ.2 ∈ KX X`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : finHA X hb δ.2 = (splitA X.B.I.cm.sig X.B.I.J (γ * n)).2 * ((splitA X.B.I.cm.sig X.B.I.J n).2)⁻¹`. Rewrite using `[hmul]`. Simplify using the standard rewrite rules. Rewrite using `[e2]`. Conclude with `(KX X).mul_mem h2' ((KX X).inv_mem h2)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKs : δ.2 ∈ X.B.I.Kset` using `(hBK X hb δ.2).2 hfinK`. Establish `hK2` using `hNL X u δ.2 hfin hKs`. Establish `hNO : δ.1 ∈ Formalism.L2.SG.PoincareInHH.PoincareSetting.NOinf X u` using `⟨δ, hGF, rfl, hinf, hfin, hK2⟩`. Establish `hreal : X.toInf hb s' = X.toInf hb (δ.1 * s)`. Rewrite using `[toInf_mul, ← h1', hmul, ← h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hs'' : s' = δ.1 * s` using `toInf_injective X hb hS hreal`. Establish `hδ1 : δ.1 = 1` using `hF.2.2 s hs δ.1 hNO (hs'' ▸ hs')`. Establish `hδ1' : δ = 1` using `gf_eq_one X hb δ hGF hδ1`. Rewrite using `[← hδ, hδ1', map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `hS X.B.I.cm.sig X.B.I.J`. Establish `hc : Continuous (splitA X.B.I.cm.sig X.B.I.J)` using `by rw [← he]; exact e.continuous_toFun`. Establish `hm : Measurable (splitA X.B.I.cm.sig X.B.I.J)` using `(continuous_fst.comp hc).measurable.prodMk (continuous_snd.comp hc).measurable`. Establish `hTm : MeasurableSet (X.toInf hb '' FdN)` using `measurableSet_image_toInf X hb hS hF.1`. Establish `hKm : MeasurableSet (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))` using `(hKo X).2.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hRm : MeasurableSet ((X.toInf hb '' FdN) ×ˢ (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)))` using `hTm.prod hKm`. Establish `hFd : FdA X hb u FdN = Subtype.val ⁻¹' (splitA X.B.I.cm.sig X.B.I.J ⁻¹' ((X.toInf hb '' FdN) ×ˢ (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))))`. Use extensionality with `n`. Simplify using `only [FdA, Set.mem_ofPred_eq, Set.mem_preimage, Set.mem_prod, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨s, hs, h1, h2⟩`. Conclude with `⟨⟨s, hs, h1.symm⟩, h2⟩`. Introduce and unpack `⟨⟨s, hs, h1⟩, h2⟩`. Conclude with `⟨s, hs, h1.symm, h2⟩`. Establish `hmeas : MeasurableSet (FdA X hb u FdN)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hFd]`. Conclude with `measurable_subtype_coe (hm hRm)`. Establish `cover : ∀ n : ↥(Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)), ∃ g : ratOf (K` using `Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)), g • n ∈ FdA X hb u FdN := by`. Introduce `n`. Take `⟨γ, hγF, hγN, hγK⟩` from `hSA X u n n.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `toInf_surjective X hb hS (splitA X.B.I.cm.sig X.B.I.J (γ * n)).1`. Take `⟨s, hsNO, hst⟩` from `hF.2.1 t`. Take `⟨δ, hGF, hδs, hinf, hfin, hK2⟩` from `hsNO`. Take `⟨hγ'F, hγ'N⟩` from `(hRB X hb u δ).2 ⟨hGF, hinf, hfin⟩`. Establish `hKs : δ.2 ∈ X.B.I.Kset`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx` using `X.xu_K u`. Establish `h2` using `hL.2.1 _ hK2`. Establish `: δ.2 = X.xu u * ((X.xu u)⁻¹ * δ.2 * X.xu u) * (X.xu u)⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `kset_mul X (kset_mul X hx h2) (kset_inv X hx)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfinK : finHA X hb δ.2 ∈ KX X` using `(hBK X hb δ.2).1 hKs`. Use `⟨⟨⟨toHA X.B.I hb δ * γ, (Nsub _ _ _ _).mul_mem hγ'N hγN⟩, Subgroup.mem_comap.2 (Subgroup.mul_mem _ hγ'F hγF)⟩, ?_⟩` and prove the remaining obligations. Establish `hsp : splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb δ * γ * (n : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J)) = (X.toInf hb δ.1, finHA X hb δ.2) * splitA X.B.I.cm.sig X.B.I.J (γ * n)`. Rewrite using `[mul_assoc, map_mul, split_toHA X hb hS δ]`. Use `⟨s * t, hst, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb δ * γ * (n : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J))).1 = _`. Rewrite using `[hsp, toInf_mul, Prod.fst_mul, ← ht, hδs]`. Use `show (splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb δ * γ * (n : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J))).2 ∈ _`. Rewrite using `[hsp, Prod.snd_mul]`. Conclude with `(KX X).mul_mem hfinK hγK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsFundamentalDomain.mk' hmeas.nullMeasurableSet fun n => ?_` and prove the remaining obligations. Take `⟨g0, hg0⟩` from `cover n`. Use `⟨g0, hg0, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, h1, h2⟩` from `hg0`. Take `⟨s', hs', h1', h2'⟩` from `hg`.
-
-Establish `hγF : (((g * g0⁻¹ : ratOf (K` using `Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) : ↥(Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) ∈ (HFinIn (AF X.B.I.F) X.B.I.cm.sig X.B.I.J : Subgroup (HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J)) := Subgroup.mem_comap.1 (g * g0 …`. Establish `hγN` using `((g * g0⁻¹ : ratOf (K := Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) : ↥(Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))).2`. Establish `hgn0 : ((g * g0⁻¹ : ratOf (K` using `Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) : ↥(Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) * (g0 • n) = g • n := by`. Rewrite using `[Subgroup.smul_def, Subgroup.smul_def, smul_eq_mul, smul_eq_mul, Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc, inv_mul_cancel_left]`. Establish `hgn : (((g * g0⁻¹ : ratOf (K` using `Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) : ↥(Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) * ((g0 • n : ↥(Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) = ((g • n : ↥(Ns …`.
-
-Establish `h1g : (g * g0⁻¹ : ratOf (K` using `Nsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) = 1 := by`. Use `core _ hγF hγN _ s s' hs hs' h1 h2 (by rw [hgn]; exact h1') (by rw [hgn]; exact h2')` as an intermediate fact. Conclude with `Subtype.ext (Subtype.ext this)`. Conclude with `mul_inv_eq_one.1 h1g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fundamental_domain_of_compact_open (hKo : KCompactOpen) (hRB : NRatBridge) : UnipotentFundamentalDomain := by
   intro hSA hNL hBK hS D X hb hK u FdN hTie hL hF

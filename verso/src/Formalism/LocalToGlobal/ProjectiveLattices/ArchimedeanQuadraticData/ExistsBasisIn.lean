@@ -7,9 +7,9 @@ noncomputable section
 namespace Formalism.L2.Pj.FundamentalDomainD5
 
 /- English proof (translation)
-Take `⟨b, hbS, hspan, hli⟩` from `exists_linearIndependent K S`. Establish `htop : ⊤ ≤ Submodule.span K (Set.range ((↑) : b → Fin r → K))`. Rewrite using `[Subtype.range_coe, hspan, hS]`. Set `B` to `Module.Basis.mk hli htop`. Set `e` to `B.indexEquiv (Pi.basisFun K (Fin r))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨fun j => (e.symm j : Fin r → K), fun j => hbS (e.symm j).2, ?_⟩` and prove the remaining obligations. Conclude with `hli.comp e.symm e.symm.injective`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_basis_in {K : Type} [Field K] {r : ℕ} (S : Set (Fin r → K))
     (hS : Submodule.span K S = ⊤) :

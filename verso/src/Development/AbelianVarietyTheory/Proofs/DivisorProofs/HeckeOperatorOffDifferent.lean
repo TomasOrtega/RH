@@ -17,11 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SphericalComm
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `h` to reduce the goal to its premises. Establish `hle : (P.asIdeal.under (𝓞 F)).map (algebraMap (𝓞 F) (𝓞 E)) ≤ P.asIdeal ^ 2`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Conclude with `hne x _ rfl hx`. Use `haveI := P.isMaximal`. Use `haveI : (P.asIdeal.under (𝓞 F)).IsMaximal := Ideal.IsMaximal.under _ _`. Establish `hb : P.asIdeal.under (𝓞 F) ≠ ⊥` using `Ideal.under_ne_bot _ P.ne_bot`.
-
-Use `pow_sub_one_dvd_differentIdeal (𝓞 F) P.asIdeal 2 hb (Ideal.dvd_iff_le.2 hle)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_unif_of_not_dvd {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (P : HeightOneSpectrum (𝓞 E)) (h : ¬ P.asIdeal ∣ differentIdeal (𝓞 F) (𝓞 E)) :

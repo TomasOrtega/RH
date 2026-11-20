@@ -12,9 +12,7 @@ namespace GlobalTheory.BkCoeff
 open GlobalTheory.PstCoeff
 
 /- English proof (translation)
-Use `haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd LL V`. Set `e : V ≃ₗ[LL] (Fin (finrank LL V) → LL)` to `(Module.finBasis LL V).equivFun`. Establish `h1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `h2 : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`. Set `e' : (Fin (finrank LL V) → LL) ≃L[R] V` to `{ e.symm.restrictScalars R with continuous_toFun := h2, continuous_invFun := h1 }`.
-
-Conclude with `IsModuleTopology.iso e'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isModuleTopology_of_tower (R LL V : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     [Field LL] [Algebra R LL] [TopologicalSpace LL] [IsTopologicalRing LL] [IsModuleTopology R LL]
@@ -36,7 +34,7 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K : FinExt l}
   (ρ : Representation LL ↥(GK K) V)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem actVB_resQ (g : ↥(GK K)) (x : V ⊗[ℚ_[l]] P.R.B) :
     actVB (P.PD K) (resQ ρ) g x = actVB (P.PD K) ρ g x := by
@@ -46,16 +44,16 @@ theorem actVB_resQ (g : ↥(GK K)) (x : V ⊗[ℚ_[l]] P.R.B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[H0V, Submodule.mem_iInf, sub_eq_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem galoisInvariants_restrictScalarsToQl : H0V (resQ ρ) = (H0V ρ).restrictScalars ℚ_[l] := by
   ext x
   simp [H0V, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Establish `h : ∀ y, AlgebraTensorModule.map (LinearMap.id : V →ₗ[ℚ_[l]] V) (((P.PD K).Fil a).restrictScalars ℚ_[l]).subtype y = AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (((P.PD K).Fil a).restrictScalars ℚ_[l]).subtype y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Use extensionality with `x`. Simplify using `only [FilV, Submodule.restrictScalars_mem, LinearMap.mem_range, h]`.
+Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem FilV_resQ (a : ℤ) :
     FilV (P.PD K) (LL := ℚ_[l]) (V := V) a = (FilV (P.PD K) (LL := LL) (V := V) a).restrictScalars ℚ_[l] := by
@@ -73,7 +71,7 @@ theorem FilV_resQ (a : ℤ) :
 variable [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V] [ContinuousConstSMul ℚ_[l] V]
 
 /- English proof (translation)
-Use `show (c ∈ continuousCocycles (resQ ρ) ∧ ∃ x, ∀ g, c g ⊗ₜ[ℚ_[l]] (1 : P.R.B) = actVB (P.PD K) (resQ ρ) g x - x) ↔ (c ∈ continuousCocycles ρ ∧ ∃ x, ∀ g, c g ⊗ₜ[ℚ_[l]] (1 : P.R.B) = actVB (P.PD K) ρ g x - x)`. Simplify using `only [actVB_resQ]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem mem_finiteCocycles_restrictScalars_Ql (c : ↥(GK K) → V) : c ∈ finiteCocycles (P.PD K) (resQ ρ) ↔ c ∈ finiteCocycles (P.PD K) ρ := by
   show (c ∈ continuousCocycles (resQ ρ) ∧ ∃ x, ∀ g, c g ⊗ₜ[ℚ_[l]] (1 : P.R.B) = actVB (P.PD K) (resQ ρ) g x - x) ↔
@@ -104,15 +102,15 @@ namespace GlobalTheory
 open GlobalTheory.PstCoeff GlobalTheory.BkCoeff
 
 /- English proof (translation)
-Introduce `l _ P K hD LL _ _ _ O _ _ hO A hdR`. Take `⟨-, hfin, hmt, htr, -⟩` from `hO`. Use `haveI := hfin`. Use `haveI := hmt`. Use `haveI := htr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : FiniteDimensional ℚ_[l] A.V := Module.Finite.trans LL A.V`. Use `haveI : IsModuleTopology ℚ_[l] A.V := isModuleTopology_of_tower ℚ_[l] LL A.V`. Take `⟨-, he⟩` from `hD A.V (resQ (LL := LL) A.ρ) A.cont ((isDR_resQ_iff P A.ρ).mpr hdR)`. Establish `hH1 : finrank ℚ_[l] (FiniteCohomology (P.PD K) (resQ A.ρ)) = finrank ℚ_[l] LL * finrank LL (FiniteCohomology (P.PD K) A.ρ)`. Rewrite using `[(h1fEquiv P A.ρ).finrank_eq, finrank_mul_finrank]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hH0 : finrank ℚ_[l] ↥(H0V (resQ A.ρ)) = finrank ℚ_[l] LL * finrank LL ↥(H0V A.ρ)`. Rewrite using `[galoisInvariants_restrictScalarsToQl, finrank_mul_finrank]`. Both sides reduce to the same expression. Establish `hdR' : finrank ℚ_[l] ↥(DdR (P.PD K) (resQ A.ρ)) = finrank ℚ_[l] LL * finrank LL ↥(DdR (P.PD K) A.ρ)`. Rewrite using `[DdR_resQ, finrank_mul_finrank]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hF : finrank ℚ_[l] ↥(DdR (P.PD K) (resQ A.ρ) ⊓ FilV (P.PD K) (LL` using `ℚ_[l]) (V := A.V) 0) = finrank ℚ_[l] LL * finrank LL ↥(DdR (P.PD K) A.ρ ⊓ FilV (P.PD K) (LL := LL) (V := A.V) 0) := by`. Rewrite using `[DdR_resQ, FilV_resQ P (LL := LL), ← Submodule.restrictScalars_inf, finrank_mul_finrank]`. Both sides reduce to the same expression. Rewrite `he` using `[hH1, hH0, hdR', hF]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Move the coercions through the operations in `at he`. Establish `hd : (finrank ℚ_[l] LL : ℤ) ≠ 0` using `by exact_mod_cast (Module.finrank_pos (R := ℚ_[l]) (M := LL)).ne'`. Use `mul_left_cancel₀ hd ?_` and prove the remaining obligations. Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem bkADim_of_dimFormula : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l),
     GlobalTheory.Published.BlochKato.DimFormula (P.PD K) → Formalism.MainNotions.LocalSituation.bkADim (P.PD K) := by

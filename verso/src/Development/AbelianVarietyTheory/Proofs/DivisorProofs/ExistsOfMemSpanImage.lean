@@ -12,7 +12,7 @@ section Abstract
 variable {M : Type*} [AddCommGroup M] [Module ℂ M] (Z : Submodule ℂ M) (q : M → M → ℂ)
 
 /- English proof (translation)
-Use `hsmul 0 Z.zero_mem c hc 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem q_zero_left (hsmul : ∀ a ∈ Z, ∀ c ∈ Z, ∀ t : ℂ, q (t • a) c = t * q a c) {c : M} (hc : c ∈ Z) :
     q 0 c = 0 := by
@@ -20,7 +20,7 @@ theorem q_zero_left (hsmul : ∀ a ∈ Z, ∀ c ∈ Z, ∀ t : ℂ, q (t • a) 
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[hherm _ (Z.add_mem ha hb) _ hc, hadd a ha b hb c hc, map_add, ← hherm a ha c hc, ← hherm b hb c hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem q_add_right (hadd : ∀ a ∈ Z, ∀ b ∈ Z, ∀ c ∈ Z, q (a + b) c = q a c + q b c)
     (hherm : ∀ a ∈ Z, ∀ b ∈ Z, q b a = conj (q a b)) {a b c : M} (ha : a ∈ Z) (hb : b ∈ Z) (hc : c ∈ Z) :
@@ -28,7 +28,7 @@ theorem q_add_right (hadd : ∀ a ∈ Z, ∀ b ∈ Z, ∀ c ∈ Z, q (a + b) c =
   rw [hherm _ (Z.add_mem ha hb) _ hc, hadd a ha b hb c hc, map_add, ← hherm a ha c hc, ← hherm b hb c hc]
 
 /- English proof (translation)
-Rewrite using `[hherm _ (Z.smul_mem t ha) _ hc, hsmul a ha c hc t, map_mul, ← hherm a ha c hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem q_smul_right (hsmul : ∀ a ∈ Z, ∀ c ∈ Z, ∀ t : ℂ, q (t • a) c = t * q a c)
     (hherm : ∀ a ∈ Z, ∀ b ∈ Z, q b a = conj (q a b)) {a c : M} (ha : a ∈ Z) (hc : c ∈ Z) (t : ℂ) :
@@ -36,7 +36,7 @@ theorem q_smul_right (hsmul : ∀ a ∈ Z, ∀ c ∈ Z, ∀ t : ℂ, q (t • a)
   rw [hherm _ (Z.smul_mem t ha) _ hc, hsmul a ha c hc t, map_mul, ← hherm a ha c hc]
 
 /- English proof (translation)
-Establish `e : a - b = a + (-1 : ℂ) • b` using `by simp [sub_eq_add_neg]`. Rewrite using `[e, q_add_right Z q hadd hherm ha (Z.smul_mem _ hb) hc, q_smul_right Z q hsmul hherm hb hc]`. Simplify using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem q_sub_right (hadd : ∀ a ∈ Z, ∀ b ∈ Z, ∀ c ∈ Z, q (a + b) c = q a c + q b c)
     (hsmul : ∀ a ∈ Z, ∀ c ∈ Z, ∀ t : ℂ, q (t • a) c = t * q a c)
@@ -47,9 +47,9 @@ theorem q_sub_right (hadd : ∀ a ∈ Z, ∀ b ∈ Z, ∀ c ∈ Z, q (a + b) c =
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `hle : Submodule.span ℂ S ≤ Z` using `Submodule.span_le.2 hS`. Introduce `n hn`. Proceed by induction on `hn using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => exact q_zero_left Z q hsmul hr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy ihx ihy => rw [hadd x (hle hx) y (hle hy) r hr, ihx, ihy, add_zero]`. Consider the case `smul t x hx ihx => rw [hsmul x (hle hx) r hr t, ihx, mul_zero]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem q_span_left (hadd : ∀ a ∈ Z, ∀ b ∈ Z, ∀ c ∈ Z, q (a + b) c = q a c + q b c)
     (hsmul : ∀ a ∈ Z, ∀ c ∈ Z, ∀ t : ℂ, q (t • a) c = t * q a c) {S : Set M} (hS : S ⊆ Z) {r : M} (hr : r ∈ Z)
@@ -63,23 +63,21 @@ theorem q_span_left (hadd : ∀ a ∈ Z, ∀ b ∈ Z, ∀ c ∈ Z, q (a + b) c =
   | smul t x hx ihx => rw [hsmul x (hle hx) r hr t, ihx, mul_zero]
 
 /- English proof (translation)
-Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro _ x _; exact ⟨0, Submodule.zero_mem _, by simp⟩`. Consider the case `insert a s ha ih`. Introduce `hS x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `haZ : a ∈ Z` using `hS (by simp)`. Establish `hsZ : (↑s : Set M) ⊆ Z` using `fun y hy => hS (by simp [hy])`. Establish `hspZ : Submodule.span ℂ (↑s : Set M) ≤ Z` using `Submodule.span_le.2 hsZ`. Take `⟨n1, hn1, h1⟩` from `ih hsZ x hx`. Take `⟨n2, hn2, h2⟩` from `ih hsZ a haZ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hrZ : x - n1 ∈ Z` using `Z.sub_mem hx (hspZ hn1)`. Establish `hsZ' : a - n2 ∈ Z` using `Z.sub_mem haZ (hspZ hn2)`. Establish `hspan_le : Submodule.span ℂ (↑s : Set M) ≤ Submodule.span ℂ (↑(insert a s) : Set M)` using `Submodule.span_mono (by simp [Finset.coe_insert])`. Establish `ha_mem : a ∈ Submodule.span ℂ (↑(insert a s) : Set M)` using `Submodule.subset_span (by simp)`. Distinguish the cases in `hss : q (a - n2) (a - n2) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `han2 : a = n2` using `sub_eq_zero.1 (hpos _ hsZ' hss)`. Use `⟨n1, hspan_le hn1, fun u hu => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hu with rfl | hu` into its components or cases. Rewrite using `[han2]`. Conclude with `q_span_left Z q hadd hsmul hsZ hrZ h1 n2 hn2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1 u hu`. Use `set t : ℂ := conj (q (a - n2) (x - n1) / q (a - n2) (a - n2)) with ht`. Establish `hct : conj t = q (a - n2) (x - n1) / q (a - n2) (a - n2)` using `by rw [ht, Complex.conj_conj]`. Establish `hts : t • (a - n2) ∈ Z` using `Z.smul_mem t hsZ'`. Establish `hx' : x - (n1 + t • (a - n2)) = (x - n1) - t • (a - n2)` using `by abel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `horth : ∀ u ∈ Z, q u (x - n1) = 0 → q u (a - n2) = 0 → q u ((x - n1) - t • (a - n2)) = 0`. Introduce `u hu e1 e2`. Rewrite using `[q_sub_right Z q hadd hsmul hherm hrZ hts hu, q_smul_right Z q hsmul hherm hsZ' hu, e1, e2]`. Simplify using the standard rewrite rules. Establish `hs : ∀ u ∈ s, q u ((x - n1) - t • (a - n2)) = 0` using `fun u hu => horth u (hsZ hu) (h1 u hu) (h2 u hu)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨n1 + t • (a - n2), add_mem (hspan_le hn1) (Submodule.smul_mem _ _ (sub_mem ha_mem (hspan_le hn2))), fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hx']`. Break down `Finset.mem_insert.1 hu with rfl | hu` into its components or cases. Establish `hself : q (u - n2) ((x - n1) - t • (u - n2)) = 0`. Rewrite using `[q_sub_right Z q hadd hsmul hherm hrZ hts hsZ', q_smul_right Z q hsmul hherm hsZ' hsZ', hct]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hn2o : q n2 ((x - n1) - t • (u - n2)) = 0` using `q_span_left Z q hadd hsmul hsZ (Z.sub_mem hrZ hts) hs n2 hn2`. Establish `e` using `hadd _ hsZ' _ (hspZ hn2) _ (Z.sub_mem hrZ hts)`. Rewrite `e` using `[sub_add_cancel]`.
-
-Rewrite using `[e, hself, hn2o, add_zero]`. Conclude with `hs u hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orth (hadd : ∀ a ∈ Z, ∀ b ∈ Z, ∀ c ∈ Z, q (a + b) c = q a c + q b c)
     (hsmul : ∀ a ∈ Z, ∀ c ∈ Z, ∀ t : ℂ, q (t • a) c = t * q a c)
@@ -130,11 +128,11 @@ theorem exists_orth (hadd : ∀ a ∈ Z, ∀ b ∈ Z, ∀ c ∈ Z, q (a + b) c =
       · exact hs u hu
 
 /- English proof (translation)
-Establish `h0 : T 0 = 0`. Use `hT 0 D.zero_mem 0 D.zero_mem 1` as an intermediate fact. Simplify using `using this`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨w, hw, rfl⟩ := hx`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately.
 
-Conclude with `⟨w, hw, rfl⟩`. Consider the case `zero => exact ⟨0, A.zero_mem, h0⟩`. Consider the case `add x y _ _ ihx ihy`. Take `⟨w1, hw1, rfl⟩` from `ihx`. Take `⟨w2, hw2, rfl⟩` from `ihy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w1 + w2, A.add_mem hw1 hw2, by simpa using hT w1 (hA hw1) w2 (hA hw2) 1⟩`. Consider the case `smul c x _ ihx`. Take `⟨w, hw, rfl⟩` from `ihx`. Conclude with `⟨c • w, A.smul_mem c hw, by simpa [h0] using hT 0 D.zero_mem w (hA hw) c⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_mem_span_image {N : Type*} [AddCommGroup N] [Module ℂ N] (D A : Submodule ℂ M) (T : M → N)
     (hT : ∀ x ∈ D, ∀ y ∈ D, ∀ c : ℂ, T (x + c • y) = T x + c • T y) (hA : A ≤ D) {f : N}
@@ -166,7 +164,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n d : ℕ} {Y : Spc F E n} {W : Spc F E d}
 
 /- English proof (translation)
-Unfold `Model.I theta`. Use `congr 1`. Use function extensionality and compare the values at `g`. Use `congr 1`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem I_transl (M : Model σ Y W) (om : Rep σ Y W) (Φ : Fn F n d) (h x : UA σ W.J) :
     M.I om (om (1, h) Φ) x = M.I om Φ (x * h) := by
@@ -177,19 +175,19 @@ theorem I_transl (M : Model σ Y W) (om : Rep σ Y W) (Φ : Fn F n d) (h x : UA 
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-Simplify using `[mat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mat_inv_mul (g : UA σ W.J) : mat g⁻¹ * mat g = 1 := by
   simp [mat]
 
 /- English proof (translation)
-Simplify using `[mat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mat_mul_inv (g : UA σ W.J) : mat g * mat g⁻¹ = 1 := by
   simp [mat]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `e : mat h⁻¹ - 1 = -(mat h⁻¹ * (mat h - 1))`. Rewrite using `[Matrix.mul_sub, mat_inv_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_neg, ← Matrix.mul_smul, hh u hu, Matrix.mul_zero, neg_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mem_UAt {R : Type} [Zero R] (ev : AF F → R) {h : UA σ W.J} (hh : h ∈ UAt σ W ev) :
     h⁻¹ ∈ UAt σ W ev := by
@@ -199,9 +197,9 @@ theorem inv_mem_UAt {R : Type} [Zero R] (ev : AF F → R) {h : UA σ W.J} (hh : 
   rw [e, smul_neg, ← Matrix.mul_smul, hh u hu, Matrix.mul_zero, neg_zero]
 
 /- English proof (translation)
-Use `⟨inv_mem_UAt _ hk.1, fun w => ?_⟩` and prove the remaining obligations. Use `set A := (mat k).map (piInf (τ w))`. Use `set A' := (mat k⁻¹).map (piInf (τ w))`. Establish `h1 : A' * A = 1`. Simplify using `only [A, A', ← Matrix.map_mul, mat_inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : A * A' = 1`. Simplify using `only [A, A', ← Matrix.map_mul, mat_mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hc : A * W.θ w = W.θ w * A` using `hk.2 w`. Use `show A' * W.θ w = W.θ w * A'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inv_mem_KInf (τ : ∀ w : InfinitePlace F, EmbOver E w) {k : UA σ W.J} (hk : k ∈ KInf σ W τ) :
     k⁻¹ ∈ KInf σ W τ := by
@@ -220,7 +218,7 @@ theorem inv_mem_KInf (τ : ∀ w : InfinitePlace F, EmbOver E w) {k : UA σ W.J}
     _ = W.θ w * A' := by rw [h1, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [Complex.sq_norm, Complex.normSq_apply]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_conj_polar (z w : ℂ) :
     z * conj w = ((‖z + w‖ ^ 2 : ℝ) - (‖z + (-1 : ℂ) * w‖ ^ 2 : ℝ) + Complex.I * (‖z + Complex.I * w‖ ^ 2 : ℝ)

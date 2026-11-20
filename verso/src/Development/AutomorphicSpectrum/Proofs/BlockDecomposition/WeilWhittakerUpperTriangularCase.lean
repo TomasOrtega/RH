@@ -14,37 +14,35 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WS
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ χ hχ Φ hΦ g hg u`. Establish `hdet : (g.val).det = g.val 0 0 * g.val 1 1`. Rewrite using `[Matrix.det_fin_two, hg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdet0 : (g.val).det ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `g.isUnit.map (Matrix.detMonoidHom (n := Fin 2) (R := F))` as an intermediate fact. Conclude with `this.ne_zero`. Establish `hA : g.val 0 0 ≠ 0` using `fun h => hdet0 (by rw [hdet, h, zero_mul])`. Establish `hD : g.val 1 1 ≠ 0` using `fun h => hdet0 (by rw [hdet, h, mul_zero])`. Establish `hu : (u : F) ≠ 0` using `u.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A := g.val 0 0 with hAdef`. Use `set B := g.val 0 1 with hBdef`. Use `set D := g.val 1 1 with hDdef`. Establish `hc : (u : F) * D ≠ 0` using `mul_ne_zero hu hD`. Establish `hinn : GlobalTheory.CompanionTheory.WS.inn χ (GlobalTheory.CompanionTheory.WS.pF χ Φ ∘ GlobalTheory.CompanionTheory.WS.rowAct g) u = ((modulus ((u : F) * D) : ℝ))⁻¹ * ((χ (B / D) : ℂ) * Φ ((u : F) * A, ((u : F) * D)⁻¹))` using `by set G : F → ℂ := fun y' => GlobalTheory.CompanionTheory.WS.pF χ Φ ((u : F) * A, y') * (χ (-(y' / ((u : F) * D)) + B / D) : ℂ) with hG`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1 : GlobalTheory.CompanionTheory.WS.inn χ (GlobalTheory.CompanionTheory.WS.pF χ Φ ∘ GlobalTheory.CompanionTheory.WS.rowAct g) u = ∫ y, (fun y => G (((u : F) * D) * y)) (y + B / D) ∂selfDualMeasure χ`. Unfold `GlobalTheory.CompanionTheory.WS.inn`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp, GlobalTheory.CompanionTheory.WS.rowAct, hG, hg]`. Establish `e1 : (u : F) * A + (u : F) * y * 0 = (u : F) * A` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e2 : (u : F) * B + (u : F) * y * D = (u : F) * D * (y + B / D)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : -((u : F) * D * (y + B / D) / ((u : F) * D)) + B / D = -y`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, e3]`. Rewrite using `[h1, integral_add_right_eq_self (fun y => G (((u : F) * D) * y)) (B / D), GroundTheory.LocalField.integral_comp_mul_left _ hc G]`. Establish `h2 : ∫ y, G y ∂selfDualMeasure χ = (χ (B / D) : ℂ) * Φ ((u : F) * A, ((u : F) * D)⁻¹)`. Establish `h3` using `GlobalTheory.CompanionTheory.WcSplit.integral_phiW hχ hΦ.1 hΦ.2 ((u : F) * A) (((u : F) * D)⁻¹)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← h3, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hG]`. Establish `e4 : -(y / ((u : F) * D)) + B / D = B / D + -(y * ((u : F) * D)⁻¹)`. Rewrite using `[div_eq_mul_inv y]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e4, AddChar.map_add_eq_mul, Circle.coe_mul]`. Establish `e7 : GlobalTheory.CompanionTheory.WS.pF χ Φ ((u : F) * A, y) = GlobalTheory.CompanionTheory.WcSplit.phiW χ Φ ![(u : F) * A, y]`. Rewrite using `[GlobalTheory.CompanionTheory.WcSplit.phiW_pair]`. Unfold `GlobalTheory.CompanionTheory.WS.pF localFourier`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [mul_comm y t]`. Rewrite using `[e7]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Complex.real_smul]`. Rewrite using `[hinn]`. Establish `hmod : ((modulus ((u : F) * D) : ℝ)) = (modulus (u : F) : ℝ) * (modulus D : ℝ)`. Rewrite using `[modulus_mul]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hmu : (modulus (u : F) : ℝ) ≠ 0`. Conclude with `modulus_ne_zero hu` after adjusting the coercions. Establish `hmD : (modulus D : ℝ) ≠ 0`. Conclude with `modulus_ne_zero hD` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `ha' : A / (g.val).det = D⁻¹`. Rewrite using `[hdet]`. Clear the denominators using the available nonvanishing facts. Establish `hz : (0 : F) / (g.val).det = 0` using `zero_div _`. Unfold `GL2LocalData.rW`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, hz, if_pos rfl, ha', GlobalTheory.CompanionTheory.WcSplit.nsg_pair (inv_ne_zero hD), GlobalTheory.CompanionTheory.WcSplit.norm_pair]`. Establish `e5 : D⁻¹ * B * ((u : F) * ((u⁻¹ : Fˣ) : F)) = B / D`. Simplify using `only [Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Establish `e6 : (algebraMap F (F × F) D⁻¹ * ((u : F), ((u⁻¹ : Fˣ) : F))) * ((g.val).det, 1) = ((u : F) * A, ((u : F) * D)⁻¹)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hdet]`. Use `ext`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e5, e6]`. Establish `hmp : mp u 1 = ((modulus (u : F) : ℝ) : ℂ)`. Simplify using `[mp]`. Rewrite using `[hmp, hmod, modulus_inv]`. Establish `hmuC : ((modulus (u : F) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hmu`.
-
-Establish `hmDC : ((modulus D : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hmD`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem modelzero_upper : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (χ : AddChar F Circle), IsStd χ → ∀ Φ : F × F → ℂ, GlobalTheory.CompanionTheory.WS.IsSB Φ → ∀ g : GL (Fin 2) F, g.val 1 0 = 0 → ∀ u : Fˣ, GL2LocalData.rW χ GL2LocalData.swapE ((selfDualMeasure χ).prod (selfDualMeasure χ)) 1 (g.val 0 0 / (g.val).det) (g.val 0 1) (g.val 1 0 / (g.val).det) (g.val 1 1) (fun x => Φ (x * ((g.val).det, 1))) ((u : F), ((u⁻¹ : Fˣ) : F)) = mp u 1 * GlobalTheory.CompanionTheory.WS.inn χ (GlobalTheory.CompanionTheory.WS.pF χ Φ ∘ GlobalTheory.CompanionTheory.WS.rowAct g) u := by
   intro F _ _ _ _ _ _ χ hχ Φ hΦ g hg u

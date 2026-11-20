@@ -11,13 +11,13 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Introduce `g hg _ hf` and use `hf g hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subset_pts (Γ : Set (Matrix ι ι ℂ)) : Γ ⊆ pts Γ ℂ := fun g hg _ hf => hf g hg
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `f`. Conclude with `⟨fun h g hg => h g (subset_pts Γ hg), fun h g hg => hg f h⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem vanI_pts (Γ : Set (Matrix ι ι ℂ)) : vanI (pts Γ ℂ) = vanI Γ := by
   ext f
@@ -25,7 +25,7 @@ theorem vanI_pts (Γ : Set (Matrix ι ι ℂ)) : vanI (pts Γ ℂ) = vanI Γ := 
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Unfold `ev`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp => rw [map_mul, map_mul, map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.aeval_X, Matrix.map_apply]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ev_map_aut (σ : ℂ ≃+* ℂ) (f : MvPolynomial (ι × ι) ℚ) (g : Matrix ι ι ℂ) :
     ev f (g.map σ) = σ (ev f g) := by
@@ -36,9 +36,9 @@ theorem ev_map_aut (σ : ℂ ≃+* ℂ) (f : MvPolynomial (ι × ι) ℚ) (g : M
   | mul_X p n hp => rw [map_mul, map_mul, map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.aeval_X, Matrix.map_apply]
 
 /- English proof (translation)
-Use `⟨∑ ij : ι × ι, MvPolynomial.C (φ (Matrix.single ij.1 ij.2 1)) * MvPolynomial.X ij, fun g => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [Matrix.matrix_eq_sum_single g]`. Simplify using `only [evC, map_sum, map_mul, MvPolynomial.eval_C, MvPolynomial.eval_X, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: Matrix.single i j (g i j) = g i j • Matrix.single i j (1 : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_poly_of_dual (φ : Module.Dual ℂ (Matrix ι ι ℂ)) :
     ∃ f : MvPolynomial (ι × ι) ℂ, ∀ g, evC f g = φ g := by
@@ -51,11 +51,11 @@ theorem exists_poly_of_dual (φ : Module.Dual ℂ (Matrix ι ι ℂ)) :
   rw [this, map_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `ι _ _ Γ h`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.ratZariskiClosurePoints_isGroup ι Γ h ℂ`. Use `⟨⟨⟨h1, h2, h3, h4, ?_⟩, ?_⟩, vanI_pts Γ, ?_⟩` and prove the remaining obligations. Introduce `σ g hg f hf`. Rewrite using `[ev_map_aut, hg f hf, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg f hf`. Conclude with `hg f (by rw [vanI_pts]; exact hf)`. Use `le_antisymm (Submodule.span_le.2 fun y hy => ?_) (Submodule.span_mono (subset_pts Γ))` and prove the remaining obligations. Use `(Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff (Submodule.span ℂ Γ) y).1 fun φ hφ => ?_` and prove the remaining obligations. Take `⟨f, hf⟩` from `exists_poly_of_dual φ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hf]`. Use `GlobalTheory.T.evalComplexPoly_eq_zero_on_ratZariskiClosure ι Γ h.aut_mem f (fun g hg => ?_) y hy` and prove the remaining obligations. Rewrite using `[hf]`. Conclude with `(Submodule.mem_dualAnnihilator φ).1 hφ g (Submodule.subset_span hg)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratClosure : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsPre Γ → IsQGroup (pts Γ ℂ) ∧ vanI (pts Γ ℂ) = vanI Γ ∧ Submodule.span ℂ (pts Γ ℂ) = Submodule.span ℂ Γ := by
   intro ι _ _ Γ h

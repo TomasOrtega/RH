@@ -23,23 +23,21 @@ def UpperTheory.Gal.projectedFormsSystemPart.AutPtOAlt {Ω : Type} [Field Ω] [C
     ∀ r : G L Ω →* GL (Fin n) (Qbar l), (∀ s, (r s).val = (ρ.r (k.p0 s)).map A.val) → IsIrr r →
       _root_.UpperTheory.Gal.projectedFormsSystemPart.AutOffN u ι (tw r ka)
 /- English proof (translation)
-Introduce `hG Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M H L _ _ _ _ _ Φ k c₁ _ f n ka R hka J hJ hE A _ _ _ ρ hρ hψ r hr hirr`. Take `⟨c₂, h₁, h₂⟩` from `ap_coef c c₁ A`. Use `letI : Algebra c₁.O c₂.O := (Subalgebra.inclusion h₁).toRingHom.toAlgebra`. Set `φ : A →+* c₂.O` to `A.val.toRingHom.codRestrict c₂.O fun x => h₂ x.1 x.2`. Use `haveI : IsLocalHom φ := ap_local c₂ φ (fun a => rfl) fun a b h => Subtype.ext (congrArg (fun t : c₂.O => t.1) h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `haveI hl : IsLocalHom (algebraMap c₁.O c₂.O) := ap_local c₂ _ (fun a => rfl) (Subalgebra.inclusion_injective h₁)`. Take `⟨hc, hf, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c₂.O`. Use `haveI : IsCD c₁.O c₂.O := { complete := hc, isLocalHom := hl, fin := hf }`. Set `j : c₂.O →ₐ[c₁.O] Qbar l` to `{ c₂.O.val.toRingHom with commutes' := fun _ => rfl }`. Set `ρ₂ : Fr.NRep (Φ.ext f) n c₂.O` to `apExt f (ρ.map φ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hlift : IsLiftA c₁.O ρ₂` using `ap_lift f φ (fun a => by`. Rewrite using `[R.hf a ⟨a.1, R.le a.2⟩ rfl, ResidueField.map_residue]`. Use the proof step `rfl) ρ hρ`. Take `⟨F, hF, hD, hP⟩` from `hJ c₂.O ρ₂ hlift (Qbar l) j Subtype.val_injective fun U hU => hirr.2.2 U le_top fun s v hv => by rw [hr]; exact hU (k.p0 s) trivial v hv`. Establish `hw : ∀ v : W.Vl l L, ((l : ℕ) : 𝓞 L) ∈ (R.s.w v).asIdeal` using `fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(R.s.hA v (l : ℕ)).2 v.2`. Use `(R.s.hw v (l : ℕ)).1 ?_` and prove the remaining obligations. Simplify using `using h1`. Use `choose wt hwt using fun v : W.Vl l L => ap_locAlg hG ι ka hka.alg (R.s.hw v) (hw v)`. Use `_root_.UpperTheory.Gal.projectedFormsSystemPart.end2oN R.v0 hE (j.comp F) (fun v i τ => wt v τ - (e : ℤ) * Fr.w n i) _ (fun x hx => ?_) ⟨fun v τ a b hab => ?_, fun v i => ?_⟩ ?_ ((UpperTheory.isIrr_twist_and_repIso_of_twist_repIso _ _ n ka).1 r hirr)` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : F x = 0` using `hF hx`. Express the relevant statement in the definitionally equal form `j (F x) = 0`. Rewrite using `[h1, map_zero]`. Establish `h1 : Fr.w n b < Fr.w n a`. Establish `h2 : (a : ℕ) < b` using `hab`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Fr.w`. Apply the tactic sequence `split_ifs <;> omega`. Establish `h3 : (0 : ℤ) < e` using `by exact_mod_cast H.e_pos`. Conclude with `sub_lt_sub_left (mul_lt_mul_of_pos_left h1 h3) _`. Take `⟨χ, hχ, h1⟩` from `ap_psi c e ψ L (Ω := Ω) (Fr.w n i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `hwt v _ χ hχ _ fun g hg => Units.ext ?_` and prove the remaining obligations. Establish `h2 : F (R.B₀.u.ψ v i g).val = (R.K.twψ ρ₂ v i g).val` using `congrArg (fun t => (t g).val) (hP v i)`. Establish `h3` using `hψ (R.K.e v) i (R.K.lam v g) ((R.K.lam_I v g).2 hg)`. Rewrite `h3` using `[R.lam_j]`. Rewrite using `[Units.val_mul, ← h1, ← R.κ_pr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `j (F (R.B₀.u.ψ v i g).val) = _`. Rewrite using `[h2]`. Conclude with `congrArg (fun t : A => t.1 * (R.K.κ (R.V.pr g)).val.1) h3`. Establish `h1 : W.UniversalOrdinaryDeterminantRing.Pt.D (j.comp F) = (W.GDet.ofRep (R.K.tw ρ₂)).map (j : c₂.O →+* Qbar l)` using `congrArg (fun D => D.map (j : c₂.O →+* Qbar l)) hD`. Use `(congrArg (fun D => D.comap R.V.pr) h1).trans (ap_det _ _ _ _ fun g => ?_)` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `(tw r ka g).val = _`. Rewrite using `[tw_val, hr, ← R.κ_pr, ← R.π_pr]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.projectedFormsSystemPart.autPtO_alt :
     GlobalTheory.Published.GlobalArtinReciprocity →
@@ -97,11 +95,11 @@ theorem UpperTheory.Gal.projectedFormsSystemPart.autPtO_alt :
     rw [tw_val, hr, ← R.κ_pr, ← R.π_pr]
     rfl
 /- English proof (translation)
-Establish `one : ∀ (R₂ : CReal k c₁ f 2 ka) (R₃ : CReal k c₁ f 3 kb), FinPt c₁.O (Φ.ext f) 3 ∧ _root_.UpperTheory.Gal.projectedFormsSystemPart.AutPtOAlt R₃.s.v0 k 3 ι kb ∧ _root_.UpperTheory.Gal.projectedFormsSystemPart.AutPtOAlt R₂.s.v0 k 2 ι ka` using `fun R₂ R₃ => by`. Take `⟨J₂, h₂, d₂⟩` from `_root_.UpperTheory.V.Pr.modularity_linked_ends hMod hLam ι H v R₂ hL (s₂ R₂)`. Take `⟨J₃, h₃, d₃⟩` from `_root_.UpperTheory.V.Pr.modularity_linked_ends hMod hLam ι H v R₃ hL (s₃ R₃)`. Take `⟨g₂, g₃, hfin⟩` from `UpperTheory.V.Pr.absMain l c₁.O _ R₂.T R₃.T J₂ J₃ h₂ h₃`. Conclude with `⟨hfin, _root_.UpperTheory.Gal.projectedFormsSystemPart.autPtO_alt hA Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f 3 _ R₃ hb J₃ g₃ d₃, _root_.UpperTheory.Gal.projectedFormsSystemPart.autPtO_alt hA Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f 2 ka R₂ ha J₂ g₂ d₂⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨R₂, -⟩` from `e₂ 1 one_ne_zero`. Take `⟨R₃, -⟩` from `e₃ 1 one_ne_zero`. Take `⟨R₂', n₂⟩` from `e₂ R₂.s.p R₂.s.p_prime.ne_zero`. Take `⟨R₃', n₃⟩` from `e₃ R₃.s.p R₃.s.p_prime.ne_zero`. Take `⟨hfin, a₃, a₂⟩` from `one R₂ R₃`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, b₃, b₂⟩` from `one R₂' R₃'`. Conclude with `⟨hfin, fun A _ _ _ ρ h1 h2 r h3 h4 => _root_.UpperTheory.Gal.projectedFormsSystemPart.glueN (by norm_num) (UpperTheory.Gal.projectedFormsSystemPart.v0_ne n₃) (a₃ A ρ h1 h2 r h3 h4) (b₃ A ρ h1 h2 r h3 h4), fun A _ _ _ ρ h1 h2 r h3 h4 => _root_.UpperTheory.Gal.projectedFormsSystemP …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.projectedFormsSystemPart.twoRuns_alt (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hMod : _root_.UpperTheory.V.W.ModUAlt) (hLam : W.LamEx)
     {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {c : Coef l}

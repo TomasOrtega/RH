@@ -9,7 +9,7 @@ open Formalism.UG NumberField Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_eq_conjTranspose, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]`. Establish `h : star z ᵥ* U = star (Uᴴ *ᵥ z)`. Rewrite using `[Matrix.star_mulVec, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[h]`. Simplify using `only [dotProduct, Pi.star_apply, Matrix.mulVec_diagonal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem svM_conj_form {n : ℕ} (U : Matrix (Fin n) (Fin n) ℂ) (d z : Fin n → ℂ) :
     star z ⬝ᵥ ((U * diagonal d * star U) *ᵥ z) =
@@ -22,28 +22,26 @@ theorem svM_conj_form {n : ℕ} (U : Matrix (Fin n) (Fin n) ℂ) (d z : Fin n �
   simp only [dotProduct, Pi.star_apply, Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Simplify using `only [Complex.star_def, Complex.ofReal_mul, Complex.ofReal_pow]`. Rewrite using `[mul_left_comm, Complex.conj_mul']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem svM_term (r : ℝ) (w : ℂ) : star w * ((r : ℂ) * w) = ((r * ‖w‖ ^ 2 : ℝ) : ℂ) := by
   simp only [Complex.star_def, Complex.ofReal_mul, Complex.ofReal_pow]
   rw [mul_left_comm, Complex.conj_mul']
 
 /- English proof (translation)
-Introduce `n J hJ hdet`. Use `set U : Matrix (Fin n) (Fin n) ℂ := (hJ.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hUdef`. Use `set ev := hJ.eigenvalues with hev`. Establish `hspec : J = U * diagonal (fun i => ((ev i : ℝ) : ℂ)) * star U`. Establish `h` using `hJ.spectral_theorem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Unitary.conjStarAlgAut_apply]`. Conclude with `h`. Establish `hUU : star U * U = 1` using `Matrix.mem_unitaryGroup_iff'.1 hJ.eigenvectorUnitary.2`. Establish `hUU' : U * star U = 1` using `Matrix.mem_unitaryGroup_iff.1 hJ.eigenvectorUnitary.2`. Establish `hev0 : ∀ i, ev i ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `i h`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[hJ.det_eq_prod_eigenvalues]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by rw [← hev, h]; simp)`. Use `⟨U * diagonal (fun i => ((|ev i| : ℝ) : ℂ)) * star U, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hD : (diagonal (fun i => ((|ev i| : ℝ) : ℂ))).PosDef`. Rewrite using `[Matrix.posDef_diagonal_iff]`. Introduce `i`. Conclude with `Complex.zero_lt_real.2 (abs_pos.2 (hev0 i))`. Establish `hinj : Function.Injective (star U).mulVec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `x y hxy`. Use `congrArg (fun v => U *ᵥ v) hxy` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hUU']`. Establish `h2` using `hD.conjTranspose_mul_mul_same hinj`. Rewrite `h2` using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose, ← Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdU : U.det * (star U).det = 1` using `by rw [← Matrix.det_mul, hUU', Matrix.det_one]`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, mul_right_comm, hdU, one_mul, Matrix.det_diagonal, hJ.det_eq_prod_eigenvalues, norm_prod]`. Use `push_cast`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hev]`. Introduce `z`. Rewrite using `[hspec, svM_conj_form, svM_conj_form]`. Simplify using `only [svM_term]`. Rewrite using `[← Complex.ofReal_sum, ← Complex.ofReal_sum, Complex.norm_real, Complex.ofReal_re, Real.norm_eq_abs]`.
-
-Use `(Finset.abs_sum_le_sum_abs _ _).trans (le_of_eq (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[abs_mul, abs_sq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem successive_vector_majorant : SvMaj := by
   intro n J hJ hdet
@@ -88,31 +86,29 @@ theorem successive_vector_majorant : SvMaj := by
     rw [abs_mul, abs_sq]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hCM m J hJ hdet`. Establish `hstar : ∀ (φ : E →+* ℂ) (a : E), φ (star a) = starRingEnd ℂ (φ a)` using `hCM.cmUnram.2.1`. Establish `hTC : NumberField.IsTotallyComplex E` using `hCM.cmUnram.1`. Establish `hne : ∀ φ : E →+* ℂ, ComplexEmbedding.conjugate φ ≠ φ`. Introduce `φ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc` using `hTC.isComplex (InfinitePlace.mk φ)`. Rewrite `hc` using `[InfinitePlace.isComplex_mk_iff]`. Conclude with `hc (ComplexEmbedding.isReal_iff.2 h)`. Establish `hJe : ∀ i j, star (J j i) = J i j`. Introduce `i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun (congrFun hJ i) j` as an intermediate fact. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply] at this`. Conclude with `this`. Establish `hherm : ∀ φ : E →+* ℂ, (J.map φ).IsHermitian`. Introduce `φ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Matrix.IsHermitian.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Rewrite using `[← hJe i j, hstar]`. Both sides reduce to the same expression. Establish `hdetφ : ∀ φ : E →+* ℂ, (J.map φ).det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `φ`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero φ).2 hdet`. Establish `hmapT : ∀ M : Matrix (Fin m) (Fin m) ℂ, M.IsHermitian → M.map (starRingEnd ℂ) = Mᵀ`. Introduce `M hM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.transpose_apply, ← hM.apply j i]`. Both sides reduce to the same expression. Establish `hid : ∀ (N : Matrix (Fin m) (Fin m) ℂ) (z : Fin m → ℂ), star z ⬝ᵥ (N.map (starRingEnd ℂ) *ᵥ z) = starRingEnd ℂ (z ⬝ᵥ (N *ᵥ star z))`. Introduce `N z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[dotProduct, mulVec, map_sum, map_mul]`. Use `choose H0 hH0 using fun φ : E →+* ℂ => successive_vector_majorant m (J.map φ) (hherm φ) (hdetφ φ)`. Set `ι` to `Fintype.equivFin (E →+* ℂ)`. Use `⟨fun φ => if ι φ < ι (ComplexEmbedding.conjugate φ) then H0 φ else (H0 (ComplexEmbedding.conjugate φ)).map (starRingEnd ℂ), ?_⟩` and prove the remaining obligations. Introduce `φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcc : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ` using `star_star φ`. Distinguish the cases in `hp : ι φ < ι (ComplexEmbedding.conjugate φ)`. Establish `hp' : ¬ ι (ComplexEmbedding.conjugate φ) < ι φ` using `lt_asymm hp`. Simplify using `only [if_pos hp]`. Use `⟨(hH0 φ).1, (hH0 φ).2.1, (hH0 φ).2.2, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcc, if_neg hp']`. Use `set ψ := ComplexEmbedding.conjugate φ with hψ`. Establish `hψφ : ι ψ < ι (ComplexEmbedding.conjugate ψ)`. Rewrite using `[hψ, hcc]`. Use `lt_of_le_of_ne (not_lt.1 hp) fun h => hne φ (ι.injective h.symm ▸ rfl)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hJφ : J.map φ = (J.map ψ).map (starRingEnd ℂ)`. Use extensionality with `i j`. Simplify using `[hψ, ComplexEmbedding.conjugate_coe_eq]`. Establish `hM` using `hH0 ψ`. Simplify using `only [if_neg hp, if_pos hψφ, ← hψ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmapT _ hM.1.1]`. Conclude with `hM.1.transpose`. Establish `hdc : ∀ N : Matrix (Fin m) (Fin m) ℂ, (N.map (starRingEnd ℂ)).det = starRingEnd ℂ N.det` using `fun N => by`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmapT _ hM.1.1, Matrix.det_transpose, hM.2.1, hJφ, hdc, Complex.norm_conj]`. Introduce `z`. Establish `h1` using `hM.2.2 (star z)`. Rewrite `h1` using `[star_star]`. Rewrite using `[hJφ, hid, hid, Complex.norm_conj, Complex.conj_re]`.
-
-Conclude with `h1`. Rewrite using `[Matrix.map_map]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem successive_vector_majorant_e : SvMajE := by
   intro F E _ _ _ _ _ _ hCM m J hJ hdet

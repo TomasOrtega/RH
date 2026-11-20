@@ -16,7 +16,7 @@ section LocCharMul
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Rewrite `h` using `[redP_zero]`. Conclude with `not_isUnit_zero h`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ml_ne_zero {u : E} (h : IsUnit (redP P u)) : u ≠ 0 := by
   rintro rfl
@@ -24,38 +24,36 @@ theorem ml_ne_zero {u : E} (h : IsUnit (redP P u)) : u ≠ 0 := by
   exact not_isUnit_zero h
 
 /- English proof (translation)
-The claim follows from `yIntAt_inv (intAt_of_isUnit h) h.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem ml_int_inv {u : E} (h : IsUnit (redP P u)) : IntAt P u⁻¹ := yIntAt_inv (intAt_of_isUnit h) h.ne_zero
 
 /- English proof (translation)
-The claim follows from `isUnit_reduction_of_integralAt_inv (ml_int_inv h) (by rw [inv_inv]; exact intAt_of_isUnit h) (inv_ne_zero (ml_ne_zero h))`.
+A detailed English derivation is pending.
 -/
 theorem ml_unit_inv {u : E} (h : IsUnit (redP P u)) : IsUnit (redP P u⁻¹) :=
   isUnit_reduction_of_integralAt_inv (ml_int_inv h) (by rw [inv_inv]; exact intAt_of_isUnit h) (inv_ne_zero (ml_ne_zero h))
 
 /- English proof (translation)
-Rewrite using `[reduction_mul (intAt_of_isUnit h) (intAt_of_isUnit h')]`. Conclude with `h.mul h'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ml_unit_mul {u w : E} (h : IsUnit (redP P u)) (h' : IsUnit (redP P w)) : IsUnit (redP P (u * w)) := by
   rw [reduction_mul (intAt_of_isUnit h) (intAt_of_isUnit h')]
   exact h.mul h'
 
 /- English proof (translation)
-Rewrite using `[(ocbA_pow_red hq k).2]`. Conclude with `not_isUnit_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ml_qpow_pos {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (k : ℕ) : ¬ IsUnit (redP P ((q : E) ^ (k + 1))) := by
   rw [(ocbA_pow_red hq k).2]
   exact not_isUnit_zero
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hlt | hgt` into its components or cases. Take `⟨m, hm⟩ : ∃ m : ℕ, k = -((m : ℤ) + 1)` from `⟨(-k - 1).toNat, by omega⟩`. Establish `h2` using `ml_unit_inv h`. Rewrite `h2` using `[hm, zpow_neg, inv_inv]`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (q : E) ^ ((m : ℤ) + 1) = (q : E) ^ (m + 1)`. Rewrite using `[← zpow_natCast]`. Use `congr 1`. Rewrite `h2` using `[e]`. Conclude with `ml_qpow_pos hq m h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩ : ∃ m : ℕ, k = (m : ℤ) + 1` from `⟨(k - 1).toNat, by omega⟩`. Establish `e : (q : E) ^ ((m : ℤ) + 1) = (q : E) ^ (m + 1)`. Rewrite using `[← zpow_natCast]`. Use `congr 1`. Rewrite `h` using `[hm, e]`.
-
-Conclude with `ml_qpow_pos hq m h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ml_qpow_unit {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (k : ℤ) (h : IsUnit (redP P ((q : E) ^ k))) : k = 0 := by
   by_contra hne
@@ -74,18 +72,18 @@ theorem ml_qpow_unit {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (k : �
     exact ml_qpow_pos hq m h
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (exists_isUnit_div P q hq hu a ha)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_div_pow_valuation (q : ℕ) (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (a : E) (ha : a ≠ 0) :
     IsUnit (redP P (a / (q : E) ^ LocE.vP P q a)) :=
   Classical.epsilon_spec (exists_isUnit_div P q hq hu a ha)
 
 /- English proof (translation)
-Establish `hq0 : (q : E) ≠ 0` using `ciQ_ne_zero hu`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `h` using `[zero_div]`. Conclude with `ml_ne_zero h rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `isUnit_div_pow_valuation q hq hu a ha`. Establish `h2` using `ml_unit_mul h (ml_unit_inv h1)`. Establish `e : a / (q : E) ^ z * (a / (q : E) ^ LocE.vP P q a)⁻¹ = (q : E) ^ (LocE.vP P q a - z)`. Rewrite using `[zpow_sub₀ hq0]`. Establish `hz : (q : E) ^ z ≠ 0` using `zpow_ne_zero _ hq0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : (q : E) ^ LocE.vP P q a ≠ 0` using `zpow_ne_zero _ hq0`. Clear the denominators using the available nonvanishing facts. Rewrite `h2` using `[e]`. Use `ml_qpow_unit hq _ h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem valuation_eq_of_isUnit_div_pow (q : ℕ) (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (a : E) (z : ℤ)
     (h : IsUnit (redP P (a / (q : E) ^ z))) : LocE.vP P q a = z := by
@@ -106,9 +104,9 @@ theorem valuation_eq_of_isUnit_div_pow (q : ℕ) (hq : ((q : ℕ) : 𝓞 E) ∈ 
   omega
 
 /- English proof (translation)
-Establish `hq0 : (q : E) ≠ 0` using `ciQ_ne_zero hu`. Apply `valuation_eq_of_isUnit_div_pow q hq hu` to reduce the goal to its premises. Establish `e : a * b / (q : E) ^ (LocE.vP P q a + LocE.vP P q b) = a / (q : E) ^ LocE.vP P q a * (b / (q : E) ^ LocE.vP P q b)`. Rewrite using `[zpow_add₀ hq0, mul_div_mul_comm]`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ml_unit_mul (isUnit_div_pow_valuation q hq hu a ha) (isUnit_div_pow_valuation q hq hu b hb)`.
+A detailed English derivation is pending.
 -/
 theorem valuation_mul₂ (q : ℕ) (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (a b : E) (ha : a ≠ 0) (hb : b ≠ 0) :
     LocE.vP P q (a * b) = LocE.vP P q a + LocE.vP P q b := by
@@ -122,7 +120,7 @@ theorem valuation_mul₂ (q : ℕ) (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `hq0 : (q : E) ≠ 0` using `ciQ_ne_zero hu`. Establish `hB` using `isUnit_div_pow_valuation q hq hu b hb`. Unfold `LocE.locChar`. Rewrite using `[valuation_mul₂ q hq hu a b ha hb, zpow_add₀ hcq, zpow_add₀ hq0, mul_div_mul_comm, unitV_mul_unit χ (intAt_of_isUnit hB) (ml_int_inv hB) (ml_ne_zero hB)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ml_locChar_mul (q : ℕ) (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (cq : K) (hcq : cq ≠ 0)
     (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a b : E) (ha : a ≠ 0) (hb : b ≠ 0) :
@@ -141,9 +139,9 @@ section Ord
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_frameD Q hN`. Establish `hf' : ∀ x, (γ * f) x ∈ localization₂ Q.asIdeal (gmap γ N) ↔ x ∈ stdAt E n Q`. Introduce `x`. Rewrite using `[mem_localization_gmap]`. Use `show γ.symm (γ (f x)) ∈ _ ↔ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `hf x`. Rewrite using `[ordDet_eq_of_frame Q (gmap γ N) (γ * f) hf', ordDet_eq_of_frame Q N f hf, map_mul, Units.val_mul, ordE_mul Q (Units.ne_zero _) (Units.ne_zero _)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ml_ordDet_gmap (Q : HeightOneSpectrum (𝓞 E)) (N : Submodule (𝓞 E) (Sp E n)) (hN : Submodule.IsLattice E N) (γ : Sp E n ≃ₗ[E] Sp E n) :
     ordDet Q (gmap γ N) = ordE Q ((LinearEquiv.det γ : Eˣ) : E) + ordDet Q N := by
@@ -158,15 +156,15 @@ theorem ml_ordDet_gmap (Q : HeightOneSpectrum (𝓞 E)) (N : Submodule (𝓞 E) 
     ordE_mul Q (Units.ne_zero _) (Units.ne_zero _)]
 
 /- English proof (translation)
-Take `⟨r, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) z`. Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Apply `hz` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero, zero_div]`. Establish `hsE : algebraMap (𝓞 E) E s ≠ 0` using `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 E) E)).2 hs0`. Establish `hrE : algebraMap (𝓞 E) E r ≠ 0` using `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 E) E)).2 hr0`. Establish `hI : Ideal.span {r * s} ≠ (0 : Ideal (𝓞 E))`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h0` using `[Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(mul_ne_zero hr0 hs0) h0`. Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations. Introduce `Q hQ`. Assume the negation of the conclusion as `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hQ` to reduce the goal to its premises. Establish `hm : r * s ∉ Q.asIdeal` using `fun hmem => hc (Ideal.dvd_span_singleton.2 hmem)`. Establish `hrQ : r ∉ Q.asIdeal` using `fun hmem => hm (Ideal.mul_mem_right _ _ hmem)`. Establish `hsQ : s ∉ Q.asIdeal` using `fun hmem => hm (Ideal.mul_mem_left _ _ hmem)`. Use `ordE_eq_zero hz ⟨r, s, hsQ, ?_⟩ ⟨s, r, hrQ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_cancel₀ _ hsE]`. Rewrite using `[inv_div, mul_div_cancel₀ _ hrE]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ml_ordE_finite (z : E) (hz : z ≠ 0) : {Q : HeightOneSpectrum (𝓞 E) | ordE Q z ≠ 0}.Finite := by
   obtain ⟨r, s, hs, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 E) z
@@ -205,11 +203,11 @@ def zFac (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (
   if ∃ P ∈ SB, P.asIdeal.under (𝓞 X.F) = v.asIdeal then 1 else ((mU (sel v) ^ ordE (sel v) z : X.Kˣ) : X.K)
 
 /- English proof (translation)
-Use `Set.Finite.subset (Set.Finite.preimage (sel_injective hsel).injOn (ml_ordE_finite z hz)) ?_` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hc`. Apply `hv` to reduce the goal to its premises. Establish `h0 : ordE (sel v) z = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hc h`. Unfold `zFac`. Use `split_ifs`. Both sides reduce to the same expression.
+Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem ml_zFac_support {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} (hsel : IsSel X sel) (SB : Finset (HeightOneSpectrum (𝓞 X.E)))
     (mU : HeightOneSpectrum (𝓞 X.E) → X.Kˣ) (z : X.E) (hz : z ≠ 0) : (Function.mulSupport (zFac sel SB mU z)).Finite := by
@@ -227,9 +225,9 @@ theorem ml_zFac_support {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectru
     simp
 
 /- English proof (translation)
-Rewrite using `[muOff_eq, muOff_eq, ← finprod_mul_distrib (ml_zFac_support hsel SB mU _ (Units.ne_zero _)) (muFac_support hsel SB mU (frame_det_unit_almost_all_primes n) N hN)]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Unfold `muFac zFac`. Distinguish the cases in `hv : ∃ P ∈ SB, P.asIdeal.under (𝓞 X.F) = v.asIdeal`. Rewrite using `[if_pos hv, if_pos hv, if_pos hv, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hv, if_neg hv, if_neg hv, ← Units.val_mul, ← zpow_add, ml_ordDet_gmap (sel v) N hN.1 γ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ml_muOff_gmap {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} (hsel : IsSel X sel) (SB : Finset (HeightOneSpectrum (𝓞 X.E)))
     (mU : HeightOneSpectrum (𝓞 X.E) → X.Kˣ) (γ : Sp X.E n ≃ₗ[X.E] Sp X.E n) (N : Submodule (𝓞 X.E) (Sp X.E n)) (hN : IsSdLat N) :
@@ -243,9 +241,9 @@ theorem ml_muOff_gmap {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum 
   · rw [if_neg hv, if_neg hv, if_neg hv, ← Units.val_mul, ← zpow_add, ml_ordDet_gmap (sel v) N hN.1 γ]
 
 /- English proof (translation)
-Unfold `muInvDet`. Rewrite using `[ml_muOff_gmap hsel SB mU γ.1 N hN]`. Establish `e : ∏ P : SB, mI P ((LinearEquiv.det (γ.1 * fr P) : X.Eˣ) : X.E) = (∏ P : SB, mI P ((LinearEquiv.det γ.1 : X.Eˣ) : X.E)) * ∏ P : SB, mI P ((LinearEquiv.det (fr P) : X.Eˣ) : X.E)`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, Units.val_mul, hmul P _ _ (Units.ne_zero _) (Units.ne_zero _)]`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ml_ratio {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} (hsel : IsSel X sel) (SB : Finset (HeightOneSpectrum (𝓞 X.E)))
     (mU : HeightOneSpectrum (𝓞 X.E) → X.Kˣ) (mI : SB → X.E → X.K)

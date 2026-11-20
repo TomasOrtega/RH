@@ -6,11 +6,11 @@ namespace Formalism.FourierDecayAlt.P.BoxOne
 open NumberField Finset
 
 /- English proof (translation)
-Use `set M := T.sup (fun k => Finset.univ.sup k) + 1 with hM`. Establish `hsub : T ⊆ Fintype.piFinset (fun _ : ι => Finset.range M)`. Introduce `k hk`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_range, hM, Nat.lt_succ_iff]`. Conclude with `(Finset.le_sup (f := k) (Finset.mem_univ i)).trans (Finset.le_sup (f := fun k => Finset.univ.sup k) hk)`. Establish `hgeom : ∑ n ∈ Finset.range M, q ^ n ≤ 1 / (1 - q)`. Establish `h` using `geom_sum_Ico_le_of_lt_one (m := 0) (n := M) hq0 hq1`. Rewrite `h` using `[← Finset.range_eq_Ico, pow_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_univ_sum]`. Use `_ ≤ ∏ _i : ι, (1 / (1 - q)) := Finset.prod_le_prod (fun _ _ => Finset.sum_nonneg fun n _ => pow_nonneg hq0 n) (fun _ _ => hgeom)`. Use `_ = (1 / (1 - q)) ^ Fintype.card ι := by rw [Finset.prod_const, Finset.card_univ]`.
+A detailed English derivation is pending.
 -/
 theorem geom_prod_sum_le {ι : Type} [Fintype ι] (q : ℝ) (hq0 : 0 ≤ q) (hq1 : q < 1)
     (T : Finset (ι → ℕ)) :
@@ -41,9 +41,9 @@ theorem geom_prod_sum_le {ι : Type} [Fintype ι] (q : ℝ) (hq0 : 0 ≤ q) (hq1
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Apply `Finset.prod_le_prod (fun w _ => le_min zero_le_one (Real.rpow_nonneg (div_nonneg (hx w).le (by positivity)) _))` to reduce the goal to its premises. Introduce `w _`. Establish `hpos : 0 < x w / w l` using `div_pos (hx w) (InfinitePlace.pos_iff.2 hl0)`. Rewrite using `[Formalism.SA.P.min_one_rpow _ _ hpos hK, ← Formalism.SA.P.pow_rpow_comm (1 / 2 : ℝ) Kx (by norm_num)]`. Apply `Real.rpow_le_rpow (le_min zero_le_one hpos.le) _ hK` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hu : 0 < w l / x w` using `div_pos (InfinitePlace.pos_iff.2 hl0) (hx w)`. Use `Formalism.SA.P.min_one_inv_le (w l / x w) hu` as an intermediate fact. Rewrite `this` using `[one_div_div]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem term_le (x : InfinitePlace E → ℝ) (hx : ∀ w, 0 < x w) (Kx : ℝ) (hK : 0 ≤ Kx) (l : E)
     (hl0 : l ≠ 0) :
@@ -65,27 +65,23 @@ namespace Formalism.FourierDecayAlt.P
 open NumberField Finset
 
 /- English proof (translation)
-Introduce `Kx hKx`. Use `set p : ℝ := (1 / 2 : ℝ) ^ Kx with hp`. Use `set q : ℝ := 4 * p with hq`. Establish `hp0 : 0 < p` using `by rw [hp]; positivity`. Establish `hp1 : p < 1 / 4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `Real.rpow_lt_rpow_of_exponent_gt (by norm_num : (0 : ℝ) < 1 / 2) (by norm_num : (1 / 2 : ℝ) < 1) hKx`. Rewrite `h` using `[show ((1 / 2 : ℝ) ^ (2 : ℝ)) = 1 / 4 by rw [Real.rpow_two]; norm_num]`. Conclude with `h`. Establish `hq0 : 0 ≤ q` using `by rw [hq]; linarith`. Establish `hq1 : q < 1` using `by rw [hq]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨400 * (1 / (1 - q)), ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ b hb x hx hX S hS`. Use `set f := Fintype.card (InfinitePlace E) with hf`. Use `set N : ℝ := (FractionalIdeal.absNorm b : ℝ) with hN`. Establish `hNpos : 0 < N` using `Formalism.SA.P.absNorm_pos b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set X := ∏ w, x w with hXdef`. Establish `hX0 : 0 ≤ X` using `Finset.prod_nonneg fun w _ => (hx w).le`. Establish `hX2 : X ^ 2 ≤ N`. Combine the equalities or inequalities in the displayed calculation. Set `kv : E → InfinitePlace E → ℕ` to `fun l w => Nat.log 2 ⌊w l / x w⌋₊`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfib : ∀ k ∈ S.image kv, ∑ l ∈ S with kv l = k, ∏ w, min 1 ((x w / w l) ^ Kx) ≤ (400 : ℝ) ^ f * ∏ w, q ^ (k w)`. Introduce `k _`. Use `set B := ∏ w, p ^ (k w) with hB`. Establish `hB0 : 0 ≤ B` using `Finset.prod_nonneg fun w _ => pow_nonneg hp0.le _`. Establish `hterm : ∀ l ∈ S.filter (fun l => kv l = k), ∏ w, min 1 ((x w / w l) ^ Kx) ≤ B`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl`. Rewrite `hl` using `[Finset.mem_filter]`. Take `⟨hlS, hlk⟩` from `hl`. Rewrite using `[hB, ← hlk]`. Conclude with `Formalism.FourierDecayAlt.P.BoxOne.term_le x hx Kx (by linarith) l (hS l hlS).2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcard : (((S.filter (fun l => kv l = k)).card : ℕ) : ℝ) ≤ (100 : ℝ) ^ f * (∏ w, (2 ^ (k w + 1) * x w) ^ 2) / N`. Apply `Formalism.SA.P.card_box_le b hb (fun w => 2 ^ (k w + 1) * x w) (fun w => by have := hx w; positivity)` to reduce the goal to its premises. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_filter]`. Take `⟨hlS, hlk⟩` from `hl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨(hS l hlS).1, (hS l hlS).2, fun w => ?_⟩` and prove the remaining obligations. Use `Formalism.SA.P.nat_log_floor_upper (w l / x w) (div_nonneg (by positivity) (hx w).le)` as an intermediate fact. Rewrite `this` using `[div_lt_iff₀ (hx w)]`. Rewrite using `[← hlk]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ w, (2 ^ (k w + 1) * x w) ^ 2 * p ^ (k w) = 4 * x w ^ 2 * q ^ (k w)`. Introduce `w`. Rewrite using `[hq, mul_pow (4 : ℝ) p (k w), show (4 : ℝ) ^ (k w) = (2 ^ (k w)) ^ 2 by rw [sq, ← mul_pow]; norm_num]`. Expand and normalize the polynomial expressions, which then agree. Establish `hid : (∏ w, (2 ^ (k w + 1) * x w) ^ 2) * B = 4 ^ f * X ^ 2 * ∏ w, q ^ (k w)`.
-
-Rewrite using `[hB, ← Finset.prod_mul_distrib, Finset.prod_congr rfl (fun w _ => hpt w), Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ← hf, Finset.prod_pow]`. Establish `hQ0 : 0 ≤ ∏ w, q ^ (k w)` using `Finset.prod_nonneg fun w _ => pow_nonneg hq0 _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, mul_assoc, hid]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ (100 : ℝ) ^ f * 4 ^ f * (∏ w, q ^ (k w)) * 1 := mul_le_mul_of_nonneg_left ((div_le_one hNpos).2 hX2) (by positivity)`. Use `_ = (400 : ℝ) ^ f * ∏ w, q ^ (k w) := by`. Rewrite using `[show (400 : ℝ) ^ f = 100 ^ f * 4 ^ f by rw [← mul_pow]; norm_num]; ring`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := kv) (t := S.image kv) (fun l hl => Finset.mem_image_of_mem kv hl)]`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem box_weights_sum_to_one : Formalism.FourierDecayAlt.BoxSumOne := by
   intro Kx hKx

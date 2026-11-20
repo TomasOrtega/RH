@@ -10,21 +10,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TorusPart
 
 /- English proof (translation)
-Take `⟨-, h₂, v, hv⟩` from `hV`. Establish `h0 : ⊤ ≤ j.left ⁻¹ᵁ V` using `fun z _ => by`. Express the relevant statement in the definitionally equal form `j.left z ∈ V`. Rewrite using `[hj]`. Conclude with `z.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `pre : ∀ {Z : Over S} (c : Z ⟶ Over.mk (V.ι ≫ G.hom)), ⊤ ≤ (c ≫ j).left ⁻¹ᵁ V` using `fun c z _ => by`. Express the relevant statement in the definitionally equal form `(c ≫ j).left z ∈ V`. Rewrite using `[Over.comp_left, Scheme.Hom.comp_apply]`. Conclude with `h0 (Set.mem_univ _)`. Use `⟨⟨(splitTorusPointsEquiv S X _).symm ((Units.map (j.left.appLE V ⊤ h0).hom.toMonoidHom).comp v), fun Z t y y' h => ?_⟩, fun Z t p => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `(splitTorusPointsEquiv S X Z).injective` to reduce the goal to its premises. Use `MonoidHom.ext fun χ => Units.ext ?_` and prove the remaining obligations. Establish `e : TorusSlice.ch ((splitTorusPointsEquiv S X (Over.mk (V.ι ≫ G.hom))).symm ((Units.map (j.left.appLE V ⊤ h0).hom.toMonoidHom).comp v)) χ.toAdd = (j.left.appLE V ⊤ h0).hom (v χ).val`. Rewrite using `[TorusSlice.ch_eq, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hv χ.toAdd Z t (y ≫ j) (h ▸ pre y') (pre y)` as an intermediate fact. Rewrite `this` using `[TorusSlice.appLE_comp_top y' _ _ h.symm _ _ h0, TorusSlice.appLE_comp_top y _ _ rfl _ _ h0]`. Use `(TorusSlice.ch_eq _ χ.toAdd).symm.trans (Eq.trans ?_ (TorusSlice.ch_eq _ χ.toAdd))` and prove the remaining obligations. Rewrite using `[TorusSlice.ch_mul, TorusSlice.ch_comp, TorusSlice.ch_comp, e]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : Set.range ((t ≫ u) * (p ≫ j)).left ⊆ Set.range V.ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `e1 : (t ≫ u) * (p ≫ j) = lift t (p ≫ j) ≫ ((fst (splitTorus S X) G ≫ u) * snd (splitTorus S X) G)`. Simplify using `[MonObj.comp_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e2 : lift t (p ≫ j) ≫ snd (splitTorus S X) G = p ≫ j` using `lift_snd _ _`. Rewrite using `[e1, Over.comp_left, Scheme.Hom.comp_apply]`. Apply `h₂` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(snd (splitTorus S X) G).left ((lift t (p ≫ j)).left z) ∈ V`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, e2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pre p (Set.mem_univ _)`. Use `⟨Over.homMk (IsOpenImmersion.lift V.ι _ hr) ?_, ?_⟩` and prove the remaining obligations. Conclude with `(IsOpenImmersion.lift_fac_assoc _ _ hr _).trans (Over.w _)`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, hj]`.
-
-Conclude with `IsOpenImmersion.lift_fac _ _ hr`.
+A detailed English derivation is pending.
 -/
 private theorem equivar_of_goodOpen {S : Scheme.{0}} {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X]
     (u : splitTorus S X ⟶ G) (V : G.left.Opens) (hV : GoodOpen u V)
@@ -72,27 +70,25 @@ private theorem equivar_of_goodOpen {S : Scheme.{0}} {G : Over S} [GrpObj G] {X 
       exact IsOpenImmersion.lift_fac _ _ hr
 
 /- English proof (translation)
-Introduce `S G _ hc X _ _ _ u hu V hV U σ T p w t ht`. Establish `hW : (snd (splitTorus S X) G).left ⁻¹ᵁ (G.hom ⁻¹ᵁ U) ≤ ((fst (splitTorus S X) G ≫ u) * snd (splitTorus S X) G).left ⁻¹ᵁ (G.hom ⁻¹ᵁ U)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, Over.w, Over.w]`. Establish `htU : w.left t ∈ G.hom ⁻¹ᵁ U`. Express the relevant statement in the definitionally equal form `G.hom (w.left t) ∈ U`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Scheme.Hom.comp_apply, Over.w, ← Over.w p, Scheme.Hom.comp_apply]`. Conclude with `(p.left t).2`. Take `⟨b, hb, hbU⟩` from `TorusQuotientGlue.exists_invariant hV hW ht htU`. Establish `hV₁` using `TorusQuotientGlue.goodOpen_basicOpen hV b.2`. Generalize the expression as in `G.left.basicOpen b.1 = V₁ at hb hbU hV₁`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression.
 
-Set `P : Over S` to `Over.mk (V₁.ι ≫ G.hom)`. Set `j : P ⟶ G` to `Over.homMk V₁.ι rfl`. Take `⟨⟨τ, hτ⟩, hs⟩` from `equivar_of_goodOpen u V₁ hV₁ j rfl`. Establish `hr : Set.range (V₁.ι ≫ G.hom) ⊆ Set.range U.ι`. Introduce and unpack `_ ⟨z, rfl⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Opens.range_ι, Scheme.Hom.comp_apply]`. Conclude with `hbU z.2`. Set `q : P ⟶ Over.mk U.ι` to `Over.homMk (IsOpenImmersion.lift U.ι _ hr) (IsOpenImmersion.lift_fac _ _ hr)`. Establish `huniq : ∀ {Z : Over S} (f g : Z ⟶ Over.mk U.ι), f = g` using `fun f g => by`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← cancel_mono U.ι]`. Conclude with `(Over.w f).trans (Over.w g).symm`. Set `a : P ⟶ G` to `(q ≫ σ) * j`. Establish `hsnd : IsOpenImmersion (snd (Over.mk U.ι) G).left` using `inferInstanceAs (IsOpenImmersion (pullback.snd U.ι G.hom))`. Establish `hl : (lift q j).left ≫ (snd (Over.mk U.ι) G).left = V₁.ι`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Establish `hlo : IsOpenImmersion (lift q j).left`. Establish `: IsOpenImmersion ((lift q j).left ≫ (snd (Over.mk U.ι) G).left)`. Rewrite using `[hl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inferInstanceAs (IsOpenImmersion V₁.ι)`. Conclude with `IsOpenImmersion.of_comp _ (snd (Over.mk U.ι) G).left`. Establish `hiso : IsIso (TorusSlice.shearIso σ).hom.left` using `inferInstanceAs (IsIso ((Over.forget S).map (TorusSlice.shearIso σ).hom))`. Establish `key : ∀ {Z : Over S} (f : Z ⟶ Over.mk U.ι) (g : Z ⟶ G), ((f ≫ σ) * g).left = (lift f g).left ≫ (TorusSlice.shearIso σ).hom.left ≫ (snd (Over.mk U.ι) G).left` using `fun f g => by`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Simplify using `[TorusSlice.shearIso, MonObj.comp_mul]`. Establish `hao : IsOpenImmersion a.left`. Rewrite using `[key q j]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `haff : IsAffine P.left` using `hV₁.1`. Establish `ha : ∀ {Z : Over S} (y y' : Z ⟶ P), y' ≫ a = (y ≫ q ≫ σ) * (y' ≫ j)` using `fun y y' => by`. Rewrite using `[MonObj.comp_mul, ← Category.assoc y', ← Category.assoc y, huniq (y' ≫ q) (y ≫ q)]`. Use `⟨_, TorusSlice.goodOpen_of_equivar u a τ (fun Z s y y' h => hτ Z s y y' ?_) (fun Z s y => ?_), ?_⟩` and prove the remaining obligations. Rewrite `h` using `[ha y y', ha y y, mul_left_comm]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel h`. Take `⟨y', h⟩` from `hs Z s y`. Conclude with `⟨y', by rw [ha y y', ha y y, h, mul_left_comm]⟩`. Rewrite using `[Scheme.Hom.image_top_eq_opensRange]`. Take `⟨x, hx⟩ : ∃ x : P.left, j.left x = w.left t` from `⟨⟨w.left t, hb⟩, rfl⟩`.
-
-Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `e : (lift q j).left x = (lift p w).left t`. Apply `(snd (Over.mk U.ι) G).left.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← Over.comp_left, ← Over.comp_left, lift_snd, lift_snd, hx]`. Rewrite using `[key p w, key q j, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply (lift p w).left, e]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.good_open_translate_section :
     ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], IsCommMonObj G → ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (u : splitTorus S X ⟶ G), IsMonHom u →

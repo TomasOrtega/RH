@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.FourTermSumSwap
 
 /- English proof (translation)
-Introduce `R α β _ _ _ f`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_four_swap : ∀ {R α β : Type} [inst : AddCommMonoid R] [inst_1 : Fintype α] [inst_2 : Fintype β]
     (f : α → β → α → β → R),

@@ -9,11 +9,11 @@ open scoped ENNReal InnerProductSpace ComplexConjugate ContDiff
 noncomputable section
 
 /- English proof (translation)
-Unfold `d`. Use `split_ifs with h`. Use `set e := Classical.choose h`. Establish `he` using `Classical.choose_spec h`. Establish `hzx : z x = e x` using `he.1 he.2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : Tendsto e.symm (𝓝 (e x)) (𝓝 x)`. Establish `hc` using `e.continuousAt_symm (e.map_source he.2)`. Rewrite `hc` using `[ContinuousAt, e.left_inv he.2]`. Conclude with `hc`. Establish `hg : (f ∘ e.symm) =ᶠ[𝓝 (e x)] fun _ => (0 : ℂ)` using `(ht.eventually hf).mono fun y hy => by simpa using hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzx]`. Unfold `wd`. Rewrite using `[hg.fderiv_eq]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma d_apply_eq_zero_of_eventuallyEq_zero {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (f : M → ℂ) (x : M) (hf : f =ᶠ[𝓝 x] 0) : d n z j f x = 0 := by
@@ -35,19 +35,19 @@ private lemma d_apply_eq_zero_of_eventuallyEq_zero {M : Type*} [TopologicalSpace
   · rfl
 
 /- English proof (translation)
-Introduce `z _ ph ph' ψ U f _ _ hsupp hph`. Establish `hfz : ∀ x, x ∉ U → f x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `h`. Conclude with `hx (hsupp (subset_tsupport _ h))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hfun : ∀ j, (fun y => (Real.exp (-(w2 ph' ψ y)) : ℂ) * f y j) = fun y => (Real.exp (-ph y) : ℂ) * f y j`. Introduce `j`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ U`. Simplify using `[w2, (hph y hy).1, (hph y hy).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hfz y hy]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `v`. Unfold `ipV`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ U`. Simplify using `[w2, (hph x hx).1, (hph x hx).2]`. Simplify using `[hfz x hx]`. Unfold `wint`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [tstar]`. Repeatedly rewrite using `[hfun]`. Distinguish the cases in `hx : x ∈ U`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h1 : w1 ph' ψ x = ph x` using `by simp [w1, (hph x hx).1, (hph x hx).2]`. Rewrite using `[h1]`. Establish `hx' : x ∉ tsupport f` using `fun h => hx (hsupp h)`. Establish `hev : f =ᶠ[𝓝 x] 0` using `notMem_tsupport_iff_eventuallyEq.1 hx'`. Establish `hS : ∀ j, d n z j (fun y => (Real.exp (-ph y) : ℂ) * f y j) x = 0` using `fun j => d_apply_eq_zero_of_eventuallyEq_zero n z j _ x (hev.mono fun y hy => by simp [hy])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero (fun j _ => hS j)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locality (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] : LocalityStatement n M := by

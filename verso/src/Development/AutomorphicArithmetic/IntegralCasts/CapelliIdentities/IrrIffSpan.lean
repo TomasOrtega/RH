@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial V with hV | hV` into its components or cases. Rewrite using `[eq_top_iff]`. Introduce `f _`. Rewrite using `[Subsingleton.elim f 0]`. Conclude with `S.zero_mem`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsSimpleModule S V := by`. Use `{ exists_pair_ne := ⟨⊥, ⊤, bot_ne_top⟩, eq_bot_or_eq_top := fun N => ?_ }` and prove the remaining obligations. Break down `h (N.restrictScalars K) (fun s hs v hv => N.smul_mem (⟨s, hs⟩ : S) hv) with h1 | h1` into its components or cases. Conclude with `Or.inl ((Submodule.restrictScalars_eq_bot_iff K S V).1 h1)`. Conclude with `Or.inr ((Submodule.restrictScalars_eq_top_iff K S V).1 h1)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `f _`. Set `F : Module.End (Module.End S V) V` to `{ toFun := f map_add' := f.map_add map_smul' := fun φ v => by`. Take `⟨c, rfl⟩` from `(IsSimpleModule.algebraMap_end_bijective_of_isAlgClosed K (A := S) (V := V)).2 φ`. Conclude with `f.map_smul c v }`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `b` to `Module.finBasis K V`. Take `⟨r, hr⟩` from `jacobson_density (R := S) F (Finset.univ.image b)`. Establish `: f = (r : Module.End K V)` using `b.ext fun i => hr (b i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Rewrite using `[this]`. Conclude with `r.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qe4.subalgebra_eq_top {K V : Type*} [Field K] [IsAlgClosed K]
     [AddCommGroup V] [Module K V] [FiniteDimensional K V] (S : Subalgebra K (Module.End K V))
@@ -40,25 +40,23 @@ private theorem UpperTheory.Reformulated.B.Qe4.subalgebra_eq_top {K V : Type*} [
   exact r.2
 
 /- English proof (translation)
-Introduce `K G ι _ _ _ _ _ ρ`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hmul : ∀ x y : Matrix ι ι K, x ∈ Submodule.span K (Set.range (⇑ρ : G → Matrix ι ι K)) → y ∈ Submodule.span K (Set.range (⇑ρ : G → Matrix ι ι K)) → x * y ∈ Submodule.span K (Set.range (⇑ρ : G → Matrix ι ι K))`. Introduce `x y hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.mul_mem_mul hx hy` as an intermediate fact. Rewrite `this` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨a, rfl⟩, _, ⟨c, rfl⟩, rfl⟩`. Conclude with `⟨a * c, map_mul ρ a c⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Set `A : Subalgebra K (Matrix ι ι K)` to `(Submodule.span K (Set.range (⇑ρ : G → Matrix ι ι K))).toSubalgebra (Submodule.subset_span ⟨1, map_one ρ⟩) hmul`. Set `e : Matrix ι ι K ≃ₐ[K] Module.End K (ι → K)` to `Matrix.toLinAlgEquiv'`. Establish `hS : A.map (e : Matrix ι ι K →ₐ[K] Module.End K (ι → K)) = ⊤`. Use `UpperTheory.Reformulated.B.Qe4.subalgebra_eq_top _ fun N hN => h N fun g v hv => ?_` and prove the remaining obligations. Conclude with `hN (e (ρ g)) ⟨ρ g, Submodule.subset_span ⟨g, rfl⟩, rfl⟩ v hv`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `M _`. Establish `hM : e M ∈ A.map (e : Matrix ι ι K →ₐ[K] Module.End K (ι → K))`. Rewrite using `[hS]`. Conclude with `Algebra.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx, hxe⟩` from `hM`. Establish `: x = M` using `e.injective hxe`. Rewrite using `[← this]`. Conclude with `hx`. Introduce `h N hN`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hall : ∀ M : Matrix ι ι K, ∀ v ∈ N, M.mulVec v ∈ N`. Introduce `M v hv`. Establish `hM : M ∈ Submodule.span K (Set.range (⇑ρ : G → Matrix ι ι K))`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨g, rfl⟩ := hx`. Conclude with `hN g v hv`. Consider the case `zero => rw [Matrix.zero_mulVec]`. Conclude with `N.zero_mem`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy => rw [Matrix.add_mulVec]`. Conclude with `N.add_mem hx hy`. Consider the case `smul c x _ hx => rw [Matrix.smul_mulVec]`. Conclude with `N.smul_mem c hx`. Distinguish the cases in `hb : N = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Or.inl hb`. Use `right`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff N).1 hb`. Rewrite using `[eq_top_iff]`. Introduce `w _`.
-
-Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_eq_one K hv0`. Use `hall (LinearMap.toMatrix' (φ.smulRight w)) v hv` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_mulVec]`. Simplify `this` using `[hφ]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qe4.irrIffSpan :
     ∀ {K G ι : Type} [inst : Field K] [IsAlgClosed K] [inst_2 : Group G]

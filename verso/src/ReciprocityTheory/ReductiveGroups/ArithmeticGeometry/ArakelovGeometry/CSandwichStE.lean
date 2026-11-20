@@ -10,11 +10,11 @@ open scoped ComplexOrder Matrix
 variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] {D : ℕ}
 
 /- English proof (translation)
-Use `choose f hf hbf using hb.1`. Introduce `z hz`. Use `set h : MvPolynomial (Ix κ) ℤ := ∑ j, c j • f j - g with hh_def`. Establish `hh : h.IsHomogeneous n`. Use `Submodule.sub_mem _ (Submodule.sum_mem (homogeneousSubmodule (Ix κ) ℤ n) (t := Finset.univ) fun j _ => Submodule.smul_mem _ (c j) ((mem_homogeneousSubmodule _ _).mpr (hf j))) ((mem_homogeneousSubmodule _ _).mpr hg)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_homogeneousSubmodule _ _).mp this`. Establish `hx : aeval x h = 0`. Rewrite using `[hh_def, map_sub, map_sum, ← hc, sub_eq_zero]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul, hbf j, aeval_map_intQ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `hz.2 h (mem_coordIdeal_of_isHomogeneous (o := ℤ) (x := x) hh hx)`. Rewrite `h0` using `[hh_def, map_sub, map_sum, map_sub, map_sum, sub_eq_zero]`. Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul, zsmul_eq_mul, hbf j, secFun_map_intQ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_secFun_eq' {x : Ix κ → Ω} {n r : ℕ} {b : Fin r → MvPolynomial (Ix κ) ℚ}
     (hb : IsSecBasis x n b) (g : MvPolynomial (Ix κ) ℤ) (hg : g.IsHomogeneous n) (c : Fin r → ℤ)
@@ -40,9 +40,9 @@ theorem sum_secFun_eq' {x : Ix κ → Ω} {n r : ℕ} {b : Fin r → MvPolynomia
   rw [map_zsmul, map_zsmul, zsmul_eq_mul, hbf j, secFun_map_intQ]
 
 /- English proof (translation)
-Use `hg.vol.1` as an intermediate fact. Establish `hae : ∀ᵐ z ∂μ, z ∈ pts (coordIdeal ℤ x)` using `ae_iff.mpr hg.vol.2.1`. Unfold `bNormSq`. Combine the equalities or inequalities in the displayed calculation. Use `integral_mono_of_nonneg (ae_of_all _ fun z => ?_) (integrable_const B) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_nonneg (sq_nonneg _) (inv_nonneg.mpr (pow_nonneg (m.nonneg z) _))`. Use `filter_upwards [hae] with z hz using h z hz`. Use `_ = B := by simp`.
+A detailed English derivation is pending.
 -/
 theorem bNormSq_le_of_pts' {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)} {μ : Measure (Ix κ → ℂ)}
     (hg : IsGood D x m μ) {n r : ℕ} (s : Fin r → (Ix κ → ℂ) → ℂ) (c : Fin r → ℂ) {B : ℝ}
@@ -58,9 +58,9 @@ theorem bNormSq_le_of_pts' {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)} {μ :
     _ = B := by simp
 
 /- English proof (translation)
-Introduce `z hz`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_secFun_eq' hb (Q p) (hQ p) (fun j => M j p) (hM p) z hz, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem sum_mulVec_secFun {x : Ix κ → Ω} {n r R : ℕ} {b : Fin r → MvPolynomial (Ix κ) ℚ}
     (hb : IsSecBasis x n b) (M : Matrix (Fin r) (Fin R) ℤ) (Q : Fin R → MvPolynomial (Ix κ) ℤ)
@@ -76,7 +76,7 @@ theorem sum_mulVec_secFun {x : Ix κ → Ω} {n r R : ℕ} {b : Fin r → MvPoly
   exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, Pi.star_apply, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diag_conj_eq {r s : ℕ} (N : Matrix (Fin s) (Fin r) ℂ) (G : Matrix (Fin s) (Fin s) ℂ)
     (i : Fin r) :
@@ -89,19 +89,19 @@ theorem diag_conj_eq {r s : ℕ} (N : Matrix (Fin s) (Fin r) ℂ) (G : Matrix (F
   ring
 
 /- English proof (translation)
-Establish `hρ0 : 0 ≤ m.ρ z` using `m.nonneg z`. Establish `hBn0 : (0 : ℝ) ≤ ((N + D).choose D : ℝ)` using `Nat.cast_nonneg _`. Use `set q : Fin δ → ℝ := fun l => ∑ i, ‖c (finProdFinEquiv (l, i))‖ ^ 2 * monoNormSq (adtEnum D N i) with hq`. Establish `hq0 : ∀ l, 0 ≤ q l` using `fun l => Finset.sum_nonneg fun i _ => mul_nonneg (sq_nonneg _) (monoNormSq_pos _).le`. Use `set P : Fin δ → ℂ := fun l => ∑ i, c (finProdFinEquiv (l, i)) * monoC (adtEnum D N i) (z ∘ e) with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ p, c p * eval z (map (Int.castRingHom ℂ) (prodForm e (adtEnum D N (finProdFinEquiv.symm p).2) (H (finProdFinEquiv.symm p).1))) = ∑ l, eval z (map (Int.castRingHom ℂ) (H l)) * P l`. Rewrite using `[← Equiv.sum_comp finProdFinEquiv, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hP, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Equiv.symm_apply_apply, eval_prodForm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hPl : ∀ l, ‖P l‖ ≤ Real.sqrt (((N + D).choose D : ℝ) * q l) * m.ρ z ^ N` using `fun l => by`. Establish `h` using `form_enum_sq_le D N (fun i => c (finProdFinEquiv (l, i))) (z ∘ e)`. Rewrite `h` using `[sqN_comp_eq hFS hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `norm_le_sqrt_of_sq_le (norm_nonneg _) (mul_nonneg hBn0 (hq0 l)) (pow_nonneg hρ0 N) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hmain : ‖∑ l, eval z (map (Int.castRingHom ℂ) (H l)) * P l‖ ≤ (Cε * ∑ l, Real.sqrt (((N + D).choose D : ℝ) * q l)) * m.ρ z ^ (N + kε)`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsum]`. Use `(sq_wgt_le_of_le hz.1 (norm_nonneg _) hmain).trans ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcs` using `sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun l => Real.sqrt (((N + D).choose D : ℝ) * q l))`. Simplify using `only [Finset.card_univ, Fintype.card_fin] at hcs`. Rewrite using `[mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[Real.sq_sqrt (mul_nonneg hBn0 (hq0 _))]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem pt_lower {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {m : ConeMetric ℂ (Ix κ)}
     (hFS : IsPullFS x e m) {N kε δ : ℕ} (H : Fin δ → MvPolynomial (Ix κ) ℤ) {Cε : ℝ}
@@ -160,9 +160,9 @@ theorem pt_lower {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {m : ConeMetric 
         rw [← Finset.mul_sum]; ring
 
 /- English proof (translation)
-Establish `hρ0 : 0 ≤ m.ρ z` using `m.nonneg z`. Establish `hm : ‖monoC a (z ∘ e)‖ ≤ m.ρ z ^ N`. Establish `h` using `norm_monoC_sq_le a (z ∘ e)`. Establish `e2 : (m.ρ z ^ 2) ^ N = (m.ρ z ^ N) ^ 2` using `by ring`. Rewrite `h` using `[sqN_comp_eq hFS hz, ha, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (pow_nonneg hρ0 N) two_ne_zero).mp h`. Use `sq_wgt_le_of_le hz.1 (norm_nonneg _) ?_` and prove the remaining obligations. Rewrite using `[eval_prodForm, norm_mul]`. Establish `h2` using `hCt z hz`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pt_small {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {m : ConeMetric ℂ (Ix κ)}
     (hFS : IsPullFS x e m) {N k₀ : ℕ} {a : Fin (D + 1) → ℕ} (ha : ∑ t, a t = N)
@@ -184,7 +184,7 @@ theorem pt_small {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {m : ConeMetric 
     _ = Ct * m.ρ z ^ (N + k₀) := by ring
 
 /- English proof (translation)
-Simplify using `only [monoZ, MvPolynomial.aeval_monomial, map_one, one_mul]`. Rewrite using `[Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aeval_monoZ {N : ℕ} {S : Type*} [CommRing S] (a : Fin N → ℕ) (y : Fin N → S) :
     aeval y (monoZ a) = ∏ i, y i ^ a i := by
@@ -193,7 +193,7 @@ theorem aeval_monoZ {N : ℕ} {S : Type*} [CommRing S] (a : Fin N → ℕ) (y : 
   simp
 
 /- English proof (translation)
-Establish `h2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `h1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `h3 : Real.log 2 ≤ Real.log (n + 1)` using `Real.log_le_log (by norm_num) (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem log_le_div_mul {L : ℝ} (hL : 0 ≤ L) {n : ℕ} (hn : 1 ≤ n) :
     L ≤ L / Real.log 2 * Real.log (n + 1) := by
@@ -204,13 +204,13 @@ theorem log_le_div_mul {L : ℝ} (hL : 0 ≤ L) {n : ℕ} (hn : 1 ≤ n) :
     _ ≤ L / Real.log 2 * Real.log (n + 1) := mul_le_mul_of_nonneg_left h3 (div_nonneg hL h2.le)
 
 /- English proof (translation)
-Rewrite using `[hmul, Submodule.mul_le]`. Introduce `a ha t ht`. Take `⟨pa, hpa, rfl⟩` from `Submodule.mem_map.mp ha`. Establish `hpa' : pa.IsHomogeneous (n - k₀)` using `(mem_homogeneousSubmodule _ _).mp hpa`. Rewrite `ht` using `[← htb.2.2, Submodule.mem_span_range_iff_exists_fun]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨cc, rfl⟩` from `ht`. Establish `ea : (aeval (x ∘ e)).toLinearMap pa = ∑ i, (coeff (Finsupp.equivFunOnFinite.symm (adtEnum D (n - k₀) i)) pa : ℤ) • ∏ t, (x ∘ e) t ^ adtEnum D (n - k₀) i t`. Rewrite using `[AlgHom.toLinearMap_apply, aeval_eq_sum_adt pa hpa', ← sum_adtEnum]`. Simplify using `only [zsmul_eq_mul]`. Rewrite using `[ea, Finset.sum_mul_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun i₀ _ => ?_` and prove the remaining obligations. Establish `: (coeff (Finsupp.equivFunOnFinite.symm (adtEnum D (n - k₀) i)) pa : ℤ) • (∏ t, (x ∘ e) t ^ adtEnum D (n - k₀) i t) * cc i₀ • aeval x (tb i₀) = (coeff (Finsupp.equivFunOnFinite.symm (adtEnum D (n - k₀) i)) pa * cc i₀) • aeval x (prodForm e (adtEnum D (n - k₀) i) (Tf i₀))`. Rewrite using `[aeval_prodForm, hTfb i₀, aeval_map_intQ]`. Simplify using `only [zsmul_eq_mul]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(i, i₀), rfl⟩)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_le_span_prod {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} {n k₀ r₀ : ℕ}
     (hmul : sec ℤ x n = sec ℤ (x ∘ e) (n - k₀) * sec ℤ x k₀) {tb : Fin r₀ → MvPolynomial (Ix κ) ℚ}

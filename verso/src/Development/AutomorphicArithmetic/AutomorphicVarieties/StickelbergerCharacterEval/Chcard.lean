@@ -27,13 +27,11 @@ private def chMul {Ω : Type} [Field Ω] {Γ : Type} [CommGroup Γ] (c : Γ) (ε
   right_inv χ := Subtype.ext (mul_inv_cancel_left _ _)
 
 /- English proof (translation)
-Introduce `Ω _ Γ _ _ _ c ε h2 hc hε`. Establish `hne₀ : Nonempty (Ch Ω c ε)`. Break down `Int.eq_one_or_neg_one_of_mul_eq_one' hε with ⟨rfl, -⟩ | ⟨rfl, -⟩` into its components or cases. Conclude with `⟨⟨1, by simp⟩⟩`. Take `⟨φ, hφ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity Γ Ω hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨φ, ?_⟩⟩` and prove the remaining obligations. Establish `hsq : (φ c : Ω) * (φ c : Ω) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, h2, map_one, Units.val_one]`. Establish `hne : (φ c : Ω) ≠ 1` using `fun h => hφ (Units.ext (by simpa using h))`. Break down `mul_self_eq_one_iff.mp hsq with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h hne`. Simplify using `using h`. Take `⟨χ₀⟩` from `hne₀`. Use `haveI : NeZero (Monoid.exponent Γ) := ⟨Monoid.exponent_ne_zero_of_finite⟩`. Use `haveI : HasEnoughRootsOfUnity Ω (Monoid.exponent (Γ ⧸ Subgroup.zpowers c)) := HasEnoughRootsOfUnity.of_dvd Ω (Group.exponent_quotient_dvd _)`.
-
-Rewrite using `[Fintype.card_eq_nat_card, Fintype.card_eq_nat_card, Nat.card_congr ((chMul c ε χ₀).symm.trans (chOne c)), CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity]`. Both sides reduce to the same expression.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.B5.card_signedInvolutionChar_eq_card_involutionQuotient :
     ∀ {Ω : Type} [Field Ω] {Γ : Type} [CommGroup Γ] [Finite Γ] [HasEnoughRootsOfUnity Ω (Monoid.exponent Γ)] (c : Γ) (ε : ℤ), c * c = 1 → c ≠ 1 → ε * ε = 1 → Fintype.card (Ch Ω c ε) = Fintype.card (Qc c) := by

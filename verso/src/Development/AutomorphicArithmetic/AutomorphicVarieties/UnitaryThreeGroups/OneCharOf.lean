@@ -26,13 +26,13 @@ private def chHom : DirichletCharacter O N →* DirichletCharacter O' N where
   map_mul' a b := MulChar.ringHomComp_mul a b f
 
 /- English proof (translation)
-The claim follows from `MulChar.injective_ringHomComp hf`.
+A detailed English derivation is pending.
 -/
 private theorem chHom_inj (hf : Function.Injective f) : Function.Injective (chHom (N := N) f) :=
   MulChar.injective_ringHomComp hf
 
 /- English proof (translation)
-Use `MulChar.ext fun a => ?_` and prove the remaining obligations. Use `show f (comp r χ a) = _`. Simplify using `only [HV.comp, MulChar.ofUnitHom_coe, MonoidHom.comp_apply, MulChar.coe_toUnitHom]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem chHom_comp (r : ℕ) (χ : DirichletCharacter O N) : chHom f (comp r χ) = comp r (chHom f χ) := by
   refine MulChar.ext fun a => ?_
@@ -41,7 +41,7 @@ private theorem chHom_comp (r : ℕ) (χ : DirichletCharacter O N) : chHom f (co
   rfl
 
 /- English proof (translation)
-Establish `h : chHom f (th0 l χ) = th0 l (chHom f χ)`. Simplify using `only [th0, lPrime, lPart, map_mul, map_inv, map_pow, orderOf_injective _ (chHom_inj f hf)]`. Simplify using `only [chiP, map_mul, map_inv, chHom_comp, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem chHom_chiP (hf : Function.Injective f) (l : ℕ) (χ : DirichletCharacter O N) :
     chHom f (chiP l χ) = chiP l (chHom f χ) := by
@@ -50,11 +50,11 @@ private theorem chHom_chiP (hf : Function.Injective f) (l : ℕ) (χ : Dirichlet
   simp only [chiP, map_mul, map_inv, chHom_comp, h]
 
 /- English proof (translation)
-Establish `h1 : orderOf (chHom f χ) = orderOf χ` using `orderOf_injective _ (chHom_inj f hf) _`. Establish `h2 : comp l (chHom f χ) ^ 2 = 1 ↔ comp l χ ^ 2 = 1`. Rewrite using `[← chHom_comp, ← map_pow, map_eq_one_iff _ (chHom_inj f hf)]`. Establish `h3 : PsiEven e (chHom f χ) ↔ PsiEven e χ` using `by show f (χ (-1)) = _ ↔ χ (-1) = _`. Rewrite using `[← hf.eq_iff (a := χ (-1)), map_pow, map_neg f, map_one f]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (Chr.dirG ℚ Ω (chiP l (chHom f χ))).ker = (Chr.dirG ℚ Ω (chiP l χ)).ker`. Rewrite using `[← chHom_chiP f hf]`. Use extensionality with `g`. Simplify using `only [MonoidHom.mem_ker, Chr.dirG, MonoidHom.comp_apply, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one]`. Conclude with `map_eq_one_iff f hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => ⟨h.l_odd, h.e_pos, h.N_even, h1 ▸ h.ord, h2.1 h.ine, h3.1 h.par, h.quad, h.imag, h.l_cop, h.cop, h4 ▸ h.eta, h.gen⟩, fun h => ⟨h.l_odd, h.e_pos, h.N_even, h1 ▸ h.ord, h2.2 h.ine, h3.2 h.par, h.quad, h.imag, h.l_cop, h.cop, h4 ▸ h.eta, h.gen⟩⟩`.
+A detailed English derivation is pending.
 -/
 private theorem gd_chHom (hf : Function.Injective f) [NeZero N] {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
     {K : Type} [Field K] [NumberField K] [Algebra K Ω] {l : ℕ} [Fact l.Prime] {e : ℕ} (χ : DirichletCharacter O N) :
@@ -78,17 +78,15 @@ private theorem gd_chHom (hf : Function.Injective f) [NeZero N] {Ω : Type} [Fie
 end Transfer
 
 /- English proof (translation)
-Use `haveI : NeZero (orderOf ψ) := ⟨fun h0 => h (h0 ▸ dvd_zero l)⟩`. Take `⟨c', he, hr⟩` from `(coefSup l).2.1 (orderOf ψ) h`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot c'.O (orderOf ψ)`. Establish `hζ' : IsPrimitiveRoot (ζ : PadicAlgCl l) (orderOf ψ)` using `hζ.map_of_injective (f := c'.O.val) Subtype.val_injective`. Establish `hmem : ∀ a : ZMod N, ((ψ a : c.O) : PadicAlgCl l) ∈ c'.O`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Distinguish the cases in `ha : IsUnit a`. Take `⟨u, rfl⟩` from `ha`. Establish `h1 : ψ u ^ orderOf ψ = 1`. Rewrite using `[← MulChar.pow_apply_coe, pow_orderOf_eq_one, MulChar.one_apply_coe]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((ψ u : c.O) : PadicAlgCl l) ^ orderOf ψ = 1`. Rewrite using `[← SubmonoidClass.coe_pow, h1]`. Both sides reduce to the same expression. Take `⟨i, -, hi⟩` from `hζ'.eq_pow_of_pow_eq_one h2`. Rewrite using `[← hi]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_mem ζ.2 i`. Rewrite using `[ψ.map_nonunit ha]`. Conclude with `zero_mem _`. Use `⟨c', ⟨⟨⟨fun a => ⟨_, hmem a⟩, Subtype.ext ?_⟩, fun a b => Subtype.ext ?_⟩, fun a ha => Subtype.ext ?_⟩, he, fun _ => rfl⟩` and prove the remaining obligations. Use `show ((ψ 1 : c.O) : PadicAlgCl l) = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_one]`. Both sides reduce to the same expression. Use `show ((ψ (a * b) : c.O) : PadicAlgCl l) = _`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
-
-Use `show ((ψ a : c.O) : PadicAlgCl l) = 0`. Rewrite using `[ψ.map_nonunit ha]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem exists_unram {l : ℕ} [Fact l.Prime] (c : Coef l) {N : ℕ} [NeZero N] (ψ : DirichletCharacter c.O N)
     (h : ¬ l ∣ orderOf ψ) : ∃ (c' : Coef l) (ψ' : DirichletCharacter c'.O N), eO l c'.O = 1 ∧
@@ -121,35 +119,33 @@ private theorem exists_unram {l : ℕ} [Fact l.Prime] (c : Coef l) {N : ℕ} [Ne
     rw [ψ.map_nonunit ha]; rfl
 
 /- English proof (translation)
-Introduce `g` and use `⟨rfl, fun a b => ⟨Algebra.subset_adjoin ⟨g, a, b, rfl⟩, rfl⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem isPush_push {O Γ R κ : Type} [CommRing O] [Group Γ] [CommRing R] [Algebra O R] [CommRing κ] [Algebra O κ]
     (f : R →ₐ[O] κ) (r : Γ →* GG 3 R) : IsPush (f.comp (entAlg O r).val) r (push f r) :=
   fun g => ⟨rfl, fun a b => ⟨Algebra.subset_adjoin ⟨g, a, b, rfl⟩, rfl⟩⟩
 
 /- English proof (translation)
-Simplify using `[GG.mat, tor_val, Matrix.trace_diagonal, Fin.sum_univ_three, wt1]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem trace_reducible_three_dim {Γ R : Type} [Group Γ] [CommRing R] (η : Γ →* ℤˣ) (Ψ : Γ →* Rˣ) (g : Γ) :
     (r0 η Ψ g).mat.trace = (Ψ g : R) + 1 + (((Ψ g)⁻¹ : Rˣ) : R) := by
   simp [GG.mat, tor_val, Matrix.trace_diagonal, Fin.sum_univ_three, wt1]
 
 /- English proof (translation)
-Take `⟨D⟩` from `exists_dat hG`. Take `⟨g₁, hM, hFin, hB, hW⟩` from `hA Ω K l c N e ψ D he ι`. Take `⟨U⟩` from `exists_uLoc hI.toCohInp D`. Take `⟨S⟩` from `exists_ring hI.toCohInp D U g₁ hM`. Take `⟨M⟩` from `exists_model hI.toCohInp hI.lemP D hM S`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmult : ∀ f : S.R →ₐ[c.O] PadicAlgCl l, HasMult D.η (push f S.r.hom)` using `fun f g => S.r.hasMult g`. Set `ρ : (S.R →ₐ[c.O] PadicAlgCl l) → (G K Ω →* GL (Fin 3) (Qbar l))` to `fun f => D.rhoK (push f S.r.hom) (hmult f)`. Establish `hσ : D.η (galEmb ℚ K Ω σ) = 1`. Rewrite using `[← MonoidHom.mem_ker, D.η_ker]`. Conclude with `galEmb_mem ℚ K Ω σ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htr : ∀ f, trDiff D.η D.Ψ S.r.hom (galEmb ℚ K Ω σ) f = (ρ f σ : Matrix (Fin 3) (Fin 3) (Qbar l)).trace - t`. Introduce `f`. Rewrite using `[trDiff, trace_reducible_three_dim, ht]`. Use `congr 1`. Conclude with `AddMonoidHom.map_trace (f : S.R →+* PadicAlgCl l) _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hadm : ∀ f, TwoPt D.η S.r.hom f → Af.Adm3 ι e N (ρ f) ∨ Af.Adm2 ι e (N * (discr K).natAbs) (ρ f)`. Introduce `f hf`. Establish `hp` using `isPt_push D hM S f hf.1`. Break down `(twoPt_shape S hG.l_odd hM f hf).1 with h | h` into its components or cases. Conclude with `Or.inl (admissible_rank_three_type_one hI.toCohInp D hM hp ι h (hB U S _ _ _ (isPush_push f _) h))`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inr (admissible_of_typeII hI.toCohInp D hM hp ι h (hW U S _ _ (isPush_push f _) h (typeII_facts hI.toCohInp D hM hp h).1))`. Take `⟨hlen, T, hT, hTo, hle⟩` from `model_upper S M hG.l_odd hM hI.lemM (hFin U S) (ptHyp_of hI D hM S ι hB hW M.x₀ M.base) (galEmb ℚ K Ω σ) hσ fun f hf => by rw [htr]; exact sub_ne_zero.2 (hne _ (hadm f hf))`. Establish `hV` using `vlen_le hI.toCohInp hI.lemM' D hM S M`. Establish `hinj : ∀ f ∈ T, ∀ f' ∈ T, Af.RepIso (ρ f) (ρ f') → f = f'`. Introduce and unpack `f hf f' hf' ⟨g, hg⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s, hs⟩` from `(twoPt_shape S hG.l_odd hM f (hT.1 f hf)).2 f' (hT.1 f' hf').1 ⟨g, fun x hx => by`. Rewrite `hx` using `[D.η_ker, ← range_galEmb]`. Take `⟨y, rfl⟩` from `hx`. Conclude with `(congrArg Units.val (eq_mul_inv_iff_mul_eq.1 (hg y))).symm⟩`. Conclude with `hTo f hf f' hf' s hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨ne_top_of_le_ne_top hlen hV, T.image ρ, fun x hx => ?_, fun x hx x' hx' h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hadm f (hT.1 f hf)`. Take `⟨f, hf, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨f', hf', rfl⟩` from `Finset.mem_image.1 hx'`.
-
-Rewrite using `[hinj f hf f' hf' h]`. Rewrite using `[Finset.sum_image fun f hf f' hf' h => hinj f hf f' hf' ⟨1, fun s => by rw [h, one_mul, inv_one, mul_one]⟩]`. Simplify using `only [← htr]`. Conclude with `(Chr.nrm_mono l hV hlen).trans hle`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem oneChar_unram (hI : Inp) (hA : Aut.AutomorphyUnramifiedCoefficients)
     (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra K Ω]
@@ -208,13 +204,11 @@ private theorem oneChar_unram (hI : Inp) (hA : Aut.AutomorphyUnramifiedCoefficie
     exact (Chr.nrm_mono l hV hlen).trans hle
 
 /- English proof (translation)
-Introduce `hI hA Ω _ _ _ K _ _ _ _ _ l _ c N _ e ψ hG ι σ t ht hne`. Take `⟨c', ψ', he, hψ⟩` from `exists_unram c ψ hG.ord`. Establish `h1 : chHom c.O.val.toRingHom ψ = chHom c'.O.val.toRingHom ψ'` using `MulChar.ext fun a => hψ a`. Establish `hG' : GD Ω K l e ψ'` using `(gd_chHom c'.O.val.toRingHom Subtype.val_injective ψ').1 (h1 ▸ (gd_chHom c.O.val.toRingHom Subtype.val_injective ψ).2 hG)`. Take `⟨h2, h3⟩` from `coefIndep Ω l c c' N e ψ ψ' hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h4 : ∀ g, Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (Chr.Psi l e (Chr.dirG ℚ Ω ψ) g) = Units.map (algebraMap c'.O (PadicAlgCl l)).toMonoidHom (Chr.Psi l e (Chr.dirG ℚ Ω ψ') g)`. Introduce `g`. Simplify using `only [Chr.Psi, MonoidHom.mul_apply, MonoidHom.zpow_apply, map_mul, map_zpow]`. Use `congr 1`. Conclude with `Units.ext (hψ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h5` using `congrArg Units.val (h4 (galEmb ℚ K Ω σ))`. Establish `h6` using `congrArg (fun u : (PadicAlgCl l)ˣ => (u⁻¹).val) (h4 (galEmb ℚ K Ω σ))`. Rewrite using `[Ne, h2, h3]`. Use `oneChar_unram hI hA Ω K l c' N e ψ' he hG' ι σ t ?_ hne` and prove the remaining obligations. Rewrite using `[ht, map_add, map_add, map_add, map_add, map_one, map_one]`.
-
-Conclude with `congrArg₂ (· + ·) (congrArg (· + 1) h5) h6`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.oneChar :
     Inp → Aut.AutomorphyUnramifiedCoefficients → OneChar := by

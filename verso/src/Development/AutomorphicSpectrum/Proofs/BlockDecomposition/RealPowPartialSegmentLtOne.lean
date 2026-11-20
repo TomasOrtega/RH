@@ -8,9 +8,9 @@ open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil Glob
 namespace GlobalTheory.CompanionTheory.Segment
 
 /- English proof (translation)
-Take `⟨a, rfl⟩ : ∃ a, l₀ = a + 1` from `⟨l₀ - 1, by omega⟩`. Take `⟨b, rfl⟩ : ∃ b, l₁ = b + 1` from `⟨l₁ - 1, by omega⟩`. Rewrite using `[show a + 1 + (b + 1) = a + b + 1 + 1 by ring, Nat.add_sub_cancel, Nat.add_sub_cancel]`. Establish `hp : 2 * ((a + 1) * a / 2) = (a + 1) * a` using `Nat.two_mul_div_two_of_even (by rw [mul_comm]; exact Nat.even_mul_succ_self a)`. Establish `hq : 2 * ((a + b + 1 + 1) * (a + b + 1) / 2) = (a + b + 1 + 1) * (a + b + 1)` using `Nat.two_mul_div_two_of_even (by rw [mul_comm]; exact Nat.even_mul_succ_self (a + b + 1))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `(a + 1) * a / 2 = p at hp ⊢`. Generalize the expression as in `(a + b + 1 + 1) * (a + b + 1) / 2 = q at hq ⊢`. Use `zify at hp hq ⊢`. Take the linear combination `((d : ℤ) * (a + b + 1 + 1)) * hp - ((d : ℤ) * (a + 1)) * hq`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem two_mul_triangle_add_mul_eq (d l₀ l₁ : ℕ) (h₀ : 1 ≤ l₀) (h₁ : 1 ≤ l₁) :
     2 * (d * (l₀ * l₁ + l₀ * (l₀ - 1) / 2)) * (l₀ + l₁) =
@@ -28,13 +28,11 @@ private theorem two_mul_triangle_add_mul_eq (d l₀ l₁ : ℕ) (h₀ : 1 ≤ l�
   linear_combination ((d : ℤ) * (a + b + 1 + 1)) * hp - ((d : ℤ) * (a + 1)) * hq
 
 /- English proof (translation)
-Introduce `α r d l0 l1 hα0 hα1 hr hd hl0 hl1 h`. Establish `key` using `two_mul_triangle_add_mul_eq d l0 l1 hl0 hl1`. Use `set T := (l0 + l1) * (l0 + l1 - 1) / 2`. Use `set S := l0 * l1 + l0 * (l0 - 1) / 2`. Establish `hpow : (r ^ l0 * α ^ (d * S)) ^ (2 * (l0 + l1)) = α ^ (d * ((l0 + l1) * l0 * l1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul, ← pow_mul]`. Apply the tactic sequence `congr 2 <;> ring`. Use `_ = (r ^ (l0 + l1) * α ^ (d * T)) ^ (2 * l0) * α ^ (d * ((l0 + l1) * l0 * l1)) := by`. Rewrite using `[key, pow_add α, mul_pow (r ^ (l0 + l1)), ← pow_mul α (d * T), show d * T * (2 * l0) = 2 * (d * T) * l0 by ring, ← mul_assoc ((r ^ (l0 + l1)) ^ (2 * l0))]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `_ = α ^ (d * ((l0 + l1) * l0 * l1)) := by rw [h, one_pow, one_mul]`. Establish `hlt : α ^ (d * ((l0 + l1) * l0 * l1)) < 1` using `pow_lt_one₀ hα0.le hα1 (Nat.mul_pos (by omega) (Nat.mul_pos (Nat.mul_pos (by omega) (by omega)) (by omega))).ne'`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h1 : 1 ≤ (r ^ l0 * α ^ (d * S)) ^ (2 * (l0 + l1))` using `one_le_pow₀ hc`.
-
-Rewrite `h1` using `[hpow]`. Conclude with `absurd hlt (not_lt.mpr h1)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_piece_exponent_lt_one : ∀ (α r : ℝ) (d l0 l1 : ℕ), 0 < α → α < 1 → 0 < r → 1 ≤ d → 1 ≤ l0 → 1 ≤ l1 →
     r ^ (l0 + l1) * α ^ (d * ((l0 + l1) * (l0 + l1 - 1) / 2)) = 1 →

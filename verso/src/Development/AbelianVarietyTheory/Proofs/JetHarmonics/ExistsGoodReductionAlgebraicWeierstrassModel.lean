@@ -9,9 +9,9 @@ open scoped ComplexConjugate BigOperators Topology UpperHalfPlane
 namespace GlobalTheory.MomOne
 
 /- English proof (translation)
-Set `S : Subring ℂ_[q]` to `(NormedField.valuation (K := ℂ_[q])).integer`. Establish `hS` using `Valuation.integer.integers (NormedField.valuation (K := ℂ_[q]))`. Establish `h1 : IsIntegral S x` using `hx.tower_top`. Establish `h2` using `hS.mem_of_integral h1`. Establish `h3 : ‖x‖₊ ≤ 1` using `h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem model_norm_le_one_of_isIntegral {q : ℕ} [Fact q.Prime] {x : ℂ_[q]} (hx : IsIntegral ℤ x) :
     ‖x‖ ≤ 1 := by
@@ -23,11 +23,11 @@ theorem model_norm_le_one_of_isIntegral {q : ℕ} [Fact q.Prime] {x : ℂ_[q]} (
   exact_mod_cast h3
 
 /- English proof (translation)
-Establish `hw : ((GlobalTheory.halfOneAddSqrtNeg d hd : ℍ) : ℂ) = wK d`. Express the relevant statement in the definitionally equal form `(1 + √d * Complex.I) / 2 = _`. Rewrite using `[wK]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GlobalTheory.latticeCurve_j (a := 1) (τ := GlobalTheory.halfOneAddSqrtNeg d hd) one_ne_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.isIntegral_modularJ_halfOneAddSqrtNeg d hd`. Introduce `x`. Rewrite using `[hL x, hw]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, v, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨v, u, by ring⟩`. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨n, m, by ring⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem model_isIntegral_j {d : ℕ} (hd : d ≠ 0) {L : PeriodPair} (hL : IsOK d L) :
     IsIntegral ℤ (GlobalTheory.latticeCurve L).j := by
@@ -45,17 +45,17 @@ theorem model_isIntegral_j {d : ℕ} (hd : d ≠ 0) {L : PeriodPair} (hL : IsOK 
       exact ⟨n, m, by ring⟩
 
 /- English proof (translation)
-Introduce `d q _ ι L hd _ hL`. Take `⟨E, h₁, h₂, h₃, h₄, h₆, hΔ, hc⟩` from `GlobalTheory.CMCurves.exists_integral_curve (model_isIntegral_j hd.ne_zero hL)`. Establish `hE : E.IsElliptic` using `⟨hΔ ▸ isUnit_one⟩`. Establish `hj : (GlobalTheory.latticeCurve L).j = E.j`. Rewrite using `[← hc, WeierstrassCurve.j, Units.val_inv_eq_inv_val, WeierstrassCurve.coe_Δ', hΔ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨C, hC⟩` from `WeierstrassCurve.exists_variableChange_of_j_eq _ _ hj`. Establish `hu : (C.u : ℂ) ≠ 0` using `C.u.ne_zero`. Establish `e4 : E.c₄ / 12 = L.g₂ / (C.u : ℂ) ^ 4`. Rewrite using `[← hC, WeierstrassCurve.variableChange_c₄, GlobalTheory.latticeCurve_c₄, Units.val_inv_eq_inv_val]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `e6 : E.c₆ / 216 = L.g₃ / (C.u : ℂ) ^ 6`. Establish `: (GlobalTheory.latticeCurve L).c₆ = 216 * L.g₃`. Simplify using `only [GlobalTheory.latticeCurve, WeierstrassCurve.c₆, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hC, WeierstrassCurve.variableChange_c₆, this, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Establish `hi : ∀ {x : ℂ}, IsIntegral ℤ x → IsIntegral ℤ ((ι : ℂ →+* ℂ_[q]) x)` using `fun hx ↦ hx.map_of_comp_eq (RingHom.id ℤ) (ι : ℂ →+* ℂ_[q]) (RingHom.ext_int _ _)`. Establish `ha : ∀ {x : ℂ}, IsIntegral ℤ x → IsAlgebraic ℚ ((ι : ℂ →+* ℂ_[q]) x)` using `fun hx ↦ (IsIntegral.tower_top (A := ℚ) (hi hx)).isAlgebraic`. Use `⟨⟨ι, L, C.u, E.map (ι : ℂ →+* ℂ_[q])⟩, rfl, rfl, ⟨hu, model_norm_le_one_of_isIntegral (hi h₁), model_norm_le_one_of_isIntegral (hi h₂), model_norm_le_one_of_isIntegral (hi h₃), model_norm_le_one_of_isIntegral (hi h₄), model_norm_le_one_of_isIntegral (hi h₆), ?_, ?_, ?_⟩, ha h₁, h …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[WeierstrassCurve.map_Δ, hΔ]`. Express the relevant statement in the definitionally equal form `(E.map (ι : ℂ →+* ℂ_[q])).c₄ / 12 = ι (L.g₂ / (C.u : ℂ) ^ 4)`. Rewrite using `[← e4, WeierstrassCurve.map_c₄, map_div₀, map_ofNat]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(E.map (ι : ℂ →+* ℂ_[q])).c₆ / 216 = ι (L.g₃ / (C.u : ℂ) ^ 6)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← e6, WeierstrassCurve.map_c₆, map_div₀, map_ofNat]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_model : ∀ (d q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (L : PeriodPair), d.Prime → d % 16 = 7 → IsOK d L → ∃ M : Mdl q, M.ι = ι ∧ M.L = L ∧ M.Ok ∧ IsAlgebraic ℚ M.W.a₁ ∧ IsAlgebraic ℚ M.W.a₂ ∧ IsAlgebraic ℚ M.W.a₃ ∧ IsAlgebraic ℚ M.W.a₄ ∧ IsAlgebraic ℚ M.W.a₆ := by
   intro d q _ ι L hd _ hL

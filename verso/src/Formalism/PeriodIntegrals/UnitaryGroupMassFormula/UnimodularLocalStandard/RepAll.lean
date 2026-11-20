@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnimodularLocalStandard
 namespace PI.UnitaryGroupMassFormula.UnimodLocStd
 
 /- English proof (translation)
-The claim follows from `keyRep_of_ram (keyStartRam_of_unit unitVecRam)`.
+A detailed English derivation is pending.
 -/
 theorem keyRep : KeyRep := keyRep_of_ram (keyStartRam_of_unit unitVecRam)
 

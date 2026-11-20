@@ -11,7 +11,7 @@ open PositivityTheory.KB
 variable {G H K Y : Type} [Group G] [Group H] [Group K] [MulAction H Y]
 
 /- English proof (translation)
-Proceed by induction on `j using Fin.inductionOn with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [Fin.partialProd_succ, Fin.partialProd_succ, map_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_partialProd {M M' : Type} [Monoid M] [Monoid M'] (f : M →* M') {m : ℕ} (g : Fin m → M)
     (j : Fin (m + 1)) : f (Fin.partialProd g j) = Fin.partialProd (fun i => f (g i)) j := by
@@ -20,48 +20,48 @@ theorem map_partialProd {M M' : Type} [Monoid M] [Monoid M'] (f : M →* M') {m 
   | succ i ih => rw [Fin.partialProd_succ, Fin.partialProd_succ, map_mul, ih]
 
 /- English proof (translation)
-Simplify using `[ev, Finsupp.linearCombination_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_eq (ρ : G →* H) {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) (y : Y) (z : Chn G m) :
     ev ρ F y z = Finsupp.linearCombination ℝ (fun g : Fin m → G => F fun j => ρ (Fin.partialProd g j) • y) z := by
   simp [ev, Finsupp.linearCombination_apply, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [ev_eq, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_add (ρ : G →* H) {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) (y : Y) (z z' : Chn G m) :
     ev ρ F y (z + z') = ev ρ F y z + ev ρ F y z' := by
   simp only [ev_eq, map_add]
 
 /- English proof (translation)
-Simplify using `only [ev_eq, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_sub (ρ : G →* H) {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) (y : Y) (z z' : Chn G m) :
     ev ρ F y (z - z') = ev ρ F y z - ev ρ F y z' := by
   simp only [ev_eq, map_sub]
 
 /- English proof (translation)
-Rewrite using `[ev_eq, ev_eq, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_smul (ρ : G →* H) {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) (y : Y) (c : ℝ) (z : Chn G m) :
     ev ρ F y (c • z) = c * ev ρ F y z := by
   rw [ev_eq, ev_eq, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `[ev]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_zero (ρ : G →* H) {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) (y : Y) : ev ρ F y 0 = 0 := by
   simp [ev]
 
 /- English proof (translation)
-Simplify using `[ev]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_single (ρ : G →* H) {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) (y : Y) (g : Fin m → G) (a : ℝ) :
     ev ρ F y (Finsupp.single g a) = a * F fun j => ρ (Fin.partialProd g j) • y := by
   simp [ev]
 
 /- English proof (translation)
-Simplify using `only [cmap, Finsupp.lmapDomain_apply, ev]`. Rewrite using `[Finsupp.sum_mapDomain_index (fun _ => by simp) (fun _ _ _ => by ring)]`. Conclude with `Finsupp.sum_congr fun g _ => by simp [MonoidHom.comp_apply, map_partialProd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_cmap (ρ : G →* H) (f : K →* G) {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) (y : Y) (z : Chn K m) :
     ev ρ F y (cmap f m z) = ev (ρ.comp f) F y z := by

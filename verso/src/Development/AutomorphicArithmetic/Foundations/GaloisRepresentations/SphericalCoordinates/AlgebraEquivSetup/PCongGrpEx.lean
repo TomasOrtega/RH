@@ -17,13 +17,13 @@ namespace UpperTheory.Gal.W2.Seed
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).1 (natCast_mem (w.adicCompletionIntegers E) N)`.
+A detailed English derivation is pending.
 -/
 private theorem vN_le_one (N : ℕ) (w : Plc E) : Valued.v (N : w.adicCompletion E) ≤ 1 :=
   (HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).1 (natCast_mem (w.adicCompletionIntegers E) N)
 
 /- English proof (translation)
-Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective`. Conclude with `(Valuation.ne_zero_iff _).2 (Nat.cast_ne_zero.2 hN.ne')`.
+A detailed English derivation is pending.
 -/
 private theorem vN_ne_zero {N : ℕ} (hN : 0 < N) (w : Plc E) : Valued.v (N : w.adicCompletion E) ≠ 0 := by
   haveI : CharZero (w.adicCompletion E) :=
@@ -31,7 +31,7 @@ private theorem vN_ne_zero {N : ℕ} (hN : 0 < N) (w : Plc E) : Valued.v (N : w.
   exact (Valuation.ne_zero_iff _).2 (Nat.cast_ne_zero.2 hN.ne')
 
 /- English proof (translation)
-Establish `h1 : Valued.v (algebraMap E (w.adicCompletion E) ((N : 𝓞 E) : E)) = w.valuation E ((N : 𝓞 E) : E)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Establish `h2 : algebraMap E (w.adicCompletion E) ((N : 𝓞 E) : E) = (N : w.adicCompletion E)` using `by simp`. Rewrite using `[← h2, h1]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem w _).2 h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vN_lt_one {N : ℕ} (w : Plc E) (h : (N : 𝓞 E) ∈ w.asIdeal) :
     Valued.v (N : w.adicCompletion E) < 1 := by
@@ -42,7 +42,7 @@ private theorem vN_lt_one {N : ℕ} (w : Plc E) (h : (N : 𝓞 E) ∈ w.asIdeal)
   exact (HeightOneSpectrum.valuation_lt_one_iff_mem w _).2 h
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_mul' (hA _ _) (hB _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem entry_mul_le {w : Plc E} {A B : Matrix (Fin n) (Fin n) (w.adicCompletion E)}
     {r s : WithZero (Multiplicative ℤ)} (hA : ∀ i j, Valued.v (A i j) ≤ r) (hB : ∀ i j, Valued.v (B i j) ≤ s)
@@ -53,13 +53,13 @@ private theorem entry_mul_le {w : Plc E} {A B : Matrix (Fin n) (Fin n) (w.adicCo
   exact mul_le_mul' (hA _ _) (hB _ _)
 
 /- English proof (translation)
-Introduce `i k` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem cong_one (N : ℕ) (w : Plc E) : Cong1 N w (1 : GL (Fin n) (w.adicCompletion E)) := fun i k => by
   simp
 
 /- English proof (translation)
-Introduce `i k` and use `by have e : (x * y).val - 1 = (x.val - 1) * (y.val - 1) + (x.val - 1) + (y.val - 1) := by rw [Units.val_mul]; noncomm_ring rw [e, Matrix.add_apply, Matrix.add_apply] have h := vN_le_one (E := E) N w refine Valuation.map_add_le _ (Valuation.map_add_le _ ?_ (hx i k)) (hy i k) exact …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem cong_mul {N : ℕ} {w : Plc E} {x y : GL (Fin n) (w.adicCompletion E)}
     (hx : Cong1 N w x) (hy : Cong1 N w y) : Cong1 N w (x * y) := fun i k => by
@@ -71,7 +71,7 @@ private theorem cong_mul {N : ℕ} {w : Plc E} {x y : GL (Fin n) (w.adicCompleti
   exact (entry_mul_le hx hy i k).trans (mul_le_of_le_one_left' h)
 
 /- English proof (translation)
-Introduce `i k` and use `by have e : (a * y * a⁻¹).val - 1 = a.val * (y.val - 1) * (a⁻¹).val := by have h : a.val * (a⁻¹).val = 1 := by rw [← Units.val_mul]; simp rw [Units.val_mul, Units.val_mul, mul_sub, sub_mul, mul_one, h] obtain ⟨h1, h2⟩ := GlobalTheory.AdelicU.mem_GLint_iff.1 ha have h1' : ∀ i j, V …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem cong_conj {N : ℕ} {w : Plc E} {a y : GL (Fin n) (w.adicCompletion E)}
     (ha : a ∈ KGL w n) (hy : Cong1 N w y) : Cong1 N w (a * y * a⁻¹) := fun i k => by
@@ -85,7 +85,7 @@ private theorem cong_conj {N : ℕ} {w : Plc E} {a y : GL (Fin n) (w.adicComplet
   simpa using entry_mul_le (entry_mul_le h1' hy) h2' i k
 
 /- English proof (translation)
-Establish `e : y.val i j = (y.val - 1) i j + (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j` using `by simp`. Rewrite using `[e]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le_max_right _ (hy i j))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cong_entry {N : ℕ} {w : Plc E} {y : GL (Fin n) (w.adicCompletion E)} (hy : Cong1 N w y) (i j : Fin n) :
     Valued.v (y.val i j) ≤ max (Valued.v (N : w.adicCompletion E)) (Valued.v ((1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j)) := by
@@ -94,7 +94,7 @@ private theorem cong_entry {N : ℕ} {w : Plc E} {y : GL (Fin n) (w.adicCompleti
   exact (Valuation.map_add _ _ _).trans (max_le_max_right _ (hy i j))
 
 /- English proof (translation)
-Apply the tactic sequence `refine (HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).2 ((cong_entry hy i j).trans (max_le (vN_le_one N w) ?_))`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -112,15 +112,15 @@ private def congGrp (N : ℕ) (w : Plc E) : Subgroup (GL (Fin n) (w.adicCompleti
   inv_mem' := fun {x} hx => ⟨hx.2, by simpa using hx.1⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_congGrp {N : ℕ} {w : Plc E} {y : GL (Fin n) (w.adicCompletion E)} :
     y ∈ congGrp N w ↔ Cong1 N w y ∧ Cong1 N w y⁻¹ := Iff.rfl
 
 /- English proof (translation)
-Establish `h0 : IsOpen ((w.adicCompletionIntegers E : Set (w.adicCompletion E)))` using `Valued.isOpen_valuationSubring _`. Establish `h1 : {x : w.adicCompletion E | Valued.v x ≤ Valued.v c} = (fun x => c⁻¹ * x) ⁻¹' (w.adicCompletionIntegers E : Set (w.adicCompletion E))`. Use extensionality with `x`. Establish `hv : Valued.v c ≠ 0` using `(Valuation.ne_zero_iff _).2 hc`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, SetLike.mem_coe, HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w, map_mul, map_inv₀]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[inv_mul_le_iff₀ (zero_lt_iff.2 hv), mul_one]`. Rewrite using `[h1]`. Conclude with `h0.preimage (continuous_const.mul continuous_id)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpen_ball {w : Plc E} {c : w.adicCompletion E} (hc : c ≠ 0) :
     IsOpen {x : w.adicCompletion E | Valued.v x ≤ Valued.v c} := by
@@ -137,9 +137,9 @@ private theorem isOpen_ball {w : Plc E} {c : w.adicCompletion E} (hc : c ≠ 0) 
   exact h0.preimage (continuous_const.mul continuous_id)
 
 /- English proof (translation)
-Establish `hc : (N : w.adicCompletion E) ≠ 0` using `fun h => vN_ne_zero hN w (by rw [h, map_zero])`. Establish `e : {y : GL (Fin n) (w.adicCompletion E) | Cong1 N w y} = ⋂ i, ⋂ k, (fun y : GL (Fin n) (w.adicCompletion E) => (y.val - 1) i k) ⁻¹' {x | Valued.v x ≤ Valued.v (N : w.adicCompletion E)}`. Use extensionality with `y`. Simplify using `[Cong1]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => (isOpen_ball hc).preimage ?_` and prove the remaining obligations. Conclude with `((Units.continuous_val.sub continuous_const).matrix_elem i k)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem isOpen_cong {N : ℕ} (hN : 0 < N) (w : Plc E) :
     IsOpen {y : GL (Fin n) (w.adicCompletion E) | Cong1 N w y} := by
@@ -154,24 +154,22 @@ private theorem isOpen_cong {N : ℕ} (hN : 0 < N) (w : Plc E) :
   exact ((Units.continuous_val.sub continuous_const).matrix_elem i k)
 
 /- English proof (translation)
-The claim follows from `(isOpen_cong hN w).inter ((isOpen_cong hN w).preimage continuous_inv)`.
+A detailed English derivation is pending.
 -/
 private theorem isOpen_congGrp {N : ℕ} (hN : 0 < N) (w : Plc E) :
     IsOpen (congGrp (n := n) N w : Set (GL (Fin n) (w.adicCompletion E))) :=
   (isOpen_cong hN w).inter ((isOpen_cong hN w).preimage continuous_inv)
 
 /- English proof (translation)
-Introduce `_ hy` and use `GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨cong_int hy.1, cong_int hy.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem congGrp_le (N : ℕ) (w : Plc E) : congGrp (n := n) N w ≤ KGL w n := fun _ hy =>
   GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨cong_int hy.1, cong_int hy.2⟩
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hK : y ∈ GlobalTheory.SplitWeil.KO (w.adicCompletion E) (Fin n)`. Rewrite using `[GlobalTheory.SmGL.SphCompletion.KO_completion]`. Conclude with `congGrp_le N w hy`. Use `GlobalTheory.SmGL.mem_iwahori.2 ⟨hK, fun i j hij => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `he` using `ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Rewrite using `[he.lt_one_iff_lt_one]`. Establish `h0 : (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j = 0` using `Matrix.one_apply_ne hij.ne'`. Apply the tactic sequence `refine (cong_entry hy.1 i j).trans_lt (max_lt (vN_lt_one w hN) ?_)`.
-
-Simplify using `[h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem congGrp_le_iw {N : ℕ} (w : Plc E) (hN : (N : 𝓞 E) ∈ w.asIdeal) : congGrp (n := n) N w ≤ Iw n w := by
   intro y hy
@@ -189,11 +187,11 @@ private theorem congGrp_le_iw {N : ℕ} (w : Plc E) (hN : (N : 𝓞 E) ∈ w.asI
   simp [h0]
 
 /- English proof (translation)
-Introduce `E _ _ _ n N hN w`. Use `⟨congGrp N w, fun y => Iff.rfl, isOpen_congGrp hN w, ?_, congGrp_le N w, ?_, fun h => congGrp_le_iw w h, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).2.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ (isOpen_congGrp hN w)) (congGrp_le N w)`. Introduce `a ha y`. Establish `key : ∀ a ∈ KGL w n, ∀ y, y ∈ congGrp N w → a * y * a⁻¹ ∈ congGrp N w` using `fun a ha y hy => ⟨cong_conj ha hy.1, by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (a * y * a⁻¹)⁻¹ = a * y⁻¹ * a⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `cong_conj ha hy.2⟩`. Use `⟨fun h => ?_, key a ha y⟩` and prove the remaining obligations. Use `key a⁻¹ (inv_mem ha) _ h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[mul_assoc]`. Use `GlobalTheory.SmGL.iwahori_le_KO _ _ hy` as an intermediate fact. Rewrite `this` using `[GlobalTheory.SmGL.SphCompletion.KO_completion]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pCongGrpEx : CongGrpEx := by
   intro E _ _ _ n N hN w

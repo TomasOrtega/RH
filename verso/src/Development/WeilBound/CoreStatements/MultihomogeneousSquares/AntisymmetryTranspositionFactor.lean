@@ -9,25 +9,23 @@ open GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundF
 namespace SquareStatements
 
 /- English proof (translation)
-Introduce `hA hAg hIn II hII Ψ _ _ N _ T R hSq B hB c τ a b hab hbj lam`. Establish `hN : 2 ≤ N`. Establish `h1` using `T.j_pos`. Establish `h2` using `T.j_lt`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hjN : T.j ≤ N` using `T.j_lt.le`. Establish `hdim : Top.dimFl Ψ N = antisymDegree Ψ N`. Simplify using `[Top.dimFl, antisymDegree, Nat.choose_two_right]`. Establish `harith : IsArithVar (PFl Ψ N) (Top.dimFl Ψ N + 1)` using `hdim ▸ (GlobalTheory.T.flag_variety_boundary_dimension_drop Ψ N hN).1`. Take `⟨m, d, S', K, _, ι, _, P, Re', hm, ⟨F⟩, hPB, hdeg⟩` from `hSq B c`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨c₀, hc₀, hfl⟩, hprop⟩` from `GlobalTheory.T.proportional' hIn Ψ N T.j hN hjN`. Take `⟨-, hv⟩` from `hprop (d + 1) S' F.dim F.unif`. Establish `hnpos : 0 < R.n c` using `(GlobalTheory.T.real_tower_arith_agreement hIn II hII Ψ N (T.M B c) (R.Sys c) (R.n c) (R.tie B c) lam 0).1`. Establish `hn0 : (R.n c : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hnpos.ne'`. Establish `hvol : m * ((R.n c : ℝ) * T.vol c) = PB.volOf S'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.T.real_tower_geometric_agreement hIn II hII Ψ N (T.M 2 c) (R.Sys c) (R.n c) (R.tie 2 c) (rhoWt : Wt Ψ N) 0`. Establish `h2` using `GlobalTheory.T.flag_degree_polynomial_eval hIn II hII Ψ N (rhoWt : Wt Ψ N) hN`. Establish `hρ : flagDeg (rhoWt : Wt Ψ N) ≠ 0`. Rewrite using `[← h2, hfl, eval_mul, eval_C]`. Conclude with `mul_ne_zero hc₀.ne' eval_rho_antisymDelta_ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : m * eval (PB.gapS (fun x : Ψ × Fin N => (rhoWt : Wt Ψ N) x.1 x.2) (0 / ((T.M 2 c).kA : ℝ))) (R.Sys c).degPoly = PB.volOf S' * flagDeg (rhoWt : Wt Ψ N)`. Rewrite using `[zero_div]`. Establish `e : PB.gapS (fun x : Ψ × Fin N => (rhoWt : Wt Ψ N) x.1 x.2) 0 = fun o => o.elim 0 (PB.gap fun x : Ψ × Fin N => (rhoWt : Wt Ψ N) x.1 x.2)` using `rfl`. Rewrite using `[e, AnSys_degPoly_gapS_zero, ← smul_eval, ← hdeg, ← PB.eval_toWt_gap, hv, eval_mul, eval_C, h2]`. Rewrite `h1` using `[linA_zero_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `RootTower.vol`. Rewrite using `[← mul_div_assoc, h1, ← mul_div_assoc, h3, mul_div_cancel_right₀ _ hρ]`. Establish `hpos : 0 < (R.Sys c).t₀` using `((R.Sys c).reg none).1`. Establish `hconv : ∀ w, Tendsto (fun t => (R.tie B c).Re.num II t w) (𝓝[>] 0) (𝓝 ((R.tie B c).Re.limNum II w))`. Take `⟨C₃, s₀, -, h⟩` from `hAg hIn (Top.dimFl Ψ N) (Option (Ψ × Fin N)) (R.Sys c) 0 hpos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(h II hII _ _ _ (R.tie B c).Re).1`. Establish `hnum : ∀ mu : Wt Ψ N, m * ((R.n c : ℝ) * T.PPc II B c (linRoot mu ^ (Top.dimFl Ψ N + 1))) = eval (fun x : Ψ × Fin N => mu x.1 x.2) (PB.toWt (Re'.PB II))`. Introduce `mu`. Establish `h1` using `((GlobalTheory.T.real_tower_arith_agreement hIn II hII Ψ N (T.M B c) (R.Sys c) (R.n c) (R.tie B c) mu 0).2.2 hconv hpos).2`. Rewrite `h1` using `[zero_div, linA_zero_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : PB.gapS (fun x : Ψ × Fin N => mu x.1 x.2) 0 = fun o => o.elim 0 (PB.gap fun x : Ψ × Fin N => mu x.1 x.2)` using `rfl`. Rewrite `h1` using `[e, Realis_PB_gapS_zero, ← PB.eval_toWt_gap]`. Rewrite using `[hPB, smul_eval]`. Conclude with `congrArg (m * ·) h1`. Establish `hh : ∀ mu : Wt Ψ N, hhFl Ψ N II (linRoot mu ^ (Top.dimFl Ψ N + 1)) = eval (fun x : Ψ × Fin N => mu x.1 x.2) (PB.hFlPoly Ψ N II)` using `fun mu => GlobalTheory.T.flag_height_polynomial_eval II hII Ψ N mu hN harith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hQ` using `(hA hIn II hII Ψ N T.j d hN S' K ι P Re' F).2 (Equiv.swap (τ, a) (τ, b)) ⟨τ, a, b, hab, by omega, rfl⟩`. Establish `hE` using `congrArg (eval fun x : Ψ × Fin N => lam x.1 x.2) hQ`. Rewrite `hE` using `[eval_rename, ← swapWt_uncurry]`. Simplify using `only [map_sub, map_neg, smul_eval] at hE`. Rewrite `hE` using `[← hnum, ← hnum, ← hh, ← hh, ← hvol]`.
-
-Apply `mul_left_cancel₀ (mul_ne_zero hm.ne' hn0)` to reduce the goal to its premises. Take the linear combination `hE`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem antisymmetry_transposition_factor : AntisymmetryFibreSquares := by
   intro hA hAg hIn II hII Ψ _ _ N _ T R hSq B hB c τ a b hab hbj lam

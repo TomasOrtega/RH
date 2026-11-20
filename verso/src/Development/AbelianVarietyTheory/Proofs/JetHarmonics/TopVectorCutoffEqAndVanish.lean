@@ -12,7 +12,7 @@ namespace GlobalTheory.TopVec
 open Filter Topology MeasureTheory in
 open scoped Matrix.Norms.Elementwise in
 /- English proof (translation)
-Unfold `_root_.Formalism.FourierDecayAlt.D.vecV`. Use `split_ifs with h h'`. Rewrite using `[_root_.Formalism.FourierDecayAlt.P.JCx1.needs.orbJ_cutF, _root_.Formalism.FourierDecayAlt.P.TBBx2.Gf_of_Zhat _ _ _ _ h'.choose_spec.2.1]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma vecV_cutoff_lemma {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
@@ -30,9 +30,9 @@ private lemma vecV_cutoff_lemma {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup W
 open Filter Topology MeasureTheory in
 open scoped Matrix.Norms.Elementwise in
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons X w ih`. Rewrite using `[List.foldr_cons, ih]`. Use function extensionality and compare the values at `g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `_root_.Formalism.REAL.RdV`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma foldr_RdV_zero {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (w : List (_root_.Formalism.FourierDecayAlt.B.Mat k r)) : List.foldr _root_.Formalism.REAL.RdV (fun _ => (0 : E)) w = fun _ => 0 := by
@@ -47,9 +47,9 @@ private lemma foldr_RdV_zero {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [Nor
 open Filter Topology MeasureTheory in
 open scoped Matrix.Norms.Elementwise in
 /- English proof (translation)
-Unfold `_root_.Formalism.FourierDecayAlt.B.opApply`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [List.mem_map] at hx`. Take `⟨T, -, rfl⟩` from `hx`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Unfold `_root_.Formalism.FourierDecayAlt.B.Rw`. Rewrite using `[foldr_RdV_zero]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma opApply_zero {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
@@ -67,41 +67,39 @@ private lemma opApply_zero {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp]
 open Filter Topology MeasureTheory in
 open scoped Matrix.Norms.Elementwise in
 /- English proof (translation)
-Use `set q := _root_.Formalism.FourierDecayAlt.TBB.bigPt P.r c with hq`. Use `set G := _root_.Formalism.FourierDecayAlt.TBB.Gp p q with hGdef`. Establish `hG : G = _root_.Formalism.FourierDecayAlt.D.ptG (_root_.Formalism.QuantumDeterminants.Tz P.k P.r p.T.base.z * _root_.Formalism.QuantumDeterminants.Tz P.k P.r p.T.base.z') P.r q` using `rfl`. Establish `hV : ∀ H, p.V H q = _root_.Formalism.FourierDecayAlt.D.vecV p.T.base p.ν' p.m₀ H q` using `fun H => rfl`. Establish `hcut : ∀ (ψ : ℝ → ℝ) (H : _root_.Formalism.FourierDecayAlt.B.Mat P.k P.r → Wq →L[ℂ] Wp) (t : ℝ) (g : _root_.Formalism.FourierDecayAlt.B.Mat P.k P.r), _root_.Formalism.FourierDecayAlt.D.cutF p.T.base ψ H t g = ((ψ (_root_.Formalism.QuantumDeterminants.Gf P.k P.r p.T.base.z p.T.bas …` using `fun _ _ _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous (_root_.Formalism.QuantumDeterminants.Gf P.k P.r p.T.base.z p.T.base.z')` using `_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.Gf_cont _ _`. Establish `hzero : ∀ F' : _root_.Formalism.FourierDecayAlt.B.Mat P.k P.r → Wq →L[ℂ] Wp, (∀ e, p.V (p.Θ.Θ w e F') q = 0) → _root_.GlobalTheory.TopVec.tv p F' w c = 0`. Introduce `F' h`. Unfold `_root_.GlobalTheory.TopVec.tv`. Simplify using `[← hq, h, _root_.Formalism.FourierDecayAlt.B.hsVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `try simp only [Pi.zero_apply]`. Rewrite using `[← Pi.zero_def, WithLp.toLp_zero, smul_zero]`. Establish `htv : ∀ F₁ F₂ : _root_.Formalism.FourierDecayAlt.B.Mat P.k P.r → Wq →L[ℂ] Wp, (∀ e, p.V (p.Θ.Θ w e F₁) q = p.V (p.Θ.Θ w e F₂) q) → _root_.GlobalTheory.TopVec.tv p F₁ w c = _root_.GlobalTheory.TopVec.tv p F₂ w c`. Introduce `F₁ F₂ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `_root_.GlobalTheory.TopVec.tv`. Simplify using `only [← hq, h]`. Establish `hV0 : G ≤ 0 → ∀ H, p.V H q = 0`. Introduce `h H`. Rewrite using `[hV]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Unfold `_root_.Formalism.FourierDecayAlt.D.vecV`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨-, h'⟩`. Rewrite `h'` using `[← hG]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨?_, ?_, fun h => hzero F fun e => hV0 h _⟩` and prove the remaining obligations. Introduce `hlt`. Establish `hGpos : 0 < G` using `hε.trans hlt`. Apply `htv` to reduce the goal to its premises. Introduce `e`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨nf, fib, o, κ, Dop, -, -, -, -, hDop⟩` from `hD w hw e`. Rewrite using `[hV, hV]`. Establish `h1 : ∀ H, _root_.Formalism.FourierDecayAlt.D.vecV p.T.base p.ν' p.m₀ H q = _root_.Formalism.FourierDecayAlt.D.vecV p.T.base p.ν' p.m₀ (_root_.Formalism.FourierDecayAlt.D.cutF p.T.base (fun x => if ε / G < x then 1 else 0) H G) q`. Introduce `H`. Rewrite using `[vecV_cutoff_lemma, ← hG, div_self hGpos.ne', if_pos ((div_lt_one hGpos).mpr hlt)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, h1 (p.Θ.Θ w e F)]`. Apply `_root_.Formalism.FourierDecayAlt.P.PBE.vecV_congrGPos` to reduce the goal to its premises. Introduce `g hg`. Rewrite using `[hcut, hcut]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hgε : ε < _root_.Formalism.QuantumDeterminants.Gf P.k P.r p.T.base.z p.T.base.z' g`. Establish `hOQ : g ∈ _root_.Formalism.FourierDecayAlt.C6.domL p.T.base ∅` using `⟨hg.1, hg.2, by simp⟩`. Establish `hloc : _root_.Formalism.FourierDecayAlt.B.opApply Dop (_root_.Formalism.FourierDecayAlt.D.cutF p.T.base χ F ε) g = _root_.Formalism.FourierDecayAlt.B.opApply Dop F g`. Apply `_root_.Formalism.FourierDecayAlt.P.JCTx6.Pos.opApply_congr_open Dop (isOpen_lt continuous_const hcont) _ g hgε` to reduce the goal to its premises. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hx' : ε < _root_.Formalism.QuantumDeterminants.Gf P.k P.r p.T.base.z p.T.base.z' x` using `hx`. Rewrite using `[hcut, hχ.2.2 _ ((le_div_iff₀ hε).mpr (by linarith))]`. Simplify using the standard rewrite rules. Rewrite using `[hDop _ g hOQ, hDop _ g hOQ, hloc]`. Establish `: ¬ (ε / G < _root_.Formalism.QuantumDeterminants.Gf P.k P.r p.T.base.z p.T.base.z' g / G)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[div_lt_div_iff_of_pos_right hGpos]`. Conclude with `hgε`. Simplify using `[this]`. Introduce `hlt`. Break down `le_or_gt G 0 with hG0 | hGpos` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hzero _ fun e => hV0 hG0 _`. Apply `hzero` to reduce the goal to its premises. Introduce `e`. Take `⟨nf, fib, o, κ, Dop, -, -, -, -, hDop⟩` from `hD w hw e`. Rewrite using `[hV]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ H, _root_.Formalism.FourierDecayAlt.D.vecV p.T.base p.ν' p.m₀ H q = _root_.Formalism.FourierDecayAlt.D.vecV p.T.base p.ν' p.m₀ (_root_.Formalism.FourierDecayAlt.D.cutF p.T.base (fun x => if x < δ * ε / G then 1 else 0) H G) q`. Introduce `H`. Rewrite using `[vecV_cutoff_lemma, ← hG, div_self hGpos.ne', if_pos ((one_lt_div hGpos).mpr hlt)]`. Simplify using the standard rewrite rules. Rewrite using `[h1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : _root_.Formalism.FourierDecayAlt.D.vecV p.T.base p.ν' p.m₀ (_root_.Formalism.FourierDecayAlt.D.cutF p.T.base (fun x => if x < δ * ε / G then 1 else 0) (p.Θ.Θ w e (_root_.Formalism.FourierDecayAlt.D.cutF p.T.base χ F ε)) G) q = _root_.Formalism.FourierDecayAlt.D.vecV p.T.base …`. Apply `_root_.Formalism.FourierDecayAlt.P.PBE.vecV_congrGPos` to reduce the goal to its premises. Introduce `g hg`. Rewrite using `[hcut, hcut]`. Distinguish the cases in `hgd : _root_.Formalism.QuantumDeterminants.Gf P.k P.r p.T.base.z p.T.base.z' g < δ * ε`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hOQ : g ∈ _root_.Formalism.FourierDecayAlt.C6.domL p.T.base ∅` using `⟨hg.1, hg.2, by simp⟩`. Establish `hloc : _root_.Formalism.FourierDecayAlt.B.opApply Dop (_root_.Formalism.FourierDecayAlt.D.cutF p.T.base χ F ε) g = _root_.Formalism.FourierDecayAlt.B.opApply Dop (fun _ => 0) g`. Apply `_root_.Formalism.FourierDecayAlt.P.JCTx6.Pos.opApply_congr_open Dop (isOpen_lt hcont continuous_const) _ g hgd` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : _root_.Formalism.QuantumDeterminants.Gf P.k P.r p.T.base.z p.T.base.z' x < δ * ε` using `hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcut, hδ _ ((div_lt_iff₀ hε).mpr hx')]`. Simplify using the standard rewrite rules. Rewrite using `[hDop _ g hOQ, hloc, opApply_zero]`. Establish `: ¬ (_root_.Formalism.QuantumDeterminants.Gf P.k P.r p.T.base.z p.T.base.z' g / G < δ * ε / G)`. Rewrite using `[div_lt_div_iff_of_pos_right hGpos]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hgd`. Simplify using `[this]`. Establish `h3 : _root_.Formalism.FourierDecayAlt.D.cutF p.T.base (fun x => if x < δ * ε / G then 1 else 0) (fun _ => (0 : Wq →L[ℂ] Wp)) G = _root_.Formalism.FourierDecayAlt.D.cutF p.T.base (fun _ => 0) (fun _ => 0) G`. Use function extensionality and compare the values at `g`. Rewrite using `[hcut, hcut]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[h2, h3, vecV_cutoff_lemma]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TopVec.tv_cutF (Wp Wq : Type) [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]

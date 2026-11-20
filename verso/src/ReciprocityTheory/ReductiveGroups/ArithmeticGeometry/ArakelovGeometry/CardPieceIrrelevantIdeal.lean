@@ -9,9 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo MvPolynomial
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Unfold `mPiece`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Conclude with `⟨h, (mem_mHom_iff _ _).1 hh, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h, hh, rfl⟩`. Conclude with `⟨h, (mem_mHom_iff _ _).2 hh, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_multidegree_piece_iff {W : Ideal (MRing ι)} {a : K → ℕ} {y : MRing ι ⧸ W} :
     y ∈ mPiece W a ↔ ∃ h, IsMultiHomog h a ∧ Ideal.Quotient.mk W h = y := by
@@ -24,7 +24,7 @@ theorem mem_multidegree_piece_iff {W : Ideal (MRing ι)} {a : K → ℕ} {y : MR
     exact ⟨h, (mem_mHom_iff _ _).2 hh, rfl⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Ideal.Quotient.eq]`. Rewrite using `[← sub_mul]`. Conclude with `(hq _).1 h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotient_mk_mul_congr_colon {F q : Ideal (MRing ι)} {f : MRing ι} (hq : ∀ g, g ∈ q ↔ g * f ∈ F)
     {g g' : MRing ι} (h : Ideal.Quotient.mk q g = Ideal.Quotient.mk q g') :
@@ -34,29 +34,27 @@ theorem quotient_mk_mul_congr_colon {F q : Ideal (MRing ι)} {f : MRing ι} (hq 
   exact (hq _).1 h
 
 /- English proof (translation)
-Establish `hle : F ≤ F ⊔ Ideal.span {f}` using `le_sup_left`. Set `ψ : mPiece F a →+ MRing ι ⧸ (F ⊔ Ideal.span {f})` to `(Ideal.Quotient.factor hle).toAddMonoidHom.comp (mPiece F a).subtype.toAddMonoidHom`. Establish `hψ : ∀ y : mPiece F a, ψ y = Ideal.Quotient.factor hle y.1` using `fun _ => rfl`. Establish `h1` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup ψ.ker`. Establish `h2 : Nat.card (mPiece F a ⧸ ψ.ker) = Nat.card (mPiece (F ⊔ Ideal.span {f}) a)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_congr (QuotientAddGroup.quotientKerEquivRange ψ).toEquiv]`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun y => ?_)` and prove the remaining obligations. Rewrite using `[AddMonoidHom.mem_range, mem_multidegree_piece_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨h, hh, hx⟩` from `mem_multidegree_piece_iff.1 x.2`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, ← hx, Ideal.Quotient.factor_mk]`. Introduce and unpack `⟨h, hh, rfl⟩`. Use `⟨⟨Ideal.Quotient.mk F h, mem_multidegree_piece_iff.2 ⟨h, hh, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hψ, Ideal.Quotient.factor_mk]`. Establish `h3 : Nat.card (mPiece q (a - c)) = Nat.card ψ.ker`. Set `g₀ : MRing ι ⧸ q → MRing ι` to `fun x => (Ideal.Quotient.mk_surjective x).choose`. Establish `hg₀ : ∀ x, Ideal.Quotient.mk q (g₀ x) = x` using `fun x => (Ideal.Quotient.mk_surjective x).choose_spec`. Establish `hmem1 : ∀ x : mPiece q (a - c), Ideal.Quotient.mk F (g₀ x.1 * f) ∈ mPiece F a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨g, hg, hgx⟩` from `mem_multidegree_piece_iff.1 x.2`. Use `mem_multidegree_piece_iff.2 ⟨g * f, ?_, quotient_mk_mul_congr_colon hq (by rw [hg₀, hgx])⟩` and prove the remaining obligations. Use `isMultiHomog_mul' hg hf` as an intermediate fact. Rewrite `this` using `[tsub_add_cancel_of_le hca]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hmem2 : ∀ x : mPiece q (a - c), (⟨_, hmem1 x⟩ : mPiece F a) ∈ ψ.ker`. Introduce `x`. Rewrite using `[AddMonoidHom.mem_ker, hψ]`. Use `show Ideal.Quotient.factor hle (Ideal.Quotient.mk F (g₀ x.1 * f)) = 0`. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self f))`. Use `Nat.card_eq_of_bijective (fun x => ⟨⟨_, hmem1 x⟩, hmem2 x⟩) ⟨fun x y hxy => ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `e : Ideal.Quotient.mk F (g₀ x.1 * f) = Ideal.Quotient.mk F (g₀ y.1 * f)` using `congrArg (fun z : ψ.ker => (z.1.1 : MRing ι ⧸ F)) hxy`. Rewrite `e` using `[Ideal.Quotient.eq, ← sub_mul, ← hq]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hg₀ x.1, ← hg₀ y.1]`. Conclude with `Ideal.Quotient.eq.2 e`. Take `⟨⟨y, hy⟩, hz⟩` from `z`. Take `⟨h, hh, rfl⟩` from `mem_multidegree_piece_iff.1 hy`. Rewrite `hz` using `[AddMonoidHom.mem_ker, hψ]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.factor hle (Ideal.Quotient.mk F h) = 0 at hz`. Rewrite `hz` using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem, Submodule.mem_sup]`. Take `⟨u, hu, v, hv, huv⟩` from `hz`. Take `⟨g, rfl⟩` from `Ideal.mem_span_singleton'.1 hv`. Establish `hx : Ideal.Quotient.mk q (i2comp (a - c) g) ∈ mPiece q (a - c)` using `mem_multidegree_piece_iff.2 ⟨_, isMultiHomog_i2comp _ _, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨⟨_, hx⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Ideal.Quotient.mk F (g₀ (Ideal.Quotient.mk q (i2comp (a - c) g)) * f) = Ideal.Quotient.mk F h`. Rewrite using `[quotient_mk_mul_congr_colon hq (hg₀ _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : h = i2comp a u + i2comp (a - c) g * f`. Rewrite using `[← i2comp_self hh, ← huv, i2comp_add, i2comp_mul_right hf, if_pos hca]`. Rewrite using `[e, Ideal.Quotient.eq]`. Establish `e2 : i2comp (a - c) g * f - (i2comp a u + i2comp (a - c) g * f) = -i2comp a u` using `by ring`. Rewrite using `[e2]`.
-
-Conclude with `neg_mem (i2comp_mem hF a hu)`. Rewrite using `[h1, h2, ← h3, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_piece_colon_exact {F q : Ideal (MRing ι)} (hF : IsMultiHomogIdeal F) {f : MRing ι} {c : K → ℕ}
     (hf : IsMultiHomog f c) (hq : ∀ g, g ∈ q ↔ g * f ∈ F) {a : K → ℕ} (hca : c ≤ a) :
@@ -127,14 +125,14 @@ theorem card_piece_colon_exact {F q : Ideal (MRing ι)} (hF : IsMultiHomogIdeal 
   rw [h1, h2, ← h3, mul_comm]
 
 /- English proof (translation)
-Use `haveI : Subsingleton (MRing ι ⧸ (⊤ : Ideal (MRing ι))) := Ideal.Quotient.subsingleton_iff.2 rfl`. Conclude with `Nat.card_of_subsingleton (0 : mPiece (⊤ : Ideal (MRing ι)) a)`.
+A detailed English derivation is pending.
 -/
 theorem card_piece_top_ideal (a : K → ℕ) : Nat.card (mPiece (⊤ : Ideal (MRing ι)) a) = 1 := by
   haveI : Subsingleton (MRing ι ⧸ (⊤ : Ideal (MRing ι))) := Ideal.Quotient.subsingleton_iff.2 rfl
   exact Nat.card_of_subsingleton (0 : mPiece (⊤ : Ideal (MRing ι)) a)
 
 /- English proof (translation)
-The claim follows from `| 0, F, f, c, q, _, hl, _, a, _ => by have : F 0 = ⊤ := hl rw [Finset.univ_eq_empty, Finset.prod_empty, this, card_piece_top_ideal] | N + 1, F, f, c, q, h0, hl, hs, a, ha => by obtain ⟨hf0, hF1, hq0⟩ := hs 0 rw [Fin.castSucc_zero] at hF1 hq0 have e1 := card_piece_colon_exact h0 h …`.
+A detailed English derivation is pending.
 -/
 theorem card_piece_of_filtration : ∀ (N : ℕ) (F : Fin (N + 1) → Ideal (MRing ι)) (f : Fin N → MRing ι)
     (c : Fin N → K → ℕ) (q : Fin N → Ideal (MRing ι)), IsMultiHomogIdeal (F 0) →
@@ -166,15 +164,13 @@ theorem card_piece_of_filtration : ∀ (N : ℕ) (F : Fin (N + 1) → Ideal (MRi
     congr 1
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ mPiece q a, y = 0`. Introduce `y hy`. Take `⟨h, hh, rfl⟩` from `mem_multidegree_piece_iff.1 hy`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, h.as_sum]`. Use `Ideal.sum_mem _ fun m hm => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmk : i2bdeg m k = a k` using `congrFun ((isMultiHomog_iff_coeff h a).1 hh m (mem_support_iff.1 hm)) k`. Establish `: ∃ i, m ⟨k, i⟩ ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h0 : i2bdeg m k = 0` using `show ∑ i, m ⟨k, i⟩ = 0 from Finset.sum_eq_zero fun i _ => hne i`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmk` using `[h0]`. Rewrite `ha` using `[← hmk]`. Conclude with `absurd ha (by norm_num)`. Take `⟨i, hi⟩` from `this`. Establish `hle : Finsupp.single (⟨k, i⟩ : Σ k, ι k) 1 ≤ m` using `Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 hi)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : monomial m (coeff m h) = X ⟨k, i⟩ * monomial (m - Finsupp.single (⟨k, i⟩ : Σ k, ι k) 1) (coeff m h)`. Rewrite using `[X, monomial_mul, one_mul, add_tsub_cancel_of_le hle]`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ (hk i)`. Use `haveI : Subsingleton (mPiece q a) := ⟨fun x y => Subtype.ext ((key _ x.2).trans (key _ y.2).symm)⟩`.
-
-Conclude with `Nat.card_of_subsingleton (0 : mPiece q a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_piece_irrelevant_ideal {q : Ideal (MRing ι)} {k : K} (hk : ∀ i, (X ⟨k, i⟩ : MRing ι) ∈ q)
     {a : K → ℕ} (ha : 1 ≤ a k) : Nat.card (mPiece q a) = 1 := by

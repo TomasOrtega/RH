@@ -9,25 +9,21 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL
 
 /- English proof (translation)
-Use `set x : (Fin n → E) →ₗ[E] (Fin n → E) := 1 - g with hx`. Establish `hxe : x ^ e = 0`. Establish `: x = -(g - 1)` using `by rw [hx, neg_sub]`. Rewrite using `[this, neg_pow, hg, mul_zero]`. Set `s : Set (Fin n → E)` to `Set.range fun p : Fin (e + 1) × Fin n => (x ^ (p.1 : ℕ)) (Pi.single p.2 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hall : ∀ (i : ℕ) (j : Fin n), (x ^ i) (Pi.single j 1) ∈ Submodule.span O s`. Introduce `i j`. Distinguish the cases in `hi : i < e + 1`. Conclude with `Submodule.subset_span ⟨(⟨i, hi⟩, j), rfl⟩`. Establish `: x ^ i = 0` using `pow_eq_zero_of_le (by omega) hxe`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Establish `hpow : ∀ (k : ℕ), ∀ v ∈ Submodule.span O s, (x ^ k) v ∈ Submodule.span O s`. Introduce `k v hv`. Proceed by induction on `hv using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `mem y hy`. Take `⟨p, rfl⟩` from `hy`. Use `hall (k + p.1) p.2` as an intermediate fact. Rewrite `this` using `[pow_add, Module.End.mul_apply]`. Then use the resulting hypothesis. Consider the case `zero => rw [map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha`. Establish `: (x ^ k) (c • a) = c • (x ^ k) a` using `(x ^ k).map_smul (c : E) a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c ha`. Use `⟨Submodule.span O s, Submodule.fg_span (Set.finite_range _), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin n)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Use `hall 0 j` as an intermediate fact. Simplify using `using this`. Introduce `v hv`. Establish `h1` using `hpow 1 v hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : g v = v - (x ^ 1) v` using `by simp [hx]`. Rewrite using `[h2]`. Conclude with `Submodule.sub_mem _ hv h1`. Introduce `v hv`. Use `⟨(∑ i ∈ Finset.range e, x ^ i) v, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun i _ => hpow i v hv`. Establish `h` using `mul_neg_geom_sum x e`. Establish `h1 : 1 - x = g` using `by rw [hx, sub_sub_cancel]`. Rewrite `h` using `[h1, hxe, sub_zero]`.
-
-Rewrite using `[← Module.End.mul_apply, h, Module.End.one_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fg_span_stable_of_unipotent {E : Type} [CommRing E] (O : Subring E) {n : ℕ}
     (g : (Fin n → E) →ₗ[E] (Fin n → E)) (e : ℕ) (hg : (g - 1) ^ e = 0) :
@@ -80,11 +76,11 @@ theorem exists_fg_span_stable_of_unipotent {E : Type} [CommRing E] (O : Subring 
       rw [← Module.End.mul_apply, h, Module.End.one_apply]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L n g e hg`. Take `⟨Λ, h1, h2, h3, h4⟩` from `exists_fg_span_stable_of_unipotent L.O _ e hg`. Use `⟨Λ, ⟨h1, h2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff]`. Use extensionality with `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `h3 w hw`. Introduce `hv`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, h⟩` from `h4 v hv`. Conclude with `⟨w, hw, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isLat_stabL_of_unipotent : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ {n : ℕ} (g : ((Fin n → E) ≃ₗ[E] (Fin n → E))) (e : ℕ), (((g : (Fin n → E) →ₗ[E] (Fin n → E)) - 1) ^ e = 0) → ∃ Λ : Submodule L.O (Fin n → E), IsLat L Λ ∧ g ∈ stabL L Λ := by
   intro F _ _ _ _ _ E _ _ _ L n g e hg

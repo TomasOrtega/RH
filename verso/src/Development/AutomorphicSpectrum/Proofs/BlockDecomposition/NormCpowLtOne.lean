@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.UnramifiedZeta
 
 /- English proof (translation)
-Establish `hq : (1 : ℝ) < residueCard F` using `by exact_mod_cast GroundTheory.LocalField.one_lt_residueCard`. Rewrite using `[Complex.norm_natCast_cpow_of_pos (Nat.pos_of_ne_zero GroundTheory.LocalField.residueCard_ne_zero)]`. Conclude with `Real.rpow_lt_one_of_one_lt_of_neg hq (by simpa using hs)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_cpow_lt_one (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     (s : ℂ) (hs : 0 < s.re) : ‖(residueCard F : ℂ) ^ (-s)‖ < 1 := by
@@ -28,9 +28,9 @@ theorem norm_cpow_lt_one (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace
   exact Real.rpow_lt_one_of_one_lt_of_neg hq (by simpa using hs)
 
 /- English proof (translation)
-Take `⟨hc, h1, h0⟩` from `hψ`. Establish `ht` using `isTrivialOn_addCharConductor hc h1`. Rewrite `ht` using `[h0]`. Establish `key : ∀ x ∈ 𝒪[F], ψ x = 1` using `fun x hx => ht x (mem_valBall_zero_iff.2 hx)`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ((ψ x : Circle) : ℂ) = 1`. Rewrite using `[key x hx, Circle.coe_one]`. Use `show (((ψ⁻¹) x : Circle) : ℂ) = 1`. Rewrite using `[AddChar.inv_apply, key (-x) (neg_mem hx), Circle.coe_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_trivial (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     (ψ : AddChar F Circle) (hψ : IsStd ψ) :
@@ -47,21 +47,19 @@ theorem psi_trivial (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [
     rw [AddChar.inv_apply, key (-x) (neg_mem hx), Circle.coe_one]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ ν hν _ y hy W' hW' s hs`. Take `⟨h1, h2⟩` from `psi_trivial F ψ hψ`. Establish `hW : W' = Spherical.sphericalWhittaker (Circle.coeHom.compAddChar ψ⁻¹) y` using `funext hW'`. Substitute `hW` using the available equality. Use `set x : Fin 3 → ℂˣ := ![ν (unifUnit F), 1, (ν (unifUnit F))⁻¹] with hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hα : ‖((ν (unifUnit F) : ℂˣ) : ℂ)‖ = 1` using `hν.2 _`. Establish `hxn : ∀ i, ‖(x i : ℂ)‖ = 1`. Apply the tactic sequence `intro i; fin_cases i <;> simp [hx, hα]`. Establish `hxi : ∀ i, ‖(((x i)⁻¹ : ℂˣ) : ℂ)‖ = 1`. Introduce `i`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_inv_eq_inv_val, norm_inv, hxn, inv_one]`. Establish `hyi : ∀ j, ‖(((y j)⁻¹ : ℂˣ) : ℂ)‖ = 1`. Introduce `j`. Rewrite using `[Units.val_inv_eq_inv_val, norm_inv, hy, inv_one]`. Establish `hq` using `norm_cpow_lt_one F s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Use `GlobalTheory.T.unramified_rankin_selberg_eq_L_factor F (sphW ψ ν) _ (fun a b => Spherical.evalAt x (Spherical.schur ![a, b, 0])) (fun a b => Spherical.evalAt y (Spherical.schur ![a, b])) s _ (fun a b => GlobalTheory.T.shintani_formula_GL3_diag F _ h1 x a b) (fun a b => GlobalTheo …` and prove the remaining obligations. Conclude with `GlobalTheory.T.cauchy_identity_schur_GL3_GL2 x y _ hxn hy hq`. Establish `key` using `GlobalTheory.T.cauchy_identity_schur_GL3_GL2 (fun i => (x i)⁻¹) (fun j => (y j)⁻¹) _ hxi hyi hq`. Establish `hp : (∏ i, ∏ j, (1 - (((x i)⁻¹ : ℂˣ) : ℂ) * (((y j)⁻¹ : ℂˣ) : ℂ) * (residueCard F : ℂ) ^ (-s))⁻¹) = ∏ i, ∏ j, (1 - (x i : ℂ) * (((y j)⁻¹ : ℂˣ) : ℂ) * (residueCard F : ℂ) ^ (-s))⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.prod_univ_three, hx]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hp]`. Use `GlobalTheory.T.unramified_rankin_selberg_eq_L_factor F _ _ (fun a b => Spherical.evalAt x (Spherical.schur ![0, -b, -a])) (fun a b => Spherical.evalAt y (Spherical.schur ![-b, -a])) s _ (fun a b => GlobalTheory.T.shintani_formula_GL3_long_weyl_dual F _ h1 x a b) (fun a b => Globa …` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e3 : ∀ a b : ℤ, Spherical.evalAt x (Spherical.schur ![0, -b, -a]) = Spherical.evalAt (fun i => (x i)⁻¹) (Spherical.schur ![a, b, 0])`. Introduce `a b`. Rewrite using `[GlobalTheory.T.schur_inverse_eq_reversed_neg]`. Use `congr 2`. Apply the tactic sequence `funext i; fin_cases i <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : ∀ a b : ℤ, Spherical.evalAt y (Spherical.schur ![-b, -a]) = Spherical.evalAt (fun i => (y i)⁻¹) (Spherical.schur ![a, b])`. Introduce `a b`. Rewrite using `[GlobalTheory.T.schur_inverse_eq_reversed_neg]`. Use `congr 2`. Apply the tactic sequence `funext i; fin_cases i <;> simp`.
-
-Simplify `key` using `only [e3, e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unramified_sum : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ → ∀ ν : Fˣ →* ℂˣ, IsUnit1 ν → IsUnramifiedChar ν → ∀ y : Fin 2 → ℂˣ, (∀ j, ‖((y j : ℂˣ) : ℂ)‖ = 1) → ∀ W' : GL (Fin 2) F → ℂ, (∀ g, W' g = Spherical.sphericalWhittaker (Circle.coeHom.compAddChar ψ⁻¹) y g) → ∀ s : ℂ, 0 < s.re → zU (sphW ψ ν) W' s = ∏ i : Fin 3, ∏ j : Fin 2, (1 - ((![ν (unifUnit F), 1, (ν (unifUnit F))⁻¹] : Fin 3 → ℂˣ) i : ℂ) * ((y j : ℂˣ) : ℂ) * (residueCard F : ℂ) ^ (-s))⁻¹ ∧ zU (GL2LocalData.dW3 (sphW ψ ν)) (GL2LocalData.dW2 W') s = ∏ i : Fin 3, ∏ j : Fin 2, (1 - ((![ν (unifUnit F), 1, (ν (unifUnit F))⁻¹] : Fin 3 → ℂˣ) i : ℂ) * (((y j)⁻¹ : ℂˣ) : ℂ) * (residueCard F : ℂ) ^ (-s))⁻¹ := by
   intro F _ _ _ _ _ _ ψ hψ ν hν _ y hy W' hW' s hs

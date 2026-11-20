@@ -15,7 +15,7 @@ namespace GlobalTheory.LatExt
 open Module
 
 /- English proof (translation)
-Use `h.smul_right σ 0 x 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem form_zero_right {F V : Type} [Field F] [AddCommGroup V] [Module F V] (h : HermFam F V) (σ : F →+* ℂ) (x : V) :
     h.form σ x 0 = 0 := by
@@ -23,7 +23,7 @@ theorem form_zero_right {F V : Type} [Field F] [AddCommGroup V] [Module F V] (h 
   simpa using this
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using form_zero_right h σ x`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.add_right, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem form_sum_right {F V ι : Type} [Field F] [AddCommGroup V] [Module F V] (h : HermFam F V) (σ : F →+* ℂ) (x : V)
     (s : Finset ι) (g : ι → V) : h.form σ x (∑ i ∈ s, g i) = ∑ i ∈ s, h.form σ x (g i) := by
@@ -33,16 +33,16 @@ theorem form_sum_right {F V ι : Type} [Field F] [AddCommGroup V] [Module F V] (
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.add_right, ih]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_single {F : Type} [Field F] {m : ℕ} (y : Fin m → F) : y = ∑ j, y j • Pi.single j (1 : F) := by
   funext k
   simp [Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Establish `hr : ∀ u w : Fin m → F, h.form σ u w = ∑ j, σ (w j) * h.form σ u (Pi.single j 1)` using `fun u w => by conv_lhs => rw [sum_single w]`. Rewrite using `[form_sum_right]`. Conclude with `Finset.sum_congr rfl fun j _ => h.smul_right σ _ _ _`. Rewrite using `[hr x y]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hr, h.conj_symm]`.
+A detailed English derivation is pending.
 -/
 theorem form_expand {F : Type} [Field F] {m : ℕ} (h : HermFam F (Fin m → F)) (σ : F →+* ℂ) (x y : Fin m → F) :
     h.form σ x y = ∑ j, σ (y j) * starRingEnd ℂ (∑ i, σ (x i) * h.form σ (Pi.single j 1) (Pi.single i 1)) := by
@@ -55,7 +55,7 @@ theorem form_expand {F : Type} [Field F] {m : ℕ} (h : HermFam F (Fin m → F))
   rw [← hr, h.conj_symm]
 
 /- English proof (translation)
-Introduce `K K' _ _ _ _ _ m h h' hh σ x y`. Rewrite using `[form_expand h', form_expand h]`. Establish `e` using `hh σ`. Simplify using `only [e, RingHom.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem formBC : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] (m : ℕ)
     (h : HermFam K (Fin m → K)) (h' : HermFam K' (Fin m → K')), IsBC h h' → ∀ (σ : K' →+* ℂ) (x y : Fin m → K),
@@ -66,13 +66,13 @@ theorem formBC : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberF
   simp only [e, RingHom.comp_apply]
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (Submodule.subset_span ⟨x, hx, rfl⟩)`. Consider the case `zero`. Establish `e : (fun i => algebraMap K K' ((0 : Fin m → K) i)) = 0` using `by funext i; simp`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `e : (fun i => algebraMap K K' ((x + y) i)) = (fun i => algebraMap K K' (x i)) + fun i => algebraMap K K' (y i)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `e : (fun i => algebraMap K K' ((a • x) i)) = algebraMap K K' a • fun i => algebraMap K K' (x i)`. Use function extensionality and compare the values at `i`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_span {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] {m : ℕ}
     (L : Submodule (𝓞 K) (Fin m → K)) {z : Fin m → K} (hz : z ∈ Submodule.span K (L : Set (Fin m → K))) :
@@ -92,17 +92,15 @@ theorem map_mem_span {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberF
     rw [e]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Introduce `K K' _ _ _ _ _ m L ⟨S, hS⟩`. Use `⟨S.image (fun v i => algebraMap K K' (v i)), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image]`. Conclude with `Submodule.span_mono (Set.image_mono (by rw [← hS]; exact Submodule.subset_span))`. Unfold `latBC`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Rewrite `hl` using `[SetLike.mem_coe, ← hS]`. Rewrite using `[Finset.coe_image]`. Proceed by induction on `hl using Submodule.span_induction with`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero`. Establish `e : (fun i => algebraMap K K' ((0 : Fin m → K) i)) = 0` using `by funext i; simp`. Use `show (fun i => algebraMap K K' ((0 : Fin m → K) i)) ∈ _`. Rewrite using `[e]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => show (fun i => algebraMap K K' ((x + y) i)) ∈ _`. Establish `e : (fun i => algebraMap K K' ((x + y) i)) = (fun i => algebraMap K K' (x i)) + fun i => algebraMap K K' (y i)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => show (fun i => algebraMap K K' ((a • x) i)) ∈ _`. Establish `hc : algebraMap (𝓞 K') K' (algebraMap (𝓞 K) (𝓞 K') a) = algebraMap K K' (algebraMap (𝓞 K) K a)` using `rfl`. Establish `e : (fun i => algebraMap K K' ((a • x) i)) = algebraMap (𝓞 K) (𝓞 K') a • fun i => algebraMap K K' (x i)`.
-
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Algebra.smul_def, Algebra.smul_def, map_mul, hc]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fgBC : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] (m : ℕ)
     (L : Submodule (𝓞 K) (Fin m → K)), L.FG → (latBC K' L).FG := by
@@ -136,11 +134,11 @@ theorem fgBC : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberFie
       rw [e]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Introduce `K K' _ _ _ _ _ m L ⟨hfg, hsp⟩`. Use `⟨fgBC K K' m L hfg, eq_top_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[← (Pi.basisFun K' (Fin m)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `h1` using `map_mem_span (K' := K') L (z := Pi.single i 1) (by rw [hsp]; trivial)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : (fun j => algebraMap K K' ((Pi.single i (1 : K) : Fin m → K) j)) = Pi.single i 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, hj]`. Rewrite `h1` using `[e]`. Simplify using `using h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fullBC : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] (m : ℕ)
     (L : Submodule (𝓞 K) (Fin m → K)), Full L → Full (latBC K' L) := by
@@ -157,9 +155,9 @@ theorem fullBC : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberF
   simpa using h1
 
 /- English proof (translation)
-Establish `h0 : ∀ τ : K →+* ℂ, Nat.card {σ : K' →+* ℂ // σ.comp (algebraMap K K') = τ} = finrank K K'` using `fun τ => by`. Use `letI : Algebra K ℂ := τ.toAlgebra`. Use `haveI : Module.Finite K K' := Module.Finite.of_restrictScalars_finite ℚ K K'`. Rewrite using `[← AlgHom.card K K' ℂ, ← Nat.card_eq_fintype_card]`. Conclude with `Nat.card_congr ⟨fun σ => { σ.1 with commutes' := fun x => RingHom.congr_fun σ.2 x }, fun φ => ⟨φ.toRingHom, RingHom.ext fun x => φ.commutes x⟩, fun σ => rfl, fun φ => rfl⟩`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_fiberwise (s := Finset.univ) (g := fun σ : K' →+* ℂ => σ.comp (algebraMap K K')), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => F τ) (fun σ hσ => by rw [(Finset.mem_filter.1 hσ).2]), Finset.sum_const, nsmul_eq_mul, ← h0 τ, Nat.card_eq_fintype_card, Fintype.card_subtype, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumExt (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (F : (K →+* ℂ) → ℝ) :
@@ -177,13 +175,13 @@ theorem sumExt (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K
     Finset.sum_const, nsmul_eq_mul, ← h0 τ, Nat.card_eq_fintype_card, Fintype.card_subtype, mul_comm]
 
 /- English proof (translation)
-Introduce `K K' _ _ _ _ _ m h L hL`. Use `⟨GlobalTheory.T.hermitian_family_base_change_exists K K' m h, fullBC K K' m L, fun h' hh' => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `exists_isFrame L hL`. Establish `hv'` using `GlobalTheory.T.lattice_frame_base_change K K' m L _ v hv`. Establish `hL'` using `fgBC K K' m L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, hv'.card_eq.symm, GlobalTheory.T.line_lattice_base_change K K' m L hL⟩` and prove the remaining obligations. Rewrite using `[arakelovDegree_eq_degreeOfFamily h' hL' hv', arakelovDegree_eq_degreeOfFamily h hL hv]`. Unfold `degreeOfFamily`. Rewrite using `[GlobalTheory.T.frame_lattice_index_base_change_pow K K' m L _ v hL hv]`. Establish `hg : ∀ σ : K' →+* ℂ, h'.gram σ (fun j i => algebraMap K K' (v j i)) = h.gram (σ.comp (algebraMap K K')) v` using `fun σ => by ext a b; exact formBC K K' m h h' hh' σ (v a) (v b)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hg]`. Rewrite using `[sumExt K K' (fun σ => Real.log (h.gram σ v).det.re), ← Module.finrank_mul_finrank ℚ K K', Nat.cast_pow, Real.log_pow]`. Use `haveI : Module.Finite K K' := Module.Finite.of_restrictScalars_finite ℚ K K'`. Establish `hd : (0 : ℝ) < finrank K K'` using `by exact_mod_cast Module.finrank_pos`. Establish `hq : (0 : ℝ) < finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ext_deg_rank_line : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] (m : ℕ) (h : HermFam K (Fin m → K)) (L : Submodule (𝓞 K) (Fin m → K)), L.FG → (∃ h' : HermFam K' (Fin m → K'), IsBC h h') ∧ (Full L → Full (latBC K' L)) ∧ ∀ h' : HermFam K' (Fin m → K'), IsBC h h' → deg h' (latBC K' L) = deg h L ∧ latRank K' (latBC K' L) = latRank K L ∧ ∀ x : Fin m → K, latBC K' (lineLat L x) = lineLat (latBC K' L) (fun i => algebraMap K K' (x i)) := by
   intro K K' _ _ _ _ _ m h L hL

@@ -36,7 +36,7 @@ def blowUpOverLoc (P W : Ideal (MRing ι R)) [P.IsPrime] (u : J → MRing ι R) 
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Use `show Polynomial.eval 1 (aeval (blowUpSubst P u) (liftForm f)) = _`. Rewrite using `[aeval_blowUpSubst_liftForm, Polynomial.eval_C]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blowUpEval_liftForm (P : Ideal (MRing ι R)) (u : J → MRing ι R) (f : MRing ι R) :
     blowUpEval P u (liftForm f) = Ideal.Quotient.mk P f := by
@@ -44,7 +44,7 @@ theorem blowUpEval_liftForm (P : Ideal (MRing ι R)) (u : J → MRing ι R) (f :
   rw [aeval_blowUpSubst_liftForm, Polynomial.eval_C]
 
 /- English proof (translation)
-Use `le_iInf₂ fun Q hQ => Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `z ⟨b, f, g, hf, hg, hgW, rfl⟩`. Use `Subring.subset_closure ⟨liftMDeg b, liftForm f, liftForm g, isMultiHomog_liftForm hf, isMultiHomog_liftForm hg, fun h => hgW (hQ.2.2.2.2 h), ?_⟩` and prove the remaining obligations. Rewrite using `[blowUpEval_liftForm, blowUpEval_liftForm]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem homLocRing_le_blowUpOverLoc {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
     (P W : Ideal (MRing ι R)) [P.IsPrime] (u : J → MRing ι R) :

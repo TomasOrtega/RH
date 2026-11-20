@@ -20,15 +20,15 @@ open PositivityTheory.ThKG.Fub GlobalTheory.Doubling
 attribute [local instance] ae_ring ae_smul ae_t2 ae_lc ae_sc
 
 /- English proof (translation)
-The claim follows from `units_top.1`.
+A detailed English derivation is pending.
 -/
 theorem id_lc : LocallyCompactSpace (AE F E)ˣ := units_top.1
 /- English proof (translation)
-The claim follows from `units_top.2`.
+A detailed English derivation is pending.
 -/
 theorem id_sc : SecondCountableTopology (AE F E)ˣ := units_top.2
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem id_borel : BorelSpace (AE F E)ˣ := ⟨rfl⟩
 
@@ -46,13 +46,13 @@ Both sides reduce to the same expression.
 theorem cw_def (w : HeightOneSpectrum (𝓞 E)) (x : AE F E) : cw w x = finAdEquiv F E (finTens F E x) w := rfl
 
 /- English proof (translation)
-The claim follows from `tens_ext h1 ((finAdEquiv F E).injective (FiniteAdeleRing.ext _ h2))`.
+A detailed English derivation is pending.
 -/
 theorem ae_ext {x y : AE F E} (h1 : infTens F E x = infTens F E y) (h2 : ∀ w, cw w x = cw w y) : x = y :=
   tens_ext h1 ((finAdEquiv F E).injective (FiniteAdeleRing.ext _ h2))
 
 /- English proof (translation)
-Rewrite using `[cw_def, finAdEquiv_apply h]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `((Algebra.TensorProduct.map _ _).comp (Algebra.TensorProduct.map _ _)) _ = _`. Rewrite using `[← Algebra.TensorProduct.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cw_eq {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) = v) (x : AE F E) : cw w x = toCompl h (compFin F E v x) := by
   rw [cw_def, finAdEquiv_apply h]
@@ -62,11 +62,7 @@ theorem cw_eq {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) 
   rfl
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`.
-
-Use `haveI : IsTopologicalRing (Af F ⊗[F] E) := IsModuleTopology.isTopologicalRing (Af F) _`. Take `⟨e0⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (Af F)`. Use `haveI : LocallyCompactSpace (Af F ⊗[F] E) := e0.isClosedEmbedding.locallyCompactSpace`. Use `haveI : T2Space (Af F ⊗[F] E) := e0.isEmbedding.t2Space`. Establish `ho : IsOpenMap (finAdEquiv F E).symm` using `AddMonoidHom.isOpenMap_of_sigmaCompact (finAdEquiv F E).symm.toAddEquiv.toAddMonoidHom (finAdEquiv F E).symm.surjective continuous_finAdEquiv_symm`.
-
-Establish `h1 : Continuous (finAdEquiv F E)` using `((finAdEquiv F E).symm.toEquiv.toHomeomorphOfContinuousOpen continuous_finAdEquiv_symm ho).symm.continuous`. Conclude with `h1.comp (GlobalTheory.AutFunCompare.continuous_tensNU (E := E) (sndA F).toLinearMap (map_mul (sndA F)) continuous_snd)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_fc : Continuous (fc F E) := by
   haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F
@@ -88,28 +84,28 @@ theorem continuous_fc : Continuous (fc F E) := by
 def io (a : AF F) : AE F E := algebraMap (AF F) (AE F E) a
 
 /- English proof (translation)
-The claim follows from `(finAdEquiv_tmul a.2 (1 : E) w).trans (by rw [map_one, mul_one]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem cw_io (w : HeightOneSpectrum (𝓞 E)) (a : AF F) : cw w (io a : AE F E) = complMap rfl (evFin F (w.under (𝓞 F)) a) :=
   (finAdEquiv_tmul a.2 (1 : E) w).trans (by rw [map_one, mul_one]; rfl)
 
 /- English proof (translation)
-Use `show a.1 ⊗ₜ[F] (1 : E) = 0`. Rewrite using `[h, TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_io {a : AF F} (h : a.1 = 0) : infTens F E (io a) = 0 := by
   show a.1 ⊗ₜ[F] (1 : E) = 0
   rw [h, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-The claim follows from `(map_mul _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem io_mul (a b : AF F) : (io a * io b : AE F E) = io (a * b) := (map_mul _ _ _).symm
 /- English proof (translation)
-Rewrite using `[io_mul, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem io_idem {a : AF F} (h : a * a = a) : (io a * io a : AE F E) = io a := by rw [io_mul, h]
 /- English proof (translation)
-Rewrite using `[io_mul, h]`. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem io_orth {a b : AF F} (h : a * b = 0) : (io a * io b : AE F E) = 0 := by rw [io_mul, h]; exact map_zero _
 
@@ -118,15 +114,13 @@ variable (F) in
 def ew (w : HeightOneSpectrum (𝓞 E)) : AE F E := extZero F E ((finAdEquiv F E).symm (1 - Neutral.B1.finiteSingle E w 0))
 
 /- English proof (translation)
-The claim follows from `infTens_extZero _`.
+A detailed English derivation is pending.
 -/
 theorem inf_ew (w : HeightOneSpectrum (𝓞 E)) : infTens F E (ew F w) = 0 := infTens_extZero _
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[cw_def, ew, finTens_extZero, RingEquiv.apply_symm_apply]`. Use `show 1 - Neutral.B1.finiteSingle E w 0 u = _`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[finSingle_self, sub_zero]`.
-
-Rewrite using `[finSingle_ne h, sub_self]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cw_ew (u w : HeightOneSpectrum (𝓞 E)) : cw u (ew F w) = if u = w then 1 else 0 := by
   rw [cw_def, ew, finTens_extZero, RingEquiv.apply_symm_apply]
@@ -136,13 +130,13 @@ theorem cw_ew (u w : HeightOneSpectrum (𝓞 E)) : cw u (ew F w) = if u = w then
   · rw [finSingle_ne h, sub_self]
 
 /- English proof (translation)
-The claim follows from `ae_ext (by rw [map_mul, inf_ew, mul_zero]) fun u => by rw [map_mul, cw_ew]; split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem ew_idem (w : HeightOneSpectrum (𝓞 E)) : ew F w * ew F w = ew F w :=
   ae_ext (by rw [map_mul, inf_ew, mul_zero]) fun u => by rw [map_mul, cw_ew]; split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `ae_ext (by rw [map_mul, inf_ew, zero_mul, map_zero]) fun u => by rw [map_mul, cw_ew, cw_ew, map_zero] split_ifs with h1 h2 · exact absurd (h1.symm.trans h2) h all_goals simp`.
+A detailed English derivation is pending.
 -/
 theorem ew_orth {w w' : HeightOneSpectrum (𝓞 E)} (h : w ≠ w') : ew F w * ew F w' = 0 :=
   ae_ext (by rw [map_mul, inf_ew, zero_mul, map_zero]) fun u => by
@@ -153,7 +147,7 @@ theorem ew_orth {w w' : HeightOneSpectrum (𝓞 E)} (h : w ≠ w') : ew F w * ew
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[cw_io]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[evFin_idem_self_k, map_one]`. Rewrite using `[evFin_idem_ne_k h, map_zero]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cw_idem (w : HeightOneSpectrum (𝓞 E)) (v : Pl F) : cw w (io (idem F v) : AE F E) = if w.under (𝓞 F) = v then 1 else 0 := by
   rw [cw_io]
@@ -163,14 +157,14 @@ theorem cw_idem (w : HeightOneSpectrum (𝓞 E)) (v : Pl F) : cw w (io (idem F v
 
 open Classical in
 /- English proof (translation)
-Apply the tactic sequence `rw [cw_io, evFin_rest]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cw_rest (w : HeightOneSpectrum (𝓞 E)) (T : Finset (Pl F)) :
     cw w (io (rest T) : AE F E) = if w.under (𝓞 F) ∈ T then 0 else 1 := by
   rw [cw_io, evFin_rest]; split_ifs <;> simp
 
 /- English proof (translation)
-Use `ae_ext (by rw [inf_io rfl, add_zero, map_sum, Finset.sum_eq_zero fun w _ => inf_ew w]) fun u => ?_` and prove the remaining obligations. Rewrite using `[add_zero, map_sum, cw_idem]`. Simplify using `only [cw_ew, Finset.sum_ite_eq, mem_aboveF]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem idem_eq_sum (v : Pl F) : (io (idem F v) : AE F E) = ∑ w ∈ Formalism.L2.Host.aboveF (L := E) F v, ew F w + 0 := by
   classical
@@ -181,26 +175,26 @@ theorem idem_eq_sum (v : Pl F) : (io (idem F v) : AE F E) = ∑ w ∈ Formalism.
 abbrev PI (a : AE F E) : (AE F E)ˣ →* (AE F E)ˣ := unitP (R := AE F E) a
 
 /- English proof (translation)
-Rewrite using `[coe_unitP h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hom_PI {A : Type} [CommRing A] (φ : AE F E →+* A) {a : AE F E} (h : a * a = a) (l : (AE F E)ˣ) :
     φ (PI a l) = φ a * φ l + (1 - φ a) := by
   rw [coe_unitP h]; simp
 
 /- English proof (translation)
-Rewrite using `[hom_PI _ h, h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cw_PI_one {a : AE F E} (h : a * a = a) {w} (h1 : cw w a = 1) (l : (AE F E)ˣ) : cw w (PI a l : AE F E) = cw w (l : AE F E) := by
   rw [hom_PI _ h, h1]; simp
 
 /- English proof (translation)
-Rewrite using `[hom_PI _ h, h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cw_PI_zero {a : AE F E} (h : a * a = a) {w} (h1 : cw w a = 0) (l : (AE F E)ˣ) : cw w (PI a l : AE F E) = 1 := by
   rw [hom_PI _ h, h1]; simp
 
 /- English proof (translation)
-The claim follows from `IsIdempotentElem.iff_eq_zero_or_one.1 (show _ * _ = _ by rw [← map_mul, h])`.
+A detailed English derivation is pending.
 -/
 theorem cw_cases {a : AE F E} (h : a * a = a) (w) : cw w a = 0 ∨ cw w a = 1 :=
   IsIdempotentElem.iff_eq_zero_or_one.1 (show _ * _ = _ by rw [← map_mul, h])
@@ -208,19 +202,19 @@ theorem cw_cases {a : AE F E} (h : a * a = a) (w) : cw w a = 0 ∨ cw w a = 1 :=
 def vw (w : HeightOneSpectrum (𝓞 E)) (l : (AE F E)ˣ) : WithZero (Multiplicative ℤ) := Valued.v (cw w (l : AE F E))
 
 /- English proof (translation)
-Simplify using `[vw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vw_mul (w) (l l' : (AE F E)ˣ) : vw w (l * l') = vw w l * vw w l' := by simp [vw]
 /- English proof (translation)
-Simplify using `[vw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vw_one (w) : vw w (1 : (AE F E)ˣ) = 1 := by simp [vw]
 /- English proof (translation)
-Rewrite using `[← vw_mul, mul_inv_cancel, vw_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vw_inv (w) (l : (AE F E)ˣ) : vw w l * vw w l⁻¹ = 1 := by rw [← vw_mul, mul_inv_cancel, vw_one]
 /- English proof (translation)
-The claim follows from `left_ne_zero_of_mul_eq_one (vw_inv w l)`.
+A detailed English derivation is pending.
 -/
 theorem vw_ne (w) (l : (AE F E)ˣ) : vw w l ≠ 0 := left_ne_zero_of_mul_eq_one (vw_inv w l)
 
@@ -233,7 +227,7 @@ def UI : Subgroup (AE F E)ˣ where
   inv_mem' {l} h w := by have := vw_inv w l; rwa [h w, one_mul] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨fun w => (h w).le, fun w => ((UI F E).inv_mem h w).le⟩, fun h w => le_antisymm (h.1 w) (by calc 1 = vw w l * vw w l⁻¹ := (vw_inv w l).symm _ ≤ vw w l * 1 := mul_le_mul_right (h.2 w) _ _ = vw w l := mul_one _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_UI_iff (l : (AE F E)ˣ) : l ∈ UI F E ↔ (∀ w, vw w l ≤ 1) ∧ ∀ w, vw w l⁻¹ ≤ 1 :=
   ⟨fun h => ⟨fun w => (h w).le, fun w => ((UI F E).inv_mem h w).le⟩, fun h w => le_antisymm (h.1 w) (by
@@ -242,7 +236,7 @@ theorem mem_UI_iff (l : (AE F E)ˣ) : l ∈ UI F E ↔ (∀ w, vw w l ≤ 1) ∧
       _ = vw w l := mul_one _)⟩
 
 /- English proof (translation)
-Establish `h : IsOpen {a : FiniteAdeleRing (𝓞 E) E | ∀ w, a w ∈ HeightOneSpectrum.adicCompletionIntegers E w}` using `RestrictedProduct.isOpen_forall_mem fun w => Valued.isOpen_integer _`. Establish `h1` using `h.preimage (continuous_fc (F := F))`. Establish `: (UI F E : Set (AE F E)ˣ) = (Units.val ⁻¹' (fc F E ⁻¹' {a | ∀ w, a w ∈ HeightOneSpectrum.adicCompletionIntegers E w})) ∩ ((fun l : (AE F E)ˣ => ((l⁻¹ : (AE F E)ˣ) : AE F E)) ⁻¹' (fc F E ⁻¹' {a | ∀ w, a w ∈ HeightOneSpectrum.adicCompletionIntegers E w}))` using `Set.ext fun l => mem_UI_iff l`. Rewrite using `[this]`. Conclude with `(h1.preimage Units.continuous_val).inter (h1.preimage Units.continuous_coe_inv)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_UI : IsOpen (UI F E : Set (AE F E)ˣ) := by
   have h : IsOpen {a : FiniteAdeleRing (𝓞 E) E | ∀ w, a w ∈ HeightOneSpectrum.adicCompletionIntegers E w} :=
@@ -254,7 +248,7 @@ theorem isOpen_UI : IsOpen (UI F E : Set (AE F E)ˣ) := by
   exact (h1.preimage Units.continuous_val).inter (h1.preimage Units.continuous_coe_inv)
 
 /- English proof (translation)
-The claim follows from `unitInvariant_continuous ha comp a b ha hb := unitInvariant_comp ha hb zero := unitInvariant_zero add a b ha hb h := ⟨idem_add ha hb h, unitInvariant_add ha hb h⟩ idem _ h := h cK := isClosed_univ mK _ _ _ _ := trivial mU := isOpen_UI.measurableSet one := (UI F E).one_mem mul _ h …`.
+A detailed English derivation is pending.
 -/
 theorem sysI : Sys (PI (F := F) (E := E)) ⊤ (UI F E) fun a => a * a = a where
   cont a ha := unitInvariant_continuous ha
@@ -273,16 +267,16 @@ theorem sysI : Sys (PI (F := F) (E := E)) ⊤ (UI F E) fun a => a * a = a where
     · rw [vw, cw_PI_one ha e]; exact hl w
 
 /- English proof (translation)
-Rewrite using `[← show PI a l = l from h.2, hom_PI _ ha, h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inf_of_part {a : AE F E} (ha : a * a = a) (h0 : infTens F E a = 0) {l : (AE F E)ˣ} (h : l ∈ part PI ⊤ a) :
     infTens F E l = 1 := by
   rw [← show PI a l = l from h.2, hom_PI _ ha, h0]; simp
 
 /- English proof (translation)
-Set `j : FiniteAdeleRing (𝓞 E) E → AE F E` to `fun y => 1 - extZero F E 1 + extZero F E ((finAdEquiv F E).symm y)`. Establish `hj : Continuous j` using `continuous_const.add (continuous_extZero.comp continuous_finAdEquiv_symm)`. Establish `hS` using `(GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties E).1.image hj`. Establish `hc` using `hS.prod (hS.image MulOpposite.continuous_op)`. Establish `key : ∀ l ∈ (part PI ⊤ a : Set (AE F E)ˣ) ∩ UI F E, ∃ y, (∀ w, y w ∈ HeightOneSpectrum.adicCompletionIntegers E w) ∧ j y = (l : AE F E)` using `fun l hl => ⟨fc F E l, fun w => (hl.2 w).le, tens_ext (by rw [inf_of_part ha h0 hl.1, map_add, map_sub, map_one, infTens_extZero, infTens_extZero, sub_zero, add_zero]) (by rw [map_add, map_sub, map_one, finTens_extZero, finTens_extZero, sub_self, zero_add]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(finAdEquiv F E).symm_apply_apply _)⟩`. Use `(Units.isClosedEmbedding_embedProduct.isCompact_preimage hc).of_isClosed_subset ((sysI.closed ha).inter ((UI F E).isClosed_of_isOpen isOpen_UI)) fun l hl => ⟨key l hl, _, key l⁻¹ ⟨Subgroup.inv_mem _ hl.1, (UI F E).inv_mem hl.2⟩, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cpt_I {a : AE F E} (ha : a * a = a) (h0 : infTens F E a = 0) :
     IsCompact ((part PI ⊤ a : Set (AE F E)ˣ) ∩ UI F E) := by
@@ -300,7 +294,7 @@ theorem cpt_I {a : AE F E} (ha : a * a = a) (h0 : infTens F E a = 0) :
       ⟨Subgroup.inv_mem _ hl.1, (UI F E).inv_mem hl.2⟩, rfl⟩
 
 /- English proof (translation)
-Use `⟨?_, isOpen_UI.preimage continuous_subtype_val⟩` and prove the remaining obligations. Use `(sysI.closed ha).isClosedEmbedding_subtypeVal.isCompact_preimage (cpt_I ha h0)` as an intermediate fact. Conclude with `this.of_isClosed_subset (((UI F E).isClosed_of_isOpen isOpen_UI).preimage continuous_subtype_val) fun x hx => ⟨x.2, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem co_I {a : AE F E} (ha : a * a = a) (h0 : infTens F E a = 0) : CO PI ⊤ (UI F E : Set (AE F E)ˣ) a := by
   refine ⟨?_, isOpen_UI.preimage continuous_subtype_val⟩
@@ -308,14 +302,14 @@ theorem co_I {a : AE F E} (ha : a * a = a) (h0 : infTens F E a = 0) : CO PI ⊤ 
   exact this.of_isClosed_subset (((UI F E).isClosed_of_isOpen isOpen_UI).preimage continuous_subtype_val) fun x hx => ⟨x.2, hx⟩
 
 /- English proof (translation)
-Rewrite using `[coe_unitP (io_idem h), smul_eq_mul, smul_eq_mul, Algebra.smul_def, Algebra.smul_def, map_sub, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_PI_io {a : AF F} (h : a * a = a) (l : (AE F E)ˣ) :
     (PI (io a) l : AE F E) = a • (l : AE F E) + (1 - a) • (1 : AE F E) := by
   rw [coe_unitP (io_idem h), smul_eq_mul, smul_eq_mul, Algebra.smul_def, Algebra.smul_def, map_sub, map_one]; rfl
 
 /- English proof (translation)
-Establish `: {l : (AE F E)ˣ | At ev ((l : AE F E) - 1)} = ((part PI ⊤ (io a) : Subgroup (AE F E)ˣ) : Set (AE F E)ˣ)` using `Set.ext fun l => by show At ev ((l : AE F E) - 1) ↔ l ∈ part PI ⊤ (io a)`. Rewrite using `[hat, fix_iff, ← coe_PI_io h, mem_part]`. Conclude with `⟨fun e => ⟨trivial, Units.ext e⟩, fun e => congrArg Units.val e.2⟩`. Rewrite using `[idAt, this, Subgroup.closure_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem idAt_eq {R : Type} [Zero R] (ev : AF F → R) {a : AF F} (h : a * a = a) (hat : ∀ z : AE F E, At ev z ↔ a • z = z) :
     idAt E ev = part PI ⊤ (io a) := by
@@ -326,9 +320,9 @@ theorem idAt_eq {R : Type} [Zero R] (ev : AF F → R) {a : AF F} (h : a * a = a)
   rw [idAt, this, Subgroup.closure_eq]
 
 /- English proof (translation)
-Establish `h` using `co_I (E := E) (io_idem (idem_idem v)) (inf_io rfl)`. Rewrite `h` using `[CO, ← idAt_eq (evFin F v) (idem_idem v) fun _ => at_fin_iff]`. Use `Set.ext fun l => ⟨fun hl w => ?_, fun hl => h.1.of_isClosed_subset isClosed_closure (closure_minimal ?_ h.1.isClosed)⟩` and prove the remaining obligations. Take `⟨k, hk, hm⟩` from `pow_mem_of_compact ((UI F E).subgroupOf _) h.2 hl fun n => subset_closure (Subgroup.npow_mem_zpowers l n)`. Establish `h1 : vw w (l.1 ^ k) = 1` using `hm w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[vw, Units.val_pow_eq_pow_val, map_pow, map_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le' hk.ne').1 h1`. Introduce and unpack `_ ⟨n, rfl⟩`. Conclude with `(UI F E).zpow_mem hl n`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem units_eq (v : Pl F) : {l : idAt E (evFin F v) | IsCompact (closure (Subgroup.zpowers l : Set (idAt E (evFin F v))))} =
     {l | l.1 ∈ (UI F E : Set (AE F E)ˣ)} := by
@@ -344,19 +338,15 @@ theorem units_eq (v : Pl F) : {l : idAt E (evFin F v) | IsCompact (closure (Subg
     exact (UI F E).zpow_mem hl n
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X r s hB hX K hK`. Use `haveI := (ua_top (σ := σ) X.J).1`. Use `haveI := (ua_top (σ := σ) X.J).2`. Use `haveI := borelUA (σ := σ) X.J`. Establish `hc` using `stab_compact hS hB hX hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sy` using `sysU hK hc`. Establish `ei` using `kAt_eq K (evI F) real_idem fun _ => at_inf_iff`. Establish `ef` using `fun v => kAt_eq K (evFin F v) (idem_idem v) fun _ => at_fin_iff`. Establish `di` using `idAt_eq (E := E) (evI F) real_idem fun _ => at_inf_iff`. Establish `df` using `fun v => idAt_eq (E := E) (evFin F v) (idem_idem v) fun _ => at_fin_iff`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : ∀ {a}, Gd a → ∀ S, S = part (PU σ X.J) K a → ∃ μ : Measure S, μ.IsHaarMeasure ∧ μ Set.univ = 1`. Introduce and unpack `a ha S rfl`. Conclude with `exists_haar _ (sy.closed ha) Set.univ trivial (co_U hK hc ha).1 (co_U hK hc ha).2`. Establish `h2 : ∀ S : Subgroup (AE F E)ˣ, ∀ P : Set S, (∃ μ : Measure S, μ.IsHaarMeasure ∧ μ P = 1) → ∃ μ : @Measure S (borel _), @Measure.IsHaarMeasure _ _ _ (borel _) μ ∧ μ P = 1` using `fun S P h => by`. Establish `: borel S = Subtype.instMeasurableSpace` using `(@BorelSpace.measurable_eq S _ Subtype.instMeasurableSpace (Subtype.borelSpace _)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `h`. Use `choose kf hkf using fun v => h1 (gd_idem v) _ (ef v)`. Take `⟨ki, hki⟩` from `h1 gd_real _ ei`. Establish `h3 : ∀ v, ∃ μ : Measure (idAt E (evFin F v)), μ.IsHaarMeasure ∧ μ {l | l.1 ∈ (UI F E : Set (AE F E)ˣ)} = 1` using `fun v => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `co_I (E := E) (io_idem (idem_idem v)) (inf_io rfl)`. Establish `hcl` using `sysI.closed (io_idem (E := E) (idem_idem v))`. Rewrite `h` using `[CO, ← df v]`. Rewrite `hcl` using `[← df v]`. Conclude with `exists_haar _ hcl _ (UI F E).one_mem h.1 h.2`.
-
-Use `choose xf hxf using fun v => h2 _ _ (h3 v)`. Use `haveI : LocallyCompactSpace (idAt E (evI F)) := by`. Establish `hcl` using `sysI.closed (io_idem (E := E) (real_idem (F := F)))`. Rewrite `hcl` using `[← di]`. Conclude with `hcl.locallyCompactSpace`.
-
-Use `letI : MeasurableSpace (idAt E (evI F)) := borel _`. Use `haveI : BorelSpace (idAt E (evI F)) := ⟨rfl⟩`. Conclude with `⟨⟨kf, xf, ki, Measure.haar⟩, hkf, fun v => ⟨(hxf v).1, by rw [units_eq]; exact (hxf v).2⟩, hki.1, inferInstance⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem measEx_of (hS : StabEx) : MeasEx := by
   intro F E _ _ _ _ _ σ B n X r s hB hX K hK

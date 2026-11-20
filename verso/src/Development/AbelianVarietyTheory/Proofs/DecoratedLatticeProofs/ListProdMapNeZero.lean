@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SeeSaw
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp only [List.map_cons, List.prod_cons, mul_pow, ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem list_prod_map_pow_eq {α : Type} (l : List α) (f g : α → ℂ) (n : ℕ) (h : ∀ a, f a ^ n = g a ^ n) :
     (l.map f).prod ^ n = (l.map g).prod ^ n := by
@@ -22,7 +22,7 @@ private theorem list_prod_map_pow_eq {α : Type} (l : List α) (f g : α → ℂ
   | cons a l ih => simp only [List.map_cons, List.prod_cons, mul_pow, ih, h]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp only [List.map_cons, List.prod_cons]`. Conclude with `mul_ne_zero (h a) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem list_prod_map_ne_zero {α : Type} (l : List α) (f : α → ℂ) (h : ∀ a, f a ≠ 0) :
     (l.map f).prod ≠ 0 := by
@@ -31,9 +31,9 @@ private theorem list_prod_map_ne_zero {α : Type} (l : List α) (f : α → ℂ)
   | cons a l ih => simp only [List.map_cons, List.prod_cons]; exact mul_ne_zero (h a) ih
 
 /- English proof (translation)
-Unfold `TDat.mono`. Apply `list_prod_map_pow_eq` to reduce the goal to its premises. Introduce `i`. Simplify using `only [mul_pow, chrPow]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `key : ∀ μ : (AE D)ˣ →* Circle, ((μ ((o.p i).idele o.q.unit) ^ e i : Circle) : ℂ) ^ n = ((((μ ^ n) ((o.p i).idele o.q.unit)) ^ e i : Circle) : ℂ)`. Introduce `μ`. Rewrite using `[MonoidHom.pow_apply, ← Circle.coe_pow, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm]`. Rewrite using `[key χ, key χ', hn]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mono_pow_eq {D : D7} {c : Comm D} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {ι : Type} (o : TDat c k ι) (r : ι → ℝ) (e : ι → ℤ)
@@ -51,9 +51,7 @@ theorem mono_pow_eq {D : D7} {c : Comm D} {k : Type} [Field k] [ValuativeRel k] 
   rw [key χ, key χ', hn]
 
 /- English proof (translation)
-Unfold `TDat.mono`. Apply `list_prod_map_ne_zero` to reduce the goal to its premises. Introduce `i`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Conclude with `(hr i).ne'` after adjusting the coercions.
-
-Conclude with `Circle.coe_ne_zero _`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mono_ne_zero {D : D7} {c : Comm D} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {ι : Type} (o : TDat c k ι) (r : ι → ℝ) (e : ι → ℤ)
@@ -66,7 +64,7 @@ theorem mono_ne_zero {D : D7} {c : Comm D} {k : Type} [Field k] [ValuativeRel k]
   · exact Circle.coe_ne_zero _
 
 /- English proof (translation)
-Introduce `D c k _ _ _ _ ι o r e χ χ' S hr ⟨n, hn, hχ⟩`. Conclude with `(GlobalTheory.T.isRootOfSUnitRatioUpToRootOfUnity_closure_laws S).2.2.1 _ _ n (mono_ne_zero o r e χ' hr) hn (mono_pow_eq o r e χ χ' n hχ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mono_unitRatio : ∀ (D : D7) (c : Comm D) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ι : Type) (o : TDat c k ι) (r : ι → ℝ) (e : ι → ℤ) (χ χ' : (AE D)ˣ →* Circle)

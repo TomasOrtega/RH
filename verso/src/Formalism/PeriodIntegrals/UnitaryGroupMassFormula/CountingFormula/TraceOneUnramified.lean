@@ -15,7 +15,7 @@ namespace PI.UnitaryGroupMassFormula.CntFormula.RowsMassW
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D` and use `Formalism.MainNotions.BridgeLemma.l_theta D.host.E D.sp.cm.cmUnram`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trace_one_unramified : TraceOne := fun D =>
   Formalism.MainNotions.BridgeLemma.l_theta D.host.E D.sp.cm.cmUnram
@@ -25,21 +25,19 @@ section Dual
 variable {D : D7} {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
 
 /- English proof (translation)
-Set `Φ : (VS D).V →ₗ[D.host.E] (Fin D.R.rS → D.host.E)` to `LinearMap.pi (fun a => (VS D).hT (F0.e a))`. Establish `hsurj : LinearMap.range Φ = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Use `set μ : Fin D.R.rS → D.host.E := fun a => f (fun j => if a = j then 1 else 0) with hμdef`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv : ∀ v, ∑ a, (VS D).hT (F0.e a) v * μ a = 0`. Introduce `v`. Establish `h1 : f (Φ v) = 0` using `hle (LinearMap.mem_range_self Φ v)`. Rewrite `h1` using `[LinearMap.pi_apply_eq_sum_univ f (Φ v)]`. Simplify `h1` using `[Φ, LinearMap.pi_apply, smul_eq_mul, μ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hx : ∑ a, star (μ a) • F0.e a = 0`. Apply `(VS D).nondeg.1` to reduce the goal to its premises. Introduce `v`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_star, smul_eq_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv v]`. Conclude with `Finset.sum_congr rfl (fun a _ => mul_comm _ _)`. Establish `hμ : ∀ a, μ a = 0`. Introduce `a`. Use `Fintype.linearIndependent_iff.1 F0.e_indep (fun a => star (μ a)) hx a` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using this`. Apply `hf0` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f u]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [LinearMap.zero_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a _`. Establish `: f (fun j => if a = j then 1 else 0) = 0` using `hμ a`. Rewrite using `[this, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun b => Classical.choose (LinearMap.range_eq_top.1 hsurj (Pi.single b 1)), ?_⟩` and prove the remaining obligations. Introduce `a b`. Establish `h` using `Classical.choose_spec (LinearMap.range_eq_top.1 hsurj (Pi.single b 1))`. Establish `h2` using `congrFun h a`. Simplify using `only [Φ, LinearMap.pi_apply] at h2`.
-
-Rewrite using `[h2, Pi.single_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dual0 : ∃ g0 : Fin D.R.rS → (VS D).V, IsDual0 F0 g0 := by
   let Φ : (VS D).V →ₗ[D.host.E] (Fin D.R.rS → D.host.E) := LinearMap.pi (fun a => (VS D).hT (F0.e a))
@@ -82,19 +80,17 @@ theorem exists_dual0 : ∃ g0 : Fin D.R.rS → (VS D).V, IsDual0 F0 g0 := by
 end Dual
 
 /- English proof (translation)
-Introduce `D u F0 Λ hΛ`. Take `⟨g0, hg0⟩` from `exists_dual0 F0`. Establish `hlat : Submodule.IsLattice D.host.E Λ` using `hΛ.2.1.1`. Establish `hu : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ` using `hΛ.2.1.2.1`. Establish `hiso : ∀ x ∈ F0.X, ∀ y ∈ F0.X, (VS D).hT x y = 0` using `fun x hx y hy => hX_X F0 hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P, P', hadj, hid, hX, _, hint', _⟩` from `Formalism.MainNotions.BridgeLemma.l_iso Formalism.MainNotions.BridgeLemma.l_adj Formalism.MainNotions.BridgeLemma.l_retr Formalism.MainNotions.BridgeLemma.l_theta D.host.E (VS D) Λ F0.X D.sp.cm.cmUnram hlat hu hiso`. Establish `hker : ∀ w ∈ perpS (VS D) F0.X, P' w = 0`. Introduce `w hw`. Apply `(VS D).nondeg.2` to reduce the goal to its premises. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hadj x w]`. Conclude with `hw _ (hX x)`. Use `⟨fun b => P' (g0 b), ?_, ?_⟩` and prove the remaining obligations. Introduce `a b show (VS D).hT (F0.e a) (P' (g0 b)) = _`. Rewrite using `[← hadj, hid _ (e_mem_X F0 a), hg0 a b]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Establish `hg0' : ∀ a b, (VS D).hT (F0.e a) (g0 b) = if a = b then 1 else 0` using `hg0`. Establish `hyc : ycL F0 (fun b => P' (g0 b)) v = P' (ycL F0 g0 v)`. Rewrite using `[ycL_apply, ycL_apply, map_sum]`. Conclude with `Finset.sum_congr rfl (fun b _ => by rw [map_smul])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hperp : v - ycL F0 g0 v ∈ perpS (VS D) F0.X`. Apply `mem_perp_of F0` to reduce the goal to its premises. Introduce `a`. Rewrite using `[map_sub, ycL_apply, map_sum]`. Simplify using `[hg0']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : P' (ycL F0 g0 v) = P' v`. Use `hker _ hperp` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this.symm`. Rewrite using `[hyc, h1]`.
-
-Conclude with `hint' v hv`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_dual_frame : RowDualFrame := by
   intro D u F0 Λ hΛ
@@ -134,7 +130,7 @@ theorem row_dual_frame : RowDualFrame := by
     exact hint' v hv
 
 /- English proof (translation)
-The claim follows from `rowClass_of_three row_dual_frame h trace_one_unramified`.
+A detailed English derivation is pending.
 -/
 theorem rowClass_of_zunit (h : RowZUnit) : RowClass :=
   rowClass_of_three row_dual_frame h trace_one_unramified

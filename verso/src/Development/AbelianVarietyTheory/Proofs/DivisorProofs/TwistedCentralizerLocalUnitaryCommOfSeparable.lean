@@ -7,13 +7,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.CentComm
 
 /- English proof (translation)
-Use `set f := Matrix.toLin' A`. Establish `hc : f.charpoly = A.charpoly` using `Matrix.charpoly_toLin' A`. Establish `hfg : Commute f (Matrix.toLin' g)` using `hg.map Matrix.toLinAlgEquiv'`. Establish `hfh : Commute f (Matrix.toLin' h)` using `hh.map Matrix.toLinAlgEquiv'`. Establish `key : ∀ μ, Module.End.maxGenEigenspace f μ ≤ LinearMap.ker (Matrix.toLin' g * Matrix.toLin' h - Matrix.toLin' h * Matrix.toLin' g)` using `fun μ v hv => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Module.finrank L (Module.End.maxGenEigenspace f μ) ≤ 1`. Rewrite using `[LinearMap.finrank_maxGenEigenspace_eq, hc]`. Conclude with `Polynomial.rootMultiplicity_le_one_of_separable hA μ`. Distinguish the cases in `h0 : v = 0`. Simplify using `[h0]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ w ∈ Module.End.maxGenEigenspace f μ, ∃ c : L, c • v = w` using `fun w hw => by`. Establish `h2 : Module.finrank L (Module.End.maxGenEigenspace f μ) = 1` using `le_antisymm h1 (Module.finrank_pos_iff_exists_ne_zero.2 ⟨⟨v, hv⟩, fun h => h0 (congrArg Subtype.val h)⟩)`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨v, hv⟩ : Module.End.maxGenEigenspace f μ) fun h => h0 (congrArg Subtype.val h)).1 h2 ⟨w, hw⟩`. Conclude with `⟨c, congrArg Subtype.val hc⟩`. Take `⟨c, hc⟩` from `hs _ (Module.End.mapsTo_maxGenEigenspace_of_comm hfg μ hv)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, hd⟩` from `hs _ (Module.End.mapsTo_maxGenEigenspace_of_comm hfh μ hv)`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, ← hc, ← hd, map_smul, map_smul, ← hc, ← hd, smul_comm, sub_self]`. Establish `h3` using `iSup_le key`. Rewrite `h3` using `[Module.End.iSup_maxGenEigenspace_eq_top, top_le_iff, LinearMap.ker_eq_top, sub_eq_zero]`. Conclude with `Matrix.toLinAlgEquiv'.injective (by rw [map_mul, map_mul]; exact h3)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_of_commute_separable_of_isAlgClosed {L : Type} [Field L] [IsAlgClosed L] {n : ℕ}
     {A g h : Matrix (Fin n) (Fin n) L} (hA : A.charpoly.Separable) (hg : Commute A g) (hh : Commute A h) :
@@ -43,11 +43,11 @@ theorem commute_of_commute_separable_of_isAlgClosed {L : Type} [Field L] [IsAlgC
   exact Matrix.toLinAlgEquiv'.injective (by rw [map_mul, map_mul]; exact h3)
 
 /- English proof (translation)
-Use `set φ := algebraMap K (AlgebraicClosure K)`. Establish `hA' : (A.map φ).charpoly.Separable`. Rewrite using `[Matrix.charpoly_map]`. Conclude with `hA.map`. Establish `hg' : Commute (A.map φ) (g.map φ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Commute SemiconjBy`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, hg.eq]`. Establish `hh' : Commute (A.map φ) (h.map φ)`. Unfold `Commute SemiconjBy`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, hh.eq]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `commute_of_commute_separable_of_isAlgClosed hA' hg' hh'` as an intermediate fact. Unfold `Commute SemiconjBy at this ⊢`. Rewrite `this` using `[← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `Matrix.map_injective φ.injective this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_of_commute_separable {K : Type} [Field K] {n : ℕ} {A g h : Matrix (Fin n) (Fin n) K}
     (hA : A.charpoly.Separable) (hg : Commute A g) (hh : Commute A h) : Commute g h := by
@@ -68,7 +68,7 @@ end GlobalTheory.BCT.CentComm
 namespace GlobalTheory.BCT
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n w y hy a ha b hb`. Establish `ha' : a.1.val * y.1.val = y.1.val * a.1.val` using `congrArg (fun z : UL n w => z.1.val) ha`. Establish `hb' : b.1.val * y.1.val = y.1.val * b.1.val` using `congrArg (fun z : UL n w => z.1.val) hb`. Use `CentComm.commute_of_commute_separable hy ha'.symm hb'.symm` as an intermediate fact. Conclude with `Subtype.ext (Units.ext this.eq)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem centComm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, ∀ (w : Pl E) (y : UL n w),
     y.1.val.charpoly.Separable → ∀ a ∈ twCent (MonoidHom.id (UL n w)) y, ∀ b ∈ twCent (MonoidHom.id (UL n w)) y,

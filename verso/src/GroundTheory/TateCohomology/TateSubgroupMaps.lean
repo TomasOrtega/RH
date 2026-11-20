@@ -15,7 +15,7 @@ variable {k G : Type u} [CommRing k] [Group G]
 section Delta
 
 /- English proof (translation)
-The claim follows from `TateCohomology.δ_naturality hX hX' (X.mapNatTrans σ) n`.
+A detailed English derivation is pending.
 -/
 lemma tate_whiskerRight_δ {H : Type u} [Group H] [Fintype H] {F F' : Rep.{u} k G ⥤ Rep.{u} k H}
     [F.PreservesZeroMorphisms] [F'.PreservesZeroMorphisms] (σ : F ⟶ F')
@@ -26,7 +26,7 @@ lemma tate_whiskerRight_δ {H : Type u} [Group H] [Fintype H] {F F' : Rep.{u} k 
   TateCohomology.δ_naturality hX hX' (X.mapNatTrans σ) n
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, h₁, Category.assoc, h₂, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sq_comp {C : Type*} [Category C] {a₁ a₂ a₃ b₁ b₂ b₃ : C} {δ₁ : a₁ ⟶ b₁} {δ₂ : a₂ ⟶ b₂}
     {δ₃ : a₃ ⟶ b₃} {f : b₁ ⟶ b₂} {f' : a₁ ⟶ a₂} {g : b₂ ⟶ b₃} {g' : a₂ ⟶ a₃}
@@ -34,7 +34,7 @@ lemma sq_comp {C : Type*} [Category C] {a₁ a₂ a₃ b₁ b₂ b₃ : C} {δ�
   rw [← Category.assoc, h₁, Category.assoc, h₂, Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[Preadditive.comp_sum, Preadditive.sum_comp]`. Conclude with `Finset.sum_congr rfl h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sq_sum {C : Type*} [Category C] [Preadditive C] {a₁ a₂ b₁ b₂ : C} {δ₁ : a₁ ⟶ b₁}
     {δ₂ : a₂ ⟶ b₂} {ι : Type*} (s : Finset ι) {f : ι → (b₁ ⟶ b₂)} {f' : ι → (a₁ ⟶ a₂)}
@@ -43,7 +43,7 @@ lemma sq_sum {C : Type*} [Category C] [Preadditive C] {a₁ a₂ b₁ b₂ : C} 
   exact Finset.sum_congr rfl h
 
 /- English proof (translation)
-Rewrite using `[Preadditive.comp_nsmul, Preadditive.nsmul_comp, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sq_nsmul {C : Type*} [Category C] [Preadditive C] {a₁ a₂ b₁ b₂ : C} {δ₁ : a₁ ⟶ b₁}
     {δ₂ : a₂ ⟶ b₂} (m : ℕ) {f : b₁ ⟶ b₂} {f' : a₁ ⟶ a₂} (h : δ₁ ≫ f = f' ≫ δ₂) :
@@ -64,7 +64,7 @@ namespace IsTateDelta
 variable {U V W : Subgroup G} [Fintype U] [Fintype V] [Fintype W]
 
 /- English proof (translation)
-The claim follows from `funext (tate_natTrans_eq_of_eq_zero (resFunctor U.subtype) (resFunctor V.subtype) (shortExact_map_resFunctor U) (shortExact_map_resFunctor V) (tateAcyclic_res_coindSES_X₂ U) (tateAcyclic_res_indSES_X₂ V) α β hα hβ h0)`.
+A detailed English derivation is pending.
 -/
 theorem ext {α β : ∀ n : ℤ, resFunctor U.subtype ⋙ tateCohomologyFunctor (R := k) n ⟶
       resFunctor V.subtype ⋙ tateCohomologyFunctor n}
@@ -76,7 +76,7 @@ theorem ext {α β : ∀ n : ℤ, resFunctor U.subtype ⋙ tateCohomologyFunctor
 omit [Fintype G] in
 
 /- English proof (translation)
-Introduce `_ _` and use `(Category.comp_id _).trans (Category.id_comp _).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem id : IsTateDelta (fun n => 𝟙 (resFunctor U.subtype ⋙ tateCohomologyFunctor (R := k) n)) :=
   fun _ _ => (Category.comp_id _).trans (Category.id_comp _).symm
@@ -84,7 +84,7 @@ theorem id : IsTateDelta (fun n => 𝟙 (resFunctor U.subtype ⋙ tateCohomology
 omit [Fintype G] in
 
 /- English proof (translation)
-Introduce `X hX n`. Conclude with `sq_comp (hα hX n) (hβ hX n)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem comp {α : ∀ n : ℤ, resFunctor U.subtype ⋙ tateCohomologyFunctor (R := k) n ⟶
       resFunctor V.subtype ⋙ tateCohomologyFunctor n}
@@ -97,7 +97,7 @@ theorem comp {α : ∀ n : ℤ, resFunctor U.subtype ⋙ tateCohomologyFunctor (
 omit [Fintype G] in
 
 /- English proof (translation)
-Introduce `X hX n`. Rewrite using `[NatTrans.app_sum, NatTrans.app_sum]`. Conclude with `sq_sum s fun i hi => hα i hi hX n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum {ι : Type*} (s : Finset ι)
     {α : ι → ∀ n : ℤ, resFunctor U.subtype ⋙ tateCohomologyFunctor (R := k) n ⟶
@@ -110,7 +110,7 @@ theorem sum {ι : Type*} (s : Finset ι)
 omit [Fintype G] in
 
 /- English proof (translation)
-Introduce `X hX n`. Rewrite using `[NatTrans.app_nsmul, NatTrans.app_nsmul]`. Conclude with `sq_nsmul m (hα hX n)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul (m : ℕ)
     {α : ∀ n : ℤ, resFunctor U.subtype ⋙ tateCohomologyFunctor (R := k) n ⟶
@@ -121,7 +121,7 @@ theorem nsmul (m : ℕ)
   exact sq_nsmul m (hα hX n)
 
 /- English proof (translation)
-Introduce `X hX n`. Conclude with `sq_comp (tateCores_δ U hX n) (tateRes_δ V hX n)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cores_res : IsTateDelta (fun n => tateCores (k := k) U n ≫ tateRes V n) := by
   intro X hX n
@@ -174,9 +174,9 @@ noncomputable def tateCoresLE (n : ℤ) :
     Functor.whiskerLeft (resFunctor U.subtype) (tateCores (W.subgroupOf U) n)
 
 /- English proof (translation)
-Set `_` to `fintypeSubgroupOf h`. Introduce `X hX n`. Establish `hU` using `shortExact_map_resFunctor U hX`. Establish `h1` using `tateRes_δ (W.subgroupOf U) hU n`. Establish `h2` using `tateTransport_δ (Subgroup.subgroupOfEquivOfLe h).symm (shortExact_map_resFunctor (W.subgroupOf U) hU) n`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `tate_whiskerRight_δ (resLENatTrans (k := k) h) (shortExact_map_resFunctor_equiv (Subgroup.subgroupOfEquivOfLe h).symm (shortExact_map_resFunctor (W.subgroupOf U) hU)) (shortExact_map_resFunctor W hX) n`. Conclude with `sq_comp h1 (sq_comp h2 h3)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isTateDelta_tateResLE : IsTateDelta (tateResLE (k := k) h) := by
   let _ := fintypeSubgroupOf h
@@ -192,9 +192,9 @@ theorem isTateDelta_tateResLE : IsTateDelta (tateResLE (k := k) h) := by
   exact sq_comp h1 (sq_comp h2 h3)
 
 /- English proof (translation)
-Set `_` to `fintypeSubgroupOf h`. Introduce `X hX n`. Establish `hW` using `shortExact_map_resFunctor W hX`. Establish `hU` using `shortExact_map_resFunctor U hX`. Establish `h1` using `tateTransport_δ (Subgroup.subgroupOfEquivOfLe h) hW n`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `tate_whiskerRight_δ (coresLENatTrans (k := k) h) (shortExact_map_resFunctor_equiv (Subgroup.subgroupOfEquivOfLe h) hW) (shortExact_map_resFunctor (W.subgroupOf U) hU) n`. Establish `h3` using `tateCores_δ (W.subgroupOf U) hU n`. Conclude with `sq_comp h1 (sq_comp h2 h3)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isTateDelta_tateCoresLE : IsTateDelta (tateCoresLE (k := k) h) := by
   let _ := fintypeSubgroupOf h
@@ -223,9 +223,9 @@ lemma coe_invariantsLE {A : Rep.{u} k G} (y : (res U.subtype A).ρ.invariants) :
     (invariantsLE h y : A) = y := rfl
 
 /- English proof (translation)
-Set `_` to `fintypeSubgroupOf h`. Establish `e1` using `tateRes_tateZeroClass (W.subgroupOf U) (res U.subtype A) y`. Establish `e2` using `tateTransport_tateZeroClass (Subgroup.subgroupOfEquivOfLe h).symm (res (W.subgroupOf U).subtype (res U.subtype A)) (invariantsRes (W.subgroupOf U).subtype y)`. Establish `e3` using `tateCohomologyFunctor_map_tateZeroClass ((resLENatTrans (k := k) h).app A) (invariantsTransport (Subgroup.subgroupOfEquivOfLe h).symm (invariantsRes (W.subgroupOf U).subtype y))`. Use `(congrArg (fun z => ((tateCohomologyFunctor 0).map ((resLENatTrans (k := k) h).app A)).hom (((tateTransport (Subgroup.subgroupOfEquivOfLe h).symm 0).app (res (W.subgroupOf U).subtype (res U.subtype A))).hom z)) e1).trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (fun z => ((tateCohomologyFunctor 0).map ((resLENatTrans (k := k) h).app A)).hom z) e2).trans ?_` and prove the remaining obligations. Conclude with `e3`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tateResLE_tateZeroClass (A : Rep.{u} k G) (y : (res U.subtype A).ρ.invariants) :
     ((tateResLE h 0).app A).hom (tateZeroClass (res U.subtype A) y) =
@@ -252,9 +252,9 @@ def invariantsSubgroupOf {A : Rep.{u} k G} (y : (res W.subtype A).ρ.invariants)
   ⟨y, fun w => y.2 ⟨(w : U), w.2⟩⟩
 
 /- English proof (translation)
-Set `_` to `fintypeSubgroupOf h`. Establish `e1` using `tateTransport_tateZeroClass (Subgroup.subgroupOfEquivOfLe h) (res W.subtype A) y`. Establish `e2` using `tateCohomologyFunctor_map_tateZeroClass ((coresLENatTrans (k := k) h).app A) (invariantsTransport (Subgroup.subgroupOfEquivOfLe h) y)`. Establish `e3` using `tateCores_tateZeroClass (W.subgroupOf U) (res U.subtype A) (invariantsSubgroupOf U y)`. Use `(congrArg (fun z => ((tateCores (W.subgroupOf U) 0).app (res U.subtype A)).hom (((tateCohomologyFunctor 0).map ((coresLENatTrans (k := k) h).app A)).hom z)) e1).trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (fun z => ((tateCores (W.subgroupOf U) 0).app (res U.subtype A)).hom z) e2).trans ?_` and prove the remaining obligations. Conclude with `e3`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tateCoresLE_tateZeroClass (A : Rep.{u} k G) (y : (res W.subtype A).ρ.invariants) :
     ((tateCoresLE h 0).app A).hom (tateZeroClass (res W.subtype A) y) =

@@ -19,7 +19,7 @@ variable {Λ : Type} [CommRing Λ] {C : Type 1} [Category.{0} C] {F : C ⥤ Modu
 include he in
 
 /- English proof (translation)
-The claim follows from `(he r _).1 (by simpa using hw) a`.
+A detailed English derivation is pending.
 -/
 theorem coord_mem (r : ℕ) (w : F.obj T₂) (hw : w ∈ (Φ.S r).S T₂) (a : ι) : e.symm w a ∈ (Φ.S r).S T₁ :=
   (he r _).1 (by simpa using hw) a
@@ -27,9 +27,7 @@ theorem coord_mem (r : ℕ) (w : F.obj T₂) (hw : w ∈ (Φ.S r).S T₂) (a : �
 include he in
 
 /- English proof (translation)
-Use `(he r _).2 fun a => ?_` and prove the remaining obligations. Distinguish the cases in `ha : p a`. Rewrite using `[Finsupp.filter_apply_pos _ _ ha]`. Conclude with `coord_mem Φ e he r w hw a`. Rewrite using `[Finsupp.filter_apply_neg _ _ ha]`.
-
-Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filt_mem (p : ι → Prop) (r : ℕ) (w : F.obj T₂) (hw : w ∈ (Φ.S r).S T₂) :
     e (Finsupp.filter p (e.symm w)) ∈ (Φ.S r).S T₂ := by
@@ -82,11 +80,11 @@ theorem fl_coe (p : ι → Prop) (x : Φ.Pr T₂) (r : ℕ) :
 omit he in
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `e.surjective w`. Rewrite using `[e.symm_apply_apply]`. Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, Finsupp.add_apply, smul_add, hf, hg]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `single b m`. Rewrite using `[hd, e.symm_apply_apply]`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.single_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diag {φ₂ : T₂ ⟶ T₂} {φ₁ : T₁ ⟶ T₁} {c : ι → Λ}
     (hd : ∀ a m, (F.map φ₂).hom (e (Finsupp.single a m)) = e (Finsupp.single a (c a • (F.map φ₁).hom m)))
@@ -103,7 +101,7 @@ theorem diag {φ₂ : T₂ ⟶ T₂} {φ₁ : T₁ ⟶ T₁} {c : ι → Λ}
     · simp [Finsupp.single_apply, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Use `Subtype.ext (show e.symm ((F.map φ₂).hom (x r).1) a = (F.map φ₁).hom (e.symm (x r).1 a) from ?_)` and prove the remaining obligations. Rewrite using `[diag e hd, h1, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem co_nat {φ₂ : T₂ ⟶ T₂} {φ₁ : T₁ ⟶ T₁} {c : ι → Λ}
     (hd : ∀ a m, (F.map φ₂).hom (e (Finsupp.single a m)) = e (Finsupp.single a (c a • (F.map φ₁).hom m)))
@@ -114,9 +112,9 @@ theorem co_nat {φ₂ : T₂ ⟶ T₂} {φ₁ : T₁ ⟶ T₁} {c : ι → Λ}
   rw [diag e hd, h1, one_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Use `Subtype.ext (show e (Finsupp.filter p (e.symm ((F.map φ₂).hom (x r).1))) = (F.map φ₂).hom (e (Finsupp.filter p (e.symm (x r).1))) from ?_)` and prove the remaining obligations. Apply `e.symm.injective` to reduce the goal to its premises. Rewrite using `[e.symm_apply_apply]`. Use extensionality with `a`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[diag e hd, e.symm_apply_apply]`. Distinguish the cases in `ha : p a`. Rewrite using `[Finsupp.filter_apply_pos _ _ ha, Finsupp.filter_apply_pos _ _ ha, diag e hd]`. Rewrite using `[Finsupp.filter_apply_neg _ _ ha, Finsupp.filter_apply_neg _ _ ha]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fl_nat {φ₂ : T₂ ⟶ T₂} {φ₁ : T₁ ⟶ T₁} {c : ι → Λ}
     (hd : ∀ a m, (F.map φ₂).hom (e (Finsupp.single a m)) = e (Finsupp.single a (c a • (F.map φ₁).hom m)))
@@ -134,7 +132,7 @@ theorem fl_nat {φ₂ : T₂ ⟶ T₂} {φ₁ : T₁ ⟶ T₁} {c : ι → Λ}
   · rw [Finsupp.filter_apply_neg _ _ ha, Finsupp.filter_apply_neg _ _ ha]; simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Use `Subtype.ext (show e.symm ((F.map t).hom (y r).1) a₀ = (y r).1 from ?_)` and prove the remaining obligations. Rewrite using `[← ht, e.symm_apply_apply]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem co_th {a₀ : ι} {t : T₁ ⟶ T₂} (ht : ∀ m, e (Finsupp.single a₀ m) = (F.map t).hom m) (y : Φ.Pr T₁) :
     co Φ e he a₀ (Φ.prMap t y) = y := by
@@ -143,7 +141,7 @@ theorem co_th {a₀ : ι} {t : T₁ ⟶ T₂} (ht : ∀ m, e (Finsupp.single a�
   rw [← ht, e.symm_apply_apply]; simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Use `Subtype.ext (show e (Finsupp.filter p (e.symm ((F.map t).hom (y r).1))) = 0 from ?_)` and prove the remaining obligations. Rewrite using `[← ht, e.symm_apply_apply, Finsupp.filter_single_of_neg _ hp, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fl_th {a₀ : ι} {t : T₁ ⟶ T₂} (ht : ∀ m, e (Finsupp.single a₀ m) = (F.map t).hom m)
     {p : ι → Prop} (hp : ¬ p a₀) (y : Φ.Pr T₁) : fl Φ e he p (Φ.prMap t y) = 0 := by
@@ -152,9 +150,9 @@ theorem fl_th {a₀ : ι} {t : T₁ ⟶ T₂} (ht : ∀ m, e (Finsupp.single a�
   rw [← ht, e.symm_apply_apply, Finsupp.filter_single_of_neg _ hp, map_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Use `Subtype.ext (show e (Finsupp.filter p (e.symm (e (Finsupp.filter p (e.symm (x r).1))))) = e (Finsupp.filter p (e.symm (x r).1)) from ?_)` and prove the remaining obligations. Rewrite using `[e.symm_apply_apply]`. Use `congr 1`. Use extensionality with `a`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases ha : p a <;> simp [Finsupp.filter_apply, ha]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fl_idem (p : ι → Prop) (x : Φ.Pr T₂) : fl Φ e he p (fl Φ e he p x) = fl Φ e he p x := by
   funext r
@@ -166,9 +164,9 @@ theorem fl_idem (p : ι → Prop) (x : Φ.Pr T₂) : fl Φ e he p (fl Φ e he p 
   by_cases ha : p a <;> simp [Finsupp.filter_apply, ha]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Use `Subtype.ext (show e (Finsupp.filter q (e.symm (e (Finsupp.filter p (e.symm (x r).1))))) = 0 from ?_)` and prove the remaining obligations. Rewrite using `[e.symm_apply_apply]`. Use `map_zero e` and compare the differences between its conclusion and the goal. Use extensionality with `a`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Distinguish the cases in `ha : p a`. Simplify using `[Finsupp.filter_apply, ha, h a ha]`. Apply the tactic sequence `by_cases hb : q a <;> simp [Finsupp.filter_apply, ha, hb]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fl_orth {p q : ι → Prop} (h : ∀ a, p a → ¬ q a) (x : Φ.Pr T₂) :
     fl Φ e he q (fl Φ e he p x) = 0 := by
@@ -187,13 +185,13 @@ def ev (T : C) (r : ℕ) : Φ.Pr T →+ F.obj T where
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Use `Subtype.ext ?_` and prove the remaining obligations. Establish `h1 : ((∑ k, fl Φ e he (fun a => K a = some k) x) r).1 = ∑ k, (fl Φ e he (fun a => K a = some k) x r).1` using `map_sum (ev Φ T₂ r) (fun k => fl Φ e he (fun a => K a = some k) x) Finset.univ`. Simplify using `only [fl_coe] at h1`. Use `(show ((Φ.prMap t (co Φ e he a₀ x)) r).1 + ((∑ k, fl Φ e he (fun a => K a = some k) x) r).1 = (x r).1 from ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, show ((Φ.prMap t (co Φ e he a₀ x)) r).1 = (F.map t).hom (e.symm (x r).1 a₀) from rfl, ← ht, ← map_sum, ← map_add]`. Apply `e.symm.injective` to reduce the goal to its premises. Rewrite using `[e.symm_apply_apply]`. Use extensionality with `a`. Rewrite using `[Finsupp.add_apply, Finsupp.finset_sum_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `hKa : K a with`. Consider the case `none`. Take `rfl` from `hK a hKa`. Simplify using `[Finsupp.filter_apply, hKa]`. Consider the case `some k₀`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hne : a₀ ≠ a` using `by rintro rfl; simp [hK₀] at hKa`. Simplify using `[Finsupp.filter_apply, hKa, Finsupp.single_apply, hne]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem fl_sum {d : ℕ} {a₀ : ι} {t : T₁ ⟶ T₂} (ht : ∀ m, e (Finsupp.single a₀ m) = (F.map t).hom m)
     (K : ι → Option (Fin d)) (hK : ∀ a, K a = none → a = a₀) (hK₀ : K a₀ = none) (x : Φ.Pr T₂) :
@@ -219,7 +217,7 @@ theorem fl_sum {d : ℕ} {a₀ : ι} {t : T₁ ⟶ T₂} (ht : ∀ m, e (Finsupp
     simp [Finsupp.filter_apply, hKa, Finsupp.single_apply, hne]
 
 /- English proof (translation)
-Establish `h1 : e (Finsupp.filter p (e.symm (x r).1)) = (x r).1` using `congrArg (fun y : Φ.Pr T₂ => (y r).1) h`. Rewrite using `[← h1, e.symm_apply_apply, Finsupp.filter_apply_neg _ _ ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fl_fix {p : ι → Prop} {x : Φ.Pr T₂} (h : fl Φ e he p x = x) (r : ℕ) (a : ι) (ha : ¬ p a) :
     e.symm (x r).1 a = 0 := by
@@ -227,11 +225,11 @@ theorem fl_fix {p : ι → Prop} {x : Φ.Pr T₂} (h : fl Φ e he p x = x) (r : 
   rw [← h1, e.symm_apply_apply, Finsupp.filter_apply_neg _ _ ha]
 
 /- English proof (translation)
-Establish `h : ∀ a, ∃ y ∈ (Φ.S (r + 1)).S T₁, (z a = 0 → y = 0) ∧ c a • (F.map φ₁).hom y - y = Φ.μ • z a`. Introduce `a`. Distinguish the cases in `h0 : z a = 0`. Conclude with `⟨0, zero_mem _, fun _ => rfl, by simp [h0]⟩`. Establish `hpa : p a` using `by_contra fun hn => h0 (hp a hn)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨y, hy, hy'⟩` from `hs a hpa r _ (hz a)`. Conclude with `⟨y, hy, fun h => absurd h h0, hy'⟩`. Use `choose u hu hu0 hu1 using h`. Use `⟨Finsupp.onFinset z.support u fun a ha => ?_, hu, fun a ha => hu0 a (hp a ha), hu1⟩` and prove the remaining obligations. Rewrite using `[Finsupp.mem_support_iff]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h0 => ha (hu0 a h0)`.
+A detailed English derivation is pending.
 -/
 theorem solve {φ₁ : T₁ ⟶ T₁} {c : ι → Λ} {p : ι → Prop}
     (hs : ∀ a, p a → ∀ r, ∀ x ∈ (Φ.S r).S T₁, ∃ y ∈ (Φ.S (r + 1)).S T₁,
@@ -252,19 +250,17 @@ theorem solve {φ₁ : T₁ ⟶ T₁} {c : ι → Λ} {p : ι → Prop}
   exact fun h0 => ha (hu0 a h0)
 
 /- English proof (translation)
-Establish `h` using `fun r => solve Φ hs r (e.symm (x r).1) (coord_mem Φ e he r _ (x r).2) (fun a ha => fl_fix Φ e he hx r a ha)`. Use `choose u hu hu0 hu1 using h`. Set `y : Φ.Pr T₂` to `fun r => match r with`. Consider the case `0 => 0`. Consider the case `r + 1 => ⟨e (u r), (he _ _).2 (hu r)⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `r`. Consider the cases of `r with`. Consider the case `zero => exact Subtype.ext (show e (Finsupp.filter p (e.symm (0 : F.obj T₂))) = 0 by simp [Finsupp.filter_zero])`. Consider the case `succ n`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (show e (Finsupp.filter p (e.symm (e (u n)))) = e (u n) from ?_)` and prove the remaining obligations. Rewrite using `[e.symm_apply_apply]`. Use `congr 1`. Use extensionality with `a`. Distinguish the cases in `ha : p a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.filter_apply_pos _ _ ha]`. Rewrite using `[Finsupp.filter_apply_neg _ _ ha, hu0 n a ha]`. Use function extensionality and compare the values at `r`. Consider the cases of `r with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Flt.X_smul_zero]`. Conclude with `Subtype.ext (show (F.map φ₂).hom (0 : F.obj T₂) - 0 = 0 by simp)`. Consider the case `succ n`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Flt.X_smul_succ]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(show (F.map φ₂).hom (e (u n)) - e (u n) = Φ.μ • (x n).1 from ?_)` and prove the remaining obligations. Apply `e.symm.injective` to reduce the goal to its premises. Use extensionality with `a`. Use `hu1 n a` as an intermediate fact. Rewrite using `[map_sub, map_smul, Finsupp.sub_apply, Finsupp.smul_apply, diag e hd, e.symm_apply_apply]`.
-
-Conclude with `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fl_surj {φ₂ : T₂ ⟶ T₂} {φ₁ : T₁ ⟶ T₁} {c : ι → Λ} {p : ι → Prop}
     (hd : ∀ a m, (F.map φ₂).hom (e (Finsupp.single a m)) = e (Finsupp.single a (c a • (F.map φ₁).hom m)))
@@ -306,13 +302,13 @@ theorem fl_surj {φ₂ : T₂ ⟶ T₂} {φ₁ : T₁ ⟶ T₁} {c : ι → Λ} 
       exact this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Consider the cases of `r with`. Consider the case `zero => rw [Flt.X_smul_zero]`. Both sides reduce to the same expression. Consider the case `succ n`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Flt.X_smul_succ]`. Use `(show Φ.μ • (x n).1 = 0 from ?_)` and prove the remaining obligations. Apply `e.symm.injective` to reduce the goal to its premises. Use extensionality with `a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[map_smul, Finsupp.smul_apply, map_zero, Finsupp.zero_apply]`. Distinguish the cases in `ha : p a`. Use `hi a ha _ ?_` and prove the remaining obligations. Rewrite using `[← diag e hd]`. Conclude with `congrArg (fun w => e.symm w a) (congrArg (fun y : Φ.Pr T₂ => (y n).1) hg)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fl_fix Φ e he hx n a ha, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem fl_inj {φ₂ : T₂ ⟶ T₂} {φ₁ : T₁ ⟶ T₁} {c : ι → Λ} {p : ι → Prop}
     (hd : ∀ a m, (F.map φ₂).hom (e (Finsupp.single a m)) = e (Finsupp.single a (c a • (F.map φ₁).hom m)))
@@ -335,21 +331,17 @@ theorem fl_inj {φ₂ : T₂ ⟶ T₂} {φ₁ : T₁ ⟶ T₁} {c : ι → Λ} {
     · rw [fl_fix Φ e he hx n a ha, smul_zero]
 
 /- English proof (translation)
-Introduce `Λ _ C _ F Φ d ι₁ ι₂ θ ι a₀ e χ h1 h2 h3 h4 h5`. Establish `hK : ∀ a, ∃ o : Option (Fin d), (a = a₀ ∧ o = none) ∨ (a ≠ a₀ ∧ ∃ k, o = some k ∧ (∀ x, χ (gen k) a • (F.map (ι₁.map (X` using `SingleObj.star _) (Y := SingleObj.star _) (gen k))).hom x = x → Φ.μ • x = 0) ∧ ∀ r, ∀ x ∈ (Φ.S r).S _, ∃ y ∈ (Φ.S (r + 1)).S _, χ (gen k) a • (F.map (ι₁.map (X := SingleObj.star _) (Y := SingleObj.star _) (gen k))).hom y - y = Φ.μ • x) := by`. Introduce `a`. Distinguish the cases in `ha : a = a₀`. Conclude with `⟨none, Or.inl ⟨ha, rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨k, hk⟩` from `h5 a ha`. Conclude with `⟨some k, Or.inr ⟨ha, k, rfl, hk⟩⟩`. Use `choose K hK using hK`. Establish `hKn : ∀ a, K a = none → a = a₀` using `fun a h => by`. Break down `hK a with h' | ⟨_, k, hk, _⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `h'.1`. Simplify using `[hk] at h`. Establish `hK₀ : K a₀ = none`. Break down `hK a₀ with h' | ⟨h', _⟩` into its components or cases. Conclude with `h'.2`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd rfl h'`. Establish `hKs : ∀ a k, K a = some k → (∀ x, χ (gen k) a • (F.map (ι₁.map (X` using `SingleObj.star _) (Y := SingleObj.star _) (gen k))).hom x = x → Φ.μ • x = 0) ∧ ∀ r, ∀ x ∈ (Φ.S r).S _, ∃ y ∈ (Φ.S (r + 1)).S _, χ (gen k) a • (F.map (ι₁.map (X := SingleObj.star _) (Y := SingleObj.star _) (gen k))).hom y - y = Φ.μ • x := by`. Introduce `a k h`. Break down `hK a with h' | ⟨_, k', hk', h''⟩` into its components or cases. Simplify using `[h'.2] at h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : k = k'` from `by simpa [h] using hk'`. Conclude with `h''`. Set `ρ : ι₂ ⋙ Φ.rees ⟶ ι₁ ⋙ Φ.rees` to `{ app := fun _ => ModuleCat.ofHom (co Φ e h4 a₀) naturality := fun _ _ g => ModuleCat.hom_ext (LinearMap.ext fun x => co_nat Φ e h4 (h2 g) a₀ (h3 g) x) }`. Set `π : Fin d → (ι₂ ⋙ Φ.rees ⟶ ι₂ ⋙ Φ.rees)` to `fun k => { app := fun _ => ModuleCat.ofHom (fl Φ e h4 (fun a => K a = some k)) naturality := fun _ _ g => ModuleCat.hom_ext (LinearMap.ext fun x => fl_nat Φ e h4 (h2 g) _ x) }`. Use `⟨{ ρ := ρ, π := π, αρ := ?_, sum := ?_, απ := ?_, idem := ?_, orth := ?_, surj := ?_, inj := ?_ }⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `NatTrans.ext (funext fun _ => ModuleCat.hom_ext (LinearMap.ext fun y => co_th Φ e h4 h1 y))`. Use `NatTrans.ext (funext fun X' => ModuleCat.hom_ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Simplify using `only [NatTrans.app_add, NatTrans.app_sum, ModuleCat.hom_add, ModuleCat.hom_sum, LinearMap.add_apply, LinearMap.sum_apply]`. Conclude with `fl_sum Φ e h4 h1 K hKn hK₀ x`. Introduce `k`.
-
-Conclude with `NatTrans.ext (funext fun _ => ModuleCat.hom_ext (LinearMap.ext fun y => fl_th Φ e h4 h1 (by simp [hK₀]) y))`. Introduce `k`. Conclude with `NatTrans.ext (funext fun _ => ModuleCat.hom_ext (LinearMap.ext fun x => fl_idem Φ e h4 _ x))`. Introduce `k k' hkk`. Conclude with `NatTrans.ext (funext fun _ => ModuleCat.hom_ext (LinearMap.ext fun x => fl_orth Φ e h4 (fun a ha hb => hkk (by simpa [ha] using hb)) x))`.
-
-Introduce `k x hx`. Conclude with `fl_surj Φ e h4 (h2 (gen k)) (fun a ha => (hKs a k ha).2) x hx`. Introduce `k x hx hg`. Conclude with `fl_inj Φ e h4 (h2 (gen k)) (fun a ha => (hKs a k ha).1) x hx hg`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {Λ : Type} [CommRing Λ] {C : Type 1} [Category.{0} C] {F : C ⥤ ModuleCat.{0} Λ} (Φ : Flt F) {d : ℕ} (ι₁ ι₂ : SingleObj (Gam d) ⥤ C) (θ : ι₁ ⟶ ι₂) {ι : Type} (a₀ : ι) (e : (ι →₀ F.obj (ι₁.obj (SingleObj.star _))) ≃ₗ[Λ] F.obj (ι₂.obj (SingleObj.star _))) (χ : Gam d → ι → Λ), (∀ m, e (Finsupp.single a₀ m) = (F.map (θ.app _)).hom m) → (∀ (g : Gam d) a m, (F.map (ι₂.map (X := SingleObj.star _) (Y := SingleObj.star _) g)).hom (e (Finsupp.single a m)) = e (Finsupp.single a (χ g a • (F.map (ι₁.map (X := SingleObj.star _) (Y := SingleObj.star _) g)).hom m))) → (∀ g, χ g a₀ = 1) → (∀ r z, e z ∈ (Φ.S r).S _ ↔ ∀ a, z a ∈ (Φ.S r).S _) → (∀ a, a ≠ a₀ → ∃ k : Fin d, (∀ x, χ (gen k) a • (F.map (ι₁.map (X := SingleObj.star _) (Y := SingleObj.star _) (gen k))).hom x = x → Φ.μ • x = 0) ∧ ∀ r, ∀ x ∈ (Φ.S r).S _, ∃ y ∈ (Φ.S (r + 1)).S _, χ (gen k) a • (F.map (ι₁.map (X := SingleObj.star _) (Y := SingleObj.star _) (gen k))).hom y - y = Φ.μ • x) → Nonempty (NI (X : ℤ[X]) (Functor.whiskerRight θ Φ.rees)) := by
   intro Λ _ C _ F Φ d ι₁ ι₂ θ ι a₀ e χ h1 h2 h3 h4 h5

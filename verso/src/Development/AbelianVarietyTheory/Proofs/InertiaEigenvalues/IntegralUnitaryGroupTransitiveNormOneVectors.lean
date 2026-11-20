@@ -8,7 +8,7 @@ namespace GlobalTheory.UnitaryTransitive
 variable {E : Type} [NormedField E] [StarRing E]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Simplify using `using IsUltrametricDist.norm_add_le_max a (-b)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nsub [IsUltrametricDist E] (a b : E) : ‖a - b‖ ≤ max ‖a‖ ‖b‖ := by
   rw [sub_eq_add_neg]; simpa using IsUltrametricDist.norm_add_le_max a (-b)
@@ -16,25 +16,25 @@ theorem nsub [IsUltrametricDist E] (a b : E) : ‖a - b‖ ≤ max ‖a‖ ‖b�
 def ext0 {r : ℕ} (x : Fin r → E) : Fin (r + 1) → E := Fin.snoc (α := fun _ => E) x 0
 
 /- English proof (translation)
-Simplify using `[ext0]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem snocZeroLastCoordinate_castSucc {r : ℕ} (x : Fin r → E) (j : Fin r) : ext0 x j.castSucc = x j := by
   simp [ext0]
 /- English proof (translation)
-Simplify using `[ext0]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem snocZeroLastCoordinate_last {r : ℕ} (x : Fin r → E) : ext0 x (Fin.last r) = 0 := by
   simp [ext0]
 
 /- English proof (translation)
-Simplify using `[dotProduct, Fin.sum_univ_castSucc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_snocZeroLastCoordinate_dotProduct {r : ℕ} (x : Fin r → E) (f : Fin (r + 1) → E) :
     star (ext0 x) ⬝ᵥ f = star x ⬝ᵥ (fun j => f j.castSucc) := by
   simp [dotProduct, Fin.sum_univ_castSucc]
 
 /- English proof (translation)
-Simplify using `[dotProduct, Fin.sum_univ_castSucc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dotProduct_snocZeroLastCoordinate {r : ℕ} (x : Fin r → E) (f : Fin (r + 1) → E) :
     f ⬝ᵥ ext0 x = (fun j => f j.castSucc) ⬝ᵥ x := by
@@ -45,7 +45,7 @@ end GlobalTheory.UnitaryTransitive
 namespace GlobalTheory.UnitaryTransitive
 variable {E : Type} [Field E] [StarRing E]
 /- English proof (translation)
-Establish `e : gᴴ * (replicateCol Unit a * replicateRow Unit b) * g = replicateCol Unit (gᴴ *ᵥ a) * replicateRow Unit (b ᵥ* g)`. Rewrite using `[Matrix.replicateCol_mulVec, Matrix.replicateRow_vecMul, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc]`. Rewrite using `[e]`. Simplify using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rank_one_entry {r : ℕ} (g : Matrix (Fin r) (Fin r) E) (a b : Fin r → E) (m m' : Fin r) :
     (gᴴ * (replicateCol Unit a * replicateRow Unit b) * g) m m' = (gᴴ *ᵥ a) m * (b ᵥ* g) m' := by
@@ -55,14 +55,14 @@ theorem rank_one_entry {r : ℕ} (g : Matrix (Fin r) (Fin r) E) (a b : Fin r →
   rw [e]; simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Simplify using `[dotProduct, Matrix.mulVec, star_sum, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_dot_col {r : ℕ} (g : Matrix (Fin r) (Fin r) E) (w : Fin r → E) (m : Fin r) :
     star (star w ⬝ᵥ (fun j => g j m)) = (gᴴ *ᵥ w) m := by
   simp [dotProduct, Matrix.mulVec, star_sum, mul_comm]
 
 /- English proof (translation)
-Simplify using `[dotProduct, Matrix.vecMul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dot_col {r : ℕ} (g : Matrix (Fin r) (Fin r) E) (b : Fin r → E) (m : Fin r) :
     b ⬝ᵥ (fun j => g j m) = (b ᵥ* g) m := by
@@ -72,45 +72,43 @@ end GlobalTheory.UnitaryTransitive
 namespace GlobalTheory.UnitaryTransitive
 
 /- English proof (translation)
-Use `haveI := Unram.ultraE (F := F) (E := E)`. Establish `hst : ∀ x : E, ‖star x‖ = ‖x‖` using `Unram.norm_star (F := F)`. Use `set w : Fin r → E := fun j => v j.castSucc with hw`. Use `set G : Matrix (Fin r) (Fin r) E := 1 + replicateCol Unit (-w) * replicateRow Unit (star w) with hG`. Establish `hGe : ∀ i j, G i j = (1 : Matrix (Fin r) (Fin r) E) i j - w i * star (w j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i j`. Simplify using `[G, Matrix.mul_apply, sub_eq_add_neg]`. Establish `hGh : G.IsHermitian`. Apply `Matrix.IsHermitian.ext` to reduce the goal to its premises. Introduce `i j`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hGe, hGe]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[mul_comm]`. Simplify using `[Matrix.one_apply, h, Ne.symm h, mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hGi : ∀ i j, ‖G i j‖ ≤ 1`. Introduce `i j`. Rewrite using `[hGe]`. Use `(nsub _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[norm_mul, hst]`. Conclude with `mul_le_one₀ (hv _) (norm_nonneg _) (hv _)`. Establish `hsplit : star v ⬝ᵥ v = star w ⬝ᵥ w + star (v (Fin.last r)) * v (Fin.last r)`. Simplify using `[dotProduct, Fin.sum_univ_castSucc, w]`. Establish `hGd : ‖G.det‖ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG, det_one_add_replicateCol_mul_replicateRow, dotProduct_neg]`. Establish `: 1 + -(star w ⬝ᵥ w) = star (v (Fin.last r)) * v (Fin.last r)`. Take the linear combination `h1.symm + hsplit`. Rewrite using `[this, norm_mul, hst, hn]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨g, hgi, -, hg⟩` from `GlobalTheory.T.unimodular_hermitian_matrix_congruent_one F E r G hGh hGi hGd`. Use `set c : Fin r → E := fun m => star w ⬝ᵥ (fun j => g j m) with hc`. Establish `hg' : ∀ m m', star (fun j => g j m) ⬝ᵥ (fun j => g j m') - star (c m) * c m' = (1 : Matrix (Fin r) (Fin r) E) m m'`. Introduce `m m'`. Use `congrFun (congrFun hg m) m'` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this, hG, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.add_apply, rank_one_entry, hc, star_dot_col, dot_col, Matrix.mulVec_neg]`. Simplify using `[Matrix.mul_apply, Matrix.vecMul, dotProduct, sub_eq_add_neg]`. Set `K : Matrix (Fin (r + 1)) (Fin (r + 1)) E` to `Matrix.of fun i l => Fin.lastCases (motive := fun _ => E) (v i) (fun m => ext0 (fun j => g j m) i - c m * v i) l`. Establish `cl : (fun i => K i (Fin.last r)) = v` using `by funext i; simp [K]`. Establish `cs : ∀ m, (fun i => K i m.castSucc) = ext0 (fun j => g j m) - c m • v`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Use function extensionality and compare the values at `i`. Simplify using `[K]`. Establish `key : ∀ a b, (star K * K) a b = star (fun i => K i a) ⬝ᵥ (fun i => K i b)`. Introduce `a b`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `d2 : ∀ m, star v ⬝ᵥ ext0 (fun j => g j m) = c m`. Introduce `m`. Rewrite using `[dotProduct_snocZeroLastCoordinate]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `d3 : ∀ m, star (ext0 (fun j => g j m)) ⬝ᵥ v = star (c m)`. Introduce `m`. Rewrite using `[star_snocZeroLastCoordinate_dotProduct, hc, star_dot_col]`. Both sides reduce to the same expression. Establish `d4 : ∀ m m', star (ext0 (fun j => g j m)) ⬝ᵥ ext0 (fun j => g j m') = star (fun j => g j m) ⬝ᵥ (fun j => g j m')`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `m m'`. Rewrite using `[star_snocZeroLastCoordinate_dotProduct]`. Simplify using the standard rewrite rules. Establish `hU : star K * K = 1`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Rewrite using `[key]`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [cl, h1]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Proceed by induction.
 
-Simplify using the standard rewrite rules. Consider the case `cast m'`. Rewrite using `[cl, cs, dotProduct_sub, dotProduct_smul, d2, h1, smul_eq_mul, mul_one, sub_self, Matrix.one_apply_ne (Fin.castSucc_ne_last m').symm]`. Consider the case `cast m`. Proceed by induction on `b using Fin.lastCases with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `last`. Rewrite using `[cl, cs, star_sub, star_smul, sub_dotProduct, smul_dotProduct, d3, h1]`. Simplify using `[Matrix.one_apply, (Fin.castSucc_ne_last m)]`. Consider the case `cast m'`. Rewrite using `[cs, cs, star_sub, star_smul, sub_dotProduct, smul_dotProduct, dotProduct_sub, dotProduct_sub, dotProduct_smul, dotProduct_smul, d2, d3, d4, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) m.castSucc m'.castSucc = (1 : Matrix (Fin r) (Fin r) E) m m'`. Simplify using `[Matrix.one_apply, Fin.castSucc_inj]`. Rewrite using `[e1, ← hg' m m']`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `⟨⟨K, Matrix.mem_unitaryGroup_iff'.2 hU⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i l show ‖K i l‖ ≤ 1`. Proceed by induction on `l using Fin.lastCases with`. Consider the case `last => simpa [K] using hv i`. Consider the case `cast m`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [K, Matrix.of_apply, Fin.lastCases_castSucc]`. Establish `hcm : ‖c m‖ ≤ 1`. Rewrite using `[hc]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one (fun j _ => by`. Rewrite using `[norm_mul, Pi.star_apply, hst]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_one₀ (hv _) (norm_nonneg _) (hgi _ _))`. Use `(nsub _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast j => simpa using hgi j m`.
-
-Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hcm (norm_nonneg _) (hv _)`. Use `show K *ᵥ Pi.single (Fin.last r) 1 = v`. Rewrite using `[Matrix.mulVec_single_one]`. Conclude with `cl`.
+A detailed English derivation is pending.
 -/
 theorem uO_transitive_of_last_unit (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (r : ℕ) (v : Fin (r + 1) → E) (hv : ∀ i, ‖v i‖ ≤ 1) (h1 : star v ⬝ᵥ v = 1)
@@ -207,17 +205,15 @@ end GlobalTheory.UnitaryTransitive
 namespace GlobalTheory.UnitaryTransitive
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ r v hv h1`. Use `haveI := Unram.ultraE (F := F) (E := E)`. Establish `hst : ∀ x : E, ‖star x‖ = ‖x‖` using `Unram.norm_star (F := F)`. Take `⟨i, -, hi⟩` from `IsUltrametricDist.exists_norm_finsetSum_le (Finset.univ : Finset (Fin (r + 1))) (fun i => star (v i) * v i)`. Establish `hs : (∑ j, star (v j) * v j) = 1` using `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[hs, norm_one, norm_mul, hst]`. Establish `hvi : ‖v i‖ = 1` using `by nlinarith [hv i, norm_nonneg (v i)]`. Use `set σ : Equiv.Perm (Fin (r + 1)) := Equiv.swap i (Fin.last r) with hσ`. Establish `hσσ : ∀ j, σ (σ j) = j` using `fun j => Equiv.swap_apply_self _ _ _`. Establish `h1' : star (v ∘ σ) ⬝ᵥ (v ∘ σ) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hs]`. Conclude with `Equiv.sum_comp σ (fun j => star (v j) * v j)`. Establish `hn' : ‖(v ∘ σ) (Fin.last r)‖ = 1` using `by simp [hσ, hvi]`. Take `⟨k, hk, hkv⟩` from `uO_transitive_of_last_unit F E r (v ∘ σ) (fun j => hv _) h1' hn'`. Set `K : Matrix (Fin (r + 1)) (Fin (r + 1)) E` to `k.1.submatrix σ id`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hU : star K * K = 1`. Establish `hk1 : star k.1 * k.1 = 1` using `Matrix.mem_unitaryGroup_iff'.1 k.2`. Use extensionality with `a b`. Rewrite using `[← hk1]`. Simplify using `only [K, Matrix.mul_apply, Matrix.star_apply, Matrix.submatrix_apply, id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `Equiv.sum_comp σ (fun j => star (k.1 j a) * k.1 j b)`. Use `⟨⟨K, Matrix.mem_unitaryGroup_iff'.2 hU⟩, fun a b => hk (σ a) b, ?_⟩` and prove the remaining obligations. Use `show K *ᵥ Pi.single (Fin.last r) 1 = v`. Use function extensionality and compare the values at `j`. Use `congrFun hkv (σ j)` as an intermediate fact.
-
-Rewrite `this`, the goal using `[Matrix.mulVec_single_one]`. Simplify `this` using `[K, hσσ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem uO_transitive : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (r : ℕ) (v : Fin (r + 1) → E), (∀ i, ‖v i‖ ≤ 1) → star v ⬝ᵥ v = 1 →

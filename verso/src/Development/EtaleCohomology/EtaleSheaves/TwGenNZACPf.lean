@@ -9,7 +9,7 @@ section Field
 variable {q : ℕ} [NeZero q] {L : Type} [Field L]
 
 /- English proof (translation)
-Establish `: NeZero (q : L)` using `⟨z.2.1.ne_zero⟩`. Establish `h` using `z.2.2`. Rewrite `h` using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `Polynomial.isRoot_cyclotomic_iff.1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_isPrimitiveRoot (z : Prim q L) : IsPrimitiveRoot z.1 q := by
   have : NeZero (q : L) := ⟨z.2.1.ne_zero⟩
@@ -22,9 +22,9 @@ open Classical in
 def lg (q : ℕ) (z x : L) : ZMod q := if h : ∃ n : ℕ, z ^ n = x then (h.choose : ZMod q) else 0
 
 /- English proof (translation)
-Establish `h : ∃ m : ℕ, z ^ m = z ^ n` using `⟨n, rfl⟩`. Unfold `lg`. Rewrite using `[dif_pos h, ZMod.natCast_eq_natCast_iff]`. Establish `h2` using `h.choose_spec`. Establish `h3` using `((hz.isOfFinOrder (NeZero.ne q)).pow_eq_pow_iff_modEq).1 h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[← hz.eq_orderOf]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lg_pow {z : L} (hz : IsPrimitiveRoot z q) (n : ℕ) : lg q z (z ^ n) = n := by
   have h : ∃ m : ℕ, z ^ m = z ^ n := ⟨n, rfl⟩
@@ -40,13 +40,13 @@ def fv (q : ℕ) (i : ℤ) (z x : L) : ZMod q :=
   if h : IsUnit (lg q z x) then ((h.unit ^ i : (ZMod q)ˣ) : ZMod q) else 0
 
 /- English proof (translation)
-Establish `hz` using `prim_isPrimitiveRoot z`. Take `⟨m, -, hm⟩` from `hz.eq_pow_of_pow_eq_one (prim_isPrimitiveRoot ζ).pow_eq_one`. Establish `hl : lg q z.1 ξ.1 = lg q z.1 ζ.1 * a`. Rewrite using `[h, ← hm, ← pow_mul, lg_pow hz, lg_pow hz]`. Use `push_cast`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[ZMod.natCast_zmod_val]`. Unfold `fv`. Distinguish the cases in `hu : IsUnit (lg q z.1 ζ.1)`. Establish `hu' : IsUnit (lg q z.1 ξ.1)` using `hl ▸ hu.mul a.isUnit`. Rewrite using `[dif_pos hu, dif_pos hu']`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: hu'.unit = hu.unit * a` using `Units.ext (by simp [hl])`. Rewrite using `[this, mul_zpow, Units.val_mul, mul_comm]`. Establish `hu' : ¬ IsUnit (lg q z.1 ξ.1)`. Rewrite using `[hl]`. Conclude with `fun h' => hu ((Units.isUnit_mul_units _ a).1 h')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[dif_neg hu, dif_neg hu', mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fv_rel (i : ℤ) (z : Prim q L) (ζ ξ : Prim q L) (a : (ZMod q)ˣ) (h : ξ.1 = ζ.1 ^ (a : ZMod q).val) :
     fv q i z.1 ξ.1 = ((a ^ i : (ZMod q)ˣ) : ZMod q) * fv q i z.1 ζ.1 := by
@@ -67,9 +67,9 @@ theorem fv_rel (i : ℤ) (z : Prim q L) (ζ ξ : Prim q L) (a : (ZMod q)ˣ) (h :
     rw [dif_neg hu, dif_neg hu', mul_zero]
 
 /- English proof (translation)
-Establish `hl : lg q z.1 z.1 = 1`. Use `lg_pow (prim_isPrimitiveRoot z) 1` as an intermediate fact. Rewrite `this` using `[pow_one]`. Rewrite using `[this, Nat.cast_one]`. Unfold `fv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hu : IsUnit (lg q z.1 z.1)` using `hl ▸ isUnit_one`. Rewrite using `[dif_pos hu]`. Establish `: hu.unit = 1` using `Units.ext (by simp [hl])`. Rewrite using `[this, one_zpow, Units.val_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fv_self (i : ℤ) (z : Prim q L) : fv q i z.1 z.1 = 1 := by
   have hl : lg q z.1 z.1 = 1 := by
@@ -86,9 +86,9 @@ def lin (i : ℤ) (z : L) : (Prim q L →₀ ULift.{1} (ZMod q)) →ₗ[ULift.{1
   Finsupp.linearCombination _ (fun ξ : Prim q L => ULift.up (fv q i z ξ.1))
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨ζ, ξ, a, h, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, lin, Finsupp.linearCombination_single]`. Rewrite using `[sub_eq_zero]`. Apply `ULift.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[fv_rel i z ζ ξ a h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_rel (i : ℤ) (z : Prim q L) : twRel q i L ≤ LinearMap.ker (lin i z.1) := by
   refine Submodule.span_le.2 ?_
@@ -99,9 +99,9 @@ theorem lin_rel (i : ℤ) (z : Prim q L) : twRel q i L ≤ LinearMap.ker (lin i 
   simp [fv_rel i z ζ ξ a h]
 
 /- English proof (translation)
-Establish `h2` using `congrArg ((twRel q i L).liftQ (lin i z.1) (lin_rel i z)) h`. Rewrite `h2` using `[map_nsmul, Submodule.liftQ_apply, map_zero, lin, Finsupp.linearCombination_single, fv_self]`. Rewrite `h2` using `[one_smul]`. Establish `h3` using `congrArg AddEquiv.ulift h2`. Rewrite `h3` using `[map_nsmul, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `c.val • (1 : ZMod q) = 0 at h3`. Rewrite `h3` using `[nsmul_eq_mul, mul_one, ZMod.natCast_zmod_val]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem field_nz (i : ℤ) (z : Prim q L) (c : ZMod q)
     (h : c.val • (Submodule.Quotient.mk (Finsupp.single z 1) : (Prim q L →₀ ULift.{1} (ZMod q)) ⧸ twRel q i L) = 0) :
@@ -117,9 +117,9 @@ theorem field_nz (i : ℤ) (z : Prim q L) (c : ZMod q)
 end Field
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Ideal.exists_maximal A`. Set `_` to `Ideal.Quotient.field M`. Apply `field_nz i (ζ.map (Ideal.Quotient.mk M)) c` to reduce the goal to its premises. Establish `h2` using `congrArg (Submodule.mapQ _ _ (Finsupp.lmapDomain (ULift.{1} (ZMod q)) (ULift.{1} (ZMod q)) (Prim.map (Ideal.Quotient.mk M))) (twRel_le q i (Ideal.Quotient.mk M))) h`. Rewrite `h2` using `[map_nsmul, map_zero, Submodule.mapQ_apply, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem ring_nz {q : ℕ} [NeZero q] (i : ℤ) {A : Type} [CommRing A] [Nontrivial A] (ζ : Prim q A) (c : ZMod q)
     (h : c.val • (Submodule.Quotient.mk (Finsupp.single ζ 1) : (Prim q A →₀ ULift.{1} (ZMod q)) ⧸ twRel q i A) = 0) :
@@ -133,20 +133,20 @@ theorem ring_nz {q : ℕ} [NeZero q] (i : ℤ) {A : Type} [CommRing A] [Nontrivi
   exact h2
 
 /- English proof (translation)
-Take `⟨y⟩` from `‹Nonempty V›`. Conclude with `RingHom.domain_nontrivial (V.presheaf.germ ⊤ y trivial).hom`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gamma_nontrivial (V : Scheme.{0}) [Nonempty V] : Nontrivial Γ(V, ⊤) := by
   obtain ⟨y⟩ := ‹Nonempty V›
   exact RingHom.domain_nontrivial (V.presheaf.germ ⊤ y trivial).hom
 
 /- English proof (translation)
-Introduce `q _ i K _ _ ζ c h`. Set `P : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} (ZMod q))` to `Scheme.Γ ⋙ twF q i`. Set `U : Scheme.{0}` to `Spec (CommRingCat.of K)`. Set `m : P.obj (op U)` to `Submodule.Quotient.mk (Finsupp.single (gam ζ) 1)`. Establish `h1 : ((toSheafify Scheme.etaleTopology P).app (op U)).hom (c.val • m) = ((toSheafify Scheme.etaleTopology P).app (op U)).hom 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[map_nsmul, map_zero]`. Conclude with `h`. Establish `hS` using `Presheaf.equalizerSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology P) (c.val • m) 0 h1`. Take `⟨𝒰, hle⟩` from `Scheme.exists_cover_of_mem_grothendieckTopology hS`. Take `⟨p⟩ : Nonempty U` from `inferInstance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, y, -⟩` from `((Scheme.presieve₀_mem_precoverage_iff _).1 𝒰.mem₀).1 p`. Establish `hj` using `hle _ _ (Presieve.ofArrows.mk j)`. Establish `: Nonempty (𝒰.X j)` using `⟨y⟩`. Establish `: Nontrivial (Scheme.Γ.obj (op (𝒰.X j)))` using `gamma_nontrivial (𝒰.X j)`. Apply `ring_nz i ((gam ζ).map (Scheme.Γ.map (𝒰.f j).op).hom) c` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(P.map (𝒰.f j).op).hom (c.val • m) = (P.map (𝒰.f j).op).hom 0 at hj`. Rewrite `hj` using `[map_nsmul, map_zero]`. Express the relevant statement in the definitionally equal form `c.val • Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map (Scheme.Γ.map (𝒰.f j).op).hom) (Finsupp.single (gam ζ) 1)) = _ at hj`. Use `erw [Finsupp.mapDomain_single] at hj`. Conclude with `hj`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem TwGenNZAC_of : LateralTheory.E.LCBijPf.TwGenNZAC := by
   intro q _ i K _ _ ζ c h

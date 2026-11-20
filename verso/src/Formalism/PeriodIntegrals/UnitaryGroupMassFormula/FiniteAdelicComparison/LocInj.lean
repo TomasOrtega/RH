@@ -10,7 +10,7 @@ open scoped TensorProduct
 open Formalism.MainNotions.S (AutInst)
 
 /- English proof (translation)
-Simplify using `[psiV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psiV_tmul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (x : I.E) (a : Formalism.MainNotions.S.Af I.F) :
     psiV I v (x ⊗ₜ[I.F] a) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV I.F v a ⊗ₜ[I.F] x := by
@@ -19,7 +19,7 @@ theorem psiV_tmul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (x : I.E) (a 
 open Classical in
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x a`. Rewrite using `[psiV_tmul, TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply, map_smul]`. Consider the case `add z w hz hw => simp only [map_add, Finsupp.add_apply, hz, hw]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem coeff_psiV (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (z : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)
     (j : Module.Basis.ofVectorSpaceIndex I.F I.E) :
@@ -34,11 +34,11 @@ theorem coeff_psiV (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (z : I.E ⊗
   | add z w hz hw => simp only [map_add, Finsupp.add_apply, hz, hw]
 
 /- English proof (translation)
-Introduce `I z hz`. Apply `(TensorProduct.equivFinsuppOfBasisLeft (Module.Basis.ofVectorSpace I.F I.E)).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `Finsupp.ext fun j => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : ∀ v, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV I.F v (TensorProduct.equivFinsuppOfBasisLeft (Module.Basis.ofVectorSpace I.F I.E) z j) = 0`. Introduce `v`. Rewrite using `[← coeff_psiV, hz v, map_zero, Finsupp.zero_apply]`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hj v`.
+A detailed English derivation is pending.
 -/
 theorem local_vector_injective : InjV := by
   classical

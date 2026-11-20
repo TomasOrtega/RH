@@ -30,7 +30,7 @@ def SpherePhase.Statement : Prop :=
       phaseLaw.prod ((sphereLaw N).map fun z ↦ (‖coordAlong p z‖, orthoDir p z))
 
 /- English proof (translation)
-Use `⟨Complex.I • LinearMap.id, fun h ↦ ?_, fun v ↦ ?_⟩` and prove the remaining obligations. Use `congrArg (fun U : (Fin 2 → ℂ) →ₗ[ℂ] (Fin 2 → ℂ) ↦ U (Pi.single 0 1) 0) h` as an intermediate fact. Simplify using `[Complex.ext_iff] at this`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 example : ∃ U : (Fin 2 → ℂ) →ₗ[ℂ] (Fin 2 → ℂ),
     U ≠ LinearMap.id ∧ ∀ v, ∑ j, ‖U v j‖ ^ 2 = ∑ j, ‖v j‖ ^ 2 := by
@@ -40,13 +40,13 @@ example : ∃ U : (Fin 2 → ℂ) →ₗ[ℂ] (Fin 2 → ℂ),
   · simp
 
 /- English proof (translation)
-Simplify using `[Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 example : ∑ j, ‖(Pi.single 0 1 : Fin 2 → ℂ) j‖ ^ 2 = 1 := by
   simp [Fin.sum_univ_two]
 
 /- English proof (translation)
-Introduce `h`. Establish `hmem : (Pi.single 1 1 : Fin 2 → ℂ) ∈ Submodule.span ℂ {(Pi.single 0 1 : Fin 2 → ℂ)}` using `h ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.mp hmem`. Use `congrFun hc 1` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example : Submodule.span ℂ {(Pi.single 0 1 : Fin 2 → ℂ)} ≠ ⊤ := by
   intro h

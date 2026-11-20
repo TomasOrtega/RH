@@ -9,7 +9,7 @@ open GlobalTheory.CompanionTheory.Ar.BT
 namespace PositivityTheory.HtPt.Twhopf
 
 /- English proof (translation)
-Introduce `R _ _ X f _ _ _ _`. Conclude with `⟨GlobalTheory.finitePart f, GlobalTheory.isFinite_finitePart (R := CommRingCat.of R) f, GlobalTheory.mem_finitePart_of_eq_closedPoint (R := CommRingCat.of R) f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem finite_part : ∀ (R : Type) [CommRing R] [HenselianLocalRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) [LocallyQuasiFinite f] [LocallyOfFiniteType f] [IsSeparated f] [QuasiCompact f], ∃ U : X.Opens, IsFinite (U.ι ≫ f) ∧ ∀ x : X, f x = IsLocalRing.closedPoint R → x ∈ U := by
   intro R _ _ X f _ _ _ _
@@ -17,7 +17,7 @@ theorem finite_part : ∀ (R : Type) [CommRing R] [HenselianLocalRing R] (X : Sc
     GlobalTheory.mem_finitePart_of_eq_closedPoint (R := CommRingCat.of R) f⟩
 
 /- English proof (translation)
-Introduce `R _ _ X f U U' hU hU' x hx`. Conclude with `(GlobalTheory.preimage_eq_top_of_closedFibre_subset (R := CommRingCat.of R) f U' hU' U.ι).ge (Set.mem_univ ⟨x, hx⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_le : ∀ (R : Type) [CommRing R] [IsLocalRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) (U U' : X.Opens), IsFinite (U.ι ≫ f) → (∀ x : X, f x = IsLocalRing.closedPoint R → x ∈ U') → U ≤ U' := by
   intro R _ _ X f U U' hU hU' x hx
@@ -25,7 +25,7 @@ theorem finite_le : ∀ (R : Type) [CommRing R] [IsLocalRing R] (X : Scheme.{0})
     (Set.mem_univ ⟨x, hx⟩)
 
 /- English proof (translation)
-Use `haveI : IsFinite (h.left ≫ X.hom) := by rw [Over.w h]; exact hY`. Conclude with `(GlobalTheory.preimage_eq_top_of_closedFibre_subset (R := CommRingCat.of R) X.hom W hW h.left).ge (Set.mem_univ z)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_finite {R : Type} [CommRing R] [IsLocalRing R]
     {X : Over (Spec (CommRingCat.of R))} (W : X.left.Opens)
@@ -37,17 +37,15 @@ theorem mem_of_finite {R : Type} [CommRing R] [IsLocalRing R]
     (Set.mem_univ z)
 
 /- English proof (translation)
-Introduce `R _ _ _ T _ Γ U hfin hU`. Use `haveI := hfin`. Establish `hV : IsFinite (openOver Γ.G U).hom` using `hfin`. Use `haveI := hV`. Use `⟨hfin, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Use `mem_of_finite U hU (𝟙_ _) ?_ η[Γ.G] x` and prove the remaining obligations. Use `show IsFinite (𝟙 _)`. Use `infer_instance`. Introduce `S x y hx hy z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x', rfl⟩` from `exists_factor_openIncl U x hx`. Take `⟨y', rfl⟩` from `exists_factor_openIncl U y hy`. Establish `hP : IsFinite (openOver Γ.G U ⊗ openOver Γ.G U).hom`. Rewrite using `[Over.tensorObj_hom]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `mem_of_finite U hU _ hP ((fst _ _ ≫ openIncl Γ.G U) * (snd _ _ ≫ openIncl Γ.G U))`. Establish `heq : x' ≫ openIncl Γ.G U * y' ≫ openIncl Γ.G U = lift x' y' ≫ ((fst _ _ ≫ openIncl Γ.G U) * (snd _ _ ≫ openIncl Γ.G U))`. Rewrite using `[comp_mul]`. Simplify using the standard rewrite rules. Rewrite using `[heq]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using key ((lift x' y').left z)`. Introduce `S x hx z`. Take `⟨x', rfl⟩` from `exists_factor_openIncl U x hx`. Establish `key` using `mem_of_finite U hU _ hV (openIncl Γ.G U)⁻¹`. Establish `heq : (x' ≫ openIncl Γ.G U)⁻¹ = x' ≫ (openIncl Γ.G U)⁻¹`.
-
-Simplify using `[Hom.inv_def]`. Rewrite using `[heq]`. Simplify using `using key (x'.left z)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_sub : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (T : Type) [CommGroup T] (Γ : QFGroup R T) (U : Γ.G.left.Opens), IsFinite (U.ι ≫ Γ.G.hom) → (∀ x : Γ.G.left, Γ.G.hom x = IsLocalRing.closedPoint R → x ∈ U) → Γ.IsFinOpenSub U := by
   intro R _ _ _ T _ Γ U hfin hU
@@ -82,9 +80,9 @@ theorem finite_sub : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (T
     simpa using key (x'.left z)
 
 /- English proof (translation)
-Introduce `R _ _ _ _ T _ _ Γ U hfin hU t`. Prove the components needed by the constructor for the conclusion. Introduce `ht`. Take `⟨σ, -, hσ⟩` from `exists_section_of_generic_point R T Γ U hfin t ht`. Conclude with `⟨σ, hσ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨σ, hσ⟩ z _`. Establish `key` using `mem_of_finite U hU (𝟙_ _) (show IsFinite (𝟙 _) from inferInstance) σ ((toUnit (genPt R)).left z)`. Rewrite using `[← hσ]`. Simplify using `using key`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_iff_section : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsLocalRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (U : Γ.G.left.Opens), IsFinite (U.ι ≫ Γ.G.hom) → (∀ g : Γ.G.left, Γ.G.hom g = IsLocalRing.closedPoint R → g ∈ U) → ∀ t, (⊤ ≤ (Γ.pt t).left ⁻¹ᵁ U ↔ ∃ σ : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ Γ.G, toUnit (genPt R) ≫ σ = Γ.pt t) := by
   intro R _ _ _ _ T _ _ Γ U hfin hU t
@@ -101,15 +99,15 @@ theorem mem_iff_section : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrally
 open Polynomial in
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `f hf hn h`. Rewrite `h` using `[hf.natDegree_eq_zero.1 hn, eval_one]`. Conclude with `absurd ((Ideal.eq_top_iff_one _).2 h) (IsLocalRing.maximalIdeal.isMaximal V).ne_top`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `f hf hn h`. Establish `hinj` using `IsFractionRing.injective V (FractionRing V)`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_aeval_eq_zero_of_injective (FractionRing V) hinj f (by rw [degree_eq_natDegree hf.ne_zero, hn]; exact_mod_cast n.succ_ne_zero)`. Take `⟨r, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (⟨f, hf, by rwa [← aeval_def]⟩ : IsIntegral V x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : f.IsRoot r` using `hinj (by rw [map_zero, ← hx, aeval_algebraMap_apply_eq_algebraMap_eval])`. Take `⟨g, rfl⟩` from `dvd_iff_isRoot.2 hr`. Establish `hg : g.Monic` using `(monic_X_sub_C r).of_mul_monic_left hf`. Rewrite `h` using `[eval_mul]`. Break down `(IsLocalRing.maximalIdeal.isMaximal V).isPrime.mem_or_mem h with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Use `neg_mem h` as an intermediate fact. Simplify using `using this`. Establish `hd : g.natDegree = n`. Rewrite `hn` using `[(monic_X_sub_C r).natDegree_mul hg, natDegree_X_sub_C]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨a, ha, ha'⟩` from `ih g hg hd h`. Conclude with `⟨a, ha.dvd (dvd_mul_left _ _), ha'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_root_near (V : Type) [CommRing V] [IsDomain V] [ValuationRing V] [IsAlgClosed (FractionRing V)]
     (a₀ : V) (n : ℕ) : ∀ f : V[X], f.Monic → f.natDegree = n → f.eval a₀ ∈ IsLocalRing.maximalIdeal V →
@@ -140,16 +138,14 @@ theorem exists_root_near (V : Type) [CommRing V] [IsDomain V] [ValuationRing V] 
       exact ⟨a, ha.dvd (dvd_mul_left _ _), ha'⟩
 
 /- English proof (translation)
-Introduce `V _ _ _ _`. Conclude with `⟨fun f hf a₀ h _ => exists_root_near V a₀ _ f hf rfl h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem henselian_of_algClosed : ∀ (V : Type) [CommRing V] [IsDomain V] [ValuationRing V] [IsAlgClosed (FractionRing V)], HenselianLocalRing V := by
   intro V _ _ _ _
   exact ⟨fun f hf a₀ h _ => exists_root_near V a₀ _ f hf rfl h⟩
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ hv _ hO`. Use `haveI := hO`. Use `haveI hval : ValuationRing O := ValuationRing.of_integers v hv`. Use `haveI hfr : IsFractionRing O C := hv.isFractionRing`. Use `haveI hac : IsAlgClosed (FractionRing O) := IsAlgClosed.of_ringEquiv C _ (FractionRing.algEquiv O C).symm.toRingEquiv`.
-
-Conclude with `⟨(GlobalTheory.ChF.padicInt_algebra_of_isAdicComplete_and_matrix_unique p O).1, henselian_of_algClosed O, inferInstance, hval, hac, hfr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem padic_alg : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [IsDomain O] [Algebra O C] (hv : v.Integers O) (hp : v (p : C) < 1) (hO : IsAdicComplete (Ideal.span {(p : O)}) O), Nonempty (Algebra ℤ_[p] O) ∧ HenselianLocalRing O ∧ IsIntegrallyClosed O ∧ ValuationRing O ∧ IsAlgClosed (FractionRing O) ∧ IsFractionRing O C := by
   intro p _ C _ _ _ v O _ _ _ hv _ hO
@@ -162,11 +158,9 @@ theorem padic_alg : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClos
     henselian_of_algClosed O, inferInstance, hval, hac, hfr⟩
 
 /- English proof (translation)
-Introduce `C _ v O _ _ _ _ hv P hP`. Distinguish the cases in `h0 : P = ⊥`. Conclude with `.inl h0`. Use `right`. Use `le_antisymm (IsLocalRing.le_maximalIdeal hP.ne_top) fun x hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, haP, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Establish `hx1 : v (algebraMap O C x) < 1` using `lt_of_le_of_ne (hv.map_le_one x) fun h => hx (hv.isUnit_of_one' h)`. Establish `ha : 0 < v (algebraMap O C a)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff v).2 ((map_ne_zero_iff _ hv.hom_inj).2 ha0))`. Take `⟨n, hn⟩` from `NNReal.exists_pow_lt_of_lt_one ha hx1`. Establish `hd : a ∣ x ^ n` using `hv.dvd_of_le (by rw [map_pow, map_pow]; exact hn.le)`.
-
-Conclude with `hP.mem_of_pow_mem n (P.mem_of_dvd hd haP)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prime_eq_bot_or_max : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [IsDomain O] [Algebra O C] [IsLocalRing O], v.Integers O → ∀ P : Ideal O, P.IsPrime → P = ⊥ ∨ P = IsLocalRing.maximalIdeal O := by
   intro C _ v O _ _ _ _ hv P hP

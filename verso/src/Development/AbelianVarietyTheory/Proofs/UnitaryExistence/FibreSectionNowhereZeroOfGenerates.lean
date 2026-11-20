@@ -14,17 +14,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Frames
 
 /- English proof (translation)
-Introduce `hbc E _ _ _ H Dw l Xo S _ x s hs p`. Take `⟨g, hg, θ, hθ⟩` from `GlobalTheory.T.exists_local_generator_stable_baseChange hbc E H Dw l Xo S x p`. Establish `hid : ∀ (R : Type) [CommRing R] (z : Sp R ⟶ Xo.X), z = spMap (RingHom.id R) ≫ z`. Introduce `R _ z`. Establish `: spMap (RingHom.id R) = 𝟙 (Sp R)` using `Spec.map_id _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, Category.id_comp]`. Take `⟨-, hc2, -, hc4⟩` from `GlobalTheory.T.scaledBaseChange_fibreSection_calculus E H Dw l Xo (Localization.Away g) (Localization.Away g) (Localization.Away g) (RingHom.id _) (RingHom.id _) (spMap (algebraMap S (Localization.Away g)) ≫ x) _ _ (hid _ _) (hid _ _)`. Establish `hθθ : SecBC (RingHom.id (Localization.Away g)) 1 _ _ θ θ` using `(hc2 1 θ θ).2 fun i => by rw [(hc4 1 1 i).2.2, _root_.one_mul]`. Establish `hnz` using `(hθ _ (RingHom.id _) _ θ (hid _ _) hθθ).2`. Choose the witnesses or unpack the hypotheses as in `⟨p', hp'⟩ : ∃ p' : PrimeSpectrum (Localization.Away g), PrimeSpectrum.comap (algebraMap S (Localization.Away g)) p' = p := by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h` using `PrimeSpectrum.localization_away_comap_range (Localization.Away g) g`. Establish `: (p : PrimeSpectrum S) ∈ Set.range (PrimeSpectrum.comap (algebraMap S (Localization.Away g)))`. Rewrite using `[h]`. Conclude with `hg`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, i, hq, hqi⟩` from `hnz p'`. Take `⟨N, s₀, s₁, h01, h1⟩` from `GlobalTheory.T.exists_fibreSection_pow_mul_baseChange_away E H Dw l Xo S x g θ`. Establish `hu : IsUnit (scal (spMap (algebraMap S (Localization.Away g)) ≫ x) ((algebraMap S (Localization.Away g)) g ^ N) i)`. Take `⟨v, hv⟩` from `((IsLocalization.Away.algebraMap_isUnit (S := Localization.Away g) g).pow N).exists_right_inv`. Use `IsUnit.of_mul_eq_one (scal _ v i) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← (hc4 _ v i).1, hv, (hc4 1 1 i).2.2]`. Establish `hq1 : q ∈ (Gx _).basicOpen (s₁.f i)`. Rewrite using `[h1 i, Scheme.basicOpen_mul, Scheme.basicOpen_of_isUnit _ hu]`. Conclude with `⟨Scheme.basicOpen_le _ _ hqi, hqi⟩`. Take `⟨q₀, i₀, hq₀, hqi₀⟩` from `(GlobalTheory.Frames.secBC_nonvanishing_iff E H Dw l Xo S (Localization.Away g) _ x _ rfl s₀ s₁ h01 p').1 ⟨q, i, hq, hq1⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, hb, -⟩` from `hs s₀`. Rewrite `hqi₀` using `[hb i₀, Scheme.basicOpen_mul]`. Conclude with `⟨q₀, i₀, hq₀.trans hp', hqi₀.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem secNZ_of_secGen : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (s : LB.Sec (PPx x)), SecGen x s → SecNZ x s := by
   intro hbc E _ _ _ H Dw l Xo S _ x s hs p

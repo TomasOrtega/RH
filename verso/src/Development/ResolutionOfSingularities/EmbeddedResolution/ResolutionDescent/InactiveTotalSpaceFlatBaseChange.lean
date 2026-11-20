@@ -29,7 +29,7 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
 namespace EmbeddedBlowupSequence
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ← S.detachedToCoprod_succ_of_lt s a hsa, S.detachedToCoprod_detachedCoprodMapOfLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem detachedToCoprod_detachedCoprodInl_detachedCoprodMapOfLE (S : EmbeddedBlowupSequence k Y pY) (s a b : ℕ)
     (hsa : s < a) (hab : a + 1 ≤ b) :
@@ -38,7 +38,7 @@ theorem detachedToCoprod_detachedCoprodInl_detachedCoprodMapOfLE (S : EmbeddedBl
   rw [← Category.assoc, ← S.detachedToCoprod_succ_of_lt s a hsa, S.detachedToCoprod_detachedCoprodMapOfLE]
 
 /- English proof (translation)
-Rewrite using `[← S.detachedToCoprod_self a, S.detachedToCoprod_detachedCoprodMapOfLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem detachedCoprodInr_detachedCoprodMapOfLE (S : EmbeddedBlowupSequence k Y pY) (a b : ℕ) (hab : a + 1 ≤ b) :
     S.detachedCoprodInr a ≫ S.detachedCoprodMapOfLE hab =
@@ -50,7 +50,7 @@ def inactiveTotalToBase (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAr
   (coprod.inr : S.detachedCoprod i ⟶ S.totalSpace i) ≫ (S.inducedBlowups h).projectionToBase i
 
 /- English proof (translation)
-The claim follows from `detachedToCoprod_inr_inducedBlowups_projectionToBase S h s i hs`.
+A detailed English derivation is pending.
 -/
 theorem detachedToCoprod_inactiveTotalToBase (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAreBlowups) (s i : ℕ)
     (hs : s < i) :
@@ -58,7 +58,7 @@ theorem detachedToCoprod_inactiveTotalToBase (S : EmbeddedBlowupSequence k Y pY)
   detachedToCoprod_inr_inducedBlowups_projectionToBase S h s i hs
 
 /- English proof (translation)
-Apply `coprod.hom_ext` to reduce the goal to its premises. Rewrite using `[coprod.inl_desc]`. Conclude with `(inl_inducedBlowups_projectionToBase S h i).symm`. Rewrite using `[coprod.inr_desc]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coprodDesc_strictTransformToBase_inactiveTotalToBase (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAreBlowups) (i : ℕ) :
     coprod.desc (S.strictTransformToBase i) (S.inactiveTotalToBase h i) = (S.inducedBlowups h).projectionToBase i := by
@@ -77,34 +77,30 @@ variable {k' : Type u} [Field k'] [CharZero k'] {Y' : Scheme.{u}} [AlgebraicGeom
   {S : EmbeddedBlowupSequence k Y pY} {S' : EmbeddedBlowupSequence k' Y' pY'}
 
 /- English proof (translation)
-The claim follows from `F.reindex_lt_reindex_of_lt hsj hj`.
+A detailed English derivation is pending.
 -/
 theorem reindex_lt_reindex (F : ChartFlatBaseChange S S') {s j : ℕ} (hsj : s < j)
     (hj : j ≤ S'.length) : F.reindex s < F.reindex j :=
   F.reindex_lt_reindex_of_lt hsj hj
 
 /- English proof (translation)
-The claim follows from `(F.reindex_lt_succ j (by omega)).le`.
+A detailed English derivation is pending.
 -/
 private theorem reindex_le_reindex_succ (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j + 1 ≤ S'.length) :
     F.reindex j ≤ F.reindex (j + 1) :=
   (F.reindex_lt_succ j (by omega)).le
 
 /- English proof (translation)
-The claim follows from `F.reindex_lt_succ j (by omega)`.
+A detailed English derivation is pending.
 -/
 private theorem reindex_lt_reindex_succ (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j + 1 ≤ S'.length) :
     F.reindex j < F.reindex (j + 1) :=
   F.reindex_lt_succ j (by omega)
 
 /- English proof (translation)
-Establish `: CategoryTheory.Mono S.emb` using `inferInstance`. Establish `key : (F.strictTransformComparison j hj ≫ S.strictTransformToBase (F.reindex j)) ≫ S.emb = (S'.strictTransformToBase j ≫ F.baseMap) ≫ S.emb`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[S.strictTransformToBase_emb (F.reindex j)]`. Use `_ = (F.strictTransformComparison j hj ≫ S.strictTransformι (F.reindex j)) ≫ S.ambientSeq.projectionToBase (F.reindex j) := (Category.assoc _ _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (S'.strictTransformι j ≫ F.levelMap j hj) ≫ S.ambientSeq.projectionToBase (F.reindex j) := by`. Rewrite using `[F.strictTransformComparison_comp_strictTransformι j hj]`. Use `_ = S'.strictTransformι j ≫ (F.levelMap j hj ≫ S.ambientSeq.projectionToBase (F.reindex j)) := Category.assoc _ _ _`. Use `_ = S'.strictTransformι j ≫ (S'.ambientSeq.projectionToBase j ≫ F.ambientMap) := by`. Rewrite using `[(F.isPullback_level j hj).w]`.
-
-Use `_ = (S'.strictTransformι j ≫ S'.ambientSeq.projectionToBase j) ≫ F.ambientMap := (Category.assoc _ _ _).symm`. Use `_ = (S'.strictTransformToBase j ≫ S'.emb) ≫ F.ambientMap := by rw [S'.strictTransformToBase_emb j]`. Use `_ = S'.strictTransformToBase j ≫ (S'.emb ≫ F.ambientMap) := Category.assoc _ _ _`. Use `_ = S'.strictTransformToBase j ≫ (F.baseMap ≫ S.emb) := by rw [F.isPullback_emb.w]`. Use `_ = (S'.strictTransformToBase j ≫ F.baseMap) ≫ S.emb := (Category.assoc _ _ _).symm`.
-
-Conclude with `(cancel_mono S.emb).mp key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strictTransformComparison_comp_strictTransformToBase (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     F.strictTransformComparison j hj ≫ S.strictTransformToBase (F.reindex j) = S'.strictTransformToBase j ≫ F.baseMap := by
@@ -133,7 +129,7 @@ theorem strictTransformComparison_comp_strictTransformToBase (F : ChartFlatBaseC
   exact (cancel_mono S.emb).mp key
 
 /- English proof (translation)
-Establish `h1` using `(F.isPullback_strictTransformComparison_strictTransformι j hj).paste_vert (F.isPullback_level j hj)`. Establish `h2 : IsPullback (F.strictTransformComparison j hj) (S'.strictTransformToBase j ≫ S'.emb) (S.strictTransformToBase (F.reindex j) ≫ S.emb) F.ambientMap`. Rewrite using `[S'.strictTransformToBase_emb j, S.strictTransformToBase_emb (F.reindex j)]`. Conclude with `h1`. Conclude with `h2.of_bot (F.strictTransformComparison_comp_strictTransformToBase j hj) F.isPullback_emb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_strictTransformComparison_strictTransformToBase (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     IsPullback (F.strictTransformComparison j hj) (S'.strictTransformToBase j) (S.strictTransformToBase (F.reindex j))
@@ -146,7 +142,7 @@ theorem isPullback_strictTransformComparison_strictTransformToBase (F : ChartFla
   exact h2.of_bot (F.strictTransformComparison_comp_strictTransformToBase j hj) F.isPullback_emb
 
 /- English proof (translation)
-Use `F.isEmpty_of_forall_reindex_ne s hs hskip Q q (p ≫ S'.emb) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem isEmpty_of_comm_detachedScheme_of_not_mem_range (F : ChartFlatBaseChange S S') (s : ℕ) (hs : s < S.length)
     (hskip : ∀ j, j < S'.length → F.reindex j ≠ s) (Q : Scheme.{u}) (q : Q ⟶ S.detachedScheme s)
@@ -162,18 +158,16 @@ theorem isEmpty_of_comm_detachedScheme_of_not_mem_range (F : ChartFlatBaseChange
     _ = (p ≫ S'.emb) ≫ F.ambientMap := (Category.assoc _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `Function.isEmpty f.base`.
+A detailed English derivation is pending.
 -/
 private theorem isEmpty_of_hom_to_initial {P : Scheme.{u}}
     (f : P ⟶ ⊥_ Scheme.{u}) : IsEmpty ↥P :=
   Function.isEmpty f.base
 
 /- English proof (translation)
-Establish `hl : T.detachedCoprodInl i ≫ T.inactiveTotalToBase hT (i + 1) = T.inactiveTotalToBase hT i`. Use `T.detachedCoprod_hom_ext i ?_` and prove the remaining obligations. Introduce `s hs`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[T.detachedToCoprod_succ_of_lt s i hs]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = T.detachedι s ≫ T.strictTransformToBase s := T.detachedToCoprod_inactiveTotalToBase hT s (i + 1) (Nat.lt_succ_of_lt hs)`. Use `_ = T.detachedToCoprod s i hs ≫ T.inactiveTotalToBase hT i := (T.detachedToCoprod_inactiveTotalToBase hT s i hs).symm`. Establish `hr : T.detachedCoprodInr i ≫ T.inactiveTotalToBase hT (i + 1) = T.detachedι i ≫ T.strictTransformToBase i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[T.detachedToCoprod_self i]`.
-
-Use `_ = T.detachedι i ≫ T.strictTransformToBase i := T.detachedToCoprod_inactiveTotalToBase hT i (i + 1) (Nat.lt_succ_self i)`. Use `T.detachedCoprod_succ_hom_ext i ?_ ?_` and prove the remaining obligations. Conclude with `hl.trans (coprod.inl_desc _ _).symm`. Conclude with `hr.trans (coprod.inr_desc _ _).symm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem inactiveTotalToBase_succ_eq_desc (T : EmbeddedBlowupSequence k Y pY)
     (hT : T.TransitionsAreBlowups) (i : ℕ) :
@@ -202,11 +196,11 @@ private theorem inactiveTotalToBase_succ_eq_desc (T : EmbeddedBlowupSequence k Y
   · exact hr.trans (coprod.inr_desc _ _).symm
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ _ P q _ _`. Conclude with `isEmpty_of_hom_to_initial q`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `hlt hskip P q p hcomm`. Establish `h1 : IsPullback (initial.to (S.detachedCoprod n)) (initial.to Y') (S.inactiveTotalToBase h n) F.baseMap` using `isPullback_initial_of_isEmpty (S.inactiveTotalToBase h n) F.baseMap (fun Q a b hab => ih (fun s hs => hlt s (Nat.lt_succ_of_lt hs)) (fun s hs => hskip s (Nat.lt_succ_of_lt hs)) Q a b hab)`. Establish `h2 : IsPullback (initial.to (S.detachedScheme n)) (initial.to Y') (S.detachedι n ≫ S.strictTransformToBase n) F.baseMap` using `isPullback_initial_of_isEmpty (S.detachedι n ≫ S.strictTransformToBase n) F.baseMap (fun Q c d hcd => F.isEmpty_of_comm_detachedScheme_of_not_mem_range n (hlt n (Nat.lt_succ_self n)) (hskip n (Nat.lt_succ_self n)) Q c d hcd)`. Establish `h3` using `isPullback_coprodMap_coprodDesc (initial.to (S.detachedCoprod n)) (initial.to (S.detachedScheme n)) (initial.to Y') (initial.to Y') (S.inactiveTotalToBase h n) (S.detachedι n ≫ S.strictTransformToBase n) F.baseMap h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm' : q ≫ coprod.desc (S.inactiveTotalToBase h n) (S.detachedι n ≫ S.strictTransformToBase n) = p ≫ F.baseMap` using `(congrArg (fun t : S.detachedCoprod (n + 1) ⟶ Y => q ≫ t) (inactiveTotalToBase_succ_eq_desc S h n)).symm.trans hcomm`. Conclude with `isEmpty_of_hom_to_initial (h3.lift q p hcomm' ≫ coprod.desc (𝟙 (⊥_ Scheme.{u})) (𝟙 (⊥_ Scheme.{u})))`.
+A detailed English derivation is pending.
 -/
 private theorem forall_isEmpty_of_comm_inactiveTotalToBase (F : ChartFlatBaseChange S S')
     (h : S.TransitionsAreBlowups) :
@@ -244,7 +238,7 @@ private theorem forall_isEmpty_of_comm_inactiveTotalToBase (F : ChartFlatBaseCha
         (h3.lift q p hcomm' ≫ coprod.desc (𝟙 (⊥_ Scheme.{u})) (𝟙 (⊥_ Scheme.{u})))
 
 /- English proof (translation)
-The claim follows from `forall_isEmpty_of_comm_inactiveTotalToBase F h i hlt hskip P q p hcomm`.
+A detailed English derivation is pending.
 -/
 theorem isEmpty_of_comm_inactiveTotalToBase_of_not_mem_range (F : ChartFlatBaseChange S S') (h : S.TransitionsAreBlowups)
     (i : ℕ) (hlt : ∀ s, s < i → s < S.length)
@@ -254,21 +248,17 @@ theorem isEmpty_of_comm_inactiveTotalToBase_of_not_mem_range (F : ChartFlatBaseC
   forall_isEmpty_of_comm_inactiveTotalToBase F h i hlt hskip P q p hcomm
 
 /- English proof (translation)
-Establish `main : ∀ (c : ℕ) (hac : a ≤ c), (∀ s, a ≤ s → s < c → s < S.length) → (∀ s, a ≤ s → s < c → ∀ j, j < S'.length → F.reindex j ≠ s) → IsPullback (q ≫ S.detachedCoprodMapOfLE hac) p (S.inactiveTotalToBase h c) F.baseMap`. Introduce `c hac`. Proceed by induction on `c, hac using Nat.le_induction with`. Consider the case `base`. Introduce `_ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hself : S.detachedCoprodMapOfLE (Nat.le_refl a) = 𝟙 (S.detachedCoprod a)` using `S.detachedCoprodMapOfLE_self a`. Establish `hpbRefl : IsPullback (q ≫ S.detachedCoprodMapOfLE (Nat.le_refl a)) p (S.inactiveTotalToBase h a) F.baseMap`. Rewrite using `[hself, Category.comp_id]`. Conclude with `hsq`. Conclude with `hpbRefl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ c hac ih`. Introduce `hlt1 hskip1`. Establish `ih'` using `ih (fun s h1 h2 => hlt1 s h1 (Nat.lt_succ_of_lt h2)) (fun s h1 h2 => hskip1 s h1 (Nat.lt_succ_of_lt h2))`. Establish `hc : c < S.length` using `hlt1 c hac (Nat.lt_succ_self c)`. Establish `hsk : ∀ j, j < S'.length → F.reindex j ≠ c` using `hskip1 c hac (Nat.lt_succ_self c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : ∀ (Q : Scheme.{u}) (cc : Q ⟶ S.detachedScheme c) (d : Q ⟶ Y'), cc ≫ S.detachedι c ≫ S.strictTransformToBase c = d ≫ F.baseMap → IsEmpty Q` using `fun Q cc d hcomm => F.isEmpty_of_comm_detachedScheme_of_not_mem_range c hc hsk Q cc d hcomm`. Establish `hinl : S.detachedCoprodInl c ≫ S.inactiveTotalToBase h (c + 1) = S.inactiveTotalToBase h c` using `by show S.detachedCoprodInl c ≫ (coprod.inr : S.detachedCoprod (c + 1) ⟶ S.totalSpace (c + 1)) ≫ (S.inducedBlowups h).projectionToBase (c + 1) = S.inactiveTotalToBase h c`. Rewrite using `[SequenceOfBlowups.projectionToBase_succ, inducedBlowups_blowupMorphism]`. Conclude with `S.detachedCoprodInl_inr_totalTransition_assoc c ((S.inducedBlowups h).projectionToBase c)`. Establish `hinr : S.detachedCoprodInr c ≫ S.inactiveTotalToBase h (c + 1) = S.detachedι c ≫ S.strictTransformToBase c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hkey` using `S.detachedToCoprod_inactiveTotalToBase h c (c + 1) (Nat.lt_succ_self c)`. Rewrite `hkey` using `[S.detachedToCoprod_self c]`. Conclude with `hkey`. Establish `hdesc : (coprod.desc (S.inactiveTotalToBase h c) (S.detachedι c ≫ S.strictTransformToBase c) : S.detachedCoprod c ⨿ S.detachedScheme c ⟶ Y) = S.inactiveTotalToBase h (c + 1)`. Apply `coprod.hom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[coprod.inl_desc]`. Conclude with `hinl.symm`. Rewrite using `[coprod.inr_desc]`. Conclude with `hinr.symm`. Establish `key1 : IsPullback ((q ≫ S.detachedCoprodMapOfLE hac) ≫ S.detachedCoprodInl c) p (S.inactiveTotalToBase h (c + 1)) F.baseMap`.
-
-Establish `key0` using `isPullback_comp_inl_coprodDesc (q ≫ S.detachedCoprodMapOfLE hac) p (S.inactiveTotalToBase h c) F.baseMap (S.detachedι c ≫ S.strictTransformToBase c) ih' hF`. Rewrite `key0` using `[hdesc]`. Conclude with `key0`. Establish `hup : S.detachedCoprodMapOfLE (Nat.le_succ_of_le hac) = S.detachedCoprodMapOfLE hac ≫ S.detachedCoprodInl c` using `S.detachedCoprodMapOfLE_succ hac`. Establish `hpbSucc : IsPullback (q ≫ S.detachedCoprodMapOfLE (Nat.le_succ_of_le hac)) p (S.inactiveTotalToBase h (c + 1)) F.baseMap`.
-
-Rewrite using `[hup, ← Category.assoc]`. Conclude with `key1`. Conclude with `hpbSucc`. Conclude with `main b hab hlt hskip`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_detachedCoprodMapOfLE_inactiveTotalToBase (F : ChartFlatBaseChange S S') (h : S.TransitionsAreBlowups)
     {a b : ℕ} (hab : a ≤ b) (hlt : ∀ s, a ≤ s → s < b → s < S.length)
@@ -332,7 +322,7 @@ theorem isPullback_detachedCoprodMapOfLE_inactiveTotalToBase (F : ChartFlatBaseC
   exact main b hab hlt hskip
 
 /- English proof (translation)
-The claim follows from `(F.isPullback_detachedSchemeComparison j hj).paste_vert (F.isPullback_strictTransformComparison_strictTransformToBase j hj.le)`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_inactiveSchemeMap_baseMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length) :
@@ -352,7 +342,7 @@ def inactiveTotalMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced
             S.detachedToCoprod (F.reindex j) (F.reindex (j + 1)) (F.reindex_lt_reindex_succ j hj))
 
 /- English proof (translation)
-Establish `h0 : F.inactiveTotalMap (n + 1) hj = eqToHom (S'.detachedCoprod_succ n) ≫ coprod.desc (F.inactiveTotalMap n (Nat.le_of_succ_le hj) ≫ S.detachedCoprodMapOfLE (F.reindex_le_reindex_succ n hj)) (F.detachedSchemeComparison n (lt_of_lt_of_le (Nat.lt_succ_self n) hj) ≫ S.detachedToCopr …` using `rfl`. Establish `hid : eqToHom (S'.detachedCoprod_succ n) = 𝟙 (S'.detachedCoprod (n + 1))` using `eqToHom_refl _ _`. Rewrite using `[h0, hid]`. Conclude with `Category.id_comp _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inactiveTotalMap_succ_eq_desc (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (n : ℕ)
@@ -373,7 +363,7 @@ private theorem inactiveTotalMap_succ_eq_desc (F : ChartFlatBaseChange S S')
   exact Category.id_comp _
 
 /- English proof (translation)
-Rewrite using `[inactiveTotalMap_succ_eq_desc F n hj]`. Conclude with `coprod.inl_desc _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem detachedCoprodInl_inactiveTotalMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (n : ℕ)
@@ -384,7 +374,7 @@ private theorem detachedCoprodInl_inactiveTotalMap (F : ChartFlatBaseChange S S'
   exact coprod.inl_desc _ _
 
 /- English proof (translation)
-Rewrite using `[inactiveTotalMap_succ_eq_desc F n hj]`. Conclude with `coprod.inr_desc _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem detachedCoprodInr_inactiveTotalMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (n : ℕ)
@@ -396,11 +386,11 @@ private theorem detachedCoprodInr_inactiveTotalMap (F : ChartFlatBaseChange S S'
   exact coprod.inr_desc _ _
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `hj s hs`. Conclude with `absurd hs (Nat.not_lt_zero s)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `hj s hs`. Break down `lt_or_eq_of_le (Nat.lt_succ_iff.mp hs) with hlt | heq` into its components or cases. Rewrite using `[S'.detachedToCoprod_succ_of_lt s n hlt, Category.assoc, detachedCoprodInl_inactiveTotalMap F n hj, ← Category.assoc, ih (Nat.le_of_succ_le hj) s hlt, Category.assoc, S.detachedToCoprod_detachedCoprodMapOfLE]`. Substitute `heq` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[S'.detachedToCoprod_self s, detachedCoprodInr_inactiveTotalMap F s hj]`.
+A detailed English derivation is pending.
 -/
 private theorem forall_detachedToCoprod_inactiveTotalMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] :
@@ -423,7 +413,7 @@ private theorem forall_detachedToCoprod_inactiveTotalMap (F : ChartFlatBaseChang
         rw [S'.detachedToCoprod_self s, detachedCoprodInr_inactiveTotalMap F s hj]
 
 /- English proof (translation)
-The claim follows from `forall_detachedToCoprod_inactiveTotalMap F j hj s hs`.
+A detailed English derivation is pending.
 -/
 theorem detachedToCoprod_inactiveTotalMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j ≤ S'.length)
@@ -434,7 +424,7 @@ theorem detachedToCoprod_inactiveTotalMap (F : ChartFlatBaseChange S S')
   forall_detachedToCoprod_inactiveTotalMap F j hj s hs
 
 /- English proof (translation)
-Use `T.detachedCoprod_hom_ext c (fun s hs => ?_)` and prove the remaining obligations. Establish `h1` using `T.detachedToCoprod_detachedCoprodInl_detachedCoprodMapOfLE s c b hs hcb`. Establish `h2` using `T.detachedToCoprod_detachedCoprodMapOfLE hs (Nat.le_of_succ_le hcb)`. Conclude with `h1.trans h2.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem inl_detachedCoprodMapOfLE (T : EmbeddedBlowupSequence k Y pY) {c b : ℕ}
     (hcb : c + 1 ≤ b) :
@@ -446,7 +436,7 @@ private theorem inl_detachedCoprodMapOfLE (T : EmbeddedBlowupSequence k Y pY) {c
   exact h1.trans h2.symm
 
 /- English proof (translation)
-The claim follows from `T.detachedCoprodInr_detachedCoprodMapOfLE c b hcb`.
+A detailed English derivation is pending.
 -/
 private theorem inr_detachedCoprodMapOfLE (T : EmbeddedBlowupSequence k Y pY) {c b : ℕ}
     (hcb : c + 1 ≤ b) :
@@ -455,7 +445,7 @@ private theorem inr_detachedCoprodMapOfLE (T : EmbeddedBlowupSequence k Y pY) {c
   T.detachedCoprodInr_detachedCoprodMapOfLE c b hcb
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Conclude with `hp`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isPullback_of_fst_eq {P X Z W : Scheme.{u}} {f f' : P ⟶ X} {g : P ⟶ Z}
     {q : X ⟶ W} {u : Z ⟶ W} (hf : f = f') (hp : IsPullback f' g q u) : IsPullback f g q u := by
@@ -463,7 +453,7 @@ private theorem isPullback_of_fst_eq {P X Z W : Scheme.{u}} {f f' : P ⟶ X} {g 
   exact hp
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Substitute `hg` using the available equality. Conclude with `hp`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isPullback_of_fst_eq_of_snd_eq {P X Z W : Scheme.{u}} {f f' : P ⟶ X}
     {g g' : P ⟶ Z} {q : X ⟶ W} {u : Z ⟶ W} (hf : f = f') (hg : g = g')
@@ -473,7 +463,7 @@ private theorem isPullback_of_fst_eq_of_snd_eq {P X Z W : Scheme.{u}} {f f' : P 
   exact hp
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Substitute `hq` using the available equality. Conclude with `hp`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isPullback_of_snd_eq_of_map_eq {P X Z W : Scheme.{u}} {f : P ⟶ X} {g g' : P ⟶ Z}
     {q q' : X ⟶ W} {u : Z ⟶ W} (hg : g = g') (hq : q = q')
@@ -483,17 +473,15 @@ private theorem isPullback_of_snd_eq_of_map_eq {P X Z W : Scheme.{u}} {f : P ⟶
   exact hp
 
 /- English proof (translation)
-Establish `main : ∀ (m : ℕ) (hm : m ≤ S'.length), IsPullback (F.inactiveTotalMap m hm) (S'.inactiveTotalToBase h' m) (S.inactiveTotalToBase h (F.reindex m)) F.baseMap`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hI : IsInitial (S'.detachedCoprod 0)` using `initialIsInitial`. Establish `hlen : F.reindex 0 ≤ S.length` using `F.reindex_le_length (Nat.zero_le S'.length)`. Establish `hempty : ∀ (P : Scheme.{u}) (a : P ⟶ S.detachedCoprod (F.reindex 0)) (b : P ⟶ Y'), a ≫ S.inactiveTotalToBase h (F.reindex 0) = b ≫ F.baseMap → IsEmpty ↥P`. Introduce `P a b hcomm`. Conclude with `F.isEmpty_of_comm_inactiveTotalToBase_of_not_mem_range h (F.reindex 0) (fun s hs => lt_of_lt_of_le hs hlen) (fun s hs j' hj' => F.reindex_ne_of_lt_reindex_zero s hs j' hj') P a b hcomm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpb` using `isPullback_initial_of_isEmpty (S.inactiveTotalToBase h (F.reindex 0)) F.baseMap hempty`. Establish `e1 : F.inactiveTotalMap 0 hm = initial.to (S.detachedCoprod (F.reindex 0))` using `hI.hom_ext _ _`. Establish `e2 : S'.inactiveTotalToBase h' 0 = initial.to Y'` using `hI.hom_ext _ _`. Conclude with `isPullback_of_fst_eq_of_snd_eq e1 e2 hpb`. Consider the case `succ n ih`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hm`. Establish `hn : n ≤ S'.length` using `Nat.le_of_succ_le hm`. Establish `hnlt : n < S'.length` using `hm`. Establish `hab : F.reindex n + 1 ≤ F.reindex (n + 1)` using `F.reindex_lt_succ n hnlt`. Establish `hlen : F.reindex (n + 1) ≤ S.length` using `F.reindex_le_length hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop` using `isPullback_coprodMap_coprodDesc (F.inactiveTotalMap n hn) (F.detachedSchemeComparison n hnlt) (S'.inactiveTotalToBase h' n) (S'.detachedι n ≫ S'.strictTransformToBase n) (S.inactiveTotalToBase h (F.reindex n)) (S.detachedι (F.reindex n) ≫ S.strictTransformToBase (F.reindex n)) F. …`. Establish `hcop2 : IsPullback (coprod.map (F.inactiveTotalMap n hn) (F.detachedSchemeComparison n hnlt)) (S'.inactiveTotalToBase h' (n + 1)) (S.inactiveTotalToBase h (F.reindex n + 1)) F.baseMap` using `isPullback_of_snd_eq_of_map_eq (inactiveTotalToBase_succ_eq_desc S' h' n) (inactiveTotalToBase_succ_eq_desc S h (F.reindex n)) hcop`. Establish `hstep` using `F.isPullback_detachedCoprodMapOfLE_inactiveTotalToBase h hab (fun s _ hs2 => lt_of_lt_of_le hs2 hlen) (fun s hs1 hs2 j' hj' => F.reindex_ne_of_reindex_lt_of_lt_reindex_succ n hnlt s (by omega) hs2 j' hj') (coprod.map (F.inactiveTotalMap n hn) (F.detachedSchemeComparison n hnlt)) …`. Establish `hE : F.inactiveTotalMap (n + 1) hm = coprod.map (F.inactiveTotalMap n hn) (F.detachedSchemeComparison n hnlt) ≫ S.detachedCoprodMapOfLE hab`. Use `S'.detachedCoprod_succ_hom_ext n ?_ ?_` and prove the remaining obligations.
-
-Conclude with `(detachedCoprodInl_inactiveTotalMap F n hm).trans ((coprod.inl_map_assoc (F.inactiveTotalMap n hn) (F.detachedSchemeComparison n hnlt) (S.detachedCoprodMapOfLE hab)).trans (congrArg (fun t : (S.detachedCoprod (F.reindex n) ⟶ S.detachedCoprod (F.reindex (n + 1))) => F.inactiveTota …`. Conclude with `(detachedCoprodInr_inactiveTotalMap F n hm).trans ((coprod.inr_map_assoc (F.inactiveTotalMap n hn) (F.detachedSchemeComparison n hnlt) (S.detachedCoprodMapOfLE hab)).trans (congrArg (fun t : (S.detachedScheme (F.reindex n) ⟶ S.detachedCoprod (F.reindex (n + 1))) => F.detachedSche …`. Conclude with `isPullback_of_fst_eq hE hstep`. Conclude with `main j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isPullback_inactiveTotalMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y']
@@ -576,7 +564,7 @@ theorem totalSpaceMap_eq_coprodMap (F : ChartFlatBaseChange S S') [AlgebraicGeom
     F.totalSpaceMap j hj = coprod.map (F.strictTransformComparison j hj) (F.inactiveTotalMap j hj) := rfl
 
 /- English proof (translation)
-Simplify using `[ChartFlatBaseChange.totalSpaceMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inl_totalSpaceMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j ≤ S'.length) :
@@ -586,7 +574,7 @@ theorem inl_totalSpaceMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsRe
   simp [ChartFlatBaseChange.totalSpaceMap]
 
 /- English proof (translation)
-Rewrite using `[F.totalSpaceMap_eq_coprodMap j hj, coprod.inr_map, ← Category.assoc, F.detachedToCoprod_inactiveTotalMap j hj s hs, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem detachedToCoprod_inr_totalSpaceMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j ≤ S'.length)
@@ -600,7 +588,7 @@ theorem detachedToCoprod_inr_totalSpaceMap (F : ChartFlatBaseChange S S')
     F.detachedToCoprod_inactiveTotalMap j hj s hs, Category.assoc]
 
 /- English proof (translation)
-Establish `key` using `isPullback_coprodMap_coprodDesc (F.strictTransformComparison j hj) (F.inactiveTotalMap j hj) (S'.strictTransformToBase j) (S'.inactiveTotalToBase h' j) (S.strictTransformToBase (F.reindex j)) (S.inactiveTotalToBase h (F.reindex j)) F.baseMap (F.isPullback_strictTransformCompariso …`. Rewrite `key` using `[S'.coprodDesc_strictTransformToBase_inactiveTotalToBase h' j, S.coprodDesc_strictTransformToBase_inactiveTotalToBase h (F.reindex j)]`. Rewrite using `[F.totalSpaceMap_eq_coprodMap j hj]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_totalSpaceMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (h : S.TransitionsAreBlowups) (h' : S'.TransitionsAreBlowups)

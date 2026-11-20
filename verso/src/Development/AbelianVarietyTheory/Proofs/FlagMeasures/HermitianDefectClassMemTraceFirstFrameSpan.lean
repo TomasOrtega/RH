@@ -17,42 +17,42 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable {L : LocE F E}
 
 /- English proof (translation)
-Simplify using `[hf, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (a b y : Fin n → E) :
     hf L Hm (a + b) y = hf L Hm a y + hf L Hm b y := by
   simp [hf, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[hf, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_sub {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (a b y : Fin n → E) :
     hf L Hm (a - b) y = hf L Hm a y - hf L Hm b y := by
   simp [hf, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[hf, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_smul {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (c : E) (a y : Fin n → E) :
     hf L Hm (c • a) y = c * hf L Hm a y := by
   simp [hf, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_zero {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (y : Fin n → E) :
     hf L Hm 0 y = 0 := by
   simp [hf]
 
 /- English proof (translation)
-Simplify using `[hf, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_neg_right {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (a y : Fin n → E) :
     hf L Hm a (-y) = - hf L Hm a y := by
   simp [hf, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Establish `h' : ∀ i j, L.cj (Hm j i) = Hm i j` using `fun i j => congrFun (congrFun h i) j`. Simplify using `only [hf, map_sum, map_mul, L.cj_cj, h']`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hf_swap {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (h : IsHerm L Hm) (v w : Fin n → E) :
     hf L Hm w v = L.cj (hf L Hm v w) := by
@@ -62,7 +62,7 @@ theorem hf_swap {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (h : IsHerm L Hm) (v w
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Rewrite using `[hf_swap h, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hf_swap_zero {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (h : IsHerm L Hm) {v w : Fin n → E}
     (h0 : hf L Hm v w = 0) : hf L Hm w v = 0 := by
@@ -71,11 +71,11 @@ theorem hf_swap_zero {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (h : IsHerm L Hm)
 variable {r k : ℕ} (S : Frames L r k)
 
 /- English proof (translation)
-Use `(hn.2.1 (g b)).2 ?_` and prove the remaining obligations. Introduce `y hy`. Apply `hf_swap_zero S.herm.1` to reduce the goal to its premises. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Proceed by induction. Treat this case separately.
 
-Take `⟨i, hi, rfl⟩` from `hy`. Rewrite using `[hg, if_neg]`. Introduce and unpack `⟨rfl, -⟩`. Simplify using `at hi`. Consider the case `zero => exact hf_zero _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add a c _ _ ha hc => rw [hf_add, ha, hc, add_zero]`. Consider the case `smul c a _ ha => rw [hf_smul, ha, mul_zero]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem frame_perp (g : Fin (r + 1) → S.V) (T : E)
     (hg : ∀ a b, hf L S.Hm (g a) (g b) = if a = Fin.last r ∧ b = Fin.last r then T else 0)
@@ -95,25 +95,23 @@ theorem frame_perp (g : Fin (r + 1) → S.V) (T : E)
   | smul c a _ ha => rw [hf_smul, ha, mul_zero]
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono fun _ ha => lt_of_lt_of_le ha h)`.
+A detailed English derivation is pending.
 -/
 theorem spanTo_mono (g : Fin (r + 1) → S.V) {i j : ℕ} (h : i ≤ j) : S.spanTo g i ≤ S.spanTo g j :=
   Submodule.span_mono (Set.image_mono fun _ ha => lt_of_lt_of_le ha h)
 
 /- English proof (translation)
-Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem m hm`. Break down `hm with ⟨b, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Use `⟨0, Λ.zero_mem, Y.zero_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[add_zero, ← h1]`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span (Or.inl ⟨b, rfl⟩)`. Use `⟨S.h (g' b) u • (algebraMap F E S.th⁻¹ • (x + x')), Λ.smul_mem ⟨_, hO b⟩ hΛ, Y.smul_mem _ (Y.smul_mem _ hY), ?_⟩` and prove the remaining obligations. Establish `: algebraMap F E S.th⁻¹ • (g' b - g b) - S.h (algebraMap F E S.th⁻¹ • (g' b - g b)) u • x + S.h (g' b) u • (algebraMap F E S.th⁻¹ • (x + x')) = algebraMap F E S.th⁻¹ • (g₁' b - g₁ b)`. Rewrite using `[h1, h1']`. Simplify using `only [Frames.h, hf_smul, hf_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `module`. Simplify using `only []`. Rewrite using `[this]`. Conclude with `Submodule.subset_span (Or.inr ⟨b, rfl⟩)`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `⟨0, Λ.zero_mem, Y.zero_mem, ?_⟩` and prove the remaining obligations. Simplify using `[Frames.h, hf_zero]`. Consider the case `add a c _ _ ha hc`. Take `⟨y, hy, hy', ha⟩` from `ha`. Take `⟨z, hz, hz', hc⟩` from `hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨y + z, Λ.add_mem hy hz, Y.add_mem hy' hz', ?_⟩` and prove the remaining obligations. Establish `: a + c - S.h (a + c) u • x + (y + z) = (a - S.h a u • x + y) + (c - S.h c u • x + z)`. Simplify using `only [Frames.h, hf_add]`. Use `module`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem _ ha hc`. Consider the case `smul c a _ ha`. Take `⟨y, hy, hy', ha⟩` from `ha`. Use `⟨(c : E) • y, Λ.smul_mem c hy, Y.smul_mem _ hy', ?_⟩` and prove the remaining obligations. Establish `: c • a - S.h (c • a) u • x + (c : E) • y = (c : E) • (a - S.h a u • x + y)`.
-
-Express the relevant statement in the definitionally equal form `(c : E) • a - S.h ((c : E) • a) u • x + (c : E) • y = _`. Simplify using `only [Frames.h, hf_smul]`. Use `module`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c ha`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mof_transport (Λ : Submodule L.O S.V) (Y : Submodule E S.V) (g g' g₁ g₁' : Fin (r + 1) → S.V)
     (x x' u : S.V) (h1 : ∀ b, g₁ b = g b - S.h (g b) u • x) (h1' : ∀ b, g₁' b = g' b + S.h (g' b) u • x')
@@ -159,7 +157,7 @@ theorem mof_transport (Λ : Submodule L.O S.V) (Y : Submodule E S.V) (g g' g₁ 
     exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Unfold `Frames.th`. Use `split_ifs`. Introduce `h`. Conclude with `S.ϖ_irr.ne_zero (Subtype.ext h)`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem th_ne : S.th ≠ 0 := by
   unfold Frames.th
@@ -173,31 +171,29 @@ end GlobalTheory.HL.TraceRep
 open GlobalTheory.HL.TraceRep in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hF x x' u s hmv hw Λ₁ hΛ₁ y hy`. Take `⟨w, hwΛ, hwW, huw⟩` from `hw`. Take `⟨hsx, -, -, -, -, -, -, hux, hux', hxX, hxX'⟩` from `GlobalTheory.T.hermitianDoubleCosetFrames_datum_move_properties L r k S j β βJ d Λ hT hF x x' u s hmv`. Take `⟨n₀, hn₀, n₀', hn₀', n'', hn'', -, e1, e2, e3, e4, hW₁⟩` from `GlobalTheory.T.move_lattice_isTerm_same_datum_with_witnesses L r k S j β βJ d Λ hT hF x x' u s hmv`. Take `⟨hSD, hW, hMs, -, hf', -⟩` from `GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlev` using `(GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ hT).2.2.2.2.2.2.2.2.2.2`. Establish `hΛe : n₀⁻¹ • Λ = Λ₁` using `SetLike.coe_injective (e4.trans hΛ₁.symm)`. Rewrite `hW₁` using `[hΛe]`. Establish `hM₁` using `(GlobalTheory.HL.WitIndep.witness_independence L r k S d Λ₁ _ _ hW₁).2.1`. Take `⟨hx, hx', ⟨t, ht, hte⟩, -, huΛ, huY, -⟩` from `hmv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hH` using `S.herm.1`. Establish `hint : ∀ a ∈ Λ, ∀ b ∈ Λ, S.h a b ∈ L.O` using `fun a ha b hb => (hSD.2 b).2 hb a ha`. Establish `hp` using `frame_perp S S.f _ S.gram _ hW.2.2.1`. Establish `hp'` using `frame_perp S S.f' _ S.gram' _ hW.2.2.2.1`. Establish `hxME : x ∈ S.ME` using `Submodule.mem_sup_left (spanTo_mono S S.f (Nat.le_succ r) hxX)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyME : y ∈ S.ME` using `hy.2`. Establish `hyΛ : eich L S.Hm x u s y ∈ Λ`. Establish `: y ∈ (Λ₁ : Set S.V)` using `hy.1`. Rewrite `this` using `[hΛ₁]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hκ : hf L S.Hm y x ∈ L.O`. Establish `h1` using `hint _ hyΛ _ hwΛ`. Establish `h2 : hf L S.Hm y w = 0` using `hf_swap_zero hH (hwW y hyME)`. Establish `h3 : hf L S.Hm x w = 0` using `hf_swap_zero hH (hwW x hxME)`. Establish `h4 : hf L S.Hm u w = 1` using `huw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Frames.h, eich, hf_sub, hf_add, hf_smul, h2, h3, h4] at h1`. Use `L.O.neg_mem h1` as an intermediate fact. Simplify using `using this`. Establish `hbΛ : y + hf L S.Hm y u • x ∈ Λ`. Establish `: y + hf L S.Hm y u • x = eich L S.Hm x u s y + hf L S.Hm y x • (u + s • x)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[eich]`. Rewrite using `[this]`. Conclude with `Λ.add_mem hyΛ (Λ.smul_mem ⟨_, hκ⟩ (Λ.add_mem huΛ hsx))`. Establish `hbs : y + hf L S.Hm y u • x ∈ S.sat Λ` using `⟨hbΛ, S.ME.add_mem hyME (S.ME.smul_mem _ hxME)⟩`. Take `⟨y₀, hy₀Y, hm⟩` from `(hlev _ hbs (j + 1)).1 (hF.2.2.1 _ hbs)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy₀Λ : y₀ ∈ Λ`. Use `Λ.sub_mem hbΛ (hMs hm).1` as an intermediate fact. Simplify using `using this`. Establish `hfrΛ : ∀ b, S.fr' d Λ b ∈ Λ` using `fun b => (hf' (r + 1) le_rfl _).2 (Submodule.subset_span ⟨b, b.2, rfl⟩) |>.1`. Establish `hth : algebraMap F E S.th⁻¹ • (x + x') ∈ Λ`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hte, smul_smul, ← map_mul, inv_mul_cancel₀ (th_ne S), map_one, one_smul]`. Conclude with `ht`. Take `⟨y₁, hy₁Λ, hy₁Y, hm₁⟩` from `mof_transport S Λ (S.spanTo S.f (j + 1) ⊔ S.spanTo S.f' (j + 1)) (S.fr d Λ) (S.fr' d Λ) (fun b => (n₀⁻¹ * (S.wit d Λ).1) (S.f b)) (fun b => (n'' * n₀' * (S.wit d Λ).2) (S.f' b)) x x' u (fun b => by`. Express the relevant statement in the definitionally equal form `n₀⁻¹ (S.fr d Λ b) = _`. Establish `h0 : hf L S.Hm (S.fr d Λ b) x = 0` using `hp b x hxX`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e1, eich, h0, hf_neg_right]`. Simplify using `[Frames.h, sub_eq_add_neg])`. Use the proof step `(fun b => by`. Express the relevant statement in the definitionally equal form `n'' (n₀' (S.fr' d Λ b)) = _`. Establish `h0 : hf L S.Hm (S.fr' d Λ b) x' = 0` using `hp' b x' hxX'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3 (n₀' (S.fr' d Λ b)) ((hn₀'.2.1 _).2 (hp' b)), e2, eich, h0]`. Simplify using `[Frames.h])`. Use the proof step `(fun b => hint _ (hfrΛ b) _ huΛ) hth (Submodule.add_mem_sup hx hx') _ hm`. Use `⟨y₀ - y₁, Λ.sub_mem hy₀Λ hy₁Λ, Submodule.sub_mem _ hy₀Y hy₁Y, ?_⟩` and prove the remaining obligations. Rewrite using `[hM₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : hf L S.Hm x u = 0` using `hf_swap_zero hH hux`. Establish `h6 : hf L S.Hm y₀ u = 0` using `hf_swap_zero hH (huY y₀ hy₀Y)`. Establish `: y - (y₀ - y₁) = y + hf L S.Hm y u • x - y₀ - S.h (y + hf L S.Hm y u • x - y₀) u • x + y₁`. Simplify using `only [Frames.h, hf_sub, hf_add, hf_smul, h5, h6]`. Use `module`.
-
-Rewrite using `[this]`. Conclude with `hm₁`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HL.TraceRep.class_from_trace : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (j : Fin r) (β βJ : ℕ) (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → S.InFF β (j + 1) βJ d Λ → ∀ x x' u s, S.IsMove (j + 1) d Λ x x' u s → (∃ y ∈ Λ, y ∈ S.W0 ∧ S.h u y = 1) → ∀ Λ₁ : Submodule L.O S.V, (Λ₁ : Set S.V) = S.moved Λ x u s → ∀ y ∈ S.sat Λ₁, ∃ y₀ ∈ Λ, y₀ ∈ (S.spanTo S.f (j + 1) ⊔ S.spanTo S.f' (j + 1)) ∧ y - y₀ ∈ S.M d Λ₁ := by
   intro F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hF x x' u s hmv hw Λ₁ hΛ₁ y hy

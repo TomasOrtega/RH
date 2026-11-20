@@ -35,7 +35,7 @@ def AbLocusSmooth (Y : Model Xo c β) : Prop :=
   ∃ U : Y.X.Opens, (U : Set Y.X) = abLocus Y.t.G ∧ SmoothOfRelativeDimension D.dim (U.ι ≫ Y.s)
 
 /- English proof (translation)
-Take `⟨h0, hn, hi, hc, hU, t, m, S, hS⟩` from `h`. Conclude with `⟨t, m, h3 R hn hi hc ξ t m hU ⟨S, hS⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsUnifBase.out {Y : Model Xo c β} (h3 : Y.N3) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     {ξ : Sp R ⟶ Y.X} (h : IsUnifBase Y R ξ) :
@@ -44,7 +44,7 @@ theorem IsUnifBase.out {Y : Model Xo c β} (h3 : Y.N3) {R : Type} [CommRing R] [
   exact ⟨t, m, h3 R hn hi hc ξ t m hU ⟨S, hS⟩⟩
 
 /- English proof (translation)
-Take `⟨U', hU', hs⟩` from `h`. Take `rfl : U = U'` from `SetLike.coe_injective (hU.trans hU'.symm)`. Conclude with `hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem AbLocusSmooth.smooth {Y : Model Xo c β} (h : AbLocusSmooth Y) (U : Y.X.Opens)
     (hU : (U : Set Y.X) = abLocus Y.t.G) : SmoothOfRelativeDimension D.dim (U.ι ≫ Y.s) := by

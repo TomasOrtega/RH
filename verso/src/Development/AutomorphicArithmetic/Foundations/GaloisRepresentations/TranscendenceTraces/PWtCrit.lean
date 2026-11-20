@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hPt Z S p w h A φ hφ`. Use `choose N c hN hu hc using h A φ hφ`. Use `⟨c, ?_, fun Ω _ _ x => (hc (pt x) Ω x (hu (pt x))).symm⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N u, hN u, hu u, fun u' hu' => ?_⟩` and prove the remaining obligations. Take `⟨Ω, _, _, x, rfl⟩` from `hPt A.U u'`. Rewrite using `[← hc (pt x) Ω x (hu (pt x)), hc u Ω x hu']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.wtCrit_of :
     PtEx → WtCrit := by

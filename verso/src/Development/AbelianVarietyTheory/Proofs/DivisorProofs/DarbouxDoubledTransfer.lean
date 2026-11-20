@@ -19,11 +19,11 @@ open scoped GlobalTheory.AffinePoints
 namespace GlobalTheory.IrrAn
 
 /- English proof (translation)
-Introduce `k _ X p _ σ d R _ T hT hirr`. Take `⟨W, hW, hne, P, hP, hcorr, hrest⟩` from `GlobalTheory.T.irreducible_closed_affine_prime_ideal k X p σ T hT hirr`. Use `letI : Algebra ℂ Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX (Limits.pullback.snd p (spMap σ)) W).toAlgebra`. Take `⟨hft, d', hch⟩` from `hrest`. Use `haveI := hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ι, hemb, hrange, han⟩` from `GlobalTheory.T.affine_prime_complex_coordinate_ring k X p σ T W hW P hcorr`. Use `⟨W, hne, ?_⟩` and prove the remaining obligations. Establish `hpull` using `GlobalTheory.T.algebraic_chart_analytic_regular_functions k X p σ d R _ d' ι hemb.continuous (han d')`. Take `⟨h1, h2⟩` from `GlobalTheory.T.algebraic_chart_holomorphic_embedding d (CxPts p σ) R.finAtlas _ d' ι hch hemb (fun O g hO hg e he => hpull O g hO ((R.finAtlas_holoOn_iff hO).1 hg) e he)`. Rewrite using `[← hrange]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_open_preconnected_locIdent : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [LocallyOfFiniteType p] (σ : k →+* ℂ) (d : ℕ) (R : AnRead p σ d) [CompactSpace (CxPts p σ)] (T : Set (Limits.pullback p (spMap σ) : Scheme.{0})), IsClosed T → IsIrreducible T → ∃ W : (Limits.pullback p (spMap σ) : Scheme.{0}).Opens, (T ∩ (W : Set (Limits.pullback p (spMap σ) : Scheme.{0}))).Nonempty ∧ IsPreconnected (GlobalTheory.IrrAn.ptsOf p σ (T ∩ (W : Set (Limits.pullback p (spMap σ) : Scheme.{0})))) ∧ GlobalTheory.IrrAn.LocIdent R.finAtlas (GlobalTheory.IrrAn.ptsOf p σ (T ∩ (W : Set (Limits.pullback p (spMap σ) : Scheme.{0})))) := by
   intro k _ X p _ σ d R _ T hT hirr

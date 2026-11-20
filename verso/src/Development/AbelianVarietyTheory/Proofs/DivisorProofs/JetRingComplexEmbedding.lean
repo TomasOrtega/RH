@@ -19,40 +19,40 @@ def coeffMap (x : J.B) : J'.B := J'.b.repr.symm (Finsupp.mapRange σ σ.map_zero
 variable {σ J J'}
 
 /- English proof (translation)
-Simplify using `[coeffMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeffMap_repr (x : J.B) (ν : Idx I n) : J'.b.repr (coeffMap σ J J' x) ν = σ (J.b.repr x ν) := by
   simp [coeffMap]
 
 /- English proof (translation)
-Use `J'.b.ext_elem fun ν => ?_` and prove the remaining obligations. Simplify using `[coeffMap_repr]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem coeffMap_add (x y : J.B) : coeffMap σ J J' (x + y) = coeffMap σ J J' x + coeffMap σ J J' y := by
   refine J'.b.ext_elem fun ν => ?_
   simp [coeffMap_repr]
 
 /- English proof (translation)
-Use `J'.b.ext_elem fun ν => ?_` and prove the remaining obligations. Simplify using `[coeffMap_repr]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem coeffMap_zero : coeffMap σ J J' 0 = 0 := by
   refine J'.b.ext_elem fun ν => ?_
   simp [coeffMap_repr]
 
 /- English proof (translation)
-Use `J'.b.ext_elem fun ν => ?_` and prove the remaining obligations. Simplify using `[coeffMap_repr]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem coeffMap_smul (r : R) (x : J.B) : coeffMap σ J J' (r • x) = σ r • coeffMap σ J J' x := by
   refine J'.b.ext_elem fun ν => ?_
   simp [coeffMap_repr]
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul R k x, coeffMap_smul, map_natCast, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeffMap_nsmul (k : ℕ) (x : J.B) : coeffMap σ J J' (k • x) = k • coeffMap σ J J' x := by
   rw [← Nat.cast_smul_eq_nsmul R k x, coeffMap_smul, map_natCast, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Use `J'.b.ext_elem fun ρ => ?_` and prove the remaining obligations. Rewrite using `[coeffMap_repr, J.b.repr_self, J'.b.repr_self, Finsupp.single_apply, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeffMap_basis (ν : Idx I n) : coeffMap σ J J' (J.b ν) = J'.b ν := by
   refine J'.b.ext_elem fun ρ => ?_
@@ -60,7 +60,7 @@ theorem coeffMap_basis (ν : Idx I n) : coeffMap σ J J' (J.b ν) = J'.b ν := b
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[JetRing.mul J, JetRing.mul J']`. Use `split_ifs`. Rewrite using `[coeffMap_nsmul, coeffMap_basis]`. Conclude with `coeffMap_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffMap_basis_mul (ν ν' : Idx I n) :
     coeffMap σ J J' (J.b ν * J.b ν') = J'.b ν * J'.b ν' := by
@@ -70,17 +70,17 @@ theorem coeffMap_basis_mul (ν ν' : Idx I n) :
   · exact coeffMap_zero
 
 /- English proof (translation)
-Rewrite using `[← J.one, coeffMap_basis, J'.one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeffMap_one : coeffMap σ J J' 1 = 1 := by
   rw [← J.one, coeffMap_basis, J'.one]
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span R (Set.range J.b)` using `J.b.mem_span x`. Establish `hy : y ∈ Submodule.span R (Set.range J.b)` using `J.b.mem_span y`. Proceed by induction on `hx using Submodule.span_induction generalizing y with`. Consider the case `mem a ha`. Take `⟨ν, rfl⟩` from `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem c hc`. Take `⟨ν', rfl⟩` from `hc`. Rewrite using `[coeffMap_basis_mul, coeffMap_basis, coeffMap_basis]`. Consider the case `zero => rw [mul_zero, coeffMap_zero, mul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add u v _ _ hu hv => rw [mul_add, coeffMap_add, coeffMap_add, hu, hv, mul_add]`. Consider the case `smul r u _ hu => rw [mul_smul_comm, coeffMap_smul, coeffMap_smul, hu, mul_smul_comm]`. Consider the case `zero => rw [zero_mul, coeffMap_zero, zero_mul]`. Consider the case `add u v _ _ hu hv => rw [add_mul, coeffMap_add, coeffMap_add, hu y hy, hv y hy, add_mul]`. Consider the case `smul r u _ hu => rw [smul_mul_assoc, coeffMap_smul, coeffMap_smul, hu y hy, smul_mul_assoc]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem coeffMap_mul (x y : J.B) : coeffMap σ J J' (x * y) = coeffMap σ J J' x * coeffMap σ J J' y := by
   have hx : x ∈ Submodule.span R (Set.range J.b) := J.b.mem_span x
@@ -109,11 +109,11 @@ def coeffHom : J.B →+* J'.B where
   map_add' := coeffMap_add
 
 /- English proof (translation)
-Establish `hker : ∀ a ∈ RingHom.ker J.π, coeffHom σ J J' a ∈ RingHom.ker J'.π`. Introduce `a ha`. Rewrite `ha`, the goal using `[RingHom.mem_ker]`. Rewrite using `[J'.π_eq, coeffHom, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, coeffMap_repr, ← J.π_eq, ha, map_zero]`. Use `⟨?_, fun {k} a ha => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Conclude with `fun a ha => hker a ha`. Establish `hu : IsUnit ((k.factorial : ℕ) : J'.B)`. Establish `: ((k.factorial : ℕ) : J'.B) = algebraMap ℂ J'.B (k.factorial : ℂ)` using `by simp`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUnit.mk0 _ (by exact_mod_cast k.factorial_ne_zero)).map _`. Use `hu.mul_left_cancel ?_` and prove the remaining obligations. Rewrite using `[J'.κ.factorial_mul_dpow_eq_pow (hker a ha), ← map_natCast (coeffHom σ J J'), ← map_mul, J.κ.factorial_mul_dpow_eq_pow ha, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffHom_isDPMorphism : IsDPMorphism J.κ J'.κ (coeffHom σ J J') := by
   have hker : ∀ a ∈ RingHom.ker J.π, coeffHom σ J J' a ∈ RingHom.ker J'.π := by
@@ -132,13 +132,13 @@ theorem coeffHom_isDPMorphism : IsDPMorphism J.κ J'.κ (coeffHom σ J J') := by
       J.κ.factorial_mul_dpow_eq_pow ha, map_pow]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨coeffHom σ J J', fun x ν => coeffMap_repr x ν, coeffHom_isDPMorphism σ J J'⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_coeffHom : ∃ τ : J.B →+* J'.B, (∀ x ν, J'.b.repr (τ x) ν = σ (J.b.repr x ν)) ∧ IsDPMorphism J.κ J'.κ τ :=
   ⟨coeffHom σ J J', fun x ν => coeffMap_repr x ν, coeffHom_isDPMorphism σ J J'⟩
 
 /- English proof (translation)
-Introduce `R _ σ I _ n J J'`. Conclude with `exists_coeffHom σ J J'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jet_coeffMap : ∀ {R : Type} [CommRing R] (σ : R →+* ℂ) {I : Type} [Fintype I] {n : ℕ} (J : JetRing R I n) (J' : JetRing ℂ I n),
     ∃ τ : J.B →+* J'.B, (∀ x ν, J'.b.repr (τ x) ν = σ (J.b.repr x ν)) ∧ IsDPMorphism J.κ J'.κ τ :=

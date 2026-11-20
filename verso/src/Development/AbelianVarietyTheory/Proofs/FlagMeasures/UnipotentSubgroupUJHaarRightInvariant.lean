@@ -16,9 +16,9 @@ variable {n : ℕ}
 def Bd (a : Matrix (Fin n) (Fin n) ℂ) (R : ℝ) : Prop := ∀ i j, ‖a i j‖ ≤ R
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `: ∀ l ∈ (Finset.univ : Finset (Fin n)), ‖a i l * b l j‖ ≤ R * R'` using `fun l _ => by`. Rewrite using `[norm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (ha i l) (hb l j) (norm_nonneg _) ((norm_nonneg _).trans (ha i l))`. Simplify using `using Finset.sum_le_card_nsmul _ _ _ this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Bd.mul {a b : Matrix (Fin n) (Fin n) ℂ} {R R' : ℝ} (ha : Bd a R) (hb : Bd b R') :
     Bd (a * b) ((n : ℝ) * (R * R')) := by
@@ -31,15 +31,13 @@ theorem Bd.mul {a b : Matrix (Fin n) (Fin n) ℂ} {R R' : ℝ} (ha : Bd a R) (hb
   simpa using Finset.sum_le_card_nsmul _ _ _ this
 
 /- English proof (translation)
-Use `set X := g - 1 with hX`. Establish `e : g = X + 1` using `by simp [hX]`. Use `⟨∑ l ∈ Finset.range m, ∑ i, ∑ j, ‖(X ^ l) i j‖, by positivity, fun p i j => ?_⟩` and prove the remaining obligations. Use `set B := ∑ l ∈ Finset.range m, ∑ i, ∑ j, ‖(X ^ l) i j‖ with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, (Commute.one_right X).add_pow, Matrix.sum_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `: ∀ l ∈ Finset.range (p + 1), ‖(X ^ l * 1 ^ (p - l) * (p.choose l : Matrix (Fin n) (Fin n) ℂ)) i j‖ ≤ B * ((p : ℝ) + 1) ^ m` using `fun l _ => by`. Distinguish the cases in `hl : l < m`. Establish `h1 : ‖(X ^ l) i j‖ ≤ B` using `((Finset.single_le_sum (f := fun j => ‖(X ^ l) i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖(X ^ l) i j‖) (fun _ _ => by positivity) (Finset.mem_univ i))).trans (Finset.single_le_sum (f := fun l => ∑ i, ∑ j, ‖(X ^ l) i j‖) …`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (p.choose l : ℝ) ≤ ((p : ℝ) + 1) ^ m`. Establish `h3 : (p.choose l : ℝ) ≤ (p : ℝ) ^ l` using `by exact_mod_cast Nat.choose_le_pow p l`. Establish `h4 : (0 : ℝ) ≤ p` using `Nat.cast_nonneg p`. Conclude with `h3.trans ((pow_le_pow_left₀ h4 (by linarith) l).trans (pow_le_pow_right₀ (by linarith) hl.le))`. Rewrite using `[one_pow, mul_one, ← nsmul_eq_mul', Matrix.smul_apply, nsmul_eq_mul, norm_mul, Complex.norm_natCast, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Conclude with `mul_le_mul h1 h2 (Nat.cast_nonneg _) hB0`. Rewrite using `[pow_eq_zero_of_le (not_lt.1 hl) hg]`. Simplify using `only [zero_mul, Matrix.zero_apply, norm_zero]`. Check the signs of the components of the expression. Use `(Finset.sum_le_card_nsmul _ _ _ this).trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Simplify using `only [Finset.card_range, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bd_pow {g : Matrix (Fin n) (Fin n) ℂ} {m : ℕ} (hg : (g - 1) ^ m = 0) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ j : ℕ, Bd (g ^ j) (B * ((j : ℝ) + 1) ^ (m + 1)) := by
@@ -80,55 +78,49 @@ end GlobalTheory.UJUnimod
 namespace GlobalTheory.UJUnimod
 
 /- English proof (translation)
-Introduce `n ε m S hS hu μ hμ`. Take `⟨hσ, h0, hc, hl⟩` from `hμ`. Establish `hce : Topology.IsClosedEmbedding S.subtype` using `hS.isClosedEmbedding_subtypeVal`. Establish `hφ : MeasurableEmbedding S.subtype` using `hce.measurableEmbedding`. Use `haveI : LocallyCompactSpace S := hce.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology S := hce.isEmbedding.secondCountableTopology`. Establish `h2 : (μ.comap S.subtype).map S.subtype = μ`. Rewrite using `[hφ.map_comap]`. Use `Measure.restrict_eq_self_of_ae_mem ?_` and prove the remaining obligations. Establish `: Set.range S.subtype = (S : Set (Formalism.REAL.UJ ε))` using `Subtype.range_coe`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[this]`. Conclude with `hc`. Use `set ν : Measure S := μ.comap S.subtype with hν`. Use `haveI : SigmaFinite ν := SigmaFinite.of_map _ hφ.measurable.aemeasurable (by rwa [h2])`. Use `haveI : ν.IsMulLeftInvariant := ⟨fun g => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hφ.map_injective` to reduce the goal to its premises. Establish `hm : Measurable fun x : Formalism.REAL.UJ ε => (g : Formalism.REAL.UJ ε) * x` using `measurable_const_mul _`. Rewrite using `[Measure.map_map hφ.measurable (measurable_const_mul g), h2]`. Use `conv_rhs => rw [← hl g g.2, ← h2, Measure.map_map hm hφ.measurable]`. Use the proof step `rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : ν.IsHaarMeasure := GlobalTheory.SnMass.ProdQuot.isHaarMeasure_of_sigmaFinite ν fun h => h0 (by rw [← h2, h, Measure.map_zero])`. Establish `hfin : IsFiniteMeasureOnCompacts μ` using `⟨fun K hK => by`. Rewrite using `[← h2, hφ.map_apply]`. Conclude with `(hce.isCompact_preimage hK).measure_lt_top⟩`. Establish `hmod : ∀ s : S, μ.map (fun x => x * (s : Formalism.REAL.UJ ε)) = (Measure.modularCharacter s : ℝ≥0∞) • μ`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Establish `e1 : ν.map (· * s) = (Measure.modularCharacter s : ℝ≥0∞) • ν`. Rewrite using `[show (Measure.modularCharacter s : ℝ≥0) = Measure.modularCharacterFun s from rfl, Measure.modularCharacterFun_eq_haarScalarFactor ν s]`. Conclude with `Measure.isMulLeftInvariant_eq_smul _ ν`. Use `conv_lhs => rw [← h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Measure.map_map (measurable_mul_const _) hφ.measurable]`. Establish `: (fun x : Formalism.REAL.UJ ε => x * (s : Formalism.REAL.UJ ε)) ∘ S.subtype = S.subtype ∘ (· * s)`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite using `[this, ← Measure.map_map hφ.measurable (measurable_mul_const _), e1, Measure.map_smul, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ s : S, Measure.modularCharacter s ≤ 1`. Introduce `s`. Use `set Δ := Measure.modularCharacter s with hΔ`. Take `⟨C, D, hgr⟩` from `GlobalTheory.T.unitaryJ_haar_entryBounded_polynomial_growth ε S hS μ ⟨hσ, h0, hc, hl⟩ hfin`. Take `⟨B, hB, hpow⟩` from `bd_pow (hu _ (S.inv_mem s.2))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `Bx : ℝ → Set (Formalism.REAL.UJ ε)` to `fun R => {g | ∀ i j, ‖Formalism.MainNotions.S.uMat g i j‖ ≤ R}`. Take `⟨ρ, hρ⟩ : ∃ ρ : ℕ, μ (Bx ((ρ : ℝ) + 1)) ≠ 0` from `by by_contra! h`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero]`. Establish `: (Set.univ : Set (Formalism.REAL.UJ ε)) = ⋃ ρ : ℕ, Bx ((ρ : ℝ) + 1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `g`. Simplify using `only [Set.mem_univ, Set.mem_iUnion, true_iff]`. Take `⟨N, hN⟩` from `exists_nat_ge (∑ i, ∑ j, ‖Formalism.MainNotions.S.uMat g i j‖)`. Use `⟨N, fun i j => ?_⟩` and prove the remaining obligations. Use `(Finset.single_le_sum (f := fun j => ‖Formalism.MainNotions.S.uMat g i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖Formalism.MainNotions.S.uMat g i j‖) (fun _ _ => by positivity) (Finset.mem_univ i))` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[this]`. Conclude with `measure_iUnion_null h`. Use `set ρ' : ℝ := (ρ : ℝ) + 1 with hρ'`. Establish `hρ1 : 1 ≤ ρ'` using `by rw [hρ']; linarith [Nat.cast_nonneg (α := ℝ) ρ]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Choose the witnesses or unpack the hypotheses as in `⟨C', hC', hgr'⟩ : ∃ C' : ℝ, 0 ≤ C' ∧ ∀ R : ℝ, 1 ≤ R → (μ (Bx R)).toReal ≤ C' * R ^ D ∧ μ (Bx R) < ⊤ := by`. Use `⟨max C 0, le_max_right _ _, fun R hR => ?_⟩` and prove the remaining obligations. Establish `h1 : μ (Bx R) ≤ ENNReal.ofReal (max C 0 * R ^ D)` using `(hgr R hR).trans (ENNReal.ofReal_le_ofReal (by gcongr; exact le_max_left _ _))`. Use `⟨?_, h1.trans_lt ENNReal.ofReal_lt_top⟩` and prove the remaining obligations. Use `ENNReal.toReal_mono ENNReal.ofReal_ne_top h1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[ENNReal.toReal_ofReal (by positivity)]`. Then use the resulting hypothesis. Establish `hv : 0 < (μ (Bx ρ')).toReal` using `ENNReal.toReal_pos hρ (hgr' ρ' hρ1).2.ne`. Use `set K : ℝ := ((n : ℝ) + 1) * ρ' * (B + 1) with hK`. Establish `hK1 : 1 ≤ K`. Rewrite using `[hK]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (1 : ℝ) ≤ (n : ℝ) + 1` using `by linarith [Nat.cast_nonneg (α := ℝ) n]`. Establish `h2 : (1 : ℝ) ≤ B + 1` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hU : ∀ (a : Formalism.REAL.UJ ε) (j : ℕ), Formalism.MainNotions.S.uMat (a ^ j) = Formalism.MainNotions.S.uMat a ^ j` using `fun a j => map_pow ((Units.coeHom (Matrix (Fin n) (Fin n) ℂ)).comp (Formalism.REAL.UJ ε).subtype) a j`. Establish `em : ∀ j : ℕ, μ.map (fun x => x * ((s : Formalism.REAL.UJ ε) ^ j)) = ((Δ : ℝ≥0∞) ^ j) • μ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Use `hmod (s ^ j)` as an intermediate fact. Rewrite `this` using `[map_pow]`. Simplify using `using this`. Establish `key2 : ∀ j : ℕ, (Δ : ℝ) ^ j * (μ (Bx ρ')).toReal ≤ C' * K ^ D * ((j : ℝ) + 1) ^ ((m + 1) * D)`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Establish `ht : (1 : ℝ) ≤ ((j : ℝ) + 1) ^ (m + 1)` using `one_le_pow₀ (by linarith [Nat.cast_nonneg (α := ℝ) j])`. Establish `hme : MeasurableEmbedding (fun x : Formalism.REAL.UJ ε => x * ((s : Formalism.REAL.UJ ε) ^ j))` using `(Homeomorph.mulRight ((s : Formalism.REAL.UJ ε) ^ j)).measurableEmbedding`. Establish `h1 : (((Δ : ℝ≥0∞) ^ j) • μ) (Bx ρ') ≤ μ (Bx (K * ((j : ℝ) + 1) ^ (m + 1)))`. Rewrite using `[← em, hme.map_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `measure_mono fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x = (x * (s : Formalism.REAL.UJ ε) ^ j) * ((s : Formalism.REAL.UJ ε)⁻¹) ^ j`. Rewrite using `[mul_assoc, inv_pow, mul_inv_cancel, mul_one]`. Establish `h2` using `(show Bd (Formalism.MainNotions.S.uMat (x * (s : Formalism.REAL.UJ ε) ^ j)) ρ' from hx).mul (hpow j)`. Establish `h3 : Formalism.MainNotions.S.uMat x = Formalism.MainNotions.S.uMat (x * (s : Formalism.REAL.UJ ε) ^ j) * Formalism.MainNotions.S.uMat (((s : S)⁻¹ : S) : Formalism.REAL.UJ ε) ^ j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hU]`. Use `conv_lhs => rw [hx']`. Both sides reduce to the same expression. Introduce `i k`. Rewrite using `[h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(h2 i k).trans ?_` and prove the remaining obligations. Rewrite using `[hK]`. Establish `hB' : B ≤ B + 1` using `by linarith`. Establish `hn' : (n : ℝ) ≤ (n : ℝ) + 1` using `by linarith`. Establish `h0ρ : 0 ≤ ρ'` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hR1 : 1 ≤ K * ((j : ℝ) + 1) ^ (m + 1)` using `by nlinarith`. Establish `h2` using `(ENNReal.toReal_mono (hgr' _ hR1).2.ne h1).trans (hgr' _ hR1).1`. Rewrite `h2` using `[Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul, ENNReal.toReal_pow, mul_pow, ← pow_mul, ← mul_assoc]`. Simplify using `using h2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `by_contra! h1`. Establish `h2 : 1 < (Δ : ℝ)` using `by exact_mod_cast h1`. Establish `h3` using `((tendsto_pow_const_div_const_pow_of_one_lt ((m + 1) * D) h2).comp (Filter.tendsto_add_atTop_nat 1)).const_mul (C' * K ^ D * (Δ : ℝ))`. Rewrite `h3` using `[mul_zero]`. Take `⟨j, hj⟩` from `(h3.eventually (gt_mem_nhds hv)).exists`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h4` using `key2 j`. Establish `h5 : 0 < (Δ : ℝ) ^ j` using `by positivity`. Simplify using `only [Function.comp_apply, Nat.cast_add, Nat.cast_one] at hj`. Establish `h6 : C' * K ^ D * (Δ : ℝ) * (((j : ℝ) + 1) ^ ((m + 1) * D) / (Δ : ℝ) ^ (j + 1)) = C' * K ^ D * ((j : ℝ) + 1) ^ ((m + 1) * D) / (Δ : ℝ) ^ j`. Establish `: (Δ : ℝ) ≠ 0` using `by positivity`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `hj` using `[h6, div_lt_iff₀ h5]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `s hs`.
-
-Establish `e1` using `key ⟨s, hs⟩`. Establish `e2` using `key (⟨s, hs⟩ : S)⁻¹`. Establish `e3 : Measure.modularCharacter (⟨s, hs⟩ : S) = 1`. Use `map_mul Measure.modularCharacter (⟨s, hs⟩ : S) (⟨s, hs⟩ : S)⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, map_one]`.
-
-Use `le_antisymm e1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `hmod ⟨s, hs⟩` as an intermediate fact. Rewrite `this` using `[e3]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unimodular_of_unipotent : ∀ {n : ℕ} (ε : Fin n → Bool) (m : ℕ) (S : Subgroup (Formalism.REAL.UJ ε)),
     IsClosed (S : Set (Formalism.REAL.UJ ε)) → (∀ g ∈ S, (Formalism.MainNotions.S.uMat g - 1) ^ m = 0) →

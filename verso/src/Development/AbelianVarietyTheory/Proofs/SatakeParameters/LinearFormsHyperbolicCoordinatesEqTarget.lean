@@ -10,21 +10,19 @@ noncomputable section
 namespace GlobalTheory.KerStd.HypCoord
 
 /- English proof (translation)
-Distinguish the cases in `hs : s.val % 2 = 0`. Simplify using `only [hs, if_true, fOf, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, Finset.sum_eq_single s]`. Simplify using `only [hs, if_true]`. Establish `h` using `hdual s s rfl`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h` using `[if_pos rfl]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun k _ => by ring`. Use `_ = _ := by rw [h, mul_one]`. Introduce `t _ hts`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ht : t.val % 2 = 0`. Simplify using `only [ht, if_true]`. Establish `h` using `hdual t s (by rw [ht, hs])`. Rewrite `h` using `[if_neg hts]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun k _ => by ring`. Use `_ = 0 := by rw [h, mul_zero]`. Simplify using `[ht]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ s) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hs, if_false, fOf', Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, Finset.sum_eq_single s]`. Simplify using `only [hs, if_false]`. Establish `h` using `hdual s s rfl`. Rewrite `h` using `[if_pos rfl]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun k _ => by ring`. Use `_ = _ := by rw [h, mul_one]`. Introduce `t _ hts`. Distinguish the cases in `ht : t.val % 2 = 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[ht]`. Simplify using `only [ht, if_false]`. Establish `h` using `hdual s t (by omega)`. Rewrite `h` using `[if_neg (Ne.symm hts)]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun k _ => by ring`. Use `_ = 0 := by rw [h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ s) h`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_coef_fOf (D : D7) (p : ℕ) [Fact p.Prime] (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (om oms : Fin (nP D p / 2) → MaximalUnramifiedExtension p)
     (R : Finset (OrbitPlaces.Pl D)) {N N' r : ℕ} (g : OrbitPlaces.Pl D → Fin N → Fin N' → Fin r → MaximalUnramifiedExtension p)
@@ -76,9 +74,9 @@ theorem sum_coef_fOf (D : D7) (p : ℕ) [Fact p.Prime] (σ : MaximalUnramifiedEx
     · intro h; exact absurd (Finset.mem_univ s) h
 
 /- English proof (translation)
-Unfold `linEv linOd`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `hs : s.val % 2 = 0`. Simplify using `[hs, map_mul, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hs, map_mul, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hypZ_term (D : D7) (p : ℕ) [Fact p.Prime] {N0 N1 : ℕ} (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (om oms : Fin (nP D p / 2) → MaximalUnramifiedExtension p)
     (R : Finset (OrbitPlaces.Pl D)) {n : Type} (f f' : (R × Fin (nP D p / 2)) × Fin N0 × Fin N1 → n → MaximalUnramifiedExtension p) (i : n)
@@ -95,13 +93,13 @@ theorem hypZ_term (D : D7) (p : ℕ) [Fact p.Prime] {N0 N1 : ℕ} (σ : MaximalU
   · simp [hs, map_mul, mul_assoc]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r₁, s₁⟩ ⟨r₂, s₂⟩ h`. Simplify using `only at h`. Establish `hr : (r₁ : OrbitPlaces.Pl D) = r₂`. Take `⟨r0, _, hu⟩` from `hR (OrbitPlaces.orbMap D p r₁ s₁)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `hu r₁ ⟨r₁.2, s₁.val, rfl⟩`. Establish `e2` using `hu r₂ ⟨r₂.2, s₂.val, h.symm⟩`. Rewrite using `[e1, e2]`. Establish `hr' : r₁ = r₂` using `Subtype.ext hr`. Substitute `hr'` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hs : s₁ = s₂` using `ZMod.val_injective _ (posPl_inj D p r₁ _ _ (ZMod.val_lt s₁) (ZMod.val_lt s₂) h)`. Rewrite using `[hs]`. Introduce `z`. Take `⟨r0, ⟨hr0, e, he⟩, _⟩` from `hR z`. Use `⟨(⟨r0, hr0⟩, (e : ZMod (nP D p))), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show posPl D p r0 (e : ZMod (nP D p)).val = z`. Rewrite using `[ZMod.val_natCast, posPl_mod, he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_orbMap (D : D7) (p : ℕ) (R : Finset (OrbitPlaces.Pl D)) (hR : OrbitPlaces.IsReps D p R) :
     Function.Bijective (fun y : R × ZMod (nP D p) => OrbitPlaces.orbMap D p y.1 y.2) := by
@@ -128,11 +126,11 @@ end GlobalTheory.KerStd.HypCoord
 namespace GlobalTheory.KerStd.HypCoord
 
 /- English proof (translation)
-Use `set F : (R × Fin (nP D p / 2)) × Fin N × Fin N' → ZMod (nP D p) → MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p] := fun e s => MvPowerSeries.C (((if s.val % 2 = 0 then fOf D p σ om R g e i * σ^[s.val] (oms e.1.2) else fOf' D p σ oms R g e i * σ^[s.val] (om e.1.2) : Maxim …`. Establish `hB : Function.Bijective (fun y : (R × ZMod (nP D p)) × Fin N × Fin N' => ((OrbitPlaces.orbMap D p y.1.1 y.1.2, y.2) : OrbitPlaces.Pl D × Fin N × Fin N'))` using `(bijective_orbMap D p R hR).prodMap Function.bijective_id`. Set `eqv : ((R × ZMod (nP D p)) × Fin N × Fin N') × Fin (nP D p / 2) ≃ ((R × Fin (nP D p / 2)) × Fin N × Fin N') × ZMod (nP D p)` to `{ toFun := fun y => (((y.1.1.1, y.2), y.1.2), y.1.1.2) invFun := fun x => (((x.1.1.1, x.2), x.1.2), x.1.1.2) left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Unfold `hypZ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_coef_fOf D p σ om oms R g hdual y.1.1 y.2.1 y.2.2 i y.1.2, hF]`. Simplify using `only [← Finset.sum_mul, ← map_sum]`. Use `congr 2`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `_ = _ := hB.sum_comp (fun j : OrbitPlaces.Pl D × Fin N × Fin N' => MvPowerSeries.C ((g j.1 j.2.1 j.2.2 i : MaximalUnramifiedExtension p) : ℂ_[p]) * MvPowerSeries.X j)`.
+A detailed English derivation is pending.
 -/
 theorem hypZ_fOf (D : D7) (p : ℕ) [Fact p.Prime] (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (om oms : Fin (nP D p / 2) → MaximalUnramifiedExtension p)
     (R : Finset (OrbitPlaces.Pl D)) {N N' r : ℕ} (g : OrbitPlaces.Pl D → Fin N → Fin N' → Fin r → MaximalUnramifiedExtension p)
@@ -176,9 +174,9 @@ theorem hypZ_fOf (D : D7) (p : ℕ) [Fact p.Prime] (σ : MaximalUnramifiedExtens
           MvPowerSeries.C ((g j.1 j.2.1 j.2.2 i : MaximalUnramifiedExtension p) : ℂ_[p]) * MvPowerSeries.X j)
 
 /- English proof (translation)
-Introduce `D p _ σ om oms R N N' r κ g Λ T _ hR hdual hT q`. Simplify using `only [hypZ_fOf D p σ om oms R g hR hdual, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hT q j.1 j.2.1 j.2.2, map_sum, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem linForm_hypZ : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (om oms : Fin (nP D p / 2) → MaximalUnramifiedExtension p) (R : Finset (OrbitPlaces.Pl D)) (N N' r : ℕ) (κ : Type) (g : OrbitPlaces.Pl D → Fin N → Fin N' → Fin r → MaximalUnramifiedExtension p) (Λ : κ → Fin r → ℂ_[p]) (T : κ → OrbitPlaces.Pl D × Fin N × Fin N' → ℂ_[p]), OrbitPlaces.OrbOK D p → OrbitPlaces.IsReps D p R → (∀ s t : ZMod (nP D p), s.val % 2 = t.val % 2 → ∑ k, σ^[s.val] (om k) * σ^[t.val] (oms k) = if s = t then 1 else 0) → (∀ q z a b, ∑ i, Λ q i * ((g z a b i : MaximalUnramifiedExtension p) : ℂ_[p]) = T q (z, a, b)) → ∀ q, ∑ i, MvPowerSeries.C (Λ q i) * hypZ D p σ om oms R (fOf D p σ om R g) (fOf' D p σ oms R g) i = ∑ j, MvPowerSeries.C (T q j) * MvPowerSeries.X j := by
   intro D p _ σ om oms R N N' r κ g Λ T _ hR hdual hT q

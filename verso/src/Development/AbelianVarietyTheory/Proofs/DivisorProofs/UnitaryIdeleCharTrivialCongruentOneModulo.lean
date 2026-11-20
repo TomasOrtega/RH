@@ -8,9 +8,9 @@ open scoped TensorProduct Topology
 namespace GlobalTheory.HeckeSplitGen
 
 /- English proof (translation)
-Unfold `intAEF GlobalTheory.AdLat.hat1`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, _, ⟨x, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem integralFiniteAdelesTensor_eq_adelicCompletion_integers (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     intAEF F E = GlobalTheory.AdLat.hat1 F (Set.range (algebraMap (𝓞 E) E)) := by
@@ -24,13 +24,11 @@ theorem integralFiniteAdelesTensor_eq_adelicCompletion_integers (F E : Type) [Fi
     exact ⟨a, ha, x, rfl⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ ν hν`. Take `⟨e, he, -, he'⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Use `haveI : IsModuleTopology (FiniteAdeleRing (𝓞 F) F) (GlobalTheory.AdLat.RA F E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (GlobalTheory.AdLat.RA F E) := IsModuleTopology.toContinuousAdd (FiniteAdeleRing (𝓞 F) F) _`. Establish `hsmall` using `(GlobalTheory.AdLat.OpenLat.isOpen_nsmul_hat F E 0 ⊤ (by simp)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N, hN, hker, -⟩` from `GlobalTheory.CharFin.finite_order_of_small (infPartF F E) (finPartF F E) e.symm he' (fun z => by`. Rewrite using `[RingEquiv.symm_apply_eq]`. Conclude with `Prod.ext (he z).1.symm (he z).2.symm)`. Use the proof step `(GlobalTheory.CharFin.hatRing F E) hsmall (GlobalTheory.CharFin.finite_quotient_hatRing F E) ν hν`. Use `⟨N, hN, fun x hx => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, ⟨r, hr, hxr⟩, h3⟩` from `hx`. Rewrite `hr`, `h3` using `[integralFiniteAdelesTensor_eq_adelicCompletion_integers]`. Establish `hNr : (N : Af F ⊗[F] E) * r = N • r` using `(nsmul_eq_mul _ _).symm`. Establish `hfin : finPartF F E (x : AEF F E) ∈ GlobalTheory.AdLat.hat1 F (Set.range (algebraMap (𝓞 E) E))`. Establish `: finPartF F E (x : AEF F E) = 1 + N • r` using `by rw [← hNr, ← hxr]; ring`.
-
-Rewrite using `[this]`. Conclude with `add_mem (AddSubgroup.subset_closure ⟨1, fun w => one_mem _, _, ⟨1, rfl⟩, by simp [Algebra.TensorProduct.one_def]⟩) (nsmul_mem hr N)`. Conclude with `hker x ⟨h1, hfin, h3⟩ ⟨r, hr, by rw [hxr, hNr]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_trivial_modSetF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (ν : (AF F ⊗[F] E)ˣ →* Circle), Continuous ν →

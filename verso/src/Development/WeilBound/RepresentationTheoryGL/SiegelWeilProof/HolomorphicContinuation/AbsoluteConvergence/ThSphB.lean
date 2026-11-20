@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.Sw.AbsSt
 open PositivityTheory.Rg.Sw
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨fun _ _ => measure_lt_top μ _⟩`. Conclude with `hf.integrable_of_hasCompactSupport (hK.of_isClosed_subset (isClosed_tsupport f) (subset_univ _))`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_cpt {K : Type*} [TopologicalSpace K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K)
     [IsFiniteMeasure μ] (hK : IsCompact (univ : Set K)) {f : K → ℂ} (hf : Continuous f) : Integrable f μ := by
@@ -18,17 +18,15 @@ theorem integrable_of_cpt {K : Type*} [TopologicalSpace K] [MeasurableSpace K] [
   exact hf.integrable_of_hasCompactSupport (hK.of_isClosed_subset (isClosed_tsupport f) (subset_univ _))
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ W`. Establish `hext : ∀ i, ∃ L : V →ₗ[ℂ] ℂ, ∀ x : W, L x = b.repr x i` using `fun i => by`. Take `⟨L, hL⟩` from `LinearMap.exists_extend (b.coord i)`. Conclude with `⟨L, fun x => by simpa using congrArg (fun f => f x) hL⟩`. Use `choose L hL using hext`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ i, (∫ k, w k * L i (v k) ∂μ) • (b i : V), fun l => ?_⟩` and prove the remaining obligations. Establish `hv' : ∀ k, l (v k) = ∑ i, L i (v k) * l (b i)`. Introduce `k`. Establish `h1` using `b.sum_repr ⟨v k, hv k⟩`. Establish `h2 : v k = ∑ i, (b.repr ⟨v k, hv k⟩ i) • (b i : V)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg Subtype.val h1`. Rewrite `h3` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h3`. Conclude with `h3.symm`. Use `conv_lhs => rw [h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, ← hL i ⟨v k, hv k⟩]`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : ∀ i, Integrable (fun k => w k * L i (v k) * l (b i)) μ` using `fun i => integrable_of_cpt μ hK ((hw.mul (hc (L i))).mul continuous_const)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const]`. Use `_ = ∫ k, ∑ i, w k * L i (v k) * l (b i) ∂μ := (integral_finsetSum _ fun i _ => hint i).symm`.
-
-Use `_ = ∫ k, w k * l (v k) ∂μ := by`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [hv' k, Finset.mul_sum, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finInt {K : Type*} [TopologicalSpace K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [IsFiniteMeasure μ]
     (hK : IsCompact (univ : Set K)) {V : Type*} [AddCommGroup V] [Module ℂ V] (W : Submodule ℂ V)
@@ -68,71 +66,65 @@ theorem finInt {K : Type*} [TopologicalSpace K] [MeasurableSpace K] [BorelSpace 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `m n ε c t p q e sL ρ hL G _ _ _ _ _ _ Pp Γ ι s₀ Ht sec I Λ hG _ _ μ _ _ g y`. Take `⟨hAdil, hAuniq, hAcpt, _hAdet, hAF0c, hAV, hAF0⟩` from `hA`. Take `⟨hCrc, hCzero⟩` from `hC`. Establish `hKc : IsCompact (univ : Set (KR n))` using `hAcpt n`. Establish `hF0 : Continuous (F0 (n` using `n) p q e) := (hAF0 n p q e).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF0ne : ∀ k : KR n, F0 p q e (k : GR n) ≠ 0` using `fun k => (hAF0 n p q e).2 k k.2`. Establish `hw : Continuous fun k : KR n => (F0 p q e (k : GR n))⁻¹` using `(hF0.comp continuous_subtype_val).inv₀ hF0ne`. Establish `hF01 : F0 (n` using `n) p q e 1 = 1 := by`. Establish `h` using `((hMult n p q e).1 1 1 (KR n).one_mem).1`. Rewrite `h` using `[mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : F0 (n` using `n) p q e 1 ≠ 0 := by simpa using hF0ne 1`. Conclude with `mul_left_cancel₀ hne (by rw [mul_one]; exact h.symm)`. Establish `hRI : ∀ (z k2 : GR n), k2 ∈ KR n → (∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * I 1 (g * ι ((k : GR n) * (z * k2))) ∂μ) = F0 p q e k2 * ∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * I 1 (g * ι ((k : GR n) * z)) ∂μ`. Introduce `z k2 hk2`. Rewrite using `[← integral_const_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Establish `hk2' : InK (mR k2)` using `hk2`. Establish `h1 : I 1 (g * ι ((k : GR n) * (z * k2))) = F0 p q e k2 * I 1 (g * ι ((k : GR n) * z))`. Rewrite using `[← mul_assoc, map_mul ι, ← mul_assoc g, hG.Ik 1 _ k2 hk2', hL.kvac k2 hk2', map_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hRS : ∀ (z k2 : GR n), k2 ∈ KR n → (∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * F0 p q e ((k : GR n) * (z * k2)) ∂μ) = F0 p q e k2 * ∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * F0 p q e ((k : GR n) * z) ∂μ`. Introduce `z k2 hk2`. Rewrite using `[← integral_const_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← mul_assoc, ((hMult n p q e).1 _ k2 hk2).1]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ (k1 : GR n), k1 ∈ KR n → ∀ (X : Fin n → ℝ) (a : ℝ → GR n), (∀ s, IsDil X s (a s)) → (∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * I 1 (g * ι ((k : GR n) * (k1 * a 1))) ∂μ) = I 1 g * ∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * F0 p q e ((k : GR n) * (k1 * a 1)) ∂μ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k1 hk1 X a ha`. Take `⟨U, F, hUo, hUR, hFc, hF⟩` from `hG.Idil g X a ha`. Establish `hmc : Continuous fun k : KR n => (k : GR n) * k1` using `continuous_subtype_val.mul continuous_const`. Take `⟨V, hVo, hVR, hVc, hVd⟩` from `hAV n p q e X _ (hKc.image hmc)`. Establish `hKm : ∀ k : KR n, (k : GR n) * k1 ∈ KR n` using `fun k => (KR n).mul_mem k.2 hk1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSm : ∀ k : KR n, (k : GR n) * k1 ∈ (fun k : KR n => (k : GR n) * k1) '' univ` using `fun k => mem_image_of_mem _ (mem_univ _)`. Establish `h0U : (0 : ℂ) ∈ U` using `by simpa using hUR 0`. Establish `h0V : (0 : ℂ) ∈ V` using `by simpa using hVR 0`. Use `set Q : PX m n := (dil c X ^ 0) 1 with hQ0`. Set `Gk : KR n → ℂ → ℂ` to `fun k z => (F0 p q e (k : GR n))⁻¹ * (F ((k : GR n) * k1) z - I 1 g * holomorphicSectionExtension p q e X ((k : GR n) * k1) z)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpm : Continuous fun w : KR n × ℂ => ((w.1 : GR n) * k1, w.2)` using `(hmc.comp continuous_fst).prodMk continuous_snd`. Establish `hc1 : ContinuousOn (fun w : KR n × ℂ => F ((w.1 : GR n) * k1) w.2) (univ ×ˢ (U ∩ V))` using `ContinuousOn.comp (f := fun w : KR n × ℂ => ((w.1 : GR n) * k1, w.2)) (g := fun y : GR n × ℂ => F y.1 y.2) hFc hpm.continuousOn (fun w hw' => ⟨mem_univ _, hw'.2.1⟩)`. Establish `hc2 : ContinuousOn (fun w : KR n × ℂ => holomorphicSectionExtension p q e X ((w.1 : GR n) * k1) w.2) (univ ×ˢ (U ∩ V))` using `ContinuousOn.comp (f := fun w : KR n × ℂ => ((w.1 : GR n) * k1, w.2)) (g := fun y : GR n × ℂ => holomorphicSectionExtension p q e X y.1 y.2) hVc hpm.continuousOn (fun w hw' => ⟨hSm w.1, hw'.2.2⟩)`. Establish `hGc : ContinuousOn (fun w : KR n × ℂ => Gk w.1 w.2) (univ ×ˢ (U ∩ V))` using `((hw.comp continuous_fst).continuousOn).mul (hc1.sub (continuousOn_const.mul hc2))`. Establish `hGd : ∀ k ∈ (univ : Set (KR n)), DifferentiableOn ℂ (Gk k) (U ∩ V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k _`. Use `DifferentiableOn.const_mul (DifferentiableOn.sub ?_ (DifferentiableOn.const_mul ?_ _)) _` and prove the remaining obligations. Conclude with `((hF _).1).mono inter_subset_left`. Conclude with `(hVd _ (hSm k)).mono inter_subset_right`. Take `⟨hφd, hφD⟩` from `hHP (KR n) μ univ hKc (by simp) (U ∩ V) Gk (hUo.inter hVo) hGc hGd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hder : ∀ r : ℕ, iteratedDeriv r (fun z => ∫ k, Gk k z ∂μ) 0 = 0`. Introduce `r`. Rewrite using `[hφD 0 ⟨h0U, h0V⟩ r]`. Use `set Qr : PX m n := (dil c X ^ r) 1 with hQr`. Take `⟨W, hWf, hQW, hWst, hWc⟩` from `hL.kfin Qr`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hWf`. Establish `hvW : ∀ k : KR n, ρ ((k : GR n) * k1) Qr ∈ W` using `fun k => hWst _ (hKm k) Qr hQW`. Establish `hvc : ∀ l : PX m n →ₗ[ℂ] ℂ, Continuous fun k : KR n => l (ρ ((k : GR n) * k1) Qr)` using `fun l => (hWc Qr hQW l).comp_continuous hmc (fun k => hKm k)`. Take `⟨Φ, hΦ⟩` from `finInt μ hKc W (fun k : KR n => ρ ((k : GR n) * k1) Qr) hvW hvc _ hw`. Establish `hval : ∀ k : KR n, iteratedDeriv r (Gk k) 0 = (F0 p q e (k : GR n))⁻¹ * (I (ρ ((k : GR n) * k1) Qr) g - I 1 g * sL (ρ ((k : GR n) * k1) Qr) 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Establish `hcF : ContDiffAt ℂ r (F ((k : GR n) * k1)) 0` using `((hF _).1.contDiffOn hUo).contDiffAt (hUo.mem_nhds h0U)`. Establish `hcG : ContDiffAt ℂ r (fun z => I 1 g * holomorphicSectionExtension p q e X ((k : GR n) * k1) z) 0` using `contDiffAt_const.mul (((hVd _ (hSm k)).contDiffOn hVo).contDiffAt (hVo.mem_nhds h0V))`. Establish `e1 : iteratedDeriv r (Gk k) 0 = (F0 p q e (k : GR n))⁻¹ * iteratedDeriv r (fun z => F ((k : GR n) * k1) z - I 1 g * holomorphicSectionExtension p q e X ((k : GR n) * k1) z) 0`. Simplify using `only [Gk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[iteratedDeriv_const_mul_field]`. Establish `e0 : (fun z => F ((k : GR n) * k1) z - I 1 g * holomorphicSectionExtension p q e X ((k : GR n) * k1) z) = F ((k : GR n) * k1) - fun z => I 1 g * holomorphicSectionExtension p q e X ((k : GR n) * k1) z` using `rfl`. Rewrite using `[e1, e0, iteratedDeriv_sub hcF hcG]`. Simplify using `only [iteratedDeriv_const_mul_field]`. Rewrite using `[(hF _).2.2 r, hG.Ik Qr g _ (hKm k)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2 : iteratedDeriv r (holomorphicSectionExtension p q e X ((k : GR n) * k1)) 0 = sL (ρ ((k : GR n) * k1) Qr) 1`. Establish `h3` using `hCrc (holomorphicSectionExtension p q e X ((k : GR n) * k1)) V hVo hVR (hVd _ (hSm k)) r 0`. Simplify using `only [Complex.ofReal_zero] at h3`. Rewrite using `[← h3]`. Establish `h4 : (fun t : ℝ => holomorphicSectionExtension p q e X ((k : GR n) * k1) t) = fun s => F0 p q e ((k : GR n) * k1 * a s)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `fun s => hAF0c n p q e X a ha _ s`. Rewrite using `[h4, (hD m n ε c t p q e sL ρ hL X a ha _ r).2]`. Rewrite using `[← hL.kact Qr 1 _ (hKm k), one_mul]`. Rewrite using `[e2]`. Set `lg : PX m n →ₗ[ℂ] ℂ` to `(LinearMap.proj g).comp I`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ly : GR n → PX m n →ₗ[ℂ] ℂ` to `fun y' => (LinearMap.proj y').comp sL`. Establish `hlg : ∀ P, lg P = I P g` using `fun P => rfl`. Establish `hly : ∀ y' P, ly y' P = sL P y'` using `fun y' P => rfl`. Establish `hcv : ∀ l : PX m n →ₗ[ℂ] ℂ, Continuous fun k : KR n => (F0 p q e (k : GR n))⁻¹ * l (ρ ((k : GR n) * k1) Qr)` using `fun l => hw.mul (hvc l)`. Use `set D : ℂ := iteratedDeriv r (fun s : ℝ => ∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * F0 p q e ((k : GR n) * (k1 * a s)) ∂μ) 0 with hDdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hsL : ∀ y' : GR n, sL Φ y' = F0 p q e y' * D`. Introduce `y'`. Establish `hm' : Continuous fun k : KR n => y' * ((k : GR n) * k1)` using `continuous_const.mul hmc`. Take `⟨V', hV'o, hV'R, hV'c, hV'd⟩` from `hAV n p q e X _ (hKc.image hm')`. Establish `hSm' : ∀ k : KR n, y' * ((k : GR n) * k1) ∈ (fun k : KR n => y' * ((k : GR n) * k1)) '' univ` using `fun k => mem_image_of_mem _ (mem_univ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0V' : (0 : ℂ) ∈ V'` using `by simpa using hV'R 0`. Set `Gk' : KR n → ℂ → ℂ` to `fun k z => (F0 p q e (k : GR n))⁻¹ * holomorphicSectionExtension p q e X (y' * ((k : GR n) * k1)) z`. Establish `hpm' : Continuous fun w : KR n × ℂ => (y' * ((w.1 : GR n) * k1), w.2)` using `(hm'.comp continuous_fst).prodMk continuous_snd`. Establish `hc3 : ContinuousOn (fun w : KR n × ℂ => holomorphicSectionExtension p q e X (y' * ((w.1 : GR n) * k1)) w.2) (univ ×ˢ V')` using `ContinuousOn.comp (f := fun w : KR n × ℂ => (y' * ((w.1 : GR n) * k1), w.2)) (g := fun y : GR n × ℂ => holomorphicSectionExtension p q e X y.1 y.2) hV'c hpm'.continuousOn (fun w hw' => ⟨hSm' w.1, hw'.2⟩)`. Establish `hGc' : ContinuousOn (fun w : KR n × ℂ => Gk' w.1 w.2) (univ ×ˢ V')` using `((hw.comp continuous_fst).continuousOn).mul hc3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hGd' : ∀ k ∈ (univ : Set (KR n)), DifferentiableOn ℂ (Gk' k) V'` using `fun k _ => (hV'd _ (hSm' k)).const_mul _`. Take `⟨hψd, hψD⟩` from `hHP (KR n) μ univ hKc (by simp) V' Gk' hV'o hGc' hGd'`. Establish `step1 : sL Φ y' = ∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * iteratedDeriv r (holomorphicSectionExtension p q e X (y' * ((k : GR n) * k1))) 0 ∂μ`. Rewrite using `[← hly, hΦ (ly y')]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hly]`. Rewrite using `[← hL.kact Qr y' _ (hKm k), ← (hD m n ε c t p q e sL ρ hL X a ha _ r).2]`. Establish `h3` using `hCrc (holomorphicSectionExtension p q e X (y' * ((k : GR n) * k1))) V' hV'o hV'R (hV'd _ (hSm' k)) r 0`. Simplify using `only [Complex.ofReal_zero] at h3`. Rewrite using `[← h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 2`. Use function extensionality and compare the values at `s`. Conclude with `(hAF0c n p q e X a ha _ s).symm`. Establish `step2 : (∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * iteratedDeriv r (holomorphicSectionExtension p q e X (y' * ((k : GR n) * k1))) 0 ∂μ) = iteratedDeriv r (fun z => ∫ k, Gk' k z ∂μ) 0`. Rewrite using `[hψD 0 h0V' r]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [Gk', iteratedDeriv_const_mul_field]`. Establish `step3 : iteratedDeriv r (fun z => ∫ k, Gk' k z ∂μ) 0 = iteratedDeriv r (fun t : ℝ => ∫ k, Gk' k t ∂μ) 0`. Establish `h3` using `hCrc _ V' hV'o hV'R hψd r 0`. Simplify using `only [Complex.ofReal_zero] at h3`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3.symm`. Establish `step4 : (fun t : ℝ => ∫ k, Gk' k t ∂μ) = fun t : ℝ => F0 p q e y' * ∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * F0 p q e ((k : GR n) * (k1 * a t)) ∂μ`. Use function extensionality and compare the values at `t`. Rewrite using `[← hSph n p q e μ y' (k1 * a t)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Gk']`. Rewrite using `[hAF0c n p q e X a ha _ t]`. Simplify using `only [mul_assoc]`. Rewrite using `[step1, step2, step3, step4, iteratedDeriv_const_mul_field]`. Establish `hν : sL Φ 1 = D` using `by rw [hsL 1, hF01, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hnull : NullSec ε c (Φ - D • 1)`. Use `(hSZ m n ε c t p q e sL ρ hL (Φ - D • 1)).mpr fun y' => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, hsL y', hL.vac y']`. Expand and normalize the polynomial expressions, which then agree. Establish `hLC'` using `hLC m n ε c hL.cpos lg (fun a b P => hG.Iinv g a b P) _ hnull`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hLC'` using `[map_sub, map_smul, smul_eq_mul, hlg, hlg]`. Establish `hint1` using `integrable_of_cpt μ hKc (hcv lg)`. Establish `hint2` using `integrable_of_cpt μ hKc (hcv (ly 1))`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[hval k, hlg, hly]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = lg Φ - I 1 g * ly 1 Φ := by`. Rewrite using `[integral_sub hint1 (hint2.const_mul _), integral_const_mul, hΦ lg, hΦ (ly 1)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 0 := by`. Rewrite using `[hlg, hly, hν]`. Take the linear combination `hLC'`. Establish `hz` using `hCzero (fun z => ∫ k, Gk k z ∂μ) (U ∩ V) (hUo.inter hVo) (fun s => ⟨hUR s, hVR s⟩) hφd hder 1`. Establish `hcI : Continuous fun k : KR n => (F0 p q e (k : GR n))⁻¹ * I 1 (g * ι ((k : GR n) * (k1 * a 1)))` using `hw.mul (hG.Icont.comp (continuous_const.mul (hG.ιcont.comp (continuous_subtype_val.mul continuous_const))))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcS : Continuous fun k : KR n => (F0 p q e (k : GR n))⁻¹ * F0 p q e ((k : GR n) * (k1 * a 1))` using `hw.mul (hF0.comp (continuous_subtype_val.mul continuous_const))`. Establish `hz' : (∫ k : KR n, ((F0 p q e (k : GR n))⁻¹ * I 1 (g * ι ((k : GR n) * (k1 * a 1))) - I 1 g * ((F0 p q e (k : GR n))⁻¹ * F0 p q e ((k : GR n) * (k1 * a 1)))) ∂μ) = 0`. Rewrite using `[← hz]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [Gk]`.
-
-Rewrite using `[(hF _).2.1 1, hAF0c n p q e X a ha _ 1]`. Simplify using `only [mul_assoc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hz'` using `[integral_sub (integrable_of_cpt μ hKc hcI) ((integrable_of_cpt μ hKc hcS).const_mul _), integral_const_mul]`. Conclude with `sub_eq_zero.mp hz'`.
-
-Take `⟨k1, k2, a1, X, hk1, hk2, hda1, rfl⟩` from `hKAK n y`. Take `⟨a, ha⟩` from `hAdil n X`. Establish `ha1 : a1 = a 1` using `hAuniq n X 1 a1 (a 1) hda1 (ha 1)`. Substitute `ha1` using the available equality. Rewrite using `[hRI _ k2 hk2, hRS _ k2 hk2, key k1 hk1 X a ha]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem thSph_of' (hA : HelpA) (hC : HelpC) (hKAK : KAK) (hMult : Mult) (hD : DerivativeVacuumDilations) (hSph : Sph)
     (hSZ : SecZero) (hHP : HolParam) (hLC : LC) : ThSph := by

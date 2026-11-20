@@ -38,7 +38,7 @@ abbrev lastObj (s : SequenceOfBlowups X) : Scheme.{u} := s.schemeAt s.length
 def lastStructMap (s : SequenceOfBlowups X) : s.lastObj ⟶ X := s.projectionToBase s.length
 
 /- English proof (translation)
-The claim follows from `Eq.trans (Category.assoc (s.transitionMap h) (s.transitionMap (Nat.zero_le i)) s.isoZero.hom).symm (congrArg (fun g => g ≫ s.isoZero.hom) (show s.transitionMap h ≫ s.transitionMap (Nat.zero_le i) = s.transitionMap (Nat.zero_le i') from (s.tower.map_comp (homOfLE h).op (homOfLE (N …`.
+A detailed English derivation is pending.
 -/
 theorem transitionMap_comp_projectionToBase (s : SequenceOfBlowups X) {i i' : ℕ} (h : i ≤ i') :
     s.transitionMap h ≫ s.projectionToBase i = s.projectionToBase i' :=

@@ -11,11 +11,11 @@ open GlobalTheory GlobalTheory.CxPts
 namespace GlobalTheory.CompanionTheory.Gaga
 
 /- English proof (translation)
-Introduce `X s D hp hs L hL h hh hg`. Take `⟨σ, hσ, e⟩` from `GlobalTheory.T.holomorphic_gluing_local_functions X s D hs (AnRead.all s (RingHom.id ℂ) D) L hL h hh hg`. Take `⟨t, ht⟩` from `GlobalTheory.T.analytic_section_is_algebraic X s D hs hp (AnRead.all s (RingHom.id ℂ) D) L hL σ hσ`. Use `⟨t, fun i x hx hU => ?_⟩` and prove the remaining obligations. Establish `hx' : x ≫ s = spMap (RingHom.id ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hx, spMap]; exact (by simp)`. Set `y : CxPts s (RingHom.id ℂ)` to `⟨x, hx'⟩`. Establish `hy : y ∈ ptsIn s (RingHom.id ℂ) (L.U i)` using `hU`. Establish `h1` using `e i y hy`. Rewrite `h1` using `[← ht]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem gagaSections_pure : ∀ (X : Scheme.{0}) (s : X ⟶ Sp ℂ) (D : ℕ), IsProper s → SmoothOfRelativeDimension D s → ∀ (L : LB X), L.IsLB → ∀ h : L.ι → (Sp ℂ ⟶ X) → ℂ, (∀ (i : L.ι) (m : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)), IsOpen B → IsHolTo B y → (∀ b ∈ B, y b ≫ s = 𝟙 _ ∧ ⊤ ≤ y b ⁻¹ᵁ L.U i) → DifferentiableOn ℂ (fun b => h i (y b)) B) → (∀ (i j : L.ι) (x : Sp ℂ ⟶ X), x ≫ s = 𝟙 _ → ⊤ ≤ x ⁻¹ᵁ (L.U i ⊓ L.U j) → h i x = valAt' x (L.U i ⊓ L.U j) (L.g i j).val * h j x) → ∃ σ : L.Sec, ∀ (i : L.ι) (x : Sp ℂ ⟶ X), x ≫ s = 𝟙 _ → ⊤ ≤ x ⁻¹ᵁ L.U i → valAt' x (L.U i) (σ.f i) = h i x := by
   intro X s D hp hs L hL h hh hg

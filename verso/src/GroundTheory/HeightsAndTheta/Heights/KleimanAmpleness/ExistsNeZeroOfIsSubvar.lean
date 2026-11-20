@@ -18,13 +18,13 @@ open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (chartRingOver sec
 open GroundTheory.Heights₂.Heights.FieldNumbers (relDim)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h`. Take `⟨n₀, hn₀⟩` from `eventually_atTop.1 hC`. Use `⟨max C (|X| * (n₀ : ℝ) ^ (d + 1) / ((d + 1).factorial : ℝ)), fun n hn => ?_⟩` and prove the remaining obligations. Establish `hnd : (1 : ℝ) ≤ (n : ℝ) ^ d` using `one_le_pow₀ (by exact_mod_cast hn)`. Establish `hfac : (0 : ℝ) < ((d + 1).factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `le_or_gt n₀ n with h | h` into its components or cases. Establish `h1` using `hn₀ n h`. Establish `h2 : C * (n : ℝ) ^ d ≤ max C (|X| * (n₀ : ℝ) ^ (d + 1) / ((d + 1).factorial : ℝ)) * (n : ℝ) ^ d` using `mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX : X * (n : ℝ) ^ (d + 1) / ((d + 1).factorial : ℝ) ≤ |X| * (n₀ : ℝ) ^ (d + 1) / ((d + 1).factorial : ℝ)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Apply `div_le_div_of_nonneg_right _ hfac.le` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hM` using `le_max_right C (|X| * (n₀ : ℝ) ^ (d + 1) / ((d + 1).factorial : ℝ))`. Establish `hM0 : 0 ≤ max C (|X| * (n₀ : ℝ) ^ (d + 1) / ((d + 1).factorial : ℝ))` using `le_trans (by positivity) hM`. Establish `h3` using `le_mul_of_one_le_right hM0 hnd`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[hf n]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem SectionCount.bound_from_one {X : ℝ} {d : ℕ} {f : ℕ → ℝ} (hf : ∀ n, 0 ≤ f n)
     (h : ∃ C : ℝ, ∀ᶠ n : ℕ in atTop,
@@ -56,7 +56,7 @@ theorem SectionCount.bound_from_one {X : ℝ} {d : ℕ} {f : ℕ → ℝ} (hf : 
     linarith [hf n]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `h.relevant`. Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations. Rewrite using `[Kleiman.primeOf, ReciprocityTheory.ChartRestriction.G.Geo.coordIdeal, RingHom.mem_ker]`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.coneMap, h0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem SectionCount.exists_ne_zero_of_isSubvar {k : Type} [Field k] {Ω : Type} [Field Ω] [Algebra k Ω] {N : ℕ}
     {x : Fin (N + 1) → Ω} {e : ℕ} (h : Kleiman.IsSubvar x (Kleiman.primeOf (S := k) x) e) : ∃ i, x i ≠ 0 := by
@@ -66,13 +66,13 @@ theorem SectionCount.exists_ne_zero_of_isSubvar {k : Type} [Field k] {Ω : Type}
   simp [ReciprocityTheory.ChartRestriction.G.Geo.coneMap, h0]
 
 /- English proof (translation)
-Establish `h1 : Kleiman.interNum (Kleiman.primeOf (S` using `F) x) (fun _ : Fin (d + 1) => Q.toSubSystem) = NumbersDVR.intNum F (mIdealOver F y) (fun _ : Fin (d + 1) => ν) := hN F K ι Ω y k₀ N e x hx hmod (d + 1) (fun _ => Q) (fun _ => ν) (fun _ => hQ) hsub`. Establish `hqs : ((q : ℤ) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) = q • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Establish `hL : (fun i => (Fin.cons (α` using `fun _ => Kleiman.LineBundle F x) (Kleiman.twistBundle F x (q : ℤ)) (fun _ : Fin d => Q) i).toSubSystem) = Fin.cons (α := fun _ => Kleiman.SubSystem F x Ω) (Kleiman.twistSys F x (q : ℤ)) (fun _ : Fin d => Q.toSubSystem) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `Fin.cases rfl (fun _ => rfl) i` and prove the remaining obligations. Establish `h2 : Kleiman.interNum (Kleiman.primeOf (S` using `F) x) (Fin.cons (α := fun _ => Kleiman.SubSystem F x Ω) (Kleiman.twistSys F x (q : ℤ)) (fun _ : Fin d => Q.toSubSystem)) = NumbersDVR.intNum F (mIdealOver F y) (Fin.snoc (α := fun _ => K → ℤ) (fun _ : Fin d => ν) (q • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀)) := by`. Rewrite using `[NumbersDVR.VerticalDivisorsCommuting.intNum_snoc, ← hL, ← hqs]`. Conclude with `hN F K ι Ω y k₀ N e x hx hmod (d + 1) _ (Fin.cons ((q : ℤ) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) fun _ => ν) (fun i => Fin.cases (hBase F K ι Ω y k₀ N e x hx hmod (q : ℤ)) (fun _ => hQ) i) hsub`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by rw [h1, h2]; push_cast; ring, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[hP F K ι Ω y k₀ N e x hx hmod Q ν hQ n (-((n : ℤ) * q))]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_eq_mul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem SectionCount.transfer (hBase : BaseRealises.Statement)
     (hP : PowRealises.Statement) (hN : NumModel.Statement)
@@ -118,17 +118,17 @@ theorem SectionCount.transfer (hBase : BaseRealises.Statement)
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hA F _ K _ _ ι _ Ω _ _ y k₀ d ν q hmod hdim hva hq`. Establish `hpos : 0 < Fintype.card (ι k₀)`. Take `⟨i, -⟩` from `hmod.1 k₀`. Conclude with `Fintype.card_pos_iff.2 ⟨i⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN'⟩ : ∃ N, Fintype.card (ι k₀) = N + 1` from `⟨_, (Nat.succ_pred_eq_of_pos hpos).symm⟩`. Take `⟨e⟩ : Nonempty (ι k₀ ≃ Fin (N + 1))` from `⟨(Fintype.equivFin _).trans (finCongr hN')⟩`. Take `⟨Q, hQ⟩` from `hB F K ι Ω y k₀ N e hmod ν`. Establish `hsub` using `(hD F K ι Ω y k₀ N e _ rfl hmod (d + 1)).2 hdim`. Establish `hvaQ` using `(hV F K ι Ω y k₀ N e _ rfl hmod Q ν hQ).2 hva`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hZ, hS⟩` from `SectionCount.transfer hBase hP hN F K ι Ω y k₀ N e _ rfl hmod Q ν hQ d q hsub`. Take `⟨C, hC⟩` from `hA F Ω N _ d Q q hsub hvaQ hq`. Use `SectionCount.bound_from_one (fun n => Nat.cast_nonneg _) ⟨C, hC.mono fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[← hZ, ← hS n]`. Conclude with `hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hB' k _ Ω _ _ N x d Nb b hsub hva hb`. Take `⟨r, h, hby⟩` from `hva`. Establish `hgen : IsGraphGen Nb 0 h` using `fun I => by`. Rewrite using `[Kleiman.SubSystem.twist_twistSys_zero]`. Conclude with `hby.generates I`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmod` using `hG k N Ω x Nb 0 (r + 1) h (SectionCount.exists_ne_zero_of_isSubvar hsub) hgen`. Establish `hQ` using `realises_graph Nb 0 h hgen`. Establish `hdim` using `(hD k (Unit ⊕ Unit) (graphIdx N (r + 1)) Ω (graphVec x h) baseBlock N (Equiv.refl _) x rfl hmod (d + 1)).1 hsub`. Establish `hvaB` using `(hV k (Unit ⊕ Unit) (graphIdx N (r + 1)) Ω (graphVec x h) baseBlock N (Equiv.refl _) x rfl hmod Nb (graphDeg 0) hQ).1 ⟨r, h, hby⟩`. Take `⟨hZ, hS⟩` from `SectionCount.transfer hBase hP hN k (Unit ⊕ Unit) (graphIdx N (r + 1)) Ω (graphVec x h) baseBlock N (Equiv.refl _) x rfl hmod Nb (graphDeg 0) hQ d b hsub`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨C, hC⟩` from `hB' k (Unit ⊕ Unit) (graphIdx N (r + 1)) Ω (graphVec x h) baseBlock d (graphDeg 0) b hmod hdim hvaB hb`. Use `⟨C, eventually_atTop.2 ⟨1, fun n hn => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hZ, hS n]`. Conclude with `hC n hn`.
+A detailed English derivation is pending.
 -/
 theorem SectionCount.equiv (hG : GraphModel.Statement) (hB : BundleOfDeg.Statement) (hD : ModelDim.Statement)
     (hBase : BaseRealises.Statement) (hP : PowRealises.Statement) (hV : VeryAmpleModel.Statement)

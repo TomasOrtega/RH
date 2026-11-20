@@ -30,7 +30,7 @@ variable {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C] [Category.{0} 
   {ι : Type} [DecidableEq ι]
 
 /- English proof (translation)
-Introduce `T hT` and use `⟨let ⟨α, hα⟩ := hT.1; ⟨α, hm α T hα⟩, fun α h => hm α T (hT.2 α h)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem capU_map (U : ι → ObjectProperty C) (U' : ι → ObjectProperty C') (hm : ∀ α T, U' α T → U α (m.G.obj T))
     (S : Finset ι) : ∀ T, capU U' S T → capU U S (m.G.obj T) := fun T hT =>
@@ -43,7 +43,7 @@ def covHom (U : ι → ObjectProperty C) (U' : ι → ObjectProperty C') {Q : Ob
   nat h n x := rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hb`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem bij_res_of_eq {Ut V₁ V₂ : ObjectProperty C} (e : V₁ = V₂) {Q : ObjectProperty C} (hQ : Cosieve Q) (h₁ : V₁ ≤ Ut)
     (h₂ : V₂ ≤ Ut) (n : ℕ) (hb : Function.Bijective ((RC.res F hQ h₁).mapH n)) :
@@ -52,14 +52,14 @@ theorem bij_res_of_eq {Ut V₁ V₂ : ObjectProperty C} (e : V₁ = V₂) {Q : O
   exact hb
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T`. Conclude with `propext ⟨fun h => ⟨h, fun α hα => absurd hα (Finset.notMem_empty α)⟩, fun h => h.1⟩`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem capU_empty (U : ι → ObjectProperty C) : (fun T => ∃ α, U α T) = capU U ∅ := by
   funext T
   exact propext ⟨fun h => ⟨h, fun α hα => absurd hα (Finset.notMem_empty α)⟩, fun h => h.1⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T`. Use `propext ⟨fun hT => (h T).2 hT.2, fun hT => ?_⟩` and prove the remaining obligations. Take `⟨α, hα⟩` from `hS`. Conclude with `⟨⟨α, (h T).1 hT α hα⟩, (h T).1 hT⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem capU_nonempty (U : ι → ObjectProperty C) (P : ObjectProperty C) (S : Finset ι) (hS : S.Nonempty)
     (h : ∀ T, P T ↔ ∀ α ∈ S, U α T) : capU U S = P := by
@@ -82,7 +82,7 @@ variable {K : Type} [Field K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.
 def covO (B : Blow q i π D d) : Option B.ι → Z.Opens := fun o => o.elim B.U B.V
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FinNear.isAffineOpen_preimage_inf_of_isSeparated_over (𝟙 Z) q (isAffineOpen_top (Spec (CommRingCat.of K))) h (fun _ _ => trivial) h' (fun _ _ => trivial)`.
+A detailed English derivation is pending.
 -/
 theorem affine_inf (q : Z ⟶ Spec (CommRingCat.of K)) [IsSeparated q] {V V' : Z.Opens} (h : IsAffineOpen V) (h' : IsAffineOpen V') :
     IsAffineOpen (V ⊓ V') :=
@@ -90,9 +90,9 @@ theorem affine_inf (q : Z ⟶ Spec (CommRingCat.of K)) [IsSeparated q] {V V' : Z
     (fun _ _ => trivial) h' (fun _ _ => trivial)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact absurd hS Finset.not_nonempty_empty`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.inf_insert]`. Break down `s.eq_empty_or_nonempty with rfl | hs` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using h a (by simp)`. Conclude with `affine_inf q (h a (by simp)) (ih hs fun o ho => h o (Finset.mem_insert_of_mem ho))`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem affine_finset_inf (q : Z ⟶ Spec (CommRingCat.of K)) [IsSeparated q] {κ : Type} (V : κ → Z.Opens) (S : Finset κ)
     (hS : S.Nonempty) (h : ∀ o ∈ S, IsAffineOpen (V o)) : IsAffineOpen (S.inf V) := by
@@ -106,7 +106,7 @@ theorem affine_finset_inf (q : Z ⟶ Spec (CommRingCat.of K)) [IsSeparated q] {�
     · exact affine_inf q (h a (by simp)) (ih hs fun o ho => h o (Finset.mem_insert_of_mem ho))
 
 /- English proof (translation)
-Take `⟨-, -, htop, hinf, -, -⟩` from `hs K W Z Z q i (𝟙 Z)`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using htop T`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.inf_insert, hinf, ih]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

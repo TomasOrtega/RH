@@ -23,7 +23,7 @@ private def Row (q : ℕ) (r : ℤ) (N₀ : ℕ) (𝔞 : Ideal (𝓞 D.F)) (K₀
         Ideal.absNorm 𝔴' ^ i ∣ N₁.1 ∧ IsTjElt L q r 𝔴' i h₁)
 
 /- English proof (translation)
-The claim follows from `hle _ _ _ _ (hKN M) hK ((Ideal.span_singleton_le_iff_mem _).2 hM)`.
+A detailed English derivation is pending.
 -/
 private theorem kn_le
     (hle : ∀ 𝔟 𝔟' K K', IsLev L 𝔟 K → IsLev L 𝔟' K' → 𝔟 ≤ 𝔟' → K ≤ K')
@@ -32,11 +32,11 @@ private theorem kn_le
   hle _ _ _ _ (hKN M) hK ((Ideal.span_singleton_le_iff_mem _).2 hM)
 
 /- English proof (translation)
-Take `⟨h3, hq, hp, hv, e, he⟩` from `hlv`. Establish `hmem : ((g.M.1 : ℕ) : 𝓞 D.F) ∈ Ideal.span {((N₀ * c : ℕ) : 𝓞 D.F)} * 𝔞`. Take `⟨a, ha, ea⟩` from `Ideal.mem_span_singleton_mul.1 hN`. Use `Ideal.mem_span_singleton_mul.2 ⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[hM]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[← ea]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨c, 𝔞, K₁, 1, g.h, N, ⟨le_trans h3 (Nat.le_mul_of_pos_right _ hc), Nat.coprime_mul_iff_left.2 ⟨hq, hcq⟩, Nat.coprime_mul_iff_left.2 ⟨hp, hcp⟩, hv, e, he⟩, hK₁, le_rfl, kn_le hle hKN hK₁ hmem, hmem, hx, (one_mul _).symm, integ_of_mem (one_mem _), g.int, hback, hN, fun k hk u hu => …` and prove the remaining obligations. Introduce `u hu`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hu`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem row_trans
     (hle : ∀ 𝔟 𝔟' K K', IsLev L 𝔟 K → IsLev L 𝔟' K' → 𝔟 ≤ 𝔟' → K ≤ K')
@@ -60,15 +60,15 @@ private theorem row_trans
   simpa using hu
 
 /- English proof (translation)
-Take `⟨h3, hq, hp, hv, e, he⟩` from `hlv`. Take `⟨K₁, hK₁⟩` from `hex (Ideal.span {((N₀ * 1 : ℕ) : 𝓞 D.F)} * (𝔞 * 𝔴'))`. Establish `hmem : ((g.M.1 : ℕ) : 𝓞 D.F) ∈ Ideal.span {(N₀ : 𝓞 D.F)} * (𝔞 * 𝔴')`. Rewrite using `[← mul_assoc, hM]`. Take `⟨i, rfl⟩ : ∃ i', i = i' + 1` from `⟨i - 1, by omega⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hn : ((Ideal.absNorm 𝔴' : ℕ) : 𝓞 D.F) ∈ 𝔴'` using `Ideal.absNorm_mem 𝔴'`. Establish `: ((N.1 * Ideal.absNorm 𝔴' ^ (i + 1) : ℕ) : 𝓞 D.F) = (((N.1 : ℕ) : 𝓞 D.F) * ((Ideal.absNorm 𝔴' : ℕ) : 𝓞 D.F) ^ i) * ((Ideal.absNorm 𝔴' : ℕ) : 𝓞 D.F)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_mul (Ideal.mul_mem_right _ _ hN) hn`. Establish `hmem1 : ((g.M.1 : ℕ) : 𝓞 D.F) ∈ Ideal.span {((N₀ * 1 : ℕ) : 𝓞 D.F)} * (𝔞 * 𝔴')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hmem`. Use `⟨1, 𝔞 * 𝔴', K₁, g.h, 1, g.M, ⟨by simpa using h3, by simpa using hq, by simpa using hp, ?_, e + 1, ?_⟩, hK₁, Ideal.mul_le_left, kn_le hle hKN hK₁ hmem1, hmem1, ?_, (mul_one _).symm, g.int, integ_of_mem (one_mem _), ?_, hmem, ?_, ?_, Or.inr ⟨𝔴', i, hmax', hu, le_rfl, hin, by rw [hM …` and prove the remaining obligations. Conclude with `Ideal.isCoprime_iff_sup_eq.1 (IsCoprime.mul_left (Ideal.isCoprime_iff_sup_eq.2 hv) (Ideal.isCoprime_iff_sup_eq.2 (Ideal.IsMaximal.coprime_of_ne hmax' hmax hne)))`. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mono he hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu'`. Conclude with `⟨u, hK ▸ hu', hu', by simpa using one_mem K₁⟩`. Introduce `v hv'`. Conclude with `⟨v, hv', by simp⟩`. Introduce `k hk u hu'`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hnorm _ _ (hKN g.M.1) k (g.le_one hk) u hu'` as an intermediate fact. Simplify using `using this`. Introduce `u hu'`. Use `g.adm 1 (one_mem _) u hu'` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem row_near
     (hex : ∀ 𝔟, ∃ K, IsLev L 𝔟 K)
@@ -111,7 +111,7 @@ private theorem row_near
     simpa using this
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_span_singleton, show ((q : ℕ) : 𝓞 E) = algebraMap ℤ (𝓞 E) (q : ℤ) by simp, Algebra.norm_algebraMap]`. Simplify using `[Int.natAbs_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem absNorm_nat {E : Type} [Field E] [NumberField E] (q : ℕ) :
     Ideal.absNorm (Ideal.span {((q : ℕ) : 𝓞 E)}) = q ^ Module.finrank ℤ (𝓞 E) := by
@@ -123,25 +123,25 @@ end UpperTheory.Gal.Int.Geo.Pl.GoodPlacesAlt
 
 open UpperTheory.Gal.Int.Geo.Pl.GoodPlacesAlt in
 /- English proof (translation)
-Introduce `hL hT hP E _ _ _ A n p _ S F x hx N v σ J L' _ g θ hD hj`. Take `⟨hex, hle, hKN, -, hnorm, -⟩` from `hL p S.D S.G S.L`. Use `⟨σ.q, σ.r, ordCompl[σ.q] N.1, σ.𝔞, σ.K₀, σ.atp, σ.lv, σ.isLev, kn_le hle hKN σ.isLev σ.mem, σ.mem, hD, fun j => ?_⟩` and prove the remaining obligations. Establish `hK₀ : IsLev S.L (Ideal.span {((ordCompl[σ.q] N.1 * 1 : ℕ) : 𝓞 E)} * σ.𝔞) σ.K₀`. Simplify using `using σ.isLev`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Express the relevant statement in the definitionally equal form `Row σ.q σ.r (ordCompl[σ.q] N.1) σ.𝔞 σ.K₀ v.asIdeal (g j)`. Break down `hj j with ⟨hK, hM, hh⟩ | ⟨w, σ', i, hne, hc, hi, hK, hH, hM⟩` into its components or cases. Use `row_trans hle hKN σ.lv σ.mem one_pos (Nat.coprime_one_left _) (Nat.coprime_one_left _) hK₀ (g j) (by simp [hM]) ?_ ?_` and prove the remaining obligations. Introduce `v' hv'`. Use `⟨S.L.actG (g j).h⁻¹ v', integ_of_mem (inv_mem hh) v' hv', ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Simplify using the standard rewrite rules. Introduce `u hu`. Conclude with `⟨1, one_mem _, one_mem _, by simpa using hu⟩`. Take `⟨hI, hTj⟩` from `hT E A n p S F x hx N w σ' i hi _ hH`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hq : σ.q = σ'.q`. Take `⟨hr, ha⟩` from `hc hq`. Establish `hKe : σ'.K₀ = σ.K₀`. Establish `h'` using `σ'.isLev`. Rewrite `h'` using `[← hq, ← ha]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subgroup.ext fun y => (h' y).trans (σ.isLev y).symm`. Rewrite `hK` using `[hKe]`. Establish `hat` using `σ'.atp`. Rewrite `hTj`, `hat` using `[← hq, ← hr]`. Break down `Nat.eq_zero_or_pos i with rfl | hpos` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `row_trans hle hKN σ.lv σ.mem one_pos (Nat.coprime_one_left _) (Nat.coprime_one_left _) hK₀ (g j) (by simpa using hM) ?_ ?_` and prove the remaining obligations. Introduce `v' hv'`. Take `⟨y, hy, e⟩` from `hTj.back v' hv'`. Conclude with `⟨y, hy, by simpa using e⟩`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨1, one_mem _, one_mem _, by simpa using hu⟩`. Conclude with `row_near hex hle hKN hnorm σ.lv σ.mem σ.atp.max hat.max (fun e => hne (HeightOneSpectrum.ext e)) hat.le hpos hi (g j) hK hM hTj`. Establish `hat` using `σ'.atp`. Establish `hqw : ((σ'.q : ℕ) : 𝓞 E) ∈ w.asIdeal` using `hat.le (Ideal.subset_span (Set.mem_insert _ _))`. Establish `hdvd : Ideal.absNorm w.asIdeal ∣ σ'.q ^ Module.finrank ℤ (𝓞 E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 hqw)` as an intermediate fact. Rewrite `this` using `[absNorm_nat]`. Then use the resulting hypothesis. Take `⟨f, -, hf⟩` from `(Nat.dvd_prime_pow hat.prime).1 hdvd`. Establish `hcpow : Ideal.absNorm w.asIdeal ^ i = σ'.q ^ (f * i)` using `by rw [hf, pow_mul]`. Take `⟨K₁, hK₁⟩` from `hex (Ideal.span {((ordCompl[σ.q] N.1 * σ'.q ^ (f * i) : ℕ) : 𝓞 E)} * σ.𝔞)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcq : (σ'.q ^ (f * i)).Coprime σ.q` using `Nat.Coprime.pow_left _ ((Nat.coprime_primes hat.prime σ.atp.prime).2 (Ne.symm hq))`. Establish `hcp : (σ'.q ^ (f * i)).Coprime p` using `Nat.Coprime.pow_left _ ((Nat.coprime_primes hat.prime (Fact.out)).2 hat.ne)`. Use `row_trans hle hKN σ.lv σ.mem (pow_pos hat.prime.pos _) hcq hcp hK₁ (g j) (by rw [hM, hcpow]) ?_ ?_` and prove the remaining obligations. Rewrite using `[← hcpow]`. Conclude with `hTj.back`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `u hu`. Take `⟨y, hy, e⟩` from `hP E A n p S F N v σ σ'.q (f * i) hat.prime (Ne.symm hq) K₁ hK₁ u hu`. Conclude with `⟨y, hK ▸ kn_le hle hKN σ'.isLev σ'.mem hy, kn_le hle hKN σ.isLev σ.mem hy, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.Pl.goodOf_of :
     LevBasic → TjOK → ProjLev → GoodOf := by

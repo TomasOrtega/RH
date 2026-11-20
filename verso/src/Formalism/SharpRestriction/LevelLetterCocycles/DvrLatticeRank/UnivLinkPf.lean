@@ -7,9 +7,9 @@ namespace Formalism.MainNotions.N.Ln34
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules Formalism.MainNotions.N.Ln34.UnivLinkPf
 
 /- English proof (translation)
-Introduce `a ha`. Break down `ha with ha | ⟨h1, h2⟩` into its components or cases. Unfold `deep at ha split_ifs at ha`. Take `⟨h1, h2⟩` from `ha`. Conclude with `⟨by omega, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨h1, h2⟩` from `ha`. Conclude with `⟨by omega, by omega⟩`. Conclude with `⟨by omega, by omega⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem univLinkPf_deep_sub {up : Bool} {bτ S η h' : ℕ} (hb : η < bτ) (hS : bτ + S ≤ h') :
     deep up bτ S ∪ Set.Icc (-(η : ℤ)) η ⊆ Set.Icc (-(h' : ℤ)) h' := by
@@ -26,23 +26,21 @@ theorem univLinkPf_deep_sub {up : Bool} {bτ S η h' : ℕ} (hb : η < bτ) (hS 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D HW Fo hA hd hR hC hH hMF hU1 hk hU2 hDn hUp hMx`. Introduce `l _ hl K LL hG π' E hp9 T₁ T₂ F S η m h' up b hN c`. Take `⟨hc₁, hc₂, -, hJ₁, hJ₂, hηb, hbS, hh', -, hposition⟩` from `id hN`. Establish `hj₁ : ∀ τ, JumpsInV ((D.loc l).PD K) T₁.ρ τ (Set.Icc (-(h' : ℤ)) h')` using `fun τ a ha => univLinkPf_deep_sub (hηb τ) (hbS τ) (hJ₁ τ a ha)`. Establish `hj₂ : ∀ τ, JumpsInV ((D.loc l).PD K) T₂.ρ τ (Set.Icc (-(h' : ℤ)) h')` using `fun τ a ha => univLinkPf_deep_sub (hηb τ) (hbS τ) (hJ₂ τ a ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : 1 ≤ sK l K`. Establish `hdv` using `hd l hl K LL hG`. Establish `hlp : l.Prime` using `Fact.out`. Establish `h2` using `hlp.two_le`. Establish `hpos : 0 < l - 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : 0 < eK K` using `Nat.pos_of_ne_zero fun h0 => by`. Rewrite `hdv` using `[h0, zero_dvd_iff]`. Use linear arithmetic over natural numbers and integers. Conclude with `Nat.div_pos (Nat.le_of_dvd hpos hdv) he`. Establish `hM : 1 ≤ MK l K h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (0 : ℝ) < 4 * (h' : ℝ)`. Establish `: (1 : ℝ) ≤ h'` using `by exact_mod_cast hh'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs' : (0 : ℝ) < (sK l K : ℝ)` using `by exact_mod_cast hs`. Conclude with `Nat.ceil_pos.2 (div_pos h4 hs')`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨α, β, hfr⟩` from `hH l hl K LL hG π' E hp9 h' hh' c`. Establish `hU3 : ThirdPropositionSlot ((HW l).W K 1 LL hG) F (Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG) π' (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') h' (MK l K h') S up b c (rhoA l (eK K) h' + max (2 * sigA l (sK l K) h') (ycA l h' η)) α`. Break down `hposition with h2 | hsl` into its components or cases. Conclude with `hMx l hl K LL hG π' E hp9 T₁ T₂ F S η m h' up b c α β hfr hN h2`. Distinguish the cases in `hex : ∃ τ, Formalism.MainNotions.DeltaInvariantLattices.OverLetter ((HW l).W K 1 LL hG) τ c ∧ up τ = true`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Take `⟨τ₀, hτ₀, hu₀⟩` from `hex`. Conclude with `universal_lift_mono_exponent _ F (hUp l hl K LL hG π' E hp9 T₁ T₂ F S η m h' up b c α β hfr hN fun τ hτ => (hsl τ τ₀ (hτ.trans hτ₀.symm)).trans hu₀) _`. Use `universal_lift_mono_exponent _ F (hDn l hl K LL hG π' E hp9 T₁ T₂ F S η m h' up b c α β hfr hN fun τ hτ => ?_) _` and prove the remaining obligations. Consider the cases of `h : up τ`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd ⟨τ, hτ, h⟩ hex`. Take `⟨s₀, hcard, hsub, hmain⟩` from `univLinkPf_local ((HW l).W K 1 LL hG) F hc₁ hc₂ ((hA l K 1 LL hG).2.1 (fun h2 => absurd (((D.loc l).PD_p K).symm.trans h2) hl)) (hfr.1 T₂ hc₂ hj₂).2.2.2.1 (hMF l hl K LL hG π' E hp9 h' hh' c α β hfr T₂ hc₂ hj₂) hM (hR l hl K LL hG π' E hp9 T₁ h' hh' hc₁ hj₁ c) (hR l hl K LL hG π' …`. Use `⟨s₀, hcard, hsub, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `hmain x hx`. Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hpl]`. Establish `hexp : sigA l (sK l K) h' + y2K l K h' S η = sigA l (sK l K) h' + (2 * sigA l (sK l K) h' + kapA l (eK K) h' S + (rhoA l (eK K) h' + max (2 * sigA l (sK l K) h') (ycA l h' η)))`. Unfold `y2K`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp, ← Nat.cast_smul_eq_nsmul ↥(OL LL), Nat.cast_pow]`.
-
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem univlink_pf : UnivLinkStep := by
   intro D HW Fo hA hd hR hC hH hMF hU1 hk hU2 hDn hUp hMx

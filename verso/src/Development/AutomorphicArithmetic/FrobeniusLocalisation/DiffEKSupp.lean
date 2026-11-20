@@ -10,7 +10,7 @@ open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `h1 : (n : 𝓞 M) = algebraMap ℤ (𝓞 M) (n : ℤ)` using `by simp`. Rewrite using `[h1, ← Ideal.mem_comap, ← Ideal.under_def, ← h.over, Ideal.mem_span_singleton, Int.natCast_dvd_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem natMem {M : Type} [Field M] [NumberField M] (l : ℕ) (P : Ideal (𝓞 M))
     [h : P.LiesOver (span {(l : ℤ)})] (n : ℕ) : (n : 𝓞 M) ∈ P ↔ l ∣ n := by
@@ -18,9 +18,9 @@ private theorem natMem {M : Type} [Field M] [NumberField M] (l : ℕ) (P : Ideal
   rw [h1, ← Ideal.mem_comap, ← Ideal.under_def, ← h.over, Ideal.mem_span_singleton, Int.natCast_dvd_natCast]
 
 /- English proof (translation)
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Establish `h2` using `H.sqd_sq`. Rewrite `h2` using `[← hs]`. Rewrite using `[← pow_two]`. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 private theorem sq_lemma' {φ : Frame} (H : HostAx φ) (s : 𝓞 H.E) (hs : (s : H.E) = H.sqd) :
     s * s = -(H.d : 𝓞 H.E) := by
@@ -32,29 +32,25 @@ private theorem sq_lemma' {φ : Frame} (H : HostAx φ) (s : 𝓞 H.E) (hs : (s :
   exact h2
 
 /- English proof (translation)
-Introduce `φ H`. Establish `hd` using `H.der`. Take `⟨-, s, hs, -, hdiff⟩` from `discr_K H`. Establish `key : ∀ l : ℕ, l.Prime → l ≠ H.d → ∀ (P : Ideal (𝓞 H.E)) [P.LiesOver (span {(l : ℤ)})], ¬ P ∣ span {s}`. Introduce `l hl hld P _ hPs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hPs` using `[Ideal.dvd_span_singleton]`. Establish `hsq : s * s ∈ P` using `P.mul_mem_left s hPs`. Rewrite `hsq` using `[sq_lemma' H s hs, neg_mem_iff, natMem l P]`. Conclude with `hld ((Nat.prime_dvd_prime_iff_eq hl H.d_prime).1 hsq)`. Establish `mult : ∀ l : ℕ, l.Prime → l ≠ H.d → ∀ (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(l : ℤ)})], multiplicity P (differentIdeal (𝓞 H.K) (𝓞 H.E)) = multiplicity P (differentIdeal ℤ (𝓞 H.E))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl hld P hPp _`. Establish `hP0 : P ≠ ⊥`. Introduce `h0`. Establish `hl' : (l : 𝓞 H.E) ∈ P` using `(natMem l P l).2 dvd_rfl`. Rewrite `hl'` using `[h0, Ideal.mem_bot]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hl.ne_zero (by exact_mod_cast hl')`. Establish `hpr : Prime P` using `Ideal.prime_of_isPrime hP0 hPp`. Establish `hz : emultiplicity P (span {s}) = 0` using `emultiplicity_eq_zero.2 (key l hl hld P)`. Unfold `multiplicity`. Rewrite using `[hdiff, emultiplicity_mul hpr, hz, add_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun σ => Formalism.HC.Der.kc_diff_smul_eq H.toHostRaw σ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P hPp`. Prove the components needed by the constructor for the conclusion. Introduce `hPd`. Establish `hmem` using `hd.diffSupport P hPp hPd`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hne : H.QS * H.q ≠ 0` using `mul_ne_zero H.QS_ne_zero H.q_prime.ne_zero`. Take `⟨l, hl, hlq, hover⟩` from `Formalism.HC.Der.kc_exists_prime P _ hne hmem`. Use `⟨l, ?_, hover⟩` and prove the remaining obligations. Establish `hld : l ≠ H.d`. Introduce and unpack `rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `H.d_not_dvd_QSq hlq`. Simplify using `only [UpperTheory.HF.Formalism.HC.HostRaw.ramI, Finset.mem_erase]`. Use `⟨hld, ?_⟩` and prove the remaining obligations. Rewrite using `[(mem_ram H hl).1]`. Introduce `hel`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : multiplicity P (differentIdeal ℤ (𝓞 H.E)) = 0`. Rewrite using `[(diff_mult H hl P).2.2.1 (by rw [hel]; exact hl.not_dvd_one), hel]`. Establish `hdv : P ∣ differentIdeal ℤ (𝓞 H.E)` using `hdiff ▸ dvd_mul_of_dvd_left hPd _`. Conclude with `multiplicity_eq_zero.1 h0 hdv`. Introduce and unpack `⟨l, hlI, hover⟩`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [UpperTheory.HF.Formalism.HC.HostRaw.ramI, Finset.mem_erase] at hlI`. Take `⟨hld, hlr⟩` from `hlI`. Establish `hl : l.Prime`. Simplify using `only [UpperTheory.HF.Formalism.HC.HostRaw.ram, Nat.mem_primeFactors] at hlr`. Conclude with `hlr.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hv : H.vdH l ≠ 0` using `((mem_ram H hl).2.2.1).1 hlr`. Establish `hm` using `(diff_mult H hl P).1`. Establish `hne : (H.el l : ℝ) * H.vdH l ≠ 0` using `mul_ne_zero (by exact_mod_cast (UpperTheory.HF.Formalism.HC.HostRaw.el_pos H.toHostRaw l).ne') hv`. Rewrite `hne` using `[← hm, ← mult l hl hld P]`. Assume the negation of the conclusion as `hnd`.
-
-Conclude with `hne (by exact_mod_cast multiplicity_eq_zero.2 hnd)`. Introduce `l hl hld P _ _`. Rewrite using `[mult l hl hld P]`. Conclude with `(diff_mult H hl P).1`. Simplify using `only [UpperTheory.HF.Formalism.HC.HostRaw.ramI, Finset.mem_erase, UpperTheory.HF.Formalism.HC.HostRaw.ram, Nat.mem_primeFactors]`.
-
-Use `⟨H.d_ne_two.symm, Nat.prime_two, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Int.ofNat_dvd_left.1 hd.discr_primes.2.1`. Conclude with `Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero H.E)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.diff_EK_supp :
     ∀ {φ : Frame} (H : HostAx φ), (∀ σ : H.E ≃ₐ[ℚ] H.E, σ • differentIdeal (𝓞 H.K) (𝓞 H.E) = differentIdeal (𝓞 H.K) (𝓞 H.E)) ∧ (∀ (P : Ideal (𝓞 H.E)) [P.IsPrime], P ∣ differentIdeal (𝓞 H.K) (𝓞 H.E) ↔ ∃ l ∈ H.ramI, P.LiesOver (span {(l : ℤ)})) ∧ (∀ l : ℕ, l.Prime → l ≠ H.d → ∀ (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(l : ℤ)})], (multiplicity P (differentIdeal (𝓞 H.K) (𝓞 H.E)) : ℝ) = H.el l * H.vdH l) ∧ 2 ∈ H.ramI := by

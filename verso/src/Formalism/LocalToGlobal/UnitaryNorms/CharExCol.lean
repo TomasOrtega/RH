@@ -31,11 +31,9 @@ structure EtaTQc (Φ : Ideles X.E →* ℂˣ) : Prop where
   glob : ∀ k : X.Eˣ, diagUnits X.E k ∈ unitF (L := X.E) X.F → Φ (diagUnits X.E k) = 1
 
 /- English proof (translation)
-Take `⟨χ, hχ⟩` from `exists_hchar_eq_on hD hO (unitF (L := X.E) X.F) le_sup_left Φ hq.cont hq.glob`. Establish `hU : ∀ u ∈ unitIdeles X.E, χ.1 u = Φ u` using `fun u hu => hχ u (le_sup_left (b := idF (L := X.E) X.F) hu)`. Use `⟨χ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isUnitary_of_unitIdeles χ fun u hu => by rw [hU u hu]; exact hq.unitU u hu`. Introduce `v x hx show χ.1 (localIdele X.E v x) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU _ (localIdele_mem hx)]`. Conclude with `hq.unr v x hx`. Conclude with `⟨fun v k => by rw [resFin_eq, hχ _ (aF_mem _ v k)]; exact hq.resFin v k, fun w k => by rw [resInf_eq, hχ _ (aFi_mem _ w k)]; exact hq.resInf w k⟩`. Introduce `k show ((χ.1 (infDiag k) : ℂˣ) : ℂ) = _`. Rewrite using `[hU _ (infDiag_mem k)]`.
-
-Conclude with `hq.inf k`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaTExistsC_of (hD : DivExtC) (hO : OpenUnits X.E) {Φ : Ideles X.E →* ℂˣ} (hq : EtaTQc σ₀ Φ) :
     ∃ χ : HChar X.E, Col.IsEtaT X σ₀ χ := by
@@ -69,9 +67,9 @@ structure MuZeroQuasiCharacterCondition {Pr : Primes X} {m : ℕ} (Ch : Chars X 
   glob : ∀ k : X.Eˣ, diagUnits X.E k ∈ unitF (L := X.E) X.F → Φ (diagUnits X.E k) = 1
 
 /- English proof (translation)
-Establish `hy : y ∉ w.asIdeal`. Introduce `hm`. Establish `h0 : (c : 𝓞 L ⧸ w.asIdeal) = 0` using `by rw [hc]; exact Ideal.Quotient.eq_zero_iff_mem.mpr hm`. Establish `: Nontrivial (𝓞 L ⧸ w.asIdeal)` using `Ideal.Quotient.nontrivial_iff.mpr w.isPrime.ne_top`. Conclude with `c.ne_zero h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show Valued.v (algebraMap L (w.adicCompletion L) (x : L)) = 1`. Rewrite using `[hx]`. Conclude with `valued_algebraMap_eq_one L w y hy`.
+A detailed English derivation is pending.
 -/
 theorem isUnitAt_of_quot {L : Type} [Field L] [NumberField L] {w : HeightOneSpectrum (𝓞 L)} {x : Lˣ} {y : 𝓞 L}
     {c : (𝓞 L ⧸ w.asIdeal)ˣ} (hx : (x : L) = (y : L)) (hc : (c : 𝓞 L ⧸ w.asIdeal) = Ideal.Quotient.mk w.asIdeal y) :
@@ -86,13 +84,11 @@ theorem isUnitAt_of_quot {L : Type} [Field L] [NumberField L] {w : HeightOneSpec
   exact valued_algebraMap_eq_one L w y hy
 
 /- English proof (translation)
-Take `⟨χ, hχ⟩` from `exists_hchar_eq_on hD hO (unitF (L := X.E) X.F) le_sup_left Φ hq.cont hq.glob`. Establish `hU : ∀ u ∈ unitIdeles X.E, χ.1 u = Φ u` using `fun u hu => hχ u (le_sup_left (b := idF (L := X.E) X.F) hu)`. Establish `hloc : ∀ v x, IsUnitAt v x → χ.loc v x = Φ (localIdele X.E v x)` using `fun v x hx => hU _ (localIdele_mem hx)`. Use `⟨χ, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isUnitary_of_unitIdeles χ fun u hu => by rw [hU u hu]; exact hq.unitU u hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨fun v k => by rw [resFin_eq, hχ _ (aF_mem _ v k)]; exact hq.trivFin v k, fun w k => by rw [resInf_eq, hχ _ (aFi_mem _ w k)]; exact hq.trivInf w k⟩`. Take `⟨n, hn, hi⟩` from `hq.inf`. Use `⟨n, hn, fun k => ?_⟩` and prove the remaining obligations. Use `show ((χ.1 (infDiag k) : ℂˣ) : ℂ) = _`. Rewrite using `[hU _ (infDiag_mem k)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hi k`. Introduce `v hv x hx`. Rewrite using `[hloc v x hx]`. Conclude with `hq.unr v hv x hx`. Introduce `v x hx h1`.
-
-Rewrite using `[hloc v x hx]`. Conclude with `hq.tame v x hx h1`. Introduce `w x y c hx hc show ((χ.loc w.1 (atFin w.1 x) : ℂˣ) : ℂ) = _`. Rewrite using `[hloc w.1 _ (isUnitAt_of_quot hx hc)]`. Conclude with `hq.atg w x y c hx hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu0ExistsC_of (hD : DivExtC) (hO : OpenUnits X.E) {Pr : Primes X} {m : ℕ} {Ch : Chars X Pr m} {e : X.Tau → ℚ}
     {j : Fin m} {Φ : Ideles X.E →* ℂˣ} (hq : MuZeroQuasiCharacterCondition σ₀ Ch e j Φ) : ∃ χ : HChar X.E, Col.IsMu0 Ch σ₀ e j χ := by
@@ -139,7 +135,7 @@ def EtaRecFC : Prop := ∀ a : X.Fˣ, etaValC σ₀ (upF X.F a) = 1
 def EtaSqrtDC (s0 : X.E) : Prop := ∀ s : X.Eˣ, (s : X.E) = s0 → etaValC σ₀ s = 1
 
 /- English proof (translation)
-Unfold `etaValC`. Simplify using `only [zpow_one, Units.val_mul, map_mul, norm_mul, Complex.ofReal_mul, mul_div_mul_comm, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem etaValC_mul (k l : X.Eˣ) : etaValC σ₀ (k * l) = etaValC σ₀ k * etaValC σ₀ l := by
   unfold etaValC
@@ -148,17 +144,15 @@ theorem etaValC_mul (k l : X.Eˣ) : etaValC σ₀ (k * l) = etaValC σ₀ k * et
   ring
 
 /- English proof (translation)
-Take `⟨Φi, hc, hun, hloc, hdiag, hS⟩` from `hI`. Establish `hcU : ∀ u ∈ unitIdeles X.E, unrQ X.E (cEtaC X) u = 1` using `fun u hu => unrQ_unit _ hu`. Establish `hiF : ∀ v k, Φi (aF X.F v k) = 1` using `fun v k => by`. Rewrite using `[aF, map_prod]`. Conclude with `Finset.prod_eq_one fun P _ => hloc P _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `haFi : ∀ w k, aFi (L` using `X.E) X.F w k ∈ unitIdeles X.E := fun w k => Subgroup.prod_mem _ fun w' _ => (mem_unitIdeles_iff X.E _).mpr (infIdele_mem_rayUnits X.E w' _)`. Use `etaTExistsC_of σ₀ hD hO (Φ := unrQ X.E (cEtaC X) * Φi) ⟨(continuous_of_unit hO _ hcU).mul hc, fun u hu => ?_, fun v x hx => ?_, fun v k => ?_, fun w k => ?_, fun k => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, hcU u hu, one_mul]`. Conclude with `hun u`. Rewrite using `[MonoidHom.mul_apply, hcU _ (localIdele_mem hx), hloc, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mul_apply, hiF, mul_one]`. Conclude with `hF v k`. Rewrite using `[MonoidHom.mul_apply, hcU _ (haFi w k), one_mul]`. Apply `Units.val_injective` to reduce the goal to its premises. Rewrite using `[← hIn w k, aFi]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hS _ _`. Rewrite using `[MonoidHom.mul_apply, hcU _ (infDiag_mem k), one_mul, infDiag, MonoidHom.finsetProd_apply]`. Simplify using `only [MonoidHom.comp_apply]`. Rewrite using `[hS Finset.univ k, Finset.filter_true_of_mem fun i _ => Finset.mem_univ (InfinitePlace.mk (X.embC σ₀ i))]`. Establish `e : etaValC σ₀ k = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha | ⟨s, hs, he⟩⟩` from `h1 k hk`. Rewrite using `[ha]`. Conclude with `h2 a`. Rewrite using `[he, etaValC_mul, h3 s hs, h2 a, one_mul]`. Rewrite `e` using `[etaValC]`.
-
-Rewrite using `[MonoidHom.mul_apply]`. Apply `Units.val_injective` to reduce the goal to its premises. Rewrite using `[Units.val_mul, hdiag k, Units.val_one]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaTExistsC_of_leaves (hD : DivExtC) (hO : OpenUnits X.E) (hI : InfChar (X.embC σ₀) (fun _ => (1 : ℤ)))
     (hF : EtaFinCheckC X) (hIn : EtaInfCheckC σ₀) (s0 : X.E) (h1 : GlobFormC X s0) (h2 : EtaRecFC σ₀)
@@ -193,7 +187,7 @@ theorem etaTExistsC_of_leaves (hD : DivExtC) (hO : OpenUnits X.E) (hI : InfChar 
     exact e
 
 /- English proof (translation)
-The claim follows from `etaTExistsC_of_leaves σ₀ PI.character_extension_exists (PI.IdeleUnitsOpenW.openUnits X.E) hI hF hIn s0 h1 h2 h3`.
+A detailed English derivation is pending.
 -/
 theorem etaTExistsC_of_leaves' (hI : InfChar (X.embC σ₀) (fun _ => (1 : ℤ)))
     (hF : EtaFinCheckC X) (hIn : EtaInfCheckC σ₀) (s0 : X.E) (h1 : GlobFormC X s0) (h2 : EtaRecFC σ₀)
@@ -201,7 +195,7 @@ theorem etaTExistsC_of_leaves' (hI : InfChar (X.embC σ₀) (fun _ => (1 : ℤ))
   etaTExistsC_of_leaves σ₀ PI.character_extension_exists (PI.IdeleUnitsOpenW.openUnits X.E) hI hF hIn s0 h1 h2 h3
 
 /- English proof (translation)
-The claim follows from `mu0ExistsC_of σ₀ PI.character_extension_exists (PI.IdeleUnitsOpenW.openUnits X.E) hq`.
+A detailed English derivation is pending.
 -/
 theorem mu0ExistsC_of' {Pr : Primes X} {m : ℕ} {Ch : Chars X Pr m} {e : X.Tau → ℚ} {j : Fin m} {Φ : Ideles X.E →* ℂˣ}
     (hq : MuZeroQuasiCharacterCondition σ₀ Ch e j Φ) : ∃ χ : HChar X.E, Col.IsMu0 Ch σ₀ e j χ :=

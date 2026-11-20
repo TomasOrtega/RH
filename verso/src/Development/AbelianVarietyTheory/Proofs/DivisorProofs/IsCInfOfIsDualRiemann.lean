@@ -14,7 +14,7 @@ open scoped ComplexOrder ContDiff CategoryTheory.Obj MonObj
 namespace GlobalTheory.HodgeSmooth
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem one_left {S : Scheme.{0}} (A : Over S) [GrpObj A] (y : Sp ℂ ⟶ S) :
     (1 : Over.mk y ⟶ A).left = y ≫ LieVB.unitSec A := by
@@ -22,7 +22,7 @@ theorem one_left {S : Scheme.{0}} (A : Over S) [GrpObj A] (y : Sp ℂ ⟶ S) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← d.ex_zero, ← d.u.ker, ← (d.u.ker 0).2 (zero_mem _)]`. Conclude with `⟨fun h => by rw [h], fun h => Over.OverMorphism.ext (d.isPull.1.hom_ext h ((Over.w _).trans (Over.w _).symm))⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_iff {S : Scheme.{0}} {P : PPAS S} {y : Sp ℂ ⟶ S} (d : P.RiemannData y) (z : Fin P.g → ℂ) :
     z ∈ d.u.Λ ↔ (d.u.ex z).left ≫ d.φ = y ≫ LieVB.unitSec P.A := by
@@ -31,9 +31,9 @@ theorem mem_iff {S : Scheme.{0}} {P : PPAS S} {y : Sp ℂ ⟶ S} (d : P.RiemannD
     (d.isPull.1.hom_ext h ((Over.w _).trans (Over.w _).symm))⟩
 
 /- English proof (translation)
-Establish `key (φ : (Fin n → ℂ) → ℂ) : (LinearMap.toMatrix' (T.symm : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)))ᵀ *ᵥ (fun a => fderiv ℂ (φ ∘ T) 0 (Pi.single a 1)) = fun a => fderiv ℂ φ 0 (Pi.single a 1)`. Use function extensionality and compare the values at `a`. Establish `e : (Pi.single a 1 : Fin n → ℂ) = T (∑ c, T.symm (Pi.single a 1) c • Pi.single c 1)`. Rewrite using `[← pi_eq_sum_univ', T.apply_symm_apply]`. Rewrite using `[e, T.comp_right_fderiv, map_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mulVec, dotProduct]`. Rewrite using `[dualGram_chg (B := LinearMap.toMatrix' (T.symm : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ))), form_chg, key, key]`. Rewrite using `[← LinearMap.toMatrix'_mul, ← LinearMap.toMatrix'_one]`. Use `congr 1`. Conclude with `LinearMap.ext fun v => T.apply_symm_apply v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem form_dualGram_chg {n : ℕ} (T : (Fin n → ℂ) ≃L[ℂ] (Fin n → ℂ)) (H : Matrix (Fin n) (Fin n) ℂ)
     (φ ψ : (Fin n → ℂ) → ℂ) :
@@ -53,23 +53,21 @@ theorem form_dualGram_chg {n : ℕ} (T : (Fin n → ℂ) ≃L[ℂ] (Fin n → �
   exact LinearMap.ext fun v => T.apply_symm_apply v
 
 /- English proof (translation)
-Use `P.isAb.comm` as an intermediate fact. Take `⟨g, B', e, hB', hb', he, hlift⟩` from `RelExp.exists_relative_exp_of_smooth X P.A m B y b₀ P.isAb.smooth P.isAb.geomConnected hB hb₀ hy`. Establish `hT` using `fun b hb => ExpCompare.exists_equiv_of_exp X P (y b) (d b) g (e b) (he b hb).2.1 (he b hb).2.2.1 (he b hb).2.2.2.1 (he b hb).2.2.2.2.2 (he b hb).2.2.2.2.1`. Choose the witnesses or unpack the hypotheses as in `rfl : g = P.g := by`. Take `⟨T, -⟩` from `hT b₀ hb'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `using T.toLinearEquiv.finrank_eq`. Establish `: Nonempty ((Fin P.g → ℂ) ≃L[ℂ] (Fin P.g → ℂ))` using `⟨.refl _ _⟩`. Use `choose! T hT using hT`. Set `ε : (Fin m → ℂ) × (Fin P.g → ℂ) → (Sp ℂ ⟶ P.A.left)` to `fun q => (e q.1 q.2).left`. Establish `hol : IsHolTo (B' ×ˢ Set.univ) ε` using `RelExp.isHolTo_of_holAt (hB'.prod isOpen_univ) fun q hq => (he q.1 hq.1).1 q.2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : ∀ b ∈ B', ∀ z, e b z = 1 ↔ T b z ∈ (d b).u.Λ` using `fun b hb z => by`. Rewrite using `[mem_iff, ← hT b hb, ← one_left]`. Conclude with `⟨fun h => by rw [h], Over.OverMorphism.ext⟩`. Use `choose ζ hζ₀ hζ hζe using fun l : (d b₀).u.Λ => hlift ((T b₀).symm l) ((hker b₀ hb' _).2 (by simp))`. Set `H : (Fin m → ℂ) → Matrix (Fin P.g) (Fin P.g) ℂ` to `fun b => chg (LinearMap.toMatrix' (T b : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ))) (d b).H`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hH : ∀ b v w, form (H b) v w = form (d b).H (T b v) (T b w)` using `fun b v w => by`. Rewrite using `[form_chg, LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression. Establish `hsm : MContDiffAt ∞ H b₀` using `GlobalTheory.contDiffAt_gram_of_im_form_const P.g m _ ζ H b₀ (fun j => (hζ j).contDiffAt.restrict_scalars ℝ) (by`. Establish `e₁ : (Set.range fun j => ζ j b₀) = (((T b₀).symm : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ)).restrictScalars ℝ) '' (d b₀).u.Λ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hζ₀]`. Conclude with `(Set.image_eq_range _ _).symm`. Rewrite using `[e₁, Submodule.span_image, (d b₀).u.full, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `(T b₀).symm.surjective) fun j k => by`. Take `⟨C, hC, hCo, hC₀⟩` from `eventually_nhds_iff.1 ((hζ j).eventually_analyticAt.and ((hζ k).eventually_analyticAt.and ((hζe j).and ((hζe k).and (hB'.mem_nhds hb')))))`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `only [hH]`. Use `GlobalTheory.T.riemannForm_im_eventually_const_of_continuous_lattice X P m C y b₀ d ε T (ζ j) (ζ k) hCo hC₀ (RelExp.isHolTo_of_holAt (hCo.prod isOpen_univ) fun q hq => (he q.1 (hC _ hq.1).2.2.2.2).1 q.2) (fun b hb => hT b (hC b hb).2.2.2.2) (fun b hb => (hC b hb).1.continuousAt.c …` and prove the remaining obligations. Conclude with `⟨(hker b (hC b hb).2.2.2.2 _).1 (hC b hb).2.2.1, (hker b (hC b hb).2.2.2.2 _).1 (hC b hb).2.2.2.1⟩`. Establish `hdet : IsUnit (H b₀).det`. Use `(posDef_chg ?_ (d b₀).posDef).det_pos.ne'.isUnit` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `(LinearMap.isUnit_toMatrix'_iff).2 ((Module.End.isUnit_iff _).2 (T b₀).bijective)`. Establish `hκ (f : Γ(P.A.left, W)) (a : Fin P.g) : ContDiffAt ℝ ∞ (fun b => fderiv ℂ (fun z => valAt' (ε (b, z)) W f) 0 (Pi.single a 1)) b₀`. Establish `h₀ : ⊤ ≤ ε (b₀, 0) ⁻¹ᵁ W`. Rewrite `hW` using `[← one_left, ← (hker b₀ hb' 0).2 (by simp)]`. Then use the resulting hypothesis. Establish `h₁ : AnalyticAt ℂ (fun q => valAt' (ε q) W f) (b₀, 0)` using `SCV.analyticAt_of_differentiableOn (hol W f).2 ((hol W f).1.mem_nhds ⟨⟨hb', trivial⟩, h₀⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `((ContDiffAt.fderiv (f := fun b z => valAt' (ε (b, z)) W f) (g := fun _ => 0) (n := ω) (m := ∞) h₁.contDiffAt contDiffAt_const le_top).clm_apply contDiffAt_const).restrict_scalars ℝ`. Establish `hD` using `(hsm.inv hdet).transpose`. Use `ContDiffAt.congr_of_eventuallyEq (f := fun b => form (dualGram (H b)) (fun a => fderiv ℂ (fun z => valAt' (ε (b, z)) W f) 0 (Pi.single a 1)) (fun a => fderiv ℂ (fun z => valAt' (ε (b, z)) W f') 0 (Pi.single a 1))) ?_ ?_` and prove the remaining obligations. Simplify using `only [form_eq_sum]`. Conclude with `ContDiffAt.sum fun a _ => ContDiffAt.sum fun c _ => ((hκ f a).mul (hD a c)).mul (Complex.conjCLE.contDiff.contDiffAt.comp b₀ (hκ f' c))`.
-
-Use `filter_upwards [hB'.mem_nhds hb'] with b hb`. Establish `e₁ (f : Γ(P.A.left, W)) : (fun z => valAt' (ε (b, z)) W f) = (d b).fn W f ∘ T b`. Use function extensionality and compare the values at `fun z => congrArg (valAt' · W f) (hT b hb z)`. Rewrite using `[e₁, e₁]`. Conclude with `form_dualGram_chg (T b) _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffAt_dualForm {X : Scheme.{0}} (P : PPAS X) {m : ℕ} {B : Set (Fin m → ℂ)}
     {y : (Fin m → ℂ) → (Sp ℂ ⟶ X)} {b₀ : Fin m → ℂ} (d : ∀ b, P.RiemannData (y b)) (W : P.A.left.Opens)
@@ -142,7 +140,7 @@ theorem contDiffAt_dualForm {X : Scheme.{0}} (P : PPAS X) {m : ℕ} {B : Set (Fi
     exact form_dualGram_chg (T b) _ _ _
 
 /- English proof (translation)
-Establish `e : (t • H)⁻¹ = t⁻¹ • H⁻¹` using `inv_eq_right_inv (by`. Rewrite using `[smul_mul_smul_comm, mul_inv_cancel₀ ht, mul_nonsing_inv _ hH.det_pos.ne'.isUnit, one_smul])`. Rewrite using `[dualGram, dualGram, e, transpose_smul, form_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_dualGram_smul {n : ℕ} {t : ℂ} (ht : t ≠ 0) {H : Matrix (Fin n) (Fin n) ℂ} (hH : H.PosDef)
     (v w : Fin n → ℂ) : form (dualGram (t • H)) v w = t⁻¹ * form (dualGram H) v w := by
@@ -151,15 +149,15 @@ theorem form_dualGram_smul {n : ℕ} {t : ℂ} (ht : t ≠ 0) {H : Matrix (Fin n
   rw [dualGram, dualGram, e, transpose_smul, form_smul]
 
 /- English proof (translation)
-Introduce `k _ X p D hp P t ht h H σ c y hy i j`. Take `⟨U, W, hx, hle, ch⟩` from `Conormal.exists_isChart (LieVB.sec_hom (MonObj.one (X := P.A))) (mem_ptsIn.1 hy)`. Establish `hyU : y ∈ ptsIn p σ U` using `mem_ptsIn.2 hx`. Take `⟨f, hf⟩` from `ch.d_surjective (LieVB.sec_hom (MonObj.one (X := P.A))) (Twist.resM (LieVB.omega P.A) hle (c.e i))`. Take `⟨f', hf'⟩` from `ch.d_surjective (LieVB.sec_hom (MonObj.one (X := P.A))) (Twist.resM (LieVB.omega P.A) hle (c.e j))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `AlgChart.exists_mem_source (D := D) y`. Establish `d (z : CxPts p σ) : P.RiemannData z.1` using `(H σ z).1.some`. Establish `ht' : ContDiff ℝ ∞ (WithLp.toLp 2 : (Fin D → ℂ) → ReciprocityTheory.L2DbarEstimates.V D)` using `PiLp.contDiff_toLp`. Establish `ht'' : Differentiable ℂ (WithLp.toLp 2 : (Fin D → ℂ) → ReciprocityTheory.L2DbarEstimates.V D)` using `(PiLp.contDiff_toLp (n := 1)).differentiable one_ne_zero`. Establish `hc (z) (hz : z ∈ C.e.source) : WithLp.toLp 2 (fun a => ev p σ C.U (C.x a) z) = C.e z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a`. Conclude with `(C.apply_eq z hz a).symm`. Set `s : (Fin D → ℂ) → CxPts p σ` to `fun v => C.e.symm (WithLp.toLp 2 v)`. Establish `hB : IsOpen (WithLp.toLp 2 ⁻¹' C.e.target : Set (Fin D → ℂ))` using `C.e.open_target.preimage ht'.continuous`. Establish `hol : IsHolTo (WithLp.toLp 2 ⁻¹' C.e.target : Set (Fin D → ℂ)) fun v => (s v).1` using `fun V g => ⟨(ChartGlue.isOpen_over C.e (isOpen_ptsIn V)).preimage ht'.continuous, (C.holo V g).comp ht''.differentiableOn fun _ hv => hv⟩`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C.U, Fin D, inferInstance, C.x, fun v => (t : ℂ)⁻¹ * form (dualGram (d (s v)).H) ((d (s v)).cov W f) ((d (s v)).cov W f'), WithLp.toLp 2 ⁻¹' (C.e.target ∩ C.e.symm ⁻¹' ptsIn p σ U), C.source_subset hC, (ChartGlue.isOpen_over C.e (isOpen_ptsIn U)).preimage ht'.continuous, ?_, fun …` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, hc y hC]`. Conclude with `ChartGlue.mem_over C.e hC hyU`. Use `(contDiffAt_const.mul (contDiffAt_dualForm P (fun v => d (s v)) W f f' hB hv.1 hol ?_)).contDiffWithinAt` and prove the remaining obligations. Conclude with `le_trans hv.2 ((s v).1.preimage_mono ch.le)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [C.e.open_source.mem_nhds hC, (isOpen_ptsIn U).mem_nhds hyU] with z hz hzU`. Establish `e : s (fun a => ev p σ C.U (C.x a) z) = z`. Simplify using `only [s, hc z hz, C.e.left_inv hz]`. Rewrite using `[e, ← form_dualGram_smul (by exact_mod_cast ht.ne') (d z).posDef, ← (H σ z).2 (d z) U W ch.le f f' hzU, ← Met.form_frame _ c (ptsIn_mono hle hzU), ← Met.form_resM _ _ _ hle hzU, ← hf, ← hf']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isCInf_of_isDualRiemann : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ),
     SmoothOfRelativeDimension D p → ∀ (P : PPAS X) (t : ℝ), 0 < t →

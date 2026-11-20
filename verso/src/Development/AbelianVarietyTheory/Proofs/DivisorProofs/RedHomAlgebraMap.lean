@@ -26,7 +26,7 @@ abbrev redHom (φ : B →ₐ[R] DualNumber D) : B →+* D :=
   (TrivSqZeroExt.fstHom R D D).toRingHom.comp φ.toRingHom
 
 /- English proof (translation)
-Simplify using `[redHom, TrivSqZeroExt.algebraMap_eq_inl']`.
+Simplify using the standard rewrite rules.
 -/
 theorem redHom_algebraMap (φ : B →ₐ[R] DualNumber D) (r : R) :
     redHom φ (algebraMap R B r) = algebraMap R D r := by
@@ -50,7 +50,7 @@ def dVal (φ : B →ₐ[R] DualNumber D) : Ω[B⁄R] →ₗ[R] D :=
   d.liftKaehlerDifferential.restrictScalars R
 
 /- English proof (translation)
-Use `letI : Algebra B D := (redHom φ).toAlgebra`. Use `haveI : IsScalarTower R B D := IsScalarTower.of_algebraMap_eq fun r ↦ (redHom_algebraMap φ r).symm`. Conclude with `Derivation.liftKaehlerDifferential_comp_D _ b`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem dVal_D (φ : B →ₐ[R] DualNumber D) (b : B) : dVal φ (KaehlerDifferential.D R B b) = (φ b).snd := by
   letI : Algebra B D := (redHom φ).toAlgebra

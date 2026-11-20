@@ -20,9 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Ker
 
 /- English proof (translation)
-Establish `key : ∀ k, EF X ((-y) k) (w • (-y) k) = EF X (y k) (w • y k)`. Introduce `k`. Express the relevant statement in the definitionally equal form `(SW.EFBil X) (-(y k)) (w • -(y k)) = (SW.EFBil X) (y k) (w • y k)`. Rewrite using `[smul_neg]`. Simplify using `only [map_neg, LinearMap.neg_apply, neg_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `SW.epsW`. Rewrite using `[Finset.sum_congr rfl (fun k _ => key k)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem epsW_neg_rows {E : Type} [Field E] [NumberField E] [IsCMField E] {r n : ℕ} (X : Data E r) (w : E)
     (y : Matrix (Fin n) (Fin r) E) : SW.epsW X w (-y) = SW.epsW X w y := by
@@ -35,11 +35,11 @@ theorem epsW_neg_rows {E : Type} [Field E] [NumberField E] [IsCMField E] {r n : 
   rw [Finset.sum_congr rfl (fun k _ => key k)]
 
 /- English proof (translation)
-Establish `hth : C.IsTh (C.Th x φ)` using `(GlobalTheory.T.adelicZakTheta_exists_unique D S T C x hx φ hφ).1.1`. Rewrite using `[GlobalTheory.T.isLatticeVacuum_iff_signedRational_fixed D S T C w hw h1 h2 M Λ hΛ L hL _ hth]`. Establish `hsb : ∀ y, SW.IsSB (heisG C.X C.bas y φ)` using `fun y => ((GlobalTheory.SW.heisG_laws D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even).2.2.2 y φ hφ).1`. Establish `hrho` using `(GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx φ hφ).2.2.1`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h y hy`. Establish `h'` using `h (-y) (neg_mem hy)`. Rewrite `h'` using `[hrho, neg_neg, epsW_neg_rows]`. Establish `hsb' : SW.IsSB (SW.epsW C.X w y • heisG C.X C.bas y φ)` using `GlobalTheory.SW.TensVac.rho_sb (idx := C.idx) (hs := C.sympl) (hn := C.even) y hφ`. Rewrite `h'` using `[← (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx _ (hsb y)).2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx _ hsb').1 φ hφ).2 h'`. Introduce `h y hy`. Establish `h'` using `h (-y) (neg_mem hy)`. Rewrite `h'` using `[epsW_neg_rows]`. Rewrite using `[hrho, ← (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx _ (hsb (-y))).2.1, h']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latVac_th_iff (D : D7) (S T : HSp D) (C : Ctx S T) (w : D.host.E) (hw : IsIntegral ℤ w)
     (h1 : w + cc w = 1) (h2 : IdemTwo w) (M : ℕ) (Λ : Lt D.host.E S.rank) (hΛ : Λ ∈ Vset D.host.E S.rank M)
@@ -66,9 +66,9 @@ theorem latVac_th_iff (D : D7) (S T : HSp D) (C : Ctx S T) (w : D.host.E) (hw : 
     rw [hrho, ← (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx _ (hsb (-y))).2.1, h']
 
 /- English proof (translation)
-Introduce `D S T C w hw h1 h2 M Λ hΛ L hL`. Use `⟨fun x hx φ hφ => latVac_th_iff D S T C w hw h1 h2 M Λ hΛ L hL x hx φ hφ, ?_⟩` and prove the remaining obligations. Introduce `B hB v hv f hf hF hlat`. Take `⟨φ, hφ, rfl⟩` from `GlobalTheory.T.exists_testFunction_of_fockVacuum_thetaFunction D S T C B hB f hf hF`. Establish `hx : C.xB B ∈ C.X.dom` using `((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfix` using `(latVac_th_iff D S T C w hw h1 h2 M Λ hΛ L hL (C.xB B) hx φ hφ).1 hlat`. Establish `hline` using `(GlobalTheory.SW.TensVac.vacua D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even w hw h1 L hL M Λ hΛ).2.1 v φ hv hφ hfix`. Use `⟨SW.ip φ v, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem latVac_th_line : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ w : D.host.E, IsIntegral ℤ w → w + cc w = 1 → IdemTwo w → ∀ (M : ℕ), ∀ Λ ∈ Vset D.host.E S.rank M, ∀ L : Lt D.host.E T.rank, SelfD C.X L → (∀ x ∈ C.X.dom, ∀ φ : TF S.rank C.g, SW.IsSB φ → (IsLatVac (heisO C.ψ S T) (hatA S T (tens Λ L)) (C.Th x φ) ↔ ∀ y ∈ tens Λ L, SW.epsW C.X w y • heisG C.X C.bas y φ = φ)) ∧ ∀ B, C.IsB B → ∀ v, IsVac C.X C.bas w (tens Λ L) v → ∀ f, C.IsTh f → C.IsFock B f → IsLatVac (heisO C.ψ S T) (hatA S T (tens Λ L)) f → ∃ t : ℂ, f = t • (C.Th (C.xB B) v) := by
   intro D S T C w hw h1 h2 M Λ hΛ L hL

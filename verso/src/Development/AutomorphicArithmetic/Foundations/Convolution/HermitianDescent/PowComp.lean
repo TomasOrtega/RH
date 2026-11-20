@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace UpperTheory.ConvolutionTheory.D
 
 /- English proof (translation)
-Unfold `cp`. Rewrite using `[← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cp_map {S R : Type} [CommRing S] [CommRing R] {n : ℕ} (j : S →+* R) (g : GL (Fin n) S) :
     cp (Matrix.GeneralLinearGroup.map j g) = (cp g).map j := by
@@ -18,7 +18,7 @@ private theorem cp_map {S R : Type} [CommRing S] [CommRing R] {n : ℕ} (j : S �
   rfl
 
 /- English proof (translation)
-Unfold `cp`. Rewrite using `[Units.val_mul, Matrix.charpoly_mul_comm, ← Units.val_mul, ← mul_assoc, mul_inv_cancel, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cp_conj {R : Type} [CommRing R] {n : ℕ} (x g : GL (Fin n) R) :
     cp (x⁻¹ * g * x) = cp g := by
@@ -29,7 +29,7 @@ section
 variable {O S k R : Type} [CommRing O] [CommRing S] [Algebra O S] [CommRing k] [CommRing R] [Algebra k R] {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `h _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem map_sg (j : S →+* R) (s : S ≃ₐ[O] S) (σ : R ≃ₐ[k] R) (h : ∀ x, j (s x) = σ (j x))
     (g : GL (Fin n) S) :
@@ -38,7 +38,7 @@ private theorem map_sg (j : S →+* R) (s : S ≃ₐ[O] S) (σ : R ≃ₐ[k] R) 
   exact h _
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ m ih => intro x`. Rewrite using `[pow_succ, pow_succ, AlgEquiv.mul_apply, AlgEquiv.mul_apply, ih, h]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pow_comp (j : S →+* R) (s : S ≃ₐ[O] S) (σ : R ≃ₐ[k] R) (h : ∀ x, j (s x) = σ (j x))
     (m : ℕ) : ∀ x, j ((s ^ m) x) = (σ ^ m) (j x) := by
@@ -47,7 +47,7 @@ private theorem pow_comp (j : S →+* R) (s : S ≃ₐ[O] S) (σ : R ≃ₐ[k] R
   | succ m ih => intro x; rw [pow_succ, pow_succ, AlgEquiv.mul_apply, AlgEquiv.mul_apply, ih, h]
 
 /- English proof (translation)
-Unfold `nm`. Rewrite using `[map_list_prod, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun m _ => ?_` and prove the remaining obligations. Conclude with `map_sg j (s ^ m) (σ ^ m) (pow_comp j s σ h m) g`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem map_nm (j : S →+* R) (s : S ≃ₐ[O] S) (σ : R ≃ₐ[k] R) (h : ∀ x, j (s x) = σ (j x))
     (q : ℕ) (g : GL (Fin n) S) :
@@ -59,7 +59,7 @@ private theorem map_nm (j : S →+* R) (s : S ≃ₐ[O] S) (σ : R ≃ₐ[k] R) 
   exact map_sg j (s ^ m) (σ ^ m) (pow_comp j s σ h m) g
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `h _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem map_up (i : O →+* k) (j : S →+* R) (h : ∀ x, j (algebraMap O S x) = algebraMap k R (i x))
     (g : GL (Fin n) O) :
@@ -72,13 +72,13 @@ end
 end UpperTheory.ConvolutionTheory.D
 
 /- English proof (translation)
-Introduce `O S k R _ _ _ _ _ _ _ i j s σ q hs hσ hj hjs hji n a a' γ hγ ha x hx`. Establish `h1 : cp (nm s q a') = cp (nm s q a)`. Apply `Polynomial.map_injective j hj` to reduce the goal to its premises. Rewrite using `[← cp_map, ← cp_map, map_nm j s σ hjs, map_nm j s σ hjs, ← hx, (nmPoly k R σ q hσ n _).2, cp_conj]`. Establish `h2 : (cp (nm s q a)).Separable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha, up, cp_map]`. Conclude with `hγ.map`. Take `⟨u, hu⟩` from `nmInj O S s q hs n a a' h2 h1`. Establish `h3 : (cp (Matrix.GeneralLinearGroup.map i γ)).Separable`. Rewrite using `[cp_map]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hγ.map`. Establish `h4 : nm σ q (Matrix.GeneralLinearGroup.map j a) = up R (Matrix.GeneralLinearGroup.map i γ)`. Rewrite using `[← map_nm j s σ hjs, ha, map_up i j hji]`. Establish `h5 : sgConj σ (x * (Matrix.GeneralLinearGroup.map j u)⁻¹) (Matrix.GeneralLinearGroup.map j a) = Matrix.GeneralLinearGroup.map j a`. Rewrite `hx` using `[hu, sgConj, sgConj, map_mul, map_mul, map_inv, map_sg j s σ hjs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[sgConj, map_mul, map_inv]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨t, ht, hxt⟩` from `(nmCent k R σ q hσ n _ _ h3 h4 _).1 h5`. Conclude with `⟨t, u, ht, by rw [← hxt]; group⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.D.nmInt :
     UpperTheory.ConvolutionTheory.D.NmInt := by

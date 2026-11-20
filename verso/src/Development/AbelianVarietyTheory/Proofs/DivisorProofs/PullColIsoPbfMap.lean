@@ -22,9 +22,7 @@ def colCx (X : SimplicialObject Spc) (a : ℕ) :
     (ComplexShape.embeddingDownNat.extendFunctor (Shv R)).mapIso (Iso.refl _)
 
 /- English proof (translation)
-Establish `h1` using `(HomologicalComplex.extendXIso (((ComplexShape.embeddingDownNat.extendFunctor (Shv R)).mapHomologicalComplex (ComplexShape.down ℕ)).obj ((dblF R).obj ((freeBi R).obj X))) ComplexShape.embeddingDownNat (i := a) (i' := -(a:ℤ)) rfl).inv_hom_id`. Establish `h2` using `congrArg (fun f => HomologicalComplex.Hom.f f (-(b:ℤ))) h1`. Simplify using `only [HomologicalComplex.comp_f, HomologicalComplex.id_f] at h2`. Use `erw [Iso.trans_hom, HomologicalComplex.comp_f, Iso.trans_inv]`. Use `erw [Category.assoc, reassoc_of% h2]`.
-
-Use `erw [Functor.mapIso_refl, Iso.refl_hom, HomologicalComplex.id_f, Category.comp_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colCx_f (X : SimplicialObject Spc) (a b : ℕ) :
     (biChainsXIso R X a b).inv ≫ (colCx R X a).hom.f (-(b : ℤ)) =
@@ -47,11 +45,11 @@ def prEquiv (E : Spc) (a : ℕ) : HomotopyEquiv ((chains R).obj (disc.obj (E.obj
   (he R _).symm.trans (HomotopyEquiv.ofIso ((CochainComplex.singleFunctor (Shv R) 0).mapIso (chainsXIso R E a).symm))
 
 /- English proof (translation)
-Use `set P := E.obj (op (SimplexCategory.mk a))`. Establish `hφψ : (he R P).hom.f 0 ≫ (he R P).inv.f 0 = 𝟙 _`. Establish `hc` using `(he R P).homotopyHomInvId.comm 0`. Establish `hz1 : IsZero ((sgl ((free R).obj P)).X 1)` using `HomologicalComplex.isZero_single_obj_X _ _ _ _ (by decide)`. Establish `hzm : IsZero ((sgl ((free R).obj P)).X (-1))` using `HomologicalComplex.isZero_single_obj_X _ _ _ _ (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[dNext_eq _ (show (ComplexShape.up ℤ).Rel 0 1 by simp), prevD_eq _ (show (ComplexShape.up ℤ).Rel (-1) 0 by simp), hz1.eq_of_tgt ((sgl ((free R).obj P)).d 0 1) 0, hzm.eq_of_tgt ((he R P).homotopyHomInvId.hom 0 (-1)) 0]`. Simplify using `at hc`. Conclude with `hc`. Establish `hinv0 : (chainsXIso R (disc.obj P) 0).inv ≫ (he R P).inv.f 0 = sglι ((free R).obj P)`. Rewrite using `[← he_hom_f_zero R P, Category.assoc, hφψ, Category.comp_id]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : sglι ((free R).obj P) ≫ ((CochainComplex.singleFunctor (Shv R) 0).map (chainsXIso R E a).inv).f 0 = (chainsXIso R E a).inv ≫ sglι _`. Express the relevant statement in the definitionally equal form `_ ≫ ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).map (chainsXIso R E a).inv).f 0 = _`. Rewrite using `[HomologicalComplex.single_map_f_self]`. Use `erw [Iso.inv_hom_id_assoc]`. Rewrite using `[prE, HomologicalComplex.comp_f, ← Category.assoc, hinv0, h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prE_zero (E : Spc) (a : ℕ) :
     (chainsXIso R (disc.obj (E.obj (op (SimplexCategory.mk a)))) 0).inv ≫ (prE R E a).f 0 =
@@ -75,7 +73,7 @@ theorem prE_zero (E : Spc) (a : ℕ) :
   rw [prE, HomologicalComplex.comp_f, ← Category.assoc, hinv0, h1]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Conclude with `(CohomologyClass.mk_zero (K := K) (L := L) (n := n)).symm`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, ih, CohomologyClass.mk_add]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mk_sum_cocycle {K L : Cx R} {n : ℤ} {ι : Type} [DecidableEq ι] (s : Finset ι) (γ : ι → Cocycle K L n) :
     ∑ j ∈ s, CohomologyClass.mk (γ j) = CohomologyClass.mk (∑ j ∈ s, γ j) := by
@@ -86,7 +84,7 @@ theorem mk_sum_cocycle {K L : Cx R} {n : ℤ} {ι : Type} [DecidableEq ι] (s : 
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, ih, CohomologyClass.mk_add]
 
 /- English proof (translation)
-Unfold `pbfMap`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pull_htCast, (a6nat_holds q).1, ← pull_comp, colIso_hom_fst, pull_cpow q a6nat_holds _ (inv_pullback_pgl q V₀ hP), (a6nat_holds q).2.2.1 _ _ (inv_pullback_pgl q V₀ hP), colIso_line]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_colIso_pbfMap (q : ℕ) [NeZero q] (P : PSh) {N : ℕ} (V₀ : disc.obj P ⟶ ofCat (glCat N))
     (hP : Inv q (disc.obj P)) (m i : ℤ) (x : ∀ j : Fin N, Ht q (disc.obj P) (m - 2 * (j : ℕ)) (i - (j : ℕ))) :
@@ -100,7 +98,7 @@ theorem pull_colIso_pbfMap (q : ℕ) [NeZero q] (P : PSh) {N : ℕ} (V₀ : disc
     (a6nat_holds q).2.2.1 _ _ (inv_pullback_pgl q V₀ hP), colIso_line]
 
 /- English proof (translation)
-Establish `hz : IsZero ((sgl (((chains R).obj E).X (-(a : ℤ)))).X (-(s : ℤ)))` using `HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℤ) 0 _ (-(s : ℤ)) (by omega)`. Rewrite using `[ev_def, Cochain.zero_cochain_comp_v, Cochain.ofHom_v, hz.eq_of_src (c.v (-(s : ℤ)) t h) 0, comp_zero, comp_zero]`. Conclude with `map_zero (mapHom _ _ (freeGen R _ U x))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_prE_pos (E : Spc) (a : ℕ) {I : Cx R} {d : ℤ} (c : Cochain (sgl (((chains R).obj E).X (-(a : ℤ)))) I d)
     (s : ℕ) (t : ℤ) (h : -(s : ℤ) + d = t) (U : Scheme.{0})
@@ -112,7 +110,7 @@ theorem ev_prE_pos (E : Spc) (a : ℕ) {I : Cx R} {d : ℤ} (c : Cochain (sgl ((
   exact map_zero (mapHom _ _ (freeGen R _ U x))
 
 /- English proof (translation)
-Rewrite using `[ev_def, Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`. Express the relevant statement in the definitionally equal form `Sec.map ((chainsXIso R (disc.obj (E.obj (op (SimplexCategory.mk a)))) 0).inv ≫ (prE R E a).f 0 ≫ c.v 0 t _) _ = _`. Rewrite using `[reassoc_of% prE_zero R E a]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_prE_zero (E : Spc) (a : ℕ) {I : Cx R} {d : ℤ} (c : Cochain (sgl (((chains R).obj E).X (-(a : ℤ)))) I d)
     (t : ℤ) (h : -((0 : ℕ) : ℤ) + d = t) (U : Scheme.{0}) (x : Sx (disc.obj (E.obj (op (SimplexCategory.mk a)))) 0 U) :

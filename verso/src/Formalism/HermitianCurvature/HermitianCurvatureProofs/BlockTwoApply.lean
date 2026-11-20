@@ -11,9 +11,9 @@ namespace Formalism.FourierDecayAlt.P.WirtingerOperators.LeviExponential
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.LevelPointCoordinates
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[Equiv.symm_apply_eq]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem fsym (m n : ℕ) (i : Fin (m + n)) : finSumFinEquiv.symm i =
     if h : i.val < m then Sum.inl ⟨i, h⟩ else Sum.inr ⟨i - m, by omega⟩ := by
@@ -22,7 +22,7 @@ theorem fsym (m n : ℕ) (i : Fin (m + n)) : finSumFinEquiv.symm i =
   · rw [Equiv.symm_apply_eq]; ext; simp; omega
 
 /- English proof (translation)
-Simplify using `only [U.blk2, Matrix.reindex_apply, Matrix.submatrix_apply]`. Rewrite using `[fsym, fsym]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block_two_apply {p s : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (B' : Matrix (Fin p) (Fin s) ℂ)
     (C : Matrix (Fin s) (Fin p) ℂ) (D' : Matrix (Fin s) (Fin s) ℂ) (a b : Fin (p + s)) :
@@ -34,16 +34,16 @@ theorem block_two_apply {p s : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (B' : Matri
   split_ifs <;> rfl
 
 /- English proof (translation)
-Simplify using `[G.wMat, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem w_mul_apply {d : ℕ} {ι : Type*} (M : Matrix (Fin d) ι ℂ) (a : Fin d) (b : ι) :
     (G.wMat d * M) a b = M a.rev b := by
   simp [G.wMat, Matrix.mul_apply]
 
 /- English proof (translation)
-Simplify using `only [G.wMat, Matrix.mul_apply, Matrix.of_apply, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single b.rev]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hc` to reduce the goal to its premises. Rewrite using `[h, Fin.rev_rev]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_w_apply {d : ℕ} {ι : Type*} [Fintype ι] (M : Matrix ι (Fin d) ℂ) (a : ι) (b : Fin d) :
     (M * G.wMat d) a b = M a b.rev := by
@@ -54,20 +54,20 @@ theorem mul_w_apply {d : ℕ} {ι : Type*} [Fintype ι] (M : Matrix ι (Fin d) �
   · simp
 
 /- English proof (translation)
-Rewrite using `[Fin.ext ha, Fin.ext hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xcongr {j : ℕ} (x : MJ j) {a a' b b' : Fin j} (ha : a.val = a'.val) (hb : b.val = b'.val) :
     x a b = x a' b' := by
   rw [Fin.ext ha, Fin.ext hb]
 
 /- English proof (translation)
-Use extensionality with `p q`. Take `⟨X, hX⟩` from `(U.eB k (j + 1) (r - (j + 1))).surjective (Fin.cast (by omega) p)`. Take `⟨Y, hY⟩` from `(U.eB k (j + 1) (r - (j + 1))).surjective (Fin.cast (by omega) q)`. Establish `hp : p.val = (U.eB k (j + 1) (r - (j + 1)) X).val` using `by rw [hX]; rfl`. Establish `hq : q.val = (U.eB k (j + 1) (r - (j + 1)) Y).val` using `by rw [hY]; rfl`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ M : B.Mat k (j + 1 + (r - (j + 1))), D.castM (by omega : j + 1 + (r - (j + 1)) = r) M p q = M (U.eB k (j + 1) (r - (j + 1)) X) (U.eB k (j + 1) (r - (j + 1)) Y)`. Introduce `M`. Rewrite using `[hX, hY]`. Both sides reduce to the same expression. Rewrite using `[e, Ux4.block3_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases X with ((a | v) | a) <;> rcases Y with ((b | w) | b) <;>`. Apply the tactic sequence `simp only [Ux4.block_index_first_val_eq, Ux4.block_index_middle_val_eq, Ux4.block_index_last_val_eq] at hp hq <;>`. Apply the tactic sequence `simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.zero_apply, levi, Matrix.of_apply, block_two_a …`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | skip`. Apply the tactic sequence `all_goals first`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `exact xcongr x (by simp; omega) (by simp; omega)`. Consider the case `(simp only [Complex.star_def]; congr 2; exact xcongr x (by simp; omega) (by simp; omega))`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem levi_eq {k r j : ℕ} (hj : j + 1 ≤ r) (x : MJ j) :
     levi k r j x = D.castM (by omega : j + 1 + (r - (j + 1)) = r)

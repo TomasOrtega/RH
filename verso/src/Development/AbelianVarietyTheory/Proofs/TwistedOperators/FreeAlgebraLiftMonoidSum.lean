@@ -9,13 +9,13 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set e := (FreeAlgebra.equivMonoidAlgebraFreeMonoid : FreeAlgebra ℂ X ≃ₐ[ℂ] MonoidAlgebra ℂ (FreeMonoid X))`. Establish `he : ∀ x : X, e (FreeAlgebra.ι ℂ x) = MonoidAlgebra.of ℂ (FreeMonoid X) (FreeMonoid.of x)`. Introduce `x`. Simplify using `[e, FreeAlgebra.equivMonoidAlgebraFreeMonoid]`. Establish `hF : ((FreeAlgebra.lift ℂ f).comp e.symm.toAlgHom) = MonoidAlgebra.lift ℂ B (FreeMonoid X) (FreeMonoid.lift f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (MonoidAlgebra.lift ℂ B (FreeMonoid X)).apply_symm_apply ((FreeAlgebra.lift ℂ f).comp e.symm.toAlgHom)]`. Use `congr 1`. Apply `FreeMonoid.hom_eq` to reduce the goal to its premises. Introduce `x`. Establish `hx : e.symm (MonoidAlgebra.of ℂ (FreeMonoid X) (FreeMonoid.of x)) = FreeAlgebra.ι ℂ x`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he x, e.symm_apply_apply]`. Rewrite `hx` using `[MonoidAlgebra.of_apply]`. Rewrite using `[MonoidAlgebra.lift_symm_apply]`. Simplify using `only [AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.coe_algHom, hx, FreeAlgebra.lift_ι_apply, FreeMonoid.lift_eval_of]`. Use `AlgHom.congr_fun hF (e p)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.coe_algHom, AlgEquiv.symm_apply_apply, MonoidAlgebra.lift_apply, FreeMonoid.lift_apply] at this`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem freeAlgebra_lift_eq_sum_monomials {B : Type} [Ring B] [Algebra ℂ B] {X : Type} (f : X → B) (p : FreeAlgebra ℂ X) : FreeAlgebra.lift ℂ f p = Finsupp.sum (FreeAlgebra.equivMonoidAlgebraFreeMonoid p).coeff fun (w : FreeMonoid X) (c : ℂ) => c • (w.toList.map f).prod := by
   set e := (FreeAlgebra.equivMonoidAlgebraFreeMonoid : FreeAlgebra ℂ X ≃ₐ[ℂ] MonoidAlgebra ℂ (FreeMonoid X))

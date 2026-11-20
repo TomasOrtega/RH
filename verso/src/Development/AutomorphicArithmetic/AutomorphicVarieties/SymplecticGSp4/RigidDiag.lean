@@ -6,23 +6,21 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormLeO
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Take `⟨p, -, hp⟩` from `Finset.exists_max_image (Finset.univ : Finset (Fin 4 × Fin 4)) (fun p => ‖M p.1 p.2 - Matrix.diagonal d p.1 p.2‖) Finset.univ_nonempty`. Take `⟨⟨i, j⟩, hq, hm⟩` from `Finset.exists_max_image (Finset.univ.filter fun q : Fin 4 × Fin 4 => lamW q.1 ≠ lamW q.2) (fun q => ‖X q.1 q.2‖) ⟨(0, 1), by decide⟩`. Establish `hij : lamW i ≠ lamW j` using `(Finset.mem_filter.1 hq).2`. Establish `hm' : ∀ a b, lamW a ≠ lamW b → ‖X a b‖ ≤ ‖X i j‖` using `fun a b h => hm (a, b) (Finset.mem_filter.2 ⟨Finset.mem_univ _, h⟩)`. Use `set ρ := ‖M p.1 p.2 - Matrix.diagonal d p.1 p.2‖ with hρ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ1 : ρ < 1` using `hM _ _`. Establish `hρ0 : 0 ≤ ρ` using `norm_nonneg _`. Take `⟨N, hN⟩ : ∃ N, N = M - Matrix.diagonal d` from `⟨_, rfl⟩`. Establish `hNρ : ∀ a b, ‖N a b‖ ≤ ρ` using `fun a b => by`. Rewrite using `[hN]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hp (a, b) (Finset.mem_univ _)`. Establish `hNb : IsBlock N` using `fun a b h => by`. Establish `: a ≠ b` using `fun e => h (by rw [e])`. Rewrite using `[hN, Matrix.sub_apply, hb a b h, Matrix.diagonal_apply_ne _ this, sub_zero]`. Establish `hMN : M = N + Matrix.diagonal d` using `by rw [hN, sub_add_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `hX i j hij`. Rewrite `h0` using `[hMN, mul_add, add_mul]`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul] at h0`. Establish `h1 : X i j * (d i - d j) = (X * N) i j + -(N * X) i j` using `by linear_combination -h0`. Establish `hx0` using `norm_nonneg (X i j)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ‖(X * N) i j‖ ≤ ‖X i j‖ * ρ`. Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : lamW k = lamW j`. Rewrite using `[norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Conclude with `mul_le_mul (hm' i k (by rw [hk]; exact hij)) (hNρ _ _) (norm_nonneg _) hx0`. Rewrite using `[hNb k j hk, mul_zero, norm_zero]`. Check the signs of the components of the expression. Establish `h3 : ‖-(N * X) i j‖ ≤ ‖X i j‖ * ρ`. Rewrite using `[norm_neg, Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : lamW i = lamW k`. Rewrite using `[norm_mul, mul_comm]`. Conclude with `mul_le_mul (hm' k j (by rw [← hk]; exact hij)) (hNρ _ _) (norm_nonneg _) hx0`. Rewrite using `[hNb i k hk, zero_mul, norm_zero]`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `h4 : ‖X i j‖ ≤ ‖X i j‖ * ρ`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : ‖X i j‖ ≤ 0` using `by nlinarith`. Introduce `a b h`.
-
-Conclude with `norm_le_zero_iff.1 ((hm' a b h).trans h5)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem block_of_comm {K : Type} [NormedField K] [IsUltrametricDist K] (M X : M4 K) (d : Fin 4 → K)
     (hM : ∀ i j, ‖M i j - Matrix.diagonal d i j‖ < 1) (hd : ∀ i j, lamW i ≠ lamW j → ‖d i - d j‖ = 1)
@@ -71,15 +69,15 @@ private theorem block_of_comm {K : Type} [NormedField K] [IsUltrametricDist K] (
   exact norm_le_zero_iff.1 ((hm' a b h).trans h5)
 
 /- English proof (translation)
-Establish `hs : ∀ i j, (sgn i * sgn j) • X j.rev i.rev = -X i j` using `fun i j => congrFun (congrFun hX i) j`. Establish `z01` using `hb 0 1 (by decide)`. Establish `z03` using `hb 0 3 (by decide)`. Establish `z10` using `hb 1 0 (by decide)`. Establish `z12` using `hb 1 2 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z21` using `hb 2 1 (by decide)`. Establish `z23` using `hb 2 3 (by decide)`. Establish `z30` using `hb 3 0 (by decide)`. Establish `z32` using `hb 3 2 (by decide)`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, Fin.sum_univ_four, z01, z03, z10, z12, z21, z23, z30, z32, h02, h20] at c02 c20`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `z02 : X 0 2 = 0`. Establish `: X 0 2 * (h 0 0 - h 2 2) = 0` using `by linear_combination -c02`. Conclude with `(mul_eq_zero.1 this).resolve_right (sub_ne_zero.2 hne)`. Establish `z20 : X 2 0 = 0`. Establish `: X 2 0 * (h 0 0 - h 2 2) = 0` using `by linear_combination c20`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 this).resolve_right (sub_ne_zero.2 hne)`. Establish `z13 : X 1 3 = 0` using `by simpa [sgn, Fin.rev, z02] using hs 0 2`. Establish `z31 : X 3 1 = 0` using `by simpa [sgn, Fin.rev, z20] using hs 2 0`. Establish `z33 : X 3 3 = -X 0 0` using `by simpa [sgn, Fin.rev] using hs 0 0`. Establish `z22 : X 2 2 = -X 1 1` using `by simpa [sgn, Fin.rev] using hs 1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨X 0 0 - X 1 1, X 0 0 + X 1 1, fun Y i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_four, z01, z03, z10, z12, z21, z23, z30, z32, z02, z20, z13, z31, z33, z22, wt, lamW, muW] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem diag_of_comm {K : Type} [Field K] (X h : M4 K) (hX : X ∈ sp4 K) (hb : IsBlock X)
     (h02 : h 0 2 = 0) (h20 : h 2 0 = 0) (hne : h 0 0 ≠ h 2 2)
@@ -110,22 +108,22 @@ private theorem diag_of_comm {K : Type} [Field K] (X h : M4 K) (hX : X ∈ sp4 K
     simp [Matrix.mul_apply, Fin.sum_univ_four, z01, z03, z10, z12, z21, z23, z30, z32, z02, z20, z13, z31, z33, z22, wt, lamW, muW] <;> ring
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.NormLeOneOfIsIntegral.norm_le_one_of_isIntegral l x hx`.
+A detailed English derivation is pending.
 -/
 private theorem norm_le_one_of_int (l : ℕ) [Fact l.Prime] (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) :
     ‖x‖ ≤ 1 :=
   _root_.UpperTheory.Reformulated.B.NormLeOneOfIsIntegral.norm_le_one_of_isIntegral l x hx
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_int l _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) x).map c.O.val)`.
+A detailed English derivation is pending.
 -/
 private theorem norm_le_one {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) : ‖algebraMap c.O (PadicAlgCl l) x‖ ≤ 1 :=
   norm_le_one_of_int l _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) x).map c.O.val)
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `(residue_ne_zero_iff_isUnit x).1 hx`. Establish `h1 : ‖algebraMap c.O (PadicAlgCl l) u‖ * ‖algebraMap c.O (PadicAlgCl l) (u⁻¹ : c.Oˣ)‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, Units.mul_inv, map_one, norm_one]`. Establish `h2` using `norm_le_one c u`. Establish `h3` using `norm_le_one c (u⁻¹ : c.Oˣ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `norm_nonneg (algebraMap c.O (PadicAlgCl l) u)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem norm_eq_one {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) (hx : residue c.O x ≠ 0) :
     ‖algebraMap c.O (PadicAlgCl l) x‖ = 1 := by
@@ -138,33 +136,31 @@ private theorem norm_eq_one {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) (hx 
   nlinarith
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD r hr hrig r' hr' hfst`. Take `⟨X, hX, hsnd⟩` from `hrig r' hr' hfst`. Take `⟨-, hcl, -⟩` from `eptInt D hD r hr`. Take `⟨-, -, ⟨hb, h02, h20⟩, -⟩` from `ptIn D hD _ r hr`. Take `⟨-, -, ⟨hb', h02', h20'⟩, -⟩` from `ptIn D hD _ r' hr'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hsg, -, -, -, -, -, -, -, hph, -⟩` from `facts D hD`. Establish `hr0 : ∀ g, D.r0E g = Matrix.diagonal fun i => algebraMap c.O (PadicAlgCl l) (D.ps i g)` using `fun g => by`. Use extensionality with `i j`. Use `show algebraMap c.O (PadicAlgCl l) (Matrix.diagonal (fun i => (D.ps i g : c.O)) i j) = _`. Distinguish the cases in `h : i = j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `only [Matrix.diagonal_apply_eq]`. Simplify using `only [Matrix.diagonal_apply_ne _ h, map_zero]`. Establish `hbar : ∀ i, Raw.bar (D.ps i) D.ph = Raw.bar (D.ps i) (D.sg l)` using `fun i => by`. Use `congrFun (congrFun hph i) i` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `residue c.O (Matrix.diagonal (fun i => (D.ps i D.ph : c.O)) i i) = residue c.O (Matrix.diagonal (fun i => (D.ps i (D.sg l) : c.O)) i i) at this`. Simplify `this` using `only [Matrix.diagonal_apply_eq]`. Establish `hXb : IsBlock X`. Use `block_of_comm (r D.ph) X (fun i => algebraMap c.O (PadicAlgCl l) (D.ps i D.ph)) (fun i j => by rw [← hr0]; exact hcl _ i j) (fun i j h => ?_) hb fun i j h => ?_` and prove the remaining obligations. Rewrite using `[← map_sub]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `norm_eq_one c _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_ne_zero]`. Use `(hsg l (Finset.mem_insert_self _ _)).2.2 i j h` as an intermediate fact. Rewrite `this` using `[← hbar, ← hbar]`. Then use the resulting hypothesis. Rewrite using `[← hsnd, hb' i j h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hh : ∀ i j, (D.hEl r' i j).snd = (X * D.hEl r - D.hEl r * X) i j` using `fun i j => by`. Establish `e : X * D.hEl r - D.hEl r * X = (X * r D.g0 - r D.g0 * X) + algebraMap c.O (PadicAlgCl l) (D.th D.g0) • (X * r D.g0⁻¹ - r D.g0⁻¹ * X)`. Simplify using `only [Raw.hEl, mul_add, add_mul, Matrix.mul_smul, Matrix.smul_mul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.add_apply, Matrix.smul_apply, ← hsnd, ← hsnd, Raw.hEl, Matrix.add_apply, Matrix.smul_apply, TrivSqZeroExt.snd_add, smul_eq_mul, smul_eq_mul, ← Algebra.smul_def, ← Algebra.smul_def]`. Both sides reduce to the same expression. Establish `hne : D.hEl r 0 0 ≠ D.hEl r 2 2`. Introduce `he`. Establish `hi : ∀ i, ‖D.hEl r i i - algebraMap c.O (PadicAlgCl l) (D.ps i D.g0 + D.th D.g0 * D.ps i D.g0⁻¹)‖ < 1` using `fun i => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `hcl D.g0 i i`. Establish `a2` using `hcl D.g0⁻¹ i i`. Rewrite `a1`, `a2` using `[hr0, Matrix.diagonal_apply_eq]`. Establish `e : D.hEl r i i - algebraMap c.O (PadicAlgCl l) (D.ps i D.g0 + D.th D.g0 * D.ps i D.g0⁻¹) = (r D.g0 i i - algebraMap c.O (PadicAlgCl l) (D.ps i D.g0)) + algebraMap c.O (PadicAlgCl l) (D.th D.g0) * (r D.g0⁻¹ i i - algebraMap c.O (PadicAlgCl l) (D.ps i D.g0⁻¹))`. Rewrite using `[Raw.hEl, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt a1 ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (norm_le_one c _) (norm_nonneg _) a2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((D.al D.g0 : c.O) - 1) * ((D.Psi D.g0 : c.O) - 1) = (D.ps 0 D.g0 + D.th D.g0 * D.ps 0 D.g0⁻¹) - (D.ps 2 D.g0 + D.th D.g0 * D.ps 2 D.g0⁻¹)`. Establish `p0 : D.ps 0 = D.th` using `rfl`. Establish `p2 : D.ps 2 = D.al` using `rfl`. Establish `t : (D.th D.g0 : c.O) = D.al D.g0 * D.Psi D.g0` using `rfl`. Establish `u1 : (D.th D.g0 : c.O) * D.th D.g0⁻¹ = 1` using `by rw [map_inv, Units.mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `u2 : (D.al D.g0 : c.O) * D.al D.g0⁻¹ = 1` using `by rw [map_inv, Units.mul_inv]`. Rewrite using `[p0, p2, u1, t]`. Take the linear combination `(D.Psi D.g0 : c.O) * u2`. Establish `n1 : ‖algebraMap c.O (PadicAlgCl l) (((D.al D.g0 : c.O) - 1) * ((D.Psi D.g0 : c.O) - 1))‖ = 1`. Use `norm_eq_one c _ ?_` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, map_sub, map_sub, map_one]`. Conclude with `mul_ne_zero (sub_ne_zero.2 hD.genElt_alpha) (sub_ne_zero.2 hD.genElt_Psi)`. Rewrite `n1` using `[e, map_sub]`. Establish `a1` using `hi 0`. Establish `a2` using `hi 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `a2` using `[← he]`. Rewrite `a1` using `[← norm_neg]`. Establish `a3` using `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt a1 a2)`. Rewrite `a3` using `[neg_sub, sub_add_sub_cancel, n1]`. Conclude with `lt_irrefl _ a3`.
-
-Take `⟨a, b, hab⟩` from `diag_of_comm X (D.hEl r) hX hXb h02 h20 hne (by rw [← hh, h02']; rfl) (by rw [← hh, h20']; rfl)`. Conclude with `⟨a, b, fun g i j => by rw [hsnd, hab]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.rigidDiag :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ r, D.EPt r → D.RigidAt r → ∀ r' : G ℚ Ω →* M4 (DualNumber (PadicAlgCl l)), D.PtIn _ r' → (∀ g i j, (r' g i j).fst = r g i j) → ∃ a b : PadicAlgCl l, ∀ g i j, (r' g i j).snd = (a * ((wt i j).1 : PadicAlgCl l) + b * ((wt i j).2 : PadicAlgCl l)) * r g i j := by

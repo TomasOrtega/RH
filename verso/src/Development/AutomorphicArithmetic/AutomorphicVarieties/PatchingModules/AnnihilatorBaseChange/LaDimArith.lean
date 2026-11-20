@@ -9,7 +9,7 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-The claim follows from `inferInstance toIsNoetherian := inferInstance complete := by rw [IsLocalRing.maximalIdeal_eq_bot] infer_instance isLocalHom := IsLocalHom.of_surjective _ h res_surj x := by obtain ⟨a, rfl⟩ := h x exact ⟨a, by simp⟩`.
+A detailed English derivation is pending.
 -/
 private theorem laDim_co (O : Type) [CommRing O] [IsLocalRing O] (K : Type) [Field K] [Algebra O K]
     (h : Function.Surjective (algebraMap O K)) : IsCO O K where
@@ -24,9 +24,9 @@ private theorem laDim_co (O : Type) [CommRing O] [IsLocalRing O] (K : Type) [Fie
     exact ⟨a, by simp⟩
 
 /- English proof (translation)
-Use `haveI : IsCO O K := laDim_co O K h`. Use `haveI : IsCO O (MvPowerSeries σ O) := co_mvps O O σ`. Use `haveI : IsCO O (PowerSeries K) := co_mvps O K Unit`. Use `co_surj O _ _ g (le_trans ?_ le_sup_left)` and prove the remaining obligations. Rewrite using `[PowerSeries.maximalIdeal_eq_span_X, Ideal.span_le, Set.singleton_subset_iff, ← hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Ideal.mem_map_of_mem _ fun hu => ?_` and prove the remaining obligations. Use `MvPowerSeries.isUnit_constantCoeff _ hu` as an intermediate fact. Simplify using `at this`.
+A detailed English derivation is pending.
 -/
 private theorem laDim_surj (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] (K : Type) [Field K] [Algebra O K] (σ : Type) [Finite σ] (s : σ)
@@ -42,9 +42,9 @@ private theorem laDim_surj (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherian
   simp at this
 
 /- English proof (translation)
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h (by rw [WithBot.bot_add]; exact (WithBot.natCast_ne_bot _).symm)`. Consider the case `coe y`. Establish `h' : y + 1 = ((n : ℕ∞) + 1)` using `by exact_mod_cast h`. Establish `: y = (n : ℕ∞)` using `WithTop.add_right_cancel ENat.one_ne_top h'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem laDim_arith (x : WithBot ℕ∞) (n : ℕ) (h : x + 1 = ((n + 1 : ℕ) : WithBot ℕ∞)) :
     x = (n : WithBot ℕ∞) := by
@@ -56,11 +56,11 @@ private theorem laDim_arith (x : WithBot ℕ∞) (n : ℕ) (h : x + 1 = ((n + 1 
     rw [this]; rfl
 
 /- English proof (translation)
-Use `haveI : IsDomain (R ⧸ p) := e.toMulEquiv.isDomain _`. Use `haveI hp : p.IsPrime := (Ideal.Quotient.isDomain_iff_prime p).1 inferInstance`. Use `haveI : IsRegularLocalRing (R ⧸ p) := IsRegularLocalRing.of_ringEquiv e.symm`. Establish `hq : ringKrullDim (R ⧸ p) = 1`. Rewrite using `[ringKrullDim_eq_of_ringEquiv e, IsDiscreteValuationRing.ringKrullDim_eq_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `regular_localization_of_regular_quotient R p`. Establish `hc` using `isCplAt_cplAt R p`. Take `⟨h3, h4⟩` from `IsCplAt.regular _ _ _ hc h1`. Use `⟨CplAt R p, inferInstance, inferInstance, inferInstance, hc, h3, ?_⟩` and prove the remaining obligations. Rewrite using `[h4]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `laDim_arith` to reduce the goal to its premises. Rewrite `h2` using `[hq]`. Rewrite using `[h2, hdim]`.
+A detailed English derivation is pending.
 -/
 private theorem laDim_gen (R : Type) [CommRing R] [IsRegularLocalRing R] (S : Type) [CommRing S] [IsDomain S]
     [IsDiscreteValuationRing S] (p : Ideal R) (e : (R ⧸ p) ≃+* S) (n : ℕ)
@@ -82,9 +82,9 @@ private theorem laDim_gen (R : Type) [CommRing R] [IsRegularLocalRing R] (S : Ty
   rw [h2, hdim]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ K _ _ _ D g h hg`. Establish `hs : Function.Surjective g` using `laDim_surj O K _ _ g h hg`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨hreg, hdim, -⟩` from `mvPowerSeries_cotInd O ϖ hϖ (Unit ⊕ Fin D)`. Use `haveI : IsRegularLocalRing (abelian₂ O Unit D) := hreg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `laDim_gen (abelian₂ O Unit D) (PowerSeries K) (RingHom.ker g) (Ideal.quotientKerAlgEquivOfSurjective hs).toRingEquiv (1 + D) ?_` and prove the remaining obligations. Rewrite using `[hdim, Fintype.card_sum, Fintype.card_unit, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.laDim :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] (K : Type) [Field K] [Finite K] [Algebra O K] (D : ℕ) (g : abelian₂ O Unit D →ₐ[O] PowerSeries K), Function.Surjective (algebraMap O K) → g (MvPowerSeries.X (.inl ())) = PowerSeries.X → ∃ (La : Type) (_ : CommRing La) (_ : IsLocalRing La) (_ : Algebra (abelian₂ O Unit D) La), IsCplAt (abelian₂ O Unit D) (RingHom.ker g) La ∧ IsRegularLocalRing La ∧ ringKrullDim La = ((1 + D : ℕ) : WithBot ℕ∞) := by

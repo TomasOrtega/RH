@@ -4,7 +4,7 @@ import Mathlib
 open IsLocalRing
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompletionEmbed.exists_finite_padicInt_domain` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFinitePadicIntDomainEmbedding.lean&line=83#L83)
 -/

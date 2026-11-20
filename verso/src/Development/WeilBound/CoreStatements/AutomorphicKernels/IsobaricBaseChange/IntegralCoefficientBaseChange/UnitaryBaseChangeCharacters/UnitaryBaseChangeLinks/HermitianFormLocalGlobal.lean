@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 /- English proof (citation)
-Apply `PositivityTheory.BCUSide.L.hermitian_form_local_global` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FAutomorphicKernels%2FIsobaricBaseChange%2FIntegralCoefficientBaseChange%2FUnitaryBaseChangeCharacters%2FUnitaryBaseChangeLemmas%2FHermitianFormLocalGlobal.lean&line=227#L227)
 -/

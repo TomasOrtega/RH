@@ -5,19 +5,17 @@ open PositivityTheory.Rg.Tf.Geo (mapGL incFin galFin)
 open scoped ENNReal
 
 /- English proof (translation)
-Introduce `hT hC hCC hI hQ hCl k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ hσ n _ _ _ _ μE μk hE hk φ hφ f hf hM γ hγ ν hν`. Take `⟨a1, a2, a3, -⟩` from `hT E n`. Take `⟨b1, b2, b3, -⟩` from `hT k n`. Establish `hσc : Continuous (sigmaGL σ : GL (Fin n) E → GL (Fin n) E)` using `((hC k E).2.2 n).2 σ`. Use `⟨fun δ hδ => ?_, fun hn => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hδ' : normGL σ δ = incl γ` using `hδ`. Take `⟨hreg, hS⟩` from `hI k E σ hσ n δ γ hγ hδ'`. Establish `hcl : IsClosed ((Subgroup.centralizer {γ} : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k))`. Establish `: ((Subgroup.centralizer {γ} : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k)) = {x | x * γ = γ * x}`. Use extensionality with `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Subgroup.mem_centralizer_singleton_iff]`. Rewrite using `[this]`. Conclude with `isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul continuous_id)`. Establish `hcm : ∀ a ∈ (Subgroup.centralizer {γ} : Subgroup (GL (Fin n) k)), ∀ b ∈ (Subgroup.centralizer {γ} : Subgroup (GL (Fin n) k)), Commute a b` using `fun a ha b hb => by`. Rewrite `ha`, `hb` using `[Subgroup.mem_centralizer_singleton_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Units.ext (hCC k n γ a b hγ (congrArg Units.val ha) (congrArg Units.val hb))`. Take `⟨μ, hμ, hmap, hq⟩` from `hQ _ _ incl (hCl k E n) μE hE _ _ hcl hcm hS ν hν`. Establish `h1` using `hM.1 δ γ 1 μ ν hreg (by simpa using hδ') hμ hν (by simpa using hmap)`. Establish `hcont : Continuous fun g => φ (twConj (sigmaGL σ) g δ)` using `hφ.1.continuous.comp ((continuous_inv.mul continuous_const).mul hσc)`. Establish `h2` using `hq _ hcont.measurable fun s hs g => by rw [twConj_mul_left _ _ hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[one_mul]`. Conclude with `h2.trans h1`. Use `hM.2 γ ν hγ (fun ⟨δ, h, hh⟩ => hn ⟨twConj (sigmaGL σ) h δ, ?_⟩) hν` and prove the remaining obligations. Establish `hl : (sigmaGL σ : Monoid.End (GL (Fin n) E)) ^ Module.finrank k E = 1`. Rewrite using `[← sigmaGL_pow, ← IsGalois.card_aut_eq_finrank, pow_card_eq_one', sigmaGL_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `twNorm_twConj_of_pow_eq_one _ hl h δ` as an intermediate fact. Establish `hh' : twNorm (sigmaGL σ) (Module.finrank k E) δ = h * incl γ * h⁻¹` using `hh`. Rewrite `this` using `[hh']`. Use `this.trans ?_` and prove the remaining obligations. Use `show h⁻¹ * (h * incl γ * h⁻¹) * h = incl γ`.
-
-Use `group`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.geoOfMatch :
     UpperTheory.V.Z.Tf.Orb.GLTop → UpperTheory.V.Z.Tf.Orb.ExtCont → UpperTheory.V.Z.Tf.Orb.CentComm → UpperTheory.V.Z.Tf.Orb.TwCentImg → UpperTheory.V.Z.Tf.Orb.QuotAlong → UpperTheory.V.Z.Tf.Orb.InclClosed → UpperTheory.V.Z.Tf.Orb.GeoOfMatch := by

@@ -13,7 +13,7 @@ section
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Simplify using `[Matrix.one_apply, h]`. Simplify using `[Matrix.one_apply, h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem val_one_entry_le {n : ℕ} (i j : Fin n) :
     ValuativeRel.valuation F ((1 : Matrix (Fin n) (Fin n) F) i j) ≤ 1 := by
@@ -22,7 +22,7 @@ private theorem val_one_entry_le {n : ℕ} (i j : Fin n) :
   · simp [Matrix.one_apply, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Simplify using `[Matrix.one_apply, h]`. Simplify using `[Matrix.one_apply, h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem coe_one_entry {n : ℕ} (i j : Fin n) :
     (((1 : Matrix (Fin n) (Fin n) 𝒪[F]) i j : 𝒪[F]) : F) = (1 : Matrix (Fin n) (Fin n) F) i j := by
@@ -31,19 +31,17 @@ private theorem coe_one_entry {n : ℕ} (i j : Fin n) :
   · simp [Matrix.one_apply, h]
 
 /- English proof (translation)
-Establish `hπ1 : ValuativeRel.valuation F (uniformizer F : F) ^ r ≤ 1` using `pow_le_one' (valuation_uniformizer_lt_one F).le r`. Establish `hent : ∀ i j, (g : Matrix (Fin n) (Fin n) F) i j ∈ (ValuativeRel.valuation F).integer`. Introduce `i j`. Establish `e : (g : Matrix (Fin n) (Fin n) F) i j = ((g : Matrix (Fin n) (Fin n) F) i j - (1 : Matrix (Fin n) (Fin n) F) i j) + (1 : Matrix (Fin n) (Fin n) F) i j` using `by ring`. Use `show ValuativeRel.valuation F _ ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `le_trans ((ValuativeRel.valuation F).map_add _ _) (max_le (le_trans (hg i j) hπ1) (val_one_entry_le i j))`. Set `M : Matrix (Fin n) (Fin n) 𝒪[F]` to `fun i j => ⟨_, hent i j⟩`. Establish `hdiff : ∀ i j, M i j - (1 : Matrix (Fin n) (Fin n) 𝒪[F]) i j ∈ IsLocalRing.maximalIdeal 𝒪[F]`. Introduce `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : M i j - (1 : Matrix (Fin n) (Fin n) 𝒪[F]) i j ∈ IsLocalRing.maximalIdeal 𝒪[F] ^ r`. Apply `(mem_maximalIdeal_pow_iff F).2` to reduce the goal to its premises. Establish `e : ((M i j - (1 : Matrix (Fin n) (Fin n) 𝒪[F]) i j : 𝒪[F]) : F) = (g : Matrix (Fin n) (Fin n) F) i j - (1 : Matrix (Fin n) (Fin n) F) i j`. Rewrite using `[AddSubgroupClass.coe_sub, coe_one_entry]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hg i j`. Conclude with `Ideal.pow_le_self (by omega) h1`. Establish `hmap : (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[F])).mapMatrix M = 1`. Use extensionality with `i j`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Ideal.Quotient.eq.2 (hdiff i j)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `h : i = j`. Simplify using `[Matrix.one_apply, h]`. Simplify using `[Matrix.one_apply, h]`. Establish `hdet : IsUnit M.det`. Assume the negation of the conclusion as `hu`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : M.det ∈ IsLocalRing.maximalIdeal 𝒪[F]` using `(IsLocalRing.mem_maximalIdeal _).2 hu`. Establish `h0 : Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[F]) M.det = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hm`. Rewrite `h0` using `[RingHom.map_det, hmap, Matrix.det_one]`. Conclude with `one_ne_zero h0`. Establish `hM : IsUnit M` using `(Matrix.isUnit_iff_isUnit_det M).2 hdet`.
-
-Use `⟨hM.unit, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem mem_integralGL_of_congr {n r : ℕ} (hr : 1 ≤ r) {g : GL (Fin n) F}
     (hg : ∀ i j, ValuativeRel.valuation F ((g : Matrix (Fin n) (Fin n) F) i j - (1 : Matrix (Fin n) (Fin n) F) i j) ≤
@@ -88,11 +86,9 @@ private theorem mem_integralGL_of_congr {n r : ℕ} (hr : 1 ≤ r) {g : GL (Fin 
   rfl
 
 /- English proof (translation)
-Establish `hπ : ValuativeRel.valuation F (uniformizer F : F) ^ r ≤ 1` using `pow_le_one' (valuation_uniformizer_lt_one F).le r`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨a, ha, rfl⟩` from `mem_valBall_iff_exists.1 hx`. Establish `hint : (uniformizer F : F) ^ r * a ∈ (ValuativeRel.valuation F).integer` using `Subring.mul_mem _ (Subring.pow_mem _ (uniformizer F).2 r) ha`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `GroundTheory.LocalField.mem_maximalIdeal_pow_iff_valBall (y := ⟨_, hint⟩) (n := r)`. Conclude with `(mem_maximalIdeal_pow_iff F).1 (h1.2 hx)`. Introduce `hx`. Establish `hint : x ∈ (ValuativeRel.valuation F).integer` using `le_trans hx hπ`. Establish `h1` using `(mem_maximalIdeal_pow_iff F (y := ⟨x, hint⟩) (m := r)).2 hx`.
-
-Conclude with `GroundTheory.LocalField.mem_maximalIdeal_pow_iff_valBall.1 h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mem_valBall_iff_val_le {r : ℕ} {x : F} :
     x ∈ GroundTheory.LocalField.valBall F (r : ℤ) ↔
@@ -115,13 +111,13 @@ private def ballInd (r : ℕ) (a : F) : F → ℂ :=
   {x : F | x - a ∈ GroundTheory.LocalField.valBall F (r : ℤ)}.indicator 1
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.LocalField.mem_schwartzBruhat]`. Prove the components needed by the constructor for the conclusion. Apply `GroundTheory.LocalField.isLocallyConstant_of_add_valBall (N := (r : ℤ))` to reduce the goal to its premises. Introduce `x h hh`. Establish `e : x + h - a = (x - a) + h` using `by ring`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : x + h - a ∈ GroundTheory.LocalField.valBall F (r : ℤ) ↔ x - a ∈ GroundTheory.LocalField.valBall F (r : ℤ)`. Rewrite using `[e]`. Conclude with `AddSubgroup.add_mem_cancel_right _ hh`. Unfold `ballInd`. Distinguish the cases in `hx : x - a ∈ GroundTheory.LocalField.valBall F (r : ℤ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem (show x + h ∈ {y : F | y - a ∈ GroundTheory.LocalField.valBall F (r : ℤ)} from key.2 hx), Set.indicator_of_mem (show x ∈ {y : F | y - a ∈ GroundTheory.LocalField.valBall F (r : ℤ)} from hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show x + h ∉ {y : F | y - a ∈ GroundTheory.LocalField.valBall F (r : ℤ)} from fun h' => hx (key.1 h')), Set.indicator_of_notMem (show x ∉ {y : F | y - a ∈ GroundTheory.LocalField.valBall F (r : ℤ)} from hx)]`. Apply `HasCompactSupport.intro ((GroundTheory.LocalField.isCompact_valBall (r : ℤ)).image (continuous_add_right a))` to reduce the goal to its premises. Introduce `x hx`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `ballInd`. Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce `hx'`. Conclude with `hx ⟨x - a, hx', by ring⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem ballInd_mem (r : ℕ) (a : F) : ballInd r a ∈ GroundTheory.LocalField.schwartzBruhat F := by
   rw [GroundTheory.LocalField.mem_schwartzBruhat]
@@ -153,9 +149,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {n : ℕ} {β : Fin n → ℕ}
 
 /- English proof (translation)
-Rewrite `hm` using `[mem_congruenceSubgroup_iff]`. Unfold `leviTensor`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `ij _`. Unfold `ballInd`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Apply `Set.indicator_of_mem` to reduce the goal to its premises. Conclude with `mem_valBall_iff_val_le.2 (hm.2 ij.1.1 ij.1.2)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem leviTensor_ball_of_mem {r : ℕ} {m : levi F n β}
     (hm : (m : GL (Fin n) F) ∈ congruenceSubgroup F n r) :
@@ -170,11 +166,11 @@ private theorem leviTensor_ball_of_mem {r : ℕ} {m : levi F n β}
   exact mem_valBall_iff_val_le.2 (hm.2 ij.1.1 ij.1.2)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Apply `hm` to reduce the goal to its premises. Establish `hall : ∀ i j, ValuativeRel.valuation F (((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j - (1 : Matrix (Fin n) (Fin n) F) i j) ≤ ValuativeRel.valuation F (uniformizer F : F) ^ r`. Introduce `i j`. Distinguish the cases in `hij : β i = β j`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h1` using `Finset.prod_ne_zero_iff.1 h0 (⟨(i, j), hij⟩ : LeviIndex n β) (Finset.mem_univ _)`. Use `mem_valBall_iff_val_le.1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `h1 (Set.indicator_of_notMem (s := {x : F | x - (1 : Matrix (Fin n) (Fin n) F) i j ∈ GroundTheory.LocalField.valBall F (r : ℤ)}) hn _)`. Establish `hne : i ≠ j` using `fun h => hij (by rw [h])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_levi.1 m.2 i j hij, Matrix.one_apply_ne hne, sub_zero, map_zero]`. Conclude with `zero_le'`. Conclude with `(mem_congruenceSubgroup_iff F n).2 ⟨mem_integralGL_of_congr hr hall, hall⟩`.
+A detailed English derivation is pending.
 -/
 private theorem leviTensor_ball_of_notMem {r : ℕ} (hr : 1 ≤ r) {m : levi F n β}
     (hm : (m : GL (Fin n) F) ∉ congruenceSubgroup F n r) :
@@ -206,33 +202,29 @@ end
 end UpperTheory.V.Z.Gam
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ n β W _ _ σ hadm hirr κ hκ μ _ ψ γ γ' h h'`. Use `haveI := hirr`. Take `⟨v, hv⟩` from `exists_ne_zero_of_isIrreducible (ρ := σ)`. Take `⟨m0, hm0⟩` from `exists_subgroupOf_congruenceSubgroup_subset (β := β) ((hadm.1 v).mem_nhds (Subgroup.one_mem (stabilizerOf σ v)))`. Establish `hr : 1 ≤ m0 + 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKc : IsCompact (((congruenceSubgroup F n (m0 + 1)).subgroupOf (levi F n β) : Subgroup (levi F n β)) : Set (levi F n β))` using `isCompact_subgroupOf_levi (isCompact_congruenceSubgroup F n (m0 + 1))`. Establish `hKo : IsOpen (((congruenceSubgroup F n (m0 + 1)).subgroupOf (levi F n β) : Subgroup (levi F n β)) : Set (levi F n β))` using `isOpen_subgroupOf_levi (isOpen_congruenceSubgroup F n (m0 + 1))`. Establish `hvK : v ∈ fixedVectors σ ((congruenceSubgroup F n (m0 + 1)).subgroupOf (levi F n β))`. Rewrite using `[mem_fixedVectors]`. Introduce `k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk' : k ∈ (congruenceSubgroup F n m0).subgroupOf (levi F n β)` using `Subgroup.mem_subgroupOf.2 (congruenceSubgroup_antitone F n (show m0 ≤ m0 + 1 by omega) (Subgroup.mem_subgroupOf.1 hk))`. Conclude with `mem_stabilizerOf.1 (hm0 hk')`. Use `haveI : FiniteDimensional ℂ (fixedVectors σ ((congruenceSubgroup F n (m0 + 1)).subgroupOf (levi F n β))) := hadm.2 _ hKc hKo`. Establish `hv' : (⟨v, hvK⟩ : fixedVectors σ ((congruenceSubgroup F n (m0 + 1)).subgroupOf (levi F n β))) ≠ 0` using `fun h0 => hv (congrArg Subtype.val h0)`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual ℂ (fixedVectors σ ((congruenceSubgroup F n (m0 + 1)).subgroupOf (levi F n β))), f ⟨v, hvK⟩ ≠ 0 := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hv' ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 hc)`. Set `E` to `fixedContragredientEquiv (ρ := σ) hadm.1 hKc hKo`. Set `x` to `E.symm f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx : x.1.1 v ≠ 0`. Establish `h1 : E x = f` using `E.apply_symm_apply f`. Rewrite `h1` using `[fixedContragredientEquiv_apply]`. Establish `h2` using `restrictFixed_apply σ _ x ⟨v, hvK⟩`. Rewrite `h2` using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← h2]`. Conclude with `hf`. Establish `hφ : ∀ ij : LeviIndex n β, (fun ij : LeviIndex n β => UpperTheory.V.Z.Gam.ballInd (m0 + 1) ((1 : Matrix (Fin n) (Fin n) F) ij.1.1 ij.1.2)) ij ∈ GroundTheory.LocalField.schwartzBruhat F` using `fun ij => UpperTheory.V.Z.Gam.ballInd_mem _ _`. Establish `e1` using `(h _ hφ v x.1.1 x.1.2).2.2`. Establish `e2` using `(h' _ hφ v x.1.1 x.1.2).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Apply `RatFE.unique e1 e2` to reduce the goal to its premises. Introduce `t`. Use `⟨((t + 1 : ℝ) : ℂ), by simp, ?_⟩` and prove the remaining obligations. Establish `hfun : (fun m => leviIntegrand σ κ (leviTensor β fun ij : LeviIndex n β => UpperTheory.V.Z.Gam.ballInd (m0 + 1) ((1 : Matrix (Fin n) (Fin n) F) ij.1.1 ij.1.2)) v x.1.1 ((t + 1 : ℝ) : ℂ) m) = (((congruenceSubgroup F n (m0 + 1)).subgroupOf (levi F n β) : Subgroup (levi F n β)) : Se …`. Use function extensionality and compare the values at `m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hm : m ∈ (congruenceSubgroup F n (m0 + 1)).subgroupOf (levi F n β)`. Rewrite using `[Set.indicator_of_mem (show m ∈ (((congruenceSubgroup F n (m0 + 1)).subgroupOf (levi F n β) : Subgroup (levi F n β)) : Set (levi F n β)) from hm)]`. Establish `hm' : (m : GL (Fin n) F) ∈ congruenceSubgroup F n (m0 + 1)` using `Subgroup.mem_subgroupOf.1 hm`. Unfold `leviIntegrand`. Rewrite using `[UpperTheory.V.Z.Gam.leviTensor_ball_of_mem hm', eq_one_of_mem_compact κ hκ hKc hm, detPow_of_mem_integralGL (congruenceSubgroup_le F n (m0 + 1) hm') _, (mem_fixedVectors.1 hvK) m hm]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (show m ∉ (((congruenceSubgroup F n (m0 + 1)).subgroupOf (levi F n β) : Subgroup (levi F n β)) : Set (levi F n β)) from hm)]`. Unfold `leviIntegrand`. Rewrite using `[UpperTheory.V.Z.Gam.leviTensor_ball_of_notMem hr (fun h => hm (Subgroup.mem_subgroupOf.2 h))]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hKset : (((congruenceSubgroup F n (m0 + 1)).subgroupOf (levi F n β) : Subgroup (levi F n β)) : Set (levi F n β)) = (fun m : levi F n β => ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) ⁻¹' {M : Matrix (Fin n) (Fin n) F | ∀ i j, M i j - (1 : Matrix (Fin n) (Fin n) F) i j ∈ Groun …`. Use extensionality with `m`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_preimage, Set.mem_setOf_eq, mem_congruenceSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hm i j`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `UpperTheory.V.Z.Gam.mem_valBall_iff_val_le.2 (hm.2 i j)`. Introduce `hm`. Establish `hall` using `fun i j => UpperTheory.V.Z.Gam.mem_valBall_iff_val_le.1 (hm i j)`. Conclude with `⟨UpperTheory.V.Z.Gam.mem_integralGL_of_congr hr hall, hall⟩`. Establish `hT : MeasurableSet {M : Matrix (Fin n) (Fin n) F | ∀ i j, M i j - (1 : Matrix (Fin n) (Fin n) F) i j ∈ GroundTheory.LocalField.valBall F ((m0 + 1 : ℕ) : ℤ)}`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : MeasurableSet (GroundTheory.LocalField.valBall F ((m0 + 1 : ℕ) : ℤ) : Set F)` using `(GroundTheory.LocalField.isCompact_valBall _).isClosed.measurableSet`. Establish `e : {M : Matrix (Fin n) (Fin n) F | ∀ i j, M i j - (1 : Matrix (Fin n) (Fin n) F) i j ∈ GroundTheory.LocalField.valBall F ((m0 + 1 : ℕ) : ℤ)} = ⋂ i, ⋂ j, (fun M : Matrix (Fin n) (Fin n) F => M i j - (1 : Matrix (Fin n) (Fin n) F) i j) ⁻¹' (GroundTheory.LocalField.valBall F ((m0 + …`. Use extensionality with `M`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
-
-Conclude with `MeasurableSet.iInter fun i => MeasurableSet.iInter fun j => hB.preimage (((measurable_pi_apply j).comp (measurable_pi_apply i)).sub_const _)`. Use `show (∫ m, leviIntegrand σ κ (leviTensor β fun ij : LeviIndex n β => UpperTheory.V.Z.Gam.ballInd (m0 + 1) ((1 : Matrix (Fin n) (Fin n) F) ij.1.1 ij.1.2)) v x.1.1 ((t + 1 : ℝ) : ℂ) m ∂μ) ≠ 0`. Rewrite using `[hfun, integral_indicator_const (μ := μ) _ ?hm]`. Establish `hpos : 0 < μ.real (((congruenceSubgroup F n (m0 + 1)).subgroupOf (levi F n β) : Subgroup (levi F n β)) : Set (levi F n β))` using `ENNReal.toReal_pos (hKo.measure_ne_zero μ ⟨1, Subgroup.one_mem _⟩) hKc.measure_lt_top.ne`. Conclude with `smul_ne_zero hpos.ne' hx`.
-
-Rewrite using `[hKset]`. Conclude with `hT.preimage ((comap_measurable Units.val).comp (@measurable_subtype_coe (GL (Fin n) F) (MeasurableSpace.comap Units.val GroundTheory.Automorphic.GJMatrix.measurableSpace_matrix) _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.local_zeta_functional_uniqueness :
     UpperTheory.V.Z.Gam.LdUnique := by

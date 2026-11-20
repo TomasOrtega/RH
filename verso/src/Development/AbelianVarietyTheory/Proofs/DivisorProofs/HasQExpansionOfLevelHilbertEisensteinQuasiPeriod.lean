@@ -14,9 +14,9 @@ set_option autoImplicit false in
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.nrm`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Establish `h : (0:ℝ) < |((discr F : ℤ) : ℝ)|`. Rewrite using `[abs_pos]`. Conclude with `discr_ne_zero F` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Rewrite using `[Rat.cast_ne_zero, Ne, FractionalIdeal.absNorm_eq_zero_iff]`. Conclude with `𝔞.ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma omegaFactor_ne_zero' {F : Type} [Field F] [NumberField F] (𝔞 : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor 𝔞 ≠ 0 := by
@@ -31,7 +31,7 @@ private lemma omegaFactor_ne_zero' {F : Type} [Field F] [NumberField F] (𝔞 : 
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp]`. Simplify using `[Complex.div_re]`. Establish `hN' : (0 : ℝ) < N` using `by exact_mod_cast hN`. Apply `div_neg_of_neg_of_pos` to reduce the goal to its premises. Use `mul_pos (mul_pos two_pos Real.pi_pos) (mul_pos τ.im_pos hN')` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion. Check the signs of the components of the expression.
 -/
@@ -48,13 +48,13 @@ private lemma norm_exp_two_pi_I_div_lt_one (N : ℕ) (hN : 0 < N) (τ : ℍ) :
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 /- English proof (translation)
-Set `σ : ℍ` to `⟨(τ : ℂ) / 2, by simpa using div_pos τ.im_pos two_pos⟩`. Use `set w := Complex.exp (2 * ↑Real.pi * Complex.I * ↑σ / ↑N) with hw`. Establish `hq : Complex.exp (2 * ↑Real.pi * Complex.I * ↑τ / ↑N) = w ^ 2`. Rewrite using `[hw, ← Complex.exp_nat_mul]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [σ, UpperHalfPlane.coe_mk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hw1` using `norm_exp_two_pi_I_div_lt_one N hN σ`. Rewrite `hw1` using `[← hw]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ht` using `(h σ).summable.tendsto_cofinite_zero`. Establish `hev : ∀ᶠ n in Filter.cofinite, ‖b n * w ^ n‖ ≤ 1`. Use `ht.norm` as an intermediate fact. Rewrite `this` using `[norm_zero]`. Conclude with `this.eventually (ge_mem_nhds one_pos)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Summable.of_norm_bounded_eventually (g := fun n => ‖w‖ ^ n) (summable_geometric_of_lt_one (norm_nonneg _) hw1) ?_` and prove the remaining obligations. Use `filter_upwards [hev] with n hn`. Rewrite using `[norm_norm, hq, ← pow_mul, mul_comm 2 n, pow_mul, sq, ← mul_assoc, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_left (by positivity) hn`.
+A detailed English derivation is pending.
 -/
 private lemma summable_norm_qExpansion_of_hasSum_everywhere (N : ℕ) (hN : 0 < N) (b : ℕ → ℂ) (f : ℍ → ℂ)
     (h : ∀ τ : ℍ, HasSum (fun n => b n * Complex.exp (2 * ↑Real.pi * Complex.I * ↑τ / ↑N) ^ n) (f τ))
@@ -83,9 +83,9 @@ private lemma summable_norm_qExpansion_of_hasSum_everywhere (N : ℕ) (hN : 0 < 
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.HilbFam.lag`. Rewrite using `[Finset.sum_eq_single n]`. Simplify using `[_root_.GlobalTheory.HilbFam.rco]`. Introduce `m hm hmn`. Establish `: n - m ≠ 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hm` using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Simplify using `[zero_pow this]`. Introduce `h`. Conclude with `absurd (Finset.self_mem_range_succ n) h`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma lag_zero_left_eq_pow (k n : ℕ) (y : ℂ) :
     _root_.GlobalTheory.HilbFam.lag k n 0 y = y ^ n := by
@@ -103,29 +103,27 @@ private lemma lag_zero_left_eq_pow (k n : ℕ) (y : ℂ) :
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 /- English proof (translation)
-Use `set P : ℂ := 2 * Real.pi * Complex.I with hP`. Establish `hP0 : P ≠ 0` using `by simp [hP, Real.pi_ne_zero, Complex.I_ne_zero]`. Use `set C : ℂ := (P ^ Module.finrank ℚ F * (_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor 𝔞 : ℂ)) ^ k with hC`. Establish `hC0 : C ≠ 0` using `pow_ne_zero _ (mul_ne_zero (pow_ne_zero _ hP0) (by exact_mod_cast omegaFactor_ne_zero' 𝔞))`. Use `set q : ℂ := Complex.exp (2 * ↑Real.pi * Complex.I * ↑τ / ↑N) with hq`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `A : F → ℂ` to `fun ξ => a ξ * _root_.GlobalTheory.HilbFam.eTr (ξ * x) * ∏ i : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F, ((i ξ : ℝ) : ℂ) ^ μ i`. Establish `h0` using `(_root_.GlobalTheory.HilbFam.hasSum_jet_split F k 𝔞 𝔟 a₀ a x τ 0 (-P) μ hk ha τ.im_pos).div_const (C * (-P ^ 2) ^ (∑ i, μ i))`. Rewrite `h0` using `[← hP, ← hC]`. Establish `hg : HasSum (fun ξ => A ξ * Complex.exp (P * ((Algebra.trace ℚ F ξ : ℚ) : ℂ) * τ)) _` using `h0.congr_fun fun ξ => by`. Simplify using `only [A, lag_zero_left_eq_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hprod : ∏ i : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F, (P * ((i ξ : ℝ) : ℂ) * -P) ^ μ i = (-P ^ 2) ^ (∑ i, μ i) * ∏ i : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F, ((i ξ : ℝ) : ℂ) ^ μ i`. Rewrite using `[← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hprod]`. Establish `: (-P ^ 2) ^ (∑ i, μ i) ≠ 0` using `pow_ne_zero _ (neg_ne_zero.mpr (pow_ne_zero _ hP0))`. Clear the denominators using the available nonvanishing facts. Take `⟨hint, hfin⟩` from `_root_.GlobalTheory.HilbFam.coef_support_trace F k 𝔞 𝔟 a₀ a x N hN ha hlev`. Set `ν : F → ℕ` to `fun ξ => if h : ∃ n : ℕ, (N : ℚ) * Algebra.trace ℚ F ξ = n then h.choose else 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hν : ∀ ξ, a ξ ≠ 0 → (N : ℚ) * Algebra.trace ℚ F ξ = ν ξ`. Introduce `ξ hξ`. Establish `h` using `hint ξ hξ`. Simplify using `only [ν, dif_pos h]`. Conclude with `h.choose_spec`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hN0 : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hgA : ∀ ξ, A ξ * Complex.exp (P * ((Algebra.trace ℚ F ξ : ℚ) : ℂ) * τ) = A ξ * q ^ ν ξ`. Introduce `ξ`. Distinguish the cases in `hξ : a ξ = 0`. Simplify using `[A, hξ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h` using `hν ξ hξ`. Establish `h' : (N : ℂ) * ((Algebra.trace ℚ F ξ : ℚ) : ℂ) = (ν ξ : ℂ)` using `by exact_mod_cast h`. Rewrite using `[hq, ← Complex.exp_nat_mul, ← h', hP]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `done`. Use `replace hg := (hg.congr_fun fun ξ => (hgA ξ).symm).tsum_fiberwise ν`. Use `hg.congr_fun fun m => ?_` and prove the remaining obligations. Establish `hfib : ∑' ξ : ↑(ν ⁻¹' {m}), A ξ * q ^ ν ξ = (∑' ξ : ↑(ν ⁻¹' {m}), A ξ) * q ^ m`. Rewrite using `[← tsum_mul_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[show ν ξ = m from ξ.2]`. Rewrite using `[hfib]`. Use `congr 1`. Establish `hind : (ν ⁻¹' {m}).indicator A = {ξ | (N : ℚ) * Algebra.trace ℚ F ξ = m}.indicator A`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared.
 
-Use function extensionality and compare the values at `ξ`. Distinguish the cases in `hξ : a ξ = 0`. Simplify using `only [Set.indicator_apply, A, hξ, zero_mul, ite_self]`. Establish `h` using `hν ξ hξ`. Simplify using `only [Set.indicator, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_setOf_eq, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `norm_cast`. Unfold `_root_.GlobalTheory.HilbFam.ecoef`. Rewrite using `[tsum_subtype, finsum_mem_def, hind]`. Use `(tsum_eq_finsum ?_).symm` and prove the remaining obligations. Use `(hfin m).subset fun ξ hξ => ?_` and prove the remaining obligations.
-
-Rewrite `hξ` using `[Function.mem_support]`. Distinguish the cases in `hm : (N : ℚ) * Algebra.trace ℚ F ξ = m`. Use `⟨fun h0 => hξ ?_, hm⟩` and prove the remaining obligations. Simplify using `[Set.indicator, A, h0]`. Conclude with `absurd (by simp [Set.indicator, hm]) hξ`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma hasSum_hilbertDiagonalTraceCoefficient_lemma_3 (F : Type) [Field F] [NumberField F]
     [IsTotallyReal F] (k : ℕ) (𝔞 𝔟 : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) (a₀ : ℂ) (a : F → ℂ) (x : F)
@@ -204,11 +202,11 @@ private lemma hasSum_hilbertDiagonalTraceCoefficient_lemma_3 (F : Type) [Field F
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 /- English proof (translation)
-Establish `hpt : ∀ n, PowerSeries.coeff n (A * B) * z ^ n = ∑ kl ∈ Finset.HasAntidiagonal.antidiagonal n, (PowerSeries.coeff kl.1 A * z ^ kl.1) * (PowerSeries.coeff kl.2 B * z ^ kl.2)`. Introduce `n`. Rewrite using `[PowerSeries.coeff_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun kl hkl => ?_` and prove the remaining obligations. Rewrite `hkl` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hkl, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs` using `summable_norm_sum_mul_antidiagonal_of_summable_norm hA' hB'`. Use `⟨?_, hs.congr fun n => by rw [hpt n]⟩` and prove the remaining obligations. Use `(Summable.of_norm hs).hasSum` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[← tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm hA' hB', hA.tsum_eq, hB.tsum_eq]`. Conclude with `this.congr_fun hpt`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma hasSum_powerSeries_mul_of_absolutely_summable (A B : PowerSeries ℂ) (z x y : ℂ)
     (hA : HasSum (fun n => PowerSeries.coeff n A * z ^ n) x)
@@ -235,11 +233,11 @@ private lemma hasSum_powerSeries_mul_of_absolutely_summable (A B : PowerSeries �
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Establish `h1 : (fun n => PowerSeries.coeff n (A ^ 0) * z ^ n) = fun n => if n = 0 then 1 else 0`. Use function extensionality and compare the values at `n`. Rewrite using `[pow_zero, PowerSeries.coeff_one]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs with hn <;> simp [hn]`. Rewrite using `[h1, pow_zero]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hasSum_ite_eq 0 (1 : ℂ) using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `exact (hasSum_ite_eq 0 (1 : ℝ)).summable.congr fun n => by split_ifs with hn <;> simp [hn]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `succ m ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `hasSum_powerSeries_mul_of_absolutely_summable _ _ z _ _ ih.1 ih.2 hA hA'`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma hasSum_powerSeries_pow_of_absolutely_summable (A : PowerSeries ℂ) (z x : ℂ)
     (hA : HasSum (fun n => PowerSeries.coeff n A * z ^ n) x)
@@ -264,25 +262,23 @@ open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 
 /- English proof (translation)
-Introduce `F _ _ _ k 𝔞 𝔟 a₀ a x N κ Ch c hN hk ha hlev hCh`. Rewrite `hCh`, the goal using `[_root_.GlobalTheory.QFam.hasQ_iff]`. Introduce `τ`. Use `set P : ℂ := 2 * Real.pi * Complex.I with hP`. Establish `hP0 : P ≠ 0` using `by simp [hP, Real.pi_ne_zero, Complex.I_ne_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q : ℂ := Complex.exp (2 * ↑Real.pi * Complex.I * ↑τ / ↑N) with hq`. Use `set C : ℂ := (P ^ Module.finrank ℚ F * (_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor 𝔞 : ℂ)) ^ k with hC`. Establish `hC0 : C ≠ 0` using `pow_ne_zero _ (mul_ne_zero (pow_ne_zero _ hP0) (by exact_mod_cast omegaFactor_ne_zero' 𝔞))`. Set `V : (_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℕ) → ℂ` to `fun μ => _root_.GlobalTheory.HilbFam.jet k (_root_.GlobalTheory.HilbFam.split 𝔞 𝔟 x) μ τ 0 (-P) / (C * (-P ^ 2) ^ (∑ i, μ i))`. Establish `hc : HasSum (fun n => PowerSeries.coeff n (PowerSeries.mk c) * q ^ n) (Ch τ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hCh τ` using `only [PowerSeries.coeff_mk]`. Establish `hc' : Summable (fun n => ‖PowerSeries.coeff n (PowerSeries.mk c) * q ^ n‖)`. Simplify `summable_norm_qExpansion_of_hasSum_everywhere N hN c Ch hCh τ` using `only [PowerSeries.coeff_mk]`. Establish `hterm : ∀ μ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℕ, HasSum (fun n => PowerSeries.coeff n ((PowerSeries.mk c ^ ∑ i, (κ i - μ i)) * PowerSeries.mk (_root_.GlobalTheory.HilbFam.ecoef N a x μ)) * q ^ n) (Ch τ ^ (∑ i, (κ i - μ i)) * V μ)`. Introduce `μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hD` using `fun σ : ℍ => hasSum_hilbertDiagonalTraceCoefficient_lemma_3 F k 𝔞 𝔟 a₀ a x N hN hk ha hlev μ σ`. Establish `hD1 : HasSum (fun n => PowerSeries.coeff n (PowerSeries.mk (_root_.GlobalTheory.HilbFam.ecoef N a x μ)) * q ^ n) (V μ)`. Simplify `hD τ` using `only [PowerSeries.coeff_mk]`. Establish `hD2 : Summable (fun n => ‖PowerSeries.coeff n (PowerSeries.mk (_root_.GlobalTheory.HilbFam.ecoef N a x μ)) * q ^ n‖)`. Simplify `summable_norm_qExpansion_of_hasSum_everywhere N hN _ _ hD τ` using `only [PowerSeries.coeff_mk]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-Establish `hpow` using `hasSum_powerSeries_pow_of_absolutely_summable _ q _ hc hc' (∑ i, (κ i - μ i))`. Conclude with `(hasSum_powerSeries_mul_of_absolutely_summable _ _ q _ _ hpow.1 hpow.2 hD1 hD2).1`. Establish `hs` using `(hasSum_sum (s := Finset.Iic κ) fun μ _ => (hterm μ).mul_left (((∏ i, _root_.GlobalTheory.HilbFam.rco k (κ i) (μ i) * (-1) ^ μ i : ℤ) : ℂ))).mul_left ((_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor 𝔞 : ℂ) ^ k)`. It suffices to establish `hv : _root_.GlobalTheory.HilbFam.hfun k (_root_.GlobalTheory.HilbFam.split 𝔞 𝔟 x) κ Ch τ = (_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor 𝔞 : ℂ) ^ k * ∑ μ ∈ Finset.Iic κ, ((∏ i, _root_.GlobalTheory.HilbFam.rco k (κ i) (μ i) * (-1) ^ μ i : ℤ) : ℂ) * …`. Rewrite using `[hv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `hs.congr_fun fun n => ?_` and prove the remaining obligations. Unfold `_root_.GlobalTheory.HilbFam.hser`. Simplify using `only [PowerSeries.coeff_smul, map_sum, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `_root_.GlobalTheory.HilbFam.hfun _root_.GlobalTheory.HilbFam.wt`. Establish `hadd` using `_root_.GlobalTheory.HilbFam.jet_split_add F k 𝔞 𝔟 a₀ a x τ 0 (-P) (P ^ 2 * Ch τ) κ hk ha τ.im_pos`. Rewrite `hadd` using `[zero_add]`. Rewrite using `[← hP, hadd, Finset.sum_div, Finset.mul_sum (Finset.Iic κ)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Rewrite `hμ` using `[Finset.mem_Iic]`. Establish `hsum : ∑ i, κ i = ∑ i, (κ i - μ i) + ∑ i, μ i`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => (Nat.sub_add_cancel (hμ i)).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hΩ : (_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor 𝔞 : ℂ) ≠ 0` using `by exact_mod_cast omegaFactor_ne_zero' 𝔞`. Simplify using `only [V]`. Rewrite using `[hC]`. Use `clear_value P`. Establish `hm : (-P ^ 2) ^ (∑ i, μ i) ≠ 0` using `pow_ne_zero _ (neg_ne_zero.mpr (pow_ne_zero _ hP0))`.
-
-Use `push_cast`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hsum, neg_pow (P ^ 2)]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HilbFam.ExpH.hasQ_hfun : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (𝔞 𝔟 : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) (a₀ : ℂ) (a : F → ℂ) (x : F) (N : ℕ) (κ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℕ) (Ch : ℍ → ℂ) (c : ℕ → ℂ), 0 < N → Even k → _root_.GlobalTheory.HilbFam.IsCoef k 𝔞 𝔟 a₀ a → _root_.GlobalTheory.HilbFam.HasLevel N (_root_.GlobalTheory.HilbFam.split 𝔞 𝔟 x) → _root_.GlobalTheory.QFam.HasQ N Ch c → _root_.GlobalTheory.QFam.HasQ N (_root_.GlobalTheory.HilbFam.hfun k (_root_.GlobalTheory.HilbFam.split 𝔞 𝔟 x) κ Ch) (fun n ↦ PowerSeries.coeff n (_root_.GlobalTheory.HilbFam.hser k N 𝔞 a x κ c)) := by
   intro F _ _ _ k 𝔞 𝔟 a₀ a x N κ Ch c hN hk ha hlev hCh

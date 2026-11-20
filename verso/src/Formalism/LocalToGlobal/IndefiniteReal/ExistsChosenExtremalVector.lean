@@ -22,7 +22,7 @@ def negS : Finset (Fin n) := Finset.univ.filter fun a => ε a = false
 def nNeg : ℕ := (negS ε).card
 
 /- English proof (translation)
-The claim follows from `(Finset.card_le_univ _).trans (Fintype.card_fin n).le`.
+A detailed English derivation is pending.
 -/
 theorem nNeg_le : nNeg ε ≤ n := (Finset.card_le_univ _).trans (Fintype.card_fin n).le
 
@@ -32,15 +32,15 @@ def revOn : Equiv.Perm {a // a ∈ negS ε} :=
 def revNeg : Equiv.Perm (Fin n) := Equiv.Perm.ofSubtype (revOn ε)
 
 /- English proof (translation)
-The claim follows from `Equiv.Perm.ofSubtype_apply_of_not_mem _ (by simp [negS, h])`.
+A detailed English derivation is pending.
 -/
 theorem revNeg_of_pos {a : Fin n} (h : ε a = true) : revNeg ε a = a :=
   Equiv.Perm.ofSubtype_apply_of_not_mem _ (by simp [negS, h])
 
 /- English proof (translation)
-Distinguish the cases in `h : a ∈ negS ε`. Establish `h1 : revNeg ε a = (revOn ε ⟨a, h⟩ : Fin n)` using `Equiv.Perm.ofSubtype_apply_of_mem _ h`. Establish `h2` using `(revOn ε ⟨a, h⟩).2`. Rewrite using `[h1]`. Simplify using `only [negS, Finset.mem_filter, Finset.mem_univ, true_and] at h h2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h2.trans h.symm`. Rewrite using `[show revNeg ε a = a from Equiv.Perm.ofSubtype_apply_of_not_mem _ h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_revNeg (a : Fin n) : ε (revNeg ε a) = ε a := by
   by_cases h : a ∈ negS ε
@@ -57,9 +57,9 @@ def arr (q : ℕ) (c : Fin n) : Fin n :=
 variable {ε}
 
 /- English proof (translation)
-Establish `e : negS ε = Finset.univ.map ⟨fun i : Fin (n - p) => (⟨p + i, by have` using `i.2; omega⟩ : Fin n), fun i j hij => Fin.ext (by have := congrArg Fin.val hij; simp only at this; omega)⟩ := by`. Use extensionality with `a`. Simplify using `only [negS, Finset.mem_filter, Finset.mem_univ, true_and, h, decide_eq_false_iff_not, Finset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨a - p, by have := a.2; omega⟩, Fin.ext (show p + ((a : ℕ) - p) = a by omega)⟩`. Introduce and unpack `⟨i, rfl⟩ show ¬ (p + (i : ℕ) < p)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[nNeg, e, Finset.card_map, Finset.card_univ, Fintype.card_fin]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem nNeg_shape {p : ℕ} (hp : p ≤ n) (h : ∀ a, ε a = decide ((a : ℕ) < p)) : nNeg ε = n - p := by
   have e : negS ε = Finset.univ.map ⟨fun i : Fin (n - p) => (⟨p + i, by have := i.2; omega⟩ : Fin n),
@@ -75,15 +75,13 @@ theorem nNeg_shape {p : ℕ} (hp : p ≤ n) (h : ∀ a, ε a = decide ((a : ℕ)
   rw [nNeg, e, Finset.card_map, Finset.card_univ, Fintype.card_fin]
 
 /- English proof (translation)
-Use `split_ifs with ha`. Rewrite using `[revNeg_of_pos ε (by simp [h, ha])]`. Establish `hq : (negS ε).card = n - p` using `nNeg_shape hp h`. Establish `hm : a ∈ negS ε` using `by simpa [negS, h] using ha`. Establish `hf : ∀ i : Fin (negS ε).card, (((negS ε).orderEmbOfFin rfl i : Fin n) : ℕ) = p + i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.orderEmbOfFin_unique (s := negS ε) (rfl : (negS ε).card = _) (f := fun i : Fin (negS ε).card => (⟨p + i, by have := i.2; omega⟩ : Fin n)) (fun i => by simp [negS, h]) (fun i j hij => by show p + (i : ℕ) < p + j` as an intermediate fact. Establish `: (i : ℕ) < j` using `hij`. Use the proof step `omega)`. Introduce `i`. Rewrite using `[← this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : revNeg ε a = (revOn ε ⟨a, hm⟩ : Fin n)` using `Equiv.Perm.ofSubtype_apply_of_mem _ hm`. Use `set i := ((negS ε).orderIsoOfFin rfl).symm ⟨a, hm⟩ with hi`. Establish `h2 : (a : ℕ) = p + i`. Rewrite using `[← hf i]`. Establish `: ((negS ε).orderIsoOfFin rfl i : Fin n) = a` using `by rw [hi, OrderIso.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `h3 : ((revOn ε ⟨a, hm⟩ : Fin n) : ℕ) = p + (Fin.rev i : ℕ)` using `hf (Fin.rev i)`. Rewrite using `[h1, h3, Fin.val_rev]`. Use `i.2` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem revNeg_shape {p : ℕ} (hp : p ≤ n) (h : ∀ a, ε a = decide ((a : ℕ) < p)) (a : Fin n) :
     (revNeg ε a : ℕ) = if (a : ℕ) < p then (a : ℕ) else n - 1 - (a - p) := by
@@ -112,7 +110,7 @@ theorem revNeg_shape {p : ℕ} (hp : p ≤ n) (h : ∀ a, ε a = decide ((a : �
     omega
 
 /- English proof (translation)
-Use `c.2` as an intermediate fact. Rewrite using `[revNeg_shape hp h, nNeg_shape hp h]`. Unfold `arr`. Apply the tactic sequence `split_ifs <;> simp only at * <;> omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem revNeg_arr {p : ℕ} (hp : p ≤ n) (h : ∀ a, ε a = decide ((a : ℕ) < p)) (c : Fin n) :
     (revNeg ε (arr (nNeg ε) c) : ℕ) = if (c : ℕ) < n - p then p + c else c - (n - p) := by
@@ -140,7 +138,7 @@ def LowSm : Prop := ∀ τ, lowKSub (M.ε τ) (M.lam τ) (M.σ τ) ≤ M.sm τ
 def x0Mat (τ : D.what₂.Tau) : Matrix (Fin V.rank) (Fin V.rank) ℂ := (onb M τ).submatrix id (arr (nNeg (M.ε τ)))
 
 /- English proof (translation)
-Establish `hinv : M.fr τ * (M.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ))`. Establish `h1 : (M.fr τ)⁻¹ * diagonal t * M.fr τ * x0Mat M τ = ((M.fr τ)⁻¹ * diagonal t * M.fr τ * (M.fr τ)⁻¹).submatrix id (arr (nNeg (M.ε τ)))` using `rfl`. Rewrite using `[h1, Matrix.mul_assoc _ (M.fr τ), hinv, Matrix.mul_one]`. Use extensionality with `a c`. Simplify using `only [submatrix_apply, id, mul_diagonal, x0Mat, onb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem torus_x0Mat (τ : D.what₂.Tau) (t : Fin V.rank → ℂ) :
     (M.fr τ)⁻¹ * diagonal t * M.fr τ * x0Mat M τ = x0Mat M τ * diagonal (fun c => t (arr (nNeg (M.ε τ)) c)) := by
@@ -152,7 +150,7 @@ theorem torus_x0Mat (τ : D.what₂.Tau) (t : Fin V.rank → ℂ) :
   simp only [submatrix_apply, id, mul_diagonal, x0Mat, onb]
 
 /- English proof (translation)
-Unfold `extWt`. Use `congr 1`. Conclude with `Fin.ext ((revNeg_arr hp h c).trans ha.symm)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem extWt_arr (τ : D.what₂.Tau) {p : ℕ} (hp : p ≤ V.rank) (h : ∀ a, M.ε τ a = decide ((a : ℕ) < p)) (c a : Fin V.rank)
     (ha : (a : ℕ) = if (c : ℕ) < V.rank - p then p + c else c - (V.rank - p)) :
@@ -171,7 +169,7 @@ variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {
 def pM (π : Equiv.Perm (Fin n)) : Matrix (Fin n) (Fin n) ℂ := (1 : Matrix (Fin n) (Fin n) ℂ).submatrix π id
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [diagonal_mul, mul_diagonal, pM, submatrix_apply, id, one_apply]`. Use `split_ifs with h`. Rewrite using `[h, mul_comm]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diag_pM (π : Equiv.Perm (Fin n)) (t : Fin n → ℂ) : diagonal (fun a => t (π a)) * pM π = pM π * diagonal t := by
   ext a b
@@ -181,9 +179,9 @@ theorem diag_pM (π : Equiv.Perm (Fin n)) (t : Fin n → ℂ) : diagonal (fun a 
   · simp
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, star_eq_conjTranspose, pM, conjTranspose_submatrix, conjTranspose_one]`. Use `Matrix.submatrix_mul_equiv (1 : Matrix (Fin n) (Fin n) ℂ) (1 : Matrix (Fin n) (Fin n) ℂ) π (Equiv.refl (Fin n)) π` as an intermediate fact. Simplify using `only [Equiv.coe_refl, Matrix.mul_one] at this`. Rewrite using `[this, submatrix_one_equiv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `diag_pM π (fun a => if ε a then (1 : ℂ) else -1)` as an intermediate fact. Simplify using `only [h] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pM_mem (π : Equiv.Perm (Fin n)) (h : ∀ a, ε (π a) = ε a) : pM π ∈ Formalism.REAL.Kset ε := by
   refine ⟨?_, ?_⟩
@@ -196,7 +194,7 @@ theorem pM_mem (π : Equiv.Perm (Fin n)) (h : ∀ a, ε (π a) = ε a) : pM π �
     exact this.symm
 
 /- English proof (translation)
-Use `show gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε`. Establish `h1 : gᴴ * g = 1` using `(Matrix.mem_unitaryGroup_iff').1 hg.1`. Rewrite using `[Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kset_uj {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) : g ∈ UJset ε := by
   show gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε
@@ -204,11 +202,11 @@ theorem kset_uj {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset
   rw [Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, star_eq_conjTranspose, diagonal_conjTranspose, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.star_apply, RCLike.star_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I]`. Simplify using the standard rewrite rules. Unfold `Formalism.REAL.Jm`. Rewrite using `[diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a`. Conclude with `mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem diag_mem (θ : Fin n → ℝ) : diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) ∈ Formalism.REAL.Kset ε := by
   refine ⟨?_, ?_⟩
@@ -225,9 +223,9 @@ theorem diag_mem (θ : Fin n → ℝ) : diagonal (fun a => Complex.exp ((θ a : 
     exact mul_comm _ _
 
 /- English proof (translation)
-Introduce `θ _`. Establish `hd` using `diag_pM π (fun b => Complex.exp ((θ (π.symm b) : ℂ) * Complex.I))`. Simplify using `only [Equiv.symm_apply_apply] at hd`. Establish `m1` using `hσ.1.2 _ (kset_uj (diag_mem (ε := ε) θ)) _ (kset_uj (pM_mem π h))`. Establish `m2` using `hσ.1.2 _ (kset_uj (pM_mem π h)) _ (kset_uj (diag_mem (ε := ε) fun b => θ (π.symm b)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : σ (diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)) (σ (pM π) w) = σ (pM π) (σ (diagonal fun b => Complex.exp ((θ (π.symm b) : ℂ) * Complex.I)) w)`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← m1, hd, m2, ContinuousLinearMap.comp_apply]`. Rewrite using `[e1, hw _ (diag_mem _), map_smul]`. Use `congr 4`. Conclude with `(Equiv.sum_comp π fun b => μ b * θ (π.symm b)).symm.trans (by simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isWtOn_perm (hσ : IsURepOn (UJset ε) σ) (π : Equiv.Perm (Fin n)) (h : ∀ a, ε (π a) = ε a) {μ : Fin n → ℝ} {w : H}
     (hw : IsWtOn (Formalism.REAL.Kset ε) σ μ w) : IsWtOn (Formalism.REAL.Kset ε) σ (fun a => μ (π a)) (σ (pM π) w) := by
@@ -244,7 +242,7 @@ theorem isWtOn_perm (hσ : IsURepOn (UJset ε) σ) (π : Equiv.Perm (Fin n)) (h 
   exact (Equiv.sum_comp π fun b => μ b * θ (π.symm b)).symm.trans (by simp)
 
 /- English proof (translation)
-Introduce `θ hθ`. Rewrite using `[map_smul, hw θ hθ, smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isWtOn_smul {G : Set (Matrix (Fin n) (Fin n) ℂ)} {μ : Fin n → ℝ} {w : H} (hw : IsWtOn G σ μ w) (c : ℂ) :
     IsWtOn G σ μ (c • w) := by
@@ -252,9 +250,9 @@ theorem isWtOn_smul {G : Set (Matrix (Fin n) (Fin n) ℂ)} {μ : Fin n → ℝ} 
   rw [map_smul, hw θ hθ, smul_comm]
 
 /- English proof (translation)
-Take `⟨-, -, hU, -, -, ⟨S, hS⟩, -⟩` from `hσ`. Take `⟨v, hvS, hv0, hv⟩` from `hS.2.2.2.1`. Establish `hK` using `pM_mem (revNeg ε) (eps_revNeg ε)`. Establish `hn : ‖σ (pM (revNeg ε)) v‖ = ‖v‖` using `hU.2.1 _ (kset_uj hK) v`. Establish `hp : ‖v‖ ≠ 0` using `norm_ne_zero_iff.2 hv0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨((‖v‖⁻¹ : ℝ) : ℂ) • σ (pM (revNeg ε)) v, ?_, ?_, isWtOn_smul (isWtOn_perm hU _ (eps_revNeg ε) hv) _⟩` and prove the remaining obligations. Rewrite using `[norm_smul, hn, Complex.norm_real, norm_inv, norm_norm, inv_mul_cancel₀ hp]`. Conclude with `Submodule.smul_mem _ _ ((le_sSup (s := {S | IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S}) hS) (hS.2.1 _ hK v hvS))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext {lam : Fin n → ℝ} (hσ : IsDS ε lam σ) : ∃ w : H, ‖w‖ = 1 ∧ w ∈ lowKSub ε lam σ ∧
     IsWtOn (Formalism.REAL.Kset ε) σ (fun a => Formalism.QuantumDeterminants.lowK ε lam (revNeg ε a)) w := by
@@ -270,7 +268,7 @@ theorem exists_ext {lam : Fin n → ℝ} (hσ : IsDS ε lam σ) : ∃ w : H, ‖
 end ExtEx
 
 /- English proof (translation)
-Use `choose w hw using fun τ => exists_ext (M.ds τ)`. Conclude with `⟨fun τ => ⟨w τ, h τ (hw τ).2.1⟩, fun τ => ⟨(hw τ).1, (hw τ).2.1, (hw τ).2.2⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isExtVec {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (h : LowSm M) :
     ∃ v, IsExtVec M v := by
@@ -300,7 +298,7 @@ def IsModelBaseFrameFamily {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel
   ∀ ρ, x₀ (tauE D ρ) = Matrix.reindex (finCongr hr) (finCongr hr) (x0Mat M ρ)
 
 /- English proof (translation)
-Rewrite using `[h ρ]`. Conclude with `Matrix.submatrix_mul_equiv g (x0Mat M ρ) _ (finCongr hr).symm _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsModelBaseFrameFamily.mul {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {hr : V.rank = r}
     {x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ} (h : IsModelBaseFrameFamily M hr x₀) (ρ : D.what₂.Tau)
@@ -327,7 +325,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-The claim follows from `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`.
+A detailed English derivation is pending.
 -/
 theorem rank_Wc (i : Fin D.R.m) : (Wc D i).rank = D.R.r := D.sp.W_rank _ (Nat.le_add_left _ _) i.2
 
@@ -341,9 +339,9 @@ def IsChosenExtremalVector (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (v : (R
 def IoExt : Prop := ∀ i, ∃ u, IsExtVec (R.MW i (sg0 D A)) u ∧ ExtremalVectorPairsToDelta R i u
 
 /- English proof (translation)
-Distinguish the cases in `hσ : σ = sg0 D A`. Substitute `hσ` using the available equality. Distinguish the cases in `hu : ∃ u, IsExtVec (R.MW i (sg0 D A)) u ∧ ExtremalVectorPairsToDelta R i u`. Take `⟨u, h1, h2⟩` from `hu`. Conclude with `⟨u, h1, fun _ _ => h2⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨v, hv⟩` from `exists_isExtVec _ h`. Conclude with `⟨v, hv, fun _ h' => absurd h' hu⟩`. Take `⟨v, hv⟩` from `exists_isExtVec _ h`. Conclude with `⟨v, hv, fun h' => absurd h' hσ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chosen_extremal_vector (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (h : LowSm (R.MW i σ)) : ∃ v, IsChosenExtremalVector R i σ v := by
   by_cases hσ : σ = sg0 D A
@@ -362,7 +360,7 @@ def v0 (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) : (R.MW i σ).Vec :=
   if h : ∃ v, IsChosenExtremalVector R i σ v then h.choose else 0
 
 /- English proof (translation)
-Establish `h'` using `exists_chosen_extremal_vector R i σ h`. Unfold `v0`. Rewrite using `[dif_pos h']`. Conclude with `h'.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extremal_vector_is_chosen (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (h : LowSm (R.MW i σ)) : IsChosenExtremalVector R i σ (v0 R i σ) := by
   have h' := exists_chosen_extremal_vector R i σ h
@@ -371,13 +369,13 @@ theorem extremal_vector_is_chosen (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) 
   exact h'.choose_spec
 
 /- English proof (translation)
-The claim follows from `(h.1 τ).1`.
+A detailed English derivation is pending.
 -/
 theorem IsChosenExtremalVector.norm {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} {v : (R.MW i σ).Vec} (h : IsChosenExtremalVector R i σ v) (τ : D.what₂.Tau) :
     ‖(v τ : (R.MW i σ).H τ)‖ = 1 := (h.1 τ).1
 
 /- English proof (translation)
-The claim follows from `h.2 rfl (hio i)`.
+A detailed English derivation is pending.
 -/
 theorem IsChosenExtremalVector.io {i : Fin D.R.m} {v : (R.MW i (sg0 D A)).Vec} (h : IsChosenExtremalVector R i (sg0 D A) v) (hio : IoExt R) : ExtremalVectorPairsToDelta R i v :=
   h.2 rfl (hio i)

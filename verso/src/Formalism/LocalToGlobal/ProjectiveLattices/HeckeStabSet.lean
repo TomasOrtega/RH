@@ -25,7 +25,7 @@ def HkFin : Prop :=
   ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra K Ω] (y : pts Ω), Finite (hkIdx Ω y)
 
 /- English proof (translation)
-Unfold `hkTerm`. Use `split_ifs with h`. Conclude with `evalAt_add _ _ _ _ _`. Conclude with `(add_zero 0).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hkTerm_add (f g : Rules pts) {Ω : Type} [Field Ω] [IsAlgClosed Ω] [Algebra K Ω] (y : pts Ω)
     (H : hkIdx Ω y) :
@@ -36,7 +36,7 @@ theorem hkTerm_add (f g : Rules pts) {Ω : Type} [Field Ω] [IsAlgClosed Ω] [Al
   · exact (add_zero 0).symm
 
 /- English proof (translation)
-Unfold `hkTerm`. Use `split_ifs with h`. Conclude with `evalAt_smul _ _ _ _ _`. Conclude with `(mul_zero _).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hkTerm_smul (c : K) (f : Rules pts) {Ω : Type} [Field Ω] [IsAlgClosed Ω] [Algebra K Ω] (y : pts Ω)
     (H : hkIdx Ω y) :
@@ -47,7 +47,7 @@ theorem hkTerm_smul (c : K) (f : Rules pts) {Ω : Type} [Field Ω] [IsAlgClosed 
   · exact (mul_zero _).symm
 
 /- English proof (translation)
-Use `haveI := hF Ω y`. Unfold `hkVal`. Repeatedly rewrite using `[hkTerm_add]`. Conclude with `finsum_add_distrib (Set.toFinite _) (Set.toFinite _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkVal_add (hF : HkFin pts hkIdx) (f g : Rules pts) {Ω : Type} [Field Ω] [IsAlgClosed Ω] [Algebra K Ω]
     (y : pts Ω) :
@@ -58,7 +58,7 @@ theorem hkVal_add (hF : HkFin pts hkIdx) (f g : Rules pts) {Ω : Type} [Field Ω
   exact finsum_add_distrib (Set.toFinite _) (Set.toFinite _)
 
 /- English proof (translation)
-Unfold `hkVal`. Repeatedly rewrite using `[hkTerm_smul]`. Conclude with `(mul_finsum (fun H => hkTerm pts mapR hkIdx quotR f y H) (algebraMap K Ω c)).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkVal_smul (c : K) (f : Rules pts) {Ω : Type} [Field Ω] [IsAlgClosed Ω] [Algebra K Ω] (y : pts Ω) :
     hkVal pts mapR hkIdx quotR (c • f) y = algebraMap K Ω c * hkVal pts mapR hkIdx quotR f y := by
@@ -87,9 +87,9 @@ def HkEx [Fintype ι] (e : ι → ℕ) (c : K) : Prop :=
 variable {pts mapR borR hkIdx quotR}
 
 /- English proof (translation)
-Establish `hz : g - g' = 0`. Use `hD _ (Submodule.sub_mem _ hg hg') ?_` and prove the remaining obligations. Introduce `Ω _ _ _ y`. Rewrite using `[sub_eq_add_neg, ← neg_one_smul K g', evalAt_add, evalAt_smul, h Ω y, h' Ω y]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.1 hz`.
+A detailed English derivation is pending.
 -/
 theorem hkRel_unique [Fintype ι] {e : ι → ℕ} (hD : PtsDetect pts mapR borR e) {c : K} {f g g' : Rules pts}
     (hg : g ∈ secW pts mapR borR e) (hg' : g' ∈ secW pts mapR borR e)
@@ -102,7 +102,7 @@ theorem hkRel_unique [Fintype ι] {e : ι → ℕ} (hD : PtsDetect pts mapR borR
   exact sub_eq_zero.1 hz
 
 /- English proof (translation)
-Introduce `Ω _ _ _ y`. Rewrite using `[evalAt_add, h Ω y, h' Ω y, hkVal_add _ _ _ _ hF, mul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hkRel_add (hF : HkFin pts hkIdx) {c : K} {f f' g g' : Rules pts} (h : HkRel pts mapR hkIdx quotR c f g)
     (h' : HkRel pts mapR hkIdx quotR c f' g') : HkRel pts mapR hkIdx quotR c (f + f') (g + g') := by
@@ -110,7 +110,7 @@ theorem hkRel_add (hF : HkFin pts hkIdx) {c : K} {f f' g g' : Rules pts} (h : Hk
   rw [evalAt_add, h Ω y, h' Ω y, hkVal_add _ _ _ _ hF, mul_add]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ y`. Rewrite using `[evalAt_smul, h Ω y, hkVal_smul, mul_left_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hkRel_smul {c : K} (a : K) {f g : Rules pts} (h : HkRel pts mapR hkIdx quotR c f g) :
     HkRel pts mapR hkIdx quotR c (a • f) (a • g) := by
@@ -132,7 +132,7 @@ def hkOp [Fintype ι] {e : ι → ℕ} {c : K} (hE : HkEx pts mapR borR hkIdx qu
       (hE _ (a • f).2).choose_spec.2 (hkRel_smul a (hE f.1 f.2).choose_spec.2)
 
 /- English proof (translation)
-The claim follows from `(hE f.1 f.2).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem hkOp_spec [Fintype ι] {e : ι → ℕ} {c : K} (hE : HkEx pts mapR borR hkIdx quotR e c)
     (hD : PtsDetect pts mapR borR e) (hF : HkFin pts hkIdx) (f : secW pts mapR borR e) :

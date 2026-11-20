@@ -27,9 +27,9 @@ open CategoryTheory AlgebraicGeometry
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `hx`. Take `⟨y, rfl⟩` from `f.surjective x`. Establish `hmem : y ∈ orderAtLeastLocus (J.comap f) μ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mem_orderAtLeastLocus_iff]`. Conclude with `le_trans ((mem_orderAtLeastLocus_iff J μ (f.base y)).mp hx) (orderAt_le_orderAt_comap f J y)`. Rewrite `hmem` using `[h]`. Simplify using `at hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_eq_empty_of_comap_eq_empty {A B : Scheme.{u}} (f : A ⟶ B)
     [AlgebraicGeometry.Surjective f] (J : B.IdealSheafData) (μ : ℕ)
@@ -48,9 +48,7 @@ theorem orderAtLeastLocus_eq_empty_of_comap_eq_empty {A B : Scheme.{u}} (f : A �
 namespace MaxContactFunctoriality
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, hd.valid_trim T h.valid⟩` and prove the remaining obligations. Establish `hdim` using `h.dim_prop`. Rewrite `hdim` using `[← MaxContactReduction.dropTrivialBoundary_dim T]`. Then use the resulting hypothesis. Introduce `x`. Conclude with `h.orderLE x`.
-
-Conclude with `h.coSupport_nonempty`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem OrderReductionHypotheses.dropTrivialBoundary {P : ℕ → Prop} {T : MarkedIdealWithBoundary.{u}} (h : OrderReductionHypotheses P T)
     {hinv : ComapIsoInvariance.{u}} {A : ℕ → PrincipalizationAssignment.{u}} {B : PrincipalizationAssignment.{u}}
@@ -68,9 +66,9 @@ variable (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop) (A : ℕ → Princip
   (B : PrincipalizationAssignment.{u})
 
 /- English proof (translation)
-Use `h.valid.charZero` as an intermediate fact. Use `h.valid.smooth` as an intermediate fact. Use `h.valid.locallyOfFiniteType` as an intermediate fact. Establish `h2` using `hd.tuning`. Unfold `IsMarkedIffBalancedTunedSheaf at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `key` using `h2 T.base T.scheme T.structMap T.ideal T.mult h.valid.one_le_mult ⟨(orderLE_iff T.ideal T.mult).mpr h.orderLE, h.coSupport_nonempty⟩ T.boundary d`. Conclude with `⟨key.1, key.2.1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isMarked_balancedTunedIdeal_iff_and_orderAtLeastLocus_eq (hd : DescentHypotheses hinv P A B) (T : MarkedIdealWithBoundary.{u}) (h : OrderReductionHypotheses P T)
     (d : BlowupSequenceData T.scheme) :
@@ -92,9 +90,9 @@ theorem isMarked_balancedTunedIdeal_iff_and_orderAtLeastLocus_eq (hd : DescentHy
   exact ⟨key.1, key.2.1⟩
 
 /- English proof (translation)
-Take `⟨d0, hpb0⟩` from `hstar.descends (MaxContactReduction.dropTrivialBoundary T) (h.dropTrivialBoundary hd)`. Take `⟨d, hdesc⟩ : ∃ e : BlowupSequenceData (MaxContactReduction.dropTrivialBoundary T).scheme, MaxContactReduction.descendStrictPullback (MaxContactReduction.dropTrivialBoundary T) (MaxContactCoverData.coverTriple (MaxContactReduction.dropTrivialBoundary T) (h.dropTrivialBoundary hd). …` from `MaxContactCoverData.exists_descendStrictPullback_eq_some _ _ ⟨d0, hpb0⟩`. Establish `hpb : IsStrictPullbackBlowupSeq (MaxContactCoverData.coverMap (MaxContactReduction.dropTrivialBoundary T) (h.dropTrivialBoundary hd).valid) (MaxContactCoverData.coverMarkedBlowupData (MaxContactReduction.dropTrivialBoundary T) (h.dropTrivialBoundary hd).valid hinv (lowerDimension …` using `MaxContactCoverData.isStrictPullbackBlowupSeq_of_descendStrictPullback_eq_some _ _ hdesc`. Establish `hm0 : d.IsMarked (MaxContactReduction.dropTrivialBoundary T).structMap (MaxContactCoverData.balancedTunedIdeal (MaxContactReduction.dropTrivialBoundary T) (h.dropTrivialBoundary hd).valid) (MaxContactCoverData.tunedMult (MaxContactReduction.dropTrivialBoundary T)) (MaxContactRedu …` using `hd.isMarked (MaxContactReduction.dropTrivialBoundary T) (h.dropTrivialBoundary hd) d hpb`. Establish `hm1 : d.IsMarked T.structMap T.ideal T.mult (MaxContactReduction.dropTrivialBoundary T).boundary` using `((isMarked_balancedTunedIdeal_iff_and_orderAtLeastLocus_eq hinv P A B hd (MaxContactReduction.dropTrivialBoundary T) (h.dropTrivialBoundary hd) d).1).mpr hm0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : d.IsMarked T.structMap T.ideal T.mult T.boundary` using `hd.isMarked_of_trim T h.valid d T.ideal T.mult hm1`. Use `⟨d, hm, hpb, ?_⟩` and prove the remaining obligations. Conclude with `MaxContactCoverData.reduceOrder_eq_toMarkedSequence hinv T (lowerDimensionalFamily A T) h.valid h.orderAtLeastLocus_ne_empty (h.dropTrivialBoundary hd).valid d hdesc hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_blowupSequenceData_isStrictPullback_cover (hstar : CoverSequenceProperties hinv P A)
     (hd : DescentHypotheses hinv P A B) (T : MarkedIdealWithBoundary.{u}) (h : OrderReductionHypotheses P T) :
@@ -135,7 +133,7 @@ theorem exists_blowupSequenceData_isStrictPullback_cover (hstar : CoverSequenceP
     h.orderAtLeastLocus_ne_empty (h.dropTrivialBoundary hd).valid d hdesc hm
 
 /- English proof (translation)
-Establish `h1 : MaxContactReduction.reduceOrder hinv T (lowerDimensionalFamily A T) = MaxContactReduction.emptyMarkedSeq T` using `MaxContactReduction.reduceOrder_of_orderAtLeastLocus_eq_empty hinv T (lowerDimensionalFamily A T) hv hemp`. Rewrite using `[maxContactPrincipalization_apply, h1, MaxContactCoverData.emptyMarkedSeq_length]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem length_eq_zero_of_orderAtLeastLocus_eq_empty (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (_hdim : P T.krullDimSucc)
     (_hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞))
@@ -146,11 +144,11 @@ theorem length_eq_zero_of_orderAtLeastLocus_eq_empty (T : MarkedIdealWithBoundar
   rw [maxContactPrincipalization_apply, h1, MaxContactCoverData.emptyMarkedSeq_length]
 
 /- English proof (translation)
-Distinguish the cases in `hemp : orderAtLeastLocus T.ideal T.mult = ∅`. It suffices to derive a contradiction. Establish `hb : maxContactPrincipalization hinv A T = MaxContactReduction.emptyMarkedSeq T` using `MaxContactReduction.reduceOrder_of_orderAtLeastLocus_eq_empty hinv T (lowerDimensionalFamily A T) hv hemp`. Rewrite `hi` using `[hb, MaxContactCoverData.emptyMarkedSeq_length]`. Conclude with `Nat.not_lt_zero i hi`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h : OrderReductionHypotheses P T` using `⟨hdim, hord, Set.nonempty_iff_ne_empty.mpr hemp, hv⟩`. Take `⟨d, hm, hpb, heq⟩` from `exists_blowupSequenceData_isStrictPullback_cover hinv P A B hstar hd T h`. Establish `hstarseq : ∀ j : ℕ, j < (MaxContactCoverData.coverMarkedBlowupData (MaxContactReduction.dropTrivialBoundary T) (h.dropTrivialBoundary hd).valid hinv (lowerDimensionalFamily A (MaxContactReduction.dropTrivialBoundary T))).toBlowupSequenceData.toSequenceOfBlowups.length → (MaxConta …`. Introduce `j hj`. Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_length]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hstar.center_ne_top (MaxContactReduction.dropTrivialBoundary T) (h.dropTrivialBoundary hd) j hj`. Establish `hdseq` using `hpb.center_ne_top_of_forall_center_ne_top hstarseq`. Rewrite `hi`, the goal using `[heq]`. Rewrite `hi`, the goal using `[BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups]`. Conclude with `(Scheme.IdealSheafData.support_nonempty_iff_ne_top _).mpr (hdseq i hi)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem center_support_nonempty (hstar : CoverSequenceProperties hinv P A) (hd : DescentHypotheses hinv P A B)
     (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (hdim : P T.krullDimSucc)
@@ -180,9 +178,9 @@ theorem center_support_nonempty (hstar : CoverSequenceProperties hinv P A) (hd :
     exact (Scheme.IdealSheafData.support_nonempty_iff_ne_top _).mpr (hdseq i hi)
 
 /- English proof (translation)
-Use `hflat` as an intermediate fact. Use `hsurj` as an intermediate fact. Establish `: AlgebraicGeometry.Surjective (t.strictPullbackComparisonMap D t.length le_rfl)` using `MarkedBlowupSequenceData.surjective_strictPullbackComparisonMap t D t.length le_rfl`. Establish `hid : t.ideal t.length = (d.controlledTransform I m t.length).comap (t.strictPullbackComparisonMap D t.length le_rfl)` using `MarkedBlowupSequenceData.ideal_eq_comap_controlledTransform t D hdiv t.length le_rfl`. Establish `hlen : t.length = d.length` using `MarkedBlowupSequenceData.length_eq_of_strictPullbackBlowupSeq t D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : orderAtLeastLocus ((d.controlledTransform I m t.length).comap (t.strictPullbackComparisonMap D t.length le_rfl)) m = ∅`. Rewrite using `[← hid]`. Conclude with `hres`. Establish `h1` using `orderAtLeastLocus_eq_empty_of_comap_eq_empty (t.strictPullbackComparisonMap D t.length le_rfl) (d.controlledTransform I m t.length) m h0`. Rewrite `h1` using `[hlen]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem orderAtLeastLocus_controlledTransform_eq_empty_of_flat_surjective {k : Type u} [Field k] {X' X : Scheme.{u}}
     {q : X' ⟶ Spec (CommRingCat.of k)} {g : X' ⟶ X}
@@ -210,13 +208,11 @@ private theorem orderAtLeastLocus_controlledTransform_eq_empty_of_flat_surjectiv
   rwa [hlen] at h1
 
 /- English proof (translation)
-Rewrite using `[MarkedSequenceOfBlowups.isResolution_iff, MarkedSequenceOfBlowups.lastIdeal_eq]`. Distinguish the cases in `hemp : orderAtLeastLocus T.ideal T.mult = ∅`. Establish `h1 : MaxContactReduction.reduceOrder hinv T (lowerDimensionalFamily A T) = MaxContactReduction.emptyMarkedSeq T` using `MaxContactReduction.reduceOrder_of_orderAtLeastLocus_eq_empty hinv T (lowerDimensionalFamily A T) hv hemp`. Rewrite using `[maxContactPrincipalization_apply, h1, MaxContactCoverData.emptyMarkedSeq_length, MarkedSequenceOfBlowups.ideal_zero, hinv.coSupport_comap, hemp, Set.preimage_empty]`. Establish `h : OrderReductionHypotheses P T` using `⟨hdim, hord, Set.nonempty_iff_ne_empty.mpr hemp, hv⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : OrderReductionHypotheses P (MaxContactReduction.dropTrivialBoundary T)` using `h.dropTrivialBoundary hd`. Take `⟨d, hm, hpb, heq⟩` from `exists_blowupSequenceData_isStrictPullback_cover hinv P A B hstar hd T h`. Rewrite using `[heq]`. Simplify using `only [MarkedBlowupSequenceData.toMarkedSequence_ideal, MarkedBlowupSequenceData.toMarkedSequence_length, BlowupSequenceData.toMarkedBlowupSequenceData_ideal, BlowupSequenceData.toMarkedBlowupSequenceData_length]`. Establish `hm0 : d.IsMarked (MaxContactReduction.dropTrivialBoundary T).structMap (MaxContactCoverData.balancedTunedIdeal (MaxContactReduction.dropTrivialBoundary T) h'.valid) (MaxContactCoverData.tunedMult (MaxContactReduction.dropTrivialBoundary T)) (MaxContactReduction.dropTrivialBoundar …` using `hd.isMarked (MaxContactReduction.dropTrivialBoundary T) h' d hpb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `htc` using `(isMarked_balancedTunedIdeal_iff_and_orderAtLeastLocus_eq hinv P A B hd (MaxContactReduction.dropTrivialBoundary T) h' d).2 ((isMarked_balancedTunedIdeal_iff_and_orderAtLeastLocus_eq hinv P A B hd (MaxContactReduction.dropTrivialBoundary T) h' d).1.mpr hm0) d.length le_rfl`. Establish `D : StrictPullbackBlowupSeq (MaxContactCoverData.coverMap (MaxContactReduction.dropTrivialBoundary T) h'.valid) (MaxContactCoverData.coverMarkedBlowupData (MaxContactReduction.dropTrivialBoundary T) h'.valid hinv (lowerDimensionalFamily A (MaxContactReduction.dropTrivialBoundary …`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups]`. Conclude with `hpb.toStrictPullbackBlowupSeq`. Establish `key : orderAtLeastLocus (d.controlledTransform (MaxContactCoverData.balancedTunedIdeal (MaxContactReduction.dropTrivialBoundary T) h'.valid) (MaxContactCoverData.tunedMult (MaxContactReduction.dropTrivialBoundary T)) d.length) (MaxContactCoverData.tunedMult (MaxContactReduction.d …` using `orderAtLeastLocus_controlledTransform_eq_empty_of_flat_surjective (hd.flat_coverMap (MaxContactReduction.dropTrivialBoundary T) h') (hd.surjective_coverMap (MaxContactReduction.dropTrivialBoundary T) h') (I := MaxContactCoverData.balancedTunedIdeal (MaxContactReduction.dropTrivia …`.
-
-Conclude with `htc.symm.trans key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isResolution_of_orderAt_le_mult (hstar : CoverSequenceProperties hinv P A) (hd : DescentHypotheses hinv P A B)
     (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (hdim : P T.krullDimSucc)
@@ -261,7 +257,7 @@ theorem isResolution_of_orderAt_le_mult (hstar : CoverSequenceProperties hinv P 
     exact htc.symm.trans key
 
 /- English proof (translation)
-The claim follows from `hd.order_le T hv hord (maxContactPrincipalization hinv A T) i hi x`.
+A detailed English derivation is pending.
 -/
 theorem orderAt_ideal_le_mult (hd : DescentHypotheses hinv P A B) (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (_hdim : P T.krullDimSucc) (hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞))

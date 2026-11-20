@@ -25,9 +25,9 @@ def sumArrowAddHomeo (A ι κ : Type) [AddCommGroup A] [TopologicalSpace A] :
     (continuous_pi fun i => continuous_apply _).prodMk (continuous_pi fun j => continuous_apply _)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨⟨fun i => c (Sum.inl i), funext fun i => congrFun hc (Sum.inl i)⟩, ⟨fun j => c (Sum.inr j), funext fun j => congrFun hc (Sum.inr j)⟩⟩`. Introduce and unpack `⟨⟨c, rfl⟩, ⟨d, rfl⟩⟩`. Use `⟨Sum.elim c d, funext fun s => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases s with i | j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_elim_mem_ratV (E : Type) [Field E] [NumberField E] (ι κ : Type) (x : ι → Ad E) (y : κ → Ad E) :
     Sum.elim x y ∈ ratV E (ι ⊕ κ) ↔ x ∈ ratV E ι ∧ y ∈ ratV E κ := by
@@ -40,17 +40,17 @@ theorem sum_elim_mem_ratV (E : Type) [Field E] [NumberField E] (ι κ : Type) (x
     rcases s with i | j <;> rfl
 
 /- English proof (translation)
-Introduce `E _ _ ι κ _ _ Φ hΦ`. Establish `hι` using `isCoLat_ratV E ι`. Establish `hκ` using `isCoLat_ratV E κ`. Establish `hs` using `isCoLat_ratV E (ι ⊕ κ)`. Establish `hp : IsCoLat ((ratV E ι).prod (ratV E κ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d₁, K₁, hK₁, c₁⟩` from `hι`. Take `⟨d₂, K₂, hK₂, c₂⟩` from `hκ`. Use `⟨?_, K₁ ×ˢ K₂, hK₁.prod hK₂, fun x => ?_⟩` and prove the remaining obligations. Set `f : ↥((ratV E ι).prod (ratV E κ)) → ratV E ι × ratV E κ` to `fun p => (⟨p.1.1, p.2.1⟩, ⟨p.1.2, p.2.2⟩)`. Establish `hf : Continuous f` using `(continuous_subtype_val.fst.subtype_mk _).prodMk (continuous_subtype_val.snd.subtype_mk _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `DiscreteTopology.of_continuous_injective hf fun p q h => ?_` and prove the remaining obligations. Establish `e₁` using `congrArg (fun r => (r.1 : ι → Ad E)) h`. Establish `e₂` using `congrArg (fun r => (r.2 : κ → Ad E)) h`. Conclude with `Subtype.ext (Prod.ext e₁ e₂)`. Take `⟨γ₁, m₁, k₁⟩` from `c₁ x.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ₂, m₂, k₂⟩` from `c₂ x.2`. Conclude with `⟨(γ₁, γ₂), ⟨m₁, m₂⟩, k₁, k₂⟩`. Set `e` to `sumArrowAddHomeo (Ad E) ι κ`. Establish `he : ∀ p, e p ∈ ratV E (ι ⊕ κ) ↔ p ∈ (ratV E ι).prod (ratV E κ)` using `fun p => (sum_elim_mem_ratV E ι κ p.1 p.2).trans AddSubgroup.mem_prod.symm`. Establish `hper : Per ((ratV E ι).prod (ratV E κ)) (fun p => Φ (e p))`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hΦ.1.comp e.continuous_toFun, fun γ hγ x => ?_⟩` and prove the remaining obligations. Establish `: e (γ + x) = e γ + e x` using `map_add e γ x`. Simplify using `only [this]`. Conclude with `hΦ.2 _ ((he γ).2 hγ) _`. Establish `h1` using `GlobalTheory.T.quotientAverage_map_lattice_equiv _ _ _ _ hp hs e he Φ hΦ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `GlobalTheory.T.quotientAverage_prod_fubini _ _ _ _ hι hκ _ hper`. Rewrite using `[← h1, h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem avg_sum_index : ∀ (E : Type) [Field E] [NumberField E] (ι κ : Type) [Fintype ι] [Fintype κ]
     (Φ : (ι ⊕ κ → Ad E) → ℂ), Per (ratV E (ι ⊕ κ)) Φ →

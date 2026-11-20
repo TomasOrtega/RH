@@ -28,14 +28,14 @@ namespace GlobalTheory.TwistScalarField
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Host.HChar.loc_mul χ₁ χ₂ v _`.
+A detailed English derivation is pending.
 -/
 theorem val_mul {L : Type} [Field L] [NumberField L] (χ₁ χ₂ : Formalism.L2.Host.HChar L) (v : HeightOneSpectrum (𝓞 L)) :
     (χ₁ * χ₂).val v = χ₁.val v * χ₂.val v :=
   Formalism.L2.Host.HChar.loc_mul χ₁ χ₂ v _
 
 /- English proof (translation)
-Unfold `Formalism.L2.Host.HChar.onId`. Establish `hfin` using `Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors (K := L) I)`. Establish `hs : ∀ χ : Formalism.L2.Host.HChar L, (Function.mulSupport fun v : HeightOneSpectrum (𝓞 L) => χ.val v ^ FractionalIdeal.count L v I).Finite` using `fun χ => hfin.subset fun v hv h0 => hv (by show χ.val v ^ _ = 1; rw [h0, zpow_zero])`. Rewrite using `[← finprod_mul_distrib (hs χ₁) (hs χ₂)]`. Conclude with `finprod_congr fun v => by rw [val_mul, mul_zpow]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onId_mul {L : Type} [Field L] [NumberField L] (χ₁ χ₂ : Formalism.L2.Host.HChar L)
     (I : FractionalIdeal (nonZeroDivisors (𝓞 L)) L) : (χ₁ * χ₂).onId I = χ₁.onId I * χ₂.onId I := by
@@ -48,9 +48,9 @@ theorem onId_mul {L : Type} [Field L] [NumberField L] (χ₁ χ₂ : Formalism.L
   exact finprod_congr fun v => by rw [val_mul, mul_zpow]
 
 /- English proof (translation)
-Set `S : Subgroup ℂˣ` to `{ carrier := {u | (u : ℂ) ∈ emb.range} mul_mem' := fun {a b} ha hb => by`. Take `⟨x, hx⟩` from `ha`. Take `⟨y, hy⟩` from `hb`. Conclude with `⟨x * y, by rw [map_mul, hx, hy, Units.val_mul]⟩`. Use the proof step `one_mem' := ⟨1, by rw [map_one, Units.val_one]⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use the proof step `inv_mem' := fun {a} ha => by`. Take `⟨x, hx⟩` from `ha`. Conclude with `⟨x⁻¹, by rw [map_inv₀, hx, Units.val_inv_eq_inv_val]⟩ }`. Establish `hv : ∀ v : HeightOneSpectrum (𝓞 L), ξ.val v ∈ S` using `fun v => h _`. Conclude with `finprod_induction (· ∈ S) S.one_mem (fun _ _ => S.mul_mem) (fun v => S.zpow_mem (hv v) _)`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem onId_mem_range {L C : Type} [Field L] [NumberField L] [Field C] (emb : C →+* ℂ) (ξ : Formalism.L2.Host.HChar L)
     (h : ∀ x, ((ξ.1 x : ℂˣ) : ℂ) ∈ emb.range) (I : FractionalIdeal (nonZeroDivisors (𝓞 L)) L) :
@@ -71,41 +71,35 @@ theorem onId_mem_range {L C : Type} [Field L] [NumberField L] [Field C] (emb : C
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ fw O hT hC i hO v hv htup hQG hF0 hVal hdel hMb hRun ℓ hLev hAct χ ξR ω φ hK Λ h N hU hTb hTl hLevOK hconj e Ps yd hh he hPs hPsO hs hy hcard`. Establish `hpq : D.R.r = (T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q` using `(hT.p.unf _ ⟨Nat.le_add_left _ _, i.2⟩ _ T.J.toCore.good_σ₀).1`. Establish `hInR : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `hlev` using `hT.sh.dLev _ hInR (Vc D i).rank`. Take `⟨pp, -, hpd⟩` from `hT.sh.dPd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpd1` using `hRun.2.1`. Rewrite `hpd1` using `[hpd _ hInR]`. Establish `hpd2 : (T.dδ ((i : ℕ) + 1) (Vc D i).rank).pd = ownAt D v` using `by rw [hpd _ hInR, hpd1]`. Establish `hL` using `hC.lev`. Establish `hstd` using `hO.2.lift.std`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbadO` using `hO.2.bad ()`. Take `⟨b, hb⟩ : ∃ b : ℕ, b = badN D * (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M * (O i).bad ()` from `⟨_, rfl⟩`. Establish `hbPs : ∀ PP ∈ Ps, ((b : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal` using `fun PP hP hm => by`. Rewrite `hm` using `[hb, Nat.cast_mul (badN D * _)]`. Break down `PP.isPrime.mem_or_mem hm with h1 | h1` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hPs PP hP h1`. Conclude with `hPsO PP hP h1`. Establish `h2b : 2 ∣ b` using `hb ▸ dvd_mul_of_dvd_right hbadO.2.1 _`. Establish `hMb' : (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M ∣ b` using `hb ▸ dvd_mul_of_dvd_left (dvd_mul_left _ _) _`. Establish `g` using `GlobalTheory.AdTh.SerOne.guard_of_splitOffBad (Vc D i) hstd.1 hstd.2 _ h2b hMb' ⟨hh, e, Ps, he, hbPs, hs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨gU, ⟨k, hk1, hk2, hk3⟩, gS⟩` from `g`. Establish `gT : (⟨Bridge.hLat (Vc D i) (fin (Vc D i) h)⟩ : GenLat D.host.E (Vc D i).rank).TrivAt ((O i).bad ())` using `⟨k, Nat.Coprime.coprime_dvd_right (hb ▸ dvd_mul_left _ _) hk1, hk2, hk3⟩`. Establish `hΛ : Λ = GlobalTheory.ClassScalarCompare.conjLat (Bridge.hLat (Vc D i) (fin (Vc D i) h))`. Consider the cases of `Λ with`. Consider the case `mk La => congr 1`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `w`. Conclude with `hconj w`. Establish `memb : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), ((ownAt D v : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal → ((b : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal` using `fun Q hQ => by`. Rewrite using `[hb, hlev.2.1, hpd2, Nat.cast_mul, Nat.cast_mul, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ hQ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hbar : (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = (GlobalTheory.IdemSupport.cO D : 𝓞 D.host.E →+* 𝓞 D.host.E)` using `RingHom.ext fun a => RingOfIntegers.ext (T.Q.H.bar_eq a)`. Take `⟨cc, c0, c1, c2, c3, c4⟩` from `GlobalTheory.ClassScalarValue.exists_ideal (Vc D i) hstd.1 hstd.2 h e Ps yd he hs hy b hbPs (Lift.chrTh (Lift.tup R.mu0 χ) R.eta ((i : ℕ) + 1)).2 (R.C.mu0 i * R.C.delAt (Formalism.EigenvalueLevelCeiling.plc v) * R.C.eta⁻¹) (GlobalTheory.ClassScalarValue.chrEq_mul_inv (hL.mu0 i) h …`. Establish `a1 : (R.C.mu0 i).UnrAt Q` using `(R.C.isMu0 i).unr Q fun j hj => hQ (by`. Take `⟨u, hu⟩` from `(Finset.dvd_prod_of_mem D.host.g (Finset.mem_univ j)).trans ((Fin.prod_univ_two D.host.g).symm ▸ hbadO.2.2.2.2)`. Rewrite using `[hb, hu]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [Nat.cast_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ hj))`. Establish `a2 : (R.C.delAt (Formalism.EigenvalueLevelCeiling.plc v)).UnrAt Q`. Assume the negation of the conclusion as `hn`. Break down `(hK.ram Q).1 hn with a | ⟨Q', a, a'⟩` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hQ (memb Q (Finset.mem_filter.1 a).2)`. Rewrite `hQ` using `[(GlobalTheory.IdemSupport.isConjPl_iff _ _).1 a', GlobalTheory.IdemSupport.mem_cP, map_natCast]`. Conclude with `hQ (memb Q' (Finset.mem_filter.1 a).2)`. Rewrite using `[Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, a1 x hx, a2 x hx, R.C.isEta.unr Q x hx, inv_one, one_mul, one_mul])`. Use the proof step `(fun Q hQ x => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Formalism.L2.Host.HChar.resFin_mul, Formalism.L2.Host.HChar.resFin_mul, Formalism.L2.Host.HChar.resFin_inv, (R.C.isMu0 i).triv.1, hK.triv.1, R.C.isEta.res.1, Formalism.L2.Host.etaFin, GlobalTheory.ClassScalarValue.above_eq, Finset.card_pair hQ.symm, if_neg (by norm_num), inv_one …`. Rewrite `c1`, `c3` using `[← hbar]`. Take `⟨q, q0, q1, q2⟩` from `(hO.2.ep ()).2 _ cc gU gT gS c1 c3`. Establish `c2' : cc ⊔ Ideal.span {(((O i).bad () : ℕ) : 𝓞 D.host.E)} = ⊤`. Use `top_le_iff.1 (c2 ▸ sup_le_sup_left (Ideal.span_singleton_le_span_singleton.2 ?_) _)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hb]`. Conclude with `Nat.cast_dvd_cast (dvd_mul_left _ _)`. Establish `hB` using `(hO.2.tuple ()).B cc c0 c2'`. Establish `hxi : R.xiH A.μ0 = 1` using `hL.xi_base`. Establish `S1 : ∀ (χ₁ χ₂ : Formalism.L2.Host.HChar D.host.E) (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E), (χ₁ * χ₂).onId I = χ₁.onId I * χ₂.onId I` using `fun χ₁ χ₂ I => onId_mul χ₁ χ₂ I`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `S2 : ∀ (ξ : Formalism.L2.Host.HChar D.host.E), (∀ x, ((ξ.1 x : ℂˣ) : ℂ) ∈ D.what₂.embLL.range) → ∀ I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E, ((ξ.onId I : ℂˣ) : ℂ) ∈ D.what₂.embLL.range` using `fun ξ hξ I => onId_mem_range D.what₂.embLL ξ hξ I`. Establish `e1 : R.C.mu0 i * R.C.delAt (Formalism.EigenvalueLevelCeiling.plc v) * R.C.eta⁻¹ = (R.C.mu0 i * R.xiH A.μ0 * R.C.eta⁻¹) * R.C.delAt (Formalism.EigenvalueLevelCeiling.plc v)`. Rewrite using `[hxi, mul_one, mul_right_comm]`. Rewrite `c4` using `[e1, S1, Units.val_mul]`. Take `⟨a3, ha3⟩` from `S2 _ hdel (cc : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF` using `hO.1`. Establish `memF : ∀ x : (O i).c'.F, ∃ a : D.what₂.LL, D.what₂.embLL a = (x : ℂ)` using `fun x => by`. Take `⟨a, ha⟩` from `AlgHom.mem_fieldRange.1 ((SetLike.ext_iff.1 hF (x : ℂ)).1 x.2)`. Conclude with `⟨a, ha⟩`. Take `⟨a1, ha1⟩` from `memF (incF T.Q.c (O i).c' (O i).hle (betaH (Dw := T.Q.Dw ((i : ℕ) + 1)) T.Q.c Λ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a2, ha2⟩` from `memF ((O i).B () cc)`. Establish `hi : GlobalTheory.ClassScalarCompare.stdIndex Λ = GlobalTheory.ClassScalarCompare.stdIndex (⟨Bridge.hLat (Vc D i) (fin (Vc D i) h)⟩ : GenLat D.host.E (Vc D i).rank)`. Rewrite using `[hΛ]`. Conclude with `GlobalTheory.ClassScalarCompare.stdIndex_conjLat _`. Establish `q1' : (q : ℝ) ^ 2 * ((GlobalTheory.ClassScalarCompare.stdIndex Λ : ℕ) : ℝ) ^ D.R.r = (Ideal.absNorm cc : ℝ)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hi, hpq]`. Conclude with `q1` after adjusting the coercions. Establish `hsq : ((Real.sqrt (((GlobalTheory.ClassScalarCompare.stdIndex Λ : ℕ) : ℝ) ^ D.R.r) : ℝ) : ℂ) = ((Real.sqrt (Ideal.absNorm cc : ℝ) : ℝ) : ℂ) * ((q : ℂ))⁻¹`. Establish `hq : (0:ℝ) < q` using `by exact_mod_cast q0`. Establish `e2 : ((GlobalTheory.ClassScalarCompare.stdIndex Λ : ℕ) : ℝ) ^ D.R.r = (Ideal.absNorm cc : ℝ) / (q : ℝ) ^ 2`.
-
-Rewrite using `[← q1']`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2, Real.sqrt_div' _ (sq_nonneg _), Real.sqrt_sq hq.le, Complex.ofReal_div, div_eq_mul_inv, Complex.ofReal_ratCast]`. Establish `h1 : (O i).s0 (betaH (Dw` using `T.Q.Dw ((i : ℕ) + 1)) T.Q.c Λ) = D.what₂.embLL a1 := ha1.symm`. Use `beta_reduce at hB`.
-
-Establish `h2` using `ha2.trans hB`. Use `⟨a1⁻¹ * a2 * a3 * ((q⁻¹ : ℚ) : D.what₂.LL), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ * _ * ((Real.sqrt (((GlobalTheory.ClassScalarCompare.stdIndex Λ : ℕ) : ℝ) ^ D.R.r) : ℝ) : ℂ)`. Rewrite using `[h1, c4, hsq, map_mul, map_mul, map_mul, map_inv₀, map_ratCast, h2, ha3]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem twist_scalar_mem_range : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : Full D) [Algebra T.J.Q.c.F D.what₂.LL] (R : RealDat D A T.J.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (fw : FWTie T.J R κ v₀) (O : ∀ i, OMDat T.J.toCore R i Unit (fun _ => A.μ0)) (hT : LawsFull T), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m), OMPins T.J R κ v₀ O i → ∀ (v : HeightOneSpectrum (𝓞 D.what₂.LL)), v ∈ R.twPl → R.tup_mu_on → QGuard R → GlobalTheory.FinalJoin2.FieldOK0 D (ownAt D v) → Formalism.L2.Host.ValLL0 D R.C → (∀ x, (((R.C.delAt (Formalism.EigenvalueLevelCeiling.plc v)).1 x : ℂˣ) : ℂ) ∈ D.what₂.embLL.range) → T.J.Q.l.Mb = ∏ PP ∈ R.Pg, PP.asIdeal → RunPin (T := T) R i (κ i).n v (ownAt D v) → ∀ (ℓ : G → (LaMod (T.Q.Dw ((i : ℕ) + 1)) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw ((i : ℕ) + 1)) T.Q.l)), LevelPin (T := T) R i ℓ → ActionPin (T := T) (R := R) hT.p fw i ℓ → ∀ χ ξR ω φ, KerDat R i (R.C.delAt (Formalism.EigenvalueLevelCeiling.plc v)) χ ξR (placesOver R (R.mu v) (ownAt D v)) ω φ → ∀ (Λ : GenLat D.host.E (Vc D i).rank) (h : GA D (Vc D i)) (N : ℕ), Λ.Unimod → Λ.TrivAt (badN D) → Λ.TrivAt (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M → Λ.LevOK N (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M → (∀ w, w ∈ Λ.La ↔ (fun b => star (w b)) ∈ Bridge.hLat (Vc D i) (fin (Vc D i) h)) → ∀ (e : AE D) (Ps : Finset (Pl D.host.E)) (yd : (AE D)ˣ), h ∈ GfC (Vc D i) → IsIdemSum e Ps → (∀ PP ∈ Ps, ((badN D * (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → (∀ PP ∈ Ps, (((O i).bad () : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → SuppAt e (Vc D i) h → IsDetAt e (Vc D i) h yd → Nat.card (Fin (Vc D i).rank → LevQ (T.Q.Dw ((i : ℕ) + 1)) (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂) ≠ 0 → ∃ a : D.what₂.LL, D.what₂.embLL a = (((O i).s0 (betaH (Dw := T.Q.Dw ((i : ℕ) + 1)) T.Q.c Λ))⁻¹ * (((Lift.chrTh (Lift.tup R.mu0 χ) R.eta ((i : ℕ) + 1)).2 yd : Circle) : ℂ) * (Real.sqrt ((((Λ.La ⊓ Formalism.L2.Pj.stdLat D.host.E (Vc D i).rank).toAddSubgroup.addSubgroupOf Λ.La.toAddSubgroup).index : ℝ) ^ D.R.r) : ℂ)) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ fw O hT hC i hO v hv htup hQG hF0 hVal hdel hMb hRun ℓ hLev hAct χ ξR ω φ hK Λ h N hU hTb hTl hLevOK hconj e Ps yd hh he hPs hPsO hs hy hcard

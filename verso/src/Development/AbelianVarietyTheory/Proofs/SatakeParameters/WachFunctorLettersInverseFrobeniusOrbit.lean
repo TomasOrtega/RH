@@ -13,35 +13,31 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 namespace GlobalTheory.HTW.Rec
 
 /- English proof (translation)
-Introduce `D l _ P K LL W c κ h2 hq hd hcl hK`. Use `set φ := DV.frobG D l with hφ`. Use `set n := Module.finrank ℚ_[l] ↥(K0 K) with hn`. Establish `hτ` using `fun a => GlobalTheory.T.existsUnique_embeddingRestrictsToWachLetter_unramified P K LL W hK a`. Establish `hg` using `fun τ => GlobalTheory.T.existsUnique_embeddingReadsGaloisElement D.host K LL c κ τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `τa : ZMod n → (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)` to `fun a => (hτ a).exists.choose`. Establish `hover : ∀ a, Over W (τa a) a` using `fun a => (hτ a).exists.choose_spec`. Set `g : ZMod n → D.R.GG` to `fun a => (hg (τa a)).exists.choose`. Establish `hread : ∀ a, Reads D.host c κ (τa a) (g a)` using `fun a => (hg (τa a)).exists.choose_spec`. Establish `smul : ∀ u v : D.R.GG, D.host.sigmaOf (u * v) = D.host.sigmaOf u * D.host.sigmaOf v` using `fun u v => map_mul (D.host.gal).symm u v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK0 : K0 K = K.1` using `inf_eq_left.mpr hK`. Establish `step : ∀ a, g (a + 1) = g a * φ⁻¹`. Introduce `a`. Use `(hg (τa (a + 1))).unique (hread (a + 1)) ?_` and prove the remaining obligations. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set x := D.host.sigmaOf φ⁻¹ z with hx`. Establish `hz : D.host.sigmaOf φ x = z`. Rewrite using `[hx, ← AlgEquiv.mul_apply, ← smul, mul_inv_cancel]`. Use `show (D.host.gal).symm 1 z = z`. Rewrite using `[map_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Set `y : ↥(K0 K)` to `⟨((c x : ↥K.1) : Om l), ⟨(c x).2, hK (c x).2⟩⟩`. Establish `hy : algebraMap ↥(K0 K) ↥K.1 y = c x` using `Subtype.ext rfl`. Establish `hσ` using `GlobalTheory.T.periodDatum_frobenius_restrict_hostField D P K c h2 hq hd x y hy`. Establish `ov : ∀ b (t : ↥(K0 K)), τa b (algebraMap ↥(K0 K) ↥K.1 t) = W.emb b t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `b t`. Use `congrArg (fun f => f t) (hover b)` as an intermediate fact. Simplify using `using this`. Establish `hemb : W.emb (a + 1) ((P.PD K).σ y) = W.emb a y`. Use `congrArg (fun f => f y) (W.emb_σ a)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Combine the equalities or inequalities in the displayed calculation. Establish `hfr : n = Module.finrank ℚ_[l] ↥K.1`. Rewrite using `[hn]`. Conclude with `(IntermediateField.equivOfEq hK0).toLinearEquiv.finrank_eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hlen : n = orderOf φ⁻¹`. Rewrite using `[orderOf_inv]`. Take `⟨Q, -, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (Ideal.span {(l : ℤ)}) (⊥ : Ideal (𝓞 D.host.E)) (by`. Introduce `x hx`. Simplify using `only [Ideal.mem_comap, Ideal.mem_bot] at hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: x = 0` using `(algebraMap ℤ (𝓞 D.host.E)).injective_int (by simpa using hx)`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _)`. Use `hQ` as an intermediate fact. Establish `: Q.LiesOver (Ideal.span {(l : ℤ)})` using `⟨hQc.symm⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfrob` using `(GlobalTheory.T.frobG_isArithFrobAt_and_sign_eq_jacobiSym D l h2 hq hd).1 Q`. Set `c' : D.host.E →+* PadicAlgCl l` to `(K.1.val : ↥K.1 →ₐ[ℚ_[l]] Om l).toRingHom.comp c`. Establish `hc' : ∀ x, c' x ∈ K.1` using `fun x => (c x).2`. Establish `hcl' : (K.1 : Set (PadicAlgCl l)) ⊆ closure (Set.range c')` using `hcl`. Use `(GlobalTheory.T.completion_embeddings_single_frobenius_orbit D.host l h2 hq hd c' K hc' hcl' Q (D.host.sigmaOf φ) hfrob).1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφg : D.host.galE (D.host.sigmaOf φ) = φ` using `(D.host.gal).apply_symm_apply φ`. Rewrite using `[hfr, this, hφg]`. Establish `hpos : 0 < n`. Rewrite using `[hfr]`. Use `K.2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `Module.finrank_pos`. Establish `: NeZero n` using `⟨hpos.ne'⟩`. Use `⟨g, ⟨hlen, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hk : ∀ k : ℕ, g (k : ZMod n) = g 0 * φ⁻¹ ^ k`. Introduce `k`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Nat.cast_succ, step, ih]`. Conclude with `(mul_assoc _ _ _).trans (congrArg _ (pow_succ φ⁻¹ k).symm)`.
-
-Introduce `a`. Use `hk a.val` as an intermediate fact. Rewrite `this` using `[ZMod.natCast_zmod_val]`. Then use the resulting hypothesis. Introduce `τ a h`. Establish `: τ = τa a` using `(hτ a).unique h (hover a)`.
-
-Substitute `this` using the available equality. Conclude with `hread a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem reads_orbit_invFrob : ∀ (D : D7) {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) (W : Wach P K LL) (c : D.host.E →+* ↥K.1) (κ : D.host.E →+* ↥LL.1), l ∉ D.host.small → l ≠ D.host.q → l ≠ D.host.d → (K.1 : Set (Om l)) ⊆ closure (Set.range fun x => ((c x : ↥K.1) : Om l)) → K.1 ≤ MaximalUnramifiedExtension l → ∃ g : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → D.R.GG, IsOrbit g (DV.frobG D l)⁻¹ ∧ ∀ τ a, Over W τ a → Reads D.host c κ τ (g a) := by
   intro D l _ P K LL W c κ h2 hq hd hcl hK

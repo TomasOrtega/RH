@@ -25,13 +25,13 @@ Both sides reduce to the same expression.
 private theorem cC_apply (i j : Fin 2) (x : Fin 2 → Fin 2 → ℝ) : cC i j x = (x i j : ℂ) := rfl
 
 /- English proof (translation)
-Establish `r : ∀ i j, HasFDerivAt (fun x : Fin 2 → Fin 2 → ℝ => x i j) (cR i j) x0` using `fun i j => (cR i j).hasFDerivAt`. Establish `c : ∀ i j, HasFDerivAt (fun x : Fin 2 → Fin 2 → ℝ => (x i j : ℂ)) (cC i j) x0` using `fun i j => (cC i j).hasFDerivAt`. Establish `hd` using `((r 0 0).fun_mul (r 1 1)).fun_sub ((r 0 1).fun_mul (r 1 0))`. Establish `hd2` using `hd.rpow_const (p := (k : ℝ) / 2) (Or.inl (by simp [h00, h01, h10, h11]))`. Establish `hd3` using `Complex.ofRealCLM.hasFDerivAt.comp x0 hd2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hden` using `((c 1 0).mul_const Complex.I).fun_add (c 1 1)`. Establish `hnum` using `((c 0 0).mul_const Complex.I).fun_add (c 0 1)`. Establish `hne : (x0 1 0 : ℂ) * Complex.I + x0 1 1 ≠ 0` using `by simp [h10, h11]`. Establish `hz` using `(hasDerivAt_zpow (-(k : ℤ)) _ (Or.inl hne)).comp_hasFDerivAt x0 hden`. Establish `hi` using `(hasDerivAt_inv hne).comp_hasFDerivAt x0 hden`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `hnum.fun_mul hi`. Establish `hF2 : HasDerivAt F F' (((x0 0 0 : ℂ) * Complex.I + x0 0 1) * ((x0 1 0 : ℂ) * Complex.I + x0 1 1)⁻¹)`. Simplify `hF` using `[h00, h01, h10, h11]`. Establish `hc` using `hF2.comp_hasFDerivAt x0 hq`. Use `⟨_, (hd3.fun_mul hz).fun_mul hc, fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[h00, h01, h10, h11, cR_apply, cC_apply]`. Take the linear combination `(-(v 1 0 : ℂ) * F') * Complex.I_mul_I`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem key (k : ℕ) (F : ℂ → ℂ) (F' : ℂ) (hF : HasDerivAt F F' Complex.I) (x0 : Fin 2 → Fin 2 → ℝ)
     (h00 : x0 0 0 = 1) (h01 : x0 0 1 = 0) (h10 : x0 1 0 = 0) (h11 : x0 1 1 = 1) :
@@ -85,7 +85,7 @@ open Classical in
 def i0 (v : InfinitePlace F) : TR.Lie F 2 := fun a b w => if w = v then 0 else (1 : Matrix (Fin 2) (Fin 2) ℝ) a b
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `[i0, ivL_apply, iv, TR.oneL, Matrix.one_apply, ite_apply]`. Simplify using `[i0, ivL_apply, iv, TR.oneL, Matrix.one_apply, ite_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem embedded_archimedean_identity_eq_one (v : InfinitePlace F) : i0 v + ivL v (Matrix.of.symm 1) = TR.oneL F 2 := by
   funext a b w
@@ -96,7 +96,7 @@ theorem embedded_archimedean_identity_eq_one (v : InfinitePlace F) : i0 v + ivL 
 
 open Classical in
 /- English proof (translation)
-Use extensionality with `a b`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `[i0, ivL_apply, iv]`. Simplify using `[i0, ivL_apply, iv, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_embedded_archimedean_matrix (v : InfinitePlace F) (x : Fin 2 → Fin 2 → ℝ) (w : InfinitePlace F) :
     (Matrix.of (i0 v + ivL v x)).map (fun r : TR.Rinf F => r w) = if w = v then Matrix.of x else 1 := by
@@ -112,49 +112,43 @@ Both sides reduce to the same expression.
 theorem sv (i j a b : Fin 2) : (Matrix.of.symm (Matrix.single i j (1 : ℝ))) a b = if i = a ∧ j = b then 1 else 0 := rfl
 
 /- English proof (translation)
-Use `set g := Matrix.GeneralLinearGroup.map (TR.pInf F) G with hg`. Use `set xf := Matrix.GeneralLinearGroup.map (pFin F) G with hxf`. Establish `hG : TR.infGL F 2 g * finGL F 2 xf = G` using `TR.infGL_mul_finGL G`. Use `set z : X (InfinitePlace F) := fun w => gv w g • iP with hz`. Use `set gw := gv v g with hgw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set C0 : ℂ := ∏ w ∈ Finset.univ.erase v, j1 (k w) (gv w g) iP with hC0`. Establish `hC0ne : C0 ≠ 0` using `Finset.prod_ne_zero_iff.2 fun w _ => hB.2.1 _ _ _`. Use `set c1 : ℂ := ((|gw.val.det| ^ (-(k v : ℝ) / 2) : ℝ) : ℂ) with hc1`. Establish `hc1ne : c1 ≠ 0`. Rewrite using `[hc1, Complex.ofReal_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Real.rpow_pos_of_pos (abs_pos.2 gw.det_ne_zero) _).ne'`. Use `set Φ : P → ℂ := fun t => f (Function.update z v t, xf) with hΦ`. Use `set Hf : ℂ → ℂ := fun τ => ext1 Φ (num gw τ / den gw τ) / (den gw τ ^ k v * c1 * C0) with hHf`. Establish `hI : (Complex.I).im ≠ 0` using `by simp`. Establish `hden : den gw Complex.I ≠ 0` using `den_ne gw hI`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdiff : DifferentiableAt ℂ Hf Complex.I`. Establish `hn : DifferentiableAt ℂ (num gw) Complex.I` using `by unfold num; fun_prop`. Establish `hd : DifferentiableAt ℂ (den gw) Complex.I` using `by unfold den; fun_prop`. Establish `h1 : DifferentiableAt ℂ (fun τ => num gw τ / den gw τ) Complex.I` using `hn.div hd hden`. Establish `h2 : DifferentiableAt ℂ (ext1 Φ) (num gw Complex.I / den gw Complex.I)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hopen : IsOpen {t : ℂ | t.im ≠ 0}` using `isOpen_ne_fun Complex.continuous_im continuous_const`. Use `((hhol xf).2 z v).differentiableAt (hopen.mem_nhds ?_)` and prove the remaining obligations. Use `show (num gw Complex.I / den gw Complex.I).im ≠ 0`. Rewrite using `[im_div]`. Conclude with `div_ne_zero (mul_ne_zero gw.det_ne_zero hI) (by simpa using hden)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(h2.comp Complex.I h1).div ((hd.pow _).mul_const _ |>.mul_const _) ?_` and prove the remaining obligations. Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ hden) hc1ne) hC0ne`. Take `⟨L, hL, hv⟩` from `key (k v) Hf _ hdiff.hasDerivAt (Matrix.of.symm 1) (by simp) (by simp) (by simp) (by simp)`. Establish `hev : (fun x => TR.chart φ G (i0 v + ivL v x)) =ᶠ[𝓝 (Matrix.of.symm 1)] fun x : Fin 2 → Fin 2 → ℝ => (((x 0 0 * x 1 1 - x 0 1 * x 1 0) ^ ((k v : ℝ) / 2) : ℝ) : ℂ) * ((x 1 0 : ℂ) * Complex.I + x 1 1) ^ (-(k v : ℤ)) * Hf (((x 0 0 : ℂ) * Complex.I + x 0 1) * ((x 1 0 : ℂ) * Complex.I …`. Establish `hc : Continuous fun x : Fin 2 → Fin 2 → ℝ => x 0 0 * x 1 1 - x 0 1 * x 1 0` using `by fun_prop`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ho : {x : Fin 2 → Fin 2 → ℝ | 0 < x 0 0 * x 1 1 - x 0 1 * x 1 0} ∈ 𝓝 (Matrix.of.symm (1 : Matrix (Fin 2) (Fin 2) ℝ))` using `(isOpen_lt continuous_const hc).mem_nhds (by simp)`. Use `Filter.eventually_of_mem ho fun x hx => ?_` and prove the remaining obligations. Establish `hx' : 0 < x 0 0 * x 1 1 - x 0 1 * x 1 0` using `hx`. Establish `hdx : (Matrix.of x).det = x 0 0 * x 1 1 - x 0 1 * x 1 0` using `by rw [Matrix.det_fin_two]; rfl`. Establish `hu : IsUnit (Matrix.of (i0 v + ivL v x))`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, Pi.isUnit_iff]`. Introduce `w`. Rewrite using `[show (Matrix.of (i0 v + ivL v x)).det w = (Pi.evalRingHom (fun _ : InfinitePlace F => ℝ) w) (Matrix.of (i0 v + ivL v x)).det from rfl, RingHom.map_det]`. Express the relevant statement in the definitionally equal form `IsUnit ((Matrix.of (i0 v + ivL v x)).map (fun r : TR.Rinf F => r w)).det`. Rewrite using `[map_embedded_archimedean_matrix]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `isUnit_iff_ne_zero.2 (by rw [hdx]; exact hx'.ne')`. Simplify using the standard rewrite rules. Use `set U := hu.unit with hU`. Establish `hUv : ∀ w a b, (gv w U).val a b = (Matrix.of (i0 v + ivL v x)).map (fun r : TR.Rinf F => r w) a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `w a b`. Express the relevant statement in the definitionally equal form `(U : Matrix (Fin 2) (Fin 2) (TR.Rinf F)) a b w = _`. Rewrite using `[hU, hu.unit_spec]`. Both sides reduce to the same expression. Establish `hU1 : ∀ w, w ≠ v → gv w U = 1` using `fun w hw => Units.ext (Matrix.ext fun a b => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hUv, map_embedded_archimedean_matrix, if_neg hw]`. Use the proof step `rfl)`. Use `set m := gv v U with hm`. Establish `hmv : ∀ a b, m.val a b = x a b` using `fun a b => by rw [hm, hUv, map_embedded_archimedean_matrix, if_pos rfl]; rfl`. Establish `hmdet : m.val.det = x 0 0 * x 1 1 - x 0 1 * x 1 0` using `by rw [Matrix.det_fin_two, hmv, hmv, hmv, hmv]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [TR.chart, dif_pos hu]`. Rewrite using `[← hU]`. Establish `e1 : G * TR.infGL F 2 U = TR.infGL F 2 (g * U) * finGL F 2 xf`. Rewrite using `[← hG, mul_assoc, ← TR.infGL_comm, ← mul_assoc, ← map_mul]`. Establish `hr` using `hrel (g * U) xf`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hr` using `[← e1]`. Establish `hprod : ∏ w, j1 (k w) (gv w (g * U)) iP = j1 (k v) gw (m • iP) * j1 (k v) m iP * C0`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ v), map_mul, ← hB.1]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hU1 w (Finset.ne_of_mem_erase hw), mul_one]`. Establish `hpt : (fun w => gv w (g * U) • iP) = Function.update z v (gw • (m • iP))`. Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.update_self, map_mul, mul_smul]`. Rewrite using `[Function.update_of_ne h, map_mul, hU1 w h, mul_one]`. Rewrite `hr` using `[hprod, hpt]`. Establish `hne1` using `hB.2.1 (k v) gw (m • iP)`. Establish `hne2` using `hB.2.1 (k v) m iP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hφG : φ (G * TR.infGL F 2 U) = Φ (gw • (m • iP)) / (j1 (k v) gw (m • iP) * j1 (k v) m iP * C0)` using `eq_div_of_mul_eq (mul_ne_zero (mul_ne_zero hne1 hne2) hC0ne) hr`. Establish `hτ : ((x 0 0 : ℂ) * Complex.I + x 0 1) * ((x 1 0 : ℂ) * Complex.I + x 1 1)⁻¹ = (m • iP).1`. Rewrite using `[coe_smul, num, den, hmv, hmv, hmv, hmv, div_eq_mul_inv]`. Both sides reduce to the same expression. Establish `hdenm : den m iP.1 = (x 1 0 : ℂ) * Complex.I + x 1 1` using `by rw [den, hmv, hmv]; rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdenne : (x 1 0 : ℂ) * Complex.I + x 1 1 ≠ 0` using `by rw [← hdenm]; exact den_ne m (by simp [iP])`. Establish `hHf : Hf (m • iP).1 = Φ (gw • (m • iP)) / (j1 (k v) gw (m • iP) * C0)`. Simplify using `only [hHf]`. Rewrite using `[ext1, dif_pos (show (num gw (m • iP).1 / den gw (m • iP).1).im ≠ 0 from (gw • (m • iP)).2)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hτ, hHf, hφG]`. Establish `hj : j1 (k v) m iP = ((x 1 0 : ℂ) * Complex.I + x 1 1) ^ k v * (((x 0 0 * x 1 1 - x 0 1 * x 1 0) ^ ((k v : ℝ) / 2) : ℝ) : ℂ)⁻¹`. Rewrite using `[j1, hdenm, hmdet, abs_of_pos hx', neg_div, Real.rpow_neg hx'.le, Complex.ofReal_inv]`. Establish `hpos : (((x 0 0 * x 1 1 - x 0 1 * x 1 0) ^ ((k v : ℝ) / 2) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos hx' _).ne'`. Rewrite using `[hj, zpow_neg, zpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `hF0 : φ G = Hf Complex.I`. Establish `h1` using `hev.eq_of_nhds`. Simplify using `only [embedded_archimedean_identity_eq_one, TR.oneL] at h1`. Rewrite using `[show TR.chart φ G (TR.toL 1) = φ G by`.
-
-Rewrite `h1` using `[show (1 : Matrix (Fin 2) (Fin 2) (TR.Rinf F)) = ((1 : GL (Fin 2) (TR.Rinf F)) : Matrix (Fin 2) (Fin 2) (TR.Rinf F)) from rfl, TR.chart_val, map_one, mul_one]]`. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Use `⟨Hf Complex.I, deriv Hf Complex.I, hF0, fun y => ?_⟩` and prove the remaining obligations. Establish `hcomp : HasFDerivAt (fun x => TR.chart φ G (i0 v + ivL v x)) ((fderiv ℝ (TR.chart φ G) (TR.oneL F 2)).comp (ivL v)) (Matrix.of.symm 1)`.
-
-Establish `h1 : HasFDerivAt (TR.chart φ G) (fderiv ℝ (TR.chart φ G) (TR.oneL F 2)) (i0 v + ivL v (Matrix.of.symm 1))`. Rewrite using `[embedded_archimedean_identity_eq_one]`. Conclude with `(TR.differentiableAt_chart hφ G).hasFDerivAt`. Conclude with `HasFDerivAt.comp (Matrix.of.symm 1) (f := fun x => i0 v + ivL v x) h1 ((ivL v).hasFDerivAt.const_add (i0 v))`. Establish `huniq` using `hcomp.unique (hL.congr_of_eventuallyEq hev)`.
-
-Establish `e : TR.lieD (iv v y) φ G = L y` using `by show (fderiv ℝ (TR.chart φ G) (TR.oneL F 2)) (ivL v y) = L y`. Rewrite using `[← huniq]`. Both sides reduce to the same expression. Rewrite using `[e, hv]`.
+A detailed English derivation is pending.
 -/
 theorem at_point (hB : B1b) (k : InfinitePlace F → ℕ) (f : X (InfinitePlace F) × GF F → ℂ) (φ : GA F 2 → ℂ)
     (hφ : φ ∈ TR.Sm F 2) (hhol : ∀ x, SepHol fun z => f (z, x)) (hrel : Rel k f φ) (v : InfinitePlace F) (G : GA F 2) :
@@ -285,15 +279,15 @@ end UpperTheory.Esk.ArchimedeanEmbeddingLemmas
 
 open UpperTheory.Esk.ArchimedeanEmbeddingLemmas in
 /- English proof (translation)
-Introduce `_ hB _ F _ _ _ k c _ ω χ _ _ _ _ f φ hform hrel h v`. Establish `E : ∀ (i j : Fin 2) G, (TR.Eop v i j (⟨φ, h⟩ : TR.Sm F 2)).1 G = TR.lieD (iv v (Matrix.of.symm (Matrix.single i j 1))) φ G`. Introduce `i j G`. Rewrite using `[TR.Eop, TR.lie_apply]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a b w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `[iv, Matrix.single, ite_apply]`. Simplify using `[iv, Matrix.single, ite_apply, Pi.single_apply, hw]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Use `Subtype.ext (funext fun G => ?_)` and prove the remaining obligations. Take `⟨F0, F', h0, hD⟩` from `at_point hB k f φ h (fun x => hform.hol x) hrel v G`. Express the relevant statement in the definitionally equal form `(TR.Eop v 0 1 (⟨φ, h⟩ : TR.Sm F 2)).1 G - (TR.Eop v 1 0 (⟨φ, h⟩ : TR.Sm F 2)).1 G = Complex.I * k v * φ G`. Rewrite using `[E, E, hD, hD, h0]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sv, eq_false (show (1 : Fin 2) ≠ 0 by decide), eq_false (show (0 : Fin 2) ≠ 1 by decide), eq_self_iff_true, and_true, true_and, and_false, false_and, and_self, if_true, if_false, Complex.ofReal_zero, Complex.ofReal_one]`. Expand and normalize the polynomial expressions, which then agree. Use `Subtype.ext (funext fun G => ?_)` and prove the remaining obligations. Take `⟨F0, F', h0, hD⟩` from `at_point hB k f φ h (fun x => hform.hol x) hrel v G`. Express the relevant statement in the definitionally equal form `(TR.Eop v 0 0 (⟨φ, h⟩ : TR.Sm F 2)).1 G - (TR.Eop v 1 1 (⟨φ, h⟩ : TR.Sm F 2)).1 G = Complex.I * ((TR.Eop v 0 1 (⟨φ, h⟩ : TR.Sm F 2)).1 G + (TR.Eop v 1 0 (⟨φ, h⟩ : TR.Sm F 2)).1 G)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[E, E, E, E, hD, hD, hD, hD]`. Simplify using `only [sv, eq_false (show (1 : Fin 2) ≠ 0 by decide), eq_false (show (0 : Fin 2) ≠ 1 by decide), eq_self_iff_true, and_true, true_and, and_false, false_and, and_self, if_true, if_false, Complex.ofReal_zero, Complex.ofReal_one]`. Take the linear combination `(k v * F0) * Complex.I_mul_I`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem UpperTheory.Esk.hyperbolic_orbit_summable_proof : UpperTheory.Esk.Osg → UpperTheory.Esk.B1b → UpperTheory.Esk.B1c → UpperTheory.Esk.H2c := by
   intro _ hB _ F _ _ _ k c _ ω χ _ _ _ _ f φ hform hrel h v

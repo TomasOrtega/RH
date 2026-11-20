@@ -19,7 +19,7 @@ def diag {Y X : Scheme.{0}} (f : Y ⟶ X) : sch.obj Y ⟶ cech f where
       erw [Category.id_comp, Category.assoc, WidePullback.lift_base, WidePullback.lift_base, WidePullback.lift_base]
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Rewrite using `[NatTrans.comp_app]`. Simplify using `[diag, cechAug, sch, Arrow.augmentedCechNerve]`. Use `erw [WidePullback.lift_base]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem diag_aug {Y X : Scheme.{0}} (f : Y ⟶ X) : diag f ≫ cechAug f = sch.map f := by
   ext n : 1
@@ -28,9 +28,9 @@ theorem diag_aug {Y X : Scheme.{0}} (f : Y ⟶ X) : diag f ≫ cechAug f = sch.m
   erw [WidePullback.lift_base]
 
 /- English proof (translation)
-Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Establish `hj : j = 0` using `Fin.fin_one_eq_zero j`. Substitute `hj` using the available equality. Simplify using `[diag]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Simplify by unfolding definitions.
 
-Use `erw [Category.assoc, WidePullback.lift_π, Category.comp_id]`. Simplify using `[diag] erw [Category.assoc, WidePullback.lift_base, Category.id_comp, WidePullback.π_arrow]`.
+Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem diag_zero {Y X : Scheme.{0}} (f : Y ⟶ X) :
     WidePullback.π (fun _ : Fin 1 => yoneda.map f) (0 : Fin 1) ≫ (diag f).app (op ⦋0⦌) = 𝟙 ((cech f).obj (op ⦋0⦌)) := by
@@ -49,37 +49,35 @@ noncomputable section
 namespace GlobalTheory.EtC.LerayOne
 
 /- English proof (translation)
-Introduce `R _ F Y X f x hx`. Take `⟨-, hneg, hmono, ⟨w0, hex⟩, -, -⟩` from `GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_basic_properties R F`. Take `⟨z, hz⟩` from `(pull R (cechAug f) F 1 x).mk_surjective`. Establish `h0 : pull R (diag f) F 1 (CohomologyClass.mk z) = 0`. Rewrite using `[hz, ← pull_comp, diag_aug, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0' : CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map (diag f))) z (zero_add 1)) = 0` using `h0`. Rewrite `h0'` using `[CohomologyClass.mk_eq_zero_iff]`. Take `⟨m, hm, w, hw⟩` from `h0'`. Take `rfl : m = 0` from `by omega`. Establish `hw01 : ((chains R).map (diag f)).f 0 ≫ z.1.v 0 1 (zero_add 1) = w.v 0 0 (add_zero 0) ≫ (res R F).d 0 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Cochain.congr_v hw 0 1 (zero_add 1)` as an intermediate fact. Rewrite `this` using `[δ_v 0 1 (zero_add 1) w 0 1 (zero_add 1) 0 1 (by norm_num) (by norm_num), (CupSpec.isZero_chains (R := R) (sch.obj Y) 1 one_pos).eq_of_tgt (((chains R).obj (sch.obj Y)).d 0 1) 0, zero_comp, smul_zero, add_zero]`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `_ = ((Cochain.ofHom ((chains R).map (diag f))).comp z.1 (zero_add 1)).v 0 1 (zero_add 1)`. Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `cm0 : (chainsXIso R (sch.obj Y) 0).inv ≫ ((chains R).map (diag f)).f 0 = (free R).map ((diag f).app (op ⦋0⦌)) ≫ (chainsXIso R (cech f) 0).inv` using `CupSpec.chains_map (diag f) 0`. Set `r : (cech f).obj (op ⦋0⦌) ⟶ (sch.obj Y).obj (op ⦋0⦌)` to `WidePullback.π (fun _ : Fin 1 => yoneda.map f) 0`. Establish `hr : r ≫ (diag f).app (op ⦋0⦌) = 𝟙 _` using `diag_zero f`. Set `y0 : (free R).obj ((cech f).obj (op ⦋0⦌)) ⟶ (res R F).X 0` to `(free R).map r ≫ (chainsXIso R (sch.obj Y) 0).inv ≫ w.v 0 0 (add_zero 0)`. Establish `hA0 : (chainsXIso R (cech f) 0).inv ≫ z.1.v 0 1 (zero_add 1) = y0 ≫ (res R F).d 0 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc, ← Category.assoc, ← Functor.map_comp, hr, CategoryTheory.Functor.map_id, Category.id_comp]`. Use `_ = y0 ≫ (res R F).d 0 1 := by`. Rewrite using `[← cm0, Category.assoc, hw01]`. Simplify using `only [y0, Category.assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `c : Cochain ((chains R).obj (cech f)) (res R F) 0` to `Cochain.single (p := 0) (q := 0) ((chainsXIso R (cech f) 0).hom ≫ y0) 0`. Set `b : Cocycle ((chains R).obj (cech f)) (res R F) 1` to `Cocycle.mk (δ 0 1 c) 2 (by norm_num) (δ_δ 0 1 2 c)`. Establish `hb : CohomologyClass.mk b = 0` using `(CohomologyClass.mk_eq_zero_iff b).2 ⟨0, zero_add 1, c, rfl⟩`. Set `ζ` to `z - b`. Establish `hζ : CohomologyClass.mk ζ = pull R (cechAug f) F 1 x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CohomologyClass.mk_sub, hb, sub_zero, hz]`. Establish `hζv : ∀ p q hpq, ζ.1.v p q hpq = z.1.v p q hpq - (δ 0 1 c).v p q hpq` using `fun p q hpq => by`. Simplify using `only [ζ, b, Cocycle.coe_sub, Cochain.sub_v]`. Both sides reduce to the same expression. Establish `hζ01 : ζ.1.v 0 1 (zero_add 1) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hζv, δ_v 0 1 (zero_add 1) c 0 1 (zero_add 1) 0 1 (by norm_num) (by norm_num), (CupSpec.isZero_chains (R := R) (cech f) 1 one_pos).eq_of_tgt (((chains R).obj (cech f)).d 0 1) 0, zero_comp, smul_zero, add_zero, Cochain.single_v]`. Rewrite using `[← cancel_epi (chainsXIso R (cech f) 0).inv, Preadditive.comp_sub, hA0, comp_zero]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc, sub_self]`. Establish `hδζ : δ 1 2 ζ.1 = 0` using `Cocycle.δ_eq_zero ζ 2`. Establish `hB : ζ.1.v (-1) 0 (by norm_num) ≫ (res R F).d 0 1 = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Cochain.congr_v hδζ (-1) 1 (by norm_num)` as an intermediate fact. Rewrite `this` using `[δ_v 1 2 (by norm_num) ζ.1 (-1) 1 (by norm_num) 0 0 (by norm_num) (by norm_num), hζ01, comp_zero, smul_zero, add_zero, Cochain.zero_v]`. Conclude with `this`. Use `haveI := hmono`. Set `B : (free R).obj ((cech f).obj (op ⦋1⦌)) ⟶ (res R F).X 0` to `(chainsXIso R (cech f) 1).inv ≫ ζ.1.v (-1) 0 (by norm_num)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hBd : B ≫ (res R F).d 0 1 = 0` using `by simp only [B, Category.assoc, hB, comp_zero]`. Set `s : (free R).obj ((cech f).obj (op ⦋1⦌)) ⟶ F` to `hex.lift B hBd`. Establish `hs : s ≫ resι R F = B` using `hex.lift_f B hBd`. Use `⟨s, ?_, ζ, hζ, ?_⟩` and prove the remaining obligations. Establish `h20` using `Cochain.congr_v hδζ (-2) 0 (by norm_num)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h20` using `[δ_v 1 2 (by norm_num) ζ.1 (-2) 0 (by norm_num) (-1) (-1) (by norm_num) (by norm_num), (hneg (-1) (by norm_num)).eq_of_tgt (ζ.1.v (-2) (-1) (by norm_num)) 0, zero_comp, zero_add, Cochain.zero_v]`. Establish `h2 : (2 : ℤ).negOnePow = 1` using `Int.negOnePow_even 2 even_two`. Rewrite `h20` using `[h2, one_smul]`. Establish `hd : (chainsXIso R (cech f) 2).inv ≫ ((chains R).obj (cech f)).d (-2) (-1) = (∑ i : Fin 3, (-1 : ℤ) ^ (i : ℕ) • (free R).map ((cech f).δ i)) ≫ (chainsXIso R (cech f) 1).inv` using `CupSpec.chains_d (cech f) 1`. Establish `h3` using `congrArg ((chainsXIso R (cech f) 2).inv ≫ ·) h20`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [comp_zero] at h3`. Rewrite `h3` using `[← Category.assoc, hd, Category.assoc]`. Apply `(cancel_mono (resι R F)).1` to reduce the goal to its premises. Rewrite using `[zero_comp, cobd, Preadditive.sum_comp]`. Rewrite `h3` using `[Preadditive.sum_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Eq.trans ?_ h3` and prove the remaining obligations. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [Preadditive.zsmul_comp, Category.assoc, hs, B]`. Apply `Cochain.ext` to reduce the goal to its premises. Introduce `p q hpq`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hp1 : p = -((1 : ℕ) : ℤ)`. Substitute `hp1` using the available equality. Take `rfl : q = 0` from `by omega`. Rewrite using `[Cochain.single_v, hs]`. Express the relevant statement in the definitionally equal form `_ = (chainsXIso R (cech f) 1).hom ≫ (chainsXIso R (cech f) 1).inv ≫ ζ.1.v _ 0 hpq`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Iso.hom_inv_id_assoc]`. Rewrite using `[Cochain.single_v_eq_zero _ _ _ _ _ hp1]`. Distinguish the cases in `hp0 : p = 0`. Substitute `hp0` using the available equality. Take `rfl : q = 1` from `by omega`.
-
-Conclude with `hζ01`. Distinguish the cases in `hpos : 0 < p`. Conclude with `(CupSpec.isZero_chains (cech f) p hpos).eq_of_src _ _`. Conclude with `(hneg q (by omega)).eq_of_tgt _ _`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem cech_cocycle_of_pull_eq_zero : ∀ (R : Type) [CommRing R] (F : Shv R) (Y X : Scheme.{0}) (f : Y ⟶ X) (x : H R (sch.obj X) F 1), pull R (sch.map f) F 1 x = 0 → ∃ s : (free R).obj ((cech f).obj (op ⦋1⦌)) ⟶ F, cobd s = 0 ∧ IsCls s (pull R (cechAug f) F 1 x) := by
   intro R _ F Y X f x hx

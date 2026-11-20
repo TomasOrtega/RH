@@ -13,25 +13,23 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ J _ P n hP N u hu hu' c x hx hxP W hWmin hWrel`. Use `hP.multiProj.isPrime` as an intermediate fact. Introduce `𝔫 h𝔫`. Take `⟨W', hW'p, hW'h, hW'r, hW'le, hW'c, h, hdom⟩` from `h₁ O K ι J P n hP N u hu hu' c x hx hxP W hWmin hWrel 𝔫 h𝔫`. Take `⟨h', 𝔭, h𝔭, hl⟩` from `h₂ O K ι J P n hP N u hu hu' c x hx hxP W hWmin hWrel W' hW'p hW'h hW'r hW'le hW'c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `_` to `(Subring.inclusion h).toAlgebra`. Establish `hl' : IsLocalization.AtPrime (blowUpLocRing P u W') 𝔭` using `hl`. Establish `hn𝔭 : 𝔫 ≤ 𝔭` using `fun b hb => by`. Assume the negation of the conclusion as `hb𝔭`. Conclude with `hdom b hb ((IsLocalization.AtPrime.isUnit_to_map_iff _ 𝔭 b).2 hb𝔭)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `rfl : 𝔫 = 𝔭` from `h𝔫.eq_of_le h𝔭.ne_top hn𝔭`. Use `⟨W', hW'p, hW'h, hW'r, hW'le, le_antisymm hW'c ?_, h, hl'⟩` and prove the remaining obligations. Establish `hWp : W.IsPrime` using `hWmin.1.1`. Establish `hPW : P ≤ W` using `le_trans le_sup_left hWmin.1.2`. Establish `hWmh : IsMultiHomogIdeal W` using `MinimalPrimeMultiHomog.full O K ι _ W (SupSpanMultiHomog.full O K ι P x c hP.multiProj.multiHomog hx) hWmin`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hAloc, hAunit⟩` from `HomLocRingIsLocal.proof HomLocRingMem.proof O K ι P W hWp hPW`. Take `⟨hfin, -⟩` from `h₃ O K ι J P n hP N u hu hu' c x hx hxP W hWmin hWrel`. Establish `: Algebra.IsIntegral (homLocRing P W) (blowUpOverLoc P W u)` using `Algebra.IsIntegral.of_finite _ _`. Establish `hmax : (𝔫.comap (algebraMap (homLocRing P W) (blowUpOverLoc P W u))).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal 𝔫`. Establish `hcomap : 𝔫.comap (algebraMap (homLocRing P W) (blowUpOverLoc P W u)) = IsLocalRing.maximalIdeal (homLocRing P W)` using `IsLocalRing.eq_maximalIdeal hmax`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (blowUpOf P u).IsPrime` using `RingHom.ker_isPrime _`. Take `⟨φ, hφ⟩` from `h₄ O K ι J P u W' hW'le`. Take `⟨-, hBunit⟩` from `HomLocRingIsLocal.proof HomLocRingMem.proof O (Option K) (extIdx ι J) (blowUpOf P u) W' hW'p hW'le`. Establish `key : ∀ (b : K → ℕ) (w : MRing ι O), IsMultiHomog w b → w ∈ W → liftForm (J` using `J) w ∈ W' := by`. Introduce `b w hw hwW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hwW'`. Take `⟨i, hi⟩` from `powMonomial_not_mem hWp hWrel b`. Establish `hg` using `isMultiHomog_powMonomial (R := O) b i`. Establish `hgW' : liftForm (J` using `J) (powMonomial b i) ∉ W' := fun hg' => hi (hW'c hg')`. Establish `hzA` using `Subring.subset_closure (s := {z | ∃ (b : K → ℕ) (f g : MRing ι O), IsMultiHomog f b ∧ IsMultiHomog g b ∧ g ∉ W ∧ z = algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (Ideal.Quotient.mk P f) / algebraMap (MRing ι O ⧸ P) (FractionRing (MRing ι O ⧸ P)) (Ideal.Quotient.mk P …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (⟨_, hzA⟩ : homLocRing P W) ∈ 𝔫.comap (algebraMap (homLocRing P W) (blowUpOverLoc P W u))`. Rewrite using `[hcomap]`. Conclude with `fun hu => (hAunit b w _ hw hg hi hzA).1 hu hwW`. Establish `hzB : algebraMap (MRing (extIdx ι J) O ⧸ blowUpOf P u) (FractionRing (MRing (extIdx ι J) O ⧸ blowUpOf P u)) (Ideal.Quotient.mk (blowUpOf P u) (liftForm w)) / algebraMap (MRing (extIdx ι J) O ⧸ blowUpOf P u) (FractionRing (MRing (extIdx ι J) O ⧸ blowUpOf P u)) (Ideal.Quotient.mk ( …`. Unfold `homLocRing`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `Subring.subset_closure ⟨liftMDeg b, liftForm w, liftForm (powMonomial b i), isMultiHomog_liftForm hw, isMultiHomog_liftForm hg, hgW', rfl⟩`. Establish `hU` using `((hBunit (liftMDeg b) (liftForm w) (liftForm (powMonomial b i)) (isMultiHomog_liftForm hw) (isMultiHomog_liftForm hg) hgW' hzB).2 hwW').map φ`. Establish `hval : φ ⟨_, hzB⟩ = algebraMap (blowUpOverLoc P W u) (blowUpLocRing P u W') (algebraMap (homLocRing P W) (blowUpOverLoc P W u) ⟨_, hzA⟩)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hφ (liftMDeg b) _ _ (isMultiHomog_liftForm hw) (isMultiHomog_liftForm hg) hgW', blowUpEval_liftForm, blowUpEval_liftForm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hU` using `[hval, IsLocalization.AtPrime.isUnit_to_map_iff _ 𝔫]`. Conclude with `hU hm`. Introduce `w hwW`. Rewrite using `[Ideal.mem_comap, ← sum_weightedHomogeneousComponent (w := blockWeight ι) w, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp _), map_sum]`.
-
-Conclude with `Ideal.sum_mem _ fun b _ => key b _ (weightedHomogeneousComponent_isWeightedHomogeneous _ _) (hWmh w hwW b)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BlowUpOverLocMaxCentre.proof (h₁ : BlowUpOverLocCentreDom.Statement.{u})
     (h₂ : BlowUpOverLocLocalization.Statement.{u}) (h₃ : BlowUpOverLocFinite.Statement.{u})

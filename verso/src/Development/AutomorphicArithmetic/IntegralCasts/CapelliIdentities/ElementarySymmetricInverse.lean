@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Rewrite using `[Finset.esymm_map_val, Finset.esymm_map_val, Finset.sum_mul]`. Use `Finset.sum_nbij' (fun u => t \ u) (fun u => t \ u) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `u hu`. Rewrite `hu`, the goal using `[Finset.mem_powersetCard]`. Conclude with `⟨Finset.sdiff_subset, by rw [Finset.card_sdiff_of_subset hu.1, hu.2]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `u hu`. Rewrite `hu`, the goal using `[Finset.mem_powersetCard]`. Conclude with `⟨Finset.sdiff_subset, by rw [Finset.card_sdiff_of_subset hu.1, hu.2]; omega⟩`. Introduce `u hu`. Rewrite `hu` using `[Finset.mem_powersetCard]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.sdiff_sdiff_eq_self hu.1`. Introduce `u hu`. Rewrite `hu` using `[Finset.mem_powersetCard]`. Conclude with `Finset.sdiff_sdiff_eq_self hu.1`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu` using `[Finset.mem_powersetCard]`. Establish `h1 : (t.val.map f).prod = (∏ i ∈ t \ u, f i) * ∏ i ∈ u, f i` using `(Finset.prod_sdiff hu.1).symm`. Establish `h2 : (∏ i ∈ u, f i) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i hi => hf i (hu.1 hi)`. Rewrite using `[h1, Finset.prod_inv_distrib]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem aux {ι : Type*} [DecidableEq ι] (t : Finset ι) (f : ι → ℂ)
     (hf : ∀ i ∈ t, f i ≠ 0) (j : ℕ) (hj : j ≤ t.card) :
@@ -36,9 +36,9 @@ private theorem aux {ι : Type*} [DecidableEq ι] (t : Finset ι) (f : ι → �
     field_simp
 
 /- English proof (translation)
-Introduce `s hs j hj`. Establish `e : (Finset.univ : Finset s.ToType).val.map (fun x : s.ToType => (x : ℂ)) = s` using `Multiset.map_univ_coe s`. Establish `c : (Finset.univ : Finset s.ToType).card = s.card`. Rewrite using `[Finset.card_univ, Multiset.card_coe]`. Establish `h` using `aux (Finset.univ : Finset s.ToType) (fun x : s.ToType => (x : ℂ)) (fun i _ => hs _ (Multiset.coe_mem)) j (by rw [c]; exact hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (Finset.univ : Finset s.ToType).val.map (fun x : s.ToType => ((x : ℂ))⁻¹) = s.map (fun x : ℂ => x⁻¹)` using `by conv_rhs => rw [← e]`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite `h` using `[e2, e, c]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.EsymmMapInvMulProd.esymm_inv :
     ∀ (s : Multiset ℂ),

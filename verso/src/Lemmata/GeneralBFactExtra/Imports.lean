@@ -3,17 +3,17 @@ import Mathlib
 namespace Bl.general_b_fact'''
 
 /- English proof (translation)
-Introduce `K V ι Γ _ _ _ T c w hw hT hc`. Rewrite using `[linearIndependent_iff']`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro g _ i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `at hi`. Consider the case `insert a s ha ih`. Introduce `g hg`. Establish `key : ∀ i ∈ s, g i = 0`. Introduce `i hi`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hia : i ≠ a` using `fun h => ha (h ▸ hi)`. Take `⟨γ, hγ⟩` from `hc i a hia`. Establish `e : ∀ j, (g j * (c j γ - c a γ)) • w j = T γ (g j • w j) - c a γ • (g j • w j)`. Introduce `j`. Rewrite using `[map_smul, hT, smul_smul, smul_smul, ← sub_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∑ j ∈ insert a s, (g j * (c j γ - c a γ)) • w j = 0`. Rewrite using `[Finset.sum_congr rfl (fun j _ => e j), Finset.sum_sub_distrib, ← map_sum, ← Finset.smul_sum, hg, map_zero, smul_zero, sub_zero]`. Rewrite `h2` using `[Finset.sum_insert ha, sub_self, mul_zero, zero_smul, zero_add]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ih (fun j => g j * (c j γ - c a γ)) h2 i hi` as an intermediate fact. Conclude with `(mul_eq_zero.mp this).resolve_right (sub_ne_zero.mpr hγ)`. Introduce `i hi`. Take `h | hi` from `Finset.mem_insert.mp hi`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[Finset.sum_insert ha, Finset.sum_eq_zero (fun j hj => by rw [key j hj, zero_smul]), add_zero]`. Conclude with `(smul_eq_zero.mp hg).resolve_right (hw _)`. Conclude with `key i hi`.
+A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {K V ι Γ : Type} [inst : Field.{0} K] [inst_1 : AddCommGroup.{0} V] [inst_2 : Module.{0, 0} K V]

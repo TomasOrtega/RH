@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.CechPic
 
 /- English proof (translation)
-Establish `e1 : (Tj * (1 + Nj * H)) ^ 2 = Tj ^ 2 * Sj * Pj'`. Take the linear combination `Tj ^ 2 * Nj * hH + Tj ^ 2 * H ^ 2 * hNj2 + Tj ^ 2 * hNj`. Establish `e2 : (G * (Tk * (1 + Nk * H))) ^ 2 = G ^ 2 * Tk ^ 2 * Sk * Pk'`. Take the linear combination `G ^ 2 * Tk ^ 2 * Nk * hH + G ^ 2 * Tk ^ 2 * H ^ 2 * hNk2 + G ^ 2 * Tk ^ 2 * hNk`. Establish `e4 : Pj' * (G' * G') = Pk'`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(-(Pj' * (G' * G'))) * hk' + Pk' * hj' - Pk' * Pj' * hP`. Establish `e5 : (Tj * (1 + Nj * H)) ^ 2 = (G * (Tk * (1 + Nk * H))) ^ 2`. Rewrite using `[e1, e2, hT, hS]`. Take the linear combination `G ^ 2 * Tk ^ 2 * Sk * e4`. Take the linear combination `H * e5 - H * hM2 + H * (Tj * (1 + Nj * H) + G * (Tk * (1 + Nk * H)) + M) * hM - M * (G * (Tk * (1 + Nk * H))) * hH`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem squareZero_localUnit_difference_ring_identity {R : Type*} [CommRing R] {Tj Tk Nj Nk H G G' Sj Sk Pj Pk Pj' Pk' M : R}
     (hT : Tj = G' * Tk) (hS : Sj = G * G * Sk) (hP : Pj = G' * G' * Pk) (hj' : Pj * Pj' = 1)
@@ -36,43 +36,39 @@ end GlobalTheory.CechPic
 open GlobalTheory.SmallExtLift in
 
 /- English proof (translation)
-Introduce `X X' i q e hiq h2 hsq c hc hc2`. Take `⟨Q, hQ, rfl⟩` from `GlobalTheory.CechPic.cls_surj c`. Rewrite `hc2` using `[two_nsmul, ← GlobalTheory.CechPic.cls_tens hQ hQ (GlobalTheory.CechPic.isLB_tens hQ hQ), GlobalTheory.CechPic.cls_eq_zero_iff]`. Take `⟨s, hs⟩` from `hc2`. Rewrite `hc` using `[← GlobalTheory.CechPic.cls_pull hQ i (pull_isLB hQ i), GlobalTheory.CechPic.cls_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t₀, ht₀⟩` from `hc`. Use `(GlobalTheory.CechPic.cls_eq_zero_iff hQ).2 ?_` and prove the remaining obligations. Establish `genLaw : ∀ {M : LB X'} (t : LB.Gen M), t.IsGen → ∀ {Z : Scheme.{0}} (f : Z ⟶ X') (z : Z) (a b : M.ι) (ha : f z ∈ M.U a) (hb : f z ∈ M.U b), gr f z _ ha (t.s a).val = gr f z (M.U a ⊓ M.U b) ⟨ha, hb⟩ (M.g a b).val * gr f z _ hb (t.s b).val`. Introduce `M t ht Z f z a b ha hb`. Establish `hm : f z ∈ M.U a ⊓ M.U b` using `⟨ha, hb⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun u => gr f z _ hm u.val) (ht a b)` as an intermediate fact. Simplify using `only [Units.val_mul, map_mul] at this`. Conclude with `(gr_res f z _ hm _).symm.trans (this.trans (congrArg₂ (· * ·) rfl (gr_res f z _ hm _)))`. Set `W : Q.ι → X.Opens` to `fun j => (Q.pull i).U (fun _ => j)`. Establish `hσ : ∀ j, Q.U j ≤ (q ≫ i) ⁻¹ᵁ Q.U j` using `fun j x hx => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Scheme.Hom.mem_preimage, Scheme.Hom.comp_apply, hiq]`. Conclude with `hx`. Establish `hW : ∀ j, Q.U j ≤ q ⁻¹ᵁ W j` using `fun j x hx => pull_le Q i j le_rfl (hσ j hx)`. Establish `hσf : ∀ j {Z : Scheme.{0}} (f : Z ⟶ X') (z : Z), f z ∈ Q.U j → ((f ≫ q) ≫ i) z ∈ Q.U j`. Introduce `j Z f z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Scheme.Hom.comp_apply, hiq]`. Conclude with `hz`. Establish `hWf : ∀ j {Z : Scheme.{0}} (f : Z ⟶ X') (z : Z), f z ∈ Q.U j → (f ≫ q) z ∈ W j` using `fun j Z f z hz => hW j hz`. Set `sj : ∀ j, Γ(X', Q.U j)ˣ` to `fun j => res (le_inf le_rfl le_rfl) (s.s (j, j))`. Set `u : ∀ j, Γ(X', Q.U j)` to `fun j => (q.appLE (W j) (Q.U j) (hW j)).hom (t₀.s fun _ => j).val`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `σi : ∀ j, Γ(X', Q.U j)` to `fun j => ((q ≫ i).appLE (Q.U j) (Q.U j) (hσ j)).hom (sj j)⁻¹.val`. Set `n : ∀ j, Γ(X', Q.U j)` to `fun j => (sj j).val * σi j - 1`. Set `hh : ∀ j, Γ(X', Q.U j)` to `fun j => (X'.presheaf.map (homOfLE le_top).op).hom h2.unit⁻¹.val`. Set `t : ∀ j, Γ(X', Q.U j)` to `fun j => u j * (1 + n j * hh j)`. Establish `gn : ∀ {Z : Scheme.{0}} (f : Z ⟶ X') (z : Z) j (hz : f z ∈ Q.U j), gr f z _ hz (n j) = gr f z _ hz (sj j).val * gr ((f ≫ q) ≫ i) z (Q.U j) (hσf j f z hz) (sj j)⁻¹.val - 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `Z f z j hz`. Simplify using `only [n, σi, map_sub, map_mul, map_one]`. Rewrite using `[gr_appLE]`. Conclude with `congrArg (fun w => _ * w - 1) (gr_congr (Category.assoc f q i).symm z _ _ _)`. Establish `gt : ∀ {Z : Scheme.{0}} (f : Z ⟶ X') (z : Z) j (hz : f z ∈ Q.U j), gr f z _ hz (t j) = gr (f ≫ q) z (W j) (hWf j f z hz) (t₀.s fun _ => j).val * (1 + gr f z _ hz (n j) * gr f z ⊤ trivial h2.unit⁻¹.val)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Z f z j hz`. Simplify using `only [t, u, hh, map_mul, map_add, map_one]`. Rewrite using `[gr_appLE, gr_res]`. Establish `E1 : (𝟙 X ≫ i) ≫ q = 𝟙 X` using `by rw [Category.assoc, e, Category.id_comp]`. Establish `E2 : ((𝟙 X ≫ i) ≫ q) ≫ i = 𝟙 X ≫ i` using `by rw [E1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : ∀ j, (i.app (Q.U j)).hom (n j) = 0` using `fun j => gr_ext fun y hy => by`. Rewrite using `[gr_app, map_zero, gn (𝟙 X ≫ i) y j hy, gr_congr E2 y _ (hσf j _ y hy), ← map_mul, Units.mul_inv, map_one, sub_self]`. Establish `hn2 : ∀ j, n j * n j = 0` using `fun j => hsq _ _ _ (hn0 j) (hn0 j)`. Establish `gti : ∀ j y (hy : (𝟙 X ≫ i) y ∈ Q.U j), gr (𝟙 X ≫ i) y _ hy (t j) = gr ((𝟙 X ≫ i) ≫ q) y (W j) (hWf j _ y hy) (t₀.s fun _ => j).val`. Introduce `j y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[gt (𝟙 X ≫ i) y j hy, gn (𝟙 X ≫ i) y j hy, gr_congr E2 y _ (hσf j _ y hy), ← map_mul, Units.mul_inv, map_one, sub_self, zero_mul, add_zero, mul_one]`. Set `m : ∀ j k, Γ(X', Q.U j ⊓ Q.U k)` to `fun j k => (X'.presheaf.map (homOfLE inf_le_left).op).hom (t j) - (Q.g j k).val * (X'.presheaf.map (homOfLE inf_le_right).op).hom (t k)`. Establish `gm' : ∀ {Z : Scheme.{0}} (f : Z ⟶ X') (z : Z) j k (hz : f z ∈ Q.U j ⊓ Q.U k), gr f z _ hz (m j k) = gr f z _ hz.1 (t j) - gr f z _ hz (Q.g j k).val * gr f z _ hz.2 (t k)`. Introduce `Z f z j k hz`. Simplify using `only [m, map_sub, map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[gr_res, gr_res]`. Establish `hm0 : ∀ j k, (i.app _).hom (m j k) = 0` using `fun j k => gr_ext fun y hy => by`. Rewrite using `[gr_app, map_zero, gm' (𝟙 X ≫ i) y j k hy, gti j y hy.1, gti k y hy.2, sub_eq_zero]`. Use `gr_gen ht₀ ((𝟙 X ≫ i) ≫ q) y (hσf j _ y hy.1) (hσf k _ y hy.2)` as an intermediate fact. Conclude with `this.trans (congrArg (· * _) (gr_congr E2 y _ _ _))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gS : ∀ {Z : Scheme.{0}} (f : Z ⟶ X') (z : Z) a b (ha : f z ∈ Q.U a) (hb : f z ∈ Q.U b), gr f z _ ha (sj a).val = gr f z (Q.U a ⊓ Q.U b) ⟨ha, hb⟩ (Q.g a b).val * gr f z (Q.U a ⊓ Q.U b) ⟨ha, hb⟩ (Q.g a b).val * gr f z _ hb (sj b).val`. Introduce `Z f z a b ha hb`. Establish `hS` using `genLaw s hs f z (a, a) (b, b) ⟨ha, ha⟩ ⟨hb, hb⟩`. Establish `hm : f z ∈ (Q.U a ⊓ Q.U a) ⊓ (Q.U b ⊓ Q.U b)` using `⟨⟨ha, ha⟩, ⟨hb, hb⟩⟩`. Establish `hg : gr f z _ hm ((GlobalTheory.CechPic.tens Q Q).g (a, a) (b, b)).val = gr f z (Q.U a ⊓ Q.U b) ⟨ha, hb⟩ (Q.g a b).val * gr f z (Q.U a ⊓ Q.U b) ⟨ha, hb⟩ (Q.g a b).val` using `by show gr f z _ hm (res _ (Q.g a b) * res _ (Q.g a b)).val = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, map_mul]`. Conclude with `congrArg₂ (· * ·) (gr_res f z _ hm _) (gr_res f z _ hm _)`. Use `(gr_res f z (le_inf le_rfl le_rfl : Q.U a ≤ Q.U a ⊓ Q.U a) ha (s.s (a, a)).val).trans (hS.trans ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) hg (gr_res f z (le_inf le_rfl le_rfl : Q.U b ≤ Q.U b ⊓ Q.U b) hb (s.s (b, b)).val).symm`. Use `gen_of_refine hQ Q.U hQ.cover id (fun _ => le_rfl) t (fun j => ((Units.isUnit _).map _).mul (isUnit_one_add (hn2 j) _)) fun a b x ha hb => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hab : (𝟙 X') x ∈ Q.U a ⊓ Q.U b` using `⟨ha, hb⟩`. Establish `hmx` using `gm' (𝟙 X') x a b hab`. Establish `hm` using `hmx`. Rewrite `hm` using `[gt (𝟙 X') x a ha, gt (𝟙 X') x b hb]`. Establish `hmm` using `congrArg (gr (𝟙 X') x _ hab) (hsq _ _ _ (hm0 a b) (hm0 a b))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmm` using `[map_mul, map_zero]`. Establish `hT` using `gr_gen ht₀ (𝟙 X' ≫ q) x (hσf a _ x ha) (hσf b _ x hb)`. Establish `hSx` using `gS (𝟙 X') x a b ha hb`. Establish `hPx` using `gS ((𝟙 X' ≫ q) ≫ i) x a b (hσf a _ x ha) (hσf b _ x hb)`. Establish `hj' : gr ((𝟙 X' ≫ q) ≫ i) x _ (hσf a _ x ha) (sj a).val * gr ((𝟙 X' ≫ q) ≫ i) x _ (hσf a _ x ha) (sj a)⁻¹.val = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hk' : gr ((𝟙 X' ≫ q) ≫ i) x _ (hσf b _ x hb) (sj b).val * gr ((𝟙 X' ≫ q) ≫ i) x _ (hσf b _ x hb) (sj b)⁻¹.val = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hNa` using `gn (𝟙 X') x a ha`. Establish `hNb` using `gn (𝟙 X') x b hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hNa2` using `congrArg (gr (𝟙 X') x _ ha) (hn2 a)`. Establish `hNb2` using `congrArg (gr (𝟙 X') x _ hb) (hn2 b)`. Rewrite `hNa2`, `hNb2` using `[map_mul, map_zero]`. Establish `hH : 2 * gr (𝟙 X') x ⊤ trivial h2.unit⁻¹.val = 1`. Use `congrArg (gr (𝟙 X') x ⊤ trivial) h2.val_inv_mul` as an intermediate fact.
-
-Rewrite `this` using `[map_mul, map_one, map_ofNat]`. Take the linear combination `this`. Establish `key` using `GlobalTheory.CechPic.squareZero_localUnit_difference_ring_identity hT hSx hPx hj' hk' hNa hNb hNa2 hNb2 hH hm hmm`. Establish `hB` using `((Units.isUnit (Q.g a b)).map (gr (𝟙 X') x (Q.U a ⊓ Q.U b) hab)).mul (((Units.isUnit (t₀.s fun _ => b)).map (gr (𝟙 X' ≫ q) x (W b) (hWf b _ x hb))).mul (isUnit_one_add hNb2 (gr (𝟙 X') x ⊤ trivial h2.unit⁻¹.val)))`. Establish `h0` using `hB.mul_left_eq_zero.1 key`.
-
-Rewrite `h0` using `[hmx]`. Conclude with `sub_eq_zero.1 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CechPic.eq_zero_of_sqZero_retract : ∀ {X X' : Scheme.{0}} (i : X ⟶ X') (q : X' ⟶ X), i ≫ q = 𝟙 X → (∀ x, i (q x) = x) → IsUnit (2 : Γ(X', ⊤)) → (∀ (W : X'.Opens) (f g : Γ(X', W)), (i.app W).hom f = 0 → (i.app W).hom g = 0 → f * g = 0) → ∀ (c : GlobalTheory.CechPic.Pic X'), GlobalTheory.CechPic.pull i c = 0 → 2 • c = 0 → c = 0 := by
   intro X X' i q e hiq h2 hsq c hc hc2

@@ -17,17 +17,15 @@ namespace GlobalTheory.ExtScale
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io y hy φ hφ`. Take `⟨S', io', z', r, hz', hr, hU, ψA, hv, hm⟩` from `GlobalTheory.T.exists_extension_all_models_uniformized _ _ _ _ Xo c T io y hy`. Establish `hphi : ∀ φ' : ℝ, HasPhi z' φ' → φ' = r * φ` using `fun φ' h' => GlobalTheory.T.balancedPeriodSlope_mul_ramificationIndex _ _ _ _ Xo c T S' io io' y z' r hr ⟨ψA, hv, hm⟩ φ φ' hφ h'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `letI := io.toAlgebra`. Set `ψ : T.Fr →+* S'.Fr` to `letI := io'.toAlgebra`. Use the proof step `ψA.toRingHom`. Establish `hio : io' = ψ.comp io`. Use `letI := io'.toAlgebra`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `RingHom.ext fun a => (ψA.commutes a).symm`. Establish `hv' : ∀ a : T.Fr, vV S'.V (ψ a) = (r : ℤ) * vV T.V a` using `fun a => by`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha, vV]`. Conclude with `hv a ha`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hev : ∀ (nab : NabV Xo c), IsNab Xo c nab → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ thGen Xo c nab a n, ψ (evI y f) = evI z' f` using `fun nab hn a n f hf => GlobalTheory.T.thetaRule_integralPoint_value_baseChange _ _ _ _ Xo c nab hn T S' io io' y z' ψA hm a n f hf`. Use `clear_value ψ`. Use `clear hm hv ψA`. Substitute `hio` using the available equality. Take `⟨C, hCh⟩` from `GlobalTheory.IntChartTrunc.intChart_frTrunc_exists _ H _ _ Xo c (fun _ => rfl) S' _ z'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P, hP⟩` from `hU C.I`. Take `⟨φ', hφ'⟩` from `exists_hasPhi z' C.I.G C.I.t' C.I.m1 C.I.m2 P`. Establish `e1` using `hphi φ' hφ'`. Substitute `e1` using the available equality. Use `⟨S', ψ.comp io, z', r, C, P, hz', hr, hCh, hP, hφ', fun la e ho => ho.bc ψ hr hv', fun m _ => ?_, fun nab hn a n e s f hf => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hv' (m : T.Fr), map_natCast]`. Rewrite using `[← hev nab hn a n f hf, RingHom.comp_apply, ← map_mul, nval_bc ψ hr hv']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext_chart_scale : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), y.IsAlg → ∀ φ : ℝ, HasPhi y φ → ∃ (T' : CDVR) (io' : c.F →+* T'.Fr) (y' : IntFr Xo c T' io') (r : ℕ) (C : IntegralChartA3 Xo c T' io' y') (P : PELUnif (maximalIdeal T'.V) C.I.G), y'.IsAlg ∧ 0 < r ∧ FrTrunc C.I.G (𝟙 (Sp T'.V)) (chD C.ch) C.xT C.eT ∧ P.TorsionIso ∧ HasPhi y' (r * φ) ∧ (∀ (la : HeightOneSpectrum (𝓞 c.F)) (e : ℕ), OverLa la T.V io e → OverLa la T'.V io' (r * e)) ∧ (∀ m : ℕ, m ≠ 0 → vV T'.V (m : T'.Fr) = (r : ℤ) * vV T.V (m : T.Fr)) ∧ ∀ (nab : NabV Xo c), IsNab Xo c nab → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n e : ℕ) (s : c.F), ∀ f ∈ thGen Xo c nab a n, nval T'.V (r * e) (io' s * evI y' f) = nval T.V e (io s * evI y f) := by
   intro E _ _ _ H Dw l Xo c

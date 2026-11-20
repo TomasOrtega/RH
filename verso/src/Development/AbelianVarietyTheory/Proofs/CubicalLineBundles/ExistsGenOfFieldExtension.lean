@@ -13,13 +13,13 @@ set_option backward.isDefEq.respectTransparency false
 namespace GlobalTheory.FieldTriv
 
 /- English proof (translation)
-Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace f`. Establish `: QuasiSeparatedSpace X` using `quasiSeparatedSpace_of_quasiSeparated f`. Establish `: IsIntegral X'` using `GeometricallyIntegral.geometrically_isIntegral _ _ _ H`. Establish `: IsIso p.appTop` using `ProperFunctions.isIso_appTop_baseChange_of_field H`. Establish `hflat : β.Flat`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `_` to `β.toAlgebra`. Conclude with `inferInstanceAs (Module.Flat k k')`. Establish `lift : ∀ x : X, ∃ y, π y = x` using `fun x => by`. Take `⟨y, hy, -⟩` from `Scheme.exists_preimage_of_isPullback H x (⊥ : PrimeSpectrum k') (Subsingleton.elim (α := PrimeSpectrum k) _ _)`. Conclude with `⟨y, hy⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `GenericTriv.exists_sec_isUnit β hflat f π p H (ConcreteCategory.bijective_of_isIso p.appTop).2 hN t ht`. Establish `hu : ∀ i, IsUnit (σ.f i)` using `fun i => X.toRingedSpace.isUnit_of_isUnit_germ _ _ fun x hx => by`. Take `⟨y, rfl⟩` from `lift x`. Use `hσ y i hx` as an intermediate fact. Rewrite `this` using `[gs_stalkMap π y _ hx, isUnit_map_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `(congrArg IsUnit (gs_eq (𝟙 X) (π y) (N.U i) hx _)).mp this`. Conclude with `⟨⟨fun i => (hu i).unit⟩, fun i i' => Units.ext (σ.compat i i')⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_of_isPullback {k k' : Type} [Field k] [Field k'] (β : k →+* k') {X X' : Scheme.{0}}
     (f : X ⟶ Sp k) [IsProper f] [GeometricallyIntegral f] (π : X' ⟶ X) (p : X' ⟶ Sp k')
@@ -46,7 +46,7 @@ theorem exists_gen_of_isPullback {k k' : Type} [Field k] [Field k'] (β : k →+
   exact ⟨⟨fun i => (hu i).unit⟩, fun i i' => Units.ext (σ.compat i i')⟩
 
 /- English proof (translation)
-Introduce `k k' _ _ β A _ hA X' π p H N hN ⟨t, ht⟩`. Use `hA.proper` as an intermediate fact. Use `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ A.hom hA.smooth hA.geomConnected` as an intermediate fact. Conclude with `exists_gen_of_isPullback β A.hom π p H hN t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_field_extension : ∀ (k k' : Type) [Field k] [Field k'] (β : k →+* k') (A : Over (Sp k)) [GrpObj A], IsAbelianScheme A → ∀ (X' : Scheme.{0}) (π : X' ⟶ A.left) (p : X' ⟶ Sp k'), IsPullback π p A.hom (spMap β) → ∀ N : LB A.left, N.IsLB → (∃ t : LB.Gen (N.pull π), t.IsGen) → ∃ t : LB.Gen N, t.IsGen := by
   intro k k' _ _ β A _ hA X' π p H N hN ⟨t, ht⟩

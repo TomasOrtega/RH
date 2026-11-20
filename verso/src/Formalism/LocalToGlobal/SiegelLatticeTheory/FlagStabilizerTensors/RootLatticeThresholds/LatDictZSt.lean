@@ -63,7 +63,7 @@ def AdelGlue : Prop :=
       ∃ x : I.Gf, (∀ a, I.fmat x *ᵥ iv I (s a) = iv I (s a)) ∧ I.fmat x *ᵥ iv I z = iv I z ∧ abelian₂ I x = M
 
 /- English proof (translation)
-Introduce `I x p hp`. Take `⟨hfg, hsp⟩` from `lattice_m_is_lattice I x`. Conclude with `hG I.E I.n I.J I.cm.cmUnram I.J_herm I.J_det I.L (abelian₂ I x) I.L_fg hfg I.L_span hsp I.L_dual (lattice_m_dual I x) p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lamGenus_of (hG : SemiGenus) : LamGenus := by
   intro I x p hp
@@ -72,17 +72,13 @@ theorem lamGenus_of (hG : SemiGenus) : LamGenus := by
     I.L_dual (lattice_m_dual I x) p hp
 
 /- English proof (translation)
-Introduce `I r s z M hMfg hMspan hMdual hsz hspan hsL hsM hzL hzM hpL hpM`. Establish `hloc` using `fun (p : Ideal (𝓞 I.E)) (hp : p.IsMaximal) => hZ I.E I.n I.J I.cm.cmUnram I.J_herm I.J_det s z I.L M I.L_fg hMfg I.L_span hMspan I.L_dual hMdual hsz hspan hsL hsM hzL hzM hpL hpM p hp`. Use `choose γ hγU hγs hγz hγL using hloc`. Take `⟨p₀, hp₀⟩` from `Ideal.exists_maximal (𝓞 I.E)`. Use `hA I s z M hMfg hMspan (hF I.E I.n I.L M I.L_fg hMfg I.L_span hMspan) (fun p => if hp : p.IsMaximal then γ p hp else γ p₀ hp₀) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Distinguish the cases in `hp : p.IsMaximal`. Simplify using `only [dif_pos hp]`. Conclude with `hγU p hp`. Simplify using `only [dif_neg hp]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `hγU p₀ hp₀`. Introduce `p a`. Distinguish the cases in `hp : p.IsMaximal`. Simplify using `only [dif_pos hp]`. Conclude with `hγs p hp a`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_neg hp]`. Conclude with `hγs p₀ hp₀ a`. Introduce `p`. Distinguish the cases in `hp : p.IsMaximal`. Simplify using `only [dif_pos hp]`.
-
-Conclude with `hγz p hp`. Simplify using `only [dif_neg hp]`. Conclude with `hγz p₀ hp₀`. Introduce `p hp v`. Simplify using `only [dif_pos hp]`.
-
-Conclude with `hγL p hp v`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zOrbit_of (hZ : SemiGenusZ) (hA : AdelGlue) (hF : LocFinite) : ZOrbit := by
   intro I r s z M hMfg hMspan hMdual hsz hspan hsL hsM hzL hzM hpL hpM

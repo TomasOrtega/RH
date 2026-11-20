@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `⟨⟨fun _ _ _ _ _ _ => by simp, fun _ => aemeasurable_const⟩, GlobalTheory.T.hasTopFormChartIntegral_zero e S⟩`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately.
 
-Simplify using `only [Finset.sum_insert ha]`. Take `⟨hF, hI⟩` from `ih`. Use `⟨⟨fun i j y hy hi hj => ?_, fun i => ((hd a).meas i).add (hF.meas i)⟩, GlobalTheory.T.topFormIntegral_add e he hc hS (hd a) hF (ht a) hI⟩` and prove the remaining obligations. Rewrite using `[(hd a).trans i j y hy hi hj, hF.trans i j y hy hi hj]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem isTopForm_hasInt_finset_sum {n : ℕ} {Y κ : Type} [TopologicalSpace Y] [MeasurableSpace Y]
     [BorelSpace Y] [SecondCountableTopology Y] (e : κ → OpenPartialHomeomorph Y (V n))
@@ -39,7 +39,7 @@ private theorem isTopForm_hasInt_finset_sum {n : ℕ} {Y κ : Type} [Topological
     ring
 
 /- English proof (translation)
-Introduce `n Y κ _ _ _ _ e he hc S hS ι _ d t hd ht`. Conclude with `(isTopForm_hasInt_finset_sum e he hc hS hd ht Finset.univ).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasInt_sum : ∀ {n : ℕ} {Y κ : Type} [TopologicalSpace Y] [MeasurableSpace Y] [BorelSpace Y]
     [SecondCountableTopology Y] (e : κ → OpenPartialHomeomorph Y (V n)),

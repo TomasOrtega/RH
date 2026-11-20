@@ -20,7 +20,7 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (�
   (hΓ : Nat.Coprime (Nat.card (L.1 ≃ₐ[K.1] L.1)) ℓ)
 
 /- English proof (translation)
-Conclude with `dMod_one_eq_pf hL hζ M hM hΓ`.
+A detailed English derivation is pending.
 -/
 theorem dMod_one_eq [Finite (ModN (AA hL 1) ℓ)] :
     dMod hL (dN hL hζ M hM hΓ) 1 =
@@ -33,11 +33,9 @@ theorem dMod_one_eq [Finite (ModN (AA hL 1) ℓ)] :
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hℓ : ℓ.Prime` using `Fact.out`. Use `haveI : NeZero ℓ := ⟨hℓ.ne_zero⟩`. Establish `hS' : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hℓS v h hv`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : Finite M := finite_of_moduleFinite M`. Establish `hPT` using `natCard_gs_cohomology_two_mul S ιs hS' hKK (gsBaseCase S ιs hS' hKK) (intRep M) (nsmul_intRep M)`. Apply `Nat.pow_right_injective hℓ.two_le` to reduce the goal to its premises. Simplify using `only [pow_add]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[card_H2_integral_module M hℓS, card_H0_dual_module M]`. Use `_ = Nat.card (ptSha (gsFinFamily S ιs) (intRep M) 2) * ∏ v : S, Nat.card (cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (dualRep (gsRoots S ℓ) (intRep M))) 0) := hPT`. Use `_ = ℓ ^ Module.finrank (ZMod ℓ) (shaSubmodule (gsFinFamily S ιs) M 2) * ∏ v : S, ℓ ^ Module.finrank (ZMod ℓ) (Representation.invariants ((dualRep (gsRootsZMod S ℓ) M).ρ.comp (gsFinFamily S ιs v).toMonoidHom)) := congrArg₂ (· * ·) (card_sha_int M hℓS ιs) (Finset.prod_congr rfl fun …`. Use `_ = _ := by rw [Finset.prod_pow_eq_pow_sum]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poitou_tate_H2_nat [Fintype S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (hKK : Odd ℓ ∨ IsTotallyComplex K.1)
@@ -73,9 +71,9 @@ theorem poitou_tate_H2_nat [Fintype S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `hKK : Odd ℓ ∨ IsTotallyComplex K.1` using `odd_or_tc_base_pf hL hcop hK`. Establish `hKL : Odd ℓ ∨ IsTotallyComplex L.1` using `hK.imp_left fun h => hℓ.odd_of_ne_two h`. Establish `hn` using `poitou_tate_H2_nat M hℓS hKK ιs`. Establish `hsha` using `finrank_shaSubmodule_two_eq_finrank_invariants ℓ hL ιs hℓS hKL hcop (roots_trivial hL hζ) M hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `dMod_one_eq hL hζ M hM hΓ`. Establish `hz` using `congrArg (Nat.cast : ℕ → ℤ) hn`. Establish `hz2` using `congrArg (Nat.cast : ℕ → ℤ) hsha`. Simplify using `only [Nat.cast_add, Nat.cast_sum] at hz`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

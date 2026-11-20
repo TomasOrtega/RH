@@ -35,24 +35,22 @@ noncomputable section
 namespace GlobalTheory.Mem.RsCoef
 
 /- English proof (translation)
-The claim follows from `h2 ▸ h1`.
+A detailed English derivation is pending.
 -/
 theorem glue {α β : Type} {a : α} {b c : β} (h2 : c = b) (h1 : HEq a b) : HEq a c := h2 ▸ h1
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hl : lam = fun τ => Bridge.lamLdef (D` using `D) V.rank j τ := by`. Use function extensionality and compare the values at `τ`. Establish `h1` using `hlam τ`. Break down `hw : lam τ with ⟨w1, hw1⟩` into its components or cases.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hw' : Bridge.lamLdef (D := D) V.rank j τ with ⟨w2, hw2⟩` into its components or cases. Rewrite `h1` using `[hw, hw']`. Establish `: w1 = w2` using `funext fun a => by simpa using h1 a`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Substitute `hl` using the available equality. Use `⟨e.toLinearMap.comp (GlobalTheory.CoefSpace.bcVV D.what₂.embLL _), ⟨fun γ γE hr v => ?_, ?_, ?_⟩, fun x y => ?_, fun v' x hx => ?_⟩` and prove the remaining obligations. Use `show e (GlobalTheory.CoefSpace.bcVV _ _ (rhoVr (labLL D) _ γE v)) = c.coef.ρ γ (e (GlobalTheory.CoefSpace.bcVV _ _ v))`. Rewrite using `[GlobalTheory.Mem.CoefIso.bcVV_rhoVr]`. Establish `ht : (fun τ => Formalism.UG.bc (D.what₂.embLL.comp (labLL D τ)) γE) = fun τ => Formalism.UG.bc (tauE D τ) γE`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun τ => by rw [show D.what₂.embLL.comp (labLL D τ) = tauE D τ from GlobalTheory.ThetaFiresProbe.labE_fixed τ]`. Rewrite using `[ht]`. Conclude with `hie γ γE γE hr ⟨rfl, fun a b a' b' ha hb => by rw [Fin.ext ha, Fin.ext hb]⟩ _`. Conclude with `(GlobalTheory.CoefSpace.bcVV_indep D.what₂.embLL _).map' e.toLinearMap (LinearEquiv.ker e)`. Establish `hs` using `congrArg (Submodule.map e.toLinearMap) (GlobalTheory.CoefSpace.bcVV_span D.what₂.embLL (fun τ => Bridge.lamLdef (D := D) V.rank j τ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs` using `[Submodule.map_span, Submodule.map_top, LinearEquiv.range, ← Set.range_comp]`. Conclude with `hs`. Substitute `hJ show inner ℂ (e _) (e _) = _` using the available equality. Rewrite using `[hinn, pairVr, ← GlobalTheory.CoefModel.pairK_mapVV D.what₂.embLL _ D.starLL_cx]`. Establish `h1 : (fun τ => (gramKd (labLL D) (1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E) τ).map D.what₂.embLL) = fun _ => (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `τ`. Simplify using `[gramKd]`. Rewrite using `[h1]`. Both sides reduce to the same expression. Use `show e (GlobalTheory.CoefSpace.bcVV _ _ v') = e x`.
-
-Use `congr 1`. Conclude with `Subtype.ext (eq_of_heq hx)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem coef_of_iso {D : D7} (V : HSp D) (c : CoefA V) {n : ℕ} (h : n = V.rank) (j : ℕ) (lam : D.what₂.Tau → DomWeight n)
     (hlam : ∀ τ a, (lam τ).w a = (Bridge.lamLdef (D := D) V.rank j τ).w (Fin.cast h a))
@@ -103,14 +101,14 @@ theorem coef_of_iso {D : D7} (V : HSp D) (c : CoefA V) {n : ℕ} (h : n = V.rank
     exact Subtype.ext (eq_of_heq hx)
 
 /- English proof (translation)
-Simplify using `only [mul_one, inv_one, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cast_one {A : Type} [CommRing A] {a b : ℕ} (h : a = b) (y : GL (Fin a) A) :
     LiftBrg.castGL h (y * 1) = (1 : GL (Fin b) A)⁻¹ * LiftBrg.castGL h y * 1 * 1 := by
   simp only [mul_one, inv_one, one_mul]
 
 /- English proof (translation)
-Establish `hx : x ≠ 0` using `fun e => h0 (by rw [e, smul_zero])`. Establish `hne : inner ℂ x x ≠ 0` using `fun e => hx (inner_self_eq_zero.1 e)`. Rewrite `h` using `[inner_smul_left, inner_smul_right, Complex.conj_ofReal, ← mul_assoc]`. Establish `h2 : ((s : ℂ) * s) = 1` using `(mul_eq_right₀ hne).1 h`. Establish `h3 : s * s = 1` using `by exact_mod_cast h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -124,7 +122,7 @@ theorem scale_eq_one {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
   nlinarith
 
 /- English proof (translation)
-Rewrite using `[pairVr, ← GlobalTheory.CoefModel.pairK_mapVV σ _ hσ]`. Establish `h1 : (fun τ => (gramKd emb (1 : Matrix (Fin n) (Fin n) E) τ).map σ) = fun _ => (1 : Matrix (Fin n) (Fin n) ℂ)`. Use function extensionality and compare the values at `τ`. Simplify using `[gramKd]`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -139,9 +137,9 @@ theorem pair_bc {K E ι : Type} [Field K] [NumberField K] [StarRing K] [Field E]
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `hφ : φ = 0`. Establish `h0 : c (φ.1 (d h)) = 0` using `by rw [hφ]; exact map_zero c`. Establish `h1` using `hc (φ.1 (d h))`. Rewrite `h1` using `[h0]`. Rewrite using `[hr, h0]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((smul_eq_zero.1 h1.symm).resolve_left (by exact_mod_cast hs.ne')).symm`. Take `⟨v, hv0, hv⟩` from `GlobalTheory.Mem.GsdIso.exists_isom_vec S ok ι σ ρ J χ P c d hr ⟨φ, hφ⟩`. Rewrite `hv0`, `hv` using `[hc]`. Rewrite using `[hr, hc, scale_eq_one hs hv0 (hv.trans (hu v).symm), Complex.ofReal_one, one_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem read_iso {K : Type} [Field K] [NumberField K] [StarRing K] (S : Formalism.L2.Col.GSD K) (ok : S.Ok) {G Γ W : Type} [Group G] [Group Γ]
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] {ι : Γ →* G} {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ}
@@ -162,17 +160,17 @@ theorem read_iso {K : Type} [Field K] [NumberField K] [StarRing K] (S : Formalis
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hh` using `hS.2 i`. Unfold `BrgStdV StdSide at hh`. Use `hh.elim fun c hh => ?_` and prove the remaining obligations. Establish `hint` using `hh.1`. Establish `hread` using `hh.2.1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli` using `hh.2.2.1`. Use `hh.2.2.2.elim fun hcm hx => ?_` and prove the remaining obligations. Establish `hlab : ∀ τ, X.B.embLL.comp (X.B.fields.emb τ) = tauE X.toD7 τ` using `fun τ => GlobalTheory.ThetaFiresProbe.labE_fixed (D := X.toD7) τ`. Use `(GlobalTheory.Mem.CoefIso.coef_iso X.toD7 (Vc X.toD7 i) X.B.R.nV (LiftBrg.rkEq X i).symm hg (z.R.cV i) (z.pins.char.base.models.cV i) (K := X.B.fields.K) X.B.embLL X.B.fields.emb (X.B.wts.lamV ((i : ℕ) + 1)) c (GlobalTheory.TestLat.SumLat.idx_nonempty _) (fun γ γE g h1 h2 v => hi …` and prove the remaining obligations. Establish `hβ : z.R.toLevCh.βV i = 1` using `z.lev.beta.1 i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hrd : ∀ (t : TupU I (usedOf I T Wt)) (ok : (Formalism.L2.Col.mtKGSD (Pr` using `X.B.primes px) X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).Ok) (φ : (Formalism.L2.Col.mtKGSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).EqFun) (h : Bridge.Gf (Vc X.toD7 i)), z.R.B.jL i t ((by with_unfolding_all exact ((Formalism.L2.Col.mtKGSD (Pr := X.B.primes px) X.B. …`. Introduce `t ok φ h`. Use `(hx h).elim fun x hm => ?_` and prove the remaining obligations. Use `(hread hcm t ⟨⟨ok⟩, φ⟩ h x hm).trans (congrArg (fun d => c (φ.1 d)) ?_)` and prove the remaining obligations. Establish `hm'` using `hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hm'` using `[hβ]`. Establish `hx'` using `LiftBrg.castGL_of_matEq (LiftBrg.rkEq X i).symm _ _ hm'`. Rewrite using `[Formalism.L2.Col.decoPt_mk]`. Unfold `LiftBrg.ptL`. Use `congrArg (Formalism.L2.Col.decoOf ∅ _) (hx'.trans ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(by with_unfolding_all exact ((cast_one (LiftBrg.rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) (h : GL (Fin (Vc X.toD7 i).rank) _))) :))`. Use `⟨e, he.2.2.1, fun γ γE g h1 h2 x => ?_, fun t ok φ h => ?_⟩` and prove the remaining obligations. Establish `h5` using `he.2.2.2 γ γE g h1 h2 x`. Establish `h3 : (fun τ => Formalism.UG.bc (X.B.embLL.comp (X.B.fields.emb τ)) g) = fun τ => Formalism.UG.bc (tauE X.toD7 τ) g`. Use function extensionality and compare the values at `fun τ => congrArg (fun a => Formalism.UG.bc a g) (hlab τ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h4` using `(congrArg (fun q => e (rhoK (X.B.wts.lamV ((i : ℕ) + 1)) (invTrK q) x)) h3).symm`. Conclude with `(by with_unfolding_all exact ((@Eq.trans _ _ _ ((z.R.cV i).coef.ρ γ (e x)) h4 ((by with_unfolding_all exact (h5 :)))) :))`. Conclude with `(by with_unfolding_all exact ((read_iso (Formalism.L2.Col.mtKGSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)) ok (G := Bridge.Gf (Vc X.toD7 i)) (Γ := GQ (Vc X.toD7 i)) (W := (z.R.cV i).W) (ι := Bridge.ratF (Vc X.toD7 i)) (σ := X.B.embLL) (ρ := (z.R.cV i).coef.ρ) (J …`.
+A detailed English derivation is pending.
 -/
 theorem std_iso {X : Stages} {px : PreX X.B.toPre} {I : Col2.ColIn X.B px} {hX : X.B.fields.Ok} {T : TwDat X.B} {Wt : Set X.B.places.Pl}
     (z : Dat X I hX T Wt) (hS : z.Std) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gram = 1) :
@@ -226,15 +224,15 @@ theorem std_iso {X : Stages} {px : PreX X.B.toPre} {I : Col2.ColIn X.B px} {hX :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hf hp hS`. Use `choose e he1 he2 he3 using fun i => std_iso z hS i (GlobalTheory.Mem.R3.BrgRead.gram_V (w.st Z) w.ok.spaces i)`. Take `⟨hPre, -, -, -⟩` from `hE`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hPre`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality.
 
-Substitute `hPre` using the available equality. Set `cp : ∀ i' : Fin (w'.st Z').toD7.R.m, CoefA (Vc (w'.st Z').toD7 i')` to `fun i' => @CoefA.mk (w'.st Z').toD7 (Vc (w'.st Z').toD7 i') (z.R.cV ((by with_unfolding_all exact (i' :)))).W (z.R.cV ((by with_unfolding_all exact (i' :)))).nW (z.R.cV ((by with_unfolding_all exact (i' :)))).iW (z.R.cV ((by with_unfolding_all exact (i' :)))).fW ((by with_unfoldi …`. Establish `hG` using `fun i' : Fin (w'.st Z').toD7.R.m => coef_of_iso (D := (w'.st Z').toD7) (Vc (w'.st Z').toD7 i') (cp i') (n := B.R.nV) ((by with_unfolding_all exact ((LiftBrg.rkEq (w.st Z) ((by with_unfolding_all exact (i' :)))) :))) ((i' : ℕ) + 1) ((by with_unfolding_all exact ((B.wts.lamV ((i' : …`. Rewrite using `[GlobalTheory.StdFrame.neg_eq_false_of_posDef _ i' ((by with_unfolding_all exact ((B.V_posDef ((i' : ℕ) + 1) (by omega) ((by with_unfolding_all exact (i'.2 :)))) :)))]`. Simplify using `only [Bool.false_eq_true, if_false]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.Mem.R3.BrgRead.gram_V (w'.st Z') w'.ok.spaces i')`. Use `choose c0 hc1 hc2 hc3 using hG`. Use `⟨cp, c0, ?_, fun i' => (by with_unfolding_all exact ((z.pins.char.base.models.cV ((by with_unfolding_all exact (i' :)))) :)), hc1, hc2, ?_⟩` and prove the remaining obligations. Introduce and unpack `i ⟨i', hi'⟩ hi dsimp only at hi`. Substitute `hi` using the available equality.
+Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩`. Introduce and unpack `i ⟨i', hi'⟩ hi dsimp only at hi`. Substitute `hi` using the available equality. Introduce `ok φ h v' hv`. Establish `h1` using `hc3 ⟨i, hi'⟩ v' ((by with_unfolding_all exact ((GlobalTheory.CoefSpace.bcVV B.embLL (B.wts.lamV ((i : ℕ) + 1)) (φ.1 (LiftBrg.ptL (w.st Z) w.I (usedOf w.I T Wt) i (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))) 1 1 h))) :))) ((by with_unfolding_all exact (hv :)))`.
+Simplify by unfolding definitions. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `he3 i (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))) ok φ h`. Conclude with `(by with_unfolding_all exact ((glue (a := c0 ⟨i, hi'⟩ v') h2 ((by with_unfolding_all exact ((heq_of_eq h1) :)))) :))`.
+A detailed English derivation is pending.
 -/
 theorem rs_coef : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl} {Wt' : Set B'.places.Pl}

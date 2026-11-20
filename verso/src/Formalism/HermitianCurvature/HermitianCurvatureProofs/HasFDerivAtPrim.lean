@@ -11,7 +11,7 @@ variable {ω : ℂ → ℂ →L[ℝ] ℝ} {S : Set ℂ} {w₀ : ℂ}
 def seg (w₀ x : ℂ) (t : ℝ) : ℂ := w₀ + (t : ℂ) * (x - w₀)
 
 /- English proof (translation)
-Establish `h` using `hc.add_smul_sub_mem hw₀ hx ht`. Simplify `h` using `[seg, Complex.real_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem seg_mem (hc : Convex ℝ S) (hw₀ : w₀ ∈ S) {x : ℂ} (hx : x ∈ S) {t : ℝ} (ht : t ∈ Icc (0 : ℝ) 1) :
     seg w₀ x t ∈ S := by
@@ -19,29 +19,29 @@ theorem seg_mem (hc : Convex ℝ S) (hw₀ : w₀ ∈ S) {x : ℂ} (hx : x ∈ S
   simpa [seg, Complex.real_smul] using h
 
 /- English proof (translation)
-Simplify using `[seg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem seg_one (w₀ x : ℂ) : seg w₀ x 1 = x := by
   simp [seg]
 
 /- English proof (translation)
-Unfold `seg`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_seg : Continuous fun p : ℂ × ℝ => seg w₀ p.1 p.2 := by
   unfold seg
   fun_prop
 
 /- English proof (translation)
-Establish `h` using `((hasDerivAt_id t).ofReal_comp.mul_const (x - w₀)).const_add w₀`. Simplify `h` using `[seg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasDerivAt_seg (x : ℂ) (t : ℝ) : HasDerivAt (fun s : ℝ => seg w₀ x s) (x - w₀) t := by
   have h := ((hasDerivAt_id t).ofReal_comp.mul_const (x - w₀)).const_add w₀
   simpa [seg] using h
 
 /- English proof (translation)
-Establish `h` using `((hasFDerivAt_id (𝕜 := ℝ) x).sub_const w₀).const_smul (t : ℂ)`. Establish `h2` using `h.const_add w₀`. Establish `hf : (fun y : ℂ => seg w₀ y t) = fun y => w₀ + ((t : ℂ) • fun x => id x - w₀) y`. Use function extensionality and compare the values at `y`. Simplify using `[seg, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_seg (x : ℂ) (t : ℝ) :
     HasFDerivAt (fun y : ℂ => seg w₀ y t) ((t : ℂ) • ContinuousLinearMap.id ℝ ℂ) x := by
@@ -60,45 +60,39 @@ theorem prim_eq (ω : ℂ → ℂ →L[ℝ] ℝ) (w₀ w : ℂ) :
     prim ω w₀ w = ∫ t in (0 : ℝ)..1, ω (seg w₀ w t) (w - w₀) := rfl
 
 /- English proof (translation)
-Establish `hdiff : ∀ p ∈ S, HasFDerivAt ω (fderiv ℝ ω p) p` using `fun p hp => (((hω.differentiableOn one_ne_zero) p hp).differentiableAt (hS.mem_nhds hp)).hasFDerivAt`. Establish `hcontω : ContinuousOn ω S` using `hω.continuousOn`. Establish `hcontD : ContinuousOn (fderiv ℝ ω) S` using `hω.continuousOn_fderiv_of_isOpen hS le_rfl`. Take `⟨δ, hδ, hball⟩` from `Metric.isOpen_iff.mp hS w hw`. Use `set δ' := δ / 2 with hδ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hδ'0 : 0 < δ'` using `by positivity`. Establish `hcb : closedBall w δ' ⊆ S` using `(closedBall_subset_ball (by linarith)).trans hball`. Use `set K := (fun p : ℂ × ℝ => seg w₀ p.1 p.2) '' (closedBall w δ' ×ˢ Icc (0 : ℝ) 1) with hK`. Establish `hKc : IsCompact K` using `((isCompact_closedBall w δ').prod isCompact_Icc).image continuous_seg`. Establish `hKS : K ⊆ S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨⟨x, t⟩, ⟨hx, ht⟩, rfl⟩`. Conclude with `seg_mem hc hw₀ (hcb hx) ht`. Establish `hmemK : ∀ x ∈ closedBall w δ', ∀ t ∈ Icc (0 : ℝ) 1, seg w₀ x t ∈ K` using `fun x hx t ht => ⟨(x, t), ⟨hx, ht⟩, rfl⟩`. Take `⟨M₁, hM₁⟩` from `hKc.exists_bound_of_continuousOn (hcontω.mono hKS)`. Take `⟨M₂, hM₂⟩` from `hKc.exists_bound_of_continuousOn (hcontD.mono hKS)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set F' : ℂ → ℝ → (ℂ →L[ℝ] ℝ) := fun x t => ω (seg w₀ x t) + t • (fderiv ℝ ω (seg w₀ x t)).flip (x - w₀) with hF'`. Establish `hFd : ∀ x ∈ closedBall w δ', ∀ t ∈ Icc (0 : ℝ) 1, HasFDerivAt (fun y => ω (seg w₀ y t) (y - w₀)) (F' x t) x`. Introduce `x hx t ht`. Establish `hs` using `hmemK x hx t ht`. Establish `hc1 : HasFDerivAt (fun y => ω (seg w₀ y t)) ((fderiv ℝ ω (seg w₀ x t)).comp ((t : ℂ) • ContinuousLinearMap.id ℝ ℂ)) x` using `(hdiff _ (hKS hs)).comp x (hasFDerivAt_seg x t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `hu : HasFDerivAt (fun y : ℂ => y - w₀) (ContinuousLinearMap.id ℝ ℂ) x` using `(hasFDerivAt_id x).sub_const w₀`. Establish `h` using `hc1.clm_apply hu`. Use `h.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `h'`. Simplify using `only [hF', ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.id_apply, ContinuousLinearMap.flip_apply, ContinuousLinearMap.smul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show ((t : ℂ) • h' : ℂ) = (t : ℝ) • h' from by rw [Complex.real_smul]; rfl, map_smul]`. Simplify using the standard rewrite rules. Establish `hseg_cont : ∀ x ∈ closedBall w δ', ContinuousOn (fun t : ℝ => seg w₀ x t) (Icc 0 1)` using `fun x _ => (continuous_seg.comp (Continuous.prodMk continuous_const continuous_id)).continuousOn`. Establish `hωseg : ∀ x ∈ closedBall w δ', ContinuousOn (fun t : ℝ => ω (seg w₀ x t)) (Icc 0 1)` using `fun x hx => hcontω.comp (hseg_cont x hx) fun t ht => hKS (hmemK x hx t ht)`. Establish `hDseg : ∀ x ∈ closedBall w δ', ContinuousOn (fun t : ℝ => fderiv ℝ ω (seg w₀ x t)) (Icc 0 1)` using `fun x hx => hcontD.comp (hseg_cont x hx) fun t ht => hKS (hmemK x hx t ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hF'cont : ∀ x ∈ closedBall w δ', ContinuousOn (F' x) (Icc 0 1)`. Introduce `x hx`. Use `(hωseg x hx).add (ContinuousOn.smul continuousOn_id ?_)` and prove the remaining obligations. Conclude with `((ContinuousLinearMap.flipₗᵢ ℝ ℂ ℂ ℝ).continuous.comp_continuousOn (hDseg x hx)).clm_apply continuousOn_const`. Establish `hIoc : Set.uIoc (0 : ℝ) 1 = Ioc 0 1` using `uIoc_of_le zero_le_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwc : w ∈ closedBall w δ'` using `mem_closedBall_self hδ'0.le`. Establish `hLeib` using `intervalIntegral.hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := volume) (F := fun y t => ω (seg w₀ y t) (y - w₀)) (F' := F') (x₀ := w) (a := 0) (b := 1) (bound := fun _ => M₁ + M₂ * (δ' + ‖w - w₀‖)) (s := ball w δ') (ball_mem_nhds w hδ'0) ?_ ?_ ?_ ?_ intervalIntegrable_cons …`. Establish `hint : ∫ t in (0 : ℝ)..1, F' w t = ω w`. Establish `hEq : EqOn (F' w) (fun t => ω (seg w₀ w t) + t • fderiv ℝ ω (seg w₀ w t) (w - w₀)) (uIcc 0 1)`. Introduce `t ht`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite `ht` using `[uIcc_of_le zero_le_one]`. Establish `hs` using `hKS (hmemK w hwc t ht)`. Simplify using `only [hF']`. Use `congr 2`. Use extensionality with `h'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.flip_apply]`. Conclude with `hsym _ hs h' (w - w₀)`. Rewrite using `[intervalIntegral.integral_congr hEq]`. Establish `hd : ∀ t ∈ uIcc (0 : ℝ) 1, HasDerivAt (fun s : ℝ => s • ω (seg w₀ w s)) (ω (seg w₀ w t) + t • fderiv ℝ ω (seg w₀ w t) (w - w₀)) t`. Introduce `t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `ht` using `[uIcc_of_le zero_le_one]`. Establish `hs` using `hKS (hmemK w hwc t ht)`. Establish `h1` using `(hdiff _ hs).comp_hasDerivAt t (hasDerivAt_seg (w₀ := w₀) w t)`. Establish `h2` using `(hasDerivAt_id t).smul h1`. Use `h2.congr_deriv ?_` and prove the remaining obligations.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [id, one_smul]`. Normalize the expressions using the abelian group laws. Establish `hcd : ContinuousOn (fun t => ω (seg w₀ w t) + t • fderiv ℝ ω (seg w₀ w t) (w - w₀)) (uIcc 0 1)`. Rewrite using `[uIcc_of_le zero_le_one]`. Conclude with `(hωseg w hwc).add (continuousOn_id.smul ((hDseg w hwc).clm_apply continuousOn_const))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt hd (hcd.intervalIntegrable)]`. Simplify using `[seg_one]`. Rewrite using `[← hint]`. Conclude with `hLeib`. Use `filter_upwards [ball_mem_nhds w hδ'0] with x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxc : x ∈ closedBall w δ'` using `ball_subset_closedBall hx`. Rewrite using `[hIoc]`. Conclude with `(((hωseg x hxc).clm_apply continuousOn_const).mono Ioc_subset_Icc_self).aestronglyMeasurable measurableSet_Ioc`. Use `ContinuousOn.intervalIntegrable ?_` and prove the remaining obligations. Rewrite using `[uIcc_of_le zero_le_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hωseg w hwc).clm_apply continuousOn_const`. Rewrite using `[hIoc]`. Conclude with `((hF'cont w hwc).mono Ioc_subset_Icc_self).aestronglyMeasurable measurableSet_Ioc`. Use `Eventually.of_forall fun t ht x hx => ?_` and prove the remaining obligations. Rewrite `ht` using `[hIoc]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `ht' : t ∈ Icc (0 : ℝ) 1` using `Ioc_subset_Icc_self ht`. Establish `hxc : x ∈ closedBall w δ'` using `ball_subset_closedBall hx`. Establish `hs` using `hmemK x hxc t ht'`. Establish `h1 : ‖ω (seg w₀ x t)‖ ≤ M₁` using `hM₁ _ hs`. Establish `h2 : ‖fderiv ℝ ω (seg w₀ x t)‖ ≤ M₂` using `hM₂ _ hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ‖x - w₀‖ ≤ δ' + ‖w - w₀‖`. Use `norm_sub_le_norm_sub_add_norm_sub x w w₀` as an intermediate fact. Establish `hxw : ‖x - w‖ ≤ δ'` using `by rw [← dist_eq_norm]; exact mem_closedBall.mp hxc`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM₂0 : 0 ≤ M₂` using `le_trans (norm_nonneg _) h2`.
-
-Simplify using `only [hF']`. Combine the equalities or inequalities in the displayed calculation. Use `add_le_add h1 ?_` and prove the remaining obligations. Rewrite using `[norm_smul]`. Establish `hf : ‖(fderiv ℝ ω (seg w₀ x t)).flip (x - w₀)‖ ≤ M₂ * (δ' + ‖w - w₀‖)`.
-
-Use `((fderiv ℝ ω (seg w₀ x t)).flip.le_opNorm (x - w₀)).trans ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.opNorm_flip]`. Conclude with `mul_le_mul h2 h3 (norm_nonneg _) hM₂0`. Establish `ht1 : ‖t‖ ≤ 1` using `by rw [Real.norm_eq_abs, abs_of_nonneg ht'.1]; exact ht'.2`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `Eventually.of_forall fun t ht x hx => ?_` and prove the remaining obligations. Rewrite `ht` using `[hIoc]`. Conclude with `hFd x (ball_subset_closedBall hx) t (Ioc_subset_Icc_self ht)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_prim (hS : IsOpen S) (hc : Convex ℝ S) (hw₀ : w₀ ∈ S) (hω : ContDiffOn ℝ 1 ω S)
     (hsym : ∀ p ∈ S, ∀ h k : ℂ, fderiv ℝ ω p h k = fderiv ℝ ω p k h) {w : ℂ} (hw : w ∈ S) :

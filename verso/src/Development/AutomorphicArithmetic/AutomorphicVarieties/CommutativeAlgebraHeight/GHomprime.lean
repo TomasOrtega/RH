@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing
 
 /- English proof (translation)
-Establish `hfin : ∀ d : ℕ, {m : σ →₀ ℕ | m.degree = d}.Finite` using `fun d => (Finsupp.finite_of_degree_le (σ := σ) d).subset (fun m hm => le_of_eq hm)`. Use `⟨fun F d => ∑ m ∈ (hfin d).toFinset, MvPolynomial.monomial m (MvPowerSeries.coeff m F), ?_⟩` and prove the remaining obligations. Introduce `F d m`. Rewrite using `[MvPolynomial.coeff_sum]`. Repeatedly rewrite using `[MvPolynomial.coeff_monomial]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.V.CA.homprime_part (R σ : Type) [CommRing R] [Finite σ] :
     ∃ p : MvPowerSeries σ R → ℕ → MvPolynomial σ R, ∀ F d (m : σ →₀ ℕ),
@@ -22,19 +22,19 @@ private theorem UpperTheory.V.CA.homprime_part (R σ : Type) [CommRing R] [Finit
   simp
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[MvPolynomial.coeff_sum]`. Repeatedly rewrite using `[MvPolynomial.coeff_mul, hp, MvPowerSeries.coeff_mul]`. Rewrite using `[Finset.sum_comm]`. Use `split_ifs with h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[Finset.sum_eq_single (x.1.degree, x.2.degree)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q _ hq`. Distinguish the cases in `h1 : x.1.degree = q.1`. Establish `h2 : x.2.degree ≠ q.2`. Introduce `h2`. Conclude with `hq (Prod.ext h1.symm h2.symm)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h2]`. Simplify using `[h1]`. Introduce `hq`. It suffices to derive a contradiction. Apply `hq` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal, ← h, ← hx, map_add]`. Use `symm`. Use `Finset.sum_eq_zero ?_` and prove the remaining obligations. Introduce `x hx`. Use `Finset.sum_eq_zero ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `q hq`. Rewrite `hx`, `hq` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Distinguish the cases in `h1 : x.1.degree = q.1`. Distinguish the cases in `h2 : x.2.degree = q.2`. It suffices to derive a contradiction.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[← hx, map_add, h1, h2, hq]`. Simplify using `[h2]`. Simplify using `[h1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.CA.homprime_mul (R σ : Type) [CommRing R]
     (p : MvPowerSeries σ R → ℕ → MvPolynomial σ R) (hp : ∀ F d (m : σ →₀ ℕ),
@@ -78,35 +78,29 @@ private theorem UpperTheory.V.CA.homprime_mul (R σ : Type) [CommRing R]
     · simp [h1]
 
 /- English proof (translation)
-Introduce `R σ _ _ _ P hP hhom`. Take `⟨p, hp⟩` from `UpperTheory.V.CA.homprime_part R σ`. Establish `key : ∀ F : MvPowerSeries σ R, F ∈ P.map (MvPolynomial.coeToMvPowerSeries.ringHom (σ` using `σ) (R := R)) ↔ ∀ d, p F d ∈ P := by`. Introduce `F`. Rewrite using `[UpperTheory.V.CA.g_hommem R σ P hhom F]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h d`. Conclude with `h d (p F d) (hp F d)`. Introduce `h d g hg`. Establish `hg' : g = p F d`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Rewrite using `[hg, hp]`. Rewrite using `[hg']`. Conclude with `h d`. Establish `hcomap : (P.map (MvPolynomial.coeToMvPowerSeries.ringHom (σ` using `σ) (R := R))).comap (MvPolynomial.coeToMvPowerSeries.ringHom (σ := σ) (R := R)) = P := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Rewrite `hf` using `[Ideal.mem_comap, key]`. Establish `hd : ∀ d, MvPolynomial.homogeneousComponent d f ∈ P`. Introduce `d`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `he : MvPolynomial.homogeneousComponent d f = p (MvPolynomial.coeToMvPowerSeries.ringHom (σ` using `σ) (R := R) f) d := by`. Use extensionality with `m`. Rewrite using `[MvPolynomial.coeff_homogeneousComponent, hp, MvPolynomial.coeToMvPowerSeries.ringHom_apply, MvPolynomial.coeff_coe]`. Rewrite using `[he]`. Conclude with `hf d`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← MvPolynomial.sum_homogeneousComponent f]`. Conclude with `Ideal.sum_mem _ (fun i _ => hd i)`. Conclude with `Ideal.le_comap_map`. Use `⟨⟨?_, ?_⟩, hcomap⟩` and prove the remaining obligations. Introduce `htop`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[← hcomap, htop, Ideal.comap_top]`. Introduce `F G hFG`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨hF, hG⟩` from `hne`. Rewrite `hF`, `hG`, `hFG` using `[key]`. Use `push_neg at hF hG`. Establish `ha : p F (Nat.find hF) ∉ P` using `Nat.find_spec hF`. Establish `hb : p G (Nat.find hG) ∉ P` using `Nat.find_spec hG`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha' : ∀ i < Nat.find hF, p F i ∈ P` using `fun i hi => by`. Simplify using `using Nat.find_min hF hi`. Establish `hb' : ∀ i < Nat.find hG, p G i ∈ P` using `fun i hi => by`. Simplify using `using Nat.find_min hG hi`. Establish `hsum` using `hFG (Nat.find hF + Nat.find hG)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsum` using `[UpperTheory.V.CA.homprime_mul R σ p hp]`. Establish `hmem : (Nat.find hF, Nat.find hG) ∈ Finset.HasAntidiagonal.antidiagonal (Nat.find hF + Nat.find hG)`. Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite `hsum` using `[← Finset.add_sum_erase _ _ hmem]`. Establish `hrest : ∑ q ∈ (Finset.HasAntidiagonal.antidiagonal (Nat.find hF + Nat.find hG)).erase (Nat.find hF, Nat.find hG), p F q.1 * p G q.2 ∈ P`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Use `Ideal.sum_mem _ (fun q hq => ?_)` and prove the remaining obligations. Rewrite `hq` using `[Finset.mem_erase, Finset.HasAntidiagonal.mem_antidiagonal]`. Take `⟨hq2, hq1⟩` from `hq`. Break down `lt_or_ge q.1 (Nat.find hF) with h | h` into its components or cases. Conclude with `P.mul_mem_right _ (ha' _ h)`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2 : q.2 < Nat.find hG`. Break down `eq_or_lt_of_le h with h' | h'` into its components or cases. It suffices to derive a contradiction. Apply `hq2` to reduce the goal to its premises. Use `ext`.
-
-Conclude with `h'.symm`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Conclude with `P.mul_mem_left _ (hb' _ h2)`.
-
-Establish `hmain : p F (Nat.find hF) * p G (Nat.find hG) ∈ P`. Use `P.sub_mem hsum hrest` as an intermediate fact. Simplify using `using this`. Break down `hP.mem_or_mem hmain with h | h` into its components or cases. Conclude with `ha h`.
-
-Conclude with `hb h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.g_homprime :
     ∀ (R σ : Type) [CommRing R] [IsNoetherianRing R] [Finite σ] (P : Ideal (MvPolynomial σ R)), P.IsPrime →

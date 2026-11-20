@@ -11,14 +11,14 @@ namespace GlobalTheory.K5.Orth
 variable {p : ℕ} [hp : Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.K5.Basic.charZero_of_isClo h`. Conclude with `hp.out.ne_zero` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem p_ne_zero' (h : IsClo p Ω) : (p : Ω) ≠ 0 := by
   haveI := GlobalTheory.K5.Basic.charZero_of_isClo h
   exact_mod_cast hp.out.ne_zero
 
 /- English proof (translation)
-Introduce `hi`. Apply `GlobalTheory.K5.Basic.not_cong_one_zero h 1 one_ne_zero` to reduce the goal to its premises. Use `⟨(p : Ω)⁻¹, hi, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, sub_zero, mul_inv_cancel₀ (p_ne_zero' h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem not_isInt_inv_p (h : IsClo p Ω) : ¬ IsInt p ((p : Ω)⁻¹) := by
   intro hi
@@ -27,24 +27,24 @@ theorem not_isInt_inv_p (h : IsClo p Ω) : ¬ IsInt p ((p : Ω)⁻¹) := by
   rw [pow_one, sub_zero, mul_inv_cancel₀ (p_ne_zero' h)]
 
 /- English proof (translation)
-Use `GlobalTheory.K5.Basic.isInt_intCast (p := p) (Ω := Ω) ((p : ℤ) ^ k)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isInt_natPow_p (k : ℕ) : IsInt p ((p : Ω) ^ k) := by
   have := GlobalTheory.K5.Basic.isInt_intCast (p := p) (Ω := Ω) ((p : ℤ) ^ k)
   simpa using this
 
 /- English proof (translation)
-Establish `hp0` using `p_ne_zero' h`. Establish `he : 0 ≤ a * b' - a' * b`. Establish `hb0 : (0 : ℚ) < b` using `by exact_mod_cast hb`. Establish `hb0' : (0 : ℚ) < b'` using `by exact_mod_cast hb'`. Rewrite `hle` using `[div_le_div_iff₀ hb0' hb0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (a' * b : ℚ) ≤ a * b'` using `hle`. Conclude with `(sub_nonneg.2 this)` after adjusting the coercions. Take `⟨e, he'⟩` from `Int.eq_ofNat_of_zero_le he`. Establish `key : (x / y) ^ (b * b') = (x ^ b / (p : Ω) ^ a) ^ b' * ((p : Ω) ^ a' / y ^ b') ^ b * (p : Ω) ^ e`. Establish `hpe : (p : Ω) ^ e = ((p : Ω) ^ a) ^ b' / ((p : Ω) ^ a') ^ b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← zpow_natCast, ← he', zpow_sub₀ hp0, zpow_mul, zpow_mul, zpow_natCast, zpow_natCast]`. Rewrite using `[hpe]`. Establish `hP : (p : Ω) ^ a ≠ 0` using `zpow_ne_zero _ hp0`. Establish `hP' : (p : Ω) ^ a' ≠ 0` using `zpow_ne_zero _ hp0`. Generalize the expression as in `(p : Ω) ^ a = P at *`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(p : Ω) ^ a' = P' at *`. Establish `e1 : (y ^ b') ^ b = y ^ (b * b')` using `by rw [← pow_mul, mul_comm]`. Establish `e2 : (x ^ b) ^ b' = x ^ (b * b')` using `by rw [← pow_mul]`. Simplify using `only [div_pow, e1, e2]`. Establish `h3 : (P ^ b') ≠ 0` using `pow_ne_zero _ hP`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (P' ^ b) ≠ 0` using `pow_ne_zero _ hP'`. Establish `h5 : y ^ (b * b') ≠ 0` using `pow_ne_zero _ hy`. Rewrite using `[div_mul_div_comm, div_mul_div_comm, div_eq_div_iff h5 (mul_ne_zero (mul_ne_zero h3 h5) h4)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hi : IsInt p ((x / y) ^ (b * b'))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `((h1.pow b').mul (h2.pow b)).mul (isInt_natPow_p e)`. Conclude with `IsIntegral.of_pow (Nat.mul_pos hb hb') hi`.
+A detailed English derivation is pending.
 -/
 theorem isInt_div (h : IsClo p Ω) {x y : Ω} (hy : y ≠ 0) {a a' : ℤ} {b b' : ℕ} (hb : 0 < b)
     (hb' : 0 < b') (h1 : IsInt p (x ^ b / (p : Ω) ^ a)) (h2 : IsInt p ((p : Ω) ^ a' / y ^ b'))
@@ -86,37 +86,33 @@ namespace GlobalTheory.K5.Orth
 variable {p : ℕ} [hp : Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-Establish `hp0` using `p_ne_zero' h`. Use `choose A B hB h1 h2 using hV`. Set `w : Ω → ℚ` to `fun x => if hx : x = 0 then 0 else (A x hx : ℚ) / B x hx`. Take `⟨j1, hj1, hnj1⟩` from `hc`. Establish `hc1 : c j1 ≠ 0` using `fun e => hnj1 (e ▸ isIntegral_zero)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j0, hj0, hmin⟩` from `Finset.exists_min_image ((Finset.range n).filter (fun j => c j ≠ 0)) (fun j => w (c j)) ⟨j1, by simp [hj1, hc1]⟩`. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hj0 hmin`. Take `⟨hj0n, hx0⟩` from `hj0`. Establish `hdiv : ∀ j < n, c j ≠ 0 → IsInt p (c j / c j0)`. Introduce `j hj hcj`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `isInt_div h hx0 (hB _ hcj) (hB _ hx0) (h1 _ hcj) (h2 _ hx0) ?_` and prove the remaining obligations. Use `hmin j ⟨hj, hcj⟩` as an intermediate fact. Simplify `this` using `[w, hcj, hx0]`. Establish `hb` using `hB _ hx0`. Establish `hu` using `h1 _ hx0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu'` using `h2 _ hx0`. Generalize the expression as in `A (c j0) hx0 = a at hu hu'`. Generalize the expression as in `B (c j0) hx0 = b at hb hu hu'`. Establish `hxInt_of : IsInt p (c j0) → ∀ j < n, IsInt p (c j)`. Introduce `hxi j hj`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hcj : c j = 0`. Rewrite using `[hcj]`. Conclude with `isIntegral_zero`. Use `(hdiv j hj hcj).mul hxi` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ _ hx0]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `ha : a < 0`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le hneg`. Apply `hnj1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hxInt_of _ j1 hj1` to reduce the goal to its premises. Establish `e : c j0 ^ b = (c j0 ^ b / (p : Ω) ^ a) * (p : Ω) ^ k`. Rewrite using `[hk, zpow_natCast, div_mul_cancel₀ _ (pow_ne_zero _ hp0)]`. Conclude with `IsIntegral.of_pow hb (e ▸ hu.mul (isInt_natPow_p k))`. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le (neg_nonneg.2 ha.le)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := h.clo`. Take `⟨l, hl⟩` from `IsAlgClosed.exists_pow_nat_eq ((p : Ω) ^ k) hb`. Establish `hk1 : 1 ≤ k` using `by omega`. Establish `hpa : (p : Ω) ^ a = ((p : Ω) ^ k)⁻¹`. Rewrite using `[← zpow_natCast, ← hk, zpow_neg, inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlx : (l * c j0) ^ b = c j0 ^ b / (p : Ω) ^ a`. Rewrite using `[mul_pow, hl, hpa, div_inv_eq_mul, mul_comm]`. Establish `hlxi : IsInt p (l * c j0)` using `IsIntegral.of_pow hb (hlx ▸ hu)`. Use `⟨l, ?_, ⟨b, hb, ?_⟩, ?_, j0, hj0n, ?_⟩` and prove the remaining obligations. Use `⟨Polynomial.X ^ b - Polynomial.C ((p : ℤ_[p]) ^ k), Polynomial.X_pow_sub_C_ne_zero hb _, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hl]`. Rewrite using `[hl]`. Establish `e : (p : Ω) ^ k / p = (p : Ω) ^ (k - 1)`. Rewrite using `[div_eq_iff hp0, ← pow_succ, Nat.sub_add_cancel hk1]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isInt_natPow_p _`. Introduce `j hj`. Distinguish the cases in `hcj : c j = 0`. Rewrite using `[hcj, mul_zero]`. Conclude with `isIntegral_zero`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (c j / c j0) * (l * c j0) = l * c j`. Rewrite using `[mul_comm l (c j0), ← mul_assoc, div_mul_cancel₀ _ hx0, mul_comm]`. Conclude with `e ▸ (hdiv j hj hcj).mul hlxi`. Introduce and unpack `⟨m, hm, hsm⟩`. Apply `not_isInt_inv_p h` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : l * c j0 ≠ 0`. Introduce `e0`. Rewrite `hlx` using `[e0, zero_pow hb.ne', eq_comm, div_eq_zero_iff]`. Break down `hlx with h0 | h0` into its components or cases. Conclude with `hx0 (pow_eq_zero_iff hb.ne' |>.1 h0)`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zpow_ne_zero _ hp0 h0`. Establish `hinv : (p : Ω) ^ a / c j0 ^ b = ((l * c j0) ^ b)⁻¹` using `by rw [hlx, inv_div]`. Rewrite `hu'` using `[hinv]`. Take `⟨b1, rfl⟩ : ∃ b1, b = b1 + 1` from `⟨b - 1, by omega⟩`. Establish `e : ((p : Ω))⁻¹ = ((l * c j0) ^ m / p) ^ (b1 + 1) * (((l * c j0) ^ (b1 + 1))⁻¹) ^ m * (p : Ω) ^ b1`.
-
-Generalize the expression as in `l * c j0 = z at hz`. Rewrite using `[div_pow, ← pow_mul, inv_pow, ← pow_mul, mul_comm (b1 + 1) m, pow_succ (p : Ω) b1]`. Establish `hzz : z ^ (m * (b1 + 1)) ≠ 0` using `pow_ne_zero _ hz`. Establish `hpp : (p : Ω) ^ b1 ≠ 0` using `pow_ne_zero _ hp0`. Rewrite using `[div_mul_eq_mul_div, mul_inv_cancel₀ hzz, div_mul_eq_mul_div, one_mul, mul_comm _ (p : Ω), eq_div_iff (mul_ne_zero hp0 hpp), inv_mul_cancel_left₀ hp0]`.
-
-Rewrite using `[e]`. Conclude with `((hsm.pow _).mul (hu'.pow m)).mul (isInt_natPow_p b1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normalize (h : IsClo p Ω)
     (hV : ∀ x : Ω, x ≠ 0 → ∃ (a : ℤ) (b : ℕ), 0 < b ∧ IsInt p (x ^ b / (p : Ω) ^ a) ∧
@@ -210,17 +206,15 @@ end GlobalTheory.K5.Orth
 namespace GlobalTheory.K5.Orth
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ h T N c hfix hint`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨l, hlalg, ⟨m0, hm0, hlsm⟩, hlint, j0, hj0, hj0ns⟩` from `normalize h (GlobalTheory.T.exists_pow_div_prime_zpow_integralClosure_unit p Ω h) (p ^ N) c hne`. Use `choose S hSalg hSmem using fun j => GlobalTheory.T.geometric_fixed_mem_closure_finite_algZp p Ω h (c j) (hfix j)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S' : Finset Ω` to `insert l ((Finset.range (p ^ N)).biUnion S)`. Establish `hS'alg : ∀ s ∈ S', IsAlgZp p s`. Introduce `s hs`. Break down `Finset.mem_insert.1 hs with rfl | hs` into its components or cases. Conclude with `hlalg`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, -, hj⟩` from `Finset.mem_biUnion.1 hs`. Conclude with `hSalg j s hj`. Use `set E := Subfield.closure (Set.range (algebraMap (O0 p) Ω) ∪ (S' : Set Ω)) with hE`. Establish `hrange : Set.range (algebraMap (O0 p) Ω) ⊆ (E : Set Ω)` using `fun x hx => Subfield.subset_closure (Or.inl hx)`. Establish `hlE : l ∈ E` using `Subfield.subset_closure (Or.inr (Finset.mem_insert_self _ _))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcE : ∀ j < p ^ N, c j ∈ E`. Introduce `j hj`. Use `Subfield.closure_mono ?_ (hSmem j)` and prove the remaining obligations. Apply `Set.union_subset_union_right` to reduce the goal to its premises. Introduce `s hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_insert_of_mem (Finset.mem_biUnion.2 ⟨j, Finset.mem_range.2 hj, hs⟩)`. Establish `hsum : (∑ j ∈ Finset.range (p ^ N), (l * c j) * T.qq N ^ j) = l * ∑ j ∈ Finset.range (p ^ N), c j * T.qq N ^ j`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hsmall : ∃ m : ℕ, 0 < m ∧ IsInt p ((∑ j ∈ Finset.range (p ^ N), (l * c j) * T.qq N ^ j) ^ m / (p : Ω))`.
-
-Use `⟨m0, hm0, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum, mul_pow, mul_div_right_comm]`. Conclude with `hlsm.mul (hint.pow m0)`. Use `GlobalTheory.T.residue_tower_powers_linearIndependent p Ω h E hrange (GlobalTheory.T.towerParameter_not_pow_mod_maximalIdeal_adjoin_algebraic p Ω h S' hS'alg) T N (fun j => l * c j) (fun j hj => ⟨E.mul_mem hlE (hcE j hj), hlint j hj⟩) hsmall j0 hj0` as an intermediate fact. Conclude with `hj0ns this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem orth : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ (T : Tower p Ω) (N : ℕ) (c : ℕ → Ω), (∀ j, ∀ g ∈ Ggeo p Ω, g (c j) = c j) →

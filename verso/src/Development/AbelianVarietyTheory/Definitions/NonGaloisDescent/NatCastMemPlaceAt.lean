@@ -23,9 +23,7 @@ section Field
 variable {p : ℕ} [Fact p.Prime] {F : Type} [Field F] (φ : F →+* ℂ_[p])
 
 /- English proof (translation)
-Establish `hx : IsIntegral ℤ (φ (a : F))`. Use `map_isIntegral_int φ a.isIntegral_coe` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _`. Establish `h1 : IsIntegral (NormedField.valuation (K` using `ℂ_[p])).integer (φ (a : F)) := hx.tower_top`. Establish `h3 : ‖φ (a : F)‖₊ ≤ 1` using `(Valuation.integer.integers (NormedField.valuation (K := ℂ_[p]))).mem_of_integral h1`.
-
-Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_int_le_one (a : 𝓞 F) : ‖φ (a : F)‖ ≤ 1 := by
   have hx : IsIntegral ℤ (φ (a : F)) := by
@@ -36,7 +34,7 @@ theorem norm_int_le_one (a : 𝓞 F) : ‖φ (a : F)‖ ≤ 1 := by
   exact_mod_cast h3
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]) p, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_p_lt_one : ‖(p : ℂ_[p])‖ < 1 := by
   rw [← map_natCast (algebraMap ℚ_[p] ℂ_[p]) p, norm_algebraMap']
@@ -77,12 +75,12 @@ def placeAt [NumberField F] : HeightOneSpectrum (𝓞 F) where
     exact (Fact.out : p.Prime).ne_zero (by exact_mod_cast (Ideal.mem_bot.1 h1))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_placeAt [NumberField F] (a : 𝓞 F) : a ∈ (placeAt φ).asIdeal ↔ ‖φ (a : F)‖ < 1 := Iff.rfl
 
 /- English proof (translation)
-Establish `e : (((p : ℕ) : 𝓞 F) : F) = (p : F)` using `by simp`. Rewrite using `[mem_placeAt, e, map_natCast]`. Conclude with `norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_placeAt [NumberField F] : ((p : ℕ) : 𝓞 F) ∈ (placeAt φ).asIdeal := by
   have e : (((p : ℕ) : 𝓞 F) : F) = (p : F) := by simp
@@ -92,25 +90,25 @@ theorem natCast_mem_placeAt [NumberField F] : ((p : ℕ) : 𝓞 F) ∈ (placeAt 
 def kurC : Subfield ℂ_[p] := (φ.fieldRange ⊔ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p).topologicalClosure
 
 /- English proof (translation)
-The claim follows from `Subfield.le_topologicalClosure _ ((le_sup_left : φ.fieldRange ≤ _) ⟨a, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mem_kurC (a : F) : φ a ∈ kurC φ :=
   Subfield.le_topologicalClosure _ ((le_sup_left : φ.fieldRange ≤ _) ⟨a, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `le_sup_right.trans (Subfield.le_topologicalClosure _)`.
+A detailed English derivation is pending.
 -/
 theorem kur_le_kurC : Formalism.L2.Th1.CM.MaximalUnramifiedExtension p ≤ kurC φ := le_sup_right.trans (Subfield.le_topologicalClosure _)
 
 /- English proof (translation)
-The claim follows from `kur_le_kurC φ (Subfield.le_topologicalClosure _ (Subfield.subset_closure ⟨n, Nat.pos_of_ne_zero fun h0 => hn (h0 ▸ dvd_zero p), hn, h⟩))`.
+A detailed English derivation is pending.
 -/
 theorem root_mem_kurC {ζ : ℂ_[p]} {n : ℕ} (hn : ¬ p ∣ n) (h : ζ ^ n = 1) : ζ ∈ kurC φ :=
   kur_le_kurC φ (Subfield.le_topologicalClosure _ (Subfield.subset_closure
     ⟨n, Nat.pos_of_ne_zero fun h0 => hn (h0 ▸ dvd_zero p), hn, h⟩))
 
 /- English proof (translation)
-Rewrite using `[kurC, kurC, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kurC_congr {F' : Type} [Field F'] {φ' : F' →+* ℂ_[p]} (h : φ.fieldRange = φ'.fieldRange) : kurC φ = kurC φ' := by
   rw [kurC, kurC, h]
@@ -166,26 +164,26 @@ variable {Xo c φ}
 def valC (z : FrPt Xo c (PAt φ)) (f : Rul Xo c) : ℂ_[p] := toCp φ (evR Xo c f z)
 
 /- English proof (translation)
-The claim follows from `evalAt_add _ _ f g z`.
+A detailed English derivation is pending.
 -/
 theorem valC_add (z : FrPt Xo c (PAt φ)) (f g : Rul Xo c) : valC z (f + g) = valC z f + valC z g :=
   evalAt_add _ _ f g z
 
 /- English proof (translation)
-The claim follows from `evalAt_smul _ _ a f z`.
+A detailed English derivation is pending.
 -/
 theorem valC_smul (z : FrPt Xo c (PAt φ)) (a : c.F) (f : Rul Xo c) : valC z (a • f) = φ a * valC z f :=
   evalAt_smul _ _ a f z
 
 /- English proof (translation)
-The claim follows from `evalAt_zero _ _ z`.
+A detailed English derivation is pending.
 -/
 theorem valC_zero (z : FrPt Xo c (PAt φ)) : valC z 0 = 0 := evalAt_zero _ _ z
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Establish `hL : GlobalTheory.Reg.EvLaws Xo c` using `(GlobalTheory.Reg.evLaws_genFr_nonempty_comp E H Dw l Xo c).1`. Take `⟨w, hw, hb⟩` from `hz`. Take `⟨q, χ, y₀, hy₀⟩` from `hL.test _ y.1`. Establish `e1 : evR Xo c f w = k (evI y f)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.Reg.evR_eq_map_of_test_point hL hf q (h.alg.comp χ) y₀ w (PullbackSections.frMap_trans χ h.alg hy₀ hw)]`. Conclude with `congrArg k (GlobalTheory.Reg.evR_eq_map_of_test_point hL hf q χ y₀ y.1 hy₀).symm`. Rewrite using `[GeoTie.valC, hL.wt a n f hf _ u w z (hL.test _ _) (hL.test _ _) hb, map_mul, e1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem IsReadPt.valC {T : CDVR} {io : c.F →+* T.Fr} {k : T.Fr →+* ℂ_[p]} {h : IsReading φ T io k} {y : IntFr Xo c T io}
     {u : Ix Dw → (PAt φ)ˣ} {z : FrPt Xo c (PAt φ)} (hz : IsReadPt h y u z) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c}
@@ -201,13 +199,13 @@ theorem IsReadPt.valC {T : CDVR} {io : c.F →+* T.Fr} {k : T.Fr →+* ℂ_[p]} 
   rfl
 
 /- English proof (translation)
-Simplify using `[wchar, norm_prod, hu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_wchar {u : Ix Dw → (PAt φ)ˣ} (hu : ∀ a, ‖toCp φ (u a)‖ = 1) (e : Ix Dw → ℕ) : ‖toCp φ (wchar e u)‖ = 1 := by
   simp [wchar, norm_prod, hu]
 
 /- English proof (translation)
-Take `⟨T, io, k, h, y, u, hy, hu, hz⟩` from `z.2`. Conclude with `⟨T, io, k, h, y, _, hy, norm_wchar hu _, fun f hf => hz.valC hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PtC.exists_valC (z : PtC Xo c φ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     ∃ (T : CDVR) (io : c.F →+* T.Fr) (k : T.Fr →+* ℂ_[p]) (_ : IsReading φ T io k) (y : IntFr Xo c T io) (u : ℂ_[p]),
@@ -216,9 +214,9 @@ theorem PtC.exists_valC (z : PtC Xo c φ) (a : (E →+* ℂ) × ℕ → ℕ) (n 
   exact ⟨T, io, k, h, y, _, hy, norm_wchar hu _, fun f hf => hz.valC hf⟩
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Take `⟨w, hw⟩` from `(GlobalTheory.Reg.evLaws_genFr_nonempty_comp E H Dw l Xo c).1.bc _ _ h.alg y.1`. Establish `hb : FrBor 1 w w` using `((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c _ w w w).1 1).2 ⟨fun _ => 1, fun _ _ _ h => Matrix.one_apply_ne h.ne, fun _ _ => Matrix.one_apply_eq _, (GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c _ w w w).1⟩`. Establish `hr : IsReadPt h y 1 w` using `⟨w, hw, hb⟩`. Use `⟨⟨w, T, io, k, h, y, 1, hy, fun a => by simp, hr⟩, fun a n f hf => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hr.valC hf]`. Simplify using `[wchar]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem PtC.exists_of_reading {T : CDVR} {io : c.F →+* T.Fr} {k : T.Fr →+* ℂ_[p]} (h : IsReading φ T io k)
     (y : IntFr Xo c T io) (hy : y.IsAlg) :
@@ -241,7 +239,7 @@ def IsHkQuot (𝔓 : Ideal (𝓞 E)) (q i : ℕ) (z : FrPt Xo c (PAt φ)) (C : H
 end Points
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨natCast_mem_placeAt _, by simp [mem_placeAt]⟩`.
+Supply the required witnesses or components.
 -/
 example (p : ℕ) [Fact p.Prime] : ((p : ℕ) : 𝓞 ℚ) ∈ (placeAt (Rat.castHom ℂ_[p])).asIdeal ∧
     (1 : 𝓞 ℚ) ∉ (placeAt (Rat.castHom ℂ_[p])).asIdeal :=

@@ -51,7 +51,7 @@ inductive IsRecC (D : D7) (Gt : GatTies D) (c : LatCmp D) : Prop
     : IsRecC D Gt c
 
 /- English proof (translation)
-Take `⟨D0, sc, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩` from `h`. Consider the cases of `heq`. Conclude with `⟨groupCompatibilityOfRecursion D0 sc 1 Lc I ψ hd H0 hL T B hBs hB (CH.toHyp0 fun u w hg v s x => pos_C D0 sc 1 Lc I ψ hd H0 hL B hBs hB iK lam hK hPos u w hg v s x).toHyp fun u w h => isHyperbolicAt_rec_of_placeIdentification D0 u w h (I u w h)⟩`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem gTiedAll_of_isRecC {D : D7} {Gt : GatTies D} {c : LatCmp D} (h : IsRecC D Gt c) : Nonempty (GroupCompatibilityAll D Gt c) := by
   obtain ⟨D0, sc, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩ := h

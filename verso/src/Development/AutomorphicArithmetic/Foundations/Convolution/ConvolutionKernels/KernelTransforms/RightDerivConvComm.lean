@@ -27,7 +27,7 @@ variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpac
   {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra G 𝔤)
 
 /- English proof (translation)
-Set `_` to `h.chartedSpace`. Use `h.lieGroup ∞` as an intermediate fact. Conclude with `ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) (h.isSmoothFun_rightDeriv (isSmoothFun_comp_inv hf) X) (contMDiff_inv 𝓘(ℝ, 𝔤) ∞)`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.smooth_conv {f : G → ℂ} (hf : h.IsSmoothFun f) (X : 𝔤) :
     h.IsSmoothFun (h.convDeriv X f) := by
@@ -46,7 +46,7 @@ private noncomputable def UpperTheory.ConvolutionTheory.Tf.convEnd (X : 𝔤) : 
     exact congrFun (h.rightDeriv_smul (isSmoothFun_comp_inv f.2) c X) y⁻¹
 
 /- English proof (translation)
-Establish `h1` using `h.hasDerivAt_rightDeriv (isSmoothFun_comp_inv hf) X g⁻¹`. Use `h1.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.hasDerivAt_conv {f : G → ℂ} (hf : h.IsSmoothFun f) (X : 𝔤) (g : G) :
     HasDerivAt (fun s : ℝ => f ((h.expG (s • X))⁻¹ * g)) (h.convDeriv X f g) 0 := by
@@ -55,7 +55,7 @@ private theorem UpperTheory.ConvolutionTheory.Tf.hasDerivAt_conv {f : G → ℂ}
   simp
 
 /- English proof (translation)
-Establish `h1` using `UpperTheory.ConvolutionTheory.Tf.hasDerivAt_conv h hf X 1`. Establish `h2` using `h.hasDerivAt_rightDeriv hf (-X) 1`. Rewrite `h2` using `[rightDeriv_neg_left]`. Conclude with `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun s => by`. Simplify using `[smul_neg, h.expG_neg]))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.conv_one {f : G → ℂ} (hf : h.IsSmoothFun f) (X : 𝔤) :
     h.convDeriv X f 1 = -h.rightDeriv X f 1 := by
@@ -66,21 +66,19 @@ private theorem UpperTheory.ConvolutionTheory.Tf.conv_one {f : G → ℂ} (hf : 
     simp [smul_neg, h.expG_neg]))
 
 /- English proof (translation)
-Use `set A : ℝ × ℝ → ℂ := fun p => f ((h.expG (p.1 • X))⁻¹ * (g * h.expG (p.2 • Y))) with hAdef`. Establish `hA : ContDiff ℝ ∞ A`. Set `_` to `h.chartedSpace`. Use `h.lieGroup ∞` as an intermediate fact. Establish `hm : ContMDiff 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, 𝔤) ∞ (fun p : ℝ × ℝ => (h.expG (p.1 • X))⁻¹ * (g * h.expG (p.2 • Y)))` using `((h.contMDiff_expG_comp (contDiff_fst.smul contDiff_const)).inv).mul (contMDiff_const.mul (h.contMDiff_expG_comp (contDiff_snd.smul contDiff_const)))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hf hm).contDiff`. Establish `hAd : Differentiable ℝ A` using `hA.differentiable (by simp)`. Use `set e₁ : ℝ × ℝ := (1, 0)`. Use `set e₂ : ℝ × ℝ := (0, 1)`. Use `set D2 := fderiv ℝ (fderiv ℝ A) 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `d1 : ∀ t : ℝ, fderiv ℝ A (t • e₂) e₁ = h.convDeriv X f (g * h.expG (t • Y))`. Introduce `t`. Establish `h1` using `hasDerivAt_comp_line (hAd (t • e₂)) e₁`. Establish `h2` using `UpperTheory.ConvolutionTheory.Tf.hasDerivAt_conv h hf X (g * h.expG (t • Y))`. Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[A, e₁, e₂]`. Establish `d2 : ∀ s : ℝ, fderiv ℝ A (s • e₁) e₂ = h.rightDeriv Y f ((h.expG (s • X))⁻¹ * g)`. Introduce `s`. Establish `h1` using `hasDerivAt_comp_line (hAd (s • e₁)) e₂`. Establish `h2` using `h.hasDerivAt_rightDeriv hf Y ((h.expG (s • X))⁻¹ * g)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun t => ?_))` and prove the remaining obligations. Simplify using `[A, e₁, e₂, mul_assoc]`. Establish `a1 : D2 e₂ e₁ = h.rightDeriv Y (h.convDeriv X f) g`. Establish `h1` using `hasDerivAt_fderiv_line hA 0 e₂ e₁`. Establish `h2` using `h.hasDerivAt_rightDeriv (UpperTheory.ConvolutionTheory.Tf.smooth_conv h hf X) Y g`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun t => ?_))` and prove the remaining obligations. Simplify using `only [zero_add]`. Rewrite using `[d1]`. Establish `a2 : D2 e₁ e₂ = h.convDeriv X (h.rightDeriv Y f) g`. Establish `h1` using `hasDerivAt_fderiv_line hA 0 e₁ e₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `UpperTheory.ConvolutionTheory.Tf.hasDerivAt_conv h (h.isSmoothFun_rightDeriv hf Y) X g`. Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_))` and prove the remaining obligations. Simplify using `only [zero_add]`. Rewrite using `[d2]`. Establish `hsymm : D2 e₂ e₁ = D2 e₁ e₂` using `(hA.contDiffAt.isSymmSndFDerivAt (by`.
-
-Simplify using `only [minSmoothness_of_isRCLikeNormedField]`. Conclude with `WithTop.coe_le_coe.2 le_top)) e₂ e₁`. Rewrite using `[← a1, ← a2, hsymm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.rightDeriv_conv_comm {f : G → ℂ} (hf : h.IsSmoothFun f) (X Y : 𝔤)
     (g : G) : h.rightDeriv Y (h.convDeriv X f) g = h.convDeriv X (h.rightDeriv Y f) g := by
@@ -127,9 +125,9 @@ private theorem UpperTheory.ConvolutionTheory.Tf.rightDeriv_conv_comm {f : G →
   rw [← a1, ← a2, hsymm]
 
 /- English proof (translation)
-Establish `e : (fun z : G => GroundTheory.Automorphic.rightTranslate x f z⁻¹) = GroundTheory.Automorphic.leftTranslate x⁻¹ (fun z : G => f z⁻¹)`. Use function extensionality and compare the values at `z`. Simplify using `[GroundTheory.Automorphic.rightTranslate, GroundTheory.Automorphic.leftTranslate]`. Use `show h.rightDeriv X (fun z : G => GroundTheory.Automorphic.rightTranslate x f z⁻¹) y⁻¹ = h.rightDeriv X (fun z : G => f z⁻¹) (y * x)⁻¹`. Rewrite using `[e, h.rightDeriv_leftTranslate]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[GroundTheory.Automorphic.leftTranslate]`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.conv_rightTranslate (f : G → ℂ) (X : 𝔤) (x y : G) :
     h.convDeriv X (GroundTheory.Automorphic.rightTranslate x f) y = h.convDeriv X f (y * x) := by
@@ -140,11 +138,11 @@ private theorem UpperTheory.ConvolutionTheory.Tf.conv_rightTranslate (f : G → 
   simp [GroundTheory.Automorphic.leftTranslate]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩ : ∃ t, UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra t = v` from `RingCon.mkₐ_surjective (α := ℝ) (UniversalEnvelopingAlgebra.ringCon ℝ h.lieSubalgebra) v`. Proceed by induction on `t using TensorAlgebra.induction with`. Consider the case `algebraMap r`. Simplify using `only [AlgHom.commutes]`. Conclude with `(Algebra.commutes r T).symm`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `ι x`. Establish `e : UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra (TensorAlgebra.ι ℝ x) = UniversalEnvelopingAlgebra.ι ℝ x` using `rfl`. Rewrite using `[e, rightUAction_ι]`. Conclude with `hT _`. Consider the case `mul a b ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [map_mul]`. Conclude with `ha.mul_right hb`. Consider the case `add a b ha hb`. Simplify using `only [map_add]`. Conclude with `ha.add_right hb`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.commute_uAction {T : Module.End ℂ (h.smoothFuns (F := ℂ))}
     (hT : ∀ Y : 𝔤, Commute T (h.rightDerivEnd Y))
@@ -170,13 +168,13 @@ private theorem UpperTheory.ConvolutionTheory.Tf.commute_uAction {T : Module.End
 variable [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Establish `hA` using `h.rightDeriv_integral_mul μ (hΨ.continuous h) hγ X 1`. Establish `hB` using `h.rightDeriv_integral_mul μ (hγ.continuous h) hΨ X 1`. Establish `hsA` using `h.isSmoothFun_integral_mul μ (hΨ.continuous h) hγ`. Establish `e : (fun g => ∫ y, Ψ (g⁻¹ * y) * γ y ∂μ) = fun g => ∫ y, γ (g * y) * Ψ y ∂μ`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `IsExpLieAlgebra.integral_mul_left_kernel μ Ψ γ g⁻¹` as an intermediate fact. Rewrite using `[this]`. Simplify using `[mul_comm]`. Establish `hc` using `UpperTheory.ConvolutionTheory.Tf.conv_one h hsA X`. Establish `hc' : h.rightDeriv X (fun g => ∫ y, γ (g * y) * Ψ y ∂μ) 1 = -h.rightDeriv X (fun g => ∫ y, Ψ (g * y) * γ y ∂μ) 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e, ← hc]`. Simplify using `[IsExpLieAlgebra.convDeriv]`. Rewrite `hc'` using `[hA, hB]`. Simplify using `only [one_mul] at hc'`. Establish `e2 : ∫ a, h.convDeriv X Ψ a * γ a ∂μ = ∫ a, γ a * h.convDeriv X Ψ a ∂μ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, hc', neg_neg]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.ibp {Ψ γ : G → ℂ} (hΨ : h.IsTestFunction Ψ) (hγ : h.IsTestFunction γ)
     (X : 𝔤) : ∫ a, Ψ a * h.convDeriv X γ a ∂μ = -∫ a, h.convDeriv X Ψ a * γ a ∂μ := by
@@ -200,34 +198,32 @@ private theorem UpperTheory.ConvolutionTheory.Tf.ibp {Ψ γ : G → ℂ} (hΨ : 
   rw [e2, hc', neg_neg]
 
 /- English proof (translation)
-The claim follows from `(hp.mul (hq.comp continuous_inv)).integrable_of_hasCompactSupport hc.mul_right`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.integrable_mul_inv {p q : G → ℂ} (hp : Continuous p) (hq : Continuous q)
     (hc : HasCompactSupport p) : Integrable (fun a => p a * q a⁻¹) μ :=
   (hp.mul (hq.comp continuous_inv)).integrable_of_hasCompactSupport hc.mul_right
 
 /- English proof (translation)
-Take `⟨t, rfl⟩ : ∃ t, UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra t = u` from `RingCon.mkₐ_surjective (α := ℝ) (UniversalEnvelopingAlgebra.ringCon ℝ h.lieSubalgebra) u`. Proceed by induction on `t using TensorAlgebra.induction with`. Consider the case `algebraMap r`. Establish `hr : ∀ (Ψ : h.smoothFuns (F` using `ℂ)) (x : G), ((algebraMap ℝ (Module.End ℂ (h.smoothFuns (F := ℂ))) r Ψ : h.smoothFuns (F := ℂ)) : G → ℂ) x = (r : ℂ) * (Ψ : G → ℂ) x := fun _ _ => rfl`. Use `⟨algebraMap ℝ _ r, fun Y => Algebra.commutes r _, fun x => Algebra.commutes r _, fun Ψ => ?_, fun Ψ hΨ => ?_, fun Ψ κ _ _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [AlgHom.commutes]`. Use `hΨ.mono fun x hx h0 => hx ?_` and prove the remaining obligations. Rewrite using `[hr, h0, mul_zero]`. Simplify using `only [AlgHom.commutes, hr]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a`. Expand and normalize the polynomial expressions, which then agree. Consider the case `ι x`. Establish `e : UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra (TensorAlgebra.ι ℝ x) = UniversalEnvelopingAlgebra.ι ℝ x` using `rfl`. Establish `hn : ∀ (Ψ : h.smoothFuns (F` using `ℂ)) (y : G), (((-UpperTheory.ConvolutionTheory.Tf.convEnd h (h.ofLie x)) Ψ : h.smoothFuns (F := ℂ)) : G → ℂ) y = -h.convDeriv (h.ofLie x) Ψ y := fun _ _ => rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨-UpperTheory.ConvolutionTheory.Tf.convEnd h (h.ofLie x), fun Y => ?_, fun a => ?_, fun Ψ => ?_, fun Ψ hΨ => ?_, fun Ψ κ hΨ hκ => ?_⟩` and prove the remaining obligations. Use `Commute.neg_left (LinearMap.ext fun f => Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Conclude with `(UpperTheory.ConvolutionTheory.Tf.rightDeriv_conv_comm h f.2 (h.ofLie x) Y g).symm`. Use `Commute.neg_left (LinearMap.ext fun f => Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Conclude with `UpperTheory.ConvolutionTheory.Tf.conv_rightTranslate h f (h.ofLie x) a g`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, rightUAction_ι, hn, UpperTheory.ConvolutionTheory.Tf.conv_one h Ψ.2, neg_neg]`. Both sides reduce to the same expression. Use `(hasCompactSupport_convDeriv hΨ (h := h) (h.ofLie x)).comp_left (g := Neg.neg) neg_zero` as an intermediate fact. Conclude with `this`. Establish `hγ : h.IsTestFunction (fun y => (κ : G → ℂ) y⁻¹)` using `⟨isSmoothFun_comp_inv κ.2, hκ.comp_homeomorph (Homeomorph.inv _)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΨt : h.IsTestFunction (Ψ : G → ℂ)` using `⟨Ψ.2, hΨ⟩`. Establish `hi` using `UpperTheory.ConvolutionTheory.Tf.ibp h μ hΨt hγ (h.ofLie x)`. Establish `e3 : (fun a => (Ψ : G → ℂ) a * h.convDeriv (h.ofLie x) (fun y => (κ : G → ℂ) y⁻¹) a) = fun a => (Ψ : G → ℂ) a * (h.rightUAction (UniversalEnvelopingAlgebra.ι ℝ x) κ : G → ℂ) a⁻¹`. Use function extensionality and compare the values at `a`. Rewrite using `[rightUAction_ι]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[IsExpLieAlgebra.convDeriv]`. Rewrite `hi` using `[e3]`. Rewrite using `[e, hi, ← integral_neg]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hn, neg_mul]`. Consider the case `mul a b ha hb`. Take `⟨Ta, ha1, ha2, ha3, ha4, ha5⟩` from `ha`. Take `⟨Tb, hb1, hb2, hb3, hb4, hb5⟩` from `hb`. Use `⟨Tb * Ta, fun Y => (hb1 Y).mul_left (ha1 Y), fun x => (hb2 x).mul_left (ha2 x), fun Ψ => ?_, fun Ψ hΨ => hb4 _ (ha4 _ hΨ), fun Ψ κ hΨ hκ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `LinearMap.congr_fun (UpperTheory.ConvolutionTheory.Tf.commute_uAction h ha1 (UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra b)).eq Ψ`. Simplify using `only [Module.End.mul_apply] at hc`. Rewrite using `[Module.End.mul_apply, hb3, ← hc, ha3, map_mul, map_mul, Module.End.mul_apply]`. Rewrite using `[Module.End.mul_apply, hb5 _ κ (ha4 _ hΨ) hκ, ha5 Ψ _ hΨ (hcs _ κ hκ), map_mul, map_mul, Module.End.mul_apply]`. Consider the case `add a b ha hb`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Ta, ha1, ha2, ha3, ha4, ha5⟩` from `ha`. Take `⟨Tb, hb1, hb2, hb3, hb4, hb5⟩` from `hb`. Use `⟨Ta + Tb, fun Y => (ha1 Y).add_left (hb1 Y), fun x => (ha2 x).add_left (hb2 x), fun Ψ => ?_, fun Ψ hΨ => ?_, fun Ψ κ hΨ hκ => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, ha3, hb3]`. Conclude with `(ha4 Ψ hΨ).add (hb4 Ψ hΨ)`.
-
-Establish `hcont : ∀ f : h.smoothFuns (F` using `ℂ), Continuous (f : G → ℂ) := fun f => continuous_of_isSmoothFun f.2`. Simplify using `only [map_add, LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, add_mul, mul_add]`. Rewrite using `[integral_add (UpperTheory.ConvolutionTheory.Tf.integrable_mul_inv μ (hcont _) (hcont κ) (ha4 Ψ hΨ)) (UpperTheory.ConvolutionTheory.Tf.integrable_mul_inv μ (hcont _) (hcont κ) (hb4 Ψ hΨ)), integral_add (UpperTheory.ConvolutionTheory.Tf.integrable_mul_inv μ (hcont Ψ) (hcont _) hΨ) …`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.exists_transpose
     (hcs : ∀ (v : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra) (κ : h.smoothFuns (F := ℂ)),
@@ -313,21 +309,19 @@ private theorem UpperTheory.ConvolutionTheory.Tf.exists_transpose
 end
 
 /- English proof (translation)
-Introduce `K _ _ _ n ν _ β₁ β₂ h₁ h₂ z hz x`. Establish `hcs : ∀ (v : UEnv K n) (κ : (isExpLieAlgebra K n).smoothFuns (F` using `ℂ)), HasCompactSupport (κ : archGroup K n → ℂ) → HasCompactSupport ((isExpLieAlgebra K n).rightUAction v κ : archGroup K n → ℂ) := by`. Introduce `v κ hκ`. Conclude with `IsCompact.of_isClosed_subset hκ (isClosed_tsupport _) ((UpperTheory.ConvolutionTheory.Tf.invSmooth K n κ κ.2).2.2.2 κ.2 v)`. Take `⟨T, -, hb, hc, -, he⟩` from `UpperTheory.ConvolutionTheory.Tf.exists_transpose (isExpLieAlgebra K n) ν hcs z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hTz : ∀ (Ψ : (isExpLieAlgebra K n).smoothFuns (F` using `ℂ)) (y : archGroup K n), (T Ψ : archGroup K n → ℂ) y = ((isExpLieAlgebra K n).rightUAction z Ψ : archGroup K n → ℂ) y := by`. Introduce `Ψ y`. Take `⟨hk, hk2⟩` from `UpperTheory.ConvolutionTheory.Tf.centerTr K n z hz y (by rw [UpperTheory.ConvolutionTheory.Tf.expGen]; trivial) Ψ Ψ.2`. Establish `h1` using `LinearMap.congr_fun (hb y).eq Ψ`. Simplify using `only [Module.End.mul_apply] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (T Ψ : archGroup K n → ℂ) y = (T ((isExpLieAlgebra K n).rightTranslateEnd y Ψ) : archGroup K n → ℂ) 1`. Rewrite using `[h1]`. Simplify using `[GroundTheory.Automorphic.rightTranslate]`. Establish `h3` using `hk2 1`. Rewrite `h3` using `[one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, hc]`. Conclude with `h3`. Establish `hk1 : HasCompactSupport (fun g : archGroup K n => β₁ g⁻¹)` using `β₁.hasCompactSupport.comp_homeomorph (Homeomorph.inv _)`. Establish `hk2 : HasCompactSupport (fun g : archGroup K n => β₂ g⁻¹)` using `β₂.hasCompactSupport.comp_homeomorph (Homeomorph.inv _)`. Use `set k₂ : (isExpLieAlgebra K n).smoothFuns (F := ℂ) := ⟨fun g => β₂ g⁻¹, h₂⟩ with hk₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `set k₁ : (isExpLieAlgebra K n).smoothFuns (F := ℂ) := ⟨fun g => β₁ g⁻¹, h₁⟩ with hk₁`. Establish `hΨc : HasCompactSupport (((isExpLieAlgebra K n).leftTranslateEnd x⁻¹ k₂ : (isExpLieAlgebra K n).smoothFuns (F` using `ℂ)) : archGroup K n → ℂ) := hk2.comp_homeomorph (Homeomorph.mulLeft x⁻¹)`. Establish `key` using `he ((isExpLieAlgebra K n).leftTranslateEnd x⁻¹ k₂) k₁ hΨc hk1`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[mul_comm]`. Use `congr 1`. Use `_ = ∫ a, (T ((isExpLieAlgebra K n).leftTranslateEnd x⁻¹ k₂) : archGroup K n → ℂ) a * (k₁ : archGroup K n → ℂ) a⁻¹ ∂ν := key.symm`. Use `_ = _ := by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[hTz, IsExpLieAlgebra.rightUAction_leftTranslate_apply, mul_comm]`. Establish `e1 : (k₁ : archGroup K n → ℂ) a⁻¹ = β₁ a` using `by show β₁ a⁻¹⁻¹ = β₁ a`. Simplify using the standard rewrite rules.
-
-Rewrite using `[e1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.convZ :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (n : ℕ) (ν : Measure (archGroup K n)) [ν.IsHaarMeasure]

@@ -12,9 +12,9 @@ namespace GlobalTheory.WhitBump
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `h : i < k`. Establish `e : (fun t : Vp E n => nu t i k) = fun t => t ⟨(i, k), h⟩` using `funext fun t => by simp [nu, h]`. Rewrite using `[e]`. Conclude with `contDiff_apply ℝ _ _`. Establish `e : (fun t : Vp E n => nu t i k) = fun _ => (if i = k then 1 else 0 : Cinf E)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun t => by simp [nu, h]`. Rewrite using `[e]`. Conclude with `contDiff_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_nu_apply (i k : Fin n) : ContDiff ℝ ∞ fun t : Vp E n => nu t i k := by
   by_cases h : i < k
@@ -25,7 +25,7 @@ theorem contDiff_nu_apply (i k : Fin n) : ContDiff ℝ ∞ fun t : Vp E n => nu 
     rw [e]; exact contDiff_const
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Use `show ContDiff ℝ ∞ fun q : Lie E n × Vp E n => ∑ k, nu (-q.2) i k * q.1 k j`. Use `ContDiff.sum fun k _ => ?_` and prove the remaining obligations. Conclude with `((contDiff_nu_apply i k).comp contDiff_snd.neg).mul ((contDiff_apply ℝ _ j).comp ((contDiff_apply ℝ _ k).comp contDiff_fst))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_nu_mul : ContDiff ℝ ∞ fun q : Lie E n × Vp E n => toL (nu (-q.2) * Matrix.of q.1) := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
@@ -37,7 +37,7 @@ theorem contDiff_nu_mul : ContDiff ℝ ∞ fun q : Lie E n × Vp E n => toL (nu 
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `hs : Continuous (sInf E)` using `((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))`. Establish `hd : Continuous fun t : Vp E n => sdM (nu t)` using `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => (contDiff_nu_apply i j).continuous`. Conclude with `continuous_subtype_val.comp (GroundTheory.Global.continuous_adelicChar.comp (hs.comp hd.neg))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_psiInf_sdM : Continuous fun t : Vp E n => psiInf (-sdM (nu t)) := by
   have hs : Continuous (sInf E) :=
@@ -47,21 +47,19 @@ theorem continuous_psiInf_sdM : Continuous fun t : Vp E n => psiInf (-sdM (nu t)
   exact continuous_subtype_val.comp (GroundTheory.Global.continuous_adelicChar.comp (hs.comp hd.neg))
 
 /- English proof (translation)
-Introduce `E _ _ _ n f hf hcs hts`. Introduce `x₀ hx₀`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 isOpen_invSet x₀ hx₀`. Use `set r := ε / 2 with hr`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr0 : 0 < r` using `by positivity`. Establish `hB : closedBall x₀ r ⊆ invSet E n` using `(closedBall_subset_ball (by linarith)).trans hball`. Set `Φ : Lie E n × Lie E n → Vp E n` to `fun q p => (Matrix.of q.1 * Matrix.of (ConstTermSmooth.invM q.2)) p.1.1 p.1.2`. Establish `hΦ : ContinuousOn Φ (tsupport f ×ˢ closedBall x₀ r)`. Establish `hinv : ContinuousOn (fun q : Lie E n × Lie E n => ConstTermSmooth.invM q.2) (tsupport f ×ˢ closedBall x₀ r)` using `ConstTermSmooth.contDiffOn_invM.continuousOn.comp continuous_snd.continuousOn fun q hq => hB hq.2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuousOn_pi.2 fun p => ?_` and prove the remaining obligations. Use `show ContinuousOn (fun q : Lie E n × Lie E n => ∑ k, q.1 p.1.1 k * ConstTermSmooth.invM q.2 k p.1.2) _`. Use `continuousOn_finset_sum _ fun k _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun q : Lie E n × Lie E n => q.1 p.1.1 k` using `(continuous_apply k).comp ((continuous_apply p.1.1).comp continuous_fst)`. Establish `h2 : ContinuousOn (fun q : Lie E n × Lie E n => ConstTermSmooth.invM q.2 k p.1.2) (tsupport f ×ˢ closedBall x₀ r)` using `(((continuous_apply p.1.2).comp (continuous_apply k) : Continuous fun m : Lie E n => m k p.1.2)).comp_continuousOn hinv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `h1.continuousOn.mul h2`. Use `set K := Φ '' (tsupport f ×ˢ closedBall x₀ r) with hK`. Establish `hKc : IsCompact K` using `(hcs.isCompact.prod (isCompact_closedBall _ _)).image_of_continuousOn hΦ`. Set `g : Lie E n → Vp E n → ℂ` to `fun x y => (f (toL (nu (-y) * Matrix.of x)) : ℂ)`. Establish `hgs : ∀ p, ∀ y, p ∈ ball x₀ r → y ∉ -K → g p y = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p y hp hy`. Assume the negation of the conclusion as `hne`. Establish `h : f (toL (nu (-y) * Matrix.of p)) ≠ 0` using `fun h => hne (by simp [g, h])`. Use `hy (Set.mem_neg.2 ⟨(toL (nu (-y) * Matrix.of p), p), ⟨subset_tsupport _ h, ball_subset_closedBall hp⟩, ?_⟩)` and prove the remaining obligations. Establish `hu : IsUnit (Matrix.of p).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (hB (ball_subset_closedBall hp))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `q`. Establish `e : Matrix.of (toL (nu (-y) * Matrix.of p)) * Matrix.of (ConstTermSmooth.invM p) = nu (-y)` using `Matrix.mul_nonsing_inv_cancel_right _ _ hu`. Use `show (Matrix.of (toL (nu (-y) * Matrix.of p)) * Matrix.of (ConstTermSmooth.invM p)) q.1.1 q.1.2 = _`. Rewrite using `[e]`. Simplify using `[nu, q.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ContDiffOn ℝ (⊤ : ℕ∞) (↿g) (ball x₀ r ×ˢ univ)` using `(Complex.ofRealCLM.contDiff.comp (hf.comp contDiff_nu_mul)).contDiffOn`. Establish `hF : LocallyIntegrable (fun t : Vp E n => psiInf (-sdM (nu t))) volume` using `continuous_psiInf_sdM.locallyIntegrable`. Establish `hv : ContDiffOn ℝ (⊤ : ℕ∞) (fun _ : Lie E n => (0 : Vp E n)) (ball x₀ r)` using `contDiffOn_const`. Establish `main` using `contDiffOn_convolution_right_with_param_comp (μ := volume) (ContinuousLinearMap.mul ℝ ℂ) hv isOpen_ball hKc.neg hgs hF hg`. Establish `fin : ContDiffOn ℝ ∞ (bumpInf f) (ball x₀ r)`.
-
-Use `main.congr fun x _ => ?_` and prove the remaining obligations. Simplify using `only [bumpInf, convolution_def, ContinuousLinearMap.mul_apply', zero_sub, neg_neg, g]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun t => mul_comm _ _)`. Conclude with `fin.contDiffAt (isOpen_ball.mem_nhds (mem_ball_self hr0))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bumpInf_contDiffOn_invSet : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (n : ℕ) (f : Lie E n → ℝ),
     ContDiff ℝ ∞ f → HasCompactSupport f → tsupport f ⊆ invSet E n → ContDiffOn ℝ ∞ (bumpInf f) (invSet E n) := by

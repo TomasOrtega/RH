@@ -17,13 +17,13 @@ noncomputable section
 namespace GlobalTheory.PMC.BrChar
 
 /- English proof (translation)
-Set `f : ℚ_[l] →+* Om l` to `τ.comp (algebraMap ℚ_[l] ↥K.1)`. Establish `hf : ∀ x : ℚ_[l], ‖x‖ ≤ 1 → ‖f x‖ ≤ 1` using `fun x hx => hτ _ (by show ‖algebraMap ℚ_[l] (Om l) x‖ ≤ 1`. Rewrite using `[norm_algebraMap'])` and apply the resulting hypothesis. Establish `hl0 : (l : ℚ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hl1 : ‖(l : ℚ_[l])‖ < 1` using `Padic.norm_p_lt_one`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlO : ‖(l : Om l)‖ = ‖(l : ℚ_[l])‖`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Om l)), norm_algebraMap']`. Establish `hc : Continuous f`. Use `continuous_of_continuousAt_zero f (Metric.continuousAt_iff.2 fun ε hε => ?_)` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε hl1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hp : 0 < ‖(l : ℚ_[l])‖ ^ n` using `pow_pos (norm_pos_iff.2 hl0) n`. Use `⟨_, hp, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[dist_zero_right]`. Rewrite using `[map_zero, dist_zero_right]`. Establish `h1` using `hf (x / (l : ℚ_[l]) ^ n) (by rw [norm_div, norm_pow, div_le_one hp]; exact hx.le)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_div₀, map_pow, map_natCast, norm_div, norm_pow, hlO, div_le_one hp]`. Conclude with `h1.trans_lt hn`. Conclude with `congrFun ((Padic.denseRange_ratCast l).equalizer hc (continuous_algebraMap ℚ_[l] (Om l)) (funext fun r => by simp)) q`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_algebraMap {l : ℕ} [Fact l.Prime] (K : FinExt l) (τ : ↥K.1 →+* Om l)
     (hτ : ∀ y : ↥K.1, ‖(y : Om l)‖ ≤ 1 → ‖τ y‖ ≤ 1) (q : ℚ_[l]) :
@@ -50,35 +50,33 @@ theorem map_algebraMap {l : ℕ} [Fact l.Prime] (K : FinExt l) (τ : ↥K.1 →+
     (funext fun r => by simp)) q
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ w A h O _ _ _ Bw hB a ha π hπ j₀ LL ψ hψc hψ`. Establish `hmem : ∀ g, ent ψ g ∈ LL.1` using `fun g => Subtype.property _`. Establish `hv : Valued.v ((1 : w.adicCompletion E) + π) = 1`. Apply `Valuation.map_one_add_of_lt` to reduce the goal to its premises. Unfold `IsUnifAt at hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Rewrite using `[hπ, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `hπL : j₀.1 (π : w.adicCompletion E) ∈ LL.1`. Establish `h0 : (1 : w.adicCompletion E) + π ≠ 0` using `fun h0 => by simp [h0] at hv`. Take `⟨σ, hσ⟩` from `ha.surj (Units.mk0 _ h0)`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hd : deg σ = 0`. Use `ha.ord_eq σ` as an intermediate fact. Rewrite `this` using `[hσ, GlobalTheory.PY.LTInh.ord_unit (x := Units.mk0 _ h0) hv]`. Use linear arithmetic over natural numbers and integers. Use `hmem ⟨σ, Weil_le_Dec h σ.2⟩` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `this` using `[hψ, hd, hσ]`. Simplify using `only [zpow_zero, mul_one, Units.val_mk0, map_add, map_one] at this`. Simplify using `using LL.1.sub_mem this LL.1.one_mem`. Establish `hall : ∀ x : w.adicCompletion E, j₀.1 x ∈ LL.1` using `fun x => by`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[map_zero]`. Conclude with `LL.1.zero_mem`. Take `⟨σ, hσ⟩` from `ha.surj (Units.mk0 x hx)`. Establish `h1` using `hmem ⟨σ, Weil_le_Dec h σ.2⟩`. Rewrite `h1` using `[hψ, map_mul, map_zpow₀, hσ, Units.val_mk0]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `LL.1.mul_mem h1 (LL.1.inv_mem (LL.1.toSubfield.zpow_mem hπL (deg σ)))`. Establish `h3 : j₀.1 (π : w.adicCompletion E) ^ deg σ ≠ 0` using `zpow_ne_zero _ (by simp)`. Rewrite `h2` using `[mul_inv_cancel_right₀ h3]`. Then use the resulting hypothesis. Take `⟨⟨j, hj, hjE⟩, H⟩` from `GlobalTheory.LTTateC.main E Ω l w A h O Bw hB a ha`. Take `⟨-, H2, H3⟩` from `H j hj hjE`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `GlobalTheory.LTTateC.exists_ringEquiv_Kw Bw j hj hjE`. Take `⟨π', hπ', hππ⟩` from `H2 π hπ`. Take `⟨⟨c, hc, hcW⟩, H4⟩` from `H3 π' hπ' π hππ`. Set `τ : ↥Bw.Kw.1 →+* Om l` to `j₀.1.comp (k.symm : ↥Bw.Kw.1 →+* w.adicCompletion E)`. Establish `hτk : ∀ x, τ (k x) = j₀.1 x` using `fun x => congrArg j₀.1 (k.symm_apply_apply x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : ∀ y : ↥Bw.Kw.1, ‖(y : Om l)‖ ≤ 1 → ‖τ y‖ ≤ 1` using `fun y hy => by`. Take `⟨x, rfl⟩` from `k.surjective y`. Rewrite `hy` using `[hk, GlobalTheory.LTTateC.norm_le_one_iff j hj]`. Rewrite using `[hτk]`. Conclude with `(GlobalTheory.LTTateC.norm_le_one_iff j₀.1 j₀.2 x).2 hy`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `τ₀ : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL.1` to `{ τ.codRestrict LL.1 (fun y => hall _) with commutes' := fun q => Subtype.ext (map_algebraMap Bw.Kw τ hτ q) }`. Establish `hτ₀ : ∀ x, ((τ₀ (k x) : ↥LL.1) : Qbar l) = j₀.1 x` using `hτk`. Set `χ : ↥(GK Bw.Kw) →* (↥Bw.Kw.1)ˣ` to `(Units.map (k : w.adicCompletion E →+* ↥Bw.Kw.1).toMonoidHom).comp (c.comp Bw.e.symm.toMonoidHom)`. Establish `hχ : ∀ g, ((χ g : (↥Bw.Kw.1)ˣ) : ↥Bw.Kw.1) = k (c (Bw.e.symm g) : (w.adicCompletion E)ˣ)` using `fun _ => rfl`. Take `⟨χ₁, z, hz⟩` from `exists_ltData_of_irreducible l Bw.Kw π' hπ'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, hF, v, hvz, hS, hv0, -, -⟩` from `ltData_tilt_hyps l Bw.Kw χ₁ π' z hz`. Take `⟨-, hz0, hz1, hzr, -⟩` from `hz`. Take `⟨_, hiff⟩` from `GlobalTheory.PZ.isLTEndo_iff_eq_lubinTateHom l Bw.Kw π' hπ'`. Use `⟨τ₀, χ, π', z, fun x => ?_, ⟨hπ', hz0, hz1, hzr, fun g => ?_⟩, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hτ₀]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Use `congr 2`. Conclude with `Subtype.ext ((hk _).trans (hjE x))`. Take `⟨⟨u, -, hu⟩, H5⟩` from `H4 c hc hcW g`. Use `⟨u, Subtype.ext (by rw [hχ, hk]; exact hu), _, (hiff u _).2 rfl, fun n => ?_⟩` and prove the remaining obligations. Establish `h6` using `H5 u hu _ hF v hS hv0 n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hind : Topology.IsInducing (algebraMap (Om l) ℂ_[l])` using `(AddMonoidHomClass.isometry_of_norm (algebraMap (Om l) ℂ_[l]) fun y => PadicComplex.norm_extends l y).isEmbedding.isInducing`. Rewrite using `[← hind.hasSum_iff]`. Establish `e2 : ((Formalism.Per.σO (g : GQ l) (v n) : Formalism.Per.OC l) : ℂ_[l]) = algebraMap (Om l) ℂ_[l] ((g : GQ l) (z n))`. Use `(GlobalTheory.RingIface.sigO_coe l (g : GQ l) (v n)).trans ?_` and prove the remaining obligations. Rewrite using `[hvz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Conclude with `GlobalTheory.RingBasics.σC_coe _ _`. Rewrite `h6` using `[e2]`. Use `(congrArg (HasSum · _) (funext fun i => ?_)).mp h6` and prove the remaining obligations. Use `push_cast`. Rewrite using `[hvz, Function.comp_apply, map_mul, map_pow]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← hτ₀]`. Use `congr 2`. Conclude with `Subtype.ext (hππ.symm.trans (hk _).symm)`. Rewrite using `[hχ, hτ₀, MulEquiv.symm_apply_apply]`.
-
-Establish `hd` using `(GlobalTheory.LTExt.ext_profinite h (B := Unit) 1 continuous_const).1`. Use `congrFun (hd.equalizer hψc (j₀.2.comp hc) (funext fun σ => ?_)) g` and prove the remaining obligations. Use `show ent ψ ⟨σ, Weil_le_Dec h σ.2⟩ = j₀.1 (c ⟨σ, Weil_le_Dec h σ.2⟩ : (w.adicCompletion E)ˣ)`. Rewrite using `[hψ, hcW, Units.val_mul, Units.val_zpow_eq_zpow_val]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime]
     (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w)

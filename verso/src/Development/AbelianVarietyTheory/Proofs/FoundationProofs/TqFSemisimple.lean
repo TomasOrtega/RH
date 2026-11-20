@@ -10,9 +10,9 @@ open scoped Manifold
 namespace GlobalTheory.HeckeFamilyMatrices
 
 /- English proof (translation)
-Introduce `N l k hN hl hlN hk q σ hq hqNl hσ f c n hf`. Take `⟨_, _, hT, hD, _⟩` from `GlobalTheory.T.heckeOperatorsOnHalfPlaneFunctions_agree_explicit`. Establish `hq0 : 0 < q` using `hq.pos`. Establish `hfun : (fun F => TqF (k : ℤ) q σ F - c • F) = (fun h => GlobalTheory.Hk.heckeT (k:ℤ) q σ h - c • h)`. Use function extensionality and compare the values at `F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hT _ _ _ _ hq0]`. Establish `hσ' : GlobalTheory.Hk.IsDia N l ((q:ℕ):ℤ) σ` using `(hD N l q σ).1 (by simpa using hσ)`. Rewrite `hf` using `[hfun]`. Rewrite using `[hT _ _ _ _ hq0]`. Conclude with `GlobalTheory.T.heckeTOperatorExplicit_semisimple_cuspForms N l q k σ c n (by omega) hl.pos hq hqNl hσ' f hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tqF_semisimple : ∀ (N l k : ℕ), 5 ≤ N → l.Prime → ¬ l ∣ N → 3 ≤ k → ∀ (q : ℕ) (σ : SL(2, ℤ)), q.Prime → ¬ q ∣ N * l → IsDiam N l (q : ZMod N) σ →
   ∀ (f : CuspForm (Lev N l) (k : ℤ)) (c : ℂ) (n : ℕ), (fun F => TqF (k : ℤ) q σ F - c • F)^[n] ⇑f = 0 → TqF (k : ℤ) q σ ⇑f = c • ⇑f := by

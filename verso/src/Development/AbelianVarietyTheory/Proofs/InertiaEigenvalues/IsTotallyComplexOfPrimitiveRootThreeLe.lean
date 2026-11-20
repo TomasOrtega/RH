@@ -4,11 +4,11 @@ open NumberField IsDedekindDomain Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[NumberField.isTotallyComplex_iff]`. Introduce `v`. Assume the negation of the conclusion as `hc`. Establish `hr : v.IsReal` using `InfinitePlace.not_isComplex_iff_isReal.mp hc`. Use `set ψ : K →+* ℝ := InfinitePlace.embedding_of_isReal hr`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : IsPrimitiveRoot (ψ ζ) m` using `hζ.map_of_injective ψ.injective`. Establish `hm0 : m ≠ 0` using `by omega`. Establish `h1 : ψ ζ ^ m = 1` using `hψ.pow_eq_one`. Establish `h2 : ψ ζ ^ 2 = 1`. Apply the tactic sequence `rcases (pow_eq_one_iff_of_ne_zero hm0).mp h1 with h | ⟨h, _⟩ <;> rw [h] <;> norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h3 : ψ (ζ ^ 2) = ψ 1` using `by rw [map_pow, h2, map_one]`. Establish `h4 : ζ ^ 2 = 1` using `ψ.injective h3`. Establish `h5 : m ∣ 2` using `hζ.pow_eq_one_iff_dvd 2 |>.mp h4`. Use `Nat.le_of_dvd (by norm_num) h5` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isTotallyComplex_of_primitiveRoot (K : Type) [Field K] [NumberField K] (ζ : K) (m : ℕ)
     (hζ : IsPrimitiveRoot ζ m) (hm : 3 ≤ m) : NumberField.IsTotallyComplex K := by
@@ -29,7 +29,7 @@ theorem isTotallyComplex_of_primitiveRoot (K : Type) [Field K] [NumberField K] (
   omega
 
 /- English proof (translation)
-Introduce `K _ _ ζ m hζ hm` and use `isTotallyComplex_of_primitiveRoot K ζ m hζ hm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tcroot : ∀ (K : Type) [Field K] [NumberField K] (ζ : K) (m : ℕ), IsPrimitiveRoot ζ m → 3 ≤ m →
     NumberField.IsTotallyComplex K :=

@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Num.FamEx.SandPt
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
 /- English proof (translation)
-Use `hN q _ ?_` and prove the remaining obligations. Establish `h : IsIntegral ℤ (σ a)` using `(Algebra.IsIntegral.isIntegral (R := ℤ) a).map σ.toIntAlgHom`. Conclude with `h.tower_top`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integers_regular {F : Type} [Field F] [NumberField F] (hN : Flat.NormalCpt ξ) (σ : 𝓞 F →+* Ω) (q : Cpt ξ)
     (a : 𝓞 F) : σ a ∈ regAt ξ q := by
@@ -23,9 +23,9 @@ theorem integers_regular {F : Type} [Field F] [NumberField F] (hN : Flat.NormalC
   exact h.tower_top
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => exact absurd rfl hn`. Consider the case `one => simpa using Flat.ZUnit.one`. Consider the case `prime p hp => exact h p hp dvd_rfl`. Consider the case `mul a b ha hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Nat.cast_mul]`. Conclude with `Flat.ZUnit.mul (ha (left_ne_zero_of_mul hn) fun p hp hd => h p hp (hd.mul_right b)) (hb (right_ne_zero_of_mul hn) fun p hp hd => h p hp (hd.mul_left a))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_nat {q : Cpt ξ} [CharZero Ω] (n : ℕ) (hn : n ≠ 0)
     (h : ∀ p : ℕ, p.Prime → p ∣ n → unitAt ξ q (p : Ω)) : unitAt ξ q (n : Ω) := by
@@ -39,7 +39,7 @@ theorem unitAt_nat {q : Cpt ξ} [CharZero Ω] (n : ℕ) (hn : n ≠ 0)
       (hb (right_ne_zero_of_mul hn) fun p hp hd => h p hp (hd.mul_left a))
 
 /- English proof (translation)
-The claim follows from `unitAt_nat _ (Int.natAbs_ne_zero.2 (discr_ne_zero F)) fun p hp hd => h p hp (Int.natCast_dvd.2 hd)`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_natAbs_discr {F : Type} [Field F] [NumberField F] {q : Cpt ξ} [CharZero Ω]
     (h : ∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr F → unitAt ξ q (p : Ω)) :
@@ -48,7 +48,7 @@ theorem unitAt_natAbs_discr {F : Type} [Field F] [NumberField F] {q : Cpt ξ} [C
     h p hp (Int.natCast_dvd.2 hd)
 
 /- English proof (translation)
-Establish `h` using `Ideal.absNorm_mem (differentIdeal ℤ (𝓞 F))`. Rewrite `h` using `[absNorm_differentIdeal F]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem natAbs_discr_mem_different (F : Type) [Field F] [NumberField F] :
     (((discr F).natAbs : ℕ) : 𝓞 F) ∈ differentIdeal ℤ (𝓞 F) := by
@@ -56,11 +56,9 @@ theorem natAbs_discr_mem_different (F : Type) [Field F] [NumberField F] :
   rwa [absNorm_differentIdeal F] at h
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 fun e he => ?_` and prove the remaining obligations. Establish `h1` using `he.2 _ (natAbs_discr_mem_different F)`. Rewrite `h1` using `[map_natCast]`. Establish `h2` using `Submodule.smul_mem _ (⟨_, hu.2.2⟩ : regAt ξ q) h1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (⟨_, hu.2.2⟩ : regAt ξ q) • (((discr F).natAbs : ℕ) : Ω) • e = e` using `by show (((discr F).natAbs : ℕ) : Ω)⁻¹ • (((discr F).natAbs : ℕ) : Ω) • e = e`. Conclude with `inv_smul_smul₀ hu.1 e`. Rewrite `h2` using `[h3]`. Conclude with `h2`. Introduce `e he`.
-
-Use `Submodule.subset_span ⟨M.mem_eigSp_of_mem_htDual L n ρ σ he, fun d _ => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ (⟨σ d, hσ d⟩ : regAt ξ q) he`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem htW_eq_htDual {G : Over X} [GrpObj G] {Li : Type} [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li)
     (L : Semi.LB G.left) (n : ℕ) {F : Type} [Field F] [NumberField F] (ρ : 𝓞 F →+* Module.End Ω Li)
@@ -82,11 +80,11 @@ theorem htW_eq_htDual {G : Over X} [GrpObj G] {Li : Type} [AddCommGroup Li] [Mod
     exact Submodule.smul_mem _ (⟨σ d, hσ d⟩ : regAt ξ q) he
 
 /- English proof (translation)
-Unfold `HT.IsCp at hκ hw`. Rewrite `hκ`, `hw` using `[if_neg h2]`. Take `⟨z, hz, rfl⟩` from `hκ`. Take `⟨z', hz', rfl⟩` from `hw`. Use `haveI : NeZero p := ⟨hp.ne_zero⟩`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, -, hj⟩` from `hz'.eq_pow_of_pow_eq_one hz.pow_eq_one`. Take `⟨k, -, hk⟩` from `hz.eq_pow_of_pow_eq_one hz'.pow_eq_one`. Establish `h1 : z' ∈ R` using `by simpa using R.add_mem hR R.one_mem`. Establish `h3 : z ∈ R` using `hj ▸ R.pow_mem h1 j`. Use `⟨∑ i ∈ Finset.range k, z ^ i, R.sum_mem fun i _ => R.pow_mem h3 i, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[geom_sum_mul, hk]`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_of_isCp {p : ℕ} (hp : p.Prime) (h2 : p ≠ 2) {κ w : Ω} (hκ : HT.IsCp p κ) (hw : HT.IsCp p w)
     (R : Subring Ω) (hR : w ∈ R) : ∃ u ∈ R, w = u * κ := by
@@ -103,13 +101,13 @@ theorem exists_mul_of_isCp {p : ℕ} (hp : p.Prime) (h2 : p ≠ 2) {κ w : Ω} (
   rw [geom_sum_mul, hk]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ J y 𝔐 p hp _ h2 hd κ w hκ hw hS q hq hwq t`. Use `haveI : CharZero Ω := ⟨fun a b h => by`. Establish `h' : 𝔐.cst (a : c.F) = 𝔐.cst (b : c.F)` using `by rw [map_natCast, map_natCast, h]`. Conclude with `Nat.cast_injective (𝔐.cst.injective h')⟩`. Establish `hN : Flat.NormalCpt 𝔐.ξ` using `GlobalTheory.CompanionTheory.Ar.XR.normalCpt_of_isCptGen 𝔐.tie.gen 𝔐.normal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hu : unitAt 𝔐.ξ q (((discr E).natAbs : ℕ) : Ω)` using `unitAt_natAbs_discr fun r hr hrd => by`. Assume the negation of the conclusion as `hn`. Establish `: r = p` using `GlobalTheory.CompanionTheory.Ar.inFibre_unique hp.out hr hq hn`. Conclude with `hd (this ▸ hrd)`. Establish `hHT : 𝔐.HT p t q = 𝔐.M.htDual 𝔐.t.PP.L (p ^ 𝔐.R p) 𝔐.ρ (𝔐.emb t) q`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `t with`. Consider the case `inl τ => exact htW_eq_htDual 𝔐.M _ _ 𝔐.ρ _ q (integers_regular hN _ q) hu`. Consider the case `inr τ => rfl`. Take `⟨-, -, -, hs⟩` from `hS q hq`. Take `⟨h1, h3⟩` from `hs t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, huR, rfl⟩` from `exists_mul_of_isCp hp.out h2 hκ hw (regAt 𝔐.ξ q) hwq`. Rewrite using `[hHT]`. Use `⟨h1, fun e he => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ (⟨u, huR⟩ : regAt 𝔐.ξ q) (h3 e he)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sandwich_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (p : ℕ) [Fact p.Prime], p ∈ S → p ≠ 2 → ¬ (p : ℤ) ∣ NumberField.discr E → ∀ κ w : Ω, HT.IsCp p κ → HT.IsCp p w → HT.Sandwich 𝔐 p κ → ∀ q : Cpt 𝔐.ξ, InFibre 𝔐.ξ p q → w ∈ regAt 𝔐.ξ q → ∀ t : CMType H ⊕ CMType H, 𝔐.dR t q ≤ 𝔐.HT p t q ∧ ∀ e ∈ 𝔐.HT p t q, w • e ∈ 𝔐.dR t q := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ J y 𝔐 p hp _ h2 hd κ w hκ hw hS q hq hwq t

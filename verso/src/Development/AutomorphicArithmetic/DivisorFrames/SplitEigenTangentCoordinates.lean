@@ -12,9 +12,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(hb w (Guard.comb_tan he hw)).unique hw (Chart.comb_comb he ha h)`. Introduce and unpack `rfl`. Take `⟨w', -, hw'⟩` from `Guard.exists_comb (fun l => Guard.comb_tan he (ha l)) c`.
-
-Conclude with `Guard.comb_unique he (Chart.comb_comb he ha hw') hw ▸ hw'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem tangent_combination_coordinates_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} {t : SAB H X} {R : Type} [CommRing R] {x : Sp R ⟶ X} {g m : ℕ}
@@ -31,9 +29,9 @@ private theorem tangent_combination_coordinates_iff {E : Type} [Field E] [Number
     exact Guard.comb_unique he (Chart.comb_comb he ha hw') hw ▸ hw'
 
 /- English proof (translation)
-Establish `h1 : ∀ c : Fin g → T, ∑ l, c l • B l = B.vecMul c` using `fun c => by`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply]`. Simplify using `only [h1]`. Use `⟨B⁻¹.vecMul cf, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `show cf = _`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hB, Matrix.vecMul_one]`. Introduce and unpack `c rfl`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hB, Matrix.vecMul_one]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem existsUnique_basis_coordinates {T : Type} [CommRing T] {g : ℕ} (B : Matrix (Fin g) (Fin g) T) (hB : IsUnit B.det)
     (cf : Fin g → T) : ∃! c : Fin g → T, cf = ∑ l, c l • B l := by
@@ -48,9 +46,9 @@ private theorem existsUnique_basis_coordinates {T : Type} [CommRing T] {g : ℕ}
     rw [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hB, Matrix.vecMul_one]
 
 /- English proof (translation)
-Apply `Submodule.eq_of_le_of_finrank_le` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[hT i]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finrank_span_eq_card hv]`. Conclude with `finrank_range_le_card A₀`.
+A detailed English derivation is pending.
 -/
 private theorem span_eq_of_triangular_change {K : Type} [Field K] {g n : ℕ} (v A₀ : Fin n → Fin g → K) (hv : LinearIndependent K v)
     (T : Fin n → Fin n → K) (hT : ∀ i, v i = ∑ l, T i l • A₀ l) :
@@ -64,29 +62,27 @@ private theorem span_eq_of_triangular_change {K : Type} [Field K] {g n : ℕ} (v
     exact finrank_range_le_card A₀
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t A _ s S _ ε τ R K _ _ ι hι x₀ κ hκ hsp hun g e he n u₀ hu₀ hu₀s A₀ hA₀ v T hT ⟨s₀, hs₀⟩`. Establish `: Nontrivial R` using `ι.domain_nontrivial`. Take `⟨e', B, hB, hBv⟩` from `UpperTheory.extend_to_invertible_matrix R n g v s₀ hs₀`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.tangent_basis_integer_action E H X t R x₀ g e he`. Establish `hb : ∀ {T : Type} [CommRing T] (ψ : R →+* T) (i : Fin g), IsTanAtG t (spMap ψ ≫ x₀) (spMap (dualMap ψ) ≫ e i)` using `fun ψ i => GlobalTheory.LieMet.isTan_map ψ rfl (he.1 i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hBm : ∀ {T : Type} [CommRing T] (ψ : R →+* T), IsUnit (B.map ψ).det` using `fun ψ => by`. Use `hB.map ψ` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Use `choose u hut hu using fun i => Guard.exists_comb he.1 (B i)`. Establish `hum : ∀ {T : Type} [CommRing T] (ψ : R →+* T) (i : Fin g), IsCombAtG t (spMap ψ ≫ x₀) (fun i => spMap (dualMap ψ) ≫ e i) (fun j => ψ (B i j)) (spMap (dualMap ψ) ≫ u i)` using `fun ψ i => GlobalTheory.LatDRFree.comb_map t ψ (hu i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heig : ∀ {T : Type} [CommRing T] (ψ : R →+* T) (cf : Fin g → T) w, IsCombAtG t (spMap ψ ≫ x₀) (fun i => spMap (dualMap ψ) ≫ e i) cf w → ∀ (c : 𝓞 E) (a : T), (w ≫ (t.act.act c).left = spMap (epsMul a) ≫ w ↔ ((ρ c).map ψ).mulVec cf = a • cf)`. Introduce `T _ ψ cf w hw c a`. Establish `h1` using `hρ T ψ c cf w hw`. Establish `h2` using `Guard.comb_smul (hb ψ) hw a`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hE`. Rewrite `h2` using `[← hE]`. Conclude with `(he.2 T ψ _ (Guard.comb_tan (hb ψ) h1)).unique h1 h2`. Introduce `h`. Rewrite `h1` using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Guard.comb_unique (hb ψ) h1 h2`. Establish `hli : LinearIndependent K fun m j => ι (v m j)`. Establish `h1 : LinearIndependent K (B.map ι).row` using `Matrix.linearIndependent_rows_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 (hBm ι))`. Establish `h2` using `h1.comp e' e'.injective`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `m j`. Simplify using `[← hBv]`. Establish `hK : ∀ cf : Fin g → K, (∀ c, ((ρ c).map ι).mulVec cf = ι (κ (ε τ c)) • cf) ↔ cf ∈ Submodule.span K (Set.range fun m j => ι (v m j))`. Introduce `cf`. Rewrite using `[span_eq_of_triangular_change _ A₀ hli T hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨w, hwt, hw⟩` from `Guard.exists_comb (hb ι) cf`. Take `⟨c, hc⟩` from `hu₀s w hwt fun c => (heig ι cf w hw c _).2 (h c)`. Rewrite using `[(tangent_combination_coordinates_iff (hb ι) (he.2 K ι) hA₀ hw c).1 hc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`. Introduce `h c`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 h`. Rewrite using `[Matrix.mulVec_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mulVec_smul, (heig ι _ _ (hA₀ l) c _).1 (hu₀ l c), smul_comm]`. Establish `main` using `UpperTheory.split_action_coordinate_span (𝓞 E) R K S ι hι g n ρ (fun σ => κ.comp (ε σ)) τ hsp hun v e' B hB hBv hK`. Use `⟨fun m => u (e' m), fun m => hBv m ▸ hu (e' m), ⟨g, e', u, fun _ => rfl, hut, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `T _ φ w hw`. Take `⟨cf, hcf, -⟩` from `he.2 T φ w hw`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [tangent_combination_coordinates_iff (hb φ) (he.2 T φ) (hum φ) hcf]`. Conclude with `existsUnique_basis_coordinates (B.map φ) (hBm φ) cf`. Introduce `R' _ α ψ hψ`. Choose the witnesses or unpack the hypotheses as in `rfl : ψ = α.comp κ := by`. Apply `GlobalTheory.ShFam.EigLoc.spMap_inj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hψ, Category.assoc, hκ]`. Conclude with `(Spec.map_comp _ _).symm`. Take `⟨m1, m2⟩` from `main R' α`. Establish `hwm : ∀ m, IsCombAtG t (spMap α ≫ x₀) (fun i => spMap (dualMap α) ≫ e i) (fun j => α (v m j)) (spMap (dualMap α) ≫ u (e' m))` using `fun m => hBv m ▸ hum α (e' m)`. Use `⟨fun m c => (heig α _ _ (hwm m) c _).2 (m1 m c), fun w' hw' hE => ?_⟩` and prove the remaining obligations.
-
-Take `⟨cf, hcf, -⟩` from `he.2 R' α w' hw'`. Simplify using `only [tangent_combination_coordinates_iff (hb α) (he.2 R' α) hwm hcf]`. Conclude with `m2 cf fun c => (heig α cf w' hcf c _).1 (hE c)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.split_eigen_tangent_coordinates :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (A : Type) [CommRing A] (s : X ⟶ Sp A) (S : Type) [Fintype S] (ε : S → (𝓞 E →+* A)) (τ : S) (R K : Type) [CommRing R] [Field K] (ι : R →+* K), Function.Injective ι → ∀ (x₀ : Sp R ⟶ X) (κ : A →+* R), x₀ ≫ s = spMap κ → GlobalTheory.VB.IsSplitBy (fun σ => (ι.comp κ).comp (ε σ)) → (∀ σ, σ ≠ τ → ∃ c, IsUnit (κ (ε τ c) - κ (ε σ c))) → ∀ (g : ℕ) (e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)), IsTanBasis t x₀ e → ∀ (n : ℕ) (u₀ : Fin n → (Sp (DualNumber K) ⟶ t.G.left)), (∀ (m : Fin n) (c : 𝓞 E), u₀ m ≫ (t.act.act c).left = spMap (epsMul (ι (κ (ε τ c)))) ≫ u₀ m) → (∀ w, IsTanAtG t (spMap ι ≫ x₀) w → (∀ c : 𝓞 E, w ≫ (t.act.act c).left = spMap (epsMul (ι (κ (ε τ c)))) ≫ w) → ∃ cf : Fin n → K, IsCombAtG t (spMap ι ≫ x₀) u₀ cf w) → ∀ (A₀ : Fin n → Fin g → K), (∀ l, IsCombAtG t (spMap ι ≫ x₀) (fun i => spMap (dualMap ι) ≫ e i) (A₀ l) (u₀ l)) → ∀ (v : Fin n → Fin g → R) (T : Fin n → Fin n → K), (∀ i, (fun j => ι (v i j)) = ∑ l, T i l • A₀ l) → (∃ s₀, IsUnit (minor v le_rfl s₀)) → ∃ w : Fin n → (Sp (DualNumber R) ⟶ t.G.left), (∀ m, IsCombAtG t x₀ e (v m) (w m)) ∧ GlobalTheory.TriFlag.IsLocFr t s (ε τ) x₀ w := by

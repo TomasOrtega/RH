@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIn
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheory.BigOn
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HodgeMultNum.hodgeMult_le_TO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHodgeLineMultipleLeFamilyThreshold.lean&line=43#L43)
 -/

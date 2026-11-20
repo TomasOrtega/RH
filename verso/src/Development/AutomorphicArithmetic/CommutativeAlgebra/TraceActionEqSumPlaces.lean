@@ -22,9 +22,9 @@ private def psiE {p : ℕ} [Fact p.Prime] (G : HTGroup p) (σ : G.F →+* ℂ) :
   else ((starRingEnd ℂ).mapMatrix).comp (G.psi (InfinitePlace.mk σ))
 
 /- English proof (translation)
-Unfold `psiE`. Use `split_ifs with h`. Rewrite using `[G.psi_F, h]`. Establish `h2 : (InfinitePlace.mk σ).embedding = ComplexEmbedding.conjugate σ` using `(InfinitePlace.embedding_mk_eq σ).resolve_left h`. Rewrite using `[RingHom.comp_apply, G.psi_F, h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.scalar_apply, Matrix.diagonal_apply, hij, ComplexEmbedding.conjugate_coe_eq]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem psiE_F {p : ℕ} [Fact p.Prime] (G : HTGroup p) (σ : G.F →+* ℂ) (x : G.F) :
     psiE G σ (algebraMap G.F G.C x) = Matrix.scalar (Fin G.n) (σ x) := by
@@ -38,17 +38,17 @@ private theorem psiE_F {p : ℕ} [Fact p.Prime] (G : HTGroup p) (σ : G.F →+* 
     by_cases hij : i = j <;> simp [Matrix.scalar_apply, Matrix.diagonal_apply, hij, ComplexEmbedding.conjugate_coe_eq]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun σ : G.F →+* ℂ => InfinitePlace.mk σ)]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hne : ComplexEmbedding.conjugate v.embedding ≠ v.embedding` using `fun h => (InfinitePlace.isComplex_iff.1 (IsTotallyComplex.isComplex v)) h`. Establish `hf : (Finset.univ.filter fun σ : G.F →+* ℂ => InfinitePlace.mk σ = v) = {v.embedding, ComplexEmbedding.conjugate v.embedding}`. Use extensionality with `σ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Break down `InfinitePlace.embedding_mk_eq σ with h | h` into its components or cases. Conclude with `Or.inl h.symm`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `Or.inr ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `(star_star σ).symm`. Introduce and unpack `(rfl | rfl)`. Conclude with `InfinitePlace.mk_embedding v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`. Rewrite using `[hf, Finset.sum_pair hne.symm]`. Establish `h1 : psiE G v.embedding = G.psi v`. Unfold `psiE`. Rewrite using `[InfinitePlace.mk_embedding, if_pos rfl]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2 : psiE G (ComplexEmbedding.conjugate v.embedding) = ((starRingEnd ℂ).mapMatrix).comp (G.psi v)`. Unfold `psiE`. Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding, if_neg hne.symm]`. Rewrite using `[h1, h2, RingHom.comp_apply]`. Establish `h3 : Matrix.trace (((starRingEnd ℂ).mapMatrix) (G.psi v c)) = (starRingEnd ℂ) (Matrix.trace (G.psi v c))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.trace, map_sum]`. Rewrite using `[h3, Complex.add_conj]`.
+A detailed English derivation is pending.
 -/
 private theorem sum_psiE {p : ℕ} [Fact p.Prime] (G : HTGroup p) (c : G.C) :
     ∑ σ : G.F →+* ℂ, Matrix.trace (psiE G σ c) =
@@ -84,15 +84,13 @@ private theorem sum_psiE {p : ℕ} [Fact p.Prime] (G : HTGroup p) (c : G.C) :
   rw [h3, Complex.add_conj]
 
 /- English proof (translation)
-Establish `h3 : Module.finrank ℚ G.F = Module.finrank ℚ D.F` using `(AlgEquiv.ofRingEquiv (f := L.e) (fun r => by simp)).toLinearEquiv.finrank_eq.symm`. Establish `h4 : Module.finrank ℚ (VQ D) = D.m * G.n * Module.finrank ℚ G.F` using `by haveI := D.freeLa`. Rewrite using `[h3, L.n_eq, ← D.rankLa]`. Conclude with `Module.finrank_baseChange`. Use `haveI : FiniteDimensional ℚ (VQ D) := by haveI := D.finLa infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hq` using `GlobalTheory.QTrace.q_trace (F := G.F) (A := G.C) (V := VQ D) G.n G.rankC L.rep.toRingHom (psiE G) (psiE_F G) c`. Rewrite `hq` using `[sum_psiE, h4]`. Establish `hn : (G.n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 G.n_pos.ne'`. Establish `hd : ((Module.finrank ℚ G.F : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Move the coercions through the operations in `at hq`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq' : ((LinearMap.trace ℚ (VQ D) (L.rep c) : ℚ) : ℂ) = (D.m : ℂ) * ∑ v : InfinitePlace G.F, ((2 * (Matrix.trace (G.psi v c)).re : ℝ) : ℂ)`. Establish `: (G.n : ℂ) * (Module.finrank ℚ G.F : ℂ) ≠ 0` using `mul_ne_zero hn hd`. Apply `mul_left_cancel₀ this` to reduce the goal to its premises. Use `push_cast`. Take the linear combination `hq`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `: (((LinearMap.trace ℚ (VQ D) (L.rep c) : ℚ) : ℝ) : ℂ) = ((2 * (D.m : ℝ) * ∑ v : InfinitePlace G.F, (Matrix.trace (G.psi v c)).re : ℝ) : ℂ)`. Move the coercions through the operations in `at hq' ⊢`. Rewrite using `[hq', Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem trace_rep {p : ℕ} [Fact p.Prime] (D : Datum p) (G : HTGroup p) (L : Link D G) (c : G.C) :
     ((LinearMap.trace ℚ (VQ D) (L.rep c) : ℚ) : ℝ) =
@@ -126,11 +124,11 @@ private theorem trace_rep {p : ℕ} [Fact p.Prime] (D : Datum p) (G : HTGroup p)
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `p _ D G L x`. Use `haveI : FiniteDimensional ℚ (VQ D) := by haveI := D.finLa infer_instance`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, Matrix.trace_add, Complex.add_re, Finset.sum_add_distrib, hx, hy, mul_add]`. Consider the case `tmul r c`. Establish `h1 : actOn L.rep ℝ (r ⊗ₜ[ℚ] c) = r • (L.rep c).baseChange ℝ`. Rewrite using `[Algebra.smul_def]`. Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ r c`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, map_smul, LinearMap.trace_baseChange, smul_eq_mul]`. Establish `h2 : (algebraMap ℚ ℝ) (LinearMap.trace ℚ (VQ D) (L.rep c)) = ((LinearMap.trace ℚ (VQ D) (L.rep c) : ℚ) : ℝ)` using `rfl`. Rewrite using `[h2, trace_rep]`. Simplify using `only [HTGroup.psiR_tmul, Matrix.trace_smul, Complex.real_smul, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.trace_action_eq_sum_places :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (G : HTGroup p) (L : Link D G) (x : ℝ ⊗[ℚ] G.C), LinearMap.trace ℝ (ℝ ⊗[ℚ] VQ D) (actOn L.rep ℝ x) = 2 * (D.m : ℝ) * ∑ v : InfinitePlace G.F, (Matrix.trace (G.psiR v x)).re := by

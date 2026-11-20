@@ -11,7 +11,7 @@ namespace Formalism.IndefR.Eqv.G5
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact ⟨rfl⟩`. Consider the case `infer_instance`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tns_isModuleTopology : IsModuleTopology (AF F) (AF F ⊗[F] E) := by
   first
@@ -21,7 +21,7 @@ theorem tns_isModuleTopology : IsModuleTopology (AF F) (AF F ⊗[F] E) := by
 attribute [local instance] tns_isModuleTopology
 
 /- English proof (translation)
-Use `first`. Consider the case `exact IsModuleTopology.topologicalAddGroup (AF F) (AF F ⊗[F] E)`. Consider the case `exact IsModuleTopology.topologicalAddGroup (R := AF F)`. Consider the case `exact IsModuleTopology.topologicalAddGroup (AF F)`. Consider the case `infer_instance`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tns_isTopologicalAddGroup : IsTopologicalAddGroup (AF F ⊗[F] E) := by
   first
@@ -38,7 +38,7 @@ def tnsCoord : (AF F ⊗[F] E) ≃ₗ[AF F] (Fin d → AF F) :=
   (Algebra.TensorProduct.basis (AF F) b).equivFun
 
 /- English proof (translation)
-Use `first`. Consider the case `exact IsModuleTopology.continuous_of_linearMap (R := AF F) (tnsCoord b).toLinearMap`. Consider the case `exact IsModuleTopology.continuous_of_linearMap (tnsCoord b).toLinearMap`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tnsCoord_continuous : Continuous (tnsCoord b) := by
   first
@@ -46,9 +46,9 @@ theorem tnsCoord_continuous : Continuous (tnsCoord b) := by
     | exact IsModuleTopology.continuous_of_linearMap (tnsCoord b).toLinearMap
 
 /- English proof (translation)
-Use `haveI : IsTopologicalAddGroup (AF F ⊗[F] E) := tns_isTopologicalAddGroup`. Use `haveI : ContinuousSMul (AF F) (AF F ⊗[F] E) := by first`. Consider the case `exact IsModuleTopology.toContinuousSMul (AF F) (AF F ⊗[F] E)`. Consider the case `exact IsModuleTopology.toContinuousSMul (R := AF F)`. Consider the case `infer_instance`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact IsModuleTopology.continuous_of_linearMap (R := AF F) (tnsCoord b).symm.toLinearMap`. Consider the case `exact IsModuleTopology.continuous_of_linearMap (tnsCoord b).symm.toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem tnsCoord_symm_continuous : Continuous (tnsCoord b).symm := by
   haveI : IsTopologicalAddGroup (AF F ⊗[F] E) := tns_isTopologicalAddGroup
@@ -62,7 +62,7 @@ theorem tnsCoord_symm_continuous : Continuous (tnsCoord b).symm := by
     | exact IsModuleTopology.continuous_of_linearMap (tnsCoord b).symm.toLinearMap
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [tnsCoord, inclR, Algebra.TensorProduct.basis_repr_tmul]`. Consider the case `(simp only [tnsCoord, Module.Basis.equivFun_apply] erw [Algebra.TensorProduct.basis_repr_tmul] simp)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tnsCoord_inclR (e : E) (k : Fin d) :
     tnsCoord b (inclR (AF F) e) k = algebraMap F (AF F) (b.repr e k) := by
@@ -75,7 +75,7 @@ theorem tnsCoord_inclR (e : E) (k : Fin d) :
 end Basis
 
 /- English proof (translation)
-Use `first`. Consider the case `infer_instance`. Consider the case `exact Module.Finite.of_restrictScalars_finite ℚ F E`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem module_finite_F_E : Module.Finite F E := by
   first
@@ -83,29 +83,25 @@ private theorem module_finite_F_E : Module.Finite F E := by
     | exact Module.Finite.of_restrictScalars_finite ℚ F E
 
 /- English proof (translation)
-Use `⟨{x : AF F | (∀ w, ‖x.1 w‖ < 1) ∧ ∀ v, x.2 v ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers F v}, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hA : IsOpen {x : AF F | ∀ w, ‖x.1 w‖ < 1}`. Rewrite using `[Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun w => isOpen_lt ((continuous_apply w).comp continuous_fst).norm continuous_const`. Establish `hB : IsOpen {x : AF F | ∀ v, x.2 v ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers F v}`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), IsOpen (IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers F v : Set (IsDedekindDomain.HeightOneSpectrum.adicCompletion F v))`. Introduce `v`. Use `first`. Consider the case `exact Valued.isOpen_valuationSubring _`. Consider the case `exact Valued.valuationSubring_isOpen _`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Valued.isOpen_integer _)`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.isOpen_adicCompletionIntegers v`. Conclude with `(RestrictedProduct.isOpen_forall_mem hO).preimage continuous_snd`. Conclude with `hA.inter hB`. Use `⟨fun w => ?_, fun v => ?_⟩ swap` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz2 : (0 : AF F).2 v = 0` using `rfl`. Rewrite using `[hz2]`. Conclude with `zero_mem _`. Establish `hz : (0 : AF F).1 w = 0` using `rfl`. Rewrite using `[hz, norm_zero]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `zero_lt_one`. Introduce and unpack `a ⟨h1, h2⟩ classical`. Establish `hv : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), v.valuation F a ≤ 1`. Introduce `v`. Establish `h3` using `h2 v`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Use `first`. Consider the case `simpa using h3`. Consider the case `(rw [NumberField.AdeleRing.algebraMap_snd_apply, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] at h3`. Conclude with `h3)`. Establish `hw : ∀ w : NumberField.InfinitePlace F, w a < 1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `w`. Establish `h3` using `h1 w`. Use `first`. Consider the case `simpa using h3`. Consider the case `(rw [NumberField.AdeleRing.algebraMap_fst_apply, NumberField.InfinitePlace.Completion.norm_coe] at h3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `h3)`. Take `⟨x, rfl⟩ : a ∈ (algebraMap (𝓞 F) F).range` from `by first`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one F a hv`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one a hv`. Take `⟨w0⟩` from `(inferInstance : Nonempty (NumberField.InfinitePlace F))`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hnn : ∀ w : NumberField.InfinitePlace F, 0 ≤ w (algebraMap (𝓞 F) F x)`. Introduce `w`. Use `first`. Consider the case `positivity`. Consider the case `exact w.nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Consider the case `exact apply_nonneg w _`. Establish `hle : ∏ w ∈ Finset.univ.erase w0, w (algebraMap (𝓞 F) F x) ^ w.mult ≤ 1` using `Finset.prod_le_one (fun w _ => pow_nonneg (hnn w) _) fun w _ => pow_le_one₀ (hnn w) (hw w).le`. Establish `hm : w0.mult ≠ 0` using `by first`. Consider the case `exact NumberField.InfinitePlace.mult_ne_zero`. Consider the case `exact (NumberField.InfinitePlace.mult_pos).ne'`.
-
-Establish `hlt : w0 (algebraMap (𝓞 F) F x) ^ w0.mult < 1` using `pow_lt_one₀ (hnn w0) (hw w0) hm`. Establish `hprod : ∏ w : NumberField.InfinitePlace F, w (algebraMap (𝓞 F) F x) ^ w.mult < 1`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w0)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hprod` using `[NumberField.InfinitePlace.prod_eq_abs_norm]`.
-
-Establish `hq : Algebra.norm ℚ (algebraMap (𝓞 F) F x) = (Algebra.norm ℤ x : ℚ)` using `(Algebra.coe_norm_int x).symm`. Rewrite `hprod` using `[hq]`. Establish `hz : |Algebra.norm ℤ x| < 1` using `by exact_mod_cast hprod`. Establish `hx0 : x = 0` using `Algebra.norm_eq_zero_iff.mp (Int.abs_lt_one_iff.mp hz)`. Rewrite using `[hx0, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_isOpen_nhd_zero_algebraMap_discrete : ∃ V : Set (AF F), IsOpen V ∧ (0 : AF F) ∈ V ∧
     ∀ a : F, algebraMap F (AF F) a ∈ V → a = 0 := by
@@ -189,13 +185,11 @@ private theorem exists_isOpen_nhd_zero_algebraMap_discrete : ∃ V : Set (AF F),
     rw [hx0, map_zero]
 
 /- English proof (translation)
-Take `⟨V0, hV0, h0, hV⟩` from `exists_isOpen_nhd_zero_algebraMap_discrete (F := F)`. Use `haveI := module_finite_F_E (F := F) (E := E)`. Establish `b` using `Module.finBasis F E`. Use `⟨(tnsCoord b) ⁻¹' Set.univ.pi (fun _ => V0), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(isOpen_set_pi Set.finite_univ fun _ _ => hV0).preimage (tnsCoord_continuous b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.mem_preimage, map_zero, Set.mem_univ_pi]`. Introduce `_`. Conclude with `h0`. Introduce `e he`. Rewrite `he` using `[Set.mem_preimage, Set.mem_univ_pi]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← b.repr.map_eq_zero_iff]`. Use extensionality with `k`. Rewrite using `[Finsupp.coe_zero, Pi.zero_apply]`. Apply `hV` to reduce the goal to its premises. Rewrite using `[← tnsCoord_inclR b e k]`.
-
-Conclude with `he k`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tns_disc : ∃ V : Set (AF F ⊗[F] E), IsOpen V ∧ (0 : AF F ⊗[F] E) ∈ V ∧
     ∀ e : E, inclR (AF F) e ∈ V → e = 0 := by
@@ -217,11 +211,11 @@ theorem tns_disc : ∃ V : Set (AF F ⊗[F] E), IsOpen V ∧ (0 : AF F ⊗[F] E)
     exact he k
 
 /- English proof (translation)
-Take `⟨K0, hK0, hx⟩ : ∃ K : Set (AF F), IsCompact K ∧ ∀ x, ∃ a : F, x - algebraMap F (AF F) a ∈ K` from `adl_cocompact`. Use `haveI := module_finite_F_E (F := F) (E := E)`. Establish `b` using `Module.finBasis F E`. Use `⟨(tnsCoord b).symm '' Set.univ.pi (fun _ => K0), (isCompact_univ_pi fun _ => hK0).image (tnsCoord_symm_continuous b), fun y => ?_⟩` and prove the remaining obligations. Use `choose a ha using fun k => hx (tnsCoord b y k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b.equivFun.symm a, tnsCoord b (y - inclR (AF F) (b.equivFun.symm a)), ?_, (tnsCoord b).symm_apply_apply _⟩` and prove the remaining obligations. Rewrite using `[Set.mem_univ_pi]`. Introduce `k`. Establish `hr : b.repr (b.equivFun.symm a) k = a k`. Establish `h` using `congrFun (b.equivFun.apply_symm_apply a) k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `(rwa [Module.Basis.equivFun_apply] at h)`. Consider the case `exact h`. Rewrite using `[map_sub, Pi.sub_apply, tnsCoord_inclR, hr]`. Conclude with `ha k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tns_cocompact : ∃ K : Set (AF F ⊗[F] E), IsCompact K ∧
     ∀ y, ∃ e : E, y - inclR (AF F) e ∈ K := by
@@ -245,17 +239,15 @@ theorem tns_cocompact : ∃ K : Set (AF F ⊗[F] E), IsCompact K ∧
   exact ha k
 
 /- English proof (translation)
-Take `⟨V, hV, h0, hVe⟩` from `tns_disc (F := F) (E := E)`. Use `haveI : IsTopologicalAddGroup (AF F ⊗[F] E) := tns_isTopologicalAddGroup`. Establish `key : ∀ p : Set.range (ratTup (F` using `F) (AF F) : (Fin n → Fin M → E) → _), IsOpen ({p} : Set _) := by`. Introduce and unpack `⟨_, X, rfl⟩`. Use `isOpen_induced_iff.mpr ⟨{y | ∀ a i, y a i - inclR (F := F) (AF F) (X a i) ∈ V}, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : Continuous fun y : Fin n → Fin M → AF F ⊗[F] E => y - ratTup (F` using `F) (AF F) X := continuous_id.sub continuous_const`. Establish `ho : IsOpen (Set.univ.pi fun _ : Fin n => Set.univ.pi fun _ : Fin M => V)` using `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => hV`. Use `ho.preimage hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using `[ratTup]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use extensionality with `⟨_, Y, rfl⟩`. Rewrite using `[Set.mem_preimage, Set.mem_singleton_iff, Subtype.ext_iff]`. Use `show (∀ a i, ratTup (F := F) (AF F) Y a i - inclR (F := F) (AF F) (X a i) ∈ V) ↔ ratTup (F := F) (AF F) Y = ratTup (F := F) (AF F) X`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXY : Y = X` using `funext fun a => funext fun i => sub_eq_zero.mp (hVe (Y a i - X a i) (by rw [map_sub]; exact h a i))`. Rewrite using `[hXY]`. Introduce `h a i`. Establish `h' : inclR (F` using `F) (AF F) (Y a i) = inclR (F := F) (AF F) (X a i) := congrFun (congrFun h a) i`. Use `show inclR (F := F) (AF F) (Y a i) - inclR (F := F) (AF F) (X a i) ∈ V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[h', sub_self]`. Conclude with `h0`. Use `first`. Consider the case `exact discreteTopology_iff_isOpen_singleton.mpr key`. Consider the case `exact ⟨eq_bot_of_singletons_open key⟩`.
-
-Consider the case `exact singletons_open_iff_discrete.mp key`. Consider the case `exact discreteTopology_iff_singleton_mem_nhds.mpr fun p => (key p).mem_nhds rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tup_disc (M n : ℕ) :
     DiscreteTopology (Set.range (ratTup (F := F) (AF F) : (Fin n → Fin M → E) → _)) := by

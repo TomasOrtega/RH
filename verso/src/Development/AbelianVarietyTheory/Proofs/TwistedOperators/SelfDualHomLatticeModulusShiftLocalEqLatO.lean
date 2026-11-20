@@ -15,9 +15,9 @@ namespace GlobalTheory.BigLoc
 variable {D : D7}
 
 /- English proof (translation)
-Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨α, hα, hsupp, a, ha, s, hs, t, ht, rfl⟩`. Use `AddSubgroup.subset_closure ⟨GlobalTheory.IdeleAA.gam v c * α, GlobalTheory.IdeleAA.gam_mul_int v c hc hα, GlobalTheory.IdeleAA.gam_mul_supp v c α, a, ha, s, hs, _, h t ht, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← GlobalTheory.IdeleAA.pair_scale v c α hsupp]`. Use `congr 1`. Establish `h0` using `GlobalTheory.IdeleAA.coe_ne_zero v c hc`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem latO_tgt_le {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT LT' : Set (Fin T.rank → D.host.E)}
     (v : GlobalTheory.FinPl.Pl D) (c : 𝓞 D.host.F) (hc : c ∉ v.asIdeal)
@@ -48,17 +48,15 @@ theorem coe_alg (c : 𝓞 D.host.F) :
     algebraMap (𝓞 D.host.E) D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c) = ((c : D.host.F) : D.host.E) := rfl
 
 /- English proof (translation)
-Use `set J : Ideal (𝓞 D.host.F) := ∏ v' ∈ P.S0, v'.asIdeal ^ P.depth sc v' with hJdef`. Establish `hJ : ¬ J ≤ v.asIdeal`. Introduce `h`. Take `⟨v', hv', hle⟩` from `(Ideal.IsPrime.prod_le v.isPrime).1 h`. Establish `h1 : v'.asIdeal ≤ v.asIdeal` using `Ideal.IsPrime.le_of_pow_le (hP := v.isPrime) hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: v' = v` using `HeightOneSpectrum.ext (v'.isMaximal.eq_of_le v.isPrime.ne_top h1)`. Conclude with `hv (this ▸ hv')`. Take `⟨c, hcJ, hcv⟩` from `Set.not_subset.1 hJ`. Establish `hmap : J.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) ≤ P.modul sc`. Rewrite using `[hJdef]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Ideal.mapHom (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) _ ≤ _`. Rewrite using `[map_prod]`. Use `Finset.prod_le_prod' fun v' hv' => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Use `pow_le_pow_left' ?_ _` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Ideal.map_le_iff_le_comap.2 (le_of_eq ?_)` and prove the remaining obligations. Use `congrArg HeightOneSpectrum.asIdeal (P.under_w hv')` as an intermediate fact. Conclude with `this.symm`. Establish `hmod : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c ∈ P.modul sc` using `hmap (Ideal.mem_map_of_mem _ hcJ)`. Use `⟨c, hcv, hmod, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : D.host.conj • algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c`. Apply `FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Rewrite using `[Formalism.L2.Pj.algebraMap_conj_smul, coe_alg]`. Conclude with `GlobalTheory.IdeleAA.conj_F c`. Unfold `Places.modulBar`.
-
-Rewrite using `[← hfix]`. Conclude with `Ideal.smul_mem_pointwise_smul _ _ _ hmod`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_c {T : Type} {L : LevCh D T} (P : Places L) (sc : Consts) {v : GlobalTheory.FinPl.Pl D} (hv : v ∉ P.S0) :
     ∃ c : 𝓞 D.host.F, c ∉ v.asIdeal ∧ algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c ∈ P.modul sc ∧
@@ -99,7 +97,7 @@ namespace GlobalTheory.BigLoc
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Use `Submodule.subset_span ⟨_, ?_, y, hy, rfl⟩` and prove the remaining obligations. Unfold `shiftId`. Rewrite using `[← mul_one ((c : D.host.F) : D.host.E)]`. Conclude with `FractionalIdeal.mul_mem_mul ((FractionalIdeal.mem_coeIdeal (𝓞 D.host.E)⁰).2 ⟨_, hc, coe_alg c⟩) (FractionalIdeal.one_mem_inv_coe_ideal hne)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_idLat (G : GridData L sc) {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {c : 𝓞 D.host.F}
     (hc : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c ∈ G.pl.modul sc) (hne : G.pl.modulBar sc ≠ ⊥)
@@ -111,13 +109,11 @@ theorem smul_mem_idLat (G : GridData L sc) {n : ℕ} {Λ : Submodule (𝓞 D.hos
     (FractionalIdeal.one_mem_inv_coe_ideal hne)
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun z _ => ((c : D.host.F) : D.host.E) • z ∈ Λ) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, y, hy, rfl⟩`. Establish `hm : ((c : D.host.F) : D.host.E) * s ∈ ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Use `FractionalIdeal.mul_mem_mul ((FractionalIdeal.mem_coeIdeal (𝓞 D.host.E)⁰).2 ⟨_, hcb, coe_alg c⟩) hs` as an intermediate fact. Establish `h0 : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]` and apply the resulting hypothesis. Rewrite `this` using `[shiftId, mul_left_comm, mul_inv_cancel₀ h0, mul_one]`. Then use the resulting hypothesis. Take `⟨o, -, ho⟩` from `(FractionalIdeal.mem_coeIdeal (𝓞 D.host.E)⁰).1 hm`. Rewrite using `[smul_smul, ← ho, algebraMap_smul]`. Conclude with `Λ.smul_mem o hy`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[smul_add]`. Conclude with `add_mem hx hy`. Introduce `a x _ hx`.
-
-Rewrite using `[smul_comm]`. Conclude with `Λ.smul_mem a hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_idLat_mem (G : GridData L sc) {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {c : 𝓞 D.host.F}
     (hcb : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c ∈ G.pl.modulBar sc) (hne : G.pl.modulBar sc ≠ ⊥)
@@ -139,9 +135,9 @@ theorem smul_idLat_mem (G : GridData L sc) {n : ℕ} {Λ : Submodule (𝓞 D.hos
 end GlobalTheory.BigLoc
 
 /- English proof (translation)
-Introduce `D _ T L μ0 _ sc G W M _ i _ v hv u hu`. Take `⟨c, hcv, hc, hcb⟩` from `GlobalTheory.BigLoc.exists_c G.pl sc hv`. Establish `hne : G.pl.modulBar sc ≠ ⊥` using `fun h => by`. Rewrite `hcb` using `[h, Ideal.mem_bot]`. Apply `GlobalTheory.IdeleAA.coe_ne_zero v c hcv` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← GlobalTheory.BigLoc.coe_alg, hcb, map_zero]`. Unfold `latBig`. Rewrite using `[GlobalTheory.AscFinWit.mem_latO_at hu]`. Conclude with `⟨fun h => GlobalTheory.BigLoc.latO_tgt_le v c hcv (fun t ht => GlobalTheory.BigLoc.smul_idLat_mem G hcb hne ht) h, fun h => GlobalTheory.BigLoc.latO_tgt_le v c hcv (fun t ht => GlobalTheory.BigLoc.smul_mem_idLat G hc hne ht) h⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.BigLoc.latBig_at : All fun {D} _ _ _ {G} _ _ => ∀ i, i < D.R.m → ∀ v ∉ G.pl.S0,
     ∀ u : WO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)), MxAt (· = v) u →

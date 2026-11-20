@@ -21,7 +21,7 @@ def integerTilt (N : IntermediateField K♭ C♭) : Subring 𝒪C♭ :=
   N.toSubfield.toSubring.comap (algebraMap 𝒪C♭ C♭)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_integerTilt (N : IntermediateField K♭ C♭) {a : 𝒪C♭} : a ∈ integerTilt K C p N ↔ algebraMap 𝒪C♭ C♭ a ∈ N :=
   Iff.rfl
@@ -37,7 +37,7 @@ def untiltField (N : IntermediateField K♭ C♭) : IntermediateField K C :=
   IntermediateField.adjoin K ((↑) '' (untiltInteger K C p N : Set (normInteger C)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨WittVector.teichmuller p ⟨a, ha⟩, by rw [RingHom.comp_apply, WittVector.map_teichmuller, WittVector.fontaineTheta_teichmuller] rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem untilt_mem_untiltInteger {N : IntermediateField K♭ C♭} {a : 𝒪C♭} (ha : a ∈ integerTilt K C p N) :
     PreTilt.untilt a ∈ untiltInteger K C p N :=
@@ -46,18 +46,16 @@ theorem untilt_mem_untiltInteger {N : IntermediateField K♭ C♭} {a : 𝒪C♭
     rfl⟩
 
 /- English proof (translation)
-The claim follows from `IntermediateField.subset_adjoin _ _ ⟨z, hz, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem coe_mem_untiltField {N : IntermediateField K♭ C♭} {z : normInteger C} (hz : z ∈ untiltInteger K C p N) :
     (z : C) ∈ untiltField K C p N :=
   IntermediateField.subset_adjoin _ _ ⟨z, hz, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ y : C♭, y ∈ N → ‖y‖ ≤ 1 → tiltSharp C p y ∈ untiltField K C p N`. Introduce `y hy hy1`. Take `⟨a, rfl⟩` from `norm_le_one_iff_exists_algebraMap.1 hy1`. Rewrite using `[tiltSharp_algebraMap]`. Conclude with `coe_mem_untiltField (untilt_mem_untiltInteger ((mem_integerTilt N).2 hy))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_or_gt ‖z‖ 1 with h | h` into its components or cases. Conclude with `key z hz h`. Establish `h0 : z ≠ 0` using `by rintro rfl; rw [norm_zero] at h; linarith`. Use `key z⁻¹ (inv_mem hz) (by rw [norm_inv]; exact inv_le_one_of_one_le₀ h.le)` as an intermediate fact. Rewrite `this` using `[map_inv₀]`.
-
-Simplify using `using inv_mem this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tiltSharp_mem_untiltField {N : IntermediateField K♭ C♭} {z : C♭} (hz : z ∈ N) : tiltSharp C p z ∈ untiltField K C p N := by
   have key : ∀ y : C♭, y ∈ N → ‖y‖ ≤ 1 → tiltSharp C p y ∈ untiltField K C p N := by
@@ -75,11 +73,11 @@ theorem tiltSharp_mem_untiltField {N : IntermediateField K♭ C♭} {z : C♭} (
 section Perfect
 
 /- English proof (translation)
-Establish `: PerfectField K♭` using `PerfectRing.toPerfectField K♭ p`. Establish `: PerfectField N` using `Algebra.IsAlgebraic.perfectField (K := K♭)`. Establish `: CharP N p` using `charP_of_injective_algebraMap (algebraMap K♭ N).injective p`. Establish `: PerfectRing N p` using `PerfectField.toPerfectRing p`. Use `set y : N := (frobeniusEquiv N p).symm ⟨algebraMap 𝒪C♭ C♭ a, ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : (y : C♭) ^ p = algebraMap 𝒪C♭ C♭ a`. Use `frobeniusEquiv_symm_pow_p (R := N) p ⟨algebraMap 𝒪C♭ C♭ a, ha⟩` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Establish `ha' : (algebraMap 𝒪C♭ C♭ ((frobeniusEquiv 𝒪C♭ p).symm a)) ^ p = algebraMap 𝒪C♭ C♭ a`. Rewrite using `[← map_pow, frobeniusEquiv_symm_pow_p]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: algebraMap 𝒪C♭ C♭ ((frobeniusEquiv 𝒪C♭ p).symm a) = y` using `frobenius_inj C♭ p (by simp only [frobenius_def]; rw [ha', hy])`. Rewrite using `[mem_integerTilt, this]`. Conclude with `y.2`.
+A detailed English derivation is pending.
 -/
 theorem frobeniusEquiv_symm_mem_integerTilt {N : IntermediateField K♭ C♭} [FiniteDimensional K♭ N]
     {a : 𝒪C♭} (ha : a ∈ integerTilt K C p N) :
@@ -108,11 +106,11 @@ instance perfectRing_integerTilt (N : IntermediateField K♭ C♭) [FiniteDimens
         exact frobeniusEquiv_symm_pow_p (R := 𝒪C♭) p _)⟩
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hz`. Use `set a0 : integerTilt K C p N := u.coeff 0`. Establish `hmem : u - WittVector.teichmuller p a0 ∈ Ideal.span {(p : WittVector p (integerTilt K C p N))}`. Rewrite using `[WittVector.mem_span_p_iff_coeff_zero_eq_zero]`. Establish `h` using `map_sub (WittVector.constantCoeff (p := p) (R := integerTilt K C p N)) u (WittVector.teichmuller p a0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero] at h`. Rewrite using `[h, sub_self]`. Take `⟨v, hv⟩` from `Ideal.mem_span_singleton'.1 hmem`. Use `⟨a0, a0.2, _, ⟨v, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hu : u = WittVector.teichmuller p a0 + v * p` using `by rw [hv]; ring`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [hu]`. Rewrite using `[RingHom.comp_apply, map_add, map_mul, map_natCast, map_add, map_mul, map_natCast, WittVector.map_teichmuller, WittVector.fontaineTheta_teichmuller, RingHom.comp_apply, mul_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_eq_untilt_add_p_mul {N : IntermediateField K♭ C♭} [FiniteDimensional K♭ N]
     {z : normInteger C} (hz : z ∈ untiltInteger K C p N) :
@@ -135,13 +133,13 @@ theorem exists_eq_untilt_add_p_mul {N : IntermediateField K♭ C♭} [FiniteDime
   rfl
 
 /- English proof (translation)
-Use `set x : WittVector p (integerTilt K C p N) := WittVector.teichmuller p (∑ i ∈ s, a i) - ∑ i ∈ s, WittVector.teichmuller p (a i)`. Establish `hmem : x ∈ Ideal.span {(p : WittVector p (integerTilt K C p N))}`. Establish `hs : (∑ i ∈ s, WittVector.teichmuller p (a i)).coeff 0 = ∑ i ∈ s, a i`. Use `map_sum (WittVector.constantCoeff (p := p) (R := integerTilt K C p N)) (fun i => WittVector.teichmuller p (a i)) s` as an intermediate fact. Simplify `this` using `only [WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WittVector.mem_span_p_iff_coeff_zero_eq_zero]`. Use `show (WittVector.teichmuller p (∑ i ∈ s, a i) - ∑ i ∈ s, WittVector.teichmuller p (a i)).coeff 0 = 0`. Establish `h` using `map_sub (WittVector.constantCoeff (p := p) (R := integerTilt K C p N)) (WittVector.teichmuller p (∑ i ∈ s, a i)) (∑ i ∈ s, WittVector.teichmuller p (a i))`. Simplify using `only [WittVector.constantCoeff_apply] at h`. Rewrite using `[h, hs, WittVector.teichmuller_coeff_zero, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv⟩` from `Ideal.mem_span_singleton'.1 hmem`. Use `⟨_, ⟨v, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hx : WittVector.teichmuller p (∑ i ∈ s, a i) = ∑ i ∈ s, WittVector.teichmuller p (a i) + v * p` using `by rw [hv]; ring`. Use `congrArg (RingHom.comp θ (WittVector.map (integerTilt K C p N).subtype)) hx` as an intermediate fact. Simplify using `only [RingHom.comp_apply, map_add, map_sum, map_mul, map_natCast, WittVector.map_teichmuller, WittVector.fontaineTheta_teichmuller, map_sum] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `this` using `[mul_comm]`. Apply the tactic sequence `convert this using 2 <;> rfl`.
+A detailed English derivation is pending.
 -/
 theorem exists_untilt_sum_eq {N : IntermediateField K♭ C♭} [FiniteDimensional K♭ N] {ι : Type*}
     (s : Finset ι) (a : ι → integerTilt K C p N) :
@@ -174,14 +172,14 @@ theorem exists_untilt_sum_eq {N : IntermediateField K♭ C♭} [FiniteDimensiona
 end Perfect
 
 /- English proof (translation)
-Introduce `_ ha` and use `h ha`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integerTilt_mono {N N' : IntermediateField K♭ C♭} (h : N ≤ N') :
     integerTilt K C p N ≤ integerTilt K C p N' :=
   fun _ ha => h ha
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨u, rfl⟩`. Use `⟨WittVector.map (Subring.inclusion (integerTilt_mono h)) u, ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Use `congr 1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem untiltInteger_mono {N N' : IntermediateField K♭ C♭} (h : N ≤ N') :
     untiltInteger K C p N ≤ untiltInteger K C p N' := by
@@ -191,7 +189,7 @@ theorem untiltInteger_mono {N N' : IntermediateField K♭ C♭} (h : N ≤ N') :
   congr 1
 
 /- English proof (translation)
-The claim follows from `IntermediateField.adjoin.mono _ _ _ (Set.image_mono (untiltInteger_mono h))`.
+A detailed English derivation is pending.
 -/
 theorem untiltField_mono {N N' : IntermediateField K♭ C♭} (h : N ≤ N') :
     untiltField K C p N ≤ untiltField K C p N' :=

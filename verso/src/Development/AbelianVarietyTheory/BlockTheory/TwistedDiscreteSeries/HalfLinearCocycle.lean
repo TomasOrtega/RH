@@ -386,13 +386,13 @@ def PlaceModels (D : D7) : Prop :=
     InertVacuumFixed D ∧ SplitVacuumFixed D ∧ FockModel D ∧ FockPure D ∧ ThetaVecLocal D ∧ StepVecLocal D
 
 /- English proof (translation)
-Simplify using `[gAt]`.
+Simplify using the standard rewrite rules.
 -/
 example (V : HSp D) (v : FinPl D) (g : GA D V) : gAt V (.inl v) (gAt V (.inl v) g) = gAt V (.inl v) g := by
   simp [gAt]
 
 /- English proof (translation)
-Simplify using `[fockIp, MvPolynomial.support_monomial, Finsupp.prod_single_index]`.
+Simplify using the standard rewrite rules.
 -/
 example : fockIp (MvPolynomial.monomial (Finsupp.single () 2) (1 : ℂ)) (MvPolynomial.monomial (Finsupp.single () 2) 1) = 2 := by
   classical

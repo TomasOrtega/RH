@@ -23,7 +23,7 @@ theorem pure_eq_tens (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ
     pure f φ = tens (evI F) (⇑f) (finPart φ) := rfl
 
 /- English proof (translation)
-Establish `h0 : evI F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.pairA F 0 1) = 0` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : Ainf F) = 0`. Conclude with `map_zero _`. Establish `h` using `congrArg Prod.snd (congrFun (hz _ h0) i)`. Express the relevant statement in the definitionally equal form `(1 : Af F) * (z i).2 = 0 at h`. Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem snd_eq_zero_of_at (z : κ → AF F) (hz : At (evI F) z) (i : κ) : (z i).2 = 0 := by
   have h0 : evI F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.pairA F 0 1) = 0 := by
@@ -34,9 +34,9 @@ theorem snd_eq_zero_of_at (z : κ → AF F) (hz : At (evI F) z) (i : κ) : (z i)
   rwa [one_mul] at h
 
 /- English proof (translation)
-Unfold `finPart`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `h : evFin F v (z i) = 0` using `by show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (z i).2 = 0`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[snd_eq_zero_of_at z hz i, map_zero]`. Rewrite using `[Pi.add_apply, map_add, h, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finPart_add (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (x z : κ → AF F) (hz : At (evI F) z) :
     finPart φ (x + z) = finPart φ x := by
@@ -50,19 +50,15 @@ theorem finPart_add (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (x z : κ → A
   rw [Pi.add_apply, map_add, h, add_zero]
 
 /- English proof (translation)
-Establish `hfin` using `Filter.eventually_cofinite.1 hstd`. Use `set S := hfin.toFinset with hS`. Establish `hy : ∀ v, ∃ y, φ v y ≠ 0` using `fun v => by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h0 v (funext h)`. Use `choose y hy using hy`. Use `⟨fun i => ∑ v ∈ S, singleFin v (y v i), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hev : ∀ w, (fun i => evFin F w (x i)) = if w ∈ S then y w else 0`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Use `show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w (x i).2 = _`. Rewrite using `[hx i, map_sum]`. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[Finset.sum_eq_single w (fun v _ hv => evalV_singleFin_ne (Ne.symm hv) _) (fun h => absurd hw h), evalV_singleFin_self, if_pos hw]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.sum_eq_zero (fun v hv => evalV_singleFin_ne (fun h => hw (by rw [h]; exact hv)) _), if_neg hw]`. Both sides reduce to the same expression. Establish `hne : ∀ w, φ w (fun i => evFin F w (x i)) ≠ 0`. Introduce `w`. Distinguish the cases in `hw : w ∈ S`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev w, if_pos hw]`. Conclude with `hy w`. Rewrite using `[hev w, if_neg hw]`. Establish `hw' : φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hw (by rw [hS, Set.Finite.mem_toFinset]; exact h)`. Rewrite using `[hw', Set.indicator_of_mem (show (0 : κ → Fv F w) ∈ {x : κ → Fv F w | ∀ i, x i ∈ w.adicCompletionIntegers F} from fun i => zero_mem _)]`. Conclude with `one_ne_zero`. Unfold `finPart`. Rewrite using `[finprod_def]`.
-
-Use `split_ifs`. Conclude with `Finset.prod_ne_zero_iff.2 fun w _ => hne w`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finPart_ne_zero (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (h0 : ∀ v, φ v ≠ 0)
     (hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) :
@@ -104,9 +100,9 @@ theorem exists_finPart_ne_zero (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (h0 
   · exact one_ne_zero
 
 /- English proof (translation)
-Take `⟨x₀, hx₀⟩` from `exists_finPart_ne_zero φ h0 hstd`. Use `DFunLike.ext g g' fun y => ?_` and prove the remaining obligations. Set `x : κ → AF F` to `fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.pairA F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i)) (x₀ i)`. Establish `hI : (fun i => evI F (x i)) = y`. Use function extensionality and compare the values at `fun i => (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (y i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e` using `congrFun h x`. Express the relevant statement in the definitionally equal form `g (fun i => evI F (x i)) * finPart φ x = g' (fun i => evI F (x i)) * finPart φ x at e`. Rewrite `e` using `[hI]`. Conclude with `mul_right_cancel₀ (hx₀ x fun i => rfl) e`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_pure_eq (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (h0 : ∀ v, φ v ≠ 0)
     (hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)

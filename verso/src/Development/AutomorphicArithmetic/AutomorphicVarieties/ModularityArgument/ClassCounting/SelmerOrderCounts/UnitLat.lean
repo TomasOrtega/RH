@@ -23,7 +23,7 @@ private noncomputable def extS (F : Type) [Field F] [NumberField F] :
     · simp only [h, dif_neg, not_false_eq_true, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
 /- English proof (translation)
-Rewrite using `[show mult w = 2 from mult_isComplex ⟨w, IsTotallyComplex.isComplex w⟩]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private theorem mult_two {F : Type} [Field F] [IsTotallyComplex F] (w : InfinitePlace F) :
     (mult w : ℝ) = 2 := by
@@ -31,9 +31,9 @@ private theorem mult_two {F : Type} [Field F] [IsTotallyComplex F] (w : Infinite
   norm_num
 
 /- English proof (translation)
-Distinguish the cases in `h : w = w₀`. Substitute `h` using the available equality. Simplify using `only [extS, LinearMap.coe_mk, AddHom.coe_mk, dif_pos rfl, logEmbedding_component, mult_two, dite_true]`. Establish `hs` using `NumberField.Units.sum_mult_mul_log u`. Establish `e : (algebraMap (𝓞 F) F) (u : 𝓞 F) = ((u : 𝓞 F) : F)` using `rfl`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mult_two, e] at hs`. Rewrite `hs` using `[Fintype.sum_eq_add_sum_subtype_ne _ w₀]`. Rewrite `hs`, the goal using `[← Finset.mul_sum]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [extS, LinearMap.coe_mk, AddHom.coe_mk, dif_neg h, logEmbedding_component, mult_two]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -54,7 +54,7 @@ private theorem extS_log {F : Type} [Field F] [NumberField F] [IsTotallyComplex 
     ring
 
 /- English proof (translation)
-Establish `h` using `NumberField.Units.sum_mult_mul_log u`. Simplify using `only [mult_two, ← Finset.mul_sum, mul_eq_zero, two_ne_zero, false_or] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_log {F : Type} [Field F] [NumberField F] [IsTotallyComplex F] (u : (𝓞 F)ˣ) :
     ∑ w : InfinitePlace F, Real.log (w ((u : 𝓞 F) : F)) = 0 := by
@@ -63,7 +63,7 @@ private theorem sum_log {F : Type} [Field F] [NumberField F] [IsTotallyComplex F
   exact h
 
 /- English proof (translation)
-The claim follows from `|m| ≤ r := by have hN : (0 : ℝ) < Fintype.card (InfinitePlace F) := by exact_mod_cast Fintype.card_pos have hsum : ∑ w : InfinitePlace F, (Real.log (w ((u : 𝓞 F) : F)) + m) = Fintype.card (InfinitePlace F) * m := by rw [Finset.sum_add_distrib, sum_log, zero_add, Finset.sum_const, …`.
+A detailed English derivation is pending.
 -/
 private theorem abs_le_of_bound {F : Type} [Field F] [NumberField F] [IsTotallyComplex F]
     (u : (𝓞 F)ˣ) (m r : ℝ) (h : ∀ w : InfinitePlace F, |Real.log (w ((u : 𝓞 F) : F)) + m| ≤ r) :
@@ -83,11 +83,11 @@ private theorem abs_le_of_bound {F : Type} [Field F] [NumberField F] [IsTotallyC
   exact le_of_mul_le_mul_left h1 hN
 
 /- English proof (translation)
-Establish `hN : (0 : ℝ) < Fintype.card (InfinitePlace F)` using `by exact_mod_cast Fintype.card_pos`. Use `⟨fun w => 2 * (v w.1 - (∑ x, v x) / Fintype.card (InfinitePlace F)), (∑ x, v x) / Fintype.card (InfinitePlace F), ?_⟩` and prove the remaining obligations. Establish `hNc : (Fintype.card (InfinitePlace F) : ℝ) * ((∑ x, v x) / Fintype.card (InfinitePlace F)) = ∑ x, v x`. Clear the denominators using the available nonvanishing facts. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, mul_one, extS, LinearMap.coe_mk, AddHom.coe_mk]`. Use `split_ifs with h`. Substitute `h` using the available equality. Establish `h1` using `Fintype.sum_eq_add_sum_subtype_ne v w₀`. Establish `h2` using `Fintype.sum_eq_add_sum_subtype_ne (fun _ : InfinitePlace F => (∑ x, v x) / Fintype.card (InfinitePlace F)) w₀`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[← Finset.mul_sum, Finset.sum_sub_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem extS_surj {F : Type} [Field F] [NumberField F] (v : InfinitePlace F → ℝ) :
     ∃ (y : logSpace F) (c : ℝ), v = extS F y + c • (fun _ => (1 : ℝ)) := by
@@ -114,45 +114,41 @@ private theorem extS_surj {F : Type} [Field F] [NumberField F] (v : InfinitePlac
 end
 
 /- English proof (translation)
-Use `open NumberField.Units NumberField.Units.dirichletUnitTheorem NumberField.InfinitePlace in ( classical`. Introduce `F _ _ hF lam hlam`. Use `haveI := hF`. Establish `hlam' : ∀ (x : Additive (𝓞 F)ˣ) (m : ℤ), lam (x, m) = extS F (logEmbedding F x) + (m : ℝ) • (fun _ => (1 : ℝ))`. Introduce `x m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Establish `h1` using `hlam (Additive.toMul x) m w`. Rewrite `h1` using `[ofMul_toMul]`. Rewrite using `[h1, Pi.add_apply, Pi.smul_apply, smul_eq_mul, mul_one, ← extS_log (Additive.toMul x) w, ofMul_toMul]`. Establish `hcomp : ∀ (x : Additive (𝓞 F)ˣ) (m : ℤ) (w : InfinitePlace F), lam (x, m) w = Real.log (w (((Additive.toMul x : (𝓞 F)ˣ) : 𝓞 F) : F)) + m`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x m w`. Establish `h1` using `hlam (Additive.toMul x) m w`. Rewrite `h1` using `[ofMul_toMul]`. Then use the resulting hypothesis. Establish `hm0 : ∀ (x : Additive (𝓞 F)ˣ) (m : ℤ) (r : ℝ), r < 1 → (∀ w, |lam (x, m) w| ≤ r) → m = 0`. Introduce `x m r hr h`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `abs_le_of_bound (Additive.toMul x) (m : ℝ) r (fun w => by rw [← hcomp]; exact h w)`. Establish `: |m| < 1`. Establish `: ((|m| : ℤ) : ℝ) < 1` using `by rw [Int.cast_abs]; linarith`. Conclude with `this` after adjusting the coercions. Conclude with `Int.abs_lt_one_iff.mp this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨a, m⟩`. Rewrite using `[LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hm : m = 0` using `hm0 a m 0 (by norm_num) (fun w => by rw [hx]; simp)`. Substitute `hm` using the available equality. Establish `hlog : logEmbedding F a = 0`. Use function extensionality and compare the values at `w`. Establish `h2` using `hcomp a 0 w.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hx]`. Simplify using `only [Pi.zero_apply, Int.cast_zero, add_zero] at h2`. Establish `h3` using `logEmbedding_component (Additive.toMul a) w`. Rewrite `h3` using `[ofMul_toMul]`. Rewrite using `[h3, ← h2, mul_zero, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht : Additive.toMul a ∈ torsion F`. Rewrite using `[← logEmbedding_eq_zero_iff, ofMul_toMul]`. Conclude with `hlog`. Take `⟨n, hn, hpow⟩` from `isOfFinOrder_iff_pow_eq_one.mp ((CommGroup.mem_torsion _).mp ht)`. Establish `hne : (n : ℤ) ≠ 0` using `by exact_mod_cast hn.ne'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(Submodule.mem_torsion_iff _).mpr ⟨⟨(n : ℤ), mem_nonZeroDivisors_of_ne_zero hne⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submonoid.smul_def]`. Use `show (n : ℤ) • (a, (0 : ℤ)) = 0`. Rewrite using `[Prod.smul_mk, Prod.mk_eq_zero]`. Use `⟨?_, by simp⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Rewrite using `[toMul_zsmul, zpow_natCast, hpow, toMul_zero]`. Introduce `hx`. Take `⟨c, hc⟩` from `(Submodule.mem_torsion_iff _).mp hx`. Rewrite `hc` using `[Submonoid.smul_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `congrArg lam hc`. Rewrite `h1` using `[map_smul, map_zero]`. Conclude with `(smul_eq_zero.mp h1).resolve_left (nonZeroDivisors.coe_ne_zero c)`. Establish `hd : IsOpen ({0} : Set (unitLattice F))` using `isOpen_discrete _`. Take `⟨ε, hε, hεz⟩` from `(Metric.isOpen_singleton_iff (α := unitLattice F) (x := 0)).mp hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `discreteTopology_of_isOpen_singleton_zero (Metric.isOpen_singleton_iff.mpr ⟨min (1 / 2) (ε / 2), by positivity, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨_, ⟨⟨a, m⟩, rfl⟩⟩ hy`. Establish `hpos : (0 : ℝ) < min (1 / 2) (ε / 2)` using `by positivity`. Establish `hy' : ‖lam (a, m)‖ < min (1 / 2) (ε / 2)`. Rewrite using `[← dist_zero_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy`. Establish `hw : ∀ w, |lam (a, m) w| < min (1 / 2) (ε / 2)`. Introduce `w`. Rewrite using `[← Real.norm_eq_abs]`. Conclude with `(pi_norm_lt_iff hpos).mp hy' w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : m = 0` using `hm0 a m (1 / 2) (by norm_num) (fun w => (hw w).le.trans (min_le_left _ _))`. Substitute `hm` using the available equality. Establish `hsmall : ∀ w : {w : InfinitePlace F // w ≠ w₀}, |logEmbedding F a w| < ε`. Introduce `w`. Establish `h3` using `logEmbedding_component (Additive.toMul a) w`.
+Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[ofMul_toMul]`. Establish `h4` using `hcomp a 0 w.1`. Simplify using `only [Int.cast_zero, add_zero] at h4`. Rewrite using `[h3, mult_two, ← h4, abs_mul]`. Use `(hw w.1).trans_le (min_le_right _ _)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmem : logEmbedding F a ∈ unitLattice F` using `⟨a, Submodule.mem_top, rfl⟩`. Establish `hz` using `hεz ⟨logEmbedding F a, hmem⟩ (by`. Rewrite using `[dist_zero_right]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(pi_norm_lt_iff hε).mpr (fun w => by rw [Real.norm_eq_abs]; exact hsmall w))`. Establish `hlog : logEmbedding F a = 0` using `congrArg Subtype.val hz`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show lam (a, 0) = 0`. Rewrite using `[hlam', hlog, map_zero]`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Rewrite using `[eq_top_iff]`. Introduce `v _`. Take `⟨y, c, rfl⟩` from `extS_surj v`. Use `Submodule.add_mem _ ?_ (Submodule.smul_mem _ c (Submodule.subset_span ⟨(0, 1), ?_⟩))` and prove the remaining obligations.
-
-Establish `hy : y ∈ Submodule.span ℝ (unitLattice F : Set (logSpace F))`. Rewrite using `[unitLattice_span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Establish `hle : Submodule.map (extS F) (Submodule.span ℝ (unitLattice F : Set (logSpace F))) ≤ Submodule.span ℝ (LinearMap.range lam : Set (InfinitePlace F → ℝ))`. Rewrite using `[Submodule.map_span]`.
-
-Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨a, _, rfl⟩, rfl⟩`. Conclude with `⟨(a, 0), by rw [hlam']; simp⟩`. Conclude with `hle ⟨y, hy, rfl⟩`. Rewrite using `[hlam'] simp)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.Ct.unitLat :
     ∀ (F : Type) [Field F] [NumberField F], IsTotallyComplex F → ∀ lam : Additive (𝓞 F)ˣ × ℤ →ₗ[ℤ] (InfinitePlace F → ℝ), (∀ (u : (𝓞 F)ˣ) (m : ℤ) (w : InfinitePlace F), lam (Additive.ofMul u, m) w = Real.log (w ((u : 𝓞 F) : F)) + m) → LinearMap.ker lam = Submodule.torsion ℤ _ ∧ DiscreteTopology (LinearMap.range lam) ∧ Submodule.span ℝ (LinearMap.range lam : Set (InfinitePlace F → ℝ)) = ⊤ := by

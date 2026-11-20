@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.HilbTensorExists
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `H _ _`. Use `⟨ℂ, inferInstance, inferInstance, fun _ => 1, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.univ_eq_empty, Finset.prod_empty]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `H _ _`. Take `⟨K, iK, iK', t, ht⟩` from `ih (fun i => H i.castSucc)`. Use `⟨K ⊗[ℂ] H (Fin.last n), inferInstance, inferInstance, fun x => t (fun i => x i.castSucc) ⊗ₜ[ℂ] x (Fin.last n), fun x y => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.inner_tmul, ht, Fin.prod_univ_castSucc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pre_fin (n : ℕ) : ∀ (H : Fin n → Type) [∀ v, NormedAddCommGroup (H v)]
     [∀ v, InnerProductSpace ℂ (H v)],
@@ -33,7 +33,7 @@ theorem exists_pre_fin (n : ℕ) : ∀ (H : Fin n → Type) [∀ v, NormedAddCom
     rw [TensorProduct.inner_tmul, ht, Fin.prod_univ_castSucc]
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin ι`. Take `⟨K, iK, iK', t, ht⟩` from `exists_pre_fin (Fintype.card ι) (fun i => H (e.symm i))`. Use `⟨K, iK, iK', fun x => t (fun i => x (e.symm i)), fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`. Conclude with `e.symm.prod_comp (fun v => ⟪x v, y v⟫_ℂ)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pre {ι : Type} [Fintype ι] (H : ι → Type) [∀ v, NormedAddCommGroup (H v)]
     [∀ v, InnerProductSpace ℂ (H v)] :
@@ -46,11 +46,11 @@ theorem exists_pre {ι : Type} [Fintype ι] (H : ι → Type) [∀ v, NormedAddC
   exact e.symm.prod_comp (fun v => ⟪x v, y v⟫_ℂ)
 
 /- English proof (translation)
-Set `V` to `Submodule.span ℂ (Set.range t)`. Set `u : X → V` to `fun x => ⟨t x, Submodule.subset_span ⟨x, rfl⟩⟩`. Establish `hu : Submodule.span ℂ (Set.range u) = ⊤`. Apply `Submodule.map_injective_of_injective V.injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_subtype_top, ← Set.range_comp]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨UniformSpace.Completion V, inferInstance, inferInstance, inferInstance, fun x => ((u x : V) : UniformSpace.Completion V), fun x y => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[UniformSpace.Completion.inner_coe]`. Both sides reduce to the same expression. Use `UniformSpace.Completion.denseRange_coe.mono ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨v, rfl⟩`. Establish `hv : v ∈ Submodule.span ℂ (Set.range u)` using `hu ▸ Submodule.mem_top`. Establish `hm` using `Submodule.mem_map_of_mem (f := (UniformSpace.Completion.toComplₗᵢ (𝕜 := ℂ) (E := V)).toLinearMap) hv`. Rewrite `hm` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `hm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_complete_dense {X K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] (t : X → K) :
     ∃ (L : Type) (_ : NormedAddCommGroup L) (_ : InnerProductSpace ℂ L) (_ : CompleteSpace L) (s : X → L),
@@ -74,11 +74,11 @@ theorem exists_complete_dense {X K : Type} [NormedAddCommGroup K] [InnerProductS
     exact hm
 
 /- English proof (translation)
-Set `S` to `Finsupp.linearCombination ℂ s`. Set `A` to `Finsupp.linearCombination ℂ (s ∘ f)`. Establish `key : ∀ c : X →₀ ℂ, ⟪A c, A c⟫_ℂ = ⟪S c, S c⟫_ℂ`. Introduce `c`. Simplify using `only [A, S, Finsupp.linearCombination_apply, Finsupp.sum_inner, Finsupp.inner_sum, inner_smul_left, inner_smul_right, Function.comp_apply, hf]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hn : ∀ c, ‖A c‖ ≤ 1 * ‖S c‖`. Introduce `c`. Rewrite using `[one_mul, @norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, key]`. Establish `hd : DenseRange S`. Rewrite using `[DenseRange, ← LinearMap.coe_range, Finsupp.range_linearCombination]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`. Use `⟨A.extendOfNorm S, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `LinearMap.extendOfNorm_eq hd ⟨1, hn⟩ (Finsupp.single x (1 : ℂ))`. Simplify using `only [S, A, Finsupp.linearCombination_single, one_smul, Function.comp_apply] at h`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_extension {X L : Type} [NormedAddCommGroup L] [InnerProductSpace ℂ L] [CompleteSpace L]
     (s : X → L) (hs : Dense (Submodule.span ℂ (Set.range s) : Set L)) (f : X → X)
@@ -102,11 +102,9 @@ theorem exists_extension {X L : Type} [NormedAddCommGroup L] [InnerProductSpace 
   exact h
 
 /- English proof (translation)
-Take `⟨K, iK, iK', t, ht⟩` from `exists_pre H`. Take `⟨L, iL, iL', iL'', s, hs, hd⟩` from `exists_complete_dense t`. Establish `hext : ∀ g : I.Ginf, ∃ T : L →L[ℂ] L, ∀ x, T (s x) = s (fun v => σ v (uMat (g v)) (x v))`. Introduce `g`. Use `exists_extension s hd (fun x v => σ v (uMat (g v)) (x v)) (fun x y => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hs, ht]`. Conclude with `Finset.prod_congr rfl fun v _ => hσ v (g v) (x v) (y v)`. Use `choose σs hσs using hext`. Use `⟨L, iL, iL', iL'', σs, s, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.S.AutInst.IsHilbTensor`.
-
-Conclude with `⟨fun x y => by rw [hs, ht], hσs, hd⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isHilbTensor (I : AutInst) (H : NumberField.InfinitePlace I.F → Type)
     [∀ v, NormedAddCommGroup (H v)] [∀ v, InnerProductSpace ℂ (H v)]

@@ -28,7 +28,7 @@ instance isLocalHom_tvStalk (v : TanM (𝟙 (Sp R)) G) : IsLocalHom (tvStalk G v
   exact RingHom.isLocalHom_comp _ _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[TopCat.Presheaf.stalkCongr_hom, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem specMap_fromSpecStalk_congr {X : Scheme.{0}} {A : CommRingCat.{0}} {x y : X} (h : x = y)
     (s : X.presheaf.stalk y ⟶ A) :
@@ -38,7 +38,7 @@ theorem specMap_fromSpecStalk_congr {X : Scheme.{0}} {A : CommRingCat.{0}} {x y 
   rw [TopCat.Presheaf.stalkCongr_hom, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[tvStalk, specMap_fromSpecStalk_congr (tv_closedPoint G v).symm]`. Conclude with `(Scheme.Spec_stalkClosedPointTo_fromSpecStalk _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tv_left_eq (v : TanM (𝟙 (Sp R)) G) :
     (tv v).left = Spec.map (tvStalk G v) ≫ G.left.fromSpecStalk (origin G) := by
@@ -46,20 +46,20 @@ theorem tv_left_eq (v : TanM (𝟙 (Sp R)) G) :
   exact (Scheme.Spec_stalkClosedPointTo_fromSpecStalk _).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a ha => (TrivSqZeroExt.isUnit_iff_isUnit_fst).2 (by simpa [epsMul] using (TrivSqZeroExt.isUnit_iff_isUnit_fst).1 ha)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLocalHom_epsMul_zero : IsLocalHom (epsMul (0 : R)) :=
   ⟨fun a ha => (TrivSqZeroExt.isUnit_iff_isUnit_fst).2 (by
     simpa [epsMul] using (TrivSqZeroExt.isUnit_iff_isUnit_fst).1 ha)⟩
 
 /- English proof (translation)
-Use `haveI := isLocalHom_epsMul_zero (R := R)`. Establish `hl : ∀ w : TanM (𝟙 (Sp R)) G, IsLocalHom (tvStalk G w ≫ CommRingCat.ofHom (epsMul (0 : R))).hom`. Introduce `w`. Rewrite using `[CommRingCat.hom_comp, CommRingCat.hom_ofHom]`. Use `infer_instance`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : ∀ w : TanM (𝟙 (Sp R)) G, Spec.map (tvStalk G w ≫ CommRingCat.ofHom (epsMul (0 : R))) ≫ G.left.fromSpecStalk (origin G) = (smT (𝟙 (Sp R)) 0 (tv w)).left`. Introduce `w`. Rewrite using `[smT_left, tv_left_eq G w, Spec.map_comp, Category.assoc]`. Establish `e : Spec.map (tvStalk G u ≫ CommRingCat.ofHom (epsMul (0 : R))) ≫ G.left.fromSpecStalk (origin G) = Spec.map (tvStalk G v ≫ CommRingCat.ofHom (epsMul (0 : R))) ≫ G.left.fromSpecStalk (origin G)`. Rewrite using `[hw, hw, ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem, ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e2` using `(SpecToEquivOfLocalRing G.left (CommRingCat.of (DualNumber R))).symm.injective (a₁ := ⟨origin G, tvStalk G u ≫ CommRingCat.ofHom (epsMul (0 : R)), hl u⟩) (a₂ := ⟨origin G, tvStalk G v ≫ CommRingCat.ofHom (epsMul (0 : R)), hl v⟩) (by rw [SpecToEquivOfLocalRing_symm_apply, SpecToEq …`. Take `⟨_, e3⟩` from `SpecToEquivOfLocalRing_eq_iff.mp e2`. Simplify using `only [TopCat.Presheaf.stalkCongr_hom, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp] at e3`. Establish `e4 : epsMul (0 : R) ((tvStalk G u).hom f) = epsMul (0 : R) ((tvStalk G v).hom f)`. Use `congrArg (fun q : G.left.presheaf.stalk (origin G) ⟶ CommRingCat.of (DualNumber R) => q.hom f) e3` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `e5` using `congrArg TrivSqZeroExt.fst e4`. Simplify `e5` using `[epsMul]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tvStalk_fst (u v : TanM (𝟙 (Sp R)) G) (f : G.left.presheaf.stalk (origin G)) :
     ((tvStalk G u).hom f).fst = ((tvStalk G v).hom f).fst := by
@@ -88,9 +88,9 @@ theorem tvStalk_fst (u v : TanM (𝟙 (Sp R)) G) (f : G.left.presheaf.stalk (ori
   simpa [epsMul] using e5
 
 /- English proof (translation)
-Introduce `R _ _ G _ _ u v h`. Apply `ReciprocityTheory.ChartRestriction.G.PullbackSections.tanM_ext` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `hs : tvStalk G u = tvStalk G v`. Use extensionality with `f`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `tvStalk_fst G u v f`. Establish `hu` using `tanDer_eq G u f`. Establish `hv` using `tanDer_eq G v f`. Conclude with `hu.symm.trans ((h f).trans hv)`. Rewrite using `[tv_left_eq G u, tv_left_eq G v, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tanM_eq_of_tanDer : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
     (u v : TanM (𝟙 (Sp R)) G), (∀ f, tanDer G u f = tanDer G v f) → u = v := by

@@ -8,23 +8,19 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite using `[← hW]`. Conclude with `⟨v, hV.le hv, rfl⟩`. Use `closed := by`. Rewrite using `[Submodule.map_coe]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `U.toHomeomorph.isClosedMap _ hV.closed`. Use `inv := by`. Introduce and unpack `g _ ⟨v, hv, rfl⟩`. Use `⟨π (e.symm g) v, hV.inv _ _ hv, ?_⟩` and prove the remaining obligations. Use `hU (e.symm g) v` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Use `ne_bot := by`. Introduce `h`. Use `hV.ne_bot ((Submodule.eq_bot_iff _).2 fun v hv => ?_)` and prove the remaining obligations. Establish `h1 : U v ∈ V.map (U : H →ₗ[ℂ] H)` using `⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[h]`. Simplify using `using h1`. Use `irred := by`. Introduce `V' hle hcl hinv`. Establish `hle' : V'.comap (U : H →ₗ[ℂ] H) ≤ V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v hv`. Take `⟨w, hw, hwv⟩` from `hle hv`. Establish `: w = v` using `U.injective hwv`. Conclude with `this ▸ hw`. Establish `hcl' : IsClosed (V'.comap (U : H →ₗ[ℂ] H) : Set H)` using `hcl.preimage U.continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinv' : π.IsInvariant (V'.comap (U : H →ₗ[ℂ] H))`. Introduce `g v hv`. Express the relevant statement in the definitionally equal form `U (π g v) ∈ V'`. Rewrite using `[hU]`. Conclude with `hinv _ _ hv`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `hV.irred _ hle' hcl' hinv' with h | h` into its components or cases. Use `left`. Use `(Submodule.eq_bot_iff _).2 fun y hy => ?_` and prove the remaining obligations. Establish `h1 : U.symm y ∈ V'.comap (U : H →ₗ[ℂ] H)`. Express the relevant statement in the definitionally equal form `U (U.symm y) ∈ V'`.
-
-Simplify using `using hy`. Rewrite `h1` using `[h]`. Simplify using `using h1`. Use `right`. Use `le_antisymm hle ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite `hv` using `[← h]`. Conclude with `hv`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem summand_map {G H : Type} [Group G] [TopologicalSpace G] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep G H) (W : Submodule ℂ H) (e : G ≃* G)
@@ -76,7 +72,7 @@ private theorem summand_map {G H : Type} [Group G] [TopologicalSpace G] [NormedA
       exact hv
 
 /- English proof (translation)
-Establish `hcl : IsClosed ((W.comap (B : H →ₗ[ℂ] H) : Submodule ℂ H) : Set H)` using `hc.preimage B.continuous`. Establish `h1 : (⨆ i, V i) ≤ W.comap (B : H →ₗ[ℂ] H)` using `iSup_le fun i v hv => hle i (hB i v hv)`. Establish `h2` using `Submodule.topologicalClosure_minimal _ h1 hcl`. Rewrite `h2` using `[hspan]`. Conclude with `fun v hv => h2 hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem preserves_closure {H ι : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (V : ι → Submodule ℂ H) (W : Submodule ℂ H) (hc : IsClosed (W : Set H))
@@ -89,11 +85,11 @@ private theorem preserves_closure {H ι : Type} [NormedAddCommGroup H] [InnerPro
   exact fun v hv => h2 hv
 
 /- English proof (translation)
-Establish `hm` using `summand_map π W e U hU hW hV`. Establish `ho : V.map (U : H →ₗ[ℂ] H) ⟂ V` using `hmult _ _ hm hV hne`. Establish `hEV : eigIn V A x ≤ V` using `inf_le_left`. Establish `hcE : (eigIn V A x).topologicalClosure ≤ V` using `Submodule.topologicalClosure_minimal _ hEV hV.closed`. Establish `h0 : prj (eigIn V A x) ∘L (T ∘L (U : H →L[ℂ] H)) ∘L prj (eigIn V A x) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `y`. Establish `hy : prj (eigIn V A x) y ∈ V` using `hcE (Submodule.starProjection_apply_mem _ _)`. Establish `hz : T (U (prj (eigIn V A x) y)) ∈ V.map (U : H →ₗ[ℂ] H)` using `hT _ hm _ ⟨_, hy, rfl⟩`. Establish `hz' : T (U (prj (eigIn V A x) y)) ∈ (eigIn V A x).topologicalClosureᗮ`. Rewrite using `[Submodule.orthogonal_closure]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.orthogonal_le hEV (ho hz)`. Conclude with `(Submodule.starProjection_apply_eq_zero_iff _).2 hz'`. Unfold `trOn`. Rewrite using `[h0]`. Simplify using `[trace]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem trOn_eig_zero {G H : Type} [Group G] [TopologicalSpace G] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep G H) (W : Submodule ℂ H) (e : G ≃* G)
@@ -120,37 +116,35 @@ private theorem trOn_eig_zero {G H : Type} [Group G] [TopologicalSpace G] [Norme
   simp [trace]
 
 /- English proof (translation)
-Establish `hc : IsClosed (W : Set H)`. Rewrite using `[← hspan]`. Conclude with `Submodule.isClosed_topologicalClosure _`. Establish `hWcl : W.topologicalClosure = W` using `hc.submodule_topologicalClosure_eq`. Establish `hPmem : ∀ y, prj W y ∈ W` using `fun y => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: prj W y ∈ W.topologicalClosure` using `Submodule.starProjection_apply_mem _ _`. Rewrite `this` using `[hWcl]`. Then use the resulting hypothesis. Establish `hPself : ∀ y ∈ W, prj W y = y` using `fun y hy => Submodule.starProjection_eq_self_iff.2 (by rw [hWcl]; exact hy)`. Establish `hUW : ∀ v ∈ W, U v ∈ W` using `fun w hw => by`. Rewrite using `[← hW]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨w, hw, rfl⟩`. Establish `hle : ∀ i : {V // IsSummandOf π W V}, i.1 ≤ W` using `fun i => i.2.le`. Establish `hpres : ∀ B : H →L[ℂ] H, (∀ V, IsSummandOf π W V → ∀ v ∈ V, B v ∈ V) → ∀ v ∈ W, B v ∈ W` using `fun B hB => preserves_closure (fun i : {V // IsSummandOf π W V} => i.1) W hc hspan B (fun i => hB i.1 i.2) hle`. Establish `hAW` using `hpres A hAV`. Take `⟨S0, hS1, hS2, hS3⟩` from `UpperTheory.ConvolutionTheory.C.eigSplit H W A hc hA0 hAW hAc η hη`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsa : IsSelfAdjoint A` using `hA0.isSelfAdjoint`. Establish `hex : ∀ x ∈ S0, ∃ s : Finset {V // IsSummandOf π W V}, (∀ i, i ∈ s ↔ eigIn i.1 A x ≠ ⊥) ∧ ∀ B : H →L[ℂ] H, trOn (eigIn W A x) B = ∑ i ∈ s, trOn (eigIn i.1 A x) B`. Introduce `x hx`. Take `⟨s, h1, -, h3⟩` from `UpperTheory.ConvolutionTheory.C.eigSummands H {V // IsSummandOf π W V} (fun i => i.1) W A x (fun i => i.2.closed) (fun a b hab => hmult a.1 b.1 a.2 b.2 fun h => hab (Subtype.ext h)) hspan hsa (fun i => hAV i.1 i.2) (hS2 x hx)`. Conclude with `⟨s, h1, h3⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose! s hs1 hs2 using hex`. Establish `hEle : ∀ {V : Submodule ℂ H} (x : ℝ), V ≤ W → eigIn V A x ≤ eigIn W A x` using `fun {V} x h => inf_le_inf_right _ h`. Set `f : ℝ → Finset (ℝ × Submodule ℂ H)` to `fun x => ((s x).filter fun i => i.1.map (U : H →ₗ[ℂ] H) = i.1).image fun i => (x, i.1)`. Establish `hmemS : ∀ p, p ∈ S0.biUnion f ↔ η < p.1 ∧ IsSummandOf π W p.2 ∧ p.2.map (U : H →ₗ[ℂ] H) = p.2 ∧ eigIn p.2 A p.1 ≠ ⊥`. Introduce and unpack `⟨x, V⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Finset.mem_biUnion, f, Finset.mem_image, Finset.mem_filter, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, i, ⟨hi, hst⟩, rfl, rfl⟩`. Conclude with `⟨((hS1 y).1 hy).1, i.2, hst, (hs1 y hy i).1 hi⟩`. Introduce and unpack `⟨h1, h2, h3, h4⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hx : x ∈ S0` using `(hS1 x).2 ⟨h1, fun hb => h4 (le_bot_iff.1 (hb ▸ hEle x h2.le))⟩`. Conclude with `⟨x, hx, ⟨V, h2⟩, ⟨(hs1 x hx ⟨V, h2⟩).2 h4, h3⟩, rfl, rfl⟩`. Use `⟨S0.biUnion f, hmemS, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Take `⟨h1, h2, -, h4⟩` from `(hmemS p).1 hp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : p.1 ∈ S0` using `(hS1 _).2 ⟨h1, fun hb => h4 (le_bot_iff.1 (hb ▸ hEle _ h2.le))⟩`. Use `haveI := hS2 _ hx`. Conclude with `Submodule.finiteDimensional_of_le (hEle p.1 h2.le)`. Introduce `φ c T hφ hc0 hb hT htr`. Establish `hTW` using `hpres T hT`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : prj W ∘L (T ∘L (U : H →L[ℂ] H)) ∘L prj W = (prj W ∘L T ∘L prj W) ∘L ((U : H →L[ℂ] H) ∘L prj W)`. Use extensionality with `y`. Express the relevant statement in the definitionally equal form `prj W (T (U (prj W y))) = prj W (T (prj W (U (prj W y))))`. Rewrite using `[hPself _ (hUW _ (hPmem y))]`. Establish `hUP : ‖(U : H →L[ℂ] H) ∘L prj W‖ₑ ≤ 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `enorm_le_one_of_norm_le_one (ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖U (prj W y)‖ ≤ 1 * ‖y‖`. Rewrite using `[U.norm_map, one_mul]`. Conclude with `Submodule.norm_starProjection_apply_le _ _`. Establish `hnorm : traceNorm (prj W ∘L (T ∘L (U : H →L[ℂ] H)) ∘L prj W) ≤ traceNorm (prj W ∘L T ∘L prj W)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcomp]`. Use `(traceNorm_comp_right_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `htc : IsTraceClass (prj W ∘L (T ∘L (U : H →L[ℂ] H)) ∘L prj W)` using `hnorm.trans_lt htr`. Establish `hmain` using `hS3 φ c (T ∘L (U : H →L[ℂ] H)) hφ hc0 hb htc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hfirst : trOn W (cfc φ A ∘L prj W ∘L (T ∘L (U : H →L[ℂ] H))) = trace (prj W ∘L cfc φ A ∘L T ∘L (U : H →L[ℂ] H) ∘L prj W)`. Unfold `trOn`. Use `congr 1`. Use extensionality with `y`. Express the relevant statement in the definitionally equal form `prj W (cfc φ A (prj W (T (U (prj W y))))) = prj W (cfc φ A (T (U (prj W y))))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPself _ (hTW _ (hUW _ (hPmem y)))]`. Establish `hsum : ∑ p ∈ S0.biUnion f, (φ p.1 : ℂ) * trOn (eigIn p.2 A p.1) (T ∘L (U : H →L[ℂ] H)) = ∑ x ∈ S0, (φ x : ℂ) * trOn (eigIn W A x) (T ∘L (U : H →L[ℂ] H))`. Rewrite using `[Finset.sum_biUnion]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_image, hs2 x hx, Finset.mul_sum, Finset.sum_filter]`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun i _ => ?_ split_ifs with hst` and prove the remaining obligations. Both sides reduce to the same expression. Rewrite using `[trOn_eig_zero π W e U hU hW hmult T hT A x i.2 hst, mul_zero]`. Introduce `a _ b _ hab`. Conclude with `Subtype.ext (congrArg Prod.snd hab)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _ y _ hxy`. Use `Finset.disjoint_left.2 fun p hp hq => hxy ?_` and prove the remaining obligations. Simplify using `only [f, Finset.mem_image] at hp hq`. Take `⟨i, -, rfl⟩` from `hp`. Take `⟨j, -, hj⟩` from `hq`.
-
-Conclude with `(congrArg Prod.fst hj).symm`. Rewrite using `[hsum, ← hfirst]`. Use `hmain.trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (ENNReal.toReal_mono htr.ne hnorm) hc0`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem band_core {G H : Type} [Group G] [TopologicalSpace G] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep G H) (W : Submodule ℂ H) (e : G ≃* G)
@@ -268,7 +262,7 @@ private theorem band_core {G H : Type} [Group G] [TopologicalSpace G] [NormedAdd
     exact mul_le_mul_of_nonneg_left (ENNReal.toReal_mono htr.ne hnorm) hc0
 
 /- English proof (translation)
-Establish `key : ∀ (K K' : Submodule ℂ H) [K.HasOrthogonalProjection] [K'.HasOrthogonalProjection], K = K' → K.starProjection = K'.starProjection`. Introduce `K K' _ _ h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Conclude with `key _ _ hc.submodule_topologicalClosure_eq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem prj_eq_star {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (W : Submodule ℂ H) [W.HasOrthogonalProjection] (hc : IsClosed (W : Set H)) :
@@ -281,11 +275,9 @@ private theorem prj_eq_star {H : Type} [NormedAddCommGroup H] [InnerProductSpace
   exact key _ _ hc.submodule_topologicalClosure_eq
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ θ hm A hA0 hAV hAc η hη`. Take `⟨U, hU1, hU2, hU3⟩` from `UpperTheory.ConvolutionTheory.C.twistUnitary K n μ θ`. Establish `hspan` using `UpperTheory.ConvolutionTheory.C.summandsSpan K n μ`. Establish `hc : IsClosed (cuspidalL2 μ : Set (L2 μ))`. Rewrite using `[← hspan]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.isClosed_topologicalClosure _`. Establish `hP : Pc μ = prj (cuspidalL2 μ)` using `(prj_eq_star _ hc).symm`. Rewrite `hAc`, the goal using `[hP]`. Use `band_core (rightRegularRep (Gam K n) μ) (cuspidalL2 μ) θ.e.toMulEquiv U (fun g v => hU2 g v) hU3 hspan (fun V V' h h' hne => hm V V' h h' hne) A hA0 hAV hAc η hη` as an intermediate fact. Rewrite using `[← hU1]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.C.cuspTrBand :
     UpperTheory.ConvolutionTheory.C.CuspTrBand := by

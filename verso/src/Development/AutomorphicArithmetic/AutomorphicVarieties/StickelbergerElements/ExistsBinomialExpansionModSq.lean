@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StickelbergerEleme
 open Finset UpperTheory.V.Bern UpperTheory.V.Stk
 
 /- English proof (translation)
-Introduce `b j M e`. Establish `h2 : ∀ n : ℕ, ∃ w : ℤ, (b + M * j) ^ n = b ^ n + M * w`. Introduce `n`. Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow (b + M * j) b n`. Use `⟨j * c, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : (b + M * j) - b = M * j` using `by ring`. Rewrite `hc` using `[hd]`. Take the linear combination `hc`. Use `⟨?_, h2 e⟩` and prove the remaining obligations. Proceed by induction on `e with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `zero => exact ⟨0, by ring⟩`. Consider the case `succ n ih`. Take `⟨z, hz⟩` from `ih`. Use `⟨b * z + ((n : ℤ) + 1) * b ^ n * j ^ 2 + M * j * z, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(b + M * j) * hz`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem UpperTheory.V.Stk.exists_binomial_expansion_mod_sq :
     ∀ (b j M : ℤ) (e : ℕ),

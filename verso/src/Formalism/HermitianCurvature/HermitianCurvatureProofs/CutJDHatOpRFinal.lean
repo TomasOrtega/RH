@@ -12,12 +12,12 @@ open Formalism.FourierDecayAlt
 namespace Formalism.FourierDecayAlt.P.CutMP
 
 /- English proof (translation)
-The claim follows from `jDOpR_of_vStepB mirror_residue_second_move`.
+A detailed English derivation is pending.
 -/
 theorem residue_operator_holds : JDOpR := jDOpR_of_vStepB mirror_residue_second_move
 
 /- English proof (translation)
-The claim follows from `jDHatOpQQ_of_opA_opR_residue_splitting (jDOpA_of_parts polynomial_decay_admissible capelli_minors_holds) residue_operator_holds residue_splitting_holds mirror_residue_splitting_holds hat_lagrange_decay_holds hat_nodes_decay_holds`.
+A detailed English derivation is pending.
 -/
 theorem hat_quadratic_operator_holds : JDHatOpQQ :=
   jDHatOpQQ_of_opA_opR_residue_splitting (jDOpA_of_parts polynomial_decay_admissible capelli_minors_holds) residue_operator_holds residue_splitting_holds

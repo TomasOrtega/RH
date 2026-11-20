@@ -16,13 +16,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HL.MoveTerm
 
 /- English proof (translation)
-Introduce `D X Y u u' _hS w F00 F'0 FP hZ _hG _hB t₀ ht`. Take `⟨F', ⟨hP, hmk⟩, hGv, hCell⟩` from `ht`. Establish `hrow : IsRowLat D (X.Fu u) t₀.lam` using `(Y.rowsOK u).1 _ t₀.mem`. Take `⟨hGF, hCF, -⟩` from `Formalism.L2.SG.Closed.TermFun_holds D u u' (X.Fu u) t₀.lam hrow`. Establish `hrel` using `(Formalism.L2.SG.Closed.TermEqIff_holds D u u' (X.Fu u) t₀.lam hrow _ _).1 hmk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hGt : Gval (lf D (X.Fu u)) t₀.frame ≠ 0`. Introduce `h`. Apply `hGv` to reduce the goal to its premises. Rewrite using `[hGF _ _ hrel]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hCt` using `(hCF _ _ hrel w).1 hCell`. Establish `hTu : ∀ v : D.what₂.Word, ((Tu D v : ℕ) : D.host.E) ≠ 0` using `fun v => Nat.cast_ne_zero.mpr (Formalism.L2.SG.GramJoint.Tu_pos D v).ne'`. Take `⟨-, γ, hγ, ⟨A, hA, hAc⟩, ⟨A', hA', hAc'⟩⟩` from `GlobalTheory.T.rationalFramePairs_differ_isometry_unitriangular D (lf D (X.Fu u)) F00 t₀.frame F'0 w (hTu u) (hTu u') hGt hCt hZ`. Use `⟨γ, A, A', hγ, ?_, ?_, fun b => hAc b, fun b => hAc' b⟩` and prove the remaining obligations. Conclude with `fun i j => ⟨fun h => hA.1 i j h, fun h => h ▸ hA.2 i⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Conclude with `fun i j => ⟨fun h => hA'.1 i j h, fun h => h ▸ hA'.2 i⟩`.
+A detailed English derivation is pending.
 -/
 theorem term_moves_to_base : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ t₀ : TauC Y u u', t₀.toTerm.atPt w → ∃ (ρ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' := by
   intro D X Y u u' _hS w F00 F'0 FP hZ _hG _hB t₀ ht

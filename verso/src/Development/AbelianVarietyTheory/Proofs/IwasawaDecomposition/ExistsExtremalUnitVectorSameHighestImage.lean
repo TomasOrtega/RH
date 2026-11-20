@@ -17,7 +17,7 @@ variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Take `⟨E, hE⟩` from `GlobalTheory.LowKProj.exists_proj U`. Use `⟨E, hE, fun k hk x => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.LowKProj.comm_of_stable hE (GlobalTheory.LowKProj.inner_adj hσ hk) (hU k hk) (hU _ (Formalism.REAL.Kset_star ε hk))` as an intermediate fact. Conclude with `congrArg (fun F : H →L[ℂ] H => F x) this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_proj_comm (hσ : IsURepOn (UJset ε) σ) (U : Submodule ℂ H) [FiniteDimensional ℂ U]
     (hU : IsKStableOn ε σ U) :
@@ -29,7 +29,7 @@ theorem exists_proj_comm (hσ : IsURepOn (UJset ε) σ) (U : Submodule ℂ H) [F
   exact congrArg (fun F : H →L[ℂ] H => F x) this
 
 /- English proof (translation)
-Introduce `θ hθ`. Rewrite using `[← hE _ hθ, hw θ hθ, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isWtOn_proj {E : H →L[ℂ] H} (hE : ∀ k ∈ Formalism.REAL.Kset ε, ∀ x, E (σ k x) = σ k (E x))
     {μ : Fin n → ℝ} {w : H} (hw : IsWtOn (Formalism.REAL.Kset ε) σ μ w) :
@@ -38,7 +38,7 @@ theorem isWtOn_proj {E : H →L[ℂ] H} (hE : ∀ k ∈ Formalism.REAL.Kset ε, 
   rw [← hE _ hθ, hw θ hθ, map_smul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1 : lowKSub ε lam σ ≤ LinearMap.ker (innerSL ℂ x : H →ₗ[ℂ] ℂ)` using `sSup_le fun S hS s hs => h S hS s hs`. Establish `h2 : ⟪x, x⟫_ℂ = 0` using `h1 hx`. Conclude with `h0 (inner_self_eq_zero.1 h2)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_not_orth {lam : Fin n → ℝ} {x : H} (hx : x ∈ lowKSub ε lam σ) (h0 : x ≠ 0) :
     ∃ S, IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S ∧ ∃ s ∈ S, ⟪x, s⟫_ℂ ≠ 0 := by
@@ -50,7 +50,7 @@ theorem exists_not_orth {lam : Fin n → ℝ} {x : H} (hx : x ∈ lowKSub ε lam
   exact h0 (inner_self_eq_zero.1 h2)
 
 /- English proof (translation)
-Take `⟨S, hS, s, hs, hne⟩` from `exists_not_orth hx h0`. Use `haveI := hS.1`. Take `⟨E, hE, hc⟩` from `exists_proj_comm hσ S hS.2.1`. Use `hS.2.2.2.2 ν (E x) (GlobalTheory.LowKProj.apply_mem hE x) (fun h => hne ?_) (isWtOn_proj hc hw)` and prove the remaining obligations. Rewrite using `[← GlobalTheory.LowKProj.fix_of_mem hE s hs, ← hE.2.1, h, inner_zero_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cdom_of_mem (hσ : IsURepOn (UJset ε) σ) {lam ν : Fin n → ℝ} {x : H} (hx : x ∈ lowKSub ε lam σ)
     (h0 : x ≠ 0) (hw : IsWtOn (Formalism.REAL.Kset ε) σ ν x) : CDom ε ν (Formalism.QuantumDeterminants.lowK ε lam) := by
@@ -61,15 +61,15 @@ theorem cdom_of_mem (hσ : IsURepOn (UJset ε) σ) {lam ν : Fin n → ℝ} {x :
   rw [← GlobalTheory.LowKProj.fix_of_mem hE s hs, ← hE.2.1, h, inner_zero_left]
 
 /- English proof (translation)
-Take `⟨S, hS, s, hs, hne⟩` from `exists_not_orth (hle hx) h0`. Take `⟨E, hE, hc⟩` from `exists_proj_comm hσ U hU`. Establish `hst : IsKStableOn ε σ (S ⊓ LinearMap.ker (E : H →ₗ[ℂ] H))`. Introduce `k hk w hw`. Use `⟨hS.2.1 k hk w hw.1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : E w = 0` using `hw.2`. Use `show E (σ k w) = 0`. Rewrite using `[hc k hk, h1, map_zero]`. Establish `hbot : S ⊓ LinearMap.ker (E : H →ₗ[ℂ] H) = ⊥`. Break down `hS.2.2.1 _ inf_le_left hst with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Conclude with `h`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Establish `h1 : s ∈ S ⊓ LinearMap.ker (E : H →ₗ[ℂ] H)` using `by rw [h]; exact hs`. Establish `h2 : E s = 0` using `h1.2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← GlobalTheory.LowKProj.fix_of_mem hE x hx, hE.2.1, h2, inner_zero_right]`. Take `⟨w, hwS, hw0, hw⟩` from `hS.2.2.2.1`. Establish `hK` using `pM_mem (revNeg ε) (eps_revNeg ε)`. Establish `hn : ‖σ (pM (revNeg ε)) w‖ = ‖w‖` using `hσ.2.1 _ (kset_uj hK) w`. Use `⟨E (σ (pM (revNeg ε)) w), GlobalTheory.LowKProj.apply_mem hE _, fun h => hw0 ?_, isWtOn_proj hc (isWtOn_perm hσ _ (eps_revNeg ε) hw)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : σ (pM (revNeg ε)) w ∈ S ⊓ LinearMap.ker (E : H →ₗ[ℂ] H)` using `⟨hS.2.1 _ hK w hwS, h⟩`. Rewrite `h1` using `[hbot, Submodule.mem_bot]`. Rewrite `hn` using `[h1, norm_zero]`. Conclude with `norm_eq_zero.1 hn.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext_mem (hσ : IsURepOn (UJset ε) σ) {lam : Fin n → ℝ} (U : Submodule ℂ H)
     [FiniteDimensional ℂ U] (hU : IsKStableOn ε σ U) (hle : U ≤ lowKSub ε lam σ) {x : H} (hx : x ∈ U)
@@ -102,19 +102,19 @@ theorem exists_ext_mem (hσ : IsURepOn (UJset ε) σ) {lam : Fin n → ℝ} (U :
   exact norm_eq_zero.1 hn.symm
 
 /- English proof (translation)
-Take `⟨c, hc, he⟩` from `h`. Establish `hr : ∀ a b : Fin n, ∑ i, Formalism.REAL.root a b i * m i = m a - m b`. Introduce `a b`. Simplify using `[Formalism.REAL.root, sub_mul, Finset.sum_sub_distrib, Pi.single_apply]`. Establish `h1 : ∑ a, Λ a * m a - ∑ a, ν a * m a = ∑ a, ∑ b, (c a b : ℝ) * (m a - m b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Establish `: ∀ i, Λ i * m i - ν i * m i = ∑ a, ∑ b, (c a b : ℝ) * (Formalism.REAL.root a b i * m i)`. Introduce `i`. Establish `h2` using `congrFun he i`. Simplify using `only [Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← sub_mul, h2]`. Simplify using `only [Finset.sum_mul, mul_assoc]`. Simplify using `only [this]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, hr]`. Establish `hnn : ∀ a b, 0 ≤ (c a b : ℝ) * (m a - m b)`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : c a b = 0`. Simplify using `[h0]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (sub_pos.2 (hm a b (hc a b h0).1 (hc a b h0).2)).le`. Establish `h3 : ∑ a, ∑ b, (c a b : ℝ) * (m a - m b) = 0` using `le_antisymm (by linarith) (Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => hnn a b)`. Establish `h4 : ∀ a b, c a b = 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Assume the negation of the conclusion as `h0`. Establish `h5` using `(Finset.sum_eq_zero_iff_of_nonneg fun a _ => Finset.sum_nonneg fun b _ => hnn a b).1 h3 a (Finset.mem_univ _)`. Establish `h6` using `(Finset.sum_eq_zero_iff_of_nonneg fun b _ => hnn a b).1 h5 b (Finset.mem_univ _)`. Establish `h7 : (0 : ℝ) < c a b` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero h0)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(mul_pos h7 (sub_pos.2 (hm a b (hc a b h0).1 (hc a b h0).2))).ne' h6`. Simplify using `only [h4, Nat.cast_zero, zero_smul, Finset.sum_const_zero] at he`. Conclude with `(sub_eq_zero.1 he).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_cdom {ν Λ m : Fin n → ℝ} (h : CDom ε ν Λ)
     (hm : ∀ a b, a < b → ε a = ε b → m b < m a) (hle : ∑ a, Λ a * m a ≤ ∑ a, ν a * m a) : ν = Λ := by
@@ -155,17 +155,17 @@ theorem eq_of_cdom {ν Λ m : Fin n → ℝ} (h : CDom ε ν Λ)
   exact (sub_eq_zero.1 he).symm
 
 /- English proof (translation)
-Rewrite using `[← eps_revNeg ε ((revNeg ε).symm a), Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_symm (a : Fin n) : ε ((revNeg ε).symm a) = ε a := by
   rw [← eps_revNeg ε ((revNeg ε).symm a), Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Simplify using `only [eps_symm]`. Consider the cases of `ha : ε a`. Establish `hb : ε b = false` using `h ▸ ha`. Simplify using `only [hb, Bool.false_eq_true, if_false, Nat.cast_lt]`. Break down `lt_trichotomy ((revNeg ε).symm b) ((revNeg ε).symm a) with h1 | h1 | h1` into its components or cases.
+Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h1`. Conclude with `absurd ((revNeg ε).symm.injective h1) hab.ne'`. Use `GlobalTheory.Cmp.ExtremalNegativeSets.revNeg_anti (ε := ε) h1 ((eps_symm a).trans ha) ((eps_symm b).trans hb)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Conclude with `absurd this hab.not_gt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ε b = true` using `h ▸ ha`. Establish `e1 : (revNeg ε).symm a = a` using `(Equiv.symm_apply_eq _).2 (revNeg_of_pos ε ha).symm`. Establish `e2 : (revNeg ε).symm b = b` using `(Equiv.symm_apply_eq _).2 (revNeg_of_pos ε hb).symm`. Simplify using `only [hb, if_true, e1, e2, neg_lt_neg_iff, Nat.cast_lt]`. Conclude with `hab`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_anti (a b : Fin n) (hab : a < b) (h : ε a = ε b) :
     (fun a : Fin n => if ε a then -((a : ℕ) : ℝ) else ((a : ℕ) : ℝ)) ((revNeg ε).symm b) <
@@ -187,9 +187,9 @@ theorem form_anti (a b : Fin n) (hab : a < b) (h : ε a = ε b) :
     exact hab
 
 /- English proof (translation)
-Establish `hK` using `pM_mem (revNeg ε).symm (eps_symm (ε := ε))`. Establish `hn : ‖σ (pM (revNeg ε).symm) x‖ = ‖x‖` using `hσ.2.1 _ (kset_uj hK) x`. Establish `h1` using `cdom_of_mem hσ (GlobalTheory.LowKProj.lowKSub_stable ε lam σ _ hK x hx) (fun h => h0 (by rw [h, norm_zero] at hn; exact norm_eq_zero.1 hn.symm)) (isWtOn_perm hσ _ (eps_symm (ε := ε)) hw)`. Establish `h2` using `eq_of_cdom h1 (form_anti (ε := ε)) (by`. Rewrite using `[← Equiv.sum_comp (revNeg ε), ← Equiv.sum_comp (revNeg ε) (fun a => μ ((revNeg ε).symm a) * _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify `hle)` using `only [Equiv.symm_apply_apply]`. Use function extensionality and compare the values at `a`. Rewrite using `[← h2]`. Simplify using `only [Equiv.symm_apply_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wt_eq (hσ : IsURepOn (UJset ε) σ) {lam μ : Fin n → ℝ} {x : H} (hx : x ∈ lowKSub ε lam σ)
     (h0 : x ≠ 0) (hw : IsWtOn (Formalism.REAL.Kset ε) σ μ x)
@@ -211,39 +211,35 @@ theorem wt_eq (hσ : IsURepOn (UJset ε) σ) {lam μ : Fin n → ℝ} {x : H} (h
 end
 
 /- English proof (translation)
-Introduce `n H _ _ X _ _ ε lam μ σ π L φ v hσ hL hLs hφ hv hv1 hwt hmax`. Use `set U : Submodule ℂ H := Submodule.span ℂ {z | ∃ k ∈ Formalism.REAL.Kset ε, z = σ k v} with hUdef`. Establish `hUL : U ≤ L` using `Submodule.span_le.2 (by rintro _ ⟨k, hk, rfl⟩; exact hLs k hk v hv)`. Establish `hfd : FiniteDimensional ℂ U`. Take `⟨S, h1, h2, h3⟩` from `GlobalTheory.exists_kStable_of_mem_lowKSub n ε lam H σ v (hL hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: U ≤ S` using `Submodule.span_le.2 (by rintro _ ⟨k, hk, rfl⟩; exact h2 k hk v h3)`. Conclude with `Submodule.finiteDimensional_of_le this`. Establish `hUs : IsKStableOn ε σ U`. Introduce `g hg w hw`. Establish `: U ≤ U.comap (σ g : H →ₗ[ℂ] H)` using `Submodule.span_le.2 (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨k, hk, rfl⟩`. Use `Submodule.subset_span ⟨g * k, Formalism.REAL.Kset_mul ε hg hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hσ.1.2 g (kset_uj hg) k (kset_uj hk)]`. Use the proof step `rfl)`. Conclude with `this hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1K : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.REAL.Kset ε`. Use `diag_mem (ε := ε) (fun _ => 0)` as an intermediate fact. Simplify using `using this`. Establish `hvU : v ∈ U` using `Submodule.subset_span ⟨1, h1K, by rw [hσ.1.1]; rfl⟩`. Establish `hUφ : ∀ u ∈ U, φ u ∈ Submodule.span ℂ {z | ∃ k ∈ Formalism.REAL.Kset ε, z = π k (φ v)}`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `: U ≤ (Submodule.span ℂ {z | ∃ k ∈ Formalism.REAL.Kset ε, z = π k (φ v)}).comap φ` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `Submodule.subset_span ⟨k, hk, hφ k hk v hv⟩)`. Conclude with `fun u hu => this hu`. Establish `hU0s : IsKStableOn ε σ (U ⊓ LinearMap.ker φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `k hk w hw`. Use `⟨hUs k hk w hw.1, ?_⟩` and prove the remaining obligations. Establish `h1 : φ w = 0` using `hw.2`. Use `show φ (σ k w) = 0`. Rewrite using `[hφ k hk w (hUL hw.1), h1, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : FiniteDimensional ℂ ↥(U ⊓ LinearMap.ker φ) := Submodule.finiteDimensional_of_le inf_le_left`. Take `⟨E, hE, hc⟩` from `exists_proj_comm hσ (U ⊓ LinearMap.ker φ) hU0s`. Establish `hU1s : IsKStableOn ε σ (U ⊓ LinearMap.ker (E : H →ₗ[ℂ] H))`. Introduce `k hk w hw`. Use `⟨hUs k hk w hw.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : E w = 0` using `hw.2`. Use `show E (σ k w) = 0`. Rewrite using `[hc k hk, h1, map_zero]`. Use `haveI : FiniteDimensional ℂ ↥(U ⊓ LinearMap.ker (E : H →ₗ[ℂ] H)) := Submodule.finiteDimensional_of_le inf_le_left`. Establish `hinj : ∀ w ∈ U ⊓ LinearMap.ker (E : H →ₗ[ℂ] H), φ w = 0 → w = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw h`. Establish `h1 : E w = 0` using `hw.2`. Rewrite using `[← GlobalTheory.LowKProj.fix_of_mem hE w ⟨hw.1, h⟩, h1]`. Establish `hv0 : E v ∈ U ⊓ LinearMap.ker φ` using `GlobalTheory.LowKProj.apply_mem hE v`. Establish `hEv1 : E (v - E v) = 0` using `by rw [map_sub, GlobalTheory.LowKProj.fix_of_mem hE _ hv0, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hv1m : v - E v ∈ U ⊓ LinearMap.ker (E : H →ₗ[ℂ] H)` using `⟨U.sub_mem hvU hv0.1, hEv1⟩`. Establish `hφ1 : φ (v - E v) = φ v`. Establish `h1 : φ (E v) = 0` using `hv0.2`. Rewrite using `[map_sub, h1, sub_zero]`. Establish `hw1 : IsWtOn (Formalism.REAL.Kset ε) σ μ (v - E v)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `θ hθ`. Rewrite using `[← sub_eq_zero]`. Use `hinj _ (Submodule.sub_mem _ (hU1s _ hθ _ hv1m) (Submodule.smul_mem _ _ hv1m)) ?_` and prove the remaining obligations. Rewrite using `[map_sub, hφ _ hθ _ (hUL hv1m.1), map_smul, hφ1, hwt, sub_self]`. Establish `hw2 : IsWtOn (Formalism.REAL.Kset ε) σ (fun a => Formalism.QuantumDeterminants.lowK ε lam (revNeg ε a)) (v - E v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `h0 : v - E v = 0`. Introduce `θ hθ`. Rewrite using `[h0, map_zero, smul_zero]`. Take `⟨u, hu, hu0, hwu⟩` from `exists_ext_mem hσ (lam := lam) _ hU1s (inf_le_left.trans (hUL.trans hL)) hv1m h0`. Establish `h1` using `hmax (fun a => Formalism.QuantumDeterminants.lowK ε lam (revNeg ε a)) (φ u) (hUφ u hu.1) (fun h => hu0 (hinj u hu h)) (fun t => by`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hφ _ (diag_mem t) u (hUL hu.1), hwu t (diag_mem t), map_smul])`. Rewrite using `[← wt_eq hσ (hL (hUL hv1m.1)) h0 hw1 h1]`. Conclude with `hw1`. Distinguish the cases in `h0 : E v = 0`. Rewrite `hw2` using `[h0, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨v, hv, hv1, hw2, rfl⟩`. Take `⟨u, hu, hu0, hwu⟩` from `exists_ext_mem hσ (lam := lam) _ hU0s (inf_le_left.trans (hUL.trans hL)) hv0 h0`. Establish `horth : ∀ w ∈ U ⊓ LinearMap.ker φ, ⟪v - E v, w⟫_ℂ = 0`. Introduce `w hw`. Rewrite using `[← GlobalTheory.LowKProj.fix_of_mem hE w hw, ← hE.2.1, hEv1, inner_zero_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (((‖E v‖ / ‖u‖ : ℝ) : ℂ) • u) ∈ U ⊓ LinearMap.ker φ` using `Submodule.smul_mem _ _ hu`. Establish `hnm : ‖(((‖E v‖ / ‖u‖ : ℝ) : ℂ) • u)‖ = ‖E v‖`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg (by positivity), div_mul_cancel₀ _ (norm_ne_zero_iff.2 hu0)]`. Use `⟨(v - E v) + ((‖E v‖ / ‖u‖ : ℝ) : ℂ) • u, L.add_mem (hUL hv1m.1) (hUL hm.1), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `p1` using `norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero (𝕜 := ℂ) _ _ (horth _ hm)`.
-
-Establish `p2` using `norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero (𝕜 := ℂ) _ _ (horth _ hv0)`. Rewrite `p2` using `[sub_add_cancel, hv1]`. Rewrite `p1` using `[hnm, ← p2]`. Conclude with `(mul_self_inj_of_nonneg (norm_nonneg _) zero_le_one).1 p1`. Introduce `θ hθ`.
-
-Rewrite using `[map_add, hw2 θ hθ, isWtOn_smul hwu _ θ hθ, smul_add]`. Establish `h1 : φ (((‖E v‖ / ‖u‖ : ℝ) : ℂ) • u) = 0` using `hm.2`. Rewrite using `[map_add, hφ1, h1, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extremal_same_image : ∀ (n : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (X : Type) [AddCommGroup X] [Module ℂ X] (ε : Fin n → Bool) (lam μ : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (π : Matrix (Fin n) (Fin n) ℂ → (X →ₗ[ℂ] X)) (L : Submodule ℂ H) (φ : H →ₗ[ℂ] X) (v : H), IsURepOn (UJset ε) σ → L ≤ lowKSub ε lam σ → IsKStableOn ε σ L → (∀ k ∈ Formalism.REAL.Kset ε, ∀ x ∈ L, φ (σ k x) = π k (φ x)) → v ∈ L → ‖v‖ = 1 → (∀ t : Fin n → ℝ, π (Matrix.diagonal fun a => Complex.exp ((t a : ℂ) * Complex.I)) (φ v) = Complex.exp (((∑ a, μ a * t a : ℝ) : ℂ) * Complex.I) • φ v) → (∀ (ν : Fin n → ℝ) (y : X), y ∈ Submodule.span ℂ {z | ∃ k ∈ Formalism.REAL.Kset ε, z = π k (φ v)} → y ≠ 0 → (∀ t : Fin n → ℝ, π (Matrix.diagonal fun a => Complex.exp ((t a : ℂ) * Complex.I)) y = Complex.exp (((∑ a, ν a * t a : ℝ) : ℂ) * Complex.I) • y) → ∑ a : Fin n, ν a * (if ε a then -((a : ℕ) : ℝ) else ((a : ℕ) : ℝ)) ≤ ∑ a : Fin n, μ a * (if ε a then -((a : ℕ) : ℝ) else ((a : ℕ) : ℝ))) → ∃ x ∈ L, ‖x‖ = 1 ∧ IsWtOn (Formalism.REAL.Kset ε) σ (fun a => Formalism.QuantumDeterminants.lowK ε lam (revNeg ε a)) x ∧ φ x = φ v := by
   intro n H _ _ X _ _ ε lam μ σ π L φ v hσ hL hLs hφ hv hv1 hwt hmax

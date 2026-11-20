@@ -14,17 +14,15 @@ section Compl
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Use `set W := Submodule.span K (Set.range c) with hW`. Take `⟨W', hWW'⟩` from `Submodule.exists_isCompl W`. Establish `hrW : Module.finrank K W = r`. Rewrite using `[hW, finrank_span_eq_card hc, Fintype.card_fin]`. Establish `hsum` using `Submodule.finrank_add_eq_of_isCompl hWW'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsum` using `[hrW, Module.finrank_fin_fun]`. Use `set m := Module.finrank K W' with hm`. Establish `hn : n = r + m` using `hsum.symm`. Set `bW : Module.Basis (Fin m) K W'` to `Module.finBasisOfFinrankEq K W' hm.symm`. Set `d : Fin m → (Fin n → K)` to `fun j => (bW j : Fin n → K)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : LinearIndependent K d` using `bW.linearIndependent.map' W'.subtype (Submodule.ker_subtype W')`. Establish `hdisj : Disjoint (Submodule.span K (Set.range c)) (Submodule.span K (Set.range d))`. Use `hWW'.disjoint.mono_right ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(bW j).2`. Establish `hv : LinearIndependent K (Sum.elim c d)` using `hc.sum_type hd hdisj`. Set `e : Fin n ≃ Fin r ⊕ Fin m` to `(finCongr hn).trans finSumFinEquiv.symm`. Use `⟨fun i => Sum.elim c d (e i), ?_, ?_⟩` and prove the remaining obligations. Establish `hli : LinearIndependent K (fun i => Sum.elim c d (e i))` using `hv.comp e e.injective`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp (Matrix.linearIndependent_rows_iff_isUnit.mp hli)`. Introduce `i hi`. Establish `he : e i = Sum.inl ⟨i, hi⟩`. Establish `: finCongr hn i = Fin.castAdd m ⟨i, hi⟩` using `Fin.ext rfl`. Simplify using `only [e, Equiv.trans_apply, this, finSumFinEquiv_symm_apply_castAdd]`.
-
-Express the relevant statement in the definitionally equal form `Sum.elim c d (e i) = c ⟨i, hi⟩`. Rewrite using `[he]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isCompl {n r : ℕ} (c : Matrix (Fin r) (Fin n) K) (hc : LinearIndependent K c) :
     ∃ a : Matrix (Fin n) (Fin n) K, IsCompl c a := by
@@ -66,20 +64,20 @@ variable {D : D7} {n : ℕ}
 abbrev sg (D : D7) : D.host.E →+* D.host.E := (D.sp.cm.sig : D.host.E →+* D.host.E)
 
 /- English proof (translation)
-Use `show star (star x) = x`. Conclude with `star_star x`.
+A detailed English derivation is pending.
 -/
 theorem sg_sg (D : D7) (x : D.host.E) : sg D (sg D x) = x := by
   show star (star x) = x
   exact star_star x
 
 /- English proof (translation)
-Simplify using `only [mat, map_mul, Units.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mat_mul' (x y : G D n) : mat (x * y) = mat x * mat y := by
   simp only [mat, map_mul, Units.val_mul]
 
 /- English proof (translation)
-Establish `h1 : mat x⁻¹ = (mat x)⁻¹`. Simplify using `only [mat, map_inv, Matrix.coe_units_inv]`. Rewrite using `[h1, h]`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul g hg, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_of (x : G D n) {g : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E} (hg : IsUnit g.det)
     (h : mat x = g.map (incA D)) : mat x⁻¹ = g⁻¹.map (incA D) := by
@@ -90,9 +88,9 @@ theorem mat_inv_of (x : G D n) {g : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E}
   rw [← Matrix.map_mul, Matrix.nonsing_inv_mul g hg, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `hmem : y.1 * x.1⁻¹ ∈ GF D n` using `mul_mem y.2 (inv_mem x.2)`. Establish `hmat : mat (y.1 * x.1⁻¹) = (gy * gx⁻¹).map (incA D)`. Rewrite using `[mat_mul', mat_inv_of x.1 hx mx, my, Matrix.map_mul]`. Rewrite using `[← (hR D n).2.2 _ hmem _ hmat]`. Use `show Quotient.mk _ x = Quotient.mk _ y ↔ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Quotient.eq, QuotientGroup.rightRel_apply, Subgroup.mem_subgroupOf]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mk_eq_iff_siegel (hR : RatPts) (x y : GF D n) {gx gy : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E}
     (hx : IsUnit gx.det) (mx : mat x.1 = gx.map (incA D)) (my : mat y.1 = gy.map (incA D)) :
@@ -106,7 +104,7 @@ theorem mk_eq_iff_siegel (hR : RatPts) (x y : GF D n) {gx gy : Matrix (Fin (n + 
   simp only [Subgroup.coe_mul, Subgroup.coe_inv]
 
 /- English proof (translation)
-Unfold `IsSiegelP`. Introduce `i j`. Conclude with `Matrix.one_apply_ne (finSumFinEquiv.injective.ne Sum.inr_ne_inl)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isSiegelParabolic_one (K : Type) [Field K] (n : ℕ) : IsSiegelP (1 : Matrix (Fin (n + n)) (Fin (n + n)) K) := by
   unfold IsSiegelP
@@ -114,23 +112,21 @@ theorem isSiegelParabolic_one (K : Type) [Field K] (n : ℕ) : IsSiegelP (1 : Ma
   exact Matrix.one_apply_ne (finSumFinEquiv.injective.ne Sum.inr_ne_inl)
 
 /- English proof (translation)
-Introduce `hBr hRat hPInv hT2 D n V ψ χ θ μ ω hS Φ hconv μr hμr c hc`. Establish `ha : ∀ U : Submodule D.host.E (Fin n → D.host.E), ∃ a, IsCompl (c U) a` using `fun U => exists_isCompl (c U) (hc U).1`. Use `choose a haU using ha`. Take `⟨hU, huniq⟩` from `hBr D.host.E (sg D) (sg_sg D) two_ne_zero n c hc a haU`. Establish `hq : ∀ q : (U : Submodule D.host.E (Fin n → D.host.E)) × HermE D (Module.finrank D.host.E U), ∃ γ ∈ GF D n, mat γ = (repMat (sg D) q.2.1 (a q.1)).map (incA D)` using `fun q => (hRat D n).2.1 _ (hU q.1 q.2.1 q.2.2).1 (hU q.1 q.2.1 q.2.2).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose γ hγGF hγmat using hq`. Establish `hdet : ∀ q : (U : Submodule D.host.E (Fin n → D.host.E)) × HermE D (Module.finrank D.host.E U), IsUnit (repMat (sg D) q.2.1 (a q.1)).det` using `fun q => (hU q.1 q.2.1 q.2.2).1`. Set `f : ((U : Submodule D.host.E (Fin n → D.host.E)) × HermE D (Module.finrank D.host.E U)) → GlobalTheory.Eis.Cosets (P D n) (GF D n)` to `fun q => mk ((P D n).subgroupOf (GF D n)) ⟨γ q, hγGF q⟩`. Establish `hinj : Function.Injective f`. Introduce `q q' hqq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsSiegelP (repMat (sg D) q'.2.1 (a q'.1) * (repMat (sg D) q.2.1 (a q.1))⁻¹)` using `(mk_eq_iff_siegel hRat ⟨γ q, hγGF q⟩ ⟨γ q', hγGF q'⟩ (hdet q) (hγmat q) (hγmat q')).mp hqq`. Establish `h2 : IsSiegelP (repMat (sg D) q'.2.1 (a q'.1) * (repMat (sg D) q'.2.1 (a q'.1))⁻¹)`. Rewrite using `[Matrix.mul_nonsing_inv _ (hdet q')]`. Conclude with `isSiegelParabolic_one _ n`. Conclude with `(huniq _ (hdet q') (hU q'.1 q'.2.1 q'.2.2).2).unique h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsurj : Function.Surjective f`. Introduce `z`. Take `⟨g, hg, hgu, hgm⟩` from `(hRat D n).1 _ (Quotient.out z).2`. Take `⟨q, hqs, -⟩` from `huniq g hg hgu`. Use `⟨q, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Quotient.out_eq z]`. Conclude with `(mk_eq_iff_siegel hRat ⟨γ q, hγGF q⟩ (Quotient.out z) (hdet q) (hγmat q) hgm).mpr hqs`. Set `e` to `Equiv.ofBijective f ⟨hinj, hsurj⟩`. Establish `hrle : ∀ U : Submodule D.host.E (Fin n → D.host.E), Module.finrank D.host.E U ≤ n` using `fun U => (Submodule.finrank_le U).trans_eq (Module.finrank_fin_fun _)`. Establish `hsum : Summable (GlobalTheory.Eis.term (P D n) (GF D n) (fun γ => ((ω γ) Φ).1 0) 1)` using `Summable.of_norm hconv`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h3` using `(e.hasSum_iff).mpr hsum.hasSum`. Unfold `GlobalTheory.Eis.cosetSum`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Establish `hrel : (⟨γ q, hγGF q⟩ : GF D n) * (Quotient.out (e q))⁻¹ ∈ (P D n).subgroupOf (GF D n)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : Quotient.mk _ (Quotient.out (e q)) = Quotient.mk _ (⟨γ q, hγGF q⟩ : GF D n)` using `Quotient.out_eq (f q)`. Conclude with `QuotientGroup.rightRel_apply.mp (Quotient.exact h0)`. Rewrite `hrel` using `[Subgroup.mem_subgroupOf, Subgroup.coe_mul, Subgroup.coe_inv]`. Establish `hp : ((Quotient.out (e q) : GF D n) : G D n) * (γ q)⁻¹ ∈ (P D n ⊓ GF D n : Subgroup (G D n))`. Use `Subgroup.mem_inf.mpr ⟨?_, (GF D n).mul_mem (Quotient.out (e q)).2 ((GF D n).inv_mem (hγGF q))⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2 : ((Quotient.out (e q) : GF D n) : G D n) * (γ q)⁻¹ = (γ q * ((Quotient.out (e q) : GF D n) : G D n)⁻¹)⁻¹`. Rewrite using `[mul_inv_rev, inv_inv]`. Rewrite using `[h2]`. Conclude with `(P D n).inv_mem hrel`. Establish `hw'` using `hPInv D n V ψ χ θ μ ω hS Φ _ hp (γ q)`.
-
-Simplify using `only [inv_mul_cancel_right] at hw'`. Simplify using `only [Function.comp_apply, GlobalTheory.Eis.term, mul_one]`. Rewrite using `[hw']`. Conclude with `(hT2 D n V ψ χ θ μ ω hS Φ _ (hrle q.1) (μr _) (hμr _) (c q.1) (a q.1) (haU q.1) q.2 (γ q) (hγGF q) (hγmat q)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eisCells_of : Bruhat → RatPts → PInv → Term2 → EisCells := by
   intro hBr hRat hPInv hT2 D n V ψ χ θ μ ω hS Φ hconv μr hμr c hc

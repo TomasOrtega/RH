@@ -30,9 +30,9 @@ theorem mulFr_val {G : ι → Matrix (Fin n) (Fin n) ℂ} (g : ι → Matrix (Fi
     (y : Frames G) (τ : ι) : (mulFr g hg y).1 τ = g τ * y.1 τ := rfl
 
 /- English proof (translation)
-Use `le_antisymm ((Formalism.L2.Col.CSpan_le_span (RingHom.id ℂ) lam).trans ?_) fun F hF => ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨P, hP, rfl⟩`. Use `show MvPolynomial.map (RingHom.id ℂ) P ∈ _`. Rewrite using `[MvPolynomial.map_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hP`. Establish `h` using `Formalism.L2.Col.map_mem_CSpan (RingHom.id ℂ) lam F hF`. Rewrite `h` using `[MvPolynomial.map_id]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cspan_eq (lam : ι → DomWeight n) : CSpan lam = Formalism.L2.DIV.VV ℂ lam := by
   refine le_antisymm ((Formalism.L2.Col.CSpan_le_span (RingHom.id ℂ) lam).trans ?_) fun F hF => ?_
@@ -45,9 +45,9 @@ theorem cspan_eq (lam : ι → DomWeight n) : CSpan lam = Formalism.L2.DIV.VV �
     rwa [MvPolynomial.map_id] at h
 
 /- English proof (translation)
-Unfold `ValC at hv ⊢`. Rewrite `hv`, the goal using `[cspan_eq]`. Take `⟨P, hP, rfl⟩` from `hv`. Use `⟨(∏ τ, (g τ).det ^ shiftOf lam τ) • Formalism.GradedWeylDivisibility.blockAct ℂ g P, Submodule.smul_mem _ _ (Formalism.L2.DIV.ps_blockAct_mem_VV lam g hP), ?_⟩` and prove the remaining obligations. Rewrite using `[← Formalism.L2.Col.fnOf_mul]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, mulFr_val, Pi.one_apply, Matrix.one_mul, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem valC_tr (G : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWeight n) (g : ι → Matrix (Fin n) (Fin n) ℂ)
     (hg : ∀ τ, IsUnit (g τ).det) {v : Frames G → ℂ} (hv : v ∈ ValC G lam) :
@@ -65,7 +65,7 @@ variable {E : Type} [Field E]
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `[atInf, Matrix.map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem atInf_mul (emb : ι → E →+* ℂ) (a b : Matrix (Fin n) (Fin n) E) :
     atInf emb (a * b) = atInf emb a * atInf emb b := by
@@ -74,7 +74,7 @@ theorem atInf_mul (emb : ι → E →+* ℂ) (a b : Matrix (Fin n) (Fin n) E) :
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use `show IsUnit (((γ : Matrix (Fin n) (Fin n) E)).map (emb τ)).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(Matrix.isUnits_det_units γ).map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_atInf (emb : ι → E →+* ℂ) (γ : GL (Fin n) E) (τ : ι) : IsUnit (atInf emb γ.1 τ).det := by
   show IsUnit (((γ : Matrix (Fin n) (Fin n) E)).map (emb τ)).det
@@ -96,11 +96,9 @@ def RatPol (lam : ι → DomWeight n) : AddSubgroup (MvPolynomial (ι × Fin n �
     p = s r • Formalism.L2.Forms.ten (fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ))}
 
 /- English proof (translation)
-Unfold `RatPol at hp ⊢`. Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨r', f, hf, rfl⟩` from `hx`. Use `AddSubgroup.subset_closure ⟨r * r', f, hf, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul, map_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `AddSubgroup.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `AddSubgroup.add_mem _ hx hy`.
-
-Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `AddSubgroup.neg_mem _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_RatPol (lam : ι → DomWeight n) (r : K) {p : MvPolynomial (ι × Fin n × Fin n) ℂ}
     (hp : p ∈ RatPol s lam) : s r • p ∈ RatPol s lam := by
@@ -115,7 +113,7 @@ theorem smul_mem_RatPol (lam : ι → DomWeight n) (r : K) {p : MvPolynomial (ι
   | neg x _ hx => rw [smul_neg]; exact AddSubgroup.neg_mem _ hx
 
 /- English proof (translation)
-Unfold `RatPol`. Simplify using `only [delSq_shW]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem RatPol_shW (lam : ι → DomWeight n) (c : ι → ℤ) :
     RatPol s (fun τ => Formalism.L2.Forms.shW (lam τ) (c τ)) = RatPol s lam := by
@@ -123,15 +121,15 @@ theorem RatPol_shW (lam : ι → DomWeight n) (c : ι → ℤ) :
   simp only [delSq_shW]
 
 /- English proof (translation)
-Unfold `RatPol at hp`. Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨r, f, hf, rfl⟩` from `hx`. Use `⟨r • ∏ τ, Formalism.GradedWeylDivisibility.blockEmb K τ (MvPolynomial.map (Int.castRingHom K) (f τ)), ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, fun τ => ?_, rfl⟩)` and prove the remaining obligations. Conclude with `Formalism.GradedWeylDivisibility.weylLeDual K n n le_rfl _ (natW_anti (lam τ)) (map_mem_weyl le_rfl _ _ (hf τ))`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul, map_ten]`. Use `congr 2`. Use function extensionality and compare the values at `τ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.map_map]`. Establish `e : s.comp (Int.castRingHom K) = Int.castRingHom ℂ` using `RingHom.ext_int _ _`. Rewrite using `[e]`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, map_zero _⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF, rfl⟩` from `hx`. Take `⟨F', hF', rfl⟩` from `hy`. Conclude with `⟨F + F', Submodule.add_mem _ hF hF', map_add _ _ _⟩`. Consider the case `neg x _ hx`. Take `⟨F, hF, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨-F, Submodule.neg_mem _ hF, map_neg _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_VV_of_mem_RatPol (lam : ι → DomWeight n) {p : MvPolynomial (ι × Fin n × Fin n) ℂ}
     (hp : p ∈ RatPol s lam) : ∃ F ∈ VV K lam, MvPolynomial.map s F = p := by
@@ -160,23 +158,21 @@ theorem exists_VV_of_mem_RatPol (lam : ι → DomWeight n) {p : MvPolynomial (ι
 variable [CharZero K]
 
 /- English proof (translation)
-Unfold `VV Formalism.GradedWeylDivisibility.tensorLat at hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`. Set `T : ι → Set (MvPolynomial (ι × Fin n × Fin n) K)` to `fun τ => Set.range fun w : List (Fin n × Fin n × ℕ) => Formalism.GradedWeylDivisibility.blockEmb K τ (Formalism.GradedWeylDivisibility.applyWord K w (Formalism.GradedWeylDivisibility.hw K le_rfl (lam τ).natW))`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `h1 : ∀ τ, Formalism.GradedWeylDivisibility.blockEmb K τ (f τ) ∈ Submodule.span K (T τ)`. Introduce `τ`. Establish `h0 : f τ ∈ delSq K n (lam τ)` using `by rw [← nablaSq_eq_delSq]; exact hf τ`. Establish `h` using `Submodule.mem_map_of_mem (f := (Formalism.GradedWeylDivisibility.blockEmb K (k := n) (n := n) τ).toLinearMap) h0`. Unfold `delSq Formalism.GradedWeylDivisibility.weyl at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h`. Establish `h2 : (∏ τ, Formalism.GradedWeylDivisibility.blockEmb K τ (f τ)) ∈ Submodule.span K (∏ τ, T τ)`. Rewrite using `[← Submodule.prod_span]`. Conclude with `prod_mem_prod_sub _ _ _ fun τ _ => h1 τ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ y ∈ Submodule.span K (∏ τ, T τ), MvPolynomial.map s y ∈ RatPol s lam`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Rewrite `hy` using `[Set.mem_finsetProd]`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg, rfl⟩` from `hy`. Establish `hg' : ∀ τ, ∃ w : List (Fin n × Fin n × ℕ), Formalism.GradedWeylDivisibility.blockEmb K τ (Formalism.GradedWeylDivisibility.applyWord K w (Formalism.GradedWeylDivisibility.hw K le_rfl (lam τ).natW)) = g τ` using `fun τ => hg (Finset.mem_univ τ)`. Use `choose w hw using hg'`. Use `AddSubgroup.subset_closure ⟨1, fun τ => Formalism.GradedWeylDivisibility.applyWord ℤ (w τ) (Formalism.GradedWeylDivisibility.hw ℤ le_rfl (lam τ).natW), fun τ => Submodule.subset_span ⟨w τ, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : (∏ τ, g τ) = ∏ τ, Formalism.GradedWeylDivisibility.blockEmb K τ (Formalism.GradedWeylDivisibility.applyWord K (w τ) (Formalism.GradedWeylDivisibility.hw K le_rfl (lam τ).natW))` using `Finset.prod_congr rfl fun τ _ => (hw τ).symm`. Rewrite using `[e, map_ten]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[← Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, Formalism.GradedWeylDivisibility.lclosedeq_hw_map, ← Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, Formalism.GradedWeylDivisibility.lclosedeq_hw_map]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `AddSubgroup.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `AddSubgroup.add_mem _ hy hz`. Consider the case `smul c y _ hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`. Conclude with `smul_mem_RatPol s lam c hy`. Conclude with `key _ h2`. Consider the case `zero => rw [map_zero]`. Conclude with `AddSubgroup.zero_mem _`.
-
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `AddSubgroup.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`. Conclude with `smul_mem_RatPol s lam c hx`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_RatPol (lam : ι → DomWeight n) {F : MvPolynomial (ι × Fin n × Fin n) K} (hF : F ∈ VV K lam) :
     MvPolynomial.map s F ∈ RatPol s lam := by
@@ -238,33 +234,31 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩ c0`. Conclude with `⟨(Submodule.mem_pi.1 (Submodule.mem_inf.1 hg).2) (y c0) (Set.mem_univ _), fun γ hγ κ e z z' hz => (Submodule.mem_inf.1 hg).1 γ hγ (y c0) (y c0) κ e z z' hz⟩`. Introduce `hφ`. Establish `hU : ∀ κ : S.U, (κ : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)` using `fun κ => ((S.U_eq _).1 κ.2).1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `dec : ∀ x : UPts σ J (FiniteAdeleRing (𝓞 F) F), ∃ (c0 : c) (γ : UJ (σ : E →+* E) J) (κ : S.U), x.1 = bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ.1 * (y c0).1 * κ.1 := by`. Introduce `x`. Take `⟨c0, hc0⟩` from `hy.2 (Quotient.mk'' x)`. Take `⟨h, hh, k, hk, e⟩` from `(DoubleCoset.eq _ _ (y c0) x).1 hc0`. Establish `hh' : (h : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) ∈ (UJ (σ : E →+* E) J).map (bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F))) := Subgroup.mem_subgroupOf.1 hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk' : (k : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) ∈ S.U` using `Subgroup.mem_subgroupOf.1 hk`. Take `⟨γ, hγ, hγe⟩` from `Subgroup.mem_map.1 hh'`. Use `⟨c0, ⟨γ, hγ⟩, ⟨_, hk'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e, Subgroup.coe_mul, Subgroup.coe_mul, ← hγe]`. Establish `uniq : ∀ (c1 c2 : c) (γ1 γ2 : UJ (σ : E →+* E) J) (κ1 κ2 : S.U), bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ1.1 * (y c1).1 * κ1.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ2.1 * (y c2).1 * κ2.1 → ∀ z1 z2 : Frames (gramC J emb), (∀ τ, atInf emb γ1.1.1 τ * z1.1 τ = atInf emb γ2.1.1 τ * z2.1 τ) → (S.chi κ1 : ℂ) * φ c1 z1 = (S.chi κ2 : ℂ) * φ c2 z2 := …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c1 c2 γ1 γ2 κ1 κ2 e z1 z2 hz`. Establish `hr : (y c2).1 = bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (γ2⁻¹ * γ1).1 * (y c1).1 * (κ1 * κ2⁻¹).1 := by`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, Subgroup.coe_mul, Subgroup.coe_inv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hc : c1 = c2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Set `kk : UPts σ J (FiniteAdeleRing (𝓞 F) F)` to `⟨(κ1 * κ2⁻¹).1, hU _⟩`. Set `r : UPts σ J (FiniteAdeleRing (𝓞 F) F)` to `y c2 * kk⁻¹ * (y c1)⁻¹`. Establish `hrR : r ∈ (ratPts σ J (FiniteAdeleRing (𝓞 F) F)).subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F))`. Rewrite using `[Subgroup.mem_subgroupOf]`. Use `Subgroup.mem_map.2 ⟨(γ2⁻¹ * γ1).1, (γ2⁻¹ * γ1).2, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ = (y c2).1 * ((κ1 * κ2⁻¹).1)⁻¹ * ((y c1).1)⁻¹`. Rewrite using `[hr]`. Use `group`. Establish `hkK : kk ∈ S.U.subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F))`. Rewrite using `[Subgroup.mem_subgroupOf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(κ1 * κ2⁻¹).2`. Use `hy.1 (show (Quotient.mk'' (y c1) : Cls S) = Quotient.mk'' (y c2) from (DoubleCoset.eq _ _ (y c1) (y c2)).2 ⟨r, hrR, kk, hkK, ?_⟩)` and prove the remaining obligations. Simplify using `only [r]`. Use `group`. Substitute `hc` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `(hφ c1).2 (γ2⁻¹ * γ1).1 (γ2⁻¹ * γ1).2 (κ1 * κ2⁻¹) hr z2 z1 (fun τ => by`. Establish `h1 : γ2.1.1 * (γ2⁻¹ * γ1).1.1 = γ1.1.1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel_left]`. Establish `h2` using `congrFun (atInf_mul emb γ2.1.1 (γ2⁻¹ * γ1).1.1) τ`. Rewrite `h2` using `[h1, Pi.mul_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `hz τ`. Rewrite `h3` using `[h2, Matrix.mul_assoc]`. Conclude with `(((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_atInf emb γ2.1 τ)).mul_left_cancel h3).symm)`. Rewrite using `[h, ← mul_assoc, ← Units.val_mul, map_mul, map_inv, mul_comm (S.chi κ1), mul_inv_cancel_left]`. Use `choose cc gam kap hdec using dec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `htr : ∀ (γ : GL (Fin n) E) (z : Frames (gramC J emb)) τ, atInf emb γ.1 τ * (mulFr (atInf emb (γ⁻¹ : GL (Fin n) E).1) (isUnit_atInf emb _) z).1 τ = z.1 τ`. Introduce `γ z τ`. Establish `h2` using `congrFun (atInf_mul emb γ.1 (γ⁻¹ : GL (Fin n) E).1) τ`. Rewrite `h2` using `[Pi.mul_apply]`. Rewrite using `[mulFr_val, ← Matrix.mul_assoc, ← h2, Units.mul_inv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[atInf]`. Set `gf : UPts σ J (FiniteAdeleRing (𝓞 F) F) → Frames (gramC J emb) → ℂ` to `fun x z => ((S.chi (kap x) : ℂˣ) : ℂ) * φ (cc x) (mulFr (atInf emb (((gam x).1)⁻¹ : GL (Fin n) E).1) (isUnit_atInf emb _) z)`. Establish `hAd : gf ∈ AdFun S emb`. Introduce `γ hγ x x' κ hx z z' hz`. Establish `e : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (gam x').1 * (y (cc x')).1 * (kap x').1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) ((⟨γ, hγ⟩ : UJ (σ : E →+* E) J) * gam x).1 * (y (cc x)).1 * (kap x * κ).1 := by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hdec x', hx, hdec x]`. Simplify using `only [Subgroup.coe_mul, map_mul, mul_assoc]`. Use `(uniq _ _ _ _ _ _ e _ (mulFr (atInf emb (((gam x).1)⁻¹ : GL (Fin n) E).1) (isUnit_atInf emb _) z') fun τ => ?_).trans ?_` and prove the remaining obligations. Rewrite using `[htr, hz τ, Subgroup.coe_mul, Units.val_mul, atInf_mul, Pi.mul_apply, Matrix.mul_assoc, htr]`. Simplify using `only [gf, map_mul, Units.val_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpi : ∀ x, gf x ∈ ValC (gramC J emb) lam` using `fun x => Submodule.smul_mem _ ((S.chi (kap x) : ℂˣ) : ℂ) (valC_tr _ lam _ (isUnit_atInf emb _) (hφ (cc x)).1)`. Use `Submodule.mem_map.2 ⟨gf, Submodule.mem_inf.2 ⟨hAd, Submodule.mem_pi.2 fun x _ => hpi x⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c0 z`. Establish `e : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (gam (y c0)).1 * (y (cc (y c0))).1 * (kap (y c0)).1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (1 : UJ (σ : E →+* E) J).1 * (y c0).1 * (1 : S.U).1 := by`.
-
-Rewrite using `[← hdec (y c0)]`. Simplify using the standard rewrite rules. Use `(uniq _ _ _ _ _ _ e _ z fun τ => ?_).trans (by simp)` and prove the remaining obligations. Rewrite using `[htr]`. Simplify using `[atInf]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_fiC_iff (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ) (lam : ι → DomWeight n) {c : Type}
     (y : c → UPts σ J (FiniteAdeleRing (𝓞 F) F))
@@ -374,11 +368,11 @@ variable {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [Numbe
   (S : GStep E K n) (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨Law.embF_mem S emb σ lam h x, fun c => ⟨_, map_mem_RatPol σ lam (x.1 c).2, rfl⟩⟩`. Introduce and unpack `⟨hφ, hv⟩`. Establish `hv' : ∀ c, ∃ v : VV K lam, φ c = evV emb 1 lam σ v` using `fun c => by`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨P, hP, e⟩` from `hv c`. Take `⟨F, hF, rfl⟩` from `exists_VV_of_mem_RatPol σ lam hP`. Conclude with `⟨⟨F, hF⟩, e⟩`. Use `choose v hv using hv'`. Use `⟨⟨v, fun c g => ?_⟩, funext fun c => (hv c).symm⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : evV emb 1 lam σ (S.rho emb lam c.1 g.1 (v c)) = evV emb 1 lam σ (v c)`. Rewrite using `[Law.evV_rho, ← hv c]`. Conclude with `(hφ c).2 g`. Conclude with `Subtype.ext (evFr_injective _ _ σ (stdFrC _) e)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_embF_iff (h : (S.fam emb lam).Ok) (φ : S.Cl → GlobalTheory.Mem.Col2.Fr emb σ n → ℂ) :
     (∃ x, S.embF emb σ lam h x = φ) ↔ φ ∈ S.Fi emb σ lam ∧ ∀ c, ∃ P ∈ RatPol σ lam, φ c = fnOf _ (shiftOf lam) 1 P := by
@@ -403,15 +397,15 @@ variable {F : Type} [Field F] [NumberField F] [Algebra F E] {sg : E →ₐ[F] E}
 omit [StarRing E] [NumberField K] [StarRing K] in
 
 /- English proof (translation)
-Substitute `he` using the available equality. Prove the components needed by the constructor for the conclusion. Introduce `h γ hγ κ hy z z' hz`. Take `⟨s, hs⟩` from `(hr ⟨γ, hγ⟩).2 (Subgroup.mem_map.2 ⟨κ.1⁻¹, inv_mem κ.2, by show y * κ.1⁻¹ * y⁻¹ = bc _ γ`. Rewrite using `[mul_inv_eq_iff_eq_mul, mul_inv_eq_iff_eq_mul]`.
+Substitute using the available equality. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy⟩)`. Take `rfl : γ = S.gam c.1 s.1` from `(congrArg Subtype.val hs).symm.trans (hst s)`. Establish `e1 : p z = frMul emb σ (S.gam c.1 s.1) (p z')` using `Subtype.ext (funext fun τ => by`. Rewrite using `[hp, hz τ, ← hp z']`. Use the proof step `rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hchi s κ hy, ← congrFun (h s) (p z), GStep.tr, trFr_apply, e1, ← frMul_mul, inv_mul_cancel, frMul_one]`. Introduce `h s`. Take `⟨κ, hκ, hy⟩` from `Subgroup.mem_map.1 ((hr (st s)).1 ⟨s, rfl⟩)`. Establish `hy' : y = bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (S.gam c.1 s.1) * y * (⟨κ, hκ⟩⁻¹ : lev.U).1 := by`. Rewrite using `[← hst, ← hy]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `show y = y * κ * y⁻¹ * y * κ⁻¹`. Use `group`. Use function extensionality and compare the values at `z`. Establish `hpz : ∀ z : GlobalTheory.Mem.Col2.Fr emb σ n, p ⟨z.1, z.2⟩ = z` using `fun z => Subtype.ext (hp _)`. Establish `h1` using `h _ (hst s ▸ (st s).2) _ hy' ⟨z.1, z.2⟩ ⟨(frMul emb σ (S.gam c.1 s.1)⁻¹ z).1, (frMul emb σ (S.gam c.1 s.1)⁻¹ z).2⟩ (fun τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : frMul emb σ (S.gam c.1 s.1) (frMul emb σ (S.gam c.1 s.1)⁻¹ z) = z`. Rewrite using `[← frMul_mul, mul_inv_cancel, frMul_one]`. Conclude with `(congrFun (congrArg Subtype.val h2) τ).symm)`. Rewrite `h1` using `[hpz, hpz, hchi s _ hy']`. Rewrite using `[GStep.tr, trFr_apply, ← h1]`.
+A detailed English derivation is pending.
 -/
 theorem stab_inv_iff (c : S.Cl) (lev : StepLevel F E sg J T f bad) {e : ι → E →+* ℂ} (he : e = embAt σ emb)
     (y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (st : S.Stab c → UJ (sg : E →+* E) J)
@@ -453,7 +447,7 @@ theorem stab_inv_iff (c : S.Cl) (lev : StepLevel F E sg J T f bad) {e : ι → E
     rw [GStep.tr, trFr_apply, ← h1]
 
 /- English proof (translation)
-Substitute `hl` using the available equality. Establish `e : (fun z => v (p z)) = fun z : Frames G' => v ⟨z.1, z.2⟩` using `funext fun z => congrArg v (Subtype.ext (hp z))`. Rewrite using `[e]`. Conclude with `Iff.rfl`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_valC_comp {G G' : ι → Matrix (Fin n) (Fin n) ℂ} {l l' : ι → DomWeight n} (hl : l' = l) (v : Frames G → ℂ)
     (p : Frames G' → Frames G) (hp : ∀ z, (p z).1 = z.1) : (fun z => v (p z)) ∈ ValC G' l' ↔ v ∈ ValC G l := by
@@ -463,9 +457,9 @@ theorem mem_valC_comp {G G' : ι → Matrix (Fin n) (Fin n) ℂ} {l l' : ι → 
   exact Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[SetLike.mem_coe, mem_dual]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Establish `: Formalism.UG.hform s (1 : Matrix (Fin n) (Fin n) E) x y = hStd E n x y`. Simplify using `[Formalism.UG.hform, hStd_apply, Matrix.one_apply, hs]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Submodule.mem_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dualSet_std (s : E →+* E) (hs : ∀ x, s x = star x) (L : Submodule (𝓞 E) (Sp E n)) :
     dualSet s (1 : Matrix (Fin n) (Fin n) E) L = (Formalism.HermitianLatticesTheory.dual (hStd E n) L : Set (Sp E n)) := by
@@ -486,7 +480,7 @@ open Formalism.L2.Col
 variable {X : Formalism.L2.Col.Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))}
 
 /- English proof (translation)
-Establish `e : FrmG.incl Λ Θ (1, s.2) = ((s.1⁻¹, 1, 1) : UF X.E n × GLG X.E n SG × GLQ X.E n Q) * FrmG.incl Λ Θ s` using `Prod.ext (inv_mul_cancel s.1).symm (one_mul _).symm`. Rewrite using `[e, mul_smul, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_part_smul (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (s : FrmG Λ Θ) (p : DecoF X.E n ST SG Q)
     (h : FrmG.incl Λ Θ s • p = p) :
@@ -509,41 +503,37 @@ open GlobalTheory.Mem.Col2.BwLat GlobalTheory.LvT.Built.ValLat Formalism.Hermiti
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a i hi bad Ch chOf K eY hK hY`. Take `⟨k, hR⟩` from `hK`. Take `⟨hG, -, hc⟩` from `(spaces_in_coordinates I hI hP l Z).2.2.2 i hi`. Establish `hL` using `(hc u a).1`. Establish `hlam : lamTG (D` using `I.rec7 l Z) (I.fm l u a) i = GlobalTheory.Mem.Col2.lamT (B.hcW u) i := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Use `show Formalism.L2.Forms.shW (Examples₂.lamOf (B.hcW u τ) i) ((i * (B.R.t + 1) / 2 : ℕ) : ℤ) = GlobalTheory.Mem.Col2.shW (Examples₂.lamOf (B.hcW u τ) i) (-((i : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ)))`. Take `⟨k, hk⟩` from `B.R.t_odd`. Establish `e1 : (B.R.t + 1) / 2 = k + 1` using `by omega`. Establish `e2 : i * (B.R.t + 1) / 2 = i * (k + 1)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show B.R.t + 1 = (k + 1) * 2 by omega, ← mul_assoc, Nat.mul_div_cancel _ two_pos]`. Unfold `Formalism.L2.Forms.shW GlobalTheory.Mem.Col2.shW`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[e1, e2, Nat.cast_mul, sub_eq_add_neg]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hemb : Formalism.L2.Forms.embT (I.rec7 l Z) = embAt B.embLL B.fields.emb`. Use function extensionality and compare the values at `τ`. Use extensionality with `y`. Use `show B.host.φ₀ _ = _`. Rewrite using `[← B.embE_φ₀]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hYs : ∀ z, (eY.symm z).1 = z.1` using `fun z => (hY (eY.symm z)).symm.trans (congrArg Subtype.val (eY.apply_symm_apply z))`. Use `⟨fun φ => ?_, fun φ => ?_, fun w _ x => ?_⟩` and prove the remaining obligations. Establish `hchi : ∀ (c : (I.stp u a i).Cl) (s : (I.stp u a i).Stab c) (κ : (K (chOf c)).lev.U), (fun g y x : GA B (B.R.N i) => y = g * y * x) (bc (inclE (F` using `B.host.F) (FiniteAdeleRing (𝓞 B.host.F) B.host.F)) ((I.stp u a i).gam c.1 s.1)) ((K (chOf c)).y ⟨c, rfl⟩).1 κ.1 → ((K (chOf c)).lev.chi κ : ℂ) = B.embLL ((I.stp u a i).chr c.1 s.1 : B.LLˣ) := by`. Introduce `c s κ hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `(hR.pt c).of_extTo (I.Q_subset_SQ a) ((LevTwist.levOk_twists B X I hI).2.1.mono_right (I.Q_subset_SQ a))`. Establish `h1` using `RatMove.isPtOf_ratAd _ _ B.sp.cm _ _ _ _ s.1.1⁻¹ _ _ h0`. Establish `h2` using `lev_part_smul _ _ s.1 ((I.stp u a i).rep c).1.1 (congrArg (fun q => q.1.1) s.2)`. Establish `h3 : ∀ g y x k : GA B (B.R.N i), y = g * y * x → g⁻¹ * (y * k) = y * x * k` using `fun g y x k h => by`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, ← mul_assoc, ← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ratAd B.host.F (s.1.1⁻¹ : UF B.host.E (B.R.N i)) = (bc (inclE (F` using `B.host.F) (FiniteAdeleRing (𝓞 B.host.F) B.host.F)) ((I.stp u a i).gam c.1 s.1))⁻¹ := by`. Rewrite using `[ratAd, map_inv, map_inv]`. Both sides reduce to the same expression. Rewrite `h1` using `[h4, h3 _ _ _ _ hy, ← h2]`. Conclude with `hR.chr c κ (1, s.1.2) (map_one (ufGL B.fields.E (B.R.N i))) h1`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ c : (I.stp u a i).Cl, (φ c ∈ ValC (Gr B.fields.emb B.embLL (B.R.N i)) (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) ∧ ∀ g : (I.stp u a i).Stab c, (I.stp u a i).tr B.fields.emb B.embLL c.1 g.1 (φ c) = φ c) ↔ _` using `fun c => and_congr (mem_valC_comp (G' := gramC (gramN (I.rec7 l Z) i hi) (Formalism.L2.Forms.embT (I.rec7 l Z))) hlam (φ c) eY.symm hYs).symm (stab_inv_iff (E := B.host.E) (F := B.host.F) (sg := sigD (I.rec7 l Z)) (J := gramN (I.rec7 l Z) i hi) (I.stp u a i) B.fields.emb B.embLL …`. Prove the components needed by the constructor for the conclusion. Introduce `h β`. Use `(mem_fiC_iff _ _ _ _ (K β).y_bij _).2 ?_` and prove the remaining obligations. Introduce and unpack `⟨c, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(key c).1 (h c)`. Introduce `h c`. Conclude with `(key c).2 ((mem_fiC_iff _ _ _ _ (K (chOf c)).y_bij _).1 (h (chOf c)) ⟨c, rfl⟩)`. Establish `hrat : RatPol B.embLL (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) = RatSpan (I.rec7 l Z) ((I.fm l u a).lam i)`. Rewrite using `[← hlam]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `RatPol_shW B.embLL ((I.fm l u a).lam i) fun _ => ((i * (B.R.t + 1) / 2 : ℕ) : ℤ)`. Use `(exists_embF_iff (I.stp u a i) B.fields.emb B.embLL (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) ((l.fmL u a).fam i) φ).trans (and_congr_right fun _ => forall_congr' fun c => ?_)` and prove the remaining obligations. Rewrite using `[hrat]`. Use `exists_congr fun P => and_congr_right fun _ => funext_iff.trans (forall_congr' fun z => ?_)` and prove the remaining obligations. Conclude with `Eq.congr_right (fnOf_eq (congrArg shiftOf hlam.symm) (fun _ => rfl) _ _ _ (hY z).symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `HeightOneSpectrum (𝓞 B.fields.K) at w`. Establish `hp` using `(I.rec7 l Z).what₂.places.resChar_prime w`. Establish `hd : ∀ c, dualSet (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) i hi) (latCrd (I.rec7 l Z) i hi (I.latAt u a i c)) = SetLike.coe ((I.stp u a i).rep c).1.1.deco.1.Lsh`. Introduce `c`. Establish `h1` using `dualSet_std (E := B.host.E) (sigD (I.rec7 l Z)).toRingHom (fun x => rfl) ((I.stp u a i).rep c).1.1.deco.1.L`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrArg₂ (dualSet _) hG (hL c)).trans h1`. Establish `hint : ∀ P, P ∈ Formalism.L2.Forms.IntSpan (I.rec7 l Z) w ((I.fm l u a).lam i) ↔ ∃ z₀ ∈ localization₂ w.asIdeal (delStd B.LL (GlobalTheory.Mem.Col2.lamT (B.hcW u) i)), P = MvPolynomial.map B.embLL z₀`. Introduce `P`. Establish `h` using `mem_closure_iff (I.rec7 l Z).what₂.embLL ((I.rec7 l Z).plEq w) (intW (I.rec7 l Z).what₂.places w) ((I.rec7 l Z).val_nonneg_iff w) (lamTG (D := I.rec7 l Z) (I.fm l u a) i) P`. Simplify using `only [lamTG, delSq_shW] at h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hlam]`. Conclude with `h`. Establish `hfin : Finite (I.stp u a i).Cl`. Use `((l.ch u a).step i).fin_orb` as an intermediate fact. Conclude with `Finite.instSigma`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h1 : x ∈ (I.fm l u a).S i w ↔ ∀ c, x.1 c ∈ localization₂ w.asIdeal (delAtr B.fields.emb (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) ((I.stp u a i).rep c).1.1.deco.1.Lsh)` using `((I.rec7 l Z).mem_locW_iff w _ x).trans (mem_localization_latticeOf (I.stp u a i) B.fields.emb (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) ((l.fmL u a).fam i) _ w x)`. Use `h1.trans (forall_congr' fun c => ?_)` and prove the remaining obligations. Establish `l1` using `((I.stp u a i).rep c).1.1.deco.2.Lsh_lattice`. Establish `hbel : ∀ τ, (((I.rec7 l Z).what₂.places.resChar w : ℕ) : 𝓞 B.fields.E) ∈ (bcBelow (B.fields.emb τ) w).asIdeal` using `fun τ => by show bcO (B.fields.emb τ) _ ∈ w.asIdeal`. Rewrite using `[map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `GlobalTheory.LvT.Inh.resChar_mem_plEq (I.rec7 l Z) w`. Establish `key : ∀ Bm : GL (Fin (B.R.N i)) B.host.E, Formalism.L2.Forms.IsLocBasis ((I.rec7 l Z).what₂.places.resChar w) (((I.stp u a i).rep c).1.1.deco.1.Lsh : Set _) Bm → (x.1 c ∈ localization₂ w.asIdeal (delAtr B.fields.emb (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) ((I.stp u a i).rep c).1 …` using `I.rec7 l Z) (I.fm l u a) i)) (atInf (Formalism.L2.Forms.embT (I.rec7 l Z)) (Bm⁻¹ : GL (Fin (B.R.N i)) B.host.E).1) P (eY z)) := by`. Introduce `Bm hB`. Use `(mem_localization_delAtr_fn B.fields.emb B.embLL (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) w l1 (fun _ => Bm) (fun τ => isBasisAt_of_isLocBasis hp _ (hbel τ) hB) (x.1 c)).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨z, hz, e⟩`. Use `⟨_, (hint _).2 ⟨z, hz, rfl⟩, fun y => (congrFun e y).trans ?_⟩` and prove the remaining obligations. Conclude with `fnOf_eq (congrArg shiftOf hlam.symm) (fun τ => congrArg (fun e => atInf e _ τ) hemb.symm) _ _ _ (hY y).symm`. Introduce and unpack `⟨P, hP, e⟩`. Take `⟨z, hz, rfl⟩` from `(hint P).1 hP`.
-
-Use `⟨z, hz, funext fun y => (e y).trans ?_⟩` and prove the remaining obligations. Conclude with `fnOf_eq (congrArg shiftOf hlam) (fun τ => congrArg (fun e => atInf e _ τ) hemb) _ _ _ (hY y)`. Prove the components needed by the constructor for the conclusion. Introduce `h Bm hB`. Rewrite `hB` using `[hd c]`.
-
-Conclude with `(key Bm hB).1 h`. Introduce `h`. Establish `: Fact ((I.rec7 l Z).what₂.places.resChar w).Prime` using `⟨hp⟩`. Take `⟨Bm, hB⟩` from `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB.exists_isLocBasis ((I.rec7 l Z).what₂.places.resChar w) B.host.E _ l1.fg l1.span_eq_top`. Conclude with `(key Bm hB).2 (h Bm (by rw [hd c]; exact hB))`.
+A detailed English derivation is pending.
 -/
 theorem val_tied : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 B.host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) bad i hi (fun c : {c // chOf c = β} => (I.chain l u a).stab i c.1) (fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c.1))) (eY : (I.chain l u a).Y i ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) i hi), I.ReadsK l Z u a i hi chOf K → I.IdY l Z u a i hi eY → ValuationCompatibleChart (D := (I.rec7 l Z)) (I.fm l u a) eY (fun _ => True) chOf (lat := fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c)) K := by
   intro B X I hI hP l Z u a i hi bad Ch chOf K eY hK hY

@@ -17,9 +17,9 @@ namespace GlobalTheory.TorusExtChar
 open CubeValues SymmetricSemicharacter FrameValue
 
 /- English proof (translation)
-Distinguish the cases in `hU : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ U`. Establish `e` using `h hU`. Take `rfl : U = ⊤` from `top_le_iff.1 hU`. Rewrite `e` using `[valAt', valAt', dif_pos hU, dif_pos hU, valAt, valAt]`. Establish `e'` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).1 e`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `r : ∀ a : Γ(Sp ℂ, ⊤), ((𝟙 (Sp ℂ) : Sp ℂ ⟶ Sp ℂ).appLE ⊤ ⊤ hU).hom a = a` using `fun a => congrArg (fun q => q.hom a) ((Sp ℂ).presheaf.map_id (Opposite.op ⊤))`. Conclude with `(r a).symm.trans (Eq.trans e' (r b))`. Use `fn_ext fun x hx => (hU fun y _ => ?_).elim` and prove the remaining obligations. Take `rfl : x = y` from `Subsingleton.elim (α := PrimeSpectrum ℂ) x y`. Conclude with `hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fn_ext_val {U : (Sp ℂ).Opens} {a b : Γ(Sp ℂ, U)}
     (h : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ U → valAt' (𝟙 (Sp ℂ)) U a = valAt' (𝟙 (Sp ℂ)) U b) : a = b := by
@@ -36,9 +36,9 @@ theorem fn_ext_val {U : (Sp ℂ).Opens} {a b : Γ(Sp ℂ, U)}
     exact hx
 
 /- English proof (translation)
-Distinguish the cases in `hU : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ U`. Establish `v` using `fun a => (valueRules _ (𝟙 (Sp ℂ))).2.2.2.2.2 (𝟙 _) (Category.id_comp _) U a hU`. Take `⟨e, he⟩` from `(valueRules _ (𝟙 (Sp ℂ))).2.1 U hU`. Establish `m : constFn (𝟙 (Sp ℂ)) U c * constFn (𝟙 (Sp ℂ)) U c⁻¹ = 1` using `fn_ext_val fun _ => by`. Rewrite using `[he, he, map_mul, ← he, ← he, v, v, map_one, mul_inv_cancel₀ (hc hU)]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Units.mkOfMulEqOne _ _ m, fun _ => v c⟩`. Conclude with `⟨1, fun h => (hU h).elim⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_unit_val (U : (Sp ℂ).Opens) (c : ℂ) (hc : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ U → c ≠ 0) :
     ∃ a : Γ(Sp ℂ, U)ˣ, ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ U → valAt' (𝟙 (Sp ℂ)) U a.val = c := by
@@ -57,15 +57,13 @@ variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {u : HolUnif A
   {φ : K → (Sp ℂ ⟶ A.left)} {ε : K → ℤ} {φ' : K' → (Sp ℂ ⟶ A.left)} {ε' : K' → ℤ}
 
 /- English proof (translation)
-Introduce `j j' c₁ c₂ c₃`. Use `Units.ext (fn_ext_val fun h₃ => ?_)` and prove the remaining obligations. Take `⟨h₁, h₂⟩` from `(le_preimage_inf _ _ _).1 h₃`. Use `(val_res _ valueRules inf_le_left h₃ _).trans (Eq.trans ?_ (val_res _ valueRules inf_le_right h₃ _).symm)` and prove the remaining obligations. Use `(valAt'_gen hL ht hz h₁).trans (Eq.trans ?_ (valAt'_gen hL ht' hz' h₂).symm)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h]`. Use `congr 1`. Take `⟨J, hJ, e⟩` from `exists_good L hL (default : PrimeSpectrum ℂ) (Sum.elim φ φ') (Sum.elim j j') (by`. Introduce and unpack `(a | a) (b | b) e`. Use `exacts [c₁ a b e, c₃ a b e, (c₃ b a e.symm).symm, c₂ a b e]) (by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(a | a)`. Use `exacts [Set.mem_iInter.1 (h₁ trivial) a, Set.mem_iInter.1 (h₂ trivial) a])`. Use `congrArg (Units.coeHom ℂ) (hs fun w => Units.mk0 _ (u.fr_ne (J (u.ex w).left) w (((valueRules _ (u.ex w).left).1 _).2 (hJ _))))` as an intermediate fact. Simplify using `only [map_prod, map_zpow, Units.coeHom_apply, Units.val_mk0] at this`. Establish `a : ∀ k, J (u.ex (z k)).left = j k` using `fun k => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hz k, Category.id_comp]`. Conclude with `e (.inl k)`. Establish `a' : ∀ k, J (u.ex (z' k)).left = j' k` using `fun k => by`. Rewrite using `[← hz' k, Category.id_comp]`. Conclude with `e (.inr k)`.
-
-Simplify `this` using `only [frameProd, a, a']`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem corr_of_genVal (hL : L.IsLB) {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}
     (ht : t.IsGen) (ht' : t'.IsGen) {z : K → Fin g → ℂ} {z' : K' → Fin g → ℂ}
@@ -94,7 +92,7 @@ theorem corr_of_genVal (hL : L.IsLB) {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.
   simpa only [frameProd, a, a'] using this
 
 /- English proof (translation)
-Establish `: t.s = t'.s` using `funext fun j => Units.ext (fn_ext_val fun h₁ => (valAt'_gen hL ht hz h₁).trans (Eq.trans (by rw [h]) (valAt'_gen hL ht' hz h₁).symm))`. Take `⟨s⟩` from `t`. Take `⟨s'⟩` from `t'`. Conclude with `congrArg LB.Gen.mk this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_genVal (hL : L.IsLB) {t t' : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) (ht' : t'.IsGen)
     {z : K → Fin g → ℂ} (hz : IsLift u φ (𝟙 _) z)
@@ -106,11 +104,11 @@ theorem eq_of_genVal (hL : L.IsLB) {t t' : LB.Gen (LB.LinComb L φ ε)} (ht : t.
   exact congrArg LB.Gen.mk this
 
 /- English proof (translation)
-Use `choose s hs using fun j : K → L.ι => exists_unit_val (L.wchart φ j) (c * frameProd u ε z j) fun hj => mul_ne_zero hc (frameProd_ne_zero hz ε hj)`. Use `⟨⟨s⟩, fun j j' => Units.ext (fn_ext_val fun h₃ => ?_), ?_⟩` and prove the remaining obligations. Take `⟨hj, hj'⟩` from `(le_preimage_inf _ _ _).1 h₃`. Establish `e₂` using `val_linComb (𝟙 _) valueRules L φ ε j j' hj hj'`. Establish `e₃ : frameProd u ε z j = valAt' (𝟙 _) (L.wchart φ j ⊓ L.wchart φ j') ((L.LinComb φ ε).g j j').val * frameProd u ε z j'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (congrArg (· * _) e₂).symm` and prove the remaining obligations. Simplify using `only [frameProd]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[u.fr_compat (j k) (j' k) (z k) ((le_preimage_inf _ _ _).2 ⟨(hz.le_iff j).1 hj k, (hz.le_iff j').1 hj' k⟩), mul_zpow, hz k]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `((val_res _ valueRules inf_le_left h₃ _).trans (hs j hj)).trans (Eq.trans ?_ ((val_unit_mul _ valueRules h₃ _ _).trans (congrArg (_ * ·) ((val_res _ valueRules inf_le_right h₃ _).trans (hs j' hj')))).symm)` and prove the remaining obligations. Rewrite using `[e₃]`. Conclude with `mul_left_comm _ _ _`. Establish `h` using `le_wchart_chartAt hL φ (𝟙 _)`. Conclude with `(congrArg (· / _) (hs _ h)).trans (mul_div_cancel_right₀ _ (frameProd_ne_zero hz ε h))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_genVal (hL : L.IsLB) (ε : K → ℤ) {z : K → Fin g → ℂ} (hz : IsLift u φ (𝟙 _) z) {c : ℂ} (hc : c ≠ 0) :
     ∃ t : LB.Gen (LB.LinComb L φ ε), t.IsGen ∧ genVal u hL t (𝟙 _) z = c := by
@@ -138,9 +136,9 @@ theorem exists_genVal (hL : L.IsLB) (ε : K → ℤ) {z : K → Fin g → ℂ} (
 end Gen
 
 /- English proof (translation)
-Set `w : X →+ Additive ℂˣ` to `AddMonoidHom.mk' (fun x => Additive.ofMul (Units.mk0 _ (h₀ x))) fun x y => congrArg Additive.ofMul (Units.ext (h x y))`. Set `e : ℂ →+ Additive ℂˣ` to `AddMonoidHom.mk' (fun x => Additive.ofMul (Units.mk0 (eTwoPi x) (Complex.exp_ne_zero _))) fun x y => congrArg Additive.ofMul (Units.ext (by simp [eTwoPi, mul_add, Complex.exp_add]))`. Establish `he : Function.Surjective e.toIntLinearMap` using `fun a => ⟨Complex.log a.toMul.val / (2 * Real.pi * Complex.I), congrArg Additive.ofMul (Units.ext (by show Complex.exp _ = _`. Rewrite using `[mul_div_cancel₀ _ Complex.two_pi_I_ne_zero, Complex.exp_log a.toMul.ne_zero]`. Use the proof step `rfl))⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `Module.projective_lifting_property e.toIntLinearMap w.toIntLinearMap he`. Conclude with `⟨l.toAddMonoidHom, fun x => (congrArg (fun q => (Additive.toMul (q x)).val) hl).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_log {X : Type} [AddCommGroup X] [Module.Free ℤ X] (v : X → ℂ) (h₀ : ∀ x, v x ≠ 0)
     (h : ∀ x y, v (x + y) = v x * v y) : ∃ lam : X →+ ℂ, ∀ x, v x = eTwoPi (lam x) := by
@@ -161,7 +159,7 @@ section Points
 variable [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ]
 
 /- English proof (translation)
-Use `show Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`. Conclude with `Spec.map_id _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TF_hom : (Out.TF (R := ℂ) ℂ).hom = 𝟙 (Sp ℂ) := by
   show Spec.map _ ≫ Spec.map _ = _
@@ -173,7 +171,7 @@ variable {D : Out.DegPre ℂ} {g : ℕ} (u : HolUnif D.P.A D.P.L g)
 abbrev pt (z : Fin g → ℂ) : Out.TF (R := ℂ) ℂ ⟶ D.P.A := toUnit _ ≫ u.ex z
 
 /- English proof (translation)
-Use `show (Out.TF (R := ℂ) ℂ).hom ≫ x.left = _`. Rewrite using `[TF_hom]`. Conclude with `Category.id_comp _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toUnit_left {B : Over (Sp ℂ)} (x : 𝟙_ (Over (Sp ℂ)) ⟶ B) :
     (show Sp ℂ ⟶ _ from (toUnit (Out.TF (R := ℂ) ℂ) ≫ x).left) = x.left := by
@@ -184,7 +182,7 @@ theorem toUnit_left {B : Over (Sp ℂ)} (x : 𝟙_ (Over (Sp ℂ)) ⟶ B) :
 variable {u} {ct : D.X →+ (Fin g → ℂ)}
 
 /- English proof (translation)
-Introduce `k` and use `by refine (Category.id_comp _).trans (Eq.trans ?_ (toUnit_left _)) fin_cases k · refine congrArg (fun q => q.left) (?_ : padd D.P.A (toUnit _ ≫ D.c x) (pt u z) = pt u (ct x + z)) rw [pt, pt, u.ex_add, hc, MonObj.comp_mul] rfl · exact congrArg (fun q => (toUnit (Out.TF (R := ℂ) ℂ) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLift_gt (hc : ∀ x, u.ex (ct x) = D.c x) (z : Fin g → ℂ) (x : D.X) :
     IsLift u (Y := Sp ℂ) (Out.DegPre.gtφ D ℂ (pt u z) x) (𝟙 _) ![ct x + z, ct x, z, 0] := fun k => by
@@ -199,7 +197,7 @@ theorem isLift_gt (hc : ∀ x, u.ex (ct x) = D.c x) (z : Fin g → ℂ) (x : D.X
     rw [ex_zero, Hom.one_def]; simp
 
 /- English proof (translation)
-Establish `e : lift (Out.DegPre.cF D ℂ x) (lift (Out.DegPre.cF D ℂ x') (pt u z)) = toUnit _ ≫ pt3 u ![ct x, ct x', z]`. Simplify using `[pt3, comp_lift, hc]`. Conclude with `(congrArg (fun q => q.left) e).trans (toUnit_left _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_left (hc : ∀ x, u.ex (ct x) = D.c x) (z : Fin g → ℂ) (x x' : D.X) :
     (show Sp ℂ ⟶ _ from (lift (Out.DegPre.cF D ℂ x) (lift (Out.DegPre.cF D ℂ x') (pt u z))).left) =
@@ -209,7 +207,7 @@ theorem lift_left (hc : ∀ x, u.ex (ct x) = D.c x) (z : Fin g → ℂ) (x x' : 
   exact (congrArg (fun q => q.left) e).trans (toUnit_left _)
 
 /- English proof (translation)
-Introduce and unpack `(k | k)`. Conclude with `isLift_gt hc z _ k`. Conclude with `(Category.id_comp _).trans ((congrArg (· ≫ _) (lift_left hc z x x')).trans (isLift_cube u _ k))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isLift_mult (hc : ∀ x, u.ex (ct x) = D.c x) (z : Fin g → ℂ) (x x' : D.X) :
     IsLift u (Y := Sp ℂ) (Sum.elim (Out.DegPre.gtφ D ℂ (pt u z) (x + x'))
@@ -220,7 +218,7 @@ theorem isLift_mult (hc : ∀ x, u.ex (ct x) = D.c x) (z : Fin g → ℂ) (x x' 
   · exact (Category.id_comp _).trans ((congrArg (· ≫ _) (lift_left hc z x x')).trans (isLift_cube u _ k))
 
 /- English proof (translation)
-Introduce and unpack `(k | k)`. Use `exacts [isLift_gt hc z _ k, isLift_gt hc z _ k]`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isLift_mult' (hc : ∀ x, u.ex (ct x) = D.c x) (z : Fin g → ℂ) (x x' : D.X) :
     IsLift u (Y := Sp ℂ) (Sum.elim (Out.DegPre.gtφ D ℂ (pt u z) x) (Out.DegPre.gtφ D ℂ (pt u z) x'))
@@ -229,9 +227,9 @@ theorem isLift_mult' (hc : ∀ x, u.ex (ct x) = D.c x) (z : Fin g → ℂ) (x x'
   exacts [isLift_gt hc z _ k, isLift_gt hc z _ k]
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Use `(congrArg (_ * ·) (prod_thK fun I => f (∑ i ∈ I, ![a, b, z] i))).trans ?_` and prove the remaining obligations. Simplify using `only [sum_three, Finset.sum_singleton, Finset.sum_empty, Matrix.cons_val, Fin.prod_univ_four, Out.DegPre.gtε, zpow_neg, zpow_one]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem prod_mult (a b z : Fin g → ℂ) (f : (Fin g → ℂ) → ℂˣ) :
     ∏ k, f (Sum.elim ![a + b + z, a + b, z, 0] (cubeLift ![a, b, z]) k) ^ Sum.elim Out.DegPre.gtε thε k =
@@ -246,7 +244,7 @@ theorem prod_mult (a b z : Fin g → ℂ) (f : (Fin g → ℂ) → ℂˣ) :
   abel
 
 /- English proof (translation)
-Use `(genVal_mul D.P.isLB _ _ _ _).trans ((congrArg₂ (· * ·) rfl ?_).trans (_root_.mul_one _))` and prove the remaining obligations. Use `(genVal_pull D.P.isLB _ _ _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (genVal_cube_of_face D.P.isLB h D.cub.t D.cub.isGen (D.cub.face 0) ![ct x, ct x', z])` and prove the remaining obligations. Conclude with `congrArg (fun q => genVal u D.P.isLB (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) D.cub.t q (cubeLift ![ct x, ct x', z])) ((Category.id_comp _).trans (lift_left hc z x x'))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem genVal_mult {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (h : u.IsAH Hm χ) (hc : ∀ x, u.ex (ct x) = D.c x)
     (z : Fin g → ℂ) (x x' : D.X) (t : LB.Gen (LB.LinComb D.P.L (Out.DegPre.gtφ D ℂ (pt u z) (x + x')) Out.DegPre.gtε)) :
@@ -261,9 +259,9 @@ theorem genVal_mult {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (h : u
     ((Category.id_comp _).trans (lift_left hc z x x'))
 
 /- English proof (translation)
-Establish `a` using `genVal_mult h hc z x x' (s (x + x'))`. Establish `b : genVal u D.P.isLB (Y` using `Sp ℂ) (LB.mulGen D.P.L _ _ _ _ (s x) (s x')) (𝟙 _) (Sum.elim ![ct x + z, ct x, z, 0] ![ct x' + z, ct x', z, 0]) = genVal u D.P.isLB (Y := Sp ℂ) (s x) (𝟙 _) ![ct x + z, ct x, z, 0] * genVal u D.P.isLB (Y := Sp ℂ) (s x') (𝟙 _) ![ct x' + z, ct x', z, 0] := genVal_mul D.P.isLB _ _ _ …`. Establish `p` using `prod_mult (ct x) (ct x') z`. Rewrite `p` using `[← map_add]`. Establish `g₁` using `DVR.mulGen_isGen _ _ _ _ _ _ _ (hs (x + x')) (DVR.pullGen_isGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t D.cub.isGen (lift (Out.DegPre.cF D ℂ x) (lift (Out.DegPre.cF D ℂ x') (pt u z))).left)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `g₂` using `DVR.mulGen_isGen _ _ _ _ _ _ _ (hs x) (hs x')`. Conclude with `⟨fun hm => a.symm.trans ((genVal_corr D.P.isLB hm (isLift_mult hc z x x') (isLift_mult' hc z x x') p).trans b), fun e => corr_of_genVal D.P.isLB g₁ g₂ (isLift_mult hc z x x') (isLift_mult' hc z x x') p (a.trans (e.trans b.symm))⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mult_iff {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (h : u.IsAH Hm χ) (hc : ∀ x, u.ex (ct x) = D.c x)
     (z : Fin g → ℂ) (s : ∀ x, LB.Gen (LB.LinComb D.P.L (Out.DegPre.gtφ D ℂ (pt u z) x) Out.DegPre.gtε))
@@ -289,7 +287,7 @@ theorem mult_iff {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (h : u.Is
       (a.trans (e.trans b.symm))⟩
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (hb.trans (toUnit_left _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_pt {b : Out.TF (R := ℂ) ℂ ⟶ D.P.A} {z : Fin g → ℂ} (hb : (show Sp ℂ ⟶ _ from b.left) = (u.ex z).left) :
     b = pt u z := Over.OverMorphism.ext (hb.trans (toUnit_left _).symm)
@@ -297,13 +295,11 @@ theorem eq_pt {b : Out.TF (R := ℂ) ℂ ⟶ D.P.A} {z : Fin g → ℂ} (hb : (s
 end Points
 
 /- English proof (translation)
-Introduce `_ _ D g u Hm χ ct h _ hc z`. Use `⟨fun lam => ?_, ?_⟩` and prove the remaining obligations. Use `choose s hs hv using fun x => exists_genVal D.P.isLB Out.DegPre.gtε (isLift_gt hc z x) (c := eTwoPi (lam x)) (Complex.exp_ne_zero _)`. Use `⟨⟨pt u z, s, hs, ?_, fun x x' => ?_⟩, ⟨toUnit_left _, hv⟩, ?_⟩` and prove the remaining obligations. Use `corr_of_genVal D.P.isLB (hs 0) (fun i j => (map_one _).trans ?_) (isLift_gt hc z 0) (z' := PEmpty.elim) (fun k => k.elim) (fun f => ?_) ((hv 0).trans (Eq.trans ?_ (genVal_one D.P.isLB _ _).symm))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm`. Simplify using `[Fin.prod_univ_four, Out.DegPre.gtε]`. Simplify using `[eTwoPi]`. Use `(mult_iff h hc z s hs x x').2 ((hv _).trans (Eq.trans ?_ (congrArg₂ (· * ·) (hv x) (hv x')).symm))` and prove the remaining obligations. Simplify using `[eTwoPi, mul_add, Complex.exp_add]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨b, s', hs', h₀, hm⟩ ⟨hb, hv'⟩`. Take `rfl : b = pt u z` from `eq_pt hb`. Take `rfl : s' = s` from `funext fun x => eq_of_genVal D.P.isLB (hs' x) (hs x) (isLift_gt hc z x) ((hv' x).trans (hv x).symm)`. Both sides reduce to the same expression. Introduce and unpack `⟨b, s, hs, h₀, hm⟩ hb`.
-
-Take `rfl : b = pt u z` from `eq_pt hb`. Conclude with `exists_log _ (fun x => genVal_ne_zero D.P.isLB _ (isLift_gt hc z x)) fun x x' => (mult_iff h hc z s hs x x').1 (hm x x')`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem points_eq_characters : ∀ [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (D : Out.DegPre ℂ) (g : ℕ) (u : HolUnif D.P.A D.P.L g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ) (ct : D.X →+ (Fin g → ℂ)), u.IsAH Hm χ → u.IsRig D.rig → (∀ x, u.ex (ct x) = D.c x) → ∀ z : Fin g → ℂ, (∀ lam : D.X →+ ℂ, ∃! p : Out.GtPtF D ℂ, (show Sp ℂ ⟶ _ from p.b.left) = (u.ex z).left ∧ ∀ x, FrameValue.genVal u D.P.isLB (p.s x) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![ct x + z, ct x, z, 0] = eTwoPi (lam x)) ∧ ∀ p : Out.GtPtF D ℂ, (show Sp ℂ ⟶ _ from p.b.left) = (u.ex z).left → ∃ lam : D.X →+ ℂ, ∀ x, FrameValue.genVal u D.P.isLB (p.s x) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![ct x + z, ct x, z, 0] = eTwoPi (lam x) := by
   intro _ _ D g u Hm χ ct h _ hc z

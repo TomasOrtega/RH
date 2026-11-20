@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.CupPullbacks.ConstCompSingle
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC UpperTheory.Pbf
 
 /- English proof (translation)
-Establish `hb` using `Scheme.Opens.ι_preimage_self (T.basicOpen a)`. Rewrite `hb` using `[Scheme.preimage_basicOpen]`. Apply `RingedSpace.isUnit_of_isUnit_germ _ ⊤` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : x ∈ (T.basicOpen a).toScheme.basicOpen ((ConcreteCategory.hom ((T.basicOpen a).ι.app ⊤)) a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hb]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `(Scheme.mem_basicOpen _ _ x hx).mp hx'`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 private theorem unit_on_basicOpen (T : Scheme.{0}) (a : Γ(T, ⊤)) :
     IsUnit ((T.basicOpen a).ι.appTop.hom a) := by
@@ -20,11 +20,9 @@ private theorem unit_on_basicOpen (T : Scheme.{0}) (a : Γ(T, ⊤)) :
   exact (Scheme.mem_basicOpen _ _ x hx).mp hx'
 
 /- English proof (translation)
-Establish `h1 : (1 : Γ(T, ⊤)) ∈ Ideal.span {a, b}` using `h ▸ Submodule.mem_top`. Take `⟨x, y, hxy⟩` from `Ideal.mem_span_pair.mp h1`. Establish `hu : IsUnit (ConcreteCategory.hom (T.presheaf.germ ⊤ u trivial) (x * a) + ConcreteCategory.hom (T.presheaf.germ ⊤ u trivial) (y * b))`. Rewrite using `[← map_add, hxy, map_one]`. Conclude with `isUnit_one`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add hu with hx | hy` into its components or cases. Use `left`. Rewrite using `[Scheme.mem_basicOpen_top]`. Rewrite `hx` using `[map_mul]`. Conclude with `isUnit_of_mul_isUnit_right hx`.
-
-Use `right`. Rewrite using `[Scheme.mem_basicOpen_top]`. Rewrite `hy` using `[map_mul]`. Conclude with `isUnit_of_mul_isUnit_right hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_basicOpen_or (T : Scheme.{0}) (a b : Γ(T, ⊤)) (h : Ideal.span {a, b} = ⊤) (u : T) :
     u ∈ T.basicOpen a ∨ u ∈ T.basicOpen b := by
@@ -45,13 +43,11 @@ private theorem mem_basicOpen_or (T : Scheme.{0}) (a b : Γ(T, ⊤)) (h : Ideal.
     exact isUnit_of_mul_isUnit_right hy
 
 /- English proof (translation)
-Introduce `T a b h`. Set `U : Bool → T.Opens` to `fun i => bif i then T.basicOpen a else T.basicOpen b`. Establish `hU : TopologicalSpace.IsOpenCover U`. Apply `eq_top_iff.mpr` to reduce the goal to its premises. Introduce `u _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `mem_basicOpen_or T a b h u with hu | hu` into its components or cases. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨true, hu⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨false, hu⟩`. Set `C` to `T.openCoverOfIsOpenCover U hU`. Use `⟨Sieve.ofArrows C.X C.f, Scheme.zariskiTopology_le_etaleTopology _ (Scheme.Cover.mem_grothendieckTopology C), ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `V g hg`. Take `⟨i, c, rfl⟩` from `(Sieve.mem_ofArrows_iff _ _ g).mp hg`. Consider the cases of `i`. Use `right`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]`.
-
-Conclude with `(unit_on_basicOpen T b).map c.appTop.hom`. Use `left`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `(unit_on_basicOpen T a).map c.appTop.hom`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.locally_isUnit_or_isUnit_of_span_pair_eq_top :
     ∀ (T : Scheme.{0}) (a b : Γ(T, ⊤)), Ideal.span {a, b} = ⊤ → Loc T fun V g => IsUnit (g.appTop.hom a) ∨ IsUnit (g.appTop.hom b) := by

@@ -10,9 +10,9 @@ noncomputable section
 universe u w
 
 /- English proof (translation)
-Introduce `S _ _ Ω _ _ N x G B r η hη hspan`. Take `⟨M₀, -, hM₀⟩` from `hE S Ω N x Ω G.toSubFamily G.fg`. Take `⟨M, _, _, _, _, 𝓜, hfin, hsplit⟩` from `hT S Ω N x M₀ G.toSubSystem B.toSubSystem r η hM₀ hη hspan`. Take `⟨c₀, hc₀⟩` from `hV (MvPolynomial (Fin (r + 1)) S) N M 𝓜 hfin`. Use `⟨c₀, fun i b c hi hc => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ι, π, hπ⟩` from `hsplit b c i`. Use `hc₀ i hi c hc` as an intermediate fact. Conclude with `⟨fun z z' => by rw [← hπ z, ← hπ z', Subsingleton.elim (ι z) (ι z')]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem TwistVanishAll.proof (hE : Extension.Statement.{u, w, w}) (hV : SerreVanish.Statement.{u, w})
     (hT : TwistSplit.Statement.{u, w}) : TwistVanishAll.Statement.{u, w} := by

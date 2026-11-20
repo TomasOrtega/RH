@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.SgInf
 
 /- English proof (translation)
-Establish `hm : Measurable fun x : Mt k r => opn (Matrix.of x) ^ (-A)` using `(show Continuous fun x : Mt k r => opn (Matrix.of x) from hc).measurable.pow_const _`. Use `⟨hm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Conclude with `(hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun x => Real.rpow_nonneg (opn_nonneg _) _)).2 h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_opn_rpow_neg {k r : ℕ} (μ : Measure (Mt k r)) (A : ℝ)
     (hc : Continuous fun x : Mat k r => opn x) (h : normInt μ A < ⊤) :
@@ -25,9 +25,9 @@ theorem integrable_opn_rpow_neg {k r : ℕ} (μ : Measure (Mt k r)) (A : ℝ)
     (Filter.Eventually.of_forall fun x => Real.rpow_nonneg (opn_nonneg _) _)).2 h
 
 /- English proof (translation)
-Establish `hx0 : 0 < x` using `lt_of_lt_of_le one_pos hx`. Establish `h1 : y ^ (-a) ≤ y ^ (-(a / 2))` using `Real.rpow_le_rpow_of_exponent_le hy (by linarith)`. Establish `h2 : y ^ (-(a / 2)) ≤ (t / x) ^ (-(a / 2))` using `Real.rpow_le_rpow_of_nonpos (div_pos ht hx0) hyt (by linarith)`. Establish `h3 : (t / x) ^ (-(a / 2)) = t ^ (-(a / 2)) / x ^ (-(a / 2))` using `Real.div_rpow ht.le hx0.le _`. Establish `h4 : x ^ (-a) = x ^ (-(a / 2)) * x ^ (-(a / 2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_add hx0]`. Put the polynomial expressions in normal form. Establish `hxp : 0 < x ^ (-(a / 2))` using `Real.rpow_pos_of_pos hx0 _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h3, h4]`.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -47,27 +47,25 @@ theorem rpow_fubini_ineq {x y t a : ℝ} (hx : 1 ≤ x) (hy : 1 ≤ y) (ht : 0 <
         rw [h3, h4]; field_simp
 
 /- English proof (translation)
-Introduce `k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide u hu u₁ hu₁ v hv v₁ hv₁`. Take `⟨hk, hrep, -, -, hHG, -, ha, hdec, -⟩` from `hStd`. Take `⟨hz, hT, -, hHS, -⟩` from `hSide`. Take `⟨hGc, -, -, hSc, -⟩` from `GlobalTheory.SgInf.closedSub_groups k r z hz hT`. Take `⟨hN1, -, hNc, -, -, -, hN7, -⟩` from `GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hA` using `(GlobalTheory.T.bessel_constant_bounds_of_ge_two_n_pow_five k r a hk ha).1`. Establish `hIG` using `GlobalTheory.T.besselOpNormPowerIntegral_lt_top_closedSubgroup k r (GG k r) μG (a / 2) hGc hHG hA`. Establish `hIS` using `GlobalTheory.T.besselOpNormPowerIntegral_lt_top_closedSubgroup k r (Sset k r z) μS (a / 2) hSc hHS hA`. Take `⟨C, hC⟩` from `hdec u hu v hv`. Take `⟨C₁, hC₁⟩` from `hdec u₁ hu₁ v₁ hv₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hHG.1`. Use `haveI := hHS.1`. Establish `ha0 : 0 ≤ a` using `le_trans (by positivity) ha`. Use `set T : Set (Mt k r × Mt k r) := {p | Matrix.of p.1 ∈ GG k r ∧ Matrix.of p.2 ∈ Sset k r z} with hTdef`. Establish `hTm : MeasurableSet T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsClosed {p : Mt k r × Mt k r | Matrix.of p.1 ∈ GG k r}` using `hGc.2.1.preimage continuous_fst`. Establish `h2 : IsClosed {p : Mt k r × Mt k r | Matrix.of p.2 ∈ Sset k r z}` using `hSc.2.1.preimage continuous_snd`. Conclude with `(h1.inter h2).measurableSet`. Establish `hTae : ∀ᵐ p ∂(μG.prod μS), p ∈ T`. Rewrite using `[ae_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Use `measure_mono_null (t := ({x : Mt k r | Matrix.of x ∉ GG k r} ×ˢ Set.univ) ∪ (Set.univ ×ˢ {x : Mt k r | Matrix.of x ∉ Sset k r z})) ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Set.mem_setOf_eq, hTdef, not_and_or] at hp`. Break down `hp with hp | hp` into its components or cases. Conclude with `Or.inl ⟨hp, trivial⟩`.
+Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inr ⟨trivial, hp⟩`. Use `measure_union_null ?_ ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, hHG.2.2.1, zero_mul]`. Rewrite using `[Measure.prod_prod, hHS.2.2.1, mul_zero]`. Establish `hg : Integrable (fun p : Mt k r × Mt k r => (|C| * |C₁|) * (opn (Matrix.of p.1) ^ (-(a / 2)) * opn (Matrix.of p.2) ^ (-(a / 2)))) (μG.prod μS)` using `((integrable_opn_rpow_neg μG _ hNc hIG).mul_prod (integrable_opn_rpow_neg μS _ hNc hIS)).const_mul _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ContinuousOn (fun p : Mt k r × Mt k r => coef σ u v (Matrix.of p.1) * star (coef σ u₁ v₁ (Matrix.of p.2 * Matrix.of p.1))) T`. Establish `c1 : ContinuousOn (fun p : Mt k r × Mt k r => σ (Matrix.of p.1) u) T` using `(hrep.2.2 u).comp (continuous_fst.continuousOn) (fun p hp => hp.1)`. Establish `hmul : Continuous fun p : Mt k r × Mt k r => (Matrix.of p.2 * Matrix.of p.1 : Mat k r)` using `(continuous_snd (X := Mat k r) (Y := Mat k r)).matrix_mul continuous_fst`. Establish `c2 : ContinuousOn (fun p : Mt k r × Mt k r => σ (Matrix.of p.2 * Matrix.of p.1) u₁) T` using `(hrep.2.2 u₁).comp hmul.continuousOn (fun p hp => hGc.2.2.2.1 _ (hSc.1 hp.2) _ hp.1)`. Conclude with `(continuousOn_const.inner c1).mul (continuous_star.comp_continuousOn (continuousOn_const.inner c2))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hg.mono' ?_ ?_` and prove the remaining obligations. Use `hcont.aestronglyMeasurable (μ := μG.prod μS) hTm` as an intermediate fact. Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem hTae]`. Then use the resulting hypothesis. Use `filter_upwards [hTae] with p hp`. Take `⟨hpG, hpS⟩` from `hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSG : Matrix.of p.2 ∈ GG k r` using `hSc.1 hpS`. Establish `hyG : (Matrix.of p.2 * Matrix.of p.1 : Mat k r) ∈ GG k r` using `hGc.2.2.2.1 _ hSG _ hpG`. Establish `hx1` using `(hN1 _ hpG).2`. Establish `ht1` using `(hN1 _ hSG).2`. Establish `hy1` using `(hN1 _ hyG).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hyt : opn (Matrix.of p.2 : Mat k r) / opn (Matrix.of p.1 : Mat k r) ≤ opn (Matrix.of p.2 * Matrix.of p.1 : Mat k r)` using `(hN7 _ hSG _ hpG).1`. Establish `e1 : ‖coef σ u v (Matrix.of p.1)‖ ≤ |C| * opn (Matrix.of p.1 : Mat k r) ^ (-a)` using `(hC _ hpG).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (Real.rpow_nonneg (opn_nonneg _) _))`. Establish `e2 : ‖coef σ u₁ v₁ (Matrix.of p.2 * Matrix.of p.1)‖ ≤ |C₁| * opn (Matrix.of p.2 * Matrix.of p.1 : Mat k r) ^ (-a)` using `(hC₁ _ hyG).trans (mul_le_mul_of_nonneg_right (le_abs_self C₁) (Real.rpow_nonneg (opn_nonneg _) _))`. Establish `key` using `rpow_fubini_ineq hx1 hy1 (lt_of_lt_of_le one_pos ht1) hyt ha0`. Rewrite using `[norm_mul, norm_star]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem fubini_bound : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)) , Std σ w a μG d → Side z π μS → ∀ u ∈ DD σ w, ∀ u₁ ∈ DD σ w, ∀ v ∈ DD σ w, ∀ v₁ ∈ DD σ w, Integrable (fun p : Mt k r × Mt k r => coef σ u v (Matrix.of p.1) * star (coef σ u₁ v₁ (Matrix.of p.2 * Matrix.of p.1))) (μG.prod μS) := by
   intro k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide u hu u₁ hu₁ v hv v₁ hv₁

@@ -26,23 +26,23 @@ abbrev sw2 : Fin 2 → ((G2 B').left ⟶ (G2 B').left) :=
   ![(lift (fst B' B') (snd B' B')).left, (lift (snd B' B') (fst B' B')).left]
 
 /- English proof (translation)
-Use `show (lift a b).left ≫ (lift (fst B' B') (snd B' B')).left = _`. Rewrite using `[← Over.comp_left, comp_lift, lift_fst, lift_snd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_comp_squareFactorIdentity_eq_lift {T : Over S'} (a b : T ⟶ B') : (lift a b).left ≫ sw2 B' 0 = (lift a b).left := by
   show (lift a b).left ≫ (lift (fst B' B') (snd B' B')).left = _
   rw [← Over.comp_left, comp_lift, lift_fst, lift_snd]
 
 /- English proof (translation)
-Use `show (lift a b).left ≫ (lift (snd B' B') (fst B' B')).left = _`. Rewrite using `[← Over.comp_left, comp_lift, lift_fst, lift_snd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_comp_squareFactorSwap_eq_lift_swap {T : Over S'} (a b : T ⟶ B') : (lift a b).left ≫ sw2 B' 1 = (lift b a).left := by
   show (lift a b).left ≫ (lift (snd B' B') (fst B' B')).left = _
   rw [← Over.comp_left, comp_lift, lift_fst, lift_snd]
 
 /- English proof (translation)
-Establish `hw₀ : β ≫ B.hom = B'.hom ≫ f` using `hβ.1.w`. Establish `β₂_lift : ∀ {T₀ : Over S'} (a b : T₀ ⟶ B'), (lift a b).left ≫ β₂ = (lift (toBase hw₀ a) (toBase hw₀ b)).left` using `fun a b => square_over_hom_ext (by rw [Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst]; rfl) (by rw [Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_snd, lift_snd]; rfl)`. Introduce `U _ h`. Rewrite using `[GlobalTheory.LamBiext.prod_flat, Fin.prod_univ_two, Fintype.prod_empty]`. Use `show 1 = (∏ i, h (((lift (fst B' B') (snd B' B')).left ≫ β₂) ≫ lamφ B i) ^ lamε i) ^ (1 : ℤ) * (∏ i, h (((lift (snd B' B') (fst B' B')).left ≫ β₂) ≫ lamφ B i) ^ lamε i) ^ (-1 : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[β₂_lift, β₂_lift, GlobalTheory.LamBiext.prod_lam, GlobalTheory.LamBiext.prod_lam, _root_.mul_comm (toBase hw₀ (snd B' B'))]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [zpow_neg, zpow_one, ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem formEq_sw {f : S' ⟶ S} {β : B'.left ⟶ B.left} {β₂ : (G2 B').left ⟶ (G2 B).left}
     (hβ : IsGrpPullback B' B f β) (hsq : IsSquare β β₂) :
@@ -62,7 +62,7 @@ theorem formEq_sw {f : S' ⟶ S} {β : B'.left ⟶ B.left} {β₂ : (G2 B').left
   abel
 
 /- English proof (translation)
-Take `⟨g, hg, hv⟩` from `exists_gen hM (formEq_sw hβ hsq) (LB.oneGen M) (oneGen_isGen _)`. Use `⟨GlobalTheory.LamBiext.nest M (lamφ B) lamε (fun k => sw2 B' k ≫ β₂) ![1, -1] g, nest_isGen hg, fun r z J hJ => ?_⟩` and prove the remaining obligations. Use `(val_nest hg r (good_ind hJ) hJ).trans ?_` and prove the remaining obligations. Simplify using `only [adj_ind hM hJ, one_zpow, Finset.prod_const_one, _root_.one_mul]`. Conclude with `(hv _ r z J hJ).trans (val_one r)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gen_sw {f : S' ⟶ S} {β : B'.left ⟶ B.left} {β₂ : (G2 B').left ⟶ (G2 B).left}
     (hβ : IsGrpPullback B' B f β) (hsq : IsSquare β β₂) {M : LB B.left} (hM : M.IsLB) :
@@ -86,21 +86,19 @@ variable {S S₁ S' : Scheme.{0}} {B : Over S} {B₁ : Over S₁} {B' : Over S'}
   [GrpObj B₁] [IsCommMonObj B₁] [GrpObj B']
 
 /- English proof (translation)
-Establish `hG` using `GlobalTheory.globalFns_holds`. Establish `hL : (abelian₂ B₁ M₁).IsLB` using `DVR.linComb_isLB _ hM₁ _ _`. Establish `hL' : ((abelian₂ B M).pull β₂).IsLB` using `DVR.linComb_isLB _ (DVR.linComb_isLB _ hM _ _) _ _`. Take `⟨t, ht, hvt⟩` from `exists_gen_sw hβ₁ hsq₁ hM₁`. Take `⟨g, hg, hvg⟩` from `exists_gen_sw hβ hsq hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `c` to `chartPullLinComb (abelian₂ B M) β₂ (sw2 B') (fun k => sw2 B' k ≫ β₂) ![1, -1] (𝟙 _) (fun k => (Category.id_comp _).symm)`. Establish `ha : (cGen c g).IsGen` using `cGen_isGen c hg`. Establish `good_P : ∀ {Z : Scheme.{0}} {z₀ : Z} {J₀ : (Z ⟶ B.left) → M.ι}, Good M z₀ J₀ → Good ((abelian₂ B M).pull β₂) z₀ (fun q _ => ind B J₀ (q ≫ β₂))` using `fun hJ₀ q => mem_pull.2 (good_ind hJ₀ (q ≫ β₂))`. Establish `Fa : ∀ {Z : Scheme.{0}} (r : Z ⟶ (G2 B').left) (z₀ : Z) (J₀ : (Z ⟶ B.left) → M.ι), Good M z₀ J₀ → val (cGen c g) r z₀ (fun q _ => ind B J₀ (q ≫ β₂)) = 1`. Introduce `Z r z₀ J₀ hJ₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hvg r z₀ J₀ hJ₀, val_of g r z₀ (ind B J₀) (fun k => ind B J₀ ((r ≫ sw2 B' k) ≫ β₂)) (fun k => by rw [Category.assoc])]`. Conclude with `gm_res r z₀ _ ((good_P hJ₀).mem _ r) _`. Establish `gw_iso : ∀ {Z : Scheme.{0}} (r : Z ⟶ (G2 B').left) (φ : (G2 B').left ⟶ (G2 B').left) (z₀ : Z) (J₀ : (Z ⟶ B₁.left) → M₁.ι) (J₀' : (Z ⟶ B.left) → M.ι), gw w (r ≫ φ) z₀ (ind B₁ J₀ (r ≫ φ ≫ β₂')) (fun _ => ind B J₀' ((r ≫ φ) ≫ β₂)) = isoVal w (r ≫ φ) z₀ J₀ J₀'`. Introduce `Z r φ z₀ J₀ J₀'`. Establish `e₁ : ind B₁ J₀ (r ≫ φ ≫ β₂') = fun I => J₀ ((r ≫ φ) ≫ β₂' ≫ (psum B₁ (x2 B₁) I.down).left)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun I => congrArg J₀ (by simp only [Category.assoc])`. Establish `e₂ : ind B J₀' ((r ≫ φ) ≫ β₂) = fun I => J₀' ((r ≫ φ) ≫ β₂ ≫ (psum B (x2 B) I.down).left)`. Use function extensionality and compare the values at `fun I => congrArg J₀' (by simp only [Category.assoc])`. Rewrite using `[e₁, e₂]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `Fp : ∀ {Z : Scheme.{0}} (r : Z ⟶ (G2 B').left) (z₀ : Z) (J₀ : (Z ⟶ B₁.left) → M₁.ι) (J₀' : (Z ⟶ B.left) → M.ι), pw w (sw2 B') ![1, -1] r z₀ (fun k => ind B₁ J₀ (r ≫ sw2 B' k ≫ β₂')) (fun k => (fun (q : Z ⟶ (G2 B').left) (_ : PUnit) => ind B J₀' (q ≫ β₂)) (r ≫ sw2 B' k)) = isoVal …`. Introduce `Z r z₀ J₀ J₀'`. Unfold `pw`. Rewrite using `[Fin.prod_univ_two]`. Rewrite using `[gw_iso r (sw2 B' 0) z₀ J₀ J₀', gw_iso r (sw2 B' 1) z₀ J₀ J₀']`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, zpow_one, zpow_neg]`. Establish `he2 : (lift (1 : 𝟙_ (Over S') ⟶ B') 1).left ≫ (snd B' B').left ≫ B'.hom = 𝟙 _`. Rewrite using `[Over.w]`. Conclude with `Over.w (lift (1 : 𝟙_ (Over S') ⟶ B') 1)`. Establish `E` using `rigid_pw w hw hL hL' (sw2 B') ![1, -1] ha ht _ _ he2 (surj_comp (surj_snd hG hB' _) (hG _ _ hB').2) (fun y₀ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J₁, hJ₁⟩` from `GlobalTheory.UU.exists_good_pt hM₁ y₀`. Take `⟨J₁', hJ₁'⟩` from `GlobalTheory.UU.exists_good_pt hM y₀`. Use `⟨ind B₁ J₁, fun q _ => ind B J₁' (q ≫ β₂), good_ind hJ₁, good_P hJ₁', ?_⟩` and prove the remaining obligations. Rewrite using `[hvt _ y₀ J₁ hJ₁, Fp, Fa _ y₀ J₁' hJ₁', lift_comp_squareFactorIdentity_eq_lift, lift_comp_squareFactorSwap_eq_lift_swap, mul_inv_cancel, _root_.mul_one])`. Use the proof step `T.left (lift x y).left z (ind B₁ J) (fun q _ => ind B J' (q ≫ β₂)) (good_ind hJ) (good_P hJ')`.
-
-Rewrite `E` using `[hvt _ z J hJ, Fp, Fa _ z J' hJ', lift_comp_squareFactorIdentity_eq_lift, lift_comp_squareFactorSwap_eq_lift_swap, _root_.mul_one]`. Conclude with `mul_inv_eq_one.1 E.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoVal_swap (hB' : IsAbelianScheme B') {M : LB B.left} {M₁ : LB B₁.left} (hM : M.IsLB) (hM₁ : M₁.IsLB)
     {f : S' ⟶ S} {f₁ : S' ⟶ S₁} {β : B'.left ⟶ B.left} {β₁ : B'.left ⟶ B₁.left}
@@ -164,13 +162,13 @@ end GlobalTheory.TChart.SwapIso
 namespace GlobalTheory.TChart
 
 /- English proof (translation)
-Introduce `n V _ _ _ D r e₀ L V₁ _ _ _ f₁ κ₁ e B' _ β' β'' β₂ β₂' hV hVd hV₁ hV₁d hf₁ hfin hloc hκ hpb hpb' hsq hsq' x hx w₁ q hgen hper hnorm a b`. Establish `hAb : IsAbelianScheme B'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback D.toPre.P.isAb hpb`. Choose the witnesses or unpack the hypotheses as in `⟨κK, hκK⟩ : ∃ κK : (TK V₁).left ⟶ (TK V).left, κK ≫ jK V = jK V₁ ≫ spMap f₁ := by`. Establish `hi : Function.Injective ((algebraMap V₁ (FractionRing V₁)).comp f₁)` using `(IsFractionRing.injective V₁ (FractionRing V₁)).comp hf₁`. Take `⟨g, eg⟩ : ∃ g : FractionRing V →+* FractionRing V₁, g.comp (algebraMap V (FractionRing V)) = (algebraMap V₁ (FractionRing V₁)).comp f₁` from `⟨IsLocalization.lift (M := nonZeroDivisors V) (g := (algebraMap V₁ (FractionRing V₁)).comp f₁) fun y => IsUnit.mk0 _ ((map_ne_zero_iff _ hi).2 (nonZeroDivisors.coe_ne_zero y)), IsLocalization.lift_comp _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨spMap g, ?_⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, eg]`. Set `z : (TK V₁).left` to `(⊥ : PrimeSpectrum (FractionRing V₁))`. Take `⟨J, hJ⟩` from `GlobalTheory.UU.exists_good_pt L.T.M.isLB z`. Take `⟨J', hJ'⟩` from `GlobalTheory.UU.exists_good_pt D.toPre.P.isLB z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h₁` using `hper κK hκK a b z J J' hJ hJ'`. Establish `h₂` using `hper κK hκK b a z J J' hJ hJ'`. Rewrite `h₂` using `[GlobalTheory.Mum.RosatiSymmetry.val_tau_symm D.toPre hJ' κK, val_corr hJ (corr_of_val L.T.M.isLB (L.T.τ₀_symm ((n : ℤ) • b) ((n : ℤ) • a))), GlobalTheory.TChart.SwapIso.isoVal_swap hAb D.toPre.P.isLB L.T.M.isLB hpb hpb' hsq hsq' w₁ hgen (toUnit (TK V₁) ≫ x b) (toUnit (TK V₁) ≫ x …`. Establish `hq` using `mul_right_cancel (h₁.symm.trans h₂)`. Establish `hs : Subsingleton (TK V₁).left` using `(inferInstance : Subsingleton (PrimeSpectrum (FractionRing V₁)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eu : unitOn (q a b) = unitOn (q b a)` using `unit_ext fun y _ => by rw [Subsingleton.elim y z]; exact hq`. Conclude with `Units.map_injective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V₁))).inv).1 eu`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem periodConst_symm : ∀ (n : ℕ) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (D : DegData V (maximalIdeal V)) (r : ℕ) (e₀ : (Fin r → ℤ) ≃+ D.toPre.X) (L : LowBase (zetaAway n) n) (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁] (f₁ : V →+* V₁) (κ₁ : L.W →+* V₁) (e : (Fin L.T.r → ℤ) ≃+ (Fin r → ℤ)) (B' : Over (Sp V₁)) [GrpObj B'] (β' : B'.left ⟶ D.toPre.P.A.left) (β'' : B'.left ⟶ L.T.B.left) (β₂ : (G2 B').left ⟶ (G2 D.toPre.P.A).left) (β₂' : (G2 B').left ⟶ (G2 L.T.B).left), IsCN V → IsDiscreteValuationRing V → IsCN V₁ → IsDiscreteValuationRing V₁ → Function.Injective f₁ → f₁.Finite → IsLocalHom f₁ → IsLocalHom κ₁ → IsGrpPullback B' D.toPre.P.A (spMap f₁) β' → IsGrpPullback B' L.T.B (spMap κ₁) β'' → IsSquare β' β₂ → IsSquare β'' β₂' → ∀ (x : (Fin L.T.r → ℤ) → (𝟙_ (Over (Sp V₁)) ⟶ B')), (∀ a, (x a).left ≫ β' = spMap f₁ ≫ (D.toPre.c (e₀ (e a))).left ∧ (x a).left ≫ β'' = spMap κ₁ ≫ (L.T.c₀ ((n : ℤ) • a)).left) → ∀ (w₁ : LB.Iso ((abelian₂ D.toPre.P.A D.toPre.P.L).pull β₂) ((abelian₂ L.T.B L.T.M.L).pull β₂')) (q : (Fin L.T.r → ℤ) → (Fin L.T.r → ℤ) → (FractionRing V₁)ˣ), w₁.IsGen → PeriodRel D.toPre L.T f₁ κ₁ w₁ (e.trans e₀) x n q → IsNormIso w₁ → ∀ a b, q a b = q b a := by
   intro n V _ _ _ D r e₀ L V₁ _ _ _ f₁ κ₁ e B' _ β' β'' β₂ β₂' hV hVd hV₁ hV₁d hf₁ hfin hloc hκ hpb hpb' hsq hsq'

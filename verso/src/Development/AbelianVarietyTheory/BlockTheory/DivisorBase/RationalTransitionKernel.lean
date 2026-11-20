@@ -63,9 +63,9 @@ def OneFormPassage : Prop :=
     OneFormAt F Θ Zs P ψ → OneFormPrincipal F Θ Zs
 
 /- English proof (translation)
-Unfold `mult`. Rewrite using `[Finset.sum_eq_single (1 : (⊥ : Subgroup G))]`. Rewrite using `[Subgroup.card_bot]`. Simplify using `only [Nat.cast_one, inv_one, MonoidHom.one_apply, Units.val_one, one_mul, OneMemClass.coe_one]`. Introduce `b _ hb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Subsingleton.elim b 1) hb`. Introduce `h`. Conclude with `absurd (@Finset.mem_univ _ (_) _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 example (χ : G → K) : mult (⊥ : Subgroup G) 1 χ = χ 1 := by
   classical
@@ -77,9 +77,9 @@ example (χ : G → K) : mult (⊥ : Subgroup G) 1 χ = χ 1 := by
   · intro h; exact absurd (@Finset.mem_univ _ (_) _) h
 
 /- English proof (translation)
-Use `⟨1, ?_, ?_⟩` and prove the remaining obligations. Establish `: (1 : Matrix (Fin ((F.R F.μ0).dZ (F.lvl P ψ) (Zs.Z F.μ0))) _ K).mulVec = id`. Use function extensionality and compare the values at `fun x => Matrix.one_mulVec x`. Rewrite using `[this]`. Conclude with `Function.bijective_id`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `ext1`. Simplify using `[cx, Matrix.map_one]`.
+A detailed English derivation is pending.
 -/
 example (F : DefFam K G Pl0 T J) {EE : Type} [AddCommGroup EE] [Module ℂ EE]
     (Θ : ∀ t : T, (Fin (F.R t).S.dim → ℂ) →ₗ[ℂ] EE) (Zs : DefSub F.amb) (P : Subgroup G) (ψ : P →* Kˣ) :

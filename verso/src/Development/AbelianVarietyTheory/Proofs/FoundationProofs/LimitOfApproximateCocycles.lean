@@ -5,11 +5,9 @@ open scoped Matrix
 namespace GlobalTheory.Ord2
 
 /- English proof (translation)
-Introduce `i`. Unfold `Cg`. Establish `e : (M *ᵥ v) i - (M *ᵥ w) i = M i 0 * (v 0 - w 0) + M i 1 * (v 1 - w 1)`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (norm_le_one_of_mem_coef c (hM i 0))).trans (h 0)`. Rewrite using `[norm_mul]`.
-
-Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (norm_le_one_of_mem_coef c (hM i 1))).trans (h 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qbarLVectorCongruent_integralMatrix_mulVec {l : ℕ} [Fact l.Prime] (c : Coef l) (M : Matrix (Fin 2) (Fin 2) (Qbar l))
     (hM : ∀ i j, M i j ∈ c.O) {n : ℕ} {v w : Fin 2 → Qbar l} (h : Cv n v w) :
@@ -26,19 +24,17 @@ theorem qbarLVectorCongruent_integralMatrix_mulVec {l : ℕ} [Fact l.Prime] (c :
     exact (mul_le_of_le_one_left (norm_nonneg _) (norm_le_one_of_mem_coef c (hM i 1))).trans (h 1)
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ W c hW a z hco hloc hz`. Rewrite using `[mem_Z1_iff_cocycle]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun s => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : Filter.Tendsto (fun t => z t i) (nhds s) (@nhds (Qbar l) UniformSpace.toTopologicalSpace (z s i))`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨n, hn⟩` from `(tendsto_norm_l_pow (l := l)).eventually (gt_mem_nhds hε) |>.exists`. Use `filter_upwards [hloc n s] with t ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : Cg n (z t i) (z s i)` using `cg_trans (hz n t i) (cg_trans (ht i) (cg_symm (hz n s i)))`. Rewrite using `[dist_eq_norm]`. Conclude with `lt_of_le_of_lt h1 hn`. Conclude with `key`. Introduce `s t`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hcol : ∀ v, (Loc.colRep W s) v = mat W s *ᵥ v`. Introduce `v`. Simplify using `[Loc.colRep, Matrix.toLin'_apply]`. Rewrite using `[hcol]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `eq_of_forall_cg fun n => ?_` and prove the remaining obligations. Establish `hA : Cv n (z (s * t)) (a n (s * t))` using `hz n (s * t)`. Establish `hB` using `hco n s t`. Establish `hC : Cv n (a n s + mat W s *ᵥ a n t) (z s + mat W s *ᵥ z t)`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2` using `qbarLVectorCongruent_integralMatrix_mulVec c (mat W s) (hW s) (cv_symm (hz n t)) j`. Establish `h3` using `cg_symm (hz n s j)`. Unfold `Cg at h2 h3 ⊢`. Establish `e : (a n s + mat W s *ᵥ a n t) j - (z s + mat W s *ᵥ z t) j = (a n s j - z s j) + ((mat W s *ᵥ a n t) j - (mat W s *ᵥ z t) j)`. Simplify using `only [Pi.add_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h3 h2)`. Conclude with `(cv_trans hA (cv_trans hB hC)) i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limit_cocycle_mem_cocycles : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : R2 Ω l) (c : Coef l), (∀ s i j, mat W s i j ∈ c.O) → ∀ (a : ℕ → G ℚ Ω → Fin 2 → Qbar l) (z : G ℚ Ω → Fin 2 → Qbar l), (∀ n s t, Cv n (a n (s * t)) (a n s + mat W s *ᵥ a n t)) → (∀ n s, ∀ᶠ t in nhds s, Cv n (a n t) (a n s)) → (∀ n s, Cv n (z s) (a n s)) → z ∈ Z1 (Loc.colRep W) := by
   intro l _ Ω _ _ W c hW a z hco hloc hz

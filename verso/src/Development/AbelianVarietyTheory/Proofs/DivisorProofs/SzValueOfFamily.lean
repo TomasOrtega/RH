@@ -21,11 +21,11 @@ open GlobalTheory.CMVal (latDisc)
 namespace GlobalTheory.QFam
 
 /- English proof (translation)
-Use `GlobalTheory.T.algebraicValuationAtLeast_of_forall_rat_gt l lam r _ fun q hrq => ?_` and prove the remaining obligations. Take `⟨c, hc0, hc, hc'⟩` from `GlobalTheory.T.exists_algebraic_of_rational_valuation l lam q`. Take `⟨R, hR, hcl⟩` from `GlobalTheory.T.exists_integrallyClosed_padicIntegralSubring l lam`. Take `⟨hconst, hmono, -, hmul, -⟩` from `GlobalTheory.T.qExpansionValuationBound_ring_closure l lam N hN`. Establish `hfam : IsFam act w fun i τ => c * f i τ` using `(GlobalTheory.T.isSLTwoPermutedModularFamily_algebra_closure ι act).2.2.1 w c f hf`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq' : ∀ i, QAll (· ∈ R) N fun τ => c * f i τ` using `fun i => by`. Take `⟨a, ha, ha'⟩` from `hmono _ 0 _ (by linarith) (hmul _ _ _ _ (hconst _ c hc) (hq i))`. Conclude with `⟨a, ha, fun n => (hR _).2 (ha' n)⟩`. Establish `hjR : IsIntegral R (jT τ₀)` using `isIntegral_algebraMap (R := R) (A := ℂ) (x := ⟨jT τ₀, (hR _).2 hj⟩)`. Establish `h0 : Sz l lam 0 (c * f i τ₀ / Ω ^ w)` using `(hR _).1 (hcl _ (GlobalTheory.T.isIntegral_modularFamily_value_div_period_pow ι act w N _ R τ₀ Ω hN hact hfam hq' hjR hΩ i))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(GlobalTheory.T.algebraicValuationAtLeastAtEmbedding_ring_ops l lam).2.2.1 _ _ _ _ hc' h0`. Establish `e : c⁻¹ * (c * f i τ₀ / Ω ^ w) = f i τ₀ / Ω ^ w`. Rewrite using `[mul_div_assoc, inv_mul_cancel_left₀ hc0]`. Rewrite `h1` using `[add_zero, e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sz_value_of_family (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l])
     (ι : Type) [Fintype ι] (act : ι → SL(2, ℤ) → ι) (w N : ℕ) (f : ι → ℍ → ℂ) (r : ℝ) (τ₀ : ℍ) (Ω : ℂ)

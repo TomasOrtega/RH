@@ -40,31 +40,27 @@ def StepEnergyAt (D : D7) : Prop :=
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Introduce `X u u' sc hsc h27 _`. Take `⟨hUR, hSch, hw, -⟩` from `hS D X`. Take `⟨hHu, hFu, -, -, hSFu⟩` from `hG D X u`. Take `⟨hHu', hFu', -, -, hSFu'⟩` from `hG D X u'`. Take `⟨hh, hhm, hhd⟩` from `hSec D X u u' sc hsc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hGood : MeasurableSet (Good X u u')`. Rewrite using `[Formalism.L2.SG.RealObj.EnergyCut.good_eq_pi X u u']`. Conclude with `MeasurableSet.univ_pi fun _ => Formalism.L2.SG.RealObj.EnergyCut.goodV_meas u u'`. Distinguish the cases in `hne : (Good X u u').Nonempty`. Use `swap`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : Good X u u' = ∅` using `Set.not_nonempty_iff_eq_empty.mp hne`. Simplify using `[intOOe, nuM, h0]`. Take `⟨c₀, hc₀⟩` from `hne`. Set `g : Cinf X → X.B.I.Ginf` to `(Good X u u').piecewise hh (fun _ => hh c₀)`. Establish `hgm : Measurable g` using `Measurable.piecewise hGood hhm measurable_const`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgG : ∀ c ∈ Good X u u', g c = hh c` using `fun c hc => Set.piecewise_eq_of_mem _ _ _ hc`. Establish `hgd : ∀ c, ∃ c' ∈ Good X u u', HasDiag X u u' sc c' (g c)`. Introduce `c`. Distinguish the cases in `hc : c ∈ Good X u u'`. Conclude with `⟨c, hc, by rw [hgG c hc]; exact hhd c hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨c₀, hc₀, ?_⟩` and prove the remaining obligations. Establish `: g c = hh c₀` using `Set.piecewise_eq_of_notMem _ _ _ hc`. Rewrite using `[this]`. Conclude with `hhd c₀ hc₀`. Establish `hgD : ∀ c ∈ Good X u u', HasDiag X u u' sc c (g c)` using `fun c hc => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hgG c hc]`. Conclude with `hhd c hc`. Establish `hOfD : ∀ c ∈ Good X u u', HasDiag X u u' sc c (hOf X u u' sc c)`. Introduce `c hc`. Establish `hex : ∃ γ, HasDiag X u u' sc c γ` using `⟨hh c, hhd c hc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : hOf X u u' sc c = hex.choose` using `dif_pos hex`. Rewrite using `[e]`. Conclude with `hex.choose_spec`. Establish `hD : Disint X u u' sc (DisintegrationConstant X u u' sc)`. Establish `e : DisintegrationConstant X u u' sc = h27.choose` using `dif_pos h27`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h27.choose_spec.2`. Establish `hm : Measurable fun c => ENNReal.ofReal (DisintegrationConstant X u u' sc * wt X u u' c)` using `ENNReal.measurable_ofReal.comp ((Formalism.L2.SG.RealObj.InfCut.wt_cont X u u').measurable.const_mul _)`. Establish `hDis : Formalism.L2.SG.Pf.EnergyAbs.IsDisint (Formalism.L2.SG.ProjRows.muInf X.B.I) (muS X u) (muS X u') (nuM X u u' sc) g`. Introduce `φ hφ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hD φ hφ, nuM, lintegral_withDensity_eq_lintegral_mul_non_measurable _ hm (Filter.Eventually.of_forall fun _ => ENNReal.ofReal_lt_top)]`. Use `lintegral_congr_ae (ae_restrict_of_forall_mem hGood fun c hc => ?_)` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Use `congr 1`. Take `⟨a, ha, b, hb, hab⟩` from `InfCut.UnitaryIsometries.StepDiagDC_holds D X u u' sc c hc _ _ (hOfD c hc) (hgD c hc)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(inner_transfer X hG u u' φ hφ _ _ a ha b hb hab).symm`. Establish `key` using `hE X.B.I.Ginf (Formalism.L2.SG.ProjRows.muInf X.B.I) _ X.B.σs (degX X) (X.B.tens X.B.w) (X.Vpi u) (X.Vpi u') (X.SinfU u) (X.SinfU u') (muS X u) (muS X u') (X.nuQ u) (X.nuQ u') (tauU X u) (tauU X u') (X.Wu u) (X.Wu u') (Cinf X) inferInstance (nuM X u u' sc) g hUR hSch hw hHu hHu' …`. Take `⟨c', hc', hd⟩` from `hgd c`. Conclude with `integrableOn_univ.mp (hI X u u' sc hsc c' hc' (g c) hd))`. Use the proof step `(fun c => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨c', hc', hd⟩` from `hgd c`. Conclude with `(hC X u u' sc hsc).1 c' hc' (g c) hd)`. Use the proof step `((hC X u u' sc hsc).2 u) ((hC X u u' sc hsc).2 u')`. Use `le_trans (le_of_eq ?_) key` and prove the remaining obligations. Establish `hae : ∀ᵐ c ∂(nuM X u u' sc), c ∈ Good X u u'`.
-
-Rewrite using `[nuM]`. Conclude with `withDensity_absolutelyContinuous _ _ (ae_restrict_mem hGood)`. Establish `hIndep : OOIndep X u u' sc` using `InfCut.ooIndep_of_step X InfCut.UnitaryIsometries.StepDiagDC_holds u u' sc`. Unfold `intOOe`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hae] with c hc`. Rewrite using `[hilbertSchmidtSqGram, hIndep c hc _ _ (hOfD c hc) (hgD c hc)]`. Simplify using `only [OOinf, TermOp.OO, Measure.restrict_univ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stepEnergyAt_of_inst (D : D7) (hE : EnergyAbs) (hS : StepSchurG) (hG : StepSubG) (hSec : StepSection)
     (hC : StepConvAt D) (hI : StepIntAt D) : StepEnergyAt D := by
@@ -142,9 +138,9 @@ theorem stepEnergyAt_of_inst (D : D7) (hE : EnergyAbs) (hS : StepSchurG) (hG : S
   rfl
 
 /- English proof (translation)
-Establish `h27 : DisintegrationConstantPositive X u u' sc` using `InfCut.ProductExactness.haar_disintegration_real_holds D X u u' sc hsc`. Establish `hR` using `InfCut.ProductExactness.StepReal_holds D X u u' sc hsc`. Establish `hco : CoordOK X u u' sc`. Use `⟨hR, fun c hc => ?_⟩` and prove the remaining obligations. Establish `hex` using `hR c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hI X u u' sc hsc c hc _ ?_` and prove the remaining obligations. Establish `e : hOf X u u' sc c = hex.choose` using `dif_pos hex`. Rewrite using `[e]`. Conclude with `hex.choose_spec`. Conclude with `⟨h27, hco, stepEnergyAt_of_inst D S.Pv.EnergyAbs.energyAbs_holds S.Pv.SchurTens.stepSchurG_holds S.Pv.HaarSubS.stepSubG_holds S.Pv.SecW.stepSection_holds hC hI X u u' sc hsc h27 hco⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inInfinityXAt (hI : StepIntAt D) (hC : StepConvAt D) (u u' : D.what₂.Word) (sc : ℝ) (hsc : 0 < sc) :
     InInfinityX X u u' sc := by

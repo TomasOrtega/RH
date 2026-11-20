@@ -35,14 +35,14 @@ theorem coe_levPair (p : GA D W × GL (Fin t) (AE D)) :
     (((levPair d p : levM d) : GlobalTheory.RegSW.stab d) : GA D B) = d.emb0 p.1 * d.levi p.2 := rfl
 
 /- English proof (translation)
-Rewrite using `[coe_levPair, mt_mul, Matrix.mul_assoc, d.wittDecomp_levi_inclAnisotropic, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, cancel₂ d.p0_j0, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_eq_of_levPair (p : GA D W × GL (Fin t) (AE D)) :
     d.p0 ⬝ (mt B (((levPair d p : levM d) : GlobalTheory.RegSW.stab d) : GA D B) ⬝ d.j0) = mt W p.1 := by
   rw [coe_levPair, mt_mul, Matrix.mul_assoc, d.wittDecomp_levi_inclAnisotropic, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, cancel₂ d.p0_j0, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h : mt B (((levPair d p : levM d) : GlobalTheory.RegSW.stab d) : GA D B) ⬝ d.jX = d.jX ⬝ p.2.1`. Rewrite using `[coe_levPair, mt_mul, Matrix.mul_assoc, d.levi_jX, ← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX]`. Conclude with `Units.ext ((GlobalTheory.RegSW.eq_of_mul_jX d (GlobalTheory.RegSW.mul_jX d _)).trans (GlobalTheory.RegSW.eq_of_mul_jX d h).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onX_levPair (p : GA D W × GL (Fin t) (AE D)) :
     GlobalTheory.RegSW.onX d ((levPair d p : levM d) : GlobalTheory.RegSW.stab d) = p.2 := by
@@ -51,9 +51,9 @@ theorem onX_levPair (p : GA D W × GL (Fin t) (AE D)) :
   exact Units.ext ((GlobalTheory.RegSW.eq_of_mul_jX d (GlobalTheory.RegSW.mul_jX d _)).trans (GlobalTheory.RegSW.eq_of_mul_jX d h).symm)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `p q h`. Use `Prod.ext (mt_injective W ?_) ?_` and prove the remaining obligations. Rewrite using `[← mt_eq_of_levPair d p, ← mt_eq_of_levPair d q, h]`. Rewrite using `[← onX_levPair d p, ← onX_levPair d q, h]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨⟨q, hq⟩, g, a, e⟩`. Conclude with `⟨(g, a), Subtype.ext (Subtype.ext e.symm)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem levPair_bijective : Function.Bijective (levPair d) := by
   constructor
@@ -67,7 +67,7 @@ theorem levPair_bijective : Function.Bijective (levPair d) := by
 def levEquiv : (GA D W × GL (Fin t) (AE D)) ≃* levM d := MulEquiv.ofBijective (levPair d) (levPair_bijective d)
 
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Take `⟨-, -, -, -, h5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Establish `h : Continuous fun p : GA D W × GL (Fin t) (AE D) => d.emb0 p.1 * d.levi p.2` using `(d.continuous_embed.comp continuous_fst).mul (d.continuous_levi.comp continuous_snd)`. Conclude with `(h.subtype_mk _).subtype_mk _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_levEquiv : Continuous (levEquiv d) := by
   have := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
@@ -77,9 +77,9 @@ theorem continuous_levEquiv : Continuous (levEquiv d) := by
   exact (h.subtype_mk _).subtype_mk _
 
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Establish `hv : Continuous fun m : levM d => ((m : GlobalTheory.RegSW.stab d) : GA D B)` using `continuous_subtype_val.comp continuous_subtype_val`. Use `Continuous.prodMk (continuous_of_mt W ?_) ?_` and prove the remaining obligations. Establish `hc : Continuous fun m : levM d => d.p0 ⬝ (mt B ((m : GlobalTheory.RegSW.stab d) : GA D B) ⬝ d.j0)` using `continuous_const.matrix_mul (((continuous_mt B).comp hv).matrix_mul continuous_const)`. Use `hc.congr fun m => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mt_eq_of_levPair d ((levEquiv d).symm m)` as an intermediate fact. Rewrite `this` using `[show levPair d ((levEquiv d).symm m) = m from (levEquiv d).apply_symm_apply m]`. Then use the resulting hypothesis. Use `((GlobalTheory.RegSW.continuous_onX d).comp continuous_subtype_val).congr fun m => ?_` and prove the remaining obligations. Use `onX_levPair d ((levEquiv d).symm m)` as an intermediate fact. Rewrite `this` using `[show levPair d ((levEquiv d).symm m) = m from (levEquiv d).apply_symm_apply m]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem continuous_levEquiv_symm : Continuous (levEquiv d).symm := by
   have := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
@@ -98,11 +98,9 @@ theorem continuous_levEquiv_symm : Continuous (levEquiv d).symm := by
 end GlobalTheory.CompanionTheory.QKAvg
 
 /- English proof (translation)
-Use `borelize G₂`. Use `haveI hr1 : (Measure.haar : Measure G₁).IsMulRightInvariant := h₁ _ inferInstance`. Use `haveI hr2 : (Measure.haar : Measure G₂).IsMulRightInvariant := GlobalTheory.ParAvg.isMulRightInvariant_of_modular _ h₂`. Take `⟨ν, hνH, hνR⟩ : ∃ ν : Measure (G₁ × G₂), ν.IsHaarMeasure ∧ ν.IsMulRightInvariant` from `⟨(Measure.haar : Measure G₁).prod Measure.haar, inferInstance, inferInstance⟩`. Use `⟨Measure.map e ν, MulEquiv.isHaarMeasure_map ν e he he', ⟨fun m => ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨p, rfl⟩` from `e.surjective m`. Rewrite using `[Measure.map_map (measurable_mul_const _) he.measurable]`. Establish `h : (fun x => x * e p) ∘ e = e ∘ fun x => x * p`. Use function extensionality and compare the values at `x`. Simplify using `[map_mul]`.
-
-Rewrite using `[h, ← Measure.map_map he.measurable (measurable_mul_const _), map_mul_right_eq_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.QKAvg.exists_haar_of_prod {G₁ G₂ M : Type} [Group G₁] [Group G₂] [Group M] [TopologicalSpace G₁]
     [TopologicalSpace G₂] [TopologicalSpace M] [IsTopologicalGroup G₁] [IsTopologicalGroup G₂] [IsTopologicalGroup M]
@@ -127,9 +125,7 @@ theorem GlobalTheory.CompanionTheory.QKAvg.exists_haar_of_prod {G₁ G₂ M : Ty
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨-, m2, m3, m4, -⟩` from `lattice_Mx D t t`. Use `haveI : LocallyCompactSpace (Mx D t t)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Mx D t t)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.secondCountableTopology`. Use `haveI : T2Space (Mx D t t)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.t2Space`. Use `haveI : T1Space (Mx D t t) := @T2Space.t1Space _ _ m4`.
-
-Conclude with `⟨(Units.isClosedEmbedding_embedProduct (α := Mx D t t)).locallyCompactSpace, (Units.isEmbedding_embedProduct (M := Mx D t t)).secondCountableTopology, (Units.isEmbedding_embedProduct (M := Mx D t t)).t2Space⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.QKAvg.top_GL (D : D7) (t : ℕ) : LocallyCompactSpace (GL (Fin t) (AE D)) ∧
     SecondCountableTopology (GL (Fin t) (AE D)) ∧ T2Space (GL (Fin t) (AE D)) := by
@@ -143,7 +139,7 @@ theorem GlobalTheory.CompanionTheory.QKAvg.top_GL (D : D7) (t : ℕ) : LocallyCo
     (Units.isEmbedding_embedProduct (M := Mx D t t)).t2Space⟩
 
 /- English proof (translation)
-Introduce `D B W t d _`. Take `⟨g1, g2, g3, g4, g5, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Take `⟨l1, l2, l3⟩` from `GlobalTheory.CompanionTheory.QKAvg.top_GL D t`. Conclude with `GlobalTheory.CompanionTheory.QKAvg.exists_haar_of_prod (levEquiv d) (continuous_levEquiv d) (continuous_levEquiv_symm d) (GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D W) (GlobalTheory.T.modularCharacter_adelic_GL_eq_one D t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.QKAvg.exists_levM_haar : ∀ (D : D7) (B W : HSp D) (t : ℕ) (d : HypDec B W t) [LocallyCompactSpace (levM d)],
     ∃ νM : Measure (levM d), νM.IsHaarMeasure ∧ νM.IsMulRightInvariant := by

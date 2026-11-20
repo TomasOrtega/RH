@@ -47,13 +47,13 @@ theorem indTransport_apply (hQP : Q ≤ P) (T : W₁ →ₗ[ℂ] W₂)
     (indTransport hQP T hT φ).1.1 g = T (φ.1.1 g) := rfl
 
 /- English proof (translation)
-Substitute `hPQ` using the available equality. Establish `h1 : ∀ (q : P) (w : W₁), (T : W₁ →ₗ[ℂ] W₂) (σ ⟨q, le_refl P q.2⟩ w) = τ q (T w)` using `fun q w => hT _ _ rfl w`. Establish `h2 : ∀ (q : P) (w : W₂), (T.symm : W₂ →ₗ[ℂ] W₁) (τ ⟨q, le_refl P q.2⟩ w) = σ q (T.symm w)`. Introduce `q w`. Apply `T.injective` to reduce the goal to its premises.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Rewrite using `[hT q q rfl, LinearEquiv.apply_symm_apply]`. Set `f` to `indTransport le_rfl (T : W₁ →ₗ[ℂ] W₂) h1`. Set `f'` to `indTransport le_rfl (T.symm : W₂ →ₗ[ℂ] W₁) h2`. Use `⟨GlobalTheory.LocGL.equivOfBijective f ⟨fun φ ψ hφψ => ?_, fun ψ => ⟨f' ψ, ?_⟩⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun χ => f' χ) hφψ` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `hx` using `congrFun (congrArg (fun χ : smoothPart (ind P σ) => χ.1.1) this) x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify `hx` using `[f, f', indTransport_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x show T (T.symm (ψ.1.1 x)) = ψ.1.1 x`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem nonempty_smInd_equiv (hPQ : P = Q) (T : W₁ ≃ₗ[ℂ] W₂)
     (hT : ∀ (p : P) (q : Q), (p : G) = q → ∀ w, T (σ p w) = τ q (T w)) :
@@ -85,7 +85,7 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   (b' : Fin 2 → ℕ)
 
 /- English proof (translation)
-Use `ext`. Simplify using `[GlobalTheory.LeviBlockExponent.pairPlace, stdSum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pairPlace_zero (i : Fin (b' 0)) :
     GlobalTheory.LeviBlockExponent.pairPlace b' (rfl : b' 0 + b' 1 = _) ⟨0, i⟩ = two (stdSum (rfl : b' 0 + b' 1 = _)) ⟨false, i⟩ := by
@@ -93,7 +93,7 @@ theorem pairPlace_zero (i : Fin (b' 0)) :
   simp [GlobalTheory.LeviBlockExponent.pairPlace, stdSum]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[GlobalTheory.LeviBlockExponent.pairPlace, stdSum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pairPlace_one (j : Fin (b' 1)) :
     GlobalTheory.LeviBlockExponent.pairPlace b' (rfl : b' 0 + b' 1 = _) ⟨1, j⟩ = two (stdSum (rfl : b' 0 + b' 1 = _)) ⟨true, j⟩ := by
@@ -101,13 +101,13 @@ theorem pairPlace_one (j : Fin (b' 1)) :
   simp [GlobalTheory.LeviBlockExponent.pairPlace, stdSum]
 
 /- English proof (translation)
-Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modExp_pair_zero : modExp (fun j : Fin 2 => Fin (b' j)) 0 = b' 1 := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_two]
 
 /- English proof (translation)
-Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modExp_pair_one : modExp (fun j : Fin 2 => Fin (b' j)) 1 = -(b' 0 : ℤ) := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_two]
@@ -120,11 +120,9 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   (b' : Fin 2 → ℕ)
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_parab_iff, mem_parab_two]`. Prove the components needed by the constructor for the conclusion. Introduce `h j i`. Use `h 1 0 j i (by decide)` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[pairPlace_one, pairPlace_zero, two_true, two_false]`. Then use the resulting hypothesis. Apply the tactic sequence `intro h a c i j hca fin_cases a <;> fin_cases c`. Conclude with `absurd hca (by decide)`. Conclude with `absurd hca (by decide)`. Use `h i j` as an intermediate fact.
-
-Rewrite `this` using `[← two_true, ← two_false, ← pairPlace_one, ← pairPlace_zero]`. Conclude with `this`. Conclude with `absurd hca (by decide)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parab_pair_eq :
     parab k (GlobalTheory.LeviBlockExponent.pairPlace b' (rfl : b' 0 + b' 1 = _)) =
@@ -145,7 +143,7 @@ theorem parab_pair_eq :
     · exact absurd hca (by decide)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[leviProj_apply, leviProj_apply, pairPlace_zero, pairPlace_zero, hpq]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviProj_pair_zero (p : parab k (GlobalTheory.LeviBlockExponent.pairPlace b' (rfl : b' 0 + b' 1 = _)))
     (q : parab k (two (stdSum (rfl : b' 0 + b' 1 = _)))) (hpq : (p : GL (Fin (b' 0 + b' 1)) k) = q) :
@@ -154,7 +152,7 @@ theorem leviProj_pair_zero (p : parab k (GlobalTheory.LeviBlockExponent.pairPlac
   rw [leviProj_apply, leviProj_apply, pairPlace_zero, pairPlace_zero, hpq]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[leviProj_apply, leviProj_apply, pairPlace_one, pairPlace_one, hpq]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviProj_pair_one (p : parab k (GlobalTheory.LeviBlockExponent.pairPlace b' (rfl : b' 0 + b' 1 = _)))
     (q : parab k (two (stdSum (rfl : b' 0 + b' 1 = _)))) (hpq : (p : GL (Fin (b' 0 + b' 1)) k) = q) :
@@ -163,7 +161,7 @@ theorem leviProj_pair_one (p : parab k (GlobalTheory.LeviBlockExponent.pairPlace
   rw [leviProj_apply, leviProj_apply, pairPlace_one, pairPlace_one, hpq]
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, Fin.prod_univ_two, modExp_pair_zero, modExp_pair_one]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem deltaHalf_pair (g : Levi k (fun j : Fin 2 => Fin (b' j))) :
     deltaHalf k (fun j : Fin 2 => Fin (b' j)) g =
@@ -174,7 +172,7 @@ theorem deltaHalf_pair (g : Levi k (fun j : Fin 2 => Fin (b' j))) :
   rfl
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.LeviBlockExponent.pairChar, MonoidHom.finsetProd_apply, Fin.prod_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairChar_apply' (μ : Fin 2 → kˣ →* ℂˣ) (g : Levi k (fun j : Fin 2 => Fin (b' j))) :
     GlobalTheory.LeviBlockExponent.pairChar k b' μ g = μ 0 (Matrix.GeneralLinearGroup.det (g 0)) * μ 1 (Matrix.GeneralLinearGroup.det (g 1)) := by
@@ -183,13 +181,11 @@ theorem pairChar_apply' (μ : Fin 2 → kˣ →* ℂˣ) (g : Levi k (fun j : Fin
 end Pair2
 
 /- English proof (translation)
-Introduce `k _ _ _ _ b' d h μ`. Substitute `h` using the available equality. Simplify using `only [GlobalTheory.CuspBlock.glCast_rfl, MonoidHom.comp_id]`. Unfold `GlobalTheory.LeviBlockExponent.pairInd prod₂ ind₂ parInd`. Use `nonempty_smInd_equiv (parab_pair_eq k b') (TensorProduct.rid ℂ ℂ).symm fun p q hpq w => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL : leviProj k _ q = leviTwo k _ _ (leviProj k _ p 0, leviProj k _ p 1)`. Use function extensionality and compare the values at `x`. Consider the cases of `x`. Conclude with `(leviProj_pair_zero k b' p q hpq).symm`. Conclude with `(leviProj_pair_one k b' p q hpq).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonoidHom.comp_apply, twist_apply, ofChar_apply, TensorProduct.rid_symm_apply, hL, MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_coe, MulEquiv.symm_apply_apply, extTensor_tmul, deltaHalf_two, deltaHalf_pair, pairChar_apply']`. Simplify using `only [Fintype.card_fin, detRep, ofChar_apply, detChar_apply, Units.val_mul, smul_eq_mul]`. Establish `hc : ∀ x c : ℂ, x ⊗ₜ[ℂ] c = (c * x) ⊗ₜ[ℂ] (1 : ℂ)` using `fun x c => by`. Rewrite using `[← smul_eq_mul c x, TensorProduct.smul_tmul, smul_eq_mul, mul_one]`. Use `conv_rhs => rw [TensorProduct.smul_tmul', hc]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pairInd_equiv_prod₂ : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (b' : Fin 2 → ℕ) (d : ℕ) (h : b' 0 + b' 1 = d) (μ : Fin 2 → kˣ →* ℂˣ),

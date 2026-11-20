@@ -19,11 +19,11 @@ noncomputable section
 namespace GlobalTheory.ThetaNormal
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ hA t hpol hs`. Take `⟨h1, h2, -⟩` from `GlobalTheory.allSixLaws`. Take `⟨A, -, gen, hgen, hL, -⟩` from `GlobalTheory.LN.exists_polAV_of_polAt h1 h2 E H R t hpol`. Use `hA.1.1` as an intermediate fact. Take `⟨P, hPL, -⟩` from `GlobalTheory.UU.exists_cp_of_isSymmetric h1 R A t.G t.semi gen hgen t.PP t.cub t.sym`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hσ : ∃ (σ : LB.Sec P.L.L) (k : P.L.L.ι), σ.f k ≠ 0`. Rewrite using `[hPL]`. Conclude with `GlobalTheory.T.exists_nonzero_section_of_polarised_generic_fibre E H R t hpol`. Take `⟨D, U, hUL, -⟩` from `GlobalTheory.T.semiabelian_generic_fibre_polarization_iso R hA t.G P t.semi (hPL ▸ GlobalTheory.LN.UnifPrime.hypW_of_triple t) hs A gen hgen (hPL ▸ hL) hσ`. Establish `key` using `GlobalTheory.T.exists_section_nonzero_on_closed_fibre_complete_local R hA.1.1 hA.1.2.2.1 hA.2.1 hA.2.2.1 D A t.G t.semi U`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hUL, hPL]`. Use `t.semi.smooth` as an intermediate fact. Conclude with `GlobalTheory.UnifNormal.thetaNZ_of_closedPoint t.G _ key`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thetaNZ_of_polAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.LN.admitted R (IsLocalRing.maximalIdeal R) → ∀ (t : SAB H (Sp R)), GlobalTheory.LN.PolAt t (jK R) → GlobalTheory.LN.SplitOver t.G (IsLocalRing.maximalIdeal R) → GlobalTheory.LN.ThetaNZ t.G t.PP.L := by
   intro E _ _ _ H R _ _ _ hA t hpol hs

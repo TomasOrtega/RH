@@ -10,7 +10,7 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 namespace GlobalTheory.HWL
 
 /- English proof (translation)
-Introduce `hI D`. Take `⟨H, F, hC, -⟩` from `exists_hw_fon_cmp_ties (GlobalTheory.T.bhattScholze_coefficients_of_padicInt_lattices hI) D.loc D.locA D.locT`. Conclude with `⟨H, F, hC⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hw_fon_cmp_of_integral : GlobalTheory.Published.BhattScholzeIntegral →
     ∀ D : D7, ∃ (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), Nonempty (CmpOf D.loc D.locA HW F) := by

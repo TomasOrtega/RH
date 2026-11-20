@@ -21,7 +21,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (ρ : Representation LL G V)
 
 /- English proof (translation)
-Establish `h` using `(Submodule.mem_iInf _).mp (Submodule.mem_inf.mp hy).2 c`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVdR_of_mem {τ : K →ₐ[Qp] LL} {y : V ⊗[Qp] BdR} (hy : y ∈ DdRE PD ρ τ) (c : K) :
     mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c y = τ c • y := by
@@ -30,19 +30,17 @@ theorem mulVdR_of_mem {τ : K →ₐ[Qp] LL} {y : V ⊗[Qp] BdR} (hy : y ∈ DdR
   exact h
 
 /- English proof (translation)
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ y _ hy`. Simplify using `using hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert a s ha ih`. Introduce `hτ y hyτ hy`. Establish `haτ : a ≠ τ` using `fun h => hτ (h ▸ Finset.mem_insert_self a s)`. Establish `hτs : τ ∉ s` using `fun h => hτ (Finset.mem_insert_of_mem h)`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : K, τ c ≠ a c := by`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `haτ (AlgHom.ext fun c => (h c).symm)`. Set `φ : Module.End LL (V ⊗[Qp] BdR)` to `mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c - a c • LinearMap.id`. Establish `hφ : ∀ τ', ∀ x ∈ DdRE PD ρ τ', φ x = (τ' c - a c) • x`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `τ' x hx`. Simplify using `only [φ, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, mulVdR_of_mem PD ρ hx c, sub_smul]`. Establish `hW : ∀ x ∈ ⨆ τ' ∈ s, DdRE PD ρ τ', φ x ∈ ⨆ τ' ∈ s, DdRE PD ρ τ'`. Introduce `x hx`. Establish `hle : (⨆ τ' ∈ s, DdRE PD ρ τ') ≤ (⨆ τ' ∈ s, DdRE PD ρ τ').comap φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `iSup₂_le fun τ' hτ' => fun z hz => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, hφ τ' z hz]`. Conclude with `Submodule.smul_mem _ _ ((le_iSup₂ (f := fun τ' _ => DdRE PD ρ τ') τ' hτ') hz)`. Conclude with `hle hx`. Rewrite `hy` using `[Finset.iSup_insert, Submodule.mem_sup]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ya, hya, z, hz, hyz⟩` from `hy`. Establish `h1 : φ y ∈ ⨆ τ' ∈ s, DdRE PD ρ τ'`. Rewrite using `[← hyz, map_add, hφ a ya hya, sub_self, zero_smul, zero_add]`. Conclude with `hW z hz`. Rewrite `h1` using `[hφ τ y hyτ]`.
-
-Establish `h2` using `ih hτs _ (Submodule.smul_mem _ _ hyτ) h1`. Conclude with `(smul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr hc)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_sum (τ : K →ₐ[Qp] LL) :
     ∀ (s : Finset (K →ₐ[Qp] LL)), τ ∉ s → ∀ y ∈ DdRE PD ρ τ,
@@ -85,11 +83,9 @@ theorem eq_zero_of_mem_sum (τ : K →ₐ[Qp] LL) :
     exact (smul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr hc)
 
 /- English proof (translation)
-Take `⟨f, hf, z, hz, hfz⟩` from `Submodule.mem_sup.mp h`. Take `⟨s, hs⟩` from `Submodule.mem_iSup_iff_exists_finset.mp hz`. Establish `hle : (⨆ τ' ∈ s, ⨆ (_ : τ' ≠ τ), DdRE PD ρ τ') ≤ ⨆ τ' ∈ s.filter (· ≠ τ), DdRE PD ρ τ'`. Use `iSup₂_le fun τ' hτ' => iSup_le fun hne => ?_` and prove the remaining obligations. Conclude with `le_iSup₂ (f := fun τ' _ => DdRE PD ρ τ') τ' (Finset.mem_filter.mpr ⟨hτ', hne⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hzτ : z ∈ DdRE PD ρ τ`. Establish `e : z = x - f` using `by rw [← hfz]; abel`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ hx (hF hf)`. Establish `hz0` using `eq_zero_of_mem_sum PD ρ τ (s.filter (· ≠ τ)) (by simp) z hzτ (hle hs)`.
-
-Rewrite using `[← hfz, hz0, add_zero]`. Conclude with `hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_filC (τ : K →ₐ[Qp] LL) (F : Submodule LL (V ⊗[Qp] BdR)) (hF : F ≤ DdRE PD ρ τ)
     {x : V ⊗[Qp] BdR} (hx : x ∈ DdRE PD ρ τ)
@@ -109,13 +105,13 @@ theorem mem_of_mem_filC (τ : K →ₐ[Qp] LL) (F : Submodule LL (V ⊗[Qp] BdR)
   exact hf
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨hi, hhi⟩` from `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_fildR_hi (PD := PD) (ρ := ρ) τ`. Establish `hstep : ∀ c : ℤ, -b < c → FildR PD ρ τ c = FildR PD ρ τ (c + 1)`. Introduce `c hc`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2` using `hj c (fun h' => h h'.symm)`. Conclude with `absurd (Set.mem_Iic.1 h2) (not_le.2 hc)`. Establish `hk : ∀ k : ℕ, FildR PD ρ τ a = FildR PD ρ τ (a + k)`. Introduce `k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[ih, hstep (a + k) (by omega)]`. Use `congr 1`. Use `push_cast`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hk (hi - a).toNat]`. Conclude with `hhi _ (by omega)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fildR_eq_bot (τ : K →ₐ[Qp] LL) [FiniteDimensional LL ↥(DdRE PD ρ τ)] (b : ℤ)
     (hj : JumpsInV PD ρ τ (Set.Iic (-b))) : ∀ a : ℤ, -b < a → FildR PD ρ τ a = ⊥ := by

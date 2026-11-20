@@ -17,9 +17,9 @@ variable {K : FiniteSubfield} (Kv : Type) {Ωv : Type} [Field Kv] [Field Ωv] [A
 omit [Algebra.IsIntegral Kv Ωv] in
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `y`. Establish `h1 : ι ((g : ℚ̄ ≃ₐ[ℚ] ℚ̄) ((globalDecomp Kv (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)) σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) y)) = σ (ι ((g : ℚ̄ ≃ₐ[ℚ] ℚ̄) y))` using `globalDecomp_apply Kv (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)) σ y`. Establish `h2` using `globalDecomp_apply Kv ι σ ((g : ℚ̄ ≃ₐ[ℚ] ℚ̄) y)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) ((globalDecomp Kv (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)) σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) y) = (globalDecomp Kv ι σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) ((g : ℚ̄ ≃ₐ[ℚ] ℚ̄) y)` using `ι.injective (h1.trans h2.symm)`. Express the relevant statement in the definitionally equal form `_ = ((g : ℚ̄ ≃ₐ[ℚ] ℚ̄)⁻¹ * (globalDecomp Kv ι σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) * (g : ℚ̄ ≃ₐ[ℚ] ℚ̄)) y`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, ← h3, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem globalDecomp_comp (ι : ℚ̄ →ₐ[K.1] Ωv) (g : K.1.fixingSubgroup) (σ : Gal(Ωv/Kv)) :
     globalDecomp Kv (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)) σ = g⁻¹ * globalDecomp Kv ι σ * g := by
@@ -42,11 +42,11 @@ instance isDiscreteRep_res_globalDecomp (ι : ℚ̄ →ₐ[K.1] Ωv) :
   IsDiscreteRep.res (continuous_globalDecomp Kv ι) _
 
 /- English proof (translation)
-Establish `hconj` using `cohomologyMapAlong_conj (unitsLimitRep K) (continuous_globalDecomp Kv ι) (continuous_globalDecomp Kv (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄))) g (globalDecomp_comp Kv ι g) n`. Establish `e1 : unitsLocalRes Kv (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)) n = cohomologyMapAlong (globalDecomp Kv (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄))) (continuous_globalDecomp Kv _) (𝟙 _) n ≫ cohomologyMapAlong (MonoidHom.id _) continuous_id (unitsLocalMor Kv (ι …`. Rewrite using `[unitsLocalRes, ← cohomologyMapAlong_comp]`. Both sides reduce to the same expression. Establish `e2 : unitsLocalRes Kv ι n = cohomologyMapAlong (globalDecomp Kv ι) (continuous_globalDecomp Kv ι) (𝟙 _) n ≫ cohomologyMapAlong (MonoidHom.id _) continuous_id (unitsLocalMor Kv ι) n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[unitsLocalRes, ← cohomologyMapAlong_comp]`. Both sides reduce to the same expression. Rewrite using `[e1, hconj, Category.assoc, ← cohomologyMapAlong_comp, e2]`. Use `congr 1`. Use `cohomologyMapAlong_congr _ _ _ _ rfl (fun a => ?_) n` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ι ((g : ℚ̄ ≃ₐ[ℚ] ℚ̄) ((g : ℚ̄ ≃ₐ[ℚ] ℚ̄)⁻¹ ((Additive.toMul (a : Additive ℚ̄ˣ) : ℚ̄ˣ) : ℚ̄))) = ι ((Additive.toMul (a : Additive ℚ̄ˣ) : ℚ̄ˣ) : ℚ̄)`. Rewrite using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitsLocalRes_comp (ι : ℚ̄ →ₐ[K.1] Ωv) (g : K.1.fixingSubgroup) (n : ℕ) :
     unitsLocalRes Kv (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)) n = unitsLocalRes Kv ι n := by
@@ -75,7 +75,7 @@ theorem unitsLocalRes_comp (ι : ℚ̄ →ₐ[K.1] Ωv) (g : K.1.fixingSubgroup)
   rw [← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_eq_comp_of_normal ι ι'`. Establish `: ι' = ι.comp (fixingSubgroupEquiv K.1 ((fixingSubgroupEquiv K.1).symm g) : ℚ̄ →ₐ[K.1] ℚ̄)`. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `hg`. Rewrite using `[this, unitsLocalRes_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsLocalRes_eq_of_algHom (ι ι' : ℚ̄ →ₐ[K.1] Ωv) (n : ℕ) :
     unitsLocalRes Kv ι' n = unitsLocalRes Kv ι n := by

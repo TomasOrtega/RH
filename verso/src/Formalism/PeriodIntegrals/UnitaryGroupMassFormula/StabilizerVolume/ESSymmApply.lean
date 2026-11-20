@@ -21,9 +21,9 @@ def TailH : Prop :=
 variable {m L}
 
 /- English proof (translation)
-Take `⟨c, hc, hP⟩` from `hT S`. Establish `h2 : HasProd (fun i : {i // i ∉ S} => am m L i.1) c.toNNReal`. Unfold `HasProd at hP ⊢`. Establish `h3` using `(ENNReal.tendsto_toNNReal hc).comp hP`. Use `h3.congr (fun s => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp, am, ENNReal.toNNReal_prod]`. Rewrite using `[tl, h2.tprod_eq]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasProd_tl (hT : TailH m L) (S : Finset ι) :
     HasProd (fun i : {i // i ∉ S} => am m L i.1) (tl m L S) := by
@@ -37,18 +37,18 @@ lemma hasProd_tl (hT : TailH m L) (S : Finset ι) :
   exact h2
 
 /- English proof (translation)
-Conclude with `hasProd_subtype_iff_mulIndicator.mp (hasProd_tl hT S)`.
+A detailed English derivation is pending.
 -/
 lemma hasProd_ind (hT : TailH m L) (S : Finset ι) :
     HasProd (({i | i ∉ S} : Set ι).mulIndicator (am m L)) (tl m L S) := by
   exact hasProd_subtype_iff_mulIndicator.mp (hasProd_tl hT S)
 
 /- English proof (translation)
-Establish `hS` using `hasProd_ind hT S`. Establish `hT'` using `hasProd_ind hT T`. Establish `hfin : HasProd ((↑(T \ S) : Set ι).mulIndicator (am m L)) (∏ i ∈ T \ S, am m L i)`. Establish `h` using `hasProd_prod_of_ne_finset_one (f := (↑(T \ S) : Set ι).mulIndicator (am m L)) (s := T \ S) (L := SummationFilter.unconditional ι) (fun b hb => Set.mulIndicator_of_notMem (by simpa using hb) _)`. Rewrite `h` using `[Finset.prod_congr rfl (fun b hb => Set.mulIndicator_of_mem (by simpa using hb) (am m L))]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hmul` using `hfin.mul hT'`. Establish `heq : (fun b => (↑(T \ S) : Set ι).mulIndicator (am m L) b * ({i | i ∉ T} : Set ι).mulIndicator (am m L) b) = ({i | i ∉ S} : Set ι).mulIndicator (am m L)`. Use function extensionality and compare the values at `b`. Apply the tactic sequence `by_cases hbT : b ∈ T <;> by_cases hbS : b ∈ S`. Simplify using `[Set.mulIndicator, hbT, hbS]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.mulIndicator, hbT, hbS]`. Conclude with `absurd (h hbS) hbT`. Simplify using `[Set.mulIndicator, hbT, hbS]`. Rewrite `hmul` using `[heq]`. Conclude with `hS.unique hmul`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma tl_split [DecidableEq ι] (hT : TailH m L) {S T : Finset ι} (h : S ⊆ T) :
     tl m L S = (∏ i ∈ T \ S, am m L i) * tl m L T := by
@@ -72,7 +72,7 @@ lemma tl_split [DecidableEq ι] (hT : TailH m L) {S T : Finset ι} (h : S ⊆ T)
   exact hS.unique hmul
 
 /- English proof (translation)
-Establish `h` using `tl_split hT (Finset.subset_insert i S)`. Rewrite `h` using `[Finset.insert_sdiff_of_notMem _ hi, Finset.sdiff_self, insert_empty_eq, Finset.prod_singleton, h0, zero_mul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma tl_zero [DecidableEq ι] (hT : TailH m L) {S : Finset ι} {i : ι} (hi : i ∉ S)
     (h0 : am m L i = 0) : tl m L S = 0 := by
@@ -86,7 +86,7 @@ variable (m L)
 def Pn (i : ι) : Measure (W i) := (m i (L i))⁻¹ • (m i).restrict (L i)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Simplify using `only [Pn, Measure.smul_apply, Measure.restrict_apply_univ, smul_eq_mul]`. Conclude with `ENNReal.inv_mul_cancel h.1 h.2`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Pn_prob {i : ι} (h : m i (L i) ≠ 0 ∧ m i (L i) ≠ ⊤) : IsProbabilityMeasure (Pn m L i) := by
   constructor
@@ -139,17 +139,17 @@ instance kap_sfin (S : Finset ι) : SFinite (kap m L S) := by unfold kap Rm; inf
 variable {m L}
 
 /- English proof (translation)
-Establish `hmeas : MeasurableSet {x : ∀ i, W i | x i ∈ A}` using `measurable_pi_apply i hA`. Rewrite using `[kap, Measure.map_apply (eS S).symm.measurable hmeas]`. Distinguish the cases in `hi : i ∈ S`. Establish `hmu : (m i).restrict (L i)ᶜ A = 0` using `by simpa [mu, hi] using h`. Establish `hpre : (eS S).symm ⁻¹' {x | x i ∈ A} = (Function.eval (⟨i, hi⟩ : {i // i ∈ S}) ⁻¹' A) ×ˢ Set.univ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `p`. Simplify using `[eS_symm_apply, hi]`. Rewrite using `[hpre, Measure.prod_prod]`. Establish `h0 : Rm m L S (Function.eval (⟨i, hi⟩ : {i // i ∈ S}) ⁻¹' A) = 0` using `Measure.pi_eval_preimage_null _ hmu`. Rewrite using `[h0, zero_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmu : (m i).restrict (L i) A = 0` using `by simpa [mu, hi] using h`. Establish `hpre : (eS S).symm ⁻¹' {x | x i ∈ A} = Set.univ ×ˢ (Function.eval (⟨i, hi⟩ : {i // i ∉ S}) ⁻¹' A)`. Use extensionality with `p`. Simplify using `[eS_symm_apply, hi]`. Rewrite using `[hpre, Measure.prod_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : Qm m L S (Function.eval (⟨i, hi⟩ : {i // i ∉ S}) ⁻¹' A) = 0`. Unfold `Qm`. Use `split_ifs with hc`. Rewrite using `[Measure.smul_apply] haveI hprob : ∀ j : {j // j ∉ S}, IsProbabilityMeasure (Pn m L j.1) := fun j => Pn_prob m L (hc j.1 j.2)`. Establish `e` using `Measure.infinitePi_map_eval (fun j : {j // j ∉ S} => Pn m L j.1) ⟨i, hi⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Measure.infinitePi (fun j : {j // j ∉ S} => Pn m L j.1) (Function.eval (⟨i, hi⟩ : {i // i ∉ S}) ⁻¹' A) = Pn m L i A`. Rewrite using `[← e]`. Conclude with `(Measure.map_apply (measurable_pi_apply (⟨i, hi⟩ : {j // j ∉ S})) hA).symm`. Rewrite using `[e2]`. Simplify using `[Pn, hmu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h0, mul_zero]`.
+A detailed English derivation is pending.
 -/
 lemma kap_eval_null {S : Finset ι} {i : ι} {A : Set (W i)} (hA : MeasurableSet A)
     (h : mu m L S i A = 0) : kap m L S {x | x i ∈ A} = 0 := by
@@ -189,13 +189,11 @@ lemma kap_eval_null {S : Finset ι} {i : ι} {A : Set (W i)} (hA : MeasurableSet
     rw [h0, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[ae_all_iff]`. Introduce `i`. Rewrite using `[ae_iff]`. Distinguish the cases in `hi : i ∈ S`. Establish `h0 : kap m L S {x | x i ∈ L i} = 0` using `kap_eval_null (hLm i) (by simp [mu, hi, Measure.restrict_apply (hLm i)])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `measure_mono_null ?_ h0` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Assume the negation of the conclusion as `hxL`. Conclude with `hx ⟨fun _ => hxL, fun h => absurd hi h⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : kap m L S {x | x i ∈ (L i)ᶜ} = 0` using `kap_eval_null (hLm i).compl (by simp [mu, hi, Measure.restrict_apply (hLm i).compl])`. Use `measure_mono_null ?_ h0` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Set.mem_setOf_eq, Set.mem_compl_iff] at hx ⊢`. Introduce `hxL`.
-
-Conclude with `hx ⟨fun h => absurd h hi, fun _ => hxL⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma kap_ae [Countable ι] (hLm : ∀ i, MeasurableSet (L i)) (S : Finset ι) :
     ∀ᵐ x ∂kap m L S, ∀ i, (i ∈ S → x i ∉ L i) ∧ (i ∉ S → x i ∈ L i) := by

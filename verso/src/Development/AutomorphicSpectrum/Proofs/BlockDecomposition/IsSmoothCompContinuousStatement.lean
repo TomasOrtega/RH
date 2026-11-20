@@ -10,7 +10,7 @@ open GroundTheory.Automorphic (permGL indRep)
 open DoubleCoset (doubleCoset)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.SmoothBridge.isSmooth_comp` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FIsSmoothCompContinuous.lean&line=12#L12)
 -/

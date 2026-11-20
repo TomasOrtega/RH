@@ -13,7 +13,7 @@ variable {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {X : Type} [Add
   [Module.Finite O X] {m : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← evalR_toReal, h, (linearOn_iff φ γ).1 hγ c hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evalZ_eq_of_toReal {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : φ.LinearOn γ) {c : Fin m → ℝ}
     (hc : ∀ i, 0 ≤ c i) {β : LinearMap.BilinForm ℤ X} (h : toReal β = ∑ i, c i • toReal (γ i)) :
@@ -23,9 +23,9 @@ theorem evalZ_eq_of_toReal {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : φ.
 omit [Module O X] [Module.Finite O X] in
 
 /- English proof (translation)
-Establish `h0 : ∑ o : Option (Fin m), (Option.elim o (-1) c) • toReal (j (Option.elim o β γ)) = 0`. Rewrite using `[Fintype.sum_option]`. Simplify using `only [Option.elim_none, Option.elim_some, h, neg_one_smul, neg_add_cancel]`. Use `sum_mul_eq_zero_of_sum_toReal hj ℓ h0` as an intermediate fact. Rewrite `this` using `[Fintype.sum_option]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Option.elim_none, Option.elim_some] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem apply_eq_of_toReal {L : Type} [AddCommGroup L] {j : L →ₗ[ℤ] LinearMap.BilinForm ℤ X}
     (hj : Function.Injective j) (ℓ : L →ₗ[ℤ] ℤ) {β : L} {γ : Fin m → L} {c : Fin m → ℝ}
@@ -39,7 +39,7 @@ theorem apply_eq_of_toReal {L : Type} [AddCommGroup L] {j : L →ₗ[ℤ] Linear
   linarith
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `hγ.basis.exists_dual`. Use `⟨fun i => f i ⟨β, hβ⟩, fun i => ?_⟩` and prove the remaining obligations. Use `apply_eq_of_toReal (j := (balForms bar X).subtype) Subtype.val_injective (f i) (β := ⟨β, hβ⟩) (γ := fun k => ⟨γ k, hγ.mem k⟩) (c := c) h` as an intermediate fact. Rewrite using `[this]`. Simplify using `[hf]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coords_int {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : IsCone bar φ γ) {β : LinearMap.BilinForm ℤ X}
     (hβ : β ∈ balForms bar X) {c : Fin m → ℝ} (h : toReal β = ∑ i, c i • toReal (γ i)) :
@@ -55,7 +55,7 @@ theorem coords_int {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : IsCone bar 
 omit [Module O X] [Module.Finite O X] in
 
 /- English proof (translation)
-Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun₂ h a b` as an intermediate fact. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul] at this ⊢`. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_sum_of_toReal {γ : Fin m → LinearMap.BilinForm ℤ X} {β : LinearMap.BilinForm ℤ X} {z : Fin m → ℤ}
     (h : toReal β = ∑ i, (z i : ℝ) • toReal (γ i)) : β = ∑ i, z i • γ i := by
@@ -71,43 +71,39 @@ end GlobalTheory.ConeGrow
 namespace GlobalTheory.ConeGrow
 
 /- English proof (translation)
-Introduce `E _ _ _ H φ X _ _ _ _ hP Nmax hN m δ hδ w hw hwp`. Take `⟨Nd, ℓd, hNd, hd1, hd2, -⟩` from `hδ.strict`. Use `set u : LinearMap.BilinForm ℤ X := ∑ j, δ j with hu_def`. Establish `hu : u ∈ balForms H.bar X` using `Submodule.sum_mem _ fun j _ => hδ.mem j`. Establish `hup : ∀ a, 0 ≤ u a a` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [u, LinearMap.sum_apply]`. Conclude with `Finset.sum_nonneg fun j _ => hδ.nonneg j a`. Establish `hφu : φ.evalZ u = ∑ j, φ.evalZ (δ j)`. Use `evalZ_eq_of_toReal hδ.linear (c := fun _ => 1) (fun _ => zero_le_one) (β := u) (LinearMap.ext₂ fun a b => by simp [u, LinearMap.sum_apply])` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hℓdu : (ℓd u : ℝ) = Nd * φ.evalZ u`. Rewrite using `[hφu, Finset.mul_sum, ← Finset.sum_congr rfl (fun j _ => hd1 j)]`. Simplify using `[u, map_sum]`. Establish `hK' : 0 ≤ (ℓd w : ℝ) - Nd * φ.evalZ w` using `sub_nonneg.2 (hd2 w hw hwp)`. Take `⟨n, hn⟩` from `exists_nat_gt ((Nmax : ℝ) * ((ℓd w : ℝ) - Nd * φ.evalZ w))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y : LinearMap.BilinForm ℤ X := (n : ℤ) • u + w with hy_def`. Establish `hy : y ∈ balForms H.bar X` using `add_mem (Submodule.smul_mem _ _ hu) hw`. Establish `hyp : ∀ a, 0 ≤ y a a` using `fun a => by`. Simplify using `only [y, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `add_nonneg (mul_nonneg (by positivity) (hup a)) (hwp a)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m', ε, c, hε, hc, hyc⟩` from `hP.cover (toReal y) (toReal_mem_psdCone_of_nonneg E H X y hy hyp)`. Take `⟨z, hz⟩` from `coords_int hε hy hyc`. Take `⟨Nn, ℓn, hNn, hNnmax, hn1, hn2, hn3⟩` from `hN m' ε hε`. Establish `hφy : φ.evalZ y = ∑ i, c i * φ.evalZ (ε i)` using `evalZ_eq_of_toReal hε.linear hc hyc`. Establish `hℓny : (ℓn y : ℝ) = Nn * φ.evalZ y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hh` using `apply_eq_of_toReal (j := LinearMap.id) (β := y) (γ := ε) (c := c) Function.injective_id ℓn hyc`. Rewrite using `[hh, hφy, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hn1]; ring`. Establish `hlin : ∀ ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ, (ℓ y : ℝ) = n * ℓ u + ℓ w` using `fun ℓ => by`. Simplify using `[y]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `b1` using `hd2 y hy hyp`. Establish `c1` using `hn2 u hu hup`. Establish `c2` using `hn2 w hw hwp`. Take `⟨pu, hpu⟩` from `hP.integral u hu hup`. Establish `hNd' : (1 : ℝ) ≤ Nd` using `by exact_mod_cast hNd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNn' : (0 : ℝ) ≤ Nn` using `by positivity`. Establish `hNmax' : (Nn : ℝ) ≤ Nmax` using `by exact_mod_cast hNnmax`. Establish `key : (n : ℝ) * Nd * ((ℓn u : ℝ) - Nn * φ.evalZ u) < n`. Establish `e1` using `mul_le_mul_of_nonneg_left c2 (show (0 : ℝ) ≤ Nd by positivity)`. Establish `e2` using `mul_le_mul_of_nonneg_left b1 hNn'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `e3` using `mul_le_mul_of_nonneg_right hNmax' hK'`. Rewrite `e2` using `[hlin, hℓdu]`. Establish `e4 : (Nn : ℝ) * φ.evalZ y = n * ℓn u + ℓn w` using `by rw [← hℓny, hlin]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hnpos : (0 : ℝ) < n` using `lt_of_le_of_lt (mul_nonneg (Nat.cast_nonneg _) hK') hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set d : ℤ := ℓn u - Nn * pu with hd_def`. Establish `hdR : (d : ℝ) = (ℓn u : ℝ) - Nn * φ.evalZ u` using `by rw [hpu]; push_cast [d]; ring`. Establish `hd0 : 0 ≤ d`. Establish `: (0 : ℝ) ≤ d` using `by rw [hdR]; linarith`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hdz : d = 0`. Establish `h1 : (Nd : ℝ) * d < 1`. Rewrite using `[hdR]`. Use `key` as an intermediate fact. Rewrite `this` using `[mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : (d : ℝ) ≤ Nd * d` using `le_mul_of_one_le_left (by exact_mod_cast hd0) hNd'`. Establish `: (d : ℝ) < 1` using `lt_of_le_of_lt h2 h1`. Establish `: d < 1` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : ∀ j, 0 ≤ (ℓn (δ j) : ℝ) - Nn * φ.evalZ (δ j)` using `fun j => sub_nonneg.2 (hn2 (δ j) (hδ.mem j) (hδ.nonneg j))`. Establish `hsum : ∑ j, ((ℓn (δ j) : ℝ) - Nn * φ.evalZ (δ j)) = 0`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.mul_sum, ← hφu]`. Establish `: (ℓn u : ℝ) = ∑ j, (ℓn (δ j) : ℝ)` using `by simp [u, map_sum]`. Rewrite using `[← this, ← hdR, hdz, Int.cast_zero]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `heq : ∀ j, (Nn : ℝ) * φ.evalZ (δ j) = ℓn (δ j)` using `fun j => by`. Use `(Finset.sum_eq_zero_iff_of_nonneg fun j _ => ht j).1 hsum j (Finset.mem_univ _)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `choose k cj hk hkc using fun j => hn3 (δ j) (hδ.mem j) (hδ.nonneg j) (heq j)`. Use `⟨m', ε, hε, fun j => ⟨k j, cj j, hk j, hkc j⟩, ∏ j, k j, fun i => (∏ j, k j : ℕ) * z i - n * ∑ j, ((∏ j' ∈ Finset.univ.erase j, k j' : ℕ) : ℤ) * cj j i, Finset.prod_pos fun j _ => hk j, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyz : y = ∑ i, z i • ε i` using `eq_sum_of_toReal (by rw [hyc]; simp only [hz])`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Establish `hy_ab : y a b = n * u a b + w a b` using `by simp [y]`. Establish `hyz_ab : y a b = ∑ i, z i * ε i a b`. Rewrite using `[hyz]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `[LinearMap.sum_apply]`. Establish `hu_ab : u a b = ∑ j, δ j a b` using `by simp [u, LinearMap.sum_apply]`. Establish `hkc_ab : ∀ j, (k j : ℤ) * δ j a b = ∑ i, (cj j i : ℤ) * ε i a b` using `fun j => by`. Use `LinearMap.congr_fun₂ (hkc j) a b` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hK : ∀ j, ((∏ j, k j : ℕ) : ℤ) * δ j a b = ((∏ j' ∈ Finset.univ.erase j, k j' : ℕ) : ℤ) * ∑ i, (cj j i : ℤ) * ε i a b` using `fun j => by`. Rewrite using `[← hkc_ab, ← Finset.mul_prod_erase Finset.univ k (Finset.mem_univ j)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, smul_eq_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hy_ab, hu_ab, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Simplify using `only [hK, hyz_ab, Finset.mul_sum, Finset.sum_mul, sub_mul, Finset.sum_sub_distrib]`.
-
-Rewrite using `[Finset.sum_comm (f := fun j i => _)]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_cone_of_large_multiple : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (φ : InvFun (𝓞 E)) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], IsPolFanOn H.bar φ X → ∀ Nmax : ℕ, (∀ (m : ℕ) (ε : Fin m → LinearMap.BilinForm ℤ X), IsCone H.bar φ ε → ∃ (N : ℕ) (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), 0 < N ∧ N ≤ Nmax ∧ (∀ i, (ℓ (ε i) : ℝ) = N * φ.evalZ (ε i)) ∧ (∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → N * φ.evalZ β ≤ ℓ β) ∧ ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → N * φ.evalZ β = ℓ β → ∃ (k : ℕ) (c : Fin m → ℕ), 0 < k ∧ k • β = ∑ i, c i • ε i) → ∀ (m : ℕ) (δ : Fin m → LinearMap.BilinForm ℤ X), IsCone H.bar φ δ → ∀ w ∈ balForms H.bar X, (∀ y, 0 ≤ w y y) → ∃ (m' : ℕ) (ε : Fin m' → LinearMap.BilinForm ℤ X), IsCone H.bar φ ε ∧ (∀ j, ∃ (k : ℕ) (c : Fin m' → ℕ), 0 < k ∧ k • δ j = ∑ i, c i • ε i) ∧ ∃ (k : ℕ) (c : Fin m' → ℤ), 0 < k ∧ (k : ℤ) • w = ∑ i, c i • ε i := by
   intro E _ _ _ H φ X _ _ _ _ hP Nmax hN m δ hδ w hw hwp

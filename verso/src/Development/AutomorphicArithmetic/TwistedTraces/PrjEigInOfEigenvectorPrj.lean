@@ -4,19 +4,17 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Introduce `H _ _ _ W A hW hA v μ x hv`. Establish `hWc : W.topologicalClosure = W` using `hW.submodule_topologicalClosure_eq`. Establish `hPW : prj W v ∈ W`. Establish `: prj W v ∈ W.topologicalClosure` using `Submodule.starProjection_apply_mem _ v`. Rewrite `this` using `[hWc]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hperp : ∀ w ∈ W, inner ℂ w (v - prj W v) = 0`. Introduce `w hw`. Establish `: v - prj W v ∈ W.topologicalClosureᗮ` using `Submodule.sub_starProjection_mem_orthogonal v`. Conclude with `this w (W.le_topologicalClosure hw)`. Establish `hmem : ∀ w, w ∈ eigIn W A x ↔ w ∈ W ∧ A w = (x : ℂ) • w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Simplify using `[eigIn, Module.End.mem_eigenspace_iff]`. Establish `key : ∀ u ∈ eigIn W A x, (∀ w ∈ eigIn W A x, inner ℂ w (v - u) = 0) → prj (eigIn W A x) v = u`. Introduce `u hu h`. Use `Submodule.eq_starProjection_of_mem_orthogonal ((eigIn W A x).le_topologicalClosure hu) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.orthogonal_closure]`. Conclude with `fun w hw => h w hw`. Use `split_ifs with hx`. Substitute `hx` using the available equality. Conclude with `key _ ((hmem _).2 ⟨hPW, hv⟩) fun w hw => hperp w ((hmem w).1 hw).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `key 0 (Submodule.zero_mem _) fun w hw => ?_` and prove the remaining obligations. Take `⟨hwW, hwA⟩` from `(hmem w).1 hw`. Establish `h1 : inner ℂ (A w) (prj W v) = inner ℂ w (A (prj W v))` using `hA.isSymmetric w (prj W v)`. Rewrite `h1` using `[hwA, hv, inner_smul_left, inner_smul_right, Complex.conj_ofReal]`. Establish `h2 : inner ℂ w (prj W v) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hx (by exact_mod_cast mul_right_cancel₀ h0 h1)`. Establish `h3` using `hperp w hwW`. Rewrite `h3` using `[inner_sub_right, h2]`. Rewrite using `[inner_sub_right, inner_zero_right]`.
-
-Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.prj_eigIn_of_eigenvector_prj :
     ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (W : Submodule ℂ H) (A : H →L[ℂ] H), IsClosed (W : Set H) → IsSelfAdjoint A → ∀ (v : H) (μ x : ℝ), A (prj W v) = (μ : ℂ) • prj W v → prj (eigIn W A x) v = if x = μ then prj W v else 0 := by

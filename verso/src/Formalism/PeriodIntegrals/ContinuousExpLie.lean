@@ -23,9 +23,9 @@ variable {n : ℕ}
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Use `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h` as an intermediate fact. Simplify using `only [Complex.coe_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exp_entry (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     HasDerivAt (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X)) i j) (X i j) 0 := by
@@ -37,9 +37,9 @@ theorem exp_entry (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
   exact this
 
 /- English proof (translation)
-Establish `: HasDerivAt (fun t : ℝ => (fun i j => (NormedSpace.exp ((t : ℂ) • X)) i j : Fin n → Fin n → ℂ)) (fun i j => X i j) 0`. Rewrite using `[hasDerivAt_pi]`. Introduce `i`. Rewrite using `[hasDerivAt_pi]`. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `exact exp_entry X i j`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exp_deriv (X : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0 := by
@@ -64,7 +64,7 @@ section Grp
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `h` using `(hpkFacts k r).2.1`. Establish `: (Hpk k r).det * (Hpk k r).det = 1` using `by rw [← Matrix.det_mul, h, Matrix.det_one]`. Conclude with `IsUnit.of_mul_eq_one _ this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Hpk_unit (k r : ℕ) : IsUnit (Hpk k r).det := by
   have h := (hpkFacts k r).2.1
@@ -72,21 +72,19 @@ theorem Hpk_unit (k r : ℕ) : IsUnit (Hpk k r).det := by
   exact IsUnit.of_mul_eq_one _ this
 
 /- English proof (translation)
-The claim follows from `(uHGroup _ _ (Hpk_unit k r)).2.1 a ha b hb`.
+A detailed English derivation is pending.
 -/
 theorem UH_mul {a b : Mx k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) : a * b ∈ UH (Hpk k r) :=
   (uHGroup _ _ (Hpk_unit k r)).2.1 a ha b hb
 
 /- English proof (translation)
-Establish `hH2` using `(hpkFacts k r).2.1`. Establish `hinv : (Hpk k r)⁻¹ = Hpk k r` using `Matrix.inv_eq_right_inv hH2`. Establish `hXs : Xᴴ = Hpk k r * (-X) * (Hpk k r)⁻¹`. Rewrite using `[hinv]`. Establish `h1 : Xᴴ * Hpk k r = -(Hpk k r * X)` using `eq_neg_of_add_eq_zero_left hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `show (NormedSpace.exp ((t : ℂ) • X))ᴴ * Hpk k r * NormedSpace.exp ((t : ℂ) • X) = Hpk k r`. Rewrite using `[← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, hXs]`. Establish `hst : star (t : ℂ) = (t : ℂ)` using `Complex.conj_ofReal t`. Rewrite using `[hst]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (t : ℂ) • (Hpk k r * (-X) * (Hpk k r)⁻¹) = Hpk k r * (-((t : ℂ) • X)) * (Hpk k r)⁻¹`. Simplify using the standard rewrite rules. Rewrite using `[e1, Matrix.exp_conj _ _ ((Matrix.isUnit_iff_isUnit_det _).2 (Hpk_unit k r)), hinv]`. Establish `e2 : NormedSpace.exp (-((t : ℂ) • X)) * NormedSpace.exp ((t : ℂ) • X) = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ ((Commute.refl ((t : ℂ) • X)).neg_left)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r * (NormedSpace.exp (-((t : ℂ) • X)) * NormedSpace.exp ((t : ℂ) • X)) := by`. Rewrite using `[hH2, Matrix.mul_one, Matrix.mul_assoc]`.
-
-Use `_ = Hpk k r := by rw [e2, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_mem_UH {X : Mx k r} (hX : InLieHpk k r X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ UH (Hpk k r) := by
@@ -128,13 +126,13 @@ def InA (k r : ℕ) (X : Mx k r) : Prop :=
 def InLieN (k r : ℕ) (X : Mx k r) : Prop := InLieHpk k r X ∧ InA k r X
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a i hai`. Rewrite using `[Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hl : a.val ≤ l.val`. Rewrite using `[hY.1 a l hl, mul_zero]`. Establish `hl' : l.val < r` using `by have := a.2; omega`. Establish `: l = eI k r ⟨l.val, hl'⟩` using `rfl`. Rewrite using `[this, hX.1 ⟨l.val, hl'⟩ i (by simp only; omega), zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j h1 h2 h3`. Rewrite using `[Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Distinguish the cases in `hl : r ≤ l.val`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hY.2 l j h1 h2 hl, mul_zero]`. Establish `hl' : l.val < r` using `by omega`. Establish `: l = eI k r ⟨l.val, hl'⟩` using `rfl`. Rewrite using `[this, hX.1 ⟨l.val, hl'⟩ i (by simp only; omega), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem InA.mul {X Y : Mx k r} (hX : InA k r X) (hY : InA k r Y) : InA k r (X * Y) := by
   constructor
@@ -158,7 +156,7 @@ theorem InA.mul {X Y : Mx k r} (hX : InA k r X) (hY : InA k r Y) : InA k r (X * 
       rw [this, hX.1 ⟨l.val, hl'⟩ i (by simp only; omega), zero_mul]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using hX`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul hX`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem InA.pow {X : Mx k r} (hX : InA k r X) : ∀ n : ℕ, InA k r (X ^ (n + 1)) := by
   intro n
@@ -168,7 +166,7 @@ theorem InA.pow {X : Mx k r} (hX : InA k r X) : ∀ n : ℕ, InA k r (X ^ (n + 1
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Establish `h` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) X`. Set `L : Mx k r →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ i j)`. Use `L.hasSum h` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exp_entry_hasSum (X : Mx k r) (i j : Fin (2 * r + k + 1)) :
     HasSum (fun n : ℕ => ((n.factorial : ℂ)⁻¹) * (X ^ n) i j) ((NormedSpace.exp X) i j) := by
@@ -178,9 +176,9 @@ theorem exp_entry_hasSum (X : Mx k r) (i j : Fin (2 * r + k + 1)) :
   exact this
 
 /- English proof (translation)
-Establish `h1` using `exp_entry_hasSum X i j`. Establish `h2 : HasSum (fun n : ℕ => ((n.factorial : ℂ)⁻¹) * (X ^ n) i j) (((Nat.factorial 0 : ℂ)⁻¹) * (X ^ 0) i j)`. Apply `hasSum_single 0` to reduce the goal to its premises. Introduce `n hn`. Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h m, mul_zero]`. Rewrite using `[h1.unique h2]`. Simplify using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exp_entry_of_InA {X : Mx k r} (i j : Fin (2 * r + k + 1)) (h : ∀ n : ℕ, (X ^ (n + 1)) i j = 0) :
     (NormedSpace.exp X) i j = if i = j then 1 else 0 := by
@@ -194,9 +192,9 @@ theorem exp_entry_of_InA {X : Mx k r} (i j : Fin (2 * r + k + 1)) (h : ∀ n : �
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `exp_mem_UH hX.1 1` as an intermediate fact. Simplify using `using this`. Introduce `a i hai`. Conclude with `exp_entry_of_InA i _ (fun n => (hX.2.pow n).1 a i hai)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j h1 h2 h3`. Conclude with `exp_entry_of_InA i j (fun n => (hX.2.pow n).2 i j h1 h2 h3)`.
+A detailed English derivation is pending.
 -/
 theorem exp_mem_N {X : Mx k r} (hX : InLieN k r X) : NormedSpace.exp X ∈ Nset k r := by
   refine ⟨?_, ?_, ?_⟩
@@ -208,9 +206,9 @@ theorem exp_mem_N {X : Mx k r} (hX : InLieN k r X) : NormedSpace.exp X ∈ Nset 
     exact exp_entry_of_InA i j (fun n => (hX.2.pow n).2 i j h1 h2 h3)
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (X + Y)ᴴ * Hpk k r + Hpk k r * (X + Y) = 0`. Establish `h1 : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX.1`. Establish `h2 : Yᴴ * Hpk k r + Hpk k r * Y = 0` using `hY.1`. Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `a i hai`. Rewrite using `[Matrix.add_apply, hX.2.1 a i hai, hY.2.1 a i hai, add_zero]`. Introduce `i j h1 h2 h3`. Rewrite using `[Matrix.add_apply, hX.2.2 i j h1 h2 h3, hY.2.2 i j h1 h2 h3, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InLieN.add {X Y : Mx k r} (hX : InLieN k r X) (hY : InLieN k r Y) : InLieN k r (X + Y) := by
   refine ⟨?_, ?_, ?_⟩
@@ -227,9 +225,9 @@ theorem InLieN.add {X Y : Mx k r} (hX : InLieN k r X) (hY : InLieN k r Y) : InLi
     rw [Matrix.add_apply, hX.2.2 i j h1 h2 h3, hY.2.2 i j h1 h2 h3, add_zero]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ((c : ℂ) • X)ᴴ * Hpk k r + Hpk k r * ((c : ℂ) • X) = 0`. Establish `h1 : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX.1`. Establish `hst : star (c : ℂ) = (c : ℂ)` using `Complex.conj_ofReal c`. Rewrite using `[Matrix.conjTranspose_smul, hst, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h1, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a i hai`. Rewrite using `[Matrix.smul_apply, hX.2.1 a i hai, smul_zero]`. Introduce `i j h1 h2 h3`. Rewrite using `[Matrix.smul_apply, hX.2.2 i j h1 h2 h3, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InLieN.smul {X : Mx k r} (hX : InLieN k r X) (c : ℝ) : InLieN k r ((c : ℂ) • X) := by
   refine ⟨?_, ?_, ?_⟩
@@ -243,9 +241,9 @@ theorem InLieN.smul {X : Mx k r} (hX : InLieN k r X) (c : ℝ) : InLieN k r ((c 
     rw [Matrix.smul_apply, hX.2.2 i j h1 h2 h3, smul_zero]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (0 : Mx k r)ᴴ * Hpk k r + Hpk k r * 0 = 0`. Simplify using the standard rewrite rules. Introduce `a i _`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j _ _ _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem InLieN.zero : InLieN k r (0 : Mx k r) := by
   refine ⟨?_, ?_, ?_⟩
@@ -255,7 +253,7 @@ theorem InLieN.zero : InLieN k r (0 : Mx k r) := by
   · intro i j _ _ _; rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_add (x y : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) :
     unrealify (x + y) = unrealify x + unrealify y := by
@@ -263,7 +261,7 @@ theorem unrealify_add (x y : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 *
   apply Complex.ext <;> simp [unrealify]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_smul (c : ℝ) (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) :
     unrealify (c • x) = (c : ℂ) • unrealify x := by
@@ -271,7 +269,7 @@ theorem unrealify_smul (c : ℝ) (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) ×
   apply Complex.ext <;> simp [unrealify]
 
 /- English proof (translation)
-The claim follows from `continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of : Continuous (fun x : Mt k r => (Matrix.of x : Mx k r)) := continuous_id
 

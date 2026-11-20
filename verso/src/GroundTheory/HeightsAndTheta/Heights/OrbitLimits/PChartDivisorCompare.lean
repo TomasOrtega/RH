@@ -18,7 +18,7 @@ open GroundTheory.Heights₂.Heights (varInt localMult IsDegZeroSmooth segreChar
   SegreChartIntegral.Statement)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨z, ⟨hz1, hz2⟩, hzi, rfl⟩`. Conclude with `⟨z, ⟨hz1, fun f hf => hz2 f (h hf)⟩, hzi, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem segreChartSet_mono {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {P W : Ideal (MRing ι)}
     (h : P ≤ W) {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k) :
@@ -27,7 +27,7 @@ theorem segreChartSet_mono {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fi
   exact ⟨z, ⟨hz1, fun f hf => hz2 f (h hf)⟩, hzi, rfl⟩
 
 /- English proof (translation)
-Establish `hsub` using `segreChartSet_mono hPW σ i`. Consider the cases of `n with`. Consider the case `zero => exact hPts K ι W m σ i L g δ G Φ hW hg hδ hsupp fun x hx => (hgerm x (hsub hx)).1`. Consider the case `succ e => exact hInt K ι W e m σ i L g δ G Φ hW hL hg hδ (Or.inl hsupp) fun x hx => hgerm x (hsub hx)`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem ptsIntegral_eq_sum_chart (hInt : SegreChartIntegral.Statement) (hPts : SegreChartIntegralPoints.Statement)
     {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {P W : Ideal (MRing ι)} {n m : ℕ}
@@ -44,17 +44,15 @@ theorem ptsIntegral_eq_sum_chart (hInt : SegreChartIntegral.Statement) (hPts : S
   | succ e => exact hInt K ι W e m σ i L g δ G Φ hW hL hg hδ (Or.inl hsupp) fun x hx => hgerm x (hsub hx)
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P n m σ i L A s g δ G Φ hP hL hs hg hδ hsupp hgerm`. Take `⟨hmin, hdisj⟩` from `hComp K ι P n m σ i A s hP hs`. Establish `hfin : {W | W ∈ divSupp P s ∧ IsHorizontal W}.Finite` using `(divSupp_finite P s).subset fun _ h => h.1`. Use `set S := hfin.toFinset with hS`. Use `set T := S.biUnion fun W => segreChartComponents W σ i with hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : ∀ J ∈ segreChartComponents P σ i, ∑ᶠ (W' : Ideal (MvPolynomial (Fin m) ℂ)) (_ : W' ∈ (J ⊔ Ideal.span {chartSection σ i s}).minimalPrimes), (localMult (J ⊔ Ideal.span {chartSection σ i s}) W' : ℝ) * varInt W' n G Φ = ∑ W' ∈ T, if J ≤ W' then (localMult (J ⊔ Ideal.span {chartS …`. Introduce `J hJ`. Establish `hset : (J ⊔ Ideal.span {chartSection σ i s}).minimalPrimes = ↑(T.filter fun W' => J ≤ W')`. Use extensionality with `W'`. Simplify using `only [Finset.coe_filter, Set.mem_ofPred_eq, hmin J hJ W', hT, hS, Finset.mem_biUnion, Set.Finite.mem_toFinset, Set.mem_ofPred_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities.
 
-The claim follows by propositional logic. Rewrite using `[hset, finsum_mem_coe_finset, Finset.sum_filter]`. Establish `hB : ∀ W ∈ S, ∀ W' ∈ segreChartComponents W σ i, ∑ J ∈ segreChartComponents P σ i, (if J ≤ W' then (localMult (J ⊔ Ideal.span {chartSection σ i s}) W' : ℝ) * varInt W' n G Φ else 0) = (multAt (P ⊔ Ideal.span {s}) W : ℝ) * varInt W' n G Φ`. Introduce `W hW W' hW'`. Rewrite `hW` using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_filter, ← Finset.sum_mul, ← Nat.cast_sum, hLen K ι P n m σ i A s hP hs W hW.1 hW.2 W' hW']`. Establish `hdisjT : (↑S : Set (Ideal (MRing ι))).PairwiseDisjoint fun W => segreChartComponents W σ i`. Introduce `W₁ h₁ W₂ h₂ hne`. Rewrite `h₁`, `h₂` using `[Finset.mem_coe, Set.Finite.mem_toFinset]`. Conclude with `Finset.disjoint_left.2 fun W' hW₁ hW₂ => hne (hdisj W₁ W₂ h₁ h₂ W' hW₁ hW₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_congr rfl hA, Finset.sum_comm, Finset.sum_biUnion hdisjT, Finset.sum_congr rfl fun W hW => Finset.sum_congr rfl (hB W hW), eq_comm]`. Use `(finsum_mem_eq_finite_toFinset_sum (fun W => (multAt (P ⊔ Ideal.span {s}) W : ℝ) * ptsIntegral W (pot L) g) hfin).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun W hW => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Rewrite `hW` using `[Set.Finite.mem_toFinset]`.
-
-Establish `hWv : IsArithVar W (n + 1)` using `(divSuppArith K ι P (n + 1) A s W hP hs hW.1).1 hW.2`. Rewrite using `[ptsIntegral_eq_sum_chart hInt hPts hWv (le_sup_left.trans hW.1.1.1.2) hL hg hδ hsupp hgerm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartDivisorCompare.proof (hInt : SegreChartIntegral.Statement) (hPts : SegreChartIntegralPoints.Statement)
     (hComp : ChartDivisorComponents.Statement) (hLen : ChartDivisorLength.Statement) :

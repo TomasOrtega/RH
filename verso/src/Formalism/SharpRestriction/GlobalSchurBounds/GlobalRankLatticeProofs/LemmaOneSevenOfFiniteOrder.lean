@@ -18,7 +18,7 @@ variable {F E K : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E
   [Field K] [Algebra F K] [TopologicalSpace K] [IsTopologicalRing K]
 
 /- English proof (translation)
-Use `⟨fun s _ hs x hx y hy => hi ?_⟩` and prove the remaining obligations. Conclude with `TotallyDisconnectedSpace.isTotallyDisconnected_univ (f '' s) (Set.subset_univ _) (hs.image f hf.continuousOn) (Set.mem_image_of_mem f hx) (Set.mem_image_of_mem f hy)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem td_of_inj {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     [TotallyDisconnectedSpace Y] (f : X → Y) (hf : Continuous f) (hi : Function.Injective f) :
@@ -28,9 +28,9 @@ theorem td_of_inj {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     (hs.image f hf.continuousOn) (Set.mem_image_of_mem f hx) (Set.mem_image_of_mem f hy)
 
 /- English proof (translation)
-Use `letI : Algebra K (E ⊗[F] K) := Algebra.TensorProduct.rightAlgebra`. Conclude with `Module.Finite.equiv (R := K) (M := K ⊗[F] E) (N := E ⊗[F] K) { (TensorProduct.comm F K E) with map_smul' := fun c x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`.
+Equip the data with the indicated structure. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[Algebra.smul_def, TensorProduct.smul_tmul']`. Rewrite using `[show algebraMap K (E ⊗[F] K) c = (1 : E) ⊗ₜ[F] c from rfl, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `add x y hx hy => simp_all [smul_add] }`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tens_finite :
     letI : Algebra K (E ⊗[F] K) := Algebra.TensorProduct.rightAlgebra
@@ -48,7 +48,7 @@ theorem tens_finite :
           | add x y hx hy => simp_all [smul_add] }
 
 /- English proof (translation)
-Use `letI : Algebra K (E ⊗[F] K) := Algebra.TensorProduct.rightAlgebra`. Use `letI := tensTop (F := F) (E := E) K`. Use `haveI : Module.Finite K (E ⊗[F] K) := tens_finite`. Use `haveI : IsModuleTopology K (E ⊗[F] K) := ⟨rfl⟩`. Conclude with `IsModuleTopology.isTopologicalRing K (E ⊗[F] K)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem tens_topRing :
     letI := tensTop (F := F) (E := E) K
@@ -60,9 +60,7 @@ theorem tens_topRing :
   exact IsModuleTopology.isTopologicalRing K (E ⊗[F] K)
 
 /- English proof (translation)
-Use `letI : Algebra K (E ⊗[F] K) := Algebra.TensorProduct.rightAlgebra`. Use `letI := tensTop (F := F) (E := E) K`. Use `haveI : Module.Finite K (E ⊗[F] K) := tens_finite`. Use `haveI : IsModuleTopology K (E ⊗[F] K) := ⟨rfl⟩`. Set `e` to `(Module.finBasis K (E ⊗[F] K)).equivFun`.
-
-Conclude with `td_of_inj e (IsModuleTopology.continuous_of_linearMap e.toLinearMap) e.injective`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem tens_td [TotallyDisconnectedSpace K] :
     letI := tensTop (F := F) (E := E) K
@@ -81,14 +79,14 @@ section Steps
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {k : ℕ}
 
 /- English proof (translation)
-Conclude with `(inclE (F := F) (E := E) R).injective`.
+A detailed English derivation is pending.
 -/
 theorem inclE_injective (R : Type) [Field R] [Algebra F R] :
     Function.Injective (inclE (F := F) (E := E) R) := by
   exact (inclE (F := F) (E := E) R).injective
 
 /- English proof (translation)
-Introduce `x y hxy`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `h` using `congrArg (fun z : GL (Fin k) B => (z : Matrix (Fin k) (Fin k) B) i j) hxy`. Simplify `h` using `[bc, hφ.eq_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bc_injective {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B)
     (hφ : Function.Injective φ) : Function.Injective (bc (ι := Fin k) φ) := by
@@ -99,7 +97,7 @@ theorem bc_injective {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B)
   simpa [bc, hφ.eq_iff] using h
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[bc]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bc_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (φ : A →+* B)
     (ψ : B →+* C) (x : GL (Fin k) A) : bc ψ (bc φ x) = bc (ψ.comp φ) x := by
@@ -108,7 +106,7 @@ theorem bc_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (φ : A �
   simp [bc]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[prV, inclE]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prV_inclE [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     (prV (E := E) v).comp (inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)) =
@@ -117,13 +115,13 @@ theorem prV_inclE [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
   simp [prV, inclE]
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem gl_topGroup {T : Type} [CommRing T] [TopologicalSpace T] [IsTopologicalRing T] :
     IsTopologicalGroup (GL (Fin k) T) := inferInstance
 
 /- English proof (translation)
-Use `haveI : TotallyDisconnectedSpace (Matrix (Fin k) (Fin k) T) := (inferInstance : TotallyDisconnectedSpace (Fin k → Fin k → T))`. Conclude with `td_of_inj (fun x : GL (Fin k) T => (x : Matrix (Fin k) (Fin k) T)) Units.continuous_val (fun a b hab => Units.ext hab)`.
+A detailed English derivation is pending.
 -/
 theorem gl_td {T : Type} [CommRing T] [TopologicalSpace T] [TotallyDisconnectedSpace T] :
     TotallyDisconnectedSpace (GL (Fin k) T) := by
@@ -133,19 +131,17 @@ theorem gl_td {T : Type} [CommRing T] [TopologicalSpace T] [TotallyDisconnectedS
     (fun a b hab => Units.ext hab)
 
 /- English proof (translation)
-Take `⟨hc, hidx⟩` from `h`. Use `haveI : CompactSpace Uw := isCompact_iff_compactSpace.mp hc`. Use `haveI : T1Space Uw := inferInstance`. Set `xu : Uw` to `⟨x, hx⟩`. Establish `hxu : orderOf xu = orderOf x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `Subgroup.orderOf_mk x hx`. Establish `hnpos : 0 < orderOf x` using `hfin.orderOf_pos`. Set `Z : Finset Uw` to `(Finset.Ioo 0 (orderOf x)).image (fun j => xu ^ j)`. Establish `hZ : IsOpen ((↑Z : Set Uw)ᶜ)` using `(Z.finite_toSet.isClosed).isOpen_compl`. Establish `h1 : (1 : Uw) ∈ (↑Z : Set Uw)ᶜ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `hm`. Take `⟨j, hj, hj1⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hm)`. Take `⟨hj0, hjn⟩` from `Finset.mem_Ioo.1 hj`. Use `orderOf_le_of_pow_eq_one hj0 hj1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨N, hN⟩ : ∃ N : OpenNormalSubgroup Uw, (N : Set Uw) ⊆ (↑Z : Set Uw)ᶜ` from `by haveI : T2Space Uw := inferInstance`. Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one (G := ProfiniteGrp.of Uw) hZ h1`. Conclude with `⟨H, hH⟩`. Use `haveI hNn : N.toSubgroup.Normal := N.isNormal'`. Take `⟨m, hm⟩` from `hidx N.toSubgroup N.isOpen' hNn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hpow : xu ^ (g ^ m) ∈ N.toSubgroup`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.mk_pow, ← hm]`. Conclude with `pow_card_eq_one'`. Establish `hdvd : orderOf x ∣ g ^ m`. Assume the negation of the conclusion as `hnd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hj0 : 0 < g ^ m % orderOf x` using `Nat.pos_of_ne_zero (fun h0 => hnd (Nat.dvd_of_mod_eq_zero h0))`. Establish `hjn : g ^ m % orderOf x < orderOf x` using `Nat.mod_lt _ hnpos`. Establish `hmem : xu ^ (g ^ m % orderOf x) ∈ N.toSubgroup`. Rewrite using `[← hxu, pow_mod_orderOf]`. Conclude with `hpow`.
-
-Establish `hZm : xu ^ (g ^ m % orderOf x) ∈ (↑Z : Set Uw)` using `Finset.mem_coe.2 (Finset.mem_image.2 ⟨_, Finset.mem_Ioo.2 ⟨hj0, hjn⟩, rfl⟩)`. Conclude with `hN hmem hZm`. Take `⟨i, -, hi⟩` from `(Nat.dvd_prime_pow hg).1 hdvd`. Conclude with `⟨i, hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem proG_order {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [TotallyDisconnectedSpace G] (g : ℕ) (hg : g.Prime) (Uw : Subgroup G) (h : IsProG g Uw)
@@ -191,7 +187,7 @@ theorem proG_order {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup
   exact ⟨i, hi⟩
 
 /- English proof (translation)
-Use `haveI := gl_topGroup (k := k) (T := T)`. Use `haveI := gl_td (k := k) (T := T)`. Conclude with `proG_order g hg Uw h x hx hfin`.
+A detailed English derivation is pending.
 -/
 theorem step_pro {T : Type} [CommRing T] [TopologicalSpace T] [IsTopologicalRing T]
     [TotallyDisconnectedSpace T] (g : ℕ) (hg : g.Prime) (Uw : Subgroup (GL (Fin k) T))
@@ -218,21 +214,21 @@ def DefiniteUnitaryFiniteOrder (D : D7) : Prop :=
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `σ hσ J hJ hD g hg hlt v hv U hU hUc _hUo Uw hUw hUUw y hy`. Rewrite using `[Subgroup.eq_bot_iff_forall]`. Introduce `x hx`. Take `⟨hx1, hx2⟩` from `Subgroup.mem_inf.mp hx`. Take `⟨γ, hγ, rfl⟩` from `Subgroup.mem_map.mp hx1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfin : IsOfFinOrder γ` using `hF σ hσ J hJ hD U hU hUc y hy γ hγ hx2`. Take `⟨u, hu, hux⟩` from `Subgroup.mem_map.mp hx2`. Establish `hcomp : bc (prV v) (bc (inclE (F` using `D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ) = bc (inclE (F := D.host.F) (E := D.host.E) (v.adicCompletion D.host.F)) γ := by`. Rewrite using `[bc_comp, prV_inclE]`. Establish `hordγ : orderOf (bc (inclE (F` using `D.host.F) (E := D.host.E) (v.adicCompletion D.host.F)) γ) = orderOf γ := orderOf_injective (bc (ι := Fin D.R.k) (inclE (F := D.host.F) (E := D.host.E) (v.adicCompletion D.host.F))) (bc_injective _ (inclE_injective (F := D.host.F) (E := D.host.E) (v.adicCompletion D.host.F))) γ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hconj : bc (prV v) ((MulAut.conj y).toMonoidHom u) = MulAut.conj (bc (prV v) y) (bc (prV v) u)`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, map_inv]`. Establish `hord_u : orderOf (bc (prV v) u) = orderOf γ`. Establish `e1` using `MulEquiv.orderOf_eq (MulAut.conj (bc (prV v) y)) (bc (prV v) u)`. Establish `e2` using `congrArg (fun z => orderOf (bc (prV v) z)) hux`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `congrArg orderOf hcomp`. Rewrite using `[← e1, ← hconj, e2, e3, hordγ]`. Establish `hfin' : IsOfFinOrder (bc (prV v) u)`. Rewrite using `[← orderOf_pos_iff, hord_u]`. Conclude with `hfin.orderOf_pos`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `@step_pro D.R.k _ _ (tensTop (F := D.host.F) (E := D.host.E) (v.adicCompletion D.host.F)) (tens_topRing (F := D.host.F) (E := D.host.E) (K := v.adicCompletion D.host.F)) (tens_td (F := D.host.F) (E := D.host.E) (K := v.adicCompletion D.host.F)) g hg Uw hUw (bc (prV v) u) (hUUw u …`. Rewrite `hm` using `[hord_u]`. Establish `hlt' : 4 * D.R.ord * D.R.k < g - 1`. Establish `h2 : 2 * D.R.f * D.R.k = 4 * D.R.ord * D.R.k`. Establish `hf : D.R.f = 2 * D.R.ord` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf]`. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers. Establish `hΓ` using `Formalism.HC.HostAx.hostStab D.host.toHostAx D.R.k g hg hlt' (Subgroup.zpowers γ) (by`. Introduce `δ hδ`.
+Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd : orderOf δ ∣ g ^ m` using `hm ▸ orderOf_dvd_of_mem_zpowers hδ`. Take `⟨i, -, hi⟩` from `(Nat.dvd_prime_pow hg).1 hd`. Conclude with `⟨i, hi⟩)`. Establish `h1 : γ = 1`. Establish `hm' : γ ∈ Subgroup.zpowers γ` using `Subgroup.mem_zpowers γ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm'` using `[hΓ]`. Conclude with `Subgroup.mem_bot.mp hm'`. Rewrite using `[h1, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteModel_of_heckeEstimate (D : D7) (hF : DefiniteUnitaryFiniteOrder D) : division_rows_rational_lattice D := by
   intro σ hσ J hJ hD g hg hlt v hv U hU hUc _hUo Uw hUw hUUw y hy
@@ -285,7 +281,7 @@ theorem finiteModel_of_heckeEstimate (D : D7) (hF : DefiniteUnitaryFiniteOrder D
   rw [h1, map_one]
 
 /- English proof (translation)
-Establish `h : NumberField.ComplexEmbedding.IsReal φ`. Conclude with `NumberField.IsTotallyReal.complexEmbedding_isReal φ`. Conclude with `⟨h.embedding, fun x => (h.coe_embedding_apply x).symm⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem totReal_emb {F : Type} [Field F] [IsTotallyReal F] (φ : F →+* ℂ) :
     ∃ r : F →+* ℝ, ∀ x, φ x = (r x : ℂ) := by
@@ -294,7 +290,7 @@ theorem totReal_emb {F : Type} [Field F] [IsTotallyReal F] (φ : F →+* ℂ) :
   exact ⟨h.embedding, fun x => (h.coe_embedding_apply x).symm⟩
 
 /- English proof (translation)
-Introduce `σ _ J hJ hD U hU hUc y hy γ hγ hmem`. Conclude with `hG D.host.F D.host.E (fun φ => totReal_emb φ) σ D.R.k J hJ hD U hU hUc y hy γ hγ hmem`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_order_of_totally_real (hG : Formalism.MainNotions.Ext.FinOrdG) (D : D7) : DefiniteUnitaryFiniteOrder D := by
   intro σ _ J hJ hD U hU hUc y hy γ hγ hmem

@@ -14,13 +14,13 @@ namespace PositivityTheory.SiegelWeilFormula.KMain
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[Darboux.rho, schr, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_add_k (w) (Φ Φ' : d.Fn) : d.dd.rho d.B.ψ w (Φ + Φ') = d.dd.rho d.B.ψ w Φ + d.dd.rho d.B.ψ w Φ' := by
   funext y
   simp [Darboux.rho, schr, mul_add]
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[Darboux.rho, schr, mul_left_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_smul_k (w) (a : ℂ) (Φ : d.Fn) : d.dd.rho d.B.ψ w (a • Φ) = a • d.dd.rho d.B.ψ w Φ := by
   funext y
@@ -50,19 +50,19 @@ Both sides reduce to the same expression.
 -/
 theorem secl_apply_k (Φ : d.Fn) : _root_.PositivityTheory.SiegelWeilFormula.KMain.secl_k d Φ = d.sec0 Φ := rfl
 /- English proof (translation)
-The claim follows from `d.ok.dbl.weil.2.1.pres x Φ h`.
+A detailed English derivation is pending.
 -/
 theorem om_mem_k (x : d.G) {Φ : d.Fn} (h : Φ ∈ d.sch) : d.om x Φ ∈ d.sch :=
   d.ok.dbl.weil.2.1.pres x Φ h
 /- English proof (translation)
-The claim follows from `d.ok.dbl.lin.pres g Φ h`.
+A detailed English derivation is pending.
 -/
 theorem S_mem_k (g) {Φ : d.Fn} (h : Φ ∈ d.sch) : d.S g Φ ∈ d.sch :=
   d.ok.dbl.lin.pres g Φ h
 /- English proof (translation)
-Establish `h1` using `(hT F E σ d Φ h).1`. Establish `h2` using `(hT F E σ d Φ' h').1`. Establish `h3` using `(hT F E σ d (Φ + Φ') (d.sch.add_mem h h')).1`. Establish `h4` using `h1.add h2`. Rewrite `h3` using `[← _root_.PositivityTheory.SiegelWeilFormula.KMain.Tl_apply_k]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_add, Pi.add_apply, _root_.PositivityTheory.SiegelWeilFormula.KMain.Tl_apply_k] at h3`. Conclude with `h3.unique h4`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaSum_add_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k) {Φ Φ' : d.Fn} (h : Φ ∈ d.sch) (h' : Φ' ∈ d.sch) :
     thetaSum F (Φ + Φ') = thetaSum F Φ + thetaSum F Φ' := by
@@ -74,9 +74,9 @@ theorem thetaSum_add_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k)
   simp only [map_add, Pi.add_apply, _root_.PositivityTheory.SiegelWeilFormula.KMain.Tl_apply_k] at h3
   exact h3.unique h4
 /- English proof (translation)
-Establish `h1` using `(hT F E σ d Φ h).1`. Establish `h3` using `(hT F E σ d (a • Φ) (d.sch.smul_mem a h)).1`. Establish `h4` using `h1.mul_left a`. Rewrite `h3` using `[← _root_.PositivityTheory.SiegelWeilFormula.KMain.Tl_apply_k]`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, _root_.PositivityTheory.SiegelWeilFormula.KMain.Tl_apply_k] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h3.unique h4`.
+A detailed English derivation is pending.
 -/
 theorem thetaSum_smul_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k) (a : ℂ) {Φ : d.Fn} (h : Φ ∈ d.sch) : thetaSum F (a • Φ) = a * thetaSum F Φ := by
   have h1 := (hT F E σ d Φ h).1
@@ -86,9 +86,9 @@ theorem thetaSum_smul_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k
   simp only [map_smul, Pi.smul_apply, smul_eq_mul, _root_.PositivityTheory.SiegelWeilFormula.KMain.Tl_apply_k] at h3
   exact h3.unique h4
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `i1` using `((hA F E σ d).2.2 Φ h).1 x`. Establish `i2` using `((hA F E σ d).2.2 Φ' h').1 x`. Establish `e : ∀ g, thetaSum F (d.om x (d.S g (Φ + Φ'))) = thetaSum F (d.om x (d.S g Φ)) + thetaSum F (d.om x (d.S g Φ'))` using `fun g => by`. Rewrite using `[map_add, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `_root_.PositivityTheory.SiegelWeilFormula.KMain.thetaSum_add_k d hT (_root_.PositivityTheory.SiegelWeilFormula.KMain.om_mem_k d x (_root_.PositivityTheory.SiegelWeilFormula.KMain.S_mem_k d g h)) (_root_.PositivityTheory.SiegelWeilFormula.KMain.om_mem_k d x (_root_.PositivityTheor …`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.I, thetaMean, Pi.add_apply, e]`. Rewrite using `[average_eq, average_eq, average_eq, integral_add i1 i2, smul_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem I_add_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.ThetaAuto_k) {Φ Φ' : d.Fn} (h : Φ ∈ d.sch) (h' : Φ' ∈ d.sch) :
     d.I (Φ + Φ') = d.I Φ + d.I Φ' := by
@@ -102,9 +102,9 @@ theorem I_add_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k) (hA : 
   simp only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.I, thetaMean, Pi.add_apply, e]
   rw [average_eq, average_eq, average_eq, integral_add i1 i2, smul_add]
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `e : ∀ g, thetaSum F (d.om x (d.S g (a • Φ))) = a * thetaSum F (d.om x (d.S g Φ))` using `fun g => by`. Rewrite using `[map_smul, map_smul]`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.KMain.thetaSum_smul_k d hT a (_root_.PositivityTheory.SiegelWeilFormula.KMain.om_mem_k d x (_root_.PositivityTheory.SiegelWeilFormula.KMain.S_mem_k d g h))`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.I, thetaMean, Pi.smul_apply, e, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[average_eq, average_eq, integral_const_mul, mul_smul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem I_smul_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k) (a : ℂ) {Φ : d.Fn} (h : Φ ∈ d.sch) : d.I (a • Φ) = a • d.I Φ := by
   funext x
@@ -115,9 +115,9 @@ theorem I_smul_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k) (a : 
   simp only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.I, thetaMean, Pi.smul_apply, e, smul_eq_mul]
   rw [average_eq, average_eq, integral_const_mul, mul_smul_comm]
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Use `_root_.PositivityTheory.SiegelWeilFormula.KMain.I_smul_k d hT 0 (d.sch.zero_mem)` as an intermediate fact. Simplify using `using this`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, _root_.PositivityTheory.SiegelWeilFormula.KMain.I_add_k d hT hA (h a (Finset.mem_insert_self _ _)) (d.sch.sum_mem fun i hi => h i (Finset.mem_insert_of_mem hi)), ih fun i hi => h i (Finset.mem_insert_of_mem hi)]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem I_sum_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.ThetaAuto_k) {ι : Type} (s : Finset ι) (f : ι → d.Fn) (h : ∀ i ∈ s, f i ∈ d.sch) :
     d.I (∑ i ∈ s, f i) = ∑ i ∈ s, d.I (f i) := by

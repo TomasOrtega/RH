@@ -28,7 +28,7 @@ def archType : UnitaryRep (ArchUnits K n) V₀ := (archRep σ).restrict V₀ hV�
 def homArch : Submodule ℂ (V₀ →L[ℂ] H) := (archType σ V₀ hV₀).intertwiners (archRep σ)
 
 /- English proof (translation)
-Introduce `A v`. Use `show σ (finProj K n w) (S (archType σ V₀ hV₀ A v)) = σ (archProj K n A) (σ (finProj K n w) (S v))`. Rewrite using `[hS A v]`. Use `show σ (finProj K n w) (σ (archProj K n A) (S v)) = σ (archProj K n A) (σ (finProj K n w) (S v))`. Rewrite using `[← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, finProj_mul_archProj_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finProj_comp_mem_homArch (w : AdelicGLn.FiniteAdelicGL K n) {S : V₀ →L[ℂ] H}
     (hS : S ∈ homArch σ V₀ hV₀) : σ (finProj K n w) ∘L S ∈ homArch σ V₀ hV₀ := by
@@ -84,7 +84,7 @@ theorem fpOp_finitePart (w : AdelicGLn.FiniteAdelicGL K n) (S : FinitePartSpace 
     fpOp σ V₀ hV₀ (finitePart σ V₀ hV₀ w S) = σ (finProj K n w) ∘L fpOp σ V₀ hV₀ S := rfl
 
 /- English proof (translation)
-The claim follows from `((S : smoothVectors (finRep σ V₀ hV₀)).1 : homArch σ V₀ hV₀).2`.
+A detailed English derivation is pending.
 -/
 theorem fpOp_mem_homArch (S : FinitePartSpace σ V₀ hV₀) : fpOp σ V₀ hV₀ S ∈ homArch σ V₀ hV₀ :=
   ((S : smoothVectors (finRep σ V₀ hV₀)).1 : homArch σ V₀ hV₀).2
@@ -97,7 +97,7 @@ variable {U₀ : Subgroup (AdelicGLn.FiniteAdelicGL K n)} (hV₀U : V₀ ≤ fix
 include hV₀ hV₀U in
 
 /- English proof (translation)
-Introduce and unpack `⟨x, hx⟩ v hv`. Take `⟨A, u, hu, rfl⟩` from `exists_of_mem_levelSubgroup hx`. Use `show σ (archProj K n A * finProj K n u) v ∈ V₀`. Rewrite using `[UnitaryRep.map_mul_apply, hV₀U hv u (hU' hu)]`. Conclude with `hV₀ A v hv`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInvariant_levelSubgroup {U' : Subgroup (AdelicGLn.FiniteAdelicGL K n)} (hU' : U' ≤ U₀) :
     (σ.compHom (levelSubgroup K n U').subtype continuous_subtype_val).IsInvariant V₀ := by
@@ -113,7 +113,7 @@ def levelType {U' : Subgroup (AdelicGLn.FiniteAdelicGL K n)} (hU' : U' ≤ U₀)
     (isInvariant_levelSubgroup hV₀ hV₀U hU')
 
 /- English proof (translation)
-Establish `h` using `congrArg (fpOp σ V₀ hV₀) (S.2 u hu)`. Rewrite `h` using `[fpOp_finitePart]`. Conclude with `congrArg (fun T : V₀ →L[ℂ] H => T v) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fpOp_fixed {U' : Subgroup (AdelicGLn.FiniteAdelicGL K n)}
     (S : fixedVectors (finitePart σ V₀ hV₀) U') {u : AdelicGLn.FiniteAdelicGL K n} (hu : u ∈ U')

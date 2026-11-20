@@ -9,11 +9,11 @@ open Matrix GlobalTheory.SUCong
 namespace GlobalTheory.SUCong
 
 /- English proof (translation)
-Set `σS : S →+* S` to `{ toFun := fun x => ⟨σ x, hσ x x.2⟩ map_one' := by ext; simp map_mul' := by intro x y; ext; simp map_zero' := by ext; simp map_add' := by intro x y; ext; simp }`. Establish `hle : piIdeal S ϖ ≤ Ideal.comap σS (piIdeal S ϖ)`. Unfold `piIdeal`. Rewrite using `[Ideal.span_le]`. Introduce `x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[SetLike.mem_coe, Ideal.mem_comap]`. Apply `Ideal.subset_span` to reduce the goal to its premises. Use `show σ (x : A) = ϖ`. Rewrite using `[show (x : A) = ϖ from hx, hσϖ]`. Use `⟨Ideal.quotientMap (piIdeal S ϖ) σS hle, fun a ha => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `red`. Rewrite using `[dif_pos ha, dif_pos (hσ a ha), Ideal.quotientMap_mk]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_resInv {A : Type} [CommRing A] (S : Subring A) (σ : A →+* A) (ϖ : A) (hϖ : ϖ ∈ S)
     (hσ : ∀ s ∈ S, σ s ∈ S) (hσϖ : σ ϖ = ϖ) :
@@ -38,7 +38,7 @@ theorem exists_resInv {A : Type} [CommRing A] (S : Subring A) (σ : A →+* A) (
   rfl
 
 /- English proof (translation)
-Introduce `A _ n _ _ S σ H ϖ q hR hF`. Take `⟨τ, hτ⟩` from `exists_resInv S σ ϖ hR.2.2.1 hR.2.1 hR.2.2.2.1`. Take `⟨k, w, H', hk, hw1, hwu, hdec, hinv, hq, hH, hH'⟩` from `GlobalTheory.T.good_form_residue_field_data S σ H ϖ q τ hR hF hτ`. Rewrite using `[GlobalTheory.T.skew_tangent_reduction S σ H ϖ τ hR.2.2.1 hR.2.1 hF.1 hτ]`. Conclude with `GlobalTheory.T.unitary_lie_algebra_finite_card τ k w _ H' q hk hw1 hwu hdec hinv hq hH hH'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_skewTr : ∀ {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (S : Subring A) (σ : A →+* A) (H : Matrix n n A) (ϖ : A) (q : ℕ), GoodRing S σ ϖ q → GoodForm S σ H → Nat.card (skewTr S σ H ϖ) = q ^ (Fintype.card n ^ 2 - 1) := by
   intro A _ n _ _ S σ H ϖ q hR hF

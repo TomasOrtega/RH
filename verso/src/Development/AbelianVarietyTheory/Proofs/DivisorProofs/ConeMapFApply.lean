@@ -25,21 +25,21 @@ lemma coneD_apply (U : T) (n : ℤ) (x : (C.obj U).X (n + 1) × (D.obj U).X n) :
         (φ.app U).f (n + 1) x.1 + (D.obj U).d n (n + 1) x.2) := rfl
 
 /- English proof (translation)
-Rewrite using `[← ConcreteCategory.comp_apply, HomologicalComplex.d_comp_d]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma dd_apply (K : AbCx) (i j k : ℤ) (x : K.X i) : K.d j k (K.d i j x) = 0 := by
   rw [← ConcreteCategory.comp_apply, HomologicalComplex.d_comp_d]; rfl
 
 /- English proof (translation)
-Rewrite using `[← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, HomologicalComplex.Hom.comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma comm_apply {K L : AbCx} (f : K ⟶ L) (i j : ℤ) (x : K.X i) : f.f j (K.d i j x) = L.d i j (f.f i x) := by
   rw [← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, HomologicalComplex.Hom.comm]
 
 /- English proof (translation)
-Use `AddCommGrpCat.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `coneD φ U (n + 1) (coneD φ U n x) = 0`. Rewrite using `[coneD_apply, coneD_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[dd_apply]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[dd_apply, comm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma coneD_sq (U : T) (n : ℤ) : coneD φ U n ≫ coneD φ U (n + 1) = 0 := by
   refine AddCommGrpCat.ext fun x => ?_
@@ -53,7 +53,7 @@ def coneObj (U : T) : AbCx :=
   CochainComplex.of (fun n => AddCommGrpCat.of ((C.obj U).X (n + 1) × (D.obj U).X n)) (coneD φ U) (coneD_sq φ U)
 
 /- English proof (translation)
-Rewrite using `[← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, ← HomologicalComplex.comp_f, ← HomologicalComplex.comp_f, φ.naturality]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma nat_apply {U V : T} (g : U ⟶ V) (n : ℤ) (x : (C.obj U).X n) :
     (D.map g).f n ((φ.app U).f n x) = (φ.app V).f n ((C.map g).f n x) := by
@@ -111,11 +111,11 @@ end GlobalTheory.EtC.ConeEl
 open GlobalTheory.EtC.ConeEl in
 
 /- English proof (translation)
-Introduce `T _ C D φ`. Use `⟨cone φ, coneFst φ, coneSnd φ, fun n U => ?_, fun n U x => ?_⟩` and prove the remaining obligations. Use `⟨fun x y h => ?_, fun y => ⟨(y.1, y.2), rfl⟩⟩` and prove the remaining obligations. Conclude with `Prod.ext (congrArg Prod.fst h) (congrArg Prod.snd h)`. Establish `hd : (cone φ |>.obj U).d n (n + 1) = coneD φ U n` using `CochainComplex.of_d (fun n => AddCommGrpCat.of ((C.obj U).X (n + 1) × (D.obj U).X n)) (coneD φ U) n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `((cone φ |>.obj U).d n (n + 1) x).1 = _`. Rewrite using `[hd]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((cone φ |>.obj U).d n (n + 1) x).2 = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.coneEl_exists : ∀ (T : Type 1) [Category.{0} T] (C D : T ⥤ AbCx) (φ : C ⟶ D), ∃ (K : T ⥤ AbCx) (p : ∀ n : ℤ, term K n ⟶ term C (n + 1)) (q : ∀ n : ℤ, term K n ⟶ term D n), (∀ n U, Function.Bijective (fun x : (K.obj U).X n => ((p n).app U x, (q n).app U x))) ∧ ∀ n U (x : (K.obj U).X n), (p (n + 1)).app U ((K.obj U).d n (n + 1) x) = - (C.obj U).d (n + 1) (n + 1 + 1) ((p n).app U x) ∧ (q (n + 1)).app U ((K.obj U).d n (n + 1) x) = (φ.app U).f (n + 1) ((p n).app U x) + (D.obj U).d n (n + 1) ((q n).app U x) := by
   intro T _ C D φ

@@ -55,7 +55,7 @@ def ClassSumValues : Prop :=
       ∃ κ : ℂ, κ ≠ 0 ∧ IsModulus (U.X k) D.bas D.idx (H.w0 : E) v ‖κ‖ ∧ ReadsWith U W k D v κ
 
 /- English proof (translation)
-The claim follows from `mul_right_cancel₀ (norm_ne_zero_iff.mpr hz) ((h x hx hu θ h1 h2 z).symm.trans (h' x hx hu θ h1 h2 z))`.
+A detailed English derivation is pending.
 -/
 theorem IsModulus.unique {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {idx : Fin g ≃ X.Ψ × Fin r} {w : E}
     {v : TF n g} {ρ ρ' : ℝ} (h : IsModulus X bas idx w v ρ) (h' : IsModulus X bas idx w v ρ')

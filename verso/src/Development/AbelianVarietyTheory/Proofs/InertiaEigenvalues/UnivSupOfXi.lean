@@ -11,17 +11,15 @@ set_option maxHeartbeats 800000
 namespace GlobalTheory.TwInputs
 
 /- English proof (translation)
-Introduce `D ρ hρ rd F L hT hB E i hi j hj b a _`. Take `⟨hj1, hj2⟩` from `Finset.mem_Icc.1 hj`. Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_le' hj1`. Set `j' : Fin D.R.m` to `⟨n, hj2⟩`. Establish `T` using `F.tie i j' b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hB i hi j' b _ _ _ (T.dat a)`. Use `⟨c, fun Q M hs hcl hS hlev => ?_⟩` and prove the remaining obligations. Establish `hQ : InRange D.ntw i Q` using `⟨hs, hcl, hS⟩`. Establish `hnp : ∀ v ∈ Q, ((normProd (T.supp a) : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal` using `fun v hv h => Finset.disjoint_left.1 hlev hv ((T.lev_iff a v).2 h)`. Take `⟨x, hx, he⟩` from `T.thU_of_rat (L.rat i hi j' b).2.2 M hQ hlev`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨∑ a', Finsupp.single (spread D.nexp i Q M (ρ.ch i) a') (x a'), ?_, fun δ => ?_⟩` and prove the remaining obligations. Rewrite using `[he, grpSum, ← Finsupp.sum_finsetSum_index (fun _ => by rw [TensorProduct.zero_tmul]) (fun _ _ _ => by rw [TensorProduct.add_tmul])]`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (by rw [TensorProduct.zero_tmul])]`. Establish `h0 : ∀ a', x a' ∈ Fm0 D.nexp i ((j' : ℕ) + 1) b` using `fun a' => hT i hi j' b Q M hQ _ _ _ (T.dat a) hnp a' (x a') (hx a')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ a', ((D.ntw.l i : D.ntw.O i) ^ c) • x a' ∈ D.nexp.Bsup i ((j' : ℕ) + 1) b` using `fun a' => hc Q M hQ hnp a' (x a') (hx a')`. Rewrite using `[Finsupp.finsetSum_apply]`. Use `⟨Submodule.sum_mem _ fun a' _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0 a'`. Conclude with `zero_mem _`. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply]`.
-
-Use `split_ifs`. Conclude with `h1 a'`. Rewrite using `[smul_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univSup_of_xi : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (rd : Rds D.nexp ρ), FullTie hρ rd → Laws hρ rd → XiType rd → XiBdd rd → ∀ E : IntegralHeckeForms.XD D, UnivSup D E := by
   intro D ρ hρ rd F L hT hB E i hi j hj b a _

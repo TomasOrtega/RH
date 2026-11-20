@@ -21,15 +21,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {σ : c.F →+* ℂ} {g : ℕ} {e : Fin g ≃ Letter Dw} {Fu : Fam Xo c σ e} {a : CxFr Z σ}
 
 /- English proof (translation)
-Establish `hx : y ≫ Z.jQ ≫ pullback.fst _ _ = a.1.1 ≫ genι Z` using `by rw [← Category.assoc, hj]`. Establish `hty : ∀ z j, W z j ≠ 0 → (e j).1 = z.1` using `fun z => (GlobalTheory.isEigAt_iff_of_isDerivAt0 E H Dw l Xo c σ g e Fu i P hP _ _ z.1 (h3 z)).1 fun b => (eig_iff Z.m0.toSABMap (h1 z) b _).2 ((eig_iff Z.m (h1 z) b _).1 (h2 z ▸ a.2.eig z.1 z.2 b))`. Take `⟨t1, t2, -⟩` from `GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ Fu i P hP`. Take `⟨v, hv, -⟩` from `t2 0`. Take `⟨v', k1, rfl⟩` from `exists_lift Z.m0.toSABMap (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y) v (by rw [(t1 _ _ hv).1, ← hy, Category.assoc])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce and unpack `cf hc ⟨τ, k⟩`. Establish `hb` using `a.2.basis τ (v' ≫ Z.m.φ) ((tan_iff Z.m hx k1).2 ((tan_iff Z.m0.toSABMap hy k1).1 (t1 _ _ hv))) fun b => (eig_iff Z.m k1 b _).2 ((eig_iff Z.m0.toSABMap k1 b _).1 ((GlobalTheory.isEigAt_iff_of_isDerivAt0 E H Dw l Xo c σ g e Fu i P hP _ _ τ hv).2 (fun j hj => absurd rfl hj) b))`. Establish `e1 : a.2.v τ = fun k => v₀ ⟨τ, k⟩ ≫ Z.m.φ` using `funext fun k => (h2 ⟨τ, k⟩).symm`. Rewrite `hb` using `[e1]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcomb : ∀ d : Fin (Dw.mult τ) → ℂ, ∑ k, d k • W ⟨τ, k⟩ = 0 → IsCombAtG Z.t (a.1.1 ≫ genι Z) (fun k => v₀ ⟨τ, k⟩ ≫ Z.m.φ) d (v' ≫ Z.m.φ)` using `fun d hd => (comb_iff Z.m hx (fun k => h1 ⟨τ, k⟩) d k1).2 ((comb_iff Z.m0.toSABMap hy (fun k => h1 ⟨τ, k⟩) d k1).1 ((GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ Fu i P hP _ _ _ (fun k => h3 ⟨τ, k⟩) d _).2 (hd ▸ hv)))`. Establish `hτ : ∑ k, cf ⟨τ, k⟩ • W ⟨τ, k⟩ = 0`. Use function extensionality and compare the values at `j`. Establish `hz : ∀ ρ, (e j).1 ≠ ρ → (∑ k, cf ⟨ρ, k⟩ • W ⟨ρ, k⟩) j = 0` using `fun ρ hρ => by`. Rewrite using `[Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun k _ => by`. Rewrite using `[Pi.smul_apply, by_contra fun h => hρ (hty ⟨ρ, k⟩ j h), smul_zero]`. Distinguish the cases in `h : (e j).1 = τ`. Use `congrFun hc j` as an intermediate fact. Rewrite `this` using `[Fintype.sum_sigma, Finset.sum_apply, Finset.sum_eq_single τ (fun ρ _ hρ => hz ρ (h ▸ hρ.symm)) (by simp)]`.
-
-Conclude with `this`. Conclude with `hz τ h`. Conclude with `congrFun (hb.unique (hcomb _ hτ) (hcomb 0 (by simp))) k`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_dirs {i : Fin Fu.n} {P : (Fu.Di i).La →+ (Fin g → ℂ)} {W : Letter Dw → Fin g → ℂ}
     {y : Sp ℂ ⟶ Xo.XF c} (hP : IsPeriod (Fu.Di i) (fun j => Formalism.L2.PjFree.relab c σ (e j).1) P)
@@ -72,15 +70,13 @@ theorem linearIndependent_dirs {i : Fin Fu.n} {P : (Fu.Di i).La →+ (Fin g → 
   exact congrFun (hb.unique (hcomb _ hτ) (hcomb 0 (by simp))) k
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z σ g e Fu a`. Use `haveI := Z.jQ_open`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `i j Q Q' ⟨P, W, y, hP, hy, hj, -⟩ ⟨P', W', y', hP', hy', hj', -⟩`. Take `rfl : y = y'` from `(cancel_mono Z.jQ).1 (hj.trans hj'.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Conclude with `Fu.disj i j P P' hP hP' (hy.symm.trans hy')`. Introduce and unpack `i Q Q' ⟨P, W, y, hP, hy, hj, hv, hQ⟩ ⟨P', W', y', hP', hy', hj', hv', hQ'⟩`. Take `rfl : y = y'` from `(cancel_mono Z.jQ).1 (hj.trans hj'.symm)`. Use `choose v₀ h1 h2 h3 using hv`. Use `choose v₁ k1 k2 k3 using hv'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl : v₀ = v₁` from `funext fun z => Z.m.cart.1.hom_ext ((h2 z).trans (k2 z).symm) ((h1 z).trans (k1 z).symm)`. Take `⟨gam, h, g1, g2, g3, g4⟩` from `(Fu.fibre i P P' hP hP').1 (hy.symm.trans hy')`. Establish `hm : ∀ z, (LinearMap.toMatrix' h.toLinearMap).mulVec z = h z` using `fun z => LinearMap.toMatrix'_mulVec _ z`. Take `⟨-, -, h5⟩` from `GlobalTheory.FamRigid.ex_eq_of_level_group GlobalTheory.latMinkowski E H Dw l Xo _ g _ Fu i P P' gam (LinearMap.toMatrix' h.toLinearMap) hP hP' g1 g2 g3 (fun a => by rw [hm, g4])`. Simplify using `only [hm] at h5`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t1, -, t3⟩` from `GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ Fu i P' hP'`. Establish `hW : ∀ z, h (W z) = W' z` using `fun z => (t3 _ (t1 _ _ (k3 z))).unique ((GlobalTheory.ExpChain.isDerivAt0_ex_iff E H Dw l Xo _ g _ Fu i P hP i P' h.toLinearMap hP' h5 _ _).1 (h3 z)) (k3 z)`. Use `⟨gam, g1, g2, fun v => funext fun z => ?_⟩` and prove the remaining obligations. Use `Fintype.linearIndependent_iffₛ.1 (linearIndependent_dirs hP' hy' hj' k1 k2 k3) _ _ ?_ z` and prove the remaining obligations. Rewrite using `[← hQ', g4, hQ, map_sum]`.
-
-Simplify using `only [map_smul, hW]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem per_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Letter Dw) (Fu : Fam Xo c σ e) (a : CxFr Z σ), (∀ i j Q Q', Per Fu a i Q → Per Fu a j Q' → i = j) ∧ ∀ i Q Q', Per Fu a i Q → Per Fu a i Q' → ∃ gm : (Fu.Di i).La ≃ₗ[𝓞 E] (Fu.Di i).La, IsIsom (Fu.Di i) gm ∧ IsLev l (Fu.Di i) gm ∧ ∀ v, Q' (gm v) = Q v := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ g e Fu a

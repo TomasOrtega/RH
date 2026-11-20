@@ -10,11 +10,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.HeckeCompare
 
 /- English proof (translation)
-Establish `: NeZero ((Monoid.exponent G : ℕ) : k)` using `⟨Nat.cast_ne_zero.2 Monoid.exponent_ne_zero_of_finite⟩`. Establish `: NeZero ((Monoid.exponent S : ℕ) : k)` using `⟨Nat.cast_ne_zero.2 Monoid.exponent_ne_zero_of_finite⟩`. Establish `hc` using `CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity G k`. Establish `: Finite (G →* kˣ)` using `Nat.finite_of_card_ne_zero (by rw [hc]; exact Nat.card_pos.ne')`. Establish `hb` using `hB.bijective_of_nat_card_le hc.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Function.Surjective ((MonoidHom.domRestrictHom S kˣ).comp B)` using `(MonoidHom.domRestrict_surjective k S).comp hb.2`. Rewrite using `[← ((MonoidHom.domRestrictHom S kˣ).comp B).ker.card_mul_index, Subgroup.index_ker, MonoidHom.range_eq_top.2 hs, Subgroup.card_top, CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity]`. Use `congr 1`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun x => ?_)` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, MonoidHom.ext_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h c => h c.1 c.2, fun h c hc => h ⟨c, hc⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem card_orth_mul {G k : Type} [CommGroup G] [Finite G] [Field k] [IsAlgClosed k] [CharZero k]
     (B : G →* G →* kˣ) (hB : Function.Injective B) (S : Subgroup G) :
@@ -34,7 +34,7 @@ theorem card_orth_mul {G k : Type} [CommGroup G] [Finite G] [Field k] [IsAlgClos
   exact ⟨fun h c => h c.1 c.2, fun h c hc => h ⟨c, hc⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← ((powMonoidHom p).comp C.subtype).ker.card_mul_index, Subgroup.index_ker, MonoidHom.range_comp, Subgroup.range_subtype]`. Use `congr 1`. Conclude with `Nat.card_congr ⟨fun x => ⟨x.1.1, x.1.2, x.2⟩, fun x => ⟨⟨x.1, x.2.1⟩, x.2.2⟩, fun _ => rfl, fun _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem card_eq_tors_mul {Q : Type} [CommGroup Q] (C : Subgroup Q) (p : ℕ) :
     Nat.card C = Nat.card {x : Q // x ∈ C ∧ x ^ p = 1} * Nat.card (C.map (powMonoidHom p)) := by
@@ -44,9 +44,9 @@ theorem card_eq_tors_mul {Q : Type} [CommGroup Q] (C : Subgroup Q) (p : ℕ) :
   exact Nat.card_congr ⟨fun x => ⟨x.1.1, x.1.2, x.2⟩, fun x => ⟨⟨x.1, x.2.1⟩, x.2.2⟩, fun _ => rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨J, hJ, e⟩` from `Ideal.eq_prime_pow_mul_coprime (I := Ideal.span {p}) (by simpa using hp) P`. Take `⟨π, hπ, j, hj, h⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 hJ)`. Generalize the expression as in `Multiset.count P _ = n at e`. Use `⟨n, π, j, hπ, h, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[e, mul_right_comm, ← pow_succ, mul_comm j]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul ha hj`.
+A detailed English derivation is pending.
 -/
 theorem exists_split_one {O : Type} [CommRing O] [IsDedekindDomain O] {p : O} (hp : p ≠ 0) (P : Ideal O)
     [P.IsMaximal] : ∃ (n : ℕ) (π j : O), π ∈ P ∧ π + j = 1 ∧ ∀ a ∈ P ^ (n + 1), j * a ∈ Ideal.span {p} * P := by
@@ -58,15 +58,15 @@ theorem exists_split_one {O : Type} [CommRing O] [IsDedekindDomain O] {p : O} (h
   exact Ideal.mul_mem_mul ha hj
 
 /- English proof (translation)
-Take `⟨J, hJ, e⟩` from `Ideal.eq_prime_pow_mul_coprime (I := Ideal.span {p}) (by simpa using hp) P`. Establish `hJ0 : J ≠ ⊥`. Introduce and unpack `rfl`. Simplify using `[hp] at e`. Take `⟨R, hR, e'⟩` from `Ideal.eq_prime_pow_mul_coprime hJ0 P'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨m, e⟩ : ∃ m, Ideal.span {p} = P ^ m * J` from `⟨_, e⟩`. Take `⟨n, e'⟩ : ∃ n, J = P' ^ n * R` from `⟨_, e'⟩`. Establish `h₁ : IsCoprime P R` using `(Ideal.isCoprime_iff_sup_eq.2 hJ).of_isCoprime_of_dvd_right ⟨P' ^ n, by rw [e', mul_comm]⟩`. Establish `h₂ : IsCoprime P' R` using `Ideal.isCoprime_iff_sup_eq.2 hR`. Establish `h₃ : IsCoprime (P ^ (m + 1) * P' ^ (n + 1)) R` using `IsCoprime.mul_left (IsCoprime.pow_left h₁) (IsCoprime.pow_left h₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₄ : IsCoprime (P ^ m) (P' ^ n)` using `(Ideal.isCoprime_iff_sup_eq.2 hco).pow`. Take `⟨w, hw, a, ha, hwa⟩` from `Ideal.isCoprime_iff_exists.1 h₃`. Take `⟨s, hs, t, ht, hst⟩` from `Ideal.isCoprime_iff_exists.1 h₄`. Establish `key : ∀ x ∈ P ^ m, ∀ y ∈ P' ^ n, p ∣ x * (y * a)` using `fun x hx y hy => by`. Rewrite using `[← Ideal.mem_span_singleton, e, e']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul hx (Ideal.mul_mem_mul hy ha)`. Establish `hn : ∀ I : Ideal O, I.IsMaximal → w ∈ I → a ∉ I` using `fun I hI h h' => hI.ne_top ((Ideal.eq_top_iff_one _).2 (hwa ▸ I.add_mem h h'))`. Use `⟨m, n, w, a * t, a * s, a, by linear_combination hwa + a * hst, hn _ hP (Ideal.pow_le_self (Nat.succ_ne_zero m) (Ideal.mul_le_inf hw).1), hn _ hP' (Ideal.pow_le_self (Nat.succ_ne_zero n) (Ideal.mul_le_inf hw).2), ?_, fun b hb => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, e, e', ← mul_assoc]`. Conclude with `Ideal.mul_mem_mul (Ideal.mul_mono (Ideal.pow_le_pow_right (Nat.le_succ m)) (Ideal.pow_le_pow_right (Nat.le_succ n)) hw) ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show a * t * b = b * (t * a) by ring]; exact key b hb t ht`. Rewrite using `[show a * s * b = s * (b * a) by ring]; exact key s hs b hb`.
+A detailed English derivation is pending.
 -/
 theorem exists_split_two {O : Type} [CommRing O] [IsDedekindDomain O] {p : O} (hp : p ≠ 0) (P P' : Ideal O)
     [hP : P.IsMaximal] [hP' : P'.IsMaximal] (hco : P ⊔ P' = ⊤) : ∃ (m n : ℕ) (w u v a : O), w + v + u = 1 ∧
@@ -107,9 +107,9 @@ section Act
 variable {O Q : Type} [CommRing O] [CommGroup Q] {ρ : O → Q →* Q}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `h.2.2 0 0 x` as an intermediate fact. Rewrite `this` using `[add_zero]`. Rewrite using `[Nat.cast_zero, pow_zero, left_eq_mul.1 this]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih => rw [Nat.cast_succ, h.2.2, ih, h.1, pow_succ]`.
+Treat this case separately.
 -/
 theorem IsAct.nat (h : IsAct ρ) (n : ℕ) (x : Q) : ρ n x = x ^ n := by
   induction n with
@@ -120,34 +120,34 @@ theorem IsAct.nat (h : IsAct ρ) (n : ℕ) (x : Q) : ρ n x = x ^ n := by
   | succ n ih => rw [Nat.cast_succ, h.2.2, ih, h.1, pow_succ]
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `ha`. Rewrite using `[h.2.1, h.nat, hx, map_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsAct.of_dvd (h : IsAct ρ) {n : ℕ} {x : Q} (hx : x ^ n = 1) {a : O} (ha : (n : O) ∣ a) : ρ a x = 1 := by
   obtain ⟨b, rfl⟩ := ha
   rw [h.2.1, h.nat, hx, map_one]
 
 /- English proof (translation)
-Rewrite using `[← h.2.1, ← h.2.1, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsAct.comm (h : IsAct ρ) (a b : O) (x : Q) : ρ a (ρ b x) = ρ b (ρ a x) := by
   rw [← h.2.1, ← h.2.1, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← h.2.2, hab, h.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsAct.split (h : IsAct ρ) {a b : O} (hab : a + b = 1) (x : Q) : ρ a x * ρ b x = x := by
   rw [← h.2.2, hab, h.1]
 
 /- English proof (translation)
-Rewrite using `[← map_pow, hx, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsAct.pow_tors (h : IsAct ρ) {n : ℕ} {x : Q} (hx : x ^ n = 1) (a : O) : ρ a x ^ n = 1 := by
   rw [← map_pow, hx, map_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H a ha`. Rewrite using `[← h.nat, ← h.2.1]`. Conclude with `H _ (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) ha)`. Introduce `H a ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, rfl⟩` from `Ideal.mem_span_singleton_mul.1 ha`. Rewrite using `[h.2.1, h.nat, H b hb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsAct.kill_mul_iff (h : IsAct ρ) (p : ℕ) (I : Ideal O) (x : Q) :
     (∀ a ∈ Ideal.span {(p : O)} * I, ρ a x = 1) ↔ ∀ a ∈ I, ρ a (x ^ p) = 1 := by
@@ -160,7 +160,7 @@ theorem IsAct.kill_mul_iff (h : IsAct ρ) (p : ℕ) (I : Ideal O) (x : Q) :
     rw [h.2.1, h.nat, H b hb]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => (h.nat p x).symm.trans (H _ (Ideal.mem_span_singleton_self _)), fun H _ ha => h.of_dvd H (Ideal.mem_span_singleton.1 ha)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsAct.kill_span_iff (h : IsAct ρ) (p : ℕ) (x : Q) :
     (∀ a ∈ Ideal.span {(p : O)}, ρ a x = 1) ↔ x ^ p = 1 :=
@@ -179,22 +179,22 @@ def evH (n : ℕ) : D.La →+ Additive Q :=
   AddMonoidHom.mk' (fun a => Additive.ofMul (I.ev n a)) fun a b => by rw [I.add]; rfl
 
 /- English proof (translation)
-The claim follows from `(evH I n).map_zero`.
+A detailed English derivation is pending.
 -/
 theorem ev_zero (n : ℕ) : I.ev n 0 = 1 := (evH I n).map_zero
 
 /- English proof (translation)
-The claim follows from `(evH I n).map_nsmul m a`.
+A detailed English derivation is pending.
 -/
 theorem ev_nsmul (n m : ℕ) (a : D.La) : I.ev n (m • a) = I.ev n a ^ m := (evH I n).map_nsmul m a
 
 /- English proof (translation)
-The claim follows from `(evH I n).map_sub a b`.
+A detailed English derivation is pending.
 -/
 theorem ev_sub (n : ℕ) (a b : D.La) : I.ev n (a - b) = I.ev n a / I.ev n b := (evH I n).map_sub a b
 
 /- English proof (translation)
-The claim follows from `(I.onto n hn _).2 ⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ev_pow {n : ℕ} (hn : 0 < n) (a : D.La) : I.ev n a ^ n = 1 := (I.onto n hn _).2 ⟨a, rfl⟩
 
@@ -205,7 +205,7 @@ variable (hu : Uniq e)
 include hu
 
 /- English proof (translation)
-Rewrite using `[← (I.ζ_prim n hn).zpow_eq_one_iff_dvd]`. Conclude with `⟨fun h => hu n _ _ _ _ hn (ev_pow I hn a) (ev_pow I hn b) (I.isom n hn a b) h, fun h => h ▸ I.isom n hn a b⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem triv_iff {n : ℕ} (hn : 0 < n) (a b : D.La) : e n (I.ev n a) (I.ev n b) 1 ↔ (n : ℤ) ∣ D.EF a b := by
   rw [← (I.ζ_prim n hn).zpow_eq_one_iff_dvd]
@@ -215,9 +215,9 @@ theorem triv_iff {n : ℕ} (hn : 0 < n) (a b : D.La) : e n (I.ev n a) (I.ev n b)
 include I
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(I.onto n hn _).1 hx`. Take `⟨a', rfl⟩` from `(I.onto n hn _).1 hx'`. Take `⟨b, rfl⟩` from `(I.onto n hn _).1 hy`. Rewrite `h`, `h'` using `[triv_iff I hu hn]`. Rewrite using `[← I.add, triv_iff I hu hn, map_add, LinearMap.add_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_add h h'`.
+A detailed English derivation is pending.
 -/
 theorem triv_mul {n : ℕ} (hn : 0 < n) {x x' y : Q} (hx : x ^ n = 1) (hx' : x' ^ n = 1) (hy : y ^ n = 1)
     (h : e n x y 1) (h' : e n x' y 1) : e n (x * x') y 1 := by
@@ -229,7 +229,7 @@ theorem triv_mul {n : ℕ} (hn : 0 < n) {x x' y : Q} (hx : x ^ n = 1) (hx' : x' 
   exact dvd_add h h'
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(I.onto n hn _).1 hx`. Take `⟨b, rfl⟩` from `(I.onto n hn _).1 hy`. Rewrite `h`, the goal using `[triv_iff I hu hn]`. Rewrite using `[← LinearMap.IsAlt.neg (B := D.EF) D.alt]`. Conclude with `h.neg_right`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_symm {n : ℕ} (hn : 0 < n) {x y : Q} (hx : x ^ n = 1) (hy : y ^ n = 1)
     (h : e n x y 1) : e n y x 1 := by
@@ -240,7 +240,7 @@ theorem triv_symm {n : ℕ} (hn : 0 < n) {x y : Q} (hx : x ^ n = 1) (hy : y ^ n 
   exact h.neg_right
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(I.onto n hn _).1 hx`. Take `⟨b, rfl⟩` from `(I.onto n hn _).1 hy`. Rewrite using `[← I.lin n c a, ← I.lin n (H.bar c) b, triv_iff I hu hn, triv_iff I hu hn, D.adj]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_adj {n : ℕ} (hn : 0 < n) {x y : Q} (hx : x ^ n = 1) (hy : y ^ n = 1) (c : 𝓞 E) :
     e n (ρ c x) y 1 ↔ e n x (ρ (H.bar c) y) 1 := by
@@ -249,7 +249,7 @@ theorem triv_adj {n : ℕ} (hn : 0 < n) {x y : Q} (hx : x ^ n = 1) (hy : y ^ n =
   rw [← I.lin n c a, ← I.lin n (H.bar c) b, triv_iff I hu hn, triv_iff I hu hn, D.adj]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(I.onto n hn _).1 hx`. Use `(triv_iff I hu hn a 0).2 (by simp)` as an intermediate fact. Rewrite `this` using `[ev_zero]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem triv_one {n : ℕ} (hn : 0 < n) {x : Q} (hx : x ^ n = 1) : e n x 1 1 := by
   obtain ⟨a, rfl⟩ := (I.onto n hn _).1 hx
@@ -257,7 +257,7 @@ theorem triv_one {n : ℕ} (hn : 0 < n) {x : Q} (hx : x ^ n = 1) : e n x 1 1 := 
   rwa [ev_zero] at this
 
 /- English proof (translation)
-Rewrite using `[triv_adj I hu hn hx hy, h]`. Conclude with `triv_one I hu hn hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_of_kill {n : ℕ} (hn : 0 < n) {x y : Q} (hx : x ^ n = 1) (hy : y ^ n = 1) {c : 𝓞 E}
     (h : ρ (H.bar c) y = 1) : e n (ρ c x) y 1 := by
@@ -265,7 +265,7 @@ theorem triv_of_kill {n : ℕ} (hn : 0 < n) {x y : Q} (hx : x ^ n = 1) (hy : y ^
   exact triv_one I hu hn hx
 
 /- English proof (translation)
-Establish `hq` using `Nat.mul_pos hp hp`. Take `⟨a, rfl⟩` from `(I.onto _ hq _).1 hx`. Take `⟨b, rfl⟩` from `(I.onto _ hp _).1 hy`. Rewrite using `[I.tower p p hp hp, triv_iff I hu hp, ← I.tower p p hp hp b, ← ev_nsmul, triv_iff I hu hq, map_nsmul, nsmul_eq_mul, Nat.cast_mul, mul_dvd_mul_iff_left (Nat.cast_ne_zero.2 hp.ne')]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_down {p : ℕ} (hp : 0 < p) {x y : Q} (hx : x ^ (p * p) = 1) (hy : y ^ p = 1) :
     e (p * p) x y 1 ↔ e p (x ^ p) y 1 := by
@@ -277,24 +277,22 @@ theorem triv_down {p : ℕ} (hp : 0 < p) {x y : Q} (hx : x ^ (p * p) = 1) (hy : 
 
 omit hu in
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `(I.onto _ hp _).1 hc`. Conclude with `⟨_, I.tower p p hp hp b⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_root {p : ℕ} (hp : 0 < p) {c : Q} (hc : c ^ p = 1) : ∃ y, y ^ p = c := by
   obtain ⟨b, rfl⟩ := (I.onto _ hp _).1 hc
   exact ⟨_, I.tower p p hp hp b⟩
 
 /- English proof (translation)
-Set `G : Subgroup Q` to `(powMonoidHom p).ker`. Establish `: Finite G` using `hf`. Establish `hs : ∀ x : G, ∃ a, I.ev p a = x` using `fun x => (I.onto p hp _).1 x.2`. Use `choose s hs using hs`. Establish `hv : ∀ (x y : G) a b, I.ev p a = x → I.ev p b = y → I.ζ p ^ D.EF (s x) (s y) = I.ζ p ^ D.EF a b` using `fun x y a b ha hb => hu p x y _ _ hp x.2 y.2 (by simpa only [hs] using I.isom p hp (s x) (s y)) (by simpa only [ha, hb] using I.isom p hp a b)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `B : G →* G →* kˣ` to `MonoidHom.mk' (fun x => MonoidHom.mk' (fun y => I.ζ p ^ D.EF (s x) (s y)) fun y y' => by`. Rewrite using `[hv x (y * y') (s x) (s y + s y') (hs x) (by rw [I.add, hs, hs]; rfl), map_add, zpow_add])`. Use `fun x x' => MonoidHom.ext fun y => by show I.ζ p ^ D.EF (s (x * x')) (s y) = I.ζ p ^ D.EF (s x) (s y) * I.ζ p ^ D.EF (s x') (s y)`. Rewrite using `[hv (x * x') y (s x + s x') (s y) (by rw [I.add, hs, hs]; rfl) (hs y), map_add, LinearMap.add_apply, zpow_add]`. Establish `hB1 : ∀ x y : G, B x y = 1 ↔ e p x y 1` using `fun x y => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hs x, ← hs y, triv_iff I hu hp, ← (I.ζ_prim p hp).zpow_eq_one_iff_dvd]`. Both sides reduce to the same expression. Establish `hB : Function.Injective B` using `(injective_iff_map_eq_one B).2 fun x hx => by`. Establish `h₁ : ∀ b, (p : ℤ) ∣ D.EF (s x) b` using `fun b => by`. Rewrite using `[← triv_iff I hu hp, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(hB1 x ⟨_, ev_pow I hp b⟩).1 (by rw [hx]; rfl)`. Use `choose f hf using h₁`. Establish `hp' : (p : ℤ) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne'`. Take `⟨a, ha⟩` from `D.unimod.2 (AddMonoidHom.mk' f fun b b' => mul_left_cancel₀ hp' (by`. Rewrite using `[mul_add, ← hf, ← hf, ← hf, map_add])).toIntLinearMap`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `Subtype.ext ((hs x).symm.trans ((I.ker p hp _).2 ⟨a, D.unimod.1 (LinearMap.ext fun b => ?_)⟩))` and prove the remaining obligations. Rewrite using `[map_nsmul, LinearMap.smul_apply, ha, hf, nsmul_eq_mul]`. Both sides reduce to the same expression. Establish `h` using `card_orth_mul B hB (S.subgroupOf G)`. Rewrite `h` using `[Nat.card_congr (Subgroup.subgroupOfEquivOfLe (show S ≤ G from hS)).toEquiv]`.
-
-Use `Eq.trans (congrArg (· * _) (Nat.card_congr ?_)) h` and prove the remaining obligations. Conclude with `⟨fun x => ⟨⟨x.1, x.2.1⟩, fun c hc => (hB1 _ _).2 (x.2.2 c.1 hc)⟩, fun x => ⟨x.1.1, x.1.2, fun c hc => (hB1 x.1 ⟨c, hS c hc⟩).1 (x.2 _ hc)⟩, fun _ => rfl, fun _ => rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_orth [IsAlgClosed k] [CharZero k] {p : ℕ} (hp : 0 < p) (hf : Finite {x : Q // x ^ p = 1})
     (S : Subgroup Q) (hS : ∀ c ∈ S, c ^ p = 1) :
@@ -344,7 +342,7 @@ def kerSet (ρ : 𝓞 E → Q →* Q) (e : ℕ → Q → Q → kˣ → Prop) (p 
     (x₃ ^ p = 1 ∧ (∃ n : ℕ, ∀ a ∈ P ^ n, ρ a x₃ = 1) ∧ ∀ c ∈ C₀, e p x₃ c 1)}
 
 /- English proof (translation)
-Use `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) h` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem natCast_mem_conj {P : Ideal (𝓞 E)} {p : ℕ} (h : (p : 𝓞 E) ∈ P) :
     (p : 𝓞 E) ∈ P.map (H.bar : 𝓞 E →+* 𝓞 E) := by
@@ -352,7 +350,7 @@ theorem natCast_mem_conj {P : Ideal (𝓞 E)} {p : ℕ} (h : (p : 𝓞 E) ∈ P)
   rwa [map_natCast] at this
 
 /- English proof (translation)
-The claim follows from `Ideal.IsMaximal.map_bijective _ H.bar.bijective inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem conj_isMaximal (H : Host E) (P : Ideal (𝓞 E)) [P.IsMaximal] : (P.map (H.bar : 𝓞 E →+* 𝓞 E)).IsMaximal :=
   Ideal.IsMaximal.map_bijective _ H.bar.bijective inferInstance
@@ -364,9 +362,9 @@ include I hu hρ hco
 omit hP in
 
 /- English proof (translation)
-Establish `h₄ : IsCoprime (P ^ s) (P.map (H.bar : 𝓞 E →+* 𝓞 E) ^ r)` using `(Ideal.isCoprime_iff_sup_eq.2 hco).pow`. Take `⟨a, ha, b, hb, hab⟩` from `Ideal.isCoprime_iff_exists.1 h₄`. Use `hρ.split hab x` as an intermediate fact. Rewrite `this` using `[h b hb, mul_one]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `triv_of_kill I hu hn hx hy (h' _ ?_)` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_of_primary {n : ℕ} (hn : 0 < n) {x y : Q} (hx : x ^ n = 1) (hy : y ^ n = 1) {r s : ℕ}
     (h : ∀ a ∈ P.map (H.bar : 𝓞 E →+* 𝓞 E) ^ r, ρ a x = 1)
@@ -388,22 +386,20 @@ include h₂
 
 omit I hu hco hP hp in
 /- English proof (translation)
-The claim follows from `(hρ.nat p c).symm.trans (h₂ c hc _ (natCast_mem_conj hpP))`.
+A detailed English derivation is pending.
 -/
 theorem datum_tors {c : Q} (hc : c ∈ C₀) : c ^ p = 1 := (hρ.nat p c).symm.trans (h₂ c hc _ (natCast_mem_conj hpP))
 
 include h₁
 
 /- English proof (translation)
-Establish `ht : ∀ c ∈ C₀, c ^ p = 1` using `fun c hc => datum_tors hρ hpP h₂ hc`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x₁, x₂, x₃, rfl, ⟨t₁, a, ha, -, k₁⟩, k₂, t₃, -, k₃⟩`. Use `⟨x₁ * x₃, x₂, mul_right_comm _ _ _, ⟨by rw [mul_pow, t₁, t₃, mul_one], fun c hc => ?_⟩, k₂⟩` and prove the remaining obligations. Use `triv_mul I hu hp t₁ t₃ (ht c hc) ?_ (k₃ c hc)` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, π, hπ, h⟩` from `hP.exists_inv ha`. Use `hρ.split h x₁` as an intermediate fact. Rewrite `this` using `[mul_comm b, hρ.2.1, k₁, map_one, one_mul]`. Rewrite using `[← this]`. Conclude with `triv_of_kill I hu hp t₁ (ht c hc) (h₂ c hc _ (Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) hπ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x', x₂, rfl, ⟨t, o⟩, ⟨r, k₂⟩, k₂'⟩`. Use `conj_isMaximal H P` as an intermediate fact. Take `⟨m, n, w, u, v, a, h, ha, ha', hw, hu', hv⟩` from `exists_split_two (Nat.cast_ne_zero.2 hp.ne' : (p : 𝓞 E) ≠ 0) P _ hco`. Use `⟨ρ w x', ρ v x' * x₂, ρ u x', ?_, ⟨hρ.pow_tors t w, a, ha, ha', ?_⟩, ⟨⟨n + r, fun b hb => ?_⟩, ?_⟩, hρ.pow_tors t u, ⟨m, fun b hb => ?_⟩, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, mul_right_comm, ← hρ.2.2, ← hρ.2.2, h, hρ.1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hρ.2.1]`. Conclude with `hρ.of_dvd t hw`. Rewrite using `[map_mul, ← hρ.2.1, hρ.of_dvd t (hv b (Ideal.pow_le_pow_right (Nat.le_add_right _ _) hb)), k₂ b (Ideal.pow_le_pow_right (Nat.le_add_left _ _) hb), mul_one]`. Rewrite using `[mul_pow, hρ.pow_tors t v, one_mul]` and apply the resulting hypothesis. Rewrite using `[← hρ.2.1]`.
-
-Conclude with `hρ.of_dvd t (hu' b hb)`. Rewrite using `[triv_adj I hu hp t (ht c hc)]`. Conclude with `o _ (h₁ _ c hc)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_kerSet_iff (x : Q) : x ∈ kerSet ρ e p P (P.map (H.bar : 𝓞 E →+* 𝓞 E)) C₀ ↔
     ∃ x' x₂ : Q, x = x' * x₂ ∧ (x' ^ p = 1 ∧ ∀ c ∈ C₀, e p x' c 1) ∧
@@ -435,9 +431,9 @@ theorem mem_kerSet_iff (x : Q) : x ∈ kerSet ρ e p P (P.map (H.bar : 𝓞 E �
 
 omit hco h₁ hP in
 /- English proof (translation)
-Introduce `c hc`. Establish `ht` using `datum_tors hρ hpP h₂ hc`. Use `Submodule.smul_induction_on ha (fun π hπ b _ => ?_) fun a b ha hb => ?_` and prove the remaining obligations. Rewrite using `[I.lin]`. Conclude with `triv_of_kill I hu hp (ev_pow I hp b) ht (h₂ c hc _ (Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) hπ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[I.add]`. Conclude with `triv_mul I hu hp (ev_pow I hp a) (ev_pow I hp b) ht ha hb`.
+A detailed English derivation is pending.
 -/
 theorem ev_orth {a : D.La} (ha : a ∈ P • (⊤ : Submodule (𝓞 E) D.La)) : ∀ c ∈ C₀, e p (I.ev p a) c 1 := by
   intro c hc
@@ -449,35 +445,33 @@ theorem ev_orth {a : D.La} (ha : a ∈ P • (⊤ : Submodule (𝓞 E) D.La)) : 
     exact triv_mul I hu hp (ev_pow I hp a) (ev_pow I hp b) ht ha hb
 
 /- English proof (translation)
-Establish `ht : ∀ c ∈ C₀, c ^ p = 1` using `fun c hc => datum_tors hρ hpP h₂ hc`. Establish `hq` using `Nat.mul_pos hp hp`. Establish `h1 : ∀ y : Q, y ^ p = 1 → e p 1 y 1` using `fun y hy => triv_symm I hu hp hy (one_pow _) (triv_one I hu hp hy)`. Set `U : Subgroup Q` to `Subgroup.ofDiv {x | x ^ p = 1 ∧ ∀ c ∈ C₀, e p x c 1} ⟨1, one_pow _, fun c hc => h1 c (ht c hc)⟩ fun x hx y hy => by`. Establish `ti : y⁻¹ ^ p = 1` using `by rw [inv_pow, hy.1, inv_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨by rw [mul_pow, hx.1, ti, mul_one], fun c hc => triv_mul I hu hp hx.1 ti (ht c hc) (hx.2 c hc) ?_⟩` and prove the remaining obligations. Establish `e₁ : y⁻¹ = ρ (-1) y`. Use `hρ.2.2 (-1) 1 y` as an intermediate fact. Establish `h0` using `hρ.nat 0 y`. Rewrite `h0` using `[Nat.cast_zero, pow_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[neg_add_cancel, h0, hρ.1]`. Conclude with `inv_eq_of_mul_eq_one_left this.symm`. Rewrite using `[e₁, triv_adj I hu hp hy.1 (ht c hc)]`. Conclude with `hy.2 _ (h₁ _ c hc)`. Set `W : Subgroup Q` to `Subgroup.ofDiv {x | (∃ n : ℕ, ∀ a ∈ P.map (H.bar : 𝓞 E →+* 𝓞 E) ^ n, ρ a x = 1) ∧ x ^ p ∈ C₀} ⟨1, ⟨0, fun a _ => map_one _⟩, by rw [one_pow]; exact C₀.one_mem⟩ (by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x ⟨⟨n, hn⟩, hx⟩ y ⟨⟨m, hm⟩, hy⟩`. Use `⟨⟨n + m, fun a ha => ?_⟩, by rw [mul_pow, inv_pow]; exact C₀.mul_mem hx (C₀.inv_mem hy)⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, hn a (Ideal.pow_le_pow_right (Nat.le_add_right _ _) ha), hm a (Ideal.pow_le_pow_right (Nat.le_add_left _ _) ha), inv_one, mul_one])`. Establish `mem : ∀ x, x ∈ U ⊔ W ↔ ∃ x' x₂ : Q, x = x' * x₂ ∧ (x' ^ p = 1 ∧ ∀ c ∈ C₀, e p x' c 1) ∧ (∃ n : ℕ, ∀ a ∈ P.map (H.bar : 𝓞 E →+* 𝓞 E) ^ n, ρ a x₂ = 1) ∧ x₂ ^ p ∈ C₀` using `fun x => by`. Rewrite using `[Subgroup.mem_sup]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨fun ⟨a, ha, b, hb, h⟩ => ⟨a, b, h.symm, ha, hb⟩, fun ⟨a, b, h, ha, hb⟩ => ⟨a, ha, b, hb, h.symm⟩⟩`. Establish `tors : ∀ x, (x ∈ U ⊔ W ∧ x ^ p = 1) ↔ (x ^ p = 1 ∧ ∀ c ∈ C₀, e p x c 1)` using `fun x => by`. Use `⟨fun ⟨hx, t⟩ => ⟨t, fun c hc => ?_⟩, fun h => ⟨Subgroup.mem_sup_left h, h.1⟩⟩` and prove the remaining obligations. Take `⟨x', x₂, rfl, ⟨t', o⟩, ⟨r, k₂⟩, -⟩` from `(mem x).1 hx`. Rewrite `t` using `[mul_pow, t', one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `triv_mul I hu hp t' t (ht c hc) (o c hc) (triv_of_primary I hu hρ hco hp t (ht c hc) k₂ (s := 1) (by rw [pow_one]; exact h₂ c hc))`. Establish `img : (U ⊔ W).map (powMonoidHom p) = C₀`. Use `le_antisymm ?_ fun c hc => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨x', x₂, rfl, ⟨t', -⟩, -, k₂⟩` from `(mem x).1 hx`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[powMonoidHom_apply, mul_pow, t', one_mul]` and apply the resulting hypothesis. Use `conj_isMaximal H P` as an intermediate fact. Take `⟨n, π, j, hπ, h, hj⟩` from `exists_split_one (Nat.cast_ne_zero.2 hp.ne' : (p : 𝓞 E) ≠ 0) (P.map (H.bar : 𝓞 E →+* 𝓞 E))`. Take `⟨y, rfl⟩` from `exists_root I hp (ht c hc)`. Establish `e₁ : ρ j y ^ p = y ^ p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `hρ.split h (y ^ p)` as an intermediate fact. Rewrite `this` using `[h₂ _ hc π hπ, one_mul, map_pow]`. Then use the resulting hypothesis. Use `⟨ρ j y, Subgroup.mem_sup_right ⟨⟨n + 1, fun a ha => ?_⟩, e₁ ▸ hc⟩, e₁⟩` and prove the remaining obligations. Rewrite using `[← hρ.2.1]`. Conclude with `(hρ.kill_mul_iff p _ y).2 (h₂ _ hc) _ (hj a ha)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `card_orth I hu hp hf C₀ ht`. Rewrite `hc` using `[← Nat.card_congr (Equiv.subtypeEquivRight tors)]`. Use `⟨U ⊔ W, Set.ext fun x => (mem x).trans (mem_kerSet_iff I hu hρ hco hp hpP h₁ h₂ x).symm, fun x hx a => ?_, fun J hJ x hx => ?_, fun x hx => (hρ.kill_mul_iff p _ x).2 (h₂ _ (img ▸ ⟨x, hx, rfl⟩)), fun x hx y hy => ?_, by rw [card_eq_tors_mul _ p, img, hc], hc.symm⟩` and prove the remaining obligations. Take `⟨x', x₂, rfl, ⟨t, o⟩, ⟨r, k₂⟩, k₂'⟩` from `(mem x).1 hx`. Use `(mem _).2 ⟨ρ a x', ρ a x₂, map_mul _ _ _, ⟨hρ.pow_tors t a, fun c hc => ?_⟩, ⟨r, fun b hb => by rw [hρ.comm, k₂ b hb, map_one]⟩, by rw [← map_pow]; exact h₁ _ _ k₂'⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[triv_adj I hu hp t (ht c hc)]`. Conclude with `o _ (h₁ _ c hc)`. Establish `hpJ : (p : 𝓞 E) ∈ J * P` using `hJ ▸ Ideal.mem_span_singleton_self _`. Establish `t : x ^ p = 1` using `(hρ.nat p x).symm.trans (hx _ (Ideal.mul_le_inf hpJ).1)`. Take `⟨a, rfl⟩` from `(I.onto p hp _).1 t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `Subgroup.mem_sup_left ⟨t, ev_orth I hu hρ hp hpP h₂ ?_⟩` and prove the remaining obligations. Establish `key : ∀ z ∈ J * P, ∃ b ∈ P • (⊤ : Submodule (𝓞 E) D.La), z • a = p • b` using `fun z hz => by`. Use `Submodule.mul_induction_on hz (fun j hj π hπ => ?_) ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `(I.ker p hp (j • a)).1 ((I.lin p j a).trans (hx j hj))`. Conclude with `⟨π • b, Submodule.smul_mem_smul hπ trivial, by rw [mul_comm, mul_smul, hb, smul_comm]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `z z' ⟨b, hb, e₁⟩ ⟨b', hb', e₂⟩`. Conclude with `⟨b + b', add_mem hb hb', by rw [add_smul, e₁, e₂, smul_add]⟩`. Take `⟨b, hb, e₁⟩` from `key _ hpJ`. Rewrite `e₁` using `[Nat.cast_smul_eq_nsmul]`. Establish `: a = b` using `D.unimod.1 (LinearMap.ext fun y => mul_left_cancel₀ (Nat.cast_ne_zero.2 hp.ne' : (p : ℤ) ≠ 0) (by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (fun z => D.EF z y) e₁` as an intermediate fact. Simplify `this))` using `only [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Conclude with `this ▸ hb`. Take `⟨x', x₂, rfl, ⟨t, o⟩, ⟨r, k₂⟩, k₂'⟩` from `(mem x).1 hx`. Take `⟨y', y₂, rfl, ⟨t', o'⟩, ⟨r', l₂⟩, l₂'⟩` from `(mem y).1 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a₁ : x' ^ (p * p) = 1` using `by rw [pow_mul, t, one_pow]`. Establish `a₂ : x₂ ^ (p * p) = 1` using `by rw [pow_mul, ht _ k₂']`. Establish `b₁ : y' ^ (p * p) = 1` using `by rw [pow_mul, t', one_pow]`. Establish `b₂ : y₂ ^ (p * p) = 1` using `by rw [pow_mul, ht _ l₂']`. Establish `b₃ : (y' * y₂) ^ (p * p) = 1` using `by rw [mul_pow, b₁, b₂, mul_one]`.
-
-Use `triv_mul I hu hq a₁ a₂ b₃ (triv_symm I hu hq b₃ a₁ ((triv_down I hu hp b₃ t).2 ?_)) (triv_symm I hu hq b₃ a₂ (triv_mul I hu hq b₁ b₂ a₂ (triv_symm I hu hq a₂ b₁ ((triv_down I hu hp a₂ t').2 ?_)) (triv_of_primary I hu hρ hco hq b₂ a₂ l₂ k₂)))` and prove the remaining obligations. Rewrite using `[mul_pow, t', one_mul]`. Conclude with `triv_symm I hu hp t (ht _ l₂') (o _ l₂')`. Conclude with `triv_symm I hu hp t' (ht _ k₂') (o' _ k₂')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_subgroup [IsAlgClosed k] [CharZero k] (hf : Finite {x : Q // x ^ p = 1}) :
     ∃ C : Subgroup Q, (C : Set Q) = kerSet ρ e p P (P.map (H.bar : 𝓞 E →+* 𝓞 E)) C₀ ∧
@@ -577,19 +571,19 @@ theorem exists_subgroup [IsAlgClosed k] [CharZero k] (hf : Finite {x : Q // x ^ 
 omit h₁ hco in
 
 /- English proof (translation)
-Establish `ht : ∀ c ∈ C₀, c ^ p = 1` using `fun c hc => datum_tors hρ hpP h₂ hc`. Establish `hc` using `card_orth I hu hp hf C₀ ht`. Use `D.fin` as an intermediate fact. Use `D.proj` as an intermediate fact. Use `hP.isPrime` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : P ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `Nat.cast_ne_zero.2 hp.ne' (Ideal.mem_bot.1 hpP)`. Establish `: Finite (𝓞 E ⧸ P)` using `Ideal.finiteQuotientOfFreeOfNeBot P hP0`. Take `⟨φ, φ', s, hs, hφ, -⟩` from `HeckeTate.exists_local_iso (R := 𝓞 E) (M := D.La) (M' := Fin (D.p + D.q) → 𝓞 E) (by rw [D.rank, Module.finrank_fin_fun]) P`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `fU : Finite {x : Q // x ^ p = 1 ∧ ∀ c ∈ C₀, e p x c 1}` using `Finite.of_injective (β := {x : Q // x ^ p = 1}) (fun x => ⟨x.1, x.2.1⟩) fun a b h => Subtype.ext (congrArg (fun z : {x : Q // x ^ p = 1} => z.1) h)`. Set `F : {x : Q // x ^ p = 1 ∧ ∀ c ∈ C₀, e p x c 1} × (Fin (D.p + D.q) → 𝓞 E ⧸ P) → {x : Q // x ^ p = 1}` to `fun z => ⟨z.1.1 * I.ev p (φ' fun i => (z.2 i).out), by rw [mul_pow, z.1.2.1, ev_pow I hp, mul_one]⟩`. Establish `hF : Function.Surjective F`. Introduce and unpack `⟨x, hx⟩`. Take `⟨a, rfl⟩` from `(I.onto p hp _).1 hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, π, hπ, h⟩` from `hP.exists_inv hs`. Set `y : Fin (D.p + D.q) → 𝓞 E` to `t • φ a`. Set `y' : Fin (D.p + D.q) → 𝓞 E` to `fun i => (Ideal.Quotient.mk P (y i)).out`. Establish `hm : a - φ' y' ∈ P • (⊤ : Submodule (𝓞 E) D.La)`. Establish `e₁ : a - φ' y' = π • a + φ' (y - y')`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_smul, hφ, smul_smul, ← add_sub_assoc, ← add_smul, add_comm π, h, one_smul]`. Rewrite using `[e₁]`. Use `add_mem (Submodule.smul_mem_smul hπ trivial) ?_` and prove the remaining obligations. Rewrite using `[pi_eq_sum_univ' (y - y'), map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul (Ideal.Quotient.eq.1 (Quotient.out_eq _).symm) trivial`. Use `⟨(⟨I.ev p (a - φ' y'), ev_pow I hp _, ev_orth I hu hρ hp hpP h₂ hm⟩, fun i => Ideal.Quotient.mk P (y i)), Subtype.ext ?_⟩` and prove the remaining obligations. Use `show I.ev p (a - φ' y') * I.ev p (φ' y') = _`. Rewrite using `[← I.add, sub_add_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle` using `Nat.card_le_card_of_surjective F hF`. Rewrite `hle` using `[Nat.card_prod, Nat.card_fun, ← hc, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]`. Establish `: Nonempty {x : Q // x ^ p = 1 ∧ ∀ c ∈ C₀, e p x c 1}` using `⟨⟨1, one_pow _, fun c hc => triv_symm I hu hp (ht c hc) (one_pow _) (triv_one I hu hp (ht c hc))⟩⟩`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `Nat.le_of_mul_le_mul_left hle Nat.card_pos`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_datum_le [IsAlgClosed k] [CharZero k] (hf : Finite {x : Q // x ^ p = 1}) :
     Nat.card C₀ ≤ Ideal.absNorm P ^ (D.p + D.q) := by
@@ -638,15 +632,13 @@ theorem card_datum_le [IsAlgClosed k] [CharZero k] (hf : Finite {x : Q // x ^ p 
 omit h₁ h₂ in
 
 /- English proof (translation)
-Establish `h₁ : ∀ a, ∀ x ∈ C.map (powMonoidHom p), ρ a x ∈ C.map (powMonoidHom p)`. Introduce and unpack `a _ ⟨x, hx, rfl⟩`. Conclude with `⟨ρ a x, c₁ x hx a, (map_pow _ _ _).symm⟩`. Establish `h₂ : ∀ x ∈ C.map (powMonoidHom p), ∀ a ∈ P.map (H.bar : 𝓞 E →+* 𝓞 E), ρ a x = 1`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(hρ.kill_mul_iff p _ x).1 (c₃ x hx)`. Use `⟨h₁, h₂, ?_⟩` and prove the remaining obligations. Take `⟨C', e₁, -, -, -, -, e₂, -⟩` from `exists_subgroup I hu hρ hco hp hpP h₁ h₂ hf`. Establish `: Nonempty {x : Q // x ^ p = 1}` using `⟨⟨1, one_pow _⟩⟩`. Establish `: Finite C'` using `Nat.finite_of_card_ne_zero (by rw [e₂]; exact Nat.card_pos.ne')`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e₁]`. Use `congrArg _ (Subgroup.eq_of_le_of_card_ge (fun x hx => ?_) (by rw [e₂, c₅]))` and prove the remaining obligations. Use `conj_isMaximal H P` as an intermediate fact. Take `⟨n, π, j, hπ, h, hj⟩` from `exists_split_one (Nat.cast_ne_zero.2 hp.ne' : (p : 𝓞 E) ≠ 0) (P.map (H.bar : 𝓞 E →+* 𝓞 E))`. Establish `t : ρ π x ^ p = 1` using `by rw [← map_pow]; exact h₂ _ ⟨x, hx, rfl⟩ π hπ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `e₁.ge ((mem_kerSet_iff I hu hρ hco hp hpP h₁ h₂ x).2 ⟨ρ π x, ρ j x, (hρ.split h x).symm, ⟨t, ?_⟩, ⟨n + 1, fun a ha => ?_⟩, ⟨_, c₁ x hx j, rfl⟩⟩)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `ty : (y ^ p) ^ p = 1` using `datum_tors hρ hpP h₂ ⟨y, hy, rfl⟩`. Conclude with `triv_symm I hu hp ty t ((triv_down I hu hp (by rw [pow_mul, ty]) t).1 (c₄ y hy _ (c₁ x hx π)))`. Rewrite using `[← hρ.2.1]`.
-
-Conclude with `c₃ x hx _ (hj a ha)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_kerSet [IsAlgClosed k] [CharZero k] (hf : Finite {x : Q // x ^ p = 1}) (C : Subgroup Q)
     (c₁ : ∀ x ∈ C, ∀ a, ρ a x ∈ C)

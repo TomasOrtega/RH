@@ -20,9 +20,7 @@ namespace GlobalTheory.TrEllSum
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[finsum_subtype_eq_finsum_cond (f := u) (p := p), finsum_eq_sum_of_support_subset (s := hu.toFinset)]`. Conclude with `Finset.sum_congr rfl fun δ _ => finsum_eq_if`. Introduce `δ hδ`. Simplify using `only [Finite.coe_toFinset]`. Introduce `h0`.
-
-Conclude with `hδ (by simp [h0])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finsum_subtype_ite {G : Type} (p : G → Prop) {u : G → ℂ} (hu : (Function.support u).Finite) :
     ∑ᶠ δ : {δ // p δ}, u δ.1 = ∑ δ ∈ hu.toFinset, if p δ then u δ else 0 := by
@@ -34,9 +32,9 @@ theorem finsum_subtype_ite {G : Type} (p : G → Prop) {u : G → ℂ} (hu : (Fu
     exact hδ (by simp [h0])
 
 /- English proof (translation)
-Rewrite using `[finsum_subtype_ite p hu, Finset.sum_congr rfl fun i _ => finsum_subtype_ite (fun δ => c δ = ι i) hu, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Establish `hg' : u g ≠ 0` using `by simpa using hg`. Distinguish the cases in `h : p g`. Take `⟨i, hi⟩` from `(hp g).1 h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos h, Finset.sum_eq_single_of_mem i (hS g i hg' hi) fun j _ hj => if_neg fun e => hj (hι (e.symm.trans hi)), if_pos hi]`. Rewrite using `[if_neg h]`. Conclude with `(Finset.sum_eq_zero fun i _ => if_neg fun e => h ((hp g).2 ⟨i, e⟩)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_group {G Q I : Type} (c : G → Q) (ι : I → Q) (hι : Function.Injective ι) (p : G → Prop)
     (hp : ∀ g, p g ↔ ∃ i, c g = ι i) {u : G → ℂ} (hu : (Function.support u).Finite) (S : Finset I)
@@ -55,19 +53,17 @@ theorem finsum_group {G Q I : Type} (c : G → Q) (ι : I → Q) (hι : Function
     exact (Finset.sum_eq_zero fun i _ => if_neg fun e => h ((hp g).2 ⟨i, e⟩)).symm
 
 /- English proof (translation)
-Establish `ha' : ∀ w, Continuous (fa w) ∧ HasCompactSupport (fa w)` using `fun w => ⟨continuous_of_mem_ccSmooth (continuous_archCoord σ J w) (ha w), (ha w).1⟩`. Establish `hc` using `(continuous_of_mem_ccAd (tensor_mem_ccAd ha hf)).2`. Take `⟨hfin, hfinx⟩` from `GlobalTheory.TrFinite.finite_charpoly_and_ratPts F E σ hcm r J _ hc`. Establish `hpol` using `fun P => GlobalTheory.T.integral_charpolyKernel_eq_stableOrbitalIntegrals E F σ hcm hun r P J hJ L μa μf μ hμ fa ff ha' hf (dta P) (dtf P) (dt P) (ht P)`. Establish `hinj : Function.Injective (Subtype.val : PPol σ r → E[X])` using `Subtype.val_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S : Finset (PPol σ r) := (hfin.preimage (f := fun P : PPol σ r => P.1) hinj.injOn).toFinset with hSdef`. Establish `hS : ∀ (x : GAd σ J) (γ : GRat σ J) (P : PPol σ r), tensor σ J fa ff (x⁻¹ * ratEmb σ J γ * x) ≠ 0 → γ.1.1.charpoly = P.1 → P ∈ S` using `fun x γ P h e => (Finite.mem_toFinset _).2 ⟨γ, e, x, subset_tsupport _ h⟩`. Establish `hsum : descend (ratPts σ J) K = fun q => ∑ P ∈ S, descend (ratPts σ J) (polKernel P J (tensor σ J fa ff)) q`. Use function extensionality and compare the values at `q`. Rewrite using `[hK]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_group (fun γ : GRat σ J => γ.1.1.charpoly) _ hinj _ (fun γ => ⟨fun h => ?_, ?_⟩) (u := fun γ => tensor σ J fa ff ((Quotient.out q)⁻¹ * ratEmb σ J γ * Quotient.out q)) ((hfinx (Quotient.out q)).subset fun γ h => subset_tsupport _ h) S (hS _)` and prove the remaining obligations. Take `⟨P, hP, -⟩` from `(GlobalTheory.T.exists_torusClass_of_irreducible_charpoly_unitary F E σ hcm r J hJ).2 γ h`. Conclude with `⟨P, hP⟩`. Introduce and unpack `⟨P, hP⟩`. Rewrite using `[hP]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `P.2.2.1`. Establish `hsupp : Function.support t ⊆ S` using `fun P hP => by`. Assume the negation of the conclusion as `hn`. Use `hP ?_` and prove the remaining obligations. Rewrite using `[hterm]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hpol P).2.symm.trans (integral_eq_zero_of_ae (.of_forall fun q => ?_))` and prove the remaining obligations. Use `finsum_eq_zero_of_forall_eq_zero fun δ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hn (hS _ δ.1 P h δ.2)`. Use `⟨fun P => ⟨⟨(GlobalTheory.T.unitaryTorus_compact_quotient_finite_volume F E σ hcm r P).2 _ (ht P).haar, fun v => ?_, ?_⟩, fun w => ?_⟩, S.finite_toSet.subset hsupp, ?_, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.T.local_stable_orbital_integrals_well_defined F E σ hcm r r P J hJ).1 v _ _ _ (hμ.haar_loc v) ((ht P).haar_loc v) (hf.1 v).1.continuous (hf.1 v).2`. Use `isLattice_stdLattice (E := Fld P) (n := 1) filter_upwards [GlobalTheory.T.eventually_unitaryTorus_orbitalClass_trivial_local F E σ hcm r P J hJ L, hf.2, hμ.eventually_eq_one, IsRestrictedProd.eventually_eq_one (ht P)] with v h1 h2 h3 h4` as an intermediate fact. Establish `h5` using `h1.2.2.2 (μf v) (dtf P v) (hμ.haar_loc v) ((ht P).haar_loc v) h3 h4`. Rewrite using `[h2, Phi, finsum_eq_single _ ⟨1, h1.1⟩ fun q hq => (h5 q).2 fun e => hq (Subtype.ext e)]`. Conclude with `(h5 _).1 rfl`.
-
-Conclude with `(GlobalTheory.T.local_stable_orbital_integrals_well_defined F E σ hcm r r P J hJ).2 w _ _ _ (hμ.haar_arch w) ((ht P).haar_arch w) (ha' w).1 (ha' w).2`. Rewrite using `[hsum]`. Conclude with `integrable_finsetSum _ fun P _ => (hpol P).1`. Rewrite using `[hsum, integral_finsetSum _ fun P _ => (hpol P).1, finsum_eq_sum_of_support_subset _ hsupp, hterm]`. Conclude with `Finset.sum_congr rfl fun P _ => (hpol P).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem elliptic_expansion {E : Type} [Field E] [NumberField E] {F : Subfield E} [NumberField F] {σ : E →ₐ[F] E}
     (hcm : IsCMExt F E σ) (hun : Algebra.Unramified (𝓞 F) (𝓞 E)) {r : ℕ} {J : Matrix (Fin r) (Fin r) E}
@@ -133,7 +129,7 @@ theorem elliptic_expansion {E : Type} [Field E] [NumberField E] {F : Subfield E}
     exact Finset.sum_congr rfl fun P _ => (hpol P).2
 
 /- English proof (translation)
-Introduce `D V lam S M T U μa μf μ fa ff h dta dtf dt ht`. Take `⟨-, -, -, -, hμ, ha, hf⟩` from `h`. Conclude with `elliptic_expansion (isCMExt_host D) (GlobalTheory.InertOfConj.unram D) (isHermND_gram V) (frameLat V) hμ ha.mem hf.isFinFamily dta dtf dt ht _ rfl _ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ellipticPart : GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.EllipticPart := by
   intro D V lam S M T U μa μf μ fa ff h dta dtf dt ht

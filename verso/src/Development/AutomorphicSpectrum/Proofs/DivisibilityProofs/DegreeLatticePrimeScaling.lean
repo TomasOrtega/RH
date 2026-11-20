@@ -20,9 +20,9 @@ variable {K : Type} [DecidableEq K] {ι : K → Type} {Ω : Type} [Field Ω]
 def lineVertMono [Fintype K] (c : ∀ k, ι k) (e : K → ℕ) : MRing ι ℤ := ∏ k, X ⟨k, c k⟩ ^ e k
 
 /- English proof (translation)
-Establish `h` using `IsWeightedHomogeneous.prod (R := ℤ) (w := blockWeight ι) Finset.univ (fun k => (X ⟨k, c k⟩ : MRing ι ℤ) ^ e k) (fun k => e k • (Pi.single k 1 : K → ℕ)) (fun k _ => (isWeightedHomogeneous_X ℤ (blockWeight ι) ⟨k, c k⟩).pow (e k))`. Establish `he : ∑ k, e k • (Pi.single k 1 : K → ℕ) = e`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite `h` using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem lineVertMono_homog [Fintype K] (c : ∀ k, ι k) (e : K → ℕ) :
     IsMultiHomog (lineVertMono c e) e := by
@@ -36,18 +36,18 @@ theorem lineVertMono_homog [Fintype K] (c : ∀ k, ι k) (e : K → ℕ) :
   exact h
 
 /- English proof (translation)
-Simplify using `[lineVertMono, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lineVertMono_aeval [Fintype K] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (e : K → ℕ) :
     aeval y (lineVertMono c e) = ∏ k, y ⟨k, c k⟩ ^ e k := by
   simp [lineVertMono, map_prod]
 
 /- English proof (translation)
-Proceed by induction on `m using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Rewrite using `[Finsupp.prod_add_index' (by simp) (by intros; rw [pow_add]), hf, hg, map_add, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [Pi.add_apply, pow_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `single p e`. Rewrite using `[Finsupp.prod_single_index (by simp), Finsupp.weight_single, Finset.prod_eq_single p.1]`. Simplify using `[blockWeight]`. Introduce `k _ hk`. Simplify using `[blockWeight, Pi.single_apply, hk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem lineVert_prod_weight [Fintype K] (m : (Σ k, ι k) →₀ ℕ) :
     (m.prod fun p e => (X p.1 : MvPolynomial K Ω) ^ e) =
@@ -67,11 +67,11 @@ theorem lineVert_prod_weight [Fintype K] (m : (Σ k, ι k) →₀ ℕ) :
     · simp
 
 /- English proof (translation)
-Establish `key : ∀ m ∈ h.support, pointConeMap ℤ y (monomial m (coeff m h)) = C (aeval y (monomial m (coeff m h) : MRing ι ℤ)) * ∏ k, X k ^ b k`. Introduce `m hm`. Establish `hw : Finsupp.weight (blockWeight ι) m = b` using `hh (mem_support_iff.mp hm)`. Rewrite using `[pointConeMap, aeval_monomial, aeval_monomial, ← hw, ← lineVert_prod_weight]`. Establish `e1 : (m.prod fun p e => (C (y p) * X p.1 : MvPolynomial K Ω) ^ e) = C (m.prod fun p e => y p ^ e) * m.prod fun p e => (X p.1 : MvPolynomial K Ω) ^ e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [mul_pow, Finsupp.prod, Finset.prod_mul_distrib, map_prod, map_pow]`. Rewrite using `[e1]`. Simplify using `[mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ m ∈ h.support, C (aeval y (monomial m (coeff m h) : MRing ι ℤ)) * ∏ k, X k ^ b k := Finset.sum_congr rfl key`. Use `_ = C (aeval y h) * ∏ k, X k ^ b k := by conv_rhs => rw [h.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineVert_cone_homog [Fintype K] (y : (Σ k, ι k) → Ω) {h : MRing ι ℤ} {b : K → ℕ}
     (hh : IsMultiHomog h b) :
@@ -96,7 +96,7 @@ theorem lineVert_cone_homog [Fintype K] (y : (Σ k, ι k) → Ω) {h : MRing ι 
         rw [map_sum, map_sum, Finset.sum_mul]
 
 /- English proof (translation)
-Rewrite using `[pointIdeal, RingHom.mem_ker, lineVert_cone_homog y hh, h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lineVert_mem_of_homog [Fintype K] (y : (Σ k, ι k) → Ω) {h : MRing ι ℤ} {b : K → ℕ}
     (hh : IsMultiHomog h b) (h0 : aeval y h = 0) : h ∈ pointIdeal ℤ y := by
@@ -104,19 +104,19 @@ theorem lineVert_mem_of_homog [Fintype K] (y : (Σ k, ι k) → Ω) {h : MRing �
   simp
 
 /- English proof (translation)
-Rewrite `ha` using `[chartRing]`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨d, rfl⟩` from `hx`. Use `⟨1, lineVertMono d (fun _ => 1), lineVertMono_homog _ _, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lineVertMono_aeval, pow_one, div_mul_cancel₀ _ hc]`. Simplify using `[segreVec]`. Consider the case `algebraMap n`. Use `⟨0, C n, isWeightedHomogeneous_C _ _, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `add x z _ _ hx hz`. Take `⟨r₁, G₁, h₁, v₁⟩` from `hx`. Take `⟨r₂, G₂, h₂, v₂⟩` from `hz`. Use `⟨r₁ + r₂, G₁ * lineVertMono c (fun _ => r₂) + G₂ * lineVertMono c (fun _ => r₁), ?_, ?_⟩` and prove the remaining obligations. Establish `a₁` using `IsWeightedHomogeneous.mul h₁ (lineVertMono_homog c fun _ => r₂)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a₂` using `IsWeightedHomogeneous.mul h₂ (lineVertMono_homog c fun _ => r₁)`. Establish `e₁ : (fun _ : K => r₁) + (fun _ : K => r₂) = fun _ => r₁ + r₂` using `rfl`. Establish `e₂ : (fun _ : K => r₂) + (fun _ : K => r₁) = fun _ => r₁ + r₂`. Use function extensionality and compare the values at `k`. Simplify using `[add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `a₁` using `[e₁]`. Rewrite `a₂` using `[e₂]`. Conclude with `a₁.add a₂`. Establish `hp : ∀ r : ℕ, ∏ k, y ⟨k, c k⟩ ^ r = segreVec y c ^ r` using `fun r => by`. Rewrite using `[segreVec, Finset.prod_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_mul, map_mul, lineVertMono_aeval, lineVertMono_aeval, hp, hp, ← v₁, ← v₂]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x z _ _ hx hz`. Take `⟨r₁, G₁, h₁, v₁⟩` from `hx`. Take `⟨r₂, G₂, h₂, v₂⟩` from `hz`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r₁ + r₂, G₁ * G₂, IsWeightedHomogeneous.mul h₁ h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← v₁, ← v₂]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lineVert_chart_form [Fintype K] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k)
     (hc : segreVec y c ≠ 0) {a : Ω} (ha : a ∈ chartRing ℤ (segreVec y) c) :
@@ -156,37 +156,31 @@ theorem lineVert_chart_form [Fintype K] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι
     ring
 
 /- English proof (translation)
-Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.mp hc k (Finset.mem_univ k)`. Establish `hZ : ∀ e : K → ℤ, (∏ k, y ⟨k, c k⟩ ^ e k) ≠ 0` using `fun e => Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hy k)`. Take `⟨n, t', ⟨a, ha, rfl⟩, e1⟩` from `h1 (1 * ∏ k, y ⟨k, c k⟩ ^ b k) ⟨1, one_mem _, rfl⟩`. Take `⟨n', t, ⟨a', ha', rfl⟩, e2⟩` from `h2 (1 * ∏ k, y ⟨k, c k⟩ ^ b' k) ⟨1, one_mem _, rfl⟩`. Take `⟨r, G, hG, hGa⟩` from `lineVert_chart_form y c hc ha`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r', G', hG', hGa'⟩` from `lineVert_chart_form y c hc ha'`. Rewrite `e1`, `e2` using `[one_mul]`. Use `set Yb := ∏ k, y ⟨k, c k⟩ ^ b k with hYb`. Use `set Yb' := ∏ k, y ⟨k, c k⟩ ^ b' k with hYb'`. Establish `hYb0 : Yb ≠ 0` using `hZ b`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYb'0 : Yb' ≠ 0` using `hZ b'`. Use `set x := segreVec y c with hx`. Establish `hxp : ∀ r : ℕ, ∏ k, y ⟨k, c k⟩ ^ r = x ^ r` using `fun r => by`. Rewrite using `[hx, segreVec, Finset.prod_pow]`. Set `e : K → ℤ` to `fun k => b' k - b k + r'`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `dP : K → ℕ` to `fun k => (e k).toNat`. Set `dN : K → ℕ` to `fun k => (-e k).toNat`. Establish `haa : a * a' = (m : Ω) ^ n * (m : Ω) ^ n'`. Apply `mul_left_cancel₀ (mul_ne_zero (mul_ne_zero hs hYb0) hYb'0)` to reduce the goal to its premises. Take the linear combination `(-((m : Ω) ^ n' * s * Yb')) * e1 - (s * a * Yb') * e2`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hGG : aeval y G * aeval y G' = (m : Ω) ^ (n + n') * x ^ (r + r')`. Rewrite using `[← hGa, ← hGa', pow_add, pow_add]`. Take the linear combination `(x ^ r * x ^ r') * haa`. Establish `key : Yb' * x ^ r' * (∏ k, y ⟨k, c k⟩ ^ dN k) = Yb * ∏ k, y ⟨k, c k⟩ ^ dP k`. Rewrite using `[← hxp, hYb, hYb', ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hy k), ← zpow_add₀ (hy k), ← zpow_add₀ (hy k)]`. Use `congr 1`. Simplify using `only [dP, dN, e]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨C ((m : ℤ) ^ n') * lineVertMono c dP, G' * lineVertMono c dN, dP, (fun _ => r') + dN, ?_, IsWeightedHomogeneous.mul hG' (lineVertMono_homog c dN), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `a₀` using `(isWeightedHomogeneous_C (blockWeight ι) ((m : ℤ) ^ n')).mul (lineVertMono_homog c dP)`. Rewrite `a₀` using `[zero_add]`. Conclude with `a₀`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Pi.add_apply, dP, dN, e]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Apply `mul_right_cancel₀ hYb0` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, lineVertMono_aeval, lineVertMono_aeval, aeval_C]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [map_pow, eq_intCast, Int.cast_natCast]`. Take the linear combination `(-(s * (m : Ω) ^ n')) * key + (x ^ r' * ∏ k, y ⟨k, c k⟩ ^ dN k) * e2 + (Yb * ∏ k, y ⟨k, c k⟩ ^ dN k) * hGa'`. Introduce `W hW hPW hX hm`. Establish `hmono : ∀ d : K → ℕ, lineVertMono c d ∉ W`. Introduce `d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp hd`. Conclude with `hX k (hW.mem_of_pow_mem _ hk)`. Establish `hmpow : ∀ j : ℕ, (C ((m : ℤ) ^ j) : MRing ι ℤ) ∉ W`. Introduce `j hj`. Rewrite `hj` using `[map_pow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hm (hW.mem_of_pow_mem _ hj)`. Establish `hG'W : G' ∉ W`. Introduce `hg`. Establish `hH : G * G' - C ((m : ℤ) ^ (n + n')) * lineVertMono c (fun _ => r + r') ∈ W`. Apply `hPW` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `lineVert_mem_of_homog y (b := fun _ => r + r')` to reduce the goal to its premises. Establish `a₁` using `IsWeightedHomogeneous.mul hG hG'`. Establish `a₂` using `(isWeightedHomogeneous_C (blockWeight ι) ((m : ℤ) ^ (n + n'))).mul (lineVertMono_homog (ι := ι) c fun _ => r + r')`. Rewrite `a₂` using `[zero_add]`. Conclude with `(weightedHomogeneousSubmodule ℤ (blockWeight ι) _).sub_mem a₁ a₂`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sub, map_mul, map_mul, lineVertMono_aeval, hxp, hGG, aeval_C]`. Simplify using the standard rewrite rules. Establish `h3` using `W.sub_mem (W.mul_mem_left G hg) hH`. Rewrite `h3` using `[sub_sub_cancel]`. Break down `hW.mem_or_mem h3 with h | h` into its components or cases.
-
-Conclude with `hmpow _ h`. Conclude with `hmono _ h`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Break down `hW.mem_or_mem h with h | h` into its components or cases.
-
-Conclude with `hmpow _ h`. Conclude with `hmono _ h`. Introduce `h`. Break down `hW.mem_or_mem h with h | h` into its components or cases. Conclude with `hG'W h`.
-
-Conclude with `hmono _ h`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem lineVert_chart_pair [Fintype K] (y : (Σ k, ι k) → Ω) (m : ℕ) (b b' : K → ℤ) (s : Ω)
     (hs : s ≠ 0) (c : ∀ k, ι k) (hc : segreVec y c ≠ 0)
@@ -283,25 +277,23 @@ theorem lineVert_chart_pair [Fintype K] (y : (Σ k, ι k) → Ω) (m : ℕ) (b b
 end LineVert
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Ω _ y hP S b b' s hs hch hhor`. Use `set m : ℕ := ∏ p ∈ S, (p : ℕ) with hm`. Establish `hm0 : m ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun p _ => p.2.ne_zero`. Establish `hmP : (C (m : ℤ) : MRing ι ℤ) ∉ pointIdeal ℤ y`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : (m : ℤ) ∈ (pointIdeal ℤ y).comap (C : ℤ →+* MRing ι ℤ)` using `h`. Rewrite `h'` using `[show (pointIdeal ℤ y).comap (C : ℤ →+* MRing ι ℤ) = ⊥ from hhor, Ideal.mem_bot]`. Conclude with `hm0 (by exact_mod_cast h')`. Establish `hseg : ∀ c : ∀ k, ι k, (∀ k, (X ⟨k, c k⟩ : MRing ι ℤ) ∉ pointIdeal ℤ y) → segreVec y c ≠ 0`. Introduce `c hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Finset.prod_ne_zero_iff.mpr fun k _ h0 => hc k ?_` and prove the remaining obligations. Conclude with `lineVert_mem_of_homog y (isWeightedHomogeneous_X ℤ (blockWeight ι) ⟨k, c k⟩) (by simpa using h0)`. Use `choose c₀ hc₀ using hP.relevant`. Take `⟨U₀, V₀, dU₀, dV₀, hU₀, hV₀, hd₀, hv₀, hW₀⟩` from `lineVert_chart_pair y m b b' s hs c₀ (hseg c₀ hc₀) (hch c₀ (hseg c₀ hc₀)).1 (hch c₀ (hseg c₀ hc₀)).2`. Establish `hUV` using `hW₀ (pointIdeal ℤ y) hP.isPrime le_rfl hc₀ hmP`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨V₀, U₀, ?_, hv₀.symm⟩` and prove the remaining obligations. Introduce `i`. Use `⟨⟨dV₀, dU₀, hV₀, hU₀, ?_⟩, hUV.2, hUV.1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Conclude with `hd₀ k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `W hWp hPW hWr hWS choose c hc using hWr`. Establish `hcP : ∀ k, (X ⟨k, c k⟩ : MRing ι ℤ) ∉ pointIdeal ℤ y` using `fun k h => hc k (hPW h)`. Establish `hmW : (C (m : ℤ) : MRing ι ℤ) ∉ W`. Introduce `h`. Establish `h' : (∏ p ∈ S, (C (((p : ℕ) : ℤ)) : MRing ι ℤ)) ∈ W`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[← map_prod]`. Use `h using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hm]`. Use `push_cast`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨p, hp, hpW⟩` from `Ideal.IsPrime.prod_mem_iff.mp h'`. Conclude with `hWS p hp hpW`. Take `⟨U, V, dU, dV, hU, hV, hd, hv, hW⟩` from `lineVert_chart_pair y m b b' s hs c (hseg c hcP) (hch c (hseg c hcP)).1 (hch c (hseg c hcP)).2`. Establish `hUV'` using `hW W hWp hPW hc hmW`. Use `⟨U, V, hUV'.1, hUV'.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Apply `lineVert_mem_of_homog y (b := dU + dV₀)` to reduce the goal to its premises. Establish `a₁` using `IsWeightedHomogeneous.mul hU hV₀`. Establish `a₂` using `IsWeightedHomogeneous.mul hV hU₀`. Establish `e₂ : dV + dU₀ = dU + dV₀`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hd k`. Establish `h2` using `hd₀ k`. Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite `a₂` using `[e₂]`.
-
-Conclude with `(weightedHomogeneousSubmodule ℤ (blockWeight ι) _).sub_mem a₁ a₂`. Simplify using `only [map_sub, map_mul]`. Rewrite using `[← hv, ← hv₀]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lineVert_of_eq_off : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω), IsMultiProjPrime (pointIdeal ℤ y) → ∀ (S : Finset Nat.Primes) (b b' : K → ℤ) (s : Ω), s ≠ 0 → (∀ c, segreVec y c ≠ 0 → (∀ t ∈ degLat ℤ y b c, ∃ n : ℕ, ∃ t' ∈ degLat ℤ y b' c, ((∏ p ∈ S, (p : ℕ) : ℕ) : Ω) ^ n * t = s * t') ∧ ∀ t' ∈ degLat ℤ y b' c, ∃ n : ℕ, ∃ t ∈ degLat ℤ y b c, ((∏ p ∈ S, (p : ℕ) : ℕ) : Ω) ^ n * (s * t') = t) → IsHorizontal (pointIdeal ℤ y) → ∃ f g : MRing ι ℤ, (⟨fun _ => b, fun _ => b', fun _ => f, fun _ => g⟩ : LocPair ι ℤ Unit).IsVertOff (pointIdeal ℤ y) S ∧ aeval y f = s * aeval y g := by
   intro K _ _ ι _ Ω _ y hP S b b' s hs hch hhor

@@ -17,11 +17,11 @@ open Formalism.L2.SG.AdBridge Formalism.L2.SG.DataInst Formalism.L2.SG.SpectralT
 attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 
 /- English proof (translation)
-Take `⟨-, hk, hmf, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -⟩` from `h`. Establish `hL : 1 < large₂.sc.L` using `Formalism.MainNotions.S.one_lt_scL large₂`. Establish `hm2 : 2 ≤ D.R.m` using `D.R.two_le_m`. Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm2`. Establish `hf16 : 16 ≤ D.R.f` using `le_trans (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hf : (16 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf16`. Establish `hm5 : (32 : ℝ) ≤ (D.R.m : ℝ) ^ 5`. Combine the equalities or inequalities in the displayed calculation. Establish `hkR : (1801 : ℝ) ≤ D.R.k`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h1 : (29 : ℝ) * 32 * 16 * 1 ≤ C' * (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hkR` after adjusting the coercions.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rootLatticeThresholds_k_of_fact {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (h : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (hC' : 29 ≤ C') : 1801 ≤ D.R.k := by

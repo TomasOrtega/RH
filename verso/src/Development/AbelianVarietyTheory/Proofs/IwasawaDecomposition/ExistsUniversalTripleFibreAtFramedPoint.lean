@@ -18,11 +18,11 @@ open scoped Matrix TensorProduct
 namespace GlobalTheory.KeyFourth
 
 /- English proof (translation)
-Establish `h1` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (E →+* ℂ))) (fun τ => τ (H.rt : E) = H.rt0)`. Rewrite `h1` using `[Finset.card_univ, Embeddings.card]`. Establish `h2` using `GlobalTheory.PeriodCoord.card_cmType H`. Rewrite `h2` using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Establish `h3 : Module.finrank ℚ E = 2 * Module.finrank ℚ (maximalRealSubfield E)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E, Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E, mul_comm]`. Establish `h4 : (Finset.univ.filter (fun τ : E →+* ℂ => ¬ τ (H.rt : E) = H.rt0)).card = Module.finrank ℚ E / 2`. Use linear arithmetic over natural numbers and integers. Establish `h5 : (Finset.univ.filter (fun τ : E →+* ℂ => τ (H.rt : E) = H.rt0)).card = Module.finrank ℚ E / 2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h6` using `Fintype.card_congr e`. Rewrite `h6` using `[Fintype.card_fin, Fintype.card_sigma]`. Rewrite `h6` using `[Fintype.card_fin, Datum.mult]`. Rewrite `h6` using `[Finset.sum_ite, Finset.sum_const, Finset.sum_const, h4, h5, smul_eq_mul, smul_eq_mul]`. Rewrite using `[h6, mul_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_frame_index {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) :
@@ -47,15 +47,15 @@ theorem card_frame_index {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   rw [h6, mul_add]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c g e S _ _ _ y hpq`. Take `⟨U, hU, hg⟩` from `GlobalTheory.CM.exists_pat_of_obj E H Dw l _ _ _ _ Xo.univ`. Choose the witnesses or unpack the hypotheses as in `⟨t, ⟨m⟩⟩ : ∃ t : SAB H (Sp S), Nonempty (SABMap t Xo.univ.t y.x) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull y.x Xo.univ.t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨⟨T, rfl, hTg⟩, -⟩` from `GlobalTheory.CM.PAT.exists_of_sabMap E H _ _ y.x U t (hU ▸ m)`. Establish `hpos : 1 ≤ Module.finrank ℚ E / 2`. Establish `h1` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Rewrite `h1` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E]`. Establish `h2 : 0 < Module.finrank ℚ (maximalRealSubfield E)` using `Module.finrank_pos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hgp : 1 ≤ T.g`. Rewrite using `[hTg, hg]`. Conclude with `Nat.mul_pos hpos hpq`. Take `rfl : T.g = g` from `hTg.trans (hg.trans (card_frame_index Dw e))`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, h₁, h₂⟩` from `SecTieEx.secTie_exists_unique E H Dw l Xo S y.x T.t m`. Take `⟨th, ht⟩` from `h₁ y.s`. Establish `hne` using `(h₂ th _ ht).2.1 (GlobalTheory.Frames.secNZ_of_secGen GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo S _ _ y.gen)`. Establish `hB` using `(GlobalTheory.Frames.eigBasis_iff_tanBasis E H Dw l Xo c S y.x y.u T.g e y.tan y.eig).1 y.basis`. Take `⟨hl, hb⟩` from `GlobalTheory.Frames.lieBasis_iff_tanBasis E H Dw l Xo S y.x T.t.G m.φ m.cart`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose v hv using fun j => hl _ (y.tan (e j).1 (e j).2)`. Use `⟨⟨T, m, hgp, th, hne, v, (hb _ v).2 ?_⟩, ht, rfl, hv⟩` and prove the remaining obligations. Rewrite using `[funext hv]`. Conclude with `hB`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tied : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (S : Type) [CommRing S] [Nontrivial S] [Algebra c.F S] (y : FrPt Xo c S), 1 ≤ Dw.p + Dw.q → ∃ Φ : FibKey Xo S y.x, Tied e y.s y.u Φ := by
   intro E _ _ _ H Dw l Xo c g e S _ _ _ y hpq

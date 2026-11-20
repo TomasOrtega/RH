@@ -18,7 +18,7 @@ namespace PositivityTheory.Rg.Sw.Glob.AW
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Unfold `IsTrivAt at *`. Rewrite using `[GlobalTheory.StdUnn.LeftInvSect.mat_mul, compAt_mul', ha, hb, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_mul {θ : InfFam D} {τ : D.what₂.Tau} {a b : G D n} (ha : IsTrivAt θ τ a) (hb : IsTrivAt θ τ b) :
     IsTrivAt θ τ (a * b) := by
@@ -26,7 +26,7 @@ theorem triv_mul {θ : InfFam D} {τ : D.what₂.Tau} {a b : G D n} (ha : IsTriv
   rw [GlobalTheory.StdUnn.LeftInvSect.mat_mul, compAt_mul', ha, hb, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `IsTrivAt at *`. Establish `h : compAt θ τ (mat a⁻¹) * compAt θ τ (mat a) = 1`. Rewrite using `[← compAt_mul', ← GlobalTheory.StdUnn.LeftInvSect.mat_mul, inv_mul_cancel, GlobalTheory.StdUnn.LeftInvSect.mat_one, compAt_one']`. Rewrite `h` using `[ha, Matrix.mul_one]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem triv_inv {θ : InfFam D} {τ : D.what₂.Tau} {a : G D n} (ha : IsTrivAt θ τ a) : IsTrivAt θ τ a⁻¹ := by
   unfold IsTrivAt at *
@@ -35,15 +35,15 @@ theorem triv_inv {θ : InfFam D} {τ : D.what₂.Tau} {a : G D n} (ha : IsTrivAt
   rwa [ha, Matrix.mul_one] at h
 
 /- English proof (translation)
-Unfold `IsTrivAt`. Rewrite using `[GlobalTheory.StdUnn.LeftInvSect.mat_one, compAt_one']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_one {θ : InfFam D} {τ : D.what₂.Tau} : IsTrivAt θ τ (1 : G D n) := by
   unfold IsTrivAt; rw [GlobalTheory.StdUnn.LeftInvSect.mat_one, compAt_one']
 
 /- English proof (translation)
-Unfold `IsTrivAt at hy`. Rewrite `hy` using `[(hι.2 y).1]`. Establish `h1 : mR y = 1`. Establish `h2 : (mR y).submatrix finSumFinEquiv.symm finSumFinEquiv.symm = (1 : M2 n).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Rewrite using `[Matrix.submatrix_one_equiv]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Use `congrArg (fun M => Matrix.submatrix M finSumFinEquiv finSumFinEquiv) h2` as an intermediate fact. Simplify using `using this`. Conclude with `Subtype.ext (Units.ext h1)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_one_of_triv_ι {θ : InfFam D} {τ : D.what₂.Tau} {ι : GR n →* G D n} (hι : IsPlaceEmb θ τ ι) {y : GR n}
     (hy : IsTrivAt θ τ (ι y)) : y = 1 := by
@@ -58,7 +58,7 @@ theorem eq_one_of_triv_ι {θ : InfFam D} {τ : D.what₂.Tau} {ι : GR n →* G
   exact Subtype.ext (Units.ext h1)
 
 /- English proof (translation)
-Establish `h2 : ι (y * y'⁻¹) = a⁻¹ * a'`. Rewrite using `[map_mul, map_inv]`. Combine the equalities or inequalities in the displayed calculation. Establish `: y * y'⁻¹ = 1` using `eq_one_of_triv_ι hι (by rw [h2]; exact triv_mul (triv_inv ha) ha')`. Conclude with `mul_inv_eq_one.mp this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uniq_dec {θ : InfFam D} {τ : D.what₂.Tau} {ι : GR n →* G D n} (hι : IsPlaceEmb θ τ ι) {a a' : G D n} {y y' : GR n}
     (ha : IsTrivAt θ τ a) (ha' : IsTrivAt θ τ a') (h : a * ι y = a' * ι y') : y = y' := by
@@ -71,13 +71,11 @@ theorem uniq_dec {θ : InfFam D} {τ : D.what₂.Tau} {ι : GR n →* G D n} (h�
   exact mul_inv_eq_one.mp this
 
 /- English proof (translation)
-Take `⟨B, E', hBE⟩` from `GlobalTheory.CompanionTheory.SwUnf.SmallCell.exists_blocks M`. Use `set A := blkA M`. Use `set C := GlobalTheory.CompanionTheory.SwUnf.lowerC M`. Use `⟨A, B, C, E', hBE, ?_⟩` and prove the remaining obligations. Establish `h0` using `hτ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h0` using `[hBE, component_block_matrix]`. Take `⟨e1, e2, e3, e4⟩` from `GlobalTheory.StdUnn.Model.blockMatrixTwoByTwoFin_injective h0`. Use `⟨e1, e2, e3, e4, fun τ' hτ' => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hM τ' hτ'`. Rewrite `h1` using `[hBE, component_block_matrix, ← GlobalTheory.StdUnn.Model.block_matrix_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨f1, f2, f3, f4⟩` from `GlobalTheory.StdUnn.Model.blockMatrixTwoByTwoFin_injective h1`. Conclude with `⟨f1, f2, f3, f4⟩`. Establish `h1` using `hMf`. Rewrite `h1` using `[hBE, GlobalTheory.StdUnn.Frame.block_matrix_map, ← GlobalTheory.StdUnn.Model.block_matrix_one]`. Take `⟨f1, f2, f3, f4⟩` from `GlobalTheory.StdUnn.Model.blockMatrixTwoByTwoFin_injective h1`.
-
-Conclude with `⟨f1, f2, f3, f4⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem blocks_of_away {θ : InfFam D} {τ : D.what₂.Tau} (hθ : IsInfFam θ) {M : Mx D (n + n) (n + n)}
     (hM : ∀ τ', τ' ≠ τ → compAt θ τ' M = 1) (hMf : M.map (finPart D) = 1) {α β γ δ : Matrix (Fin n) (Fin n) ℂ}
@@ -103,7 +101,7 @@ theorem blocks_of_away {θ : InfFam D} {τ : D.what₂.Tau} (hθ : IsInfFam θ) 
     exact ⟨f1, f2, f3, f4⟩
 
 /- English proof (translation)
-Use `mx_ext hθ (fun τ'' => ?_) hf` and prove the remaining obligations. Distinguish the cases in `h : τ'' = τ`. Substitute `h` using the available equality. Conclude with `hτ`. Conclude with `hτ' τ'' h`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eq_of_comps {θ : InfFam D} {τ : D.what₂.Tau} (hθ : IsInfFam θ) {X Y : Mx D n n} (hτ : compAt θ τ X = compAt θ τ Y)
     (hτ' : ∀ τ', τ' ≠ τ → compAt θ τ' X = compAt θ τ' Y) (hf : X.map (finPart D) = Y.map (finPart D)) : X = Y := by

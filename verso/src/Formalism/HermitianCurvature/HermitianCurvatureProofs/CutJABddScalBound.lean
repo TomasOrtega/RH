@@ -22,20 +22,20 @@ def regE (D : B.RealPlaceData k r Wp Wq) (ε : ℝ) : Set (B.Mat k r) :=
   {g | g ∈ B.GV k r ∧ ε ≤ Gf k r D.z D.z' g}
 
 /- English proof (translation)
-Introduce `_ hg` and use `hg.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem regE_sub (D : B.RealPlaceData k r Wp Wq) (ε : ℝ) : regE D ε ⊆ B.GV k r := fun _ hg => hg.1
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos m with hm | hm` into its components or cases. Substitute `hm` using the available equality. Take `⟨C0, hC0⟩` from `h0`. Use `⟨C0, fun u w _ _ hl g hg hgε => ?_⟩` and prove the remaining obligations. Establish `hu : u = []` using `List.eq_nil_of_length_eq_zero (by omega)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hw : w = []` using `List.eq_nil_of_length_eq_zero (by omega)`. Substitute `hu hw` using the available equality. Simplify using `only [Nat.cast_zero, mul_zero, Real.rpow_zero, mul_one]`. Conclude with `hC0 g ⟨hg, hgε⟩`. Take `⟨⟨C, hC0, hUB⟩, -⟩` from `hU m`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C, fun u w hu hw hl g hg hgε => ?_⟩` and prove the remaining obligations. Establish `hA : admitted m (wL u ++ wR w)` using `⟨u, w, hu, hw, hl, rfl⟩`. Establish `hb` using `hUB _ hA g ⟨hg, hgε⟩`. Rewrite using `[dLR_eq]`. Use `hb.trans (mul_le_mul_of_nonneg_left ?_ hC0)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ B.gN g` using `gN_ge_one hg`. Rewrite using `[← Real.rpow_natCast]`. Apply `Real.rpow_le_rpow_of_exponent_le h1` to reduce the goal to its premises. Rewrite using `[len_LR]`. Establish `hm1 : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl' : ((u.length + w.length : ℕ) : ℝ) ≤ m` using `by exact_mod_cast hl`. Establish `he : (0 : ℝ) ≤ e` using `Nat.cast_nonneg _`. Establish `hγ : (0 : ℝ) ≤ γ` using `Nat.cast_nonneg _`. Move the coercions through the operations in `at hl' ⊢`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hl' hγ, mul_le_mul_of_nonneg_left hm1 he, mul_le_mul_of_nonneg_right hBg (by linarith : (0 : ℝ) ≤ m)]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem scal_bound_of_ubl (D : B.RealPlaceData k r Wp Wq) (φ : B.Mat k r → ℂ) (e γ : ℕ) (Bg : ℝ)
     (hBg : (e : ℝ) + γ ≤ Bg) (ε : ℝ)
@@ -71,14 +71,14 @@ theorem scal_bound_of_ubl (D : B.RealPlaceData k r Wp Wq) (φ : B.Mat k r → �
       mul_le_mul_of_nonneg_right hBg (by linarith : (0 : ℝ) ≤ m)]
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_function_last_minor k r D.z D.z' D.T_pos.le D.T'_pos.le g ε hg`.
+A detailed English derivation is pending.
 -/
 theorem dlast_pos (D : B.RealPlaceData k r Wp Wq) {ε : ℝ} (hε : 0 < ε) {g : B.Mat k r} (hg : ε ≤ Gf k r D.z D.z' g) :
     ε ≤ Complex.normSq (Dmin k r D.z D.z' g (Fin.last (r + 1))) :=
   Formalism.FourierDecayAlt.P.gram_function_last_minor k r D.z D.z' D.T_pos.le D.T'_pos.le g ε hg
 
 /- English proof (translation)
-Introduce `h`. Use `dlast_pos D hg.2 (le_refl _)` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Combine the linear relations using `[hg.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem dlast_ne (D : B.RealPlaceData k r Wp Wq) {g : B.Mat k r} (hg : g ∈ B.GPos D) :
     Dmin k r D.z D.z' g (Fin.last (r + 1)) ≠ 0 := by
@@ -88,16 +88,16 @@ theorem dlast_ne (D : B.RealPlaceData k r Wp Wq) {g : B.Mat k r} (hg : g ∈ B.G
   linarith [hg.2]
 
 /- English proof (translation)
-The claim follows from `isOpen_ne_fun (Formalism.FourierDecayAlt.P.JCx1.contDiff_Dmin z z' _).continuous continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem open_dlast (z z' : Fin (2 * r + k + 1) → ℂ) :
     IsOpen {g : B.Mat k r | Dmin k r z z' g (Fin.last (r + 1)) ≠ 0} :=
   isOpen_ne_fun (Formalism.FourierDecayAlt.P.JCx1.contDiff_Dmin z z' _).continuous continuous_const
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Use `⟨{g : B.Mat k r | Dmin k r D.z D.z' g (Fin.last (r + 1)) ≠ 0}, phiR k r D.z D.z', open_dlast D.z D.z', dlast_ne D hg₀, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Establish `h0` using `Formalism.FourierDecayAlt.P.JCx1.contDiff_Dmin (k := k) (r := r) D.z D.z' ⟨r, by omega⟩`. Establish `h1` using `Formalism.FourierDecayAlt.P.JCx1.contDiff_Dmin (k := k) (r := r) D.z D.z' (Fin.last (r + 1))`. Use `(h0.contDiffOn.mul (h1.contDiffOn.inv (fun x hx => hx))).congr (fun x _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[phiR, div_eq_mul_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ckOn_phiR (D : B.RealPlaceData k r Wp Wq) : B.CkOn ⊤ (B.GPos D) (phiR k r D.z D.z') := by
   intro g₀ hg₀
@@ -109,9 +109,9 @@ theorem ckOn_phiR (D : B.RealPlaceData k r Wp Wq) : B.CkOn ⊤ (B.GPos D) (phiR 
   simp [phiR, div_eq_mul_inv]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Use `⟨{g : B.Mat k r | Dmin k r D.z D.z' g (Fin.last (r + 1)) ≠ 0}, phiD k r D.z D.z', open_dlast D.z D.z', dlast_ne D hg₀, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Establish `h1` using `Formalism.FourierDecayAlt.P.JCx1.contDiff_Dmin (k := k) (r := r) D.z D.z' (Fin.last (r + 1))`. Establish `h2 : ContDiff ℝ (⊤ : ℕ∞) (fun g : B.Mat k r => (starRingEnd ℂ) (Dmin k r D.z D.z' g (Fin.last (r + 1))))` using `Complex.conjCLE.contDiff.comp h1`. Use `(h1.contDiffOn.mul (h2.contDiffOn.inv (fun x hx => by simpa using hx))).congr (fun x _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[phiD, div_eq_mul_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ckOn_phiD (D : B.RealPlaceData k r Wp Wq) : B.CkOn ⊤ (B.GPos D) (phiD k r D.z D.z') := by
   intro g₀ hg₀
@@ -124,13 +124,13 @@ theorem ckOn_phiD (D : B.RealPlaceData k r Wp Wq) : B.CkOn ⊤ (B.GPos D) (phiD 
   simp [phiD, div_eq_mul_inv]
 
 /- English proof (translation)
-Use `set T := Tz k r D.z * Tz k r D.z' with hT`. Establish `hT0 : 0 < T` using `mul_pos D.T_pos D.T'_pos`. Use `⟨1 + 1 / T, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hG` using `hg.2`. Establish `h1` using `dlast_pos D hε hG`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < Complex.normSq (Dmin k r D.z D.z' g (Fin.last (r + 1)))` using `lt_of_lt_of_le hε h1`. Unfold `Gf at hG`. Use `set a := Complex.normSq (Dmin k r D.z D.z' g ⟨r, by omega⟩)`. Use `set b := Complex.normSq (Dmin k r D.z D.z' g (Fin.last (r + 1)))`. Establish `hsq : ‖phiR k r D.z D.z' g‖ ^ 2 = a / b`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[← Complex.normSq_eq_norm_sq]`. Simplify using `only [phiR, Complex.normSq_div]`. Both sides reduce to the same expression. Establish `hle : a / b ≤ 1 / T`. Rewrite using `[div_le_div_iff₀ hpos hT0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hx` using `norm_nonneg (phiR k r D.z D.z' g)`. Use polynomial arithmetic with `[sq_nonneg (‖phiR k r D.z D.z' g‖ - 1)]`.
+A detailed English derivation is pending.
 -/
 theorem phiR_le (D : B.RealPlaceData k r Wp Wq) {ε : ℝ} (hε : 0 < ε) :
     ∃ C0 : ℝ, ∀ g ∈ regE D ε, ‖phiR k r D.z D.z' g‖ ≤ C0 := by
@@ -154,7 +154,7 @@ theorem phiR_le (D : B.RealPlaceData k r Wp Wq) {ε : ℝ} (hε : 0 < ε) :
   nlinarith [sq_nonneg (‖phiR k r D.z D.z' g‖ - 1)]
 
 /- English proof (translation)
-Use `⟨1, fun g _ => ?_⟩` and prove the remaining obligations. Simplify using `only [phiD, norm_div, Complex.norm_conj]`. Conclude with `div_self_le_one _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiD_le (D : B.RealPlaceData k r Wp Wq) (ε : ℝ) :
     ∃ C0 : ℝ, ∀ g ∈ regE D ε, ‖phiD k r D.z D.z' g‖ ≤ C0 := by
@@ -163,11 +163,11 @@ theorem phiD_le (D : B.RealPlaceData k r Wp Wq) (ε : ℝ) :
   exact div_self_le_one _
 
 /- English proof (translation)
-Establish `hP0 : U.IsPolyDeg r (fun g : B.Mat k r => Dmin k r D.z D.z' g ⟨r, by omega⟩)` using `Formalism.FourierDecayAlt.P.minor_polynomial_property k r D.z D.z' ⟨r, by omega⟩`. Establish `hP1 : U.IsPolyDeg (r + 1) (fun g : B.Mat k r => Dmin k r D.z D.z' g (Fin.last (r + 1)))`. Use `Formalism.FourierDecayAlt.P.minor_polynomial_property k r D.z D.z' (Fin.last (r + 1))` as an intermediate fact. Simplify using `using this`. Establish `ha` using `ubl_poly hP0 (regE D ε) (regE_sub D ε) n (r + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hb` using `ubl_invpow hP1 (regE_sub D ε) hε (fun g hg => dlast_pos D hε hg.2) 1 n`. Establish `hm` using `ubl_mul (regE_sub D ε) ha hb`. Establish `e : phiR k r D.z D.z' = fun g => Dmin k r D.z D.z' g ⟨r, by omega⟩ * (Dmin k r D.z D.z' g (Fin.last (r + 1)))⁻¹ ^ 1`. Use function extensionality and compare the values at `g`. Simplify using `[phiR, div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Simplify using `using hm`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ubl_phiR (D : B.RealPlaceData k r Wp Wq) {ε : ℝ} (hε : 0 < ε) (n : ℕ) :
     UBL (phiR k r D.z D.z') (regE D ε) n r (r + 1) := by
@@ -186,11 +186,11 @@ theorem ubl_phiR (D : B.RealPlaceData k r Wp Wq) {ε : ℝ} (hε : 0 < ε) (n : 
   simpa using hm
 
 /- English proof (translation)
-Establish `hP1 : U.IsPolyDeg (r + 1) (fun g : B.Mat k r => Dmin k r D.z D.z' g (Fin.last (r + 1)))`. Use `Formalism.FourierDecayAlt.P.minor_polynomial_property k r D.z D.z' (Fin.last (r + 1))` as an intermediate fact. Simplify using `using this`. Establish `hP2` using `Formalism.FourierDecayAlt.P.CutMP.jdh_pd_star hP1`. Establish `ha` using `ubl_poly hP1 (regE D ε) (regE_sub D ε) n (r + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `ubl_invpow hP2 (regE_sub D ε) hε (fun g hg => by simpa [Complex.star_def] using dlast_pos D hε hg.2) 1 n`. Establish `hm` using `ubl_mul (regE_sub D ε) ha hb`. Establish `e : phiD k r D.z D.z' = fun g => Dmin k r D.z D.z' g (Fin.last (r + 1)) * (star (Dmin k r D.z D.z' g (Fin.last (r + 1))))⁻¹ ^ 1`. Use function extensionality and compare the values at `g`. Simplify using `[phiD, div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Simplify using `using hm`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ubl_phiD (D : B.RealPlaceData k r Wp Wq) {ε : ℝ} (hε : 0 < ε) (n : ℕ) :
     UBL (phiD k r D.z D.z') (regE D ε) n (r + 1) (r + 1) := by
@@ -211,9 +211,7 @@ theorem ubl_phiD (D : B.RealPlaceData k r Wp Wq) {ε : ℝ} (hε : 0 < ε) (n : 
 end
 
 /- English proof (translation)
-Use `⟨2, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `k r Wp Wq _ _ _ _ D Bg hBg`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg _`. Use `⟨⟨ckOn_phiR D, fun ε hε m => ?_⟩, ⟨ckOn_phiD D, fun ε hε m => ?_⟩⟩` and prove the remaining obligations. Conclude with `scal_bound_of_ubl D _ r (r + 1) Bg (by push_cast; linarith) ε (phiR_le D hε) (fun n => ubl_phiR D hε n) m`.
-
-Conclude with `scal_bound_of_ubl D _ (r + 1) (r + 1) Bg (by push_cast; linarith) ε (phiD_le D ε) (fun n => ubl_phiD D hε n) m`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem scalar_transfer_bound_holds : JAScalBound := by
   refine ⟨2, by norm_num, ?_⟩

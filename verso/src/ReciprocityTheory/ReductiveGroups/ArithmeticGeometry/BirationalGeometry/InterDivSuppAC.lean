@@ -7,9 +7,7 @@ namespace ReciprocityTheory.ChartRestriction.G.Geo.DimF
 open Ideal
 
 /- English proof (translation)
-Use `haveI := hM`. Establish `hp : (M.under R).IsMaximal`. Rewrite using `[Ideal.under, Polynomial.algebraMap_eq]`. Conclude with `Polynomial.isMaximal_comap_C_of_isJacobsonRing M`. Use `haveI : M.LiesOver (M.under R) := ⟨rfl⟩`.
-
-Rewrite using `[Polynomial.height_eq_height_add_one (M.under R) M, hR _ hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_polynomial_of_isMaximal {R : Type*} [CommRing R] [IsNoetherianRing R]
     [IsJacobsonRing R] {c : ℕ∞} (hR : ∀ m : Ideal R, m.IsMaximal → m.height = c)
@@ -22,7 +20,7 @@ theorem height_polynomial_of_isMaximal {R : Type*} [CommRing R] [IsNoetherianRin
   rw [Polynomial.height_eq_height_add_one (M.under R) M, hR _ hp]
 
 /- English proof (translation)
-The claim follows from `| 0, M, hM => by have h := Ideal.height_le_ringKrullDim_of_ne_top hM.ne_top rw [MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field] at h have h' : M.height ≤ 0 := by have : ((M.height : ℕ∞) : WithBot ℕ∞) ≤ ((0 : ℕ∞) : WithBot ℕ∞) := by simpa using h exac …`.
+A detailed English derivation is pending.
 -/
 theorem height_mvPolynomial_fin_of_isMaximal {k : Type*} [Field k] :
     ∀ (n : ℕ) (M : Ideal (MvPolynomial (Fin n) k)), M.IsMaximal → M.height = n
@@ -41,17 +39,13 @@ theorem height_mvPolynomial_fin_of_isMaximal {k : Type*} [Field k] :
     simp
 
 /- English proof (translation)
-Establish `hIM : (M.under R).map (algebraMap R B) ≤ M` using `Ideal.map_comap_le`. Use `set I := (M.under R).map (algebraMap R B) with hIdef`. Use `haveI hp : (M.map (Ideal.Quotient.mk I)).IsPrime := Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hIM)`. Establish `hMc : (M.map (Ideal.Quotient.mk I)).comap (Ideal.Quotient.mk I) = M`. Rewrite using `[Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, Ideal.mk_ker, sup_eq_left.mpr hIM]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : M.map (Ideal.Quotient.mk I) ∈ minimalPrimes (B ⧸ I)`. Use `⟨⟨hp, bot_le⟩, ?_⟩` and prove the remaining obligations. Introduce `Q hQ hQM`. Use `haveI hQp : Q.IsPrime := hQ.1`. Use `set Q' := Q.comap (Ideal.Quotient.mk I) with hQ'def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ'M : Q' ≤ M`. Rewrite using `[← hMc]`. Conclude with `Ideal.comap_mono hQM`. Establish `hIQ' : I ≤ Q'`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hQ'def, Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx]`. Conclude with `Q.zero_mem`. Establish `hQ'eq : Q' = M`. Assume the negation of the conclusion as `hne`. Establish `hlt : Q' < M` using `lt_of_le_of_ne hQ'M hne`.
-
-Take `⟨x, hxM, hxQ⟩` from `SetLike.exists_of_lt hlt`. Establish `hcl` using `Ideal.comap_lt_comap_of_integral_mem_sdiff (R := R) hQ'M ⟨hxM, hxQ⟩ (Algebra.IsIntegral.isIntegral x)`. Establish `hge : M.under R ≤ Q'.comap (algebraMap R B)` using `(Ideal.le_comap_map).trans (Ideal.comap_mono hIQ')`. Conclude with `absurd (lt_of_le_of_lt hge hcl) (lt_irrefl _)`. Establish `hmq : M.map (Ideal.Quotient.mk I) = Q`.
-
-Rewrite using `[← hQ'eq, hQ'def, Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`. Conclude with `hmq.le`. Conclude with `Ideal.height_eq_zero_iff.mpr h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_map_under_eq_zero {R B : Type*} [CommRing R] [CommRing B] [Algebra R B]
     [Algebra.IsIntegral R B] (M : Ideal B) [M.IsPrime] :
@@ -91,11 +85,7 @@ theorem height_map_under_eq_zero {R B : Type*} [CommRing R] [CommRing B] [Algebr
   exact Ideal.height_eq_zero_iff.mpr h0
 
 /- English proof (translation)
-Take `⟨s, g, hg, hfin⟩` from `exists_finite_inj_algHom_of_fg k B`. Use `letI : Algebra (MvPolynomial (Fin s) k) B := g.toRingHom.toAlgebra`. Use `haveI : Module.Finite (MvPolynomial (Fin s) k) B := hfin`. Use `haveI : Algebra.IsIntegral (MvPolynomial (Fin s) k) B := Algebra.IsIntegral.of_finite _ _`. Use `haveI : FaithfulSMul (MvPolynomial (Fin s) k) B := (faithfulSMul_iff_algebraMap_injective _ _).2 hg`.
-
-Use `haveI : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing k B`. Use `⟨s, fun M hM => ?_⟩` and prove the remaining obligations. Use `haveI := hM`. Use `haveI hmax : (M.under (MvPolynomial (Fin s) k)).IsMaximal := Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M`. Use `haveI : M.LiesOver (M.under (MvPolynomial (Fin s) k)) := ⟨rfl⟩`.
-
-Rewrite using `[Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (M.under (MvPolynomial (Fin s) k)) M, height_mvPolynomial_fin_of_isMaximal s _ hmax, height_map_under_eq_zero M, add_zero]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_height_of_isMaximal_of_field (k B : Type*) [Field k] [CommRing B] [IsDomain B]
     [Algebra k B] [Algebra.FiniteType k B] :

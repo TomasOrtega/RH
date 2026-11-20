@@ -23,13 +23,11 @@ open Formalism.L2.Th1.E (IntCurve curveL)
 open Formalism.L2.AlgTh (KerStd)
 
 /- English proof (translation)
-Establish `hA : TaylorLogMetric.admitted D a b (s.lat N) (s.lat N')` using `s.admissible_of_selfDual_lattices hok hae hbe hN hN'`. Establish `hT` using `KS.lamTie D X s cc δ B χ cD a b N N' hok`. Establish `hodd : Odd b₀` using `KS.Lat.odd_of_cmOK hcm`. Establish `hchi : ‖ι ((ambOf s B χ cD : Amb X).chiF a b N N')‖ = 1` using `KS.chiFac_unit χ hχ p ι hA hsN hsN'`. Use `⟨hcm, KS.Lat.sc_pos B, ?_, ?_, ?_, ?_, hW, ?_, ?_, hchi⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hT]`. Conclude with `KS.Lat.isLat_laF s B hcc hδ hA`. Rewrite using `[hT]`. Conclude with `KS.Lat.selfDual_laF s B hcc hδ hA`. Rewrite using `[hT]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun x hx => KS.Lat.theta_laF s B hodd hx`. Rewrite using `[hT]`. Conclude with `KS.Lat.eNat_laF s B hcc hδ χ hA`. Conclude with `KS.locNorm_ambOf_of s B KS.lamTie Formalism.L2.AlgTh.local_norm_scaling Formalism.L2.AlgTh.local_norm_power Formalism.L2.AlgTh.local_norm_intertwiner χ cD a₀ b₀ c₀ ha hd lam hlam p ι hok hcc hδ hcm (KS.MM.selfDual_lamMX s B hcc hδ) (KS.MM.stable_lamMX s B b₀ hodd) (KS.MM.thMMX_me …`. Establish `h` using `KS.frame_std s B χ cD Formalism.L2.AlgTh.kerFrame hok N N' p ι hsN hsN' hdisc hcD`.
-
-Rewrite `h` using `[hB.1]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerStd_core {D : D7} {X : Fields} (s : Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
     {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
@@ -59,7 +57,7 @@ theorem kerStd_core {D : D7} {X : Fields} (s : Seam D X) {cc : Ideal (𝓞 D.hos
     exact h
 
 /- English proof (translation)
-Introduce `D X s cc δ B χ cD a b N N' a₀ b₀ c₀ ha hd lam hlam p _ ι hok hcc hδ hχ hcm hB hae hbe hN hN' hsN hsN' hdisc hcD hW`. Conclude with `kerStd_core s B χ cD N N' a₀ b₀ c₀ ha hd lam hlam p ι hok hcc hδ hχ hcm hB hae hbe hN hN' hsN hsN' hdisc hcD hW (hK D cc δ B hcc hδ p ι trivial)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kerStdAmb_of (hK : ∀ D, KappaAll D) : KerStdAmb := by
   intro D X s cc δ B χ cD a b N N' a₀ b₀ c₀ ha hd lam hlam p _ ι hok hcc hδ hχ hcm hB hae hbe hN hN' hsN hsN' hdisc hcD hW
@@ -67,7 +65,7 @@ theorem kerStdAmb_of (hK : ∀ D, KappaAll D) : KerStdAmb := by
     (hK D cc δ B hcc hδ p ι trivial)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hK`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem kerStd_congr {X : Fields} {A A' : Amb X} (h : A = A') {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
     (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < A.d) (hd' : 0 < A'.d) (lam : ℂ) (hlam : lam ≠ 0) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p])
@@ -76,7 +74,7 @@ theorem kerStd_congr {X : Fields} {A A' : Amb X} (h : A = A') {a b : ℕ} (N : S
   exact hK
 
 /- English proof (translation)
-Introduce `D X s cc δ B χ cD a b N N' a₀ b₀ c₀ ha hd lam hlam p _ ι hok hcc hδ hχ hcm hl hae hbe hN hN' hsN hsN' hdisc hcD hp hQ`. Use `kerStd_congr (KS.ambOf_cmBase B a₀ b₀ c₀ ha hd lam hlam s hcm hl χ cD) N N' a₀ b₀ c₀ ha hd hd lam hlam p ι ?_` and prove the remaining obligations. Conclude with `kerStd_core s (KS.cmBase B a₀ b₀ c₀ ha hd lam hlam hcm hl) χ cD N N' a₀ b₀ c₀ ha hd lam hlam p ι hok hcc hδ hχ hcm (KS.cmBase_isCm B a₀ b₀ c₀ ha hd lam hlam hcm hl) hae hbe hN hN' hsN hsN' hdisc hcD (KS.intCurve_base (KS.cmBase B a₀ b₀ c₀ ha hd lam hlam hcm hl) hcc hδ p hp ι) (hK …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kerStdLatOn_of (Q : D7 → ℕ → Prop) (hK : ∀ D, KappaOn Q D) : KerStdLatOn Q := by
   intro D X s cc δ B χ cD a b N N' a₀ b₀ c₀ ha hd lam hlam p _ ι hok hcc hδ hχ hcm hl hae hbe hN hN' hsN hsN' hdisc hcD hp hQ
@@ -87,9 +85,9 @@ theorem kerStdLatOn_of (Q : D7 → ℕ → Prop) (hK : ∀ D, KappaOn Q D) : Ker
     (hK D cc δ _ hcc hδ p ι hQ)
 
 /- English proof (translation)
-Introduce `D X s cc δ B χ cD hok hcc hδ hχ`. Establish `hd : 0 < D.host.d` using `D.host.hyp.2.1.pos`. Take `⟨a₀, b₀, c₀, ha, lam, hlam, hcm, hL⟩` from `KS.exists_cmOK D.host.d hd (dMod8 D) D.host.hyp.2.1 B.L (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.hst B)`. Establish `hl : (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ` using `by rw [hL]; exact B.lat`. Use `⟨a₀, b₀, c₀, ha, hd, lam, hlam, hcm, hl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b N N' p _ ι hae hbe hN hN' hsN hsN' hdisc hcD hp hQ`. Conclude with `kerStdLatOn_of Q hK D X s cc δ B χ cD a b N N' a₀ b₀ c₀ ha hd lam hlam p ι hok hcc hδ hχ hcm hl hae hbe hN hN' hsN hsN' hdisc hcD hp hQ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kerStdExOn_of (Q : D7 → ℕ → Prop) (hK : ∀ D, KappaOn Q D) : KerStdExOn Q := by
   intro D X s cc δ B χ cD hok hcc hδ hχ
@@ -101,26 +99,26 @@ theorem kerStdExOn_of (Q : D7 → ℕ → Prop) (hK : ∀ D, KappaOn Q D) : KerS
   exact kerStdLatOn_of Q hK D X s cc δ B χ cD a b N N' a₀ b₀ c₀ ha hd lam hlam p ι hok hcc hδ hχ hcm hl hae hbe hN hN' hsN hsN' hdisc hcD hp hQ
 
 /- English proof (translation)
-The claim follows from `kerStdAmb_of KS.kappaAll`.
+A detailed English derivation is pending.
 -/
 theorem kerStdAmb : KerStdAmb := kerStdAmb_of KS.kappaAll
 /- English proof (translation)
-The claim follows from `kerStdLatOn_of _ KS.kappaAll`.
+A detailed English derivation is pending.
 -/
 theorem kerStdLat : KerStdLat := kerStdLatOn_of _ KS.kappaAll
 /- English proof (translation)
-Use `kerStdLatOn_of _ fun D => ?_` and prove the remaining obligations. Introduce `cc δ B h1 h2 p _ ι _`. Conclude with `KS.kappaAll D cc δ B h1 h2 p ι trivial`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kerStdLatSplit : KerStdLatSplit := by
   refine kerStdLatOn_of _ fun D => ?_
   intro cc δ B h1 h2 p _ ι _
   exact KS.kappaAll D cc δ B h1 h2 p ι trivial
 /- English proof (translation)
-The claim follows from `kerStdExOn_of _ KS.kappaAll`.
+A detailed English derivation is pending.
 -/
 theorem kerStdEx : KerStdEx := kerStdExOn_of _ KS.kappaAll
 /- English proof (translation)
-Use `kerStdExOn_of _ fun D => ?_` and prove the remaining obligations. Introduce `cc δ B h1 h2 p _ ι _`. Conclude with `KS.kappaAll D cc δ B h1 h2 p ι trivial`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kerStdExSplit : KerStdExSplit := by
   refine kerStdExOn_of _ fun D => ?_
@@ -133,9 +131,9 @@ open scoped ComplexConjugate
 open IsDedekindDomain
 
 /- English proof (translation)
-Establish `h0 : δ ≠ 0` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.brcc_delta_ne D cc hcc δ hδ`. Establish `hne` using `(B.vec_mem_ne hcc hδ h0 (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.stdOK B hcc hδ) χ hχ a b _ _ (s.admissible_of_selfDual_lattices hok hae hbe hN hN')).2`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `congrFun h ((s.flatV a b).symm w)`. Rewrite `h1` using `[KS.thF_eq]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem thF_ne_zero {D : D7} {X : Fields} (s : Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
     {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
@@ -151,7 +149,7 @@ theorem thF_ne_zero {D : D7} {X : Fields} (s : Seam D X) {cc : Ideal (𝓞 D.hos
   simpa using h1
 
 /- English proof (translation)
-Take `⟨a₀, b₀, c₀, ha, hd, lam, hlam, -, -, h⟩` from `kerStdEx D X s cc δ B χ cD hok hcc hδ hχ`. Conclude with `Formalism.L2.AlgTh.jetAtSplit X (ambOf s B χ cD) a b S N N' a₀ b₀ c₀ ha hd lam hlam p ι (by omega) hpd (h a b N N' p ι hae hbe hN hN' hsN hsN' hdisc hcD hp trivial) hN hN' hLa π pE hπ hππ hS c' x hc' hpc hx m`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jetAtSplit_ambOf {D : D7} {X : Fields} (s : Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
     (hok : s.Ok) (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hχ : TaylorLogMetric.IsChi D χ)

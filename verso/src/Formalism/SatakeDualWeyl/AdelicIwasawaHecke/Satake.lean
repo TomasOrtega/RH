@@ -22,7 +22,7 @@ abbrev satakeTset (ϖ : v.adicCompletion F) (j : ℕ) : Set (GL (Fin n) (v.adicC
       (a : Matrix (Fin n) (Fin n) _) * diagJ n ϖ j * (b : Matrix (Fin n) (Fin n) _)}
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, e⟩` from `hg`. Conclude with `⟨a, ha, b * k, (GLint (Fin n) (Ov F v)).mul_mem hb hk, by`. Rewrite using `[Units.val_mul, e, Units.val_mul, Matrix.mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem satake_Tset_right {ϖ : v.adicCompletion F} {j : ℕ} {g k : GL (Fin n) (v.adicCompletion F)}
     (hg : g ∈ satakeTset v ϖ j) (hk : k ∈ GLint (Fin n) (Ov F v)) : g * k ∈ satakeTset v ϖ j := by
@@ -31,7 +31,7 @@ theorem satake_Tset_right {ϖ : v.adicCompletion F} {j : ℕ} {g k : GL (Fin n) 
     rw [Units.val_mul, e, Units.val_mul, Matrix.mul_assoc]⟩
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, e⟩` from `hg`. Conclude with `⟨k * a, (GLint (Fin n) (Ov F v)).mul_mem hk ha, b, hb, by`. Rewrite using `[Units.val_mul, e, Units.val_mul]`. Simplify using `only [Matrix.mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem satake_Tset_left {ϖ : v.adicCompletion F} {j : ℕ} {g k : GL (Fin n) (v.adicCompletion F)}
     (hg : g ∈ satakeTset v ϖ j) (hk : k ∈ GLint (Fin n) (Ov F v)) : k * g ∈ satakeTset v ϖ j := by
@@ -47,9 +47,9 @@ theorem satake_Tj_eq (k : Type) [CommRing k] (ϖ : v.adicCompletion F) (j : ℕ)
     Tj k n (Ov F v) ϖ j g = Set.indicator (satakeTset v ϖ j) 1 g := rfl
 
 /- English proof (translation)
-Rewrite using `[satake_Tj_eq]`. Distinguish the cases in `h : g ∈ satakeTset v ϖ j`. Rewrite using `[Set.indicator_of_mem h]`. Simplify using `[h]`. Rewrite using `[Set.indicator_of_notMem h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem satake_Tj_ne_zero_iff (k : Type) [CommRing k] [Nontrivial k] (ϖ : v.adicCompletion F) (j : ℕ)
     (g : GL (Fin n) (v.adicCompletion F)) :
@@ -60,7 +60,7 @@ theorem satake_Tj_ne_zero_iff (k : Type) [CommRing k] [Nontrivial k] (ϖ : v.adi
   · rw [Set.indicator_of_notMem h]; simp [h]
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i _`. Establish `: 1 < q ^ (i + 1)` using `one_lt_pow₀ (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem satake_prodD_ne {q : ℤ} (hq : 2 ≤ q) (j : ℕ) : ∏ i ∈ Finset.range j, (q ^ (i + 1) - 1) ≠ 0 := by
   rw [Finset.prod_ne_zero_iff]
@@ -69,7 +69,7 @@ theorem satake_prodD_ne {q : ℤ} (hq : 2 ≤ q) (j : ℕ) : ∏ i ∈ Finset.ra
   omega
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i hi`. Establish `hi'` using `Finset.mem_range.1 hi`. Establish `: 1 < q ^ (n - i)` using `one_lt_pow₀ (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem prod_pow_sub_one_ne_zero {q : ℤ} (hq : 2 ≤ q) {j n : ℕ} (hj : j ≤ n) :
     ∏ i ∈ Finset.range j, (q ^ (n - i) - 1) ≠ 0 := by
@@ -80,13 +80,11 @@ theorem prod_pow_sub_one_ne_zero {q : ℤ} (hq : 2 ≤ q) {j n : ℕ} (hj : j �
   omega
 
 /- English proof (translation)
-Establish `hq : (2 : ℤ) ≤ qV F v` using `by exact_mod_cast satake_two_le_qV v`. Establish `h` using `hTjCosets F v n ϖ hϖ hu j hj`. Establish `hset : {x : GL (Fin n) (v.adicCompletion F) ⧸ GLint (Fin n) (Ov F v) | Tj ℤ n (Ov F v) ϖ j x.out ≠ 0} = {x : GL (Fin n) (v.adicCompletion F) ⧸ GLint (Fin n) (Ov F v) | x.out ∈ satakeTset v ϖ j}`. Use extensionality with `x`. Conclude with `satake_Tj_ne_zero_iff v ℤ ϖ j x.out`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hset]`. Establish `hb` using `satake_qbinom (qV F v : ℤ) (Finset.univ : Finset (Fin n)) j`. Rewrite `hb` using `[Finset.card_univ, Fintype.card_fin, ← h]`. Establish `hD` using `satake_prodD_ne hq j`. Establish `hc : (Nat.card {x : GL (Fin n) (v.adicCompletion F) ⧸ GLint (Fin n) (Ov F v) | x.out ∈ satakeTset v ϖ j} : ℤ) = ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard j, (qV F v : ℤ) ^ satakeInv Finset.univ S` using `(mul_right_cancel₀ hD hb).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : Nat.card {x : GL (Fin n) (v.adicCompletion F) ⧸ GLint (Fin n) (Ov F v) | x.out ∈ satakeTset v ϖ j} ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, Nat.cast_zero, zero_mul]`. Conclude with `prod_pow_sub_one_ne_zero hq hj h.symm`. Use `⟨Set.finite_coe_iff.1 (Nat.finite_of_card_ne_zero hne), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Nat.card_coe_set_eq]`. Conclude with `hc` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satake_cosets_card (hTjCosets : TjCosets) {ϖ : v.adicCompletion F} (hϖ : ϖ ∈ Ov F v)
     (hu : IsUnifV F v ϖ) {j : ℕ} (hj : j ≤ n) :
@@ -117,7 +115,7 @@ theorem satake_cosets_card (hTjCosets : TjCosets) {ϖ : v.adicCompletion F} (hϖ
   exact_mod_cast hc
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, Complex.cpow_add _ _ hx]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem satake_cpow_prod {ι : Type} (x : ℂ) (hx : x ≠ 0) (s : Finset ι) (f : ι → ℂ) :
     ∏ i ∈ s, x ^ f i = x ^ (∑ i ∈ s, f i) := by
@@ -127,9 +125,9 @@ theorem satake_cpow_prod {ι : Type} (x : ℂ) (hx : x ≠ 0) (s : Finset ι) (f
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, Complex.cpow_add _ _ hx]
 
 /- English proof (translation)
-Establish `hq : (qV F v : ℂ) ≠ 0`. Use `satake_two_le_qV v` as an intermediate fact. Conclude with `(show qV F v ≠ 0 by omega)` after adjusting the coercions. Rewrite using `[Finset.prod_mul_distrib, satake_cpow_prod _ hq, ← Complex.cpow_natCast, mul_left_comm, ← Complex.cpow_add _ _ hq, mul_comm]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h` using `satakeInv_two_mul S`. Establish `h' : 2 * (satakeInv Finset.univ S : ℂ) = ∑ a ∈ S, ((n : ℂ) - 1 - 2 * ((a : ℕ) : ℂ)) + (S.card : ℂ) * ((n : ℂ) - S.card)`. Conclude with `congrArg (fun z : ℤ => (z : ℂ)) h` after adjusting the coercions. Rewrite using `[Finset.sum_neg_distrib, ← Finset.sum_div]`. Take the linear combination `h' / 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem satake_exponent (α : Fin n → ℂ) (S : Finset (Fin n)) :
     ((qV F v : ℂ)) ^ satakeInv Finset.univ S *
@@ -162,7 +160,7 @@ abbrev satakeB {j : ℕ} (i : SatakeIdx v hϖ (n := n) j) : GL (Fin n) (v.adicCo
   satakeRep (Ov F v) ⟨ϖ, hϖ⟩ (satake_unif_ne_zero v hu) j i
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, e⟩` from `satakeGL_mem_doset (Ov F v) (satake_unif_ne_zero v hu) i.1.1 (fun p => satakeSec (Ov F v) ⟨ϖ, hϖ⟩ (i.2 p))`. Rewrite `e` using `[i.1.2]`. Conclude with `⟨a, ha, b, hb, e⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem satakeB_mem {j : ℕ} (i : SatakeIdx v hϖ (n := n) j) : satakeB v hϖ hu i ∈ satakeTset v ϖ j := by
   obtain ⟨a, ha, b, hb, e⟩ := satakeGL_mem_doset (Ov F v) (satake_unif_ne_zero v hu) i.1.1
@@ -171,13 +169,13 @@ theorem satakeB_mem {j : ℕ} (i : SatakeIdx v hϖ (n := n) j) : satakeB v hϖ h
   exact ⟨a, ha, b, hb, e⟩
 
 /- English proof (translation)
-Introduce `a l h` and use `satakeGL_lower (Ov F v) _ _ _ a l h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem satakeB_upper {j : ℕ} (i : SatakeIdx v hϖ (n := n) j) : IsUpperB F v (satakeB v hϖ hu i) :=
   fun a l h => satakeGL_lower (Ov F v) _ _ _ a l h
 
 /- English proof (translation)
-Introduce `i i' h`. Establish `h'` using `QuotientGroup.eq.1 h`. Conclude with `satakeRep_inj (Ov F v) ⟨ϖ, hϖ⟩ (satake_unif_ne_zero v hu) (satake_unif_inv_not_mem v hu) j i i' h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem satakeB_inj {j : ℕ} :
     Function.Injective (fun i : SatakeIdx v hϖ (n := n) j =>
@@ -189,7 +187,7 @@ theorem satakeB_inj {j : ℕ} :
 
 include hu in
 /- English proof (translation)
-Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[satake_card_res v hϖ hu]`. Use `satake_two_le_qV v` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem satake_res_finite : Finite (satakeRes (Ov F v) ⟨ϖ, hϖ⟩) := by
   apply Nat.finite_of_card_ne_zero
@@ -199,9 +197,9 @@ theorem satake_res_finite : Finite (satakeRes (Ov F v) ⟨ϖ, hϖ⟩) := by
 
 include hu in
 /- English proof (translation)
-Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_sigma]`. Simplify using `only [Fintype.card_fun, satakePairs_card]`. Rewrite using `[← Nat.card_eq_fintype_card, satake_card_res v hϖ hu]`. Use `symm`. Apply `Finset.sum_subtype` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `S`. Simplify using `[Finset.mem_powersetCard]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem satake_idx_card [Fintype (satakeRes (Ov F v) ⟨ϖ, hϖ⟩)] (j : ℕ) :
     Nat.card (SatakeIdx v hϖ (n := n) j) =
@@ -215,9 +213,9 @@ theorem satake_idx_card [Fintype (satakeRes (Ov F v) ⟨ϖ, hϖ⟩)] (j : ℕ) :
   simp [Finset.mem_powersetCard]
 
 /- English proof (translation)
-Take `⟨hfin, hcard⟩` from `satake_cosets_card v hTjCosets hϖ hu hj`. Use `Set.eq_of_subset_of_ncard_le ?_ ?_ hfin` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨κ, hκ⟩` from `QuotientGroup.mk_out_eq_mul (GLint (Fin n) (Ov F v)) (satakeB v hϖ hu i)`. Express the relevant statement in the definitionally equal form `(Quotient.out (((satakeB v hϖ hu i : GL (Fin n) (v.adicCompletion F)) : GL (Fin n) (v.adicCompletion F) ⧸ GLint (Fin n) (Ov F v)))) ∈ satakeTset v ϖ j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e : (Quotient.out (((satakeB v hϖ hu i : GL (Fin n) (v.adicCompletion F)) : GL (Fin n) (v.adicCompletion F) ⧸ GLint (Fin n) (Ov F v)))) = satakeB v hϖ hu i * κ` using `hκ`. Rewrite using `[e]`. Conclude with `satake_Tset_right v (satakeB_mem v hϖ hu i) κ.2`. Rewrite using `[hcard, Set.ncard_range_of_injective (satakeB_inj v hϖ hu), satake_idx_card v hϖ hu j]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satake_range_eq [Fintype (satakeRes (Ov F v) ⟨ϖ, hϖ⟩)] (hTjCosets : TjCosets) {j : ℕ}
     (hj : j ≤ n) :
@@ -245,22 +243,22 @@ variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {
   {ϖ : v.adicCompletion F} (hϖ : ϖ ∈ Ov F v) (hu : IsUnifV F v ϖ)
 
 /- English proof (translation)
-Unfold `chiDelta`. Simplify using `[satake_ordV_one v]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem satake_chiDelta_one (α : Fin n → ℂ) : chiDelta F v α 1 = 1 := by
   unfold chiDelta
   simp [satake_ordV_one v]
 
 /- English proof (translation)
-Introduce `a l h` and use `by rw [Units.val_one, Matrix.one_apply_ne (ne_of_gt h)]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem satake_upper_one : IsUpperB F v (1 : GL (Fin n) (v.adicCompletion F)) :=
   fun a l h => by rw [Units.val_one, Matrix.one_apply_ne (ne_of_gt h)]
 
 /- English proof (translation)
-Rewrite using `[satake_Tj_eq, satake_Tj_eq]`. Distinguish the cases in `h : z ∈ satakeTset v ϖ j`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (satake_Tset_right v h hc)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Apply `h` to reduce the goal to its premises. Use `satake_Tset_right v h' ((GLint (Fin n) (Ov F v)).inv_mem hc)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem satake_T_mul_right (j : ℕ) (z c : GL (Fin n) (v.adicCompletion F)) (hc : c ∈ GLint (Fin n) (Ov F v)) :
     Tj ℂ n (Ov F v) ϖ j (z * c) = Tj ℂ n (Ov F v) ϖ j z := by
@@ -274,9 +272,9 @@ theorem satake_T_mul_right (j : ℕ) (z c : GL (Fin n) (v.adicCompletion F)) (hc
     rwa [mul_inv_cancel_right] at this
 
 /- English proof (translation)
-Rewrite using `[satake_Tj_eq, satake_Tj_eq]`. Distinguish the cases in `h : z ∈ satakeTset v ϖ j`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (satake_Tset_left v h hc)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Apply `h` to reduce the goal to its premises. Use `satake_Tset_left v h' ((GLint (Fin n) (Ov F v)).inv_mem hc)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem satake_T_mul_left (j : ℕ) (z c : GL (Fin n) (v.adicCompletion F)) (hc : c ∈ GLint (Fin n) (Ov F v)) :
     Tj ℂ n (Ov F v) ϖ j (c * z) = Tj ℂ n (Ov F v) ϖ j z := by
@@ -290,9 +288,9 @@ theorem satake_T_mul_left (j : ℕ) (z c : GL (Fin n) (v.adicCompletion F)) (hc 
     rwa [inv_mul_cancel_left] at this
 
 /- English proof (translation)
-Unfold `chiDelta`. Rewrite using `[← Finset.univ_inter i.1.1, ← Finset.prod_ite_mem]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hd` using `satakeGL_diag (Ov F v) (satake_unif_ne_zero v hu) i.1.1 (fun p => satakeSec (Ov F v) ⟨ϖ, hϖ⟩ (i.2 p)) a`. Establish `e : ((satakeB v hϖ hu i : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) a a = if a ∈ i.1.1 then ϖ else 1` using `hd`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Distinguish the cases in `h : a ∈ i.1.1`. Simplify using `[h, satake_ordV_unif v hu]`. Simplify using `[h, satake_ordV_one v]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem satake_chiDelta_B (α : Fin n → ℂ) {j : ℕ} (i : SatakeIdx v hϖ (n := n) j) :
     chiDelta F v α (satakeB v hϖ hu i) =
@@ -310,9 +308,9 @@ theorem satake_chiDelta_B (α : Fin n → ℂ) {j : ℕ} (i : SatakeIdx v hϖ (n
   · simp [h, satake_ordV_one v]
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sigma]`. Repeatedly rewrite using `[satake_chiDelta_B v hϖ hu α]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fun, satakePairs_card]`. Rewrite using `[← Nat.card_eq_fintype_card, satake_card_res v hϖ hu, Finset.esymm_map_val, Finset.mul_sum]`. Rewrite using `[← Finset.sum_subtype (Finset.univ.powersetCard j) (p := fun S : Finset (Fin n) => S.card = j) (f := fun S => (qV F v ^ satakeInv Finset.univ S) • ∏ a ∈ S, (α a * (qV F v : ℂ) ^ (-(((n : ℂ) - 1 - 2 * (a : ℂ)) / 2)))) (fun S => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[Finset.mem_powersetCard])]`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Establish `hc` using `(Finset.mem_powersetCard.1 hS).2`. Rewrite using `[nsmul_eq_mul, Nat.cast_pow, satake_exponent v α S, hc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem satake_sum_chi [Fintype (satakeRes (Ov F v) ⟨ϖ, hϖ⟩)] (α : Fin n → ℂ) (j : ℕ) :
     ∑ i : SatakeIdx v hϖ (n := n) j, chiDelta F v α (satakeB v hϖ hu i) =
@@ -330,13 +328,13 @@ theorem satake_sum_chi [Fintype (satakeRes (Ov F v) ⟨ϖ, hϖ⟩)] (α : Fin n 
   rw [nsmul_eq_mul, Nat.cast_pow, satake_exponent v α S, hc]
 
 /- English proof (translation)
-Unfold `hAct`. Establish `hr` using `satake_range_eq v hϖ hu hTjCosets hj`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.univ.image (fun i : SatakeIdx v hϖ (n := n) j => ((satakeB v hϖ hu i : GL (Fin n) (v.adicCompletion F)) : GL (Fin n) (v.adicCompletion F) ⧸ GLint (Fin n) (Ov F v)))) ?_]`. Rewrite using `[Finset.sum_image (fun i _ i' _ h => satakeB_inj v hϖ hu h), Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨κ, hκ⟩` from `QuotientGroup.mk_out_eq_mul (GLint (Fin n) (Ov F v)) (satakeB v hϖ hu i)`. Establish `e : (Quotient.out (((satakeB v hϖ hu i : GL (Fin n) (v.adicCompletion F)) : GL (Fin n) (v.adicCompletion F) ⧸ GLint (Fin n) (Ov F v)))) = satakeB v hϖ hu i * κ` using `hκ`. Rewrite using `[e, satake_Tj_eq, Set.indicator_of_mem (satake_Tset_right v (satakeB_mem v hϖ hu i) κ.2), Pi.one_apply, one_smul, one_mul]`. Use `hφ (satakeB v hϖ hu i) 1 κ (satakeB_upper v hϖ hu i) κ.2` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `x hx`. Rewrite `hx` using `[Function.mem_support]`. Establish `hT : Tj ℂ n (Ov F v) ϖ j x.out ≠ 0` using `fun h0 => hx (by rw [h0, zero_smul])`. Rewrite `hT` using `[satake_Tj_ne_zero_iff]`. Establish `hx' : x ∈ Set.range (fun i : SatakeIdx v hϖ (n` using `n) j => ((satakeB v hϖ hu i : GL (Fin n) (v.adicCompletion F)) : GL (Fin n) (v.adicCompletion F) ⧸ GLint (Fin n) (Ov F v))) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hr]`. Conclude with `hT`. Take `⟨i, rfl⟩` from `hx'`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem satake_value_one [Fintype (satakeRes (Ov F v) ⟨ϖ, hϖ⟩)] (hTjCosets : TjCosets) {j : ℕ}
     (hj : j ≤ n) (α : Fin n → ℂ) (φ : GL (Fin n) (v.adicCompletion F) → ℂ)
@@ -370,15 +368,15 @@ theorem satake_value_one [Fintype (satakeRes (Ov F v) ⟨ϖ, hϖ⟩)] (hTjCosets
     simp
 
 /- English proof (translation)
-Introduce `b g k hb hk`. Unfold `hAct`. Establish `step1 : ∀ x : GL (Fin n) (v.adicCompletion F) ⧸ GLint (Fin n) (Ov F v), Tj ℂ n (Ov F v) ϖ j x.out • φ (b * g * k * x.out) = chiDelta F v α b * (Tj ℂ n (Ov F v) ϖ j x.out • φ (g * k * x.out))`. Introduce `x`. Use `hφ b (g * k * x.out) 1 hb (one_mem _)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_one]`. Rewrite using `[show b * g * k * x.out = b * (g * k * x.out) by group, this, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[finsum_congr step1, ← mul_finsum]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hF : ∀ (y : GL (Fin n) (v.adicCompletion F)) (c : GLint (Fin n) (Ov F v)), Tj ℂ n (Ov F v) ϖ j (k⁻¹ * (y * c)) • φ (g * (y * c)) = Tj ℂ n (Ov F v) ϖ j (k⁻¹ * y) • φ (g * y)`. Introduce `y c`. Rewrite using `[← mul_assoc, satake_T_mul_right v j _ _ c.2]`. Use `hφ 1 (g * y) c (satake_upper_one v) c.2` as an intermediate fact. Rewrite `this` using `[one_mul, satake_chiDelta_one, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← mul_assoc, this]`. Establish `hr` using `finsum_out_mul (GLint (Fin n) (Ov F v)) k (fun y => Tj ℂ n (Ov F v) ϖ j (k⁻¹ * y) • φ (g * y)) hF`. Simplify using `only [inv_mul_cancel_left] at hr`. Rewrite using `[show (fun x : GL (Fin n) (v.adicCompletion F) ⧸ GLint (Fin n) (Ov F v) => Tj ℂ n (Ov F v) ϖ j x.out • φ (g * k * x.out)) = (fun x => Tj ℂ n (Ov F v) ϖ j x.out • φ (g * (k * x.out))) by`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[mul_assoc]]`. Rewrite using `[hr]`. Use `finsum_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[satake_T_mul_left v j _ _ ((GLint (Fin n) (Ov F v)).inv_mem hk)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem satake_hAct_spherical (j : ℕ) (α : Fin n → ℂ)
     (φ : GL (Fin n) (v.adicCompletion F) → ℂ) (hφ : IsSpherical F v α φ) :
@@ -417,11 +415,11 @@ theorem satake_hAct_spherical (j : ℕ) (α : Fin n → ℂ)
 end Value
 
 /- English proof (translation)
-Introduce `F _ _ v n ϖ hϖ hu α hα φ hφ j hj`. Use `satake_res_finite v hϖ hu` as an intermediate fact. Set `_ : Fintype (satakeRes (Ov F v) ⟨ϖ, hϖ⟩)` to `Fintype.ofFinite _`. Take `⟨φ₀, -, -, huniq⟩` from `hSphericalExists F v n α hα`. Establish `hsph` using `satake_hAct_spherical v (ϖ := ϖ) j α φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `satake_value_one v hϖ hu hTjCosets hj α φ hφ`. Rewrite `h1` using `[satake_sum_chi v hϖ hu α j]`. Establish `e1` using `huniq _ hsph`. Establish `e2` using `huniq φ hφ`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1g : hAct (GLint (Fin n) (Ov F v)) (Tj ℂ n (Ov F v) ϖ j) φ g = hAct (GLint (Fin n) (Ov F v)) (Tj ℂ n (Ov F v) ϖ j) φ 1 * φ₀ g` using `congrFun e1 g`. Establish `e2g : φ g = φ 1 * φ₀ g` using `congrFun e2 g`. Rewrite using `[Pi.smul_apply, smul_eq_mul, e1g, h1, e2g]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem satake_Tj_of_spherical_cosets (hSphericalExists : Formalism.UG.SphericalExists) (hTjCosets : Formalism.UG.TjCosets) :
     Formalism.UG.SatakeTj := by

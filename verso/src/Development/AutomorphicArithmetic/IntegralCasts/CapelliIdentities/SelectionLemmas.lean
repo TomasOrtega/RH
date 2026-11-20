@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Use `intros`. Use `infer_instance`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SelectionLemmas.aux1.{u_1} :
     ∀ {K : Type u_1} [inst : Field K],
@@ -16,7 +16,7 @@ theorem UpperTheory.Reformulated.B.SelectionLemmas.aux1.{u_1} :
   intros; infer_instance
 
 /- English proof (translation)
-Use `intros`. Use `infer_instance`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SelectionLemmas.aux2.{u_1} :
     ∀ {K : Type u_1} [inst : Field K],
@@ -31,7 +31,7 @@ theorem UpperTheory.Reformulated.B.SelectionLemmas.aux2.{u_1} :
   intros; infer_instance
 
 /- English proof (translation)
-Use `intros`. Use `infer_instance`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SelectionLemmas.aux3.{u_1, u_2, u_3} :
     ∀ {S : Type u_3} {K : Type u_2} {V : Type u_1} [inst : CommRing S] [inst_1 : Field K]
@@ -750,7 +750,7 @@ noncomputable def UpperTheory.Reformulated.B.SelectionLemmas.dual.{u_1, u_2, u_3
       @UpperTheory.Reformulated.B.SelectionLemmas.hdual R K V inst inst_1 inst_2 inst_3 inst_4 inst_5 inst_6 inst_7 h L
 
 /- English proof (translation)
-Use `intros`. Use `infer_instance`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SelectionLemmas.aux6 :
     ∀ {K : Type} [inst : Field K],
@@ -765,7 +765,7 @@ theorem UpperTheory.Reformulated.B.SelectionLemmas.aux6 :
   intros; infer_instance
 
 /- English proof (translation)
-Use `intros`. Use `infer_instance`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SelectionLemmas.aux7 :
     ∀ {K : Type} [inst : Field K],
@@ -780,7 +780,7 @@ theorem UpperTheory.Reformulated.B.SelectionLemmas.aux7 :
   intros; infer_instance
 
 /- English proof (translation)
-Use `intros`. Use `infer_instance`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SelectionLemmas.aux8 :
     ∀ {K : Type} [inst : Field K] {n : Nat},
@@ -1925,9 +1925,9 @@ noncomputable def UpperTheory.Reformulated.B.SelectionLemmas.hform :
         H
 
 /- English proof (translation)
-Introduce `R _ W _ _ S L x y hx hy`. Take `⟨s, hs, hx⟩` from `hx`. Take `⟨t, ht, hy⟩` from `hy`. Use `⟨s * t, S.mul_mem hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.smul_mem _ hx`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem _ hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SelectionLemmas.laurent_T_neg_one_mul_T_one.{u_1, u_2} :
     ∀ {R : Type u_2} [inst : CommRing R] {W : Type u_1} [inst_1 : AddCommGroup W]
@@ -2098,7 +2098,7 @@ theorem UpperTheory.Reformulated.B.SelectionLemmas.laurent_T_neg_one_mul_T_one.{
   · rw [mul_smul]; exact L.smul_mem _ hy
 
 /- English proof (translation)
-Introduce `R _ W _ _ S L`. Conclude with `⟨1, S.one_mem, by rw [smul_zero]; exact L.zero_mem⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.SelectionLemmas.aux11.{u_1, u_2} :
     ∀ {R : Type u_1} [inst : CommRing R] {W : Type u_2} [inst_1 : AddCommGroup W]
@@ -2163,7 +2163,7 @@ theorem UpperTheory.Reformulated.B.SelectionLemmas.aux11.{u_1, u_2} :
   exact ⟨1, S.one_mem, by rw [smul_zero]; exact L.zero_mem⟩
 
 /- English proof (translation)
-Introduce `R _ W _ _ S L r x hx`. Take `⟨s, hs, hx⟩` from `hx`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `L.smul_mem _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SelectionLemmas.aux12.{u_1, u_2} :
     ∀ {R : Type u_2} [inst : CommRing R] {W : Type u_1} [inst_1 : AddCommGroup W]
@@ -2637,7 +2637,7 @@ noncomputable def UpperTheory.Reformulated.B.SelectionLemmas.IsLocBasis :
             L))
 
 /- English proof (translation)
-Use `intros`. Use `infer_instance`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SelectionLemmas.complex_normed_instance_compat :
     ∀ {K : Type} [inst : Field K],
@@ -2654,7 +2654,7 @@ theorem UpperTheory.Reformulated.B.SelectionLemmas.complex_normed_instance_compa
   intros; infer_instance
 
 /- English proof (translation)
-Use `intros`. Use `infer_instance`.
+Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SelectionLemmas.padic_embedding_algebra_compat :
     ∀ {K : Type} [inst : Field K] {d d' : Nat},
@@ -3033,7 +3033,7 @@ open NumberField IsDedekindDomain Matrix
 namespace UpperTheory.Reformulated.B.SelectionLemmas
 
 /- English proof (translation)
-Establish `h : IsIntegral ℤ ((starRingEnd K).toIntAlgHom (algebraMap (𝓞 K) K a))` using `(RingOfIntegers.isIntegral_coe a).map _`. Conclude with `⟨⟨_, h⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem star_int {K : Type} [Field K] [StarRing K] (a : 𝓞 K) :
     ∃ b : 𝓞 K, algebraMap (𝓞 K) K b = star (algebraMap (𝓞 K) K a) := by
@@ -3042,11 +3042,11 @@ private theorem star_int {K : Type} [Field K] [StarRing K] (a : 𝓞 K) :
   exact ⟨⟨_, h⟩, rfl⟩
 
 /- English proof (translation)
-Unfold `hcompl at hs`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨t, ht⟩` from `star_int x`. Conclude with `⟨hx.1, t, hx.2 t ht, ht⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `one => exact ⟨(Ideal.ne_top_iff_one p).1 hp.ne_top, 1, (Ideal.ne_top_iff_one p).1 hp.ne_top, by simp⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨hx, t, ht, ht'⟩` from `hx`. Take `⟨hy, u, hu, hu'⟩` from `hy`. Use `⟨fun h => (hp.mem_or_mem h).elim hx hy, t * u, fun h => (hp.mem_or_mem h).elim ht hu, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_mul, ht', hu', star_mul']`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hcompl_spec {K : Type} [Field K] [StarRing K] (p : Ideal (𝓞 K)) (hp : p.IsPrime)
     (s : 𝓞 K) (hs : s ∈ hcompl (K := K) p) :
@@ -3064,13 +3064,13 @@ private theorem hcompl_spec {K : Type} [Field K] [StarRing K] (p : Ideal (𝓞 K
     rw [map_mul, map_mul, ht', hu', star_mul']
 
 /- English proof (translation)
-Proceed by induction on `N, hN using Submodule.fg_induction with`. Consider the case `singleton x`. Take `⟨s, hs, hx⟩` from `h (Submodule.mem_span_singleton_self x)`. Use `⟨s, hs, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_comm]`. Conclude with `L.smul_mem _ hx`. Consider the case `sup N₁ N₂ _ _ h₁ h₂`. Take `⟨s, hs, h₁⟩` from `h₁ (le_sup_left.trans h)`. Take `⟨t, ht, h₂⟩` from `h₂ (le_sup_right.trans h)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s * t, S.mul_mem hs ht, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `L.smul_mem _ (h₁ a ha)`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem _ (h₂ b hb)`.
+A detailed English derivation is pending.
 -/
 private theorem exists_uniform {R W : Type} [CommRing R] [AddCommGroup W] [Module R W]
     (S : Submonoid R) (N L : Submodule R W) (hN : N.FG) (h : N ≤ locS S L) :
@@ -3093,7 +3093,7 @@ private theorem exists_uniform {R W : Type} [CommRing R] [AddCommGroup W] [Modul
     · rw [mul_smul]; exact L.smul_mem _ (h₂ b hb)
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul]`. Conclude with `FractionalIdeal.spanSingleton_ne_zero_iff.2 ha`. Conclude with `FractionalIdeal.spanSingleton_ne_zero_iff.2 hb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vw_mul {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
     {a b : K} (ha : a ≠ 0) (hb : b ≠ 0) : vw w (a * b) = vw w a + vw w b := by
@@ -3103,7 +3103,7 @@ private theorem vw_mul {K : Type} [Field K] [NumberField K] (w : HeightOneSpectr
   · exact FractionalIdeal.spanSingleton_ne_zero_iff.2 hb
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem vw_pow {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
     (a : K) (m : ℕ) : vw w (a ^ m) = m * vw w a := by
@@ -3111,7 +3111,7 @@ private theorem vw_pow {K : Type} [Field K] [NumberField K] (w : HeightOneSpectr
   rw [← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow]
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[FractionalIdeal.spanSingleton_zero, FractionalIdeal.count_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem vw_zero {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) :
     vw w (0 : K) = 0 := by
@@ -3119,7 +3119,7 @@ private theorem vw_zero {K : Type} [Field K] [NumberField K] (w : HeightOneSpect
   rw [FractionalIdeal.spanSingleton_zero, FractionalIdeal.count_zero]
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem vw_one {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) :
     vw w (1 : K) = 0 := by
@@ -3127,7 +3127,7 @@ private theorem vw_one {K : Type} [Field K] [NumberField K] (w : HeightOneSpectr
   rw [FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton]`. Conclude with `FractionalIdeal.count_coe_nonneg K w _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vw_nonneg {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
     (a : 𝓞 K) : 0 ≤ vw w (algebraMap (𝓞 K) K a) := by
@@ -3136,11 +3136,9 @@ private theorem vw_nonneg {K : Type} [Field K] [NumberField K] (w : HeightOneSpe
   exact FractionalIdeal.count_coe_nonneg K w _
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {a} ≠ (0 : Ideal (𝓞 K))`. Introduce `h`. Rewrite `h` using `[Submodule.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `ha (h ▸ w.asIdeal.zero_mem)`. Unfold `vw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K w h0]`. Assume the negation of the conclusion as `hne`. Establish `hne' : (Associates.mk w.asIdeal).count (Associates.mk (Ideal.span {a})).factors ≠ 0`. Conclude with `hne` after adjusting the coercions. Use `(Associates.count_ne_zero_iff_dvd h0 w.irreducible).1 hne'` as an intermediate fact.
-
-Conclude with `ha (Ideal.dvd_span_singleton.1 this)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem vw_eq_zero {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
     (a : 𝓞 K) (ha : a ∉ w.asIdeal) : vw w (algebraMap (𝓞 K) K a) = 0 := by
@@ -3158,9 +3156,7 @@ private theorem vw_eq_zero {K : Type} [Field K] [NumberField K] (w : HeightOneSp
   exact ha (Ideal.dvd_span_singleton.1 this)
 
 /- English proof (translation)
-Use `choose B hB using h`. Use `⟨(Matrix.of B).det, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
-
-Conclude with `hB i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem det_int {K : Type} [Field K] {D : ℕ} (A : Matrix (Fin D) (Fin D) K)
     (h : ∀ i j, ∃ a : 𝓞 K, algebraMap (𝓞 K) K a = A i j) :
@@ -3173,15 +3169,15 @@ private theorem det_int {K : Type} [Field K] {D : ℕ} (A : Matrix (Fin D) (Fin 
   exact hB i j
 
 /- English proof (translation)
-Establish `hx : algebraMap (𝓞 K) K t • (H⁻¹ *ᵥ star (B j)) ∈ dual (hform H) M`. Unfold `dual hdual`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, Submodule.mem_one]`. Introduce `y hy`. Take `⟨a, ha⟩` from `hs y hy j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `star_int a`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[hb, ha, LinearMap.restrictScalars_apply, map_smul]`. Unfold `hform`. Rewrite using `[Matrix.toLinearMapₛₗ₂'_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : H *ᵥ (H⁻¹ *ᵥ star (B j)) = star (B j)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hH, Matrix.one_mulVec]`. Establish `h2 : ∀ v : Fin n → K, ∑ a, ∑ b, (starRingEnd K) (y a) • (RingHom.id K) (v b) • H a b = star y ⬝ᵥ (H *ᵥ v)`. Introduce `v`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, smul_eq_mul, RingHom.id_apply, starRingEnd_apply, Pi.star_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring` and prove the remaining obligations. Rewrite using `[h2, h1, star_mul', ← ht, smul_eq_mul]`. Use `congr 1`. Simplify using `[dotProduct, Matrix.mulVec, star_sum, mul_comm]`. Take `⟨a, ha⟩` from `hs _ (hc _ hx) i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.smul_apply, Matrix.mul_apply (M := B * H⁻¹)]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, Pi.star_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem core {K : Type} [Field K] [StarRing K] {n D : ℕ}
     (H : Matrix (Fin n) (Fin n) K) (hH : IsUnit H.det) (B : Matrix (Fin D) (Fin n) K)
@@ -3225,35 +3221,31 @@ end UpperTheory.Reformulated.B.SelectionLemmas
 end Helpers
 
 /- English proof (translation)
-Use `open NumberField Matrix UpperTheory.Reformulated.B.SelectionLemmas in`. Introduce `K _ _ _ n D H P M hM l g hl hc w e he`. Establish `hl0 : (l : K) ≠ 0` using `Nat.cast_ne_zero.2 hl.ne'`. Establish `hvl : 0 ≤ vw w (l : K)` using `by simpa using vw_nonneg w (l : 𝓞 K)`. Break down `Nat.eq_zero_or_pos D with rfl | hD` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `: gramR (quotGram P H) e = 1` using `Matrix.det_isEmpty`. Rewrite using `[this, vw_one]`. Simplify using the standard rewrite rules. Distinguish the cases in `hG : gramR (quotGram P H) e = 0`. Rewrite using `[hG, vw_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Use `haveI : Nonempty (Fin D) := ⟨⟨0, hD⟩⟩`. Use `set E : Matrix (Fin D) (Fin D) K := (Matrix.of e)ᵀ with hE`. Establish `hgram : gramR (quotGram P H) e = (Eᴴ * (P * H⁻¹ * Pᴴ)⁻¹ * E).det`. Unfold `gramR quotGram`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_assoc Eᴴ, Matrix.mul_apply]`. Both sides reduce to the same expression. Establish `hG'` using `hG`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hG'` using `[hgram, Matrix.det_mul, Matrix.det_mul]`. Establish `hEu : IsUnit E.det` using `(right_ne_zero_of_mul hG').isUnit`. Establish `hEu' : IsUnit Eᴴ.det` using `(left_ne_zero_of_mul (left_ne_zero_of_mul hG')).isUnit`. Establish `hA : IsUnit (P * H⁻¹ * Pᴴ).det`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hG'` using `[Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.det_zero]`. Apply the tactic sequence `all_goals first | exact hG' (by simp) | infer_instance`. Establish `hH : IsUnit H.det`. Assume the negation of the conclusion as `h`. Rewrite `hA` using `[Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.mul_zero, Matrix.zero_mul, Matrix.det_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `all_goals first | exact not_isUnit_zero hA | infer_instance`. Establish `hle : matLat P M ≤ locS (hcompl (K` using `K) w.asIdeal) (Submodule.span (𝓞 K) (Set.range e)) := by`. Introduce `x hx`. Establish `h1 : x ∈ loc (K` using `K) w.asIdeal (matLat P M) := ⟨1, Submonoid.one_mem _, by rwa [one_smul]⟩`. Rewrite `h1` using `[← he.2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h1`. Take `⟨s, hsS, hs⟩` from `exists_uniform _ _ _ (hM.map _) hle`. Take `⟨hsw, t, htw, ht⟩` from `hcompl_spec _ w.isPrime s hsS`. Establish `hs' : ∀ y ∈ M, ∀ i, ∃ a : 𝓞 K, algebraMap (𝓞 K) K a = algebraMap (𝓞 K) K s * ((E⁻¹ * P) *ᵥ y) i`. Introduce `y hy i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 (hs (P *ᵥ y) (Submodule.mem_map_of_mem hy))`. Use `⟨a i, ?_⟩` and prove the remaining obligations. Establish `h1 : E *ᵥ (fun i => algebraMap (𝓞 K) K (a i)) = algebraMap (𝓞 K) K s • (P *ᵥ y)`. Rewrite using `[algebraMap_smul, ← ha]`. Use extensionality with `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hE, Matrix.mulVec, dotProduct, Finset.sum_apply, Algebra.smul_def, mul_comm]`. Establish `h2` using `congrArg (fun v => (E⁻¹ *ᵥ v) i) h1`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hEu, Matrix.one_mulVec, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul] at h2`. Conclude with `h2`. Take `⟨a, ha⟩` from `det_int _ (core H hH (E⁻¹ * P) M ((l : K) ^ g) hc s t ht hs')`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hN : (E⁻¹ * P * H⁻¹ * (E⁻¹ * P)ᴴ) * (Eᴴ * (P * H⁻¹ * Pᴴ)⁻¹ * E) = 1`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.nonsing_inv_mul _ hEu', Matrix.one_mul, Matrix.mul_nonsing_inv _ hA, Matrix.mul_one, Matrix.nonsing_inv_mul _ hEu]`. Establish `hdet` using `congrArg Matrix.det hN`. Rewrite `hdet` using `[Matrix.det_mul, ← hgram, Matrix.det_one]`. Rewrite `ha` using `[Matrix.det_smul, Fintype.card_fin]`. Establish `hs0 : algebraMap (𝓞 K) K s ≠ 0` using `fun h => hsw (((FaithfulSMul.algebraMap_eq_zero_iff _ _).1 h) ▸ w.asIdeal.zero_mem)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht0 : algebraMap (𝓞 K) K t ≠ 0` using `fun h => htw (((FaithfulSMul.algebraMap_eq_zero_iff _ _).1 h) ▸ w.asIdeal.zero_mem)`. Establish `hkey : algebraMap (𝓞 K) K a * gramR (quotGram P H) e = (algebraMap (𝓞 K) K s * algebraMap (𝓞 K) K t * (l : K) ^ g) ^ D`. Rewrite using `[ha, mul_assoc, hdet, mul_one]`. Establish `ha0 : algebraMap (𝓞 K) K a ≠ 0`. Use `left_ne_zero_of_mul (b := gramR (quotGram P H) e) ?_` and prove the remaining obligations.
-
-Rewrite using `[hkey]`. Conclude with `pow_ne_zero _ (mul_ne_zero (mul_ne_zero hs0 ht0) (pow_ne_zero _ hl0))`. Establish `hv` using `congrArg (vw w) hkey`. Rewrite `hv` using `[vw_mul w ha0 hG, vw_pow, vw_mul w (mul_ne_zero hs0 ht0) (pow_ne_zero _ hl0), vw_mul w hs0 ht0, vw_pow, vw_eq_zero w s hsw, vw_eq_zero w t htw]`. Use `vw_nonneg w a` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SelectionLemmas.main :
     ∀ {K : Type} [inst : Field K] [inst_1 : @NumberField K inst]

@@ -11,7 +11,7 @@ namespace PositivityTheory.Rg.BcB.CV.SecondVanishing
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D4 PositivityTheory.Rg.BcB.CV
 
 /- English proof (translation)
-Use `HasCompactSupport.intro (IsCompact.image hf continuous_snd) fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hy ⟨(g, y), subset_tsupport _ (Function.mem_support.2 h), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem hcs_left {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [T2Space Y]
     {f : X × Y → ℂ} (hf : HasCompactSupport f) (g : X) : HasCompactSupport fun y => f (g, y) := by
@@ -20,7 +20,7 @@ theorem hcs_left {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [T2Spac
   exact hy ⟨(g, y), subset_tsupport _ (Function.mem_support.2 h), rfl⟩
 
 /- English proof (translation)
-Use `HasCompactSupport.intro (IsCompact.image hf continuous_fst) fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hy ⟨(y, g), subset_tsupport _ (Function.mem_support.2 h), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem hcs_right {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [T2Space X]
     {f : X × Y → ℂ} (hf : HasCompactSupport f) (g : Y) : HasCompactSupport fun y => f (y, g) := by
@@ -29,7 +29,7 @@ theorem hcs_right {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [T2Spa
   exact hy ⟨(y, g), subset_tsupport _ (Function.mem_support.2 h), rfl⟩
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hK.exists_bound_of_continuousOn hq.continuousOn`. Take `⟨B, hB⟩` from `hV.bdd R`. Use `⟨max B 0, le_max_right _ _, fun x hx => (hB (q x) fun e => ?_).trans (le_max_left _ _)⟩` and prove the remaining obligations. Rewrite using `[← Real.norm_eq_abs]`. Conclude with `(norm_le_pi_norm (q x) e).trans (hR x hx)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vp_bdd_on {X : Type*} [TopologicalSpace X] {m : ℕ} {V : ((Fin m → SignType) → ℝ) → ℂ} (hV : VP V)
     {q : X → (Fin m → SignType) → ℝ} (hq : Continuous q) {K : Set X} (hK : IsCompact K) :
@@ -41,7 +41,7 @@ theorem vp_bdd_on {X : Type*} [TopologicalSpace X] {m : ℕ} {V : ((Fin m → Si
   exact (norm_le_pi_norm (q x) e).trans (hR x hx)
 
 /- English proof (translation)
-Rewrite using `[add_assoc, h₁.tor t₁ ht₁, add_left_comm (p₁ x₁), h₂.tor t₂ ht₂, add_left_comm (p₂ x₂), ← add_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tor2 {n m : ℕ} {d₁ d₂ : GL (Fin n) ℂ} {V : ((Fin m → SignType) → ℝ) → ℂ}
     {p₁ p₂ : GL (Fin n) ℂ → (Fin m → SignType) → ℝ} (h₁ : LocFam d₁ V p₁) (h₂ : LocFam d₂ V p₂)
@@ -53,33 +53,31 @@ end PositivityTheory.Rg.BcB.CV.SecondVanishing
 
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D4 PositivityTheory.Rg.BcB.CV PositivityTheory.Rg.BcB.CV.SecondVanishing in
 /- English proof (translation)
-Introduce `hLV hLP hLT hQI hQA hQP hOV n m _ _ μ _ d₁ d₂ ν _ _ f V p₁ p₂ z hm hd₁ hd₂ hfc hfs hcu₁ hcu₂ hV hF₁ hF₂ hz`. Take `⟨hcl₁, hcomm₁, hθ, hlc, hsc⟩` from `hLT n d₁ hd₁`. Take `⟨hcl₂, hcomm₂, -, -, -⟩` from `hLT n d₂ hd₂`. Use `hlc` as an intermediate fact. Use `hsc` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc₁ : Continuous fun x => twConj (thC n) x d₁` using `by show Continuous fun x => x⁻¹ * d₁ * thC n x`. Conclude with `(continuous_inv.mul continuous_const).mul hθ`. Establish `hc₂ : Continuous fun x => twConj (thC n) x d₂` using `by show Continuous fun x => x⁻¹ * d₂ * thC n x`. Conclude with `(continuous_inv.mul continuous_const).mul hθ`. Establish `hΦc : Continuous fun x : GL (Fin n) ℂ × GL (Fin n) ℂ => f (twConj (thC n) x.1 d₁, twConj (thC n) x.2 d₂)` using `hfc.comp ((hc₁.comp continuous_fst).prodMk (hc₂.comp continuous_snd))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΦinv : ∀ t ∈ (twCent (thC n) d₁).prod (twCent (thC n) d₂), ∀ x : GL (Fin n) ℂ × GL (Fin n) ℂ, f (twConj (thC n) (t * x).1 d₁, twConj (thC n) (t * x).2 d₂) = f (twConj (thC n) x.1 d₁, twConj (thC n) x.2 d₂)`. Introduce `t ht x`. Rewrite using `[Prod.fst_mul, Prod.snd_mul, twConj_mul_left _ _ (Subgroup.mem_prod.1 ht).1, twConj_mul_left _ _ (Subgroup.mem_prod.1 ht).2]`. Take `⟨C₁, hC₁, hsub₁⟩` from `hLP n d₁ hd₁ (Prod.fst '' tsupport f) (IsCompact.image hfs continuous_fst)`. Take `⟨C₂, hC₂, hsub₂⟩` from `hLP n d₂ hd₂ (Prod.snd '' tsupport f) (IsCompact.image hfs continuous_snd)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Bf, hBf⟩` from `hfc.bounded_above_of_compact_support hfs`. Establish `hBf0 : 0 ≤ Bf` using `(norm_nonneg _).trans (hBf (1, 1))`. Establish `hclosed : IsClosed (((twCent (thC n) d₁).prod (twCent (thC n) d₂) : Subgroup _) : Set (GL (Fin n) ℂ × GL (Fin n) ℂ))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `hcl₁.prod hcl₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨A₀, -, hA₀⟩` from `hQI (GL (Fin n) ℂ × GL (Fin n) ℂ) (μ.prod μ) ((twCent (thC n) d₁).prod (twCent (thC n) d₂)) ν (C₁ ×ˢ C₂) hclosed (hC₁.prod hC₂)`. Establish `hint : ∀ h : GL (Fin n) ℂ × GL (Fin n) ℂ → ℂ, Measurable h → (∀ t ∈ (twCent (thC n) d₁).prod (twCent (thC n) d₂), ∀ x, h (t * x) = h x) → (∃ B : ℝ, 0 ≤ B ∧ ∀ x ∈ C₁ ×ˢ C₂, ‖h x‖ ≤ B) → quotLIntegral (μ.prod μ) ((twCent (thC n) d₁).prod (twCent (thC n) d₂)) ν (fun x => ‖f (twConj …`. Introduce `h hm hinv ⟨B, hB0, hB⟩`. Use `(hA₀ (fun x => f (twConj (thC n) x.1 d₁, twConj (thC n) x.2 d₂) * h x) (Bf * B) (mul_nonneg hBf0 hB0) (hΦc.measurable.mul hm) (fun t ht x => by rw [hΦinv t ht x, hinv t ht x]) ?_ ?_).1` and prove the remaining obligations. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfx : f (twConj (thC n) x.1 d₁, twConj (thC n) x.2 d₂) ≠ 0` using `left_ne_zero_of_mul hx`. Establish `hts : (twConj (thC n) x.1 d₁, twConj (thC n) x.2 d₂) ∈ tsupport f` using `subset_tsupport _ (Function.mem_support.2 hfx)`. Take `⟨a₁, ha₁, b₁, hb₁, e₁⟩` from `Set.mem_mul.1 (hsub₁ (show twConj (thC n) x.1 d₁ ∈ Prod.fst '' tsupport f from ⟨_, hts, rfl⟩))`. Take `⟨a₂, ha₂, b₂, hb₂, e₂⟩` from `Set.mem_mul.1 (hsub₂ (show twConj (thC n) x.2 d₂ ∈ Prod.snd '' tsupport f from ⟨_, hts, rfl⟩))`. Conclude with `Set.mem_mul.2 ⟨(a₁, a₂), Subgroup.mem_prod.2 ⟨ha₁, ha₂⟩, (b₁, b₂), ⟨hb₁, hb₂⟩, Prod.ext e₁ e₂⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hBf _) (hB x hx) (norm_nonneg _) hBf0`. Establish `hq : Continuous fun x : GL (Fin n) ℂ × GL (Fin n) ℂ => p₁ x.1 + p₂ x.2 + z` using `((hF₁.cont.comp continuous_fst).add (hF₂.cont.comp continuous_snd)).add continuous_const`. Establish `hq' : Continuous fun x : GL (Fin n) ℂ × GL (Fin n) ℂ => p₁ x.1` using `hF₁.cont.comp continuous_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmF : Measurable fun x : GL (Fin n) ℂ × GL (Fin n) ℂ => V (p₁ x.1 + p₂ x.2 + z)` using `hV.meas.comp hq.measurable`. Establish `hmB : Measurable fun x : GL (Fin n) ℂ × GL (Fin n) ℂ => V (p₁ x.1)` using `hV.meas.comp hq'.measurable`. Establish `hiF : ∀ t ∈ (twCent (thC n) d₁).prod (twCent (thC n) d₂), ∀ x : GL (Fin n) ℂ × GL (Fin n) ℂ, V (p₁ (t * x).1 + p₂ (t * x).2 + z) = V (p₁ x.1 + p₂ x.2 + z)` using `fun t ht x => tor2 hF₁ hF₂ (Subgroup.mem_prod.1 ht).1 (Subgroup.mem_prod.1 ht).2 x.1 x.2 z`. Establish `hiB : ∀ t ∈ (twCent (thC n) d₁).prod (twCent (thC n) d₂), ∀ x : GL (Fin n) ℂ × GL (Fin n) ℂ, V (p₁ (t * x).1) = V (p₁ x.1)` using `fun t ht x => by`. Simplify using `using hF₁.tor t.1 (Subgroup.mem_prod.1 ht).1 x.1 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hIF` using `hint _ hmF hiF (vp_bdd_on hV hq (hC₁.prod hC₂))`. Establish `hIB` using `hint _ hmB hiB (vp_bdd_on hV hq' (hC₁.prod hC₂))`. Establish `hsplit` using `(hQA (GL (Fin n) ℂ × GL (Fin n) ℂ) (μ.prod μ) ((twCent (thC n) d₁).prod (twCent (thC n) d₂)) ν).2.1 (fun x => f (twConj (thC n) x.1 d₁, twConj (thC n) x.2 d₂) * V (p₁ x.1 + p₂ x.2 + z)) (fun x => f (twConj (thC n) x.1 d₁, twConj (thC n) x.2 d₂) * V (p₁ x.1)) (hΦc.measurable.mul h …`. Establish `hA : quotIntegral (μ.prod μ) ((twCent (thC n) d₁).prod (twCent (thC n) d₂)) ν (fun x => f (twConj (thC n) x.1 d₁, twConj (thC n) x.2 d₂) * V (p₁ x.1 + p₂ x.2 + z) - f (twConj (thC n) x.1 d₁, twConj (thC n) x.2 d₂) * V (p₁ x.1)) = 0`. Use `hQP _ _ μ μ _ _ ν _ hcl₁ hcl₂ hcomm₁ hcomm₂ ((hΦc.measurable.mul hmF).sub (hΦc.measurable.mul hmB)) (fun t ht x => by simp only [hΦinv t ht x, hiF t ht x, hiB t ht x]) (Or.inl fun ν₁ _ _ x₂ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify by unfolding definitions.
 
-Establish `h1` using `hOV n m μ d₁ ν₁ (fun y => f (y, twConj (thC n) x₂ d₂)) V p₁ (p₂ x₂ + z) hd₁ (hfc.comp (continuous_id.prodMk continuous_const)) (hcs_right hfs _) (hcu₁ _) hV hF₁ (by rw [Pi.add_apply, hF₂.zero, hz, add_zero])`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[add_assoc]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := h1`. Establish `hB : quotIntegral (μ.prod μ) ((twCent (thC n) d₁).prod (twCent (thC n) d₂)) ν (fun x => f (twConj (thC n) x.1 d₁, twConj (thC n) x.2 d₂) * V (p₁ x.1)) = 0`. Use `hQP _ _ μ μ _ _ ν _ hcl₁ hcl₂ hcomm₁ hcomm₂ (hΦc.measurable.mul hmB) (fun t ht x => by simp only [hΦinv t ht x, hiB t ht x]) (Or.inr fun ν₂ _ _ x₁ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : (fun _ : Fin m => (1 : SignType)) ≠ 0`. Introduce `h`. Use `congrFun h ⟨0, Nat.pos_of_ne_zero hm⟩` as an intermediate fact. Simplify using `at this`. Take `⟨W₁, W₂, hW, -⟩` from `hF₂.nil _ hne`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify by unfolding definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1` using `hLV n μ (fun y => f (twConj (thC n) x₁ d₁, y)) (fun _ => 1) d₂ ν₂ W₁ W₂ (hfc.comp (continuous_const.prodMk continuous_id)) (hcs_left hfs _) (hcu₂ _) hd₂ hW.1 hW.2.1 hW.2.2.1 hW.2.2.2 measurable_const (fun _ _ => ⟨1, fun _ _ => by simp⟩) (fun _ _ _ => rfl) (fun _ _ _ => rfl) (fun …`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ = V (p₁ x₁) * quotIntegral μ (twCent (thC n) d₂) ν₂ (fun x => f (twConj (thC n) x₁ d₁, twConj (thC n) x d₂) * (fun _ => (1 : ℂ)) x) := (hQA _ μ _ ν₂).2.2 _ _`. Use `_ = 0 := by rw [h1, mul_zero]`. Rewrite `hsplit` using `[hA, hB]`. Take the linear combination `-hsplit`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.BcB.CV.pf_TwoVanish : PositivityTheory.Rg.BcB.LocVanish → PositivityTheory.Rg.BcB.D4.LocProper → PositivityTheory.Rg.BcB.CV.LocTor → PositivityTheory.Rg.BcB.CV.QInt → PositivityTheory.Rg.BcB.CV.QAdd → PositivityTheory.Rg.BcB.CV.QProd → PositivityTheory.Rg.BcB.CV.OneVanish → PositivityTheory.Rg.BcB.CV.TwoVanish := by
   intro hLV hLP hLT hQI hQA hQP hOV n m _ _ μ _ d₁ d₂ ν _ _ f V p₁ p₂ z hm hd₁ hd₂ hfc hfs hcu₁ hcu₂ hV hF₁ hF₂ hz

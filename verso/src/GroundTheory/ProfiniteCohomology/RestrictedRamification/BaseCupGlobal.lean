@@ -16,9 +16,9 @@ variable {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopological
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Rewrite using `[cupCochain_apply]`. Use `congr 1`. Establish `h0 : Fin.partialProd x ⟨0, by omega⟩ = 1` using `Fin.partialProd_zero x`. Rewrite using `[h0, map_one, Module.End.one_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cupCochain_const_left {A B : Rep.{0} k G} {q n : ℕ} (h : 0 + q = n) (m : A) (g : (Fin q → G) → B)
     (x : Fin n → G) :
@@ -41,7 +41,7 @@ noncomputable def constCupSub (m : X) {s : ℕ} (e : (cochainsComplex B).X s) (z
   cupPairingCochains μX (show 0 + s = s by omega) (constCochain X m) e - ((cochainsMap j).f s).hom z
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `cochainOf X (cupPairingCochains μX (show 0 + s = s by omega) (constCochain X m) e) σ - cochainOf X (((cochainsMap j).f s).hom z) σ = _`. Rewrite using `[cochainOf_cochainsMap_f, cochainOf_cupPairingCochains]`. Use `congr 1`. Use `(congrArg μX.hom (cupCochain_const_left (show 0 + s = s by omega) m _ σ)).trans ?_` and prove the remaining obligations. Use `congr 3`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem cochainOf_constCupSub (m : X) {s : ℕ} (e : (cochainsComplex B).X s) (z : (cochainsComplex U).X s)
     (σ : Fin s → G) :
@@ -56,9 +56,9 @@ theorem cochainOf_constCupSub (m : X) {s : ℕ} (e : (cochainsComplex B).X s) (z
 include hj in
 
 /- English proof (translation)
-Establish `L` using `(cupLeibniz μX).leibniz (show 0 + s = s by omega) (constCochain X m) e`. Express the relevant statement in the definitionally equal form `((cochainsComplex X).d s (s + 1)).hom (cupPairingCochains μX _ (constCochain X m) e) = _ at L`. Rewrite using `[constCupSub, map_sub, L, he, map_zero, smul_zero, add_zero, ← hx, hom_apply_hom_apply_eq_of_comp_eq ((cochainsMap j).comm s (s + 1)) z, hz, sub_eq_zero]`. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[cochainOf_cochainsMap_f]`. Conclude with `(cupCochain_tensorHom_eq' ((j ⊗ₘ 𝟙 B) ≫ μX) μX j rfl (show 1 + s = s + 1 by omega) (cochainOf U x) (cochainOf B e) σ).symm.trans (congrArg (fun f : U ⊗ B ⟶ X => f.hom (cupCochain (show 1 + s = s + 1 by omega) (cochainOf U x) (cochainOf B e) σ)) hj.symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_constCupSub (m : X) (x : (cochainsComplex U).X 1)
     (hx : ((cochainsMap j).f 1).hom x = ((cochainsComplex X).d 0 1).hom (constCochain X m))
@@ -84,13 +84,13 @@ variable (Ωᵥ : ∀ v, Rep.{0} k (H v)) [∀ v, IsDiscreteRep (Ωᵥ v)] (l : 
 include hj hl in
 
 /- English proof (translation)
-Establish `hdW` using `d_constCupSub j μU μX hj m x hx (((cochainsComplex B).iCycles s).hom e) (iCycles_d_apply _ s (s + 1) e) z hz`. Set `W : cocycles X s` to `(cochainsComplex X).cyclesMk _ (s + 1) (by simp) hdW`. Establish `hW : cochainOf X (cocycleι X s W) = cochainOf X (constCupSub j μX m (((cochainsComplex B).iCycles s).hom e) z)` using `congrArg (cochainOf X) ((cochainsComplex X).i_cyclesMk _ _ _ _)`. Use `⟨W, hW, ?_⟩` and prove the remaining obligations. Take `⟨w, hw1, hw2⟩` from `LeibnizPairing.exists_coconeLeft_homology_eq_homologyδ (LeibnizPairing.pi fun v => cupLeibniz (μΩ v)) (localRes φ B (fun v => Rep.res (φ v).toMonoidHom B) fun _ => 𝟙 _) (cupLeibniz μU) (localRes_cupPairingCochains φ μU μΩ hμ) (show 0 + 1 + s = s + 1 by omega) Xc e z (hz.trans (co …`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `hw2.trans ((homologyδ_homologyπ_eq_localToCompact φ w).trans (congrArg _ (funext fun v => ?_)))` and prove the remaining obligations. Rewrite using `[cohomologyMapAlong_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong, hW]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `σ`. Establish `e1` using `iCycles_cyclesMap_apply (piProj (fun v => cochainsComplex (Ωᵥ v)) v) s w`. Rewrite using `[cocycleι, e1, piProj_f_hom_apply, hw1, cochainOf_constCupSub, map_sub]`. Express the relevant statement in the definitionally equal form `cochainOf (Ωᵥ v) (cupPairingCochains (μΩ v) (show 0 + s = s by omega) ((((compactCochains φ U Ωᵥ _).iCycles 1).hom Xc).2 v) (((localRes φ B (fun v => Rep.res (φ v).toMonoidHom B) fun _ => 𝟙 _).f s).hom (((cochainsComplex B).iCycles s).hom e) v)) σ - cochainOf (Ωᵥ v) (((localRes φ …`. Rewrite using `[hX2, piConst_apply, cochainOf_cupPairingCochains, cochainOf_localRes_f_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `(congrArg (μΩ v).hom (cupCochain_const_left (show 0 + s = s by omega) (y v) _ σ)).trans ?_` and prove the remaining obligations. Rewrite using `[hy v]`. Use `Eq.trans ?_ (congrArg (fun f => f.hom ((m ⊗ₜ[k] cochainOf B (((cochainsComplex B).iCycles s).hom e) (⇑(φ v).toMonoidHom ∘ σ)) : Rep.res (φ v).toMonoidHom (X ⊗ B))) (hl v)).symm` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem exists_compactCup_const
     (hμ : ∀ v, (Rep.resFunctor (φ v).toMonoidHom).map μU ≫ ((Rep.resFunctor (φ v).toMonoidHom).map j ≫ l v) =
@@ -148,7 +148,7 @@ end ConstCup
 section Exists
 
 /- English proof (translation)
-Rewrite using `[← map_nsmul, hy, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_apply_eq_zero_of {F M N : Type*} [AddMonoid M] [AddMonoid N] [FunLike F M N] [AddMonoidHomClass F M N]
     (f : F) (n : ℕ) {y : M} (hy : n • y = 0) : n • f y = 0 := by
@@ -158,9 +158,9 @@ variable {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopological
   {A B C : Rep.{0} k G} [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep C]
 
 /- English proof (translation)
-Rewrite `h0` using `[cupPairing_cohomologyπ]`. Establish `h1` using `(homologyπ_eq_zero_iff (cochainsComplex C) _).1 h0`. Rewrite `h1` using `[CochainComplex.prev_nat_succ]`. Take `⟨z, hz⟩` from `h1`. Use `⟨z, hz.trans (cochainOf_injective (funext fun σ => ?_))⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(cochainOf_cocycleι_cyclesMap_cupCocycles μ h x y σ).trans rfl`.
+A detailed English derivation is pending.
 -/
 theorem exists_d_eq_cupPairingCochains (μ : A ⊗ B ⟶ C) {p q m : ℕ} (h : p + q = m + 1) (x : cocycles A p)
     (y : cocycles B q) (h0 : cupPairing μ h (cohomologyπ A p x) (cohomologyπ B q y) = 0) :
@@ -178,7 +178,7 @@ end Exists
 section Units
 
 /- English proof (translation)
-Establish `e : Additive.toMul (b • Additive.ofMul u - Additive.ofMul w) * (u ^ b)⁻¹ = w⁻¹`. Rewrite using `[toMul_sub, toMul_zsmul, toMul_ofMul, toMul_ofMul, div_eq_mul_inv, mul_comm (u ^ b) w⁻¹, mul_assoc, mul_inv_cancel, mul_one]`. Rewrite using `[e]`. Conclude with `H.inv_mem hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toMul_zsmul_sub_mul_inv_mem {M : Type*} [CommGroup M] (H : Subgroup M) (u : M) (b : ℤ) (w : M) (hw : w ∈ H) :
     Additive.toMul (b • Additive.ofMul u - Additive.ofMul w) * (u ^ b)⁻¹ ∈ H := by
@@ -189,7 +189,7 @@ theorem toMul_zsmul_sub_mul_inv_mem {M : Type*} [CommGroup M] (H : Subgroup M) (
   exact H.inv_mem hw
 
 /- English proof (translation)
-Rewrite using `[hX]`. Conclude with `toMul_zsmul_sub_mul_inv_mem H u b w hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toMul_mem_of_eq {M : Type*} [CommGroup M] (H : Subgroup M) (u : M) (b : ℤ) (w : M) (X : Additive M)
     (hX : X = b • Additive.ofMul u - Additive.ofMul w) (hw : w ∈ H) : Additive.toMul X * (u ^ b)⁻¹ ∈ H := by
@@ -215,7 +215,7 @@ noncomputable abbrev gsPairingK :
   intActPairing _ _ (AddEquiv.ulift : ULift.{0} ℤ ≃+ ℤ).toAddMonoidHom (fun _ _ => rfl)
 
 /- English proof (translation)
-The claim follows from `intActPairing_tmul _ _ _ _ x m`.
+A detailed English derivation is pending.
 -/
 theorem gsPairingK_tmul (x : galUnits.{0, 0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S))
     (m : intRepTriv (galUnramifiedOutside K.1 ℚ̄ S)) :
@@ -223,7 +223,7 @@ theorem gsPairingK_tmul (x : galUnits.{0, 0} K.1 (maxUnramifiedOutside K.1 ℚ̄
   intActPairing_tmul _ _ _ _ x m
 
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun (x : galSUnitsMax K.1 ℚ̄ S) (m : intRepTriv (galUnramifiedOutside K.1 ℚ̄ S)) => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)).hom ((gsPairingU S).hom (x ⊗ₜ[ULift.{0} ℤ] m)) = (gsPairingK S).hom ((sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)).hom x ⊗ₜ[ULift.{0} ℤ] m)`. Conclude with `(congrArg (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)).hom (gsPairingU_tmul S x m)).trans ((map_zsmul (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)).hom m.down x).trans (gsPairingK_tmul S _ m).symm)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem gsPairingU_sUnitsToUnits :
     gsPairingU S ≫ sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S) =
@@ -238,7 +238,7 @@ theorem gsPairingU_sUnitsToUnits :
       (gsPairingK_tmul S _ m).symm)
 
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun (x : galUnits.{0, 0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) (m : intRepTriv (galUnramifiedOutside K.1 ℚ̄ S)) => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(gsUnitsLocalMor.{0} S ιs v).hom ((gsPairingK S).hom (x ⊗ₜ[ULift.{0} ℤ] m)) = (mulIntRight (gsFinFamily S ιs v).toMonoidHom (galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)))).hom ((gsUnit …`. Conclude with `(congrArg (gsUnitsLocalMor.{0} S ιs v).hom (gsPairingK_tmul S x m)).trans ((map_zsmul (gsUnitsLocalMor.{0} S ιs v).hom m.down x).trans (mulIntRight_tmul (gsFinFamily S ιs v).toMonoidHom (galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : …`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem gsPairingK_gsUnitsLocalMor (v : S) :
     (Rep.resFunctor (gsFinFamily S ιs v).toMonoidHom).map (gsPairingK S) ≫ gsUnitsLocalMor.{0} S ιs v =
@@ -262,15 +262,13 @@ omit [Fintype S] in
 include hℓ hnk hS in
 
 /- English proof (translation)
-Establish `hb` using `exists_cocycle_δ_bockSeq (NeZero.ne n) z`. Take `⟨x₁, hx₁π, hx₁v⟩` from `hb`. Set `c : cocycles (galSUnitsMax K.1 ℚ̄ S) 1` to `(cochainsComplex (galSUnitsMax K.1 ℚ̄ S)).cyclesMk (sInvCochain S t) 2 (by simp) (d_sInvCochain S t)`. Establish `hc : cocycleι _ 1 c = sInvCochain S t` using `(cochainsComplex (galSUnitsMax K.1 ℚ̄ S)).i_cyclesMk _ _ _ _`. Establish `hnz : n • cohomologyπ (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 1 z = 0` using `nsmul_cohomology_eq_zero _ (fun a => ULift.ext _ _ (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `n • a.down = 0`. Rewrite using `[nsmul_eq_mul, ZMod.natCast_self, zero_mul])) 1 _`. Establish `hb' : n • cohomologyπ _ 2 x₁ = 0` using `(congrArg (n • ·) hx₁π).trans (nsmul_apply_eq_zero_of (δ (bockSeq_shortExact (galUnramifiedOutside K.1 ℚ̄ S) n (NeZero.ne n)) 1 2 rfl).hom n hnz)`. Establish `h0 : cupPairing (gsPairingU S) (show 1 + 2 = 2 + 1 from rfl) (cohomologyπ _ 1 c) (cohomologyπ _ 2 x₁) = 0`. Use `eq_zero_of_h3_sUnits K S ℓ hℓ hS _ k ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hnk]`. Conclude with `nsmul_apply_eq_zero_of (cupPairing (gsPairingU S) (show 1 + 2 = 2 + 1 from rfl) (cohomologyπ _ 1 c)) n hb'`. Establish `hz` using `exists_d_eq_cupPairingCochains (gsPairingU S) (show 1 + 2 = 2 + 1 from rfl) c x₁ h0`. Establish `hz₀'` using `hz.choose_spec.trans (congrArg (fun a => cupPairingCochains (gsPairingU S) (show 1 + 2 = 2 + 1 from rfl) a (cocycleι _ 2 x₁)) hc)`. Establish `hX` using `iCycles_dataCycle (gsFinFamily S ιs) (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) (fun v : S => galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) (gsUnitsLocalMor.{0} S ιs) (sInvCocha …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `exists_compactCup_const (U := galSUnitsMax K.1 ℚ̄ S) (X := galUnits.{0, 0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) (B := intRepTriv (galUnramifiedOutside K.1 ℚ̄ S)) (gsFinFamily S ιs) (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) (gsPairingU S) (gsPairingK S) (gsPairingU_sUnitsT …`. Use `⟨key.choose, fun g h => ?_, ?_⟩` and prove the remaining obligations. Establish `e1` using `(congrFun key.choose_spec.1 ![g, h]).trans (cochainOf_constCupSub _ _ _ _ _ _)`. Establish `e2` using `gsPairingK_tmul S (Additive.ofMul (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)) (cochainOf _ (cocycleι _ 2 x₁) ![g, h])`. Establish `e3` using `sUnitsToUnits_hom_apply S (maxUnramifiedOutside K.1 ℚ̄ S) (cochainOf _ hz.choose ![g, h])`.
-
-Conclude with `toMul_mem_of_eq (sUnitsMax K.1 ℚ̄ S) _ _ _ _ (e1.trans (congrArg₂ (· - ·) (e2.trans (congrArg (· • Additive.ofMul (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)) (hx₁v g h))) e3)) (Additive.toMul (cochainOf _ hz.choose ![g, h]) : sUnitsMax K.1 ℚ̄ S).2`. Conclude with `(congrArg _ hx₁π.symm).trans key.choose_spec.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_gsUnitsData_cup_bock (t : sInvariantSubgroup (F := K.1) ℚ̄ S)
     (z : cocycles (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 1) :

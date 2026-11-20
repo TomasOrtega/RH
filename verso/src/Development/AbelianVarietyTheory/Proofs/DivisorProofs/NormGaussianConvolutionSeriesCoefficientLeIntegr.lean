@@ -7,7 +7,7 @@ namespace GlobalTheory.ConvSeries
 namespace CoefNorm
 
 /- English proof (translation)
-Simplify using `only [innerC, ContinuousLinearMap.comp_apply, innerSL_apply_apply, Complex.ofRealCLM_apply, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `abs_real_inner_le_norm a y`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_innerC_apply_le {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E] (a y : E) :
     ‖innerC a y‖ ≤ ‖a‖ * ‖y‖ := by
@@ -16,7 +16,7 @@ theorem norm_innerC_apply_le {E : Type} [NormedAddCommGroup E] [InnerProductSpac
   exact abs_real_inner_le_norm a y
 
 /- English proof (translation)
-Use `ContinuousMultilinearMap.opNorm_le_bound (by positivity) fun m => ?_` and prove the remaining obligations. Simplify using `only [powForm, ContinuousMultilinearMap.compContinuousLinearMap_apply, ContinuousMultilinearMap.mkPiAlgebra_apply]`. Rewrite using `[norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_powForm_le {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E] (k : ℕ) (a : E) :
     ‖powForm k a‖ ≤ ‖a‖ ^ k := by
@@ -30,7 +30,7 @@ theorem norm_powForm_le {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ
         rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
 /- English proof (translation)
-Unfold `wt`. Rewrite using `[norm_mul, norm_mul, ← Complex.ofReal_neg, ← Complex.ofReal_neg, Complex.norm_exp_ofReal, Complex.norm_exp_ofReal]`. Establish `e1 : Real.exp (-(b * ‖a‖ ^ 2)) ≤ 1` using `Real.exp_le_one_iff.2 (by nlinarith [sq_nonneg ‖a‖])`. Establish `e2 : Real.exp (-(c * ‖a‖ ^ 2)) ≤ 1` using `Real.exp_le_one_iff.2 (by nlinarith [sq_nonneg ‖a‖])`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_wt_le {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E] (b c : ℝ) (hb : 0 ≤ b) (hc : 0 ≤ c)
     (h : E → ℂ) (a : E) : ‖wt b c h a‖ ≤ ‖h a‖ := by
@@ -43,7 +43,7 @@ theorem norm_wt_le {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E] (
     _ = _ := by ring
 
 /- English proof (translation)
-Unfold `wt`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_wt {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E] (b c : ℝ) (h : E → ℂ)
     (hh : Continuous h) : Continuous (wt b c h) := by
@@ -55,11 +55,11 @@ end CoefNorm
 open CoefNorm in
 
 /- English proof (translation)
-Unfold `coef`. Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Establish `hw : Continuous (wt b c (⇑h))` using `continuous_wt b c _ h.continuous`. Establish `hint : Integrable (fun a : E => ‖a‖ ^ j * ‖h a‖)` using `h.integrable_pow_mul volume j`. Establish `hint2 : Integrable (fun a : E => ‖wt b c (⇑h) a‖ * ‖a‖ ^ j)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hint.mono' ((hw.norm.mul (continuous_norm.pow j)).aestronglyMeasurable) ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun a => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity), mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (norm_wt_le b c hb hc _ a) (by positivity)`. Use `integral_mono_of_nonneg (Filter.Eventually.of_forall fun a => norm_nonneg _) hint2 (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (norm_powForm_le j a) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_coef_le_integral (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (b c : ℝ) (hb : 0 ≤ b) (hc : 0 ≤ c) (h : SchwartzMap E ℂ) (j : ℕ) :

@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Introduce `γ`. Simplify using `only [gact, one_mul, inv_one, mul_one]`. Conclude with `(Group.mulRight_bijective _)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gact_one_bij (N : ℕ) : ActBij (gact N 1) := by
   intro γ
@@ -24,15 +24,15 @@ theorem gact_one_bij (N : ℕ) : ActBij (gact N 1) := by
   exact (Group.mulRight_bijective _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[redGL]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem redGL_one (N : ℕ) : redGL N 1 = 1 := by
   ext i j; simp [redGL]
 
 /- English proof (translation)
-Establish `hD' : D ^ (w * n) ≠ 0` using `pow_ne_zero _ hD`. Use `(mul_eq_zero.mp ?_).resolve_left hD'` and prove the remaining obligations. Rewrite using `[← h, mul_add, Finset.mul_sum]`. Use `congr 1`. Rewrite using `[mul_pow, pow_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hj : (j : ℕ) ≤ n` using `j.2.le`. Establish `e : w * n = w * (n - j) + w * j` using `by rw [← mul_add, Nat.sub_add_cancel hj]`. Rewrite using `[hs, e, mul_pow, pow_add, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rel_div (w n : ℕ) (D x J : ℂ) (hD : D ≠ 0) (s : Fin n → ℂ) (P : Fin n → Polynomial ℂ)
     (hs : ∀ j : Fin n, s j = D ^ (w * (n - j)) * (P j).eval J)
@@ -50,21 +50,19 @@ theorem rel_div (w n : ℕ) (D x J : ℂ) (hD : D ≠ 0) (s : Fin n → ℂ) (P 
     ring
 
 /- English proof (translation)
-Introduce `E f ⟨N, w, hN, hinv, hq⟩`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Establish `hslash : ∀ γ : SL(2, ℤ), (fun τ => DD τ ^ w * f τ) ∣[((12 * w : ℕ) : ℤ)] γ = fun τ => DD τ ^ w * f (γ • τ)` using `fun γ => GlobalTheory.T.modularDiscriminant_pow_mul_slash_twelve_mul w f γ`. Establish `hΓ : ∀ γ ∈ CongruenceSubgroup.Gamma N, (fun τ => DD τ ^ w * f τ) ∣[((12 * w : ℕ) : ℤ)] γ = (fun τ => DD τ ^ w * f τ)`. Introduce `γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hslash]`. Use function extensionality and compare the values at `τ`. Rewrite using `[hinv γ hγ τ]`. Take `⟨F, hFam, hFγ, hF0⟩` from `GlobalTheory.T.exists_slTwoPermutedModularFamily_of_level N ((12 * w : ℕ) : ℤ) _ hΓ`. Establish `hQ : ∀ α, QAll (· ∈ E) N (F α)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `α`. Break down `hF0 α with ⟨γ, rfl⟩ | h0` into its components or cases. Rewrite using `[hFγ, hslash]`. Conclude with `hq γ`. Rewrite using `[h0]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨fun _ => 0, fun τ => ?_, fun _ => E.zero_mem⟩` and prove the remaining obligations. Simplify using `using (hasSum_zero : HasSum (fun _ : ℕ => (0 : ℂ)) 0)`. Establish `h1 : F 1 = fun τ => DD τ ^ w * f τ`. Rewrite using `[← redGL_one N, hFγ]`. Conclude with `SlashAction.slash_one _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s, hs, hpoly⟩` from `GlobalTheory.T.permutedModularFamily_monic_poly_coeff_invariant (GL (Fin 2) (ZMod N)) (gact N 1) (12 * w) N F E hN (gact_one_bij N) hFam hQ`. Establish `key` using `hpoly 1`. Rewrite `key` using `[h1]`. Use `clear hpoly hFam hF0 hFγ hQ h1 hslash hΓ`. Use `revert s`.
+Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Generalize the expression as in `Fintype.card (GL (Fin 2) (ZMod N)) = n`. Introduce `s hs key`. Establish `hP : ∀ j : Fin n, ∃ P : Polynomial ℂ, (∀ i, P.coeff i ∈ E) ∧ ∀ τ, s j τ = DD τ ^ (w * (n - j)) * P.eval (jT τ)`. Introduce `j`. Use `GlobalTheory.QFam.exists_eq_DD_pow_mul_eval_jT E N (w * (n - j)) (s j) hN (fun γ => ?_) (hs j).2` and prove the remaining obligations.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 
-Use `(hs j).1 γ` as an intermediate fact. Use `this using 3` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `choose P hPc hPe using hP`.
-
-Conclude with `⟨n, P, hPc, fun τ => rel_div w n (DD τ) (f τ) (jT τ) (ReciprocityTheory.ChartRestriction.L1.DD_ne_zero τ) (fun j => s j τ) P (fun j => hPe j τ) (key τ)⟩`.
+A detailed English derivation is pending.
 -/
 theorem integral_over_jT : ∀ (E : Subring ℂ) (f : ℍ → ℂ), InR E f → ∃ (n : ℕ) (c : Fin n → Polynomial ℂ), (∀ i k, (c i).coeff k ∈ E) ∧ ∀ τ, f τ ^ n + ∑ i, (c i).eval (jT τ) * f τ ^ (i : ℕ) = 0 := by
   intro E f ⟨N, w, hN, hinv, hq⟩

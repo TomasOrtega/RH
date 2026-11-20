@@ -13,7 +13,7 @@ variable {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R] [
   {F : Type} [Field F]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_aug {X : Type} [AddCommGroup X] {M : Submodule R (X → C)} {g : X → C} :
     g ∈ augIdeal M ↔ g ∈ M ∧ g 0 = 0 := Iff.rfl
@@ -23,7 +23,7 @@ section Pull
 variable {X Y : Type} [AddCommGroup X] [Module F X] [AddCommGroup Y] [Module F Y]
 
 /- English proof (translation)
-Use `hg.2 0 0` as an intermediate fact. Rewrite `this` using `[smul_zero, MulChar.map_zero, map_zero, zero_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eig_zero {M : Submodule R (X → C)} {χ : MulChar F R} {g : X → C} (hg : g ∈ eig M χ) :
     g 0 = 0 := by
@@ -31,7 +31,7 @@ theorem eig_zero {M : Submodule R (X → C)} {χ : MulChar F R} {g : X → C} (h
   rwa [smul_zero, MulChar.map_zero, map_zero, zero_mul] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h g hg.1, fun a x => by simpa using hg.2 a (u x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem eig_pull (u : X →ₗ[F] Y) {M : Submodule R (Y → C)} {M' : Submodule R (X → C)}
     (h : ∀ g ∈ M, g ∘ u ∈ M') {χ : MulChar F R} {g : Y → C} (hg : g ∈ eig M χ) :
@@ -39,11 +39,9 @@ theorem eig_pull (u : X →ₗ[F] Y) {M : Submodule R (Y → C)} {M' : Submodule
   ⟨h g hg.1, fun a x => by simpa using hg.2 a (u x)⟩
 
 /- English proof (translation)
-Establish `: (sqIdeal (augIdeal M)).map (LinearMap.funLeft R C u) ≤ sqIdeal (augIdeal M')`. Rewrite using `[sqIdeal, Submodule.map_span_le]`. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Use `Submodule.subset_span ⟨a ∘ u, ⟨h a ha.1, ?_⟩, b ∘ u, ⟨h b hb.1, ?_⟩, rfl⟩` and prove the remaining obligations. Use `show a (u 0) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `ha.2`. Use `show b (u 0) = 0`. Rewrite using `[map_zero]`. Conclude with `hb.2`.
-
-Conclude with `this (Submodule.mem_map_of_mem hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_pull (u : X →ₗ[F] Y) {M : Submodule R (Y → C)} {M' : Submodule R (X → C)}
     (h : ∀ g ∈ M, g ∘ u ∈ M') {g : Y → C} (hg : g ∈ sqIdeal (augIdeal M)) :
@@ -59,15 +57,13 @@ theorem sq_pull (u : X →ₗ[F] Y) {M : Submodule R (Y → C)} {M' : Submodule 
   exact this (Submodule.mem_map_of_mem hg)
 
 /- English proof (translation)
-Establish `h1 : ∀ g ∈ M, g ∘ (e : X →ₗ[F] Y) ∈ M'` using `fun g hg => (h g).1 hg`. Establish `c1 : ∀ g : X → C, (g ∘ (e.symm : Y →ₗ[F] X)) ∘ e = g` using `fun g => by`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Establish `c2 : ∀ g : Y → C, (g ∘ e) ∘ (e.symm : Y →ₗ[F] X) = g` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Establish `h2 : ∀ g ∈ M', g ∘ (e.symm : Y →ₗ[F] X) ∈ M` using `fun g hg => by`. Rewrite using `[h, c1]`. Conclude with `hg`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ : eig M χ ≃ₗ[R] eig M' χ` to `{ toFun := fun g => ⟨g.1 ∘ e, eig_pull (e : X →ₗ[F] Y) h1 g.2⟩ invFun := fun g => ⟨g.1 ∘ (e.symm : Y →ₗ[F] X), eig_pull _ h2 g.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun g => Subtype.ext (c2 g.1) right_inv := fun g => Subtype.ext (c1 g.1) }`. Take `⟨m, c, ⟨ψ⟩, hx⟩` from `hx`. Use `⟨m, c, ⟨(Submodule.Quotient.equiv _ _ φ ?_).trans ψ⟩, hx⟩` and prove the remaining obligations. Use extensionality with `g`. Rewrite using `[Submodule.mem_map_equiv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `: (g.1 ∘ (e.symm : Y →ₗ[F] X)) ∘ e ∈ sqIdeal (augIdeal M')` using `sq_pull (e : X →ₗ[F] Y) h1 hg`. Rewrite `this` using `[c1]`. Conclude with `this`.
-
-Introduce `hg`. Conclude with `sq_pull (e.symm : Y →ₗ[F] X) h2 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasLen_transport (e : X ≃ₗ[F] Y) {M : Submodule R (Y → C)} {M' : Submodule R (X → C)}
     (h : ∀ g, g ∈ M ↔ g ∘ e ∈ M') {χ : MulChar F R} {x : NNReal}
@@ -104,7 +100,7 @@ end Pull
 variable {N : Type} [AddCommGroup N] [Module F N]
 
 /- English proof (translation)
-Establish `: Subsingleton (eig M χ)` using `⟨fun a b => Subtype.ext (funext fun y => by`. Rewrite using `[Subsingleton.elim y 0, eig_zero a.2, eig_zero b.2])⟩`. Establish `: Subsingleton (OmType M χ)` using `(Submodule.Quotient.mk_surjective _).subsingleton`. Use `hasLen_unique hv hx ⟨0, Fin.elim0, ⟨LinearEquiv.ofSubsingleton _ _⟩, by simp⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hasLen_trivial (hv : v.Integers R) [Subsingleton N] {M : Submodule R (N → C)}
     {χ : MulChar F R} {x : NNReal} (hx : HasLen v R (OmType M χ) x) : x = 1 := by
@@ -114,17 +110,15 @@ theorem hasLen_trivial (hv : v.Integers R) [Subsingleton N] {M : Submodule R (N 
   refine hasLen_unique hv hx ⟨0, Fin.elim0, ⟨LinearEquiv.ofSubsingleton _ _⟩, by simp⟩
 
 /- English proof (translation)
-Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, ⟨hg, hi⟩, rfl⟩`. Use `⟨g ∘ L.mkQ, ⟨hg, fun x k hk => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show g (L.mkQ (x + k)) = g (L.mkQ x)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `hi _ _ (Submodule.mem_map_of_mem hk)`. Use function extensionality and compare the values at `a show g (L.mkQ (a • t)) = g (a • L.mkQ t)`. Rewrite using `[map_smul]`. Introduce and unpack `⟨g, ⟨hg, hi⟩, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsur` using `L.mkQ_surjective`. Establish `key : ∀ x, g (Function.surjInv hsur (L.mkQ x)) = g x` using `fun x => by`. Establish `h1 : L.mkQ (Function.surjInv hsur (L.mkQ x) - x) = 0`. Rewrite using `[map_sub, Function.surjInv_eq hsur, sub_self]`. Establish `h2 : Function.surjInv hsur (L.mkQ x) - x ∈ K` using `hLK ((Submodule.Quotient.mk_eq_zero L).1 h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hi x _ h2` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Use `⟨g ∘ Function.surjInv hsur, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (fun x => g (Function.surjInv hsur (L.mkQ x))) ∈ M`. Simplify `hg` using `only [key]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x _ ⟨k, hk, rfl⟩`. Take `⟨x, rfl⟩` from `hsur x`. Use `show g (Function.surjInv hsur (L.mkQ x + L.mkQ k)) = g (Function.surjInv hsur (L.mkQ x))`. Rewrite using `[← map_add, key, key]`. Conclude with `hi x k hk`.
-
-Use function extensionality and compare the values at `a show g (Function.surjInv hsur (a • L.mkQ t)) = g (a • t)`. Rewrite using `[← map_smul, key]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_step (M : Submodule R (N → C)) {L K : Submodule F N} (hLK : L ≤ K) (t : N) :
     stepOrder (M.comap (LinearMap.funLeft R C (L.mkQ : N → N ⧸ L))) (K.map L.mkQ) (L.mkQ t) =
@@ -161,9 +155,9 @@ theorem quot_step (M : Submodule R (N → C)) {L K : Submodule F N} (hLK : L ≤
       rw [← map_smul, key]
 
 /- English proof (translation)
-Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨g, hg, rfl⟩, e⟩`. Conclude with `⟨g, hg, fun a k hk => e a ⟨k, hKL hk⟩ hk⟩`. Introduce and unpack `⟨g, hg, e⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ⟨g, hg, rfl⟩, fun a k hk => e a k hk⟩`.
+Supply the required witnesses or components.
 -/
 theorem sub_stepRes (M : Submodule R (N → C)) {L K : Submodule F N} (hKL : K ≤ L) (t : L) :
     stepOrderRes (M.map (LinearMap.funLeft R C (Subtype.val : L → N))) (K.comap L.subtype) t =
@@ -176,11 +170,11 @@ theorem sub_stepRes (M : Submodule R (N → C)) {L K : Submodule F N} (hKL : K �
     exact ⟨_, ⟨g, hg, rfl⟩, fun a k hk => e a k hk⟩
 
 /- English proof (translation)
-Use `hasLen_transport (LinearEquiv.toSpanNonzeroSingleton F N t ht) (fun g => ?_) hx` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Use `⟨g, ⟨hg, fun x k hk => ?_⟩, rfl⟩` and prove the remaining obligations. Take `rfl : k = 0` from `hk`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[add_zero]`. Introduce and unpack `⟨g', ⟨hg, -⟩, e⟩`. Use `⟨g', hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Take `⟨a, rfl⟩` from `(LinearEquiv.toSpanNonzeroSingleton F N t ht).surjective y`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Conclude with `congrFun e a`.
+A detailed English derivation is pending.
 -/
 theorem hasLen_line (M : Submodule R (N → C)) {t : N} (ht : t ≠ 0) {χ : MulChar F R} {x : NNReal}
     (hx : HasLen v R (OmType (stepOrder M (⊥ : Submodule F N) t) χ) x) :

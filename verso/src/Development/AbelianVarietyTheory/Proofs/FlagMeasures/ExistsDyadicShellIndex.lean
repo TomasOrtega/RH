@@ -6,9 +6,9 @@ open Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hex : ∀ s : ℝ, ∃ n : ℕ, s ≤ 2 ^ n * ep`. Introduce `s`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (s / ep) (by norm_num : (1 : ℝ) < 2)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[div_lt_iff₀ hep]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hn.le`. Use `⟨fun s => Nat.find (hex s), fun s => Nat.find_spec (hex s), fun s j hj => ?_⟩` and prove the remaining obligations. Conclude with `not_le.mp (Nat.find_min (hex s) hj)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_dyadic_shell_index (ep : ℝ) (hep : 0 < ep) :
     ∃ sh : ℝ → ℕ, (∀ s, s ≤ 2 ^ sh s * ep) ∧ ∀ s j, j < sh s → 2 ^ j * ep < s := by
@@ -23,7 +23,7 @@ theorem exists_dyadic_shell_index (ep : ℝ) (hep : 0 < ep) :
   exact not_le.mp (Nat.find_min (hex s) hj)
 
 /- English proof (translation)
-Establish `hz : (fun _ : ι => (0 : ℕ)) ∈ Fintype.piFinset (fun _ : ι => range (N + 1))`. Simplify using `[Fintype.mem_piFinset]`. Rewrite using `[Finset.sum_erase_eq_sub hz, ← Finset.prod_univ_sum (fun _ : ι => range (N + 1)) (fun _ j => W j), Finset.prod_const, Finset.prod_const, Finset.card_univ, Finset.sum_range_succ', add_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_prod_box_erase_zero (ι : Type) [Fintype ι] [DecidableEq ι] (W : ℕ → ℝ) (N : ℕ) :
     ∑ k ∈ (Fintype.piFinset (fun _ : ι => range (N + 1))).erase (fun _ => 0), ∏ v, W (k v)
@@ -36,55 +36,49 @@ theorem sum_prod_box_erase_zero (ι : Type) [Fintype ι] [DecidableEq ι] (W : �
     Finset.prod_const, Finset.prod_const, Finset.card_univ, Finset.sum_range_succ', add_comm]
 
 /- English proof (translation)
-Introduce `Γ ι _ d w A κ h ep c hA hκ hep hc hepc hκep hh hT hd hcount hfar hw`. Take `⟨sh, hsh1, hsh2⟩` from `exists_dyadic_shell_index ep hep`. Take `⟨hineq, -, hpow⟩` from `shell_sum_elementary_inequalities`. Use `set T : ℝ := h * ep ^ 2 / 16 with hTdef`. Establish `hhpos : 0 < h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hneg`. Use `replace hneg := not_lt.mp hneg`. Establish `h1 : h * ep ^ 2 ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hneg (sq_nonneg ep)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hκT : κ * ep ≤ T / 2`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : 32 * κ * ep ≤ h * ep * ep` using `mul_le_mul_of_nonneg_right hh hep.le`. Rewrite using `[hTdef]`. Use the polynomial consequences of the given equalities and inequalities. Set `F : ℕ → ℝ` to `fun j => if j = 0 then 1 else Real.exp (-T * 2 ^ j)`. Set `W : ℕ → ℝ` to `fun j => Real.exp (κ * (2 ^ j * ep)) * F j`.
+Use the polynomial consequences of the given equalities and inequalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `K : Γ → ι → ℕ` to `fun γ v => sh (d γ v)`. Establish `hF0 : ∀ j, 0 ≤ F j`. Introduce `j`. Simplify using `only [F]`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_le_one`. Conclude with `(Real.exp_pos _).le`. Establish `hW0 : ∀ j, 0 ≤ W j` using `fun j => mul_nonneg (Real.exp_pos _).le (hF0 j)`. Establish `hwF : ∀ γ, w γ ≤ ∏ v, F (K γ v)`. Introduce `γ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `(hw γ).2.trans (Finset.prod_le_prod (fun v _ => (Real.exp_pos _).le) (fun v _ => ?_))` and prove the remaining obligations. Establish `hmin0 : 0 ≤ min (d γ v ^ 2) (d γ v / c)` using `le_min (sq_nonneg _) (div_nonneg (hd γ v) hc.le)`. Simplify using `only [F, K]`. Use `split_ifs with hk`. Rewrite using `[Real.exp_le_one_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[Real.exp_le_exp]`. Establish `hlt : sh (d γ v) - 1 < sh (d γ v)` using `Nat.sub_lt (Nat.pos_of_ne_zero hk) one_pos`. Establish `hbig` using `hsh2 (d γ v) _ hlt`. Establish `hp1 : (1 : ℝ) ≤ 2 ^ (sh (d γ v) - 1)` using `one_le_pow₀ (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Establish `hge : ep ≤ d γ v` using `by nlinarith`. Establish `hm` using `hineq (d γ v) ep c hep hge hc hepc`. Establish `h2 : (2 : ℝ) ^ sh (d γ v) = 2 * 2 ^ (sh (d γ v) - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hm2 : ep ^ 2 * 2 ^ (sh (d γ v) - 1) ≤ min (d γ v ^ 2) (d γ v / c)`. Establish `: ep * (2 ^ (sh (d γ v) - 1) * ep) ≤ ep * d γ v` using `mul_le_mul_of_nonneg_left hbig.le hep.le`. Use the polynomial consequences of the given equalities and inequalities. Establish `hm3` using `mul_le_mul_of_nonneg_left hm2 hhpos.le`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2, hTdef]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hfib : ∀ (u : Finset Γ) (k : ι → ℕ), ((u.filter fun γ => K γ = k).card : ℝ) ≤ A * ∏ v, Real.exp (κ * (2 ^ k v * ep))`. Introduce `u k`. Establish `hr : ∀ v, 0 ≤ (2 : ℝ) ^ k v * ep` using `fun v => mul_nonneg (pow_nonneg (by norm_num) _) hep.le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hfin, hcard⟩` from `hcount (fun v => 2 ^ k v * ep) hr`. Establish `hsub : ((u.filter fun γ => K γ = k : Finset Γ) : Set Γ) ⊆ {γ | ∀ v, d γ v ≤ 2 ^ k v * ep}`. Introduce `γ hγ`. Establish `hγ'` using `Finset.mem_filter.mp (Finset.mem_coe.mp hγ)`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `hsh1 (d γ v)` as an intermediate fact. Rewrite using `[← hγ'.2]`. Conclude with `this`. Establish `hle` using `Set.ncard_le_ncard hsub hfin`. Rewrite `hle` using `[Set.ncard_coe_finset]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Real.exp_sum]`. Establish `hpart : ∀ u : Finset Γ, ∑ γ ∈ u, w γ ≤ A * (2 * Fintype.card ι * 3 ^ Fintype.card ι * Real.exp (-(h * ep ^ 2 / 16)))`. Introduce `u`. Use `set N : ℕ := u.sup fun γ => Finset.univ.sup (K γ) with hN`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := (Fintype.piFinset fun _ : ι => range (N + 1)).erase (fun _ => 0) with hB`. Establish `hmaps : ∀ γ ∈ u, K γ ∈ B`. Introduce `γ hγ`. Rewrite using `[hB, Finset.mem_erase, Fintype.mem_piFinset]`. Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Take `⟨v, hv⟩` from `hfar γ`. Establish `h1 : K γ v = 0` using `congrFun h0 v`. Establish `h2` using `hsh1 (d γ v)`. Simplify using `only [K] at h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1, pow_zero, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Finset.mem_range, Nat.lt_succ_iff]`. Conclude with `(Finset.le_sup (f := K γ) (Finset.mem_univ v)).trans (Finset.le_sup (f := fun γ => Finset.univ.sup (K γ)) hγ)`. Establish `hal0 : 0 ≤ W 0` using `hW0 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hal2 : W 0 ≤ 2` using `by show Real.exp (κ * (2 ^ 0 * ep)) * (if (0 : ℕ) = 0 then 1 else Real.exp (-T * 2 ^ 0)) ≤ 2`. Rewrite using `[if_pos rfl, pow_zero, one_mul, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hT1 : 1 ≤ T` using `hT`. Establish `hWs : ∀ i, W (i + 1) ≤ Real.exp (-T) * (1 / 2 : ℝ) ^ i`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Use `le_trans ?_ (exp_neg_mul_two_pow_le_geometric T hT1 i)` and prove the remaining obligations. Simplify using `only [W, F, if_neg (Nat.succ_ne_zero i)]`. Rewrite using `[← Real.exp_add, Real.exp_le_exp, pow_succ]`. Establish `hp : (0 : ℝ) ≤ 2 ^ i` using `pow_nonneg (by norm_num) _`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hexpT : Real.exp (-T) ≤ 1 / 2`. Establish `h1 : Real.exp (-T) ≤ Real.exp (-1)` using `Real.exp_le_exp.mpr (by linarith)`. Establish `h2 : (1 : ℝ) + 1 ≤ Real.exp 1` using `Real.add_one_le_exp 1`. Establish `h3 : Real.exp (-1) * Real.exp 1 = 1` using `by rw [← Real.exp_add]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : 0 < Real.exp (-1)` using `Real.exp_pos _`. Use the polynomial consequences of the given equalities and inequalities. Establish `hbe : ∑ i ∈ range N, W (i + 1) ≤ 2 * Real.exp (-T)`. Combine the equalities or inequalities in the displayed calculation. Establish `hbe0 : 0 ≤ ∑ i ∈ range N, W (i + 1)` using `Finset.sum_nonneg fun i _ => hW0 _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hbe1 : ∑ i ∈ range N, W (i + 1) ≤ 1` using `by linarith`. Establish `hbox` using `sum_prod_box_erase_zero ι W N`. Establish `key` using `hpow (W 0) (∑ i ∈ range N, W (i + 1)) (Fintype.card ι) hal0 hal2 hbe0 hbe1`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ ∑ k ∈ B, (A * ∏ v, Real.exp (κ * (2 ^ k v * ep))) * ∏ v, F (k v) := Finset.sum_le_sum fun k _ => mul_le_mul_of_nonneg_right (hfib u k) (Finset.prod_nonneg fun v _ => hF0 _)`. Use `_ = A * ∑ k ∈ B, ∏ v, W (k v) := by`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_assoc, ← Finset.prod_mul_distrib]`. Use `_ = A * ((W 0 + ∑ i ∈ range N, W (i + 1)) ^ Fintype.card ι - W 0 ^ Fintype.card ι) := by`. Rewrite using `[hB, hbox]`. Use `_ ≤ A * (Fintype.card ι * (2 * Real.exp (-T)) * 3 ^ Fintype.card ι) := by`. Use `mul_le_mul_of_nonneg_left (key.trans ?_) hA` and prove the remaining obligations.
-
-Establish `h3 : (0 : ℝ) ≤ 3 ^ Fintype.card ι` using `pow_nonneg (by norm_num) _`. Establish `hn : (0 : ℝ) ≤ Fintype.card ι` using `Nat.cast_nonneg _`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hbe hn) h3`. Use `_ = A * (2 * Fintype.card ι * 3 ^ Fintype.card ι * Real.exp (-(h * ep ^ 2 / 16))) := by`. Rewrite using `[hTdef]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hw0 : 0 ≤ w` using `fun γ => (hw γ).1`. Conclude with `⟨summable_of_sum_le hw0 hpart, Real.tsum_le_of_sum_le hw0 hpart⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sum_over_dyadic_shells :
     ∀ (Γ ι : Type) [Fintype ι] (d : Γ → ι → ℝ) (w : Γ → ℝ) (A κ h ep c : ℝ), 0 ≤ A → 0 ≤ κ → 0 < ep → 0 < c → ep ≤ 1 / c → κ * ep ≤ Real.log 2 → 32 * κ ≤ h * ep → 1 ≤ h * ep ^ 2 / 16 → (∀ γ v, 0 ≤ d γ v) → (∀ r : ι → ℝ, (∀ v, 0 ≤ r v) → {γ | ∀ v, d γ v ≤ r v}.Finite ∧ (({γ | ∀ v, d γ v ≤ r v}.ncard : ℕ) : ℝ) ≤ A * Real.exp (κ * ∑ v, r v)) → (∀ γ, ∃ v, ep < d γ v) → (∀ γ, 0 ≤ w γ ∧ w γ ≤ ∏ v, Real.exp (-(h / 8) * min (d γ v ^ 2) (d γ v / c))) → Summable w ∧ ∑' γ, w γ ≤ A * (2 * Fintype.card ι * 3 ^ Fintype.card ι * Real.exp (-(h * ep ^ 2 / 16))) := by

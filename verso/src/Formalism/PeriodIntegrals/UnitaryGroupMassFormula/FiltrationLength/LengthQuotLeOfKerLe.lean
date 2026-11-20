@@ -11,21 +11,19 @@ noncomputable def ell (B A : Submodule R W) : ℕ∞ :=
   Module.length R (↥B ⧸ A.comap B.subtype)
 
 /- English proof (translation)
-Unfold `ell`. Set `f : (↥C ⧸ A.comap C.subtype) →ₗ[R] (↥B ⧸ A.comap B.subtype)` to `Submodule.mapQ _ _ (Submodule.inclusion hCB) (fun x hx => by simpa using hx)`. Set `g : (↥B ⧸ A.comap B.subtype) →ₗ[R] (↥B ⧸ C.comap B.subtype)` to `Submodule.mapQ _ _ LinearMap.id (fun x hx => by simpa using hAC hx)`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `_ c`. Rewrite `hy` using `[LinearMap.mem_ker]`. Simplify using `only [f, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, Submodule.coe_inclusion] at hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Conclude with `hy`. Establish `hg : Function.Surjective g`. Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `_ b => exact ⟨Submodule.Quotient.mk b, by simp [g]⟩`. Establish `H : Function.Exact f g`. Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `_ b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hb`. Simplify using `only [g, Submodule.mapQ_apply, LinearMap.id_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype] at hb`. Conclude with `⟨Submodule.Quotient.mk ⟨b, hb⟩, by simp [f]; rfl⟩`. Introduce and unpack `⟨z, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `_ c`. Simplify using `only [f, Submodule.mapQ_apply] at hz`. Rewrite `hz` using `[Submodule.Quotient.eq]`. Simplify using `only [Submodule.mem_comap, Submodule.coe_subtype, AddSubgroupClass.coe_sub, Submodule.coe_inclusion] at hz`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, Submodule.mapQ_apply, LinearMap.id_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype]`. Establish `h1 : (c : W) ∈ C` using `c.2`. Establish `h2 : (c : W) - (b : W) ∈ C` using `hAC hz`. Use `C.sub_mem h1 h2` as an intermediate fact. Simplify using `using this`.
-
-Conclude with `Module.length_eq_add_of_exact f g hf hg H`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ell_add {A B C : Submodule R W} (hAC : A ≤ C) (hCB : C ≤ B) :
     ell B A = ell C A + ell B C := by
@@ -73,9 +71,9 @@ theorem ell_add {A B C : Submodule R W} (hAC : A ≤ C) (hCB : C ≤ B) :
   exact Module.length_eq_add_of_exact f g hf hg H
 
 /- English proof (translation)
-Establish `h1 : Module.length R (X ⧸ K) ≤ Module.length R (X ⧸ LinearMap.ker g)` using `Module.length_le_of_surjective (Submodule.mapQ _ _ LinearMap.id (by simpa using hK)) (by`. Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `_ x => exact ⟨Submodule.Quotient.mk x, by simp⟩)`. Establish `h2 : Module.length R (X ⧸ LinearMap.ker g) = Module.length R (LinearMap.range g)` using `(g.quotKerEquivRange).length_eq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Establish `h3 : Module.length R (LinearMap.range g) ≤ Module.length R Y` using `Module.length_le_of_injective (LinearMap.range g).subtype (Submodule.subtype_injective _)`. Conclude with `h1.trans (h2.le.trans h3)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem length_quot_le_of_ker_le {X Y : Type} [AddCommGroup X] [Module R X] [AddCommGroup Y]
     [Module R Y] (g : X →ₗ[R] Y) (K : Submodule R X) (hK : LinearMap.ker g ≤ K) :
@@ -93,11 +91,11 @@ theorem length_quot_le_of_ker_le {X Y : Type} [AddCommGroup X] [Module R X] [Add
   exact h1.trans (h2.le.trans h3)
 
 /- English proof (translation)
-Unfold `ell`. Use `Module.length_le_of_surjective (Submodule.mapQ (D.comap C.subtype) (A.comap (A ⊔ C).subtype) (Submodule.inclusion (le_sup_right : C ≤ A ⊔ C)) (fun x hx => by simpa using hDA hx)) ?_` and prove the remaining obligations. Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `_ z`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, c, hc, hz⟩` from `Submodule.mem_sup.mp z.2`. Use `⟨Submodule.Quotient.mk ⟨c, hc⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.mapQ_apply]`. Rewrite using `[Submodule.Quotient.eq]`. Simplify using `only [Submodule.mem_comap, Submodule.coe_subtype, AddSubgroupClass.coe_sub, Submodule.coe_inclusion]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: (c : W) - (z : W) = -a` using `by rw [← hz]; abel`. Rewrite using `[this]`. Conclude with `A.neg_mem ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ell_sup_le {A C D : Submodule R W} (hDA : D ≤ A) :
     ell (A ⊔ C) A ≤ ell C D := by

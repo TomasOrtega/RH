@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.DefiniteQuotient.exists_compact`.
+A detailed English derivation is pending.
 -/
 theorem definite_unitary_cocompact :
     ∀ {D : D7} (V : HSp D), (∀ τ, (gramAt D V τ).PosDef) →

@@ -2,6 +2,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.QuadraticCharacterNorms.QuadCharNorm
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Rg.BcB.F.Fok.Mu3.muExists`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.muEx : UpperTheory.V.Z.Tf.GlobalTraceComparison.MuEx := PositivityTheory.Rg.BcB.F.Fok.Mu3.muExists

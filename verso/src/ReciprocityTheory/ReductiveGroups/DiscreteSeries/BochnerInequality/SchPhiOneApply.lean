@@ -16,17 +16,15 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {lam : Fin n → ℝ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `finiteDimensional_ncV (ε := ε) hV.1 1` as an intermediate fact. Establish `hfdW : FiniteDimensional ℂ (Wm ε E V)` using `Submodule.finiteDimensional_of_le Wm_le_ncV`. Establish `hWst : IsKStableSub ε (bAct E 1) (Wm ε E V)` using `Wm_kStable hE hU hV`. Use `set T : Submodule ℂ M := (Wm ε E V).map (phi E 1) with hTdef`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfdT : FiniteDimensional ℂ T` using `inferInstance`. Establish `hTst : IsKStableSub ε E T`. Introduce `a b hab v hv`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hv`. Rewrite using `[← phi_bAct hE 1 hab y]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_map_of_mem (hWst a b hab y hy)`. Establish `hTne : T ≠ ⊥`. Introduce `hT`. Establish `: phi E 1 x ∈ T` using `Submodule.mem_map_of_mem hx`. Rewrite `this` using `[hT, Submodule.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hne this`. Establish `hKU : IsKUnitary ε E` using `isKUnitary_of_isInfUnitary hU`. Take `⟨y, hyT, hy0, μ, hyμ⟩` from `exists_khw hE hKU hfdT hTst hTne`. Take `⟨x₀, hx₀, rfl⟩` from `Submodule.mem_map.1 hyT`. Take `⟨x1, hx1, -, hkhw, hfx⟩` from `lift_khw (A := bAct E 1) (bAct_isKUnitary hU 1) (phi E 1) (fun a b hab z => phi_bAct hE 1 hab z) hfdW hWst hx₀ hyμ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx10 : x1 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hfx` using `[map_zero]`. Conclude with `hy0 hfx.symm`. Take `⟨a, b, hab, hε, hμ⟩` from `Wm_khw hE hU hV hmono hh hbig hx1 hx10 hkhw`.
-
-Establish `hlay : phi E 1 x₀ ∈ layer ε E V 1` using `phi_mem_layer (Wm_le_ncV hx₀)`. Establish `hcas : casimir E (phi E 1 x₀) = (casVal lam : ℂ) • phi E 1 x₀` using `casimir_genSub hE hc _ (layer_le_genSub (ε := ε) 1 hlay)`. Rewrite `hyμ` using `[hμ]`. Conclude with `hy0 (khw_lowK_sub_root_eq_zero ε hE hU lam hab hε (sch_gap ⟨hmono, h, hh, hbig⟩ hab hε) hyμ hcas)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_one_Wm (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)
@@ -82,7 +80,7 @@ theorem sch_permute_apply {k : ℕ} (σ : Equiv.Perm (Fin k)) (F : Big n k M)
     (κ : Fin k → Fin n × Fin n) : permute σ F κ = F (κ ∘ σ) := rfl
 
 /- English proof (translation)
-Simplify using `only [word, List.ofFn_succ', Fin.snoc_castSucc, Fin.snoc_last, List.concat_eq_append, List.prod_append, List.prod_cons, List.prod_nil, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sch_word_snoc {k : ℕ} (init : Fin k → Fin n × Fin n) (p : Fin n × Fin n) :
     word E (Fin.snoc init p : Fin (k + 1) → Fin n × Fin n) = word E init * E p.1 p.2 := by
@@ -90,13 +88,13 @@ theorem sch_word_snoc {k : ℕ} (init : Fin k → Fin n × Fin n) (p : Fin n × 
     List.prod_append, List.prod_cons, List.prod_nil, mul_one]
 
 /- English proof (translation)
-Simplify using `only [word, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sch_word_one (ι : Fin 1 → Fin n × Fin n) : word E ι = E (ι 0).1 (ι 0).2 := by
   simp only [word, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, mul_one]
 
 /- English proof (translation)
-Simplify using `only [phi, LinearMap.sum_apply, LinearMap.comp_apply]`. Use `Fintype.sum_equiv (Equiv.funUnique (Fin 1) (Fin n × Fin n)) _ _ (fun κ => ?_)` and prove the remaining obligations. Rewrite using `[Equiv.funUnique_apply, sch_word_one, sch_coord_apply]`. Take `⟨p, rfl⟩ : ∃ p, κ = fun _ => p` from `⟨κ 0, funext fun j => by rw [Fin.fin_one_eq_zero j]⟩`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem sch_phi_one_apply (G : Big n 1 M) :
     phi E 1 G = ∑ p : Fin n × Fin n, E p.1 p.2 (G (fun _ => p)) := by
@@ -107,11 +105,11 @@ theorem sch_phi_one_apply (G : Big n 1 M) :
   rfl
 
 /- English proof (translation)
-Set `e : (Fin k → Fin n × Fin n) × (Fin n × Fin n) ≃ (Fin (k + 1) → Fin n × Fin n)` to `{ toFun := fun q => Fin.snoc q.1 q.2 invFun := fun κ => (Fin.init κ, κ (Fin.last k)) left_inv := fun q => by simp right_inv := fun κ => Fin.snoc_init_self κ }`. Simplify using `only [phi, LinearMap.sum_apply, LinearMap.comp_apply, sch_coord_apply]`. Rewrite using `[Fintype.sum_equiv e.symm _ (fun q => word E (Fin.snoc q.1 q.2 : Fin (k + 1) → Fin n × Fin n) (F (Fin.snoc q.1 q.2))) (fun κ => by simp only [e, Equiv.coe_fn_symm_mk, Fin.snoc_init_self])]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_eq_zero fun init _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [sch_word_snoc, Module.End.mul_apply]`. Rewrite using `[← map_sum]`. Break down `isEmpty_or_nonempty (Fin n × Fin n) with hX | ⟨⟨p0⟩⟩` into its components or cases. Simplify using the standard rewrite rules. Establish `h` using `phi_one_Wm hE hU hV hc hmono hh hbig (hF (Fin.snoc init p0))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h` using `[sch_phi_one_apply]`. Simplify using `only [sch_slice_apply, Fin.update_snoc_last] at h`. Rewrite using `[h, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_Wm_last (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)
@@ -139,11 +137,9 @@ theorem phi_Wm_last (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε 
     rw [h, map_zero]
 
 /- English proof (translation)
-Establish `hperm : ∀ κ, slice (Fin.last k) κ (permute (Equiv.swap i (Fin.last k)) F) ∈ Wm ε E V`. Introduce `κ`. Establish `heq : slice (Fin.last k) κ (permute (Equiv.swap i (Fin.last k)) F) = slice i (κ ∘ Equiv.swap i (Fin.last k)) F`. Use `PiLp.ext fun ι => ?_` and prove the remaining obligations. Rewrite using `[sch_slice_apply, sch_permute_apply, sch_slice_apply, Function.update_comp_equiv, Equiv.symm_swap, Equiv.swap_apply_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `hF _`. Establish `h0` using `phi_Wm_last hE hU hV hc hmono hh hbig hperm`. Establish `hsub` using `phi_permute_sub_mem hE hV.2.1 (Equiv.swap i (Fin.last k)) hF0`. Rewrite `hsub` using `[h0, sub_zero]`.
-
-Conclude with `hsub`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_Wm_position (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)

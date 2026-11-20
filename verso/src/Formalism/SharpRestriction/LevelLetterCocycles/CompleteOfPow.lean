@@ -8,7 +8,7 @@ namespace Formalism.MainNotions.CrystallineLiftingInputs.OL
 open Formalism.BasicNotions Formalism.BasicNotions.Loc IsLocalRing
 
 /- English proof (translation)
-Set `: WithIdeal R` to `⟨J⟩`. Establish `hJ : IsAdic J` using `rfl`. Establish `hJn : IsAdic (J ^ n)` using `is_ideal_adic_pow hJ hn`. Rewrite using `[hJ.isAdicComplete_iff]`. Conclude with `hJn.isAdicComplete_iff.mp h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem complete_of_pow {R : Type*} [CommRing R] (J : Ideal R) {n : ℕ} (hn : 0 < n)
     (h : IsAdicComplete (J ^ n) R) : IsAdicComplete J R := by
@@ -21,7 +21,7 @@ theorem complete_of_pow {R : Type*} [CommRing R] (J : Ideal R) {n : ℕ} (hn : 0
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `congrArg (fun x : ↥(OL LL) => (x : ↥LL.1)) h`. Simplify using `only [ZeroMemClass.coe_zero, SubringClass.coe_natCast] at h2`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem l_ne_zero (LL : FinExt l) : ((l : ℕ) : ↥(OL LL)) ≠ 0 := by
   intro h
@@ -30,9 +30,9 @@ theorem l_ne_zero (LL : FinExt l) : ((l : ℕ) : ↥(OL LL)) ≠ 0 := by
   exact (Fact.out : l.Prime).ne_zero (by exact_mod_cast h2)
 
 /- English proof (translation)
-Introduce `hu`. Establish `h0` using `Formalism.MainNotions.LiftingTheory.zl_v_unit P LL hu.unit`. Establish `h1` using `Formalism.MainNotions.LiftingTheory.zl_v_pow P LL 1`. Rewrite `h0` using `[IsUnit.unit_spec, map_natCast]`. Rewrite `h1` using `[pow_one, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h1 (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem l_not_unit (P : LocPrime l) (LL : FinExt l) : ¬ IsUnit ((l : ℕ) : ↥(OL LL)) := by
   intro hu
@@ -43,7 +43,7 @@ theorem l_not_unit (P : LocPrime l) (LL : FinExt l) : ¬ IsUnit ((l : ℕ) : ↥
   exact absurd h1 (by simp)
 
 /- English proof (translation)
-Set `` to `Formalism.MainNotions.LiftingTheory.lkd_local P LL`. Conclude with `(mem_maximalIdeal _).2 (mem_nonunits_iff.2 (l_not_unit P LL))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem l_mem_max (P : LocPrime l) (LL : FinExt l) :
     letI := Formalism.MainNotions.LiftingTheory.lkd_local P LL
@@ -52,9 +52,9 @@ theorem l_mem_max (P : LocPrime l) (LL : FinExt l) :
   exact (mem_maximalIdeal _).2 (mem_nonunits_iff.2 (l_not_unit P LL))
 
 /- English proof (translation)
-Use `letI := Formalism.MainNotions.LiftingTheory.lkd_local P LL`. Establish `hfd : FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `hded : IsDedekindDomain ↥(OL LL)` using `IsIntegralClosure.isDedekindDomain ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)`. Establish `hnf : ¬ IsField ↥(OL LL)` using `fun hf => by`. Establish `hm` using `l_mem_max P LL`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hm` using `[isField_iff_maximalIdeal_eq.mp hf, Ideal.mem_bot]`. Conclude with `l_ne_zero LL hm`. Conclude with `((IsDiscreteValuationRing.TFAE _ hnf).out 0 2).mpr hded`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OL_dvr (P : LocPrime l) (LL : FinExt l) : IsDiscreteValuationRing ↥(OL LL) := by
   letI := Formalism.MainNotions.LiftingTheory.lkd_local P LL
@@ -68,11 +68,11 @@ theorem OL_dvr (P : LocPrime l) (LL : FinExt l) : IsDiscreteValuationRing ↥(OL
   exact ((IsDiscreteValuationRing.TFAE _ hnf).out 0 2).mpr hded
 
 /- English proof (translation)
-Use `letI := Formalism.MainNotions.LiftingTheory.lkd_local P LL`. Use `OL_dvr P LL` as an intermediate fact. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible ↥(OL LL)`. Establish `hl0 : Ideal.span {((l : ℕ) : ↥(OL LL))} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `l_ne_zero LL`. Take `⟨e, he⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hl0 hϖ`. Establish `hC` using `Formalism.MainNotions.WachCoordinates.Br.complete_OL LL`. Rewrite `hC` using `[he, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq]`. Use `complete_of_pow _ (n := e) (Nat.pos_of_ne_zero ?_) hC` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hC` using `[pow_zero, Ideal.one_eq_top]`. Conclude with `not_subsingleton _ hC.subsingleton`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OL_complete_max (P : LocPrime l) (LL : FinExt l) :
     letI := Formalism.MainNotions.LiftingTheory.lkd_local P LL

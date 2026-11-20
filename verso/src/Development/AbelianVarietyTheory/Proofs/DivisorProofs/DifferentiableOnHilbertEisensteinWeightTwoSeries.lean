@@ -17,7 +17,7 @@ namespace GlobalTheory.QHolo
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `: upperHalf F = ⋂ τ : Emb F, (fun z : Emb F → ℂ => (z τ).im) ⁻¹' Set.Ioi 0`. Use extensionality with `z`. Simplify using `[upperHalf]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun τ => isOpen_Ioi.preimage (by fun_prop)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_upperHalf : IsOpen (upperHalf F) := by
   have : upperHalf F = ⋂ τ : Emb F, (fun z : Emb F → ℂ => (z τ).im) ⁻¹' Set.Ioi 0 := by
@@ -26,7 +26,7 @@ theorem isOpen_upperHalf : IsOpen (upperHalf F) := by
   exact isOpen_iInter_of_finite fun τ => isOpen_Ioi.preimage (by fun_prop)
 
 /- English proof (translation)
-Simplify using `[qClass, qTerm, qPow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qClass_two (𝔞 𝔟 : Frac F) (z : Emb F → ℂ) (c : Quotient (qRel 𝔞 𝔟)) : qClass 𝔞 𝔟 2 z c =
     ((|(Algebra.norm ℚ c.out.1.1 : ℝ)| / nrm 𝔞 : ℝ) : ℂ) *
@@ -34,7 +34,7 @@ theorem qClass_two (𝔞 𝔟 : Frac F) (z : Emb F → ℂ) (c : Quotient (qRel 
   simp [qClass, qTerm, qPow]
 
 /- English proof (translation)
-Simplify using `only [qClass_two]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_qClass (𝔞 𝔟 : Frac F) (c : Quotient (qRel 𝔞 𝔟)) :
     Differentiable ℂ (fun z => qClass 𝔞 𝔟 2 z c) := by
@@ -42,7 +42,7 @@ theorem differentiable_qClass (𝔞 𝔟 : Frac F) (c : Quotient (qRel 𝔞 𝔟
   fun_prop
 
 /- English proof (translation)
-The claim follows from `|(Algebra.norm ℚ c.out.1.1 : ℝ)| / nrm 𝔞 * Real.exp (-(2 * Real.pi) * ∑ τ, τ (c.out.1.1 * c.out.1.2) * (z τ).im) := by rw [qClass_two, norm_mul, Complex.norm_exp, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (div_nonneg (abs_nonneg _) (by unfold nrm; exact_mod_cast Fraction …`.
+A detailed English derivation is pending.
 -/
 theorem norm_qClass (𝔞 𝔟 : Frac F) (z : Emb F → ℂ) (c : Quotient (qRel 𝔞 𝔟)) : ‖qClass 𝔞 𝔟 2 z c‖ =
     |(Algebra.norm ℚ c.out.1.1 : ℝ)| / nrm 𝔞 *
@@ -53,7 +53,7 @@ theorem norm_qClass (𝔞 𝔟 : Frac F) (z : Emb F → ℂ) (c : Quotient (qRel
   simp [Complex.mul_re, Complex.mul_im, Complex.re_sum, Complex.im_sum, Finset.mul_sum]
 
 /- English proof (translation)
-Establish `hB0 : ∀ b, 0 ≤ B b` using `fun b => by simpa using hfib b ∅ (by simp)`. Use `summable_of_sum_le hf (c := ∑' b, B b) fun u => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := u) (t := u.image g) (g := g) (fun x hx => Finset.mem_image_of_mem g hx)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem summable_of_fiber {α β : Type} (g : α → β) (f : α → ℝ) (B : β → ℝ) (hf : ∀ a, 0 ≤ f a)
     (hB : Summable B) (hfib : ∀ (b : β) (s : Finset α), (∀ a ∈ s, g a = b) → ∑ a ∈ s, f a ≤ B b) :
@@ -68,42 +68,42 @@ theorem summable_of_fiber {α β : Type} (g : α → β) (f : α → ℝ) (B : �
     _ ≤ ∑' b, B b := hB.sum_le_tsum _ fun b _ => hB0 b
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.card_hilbertEisensteinFourierFiber_le_norm F 𝔞 𝔟 ξ s hs`.
+A detailed English derivation is pending.
 -/
 theorem card_fiber_le [IsTotallyReal F] (𝔞 𝔟 : Frac F) (ξ : F) (s : Finset (Quotient (qRel 𝔞 𝔟)))
     (hs : ∀ c ∈ s, c.out.1.1 * c.out.1.2 = ξ) :
     (s.card : ℝ) ≤ |(Algebra.norm ℚ ξ : ℝ)| / (nrm 𝔞 * nrm 𝔟) := GlobalTheory.T.card_hilbertEisensteinFourierFiber_le_norm F 𝔞 𝔟 ξ s hs
 
 /- English proof (translation)
-The claim follows from `|(Algebra.norm ℚ p.1.1 : ℝ)| ≤ |(Algebra.norm ℚ (p.1.1 * p.1.2) : ℝ)| / nrm 𝔟 := GlobalTheory.T.abs_norm_le_abs_norm_mul_div_absNorm_of_eisensteinIndexPair F 𝔞 𝔟 p`.
+A detailed English derivation is pending.
 -/
 theorem abs_norm_le [IsTotallyReal F] (𝔞 𝔟 : Frac F) (p : QPair 𝔞 𝔟) :
     |(Algebra.norm ℚ p.1.1 : ℝ)| ≤ |(Algebra.norm ℚ (p.1.1 * p.1.2) : ℝ)| / nrm 𝔟 := GlobalTheory.T.abs_norm_le_abs_norm_mul_div_absNorm_of_eisensteinIndexPair F 𝔞 𝔟 p
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.summable_exp_neg_trace_totallyPositive_fractionalIdeal F L δ hδ`.
+A detailed English derivation is pending.
 -/
 theorem summable_exp_trace [IsTotallyReal F] (L : FractionalIdeal (𝓞 F)⁰ F) {δ : ℝ} (hδ : 0 < δ) :
     Summable (fun x : {x : F // x ∈ L ∧ ∀ τ : Emb F, 0 < τ x} => Real.exp (-δ * ∑ τ : Emb F, τ x.1)) :=
   GlobalTheory.T.summable_exp_neg_trace_totallyPositive_fractionalIdeal F L δ hδ
 
 /- English proof (translation)
-The claim follows from `|(Algebra.norm ℚ x : ℝ)| ^ 2 * Real.exp (-δ * ∑ τ : Emb F, τ x) ≤ C * Real.exp (-(δ / 2) * ∑ τ : Emb F, τ x) := GlobalTheory.T.norm_sq_mul_exp_neg_trace_le' F δ hδ`.
+A detailed English derivation is pending.
 -/
 theorem norm_sq_exp_le [IsTotallyReal F] {δ : ℝ} (hδ : 0 < δ) : ∃ C : ℝ, ∀ x : F, (∀ τ : Emb F, 0 < τ x) →
     |(Algebra.norm ℚ x : ℝ)| ^ 2 * Real.exp (-δ * ∑ τ : Emb F, τ x) ≤ C * Real.exp (-(δ / 2) * ∑ τ : Emb F, τ x) :=
   GlobalTheory.T.norm_sq_mul_exp_neg_trace_le' F δ hδ
 
 /- English proof (translation)
-Establish `hna : 0 ≤ nrm 𝔞` using `by unfold nrm; exact_mod_cast FractionalIdeal.absNorm_nonneg _`. Establish `hnb : 0 ≤ nrm 𝔟` using `by unfold nrm; exact_mod_cast FractionalIdeal.absNorm_nonneg _`. Set `β` to `{x : F // x ∈ ((𝔞 : FractionalIdeal (𝓞 F)⁰ F) * 𝔟) ∧ ∀ τ : Emb F, 0 < τ x}`. Set `g : Quotient (qRel 𝔞 𝔟) → β` to `fun c => ⟨c.out.1.1 * c.out.1.2, FractionalIdeal.mul_mem_mul c.out.2.1 c.out.2.2.1, c.out.2.2.2⟩`. Set `B : β → ℝ` to `fun x => |(Algebra.norm ℚ x.1 : ℝ)| / (nrm 𝔞 * nrm 𝔟) * (|(Algebra.norm ℚ x.1 : ℝ)| / nrm 𝔟 * Real.exp (-δ * ∑ τ : Emb F, τ x.1))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨C, hC⟩` from `norm_sq_exp_le (F := F) hδ`. Establish `hB : Summable B`. Use `Summable.of_nonneg_of_le (fun x => by positivity) (fun x => ?_) ((summable_exp_trace (F := F) ((𝔞 : FractionalIdeal (𝓞 F)⁰ F) * 𝔟) (half_pos hδ)).mul_left ((nrm 𝔞 * nrm 𝔟 * nrm 𝔟)⁻¹ * C))` and prove the remaining obligations. Establish `h` using `hC x.1 x.2.2`. Establish `: B x = (nrm 𝔞 * nrm 𝔟 * nrm 𝔟)⁻¹ * (|(Algebra.norm ℚ x.1 : ℝ)| ^ 2 * Real.exp (-δ * ∑ τ : Emb F, τ x.1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [B]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Establish `h2` using `mul_le_mul_of_nonneg_left h (show 0 ≤ (nrm 𝔞 * nrm 𝔟 * nrm 𝔟)⁻¹ by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `summable_of_fiber g _ B (fun c => by positivity) hB fun b s hs => ?_` and prove the remaining obligations. Establish `hξ : ∀ c ∈ s, c.out.1.1 * c.out.1.2 = b.1` using `fun c hc => by rw [← hs c hc]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun c hc => ?_` and prove the remaining obligations. Rewrite using `[← hξ c hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (abs_norm_le 𝔞 𝔟 c.out) (Real.exp_pos _).le`. Use `_ = (s.card : ℝ) * (|(Algebra.norm ℚ b.1 : ℝ)| / nrm 𝔟 * Real.exp (-δ * ∑ τ : Emb F, τ b.1)) := by`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ B b := mul_le_mul_of_nonneg_right (card_fiber_le 𝔞 𝔟 b.1 s hξ) (by positivity)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_key [IsTotallyReal F] (𝔞 𝔟 : Frac F) {δ : ℝ} (hδ : 0 < δ) :
     Summable (fun c : Quotient (qRel 𝔞 𝔟) =>
@@ -139,11 +139,11 @@ theorem summable_key [IsTotallyReal F] (𝔞 𝔟 : Frac F) {δ : ℝ} (hδ : 0 
     _ ≤ B b := mul_le_mul_of_nonneg_right (card_fiber_le 𝔞 𝔟 b.1 s hξ) (by positivity)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨ε, hε, hle⟩ : ∃ ε > 0, ∀ τ, 2 * ε ≤ (y τ).im := by`. Break down `isEmpty_or_nonempty (Emb F) with h | h` into its components or cases. Conclude with `⟨1, one_pos, fun τ => isEmptyElim τ⟩`. Take `⟨τ₀, hτ₀⟩` from `Finite.exists_min (fun τ => (y τ).im)`. Conclude with `⟨(y τ₀).im / 2, half_pos (hy τ₀), fun τ => by linarith [hτ₀ τ]⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨ε, hε, fun v hv τ => ?_⟩` and prove the remaining obligations. Establish `h1 : dist (v τ) (y τ) < ε` using `(dist_le_pi_dist v y τ).trans_lt (Metric.mem_ball.1 hv)`. Establish `h2 : |(v τ).im - (y τ).im| < ε`. Rewrite `h1` using `[Complex.dist_eq]`. Conclude with `(by simpa using Complex.abs_im_le_norm (v τ - y τ) : |(v τ).im - (y τ).im| ≤ ‖v τ - y τ‖).trans_lt h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[hle τ, (abs_lt.1 h2).1]`.
+A detailed English derivation is pending.
 -/
 theorem exists_im_bound {y : Emb F → ℂ} (hy : y ∈ upperHalf F) :
     ∃ ε > 0, ∀ v ∈ Metric.ball y ε, ∀ τ, ε ≤ (v τ).im := by
@@ -160,11 +160,11 @@ theorem exists_im_bound {y : Emb F → ℂ} (hy : y ∈ upperHalf F) :
   linarith [hle τ, (abs_lt.1 h2).1]
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔞 𝔟`. Use `ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.differentiableOn_tsum_loc isOpen_upperHalf (fun c z => qClass 𝔞 𝔟 2 z c) (fun c => (differentiable_qClass 𝔞 𝔟 c).differentiableOn) ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨ε, hε, hv⟩` from `exists_im_bound hy`. Use `⟨ε, hε, fun c => (nrm 𝔞)⁻¹ * (|(Algebra.norm ℚ c.out.1.1 : ℝ)| * Real.exp (-(2 * Real.pi * ε) * ∑ τ : Emb F, τ (c.out.1.1 * c.out.1.2))), (summable_key 𝔞 𝔟 (by positivity)).mul_left _, fun c v hvb => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_qClass, div_eq_inv_mul, mul_assoc]`. Establish `hn : 0 ≤ (nrm 𝔞)⁻¹` using `inv_nonneg.2 (by unfold nrm; exact_mod_cast FractionalIdeal.absNorm_nonneg _)`. Use `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left ?_ (abs_nonneg _)) hn` and prove the remaining obligations. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `hpos` using `c.out.2.2.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ε * ∑ τ : Emb F, τ (c.out.1.1 * c.out.1.2) ≤ ∑ τ : Emb F, τ (c.out.1.1 * c.out.1.2) * (v τ).im`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun τ _ => by nlinarith [hpos τ, hv v hvb τ]`. Establish `hπ` using `Real.pi_pos`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem qholo : ∀ (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F] (𝔞 𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F),
     DifferentiableOn ℂ (fun z => ∑' c, GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.qClass 𝔞 𝔟 2 z c) (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.upperHalf F) := by

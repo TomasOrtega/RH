@@ -3,7 +3,7 @@ import Development.DiscreteGroups.GlobalIrreducibility.DzStickDefs
 namespace DiscreteGroups.sglob.Stick
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Simplify using `[dsum]`. Unfold `dsum`. Rewrite using `[Nat.digits_def' (by omega) ha, List.sum_cons]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dsum_rec {p : ℕ} (hp : 2 ≤ p) (a : ℕ) : dsum p a = a % p + dsum p (a / p) := by
   rcases Nat.eq_zero_or_pos a with rfl | ha
@@ -12,26 +12,26 @@ theorem dsum_rec {p : ℕ} (hp : 2 ≤ p) (a : ℕ) : dsum p a = a % p + dsum p 
     rw [Nat.digits_def' (by omega) ha, List.sum_cons]
 
 /- English proof (translation)
-Simplify using `[dsum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dsum_zero (p : ℕ) : dsum p 0 = 0 := by simp [dsum]
 
 /- English proof (translation)
-Rewrite using `[dsum_rec hp, Nat.mod_eq_of_lt ha, Nat.div_eq_of_lt ha, dsum_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dsum_of_lt {p a : ℕ} (hp : 2 ≤ p) (ha : a < p) : dsum p a = a := by
   rw [dsum_rec hp, Nat.mod_eq_of_lt ha, Nat.div_eq_of_lt ha, dsum_zero, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `f with`. Consider the case `zero`. Introduce `a ha`. Establish `: a = 0` using `by simpa using ha`. Substitute `this` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `[dsum_zero]`. Consider the case `succ f ih`. Introduce `a ha`. Establish `hx : a / p < p ^ f`. Apply `Nat.div_lt_of_lt_mul` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `ha` using `[pow_succ, mul_comm]`. Then use the resulting hypothesis. Establish `h1` using `ih (a / p) hx`. Establish `h2 : ∑ j ∈ Finset.range (f + 1), a / p ^ (j + 1) = ∑ j ∈ Finset.range f, a / p / p ^ (j + 1) + a / p`. Rewrite using `[Finset.sum_range_succ']`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[Nat.div_div_eq_div_mul, pow_succ p (j + 1), mul_comm]`. Simplify using the standard rewrite rules. Rewrite using `[h2, dsum_rec hp a, mul_add]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, rfl⟩ : ∃ k, p = k + 1` from `⟨p - 1, by omega⟩`. Establish `h3` using `Nat.div_add_mod a (k + 1)`. Simplify using `only [Nat.add_sub_cancel] at h1 ⊢`. Establish `h4 : (k + 1) * (a / (k + 1)) = k * (a / (k + 1)) + a / (k + 1)` using `by ring`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dsum_legendre {p : ℕ} (hp : 2 ≤ p) (f : ℕ) : ∀ a : ℕ, a < p ^ f →
     (p - 1) * ∑ j ∈ Finset.range f, a / p ^ (j + 1) + dsum p a = a := by
@@ -63,7 +63,7 @@ theorem dsum_legendre {p : ℕ} (hp : 2 ≤ p) (f : ℕ) : ∀ a : ℕ, a < p ^ 
     omega
 
 /- English proof (translation)
-Establish `h` using `dsum_legendre hp a a (Nat.lt_pow_self (by omega))`. Unfold `Nat.ModEq`. Use `conv_rhs => rw [← h]`. Rewrite using `[Nat.mul_add_mod]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dsum_modEq {p : ℕ} (hp : 2 ≤ p) (a : ℕ) : dsum p a ≡ a [MOD p - 1] := by
   have h := dsum_legendre hp a a (Nat.lt_pow_self (by omega))
@@ -72,15 +72,15 @@ theorem dsum_modEq {p : ℕ} (hp : 2 ≤ p) (a : ℕ) : dsum p a ≡ a [MOD p - 
   rw [Nat.mul_add_mod]
 
 /- English proof (translation)
-Proceed by induction on `f generalizing a with`. Consider the case `zero`. Establish `: a = 0` using `by simpa using ha`. Substitute `this` using the available equality. Simplify using `[dsum_zero]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Consider the case `succ f ih`. Establish `hq : 0 < p ^ f` using `pow_pos (by omega) f`. Establish `hpq : p ^ (f + 1) = p * p ^ f` using `by rw [pow_succ, mul_comm]`. Establish `hpos : 0 < p * p ^ f` using `Nat.mul_pos (by omega) hq`. Establish `hx : a / p < p ^ f`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Nat.div_lt_of_lt_mul` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Establish `hr : a % p < p` using `Nat.mod_lt _ (by omega)`. Establish `hc : p ^ (f + 1) - 1 - a = p * (p ^ f - 1 - a / p) + (p - 1 - a % p)`. Establish `h3` using `Nat.div_add_mod a p`.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩ : ∃ y, p ^ f = a / p + 1 + y` from `⟨p ^ f - 1 - a / p, by omega⟩`. Establish `h5 : p ^ f - 1 - a / p = y` using `by omega`. Rewrite using `[h5, hpq, hy]`. Establish `h6 : p * (a / p + 1 + y) = p * (a / p) + p + p * y` using `by ring`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1` using `ih (a / p) (by omega)`. Rewrite using `[dsum_rec hp a, dsum_rec hp (p ^ (f + 1) - 1 - a), hc, Nat.mul_add_mod, Nat.mod_eq_of_lt (by omega : p - 1 - a % p < p), Nat.mul_add_div (by omega), Nat.div_eq_of_lt (by omega : p - 1 - a % p < p), add_zero, add_mul, one_mul]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dsum_compl {p : ℕ} (hp : 2 ≤ p) (f a : ℕ) (ha : a ≤ p ^ f - 1) :
     dsum p a + dsum p (p ^ f - 1 - a) = f * (p - 1) := by
@@ -111,21 +111,19 @@ theorem dsum_compl {p : ℕ} (hp : 2 ≤ p) (f a : ℕ) (ha : a ≤ p ^ f - 1) :
     omega
 
 /- English proof (translation)
-Take `⟨M, hM⟩ : ∃ M, A * B = M + 1` from `⟨A * B - 1, by omega⟩`. Establish `hA : 0 < A`. Break down `Nat.eq_zero_or_pos A with rfl | h` into its components or cases. Simplify using `at hM`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hB : 0 < B`. Break down `Nat.eq_zero_or_pos B with rfl | h` into its components or cases. Simplify using `at hM`. Conclude with `h`. Rewrite `ha`, the goal using `[hM, Nat.add_sub_cancel]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hw : a / B < A`. Apply `Nat.div_lt_of_lt_mul` to reduce the goal to its premises. Rewrite using `[mul_comm]`. Use linear arithmetic over natural numbers and integers. Establish `hu : a % B < B` using `Nat.mod_lt _ hB`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Nat.div_add_mod a B`. Use `set w := a / B`. Use `set u := a % B`. Establish `h4 : A * a = A * u + w + M * w`. Rewrite using `[← h3]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h5 : A * u + A ≤ M + 1`. Rewrite using `[← hM]`. Combine the equalities or inequalities in the displayed calculation. Establish `h6 : A * u + w < M`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hcon`. Establish `e1 : w + 1 = A` using `by omega`. Establish `e2 : A * (u + 1) = A * B`. Rewrite using `[hM, mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `e3 : u + 1 = B` using `Nat.eq_of_mul_eq_mul_left hA e2`. Establish `e4 : a + 1 = M + 1`. Rewrite using `[← hM, ← h3, ← e1]`. Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[h4, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt h6]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mod_pred_add {A B a : ℕ} (ha : a < A * B - 1) :
     A * a % (A * B - 1) + (A * B - 1) * (a / B) = A * a := by
@@ -170,7 +168,7 @@ theorem mul_mod_pred_add {A B a : ℕ} (ha : a < A * B - 1) :
   rw [h4, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt h6]
 
 /- English proof (translation)
-Establish `h : p ^ f = p ^ i * p ^ (f - i)` using `by rw [← pow_add, Nat.add_sub_cancel' hi]`. Rewrite `ha`, the goal using `[h]`. Conclude with `mul_mod_pred_add ha`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_mod {p : ℕ} (hp : 2 ≤ p) {f a i : ℕ} (ha : a < p ^ f - 1) (hi : i ≤ f) :
     p ^ i * a % (p ^ f - 1) + (p ^ f - 1) * (a / p ^ (f - i)) = p ^ i * a := by
@@ -179,9 +177,9 @@ theorem pow_mul_mod {p : ℕ} (hp : 2 ≤ p) {f a i : ℕ} (ha : a < p ^ f - 1) 
   exact mul_mod_pred_add ha
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, p = k + 1` from `⟨p - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Proceed by induction on `f with`. Consider the case `zero => simp`. Consider the case `succ f ih`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hq : 0 < (k + 1) ^ f` using `pow_pos (by omega) f`. Rewrite using `[Finset.sum_range_succ, mul_add, ih, pow_succ]`. Establish `: (k + 1) ^ f * (k + 1) = k * (k + 1) ^ f + (k + 1) ^ f` using `by ring`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem geom_sum_mul_pred (p f : ℕ) (hp : 2 ≤ p) :
     (p - 1) * ∑ i ∈ Finset.range f, p ^ i = p ^ f - 1 := by
@@ -196,15 +194,13 @@ theorem geom_sum_mul_pred (p f : ℕ) (hp : 2 ≤ p) :
     omega
 
 /- English proof (translation)
-Establish `hS : ∑ i ∈ Finset.range f, a / p ^ (f - i) = ∑ j ∈ Finset.range f, a / p ^ (j + 1)`. Rewrite using `[← Finset.sum_range_reflect (fun j => a / p ^ (j + 1)) f]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j hj`. Use `Finset.mem_range.mp hj` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congr 2`. Use linear arithmetic over natural numbers and integers. Establish `hT : ∑ i ∈ Finset.range f, p ^ i * a % (p ^ f - 1) + (p ^ f - 1) * ∑ j ∈ Finset.range f, a / p ^ (j + 1) = (∑ i ∈ Finset.range f, p ^ i) * a`. Rewrite using `[← hS, Finset.mul_sum, ← Finset.sum_add_distrib, Finset.sum_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i hi`. Conclude with `pow_mul_mod hp ha (Finset.mem_range.mp hi).le`. Establish `hL` using `dsum_legendre hp f a (by omega)`. Establish `hG` using `geom_sum_mul_pred p f hp`. Use `set T := ∑ i ∈ Finset.range f, p ^ i * a % (p ^ f - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `set S := ∑ j ∈ Finset.range f, a / p ^ (j + 1)`. Use `set G := ∑ i ∈ Finset.range f, p ^ i`. Use `set M := p ^ f - 1`. Use `set k := p - 1`. Establish `key : k * T + M * (k * S) = M * dsum p a + M * (k * S)`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.add_right_cancel key`.
+A detailed English derivation is pending.
 -/
 theorem dsum_frac {p : ℕ} (hp : 2 ≤ p) {f a : ℕ} (ha : a < p ^ f - 1) :
     (p - 1) * ∑ i ∈ Finset.range f, p ^ i * a % (p ^ f - 1) = (p ^ f - 1) * dsum p a := by
@@ -237,15 +233,15 @@ theorem dsum_frac {p : ℕ} (hp : 2 ≤ p) {f a : ℕ} (ha : a < p ^ f - 1) :
   exact Nat.add_right_cancel key
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Establish `hf : f = 0`. Assume the negation of the conclusion as `hf`. Establish `: p ^ 1 ≤ p ^ f` using `Nat.pow_le_pow_right (by omega) (Nat.pos_of_ne_zero hf)`. Simplify using `at hN this`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Substitute `hf` using the available equality. Simplify using `[dsum_zero]`. Establish `ha : d * b < p ^ f - 1`. Rewrite using `[← hN, mul_comm N d]`.
+Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_lt_mul_of_pos_left hb hd`. Establish `h` using `dsum_frac hp ha`. Rewrite `h` using `[← hN]`. Establish `h2 : ∑ i ∈ Finset.range f, p ^ i * (d * b) % (N * d) = d * ∑ i ∈ Finset.range f, p ^ i * b % N`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[mul_comm N d, mul_left_comm, Nat.mul_mod_mul_left]`. Rewrite `h` using `[h2]`. Apply `Nat.eq_of_mul_eq_mul_left hd` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem dsum_frac_dvd {p : ℕ} (hp : 2 ≤ p) {f N d b : ℕ} (hN : N * d = p ^ f - 1) (hb : b < N) :
     (p - 1) * ∑ i ∈ Finset.range f, p ^ i * b % N = N * dsum p (d * b) := by

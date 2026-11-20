@@ -17,7 +17,7 @@ section Mat
 variable {ι R : Type} [Fintype ι] [DecidableEq ι] [Semiring R]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, hu, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_row_one {H : Matrix ι ι R} {u : ι} (hu : ∀ v, H u v = (1 : Matrix ι ι R) u v) (X : Matrix ι ι R) (e : ι) :
     (H * X) u e = X u e := by
@@ -25,7 +25,7 @@ theorem mul_row_one {H : Matrix ι ι R} {u : ι} (hu : ∀ v, H u v = (1 : Matr
     if_true]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, hu, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_col_one {H : Matrix ι ι R} {u : ι} (hu : ∀ v, H v u = (1 : Matrix ι ι R) v u) (X : Matrix ι ι R) (e : ι) :
     (X * H) e u = X e u := by
@@ -33,7 +33,7 @@ theorem mul_col_one {H : Matrix ι ι R} {u : ι} (hu : ∀ v, H v u = (1 : Matr
     if_true]
 
 /- English proof (translation)
-Introduce `j k hk`. Use `congrFun (congrFun h j) k` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`. Rewrite using `[← this]`. Simplify using `only [hD _ k hk, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inv_col {D D' : Matrix ι ι R} {c : ι} (hD : ∀ j k, k ≠ c → D j k = (1 : Matrix ι ι R) j k) (h : D' * D = 1) :
     ∀ j k, k ≠ c → D' j k = (1 : Matrix ι ι R) j k := by
@@ -46,15 +46,15 @@ theorem inv_col {D D' : Matrix ι ι R} {c : ι} (hD : ∀ j k, k ≠ c → D j 
 end Mat
 
 /- English proof (translation)
-Use `set v : ι → R := Pi.single c 1 with hv`. Establish `hvc : v c = 1` using `by simp [hv]`. Establish `hvn : ∀ j, j ≠ c → v j = 0` using `fun j hj => by simp [hv, Pi.single_eq_of_ne hj]`. Establish `e : A = 1 + Matrix.replicateCol Unit v ⬝ Matrix.replicateRow Unit (A c - v)`. Use extensionality with `j k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hm : (Matrix.replicateCol Unit v ⬝ Matrix.replicateRow Unit (A c - v)) j k = v j * (A c k - v k)`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[Matrix.add_apply, hm]`. Distinguish the cases in `hj : j = c`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Rewrite using `[hvc, Matrix.one_apply_eq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hvn k hk, Matrix.one_apply_ne (Ne.symm hk), hvc]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hA j k hj, hvn j hj, zero_mul, add_zero]`. Establish `h` using `congrArg Matrix.det e`. Rewrite using `[h, Matrix.det_one_add_replicateCol_mul_replicateRow]`. Establish `hd : (A c - v) ⬝ᵥ v = A c c - 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dotProduct, Finset.sum_eq_single c (fun j _ hj => by rw [hvn j hj, mul_zero]) (by simp), hvc, mul_one, Pi.sub_apply, hvc]`. Rewrite using `[hd]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem det_row {ι R : Type} [Fintype ι] [DecidableEq ι] [CommRing R] {A : Matrix ι ι R} {c : ι}
     (hA : ∀ j k, j ≠ c → A j k = (1 : Matrix ι ι R) j k) : A.det = A c c := by
@@ -84,17 +84,17 @@ def IdentityOnLastRowsCols {n : ℕ} (i₀ : Fin n) (H : Matrix (Fin n ⊕ Fin n
     H v u = (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) v u
 
 /- English proof (translation)
-Establish `mI : Sum.inl i₀ ∈ I0 i₀` using `Or.inl rfl`. Establish `mR : Sum.inr i₀ ∈ I0 i₀` using `Or.inr rfl`. Establish `hN : H * M * H' = 1 + H * (M - 1) * H'`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hH]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `⟨fun a b ha hb => ?_, fun a => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[hN, Matrix.add_apply]`. Establish `: (H * (M - 1) * H') a b = 0`. Simplify using `only [Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c ∈ I0 i₀`. Rewrite using `[(h1 c hc a).2, Matrix.one_apply_ne (by rintro rfl; exact ha hc), zero_mul, zero_mul]`. Distinguish the cases in `he : e ∈ I0 i₀`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[(h2 e he b).1, Matrix.one_apply_ne (by rintro rfl; exact hb he), mul_zero]`. Rewrite using `[Matrix.sub_apply, hq.off c e hc he, sub_self, mul_zero, zero_mul]`. Rewrite using `[this, add_zero]`. Rewrite using `[mul_col_one (fun v => (h2 _ mI v).2)]`. Rewrite using `[Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hq.col, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, (h1 _ mI a).2, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`. Rewrite using `[Matrix.mul_assoc, mul_row_one (fun v => (h1 _ mR v).1), Matrix.mul_apply]`. Rewrite using `[Finset.sum_eq_single (Sum.inr i₀)]`. Rewrite using `[(h2 _ mR b).1, Matrix.one_apply_ne (Ne.symm hb), mul_zero]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `e _ he`. Rewrite using `[hq.row e he, zero_mul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isQ_conj {n : ℕ} {i₀ : Fin n} {M H H' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)} {lam : (AE F E)ˣ}
     (hq : IsQ F E i₀ M lam) (hH : H * H' = 1) (h1 : IdentityOnLastRowsCols i₀ H) (h2 : IdentityOnLastRowsCols i₀ H') : IsQ F E i₀ (H * M * H') lam := by
@@ -127,21 +127,21 @@ theorem isQ_conj {n : ℕ} {i₀ : Fin n} {M H H' : Matrix (Fin n ⊕ Fin n) (Fi
     · simp
 
 /- English proof (translation)
-Establish `e : mat2 (1 : d.G) = 1` using `rfl`. Simplify using `only [inFrame, e, Matrix.mul_one, KWhit.incM_inv_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem inFrame_one (d : SD σ) : inFrame d.b (1 : d.G) = 1 := by
   have e : mat2 (1 : d.G) = 1 := rfl
   simp only [inFrame, e, Matrix.mul_one, KWhit.incM_inv_mul]
 
 /- English proof (translation)
-Introduce `u hu v` and use `L.j_out g u hu v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem identityOnLast_embedding {d : SD σ} (L : LD d) (g : L.sd.G) : IdentityOnLastRowsCols L.i₀ (inFrame d.b (L.j g)) := fun u hu v => L.j_out g u hu v
 
 /- English proof (translation)
-Establish `hH : inFrame d.b (L.j g) * inFrame d.b (L.j g)⁻¹ = 1`. Rewrite using `[← KWhit.inFrame_mul, mul_inv_cancel, inFrame_one]`. Rewrite using `[KWhit.inFrame_mul, KWhit.inFrame_mul]`. Use `isQ_conj hq hH (identityOnLast_embedding L g) ?_` and prove the remaining obligations. Rewrite using `[← map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `identityOnLast_embedding L g⁻¹`.
+A detailed English derivation is pending.
 -/
 theorem q_conj' {d : SD σ} (L : LD d) {q : d.G} {lam : (AE F E)ˣ} (hq : IsQ F E L.i₀ (inFrame d.b q) lam) (g : L.sd.G) :
     IsQ F E L.i₀ (inFrame d.b (L.j g * q * (L.j g)⁻¹)) lam := by

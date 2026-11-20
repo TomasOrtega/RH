@@ -10,7 +10,7 @@ namespace Formalism.MainNotions.N
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Introduce `l _ K s LL hg T _ _`. Use `⟨(h l K s LL hg).2.1 T, fun _ hp => ?_⟩` and prove the remaining obligations. Establish `hA` using `(h l K s LL hg).1 (fun e => absurd e hp) T`. Conclude with `⟨hA.1, fun w => hA.2.1 w⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem herr_description_H1_of_herr (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h : Formalism.MainNotions.LocalSituation.ClassMapInjectiveBijectiveNorms D HW F) : Formalism.MainNotions.DeltaInvariantLattices.adm2 D HW F := by
   intro l _ K s LL hg T _ _

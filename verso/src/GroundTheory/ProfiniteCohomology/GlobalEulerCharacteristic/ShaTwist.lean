@@ -22,15 +22,15 @@ def coordTensor (i : ι) : TensorProduct k H N →ₗ[k] H :=
 
 omit [Fintype ι] in
 /- English proof (translation)
-Simplify using `[coordTensor]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordTensor_tmul (i : ι) (y : H) (m : N) : coordTensor b i (y ⊗ₜ[k] m) = b.coord i m • y := by
   simp [coordTensor]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, TensorProduct.zero_tmul, Finset.sum_const_zero]`. Consider the case `tmul y m`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coordTensor_tmul, TensorProduct.smul_tmul, Module.Basis.coord_apply]`. Use `_ = y ⊗ₜ[k] m := by rw [← TensorProduct.tmul_sum, b.sum_repr]`. Consider the case `add z w hz hw`. Simplify using `only [map_add, TensorProduct.add_tmul]`. Rewrite using `[Finset.sum_add_distrib, hz, hw]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_coordTensor_tmul (z : TensorProduct k H N) : ∑ i, coordTensor b i z ⊗ₜ[k] b i = z := by
   induction z using TensorProduct.induction_on with
@@ -47,7 +47,7 @@ theorem sum_coordTensor_tmul (z : TensorProduct k H N) : ∑ i, coordTensor b i 
 omit [Fintype ι] in
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x m => rw [LinearMap.rTensor_tmul, coordTensor_tmul, coordTensor_tmul, map_smul]`. Consider the case `add z w hz hw => simp only [map_add, hz, hw]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem coordTensor_rTensor {X : Type*} [AddCommGroup X] [Module k X] (f : X →ₗ[k] H) (i : ι)
     (w : TensorProduct k X N) : coordTensor b i (f.rTensor N w) = f (coordTensor b i w) := by
@@ -57,9 +57,9 @@ theorem coordTensor_rTensor {X : Type*} [AddCommGroup X] [Module k X] (f : X →
   | add z w hz hw => simp only [map_add, hz, hw]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩ i`. Conclude with `⟨coordTensor b i w, (coordTensor_rTensor b f i w).symm⟩`. Introduce `h choose w hw using h`. Use `⟨∑ i, w i ⊗ₜ[k] b i, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Repeatedly rewrite using `[LinearMap.rTensor_tmul, hw]`. Conclude with `sum_coordTensor_tmul b z`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_rTensor_iff {X : Type*} [AddCommGroup X] [Module k X] (f : X →ₗ[k] H)
     (z : TensorProduct k H N) :
@@ -90,9 +90,9 @@ def resTensorFormMor (f : M →ₗ[k] k) : Rep.res Q.subtype (T ⊗ M) ⟶ Rep.r
       (form_invariant_of_forall_eq (M := Rep.res Q.subtype M) hM f)
 
 /- English proof (translation)
-Rewrite using `[twistResMap_tmul, ← ModuleCat.comp_apply, ← cohomologyMap_comp]`. Establish `e : (tensorRightMor (M` using `Rep.res Q.subtype M) (Rep.res Q.subtype T) m (fun h => hM h m) ≫ (resTensorIso Q.subtype T M).inv) ≫ resTensorFormMor Q T M hM f = f m • 𝟙 _ := by`. Use extensionality with `t`. Express the relevant statement in the definitionally equal form `f m • t = f m • t`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression.
 
-Rewrite using `[e, cohomologyMap_smul, cohomologyMap_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cohomologyMap_resTensorFormMor_twistResMap (f : M →ₗ[k] k) (n : ℕ)
     (y : cohomology (Rep.res Q.subtype T) n) (m : M) :
@@ -109,7 +109,7 @@ theorem cohomologyMap_resTensorFormMor_twistResMap (f : M →ₗ[k] k) (n : ℕ)
 omit [Fintype ιb] in
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul y m => rw [cohomologyMap_resTensorFormMor_twistResMap, coordTensor_tmul]`. Consider the case `add z w hz hw => rw [map_add, map_add, hz, hw, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cohomologyMap_resTensorFormMor_coord_twistResMap (n : ℕ) (i : ιb)
     (z : TensorProduct k (cohomology (Rep.res Q.subtype T) n) M) :
@@ -121,9 +121,9 @@ theorem cohomologyMap_resTensorFormMor_coord_twistResMap (n : ℕ) (i : ιb)
   | add z w hz hw => rw [map_add, map_add, hz, hw, map_add]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Rewrite using `[← cohomologyMap_resTensorFormMor_coord_twistResMap Q T M hM b n i z]`. Conclude with `cohomologyMap_mem_shaSubmodule ψ _ h`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sum_coordTensor_tmul b z, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[twistResMap_tmul]`. Conclude with `cohomologyMap_mem_shaSubmodule ψ _ (h i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twistResMap_mem_shaSubmodule_iff (n : ℕ)
     (z : TensorProduct k (cohomology (Rep.res Q.subtype T) n) M) :
@@ -152,7 +152,7 @@ variable {k G : Type u} [Field k] [Group G] [TopologicalSpace G] [IsTopologicalG
   [Module.Finite k M] (hTr : Module.finrank k T = 1) (hP : ((P : Subgroup G).index : k) ≠ 0)
 
 /- English proof (translation)
-The claim follows from `isDiscreteRep_homRep P T M hT hM haveI : Module.Finite k T := Module.finite_of_finrank_eq_succ hTr haveI : Module.Finite k (homRep T M) := inferInstanceAs (Module.Finite k (T →ₗ[k] M)) twistResEquiv (P : Subgroup G) T (homRep T M) (homRep_ρ_of_mem P T M hT hM) n (coprimeTwistEqui …`.
+A detailed English derivation is pending.
 -/
 theorem coe_coprimeTwistEquiv (n : ℕ) (x : cohomology M n) :
     haveI := isDiscreteRep_homRep P T M hT hM
@@ -170,11 +170,11 @@ theorem coe_coprimeTwistEquiv (n : ℕ) (x : cohomology M n) :
   rfl
 
 /- English proof (translation)
-Use `isDiscreteRep_homRep P T M hT hM` as an intermediate fact. Establish `: Module.Finite k T` using `Module.finite_of_finrank_eq_succ hTr`. Establish `: Module.Finite k (homRep T M)` using `inferInstanceAs (Module.Finite k (T →ₗ[k] M))`. Establish `h1 : x ∈ shaSubmodule φ M n ↔ (cohomologyMap (evalInv T M hTr) n).hom x ∈ shaSubmodule φ (T ⊗ homRep T M) n`. Use `⟨cohomologyMap_mem_shaSubmodule φ _, fun h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (cohomologyMap (evalMor T M) n).hom ((cohomologyMap (evalInv T M hTr) n).hom x) = x`. Rewrite using `[← ModuleCat.comp_apply, ← cohomologyMap_comp, evalInv_comp_evalMor, cohomologyMap_id]`. Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `cohomologyMap_mem_shaSubmodule φ _ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, mem_shaSubmodule_iff_cohomologyRes φ P _ (bijective_nsmul_of_ne_zero hP), ← coe_coprimeTwistEquiv P T M hT hM hTr hP n x, twistResEquiv_apply]`. Conclude with `twistResMap_mem_shaSubmodule_iff (P : Subgroup G) (mackeyFamily P φ) T (homRep T M) (homRep_ρ_of_mem P T M hT hM) b n _`.
+A detailed English derivation is pending.
 -/
 theorem mem_shaSubmodule_iff_coprimeTwistEquiv {ιb : Type*} [Fintype ιb]
     (b : Module.Basis ιb k (homRep T M)) (n : ℕ) (x : cohomology M n) :
@@ -202,19 +202,17 @@ theorem mem_shaSubmodule_iff_coprimeTwistEquiv {ιb : Type*} [Fintype ιb]
 include hTr hP in
 
 /- English proof (translation)
-Use `isDiscreteRep_homRep P T M hT hM` as an intermediate fact. Establish `: Module.Finite k T` using `Module.finite_of_finrank_eq_succ hTr`. Establish `: Module.Finite k (homRep T M)` using `inferInstanceAs (Module.Finite k (T →ₗ[k] M))`. Use `set σ := quotientRep (P : Subgroup G) (homRep T M) (homRep_ρ_of_mem P T M hT hM)`. Use `set E := coprimeTwistEquiv P T M hT hM hTr hP n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set R := e.rTensor (homRep T M)`. Establish `hR : (ρX.tprod σ).IsIntertwiningMap ((cohomologyConjRep T (P : Subgroup G) n).tprod σ) R` using `isIntertwiningMap_rTensor σ he`. Establish `hRinj : Function.Injective R` using `Module.Flat.rTensor_preserves_injective_linearMap e hinj`. Set `Ψ : (ρX.tprod σ).invariants →ₗ[k] ((cohomologyConjRep T (P : Subgroup G) n).tprod σ).invariants` to `R.restrict (mapsTo_invariants hR)`. Set `Φ : (ρX.tprod σ).invariants →ₗ[k] cohomology M n` to `E.symm.toLinearMap ∘ₗ Ψ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΦinj : Function.Injective Φ` using `fun w w' h => Subtype.ext (hRinj (congrArg Subtype.val (E.symm.injective h)))`. Set `b` to `Module.Free.chooseBasis k (homRep T M)`. Establish `hrangeΦ : LinearMap.range Φ = shaSubmodule φ M n`. Use extensionality with `x`. Rewrite using `[mem_shaSubmodule_iff_coprimeTwistEquiv φ P T M hT hM hTr hP b n x]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩ i`. Establish `hEw : (E (Φ w) : TensorProduct k (cohomology (Rep.res (P : Subgroup G).subtype T) n) (homRep T M)) = R w`. Express the relevant statement in the definitionally equal form `((E (E.symm (Ψ w)) : _)) = R w`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Rewrite using `[hEw, coordTensor_rTensor]`. Conclude with `(hrange _).2 ⟨_, rfl⟩`. Introduce `h`. Take `⟨w₀, hw₀⟩` from `(mem_range_rTensor_iff b e _).2 fun i => (hrange _).1 (h i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hinv : w₀ ∈ (ρX.tprod σ).invariants` using `fun q => hRinj (by`. Rewrite using `[hR.isIntertwining, hw₀]`. Conclude with `(E x).2 q)`. Use `⟨⟨w₀, hinv⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `E.symm (Ψ ⟨w₀, hinv⟩) = x`.
-
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `Subtype.ext hw₀`. Rewrite using `[← hrangeΦ, LinearMap.finrank_range_of_inj hΦinj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_shaSubmodule_eq_finrank_invariants (n : ℕ) {X : Type u} [AddCommGroup X] [Module k X]
     (ρX : Representation k (G ⧸ (P : Subgroup G)) X)

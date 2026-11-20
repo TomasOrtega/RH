@@ -20,7 +20,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `e : θ hτ.choose = th` using `GlobalTheory.SmoothForms.RealPts.infEmb_unique τ _ _ (by have := hθ hτ.choose; rwa [← hτ.choose_spec] at this) hth`. Rewrite using `[realM, dif_pos hτ, compAt, e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem realM_mt {θ : InfFam D} (hθ : IsInfFam θ) (W : HSp D) (h : GA D W) (τ : D.host.E →+* ℂ)
     (hτ : ∃ ρ, τ = tauE D ρ) (th : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (hth : IsInfEmb τ th) :
@@ -31,9 +31,9 @@ theorem realM_mt {θ : InfFam D} (hθ : IsInfFam θ) (W : HSp D) (h : GA D W) (�
   rfl
 
 /- English proof (translation)
-Take `⟨γ, hγ, h1, -, h3⟩` from `hD.2 h`. Use `⟨γ, hγ, ?_, ?_⟩` and prove the remaining obligations. Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[h1, latR, Submodule.map_coe]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `τ`. Use `h3 τ` as an intermediate fact. Rewrite `this` using `[← realM_mt hθ W (γ * h) τ.1 (hΨ _ _ τ.2) _ (hth _ τ)]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_atComp {θ : InfFam D} (hθ : IsInfFam θ) {W : HSp D} {r : ℕ} (hr : W.rank = r)
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
@@ -56,11 +56,11 @@ theorem exists_atComp {θ : InfFam D} (hθ : IsInfFam θ) {W : HSp D} {r : ℕ} 
     exact this
 
 /- English proof (translation)
-Establish `hU' : Formalism.L2.PjFree.IsUnf (Formalism.L2.PjFree.Unf.ofPj U)` using `hU`. Take `⟨Wt⟩` from `nonempty_uw hU'`. Establish `huw` using `GlobalTheory.Dict.uw_lattice E H Dw l Xo c σ _ _ hσ hU' h1 Wt k`. Establish `hdom : Formalism.L2.Pj.Dom (fun _ : (E →+* ℂ) × ℕ => 0) 0` using `⟨fun _ => antitone_const, by simp⟩`. Take `⟨Dc, hDe, -⟩` from `GlobalTheory.Dict.exists_dic E H Dw l c σ _ Wt.g 0 (U.X k) (fun _ => 0) Wt.e hσ hU.1 (hU.2.1 k).1 (hU.2.1 k).2 huw.2.1 hdom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hper : ∀ x v j, pv (U.X k) Dc.idx x v j = Formalism.L2.PjFree.perFr (U.X k) x v (Formalism.L2.PjFree.relab c σ (Wt.e j).1) (Wt.e j).2` using `fun x v j => by`. Rewrite using `[Dc.per_eq, hDe]`. Establish `hty : ∀ j, rowType (U.X k) (Dc.idx j) = Formalism.L2.PjFree.relab c σ (Wt.e j).1` using `fun j => by`. Rewrite using `[Dc.ty_eq, hDe]`. Take `⟨A, -, ϑ, hA, hm⟩` from `GlobalTheory.Dict.uw_anFib E H Dw l Xo c σ _ _ hσ hU' h1 Wt k Dc.bas Dc.idx Dc.sympl hper hty x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Wt.g, Dc.bas, Dc.idx, Wt.e, ϑ, Dc.sympl, ⟨hper, hty⟩, ⟨A, hA⟩, hm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_genReads {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r)
@@ -88,7 +88,7 @@ variable {θ : InfFam D} {V W : HSp D} {r : ℕ} {hr : W.rank = r} {H : Reciproc
     {om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {f₀ : WO V W → ℂ} {cc cc' : U.Comp → ℂ}
 
 /- English proof (translation)
-Use `⟨fun k => by rw [norm_mul, ha, h.1 k, mul_one], fun g γ hg hx' n bas idx e hs hi ϑ hϑ w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, h.2 g γ hg hx' n bas idx e hs hi ϑ hϑ w hw, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ccIs_smul (h : CcIs θ V W hr U dict mu x₀ om f₀ cc) (a : ℂ) (ha : ‖a‖ = 1) :
     CcIs θ V W hr U dict mu x₀ om (a • f₀) (fun k => a * cc k) := by
@@ -97,9 +97,9 @@ theorem ccIs_smul (h : CcIs θ V W hr U dict mu x₀ om f₀ cc) (a : ℂ) (ha :
   ring
 
 /- English proof (translation)
-Take `⟨n, bas, idx, e, ϑ, hs, hi, hϑ, -⟩` from `exists_genReads U hσ hU h1 (dict g).1 ⟨_, hd⟩ hu`. Establish `e1` using `h.2 g γ hg hd n bas idx e hs hi ϑ hϑ w hw`. Establish `e2` using `h'.2 g γ hg hd n bas idx e hs hi ϑ hϑ w hw`. Rewrite `e1`, `e2` using `[mul_assoc, mul_assoc]`. Establish `hB` using `right_ne_zero_of_mul (e1 ▸ hne)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ hB (e1.symm.trans e2)`.
+A detailed English derivation is pending.
 -/
 theorem ccIs_unique (hσ : GoodEmb c σ) (hU : IsUnf U) (h1 : 1 ≤ r) (h : CcIs θ V W hr U dict mu x₀ om f₀ cc)
     (h' : CcIs θ V W hr U dict mu x₀ om f₀ cc') (g γ : GA D W) (hg : AtComp θ W hr U.X dict x₀ g γ)

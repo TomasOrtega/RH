@@ -74,7 +74,7 @@ def GlobAt {D : D7} (Y : ShimX D.what₂.Tau) (p : ℕ) : Prop := ∀ (Sx : Fins
         Y.chern (chLie Y.j (k - 1) (Sum.inl τ) * collapse D _ Q) / ((p : ℝ) - 1))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h p a b c d Sx R => h Sx R p a b c d, fun h Sx R p a b c d => h p a b c d Sx R⟩`.
+Supply the required witnesses or components.
 -/
 theorem globalHeightBound_iff_atGoodPrimes {D : D7} (Y : ShimX D.what₂.Tau) : GlobalTheory.CovHt.DeRhamMinusHodgeTateGoodPrimesAt Y ↔
     ∀ p : ℕ, p.Prime → p ≠ 2 → UnramE D p → p ∉ Y.lev → GlobAt Y p :=

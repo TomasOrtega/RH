@@ -39,7 +39,7 @@ def flagSec {K : Type} [Field K] (σ : K →+* ℂ) (X : Data E r) (la : Wt X.Ψ
       rw [hP.2 x hx, mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `(Matrix.mul_assoc _ (mat x τ) (mat b τ)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem zAct_rmul (X : Data E r) (cu : FJ.CuspFD X ρ) (t : Fin (nZ X ρ) → ℝ) (x b : Frame X.Ψ r) :
     zAct X cu t (rmul x b) = rmul (zAct X cu t x) b := by
@@ -47,13 +47,13 @@ theorem zAct_rmul (X : Data E r) (cu : FJ.CuspFD X ρ) (t : Fin (nZ X ρ) → �
   exact (Matrix.mul_assoc _ (mat x τ) (mat b τ)).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `hj : Continuous fun p : (Fin (nZ X ρ) → ℝ) × Frame X.Ψ r => zAct X cu p.1 p.2`. Unfold `zAct zMatC mat`. Use `fun_prop`. Establish `hc : Continuous (chr ph)` using `by unfold chr; fun_prop`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.differentiableOn_setIntegral_of_holomorphic_of_continuousOn (μ := volume) (F := fun t x => integrand (zAct X cu) ph P x t) (FourierCoefficientDomain.isOpen_dom X) (S := cube _) (K := cube _) isCompact_Icc subset_rfl measurableSet_Icc (isCompact_Icc.measure_lt_top.ne …` and prove the remaining obligations. Use `ContinuousOn.mul (hP.1.continuousOn.comp hj.continuousOn fun p hp => hd p.1 p.2 hp.2) ?_` and prove the remaining obligations. Conclude with `(hc.comp continuous_fst).continuousOn`. Introduce `t _`. Use `DifferentiableOn.mul_const (hP.1.comp ?_ fun x hx => hd t x hx) _` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Differentiable.differentiableOn ?_` and prove the remaining obligations. Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun i => differentiable_pi.2 fun k => ?_` and prove the remaining obligations. Simplify using `only [zAct, Matrix.mul_apply, mat, Matrix.of_apply]`. Use `fun_prop`. Introduce `x hx b hb`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `coefFn integrand`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[zAct_rmul, hP.2 _ (hd t x hx) b hb, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFlagSec_coefFn (X : Data E r) (la : Wt X.Ψ r) (cu : FJ.CuspFD X ρ)
     (hd : ∀ t, ∀ x ∈ X.dom, zAct X cu t x ∈ X.dom) (ph : Fin (nZ X ρ) → ℝ) {P : Frame X.Ψ r → ℂ}
@@ -82,9 +82,9 @@ theorem isFlagSec_coefFn (X : Data E r) (la : Wt X.Ψ r) (cu : FJ.CuspFD X ρ)
     rw [zAct_rmul, hP.2 _ (hd t x hx) b hb, mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `isFlagSec_coefFn X la cu hd ph hP`. Use `⟨⟨h.1.congr fun x hx => coefL_apply _ _ _ _ hx, fun x hx b hb => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `coefL (zAct X cu) X.dom ph P (rmul x b) = bchar la b * coefL (zAct X cu) X.dom ph P x`. Rewrite using `[coefL_apply _ _ _ _ hx, coefL_apply _ _ _ _ (dom_rmul X hx hb)]`. Conclude with `h.2 x hx b hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `coefL (zAct X cu) X.dom ph P x = 0`. Simplify using `[coefL, hx]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coef_mem_flagSec {K : Type} [Field K] (σ : K →+* ℂ) (X : Data E r) (la : Wt X.Ψ r) (cu : FJ.CuspFD X ρ)
     (hd : ∀ t, ∀ x ∈ X.dom, zAct X cu t x ∈ X.dom) (ph : Fin (nZ X ρ) → ℝ) (P : OrbInt (zAct X cu) X.dom)

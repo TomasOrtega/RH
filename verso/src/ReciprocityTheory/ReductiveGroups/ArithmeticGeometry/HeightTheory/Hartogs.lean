@@ -3,23 +3,21 @@ import Mathlib
 namespace ReciprocityTheory.ChartRestriction.G.T0
 
 /- English proof (translation)
-Establish `key : ∀ c : R, c ≠ 0 → ∀ a0 : R, x * algebraMap R (FractionRing R) c = algebraMap R (FractionRing R) a0 → ∃ a : R, x = algebraMap R (FractionRing R) a`. Introduce `c`. Proceed by induction on `c using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => intro h0`. Conclude with `absurd rfl h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `h₂ u hu`. Introduce `_ a0 hx`. Use `⟨a0 * ↑(hu.unit⁻¹), ?_⟩` and prove the remaining obligations. Establish `hu' : algebraMap R (FractionRing R) u * algebraMap R (FractionRing R) ↑(hu.unit⁻¹) = 1`. Rewrite using `[← map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu', mul_one]`. Use `_ = algebraMap R (FractionRing R) (a0 * ↑(hu.unit⁻¹)) := by rw [← mul_assoc, hx, map_mul]`. Consider the case `h₃ c p hc hp ih`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `_ a0 hx`. Take `⟨a, b, hpb, hab⟩` from `h p hp`. Establish `hinj` using `IsFractionRing.injective R (FractionRing R)`. Establish `e1 : a * (p * c) = a0 * b`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [map_mul] at hx hab ⊢`. Take the linear combination `(-(algebraMap R (FractionRing R) p * algebraMap R (FractionRing R) c)) * hab + algebraMap R (FractionRing R) b * hx`. Establish `hpa0 : p ∣ a0`. Establish `: p ∣ a0 * b` using `⟨a * c, by rw [← e1]; ring⟩`. Break down `hp.dvd_or_dvd this with h1 | h1` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h1`. Conclude with `absurd h1 hpb`. Take `⟨a1, rfl⟩` from `hpa0`. Establish `hp0 : algebraMap R (FractionRing R) p ≠ 0`. Rewrite using `[Ne, ← map_zero (algebraMap R (FractionRing R))]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `fun h' => hp.ne_zero (hinj h')`. Use `ih hc a1 ?_` and prove the remaining obligations. Apply `mul_left_cancel₀ hp0` to reduce the goal to its premises. Simplify using `only [map_mul] at hx ⊢`. Take the linear combination `hx`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a0, c, hc, rfl⟩` from `IsFractionRing.div_surjective (A := R) x`. Establish `hc0 : c ≠ 0` using `nonZeroDivisors.ne_zero hc`. Use `key c hc0 a0 ?_` and prove the remaining obligations. Rewrite using `[div_mul_cancel₀]`. Rewrite using `[Ne, ← map_zero (algebraMap R (FractionRing R))]`.
-
-Conclude with `fun h' => hc0 (IsFractionRing.injective R (FractionRing R) h')`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem ufd_mem_of_forall_prime {R : Type*} [CommRing R] [IsDomain R] [UniqueFactorizationMonoid R]
     (x : FractionRing R)

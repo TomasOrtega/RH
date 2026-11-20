@@ -13,11 +13,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan.StarSubdivisionDropsCells
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar w0 hb q φ lab hDom hφ hφtw hlabtw hsl M n hM hmax hcells`. Take `⟨R, hR⟩` from `hcells`. Take `⟨w, hwtw, hwc, hcov, hdrop⟩` from `GlobalTheory.T.exists_twisted_centre_set O bar w0 hb q φ lab hDom hφ hφtw hlabtw hsl M hM hmax (R 0)`. Take `⟨ψ', hψ', hψ'tw, hsub, hstar⟩` from `GlobalTheory.T.exists_star_subdivision O bar w0 hb q φ w hDom hφ hφtw hwtw hwc`. Take `⟨lab', hlab'tw, hsl'⟩` from `GlobalTheory.T.exists_twisted_simplicial_star_label O bar w0 hb q φ lab w ψ' hDom hφ hlabtw hsl hwtw hwc hψ' hsub hstar`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hmax', hc'⟩` from `GlobalTheory.T.star_subdivision_mult_le O bar hb q φ lab w ψ' hDom hφ hsl hwc hdrop hψ' hsub hstar M hmax`. Use `⟨ψ', lab', hψ', hψ'tw, hlab'tw, hsl', hsub, hmax', fun k => R k.succ, ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ _ hX m δ hδ`. Take `⟨hδφ, hnoc⟩` from `hc' X hX m δ hδ`. Take `⟨k, hk⟩` from `hR X hX m δ hδφ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `k using Fin.cases with`. Consider the case `zero`. Take `⟨β, hβ, hp, hw1, hin⟩` from `hcov X hX m δ hδφ hk`. Conclude with `absurd hw1 (hnoc β hβ hp hin)`. Consider the case `succ k => exact ⟨k, hk⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_star_drop_multCells : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ (q : ℕ) (φ lab : InvFun O),
     (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) →

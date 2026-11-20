@@ -28,7 +28,7 @@ def Compat (u : E ⟶ E') (fl : Vert.Flag E r) (fl' : Vert.Flag E' r) : Prop :=
   ∀ i, ∃ t : fl.F i ⟶ fl'.F i, t ≫ fl'.ι i = fl.ι i ≫ u
 
 /- English proof (translation)
-Introduce `i` and use `by obtain ⟨t, ht⟩ := h i exact ⟨(Scheme.Modules.pullback π).map t, ((Functor.map_comp _ _ _).symm.trans (congrArg _ ht)).trans (Functor.map_comp _ _ _)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Compat.pull {u : E ⟶ E'} {fl : Vert.Flag E r} {fl' : Vert.Flag E' r} (h : Compat u fl fl') {Y : Scheme.{0}}
     (π : Y ⟶ X) : Compat ((Scheme.Modules.pullback π).map u) (fl.pull π) (fl'.pull π) := fun i => by

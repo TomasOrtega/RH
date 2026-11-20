@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.EtC.hyp_spec_coAug_of_etFF) | (exact GlobalTheory.EtC.hyp_spec_coAug_of_etFF) | (intros; apply GlobalTheory.EtC.hyp_spec_coAug_of_etFF <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.cechConerve_resolution_of_etaleFaithfullyFlat : ∀ (R : Type) [CommRing R] (A B : CommRingCat.{0}) (g : A ⟶ B), EtFF g → Hyp R (Scheme.Spec.rightOp ⋙ sch.op) (coAug g) := by
   first | (exact @GlobalTheory.EtC.hyp_spec_coAug_of_etFF) | (exact GlobalTheory.EtC.hyp_spec_coAug_of_etFF) | (intros; apply GlobalTheory.EtC.hyp_spec_coAug_of_etFF <;> assumption)

@@ -16,35 +16,35 @@ namespace GlobalTheory.ZM.RepBC
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rr {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (a : Γ(X, U)) :
     resG X h₂ (resG X h₁ a) = resG X (h₂.trans h₁) a := by
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]; rfl
 
 /- English proof (translation)
-Establish `: (homOfLE h).op = 𝟙 _` using `rfl`. Simplify using `only [resG, this, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem r_self {U : X.Opens} (h : U ≤ U) (a : Γ(X, U)) : resG X h a = a := by
   have : (homOfLE h).op = 𝟙 _ := rfl
   simp only [resG, this, CategoryTheory.Functor.map_id]; rfl
 
 /- English proof (translation)
-Rewrite using `[← f.appLE_map e (homOfLE h).op]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem r_appLE (f : Y ⟶ X) {U : X.Opens} {V W : Y.Opens} (e : V ≤ f ⁻¹ᵁ U) (h : W ≤ V) (a : Γ(X, U)) :
     resG Y h ((f.appLE U V e).hom a) = (f.appLE U W (h.trans e)).hom a := by
   rw [← f.appLE_map e (homOfLE h).op]; rfl
 
 /- English proof (translation)
-Rewrite using `[← f.map_appLE e (homOfLE h).op]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appLE_r (f : Y ⟶ X) {U U' : X.Opens} {V : Y.Opens} (e : V ≤ f ⁻¹ᵁ U) (h : U ≤ U') (a : Γ(X, U')) :
     (f.appLE U V e).hom (resG X h a) = (f.appLE U' V (e.trans (fun _ hy => h hy))).hom a := by
   rw [← f.map_appLE e (homOfLE h).op]; rfl
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.appLE_comp_appLE f g U V W e₁ e₂]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appLE_appLE (f : Z ⟶ Y) (g : Y ⟶ X) {U : X.Opens} {V : Y.Opens} {W : Z.Opens} (e₁ : V ≤ g ⁻¹ᵁ U)
     (e₂ : W ≤ f ⁻¹ᵁ V) (e : W ≤ (f ≫ g) ⁻¹ᵁ U) (a : Γ(X, U)) :
@@ -52,19 +52,19 @@ theorem appLE_appLE (f : Z ⟶ Y) (g : Y ⟶ X) {U : X.Opens} {V : Y.Opens} {W :
   rw [← Scheme.Hom.appLE_comp_appLE f g U V W e₁ e₂]; rfl
 
 /- English proof (translation)
-The claim follows from `LB.wchart_le M (fun _ : PUnit => f) j PUnit.unit`.
+A detailed English derivation is pending.
 -/
 theorem pull_le (M : LB X) (f : Y ⟶ X) (j : PUnit → M.ι) : (M.pull f).U j ≤ f ⁻¹ᵁ M.U (j PUnit.unit) :=
   LB.wchart_le M (fun _ : PUnit => f) j PUnit.unit
 
 /- English proof (translation)
-Introduce `_ h` and use `Set.mem_iInter.2 fun _ => h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_pull (M : LB X) (f : Y ⟶ X) (j : PUnit → M.ι) : f ⁻¹ᵁ M.U (j PUnit.unit) ≤ (M.pull f).U j :=
   fun _ h => Set.mem_iInter.2 fun _ => h
 
 /- English proof (translation)
-Use `show ((∏ _k : PUnit, (res e (pullU f _ (M.g (j PUnit.unit) (j' PUnit.unit)))) ^ (1 : ℤ) : Γ(Y, (M.pull f).U j ⊓ (M.pull f).U j')ˣ)).val = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pull_g (M : LB X) (f : Y ⟶ X) (j j' : PUnit → M.ι)
     (e : (M.pull f).U j ⊓ (M.pull f).U j' ≤ f ⁻¹ᵁ (M.U (j PUnit.unit) ⊓ M.U (j' PUnit.unit))) :
@@ -75,7 +75,7 @@ theorem pull_g (M : LB X) (f : Y ⟶ X) (j j' : PUnit → M.ι)
   rfl
 
 /- English proof (translation)
-Introduce `_ h` and use `⟨pull_le M f j h.1, pull_le M f j' h.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem pull_inf_le (M : LB X) (f : Y ⟶ X) (j j' : PUnit → M.ι) :
     (M.pull f).U j ⊓ (M.pull f).U j' ≤ f ⁻¹ᵁ (M.U (j PUnit.unit) ⊓ M.U (j' PUnit.unit)) :=
@@ -92,28 +92,28 @@ def secPull (M : LB X) (f : Y ⟶ X) (s : M.Sec) : (M.pull f).Sec where
     exact h
 
 /- English proof (translation)
-The claim follows from `forall₂_congr fun _ _ => Units.ext_iff`.
+A detailed English derivation is pending.
 -/
 theorem isGen_val {L : LB X} (t : L.Gen) : t.IsGen ↔ ∀ i j, resG X (inf_le_left : L.U i ⊓ L.U j ≤ L.U i) (t.s i).val =
     (L.g i j).val * resG X (inf_le_right : L.U i ⊓ L.U j ≤ L.U j) (t.s j).val :=
   forall₂_congr fun _ _ => Units.ext_iff
 
 /- English proof (translation)
-Introduce `_ h` and use `le_pull M (x ≫ π) _ (pull_le M π _ (pull_le (M.pull π) x J h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le₁ (M : LB X) (π : Y ⟶ X) (x : Z ⟶ Y) (J : PUnit → PUnit → M.ι) :
     ((M.pull π).pull x).U J ≤ (M.pull (x ≫ π)).U (J PUnit.unit) :=
   fun _ h => le_pull M (x ≫ π) _ (pull_le M π _ (pull_le (M.pull π) x J h))
 
 /- English proof (translation)
-Introduce `_ h` and use `le_pull (M.pull π) x (fun _ => j) (le_pull M π _ (pull_le M (x ≫ π) j h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le₂ (M : LB X) (π : Y ⟶ X) (x : Z ⟶ Y) (j : PUnit → M.ι) :
     (M.pull (x ≫ π)).U j ≤ ((M.pull π).pull x).U (fun _ => j) :=
   fun _ h => le_pull (M.pull π) x (fun _ => j) (le_pull M π _ (pull_le M (x ≫ π) j h))
 
 /- English proof (translation)
-Rewrite using `[pull_g (M.pull π) x J J' (pull_inf_le _ _ _ _), pull_g M π _ _ (pull_inf_le _ _ _ _)]`. Conclude with `appLE_appLE x π _ _ e _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullpull_g (M : LB X) (π : Y ⟶ X) (x : Z ⟶ Y) (J J' : PUnit → PUnit → M.ι)
     (e : ((M.pull π).pull x).U J ⊓ ((M.pull π).pull x).U J' ≤
@@ -124,15 +124,11 @@ theorem pullpull_g (M : LB X) (π : Y ⟶ X) (x : Z ⟶ Y) (J J' : PUnit → PUn
   exact appLE_appLE x π _ _ e _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, hτ, h⟩`. Use `⟨⟨fun j => res (le₂ M π x j) (τ.s fun _ => j)⟩, (isGen_val _).2 fun j j' => ?_, fun i j e => ?_⟩` and prove the remaining obligations. Establish `h0` using `congrArg (resG (Sp T) (inf_le_inf (le₂ M π x j) (le₂ M π x j'))) ((isGen_val τ).1 hτ (fun _ => j) (fun _ => j'))`. Rewrite `h0` using `[map_mul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `erw [pullpull_g M π x (fun _ => j) (fun _ => j') ((inf_le_inf (le₁ M π x _) (le₁ M π x _)).trans (pull_inf_le M (x ≫ π) _ _)), rr, r_appLE] at h0`. Use `erw [pull_g M (x ≫ π) j j' (pull_inf_le _ _ _ _)]`. Conclude with `(rr _ _ _).trans (h0.trans (congrArg _ ((rr _ _ _).trans (rr (le₂ M π x j') inf_le_right _).symm)))`. Establish `h0` using `congrArg (resG (Sp T) (le₂ M π x j)) (h i (fun _ => j) (pull_le _ _ _))`. Rewrite `h0` using `[map_mul, rr, r_appLE]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(appLE_appLE x π _ _ e _).symm.trans h0`. Introduce and unpack `⟨τ, hτ, h⟩`. Use `⟨⟨fun J => res (le₁ M π x J) (τ.s (J PUnit.unit))⟩, (isGen_val _).2 fun J J' => ?_, fun i J e => ?_⟩` and prove the remaining obligations. Establish `h0` using `congrArg (resG (Sp T) (inf_le_inf (le₁ M π x J) (le₁ M π x J'))) ((isGen_val τ).1 hτ (J PUnit.unit) (J' PUnit.unit))`. Rewrite `h0` using `[map_mul]`.
-
-Use `erw [pull_g M (x ≫ π) (J PUnit.unit) (J' PUnit.unit) (pull_inf_le _ _ _ _), rr, r_appLE] at h0`. Use `erw [pullpull_g M π x J J' ((inf_le_inf (le₁ M π x _) (le₁ M π x _)).trans (pull_inf_le M (x ≫ π) _ _))]`. Conclude with `(rr _ _ _).trans (h0.trans (congrArg _ ((rr _ _ _).trans (rr (le₁ M π x J') inf_le_right _).symm)))`. Establish `h0` using `congrArg (resG (Sp T) (le₁ M π x J)) (h i (J PUnit.unit) (pull_le _ _ _))`. Rewrite `h0` using `[map_mul, rr, r_appLE]`.
-
-Conclude with `(appLE_appLE x π _ e _ _).trans h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secCoord_pull {σ : Type} (M : LB X) (th : σ → M.Sec) (π : Y ⟶ X) {T : Type} [CommRing T] (x : Sp T ⟶ Y)
     (v : σ → T) : SecCoord (M.pull π) (fun i => secPull M π (th i)) x v ↔ SecCoord M th (x ≫ π) v := by
@@ -162,15 +158,15 @@ theorem secCoord_pull {σ : Type} (M : LB X) (th : σ → M.Sec) (π : Y ⟶ X) 
       exact (appLE_appLE x π _ e _ _).trans h0
 
 /- English proof (translation)
-Introduce `R R' σ _ _ φ I Z Z' s s' π M th ⟨hM, hloc, hpts⟩ hp`. Use `⟨fun i => secPull M π (th i), ⟨pull_isLB hM π, fun T _ β x v hx hv => ?_, fun T _ β v hu hF => ?_⟩, fun T _ x v => secCoord_pull M th π x v⟩` and prove the remaining obligations. Establish `hs : (x ≫ π) ≫ s = spMap (β.comp φ)`. Rewrite using `[Category.assoc, hp.w, ← Category.assoc, hx, spMap_comp]`. Take `⟨h1, h2⟩` from `hloc T (β.comp φ) (x ≫ π) v hs ((secCoord_pull M th π x v).1 hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨h1, fun F hF => ?_⟩` and prove the remaining obligations. Establish `: I.map (MvPolynomial.map φ) ≤ RingHom.ker (MvPolynomial.eval₂Hom β v)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `G hG`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_map]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 G hG`. Conclude with `this hF`. Take `⟨y, ⟨hy, hv⟩, huniq⟩` from `hpts T (β.comp φ) v hu fun G hG => by`. Rewrite using `[← MvPolynomial.eval₂_map]`. Conclude with `hF _ (Ideal.mem_map_of_mem _ hG)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hw : y ≫ s = spMap β ≫ spMap φ` using `by rw [hy, spMap_comp]`. Use `⟨hp.lift y (spMap β) hw, ⟨hp.lift_snd _ _ _, (secCoord_pull M th π _ v).2 (by rw [hp.lift_fst]; exact hv)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hxv⟩`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[hp.lift_fst]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `huniq _ ⟨?_, (secCoord_pull M th π x v).1 hxv⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hp.w, ← Category.assoc, hx, spMap_comp]`. Rewrite using `[hp.lift_snd, hx]`.
+A detailed English derivation is pending.
 -/
 theorem projRep_baseChange : ∀ (R R' σ : Type) [CommRing R] [CommRing R'] (φ : R →+* R') (I : Ideal (MvPolynomial σ R)) (Z Z' : Scheme.{0}) (s : Z ⟶ Sp R) (s' : Z' ⟶ Sp R') (π : Z' ⟶ Z) (M : LB Z) (th : σ → M.Sec), ProjRep I s M th → IsPullback π s' s (spMap φ) → ∃ th' : σ → (M.pull π).Sec, ProjRep (I.map (MvPolynomial.map φ)) s' (M.pull π) th' ∧ ∀ (T : Type) [CommRing T] (x : Sp T ⟶ Z') (v : σ → T), SecCoord (M.pull π) th' x v ↔ SecCoord M th (x ≫ π) v := by
   intro R R' σ _ _ φ I Z Z' s s' π M th ⟨hM, hloc, hpts⟩ hp

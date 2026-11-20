@@ -12,25 +12,21 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Introduce `L β u V N hmul hβ hΔ hN hodd hu r s t hint z hz hNz`. Establish `h2z : 2 * z ∉ L.lattice`. Introduce `h`. Take `⟨k, hk⟩` from `hodd`. Establish `e : z = (N : ℂ) * z - ((k : ℤ) • (2 * z))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[zsmul_eq_mul, hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hz (e ▸ sub_mem hNz (L.lattice.smul_mem _ h))`. Establish `hNz2 : (N : ℂ) * (2 * z) ∈ L.lattice`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (N : ℂ) * (2 * z) = N * z + N * z` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem hNz hNz`. Take `⟨hP', -⟩` from `GlobalTheory.T.torsion_weierstrassP_mem_valuationSubring L β u V N hmul hβ hΔ hN z z hz hz hNz hNz`. Take `⟨-, hδ⟩` from `GlobalTheory.T.torsion_weierstrassP_mem_valuationSubring L β u V N hmul hβ hΔ hN (2 * z) z h2z hz hNz2 hNz`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dup` using `GlobalTheory.T.weierstrassP_two_mul_mul_deriv_sq L z hz h2z`. Establish `sq` using `L.derivWeierstrassP_sq z hz`. Use `set C : VariableChange ℂ := ⟨Units.mk0 u hu, r, s, t⟩ with hC`. Establish `hCu : ((C.u⁻¹ : ℂˣ) : ℂ) = u⁻¹` using `by simp [hC]`. Establish `hCr : C.r = r` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCs : C.s = s` using `rfl`. Establish `hCt : C.t = t` using `rfl`. Use `set P := L.weierstrassP z with hPdef`. Use `set P' := L.derivWeierstrassP z with hP'def`. Use `set P2 := L.weierstrassP (2 * z) with hP2def`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hD : 2 * ((P' / 2 - t - s * (P - r)) / u ^ 3) + (C • latticeCurve L).a₁ * ((P - r) / u ^ 2) + (C • latticeCurve L).a₃ = P' / u ^ 3`. Rewrite using `[variableChange_a₁, variableChange_a₃, hCu, hCr, hCs, hCt]`. Simplify using `only [latticeCurve]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `GlobalTheory.T.mem_of_duplication_eq_weierstrass V (C • latticeCurve L) _ _ ((P2 - P) / u ^ 2) hint` to reduce the goal to its premises. Rewrite using `[Affine.equation_iff]`. Simplify using `only [WeierstrassCurve.toAffine]`. Rewrite using `[variableChange_a₁, variableChange_a₂, variableChange_a₃, variableChange_a₄, variableChange_a₆, hCu, hCr, hCs, hCt]`. Simplify using `only [latticeCurve]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := skip) (1 / 4 * u⁻¹ ^ 6) * sq`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hD]`. Conclude with `hP'`.
-
-Conclude with `hδ`. Rewrite using `[hD, variableChange_b₄, variableChange_b₆, variableChange_b₈, hCu, hCr]`. Simplify using `only [latticeCurve, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Take the linear combination `(norm := skip) (u⁻¹ ^ 8) * (-dup + (2 * P + r) * sq)`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem torsion_coords_mem_of_odd : ∀ (L : PeriodPair) (β u : ℂ) (V : ValuationSubring ℂ) (N : ℕ), MulStable L β → β.im ≠ 0 → V.valuation u ^ 12 = V.valuation (latticeCurve L).Δ → V.valuation (N : ℂ) = 1 → Odd N → ∀ (hu : u ≠ 0) (r s t : ℂ), IntV V ((⟨Units.mk0 u hu, r, s, t⟩ : VariableChange ℂ) • latticeCurve L) → ∀ z, z ∉ L.lattice → (N : ℂ) * z ∈ L.lattice → (L.weierstrassP z - r) / u ^ 2 ∈ V ∧ (L.derivWeierstrassP z / 2 - t - s * (L.weierstrassP z - r)) / u ^ 3 ∈ V := by
   intro L β u V N hmul hβ hΔ hN hodd hu r s t hint z hz hNz

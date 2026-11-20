@@ -22,21 +22,21 @@ open GlobalTheory.FinPl.FrameLat
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[p.int_iff, p.sec_pr, RingHom.map_mul]`. Conclude with `mul_mem_intAE (e_mem_intAt p).2 ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_mem_of_intAt (p : SplitPt D k) {a : AE D} (ha : finPart D a ∈ intAE D) : p.pr a ∈ 𝒪[k] := by
   rw [p.int_iff, p.sec_pr, RingHom.map_mul]
   exact mul_mem_intAE (e_mem_intAt p).2 ha
 
 /- English proof (translation)
-Rewrite using `[p.sec_pr, p.sec_pr, RingHom.map_mul, cA_cA, ← add_mul, (idem_iff p a).1 ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_sec_add (p : SplitPt D k) {a : AE D} (ha : a ∈ idAt D (· = p.v)) :
     a = p.sec (p.pr a) + cA D (p.sec (p.pr (cA D a))) := by
   rw [p.sec_pr, p.sec_pr, RingHom.map_mul, cA_cA, ← add_mul, (idem_iff p a).1 ha]
 
 /- English proof (translation)
-Use `⟨fun h => ⟨pr_mem_of_intAt p h.2, pr_mem_of_intAt p ((cA_int_iff a).2 h.2)⟩, fun h => ⟨ha, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_sec_add p ha, RingHom.map_add]`. Conclude with `add_mem ((p.int_iff _).1 h.1) ((cA_int_iff _).2 ((p.int_iff _).1 h.2))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_intAt_iff (p : SplitPt D k) {a : AE D} (ha : a ∈ idAt D (· = p.v)) :
     a ∈ intAt D (· = p.v) ↔ p.pr a ∈ 𝒪[k] ∧ p.pr (cA D a) ∈ 𝒪[k] := by
@@ -45,13 +45,13 @@ theorem mem_intAt_iff (p : SplitPt D k) {a : AE D} (ha : a ∈ idAt D (· = p.v)
   exact add_mem ((p.int_iff _).1 h.1) ((cA_int_iff _).2 ((p.int_iff _).1 h.2))
 
 /- English proof (translation)
-Establish `h0 : (Pi.single (Sum.inr 0) t : n ⊕ Fin 1 → k) ∘ Sum.inl = 0`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.LevelUnfold.mem_gluedS, h0]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨s, h1, h2⟩`. Establish `h3` using `(h2 0).1 rfl`. Rewrite `h3` using `[Pi.single_eq_same]`. Rewrite `h1` using `[zero_sub, neg_mem_iff, Pair.mem_ker]`. Establish `h4` using `(P.hasVal_vec.smul s).unique h1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[mul_one, IsLocalRing.residue_eq_zero_iff, q.mem_max_iff]`. Take `⟨c, rfl⟩` from `h4`. Rewrite using `[h3, Unif.inv, Subring.coe_mul, ← mul_assoc, inv_mul_cancel₀ q.ne_zero, one_mul]`. Conclude with `c.2`. Introduce `ht`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨q.1 * ⟨t, ht⟩, ?_, fun i => ⟨fun _ => ?_, fun hi => absurd hi (by omega)⟩⟩` and prove the remaining obligations. Rewrite using `[zero_sub]`. Conclude with `neg_mem (Pair.smul_mem_ker (Ideal.mul_mem_right _ _ q.mem_max) P.hasVal_vec.mem)`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Rewrite using `[Pi.single_eq_same, Unif.inv, Subring.coe_mul, ← mul_assoc, inv_mul_cancel₀ q.ne_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_mem_glued_iff {n : Type} [DecidableEq n] (q : Unif k) (P : Pair k n) (t : k) :
     (Pi.single (Sum.inr 0) t : n ⊕ Fin 1 → k) ∈ gluedS q 1 P.ker P.vec ↔ t ∈ 𝒪[k] := by
@@ -77,17 +77,17 @@ theorem single_mem_glued_iff {n : Type} [DecidableEq n] (q : Unif k) (P : Pair k
       rw [Pi.single_eq_same, Unif.inv, Subring.coe_mul, ← mul_assoc, inv_mul_cancel₀ q.ne_zero, one_mul]
 
 /- English proof (translation)
-Set `f : D.host.E →+* k` to `p.pr.comp (incA D)`. Set `r : Fin S.rank → D.host.E` to `star (vecB o ζ) ᵥ* S.gram`. Establish `hr : ∀ i, r i = ∑ j, star (S.gram i j) * star (vecB o ζ j)` using `fun i => by`. Simplify using `only [r, vecMul, dotProduct, Pi.star_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, ← conjTranspose_apply, gram_conjTranspose]`. Establish `h1 : ∑ i, ∑ j, (β₀.b *ᵥ x) i * p.pr (cA D (incA D (S.gram i j))) * (t * p.pr (incA D (star (vecB o ζ j)))) = t * ((f ∘ r) ⬝ᵥ β₀.b *ᵥ x)`. Simplify using `only [dotProduct, Function.comp_apply, hr, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * f (star (S.gram i j)) * (t * f (star (vecB o ζ j))) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hA : r ᵥ* o.iA = 0`. Simplify using `only [r, vecB, star_mulVec, vecMul_vecMul, o.orth, vecMul_zero]`. Establish `hB : r ⬝ᵥ vecB o ζ = star ζ ⬝ᵥ L.gram *ᵥ ζ`. Rewrite using `[← o.isoB]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [r, vecB, star_mulVec, vecMul_vecMul, dotProduct_mulVec]`. Establish `hA' : (f ∘ r) ᵥ* o.jA.map p.pr = 0`. Use function extensionality and compare the values at `i`. Use `RingHom.map_vecMul f o.iA r i` as an intermediate fact. Rewrite `this` using `[hA, Pi.zero_apply, map_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `hB' : (f ∘ r) ⬝ᵥ (fun i => p.pr (ratV (vecB o ζ) i)) = p.pr (incA D (star ζ ⬝ᵥ L.gram *ᵥ ζ))`. Rewrite using `[← hB]`. Conclude with `(RingHom.map_dotProduct f r (vecB o ζ)).symm`. Rewrite using `[h1, hs, dotProduct_mulVec, vecMul_fromCols, ← vecMul_vecMul, hA', zero_vecMul, ← hB']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `[dotProduct, vecMul, Fintype.sum_sum_type]`.
+A detailed English derivation is pending.
 -/
 theorem pair_sumFrame {p : SplitPt D k} {S A L : HSp D} (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) {n : Type} [Fintype n]
     [DecidableEq n] {β : Frame p A n} {β₀ : Frame p S (n ⊕ Fin 1)} (hs : IsSumFrame o ζ β β₀) (x : n ⊕ Fin 1 → k) (t : k) :
@@ -123,15 +123,13 @@ theorem pair_sumFrame {p : SplitPt D k} {S A L : HSp D} (o : OrthDec S A L) (ζ 
   simp [dotProduct, vecMul, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Establish `hdec : a • ratV (vecB B.o B.ζ) = (fun i => p.sec ((β₀.b *ᵥ (Pi.single (Sum.inr 0) (p.pr a) : n ⊕ Fin 1 → k)) i)) + fun i => cA D (p.sec (p.pr (cA D a) * p.pr (incA D (star (vecB B.o B.ζ i)))))`. Use function extensionality and compare the values at `i`. Establish `e` using `eq_sec_add p (Ideal.mul_mem_right (incA D (vecB B.o B.ζ i)) _ ha)`. Rewrite `e` using `[RingHom.map_mul, RingHom.map_mul (cA D), RingHom.map_mul, cA_incA]`. Use `e.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.add_apply, mulVec_single, hg.sum]`. Use `congr 2`. Conclude with `mul_comm _ _`. Establish `hq : valuation k ((q.1 : 𝒪[k]) : k) ≠ 0` using `by simpa using q.ne_zero`. Establish `hu : valuation k (p.pr (incA D (star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ)) * q.inv) = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hg.norm, Unif.inv, map_inv₀, mul_inv_cancel₀ hq]`. Rewrite using `[hdec, decomp hM, ← hg.lat, single_mem_glued_iff, mem_intAt_iff p ha, csec_mem_iff hM]`. Use `and_congr_right fun _ => ⟨fun h => ?_, fun h x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `h _ ((hg.lat _).1 (GlobalTheory.LevelUnfold.mem_gluedS.2 ⟨1, (by simp : Sum.elim P.vec (fun _ => q.inv) ∘ Sum.inl - (1 : 𝒪[k]) • P.vec ∈ P.ker), fun i => ⟨fun _ => by simp, fun hi => absurd hi (by omega)⟩⟩))`. Rewrite `h1` using `[pair_sumFrame B.o B.ζ hg.sum, Sum.elim_inr, Valuation.mem_integer_iff, map_mul, hu, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `hx' : x = β₀.b *ᵥ (β₀.b' *ᵥ x)` using `by rw [mulVec_mulVec, β₀.bb', one_mulVec]`. Rewrite `hx` using `[hx']`. Take `⟨s, -, hs⟩` from `GlobalTheory.LevelUnfold.mem_gluedS.1 ((hg.lat _).2 hx)`. Rewrite using `[hx', pair_sumFrame B.o B.ζ hg.sum, (hs 0).1 rfl, ← mul_assoc _ q.inv]`.
-
-Conclude with `mul_mem h (mul_mem ((Valuation.mem_integer_iff _ _).2 hu.le) s.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_of_glued {p : SplitPt D k} {ρ : ℕ} {B : BesLev D ρ} {M : Lat B.V₀} {q : Unif k} {n : Type} [Fintype n] [DecidableEq n]
     {β : Frame p B.A n} {β₀ : Frame p B.V₀ (n ⊕ Fin 1)} {P : Pair k n} (hM : IsSelfDualC B.V₀ M) (hg : GluedCore B M q β β₀ P)
@@ -168,7 +166,7 @@ namespace GlobalTheory.MiTop.Scale
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite using `[Glue.mem_intAt_iff p ha, Glue.mem_intAt_iff p (Ideal.mul_mem_left _ _ ha), RingHom.map_mul (cA D), FrameLat.cA_incA]`. Simplify using `only [Valuation.mem_integer_iff, map_mul, h, h', one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isU_of_val {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k)
     {t : D.host.E} (h : valuation k (p.pr (incA D t)) = 1) (h' : valuation k (p.pr (incA D (star t))) = 1) : IsU p.v (incA D t) := by
@@ -178,7 +176,7 @@ theorem isU_of_val {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [I
   simp only [Valuation.mem_integer_iff, map_mul, h, h', one_mul]
 
 /- English proof (translation)
-Introduce `a ha` and use `by have he := idem_mem_intAt (D := D) (· = x) have hs := Ideal.mul_mem_left _ ((b⁻¹ : (AE D)ˣ) : AE D) ha rw [mul_inv, Units.val_mul, mul_assoc, ← hψ _ hs, ← hp i j hij _ hs] refine ⟨fun h t ht => ?_, fun h => ?_⟩ · have := GlobalTheory.IwaPlace.SDStable.smul_mem D S x _ (LocSD.i …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prim_line {ψ : AddChar (AF D.host.F) ℂ} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} (hL : IsSelfDualC S L) {x : Pl D}
     (hp : PrimAt ψ d L x) {cc b : (AE D)ˣ} (hψ : ∀ s ∈ idAt D (· = x), (∀ o ∈ intAt D (· = x), psiE ψ (s * o) = 1) ↔
@@ -195,13 +193,11 @@ theorem prim_line {ψ : AddChar (AF D.host.F) ℂ} {S S₀ : HSp D} {ρ : ℕ} (
     rwa [mul_mul_mul_comm, Units.inv_mul, one_mul, mul_comm, (mem_idAt_iff _ a).1 ha] at this
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `i hi a ha`. Take `rfl : i = Fin.last σ` from `Fin.ext hi`. Establish `e : ∀ t : AE D, colMul (xLast B'.d (vecB B'.o B'.ζ)) (Fin.last σ) t = B'.d.j0 *ᵥ (t • ratV (vecB B'.o B'.ζ))` using `fun t => by`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [colMul, xLast, Matrix.of_apply, Fin.snoc_last, mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Establish `e0 : ∀ (M : Mx D B'.V.rank σ) i, colMul M i 0 = 0` using `fun M i => funext fun k => zero_mul _`. Establish `ha'` using `Ideal.mul_mem_left _ ((α⁻¹ : (AE D)ˣ) : AE D) ha`. Rewrite using `[h₁.cols _ a ha, hα, smul_colMul, xZero, h₂.cols _ _ ha', hα, smul_colMul, e, h₂.monoW, mulVec_mulVec, mulVec_mulVec, mulVec_mulVec, B'.d.pX_j0, B'.d.pY_j0, B'.d.p0_j0, zero_mulVec, one_mulVec, hz _ (Ideal.mul_mem_left _ _ ha'), pow_zero, one_mul, mul_inv, mul_inv, Units.val_mul, …`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.zero_apply, e0, zero_mem, implies_true, true_and]`. Conclude with `iff_of_eq (congrArg (· ∈ _) (by ring))`. Consider the case `succ n ih`. Introduce `i hi`. Rewrite using `[pow_succ', mul_assoc]`.
-
-Conclude with `prim_line B.d h₁.sdV h₁.prim hψ (j := ⟨i.1 + 1, by omega⟩) rfl (ih _ (by simp only; omega))`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iso_step {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {B : BesLev D (σ + 1)} {J : JacLev D (σ + 1)} {B' : BesLev D σ}
     {LV : Lat B.V} {LV₀ : Lat B.V₀} {LW : Lat J.W} {LW₀ : Lat J.W₀} {LV' : Lat B'.V} {LV₀' : Lat B'.V₀} {x : Pl D} {α m cc : (AE D)ˣ}
@@ -237,13 +233,11 @@ variable {c : Comm D} {v : VCom c} {k : Type} [Field k] [ValuativeRel k] [Topolo
   {ι : Type} {o : TDat c k ι}
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ v.tP`. Use `swap`. Conclude with `core_line hc hs hp hr hlam hτ hx hα ρ j h`. Take `⟨i, rfl⟩` from `(hs.pre.tP x).1 hx`. Introduce `a ha`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hU` using `(hs.pre.char i).2`. Take `⟨l, h1, h2⟩` from `hs.pre.lam (j + 2 * ρ) h`. Take `⟨r, -, hr0⟩` from `line_coord (c.bes (j + 2 * ρ) 0 h).line`. Take `rfl : lam = l` from `mul_right_cancel₀ hr0 (congrFun ((hτ _ h).symm.trans h1) r)`. Establish `u1` using `isU_alpha hU hs.pre.line hα`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u2 : IsU (o.p i).v ((xiU D * cU α : (AE D)ˣ) : AE D)` using `(isU_xi hU).mul u1.conj`. Establish `u3 : IsU (o.p i).v ((α * (xiU D * cU α)⁻¹ : (AE D)ˣ) : AE D)` using `u1.mul (u2.inv (Units.mul_inv _))`. Establish `u4 : IsU (o.p i).v (((α * (xiU D * cU α)⁻¹) ^ (ρ + 1) * inU lam hlam : (AE D)ˣ) : AE D)`. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val]`. Conclude with `(u3.pow _).mul (isU_of_val _ (h2 i).1 (h2 i).2)`.
-
-Conclude with `(Glue.line_of_glued ((hs.good (o.p i).v).bf j ρ h).sdV₀ (hs.glued j ρ h i) ha).trans (u4.inv (Units.mul_inv _) a ha)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core_line_all (hc : c.Is) (hs : ShapeOff v o) (hp : TopPrim v o) (hr : ∀ j, j + 2 * 0 + 2 = D.R.m → 0 < (c.X (j + 1)).rank)
     {lam : D.host.E} (hlam : lam ≠ 0) (hτ : ∀ j h, v.τ j h *ᵥ o.ζ₀ = lam • (c.bes j 0 h).ζ) {x : Pl D} {α : (AE D)ˣ}
@@ -270,9 +264,9 @@ theorem core_line_all (hc : c.Is) (hs : ShapeOff v o) (hp : TopPrim v o) (hr : �
     (u4.inv (Units.mul_inv _) a ha)
 
 /- English proof (translation)
-Take `⟨σ, rfl⟩ : ∃ σ, ρ = σ + 1` from `⟨ρ - 1, by have := i.2; omega⟩`. Establish `hi` using `i.2`. Establish `e : (xiU D * α * cU α) ^ (σ + 1 - i.1) * ((α * (xiU D * cU α)⁻¹) ^ (σ + 1 + 1) * inU lam hlam) = (xiU D * α * cU α) ^ (σ - i.1) * (α * (α * ((α * (xiU D * cU α)⁻¹) ^ (σ + 1) * inU lam hlam)))`. Rewrite using `[show σ + 1 - i.1 = σ - i.1 + 1 by omega, pow_succ _ (σ - i.1), pow_succ' _ (σ + 1), mul_right_comm (xiU D) α]`. Generalize the expression as in `xiU D * cU α = t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(α * t⁻¹) ^ (σ + 1) = w`. Rewrite using `[mul_assoc, mul_assoc (α * t⁻¹), mul_comm t α, mul_comm α t⁻¹, mul_assoc α t, mul_assoc t⁻¹, mul_inv_cancel_left]`. Rewrite using `[e]`. Conclude with `iso_step hα hψ ((hs.good x).bf j (σ + 1) h) ((hs.good x).fb j σ h) (core_line_all hc hs hp hr hlam hτ hα σ _ (idx_step h)) (σ - i.1) i (by omega)`.
+Replace the chosen expression with an arbitrary variable. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iso_line_all (hc : c.Is) (hs : ShapeOff v o) (hp : TopPrim v o) (hr : ∀ j, j + 2 * 0 + 2 = D.R.m → 0 < (c.X (j + 1)).rank)
     {lam : D.host.E} (hlam : lam ≠ 0) (hτ : ∀ j h, v.τ j h *ᵥ o.ζ₀ = lam • (c.bes j 0 h).ζ) {x : Pl D} {α : (AE D)ˣ}
@@ -307,21 +301,21 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h _ rfl, fun h _ e => by subst e; exact h⟩`.
+Supply the required witnesses or components.
 -/
 theorem topPrim_iff {c : Comm D} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ι : Type}
     (v : VCom c) (o : TDat c k ι) : TopPrim v o ↔ PrimTop (c := c) v.tP o.ζ₀ :=
   ⟨fun h => h _ rfl, fun h _ e => by subst e; exact h⟩
 
 /- English proof (translation)
-Unfold `PlacedPrim PlacedP`. Simplify using `only [topPrim_iff]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem placedPrim_iff : PlacedPrim f B ↔ PlacedP f B := by
   unfold PlacedPrim PlacedP
   simp only [topPrim_iff]
 
 /- English proof (translation)
-Use `D.R.two_le_m` as an intermediate fact. Take `⟨c, hc⟩` from `D.R.m_even`. Unfold `Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_rS (D : D7) : 0 + 2 * D.R.rS + 2 = D.R.m := by
   have := D.R.two_le_m
@@ -330,7 +324,7 @@ theorem two_rS (D : D7) : 0 + 2 * D.R.rS + 2 = D.R.m := by
   omega
 
 /- English proof (translation)
-Use `lt_of_lt_of_eq ?_ (Formalism.L2.Forms.rankN D (j + 1) (by omega)).symm` and prove the remaining obligations. Unfold `Ranks.N`. Check the signs of the components of the expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem rank_pos (f : FamCh W u) (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) : 0 < (f.c.X (j + 1)).rank := by
   refine lt_of_lt_of_eq ?_ (Formalism.L2.Forms.rankN D (j + 1) (by omega)).symm
@@ -338,7 +332,7 @@ theorem rank_pos (f : FamCh W u) (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) : 0 < (f.
   positivity
 
 /- English proof (translation)
-Establish `h0` using `two_rS D`. Use `(ht.moves 0 (by omega) (· = x) (fun p hp h => ?_) _ (mulVec_mem_idAt _ hy)).trans ?_` and prove the remaining obligations. Take `⟨PP, h1, h2⟩` from `(ht.gP p).1 h`. Conclude with `hg PP h1 (hp.symm.trans h2)`. Rewrite using `[mulVec_mulVec, ← GlobalTheory.MixModel.mt_mul, mul_inv_cancel, GlobalTheory.MixModel.mt_one, one_mulVec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_moved {v : VCom f.c} (ht : VTie f v) {x : GlobalTheory.FinPl.Pl D} (hg : ∀ PP ∈ (pk W).Pg, x ≠ PP.under (𝓞 D.host.F))
     {y : Fin (Yc D 0).rank → AE D} (hy : ∀ i, y i ∈ idAt D (· = x)) :

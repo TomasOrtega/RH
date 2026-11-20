@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.Pinch
 
 /- English proof (translation)
-Rewrite using `[gm_val (𝟙 X) x U h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gm_id_val_germ {X : Scheme.{0}} (x : X) (U : X.Opens) (h : x ∈ U) (a : Γ(X, U)ˣ) :
     (gm (𝟙 X) x U a).val = (X.presheaf.germ U x h).hom a.val := by
@@ -21,7 +21,7 @@ theorem gm_id_val_germ {X : Scheme.{0}} (x : X) (U : X.Opens) (h : x ∈ U) (a :
   rfl
 
 /- English proof (translation)
-The claim follows from `X.toRingedSpace.isUnit_res_basicOpen e`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_res_basicOpen' {X : Scheme.{0}} {D : X.Opens} (e : Γ(X, D)) :
     IsUnit ((X.presheaf.map (homOfLE (X.basicOpen_le e)).op).hom e) :=
@@ -31,7 +31,7 @@ def basicUnit {X : Scheme.{0}} {D : X.Opens} (e : Γ(X, D)) : Γ(X, X.basicOpen 
   (isUnit_res_basicOpen' e).unit
 
 /- English proof (translation)
-Rewrite using `[gm_id_val_germ x _ hx]`. Use `show (X.presheaf.germ (X.basicOpen e) x hx).hom ((X.presheaf.map (homOfLE (X.basicOpen_le e)).op).hom e) = _`. Conclude with `TopCat.Presheaf.germ_res_apply X.presheaf _ x hx e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_basicUnit_val {X : Scheme.{0}} {D : X.Opens} (e : Γ(X, D)) (x : X) (hx : x ∈ X.basicOpen e) :
     (gm (𝟙 X) x _ (basicUnit e)).val = (X.presheaf.germ D x (X.basicOpen_le e hx)).hom e := by
@@ -40,21 +40,19 @@ theorem gm_basicUnit_val {X : Scheme.{0}} {D : X.Opens} (e : Γ(X, D)) (x : X) (
   exact TopCat.Presheaf.germ_res_apply X.presheaf _ x hx e
 
 /- English proof (translation)
-Introduce `X L hL J D k hD e he`. Set `B : J → X.Opens` to `fun j => X.basicOpen (e j)`. Establish `hB : ∀ j, B j ≤ D j` using `fun j => X.basicOpen_le (e j)`. Set `V : X.Opens` to `⨆ j, B j`. Establish `hBV : ∀ j, B j ≤ V` using `fun j => le_iSup B j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ge : ∀ j j' (z : X) (hz : z ∈ B j) (hz' : z ∈ B j'), gm (𝟙 X) z (B j) (basicUnit (e j)) = gm (𝟙 X) z (L.U (k j) ⊓ L.U (k j')) (L.g (k j) (k j')) * gm (𝟙 X) z (B j') (basicUnit (e j'))`. Introduce `j j' z hz hz'`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, gm_basicUnit_val _ z hz, gm_basicUnit_val _ z hz', gm_id_val_germ z (L.U (k j) ⊓ L.U (k j')) ⟨hD j (hB j hz), hD j' (hB j' hz')⟩]`. Conclude with `he j j' z (hB j hz) (hB j' hz')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `W : L.ι → J → X.Opens` to `fun i j => B j ⊓ L.U i`. Establish `hWV : ∀ i j, W i j ≤ V ⊓ L.U i` using `fun i j => inf_le_inf_right _ (hBV j)`. Establish `hWg : ∀ i j, W i j ≤ L.U i ⊓ L.U (k j)` using `fun i j z hz => ⟨hz.2, hD j (hB j hz.1)⟩`. Establish `hWB : ∀ i j, W i j ≤ B j` using `fun i j => inf_le_left`. Set `u : ∀ i j, Γ(X, W i j)ˣ` to `fun i j => res (hWg i j) (L.g i (k j)) * res (hWB i j) (basicUnit (e j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `gu : ∀ i j (z : X) (hz : z ∈ W i j), gm (𝟙 X) z (W i j) (u i j) = gm (𝟙 X) z (L.U i ⊓ L.U (k j)) (L.g i (k j)) * gm (𝟙 X) z (B j) (basicUnit (e j))`. Introduce `i j z hz`. Simplify using `only [u, map_mul]`. Rewrite using `[gm_res _ z (hWg i j) hz, gm_res _ z (hWB i j) hz]`. Establish `key : ∀ i j j' (z : X), z ∈ L.U i → z ∈ B j → z ∈ B j' → gm (𝟙 X) z (L.U i ⊓ L.U (k j)) (L.g i (k j)) * gm (𝟙 X) z (B j) (basicUnit (e j)) = gm (𝟙 X) z (L.U i ⊓ L.U (k j')) (L.g i (k j')) * gm (𝟙 X) z (B j') (basicUnit (e j'))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j j' z hi hj hj'`. Rewrite using `[ge j j' z hj hj', ← _root_.mul_assoc, gm_cocycle hL (𝟙 X) z hi (hD j (hB j hj)) (hD j' (hB j' hj'))]`. Establish `glued : ∀ i, ∃ s : Γ(X, V ⊓ L.U i)ˣ, ∀ j, res (hWV i j) s = u i j`. Introduce `i`. Use `glue_unit (V ⊓ L.U i) (W i) (hWV i) (fun z hz => ?_) (u i) (fun j j' z hz => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz.1`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, hj, hz.2⟩`. Rewrite using `[gu i j z hz.1, gu i j' z hz.2]`. Conclude with `key i j j' z hz.1.2 hz.1.1 hz.2.1`. Use `choose a ha using glued`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨V, a, fun j x hx hu => hBV j ((Scheme.mem_basicOpen X (e j) x hx).2 hu), ?_⟩` and prove the remaining obligations. Introduce `y i i' hy hi hi'`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Establish `ga : ∀ i (hi : y ∈ L.U i), gm (𝟙 X) y (V ⊓ L.U i) (a i) = gm (𝟙 X) y (L.U i ⊓ L.U (k j)) (L.g i (k j)) * gm (𝟙 X) y (B j) (basicUnit (e j))`. Introduce `i hi`.
-
-Rewrite using `[← gm_res _ y (hWV i j) ⟨hj, hi⟩, ha i j]`. Conclude with `gu i j y ⟨hj, hi⟩`. Rewrite using `[ga i hi, ga i' hi', ← _root_.mul_assoc, gm_cocycle hL (𝟙 X) y hi hi' (hD j (hB j hj))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locGen_of_secFam : ∀ (X : Scheme.{0}) (L : LB X), L.IsLB → ∀ (J : Type) (D : J → X.Opens) (k : J → L.ι) (hD : ∀ j, D j ≤ L.U (k j)) (e : ∀ j, Γ(X, D j)), GlobalTheory.Pinch.IsSecFam L D k hD e → ∃ (V : X.Opens) (a : ∀ i, Γ(X, V ⊓ L.U i)ˣ), (∀ j (x : X) (h : x ∈ D j), IsUnit ((X.presheaf.germ (D j) x h).hom (e j)) → x ∈ V) ∧ GlobalTheory.Pinch.LocGen L V a := by
   intro X L hL J D k hD e he

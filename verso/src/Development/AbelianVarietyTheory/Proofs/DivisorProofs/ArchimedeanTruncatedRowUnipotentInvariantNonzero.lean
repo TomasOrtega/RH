@@ -7,15 +7,15 @@ open scoped FourierTransform ContDiff
 namespace GlobalTheory.JSW.MirCinf
 
 /- English proof (translation)
-Introduce `E _ _ n ρ g hg`. Establish `hw : ∀ w, compGL w g ∈ levSet n (ρ + 1)` using `hg`. Establish `hc : ∀ w (x : GL (Fin n) (Cinf E)) j, rowCut ρ ((compGL w x : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) j = rowCutInf ρ (x : Matrix (Fin n) (Fin n) (Cinf E)) j w`. Introduce `w x j`. Unfold `rowCut rowCutInf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Prove the components needed by the constructor for the conclusion. Introduce `u hu`. Take `⟨hu0, hu1⟩` from `(GlobalTheory.SmGL.mem_unipB (Cinf E)).1 hu`. Establish `hmem : ∀ w, compGL w u ∈ GlobalTheory.SmGL.unipB ℂ (Fin n)`.
+Apply the first step, then apply the next step to every resulting obligation. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w`. Use `(GlobalTheory.SmGL.mem_unipB ℂ).2 ⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[compGL_apply, hu0 i j h]`. Both sides reduce to the same expression. Rewrite using `[compGL_apply, hu1 i]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `j w`. Rewrite using `[← hc, ← hc, map_mul]`. Conclude with `congrFun ((truncatedRow_unipotent_mul_and_ne_zero n ρ _ (hw w)).1 _ (hmem w)) j`. Introduce `w`.
+Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj, hne⟩` from `(truncatedRow_unipotent_mul_and_ne_zero n ρ _ (hw w)).2`. Conclude with `⟨j, hj, by rwa [← hc]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rowCutInf_unipB_mul_levSetInf : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (ρ : Fin n),
     ∀ g ∈ levSetInf E n (ρ + 1),

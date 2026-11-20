@@ -10,9 +10,9 @@ def multiIndicesOfDegree (h r : ℕ) : Finset (Fin h → ℕ) :=
   (Fintype.piFinset fun _ : Fin h => Finset.range (r + 1)).filter fun β => ∑ i, β i = r
 
 /- English proof (translation)
-Simplify using `only [multiIndicesOfDegree, Finset.mem_filter, Fintype.mem_piFinset, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun hβ => hβ.2`. Introduce `hs`. Use `⟨fun i => ?_, hs⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : β i ≤ r`. Rewrite using `[← hs]`. Conclude with `Finset.single_le_sum (f := β) (fun j _ => Nat.zero_le _) (Finset.mem_univ i)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mem_multiIndicesOfDegree {h r : ℕ} (β : Fin h → ℕ) :
     β ∈ multiIndicesOfDegree h r ↔ ∑ i, β i = r := by
@@ -27,17 +27,17 @@ theorem mem_multiIndicesOfDegree {h r : ℕ} (β : Fin h → ℕ) :
     omega
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Introduce `f _ hβ`. Establish `h0` using `hβ (fun _ => 0) (by simp)`. Rewrite `h0` using `[multiIndexDeriv_fun_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h0`. Consider the case `succ r ih`. Introduce `f hf hβ`. Establish `key : ∀ i, D i f ∈ IsLocalRing.maximalIdeal R ^ (r + 1)`. Introduce `i`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ih (D i f) ?_ ?_` and prove the remaining obligations. Establish `h1` using `multiIndexDeriv_mem_pow_sub D (IsLocalRing.maximalIdeal R) (r + 1) hf (unitMultiIndex i)`. Rewrite `h1` using `[multiIndexDeriv_unitMultiIndex, sum_unitMultiIndex]`. Simplify using `using h1`. Introduce `β hβ'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∑ j, (β + unitMultiIndex i) j = r + 1`. Simplify using `only [Pi.add_apply]`. Rewrite using `[Finset.sum_add_distrib, hβ', sum_unitMultiIndex]`. Establish `h2` using `hβ (β + unitMultiIndex i) hsum`. Rewrite `h2` using `[multiIndexDeriv_add_unitMultiIndex_apply_first D hDD β i f]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hfx : f ∈ Ideal.span (Set.range x) ^ (r + 1)` using `by rw [hx]; exact hf`. Establish `hdx : ∀ i, D i f ∈ Ideal.span (Set.range x) ^ (r + 1)`. Introduce `i`. Rewrite using `[hx]`. Conclude with `key i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hres` using `mem_pow_succ_of_deriv_mem_pow k x D hD (hunit (r + 1) (by omega)) hfx hdx`. Rewrite `hres` using `[hx]`. Conclude with `hres`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_maximalIdeal_pow_succ_of_multiIndexDeriv_mem {k R : Type*} [CommRing k] [CommRing R]
     [IsLocalRing R] [Algebra k R] {h : ℕ} (x : Fin h → R) (D : Fin h → Derivation k R R)
@@ -77,9 +77,9 @@ private theorem mem_maximalIdeal_pow_succ_of_multiIndexDeriv_mem {k R : Type*} [
     exact hres
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hfs β hβ`. Establish `hβ' : ∑ i, β i = r` using `(mem_multiIndicesOfDegree β).mp hβ`. Establish `hm` using `multiIndexDeriv_mem_pow_sub D (IsLocalRing.maximalIdeal R) (r + 1) hfs β`. Rewrite `hm` using `[hβ']`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr1 : r + 1 - r = 1` using `by omega`. Rewrite `hm` using `[hr1, pow_one]`. Conclude with `hm`. Introduce `hall`. Conclude with `mem_maximalIdeal_pow_succ_of_multiIndexDeriv_mem x D hx hD hDD hunit r f hf (fun β hb => hall β ((mem_multiIndicesOfDegree β).mpr hb))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_maximalIdeal_pow_succ_iff_multiIndexDeriv_mem {k R : Type*} [CommRing k] [CommRing R]
     [IsLocalRing R] [Algebra k R] {h : ℕ} (x : Fin h → R) (D : Fin h → Derivation k R R)
@@ -103,9 +103,9 @@ theorem mem_maximalIdeal_pow_succ_iff_multiIndexDeriv_mem {k R : Type*} [CommRin
       (fun β hb => hall β ((mem_multiIndicesOfDegree β).mpr hb))
 
 /- English proof (translation)
-Establish `h3 : (n : ℕ∞) ≤ idealOrder I` using `(le_idealOrder_iff I n).mpr h1`. Establish `h4 : ¬ (((n + 1 : ℕ) : ℕ∞) ≤ idealOrder I)` using `fun hc => h2 ((le_idealOrder_iff I (n + 1)).mp hc)`. Rewrite `h4` using `[not_le]`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.mp (ne_top_of_lt h4)`. Rewrite `h3`, `h4`, the goal using `[← hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hle : n ≤ m` using `by exact_mod_cast h3`. Establish `hlt : m < n + 1` using `by exact_mod_cast h4`. Establish `hme : m = n` using `by omega`. Conclude with `hme` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem idealOrder_eq_of_le_of_not_le {R : Type*} [CommRing R] [IsLocalRing R] {n : ℕ}
     {I : Ideal R} (h1 : I ≤ IsLocalRing.maximalIdeal R ^ n)
@@ -124,7 +124,7 @@ private theorem idealOrder_eq_of_le_of_not_le {R : Type*} [CommRing R] [IsLocalR
 private def ofDigitsFin (N : ℕ) {h : ℕ} (β : Fin h → ℕ) : ℕ := ∑ i, β i * N ^ (i : ℕ)
 
 /- English proof (translation)
-Simplify using `only [ofDigitsFin, add_mul]`. Rewrite using `[Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ofDigits_add (N : ℕ) {h : ℕ} (β γ : Fin h → ℕ) :
     ofDigitsFin N (fun i => β i + γ i) = ofDigitsFin N β + ofDigitsFin N γ := by
@@ -132,9 +132,9 @@ private theorem ofDigits_add (N : ℕ) {h : ℕ} (β γ : Fin h → ℕ) :
   rw [Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [ofDigitsFin]`. Rewrite using `[Fin.sum_univ_succ, Finset.sum_mul]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.val_succ, pow_succ, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ofDigits_fin_succ (N : ℕ) {n : ℕ} (δ : Fin (n + 1) → ℕ) :
     ofDigitsFin N δ = δ 0 + (ofDigitsFin N fun i : Fin n => δ i.succ) * N := by
@@ -146,13 +146,13 @@ private theorem ofDigits_fin_succ (N : ℕ) {n : ℕ} (δ : Fin (n + 1) → ℕ)
     rw [Fin.val_succ, pow_succ, mul_assoc]
 
 /- English proof (translation)
-Introduce `h`. Proceed by induction on `h with`. Consider the case `zero`. Introduce `β γ _ _ _`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `i.elim0`. Consider the case `succ n ih`. Introduce `β γ hβ hγ hsum`. Rewrite `hsum` using `[ofDigits_fin_succ N β, ofDigits_fin_succ N γ]`. Establish `h0 : β 0 = γ 0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmod : (β 0 + (ofDigitsFin N fun i : Fin n => β i.succ) * N) % N = (γ 0 + (ofDigitsFin N fun i : Fin n => γ i.succ) * N) % N` using `by rw [hsum]`. Rewrite `hmod` using `[Nat.add_mul_mod_self_right, Nat.add_mul_mod_self_right, Nat.mod_eq_of_lt (hβ 0), Nat.mod_eq_of_lt (hγ 0)]`. Then use the resulting hypothesis. Rewrite `hsum` using `[h0]`. Establish `h1 : (ofDigitsFin N fun i : Fin n => β i.succ) = ofDigitsFin N fun i : Fin n => γ i.succ` using `Nat.eq_of_mul_eq_mul_right hN (Nat.add_left_cancel hsum)`. Establish `h2` using `ih _ _ (fun i => hβ i.succ) (fun i => hγ i.succ) h1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ ?_ i` and prove the remaining obligations. Conclude with `h0`. Introduce `j`. Conclude with `congrFun h2 j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem ofDigits_injective_of_lt (N : ℕ) (hN : 0 < N) : ∀ (h : ℕ) (β γ : Fin h → ℕ),
     (∀ i, β i < N) → (∀ i, γ i < N) → ofDigitsFin N β = ofDigitsFin N γ → β = γ := by
@@ -181,7 +181,7 @@ private theorem ofDigits_injective_of_lt (N : ℕ) (hN : 0 < N) : ∀ (h : ℕ) 
       exact congrFun h2 j
 
 /- English proof (translation)
-Take `⟨β₁, hβ₁, hP₁⟩` from `hex`. Take `⟨β₀, hmem, hmin⟩` from `Finset.exists_min_image ((multiIndicesOfDegree h r).filter P) (ofDigitsFin N) ⟨β₁, Finset.mem_filter.mpr ⟨(mem_multiIndicesOfDegree β₁).mpr hβ₁, hP₁⟩⟩`. Rewrite `hmem` using `[Finset.mem_filter, mem_multiIndicesOfDegree]`. Conclude with `⟨β₀, hmem.1, hmem.2, fun β hβ hPβ => hmin β (Finset.mem_filter.mpr ⟨(mem_multiIndicesOfDegree β).mpr hβ, hPβ⟩)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem exists_ofDigits_le_of_sum_eq {h : ℕ} (P : (Fin h → ℕ) → Prop) (r N : ℕ)
     (hex : ∃ β : Fin h → ℕ, (∑ i, β i = r) ∧ P β) :
@@ -197,9 +197,9 @@ private theorem exists_ofDigits_le_of_sum_eq {h : ℕ} (P : (Fin h → ℕ) → 
     hmin β (Finset.mem_filter.mpr ⟨(mem_multiIndicesOfDegree β).mpr hβ, hPβ⟩)⟩
 
 /- English proof (translation)
-Introduce `hsum`. Use `hFa ?_` and prove the remaining obligations. Establish `h1 : (∑ b ∈ t.erase a, F b) ∈ I` using `Ideal.sum_mem _ fun b hb => hrest b (Finset.mem_of_mem_erase hb) (Finset.ne_of_mem_erase hb)`. Establish `h2 : F a + ∑ b ∈ t.erase a, F b = ∑ b ∈ t, F b` using `Finset.add_sum_erase t F ha`. Establish `h3` using `sub_mem hsum h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[← h2, add_sub_cancel_right]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_notMem_of_unique_notMem {R : Type*} [CommRing R] {I : Ideal R} {ι : Type*}
     [DecidableEq ι] (t : Finset ι) (F : ι → R) (a : ι) (ha : a ∈ t) (hFa : F a ∉ I)
@@ -214,39 +214,35 @@ private theorem sum_notMem_of_unique_notMem {R : Type*} [CommRing R] {I : Ideal 
   exact h3
 
 /- English proof (translation)
-Establish `hfex : ∃ β : Fin h → ℕ, (∑ i, β i = r) ∧ multiIndexDeriv D β f ∉ IsLocalRing.maximalIdeal R`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `hnf ((mem_maximalIdeal_pow_succ_iff_multiIndexDeriv_mem x D hx hD hDD hunit r hf).mpr ?_)` and prove the remaining obligations. Introduce `β hβ`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hcon β ((mem_multiIndicesOfDegree β).mp hβ)`. Establish `hgex : ∃ γ : Fin h → ℕ, (∑ i, γ i = s) ∧ multiIndexDeriv D γ g ∉ IsLocalRing.maximalIdeal R`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `hng ((mem_maximalIdeal_pow_succ_iff_multiIndexDeriv_mem x D hx hD hDD hunit s hg).mpr ?_)` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `γ hγ`. Conclude with `hcon γ ((mem_multiIndicesOfDegree γ).mp hγ)`. Take `⟨β₀, hβ₀deg, hβ₀f, hβ₀min⟩` from `exists_ofDigits_le_of_sum_eq (fun β => multiIndexDeriv D β f ∉ IsLocalRing.maximalIdeal R) r (r + s + 1) hfex`. Take `⟨γ₀, hγ₀deg, hγ₀g, hγ₀min⟩` from `exists_ofDigits_le_of_sum_eq (fun γ => multiIndexDeriv D γ g ∉ IsLocalRing.maximalIdeal R) s (r + s + 1) hgex`. Take `⟨α, hα⟩ : ∃ α : Fin h → ℕ, ∀ i, α i = β₀ i + γ₀ i` from `⟨_, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hαsum : ∑ i, α i = r + s`. Establish `hc : ∑ i, α i = ∑ i, (β₀ i + γ₀ i)` using `Finset.sum_congr rfl fun i _ => hα i`. Rewrite using `[hc, Finset.sum_add_distrib, hβ₀deg, hγ₀deg]`. Establish `hbase : ofDigitsFin (r + s + 1) α = ofDigitsFin (r + s + 1) β₀ + ofDigitsFin (r + s + 1) γ₀`. Rewrite using `[← ofDigits_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (ofDigitsFin (r + s + 1)) (funext hα)`. Introduce `hmem`. Establish `hfg : f * g ∈ IsLocalRing.maximalIdeal R ^ (r + s)`. Rewrite using `[pow_add]`. Conclude with `Ideal.mul_mem_mul hf hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hkey` using `(mem_maximalIdeal_pow_succ_iff_multiIndexDeriv_mem x D hx hD hDD hunit (r + s) hfg).mp hmem α ((mem_multiIndicesOfDegree α).mpr hαsum)`. Establish `hsub` using `multiIndexDeriv_mul_sub_sum_mem D (IsLocalRing.maximalIdeal R) r s α hαsum hf hg`. Establish `hT` using `sub_mem hkey hsub`. Rewrite `hT` using `[sub_sub_cancel]`. Use `(sum_notMem_of_unique_notMem _ _ β₀ ?_ ?_ ?_) hT` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Finset.mem_filter, Fintype.mem_piFinset]`. Use `⟨fun i => Finset.mem_range.mpr ?_, hβ₀deg⟩` and prove the remaining obligations. Use `hα i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hγeq : (fun i => α i - β₀ i) = γ₀`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Use `hα i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hγeq]`. Establish `hcne : (∏ i, (α i).choose (β₀ i)) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i _`. Use `(Nat.choose_pos ?_).ne'` and prove the remaining obligations. Use `hα i` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `IsLocalRing.notMem_maximalIdeal.mpr (((hunit _ (Nat.one_le_iff_ne_zero.mpr hcne)).mul (IsLocalRing.notMem_maximalIdeal.mp hβ₀f)).mul (IsLocalRing.notMem_maximalIdeal.mp hγ₀g))`. Introduce `β hβt hβne`. Rewrite `hβt` using `[Finset.mem_filter, Fintype.mem_piFinset]`. Take `⟨hβrange, hβsum⟩` from `hβt`. Establish `hβle : ∀ i, β i ≤ α i` using `fun i => Nat.lt_succ_iff.mp (Finset.mem_range.mp (hβrange i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Distinguish the cases in `hcase : multiIndexDeriv D β f ∈ IsLocalRing.maximalIdeal R`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hcase)`. Establish `hmin1 : ofDigitsFin (r + s + 1) β₀ ≤ ofDigitsFin (r + s + 1) β` using `hβ₀min β hβsum hcase`. Establish `hbβ : ∀ i, β i < r + s + 1`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1 : β i ≤ r`. Rewrite using `[← hβsum]`. Conclude with `Finset.single_le_sum (f := β) (fun j _ => Nat.zero_le _) (Finset.mem_univ i)`. Use linear arithmetic over natural numbers and integers. Establish `hbβ₀ : ∀ i, β₀ i < r + s + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Establish `h1 : β₀ i ≤ r`. Rewrite using `[← hβ₀deg]`. Conclude with `Finset.single_le_sum (f := β₀) (fun j _ => Nat.zero_le _) (Finset.mem_univ i)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ofDigitsFin (r + s + 1) β₀ ≠ ofDigitsFin (r + s + 1) β` using `fun heq => hβne (ofDigits_injective_of_lt (r + s + 1) (by omega) h β β₀ hbβ hbβ₀ heq.symm)`. Establish `hstrict : ofDigitsFin (r + s + 1) β₀ < ofDigitsFin (r + s + 1) β` using `lt_of_le_of_ne hmin1 hne`. Establish `hγsum : ∑ i, (α i - β i) = s`. Establish `h1 : ∑ i, ((α i - β i) + β i) = ∑ i, α i` using `Finset.sum_congr rfl fun i _ => by`. Use `hβle i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[Finset.sum_add_distrib, hβsum, hαsum]`. Use linear arithmetic over natural numbers and integers. Establish `hsplit : ofDigitsFin (r + s + 1) β + ofDigitsFin (r + s + 1) (fun i => α i - β i) = ofDigitsFin (r + s + 1) α`. Rewrite using `[← ofDigits_add]`.
-
-Conclude with `congrArg (ofDigitsFin (r + s + 1)) (funext fun i => by show β i + (α i - β i) = α i`. Use `hβle i` as an intermediate fact. Use the proof step `omega)`. Establish `hγlt : ofDigitsFin (r + s + 1) (fun i => α i - β i) < ofDigitsFin (r + s + 1) γ₀`. Use linear arithmetic over natural numbers and integers.
-
-Establish `hgmem : multiIndexDeriv D (fun i => α i - β i) g ∈ IsLocalRing.maximalIdeal R`. Assume the negation of the conclusion as `hcon2`. Conclude with `absurd (hγ₀min _ hγsum hcon2) (by omega)`. Conclude with `Ideal.mul_mem_left _ _ hgmem`.
+A detailed English derivation is pending.
 -/
 private theorem mul_notMem_maximalIdeal_pow_add_succ {k R : Type*} [CommRing k] [CommRing R]
     [IsLocalRing R] [Algebra k R] {h : ℕ} (x : Fin h → R) (D : Fin h → Derivation k R R)
@@ -360,25 +356,23 @@ private theorem mul_notMem_maximalIdeal_pow_add_succ {k R : Type*} [CommRing k] 
       exact Ideal.mul_mem_left _ _ hgmem
 
 /- English proof (translation)
-Distinguish the cases in `hI : I = ⊥`. Substitute `hI` using the available equality. Establish `hbm : (⊥ : Ideal R) * J = ⊥`. Use `le_antisymm (Ideal.mul_le.mpr ?_) bot_le` and prove the remaining obligations. Introduce `a ha b _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ha`, the goal using `[Ideal.mem_bot]`. Rewrite using `[ha, zero_mul]`. Rewrite using `[hbm, idealOrder_bot]`. Conclude with `le_antisymm le_self_add le_top`. Distinguish the cases in `hJ : J = ⊥`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hJ` using the available equality. Establish `hbm : I * (⊥ : Ideal R) = ⊥`. Use `le_antisymm (Ideal.mul_le.mpr ?_) bot_le` and prove the remaining obligations. Introduce `a _ b hb`. Rewrite `hb`, the goal using `[Ideal.mem_bot]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, mul_zero]`. Rewrite using `[hbm, idealOrder_bot]`. Conclude with `le_antisymm le_add_self le_top`. Take `⟨r, hr⟩` from `exists_idealOrder_eq_coe hI`. Take `⟨s, hs⟩` from `exists_idealOrder_eq_coe hJ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIr : I ≤ IsLocalRing.maximalIdeal R ^ r` using `(le_idealOrder_iff I r).mp (le_of_eq hr.symm)`. Establish `hJs : J ≤ IsLocalRing.maximalIdeal R ^ s` using `(le_idealOrder_iff J s).mp (le_of_eq hs.symm)`. Establish `hIn : ¬ I ≤ IsLocalRing.maximalIdeal R ^ (r + 1)`. Introduce `hc`. Establish `hle` using `(le_idealOrder_iff I (r + 1)).mpr hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hle` using `[hr]`. Establish `hnat : r + 1 ≤ r` using `by exact_mod_cast hle`. Use linear arithmetic over natural numbers and integers. Establish `hJn : ¬ J ≤ IsLocalRing.maximalIdeal R ^ (s + 1)`. Introduce `hc`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle` using `(le_idealOrder_iff J (s + 1)).mpr hc`. Rewrite `hle` using `[hs]`. Establish `hnat : s + 1 ≤ s` using `by exact_mod_cast hle`. Use linear arithmetic over natural numbers and integers. Choose the witnesses or unpack the hypotheses as in `⟨a, haI, han⟩ : ∃ a ∈ I, a ∉ IsLocalRing.maximalIdeal R ^ (r + 1) := by`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hIn fun y hy => hc y hy`. Choose the witnesses or unpack the hypotheses as in `⟨b, hbJ, hbn⟩ : ∃ b ∈ J, b ∉ IsLocalRing.maximalIdeal R ^ (s + 1) := by`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at hc`. Conclude with `hJn fun y hy => hc y hy`. Establish `hmul : a * b ∉ IsLocalRing.maximalIdeal R ^ (r + s + 1)` using `mul_notMem_maximalIdeal_pow_add_succ x D hx hD hDD hunit (hIr haI) han (hJs hbJ) hbn`. Establish `h1 : ¬ I * J ≤ IsLocalRing.maximalIdeal R ^ (r + s + 1)` using `fun hc => hmul (hc (Ideal.mul_mem_mul haI hbJ))`. Establish `h2 : I * J ≤ IsLocalRing.maximalIdeal R ^ (r + s)`.
-
-Rewrite using `[pow_add]`. Conclude with `Ideal.mul_mono hIr hJs`. Rewrite using `[idealOrder_eq_of_le_of_not_le h2 h1, hr, hs]`. Conclude with `Nat.cast_add r s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealOrder_mul {k R : Type*} [CommRing k] [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] [Algebra k R] {h : ℕ} (x : Fin h → R) (D : Fin h → Derivation k R R)
@@ -442,9 +436,9 @@ theorem idealOrder_mul {k R : Type*} [CommRing k] [CommRing R] [IsLocalRing R]
       exact Nat.cast_add r s
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero`. Rewrite using `[pow_zero, Ideal.one_eq_top, idealOrder_top]`. Simplify using the standard rewrite rules. Consider the case `succ c ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[pow_succ, idealOrder_mul x D hx hD hDD hunit, ih, Nat.cast_add, Nat.cast_one, add_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idealOrder_pow {k R : Type*} [CommRing k] [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] [Algebra k R] {h : ℕ} (x : Fin h → R) (D : Fin h → Derivation k R R)

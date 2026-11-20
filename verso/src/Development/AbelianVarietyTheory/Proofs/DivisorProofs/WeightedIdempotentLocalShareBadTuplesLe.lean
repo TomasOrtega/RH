@@ -16,17 +16,15 @@ open GlobalTheory.BadShare
 namespace GlobalTheory.PropWU
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.ArithmeticCylinders.eU Formalism.MainNotions.ArithmeticCylinders.eDat`. Use `set J := Finset.univ.filter (fun u : GL (Fin N) (ZMod g) => Formalism.MainNotions.ArithmeticCylinders.IsUniUp (u : Matrix (Fin N) (Fin N) (ZMod g))) with hJ`. Establish `h1 : (1 : GL (Fin N) (ZMod g)) ∈ J`. Rewrite using `[hJ, Finset.mem_filter]`. Use `⟨Finset.mem_univ _, fun a b => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply, (ne_of_gt h)]`. Simplify using `[Matrix.one_apply, h]`. Establish `h0 : (∑ i ∈ Finset.range (N - 1), Formalism.MainNotions.ArithmeticCylinders.entN ((1 : GL (Fin N) (ZMod g)) : Matrix (Fin N) (Fin N) (ZMod g)) i (i + 1)) = 0`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Unfold `Formalism.MainNotions.ArithmeticCylinders.entN`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[Units.val_one, Matrix.one_apply_ne]`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [MonoidAlgebra.coeff_smul, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single, Finsupp.coe_smul, Finsupp.coe_finsetSum, Pi.smul_apply, Finset.sum_apply, smul_eq_mul, Complex.mul_re, Complex.inv_re, Complex.natCast_re, Complex.normSq_natCast, div_self_mul_self', Complex.re_s …`. Use `⟨Finset.nonempty_iff_ne_empty.1 ⟨1, h1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (1 : GL (Fin N) (ZMod g))]`. Rewrite using `[Finsupp.single_eq_same, h0, AddChar.map_zero_eq_one, inv_one, Complex.one_re]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero`. Introduce `b _ hb`. Rewrite using `[Finsupp.single_apply, if_neg hb]`. Simplify using the standard rewrite rules. Introduce `h`.
-
-Conclude with `absurd h1 h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eU_coeff_one_ne (g N : ℕ) [NeZero g] (ψ₀ : AddChar (ZMod g) ℂ) :
     ((Formalism.MainNotions.ArithmeticCylinders.eU g N ψ₀).coeff 1).re ≠ 0 := by
@@ -61,22 +59,22 @@ theorem eU_coeff_one_ne (g N : ℕ) [NeZero g] (ψ₀ : AddChar (ZMod g) ℂ) :
   · intro h; exact absurd h1 h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.inv_five_log_le_sum_inv_primes_half_interval N hN`.
+A detailed English derivation is pending.
 -/
 theorem sum_inv_primes_between_ge (N : ℕ) (hN : 100 ≤ N) : 1 / (5 * Real.log N) ≤
     ∑ p ∈ (Finset.range (N + 1)).filter (fun p => p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N), (1 : ℝ) / p :=
   GlobalTheory.T.inv_five_log_le_sum_inv_primes_half_interval N hN
 
 /- English proof (translation)
-Use `set S := (Finset.range (N + 1)).filter (fun p => p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N) with hSdef`. Establish `hS : ∀ p ∈ S, p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N` using `fun p hp => (Finset.mem_filter.1 hp).2`. Establish `h1 : (GlobalTheory.BadShare.mass g N fun f => ¬ GlobalTheory.BadShare.HasPrimeFactor g N f) ≤ GlobalTheory.BadShare.mass g N fun f => ∀ p ∈ S, p ∉ GlobalTheory.BadShare.degType g f`. Use `GlobalTheory.BadShare.mass_mono fun f _ hf p hp hd => hf ?_` and prove the remaining obligations. Take `⟨h, hh, rfl⟩` from `Multiset.mem_map.1 hd`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨h, UniqueFactorizationMonoid.irreducible_of_normalized_factor h hh, UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hh, hS _ hp⟩`. Establish `h2` using `GlobalTheory.T.mass_degType_le_card_cycleType_div g N (fun s => ∀ p ∈ S, p ∉ s)`. Establish `h3` using `GlobalTheory.BadShare.card_perm_no_long_cycle N S fun p hp => (hS p hp).2.1`. Establish `h4` using `sum_inv_primes_between_ge N hN`. Establish `hf : (0 : ℝ) < N.factorial` using `by exact_mod_cast N.factorial_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : ∀ p ∈ S, ((Finset.univ.filter fun σ : Equiv.Perm (Fin N) => p ∈ σ.partition.parts).card : ℝ) = N.factorial * ((1 : ℝ) / p)`. Introduce `p hp`. Establish `e` using `GlobalTheory.BadShare.card_perm_long_cycle N p (hS p hp).2.1 (by have := (hS p hp).2.2; omega)`. Establish `hp0 : (p : ℝ) ≠ 0` using `by exact_mod_cast (hS p hp).1.ne_zero`. Rewrite using `[← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `h6 : ((Finset.univ.filter fun σ : Equiv.Perm (Fin N) => ∀ p ∈ S, p ∉ σ.partition.parts).card : ℝ) + N.factorial * ∑ p ∈ S, (1 : ℝ) / p = N.factorial`. Rewrite using `[Finset.mul_sum, ← Finset.sum_congr rfl h5]`. Conclude with `h3` after adjusting the coercions.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.trans (le_trans ?_ (sub_le_sub_left h4 1))` and prove the remaining obligations. Use `le_trans (h2.trans_eq (by congr!)) (?_ : ((Finset.univ.filter fun σ : Equiv.Perm (Fin N) => ∀ p ∈ S, p ∉ σ.partition.parts).card : ℝ) / (N.factorial : ℝ) ≤ _)` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hf]`. Use polynomial arithmetic with `[h6]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem mass_not_hasPrimeFactor_le_five (g : ℕ) [Fact g.Prime] (N : ℕ) (hN : 100 ≤ N) :
     (GlobalTheory.BadShare.mass g N fun f => ¬ GlobalTheory.BadShare.HasPrimeFactor g N f) ≤ 1 - 1 / (5 * Real.log N) := by
@@ -111,29 +109,27 @@ theorem mass_not_hasPrimeFactor_le_five (g : ℕ) [Fact g.Prime] (N : ℕ) (hN :
   nlinarith [h6]
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.T.squarefreeLabelTorusMass_divisor_bound g).1 N`. Set `B2 : (ι → (ZMod g)[X]) → Prop` to `fun F => ∃ v ∈ (Finset.univ : Finset ι), ¬ RootsApart g N (F v)`. Set `B3 : (ι → (ZMod g)[X]) → Prop` to `fun F => ∃ p ∈ (Finset.univ : Finset (ι × Fin m × Bool)), ¬ RootsAvoid g (if p.2.2 then ch p.1 p.2.1 else (ch p.1 p.2.1)⁻¹) (F p.1)`. Set `B4 : (ι → (ZMod g)[X]) → Prop` to `fun F => ∃ a ∈ Finset.Icc 1 (N / 2), ∀ v, HasDiv g a (F v)`. Set `B5 : (ι → (ZMod g)[X]) → Prop` to `fun F => ∀ v, ¬ HasPrimeFactor g N (F v)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `u0 : tupleMass g N (fun F : ι → (ZMod g)[X] => ¬ Good g N ch F) ≤ tupleMass g N (fun F => B2 F ∨ B3 F ∨ B4 F ∨ B5 F) + tupleMass g N (fun _ : ι → (ZMod g)[X] => False)`. Use `tupleMass_le_add fun F hF hng => Or.inl ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [not_or] at hc`. Take `⟨c2, c3, c4, c5⟩` from `hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `hng (good_iff.2 ⟨hF, fun v => ?_, fun v j => ⟨?_, ?_⟩, ?_, ?_⟩)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `c2 ⟨v, Finset.mem_univ _, h⟩`. Assume the negation of the conclusion as `h`. Conclude with `c3 ⟨(v, j, true), Finset.mem_univ _, by simpa using h⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components.
 
-Assume the negation of the conclusion as `h`. Conclude with `c3 ⟨(v, j, false), Finset.mem_univ _, by simpa using h⟩`. Introduce and unpack `⟨a, a1, a2, a3⟩`. Conclude with `c4 ⟨a, Finset.mem_Icc.2 ⟨a1, by omega⟩, a3⟩`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `c5 fun v hv => h ⟨v, hv⟩`. Establish `u00 : tupleMass g N (fun _ : ι → (ZMod g)[X] => False) = 0`. Unfold `tupleMass`. Simplify using the standard rewrite rules. Establish `u2 : tupleMass g N (fun F => B2 F ∨ B3 F ∨ B4 F ∨ B5 F) ≤ tupleMass g N B2 + tupleMass g N (fun F => B3 F ∨ B4 F ∨ B5 F)` using `tupleMass_le_add fun _ _ h => h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `u3 : tupleMass g N (fun F => B3 F ∨ B4 F ∨ B5 F) ≤ tupleMass g N B3 + tupleMass g N (fun F => B4 F ∨ B5 F)` using `tupleMass_le_add fun _ _ h => h`. Establish `u4 : tupleMass g N (fun F => B4 F ∨ B5 F) ≤ tupleMass g N B4 + tupleMass g N B5` using `tupleMass_le_add fun _ _ h => h`. Establish `b2 : tupleMass g N B2 ≤ 23 * (Fintype.card ι : ℝ) * Real.log g / Real.sqrt g`. Use `(tupleMass_exists_le _ fun v F => ¬ RootsApart g N (F v)).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_card_nsmul _ _ _ fun v _ => (tupleMass_single_le h1 v fun f => ¬ RootsApart g N f).trans (GlobalTheory.T.squarefreeLabelTorusMass_rootsNotDistinct_le g N hg)).trans (le_of_eq ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `b3 : tupleMass g N B3 ≤ 2 * (Fintype.card ι : ℝ) * m * (1 / (4 * ((min q d : ℕ) : ℝ)) + (1 + Real.log N) / ((g : ℝ) - 1))`. Use `(tupleMass_exists_le _ fun (p : ι × Fin m × Bool) F => ¬ RootsAvoid g (if p.2.2 then ch p.1 p.2.1 else (ch p.1 p.2.1)⁻¹) (F p.1)).trans ?_` and prove the remaining obligations. Establish `key : ∀ (c : (ZMod g)ˣ) (v : ι), tupleMass g N (fun F : ι → (ZMod g)[X] => ¬ RootsAvoid g c (F v)) ≤ 1 / (4 * ((min q d : ℕ) : ℝ)) + (1 + Real.log N) / ((g : ℝ) - 1)` using `fun c v => (tupleMass_single_le h1 v fun f => ¬ RootsAvoid g c f).trans (GlobalTheory.T.mass_not_rootsAvoid_le' g N q d c hq)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `(Finset.sum_le_card_nsmul _ _ _ fun p _ => key _ p.1).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.card_univ, nsmul_eq_mul]`. Simplify using `only [Fintype.card_prod, Fintype.card_fin, Fintype.card_bool]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `b4 : tupleMass g N B4 ≤ (N : ℝ) / 2 * (7 / 8 : ℝ) ^ Fintype.card ι`. Use `(tupleMass_exists_le _ fun a (F : ι → (ZMod g)[X]) => ∀ v, HasDiv g a (F v)).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_card_nsmul _ _ ((7 / 8 : ℝ) ^ Fintype.card ι) fun a ha => ?_).trans ?_` and prove the remaining obligations. Rewrite `ha` using `[Finset.mem_Icc]`. Use `(tupleMass_forall (fun _ : ι => HasDiv g a)).le.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_const, Finset.card_univ]`. Conclude with `pow_le_pow_left₀ (mass_nonneg _ _) (GlobalTheory.T.squarefreeLabelTorusMass_hasDivisorOfDegree_le g N a (by omega) (by omega)) _`. Rewrite using `[Nat.card_Icc, nsmul_eq_mul, Nat.add_sub_cancel]`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Conclude with `Nat.cast_div_le (α := ℝ) (m := N) (n := 2)` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `b5 : tupleMass g N B5 ≤ Real.exp (-((Fintype.card ι : ℝ) / (5 * Real.log N)))`. Establish `e` using `tupleMass_forall (g := g) (N := N) (fun (_ : ι) f => ¬ HasPrimeFactor g N f)`. Use `e.le.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_const, Finset.card_univ]`. Establish `h2 : (mass g N fun f => ¬ HasPrimeFactor g N f) ≤ Real.exp (-(1 / (5 * Real.log N)))` using `(mass_not_hasPrimeFactor_le_five g N hN).trans (Real.one_sub_le_exp_neg _)`.
-
-Use `(pow_le_pow_left₀ (mass_nonneg _ _) h2 _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tupleMass_not_good_le (g : ℕ) [Fact g.Prime] (N m q d : ℕ) (ι : Type) [Fintype ι]
     (ch : ι → Fin m → (ZMod g)ˣ) (hN : 100 ≤ N) (hg : 2 ^ 12 ≤ g)
@@ -214,11 +210,11 @@ theorem tupleMass_not_good_le (g : ℕ) [Fact g.Prime] (N m q d : ℕ) (ι : Typ
   linarith
 
 /- English proof (translation)
-Take `⟨hq, hd, hq8, hd16, -⟩` from `D.host.hyp`. Take `⟨hbq, hbd⟩` from `D.host.qd_big`. Establish `hc` using `D.ntypes.g_cond k`. Establish `he` using `D.host.two_le_e`. Establish `ht : 1 ≤ D.R.t` using `D.R.t_odd.pos`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h400 : 400 ≤ 4 * D.R.t * D.R.r` using `by nlinarith`. Use `⟨hq, hd, by omega, by omega, by omega, by omega, ?_⟩` and prove the remaining obligations. Establish `h1 : D.host.QS * D.host.q * D.host.d ∣ D.host.g k - 1`. Use `Nat.dvd_sub_mod (n := D.host.QS * D.host.q * D.host.d) (D.host.g k)` as an intermediate fact. Rewrite `this` using `[hc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h16 : 16 ∣ D.host.QS` using `(pow_dvd_pow 2 (show 4 ≤ D.R.e + 2 by omega)).trans D.host.tower_dvd`. Conclude with `(Nat.mul_dvd_mul_right (Nat.mul_dvd_mul_right h16 _) _).trans h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem host_primes (D : Formalism.BasicNotions.D7) (k : Fin 2) (hr : 100 ≤ D.R.r) :
     D.host.q.Prime ∧ D.host.d.Prime ∧ D.host.q ≠ 2 ∧ D.host.d ≠ 2 ∧ D.host.q ≠ D.host.d ∧
@@ -237,49 +233,43 @@ theorem host_primes (D : Formalism.BasicNotions.D7) (k : Fin 2) (hr : 100 ≤ D.
   exact (Nat.mul_dvd_mul_right (Nat.mul_dvd_mul_right h16 _) _).trans h1
 
 /- English proof (translation)
-Introduce `D ψ₀ hψ hA _hT hr hg k S hS`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨S0, hmem, hsum⟩` from `D.ntypes.eSer_sum k`. Take `⟨hA0, hA1, -, -⟩` from `hA k (ψ₀ k) (hψ k)`. Use `set w : (ZMod (D.host.g k))[X] → ℝ := fun f => Formalism.MainNotions.ArithmeticCylinders.wtOf D k (Formalism.MainNotions.ArithmeticCylinders.eUk D k (ψ₀ k)) f with hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0 : ∀ f, 0 ≤ w f` using `fun f => (hA0 f).1`. Establish `hcoef : ((Formalism.MainNotions.ArithmeticCylinders.eUk D k (ψ₀ k)).coeff 1).re ≠ 0` using `eU_coeff_one_ne _ _ _`. Establish `htot : ∑ f ∈ S0, w f = 1`. Simplify using `only [hw]`. Unfold `Formalism.MainNotions.ArithmeticCylinders.wtOf`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_div]`. Establish `h : ∑ f ∈ S0, ((Formalism.MainNotions.ArithmeticCylinders.eUk D k (ψ₀ k) * D.ntypes.eSer k f).coeff 1).re = ((Formalism.MainNotions.ArithmeticCylinders.eUk D k (ψ₀ k)).coeff 1).re`. Rewrite using `[← Complex.re_sum, ← Finsupp.finsetSum_apply, ← MonoidAlgebra.coeff_sum, ← Finset.mul_sum, hsum, mul_one]`. Rewrite using `[h, div_self hcoef]`. Establish `hoff : ∀ f, f ∉ S0 → w f = 0` using `fun f hf => Formalism.MainNotions.N.LocalShareBounds.wtOf_off k _ _ fun h => hf ((hmem f).2 h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsqS : ∀ f, f ∈ sqSet (D.host.g k) D.R.r ↔ f ∈ S0 ∧ Squarefree f`. Introduce `f`. Rewrite using `[mem_sqSet, hmem]`. The claim follows by propositional logic. Establish `hwsq : ∀ f ∈ sqSet (D.host.g k) D.R.r, w f = ((torusCard (D.host.g k) f : ℕ) : ℝ)⁻¹`.
+Rewrite the conclusion using the stated equalities. The claim follows by propositional logic. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `f hf`. Take `⟨h1, h2⟩` from `(hsqS f).1 hf`. Establish `hl` using `(hmem f).1 h1`. Simplify using `only [hw]`. Rewrite using `[hA1 f hl h2, one_div]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Unfold `torusCard degType`. Rewrite using `[Multiset.map_map, Nat.cast_multiset_prod, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl fun P _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ (D.host.g_prime k).pos), Nat.cast_pow, Nat.cast_one]`. Establish `hmass : mass (D.host.g k) D.R.r (fun _ => True) = ∑ f ∈ S0.filter Squarefree, w f`. Unfold `mass`. Use `Finset.sum_congr (by ext f; simp [hsqS]) fun f hf => (hwsq f ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsqS]`. Conclude with `Finset.mem_filter.1 hf`. Establish `hnsq : ∑ f ∈ S0.filter (fun f => ¬ Squarefree f), w f ≤ 2 / (D.host.g k : ℝ)`. Establish `e1` using `Finset.sum_filter_add_sum_filter_not S0 Squarefree w`. Establish `e2` using `GlobalTheory.T.one_sub_two_div_le_squarefreeLabelMass (D.host.g k) D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hw1 : ∀ _v : D.nd.PlG k, ∑ f ∈ S0, w f ≤ 1` using `fun _ => htot.le`. Establish `hq` using `host_primes D k hr`. Establish `hTM` using `tupleMass_not_good_le (D.host.g k) D.R.r D.R.m D.host.q D.host.d (D.nd.PlG k) (D.nd.chiT k) hr (hg k) hq`. Rewrite `hTM` using `[D.nd.card_PlG k]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hF0 : ∀ t : Formalism.MainNotions.ArithmeticCylinders.Tup D k, 0 ≤ ∏ v, w (t v)` using `fun t => Finset.prod_nonneg fun v _ => hw0 _`. Establish `hite : ∀ (p : Prop) [Decidable p] (t : Formalism.MainNotions.ArithmeticCylinders.Tup D k), 0 ≤ (if p then ∏ v, w (t v) else 0)`. Introduce `p _ t`. Use `split_ifs`. Conclude with `hF0 t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Conclude with `le_rfl`. Use `show ∑ t ∈ S, ∏ v, w (t v) ≤ _`. Establish `h1 : ∑ t ∈ S, ∏ v, w (t v) = ∑ t ∈ S.filter (fun t => ∀ v, t v ∈ S0), ∏ v, w (t v)`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with ht`. Both sides reduce to the same expression. Use `push Not at ht`. Take `⟨v, hv⟩` from `ht`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (hoff _ hv)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsplit : ∀ t : Formalism.MainNotions.ArithmeticCylinders.Tup D k, ∏ v, w (t v) ≤ ∑ v, (if ¬ Squarefree (t v) then ∏ v, w (t v) else 0) + (if ∀ v, Squarefree (t v) then ∏ v, w (t v) else 0)`. Introduce `t`. Establish `hs0` using `Finset.sum_nonneg (s := Finset.univ) fun v (_ : v ∈ Finset.univ) => hite (¬ Squarefree (t v)) t`. Distinguish the cases in `h : ∀ v, Squarefree (t v)`. Rewrite using `[if_pos h]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `push Not at h`. Take `⟨v, hv⟩` from `h`. Rewrite using `[if_neg (fun h => hv (h v))]`. Use `Finset.single_le_sum (f := fun v => if ¬ Squarefree (t v) then ∏ v, w (t v) else 0) (fun v _ => hite _ t) (Finset.mem_univ v)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [if_pos hv] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set S' := S.filter (fun t => ∀ v, t v ∈ S0) with hS'`. Establish `hA : ∑ t ∈ S', ∑ v, (if ¬ Squarefree (t v) then ∏ v, w (t v) else 0) ≤ (D.R.f : ℝ) * (2 / (D.host.g k : ℝ))`. Establish `hsub : S' ⊆ Fintype.piFinset (fun _ : D.nd.PlG k => S0)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t ht`. Rewrite using `[Fintype.mem_piFinset]`. Conclude with `(Finset.mem_filter.1 ht).2`. Use `(Finset.sum_le_sum_of_subset_of_nonneg hsub fun t _ _ => Finset.sum_nonneg fun v _ => hite _ t).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hB : ∑ t ∈ S', (if ∀ v, Squarefree (t v) then ∏ v, w (t v) else 0) ≤ tupleMass (D.host.g k) D.R.r (fun F : D.nd.PlG k → (ZMod (D.host.g k))[X] => ¬ Good (D.host.g k) D.R.r (D.nd.chiT k) F)`. Rewrite using `[← Finset.sum_filter]`. Establish `eT : tupleMass (D.host.g k) D.R.r (fun F : D.nd.PlG k → (ZMod (D.host.g k))[X] => ¬ Good (D.host.g k) D.R.r (D.nd.chiT k) F) = ∑ F ∈ (Fintype.piFinset fun _ : D.nd.PlG k => sqSet (D.host.g k) D.R.r).filter (fun F => ¬ Good (D.host.g k) D.R.r (D.nd.chiT k) F), ∏ v, ((torusCard (D. …`. Unfold `tupleMass`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_filter]`. Use `congr!`. Rewrite using `[eT]`. Establish `hin : ∀ t ∈ S'.filter (fun t => ∀ v, Squarefree (t v)), ∀ v, t v ∈ sqSet (D.host.g k) D.R.r`. Introduce `t ht v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `Finset.mem_filter.1 ht`. Conclude with `(hsqS _).2 ⟨(Finset.mem_filter.1 h1).2 v, h2 v⟩`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ fun t _ _ => tupleWeight_nonneg t` and prove the remaining obligations. Introduce `t ht`.
-
-Use `Finset.mem_filter.2 ⟨Fintype.mem_piFinset.2 (hin t ht), ?_⟩` and prove the remaining obligations. Use `hS t (Finset.mem_filter.1 (Finset.mem_filter.1 ht).1).1` as an intermediate fact. Conclude with `this`. Establish `hmain : ∑ t ∈ S', ∏ v, w (t v) ≤ (D.R.f : ℝ) * (2 / (D.host.g k : ℝ)) + tupleMass (D.host.g k) D.R.r (fun F : D.nd.PlG k → (ZMod (D.host.g k))[X] => ¬ Good (D.host.g k) D.R.r (D.nd.chiT k) F)`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hgpos : (0 : ℝ) < D.host.g k` using `by exact_mod_cast (D.host.g_prime k).pos`. Establish `hfg : 0 ≤ (D.R.f : ℝ) / (D.host.g k : ℝ)` using `by positivity`. Establish `e1 : (D.R.f : ℝ) * (2 / (D.host.g k : ℝ)) = 2 * ((D.R.f : ℝ) / (D.host.g k : ℝ))` using `by ring`. Establish `e2 : 3 * (D.R.f : ℝ) / (D.host.g k : ℝ) = 3 * ((D.R.f : ℝ) / (D.host.g k : ℝ))` using `by ring`. Establish `e3 : -(D.R.f : ℝ) / (5 * Real.log (D.R.r : ℝ)) = -((D.R.f : ℝ) / (5 * Real.log (D.R.r : ℝ)))` using `neg_div _ _`.
-
-Rewrite using `[h1, e2, e3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem propW_eUk : ∀ (D : Formalism.BasicNotions.D7) (ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ), (∀ k, ψ₀ k ≠ 1) →
     Formalism.MainNotions.ArithmeticCylinders.admLq D → Formalism.MainNotions.ArithmeticCylinders.TieAdmG D → 100 ≤ D.R.r → (∀ k : Fin 2, 2 ^ 12 ≤ D.host.g k) →

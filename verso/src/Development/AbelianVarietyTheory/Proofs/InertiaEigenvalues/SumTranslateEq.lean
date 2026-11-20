@@ -5,17 +5,15 @@ universe u_1 u_2
 namespace GlobalTheory.TranslateSum
 
 /- English proof (translation)
-Introduce `h hh`. Establish `hex : ∀ s ∈ S, ∃ t : G, t ∈ S ∧ t⁻¹ * (h * s) ∈ V` using `fun s hs => (huniq (h * s) (H.mul_mem hh (hS s hs))).exists`. Use `choose φ hφS hφV using hex`. Use `Finset.sum_bij φ hφS ?_ ?_ ?_` and prove the remaining obligations. Introduce `s hs t ht hst`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : s⁻¹ * t ∈ V`. Use `V.mul_mem (V.inv_mem (hφV s hs)) (hφV t ht)` as an intermediate fact. Rewrite `this` using `[hst]`. Establish `e : ((φ t ht)⁻¹ * (h * s))⁻¹ * ((φ t ht)⁻¹ * (h * t)) = s⁻¹ * t` using `by group`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2 : t⁻¹ * t ∈ V`. Rewrite using `[inv_mul_cancel]`. Conclude with `V.one_mem`. Conclude with `(huniq t (hS t ht)).unique ⟨hs, h1⟩ ⟨ht, h2⟩`. Introduce `u hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨s, hs, hsV⟩` from `(huniq (h⁻¹ * u) (H.mul_mem (H.inv_mem hh) (hS u hu))).exists`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `h1 : u⁻¹ * (h * s) ∈ V`. Use `V.inv_mem hsV` as an intermediate fact. Establish `e : (s⁻¹ * (h⁻¹ * u))⁻¹ = u⁻¹ * (h * s)` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis. Conclude with `(huniq (h * s) (H.mul_mem hh (hS s hs))).unique ⟨hφS s hs, hφV s hs⟩ ⟨hu, h1⟩`. Introduce `s hs`. Establish `hm : (φ s hs)⁻¹ * (h * s) ∈ H` using `H.mul_mem (H.inv_mem (hS _ (hφS s hs))) (H.mul_mem hh (hS s hs))`. Use `hf (φ s hs) _ hm (hφV s hs)` as an intermediate fact.
-
-Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sum_translate_eq {G : Type u_1} {M : Type u_2} [Group G] [AddCommMonoid M]
     (H V : Subgroup G) (S : Finset G) (hS : ∀ s ∈ S, s ∈ H)

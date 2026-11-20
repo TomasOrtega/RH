@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZPhiPG.OntoO
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `continuous_id`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem continuous_castM (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a b : ℕ} (h : a = b) : Continuous (castM k h) := by
@@ -17,7 +17,7 @@ theorem continuous_castM (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace
   exact continuous_id
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t`. Conclude with `(GlobalTheory.CompanionTheory.BZPhiPG.EcSmooth.continuous_sEmb k ((i + 1) + t)).comp (continuous_castM k _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem continuous_sO : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (i t : ℕ), Continuous (sO k i t) := by

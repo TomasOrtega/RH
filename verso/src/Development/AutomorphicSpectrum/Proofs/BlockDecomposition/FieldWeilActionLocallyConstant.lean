@@ -22,25 +22,23 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilLocConst
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ hχ hχ1 E _ _ _ _ _ _ _ hfr hcont σ hσ η hη c Φ hΦ g h hg hh`. Establish `wdg` using `GlobalTheory.CompanionTheory.WeilDilation.wDiagT F χ hχ hχ1 E hfr hcont σ hσ η hη`. Establish `wsb` using `GlobalTheory.CompanionTheory.WeilSB.wsb F χ hχ hχ1 E hfr hcont σ hσ η hη`. Establish `wrp` using `GlobalTheory.T.weil_representation_hypothesis F χ hχ hχ1 E hfr hcont σ hσ η hη`. Use `beta_reduce at wdg wsb wrp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : ∀ x : GL (Fin 2) F, (x.val).det ≠ 0` using `fun x => ((Matrix.isUnit_iff_isUnit_det _).1 x.isUnit).ne_zero`. Take `⟨tg, htg⟩` from `hg`. Take `⟨t, hnt⟩` from `hh`. Establish `hiso` using `hΦ.2.2`. Establish `hpi : piE E χ σ η c h Φ = fun x => (((c t : ℂˣ) : ℂ) * (((modulus (h.val).det : ℝ) : ℂ) ^ (1 / 2 : ℂ))) * rWE E χ σ η (red h.val) (fun y => Φ (y * (t : E))) x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun x => piG_choice χ σ (muE E χ) (lamE E χ η) c hiso h t hnt x`. Use `set k : ℂ := ((c t : ℂˣ) : ℂ) * (((modulus (h.val).det : ℝ) : ℂ) ^ (1 / 2 : ℂ)) with hk`. Use `set Ψ : E → ℂ := fun y => Φ (y * (t : E)) with hΨdef`. Establish `hΨ : Ψ ∈ SBc F E c` using `dil_mem hΦ t`. Establish `hΨE : Ψ ∈ SBE E` using `⟨hΨ.1, hΨ.2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd1 : (red h.val).det = 1` using `det_red (hdet h)`. Establish `hmem : piE E χ σ η c h Φ ∈ SBc F E c`. Rewrite using `[hpi]`. Conclude with `const_mul_mem ((wsb _ hd1 Ψ hΨE).2 c hΨ) k`. Establish `hdg` using `hdet g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hgh : Algebra.norm F ((tg * t : Eˣ) : E) = ((g * h).val).det`. Rewrite using `[Units.val_mul, map_mul, htg, hnt, Units.val_mul, Matrix.det_mul]`. Use function extensionality and compare the values at `x`. Establish `lhs` using `piG_choice χ σ (muE E χ) (lamE E χ η) c hiso (g * h) (tg * t) hgh x`. Establish `rhs` using `piG_choice χ σ (muE E χ) (lamE E χ η) c hmem.2.2 g tg htg x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `lhs.trans (Eq.trans ?_ rhs.symm)` and prove the remaining obligations. Use `set f : E → ℂ := fun y => Ψ (y * (tg : E)) with hfdef`. Establish `hfE : f ∈ SBE E`. Use `dil_mem hΨ tg` as an intermediate fact. Conclude with `⟨this.1, this.2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hcj : (cjA (g.val).det (red h.val)).det = 1` using `by rw [det_cjA hdg, hd1]`. Establish `hgd : (red g.val).det = 1` using `det_red hdg`. Establish `hL : (fun y => Φ (y * ((tg * t : Eˣ) : E))) = f`. Use function extensionality and compare the values at `y`. Simplify using `only [hfdef, hΨdef, Units.val_mul, mul_assoc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : (fun y => piE E χ σ η c h Φ (y * (tg : E))) = fun y => k * rWE E χ σ η (cjA (g.val).det (red h.val)) f y`. Use function extensionality and compare the values at `y`. Use `congrFun (wdg (red h.val) hd1 tg Ψ hΨE) y` as an intermediate fact. Rewrite `this` using `[htg]`. Rewrite using `[hpi]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only []`. Rewrite using `[this]`. Establish `e1 : rW χ σ (muE E χ) (lamE E χ η) (((g * h).val) 0 0 / ((g * h).val).det) (((g * h).val) 0 1) (((g * h).val) 1 0 / ((g * h).val).det) (((g * h).val) 1 1) f x = rWE E χ σ η (red (g * h).val) f x` using `rfl`. Establish `e2 : rW χ σ (muE E χ) (lamE E χ η) ((g.val) 0 0 / (g.val).det) ((g.val) 0 1) ((g.val) 1 0 / (g.val).det) ((g.val) 1 1) (fun y => k * rWE E χ σ η (cjA (g.val).det (red h.val)) f y) x = k * rWE E χ σ η (red g.val) (rWE E χ σ η (cjA (g.val).det (red h.val)) f) x` using `GlobalTheory.CompanionTheory.WeilChoice.rW_const_mul _ _ _ _ _ _ _ _ _ _ _`. Rewrite using `[hL, hR, e1, e2, Units.val_mul, red_mul hdg (hdet h), wrp _ _ hgd hcj f hfE]`.
-
-Establish `e3 : (((modulus ((g.val * h.val).det) : ℝ) : ℂ) ^ (1 / 2 : ℂ)) = (((modulus (g.val).det : ℝ) : ℂ) ^ (1 / 2 : ℂ)) * (((modulus (h.val).det : ℝ) : ℂ) ^ (1 / 2 : ℂ))`. Rewrite using `[Matrix.det_mul, modulus_mul, NNReal.coe_mul, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]`. Rewrite using `[e3, map_mul, Units.val_mul, hk]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem piE_mul : GL2LocalData.ForEF fun F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ χ σ η =>
     ∀ c : Eˣ →* ℂˣ, ∀ Φ ∈ GL2LocalData.SBc F E c, ∀ g h : GL (Fin 2) F,
@@ -109,49 +107,45 @@ theorem piE_mul : GL2LocalData.ForEF fun F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ χ σ �
   ring
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ hχ hχ1 E _ _ _ _ _ _ _ hfr hcont σ hσ η hη c hc Φ hΦ g₀ hg₀`. Use `haveI : Fact (Module.finrank F E = 2) := ⟨hfr⟩`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Use `haveI : ValuativeExtension F E := GlobalTheory.CompanionTheory.WeilSB.valuativeExtension_of_continuous hcont`. Use `haveI : Algebra.IsSeparable F E := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNc` using `GlobalTheory.CompanionTheory.WeilSB.continuous_norm_of (F := F) (E := E) hcont`. Establish `hlc` using `GlobalTheory.CompanionTheory.WeilSB.isLocallyConstant_char hχ hχ1`. Establish `hSB : Φ ∈ SBE E` using `⟨hΦ.1, hΦ.2.1⟩`. Establish `hiso` using `hΦ.2.2`. Establish `hmul : ∀ g h : GL (Fin 2) F, (∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det) → (∃ t : Eˣ, Algebra.norm F (t : E) = (h.val).det) → piE E χ σ η c (g * h) Φ = piE E χ σ η c g (piE E χ σ η c h Φ)` using `piE_mul F χ hχ hχ1 E hfr hcont σ hσ η hη c Φ hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hrep : ∀ g h : Matrix (Fin 2) (Fin 2) F, g.det = 1 → h.det = 1 → ∀ Ψ ∈ SBE E, rWE E χ σ η (g * h) Ψ = rWE E χ σ η g (rWE E χ σ η h Ψ)` using `GlobalTheory.T.weil_representation_hypothesis F χ hχ hχ1 E hfr hcont σ hσ η hη`. Establish `hsb : ∀ g : Matrix (Fin 2) (Fin 2) F, g.det = 1 → ∀ Ψ ∈ SBE E, rWE E χ σ η g Ψ ∈ SBE E` using `fun g hg Ψ hΨ => (GlobalTheory.CompanionTheory.WeilSB.wsb F χ hχ hχ1 E hfr hcont σ hσ η hη g hg Ψ hΨ).1`. Establish `hone : piE E χ σ η c 1 Φ = Φ` using `(piG_det_one χ σ (muE E χ) (lamE E χ η) c hiso 1 (by simp)).trans (rWm_one χ σ (muE E χ) (lamE E χ η) Φ)`. Choose the witnesses or unpack the hypotheses as in `⟨H, hH⟩ : ∃ H : Subgroup (GL (Fin 2) F), ∀ h, h ∈ H ↔ (∃ t : Eˣ, Algebra.norm F (t : E) = (h.val).det) ∧ piE E χ σ η c h Φ = Φ := by`. Use `⟨{ carrier := {h | (∃ t : Eˣ, Algebra.norm F (t : E) = (h.val).det) ∧ piE E χ σ η c h Φ = Φ} mul_mem' := ?_, one_mem' := ?_, inv_mem' := ?_ }, fun h => Iff.rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `a b ⟨⟨s, hs⟩, ha⟩ ⟨⟨t, ht⟩, hb⟩`. Use `⟨⟨s * t, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, hs, ht, Units.val_mul, Matrix.det_mul]`. Rewrite using `[hmul a b ⟨s, hs⟩ ⟨t, ht⟩, hb, ha]`. Conclude with `⟨⟨1, by simp⟩, hone⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `a ⟨⟨t, ht⟩, ha⟩`. Establish `h1 : ((a⁻¹ : GL (Fin 2) F).val).det * (a.val).det = 1`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, inv_mul_cancel]`. Simplify using the standard rewrite rules. Establish `h2 : Algebra.norm F ((t⁻¹ : Eˣ) : E) * (a.val).det = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← ht, ← map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, map_one]`. Establish `hd : Algebra.norm F ((t⁻¹ : Eˣ) : E) = ((a⁻¹ : GL (Fin 2) F).val).det` using `mul_right_cancel₀ (show (a.val).det ≠ 0 from fun h0 => by simp [h0] at h1) (h2.trans h1.symm)`. Use `⟨⟨t⁻¹, hd⟩, ?_⟩` and prove the remaining obligations. Use `hmul a⁻¹ a ⟨t⁻¹, hd⟩ ⟨t, ht⟩` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, hone, ha]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.symm`. Establish `key : ∀ h : GL (Fin 2) F, (∃ t : Eˣ, Algebra.norm F (t : E) = (h.val).det) → piE E χ σ η c h Φ = Φ → h ∈ H` using `fun h hx he => (hH h).2 ⟨hx, he⟩`. Establish `hdet1 : ∀ h : GL (Fin 2) F, (h.val).det = 1 → rWE E χ σ η h.val Φ = Φ → h ∈ H`. Introduce `h hd he`. Use `key h ⟨1, by simp [hd]⟩ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(piG_det_one χ σ (muE E χ) (lamE E χ η) c hiso h hd).trans he`. Establish `hUp : ∀ᶠ x in 𝓝 (0 : F), uni2 x ∈ H` using `by filter_upwards [ev_chirp hlc hNc hΦ.2.1] with x hx`. Use `hdet1 _ (by simp [uni2, Matrix.det_fin_two]) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Conclude with `(rWm_upper χ σ (muE E χ) (lamE E χ η) x Φ z).trans (hx z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hLow : ∀ᶠ y in 𝓝 (0 : F), low y ∈ H`. Establish `hwm : (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) F).det = 1` using `by simp [Matrix.det_fin_two]`. Establish `hwi : (!![0, -1; 1, 0] : Matrix (Fin 2) (Fin 2) F).det = 1` using `by simp [Matrix.det_fin_two]`. Establish `hΦ'` using `hsb _ hwi Φ hSB`. Establish `ht : Tendsto (fun y : F => -y) (𝓝 0) (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: ContinuousAt (fun y : F => -y) 0` using `continuous_neg.continuousAt`. Simplify `this` using `[ContinuousAt]`. Use `filter_upwards [ht.eventually (ev_chirp hlc hNc hΦ'.2)] with y hy`. Establish `hnd : (!![1, -y; 0, 1] : Matrix (Fin 2) (Fin 2) F).det = 1` using `by simp [Matrix.det_fin_two]`. Establish `hn : rWE E χ σ η !![1, -y; 0, 1] (rWE E χ σ η !![0, -1; 1, 0] Φ) = rWE E χ σ η !![0, -1; 1, 0] Φ`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `fun z => (rWm_upper χ σ (muE E χ) (lamE E χ η) (-y) _ z).trans (hy z)`. Establish `e : (low y).val = !![0, 1; -1, 0] * (!![1, -y; 0, 1] * !![0, -1; 1, 0])`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [low, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e1 : (!![0, 1; -1, 0] * !![0, -1; 1, 0] : Matrix (Fin 2) (Fin 2) F) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`. Use `hdet1 _ (by simp [low, Matrix.det_fin_two]) ?_` and prove the remaining obligations. Rewrite using `[e, hrep _ _ hwm (by rw [Matrix.det_mul, hnd, hwi, one_mul]) Φ hSB, hrep _ _ hnd hwi Φ hSB, hn, ← hrep _ _ hwm hwi Φ hSB, e1]`. Conclude with `rWm_one χ σ (muE E χ) (lamE E χ η) Φ`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `tE : Tendsto (algebraMap F E) (𝓝 1) (𝓝 1)`. Use `hcont.tendsto 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Establish `hGood : ∀ᶠ r in 𝓝 (1 : F), r ≠ 0 ∧ GroundTheory.LocalField.modulus r = 1 ∧ (∀ x, Φ (x * algebraMap F E r) = Φ x) ∧ ∀ u : Eˣ, (u : E) = algebraMap F E r → c u = 1` using `by filter_upwards [eventually_ne_nhds (one_ne_zero (α := F)), ev_modulus, tE.eventually (ev_dil hSB), tE.eventually (ev_char c hc.1)] with r h1 h2 h3 h4`. Conclude with `⟨h1, h2, h3, h4⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hS` using `ev_sq hGood`. Establish `hD : ∀ᶠ a in 𝓝 (1 : F), ∀ s : Fˣ, (s : F) = a → dg2 s 1 ∈ H` using `by filter_upwards [hS] with a ha s hs`. Take `⟨r, ⟨hr0, hrm, hrd, hrc⟩, hra⟩` from `ha`. Set `t : Eˣ` to `Units.mk0 (algebraMap F E r) ((map_ne_zero _).2 hr0)`. Establish `hNt : Algebra.norm F (t : E) = a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `[t, Algebra.norm_algebraMap, hfr, sq, hra]`. Establish `hdet : ((dg2 s 1 : GL (Fin 2) F).val).det = a`. Simplify using `[dg2, Matrix.det_fin_two, hs]`. Establish `ha0 : a ≠ 0` using `hs ▸ s.ne_zero`. Establish `hma : GroundTheory.LocalField.modulus a = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hra, GroundTheory.LocalField.modulus_mul, hrm, one_mul]`. Use `key _ ⟨t, by rw [hNt, hdet]⟩ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `e00 : (dg2 s 1 : GL (Fin 2) F).val 0 0 = a` using `by simp [dg2, hs]`. Establish `e01 : (dg2 s 1 : GL (Fin 2) F).val 0 1 = 0` using `by simp [dg2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e10 : (dg2 s 1 : GL (Fin 2) F).val 1 0 = 0` using `by simp [dg2]`. Establish `e11 : (dg2 s 1 : GL (Fin 2) F).val 1 1 = 1` using `by simp [dg2]`. Use `(piG_choice χ σ (muE E χ) (lamE E χ η) c hiso _ t (by rw [hNt, hdet]) x).trans ?_` and prove the remaining obligations. Rewrite using `[hdet, e00, e01, e10, e11, div_self ha0, zero_div, rW_zero, hrc t rfl, hma]`. Simplify using `[nsg_one, t, hrd]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hM : ∀ᶠ a in 𝓝 (1 : F), ∀ s : Fˣ, (s : F) = a → dg2 s s⁻¹ ∈ H` using `by filter_upwards [hS] with a ha s hs`. Take `⟨r, ⟨hr0, hrm, hrd, hrc⟩, hra⟩` from `ha`. Set `t : Eˣ` to `Units.mk0 (algebraMap F E r) ((map_ne_zero _).2 hr0)`. Establish `hNt : Algebra.norm F (t : E) = a`. Simplify using `[t, Algebra.norm_algebraMap, hfr, sq, hra]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hma : GroundTheory.LocalField.modulus a = 1`. Rewrite using `[← hra, GroundTheory.LocalField.modulus_mul, hrm, one_mul]`. Use `hdet1 _ (by simp [dg2, Matrix.det_fin_two]) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Use `show rW χ σ (muE E χ) (lamE E χ η) ((dg2 s s⁻¹ : GL (Fin 2) F).val 0 0) ((dg2 s s⁻¹ : GL (Fin 2) F).val 0 1) ((dg2 s s⁻¹ : GL (Fin 2) F).val 1 0) ((dg2 s s⁻¹ : GL (Fin 2) F).val 1 1) Φ z = Φ z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e00 : (dg2 s s⁻¹ : GL (Fin 2) F).val 0 0 = a` using `by simp [dg2, hs]`. Establish `e01 : (dg2 s s⁻¹ : GL (Fin 2) F).val 0 1 = 0` using `by simp [dg2]`. Establish `e10 : (dg2 s s⁻¹ : GL (Fin 2) F).val 1 0 = 0` using `by simp [dg2]`. Rewrite using `[e00, e01, e10, rW_zero, hma, ← hNt, nsg_norm, hNt]`. Establish `: Φ (algebraMap F E a * z) = Φ z`.
-
-Rewrite using `[← hra, map_mul, mul_comm, ← mul_assoc, hrd, hrd]`. Simplify using `[this]`. Establish `hmem` using `mem_nhds_of_factors H hUp hLow hD hM`. Establish `hcont' : ContinuousAt (fun g : GL (Fin 2) F => g₀⁻¹ * g) g₀` using `(continuous_const.mul continuous_id).continuousAt`. Use `⟨(fun g : GL (Fin 2) F => g₀⁻¹ * g) ⁻¹' (H : Set (GL (Fin 2) F)), hcont'.preimage_mem_nhds (by simpa using hmem), fun g hg => ?_⟩` and prove the remaining obligations.
-
-Take `⟨hx, he⟩` from `(hH _).1 hg`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem piE_locConst : GL2LocalData.ForEF fun F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ χ σ η =>
   ∀ c : Eˣ →* ℂˣ, IsUnit1 c → ∀ Φ ∈ GL2LocalData.SBc F E c, ∀ g₀ : GL (Fin 2) F,

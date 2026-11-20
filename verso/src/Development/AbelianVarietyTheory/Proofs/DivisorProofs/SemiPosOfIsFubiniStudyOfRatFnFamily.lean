@@ -14,21 +14,19 @@ noncomputable section
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `k _ X _ p D M J _ f w hM σ i c y hy ξ`. Take `⟨ρ, -, hreg, hφ⟩` from `hM`. Establish `hx : under y ∈ M.B.U i` using `mem_ptsIn.1 hy.2`. Take `⟨hr, j0, hu⟩` from `hreg (under y) i hx`. Use `choose U hU a ha using fun j => (hr j).exists_fnOf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `G (j : J) (v : V D) : ℂ` to `(Real.exp (w j) : ℂ) * ev p σ (U j) (a j) (c.e.symm v)`. Set `S : Set (CxPts p σ)` to `ptsIn p σ (M.B.U i) ∩ ⋂ j, ptsIn p σ (U j)`. Establish `hSo : IsOpen S` using `(isOpen_ptsIn _).inter (isOpen_iInter_of_finite fun j => isOpen_ptsIn _)`. Establish `hyS : y ∈ S` using `⟨hy.2, Set.mem_iInter.2 fun j => mem_ptsIn.2 (hU j)⟩`. Establish `hO` using `isOpen_over c.e hSo`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmO` using `mem_over c.e hy.1 hyS`. Establish `hval (z : CxPts p σ) (hz : z ∈ S) (j : J) : ratVal (f j * (ρ i : X.functionField)) z = ev p σ (U j) (a j) z`. Rewrite using `[← ha j]`. Conclude with `ratVal_fnOf (Set.mem_iInter.1 hz.2 j) _ _`. Establish `hterm (z : CxPts p σ) (hz : z ∈ S) (j : J) : ‖ratVal (f j * (ρ i : X.functionField)) z‖ ^ 2 * Real.exp (2 * w j) = Complex.normSq ((Real.exp (w j) : ℂ) * ev p σ (U j) (a j) z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Rewrite using `[hval z hz j, Complex.normSq_mul, Complex.normSq_ofReal, Complex.normSq_eq_norm_sq, ← Real.exp_add]`. Put the polynomial expressions in normal form. Establish `hG (j : J) : ContDiffAt ℂ 2 (G j) (c.e y)`. Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (U j))`. Establish `hm` using `mem_over c.e hy.1 (mem_ptsIn.2 (hU j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `contDiffAt_const.mul ((((ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn D _ _ ho (c.holo (U j) (a j))).contDiffAt (ho.mem_nhds hm)).of_le (by norm_cast)))`. Set `e` to `Fintype.equivFin J`. Set `u (b : Fin (Fintype.card J)) (v : V D) : ℝ` to `Complex.normSq (G (e.symm b) v)`. Establish `hsum (v : V D) : ∑ b, u b v = ∑ j, Complex.normSq (G j v)` using `Equiv.sum_comp e.symm fun j => Complex.normSq (G j v)`. Establish `hev : (fun v => (((M.φ σ).φ i (c.e.symm v) : ℝ) : ℂ)) =ᶠ[𝓝 (c.e y)] fun v => ((Real.log (∑ b, u b v) : ℝ) : ℂ)` using `by filter_upwards [hO.mem_nhds hmO] with v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[hφ σ _ i hv.2.1, hsum]`. Use `congr 2`. Conclude with `Finset.sum_congr rfl fun j _ => hterm _ hv.2 j`. Establish `hpos : 0 < ∑ b, u b (c.e y)`. Rewrite using `[hsum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [G, c.e.left_inv hy.1]`. Use `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨j0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← hterm y hyS j0]`. Conclude with `mul_pos (pow_pos (norm_pos_iff.2 (ratVal_ne_zero hu)) 2) (Real.exp_pos _)`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.leviV_congr hev]`.
-
-Conclude with `ReciprocityTheory.L2DbarEstimates.leviV_log_sum_nonneg (fun b => ReciprocityTheory.L2DbarEstimates.contDiffAt_normSq_comp (hG _)) (fun b => ReciprocityTheory.L2DbarEstimates.logPshAt_normSq (hG _)) hpos ξ`.
+A detailed English derivation is pending.
 -/
 theorem semiPos_of_isFS : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k),
     ∀ (D : ℕ) (M : HermLB p) (J : Type) [Fintype J] (f : J → X.functionField) (w : J → ℝ),

@@ -12,7 +12,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨⟨hE, hR⟩, ⟨hW, hL⟩⟩` from `h.hecke`. Use `exact`. Use the proof step `{ heckeR := h.heckeR heckeL := h.heckeL hecke := ⟨⟨hE, ⟨hR.intw, hR.comm, hR.parts⟩⟩, ⟨hW, ⟨hL.intw, hL.comm, hL.parts⟩⟩⟩ gUnit := h.gUnit gEquiv := h.gEquiv block := h.block rowTest := h.rowTest liftTest := h.liftTest liftTestB := h.liftTestB liftOnto := fun hW' hh => h.liftOnto …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prim_updS (R : RealDat3 D A3 Ks) (F : Face3 D A3) (lam : type_of% R.lam3) (h : PrimRows3 R F)
     (h1 : ∀ i t p v, 0 < lam i t p v) (h2 : (R.updS R.kap lam).PThmB) (h3 : (R.updS R.kap lam).PThmA)
@@ -46,7 +46,7 @@ theorem prim_updS (R : RealDat3 D A3 Ks) (F : Face3 D A3) (lam : type_of% R.lam3
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `h` using `hP.char`. Establish `hC : (R.updS R.kap lam).WeakCharacterisation (reFace F Dc Sp Zsc)` using `⟨h.base, ⟨h.inert.tie, h.inert.onto, h.inert.hR, h.inert.hL, h.inert.SF⟩, h.fullY, h.fullX, h.fullP, hs, ⟨h.tup.mu_off, h.tup.mu_used, h.tup.mu_ne, h.tup.mu_conj, h.tup.mu_on⟩, h.phase, h.allPl⟩`. Conclude with `⟨RealDat3.weak_characterisation_with_error hC e, reFace_keep (R.updS R.kap lam) F cG Dc Sp Zsc e hP.keep, hP.phs, hP.trSem⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pins_updS (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (lam : type_of% R.lam3)
     (Dc : ∀ Zs : DefSub A3.fam3.amb3, DefCols (A3.side3 F.P1 F.ψ1 Zs)) (Sp : ∀ Zs, SPer (Dc Zs))
@@ -61,7 +61,7 @@ theorem pins_updS (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r �
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.ex, h.conj, h.levelW, h.integral⟩`.
+Supply the required witnesses or components.
 -/
 theorem furtherRows_updatedScalars (R : RealDat3 D A3 Ks) (F : Face3 D A3) (lam : type_of% R.lam3) (h : UnusedChoiceStatements R F) :
     UnusedChoiceStatements (R.updS R.kap lam) F := ⟨h.ex, h.conj, h.levelW, h.integral⟩

@@ -21,13 +21,13 @@ def inrMap (a b : ℕ) : (Fin b → ℂ) →ₗ[ℂ] (Fin a ⊕ Fin b → ℂ) w
   map_smul' c x := by ext k; cases k <;> simp
 
 /- English proof (translation)
-Introduce `z z' h`. Use function extensionality and compare the values at `i`. Conclude with `congrFun h (Sum.inl i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma inlMap_injective (a b : ℕ) : Function.Injective (inlMap a b) := by
   intro z z' h; funext i; exact congrFun h (Sum.inl i)
 
 /- English proof (translation)
-Introduce `z z' h`. Use function extensionality and compare the values at `i`. Conclude with `congrFun h (Sum.inr i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma inrMap_injective (a b : ℕ) : Function.Injective (inrMap a b) := by
   intro z z' h; funext i; exact congrFun h (Sum.inr i)
@@ -43,9 +43,9 @@ lemma chg_apply {a b : ℕ} (e : n ≃ Fin a ⊕ Fin b) (P : GL (Fin a ⊕ Fin b
     chg e P y = ((P : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) ℂ) *ᵥ y) ∘ e := rfl
 
 /- English proof (translation)
-Introduce `y y' h`. Establish `h1 : (P : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) ℂ) *ᵥ y = (P : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) ℂ) *ᵥ y'`. Use `congrArg (fun v => v ∘ e.symm) h` as an intermediate fact. Simplify `this` using `[chg_apply, Function.comp_def]`. Establish `h2` using `congrArg (fun v => ((P⁻¹ : GL (Fin a ⊕ Fin b) ℂ) : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) ℂ) *ᵥ v) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h2` using `[mulVec_mulVec]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma chg_injective {a b : ℕ} (e : n ≃ Fin a ⊕ Fin b) (P : GL (Fin a ⊕ Fin b) ℂ) :
     Function.Injective (chg e P) := by
@@ -57,11 +57,11 @@ lemma chg_injective {a b : ℕ} (e : n ≃ Fin a ⊕ Fin b) (P : GL (Fin a ⊕ F
   simpa [mulVec_mulVec] using h2
 
 /- English proof (translation)
-Use `set M : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) ℂ := (P : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) ℂ)`. Establish `hc : Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ` using `by ext i j; rfl`. Rewrite using `[← h, hc]`. Use `set w := M *ᵥ y`. Establish `h1 : J *ᵥ (w ∘ e) = (J.reindex e e *ᵥ w) ∘ e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[reindex_apply, submatrix_mulVec_equiv]`. Use extensionality with `i`. Simplify using `[Function.comp_def]`. Establish `h2 : qf J (chg e P y) = star w ⬝ᵥ (J.reindex e e *ᵥ w)`. Rewrite using `[qf, chg_apply, h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dotProduct, Function.comp_apply, Pi.star_apply]`. Conclude with `Fintype.sum_equiv e _ _ (fun _ => rfl)`. Rewrite using `[h2]`. Simplify using `only [w, star_mulVec, ← mulVec_mulVec, dotProduct_mulVec, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma qf_chg {a b : ℕ} (J : Matrix n n ℂ) (e : n ≃ Fin a ⊕ Fin b) (P : GL (Fin a ⊕ Fin b) ℂ)
     (h : Formalism.UG.cT (starRingEnd ℂ) (P : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) ℂ) * J.reindex e e *
@@ -82,21 +82,21 @@ lemma qf_chg {a b : ℕ} (J : Matrix n n ℂ) (e : n ≃ Fin a ⊕ Fin b) (P : G
   simp only [w, star_mulVec, ← mulVec_mulVec, dotProduct_mulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `[inlMap, Formalism.UG.Jpq, fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 lemma jpq_inl (a b : ℕ) (z : Fin a → ℂ) :
     star (inlMap a b z) ⬝ᵥ Formalism.UG.Jpq a b *ᵥ inlMap a b z = star z ⬝ᵥ z := by
   simp [inlMap, Formalism.UG.Jpq, fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type, Function.comp_def]
 
 /- English proof (translation)
-Simplify using `[inrMap, Formalism.UG.Jpq, fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type, Function.comp_def, neg_mulVec, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma jpq_inr (a b : ℕ) (z : Fin b → ℂ) :
     star (inrMap a b z) ⬝ᵥ Formalism.UG.Jpq a b *ᵥ inrMap a b z = -(star z ⬝ᵥ z) := by
   simp [inrMap, Formalism.UG.Jpq, fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type, Function.comp_def, neg_mulVec, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hx`. Establish `hz : z ≠ 0` using `by rintro rfl; exact hx0 (map_zero _)`. Rewrite using `[LinearMap.comp_apply, qf_chg J e P h, jpq_inl]`. Conclude with `dotProduct_star_self_pos_iff.mpr hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pos_of_mem {a b : ℕ} {J : Matrix n n ℂ} {e : n ≃ Fin a ⊕ Fin b} {P : GL (Fin a ⊕ Fin b) ℂ}
     (h : Formalism.UG.cT (starRingEnd ℂ) (P : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) ℂ) * J.reindex e e *
@@ -108,7 +108,7 @@ lemma pos_of_mem {a b : ℕ} {J : Matrix n n ℂ} {e : n ≃ Fin a ⊕ Fin b} {P
   exact dotProduct_star_self_pos_iff.mpr hz
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hx`. Rewrite using `[LinearMap.comp_apply, qf_chg J e P h, jpq_inr]`. Conclude with `neg_nonpos.mpr (dotProduct_star_self_nonneg z)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nonpos_of_mem {a b : ℕ} {J : Matrix n n ℂ} {e : n ≃ Fin a ⊕ Fin b} {P : GL (Fin a ⊕ Fin b) ℂ}
     (h : Formalism.UG.cT (starRingEnd ℂ) (P : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) ℂ) * J.reindex e e *
@@ -119,15 +119,15 @@ lemma nonpos_of_mem {a b : ℕ} {J : Matrix n n ℂ} {e : n ≃ Fin a ⊕ Fin b}
   exact neg_nonpos.mpr (dotProduct_star_self_nonneg z)
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Take `⟨e', P', hP'⟩` from `h'`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Use `set U := LinearMap.range (chg e P ∘ₗ inlMap a b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set N := LinearMap.range (chg e' P' ∘ₗ inrMap a' b')`. Establish `hU : finrank ℂ U = a`. Rewrite using `[LinearMap.finrank_range_of_inj (by rw [LinearMap.coe_comp]; exact (chg_injective e P).comp (inlMap_injective a b))]`. Simplify using the standard rewrite rules. Establish `hN : finrank ℂ N = b'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.finrank_range_of_inj (by rw [LinearMap.coe_comp]; exact (chg_injective e' P').comp (inrMap_injective a' b'))]`. Simplify using the standard rewrite rules. Establish `hcard : Fintype.card n = a' + b'` using `by simpa using Fintype.card_congr e'`. Establish `hsup : finrank ℂ ↥(U ⊔ N) ≤ Fintype.card n`. Use `Submodule.finrank_le (U ⊔ N)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hsum` using `Submodule.finrank_sup_add_finrank_inf_eq U N`. Establish `hinf : U ⊓ N ≠ ⊥`. Introduce `hb`. Rewrite `hsum` using `[hb, finrank_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hinf`. Establish `h1` using `pos_of_mem hP (Submodule.mem_inf.1 hx).1 hx0`. Establish `h2` using `nonpos_of_mem hP' (Submodule.mem_inf.1 hx).2`. Conclude with `lt_irrefl _ (lt_of_lt_of_le h1 h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fst_le_of_hasSignature {J : Matrix n n ℂ} {a b a' b' : ℕ}
     (h : Formalism.UG.HasSignature J a b) (h' : Formalism.UG.HasSignature J a' b') : a ≤ a' := by
@@ -158,7 +158,7 @@ theorem fst_le_of_hasSignature {J : Matrix n n ℂ} {a b a' b' : ℕ}
   exact lt_irrefl _ (lt_of_lt_of_le h1 h2)
 
 /- English proof (translation)
-Introduce `h h'` and use `le_antisymm (fst_le_of_hasSignature h h') (fst_le_of_hasSignature h' h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasSignature_fst_unique : ∀ {n : ℕ} {J : Matrix (Fin n) (Fin n) ℂ} {a b a' b' : ℕ},
     Formalism.UG.HasSignature J a b → Formalism.UG.HasSignature J a' b' → a = a' :=

@@ -9,39 +9,37 @@ namespace GlobalTheory
 open Submodule in
 
 /- English proof (translation)
-Introduce `l _ P K LL _ _ O _ _ lam n e f h1 h2 h3 L1 hL1 L1Z hL1Z z`. Establish `memT : ∀ x : LL, x ∈ L1.T ↔ ∃ o : O, algebraMap O LL o = x`. Introduce `x`. Rewrite using `[hL1]`. Simplify using `[LinearMap.mem_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `memZ : ∀ q : ℚ_[l], q ∈ L1Z.T ↔ ∃ w : ℤ_[l], (w : ℚ_[l]) = q`. Introduce `q`. Rewrite using `[hL1Z]`. Simplify using `[LinearMap.mem_range]`. Establish `actT : ∀ g (a : LL), (repD L1 g) (Submodule.Quotient.mk a) = Submodule.Quotient.mk (algebraMap ℚ_[l] LL ((P.PD K).χ g : ℚ_[l]) * a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `g a`. Simplify using `[repD, Submodule.mapQ_apply, charRep, cycLL, Algebra.smul_def]`. Establish `actZ : ∀ g (q : ℚ_[l]), (repD L1Z g) (Submodule.Quotient.mk q) = Submodule.Quotient.mk (((P.PD K).χ g : ℚ_[l]) * q)`. Introduce `g q`. Simplify using `[repD, Submodule.mapQ_apply, charRep, cycLL]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `lamc : ∀ (o : O) (c : ℚ_[l]) (y : LL), lam (algebraMap O LL o * (algebraMap ℚ_[l] LL c * y)) = c * lam (algebraMap O LL o * y)`. Introduce `o c y`. Establish `: algebraMap O LL o * (algebraMap ℚ_[l] LL c * y) = c • (algebraMap O LL o * y)`. Rewrite using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, map_smul, smul_eq_mul]`. Unfold `CobO ReciprocityTheory.Def.B2`. Prove the components needed by the constructor for the conclusion. Introduce `H o`. Take `⟨F, ⟨hFc, -⟩, hF⟩` from `Submodule.mem_map.1 H`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `choose Ft hFt using fun g => Submodule.Quotient.mk_surjective L1.T (F g)`. Establish `hFeq : F = fun g => Submodule.Quotient.mk (Ft g)` using `funext fun g => (hFt g).symm`. Substitute `hFeq` using the available equality. Set `φ : LL ⧸ L1.T → ℚ_[l] ⧸ L1Z.T` to `fun q => Submodule.Quotient.mk (lam (algebraMap O LL o * (Submodule.Quotient.mk_surjective L1.T q).choose))`. Establish `hφ : ∀ a, φ (Submodule.Quotient.mk a) = Submodule.Quotient.mk (lam (algebraMap O LL o * a))`.
+Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Establish `hc` using `(Submodule.Quotient.mk_surjective L1.T (Submodule.Quotient.mk a)).choose_spec`. Rewrite `hc` using `[Submodule.Quotient.eq]`. Take `⟨o', ho'⟩` from `(memT _).1 hc`. Take `⟨w, hw⟩` from `h2 (o * o')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show Submodule.Quotient.mk _ = _`. Rewrite using `[Submodule.Quotient.eq, memZ]`. Conclude with `⟨w, by rw [← hw, map_mul, ho', mul_sub, map_sub]⟩`. Use `Submodule.mem_map.2 ⟨φ ∘ (fun g => Submodule.Quotient.mk (Ft g)), ⟨hFc.comp φ, fun _ => trivial⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hx` using `congrFun hF x`. Simplify using `only [ReciprocityTheory.Def.d1, LinearMap.coe_mk, AddHom.coe_mk, Function.comp_apply] at hx ⊢`. Rewrite `hx` using `[actT, ← Submodule.Quotient.mk_sub, ← Submodule.Quotient.mk_add, Submodule.Quotient.eq]`. Take `⟨o', ho'⟩` from `(memT _).1 hx`. Take `⟨w, hw⟩` from `h2 (o * o')`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hφ, hφ, hφ, actZ, ← Submodule.Quotient.mk_sub, ← Submodule.Quotient.mk_add, Submodule.Quotient.eq, memZ]`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw, map_mul, ho', mul_sub, mul_add, mul_sub, map_sub, map_add, map_sub, lamc]`. Introduce `H choose Fz hFzc hFz using fun i => Submodule.mem_map.1 (H (f i)) choose Ft hFt using fun i g => Submodule.Quotient.mk_surjective L1Z.T (Fz i g)`. Use `Submodule.mem_map.2 ⟨fun g => Submodule.Quotient.mk (∑ i, algebraMap ℚ_[l] LL (Ft i g) * algebraMap O LL (e i)), ⟨?_, fun _ => trivial⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hev : ∀ᶠ y in nhds x, ∀ i, Fz i y = Fz i x` using `Filter.eventually_all.2 fun i => (IsLocallyConstant.iff_eventually_eq _).1 (hFzc i).1 x`. Use `filter_upwards [hev] with y hy`. Rewrite using `[Submodule.Quotient.eq, ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hyi` using `hy i`. Rewrite `hyi` using `[← hFt i y, ← hFt i x, Submodule.Quotient.eq, memZ]`. Take `⟨w, hw⟩` from `hyi`. Take `⟨o, ho⟩` from `h1 w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[memT]`. Conclude with `⟨o * e i, by rw [map_mul, ho, hw, ← sub_mul, map_sub]⟩`. Use function extensionality and compare the values at `x`. Establish `key : ∀ i, ∃ w : ℤ_[l], (w : ℚ_[l]) = ((P.PD K).χ x.1 : ℚ_[l]) * Ft i x.2 - Ft i (x.1 * x.2) + Ft i x.1 - lam (algebraMap O LL (f i) * z x)`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx` using `congrFun (hFz i) x`. Simplify using `only [ReciprocityTheory.Def.d1, LinearMap.coe_mk, AddHom.coe_mk] at hx`. Rewrite `hx` using `[← hFt i x.2, ← hFt i (x.1 * x.2), ← hFt i x.1, actZ, ← Submodule.Quotient.mk_sub, ← Submodule.Quotient.mk_add, Submodule.Quotient.eq, memZ]`. Conclude with `hx`. Use `choose w hw using key`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `choose o ho using fun i => h1 (w i)`. Simplify using `only [ReciprocityTheory.Def.d1, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[actT, ← Submodule.Quotient.mk_sub, ← Submodule.Quotient.mk_add, Submodule.Quotient.eq, memT]`. Use `⟨∑ i, o i * e i, ?_⟩` and prove the remaining obligations. Establish `hl : ∀ i, lam (algebraMap O LL (f i) * z x) = ((P.PD K).χ x.1 : ℚ_[l]) * Ft i x.2 - Ft i (x.1 * x.2) + Ft i x.1 - (w i : ℚ_[l])` using `fun i => by rw [hw i]; ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `conv_rhs => rw [h3 (z x)]`. Repeatedly rewrite using `[hl]`. Rewrite using `[map_sum, Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ho, Algebra.smul_def]`.
-
-Simplify using `only [map_sub, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem cobO_iff_forall_lam : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL]
     (O : Type) [CommRing O] [Algebra O LL] (lam : LL →ₗ[ℚ_[l]] ℚ_[l]) (n : ℕ) (e f : Fin n → O),

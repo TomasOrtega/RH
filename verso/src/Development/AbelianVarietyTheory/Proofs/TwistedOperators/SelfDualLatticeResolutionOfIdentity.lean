@@ -8,7 +8,7 @@ namespace GlobalTheory.SelfDualIdDecomp
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Establish `h : IsIntegral ℤ (star (a : E))`. Conclude with `(RingOfIntegers.isIntegral_coe a).map (starRingEnd E).toIntAlgHom`. Conclude with `⟨⟨star (a : E), h⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem star_mem_range (a : 𝓞 E) : star (a : E) ∈ (algebraMap (𝓞 E) E).range := by
   have h : IsIntegral ℤ (star (a : E)) := by
@@ -16,9 +16,9 @@ theorem star_mem_range (a : 𝓞 E) : star (a : E) ∈ (algebraMap (𝓞 E) E).r
   exact ⟨⟨star (a : E), h⟩, rfl⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CommonDenominatorLemma.exists_common_denominator`. Consider the case `exact _root_.GlobalTheory.CommonDenominatorLemma.exists_common_denominator`. Consider the case `(apply _root_.GlobalTheory.CommonDenominatorLemma.exists_common_denominator <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CommonDenominatorLemma.exists_common_denominator <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CommonDenominatorLemma.exists_common_denominator <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CommonDenominatorLemma.exists_common_denominator ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_den {N : ℕ} (L : Submodule (𝓞 E) (Fin N → E)) (hfg : L.FG) :
     ∃ b : 𝓞 E, b ≠ 0 ∧ ∀ x ∈ L, ∀ i, ∃ u : 𝓞 E, (u : E) = (b : E) * x i := by
@@ -31,25 +31,25 @@ theorem exists_den {N : ℕ} (L : Submodule (𝓞 E) (Fin N → E)) (hfg : L.FG)
   | (intros; exact _root_.GlobalTheory.CommonDenominatorLemma.exists_common_denominator ..)
 
 /- English proof (translation)
-Take `⟨hfg, -, hdual⟩` from `hL`. Take `⟨b, hb0, hb⟩` from `exists_den L hfg`. Take `⟨c', hc'⟩` from `star_mem_range b`. Establish `hbE : (b : E) ≠ 0`. Introduce `h; apply hb0; exact RingOfIntegers.coe_injective (by simpa using h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc0 : star (b : E) ≠ 0` using `star_ne_zero.2 hbE`. Establish `hce : ∀ i, (Pi.single i (star (b : E)) : Fin N → E) ∈ L`. Introduce `i`. Rewrite using `[hdual]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu⟩` from `hb x hx i`. Establish `h1 : stdH E N x (Pi.single i (star (b : E))) = star (u : E)`. Rewrite using `[hu, star_mul]`. Simplify using `[stdH, Pi.single_apply]`. Rewrite using `[h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `star_mem_range u`. Set `w : Fin N → E` to `fun i => (φ ⟨Pi.single i (star (b : E)), hce i⟩ : E) / star (b : E)`. Establish `hw : ∀ x (hx : x ∈ L), (φ ⟨x, hx⟩ : E) = ∑ i, w i * x i`. Introduce `x hx`. Use `choose ub hub using hb x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (b * c') • (⟨x, hx⟩ : L) = ∑ i, ub i • (⟨Pi.single i (star (b : E)), hce i⟩ : L)`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Simplify using `only [Submodule.coe_smul, Submodule.coe_sum, Finset.sum_apply, Pi.smul_apply, Algebra.smul_def, Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `hub j` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, hc']`. Rewrite using `[show (algebraMap (𝓞 E) E) (ub j) = (b : E) * x j from this]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg (fun z => ((φ z : 𝓞 E) : E)) h1`. Simplify using `only [map_smul, map_sum, smul_eq_mul] at h2`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result.
 
-Move the coercions through the operations in `at h2`. Apply `mul_left_cancel₀ (mul_ne_zero hbE hc0)` to reduce the goal to its premises. Establish `h3 : (b : E) * star (b : E) * (φ ⟨x, hx⟩ : E) = ∑ i, ((ub i : 𝓞 E) : E) * (φ ⟨Pi.single i (star (b : E)), hce i⟩ : E)`. Rewrite using `[← h2, ← hc']`. Rewrite using `[h3, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hub i]`. Simplify using `only [w]`. Apply the tactic sequence `first | (field_simp; ring) | field_simp`. Use `⟨fun i => star (w i), ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hdual]`. Introduce `y hy`. Establish `: stdH E N y (fun i => star (w i)) = star (φ ⟨y, hy⟩ : E)`. Rewrite using `[hw y hy, star_sum]`. Simplify using `[stdH, star_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `star_mem_range _`. Introduce `x hx`. Rewrite using `[hw x hx]`. Simplify using `[stdH]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_extension {N : ℕ} (L : Submodule (𝓞 E) (Fin N → E)) (hL : IsSDLat E N L)
     (φ : L →ₗ[𝓞 E] 𝓞 E) : ∃ u ∈ L, ∀ x (hx : x ∈ L), stdH E N u x = (φ ⟨x, hx⟩ : E) := by
@@ -105,17 +105,17 @@ theorem exists_extension {N : ℕ} (L : Submodule (𝓞 E) (Fin N → E)) (hL : 
     simp [stdH]
 
 /- English proof (translation)
-Establish `hspan` using `hL.2.1`. Establish `: Module.Finite (𝓞 E) L` using `Module.Finite.iff_fg.2 hL.1`. Establish `: Module.FinitePresentation (𝓞 E) L` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Projective (𝓞 E) L` using `Module.Flat.projective_of_finitePresentation`. Take `⟨m, f, g, -, -, hfg⟩` from `Module.Finite.exists_comp_eq_id_of_projective (𝓞 E) L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose u hu hux using fun k : Fin m => exists_extension L hL ((LinearMap.proj k) ∘ₗ g)`. Use `⟨m, fun k => (f (Pi.single k 1) : Fin N → E), u, fun k => (f _).2, hu, ?_⟩` and prove the remaining obligations. Establish `hrec : ∀ y : L, (y : Fin N → E) = ∑ k, ((g y k : 𝓞 E) : E) • (f (Pi.single k 1) : Fin N → E)`. Introduce `y`. Establish `h1 : f (g y) = y` using `LinearMap.congr_fun hfg y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [← h1, pi_eq_sum_univ' (g y), map_sum]`. Simplify using `only [map_smul, Submodule.coe_sum, Submodule.coe_smul, algebraMap_smul]`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext_on hspan` to reduce the goal to its premises. Introduce and unpack `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Matrix.toLin'_one, LinearMap.id_apply, Matrix.toLin'_apply]`. Use function extensionality and compare the values at `i`. Establish `e1 : x i = ∑ k, ((g ⟨x, hx⟩ k : 𝓞 E) : E) * (f (Pi.single k 1) : Fin N → E) i` using `by conv_lhs => rw [show x = ((⟨x, hx⟩ : L) : Fin N → E) from rfl, hrec ⟨x, hx⟩]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => Algebra.smul_def _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.sum_apply, vecMulVec_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `hux k x hx` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [stdH, LinearMap.comp_apply, LinearMap.proj_apply] at this`. Rewrite using `[← this, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.star_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_decomp {N : ℕ} (L : Submodule (𝓞 E) (Fin N → E)) (hL : IsSDLat E N L) :
     ∃ (r : ℕ) (s u : Fin r → Fin N → E), (∀ k, s k ∈ L) ∧ (∀ k, u k ∈ L) ∧
@@ -154,7 +154,7 @@ theorem exists_decomp {N : ℕ} (L : Submodule (𝓞 E) (Fin N → E)) (hL : IsS
   ring
 
 /- English proof (translation)
-Introduce `D N L hL`. Conclude with `exists_decomp L hL`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem iddecomp : ∀ {D : D7} {N : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)),
     Formalism.MainNotions.StandardLatticesGL3.SD D L → ∃ (r : ℕ) (s u : Fin r → Fin N → D.host.E), (∀ k, s k ∈ L) ∧ (∀ k, u k ∈ L) ∧

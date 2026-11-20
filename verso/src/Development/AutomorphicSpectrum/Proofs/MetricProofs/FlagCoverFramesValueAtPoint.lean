@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg
 
 /- English proof (translation)
-Introduce `e`. Distinguish the cases in `hi : (i : ℕ) + 1 ≤ j`. Establish `h0 : N - j < N` using `by omega`. Establish `: (⟨N - j, h0⟩ : Fin N) ∈ stepCols N j i`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_pos hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[e]`. Simplify using `at this`. Establish `h0 : 0 < N` using `by have := i.2; omega`. Establish `: (⟨0, h0⟩ : Fin N) ∈ stepCols N j i`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_neg hi]`. Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[e]`. Simplify using `at this`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stepCols_ne_empty {N j : ℕ} (hj : j ≤ N) {i : Fin N} : stepCols N j i ≠ ∅ := by
   intro e
@@ -39,23 +39,23 @@ theorem stepCols_ne_empty {N j : ℕ} (hj : j ≤ N) {i : Fin N} : stepCols N j 
     simp at this
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv z F' F h hb hF' hF hG' hG hh hyp p k hp`. Take `⟨k', hk'⟩` from `exists_blk_cover M' hp`. Take `⟨a, ha, hz⟩` from `hyp p k' hk'`. Establish `hCB` using `GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j p.2 M.j_le`. Establish `hoff : ∀ J, ¬ IsStepRows N j p.2 J → minorIJ (h p.1) J (stepCols N j p.2) = 0` using `fun J hJ => (hCB.2.1 (h p.1) J (hh p.1) hJ).resolve_right (stepCols_ne_empty M.j_le)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdelta : ∀ I' J, IsStepRows N j p.2 I' → IsStepRows N j p.2 J → ∑ m' : ι' k', valAt M'.x (F'.u' I' ⟨k', m'⟩) (basePart M'.blk z) * valAt M'.x (F'.u ⟨k', m'⟩ J) (basePart M'.blk z) = if I' = J then 1 else 0`. Introduce `I' J hI hJ`. Establish `hu'` using `fun m' : ι' k' => (hG'.2.1 ⟨k', m'⟩ I').2`. Establish `hu` using `fun m' : ι' k' => (hG'.2.1 ⟨k', m'⟩ J).1`. Establish `e1` using `(reg_sum hb Finset.univ (fun m' : ι' k' => F'.u' I' ⟨k', m'⟩ * F'.u ⟨k', m'⟩ J) fun m' _ => (reg_mul hb (hu' m') (hu m')).1).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[hF'.2.2.1 p k' hk' I' J hI hJ]`. Rewrite using `[Finset.sum_congr rfl fun m' _ => ((reg_mul hb (hu' m') (hu m')).2).symm, ← e1]`. Use `split_ifs`. Conclude with `map_one (regVal M'.x hb)`. Conclude with `map_zero (regVal M'.x hb)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hread : ∀ I', IsStepRows N j p.2 I' → ∑ m' : ι' k', valAt M'.x (F'.u' I' ⟨k', m'⟩) (basePart M'.blk z) * z ⟨k', m'⟩ = a * minorIJ (h p.1) I' (stepCols N j p.2)`. Introduce `I' hI`. Establish `e1 : ∑ m' : ι' k', valAt M'.x (F'.u' I' ⟨k', m'⟩) (basePart M'.blk z) * z ⟨k', m'⟩ = a * ∑ J, (∑ m' : ι' k', valAt M'.x (F'.u' I' ⟨k', m'⟩) (basePart M'.blk z) * valAt M'.x (F'.u ⟨k', m'⟩ J) (basePart M'.blk z)) * minorIJ (h p.1) J (stepCols N j p.2)`. Repeatedly rewrite using `[hz, plk, Finset.mul_sum, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun J _ => Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single I']`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hdelta I' I' hI hI, if_pos rfl, one_mul]`. Introduce `J _ hne`. Distinguish the cases in `hJ : IsStepRows N j p.2 J`. Rewrite using `[hdelta I' J hI hJ, if_neg hne.symm, zero_mul]`. Rewrite using `[hoff J hJ, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨a, ha, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[img_step Cv F' F z hp hk' m]`. Unfold `stepCoord plk`. Rewrite using `[Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[hCB.1, mul_left_comm]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun I' _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `hI : IsStepRows N j p.2 I'`. Rewrite using `[if_pos hI, hread I' hI]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hI, hoff I' hI, mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem img_form : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (z : (Σ k, ι' k) → ℂ) (F' : FrameData ι' Ψ N M'.Ω M'.blk) (F : FrameData ι Ψ N M.Ω M.blk) (h : Ψ → Matrix (Fin N) (Fin N) ℂ), basePart M'.blk z ∈ mcPts (mCoordIdeal M'.x) → M'.IsFrame F' → M.IsFrame F → M'.GoodAt F' (mCoordIdeal (basePart M'.blk z)) → M.GoodAt F (mCoordIdeal (basePart M'.blk z ∘ Cv.v)) → (∀ τ, IsBlockDiag j (h τ)) → (∀ (p : Ψ × Fin N) (k' : K'), M'.blk p = some k' → ∃ a : ℂ, a ≠ 0 ∧ ∀ m' : ι' k', z ⟨k', m'⟩ = a * CovMap.LocImg.plk M' F' (basePart M'.blk z) p.2 ⟨k', m'⟩ (h p.1)) → ∀ (p : Ψ × Fin N) (k : K), M.blk p = some k → ∃ a : ℂ, a ≠ 0 ∧ ∀ m : ι k, CovMap.LocImg.img Cv F' F z ⟨k, m⟩ = a * CovMap.LocImg.plk M F (basePart M'.blk z ∘ Cv.v) p.2 ⟨k, m⟩ (Cv.trans F' F (basePart M'.blk z) p.1 * h p.1) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv z F' F h hb hF' hF hG' hG hh hyp p k hp

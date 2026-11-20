@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.DblKFinCpt
 
 /- English proof (translation)
-Set `u : AF F` to `(1, 0)`. Establish `h0` using `hf u rfl`. Use extensionality with `i j`. Establish `h` using `(compInf_smul w u ((mat f - 1) i j)).symm.trans (congrArg (compInf F E w) (show u • (mat f - 1) i j = 0 from congrFun (congrFun h0 i) j))`. Rewrite `h` using `[show evInf F w u = 1 from rfl, one_smul, map_zero, Matrix.sub_apply, map_sub, sub_eq_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.map_apply, piInf, RingHom.comp_apply, h, ← RingHom.comp_apply, ← piInf]`. Rewrite using `[← Matrix.map_apply (f := piInf τ), Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_piInf_eq_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} (X : Spc F E n) (f : UA σ X.J) (hf : f ∈ UAt σ X (sndA F))
@@ -36,19 +36,15 @@ theorem map_piInf_eq_one {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   rw [← Matrix.map_apply (f := piInf τ), Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ hJ hL K₂ hK N hN`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := (GlobalTheory.UnipCT.topFacts σ W₂.J).1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `W₃ : Spc F E (d + d)` to `⟨W₂.J, W₂.L, fun w => blkMat finSumFinEquiv (W.θ w) (-W.θ w), W₂.bas⟩`. Establish `hL₃ : W₃.L.IsLattice E` using `by show W₂.L.IsLattice E`. Rewrite using `[hL]`. Use `haveI : Submodule.IsLattice E W.L := hP.skew.lat`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ₃ : ∀ w, IsCartan (Complex.I • W₃.J.map (B.emb w).1) (W₃.θ w)`. Introduce `w`. Use `show IsCartan (Complex.I • W₂.J.map (B.emb w).1) (blkMat finSumFinEquiv (W.θ w) (-W.θ w))`. Rewrite using `[hJ, dblGram, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _), GlobalTheory.DblUnfoldCont.smul_blkMat, smul_neg]`. Conclude with `GlobalTheory.DblUnfoldCont.isCartan_dbl _ _ (hP.skew.cartan w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hKc : IsCompact ((GlobalTheory.StabHaar.stabK B W₃ : Subgroup (UA σ W₃.J)) : Set (UA σ W₃.J))` using `GlobalTheory.DblUnfoldCont.isCompact_of_isStab_skew hP.base.cm B W₃ hL₃ hθ₃ (GlobalTheory.StabHaar.isStab_stabK B W₃)`. Establish `hC : IsCompact ((KAt (GlobalTheory.StabHaar.stabK B W₃) (sndA F) : Subgroup (UA σ W₃.J)) : Set (UA σ W₃.J))` using `isCompact_KAt hKc (sndA F)`. Establish `hCeq : ∀ f : UA σ W₂.J, (f ∈ K₂ ∧ f ∈ UAt σ W₂ (sndA F)) ↔ f ∈ ((KAt (GlobalTheory.StabHaar.stabK B W₃) (sndA F) : Subgroup (UA σ W₃.J)) : Set (UA σ W₃.J))`. Introduce `f`. Establish `h1 : ∀ w, (mat f).map (piInf (B.emb w)) = 1 → ∀ θ : Matrix (Fin (d + d)) (Fin (d + d)) ℂ, Commute ((mat f).map (piInf (B.emb w))) θ` using `fun w hw θ => by rw [hw]; exact Commute.one_left _`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf1, hf2⟩`. Use `⟨⟨fun w => h1 w (map_piInf_eq_one W₂ f hf2 (B.emb w)) _, ((hK f).1 hf1).2⟩, hf2⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨_, hf1⟩, hf2⟩`. Conclude with `⟨(hK f).2 ⟨fun w => h1 w (map_piInf_eq_one W₂ f hf2 (B.emb w)) _, hf1⟩, hf2⟩`.
-
-Take `⟨t, ht, hcov⟩` from `hC.elim_nhds_subcover (fun k : UA σ W₂.J => (fun f => k⁻¹ * f) ⁻¹' N) (fun k _ => by`. Use `(continuous_mul_left k⁻¹).continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[inv_mul_cancel]`. Conclude with `hN)`. Use `⟨t, fun k hk => (hCeq k).2 (ht k hk), fun f hf1 hf2 => ?_⟩` and prove the remaining obligations.
-
-Take `⟨k, hk, hfk⟩` from `Set.mem_iUnion₂.1 (hcov ((hCeq f).1 ⟨hf1, hf2⟩))`. Conclude with `⟨k, hk, hfk, (UAtSub σ W₂ (sndA F)).mul_mem ((UAtSub σ W₂ (sndA F)).inv_mem ((hCeq k).2 (ht k hk)).2) hf2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_cover : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),

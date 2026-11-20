@@ -18,7 +18,7 @@ attribute [local instance] borelG borelF borelH
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.PRep.fixed, GlobalTheory.PRep.eig, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_ofPred_eq] at hv ⊢`. Introduce `h`. Conclude with `hv ⟨h.1, hle h.2⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fixed_mono {k G V : Type} [Field k] [Group G] [AddCommGroup V] [Module k V] (ρ : Representation k G V)
     {K K' : Subgroup G} (hle : K' ≤ K) {v : V} (hv : v ∈ fixed ρ K) : v ∈ fixed ρ K' := by
@@ -28,23 +28,19 @@ theorem fixed_mono {k G V : Type} [Field k] [Group G] [AddCommGroup V] [Module k
   exact hv ⟨h.1, hle h.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨HasCompactSupport.zero, fun _ _ _ => ⟨rfl, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHecke_zero {G : Type} [Group G] [TopologicalSpace G] (K : Subgroup G) : IsHecke K (fun _ : G => (0 : ℂ)) :=
   ⟨HasCompactSupport.zero, fun _ _ _ => ⟨rfl, rfl⟩⟩
 
 /- English proof (translation)
-Take `⟨K₁, K₂, hK₁, hK₂, hT⟩` from `hφ`. Use `⟨fun w => if w ∈ T then V₁ w else K₁ w, fun w => if w ∈ T then V₂ w else K₂ w, ⟨fun w => ?_, ?_⟩, ⟨fun w => ?_, ?_⟩, fun w => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : w ∈ T`. Simplify using `only [h, if_true]`. Conclude with `hV₁ w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, if_false]`. Conclude with `hK₁.1 w`. Use `filter_upwards [hK₁.2, T.finite_toSet.compl_mem_cofinite] with w hw hwT`. Simplify using `only [Set.mem_compl_iff, Finset.mem_coe] at hwT`. Simplify using `only [hwT, if_false, hw]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : w ∈ T`. Simplify using `only [h, if_true]`. Conclude with `hV₂ w`. Simplify using `only [h, if_false]`. Conclude with `hK₂.1 w`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hK₂.2, T.finite_toSet.compl_mem_cofinite] with w hw hwT`. Simplify using `only [Set.mem_compl_iff, Finset.mem_coe] at hwT`. Simplify using `only [hwT, if_false, hw]`. Distinguish the cases in `h : w ∈ T`. Simplify using `only [h, if_true]`.
-
-Conclude with `hin w h`. Simplify using `only [h, if_false]`. Rewrite using `[hout w h]`. Conclude with `hT.1 w`. Use `filter_upwards [hT.2, T.finite_toSet.compl_mem_cofinite] with w hw hwT`.
-
-Simplify using `only [Set.mem_compl_iff, Finset.mem_coe] at hwT`. Rewrite using `[hout w hwT, hw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTestFunction_modify {φ ψ : ∀ w : Pl E, GLw a w × GLw b w → ℂ} (hφ : IsTestP φ) (T : Finset (Pl E))
     (V₁ : ∀ w : Pl E, Subgroup (GLw a w)) (V₂ : ∀ w : Pl E, Subgroup (GLw b w))
@@ -73,13 +69,13 @@ theorem isTestFunction_modify {φ ψ : ∀ w : Pl E, GLw a w × GLw b w → ℂ}
     rw [hout w hwT, hw]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊤, by rw [Subgroup.coe_top]; exact isOpen_univ, fun _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasLev_zero : HasLev (0 : H E a b → ℂ) :=
   ⟨⊤, by rw [Subgroup.coe_top]; exact isOpen_univ, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨U, hU, hG⟩` from `h`. Take `⟨U', hU', hG'⟩` from `h'`. Use `⟨U ⊓ U', by rw [Subgroup.coe_inf]; exact hU.inter hU', fun u hu x => ?_⟩` and prove the remaining obligations. Establish `hu'` using `Subgroup.mem_inf.1 hu`. Simplify using `only [Pi.add_apply, hG u hu'.1 x, hG' u hu'.2 x]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem hasLev_add {G G' : H E a b → ℂ} (h : HasLev G) (h' : HasLev G') : HasLev (G + G') := by
   obtain ⟨U, hU, hG⟩ := h
@@ -89,7 +85,7 @@ theorem hasLev_add {G G' : H E a b → ℂ} (h : HasLev G) (h' : HasLev G') : Ha
   simp only [Pi.add_apply, hG u hu'.1 x, hG' u hu'.2 x]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (hasLev_zero (E := E) (a := a) (b := b))`. Consider the case `insert x s hx ih`. Rewrite using `[Finset.sum_insert hx]`. Conclude with `hasLev_add (h x (Finset.mem_insert_self x s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasLev_sum {ι : Type} (s : Finset ι) (g : ι → H E a b → ℂ) (h : ∀ i ∈ s, HasLev (g i)) :
     HasLev (∑ i ∈ s, g i) := by
@@ -100,7 +96,7 @@ theorem hasLev_sum {ι : Type} (s : Finset ι) (g : ι → H E a b → ℂ) (h :
     exact hasLev_add (h x (Finset.mem_insert_self x s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Use `choose U hU hG using h`. Use `⟨⨅ i, U i, ?_, fun i u hu x => hG i u (Subgroup.mem_iInf.1 hu i) x⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite hU`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniform_lev {ι : Type} [Finite ι] (G : ι → H E a b → ℂ) (h : ∀ i, HasLev (G i)) :
     ∃ U : Subgroup (Hf E a b), IsOpen (U : Set (Hf E a b)) ∧ ∀ i, ∀ u ∈ U, ∀ x, G i (x * finH u) = G i x := by
@@ -110,7 +106,7 @@ theorem uniform_lev {ι : Type} [Finite ι] (G : ι → H E a b → ℂ) (h : �
   exact isOpen_iInter_of_finite hU
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [convF, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem convF_congr {A A' κ : Type} [Fintype κ] [MeasurableSpace (Hf E a b)] (ν : Measure (Hf E a b))
     (ψ : Matrix κ κ (Hf E a b → ℂ)) (G : A × κ → H E a b → ℂ) (G' : A' × κ → H E a b → ℂ) (p : A) (q : A')
@@ -119,7 +115,7 @@ theorem convF_congr {A A' κ : Type} [Fintype κ] [MeasurableSpace (Hf E a b)] (
   simp only [convF, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i y`. Simplify using `[convF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem convF_zero {A κ : Type} [Fintype κ] [MeasurableSpace (Hf E a b)] (ν : Measure (Hf E a b))
     (ψ : Matrix κ κ (Hf E a b → ℂ)) : convF ν ψ (0 : A × κ → H E a b → ℂ) = 0 := by
@@ -127,7 +123,7 @@ theorem convF_zero {A κ : Type} [Fintype κ] [MeasurableSpace (Hf E a b)] (ν :
   simp [convF]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply']`. Conclude with `convF_congr ν ψ _ _ p () (fun z => ih z) x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iter_restrict {A κ : Type} [Fintype κ] [MeasurableSpace (Hf E a b)] (ν : Measure (Hf E a b))
     (ψ : Matrix κ κ (Hf E a b → ℂ)) (F : A × κ → H E a b → ℂ) (p : A) (k : ℕ) (x : κ) :
@@ -171,9 +167,9 @@ def rest1 (L : LM κ a b) (V : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) (w�
   ⟨fun w x y => if w = w₀ then dg V w x y else L.m w x y, L.s, L.t⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single x]`. Simplify using `[dg]`. Introduce `z _ hz`. Simplify using `only [dg, if_neg (Ne.symm hz)]`. Conclude with `mconv_zero_left _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem dg_mul_left (V : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) (w : Pl E) (x : κ w)
     (f : κ w → GLw a w × GLw b w → ℂ) : ∑ z, mconv (dg V w x z) (f z) = mconv (idem (V w)) (f x) := by
@@ -185,9 +181,9 @@ theorem dg_mul_left (V : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) (w : Pl E)
   · simp
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single y]`. Simplify using `[dg]`. Introduce `z _ hz`. Simplify using `only [dg, if_neg hz]`. Conclude with `mconv_zero_right _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem dg_mul_right (V : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) (w : Pl E) (y : κ w)
     (f : κ w → GLw a w × GLw b w → ℂ) : ∑ z, mconv (f z) (dg V w z y) = mconv (f y) (idem (V w)) := by
@@ -199,7 +195,7 @@ theorem dg_mul_right (V : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) (w : Pl E
   · simp
 
 /- English proof (translation)
-Unfold `dg`. Use `split_ifs`. Conclude with `mconv_idem_left hV hle fun v hv g => idem_left hv g`. Conclude with `mconv_zero_right _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mconv_idem_dg {V : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)} {w : Pl E}
     (hV : IsOpen (V w : Set (GLw a w × GLw b w))) (hle : V w ≤ K2 a b w) (x y : κ w) :
@@ -210,9 +206,9 @@ theorem mconv_idem_dg {V : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)} {w : Pl 
   · exact mconv_zero_right _
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact hs`. Consider the case `succ k ih`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show mconv (M.s w) ((pw M k).s w) = _`. Rewrite using `[hs, ih]`. Conclude with `mconv_idem_left (hW w).1 (hW w).2 fun v hv g => idem_left hv g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabilizerDilationWeights_dualIsotropicVector (M : LM κ a b) (W : ∀ w : Pl E, Subgroup (GLw a w × GLw b w))
     (hW : ∀ w, IsOpen (W w : Set (GLw a w × GLw b w)) ∧ W w ≤ K2 a b w) (hs : ∀ w, M.s w = idem (W w)) :
@@ -227,9 +223,9 @@ theorem stabilizerDilationWeights_dualIsotropicVector (M : LM κ a b) (W : ∀ w
     exact mconv_idem_left (hW w).1 (hW w).2 fun v hv g => idem_left hv g
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ht`. Consider the case `succ k ih`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show mconv (M.t w) ((pw M k).t w) = _`. Rewrite using `[ht, ih]`. Conclude with `mconv_idem_left (hW w).1 (hW w).2 fun v hv g => idem_left hv g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem power_torus_component_idempotent (M : LM κ a b) (W : ∀ w : Pl E, Subgroup (GLw a w × GLw b w))
     (hW : ∀ w, IsOpen (W w : Set (GLw a w × GLw b w)) ∧ W w ≤ K2 a b w) (ht : ∀ w, M.t w = idem (W w)) :
@@ -244,7 +240,7 @@ theorem power_torus_component_idempotent (M : LM κ a b) (W : ∀ w : Pl E, Subg
     exact mconv_idem_left (hW w).1 (hW w).2 fun v hv g => idem_left hv g
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact h`. Consider the case `succ k ih => show (fun x y => ∑ z, mconv (M.m w x z) ((pw M k).m w z y)) = fun x y => ∑ z, mconv (M'.m w x z) ((pw M' k).m w z y)`. Rewrite using `[h, ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pw_m_congr (M M' : LM κ a b) (w : Pl E) (h : M.m w = M'.m w) : ∀ k, (pw M k).m w = (pw M' k).m w := by
   intro k
@@ -256,9 +252,9 @@ theorem pw_m_congr (M M' : LM κ a b) (w : Pl E) (h : M.m w = M'.m w) : ∀ k, (
     rw [h, ih]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact h`. Consider the case `succ k ih`. Use function extensionality and compare the values at `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show ∑ z, mconv (M.m w x z) ((pw M k).m w z y) = _`. Rewrite using `[h, ih, dg_mul_left V w x (fun z => dg V w z y)]`. Conclude with `mconv_idem_dg hV hle x y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pw_dg (M : LM κ a b) (V : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) (w : Pl E)
     (hV : IsOpen (V w : Set (GLw a w × GLw b w))) (hle : V w ≤ K2 a b w) (h : M.m w = dg V w) :
@@ -273,9 +269,9 @@ theorem pw_dg (M : LM κ a b) (V : ∀ w : Pl E, Subgroup (GLw a w × GLw b w)) 
     exact mconv_idem_dg hV hle x y
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact h`. Consider the case `succ k ih`. Introduce `x y v hv g`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (∑ z, mconv (M.m w x z) ((pw M k).m w z y)) (v * g) = (∑ z, mconv (M.m w x z) ((pw M k).m w z y)) g`. Simplify using `only [Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun z _ => mconv_left (fun g' => h x z v hv g') g`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pw_left (M : LM κ a b) (w : Pl E) (W : Subgroup (GLw a w × GLw b w))
     (h : ∀ x y, ∀ v ∈ W, ∀ g, M.m w x y (v * g) = M.m w x y g) :
@@ -290,9 +286,9 @@ theorem pw_left (M : LM κ a b) (w : Pl E) (W : Subgroup (GLw a w × GLw b w))
     exact Finset.sum_congr rfl fun z _ => mconv_left (fun g' => h x z v hv g') g
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact h`. Consider the case `succ k ih`. Introduce `x y v hv g`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (∑ z, mconv (M.m w x z) ((pw M k).m w z y)) (g * v) = (∑ z, mconv (M.m w x z) ((pw M k).m w z y)) g`. Simplify using `only [Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun z _ => mconv_right (fun g' => ih z y v hv g') g`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pw_right (M : LM κ a b) (w : Pl E) (W : Subgroup (GLw a w × GLw b w))
     (h : ∀ x y, ∀ v ∈ W, ∀ g, M.m w x y (g * v) = M.m w x y g) :
@@ -312,7 +308,7 @@ section
 variable {κ : Pl E → Type} [∀ w, Fintype (κ w)]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact hM`. Consider the case `succ k ih => exact (hA E κ S P B e hS hP M (pw M k) hM ih).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pw_ok (hA : FmAlg) (S : Set (Pl E)) (P : Finset (Pl E)) (B : Block E) (e : B.κ ≃ ∀ w : P, κ w)
     (hS : IsSection S) (hP : (↑P : Set (Pl E)) ⊆ S) (M : LM κ B.a B.b) (hM : M.Ok P) : ∀ k, (pw M k).Ok P := by
@@ -322,9 +318,9 @@ theorem pw_ok (hA : FmAlg) (S : Set (Pl E)) (P : Finset (Pl E)) (B : Block E) (e
   | succ k ih => exact (hA E κ S P B e hS hP M (pw M k) hM ih).2.1
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hk` using `pw_ok hA S P B e hS hP M hM k`. Take `⟨h1, -, h3, -⟩` from `hA E κ S P B e hS hP M (pw M k) hM hk`. Establish `h2` using `(hA E κ S P B e hS hP (pw M k) M hk hM).1`. Rewrite using `[← (hC E B A _ _ U G h1 h2 hU hG).1, h3]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iter_pw (hA : FmAlg) (hC : ConvMul) (S : Set (Pl E)) (P : Finset (Pl E)) (B : Block E)
     (e : B.κ ≃ ∀ w : P, κ w) (hS : IsSection S) (hP : (↑P : Set (Pl E)) ⊆ S) (M : LM κ B.a B.b) (hM : M.Ok P)

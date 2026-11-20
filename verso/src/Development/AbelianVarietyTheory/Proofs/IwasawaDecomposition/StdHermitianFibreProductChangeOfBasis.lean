@@ -17,21 +17,21 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (e : E) :
     sigR R σ (inclR R e) = inclR R (σ e) := by
   simp [sigR, inclR]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq {A : Type} [CommRing A] (τ : A →+* A) {M : ℕ} (J : Matrix (Fin M) (Fin M) A)
     (x y : Fin M → A) : Formalism.UG.hform τ J x y = (τ ∘ x) ⬝ᵥ J.mulVec y := by
   simp [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[hform_eq, hform_eq]`. Establish `h : (τ ∘ P.mulVec x) = (P.map τ).mulVec (τ ∘ x)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec τ P x i`. Rewrite using `[h, Formalism.UG.cT, Matrix.mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (τ ∘ x), Matrix.vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_mulVec {A : Type} [CommRing A] (τ : A →+* A) {M : ℕ} (J P : Matrix (Fin M) (Fin M) A)
     (x y : Fin M → A) :
@@ -44,9 +44,9 @@ theorem hform_mulVec {A : Type} [CommRing A] (τ : A →+* A) {M : ℕ} (J P : M
     Matrix.dotProduct_mulVec (τ ∘ x), Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Establish `h : JR R (Formalism.UG.cT (σ : E →+* E) P * J * P) = Formalism.UG.cT (sigR R σ) (P.map (inclR R)) * JR R J * P.map (inclR R)`. Unfold `JR`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Establish `hc : (Formalism.UG.cT (σ : E →+* E) P).map (inclR (F` using `F) R) = Formalism.UG.cT (sigR R σ) (P.map (inclR R)) := by`. Use extensionality with `i j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `(sigR_inclR R σ _).symm`. Rewrite using `[hc]`. Unfold `qR hR`. Rewrite using `[hform_mulVec, h]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qR_mulVec (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ}
     (J P : Matrix (Fin M) (Fin M) E) (z : Fin M → R ⊗[F] E) :
@@ -70,13 +70,13 @@ section Proj
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `[prInf, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prInf_inclR (e : E) : prInf (inclR (AF F) e) = inclR (Ainf F) e := by
   simp [prInf, inclR]
 
 /- English proof (translation)
-Simplify using `[prV, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prV_inclR (v : HeightOneSpectrum (𝓞 F)) (e : E) :
     prV v (inclR (AF F) e) = inclR (Fv F v) e := by
@@ -85,9 +85,9 @@ theorem prV_inclR (v : HeightOneSpectrum (𝓞 F)) (e : E) :
 end Proj
 
 /- English proof (translation)
-Establish `hdet : ((P : Matrix (Fin M) (Fin M) E).map (inclR (F` using `F) R)).det = inclR R (P : Matrix (Fin M) (Fin M) E).det := (RingHom.map_det _ _).symm`. Establish `hu : IsUnit ((P : Matrix (Fin M) (Fin M) E).map (inclR (F` using `F) R)).det := by`. Rewrite using `[hdet]`. Conclude with `((Matrix.isUnits_det_units P)).map _`. Use `GlobalTheory.T.fibreMeasures_transport_unitary_similitude F E σ R hR M _ J lam ν β 1 m _ hl hν hu isUnit_one (fun z => by rw [one_mul, qR_mulVec]) h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[one_mul, (modu_basic R).2.2.1, inv_one, mul_one, hdet]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem fibAt_basis (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
@@ -111,15 +111,13 @@ theorem fibAt_basis (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
   exact this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ d b s M J J' P β ν' hJ ⟨mi, mv, hi, hv, hp⟩`. Substitute `hJ` using the available equality. Take `⟨hni, hnv⟩` from `nice_ainf_fv F`. Establish `hdet : (P : Matrix (Fin M) (Fin M) E).det ≠ 0` using `(Matrix.isUnits_det_units P).ne_zero`. Take `⟨hfin, hone⟩` from `GlobalTheory.T.product_formula_haarModulus_cmField_element F E σ hσ _ hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨_, _, fibAt_basis F E σ (Ainf F) hni M J P _ _ _ _ s.haar_lamI s.haar_nuI hi, fun v => fibAt_basis F E σ (Fv F v) (hnv v) M J P _ _ _ _ (s.haar_lamV v) (s.haar_nuV v) (hv v), ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.isRestrictedProductTupleMeasure_map_leftRightAction F E d b 1 M ν' mi mv (Matrix.GeneralLinearGroup.map (inclR (F := F) (AF F)) P) 1 hp`. Establish `hg : (Matrix.GeneralLinearGroup.map (inclR (F` using `F) (AF F)) P).val = (P : Matrix (Fin M) (Fin M) E).map (inclR (AF F)) := rfl`. Establish `hI : ((P : Matrix (Fin M) (Fin M) E).map (inclR (F` using `F) (AF F))).map prInf = (P : Matrix (Fin M) (Fin M) E).map (inclR (Ainf F)) := by`. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `prInf_inclR _`. Establish `hV : ∀ v, ((P : Matrix (Fin M) (Fin M) E).map (inclR (F` using `F) (AF F))).map (prV v) = (P : Matrix (Fin M) (Fin M) E).map (inclR (Fv F v)) := by`. Introduce `v`. Use extensionality with `i j`. Conclude with `prV_inclR v _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1I : (1 : Matrix (Fin 1) (Fin 1) (AF F ⊗[F] E)).map prInf = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h1V : ∀ v, (1 : Matrix (Fin 1) (Fin 1) (AF F ⊗[F] E)).map (prV v) = 1` using `fun v => Matrix.map_one _ (map_zero _) (map_one _)`. Simplify using `only [hg, Units.val_one, hI, hV, h1I, h1V] at h1`. Establish `h2` using `GlobalTheory.T.restrictedProduct_measure_smul_factors_eq_smul F E d b 1 M _ _ _ (modu (Ainf F ⊗[F] E) (inclR (Ainf F) (P : Matrix (Fin M) (Fin M) E).det)) _ h1 hfin`. Rewrite `h2` using `[hone, one_smul]`.
-
-Conclude with `h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isStdX_basis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (s : StdMeas b) (M : ℕ) (J J' : Matrix (Fin M) (Fin M) E) (P : GL (Fin M) E) (β : F) (ν' : Measure (Fin 1 → Fin M → AF F ⊗[F] E)), J' = Formalism.UG.cT (σ : E →+* E) (P : Matrix (Fin M) (Fin M) E) * J * (P : Matrix (Fin M) (Fin M) E) → IsStdX s σ J' β ν' → IsStdX s σ J β (ν'.map (lrAct ((P : Matrix (Fin M) (Fin M) E).map (inclR (AF F))) 1)) := by
   intro F E _ _ _ _ _ σ hσ d b s M J J' P β ν' hJ ⟨mi, mv, hi, hv, hp⟩

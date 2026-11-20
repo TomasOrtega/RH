@@ -16,13 +16,13 @@ variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε 
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.DS.umat_mem_UJset ε g`.
+A detailed English derivation is pending.
 -/
 theorem hq_umem (g : Formalism.REAL.UJ ε) : Formalism.MainNotions.S.umat g ∈ UJset ε :=
   ReciprocityTheory.ChartRestriction.DS.umat_mem_UJset ε g
 
 /- English proof (translation)
-Establish `e : Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε) = 1` using `rfl`. Rewrite using `[e]`. Conclude with `hrep.1.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hq_one (hrep : IsURepOn (UJset ε) (sigLam ε Ψ T.w)) :
     sigLam ε Ψ T.w (Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε)) = 1 := by
@@ -31,7 +31,7 @@ theorem hq_one (hrep : IsURepOn (UJset ε) (sigLam ε Ψ T.w)) :
   exact hrep.1.1
 
 /- English proof (translation)
-Establish `e : Formalism.MainNotions.S.umat (a * b) = Formalism.MainNotions.S.umat a * Formalism.MainNotions.S.umat b` using `rfl`. Rewrite using `[e]`. Conclude with `hrep.1.2 _ (hq_umem a) _ (hq_umem b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hq_mul (hrep : IsURepOn (UJset ε) (sigLam ε Ψ T.w)) (a b : Formalism.REAL.UJ ε) :
     sigLam ε Ψ T.w (Formalism.MainNotions.S.umat (a * b)) =
@@ -41,14 +41,14 @@ theorem hq_mul (hrep : IsURepOn (UJset ε) (sigLam ε Ψ T.w)) (a b : Formalism.
   exact hrep.1.2 _ (hq_umem a) _ (hq_umem b)
 
 /- English proof (translation)
-The claim follows from `hrep.2.1 _ (hq_umem g) v`.
+A detailed English derivation is pending.
 -/
 theorem hq_iso (hrep : IsURepOn (UJset ε) (sigLam ε Ψ T.w)) (g : Formalism.REAL.UJ ε) (v : Hlam ε Ψ T.w) :
     ‖sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g) v‖ = ‖v‖ :=
   hrep.2.1 _ (hq_umem g) v
 
 /- English proof (translation)
-The claim follows from `GraphTrick.memLp_of_ne (μ := Formalism.REAL.muG ε) (ρ := fun g : Formalism.REAL.UJ ε => sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g)) (measurePreserving_mul_right ε) (hq_one hrep) (hq_mul hrep) (hq_iso hrep) (Formalism.MainNotions.BridgeCSchur.irr_of hirr) w₀ x₀ hx₀ h0 x`.
+A detailed English derivation is pending.
 -/
 theorem hq_memLp_of_ne (hrep : IsURepOn (UJset ε) (sigLam ε Ψ T.w))
     (hirr : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) (sigLam ε Ψ T.w)) (w₀ x₀ : Hlam ε Ψ T.w) (hx₀ : x₀ ≠ 0)
@@ -60,7 +60,7 @@ theorem hq_memLp_of_ne (hrep : IsURepOn (UJset ε) (sigLam ε Ψ T.w))
     (Formalism.MainNotions.BridgeCSchur.irr_of hirr) w₀ x₀ hx₀ h0 x
 
 /- English proof (translation)
-Rewrite using `[Submodule.coe_inner, hcoe _ (hq_umem g)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hq_inner
     (hcoe : ∀ g ∈ UJset ε, ∀ x : Hlam ε Ψ T.w, ((sigLam ε Ψ T.w g x : Hlam ε Ψ T.w) : L2 ε) = rreg ε g x)
@@ -69,9 +69,7 @@ theorem hq_inner
   rw [Submodule.coe_inner, hcoe _ (hq_umem g)]
 
 /- English proof (translation)
-Establish `hw : T.w ≠ 0`. Introduce `h`. Establish `h1 : ‖T.w‖ = 1` using `T.w_norm`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`.
-
-Conclude with `datumEmbedding_self_ne_zero hP hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hq_w_ne (hP : IsPsiFor ε lam T Ψ) : uniformisationL2 ε Ψ T.w T.w ≠ 0 := by
   have hw : T.w ≠ 0 := by
@@ -82,13 +80,13 @@ theorem hq_w_ne (hP : IsPsiFor ε lam T Ψ) : uniformisationL2 ε Ψ T.w T.w ≠
   exact datumEmbedding_self_ne_zero hP hw
 
 /- English proof (translation)
-Take `⟨w₀, hw₀⟩ : ∃ w₀ : Hlam ε Ψ T.w, (w₀ : L2 ε) = uniformisationL2 ε Ψ T.w T.w` from `⟨⟨_, datumEmbedding_mem_Hlam hP T.w⟩, rfl⟩`. Establish `hne : w₀ ≠ 0`. Introduce `h`. Apply `hq_w_ne hP` to reduce the goal to its premises. Rewrite using `[← hw₀, h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e0 : (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g) w₀⟫_ℂ) = fun g => ((‖uniformisationL2 ε Ψ T.w T.w‖ ^ 2 : ℝ) : ℂ) * jfun Ψ T.w T.w (Formalism.MainNotions.S.umat g)`. Use function extensionality and compare the values at `g`. Rewrite using `[hq_inner hcoe, hw₀, hF _ (hq_umem g)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h0 : MemLp (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g) w₀⟫_ℂ) 2 (Formalism.REAL.muG ε)`. Rewrite using `[e0]`. Conclude with `(dt_memLp hP T.w T.w).const_mul _`. Establish `h1` using `hq_memLp_of_ne hrep hirr w₀ w₀ hne h0 x`. Establish `e1 : (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g) x⟫_ℂ) = fun g => inner ℂ (uniformisationL2 ε Ψ T.w T.w) (rreg ε (Formalism.MainNotions.S.umat g) (x : L2 ε))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[hq_inner hcoe, hw₀]`. Rewrite `h1` using `[e1]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hq_coef_all (hP : IsPsiFor ε lam T Ψ)
     (hcoe : ∀ g ∈ UJset ε, ∀ x : Hlam ε Ψ T.w, ((sigLam ε Ψ T.w g x : Hlam ε Ψ T.w) : L2 ε) = rreg ε g x)
@@ -122,17 +120,17 @@ theorem hq_coef_all (hP : IsPsiFor ε lam T Ψ)
   exact h1
 
 /- English proof (translation)
-Introduce `v w`. Use `show MemLp (fun g : Formalism.REAL.UJ ε => ⟪w, sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g) v⟫_ℂ) 2 (Formalism.REAL.muG ε)`. Distinguish the cases in `hw : w = 0`. Establish `e : (fun g : Formalism.REAL.UJ ε => ⟪w, sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g) v⟫_ℂ) = 0`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, inner_zero_left]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(Lp.memLp (0 : Lp ℂ 2 (Formalism.REAL.muG ε))).ae_eq (Lp.coeFn_zero ℂ 2 _)`. Take `⟨w₀, hw₀⟩ : ∃ w₀ : Hlam ε Ψ T.w, (w₀ : L2 ε) = uniformisationL2 ε Ψ T.w T.w` from `⟨⟨_, datumEmbedding_mem_Hlam hP T.w⟩, rfl⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : w₀ ≠ 0`. Introduce `h`. Apply `hq_w_ne hP` to reduce the goal to its premises. Rewrite using `[← hw₀, h]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFw : MemLp (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g) w⟫_ℂ) 2 (Formalism.REAL.muG ε)`. Establish `e1 : (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g) w⟫_ℂ) = fun g => inner ℂ (uniformisationL2 ε Ψ T.w T.w) (rreg ε (Formalism.MainNotions.S.umat g) (w : L2 ε))`. Use function extensionality and compare the values at `g`. Rewrite using `[hq_inner hcoe, hw₀]`. Rewrite using `[e1]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hq_coef_all hP hcoe hrep hF hirr w`. Establish `hinv` using `(hFw.comp_measurePreserving (Measure.measurePreserving_inv (Formalism.REAL.muG ε))).star`. Establish `e2 : star ((fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g) w⟫_ℂ) ∘ Inv.inv) = fun g : Formalism.REAL.UJ ε => ⟪w, sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g) w₀⟫_ℂ`. Use function extensionality and compare the values at `g`. Establish `hs : star (sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g⁻¹)) = sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g⁻¹⁻¹)` using `GraphTrick.star_eq (ρ := fun g : Formalism.REAL.UJ ε => sigLam ε Ψ T.w (Formalism.MainNotions.S.umat g)) (hq_one hrep) (hq_mul hrep) (hq_iso hrep) g⁻¹`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Pi.star_apply, Function.comp_apply, RCLike.star_def, inner_conj_symm]`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, ← ContinuousLinearMap.star_eq_adjoint, hs, inv_inv]`. Rewrite `hinv` using `[e2]`. Conclude with `hq_memLp_of_ne hrep hirr w w₀ hne hinv v`.
+A detailed English derivation is pending.
 -/
 theorem hq_sqInt (hP : IsPsiFor ε lam T Ψ)
     (hcoe : ∀ g ∈ UJset ε, ∀ x : Hlam ε Ψ T.w, ((sigLam ε Ψ T.w g x : Hlam ε Ψ T.w) : L2 ε) = rreg ε g x)
@@ -179,7 +177,7 @@ theorem hq_sqInt (hP : IsPsiFor ε lam T Ψ)
 end SquareIntegrability
 
 /- English proof (translation)
-Introduce `hS n ε lam T Ψ hP hst hF hirr`. Take `⟨hcoe, hrep, -⟩` from `hS n ε lam T Ψ hP hst`. Conclude with `hq_sqInt hP hcoe hrep hF hirr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hilbert_square_integrable_of_signature : StepSig → StepSqInt := by
   intro hS n ε lam T Ψ hP hst hF hirr

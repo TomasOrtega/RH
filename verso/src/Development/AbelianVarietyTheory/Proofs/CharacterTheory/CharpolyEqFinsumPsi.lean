@@ -7,13 +7,11 @@ open Polynomial GlobalTheory.CuspGL
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Use `haveI : Finite V := Module.finite_of_finite F`. Use `haveI : Finite (Submodule F V) := Finite.of_injective _ (SetLike.coe_injective (A := Submodule F V))`. Use `haveI := Fintype.ofFinite {W : Submodule F V // ∀ x ∈ W, g x ∈ W}`. Use `haveI := Fintype.ofFinite {W : Submodule F V // W ≠ ⊤ ∧ ∀ x ∈ W, g x ∈ W}`. Set `T : {W : Submodule F V // ∀ x ∈ W, g x ∈ W}` to `⟨⊤, fun _ _ => Submodule.mem_top⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : psi s T.1 (g.restrict T.2) = psi s V g`. Rewrite using `[← psi_conj F s T.1 V Submodule.topEquiv (g.restrict T.2)]`. Use `congr 1`. Rewrite using `[finsum_eq_sum_of_fintype, ← Finset.add_sum_erase _ _ (Finset.mem_univ T), hT, psi_eq, finsum_eq_sum_of_fintype]`. Rewrite using `[sub_add, eq_comm, sub_eq_self, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_bij (fun W _ => ⟨W.1, W.2.2⟩) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `W _`. Use `Finset.mem_erase.2 ⟨fun h => W.2.1 (congrArg Subtype.val h), Finset.mem_univ _⟩` and prove the remaining obligations. Introduce `a _ b _ h`. Conclude with `Subtype.ext (Subtype.mk.inj h)`.
-
-Introduce `b hb`. Conclude with `⟨⟨b.1, fun h => (Finset.mem_erase.1 hb).1 (Subtype.ext h), b.2⟩, Finset.mem_univ _, rfl⟩`. Introduce `a _`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem charpoly_eq_finsum_psi (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (s : F[X] → ℂ) (g : Module.End F V) :

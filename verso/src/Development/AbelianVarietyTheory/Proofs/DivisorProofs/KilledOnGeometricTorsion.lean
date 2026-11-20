@@ -17,9 +17,9 @@ namespace GlobalTheory.TorsionRigid
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Rewrite using `[pow_zero, mulN, ← Category.assoc, Hom.one_def]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Consider the case `succ n ih => rw [pow_succ, mulN, ← Category.assoc, comp_lift, ih, Category.comp_id, Hom.mul_def]`.
+A detailed English derivation is pending.
 -/
 lemma comp_mulN {G : Over S} [GrpObj G] {T : Over S} (x : T ⟶ G) (N : ℕ) : x ≫ mulN G N = x ^ N := by
   induction N with
@@ -33,14 +33,14 @@ def tLift {G : Over S} [GrpObj G] {N : ℕ} {T : Over S} (x : T ⟶ G) (hx : x ^
   pullback.lift x (toUnit T) (by rw [comp_mulN, hx, Hom.one_def])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma tLift_ι {G : Over S} [GrpObj G] {N : ℕ} {T : Over S} (x : T ⟶ G) (hx : x ^ N = 1) :
     tLift x hx ≫ torsion.ι G N = x :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Rewrite using `[← comp_mulN, Hom.one_def]`. Use `(pullback.condition (f := mulN G N) (g := η[G])).trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma ι_pow (G : Over S) [GrpObj G] (N : ℕ) : torsion.ι G N ^ N = 1 := by
   rw [← comp_mulN, Hom.one_def]

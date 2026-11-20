@@ -25,23 +25,23 @@ def cyc (ρ : Representation ℂ G U) (u : U) : Subrepresentation ρ where
     exact hle hv
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨1, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_cyc (ρ : Representation ℂ G U) (u : U) : u ∈ (cyc ρ u).toSubmodule :=
   Submodule.subset_span ⟨1, by simp⟩
 
 /- English proof (translation)
-Establish `hbot : (⊥ : Subrepresentation ρ) ∈ {T : Subrepresentation ρ | u ∉ T.toSubmodule}` using `by show u ∉ (⊥ : Submodule ℂ U)`. Simplify using `using hu`. Establish `hz : ∀ c ⊆ {T : Subrepresentation ρ | u ∉ T.toSubmodule}, IsChain (· ≤ ·) c → ∀ y ∈ c, ∃ ub ∈ {T : Subrepresentation ρ | u ∉ T.toSubmodule}, ∀ z ∈ c, z ≤ ub`. Introduce `c hc hchain y hy`. Establish `hne : (Subrepresentation.toSubmodule '' c).Nonempty` using `⟨_, y, hy, rfl⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdir : DirectedOn (· ≤ ·) (Subrepresentation.toSubmodule '' c)`. Introduce and unpack `_ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩`. Break down `hchain.total ha hb with h | h` into its components or cases. Conclude with `⟨_, ⟨b, hb, rfl⟩, h, le_rfl⟩`. Conclude with `⟨_, ⟨a, ha, rfl⟩, le_rfl, h⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hmem : ∀ x, x ∈ sSup (Subrepresentation.toSubmodule '' c) ↔ ∃ a ∈ c, x ∈ Subrepresentation.toSubmodule a`. Introduce `x`. Rewrite using `[Submodule.mem_sSup_of_directed hne hdir]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, hx⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, hx⟩`. Introduce and unpack `⟨a, ha, hx⟩`. Conclude with `⟨_, ⟨a, ha, rfl⟩, hx⟩`. Use `⟨⟨sSup (Subrepresentation.toSubmodule '' c), ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `g v hv`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha, hx⟩` from `(hmem v).1 hv`. Conclude with `(hmem _).2 ⟨a, ha, a.apply_mem_toSubmodule g hx⟩`. Introduce `h`. Take `⟨a, ha, hx⟩` from `(hmem u).1 h`. Conclude with `hc ha hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z hz x hx`. Conclude with `(hmem x).2 ⟨z, hz, hx⟩`. Take `⟨T, -, hT⟩` from `zorn_le_nonempty₀ {T : Subrepresentation ρ | u ∉ T.toSubmodule} hz ⊥ hbot`. Conclude with `⟨T, hT.prop, fun T' hle hu' => le_antisymm (hT.le_of_ge hu' hle) hle⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_max_avoid (ρ : Representation ℂ G U) {u : U} (hu : u ≠ 0) :
     ∃ T : Subrepresentation ρ, u ∉ T.toSubmodule ∧
@@ -80,9 +80,9 @@ theorem exists_max_avoid (ρ : Representation ℂ G U) {u : U} (hu : u ≠ 0) :
   exact ⟨T, hT.prop, fun T' hle hu' => le_antisymm (hT.le_of_ge hu' hle) hle⟩
 
 /- English proof (translation)
-Establish `hle : (cyc ρ u).toSubmodule ≤ R.toSubmodule.map (cyc ρ u).toSubmodule.subtype`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨_, R.apply_mem_toSubmodule g hR, rfl⟩`. Use `le_antisymm le_top fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, hyx⟩` from `hle x.2`. Establish `: y = x` using `Subtype.ext hyx`. Conclude with `this ▸ hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cyc_gen (ρ : Representation ℂ G U) (u : U)
     (R : Subrepresentation (cyc ρ u).toRepresentation)
@@ -97,19 +97,17 @@ theorem cyc_gen (ρ : Representation ℂ G U) (u : U)
   exact this ▸ hy
 
 /- English proof (translation)
-Establish `hne : (Submodule.Quotient.mk u : U ⧸ T.toSubmodule) ≠ 0`. Rewrite using `[Ne, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis. Establish `hnt : Nontrivial (Subrepresentation (ρ.quotient T.toSubmodule hst))`. Use `⟨⊥, ⊤, fun h => hne ?_⟩` and prove the remaining obligations. Establish `h1 : (Submodule.Quotient.mk u : U ⧸ T.toSubmodule) ∈ (⊤ : Subrepresentation (ρ.quotient T.toSubmodule hst)).toSubmodule` using `trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[← h]`. Conclude with `(Submodule.mem_bot ℂ).1 h1`. Use `⟨fun R => ?_⟩` and prove the remaining obligations. Set `T' : Subrepresentation ρ` to `⟨R.toSubmodule.comap T.toSubmodule.mkQ, by`. Introduce `g v hv`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `R.apply_mem_toSubmodule g hv` as an intermediate fact. Conclude with `this⟩`. Establish `hle : T ≤ T'`. Introduce `x hx`. Use `show T.toSubmodule.mkQ x ∈ R.toSubmodule`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h0 : T.toSubmodule.mkQ x = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hx`. Rewrite using `[h0]`. Conclude with `R.toSubmodule.zero_mem`. Distinguish the cases in `huT : u ∈ T'.toSubmodule`. Use `right`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT'` using `hgen T' huT`. Use `le_antisymm le_top fun x _ => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `: y ∈ T'.toSubmodule` using `by rw [hT']; trivial`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `left`. Establish `hT'` using `hmax T' hle huT`. Use `le_antisymm (fun x hx => ?_) bot_le` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hy : y ∈ T'.toSubmodule` using `hx`.
-
-Rewrite `hy` using `[hT']`. Establish `: (Submodule.Quotient.mk y : U ⧸ T.toSubmodule) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_irred (ρ : Representation ℂ G U) (T : Subrepresentation ρ) {u : U}
     (hu : u ∉ T.toSubmodule)
@@ -172,9 +170,7 @@ noncomputable def stab (ρ : Representation ℂ G U) (v : U) : Subgroup G :=
   _root_.UpperTheory.Reformulated.B.RepresentationStabilizer.stab ρ v
 
 /- English proof (translation)
-Introduce `v`. Establish `: {g : G | S.toRepresentation g v = v} = {g : G | ρ g (v : U) = v}`. Use extensionality with `g`. Conclude with `Subtype.ext_iff`. Rewrite using `[this]`.
-
-Conclude with `hρ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_sub {ρ : Representation ℂ G U} (hρ : IsSmooth ρ) (S : Subrepresentation ρ) :
     IsSmooth S.toRepresentation := by
@@ -186,7 +182,7 @@ theorem smooth_sub {ρ : Representation ℂ G U} (hρ : IsSmooth ρ) (S : Subrep
   exact hρ _
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Gwb5.smooth_quot hρ T hst`.
+A detailed English derivation is pending.
 -/
 theorem smooth_quot {ρ : Representation ℂ G U} (hρ : IsSmooth ρ) (T : Submodule ℂ U)
     (hst : ∀ g, T ≤ T.comap (ρ g)) : IsSmooth (ρ.quotient T hst) :=

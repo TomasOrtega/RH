@@ -15,13 +15,13 @@ noncomputable section
 namespace GlobalTheory.JSW.SpanProps
 
 /- English proof (translation)
-Establish `hra' : r < a` using `by omega`. Establish `hper` using `per_blk (E := E) (r := r) (m := a - 1) hcont (fun c g => hleft _ g) g`. Establish `hper2 : Per (ratN E a r) (fun x => F (blkU (blkIxHomeo r x) * g))` using `⟨hper.1.comp (blkIxHomeo r).continuous, fun γ hγ x => by`. Simplify using `only [map_add]`. Conclude with `hper.2 _ ((blkIxHomeo_mem r γ).2 hγ) _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.quotientAverage_map_lattice_equiv _ _ (ratN E a r) (ratV E _) (isCoLat_ratV E (BlockIx a r)) (isCoLat_ratV E _) (blkIxHomeo r) (blkIxHomeo_mem r) _ hper`. Rewrite using `[← key]`. Establish `hfun : (fun x => F (blkU (blkIxHomeo r x) * g)) = fun x => F (unip x * g)`. Use function extensionality and compare the values at `fun x => by rw [← blkU_comp_equiv]; rfl`. Rewrite `hper2`, the goal using `[hfun]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `letI : MeasurableSpace (BlockIx a r → Ad E) := borel _`. Use `haveI : BorelSpace (BlockIx a r → Ad E) := ⟨rfl⟩`. Take `⟨μ, 𝓕, hμ, hF, h1⟩` from `GlobalTheory.T.exists_fundamentalDomain_mass_one_cocompactLattice _ (ratN E a r) (isCoLat_ratV E (BlockIx a r))`. Take `⟨-, -, -, hint⟩` from `GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average _ _ (isCoLat_ratV E (BlockIx a r)) μ 𝓕 hμ hF _ hper2`. Establish `hc'` using `hc r hr hra' μ 𝓕 hμ hF g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hc'` using `[hint, h1]`. Simplify using `only [ENNReal.toReal_one, Complex.ofReal_one, one_mul] at hc'`. Conclude with `hc'`.
+A detailed English derivation is pending.
 -/
 theorem avg_eq_zero {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {F : GA E a → ℂ}
     (hcont : Continuous F) (hleft : ∀ γ g, F (ratGL E a γ * g) = F g) (hc : IsCuspidal F)
@@ -51,9 +51,9 @@ theorem avg_eq_zero {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a
 end GlobalTheory.JSW.SpanProps
 
 /- English proof (translation)
-Introduce `E _ _ _ m π ω hω hc F hF`. Establish `hπ : π.IsUnitary` using `⟨ω, hω, CuspSub.hasCentral_iff.2 hc⟩`. Take `⟨ψ, rfl, h⟩` from `GlobalTheory.JSW.mspanR_words GlobalTheory.CuspOrth.cuspFormsBounded hπ F hF`. Establish `h0` using `(h []).2`. Rewrite `h0` using `[GlobalTheory.JSW.word_nil]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨h0.cont, h0.left, fun r hr hrm g => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.JSW.SpanProps.avg_eq_zero (a := m + 1) h0.cont h0.left h0.cusp r hr hrm g`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.JSW.mspanR_cont_left_avg : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (π : CuspSub E (m + 1))
     (ω : HChar E), ω.IsUnitary → π.HasCentChar ω → ∀ φ ∈ GlobalTheory.JSW.mspanR π, Continuous φ ∧

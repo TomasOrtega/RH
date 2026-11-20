@@ -5,15 +5,15 @@ namespace GlobalTheory.ScaleIntoUnitBall
 open NumberField
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨d1, hd1, h1⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d2, hd2, h2⟩` from `hz`. Use `⟨d1 * d2, mul_ne_zero hd1 hd2, ?_⟩` and prove the remaining obligations. Establish `e1 : (d1 * d2) • y = d2 • (d1 • y)` using `by rw [mul_comm, mul_smul]`. Establish `e2 : (d1 * d2) • z = d1 • (d2 • z)` using `by rw [mul_smul]`. Rewrite using `[smul_add, e1, e2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.add_mem (W.smul_mem _ h1) (W.smul_mem _ h2)`. Consider the case `smul c y _ hy`. Take `⟨d, hd, h⟩` from `hy`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) c`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbK : algebraMap (𝓞 K) K b ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 K) K)]`. Conclude with `hb0`. Use `⟨b * d, mul_ne_zero hb0 hd, ?_⟩` and prove the remaining obligations. Establish `hc : b • c = algebraMap (𝓞 K) K a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, ← hab, mul_div_cancel₀ _ hbK]`. Establish `key : (b * d) • (c • y) = a • (d • y)`. Rewrite using `[mul_comm, mul_smul, ← smul_assoc b c y, hc, algebraMap_smul, smul_comm]`. Rewrite using `[key]`. Conclude with `W.smul_mem _ h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_into {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (W : Submodule (𝓞 K) V) {x : V}

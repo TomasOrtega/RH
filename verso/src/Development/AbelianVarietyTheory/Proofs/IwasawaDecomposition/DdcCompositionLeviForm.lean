@@ -14,7 +14,7 @@ namespace GlobalTheory.HodgeDomain.DdcChain
 open ReciprocityTheory.L2DbarEstimates ReciprocityTheory.ChartRestriction.G.AR.Up.RGF ReciprocityTheory.L2DbarEstimates.Y Topology
 
 /- English proof (translation)
-Rewrite using `[fc_clm_decomp n D c, fc_clm_decomp n D (Complex.I • c), Finset.mul_sum, ← Finset.sum_add_distrib, Finset.sum_div]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [PiLp.smul_apply, smul_eq_mul, map_mul, Complex.conj_I]`. Take the linear combination `((D (bas n a) - Complex.I * D (Complex.I • bas n a)) / 2 * c a / 2 - (D (bas n a) + Complex.I * D (Complex.I • bas n a)) / 2 * (starRingEnd ℂ) (c a) / 2) * Complex.I_sq`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem anti_eq_sum (n : ℕ) (D : V n →L[ℝ] ℂ) (c : V n) :
     (D c + Complex.I * D (Complex.I • c)) / 2 =
@@ -28,7 +28,7 @@ theorem anti_eq_sum (n : ℕ) (D : V n →L[ℝ] ℂ) (c : V n) :
       Complex.I_sq
 
 /- English proof (translation)
-Rewrite using `[fc_clm_decomp n D c, fc_clm_decomp n D (Complex.I • c), Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [PiLp.smul_apply, smul_eq_mul, map_mul, Complex.conj_I]`. Take the linear combination `(-(D (bas n a) - Complex.I * D (Complex.I • bas n a)) / 2 * c a / 2 + (D (bas n a) + Complex.I * D (Complex.I • bas n a)) / 2 * (starRingEnd ℂ) (c a) / 2) * Complex.I_sq`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hol_eq_sum (n : ℕ) (D : V n →L[ℝ] ℂ) (c : V n) :
     (D c - Complex.I * D (Complex.I • c)) / 2 =
@@ -62,9 +62,9 @@ def onV (e : (ι × Fin p × Fin q → ℂ) ≃L[ℂ] V n) (φ : Pt ι p q → �
   fun y => φ (unflat (e.symm y))
 
 /- English proof (translation)
-Set `eR : (ι × Fin p × Fin q → ℂ) ≃L[ℝ] V n` to `{ e.toLinearEquiv.restrictScalars ℝ with continuous_toFun := e.continuous continuous_invFun := e.symm.continuous }`. Establish `h : (fun v => φ (unflat v)) = onV e φ ∘ eR`. Use function extensionality and compare the values at `v`. Use `show φ (unflat v) = φ (unflat (e.symm (e v)))`. Rewrite using `[e.symm_apply_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `dR`. Rewrite using `[h, ContinuousLinearEquiv.comp_right_fderiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dR_eq (e : (ι × Fin p × Fin q → ℂ) ≃L[ℂ] V n) (φ : Pt ι p q → ℂ) (z ζ : Pt ι p q) :
     dR φ z ζ = fderiv ℝ (onV e φ) (e (flat z)) (e (flat ζ)) := by
@@ -81,7 +81,7 @@ theorem dR_eq (e : (ι × Fin p × Fin q → ℂ) ≃L[ℂ] V n) (φ : Pt ι p q
   rfl
 
 /- English proof (translation)
-Unfold `dAnti`. Rewrite using `[dR_eq e, dR_eq e, flat_I_smul, map_smul]`. Conclude with `anti_eq_sum n _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dAnti_eq (e : (ι × Fin p × Fin q → ℂ) ≃L[ℂ] V n) (φ : Pt ι p q → ℂ) (z ζ : Pt ι p q) :
     dAnti φ z ζ = ∑ k, wdb n k (onV e φ) (e (flat z)) * (starRingEnd ℂ) (e (flat ζ) k) := by
@@ -90,7 +90,7 @@ theorem dAnti_eq (e : (ι × Fin p × Fin q → ℂ) ≃L[ℂ] V n) (φ : Pt ι 
   exact anti_eq_sum n _ _
 
 /- English proof (translation)
-Unfold `dHol`. Rewrite using `[dR_eq e, dR_eq e, flat_I_smul, map_smul]`. Conclude with `hol_eq_sum n _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dHol_eq (e : (ι × Fin p × Fin q → ℂ) ≃L[ℂ] V n) (φ : Pt ι p q → ℂ) (z ζ : Pt ι p q) :
     dHol φ z ζ = ∑ k, wd n k (onV e φ) (e (flat z)) * e (flat ζ) k := by
@@ -99,15 +99,15 @@ theorem dHol_eq (e : (ι × Fin p × Fin q → ℂ) ≃L[ℂ] V n) (φ : Pt ι p
   exact hol_eq_sum n _ _
 
 /- English proof (translation)
-Use `set H := onV e fun t => (f t : ℂ) with hH`. Establish `h1 : (fun w => dAnti (fun t => (f t : ℂ)) w ξ) = fun w => ∑ k, wdb n k H (e (flat w)) * (starRingEnd ℂ) (e (flat ξ) k)`. Use function extensionality and compare the values at `fun w => dAnti_eq e _ w ξ`. Establish `h2 : onV e (fun w => ∑ k, wdb n k H (e (flat w)) * (starRingEnd ℂ) (e (flat ξ) k)) = fun y => ∑ k, wdb n k H y * (starRingEnd ℂ) (e (flat ξ) k)`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[onV, flat_unflat]`. Establish `hd : ∀ k, DifferentiableAt ℝ (wdb n k H) (e (flat z))` using `fun k => differentiableAt_wdb hf`. Establish `h3 : ∀ j, wd n j (fun y => ∑ k, wdb n k H y * (starRingEnd ℂ) (e (flat ξ) k)) (e (flat z)) = ∑ k, wd n j (wdb n k H) (e (flat z)) * (starRingEnd ℂ) (e (flat ξ) k)`. Introduce `j`. Rewrite using `[fc_wd_sum n j Finset.univ _ _ fun k _ => (hd k).mul_const _]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [wd]`. Rewrite using `[fderiv_mul_const (hd k)]`. Simplify using `only [ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Unfold `ddc`. Rewrite using `[h1, dHol_eq e, h2]`. Simplify using `only [h3, leviV, Finset.sum_mul]`. Use `congr 2`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ddc_eq_leviV (e : (ι × Fin p × Fin q → ℂ) ≃L[ℂ] V n) (f : Pt ι p q → ℝ) (z ξ : Pt ι p q)
     (hf : ContDiffAt ℝ 2 (onV e fun t => (f t : ℂ)) (e (flat z))) :
@@ -141,17 +141,15 @@ end GlobalTheory.HodgeDomain.DdcChain
 open GlobalTheory.HodgeDomain.DdcChain in
 
 /- English proof (translation)
-Introduce `ι _ p q d F u z hF hu ξ`. Use `set n := Module.finrank ℂ (ι × Fin p × Fin q → ℂ) with hn`. Set `e : (ι × Fin p × Fin q → ℂ) ≃L[ℂ] ReciprocityTheory.L2DbarEstimates.V n` to `ContinuousLinearEquiv.ofFinrankEq (by simp [hn])`. Use `set Gf : (ι × Fin p × Fin q → ℂ) → ReciprocityTheory.L2DbarEstimates.V d := fun w => F (unflat w) with hGf`. Use `set G : ReciprocityTheory.L2DbarEstimates.V n → ReciprocityTheory.L2DbarEstimates.V d := Gf ∘ e.symm with hG`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g : ReciprocityTheory.L2DbarEstimates.V d → ℂ := fun v => (u v : ℂ) with hg`. Use `set y0 := e (flat z) with hy0`. Take `⟨t, ht, hto, hzt⟩` from `eventually_nhds_iff.mp hF`. Establish `hUo : IsOpen (e.symm ⁻¹' t)` using `hto.preimage e.symm.continuous`. Establish `hyU : y0 ∈ e.symm ⁻¹' t` using `by simpa [hy0] using hzt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGd : DifferentiableOn ℂ G (e.symm ⁻¹' t)` using `fun y hy => ((ht _ hy).comp y e.symm.differentiableAt).differentiableWithinAt`. Establish `hC : ContDiffOn ℂ 2 G (e.symm ⁻¹' t)` using `GlobalTheory.SCV.contDiffOn_of_differentiableOn hUo hGd 2`. Establish `hGz : G y0 = F z` using `by simp [hG, hGf, hy0, unflat_flat]`. Establish `hg2 : ContDiffAt ℝ 2 g (G y0)`. Rewrite using `[hGz]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `Complex.ofRealCLM.contDiff.contDiffAt.comp _ hu`. Establish `hGat : ContDiffAt ℝ 2 G y0` using `((hC y0 hyU).contDiffAt (hUo.mem_nhds hyU)).restrict_scalars ℝ`. Establish `hH : onV e (fun t => (((u ∘ F) t : ℝ) : ℂ)) = g ∘ G`. Use function extensionality and compare the values at `y`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hH2 : ContDiffAt ℝ 2 (onV e (fun t => (((u ∘ F) t : ℝ) : ℂ))) y0`. Rewrite using `[hH]`. Conclude with `hg2.comp y0 hGat`. Rewrite using `[ddc_eq_leviV e (u ∘ F) z ξ hH2, hH, ReciprocityTheory.ChartRestriction.G.AR.Up.RGF.gc_leviV_comp n d g G _ hUo y0 hyU hC hg2, hGz]`. Establish `hD : fderiv ℂ G y0 (WithLp.toLp 2 (e (flat ξ)).ofLp) = fderiv ℂ Gf (flat z) (flat ξ)`.
-
-Rewrite using `[hG, ContinuousLinearEquiv.comp_right_fderiv]`. Simplify using `[hy0]`. Simplify using `only [hD]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HodgeDomain.ddc_comp_holo : ∀ (ι : Type) [Fintype ι] (p q d : ℕ) (F : Pt ι p q → ReciprocityTheory.L2DbarEstimates.V d)
     (u : ReciprocityTheory.L2DbarEstimates.V d → ℝ) (z : Pt ι p q),

@@ -2,21 +2,19 @@ import Development.AutomorphicArithmetic.Foundations.LocalLanglands.RecTTranspor
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial GlobalTheory.WeilDeligne GlobalTheory.LocGL GlobalTheory.LocLanglands GlobalTheory.GLq
 
 /- English proof (translation)
-Introduce `K _ _ f`. Use `haveI hp : Fact (ringChar K).Prime := ⟨CharP.char_is_prime K _⟩`. Use `haveI : NeZero (ringChar K) := ⟨hp.out.ne_zero⟩`. Use `letI : Algebra (ZMod (ringChar K)) K := ZMod.algebra K (ringChar K)`. Take `⟨b, hb⟩` from `IsCyclic.exists_generator (α := Kˣ)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T : K →ₗ[ZMod (ringChar K)] ZMod (ringChar K)` to `Algebra.trace (ZMod (ringChar K)) K`. Set `χ : AddChar K ℂ` to `((ZMod.stdAddChar (N := ringChar K)).compAddMonoidHom T.toAddMonoidHom).mulShift (b : K)`. Establish `hχ : ∀ x : K, χ x = ZMod.stdAddChar (T ((b : K) * x))` using `fun x => rfl`. Use `⟨χ.toMonoidHom.toHomUnits, fun m => ⟨fun h => ?_, fun h x => by rw [h]; rfl⟩⟩` and prove the remaining obligations. Generalize the expression as in `f ^ m = g at h ⊢`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ x : K, T ((b : K) * g x) = T ((b : K) * x)`. Introduce `x`. Apply `ZMod.injective_stdAddChar` to reduce the goal to its premises. Rewrite using `[← hχ, ← hχ]`. Conclude with `congrArg Units.val (h x)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hT : ∀ y : K, T (g y) = T y`. Introduce `y`. Set `e : K ≃ₐ[ZMod (ringChar K)] K` to `AlgEquiv.ofRingEquiv (f := g) (fun c => by`. Use `RingHom.ext_zmod ((g : K →+* K).comp (algebraMap (ZMod (ringChar K)) K)) (algebraMap (ZMod (ringChar K)) K)` as an intermediate fact. Conclude with `DFunLike.congr_fun this c)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Algebra.trace_eq_of_algEquiv e y`. Establish `h2 : g (b : K) = (b : K)`. Assume the negation of the conclusion as `hne`. Establish `hne' : (b : K) - g (b : K) ≠ 0` using `fun h0 => hne (sub_eq_zero.mp h0).symm`. Take `⟨y, hy⟩` from `FiniteField.trace_to_zmod_nondegenerate K hne'`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Apply `hy` to reduce the goal to its premises. Take `⟨x, rfl⟩` from `g.surjective y`. Express the relevant statement in the definitionally equal form `T (((b : K) - g b) * g x) = 0`. Rewrite using `[sub_mul, map_sub, h1, ← map_mul, hT, sub_self]`. Use extensionality with `x`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Take `⟨n, hn⟩` from `Subgroup.mem_zpowers_iff.mp (hb (Units.mk0 x hx))`. Establish `hxn : x = (b : K) ^ n`. Rewrite using `[← Units.val_zpow_eq_zpow_val, hn]`.
-
-Both sides reduce to the same expression. Rewrite using `[hxn, map_zpow₀, h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_addChar_invariant_iff_finiteField_aut_eq_one :
     ∀ (K : Type) [Field K] [Finite K] (f : RingAut K), ∃ ψ : Multiplicative K →* ℂˣ, ∀ m : ℤ,

@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHens
 namespace GlobalTheory.CompanionTheory.CommAlg
 
 /- English proof (translation)
-Conclude with `@PositivityTheory.HtPt.Htat.hens_normal`.
+A detailed English derivation is pending.
 -/
 theorem exists_flat_henselian_normal_over_prime :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (P : Ideal R) [P.IsPrime],

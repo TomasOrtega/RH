@@ -8,11 +8,9 @@ open scoped TensorProduct
 namespace GlobalTheory.TypeTwo
 
 /- English proof (translation)
-Introduce `k _ _ _ _ x y h`. Take `⟨ϖ, hϖ⟩` from `GlobalTheory.LocGL.exists_uniformizer k`. Establish `h1 : nabs k ϖ ≠ 1` using `fun e => ValuativeRel.uniformizer_lt_one.ne (hϖ ▸ (nabs_eq_one_iff ϖ).1 e)`. Establish `h2 : nabs k ϖ ^ x = nabs k ϖ ^ y`. Establish `hx` using `val_absPow_ofReal k x ϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy` using `val_absPow_ofReal k y ϖ`. Rewrite `hx` using `[h]`. Conclude with `hx.symm.trans hy` after adjusting the coercions. Establish `h3` using `congrArg Real.log h2`. Rewrite `h3` using `[Real.log_rpow (nabs_pos' k ϖ), Real.log_rpow (nabs_pos' k ϖ)]`.
-
-Conclude with `mul_right_cancel₀ (Real.log_ne_zero_of_pos_of_ne_one (nabs_pos' k ϖ) h1) h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absPow_ofReal_injective : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (x y : ℝ), absPow k (x : ℂ) = absPow k (y : ℂ) → x = y := by

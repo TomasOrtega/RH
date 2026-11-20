@@ -5,9 +5,9 @@ open private normV_inj normV_surj from Development.AutomorphicArithmetic.Automor
 
 open Formalism.ConjugateSelfDual UpperTheory.V.Af UpperTheory.V.Af.Nf UpperTheory.V.Sd UpperTheory.V.Br.CharacterEquality in
 /- English proof (translation)
-Use `⟨fun P => ⟨fun h => ?_, fun h => ?_⟩, fun M hM => ?_⟩` and prove the remaining obligations. Use `Filter.eventually_cofinite.2 (((Filter.eventually_cofinite.1 h).image fun w => normV w).subset fun p hp => ?_)` and prove the remaining obligations. Take `⟨hp, hne⟩` from `Classical.not_imp.1 hp`. Take `⟨w, rfl⟩` from `normV_surj hp`. Conclude with `⟨w, hne, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `filter_upwards [normV_inj.tendsto_cofinite.eventually h] with w hw`. Conclude with `hw (places w).1`. Use `filter_upwards [normV_inj.tendsto_cofinite.eventually (Set.finite_le_nat M).eventually_cofinite_notMem] with w hw`. Conclude with `fun h => hw (Nat.le_of_dvd hM h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rn.evPl :
     UpperTheory.V.Af.Rn.EvPl := by

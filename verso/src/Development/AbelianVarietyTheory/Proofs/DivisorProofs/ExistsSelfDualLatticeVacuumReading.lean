@@ -41,9 +41,9 @@ section Copy
 def posSig {D : D7} (S : HSp D) : HSp D := {S with sig := fun _ => (S.rank, 0)}
 
 /- English proof (translation)
-Use `⟨(Equiv.sumEmpty (Fin n) (Fin 0)).symm, 1, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Break down `j with j | j` into its components or cases. Simplify using `[Formalism.UG.Jpq, Formalism.UG.cT, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `j.elim0`. Conclude with `i.elim0`.
+A detailed English derivation is pending.
 -/
 theorem hasSignature_one (n : ℕ) : Formalism.UG.HasSignature (1 : Matrix (Fin n) (Fin n) ℂ) n 0 := by
   refine ⟨(Equiv.sumEmpty (Fin n) (Fin 0)).symm, 1, ?_⟩
@@ -55,7 +55,7 @@ theorem hasSignature_one (n : ℕ) : Formalism.UG.HasSignature (1 : Matrix (Fin 
   · exact i.elim0
 
 /- English proof (translation)
-Introduce `τ`. Use `show Formalism.UG.HasSignature (S.gram.map τ) S.rank 0`. Rewrite using `[h, Matrix.map_one _ (map_zero τ) (map_one τ)]`. Conclude with `hasSignature_one _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigOK_posSig {D : D7} (S : HSp D) (h : S.gram = 1) : (posSig S).SigOK := by
   intro τ
@@ -65,7 +65,7 @@ theorem sigOK_posSig {D : D7} (S : HSp D) (h : S.gram = 1) : (posSig S).SigOK :=
 
 open scoped ComplexOrder in
 /- English proof (translation)
-Establish `: gramAt D S τ = 1` using `by show (HSpace.gram S).map (tauE D τ) = 1`. Rewrite using `[h, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[this]`. Conclude with `⟨by simp, by simp, by simpa using (Matrix.PosDef.one : Matrix.PosDef (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ))⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isCartanInv_one {D : D7} (S : HSp D) (h : S.gram = 1) (τ : D.what₂.Tau) : IsCartanInv (gramAt D S τ) 1 := by
   have : gramAt D S τ = 1 := by
@@ -75,7 +75,7 @@ theorem isCartanInv_one {D : D7} (S : HSp D) (h : S.gram = 1) (τ : D.what₂.Ta
   exact ⟨by simp, by simp, by simpa using (Matrix.PosDef.one : Matrix.PosDef (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ))⟩
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `GlobalTheory.VacuumO.vacExists D ψ θ hψ hθ (posSig S) (posSig T) (fun _ => 1) (fun _ => 1) (sigOK_posSig S gS) (sigOK_posSig T gT) (isCartanInv_one S gS) (isCartanInv_one T gT) ΛS ΛT hS hT`. Conclude with `⟨f, hf.1, ⟨hf.2.inf, ⟨hf.2.theta.quasi, hf.2.theta.level, hf.2.theta.cont, hf.2.theta.smooth⟩, hf.2.lat, hf.2.fock, hf.2.norm⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vac_exists_gram_one {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hψ : IsStdChar D ψ (-1))
     (hθ : IsInfFam θ) (S T : HSp D) (gS : S.gram = 1) (gT : T.gram = 1)
@@ -90,17 +90,17 @@ theorem vac_exists_gram_one {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfF
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {r : D.host.E}
 
 /- English proof (translation)
-Establish `hr : r ≠ 0` using `IsScale.ne_zero hc.1.1 h`. Establish `hA` using `area_pos hc`. Establish `hx` using `xiR_pos D`. Establish `key : ∀ τ, Complex.normSq (embT D τ r) * area (lamOf D D.host.ccK δ) = area (lamOf D cc δ)`. Introduce `τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `normSq_scale hc.1.1 h δ τ`. Establish `h2` using `normSq_scale D.host.ccK_ne_bot (isScale_one D) δ τ`. Rewrite `h2` using `[map_one, mul_one]`. Rewrite `h1` using `[Complex.normSq_mul, h2]`. Establish `h3 : (2 * Formalism.L2.Pj.xiR D) * (Complex.normSq (embT D τ r) * area (lamOf D D.host.ccK δ)) = (2 * Formalism.L2.Pj.xiR D) * area (lamOf D cc δ)` using `by rw [← h1]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ (by positivity) h3`. Establish `hL : ∀ c : Ideal (𝓞 D.host.K), (tor0 D c δ).abelian₂ = lamOf D c δ` using `fun _ => rfl`. Rewrite using `[Formalism.MainNotions.TaylorLogMetric.Hf, Formalism.MainNotions.TaylorLogMetric.Hf, hL, hL, Finset.sum_div, Finset.sum_div]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_div, Finset.sum_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_div, Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `ht : embT D τ r ≠ 0` using `(map_ne_zero _).2 hr`. Establish `htc : starRingEnd ℂ (embT D τ r) ≠ 0` using `(map_ne_zero _).2 ht`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : (area (lamOf D D.host.ccK δ) : ℂ) ≠ 0`. Establish `: 0 < area (lamOf D D.host.ccK δ)`. Use `key τ` as an intermediate fact. Establish `h0 : 0 < Complex.normSq (embT D τ r)` using `Complex.normSq_pos.2 ht`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.ne'` after adjusting the coercions. Rewrite using `[← key τ, map_div₀]`. Use `push_cast`. Rewrite using `[← Complex.mul_conj]`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem Hf_div_scale (hc : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) (h : IsScale D cc r) {a d : ℕ} (z x : VC D a d) :
     Hf D (tor0 D D.host.ccK δ) (fun τ i j => z τ i j / embT D τ r) (fun τ i j => x τ i j / embT D τ r) =
@@ -138,11 +138,11 @@ theorem Hf_div_scale (hc : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ
   field_simp
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hl : Differentiable ℂ (fun Y : VC D a d => (fun τ i j => Y τ i j / embT D τ r : VC D a d))` using `by fun_prop`. Conclude with `hΦ.1.comp hl`. Introduce `x hx z`. Establish `e1` using `hΦ.2 _ (hLa x hx) (fun τ i j => z τ i j / embT D τ r)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hal : Formalism.MainNotions.TaylorLogMetric.al D (tor0 D cc δ) x = Formalism.MainNotions.TaylorLogMetric.al D (tor0 D D.host.ccK δ) (fun τ i j => x τ i j / embT D τ r)`. Simplify using `only [Formalism.MainNotions.TaylorLogMetric.al, Hf_div_scale hc h]`. Establish `hadd : (fun τ i j => (z + x) τ i j / embT D τ r) = (fun τ i j => z τ i j / embT D τ r) + (fun τ i j => x τ i j / embT D τ r)`. Use function extensionality and compare the values at `τ i j`. Simplify using `[add_div]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = Φ fun τ i j => z τ i j / embT D τ r`. Rewrite using `[← e1, hal]`. Simplify using `only [Formalism.MainNotions.TaylorLogMetric.U]`. Rewrite using `[Hf_div_scale hc h, Hf_div_scale hc h, hadd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_div_scale (hc : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) (h : IsScale D cc r) {a d : ℕ}
     {L Ls : GlobalTheory.InertSign.Lat D a} {L' Lt : GlobalTheory.InertSign.Lat D d}
@@ -173,15 +173,15 @@ end Copy
 variable {D : D7} {r : D.host.E}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨algebraMap (𝓞 D.host.K) (𝓞 D.host.E) c, Ideal.mem_map_of_mem _ hc, rfl⟩`. Consider the case `zero => exact ⟨0, zero_mem _, rfl⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, hc, rfl⟩` from `hx`. Take `⟨c', hc', rfl⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c + c', add_mem hc hc', rfl⟩`. Consider the case `smul o x _ hx`. Take `⟨c, hc, rfl⟩` from `hx`. Conclude with `⟨o * c, Ideal.mul_mem_left _ o hc, rfl⟩`. Introduce and unpack `⟨c, hc, rfl⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Unfold `Host.ccE Ideal.map at hc`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨c, hc, rfl⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul o x _ hx => exact Submodule.smul_mem _ o hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_cE {α : D.host.E} : α ∈ cE D D.host.ccK ↔ ∃ c ∈ D.host.ccE, (c : D.host.E) = α := by
   constructor
@@ -209,9 +209,7 @@ theorem mem_cE {α : D.host.E} : α ∈ cE D D.host.ccK ↔ ∃ c ∈ D.host.ccE
     | smul o x _ hx => exact Submodule.smul_mem _ o hx
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h α hα`. Take `⟨c, hc, rfl⟩` from `mem_cE.1 hα`. Conclude with `Submodule.mem_one.1 (h c hc)`. Introduce `h c hc`.
-
-Conclude with `Submodule.mem_one.2 (h _ (mem_cE.2 ⟨c, hc, rfl⟩))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_scaleInv {x : D.host.E} : x ∈ scaleInv D r ↔ ∀ α ∈ cE D D.host.ccK, IntE D (r * α * x) := by
   constructor
@@ -222,13 +220,13 @@ theorem mem_scaleInv {x : D.host.E} : x ∈ scaleInv D r ↔ ∀ α ∈ cE D D.h
     exact Submodule.mem_one.2 (h _ (mem_cE.2 ⟨c, hc, rfl⟩))
 
 /- English proof (translation)
-Simplify using `only [scaleLat, Submodule.mem_pi, Set.mem_univ, true_implies]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_scaleLat' {n : ℕ} {y : Fin n → D.host.E} : y ∈ scaleLat D r n ↔ ∀ i, y i ∈ scaleInv D r := by
   simp only [scaleLat, Submodule.mem_pi, Set.mem_univ, true_implies]
 
 /- English proof (translation)
-Establish `h` using `hs`. Unfold `IsScale at h`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scale_eq (hs : IsScale D ⊤ r) : r * D.host.conj r * (Ideal.absNorm D.host.ccK : D.host.E) = 1 := by
   have h := hs
@@ -236,12 +234,12 @@ theorem scale_eq (hs : IsScale D ⊤ r) : r * D.host.conj r * (Ideal.absNorm D.h
   rw [h]; simp
 
 /- English proof (translation)
-The claim follows from `IsScale.ne_zero top_ne_bot hs`.
+A detailed English derivation is pending.
 -/
 theorem scale_ne (hs : IsScale D ⊤ r) : r ≠ 0 := IsScale.ne_zero top_ne_bot hs
 
 /- English proof (translation)
-Use `mem_scaleInv.2 fun β hβ => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `(GlobalTheory.VacRead.conj_mul_cE_absNorm D D.host.ccK).1 α hα β hβ`. Use `⟨o, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(o : D.host.E) = _`. Take the linear combination `(-(o : D.host.E)) * scale_eq hs - r * D.host.conj r * ho`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem conj_mem_scaleInv (hs : IsScale D ⊤ r) {α : D.host.E} (hα : α ∈ cE D D.host.ccK) :
     D.host.conj r * D.host.conj α ∈ scaleInv D r := by
@@ -252,9 +250,9 @@ theorem conj_mem_scaleInv (hs : IsScale D ⊤ r) {α : D.host.E} (hα : α ∈ c
   linear_combination (-(o : D.host.E)) * scale_eq hs - r * D.host.conj r * ho
 
 /- English proof (translation)
-Establish `hle : Submodule.span (𝓞 D.host.E) {t | ∃ α ∈ cE D D.host.ccK, ∃ β ∈ cE D D.host.ccK, t = D.host.conj α * β} ≤ M.comap (LinearMap.mulLeft (𝓞 D.host.E) (D.host.conj r))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨α, hα, β, hβ, rfl⟩`. Conclude with `h α hα β hβ`. Establish `h1 : D.host.conj r * (Ideal.absNorm D.host.ccK : D.host.E) ∈ M` using `hle (GlobalTheory.VacRead.conj_mul_cE_absNorm D D.host.ccK).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : r⁻¹ = D.host.conj r * (Ideal.absNorm D.host.ccK : D.host.E)` using `inv_eq_of_mul_eq_one_right (by rw [← mul_assoc]; exact scale_eq hs)`. Rewrite using `[h2]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem inv_mem_of_gen (hs : IsScale D ⊤ r) (M : Submodule (𝓞 D.host.E) D.host.E)
     (h : ∀ α ∈ cE D D.host.ccK, ∀ β ∈ cE D D.host.ccK, D.host.conj r * (D.host.conj α * β) ∈ M) : r⁻¹ ∈ M := by
@@ -270,11 +268,11 @@ theorem inv_mem_of_gen (hs : IsScale D ⊤ r) (M : Submodule (𝓞 D.host.E) D.h
   rwa [h2]
 
 /- English proof (translation)
-Establish `h` using `inv_mem_of_gen hs ((1 : Submodule (𝓞 D.host.E) D.host.E).comap (LinearMap.mulLeft (𝓞 D.host.E) (r * (u * D.host.conj x)))) fun α hα β hβ => by`. Establish `h1` using `mul_mem (mem_scaleInv.1 hu β hβ) (mem_scaleInv.1 hx α hα).conj`. Use `Submodule.mem_one.2 ?_` and prove the remaining obligations. Establish `e : r * (u * D.host.conj x) * (D.host.conj r * (D.host.conj α * β)) = r * β * u * D.host.conj (r * α * x)`. Simplify using `only [map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `IntE D (r * (u * D.host.conj x) * (D.host.conj r * (D.host.conj α * β)))`. Rewrite using `[e]`. Conclude with `h1`. Establish `h2 : IntE D (r * (u * D.host.conj x) * r⁻¹)` using `Submodule.mem_one.1 h`.
+Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `scale_ne hs`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem intE_mul_conj (hs : IsScale D ⊤ r) {u x : D.host.E} (hu : u ∈ scaleInv D r) (hx : x ∈ scaleInv D r) :
     IntE D (u * D.host.conj x) := by
@@ -293,7 +291,7 @@ theorem intE_mul_conj (hs : IsScale D ⊤ r) {u x : D.host.E} (hu : u ∈ scaleI
   field_simp
 
 /- English proof (translation)
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using hu`. Simplify using `only [Pi.single_apply, hj, if_false]`. Conclude with `zero_mem _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem single_mem {n : ℕ} (i : Fin n) {M : Submodule (𝓞 D.host.E) D.host.E} {u : D.host.E} (hu : u ∈ M) (j : Fin n) :
     (Pi.single i u : Fin n → D.host.E) j ∈ M := by
@@ -302,21 +300,19 @@ theorem single_mem {n : ℕ} (i : Fin n) {M : Submodule (𝓞 D.host.E) D.host.E
   · simp only [Pi.single_apply, hj, if_false]; exact zero_mem _
 
 /- English proof (translation)
-Establish `hr` using `scale_ne hs`. Establish `hri : r⁻¹ ∈ scaleInv D r` using `fun c _ => Submodule.mem_one.2 ⟨c, by`. Express the relevant statement in the definitionally equal form `(c : D.host.E) = _`. Use the proof step `field_simp⟩`. Establish `hc : D.host.conj r ≠ 0` using `(map_ne_zero_iff _ D.host.conj.injective).mpr hr`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.InertSign.sd_iff]`. Use `⟨?_, ?_, fun y => ?_⟩` and prove the remaining obligations. Use `Submodule.fg_pi fun _ => ?_` and prove the remaining obligations. Establish `hM : (Submodule.span (𝓞 D.host.E) {D.host.conj r}).FG` using `Submodule.fg_span (Set.finite_singleton _)`. Use `haveI := isNoetherian_of_fg_of_noetherian _ hM`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Submodule.FG.of_le_of_isNoetherian (T := Submodule.span (𝓞 D.host.E) {D.host.conj r}) fun y hy => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `intE_mul_conj hs hy hri`. Use `Submodule.mem_span_singleton.2 ⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, ho, map_inv₀]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `v _`. Rewrite using `[pi_eq_sum_univ' v]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `e : (Pi.single i (1 : D.host.E) : Fin n → D.host.E) = r • Pi.single i r⁻¹`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_inv_cancel₀ hr]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (mem_scaleLat'.2 (single_mem i hri)))`. Rewrite using `[mem_scaleLat']`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Introduce `hy x hx`. Rewrite `hx` using `[mem_scaleLat']`. Unfold `GlobalTheory.InertSign.hE`. Conclude with `Subring.sum_mem _ fun i _ => intE_mul_conj hs (hy i) (hx i)`. Introduce `h i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mem_scaleInv.2 fun α hα => ?_` and prove the remaining obligations. Establish `h'` using `h (Pi.single i _) (mem_scaleLat'.2 (single_mem i (conj_mem_scaleInv hs hα)))`. Unfold `GlobalTheory.InertSign.hE at h'`. Rewrite `h'` using `[Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_apply, hj]) (by simp), Pi.single_eq_same, map_mul, GlobalTheory.InertSign.conj_conj, GlobalTheory.InertSign.conj_conj]`. Use `h' using 1` and compare the differences between its conclusion and the goal.
-
-Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sd_scaleLat (hs : IsScale D ⊤ r) (n : ℕ) : SD D (scaleLat D r n) := by
   have hr := scale_ne hs
@@ -357,7 +353,7 @@ theorem sd_scaleLat (hs : IsScale D ⊤ r) (n : ℕ) : SD D (scaleLat D r n) := 
       ring
 
 /- English proof (translation)
-Take `⟨Λ, hΛ, h⟩` from `GlobalTheory.MovedDict.isSelfDualC_inV S 1 (by rw [gS]; simp [Formalism.UG.cT]) L hL`. Establish `e : Λ = L` using `SetLike.coe_injective (by rw [hΛ]; simp [GlobalTheory.MovedDict.inV])`. Conclude with `e ▸ h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSelfDualC_of_sd (S : HSp D) (gS : S.gram = 1) {L : Lat S} (hL : SD D L) : IsSelfDualC S L := by
   obtain ⟨Λ, hΛ, h⟩ := GlobalTheory.MovedDict.isSelfDualC_inV S 1 (by rw [gS]; simp [Formalism.UG.cT]) L hL
@@ -367,7 +363,7 @@ theorem isSelfDualC_of_sd (S : HSp D) (gS : S.gram = 1) {L : Lat S} (hL : SD D L
 variable {a d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.matrix_eq_sum_single z]`. Conclude with `sum_mem fun i _ => sum_mem fun j _ => h i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_single {W : AddSubgroup (Matrix (Fin d) (Fin a) D.host.E)} {z : Matrix (Fin d) (Fin a) D.host.E}
     (h : ∀ i j, Matrix.single i j (z i j) ∈ W) : z ∈ W := by
@@ -375,11 +371,9 @@ theorem mem_of_single {W : AddSubgroup (Matrix (Fin d) (Fin a) D.host.E)} {z : M
   exact sum_mem fun i _ => sum_mem fun j _ => h i j
 
 /- English proof (translation)
-Use `mem_of_single fun i j => ?_` and prove the remaining obligations. Set `M : Submodule (𝓞 D.host.E) D.host.E` to `{ carrier := {x | Matrix.single i j (x * z i j) ∈ W} add_mem' := fun {x y} hx hy => by`. Express the relevant statement in the definitionally equal form `Matrix.single i j ((x + y) * z i j) ∈ W`. Rewrite using `[add_mul, Matrix.single_add]`. Conclude with `add_mem hx hy`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use the proof step `zero_mem' := by`. Express the relevant statement in the definitionally equal form `Matrix.single i j (0 * z i j) ∈ W`. Rewrite using `[zero_mul, Matrix.single_zero]`. Conclude with `zero_mem _`. Use the proof step `smul_mem' := fun o x hx => by`.
-
-Express the relevant statement in the definitionally equal form `Matrix.single i j (((o : D.host.E) * x) * z i j) ∈ W`. Use `hW o _ hx` as an intermediate fact. Rewrite using `[Matrix.smul_single, smul_eq_mul, ← mul_assoc] at this }` and apply the resulting hypothesis. Conclude with `inv_mem_of_gen hs M fun α hα β hβ => h α hα β hβ _ (hz i j) i j`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem inv_smul_mem (hs : IsScale D ⊤ r) (W : AddSubgroup (Matrix (Fin d) (Fin a) D.host.E))
     (hW : ∀ o : 𝓞 D.host.E, ∀ M ∈ W, (o : D.host.E) • M ∈ W)
@@ -405,9 +399,9 @@ theorem inv_smul_mem (hs : IsScale D ⊤ r) (W : AddSubgroup (Matrix (Fin d) (Fi
   exact inv_mem_of_gen hs M fun α hα β hβ => h α hα β hβ _ (hz i j) i j
 
 /- English proof (translation)
-Use `GlobalTheory.ThetaLatImage.mem_homL.2 fun x hx k _ => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `GlobalTheory.ThetaLatImage.mem_stdL.1 hx j`. Rewrite using `[Matrix.single_mulVec]`. Use `single_mem i (u := u * x j) ?_ k` and prove the remaining obligations. Rewrite using `[← ho, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.smul_mem o hu`.
+A detailed English derivation is pending.
 -/
 theorem single_mem_homL {J : Submodule (𝓞 D.host.E) D.host.E} {u : D.host.E} (hu : u ∈ J) (i : Fin d) (j : Fin a) :
     Matrix.single i j u ∈ homL D (stdL D a) (Submodule.pi Set.univ fun _ : Fin d => J) := by
@@ -419,7 +413,7 @@ theorem single_mem_homL {J : Submodule (𝓞 D.host.E) D.host.E} {u : D.host.E} 
   exact J.smul_mem o hu
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.ThetaLatImage.mem_stdL.1 (GlobalTheory.ThetaLatImage.mem_homL.1 hA (Pi.single j 1) (fun k _ => single_mem j (M := (1 : Submodule (𝓞 D.host.E) D.host.E)) (Submodule.mem_one.2 ⟨1, map_one _⟩) k)) i`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem int_of_mem_homL {A : Matrix (Fin d) (Fin a) D.host.E} (hA : A ∈ homL D (stdL D a) (stdL D d)) (i : Fin d) (j : Fin a) :
     IntE D (A i j) := by
@@ -428,9 +422,9 @@ theorem int_of_mem_homL {A : Matrix (Fin d) (Fin a) D.host.E} (hA : A ∈ homL D
   simpa using h
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem B hB`. Take `⟨t, ht, A, hA, rfl⟩` from `hB`. Take `⟨o, ho⟩` from `int_of_mem_homL hA i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← ho, mul_comm]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.smul_mem o ht`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul o x _ hx => exact J.smul_mem o hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem entries_of_span {J : Submodule (𝓞 D.host.E) D.host.E} {z : Matrix (Fin d) (Fin a) D.host.E}
     (hz : z ∈ Submodule.span (𝓞 D.host.E) {B | ∃ t ∈ J, ∃ A ∈ homL D (stdL D a) (stdL D d), B = t • A}) (i : Fin d)
@@ -446,7 +440,7 @@ theorem entries_of_span {J : Submodule (𝓞 D.host.E) D.host.E} {z : Matrix (Fi
   | smul o x _ hx => exact J.smul_mem o hx
 
 /- English proof (translation)
-Use `⟨fun h => entries_of_span h, fun h => ?_⟩` and prove the remaining obligations. Use `mem_of_single (W := (YYl D (stdL D a) (stdL D d)).toAddSubgroup) fun i j => ?_` and prove the remaining obligations. Use `Submodule.subset_span ⟨_, h i j, Matrix.single i j 1, single_mem_homL (J := 1) (Submodule.mem_one.2 ⟨1, map_one _⟩) i j, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_YYl {z : Matrix (Fin d) (Fin a) D.host.E} : z ∈ YYl D (stdL D a) (stdL D d) ↔
     ∀ i j, z i j ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) := by
@@ -457,11 +451,11 @@ theorem mem_YYl {z : Matrix (Fin d) (Fin a) D.host.E} : z ∈ YYl D (stdL D a) (
   rw [Matrix.smul_single, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Establish `hI : GlobalTheory.InertSign.Iid D ⊤ ≤ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, -, b, hb, rfl⟩`. Conclude with `Submodule.smul_mem _ (algebraMap (𝓞 D.host.K) (𝓞 D.host.E) c) hb`. Use `inv_smul_mem hs (RL D D.host.ccK (stdL D a) (scaleLat D r d)).toAddSubgroup (fun o M hM => Submodule.smul_mem _ o hM) (fun α hα β hβ b hb i j => ?_) fun i j => hI (entries_of_span hz i j)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hβb : β * b ∈ GlobalTheory.InertSign.Iid D D.host.ccK`. Establish `hle : cE D D.host.ccK ≤ (GlobalTheory.InertSign.Iid D D.host.ccK).comap (LinearMap.mulRight (𝓞 D.host.E) b)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `Submodule.subset_span ⟨c, hc, b, hb, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hle hβ`. Use `Submodule.subset_span ⟨β * b, hβb, _, single_mem_homL (conj_mem_scaleInv hs hα) i j, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_single, smul_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rl_div (hs : IsScale D ⊤ r) {z : Matrix (Fin d) (Fin a) D.host.E} (hz : z ∈ RL D ⊤ (stdL D a) (stdL D d)) :
     r⁻¹ • z ∈ RL D D.host.ccK (stdL D a) (scaleLat D r d) := by
@@ -483,25 +477,25 @@ theorem rl_div (hs : IsScale D ⊤ r) {z : Matrix (Fin d) (Fin a) D.host.E} (hz 
   ring
 
 /- English proof (translation)
-Establish `hr` using `scale_ne hs`. Establish `hg : ∀ (s : Fin S.rank → D.host.E) j, ∑ k, star (s k) * S.gram k j = D.host.conj (s j)`. Introduce `s j`. Rewrite using `[gS]`. Simplify using `[Matrix.one_apply, GlobalTheory.NormSum.AdLattice.star_eq_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Establish `key : ∀ M ∈ GlobalTheory.LatVac.latRat S T (stdLat S) (scaleLat D r T.rank), ∀ i j, r * M i j ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E)`. Introduce `M hM i j`. Proceed by induction on `hM using AddSubgroup.closure_induction with`. Consider the case `mem w hw`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨x, hx, s, hs', t, ht, rfl⟩` from `hw`. Take `⟨o, ho⟩` from `(GlobalTheory.ThetaLatImage.mem_stdL.1 hs' j).conj`. Establish `h1 : r * (x * t i) ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E)`. Unfold `Host.AA at hx`. Use `FractionalIdeal.mul_induction_on hx (fun c hc b hb => ?_) fun x y hx hy => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc', rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hc`. Take `⟨o', ho'⟩` from `Submodule.mem_one.1 (mem_scaleLat.1 ht i c hc')`. Establish `e : r * (algebraMap (𝓞 D.host.E) D.host.E c * b * t i) = o' • b`. Rewrite using `[Algebra.smul_def, ho']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ o' hb`. Rewrite using `[add_mul, mul_add]`. Conclude with `add_mem hx hy`. Establish `e : r * GlobalTheory.LatVac.genMap S T x s t i j = o • (r * (x * t i))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[GlobalTheory.LatVac.genMap, Matrix.of_apply, hg, Algebra.smul_def, ho]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ o h1`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add x y _ _ hx hy => rw [Matrix.add_apply, mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.neg_apply, mul_neg]`. Conclude with `neg_mem hx`. Introduce `h i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `key _ h i j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul, mul_inv_cancel_left₀ hr]`. Then use the resulting hypothesis. Use `inv_smul_mem hs _ (fun o M hM => GlobalTheory.LatVac.smul_mem_latRat o hM) fun α hα β hβ b hb i j => ?_` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `mem_cE.1 hβ`. Use `AddSubgroup.subset_closure ⟨(c : D.host.E) * b, FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_coeIdeal_of_mem _ hc) hb, Pi.single j 1, fun k _ => single_mem j (M := (1 : Submodule (𝓞 D.host.E) D.host.E)) (Submodule.mem_one.2 ⟨1, map_one _⟩) k, Pi.single i _, mem_scaleLat'.2 (s …` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `k l`. Rewrite using `[GlobalTheory.LatVac.genMap, Matrix.of_apply, hg]`. Distinguish the cases in `hk : i = k`. Substitute `hk` using the available equality. Distinguish the cases in `hl : j = l`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hl, Ne.symm hl]`. Simplify using `[hk, Ne.symm hk]`.
+A detailed English derivation is pending.
 -/
 theorem mem_latRat (hs : IsScale D ⊤ r) (S T : HSp D) (gS : S.gram = 1) (z : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     r⁻¹ • z ∈ GlobalTheory.LatVac.latRat S T (stdLat S) (scaleLat D r T.rank) ↔
@@ -555,7 +549,7 @@ theorem mem_latRat (hs : IsScale D ⊤ r) (S T : HSp D) (gS : S.gram = 1) (z : M
     · simp [hk, Ne.symm hk]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => GlobalTheory.LatVac.finTens_mem_latO (GlobalTheory.LatVac.one_mem_intAf _) h⟩` and prove the remaining obligations. Use `(GlobalTheory.T.rationalHermitianRankOneLattice_selfDual D S T LS LT hS hT (GlobalTheory.T.exists_dual_family_selfDual_hermitianSpace D S LS hS) _).2 fun ℓ hℓ => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.LatVac.char_sympl_eq_one hψ hS hT (u := GlobalTheory.LatVac.finTens 1 M) h (GlobalTheory.LatVac.finTens_mem_latO (GlobalTheory.LatVac.one_mem_intAf _) hℓ)`. Rewrite `h1` using `[GlobalTheory.LatVac.symplO_finTens, one_mul, one_mul]`. Conclude with `(GlobalTheory.LatVac.char_rat hψ _).1 h1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finRat_mem_iff {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {LS : Lat S} {LT : Lat T}
     (hS : IsSelfDualC S LS) (hT : IsSelfDualC T LT) (M : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
@@ -568,23 +562,23 @@ theorem finRat_mem_iff {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-
   exact (GlobalTheory.LatVac.char_rat hψ _).1 h1
 
 /- English proof (translation)
-Take `⟨hψ, hθ, gS, gT, crv, sc⟩` from `hset`. Establish `hr : r ≠ 0` using `scale_ne sc`. Establish `hδ : δ ≠ 0` using `delta_ne_zero crv`. Establish `hS1 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin S.rank) D.host.E).1 * S.gram * (1 : GL (Fin S.rank) D.host.E).1 = 1`. Rewrite using `[gS]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.UG.cT]`. Establish `hT1 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin T.rank) D.host.E).1 * T.gram * (1 : GL (Fin T.rank) D.host.E).1 = 1`. Rewrite using `[gT]`. Simplify using `[Formalism.UG.cT]`. Take `⟨Φ, hΦd, hΦ⟩` from `GlobalTheory.FockPos.vacuum_real_entire ψ θ S T 1 1 _ _ hS1 hT1 f hf`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hinV : ∀ {k : ℕ} (L : Submodule (𝓞 D.host.E) (Fin k → D.host.E)), GlobalTheory.MovedDict.inV (D` using `D) 1 L = (L : Set (Fin k → D.host.E)) := by`. Introduce `k L`. Simplify using `[GlobalTheory.MovedDict.inV]`. Establish `hf'` using `hf`. Rewrite `hf'` using `[← hinV (stdL D S.rank), ← hinV (scaleLat D r T.rank)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hth` using `GlobalTheory.VacRead.theta_of_unit_vacuum ψ θ S T 1 1 hS1 hT1 δ hδ _ _ (GlobalTheory.MovedVacuum.sd_stdL D _) (sd_scaleLat sc _) f hf' Φ hΦd hΦ`. Establish `hLa : ∀ x ∈ Formalism.MainNotions.TaylorLogMetric.La D (tor0 D ⊤ δ) (stdL D S.rank) (stdL D T.rank), (fun τ i j => x τ i j / embT D τ r) ∈ Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK δ) (stdL D S.rank) (scaleLat D r T.rank)`. Introduce `x hx`. Take `⟨z, hz, rfl⟩` from `GlobalTheory.ThetaLatImage.La_sub hx`. Establish `h2` using `GlobalTheory.ThetaLatImage.pt_mem_La (δ := δ) (rl_div sc hz) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ i j`. Rewrite using `[one_smul, GlobalTheory.ThetaLatImage.pt_apply, GlobalTheory.ThetaLatImage.pt_apply]`. Establish `ht : embT D τ r ≠ 0` using `(map_ne_zero _).2 hr`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, map_inv₀]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Establish `hG` using `th_div_scale crv sc hLa hth`. Establish `hback : ∀ Z : VC D S.rank T.rank, (δ⁻¹ • fun τ i j => (δ * embT D τ r * Z τ i j) / embT D τ r : VC D S.rank T.rank) = Z`. Introduce `Z`. Use function extensionality and compare the values at `τ i j`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `ht : embT D τ r ≠ 0` using `(map_ne_zero _).2 hr`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Use `⟨_, hG, ?_, (reads_iff crv sc _ f).2 ⟨hf.2.theta, fun w hw => ?_⟩⟩` and prove the remaining obligations. Introduce `h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `GlobalTheory.StepMove.vacO_ne_zero hf` to reduce the goal to its premises. Use `GlobalTheory.TwistFactorCompare.theta_eq_zero_of_real hf.2.theta fun w hw => ?_` and prove the remaining obligations. Rewrite using `[hΦ w hw]`. Establish `e` using `congrFun h0 (fun τ i j => δ * embT D τ r * GlobalTheory.FockPos.zCo θ 1 1 w τ i j)`. Simplify using `only [Pi.zero_apply, hback] at e`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, mul_zero]`. Rewrite using `[hΦ w hw]`. Simplify using `only [hback]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vac_reads {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {δ : ℂ} (hset : Setup ψ θ S T ⊤ δ r)
     {f : WO S T → ℂ} (hf : IsVacO ψ θ S T (fun _ => 1) (fun _ => 1) (stdLat S) (scaleLat D r T.rank) f) :
@@ -645,13 +639,13 @@ namespace GlobalTheory.NormRatio
 open GlobalTheory.NormRatio.VacLat
 
 /- English proof (translation)
-Introduce `D ψ θ S T a d hS hT δ r hs`. Substitute `hS hT` using the available equality. Establish `sdS : IsSelfDualC S (stdLat S)` using `isSelfDualC_of_sd S hs.gS (GlobalTheory.MovedVacuum.sd_stdL D _)`. Establish `sdT : IsSelfDualC T (scaleLat D r T.rank)` using `isSelfDualC_of_sd T hs.gT (sd_scaleLat hs.scale _)`. Use `⟨scaleLat D r T.rank, sdT, fun z => ?_, fun e0 he0 f₀ hf₀ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : finPt (rfl : S.rank = S.rank) (rfl : T.rank = T.rank) r z = GlobalTheory.VacUnique.finRat S T (-(r⁻¹ • z))` using `rfl`. Rewrite using `[e, finRat_mem_iff hs.std sdS sdT, neg_mem_iff, mem_latRat hs.scale S T hs.gS, mem_YYl]`. Take `⟨f, hf⟩` from `vac_exists_gram_one ψ θ hs.std hs.inf S T hs.gS hs.gT _ _ sdS sdT`. Take `⟨G, hG, hG0, hrd⟩` from `vac_reads hs hf`. Take `⟨c, rfl⟩` from `(GlobalTheory.ThetaLine.theta_line D (GlobalTheory.InducedType.induced_type D).1 ⊤ δ hs.crv _ _ _ (Or.inr ⟨_, _, GlobalTheory.MovedVacuum.sd_stdL D _, GlobalTheory.MovedVacuum.sd_stdL D _, rfl⟩)).1 e0 he0 G hG hG0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hP : (fun v : FinPl D => v ∉ (∅ : Finset (FinPl D))) = fun _ => True`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules. Rewrite using `[hf₀.unique (hrd.smul c)]`. Unfold `IsSphOff`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hP]`. Conclude with `⟨fun u hu => by rw [GlobalTheory.LatVac.heisO_smul, hf.2.lat.1 u hu], fun e he u hu hh => by rw [GlobalTheory.LatVac.heisO_smul, hf.2.lat.2 e he u hu hh]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem vacLat_of_reads : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (δ : ℂ) (r : D.host.E), Setup ψ θ S T ⊤ δ r →

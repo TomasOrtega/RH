@@ -10,7 +10,7 @@ section General
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Use `Finset.sum_induction f (IntAt P) (fun _ _ ha hb => ha.add hb) ?_ h` and prove the remaining obligations. Simplify using `using IntAt.coe P 0`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intAt_sum {P : HeightOneSpectrum (𝓞 E)} {ι : Type} (s : Finset ι) (f : ι → E)
     (h : ∀ i ∈ s, IntAt P (f i)) : IntAt P (∑ i ∈ s, f i) := by
@@ -18,11 +18,11 @@ theorem intAt_sum {P : HeightOneSpectrum (𝓞 E)} {ι : Type} (s : Finset ι) (
   simpa using IntAt.coe P 0
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨z, rfl⟩` from `f.surjective y`. Establish `hz : ∀ i, IntAt P (z i)` using `(mem_localization_standardLattice P z).1 ((hf z).1 hy)`. Establish `e : c • x (f z) = f' (c • inFr f f' x z)` using `by simp [inFr]`. Rewrite using `[e, hf']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(mem_localization_standardLattice P _).2 fun l => ?_` and prove the remaining obligations. Establish `hz' : z = ∑ s, z s • (Pi.single s (1 : E) : Sp E a)`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `e2 : (c • inFr f f' x z) l = ∑ s, z s * (c * inFr f f' x (Pi.single s 1) l)` using `by conv_lhs => rw [hz']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_smul, Pi.smul_apply, Finset.sum_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`. Rewrite using `[e2]`. Conclude with `intAt_sum _ _ fun s _ => (hz s).mul (h s l)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_of_frames {a b : ℕ} (P : HeightOneSpectrum (𝓞 E)) (M : Submodule (𝓞 E) (Sp E a))
     (M' : Submodule (𝓞 E) (Sp E b)) (f : Sp E a ≃ₗ[E] Sp E a) (f' : Sp E b ≃ₗ[E] Sp E b)

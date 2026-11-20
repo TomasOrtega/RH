@@ -6,9 +6,9 @@ open scoped TensorProduct Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : ((n : ℤ) * q.num : ℚ) = (a * q.den : ℤ)`. Use `push_cast`. Rewrite using `[← Rat.mul_den_eq_num q, ← mul_assoc, h]`. Establish `h2 : (n : ℤ) * q.num = a * q.den` using `by exact_mod_cast h1`. Establish `h3 : (q.den : ℤ) ∣ (n : ℤ) * q.num` using `⟨a, by rw [h2]; ring⟩`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : q.den ∣ n * q.num.natAbs`. Use `Int.natAbs_dvd_natAbs.mpr h3` as an intermediate fact. Simplify `this` using `[Int.natAbs_mul]`. Conclude with `(Nat.Coprime.dvd_of_dvd_mul_right (Nat.Coprime.symm q.reduced) h4)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem den_dvd_of_natCast_mul_eq_int (n : ℕ) (q : ℚ) (a : ℤ) (h : (n : ℚ) * q = a) :
     q.den ∣ n := by
@@ -23,7 +23,7 @@ theorem den_dvd_of_natCast_mul_eq_int (n : ℕ) (q : ℚ) (a : ℤ) (h : (n : �
   exact (Nat.Coprime.dvd_of_dvd_mul_right (Nat.Coprime.symm q.reduced) h4)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Use `⟨c * q.num, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← Rat.mul_den_eq_num q]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_int_of_den_dvd (n : ℕ) (q : ℚ) (h : q.den ∣ n) :
     ∃ a : ℤ, (n : ℚ) * q = a := by
@@ -34,11 +34,11 @@ theorem exists_int_of_den_dvd (n : ℕ) (q : ℚ) (h : q.den ∣ n) :
   ring
 
 /- English proof (translation)
-Introduce `p D K k _ q ⟨m, hm, a, ha⟩ ⟨b, hb⟩`. Establish `d1` using `den_dvd_of_natCast_mul_eq_int _ q a ha`. Establish `d2` using `den_dvd_of_natCast_mul_eq_int _ q b hb`. Apply `exists_int_of_den_dvd` to reduce the goal to its premises. Establish `e1 : q.den ∣ D * p ^ K * m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: p ^ K * m ∣ D * p ^ K * m` using `⟨D, by ring⟩`. Conclude with `d1.trans this`. Establish `e2 : q.den ∣ D * p ^ K * p ^ k`. Establish `: D * p ^ k ∣ D * p ^ K * p ^ k` using `⟨p ^ K, by ring⟩`. Conclude with `d2.trans this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3` using `Nat.dvd_gcd e1 e2`. Rewrite `e3` using `[Nat.gcd_mul_left, (Nat.Coprime.pow_right k hm : Nat.Coprime m (p ^ k)), mul_one]`. Conclude with `e3`.
+A detailed English derivation is pending.
 -/
 theorem den_comb : ∀ (p D K k : ℕ), p.Prime → ∀ q : ℚ,
     (∃ m : ℕ, m.Coprime p ∧ ∃ a : ℤ, ((p ^ K * m : ℕ) : ℚ) * q = a) →

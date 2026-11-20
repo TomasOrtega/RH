@@ -11,13 +11,13 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W a k hk`. Establish `H` using `hatSt F E D W`. Establish `K` using `fockSt F E D W`. Take `⟨χ, hχ, hne⟩` from `(fockMul F D.δ).2 ![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0]`. Take `⟨φ₁, hφ₁, hh⟩` from `hatSurj F D.δ D.neg χ hχ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hk' : k⁻¹ ∈ KK F`. Establish `hs` using `(M.kkCpt F).1`. Rewrite `hk`, the goal using `[hs]`. Conclude with `inv_mem hk`. Take `⟨U, hU, -, hC⟩` from `K.om φ₁ hφ₁ {k⁻¹} isCompact_singleton (by rintro _ rfl; exact hk'.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨W.Om k⁻¹ φ₁, hU (hC _ rfl), ?_⟩` and prove the remaining obligations. Establish `e : W.Om (mD a * k) (W.Om k⁻¹ φ₁) = W.Om (mD a) φ₁`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_right]`. Apply the tactic sequence `have hv : (![a * (![0, 1, 1, 0] : V4 F) 0, ((a⁻¹ : (A F)ˣ) : A F) * (![0, 1, 1, 0] : V4 F) 1, a * (![0, 1, 1, 0] : V4 F) 2, a * (![0, 1, 1, 0] : V4 F) 3] : V4 F) = ![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0] := by ext1 i fin_cases i <;> simp`. Rewrite using `[e, H.m, hh, hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hab : ((ab a : ℝ) : ℂ) ≠ 0`. Establish `: 0 < ab a` using `(IdeleGroup.ideleModule F a).2`. Conclude with `this.ne'` after adjusting the coercions. Conclude with `mul_ne_zero (mul_ne_zero (Units.ne_zero _) hab) hne`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.exPhi :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (a : (A F)ˣ), ∀ k ∈ KK F, ∃ φ ∈ Fock D.δ, hat (W.Om (mD a * k) φ).1 ![0, 1, 1, 0] ≠ 0 := by

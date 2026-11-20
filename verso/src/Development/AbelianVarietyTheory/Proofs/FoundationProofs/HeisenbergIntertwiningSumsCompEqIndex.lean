@@ -10,19 +10,17 @@ open Classical in
 open scoped BigOperators in
 
 /- English proof (translation)
-Introduce `R X M _ _ _ _ _ σ w γ W hW A B hA hB hAB`. Take `⟨hidx, -, hsum⟩` from `_root_.GlobalTheory.FinWeil.perfect_pairing_quotients hW B.toAddSubgroup A.toAddSubgroup A.toAddSubgroup B.toAddSubgroup (fun a _ => hB a) (fun t _ => (hA t).trans (forall₂_congr fun a _ => ⟨hW.swap_eq_one, hW.swap_eq_one⟩)) hAB`. Use `⟨hidx, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hfinB : (A.toAddSubgroup.addSubgroupOf B.toAddSubgroup).FiniteIndex` using `⟨hAB⟩`. Establish `hfinA : (B.toAddSubgroup.addSubgroupOf A.toAddSubgroup).FiniteIndex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `B.toAddSubgroup.relIndex A.toAddSubgroup ≠ 0`. Rewrite using `[hidx]`. Conclude with `hAB`. Use `letI := Fintype.ofFinite (B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := Fintype.ofFinite (A.toAddSubgroup ⧸ B.toAddSubgroup.addSubgroupOf A.toAddSubgroup)`. Unfold `_root_.GlobalTheory.FinWeil.sumOp`. Rewrite `hsum`, the goal using `[finsum_eq_sum_of_fintype, map_sum]`. Establish `hcomm : ∀ a ∈ A, ∀ b : X, W a (W b v) = γ a b • W b v`. Introduce `a ha b`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hW.comm, hv a ha]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun q _ => hcomm _ (Quotient.out q).2 _`. Use `_ = ∑ p : B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup, if p = 0 then (_root_.GlobalTheory.FinWeil.idx A B : ℂ) • v else 0 := by`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hsum _ (Quotient.out p).2]`. Establish `hmem : (Quotient.out p).1 ∈ A.toAddSubgroup ↔ p = 0` using `by conv_rhs => rw [← QuotientAddGroup.out_eq' p]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Distinguish the cases in `hp : p = 0`. Rewrite using `[if_pos (hmem.2 hp), if_pos hp, hv _ (hmem.2 hp)]`. Conclude with `congrArg (fun n : ℕ => (n : ℂ) • v) hidx`. Rewrite using `[if_neg (mt hmem.1 hp), if_neg hp, zero_smul]`.
-
-Use `_ = (_root_.GlobalTheory.FinWeil.idx A B : ℂ) • v := by`. Rewrite using `[Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FinWeil.sumOp_sumOp_eq_idx_smul : ∀ {R X M : Type} [CommRing R]
     [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R}

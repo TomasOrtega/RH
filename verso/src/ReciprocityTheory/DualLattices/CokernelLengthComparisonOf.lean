@@ -62,11 +62,11 @@ def WdetDegStatement : Prop :=
       HasLen v R (xMod H e π w) X → X ≤ v (algebraMap R C cp) ^ d
 
 /- English proof (translation)
-Introduce `p _ g C _ _ _ v R _ _ _ O _ _ σ cp hS H m e π he hσ h1 h2 h3 h4 w hw cw cwb hcw hcwb`. Take `⟨d, X, hd, hX, hXe⟩` from `hW1 p g C v R O σ cp hS H m e π he hσ h1 h2 h3 h4 w hw cw cwb hcw hcwb`. Establish `hle` using `hW2 p g C v R O σ cp hS H m e π he hσ h1 h2 h3 h4 w hw d X hd hX`. Establish `hcp : v (algebraMap R C cp) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h5` using `hS.cp_val`. Rewrite `h5` using `[h0, zero_pow (Nat.sub_pos_of_lt (Fact.out : p.Prime).one_lt).ne']`. Conclude with `hS.p_ne h5.symm`. Establish `hpos : 0 < v (algebraMap R C cp) ^ d` using `pow_pos (pos_iff_ne_zero.mpr hcp) d`. Establish `h6 : v (algebraMap R C cp) ^ d * cwb ≤ v (algebraMap R C cp) ^ d * cw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hXe]`. Conclude with `mul_le_mul_of_nonneg_right hle zero_le`. Conclude with `le_of_mul_le_mul_left h6 hpos`.
+A detailed English derivation is pending.
 -/
 theorem cokernelLengthComparison_of (hW1 : WdetLenStatement) (hW2 : WdetDegStatement) : CokernelLengthComparisonStatement := by
   intro p _ g C _ _ _ v R _ _ _ O _ _ σ cp hS H m e π he hσ h1 h2 h3 h4 w hw cw cwb hcw hcwb

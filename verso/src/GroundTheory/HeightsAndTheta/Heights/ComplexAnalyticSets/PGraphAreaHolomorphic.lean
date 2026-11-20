@@ -16,7 +16,7 @@ noncomputable section
 namespace GraphAreaHolomorphic
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, Fintype.sum_equiv e _ (fun s => ‖Sum.elim (fun i => a i) (fun i => b i) s‖ ^ 2) (fun j => rfl), Fintype.sum_sum_type]`. Apply the tactic sequence `all_goals rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sq_sumElim {𝕜 : Type*} [RCLike 𝕜] {ι κ ν : Type*} [Fintype ι] [Fintype κ] [Fintype ν]
     (e : ν ≃ ι ⊕ κ) (a : EuclideanSpace 𝕜 ι) (b : EuclideanSpace 𝕜 κ) :
@@ -28,7 +28,7 @@ theorem norm_sq_sumElim {𝕜 : Type*} [RCLike 𝕜] {ι κ ν : Type*} [Fintype
   all_goals rfl
 
 /- English proof (translation)
-The claim follows from `norm_sq_sumElim (Equiv.refl _) a b`.
+A detailed English derivation is pending.
 -/
 theorem norm_sq_sumElim' {𝕜 : Type*} [RCLike 𝕜] {ι κ : Type*} [Fintype ι] [Fintype κ]
     (a : EuclideanSpace 𝕜 ι) (b : EuclideanSpace 𝕜 κ) :
@@ -37,9 +37,9 @@ theorem norm_sq_sumElim' {𝕜 : Type*} [RCLike 𝕜] {ι κ : Type*} [Fintype �
   norm_sq_sumElim (Equiv.refl _) a b
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => ext_inner_right ℝ fun w => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, Module.End.one_apply, inner_add_left, LinearMap.adjoint_inner_left]`. Simplify using `only [real_inner_eq_norm_add_mul_self_sub_norm_mul_self_sub_norm_mul_self_div_two, ← map_add]`. Establish `h1` using `h (v + w)`. Establish `h2` using `h v`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h w`. Simplify using `only [sq] at h1 h2 h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem adjoint_comp_self_of_norm {E H K : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup H] [InnerProductSpace ℝ H] [FiniteDimensional ℝ H]
@@ -57,7 +57,7 @@ theorem adjoint_comp_self_of_norm {E H K : Type*} [NormedAddCommGroup E] [InnerP
   linarith
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.det_conj (1 + LinearMap.adjoint L ∘ₗ L) φ.symm.toLinearEquiv]`. Use `congr 1`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `[LinearMap.adjoint_comp, LinearIsometryEquiv.adjoint_toLinearMap_eq_symm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem det_one_add_comp {E E' H : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup E'] [InnerProductSpace ℝ E'] [FiniteDimensional ℝ E']
@@ -71,9 +71,7 @@ theorem det_one_add_comp {E E' H : Type*} [NormedAddCommGroup E] [InnerProductSp
   simp [LinearMap.adjoint_comp, LinearIsometryEquiv.adjoint_toLinearMap_eq_symm]
 
 /- English proof (translation)
-Rewrite using `[differentiableAt_piLp]`. Introduce `j`. Use `show DifferentiableAt ℝ (fun y => Sum.elim (fun i => y i) (fun i => F y i) (e j)) x`. Break down `e j with i | i` into its components or cases. Conclude with `(differentiableAt_piLp 2).1 differentiableAt_id i`.
-
-Conclude with `(differentiableAt_piLp 2).1 hF i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem differentiableAt_graphPt_real {d m n : ℕ} (e : Fin n ≃ Fin d ⊕ Fin m)
     {F : EuclideanSpace ℂ (Fin d) → EuclideanSpace ℂ (Fin m)} {x : EuclideanSpace ℂ (Fin d)}
@@ -86,11 +84,11 @@ theorem differentiableAt_graphPt_real {d m n : ℕ} (e : Fin n ≃ Fin d ⊕ Fin
   · exact (differentiableAt_piLp 2).1 hF i
 
 /- English proof (translation)
-Use extensionality with `j`. Take `⟨s, rfl⟩` from `e.symm.surjective j`. Establish `hj` using `(hasFDerivWithinAt_piLp 2).1 (hasFDerivWithinAt_univ.2 hG) (e.symm s)`. Rewrite `hj` using `[hasFDerivWithinAt_univ]`. Break down `s with i | i` into its components or cases.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h' : HasFDerivAt (fun y : EuclideanSpace ℂ (Fin d) => graphPt e F y (e.symm (Sum.inl i))) (PiLp.proj (𝕜` using `ℝ) 2 (fun _ : Fin d => ℂ) i) x := by`. Simplify `PiLp.hasFDerivAt_apply (𝕜 := ℝ) 2 x i` using `[graphPt]`. Simplify using `using congrArg (fun M => M v) (hj.unique h')`. Establish `hfun : (fun y : EuclideanSpace ℂ (Fin d) => graphPt e F y (e.symm (Sum.inr i))) = (fun f : EuclideanSpace ℂ (Fin m) => f i) ∘ F`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[graphPt]`. Establish `h' : HasFDerivAt (fun y : EuclideanSpace ℂ (Fin d) => graphPt e F y (e.symm (Sum.inr i))) ((PiLp.proj (𝕜` using `ℝ) 2 (fun _ : Fin m => ℂ) i).comp L) x := by`. Rewrite using `[hfun]`. Conclude with `(PiLp.hasFDerivAt_apply (𝕜 := ℝ) 2 (F x) i).comp x hF`. Simplify using `using congrArg (fun M => M v) (hj.unique h')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_graphPt_apply {d m n : ℕ} (e : Fin n ≃ Fin d ⊕ Fin m)
     {F : EuclideanSpace ℂ (Fin d) → EuclideanSpace ℂ (Fin m)} {x : EuclideanSpace ℂ (Fin d)}
@@ -118,15 +116,15 @@ theorem hasFDerivAt_graphPt_apply {d m n : ℕ} (e : Fin n ≃ Fin d ⊕ Fin m)
     simpa using congrArg (fun M => M v) (hj.unique h')
 
 /- English proof (translation)
-Set `πd : EuclideanSpace ℂ (Fin n) →ₗ[ℝ] EuclideanSpace ℂ (Fin d)` to `{ toFun := fun z => WithLp.toLp 2 fun k => z (e.symm (Sum.inl k)) map_add' := fun z w => by ext; simp map_smul' := fun c z => by ext; simp }`. Set `πm : EuclideanSpace ℂ (Fin n) →ₗ[ℝ] EuclideanSpace ℂ (Fin m)` to `{ toFun := fun z => WithLp.toLp 2 fun k => z (e.symm (Sum.inr k)) map_add' := fun z w => by ext; simp map_smul' := fun c z => by ext; simp }`. Establish `hz : ∀ z : EuclideanSpace ℂ (Fin n), z = WithLp.toLp 2 (fun j => Sum.elim (fun i => πd z i) (fun i => πm z i) (e j))`. Introduce `z`. Use extensionality with `j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Take `⟨s, rfl⟩` from `e.symm.surjective j`. Apply the tactic sequence `rcases s with i | i <;> simp [πd, πm]`. Use `⟨fun z => WithLp.toLp 2 (Sum.elim (fun i => φ (πd z) i) (fun i => φm (πm z) i)), ?_, ?_⟩` and prove the remaining obligations. Use `Isometry.of_dist_eq fun z w => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm, dist_eq_norm]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : (WithLp.toLp 2 (Sum.elim (fun i => φ (πd z) i) (fun i => φm (πm z) i)) : EuclideanSpace ℝ (ι ⊕ κ)) - WithLp.toLp 2 (Sum.elim (fun i => φ (πd w) i) (fun i => φm (πm w) i)) = WithLp.toLp 2 (Sum.elim (fun i => φ (πd (z - w)) i) (fun i => φm (πm (z - w)) i))`. Use extensionality with `s`. Apply the tactic sequence `rcases s with i | i <;> simp [map_sub]`. Rewrite using `[hsub]`. Use `(sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn` using `norm_sq_sumElim e (πd (z - w)) (πm (z - w))`. Rewrite `hn` using `[← hz (z - w)]`. Rewrite using `[norm_sq_sumElim', φ.norm_map, φm.norm_map, hn]`. Introduce `F x`. Establish `h1 : πd (graphPt e F x) = x` using `by ext k; simp [πd, graphPt]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : πm (graphPt e F x) = F x` using `by ext k; simp [πm, graphPt]`. Simplify using `only [h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem exists_graph_isometry {d m n : ℕ} {ι κ : Type*} [Fintype ι] [Fintype κ]
     (e : Fin n ≃ Fin d ⊕ Fin m) (φ : EuclideanSpace ℂ (Fin d) ≃ₗᵢ[ℝ] EuclideanSpace ℝ ι)
@@ -170,23 +168,21 @@ end GraphAreaHolomorphic
 
 open GraphAreaHolomorphic in
 /- English proof (translation)
-Introduce `d m n e Ω F hΩ hF A hAΩ hA`. Establish `hFcC : ContDiffOn ℂ 1 F Ω`. Use `contDiffOn_piLp' 2 fun j x hx => ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Establish `hU : IsOpen ((WithLp.toLp 2 : (Fin d → ℂ) → EuclideanSpace ℂ (Fin d)) ⁻¹' Ω)` using `hΩ.preimage (PiLp.continuous_toLp 2 _)`. Establish `hg : DifferentiableOn ℂ (fun w : Fin d → ℂ => F (WithLp.toLp 2 w) j) ((WithLp.toLp 2 : (Fin d → ℂ) → EuclideanSpace ℂ (Fin d)) ⁻¹' Ω)` using `fun w hw => (((differentiableAt_piLp 2).1 (hF.differentiableAt (hΩ.mem_nhds hw)) j).comp w (PiLp.hasFDerivAt_toLp (𝕜 := ℂ) 2 w).differentiableAt).differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((ReciprocityTheory.AnForm.Osgood.osgood d _ _ hU hg (WithLp.ofLp x) hx).contDiffAt).comp x PiLp.contDiff_ofLp.contDiffAt`. Establish `hFc : ContDiffOn ℝ 1 F Ω` using `hFcC.restrict_scalars ℝ`. Establish `hd : finrank ℝ (EuclideanSpace ℂ (Fin d)) = 2 * d`. Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace_fin]`. Establish `hm : finrank ℝ (EuclideanSpace ℂ (Fin m)) = 2 * m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace_fin]`. Take `⟨φ⟩ : Nonempty (EuclideanSpace ℂ (Fin d) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin (2 * d)))` from `⟨((stdOrthonormalBasis ℝ _).reindex (finCongr hd)).repr⟩`. Take `⟨φm⟩ : Nonempty (EuclideanSpace ℂ (Fin m) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin (2 * m)))` from `⟨((stdOrthonormalBasis ℝ _).reindex (finCongr hm)).repr⟩`. Apply the tactic sequence `obtain ⟨ψ, hψ, hψG⟩ := exists_graph_isometry e φ φm`. Take `⟨F', hF'⟩ : ∃ F' : EuclideanSpace ℝ (Fin (2 * d)) → EuclideanSpace ℝ (Fin (2 * m)), F' = fun y => φm (F (φ.symm y))` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : IsOpen (φ '' Ω)` using `φ.toHomeomorph.isOpenMap Ω hΩ`. Establish `hA' : MeasurableSet (φ '' A)` using `φ.toHomeomorph.measurableEmbedding.measurableSet_image.2 hA`. Establish `hF'c : ContDiffOn ℝ 1 F' (φ '' Ω)`. Rewrite using `[hF']`. Conclude with `φm.toContinuousLinearEquiv.contDiff.comp_contDiffOn (hFc.comp φ.symm.toContinuousLinearEquiv.contDiff.contDiffOn (by rintro _ ⟨y, hy, rfl⟩; simpa using hy))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmp : MeasurePreserving φ μH[((2 * d : ℕ) : ℝ)] μH[((2 * d : ℕ) : ℝ)]` using `φ.toIsometryEquiv.measurePreserving_hausdorffMeasure _`. Establish `himg : (fun x => ψ (graphPt e F x)) '' A = realGraphPt F' '' (φ '' A)`. Rewrite using `[Set.image_image]`. Use `Set.image_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hψG, hF']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[realGraphPt]`. Rewrite using `[← hψ.hausdorffMeasure_image (Or.inl (Nat.cast_nonneg _)) (graphPt e F '' A), Set.image_image, himg, h (2 * d) (2 * m) (φ '' Ω) F' hU hF'c (φ '' A) (Set.image_mono hAΩ) hA', ← hmp.setLIntegral_comp_emb φ.toHomeomorph.measurableEmbedding]`. Use `setLIntegral_congr_fun hA fun x hx => ?_` and prove the remaining obligations. Establish `hFx : HasFDerivAt F (fderiv ℝ F x) x` using `((hF.differentiableAt (hΩ.mem_nhds (hAΩ hx))).restrictScalars ℝ).hasFDerivAt`. Establish `hG : HasFDerivAt (graphPt e F) (fderiv ℝ (graphPt e F) x) x` using `(differentiableAt_graphPt_real e hFx.differentiableAt).hasFDerivAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set K : EuclideanSpace ℝ (Fin (2 * d)) →L[ℝ] EuclideanSpace ℝ (Fin (2 * m)) := (φm.toContinuousLinearEquiv : EuclideanSpace ℂ (Fin m) →L[ℝ] _).comp ((fderiv ℝ F x).comp (φ.symm.toContinuousLinearEquiv : EuclideanSpace ℝ (Fin (2 * d)) →L[ℝ] _)) with hK`. Establish `hF'x : HasFDerivAt F' K (φ x)`. Rewrite using `[hF']`. Conclude with `φm.toContinuousLinearEquiv.hasFDerivAt.comp _ ((by simpa using hFx : HasFDerivAt F (fderiv ℝ F x) (φ.symm (φ x))).comp _ φ.symm.toContinuousLinearEquiv.hasFDerivAt)`. Simplify using `only [hF'x.fderiv, areaJacobian]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Rewrite using `[adjoint_comp_self_of_norm _ ((K : EuclideanSpace ℝ (Fin (2 * d)) →ₗ[ℝ] EuclideanSpace ℝ (Fin (2 * m))) ∘ₗ φ.toLinearMap), det_one_add_comp]`. Introduce `v`. Simplify using `only [ContinuousLinearMap.coe_coe]`. Rewrite using `[hasFDerivAt_graphPt_apply e hFx hG v, norm_sq_sumElim]`.
-
-Simplify using `[hK]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GraphAreaHolomorphic.proof (h : AreaGraph.Statement) : GraphAreaHolomorphic.Statement := by
   intro d m n e Ω F hΩ hF A hAΩ hA

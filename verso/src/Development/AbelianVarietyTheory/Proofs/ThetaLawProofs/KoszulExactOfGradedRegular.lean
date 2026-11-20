@@ -15,7 +15,7 @@ def dd (x : Fin g → ∀ j, V (j + 1) →ₗ[K] V j) (r : ℕ) (c : Finset (Fin
     (-1 : K) ^ (I.filter (· < i)).card • x i j (c (insert i I) (j + 1)) else 0
 
 /- English proof (translation)
-Unfold `dd`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hi`. Rewrite using `[h i hi.1 hi.2]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dd_congr (x : Fin g → ∀ j, V (j + 1) →ₗ[K] V j) (r : ℕ) (c c' : Finset (Fin g) → ∀ j, V j)
     (I : Finset (Fin g)) (j : ℕ)
@@ -28,11 +28,11 @@ theorem dd_congr (x : Fin g → ∀ j, V (j + 1) →ₗ[K] V j) (r : ℕ) (c c' 
   · rfl
 
 /- English proof (translation)
-Establish `htI : t ∉ I` using `fun h => lt_irrefl _ (hI t h)`. Establish `hfil : I.filter (· < t) = I` using `Finset.filter_true_of_mem fun k hk => hI k hk`. Unfold `dd`. Rewrite using `[show (-1 : K) ^ I.card • x t j (c (insert t I) (j + 1)) = ∑ i : Fin g, if i = t then (-1 : K) ^ (I.filter (· < i)).card • x i j (c (insert i I) (j + 1)) else 0 by`. Rewrite using `[Finset.sum_ite_eq' Finset.univ t, if_pos (Finset.mem_univ t), hfil]]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : i = t`. Substitute `h1` using the available equality. Simplify using `[htI]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h2 : i.val < t.val + 1 ↔ i.val < t.val` using `⟨fun h => lt_of_le_of_ne (Nat.lt_succ_iff.mp h) (fun e => h1 (Fin.ext e)), Nat.lt_succ_of_lt⟩`. Simplify using `only [h2, h1, if_false, add_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dd_succ (x : Fin g → ∀ j, V (j + 1) →ₗ[K] V j) (t : Fin g) (c : Finset (Fin g) → ∀ j, V j)
     (I : Finset (Fin g)) (hI : ∀ k ∈ I, k.val < t.val) (j : ℕ) :
@@ -54,11 +54,11 @@ theorem dd_succ (x : Fin g → ∀ j, V (j + 1) →ₗ[K] V j) (t : Fin g) (c : 
     simp only [h2, h1, if_false, add_zero]
 
 /- English proof (translation)
-Unfold `dd`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hit : i.val < t.val`. Establish `hne : i ≠ t` using `fun h => by rw [h] at hit; exact lt_irrefl _ hit`. Establish `hf : (insert t I).filter (· < i) = I.filter (· < i)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.filter_insert, if_neg (fun h : t < i => absurd (lt_trans hit h) (lt_irrefl _))]`. Establish `hmem : i ∉ insert t I ↔ i ∉ I` using `by simp [hne]`. Rewrite using `[hf, Finset.insert_comm i t]`. Simplify using `only [hmem, Nat.lt_succ_of_lt hit, hit, true_and]`. Establish `h1 : ¬ (i.val < t.val + 1 ∧ i ∉ insert t I)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `⟨h, hi⟩`. Break down `Nat.lt_succ_iff_lt_or_eq.mp h with h | h` into its components or cases. Conclude with `hit h`. Conclude with `hi (Finset.mem_insert.mpr (Or.inl (Fin.ext h)))`. Rewrite using `[if_neg h1, if_neg (fun h => hit h.1)]`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dd_succ_insert (x : Fin g → ∀ j, V (j + 1) →ₗ[K] V j) (t : Fin g)
     (c : Finset (Fin g) → ∀ j, V j) (I : Finset (Fin g)) (j : ℕ) :
@@ -80,13 +80,13 @@ theorem dd_succ_insert (x : Fin g → ∀ j, V (j + 1) →ₗ[K] V j) (t : Fin g
     rw [if_neg h1, if_neg (fun h => hit h.1)]
 
 /- English proof (translation)
-Use `Submodule.iSup_induction (fun i => ⨆ (_ : i < t), LinearMap.range (f i)) (motive := fun y => ∃ z : Fin g → A, y = ∑ i : Fin g, if i.val < t.val then f i (z i) else 0) hy ?_ ?_ ?_` and prove the remaining obligations. Introduce `i y hy`. Distinguish the cases in `hi : i < t`. Rewrite `hy` using `[iSup_pos hi]`. Take `⟨a, rfl⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨Pi.single i a, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[if_pos (Fin.lt_def.mp hi), Pi.single_eq_same]`. Introduce `k _ hk`. Rewrite using `[Pi.single_eq_of_ne hk, map_zero, ite_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Rewrite `hy` using `[iSup_neg hi, Submodule.mem_bot]`. Conclude with `⟨0, by simp [hy]⟩`. Conclude with `⟨0, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y₁ y₂ ⟨z₁, rfl⟩ ⟨z₂, rfl⟩`. Use `⟨z₁ + z₂, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_sum_of_mem_iSup {A B : Type} [AddCommGroup A] [AddCommGroup B] [Module K A]
     [Module K B] (f : Fin g → A →ₗ[K] B) (t : Fin g) (y : B)
@@ -116,9 +116,7 @@ theorem exists_sum_of_mem_iSup {A B : Type} [AddCommGroup A] [AddCommGroup B] [M
     split_ifs <;> simp
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `n hn`. Take `⟨k, hk, rfl⟩` from `Finset.mem_image.mp hn`. Conclude with `Finset.mem_range.mpr (hI k hk)`.
-
-Use `_ = r := Finset.card_range r`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_le_of_lt (I : Finset (Fin g)) (r : ℕ) (hI : ∀ k ∈ I, k.val < r) : I.card ≤ r := by
   calc I.card = (I.image Fin.val).card := (Finset.card_image_of_injective _ Fin.val_injective).symm
@@ -130,59 +128,51 @@ theorem card_le_of_lt (I : Finset (Fin g)) (r : ℕ) (hI : ∀ k ∈ I, k.val < 
     _ = r := Finset.card_range r
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Introduce `j₀ _ c _`. Use `⟨c, fun I hI hne j _ => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Finset.nonempty_iff_ne_empty.mpr hne`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (hI k hk) (Nat.not_lt_zero _)`. Consider the case `succ r ih`. Introduce `j₀ hj₀ c hcyc`. Take `⟨t, htv⟩ : ∃ t : Fin g, t.val = r` from `⟨⟨r, by omega⟩, rfl⟩`. Establish `hsub : ∀ I : Finset (Fin g), (∀ k ∈ I, k.val < r) → ∀ k ∈ I, k.val < r + 1` using `fun I hI k hk => Nat.lt_succ_of_lt (hI k hk)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : ∀ I : Finset (Fin g), (∀ k ∈ I, k.val < r) → ∀ k ∈ I, k.val < t.val`. Introduce `I hI k hk`. Rewrite using `[htv]`. Conclude with `hI k hk`. Establish `htI : ∀ I : Finset (Fin g), (∀ k ∈ I, k.val < r) → t ∉ I`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `I hI h`. Use `hI t h` as an intermediate fact. Rewrite `this` using `[htv]`. Conclude with `lt_irrefl _ this`. Establish `hins : ∀ I : Finset (Fin g), (∀ k ∈ I, k.val < r) → ∀ k ∈ insert t I, k.val < r + 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `I hI k hk`. Break down `Finset.mem_insert.mp hk with rfl | hk` into its components or cases. Rewrite using `[htv]`. Conclude with `Nat.lt_succ_self r`. Conclude with `Nat.lt_succ_of_lt (hI k hk)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hC2 : ∀ J : Finset (Fin g), (∀ k ∈ J, k.val < r) → ∀ j, j = (j₀ + 1) + J.card → dd x r (fun J => c (insert t J)) J j = 0`. Introduce `J hJ j hj`. Establish `h1` using `hcyc (insert t J) (hins J hJ) j (by rw [Finset.card_insert_of_notMem (htI J hJ)]; omega)`. Establish `e` using `dd_succ_insert x t c J j`. Rewrite `e` using `[htv]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e]`. Conclude with `h1`. Take `⟨u, hu⟩` from `ih (j₀ + 1) (by omega) (fun J => c (insert t J)) hC2`. Establish `h0` using `hcyc ∅ (by simp) j₀ (by simp)`. Establish `e0` using `dd_succ x t c ∅ (by simp) j₀`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e0` using `[htv, h0]`. Establish `hmem : x t j₀ (c (insert t ∅) (j₀ + 1)) ∈ ⨆ (i' : Fin g) (_ : i' < t), LinearMap.range (x i' j₀)`. Establish `hsum : dd x r c ∅ j₀ ∈ ⨆ (i' : Fin g) (_ : i' < t), LinearMap.range (x i' j₀)`. Unfold `dd`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs with hi`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hit : i < t` using `Fin.lt_def.mpr (by rw [htv]; exact hi.1)`. Conclude with `Submodule.mem_iSup_of_mem i (Submodule.mem_iSup_of_mem hit (LinearMap.mem_range_self _ _))`. Conclude with `Submodule.zero_mem _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e1 : x t j₀ (c (insert t ∅) (j₀ + 1)) = -dd x r c ∅ j₀`. Rewrite `e0` using `[Finset.card_empty, pow_zero, one_smul]`. Conclude with `eq_neg_of_add_eq_zero_right e0.symm`. Rewrite using `[e1]`. Conclude with `Submodule.neg_mem _ hsum`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy` using `hr t j₀ (c (insert t ∅) (j₀ + 1)) (by rw [htv]; omega) hmem`. Take `⟨z, hz⟩` from `exists_sum_of_mem_iSup (fun i => x i (j₀ + 1)) t _ hy`. Set `w₁ : Finset (Fin g) → ∀ j, V j` to `fun J => if J.card = 1 then Function.update (0 : ∀ j, V j) (j₀ + 1 + 1) (∑ i, if J = {i} then z i else 0) else u J`. Establish `hw₁ : ∀ J : Finset (Fin g), (∀ k ∈ J, k.val < r) → ∀ j, j = j₀ + 1 + J.card → c (insert t J) j = dd x r w₁ J j`. Introduce `J hJ j hj`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `J.eq_empty_or_nonempty with rfl | hne` into its components or cases. Rewrite `hj` using `[Finset.card_empty, add_zero]`. Substitute `hj` using the available equality. Rewrite using `[hz]`. Unfold `dd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i.val < r`. Rewrite using `[if_pos (by rw [htv]; exact hi), if_pos ⟨hi, Finset.notMem_empty i⟩]`. Simplify using `[w₁]`. Rewrite using `[if_neg (by rw [htv]; exact hi), if_neg (fun h => hi h.1)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dd_congr x r w₁ u J j (fun i hi hiJ => ?_)]`. Conclude with `hu J hJ hne.ne_empty j hj`. Establish `hc1 : (insert i J).card ≠ 1`. Rewrite using `[Finset.card_insert_of_notMem hiJ]`. Use `hne.card_pos` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [w₁, if_neg hc1]`. Set `d : Finset (Fin g) → ∀ j, V j` to `fun I j => c I j - (-1 : K) ^ I.card • x t j (w₁ I (j + 1))`. Establish `hdcyc : ∀ I : Finset (Fin g), (∀ k ∈ I, k.val < r) → ∀ j, j = j₀ + I.card → dd x r d I j = 0`. Introduce `I hI j hj`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hcI` using `hcyc I (hsub I hI) j hj`. Establish `e` using `dd_succ x t c I (hlt I hI) j`. Rewrite `e` using `[htv, hcI]`. Establish `hcw` using `hw₁ I hI (j + 1) (by rw [hj]; ring)`. Rewrite `e` using `[hcw]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Unfold `dd`. Rewrite using `[map_sum, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hi`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcard : (insert i I).card ≤ r` using `card_le_of_lt (insert i I) r (by`. Introduce `k hk`. Break down `Finset.mem_insert.mp hk with rfl | hk` into its components or cases. Conclude with `hi.1`. Conclude with `hI k hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `hcard` using `[Finset.card_insert_of_notMem hi.2]`. Simplify using `only [d, map_sub, map_smul, Finset.card_insert_of_notMem hi.2]`. Rewrite using `[hc i t j _ (by omega), pow_succ]`. Use `module`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w₀, hw₀⟩` from `ih j₀ (by omega) d hdcyc`. Use `⟨fun I => if t ∈ I then w₁ (I.erase t) else w₀ I, ?_⟩` and prove the remaining obligations. Introduce `I hI hne j hj`. Distinguish the cases in `htI' : t ∈ I`. Take `⟨J, htJ, rfl⟩ : ∃ J, t ∉ J ∧ I = insert t J` from `⟨I.erase t, Finset.notMem_erase t I, (Finset.insert_erase htI').symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hJ : ∀ k ∈ J, k.val < r`. Introduce `k hk`. Establish `h1` using `hI k (Finset.mem_insert_of_mem hk)`. Establish `h2 : k.val ≠ r` using `fun h => htJ (by rwa [show k = t from Fin.ext (h.trans htv.symm)] at hk)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `dd_succ_insert x t (fun I => if t ∈ I then w₁ (I.erase t) else w₀ I) J j`. Rewrite `e` using `[htv]`. Rewrite using `[e, dd_congr x r _ w₁ J j (fun i hi hiJ => ?_)]`. Conclude with `hw₁ J hJ j (by rw [hj, Finset.card_insert_of_notMem htJ]; ring)`. Establish `hti : t ∉ insert i J`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_insert, not_or]`. Use `⟨fun h => ?_, htJ⟩` and prove the remaining obligations. Rewrite `hi` using `[← h, htv]`. Conclude with `lt_irrefl _ hi`. Simplify using `only [Finset.mem_insert_self, ↓reduceIte, Finset.erase_insert hti]`.
-
-Establish `hI' : ∀ k ∈ I, k.val < r`. Introduce `k hk`. Establish `h1` using `hI k hk`. Establish `h2 : k.val ≠ r` using `fun h => htI' (by rwa [show k = t from Fin.ext (h.trans htv.symm)] at hk)`. Use linear arithmetic over natural numbers and integers.
-
-Establish `e` using `dd_succ x t (fun I => if t ∈ I then w₁ (I.erase t) else w₀ I) I (hlt I hI') j`. Rewrite `e` using `[htv]`. Rewrite using `[e, dd_congr x r _ w₀ I j (fun i hi hiI => ?_)]`. Simplify using `only [Finset.mem_insert_self, ↓reduceIte, Finset.erase_insert htI']`. Establish `h1` using `hw₀ I hI' hne j hj`.
-
-Simplify using `only [d] at h1`. Rewrite using `[← h1, sub_add_cancel]`. Establish `hti : t ∉ insert i I`. Rewrite using `[Finset.mem_insert, not_or]`. Use `⟨fun h => ?_, htI'⟩` and prove the remaining obligations.
-
-Rewrite `hi` using `[← h, htv]`. Conclude with `lt_irrefl _ hi`. Simplify using `only [hti, ↓reduceIte]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exact_dd (x : Fin g → ∀ j, V (j + 1) →ₗ[K] V j)
     (hc : ∀ i i' j (y : V (j + 2)), j + 2 ≤ g → x i j (x i' (j + 1) y) = x i' j (x i (j + 1) y))
@@ -336,15 +326,15 @@ theorem exact_dd (x : Fin g → ∀ j, V (j + 1) →ₗ[K] V j)
 end Abstract
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Finset.univ_eq_empty, Finset.sum_empty, add_zero, kosD]`. Rewrite using `[Fintype.sum_sigma]`. Unfold `dd`. Simplify using `only [Finset.sum_apply, h, Finset.sum_mul, ite_mul, zero_mul]`. Establish `hL : ∀ J : Finset (Fin g), (∑ b : Fin (N J.card), ∑ i : Fin g, if i ∉ I ∧ J = insert i I then (-1 : K) ^ (I.filter (· < i)).card * m i I.card J.card a b * c J J.card b else 0) = ∑ i : Fin g, if i ∉ I ∧ J = insert i I then (-1 : K) ^ (I.filter (· < i)).card * ∑ b : Fin (N J.card), …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `J`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl fun J _ => hL J, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ I`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hi]`. Rewrite using `[Finset.sum_eq_single (insert i I)]`. Rewrite using `[if_pos ⟨hi, rfl⟩, if_pos ⟨i.isLt, hi⟩]`. Simplify using `only [Pi.smul_apply, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, smul_eq_mul]`. Rewrite using `[Finset.card_insert_of_notMem hi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `J _ hJ`. Rewrite using `[if_neg (fun h' => hJ h'.2)]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kosD_mulVec {K : Type} [CommRing K] {g : ℕ} {N : ℕ → ℕ}
     (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K) (w : KIx g 0 N → K)
@@ -383,15 +373,15 @@ theorem kosD_mulVec {K : Type} [CommRing K] {g : ℕ} {N : ℕ → ℕ}
       exact absurd (Finset.mem_univ _) h'
 
 /- English proof (translation)
-Introduce `K _ g N m hcomm hreg v hv`. Set `x : Fin g → ∀ j, (Fin (N (j + 1)) → K) →ₗ[K] (Fin (N j) → K)` to `fun i j => (m i j (j + 1)).mulVecLin`. Establish `hc : ∀ i i' j (y : Fin (N (j + 2)) → K), j + 2 ≤ g → x i j (x i' (j + 1) y) = x i' j (x i (j + 1) y)`. Introduce `i i' j y hj`. Simplify using `only [x, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hcomm i i' j hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hr' : ∀ (i : Fin g) (j : ℕ) (y : Fin (N (j + 1)) → K), j + 1 + i ≤ g → x i j y ∈ (⨆ (i' : Fin g) (_ : i' < i), LinearMap.range (x i' j)) → y ∈ ⨆ (i' : Fin g) (_ : i' < i), LinearMap.range (x i' (j + 1))` using `fun i j y hj hy => hreg i j y hj hy`. Set `c : Finset (Fin g) → ∀ j, Fin (N j) → K` to `fun I => Function.update (0 : ∀ j, Fin (N j) → K) I.card (fun a => v (.inl ⟨I, a⟩))`. Establish `hcv : ∀ (I : Finset (Fin g)) (a : Fin (N I.card)), v (.inl ⟨I, a⟩) = c I I.card a`. Introduce `I a`. Simplify using `[c]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hcyc : ∀ I : Finset (Fin g), (∀ k ∈ I, k.val < g) → ∀ j, j = 0 + I.card → dd x g c I j = 0`. Introduce `I _ j hj`. Rewrite `hj` using `[zero_add]`. Substitute `hj` using the available equality. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `kosD_mulVec m v c hcv I a`. Rewrite `h1` using `[hv]`. Conclude with `h1.symm`. Take `⟨w', hw'⟩` from `exact_dd x hc hr' g 0 (by simp) c hcyc`. Set `W : KIx g 0 N → K` to `fun q => Sum.elim (fun p => w' p.1 p.1.card p.2) (fun _ => 0) q`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨W, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨I, a⟩ hI`. Rewrite using `[kosD_mulVec m W w' (fun I a => rfl) I a, hcv I a, hw' I (fun k _ => k.isLt) hI I.card (by rw [zero_add])]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem koszul_exact_of_graded_regular : ∀ (K : Type) [CommRing K] (g : ℕ) (N : ℕ → ℕ) (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) K), (∀ i i' j, j + 2 ≤ g → m i j (j + 1) * m i' (j + 1) (j + 2) = m i' j (j + 1) * m i (j + 1) (j + 2)) → (∀ (i : Fin g) (j : ℕ) (y : Fin (N (j + 1)) → K), j + 1 + i ≤ g → (m i j (j + 1)).mulVec y ∈ (⨆ (i' : Fin g) (_ : i' < i), LinearMap.range (m i' j (j + 1)).mulVecLin) → y ∈ ⨆ (i' : Fin g) (_ : i' < i), LinearMap.range (m i' (j + 1) (j + 2)).mulVecLin) → ∀ v : KIx g 0 N → K, (kosD m (fun _ => 0)).mulVec v = 0 → ∃ w : KIx g 0 N → K, ∀ p : (Σ I : Finset (Fin g), Fin (N I.card)), p.1 ≠ ∅ → v (.inl p) = (kosD m (fun _ => 0)).mulVec w (.inl p) := by
   intro K _ g N m hcomm hreg v hv

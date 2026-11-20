@@ -15,35 +15,35 @@ def extM (_hN : N = n + 1) (g : Matrix (Fin n) (Fin n) A) : Matrix (Fin N) (Fin 
   if ha : a.1 < n then (if hb : b.1 < n then g ⟨a.1, ha⟩ ⟨b.1, hb⟩ else 0) else if b.1 < n then 0 else 1
 
 /- English proof (translation)
-Simplify using `[extM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extM_castSucc (g : Matrix (Fin n) (Fin n) A) (i j : Fin n) :
     extM (rfl : n + 1 = n + 1) g i.castSucc j.castSucc = g i j := by
   simp [extM]
 
 /- English proof (translation)
-Simplify using `[extM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extM_castSucc_last (g : Matrix (Fin n) (Fin n) A) (i : Fin n) :
     extM (rfl : n + 1 = n + 1) g i.castSucc (Fin.last n) = 0 := by
   simp [extM]
 
 /- English proof (translation)
-Simplify using `[extM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extM_last_castSucc (g : Matrix (Fin n) (Fin n) A) (j : Fin n) :
     extM (rfl : n + 1 = n + 1) g (Fin.last n) j.castSucc = 0 := by
   simp [extM]
 
 /- English proof (translation)
-Simplify using `[extM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extM_last_last (g : Matrix (Fin n) (Fin n) A) :
     extM (rfl : n + 1 = n + 1) g (Fin.last n) (Fin.last n) = 1 := by
   simp [extM]
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `e : Br.iC (rfl : n + 1 = n + 1) i = i.castSucc` using `rfl`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, e, extM_castSucc, extM_castSucc_last, zero_mul, add_zero]`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem extM_mulVec_iC (g : Matrix (Fin n) (Fin n) A) (x : Fin N → A) (i : Fin n) :
     (extM hN g *ᵥ x) (Br.iC hN i) = (g *ᵥ iniH hN x) i := by
@@ -53,7 +53,7 @@ theorem extM_mulVec_iC (g : Matrix (Fin n) (Fin n) A) (x : Fin N → A) (i : Fin
   rfl
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `e : Br.iL (rfl : n + 1 = n + 1) = Fin.last n` using `rfl`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, e, extM_last_castSucc, extM_last_last, zero_mul, Finset.sum_const_zero, zero_add, one_mul]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem extM_mulVec_iL (g : Matrix (Fin n) (Fin n) A) (x : Fin N → A) :
     (extM hN g *ᵥ x) (Br.iL hN) = x (Br.iL hN) := by
@@ -63,9 +63,9 @@ theorem extM_mulVec_iL (g : Matrix (Fin n) (Fin n) A) (x : Fin N → A) :
     Finset.sum_const_zero, zero_add, one_mul]
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Use extensionality with `a b`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) a <;> refine Fin.lastCases ?_ (fun j => ?_) b`. Simplify using `[extM_last_last]`. Rewrite using `[extM_last_castSucc, Matrix.one_apply_ne (Fin.castSucc_lt_last j).ne']`.
+Substitute using the available equality. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[extM_castSucc_last, Matrix.one_apply_ne (Fin.castSucc_lt_last i).ne]`. Rewrite using `[extM_castSucc, Matrix.one_apply, Matrix.one_apply]`. Simplify using `[Fin.castSucc_inj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem extM_one : extM hN (1 : Matrix (Fin n) (Fin n) A) = 1 := by
   subst hN
@@ -78,9 +78,9 @@ theorem extM_one : extM hN (1 : Matrix (Fin n) (Fin n) A) = 1 := by
     simp [Fin.castSucc_inj]
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_castSucc]`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) a <;> refine Fin.lastCases ?_ (fun j => ?_) b`. Simplify using `[extM_last_last, extM_last_castSucc]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[extM_last_last, extM_last_castSucc]`. Simplify using `[extM_castSucc_last]`. Simplify using `[extM_castSucc, extM_castSucc_last, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem extM_mul (g h : Matrix (Fin n) (Fin n) A) : extM hN (g * h) = extM hN g * extM hN h := by
   subst hN
@@ -101,14 +101,14 @@ Both sides reduce to the same expression.
 theorem extGL_val (g : GL (Fin n) A) : (extGL hN g : Matrix (Fin N) (Fin N) A) = extM hN g := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_inv, extGL_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extGL_inv_val (g : GL (Fin n) A) :
     ((extGL hN g)⁻¹ : GL (Fin N) A).1 = extM hN ((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) := by
   rw [← map_inv, extGL_val]
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Use extensionality with `a b`. Use `Fin.lastCases ?_ (fun j => ?_) b` and prove the remaining obligations. Conclude with `h2 a`. Conclude with `h1 a j`.
+Substitute using the available equality. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_extM {M : Matrix (Fin N) (Fin N) A} {g : Matrix (Fin n) (Fin n) A}
     (h1 : ∀ (a : Fin N) (j : Fin n), M a (Br.iC hN j) = extM hN g a (Br.iC hN j))

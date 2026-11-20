@@ -23,7 +23,7 @@ section Ord
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Unfold `ordL`. Use `split_ifs with h`. Simplify using `[h]`. Rewrite using `[WithZero.toAdd_unzero_eq_log]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordL_eq_neg_log' (x : L) : ordL x = -WithZero.log (Valued.v x) := by
   unfold ordL
@@ -32,13 +32,13 @@ theorem ordL_eq_neg_log' (x : L) : ordL x = -WithZero.log (Valued.v x) := by
   · rw [WithZero.toAdd_unzero_eq_log]
 
 /- English proof (translation)
-Rewrite using `[ordL_eq_neg_log', neg_neg, WithZero.exp_log ((Valuation.ne_zero_iff _).2 hx)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem v_eq_exp_ordL {x : L} (hx : x ≠ 0) : Valued.v x = WithZero.exp (-ordL x) := by
   rw [ordL_eq_neg_log', neg_neg, WithZero.exp_log ((Valuation.ne_zero_iff _).2 hx)]
 
 /- English proof (translation)
-Establish `h` using `v_eq_exp_ordL (mul_ne_zero hx hy)`. Rewrite `h` using `[map_mul, v_eq_exp_ordL hx, v_eq_exp_ordL hy, ← WithZero.exp_add, WithZero.exp_inj]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ordL_mul'' {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL x + ordL y := by
   have h := v_eq_exp_ordL (mul_ne_zero hx hy)
@@ -46,7 +46,7 @@ theorem ordL_mul'' {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL
   linarith
 
 /- English proof (translation)
-Establish `h` using `v_eq_exp_ordL (inv_ne_zero hx)`. Rewrite `h` using `[map_inv₀, v_eq_exp_ordL hx, ← WithZero.exp_neg, WithZero.exp_inj]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ordL_inv'' {x : L} (hx : x ≠ 0) : ordL x⁻¹ = -ordL x := by
   have h := v_eq_exp_ordL (inv_ne_zero hx)
@@ -54,13 +54,13 @@ theorem ordL_inv'' {x : L} (hx : x ≠ 0) : ordL x⁻¹ = -ordL x := by
   linarith
 
 /- English proof (translation)
-Rewrite using `[v_eq_exp_ordL hx, h, neg_zero, WithZero.exp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem v_eq_one_of_ordL {x : L} (hx : x ≠ 0) (h : ordL x = 0) : Valued.v x = 1 := by
   rw [v_eq_exp_ordL hx, h, neg_zero, WithZero.exp_zero]
 
 /- English proof (translation)
-Establish `hx : (x : L) ≠ 0` using `x.ne_zero`. Establish `h` using `v_eq_exp_ordL ((x ^ k).ne_zero)`. Rewrite `h` using `[Units.val_zpow_eq_zpow_val, map_zpow₀, v_eq_exp_ordL hx, ← WithZero.exp_zsmul, WithZero.exp_inj]`. Rewrite using `[Units.val_zpow_eq_zpow_val]`. Simplify using `only [smul_eq_mul] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -83,21 +83,21 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-Rewrite using `[ordL_eq_neg_log', ordL_eq_neg_log', (GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.2.1 x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordL_cj (hU : Unr E) (w : Pl E) (x : w.adicCompletion E) : ordL (cj w x) = ordL x := by
   rw [ordL_eq_neg_log', ordL_eq_neg_log', (GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.2.1 x]
 
 /- English proof (translation)
-Establish `hth : ∀ g : GLw a w, thL a w g = PhiU a _ * invT a _ (GeneralLinearGroup.map (cj w) g) * (PhiU a _)⁻¹`. Introduce `g`. Simplify using `only [thL, if_neg hw]`. Both sides reduce to the same expression. Rewrite using `[hth, mul_inv_eq_iff_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `h1 : ((invT a _ (GeneralLinearGroup.map (cj w) (GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin a) d)) : GLw a w) : Matrix (Fin a) (Fin a) (w.adicCompletion E)) = Matrix.diagonal fun i => cj w (((d i)⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E)`. Express the relevant statement in the definitionally equal form `((((GeneralLinearGroup.map (cj w) (GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin a) d))⁻¹ : GLw a w) : Matrix (Fin a) (Fin a) (w.adicCompletion E)))ᵀ = _`. Rewrite using `[← map_inv, ← map_inv]`. Express the relevant statement in the definitionally equal form `((GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin a) d⁻¹ : GLw a w).val.map (cj w))ᵀ = _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.SmGL.val_diagT, diagonal_map (map_zero _), diagonal_transpose]`. Both sides reduce to the same expression. Rewrite using `[Units.val_mul, Units.val_mul, h1, GlobalTheory.SmGL.val_diagT]`. Express the relevant statement in the definitionally equal form `GlobalTheory.Tw.Phi a _ * _ = _ * GlobalTheory.Tw.Phi a _`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components.
 
-Rewrite using `[mul_diagonal, diagonal_mul]`. Simplify using `only [GlobalTheory.Tw.Phi, Matrix.of_apply]`. Use `split_ifs with hij`. Establish `hj : j = i.rev` using `Fin.ext (by rw [Fin.val_rev]; omega)`. Substitute `hj` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thL_diagT (w : Pl E) (hw : ¬ IsSplitAt w) (a : ℕ) (d : Fin a → (w.adicCompletion E)ˣ) :
     thL a w (GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin a) d) =
@@ -127,11 +127,11 @@ theorem thL_diagT (w : Pl E) (hw : ¬ IsSplitAt w) (a : ℕ) (d : Fin a → (w.a
   · simp
 
 /- English proof (translation)
-Establish `hc : C (cj w (Q.coeff 0)) * Q = (Q.map (cj w)).reverse` using `hcsr.resolve_left hw`. Establish `hcu : cj w u ≠ 0` using `(map_ne_zero (cj w)).2 hu0`. Set `_ : Invertible (cj w u)` to `invertibleOfNonzero hcu`. Establish `h2 : (Q.map (cj w)).eval (cj w u) = 0` using `by rw [eval_map, eval₂_at_apply, hu, map_zero]`. Establish `h1 : ((Q.map (cj w)).reverse).eval (cj w u)⁻¹ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(eval₂_reverse_eq_zero_iff (RingHom.id _) (cj w u) (Q.map (cj w))).2 h2` as an intermediate fact. Rewrite `this` using `[invOf_eq_inv]`. Then use the resulting hypothesis. Rewrite `h1` using `[← hc, eval_mul, eval_C]`. Establish `h0 : cj w (Q.coeff 0) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc` using `[h, C_0, zero_mul]`. Conclude with `hQ ((Polynomial.map_eq_zero (cj w)).1 (reverse_eq_zero.1 hc.symm))`. Conclude with `(mul_eq_zero.1 h1).resolve_left h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem csr_root (w : Pl E) (hw : ¬ IsSplitAt w) (Q : (w.adicCompletion E)[X]) (hQ : Q ≠ 0) (hcsr : IsCsr w Q)
     (u : w.adicCompletion E) (hu0 : u ≠ 0) (hu : Q.eval u = 0) : Q.eval (cj w u)⁻¹ = 0 := by
@@ -150,11 +150,9 @@ theorem csr_root (w : Pl E) (hw : ¬ IsSplitAt w) (Q : (w.adicCompletion E)[X]) 
   exact (mul_eq_zero.1 h1).resolve_left h0
 
 /- English proof (translation)
-Establish `hQ0 : Q ≠ 0`. Rewrite using `[hQu]`. Conclude with `(monic_prod_of_monic _ _ fun j _ => monic_X_sub_C (u j)).ne_zero`. Establish `hr` using `csr_root w hw Q hQ0 hQ (u i) (hu0 i) (by rw [hQu, eval_prod]; exact Finset.prod_eq_zero (Finset.mem_univ i) (by simp))`. Rewrite `hr` using `[hQu, eval_prod, Finset.prod_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j, -, hj⟩` from `hr`. Rewrite `hj` using `[eval_sub, eval_X, eval_C, sub_eq_zero]`. Establish `hvj : v j = v i.rev`. Rewrite using `[← huv j, ← hj, ordL_inv'' ((_root_.map_ne_zero _).2 (hu0 i)), ordL_cj hU, huv, hvr]`. Rewrite using `[← hv hvj]`.
-
-Conclude with `hj.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_pair (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) {m : ℕ} (v : Fin m → ℤ) (hv : Function.Injective v)
     (hvr : ∀ i, v i.rev = -v i) (Q : (w.adicCompletion E)[X]) (hQ : IsCsr w Q) (u : Fin m → w.adicCompletion E)
@@ -173,7 +171,7 @@ theorem root_pair (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) {m : ℕ} (v : F
   exact hj.symm
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `h1` using `hy hij`. Establish `h2` using `hy (Fin.rev_lt_rev.2 hij)`. Simplify using `only [nv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nv_strictAnti {a : ℕ} {y : Fin a → ℤ} (hy : StrictAnti y) : StrictAnti (nv y) := by
   intro i j hij
@@ -183,17 +181,17 @@ theorem nv_strictAnti {a : ℕ} {y : Fin a → ℤ} (hy : StrictAnti y) : Strict
   linarith
 
 /- English proof (translation)
-Simplify using `[nv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nv_rev {a : ℕ} (y : Fin a → ℤ) (i : Fin a) : nv y i.rev = -nv y i := by
   simp [nv]
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.T.iwahori_and_maximal_compact_criteria E w n _).1]`. Establish `hinv : ((GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) s)⁻¹ : GLw n w) = GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) s⁻¹` using `(map_inv _ _).symm`. Use `⟨fun i j => ?_, fun i j => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SmGL.val_diagT, diagonal_apply] split_ifs with h`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[hs]`. Simplify using the standard rewrite rules. Rewrite using `[hinv, GlobalTheory.SmGL.val_diagT, diagonal_apply] split_ifs with h`. Substitute `h` using the available equality. Simplify using `[Units.val_inv_eq_inv_val, map_inv₀, hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.SmGL.val_diagT, diagonal_apply_ne _ (ne_of_gt hij)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem diagT_mem_iwGL' (w : Pl E) (n : ℕ) (s : Fin n → (w.adicCompletion E)ˣ)
     (hs : ∀ i, Valued.v (s i : w.adicCompletion E) = 1) : GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) s ∈ iwGL n w := by
@@ -213,41 +211,39 @@ theorem diagT_mem_iwGL' (w : Pl E) (n : ℕ) (s : Fin n → (w.adicCompletion E)
     simp
 
 /- English proof (translation)
-Simplify using `only [nrmL, thL, if_neg hw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrmL_eq (w : Pl E) (hw : ¬ IsSplitAt w) (a : ℕ) (g : GLw a w) : nrmL a w g = g * thL a w g := by
   simp only [nrmL, thL, if_neg hw]
 
 /- English proof (translation)
-Use `set U : Fin a → (w.adicCompletion E)ˣ := fun i => Units.mk0 (u i) (hu0 i) with hUdef`. Use `set P : Fin a → (w.adicCompletion E)ˣ := fun i => ϖ ^ y i with hPdef`. Establish `hcϖ : cjU w ϖ = ϖ` using `Units.ext hϖ.2`. Establish `hcP : ∀ i, cjU w (P i) = P i` using `fun i => by simp only [hPdef, map_zpow, hcϖ]`. Establish `hcc : ∀ x, cj w (cj w x) = x` using `(GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUr : ∀ i, U i.rev = (cjU w (U i))⁻¹` using `fun i => Units.ext (by simp [hUdef, hrev])`. Establish `hoP : ∀ i, ordL (P i : w.adicCompletion E) = y i` using `fun i => by`. Rewrite using `[hPdef, ordL_zpow_units, hϖ.1, mul_one]`. Use `set c : Fin a → (w.adicCompletion E)ˣ := fun i => U i * P i.rev * (P i)⁻¹ with hcdef`. Establish `hcv : ∀ i, Valued.v (c i : w.adicCompletion E) = 1` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `v_eq_one_of_ordL (c i).ne_zero` to reduce the goal to its premises. Simplify using `only [hcdef, Units.val_mul]`. Rewrite using `[ordL_mul'' (mul_ne_zero (U i).ne_zero (P i.rev).ne_zero) (P i)⁻¹.ne_zero, ordL_mul'' (U i).ne_zero (P i.rev).ne_zero, Units.val_inv_eq_inv_val, ordL_inv'' (P i).ne_zero, hoP, hoP]`. Simplify using `only [hUdef, Units.val_mk0, hu, nv]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmid : ∀ i, i.rev = i → ∃ Z : (w.adicCompletion E)ˣ, Valued.v (Z : w.adicCompletion E) = 1 ∧ c i * cjU w Z = Z` using `fun i hi => by`. Establish `h1 : (c i : w.adicCompletion E) * cj w (c i) = 1`. Establish `: c i = U i` using `by simp only [hcdef, hi, mul_inv_cancel_right]`. Rewrite using `[this]`. Establish `h2` using `hUr i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h2` using `[hi]`. Establish `h3 : U i * cjU w (U i) = 1` using `by rw [← inv_inv (cjU w (U i)), ← h2, mul_inv_cancel]`. Simplify using `using congrArg Units.val h3`. Take `⟨z, hz, hz'⟩` from `norm_one_eq_unit_div_conj hU w hw _ h1`. Establish `hz0 : z ≠ 0` using `by intro h; rw [h, map_zero] at hz; exact zero_ne_one hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨Units.mk0 z hz0, hz, Units.ext (by simpa using hz')⟩`. Set `τ : Fin a → (w.adicCompletion E)ˣ` to `fun i => if h : i < i.rev then c i else if h' : i.rev = i then Classical.choose (hmid i h') else 1`. Establish `hτv : ∀ i, Valued.v (τ i : w.adicCompletion E) = 1` using `fun i => by`. Simplify using `only [τ]`. Use `split_ifs with h h'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hcv i`. Conclude with `(Classical.choose_spec (hmid i h')).1`. Simplify using the standard rewrite rules. Use `⟨τ, hτv, ?_⟩` and prove the remaining obligations. Establish `key : ∀ i, P i * τ i * (cjU w (P i.rev * τ i.rev))⁻¹ = U i`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Break down `lt_trichotomy i i.rev with h | h | h` into its components or cases. Establish `e1 : τ i = c i` using `by simp only [τ, dif_pos h]`. Establish `e2 : τ i.rev = 1`. Establish `hn : ¬ i.rev < i.rev.rev` using `by rw [Fin.rev_rev]; exact not_lt.2 h.le`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `hn' : ¬ i.rev.rev = i.rev` using `by rw [Fin.rev_rev]; exact h.ne`. Simplify using `only [τ, dif_neg hn, dif_neg hn']`. Rewrite using `[e1, e2, mul_one, hcP, hcdef]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hi : i.rev = i` using `h.symm`. Take `⟨hZv, hZ⟩` from `Classical.choose_spec (hmid i hi)`. Establish `hn : ¬ i < i.rev` using `by rw [hi]; exact lt_irrefl i`. Establish `e1 : τ i = Classical.choose (hmid i hi)` using `by simp only [τ, dif_neg hn, dif_pos hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hc : c i = U i` using `by simp only [hcdef, hi, mul_inv_cancel_right]`. Establish `hU' : U i = Classical.choose (hmid i hi) * (cjU w (Classical.choose (hmid i hi)))⁻¹`. Rewrite using `[← hc]`. Conclude with `eq_mul_inv_of_mul_eq hZ`. Rewrite using `[hi, e1, hU', map_mul, hcP]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Establish `hn : ¬ i < i.rev` using `not_lt.2 h.le`. Establish `hn' : ¬ i.rev = i` using `h.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : τ i = 1` using `by simp only [τ, dif_neg hn, dif_neg hn']`. Establish `hp : i.rev < i.rev.rev` using `by rw [Fin.rev_rev]; exact h`. Establish `e2 : τ i.rev = c i.rev` using `by simp only [τ, dif_pos hp]`. Establish `h3` using `hUr i.rev`. Rewrite `h3` using `[Fin.rev_rev]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, mul_one, hcdef]`. Simplify using `only [Fin.rev_rev]`. Rewrite using `[h3, map_mul, map_mul, map_mul, map_inv, hcP, hcP]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[nrmL_eq w hw, show tdiag ϖ y = GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin a) P from rfl, ← map_mul, thL_diagT w hw, ← map_mul, GlobalTheory.SmGL.val_diagT]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify `congrArg Units.val (key i)` using `[hUdef]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ex_tw (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (ϖ : (w.adicCompletion E)ˣ) (hϖ : IsUnifAt ϖ) (a : ℕ)
     (y : Fin a → ℤ) (u : Fin a → w.adicCompletion E) (hu0 : ∀ i, u i ≠ 0) (hu : ∀ i, ordL (u i) = nv y i)
@@ -334,9 +330,9 @@ theorem ex_tw (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (ϖ : (w.adicComplet
   simpa [hUdef] using congrArg Units.val (key i)
 
 /- English proof (translation)
-Take `⟨u, hQu, hu⟩` from `hv`. Establish `hu0 : ∀ i, u i ≠ 0` using `fun i => (hu i).1`. Establish `huv : ∀ i, ordL (u i) = nv y i` using `fun i => (hu i).2`. Establish `hpair` using `root_pair hU w hw (nv y) (nv_strictAnti hy).injective (nv_rev y) Q hQ u hQu hu0 huv`. Take `⟨τ, hτ, hN⟩` from `ex_tw hU w hw ϖ hϖ a y u hu0 huv hpair`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨tdiag ϖ y * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin a) τ, ?_, ?_⟩` and prove the remaining obligations. Unfold `dcos`. Rewrite using `[if_pos ⟨1, one_mem _, _, diagT_mem_iwGL' w a τ hτ, by rw [one_mul]⟩]`. Conclude with `one_ne_zero`. Rewrite using `[hN, charpoly_diagonal, hQu]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_pf (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (ϖ : (w.adicCompletion E)ˣ) (hϖ : IsUnifAt ϖ) (a : ℕ)
     (y : Fin a → ℤ) (hy : StrictAnti y) (Q : (w.adicCompletion E)[X]) (hm : Q.Monic) (hQ : IsCsr w Q)
@@ -354,15 +350,13 @@ theorem ext_pf (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (ϖ : (w.adicComple
   · rw [hN, charpoly_diagonal, hQu]
 
 /- English proof (translation)
-Take `⟨u, hQu, hu⟩` from `hv`. Establish `hu0 : ∀ i, u i ≠ 0` using `fun i => (hu i).1`. Establish `huv : ∀ i, ordL (u i) = wexp n l i` using `fun i => (hu i).2`. Take `⟨hwa, hwr⟩` from `GlobalTheory.T.weight_exponent_strictly_antitone n l hl`. Establish `hpair` using `root_pair hU w hw (wexp n l) hwa.injective hwr Q hQ u hQu hu0 huv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set U : Fin n → (w.adicCompletion E)ˣ := fun i => Units.mk0 (u i) (hu0 i) with hUdef`. Take `⟨hw1, -, -, hw4⟩` from `GlobalTheory.T.unitary_iwahori_facts E hU w hw n b hb`. Establish `hD : GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) U ∈ UJ (cj w) (antiJ (w.adicCompletion E) n)`. Rewrite using `[hw4]`. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hUdef, Units.val_mk0]`. Rewrite using `[hpair i, mul_inv_cancel₀ ((_root_.map_ne_zero _).2 (hu0 i))]`. Establish `hγ` using `(hw1 _).2 hD`. Use `⟨⟨_, hγ⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.unitary_iwahori_orbital_support E hU w hw n b hb ϖ hϖ l hl ⟨_, hγ⟩ U (fun i => by simpa [hUdef] using huv i) rfl 1 (one_mem _) 1 (one_mem _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[one_mul, mul_one]`. Rewrite using `[h1]`. Conclude with `one_ne_zero`. Express the relevant statement in the definitionally equal form `(b * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) U * b⁻¹ : GLw n w).val.charpoly = Q`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv, charpoly_units_conj, GlobalTheory.SmGL.val_diagT, charpoly_diagonal, hQu]`.
-
-Simplify using `[hUdef]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exu_pf (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (n : ℕ) (b : GLw n w) (hb : IsWitt n w b)
     (ϖ : (w.adicCompletion E)ˣ) (hϖ : IsUnifAt ϖ) (l : Fin (n / 2) → ℤ) (hl : Cone l) (Q : (w.adicCompletion E)[X])

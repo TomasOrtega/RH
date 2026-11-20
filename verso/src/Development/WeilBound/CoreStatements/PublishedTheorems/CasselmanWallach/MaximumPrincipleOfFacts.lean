@@ -11,11 +11,9 @@ namespace MaximumPrincipleOneFunction
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨-, -, hmem, -, -, hX⟩` from `hB3g n ε`. Establish `hXp` using `hX p hp`. Use `hB3 (fun t => u (g0 * NormedSpace.exp (t • Xp p.1 p.2)) - A * (1 + hs2 (g0 * NormedSpace.exp (t • Xp p.1 p.2))) ^ r - η * (1 + hs2 (g0 * NormedSpace.exp (t • Xp p.1 p.2))) ^ (r + 1)) (fun t => u' t - A * v' t - η * w' t) _ ?_ ?_ ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun t => ?_` and prove the remaining obligations. Establish `h0 : g0 * NormedSpace.exp ((0 : ℝ) • Xp p.1 p.2) = g0` using `by simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show _ ≤ u (g0 * NormedSpace.exp ((0 : ℝ) • Xp p.1 p.2)) - A * (1 + hs2 (g0 * NormedSpace.exp ((0 : ℝ) • Xp p.1 p.2))) ^ r - η * (1 + hs2 (g0 * NormedSpace.exp ((0 : ℝ) • Xp p.1 p.2))) ^ (r + 1)`. Rewrite using `[h0]`. Conclude with `hmax _ (hmem g0 hg0 _ hXp t)`. Introduce `t`. Conclude with `((hu' t).sub ((hv' t).const_mul A)).sub ((hw' t).const_mul η)`.
-
-Conclude with `(hd.sub (hv''.const_mul A)).sub (hw''.const_mul η)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem step (hB3 : B3) (hB3g : UnitaryGroupFacts) (ε : Fin n → Bool) (r : ℕ) (u : Matrix (Fin n) (Fin n) ℂ → ℝ) (A η : ℝ)
     (g0 : Matrix (Fin n) (Fin n) ℂ)
@@ -50,7 +48,7 @@ theorem step (hB3 : B3) (hB3g : UnitaryGroupFacts) (ε : Fin n → Bool) (r : �
   · exact (hd.sub (hv''.const_mul A)).sub (hw''.const_mul η)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity`.
+A detailed English derivation is pending.
 -/
 theorem hilbert_schmidt_nonneg_alt (g : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ hs2 g :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity
@@ -59,33 +57,31 @@ end MaximumPrincipleOneFunction
 
 open MaximumPrincipleOneFunction in
 /- English proof (translation)
-Introduce `hB2 hB3 hB3g n ε r`. Use `choose cf hcf0 hcf using hB2`. Establish `hcr0 : 0 ≤ ∑ p ∈ nc ε, cf n (Xp p.1 p.2) r` using `Finset.sum_nonneg fun p _ => hcf0 _ _ _`. Establish `hcr10 : 0 ≤ ∑ p ∈ nc ε, cf n (Xp p.1 p.2) (r + 1)` using `Finset.sum_nonneg fun p _ => hcf0 _ _ _`. Use `⟨(∑ p ∈ nc ε, cf n (Xp p.1 p.2) r) + (∑ p ∈ nc ε, cf n (Xp p.1 p.2) (r + 1)) + 1, by linarith, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u A hA hcont hgrowth hsub`. Take `⟨C, hC⟩` from `hgrowth`. Take `⟨hcpt, h1, hmem, -, hhs, hX⟩` from `hB3g n ε`. Establish `key : ∀ η : ℝ, 0 < η → u 1 ≤ A * (1 + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)) ^ r + η * (1 + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)) ^ (r + 1)`. Introduce `η hη`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hneg`. Use `push Not at hneg`. Establish `hW : Continuous fun g : Matrix (Fin n) (Fin n) ℂ => 1 + hs2 g` using `continuous_const.add hhs`. Establish `hK` using `hcpt (|C| / η + hs2 (1 : Matrix (Fin n) (Fin n) ℂ))`. Establish `hKne : ({g | g ∈ UJset ε ∧ hs2 g ≤ |C| / η + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)} : Set _).Nonempty` using `⟨1, h1, by have := div_nonneg (abs_nonneg C) hη.le; linarith⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψc : ContinuousOn (fun g => u g - A * (1 + hs2 g) ^ r - η * (1 + hs2 g) ^ (r + 1)) {g | g ∈ UJset ε ∧ hs2 g ≤ |C| / η + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)}`. Establish `hu : ContinuousOn u {g | g ∈ UJset ε ∧ hs2 g ≤ |C| / η + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)}` using `hcont.mono fun g hg => hg.1`. Conclude with `(hu.sub (continuous_const.mul (hW.pow r)).continuousOn).sub (continuous_const.mul (hW.pow (r + 1))).continuousOn`. Take `⟨g0, hg0K, hg0max⟩` from `hK.exists_isMaxOn hKne hψc`. Establish `hψ1 : u 1 - A * (1 + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)) ^ r - η * (1 + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)) ^ (r + 1) ≤ u g0 - A * (1 + hs2 g0) ^ r - η * (1 + hs2 g0) ^ (r + 1)` using `hg0max ⟨h1, by have := div_nonneg (abs_nonneg C) hη.le; linarith⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hglob : ∀ g ∈ UJset ε, u g - A * (1 + hs2 g) ^ r - η * (1 + hs2 g) ^ (r + 1) ≤ u g0 - A * (1 + hs2 g0) ^ r - η * (1 + hs2 g0) ^ (r + 1)`. Introduce `g hg`. Distinguish the cases in `hgρ : hs2 g ≤ |C| / η + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)`. Conclude with `hg0max ⟨hg, hgρ⟩`. Use `push Not at hgρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1` using `hilbert_schmidt_nonneg_alt (1 : Matrix (Fin n) (Fin n) ℂ)`. Establish `hsg` using `hilbert_schmidt_nonneg_alt g`. Establish `hlt : |C| / η < 1 + hs2 g` using `by linarith`. Establish `hCl : C < η * (1 + hs2 g)`. Use `(div_lt_iff₀ hη).mp hlt` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_abs_self C` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hWr : 0 < (1 + hs2 g) ^ r` using `pow_pos (by linarith) r`. Establish `hAW : 0 ≤ A * (1 + hs2 g) ^ r` using `mul_nonneg hA hWr.le`. Establish `hug` using `hC g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hprod` using `mul_pos hWr (sub_pos.mpr hCl)`. Rewrite using `[pow_succ]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hg0 : g0 ∈ UJset ε` using `hg0K.1`. Take `⟨d, hd, hdsum⟩` from `hsub g0 hg0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hW0` using `hilbert_schmidt_nonneg_alt g0`. Establish `hWr : 0 < (1 + hs2 g0) ^ r` using `pow_pos (by linarith) r`. Establish `hWr1 : 0 < (1 + hs2 g0) ^ (r + 1)` using `pow_pos (by linarith) (r + 1)`. Establish `hp : ∀ p ∈ nc ε, d p ≤ A * cf n (Xp p.1 p.2) r * (1 + hs2 g0) ^ r + η * cf n (Xp p.1 p.2) (r + 1) * (1 + hs2 g0) ^ (r + 1)`. Introduce `p hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u', hu', hdp⟩` from `hd p hp`. Take `⟨v', v'', hv', hv'', hvb⟩` from `hcf n (Xp p.1 p.2) r g0`. Take `⟨w', w'', hw', hw'', hwb⟩` from `hcf n (Xp p.1 p.2) (r + 1) g0`. Establish `hst` using `step hB3 hB3g ε r u A η g0 hglob hg0 p hp u' (d p) hu' hdp v' v'' hv' hv'' w' w'' hw' hw''`. Establish `h1` using `mul_le_mul_of_nonneg_left hvb hA`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `mul_le_mul_of_nonneg_left hwb hη.le`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsum : ∑ p ∈ nc ε, d p ≤ A * (∑ p ∈ nc ε, cf n (Xp p.1 p.2) r) * (1 + hs2 g0) ^ r + η * (∑ p ∈ nc ε, cf n (Xp p.1 p.2) (r + 1)) * (1 + hs2 g0) ^ (r + 1)`. Use `(Finset.sum_le_sum hp).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_mul, ← Finset.sum_mul, ← Finset.mul_sum, ← Finset.mul_sum]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < (∑ p ∈ nc ε, cf n (Xp p.1 p.2) r) + (∑ p ∈ nc ε, cf n (Xp p.1 p.2) (r + 1)) + 1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hug0 : A * (1 + hs2 g0) ^ r + η * (1 + hs2 g0) ^ (r + 1) < u g0` using `by linarith`. Establish `hm` using `mul_lt_mul_of_pos_left hug0 hpos`. Establish `e1` using `mul_nonneg hcr10 (mul_nonneg hA hWr.le)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `mul_pos (by linarith : (0:ℝ) < (∑ p ∈ nc ε, cf n (Xp p.1 p.2) r) + 1) (mul_pos hη hWr1)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hW1 : 0 < (1 + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)) ^ (r + 1)` using `pow_pos (by linarith [hilbert_schmidt_nonneg_alt (1 : Matrix (Fin n) (Fin n) ℂ)]) (r + 1)`. Use `le_of_forall_pos_le_add fun δ hδ => ?_` and prove the remaining obligations. Use `key (δ / (1 + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)) ^ (r + 1)) (div_pos hδ hW1)` as an intermediate fact.
-
-Rewrite `this` using `[div_mul_cancel₀ _ hW1.ne']`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem maximum_principle_of_facts : B2 → B3 → UnitaryGroupFacts → MaximumPrincipleVar := by
   intro hB2 hB3 hB3g n ε r

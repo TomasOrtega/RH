@@ -9,7 +9,7 @@ namespace Formalism.L2.GlobalTheoryTheory.TraceIntegrality.LT
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℚ a : ℚ) : ℝ)| = ∏ φ : E →+* ℂ, (φ a).re := by have h2 := Algebra.norm_eq_prod_embeddings ℚ ℂ a have h3 : ∏ σ : E →ₐ[ℚ] ℂ, σ a = ∏ φ : E →+* ℂ, φ a := Fintype.prod_equiv (RingHom.equivRatAlgHom (R := E) (S := ℂ)).symm _ _ fun σ ↦ rfl have hre : ∀ φ : E →+* ℂ, ‖φ a …`.
+A detailed English derivation is pending.
 -/
 theorem abs_norm_eq_prod_re (a : E) (hpos : ∀ φ : E →+* ℂ, ∃ c : ℝ, 0 < c ∧ φ a = c) :
     |((Algebra.norm ℚ a : ℚ) : ℝ)| = ∏ φ : E →+* ℂ, (φ a).re := by
@@ -27,13 +27,13 @@ theorem abs_norm_eq_prod_re (a : E) (hpos : ∀ φ : E →+* ℂ, ∃ c : ℝ, 0
   exact Finset.prod_congr rfl fun φ _ ↦ hre φ
 
 /- English proof (translation)
-Use `set d : ℝ := ((Module.finrank ℚ E : ℕ) : ℝ) with hd`. Establish `hcard : (Fintype.card (E →+* ℂ) : ℝ) = d` using `by rw [hd, Embeddings.card]`. Establish `hd0 : 0 < d` using `by rw [hd]; exact_mod_cast Module.finrank_pos`. Establish `hc : ∀ φ : E →+* ℂ, 0 < (φ a).re`. Introduce `φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, he⟩` from `hpos φ`. Rewrite using `[he, Complex.ofReal_re]`. Conclude with `hc`. Establish `hP : ∏ φ : E →+* ℂ, (φ a).re = |((Algebra.norm ℚ a : ℚ) : ℝ)|` using `(abs_norm_eq_prod_re a hpos).symm`. Establish `hPX : X⁻¹ ≤ ∏ φ : E →+* ℂ, (φ a).re`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hP, inv_le_iff_one_le_mul₀ hX, mul_comm]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgm` using `Real.geom_mean_le_arith_mean_weighted (Finset.univ : Finset (E →+* ℂ)) (fun _ ↦ 1 / d) (fun φ ↦ (φ a).re) (fun _ _ ↦ by positivity) (by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard]; field_simp) (fun φ _ ↦ (hc φ).le)`. Rewrite `hgm` using `[Real.finsetProd_rpow _ _ (fun φ _ ↦ (hc φ).le), ← Finset.mul_sum]`. Establish `hmono : X⁻¹ ^ (1 / d) ≤ (∏ φ : E →+* ℂ, (φ a).re) ^ (1 / d)` using `Real.rpow_le_rpow (by positivity) hPX (by positivity)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hmono` using `[Real.inv_rpow hX.le, ← Real.rpow_neg hX.le]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem sum_re_ge (a : E) (hpos : ∀ φ : E →+* ℂ, ∃ c : ℝ, 0 < c ∧ φ a = c) (X : ℝ) (hX : 0 < X)
     (h1 : 1 ≤ |((Algebra.norm ℚ a : ℚ) : ℝ)| * X) :

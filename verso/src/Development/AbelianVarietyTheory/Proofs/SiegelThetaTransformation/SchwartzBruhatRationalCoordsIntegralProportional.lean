@@ -11,9 +11,9 @@ namespace GlobalTheory.SW.HaarProp
 open HaarLevel
 
 /- English proof (translation)
-Rewrite using `[mem_perSub]`. Simplify using `only [intM_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨_, ⟨y, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩`. Conclude with `⟨y, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_perSub' {K κ ι : Type} [Field K] (R : ℕ) (x : Matrix κ ι K) :
     x ∈ perSub K κ ι R ↔ ∃ y, IntM y ∧ R • y = x := by
@@ -24,11 +24,11 @@ theorem mem_perSub' {K κ ι : Type} [Field K] (R : ℕ) (x : Matrix κ ι K) :
   · rintro ⟨_, ⟨y, rfl⟩, rfl⟩; exact ⟨y, rfl⟩
 
 /- English proof (translation)
-Use `⟨(QuotientAddGroup.congr (t.comap e.toAddMonoidHom) t e (AddSubgroup.map_comap_eq_self_of_surjective e.surjective t)).toEquiv, fun q => ?_⟩` and prove the remaining obligations. Use `set g := QuotientAddGroup.congr (t.comap e.toAddMonoidHom) t e (AddSubgroup.map_comap_eq_self_of_surjective e.surjective t)`. Establish `h2 : g q = (e q.out : B ⧸ t)` using `by conv_lhs => rw [← QuotientAddGroup.out_eq' q]`. Both sides reduce to the same expression. Establish `h3 : ((g q).out : B ⧸ t) = (e q.out : B ⧸ t)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientAddGroup.out_eq', h2]`. Use `hφ (g q).out _ (QuotientAddGroup.eq.1 h3)` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ = φ (g q).out`. Rewrite using `[← this]`. Use `congr 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem transport {A B : Type} [AddCommGroup A] [AddCommGroup B] (e : A ≃+ B) (t : AddSubgroup B)
     (φ : B → ℂ) (hφ : ∀ x, ∀ y ∈ t, φ (x + y) = φ x) :
@@ -50,27 +50,27 @@ variable {K K' κ ι κ' ι' : Type} [Field K] [NumberField K] [Field K'] [Numbe
   [Fintype κ] [Fintype ι] [Fintype κ'] [Fintype ι']
 
 /- English proof (translation)
-Use `set d := Module.finrank ℚ K * (Fintype.card κ * Fintype.card ι) with hdd`. Set `t : ℕ → AddSubgroup (Matrix κ ι K)` to `fun R => (perSub K' κ' ι' R).comap e.toAddMonoidHom`. Establish `ht : ∀ R x, x ∈ t R ↔ ∃ y, IntM y ∧ R • y = e x` using `fun R x => mem_perSub' R (e x)`. Establish `hle : ∀ R, perSub K κ ι (R * D) ≤ t R`. Introduce `R x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, rfl⟩` from `(mem_perSub' _ _).1 hx`. Conclude with `(ht _ _).2 ⟨_, h1 y hy, by rw [map_nsmul, mul_smul]⟩`. Establish `hne : (perSub K κ ι D).relIndex (t 1) ≠ 0`. Establish `hle' : t (1 * (D * D')) ≤ perSub K κ ι D`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, hxy⟩` from `(ht _ _).1 hx`. Use `(mem_perSub' _ _).2 ⟨_, h2 y hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_smul, ← map_nsmul, ← one_mul (D * D'), hxy, e.symm_apply_apply]`. Establish `h0 : (t (1 * (D * D'))).relIndex (t 1) ≠ 0`. Rewrite using `[AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective e.surjective, relIndex_perSub _ _ one_pos]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Check the signs of the components of the expression. Conclude with `fun h => h0 (AddSubgroup.relIndex_eq_zero_of_le_left hle' h)`. Establish `hsc : ∀ R, 0 < R → (perSub K κ ι (R * D)).relIndex (t R) = (perSub K κ ι D).relIndex (t 1)`. Introduce `R hR`. Establish `ha : (perSub K κ ι (R * D)).comap (nsmulAddMonoidHom R) = perSub K κ ι D`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_comap, mem_perSub', nsmulAddMonoidHom_apply, mul_smul, nsmul_cancel hR]`. Establish `hb : (t 1).map (nsmulAddMonoidHom R) = t R`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_map, ht, nsmulAddMonoidHom_apply, one_smul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `⟨_, hz, by rw [map_nsmul]⟩`. Introduce and unpack `⟨y, hy, hxy⟩`. Use `⟨e.symm y, ⟨y, hy, by simp⟩, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_nsmul, hxy, e.symm_apply_apply]`. Rewrite using `[← ha, AddSubgroup.relIndex_comap, hb]`. Use `⟨((perSub K κ ι D).relIndex (t 1) : ℝ) / (D : ℝ) ^ d, by positivity, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨S, hS, hψ⟩ : IsSB (fun m => φ (e m))` from `Dict.isSB_comp e.toAddMonoidHom D D' hD hD' h1 (fun x hx => by simpa using h2 _ hx) hφ`. Take `⟨R, hR, hφ⟩` from `hφ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `transport e (perSub K' κ' ι' R) φ (periodic hφ)`. Establish `hidx : (perSub K κ ι (R * D * S)).relIndex (t R) = S ^ d * (perSub K κ ι D).relIndex (t 1)`. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex _ _ _ (perSub_le (R * D) S) (hle R), hsc R hR, relIndex_perSub _ _ (by positivity)]`. Establish `hfin : (Function.support fun q : Matrix κ ι K ⧸ t R => φ (e q.out)).Finite`. Use `(finite_support hR hφ).preimage (f := g) g.injective.injOn` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `this.subset fun q hq => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Function.mem_support] at hq ⊢`. Rewrite using `[← hg]` and apply the resulting hypothesis. Establish `hsum` using `finsum_quotient_of_le ((perSub_le (R * D) S).trans (hle R)) (by rw [hidx]; positivity) (fun m => φ (e m)) (fun x y hy => by rw [map_add]; exact periodic hφ _ _ hy) hfin`. Establish `hsum2 : ∑ᶠ q : Matrix κ ι K ⧸ t R, φ (e q.out) = ∑ᶠ q : Matrix κ' ι' K' ⧸ perSub K' κ' ι' R, φ q.out`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← finsum_comp_equiv g]`. Conclude with `finsum_congr hg`. Rewrite using `[(haar_eq_haarAt _ _ _ S _ hS hψ).1, (haar_eq_haarAt _ _ _ R _ hR hφ).1, ← haarAt_mul hS hψ (S := R * D) (by positivity), mul_comm S, haarAt, haarAt, hsum, hsum2, hidx, ← hd, ← hdd]`. Establish `hS' : (S : ℂ) ≠ 0` using `by exact_mod_cast hS.ne'`. Establish `hR' : (R : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hD'' : (D : ℂ) ≠ 0` using `by exact_mod_cast hD.ne'`. Use `push_cast`. Rewrite using `[mul_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem haar_comp (e : Matrix κ ι K ≃+ Matrix κ' ι' K') (D D' : ℕ) (hD : 0 < D) (hD' : 0 < D')
     (h1 : ∀ x, IntM x → IntM (D • e x)) (h2 : ∀ x, IntM x → IntM (D' • e.symm x))
@@ -146,7 +146,7 @@ theorem haar_comp (e : Matrix κ ι K ≃+ Matrix κ' ι' K') (D D' : ℕ) (hD :
 end GlobalTheory.SW.HaarProp
 
 /- English proof (translation)
-Introduce `E _ _ _ n N`. Take `⟨D, hD, h⟩` from `Dict.exists_den_ofQ (E := E) (n := n) (N := N)`. Take `⟨D', hD', h'⟩` from `Dict.exists_den_symm (E := E) (n := n) (N := N)`. Conclude with `HaarProp.haar_comp (Dict.ofQEquiv E n N) D D' hD hD' h h' (by simp; ring)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SW.haar_ofQ_proportional : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n N : ℕ), ∃ c : ℝ, 0 < c ∧ ∀ φ : Matrix (Fin n) (Fin N) E → ℂ, IsSB φ → haar (fun m : Matrix (Fin n) (QI E N) ℚ => φ (ofQ m)) = c * haar φ := by
   intro E _ _ _ n N

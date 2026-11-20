@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.LatticeFactsFlagMeasures
 
 /- English proof (translation)
-Introduce `n A B a b hA hB i j`. Rewrite using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `k _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_mul]`. Establish `ha : 0 ≤ a` using `le_trans (norm_nonneg _) (hA i k)`. Conclude with `mul_le_mul (hA i k) (hB k j) (norm_nonneg _) ha`. Use `_ = (n : ℝ) * (a * b) := by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) (a b : ℝ), (∀ (i j : Fin n), ‖A i j‖ ≤ a) → (∀ (i j : Fin n), ‖B i j‖ ≤ b) → ∀ (i j : Fin n), ‖(A * B) i j‖ ≤ (↑n : ℝ) * (a * b) := by
   intro n A B a b hA hB i j

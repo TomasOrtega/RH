@@ -15,9 +15,9 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Unfold `linRoot`. Rewrite using `[map_neg, map_sum]`. Use `congr 1`. Rewrite using `[← Equiv.sum_comp (σ.prodCongr (Equiv.refl (Fin N))) (fun x => C (u x.1 x.2) * X x)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, b⟩` from `x`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem rename_linRoot (σ : Equiv.Perm ι) (u : ι → Fin N → ℝ) :
     rename (Prod.map σ id) (linRoot (fun τ => u (σ τ))) = linRoot u := by
@@ -31,7 +31,7 @@ theorem rename_linRoot (σ : Equiv.Perm ι) (u : ι → Fin N → ℝ) :
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[eval_rename]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_comp (σ : Equiv.Perm ι) (u : ι → Fin N → ℝ) (P : Pol ι N) :
     ev (fun τ => u (σ τ)) P = ev u (rename (fun x : ι × Fin N => (σ x.1, x.2)) P) := by
@@ -41,14 +41,14 @@ theorem ev_comp (σ : Equiv.Perm ι) (u : ι → Fin N → ℝ) (P : Pol ι N) :
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Unfold `linRoot`. Conclude with `(IsHomogeneous.sum _ _ _ fun x _ => (isHomogeneous_X _ _).C_mul _).neg`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem linRoot_isHomogeneous (u : ι → Fin N → ℝ) : (linRoot u).IsHomogeneous 1 := by
   unfold linRoot
   exact (IsHomogeneous.sum _ _ _ fun x _ => (isHomogeneous_X _ _).C_mul _).neg
 
 /- English proof (translation)
-Unfold `flagDeg`. Rewrite using `[← GlobalTheory.FlagPerm.degFl_rename_perm ι N σ, map_pow, rename_linRoot]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem flagDeg_comp (σ : Equiv.Perm ι) (u : ι → Fin N → ℝ) :
     flagDeg ι N (fun τ => u (σ τ)) = flagDeg ι N u := by
@@ -57,7 +57,7 @@ theorem flagDeg_comp (σ : Equiv.Perm ι) (u : ι → Fin N → ℝ) :
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Unfold `ev invForm`. Simplify using `[map_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ev_invForm (j : ℕ) (al be : ι → ℝ) (u : ι → Fin N → ℝ) :
     ev u (invForm j al be) = ∑ τ, (al τ * ev u (pLow j τ 1) + be τ * ev u (pHigh j τ 1)) := by
@@ -65,19 +65,19 @@ theorem ev_invForm (j : ℕ) (al be : ι → ℝ) (u : ι → Fin N → ℝ) :
   simp [map_sum]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `sum_inv_smul_const (G := G) al`. Take `⟨b, hb⟩` from `sum_inv_smul_const (G := G) be`. Use `set n : ℝ := (Fintype.card G : ℝ) with hn`. Establish `hpos : 0 < n` using `by rw [hn]; exact_mod_cast Fintype.card_pos`. Use `⟨a / n, b / n, C n⁻¹ * ∑ g : G, rename (fun x : ι × Fin N => ((g : Equiv.Perm ι) x.1, x.2)) E, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(IsHomogeneous.sum _ _ _ fun g _ => hE.rename_isHomogeneous).C_mul _`. Introduce `m`. Rewrite using `[coeff_C_mul, coeff_sum, abs_mul, abs_of_pos (inv_pos.mpr hpos), inv_mul_le_iff₀ hpos]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun (g : G) _ => hc.rename_perm (g : Equiv.Perm ι) m).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← hn]`. Introduce `u`. Establish `key : ∀ g : G, φ (linRoot u ^ d) = v * (hh (linRoot u ^ d) + k * flagDeg ι N u * ev u (invForm j (fun τ => al (g⁻¹ • τ)) (fun τ => be (g⁻¹ • τ)))) + ev u (rename (fun x : ι × Fin N => ((g : Equiv.Perm ι) x.1, x.2)) E)`. Introduce `g`. Establish `h1` using `h (fun τ => u ((g : Equiv.Perm ι) τ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hom : (linRoot (fun τ => u ((g : Equiv.Perm ι) τ)) ^ d).IsHomogeneous d`. Simplify using `using (linRoot_isHomogeneous (fun τ => u ((g : Equiv.Perm ι) τ))).pow d`. Rewrite `h1` using `[← hφ g g.2 _ hom, ← hhh g g.2 _ hom, map_pow, rename_linRoot, flagDeg_comp, ev_comp, ev_comp, rename_perm_invForm]`. Conclude with `h1`. Establish `hs` using `Finset.sum_congr (s₁ := (Finset.univ : Finset G)) rfl fun g _ => key g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ∑ g : G, ev u (invForm j (fun τ => al (g⁻¹ • τ)) (fun τ => be (g⁻¹ • τ))) = n * ev u (invForm j (fun _ => a / n) (fun _ => b / n))`. Simplify using `only [ev_invForm]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_mul, ← Finset.sum_mul, ha, hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Clear the denominators using the available nonvanishing facts. Establish `hev : ev u (C n⁻¹ * ∑ g : G, rename (fun x : ι × Fin N => ((g : Equiv.Perm ι) x.1, x.2)) E) = n⁻¹ * ∑ g : G, ev u (rename (fun x : ι × Fin N => ((g : Equiv.Perm ι) x.1, x.2)) E)`. Unfold `ev`. Rewrite using `[map_mul, eval_C, map_sum]`. Rewrite `hs` using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_add_distrib, ← Finset.mul_sum, hinv, Finset.sum_const, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, nsmul_eq_mul, ← hn]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev]`. Use `mul_left_cancel₀ hpos.ne' ?_` and prove the remaining obligations. Rewrite using `[hs, mul_add, mul_add n, mul_inv_cancel_left₀ hpos.ne']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem average (j d : ℕ) (G : Subgroup (Equiv.Perm ι)) [MulAction.IsPretransitive G ι]
     (φ hh : Pol ι N →ₗ[ℝ] ℝ) (v k e : ℝ)
@@ -152,9 +152,9 @@ def stab {κ : Type} (Φ : κ → Pol ι N →ₗ[ℝ] ℝ) (p : κ → Prop) : 
 end General
 
 /- English proof (translation)
-Introduce `D Y Φ hh _ hrel hfl hT`. Take `⟨C, B₁, hT⟩` from `hT`. Use `⟨C, max B₁ 2, fun B hB => ?_⟩` and prove the remaining obligations. Take `⟨al, be, E, hE, hc, h⟩` from `hT B (le_trans (le_max_left _ _) hB)`. Establish `hB2 : (2 : ℝ) ≤ (B : ℝ)` using `by exact_mod_cast le_trans (le_max_right _ _) hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: MulAction.IsPretransitive (stab Φ (fun B : ℝ => 2 ≤ B)) D.what₂.Tau` using `⟨fun τ τ' => by`. Take `⟨σ, h1, h2⟩` from `hrel τ τ'`. Conclude with `⟨⟨σ, h2⟩, h1⟩⟩`. Conclude with `average Y.j (dimY Y + 1) (stab Φ (fun B : ℝ => 2 ≤ B)) (Φ B) hh Y.vol ((dimY Y : ℝ) + 1) _ (fun σ hσ F _ => hσ B hB2 F) (fun σ _ F hF => hfl.2.2.2 σ F hF) al be E hE hc h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem shapeC_of_shapeT : ∀ (D : D7) (Y : ShimX D.what₂.Tau), ∀ (Φ : ℝ → Fn Y) (hh : Fn Y), 0 < Y.vol → Relabel Φ → FlagHt D.what₂.Tau Y.N hh → ShapeT Φ hh → ShapeC Φ hh := by
   intro D Y Φ hh _ hrel hfl hT

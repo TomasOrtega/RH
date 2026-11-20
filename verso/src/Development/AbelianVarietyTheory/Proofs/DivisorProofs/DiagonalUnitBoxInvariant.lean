@@ -6,7 +6,7 @@ open ValuativeRel Matrix GlobalTheory.SplitFlip GlobalTheory.FullRankCoinv Globa
 namespace GlobalTheory.UnitScaleBox
 
 /- English proof (translation)
-Simplify using `only [box, Set.mem_setOf_eq]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `h : Z i j - p i j = c i j * (Y i j - p i j)` using `by rw [hZ, mul_sub, hp]`. Rewrite using `[h, map_mul, hc, one_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_mem_box_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n d : ℕ} (ϖ : kˣ) (p : Matrix (Fin n) (Fin d) k) (N : ℕ)
@@ -19,7 +19,7 @@ theorem scale_mem_box_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
   rw [h, map_mul, hc, one_mul]
 
 /- English proof (translation)
-Distinguish the cases in `h : i = i₀`. Substitute `h` using the available equality. Simplify using `[ht]`. Simplify using `[Function.update_apply, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem val_update {k : Type} [Field k] [ValuativeRel k] {m : ℕ} (i₀ : Fin m) (t : k) (ht : valuation k t = 1)
     (i : Fin m) : valuation k (Function.update (1 : Fin m → k) i₀ t i) = 1 := by
@@ -28,17 +28,17 @@ theorem val_update {k : Type} [Field k] [ValuativeRel k] {m : ℕ} (i₀ : Fin m
   · simp [Function.update_apply, h]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d i₀ j₀ ϖ u p₁ p₂ N hu h1 h1' h2`. Establish `hu' : valuation k (((u⁻¹ : kˣ) : k)) = 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hu, inv_one]`. Use `set f : Fin n → k := Function.update (1 : Fin n → k) i₀ (u : k) with hf`. Use `set g : Fin d → k := Function.update (1 : Fin d → k) j₀ ((u⁻¹ : kˣ) : k) with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfv : ∀ i, valuation k (f i) = 1` using `val_update i₀ _ hu`. Establish `hgv : ∀ j, valuation k (g j) = 1` using `val_update j₀ _ hu'`. Prove the components needed by the constructor for the conclusion. Use extensionality with `Y`. Simplify using `only [Set.mem_setOf_eq]`.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `scale_mem_box_iff ϖ p₁ N (fun i j => f i * g j) (fun i j => by rw [map_mul, hfv, hgv, one_mul]) (fun i j => ?_) Y _ (fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hi : i = i₀ <;> by_cases hj : j = j₀`. Substitute `hi hj` using the available equality. Simplify using `[hf, hg]`. Substitute `hi` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[h1 j, hj]`. Substitute `hj` using the available equality. Simplify using `[h1' i hi]`. Simplify using `[hf, hg, Function.update_apply, hi, hj]`. Rewrite using `[dgl_val, dgl_val, diagonal_transpose, mul_diagonal, diagonal_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components.
 
-Expand and normalize the polynomial expressions, which then agree. Use extensionality with `Y`. Simplify using `only [Set.mem_setOf_eq]`. Use `scale_mem_box_iff ϖ p₂ N (fun _ j => g j) (fun i j => hgv j) (fun i j => ?_) Y _ (fun i j => ?_)` and prove the remaining obligations. Distinguish the cases in `hj : j = j₀`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hj` using the available equality. Simplify using `[h2 i]`. Simplify using `[hg, Function.update_apply, hj]`. Rewrite using `[dgl_val, mul_diagonal]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem box_unit_scale : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n d : ℕ) (i₀ : Fin n) (j₀ : Fin d) (ϖ u : kˣ) (p₁ p₂ : Matrix (Fin n) (Fin d) k) (N : ℕ),

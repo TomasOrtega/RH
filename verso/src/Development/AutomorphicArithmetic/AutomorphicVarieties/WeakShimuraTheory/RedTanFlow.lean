@@ -5,23 +5,21 @@ open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolati
 namespace UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `k V _ _ _ π T U h ⟨lo, hlo⟩ ⟨hi, hhi⟩ H`. Set `K : ℤ → Submodule k V` to `fun p => ⨅ q < p, LinearMap.ker (π q)`. Establish `hK : ∀ p x, x ∈ K p ↔ ∀ q < p, π q x = 0` using `fun p x => by simp [K, Submodule.mem_iInf]`. Establish `step : ∀ (W : Submodule k V) p, Module.rank k ↥(W ⊓ K p) = Module.rank k ↥((W ⊓ K p).map (π p)) + Module.rank k ↥(W ⊓ K (p + 1))`. Introduce `W p`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.rank_range_add_rank_ker ((π p).domRestrict (W ⊓ K p)), LinearMap.range_domRestrict]`. Use `congr 1`. Rewrite using `[LinearMap.ker_domRestrict]`. Establish `e : W ⊓ K (p + 1) = (W ⊓ K p) ⊓ LinearMap.ker (π p)`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Submodule.mem_inf, hK, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨h1, fun q hq => h2 q (by omega)⟩, h2 p (by omega)⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨h1, fun q hq => ?_⟩` and prove the remaining obligations. Break down `lt_or_eq_of_le (show q ≤ p by omega) with h4 | rfl` into its components or cases. Use `exacts [h2 q h4, h3]`. Rewrite using `[e, ← Submodule.map_comap_subtype (W ⊓ K p) (LinearMap.ker (π p))]`. Conclude with `(Submodule.equivMapOfInjective _ (W ⊓ K p).subtype_injective _).rank_eq`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `main : ∀ p ≤ max hi lo, Module.rank k ↥(T ⊓ K p) ≤ Module.rank k ↥(U ⊓ K p)`. Introduce `p hp`. Proceed by induction on `p, hp using Int.le_induction_down with`. Consider the case `base`. Establish `: T ⊓ K (max hi lo) = ⊥`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Conclude with `hhi x fun q hq => (hK _ _).1 hx.2 q (lt_max_of_lt_left hq)`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `pred n hn ih`. Rewrite using `[step T, step U, sub_add_cancel]`. Use `add_le_add (Submodule.rank_mono ?_) ih` and prove the remaining obligations. Introduce and unpack `_ ⟨x, ⟨h1, h2⟩, rfl⟩`. Use `⟨π (n - 1) x, ⟨H _ x h1 ((hK _ _).1 h2), (hK _ _).2 fun q hq => ?_⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h, if_neg hq.ne]`. Rewrite using `[h, if_pos rfl]`. Establish `top : K lo = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
-
-Conclude with `(hK _ _).2 fun q hq => by simp [hlo q hq]`. Use `main lo (le_max_right _ _)` as an intermediate fact. Rewrite `this` using `[top, inf_top_eq, inf_top_eq]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem rank_le_of_lowest : ∀ {k V : Type} [Field k] [AddCommGroup V] [Module k V] (π : ℤ → V →ₗ[k] V) (T U : Submodule k V),
       (∀ p q x, π p (π q x) = if p = q then π q x else 0) → (∃ lo : ℤ, ∀ q < lo, π q = 0) →
@@ -72,19 +70,17 @@ theorem rank_le_of_lowest : ∀ {k V : Type} [Field k] [AddCommGroup V] [Module 
   rwa [top, inf_top_eq, inf_top_eq] at this
 
 /- English proof (translation)
-Introduce `O Γ _ _ _ Φ k _ S c c₀ m hm hr hn p x ⟨a1, a2, a3, a4, a5, a6, a7, a8⟩ hX hY`. Establish `c3 : ∀ {A B Z : M4 k}, FGe m 0 A → FGe m 0 B → FGe m p Z → FGe m p (A * Z * B) ∧ cmp m p (A * Z * B) = cmp m 0 A * cmp m p Z * cmp m 0 B`. Introduce `A B Z hA hB hZ`. Establish `h1` using `(hA.mul hZ).mul hB`. Establish `h2` using `cmp_mul (hA.mul hZ) hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[cmp_mul hA hZ]`. Simplify using `only [zero_add, add_zero] at h1 h2`. Conclude with `⟨h1, h2⟩`. Establish `csp : ∀ {Z : M4 k}, Z ∈ sp4 k → cmp m p Z ∈ sp4 k`. Introduce `Z hZ`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show adj _ = -_`. Rewrite using `[← cmp_adj hm, show adj Z = -Z from hZ, map_neg]`. Establish `cz : ∀ {Z : M4 k} {i j}, Z i j = 0 → cmp m p Z i j = 0`. Introduce `Z i j h`. Simplify using `[cmp_apply, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `cn : ∀ v {Z : M4 k}, FGe m p Z → adj (c₀.n v) * cmp m p Z * c₀.n v = cmp m p (adj (c.n v) * Z * c.n v)`. Introduce `v Z hZ`. Rewrite using `[(c3 ((hn v).1.adj hm) (hn v).1 hZ).2, cmp_adj hm, ← (hn v).2]`. Use `⟨a1.comp (cmp m p), fun g => csp (a2 g), fun g h => ?_, fun g h => ?_, fun i j h => cz (a5 h), fun g i j h1 h2 => ?_, fun v => ⟨csp (a7 v).1, fun i j h => ?_⟩, fun v s hs i j h => ?_⟩` and prove the remaining obligations. Simplify using `only [Fr.cmpT_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a3, map_add, (c3 (hr g).1 (hr g⁻¹).1 (hX h)).2, ← (hr g).2, ← (hr g⁻¹).2]`. Rewrite using `[Fr.cmpT_fst, a4 g h, map_zero]`. Use `cmp_mul (hX g) (hr g).1` as an intermediate fact. Rewrite `this` using `[add_zero, ← (hr g).2]`. Rewrite using `[Fr.cmpT_fst, ← this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cz (a6 g i j h1 h2)`. Rewrite using `[Fr.cmpT_snd, cn v (hY v)]`. Conclude with `cz ((a7 v).2 i j h)`. Establish `h3` using `c3 (hr s).1 (hr s⁻¹).1 (hY v)`. Rewrite `h3` using `[← (hr s).2, ← (hr s⁻¹).2]`.
-
-Rewrite using `[Fr.cmpT_snd, Fr.cmpT_fst, ← h3.2, ← map_add, ← map_sub, cn v (((hX s).add h3.1).sub (hY v))]`. Conclude with `cz (a8 v s hs i j h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tan_lowest : ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] (Φ : Fr O Γ) {k : Type} [Field k] (S : Finset (ℤ × ℤ)) (c c₀ : PD Φ.ι Γ k) (m : Fin 4 → ℤ), Symp m →
       (∀ g, Lim m (c.r g) (c₀.r g)) → (∀ v, Lim m (c.n v) (c₀.n v)) → ∀ p : ℤ, ∀ x ∈ Φ.Tan S c,
@@ -125,17 +121,15 @@ theorem tan_lowest : ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace
     exact cz (a8 v s hs i j h)
 
 /- English proof (translation)
-Take `⟨N, hN⟩ : ∃ N : ℤ, ∀ i j, |m i - m j| < N` from `⟨∑ z : Fin 4 × Fin 4, |m z.1 - m z.2| + 1, fun i j => Int.lt_add_one_of_le (Finset.single_le_sum (f := fun z : Fin 4 × Fin 4 => |m z.1 - m z.2|) (fun _ _ => abs_nonneg _) (Finset.mem_univ (i, j)))⟩`. Establish `ge : ∀ {p : ℤ} {Z : M4 k}, (∀ q < p, cmp m q Z = 0) → FGe m p Z`. Introduce `p Z h i j hij`. Use `congrFun (congrFun (h _ hij) i) j` as an intermediate fact. Simplify `this` using `[cmp_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `cc : ∀ (p q : ℤ) (Z : M4 k), cmp m p (cmp m q Z) = if p = q then cmp m q Z else 0`. Introduce `p q Z`. Use extensionality with `i j`. Distinguish the cases in `h : p = q`. Apply the tactic sequence `subst h; simp only [cmp_apply, if_true]; split_ifs <;> rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [cmp_apply, if_neg h, Matrix.zero_apply] split_ifs with h1 h2`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `all_goals rfl`. Use `rank_le_of_lowest (Φ.cmpT m) _ _ (fun p q x => ?_) ⟨-N, fun q hq => ?_⟩ ⟨N, fun x hx => ?_⟩ fun p x hx h => ?_` and prove the remaining obligations. Use `Prod.ext (funext fun g => ?_) (funext fun v => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [Fr.cmpT_fst, Fr.cmpT_fst, cc]; split_ifs <;> rfl`. Apply the tactic sequence `rw [Fr.cmpT_snd, Fr.cmpT_snd, cc]; split_ifs <;> rfl`. Establish `: ∀ Z : M4 k, cmp m q Z = 0` using `fun Z => by`. Use extensionality with `i j`. Use `abs_lt.1 (hN i j)` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cmp_apply, if_neg (by omega)]; rfl`. Conclude with `LinearMap.ext fun x => Prod.ext (funext fun g => this _) (funext fun v => this _)`. Apply the tactic sequence `refine Prod.ext (funext fun g => ?_) (funext fun v => ?_) <;> ext i j`. Conclude with `ge (fun q hq => congrArg (·.1 g) (hx q hq)) i j (abs_lt.1 (hN i j)).2`. Conclude with `ge (fun q hq => congrArg (·.2 v) (hx q hq)) i j (abs_lt.1 (hN i j)).2`.
-
-Conclude with `tan_lowest Φ S c c₀ m hm hr hn p x hx (fun g => ge fun q hq => congrArg (·.1 g) (h q hq)) fun v => ge fun q hq => congrArg (·.2 v) (h q hq)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem tan_flow {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] (Φ : Fr O Γ) {k : Type} [Field k]
     (S : Finset (ℤ × ℤ)) (c c₀ : PD Φ.ι Γ k) (m : Fin 4 → ℤ) (hm : Symp m)

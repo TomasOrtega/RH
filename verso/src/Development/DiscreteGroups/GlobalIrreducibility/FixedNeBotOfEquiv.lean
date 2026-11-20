@@ -14,7 +14,7 @@ namespace DiscreteGroups.sglob.DzType
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Take `⟨v, hv, h0⟩` from `(Submodule.ne_bot_iff _).1 hπ`. Use `(Submodule.ne_bot_iff _).2 ⟨φ v, GlobalTheory.Parabolic.mem_fixed.2 fun u hu => ?_, fun h1 => h0 ?_⟩` and prove the remaining obligations. Conclude with `(φ.toIntertwiningMap.isIntertwining _ _ u v).symm.trans (congrArg φ (GlobalTheory.Parabolic.mem_fixed.1 hv u hu))`. Conclude with `φ.toLinearEquiv.injective (h1.trans (map_zero _).symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fixed_ne_bot_of_equiv' {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {π : Representation ℂ G V} {σ : Representation ℂ G W} (φ : π.Equiv σ) {K : Subgroup G}
@@ -26,7 +26,7 @@ theorem fixed_ne_bot_of_equiv' {G V W : Type} [Group G] [AddCommGroup V] [Module
   · exact φ.toLinearEquiv.injective (h1.trans (map_zero _).symm)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isLower_iff {g m : ℕ} [Fact g.Prime] (b : Gn g m) :
     IsLower b ↔ (b : Mt g m).BlockTriangular OrderDual.toDual := Iff.rfl
@@ -50,7 +50,7 @@ def lowZ (g m : ℕ) [Fact g.Prime] : Subgroup (GL (Fin m) ℤ_[g]) where
     exact Matrix.blockTriangular_inv_of_blockTriangular hx
 
 /- English proof (translation)
-Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.padic_norm_e_of_padicInt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toZMod_eq_zero_iff {g : ℕ} [Fact g.Prime] (x : ℤ_[g]) : PadicInt.toZMod x = 0 ↔ ‖(x : ℚ_[g])‖ < 1 := by
   rw [← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits,
@@ -74,9 +74,7 @@ theorem lowS_apply {m : ℕ} (x : GL (Fin m) ℤ_[g]) (a b : Fin m) :
 include hi
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨x, hx1, hx2⟩` from `DiscreteGroups.sglob.DzIso.exists_of_mem_KOne i hi hy`. Use `⟨x, ?_, hx2⟩` and prove the remaining obligations. Use `show IsLower (GlobalTheory.GLp.red g m x)`. Rewrite using `[hx1, isLower_iff, Units.val_one]`.
-
-Conclude with `Matrix.blockTriangular_one`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowS_one (m : ℕ) : KOne (w.adicCompletion E) (Fin m) ≤ lowS i m := by
   intro y hy
@@ -87,14 +85,14 @@ theorem lowS_one (m : ℕ) : KOne (w.adicCompletion E) (Fin m) ≤ lowS i m := b
   exact Matrix.blockTriangular_one
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `DiscreteGroups.sglob.DzIso.map_inc_mem_KO i hi x`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lowS_KO (m : ℕ) : lowS i m ≤ KO (w.adicCompletion E) (Fin m) := by
   rintro _ ⟨x, -, rfl⟩
   exact DiscreteGroups.sglob.DzIso.map_inc_mem_KO i hi x
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, hx, rfl⟩ a b hab`. Rewrite using `[lowS_apply, DiscreteGroups.sglob.DzIso.valuation_lt_iff i hi, ← toZMod_eq_zero_iff]`. Conclude with `hx a b hab`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowS_upper (m : ℕ) : ∀ y ∈ lowS i m, ∀ a b, a < b →
     valuation (w.adicCompletion E) (((y : GL (Fin m) (w.adicCompletion E)) : Matrix (Fin m) (Fin m) _) a b) < 1 := by
@@ -103,11 +101,9 @@ theorem lowS_upper (m : ℕ) : ∀ y ∈ lowS i m, ∀ a b, a < b →
   exact hx a b hab
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, hx, rfl⟩ a`. Rewrite using `[lowS_apply]`. Establish `hdet : ((GlobalTheory.GLp.red g m x : Gn g m) : Mt g m).det ≠ 0`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.ne_zero _`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdet` using `[Matrix.det_of_lowerTriangular _ hx]`. Establish `hd : PadicInt.toZMod ((x : Matrix (Fin m) (Fin m) ℤ_[g]) a a) ≠ 0` using `(Finset.prod_ne_zero_iff.1 hdet) a (Finset.mem_univ a)`. Rewrite `hd` using `[Ne, toZMod_eq_zero_iff]`. Use `le_antisymm ((DiscreteGroups.sglob.DzIso.valuation_le_iff i hi _).2 ?_) (not_lt.1 fun h => hd ?_)` and prove the remaining obligations. Rewrite using `[PadicInt.padic_norm_e_of_padicInt]`.
-
-Conclude with `PadicInt.norm_le_one _`. Conclude with `(DiscreteGroups.sglob.DzIso.valuation_lt_iff i hi _).1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowS_diag (m : ℕ) : ∀ y ∈ lowS i m, ∀ a,
     valuation (w.adicCompletion E) (((y : GL (Fin m) (w.adicCompletion E)) : Matrix (Fin m) (Fin m) _) a a) = 1 := by
@@ -125,9 +121,9 @@ theorem lowS_diag (m : ℕ) : ∀ y ∈ lowS i m, ∀ a,
   · exact (DiscreteGroups.sglob.DzIso.valuation_lt_iff i hi _).1 h
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hx : ‖i.symm y‖ < 1` using `(DiscreteGroups.sglob.DzIso.valuation_lt_iff i hi (i.symm y)).1 (by simpa using hy)`. Set `z : ℤ_[g]` to `⟨i.symm y, hx.le⟩`. Establish `hz : PadicInt.toZMod z = 0` using `(toZMod_eq_zero_iff z).2 hx`. Establish `h` using `hL z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hz, AddChar.map_zero_eq_one]`. Establish `e : i (z : ℚ_[g]) = y` using `by simp [z]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem psi_of_lifts {ψ₀ : AddChar (ZMod g) Circle} {ψ : AddChar (w.adicCompletion E) Circle} (hL : Lifts1 i ψ₀ ψ) :
     ∀ y, valuation (w.adicCompletion E) y < 1 → ψ y = 1 := by
@@ -143,9 +139,9 @@ theorem psi_of_lifts {ψ₀ : AddChar (ZMod g) Circle} {ψ : AddChar (w.adicComp
 end Place
 
 /- English proof (translation)
-Introduce `H E _ _ w g _ i hi ψ₀ _ ψ hψc hL m`. Take `⟨hirr, hsph, hcen⟩` from `genA H (w.adicCompletion E) m`. Set `τ₀ : IrrRep (GL (Fin m) (w.adicCompletion E))` to `⟨PS (w.adicCompletion E) m, psOne (w.adicCompletion E) m, isSmooth_parInd _ _, hirr⟩`. Use `⟨τ₀, 1, ?_, hcen, ?_⟩` and prove the remaining obligations. Take `⟨φ⟩` from `IrrRep.nonempty_equiv_rep τ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `fixed_ne_bot_of_equiv' φ.symm hsph`. Take `⟨l, hl, hlv⟩` from `exists_cell_functional (lowS_one i hi m) (lowS_KO i hi m) (lowS_upper i hi m) (lowS_diag i hi m) ψ hψc (psi_of_lifts i hi hL)`. Conclude with `⟨l, cellVec (lowS_one i hi m) (lowS_diag i hi m), hl, hlv, fun x hx => cellVec_fixed (lowS_one i hi m) (lowS_diag i hi m) ⟨x, hx, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lGen : LGen := by
   intro H E _ _ w g _ i hi ψ₀ _ ψ hψc hL m

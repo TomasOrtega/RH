@@ -7,15 +7,13 @@ open scoped ComplexConjugate ContDiff
 namespace GlobalTheory.SUChartSection
 
 /- English proof (translation)
-Take `⟨R, hR, hball⟩` from `exists_ball X hx`. Establish `hnhds : {w | cpt X x w ∈ X.dom} ∈ nhds (0 : V (nd X))` using `Filter.mem_of_superset (Metric.ball_mem_nhds 0 hR) fun w hw => hball w hw`. Establish `hB : ∀ τ k b, ContDiffAt ℝ ∞ (fun w => gsB X w τ k b) 0` using `fun τ k b => (GlobalTheory.T.contDiffOn_gramSchmidtUpperTriangularFactor X hx τ k b).contDiffAt hnhds`. Establish `hN : ∀ τ a k, ContDiffAt ℝ ∞ (fun w : V (nd X) => nmat X w τ a k) 0` using `fun τ a k =>`. Establish `h1 : ContDiff ℂ ∞ (fun w : V (nd X) => nmat X w τ a k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `nmat`. Use `split_ifs`. Conclude with `((EuclideanSpace.proj _ : V (nd X) →L[ℂ] ℂ)).contDiff`. Conclude with `contDiff_const`. Conclude with `contDiff_const`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(h1.restrict_scalars ℝ).contDiffAt`. Establish `hY : ContDiffAt ℝ ∞ (yF X) 0`. Rewrite using `[contDiffAt_pi]`. Introduce `τ`. Rewrite using `[contDiffAt_pi]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Rewrite using `[contDiffAt_pi]`. Introduce `b`. Use `show ContDiffAt ℝ ∞ (fun w => (mat (nmat X w) τ * gsB X w τ) a b) 0`. Simplify using `only [Matrix.mul_apply]`.
-
-Use `ContDiffAt.sum fun k _ => ?_` and prove the remaining obligations. Conclude with `(hN τ a k).mul (hB τ k b)`. Conclude with `hY.hasStrictFDerivAt (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem yF_hasStrictFDerivAt {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     {x : Frame X.Ψ r} (hx : IsOrth X x) : HasStrictFDerivAt (yF X) (dY X) 0 := by

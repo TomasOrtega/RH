@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open IsLocalRing
 
 /- English proof (translation)
-The claim follows from `polyOriginIdeal_isMaximal.isPrime`.
+A detailed English derivation is pending.
 -/
 theorem DerivationMinorOfDetection.polyOriginIdeal_isPrime : polyOriginIdeal.IsPrime :=
   polyOriginIdeal_isMaximal.isPrime

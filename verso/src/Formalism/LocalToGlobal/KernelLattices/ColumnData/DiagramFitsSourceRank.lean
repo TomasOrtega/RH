@@ -12,9 +12,9 @@ namespace Formalism.L2.Ker
 open Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.G
 
 /- English proof (translation)
-Establish `hex : ∃ g : (FrP D w N → Cw D w) →ₗ[Cw D w] Module.Dual (Cw D w) (MvPolynomial ((Bool × HH D) × ℕ × Fin N) (Cw D w)), ∀ F ∈ LinearMap.range (canM D w N nu), canM D w N nu (g F) = F`. Establish `: Module.Free (Cw D w) (LinearMap.range (canM D w N nu))` using `Module.Free.of_divisionRing _ _`. Establish `: Module.Projective (Cw D w) (LinearMap.range (canM D w N nu))` using `Module.Projective.of_free`. Take `⟨r, hr⟩` from `(canM D w N nu).rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict _)`. Take `⟨g, hg⟩` from `LinearMap.exists_extend r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨g, fun F hF => ?_⟩` and prove the remaining obligations. Establish `h1 : g F = r ⟨F, hF⟩` using `LinearMap.congr_fun hg ⟨F, hF⟩`. Rewrite using `[h1]`. Conclude with `congrArg Subtype.val (LinearMap.congr_fun hr ⟨F, hF⟩)`. Conclude with `Classical.epsilon_spec hex F hF`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem canInv_spec (D : D7) (w : D.what₂.places.Pl) (N : ℕ) (nu : Bool × HH D → YoungDiagram) (F : FrP D w N → Cw D w)
     (hF : F ∈ LinearMap.range (canM D w N nu)) : canM D w N nu (canInv D w N nu F) = F := by
@@ -35,32 +35,32 @@ section Obj
 variable {D : D7} (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.LiftObj D (D.chTw u μ)) (B : PlaceMatrixFamily D)
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (h u μ w i hi c τ)`.
+A detailed English derivation is pending.
 -/
 theorem basC_spec (h : BasEx P O) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.chTw u μ).cls i)
     (τ : D.what₂.Tau) : IsBasC P O u μ w i c τ (basC P O u μ w i c τ) :=
   Classical.epsilon_spec (h u μ w i hi c τ)
 
 /- English proof (translation)
-Introduce `u μ w i hi c τ` and use `(basC_spec P O h u μ w i hi c τ).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem basC_ok (h : BasEx P O) : BasOk P O (basC P O) := fun u μ w i hi c τ => (basC_spec P O h u μ w i hi c τ).1
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (Classical.choose_spec ((LinearMap.ker (evP O u μ i)).mkQ.exists_rightInverse_of_surjective (Submodule.range_mkQ _))) v`.
+A detailed English derivation is pending.
 -/
 theorem secC_spec (u : D.what₂.Word) (μ : D.what₂.Tup) (i : ℕ) (v : ValQ O u μ i) : (LinearMap.ker (evP O u μ i)).mkQ (secC O u μ i v) = v :=
   LinearMap.congr_fun (Classical.choose_spec ((LinearMap.ker (evP O u μ i)).mkQ.exists_rightInverse_of_surjective (Submodule.range_mkQ _))) v
 
 /- English proof (translation)
-Use `conv_lhs => rw [← secC_spec O u μ i v]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem evC_sec (u : D.what₂.Word) (μ : D.what₂.Tup) (i : ℕ) (v : ValQ O u μ i) : evC O u μ i v = evP O u μ i (secC O u μ i v) := by
   conv_lhs => rw [← secC_spec O u μ i v]
   rfl
 
 /- English proof (translation)
-Take `⟨_, _, h, _⟩` from `Examples₂.exists_placeEmb D w`. Conclude with `(h x).choose`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem embLL_alg (w : D.what₂.places.Pl) (x : D.what₂.LL) : D.what₂.embLL x ∈ Qbar := by
   obtain ⟨_, _, h, _⟩ := Examples₂.exists_placeEmb D w
@@ -69,18 +69,18 @@ theorem embLL_alg (w : D.what₂.places.Pl) (x : D.what₂.LL) : D.what₂.embLL
 def jL (w : D.what₂.places.Pl) : D.what₂.LL →+* Qbar := D.what₂.embLL.codRestrict Qbar (embLL_alg w)
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem alg_jL (w : D.what₂.places.Pl) : (algebraMap Qbar ℂ).comp (jL w) = D.what₂.embLL := RingHom.ext fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => (P.iL_lam' w x (embLL_alg w x)).symm`.
+A detailed English derivation is pending.
 -/
 theorem lam_jL (w : D.what₂.places.Pl) : (P.lam w).comp (jL w) = P.iL w :=
   RingHom.ext fun x => (P.iL_lam' w x (embLL_alg w x)).symm
 
 /- English proof (translation)
-Establish `h` using `RingHom.map_det ((MvPolynomial.eval (fun k : GL3Theta.FrV D N => y k.1 k.2.1 k.2.2)).comp (MvPolynomial.map f)) (Matrix.of fun a k : Fin N => (MvPolynomial.X (τ, a, k) : MvPolynomial (GL3Theta.FrV D N) K))`. Use `h.trans (congrArg Matrix.det ?_)` and prove the remaining obligations. Use extensionality with `a k`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eval_detP {K S : Type} [Field K] [CommRing S] (f : K →+* S) {N : ℕ} (y : D.what₂.Tau → Matrix (Fin N) (Fin N) S) (τ : D.what₂.Tau) :
     MvPolynomial.eval (fun k : GL3Theta.FrV D N => y k.1 k.2.1 k.2.2) (MvPolynomial.map f (frDet K N τ)) = (y τ).det := by
@@ -93,9 +93,9 @@ theorem eval_detP {K S : Type} [Field K] [CommRing S] (f : K →+* S) {N : ℕ} 
 variable {Dx : DivX D} {Tw : TwForms D}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Rewrite using `[evC_sec, MvPolynomial.map_map, alg_jL]`. Use `show (∏ τ, ((D.chTw u μ).de i y τ) ^ ((D.chTw u μ).sSharp i τ)) * ((∏ τ, ((D.chTw u μ).de i y τ) ^ (-(twB D u μ i τ))) * GL3Theta.evFr D (MvPolynomial.map D.what₂.embLL (secC O u μ i v : MvPolynomial (GL3Theta.FrV D (D.R.N i)) D.what₂.LL)) ((O u μ).frm i y)) = _`. Unfold `srcPol GL3Theta.evFr`. Rewrite using `[map_mul, map_mul, map_prod, map_prod, ← mul_assoc, ← Finset.prod_mul_distrib, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow, eval_detP, ← (O u μ).frm_de i hi.le y τ, ← zpow_add₀ ((D.chTw u μ).de_ne i y τ), ← zpow_natCast, Int.toNat_of_nonneg (sub_nonneg.2 (hL u μ i hi τ)), sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem src_sharp (hL : TwLe D) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (i : ℕ) (hi : i < D.R.m) (v : ValQ O u μ i) :
     (D.chTw u μ).sharp i (evC O u μ i v) = fun y => GL3Theta.evFr D (MvPolynomial.map (algebraMap Qbar ℂ)
@@ -145,7 +145,7 @@ def kfTieC (hB : BasOk P O B) (hS : CanS P B) (hT : CanT P B) (hL : TwLe D) (h :
       rfl
 
 /- English proof (translation)
-Unfold `lamC`. Rewrite using `[dif_pos hx]`. Conclude with `(map_ne_zero lam).2 fun h => h0 (congrArg Subtype.val h)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamC_ne {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) {x : ℂ} (hx : x ∈ Qbar) (h0 : x ≠ 0) : lamC lam x ≠ 0 := by
   unfold lamC
@@ -153,7 +153,7 @@ theorem lamC_ne {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) {x : ℂ} (h
   exact (map_ne_zero lam).2 fun h => h0 (congrArg Subtype.val h)
 
 /- English proof (translation)
-Unfold `unF`. Use `mul_ne_zero (mul_ne_zero (lamC_ne _ ((hR i hi).1 c) (Units.ne_zero _)) ?_) (mul_ne_zero (lamC_ne _ ((hR i hi).2 c') (Units.ne_zero _)) ?_)` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (hB u μ w i hi.le c τ).1`. Conclude with `Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (hB u μ w (i + 1) hi c' τ).1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unF_ne (hB : BasOk P O B) (u : D.what₂.Word) (μ : D.what₂.Tup) (hR : GL3Columns.RhoAlg (O u μ)) (w : D.what₂.places.Pl) (i : ℕ) (hi : i < D.R.m)
     (c : (D.chTw u μ).cls i) (c' : (D.chTw u μ).cls (i + 1)) : unF P O B u μ w i c c' ≠ 0 := by
@@ -163,9 +163,9 @@ theorem unF_ne (hB : BasOk P O B) (u : D.what₂.Word) (μ : D.what₂.Tup) (hR 
   · exact Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (hB u μ w (i + 1) hi c' τ).1
 
 /- English proof (translation)
-Introduce `i hi c c'`. Use `show unC P O B u μ w i c c' = _`. Unfold `unC`. Rewrite using `[if_neg (unF_ne P O B hB u μ hR w i hi c c')]`. Unfold `GL3Columns.KFTie.un GL3Columns.KFTie.cK`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [kfTieC, one_pow, Finset.prod_const_one, inv_one, one_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kfTieC_un (hB : BasOk P O B) (hS : CanS P B) (hT : CanT P B) (hL : TwLe D) (h : KerEntHyp P O B Dx Tw) (u : D.what₂.Word) (μ : D.what₂.Tup)
     (hR : GL3Columns.RhoAlg (O u μ)) (w : D.what₂.places.Pl) : (kfTieC P O B hB hS hT hL h u μ w).UnIs := by
@@ -180,13 +180,13 @@ theorem kfTieC_un (hB : BasOk P O B) (hS : CanS P B) (hT : CanT P B) (hL : TwLe 
 end Obj
 
 /- English proof (translation)
-Introduce `u μ i hi τ`. Consider the cases of `i with`. Consider the case `zero => exact le_rfl`. Consider the case `succ j => show (D.chTw u μ).sDiv j τ ≤ (D.chTw u μ).sSharp (j + 1) τ`. Establish `h1` using `(D.chTw u μ).sDiv_eq j (by omega) τ`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2` using `(D.chTw u μ).sSharp_eq (j + 1) hi τ`. Establish `g1` using `(D.hcW u τ).gap_be ⟨j + 1, hi⟩`. Establish `g2` using `(D.hcW u τ).gap_eb ⟨j, by omega⟩ hi`. Establish `h3 : (((D.chTw u μ).sDiv j τ : ℤ) : ℚ) ≤ (((D.chTw u μ).sSharp (j + 1) τ : ℤ) : ℚ)`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `sExp sExp' Ranks.N`. Establish `ht : (0 : ℚ) ≤ (D.R.t : ℚ)` using `Nat.cast_nonneg _`. Simplify using `only [Nat.add_sub_cancel]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `h3` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem twLe (D : D7) : TwLe D := by
   intro u μ i hi τ
@@ -208,9 +208,9 @@ theorem twLe (D : D7) : TwLe D := by
     exact_mod_cast h3
 
 /- English proof (translation)
-Introduce `β hβ`. Rewrite using `[map_mul, hQ β hβ, map_prod]`. Simplify using `only [map_pow, colSub_frDet β hβ, smul_pow]`. Rewrite using `[Finset.prod_smul, smul_mul_smul_comm]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun x _ => (pow_add _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtPol_mul_det {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (ν : ι → Fin n → ℕ) (k : ι → ℕ) {Q : Formalism.L2.DIV.Pol K ι n} (hQ : Q ∈ WtPol K ν) :
     Q * ∏ τ, frDet K n τ ^ k τ ∈ WtPol K (fun τ r => ν τ r + k τ) := by
@@ -225,9 +225,9 @@ theorem wtPol_mul_det {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (�
   exact Finset.prod_congr rfl fun x _ => (pow_add _ _ _).symm
 
 /- English proof (translation)
-Establish `e0 : ∀ τ, ((D.chTw u μ).sSharp 0 τ - twB D u μ 0 τ).toNat = 0` using `fun τ => by show ((D.chTw u μ).sSharp 0 τ - (D.chTw u μ).sSharp 0 τ).toNat = 0`. Simplify using the standard rewrite rules. Establish `h` using `wtPol_mul_det (nuT D u 0) (fun τ => ((D.chTw u μ).sSharp 0 τ - twB D u μ 0 τ).toNat) v.2`. Simplify using `only [e0, add_zero] at h`. Unfold `srcPol`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [e0]`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem srcPol_zero {D : D7} (u : D.what₂.Word) (μ : D.what₂.Tup) (v : polV D u 0) :
     srcPol u μ 0 (v : MvPolynomial (GL3Theta.FrV D (D.R.N 0)) D.what₂.LL) ∈ WtPol D.what₂.LL (nuT D u 0) := by
@@ -241,7 +241,7 @@ theorem srcPol_zero {D : D7} (u : D.what₂.Word) (μ : D.what₂.Tup) (v : polV
   exact h
 
 /- English proof (translation)
-The claim follows from `wtPol_mul_det (extNu (D.R.N (j + 1)) (nuT D u j)) (fun τ => ((D.chTw u μ).sSharp (j + 1) τ - (D.chTw u μ).sDiv j τ).toNat) v.2`.
+A detailed English derivation is pending.
 -/
 theorem srcPol_succ {D : D7} (u : D.what₂.Word) (μ : D.what₂.Tup) (j : ℕ) (v : polV D u (j + 1)) :
     srcPol u μ (j + 1) (v : MvPolynomial (GL3Theta.FrV D (D.R.N (j + 1))) D.what₂.LL) ∈
@@ -249,29 +249,29 @@ theorem srcPol_succ {D : D7} (u : D.what₂.Word) (μ : D.what₂.Tup) (j : ℕ)
   wtPol_mul_det (extNu (D.R.N (j + 1)) (nuT D u j)) (fun τ => ((D.chTw u μ).sSharp (j + 1) τ - (D.chTw u μ).sDiv j τ).toNat) v.2
 
 /- English proof (translation)
-Establish `hle : (D.chTw u μ).sDiv j τ ≤ (D.chTw u μ).sSharp (j + 1) τ` using `twLe D u μ (j + 1) hj τ`. Establish `h1` using `(D.chTw u μ).sDiv_eq j (by omega) τ`. Establish `h2` using `(D.chTw u μ).sSharp_eq (j + 1) hj τ`. Establish `hn : ((((D.chTw u μ).sSharp (j + 1) τ - (D.chTw u μ).sDiv j τ).toNat : ℕ) : ℝ) = (((D.hcW u τ).e ⟨j + 1, hj⟩ : ℚ) : ℝ) - (((D.hcW u τ).e ⟨j, by omega⟩ : ℚ) : ℝ) - ((D.R.t : ℝ) + 1)`. Establish `a1 : ((((D.chTw u μ).sSharp (j + 1) τ - (D.chTw u μ).sDiv j τ).toNat : ℕ) : ℤ) = (D.chTw u μ).sSharp (j + 1) τ - (D.chTw u μ).sDiv j τ` using `Int.toNat_of_nonneg (sub_nonneg.2 hle)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : ((((D.chTw u μ).sSharp (j + 1) τ - (D.chTw u μ).sDiv j τ).toNat : ℕ) : ℚ) = (D.hcW u τ).e ⟨j + 1, hj⟩ - (D.hcW u τ).e ⟨j, by omega⟩ - ((D.R.t : ℚ) + 1)`. Establish `a3 : ((((D.chTw u μ).sSharp (j + 1) τ - (D.chTw u μ).sDiv j τ).toNat : ℕ) : ℚ) = (((D.chTw u μ).sSharp (j + 1) τ : ℤ) : ℚ) - (((D.chTw u μ).sDiv j τ : ℤ) : ℚ)` using `by exact_mod_cast a1`. Rewrite using `[a3, h1, h2]`. Unfold `sExp sExp' Ranks.N`. Simplify using `only [Nat.add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `a2` after adjusting the coercions. Establish `hR` using `(nu_t_identity D u (j + 1) hj τ r).1`. Establish `w2 : DV.wSz D (j + 1 + 1) τ = (((D.hcW u τ).e ⟨j + 1, hj⟩ : ℚ) : ℝ)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `DV.wSz`. Rewrite using `[dif_pos ⟨by omega, by omega⟩, D.hcW_e u τ]`. Both sides reduce to the same expression. Establish `w1 : DV.wSz D (j + 1) τ = (((D.hcW u τ).e ⟨j, by omega⟩ : ℚ) : ℝ)`. Unfold `DV.wSz`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos ⟨by omega, by omega⟩, D.hcW_e u τ]`. Both sides reduce to the same expression. Establish `key : ((extNu (D.R.N (j + 1)) (nuT D u j) τ r : ℕ) : ℝ) + ((((D.chTw u μ).sSharp (j + 1) τ - (D.chTw u μ).sDiv j τ).toNat : ℕ) : ℝ) = ((nuT D u (j + 1) τ r : ℕ) : ℝ)`. Rewrite using `[hR, hn]`. Unfold `DV.nuRow`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[w2]`. Distinguish the cases in `hr : r.1 < D.R.N j`. Establish `hL` using `(nu_t_identity D u j (by omega) τ ⟨r.1, hr⟩).1`. Unfold `extNu`. Rewrite using `[dif_pos hr, hL]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `DV.nuRow`. Rewrite using `[w1]`. Simplify using `only [Nat.add_sub_cancel]`. Unfold `Ranks.N`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `extNu`. Rewrite using `[dif_neg hr]`. Establish `hr2` using `r.2`. Unfold `Ranks.N at hr hr2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩ : ∃ a, r.1 = D.R.k + j * (D.R.t + 1) + a` from `⟨r.1 - (D.R.k + j * (D.R.t + 1)), by omega⟩`. Establish `hat : a < D.R.t + 1`. Rewrite `hr2` using `[ha, Nat.add_mul]`. Use linear arithmetic over natural numbers and integers. Establish `hsub : r.1 - D.R.k = a + j * (D.R.t + 1)` using `by omega`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiv : (r.1 - D.R.k) / (D.R.t + 1) = j`. Rewrite using `[hsub, Nat.add_mul_div_right _ _ (Nat.succ_pos _), Nat.div_eq_of_lt hat, Nat.zero_add]`. Establish `hmod : (r.1 - D.R.k) % (D.R.t + 1) = a`. Rewrite using `[hsub, Nat.add_mul_mod_self_right, Nat.mod_eq_of_lt hat]`. Establish `hb : (r.1 - D.R.k) / (D.R.t + 1) < D.R.m` using `by rw [hdiv]; omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : (D.hcW u τ).e ⟨(r.1 - D.R.k) / (D.R.t + 1), hb⟩ = (D.hcW u τ).e ⟨j, by omega⟩` using `congrArg _ (Fin.ext hdiv)`. Unfold `DV.srcPar`. Rewrite using `[dif_neg (by omega), dif_pos hb, he, hmod]`. Simplify using `only [Nat.add_sub_cancel]`. Unfold `Ranks.N`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `key` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem nuStep (D : D7) (u : D.what₂.Word) (μ : D.what₂.Tup) (j : ℕ) (hj : j + 1 < D.R.m) (τ : D.what₂.Tau) (r : Fin (D.R.N (j + 1))) :
     extNu (D.R.N (j + 1)) (nuT D u j) τ r + ((D.chTw u μ).sSharp (j + 1) τ - (D.chTw u μ).sDiv j τ).toNat = nuT D u (j + 1) τ r := by
@@ -341,9 +341,9 @@ theorem nuStep (D : D7) (u : D.what₂.Word) (μ : D.what₂.Tup) (j : ℕ) (hj 
   exact_mod_cast key
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero => exact srcPol_zero u μ v`. Consider the case `succ j`. Establish `h` using `srcPol_succ u μ j v`. Establish `e : (fun τ r => extNu (D.R.N (j + 1)) (nuT D u j) τ r + ((D.chTw u μ).sSharp (j + 1) τ - (D.chTw u μ).sDiv j τ).toNat) = nuT D u (j + 1)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun τ => funext fun r => nuStep D u μ j hi τ r`. Rewrite `h` using `[e]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem srcPol_mem {D : D7} (u : D.what₂.Word) (μ : D.what₂.Tup) (i : ℕ) (hi : i < D.R.m) (v : polV D u i) :
     srcPol u μ i (v : MvPolynomial (GL3Theta.FrV D (D.R.N i)) D.what₂.LL) ∈ WtPol D.what₂.LL (nuT D u i) := by
@@ -357,9 +357,9 @@ theorem srcPol_mem {D : D7} (u : D.what₂.Word) (μ : D.what₂.Tup) (i : ℕ) 
     exact h
 
 /- English proof (translation)
-Use `⟨fun z r => ?_, fun z r hr => ?_⟩` and prove the remaining obligations. Establish `h1` using `nuRowOK D u i hi z r.1`. Rewrite `h1` using `[if_pos r.2, ← (nu_t_identity D u i hi (tauPl D z) r).1]`. Conclude with `h1` after adjusting the coercions. Establish `h1` using `nuRowOK D u i hi z r`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[if_neg (by omega)]`. Conclude with `h1` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem diagram_fits_source_rank (D : D7) (u : D.what₂.Word) (i : ℕ) (hi : i < D.R.m) : NuFits D (nuD D u i) (nuT D u i) := by
   refine ⟨fun z r => ?_, fun z r hr => ?_⟩
@@ -371,9 +371,9 @@ theorem diagram_fits_source_rank (D : D7) (u : D.what₂.Word) (i : ℕ) (hi : i
     exact_mod_cast h1
 
 /- English proof (translation)
-Use `⟨fun z r => ?_, fun z r hr => ?_⟩` and prove the remaining obligations. Unfold `extNu`. Distinguish the cases in `h : r.1 < D.R.N i`. Rewrite using `[dif_pos h]`. Conclude with `(diagram_fits_source_rank D u i hi).1 z ⟨r.1, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h]`. Conclude with `(diagram_fits_source_rank D u i hi).2 z r.1 (by omega)`. Conclude with `(diagram_fits_source_rank D u i hi).2 z r (le_trans (N_le_succ D.R i) hr)`.
+A detailed English derivation is pending.
 -/
 theorem nuFits_tgt (D : D7) (u : D.what₂.Word) (i : ℕ) (hi : i < D.R.m) :
     NuFits D (nuD D u i) (extNu (D.R.N (i + 1)) (nuT D u i)) := by
@@ -387,13 +387,13 @@ theorem nuFits_tgt (D : D7) (u : D.what₂.Word) (i : ℕ) (hi : i < D.R.m) :
   · exact (diagram_fits_source_rank D u i hi).2 z r (le_trans (N_le_succ D.R i) hr)
 
 /- English proof (translation)
-Introduce `u μ w i hi c v` and use `Submodule.smul_mem _ _ (h w (D.R.N i) (nuD D u i) (nuT D u i) (diagram_fits_source_rank D u i hi) _ (srcPol_mem u μ i hi v) (B u μ w i c))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem canS_of {D : D7} (P : Examples₂.EntPl D) (B : PlaceMatrixFamily D) (h : CanOnto P) : CanS P B := fun u μ w i hi c v =>
   Submodule.smul_mem _ _ (h w (D.R.N i) (nuD D u i) (nuT D u i) (diagram_fits_source_rank D u i hi) _ (srcPol_mem u μ i hi v) (B u μ w i c))
 
 /- English proof (translation)
-Introduce `u μ w i hi c' v` and use `Submodule.smul_mem _ _ (h w (D.R.N (i + 1)) (nuD D u i) (extNu (D.R.N (i + 1)) (nuT D u i)) (nuFits_tgt D u i hi) _ v.2 (B u μ w (i + 1) c'))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem canT_of {D : D7} (P : Examples₂.EntPl D) (B : PlaceMatrixFamily D) (h : CanOnto P) : CanT P B := fun u μ w i hi c' v =>
   Submodule.smul_mem _ _ (h w (D.R.N (i + 1)) (nuD D u i) (extNu (D.R.N (i + 1)) (nuT D u i)) (nuFits_tgt D u i hi) _ v.2 (B u μ w (i + 1) c'))
@@ -404,7 +404,7 @@ def kfTieOf {D : D7} (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.LiftObj D
   kfTieC P O B hB (canS_of P B hC) (canT_of P B hC) (twLe D) h u μ w
 
 /- English proof (translation)
-The claim follows from `kfTieC_un P O B hB (canS_of P B hC) (canT_of P B hC) (twLe D) h u μ hR w`.
+A detailed English derivation is pending.
 -/
 theorem kfTieOf_un {D : D7} (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.LiftObj D (D.chTw u μ)) (B : PlaceMatrixFamily D) {Dx : DivX D} {Tw : TwForms D} (hB : BasOk P O B)
     (hC : CanOnto P) (h : KerEntHyp P O B Dx Tw) (u : D.what₂.Word) (μ : D.what₂.Tup) (hR : GL3Columns.RhoAlg (O u μ)) (w : D.what₂.places.Pl) :
@@ -412,7 +412,7 @@ theorem kfTieOf_un {D : D7} (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.Li
   kfTieC_un P O B hB (canS_of P B hC) (canT_of P B hC) (twLe D) h u μ hR w
 
 /- English proof (translation)
-Introduce `i hi c c' v v' h I` and use `by rw [← hU i hi c c'] exact E.kform u μ w hw i hi c c' v v' h I`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kfPair_of_field {D : D7} {Dx : DivX D} {Tw : TwForms D} (E : KerEnt D Dx Tw) {u : D.what₂.Word} {μ : D.what₂.Tup}
     {O : GL3Theta.LiftObj D (D.chTw u μ)} {w : D.what₂.places.Pl} (T : GL3Columns.KFTie E O w) (hw : LevFree Dx u μ w) (hU : T.UnIs) : T.kfPair :=

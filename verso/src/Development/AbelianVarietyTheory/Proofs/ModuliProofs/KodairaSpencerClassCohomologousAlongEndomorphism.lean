@@ -18,7 +18,7 @@ namespace GlobalTheory.KS.EndClass
 variable {X Y Z T : Scheme.{0}}
 
 /- English proof (translation)
-Establish `h₃ : O₂ ≤ (t ≫ f) ⁻¹ᵁ O₀` using `h₂.trans (t.preimage_mono h₁)`. Simplify using `only [pbT, dif_pos h₁, dif_pos h₂, dif_pos h₃]`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pbT_pbT (t : T ⟶ Z) (f : Z ⟶ Y) {O₀ : Y.Opens} {O₁ : Z.Opens} {O₂ : T.Opens} (h₁ : O₁ ≤ f ⁻¹ᵁ O₀)
     (h₂ : O₂ ≤ t ⁻¹ᵁ O₁) (s : Γ(Y, O₀)) : pbT t (pbT f s O₁) O₂ = pbT (t ≫ f) s O₂ := by
@@ -27,25 +27,25 @@ theorem pbT_pbT (t : T ⟶ Z) (f : Z ⟶ Y) {O₀ : Y.Opens} {O₁ : Z.Opens} {O
   rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Simplify using `only [pbT, dif_pos (le_refl (f ⁻¹ᵁ O)), Scheme.Hom.appLE_eq_app]`.
+Simplify using the standard rewrite rules.
 -/
 theorem app_eq (f : Z ⟶ Y) {O : Y.Opens} (s : Γ(Y, O)) : (f.app O).hom s = pbT f s (f ⁻¹ᵁ O) := by
   simp only [pbT, dif_pos (le_refl (f ⁻¹ᵁ O)), Scheme.Hom.appLE_eq_app]
 
 /- English proof (translation)
-Simplify using `only [rsT, dif_pos h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem resG_eq {O₀ O : Y.Opens} (h : O ≤ O₀) (s : Γ(Y, O₀)) : resG Y h s = rsT s O := by
   simp only [rsT, dif_pos h]
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Establish `e : O.ι ''ᵁ (O.ι ⁻¹ᵁ O') = O'`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Set.image_preimage_subset _ _`. Introduce `x hx`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨x, h hx⟩, hx, rfl⟩`. Establish `key : (fun s : Γ(Y, O') => pbT O.ι s (O.ι ⁻¹ᵁ O')) = (O.ι.appLE O' _ le_rfl).hom`. Use function extensionality and compare the values at `s`. Simplify using `only [pbT, dif_pos (le_refl (O.ι ⁻¹ᵁ O'))]`. Rewrite using `[key, Scheme.Opens.ι_appLE]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show homOfLE (x := O.ι ''ᵁ O.ι ⁻¹ᵁ O') (Set.image_subset_iff.mpr le_rfl) = eqToHom e from Subsingleton.elim _ _]`. Rewrite using `[eqToHom_op, eqToHom_map]`. Establish `hI : ∀ {A B : CommRingCat} (p : A = B), Function.Bijective (eqToHom p).hom`. Introduce `A B p`. Substitute `p` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Function.bijective_id`. Conclude with `hI _`.
+A detailed English derivation is pending.
 -/
 theorem pbT_ι_bijective (O : Y.Opens) {O' : Y.Opens} (h : O' ≤ O) {V : O.toScheme.Opens} (hV : V = O.ι ⁻¹ᵁ O') :
     Function.Bijective (fun s : Γ(Y, O') => pbT O.ι s V) := by
@@ -68,13 +68,13 @@ theorem pbT_ι_bijective (O : Y.Opens) {O' : Y.Opens} (h : O' ≤ O) {V : O.toSc
   exact hI _
 
 /- English proof (translation)
-Simplify using `only [constFn, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constFn_zero' {R : Type} [CommRing R] (q : Y ⟶ Sp R) (O : Y.Opens) : constFn q O 0 = 0 := by
   simp only [constFn, map_zero]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.preimage_inf, Scheme.Opens.ι_preimage_self, top_inf_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pre_ι_eq (O : Y.Opens) (y : Y ⟶ Z) (m : Z ⟶ X) (W : X.Opens) :
     ((O.ι ≫ y) ≫ m) ⁻¹ᵁ W = O.ι ⁻¹ᵁ (O ⊓ y ⁻¹ᵁ m ⁻¹ᵁ W) := by
@@ -82,9 +82,9 @@ theorem pre_ι_eq (O : Y.Opens) (y : Y ⟶ Z) (m : Z ⟶ X) (W : X.Opens) :
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : O ≤ O₀`. Establish `h' : O ≤ (𝟙 Y) ⁻¹ᵁ O₀` using `h`. Simplify using `only [rsT, pbT, dif_pos h, dif_pos h', Scheme.Hom.appLE, resG]`. Both sides reduce to the same expression. Establish `h' : ¬ O ≤ (𝟙 Y) ⁻¹ᵁ O₀` using `h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [rsT, pbT, dif_neg h, dif_neg h']`.
+Simplify using the standard rewrite rules.
 -/
 private lemma rsT_eq_pbT_id {Y : Scheme.{0}} {O₀ : Y.Opens} (s : Γ(Y, O₀)) (O : Y.Opens) :
     rsT s O = pbT (𝟙 Y) s O := by
@@ -96,14 +96,14 @@ private lemma rsT_eq_pbT_id {Y : Scheme.{0}} {O₀ : Y.Opens} (s : Γ(Y, O₀)) 
     simp only [rsT, pbT, dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Simplify using `only [pbT, dif_pos h]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pbT_eq_appLE_hom {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ : Y.Opens} {V : Z.Opens} (h : V ≤ f ⁻¹ᵁ O₀)
     (s : Γ(Y, O₀)) : pbT f s V = (f.appLE O₀ V h).hom s := by
   simp only [pbT, dif_pos h]
 
 /- English proof (translation)
-Distinguish the cases in `h : O ≤ O₀`. Simplify using `only [rsT, dif_pos h, map_sub]`. Simplify using `only [rsT, dif_neg h, sub_zero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma rsT_sub_moduli' {Y : Scheme.{0}} {O₀ : Y.Opens} (a b : Γ(Y, O₀)) (O : Y.Opens) :
     rsT (a - b) O = rsT a O - rsT b O := by
@@ -112,7 +112,7 @@ private lemma rsT_sub_moduli' {Y : Scheme.{0}} {O₀ : Y.Opens} (a b : Γ(Y, O�
   · simp only [rsT, dif_neg h, sub_zero]
 
 /- English proof (translation)
-Distinguish the cases in `h : V ≤ f ⁻¹ᵁ O₀`. Simplify using `only [pbT, dif_pos h, map_zero]`. Simplify using `only [pbT, dif_neg h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma pbT_zero_eq_zero {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ : Y.Opens} (V : Z.Opens) :
     pbT f (0 : Γ(Y, O₀)) V = 0 := by
@@ -121,7 +121,7 @@ private lemma pbT_zero_eq_zero {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ : Y.Opens}
   · simp only [pbT, dif_neg h]
 
 /- English proof (translation)
-Distinguish the cases in `h : O ≤ O₀`. Simplify using `only [rsT, dif_pos h, map_zero]`. Simplify using `only [rsT, dif_neg h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma rsT_zero_eq_zero {Y : Scheme.{0}} {O₀ : Y.Opens} (O : Y.Opens) :
     rsT (0 : Γ(Y, O₀)) O = 0 := by
@@ -130,7 +130,7 @@ private lemma rsT_zero_eq_zero {Y : Scheme.{0}} {O₀ : Y.Opens} (O : Y.Opens) :
   · simp only [rsT, dif_neg h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ => (add_zero 0).symm, fun _ _ _ _ => by simp, fun _ _ _ _ _ => (rsT_zero_eq_zero _).symm, fun _ _ _ => (constFn_zero' q _).symm⟩`.
+Supply the required witnesses or components.
 -/
 private lemma locDerK_zero' {Y X : Scheme.{0}} {K R : Type} [Field K] [CommRing R] (q : Y ⟶ Sp K)
     (p : X ⟶ Sp R) (m : Y ⟶ X) (W₀ : X.Opens) :
@@ -146,11 +146,11 @@ def IsBasis (q : Y ⟶ Sp K) (p : X ⟶ Sp R) (m : Y ⟶ X) (dd : Fin g → ∀ 
       ∀ W, W ≤ W₀ → ∀ f, d W f = ∑ a, rsT (c a) _ * pbT y (dd a (m ⁻¹ᵁ W) ((m.app W).hom f)) _
 
 /- English proof (translation)
-Establish `hL : ((O.ι ≫ y) ≫ m) ⁻¹ᵁ W ≤ O.ι ⁻¹ᵁ (O ⊓ y ⁻¹ᵁ m ⁻¹ᵁ W)` using `le_of_eq (pre_ι_eq O y m W)`. Establish `hL₀ : ((O.ι ≫ y) ≫ m) ⁻¹ᵁ W ≤ ((O.ι ≫ y) ≫ m) ⁻¹ᵁ W₀` using `Scheme.Hom.preimage_mono _ hW`. Rewrite using `[pbT_eq_appLE_hom _ hL, map_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, ← pbT_eq_appLE_hom _ hL, ← pbT_eq_appLE_hom _ hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `h₁ : O ⊓ y ⁻¹ᵁ m ⁻¹ᵁ W ≤ (𝟙 Z) ⁻¹ᵁ O` using `inf_le_left`. Establish `h₂ : ((O.ι ≫ y) ≫ m) ⁻¹ᵁ W₀ ≤ O.ι ⁻¹ᵁ O`. Rewrite using `[Scheme.Opens.ι_preimage_self]`. Conclude with `le_top`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₃ : ((O.ι ≫ y) ≫ m) ⁻¹ᵁ W ≤ (𝟙 O.toScheme) ⁻¹ᵁ (((O.ι ≫ y) ≫ m) ⁻¹ᵁ W₀)` using `hL₀`. Rewrite using `[rsT_eq_pbT_id, rsT_eq_pbT_id, pbT_pbT O.ι (𝟙 Z) h₁ hL, pbT_pbT (𝟙 O.toScheme) O.ι h₂ h₃]`. Simplify using `only [Category.comp_id, Category.id_comp]`. Conclude with `pbT_pbT _ _ inf_le_right hL _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pbT_ι_comb {m : Y ⟶ X} (dd : Fin g → ∀ O : Y.Opens, Γ(Y, O) → Γ(Y, O)) (y : Z ⟶ Y) (O : Z.Opens)
     {W₀ W : X.Opens} (hO : O ≤ y ⁻¹ᵁ m ⁻¹ᵁ W₀) (hW : W ≤ W₀) (c : Fin g → Γ(Z, O)) (f : Γ(X, W)) :
@@ -173,13 +173,13 @@ theorem pbT_ι_comb {m : Y ⟶ X} (dd : Fin g → ∀ O : Y.Opens, Γ(Y, O) → 
   · exact pbT_pbT _ _ inf_le_right hL _
 
 /- English proof (translation)
-Establish `hV₀ : ((O.ι ≫ y) ≫ m) ⁻¹ᵁ W₀ = O.ι ⁻¹ᵁ O` using `by rw [pre_ι_eq, inf_eq_left.mpr hO]`. Establish `hz : ∀ W, W ≤ W₀ → ∀ f : Γ(X, W), (fun _ _ => 0 : ∀ W : X.Opens, Γ(X, W) → Γ(O.toScheme, ((O.ι ≫ y) ≫ m) ⁻¹ᵁ W)) W f = ∑ a, rsT ((fun a => pbT O.ι (c a - c' a) (((O.ι ≫ y) ≫ m) ⁻¹ᵁ W₀)) a) _ * pbT (O.ι ≫ y) (dd a (m ⁻¹ᵁ W) ((m.app W).hom f)) _`. Introduce `W hW f`. Establish `e` using `pbT_ι_comb dd y O hO hW (fun a => c a - c' a) f`. Use `beta_reduce at e ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Simplify using `only [rsT_sub_moduli', sub_mul, Finset.sum_sub_distrib, h W hW f, sub_self, pbT_zero_eq_zero]`. Establish `hz' : ∀ W, W ≤ W₀ → ∀ f : Γ(X, W), (fun _ _ => 0 : ∀ W : X.Opens, Γ(X, W) → Γ(O.toScheme, ((O.ι ≫ y) ≫ m) ⁻¹ᵁ W)) W f = ∑ a, rsT ((0 : Fin g → Γ(O.toScheme, ((O.ι ≫ y) ≫ m) ⁻¹ᵁ W₀)) a) _ * pbT (O.ι ≫ y) (dd a (m ⁻¹ᵁ W) ((m.app W).hom f)) _`. Introduce `W hW f`. Simplify using `only [Pi.zero_apply, rsT_zero_eq_zero, zero_mul, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨c₀, -, hu⟩` from `hb O.toScheme (O.ι ≫ y) W₀ _ (locDerK_zero' _ p _ W₀)`. Establish `e₁` using `hu _ hz`. Establish `e₂` using `hu _ hz'`. Use function extensionality and compare the values at `a`. Establish `ha : pbT O.ι (c a - c' a) (((O.ι ≫ y) ≫ m) ⁻¹ᵁ W₀) = pbT O.ι (0 : Γ(Z, O)) (((O.ι ≫ y) ≫ m) ⁻¹ᵁ W₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pbT_zero_eq_zero]`. Conclude with `congrFun (e₁.trans e₂.symm) a`. Conclude with `sub_eq_zero.mp ((pbT_ι_bijective O (le_refl O) hV₀).1 ha)`.
+A detailed English derivation is pending.
 -/
 theorem comb_unique {q : Y ⟶ Sp K} {p : X ⟶ Sp R} {m : Y ⟶ X} {dd : Fin g → ∀ O : Y.Opens, Γ(Y, O) → Γ(Y, O)}
     (hb : IsBasis q p m dd) (y : Z ⟶ Y) (O : Z.Opens) (W₀ : X.Opens) (hO : O ≤ y ⁻¹ᵁ m ⁻¹ᵁ W₀)
@@ -212,9 +212,9 @@ theorem comb_unique {q : Y ⟶ Sp K} {p : X ⟶ Sp R} {m : Y ⟶ X} {dd : Fin g 
   exact sub_eq_zero.mp ((pbT_ι_bijective O (le_refl O) hV₀).1 ha)
 
 /- English proof (translation)
-Establish `hV₀ : ((O.ι ≫ y) ≫ m) ⁻¹ᵁ W₀ = O.ι ⁻¹ᵁ O` using `by rw [pre_ι_eq, inf_eq_left.mpr hO]`. Take `⟨c₀, hc₀, -⟩` from `hb O.toScheme (O.ι ≫ y) W₀ _ hν`. Use `choose c hc using fun a => (pbT_ι_bijective O (le_refl O) hV₀).2 (c₀ a)`. Establish `hc' : ∀ a, pbT O.ι (c a) (((O.ι ≫ y) ≫ m) ⁻¹ᵁ W₀) = c₀ a` using `hc`. Use `⟨c, fun W hW f => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(pbT_ι_bijective O (inf_le_left : O ⊓ y ⁻¹ᵁ m ⁻¹ᵁ W ≤ O) (pre_ι_eq O y m W)).1` to reduce the goal to its premises. Establish `e` using `hc₀ W hW f`. Use `beta_reduce at e ⊢`. Rewrite using `[e, pbT_ι_comb dd y O hO hW c f]`. Simplify using `only [hc']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comb_exists {q : Y ⟶ Sp K} {p : X ⟶ Sp R} {m : Y ⟶ X} {dd : Fin g → ∀ O : Y.Opens, Γ(Y, O) → Γ(Y, O)}
     (hb : IsBasis q p m dd) (y : Z ⟶ Y) (O : Z.Opens) (W₀ : X.Opens) (hO : O ≤ y ⁻¹ᵁ m ⁻¹ᵁ W₀)
@@ -234,7 +234,7 @@ theorem comb_exists {q : Y ⟶ Sp K} {p : X ⟶ Sp R} {m : Y ⟶ X} {dd : Fin g 
   simp only [hc']
 
 /- English proof (translation)
-Distinguish the cases in `h : V ≤ f ⁻¹ᵁ O₀`. Simplify using `only [pbT, dif_pos h, map_add]`. Simplify using `only [pbT, dif_neg h, add_zero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma pbT_add_of_open {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ : Y.Opens} (a b : Γ(Y, O₀)) (V : Z.Opens) :
     pbT f (a + b) V = pbT f a V + pbT f b V := by
@@ -243,14 +243,14 @@ private lemma pbT_add_of_open {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ : Y.Opens} 
   · simp only [pbT, dif_neg h, add_zero]
 
 /- English proof (translation)
-Simplify using `only [pbT, dif_pos h, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pbT_mul_of_le_preimage {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ : Y.Opens} (a b : Γ(Y, O₀)) {V : Z.Opens}
     (h : V ≤ f ⁻¹ᵁ O₀) : pbT f (a * b) V = pbT f a V * pbT f b V := by
   simp only [pbT, dif_pos h, map_mul]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private lemma pbT_congr {Y Z : Scheme.{0}} {f f' : Z ⟶ Y} (e : f = f') {O₀ : Y.Opens} (s : Γ(Y, O₀))
     (V : Z.Opens) : pbT f s V = pbT f' s V := by
@@ -258,7 +258,7 @@ private lemma pbT_congr {Y Z : Scheme.{0}} {f f' : Z ⟶ Y} (e : f = f') {O₀ :
   rfl
 
 /- English proof (translation)
-Establish `hO' : O ≤ (𝟙 Y) ⁻¹ᵁ O₀` using `hO`. Establish `hVV' : V ≤ (𝟙 Z) ⁻¹ᵁ V₀` using `hVV`. Rewrite using `[rsT_eq_pbT_id, rsT_eq_pbT_id, pbT_pbT f (𝟙 Y) hO' hV, pbT_pbT (𝟙 Z) f hV₀ hVV']`. Simplify using `only [Category.comp_id, Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma pbT_rsT_eq_rsT_pbT {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ O : Y.Opens} {V₀ V : Z.Opens} (s : Γ(Y, O₀))
     (hO : O ≤ O₀) (hV : V ≤ f ⁻¹ᵁ O) (hV₀ : V₀ ≤ f ⁻¹ᵁ O₀) (hVV : V ≤ V₀) :
@@ -269,7 +269,7 @@ private lemma pbT_rsT_eq_rsT_pbT {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ O : Y.Op
   simp only [Category.comp_id, Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[pbT_eq_appLE_hom f h]`. Conclude with `congrArg (fun φ : Γ(Sp R, ⊤) ⟶ Γ(Z, V) => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) (Scheme.Hom.appLE_comp_appLE f q ⊤ O V (by exact le_top) h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pbT_constFn_of_le_preimage {Y Z : Scheme.{0}} {R : Type} [CommRing R] (f : Z ⟶ Y) (q : Y ⟶ Sp R)
     {O : Y.Opens} {V : Z.Opens} (h : V ≤ f ⁻¹ᵁ O) (r : R) : pbT f (constFn q O r) V = constFn (f ≫ q) V r := by
@@ -278,15 +278,15 @@ private lemma pbT_constFn_of_le_preimage {Y Z : Scheme.{0}} {R : Type} [CommRing
     (Scheme.Hom.appLE_comp_appLE f q ⊤ O V (by exact le_top) h)
 
 /- English proof (translation)
-Establish `ht' : t ⁻¹ᵁ m ⁻¹ᵁ W₁ = ⊤` using `top_le_iff.mp ht`. Establish `hM : ∀ W, ((t ≫ f₀) ≫ m) ⁻¹ᵁ W = t ⁻¹ᵁ m ⁻¹ᵁ (W₁ ⊓ f ⁻¹ᵁ W)`. Introduce `W`. Rewrite using `[Category.assoc, hm, Scheme.Hom.preimage_inf, Scheme.Hom.preimage_inf, ht', top_inf_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hL : ∀ W, ((t ≫ f₀) ≫ m) ⁻¹ᵁ W ≤ t ⁻¹ᵁ m ⁻¹ᵁ (W₁ ⊓ f ⁻¹ᵁ W)` using `fun W => le_of_eq (hM W)`. Establish `hL' : ∀ W, ((t ≫ f₀) ≫ m) ⁻¹ᵁ W ≤ (t ≫ f₀) ⁻¹ᵁ m ⁻¹ᵁ W` using `fun W => le_rfl`. Establish `hA : ∀ W (h : Γ(X, W)), pbT t ((m.app (W₁ ⊓ f ⁻¹ᵁ W)).hom (pbT f h (W₁ ⊓ f ⁻¹ᵁ W))) (((t ≫ f₀) ≫ m) ⁻¹ᵁ W) = (((t ≫ f₀) ≫ m).app W).hom h`. Introduce `W h`. Establish `e₁ : W₁ ⊓ f ⁻¹ᵁ W ≤ f ⁻¹ᵁ W` using `inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e₂ : m ⁻¹ᵁ (W₁ ⊓ f ⁻¹ᵁ W) ≤ (m ≫ f) ⁻¹ᵁ W` using `m.preimage_mono inf_le_right`. Rewrite using `[app_eq, app_eq, pbT_pbT m f e₁ le_rfl, pbT_pbT t (m ≫ f) e₂ (hL W)]`. Conclude with `pbT_congr (by rw [Category.assoc, hm]) _ _`. Establish `hB : ∀ W (h : Γ(X, W)), pbT (t ≫ f₀) ((m.app W).hom h) (((t ≫ f₀) ≫ m) ⁻¹ᵁ W) = (((t ≫ f₀) ≫ m).app W).hom h`. Introduce `W h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[app_eq, app_eq, pbT_pbT (t ≫ f₀) m le_rfl (hL' W)]`. Use `⟨fun W hW h h' => ?_, fun W hW h h' => ?_, fun W W' hh hW h => ?_, fun W hW r => ?_⟩` and prove the remaining obligations. Rewrite using `[pbT_add_of_open, h₁.add (W₁ ⊓ f ⁻¹ᵁ W) inf_le_left, pbT_add_of_open, h₂.add W hW, pbT_add_of_open]`. Normalize the expressions using the abelian group laws. Rewrite using `[pbT_mul_of_le_preimage f h h' (inf_le_right : W₁ ⊓ f ⁻¹ᵁ W ≤ f ⁻¹ᵁ W), h₁.mul (W₁ ⊓ f ⁻¹ᵁ W) inf_le_left, h₂.mul W hW, pbT_add_of_open, pbT_add_of_open, pbT_mul_of_le_preimage _ _ _ (hL W), pbT_mul_of_le_preimage _ _ _ (hL W), pbT_mul_of_le_preimage _ _ _ (hL' W), pbT_mul_of_le_ …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hV : W₁ ⊓ f ⁻¹ᵁ W' ≤ W₁ ⊓ f ⁻¹ᵁ W` using `inf_le_inf_left _ (f.preimage_mono hh)`. Rewrite using `[h₂.res W W' hh hW, resG_eq, pbT_rsT_eq_rsT_pbT f h hh inf_le_right inf_le_right hV, ← resG_eq hV, h₁.res _ _ hV inf_le_left, pbT_rsT_eq_rsT_pbT t _ (m.preimage_mono hV) (hL W') (hL W) ((t ≫ f₀ ≫ m).preimage_mono hh), pbT_rsT_eq_rsT_pbT (t ≫ f₀) _ (m.preimage_mono hh) (hL' W') (h …`. Rewrite using `[pbT_constFn_of_le_preimage f p (inf_le_right : W₁ ⊓ f ⁻¹ᵁ W ≤ f ⁻¹ᵁ W), hp, h₁.base _ inf_le_left, h₂.base W hW, pbT_constFn_of_le_preimage t q (hL W), pbT_constFn_of_le_preimage (t ≫ f₀) q (hL' W), Category.assoc t f₀ q, hq, sub_self, constFn_zero']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locDer_diff {q : Y ⟶ Sp K} {p : X ⟶ Sp R} {m : Y ⟶ X} {D : R → K} {W₁ W₂ : X.Opens}
     {d₁ d₂ : ∀ W : X.Opens, Γ(X, W) → Γ(Y, m ⁻¹ᵁ W)} (h₁ : LocDerK q p m D W₁ d₁) (h₂ : LocDerK q p m D W₂ d₂)
@@ -330,7 +330,7 @@ theorem locDer_diff {q : Y ⟶ Sp K} {p : X ⟶ Sp R} {m : Y ⟶ X} {D : R → K
       sub_self, constFn_zero']
 
 /- English proof (translation)
-Distinguish the cases in `h : V ≤ f ⁻¹ᵁ O₀`. Simplify using `only [pbT, dif_pos h, map_sub]`. Simplify using `only [pbT, dif_neg h, sub_zero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma pbT_sub' {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ : Y.Opens} (a b : Γ(Y, O₀)) (V : Z.Opens) :
     pbT f (a - b) V = pbT f a V - pbT f b V := by
@@ -339,7 +339,7 @@ private lemma pbT_sub' {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ : Y.Opens} (a b : 
   · simp only [pbT, dif_neg h, sub_zero]
 
 /- English proof (translation)
-Establish `hO' : O ≤ (𝟙 Y) ⁻¹ᵁ O₀` using `hO`. Rewrite using `[rsT_eq_pbT_id, pbT_pbT f (𝟙 Y) hO' hV, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma pbT_rsT_of_le_of_le_preimage {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ O : Y.Opens} {L : Z.Opens} (s : Γ(Y, O₀))
     (hV : L ≤ f ⁻¹ᵁ O) (hO : O ≤ O₀) : pbT f (rsT s O) L = pbT f s L := by
@@ -347,7 +347,7 @@ private lemma pbT_rsT_of_le_of_le_preimage {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O�
   rw [rsT_eq_pbT_id, pbT_pbT f (𝟙 Y) hO' hV, Category.comp_id]
 
 /- English proof (translation)
-Establish `h₁' : O ≤ (𝟙 Y) ⁻¹ᵁ O₀` using `h₁`. Establish `h₂' : O' ≤ (𝟙 Y) ⁻¹ᵁ O` using `h₂`. Rewrite using `[rsT_eq_pbT_id, rsT_eq_pbT_id, rsT_eq_pbT_id, pbT_pbT (𝟙 Y) (𝟙 Y) h₁' h₂', Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma rsT_rsT_of_le {Y : Scheme.{0}} {O₀ O O' : Y.Opens} (s : Γ(Y, O₀)) (h₁ : O ≤ O₀) (h₂ : O' ≤ O) :
     rsT (rsT s O) O' = rsT s O' := by
@@ -356,7 +356,7 @@ private lemma rsT_rsT_of_le {Y : Scheme.{0}} {O₀ O O' : Y.Opens} (s : Γ(Y, O�
   rw [rsT_eq_pbT_id, rsT_eq_pbT_id, rsT_eq_pbT_id, pbT_pbT (𝟙 Y) (𝟙 Y) h₁' h₂', Category.comp_id]
 
 /- English proof (translation)
-Establish `hV' : V ≤ (𝟙 Z) ⁻¹ᵁ V₀` using `hV`. Rewrite using `[rsT_eq_pbT_id, pbT_pbT (𝟙 Z) f hV₀ hV', Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma rsT_pbT_of_le_preimage {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ : Y.Opens} {V₀ V : Z.Opens} (s : Γ(Y, O₀))
     (hV₀ : V₀ ≤ f ⁻¹ᵁ O₀) (hV : V ≤ V₀) : rsT (pbT f s V₀) V = pbT f s V := by
@@ -364,7 +364,7 @@ private lemma rsT_pbT_of_le_preimage {Y Z : Scheme.{0}} (f : Z ⟶ Y) {O₀ : Y.
   rw [rsT_eq_pbT_id, pbT_pbT (𝟙 Z) f hV₀ hV', Category.id_comp]
 
 /- English proof (translation)
-Establish `h' : O' ≤ (𝟙 Y) ⁻¹ᵁ O` using `h`. Rewrite using `[rsT_eq_pbT_id, pbT_constFn_of_le_preimage (𝟙 Y) q h', Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma rsT_constFn_of_le {Y : Scheme.{0}} {R : Type} [CommRing R] (q : Y ⟶ Sp R) {O O' : Y.Opens}
     (h : O' ≤ O) (r : R) : rsT (constFn q O r) O' = constFn q O' r := by
@@ -372,7 +372,7 @@ private lemma rsT_constFn_of_le {Y : Scheme.{0}} {R : Type} [CommRing R] (q : Y 
   rw [rsT_eq_pbT_id, pbT_constFn_of_le_preimage (𝟙 Y) q h', Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[← resG_eq h, map_sum]`. Simplify using `only [map_mul]`. Simplify using `only [resG_eq h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma rsT_sum_mul {Y : Scheme.{0}} {n : ℕ} {O O' : Y.Opens} (h : O' ≤ O) (u v : Fin n → Γ(Y, O)) :
     rsT (∑ a, u a * v a) O' = ∑ a, rsT (u a) O' * rsT (v a) O' := by
@@ -381,7 +381,7 @@ private lemma rsT_sum_mul {Y : Scheme.{0}} {n : ℕ} {O O' : Y.Opens} (h : O' �
   simp only [resG_eq h]
 
 /- English proof (translation)
-Rewrite using `[pbT_eq_appLE_hom f h, map_sum]`. Simplify using `only [map_mul]`. Simplify using `only [← pbT_eq_appLE_hom f h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma pbT_sum_mul {Y Z : Scheme.{0}} {n : ℕ} (f : Z ⟶ Y) {O : Y.Opens} {V : Z.Opens}
     (h : V ≤ f ⁻¹ᵁ O) (u v : Fin n → Γ(Y, O)) :
@@ -391,7 +391,7 @@ private lemma pbT_sum_mul {Y Z : Scheme.{0}} {n : ℕ} (f : Z ⟶ Y) {O : Y.Open
   simp only [← pbT_eq_appLE_hom f h]
 
 /- English proof (translation)
-Rewrite using `[rsT_sum_mul (inf_le_inf_right V hQ)]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[rsT_rsT_of_le _ inf_le_left (inf_le_inf_right V hQ), rsT_pbT_of_le_preimage y _ (inf_le_right.trans hV) (inf_le_inf_right V hQ)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma rsT_sum_rsT_mul_pbT_inf {Y₁ Y₂ : Scheme.{0}} {n : ℕ} (y : Y₁ ⟶ Y₂) {O Q V : Y₁.Opens} {A : Y₂.Opens}
     (hQ : Q ≤ O) (hV : V ≤ y ⁻¹ᵁ A) (c : Fin n → Γ(Y₁, O)) (e : Fin n → Γ(Y₂, A)) :
@@ -401,7 +401,7 @@ private lemma rsT_sum_rsT_mul_pbT_inf {Y₁ Y₂ : Scheme.{0}} {n : ℕ} (y : Y�
   rw [rsT_rsT_of_le _ inf_le_left (inf_le_inf_right V hQ), rsT_pbT_of_le_preimage y _ (inf_le_right.trans hV) (inf_le_inf_right V hQ)]
 
 /- English proof (translation)
-Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun _ _ => Finset.sum_congr rfl (fun _ _ => by ring))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_mul_sum_eq_sum_sum_mul_mul {A : Type} [CommRing A] {n : ℕ} (t : Fin n → A) (C : Fin n → Fin n → A) (P : Fin n → A) :
     ∑ a, t a * ∑ b, C b a * P b = ∑ b, (∑ a, C b a * t a) * P b := by
@@ -410,37 +410,33 @@ private lemma sum_mul_sum_eq_sum_sum_mul_mul {A : Type} [CommRing A] {n : ℕ} (
   exact Finset.sum_congr rfl (fun _ _ => Finset.sum_congr rfl (fun _ _ => by ring))
 
 /- English proof (translation)
-Establish `hmW : ∀ W' : X.Opens, f₀ ⁻¹ᵁ m ⁻¹ᵁ W' = m ⁻¹ᵁ f ⁻¹ᵁ W'` using `fun W' => by`. Rewrite using `[← Scheme.Hom.comp_preimage, hm]`. Both sides reduce to the same expression. Establish `hVi : ∀ i k W', m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W' ≤ m ⁻¹ᵁ (W i ⊓ f ⁻¹ᵁ W')`. Introduce `i k W'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Scheme.Hom.preimage_inf, ← hmW]`. Conclude with `le_inf (inf_le_left.trans inf_le_left) inf_le_right`. Establish `hex : ∀ i k, ∃ c : Fin g → Γ(Y, m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k), ∀ W', W' ≤ W k → ∀ h : Γ(X, W'), rsT (d i (W i ⊓ f ⁻¹ᵁ W') (pbT f h (W i ⊓ f ⁻¹ᵁ W'))) (m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W') - pbT f₀ (d k W' h) (m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W') = ∑ a, rsT ( …`. Introduce `i k`. Establish `ht : ⊤ ≤ (m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k).ι ⁻¹ᵁ m ⁻¹ᵁ W i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Opens.ι_preimage_self (m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k)]`. Conclude with `Scheme.Hom.preimage_mono _ inf_le_left`. Establish `hD` using `locDer_diff (hc.der i) (hc.der k) f f₀ hp hq hm _ ht`. Use `comb_exists hb f₀ _ (W k) inf_le_right (fun W' h => rsT (d i (W i ⊓ f ⁻¹ᵁ W') (pbT f h (W i ⊓ f ⁻¹ᵁ W'))) _ - pbT f₀ (d k W' h) _) ?_` and prove the remaining obligations. Use `hD using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `W' h`. Establish `hL` using `le_of_eq (pre_ι_eq (m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k) f₀ m W')`. Rewrite using `[pbT_sub', pbT_rsT_of_le_of_le_preimage _ _ hL (hVi i k W'), pbT_pbT _ f₀ inf_le_right hL]`. Use `choose c hc' using hex`. Establish `hE : ∀ i k (Q : Y.Opens), Q ≤ m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k → ∀ W', W' ≤ W k → ∀ h : Γ(X, W'), ∑ a, rsT (c i k a) (Q ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W') * pbT f₀ (dd a (m ⁻¹ᵁ W') ((m.app W').hom h)) (Q ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W') = rsT (d i (W i ⊓ f ⁻¹ᵁ W') (pbT f h (W i ⊓ f ⁻¹ᵁ W'))) (Q ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W') …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i k Q hQ W' hW' h`. Establish `e` using `rsT_sum_rsT_mul_pbT_inf f₀ hQ (le_refl (f₀ ⁻¹ᵁ m ⁻¹ᵁ W')) (c i k) (fun a => dd a (m ⁻¹ᵁ W') ((m.app W').hom h))`. Rewrite `e` using `[← hc' i k W' hW' h]`. Rewrite using `[← e, rsT_sub_moduli', rsT_rsT_of_le _ (hVi i k W') (inf_le_inf_right _ hQ), rsT_pbT_of_le_preimage f₀ _ inf_le_right (inf_le_inf_right _ hQ)]`. Use `⟨fun i k => c i k x, fun i i' k => ?_, fun i k k' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ≤ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k` using `inf_le_right`. Establish `hQi : m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ≤ m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`. Establish `hQi' : m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ≤ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Establish `key` using `comb_unique hb f₀ _ (W k) hQ (fun a => rsT (c i' k a) (m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k) - rsT (c i k a) (m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k)) (fun a => rsT (lc q (F a) θ i i') (m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k)) ?_`. Conclude with `congrFun key x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `W' hW' h`. Establish `hQ' : m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W' ≤ m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k` using `inf_le_left`. Establish `hQc : m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W' ≤ m ⁻¹ᵁ (W i ⊓ W i' ⊓ f ⁻¹ᵁ W')`. Rewrite using `[Scheme.Hom.preimage_inf, Scheme.Hom.preimage_inf, ← hmW]`. Conclude with `le_inf (le_inf (inf_le_left.trans (inf_le_left.trans inf_le_left)) (inf_le_left.trans (inf_le_left.trans inf_le_right))) inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQf : m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W' ≤ f₀ ⁻¹ᵁ m ⁻¹ᵁ W'` using `inf_le_right`. Establish `hOcf : m ⁻¹ᵁ (W i ⊓ W i' ⊓ f ⁻¹ᵁ W') ≤ f₀ ⁻¹ᵁ m ⁻¹ᵁ W'`. Rewrite using `[hmW]`. Conclude with `Scheme.Hom.preimage_mono _ inf_le_right`. Establish `hOθ : m ⁻¹ᵁ (W i ⊓ W i' ⊓ f ⁻¹ᵁ W') ≤ m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i'` using `Scheme.Hom.preimage_mono _ inf_le_left`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `EA : ∀ j, W i ⊓ W i' ⊓ f ⁻¹ᵁ W' ≤ W j ⊓ f ⁻¹ᵁ W' → rsT (d j (W j ⊓ f ⁻¹ᵁ W') (pbT f h (W j ⊓ f ⁻¹ᵁ W'))) (m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W') = rsT (d j (W i ⊓ W i' ⊓ f ⁻¹ᵁ W') (pbT f h (W i ⊓ W i' ⊓ f ⁻¹ᵁ W'))) (m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k …`. Introduce `j hj`. Rewrite using `[← rsT_rsT_of_le _ (Scheme.Hom.preimage_mono _ hj) hQc, ← (hc.der j).res _ _ hj inf_le_left, resG_eq, rsT_pbT_of_le_preimage f h inf_le_right hj]`. Establish `Eu : (m.app (W i ⊓ W i' ⊓ f ⁻¹ᵁ W')).hom (pbT f h (W i ⊓ W i' ⊓ f ⁻¹ᵁ W')) = rsT ((f₀.app (m ⁻¹ᵁ W')).hom ((m.app W').hom h)) (m ⁻¹ᵁ (W i ⊓ W i' ⊓ f ⁻¹ᵁ W'))`. Rewrite using `[app_eq m (pbT f h _), app_eq m h, app_eq f₀, pbT_pbT f₀ m le_rfl le_rfl, rsT_pbT_of_le_preimage (f₀ ≫ m) h (le_rfl : f₀ ⁻¹ᵁ m ⁻¹ᵁ W' ≤ (f₀ ≫ m) ⁻¹ᵁ W') hOcf, pbT_pbT m f inf_le_right le_rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `pbT_congr hm.symm _ _`. Establish `Edd : ∀ a, rsT (dd a (m ⁻¹ᵁ (W i ⊓ W i' ⊓ f ⁻¹ᵁ W')) ((m.app (W i ⊓ W i' ⊓ f ⁻¹ᵁ W')).hom (pbT f h (W i ⊓ W i' ⊓ f ⁻¹ᵁ W')))) (m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W') = ∑ b, constFn q (m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W') (F b a) * pbT …`. Introduce `a`. Rewrite using `[Eu, hres a _ _ _ hOcf, rsT_rsT_of_le _ hOcf hQc, hend a (m ⁻¹ᵁ W') ((m.app W').hom h), rsT_sum_mul hQf]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[rsT_constFn_of_le _ hQf, app_eq f₀, rsT_pbT_of_le_preimage f₀ _ le_rfl hQf]`. Simplify using `only [rsT_sub_moduli', rsT_rsT_of_le _ hQi hQ', rsT_rsT_of_le _ hQi' hQ', sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[hE i' k _ hQi' W' hW' h, hE i k _ hQi W' hW' h, sub_sub_sub_cancel_right, EA i (le_inf (inf_le_left.trans inf_le_left) inf_le_right), EA i' (le_inf (inf_le_left.trans inf_le_right) inf_le_right), ← rsT_sub_moduli', hc.diff i i' _ inf_le_left, rsT_sum_mul hQc]`. Establish `Elc : ∀ b, rsT (rsT (lc q (F b) θ i i') (m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k)) (m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W') = ∑ a, constFn q (m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W') (F b a) * rsT (θ a i i') (m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ …`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[rsT_rsT_of_le _ inf_le_left hQ']`. Conclude with `(rsT_sum_mul (hQ'.trans inf_le_left) (fun a => constFn q _ (F b a)) (fun a => θ a i i')).trans (Finset.sum_congr rfl (fun a _ => by rw [rsT_constFn_of_le _ (hQ'.trans inf_le_left)]))`. Use `(Finset.sum_congr rfl (fun a _ => ?_)).trans ((sum_mul_sum_eq_sum_sum_mul_mul (fun a => rsT (θ a i i') (m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W')) (fun b a => constFn q (m ⁻¹ᵁ W i ⊓ m ⁻¹ᵁ W i' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W') (F b a)) (fun b => pbT f₀ (dd …` and prove the remaining obligations. Rewrite using `[rsT_rsT_of_le _ hOθ hQc, Edd a]`. Rewrite using `[Elc b]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR : m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k' ≤ f₀ ⁻¹ᵁ m ⁻¹ᵁ (W k ⊓ W k')`. Rewrite using `[Scheme.Hom.preimage_inf, Scheme.Hom.preimage_inf]`. Conclude with `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Establish `hRk : m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k' ≤ m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k` using `inf_le_left`. Establish `hRk' : m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k' ≤ m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k'` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hRθ : m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k' ≤ f₀ ⁻¹ᵁ (m ⁻¹ᵁ W k ⊓ m ⁻¹ᵁ W k')`. Rewrite using `[Scheme.Hom.preimage_inf]`. Conclude with `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Establish `key` using `comb_unique hb f₀ _ (W k ⊓ W k') hR (fun a => rsT (c i k a) (m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k') - rsT (c i k' a) (m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k')) (fun a => pbT f₀ (θ a k k') (m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k')) ?_`. Conclude with `congrFun key x`.
-
-Introduce `W' hW' h`. Establish `hR' : m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W' ≤ m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k'` using `inf_le_left`. Establish `hRf : m ⁻¹ᵁ W i ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W k' ⊓ f₀ ⁻¹ᵁ m ⁻¹ᵁ W' ≤ f₀ ⁻¹ᵁ m ⁻¹ᵁ W'` using `inf_le_right`. Establish `hWθ : m ⁻¹ᵁ W' ≤ m ⁻¹ᵁ W k ⊓ m ⁻¹ᵁ W k'` using `Scheme.Hom.preimage_mono _ hW'`. Simplify using `only [rsT_sub_moduli', rsT_rsT_of_le _ hRk hR', rsT_rsT_of_le _ hRk' hR', sub_mul, Finset.sum_sub_distrib]`.
-
-Rewrite using `[hE i k _ hRk W' (hW'.trans inf_le_left) h, hE i k' _ hRk' W' (hW'.trans inf_le_right) h, sub_sub_sub_cancel_left, ← pbT_sub', hc.diff k k' W' hW', pbT_sum_mul f₀ hRf]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[pbT_rsT_of_le_of_le_preimage _ _ hRf hWθ, rsT_pbT_of_le_preimage f₀ _ hRθ hR']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohom_of_basis {q : Y ⟶ Sp K} {p : X ⟶ Sp R} {m : Y ⟶ X} {dd : Fin g → ∀ O : Y.Opens, Γ(Y, O) → Γ(Y, O)}
     (hb : IsBasis q p m dd) {I : Type} {W : I → X.Opens} {D : R → K}
@@ -573,9 +569,9 @@ end GlobalTheory.KS.EndClass
 open GlobalTheory.KS.EndClass in
 
 /- English proof (translation)
-Introduce `K _ A₀ _ g v dd hs hv hdd R _ x₀ X p m hpb I W D d θ f f₀ F hc hf₀ hp hm hF x`. Establish `hT : ∀ a, IsTangent (v a)`. Unfold `IsLieBasis at hv`. Conclude with `hv.1`. Establish `hb : IsBasis A₀.hom p m dd` using `GlobalTheory.T.invariantVectorFields_basis_verticalDerivations K A₀ g v dd hs hv hdd R x₀ X p m hpb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres : ∀ a O O' (s : Γ(A₀.left, O)), O' ≤ O → dd a O' (rsT s O') = rsT (dd a O s) O'` using `fun a O O' s h => ((GlobalTheory.T.exists_unique_invariantVectorField_of_tangent K A₀ (v a) (hT a)).2 (dd a) (hdd a)).2.2.1 O O' s h`. Establish `hend : ∀ j (O : A₀.left.Opens) (s : Γ(A₀.left, O)), dd j (f₀.left ⁻¹ᵁ O) ((f₀.left.app O).hom s) = ∑ a, constFn A₀.hom _ (F a j) * (f₀.left.app O).hom (dd a O s)` using `fun j O s => GlobalTheory.T.invariantVectorFields_along_groupHom K A₀ A₀ f₀ g v dd (v j) (dd j) (fun i => F i j) hf₀ hT (hT j) hdd (hdd j) (hF j) O s`. Conclude with `cohom_of_basis hb hc f f₀.left hp (Over.w f₀) hm F hres hend x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KS.cohom_ksCoc_of_endomorphism : ∀ (K : Type) [Field K] (A₀ : Over (Sp K)) [GrpObj A₀] (g : ℕ) (v : Fin g → (epsR K ⟶ A₀)) (dd : Fin g → ∀ O : A₀.left.Opens, Γ(A₀.left, O) → Γ(A₀.left, O)), Smooth A₀.hom → IsLieBasis v → (∀ a, IsInvDer (v a) (dd a)) → ∀ (R : Type) [CommRing R] (x₀ : R →+* K) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : A₀.left ⟶ X), IsPullback m A₀.hom p (spMap x₀) → ∀ (I : Type) (W : I → X.Opens) (D : R → K) d θ (f : X ⟶ X) (f₀ : A₀ ⟶ A₀) (F : Matrix (Fin g) (Fin g) K), KSCoc A₀.hom p m D W dd d θ → IsMonHom f₀ → f ≫ p = p → f₀.left ≫ m = m ≫ f → (∀ j, IsLieComb (fun i => F i j) v (v j ≫ f₀)) → ∀ x, Cohom f₀.left _ (lc A₀.hom (F x) θ) (θ x) := by
   intro K _ A₀ _ g v dd hs hv hdd R _ x₀ X p m hpb I W D d θ f f₀ F hc hf₀ hp hm hF x

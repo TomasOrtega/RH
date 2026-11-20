@@ -15,11 +15,11 @@ section Blocks
 variable {K : Type} [Field K] [StarRing K] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `hu : IsUnit G.det` using `isUnit_iff_ne_zero.2 hG`. Establish `h1 : fromBlocks G 0 0 (-G) * fromBlocks G⁻¹ 0 0 (-G⁻¹) = 1`. Rewrite using `[fromBlocks_multiply]`. Simplify using `[Matrix.mul_nonsing_inv _ hu, fromBlocks_one]`. Establish `h2 : fromBlocks G⁻¹ 0 0 (-G⁻¹) * fromBlocks G 0 0 (-G) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[fromBlocks_multiply]`. Simplify using `[Matrix.nonsing_inv_mul _ hu, fromBlocks_one]`. Establish `hL : (fromBlocks G⁻¹ 0 0 (-G⁻¹) * Bᴴ * fromBlocks G 0 0 (-G)) * B = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hR : B * (fromBlocks G⁻¹ 0 0 (-G⁻¹) * Bᴴ * fromBlocks G 0 0 (-G)) = 1` using `mul_eq_one_comm.1 hL`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, h1, Matrix.mul_one]`. Use `_ = fromBlocks G⁻¹ 0 0 (-G⁻¹) := by rw [hR, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem row_rel (G : Matrix n n K) (hG : G.det ≠ 0) (B : Matrix (n ⊕ n) (n ⊕ n) K)
     (hB : Bᴴ * fromBlocks G 0 0 (-G) * B = fromBlocks G 0 0 (-G)) :
@@ -40,7 +40,7 @@ theorem row_rel (G : Matrix n n K) (hG : G.det ≠ 0) (B : Matrix (n ⊕ n) (n �
     _ = fromBlocks G⁻¹ 0 0 (-G⁻¹) := by rw [hR, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h` using `row_rel G hG B hB`. Rewrite `h` using `[← fromBlocks_toBlocks B, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply, fromBlocks_inj]`. Simplify using `only [toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, zero_sub, ← sub_eq_add_neg] at h`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blocks_rel (G : Matrix n n K) (hG : G.det ≠ 0) (B : Matrix (n ⊕ n) (n ⊕ n) K)
     (hB : Bᴴ * fromBlocks G 0 0 (-G) * B = fromBlocks G 0 0 (-G)) :
@@ -62,11 +62,9 @@ section Blocks2
 variable {K : Type} [Field K] [StarRing K] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Take `⟨h11, h12, h21, h22⟩` from `blocks_rel G hG B hB`. Use `set a := B.toBlocks₁₁`. Use `set b := B.toBlocks₁₂`. Use `set c := B.toBlocks₂₁`. Use `set d := B.toBlocks₂₂`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← sub_eq_zero, Matrix.conjTranspose_sub, Matrix.conjTranspose_sub]`. Establish `: (a - c) * G⁻¹ * (aᴴ - cᴴ) - (d - b) * G⁻¹ * (dᴴ - bᴴ) = (a * G⁻¹ * aᴴ - b * G⁻¹ * bᴴ) + (c * G⁻¹ * cᴴ - d * G⁻¹ * dᴴ) - (a * G⁻¹ * cᴴ - b * G⁻¹ * dᴴ) - (c * G⁻¹ * aᴴ - d * G⁻¹ * bᴴ)`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, h11, h12, h21, h22]`.
-
-Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem form_eq (G : Matrix n n K) (hG : G.det ≠ 0) (B : Matrix (n ⊕ n) (n ⊕ n) K)
     (hB : Bᴴ * fromBlocks G 0 0 (-G) * B = fromBlocks G 0 0 (-G)) :
@@ -85,7 +83,7 @@ theorem form_eq (G : Matrix n n K) (hG : G.det ≠ 0) (B : Matrix (n ⊕ n) (n �
   rw [this, h11, h12, h21, h22]; abel
 
 /- English proof (translation)
-Establish `hu : IsUnit G.det` using `isUnit_iff_ne_zero.2 hG`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_nonsing_inv, hH, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hu]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem adj_form (G : Matrix n n K) (hG : G.det ≠ 0) (hH : Gᴴ = G) (M : Matrix n n K) :
     (G⁻¹ * Mᴴ * G)ᴴ * G * (G⁻¹ * Mᴴ * G) = G * (M * G⁻¹ * Mᴴ) * G := by
@@ -94,19 +92,17 @@ theorem adj_form (G : Matrix n n K) (hG : G.det ≠ 0) (hH : Gᴴ = G) (M : Matr
     Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hu]
 
 /- English proof (translation)
-Establish `hu : IsUnit G.det` using `isUnit_iff_ne_zero.2 hG`. Establish `hrow` using `row_rel G hG B hB`. Use `set w := G *ᵥ v`. Establish `k1 : (B.toBlocks₂₂ - B.toBlocks₁₂)ᴴ *ᵥ w = 0`. Use `congrArg (G *ᵥ ·) h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[w, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu]`. Establish `k2 : (B.toBlocks₁₁ - B.toBlocks₂₁)ᴴ *ᵥ w = 0`. Use `congrArg (G *ᵥ ·) h2` as an intermediate fact. Simplify `this` using `[w, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu]`. Establish `hx : Bᴴ *ᵥ Sum.elim w (-w) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← fromBlocks_toBlocks B, fromBlocks_conjTranspose, fromBlocks_mulVec]`. Simplify using `only [Matrix.conjTranspose_sub, Matrix.sub_mulVec] at k1 k2`. Use extensionality with `(i | i)`. Use `congrFun k2 i` as an intermediate fact. Simplify using `only [Pi.sub_apply, Pi.zero_apply] at this`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inl, Pi.zero_apply, Sum.elim_comp_inl, Sum.elim_comp_inr, Matrix.mulVec_neg, Pi.add_apply, Pi.neg_apply]`. Take the linear combination `this`. Use `congrFun k1 i` as an intermediate fact. Simplify using `only [Pi.sub_apply, Pi.zero_apply] at this`. Simplify using `only [Sum.elim_inr, Pi.zero_apply, Sum.elim_comp_inl, Sum.elim_comp_inr, Matrix.mulVec_neg, Pi.add_apply, Pi.neg_apply]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-this`. Establish `hK : fromBlocks G⁻¹ 0 0 (-G⁻¹) *ᵥ Sum.elim w (-w) = 0`. Rewrite using `[← hrow, ← Matrix.mulVec_mulVec, hx, Matrix.mulVec_zero]`. Establish `hw : w = 0`. Use `congrArg (fun x => fromBlocks G 0 0 (-G) *ᵥ x) hK` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec_mulVec, Matrix.mulVec_zero, fromBlocks_multiply] at this`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_nonsing_inv _ hu, neg_zero, fromBlocks_one, Matrix.one_mulVec] at this`. Use function extensionality and compare the values at `i`. Conclude with `congrFun this (Sum.inl i)`. Establish `: G⁻¹ *ᵥ w = v` using `by simp [w, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu]`.
-
-Rewrite using `[← this, hw, Matrix.mulVec_zero]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_trivial (G : Matrix n n K) (hG : G.det ≠ 0) (B : Matrix (n ⊕ n) (n ⊕ n) K)
     (hB : Bᴴ * fromBlocks G 0 0 (-G) * B = fromBlocks G 0 0 (-G)) (v : n → K)
@@ -151,9 +147,9 @@ end Blocks2
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hγ : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (Formalism.L2.Theta.mt (GlobalTheory.Doubling.dblSp W) γ) * (GlobalTheory.Doubling.dblSp W).gram.map (incA D) * Formalism.L2.Theta.mt (GlobalTheory.Doubling.dblSp W) γ = (GlobalTheory.Doubling.dblSp W).gram.map (incA D)` using `γ.2`. Establish `hc : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (g₀.map (incA D)) = g₀ᴴ.map (incA D)`. Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply]`. Simplify using `[sigR, CMData.sig, inclR]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite `hγ` using `[h, hc, ← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `Matrix.map_injective (Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)) hγ`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_of_mt (W : HSp D) (γ : GA D (GlobalTheory.Doubling.dblSp W))
     (g₀ : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E)
@@ -171,7 +167,7 @@ theorem unitary_of_mt (W : HSp D) (γ : GA D (GlobalTheory.Doubling.dblSp W))
     (Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)) hγ
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_mulVec]`. Use `conv_rhs => rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_dot' (W : HSp D) (c : Matrix (Fin W.rank) (Fin W.rank) D.host.E) (x x' : Fin W.rank → D.host.E) :
     star (c *ᵥ x) ⬝ᵥ W.gram *ᵥ (c *ᵥ x') = star x ⬝ᵥ (cᴴ * W.gram * c) *ᵥ x' := by
@@ -179,7 +175,7 @@ theorem star_dot' (W : HSp D) (c : Matrix (Fin W.rank) (Fin W.rank) D.host.E) (x
   conv_rhs => rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]
 
 /- English proof (translation)
-Establish `hU` using `unitary_of_mt W γ g₀ h`. Rewrite `hU` using `[show (GlobalTheory.Doubling.dblSp W).gram = GlobalTheory.Doubling.dblGram finSumFinEquiv W.gram from GlobalTheory.Doubling.gram_hdbl W]`. Use `congrArg (fun X => X.submatrix finSumFinEquiv finSumFinEquiv) hU` as an intermediate fact. Simplify using `only [← Matrix.submatrix_mul_equiv _ _ _ finSumFinEquiv _, Matrix.conjTranspose_submatrix, GlobalTheory.Doubling.dblGram, GlobalTheory.Doubling.submatrix_blkMat] at this`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blk_unitary (W : HSp D) (γ : GA D (GlobalTheory.Doubling.dblSp W))
     (g₀ : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E)
@@ -194,17 +190,15 @@ theorem blk_unitary (W : HSp D) (γ : GA D (GlobalTheory.Doubling.dblSp W))
   exact this
 
 /- English proof (translation)
-Introduce `h`. Establish `hB` using `blk_unitary W γ g₀ h`. Establish `hG : (HSpace.gram W).det ≠ 0` using `Formalism.L2.Theta.gram_det_ne W`. Establish `hH : (HSpace.gram W)ᴴ = HSpace.gram W` using `Matrix.ext fun i j => W.herm.eq _ _`. Use `set C := frameOf W g₀ with hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : C.1 = (HSpace.gram W)⁻¹ * ((blk W g₀).toBlocks₂₂ - (blk W g₀).toBlocks₁₂)ᴴ * HSpace.gram W` using `rfl`. Establish `h2 : C.2 = (HSpace.gram W)⁻¹ * ((blk W g₀).toBlocks₁₁ - (blk W g₀).toBlocks₂₁)ᴴ * HSpace.gram W` using `rfl`. Set `φ : (Fin W.rank → D.host.E) →ₗ[D.host.E] (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)` to `LinearMap.prod (Matrix.mulVecLin C.1) (Matrix.mulVecLin C.2)`. Establish `hinj : Function.Injective φ`. Use `(injective_iff_map_eq_zero φ).2 fun v hv => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : C.1 *ᵥ v = 0` using `congrArg Prod.fst hv`. Establish `e2 : C.2 *ᵥ v = 0` using `congrArg Prod.snd hv`. Rewrite `e1` using `[h1]`. Rewrite `e2` using `[h2]`. Conclude with `ker_trivial _ hG _ hB v e1 e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `Y : Lag W` to `⟨LinearMap.range φ, by`. Rewrite using `[LinearMap.finrank_range_of_inj hinj]`. Use the proof step `simp, by`. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Use `show star (C.1 *ᵥ x) ⬝ᵥ W.gram *ᵥ (C.1 *ᵥ y) = star (C.2 *ᵥ x) ⬝ᵥ W.gram *ᵥ (C.2 *ᵥ y)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[star_dot', star_dot', h1, h2, adj_form _ hG hH, adj_form _ hG hH, form_eq _ hG _ hB]⟩`. Use `⟨Y, ?_⟩` and prove the remaining obligations. Establish `hs` using `congrArg (Submodule.map φ) (Pi.basisFun D.host.E (Fin W.rank)).span_eq`. Rewrite `hs` using `[Submodule.map_span, Submodule.map_top, ← Set.range_comp]`. Use `Eq.trans ?_ hs` and prove the remaining obligations.
-
-Use `congr 2`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `ext a <;> simp [φ, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_lag_isLagFrame_frameOf (D : D7) (W : HSp D) (γ : GA D (GlobalTheory.Doubling.dblSp W))
     (g₀ : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E) :

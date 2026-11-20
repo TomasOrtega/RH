@@ -12,21 +12,19 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.PDiv.FrobKerOrder
 
 /- English proof (translation)
-Set `e : (Fin d → Fin n) → (Fin d →₀ ℕ)` to `fun a => Finsupp.equivFunOnFinite.symm fun i => a i`. Set `v : (Fin d → Fin n) → A` to `fun a => MvPolynomial.aeval (R := K) x (MvPolynomial.monomial (e a) 1)`. Establish `hmono : ∀ m : Fin d →₀ ℕ, MvPolynomial.aeval (R` using `K) x (MvPolynomial.monomial m 1) ∈ Submodule.span K (Set.range v) := by`. Introduce `m`. Distinguish the cases in `hm : ∀ i, m i < n`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `Submodule.subset_span ⟨fun i => ⟨m i, hm i⟩, ?_⟩` and prove the remaining obligations. Establish `: e (fun i => ⟨m i, hm i⟩) = m`. Use extensionality with `i`. Simplify using `[e]`. Simplify using `only [v, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `push_neg at hm`. Take `⟨i, hi⟩` from `hm`. Establish `h0 : MvPolynomial.aeval (R` using `K) x (MvPolynomial.monomial m 1) = 0 := by`. Rewrite using `[MvPolynomial.aeval_monomial, map_one, one_mul, Finsupp.prod]`. Distinguish the cases in `hmi : m i = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hn : n = 0` using `by omega`. Substitute `hn` using the available equality. Establish `h10 : (1 : A) = 0` using `by simpa using hpow i`. Rewrite using `[← mul_one (∏ j ∈ m.support, x j ^ m j), h10, mul_zero]`. Apply `Finset.prod_eq_zero (i := i) (by simpa using hmi)` to reduce the goal to its premises.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `Nat.exists_eq_add_of_le hi`. Rewrite using `[hr, pow_add, hpow i, zero_mul]`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Establish `htop : Submodule.span K (Set.range v) = ⊤`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨P, rfl⟩` from `hsurj y`. Rewrite using `[P.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: MvPolynomial.monomial m (MvPolynomial.coeff m P) = MvPolynomial.coeff m P • MvPolynomial.monomial m (1 : K)`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul]`. Conclude with `Submodule.smul_mem _ _ (hmono m)`. Establish `h1` using `finrank_range_le_card (R := K) v`.
-
-Rewrite `h1` using `[Set.finrank, htop, finrank_top]`. Simplify using `using h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_le_pow_of_aeval_surjective {n d : ℕ} {K A : Type*} [Field K] [CommRing A]
     [Algebra K A] (x : Fin d → A) (hsurj : Function.Surjective (MvPolynomial.aeval (R := K) x))
@@ -72,23 +70,19 @@ theorem finrank_le_pow_of_aeval_surjective {n d : ℕ} {K A : Type*} [Field K] [
   simpa using h1
 
 /- English proof (translation)
-Use `haveI := isHopfIdeal p K H`. Use `set J := frobKerIdeal p K H with hJ`. Set `π` to `Ideal.Quotient.mkₐ K J`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mkₐ_surjective K J`. Establish `hε : (counitAlgHom K (H ⧸ J)).comp π = counitAlgHom K H` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbij : Function.Bijective (AugCot.map π hε)`. Use `⟨?_, AugCot.map_surjective π hε hπ⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨z, rfl⟩` from `(AugCot.exact_kerMap_map π hε hπ y).1 hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AugCot.kerMap_apply, AugCot.d_of_mem _ (AugCot.ker_le π hε z.2), Ideal.toCotangent_eq_zero]`. Conclude with `le_sq p K H (Ideal.Quotient.eq_zero_iff_mem.1 z.2)`. Rewrite using `[(LinearEquiv.ofBijective _ hbij).finrank_eq]`. Use `set ε := counitAlgHom K (H ⧸ J) with hεdef`. Set `b` to `Module.finBasis K (AugCot ε)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `choose x hx using fun i => (RingHom.ker ε).toCotangent_surjective (b i)`. Establish `hsum : ∀ l : Fin (Module.finrank K (AugCot ε)) → K, AugCot.d ε (∑ i, l i • (x i : H ⧸ J)) = ∑ i, l i • b i`. Introduce `l`. Simplify using `[map_sum, hx]`. Establish `hmem : ∀ l : Fin (Module.finrank K (AugCot ε)) → K, (∑ i, l i • (x i : H ⧸ J)) ∈ RingHom.ker ε`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ (x i).2`. Establish `hpow : ∀ f ∈ RingHom.ker ε, f ^ p = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `f hf`. Take `⟨a, rfl⟩` from `hπ f`. Rewrite using `[← map_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (pow_mem_frobKerIdeal (R := K) hf)`. Establish `: IsNoetherianRing (H ⧸ J)` using `isNoetherian_of_tower K inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnil : IsNilpotent (RingHom.ker ε)`. Rewrite using `[Ideal.FG.isNilpotent_iff_le_nilradical (IsNoetherian.noetherian _)]`. Introduce `f hf`. Conclude with `⟨p, hpow f hf⟩`. Establish `hspan : ∀ y ∈ RingHom.ker ε, ∃ l : Fin (Module.finrank K (AugCot ε)) → K, y - ∑ i, l i • (x i : H ⧸ J) ∈ RingHom.ker ε ^ 2`.
-
-Introduce `y hy`. Use `⟨b.repr (AugCot.d ε y), ?_⟩` and prove the remaining obligations. Establish `h1 : AugCot.d ε (y - ∑ i, b.repr (AugCot.d ε y) i • (x i : H ⧸ J)) = 0`. Rewrite using `[map_sub, hsum, b.sum_repr, sub_self]`. Rewrite `h1` using `[AugCot.d_of_mem _ (sub_mem hy (hmem _)), Ideal.toCotangent_eq_zero]`. Then use the resulting hypothesis.
-
-Conclude with `finrank_le_pow_of_aeval_surjective (fun i => (x i : H ⧸ J)) (GlobalTheory.HeightOneHopf.aeval_surjective_of_span_cotangent ε hnil _ (fun i => (x i).2) hspan) (fun i => hpow _ (x i).2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finrank_le_pow_finrank_cot (p : ℕ) [hp : Fact p.Prime] (K H : Type) [Field K] [CharP K p]
     [CommRing H] [HopfAlgebra K H] [Module.Finite K H] :

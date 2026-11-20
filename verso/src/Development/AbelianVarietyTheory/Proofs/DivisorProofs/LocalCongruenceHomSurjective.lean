@@ -33,11 +33,11 @@ def glue (hj : ∀ x y, j (x * y) = j x * j y) : (R' ⊗[F] E) × (R ⊗[F] E) �
     linear_combination q.2 * h1 + p.2 * h2 - p.2 * q.2 * h3
 
 /- English proof (translation)
-Set `P : Matrix (Fin n) (Fin n) ((R' ⊗[F] E) × (R ⊗[F] E))` to `Matrix.of fun a b => (A a b, (1 : Matrix (Fin n) (Fin n) (R ⊗[F] E)) a b)`. Establish `h0 : secM j A = (glue hj).mapMatrix P`. Use extensionality with `a b`. Simplify using `[secM, glue, P]`. Establish `h1 : P.det = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `(RingHom.fst (R' ⊗[F] E) (R ⊗[F] E)).map_det P` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Conclude with `hA`. Use `(RingHom.snd (R' ⊗[F] E) (R ⊗[F] E)).map_det P` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.trans ?_` and prove the remaining obligations. Conclude with `Matrix.det_one`. Rewrite using `[h0, ← RingHom.map_det, h1, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_secM (hj : ∀ x y, j (x * y) = j x * j y) (A : Matrix (Fin n) (Fin n) (R' ⊗[F] E)) (hA : A.det = 1) :
     (secM j A).det = 1 := by
@@ -57,9 +57,9 @@ theorem det_secM (hj : ∀ x y, j (x * y) = j x * j y) (A : Matrix (Fin n) (Fin 
   rw [h0, ← RingHom.map_det, h1, map_one]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul b f`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_mul_tmul, Jt_tmul, Jt_tmul, Algebra.TensorProduct.tmul_mul_tmul, hφ]`. Both sides reduce to the same expression. Consider the case `add y z hy hz => rw [mul_add, hy, hz, map_add, mul_add, map_add]`. Consider the case `add x z hx hz => rw [add_mul, map_add, add_mul, hx, hz, map_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 -/
 theorem Jt_mul_right (φ : R →ₐ[F] R') (hφ : ∀ x y, j x * y = j (x * φ y)) (x : R' ⊗[F] E) (y : R ⊗[F] E) :
     Jt j x * y = Jt j (x * Algebra.TensorProduct.map φ (AlgHom.id F E) y) := by
@@ -76,9 +76,9 @@ theorem Jt_mul_right (φ : R →ₐ[F] R') (hφ : ∀ x y, j x * y = j (x * φ y
   | add x z hx hz => rw [add_mul, map_add, add_mul, hx, hz, map_add]
 
 /- English proof (translation)
-Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[secM, eps]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[secM, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem secM_sub_one (hj : ∀ x y, j (x * y) = j x * j y) (A : Matrix (Fin n) (Fin n) (R' ⊗[F] E)) :
     secM j A - 1 = (A - 1).map (Jt j) := by
@@ -90,7 +90,7 @@ theorem secM_sub_one (hj : ∀ x y, j (x * y) = j x * j y) (A : Matrix (Fin n) (
   · simp [secM, h]
 
 /- English proof (translation)
-Rewrite using `[secM_sub_one hj]`. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, Jt_mul_right φ hφ]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem secM_sub_one_mulVec (hj : ∀ x y, j (x * y) = j x * j y) (φ : R →ₐ[F] R')
     (hφ : ∀ x y, j x * y = j (x * φ y)) (A : Matrix (Fin n) (Fin n) (R' ⊗[F] E)) (y : Fin n → R ⊗[F] E) :
@@ -101,9 +101,9 @@ theorem secM_sub_one_mulVec (hj : ∀ x y, j (x * y) = j x * j y) (φ : R →ₐ
   simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, Jt_mul_right φ hφ]
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨f a, hS a ha, x, hx, rfl⟩`. Consider the case `zero => simp only [Pi.zero_apply, map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => simp only [Pi.add_apply, map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => simp only [Pi.neg_apply, map_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem genLat_map (f : R' →ₗ[F] R) (S' : Set R') (S : Set R) (hS : ∀ a ∈ S', f a ∈ S) (L : Set (Fin n → E))
     {y : Fin n → R' ⊗[F] E} (hy : y ∈ genLat F R' S' L) : (fun a => Jt f (y a)) ∈ genLat F R S L := by
@@ -116,7 +116,7 @@ theorem genLat_map (f : R' →ₗ[F] R) (S' : Set R') (S : Set R) (hS : ∀ a �
   | neg x _ hx => simp only [Pi.neg_apply, map_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x z hx hz => rw [map_add, map_add, hx, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_eq_Jt (φ : R →ₐ[F] R') (y : R ⊗[F] E) :
     Algebra.TensorProduct.map φ (AlgHom.id F E) y = Jt φ.toLinearMap y := by
@@ -133,7 +133,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[mul_comm, mul_comm x]`. Conclude with `(RestrictedProduct.mul_single (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v x y).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem singleL_mul_right (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v) (y : Af F) :
     singleL v x * y = singleL v (x * evalV F v y) := by
@@ -142,9 +142,9 @@ theorem singleL_mul_right (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v) (y : Af 
 
 open Classical in
 /- English proof (translation)
-Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[evalV_singleL]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: evalV F w (singleL v x) = 0` using `RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) x h`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem singleL_mem (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v) (hx : x ∈ v.adicCompletionIntegers F) :
     singleL v x ∈ intAf F := by
@@ -160,14 +160,14 @@ def singleA (v : HeightOneSpectrum (𝓞 F)) : Fv F v →ₗ[F] AF F :=
   (LinearMap.inr F (Ainf F) (Af F)).comp (singleL v)
 
 /- English proof (translation)
-The claim follows from `Prod.ext (mul_zero (0 : Ainf F)).symm (singleL_mul v x y)`.
+A detailed English derivation is pending.
 -/
 theorem singleA_mul (v : HeightOneSpectrum (𝓞 F)) (x y : Fv F v) :
     singleA v (x * y) = singleA v x * singleA v y :=
   Prod.ext (mul_zero (0 : Ainf F)).symm (singleL_mul v x y)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x z hx hz => rw [map_add, map_add, hx, hz, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem snd_Jt (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v ⊗[F] E) :
     Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (Jt (singleA v) x) = Jt (singleL v) x := by
@@ -177,7 +177,7 @@ theorem snd_Jt (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v ⊗[F] E) :
   | add x z hx hz => rw [map_add, map_add, hx, hz, map_add]
 
 /- English proof (translation)
-Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[secM, eps, snd_Jt]`. Simplify using `[secM, h, snd_Jt]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_snd_secM (v : HeightOneSpectrum (𝓞 F)) (A : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)) :
     (secM (singleA v) A).map (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)) = secM (singleL v) A := by
@@ -188,9 +188,9 @@ theorem map_snd_secM (v : HeightOneSpectrum (𝓞 F)) (A : Matrix (Fin M) (Fin M
   · simp [secM, h, snd_Jt]
 
 /- English proof (translation)
-Establish `h0 : ∀ x : Fv F v ⊗[F] E, Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E) (Jt (singleL v) x) = x` using `fun x => tensMap_Jt (evalV F v) (evalV_singleL v) x`. Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[secM, eps, h0]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[secM, h, h0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_eval_secM (v : HeightOneSpectrum (𝓞 F)) (A : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)) :
     (secM (singleL v) A).map (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)) = A := by
@@ -204,7 +204,7 @@ theorem map_eval_secM (v : HeightOneSpectrum (𝓞 F)) (A : Matrix (Fin M) (Fin 
   · simp [secM, h, h0]
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite using `[secM_sub_one_mulVec (singleL_mul v) (evalV F v) (singleL_mul_right v)]`. Use `genLat_map (singleL v) _ (intAf F) (singleL_mem v) L' (hA _ ?_)` and prove the remaining obligations. Simplify using `only [map_eq_Jt]`. Conclude with `genLat_map (evalV F v).toLinearMap (intAf F) _ (fun a ha => ha v) L hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secM_sub_one_mem (v : HeightOneSpectrum (𝓞 F)) (A : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E))
     (L L' : Set (Fin M → E)) (hA : ∀ y ∈ compLat v L, (A - 1) *ᵥ y ∈ compLat v L') :
@@ -216,9 +216,9 @@ theorem secM_sub_one_mem (v : HeightOneSpectrum (𝓞 F)) (A : Matrix (Fin M) (F
   exact genLat_map (evalV F v).toLinearMap (intAf F) _ (fun a ha => ha v) L hy
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h` using `secM_sub_one_mem v A L L (fun z hz => by`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `sub_mem (hA z hz) hz) y hy`. Rewrite `h` using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using add_mem h hy`.
+A detailed English derivation is pending.
 -/
 theorem secM_mem (v : HeightOneSpectrum (𝓞 F)) (A : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E))
     (L : Set (Fin M → E)) (hA : ∀ y ∈ compLat v L, A *ᵥ y ∈ compLat v L) :
@@ -238,13 +238,13 @@ namespace GlobalTheory.TamCnt
 open MassDataLevelSSteps.EvalVW MassDataLevelSSteps.EvalVSpec LocLift
 
 /- English proof (translation)
-Set `h0 : HA (AF F) σ J` to `secHA σ J (singleA_mul v) (⟨g, hg.1⟩ : HR (Fv F v) σ J)`. Establish `hdet : h0 ∈ SUAdelic σ J`. Use `MonoidHom.mem_ker.2 (Units.ext ?_)` and prove the remaining obligations. Conclude with `det_secM (singleA_mul v) _ hg.2.1`. Establish `hfin : finMat σ J h0 = secM (singleL v) (g : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E))` using `map_snd_secM v _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨h0, hdet⟩, ⟨fun y => ⟨fun hy => ?_, fun hy => ?_⟩, ?_⟩, Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finMat σ J h0 *ᵥ y ∈ _`. Rewrite using `[hfin]`. Conclude with `secM_mem v _ _ (fun z hz => (hg.2.2.1 z).1 hz) y hy`. Express the relevant statement in the definitionally equal form `finMat σ J h0 *ᵥ y ∈ _ at hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy` using `[hfin]`. Use `secM_mem v _ _ (fun z hz => ((inv_mem hg : g⁻¹ ∈ locCong σ J Λ v k).2.2.1 z).1 hz) _ hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← secM_mul (singleL_mul v), Units.inv_mul, secM_one (singleL_mul v), Matrix.one_mulVec]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `∀ y ∈ _, (finMat σ J h0 - 1) *ᵥ y ∈ _`. Rewrite using `[hfin]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `secM_sub_one_mem v _ _ _ hg.2.2.2`. Rewrite using `[locHom_val]`. Express the relevant statement in the definitionally equal form `(finMat σ J h0).map _ = _`. Rewrite using `[hfin, map_eval_secM]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_congG_locHom_eq (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (Λ : Submodule (𝓞 E) (Fin M → E))

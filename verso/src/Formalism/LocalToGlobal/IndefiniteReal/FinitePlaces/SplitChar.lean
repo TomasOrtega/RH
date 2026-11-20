@@ -15,13 +15,13 @@ namespace Formalism.IndefR.Fin
 namespace SplitChar
 
 /- English proof (translation)
-Establish `h2 : ¬ IsUnit (2 : 𝓞 F)`. Introduce `hu`. Establish `hn` using `hu.map (Algebra.norm ℤ (S := 𝓞 F))`. Rewrite `hn` using `[show (2 : 𝓞 F) = algebraMap ℤ (𝓞 F) 2 by simp, Algebra.norm_algebraMap]`. Establish `hr : 0 < Module.finrank ℤ (𝓞 F)` using `Module.finrank_pos`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hge : (2 : ℤ) ≤ 2 ^ Module.finrank ℤ (𝓞 F)`. Combine the equalities or inequalities in the displayed calculation. Apply the tactic sequence `rcases Int.isUnit_iff.mp hn with h | h <;> omega`. Take `⟨M, hM, h2M⟩` from `Ideal.exists_le_maximal (Ideal.span {(2 : 𝓞 F)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `h2mem : (2 : 𝓞 F) ∈ M` using `h2M (Ideal.mem_span_singleton_self 2)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hM0 : M ≠ ⊥`. Introduce and unpack `rfl`. Establish `h0 : (2 : 𝓞 F) = 0` using `(Submodule.mem_bot _).mp h2mem`. Establish `h0' : (2 : F) = 0`. Use `congrArg (algebraMap (𝓞 F) F) h0` as an intermediate fact.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_ofNat, map_zero]`. Then use the resulting hypothesis. Conclude with `two_ne_zero h0'`. Conclude with `⟨⟨M, hM.isPrime, hM0⟩, h2mem⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_place_two (F : Type) [Field F] [NumberField F] :
     ∃ v : HeightOneSpectrum (𝓞 F), (2 : 𝓞 F) ∈ v.asIdeal := by
@@ -47,7 +47,7 @@ theorem exists_place_two (F : Type) [Field F] [NumberField F] :
   exact ⟨⟨M, hM.isPrime, hM0⟩, h2mem⟩
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_place_two D.host.F`. Take `⟨e, ε, he, -, -⟩` from `twoSplitIdem D v hv`. Conclude with `⟨e, he⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_splitIdem_D (D : D7) : ∃ e, IsSplitIdem D e := by
   obtain ⟨v, hv⟩ := exists_place_two D.host.F
@@ -57,7 +57,7 @@ theorem exists_splitIdem_D (D : D7) : ∃ e, IsSplitIdem D e := by
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem ga_ext (V : HSp D) {g g' : GA D V} (h : mt V g = mt V g') : g = g' :=
   Subtype.ext (Units.ext h)
@@ -67,7 +67,7 @@ def RA (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E) :
   proj (cA D) (V.gram.map (incA D)) (fun i => incA D (u i)) (incA D ainv)
 
 /- English proof (translation)
-Rewrite using `[← hsq_map (incA D) (flipTwoThree.sigE D) (cA D) (fun a => (flipTwoThree.cA_incA' a).symm), ← map_mul, ha, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem haA (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E)
     (ha : ainv * hsq (flipTwoThree.sigE D) V.gram u = 1) :
@@ -75,20 +75,20 @@ theorem haA (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E)
   rw [← hsq_map (incA D) (flipTwoThree.sigE D) (cA D) (fun a => (flipTwoThree.cA_incA' a).symm), ← map_mul, ha, map_one]
 
 /- English proof (translation)
-Rewrite using `[flipTwoThree.cA_incA', hainv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hainvA (ainv : D.host.E) (hainv : flipTwoThree.sigE D ainv = ainv) : cA D (incA D ainv) = incA D ainv := by
   rw [flipTwoThree.cA_incA', hainv]
 
 /- English proof (translation)
-The claim follows from `proj_idem' _ _ _ _ (haA V u ainv ha)`.
+A detailed English derivation is pending.
 -/
 theorem RA_idem (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E)
     (ha : ainv * hsq (flipTwoThree.sigE D) V.gram u = 1) : RA V u ainv * RA V u ainv = RA V u ainv :=
   proj_idem' _ _ _ _ (haA V u ainv ha)
 
 /- English proof (translation)
-Simplify using `only [add_mul, mul_add, one_mul, mul_one]`. Rewrite using `[smul_mul_smul_comm, hRR, show a * b - 1 = (b - 1) + ((a - 1) + (a - 1) * (b - 1)) by ring, add_smul, add_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem mul_aux {n : Type} [Fintype n] [DecidableEq n] (R : Matrix n n (AE D)) (hRR : R * R = R)
     (a b : AE D) : (1 + (a - 1) • R) * (1 + (b - 1) • R) = 1 + (a * b - 1) • R := by
@@ -102,7 +102,7 @@ def secM (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E) (x : AE D) 
   1 + (x - 1) • RA V u ainv
 
 /- English proof (translation)
-The claim follows from `proj_unitary (cA D) Formalism.L2.Theta.cA_cA (V.gram.map (incA D)) (flipTwoThree.gramA_herm V) _ _ (haA V u ainv ha) (hainvA ainv hainv) x hx`.
+A detailed English derivation is pending.
 -/
 theorem secM_unitary (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E)
     (ha : ainv * hsq (flipTwoThree.sigE D) V.gram u = 1) (hainv : flipTwoThree.sigE D ainv = ainv) (x : AE D)
@@ -112,14 +112,14 @@ theorem secM_unitary (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E)
     (hainvA ainv hainv) x hx
 
 /- English proof (translation)
-The claim follows from `det_proj' (cA D) _ _ _ (haA V u ainv ha) x`.
+A detailed English derivation is pending.
 -/
 theorem secM_det (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E)
     (ha : ainv * hsq (flipTwoThree.sigE D) V.gram u = 1) (x : AE D) : (secM V u ainv x).det = x :=
   det_proj' (cA D) _ _ _ (haA V u ainv ha) x
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `x.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_one_conj_mul_self (x : FirstPropositionFrame D) : cA D (((x : (AE D)ˣ)) : AE D) * (((x : (AE D)ˣ)) : AE D) = 1 := by
   rw [mul_comm]; exact x.2

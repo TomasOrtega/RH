@@ -14,7 +14,7 @@ def InG (X : HidaSetting D) (p : TypX X) (z : FpX X p) : Prop :=
   ∃ y : p.1.adicCompletionIntegers X.B.I.F, z = ((gOf p : ℕ) : FpX X p) * (y : FpX X p)
 
 /- English proof (translation)
-Take `⟨y1, rfl⟩` from `ha`. Take `⟨y2, rfl⟩` from `hb`. Conclude with `⟨y1 + y2, by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inG_add {X : HidaSetting D} {p : TypX X} {a b : FpX X p} (ha : InG X p a) (hb : InG X p b) : InG X p (a + b) := by
   obtain ⟨y1, rfl⟩ := ha
@@ -22,7 +22,7 @@ theorem inG_add {X : HidaSetting D} {p : TypX X} {a b : FpX X p} (ha : InG X p a
   exact ⟨y1 + y2, by push_cast; ring⟩
 
 /- English proof (translation)
-Take `⟨y1, rfl⟩` from `ha`. Take `⟨y2, rfl⟩` from `hb`. Conclude with `⟨y1 - y2, by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inG_sub {X : HidaSetting D} {p : TypX X} {a b : FpX X p} (ha : InG X p a) (hb : InG X p b) : InG X p (a - b) := by
   obtain ⟨y1, rfl⟩ := ha
@@ -30,12 +30,12 @@ theorem inG_sub {X : HidaSetting D} {p : TypX X} {a b : FpX X p} (ha : InG X p a
   exact ⟨y1 - y2, by push_cast; ring⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem inG_zero {X : HidaSetting D} {p : TypX X} : InG X p 0 := ⟨0, by simp⟩
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `ha`. Conclude with `⟨⟨c, hc⟩ * y, by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inG_mul_int {X : HidaSetting D} {p : TypX X} {a : FpX X p} (c : FpX X p)
     (hc : c ∈ p.1.adicCompletionIntegers X.B.I.F) (ha : InG X p a) : InG X p (c * a) := by
@@ -43,13 +43,13 @@ theorem inG_mul_int {X : HidaSetting D} {p : TypX X} {a : FpX X p} (c : FpX X p)
   exact ⟨⟨c, hc⟩ * y, by push_cast; ring⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨y, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem inG_g_mul {X : HidaSetting D} {p : TypX X} (y : p.1.adicCompletionIntegers X.B.I.F) :
     InG X p (((gOf p : ℕ) : FpX X p) * (y : FpX X p)) := ⟨y, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (inG_zero (X := X) (p := p))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `inG_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inG_sum {X : HidaSetting D} {p : TypX X} {ι : Type} (s : Finset ι) (f : ι → FpX X p)
     (h : ∀ i ∈ s, InG X p (f i)) : InG X p (∑ i ∈ s, f i) := by
@@ -66,7 +66,7 @@ variable (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : 
   (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p) (Q : GL (Idx D.R.rS D.R.k) (FpX X p))
 
 /- English proof (translation)
-Establish `h1` using `vecV_fmat X hb p (X.xu u) (Formalism.L2.SG.HidaSetting.incl X.B.I (crdOf X.B.I X.ιE X.bas (X.eX b)))`. Rewrite `h1` using `[(X.xu_fix u b).1, vecV_incl]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotent_fixes_basisVector (b : Fin D.R.rS) :
     ((HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (xuP X hb u p) : GL (Fin X.B.I.n) (TpX X p)) :
@@ -78,23 +78,21 @@ theorem unipotent_fixes_basisVector (b : Fin D.R.rS) :
   exact h1.symm
 
 /- English proof (translation)
-Use `set A : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p) := ((HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (xuP X hb u p) : GL (Fin X.B.I.n) (TpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) with hA`. Establish `hAK : HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (xuP X hb u p) ∈ Kloc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := unipotent_mem_localStabilizer X hb u p`. Establish `hgen : ∀ s ∈ (Set.range fun b => PI.FinKW.vecV X.B.I p.1 (X.e0 b)) ∪ (fun j' => PI.FinKW.vecV X.B.I p.1 (X.bw j')) '' {j' | j'.1 < i.1}, InG X p (crd X p θ Q (A *ᵥ s) (wI j))`. Introduce and unpack `s (⟨b, rfl⟩ | ⟨j', hj', rfl⟩)`. Establish `hd : PI.FinKW.vecV X.B.I p.1 (X.e0 b) - ratV (F` using `X.B.I.F) (Fv X.B.I.F p.1) (crdOf X.B.I X.ιE X.bas (X.eX b)) ∈ gLam X p := by`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← vecV_incl, ← MassDataIdxSteps.imA_vecV_sub]`. Conclude with `loc_of_InAt X p _ (X.basisApprox b).1`. Establish `hsplit : A *ᵥ PI.FinKW.vecV X.B.I p.1 (X.e0 b) = A *ᵥ (PI.FinKW.vecV X.B.I p.1 (X.e0 b) - ratV (F` using `X.B.I.F) (Fv X.B.I.F p.1) (crdOf X.B.I X.ιE X.bas (X.eX b))) + ratV (F := X.B.I.F) (Fv X.B.I.F p.1) (crdOf X.B.I X.ιE X.bas (X.eX b)) := by`. Rewrite using `[Matrix.mulVec_sub, hA, unipotent_fixes_basisVector X hb u p b]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsplit, crd_add, Pi.add_apply]`. Establish `he : crd X p θ Q (ratV (F` using `X.B.I.F) (Fv X.B.I.F p.1) (crdOf X.B.I X.ιE X.bas (X.eX b))) = Pi.single (Sum.inl b) 1 := hy1 (Sum.inl b) (not_isW_inl b)`. Rewrite using `[he]`. Establish `h0 : (Pi.single (Sum.inl b) (1 : FpX X p) : Idx D.R.rS D.R.k → FpX X p) (wI j) = 0`. Simplify using `[Pi.single_apply, wI]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h0, add_zero]`. Take `⟨y, hy⟩` from `crd_gLam X p θ Q hLB _ (kloc_gLam X p _ hAK _ hd) (wI j)`. Conclude with `⟨y, hy⟩`. Take `⟨c, hc⟩` from `coords_weight_vector X hb u p θ Q hW j'`. Establish `hne : j' ≠ j`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Introduce `e`. Substitute `e` using the available equality. Conclude with `absurd hij (not_le.2 hj')`. Rewrite using `[show A *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw j') = _ from rfl, hc]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (Pi.single (wI j') (1 : FpX X p) : Idx D.R.rS D.R.k → FpX X p) (wI j) = 0`. Simplify using `[Pi.single_apply, wI, hne.symm]`. Rewrite using `[h0, zero_sub]`. Conclude with `⟨-c (wI j), by push_cast; ring⟩`. Proceed by induction on `ha using Submodule.span_induction with`.
+Supply the required witnesses or components. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem w hw`. Take `⟨t, ht, s, hs, rfl⟩` from `hw`. Rewrite using `[Matrix.mulVec_smul, crd_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `inG_mul_int _ (oep_int X p θ Q hLB t ht) (hgen s hs)`. Consider the case `zero`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Matrix.mulVec_zero, crd_zero]`. Conclude with `inG_zero`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Matrix.mulVec_add, crd_add, Pi.add_apply]`. Conclude with `inG_add hx hy`.
-
-Consider the case `smul c x _ hx`. Rewrite using `[Matrix.mulVec_smul, crd_osmul, Pi.smul_apply, smul_eq_mul]`. Conclude with `inG_mul_int _ c.2 hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_coord (hLB : LatBasis X p θ (reindex₂ X p Q))
     (hy1 : ∀ s, ¬ IsW s → ((Q⁻¹ : GL (Idx D.R.rS D.R.k) (FpX X p)) : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) *ᵥ

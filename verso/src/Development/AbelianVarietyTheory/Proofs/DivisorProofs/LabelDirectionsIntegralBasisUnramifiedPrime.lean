@@ -11,23 +11,19 @@ open NumberField MvPowerSeries IsLocalRing ReciprocityTheory.PGsh ReciprocityThe
 namespace GlobalTheory.PrimePart
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ p _ T io X y Ch hp inst`. Establish `hbij` using `GlobalTheory.T.embeddingReducedResidueField_bijective_unramified E H l c p T io X hp`. Use `choose σV hσV using fun τ : E →+* ℂ => GlobalTheory.PowGerm.exists_lift_ringOfIntegers (V := T.V) (io.comp (embK c τ))`. Establish `hσV' : ∀ τ a, algebraMap T.V T.Fr (σV τ a) = io (embK c τ a)` using `hσV`. Establish `hι : ∀ τ a, X.ι (σV τ a) = embO io X τ a` using `fun τ a => X.ints.hom_inj (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[algebraMap_embO, ← X.comp, hσV']`. Use the proof step `rfl)`. Establish `hsep : ∀ τ τ' : E →+* ℂ, τ ≠ τ' → ∃ a, IsUnit (σV τ a - σV τ' a)`. Introduce `τ τ' hne`. Establish `h1 : red io X τ ≠ red io X τ'` using `fun h => hne (hbij.1 h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `DFunLike.ne_iff.1 h1`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `X.ι_local` as an intermediate fact. Use `(isUnit_map_iff X.ι _).1 ?_` and prove the remaining obligations. Rewrite using `[map_sub, hι, hι]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hu`. Apply `ha` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero]`. Use `show residue X.O _ - residue X.O _ = 0`. Rewrite using `[← map_sub, residue_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(mem_maximalIdeal _).2 hu`. Establish `hex : ∃ lam : Lt1 Dw → Fin (chD Ch.ch) → T.V, ∀ l l', ∑ s, lam l s * Ch.uvecT l' s = if l = l' then 1 else 0` using `by classical`. Take `⟨lam, hlam⟩` from `GlobalTheory.exists_dual_forms_of_separated_types T.V (𝓞 E) (chD Ch.ch) (fun a => Matrix.of fun m j => MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (Ch.actT a m)) (E →+* ℂ) Dw.mult (fun τ a => σV τ a) Ch.uvecT hsep (fun a ℓ => ReciprocityTheory.ChartRestriction.G.Pullb …`. Take `⟨⟨w, emb, hw, hb⟩, -⟩` from `Formalism.L2.Pj.SaturatedCharts.saturation_charts_holds Xo c T io y Ch τ`. Conclude with `GlobalTheory.PowGerm.exists_dual_of_extends (fun i => Ch.uvecT ⟨τ, i⟩) w emb hw hb)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `⟨lam, fun l l' => by convert hlam l l'⟩`. Take `⟨lam, hlam⟩` from `hex`. Establish `h1 : (Matrix.of fun ℓ e => jX X (lam ℓ e)) * (Matrix.of fun e ℓ => lieVec Ch X ℓ e) = 1`. Use extensionality with `ℓ ℓ'`. Establish `h` using `congrArg (jX X) (hlam ℓ ℓ')`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[map_sum]`. Simplify using `only [map_mul] at h`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.of_apply, lieVec]`. Rewrite using `[h]`.
-
-Use `split_ifs`. Conclude with `map_one _`. Conclude with `map_zero _`. Use `⟨Matrix.of fun ℓ e => jX X (lam ℓ e), fun a b => isIntV_jX X _, h1, ?_⟩` and prove the remaining obligations. Establish `e : Lt1 Dw ≃ Fin (chD Ch.ch)` using `Fintype.equivFinOfCardEq (GlobalTheory.IntChartCheck.dim_eq Ch).symm`.
-
-Conclude with `(Matrix.mul_eq_one_comm_of_equiv e).1 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_integral_inverse_lieVec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (p : ℕ) [Fact p.Prime] (T : CDVR) (io : c.F →+* T.Fr) (X : ValExt T p) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y), UnramIn E p → ∀ [DecidableEq (Lt1 Dw)], ∃ L : Matrix (Lt1 Dw) (Fin (chD Ch.ch)) X.C, (∀ a b, IsIntV (vX_vp X) (L a b)) ∧ L * (Matrix.of fun e ℓ => lieVec Ch X ℓ e) = 1 ∧ (Matrix.of fun e ℓ => lieVec Ch X ℓ e) * L = 1 := by
   intro E _ _ _ H Dw l Xo c _ p _ T io X y Ch hp inst

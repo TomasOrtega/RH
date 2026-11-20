@@ -50,17 +50,15 @@ end GlobalTheory.Published
 namespace GlobalTheory.Eis
 
 /- English proof (translation)
-Establish `hsub : ball s₀ (r / 2) ⊆ ball s₀ r` using `ball_subset_ball (by linarith)`. Establish `hsub' : closedBall s₀ (r / 2) ⊆ ball s₀ r` using `closedBall_subset_ball (by linarith)`. Establish `h1 : ∀ x, DifferentiableOn ℂ (dslope (H · x) s₀) (ball s₀ r)` using `fun x => (Complex.differentiableOn_dslope (ball_mem_nhds _ hr)).2 (hd x)`. Use `⟨fun x => (h1 x).mono hsub, ?_, fun s hs x => Complex.norm_dslope_le_div_of_mapsTo_ball (hd x) (fun z hz => by simpa [h0] using hb z hz x) (hsub hs)⟩` and prove the remaining obligations. Introduce and unpack `⟨s₁, x₀⟩ ⟨hs₁, -⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h2 : ContinuousWithinAt (fun p : ℂ × X => dslope (H · x₀) s₀ p.1) (ball s₀ (r / 2) ×ˢ univ) (s₁, x₀)` using `(((h1 x₀).continuousOn.continuousAt (isOpen_ball.mem_nhds (hsub hs₁))).comp_of_eq continuousAt_fst rfl).continuousWithinAt`. Establish `h3 : Tendsto (fun p : ℂ × X => dslope (H · p.2) s₀ p.1 - dslope (H · x₀) s₀ p.1) (𝓝[ball s₀ (r / 2) ×ˢ univ] (s₁, x₀)) (𝓝 0)`. Use `NormedAddGroup.tendsto_nhds_zero.2 fun ε hε => ?_` and prove the remaining obligations. Establish `h4 : ∀ᶠ x in 𝓝 x₀, ∀ z ∈ closedBall s₀ (r / 2), ‖H z x - H z x₀‖ < ε * (r / 4)`. Use `(isCompact_closedBall s₀ (r / 2)).eventually_forall_of_forall_eventually fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h5 : ∀ y, ContinuousAt (fun p : ℂ × X => H p.1 p.2) (z, y)` using `fun y => hc.continuousAt ((isOpen_ball.prod isOpen_univ).mem_nhds ⟨hsub' hz, trivial⟩)`. Establish `h6 : ContinuousAt (fun p : X × ℂ => ‖H p.2 p.1 - H p.2 x₀‖) (x₀, z)` using `(((h5 x₀).comp_of_eq (f := fun p : X × ℂ => (p.2, p.1)) (by fun_prop) rfl).sub ((h5 x₀).comp_of_eq (f := fun p : X × ℂ => (p.2, x₀)) (by fun_prop) rfl)).norm`. Conclude with `h6.eventually (gt_mem_nhds (by simpa using by positivity))`. Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (continuousAt_snd.eventually h4)] with p hp h4`. Establish `h7` using `Complex.norm_dslope_le_div_of_mapsTo_ball (f := fun z => H z p.2 - H z x₀) (R₂ := ε * (r / 4)) (((hd _).sub (hd _)).mono hsub) (fun z hz => by simpa [h0] using (h4 z (ball_subset_closedBall hz)).le) hp.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h8 : dslope (fun z => H z p.2 - H z x₀) s₀ p.1 = dslope (H · p.2) s₀ p.1 - dslope (H · x₀) s₀ p.1`. Break down `eq_or_ne p.1 s₀ with e | e` into its components or cases. Rewrite using `[e, dslope_same, dslope_same, dslope_same]`. Conclude with `deriv_fun_sub ((hd _).differentiableAt (ball_mem_nhds _ hr)) ((hd _).differentiableAt (ball_mem_nhds _ hr))`. Simplify using `only [dslope_of_ne _ e, slope_def_field]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h8]`. Use `h7.trans_lt ?_` and prove the remaining obligations. Rewrite using `[div_lt_iff₀ (by positivity)]`. Use polynomial arithmetic with `[mul_pos hε hr]`.
-
-Simplify `h3.add h2` using `[ContinuousWithinAt]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dslope_family {X : Type} [TopologicalSpace X] {H : ℂ → X → ℂ} {w : X → ℝ} {s₀ : ℂ} {r : ℝ} (hr : 0 < r)
     (hd : ∀ x, DifferentiableOn ℂ (H · x) (ball s₀ r))
@@ -106,7 +104,7 @@ theorem dslope_family {X : Type} [TopologicalSpace X] {H : ℂ → X → ℂ} {w
 variable {D : D7} {V : HSp D} {Φ : ℂ → GA D (dblSp V) → ℂ} {s₀ : ℂ} {j k : ℕ}
 
 /- English proof (translation)
-Take `⟨r, H, hr, e, hd, hc, C, N, hb⟩` from `h`. Use `⟨r, fun s g => (s - s₀) * H s g, hr, fun s hs h0 g => by simp only [e s hs h0]; ring, fun g => (differentiableOn_id.sub_const _).mul (hd g), (by fun_prop : ContinuousOn (fun x : ℂ × _ => x.1 - s₀) _).mul hc, r * C, N, fun s hs g => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, mul_assoc]`. Conclude with `mul_le_mul (mem_ball_iff_norm.1 hs).le (hb s hs g) (norm_nonneg _) hr.le`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EisRegularAt.succ (h : EisRegularAt V Φ s₀ k) : EisRegularAt V Φ s₀ (k + 1) := by
   obtain ⟨r, H, hr, e, hd, hc, C, N, hb⟩ := h
@@ -117,13 +115,13 @@ theorem EisRegularAt.succ (h : EisRegularAt V Φ s₀ k) : EisRegularAt V Φ s�
   exact mul_le_mul (mem_ball_iff_norm.1 hs).le (hb s hs g) (norm_nonneg _) hr.le
 
 /- English proof (translation)
-Take `⟨r, H, hr, e, hd, hc, C, N, hb⟩` from `h`. Establish `h0 : ∀ g, H s₀ g = 0` using `fun g => by`. Take `⟨E, hE, -⟩` from `id (hp.2 g)`. Take `⟨c, hc⟩` from `hE.poleLE_iff.1 (hp.2 g)`. Establish `h1 : Tendsto (fun s => (s - s₀) ^ (k + 1 - j)) (𝓝[≠] s₀) (𝓝 0)` using `(Continuous.tendsto' (by fun_prop) s₀ 0 (by simp; omega)).mono_left nhdsWithin_le_nhds`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `tendsto_nhds_unique (((hd g).continuousOn.continuousAt (ball_mem_nhds _ hr)).tendsto.mono_left (nhdsWithin_le_nhds (s := {s₀}ᶜ))) ((zero_mul c ▸ h1.mul hc).congr' ?_)` and prove the remaining obligations. Use `filter_upwards [hE.cont_eventuallyEq, self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s₀ hr)] with s h2 h3 h4`. Rewrite using `[e s h4 h3, ← mul_assoc, ← pow_add, Nat.sub_add_cancel (by omega), ← h2]`. Both sides reduce to the same expression. Take `⟨h1, h2, h3⟩` from `dslope_family hr hd hc hb h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r / 2, fun s g => dslope (H · g) s₀ s, half_pos hr, fun s hs hs' g => ?_, h1, h2, C / r, N, fun s hs g => ?_⟩` and prove the remaining obligations. Use `sub_ne_zero.2 hs'` as an intermediate fact. Simplify using `only [dslope_of_ne _ hs', slope_def_field, h0, e s (ball_subset_ball (by linarith) hs) hs']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_eq_mul_div]`. Conclude with `h3 s hs g`.
+A detailed English derivation is pending.
 -/
 theorem EisRegularAt.pred (h : EisRegularAt V Φ s₀ (k + 1)) (hp : EisPoleLE V Φ s₀ j) (hj : j ≤ k) :
     EisRegularAt V Φ s₀ k := by
@@ -148,7 +146,7 @@ theorem EisRegularAt.pred (h : EisRegularAt V Φ s₀ (k + 1)) (hp : EisPoleLE V
   · rw [div_mul_eq_mul_div]; exact h3 s hs g
 
 /- English proof (translation)
-Break down `le_total k j with hk | hk` into its components or cases. Conclude with `Nat.le_induction h (fun _ _ => EisRegularAt.succ) j hk`. Conclude with `Nat.decreasingInduction (motive := fun i _ => j ≤ i → EisRegularAt V Φ s₀ i) (fun i _ ih hi => (ih (by omega)).pred hp hi) (fun _ => h) hk le_rfl`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem EisRegularAt.of_poleLE (h : EisRegularAt V Φ s₀ k) (hp : EisPoleLE V Φ s₀ j) : EisRegularAt V Φ s₀ j := by
   rcases le_total k j with hk | hk
@@ -157,9 +155,9 @@ theorem EisRegularAt.of_poleLE (h : EisRegularAt V Φ s₀ k) (hp : EisPoleLE V 
       (fun i _ ih hi => (ih (by omega)).pred hp hi) (fun _ => h) hk le_rfl
 
 /- English proof (translation)
-Take `⟨r, H, hr, e, hd, hc, C, N, hb⟩` from `h.of_poleLE (eisValueAt_iff_eisPoleLE.1 hv).1`. Establish `e' : ∀ s ∈ ball s₀ r, ∀ g, eisCont V Φ s g = H s g` using `fun s hs g => by`. Break down `eq_or_ne s s₀ with rfl | h0` into its components or cases. Use `tendsto_nhds_unique_of_eventuallyEq (l := 𝓝[≠] s) ((hv.2 g).analyticAt_cont.continuousAt.tendsto.mono_left nhdsWithin_le_nhds) (((hd g).continuousOn.continuousAt (ball_mem_nhds _ hr)).tendsto.mono_left nhdsWithin_le_nhds) ?_ filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_ …` and prove the remaining obligations. Rewrite using `[e z h2 h1, pow_zero, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e s hs h0, pow_zero, one_mul]`. Conclude with `⟨r, hr, fun g => (hd g).congr fun s hs => e' s hs g, hc.congr fun x hx => e' _ hx.1 _, C, N, fun s hs g => e' s hs g ▸ hb s hs g⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem EisRegularAt.of_eisValueAt {ψ : GA D (dblSp V) → ℂ} (h : EisRegularAt V Φ s₀ k) (hv : EisValueAt V Φ s₀ ψ) :
     ∃ r : ℝ, 0 < r ∧ (∀ g, DifferentiableOn ℂ (eisCont V Φ · g) (ball s₀ r)) ∧
@@ -178,9 +176,9 @@ theorem EisRegularAt.of_eisValueAt {ψ : GA D (dblSp V) → ℂ} (h : EisRegular
     fun s hs g => e' s hs g ▸ hb s hs g⟩
 
 /- English proof (translation)
-Take `⟨r, H, hr, e, hd, -⟩` from `h`. Use `⟨hE.1, fun g => ?_⟩` and prove the remaining obligations. Take `⟨E, hE⟩` from `hE.2 g`. Use `(hE.isExtAt trivial).poleLE_iff.2 ⟨H s₀ g, (((hd g).continuousOn.continuousAt (ball_mem_nhds _ hr)).tendsto.mono_left nhdsWithin_le_nhds).congr' ?_⟩` and prove the remaining obligations. Use `filter_upwards [(hE.isExtAt (s₀ := s₀) trivial).cont_eventuallyEq, self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s₀ hr)] with s h2 h3 h4`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e s h4 h3, ← h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem EisRegularAt.eisPoleLE (h : EisRegularAt V Φ s₀ k) (hE : EisContinues V Φ) : EisPoleLE V Φ s₀ k := by
   obtain ⟨r, H, hr, e, hd, -⟩ := h
@@ -200,7 +198,7 @@ variable (hP : Published.DoublingMethod) (h0 : 0 < V.rank) {a : GL (Fin V.rank) 
 include hP h0 ha hI hμ hb hφ
 
 /- English proof (translation)
-Simplify `((hP D V h0 a ha hI μ b hμ hb s₁ φ hφ).2.2 θ hθ hV A hA m hm f₁ h₁ f₂ h₂).1 s₁ hs` using `only [flatH_self]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem basicIdentity_of_mem (hs : (V.rank : ℝ) / 2 < s₁.re) {θ : InfF D} (hθ : IsInfFam θ) (hV : V.SigOK) {A : CptF V}
     (hA : Cusp.IsCartanFrame V A) (m : Measure (GA D V)) [hm : m.IsHaarMeasure] {f₁ f₂ : GA D V → ℂ}

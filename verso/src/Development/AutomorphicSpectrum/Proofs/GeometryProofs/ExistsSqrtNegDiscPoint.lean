@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.PointDet
 
 /- English proof (translation)
-Establish `: ∀ x : X, _root_.IsReduced (X.presheaf.stalk x)` using `fun x => by`. Use `(h x).1` as an intermediate fact. Use `infer_instance`. Conclude with `isReduced_of_isReduced_stalk X`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_of_isNormalScheme {X : Scheme.{0}} (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) : IsReduced X := by
   have : ∀ x : X, _root_.IsReduced (X.presheaf.stalk x) := fun x => by
@@ -20,7 +20,7 @@ theorem isReduced_of_isNormalScheme {X : Scheme.{0}} (h : ReciprocityTheory.Char
   exact isReduced_of_isReduced_stalk X
 
 /- English proof (translation)
-Establish `hcl : closure {x} = (Set.univ : Set X)` using `Set.eq_univ_of_forall fun q => specializes_iff_mem_closure.1 (h q)`. Establish `hp : PreconnectedSpace X` using `⟨by rw [← hcl]; exact isPreconnected_singleton.closure⟩`. Conclude with `{ toPreconnectedSpace := hp, toNonempty := ⟨x⟩ }`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem connectedSpace_of_specializes {X : Scheme.{0}} (x : X) (h : ∀ q : X, x ⤳ q) : ConnectedSpace X := by
   have hcl : closure {x} = (Set.univ : Set X) :=
@@ -29,7 +29,7 @@ theorem connectedSpace_of_specializes {X : Scheme.{0}} (x : X) (h : ∀ q : X, x
   exact { toPreconnectedSpace := hp, toNonempty := ⟨x⟩ }
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -39,7 +39,7 @@ noncomputable def rtF {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   ⟨H.rt0, c.le (IntermediateField.subset_adjoin _ _ (by simp))⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify `H.sqrt_neg_disc_sq` using `[rtF]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rtF_sq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l) :
     rtF c ^ 2 = -(H.d : c.F) := by
@@ -47,7 +47,7 @@ theorem rtF_sq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {
   simpa [rtF] using H.sqrt_neg_disc_sq
 
 /- English proof (translation)
-Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[rtF_sq]`. Use `isIntegral_algebraMap (R := ℤ) (A := c.F) (x := -(H.d : ℤ))` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isIntegral_rtF {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l) :
     IsIntegral ℤ (rtF c) := by
@@ -60,14 +60,14 @@ noncomputable def rtO {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   IsIntegralClosure.mk' (𝓞 c.F) (rtF c) (isIntegral_rtF c)
 
 /- English proof (translation)
-The claim follows from `IsIntegralClosure.algebraMap_mk' _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_rtO {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l) :
     algebraMap (𝓞 c.F) c.F (rtO c) = rtF c :=
   IsIntegralClosure.algebraMap_mk' _ _ _
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `rtF_sq c` as an intermediate fact. Rewrite `this` using `[← algebraMap_rtO]`. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rtO_sq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l) :
     rtO c ^ 2 = -(H.d : 𝓞 c.F) := by
@@ -77,23 +77,19 @@ theorem rtO_sq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {
   simpa using this
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S Ω _ Kf _ J _ y 𝔐 L _ _ z`. Use `haveI : IsReduced 𝔐.X := isReduced_of_isNormalScheme 𝔐.normal`. Use `haveI : ConnectedSpace 𝔐.X := connectedSpace_of_specializes _ 𝔐.all`. Use `haveI : Smooth 𝔐.t.G.hom := 𝔐.t.semi.smooth`. Take `⟨n, hn⟩` from `GlobalTheory.CompanionTheory.Ggeo.exists_smoothOfRelativeDimension_of_geometricallyConnected 𝔐.X 𝔐.t.G 𝔐.t.semi.smooth 𝔐.t.semi.geomConnected`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `s : 𝔐.X ⟶ Sp (𝓞 c.F)` to `𝔐.f ≫ Y.s`. Establish `hd : Dense {p : 𝔐.X | ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (_ : CharZero K) (x : Sp K ⟶ 𝔐.X) (β : 𝓞 c.F →+* K), p ∈ Set.range x ∧ x ≫ s = spMap β ∧ DetCond D 𝔐.t.act x (β (rtO c))}`. Introduce `q`. Use `closure_mono (Set.singleton_subset_iff.2 ?_) (specializes_iff_mem_closure.1 (𝔐.all q))` and prove the remaining obligations. Set `i : Ω →+* AlgebraicClosure Ω` to `algebraMap Ω (AlgebraicClosure Ω)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : CharZero Ω := charZero_of_injective_ringHom 𝔐.cst.injective`. Use `haveI : CharZero (AlgebraicClosure Ω) := charZero_of_injective_ringHom i.injective`. Use `⟨AlgebraicClosure Ω, inferInstance, inferInstance, inferInstance, spMap i ≫ 𝔐.ξ, i.comp (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)), ?_, ?_, ?_⟩` and prove the remaining obligations. Set `y₀ : Sp (AlgebraicClosure Ω)` to `(default : PrimeSpectrum (AlgebraicClosure Ω))`. Use `⟨y₀, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `congrArg 𝔐.ξ (Subsingleton.elim _ _)`. Establish `h` using `𝔐.cst_over`. Express the relevant statement in the definitionally equal form `(spMap i ≫ 𝔐.ξ) ≫ 𝔐.f ≫ Y.s = _`. Rewrite using `[Category.assoc, h, spMap_comp_spMap]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Introduce `τ`. Establish `hβ : (i.comp (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F))) (rtO c) = (i.comp 𝔐.cst) (rtF c)`. Simplify using `only [RingHom.comp_apply, algebraMap_rtO]`. Rewrite using `[hβ]`. Take `⟨h₁, h₂⟩` from `GlobalTheory.CompanionTheory.Ar.LabelCover.exists_label E H l c (rtF c) rfl (AlgebraicClosure Ω) (i.comp 𝔐.cst) τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨t, rfl⟩` from `h₁ h`. Conclude with `(GlobalTheory.DetExtend.lieMult_extend i 𝔐.ξ 𝔐.t.act (𝔐.emb (.inl t)) D.p).2 (GlobalTheory.CompanionTheory.Ar.HodgeCpt.lieMult_label_generic E H D l Xo c (𝓞 c.F) (algebraMap (𝓞 c.F) c.F) Y S Ω Kf J y 𝔐 (.inl t))`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, rfl⟩` from `h₂ h`. Conclude with `(GlobalTheory.DetExtend.lieMult_extend i 𝔐.ξ 𝔐.t.act (𝔐.emb (.inr t)) D.q).2 (GlobalTheory.CompanionTheory.Ar.HodgeCpt.lieMult_label_generic E H D l Xo c (𝓞 c.F) (algebraMap (𝓞 c.F) c.F) Y S Ω Kf J y 𝔐 (.inr t))`. Take `⟨b, hb⟩` from `Spec.map_surjective (z ≫ s)`. Use `⟨b.hom (rtO c), ?_, ?_⟩` and prove the remaining obligations. Use `congrArg b.hom (rtO_sq c)` as an intermediate fact.
-
-Rewrite `this` using `[map_pow, map_neg, map_natCast]`. Conclude with `this`. Introduce `k _ _ g haveI : CharZero k := charZero_of_injective_ringHom g.injective`. Use `GlobalTheory.DetSpread.detCond_of_dense E H D 𝔐.X 𝔐.t.G n 𝔐.t.act (𝓞 c.F) s (rtO c) hn (rtO_sq c) hd k (spMap g ≫ z) (g.comp b.hom) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hb]`.
-
-Conclude with `spMap_comp_spMap b.hom g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detCond_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (L : Type) [Field L] [NumberField L] (z : Sp L ⟶ 𝔐.X), ∃ ρ : L, ρ ^ 2 = -(H.d : L) ∧ ∀ (k : Type) [Field k] [IsAlgClosed k] (g : L →+* k), DetCond D 𝔐.t.act (spMap g ≫ z) (g ρ) := by
   intro E _ _ _ H D l Xo c Y S Ω _ Kf _ J _ y 𝔐 L _ _ z

@@ -18,7 +18,7 @@ def mP {n : ℕ} (x : Pt R n d) : Pt k n d := fun i => MvPowerSeries.map φ (x i
 def mV {m n : ℕ} (a : Fin m → Pt R n d) : Fin m → Pt k n d := fun j => mP φ (a j)
 
 /- English proof (translation)
-Introduce `f g h`. Use extensionality with `n`. Apply `hφ` to reduce the goal to its premises. Rewrite using `[← MvPowerSeries.coeff_map, ← MvPowerSeries.coeff_map, h]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mapInj (hφ : Function.Injective φ) {σ : Type} :
     Function.Injective (MvPowerSeries.map (σ := σ) φ) := by
@@ -28,7 +28,7 @@ theorem mapInj (hφ : Function.Injective φ) {σ : Type} :
   rw [← MvPowerSeries.coeff_map, ← MvPowerSeries.coeff_map, h]
 
 /- English proof (translation)
-Introduce `x y h`. Use function extensionality and compare the values at `i`. Conclude with `mapInj φ hφ (congrFun h i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mPInj (hφ : Function.Injective φ) {n : ℕ} : Function.Injective (mP φ (n := n) (d := d)) := by
   intro x y h
@@ -36,7 +36,7 @@ theorem mPInj (hφ : Function.Injective φ) {n : ℕ} : Function.Injective (mP �
   exact mapInj φ hφ (congrFun h i)
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero (a := fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2))]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_ev' {m n : ℕ} {a : Fin m → Pt R n d} (ha : CZ a) (f : PS R m d) :
     MvPowerSeries.map φ (ev a f) = ev (mV φ a) (MvPowerSeries.map φ f) := by
@@ -45,7 +45,7 @@ theorem map_ev' {m n : ℕ} {a : Fin m → Pt R n d} (ha : CZ a) (f : PS R m d) 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `only [mV, Matrix.cons_val_zero]`. Simplify using `only [mV, Matrix.cons_val_succ]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mV_cons {m n : ℕ} (x : Pt R n d) (a : Fin m → Pt R n d) :
     mV φ (Matrix.vecCons x a) = Matrix.vecCons (mP φ x) (mV φ a) := by
@@ -55,38 +55,36 @@ theorem mV_cons {m n : ℕ} (x : Pt R n d) (a : Fin m → Pt R n d) :
   · simp only [mV, Matrix.cons_val_succ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Conclude with `Fin.elim0 j`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mV_nil {n : ℕ} : mV φ (![] : Fin 0 → Pt R n d) = ![] := by
   funext j
   exact Fin.elim0 j
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mP, pt, MvPowerSeries.map_X]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mapPoint_pt {n : ℕ} (j : Fin n) : mP φ (pt R d j) = pt k d j := by
   funext i
   simp only [mP, pt, MvPowerSeries.map_X]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mP, Pi.zero_apply, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mapPoint_zero {n : ℕ} : mP φ (0 : Pt R n d) = 0 := by
   funext i
   simp only [mP, Pi.zero_apply, map_zero]
 
 /- English proof (translation)
-Simplify using `only [pt, MvPowerSeries.constantCoeff_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_pt' {n : ℕ} (j : Fin n) (i : Fin d) : constantCoeff (pt R d j i) = 0 := by
   simp only [pt, MvPowerSeries.constantCoeff_X]
 
 /- English proof (translation)
-Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (a := fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2)`. Unfold `ev`. Rewrite using `[MvPowerSeries.constantCoeff_subst hs, finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `e he`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p, e p ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `he (Finsupp.ext hc)`. Rewrite using `[Finsupp.prod, map_prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hp), smul_zero]`.
-
-Simplify using `[ha p.1 p.2, hp]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cc_ev_lemma {m n : ℕ} {a : Fin m → Pt R n d} (ha : CZ a) (f : PS R m d) :
     constantCoeff (ev a f) = constantCoeff f := by
@@ -104,9 +102,9 @@ private theorem cc_ev_lemma {m n : ℕ} {a : Fin m → Pt R n d} (ha : CZ a) (f 
     simp [ha p.1 p.2, hp]
 
 /- English proof (translation)
-Establish `hcz : CZ ![x]`. Introduce `j i`. Use `Fin.cases ?_ (fun j => Fin.elim0 j) j` and prove the remaining obligations. Simplify using `using hx i`. Use `show constantCoeff (ev ![x] (ψ i)) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cc_ev_lemma hcz, hψ]`.
+A detailed English derivation is pending.
 -/
 theorem cc_comp1' {n : ℕ} {ψ : Pt R 1 d} {x : Pt R n d} (hψ : ∀ i, constantCoeff (ψ i) = 0)
     (hx : ∀ i, constantCoeff (x i) = 0) (i : Fin d) : constantCoeff (comp1 ψ x i) = 0 := by
@@ -118,9 +116,9 @@ theorem cc_comp1' {n : ℕ} {ψ : Pt R 1 d} {x : Pt R n d} (hψ : ∀ i, constan
   rw [cc_ev_lemma hcz, hψ]
 
 /- English proof (translation)
-Establish `hcz : CZ ![x, y]`. Introduce `j i`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `using hx i`. Use `Fin.cases ?_ (fun j => Fin.elim0 j) j` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hy i`. Use `show constantCoeff (ev ![x, y] (F i)) = 0`. Rewrite using `[cc_ev_lemma hcz, hF]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_addOf' {n : ℕ} {F : Fin d → PS R 2 d} {x y : Pt R n d} (hF : ∀ i, constantCoeff (F i) = 0)
     (hx : ∀ i, constantCoeff (x i) = 0) (hy : ∀ i, constantCoeff (y i) = 0) (i : Fin d) :
@@ -135,20 +133,20 @@ theorem cc_addOf' {n : ℕ} {F : Fin d → PS R 2 d} {x y : Pt R n d} (hF : ∀ 
   rw [cc_ev_lemma hcz, hF]
 
 /- English proof (translation)
-Simplify using `only [CZ, Fin.forall_fin_succ, Matrix.cons_val_zero, Matrix.cons_val_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cz_cons_iff {m n : ℕ} {p : Pt R n d} {a : Fin m → Pt R n d} :
     CZ (Matrix.vecCons p a) ↔ (∀ i, constantCoeff (p i) = 0) ∧ CZ a := by
   simp only [CZ, Fin.forall_fin_succ, Matrix.cons_val_zero, Matrix.cons_val_succ]
 
 /- English proof (translation)
-Conclude with `⟨fun _ => trivial, fun _ j => Fin.elim0 j⟩`.
+Supply the required witnesses or components.
 -/
 theorem cz_nil' {n : ℕ} : CZ (![] : Fin 0 → Pt R n d) ↔ True := by
   exact ⟨fun _ => trivial, fun _ j => Fin.elim0 j⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hcz : CZ ![x]` using `cz_cons_iff.2 ⟨hx, cz_nil'.2 trivial⟩`. Use `show MvPowerSeries.map φ (ev ![x] (ψ i)) = ev ![mP φ x] (MvPowerSeries.map φ (ψ i))`. Rewrite using `[map_ev' φ hcz, mV_cons, mV_nil]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapPoint_comp1 {n : ℕ} (ψ : Pt R 1 d) {x : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0) :
     mP φ (comp1 ψ x) = comp1 (mP φ ψ) (mP φ x) := by
@@ -158,7 +156,7 @@ theorem mapPoint_comp1 {n : ℕ} (ψ : Pt R 1 d) {x : Pt R n d} (hx : ∀ i, con
   rw [map_ev' φ hcz, mV_cons, mV_nil]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hcz : CZ ![x, y]` using `cz_cons_iff.2 ⟨hx, cz_cons_iff.2 ⟨hy, cz_nil'.2 trivial⟩⟩`. Use `show MvPowerSeries.map φ (ev ![x, y] (F i)) = ev ![mP φ x, mP φ y] (MvPowerSeries.map φ (F i))`. Rewrite using `[map_ev' φ hcz, mV_cons, mV_cons, mV_nil]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapPoint_addOf {n : ℕ} (F : Fin d → PS R 2 d) {x y : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0) : mP φ (addOf F x y) = addOf (mP φ F) (mP φ x) (mP φ y) := by
@@ -191,7 +189,7 @@ variable {φ} {B : FB k d O} (t : IntTie φ B) (hφ : Function.Injective φ)
 
 include hφ in
 /- English proof (translation)
-Establish `h1 : MvPowerSeries.map φ (t.FT i) = B.G.F i` using `congrFun t.hF i`. Establish `h2` using `congrArg (fun f => MvPowerSeries.constantCoeff f) h1`. Simplify using `only [MvPowerSeries.constantCoeff_map, B.G.const i] at h2`. Conclude with `hφ (h2.trans (map_zero φ).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IntTie.hFc (i : Fin d) : constantCoeff (t.FT i) = 0 := by
   have h1 : MvPowerSeries.map φ (t.FT i) = B.G.F i := congrFun t.hF i
@@ -201,7 +199,7 @@ theorem IntTie.hFc (i : Fin d) : constantCoeff (t.FT i) = 0 := by
 
 include hφ in
 /- English proof (translation)
-Establish `h1 : MvPowerSeries.map φ (t.actT a i) = B.A.act a i` using `congrFun (t.hA a) i`. Establish `h2` using `congrArg (fun f => MvPowerSeries.constantCoeff f) h1`. Simplify using `only [MvPowerSeries.constantCoeff_map, B.A.const a i] at h2`. Conclude with `hφ (h2.trans (map_zero φ).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IntTie.hAc (a : O) (i : Fin d) : constantCoeff (t.actT a i) = 0 := by
   have h1 : MvPowerSeries.map φ (t.actT a i) = B.A.act a i := congrFun (t.hA a) i
@@ -210,7 +208,7 @@ theorem IntTie.hAc (a : O) (i : Fin d) : constantCoeff (t.actT a i) = 0 := by
   exact hφ (h2.trans (map_zero φ).symm)
 
 /- English proof (translation)
-Conclude with `congrFun t.hF i`.
+A detailed English derivation is pending.
 -/
 theorem IntTie.hFi (i : Fin d) : MvPowerSeries.map φ (t.FT i) = B.G.F i := by
   exact congrFun t.hF i
@@ -438,28 +436,28 @@ variable {R k O : Type} [CommRing R] [CommRing k] [Algebra ℚ k] [Algebra R k] 
 variable {B : FB k d O} (t : IntTie (algebraMap R k) B) (hφ : Function.Injective (algebraMap R k))
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[MvPowerSeries.coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_self {n : ℕ} (f : PS k n d) : MvPowerSeries.map (algebraMap k k) f = f := by
   ext n
   simp [MvPowerSeries.coeff_map]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `map_self (B.G.F i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem FK_self (B : FB k d O) : B.FK k = B.G.F := by
   funext i
   exact map_self (B.G.F i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `map_self (B.A.act a i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem actK_self (B : FB k d O) (a : O) : B.actK k a = B.A.act a := by
   funext i
   exact map_self (B.A.act a i)
 
 /- English proof (translation)
-Rewrite using `[FK_self B]`. Use function extensionality and compare the values at `i`. Conclude with `t.hFi i`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fbOf_FK : (fbOf t hφ).FK k = B.FK k := by
   rw [FK_self B]
@@ -467,7 +465,7 @@ theorem fbOf_FK : (fbOf t hφ).FK k = B.FK k := by
   exact t.hFi i
 
 /- English proof (translation)
-Rewrite using `[actK_self B]`. Use function extensionality and compare the values at `i`. Conclude with `congrFun (t.hA a) i`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fbOf_actK (a : O) : (fbOf t hφ).actK k a = B.actK k a := by
   rw [actK_self B]
@@ -475,7 +473,7 @@ theorem fbOf_actK (a : O) : (fbOf t hφ).actK k a = B.actK k a := by
   exact congrFun (t.hA a) i
 
 /- English proof (translation)
-Use `show MvPowerSeries.map (algebraMap R k) t.ph1T = MvPowerSeries.map (algebraMap k k) B.ph1`. Rewrite using `[map_self]`. Conclude with `t.h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biext_change_first_factor : FB.toK k (fbOf t hφ).ph1 = FB.toK k B.ph1 := by
   show MvPowerSeries.map (algebraMap R k) t.ph1T = MvPowerSeries.map (algebraMap k k) B.ph1
@@ -483,7 +481,7 @@ theorem biext_change_first_factor : FB.toK k (fbOf t hφ).ph1 = FB.toK k B.ph1 :
   exact t.h1
 
 /- English proof (translation)
-Use `show MvPowerSeries.map (algebraMap R k) t.ph2T = MvPowerSeries.map (algebraMap k k) B.ph2`. Rewrite using `[map_self]`. Conclude with `t.h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biext_change_second_factor : FB.toK k (fbOf t hφ).ph2 = FB.toK k B.ph2 := by
   show MvPowerSeries.map (algebraMap R k) t.ph2T = MvPowerSeries.map (algebraMap k k) B.ph2
@@ -491,7 +489,7 @@ theorem biext_change_second_factor : FB.toK k (fbOf t hφ).ph2 = FB.toK k B.ph2 
   exact t.h2
 
 /- English proof (translation)
-Use `show MvPowerSeries.map (algebraMap R k) t.syT = MvPowerSeries.map (algebraMap k k) B.sy`. Rewrite using `[map_self]`. Conclude with `t.hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fbOf_toKs : FB.toK k (fbOf t hφ).sy = FB.toK k B.sy := by
   show MvPowerSeries.map (algebraMap R k) t.syT = MvPowerSeries.map (algebraMap k k) B.sy
@@ -499,7 +497,7 @@ theorem fbOf_toKs : FB.toK k (fbOf t hφ).sy = FB.toK k B.sy := by
   exact t.hs
 
 /- English proof (translation)
-Use `show MvPowerSeries.map (algebraMap R k) (t.adT a) = MvPowerSeries.map (algebraMap k k) (B.ad a)`. Rewrite using `[map_self]`. Conclude with `t.had a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fbOf_toKad (a : O) : FB.toK k ((fbOf t hφ).ad a) = FB.toK k (B.ad a) := by
   show MvPowerSeries.map (algebraMap R k) (t.adT a) = MvPowerSeries.map (algebraMap k k) (B.ad a)
@@ -507,7 +505,7 @@ theorem fbOf_toKad (a : O) : FB.toK k ((fbOf t hφ).ad a) = FB.toK k (B.ad a) :=
   exact t.had a
 
 /- English proof (translation)
-Unfold `FB.nabVal FB.hL`. Rewrite using `[fbOf_FK, fbOf_actK]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fbOf_nabVal (h : PS k 2 d) (w0 : O) (m : ℕ) (f : PS k 1 d) {ι : Type} [Fintype ι] (u : ι → Fin d → k)
     (P : MvPolynomial ι k) : (fbOf t hφ).nabVal k h w0 m f u P = B.nabVal k h w0 m f u P := by
@@ -515,9 +513,9 @@ theorem fbOf_nabVal (h : PS k 2 d) (w0 : O) (m : ℕ) (f : PS k 1 d) {ι : Type}
   rw [fbOf_FK, fbOf_actK]
 
 /- English proof (translation)
-Use `⟨hB.ax0, hB.ax1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[biext_change_first_factor, fbOf_FK]`. Conclude with `hB.ph1`. Rewrite using `[biext_change_second_factor, fbOf_FK]`. Conclude with `hB.ph2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[fbOf_toKs]`. Conclude with `hB.sy`. Introduce `a`. Rewrite using `[fbOf_toKad, fbOf_actK, fbOf_actK]`. Conclude with `hB.ad a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fbOf_canon (h : PS k 2 d) (hB : B.IsCanonGauge k h) : (fbOf t hφ).IsCanonGauge k h := by
   refine ⟨hB.ax0, hB.ax1, ?_, ?_, ?_, ?_⟩

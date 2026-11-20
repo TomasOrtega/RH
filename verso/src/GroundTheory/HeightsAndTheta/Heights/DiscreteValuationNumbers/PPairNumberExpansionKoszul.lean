@@ -20,7 +20,7 @@ def pairCollapse (p : Fin n) : Fin n ⊕ Fin n → Fin n ⊕ Fin n :=
   fun s => if s = Sum.inl p then Sum.inr p else s
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Simplify using `only [Function.comp, pairCollapse]`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pairCollapse_comp (p : Fin n) : pairCollapse p ∘ pairCollapse p = pairCollapse p := by
   funext s
@@ -28,14 +28,14 @@ theorem pairCollapse_comp (p : Fin n) : pairCollapse p ∘ pairCollapse p = pair
   split_ifs with h1 h2 <;> simp_all
 
 /- English proof (translation)
-Rewrite using `[rename_rename, pairCollapse_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_pairCollapse_idem (p : Fin n) (G : MvPolynomial (Fin n ⊕ Fin n) ℤ) :
     rename (pairCollapse p) (rename (pairCollapse p) G) = rename (pairCollapse p) G := by
   rw [rename_rename, pairCollapse_comp]
 
 /- English proof (translation)
-Unfold `pairDiff`. Distinguish the cases in `h : i = p`. Substitute `h` using the available equality. Simplify using `[pairCollapse]`. Simplify using `[pairCollapse, h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rename_pairCollapse_pairDiff (p i : Fin n) :
     rename (pairCollapse p) (pairDiff i) = if i = p then 0 else pairDiff i := by
@@ -46,7 +46,7 @@ theorem rename_pairCollapse_pairDiff (p i : Fin n) :
   · simp [pairCollapse, h]
 
 /- English proof (translation)
-Unfold `pairDiff`. Rewrite using `[sub_ne_zero]`. Introduce `h`. Conclude with `Sum.inl_ne_inr (X_injective h)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pairDiff_ne_zero (i : Fin n) : pairDiff i ≠ 0 := by
   unfold pairDiff
@@ -55,21 +55,21 @@ theorem pairDiff_ne_zero (i : Fin n) : pairDiff i ≠ 0 := by
   exact Sum.inl_ne_inr (X_injective h)
 
 /- English proof (translation)
-The claim follows from `(isHomogeneous_X _ _).sub (isHomogeneous_X _ _)`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_pairDiff (i : Fin n) : (pairDiff i).IsHomogeneous 1 :=
   (isHomogeneous_X _ _).sub (isHomogeneous_X _ _)
 
 /- English proof (translation)
-Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨0, by simp⟩`. Consider the case `add G H hG hH`. Take `⟨Q₁, h₁⟩` from `hG`. Take `⟨Q₂, h₂⟩` from `hH`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Q₁ + Q₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, mul_add, ← h₁, ← h₂]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X G s hG`. Take `⟨Q, hQ⟩` from `hG`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨Q * X s + if s = Sum.inl p then rename (pairCollapse p) G else 0, ?_⟩` and prove the remaining obligations. Establish `hs : X s - rename (pairCollapse p) (X s) = pairDiff p * (if s = Sum.inl p then 1 else 0)`. Rewrite using `[rename_X]`. Unfold `pairCollapse pairDiff`. Use `split_ifs with h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Substitute using the available equality.
 
-Substitute `h` using the available equality. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Rewrite using `[hQ, hs]`. Apply the tactic sequence `split_ifs <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_sub_rename_pairCollapse (p : Fin n) (G : MvPolynomial (Fin n ⊕ Fin n) ℤ) :
     ∃ Q, G - rename (pairCollapse p) G = pairDiff p * Q := by
@@ -102,9 +102,9 @@ theorem exists_sub_rename_pairCollapse (p : Fin n) (G : MvPolynomial (Fin n ⊕ 
           split_ifs <;> ring
 
 /- English proof (translation)
-Establish `h : ∑ i, pairDiff i * ∑ j, pairDiff j * M i j = -∑ i, pairDiff i * ∑ j, pairDiff j * M i j` using `by conv_lhs => simp only [Finset.mul_sum]; rw [Finset.sum_comm]`. Simplify using `only [Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hM j i]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : (2 : MvPolynomial (Fin n ⊕ Fin n) ℤ) * ∑ i, pairDiff i * ∑ j, pairDiff j * M i j = 0`. Take the linear combination `h`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 two_ne_zero`. Conclude with `h3`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sum_pairDiff_koszul (M : Fin n → Fin n → MvPolynomial (Fin n ⊕ Fin n) ℤ)
     (hM : ∀ i j, M i j = -M j i) :
@@ -123,31 +123,29 @@ theorem sum_pairDiff_koszul (M : Fin n → Fin n → MvPolynomial (Fin n ⊕ Fin
   · exact h3
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `G hG _`. Conclude with `⟨0, fun _ _ => by simp, fun i => by simp [hG i (Finset.notMem_empty i)]⟩`. Consider the case `insert p s hp ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `G hG hrel`. Use `choose Q hQ using fun i => exists_sub_rename_pairCollapse p (G i)`. Set `M : Fin n → Fin n → MvPolynomial (Fin n ⊕ Fin n) ℤ` to `fun i j => if i ∈ s ∧ j = p then Q i else if i = p ∧ j ∈ s then -Q j else 0`. Establish `hM : ∀ i j, M i j = -M j i`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [M]`. Apply the tactic sequence `by_cases hi : i ∈ s <;> by_cases hj : j ∈ s <;> by_cases hip : i = p <;>`. Apply the tactic sequence `by_cases hjp : j = p <;> simp_all`. Set `G' : Fin n → MvPolynomial (Fin n ⊕ Fin n) ℤ` to `fun i => G i - ∑ j, pairDiff j * M i j`. Establish `hrel' : ∑ i, pairDiff i * G' i = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [G', mul_sub, Finset.sum_sub_distrib, hrel, sum_pairDiff_koszul M hM, sub_self]`. Establish `hs : ∀ i ∈ s, G' i = rename (pairCollapse p) (G i)`. Introduce `i hi`. Establish `hip : i ≠ p` using `fun h => hp (h ▸ hi)`. Establish `hsum : ∑ j, pairDiff j * M i j = pairDiff p * Q i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[M, hi, hip]`. Simplify using `only [G', hsum]`. Take the linear combination `hQ i`. Establish `hout : ∀ i, i ∉ insert p s → G' i = 0`. Introduce `i hi`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[Finset.mem_insert, not_or]`. Establish `hsum : ∑ j, pairDiff j * M i j = 0`. Simplify using `[M, hi.1, hi.2]`. Simplify using `only [G', hsum, hG i (by rw [Finset.mem_insert, not_or]; exact hi), sub_zero]`. Establish `hcol : ∑ i, (if i = p then 0 else pairDiff i * G' i) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (rename (pairCollapse p)) hrel'`. Rewrite `h` using `[map_sum, map_zero]`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) h` and prove the remaining obligations. Rewrite using `[map_mul, rename_pairCollapse_pairDiff]`. Distinguish the cases in `hip : i = p`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hip]`. Rewrite using `[if_neg hip, if_neg hip]`. Distinguish the cases in `hi : i ∈ s`. Rewrite using `[hs i hi, rename_pairCollapse_idem]`. Rewrite using `[hout i (by rw [Finset.mem_insert, not_or]; exact ⟨hip, hi⟩), map_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp0 : G' p = 0`. Establish `hsplit : ∑ i, pairDiff i * G' i = ∑ i, (if i = p then 0 else pairDiff i * G' i) + ∑ i, (if i = p then pairDiff p * G' p else 0)`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hip : i = p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hip` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hip]`. Rewrite `hsplit` using `[hrel', hcol, zero_add, Finset.sum_ite_eq', if_pos (Finset.mem_univ p)]`. Break down `mul_eq_zero.mp hsplit.symm with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd h (pairDiff_ne_zero p)`. Conclude with `h`. Take `⟨K', hK'a, hK'⟩` from `ih G' (fun i hi => by`. Distinguish the cases in `hip : i = p`. Rewrite using `[hip, hp0]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hout i (by rw [Finset.mem_insert, not_or]; exact ⟨hip, hi⟩)) hrel'`. Use `⟨K' + M, fun i j => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Rewrite using `[hK'a i j, hM i j, neg_add]`. Establish `h` using `hK' i`.
-
-Simplify using `only [G'] at h`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib, ← h, sub_add_cancel]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem koszul_finset (s : Finset (Fin n)) :
     ∀ G : Fin n → MvPolynomial (Fin n ⊕ Fin n) ℤ, (∀ i, i ∉ s → G i = 0) →
@@ -224,13 +222,11 @@ theorem koszul_finset (s : Finset (Fin n)) :
       simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib, ← h, sub_add_cancel]
 
 /- English proof (translation)
-Take `⟨K, hK, hGK⟩` from `koszul_finset Finset.univ G (fun i h => absurd (Finset.mem_univ i) h) hrel`. Use `⟨fun i j => if m - 1 = 0 then 0 else homogeneousComponent (m - 2) (K i j), fun i j => ?_, fun i j => ?_, fun hm i j => if_pos hm, fun i => ?_⟩` and prove the remaining obligations. Use `split_ifs`. Simplify using the standard rewrite rules. Use `show homogeneousComponent (m - 2) (K i j) = -homogeneousComponent (m - 2) (K j i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hK i j, map_neg]`. Use `split_ifs`. Conclude with `isHomogeneous_zero _ _ _`. Conclude with `homogeneousComponent_isHomogeneous _ _`. Establish `h` using `congrArg (homogeneousComponent (m - 1)) (hGK i)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).mpr (hG i)), if_pos rfl, map_sum]`. Simplify using `only [homogeneousComponent_linear_mul (isHomogeneous_pairDiff _)] at h`. Rewrite using `[h]`. Distinguish the cases in `hm : m - 1 = 0`. Simplify using `[hm]`.
-
-Simplify using `only [hm, if_false]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show m - 1 - 1 = m - 2 by omega]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem koszul_homogeneous {m : ℕ} (G : Fin n → MvPolynomial (Fin n ⊕ Fin n) ℤ)
     (hG : ∀ i, (G i).IsHomogeneous (m - 1)) (hrel : ∑ i, pairDiff i * G i = 0) :
@@ -267,7 +263,7 @@ variable {K : Type*} [DecidableEq K] {ι : K → Type*}
   {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Unfold `vNumL vNum intNum mixedDiff`. Rewrite using `[List.ofFn_get]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem vNumL_eq_foldr (W : Ideal (MRing ι O)) (l : List (K → ℤ)) :
     vNumL W l = eventualValue (l.foldr diffStep (hilbFn (specialIdeal W))) := by
@@ -275,7 +271,7 @@ theorem vNumL_eq_foldr (W : Ideal (MRing ι O)) (l : List (K → ℤ)) :
   rw [List.ofFn_get]
 
 /- English proof (translation)
-Rewrite using `[vNumL_eq_foldr]`. Unfold `vNum intNum mixedDiff`. Rewrite using `[List.ofFn_succ]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_succ]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vNum_vecCons_eq (W : Ideal (MRing ι O)) {k : ℕ} (b : K → ℤ) (L : Fin k → K → ℤ) :
     vNum W (Matrix.vecCons b L) = vNumL W (b :: List.ofFn L) := by
@@ -287,9 +283,9 @@ theorem vNum_vecCons_eq (W : Ideal (MRing ι O)) {k : ℕ} (b : K → ℤ) (L : 
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Proceed by induction on `hl with`. Consider the case `nil => rfl`. Consider the case `cons x _ ih => simp only [List.foldr_cons, ih]`. Consider the case `swap x y l`. Simplify using `only [List.foldr_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `diffStep_comm' _ _ _`. Consider the case `trans _ _ ih₁ ih₂ => exact ih₁.trans ih₂`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem foldr_diffStep_perm {l₁ l₂ : List (K → ℤ)} (hl : l₁.Perm l₂) (h : (K → ℤ) → ℤ) :
     l₁.foldr diffStep h = l₂.foldr diffStep h := by
@@ -302,7 +298,7 @@ theorem foldr_diffStep_perm {l₁ l₂ : List (K → ℤ)} (hl : l₁.Perm l₂)
   | trans _ _ ih₁ ih₂ => exact ih₁.trans ih₂
 
 /- English proof (translation)
-Rewrite using `[vNumL_eq_foldr, vNumL_eq_foldr, foldr_diffStep_perm hl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vNumL_perm (W : Ideal (MRing ι O)) {l₁ l₂ : List (K → ℤ)} (hl : l₁.Perm l₂) :
     vNumL W l₁ = vNumL W l₂ := by
@@ -311,7 +307,7 @@ theorem vNumL_perm (W : Ideal (MRing ι O)) {l₁ l₂ : List (K → ℤ)} (hl :
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Rewrite using `[← Multiset.coe_eq_coe]`. Unfold `classList`. Rewrite using `[Multiset.coe_toList, ← Multiset.cons_coe, Multiset.coe_toList]`. Simplify using `[Finsupp.toMultiset_single]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem classList_single_add_perm {σ : Type*} (cls : σ → K → ℤ) (s : σ) (μ : σ →₀ ℕ) :
     (classList cls (Finsupp.single s 1 + μ)).Perm (cls s :: classList cls μ) := by
@@ -323,9 +319,9 @@ theorem classList_single_add_perm {σ : Type*} (cls : σ → K → ℤ) (s : σ)
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Unfold `classList`. Rewrite using `[Multiset.length_toList, Multiset.card_map, Finsupp.card_toMultiset]`. Establish `h` using `hH (mem_support_iff.mp hμ)`. Rewrite `h` using `[Finsupp.weight_apply]`. Simplify using `only [Pi.one_apply, smul_eq_mul, mul_one] at h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem classList_length_of_mem_support {σ : Type*} (cls : σ → K → ℤ) {H : MvPolynomial σ ℤ}
     {t : ℕ} (hH : H.IsHomogeneous t) {μ : σ →₀ ℕ} (hμ : μ ∈ H.support) :
@@ -338,9 +334,9 @@ theorem classList_length_of_mem_support {σ : Type*} (cls : σ → K → ℤ) {H
   exact h
 
 /- English proof (translation)
-Use `conv_lhs => rw [H.as_sum, Finset.mul_sum]`. Establish `h` using `map_sum (classNumAddHom cls Q W) (fun μ => X s * monomial μ (H.coeff μ)) H.support`. Simplify using `only [classNumAddHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk] at h`. Rewrite using `[h]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (X s : MvPolynomial σ ℤ) = monomial (Finsupp.single s 1) 1 from rfl, monomial_mul, one_mul, classNum_monomial_eq]`. Use `congr 1`. Conclude with `vNumL_perm W ((classList_single_add_perm cls s μ).append_right Q)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem classNum_X_mul {σ : Type*} [DecidableEq σ] (cls : σ → K → ℤ) (s : σ) (H : MvPolynomial σ ℤ)
     (Q : List (K → ℤ)) (W : Ideal (MRing ι O)) :
@@ -361,19 +357,17 @@ end Numbers
 section Additivity
 
 /- English proof (translation)
-Take `⟨bf, bg, hbf, hbg, -⟩` from `hD.degrees`. Establish `hPmh : IsMultiHomogIdeal P` using `hP.multiProj.multiHomog`. Establish `: P.IsPrime` using `hP.multiProj.isPrime`. Establish `hmh : ∀ (h : MRing ι O) (c : K → ℕ), IsMultiHomog h c → divCycle P h W ≠ 0 → IsMultiHomogIdeal W ∧ W.IsPrime ∧ P ≤ W`. Introduce `h c hc hW'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `divCycle at hW'`. Use `split_ifs at hW' with hW''`. Conclude with `⟨MinimalPrimeMultiHomog.full O K ι _ W (SupSpanMultiHomog.full O K ι P h c hPmh hc) hW''.1, hW''.1.1.1, le_sup_left.trans hW''.1.1.2⟩`. Conclude with `absurd rfl hW'`. Establish `hϖP : (C ϖ : MRing ι O) ∉ P`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h' : ϖ ∈ P.comap (C : O →+* MRing ι O)` using `h`. Rewrite `h'` using `[hP.noTorsion, Ideal.mem_bot]`. Conclude with `hϖ.ne_zero h'`. Establish `hϖW : (C ϖ : MRing ι O) ∈ W` using `hD.vertical W hW`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨hWm, hWp, hPW⟩ : IsMultiHomogIdeal W ∧ W.IsPrime ∧ P ≤ W := by`. Distinguish the cases in `hWf : divCycle P f W = 0`. Conclude with `hmh g bg hbg (fun hWg => hW (by simp [ratDiv, hWf, hWg]))`. Conclude with `hmh f bf hbf hWf`. Use `hWp` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : P < W` using `lt_of_le_of_ne hPW (fun h => hϖP (h ▸ hϖW))`. Establish `hdrop` using `DimStrictDrop.full (MRing ι O) P W hlt`. Rewrite `hdrop` using `[hP.dim]`. Establish `hdim : ringKrullDim (MRing ι (IsLocalRing.ResidueField O) ⧸ specialIdeal W) < ((l.length + 2 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[SpecialQuotDim.full O ϖ hϖ K ι W hϖW]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Use `lt_of_lt_of_le (lt_natCast_of_add_one_le hdrop) ?_` and prove the remaining obligations. Conclude with `(by omega : e + 1 + 1 + Fintype.card K ≤ l.length + 2 + Fintype.card K)` after adjusting the coercions. Establish `key` using `IntNumAddFirst.full (IsLocalRing.ResidueField O) K ι l.length (specialIdeal W) (SpecialIdealCorresp.full O ϖ hϖ K ι P W hWp hϖW).1 (SpecialIdealMultiHomog.full O K ι W hWm) hdim a₁ a₂ l.get`. Establish `e' : ∀ c, vNumL W (c :: l) = intNum (IsLocalRing.ResidueField O) (specialIdeal W) (Matrix.vecCons c l.get)`. Introduce `c`.
-
-Express the relevant statement in the definitionally equal form `_ = vNum W (Matrix.vecCons c l.get)`. Rewrite using `[vNum_vecCons_eq, List.ofFn_get]`. Rewrite using `[e', e', e', key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vNumL_add_of_ratDiv_ne_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {ϖ : O} (hϖ : Irreducible ϖ) {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}

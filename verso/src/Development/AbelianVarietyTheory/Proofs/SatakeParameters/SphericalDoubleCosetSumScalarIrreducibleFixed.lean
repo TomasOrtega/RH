@@ -12,17 +12,17 @@ open GlobalTheory.HeckeScalarSph
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨hdec, hcomm, -⟩` from `GlobalTheory.T.unitaryFiniteAdeles_splitPlace_decomposition L n s`. Use `choose R hR using exists_repsU (n := n) s.v`. Establish `hRα` using `reps_of_repsU hα hRα0`. Establish `hRtriv : ∀ γ ∈ Rα, TrivOutside {s.v} γ`. Introduce `γ hγ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k₁, h₁, k₂, h₂, rfl⟩` from `hRα0.1 γ hγ`. Conclude with `triv_mul (triv_mul h₁.2 hα) h₂.2`. Set `T : (GAf L n → a.W) →ₗ[ℂ] (GAf L n → a.W)` to `∑ γ ∈ Rα, rtHom L n a.W γ`. Establish `hT : ∀ x, T x = ∑ γ ∈ Rα, rtHom L n a.W γ x` using `fun x => LinearMap.sum_apply _ _ _`. Establish `conv : ∀ {b x : GAf L n}, (∃ k₁ ∈ Umax L n, ∃ k₂ ∈ Umax L n, TrivOutside {s.v} k₁ ∧ TrivOutside {s.v} k₂ ∧ x = k₁ * b * k₂) ↔ ∃ k₁ ∈ locK n s.v, ∃ k₂ ∈ locK n s.v, x = k₁ * b * k₂` using `⟨fun ⟨k₁, h₁, k₂, h₂, t₁, t₂, e⟩ => ⟨k₁, ⟨h₁, t₁⟩, k₂, ⟨h₂, t₂⟩, e⟩, fun ⟨k₁, h₁, k₂, h₂, e⟩ => ⟨k₁, h₁.1, k₂, h₂.1, h₁.2, h₂.2, e⟩⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : ℂ, ∀ x ∈ GlobalTheory.SphScalar.fixS (rtHom L n a.W) S (locK n s.v), T x = c • x := by`. Use `GlobalTheory.SphScalar.abs_scalar (rtHom L n a.W) S hS.1.stable (fun S' hle hst => hS.2.2 S' ⟨hle.trans hS.1.le, hst⟩ hle) (rank_le hS) (locK n s.v) {x | TrivOutside {s.v} x} {y | TrivOutside {s.v}ᶜ y} (fun g => by obtain ⟨x, y, hx, hy, e⟩ := hdec g; exact ⟨x, hx, y, hy, e⟩) (fun …` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[hT]`. Use `⟨S.sum_mem fun γ _ => hS.1.stable γ x hx.1, fun κ hκ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Use `hRα.sum_eq hRα hκ (fun g => rtHom L n a.W g x) (fun y l hl => by rw [map_mul, Module.End.mul_apply, hx.2 l hl])` as an intermediate fact. Simplify `this` using `only [map_mul, Module.End.mul_apply]`. Introduce `b hb x _`. Rewrite using `[hT, hT, map_sum]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, (hcomm γ b (hRtriv γ hγ) hb).eq]`. Introduce `b hb x hx`. Rewrite using `[hT, hT]`. Conclude with `GlobalTheory.T.splitPlace_doubleCosetOperators_commute_spherical L n a.W s α b Rα (R b) hα hb (fun y hy => hRα0.2 y (conv.1 hy)) (fun γ hγ => conv.2 (hRα0.1 γ hγ)) (fun y hy => (hR b).2 y (conv.1 hy)) (fun γ hγ => conv.2 ((hR b).1 γ hγ)) x (fun κ h1 h2 => hx.2 κ ⟨h1, h2⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨c, fun f hf hfix => ?_⟩` and prove the remaining obligations. Establish `e` using `hc f ⟨hf, fun κ hκ => hfix κ hκ.1 hκ.2⟩`. Rewrite `e` using `[hT]`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dc_scalar_fin (a : NG.AlgWt L n) (S : Submodule ℂ (GAf L n → a.W)) (hS : NG.IsIrrRep a.ρ S)
     (s : SplitPlace L) (α : GAf L n) (hα : TrivOutside {s.v} α) (Rα : Finset (GAf L n))
@@ -73,13 +73,13 @@ theorem dc_scalar_fin (a : NG.AlgWt L n) (S : Submodule ℂ (GAf L n → a.W)) (
   rfl
 
 /- English proof (translation)
-Introduce `L _ _ _ n a S hS s α hα ι R r h1 h2`. Establish `hinj : Set.InjOn r R`. Introduce `γ hγ δ hδ e`. Establish `hx` using `h1 γ hγ`. Establish `hU : (r γ)⁻¹ * r γ ∈ Umax L n` using `by rw [inv_mul_cancel]; exact one_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h2 (r γ) hx).unique ⟨hγ, hU⟩ ⟨hδ, by rw [← e]; exact hU⟩`. Establish `hA : ∀ γ ∈ R.image r, ∃ k₁ ∈ locK n s.v, ∃ k₂ ∈ locK n s.v, γ = k₁ * α * k₂`. Introduce `γ hγ`. Take `⟨δ, hδ, rfl⟩` from `Finset.mem_image.1 hγ`. Conclude with `h1 δ hδ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : ∀ x, (∃ k₁ ∈ locK n s.v, ∃ k₂ ∈ locK n s.v, x = k₁ * α * k₂) → ∃! γ, γ ∈ R.image r ∧ γ⁻¹ * x ∈ Umax L n`. Introduce `x hx`. Take `⟨γ, ⟨hγ, e⟩, hu⟩` from `h2 x hx`. Use `⟨r γ, ⟨Finset.mem_image.2 ⟨γ, hγ, rfl⟩, e⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy, ey⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨δ, hδ, rfl⟩` from `Finset.mem_image.1 hy`. Rewrite using `[hu δ ⟨hδ, ey⟩]`. Take `⟨c, hc⟩` from `dc_scalar_fin a S hS s α hα (R.image r) ⟨hA, hB⟩`. Use `⟨c, fun f hf hfix => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc f hf hfix, Finset.sum_image (fun γ hγ δ hδ e => hinj hγ hδ e)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dc_scalar : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : Formalism.L2.NG.AlgWt L n) (S : Submodule ℂ (Formalism.AUTREP.GAf L n → a.W)), Formalism.L2.NG.IsIrrRep a.ρ S → ∀ (s : SplitPlace L) (α : Formalism.AUTREP.GAf L n), TrivOutside {s.v} α → ∀ (ι : Type) (R : Finset ι) (r : ι → Formalism.AUTREP.GAf L n), (∀ γ ∈ R, ∃ k₁ ∈ GlobalTheory.HeckeScalarSph.locK n s.v, ∃ k₂ ∈ GlobalTheory.HeckeScalarSph.locK n s.v, r γ = k₁ * α * k₂) → (∀ x, (∃ k₁ ∈ GlobalTheory.HeckeScalarSph.locK n s.v, ∃ k₂ ∈ GlobalTheory.HeckeScalarSph.locK n s.v, x = k₁ * α * k₂) → ∃! γ, γ ∈ R ∧ (r γ)⁻¹ * x ∈ Umax L n) → ∃ c : ℂ, ∀ f ∈ S, (∀ κ ∈ Umax L n, TrivOutside {s.v} κ → Formalism.L2.NG.rt L n κ f = f) → ∑ γ ∈ R, Formalism.L2.NG.rt L n (r γ) f = c • f := by
   intro L _ _ _ n a S hS s α hα ι R r h1 h2

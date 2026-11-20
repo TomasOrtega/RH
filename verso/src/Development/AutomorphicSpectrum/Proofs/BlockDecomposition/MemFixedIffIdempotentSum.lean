@@ -16,11 +16,11 @@ section Idem
 variable {R I J : Type} [CommRing R] [Fintype I] [Fintype J]
 
 /- English proof (translation)
-Use `⟨⟨fun p => (hf.idem p.1).mul (hg.idem p.2), ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩ ⟨i', j'⟩ h`. Distinguish the cases in `hi : i = i'`. Substitute `hi` using the available equality. Establish `hj : j ≠ j'` using `fun hj => h (by rw [hj])`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `f i * g j * (f i * g j') = 0`. Rewrite using `[mul_mul_mul_comm, hg.ortho hj, mul_zero]`. Express the relevant statement in the definitionally equal form `f i * g j * (f i' * g j') = 0`. Rewrite using `[mul_mul_mul_comm, hf.ortho hi, zero_mul]`. Rewrite using `[Fintype.sum_prod_type]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Finset.mul_sum, hg.complete, mul_one]`. Conclude with `hf.complete`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coi_prod {f : I → R} {g : J → R} (hf : CompleteOrthogonalIdempotents f)
     (hg : CompleteOrthogonalIdempotents g) :
@@ -39,9 +39,9 @@ theorem coi_prod {f : I → R} {g : J → R} (hf : CompleteOrthogonalIdempotents
     exact hf.complete
 
 /- English proof (translation)
-Use `⟨⟨fun c => he.1.isIdempotentElem_sum, fun c c' h => ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∑ i with v i = c, e i) * (∑ i with v i = c', e i) = 0`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => he.ortho ?_` and prove the remaining obligations. Introduce and unpack `rfl`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `h ((Finset.mem_filter.1 hi).2.symm.trans (Finset.mem_filter.1 hj).2)`. Rewrite using `[Finset.sum_fiberwise]`. Conclude with `he.complete`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coi_push [DecidableEq J] {e : I → R} (he : CompleteOrthogonalIdempotents e) (v : I → J) :
     CompleteOrthogonalIdempotents fun c => ∑ i with v i = c, e i := by
@@ -61,7 +61,7 @@ variable {l : ℕ} [Fact l.Prime] (A : PAlg l)
 local notation "τ" => WittVector.teichmuller l
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero (Fact.out : l.Prime).ne_zero`. Establish `h2 : a ^ (k + 1) = a` using `h.pow_succ_eq k`. Rewrite `h2` using `[show k + 1 = l from hk.symm]`. Establish `: A.frob a = a` using `h2`. Rewrite using `[phiW, WittVector.map_teichmuller, this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiW_teichmuller {a : A.A} (h : IsIdempotentElem a) : A.phiW (τ a) = τ a := by
   obtain ⟨k, hk⟩ := Nat.exists_eq_succ_of_ne_zero (Fact.out : l.Prime).ne_zero
@@ -71,13 +71,13 @@ theorem phiW_teichmuller {a : A.A} (h : IsIdempotentElem a) : A.phiW (τ a) = τ
   rw [phiW, WittVector.map_teichmuller, this]
 
 /- English proof (translation)
-Establish `ho : OrthogonalIdempotents fun i => τ (e i)` using `⟨fun i => by`. Express the relevant statement in the definitionally equal form `τ (e i) * τ (e i) = τ (e i)`. Rewrite using `[← map_mul, (he.idem i).eq], fun i j hij => by`. Express the relevant statement in the definitionally equal form `τ (e i) * τ (e j) = 0`. Rewrite using `[← map_mul, he.ortho hij, WittVector.teichmuller_zero]⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsIdempotentElem (1 - ∑ i, τ (e i))` using `ho.isIdempotentElem_sum.one_sub`. Establish `h0 : (1 - ∑ i, τ (e i)) ∈ Ideal.span {(l : A.W)}`. Rewrite using `[A.mem_span_l_iff, ← WittVector.constantCoeff_apply, map_sub, map_one, map_sum]`. Simplify using `only [WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`. Rewrite using `[he.complete, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : (1 - ∑ i, τ (e i)) = 0` using `IsHausdorff.haus (inferInstance : IsHausdorff (Ideal.span {(l : A.W)}) A.W) _ fun k => by`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Break down `k with _ | k` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[← hu.pow_succ_eq k]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.pow_mem_pow h0 _`. Conclude with `(sub_eq_zero.1 hz).symm`.
+A detailed English derivation is pending.
 -/
 theorem sum_teichmuller {I : Type} [Fintype I] {e : I → A.A}
     (he : CompleteOrthogonalIdempotents e) : ∑ i, τ (e i) = 1 := by
@@ -102,11 +102,9 @@ theorem sum_teichmuller {I : Type} [Fintype I] {e : I → A.A}
   exact (sub_eq_zero.1 hz).symm
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_teichmuller A he, mul_one]`. Use `_ = ∑ i, τ ((∑ j with v j = c, e j) * e i) := by`. Rewrite using `[Finset.mul_sum]`. Simplify using `only [map_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ∑ i, if v i = c then τ (e i) else 0 := by`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `split_ifs with h`. Rewrite using `[he.1.mul_sum_of_mem (Finset.mem_filter.2 ⟨Finset.mem_univ _, h⟩)]`.
-
-Rewrite using `[he.1.mul_sum_of_notMem (fun hi => h (Finset.mem_filter.1 hi).2), WittVector.teichmuller_zero]`. Use `_ = ∑ i with v i = c, τ (e i) := (Finset.sum_filter _ _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem teichmuller_push {I J : Type} [Fintype I] [DecidableEq J] {e : I → A.A}
     (he : CompleteOrthogonalIdempotents e) (v : I → J) (c : J) :
@@ -126,9 +124,9 @@ theorem teichmuller_push {I J : Type} [Fintype I] [DecidableEq J] {e : I → A.A
     _ = ∑ i with v i = c, τ (e i) := (Finset.sum_filter _ _).symm
 
 /- English proof (translation)
-Establish `h0 : ((l ^ n : ℕ) : A.Wn n) = 0`. Establish `: ((l ^ n : ℕ) : A.Wn n) = Ideal.Quotient.mk _ ((l : A.W) ^ n)`. Rewrite using `[Nat.cast_pow, map_pow, map_natCast]`. Rewrite using `[this]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.val_natCast]`. Use `conv_rhs => rw [← Nat.mod_add_div m (l ^ n)]`. Rewrite using `[Nat.cast_add, Nat.cast_mul, h0, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_val_eq (n m : ℕ) [NeZero (l ^ n)] :
     ((((m : ZMod (l ^ n)).val : ℕ)) : A.Wn n) = (m : A.Wn n) := by
@@ -142,11 +140,11 @@ theorem natCast_val_eq (n m : ℕ) [NeZero (l ^ n)] :
   rw [Nat.cast_add, Nat.cast_mul, h0, zero_mul, add_zero]
 
 /- English proof (translation)
-Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `⟨fun c => ∑ i with ((v i : ℕ) : ZMod (l ^ n)) = c, e i, coi_push he _, ?_⟩` and prove the remaining obligations. Rewrite using `[idemSum]`. Simplify using `only [teichmuller_push A he, map_sum, map_mul, map_natCast]`. Establish `key : ∀ c : ZMod (l ^ n), ((c.val : ℕ) : A.Wn n) * ∑ i with ((v i : ℕ) : ZMod (l ^ n)) = c, Ideal.Quotient.mk _ (τ (e i)) = ∑ i with ((v i : ℕ) : ZMod (l ^ n)) = c, (v i : A.Wn n) * Ideal.Quotient.mk _ (τ (e i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[← (Finset.mem_filter.1 hi).2, natCast_val_eq]`. Simplify using `only [key]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_fiberwise]`.
+A detailed English derivation is pending.
 -/
 theorem exists_idemSum (n : ℕ) {I : Type} [Fintype I] (v : I → ℕ) (e : I → A.A)
     (he : CompleteOrthogonalIdempotents e) :
@@ -171,27 +169,27 @@ theorem exists_idemSum (n : ℕ) {I : Type} [Fintype I] (v : I → ℕ) (e : I �
   rw [Finset.sum_fiberwise]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `y _`. Use `⟨Unit, inferInstance, fun _ => 0, fun _ => 1, CompleteOrthogonalIdempotents.unique_iff.2 rfl, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `y hy`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Establish `hl : Ideal.span {(l : A.W) ^ (n + 1)} ≤ Ideal.span {(l : A.W)}` using `Ideal.span_singleton_le_span_singleton.2 (dvd_pow_self _ n.succ_ne_zero)`. Establish `h0 : y.coeff 0 ^ l = y.coeff 0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(A.mem_span_l_iff _).1 (hl hy)` as an intermediate fact. Rewrite `this` using `[← WittVector.constantCoeff_apply, map_sub, sub_eq_zero, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, phiW, WittVector.map_coeff]`. Conclude with `this`. Take `⟨f, hf, hfc⟩` from `GlobalTheory.CompanionTheory.FrobFixed.fix_one A _ h0`. Establish `hTφ : A.phiW (∑ c : ZMod l, (c.val : A.W) * τ (f c)) = ∑ c : ZMod l, (c.val : A.W) * τ (f c)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_natCast, phiW_teichmuller A (hf.idem c)]`. Establish `hT0 : (y - ∑ c : ZMod l, (c.val : A.W) * τ (f c)).coeff 0 = 0`. Rewrite using `[← WittVector.constantCoeff_apply, map_sub, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_natCast, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`. Rewrite using `[sub_eq_zero]`. Establish `hs : y.coeff 0 = ∑ c, f c * y.coeff 0`. Rewrite using `[← Finset.sum_mul, hf.complete, one_mul]`. Rewrite using `[hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `hfc c` as an intermediate fact. Take the linear combination `this`. Generalize the expression as in `hT : ∑ c : ZMod l, (c.val : A.W) * τ (f c) = T at hTφ hT0`. Take `⟨y1, hy1⟩` from `Ideal.mem_span_singleton'.1 ((A.mem_span_l_iff _).2 hT0)`.
+Take a linear combination of the given relations to obtain the conclusion. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 hy`. Establish `e1 : y = T + y1 * l` using `by rw [hy1]; ring`. Establish `e3 : A.phiW y = T + A.phiW y1 * l`. Rewrite using `[e1, map_add, map_mul, map_natCast, hTφ]`. Establish `e2 : (l : A.W) * (A.phiW y1 - y1 - d * (l : A.W) ^ n) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `-hd - e3 + e1`. Establish `hφ : A.phiW y1 - y1 ∈ Ideal.span {(l : A.W) ^ n}` using `Ideal.mem_span_singleton'.2 ⟨d, (sub_eq_zero.1 (A.l_mul_eq_zero e2)).symm⟩`. Take `⟨I, _, v, e, he, hm⟩` from `ih y1 hφ`. Take `⟨d', hd'⟩` from `Ideal.mem_span_singleton'.1 hm`. Establish `hS : ∑ p : ZMod l × I, (((p.1.val + l * v p.2 : ℕ)) : A.W) * τ (f p.1 * e p.2) = T + (l : A.W) * ∑ i, (v i : A.W) * τ (e i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Fintype.sum_prod_type]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = (∑ c : ZMod l, (c.val : A.W) * τ (f c)) * (∑ i, τ (e i)) + (∑ c, τ (f c)) * ((l : A.W) * ∑ i, (v i : A.W) * τ (e i)) := by`. Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.sum_mul]`. Use `_ = T + (l : A.W) * ∑ i, (v i : A.W) * τ (e i) := by`. Rewrite using `[sum_teichmuller A he, sum_teichmuller A hf, hT, mul_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨ZMod l × I, inferInstance, fun p => p.1.val + l * v p.2, fun p => f p.1 * e p.2, coi_prod hf he, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hS]`. Use `Ideal.mem_span_singleton'.2 ⟨d', ?_⟩` and prove the remaining obligations. Take the linear combination `(l : A.W) * hd' + hy1`.
+A detailed English derivation is pending.
 -/
 theorem exists_rep (n : ℕ) : ∀ y : A.W, A.phiW y - y ∈ Ideal.span {(l : A.W) ^ n} →
     ∃ (I : Type) (_ : Fintype I) (v : I → ℕ) (e : I → A.A), CompleteOrthogonalIdempotents e ∧
@@ -264,13 +262,11 @@ theorem exists_rep (n : ℕ) : ∀ y : A.W, A.phiW y - y ∈ Ideal.span {(l : A.
     linear_combination (l : A.W) * hd' + hy1
 
 /- English proof (translation)
-Introduce `l _ A n x`. Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : A.phiW y - y ∈ Ideal.span {(l : A.W) ^ n}` using `Ideal.Quotient.eq.1 hx`. Take `⟨I, _, v, e, he, hm⟩` from `exists_rep A n y h`. Take `⟨e', he', h'⟩` from `exists_idemSum A n v e he`. Conclude with `⟨e', he', (Ideal.Quotient.eq.2 hm).trans h'⟩`. Introduce and unpack `⟨e, he, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `wnMap A.frob n (A.idemSum n e) = A.idemSum n e`. Rewrite using `[idemSum, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_natCast]`. Use `congr 1`.
-
-Conclude with `congrArg (Ideal.Quotient.mk _) (phiW_teichmuller A (he.idem c))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mem_Fix_iff : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ) (x : A.Wn n),
     x ∈ A.Fix n ↔ ∃ e : ZMod (l ^ n) → A.A,

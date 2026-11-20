@@ -12,7 +12,7 @@ section Fl
 variable {p : ℕ} {G : Formalism.MainNotions.G.GAtP p} (Fl : Formalism.MainNotions.G.Fills G) (v : Fin G.P.nV)
 
 /- English proof (translation)
-Unfold `lamI`. Rewrite using `[dif_pos ⟨by omega, le_rfl⟩]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ne_lamI_last (s : Fin (G.P.n' v)) : lamI (G.P.lam0 v) s (G.P.m + 1) = G.P.lam0 v s (Fin.last G.P.m) := by
   unfold lamI
@@ -20,15 +20,15 @@ theorem ne_lamI_last (s : Fin (G.P.n' v)) : lamI (G.P.lam0 v) s (G.P.m + 1) = G.
   rfl
 
 /- English proof (translation)
-Establish `hc : (0 : ℤ) ≤ Fl.c` using `Int.natCast_nonneg _`. Unfold `lamI`. Distinguish the cases in `h : 1 ≤ a ∧ a ≤ G.P.m + 1`. Rewrite using `[dif_pos h]`. Distinguish the cases in `hs : s ∈ Fl.TT v`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨h1, h2, h3⟩` from `(Fl.base v s).1 hs`. Distinguish the cases in `ha : a = 1`. Substitute `ha` using the available equality. Rewrite using `[if_pos ⟨hs, rfl⟩]`. Establish `: G.P.lam0 v s ⟨1 - 1, by omega⟩ = Fl.a v s` using `h1`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg (fun h' => ha h'.2)]`. Distinguish the cases in `hl : a = G.P.m + 1`. Substitute `hl` using the available equality. Establish `: G.P.lam0 v s ⟨G.P.m + 1 - 1, by omega⟩ = -Fl.b v s` using `h2`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use `hb hs` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `(abs_le.1 (h3 ⟨a - 1, by omega⟩ (by show 0 < a - 1; omega) (by show a - 1 < G.P.m; omega))).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg (fun h' => hs h'.1)]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `(abs_le.1 ((Fl.base v s).2 hs ⟨a - 1, by omega⟩)).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg h, if_neg (fun h' => h ⟨by omega, by omega⟩)]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ne_lamI_le (s : Fin (G.P.n' v)) (a : ℕ) (hm : 2 ≤ G.P.m) (hb : s ∈ Fl.TT v → 0 ≤ Fl.b v s) :
     lamI (G.P.lam0 v) s a ≤ (Fl.c : ℤ) + (if s ∈ Fl.TT v ∧ a = 1 then Fl.a v s else 0) := by
@@ -62,7 +62,7 @@ end Fl
 variable {D : Formalism.BasicNotions.D7} {L : SizeData₂ D}
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.G.kaJ`. Establish `h1 : (1 : ℝ) ≤ j` using `by exact_mod_cast hj`. Establish `h2 : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `h3 : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `: 0 ≤ (2 * (j : ℝ) - 1) * ((D.R.t : ℝ) + 1)` using `mul_nonneg (by linarith) (by linarith)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -75,7 +75,7 @@ theorem ne_kaJ_nonneg (j : ℕ) (hj : 1 ≤ j) : 0 ≤ Formalism.MainNotions.G.k
   linarith
 
 /- English proof (translation)
-Unfold `Scale.w''`. Conclude with `div_nonneg L.sc.b'_pos.le (mul_nonneg L.sc.x_pos.le (Nat.cast_nonneg _))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ne_w''_nonneg : 0 ≤ L.sc.w'' D.R.n := by
   unfold Scale.w''
@@ -90,9 +90,9 @@ variable (X : Formalism.MainNotions.G.Inst D L) (Y : Formalism.MainNotions.G.Lat
 include hL ht0 in
 
 /- English proof (translation)
-Take `⟨_, h2, _, h4⟩` from `((hL u w hg).2.2.2.2.2.2 t0 ht0).2 s`. Rewrite using `[h4 j hj]`. Establish `hn : t0 + s.val • Formalism.MainNotions.G.hP D (D.what₂.places.resChar w) ∉ D.host.TT` using `fun h => hs (h2.2 h)`. Unfold `Formalism.MainNotions.G.fillG Formalism.MainNotions.G.fill`. Rewrite using `[if_neg (fun h => hn h.2)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h5` using `(X.off_thin j (false, t0 + s.val • Formalism.MainNotions.G.hP D (D.what₂.places.resChar w)) ⟨fun h => hn h.2, fun h => by simpa using h.1⟩).2`. Establish `h6` using `ne_kaJ_nonneg (D := D) j (Finset.mem_Icc.1 hj).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ne_w_non (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (s : Fin ((D.gat u w hg).P.n' (Y.vOf u w hg t0)))
     (hs : s ∉ (Y.Fl u w hg).TT (Y.vOf u w hg t0)) :
@@ -110,9 +110,9 @@ theorem ne_w_non (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (s : Fin ((D.gat u w
 include hL ht0 in
 
 /- English proof (translation)
-Take `⟨_, h2, h3, h4⟩` from `((hL u w hg).2.2.2.2.2.2 t0 ht0).2 s`. Rewrite using `[h4 j hj, (h3 hs).2]`. Establish `hn : t0 + s.val • Formalism.MainNotions.G.hP D (D.what₂.places.resChar w) ∈ D.host.TT` using `h2.1 hs`. Unfold `Formalism.MainNotions.G.fillG Formalism.MainNotions.G.fill`. Rewrite using `[if_pos ⟨rfl, hn⟩]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h5` using `(X.off_top j (false, t0 + s.val • Formalism.MainNotions.G.hP D (D.what₂.places.resChar w)) ⟨rfl, hn⟩).2`. Establish `h6` using `ne_kaJ_nonneg (D := D) j (Finset.mem_Icc.1 hj).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ne_w_top (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (s : Fin ((D.gat u w hg).P.n' (Y.vOf u w hg t0)))
     (hs : s ∈ (Y.Fl u w hg).TT (Y.vOf u w hg t0)) :
@@ -129,16 +129,16 @@ theorem ne_w_top (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (s : Fin ((D.gat u w
 
 include hL ht0 in
 /- English proof (translation)
-Unfold `Formalism.MainNotions.G.nP`. Rewrite using `[if_neg (nc_notSg hg), nc_n_eq X Y hT hL u w hg t0 ht0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ne_nP : (Formalism.MainNotions.G.nP D (D.what₂.places.resChar w) : ℝ) = ((D.gat u w hg).P.n' (Y.vOf u w hg t0) : ℕ) := by
   unfold Formalism.MainNotions.G.nP
   rw [if_neg (nc_notSg hg), nc_n_eq X Y hT hL u w hg t0 ht0]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.G.Nm Ranks.N`. Establish `h1 : (j : ℝ) ≤ D.R.m` using `by exact_mod_cast (Finset.mem_Icc.1 hj).2`. Establish `h2 : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `h3 : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `h4 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1 (by linarith : (0 : ℝ) ≤ (D.R.t : ℝ) + 1), mul_nonneg h4 (by linarith : (0 : ℝ) ≤ (D.R.t : ℝ) + 1)]`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem ne_Nm (j : ℕ) (hj : j ∈ SizeData₂.lifts D) : (j : ℝ) * ((D.R.t : ℝ) + 1) / 2 ≤ Formalism.MainNotions.G.Nm D := by
   unfold Formalism.MainNotions.G.Nm Ranks.N
@@ -155,25 +155,25 @@ end Orbit
 open Classical in
 
 /- English proof (translation)
-Introduce `D L X Y K hK _ hT hL u w hg hp t0 ht0 j hj`. Establish `hr : (D.gat u w hg).P.r = 1` using `by rw [(hL u w hg).2.2.2.1, if_neg (not_lt.2 hp)]`. Establish `ht : (Y.Fl u w hg).t = D.R.t` using `(hL u w hg).2.1`. Establish `hc : ((Y.Fl u w hg).c : ℝ) ≤ Formalism.MainNotions.G.cG L` using `(hL u w hg).2.2.1`. Establish `hinj` using `nc_iota_inj X Y hT hL u w hg t0 ht0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : 0 ≤ L.sc.w'' D.R.n + L.etaSz + Formalism.MainNotions.G.cG L`. Use `ne_w''_nonneg (L := L)` as an intermediate fact. Use `L.etaSz_pos` as an intermediate fact. Use `nc_cG_nonneg (L := L)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hr]`. Establish `h1` using `price_sum_single_edge (Y.Fl u w hg).t j ((Y.Fl u w hg).TT (Y.vOf u w hg t0)) ((D.gat u w hg).P.lam0 (Y.vOf u w hg t0)) ((Y.Fl u w hg).w (Y.vOf u w hg t0)) (L.sc.w'' D.R.n + L.etaSz + Formalism.MainNotions.G.cG L) (fun s => ((Y.Fl u w hg).w (Y.vOf u w hg t0) j s : ℝ) - ((Y.Fl u w …`. Establish `e : (D.gat u w hg).P.m + 2 - 1 = (D.gat u w hg).P.m + 1` using `rfl`. Rewrite using `[e, Finset.Icc_self, Finset.sum_singleton, ne_lamI_last]`. Use `split_ifs with hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[((Y.Fl u w hg).base (Y.vOf u w hg t0) s).1 hs |>.2.1]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `ne_w_non X Y hT hL u w hg t0 ht0 j hj s hs`. Establish `h3` using `(abs_le.1 (((Y.Fl u w hg).base (Y.vOf u w hg t0) s).2 hs (Fin.last _))).2`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (((D.gat u w hg).P.lam0 (Y.vOf u w hg t0) s (Fin.last _) : ℤ) : ℝ) ≤ ((Y.Fl u w hg).c : ℝ)`. Conclude with `h3` after adjusting the coercions. Use `push_cast`. Use the proof step `linarith)`. Use `le_trans h1 ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Formalism.MainNotions.G.Pr`. Rewrite using `[if_pos hp, nc_topsOn X Y hT hL u w hg t0 ht0, Finset.filter_image, Finset.sum_image (fun a _ b _ h => hinj h)]`. Establish `hf : ((Y.Fl u w hg).TT (Y.vOf u w hg t0)).filter (fun a => ¬ Formalism.MainNotions.G.IsV X (D.what₂.places.resChar w) (nc_iota Y u w hg t0 a)) = ((Y.Fl u w hg).TT (Y.vOf u w hg t0)).filter IsOddPos`. Apply `Finset.filter_congr` to reduce the goal to its premises. Introduce `s _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[nc_isV X Y hT hL u w hg t0 ht0 s, not_not]`. Rewrite using `[hf, ne_nP X Y hT hL u w hg t0 ht0, ht]`. Establish `e1 : ∑ s ∈ ((Y.Fl u w hg).TT (Y.vOf u w hg t0)).filter IsOddPos, (((Y.Fl u w hg).w (Y.vOf u w hg t0) j s : ℝ) - ((Y.Fl u w hg).b (Y.vOf u w hg t0) s : ℝ)) = ∑ s ∈ ((Y.Fl u w hg).TT (Y.vOf u w hg t0)).filter IsOddPos, (Formalism.MainNotions.G.fillG X (Formalism.MainNotions.G.bL L) …`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s hs`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_, _, h3, h4⟩` from `((hL u w hg).2.2.2.2.2.2 t0 ht0).2 s`. Rewrite using `[h4 j hj, (h3 (Finset.mem_filter.1 hs).1).2]`. Rewrite using `[e1]`. Establish `hN` using `ne_Nm (D := D) j hj`. Establish `hn : (0 : ℝ) ≤ ((D.gat u w hg).P.n' (Y.vOf u w hg t0) : ℕ)` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNm : 0 ≤ Formalism.MainNotions.G.Nm D` using `le_trans (by positivity) hN`. Establish `h5 : ((D.gat u w hg).P.n' (Y.vOf u w hg t0) : ℝ) * (L.sc.w'' D.R.n + L.etaSz + Formalism.MainNotions.G.cG L + Formalism.MainNotions.G.Nm D) ≤ K.Pr1 * ((D.gat u w hg).P.n' (Y.vOf u w hg t0) : ℝ) * (L.sc.w'' D.R.n + L.etaSz + Formalism.MainNotions.G.cG L + Formalism.MainNotions.G.N …`. Use `mul_le_mul_of_nonneg_right hK (mul_nonneg hn (by linarith : 0 ≤ L.sc.w'' D.R.n + L.etaSz + Formalism.MainNotions.G.cG L + Formalism.MainNotions.G.Nm D))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6 : ((D.gat u w hg).P.n' (Y.vOf u w hg t0) : ℝ) * ((1 : ℕ) : ℝ) * j * ((D.R.t : ℝ) + 1) / 2 ≤ ((D.gat u w hg).P.n' (Y.vOf u w hg t0) : ℝ) * Formalism.MainNotions.G.Nm D`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `mul_le_mul_of_nonneg_left hN hn` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem price_bound_large_primes : PriceBoundLargePrimes 1 := by
   intro D L X Y K hK _ hT hL u w hg hp t0 ht0 j hj

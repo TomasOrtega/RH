@@ -35,19 +35,19 @@ Both sides reduce to the same expression.
 theorem mat_one (w : InfinitePlace E) : mat (1 : archUnitary h v) w = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← mat_mul, mul_inv_cancel, mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_mul_inv (g : archUnitary h v) (w : InfinitePlace E) : mat g w * mat g⁻¹ w = 1 := by
   rw [← mat_mul, mul_inv_cancel, mat_one]
 
 /- English proof (translation)
-Rewrite using `[← mat_mul, inv_mul_cancel, mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_mul (g : archUnitary h v) (w : InfinitePlace E) : mat g⁻¹ w * mat g w = 1 := by
   rw [← mat_mul, inv_mul_cancel, mat_one]
 
 /- English proof (translation)
-Use `mem_archUnitary.1 g.2 w` as an intermediate fact. Rewrite `this` using `[conjT_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unitary_mat (g : archUnitary h v) (w : InfinitePlace E) :
     (mat g w)ᴴ * gramAt h v w * mat g w = gramAt h v w := by
@@ -55,7 +55,7 @@ theorem unitary_mat (g : archUnitary h v) (w : InfinitePlace E) :
   rwa [conjT_eq] at this
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp ((continuous_apply w).comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat (w : InfinitePlace E) : Continuous fun g : archUnitary h v => mat g w :=
   Units.continuous_val.comp ((continuous_apply w).comp continuous_subtype_val)
@@ -73,7 +73,7 @@ abbrev bMat (v : Basis ι E W) (v' : Basis (Fin n) E (hypComplement h x₀ w₀)
 include hp hh'
 
 /- English proof (translation)
-Take `⟨hH, hG, hBX, hBY, hXX, hYY, hXY, hspan⟩` from `frame v hp h' hh' v' w`. Rewrite using `[mat_mul]`. Conclude with `leviProj_mul hH hG hBX hBY hXX hYY hXY hspan (unitary_mat g w) (hg w) (unitary_mat g' w) (hg' w)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_mul (g g' : archUnitary h v) (hg : g ∈ vecFixGroup h v x₀)
     (hg' : g' ∈ vecFixGroup h v x₀) (w : InfinitePlace E) :
@@ -86,7 +86,7 @@ theorem q_mul (g g' : archUnitary h v) (hg : g ∈ vecFixGroup h v x₀)
     (hg' w)
 
 /- English proof (translation)
-Take `⟨hH, hG, -⟩` from `frame v hp h' hh' v' w`. Rewrite using `[mat_one, leviProj, Matrix.mul_one]`. Conclude with `leftInv_mul hG`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_one (w : InfinitePlace E) :
     leviProj (gramAt h v w) (bMat v v' w) (mat (1 : archUnitary h v) w) = 1 := by
@@ -105,9 +105,9 @@ def qUnit (g : vecFixGroup h v x₀) (w : InfinitePlace E) : GL (Fin n) ℂ wher
       q_one hp hh']
 
 /- English proof (translation)
-Rewrite using `[mem_archUnitary]`. Introduce `w`. Take `⟨hH, hG, hBX, hBY, hXX, hYY, hXY, hspan⟩` from `frame v hp h' hh' v' w`. Rewrite using `[conjT_eq]`. Express the relevant statement in the definitionally equal form `(leviProj (gramAt h v w) (bMat v v' w) (mat (g : archUnitary h v) w))ᴴ * gramAt h' v' w * leviProj (gramAt h v w) (bMat v v' w) (mat (g : archUnitary h v) w) = gramAt h' v' w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[gramAt_complement v h' hh' v' w]`. Conclude with `leviProj_unitary hH hG hBX hBY hXX hYY hXY hspan (unitary_mat _ w) (g.2 w)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qUnit_mem (g : vecFixGroup h v x₀) :
     (fun w => qUnit hp hh' (v' := v') g w) ∈ archUnitary h' v' := by
@@ -136,9 +136,9 @@ def iUnit (m : archUnitary h' v') (w : InfinitePlace E) : GL ι ℂ where
     rw [← leviSec_mul hG, mat_inv_mul, leviSec_one]
 
 /- English proof (translation)
-Rewrite using `[mem_archUnitary]`. Introduce `w`. Take `⟨hH, hG, -⟩` from `frame v hp h' hh' v' w`. Rewrite using `[conjT_eq]`. Express the relevant statement in the definitionally equal form `(leviSec (gramAt h v w) (bMat v v' w) (mat m w))ᴴ * gramAt h v w * leviSec (gramAt h v w) (bMat v v' w) (mat m w) = gramAt h v w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `leviSec_unitary hH hG _ ?_` and prove the remaining obligations. Rewrite using `[← gramAt_complement v h' hh' v' w]`. Conclude with `unitary_mat m w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iUnit_mem (m : archUnitary h' v') : (fun w => iUnit hp hh' (v := v) m w) ∈ archUnitary h v := by
   rw [mem_archUnitary]
@@ -152,7 +152,7 @@ theorem iUnit_mem (m : archUnitary h' v') : (fun w => iUnit hp hh' (v := v) m w)
   exact unitary_mat m w
 
 /- English proof (translation)
-Introduce `w`. Take `⟨hH, hG, hBX, -⟩` from `frame v hp h' hh' v' w`. Conclude with `leviSec_mulVec_of hBX _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem iUnit_mem_vecFixGroup (m : archUnitary h' v') :
     (⟨fun w => iUnit hp hh' (v := v) m w, iUnit_mem hp hh' m⟩ : archUnitary h v) ∈ vecFixGroup h v x₀ := by
@@ -172,7 +172,7 @@ def iHom : archUnitary h' v' →* vecFixGroup h v x₀ where
     rw [mat_mul, leviSec_mul hG])))
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 (continuous_pi fun w => Units.continuous_iff.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun g : vecFixGroup h v x₀ => leftInv (gramAt h v w) (bMat v v' w) * mat (g : archUnitary h v) w * bMat v v' w`. Conclude with `(continuous_const.matrix_mul ((continuous_mat w).comp continuous_subtype_val)).matrix_mul continuous_const`. Express the relevant statement in the definitionally equal form `Continuous fun g : vecFixGroup h v x₀ => leftInv (gramAt h v w) (bMat v v' w) * mat ((g⁻¹ : vecFixGroup h v x₀) : archUnitary h v) w * bMat v v' w`. Conclude with `(continuous_const.matrix_mul (((continuous_mat w).comp continuous_subtype_val).comp continuous_inv)).matrix_mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_qHom : Continuous (qHom hp hh' (v := v) (v' := v')) := by
   refine continuous_induced_rng.2 (continuous_pi fun w => Units.continuous_iff.2 ⟨?_, ?_⟩)
@@ -187,7 +187,7 @@ theorem continuous_qHom : Continuous (qHom hp hh' (v := v) (v' := v')) := by
       continuous_inv)).matrix_mul continuous_const
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 (continuous_induced_rng.2 (continuous_pi fun w => Units.continuous_iff.2 ⟨?_, ?_⟩))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun m : archUnitary h' v' => 1 - bMat v v' w * leftInv (gramAt h v w) (bMat v v' w) + bMat v v' w * mat m w * leftInv (gramAt h v w) (bMat v v' w)`. Conclude with `continuous_const.add ((continuous_const.matrix_mul (continuous_mat w)).matrix_mul continuous_const)`. Express the relevant statement in the definitionally equal form `Continuous fun m : archUnitary h' v' => 1 - bMat v v' w * leftInv (gramAt h v w) (bMat v v' w) + bMat v v' w * mat m⁻¹ w * leftInv (gramAt h v w) (bMat v v' w)`. Conclude with `continuous_const.add ((continuous_const.matrix_mul ((continuous_mat w).comp continuous_inv)).matrix_mul continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_iHom : Continuous (iHom hp hh' (v := v) (v' := v')) := by
   refine continuous_induced_rng.2 (continuous_induced_rng.2
@@ -212,21 +212,19 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Introduce `x₀ w₀ hp h' hh' n v'`. Use `⟨iHom hp hh', qHom hp hh', continuous_iHom hp hh', continuous_qHom hp hh', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Units.ext` to reduce the goal to its premises. Take `⟨hH, hG, -⟩` from `frame v hp h' hh' v' w`. Conclude with `leviProj_leviSec hG (mat m w)`. Introduce `g`. Rewrite using `[mem_unipRadical]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h1 w`. Take `⟨hH, hG, hBX, hBY, hXX, hYY, hXY, hspan⟩` from `frame v hp h' hh' v' w`. Establish `e : leviProj (gramAt h v w) (bMat v v' w) (mat (g : archUnitary h v) w) = 1` using `congrArg (fun u : archUnitary h' v' => ((u : InfinitePlace E → GL (Fin n) ℂ) w : Matrix (Fin n) (Fin n) ℂ)) h1`. Conclude with `⟨g.2 w, (leviProj_eq_one_iff hH hG hBX hBY hXX hYY hXY hspan (unitary_mat _ w) (g.2 w)).1 e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises. Take `⟨hH, hG, hBX, hBY, hXX, hYY, hXY, hspan⟩` from `frame v hp h' hh' v' w`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(leviProj_eq_one_iff hH hG hBX hBY hXX hYY hXY hspan (unitary_mat _ w) (g.2 w)).2 (h1 w).2`. Introduce `m w`. Take `⟨hH, hG, hBX, hBY, -⟩` from `frame v hp h' hh' v' w`. Conclude with `leviSec_mulVec_of hBY _`. Introduce `γ m hx hw hW`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises. Take `⟨hH, hG, hBX, hBY, hXX, hYY, hXY, hspan⟩` from `frame v hp h' hh' v' w`. Express the relevant statement in the definitionally equal form `leviSec (gramAt h v w) (bMat v v' w) (mat (archEmbed h' v' m) w) = mat (archEmbed h v γ) w`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Apply `eq_leviSec hH hG hBX hBY hXX hYY hXY hspan` to reduce the goal to its premises. Rewrite using `[mat, archEmbed_apply, map_toMatrix_mulVec_vecAt]`. Conclude with `congrArg (fun x => vecAt v x w) hx`. Rewrite using `[mat, archEmbed_apply, map_toMatrix_mulVec_vecAt]`.
-
-Conclude with `congrArg (fun x => vecAt v x w) hw`. Apply `ext_of_mulVec_single` to reduce the goal to its premises. Introduce `k`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, ← vecAt_basis v' k w, ← vecAt_coe, mat, mat, archEmbed_apply, archEmbed_apply, map_toMatrix_mulVec_vecAt, map_toMatrix_mulVec_vecAt, ← vecAt_coe]`. Conclude with `congrArg (fun x => vecAt v x w) (hW (v' k))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem StabilizerLevi.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     StabilizerLevi.Statement h v := by

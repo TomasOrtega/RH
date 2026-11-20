@@ -27,7 +27,7 @@ local instance invTwoFv (v : Pl F) : Invertible (2 : Fv F v) := invertibleOfNonz
 local instance modTopEv (v : Pl F) : IsModuleTopology (Fv F v) (Ev E v) := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun y => by have h := (under_eq_iff hw w).2 rfl rw [PT.locChar_eq hw h H y, MonoidHom.one_apply] exact h1 _ (PT.locIdele_spec hw h y).1`.
+A detailed English derivation is pending.
 -/
 theorem locChar_one {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : IsInertAt F E v w) {χ : Chr F E}
     (h1 : ∀ z : (AE F E)ˣ, At (evFin F v) ((z : AE F E) - 1) → χ z = 1) {χv : (Ev E v)ˣ →* Circle}
@@ -40,13 +40,13 @@ end EvInv
 
 open EvInv in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d B X W M om χX χW hP hWl v w hw hχ ω ρ hR m Cy hL _ l hl h0 g hg φ hφ`. Establish `hσ` using `hP.base.cm`. Take `⟨r, s, hX⟩` from `hP.herm`. Take `⟨r', s', hW⟩` from `hP.skew`. Take `⟨ψv, dv, χXv, χWv, omv, L⟩` from `ThKH.Locpair.locPairEx F E σ n d B X W M om χX χW hP hWl v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : χWv = 1` from `locChar_one hw hχ L.chW`. Take `⟨c1, c2⟩` from `PT.psi_good hP.base.std (hP.base.inert v w hw).2.2 L.psi`. Establish `a1` using `PT.isHerm_loc (v := v) hX`. Establish `a2` using `PT.isSkew_loc (v := v) hW`. Establish `a3` using `PT.isLagr_loc hσ hw hW hL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a4` using `PT.isEv_of L hL.supp hl h0`. Establish `fix` using `split_character_fixes_evaluation _ _ _ ψv (PT.isField_Ev hw) (PT.isQuad_Ev hσ v) c1 c2 _ _ _ _ _ _ dv _ _ _ l a1 a2 a3 L.weil a4`. Take `⟨gv, -, e1, -, -⟩` from `L.loc g hg 1 (one_mem_UAt W v)`. Establish `e : ω (g, 1) φ = omv.comp (MonoidHom.inl _ _) gv φ` using `(PT.actsX L hg e1 hφ _).1 ((hR.acts g hg 1 (one_mem_UAt W v) φ hφ _).2 rfl)`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fix gv φ hφ`.
+A detailed English derivation is pending.
 -/
 theorem evInvSt : EvInvSt := by
   intro F E _ _ _ _ _ σ n d B X W M om χX χW hP hWl v w hw hχ ω ρ hR m Cy hL _ l hl h0 g hg φ hφ

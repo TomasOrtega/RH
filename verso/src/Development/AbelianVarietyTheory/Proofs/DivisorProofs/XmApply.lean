@@ -16,7 +16,7 @@ open Classical in
 def pre (ι : L →+ AE F E) (z : AE F E) : L := if h : ∃ x, ι x = z then h.choose else 0
 
 /- English proof (translation)
-Unfold `pre`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_spec (ι : L →+ AE F E) {z : AE F E} (h : ∃ x, ι x = z) : ι (pre ι z) = z := by
   unfold pre

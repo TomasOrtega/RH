@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.FockDegFin
 
 /- English proof (translation)
-Take `⟨m, L, hL⟩` from `GlobalTheory.HeisDerivSpan.heisLine_deriv_finite_span F E σ n d X W M ψ hψ`. Establish `hle : Submodule.span ℂ {f₁ : SInf F (Fin n × Fin d) | ∃ u, At (evI F) u ∧ ∃ f ∈ N, ActsD (evI F) (M.heisLine ψ u) f f₁} ≤ ⨆ i, N.map (L i)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f₁ ⟨u, hu, f, hf, hd⟩`. Take `⟨D, hD, hDs⟩` from `hL u hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(hD f f₁).1 hd]`. Use `Submodule.span_le.2 ?_ (hDs f)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem i ⟨f, hf, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem span_actsD_finiteDimensional {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
@@ -37,9 +37,9 @@ theorem span_actsD_finiteDimensional {F E : Type} [Field F] [NumberField F] [Fie
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M r s r' s' hB hX hW hM j`. Proceed by induction on `j with`. Consider the case `zero => rw [fockDeg_zero]`. Conclude with `GlobalTheory.T.gaussian_span_finite_dimensional F E σ B n d X W M r s r' s' hB hX hW hM`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fockDeg_succ]`. Use `haveI := ih`. Use `haveI := span_actsD_finiteDimensional M B.ψ hB.std (fockDeg M B.ψ B.emb k)`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem fockDeg_finiteDimensional : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E)

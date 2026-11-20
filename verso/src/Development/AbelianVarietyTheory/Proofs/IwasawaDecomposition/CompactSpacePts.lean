@@ -53,7 +53,7 @@ def constBdd (F : Type) [NormedField F] : F →+* bddRing 𝒰 F where
 variable [ProperSpace F]
 
 /- English proof (translation)
-Take `⟨_, M, f, rfl, hf⟩` from `a`. Take `⟨c, -, hc⟩` from `(isCompact_closedBall (0 : F) M).ultrafilter_le_nhds (𝒰.map f) (by`. Rewrite using `[le_principal_iff]`. Conclude with `hf.mono fun i hi => by simpa using hi)`. Conclude with `⟨c, hc⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_tendsto (a : bddRing 𝒰 F) : ∃ c : F, (a : (𝒰 : Filter I).Germ F).Tendsto (𝓝 c) := by
   obtain ⟨_, M, f, rfl, hf⟩ := a
@@ -63,7 +63,7 @@ theorem exists_tendsto (a : bddRing 𝒰 F) : ∃ c : F, (a : (𝒰 : Filter I).
   exact ⟨c, hc⟩
 
 /- English proof (translation)
-Establish `h` using `(exists_tendsto 𝒰 a).choose_spec`. Generalize the expression as in `(exists_tendsto 𝒰 a).choose = c at h ⊢`. Rewrite `h` using `[hf]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tendsto_choose (a : bddRing 𝒰 F) (f : I → F) (hf : (a : (𝒰 : Filter I).Germ F) = f) :
     Tendsto f 𝒰 (𝓝 (exists_tendsto 𝒰 a).choose) := by
@@ -72,7 +72,7 @@ theorem tendsto_choose (a : bddRing 𝒰 F) (f : I → F) (hf : (a : (𝒰 : Fil
   rwa [hf] at h
 
 /- English proof (translation)
-The claim follows from `tendsto_nhds_unique (tendsto_choose 𝒰 a f hf) hc`.
+A detailed English derivation is pending.
 -/
 theorem choose_eq (a : bddRing 𝒰 F) (f : I → F) (hf : (a : (𝒰 : Filter I).Germ F) = f) {c : F}
     (hc : Tendsto f 𝒰 (𝓝 c)) : (exists_tendsto 𝒰 a).choose = c :=
@@ -96,13 +96,13 @@ def stdPart (F : Type) [NormedField F] [ProperSpace F] : bddRing 𝒰 F →+* F 
       ((tendsto_choose 𝒰 a f hf).add (tendsto_choose 𝒰 b g hg))
 
 /- English proof (translation)
-The claim follows from `tendsto_choose 𝒰 a f hf`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_stdPart (a : bddRing 𝒰 F) (f : I → F) (hf : (a : (𝒰 : Filter I).Germ F) = f) :
     Tendsto f 𝒰 (𝓝 (stdPart 𝒰 F a)) := tendsto_choose 𝒰 a f hf
 
 /- English proof (translation)
-The claim follows from `choose_eq 𝒰 _ (fun _ => a) rfl tendsto_const_nhds`.
+A detailed English derivation is pending.
 -/
 theorem stdPart_constBdd (a : F) : stdPart 𝒰 F (constBdd 𝒰 F a) = a :=
   choose_eq 𝒰 _ (fun _ => a) rfl tendsto_const_nhds
@@ -110,7 +110,7 @@ theorem stdPart_constBdd (a : F) : stdPart 𝒰 F (constBdd 𝒰 F a) = a :=
 end Ultrapower
 
 /- English proof (translation)
-Establish `h1` using `congrArg (valR y (X.basicOpen h)) ha`. Rewrite `h1` using `[valR_mul y _ hy, valR_pow y _ hy, valR_res y hV hy]`. Establish `h2 : ∀ t : Γ(X, U), valR y (X.basicOpen h) (algebraMap Γ(X, U) Γ(X, X.basicOpen h) t) = valR y U t` using `fun t => valR_res y (X.basicOpen_le h) hy t`. Rewrite `h1` using `[h2, h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem valR_mul_pow {C : Type} [CommRing C] {X : Scheme.{0}} {U V : X.Opens} (h : Γ(X, U))
     (hV : X.basicOpen h ≤ V) (f : Γ(X, V)) (n : ℕ) (a : Γ(X, U))
@@ -135,17 +135,17 @@ def germVal (hl : ∀ᶠ i in (𝒰 : Filter I), ⊤ ≤ e i ⁻¹ᵁ U) : Γ(X,
   map_add' f g := Germ.coe_eq.2 (hl.mono fun _ hi => valR_add _ U hi f g)
 
 /- English proof (translation)
-Take `⟨z, hz⟩ : ∃ z : X, Tendsto (fun i => e i (IsLocalRing.closedPoint F)) 𝒰 (𝓝 z)` from `⟨_, (𝒰.map fun i => e i (IsLocalRing.closedPoint F)).le_nhds_lim⟩`. Take `⟨U, hU, hzU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := z) trivial`. Establish `hl : ∀ᶠ i in (𝒰 : Filter I), ⊤ ≤ e i ⁻¹ᵁ U` using `(hz.eventually (U.isOpen.mem_nhds hzU)).mono fun i hi => (le_preimage_iff _ _).2 hi`. Set `ξ : Sp ((𝒰 : Filter I).Germ F) ⟶ X` to `Spec.map (CommRingCat.ofHom (germVal 𝒰 e hl)) ≫ hU.fromSpec`. Establish `hξ : ⊤ ≤ ξ ⁻¹ᵁ U` using `le_preimage_specMap_fromSpec hU _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hval : ∀ f, valR ξ U f = germVal 𝒰 e hl f` using `fun f => by`. Rewrite using `[valR_eq ξ U hξ, valMap_specMap_fromSpec]`. Both sides reduce to the same expression. Use `⟨ξ, fun V hV => ?_⟩` and prove the remaining obligations. Take `⟨h, hhV, hh⟩` from `hU.exists_basicOpen_le (V := V) ⟨_, (le_preimage_iff ξ V).1 hV⟩ ((le_preimage_iff ξ U).1 hξ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hξh : ⊤ ≤ ξ ⁻¹ᵁ X.basicOpen h` using `(le_preimage_iff ξ _).2 hh`. Establish `hne : germVal 𝒰 e hl h ≠ 0`. Rewrite using `[← hval]`. Conclude with `((le_preimage_basicOpen_iff ξ hξ h).1 hξh).ne_zero`. Establish `hl' : ∀ᶠ i in (𝒰 : Filter I), ⊤ ≤ e i ⁻¹ᵁ X.basicOpen h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ¬ ∀ᶠ i in (𝒰 : Filter I), valR (e i) U h = 0` using `fun h0 => hne (Germ.coe_eq.2 h0)`. Use `filter_upwards [hl, Ultrafilter.eventually_not.2 h0] with i h1 h2 using (le_preimage_basicOpen_iff _ h1 h).2 (Ne.isUnit h2)`. Use `⟨hl'.mono fun i hi => le_preimage_mono _ hhV hi, fun f => ?_⟩` and prove the remaining obligations. Use `hU.isLocalization_basicOpen h` as an intermediate fact. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj h ((X.presheaf.map (homOfLE hhV).op).hom f)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `valR_mul_pow h hhV f n a ha ξ hξh`. Rewrite `h1` using `[hval, hval]`. Apply `mul_right_cancel₀ (pow_ne_zero n hne)` to reduce the goal to its premises. Rewrite using `[h1, ← map_pow]`. Use `Germ.coe_eq.2 ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `filter_upwards [hl, hl'] with i h2 h3`. Use `valR_mul_pow h hhV f n a ha (e i) h3` as an intermediate fact. Rewrite `this` using `[← valR_pow _ _ h2]`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_germPoint [CompactSpace X] : ∃ ξ : Sp ((𝒰 : Filter I).Germ F) ⟶ X, ∀ V : X.Opens, ⊤ ≤ ξ ⁻¹ᵁ V →
     (∀ᶠ i in (𝒰 : Filter I), ⊤ ≤ e i ⁻¹ᵁ V) ∧
@@ -187,17 +187,17 @@ theorem exists_germPoint [CompactSpace X] : ∃ ξ : Sp ((𝒰 : Filter I).Germ 
 end Limit
 
 /- English proof (translation)
-Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace p`. Use `⟨isCompact_iff_ultrafilter_le_nhds.2 fun 𝒰 _ => ?_⟩` and prove the remaining obligations. Take `⟨ξ, hξ⟩` from `exists_germPoint 𝒰 (fun x : Pts p => x.1)`. Establish `hE : ValuativeCriterion.Existence p` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed p) : (ValuativeCriterion.Existence ⊓ @QuasiCompact) p).1`. Establish `hw : ξ ≫ p = Spec.map (CommRingCat.ofHom (algebraMap (bddRing 𝒰 F) ((𝒰 : Filter (Pts p)).Germ F))) ≫ spMap (constBdd 𝒰 F)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← Spec.map_preimage (ξ ≫ p)]`. Use `congr 1`. Use extensionality with `a`. Use `(valR_constFn p ξ ⊤ (le_preimage_top _) a).symm.trans ?_` and prove the remaining obligations. Rewrite using `[(hξ ⊤ (le_preimage_top _)).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Germ.coe_eq.2 (Eventually.of_forall fun x => valR_constFn_of_section p x.1 x.2 ⊤ (le_preimage_top _) a)`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl₁, hl₂⟩ : ∃ l : Sp (bddRing 𝒰 F) ⟶ X, spMap (algebraMap (bddRing 𝒰 F) ((𝒰 : Filter (Pts p)).Germ F)) ≫ l = ξ ∧ l ≫ p = spMap (constBdd 𝒰 F) := by`. Take `⟨⟨l, hl, hl'⟩⟩` from `(hE { R := bddRing 𝒰 F, K := (𝒰 : Filter (Pts p)).Germ F, i₁ := ξ, i₂ := spMap (constBdd 𝒰 F), commSq := ⟨hw⟩ }).exists_lift`. Conclude with `⟨l, hl, hl'⟩`. Establish `hx : (spMap (stdPart 𝒰 F) ≫ l) ≫ p = 𝟙 _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hl₂, ← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Use extensionality with `a`. Conclude with `stdPart_constBdd 𝒰 a`. Use `⟨⟨_, hx⟩, trivial, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨V, hV, hlV, -⟩` from `exists_isAffineOpen_le (C := bddRing 𝒰 F) l (le_preimage_top _)`. Establish `hξV : ⊤ ≤ ξ ⁻¹ᵁ V` using `hl₁ ▸ le_preimage_comp _ l hlV (le_preimage_top _)`. Establish `H : Tendsto (fun x : Pts p => x.1) 𝒰 (𝓝 (spMap (stdPart 𝒰 F) ≫ l))`. Use `tendsto_of_isAffineOpen hV (le_preimage_comp _ l hlV (le_preimage_top _)) (hξ V hξV).1 fun f => ?_` and prove the remaining obligations. Rewrite using `[valR_spMap_comp _ l V hlV]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `tendsto_stdPart 𝒰 _ _ ?_` and prove the remaining obligations. Rewrite using `[← (hξ V hξV).2, ← hl₁, valR_spMap_comp _ l V hlV]`. Both sides reduce to the same expression. Conclude with `tendsto_id'.1 (tendsto_subtype_rng.2 H)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem compactSpace_pts {F : Type} [NormedField F] [ProperSpace F] {X : Scheme.{0}} (p : X ⟶ Sp F)
     [UniversallyClosed p] : CompactSpace (Pts p) := by

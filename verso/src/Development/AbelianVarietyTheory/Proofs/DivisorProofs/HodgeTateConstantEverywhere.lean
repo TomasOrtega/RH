@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.HTConstModel
 
 /- English proof (translation)
-Rewrite `hκ` using `[val_vw_of_ne la p v hb, EReal.coe_eq_coe_iff]`. Rewrite using `[val_vw_of_ne la p v ha, EReal.coe_eq_coe_iff, ← hκ]`. Establish `hva : (0 : ℝ) < v a` using `by simpa [pos_iff_ne_zero] using ha`. Establish `hvb : (0 : ℝ) < v b` using `by simpa [pos_iff_ne_zero] using hb`. Establish `hl : (M : ℝ) * Real.log (v a) = n * Real.log (v b)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun t : NNReal => Real.log (t : ℝ)) h` as an intermediate fact. Simplify using `only [NNReal.coe_pow, NNReal.coe_zpow] at this`. Rewrite `this` using `[Real.log_pow, Real.log_zpow]`. Then use the resulting hypothesis. Establish `hM' : (M : ℝ) ≠ 0` using `by exact_mod_cast (show M ≠ 0 by omega)`. Establish `: Real.log (v a) = n / M * Real.log (v b)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_vw_eq_of_pow {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (p : ℕ)
     {C : Type} [Field C] (v : Valuation C NNReal) {a b : C} (ha : a ≠ 0) (hb : b ≠ 0) {M : ℕ} (hM : 1 ≤ M) {n : ℤ}
@@ -44,9 +44,9 @@ theorem val_vw_eq_of_pow {K : Type} [Field K] [NumberField K] (la : HeightOneSpe
 end GlobalTheory.HTConstModel
 
 /- English proof (translation)
-Introduce `hP h1 h2 h3 E _ _ _ H Dw l Xo c r U x hL Z τ s la`. Take `⟨O, _, _, _, _, ϖ, hϖ, Zs, f, D, hInt, hNorm, hProp, hFlat, hLB, hT, sig, κ, hsig, hw⟩` from `GlobalTheory.T.archimedean_section_flat_weight hP h1 h2 h3 E H Dw l Xo c r U x hL Z τ s la`. Establish `hconn` using `GlobalTheory.T.special_fibre_connected O Zs f hInt hNorm hProp hFlat`. Take `⟨M, n, hM, -, hV⟩` from `GlobalTheory.T.prop_z_statement O ϖ hϖ Zs f D ⟨hInt, hNorm, hProp, hFlat, hconn, hLB, hT⟩ sig hsig`. Use `⟨(n : ℝ) / M * κ, fun w hw' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, _, R, _, _, φ, hv, hφi, hφl, ybar, y, e, cc, hyb, hy, he, hco, hval, hκ⟩` from `hw w hw'`. Establish `h` using `(hV R ℂ_[p] NNReal (Valued.v : Valuation ℂ_[p] NNReal) hv φ hφi hφl ybar hyb y hy).2 e cc he hco`. Establish `hb : algebraMap R ℂ_[p] (φ ϖ) ≠ 0` using `fun h0 => hϖ.ne_zero (hφi ((hv.hom_inj (h0.trans (map_zero _).symm)).trans (map_zero φ).symm))`. Rewrite using `[hval]`. Conclude with `GlobalTheory.HTConstModel.val_vw_eq_of_pow la p _ cc.ne_zero hb hM h hκ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlatCore.htConst_always : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.CanonicalExtensionRankOne →
     GlobalTheory.Published.DeRhamCanonicalExtension → GlobalTheory.Published.PrismaticDieudonneHodge → Always fun U x => HTConst U x := by

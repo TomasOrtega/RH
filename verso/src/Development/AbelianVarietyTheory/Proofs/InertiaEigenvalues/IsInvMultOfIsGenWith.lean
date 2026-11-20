@@ -53,16 +53,16 @@ Both sides reduce to the same expression.
 theorem NΔl_eq (i : ZMod n) : DiagonalQuotientEigen.NΔl W T i = SenWeightsAlt.Ni W T i := rfl
 
 /- English proof (translation)
-Use `W.γD_smul T g (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.γE_ext, algebraMap_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem γD_smulA (g : W.Gam) (a : LetA O n) (x : W.DD T) : W.γD T g (a • x) = W.γA g a • W.γD T g x := by
   have := W.γD_smul T g (algebraMap (LetA O n) W.EE a) x
   rwa [algebraMap_smul, W.γE_ext, algebraMap_smul] at this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `W.γ₀ g (Pi.single (M := fun _ => PowerSeries O) i 1 j) = Pi.single (M := fun _ => PowerSeries O) i 1 j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem γA_letE (g : W.Gam) (i : ZMod n) : W.γA g (letE i) = letE i := by
   funext j
@@ -72,7 +72,7 @@ theorem γA_letE (g : W.Gam) (i : ZMod n) : W.γA g (letE i) = letE i := by
   · simp [h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[h]`. Simplify using `[letE, hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mul_letE {a b : LetA O n} {i : ZMod n} (h : a i = b i) : a * letE i = b * letE i := by
   funext j
@@ -81,13 +81,13 @@ theorem mul_letE {a b : LetA O n} {i : ZMod n} (h : a i = b i) : a * letE i = b 
   · simp [letE, hj]
 
 /- English proof (translation)
-Rewrite using `[mul_letE (b := 1) (by simp [letE]), one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem letE_mul (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
   rw [mul_letE (b := 1) (by simp [letE]), one_mul]
 
 /- English proof (translation)
-Use `and_congr_right fun hx => ⟨?_, fun h => ⟨x, hx.1, h⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, -, rfl⟩`. Express the relevant statement in the definitionally equal form `(letE i : LetA O n) • (letE i : LetA O n) • y = (letE i : LetA O n) • y`. Rewrite using `[smul_smul, letE_mul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_Ni {i : ZMod n} {x : W.DD T} :
     x ∈ SenWeightsAlt.Ni W T i ↔ x ∈ W.NΔ T ∧ (letE i : LetA O n) • x = x := by
@@ -97,7 +97,7 @@ theorem mem_Ni {i : ZMod n} {x : W.DD T} :
   rw [smul_smul, letE_mul]
 
 /- English proof (translation)
-Take `⟨⟨h1, h2⟩, h3⟩` from `(mem_Ni W T).1 hx`. Use `(mem_Ni W T).2 ⟨⟨W.N_Γ T g x h1, fun δ hδ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← W.γD_mul, mul_comm, W.γD_mul, h2 δ hδ]`. Rewrite using `[← γA_letE W g i, ← γD_smulA, h3]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem γD_mem_Ni {i : ZMod n} (g : W.Gam) {x : W.DD T} (hx : x ∈ SenWeightsAlt.Ni W T i) :
     W.γD T g x ∈ SenWeightsAlt.Ni W T i := by
@@ -107,7 +107,7 @@ theorem γD_mem_Ni {i : ZMod n} (g : W.Gam) {x : W.DD T} (hx : x ∈ SenWeightsA
   · rw [← γA_letE W g i, ← γD_smulA, h3]
 
 /- English proof (translation)
-Introduce `δ hδ` and use `by funext j have h : W.γ₀ δ (c j) = c j := congrFun (hc δ hδ) j change (W.γ₀ δ * W.γ₀ g) (c j) = W.γ₀ g (c j) rw [← map_mul, mul_comm, map_mul, AlgHom.mul_apply, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem γA_mem_AΔ (g : W.Gam) {c : LetA O n} (hc : c ∈ W.AΔ) : W.γA g c ∈ W.AΔ := fun δ hδ => by
   funext j
@@ -116,7 +116,7 @@ theorem γA_mem_AΔ (g : W.Gam) {c : LetA O n} (hc : c ∈ W.AΔ) : W.γA g c �
   rw [← map_mul, mul_comm, map_mul, AlgHom.mul_apply, h]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => one_smul (LetA O n) (W.γD T g x)`.
+A detailed English derivation is pending.
 -/
 theorem twγ_one (g : W.Gam) : SenWeightsAlt.twγ W g T 1 = W.γD T g :=
   LinearMap.ext fun x => one_smul (LetA O n) (W.γD T g x)
@@ -166,7 +166,7 @@ def QuoFrom (m : ℤ) : Prop :=
               ((U i).map fun u => u - w i)
 
 /- English proof (translation)
-Introduce `h5 K LL hA g hg hh U T hT hU` and use `⟨(h h5 K LL hA g hg hh U T hT hU).1, fun χ₁ w hχ hw => (h h5 K LL hA g hg hh U T hT hU).2 χ₁ w hχ fun i => ⟨hm.trans (hw i).1, (hw i).2⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem OpFrom.mono {m m' : ℤ} (hm : m ≤ m') (h : OpFrom P H m) : OpFrom P H m' :=
   fun h5 K LL hA g hg hh U T hT hU => ⟨(h h5 K LL hA g hg hh U T hT hU).1, fun χ₁ w hχ hw =>
@@ -175,7 +175,7 @@ theorem OpFrom.mono {m m' : ℤ} (hm : m ≤ m') (h : OpFrom P H m) : OpFrom P H
 variable {K LL : FinExt l} (hA : CaseA K LL)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, h.2.1, h.2.2.2.2.2⟩, fun h => ⟨h.1, h.2.1, by rw [show K0 K = K.1 from inf_eq_left.2 h.2.1.1], (H.W K 1 LL hg).emb_bij, (H.W K 1 LL hg).emb_σ, h.2.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem standing_iff {hg : Good K 1 LL} (lam : ↥(OL LL)) :
     Standing P K LL (H.W K 1 LL hg).emb lam ↔ 5 ≤ l ∧ CaseA K LL ∧ Irreducible lam :=

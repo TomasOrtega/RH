@@ -14,31 +14,31 @@ open GlobalTheory.TorsionForm
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `funext S; by_cases hS : i ∈ S <;> simp [wedge, hS, mul_left_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wedge_smul {m : ℕ} (i : Fin m) (c : ℂ) (w : Ext m) : wedge i (c • w) = c • wedge i w := by
   funext S; by_cases hS : i ∈ S <;> simp [wedge, hS, mul_left_comm]
 
 /- English proof (translation)
-Apply the tactic sequence `funext S; by_cases hS : i ∈ S <;> simp [contr, hS, mul_left_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem contr_smul {m : ℕ} (i : Fin m) (c : ℂ) (w : Ext m) : contr i (c • w) = c • contr i w := by
   funext S; by_cases hS : i ∈ S <;> simp [contr, hS, mul_left_comm]
 
 /- English proof (translation)
-Apply the tactic sequence `funext S; by_cases hS : i ∈ S <;> simp [wedge, hS, mul_add]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wedge_add {m : ℕ} (i : Fin m) (v w : Ext m) : wedge i (v + w) = wedge i v + wedge i w := by
   funext S; by_cases hS : i ∈ S <;> simp [wedge, hS, mul_add]
 
 /- English proof (translation)
-Apply the tactic sequence `funext S; by_cases hS : i ∈ S <;> simp [contr, hS, mul_add]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem contr_add {m : ℕ} (i : Fin m) (v w : Ext m) : contr i (v + w) = contr i v + contr i w := by
   funext S; by_cases hS : i ∈ S <;> simp [contr, hS, mul_add]
 
 /- English proof (translation)
-Simplify using `only [connForm, contr_smul, wedge_smul, Finset.smul_sum, smul_comm c]`.
+Simplify using the standard rewrite rules.
 -/
 theorem connForm_smul (τ : E → Matrix (Fin g) (Fin g) ℂ) (b v : E) (c : ℂ) (w : Ext (n + n + g)) :
     connForm τ b v (c • w) = c • connForm τ b v w := by

@@ -17,20 +17,20 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Rewrite using `[P5.tprod, dif_pos l.isLt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tprod_succ (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (Y : ℂ) (l : Fin r) :
     P5.tprod L Y l.val = P5.tprod L Y (l.val + 1) * Ts (site L l) Y := by
   rw [P5.tprod, dif_pos l.isLt]
 
 /- English proof (translation)
-Rewrite using `[P5.tprod, dif_neg (lt_irrefl r)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tprod_top (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (Y : ℂ) : P5.tprod L Y r = 1 := by
   rw [P5.tprod, dif_neg (lt_irrefl r)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Simplify using `only [QQi, Fin.coe_castSucc, Fin.val_succ]`. Rewrite using `[tprod_succ L (star Y) l, tprod_succ L Y l, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem QQi_step (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Start (Pr (RadSp k r z z' π π')))
     (l : Fin r) : QQi L st l.castSucc = fun Y => Matrix.conjTranspose (Ts (site L l) (star Y)) * QQi L st l.succ Y * Ts (site L l) Y := by
@@ -40,7 +40,7 @@ theorem QQi_step (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Start
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Simplify using `only [QQi, Fin.val_last, tprod_top, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem QQi_top (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Start (Pr (RadSp k r z z' π π'))) :
     QQi L st (Fin.last r) = st.QQ := by
@@ -50,7 +50,7 @@ theorem QQi_top (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Start 
 def bet (μ : MeasureTheory.Measure (Mt k r)) (Φ Ψ : RadSp k r z z' π π') : ℂ := pairLev μ 0 Φ Ψ (fun _ => 1)
 
 /- English proof (translation)
-Establish `h0 : ∀ A : Wq →L[ℂ] Wp, B.hsInner 0 A = 0` using `fun A => by`. Simplify using `only [B.hsInner, B.hsVec, ContinuousLinearMap.zero_apply]`. Rewrite using `[show (fun _ : Fin (Module.finrank ℂ Wq) => (0 : Wp)) = 0 from rfl, WithLp.toLp_zero, inner_zero_right]`. Simplify using `[P5.pairAt, h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pairAt_zero_left (μ : MeasureTheory.Measure (Mt k r)) (Ψ : RadSp k r z z' π π') (c : Fin r → ℂ) :
     pairAt μ 0 Ψ c = 0 := by
@@ -61,7 +61,7 @@ theorem pairAt_zero_left (μ : MeasureTheory.Measure (Mt k r)) (Ψ : RadSp k r z
   simp [P5.pairAt, h0]
 
 /- English proof (translation)
-Establish `h0 : ∀ A : Wq →L[ℂ] Wp, B.hsInner A 0 = 0` using `fun A => by`. Simplify using `only [B.hsInner, B.hsVec, ContinuousLinearMap.zero_apply]`. Rewrite using `[show (fun _ : Fin (Module.finrank ℂ Wq) => (0 : Wp)) = 0 from rfl, WithLp.toLp_zero, inner_zero_left]`. Simplify using `[P5.pairAt, h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pairAt_zero_right (μ : MeasureTheory.Measure (Mt k r)) (Φ : RadSp k r z z' π π') (c : Fin r → ℂ) :
     pairAt μ Φ 0 c = 0 := by
@@ -74,9 +74,9 @@ theorem pairAt_zero_right (μ : MeasureTheory.Measure (Mt k r)) (Φ : RadSp k r 
 variable {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Simplify using `only [P5.form, pairLev]`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single a]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_same]`. Introduce `b _ hb`. Rewrite using `[Pi.single_eq_of_ne hb, pairAt_zero_left]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem form_single_left (μ : MeasureTheory.Measure (Mt k r)) (a : Ix S) (Φ : RadSp k r z z' π π')
     (y : Ix S → RadSp k r z z' π π') (c : Fin r → ℂ) :
@@ -93,17 +93,17 @@ theorem form_single_left (μ : MeasureTheory.Measure (Mt k r)) (a : Ix S) (Φ : 
     exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Establish `hyU : y ∈ Submodule.pi Set.univ (fun _ : Ix S => K0)` using `Submodule.mem_pi.mpr (fun a _ => hy a)`. Establish `hsingle : ∀ a, Pi.single a (x a) ∈ Submodule.pi Set.univ (fun _ : Ix S => K0)`. Introduce `a`. Use `Submodule.mem_pi.mpr (fun b _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : b = a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `using hx b`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `K0.zero_mem`. Establish `hzero : form μ 0 0 y c = 0`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(hS 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) y hyU 1).1`. Simplify using `only [one_smul, add_zero, one_mul] at h`. Take the linear combination `-h`. Establish `key : ∀ s : Finset (Ix S), form μ 0 (∑ a ∈ s, Pi.single a (x a)) y c = ∑ a ∈ s, pairLev μ 0 (x a) (y a) c`. Introduce `s`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hzero`. Consider the case `insert b s hb ih`. Rewrite using `[Finset.sum_insert hb, Finset.sum_insert hb]`. Establish `hmem : (∑ a ∈ s, Pi.single a (x a)) ∈ Submodule.pi Set.univ (fun _ : Ix S => K0)` using `Submodule.sum_mem _ (fun a _ => hsingle a)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(hS _ (hsingle b) _ hmem y hyU 1).1`. Simplify using `only at h`. Rewrite `h` using `[one_smul, one_mul]`. Rewrite using `[h, ih, form_single_left]`. Establish `h2` using `key Finset.univ`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Finset.univ_sum_single]`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem form_eq_pairS (μ : MeasureTheory.Measure (Mt k r)) (K0 : Submodule ℂ (RadSp k r z z' π π'))
     (c : Fin r → ℂ) (hS : SesqOn (Submodule.pi Set.univ fun _ : Ix S => K0) (fun x y => form μ 0 x y c))
@@ -152,15 +152,15 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r) (st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))) (l0 : ℕ)
 
 /- English proof (translation)
-Establish `h0 : IsStart st.QQ (M.qC P)`. Establish `hX` using `(Formalism.FourierDecayAlt.P.actual_start Wp Wq P z z' π π' hD.1 X).1`. Establish `h` using `Formalism.FourierDecayAlt.P.Mx8.isStart_smul X.QQ (M.qC P) (M.sgn P l0) (Formalism.FourierDecayAlt.P.Mx8.sgn_sq P l0) (Formalism.FourierDecayAlt.P.Mx8.sgn_star P l0) hX`. Establish `e : st.QQ = fun Y => M.sgn P l0 • X.QQ Y` using `funext hD.2.2.2.1`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `key : ∀ d i : ℕ, ∀ hi : i + d = P.r, IsStart (QQi L st ⟨i, by omega⟩) (M.qC P)`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `e : (⟨i, by omega⟩ : Fin (P.r + 1)) = Fin.last P.r` using `Fin.ext (by simp; omega)`. Rewrite using `[e, QQi_top]`. Conclude with `h0`. Consider the case `succ d ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `hlt : i < P.r` using `by omega`. Set `l : Fin P.r` to `⟨i, hlt⟩`. Establish `e : (⟨i, by omega⟩ : Fin (P.r + 1)) = l.castSucc` using `rfl`. Rewrite using `[e, QQi_step]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ih'` using `ih (i + 1) (by omega)`. Establish `e' : (⟨i + 1, by omega⟩ : Fin (P.r + 1)) = l.succ` using `rfl`. Rewrite `ih'` using `[e']`. Conclude with `Formalism.FourierDecayAlt.P.Mx8.isStart_step _ _ _ (isSite_actual hD.2.2.1 l) (qqCommutes_actual P z z' π π' X μ L st l0 hD l) ih'`. Conclude with `key (P.r - i.val) i.val (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isStart_QQi (hD : IsData P z z' π π' X μ L st l0) (i : Fin (P.r + 1)) :
     IsStart (QQi L st i) (M.qC P) := by
@@ -191,9 +191,9 @@ theorem isStart_QQi (hD : IsData P z z' π π' X μ L st l0) (i : Fin (P.r + 1))
   exact key (P.r - i.val) i.val (by omega)
 
 /- English proof (translation)
-Simplify using `only [P5.form, pairLev]`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single a]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_same]`. Introduce `b _ hb`. Rewrite using `[Pi.single_eq_of_ne hb, pairAt_zero_right]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem form_single_right (μ : MeasureTheory.Measure (Mt P.k P.r)) (a : Ix S)
     (x : Ix S → RadSp P.k P.r z z' π π') (Ψ : RadSp P.k P.r z z' π π') (c : Fin P.r → ℂ) :
@@ -210,11 +210,11 @@ theorem form_single_right (μ : MeasureTheory.Measure (Mt P.k P.r)) (a : Ix S)
     exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Establish `key : ∀ a : ℂ, (f (x + a • y) (x + a • y)).im = 0` using `fun a => (Complex.nonneg_iff.mp (hN _ (U'.add_mem hx (U'.smul_mem a hy)))).2.symm`. Establish `hxx : (f x x).im = 0` using `(Complex.nonneg_iff.mp (hN x hx)).2.symm`. Establish `hyy : (f y y).im = 0` using `(Complex.nonneg_iff.mp (hN y hy)).2.symm`. Establish `expand : ∀ a : ℂ, f (x + a • y) (x + a • y) = f x x + conj a * f x y + a * (f y x + conj a * f y y)`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hS x hx y hy (x + a • y) (U'.add_mem hx (U'.smul_mem a hy)) a).1, (hS x hx y hy x hx a).2, (hS x hx y hy y hy a).2]`. Establish `h1` using `key 1`. Establish `hI` using `key Complex.I`. Rewrite `h1`, `hI` using `[expand]`. Simplify using `only [Complex.add_im, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.one_re, Complex.one_im, Complex.I_re, Complex.I_im, Complex.add_re, Complex.mul_re, map_one, hxx, hyy] at h1 hI`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.conj_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem herm_on {W : Type} [AddCommGroup W] [Module ℂ W] (U' : Submodule ℂ W) (f : W → W → ℂ) (hS : SesqOn U' f)
     (hN : NonnegOn U' f) (x : W) (hx : x ∈ U') (y : W) (hy : y ∈ U') : f y x = conj (f x y) := by

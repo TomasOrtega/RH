@@ -62,13 +62,13 @@ def SetupEx : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Un
       ∀ T : Finset (HeightOneSpectrum (𝓞 E)), Nonempty (Setup π S T K W)
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n hn π hπ S hS`. Take `⟨K, W, hK, hW, hX⟩` from `h2 E hE n hn π hπ S hS`. Use `⟨K, W, hK, hW, fun T => ?_⟩` and prove the remaining obligations. Take `⟨X⟩` from `hX T`. Use `letI := X.cr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI := X.sr`. Use `letI := X.al`. Use `letI := X.sm`. Use `letI := X.ft`. Use `letI := X.ne`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := X.ng`. Use `letI := X.ip`. Use `letI := X.cs`. Use `letI := X.ag`. Use `letI := X.md`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := X.fd`. Take `⟨s, χ, h1', h2', h3'⟩` from `h1 X.A X.ι X.H X.R X.β X.m X.V X.ρ X.u X.p X.a₀ X.comm X.commU X.pa₀ X.bound X.eig`. Conclude with `X.read s χ h1' h2' h3'`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem runT_of (h1 : PeakTraceBound) (h2 : SetupEx) : RunT := by
   intro E _ _ _ hE n hn π hπ S hS

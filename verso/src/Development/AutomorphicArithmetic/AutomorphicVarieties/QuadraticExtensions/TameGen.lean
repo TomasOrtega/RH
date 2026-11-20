@@ -5,25 +5,21 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ A hvl`. Take `⟨γ, hγ⟩` from `GlobalTheory.TameInertiaGen.exists_tameGenAt_of_valuationSubring (E := F) A`. Use `⟨⟨γ, hγ.1⟩, fun t ht hm h0 => ?_⟩` and prove the remaining obligations. Establish `hl : l.Prime` using `Fact.out`. Establish `t1 : t 1 = 0` using `by simpa using hm 1 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tinv : ∀ a, t a⁻¹ = -t a` using `fun a => by`. Use `hm a⁻¹ a` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, t1]`. Conclude with `eq_neg_of_add_eq_zero_left this.symm`. Establish `tpow : ∀ a (n : ℕ), t (a ^ n) = n • t a` using `fun a n => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => simp [t1]`. Consider the case `succ n ih => rw [pow_succ, hm, ih, succ_nsmul]`. Establish `hvl1 : A.valuation (l : Ω) = 1` using `le_antisymm ((A.valuation_le_one_iff _).mpr (natCast_mem A l)) (not_lt.mp hvl)`. Establish `: IsGalois F Ω` using `IsAlgClosure.isGalois F Ω`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T : Subgroup (Ine (F` to `F) A) := { carrier := t ⁻¹' {0} one_mem' := t1 mul_mem' := fun {a b} ha hb => by show t (a * b) = 0`. Rewrite using `[hm, show t a = 0 from ha, show t b = 0 from hb, add_zero]`. Use the proof step `inv_mem' := fun {a} ha => by show t a⁻¹ = 0`. Rewrite using `[tinv, show t a = 0 from ha, neg_zero] }`. Establish `ho : IsOpen (t ⁻¹' {0})` using `ht _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.TameCharUnique.mem_of_tameGen hγ T (T.isClosed_of_isOpen ho) h0 fun σ hσ => ?_` and prove the remaining obligations. Take `⟨V, hV, hVU⟩` from `isOpen_induced_iff.1 ho`. Establish `hV1 : (1 : G F Ω) ∈ V`. Establish `: (1 : Ine (F` using `F) A) ∈ t ⁻¹' {0} := t1`. Rewrite `this` using `[← hVU]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this`. Take `⟨L, hL, hsub⟩` from `(krullTopology_mem_nhds_one_iff F Ω _).mp (hV.mem_nhds hV1)`. Establish `hidx : L.fixingSubgroup.index ≠ 0`. Rewrite using `[← IntermediateField.finrank_eq_fixingSubgroup_index]`. Conclude with `Module.finrank_pos.ne'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨N, hN, -, hmem⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero hidx σ.1`. Take `⟨a, m, hm', rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN.ne' l hl.ne_one`. Establish `hτ : σ.1 ^ m ∈ L.fixingSubgroup`. Rewrite `hmem`, the goal using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.WildInertiaChar.fixed_of_pow_fixed A (σ.1 ^ m) (GlobalTheory.WildInertiaChar.wild_pow A σ.1 hσ m) (l ^ a) ?_ x ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, map_pow, hvl1, one_pow]`. Conclude with `lt_irrefl _`. Rewrite using `[← pow_mul, mul_comm]`. Conclude with `hmem x hx`.
-
-Establish `h2 : σ ^ m ∈ t ⁻¹' {0}`. Rewrite using `[← hVU]`. Conclude with `hsub hτ`. Establish `h4 : t (σ ^ m) = 0` using `h2`. Rewrite `h4` using `[tpow, nsmul_eq_mul]`.
-
-Conclude with `(mul_eq_zero.1 h4).resolve_left fun h => hm' ((ZMod.natCast_eq_zero_iff m l).1 h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.tameGen :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω), ¬ A.valuation (l : Ω) < 1 →

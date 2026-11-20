@@ -24,11 +24,9 @@ namespace GlobalTheory.DescentFamily
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Establish `hA` using `isGrpPullback_pullback A t`. Establish `hB` using `isGrpPullback_pullback B t`. Establish `inj : ∀ {G : Over S} [GrpObj G] (h : IsGrpPullback ((Over.pullback t).obj G) G t (pullback.fst G.hom t)), Function.Injective (pushHom h (𝟙_ (Over S')))` using `fun h x y e => Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun z => z.left) e) (by rw [Over.w, Over.w]))`. Establish `surj : Function.Surjective (pushHom hA (𝟙_ (Over S')))` using `fun x => ⟨Over.homMk (hA.1.lift x.left (𝟙_ (Over S')).hom (Over.w x)) (hA.1.lift_snd _ _ _), Over.OverMorphism.ext (hA.1.lift_fst _ _ _)⟩`. Use `Nat.card_congr (Equiv.subtypeEquiv (Equiv.ofBijective _ ⟨inj hA, surj⟩) fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : pushHom hB (𝟙_ (Over S')) (x ≫ (Over.pullback t).map ψ) = pushHom hA (𝟙_ (Over S')) x ≫ ψ`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Use `show (x.left ≫ ((Over.pullback t).map ψ).left) ≫ pullback.fst B.hom t = (x.left ≫ pullback.fst A.hom t) ≫ ψ.left`. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg (x.left ≫ ·) (pullback.lift_fst _ _ _)`.
-
-Conclude with `(map_eq_one_iff _ (inj hB)).symm.trans (Eq.congr_left e)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_ker_pullback {S S' : Scheme.{0}} (t : S' ⟶ S) {A B : Over S} [GrpObj A] [GrpObj B] (ψ : A ⟶ B) :
     Nat.card {x : 𝟙_ (Over S') ⟶ (Over.pullback t).obj A // x ≫ (Over.pullback t).map ψ = 1} =
@@ -50,13 +48,13 @@ theorem card_ker_pullback {S S' : Scheme.{0}} (t : S' ⟶ S) {A B : Over S} [Grp
   exact (map_eq_one_iff _ (inj hB)).symm.trans (Eq.congr_left e)
 
 /- English proof (translation)
-Establish `hw : ((Over.pullback t).map ψ).left ≫ pullback.fst B.hom t = pullback.fst P.A.hom t ≫ ψ.left` using `pullback.lift_fst _ _ _`. Establish `hp : IsPullback (pullback.fst P.A.hom t) ((Over.pullback t).map ψ).left ψ.left (pullback.fst B.hom t)`. Use `IsPullback.of_bot ?_ hw.symm (IsPullback.of_hasPullback B.hom t)` and prove the remaining obligations. Establish `e : ((Over.pullback t).map ψ).left ≫ pullback.snd B.hom t = pullback.snd P.A.hom t` using `Over.w ((Over.pullback t).map ψ)`. Rewrite using `[e, Over.w ψ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsPullback.of_hasPullback _ _`. Establish `hL'` using `pull_isLB P.isLB (pullback.fst P.A.hom t)`. Establish `hM'` using `pull_isLB hM (pullback.fst B.hom t)`. Establish `h₁ : (lbPow (P.L.pull (pullback.fst P.A.hom t)) n).IsLB` using `LB.isLB_linComb hL' _ _`. Establish `h₂` using `pull_isLB hM' ((Over.pullback t).map ψ).left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₀` using `(cls_eq_iff (LB.isLB_linComb P.isLB _ _) (pull_isLB hM _)).2 hiso`. Rewrite `h₀` using `[cls_lbPow P.isLB, cls_pull hM]`. Establish `he : cls _ h₁ = cls _ h₂`. Rewrite using `[cls_lbPow hL', cls_pull hM', cls_pull P.isLB, cls_pull hM, ← pull_comp, hw, pull_comp, ← h₀, map_nsmul]`. Establish `hmon : IsMonHom ((Over.pullback t).map ψ)` using `inferInstance`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `kTriv_of_descent firstFiveLaws.1 k (StrictPull.polPull P t) n _ ((Over.pullback t).map ψ) _ hn (PolPull.isAbelianScheme_of_isGrpPullback hB (isGrpPullback_pullback B t)) hM' hmon (MorphismProperty.of_isPullback (P := @IsFinite) hp inferInstance) (MorphismProperty.of_isPullback (P …` and prove the remaining obligations. Use `(cls_eq_iff (LB.isLB_linComb h₁ _ _) (LB.isLB_linComb h₂ _ _)).1 ?_` and prove the remaining obligations. Use `(cls_cube_two (G := (Over.pullback t).obj P.A) h₁ _ _ _).trans (Eq.trans ?_ (cls_cube_two (G := (Over.pullback t).obj P.A) h₂ _ _ _).symm)` and prove the remaining obligations. Conclude with `congrArg (fun c => lam (G := (Over.pullback t).obj P.A) c _ _) he`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kTriv_fibre {S : Scheme.{0}} (P : Out.PolAV S) {n : ℕ} (B : Over S) [GrpObj B] (ψ : P.A ⟶ B) (M : LB B.left)
     (hn : 0 < n) (hB : IsAbelianScheme B) (hM : M.IsLB) [IsMonHom ψ] [IsFinite ψ.left] [Etale ψ.left]
@@ -98,21 +96,19 @@ namespace GlobalTheory
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Introduce `R _ _ P n B _ ψ M hu hn hB hM hψ hf he hs hc hiso`. Establish `hA` using `P.isAb`. Establish `hn' : (lbPow P.L n).IsLB` using `LB.isLB_linComb P.isLB _ _`. Establish `hid : IsFinite (𝟙 P.A : P.A ⟶ P.A).left` using `by rw [Over.id_left]; infer_instance`. Establish `a₁ : Out.RelAmple P.A (lbPow P.L n)` using `(relAmple_finite_pow_iso _ P.A P.A (𝟙 _) P.L n hn hA hA P.isLB hid).2.1.2 P.ample`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂ : Out.RelAmple P.A (M.pull ψ.left)` using `(relAmple_finite_pow_iso _ P.A P.A (𝟙 _) _ 1 one_pos hA hA hn' hid).2.2.2 _ (pull_isLB hM _) hiso a₁`. Establish `a₃ : Out.RelAmple B M` using `(relAmple_finite_pow_iso _ P.A B ψ M 1 one_pos hA hB hM hf).2.2.1 inferInstance hs a₂`. Use `⟨a₃, ?_⟩` and prove the remaining obligations. Establish `loc : ∀ q : PrimeSpectrum R, ∃ f : R, f ∉ q.asIdeal ∧ Out.KTriv ((Over.pullback (spMap (algebraMap R (Localization.Away f)))).obj B) (M.pull (pullback.fst B.hom (spMap (algebraMap R (Localization.Away f)))))`. Introduce `q`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `k` to `AlgebraicClosure q.asIdeal.ResidueField`. Set `x : R →+* k` to `(algebraMap q.asIdeal.ResidueField k).comp (algebraMap R q.asIdeal.ResidueField)`. Establish `: CharZero k` using `charZero_of_inj_zero fun m hm => by`. Assume the negation of the conclusion as `h`. Use `(hu m (Nat.pos_of_ne_zero h)).map x` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast, hm]`. Conclude with `not_isUnit_zero this`. Take `⟨f, hf, H⟩` from `kTriv_away_of_kTriv_fibre firstFiveLaws.1.globalFns R B M k x hB hM a₃ (DescentFamily.kTriv_fibre P B ψ M hn hB hM hiso k (spMap x) (hc k _))`. Use `⟨f, fun h => hf ?_, H⟩` and prove the remaining obligations. Use `show algebraMap q.asIdeal.ResidueField k (algebraMap R q.asIdeal.ResidueField f) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Ideal.algebraMap_residueField_eq_zero.2 h, map_zero]`. Use `choose f hf H using loc`. Set `j : ∀ q, Sp (Localization.Away (f q)) ⟶ Sp R` to `fun q => spMap (algebraMap R (Localization.Away (f q)))`. Establish `hj : ∀ q, IsOpenImmersion (j q)` using `fun q => IsOpenImmersion.of_isLocalization (f q)`. Set `G` to `fun q => (Over.pullback (j q).isoOpensRange.inv).obj ((Over.pullback (j q)).obj B)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gp : ∀ q, IsGrpPullback (G q) ((Over.pullback (j q)).obj B) (j q).isoOpensRange.inv (pullback.fst _ _)` using `fun q => isGrpPullback_pullback _ _`. Establish `hM₁` using `fun q => pull_isLB hM (pullback.fst B.hom (j q))`. Establish `hB₁` using `fun q => PolPull.isAbelianScheme_of_isGrpPullback hB (isGrpPullback_pullback B (j q))`. Establish `key` using `fun q => pol_pull _ _ _ (G q) _ _ _ _ (hM₁ q) (pull_isLB (hM₁ q) _) (hB₁ q) (gp q) ((cls_eq_iff (pull_isLB (hM₁ q) _) (pull_isLB (hM₁ q) _)).1 rfl)`. Use `CoverGlue.kTriv_of_cover (Sp R) (PrimeSpectrum R) (fun q => (j q).opensRange) B G (fun q => pullback.fst _ (j q).isoOpensRange.inv ≫ pullback.fst B.hom (j q)) ?_ (fun q => ((gp q).comp (isGrpPullback_pullback B (j q))).congr (Scheme.Hom.isoOpensRange_inv_comp _) rfl) M _ hM (fun …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `top_le_iff.1 fun q _ => TopologicalSpace.Opens.mem_iSup.2 ⟨q, ?_⟩` and prove the remaining obligations. Establish `: q ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.Away (f q))))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away (f q)) (f q)]`. Conclude with `hf q`. Conclude with `this`.
-
-Rewrite using `[← cls_eq_iff (pull_isLB (hM₁ q) _) (pull_isLB hM _), cls_pull (hM₁ q), cls_pull hM, cls_pull hM, pull_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relAmple_kTriv_of_descent_family : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (P : Out.PolAV (Sp R)) (n : ℕ) (B : Over (Sp R)) [GrpObj B] (ψ : P.A ⟶ B) (M : LB B.left), (∀ m : ℕ, 0 < m → IsUnit (m : R)) → 0 < n → IsAbelianScheme B → M.IsLB → IsMonHom ψ → IsFinite ψ.left → Etale ψ.left → Surjective ψ.left → (∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R), Nat.card {x : Over.mk t ⟶ P.A // x ≫ ψ = 1} = n ^ P.g) → LBIso (lbPow P.L n) (M.pull ψ.left) → Out.RelAmple B M ∧ Out.KTriv B M := by
   intro R _ _ P n B _ ψ M hu hn hB hM hψ hf he hs hc hiso

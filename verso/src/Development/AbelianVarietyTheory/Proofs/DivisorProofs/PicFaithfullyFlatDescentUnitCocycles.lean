@@ -14,7 +14,7 @@ section
 variable {A B : Type} [CommRing A] [CommRing B] [Algebra A B]
 
 /- English proof (translation)
-Use `Submodule.mul_le.2 fun x hx y hy => ?_` and prove the remaining obligations. Simplify using `only [descMod, LinearMap.mem_eqLocus, LinearMap.comp_apply, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply] at hx hy ⊢`. Rewrite using `[map_mul, map_mul, Units.val_mul, ← hx, ← hy]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem descMod_mul_le (u v : (B ⊗[A] B)ˣ) : descMod A B u * descMod A B v ≤ descMod A B (u * v) := by
   refine Submodule.mul_le.2 fun x hx y hy => ?_
@@ -23,7 +23,7 @@ theorem descMod_mul_le (u v : (B ⊗[A] B)ˣ) : descMod A B u * descMod A B v �
   rw [map_mul, map_mul, Units.val_mul, ← hx, ← hy]; ring
 
 /- English proof (translation)
-Introduce `b hb`. Simplify using `only [descMod, LinearMap.mem_eqLocus, LinearMap.comp_apply, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply, Units.val_one, one_mul] at hb`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_algebraMap_eq_of_faithfullyFlat_includeLeft_eq_includeRight A B b hb.symm`. Conclude with `Submodule.mem_one.2 ⟨a, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem descMod_one_le [Module.FaithfullyFlat A B] : descMod A B 1 ≤ 1 := by
   intro b hb
@@ -33,7 +33,7 @@ theorem descMod_one_le [Module.FaithfullyFlat A B] : descMod A B 1 ≤ 1 := by
   exact Submodule.mem_one.2 ⟨a, ha⟩
 
 /- English proof (translation)
-Unfold `UCoc at *`. Simplify using `only [Units.val_mul, map_mul, hu, hv]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem uCoc_mul {u v : (B ⊗[A] B)ˣ} (hu : UCoc A B u) (hv : UCoc A B v) : UCoc A B (u * v) := by
   unfold UCoc at *
@@ -41,9 +41,9 @@ theorem uCoc_mul {u v : (B ⊗[A] B)ˣ} (hu : UCoc A B u) (hv : UCoc A B v) : UC
   ring
 
 /- English proof (translation)
-Unfold `UCoc at *`. Use `set f13 := (Algebra.TensorProduct.map (AlgHom.id A B) (Algebra.TensorProduct.includeRight : B →ₐ[A] B ⊗[A] B))`. Use `set f12 := (Algebra.TensorProduct.map (AlgHom.id A B) (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B))`. Use `set f23 := (Algebra.TensorProduct.includeRight : B ⊗[A] B →ₐ[A] B ⊗[A] (B ⊗[A] B))`. Establish `key : Units.map f13.toMonoidHom u = Units.map f12.toMonoidHom u * Units.map f23.toMonoidHom u` using `Units.ext hu`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `key'` using `congrArg (fun x => ((x⁻¹ : (B ⊗[A] (B ⊗[A] B))ˣ) : B ⊗[A] (B ⊗[A] B))) key`. Simplify using `only [mul_inv, ← map_inv] at key'`. Simplify `key'` using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem uCoc_inv {u : (B ⊗[A] B)ˣ} (hu : UCoc A B u) : UCoc A B u⁻¹ := by
   unfold UCoc at *
@@ -57,13 +57,11 @@ theorem uCoc_inv {u : (B ⊗[A] B)ˣ} (hu : UCoc A B u) : UCoc A B u⁻¹ := by
   simpa [mul_comm] using key'
 
 /- English proof (translation)
-Establish `hle : descMod A B u * descMod A B u⁻¹ ≤ 1` using `(descMod_mul_le u u⁻¹).trans (by rw [mul_inv_cancel]; exact descMod_one_le)`. Use `le_antisymm hle ?_` and prove the remaining obligations. Establish `htop : (⊤ : Submodule A B) * (descMod A B u * descMod A B u⁻¹) = ⊤`. Rewrite using `[← mul_assoc, GlobalTheory.T.top_mul_descendedSubmoduleOfUnitCocycle_eq_top A B u hu, GlobalTheory.T.top_mul_descendedSubmoduleOfUnitCocycle_eq_top A B u⁻¹ (uCoc_inv hu)]`. Use `set J : Ideal A := (descMod A B u * descMod A B u⁻¹).comap (Algebra.linearMap A B) with hJ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJtop : J • (⊤ : Submodule A B) = ⊤`. Rewrite using `[eq_top_iff]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨a, rfl⟩` from `Submodule.mem_one.1 (hle hp)`. Establish `ha : a ∈ J` using `hp`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem_smul ha Submodule.mem_top`. Establish `hJ1 : J = ⊤` using `((Module.FaithfullyFlat.iff_flat_and_ideal_smul_eq_top A B).1 inferInstance).2 J hJtop`. Establish `h1 : (1 : A) ∈ J` using `hJ1 ▸ Submodule.mem_top`. Rewrite using `[Submodule.one_le]`.
-
-Simplify `h1` using `[hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem descMod_mul_inv [Module.FaithfullyFlat A B] {u : (B ⊗[A] B)ˣ} (hu : UCoc A B u) :
     descMod A B u * descMod A B u⁻¹ = 1 := by
@@ -87,17 +85,17 @@ theorem descMod_mul_inv [Module.FaithfullyFlat A B] {u : (B ⊗[A] B)ˣ} (hu : U
   simpa [hJ] using h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `hmem : (x : B) ∈ descMod A B u` using `hx ▸ Submodule.mem_span_singleton_self _`. Simplify `hmem` using `[descMod, LinearMap.mem_eqLocus]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨w, hw⟩`. Use `⟨w, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `(Submodule.span_le).2 ?_` and prove the remaining obligations. Introduce and unpack `_ rfl`. Simplify `hw` using `[descMod, LinearMap.mem_eqLocus]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `b hb`. Establish `hwi : ((w⁻¹ : Bˣ) : B) ∈ descMod A B u⁻¹`. Simplify using `only [descMod, LinearMap.mem_eqLocus, LinearMap.comp_apply, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply]`. Establish `e1 : (Algebra.TensorProduct.includeRight : B →ₐ[A] B ⊗[A] B) (w : B) * (Algebra.TensorProduct.includeRight : B →ₐ[A] B ⊗[A] B) ((w⁻¹ : Bˣ) : B) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B) (w : B) * (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B) ((w⁻¹ : Bˣ) : B) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `e3 : (u : B ⊗[A] B) * ((u⁻¹ : (B ⊗[A] B)ˣ) : B ⊗[A] B) = 1` using `Units.mul_inv u`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hw, e2, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B) ((w⁻¹ : Bˣ) : B) := by`. Take the linear combination `(((u⁻¹ : (B ⊗[A] B)ˣ) : B ⊗[A] B) * (u : B ⊗[A] B) * (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B) ((w⁻¹ : Bˣ) : B)) * e1 + ((Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B) ((w⁻¹ : Bˣ) : B)) * e3`. Establish `hp : b * ((w⁻¹ : Bˣ) : B) ∈ descMod A B u * descMod A B u⁻¹` using `Submodule.mul_mem_mul hb hwi`. Rewrite `hp` using `[descMod_mul_inv hu]`. Take `⟨a, ha⟩` from `Submodule.mem_one.1 hp`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_span_singleton.2 ⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, ha, mul_assoc, Units.inv_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descMod_eq_span_iff [Module.FaithfullyFlat A B] {u : (B ⊗[A] B)ˣ} (hu : UCoc A B u) :
     (∃ x : Bˣ, Submodule.spanSingleton A (x : B) = descMod A B u) ↔
@@ -138,16 +136,16 @@ theorem descMod_eq_span_iff [Module.FaithfullyFlat A B] {u : (B ⊗[A] B)ˣ} (hu
       rw [Algebra.smul_def, ha, mul_assoc, Units.inv_mul, mul_one]
 
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one _ (descMod_mul_inv hu)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_descMod [Module.FaithfullyFlat A B] {u : (B ⊗[A] B)ˣ} (hu : UCoc A B u) :
     IsUnit (descMod A B u) :=
   IsUnit.of_mul_eq_one _ (descMod_mul_inv hu)
 
 /- English proof (translation)
-Use `le_antisymm ?_ (descMod_mul_le u v)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[descMod_mul_inv hu, mul_one]`. Use `_ = descMod A B u * (descMod A B (u * v) * descMod A B u⁻¹) := by ring`. Use `_ ≤ descMod A B u * descMod A B (u * v * u⁻¹) := by gcongr; exact descMod_mul_le _ _`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `_ = descMod A B u * descMod A B v := by`. Use `congr 2`. Rewrite using `[mul_comm u v, mul_assoc, mul_inv_cancel, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem descMod_mul [Module.FaithfullyFlat A B] {u v : (B ⊗[A] B)ˣ} (hu : UCoc A B u)
     (hv : UCoc A B v) : descMod A B (u * v) = descMod A B u * descMod A B v := by
@@ -161,20 +159,20 @@ theorem descMod_mul [Module.FaithfullyFlat A B] {u v : (B ⊗[A] B)ˣ} (hu : UCo
         congr 2; rw [mul_comm u v, mul_assoc, mul_inv_cancel, mul_one]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_unitDescentCocycle_descendedSubmodule_eq A B descMod_one_le I`.
+A detailed English derivation is pending.
 -/
 theorem exists_descMod_eq [Module.FaithfullyFlat A B] (I : (Submodule A B)ˣ) :
     ∃ u, UCoc A B u ∧ descMod A B u = I :=
   GlobalTheory.T.exists_unitDescentCocycle_descendedSubmodule_eq A B descMod_one_le I
 
 /- English proof (translation)
-Unfold `UCoc at *`. Establish `h13 : ∀ x, (Algebra.TensorProduct.map (AlgHom.id A B') (Algebra.TensorProduct.includeRight : B' →ₐ[A] B' ⊗[A] B')) (Algebra.TensorProduct.map φ φ x) = Algebra.TensorProduct.map φ (Algebra.TensorProduct.map φ φ) ((Algebra.TensorProduct.map (AlgHom.id A B) (Algebra.TensorProduct.in …`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `h12 : ∀ x, (Algebra.TensorProduct.map (AlgHom.id A B') (Algebra.TensorProduct.includeLeft : B' →ₐ[A] B' ⊗[A] B')) (Algebra.TensorProduct.map φ φ x) = Algebra.TensorProduct.map φ (Algebra.TensorProduct.map φ φ) ((Algebra.TensorProduct.map (AlgHom.id A B) (Algebra.TensorProduct.inc …`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `h23 : ∀ x, (Algebra.TensorProduct.includeRight : B' ⊗[A] B' →ₐ[A] B' ⊗[A] (B' ⊗[A] B')) (Algebra.TensorProduct.map φ φ x) = Algebra.TensorProduct.map φ (Algebra.TensorProduct.map φ φ) ((Algebra.TensorProduct.includeRight : B ⊗[A] B →ₐ[A] B ⊗[A] (B ⊗[A] B)) x)`. Introduce `x`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `e : ((Units.map (Algebra.TensorProduct.map φ φ).toMonoidHom u : (B' ⊗[A] B')ˣ) : B' ⊗[A] B') = Algebra.TensorProduct.map φ φ (u : B ⊗[A] B)` using `rfl`. Rewrite using `[e, h13, h12, h23, hu, map_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem uCoc_map {B' : Type} [CommRing B'] [Algebra A B'] (φ : B →ₐ[A] B') {u : (B ⊗[A] B)ˣ}
     (hu : UCoc A B u) : UCoc A B' (Units.map (Algebra.TensorProduct.map φ φ).toMonoidHom u) := by
@@ -202,7 +200,7 @@ theorem uCoc_map {B' : Type} [CommRing B'] [Algebra A B'] (φ : B →ₐ[A] B') 
   rw [e, h13, h12, h23, hu, map_mul]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨b, hb, rfl⟩`. Simplify using `only [descMod, LinearMap.mem_eqLocus, LinearMap.comp_apply, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply, Units.coe_map, MonoidHom.coe_coe] at hb ⊢`. Use `congrArg (Algebra.TensorProduct.map φ φ) hb` as an intermediate fact. Simplify using `using this`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem descMod_map_le {B' : Type} [CommRing B'] [Algebra A B'] (φ : B →ₐ[A] B') (u : (B ⊗[A] B)ˣ) :
     (descMod A B u).map φ.toLinearMap ≤ descMod A B' (Units.map (Algebra.TensorProduct.map φ φ).toMonoidHom u) := by
@@ -213,15 +211,13 @@ theorem descMod_map_le {B' : Type} [CommRing B'] [Algebra A B'] (φ : B →ₐ[A
   simpa using this
 
 /- English proof (translation)
-Use `set u' := Units.map (Algebra.TensorProduct.map φ φ).toMonoidHom u`. Establish `hu' : UCoc A B' u'` using `uCoc_map φ hu`. Use `haveI : Module.Invertible A (descMod A B u) := inferInstanceAs (Module.Invertible A ((isUnit_descMod hu).unit : Submodule A B))`. Use `haveI : Module.Invertible A (descMod A B' u') := inferInstanceAs (Module.Invertible A ((isUnit_descMod hu').unit : Submodule A B'))`. Establish `hmap` using `descMod_map_le φ u`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : descMod A B u →ₗ[A] descMod A B' u'` to `(φ.toLinearMap.restrict (p := descMod A B u) (q := descMod A B' u') fun b hb => hmap (Submodule.mem_map_of_mem hb))`. Establish `hinv : (descMod A B u⁻¹).map φ.toLinearMap ≤ descMod A B' u'⁻¹`. Use `descMod_map_le φ u⁻¹` as an intermediate fact. Rewrite `this` using `[map_inv]`. Then use the resulting hypothesis. Use `set P := (descMod A B u).map φ.toLinearMap`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (1 : Submodule A B') ≤ P * descMod A B' u'⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← descMod_mul_inv hu, Submodule.map_mul]`. Use `_ ≤ P * descMod A B' u'⁻¹ := by gcongr`. Establish `hle : descMod A B' u' ≤ P`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨y, hy⟩`. Take `⟨b, hb, rfl⟩` from `hle hy`. Conclude with `⟨⟨b, hb⟩, rfl⟩`.
-
-Conclude with `⟨LinearEquiv.ofBijective f (Module.Invertible.bijective_of_surjective hsurj)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_descMod_equiv [Module.FaithfullyFlat A B] {B' : Type} [CommRing B'] [Algebra A B']
     [Module.FaithfullyFlat A B'] (φ : B →ₐ[A] B') {u : (B ⊗[A] B)ˣ} (hu : UCoc A B u) :
@@ -263,7 +259,7 @@ def δ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (u : (B ⊗[A] B)ˣ)
   exact if h : Module.Invertible A (descMod A B u) then CommRing.Pic.mk A (descMod A B u) else 1
 
 /- English proof (translation)
-Establish `: Module.Invertible A (descMod A B u)` using `inferInstanceAs (Module.Invertible A ((isUnit_descMod hu).unit : Submodule A B))`. Rewrite using `[δ, dif_pos this, Submodule.unitsToPic_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem δ_eq {A B : Type} [CommRing A] [CommRing B] [Algebra A B] [Module.FaithfullyFlat A B]
     {u : (B ⊗[A] B)ˣ} (hu : UCoc A B u) :
@@ -277,21 +273,19 @@ end GlobalTheory.PicCech
 open GlobalTheory.PicCech in
 
 /- English proof (translation)
-Introduce `A _`. Use `⟨fun B _ _ u => δ A B u, fun B _ _ _ => ⟨?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `u v hu hv`. Establish `huv : UCoc A B (u * v)` using `uCoc_mul hu hv`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Rewrite using `[δ_eq hu, δ_eq hv, δ_eq huv, ← map_mul]`. Use `congr 1`. Conclude with `Units.ext (descMod_mul hu hv)`. Introduce `u hu dsimp only`. Rewrite using `[δ_eq hu, ← MonoidHom.mem_ker, Submodule.ker_unitsToPic, ← descMod_eq_span_iff hu]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨x, congrArg Units.val hx⟩`. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨x, Units.ext hx⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `c hc`. Choose the witnesses or unpack the hypotheses as in `⟨I, rfl⟩ : c ∈ (Submodule.unitsToPic A B).range := by`. Rewrite using `[Submodule.range_unitsToPic]`. Conclude with `hc`. Take `⟨u, hu, hI⟩` from `exists_descMod_eq I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[δ_eq hu]`. Use `congr 1`. Conclude with `Units.ext hI`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu`. Use `⟨inferInstanceAs (Module.Invertible A ((isUnit_descMod hu).unit : Submodule A B)), ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[δ_eq hu, Submodule.unitsToPic_apply]`. Both sides reduce to the same expression.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `B' _ _ _ φ u u' hu hu'`. Establish `hu'' : u' = Units.map (Algebra.TensorProduct.map φ φ).toMonoidHom u` using `Units.ext hu'`. Substitute `hu''` using the available equality. Simplify using `only`. Rewrite using `[δ_eq hu, δ_eq (uCoc_map φ hu), Submodule.unitsToPic_apply, Submodule.unitsToPic_apply, CommRing.Pic.mk_eq_mk_iff]`.
-
-Conclude with `(nonempty_descMod_equiv φ hu).map LinearEquiv.symm`.
+Substitute using the available equality. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.pic_cech_descent : ∀ (A : Type) [CommRing A], ∃ δ : ∀ (B : Type) [CommRing B] [Algebra A B], (B ⊗[A] B)ˣ → CommRing.Pic A, ∀ (B : Type) [CommRing B] [Algebra A B] [Module.FaithfullyFlat A B], (∀ u v, UCoc A B u → UCoc A B v → δ B (u * v) = δ B u * δ B v) ∧ (∀ u, UCoc A B u → (δ B u = 1 ↔ ∃ w : Bˣ, (u : B ⊗[A] B) * (Algebra.TensorProduct.includeRight : B →ₐ[A] B ⊗[A] B) w = (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B) w)) ∧ (∀ c : CommRing.Pic A, CommRing.Pic.mapAlgebra A B c = 1 → ∃ u, UCoc A B u ∧ δ B u = c) ∧ (∀ u, UCoc A B u → ∃ _ : Module.Invertible A (descMod A B u), CommRing.Pic.mk A (descMod A B u) = δ B u) ∧ ∀ (B' : Type) [CommRing B'] [Algebra A B'] [Module.FaithfullyFlat A B'] (φ : B →ₐ[A] B') (u : (B ⊗[A] B)ˣ) (u' : (B' ⊗[A] B')ˣ), UCoc A B u → (u' : B' ⊗[A] B') = Algebra.TensorProduct.map φ φ (u : B ⊗[A] B) → δ B' u' = δ B u := by
   intro A _

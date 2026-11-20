@@ -20,17 +20,11 @@ noncomputable section
 namespace GlobalTheory.ClosureDim
 
 /- English proof (translation)
-Use `letI : Algebra F B := (φ.comp (algebraMap F A)).toAlgebra`. Use `letI : Algebra A B := φ.toAlgebra`. Use `haveI : IsScalarTower F A B := IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Use `set P := Q.comap φ`. Use `letI : Algebra P.ResidueField Q.ResidueField := (Ideal.ResidueField.map P Q φ rfl).toAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsScalarTower F P.ResidueField Q.ResidueField := IsScalarTower.of_algebraMap_eq fun f ↦ by`. Express the relevant statement in the definitionally equal form `algebraMap F Q.ResidueField f = Ideal.ResidueField.map P Q φ rfl (algebraMap F P.ResidueField f)`. Rewrite using `[IsScalarTower.algebraMap_apply F A P.ResidueField, Ideal.ResidueField.map_algebraMap, IsScalarTower.algebraMap_apply F B Q.ResidueField]`. Both sides reduce to the same expression. Use `haveI : Algebra.FiniteType F (A ⧸ P) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ F P) Ideal.Quotient.mk_surjective`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Algebra.FiniteType F (B ⧸ Q) := haveI := hB`. Use the proof step `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ F Q) Ideal.Quotient.mk_surjective`. Establish `hfaith (S : Type) [CommRing S] [Nontrivial S] [Algebra F S] : FaithfulSMul F S` using `(faithfulSMul_iff_algebraMap_injective F S).mpr (algebraMap F S).injective`. Use `haveI := hfaith (A ⧸ P)`. Use `haveI := hfaith (B ⧸ Q)`.
-
-Use `haveI := hfaith P.ResidueField`. Use `haveI : FaithfulSMul (A ⧸ P) P.ResidueField := (faithfulSMul_iff_algebraMap_injective _ _).mpr P.injective_algebraMap_quotient_residueField`. Use `haveI : FaithfulSMul (B ⧸ Q) Q.ResidueField := (faithfulSMul_iff_algebraMap_injective _ _).mpr Q.injective_algebraMap_quotient_residueField`. Use `haveI : FaithfulSMul P.ResidueField Q.ResidueField := (faithfulSMul_iff_algebraMap_injective _ _).mpr (RingHom.injective _)`. Use `haveI : Algebra.IsAlgebraic (A ⧸ P) P.ResidueField := IsLocalization.isAlgebraic _ (nonZeroDivisors (A ⧸ P))`.
-
-Use `haveI : Algebra.IsAlgebraic (B ⧸ Q) Q.ResidueField := IsLocalization.isAlgebraic _ (nonZeroDivisors (B ⧸ Q))`. Establish `h₁` using `GlobalTheory.trdeg_eq_of_isAlgebraic_top F (A ⧸ P) P.ResidueField`. Establish `h₂` using `GlobalTheory.trdeg_eq_of_isAlgebraic_top F (B ⧸ Q) Q.ResidueField`. Establish `h₃` using `trdeg_add_eq F P.ResidueField (A := Q.ResidueField)`. Rewrite `h₃` using `[h, add_zero]`.
-
-Take `⟨d, hd₁, hd₂⟩` from `GlobalTheory.exists_ringKrullDim_eq_and_trdeg_eq F (A ⧸ P)`. Rewrite using `[hd₁]`. Conclude with `GlobalTheory.ringKrullDim_eq_of_trdeg_eq F (B ⧸ Q) (by rw [← h₂, ← h₃, h₁, hd₂])`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_eq_of_trdeg_residueField_eq_zero (F : Type) [Field F]
     {A B : Type} [CommRing A] [CommRing B] [Algebra F A] [Algebra.FiniteType F A]
@@ -80,17 +74,15 @@ end GlobalTheory.ClosureDim
 namespace GlobalTheory.ClosureDim
 
 /- English proof (translation)
-Introduce `F _ Y X π sX _ _ y halg`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (π y)) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Take `⟨_, ⟨V, hV, rfl⟩, hyV, hVU⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ (π ⁻¹ᵁ U : Set Y) from hxU) (π ⁻¹ᵁ U).isOpen`. Establish `hV : IsAffineOpen V` using `hV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : V ≤ π ⁻¹ᵁ U` using `hVU`. Take `⟨p, rfl⟩ : y ∈ Set.range hV.fromSpec` from `by rw [hV.range_fromSpec]; exact hyV`. Set `φ` to `π.appLE U V e`. Establish `hsq : Spec.map φ ≫ hU.fromSpec = hV.fromSpec ≫ π` using `IsAffineOpen.SpecMap_appLE_fromSpec π hU hV e`. Establish `hpt : π (hV.fromSpec p) = hU.fromSpec (Spec.map φ p)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← hsq, Scheme.Hom.comp_apply]`. Establish `h0 : @Algebra.trdeg (X.residueField (π (hV.fromSpec p))) (Y.residueField (hV.fromSpec p)) _ _ (π.residueFieldMap (hV.fromSpec p)).hom.toAlgebra = 0`. Use `letI := (π.residueFieldMap (hV.fromSpec p)).hom.toAlgebra`. Conclude with `trdeg_eq_zero (R := X.residueField (π (hV.fromSpec p))) (A := Y.residueField (hV.fromSpec p))`. Rewrite `h0` using `[GlobalTheory.RelDimFibCrit.trdeg_affine π U hU V hV e p]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `ψ` to `Spec.preimage (hU.fromSpec ≫ sX)`. Establish `hψ : Spec.map ψ = hU.fromSpec ≫ sX` using `Spec.map_preimage _`. Use `letI : Algebra F Γ(X, U) := ψ.hom.toAlgebra`. Establish `hA : Algebra.FiniteType F Γ(X, U)` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := ψ)).mp (hψ ▸ inferInstance)`. Establish `hB : @Algebra.FiniteType F Γ(Y, V) _ _ (φ.hom.comp (algebraMap F Γ(X, U))).toAlgebra`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : Spec.map (ψ ≫ φ) = hV.fromSpec ≫ π ≫ sX`. Rewrite using `[Spec.map_comp, hψ, ← Category.assoc, hsq, Category.assoc]`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := ψ ≫ φ)).mp (h ▸ inferInstance)`. Rewrite using `[hpt, GlobalTheory.topologicalKrullDim_closure_eq_ringKrullDim_quotient (π ≫ sX) hV.fromSpec p, GlobalTheory.topologicalKrullDim_closure_eq_ringKrullDim_quotient sX hU.fromSpec (Spec.map φ p)]`. Use `haveI := p.isPrime`.
-
-Conclude with `ringKrullDim_quotient_eq_of_trdeg_residueField_eq_zero F φ.hom hB p.asIdeal h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_closure_eq_of_isAlgebraic : ∀ (F : Type) [Field F] (Y X : Scheme.{0}) (π : Y ⟶ X)
     (sX : X ⟶ Sp F) [LocallyOfFiniteType sX] [LocallyOfFiniteType (π ≫ sX)] (y : Y),

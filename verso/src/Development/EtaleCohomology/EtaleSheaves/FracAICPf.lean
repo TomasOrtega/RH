@@ -6,19 +6,19 @@ namespace LateralTheory.E.FracAICPf
 
 open Classical in
 /- English proof (translation)
-Introduce `T K _ _ _ _ _ hT p hp hdeg`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors T) (p.support.image p.coeff)`. Use `set s : K := algebraMap T K b with hs`. Establish `hs0 : s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Use `set q := p.scaleRoots s with hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqm : q.Monic` using `(monic_scaleRoots_iff _).mpr hp`. Establish `hqd : q.natDegree = p.natDegree` using `natDegree_scaleRoots _ _`. Establish `hlift : q ∈ lifts (algebraMap T K)`. Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hq, coeff_scaleRoots]`. Distinguish the cases in `hi : p.coeff i = 0`. Rewrite using `[hi, zero_mul]`. Conclude with `⟨0, map_zero _⟩`. Establish `hile : i ≤ p.natDegree` using `le_natDegree_of_ne_zero hi`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `lt_or_eq_of_le hile with hlt | heq` into its components or cases. Take `⟨c, hc⟩` from `hb (p.coeff i) (Finset.mem_image_of_mem _ (mem_support_iff.mpr hi))`. Take `⟨k, hk⟩ : ∃ k, p.natDegree - i = k + 1` from `⟨p.natDegree - i - 1, by omega⟩`. Use `⟨c * (b : T) ^ k, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, map_mul, map_pow, hc, Algebra.smul_def, pow_succ, hs]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Substitute using the available equality.
 
-Expand and normalize the polynomial expressions, which then agree. Substitute `heq` using the available equality. Rewrite using `[Nat.sub_self, pow_zero, mul_one, hp.coeff_natDegree]`. Conclude with `⟨1, map_one _⟩`. Take `⟨q', hq'map, hq'deg, hq'm⟩` from `lifts_and_natDegree_eq_and_monic hlift hqm`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `hT q' hq'm (by rw [hq'deg, hqd]; exact hdeg)`. Use `⟨algebraMap T K r / s, ?_⟩` and prove the remaining obligations. Establish `h1 : q.eval (algebraMap T K r) = 0`. Rewrite using `[← hq'map, eval_map, eval₂_at_apply, hr, map_zero]`. Establish `h2` using `scaleRoots_eval₂_mul (p := p) (RingHom.id K) (algebraMap T K r / s) s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [RingHom.id_apply, eval₂_id] at h2`. Rewrite `h2` using `[mul_div_cancel₀ _ hs0, ← hq, h1]`. Conclude with `(mul_eq_zero.mp h2.symm).resolve_left (pow_ne_zero _ hs0)`.
+A detailed English derivation is pending.
 -/
 theorem FracAIC_of : LateralTheory.E.ULAStalkPf.FracAIC := by
   intro T K _ _ _ _ _ hT p hp hdeg

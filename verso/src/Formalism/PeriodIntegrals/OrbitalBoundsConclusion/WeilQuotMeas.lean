@@ -9,7 +9,7 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QuotMeasUniq
 namespace PI
 
 /- English proof (translation)
-The claim follows from `PI.WeilQuotMeas.UnitaryGroupMassFormula.weilQuotient_of_parts PI.WeilQuotMeas.UnitaryGroupMassFormula.stepBruhat PI.WeilQuotMeas.UnitaryGroupMassFormula.stepInvInv PI.wqUnique`.
+A detailed English derivation is pending.
 -/
 theorem weil_quotient_measure : PI.WeilQuotMeas.WeilQuotient :=
   PI.WeilQuotMeas.UnitaryGroupMassFormula.weilQuotient_of_parts PI.WeilQuotMeas.UnitaryGroupMassFormula.stepBruhat

@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.LeviBlockExponent
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[pairChar, detChar, det_leviEmb, Fin.prod_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairChar_mul_twist (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (b' : Fin 2 → ℕ) (d : ℕ) (h : b' 0 + b' 1 = d) (μ : Fin 2 → kˣ →* ℂˣ) (ν : kˣ →* ℂˣ) :
@@ -29,7 +29,7 @@ theorem pairChar_mul_twist (k : Type) [Field k] [ValuativeRel k] [TopologicalSpa
   ring
 
 /- English proof (translation)
-Introduce `k _ _ _ _ b' d h μ ν hν`. Use `⟨(GlobalTheory.LocGL.parIndTwistEquiv (pairPlace b' h) _ hν).trans (GlobalTheory.LocGL.parIndEquiv _ ?_)⟩` and prove the remaining obligations. Rewrite using `[ofChar, twist_twist, ← ofChar, pairChar_mul_twist]`. Conclude with `.refl _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_pairInd : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (b' : Fin 2 → ℕ) (d : ℕ) (h : b' 0 + b' 1 = d) (μ : Fin 2 → kˣ →* ℂˣ) (ν : kˣ →* ℂˣ),

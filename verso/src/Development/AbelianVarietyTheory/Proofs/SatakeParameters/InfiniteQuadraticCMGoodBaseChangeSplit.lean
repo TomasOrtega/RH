@@ -30,7 +30,7 @@ namespace GlobalTheory.CMFam
 open IntermediateField
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_cmQuadratic_adjoin_sqrt_neg_nat E Ω p hp δ hδ hn`.
+A detailed English derivation is pending.
 -/
 theorem exists_qcm_adjoin (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (p : ℕ) (hp : 0 < p) (δ : Ω) (hδ : δ ^ 2 = -(p : Ω))
@@ -39,7 +39,7 @@ theorem exists_qcm_adjoin (E Ω : Type) [Field E] [NumberField E] [IsCMField E] 
   GlobalTheory.T.exists_cmQuadratic_adjoin_sqrt_neg_nat E Ω p hp δ hδ hn
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isSplitPlaceBelowCMField_of_sqrt_neg_prime L p q δ hp hδ hq w hw`.
+A detailed English derivation is pending.
 -/
 theorem isSplitAt_of_dvd (L : Type) [Field L] [NumberField L] [IsCMField L] (p q : ℕ) (δ : L) (hp : 0 < p)
     (hδ : δ ^ 2 = -(p : L)) (hq : ((8 * q : ℕ) : ℤ) ∣ (p : ℤ) + 1) (w : HeightOneSpectrum (𝓞 L))
@@ -47,7 +47,7 @@ theorem isSplitAt_of_dvd (L : Type) [Field L] [NumberField L] [IsCMField L] (p q
   GlobalTheory.T.isSplitPlaceBelowCMField_of_sqrt_neg_prime L p q δ hp hδ hq w hw
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.not_isUnramifiedAt_of_sq_eq_neg_prime E K p hp hd δ hδ w hw`.
+A detailed English derivation is pending.
 -/
 theorem not_isUnramifiedAt (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K]
     (p : ℕ) (hp : p.Prime) (hd : ¬ (p : ℤ) ∣ discr E) (δ : K) (hδ : δ ^ 2 = -(p : K))
@@ -56,7 +56,7 @@ theorem not_isUnramifiedAt (E K : Type) [Field E] [NumberField E] [Field K] [Num
   GlobalTheory.T.not_isUnramifiedAt_of_sq_eq_neg_prime E K p hp hd δ hδ w hw
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_nat_unramified_over_maximalRealSubfield E`.
+A detailed English derivation is pending.
 -/
 theorem exists_unram (E : Type) [Field E] [NumberField E] [IsCMField E] :
     ∃ N : ℕ, N ≠ 0 ∧ ∀ (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra E K]
@@ -65,7 +65,7 @@ theorem exists_unram (E : Type) [Field E] [NumberField E] [IsCMField E] :
   GlobalTheory.T.exists_nat_unramified_over_maximalRealSubfield E
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finrank_maximal_real_even E Ω Q`.
+A detailed English derivation is pending.
 -/
 theorem even_finrank (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω]
     (Q : GlobalTheory.RealGal.QCM E Ω) : Even (Module.finrank ℚ (maximalRealSubfield Q.K)) :=
@@ -76,9 +76,9 @@ end GlobalTheory.CMFam
 namespace GlobalTheory.CMFam
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hc : Nat.gcd q n = 1` using `(Nat.Prime.coprime_iff_not_dvd hq).2 h`. Establish `hm : (((Nat.gcd q n : ℕ) : ℤ) : 𝓞 K) ∈ w.asIdeal`. Rewrite using `[Nat.gcd_eq_gcd_ab q n]`. Use `push_cast`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `w.asIdeal.add_mem (w.asIdeal.mul_mem_right _ hqw) (w.asIdeal.mul_mem_right _ hn)`. Rewrite `hm` using `[hc]`. Simplify using `only [Nat.cast_one, Int.cast_one] at hm`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 hm)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dvd_of_mem {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) {q n : ℕ} (hq : q.Prime)
     (hqw : (q : 𝓞 K) ∈ w.asIdeal) (hn : (n : 𝓞 K) ∈ w.asIdeal) : q ∣ n := by
@@ -93,7 +93,7 @@ theorem dvd_of_mem {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 hm)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ ∈ Ideal.comap _ _ ↔ _`. Rewrite using `[Ideal.mem_comap, map_natCast]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_mem_under {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K]
     (w : HeightOneSpectrum (𝓞 K)) (n : ℕ) : (n : 𝓞 E) ∈ (w.under (𝓞 E)).asIdeal ↔ (n : 𝓞 K) ∈ w.asIdeal := by
@@ -105,45 +105,37 @@ end GlobalTheory.CMFam
 open GlobalTheory.CMFam GlobalTheory.ExSplitCM in
 
 /- English proof (translation)
-Introduce `hAF E Ω _ _ _ _ _ _ l _ a π w₀`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Establish `halg : Algebra.IsAlgebraic E Ω` using `IsAlgClosure.isAlgebraic`. Take `⟨q₀, hq₀, hq₀w⟩` from `exists_prime_mem w₀`. Use `haveI : Fact q₀.Prime := ⟨hq₀⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, hN0, hN⟩` from `exists_unram E`. Use `set S : Set (HeightOneSpectrum (𝓞 E)) := {v | ¬ ∃ B, (CG.mk π).HasSat v B} with hSdef`. Establish `hS : S.Finite` using `Filter.eventually_cofinite.1 (GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep hAF E a π)`. Use `set T : Finset ℕ := ({2, l, q₀} : Finset ℕ) ∪ N.primeFactors ∪ (discr E).natAbs.primeFactors ∪ (finite_primes_of_finite hS).toFinset with hTdef`. Use `set M : ℕ := 8 * ∏ q ∈ T, q with hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hT2 : 2 ∈ T` using `by simp [hTdef]`. Establish `hTl : l ∈ T` using `by simp [hTdef]`. Establish `hTq₀ : q₀ ∈ T` using `by simp [hTdef]`. Establish `hTN : ∀ r : ℕ, r.Prime → r ∣ N → r ∈ T` using `fun r hr hd => by`. Simplify using `[hTdef, Nat.mem_primeFactors, hr, hd, hN0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTd : ∀ r : ℕ, r.Prime → (r : ℤ) ∣ discr E → r ∈ T` using `fun r hr hd => by`. Establish `: r ∈ (discr E).natAbs.primeFactors` using `Nat.mem_primeFactors.2 ⟨hr, Int.natCast_dvd.1 hd, Int.natAbs_ne_zero.2 (discr_ne_zero E)⟩`. Simplify using `[hTdef, this]`. Establish `hTS : ∀ r : ℕ, r.Prime → ∀ v ∈ S, (r : 𝓞 E) ∈ v.asIdeal → r ∈ T` using `fun r hr v hv h => by`. Establish `: r ∈ (finite_primes_of_finite hS).toFinset` using `by simpa using ⟨hr, v, hv, h⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hTdef, this]`. Establish `hM0 : M ≠ 0`. Rewrite using `[hM]`. Use `mul_ne_zero (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce `q hq h0`. Substitute `h0` using the available equality. Simplify using `[hTdef] at hq`. Break down `hq with h | h | h` into its components or cases. Conclude with `(Fact.out : l.Prime).ne_zero h.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hq₀.ne_zero h.symm`. Conclude with `Nat.not_prime_zero h.1`. Use `haveI : NeZero M := ⟨hM0⟩`. Establish `hsq : ∀ p : ℕ, ∃ δ : Ω, δ ^ 2 = -(p : Ω)` using `fun p => IsAlgClosed.exists_pow_nat_eq (-(p : Ω)) two_pos`. Use `choose δ hδ using hsq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Gd : Set ℕ := {p | p.Prime ∧ p ∉ T ∧ (M : ℤ) ∣ (p : ℤ) + 1} with hGd`. Establish `hGood : Gd.Infinite`. Use `((Nat.infinite_setOfPred_prime_and_eq_mod (q := M) isUnit_one.neg).diff T.finite_toSet).mono ?_` and prove the remaining obligations. Introduce and unpack `p ⟨⟨hp, hpe⟩, hpT⟩`. Use `⟨hp, hpT, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: (((p : ℤ) + 1 : ℤ) : ZMod M) = 0` using `by push_cast; rw [hpe]; ring`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp this`. Establish `h8 : ∀ p ∈ Gd, ∀ q ∈ T, ((8 * q : ℕ) : ℤ) ∣ (p : ℤ) + 1` using `fun p hp q hq => by`. Use `dvd_trans ?_ hp.2.2` and prove the remaining obligations. Rewrite using `[Int.natCast_dvd_natCast, hM]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Nat.mul_dvd_mul_left 8 (Finset.dvd_prod_of_mem _ hq)`. Establish `hodd : ∀ p ∈ Gd, p ≠ 2` using `fun p hp h => hp.2.1 (h ▸ hT2)`. Establish `hdisc : ∀ p ∈ Gd, ¬ (p : ℤ) ∣ discr E` using `fun p hp h => hp.2.1 (hTd p hp.1 h)`. Establish `hmove : ∀ p ∈ Gd, ∀ (u : HeightOneSpectrum (𝓞 E)) (A' : ValuationSubring Ω), ((p : ℕ) : 𝓞 E) ∈ u.asIdeal → IsPlaceOver A' u → ∃ s ∈ Ine (F` using `E) A', s (δ p) ≠ δ p := fun p hp u A' hu hA' => GlobalTheory.SqrtNegRam.sqrt_neg_moved_by_inertia E Ω p hp.1 (hodd p hp) (hdisc p hp) (δ p) (hδ p) u A' hu hA'`. Establish `hnot : ∀ p ∈ Gd, δ p ∉ Set.range (algebraMap E Ω)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `p hp ⟨x, hx⟩`. Take `⟨u, hu⟩` from `exists_mem_of_prime (F := E) hp.1`. Take `⟨A', hA'⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver Ω u`. Take `⟨s, -, hs⟩` from `hmove p hp u A' hu hA'`. Conclude with `hs (by rw [← hx]; exact s.commutes x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hQ : ∀ p ∈ Gd, ∃ Q : GlobalTheory.RealGal.QCM E Ω, Q.K = IntermediateField.adjoin E {δ p}` using `fun p hp => exists_qcm_adjoin E Ω p hp.1.pos (δ p) (hδ p) (hnot p hp)`. Establish `hmem : ∀ p ∈ Gd, ∀ Q : GlobalTheory.RealGal.QCM E Ω, Q.K = IntermediateField.adjoin E {δ p} → Q ∈ {Q : GlobalTheory.RealGal.QCM E Ω | (∀ A : ValuationSubring Ω, IsPlaceOver A w₀ → Dec (F` using `E) A ≤ (UpperTheory.V.Af.Bc.res E Ω ↥Q.K).range) ∧ (∀ w : HeightOneSpectrum (𝓞 ↥Q.K), w.under (𝓞 E) = w₀ → GlobalTheory.UnitaryBC.IsSplitAt w) ∧ (∃ w : HeightOneSpectrum (𝓞 ↥Q.K), ¬ Algebra.IsUnramifiedAt (𝓞 E) w.asIdeal ∧ ∃ B, (CG.mk π).HasSat (w.under (𝓞 E)) B) ∧ ∀ P : CuspSub …`. Introduce `p hp Q hQK`. Establish `hδK : δ p ∈ Q.K` using `by rw [hQK]; exact IntermediateField.mem_adjoin_simple_self E (δ p)`. Use `set y : ↥Q.K := ⟨δ p, hδK⟩ with hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy2 : y ^ 2 = -(p : ↥Q.K)` using `Subtype.ext (by simpa using hδ p)`. Establish `hsplit : ∀ q ∈ T, ∀ w : HeightOneSpectrum (𝓞 ↥Q.K), (q : 𝓞 ↥Q.K) ∈ w.asIdeal → GlobalTheory.UnitaryBC.IsSplitAt w` using `fun q hq w hw => isSplitAt_of_dvd _ p q y hp.1.pos hy2 (h8 p hp q hq) w hw`. Use `⟨fun A hA s hs => ?_, fun w hw => ?_, ?_, fun P hP => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_range_res_iff, hQK]`. Use `fix_adjoin (halg.isAlgebraic (δ p)).isIntegral s ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.SqFix.sqrt_fixed_of_isSquare_padic E Ω w₀ A hA q₀ hq₀w (-(p : ℤ)) (δ p) (by push_cast; exact hδ p) (by push_cast; exact GlobalTheory.RealGal.PrimesNegSquare.isSquare_neg_of_dvd q₀ p (h8 p hp q₀ hTq₀)) s hs`. Use `hsplit q₀ hTq₀ w ?_` and prove the remaining obligations. Rewrite using `[← natCast_mem_under (E := E), hw]`. Conclude with `hq₀w`. Take `⟨w, hw⟩` from `exists_mem_of_prime (F := ↥Q.K) hp.1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w, not_isUnramifiedAt E ↥Q.K p hp.1 (hdisc p hp) y hy2 w hw, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hB`. Conclude with `hp.2.1 (hTS p hp.1 _ hB ((natCast_mem_under w p).2 hw))`. Use `⟨⟨y, p, hp.1.pos, by rw [hy2]⟩, even_finrank E Ω Q, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨q, hq, hqw⟩` from `exists_prime_mem w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hqT : q ∉ T` using `fun h => hw (hsplit q h w hqw)`. Use `⟨fun hl => hqT (prime_eq_of_mem w (Fact.out : l.Prime) hq hl hqw ▸ hTl), ?_, ?_⟩` and prove the remaining obligations. Use `hN ↥Q.K w fun h => hqT (hTN q hq (dvd_of_mem w hq hqw h))` and prove the remaining obligations. Establish `hB : ∃ B, (CG.mk π).HasSat (w.under (𝓞 E)) B`. Assume the negation of the conclusion as `hB`.
-
-Conclude with `hqT (hTS q hq _ hB ((natCast_mem_under w q).2 hqw))`. Take `⟨B, hB⟩` from `hB`. Conclude with `⟨_, hP.sat w _ B (GlobalTheory.RealGal.AttRes.normV_eq_pow w) hB⟩`. Introduce `hfin`. Apply `hGood` to reduce the goal to its premises.
-
-Use `(hfin.biUnion (t := fun Q : GlobalTheory.RealGal.QCM E Ω => {p : ℕ | p.Prime ∧ ∃ u ∈ {u : HeightOneSpectrum (𝓞 E) | ¬ ∀ A' : ValuationSubring Ω, IsPlaceOver A' u → Ine (F := E) A' ≤ (UpperTheory.V.Af.Bc.res E Ω ↥Q.K).range}, ((p : ℕ) : 𝓞 E) ∈ u.asIdeal}) fun Q _ => finite_primes_ …` and prove the remaining obligations. Introduce `p hp`. Take `⟨Q, hQK⟩` from `hQ p hp`. Use `Set.mem_biUnion (hmem p hp Q hQK) ⟨hp.1, ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `exists_mem_of_prime (F := E) hp.1`.
-
-Take `⟨A', hA'⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver Ω u`. Use `⟨u, fun hall => ?_, hu⟩` and prove the remaining obligations. Take `⟨s, hs, hne⟩` from `hmove p hp u A' hu hA'`. Use `hne ((mem_range_res_iff Q.K s).1 (hall A' hA' hs) (δ p) ?_)` and prove the remaining obligations. Rewrite using `[hQK]`.
-
-Conclude with `IntermediateField.mem_adjoin_simple_self E (δ p)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GalCut.infinite_qcm_split_good : AutomorphicFormsFiniteGL → ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (a : ℕ) (π : CuspSub E a) (w₀ : HeightOneSpectrum (𝓞 E)), {Q : GlobalTheory.RealGal.QCM E Ω | (∀ A : ValuationSubring Ω, IsPlaceOver A w₀ → Dec (F := E) A ≤ (UpperTheory.V.Af.Bc.res E Ω ↥Q.K).range) ∧ (∀ w : HeightOneSpectrum (𝓞 ↥Q.K), w.under (𝓞 E) = w₀ → GlobalTheory.UnitaryBC.IsSplitAt w) ∧ (∃ w : HeightOneSpectrum (𝓞 ↥Q.K), ¬ Algebra.IsUnramifiedAt (𝓞 E) w.asIdeal ∧ ∃ B, (CG.mk π).HasSat (w.under (𝓞 E)) B) ∧ ∀ P : CuspSub ↥Q.K a, IsLift π P → Good l P}.Infinite := by
   intro hAF E Ω _ _ _ _ _ _ l _ a π w₀

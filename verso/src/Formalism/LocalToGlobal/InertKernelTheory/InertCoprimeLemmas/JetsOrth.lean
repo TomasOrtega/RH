@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[PullbackComparison.mem_smulLat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨z, hz, rfl⟩` from `(PullbackComparison.mem_smulLat γ M y).1 hy`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`. Conclude with `hz`. Introduce `hx`. Use `⟨γ.mulVec x, (PullbackComparison.mem_smulLat γ M _).2 ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smulLat_star {N : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E) (h : star γ * γ = 1)
     (M : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) :
@@ -34,7 +34,7 @@ theorem smulLat_star {N : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E) (h : star 
     rw [Matrix.mulVec_mulVec, h, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hb' : LocBasis D p (YYl D (SDLat.smulLat (star γ) (SDLat.smulLat γ M)) (SDLat.smulLat (star γ') (SDLat.smulLat γ' M'))) b`. Rewrite using `[smulLat_star γ h2, smulLat_star γ' h4]`. Conclude with `hb`. Use `PullbackComparison.locBasis_pull p (star γ) (star γ') (by rw [star_star]; exact h2) (by rw [star_star]; exact h1) (by rw [star_star]; exact h4) (by rw [star_star]; exact h3) (SDLat.smulLat γ M) (SDLat.smulLat γ' M') b hb'` as an intermediate fact. Simplify `this` using `only [star_star]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem locBasis_push {N N' r : ℕ} (p : ℕ) (γ : Matrix (Fin N) (Fin N) D.host.E)
     (γ' : Matrix (Fin N') (Fin N') D.host.E) (h1 : γ * star γ = 1) (h2 : star γ * γ = 1)
@@ -51,7 +51,7 @@ theorem locBasis_push {N N' r : ℕ} (p : ℕ) (γ : Matrix (Fin N) (Fin N) D.ho
   simpa only [star_star] using this
 
 /- English proof (translation)
-Use `PullbackComparison.ortho_pull (star γ) (star γ') (by rw [star_star]; exact h2) (by rw [star_star]; exact h4) b hb` as an intermediate fact. Simplify `this` using `only [star_star]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ortho_push {N N' r : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E)
     (γ' : Matrix (Fin N') (Fin N') D.host.E) (h2 : star γ * γ = 1) (h4 : star γ' * γ' = 1)
@@ -67,13 +67,13 @@ namespace Formalism.L2.KerInert
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker OrthonormalJets
 
 /- English proof (translation)
-Introduce `D p _ hp5 hin N N' L L' hA`. Take `⟨n, rfl⟩` from `hA.1`. Take `⟨n', rfl⟩` from `hA.2.1`. Establish `hQ : Algebra.IsAlgebraic ℚ Formalism.MainNotions.TaylorLogMetric.Qbar` using `algebraicClosure.isAlgebraic ℚ ℂ`. Set `lam : Formalism.MainNotions.TaylorLogMetric.Qbar →+* ℂ_[p]` to `(IsAlgClosed.lift (R := ℚ) (S := Formalism.MainNotions.TaylorLogMetric.Qbar) (M := ℂ_[p])).toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨r, b, hloc, hon, -⟩` from `hG D p hp5 hin lam`. Establish `hlocN` using `IntTens.locBasis_bB (IntTens.eTwo n') (IntTens.eTwo n) p b hloc`. Establish `honN` using `IntTens.orth_bB (IntTens.eTwo n') (IntTens.eTwo n) b hon`. Take `⟨γ, γ', M, M', -, hM, hM', rfl, rfl⟩` from `hW D p hp5 hin _ _ L L' hA`. Establish `hlocM` using `(pairing_fact D ⊥ 0 p _ _ _ M _ M' hM hM').1 _ _ hlocN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `letI := D.host.cmStar`. Establish `h1 : (γ : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E) * star (γ : Matrix _ _ D.host.E) = 1` using `Matrix.mem_unitaryGroup_iff.1 γ.2`. Establish `h2 : star (γ : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E) * (γ : Matrix _ _ D.host.E) = 1` using `Matrix.mem_unitaryGroup_iff'.1 γ.2`. Establish `h3 : (γ' : Matrix (Fin (n' + n')) (Fin (n' + n')) D.host.E) * star (γ' : Matrix _ _ D.host.E) = 1` using `Matrix.mem_unitaryGroup_iff.1 γ'.2`. Establish `h4 : star (γ' : Matrix (Fin (n' + n')) (Fin (n' + n')) D.host.E) * (γ' : Matrix _ _ D.host.E) = 1` using `Matrix.mem_unitaryGroup_iff'.1 γ'.2`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨_, _, locBasis_push p _ _ h1 h2 h3 h4 M M' _ hlocM, ortho_push _ _ h2 h4 _ honN⟩`.
+Supply the required witnesses or components.
 -/
 theorem orthBasisExists_of (hG : GlobONB) (hW : WeakApprox) : OrthBasisExists := by
   intro D p _ hp5 hin N N' L L' hA

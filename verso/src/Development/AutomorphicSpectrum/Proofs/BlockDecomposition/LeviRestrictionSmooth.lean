@@ -12,9 +12,9 @@ def blockOne (x : Lie E r) : Lie E (r + s) :=
     (Matrix.fromBlocks (Matrix.of x) 0 0 1))
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ContDiff ℝ _ (fun x : Lie E r => Matrix.fromBlocks (Matrix.of x) 0 0 (1 : Matrix (Fin s) (Fin s) (Cinf E)) ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i) ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j))`. Generalize the expression as in `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i = i'`. Generalize the expression as in `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j = j'`. Apply the tactic sequence `rcases i' with i' | i' <;> rcases j' with j' | j'`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `contDiff_apply_apply ℝ (Cinf E) i' j'`. Conclude with `contDiff_const`. Conclude with `contDiff_const`. Conclude with `contDiff_const`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_blockOne : ContDiff ℝ (⊤ : ℕ∞) (blockOne E r s) := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
@@ -29,7 +29,7 @@ theorem contDiff_blockOne : ContDiff ℝ (⊤ : ℕ∞) (blockOne E r s) := by
   · exact contDiff_const
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SmGL.val_emb₂]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blockOne_val (y : GL (Fin r) (Cinf E)) :
     blockOne E r s (toL (y : Matrix (Fin r) (Fin r) (Cinf E))) =
@@ -38,25 +38,25 @@ theorem blockOne_val (y : GL (Fin r) (Cinf E)) :
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(show IsUnit (Matrix.of x) from hx).unit, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_val_of_mem_invSet {x : Lie E r} (hx : x ∈ invSet E r) :
     ∃ y : GL (Fin r) (Cinf E), x = toL (y : Matrix (Fin r) (Fin r) (Cinf E)) :=
   ⟨(show IsUnit (Matrix.of x) from hx).unit, rfl⟩
 
 /- English proof (translation)
-The claim follows from `show IsUnit (Matrix.of (Matrix.of.symm (y : Matrix (Fin r) (Fin r) (Cinf E)))) from y.isUnit`.
+A detailed English derivation is pending.
 -/
 theorem toL_val_mem_invSet (y : GL (Fin r) (Cinf E)) :
     toL (y : Matrix (Fin r) (Fin r) (Cinf E)) ∈ invSet E r :=
   show IsUnit (Matrix.of (Matrix.of.symm (y : Matrix (Fin r) (Fin r) (Cinf E)))) from y.isUnit
 
 /- English proof (translation)
-Introduce `g`. Establish `hmaps : Set.MapsTo (blockOne E r s) (invSet E r) (invSet E (r + s))`. Introduce `x hx`. Take `⟨y, rfl⟩` from `exists_val_of_mem_invSet hx`. Rewrite using `[blockOne_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `toL_val_mem_invSet _`. Establish `hcomp` using `(hF (lev (Ad E) r s (g, 1))).comp contDiff_blockOne.contDiffOn hmaps`. Use `hcomp.congr fun x hx => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `exists_val_of_mem_invSet hx`. Rewrite using `[Function.comp_apply, blockOne_val, chart_val, chart_val]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : lev (Ad E) r s (infGL E r y, 1) = infGL E (r + s) (lev (Cinf E) r s (y, 1))`. Rewrite using `[← lev_infGL, map_one]`. Rewrite using `[← e1, lev_mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sm_lev_slice (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : ℕ) (F : GA E (r + s) → ℂ)
     (hF : F ∈ Sm E (r + s)) : (fun m : GA E r => F (lev (Ad E) r s (m, 1))) ∈ Sm E r := by

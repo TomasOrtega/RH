@@ -18,19 +18,17 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LocM
 namespace GlobalTheory.NormSheafDescent
 
 /- English proof (translation)
-Introduce `Y Z π _ hY _ _ hnZ hW hchar I`. Establish `hK` using `GlobalTheory.T.isField_stalk_imageOfGenericPoint Y Z π hW`. Establish `hfd` using `GlobalTheory.T.finiteDimensional_functionField_stalk_imageGenericPoint Y Z π hK`. Use `letI := GlobalTheory.NormSheafDescent.fieldK π hK`. Use `letI := GlobalTheory.NormSheafDescent.algKL π`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Establish `hcl : IsClosed (Set.range π)` using `π.isClosedMap.isClosed_range`. Take `⟨J, hJ, hJs⟩` from `GlobalTheory.T.exists_idealSheafData_of_isClopen_family Z (Set.range π) ⟨hcl, hW⟩ (GlobalTheory.NormSheafDescent.famIdeal π hK hfd I) (fun U f hU => GlobalTheory.T.normCoeffIdealFamily_map_basicOpen Y Z π hK hfd I U f hU)`. Establish `hgen : ∀ (U : Z.Opens) (x : Z), x ∈ U → x ∈ Set.range π → GlobalTheory.NormSheafDescent.genPt π ∈ U`. Introduce and unpack `U _ hx ⟨y, rfl⟩`. Conclude with `((genericPoint_specializes y).map π.continuous).mem_open U.isOpen hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Z.presheaf.stalk (GlobalTheory.NormSheafDescent.genPt π), Y.functionField, inferInstance, inferInstance, inferInstance, hfd, GlobalTheory.T.charZero_stalk_imageOfGenericPoint Y Z π hchar hK, J, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hxW` using `hJs hx`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS : IsClosed (π '' (I.support : Set Y))` using `π.isClosedMap _ I.support.isClosed`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUsub⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ (π '' (I.support : Set Y))ᶜ ∩ Set.range π from ⟨fun ⟨y, hy, e⟩ => hne y hy e, hxW⟩) (hS.isOpen_compl.inter hW)`. Establish `htop` using `GlobalTheory.T.normCoefficientIdealFamily_eq_top_of_disjoint Y Z π hK hfd I ⟨U, hU⟩ (fun y hy hyU => (hUsub hyU).1 ⟨y, hy, rfl⟩)`. Establish `hx'` using `(Scheme.IdealSheafData.mem_support_iff_of_mem (U := ⟨U, hU⟩) hxU).mp hx`. Rewrite `hx'` using `[hJ ⟨U, hU⟩ (fun z hz => (hUsub hz).2), htop]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(Scheme.mem_zeroLocus_iff _ _ _).mp hx' 1 Submodule.mem_top (by simpa using hxU)`. Introduce and unpack `U hUW ⟨x, hxU⟩`. Establish `h` using `hgen U.1 x hxU (hUW hxU)`. Take `⟨hdom, hfr⟩` from `GlobalTheory.T.sections_isFractionRing_stalk_imageOfGenericPoint Y Z π U.1 U.2 hUW h`. Use `letI := GlobalTheory.NormSheafDescent.algAK π U.1 h`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `letI := GlobalTheory.NormSheafDescent.algBL π U.1 h`. Use `haveI : Nonempty (π ⁻¹ᵁ U.1) := ⟨⟨genericPoint Y, h⟩⟩`. Use `⟨inferInstance, inferInstance, hdom, GlobalTheory.IsNormalScheme.isIntegrallyClosed_of_isAffineOpen U.2, inferInstance, ?_, hfr, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `π.finite_app U.1 U.2`. Conclude with `functionField_isFractionRing_of_isAffineOpen Y _ (U.2.preimage π)`.
-
-Use extensionality with `a`. Conclude with `Scheme.Hom.germ_stalkMap_apply π U.1 (genericPoint Y) h a`. Rewrite using `[hJ U hUW]`. Simplify using `only [GlobalTheory.NormSheafDescent.famIdeal, dif_pos h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem descendedIdealSheaf_exists : ∀ (Y Z : Scheme.{0}) (π : Y ⟶ Z) [IsFinite π], IsIntegral Y → IsLocallyNoetherian Y →
     GlobalTheory.IsNormalScheme Y → GlobalTheory.IsNormalScheme Z → IsOpen (Set.range π) → CharZero Γ(Y, ⊤) →

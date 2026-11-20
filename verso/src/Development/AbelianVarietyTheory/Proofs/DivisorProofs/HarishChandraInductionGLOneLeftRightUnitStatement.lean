@@ -5,7 +5,7 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI GlobalTheory.Shin Semidirect
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.Shin.HcUnit.main) | (exact GlobalTheory.Shin.HcUnit.main) | (intros; apply GlobalTheory.Shin.HcUnit.main <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.harishChandraInductionGL_one_left_right_unit : ∀ (F : Type) [Field F] [Finite F], ∀ (a : ℕ) (α : GL (Fin a) F → ℂ), IsCl α → hc 0 a (fun _ => 1) α a = α ∧ hc a 0 α (fun _ => 1) a = α := by
   first | (exact @GlobalTheory.Shin.HcUnit.main) | (exact GlobalTheory.Shin.HcUnit.main) | (intros; apply GlobalTheory.Shin.HcUnit.main  <;> assumption)

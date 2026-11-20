@@ -17,7 +17,7 @@ def ev1 (g : ι → k) : List ι → k
 def word (Ls : List ι) (m : ι →₀ ℕ) : List ι := Ls.flatMap (fun l => List.replicate (m l) l)
 
 /- English proof (translation)
-Simplify using `only [word, List.flatMap_cons]`.
+Simplify using the standard rewrite rules.
 -/
 theorem word_cons (l : ι) (Ls : List ι) (m : ι →₀ ℕ) :
     word (l :: Ls) m = List.replicate (m l) l ++ word Ls m := by

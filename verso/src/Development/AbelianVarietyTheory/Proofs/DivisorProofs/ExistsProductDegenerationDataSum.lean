@@ -20,14 +20,14 @@ section Tens
 variable {X Y Z : Scheme.{0}} (L M : LB X) {K : Type} [Fintype K]
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => (Set.mem_iInter.1 hy k).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma tens_le₁ (φ : K → (Y ⟶ X)) (jj : K → (tensLB L M).ι) :
     LB.wchart (tensLB L M) φ jj ≤ LB.wchart L φ (fun k => (jj k).1) :=
   fun _ hy => Set.mem_iInter.2 fun k => (Set.mem_iInter.1 hy k).1
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => (Set.mem_iInter.1 hy k).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma tens_le₂ (φ : K → (Y ⟶ X)) (jj : K → (tensLB L M).ι) :
     LB.wchart (tensLB L M) φ jj ≤ LB.wchart M φ (fun k => (jj k).2) :=
@@ -38,7 +38,7 @@ def tensGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ
   s := fun jj => res (tens_le₁ L M φ jj) (t.s (fun k => (jj k).1)) * res (tens_le₂ L M φ jj) (t'.s (fun k => (jj k).2))
 
 /- English proof (translation)
-The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ h _) (gm_res r z _ h _))`.
+A detailed English derivation is pending.
 -/
 theorem gm_tensGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb M φ ε))
     (r : Z ⟶ Y) (z : Z) (jj : K → (tensLB L M).ι) (h : r z ∈ LB.wchart (tensLB L M) φ jj) :
@@ -48,9 +48,9 @@ theorem gm_tensGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinCo
   (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ h _) (gm_res r z _ h _))
 
 /- English proof (translation)
-Unfold `trF`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow]`. Use `congrArg (· ^ ε k) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : (r ≫ φ k) z ∈ (tensLB L M).U (jj k) ⊓ (tensLB L M).U (jj' k)` using `⟨Set.mem_iInter.1 h k, Set.mem_iInter.1 h' k⟩`. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res _ z _ hm _) (gm_res _ z _ hm _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trF_tens (φ : K → (Y ⟶ X)) (ε : K → ℤ) (r : Z ⟶ Y) (z : Z) (jj jj' : K → (tensLB L M).ι)
     (h : r z ∈ LB.wchart (tensLB L M) φ jj) (h' : r z ∈ LB.wchart (tensLB L M) φ jj') :
@@ -67,7 +67,7 @@ theorem trF_tens (φ : K → (Y ⟶ X)) (ε : K → ℤ) (r : Z ⟶ Y) (z : Z) (
   exact (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res _ z _ hm _) (gm_res _ z _ hm _))
 
 /- English proof (translation)
-Introduce `jj jj'`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Use `((gm_res (𝟙 Y) y _ hy _).trans (gm_tensGen L M φ ε t t' (𝟙 Y) y jj hy.1)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_linComb (tensLB L M) φ ε (𝟙 Y) y jj jj' hy.1 hy.2).trans (trF_tens L M φ ε (𝟙 Y) y jj jj' hy.1 hy.2)) ((gm_res (𝟙 Y) y _ hy _).trans (gm_ten …` and prove the remaining obligations. Rewrite using `[gen_trans ht (𝟙 Y) y (tens_le₁ L M φ jj hy.1) (tens_le₁ L M φ jj' hy.2), gen_trans ht' (𝟙 Y) y (tens_le₂ L M φ jj hy.1) (tens_le₂ L M φ jj' hy.2), _root_.mul_mul_mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isGen_tensGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb M φ ε))
     (ht : t.IsGen) (ht' : t'.IsGen) : (tensGen L M φ ε t t').IsGen := by
@@ -84,19 +84,19 @@ theorem isGen_tensGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.Li
 variable {L M}
 
 /- English proof (translation)
-Introduce `ψ` and use `(hJ ψ).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good₁ {z : Z} {J : (Z ⟶ X) → (tensLB L M).ι} (hJ : Good (tensLB L M) z J) :
     Good L z (fun ψ => (J ψ).1) := fun ψ => (hJ ψ).1
 
 /- English proof (translation)
-Introduce `ψ` and use `(hJ ψ).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good₂ {z : Z} {J : (Z ⟶ X) → (tensLB L M).ι} (hJ : Good (tensLB L M) z J) :
     Good M z (fun ψ => (J ψ).2) := fun ψ => (hJ ψ).2
 
 /- English proof (translation)
-The claim follows from `gm_tensGen L M φ ε t t' r z _ (hJ.mem φ r)`.
+A detailed English derivation is pending.
 -/
 theorem val_tensGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb M φ ε))
     (r : Z ⟶ Y) {z : Z} {J : (Z ⟶ X) → (tensLB L M).ι} (hJ : Good (tensLB L M) z J) :
@@ -157,14 +157,14 @@ def extGen : LB.Gen (LB.LinComb (extLB L₁ L₂ f₁ f₂) ψ ε) :=
   tensGen (L₁.pull f₁) (L₂.pull f₂) ψ ε (GeneratorPullback.pullAlong L₁ f₁ h₁ φ₁ ε ψ e₁ t₁) (GeneratorPullback.pullAlong L₂ f₂ h₂ φ₂ ε ψ e₂ t₂)
 
 /- English proof (translation)
-The claim follows from `isGen_tensGen _ _ _ _ _ _ (LBxP.isGen_pullAlong _ _ _ _ _ _ _ _ ht₁) (LBxP.isGen_pullAlong _ _ _ _ _ _ _ _ ht₂)`.
+A detailed English derivation is pending.
 -/
 theorem isGen_extGen (ht₁ : t₁.IsGen) (ht₂ : t₂.IsGen) :
     (extGen L₁ L₂ f₁ f₂ ψ ε h₁ φ₁ e₁ t₁ h₂ φ₂ e₂ t₂).IsGen :=
   isGen_tensGen _ _ _ _ _ _ (LBxP.isGen_pullAlong _ _ _ _ _ _ _ _ ht₁) (LBxP.isGen_pullAlong _ _ _ _ _ _ _ _ ht₂)
 
 /- English proof (translation)
-The claim follows from `(gm_res r z _ h _).trans (gm_pull r h₁ z _ (GeneratorPullback.pullAlong_le L₁ f₁ h₁ φ₁ ψ e₁ jj h) _)`.
+A detailed English derivation is pending.
 -/
 theorem gm_pullAlong (r : Z ⟶ Y) (z : Z) (jj : K → (L₁.pull f₁).ι) (h : r z ∈ LB.wchart (L₁.pull f₁) ψ jj) :
     gm r z (LB.wchart (L₁.pull f₁) ψ jj) ((GeneratorPullback.pullAlong L₁ f₁ h₁ φ₁ ε ψ e₁ t₁).s jj) =
@@ -172,7 +172,7 @@ theorem gm_pullAlong (r : Z ⟶ Y) (z : Z) (jj : K → (L₁.pull f₁).ι) (h :
   (gm_res r z _ h _).trans (gm_pull r h₁ z _ (GeneratorPullback.pullAlong_le L₁ f₁ h₁ φ₁ ψ e₁ jj h) _)
 
 /- English proof (translation)
-The claim follows from `(gm_tensGen _ _ _ _ _ _ r z jj h).trans (congrArg₂ (· * ·) (gm_pullAlong L₁ f₁ ψ ε h₁ φ₁ e₁ t₁ r z _ (tens_le₁ _ _ ψ jj h)) (gm_pullAlong L₂ f₂ ψ ε h₂ φ₂ e₂ t₂ r z _ (tens_le₂ _ _ ψ jj h)))`.
+A detailed English derivation is pending.
 -/
 theorem gm_extGen (r : Z ⟶ Y) (z : Z) (jj : K → (extLB L₁ L₂ f₁ f₂).ι)
     (h : r z ∈ LB.wchart (extLB L₁ L₂ f₁ f₂) ψ jj) :
@@ -187,7 +187,7 @@ def chg (z : Z) (I : (Z ⟶ X) → (L₁.pull f₁).ι) (J : (Z ⟶ X₁) → L�
   gm (p ≫ f₁) z (L₁.U (I p ⟨⟩) ⊓ L₁.U (J (p ≫ f₁))) (L₁.g (I p ⟨⟩) (J (p ≫ f₁)))
 
 /- English proof (translation)
-Use `(gm_pullAlong L₁ f₁ ψ ε h₁ φ₁ e₁ t₁ r z _ (hI.mem ψ r)).trans ?_` and prove the remaining obligations. Use `(gen_trans ht₁ (r ≫ h₁) z (GeneratorPullback.pullAlong_le L₁ f₁ h₁ φ₁ ψ e₁ _ (hI.mem ψ r)) (hJ.mem φ₁ (r ≫ h₁))).trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => congrArg (· ^ ε k) ?_) rfl)` and prove the remaining obligations. Establish `e : (r ≫ h₁) ≫ φ₁ k = (r ≫ ψ k) ≫ f₁` using `by rw [Category.assoc, Category.assoc, e₁]`. Unfold `chg`. Rewrite using `[← e]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_pullAlong (ht₁ : t₁.IsGen) (r : Z ⟶ Y) {z : Z} {I : (Z ⟶ X) → (L₁.pull f₁).ι}
     (hI : Good (L₁.pull f₁) z I) {J : (Z ⟶ X₁) → L₁.ι} (hJ : Good L₁ z J) :
@@ -205,7 +205,7 @@ def chg₂ (z : Z) (J : (Z ⟶ X) → (extLB L₁ L₂ f₁ f₂).ι) (J₁ : (Z
   chg L₁ f₁ z (fun q => (J q).1) J₁ p * chg L₂ f₂ z (fun q => (J q).2) J₂ p
 
 /- English proof (translation)
-Use `(val_tensGen _ _ r hJ).trans ((congrArg₂ (· * ·) (val_pullAlong L₁ f₁ ψ ε h₁ φ₁ e₁ t₁ ht₁ r (good₁ hJ) hJ₁) (val_pullAlong L₂ f₂ ψ ε h₂ φ₂ e₂ t₂ ht₂ r (good₂ hJ) hJ₂)).trans ((_root_.mul_mul_mul_comm _ _ _ _).trans (congrArg₂ (· * ·) ?_ rfl)))` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => (mul_zpow _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_extGen (ht₁ : t₁.IsGen) (ht₂ : t₂.IsGen) (r : Z ⟶ Y) {z : Z} {J : (Z ⟶ X) → (extLB L₁ L₂ f₁ f₂).ι}
     (hJ : Good (extLB L₁ L₂ f₁ f₂) z J) {J₁ : (Z ⟶ X₁) → L₁.ι} (hJ₁ : Good L₁ z J₁) {J₂ : (Z ⟶ X₂) → L₂.ι}
@@ -232,13 +232,13 @@ def extAt : LB.Gen (LB.LinComb (extLB L₁ L₂ f₁ f₂) (K := PUnit) (fun _ =
     (𝟙 Y) (fun _ => p₂) (fun _ => e₂.trans (Category.id_comp _).symm) t₂
 
 /- English proof (translation)
-The claim follows from `isGen_extGen _ _ _ _ _ _ _ _ _ _ _ _ _ _ ht₁ ht₂`.
+A detailed English derivation is pending.
 -/
 theorem isGen_extAt (ht₁ : t₁.IsGen) (ht₂ : t₂.IsGen) : (extAt L₁ L₂ f₁ f₂ p n p₁ e₁ t₁ p₂ e₂ t₂).IsGen :=
   isGen_extGen _ _ _ _ _ _ _ _ _ _ _ _ _ _ ht₁ ht₂
 
 /- English proof (translation)
-Use `(gm_extGen L₁ L₂ f₁ f₂ _ _ _ _ _ _ _ _ _ _ r z (fun _ => q) (Set.mem_iInter.2 fun _ => h)).trans ?_` and prove the remaining obligations. Rewrite using `[Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gm_extAt (r : Z ⟶ Y) (z : Z) (q : (extLB L₁ L₂ f₁ f₂).ι) (h : p (r z) ∈ (extLB L₁ L₂ f₁ f₂).U q) :
     gm r z (LB.wchart (extLB L₁ L₂ f₁ f₂) (fun _ : PUnit => p) (fun _ => q))
@@ -249,7 +249,7 @@ theorem gm_extAt (r : Z ⟶ Y) (z : Z) (q : (extLB L₁ L₂ f₁ f₂).ι) (h :
   rw [Category.comp_id]
 
 /- English proof (translation)
-Use `(val_extGen L₁ L₂ f₁ f₂ _ _ _ _ _ _ _ _ _ _ ht₁ ht₂ r hJ hJ₁ hJ₂).trans ?_` and prove the remaining obligations. Rewrite using `[Category.comp_id, Fintype.prod_unique]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_extAt (ht₁ : t₁.IsGen) (ht₂ : t₂.IsGen) (r : Z ⟶ Y) {z : Z} {J : (Z ⟶ X) → (extLB L₁ L₂ f₁ f₂).ι}
     (hJ : Good (extLB L₁ L₂ f₁ f₂) z J) {J₁ : (Z ⟶ X₁) → L₁.ι} (hJ₁ : Good L₁ z J₁) {J₂ : (Z ⟶ X₂) → L₂.ι}
@@ -260,7 +260,7 @@ theorem val_extAt (ht₁ : t₁.IsGen) (ht₂ : t₂.IsGen) (r : Z ⟶ Y) {z : Z
   rw [Category.comp_id, Fintype.prod_unique]
 
 /- English proof (translation)
-Introduce `j j' _ _ c`. Take `rfl : j = j'` from `funext fun k => c k k rfl`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem corr_self (t : LB.Gen (LB.LinComb L₁ (K := PUnit) (fun _ => p₁) (fun _ => n))) :
     LB.Gen.Corr L₁ _ _ _ _ t t := by
@@ -269,11 +269,11 @@ theorem corr_self (t : LB.Gen (LB.LinComb L₁ (K := PUnit) (fun _ => p₁) (fun
   rfl
 
 /- English proof (translation)
-Substitute `e₁ e₂` using the available equality. Use `⟨t₁, t₂, fun j₁ j₂ jL => unit_ext fun y hy => ?_, corr_self _ _ _ _, corr_self _ _ _ _⟩` and prove the remaining obligations. Establish `h2 : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart (extLB L₁ L₂ f₁ f₂) (fun _ : PUnit => p) (fun _ => jL)` using `Set.mem_iInter.2 fun _ => hy.2`. Establish `h1 : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart (extLB L₁ L₂ f₁ f₂) (fun _ : PUnit => p) (fun _ => extIdx j₁ j₂)` using `Set.mem_iInter.2 fun _ => hy.1`. Establish `key` using `gen_trans (isGen_extAt L₁ L₂ f₁ f₂ p n _ rfl t₁ _ rfl t₂ ht₁ ht₂) (𝟙 Y) y h1 h2`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2` using `gm_extAt L₁ L₂ f₁ f₂ p n _ rfl t₁ _ rfl t₂ (𝟙 Y) y (extIdx j₁ j₂) hy.1`. Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res _ y _ hy _) (gm_res _ y _ hy _))).trans (k2.symm.trans (key.trans (Eq.symm ?_)))` and prove the remaining obligations. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ (gm_res _ y _ hy _))` and prove the remaining obligations. Unfold `trF`. Rewrite using `[Fintype.prod_unique]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_zpow _ _ _).trans (congrArg (· ^ n) (gm_pull (𝟙 Y) p y _ hy _))`.
+A detailed English derivation is pending.
 -/
 theorem mapsAt_extAt (ht₁ : t₁.IsGen) (ht₂ : t₂.IsGen) :
     ∃ b₁ b₂, MapsAt₂ (CubePf.idIsoL (extLB L₁ L₂ f₁ f₂)) p n (extAt L₁ L₂ f₁ f₂ p n p₁ e₁ t₁ p₂ e₂ t₂) b₁ b₂ ∧
@@ -302,27 +302,27 @@ variable {S : Scheme.{0}} {A A₁ A₂ : Over S} (a₁ : A ⟶ A₁) (a₂ : A �
 def pairPt {T : Over S} (x₁ : T ⟶ A₁) (x₂ : T ⟶ A₂) : T ⟶ A := lift x₁ x₂ ≫ inv (lift a₁ a₂)
 
 /- English proof (translation)
-Rewrite using `[pairPt, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pairPt_lift {T : Over S} (x₁ : T ⟶ A₁) (x₂ : T ⟶ A₂) : pairPt a₁ a₂ x₁ x₂ ≫ lift a₁ a₂ = lift x₁ x₂ := by
   rw [pairPt, Category.assoc, IsIso.inv_hom_id, Category.comp_id]
 
 /- English proof (translation)
-Use `congrArg (· ≫ fst A₁ A₂) (pairPt_lift a₁ a₂ x₁ x₂)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pairPt_fst {T : Over S} (x₁ : T ⟶ A₁) (x₂ : T ⟶ A₂) : pairPt a₁ a₂ x₁ x₂ ≫ a₁ = x₁ := by
   have := congrArg (· ≫ fst A₁ A₂) (pairPt_lift a₁ a₂ x₁ x₂)
   simpa using this
 
 /- English proof (translation)
-Use `congrArg (· ≫ snd A₁ A₂) (pairPt_lift a₁ a₂ x₁ x₂)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pairPt_snd {T : Over S} (x₁ : T ⟶ A₁) (x₂ : T ⟶ A₂) : pairPt a₁ a₂ x₁ x₂ ≫ a₂ = x₂ := by
   have := congrArg (· ≫ snd A₁ A₂) (pairPt_lift a₁ a₂ x₁ x₂)
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono (lift a₁ a₂), comp_lift, comp_lift, h₁, h₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_ext {T : Over S} {x y : T ⟶ A} (h₁ : x ≫ a₁ = y ≫ a₁) (h₂ : x ≫ a₂ = y ≫ a₂) : x = y := by
   rw [← cancel_mono (lift a₁ a₂), comp_lift, comp_lift, h₁, h₂]
@@ -334,19 +334,19 @@ section Hom
 variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] (a : A ⟶ B) [IsMonHom a]
 
 /- English proof (translation)
-Rewrite using `[padd, padd, Category.assoc, IsMonHom.mul_hom, lift_map_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem padd_comp {T : Over S} (x y : T ⟶ A) : padd A x y ≫ a = padd B (x ≫ a) (y ≫ a) := by
   rw [padd, padd, Category.assoc, IsMonHom.mul_hom, lift_map_assoc]
 
 /- English proof (translation)
-Rewrite using `[eSec, eSec, ← Over.comp_left, IsMonHom.one_hom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eSec_comp : eSec A ≫ a.left = eSec B := by
   rw [eSec, eSec, ← Over.comp_left, IsMonHom.one_hom]
 
 /- English proof (translation)
-Use `fin_cases k`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]`. Rewrite using `[← Over.comp_left, ← Over.comp_left, GrpObj.inv_hom]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_comp (k : Fin 2) :
     (![(ι[A]).left, 𝟙 A.left] : Fin 2 → (A.left ⟶ A.left)) k ≫ a.left =
@@ -357,7 +357,7 @@ theorem inv_comp (k : Fin 2) :
   · simp
 
 /- English proof (translation)
-Simplify using `[Fin.prod_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prod_sym {Z : Scheme.{0}} (r : Z ⟶ A.left) {U : Type} [CommGroup U] (f : (Z ⟶ A.left) → U) :
     ∏ k : Fin 2, f (r ≫ (![(ι[A]).left, 𝟙 A.left] : Fin 2 → (A.left ⟶ A.left)) k) ^ (![1, -1] : Fin 2 → ℤ) k =
@@ -365,7 +365,7 @@ theorem prod_sym {Z : Scheme.{0}} (r : Z ⟶ A.left) {U : Type} [CommGroup U] (f
   simp [Fin.prod_univ_two]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, lift_map, lift_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem groupObj_lift3_comp_tensorCube_monHom {T : Over S} (x y z : T ⟶ A) :
     (lift x (lift y z)).left ≫ (a ⊗ₘ a ⊗ₘ a).left = (lift (x ≫ a) (lift (y ≫ a) (z ≫ a))).left := by
@@ -397,7 +397,7 @@ def sRig : LB.Gen ((sL D₁ D₂ P a₁ a₂).pull (eSec P.A)) :=
   extAt D₁.P.L D₂.P.L a₁.left a₂.left (eSec P.A) 1 _ (eSec_comp a₁) D₁.rig _ (eSec_comp a₂) D₂.rig
 
 /- English proof (translation)
-The claim follows from `isGen_extAt _ _ _ _ _ _ _ _ _ _ _ _ D₁.rig_gen D₂.rig_gen`.
+A detailed English derivation is pending.
 -/
 theorem sRig_gen : (sRig D₁ D₂ P a₁ a₂).IsGen := isGen_extAt _ _ _ _ _ _ _ _ _ _ _ _ D₁.rig_gen D₂.rig_gen
 
@@ -405,12 +405,12 @@ def sSym : LB.Gen (LB.LinComb (sL D₁ D₂ P a₁ a₂) (K := Fin 2) ![(ι[P.A]
   extGen D₁.P.L D₂.P.L a₁.left a₂.left _ _ a₁.left _ (inv_comp a₁) D₁.sym a₂.left _ (inv_comp a₂) D₂.sym
 
 /- English proof (translation)
-The claim follows from `isGen_extGen _ _ _ _ _ _ _ _ _ _ _ _ _ _ D₁.sym_gen D₂.sym_gen`.
+A detailed English derivation is pending.
 -/
 theorem sSym_gen : (sSym D₁ D₂ P a₁ a₂).IsGen := isGen_extGen _ _ _ _ _ _ _ _ _ _ _ _ _ _ D₁.sym_gen D₂.sym_gen
 
 /- English proof (translation)
-The claim follows from `(val_extGen _ _ _ _ _ _ _ _ _ _ _ _ _ _ D₁.sym_gen D₂.sym_gen r hJ hJ₁ hJ₂).trans (congrArg₂ (· * ·) (prod_sym r _) rfl)`.
+A detailed English derivation is pending.
 -/
 theorem val_sSym {Z : Scheme.{0}} (r : Z ⟶ P.A.left) {z : Z} {J} (hJ : Good (sL D₁ D₂ P a₁ a₂) z J)
     {J₁} (hJ₁ : Good D₁.P.L z J₁) {J₂} (hJ₂ : Good D₂.P.L z J₂) :
@@ -422,14 +422,14 @@ theorem val_sSym {Z : Scheme.{0}} (r : Z ⟶ P.A.left) {z : Z} {J} (hJ : Good (s
     (congrArg₂ (· * ·) (prod_sym r _) rfl)
 
 /- English proof (translation)
-Establish `v` using `val_corr hJ D.sym_rig (𝟙 _)`. Rewrite `v` using `[val_pull hJ, Category.id_comp, val_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem val_sym_zero (D : DegPre R) {y} {J} (hJ : Good D.P.L y J) : val D.sym (eSec D.P.A) y J = 1 := by
   have v := val_corr hJ D.sym_rig (𝟙 _)
   rwa [val_pull hJ, Category.id_comp, val_one] at v
 
 /- English proof (translation)
-Use `corr_of_val hL fun y J hJ => ?_` and prove the remaining obligations. Take `⟨J₁, hJ₁⟩` from `BoxFamily.exists_good_at D₁.P.isLB y`. Take `⟨J₂, hJ₂⟩` from `BoxFamily.exists_good_at D₂.P.isLB y`. Establish `o : eSec P.A ≫ (ι[P.A]).left = eSec P.A` using `congrArg (fun m => m.left) (GrpObj.one_inv : η[P.A] ≫ ι[P.A] = η[P.A])`. Rewrite using `[val_pull hJ, Category.id_comp, val_one, val_sSym D₁ D₂ P a₁ a₂ _ hJ hJ₁ hJ₂, o, mul_inv_cancel, eSec_comp, eSec_comp, val_sym_zero D₁ hJ₁, val_sym_zero D₂ hJ₂, _root_.mul_one, _root_.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sSym_rig (hL : (sL D₁ D₂ P a₁ a₂).IsLB) : LB.Gen.Corr (sL D₁ D₂ P a₁ a₂) _ _ _ _
     (LB.pullGen (sL D₁ D₂ P a₁ a₂) _ _ (sSym D₁ D₂ P a₁ a₂) (eSec P.A)) (LB.oneGen (sL D₁ D₂ P a₁ a₂)) := by
@@ -451,7 +451,7 @@ def sCub (hL : (sL D₁ D₂ P a₁ a₂).IsLB) :
   tensCub (pullCub P D₁ a₁) (pullCub P D₂ a₂) _ hL _
 
 /- English proof (translation)
-Substitute `hh` using the available equality. Use `(val_extGen D₁.P.L D₂.P.L a₁.left a₂.left (thφ P.A (x3 P.A)) thε (a₁ ⊗ₘ a₁ ⊗ₘ a₁).left (thφ D₁.P.A (x3 D₁.P.A)) (fun I => (CubeMap.ofHom a₁).psum_comm I.down) D₁.cub.t (a₂ ⊗ₘ a₂ ⊗ₘ a₂).left (thφ D₂.P.A (x3 D₂.P.A)) (fun I => (CubeMap.ofHom a₂).psum_comm I.down) D₂.cub.t D₁.cub.is …` and prove the remaining obligations. Rewrite using `[groupObj_lift3_comp_tensorCube_monHom, groupObj_lift3_comp_tensorCube_monHom]`. Both sides reduce to the same expression.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cubV_sCub (hL : (sL D₁ D₂ P a₁ a₂).IsLB) {T : Over (Spec (CommRingCat.of R))} {z : T.left} {J}
     (hJ : Good (sL D₁ D₂ P a₁ a₂) z J) {J₁} (hJ₁ : Good D₁.P.L z J₁) {J₂} (hJ₂ : Good D₂.P.L z J₂)
@@ -475,13 +475,13 @@ variable [IsIso (lift a₁ a₂)]
 def sC (x : D₁.X × D₂.X) : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ P.A := pairPt a₁ a₂ (D₁.c x.1) (D₂.c x.2)
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, Category.assoc, sC, pairPt_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptK_fst (x : D₁.X × D₂.X) : ptK (sC D₁ D₂ P a₁ a₂ x) ≫ a₁.left = ptK (D₁.c x.1) := by
   rw [← Over.comp_left, Category.assoc, sC, pairPt_fst]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, Category.assoc, sC, pairPt_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptK_snd (x : D₁.X × D₂.X) : ptK (sC D₁ D₂ P a₁ a₂ x) ≫ a₂.left = ptK (D₂.c x.2) := by
   rw [← Over.comp_left, Category.assoc, sC, pairPt_snd]
@@ -510,7 +510,7 @@ def sumPre : DegPre R where
   psi_gen := fun x => isGen_extAt _ _ _ _ _ _ _ _ _ _ _ _ (D₁.psi_gen x.1) (D₂.psi_gen x.2)
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (IsMonHom a₁) hom₂ := inferInstanceAs (IsMonHom a₂) lim := inferInstanceAs (IsIso (lift a₁ a₂)) xsum := Function.bijective_id c_pr₁ := fun _ => pairPt_fst a₁ a₂ _ _ c_pr₂ := fun _ => pairPt_snd a₁ a₂ _ _ w := ⟨CubePf.idIsoL (sL D₁ D₂ P a₁ a₂), CubePf.idIsoL_isGen …`.
+A detailed English derivation is pending.
 -/
 theorem isSumDeg_sumPre : IsSumDeg (sumPre D₁ D₂ P a₁ a₂ h) D₁ D₂ a₁ a₂ (AddMonoidHom.fst D₁.X D₂.X)
     (AddMonoidHom.snd D₁.X D₂.X) where
@@ -527,7 +527,7 @@ theorem isSumDeg_sumPre : IsSumDeg (sumPre D₁ D₂ P a₁ a₂ h) D₁ D₂ a�
       _ (ptK_snd D₁ D₂ P a₁ a₂ x) (D₂.psi x.2) (D₁.psi_gen x.1) (D₂.psi_gen x.2)⟩
 
 /- English proof (translation)
-Use `(val_extAt D₁.P.L D₂.P.L a₁.left a₂.left _ (-1) _ (ptK_fst D₁ D₂ P a₁ a₂ x) (D₁.psi x.1) _ (ptK_snd D₁ D₂ P a₁ a₂ x) (D₂.psi x.2) (D₁.psi_gen x.1) (D₂.psi_gen x.2) (𝟙 _) hJ hJ₁ hJ₂).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, zpow_neg_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_psi (x : D₁.X × D₂.X) {y : (TK R).left} {J} (hJ : Good (sL D₁ D₂ P a₁ a₂) y J)
     {J₁} (hJ₁ : Good D₁.P.L y J₁) {J₂} (hJ₂ : Good D₂.P.L y J₂) :
@@ -539,7 +539,7 @@ theorem val_psi (x : D₁.X × D₂.X) {y : (TK R).left} {J} (hJ : Good (sL D₁
   rw [Category.id_comp, zpow_neg_one]
 
 /- English proof (translation)
-Use `(val_pull hJ _ _ _).trans ((val_extAt D₁.P.L D₂.P.L a₁.left a₂.left (eSec P.A) 1 _ (eSec_comp a₁) D₁.rig _ (eSec_comp a₂) D₂.rig D₁.rig_gen D₂.rig_gen _ hJ hJ₁ hJ₂).trans (congrArg₂ (· * ·) ?_ (congrArg₂ (· * ·) (val_pull hJ₁ _ _ _).symm (val_pull hJ₂ _ _ _).symm)))` and prove the remaining obligations. Rewrite using `[Category.id_comp, zpow_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_rigK {y : (TK R).left} {J} (hJ : Good (sL D₁ D₂ P a₁ a₂) y J)
     {J₁} (hJ₁ : Good D₁.P.L y J₁) {J₂} (hJ₂ : Good D₂.P.L y J₂) :
@@ -553,13 +553,13 @@ theorem val_rigK {y : (TK R).left} {J} (hJ : Good (sL D₁ D₂ P a₁ a₂) y J
   rfl
 
 /- English proof (translation)
-Introduce `(x : D₁.X × D₂.X)`. Use `corr_of_val (sumPre D₁ D₂ P a₁ a₂ h).P.isLB fun y J hJ => ?_` and prove the remaining obligations. Take `⟨J₁, hJ₁⟩` from `BoxFamily.exists_good_at D₁.P.isLB y`. Take `⟨J₂, hJ₂⟩` from `BoxFamily.exists_good_at D₂.P.isLB y`. Establish `n : ptK (sC D₁ D₂ P a₁ a₂ (-x)) = ptK (sC D₁ D₂ P a₁ a₂ x) ≫ (ι[P.A]).left`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `PsiEvenPull.c_neg (sumPre D₁ D₂ P a₁ a₂ h) x` as an intermediate fact. Conclude with `(congrArg (fun m => ptK m) this).trans (Category.assoc (jK R) _ _).symm`. Establish `e : ∀ (D : DegPre R), D.PsiEven → ∀ (χ : D.X) {I}, Good D.P.L y I → val (D.psi (-χ)) (𝟙 _) y I * val D.sym (ptK (D.c χ)) y I = val (D.psi χ) (𝟙 _) y I` using `fun D hE χ I hI => by`. Use `val_corr hI (hE χ) (𝟙 _)` as an intermediate fact. Rewrite `this` using `[val_mul hI, val_pull hI, Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `s` using `val_sSym D₁ D₂ P a₁ a₂ (ptK (sC D₁ D₂ P a₁ a₂ x)) hJ hJ₁ hJ₂`. Rewrite `s` using `[← n, ptK_fst, ptK_snd]`. Use `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_psi D₁ D₂ P a₁ a₂ h (-x) hJ hJ₁ hJ₂) ((val_pull hJ _ _ _).trans ((congrArg (fun m => val (sSym D₁ D₂ P a₁ a₂) m y J) (Category.id_comp _)).trans s)))).trans (Eq.trans ?_ (val_psi D₁ D₂ P a₁ a₂ h x hJ hJ₁ hJ₂).symm)` and prove the remaining obligations. Rewrite using `[← e D₁ hE₁ x.1 hJ₁, ← e D₂ hE₂ x.2 hJ₂, Prod.fst_neg, Prod.snd_neg]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem psiEven (hE₁ : D₁.PsiEven) (hE₂ : D₂.PsiEven) : (sumPre D₁ D₂ P a₁ a₂ h).PsiEven := by
   intro (x : D₁.X × D₂.X)
@@ -584,13 +584,13 @@ theorem psiEven (hE₁ : D₁.PsiEven) (hE₂ : D₂.PsiEven) : (sumPre D₁ D�
   abel
 
 /- English proof (translation)
-Establish `a : ptK (sC D₁ D₂ P a₁ a₂ (p + q)) = (u * v).left`. Substitute `hu hv` using the available equality. Conclude with `congrArg (fun m => m.left) (cPoint_add (sumPre D₁ D₂ P a₁ a₂ h) (TK R) p q)`. Establish `b₃` using `val_psi D₁ D₂ P a₁ a₂ h (p + q) hJ hJ₁ hJ₂`. Rewrite `b₃` using `[a, Prod.fst_add, Prod.snd_add, ← hf]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `b₁` using `val_psi D₁ D₂ P a₁ a₂ h p hJ hJ₁ hJ₂`. Establish `b₂` using `val_psi D₁ D₂ P a₁ a₂ h q hJ hJ₁ hJ₂`. Establish `b₀` using `val_rigK D₁ D₂ P a₁ a₂ h hJ hJ₁ hJ₂`. Rewrite `b₁` using `[show ptK (sC D₁ D₂ P a₁ a₂ p) = u.left by rw [hu], ← hf]`. Rewrite `b₂` using `[show ptK (sC D₁ D₂ P a₁ a₂ q) = v.left by rw [hv], ← hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b₀` using `[← hf]`. Use `(TauBalBox.tau_val (sumPre D₁ D₂ P a₁ a₂ h) hJ p q (𝟙 _)).trans ((congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg₂ (· * ·) b₃ (congrArg (·⁻¹) b₁)) (congrArg (·⁻¹) b₂)) (congrArg (·⁻¹) b₀)).trans ?_)` and prove the remaining obligations. Rewrite using `[TauBalBox.tau_val D₁ hJ₁, TauBalBox.tau_val D₂ hJ₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem val_tau (p q : D₁.X × D₂.X) {y : (TK R).left} {J} (hJ : Good (sL D₁ D₂ P a₁ a₂) y J)
     {J₁} (hJ₁ : Good D₁.P.L y J₁) {J₂} (hJ₂ : Good D₂.P.L y J₂)
@@ -619,17 +619,17 @@ theorem val_tau (p q : D₁.X × D₂.X) {y : (TK R).left} {J} (hJ : Good (sL D�
   abel
 
 /- English proof (translation)
-Introduce `(a : D₁.X × D₂.X) (a' : D₁.X × D₂.X) (b : D₁.X × D₂.X)`. Use `corr_of_val (sumPre D₁ D₂ P a₁ a₂ h).P.isLB fun y J hJ => ?_` and prove the remaining obligations. Take `⟨J₁, hJ₁⟩` from `BoxFamily.exists_good_at D₁.P.isLB y`. Take `⟨J₂, hJ₂⟩` from `BoxFamily.exists_good_at D₂.P.isLB y`. Take `⟨f, hf⟩ : ∃ f, f = chg₂ D₁.P.L D₂.P.L a₁.left a₂.left y J J₁ J₂` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩ : ∃ u : TK R ⟶ P.A, u = toUnit _ ≫ sC D₁ D₂ P a₁ a₂ a` from `⟨_, rfl⟩`. Take `⟨u', hu'⟩ : ∃ u : TK R ⟶ P.A, u = toUnit _ ≫ sC D₁ D₂ P a₁ a₂ a'` from `⟨_, rfl⟩`. Take `⟨v, hv⟩ : ∃ u : TK R ⟶ P.A, u = toUnit _ ≫ sC D₁ D₂ P a₁ a₂ b` from `⟨_, rfl⟩`. Establish `huu : u * u' = toUnit _ ≫ sC D₁ D₂ P a₁ a₂ (a + a')`. Substitute `hu hu'` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `(cPoint_add (sumPre D₁ D₂ P a₁ a₂ h) (TK R) a a').symm`. Establish `t₁` using `val_tau D₁ D₂ P a₁ a₂ h (a + a') b hJ hJ₁ hJ₂ f hf _ _ huu hv`. Establish `t₂` using `val_tau D₁ D₂ P a₁ a₂ h a b hJ hJ₁ hJ₂ f hf _ _ hu hv`. Establish `t₃` using `val_tau D₁ D₂ P a₁ a₂ h a' b hJ hJ₁ hJ₂ f hf _ _ hu' hv`. Establish `key` using `cubV_sCub D₁ D₂ P a₁ a₂ (withL P _ h).isLB hJ hJ₁ hJ₂ u u' v f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ (D : DegPre R), D.TauBimult → ∀ (χ χ' ω : D.X) {I}, Good D.P.L y I → cubV D.cub y I (cP D (TK R) χ) (cP D (TK R) χ') (cP D (TK R) ω) = (val (D.tau (χ + χ') ω) (𝟙 _) y I)⁻¹ * (val (D.tau χ ω) (𝟙 _) y I * val (D.tau χ' ω) (𝟙 _) y I)` using `fun D hB χ χ' ω I hI => eq_inv_mul_of_mul_eq ((TauBimultBox.val_lhs D hI _ _ _).symm.trans ((val_corr hI (hB χ χ' ω) (𝟙 _)).trans (val_mul hI _ _ _)))`. Establish `f₁ : ∀ (w : TK R ⟶ P.A) (x : D₁.X × D₂.X), w = toUnit _ ≫ sC D₁ D₂ P a₁ a₂ x → w ≫ a₁ = cP D₁ (TK R) x.1` using `fun w x hw => by rw [hw, Category.assoc, sC, pairPt_fst]; rfl`. Establish `f₂ : ∀ (w : TK R ⟶ P.A) (x : D₁.X × D₂.X), w = toUnit _ ≫ sC D₁ D₂ P a₁ a₂ x → w ≫ a₂ = cP D₂ (TK R) x.2` using `fun w x hw => by rw [hw, Category.assoc, sC, pairPt_snd]; rfl`. Rewrite `key` using `[f₁ u a hu, f₁ u' a' hu', f₁ v b hv, f₂ u a hu, f₂ u' a' hu', f₂ v b hv, e D₁ hB₁ _ _ _ hJ₁, e D₂ hB₂ _ _ _ hJ₂]`. Establish `k' : cubV (sumPre D₁ D₂ P a₁ a₂ h).cub y J (cP (sumPre D₁ D₂ P a₁ a₂ h) (TK R) a) (cP (sumPre D₁ D₂ P a₁ a₂ h) (TK R) a') (cP (sumPre D₁ D₂ P a₁ a₂ h) (TK R) b) = cubV (sCub D₁ D₂ P a₁ a₂ (withL P _ h).isLB) y J u u' v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hu hu' hv` using the available equality. Both sides reduce to the same expression. Use `((TauBimultBox.val_lhs (sumPre D₁ D₂ P a₁ a₂ h) hJ a a' b).trans (congrArg₂ (· * ·) t₁ (k'.trans key))).trans (Eq.trans ?_ ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) t₂ t₃)).symm)` and prove the remaining obligations. Rewrite using `[Prod.fst_add, Prod.snd_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem tauBimult (hB₁ : D₁.TauBimult) (hB₂ : D₂.TauBimult) : (sumPre D₁ D₂ P a₁ a₂ h).TauBimult := by
   intro (a : D₁.X × D₂.X) (a' : D₁.X × D₂.X) (b : D₁.X × D₂.X)
@@ -671,9 +671,9 @@ theorem tauBimult (hB₁ : D₁.TauBimult) (hB₂ : D₂.TauBimult) : (sumPre D�
   abel
 
 /- English proof (translation)
-Use `PsiInPow.psiIn_of_gs (sumPre D₁ D₂ P a₁ a₂ h) x _ fun q V hV hle z hz => ?_` and prove the remaining obligations. Establish `c₁ : (sC D₁ D₂ P a₁ a₂ x).left ≫ a₁.left = (D₁.c x.1).left`. Rewrite using `[← Over.comp_left, sC, pairPt_fst]`. Establish `c₂ : (sC D₁ D₂ P a₁ a₂ x).left ≫ a₂.left = (D₂.c x.2).left`. Rewrite using `[← Over.comp_left, sC, pairPt_snd]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r₁, hr₁, e₁⟩` from `PsiInPow.gs_of_psiIn D₁ _ _ H₁ (q.1 ⟨⟩) V hV (fun y hy => (congrArg (fun m => m y ∈ D₁.P.L.U (q.1 ⟨⟩)) c₁).mp (Set.mem_iInter.1 (hle hy).1 ⟨⟩)) z hz`. Take `⟨r₂, hr₂, e₂⟩` from `PsiInPow.gs_of_psiIn D₂ _ _ H₂ (q.2 ⟨⟩) V hV (fun y hy => (congrArg (fun m => m y ∈ D₂.P.L.U (q.2 ⟨⟩)) c₂).mp (Set.mem_iInter.1 (hle hy).2 ⟨⟩)) z hz`. Use `⟨r₁ * r₂, by rw [Ideal.map_mul]; exact Ideal.mul_mem_mul hr₁ hr₂, ?_⟩` and prove the remaining obligations. Use `(gs_mul _ _ _ hz _ _).trans ((congrArg₂ (· * ·) e₁ e₂).trans ((Units.val_mul _ _).symm.trans (congrArg Units.val (Eq.symm ?_))))` and prove the remaining obligations. Conclude with `gm_extAt D₁.P.L D₂.P.L a₁.left a₂.left _ (-1) _ (ptK_fst D₁ D₂ P a₁ a₂ x) (D₁.psi x.1) _ (ptK_snd D₁ D₂ P a₁ a₂ x) (D₂.psi x.2) (𝟙 _) z q (hle hz)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem psiIn_mul (x : D₁.X × D₂.X) (I₁ I₂ : Ideal R) (H₁ : D₁.PsiIn x.1 I₁) (H₂ : D₂.PsiIn x.2 I₂) :
     (sumPre D₁ D₂ P a₁ a₂ h).PsiIn x (I₁ * I₂) := by
@@ -695,13 +695,11 @@ theorem psiIn_mul (x : D₁.X × D₂.X) (I₁ I₂ : Ideal R) (H₁ : D₁.PsiI
 end Deg
 
 /- English proof (translation)
-Introduce `R _ _ I D₁ D₂`. Take `⟨P, a₁, a₂, hs, h⟩` from `GlobalTheory.T.exists_product_principallyPolarised_abelianScheme _ D₁.toPre.P D₂.toPre.P`. Use `hs.hom₁` as an intermediate fact. Use `hs.hom₂` as an intermediate fact. Use `hs.lim` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l : ∀ (x : D₁.toPre.X × D₂.toPre.X) (J : Ideal R), D₁.toPre.PsiIn x.1 J → (sumPre D₁.toPre D₂.toPre P a₁ a₂ h).PsiIn x J` using `fun x J H => by`. Use `psiIn_mul D₁.toPre D₂.toPre P a₁ a₂ h x J ⊤ H (PowDegData.psiIn_top D₂ x.2)` as an intermediate fact. Rewrite `this` using `[Ideal.mul_top]`. Then use the resulting hypothesis. Establish `r : ∀ (x : D₁.toPre.X × D₂.toPre.X) (J : Ideal R), D₂.toPre.PsiIn x.2 J → (sumPre D₁.toPre D₂.toPre P a₁ a₂ h).PsiIn x J` using `fun x J H => by`. Use `psiIn_mul D₁.toPre D₂.toPre P a₁ a₂ h x ⊤ J (PowDegData.psiIn_top D₁ x.1) H` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Ideal.top_mul]`. Then use the resulting hypothesis. Use `⟨⟨sumPre D₁.toPre D₂.toPre P a₁ a₂ h, psiEven _ _ _ _ _ h D₁.psi_even D₂.psi_even, tauBimult _ _ _ _ _ h D₁.tau_bimult D₂.tau_bimult, fun x hx => ?_, fun n => ?_⟩, a₁, a₂, _, _, isSumDeg_sumPre D₁.toPre D₂.toPre P a₁ a₂ h⟩` and prove the remaining obligations. Distinguish the cases in `h₁ : x.1 = 0`. Conclude with `r x I (D₂.psi_pos _ fun h₂ => hx (Prod.ext h₁ h₂))`. Conclude with `l x I (D₁.psi_pos _ h₁)`.
-
-Conclude with `((D₁.psi_tendsto n).prod (D₂.psi_tendsto n)).subset fun x hx => ⟨fun H => hx (l x _ H), fun H => hx (r x _ H)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem exists_sum : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D₁ D₂ : DegData R I),
     ∃ (D : DegData R I) (p₁ : D.toPre.P.A ⟶ D₁.toPre.P.A) (p₂ : D.toPre.P.A ⟶ D₂.toPre.P.A)

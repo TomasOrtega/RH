@@ -9,7 +9,7 @@ namespace PositivityTheory.Rg.BcB.CV.FirstVanishingAlt
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D4 PositivityTheory.Rg.BcB.CV
 
 /- English proof (translation)
-Rewrite `ht` using `[mem_twCent]`. Simplify using `only [twConj, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem twConj_mul_left {n : ℕ} (d t x : GL (Fin n) ℂ) (ht : t ∈ twCent (thC n) d) :
     twConj (thC n) (t * x) d = twConj (thC n) x d := by
@@ -19,7 +19,7 @@ theorem twConj_mul_left {n : ℕ} (d t x : GL (Fin n) ℂ) (ht : t ∈ twCent (t
     _ = x⁻¹ * d * (thC n) x := by rw [ht]
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem sle_refl {m : ℕ} (e : Fin m → SignType) : SLe e e := fun _ _ => rfl
 
@@ -27,7 +27,7 @@ def zr {m : ℕ} (z : (Fin m → SignType) → ℝ) (s : Finset (Fin m → SignT
   fun e => if e ∈ s then z e else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `e'`. Distinguish the cases in `h : e' = e`. Substitute `h` using the available equality. Simplify using `[zr]`. Simplify using `[zr, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem zr_insert {m : ℕ} (z y : (Fin m → SignType) → ℝ) {s : Finset (Fin m → SignType)} {e : Fin m → SignType}
     (he : e ∉ s) : y + zr z (insert e s) = Function.update (y + zr z s) e (y e + z e) := by
@@ -37,7 +37,7 @@ theorem zr_insert {m : ℕ} (z y : (Fin m → SignType) → ℝ) {s : Finset (Fi
   · simp [zr, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `e'`. Distinguish the cases in `h : e' = e`. Substitute `h` using the available equality. Simplify using `[zr, he]`. Simplify using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem zr_self {m : ℕ} (z y : (Fin m → SignType) → ℝ) {s : Finset (Fin m → SignType)} {e : Fin m → SignType}
     (he : e ∉ s) : y + zr z s = Function.update (y + zr z s) e (y e) := by
@@ -47,7 +47,7 @@ theorem zr_self {m : ℕ} (z y : (Fin m → SignType) → ℝ) {s : Finset (Fin 
   · simp [h]
 
 /- English proof (translation)
-Establish `key : ∀ w : (Fin m → SignType) → ℝ, V (w + zr z (insert e s)) - V (w + zr z s) = V (Function.update (w + zr z s) e (w e + z e)) - V (Function.update (w + zr z s) e (w e))` using `fun w => by`. Rewrite using `[← zr_insert z w he, ← zr_self z w he]`. Establish `hee : y e = y' e` using `hyy e (Or.inl (sle_refl e))`. Rewrite using `[key y, key y', hee]`. Conclude with `hV.diff _ _ e _ _ (fun e' h => by simp only [Pi.add_apply, hyy e' h])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diff_step {m : ℕ} {V : ((Fin m → SignType) → ℝ) → ℂ} (hV : VP V) (z : (Fin m → SignType) → ℝ)
     (s : Finset (Fin m → SignType)) (e : Fin m → SignType) (he : e ∉ s) (y y' : (Fin m → SignType) → ℝ)
@@ -61,9 +61,9 @@ theorem diff_step {m : ℕ} {V : ((Fin m → SignType) → ℝ) → ℂ} (hV : V
   exact hV.diff _ _ e _ _ (fun e' h => by simp only [Pi.add_apply, hyy e' h])
 
 /- English proof (translation)
-Use `⟨hV.meas.comp (hL.cont.add continuous_const).measurable, fun t ht x => hL.tor t ht x c, fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn (f := fun x => p x + c) (hL.cont.add continuous_const).continuousOn`. Take `⟨B, hB⟩` from `hV.bdd M`. Use `⟨B, fun x hx => hB _ fun e => ?_⟩` and prove the remaining obligations. Use `(norm_le_pi_norm (p x + c) e).trans (hM x hx)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.norm_eq_abs]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem good_V {n m : ℕ} [MeasurableSpace (GL (Fin n) ℂ)] [BorelSpace (GL (Fin n) ℂ)] {d : GL (Fin n) ℂ}
     {V : ((Fin m → SignType) → ℝ) → ℂ} {p : GL (Fin n) ℂ → (Fin m → SignType) → ℝ} (hV : VP V) (hL : LocFam d V p)
@@ -81,31 +81,29 @@ end PositivityTheory.Rg.BcB.CV.FirstVanishingAlt
 
 open PositivityTheory.Rg.BcB.CV.FirstVanishingAlt in
 /- English proof (translation)
-Introduce `hLV hLP hLT hQI hQA n m _ _ μ _ d ν _ _ f V p z hsep hf hfs hfc hV hL hz0`. Take `⟨hTc, -, hθc, hlc, hsc⟩` from `hLT n d hsep`. Use `hlc` as an intermediate fact. Use `hsc` as an intermediate fact. Establish `htc : Continuous (fun x : GL (Fin n) ℂ => twConj (thC n) x d)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `twConj`. Conclude with `(continuous_inv.mul continuous_const).mul hθc`. Take `⟨Bf, hBf⟩` from `hf.bounded_above_of_compact_support hfs`. Take `⟨C', hC', hsub⟩` from `hLP n d hsep (tsupport f) hfs`. Take `⟨A, -, hAI⟩` from `hQI (GL (Fin n) ℂ) μ (twCent (thC n) d) ν C' hTc hC'`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `fin : ∀ g : GL (Fin n) ℂ → ℂ, Measurable g → (∀ t ∈ twCent (thC n) d, ∀ x, g (t * x) = g x) → (∀ C : Set (GL (Fin n) ℂ), IsCompact C → ∃ B : ℝ, ∀ x ∈ C, ‖g x‖ ≤ B) → Measurable (fun x => f (twConj (thC n) x d) * g x) ∧ quotLIntegral μ (twCent (thC n) d) ν (fun x => ‖f (twConj (th …`. Introduce `g hgm hgT hgb`. Take `⟨Bg, hBg⟩` from `hgb C' hC'`. Establish `hm : Measurable (fun x => f (twConj (thC n) x d) * g x)` using `(hf.comp htc).measurable.mul hgm`. Use `⟨hm, (hAI _ (max Bf 0 * max Bg 0) (mul_nonneg (le_max_right _ _) (le_max_right _ _)) hm ?_ ?_ ?_).1⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht x`. Rewrite using `[twConj_mul_left d t x ht, hgT t ht x]`. Introduce `x hx`. Conclude with `hsub (show twConj (thC n) x d ∈ tsupport f from subset_tsupport f (Function.mem_support.2 (left_ne_zero_of_mul hx)))`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul ((hBf _).trans (le_max_left _ _)) ((hBg x hx).trans (le_max_left _ _)) (norm_nonneg _) (le_max_right _ _)`. Establish `goodsub : ∀ c c' : (Fin m → SignType) → ℝ, Measurable (fun x => V (p x + c) - V (p x + c')) ∧ (∀ t ∈ twCent (thC n) d, ∀ x, V (p (t * x) + c) - V (p (t * x) + c') = V (p x + c) - V (p x + c')) ∧ ∀ C : Set (GL (Fin n) ℂ), IsCompact C → ∃ B : ℝ, ∀ x ∈ C, ‖V (p x + c) - V (p x + c') …`. Introduce `c c'`. Take `⟨h1, h2, h3⟩` from `good_V hV hL c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h1', h2', h3'⟩` from `good_V hV hL c'`. Use `⟨h1.sub h1', fun t ht x => by rw [h2 t ht x, h2' t ht x], fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `h3 C hC`. Take `⟨B', hB'⟩` from `h3' C hC`. Conclude with `⟨B + B', fun x hx => (norm_sub_le _ _).trans (add_le_add (hB x hx) (hB' x hx))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h0int : quotIntegral μ (twCent (thC n) d) ν (fun _ => (0 : ℂ)) = 0`. Simplify using `using (hQA (GL (Fin n) ℂ) μ (twCent (thC n) d) ν).2.2 0 (fun _ => 0)`. Establish `main : ∀ s : Finset (Fin m → SignType), quotIntegral μ (twCent (thC n) d) ν (fun x => f (twConj (thC n) x d) * (V (p x + zr z s) - V (p x + 0))) = 0`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : zr z ∅ = 0` using `by funext e; simp [zr]`. Simplify using `only [h0, sub_self, mul_zero]`. Conclude with `h0int`. Introduce `e s he ih`. Establish `hFi` using `fin _ (goodsub (zr z (insert e s)) 0).1 (goodsub _ 0).2.1 (goodsub _ 0).2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hFs` using `fin _ (goodsub (zr z s) 0).1 (goodsub _ 0).2.1 (goodsub _ 0).2.2`. Establish `hdiff : quotIntegral μ (twCent (thC n) d) ν (fun x => f (twConj (thC n) x d) * (V (p x + zr z (insert e s)) - V (p x + zr z s))) = 0`. Distinguish the cases in `he0 : e = 0`. Substitute `he0` using the available equality. Establish `hzz : zr z (insert 0 s) = zr z s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `e'`. Distinguish the cases in `h : e' = 0`. Substitute `h` using the available equality. Simplify using `[zr, he, hz0]`. Simplify using `[zr, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [hzz, sub_self, mul_zero]`. Conclude with `h0int`. Take `⟨W₁, W₂, ⟨hW1, hW12, hp1, hp2⟩, hnil⟩` from `hL.nil e he0`. Take `⟨hm, hTi, hb⟩` from `goodsub (zr z (insert e s)) (zr z s)`. Conclude with `hLV n μ f (fun x => V (p x + zr z (insert e s)) - V (p x + zr z s)) d ν W₁ W₂ hf hfs hfc hsep hW1 hW12 hp1 hp2 hm hb (fun x k hk => by simp only [hL.cpt x k hk]) hTi (fun u hu x => diff_step hV z s e he _ _ (fun e' h => hnil u hu x e' h))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : quotIntegral μ (twCent (thC n) d) ν (fun x => f (twConj (thC n) x d) * (V (p x + zr z (insert e s)) - V (p x + 0)) - f (twConj (thC n) x d) * (V (p x + zr z s) - V (p x + 0))) = quotIntegral μ (twCent (thC n) d) ν (fun x => f (twConj (thC n) x d) * (V (p x + zr z (insert e …` using `(hQA (GL (Fin n) ℂ) μ (twCent (thC n) d) ν).2.1 _ _ hFi.1 hFs.1 hFi.2 hFs.2`. Establish `hfun : (fun x => f (twConj (thC n) x d) * (V (p x + zr z (insert e s)) - V (p x + 0)) - f (twConj (thC n) x d) * (V (p x + zr z s) - V (p x + 0))) = fun x => f (twConj (thC n) x d) * (V (p x + zr z (insert e s)) - V (p x + zr z s))`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hfun, hdiff, ih, sub_zero]`.
-
-Conclude with `key.symm`. Establish `hu : zr z Finset.univ = z` using `by funext e; simp [zr]`. Use `main Finset.univ` as an intermediate fact. Rewrite `this` using `[hu]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.BcB.CV.pf_OneVanish : PositivityTheory.Rg.BcB.LocVanish → PositivityTheory.Rg.BcB.D4.LocProper → PositivityTheory.Rg.BcB.CV.LocTor → PositivityTheory.Rg.BcB.CV.QInt → PositivityTheory.Rg.BcB.CV.QAdd → PositivityTheory.Rg.BcB.CV.OneVanish := by
   intro hLV hLP hLT hQI hQA n m _ _ μ _ d ν _ _ f V p z hsep hf hfs hfc hV hL hz0

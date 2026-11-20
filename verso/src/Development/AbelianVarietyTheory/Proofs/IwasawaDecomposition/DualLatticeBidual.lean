@@ -13,7 +13,7 @@ namespace GlobalTheory.LevelHecke.DualConj
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Use `bwG_span_dualSet σ J L` as an intermediate fact. Express the relevant statement in the definitionally equal form `y ∈ ((Submodule.span (𝓞 E) (dualSet σ J L) : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E)) ↔ _`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_dualL (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E) :
     y ∈ dualL σ J L ↔ ∀ x ∈ L, hform σ J x y ∈ (algebraMap (𝓞 E) E).range := by
@@ -23,7 +23,7 @@ theorem mem_dualL (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (L : Submodule
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `only [hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     hform σ J x y = (fun i => σ (x i)) ⬝ᵥ (J *ᵥ y) := by
@@ -31,7 +31,7 @@ theorem hform_eq (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (x y : Fin n �
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `e : (fun i => σ ((g *ᵥ x) i)) = (fun i => σ (x i)) ᵥ* cT σ g`. Use function extensionality and compare the values at `i`. Simplify using `[cT, mulVec, vecMul, dotProduct, mul_comm]`. Rewrite using `[hform_eq, hform_eq, e, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hg]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_unitary (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (g : Matrix (Fin n) (Fin n) E)
     (hg : cT σ g * J * g = J) (x y : Fin n → E) : hform σ J (g *ᵥ x) (g *ᵥ y) = hform σ J x y := by
@@ -42,7 +42,7 @@ theorem hform_unitary (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (g : Matri
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_smul_left (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (a : E) (x y : Fin n → E) :
     hform σ J (a • x) y = σ a * hform σ J x y := by
@@ -50,7 +50,7 @@ theorem hform_smul_left (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (a : E) 
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hform_smul_right (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (a : E) (x y : Fin n → E) :
     hform σ J x (a • y) = a * hform σ J x y := by
@@ -64,19 +64,19 @@ theorem hform_smul_right (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (a : E)
   star_add := map_add σ
 
 /- English proof (translation)
-Use `letI : StarRing E := starOf σ hσ`. Set `h : (Fin n → E) →ₗ⋆[E] (Fin n → E) →ₗ[E] E` to `LinearMap.mk₂'ₛₗ (starRingEnd E) (RingHom.id E) (hform σ J) (fun x x' y => by simp only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]) (fun a x y => hform_smul_left σ J a x y) (fun x y y' => by simp only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]) (f …`. Establish `hh : ∀ x y, h x y = hform σ J x y` using `fun _ _ => rfl`. Establish `hsym' : ∀ x y, σ (hform σ J x y) = hform σ J y x`. Introduce `x y`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ i j, σ (J i j) = J j i` using `fun i j => congrFun (congrFun hH j) i`. Simplify using `only [hform, map_sum, map_mul, hσ, e]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Establish `hsym : h.IsSymm` using `⟨fun x y => hsym' x y⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hr : ∀ y, (∀ x, hform σ J x y = 0) → y = 0`. Introduce `y hy`. Establish `h1 : J *ᵥ y = 0`. Use function extensionality and compare the values at `i`. Use `hy (Pi.single i 1)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `this` using `[hform_eq, dotProduct, Finset.sum_eq_single i]`. Simplify using `using this`. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `ey : y = J⁻¹ *ᵥ (J *ᵥ y)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul J hJ, Matrix.one_mulVec]`. Rewrite using `[ey, h1, mulVec_zero]`. Establish `hnd : h.Nondegenerate`. Use `⟨fun x hx => hr x fun y => ?_, fun y hy => hr y hy⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hsym', ← hh, hx y, map_zero]`. Establish `hd : ∀ M : Submodule (𝓞 E) (Fin n → E), Formalism.HermitianLatticesTheory.dual h M = dualL σ J M`. Introduce `M`. Use extensionality with `y`. Rewrite using `[mem_dualL]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, Submodule.mem_one]`. Both sides reduce to the same expression. Use `Formalism.HermitianLatticesTheory.dualLattice (𝓞 E) E (Fin n → E) h hsym hnd (fun r => LocB.sig_int σ r) L hL` as an intermediate fact. Rewrite `this` using `[hd, hd]`. Conclude with `⟨this.1, this.2.1⟩`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem dual_lattice_bidual (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) (J : Matrix (Fin n) (Fin n) E)
     (hJ : IsUnit J.det) (hH : cT σ J = J) (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.IsLattice E L) :
@@ -123,19 +123,17 @@ theorem dual_lattice_bidual (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) (J : M
   exact ⟨this.1, this.2.1⟩
 
 /- English proof (translation)
-Establish `h1P : (1 : 𝓞 E) ∉ P` using `P.ne_top_iff_one.1 (Ideal.IsPrime.ne_top inferInstance)`. Establish `key : ∃ s : 𝓞 E, s ∉ P ∧ ∀ x ∈ M, s • x ∈ N`. Establish `h0 : M ≤ Formalism.HermitianLatticesTheory.localization₂ P N` using `fun x hx => h ((rlv_mem_locP P M x).2 ⟨1, h1P, by rwa [one_smul]⟩)`. Use `clear h`. Proceed by induction on `M, hM using Submodule.fg_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `singleton x`. Take `⟨s, hs, hx⟩` from `(rlv_mem_locP P N x).1 (h0 (Submodule.mem_span_singleton_self x))`. Use `⟨s, hs, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Rewrite using `[smul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `N.smul_mem a hx`. Consider the case `sup A B _ _ hA hB`. Take `⟨s, hs, h1⟩` from `hA (le_sup_left.trans h0)`. Take `⟨t, ht, h2⟩` from `hB (le_sup_right.trans h0)`. Use `⟨s * t, fun hst => (Ideal.IsPrime.mem_or_mem inferInstance hst).elim hs ht, fun y hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[smul_add]`. Use `N.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `N.smul_mem _ (h1 a ha)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_smul]`. Conclude with `N.smul_mem _ (h2 b hb)`. Take `⟨s, hs, hsM⟩` from `key`. Take `⟨s', hs'⟩` from `LocB.sig_int σ s`. Establish `hs'Q : s' ∉ Q` using `fun hq => hs (hPQ s' s hs' hq)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `y hy`. Take `⟨t, ht, hty⟩` from `(rlv_mem_locP Q _ y).1 hy`. Use `(rlv_mem_locP Q _ y).2 ⟨s' * t, fun hst => (Ideal.IsPrime.mem_or_mem inferInstance hst).elim hs'Q ht, ?_⟩` and prove the remaining obligations. Rewrite `hty`, the goal using `[mem_dualL]`. Introduce `x hx`.
-
-Use `hty _ (hsM x hx)` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul E s x, hform_smul_left]`. Rewrite using `[mul_smul, ← algebraMap_smul E s' (t • y), hform_smul_right, hs']`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization_dualL_le (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (P Q : Ideal (𝓞 E)) [P.IsPrime] [Q.IsPrime]
     (hPQ : ∀ a b : 𝓞 E, (a : E) = σ (b : E) → a ∈ Q → b ∈ P) (M N : Submodule (𝓞 E) (Fin n → E)) (hM : M.FG)
@@ -175,14 +173,14 @@ theorem localization_dualL_le (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (P
   exact this
 
 /- English proof (translation)
-Rewrite using `[← map_glE, Submodule.mem_map_equiv, glE_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_mulLat (γ : GL (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E) :
     y ∈ mulLat γ.1 L ↔ (γ⁻¹).1 *ᵥ y ∈ L := by
   rw [← map_glE, Submodule.mem_map_equiv, glE_symm_apply]
 
 /- English proof (translation)
-Use `⟨hL.fg.map _, ?_⟩` and prove the remaining obligations. Establish `e : (mulLat γ.1 L : Set (Fin n → E)) = (Matrix.mulVecLin γ.1) '' (L : Set (Fin n → E))` using `rfl`. Rewrite using `[e, ← Submodule.map_span, hL.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `(glE γ).surjective`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulLat_lattice (γ : GL (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.IsLattice E L) :
     Submodule.IsLattice E (mulLat γ.1 L) := by
@@ -192,11 +190,9 @@ theorem mulLat_lattice (γ : GL (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)
   exact (glE γ).surjective
 
 /- English proof (translation)
-Use extensionality with `y`. Establish `ey : γ.1 *ᵥ ((γ⁻¹).1 *ᵥ y) = y` using `(glE γ).apply_symm_apply y`. Rewrite using `[mem_mulLat, mem_dualL, mem_dualL]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hform_unitary σ J γ.1 hγ, ey]`. Conclude with `h _ ⟨x, hx, rfl⟩`. Introduce and unpack `h _ ⟨x, hx, rfl⟩`. Use `h x hx` as an intermediate fact. Rewrite `this` using `[← hform_unitary σ J γ.1 hγ, ey]`.
-
-Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualL_mulLat (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (γ : GL (Fin n) E) (hγ : γ ∈ UJ σ J)
     (L : Submodule (𝓞 E) (Fin n → E)) : dualL σ J (mulLat γ.1 L) = mulLat γ.1 (dualL σ J L) := by
@@ -213,9 +209,9 @@ theorem dualL_mulLat (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (γ : GL (F
     exact this
 
 /- English proof (translation)
-Introduce `E _ _ σ n J P Q _ _ hσ hJ hH hPQ M N hM hN`. Establish `hPQ' : ∀ a b : 𝓞 E, (a : E) = σ (b : E) → a ∈ Q → b ∈ P` using `fun a b hab => (hPQ a b (by rw [hab, hσ])).1`. Establish `one : ∀ A B : Submodule (𝓞 E) (Fin n → E), A.FG → B.FG → Formalism.HermitianLatticesTheory.localization₂ P A = Formalism.HermitianLatticesTheory.localization₂ P B → Formalism.HermitianLatticesTheory.localization₂ Q (dualL σ J A) = Formalism.HermitianLatticesTheory.localization₂ Q …` using `fun A B hA hB h => le_antisymm (localization_dualL_le σ J P Q hPQ' B A hB h.ge) (localization_dualL_le σ J P Q hPQ' A B hA h.le)`. Take `⟨hM1, hM2⟩` from `dual_lattice_bidual σ hσ J hJ hH M hM`. Take `⟨hN1, hN2⟩` from `dual_lattice_bidual σ hσ J hJ hH N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨one M N hM.fg hN.fg, fun h => ?_, fun γ hγ => ⟨mulLat_lattice γ M hM, dualL_mulLat σ J γ hγ M⟩⟩` and prove the remaining obligations. Use `one _ _ hM1.fg hN1.fg h` as an intermediate fact. Rewrite `this` using `[hM2, hN2]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dual_conj_primes : ∀ (E : Type) [Field E] [NumberField E] (σ : E →+* E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (P Q : Ideal (𝓞 E)) [P.IsPrime] [Q.IsPrime], (∀ x, σ (σ x) = x) → IsUnit J.det → cT σ J = J → (∀ a b : 𝓞 E, (b : E) = σ (a : E) → (a ∈ Q ↔ b ∈ P)) → ∀ M N : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E M → Submodule.IsLattice E N → (Formalism.HermitianLatticesTheory.localization₂ P M = Formalism.HermitianLatticesTheory.localization₂ P N → Formalism.HermitianLatticesTheory.localization₂ Q (dualL σ J M) = Formalism.HermitianLatticesTheory.localization₂ Q (dualL σ J N)) ∧ (Formalism.HermitianLatticesTheory.localization₂ P (dualL σ J M) = Formalism.HermitianLatticesTheory.localization₂ P (dualL σ J N) → Formalism.HermitianLatticesTheory.localization₂ Q M = Formalism.HermitianLatticesTheory.localization₂ Q N) ∧ ∀ γ : GL (Fin n) E, γ ∈ UJ σ J → Submodule.IsLattice E (mulLat γ.1 M) ∧ dualL σ J (mulLat γ.1 M) = mulLat γ.1 (dualL σ J M) := by
   intro E _ _ σ n J P Q _ _ hσ hJ hH hPQ M N hM hN

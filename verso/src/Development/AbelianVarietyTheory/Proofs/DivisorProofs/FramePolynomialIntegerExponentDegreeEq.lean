@@ -26,7 +26,7 @@ namespace GlobalTheory.FrameHom
 open Formalism.L2.LamCM GlobalTheory.LamT.FieldPoly
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.prod_insert hj, Finset.sum_insert hj, ih, zpow_add₀ ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_eq_zpow_sum {K ι : Type} [Field K] {a : K} (ha : a ≠ 0) (s : Finset ι) (f : ι → ℤ) :
     ∏ i ∈ s, a ^ f i = a ^ (∑ i ∈ s, f i) := by
@@ -36,7 +36,7 @@ theorem prod_zpow_eq_zpow_sum {K ι : Type} [Field K] {a : K} (ha : a ≠ 0) (s 
   | insert j s hj ih => rw [Finset.prod_insert hj, Finset.sum_insert hj, ih, zpow_add₀ ha]
 
 /- English proof (translation)
-Establish `h' : (((2 : ℚ) ^ m : ℚ) : K) = (((2 : ℚ) ^ n : ℚ) : K)`. Rewrite using `[Rat.cast_zpow, Rat.cast_zpow, Rat.cast_ofNat]`. Conclude with `h`. Conclude with `(zpow_right_inj₀ (by norm_num : (0 : ℚ) < 2) (by norm_num)).1 (Rat.cast_injective h')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_zpow_injective {K : Type} [Field K] [CharZero K] {m n : ℤ} (h : (2 : K) ^ m = 2 ^ n) : m = n := by
   have h' : (((2 : ℚ) ^ m : ℚ) : K) = (((2 : ℚ) ^ n : ℚ) : K) := by
@@ -44,13 +44,13 @@ theorem two_zpow_injective {K : Type} [Field K] [CharZero K] {m n : ℤ} (h : (2
   exact (zpow_right_inj₀ (by norm_num : (0 : ℚ) < 2) (by norm_num)).1 (Rat.cast_injective h')
 
 /- English proof (translation)
-Establish `h1 : P * (MvPolynomial.aeval (fun v => MvPolynomial.C (2 : K) * MvPolynomial.X v : σ → MvPolynomial σ K) G - MvPolynomial.C ((2 : K) ^ d) * G) = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Distinguish the cases in `hx : MvPolynomial.eval x P = 0`. Simplify using `[hx]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `e : MvPolynomial.eval x (MvPolynomial.aeval (fun v => MvPolynomial.C (2 : K) * MvPolynomial.X v : σ → MvPolynomial σ K) G) = MvPolynomial.eval (fun v => 2 * x v) G` using `by clear h hμ`. Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C r => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp => simp only [map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.eval_C, MvPolynomial.eval_X]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_mul, map_sub, e, h x hx]`. Simplify using the standard rewrite rules. Establish `h2` using `sub_eq_zero.1 ((mul_eq_zero.1 h1).resolve_left hP)`. Establish `h3` using `congrArg (MvPolynomial.coeff μ) h2`. Rewrite `h3` using `[coeff_aeval_scale, MvPolynomial.coeff_C_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : (2 : K) ^ μ.degree = 2 ^ d` using `mul_right_cancel₀ hμ h3`. Rewrite `h4` using `[← zpow_natCast]`. Conclude with `two_zpow_injective h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_eq_of_scaling_zpow {K σ : Type} [Field K] [CharZero K] (G P : MvPolynomial σ K) (hP : P ≠ 0) (d : ℤ)
     (h : ∀ x : σ → K, MvPolynomial.eval x P ≠ 0 →
@@ -80,27 +80,27 @@ theorem degree_eq_of_scaling_zpow {K σ : Type} [Field K] [CharZero K] (G P : Mv
   exact two_zpow_injective h4
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c K _ _ y₀ e k _he0 F hF G hG μ hμ`. Establish `: CharZero K` using `charZero_of_injective_algebraMap (algebraMap c.F K).injective`. Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.lawsFieldsSeparately.2.1`. Establish `h2 : (2 : K) ≠ 0` using `two_ne_zero`. Establish `hev : ∀ Y : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) K, evalFr (∏ b, blockDetPoly K Dw.mult b) Y = ∏ b, (Y b).det` using `fun Y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [← evalFr_blockDetPoly Dw.mult _ Y]`. Simplify using `only [evalFr, map_prod]`. Establish `hDp : (∏ b, blockDetPoly K Dw.mult b) ≠ 0` using `fun h0 => by`. Establish `h1` using `hev fun _ => 1`. Rewrite `h1` using `[h0]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[evalFr] at h1`. Use `degree_eq_of_scaling_zpow G _ hDp _ (fun x hx => ?_) μ hμ` and prove the remaining obligations. Set `X : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) K` to `fun b => Matrix.of fun i j => x ⟨b, (j, i)⟩`. Set `T : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) K` to `fun b => Matrix.diagonal fun _ => 2`. Establish `hX : ∀ b, (X b).det ≠ 0` using `fun b => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : (∏ b, (X b).det) ≠ 0` using `by rw [← hev X]; exact hx`. Conclude with `(Finset.prod_ne_zero_iff.1 h1) b (Finset.mem_univ b)`. Establish `hTd : ∀ b, (T b).det ≠ 0` using `fun b => by simp [T]`. Take `⟨z₁, h₁, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c K y₀ (fun b => (X b).transpose) 1 (fun b' => by rw [Matrix.det_transpose]; exact (hX b').isUnit)`. Take `⟨z₂, h₂, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c K z₁ (fun b => (T b).transpose) 1 (fun b' => by rw [Matrix.det_transpose]; exact (hTd b').isUnit)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₁`, `h₂` using `[Units.val_one]`. Establish `h₃` using `(GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c K y₀ z₁ z₂).2 _ _ _ _ h₁ h₂`. Simplify using `only [← Matrix.transpose_mul, _root_.mul_one] at h₃`. Set `t : Ix Dw → Kˣ` to `fun o => match o with`. Consider the case `none => 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Treat this case separately. Treat this case separately.
 
-Consider the case `some _ => Units.mk0 2 h2`. Establish `hb : FrBor t z₁ z₂`. Use `((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c K z₁ z₂ z₂).1 t).2 ⟨fun b => (T b).transpose, fun τ i j hij => ?_, fun τ i => ?_, h₂⟩` and prove the remaining obligations. Simplify using `[T, Matrix.transpose_apply, Matrix.diagonal_apply_ne _ (ne_of_gt hij)]`. Simplify using `[T, t]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e₁` using `hG z₁ X hX h₁`. Establish `e₂` using `hG z₂ (fun b' => X b' * T b') (fun b' => by rw [Matrix.det_mul]; exact mul_ne_zero (hX b') (hTd b')) h₃`. Establish `e₃` using `evR_frBor_of_mem_secZ hS Xo c e hF K t z₁ z₂ hb`. Establish `p₁ : ((∏ i, t i ^ e i : Kˣ) : K) = (2 : K) ^ (∑ b, ∑ i : Fin (Dw.mult b), e (some ⟨b, i⟩))`. Rewrite using `[Units.coe_prod, Fintype.prod_option, Fintype.prod_sigma]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [t, one_zpow, Units.val_one, _root_.one_mul, Units.val_zpow_eq_zpow_val, Units.val_mk0]`. Rewrite using `[← prod_zpow_eq_zpow_sum h2]`. Conclude with `Finset.prod_congr rfl fun b _ => prod_zpow_eq_zpow_sum h2 _ _`. Establish `p₂ : (∏ b, (X b * T b).det ^ k b) = (2 : K) ^ (∑ b, (Dw.mult b : ℤ) * (k b : ℤ)) * ∏ b, (X b).det ^ k b`. Rewrite using `[← prod_zpow_eq_zpow_sum h2, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Simplify using `only [T, Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[show ((Dw.mult b : ℤ) * (k b : ℤ)) = ((Dw.mult b * k b : ℕ) : ℤ) by push_cast; ring, zpow_natCast, pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `p₃ : evalFr G (fun b' => X b' * T b') = MvPolynomial.eval (fun v => 2 * x v) G`. Unfold `evalFr`. Use `congr 2`. Use function extensionality and compare the values at `v`. Simplify using `only [T, Matrix.mul_diagonal, X, Matrix.of_apply]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_comm _ _`. Establish `p₄ : evalFr G X = MvPolynomial.eval x G` using `rfl`. Rewrite using `[← p₃, ← e₂, p₂, e₃, p₁, ← p₄, ← e₁, Finset.sum_add_distrib, zpow_add₀ h2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frPoly_secZ_degree_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y₀ : FrPt Xo c K) (e : Formalism.L2.Pj.Ix Dw → ℤ) (k : (E →+* ℂ) → ℕ),

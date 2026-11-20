@@ -8,11 +8,11 @@ namespace Formalism.L2.PairingIndexBounds.Eq
 open Formalism.MainNotions Formalism.L2.Th1.H
 
 /- English proof (translation)
-Introduce `T N N' La' G hG`. Use function extensionality and compare the values at `z`. Unfold `TaylorLogMetric.Iop`. Establish `hidx : (La'.addSubgroupOf La').index = 1`. Rewrite using `[AddSubgroup.addSubgroupOf_self, AddSubgroup.index_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : ∀ q : La' ⧸ La'.addSubgroupOf La', TaylorLogMetric.al D T ((Quotient.out q : La') : TaylorLogMetric.VC D N N') * TaylorLogMetric.U D T ((Quotient.out q : La') : TaylorLogMetric.VC D N N') G z = G z` using `fun q => hG.2 _ (Quotient.out q).2 z`. Repeatedly rewrite using `[hq]`. Establish `h0 : ∀ q : La' ⧸ La'.addSubgroupOf La', q = 0`. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `H x => exact (QuotientAddGroup.eq_zero_iff _).mpr (by simp)`. Rewrite using `[finsum_eq_single (fun _ => G z) (0 : La' ⧸ La'.addSubgroupOf La') (fun q hq => absurd (h0 q) hq), hidx]`. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iopSelf (D : D7) : IopSelf D := by
   intro T N N' La' G hG
@@ -36,7 +36,7 @@ section Chi
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `Ker.Base.chiFac`. Rewrite using `[hM N' (StandardLatticesGL3.stdL D N') L' L'' hN' (sd0 N') h1 h2, hχ.1 _ _ (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.relative_determinant_norm_one D N' _ _ hN' (sd0 N') h1) (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.relative_determinant_norm_one D N' _ …`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem character_factor_change_right (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) (hM : DetMul D) {N N' : ℕ} (hN' : Even N')
     (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) {L' L'' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
@@ -49,7 +49,7 @@ theorem character_factor_change_right (χ : TaylorLogMetric.IdE D → ℂ) (hχ 
   ring
 
 /- English proof (translation)
-Unfold `Ker.Base.chiFac`. Rewrite using `[hM N (StandardLatticesGL3.stdL D N) L L₁ hN (sd0 N) h1 h2, hχ.1 _ _ (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.relative_determinant_norm_one D N _ _ hN (sd0 N) h1) (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.relative_determinant_norm_one D N _ _ hN h1 h2 …`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem character_factor_change_left (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) (hM : DetMul D) {N N' : ℕ} (hN : Even N)
     {L L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
@@ -62,7 +62,7 @@ theorem character_factor_change_left (χ : TaylorLogMetric.IdE D → ℂ) (hχ :
   ring
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Use `eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← map_mul, hx, map_one]`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_star_unit (τ : D.what₂.Tau) (x : D.host.E) (hx : letI := D.host.cmStar; x * star x = 1) :
     (letI := D.host.cmStar; TaylorLogMetric.embT D τ (star x)) = (TaylorLogMetric.embT D τ x)⁻¹ := by
@@ -71,11 +71,11 @@ theorem emb_star_unit (τ : D.what₂.Tau) (x : D.host.E) (hx : letI := D.host.c
   rw [← map_mul, hx, map_one]
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `L L' γ γ' h1 h2`. Establish `u1` using `Matrix.det_of_mem_unitary γ.2`. Establish `u2` using `Matrix.det_of_mem_unitary γ'.2`. Establish `c1 : χ (Submodule.span (𝓞 D.host.E) {(γ : Matrix (Fin N) (Fin N) D.host.E).det}) = ∏ τ : D.what₂.Tau, (TaylorLogMetric.embT D τ (γ : Matrix (Fin N) (Fin N) D.host.E).det)⁻¹` using `hχ.2 ⟨_, u1⟩`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : χ (Submodule.span (𝓞 D.host.E) {(γ' : Matrix (Fin N') (Fin N') D.host.E).det}) = ∏ τ : D.what₂.Tau, (TaylorLogMetric.embT D τ (γ' : Matrix (Fin N') (Fin N') D.host.E).det)⁻¹` using `hχ.2 ⟨_, u2⟩`. Establish `s1 : ∏ τ : D.what₂.Tau, TaylorLogMetric.embT D τ (star (γ : Matrix (Fin N) (Fin N) D.host.E).det) = ∏ τ : D.what₂.Tau, (TaylorLogMetric.embT D τ (γ : Matrix (Fin N) (Fin N) D.host.E).det)⁻¹` using `Finset.prod_congr rfl fun τ _ => emb_star_unit τ _ (Unitary.mul_star_self_of_mem u1)`. Unfold `Ker.Base.chiFac`. Rewrite using `[hS N (StandardLatticesGL3.stdL D N) L γ hN (sd0 N) h1, hS N' (StandardLatticesGL3.stdL D N') L' γ' hN' (sd0 N') h2, hχ.1 _ _ (hU ⟨_, u1⟩) (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.relative_determinant_norm_one D N _ _ hN (sd0 N) h1), hχ.1 _ _ (hU ⟨_, u2⟩) (Formalis …`. Use the proof step `]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.prod_inv_distrib, mul_zpow, zpow_neg, zpow_natCast, inv_pow]`. Put the polynomial expressions in normal form. Simplify using `only [inv_inv]`.
+Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem character_factor_unitary_action (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) (hS : DetSmul D) (hU : NormOneUnitIdeal D) {N N' : ℕ}
     (hN : Even N) (hN' : Even N') :
@@ -121,7 +121,7 @@ theorem pull_smul (T : TaylorLogMetric.Tor D) {N N' : ℕ} (γ : Matrix (Fin N) 
     TaylorLogMetric.pull D T γ γ' (c • G) = c • TaylorLogMetric.pull D T γ γ' G := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [TaylorLogMetric.pull, TaylorLogMetric.tor0]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using `[Matrix.map_one, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

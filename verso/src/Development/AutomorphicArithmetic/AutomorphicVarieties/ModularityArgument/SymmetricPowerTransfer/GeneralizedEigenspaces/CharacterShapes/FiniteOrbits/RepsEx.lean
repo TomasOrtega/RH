@@ -10,21 +10,17 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob UpperT
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Set `P : Pl F → Prop` to `fun v => y.1 v ∈ KD ((cv v) Δ) (Ov v) ∧ v ∉ D.Sg`. Establish `hfin : {v | y.1 v ∉ KD ((cv v) Δ) (Ov v)}.Finite` using `Filter.eventually_cofinite.mp y.2`. Establish `hbad : {v | ¬ P v}.Finite`. Use `(hfin.union D.Sg.finite_toSet).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h1 : y.1 v ∈ KD ((cv v) Δ) (Ov v)`. Conclude with `Or.inr (by_contra fun h2 => hv ⟨h1, h2⟩)`. Conclude with `Or.inl h1`. Use `⟨⟨fun v => if P v then 1 else y.1 v, ?_⟩, ⟨fun v => if P v then y.1 v else 1, ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Filter.eventually_cofinite.mpr (hbad.subset ?_)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv h`. Apply `hv` to reduce the goal to its premises. Use `show (if P v then 1 else y.1 v) ∈ KD ((cv v) Δ) (Ov v)`. Rewrite using `[if_pos h]`. Conclude with `one_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `show ∀ᶠ v in Filter.cofinite, (if P v then y.1 v else 1) ∈ KD ((cv v) Δ) (Ov v)`. Use `Filter.Eventually.of_forall fun v => ?_` and prove the remaining obligations. Distinguish the cases in `h : P v`. Rewrite using `[if_pos h]`. Conclude with `h.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg h]`. Conclude with `one_mem _`. Simplify using `only [Dat.U2, RPG.box, Subgroup.mem_iInf, Subgroup.mem_comap]`. Introduce `v`. Use `show (if P v then y.1 v else 1) ∈ D.J2v v`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Distinguish the cases in `h : P v`. Rewrite using `[if_pos h, Dat.J2v, if_neg h.2]`. Conclude with `h.1`. Rewrite using `[if_neg h]`. Conclude with `one_mem _`.
-
-Apply the tactic sequence `refine Subtype.ext (funext fun v => ?_) show (if P v then 1 else y.1 v) * (if P v then y.1 v else 1) = y.1 v split_ifs <;> simp`. Introduce `v hv show (if P v then 1 else y.1 v) = 1 split_ifs`. Both sides reduce to the same expression. Conclude with `hy v hv`. Use `hbad.subset ?_` and prove the remaining obligations.
-
-Introduce `v hv h`. Apply `hv` to reduce the goal to its premises. Use `show (if P v then 1 else y.1 v) = 1`. Rewrite using `[if_pos h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trim {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ) (y : DA Δ) (hy : D.Off y) :
     ∃ t w : DA Δ, w ∈ D.U2 ∧ t * w = y ∧ D.Off t ∧ {v | t.1 v ≠ 1}.Finite := by
@@ -74,13 +70,13 @@ private theorem trim {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ) 
     rw [if_pos h]
 
 /- English proof (translation)
-Introduce `F _ _ Δ A hA hCR ι hι`. Take `⟨Y, hY, hdec⟩` from `hCR F Δ A.dat (datOk F Δ A hA).1 ι hι`. Set `f : DA Δ → DA Δ` to `fun y => if h : A.dat.Off y then (trim A.dat y h).choose else y`. Use `⟨Y.image f, ?_, ?_⟩` and prove the remaining obligations. Introduce `y' hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hy'`. Take `⟨w, -, -, ht, hfin⟩` from `(trim A.dat y (hY y hy)).choose_spec`. Simplify using `only [f, dif_pos (hY y hy)]`. Conclude with `⟨ht, hfin⟩`. Introduce `g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ, s, hs, y, hy, u, hu, rfl⟩` from `hdec g`. Take `⟨w, hw, hty, -, -⟩` from `(trim A.dat y (hY y hy)).choose_spec`. Use `⟨γ, s, hs, f y, Finset.mem_image_of_mem f hy, w * u, mul_mem hw hu, ?_⟩` and prove the remaining obligations. Simplify using `only [f, dif_pos (hY y hy)]`. Use `conv_lhs => rw [← hty]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.repsEx :
     UpperTheory.V.Z.Sym.So.RepsEx := by

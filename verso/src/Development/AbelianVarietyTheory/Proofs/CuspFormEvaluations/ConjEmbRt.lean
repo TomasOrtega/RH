@@ -8,11 +8,11 @@ namespace GlobalTheory.ConjugateEmbeddingSquareRoot
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Establish `hre : z.re * z.re - z.im * z.im = -r`. Use `congrArg Complex.re h` as an intermediate fact. Simplify `this` using `[pow_two]`. Establish `him : z.re * z.im + z.im * z.re = 0`. Use `congrArg Complex.im h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[pow_two]`. Establish `h0 : z.re = 0`. Establish `hm : z.re * z.im = 0` using `by linarith`. Break down `mul_eq_zero.mp hm with h1 | h1` into its components or cases. Conclude with `h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hre` using `[h1]`. Use polynomial arithmetic with `[mul_self_nonneg z.re]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[h0]`. Simplify using the standard rewrite rules.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_eq_neg_of_sq {z : ℂ} {r : ℝ} (hr : 0 < r) (h : z ^ 2 = -(r : ℂ)) :
     (starRingEnd ℂ) z = -z := by
@@ -33,9 +33,9 @@ theorem conj_eq_neg_of_sq {z : ℂ} {r : ℝ} (hr : 0 < r) (h : z ^ 2 = -(r : �
   · simp
 
 /- English proof (translation)
-Establish `hd : (0 : ℝ) < (H.d : ℝ)` using `by exact_mod_cast H.d_prime.pos`. Establish `h1 : ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `h2 : (τ (H.rt : E)) ^ 2 = -(((H.d : ℝ)) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, h1]`. Simplify using the standard rewrite rules. Conclude with `conj_eq_neg_of_sq hd h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjEmb_rt {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (τ : E →+* ℂ) :
     conjEmb τ (H.rt : E) = -τ (H.rt : E) := by

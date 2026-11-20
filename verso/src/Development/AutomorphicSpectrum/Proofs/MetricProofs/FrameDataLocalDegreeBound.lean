@@ -21,9 +21,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Kk : Type} [Fintype Kk] {ιk : Kk → Type} [∀ k, Fintype (ιk k)]
 
 /- English proof (translation)
-Use `continuous_pi fun q => ?_` and prove the remaining obligations. Unfold `upV`. Distinguish the cases in `h : ∃ q', v q' = q`. Simplify using `only [dif_pos h]`. Conclude with `continuous_apply _`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_neg h]`. Conclude with `continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_upV (v : (Σ k, ιk k) → (Σ k, ι k)) : Continuous (upV v) := by
   refine continuous_pi fun q => ?_
@@ -35,24 +35,22 @@ theorem continuous_upV (v : (Σ k, ιk k) → (Σ k, ι k)) : Continuous (upV v)
     exact continuous_const
 
 /- English proof (translation)
-Use `continuous_pi fun q => ?_` and prove the remaining obligations. Conclude with `(continuous_apply (⟨q.1.1, q.2⟩ : Σ k, ι k)).comp (continuous_upV v)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_pBase (M : FlagModel y Ψ N j) (v : (Σ k, ιk k) → (Σ k, ι k)) : Continuous (pBase M v) := by
   refine continuous_pi fun q => ?_
   exact (continuous_apply (⟨q.1.1, q.2⟩ : Σ k, ι k)).comp (continuous_upV v)
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε hc`. Take `⟨hBM, hkp, -, hBC, hr, hrc, -⟩` from `hc`. Establish `hmaps : Set.MapsTo (pBase M v) (mcPts (mCoordIdeal (y ∘ v))) (mcPts (mCoordIdeal M.x))` using `(GlobalTheory.T.blockMap_frame_restriction K ι Φ y Ψ N j M keep Kk ιk κ v hBM hkp).1`. Establish `key : ∀ z₀ ∈ pO M Rb keep v F kb V r h, pO M Rb keep v F kb V r h ∈ 𝓝[mcPts (mCoordIdeal (y ∘ v))] z₀`. Introduce and unpack `z₀ ⟨hz₀, hsrc, hV₀, hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hbm` using `hmaps hz₀`. Establish `hG : M.GoodAt F (mCoordIdeal (pBase M v z₀))`. Take `⟨-, -, hgood, horb⟩` from `hBC.2.2.2.2 _ hV₀`. Rewrite `horb` using `[(Rb.A.chart kb).left_inv hsrc]`. Rewrite using `[CovMap.mCoordIdeal_eq_of_sameOrbit (orbit_trans (orbit_symm (hr _ hbm)) horb)]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hrb : ContinuousWithinAt (fun z => r (pBase M v z)) (mcPts (mCoordIdeal (y ∘ v))) z₀` using `(hrc _ hbm).comp (continuous_pBase M v).continuousWithinAt hmaps`. Establish `e₁` using `hrb.tendsto.eventually_mem ((Rb.A.chart kb).open_source.mem_nhds hsrc)`. Establish `e₂` using `(((Rb.A.chart kb).continuousAt hsrc).tendsto.comp hrb.tendsto).eventually_mem (hBC.1.mem_nhds hV₀)`. Establish `tw` using `GlobalTheory.CompanionTheory.Ar.PB.WMan.Opn.continuousWithinAt_twMinor M F (continuous_pBase M v) (continuous_upV v) hmaps hz₀ hG`. Establish `e₃ : ∀ᶠ z in 𝓝[mcPts (mCoordIdeal (y ∘ v))] z₀, ∀ p k, keep p → M.blk p = some k → twMinor M F (pBase M v z) p.2 k (h p.1)⁻¹ (upV v z) (stepCols N j p.2) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `eventually_all.2 fun p => eventually_all.2 fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hp : keep p ∧ M.blk p = some k`. Conclude with `((tw p.2 k (h p.1)⁻¹ (stepCols N j p.2)).tendsto.eventually_ne (hm p k hp.1 hp.2)).mono fun _ hz _ _ => hz`. Conclude with `Eventually.of_forall fun _ h₁ h₂ => absurd ⟨h₁, h₂⟩ hp`. Use `filter_upwards [self_mem_nhdsWithin, e₁, e₂, e₃] with z h₀ h₁ h₂ h₃`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨h₀, h₁, h₂, h₃⟩`. Use `choose! U hU hmem hsub using fun z₀ (hz : z₀ ∈ pO M Rb keep v F kb V r h) => mem_nhdsWithin.1 (key z₀ hz)`. Use `⟨⋃ z₀ ∈ pO M Rb keep v F kb V r h, U z₀, isOpen_biUnion hU, Set.Subset.antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce `z hz`. Conclude with `⟨Set.mem_biUnion hz (hmem z hz), hz.1⟩`.
-
-Introduce and unpack `z ⟨hz, hzA⟩`. Take `⟨z₀, h₀, hz₀⟩` from `Set.mem_iUnion₂.1 hz`. Conclude with `hsub z₀ h₀ ⟨hz₀, hzA⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n e : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ PIdx j keep ≃ Fin e), IsPCtx M Rb keep κ v F kb V bl r h → ∃ O' : Set ((Σ k, ιk k) → ℂ), IsOpen O' ∧ pO M Rb keep v F kb V r h = O' ∩ mcPts (mCoordIdeal (y ∘ v)) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε hc

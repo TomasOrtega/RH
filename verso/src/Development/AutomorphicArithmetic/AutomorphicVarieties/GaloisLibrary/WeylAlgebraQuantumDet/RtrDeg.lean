@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open Matrix UpperTheory.V.Weyl
 
 /- English proof (translation)
-Introduce `n g f`. Establish `hY : ∀ ij : Fin n × Fin n, (∑ k, MvPolynomial.X (ij.1, k) * MvPolynomial.C (g k ij.2) : MvPolynomial (Fin n × Fin n) ℂ).totalDegree ≤ 1`. Introduce `ij`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun k _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPolynomial.totalDegree_X, MvPolynomial.totalDegree_C]`. Use `conv_lhs => rw [MvPolynomial.as_sum f]`. Simplify using `only [rtr, map_sum, MvPolynomial.aeval_monomial]`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun s hs => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.algebraMap_eq, MvPolynomial.totalDegree_C, zero_add]`. Use `le_trans ?_ (MvPolynomial.le_totalDegree hs)` and prove the remaining obligations. Unfold `Finsupp.prod Finsupp.sum`. Use `(MvPolynomial.totalDegree_finset_prod _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_pow _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Weyl.rtrDeg :
     ∀ (n : ℕ) (g : Matrix (Fin n) (Fin n) ℂ) (f : Pol n), (rtr g f).totalDegree ≤ f.totalDegree := by

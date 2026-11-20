@@ -28,14 +28,14 @@ variable {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddComm
   [NormedSpace ℂ E'] {W : Set E} {X Y : Over (Sp ℂ)} {a : E → (𝟙_ (Over (Sp ℂ)) ⟶ X)}
 
 /- English proof (translation)
-The claim follows from `TopologicalSpace.isOpen_generateFrom_of_mem ⟨U, f, O, hO, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_value (U : X.left.Opens) (f : Γ(X.left, U)) {O : Set ℂ} (hO : IsOpen O) :
     IsOpen {x : 𝟙_ (Over (Sp ℂ)) ⟶ X | ⊤ ≤ x.left ⁻¹ᵁ U ∧ valAt' x.left U f ∈ O} :=
   TopologicalSpace.isOpen_generateFrom_of_mem ⟨U, f, O, hO, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[continuousOn_iff]`. Introduce `x hx t ht hxt`. Conclude with `⟨_, isOpen_value U f ht, ⟨hx, hxt⟩, fun y hy => hy.1.2⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem continuousOn_value (U : X.left.Opens) (f : Γ(X.left, U)) :
     ContinuousOn (fun x : 𝟙_ (Over (Sp ℂ)) ⟶ X => valAt' x.left U f) {x | ⊤ ≤ x.left ⁻¹ᵁ U} := by
@@ -44,9 +44,9 @@ theorem continuousOn_value (U : X.left.Opens) (f : Γ(X.left, U)) :
   exact ⟨_, isOpen_value U f ht, ⟨hx, hxt⟩, fun y hy => hy.1.2⟩
 
 /- English proof (translation)
-Introduce `U f`. Distinguish the cases in `h : ⊤ ≤ x.left ⁻¹ᵁ U`. Simplify using `only [h, and_true, Set.setOf_mem_eq]`. Conclude with `⟨hW, differentiableOn_const _⟩`. Simplify using `only [h, and_false, Set.setOf_false]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨isOpen_empty, differentiableOn_empty⟩`.
+Supply the required witnesses or components.
 -/
 theorem HolOn.const (hW : IsOpen W) (x : 𝟙_ (Over (Sp ℂ)) ⟶ X) : HolOn W fun _ => x := by
   intro U f
@@ -57,9 +57,9 @@ theorem HolOn.const (hW : IsOpen W) (x : 𝟙_ (Over (Sp ℂ)) ⟶ X) : HolOn W 
     exact ⟨isOpen_empty, differentiableOn_empty⟩
 
 /- English proof (translation)
-Introduce `U f`. Establish `hset : {w | w ∈ W' ∧ ⊤ ≤ (a (φ w)).left ⁻¹ᵁ U} = W' ∩ φ ⁻¹' {w | w ∈ W ∧ ⊤ ≤ (a w).left ⁻¹ᵁ U}`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, hU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hw, hm hw, hU⟩`. Introduce and unpack `⟨hw, -, hU⟩`. Conclude with `⟨hw, hU⟩`. Rewrite using `[hset]`. Conclude with `⟨hφ.continuousOn.isOpen_inter_preimage hW' (h U f).1, (h U f).2.comp (hφ.mono Set.inter_subset_left) (fun w hw => hw.2)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem HolOn.comp (h : HolOn W a) {W' : Set E'} (hW' : IsOpen W') {φ : E' → E}
     (hφ : DifferentiableOn ℂ φ W') (hm : Set.MapsTo φ W' W) : HolOn W' fun w => a (φ w) := by
@@ -77,9 +77,9 @@ theorem HolOn.comp (h : HolOn W a) {W' : Set E'} (hW' : IsOpen W') {φ : E' → 
     (h U f).2.comp (hφ.mono Set.inter_subset_left) (fun w hw => hw.2)⟩
 
 /- English proof (translation)
-Introduce `U f`. Establish `e1 : ∀ w, (a w ≫ q).left ⁻¹ᵁ U = (a w).left ⁻¹ᵁ (q.left ⁻¹ᵁ U)` using `fun w => by`. Rewrite using `[Over.comp_left]`. Simplify using the standard rewrite rules. Establish `e2 : ∀ w, valAt' (a w ≫ q).left U f = valAt' (a w).left (q.left ⁻¹ᵁ U) ((q.left.app U).hom f)` using `fun w => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Over.comp_left, hval]`. Simplify using `only [e1, e2]`. Conclude with `h (q.left ⁻¹ᵁ U) ((q.left.app U).hom f)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HolOn.post
     (hval : ∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X) (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens)
@@ -96,9 +96,9 @@ theorem HolOn.post
   exact h (q.left ⁻¹ᵁ U) ((q.left.app U).hom f)
 
 /- English proof (translation)
-Unfold `ContinuousAt`. Use `TopologicalSpace.tendsto_nhds_generateFrom_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨U, f, O, hO, rfl⟩ ⟨hU, hfO⟩`. Establish `hN : {w | w ∈ W ∧ ⊤ ≤ (a w).left ⁻¹ᵁ U} ∈ 𝓝 w` using `(h U f).1.mem_nhds ⟨hw, hU⟩`. Establish `hc : ContinuousAt (fun w => valAt' (a w).left U f) w` using `((h U f).2.differentiableAt hN).continuousAt`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hN, hc.preimage_mem_nhds (hO.mem_nhds hfO)] with z hz hz'`. Conclude with `⟨hz.2, hz'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem HolOn.continuousAt (h : HolOn W a) {w : E} (hw : w ∈ W) : ContinuousAt a w := by
   unfold ContinuousAt
@@ -111,11 +111,11 @@ theorem HolOn.continuousAt (h : HolOn W a) {w : E} (hw : w ∈ W) : ContinuousAt
   exact ⟨hz.2, hz'⟩
 
 /- English proof (translation)
-Establish `key : ∀ z, ⊤ ≤ (a z).left ⁻¹ᵁ U → {z | ⊤ ≤ (a z).left ⁻¹ᵁ U} ∈ 𝓝 z ∧ DifferentiableAt ℂ (fun z => valAt' (a z).left U f) z`. Introduce `z hzU`. Take `⟨W', b, hzW, hb, hab⟩` from `h z`. Establish `hbz : b z = a z` using `hab.self_of_nhds.symm`. Establish `hmem : z ∈ {w | w ∈ W' ∧ ⊤ ≤ (b w).left ⁻¹ᵁ U}` using `⟨hzW, by rw [hbz]; exact hzU⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `(hb U f).1.mem_nhds hmem`. Prove the components needed by the constructor for the conclusion. Use `filter_upwards [hN, hab] with y hy hy' show ⊤ ≤ (a y).left ⁻¹ᵁ U`. Rewrite using `[hy']`. Conclude with `hy.2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `((hb U f).2.differentiableAt hN).congr_of_eventuallyEq ?_ filter_upwards [hab] with y hy` and prove the remaining obligations. Rewrite using `[hy]`. Conclude with `⟨isOpen_iff_mem_nhds.2 fun z hz => (key z hz).1, fun z hz => (key z hz).2.differentiableWithinAt⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem HolOn.of_local
     (h : ∀ z, ∃ (W : Set E) (b : E → (𝟙_ (Over (Sp ℂ)) ⟶ X)), z ∈ W ∧ HolOn W b ∧ a =ᶠ[𝓝 z] b)
@@ -140,7 +140,7 @@ theorem HolOn.of_local
     fun z hz => (key z hz).2.differentiableWithinAt⟩
 
 /- English proof (translation)
-Rewrite using `[analyticAt_pi_iff]`. Introduce `i`. Conclude with `GlobalTheory.SCV.analyticAt_of_differentiableOn (h U (t i)).2 ((h U (t i)).1.mem_nhds ⟨hw, hU⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem HolOn.analyticAt [FiniteDimensional ℂ E] (h : HolOn W a) {g : ℕ} {U : X.left.Opens}
     (t : Fin g → Γ(X.left, U)) {w : E} (hw : w ∈ W) (hU : ⊤ ≤ (a w).left ⁻¹ᵁ U) :
@@ -175,61 +175,43 @@ noncomputable def chart {g : ℕ} {W : Set (Fin g → ℂ)} {σ : (Fin g → ℂ
 end Hol
 
 /- English proof (translation)
-Introduce `hmul H1 H2 H3 H4 H5 P`. Use `haveI : IsCommMonObj P.A := P.isAb.comm`. Establish `hval : ∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X) (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f` using `fun X x => (H1 X x).2.2.2.1`. Use `haveI hTG : IsTopologicalGroup (𝟙_ (Over (Sp ℂ)) ⟶ P.A) := H3 P.A`. Use `haveI : IsTopologicalAddGroup (Additive (𝟙_ (Over (Sp ℂ)) ⟶ P.A)) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CompactSpace (Additive (𝟙_ (Over (Sp ℂ)) ⟶ P.A)) := H4 P`. Take `⟨W, σ, U, t, hW, h0W, hσ0, hUa, hσ, ht, ho, hD⟩` from `H5 P.A P.g P.smoothDim 1`. Establish `hσ' : HolOn W σ` using `hσ`. Establish `hmulHol : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {W' : Set E} {a b : E → (𝟙_ (Over (Sp ℂ)) ⟶ P.A)}, HolOn W' a → HolOn W' b → HolOn W' fun w => a w * b w`. Introduce `E _ _ W' a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hl : HolOn W' fun w => lift (a w) (b w)` using `H2 E W' P.A P.A a b ha hb`. Use `hl.post hval μ[P.A]` as an intermediate fact. Simplify `this` using `only [Hom.mul_def]`. Set `φ' : OpenPartialHomeomorph (Additive (𝟙_ (Over (Sp ℂ)) ⟶ P.A)) (Fin P.g → ℂ)` to `chart t hW hσ' ht ho`. Establish `hσ00 : (fun i => valAt' (σ 0).left U (t i)) = 0` using `funext fun i => (ht 0 h0W).2 i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφ : IsAnalyticGroupChart φ'`. Use `⟨⟨0, h0W, hσ0⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show (fun i => valAt' ((1 : 𝟙_ (Over (Sp ℂ)) ⟶ P.A)).left U (t i)) = 0`. Rewrite using `[← hσ0]`. Conclude with `hσ00`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hprod : HolOn (W ×ˢ W) fun p : (Fin P.g → ℂ) × (Fin P.g → ℂ) => σ p.1 * σ p.2` using `hmulHol (hσ'.comp (hW.prod hW) differentiableOn_fst (fun p hp => hp.1)) (hσ'.comp (hW.prod hW) differentiableOn_snd (fun p hp => hp.2))`. Establish `h00 : σ (0 : (Fin P.g → ℂ) × (Fin P.g → ℂ)).1 * σ (0 : (Fin P.g → ℂ) × (Fin P.g → ℂ)).2 = σ 0` using `by simp [hσ0]`. Establish `hU0 : ⊤ ≤ (σ (0 : (Fin P.g → ℂ) × (Fin P.g → ℂ)).1 * σ (0 : (Fin P.g → ℂ) × (Fin P.g → ℂ)).2).left ⁻¹ᵁ U`. Rewrite using `[h00]`. Conclude with `(ht 0 h0W).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hprod.analyticAt t ⟨h0W, h0W⟩ hU0`. Establish `hdiv : ∀ n : ℕ, n ≠ 0 → ∀ a : Additive (𝟙_ (Over (Sp ℂ)) ⟶ P.A), ∃ b, n • b = a`. Introduce `n hn a`. Establish `hn1 : 1 ≤ n` using `Nat.one_le_iff_ne_zero.mpr hn`. Take `⟨hfin, -, hsur, -⟩` from `hmul (Sp ℂ) P n hn1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `haveI : Smooth P.A.hom := P.isAb.smooth`. Use `haveI : LocallyOfFiniteType P.A.hom := inferInstance`. Use `haveI : JacobsonSpace P.A.left := LocallyOfFiniteType.jacobsonSpace P.A.hom`. Use `set y : 𝟙_ (Over (Sp ℂ)) ⟶ P.A := Additive.toMul a with hy`. Establish `hyh : y.left ≫ P.A.hom = 𝟙 _` using `Over.w y`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : y.left (IsLocalRing.closedPoint ℂ) ∈ closedPoints P.A.left` using `((pointEquivClosedPoint P.A.hom) ⟨y.left, hyh⟩).2`. Take `⟨q, hqZ, hqc⟩` from `nonempty_inter_closedPoints (Z := (Out.mulA P.A n).left ⁻¹' {y.left (IsLocalRing.closedPoint ℂ)}) (hsur.surj _) ((IsClosed.preimage (Out.mulA P.A n).left.continuous hp).isLocallyClosed)`. Establish `hb'h : pointOfClosedPoint P.A.hom q hqc ≫ P.A.hom = 𝟙 _` using `pointOfClosedPoint_comp P.A.hom q hqc`. Set `b : 𝟙_ (Over (Sp ℂ)) ⟶ P.A` to `Over.homMk (pointOfClosedPoint P.A.hom q hqc) hb'h`. Use `⟨Additive.ofMul b, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ofMul_pow]`. Use `show Additive.ofMul (b ^ n) = Additive.ofMul y`. Use `congr 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `hpow : b ≫ Out.mulA P.A n = b ^ n`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Out.mulA`. Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Rewrite using `[← hpow, Over.comp_left]`. Use `ext_of_apply_closedPoint_eq P.A.hom ?_ hyh ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w (Out.mulA P.A n)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hb'h`. Use `show (Out.mulA P.A n).left (pointOfClosedPoint P.A.hom q hqc (IsLocalRing.closedPoint ℂ)) = _`. Establish `h2` using `pointOfClosedPoint_apply P.A.hom q hqc (IsLocalRing.closedPoint ℂ)`. Conclude with `(congrArg (Out.mulA P.A n).left h2).trans hqZ`. Establish `hsurj` using `hφ.exp_surjective hdiv`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hex0 : Additive.toMul (hφ.exp 0) = σ 0`. Rewrite using `[hσ0, map_zero]`. Both sides reduce to the same expression. Establish `hloc : ∃ N : Set (Fin P.g → ℂ), IsOpen N ∧ (0 : Fin P.g → ℂ) ∈ N ∧ HolOn N (fun v => σ (φ' (hφ.exp v))) ∧ ∀ v ∈ N, Additive.toMul (hφ.exp v) = σ (φ' (hφ.exp v))`. Establish `hc` using `hφ.analyticAt_chart_exp`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Establish `hc0 : φ' (hφ.exp 0) = 0` using `by rw [map_zero]; exact hφ.map_zero`. Establish `hsrc : ∀ᶠ v in 𝓝 (0 : Fin P.g → ℂ), hφ.exp v ∈ φ'.source`. Establish `h1` using `hφ.continuous_exp.tendsto 0`. Rewrite `h1` using `[map_zero]`. Conclude with `h1.eventually (φ'.open_source.mem_nhds hφ.zero_mem_source)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW0 : ∀ᶠ v in 𝓝 (0 : Fin P.g → ℂ), φ' (hφ.exp v) ∈ W` using `hc.continuousAt.preimage_mem_nhds (by rw [hc0]; exact hW.mem_nhds h0W)`. Take `⟨N, hNp, hNo, hN0⟩` from `eventually_nhds_iff.1 (hc.eventually_analyticAt.and (hsrc.and hW0))`. Use `⟨N, hNo, hN0, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hσ'.comp hNo (fun v hv => (hNp v hv).1.differentiableAt.differentiableWithinAt) (fun v hv => (hNp v hv).2.2)`. Introduce `v hv`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(φ'.left_inv (hNp v hv).2.1).symm`. Take `⟨N, hNo, hN0, hNhol, hNeq⟩` from `hloc`. Use `⟨{ ex := fun z => Additive.toMul (hφ.exp z) ex_add := fun z w => by show Additive.toMul (hφ.exp (z + w)) = _` and prove the remaining obligations. Rewrite using `[map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ex_onto := fun y => by`. Take `⟨z, hz⟩` from `hsurj (Additive.ofMul y)`. Conclude with `⟨z, by show Additive.toMul (hφ.exp z) = y; rw [hz]; rfl⟩`. Use `Λ := hφ.periodLattice`. Use `ker := fun z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hφ.mem_periodLattice]`. Conclude with `Iff.rfl`. Use `discrete := inferInstance`. Use `full := (inferInstance : IsZLattice ℝ hφ.periodLattice).span_top`. Use `hol := ?_`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `fr := fun _ _ => 1`. Use `fr_hol := fun _ => differentiableOn_const _`. Use `fr_ne := fun _ _ _ => one_ne_zero`. Use `fr_compat := ?_ }, ?_, ?_⟩`. Introduce `U' f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `HolOn.of_local (fun z0 => ?_) U' f` and prove the remaining obligations. Use `⟨(fun z => z - z0) ⁻¹' N, fun z => Additive.toMul (hφ.exp z0) * σ (φ' (hφ.exp (z - z0))), by simpa using hN0, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hmulHol (HolOn.const (hNo.preimage (continuous_sub_right z0)) _) (hNhol.comp (hNo.preimage (continuous_sub_right z0)) (differentiableOn_id.sub_const z0) (fun z hz => hz))`. Establish `ht0 : Tendsto (fun z => z - z0) (𝓝 z0) (𝓝 0)`. Use `(continuous_sub_right z0).tendsto z0` as an intermediate fact.
-
-Rewrite `this` using `[sub_self]`. Then use the resulting hypothesis. Use `filter_upwards [ht0.eventually (hNo.mem_nhds hN0)] with z hz`. Rewrite using `[← hNeq _ hz]`. Use `show Additive.toMul (hφ.exp z) = Additive.toMul (hφ.exp z0) * Additive.toMul (hφ.exp (z - z0))`. Rewrite using `[← toMul_add, ← map_add, add_sub_cancel]`.
-
-Introduce `i j z hz`. Take `⟨e, he⟩` from `(H1 _ (Additive.toMul (hφ.exp z)).left).2.1 _ hz`. Rewrite using `[he]`. Simplify using the standard rewrite rules. Use `⟨U, t, hUa, ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Use `show ⊤ ≤ (Additive.toMul (hφ.exp 0)).left ⁻¹ᵁ U`. Rewrite using `[hex0]`. Conclude with `(ht 0 h0W).1`. Establish `h1 : Additive.toMul (hφ.exp 0) = 1` using `by rw [hex0, hσ0]`. Introduce `D`.
-
-Simplify using `only`. Rewrite using `[h1]`. Conclude with `hD D`. Conclude with `hφ.hasFDerivAt_chart_exp`. Introduce `n a ha ha0`.
-
-Establish `haH : HolOn Set.univ a` using `ha`. Establish `hU1 : ⊤ ≤ (a 0).left ⁻¹ᵁ U`. Rewrite using `[ha0, ← hσ0]`. Conclude with `(ht 0 h0W).1`. Establish `hc : AnalyticAt ℂ (fun w i => valAt' (a w).left U (t i)) 0` using `haH.analyticAt t (Set.mem_univ 0) hU1`.
-
-Establish `hca : (fun i => valAt' (a 0).left U (t i)) = 0`. Rewrite using `[ha0, ← hσ0]`. Conclude with `hσ00`. Establish `hlog0 : hφ.log 0 = 0`. Use `hφ.log_exp.self_of_nhds` as an intermediate fact.
-
-Rewrite `this` using `[map_zero, hφ.map_zero]`. Conclude with `this`. Use `⟨fun w => hφ.log (φ' (Additive.ofMul (a w))), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show hφ.log (fun i => valAt' (a 0).left U (t i)) = 0`. Rewrite using `[hca]`.
-
-Conclude with `hlog0`. Conclude with `AnalyticAt.comp_of_eq hφ.isLocalCommGroupLaw.analyticAt_log hc hca`. Establish `hcont : Tendsto (fun w => Additive.ofMul (a w)) (𝓝 0) (𝓝 (0 : Additive (𝟙_ (Over (Sp ℂ)) ⟶ P.A)))`. Use `haH.continuousAt (Set.mem_univ (0 : Fin n → ℂ))` as an intermediate fact. Rewrite `this` using `[ContinuousAt, ha0]`.
-
-Conclude with `this`. Use `filter_upwards [hcont.eventually hφ.exp_log] with w hw`. Conclude with `congrArg Additive.toMul hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_holUnif :
     Out.MulNSt → (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)) → (∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (W : Set E) (X Y : Over (Sp ℂ)) (a : E → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (b : E → (𝟙_ (Over (Sp ℂ)) ⟶ Y)), (∀ (U : (X).left.Opens) (f : Γ((X).left, U)), IsOpen {w | w ∈ W ∧ ⊤ ≤ (a w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (a w).left U f) {w | w ∈ W ∧ ⊤ ≤ (a w).left ⁻¹ᵁ U}) → (∀ (U : (Y).left.Opens) (f : Γ((Y).left, U)), IsOpen {w | w ∈ W ∧ ⊤ ≤ (b w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (b w).left U f) {w | w ∈ W ∧ ⊤ ≤ (b w).left ⁻¹ᵁ U}) → (∀ (U : (X ⊗ Y).left.Opens) (f : Γ((X ⊗ Y).left, U)), IsOpen {w | w ∈ W ∧ ⊤ ≤ ((fun w => lift (a w) (b w)) w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' ((fun w => lift (a w) (b w)) w).left U f) {w | w ∈ W ∧ ⊤ ≤ ((fun w => lift (a w) (b w)) w).left ⁻¹ᵁ U})) → (∀ (A : Over (Sp ℂ)) [GrpObj A], @IsTopologicalGroup (𝟙_ (Over (Sp ℂ)) ⟶ A) (TopologicalSpace.generateFrom {S : Set (𝟙_ (Over (Sp ℂ)) ⟶ A) | ∃ (U : A.left.Opens) (f : Γ(A.left, U)) (O : Set ℂ), IsOpen O ∧ S = {x | ⊤ ≤ (x).left ⁻¹ᵁ U ∧ valAt' x.left U f ∈ O}}) _) → (∀ P : Out.PolAV (Sp ℂ), @CompactSpace (𝟙_ (Over (Sp ℂ)) ⟶ P.A) (TopologicalSpace.generateFrom {S : Set (𝟙_ (Over (Sp ℂ)) ⟶ P.A) | ∃ (U : P.A.left.Opens) (f : Γ(P.A.left, U)) (O : Set ℂ), IsOpen O ∧ S = {x | ⊤ ≤ (x).left ⁻¹ᵁ U ∧ valAt' x.left U f ∈ O}})) → (∀ (X : Over (Sp ℂ)) (g : ℕ), SmoothOfRelativeDimension g X.hom → ∀ e : (𝟙_ (Over (Sp ℂ)) ⟶ X), ∃ (W : Set (Fin g → ℂ)) (σ : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (U : X.left.Opens) (t : Fin g → Γ(X.left, U)), IsOpen W ∧ 0 ∈ W ∧ σ 0 = e ∧ IsAffineOpen U ∧ (∀ (U : (X).left.Opens) (f : Γ((X).left, U)), IsOpen {w | w ∈ W ∧ ⊤ ≤ (σ w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (σ w).left U f) {w | w ∈ W ∧ ⊤ ≤ (σ w).left ⁻¹ᵁ U}) ∧ (∀ w ∈ W, ⊤ ≤ (σ w).left ⁻¹ᵁ U ∧ ∀ i, valAt' (σ w).left U (t i) = w i) ∧ IsOpen[(TopologicalSpace.generateFrom {S : Set (𝟙_ (Over (Sp ℂ)) ⟶ X) | ∃ (U : X.left.Opens) (f : Γ(X.left, U)) (O : Set ℂ), IsOpen O ∧ S = {x | ⊤ ≤ (x).left ⁻¹ᵁ U ∧ valAt' x.left U f ∈ O}})] (σ '' W) ∧ (∀ D : Γ(X.left, U) →+ ℂ, (∀ a, D (constFn X.hom U a) = 0) → (∀ f f', D (f * f') = valAt' e.left U f * D f' + valAt' e.left U f' * D f) → (∀ i, D (t i) = 0) → D = 0)) → (∀ P : Out.PolAV (Sp ℂ), ∃ u : HolUnif P.A (⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩ : LB P.A.left) P.g, (∃ (U : P.A.left.Opens) (t : Fin P.g → Γ(P.A.left, U)), IsAffineOpen U ∧ ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U ∧ (∀ D : Γ(P.A.left, U) →+ ℂ, (∀ a, D (constFn P.A.hom U a) = 0) → (∀ f f', D (f * f') = valAt' (u.ex 0).left U f * D f' + valAt' (u.ex 0).left U f' * D f) → (∀ i, D (t i) = 0) → D = 0) ∧ HasFDerivAt (fun w i => valAt' (u.ex w).left U (t i)) (ContinuousLinearMap.id ℂ (Fin P.g → ℂ)) 0) ∧ (∀ (n : ℕ) (a : (Fin n → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ P.A)), (∀ (U : (P.A).left.Opens) (f : Γ((P.A).left, U)), IsOpen {w | w ∈ (Set.univ : Set (Fin n → ℂ)) ∧ ⊤ ≤ (a w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (a w).left U f) {w | w ∈ (Set.univ : Set (Fin n → ℂ)) ∧ ⊤ ≤ (a w).left ⁻¹ᵁ U}) → a 0 = 1 → ∃ G : (Fin n → ℂ) → (Fin P.g → ℂ), G 0 = 0 ∧ AnalyticAt ℂ G 0 ∧ ∀ᶠ w in 𝓝 0, u.ex (G w) = a w)) := by

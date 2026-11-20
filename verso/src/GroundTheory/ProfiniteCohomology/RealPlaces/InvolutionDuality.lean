@@ -11,7 +11,7 @@ variable {M : Type*} [AddCommGroup M]
 def fixedSub (σ : M →+ M) : AddSubgroup M := (σ - AddMonoidHom.id M).ker
 
 /- English proof (translation)
-Rewrite using `[fixedSub, AddMonoidHom.mem_ker, AddMonoidHom.sub_apply, AddMonoidHom.id_apply, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_fixedSub {σ : M →+ M} {x : M} : x ∈ fixedSub σ ↔ σ x = x := by
   rw [fixedSub, AddMonoidHom.mem_ker, AddMonoidHom.sub_apply, AddMonoidHom.id_apply, sub_eq_zero]
@@ -19,14 +19,14 @@ theorem mem_fixedSub {σ : M →+ M} {x : M} : x ∈ fixedSub σ ↔ σ x = x :=
 def traceSub (σ : M →+ M) : AddSubgroup M := (AddMonoidHom.id M + σ).range
 
 /- English proof (translation)
-Rewrite using `[traceSub, AddMonoidHom.mem_range]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_traceSub {σ : M →+ M} {x : M} : x ∈ traceSub σ ↔ ∃ y, y + σ y = x := by
   rw [traceSub, AddMonoidHom.mem_range]
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, rfl⟩` from `mem_traceSub.1 hx`. Rewrite using `[mem_fixedSub, map_add, hσ, add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem traceSub_le_fixedSub {σ : M →+ M} (hσ : ∀ x, σ (σ x) = x) : traceSub σ ≤ fixedSub σ := by
   intro x hx
@@ -49,9 +49,9 @@ theorem dualInv_apply (σ : M →+ M) (f : M →+ QZ) (x : M) : dualInv σ f x =
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_fixedSub]`. Prove the components needed by the constructor for the conclusion. Introduce `h y`. Establish `e` using `DFunLike.congr_fun h y`. Rewrite `e` using `[dualInv_apply]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_add, ← e, neg_add_cancel]`. Introduce `h`. Use extensionality with `y`. Rewrite using `[dualInv_apply, neg_eq_iff_add_eq_zero, add_comm, ← map_add]`. Conclude with `h y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_fixedSub_dualInv_iff {σ : M →+ M} (f : M →+ QZ) :
     f ∈ fixedSub (dualInv σ) ↔ ∀ y, f (y + σ y) = 0 := by
@@ -83,7 +83,7 @@ theorem fixedPair_apply (σ : M →+ M) (x : fixedSub σ) (f : fixedSub (dualInv
   rfl
 
 /- English proof (translation)
-Rewrite using `[fixedPair_apply, two_nsmul]`. Establish `hx : σ x = x` using `mem_fixedSub.1 x.2`. Establish `hf` using `(mem_fixedSub_dualInv_iff (f : M →+ QZ)).1 f.2 x`. Rewrite `hf` using `[hx, map_add]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem two_nsmul_fixedPair (σ : M →+ M) (x : fixedSub σ) (f : fixedSub (dualInv σ)) :
     2 • fixedPair σ x f = 0 := by
@@ -93,7 +93,7 @@ theorem two_nsmul_fixedPair (σ : M →+ M) (x : fixedSub σ) (f : fixedSub (dua
   rwa [hx, map_add] at hf
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `mem_traceSub.1 hx`. Rewrite using `[fixedPair_apply, ← hy]`. Conclude with `(mem_fixedSub_dualInv_iff (f : M →+ QZ)).1 f.2 y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixedPair_eq_zero_of_mem_left (σ : M →+ M) (x : fixedSub σ) (hx : (x : M) ∈ traceSub σ)
     (f : fixedSub (dualInv σ)) : fixedPair σ x f = 0 := by
@@ -102,7 +102,7 @@ theorem fixedPair_eq_zero_of_mem_left (σ : M →+ M) (x : fixedSub σ) (hx : (x
   exact (mem_fixedSub_dualInv_iff (f : M →+ QZ)).1 f.2 y
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `mem_traceSub.1 hf`. Establish `hx : σ x = x` using `mem_fixedSub.1 x.2`. Rewrite using `[fixedPair_apply, ← hg, AddMonoidHom.add_apply, dualInv_apply, hx, add_neg_cancel]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fixedPair_eq_zero_of_mem_right (σ : M →+ M) (x : fixedSub σ) (f : fixedSub (dualInv σ))
     (hf : (f : M →+ QZ) ∈ traceSub (dualInv σ)) : fixedPair σ x f = 0 := by
@@ -137,11 +137,11 @@ theorem tatePair_mk (σ : M →+ M) (x : fixedSub σ) (f : fixedSub (dualInv σ)
 variable {σ : M →+ M}
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hne' : (QuotientAddGroup.mk (x : M) : M ⧸ traceSub σ) ≠ 0`. Rewrite using `[Ne, QuotientAddGroup.eq_zero_iff]` and apply the resulting hypothesis. Take `⟨χ, hχ⟩` from `QZ.exists_apply_ne_zero hne'`. Use `set f : M →+ QZ := χ.comp (QuotientAddGroup.mk' (traceSub σ)) with hf_def`. Establish `hf : f ∈ fixedSub (dualInv σ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_fixedSub_dualInv_iff]`. Introduce `y`. Rewrite using `[hf_def, AddMonoidHom.comp_apply, QuotientAddGroup.mk'_apply, (QuotientAddGroup.eq_zero_iff _).2 (mem_traceSub.2 ⟨y, rfl⟩), map_zero]`. Apply `hχ` to reduce the goal to its premises. Conclude with `DFunLike.congr_fun hx (((⟨f, hf⟩ : fixedSub (dualInv σ))) : tateQuot (dualInv σ))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem tatePair_injective : Function.Injective (tatePair σ) := by
   rw [injective_iff_map_eq_zero]
@@ -162,13 +162,11 @@ theorem tatePair_injective : Function.Injective (tatePair σ) := by
   exact DFunLike.congr_fun hx (((⟨f, hf⟩ : fixedSub (dualInv σ))) : tateQuot (dualInv σ))
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`. Take `⟨f, rfl⟩` from `QuotientAddGroup.mk_surjective f`. Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Establish `hker : (AddMonoidHom.id M - σ).ker ≤ (f : M →+ QZ).ker`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx' : (x : M) ∈ fixedSub σ`. Rewrite using `[mem_fixedSub]`. Rewrite `hx` using `[AddMonoidHom.mem_ker, AddMonoidHom.sub_apply, AddMonoidHom.id_apply, sub_eq_zero]`. Conclude with `hx.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `DFunLike.congr_fun hf (((⟨x, hx'⟩ : fixedSub σ)) : tateQuot σ)`. Take `⟨ψ, hψ⟩` from `QZ.exists_comp_eq_of_ker_le _ _ hker`. Use `mem_traceSub.2 ⟨ψ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hψ]`. Use extensionality with `x`.
-
-Simplify using `[sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tatePair_flip_injective : Function.Injective (tatePair σ).flip := by
   rw [injective_iff_map_eq_zero]
@@ -192,9 +190,9 @@ instance finite_tateQuot [Finite M] (τ : M →+ M) : Finite (tateQuot τ) :=
   inferInstance
 
 /- English proof (translation)
-Establish `: Finite (tateQuot (dualInv σ) →+ QZ)` using `Nat.finite_of_card_ne_zero (by`. Rewrite using `[QZ.card_hom]`. Conclude with `Nat.card_pos.ne')`. Use `(tatePair_injective (σ := σ)).bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[QZ.card_hom]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Nat.card_le_card_of_injective _ (tatePair_flip_injective (σ := σ))`. Rewrite `h` using `[QZ.card_hom]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem tatePair_bijective [Finite M] : Function.Bijective (tatePair σ) := by
   have : Finite (tateQuot (dualInv σ) →+ QZ) := Nat.finite_of_card_ne_zero (by
@@ -205,9 +203,9 @@ theorem tatePair_bijective [Finite M] : Function.Bijective (tatePair σ) := by
   rwa [QZ.card_hom] at h
 
 /- English proof (translation)
-Establish `: Finite (tateQuot σ →+ QZ)` using `Nat.finite_of_card_ne_zero (by`. Rewrite using `[QZ.card_hom]`. Conclude with `Nat.card_pos.ne')`. Use `(tatePair_flip_injective (σ := σ)).bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[QZ.card_hom]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Nat.card_le_card_of_injective _ (tatePair_injective (σ := σ))`. Rewrite `h` using `[QZ.card_hom]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem tatePair_flip_bijective [Finite M] : Function.Bijective (tatePair σ).flip := by
   have : Finite (tateQuot σ →+ QZ) := Nat.finite_of_card_ne_zero (by
@@ -275,9 +273,9 @@ section Pairings
 variable {X Y X' Y' : Type*} [AddCommGroup X] [AddCommGroup Y] [AddCommGroup X'] [AddCommGroup Y']
 
 /- English proof (translation)
-Set `pre : (Y' →+ QZ) ≃ (Y →+ QZ)` to `{ toFun := fun φ => φ.comp e'.symm.toAddMonoidHom invFun := fun ψ => ψ.comp e'.toAddMonoidHom left_inv := fun φ => by ext; simp right_inv := fun ψ => by ext; simp }`. Establish `hP : ⇑P = pre ∘ Q ∘ e.symm`. Use function extensionality and compare the values at `x`. Use extensionality with `y`. Express the relevant statement in the definitionally equal form `P x y = Q (e.symm x) (e'.symm y)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← h, e.apply_symm_apply, e'.apply_symm_apply]`. Rewrite using `[hP]`. Conclude with `pre.bijective.comp (hQ.comp e.symm.bijective)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_of_pairing_eq (P : X →+ Y →+ QZ) (Q : X' →+ Y' →+ QZ) (e : X' ≃+ X) (e' : Y' ≃+ Y)
     (h : ∀ x y, P (e x) (e' y) = Q x y) (hQ : Function.Bijective Q) : Function.Bijective P := by
@@ -295,7 +293,7 @@ theorem bijective_of_pairing_eq (P : X →+ Y →+ QZ) (Q : X' →+ Y' →+ QZ) 
   exact pre.bijective.comp (hQ.comp e.symm.bijective)
 
 /- English proof (translation)
-The claim follows from `bijective_of_pairing_eq P.flip Q.flip e' e (fun y x => h x y) hQ`.
+A detailed English derivation is pending.
 -/
 theorem bijective_flip_of_pairing_eq (P : X →+ Y →+ QZ) (Q : X' →+ Y' →+ QZ) (e : X' ≃+ X)
     (e' : Y' ≃+ Y) (h : ∀ x y, P (e x) (e' y) = Q x y) (hQ : Function.Bijective Q.flip) :

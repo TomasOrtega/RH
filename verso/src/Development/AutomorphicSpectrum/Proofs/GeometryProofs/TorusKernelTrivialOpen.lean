@@ -16,7 +16,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompanionTheory.Ar.KerSpread
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.Xgn.torus_kernel_trivial_spreads_open`.
+A detailed English derivation is pending.
 -/
 theorem injective_on_points_of_generic : ∀ (Z' : Scheme.{0}) [IsIntegral Z'] (G : Over Z') [GrpObj G] [IsSeparated G.hom] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (u : splitTorus Z' X ⟶ G) [IsMonHom u] (L' : Type) [Field L'] (j : Sp L' ⟶ Z'), GlobalTheory.IsGenericPointHom j → (∀ (A : Type) [CommRing A] (g : L' →+* A) (t : Over.mk (spMap g ≫ j) ⟶ splitTorus Z' X), t ≫ u = 1 → t = 1) → ∃ V : Z'.Opens, (V : Set Z').Nonempty ∧ ∀ (A : Type) [CommRing A] (a : Sp A ⟶ Z'), ⊤ ≤ a ⁻¹ᵁ V → ∀ t : Over.mk a ⟶ splitTorus Z' X, t ≫ u = 1 → t = 1 :=
   @PositivityTheory.Xgn.torus_kernel_trivial_spreads_open

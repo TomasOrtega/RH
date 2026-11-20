@@ -11,21 +11,21 @@ open PI.TO PI.TOW
 variable {K : Type} [CommRing K] {n' k : ℕ}
 
 /- English proof (translation)
-Introduce `a c h`. Conclude with `(Prod.mk.inj h).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inj (t : Fin n') : Function.Injective (fun c : Fin k => (t, c)) := by
   intro a c h
   exact (Prod.mk.inj h).2
 
 /- English proof (translation)
-Simplify `pderiv_rename (inj (k := k) t) b W` using `[embS]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pderiv_embS (t : Fin n') (b : Fin k) (W : MvPolynomial (Fin k) K) :
     pderiv (t, b) (embS K t W) = embS K t (pderiv b W) := by
   simpa [embS] using pderiv_rename (inj (k := k) t) b W
 
 /- English proof (translation)
-Introduce `hm`. Establish `h2 : (t, b) ∈ W.vars.image (fun c : Fin k => (a, c))` using `vars_rename (fun c : Fin k => (a, c)) W hm`. Rewrite `h2` using `[Finset.mem_image]`. Take `⟨c, -, hc⟩` from `h2`. Conclude with `h (congrArg Prod.fst hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem notMem_vars_embS {t a : Fin n'} (h : a ≠ t) (b : Fin k) (W : MvPolynomial (Fin k) K) :
     (t, b) ∉ (embS K a W).vars := by
@@ -37,9 +37,9 @@ theorem notMem_vars_embS {t a : Fin n'} (h : a ≠ t) (b : Fin k) (W : MvPolynom
   exact h (congrArg Prod.fst hc)
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert s T hs ih`. Rewrite using `[Finset.prod_insert hs, Derivation.leibniz]`. Establish `hst : s ≠ t` using `fun e => ht (e ▸ Finset.mem_insert_self s T)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ih (fun h => ht (Finset.mem_insert_of_mem h)), pderiv_eq_zero_of_notMem_vars (notMem_vars_embS hst b (H s))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_prod_ne (t : Fin n') (b : Fin k) (T : Finset (Fin n')) (ht : t ∉ T)
     (H : Fin n' → MvPolynomial (Fin k) K) : pderiv (t, b) (∏ s ∈ T, embS K s (H s)) = 0 := by
@@ -54,9 +54,9 @@ theorem pderiv_prod_ne (t : Fin n') (b : Fin k) (T : Finset (Fin n')) (ht : t �
     simp
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [opWord, liftW, word1]`. Consider the case `cons y l ih`. Establish `e1 : opWord (liftW t (y :: l)) (embS K t F * R) = X (t, y.1) * pderiv (t, y.2) (opWord (liftW t l) (embS K t F * R))`. Simplify using `[opWord, liftW]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : word1 (y :: l) F = X y.1 * pderiv y.2 (word1 l F)`. Simplify using `[word1]`. Rewrite using `[e1, ih, e2, Derivation.leibniz, hR, pderiv_embS]`. Simplify using `[embS, map_mul, rename_X]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem opWord_liftW (t : Fin n') (l : List (Fin k × Fin k)) (F : MvPolynomial (Fin k) K)
     (R : MvPolynomial (Fin n' × Fin k) K) (hR : ∀ b, pderiv (t, b) R = 0) :
@@ -74,18 +74,18 @@ theorem opWord_liftW (t : Fin n') (l : List (Fin k × Fin k)) (F : MvPolynomial 
     ring
 
 /- English proof (translation)
-Simplify using `[opWord, List.foldr_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem opWord_append (l₁ l₂ : List (Fin n' × (Fin k × Fin k))) (f : MvPolynomial (Fin n' × Fin k) K) :
     opWord (l₁ ++ l₂) f = opWord l₁ (opWord l₂ f) := by
   simp [opWord, List.foldr_append]
 
 /- English proof (translation)
-Proceed by induction on `ts with`. Consider the case `nil => simp [opWord]`. Consider the case `cons t ts ih`. Rewrite `hts` using `[List.nodup_cons]`. Rewrite using `[List.flatMap_cons, opWord_append, ih hts.2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ t), ← Finset.mul_prod_erase Finset.univ (fun s => embS K s (if s ∈ t :: ts then word1 (w s) (G s) else G s)) (Finset.mem_univ t)]`. Simplify using `only [if_neg hts.1, List.mem_cons, true_or, if_true]`. Rewrite using `[opWord_liftW t (w t) (G t) _ (fun b' => pderiv_prod_ne t b' _ (Finset.notMem_erase t _) _)]`. Use `congr 1`. Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : s ≠ t` using `Finset.ne_of_mem_erase hs`. Simplify using `[hne]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem main_list (w : Fin n' → List (Fin k × Fin k)) (G : Fin n' → MvPolynomial (Fin k) K)
     (ts : List (Fin n')) (hts : ts.Nodup) :
@@ -108,7 +108,7 @@ theorem main_list (w : Fin n' → List (Fin k × Fin k)) (G : Fin n' → MvPolyn
     simp [hne]
 
 /- English proof (translation)
-Introduce `K _ n' k w F`. Establish `h` using `main_list w F (List.finRange n') (List.nodup_finRange n')`. Simplify `h` using `[concatW, List.mem_finRange]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stepLift : StepLift := by
   intro K _ n' k w F

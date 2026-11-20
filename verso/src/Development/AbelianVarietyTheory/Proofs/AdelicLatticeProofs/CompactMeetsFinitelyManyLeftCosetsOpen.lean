@@ -6,9 +6,9 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Take `⟨T, -, hT⟩` from `hK.elim_nhds_subcover (fun t : G => (fun k => t⁻¹ * k) ⁻¹' (U : Set G)) (fun t _ => (hU.preimage (by fun_prop)).mem_nhds (by simp))`. Use `⟨T, fun k hk => ?_⟩` and prove the remaining obligations. Use `hT hk` as an intermediate fact. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe] at this`. Take `⟨t, ht, h⟩` from `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, ht, t⁻¹ * k, h, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem compact_subset_finite_leftCosets (G : Type) [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (U : Subgroup G) (K : Set G) (hU : IsOpen (U : Set G))

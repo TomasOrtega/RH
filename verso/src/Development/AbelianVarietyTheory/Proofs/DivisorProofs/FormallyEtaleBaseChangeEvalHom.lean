@@ -6,19 +6,13 @@ namespace GlobalTheory
 attribute [local instance] MvPolynomial.algebraMvPolynomial
 
 /- English proof (translation)
-Use `set f := MvPolynomial.eval₂Hom (algebraMap k B) τ with hfdef`. Use `set g := MvPolynomial.eval₂Hom (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[k] B) (fun i => (1 : R) ⊗ₜ[k] τ i) with hgdef`. Use `letI : Algebra (MvPolynomial (Fin r) k) B := f.toAlgebra`. Use `letI : Algebra (MvPolynomial (Fin r) R) (R ⊗[k] B) := g.toAlgebra`. Use `letI : Algebra B (R ⊗[k] B) := Algebra.TensorProduct.rightAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra (MvPolynomial (Fin r) k) (R ⊗[k] B) := (g.comp (algebraMap (MvPolynomial (Fin r) k) (MvPolynomial (Fin r) R))).toAlgebra`. Use `haveI : Algebra.FormallyEtale (MvPolynomial (Fin r) k) B := hf`. Establish `key : g.comp (algebraMap (MvPolynomial (Fin r) k) (MvPolynomial (Fin r) R)) = (algebraMap B (R ⊗[k] B)).comp f`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, MvPolynomial.algebraMap_def, MvPolynomial.map_C, f, g, MvPolynomial.eval₂Hom_C]`. Use `show (algebraMap k R a) ⊗ₜ[k] (1 : B) = (1 : R) ⊗ₜ[k] algebraMap k B a`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Introduce `i`. Simplify using `only [RingHom.comp_apply, MvPolynomial.algebraMap_def, MvPolynomial.map_X, f, g, MvPolynomial.eval₂Hom_X']`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `haveI : IsScalarTower k (MvPolynomial (Fin r) k) B := IsScalarTower.of_algebraMap_eq fun x => by`. Simplify using `[RingHom.algebraMap_toAlgebra, f, MvPolynomial.algebraMap_eq, MvPolynomial.algebraMap_def]`. Use `haveI : IsScalarTower k B (R ⊗[k] B) := IsScalarTower.of_algebraMap_eq fun x => ((Algebra.TensorProduct.includeRight : B →ₐ[k] R ⊗[k] B).commutes x).symm`. Use `haveI : IsScalarTower (MvPolynomial (Fin r) k) B (R ⊗[k] B) := IsScalarTower.of_algebraMap_eq fun x => by`.
-
-Rewrite using `[RingHom.algebraMap_toAlgebra, key]`. Both sides reduce to the same expression. Use `haveI : IsScalarTower (MvPolynomial (Fin r) k) (MvPolynomial (Fin r) R) (R ⊗[k] B) := IsScalarTower.of_algebraMap_eq fun x => rfl`. Use `haveI : IsScalarTower k (MvPolynomial (Fin r) R) (R ⊗[k] B) := IsScalarTower.of_algebraMap_eq fun x => by`. Simplify using `[RingHom.algebraMap_toAlgebra, g, MvPolynomial.algebraMap_eq, Algebra.TensorProduct.algebraMap_apply]`.
-
-Use `haveI : IsScalarTower R (MvPolynomial (Fin r) R) (R ⊗[k] B) := IsScalarTower.of_algebraMap_eq fun x => by`. Simplify using `[RingHom.algebraMap_toAlgebra, g, MvPolynomial.algebraMap_eq, Algebra.TensorProduct.algebraMap_apply]`. Use `haveI h1 : Algebra.IsPushout k B R (R ⊗[k] B) := inferInstance`. Use `haveI h2 : Algebra.IsPushout (MvPolynomial (Fin r) k) B (MvPolynomial (Fin r) R) (R ⊗[k] B) := (Algebra.IsPushout.comp_iff k (MvPolynomial (Fin r) k) R (MvPolynomial (Fin r) R) (T := B) (T' := R ⊗[k] B)).1 h1`. Use `haveI : Algebra.IsPushout (MvPolynomial (Fin r) k) (MvPolynomial (Fin r) R) B (R ⊗[k] B) := h2.symm`.
-
-Establish `: Algebra.FormallyEtale (MvPolynomial (Fin r) R) (R ⊗[k] B)` using `Algebra.FormallyEtale.of_equiv (Algebra.IsPushout.equiv (MvPolynomial (Fin r) k) (MvPolynomial (Fin r) R) B (R ⊗[k] B))`. Conclude with `this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formallyEtale_mvPolynomial_eval₂_tensor {k R B : Type} [CommRing k] [CommRing R]
     [CommRing B] [Algebra k R] [Algebra k B] {r : ℕ} (τ : Fin r → B)

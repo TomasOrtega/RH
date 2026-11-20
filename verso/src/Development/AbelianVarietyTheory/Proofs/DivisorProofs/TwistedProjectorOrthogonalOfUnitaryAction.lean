@@ -7,21 +7,19 @@ open scoped ComplexConjugate InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `LL Ks _ _ _ _ _ WL _ _ _ _ _ _ _ _ W _ _ G0 _ _ A eC σ hid hu hc x y`. Establish `hunit : ∀ g : G0, starRingEnd ℂ (σ ((A.chi g : LLˣ) : LL)) = (σ ((A.chi g : LLˣ) : LL))⁻¹`. Introduce `g`. Use `set z := σ ((A.chi g : LLˣ) : LL)`. Establish `hpow : z ^ orderOf g = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : A.chi g ^ orderOf g = 1` using `by rw [← map_pow, pow_orderOf_eq_one, map_one]`. Establish `h2 : ((A.chi g : LLˣ) : LL) ^ orderOf g = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, h1, Units.val_one]`. Simplify using `only [z]`. Rewrite using `[← map_pow, h2, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : ‖z‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one hpow (orderOf_pos g).ne'`. Establish `hz : z ≠ 0` using `by intro h; rw [h, norm_zero] at hn; exact zero_ne_one hn`. Establish `hm : z * starRingEnd ℂ z = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hn]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `eq_inv_of_mul_eq_one_right hm`. Establish `key : ∀ g u v, ⟪A.j σ (A.ρ g u), A.j σ v⟫_ℂ = ⟪A.j σ u, A.j σ (A.ρ g⁻¹ v)⟫_ℂ`. Introduce `g u v`. Establish `h1 : A.ρ g (A.ρ g⁻¹ v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hu g u (A.ρ g⁻¹ v), h1]`. Establish `sa : ∀ u v, ⟪A.j σ (A.eOp eC u), A.j σ v⟫_ℂ = ⟪A.j σ u, A.j σ (A.eOp eC v)⟫_ℂ`. Introduce `u v`. Simplify using `only [Formalism.IndefR.Arith.FormsL.eOp_apply, map_sum, map_smulₛₗ, sum_inner, inner_sum, inner_smul_left, inner_smul_right]`. Use `conv_rhs => rw [← Equiv.sum_comp (Equiv.inv G0)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[key g, Equiv.inv_apply]`. Use `congr 1`. Rewrite using `[map_mul, map_mul, map_mul, hc, map_inv, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, map_inv₀, map_inv₀, hunit]`. Simplify using `only [Units.val_inv_eq_inv_val, map_inv₀, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `horth : ⟪A.j σ (A.eOp eC x), A.j σ (y - A.eOp eC y)⟫_ℂ = 0`. Establish `hy : A.eOp eC (A.eOp eC y) = A.eOp eC y` using `LinearMap.congr_fun hid y`. Rewrite using `[sa, map_sub, hy, sub_self, map_zero, inner_zero_right]`. Rewrite using `[map_add]`. Establish `h` using `norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ horth`.
-
-Simplify `h` using `only [sq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem twistedProjector_orthogonal_of_unitary : ∀ {LL Ks : Type} [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] [Algebra Ks LL]
     {WL : Type} [AddCommGroup WL] [Module LL WL] [Module Ks WL] [IsScalarTower Ks LL WL]

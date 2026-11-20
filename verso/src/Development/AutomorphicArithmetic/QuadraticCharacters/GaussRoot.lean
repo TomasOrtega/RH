@@ -8,19 +8,19 @@ namespace HostParam
 namespace SlopeTestRemainingChoices.GaussRoot
 
 /- English proof (translation)
-Use `haveI : NeZero d := ⟨hd.out.ne_zero⟩`. Establish `hζ1 : ζ ^ d = 1` using `hζ.pow_eq_one`. Set `χ : MulChar (ZMod d) K` to `(quadraticChar (ZMod d)).ringHomComp (Int.castRingHom K)`. Set `ψ : AddChar (ZMod d) K` to `AddChar.zmodChar d hζ1`. Establish `hchar : ringChar (ZMod d) ≠ 2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.ringChar_zmod_n]`. Use linear arithmetic over natural numbers and integers. Establish `hχ1 : χ ≠ 1` using `(MulChar.ringHomComp_ne_one_iff Int.cast_injective).mpr (quadraticChar_ne_one hchar)`. Establish `hχq : χ.IsQuadratic` using `(quadraticChar_isQuadratic (ZMod d)).comp _`. Establish `hψ : ψ.IsPrimitive` using `AddChar.zmodChar_primitive_of_primitive_root d hζ`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨gaussSum χ ψ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gaussSum_sq hχ1 hχq hψ, ZMod.card]`. Establish `hm : χ (-1) = -1`. Simplify using `only [χ, MulChar.ringHomComp_apply, quadraticChar_neg_one hchar, ZMod.card, ZMod.χ₄_nat_three_mod_four hd4]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Expand and normalize the polynomial expressions, which then agree. Introduce `σ a ha hσ`. Establish `hσψ : ∀ x : ZMod d, σ (ψ x) = ψ (a * x)`. Introduce `x`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`. Set `u : (ZMod d)ˣ` to `ZMod.unitOfCoprime a ha`. Establish `hG : σ (gaussSum χ ψ) = gaussSum χ (ψ.mulShift u)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [gaussSum, map_sum, map_mul, AddChar.mulShift_apply]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[hσψ]`. Simplify using `[χ, u]`. Rewrite using `[hG, gaussSum_mulShift_eq, hχq.inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[χ, u]`.
+A detailed English derivation is pending.
 -/
 theorem exists_gauss {K : Type} [Field K] [CharZero K] {d : ℕ} [hd : Fact d.Prime]
     (hd4 : d % 4 = 3) {ζ : K} (hζ : IsPrimitiveRoot ζ d) :
@@ -64,13 +64,13 @@ theorem exists_gauss {K : Type} [Field K] [CharZero K] {d : ℕ} [hd : Fact d.Pr
     simp [χ, u]
 
 /- English proof (translation)
-The claim follows from `sq_eq_sq_iff_eq_or_eq_neg.mp (ha.trans hb.symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_or_neg {K : Type} [Field K] {a b c : K} (ha : a ^ 2 = c) (hb : b ^ 2 = c) :
     a = b ∨ a = -b := sq_eq_sq_iff_eq_or_eq_neg.mp (ha.trans hb.symm)
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Establish `: (d : K) ≠ 0` using `Nat.cast_ne_zero.mpr hd.ne_zero`. Apply `this` to reduce the goal to its premises. Rewrite using `[← neg_eq_zero, ← hb]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ne_zero {K : Type} [Field K] [CharZero K] {d : ℕ} (hd : d.Prime) {b : K}
     (hb : b ^ 2 = -(d : K)) : b ≠ 0 := by

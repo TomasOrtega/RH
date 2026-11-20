@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Hodg
 section
 namespace MainStatements.Tam.Plug
 /- English proof (translation)
-The claim follows from `_root_.MainStatements.Tam.tamagawa_number_upper_bound MainStatements.Tam.vol MainStatements.Tam.stab MainStatements.Tam.num`.
+A detailed English derivation is pending.
 -/
 theorem tamagawa_number_upper_bound : _root_.MainStatements.Tam.ArchimedeanTamagawaUpperBound := _root_.MainStatements.Tam.tamagawa_number_upper_bound MainStatements.Tam.vol MainStatements.Tam.stab MainStatements.Tam.num
 end MainStatements.Tam.Plug

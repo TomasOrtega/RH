@@ -31,7 +31,7 @@ def IsOsc (ρ : V → B →L[ℂ] B) {G : Type} [Group G] (k : G → V → V) (�
     (∀ v f, ‖Φ (ρ v f)‖ = ‖Φ f‖) → ∀ g f, Sm ρ f → ‖Φ (Ω g f)‖ = ‖Φ f‖
 
 /- English proof (translation)
-Unfold `gau`. Rewrite using `[Complex.norm_exp]`. Use `congr 1`. Establish `: (-(π / 2 : ℂ) * (‖u‖ : ℂ) ^ 2) = ((-(π / 2) * ‖u‖ ^ 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, ofReal_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_gau (u : V) : ‖gau u‖ = Real.exp (-(π / 2) * ‖u‖ ^ 2) := by
   unfold gau
@@ -41,7 +41,7 @@ theorem norm_gau (u : V) : ‖gau u‖ = Real.exp (-(π / 2) * ‖u‖ ^ 2) := b
   rw [this, ofReal_re]
 
 /- English proof (translation)
-Rewrite using `[norm_gau, Real.exp_le_one_iff]`. Use `Real.pi_pos` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg ‖u‖]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_gau_le_one (u : V) : ‖gau u‖ ≤ 1 := by
   rw [norm_gau, Real.exp_le_one_iff]
@@ -49,27 +49,27 @@ theorem norm_gau_le_one (u : V) : ‖gau u‖ ≤ 1 := by
   nlinarith [sq_nonneg ‖u‖]
 
 /- English proof (translation)
-The claim follows from `Complex.exp_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem gau_ne_zero (u : V) : gau u ≠ 0 := Complex.exp_ne_zero _
 
 /- English proof (translation)
-Simplify using `[gau]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gau_zero : gau (0 : V) = 1 := by simp [gau]
 
 /- English proof (translation)
-Simplify using `[gau]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gau_neg (u : V) : gau (-u) = gau u := by simp [gau]
 
 /- English proof (translation)
-Unfold `gau`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_gau : Continuous (gau : V → ℂ) := by unfold gau; fun_prop
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun f => by simp only [map_zero, h.1], fun u v f => by simp only [h.2.1, hg, map_add], fun u f => h.2.2.1 _ f, fun f => (h.2.2.2 f).comp g.continuous⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsHeis.twist {om : V → V → ℝ} {ρ : V → B →L[ℂ] B} (h : IsHeis om ρ) (g : V →L[ℝ] V)
     (hg : ∀ x y, om (g x) (g y) = om x y) : IsHeis om fun v => ρ (g v) :=
@@ -77,7 +77,7 @@ theorem IsHeis.twist {om : V → V → ℝ} {ρ : V → B →L[ℂ] B} (h : IsHe
     fun f => (h.2.2.2 f).comp g.continuous⟩
 
 /- English proof (translation)
-Establish `: Continuous fun p : B × V => ρ p.2 p.1` using `continuous_prod_of_continuous_lipschitzWith (fun p : B × V => ρ p.2 p.1) 1 (fun f => h.2.2.2 f) fun v => LipschitzWith.of_dist_le_mul fun x y => by`. Simplify using `only [dist_eq_norm, ← map_sub, h.2.2.1]`. Simplify using the standard rewrite rules. Conclude with `this.comp (hx.prodMk ha)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsHeis.continuous {om : V → V → ℝ} {ρ : V → B →L[ℂ] B} (h : IsHeis om ρ) {Y : Type} [TopologicalSpace Y]
     {a : Y → V} {x : Y → B} (ha : Continuous a) (hx : Continuous x) : Continuous fun y => ρ (a y) (x y) := by
@@ -105,7 +105,7 @@ def mu (J : V ≃ₗᵢ[ℝ] V) (g₁ g₂ : V → V) : ℂ :=
   ∫ u, ∫ v, gau u * gau v * (cexp (π * I * (omJ J (g₁ u) (g₂ v) : ℂ)) * gau (g₁ u + g₂ v))
 
 /- English proof (translation)
-Use `GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := V) (b := (π / 2 : ℂ)) (by simpa using Real.pi_pos) 0 0` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `[gau]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem integrable_gau : Integrable (gau : V → ℂ) := by
   have := GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := V) (b := (π / 2 : ℂ)) (by simpa using Real.pi_pos) 0 0
@@ -116,7 +116,7 @@ variable {om : V → V → ℝ} {ρ : V → B →L[ℂ] B}
 
 omit [CompleteSpace B] in
 /- English proof (translation)
-Use `Integrable.mono' ((integrable_gau (V := V)).norm.mul_const ‖f‖) (continuous_gau.smul (h.2.2.2 f)).aestronglyMeasurable (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, h.2.2.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsHeis.integrable (h : IsHeis om ρ) (f : B) : Integrable fun u => gau u • ρ u f := by
   refine Integrable.mono' ((integrable_gau (V := V)).norm.mul_const ‖f‖)
@@ -125,7 +125,7 @@ theorem IsHeis.integrable (h : IsHeis om ρ) (f : B) : Integrable fun u => gau u
 
 omit [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] [CompleteSpace B] in
 /- English proof (translation)
-The claim follows from `continuous_gau.smul (h.2.2.2 f)`.
+A detailed English derivation is pending.
 -/
 theorem IsHeis.continuous_gau_smul (h : IsHeis om ρ) (f : B) : Continuous fun u => gau u • ρ u f :=
   continuous_gau.smul (h.2.2.2 f)
@@ -156,18 +156,18 @@ variable {J : V ≃ₗᵢ[ℝ] V}
 
 omit [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] in
 /- English proof (translation)
-Unfold `omJ`. Rewrite using `[← J.inner_map_map, hJ, inner_neg_right, real_inner_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem omJ_skew (hJ : ∀ x, J (J x) = -x) (x y : V) : omJ J y x = -omJ J x y := by
   unfold omJ
   rw [← J.inner_map_map, hJ, inner_neg_right, real_inner_comm]
 
 /- English proof (translation)
-Rewrite using `[proj_apply, Real.fourier_eq', ← ContinuousLinearMap.integral_comp_comm]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [map_smul, h.2.1, smul_smul]`. Rewrite using `[add_comm (-w) u, omJ_skew hJ u (-w)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : omJ J u (-w) = -⟪u, J w⟫` using `by simp [omJ]`. Rewrite using `[e, mul_right_comm _ (gau u), ← Complex.exp_add, mul_comm]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `(Real.fourierIntegral_convergent_iff (J w)).2 (h.integrable f)` as an intermediate fact. Simplify `this` using `only [Circle.smul_def, Real.fourierChar_apply, mul_neg, neg_mul, Complex.ofReal_neg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem proj_translate (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (f : B) (w : V) :
     proj h (ρ (-w) f) = ρ (-w) (𝓕 (fun u => gau u • ρ u f) (J w)) := by
@@ -185,7 +185,7 @@ theorem proj_translate (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (f : B
     simpa only [Circle.smul_def, Real.fourierChar_apply, mul_neg, neg_mul, Complex.ofReal_neg] using this
 
 /- English proof (translation)
-Use `hf n` as an intermediate fact. Simplify using `only [proj_translate hJ, h.2.2.1] at this`. Rewrite using `[← J.measurePreserving.integrable_comp_emb J.toHomeomorph.measurableEmbedding]`. Use `this.congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Good.fourier (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} {f : B} (hf : Good h f) (n : ℕ) :
     Integrable fun w => ‖w‖ ^ n * ‖𝓕 (fun u => gau u • ρ u f) w‖ := by
@@ -196,13 +196,13 @@ theorem Good.fourier (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} {f : B} 
   simp
 
 /- English proof (translation)
-The claim follows from `VectorFourier.fourierIntegral_continuous Real.continuous_fourierChar (innerSL ℝ).continuous₂ (h.integrable f)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fourier_gau (h : IsHeis om ρ) (f : B) : Continuous (𝓕 fun u => gau u • ρ u f) :=
   VectorFourier.fourierIntegral_continuous Real.continuous_fourierChar (innerSL ℝ).continuous₂ (h.integrable f)
 
 /- English proof (translation)
-Use `hf.fourier hJ 0` as an intermediate fact. Simplify using `only [pow_zero, one_mul] at this`. Conclude with `(integrable_norm_iff (continuous_fourier_gau h f).aestronglyMeasurable).1 this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Good.integrable_fourier (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} {f : B} (hf : Good h f) :
     Integrable (𝓕 fun u => gau u • ρ u f) := by
@@ -211,11 +211,11 @@ theorem Good.integrable_fourier (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) �
   exact (integrable_norm_iff (continuous_fourier_gau h f).aestronglyMeasurable).1 this
 
 /- English proof (translation)
-Establish `e : ∀ w, ρ w (proj h (ρ (-w) f)) = 𝓕 (fun u => gau u • ρ u f) (J w)`. Introduce `w`. Establish `h0 : omJ J w (-w) = 0`. Use `omJ_skew hJ w w` as an intermediate fact. Establish `e : omJ J w (-w) = -omJ J w w` using `by simp [omJ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[proj_translate hJ, h.2.1, h0, add_neg_cancel, h.1]`. Simplify using the standard rewrite rules. Simplify using `only [e]`. Rewrite using `[J.measurePreserving.integral_comp J.toHomeomorph.measurableEmbedding]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun ((h.continuous_gau_smul f).fourierInv_fourier_eq (h.integrable f) (hf.integrable_fourier hJ)) 0` as an intermediate fact. Rewrite `this` using `[Real.fourierInv_eq]`. Simplify `this` using `[gau_zero, h.1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Good.inversion (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} {f : B} (hf : Good h f) :
     ∫ w, ρ w (proj h (ρ (-w) f)) = f := by
@@ -236,9 +236,9 @@ theorem Good.inversion (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} {f : B
 
 omit [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] in
 /- English proof (translation)
-Establish `: (fun u : V => (gau u)⁻¹) = fun u => cexp ((π / 2 : ℂ) * ((‖u‖ ^ 2 : ℝ) : ℂ))`. Use function extensionality and compare the values at `u`. Rewrite using `[gau, ← Complex.exp_neg]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Rewrite using `[this]`. Conclude with `Complex.contDiff_exp.comp (contDiff_const.mul (Complex.ofRealCLM.contDiff.comp (contDiff_norm_sq ℝ)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_gau_inv : ContDiff ℝ ∞ fun u : V => (gau u)⁻¹ := by
   have : (fun u : V => (gau u)⁻¹) = fun u => cexp ((π / 2 : ℂ) * ((‖u‖ ^ 2 : ℝ) : ℂ)) := by
@@ -250,11 +250,11 @@ theorem contDiff_gau_inv : ContDiff ℝ ∞ fun u : V => (gau u)⁻¹ := by
   exact Complex.contDiff_exp.comp (contDiff_const.mul (Complex.ofRealCLM.contDiff.comp (contDiff_norm_sq ℝ)))
 
 /- English proof (translation)
-Establish `h1` using `(h.continuous_gau_smul f).fourierInv_fourier_eq (h.integrable f) (hf.integrable_fourier hJ)`. Establish `h2 : ContDiff ℝ ∞ (𝓕 (𝓕 fun u => gau u • ρ u f))` using `Real.contDiff_fourier fun n _ => hf.fourier hJ n`. Establish `h3 : ContDiff ℝ ∞ fun u => gau u • ρ u f`. Rewrite using `[← h1]`. Establish `: 𝓕⁻ (𝓕 fun u => gau u • ρ u f) = fun u => 𝓕 (𝓕 fun u => gau u • ρ u f) (-u)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Rewrite using `[Real.fourierInv_eq_fourier_neg]`. Rewrite using `[this]`. Conclude with `h2.comp contDiff_neg`. Establish `: ContDiff ℝ ∞ fun u => (gau u)⁻¹ • gau u • ρ u f` using `(contDiff_gau_inv (V := V)).smul h3`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [smul_smul, inv_mul_cancel₀ (gau_ne_zero _), one_smul, Sm]`.
+A detailed English derivation is pending.
 -/
 theorem Good.sm (hJ : ∀ x, J (J x) = -x) {h : IsHeis (omJ J) ρ} {f : B} (hf : Good h f) : Sm ρ f := by
   have h1 := (h.continuous_gau_smul f).fourierInv_fourier_eq (h.integrable f) (hf.integrable_fourier hJ)

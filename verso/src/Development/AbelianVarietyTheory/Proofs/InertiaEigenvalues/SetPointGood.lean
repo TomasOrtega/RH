@@ -26,11 +26,11 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.SetPtOff
 
 /- English proof (translation)
-Introduce `l _ a ρ h`. Break down `Nat.eq_zero_or_pos a with ha | ha` into its components or cases. Substitute `ha` using the available equality. Conclude with `Subsingleton.elim _ _`. Apply `GlobalTheory.BurnsideField.span_mat_eq_top_of_isIrrSub ρ` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hb`. Establish `: (Pi.single (⟨0, ha⟩ : Fin a) (1 : CyclotomicNorms.Fbar l) : Fin a → CyclotomicNorms.Fbar l) ∈ (⊤ : Submodule (CyclotomicNorms.Fbar l) (Fin a → CyclotomicNorms.Fbar l))` using `trivial`. Rewrite `this` using `[hb, Submodule.mem_bot]`. Establish `h1` using `congrFun this ⟨0, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at h1`. Introduce `g x _`. Discharge the goal by the elementary cases of `trivial`. Introduce `W' _ hW'`. Conclude with `h W' (fun g _ x hx => hW' g x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Check the elementary cases of the proposition. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem litBurnside_all (D : D7) : LitBurnside (G D.host.E D.nd.Om) := by
   intro l _ a ρ h
@@ -49,9 +49,9 @@ theorem litBurnside_all (D : D7) : LitBurnside (G D.host.E D.nd.Om) := by
       exact h W' (fun g _ x hx => hW' g x hx)
 
 /- English proof (translation)
-Introduce `hP D L P nch HW F Cm X C₂ hS i hi π hπ`. Establish `fa` using `hS.facts`. Establish `hHub` using `GlobalTheory.T.split_bound_of_params hP.font hP.fin GlobalTheory.Published.cheb_holds D L HW F (rowC C₂) nch X 120 0 hS.canon P (by linarith [hS.big]) le_rfl (by exact_mod_cast (Real.exp_pos _).le) (fa.admJ L hS.par) hS.par67 fa.admA fa.Conclusion1.1 fa.Conclusion1.2.2 fa.Conclus …`. Establish `hR : RestPt i (X.r i) (X.ρ i) π` using `hHub.2.2.2.2.2.2.2.1 i hi π hπ`. Establish `hHG : HG D.nd D.naut i` using `⟨π, (D.Zgood_tie i π).1 hπ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : π ∈ D.nd.Z i` using `(D.Z_tie i π).2 ((D.Zgood_tie i π).1 hπ).1`. Establish `hJ` using `GlobalTheory.JumpStatement.holds_all D L (fa.admJ L hS.par)`. Establish `hdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition (D` using `D) i (X.r i) (X.ρ i) π := semisimple_decomposition_of D i (X.r i) (X.ρ i) π fa.admA.2.2.2.2.2.2 hR.good hR.rho hR.ss`. Conclude with `⟨galois_condition_one_of D i (X.r i) fa.Conclusion1.1 hR.good, GlobalTheory.GTwoTheta.main hP.font D L fa.g2.1 hJ.1 hJ.2.2.1 i (X.r i) (X.ρ i) π hR.good hR.ng0 hR.ng1 hZ hdec, galois_condition_three_of D i (X.r i) (X.ρ i) π fa.Conclusion1.1 hR.good hdec hR.cont hHG fa.rhoBar (lit …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem main : Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ), Setup L nch HW X C₂ → ∀ i, D.nd.l i ∉ TwistedPlaces.gset D → ∀ π ∈ D.nd.Zgood i, SetPt i (X.r i) (X.ρ i) π := by
   intro hP D L P nch HW F Cm X C₂ hS i hi π hπ

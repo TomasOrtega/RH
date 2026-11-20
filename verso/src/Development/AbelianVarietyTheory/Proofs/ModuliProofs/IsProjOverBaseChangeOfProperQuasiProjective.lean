@@ -10,9 +10,7 @@ namespace GlobalTheory
 open AlgebraicGeometry CategoryTheory Limits in
 
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsQProjOver at hx`. Take `⟨N, i, hi, -, rfl⟩` from `hx`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver`. Use `haveI : IsProper (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str A N) := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str A N`. Use `haveI : IsProper ((e ≫ i) ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str A N) := by rw [Category.assoc]; infer_instance`.
-
-Use `haveI : IsProper (e ≫ i) := IsProper.of_comp (e ≫ i) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str A N)`. Conclude with `⟨N, e ≫ i, .of_isPreimmersion _ (e ≫ i).isClosedMap.isClosed_range, by simp⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.isProjOver_of_isProper_of_isImmersion {A : Type} [CommRing A]
     {B X : Scheme.{0}} (e : B ⟶ X)
@@ -28,7 +26,7 @@ theorem _root_.GlobalTheory.isProjOver_of_isProper_of_isImmersion {A : Type} [Co
 
 open AlgebraicGeometry CategoryTheory Limits in
 /- English proof (translation)
-Establish `h₁ : pullback.map (f ≫ s) t s t f (𝟙 _) (𝟙 _) (by simp) (by simp) ≫ pullback.fst s t = pullback.fst (f ≫ s) t ≫ f` using `pullback.lift_fst _ _ _`. Establish `h₂ : pullback.map (f ≫ s) t s t f (𝟙 _) (𝟙 _) (by simp) (by simp) ≫ pullback.snd s t = pullback.snd (f ≫ s) t` using `(pullback.lift_snd _ _ _).trans (Category.comp_id _)`. Use `IsPullback.of_bot ?_ h₁.symm (IsPullback.of_hasPullback s t)` and prove the remaining obligations. Rewrite using `[h₂]`. Conclude with `IsPullback.of_hasPullback (f ≫ s) t`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPullback_fst_comp_map {X Y Z W : Scheme.{0}} (f : X ⟶ Y) (s : Y ⟶ Z)
     (t : W ⟶ Z) :
@@ -44,13 +42,11 @@ private theorem isPullback_fst_comp_map {X Y Z W : Scheme.{0}} (f : X ⟶ Y) (s 
 
 open AlgebraicGeometry CategoryTheory Limits in
 /- English proof (translation)
-Use `set Γ : W ⟶ pullback s t := pullback.lift y (𝟙 W) (by rw [hy, Category.id_comp]) with hΓdef`. Establish `hΓs : Γ ≫ pullback.snd s t = 𝟙 W` using `pullback.lift_snd _ _ _`. Establish `hΓf : Γ ≫ pullback.fst s t = y` using `pullback.lift_fst _ _ _`. Use `haveI : IsImmersion (Γ ≫ pullback.snd s t) := by rw [hΓs]; infer_instance`. Use `haveI : IsImmersion Γ := IsImmersion.of_comp Γ (pullback.snd s t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e : P ⟶ pullback (f ≫ s) t := pullback.lift (f := f ≫ s) (g := t) φ b (by rw [← hy, ← Category.assoc, h.w, Category.assoc]) with hedef`. Establish `hef : e ≫ pullback.fst (f ≫ s) t = φ` using `pullback.lift_fst _ _ _`. Establish `hes : e ≫ pullback.snd (f ≫ s) t = b` using `pullback.lift_snd _ _ _`. Use `set g := pullback.map (f ≫ s) t s t f (𝟙 _) (𝟙 _) (by simp) (by simp) with hgdef`. Establish `hg₁ : g ≫ pullback.fst s t = pullback.fst (f ≫ s) t ≫ f` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hg₂ : g ≫ pullback.snd s t = pullback.snd (f ≫ s) t` using `(pullback.lift_snd _ _ _).trans (Category.comp_id _)`. Establish `hsq : e ≫ g = b ≫ Γ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hg₁, hΓf, ← Category.assoc, hef, h.w]`. Rewrite using `[Category.assoc, Category.assoc, hg₂, hΓs, hes, Category.comp_id]`.
-
-Establish `hleft : IsPullback e b g Γ`. Use `IsPullback.of_right ?_ hsq (isPullback_fst_comp_map f s t)` and prove the remaining obligations. Rewrite using `[hef, hΓf]`. Conclude with `h`. Conclude with `MorphismProperty.of_isPullback (P := @IsImmersion) hleft.flip ‹IsImmersion Γ›`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isImmersion_pullback_lift_of_isPullback {X Y Z W P : Scheme.{0}} (f : X ⟶ Y)
     (s : Y ⟶ Z) (t : W ⟶ Z) (y : W ⟶ Y) (hy : y ≫ s = t) (φ : P ⟶ X) (b : P ⟶ W)
@@ -83,11 +79,9 @@ private theorem isImmersion_pullback_lift_of_isPullback {X Y Z W P : Scheme.{0}}
 open AlgebraicGeometry CategoryTheory Limits in
 
 /- English proof (translation)
-Introduce `R A _ _ S s G y B φ hG hq hpb`. Set `j : R →+* A` to `(Spec.preimage (y ≫ s : Spec (CommRingCat.of A) ⟶ Spec (CommRingCat.of R))).hom`. Establish `hj : y ≫ s = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap`. Simplify using `only [j, CommRingCat.ofHom_hom]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `(Spec.map_preimage _).symm`. Use `haveI := isImmersion_pullback_lift_of_isPullback G.hom s (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j) y hj φ B.hom hpb`. Use `haveI : IsProper B.hom := MorphismProperty.of_isPullback (P := @IsProper) hpb hG`. Establish `hqQ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsQProjOver (pullback.snd (G.hom ≫ s) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j))` using `(_root_.GlobalTheory.isQProjOver_baseChange_and_finite_restrict R A j _ _).1 hq`. Establish `he : pullback.lift (f` using `G.hom ≫ s) (g := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j) φ B.hom (by rw [← hj, ← Category.assoc, hpb.w, Category.assoc]) ≫ pullback.snd (G.hom ≫ s) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j) = B.hom := pullback.lift_snd _ _ _`.
-
-Use `haveI : IsProper (pullback.lift (f := G.hom ≫ s) (g := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j) φ B.hom (by rw [← hj, ← Category.assoc, hpb.w, Category.assoc]) ≫ pullback.snd (G.hom ≫ s) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j)) := by rw [ …`. Rewrite using `[← he]`. Conclude with `_root_.GlobalTheory.isProjOver_of_isProper_of_isImmersion _ hqQ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.isProjOver_of_isPullback_of_isProper_of_isQProjOver :
     ∀ (R A : Type) [CommRing R] [CommRing A] (S : Scheme.{0}) (s : S ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R) (G : Over S)

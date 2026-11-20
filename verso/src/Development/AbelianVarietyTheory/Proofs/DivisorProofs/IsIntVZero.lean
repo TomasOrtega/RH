@@ -20,29 +20,27 @@ theorem iotaF_tmul (G : HTGroup p) (v : AwayP p) (a : Qv v) (x : G.F) :
     iotaF G v (a ⊗ₜ[ℚ] x) = a ⊗ₜ[ℚ] algebraMap G.F G.C x := rfl
 
 /- English proof (translation)
-Introduce `i` and use `by rw [map_zero, Finsupp.zero_apply]; exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntV_zero (G : HTGroup p) (v : AwayP p) : IsIntV G v 0 := fun i => by
   rw [map_zero, Finsupp.zero_apply]; exact zero_mem _
 
 /- English proof (translation)
-Introduce `i` and use `by rw [map_add, Finsupp.add_apply]; exact add_mem (ha i) (hb i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntV_add' (G : HTGroup p) (v : AwayP p) {a b : Qv v ⊗[ℚ] G.C} (ha : IsIntV G v a)
     (hb : IsIntV G v b) : IsIntV G v (a + b) := fun i => by
   rw [map_add, Finsupp.add_apply]; exact add_mem (ha i) (hb i)
 
 /- English proof (translation)
-Introduce `i` and use `by rw [map_neg, Finsupp.neg_apply]; exact neg_mem (ha i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntV_neg (G : HTGroup p) (v : AwayP p) {a : Qv v ⊗[ℚ] G.C} (ha : IsIntV G v a) :
     IsIntV G v (-a) := fun i => by
   rw [map_neg, Finsupp.neg_apply]; exact neg_mem (ha i)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `isIntV_zero G v`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
-
-Conclude with `isIntV_add' G v (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntV_sum (G : HTGroup p) (v : AwayP p) {ι : Type*} (s : Finset ι) (f : ι → Qv v ⊗[ℚ] G.C)
     (h : ∀ i ∈ s, IsIntV G v (f i)) : IsIntV G v (∑ i ∈ s, f i) := by
@@ -64,7 +62,7 @@ def intF (G : HTGroup p) (v : AwayP p) (h1 : IsIntV G v 1)
   neg_mem' {a} ha := by simp only [Set.mem_setOf_eq, map_neg] at *; exact isIntV_neg G v ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intF (G : HTGroup p) (v : AwayP p) (h1 : IsIntV G v 1)
     (hm : ∀ y z : Qv v ⊗[ℚ] G.C, IsIntV G v y → IsIntV G v z → IsIntV G v (y * z)) (m : Qv v ⊗[ℚ] G.F) :

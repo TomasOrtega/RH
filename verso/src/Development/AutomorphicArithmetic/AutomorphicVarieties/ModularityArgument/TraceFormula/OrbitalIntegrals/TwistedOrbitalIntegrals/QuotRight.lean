@@ -2,9 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open MeasureTheory PositivityTheory.Rg.Tf.Loc in
 /- English proof (translation)
-Introduce `hI G _ _ _ _ _ _ _ _ μG hμG hR H μ hs hinv F hF hFH y`. Distinguish the cases in `hex : ∃ ρ, IsQuotNormaliser H μ ρ`. Take `⟨ρ, hρ⟩` from `hex`. Establish `hρ' : IsQuotNormaliser H μ (fun g => ρ (g * y))`. Use `⟨hρ.1.comp (measurable_mul_const y), fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hρ.2 (g * y)` using `only [mul_assoc]`. Rewrite using `[hI G μG hμG H μ hs hinv F hF hFH ρ hρ, hI G μG hμG H μ hs hinv (fun g => F (g * y)) (hF.comp (measurable_mul_const y)) (fun h hh g => by rw [mul_assoc, hFH h hh]) _ hρ']`. Conclude with `integral_mul_right_eq_self (fun g => F g * ((ρ g).toReal : ℂ)) y`. Simplify using `only [quotIntegral, dif_neg hex]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.quotRight :
     UpperTheory.V.Z.Tf.Orb.QuotIndep → UpperTheory.V.Z.Tf.Orb.QuotRight := by

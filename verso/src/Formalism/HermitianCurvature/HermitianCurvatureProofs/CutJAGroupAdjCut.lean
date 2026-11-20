@@ -15,9 +15,7 @@ noncomputable section
 def gaChi (x : ℝ) : ℝ := Real.smoothTransition (2 * x - 1)
 
 /- English proof (translation)
-Use `⟨?_, ⟨1 / 2, by norm_num, fun x hx => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `Real.smoothTransition.contDiff.comp ((contDiff_const.mul contDiff_id).sub contDiff_const)`. Use `show Real.smoothTransition (2 * x - 1) = 0`. Conclude with `Real.smoothTransition.zero_of_nonpos (by linarith)`. Use `show Real.smoothTransition (2 * x - 1) = 1`.
-
-Conclude with `Real.smoothTransition.one_of_one_le (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCut0_gaChi : C6.IsCut0 gaChi := by
   refine ⟨?_, ⟨1 / 2, by norm_num, fun x hx => ?_⟩, fun x hx => ?_⟩
@@ -86,7 +84,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-The claim follows from `| [] => rfl | X :: v => by show Formalism.REAL.RdV X (B.Rw v 0) = 0 rw [rw_zero_fn v] funext g simp [Formalism.REAL.RdV]`.
+A detailed English derivation is pending.
 -/
 theorem rw_zero_fn {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] :
     ∀ v : List (B.Mat k r), B.Rw v (0 : B.Mat k r → E) = 0
@@ -98,7 +96,7 @@ theorem rw_zero_fn {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] :
     simp [Formalism.REAL.RdV]
 
 /- English proof (translation)
-The claim follows from `| [] => rw_zero_fn v | X :: u => by show B.LdV X (B.dLR u v 0) = 0 rw [dLR_zero_fn v u] funext g simp [B.LdV]`.
+A detailed English derivation is pending.
 -/
 theorem dLR_zero_fn {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (v : List (B.Mat k r)) :
     ∀ u : List (B.Mat k r), B.dLR u v (0 : B.Mat k r → E) = 0
@@ -110,9 +108,9 @@ theorem dLR_zero_fn {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (v : 
     simp [B.LdV]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Unfold `B.opApply`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `x hx`. Take `⟨T, _, rfl⟩` from `List.mem_map.1 hx`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[rw_zero_fn]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem opApply_zero_fn (Θ : B.DiffOp k r Wp Wq) : B.opApply Θ 0 = 0 := by
   funext g
@@ -124,7 +122,7 @@ theorem opApply_zero_fn (Θ : B.DiffOp k r Wp Wq) : B.opApply Θ 0 = 0 := by
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Unfold `B.JF Formalism.QuantumDeterminants.besselJ`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem JF_zero_fn (Bs : B.RealPlaceData k r Wp Wq) : B.JF Bs 0 = 0 := by
   funext g
@@ -132,13 +130,13 @@ theorem JF_zero_fn (Bs : B.RealPlaceData k r Wp Wq) : B.JF Bs 0 = 0 := by
   simp
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨Set.univ, 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ckOn_zero_fn {m : ℕ∞} {UU : Set (B.Mat k r)} : B.CkOn m UU (0 : B.Mat k r → (Wq →L[ℂ] Wp)) :=
   fun _ _ => ⟨Set.univ, 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, ckOn_zero_fn, fun u v _ _ _ g _ => by rw [dLR_zero_fn]; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem inCC_zero_fn (A : ℝ) (m : ℕ) : B.InCC A m (0 : B.Mat k r → (Wq →L[ℂ] Wp)) :=
   ⟨0, ckOn_zero_fn, fun u v _ _ _ g _ => by rw [dLR_zero_fn]; simp⟩
@@ -146,43 +144,37 @@ theorem inCC_zero_fn (A : ℝ) (m : ℕ) : B.InCC A m (0 : B.Mat k r → (Wq →
 end zero
 
 /- English proof (translation)
-Take `⟨Cg₁, hCg₁, hC1⟩` from `hCut`. Take `⟨Cc, Cg₂, hCc, hCg₂, hC2⟩` from `hComm`. Use `⟨Cc, max Cg₁ Cg₂, le_max_of_le_left hCg₁, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e hFr Θ d Bg hd hBg hΘ hCoef ε hε J₁ J₂ hJ₁ hJ₂ hvan hΘJ₁ hΘJ₂`. Establish `hr1 : (0 : ℝ) ≤ (S.G.r : ℝ) + 1` using `by positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hBg1 : Cg₁ * ((S.G.r : ℝ) + 1) ≤ Bg` using `le_trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hr1) hBg`. Establish `hBg2 : Cg₂ * ((S.G.r : ℝ) + 1) ≤ Bg` using `le_trans (mul_le_mul_of_nonneg_right (le_max_right _ _) hr1) hBg`. Establish `hBg0 : 0 ≤ Bg` using `le_trans (mul_nonneg (le_max_of_le_left hCg₁) hr1) hBg`. Establish `hχ0 : ∀ x, x < 1 / 2 → gaChi x = 0` using `fun x hx => by show Real.smoothTransition (2 * x - 1) = 0`. Conclude with `Real.smoothTransition.zero_of_nonpos (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ1 : ∀ x, 1 ≤ x → gaChi x = 1` using `fun x hx => by show Real.smoothTransition (2 * x - 1) = 1`. Conclude with `Real.smoothTransition.one_of_one_le (by linarith)`. Establish `hrep : ∀ (J : GFn S v) (t : ℝ), 0 < t → LocCC S T v (B.AB S.G.k S.G.r + Cc * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ^ 2 + 6 * (S.G.r : ℝ) * ((B.opOrder Θ : ℝ) + 5) + d + 2 * Bg * ((B.opOrder Θ : ℝ) + 5)) Bg J → ∃ F : GFn S v, B.CkOn ⊤ (B.GV S.G.k S.G.r) F ∧ CCg S v (B.AB S.G.k S.G. …`. Introduce `J t ht hJ`. Take `⟨F₀, hF₀s, hF₀g, hF₀e⟩` from `hJ.2 (t / 2) (by positivity)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hcs, hcg⟩` from `hC1 S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base gaChi isCut0_gaChi t (B.AB S.G.k S.G.r + Cc * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ^ 2 + 6 * (S.G.r : ℝ) * ((B.opOrder Θ : ℝ) + 5) + d + 2 * Bg * ((B.opOrder Θ : ℝ) + 5)) Bg F₀ ht hBg1 hF₀s hF₀g`. Use `⟨D.cutF (T v).base gaChi F₀ t, hcs, hcg, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g _ hg`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `GfP at hlt`. Establish `h0 : gaChi (Formalism.QuantumDeterminants.Gf S.G.k S.G.r (T v).base.z (T v).base.z' g / t) = 0` using `hχ0 _ (by rw [div_lt_iff₀ ht]; linarith)`. Apply `hg` to reduce the goal to its premises. Simplify using `[Formalism.FourierDecayAlt.D.cutF, h0]`. Introduce `x hx hle`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hle'` using `hle`. Unfold `GfP at hle'`. Establish `h1 : gaChi (Formalism.QuantumDeterminants.Gf S.G.k S.G.r (T v).base.z (T v).base.z' (B.gq (T v).base x) / t) = 1` using `hχ1 _ (by rw [le_div_iff₀ ht]; linarith)`. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx2.JF_cutF, h1, ← hF₀e x hx (by linarith)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `x hx h0`. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx2.JF_cutF]`. Distinguish the cases in `hlt : GfP S T v (B.gq (T v).base x) < t / 2`. Unfold `GfP at hlt`. Establish `h0' : gaChi (Formalism.QuantumDeterminants.Gf S.G.k S.G.r (T v).base.z (T v).base.z' (B.gq (T v).base x) / t) = 0` using `hχ0 _ (by rw [div_lt_iff₀ ht]; linarith)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0']`. Simplify using the standard rewrite rules. Use `push Not at hlt`. Rewrite using `[← hF₀e x hx hlt, h0, smul_zero]`. Take `⟨-, -, -, -, -, -, hB3P⟩` from `Formalism.FourierDecayAlt.P.b_any_of_xi S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base (B.AB S.G.k S.G.r) le_rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hAB0 : (0 : ℝ) ≤ B.AB S.G.k S.G.r` using `by unfold B.AB; positivity`. Take `⟨-, hSC⟩` from `Formalism.FourierDecayAlt.P.clause_of_regularized_limit S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base (B.AB S.G.k S.G.r) hAB0 (Formalism.FourierDecayAlt.P.matrix_coefficient_integrable_all S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base _ le_rfl)`. Take `⟨F₁, hF₁s, hF₁g, hF₁supp, hF₁e, hF₁z⟩` from `hrep J₁ ε hε hJ₁`. Take `⟨F₂, hF₂s, hF₂g, hF₂supp, hF₂e, -⟩` from `hrep J₂ (ε / 2) (by positivity) hJ₂`. Establish `hε' : (0 : ℝ) < ε / 2 / 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs₁ : ∀ g ∈ B.GV S.G.k S.G.r, F₁ g ≠ 0 → ε / 2 / 2 ≤ Formalism.QuantumDeterminants.Gf S.G.k S.G.r (T v).base.z (T v).base.z' g` using `fun g hg h => le_trans (by linarith) (hF₁supp g hg h)`. Establish `hs₂ : ∀ g ∈ B.GV S.G.k S.G.r, F₂ g ≠ 0 → ε / 2 / 2 ≤ Formalism.QuantumDeterminants.Gf S.G.k S.G.r (T v).base.z (T v).base.z' g` using `fun g hg h => hF₂supp g hg h`. Establish `hd'0 : (0 : ℝ) ≤ d + Bg * ((B.opOrder Θ : ℝ) + 5)` using `by positivity`. Establish `hPoly : B.PolyCoef (T v).base (ε / 2 / 2) (d + Bg * ((B.opOrder Θ : ℝ) + 5)) (B.opOrder Θ + 5) Θ`. Introduce `Tm hTm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Cb, hCb⟩` from `hCoef Tm hTm (ε / 2 / 2) hε' (B.opOrder Θ + 5)`. Use `⟨Cb, fun u w hu hw hl g hg hG => ?_⟩` and prove the remaining obligations. Establish `h` using `hCb u w hu hw hl g hg hG`. Establish `e : d + Bg * ((B.opOrder Θ + 5 : ℕ) : ℝ) = d + Bg * ((B.opOrder Θ : ℝ) + 5)` using `by push_cast; ring`. Rewrite `h` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Establish `hcc : ∀ F : GFn S v, CCg S v (B.AB S.G.k S.G.r + Cc * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ^ 2 + 6 * (S.G.r : ℝ) * ((B.opOrder Θ : ℝ) + 5) + d + 2 * Bg * ((B.opOrder Θ : ℝ) + 5)) Bg F → B.InCC (B.AB S.G.k S.G.r + (d + Bg * ((B.opOrder Θ : ℝ) + 5))) (B.opOrder Θ + 5) F`. Introduce `F hF`. Take `⟨c, hc⟩` from `hF (B.opOrder Θ + 5)`. Use `⟨c, Formalism.FourierDecayAlt.P.compactly_supported_monotone S.G.k S.G.r _ _ _ c _ F ?_ hc⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ Cc * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ^ 2` using `mul_nonneg (mul_nonneg hCc hr1) (sq_nonneg _)`. Establish `h1 : (0 : ℝ) ≤ 6 * (S.G.r : ℝ) * ((B.opOrder Θ : ℝ) + 5)` using `by positivity`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hβ` using `hB3P Θ (ε / 2 / 2) (d + Bg * ((B.opOrder Θ : ℝ) + 5)) hε' hd'0 hΘ.1 hΘ.2 hPoly F₁ F₂ (hcc F₁ hF₁g) (hcc F₂ hF₂g) hs₁ hs₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, -, hF₁5, hF₂5, hΘF₁5, hΘF₂5, -⟩` from `hSC Θ (ε / 2 / 2) (d + Bg * ((B.opOrder Θ : ℝ) + 5)) hε' hd'0 hΘ.1 hPoly F₁ F₂ (hcc F₁ hF₁g) (hcc F₂ hF₂g) hs₁ hs₂`. Establish `hJF₁ : ∀ x ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT, J₁ (B.gq (T v).base x) = B.JF (T v).base F₁ (B.gq (T v).base x)`. Introduce `x hx`. Distinguish the cases in `hG : GfP S T v (B.gq (T v).base x) < ε`. Rewrite using `[hvan x hx hG, hF₁z x hx (hvan x hx hG)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push Not at hG`. Conclude with `(hF₁e x hx hG).symm`. Establish `hAJ` using `hC2 E Wp Wq S T f χ ν' m₀ top A₀ hB v Θ d Bg hd hBg2 hΘ hCoef`. Establish `hi` using `hAJ (ε / 2) F₁ (by positivity) hF₁s hF₁g hF₁supp Set.univ J₁ isOpen_univ hJ₁.1 (fun x hx _ => hJF₁ x hx)`. Establish `hii` using `hAJ 1 0 one_pos ckOn_zero_fn (fun m => inCC_zero_fn _ m) (fun g _ h => absurd rfl h) (Set.Iio ε) J₁ isOpen_Iio hJ₁.1 (fun x hx hG => by rw [JF_zero_fn]; exact hvan x hx hG)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hiii` using `hAJ (ε / 2 / 2) F₂ hε' hF₂s hF₂g hF₂supp (Set.Ioi (ε / 2)) J₂ isOpen_Ioi hJ₂.1 (fun x hx hG => (hF₂e x hx (le_of_lt hG)).symm)`. Establish `hL` using `hPair Cc E Wp Wq S T f χ ν' m₀ top A₀ hB v e hFr (B.opApply Θ J₁) J₂ (B.opApply Θ F₁) F₂ hΘJ₁ hJ₂.1 hΘF₁5 hF₂5 (by`. Use `Filter.Eventually.of_forall fun x hx => ⟨(hi x hx (Set.mem_univ _)).1, fun hne => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hG : GfP S T v (B.gq (T v).base x) < ε`. Conclude with `absurd (by simpa [opApply_zero_fn, JF_zero_fn] using (hii x hx hG).1) hne`.
-
-Use `push Not at hG`. Conclude with `(hF₂e x hx (by linarith)).symm)`. Establish `hR` using `hPair Cc E Wp Wq S T f χ ν' m₀ top A₀ hB v e hFr J₁ (B.opAdj Θ J₂) F₁ (B.opAdj Θ F₂) hJ₁.1 hΘJ₂ hF₁5 hΘF₂5 (by`. Use `Filter.Eventually.of_forall fun x hx => ⟨hJF₁ x hx, fun hne => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hG : GfP S T v (B.gq (T v).base x) < ε`.
-
-Conclude with `absurd (hvan x hx hG) hne`. Use `push Not at hG`. Conclude with `(hiii x hx (show GfP S T v (B.gq (T v).base x) ∈ Set.Ioi (ε / 2) by`. Simplify using `only [Set.mem_Ioi]`. Use the proof step `linarith)).2)`.
-
-Rewrite using `[hL, hR]`. Conclude with `hβ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jAGroupAdj_of_leaves (hCut : GACutGraded) (hComm : GAJComm) (hPair : GAPair) : JAGroupAdj := by
   obtain ⟨Cg₁, hCg₁, hC1⟩ := hCut

@@ -6,7 +6,7 @@ open scoped UpperHalfPlane MatrixGroups
 open GlobalTheory.KZ GlobalTheory.Sieg
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.KZ.SiegelSL.sl_siegel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FSiegelUnitInTowerSlActionRowVector.lean&line=57#L57)
 -/

@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.LTPer.LogConv
 variable {B : Type} [CommRing B] {S : Subring B} {ϖ : B} {J : Ideal B}
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `hx`. Take `⟨s', hs', h'⟩` from `hy`. Use `⟨s + s', S.add_mem hs hs', ?_⟩` and prove the remaining obligations. Use `J.add_mem h h'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -23,7 +23,7 @@ theorem near_add {m : ℕ} {x y : B} (hx : Near S ϖ J m x) (hy : Near S ϖ J m 
   convert this using 1; ring
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `hx`. Take `⟨s', hs', h'⟩` from `hy`. Use `⟨s - s', S.sub_mem hs hs', ?_⟩` and prove the remaining obligations. Use `J.sub_mem h h'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -36,7 +36,7 @@ theorem near_sub {m : ℕ} {x y : B} (hx : Near S ϖ J m x) (hy : Near S ϖ J m 
   convert this using 1; ring
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `hx`. Take `⟨s', hs', h'⟩` from `hy`. Use `⟨s * s', S.mul_mem hs hs', ?_⟩` and prove the remaining obligations. Use `J.add_mem (J.mul_mem_right y h) (J.mul_mem_left (ϖ ^ a * s) h')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -49,7 +49,7 @@ theorem near_mul {a b : ℕ} {x y : B} (hx : Near S ϖ J a x) (hy : Near S ϖ J 
   convert this using 1; ring
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `h`. Use `⟨ϖ ^ (b - a) * s, S.mul_mem (S.pow_mem hϖ _) hs, ?_⟩` and prove the remaining obligations. Establish `e : ϖ ^ a * (ϖ ^ (b - a) * s) = ϖ ^ b * s`. Rewrite using `[← mul_assoc, ← pow_add, Nat.add_sub_cancel' hab]`. Rewrite using `[e]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem near_mono (hϖ : ϖ ∈ S) {a b : ℕ} (hab : a ≤ b) {x : B} (h : Near S ϖ J b x) :
     Near S ϖ J a x := by
@@ -60,12 +60,12 @@ theorem near_mono (hϖ : ϖ ∈ S) {a b : ℕ} (hab : a ≤ b) {x : B} (h : Near
   rwa [e]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨s, hs, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem near_of_mem {s : B} (hs : s ∈ S) : Near S ϖ J 0 s := ⟨s, hs, by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => exact ⟨1, S.one_mem, by simp⟩`. Consider the case `succ e ih`. Rewrite using `[pow_succ, Nat.mul_succ]`. Conclude with `near_mul ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem near_pow {a : ℕ} {x : B} (h : Near S ϖ J a x) (e : ℕ) : Near S ϖ J (a * e) (x ^ e) := by
   induction e with
@@ -75,7 +75,7 @@ theorem near_pow {a : ℕ} {x : B} (h : Near S ϖ J a x) (e : ℕ) : Near S ϖ J
     exact near_mul ih h
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `h`. Conclude with `⟨s, hs, hJ h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem near_anti {J' : Ideal B} (hJ : J ≤ J') {m : ℕ} {x : B} (h : Near S ϖ J m x) :
     Near S ϖ J' m x := by
@@ -85,9 +85,9 @@ theorem near_anti {J' : Ideal B} (hJ : J ≤ J') {m : ℕ} {x : B} (h : Near S �
 variable {F : ℕ → Ideal B}
 
 /- English proof (translation)
-Take `⟨s, hs, h0⟩` from `h 0`. Establish `hs' : s ∈ F k` using `E.closed k s hs (fun m => by`. Take `⟨s', hs', h'⟩` from `h m`. Use `⟨s', hs', ?_⟩` and prove the remaining obligations. Use `(F k).sub_mem h' h0` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use the proof step `ring)`. Use `(F k).add_mem h0 hs'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem near_all (E : PerEnv S F ϖ) (k : ℕ) {x : B} (h : ∀ m, Near S ϖ (F k) m x) : x ∈ F k := by
   obtain ⟨s, hs, h0⟩ := h 0
@@ -100,9 +100,9 @@ theorem near_all (E : PerEnv S F ϖ) (k : ℕ) {x : B} (h : ∀ m, Near S ϖ (F 
   convert this using 1; ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, S.zero_mem, by rw [E.top]; trivial⟩`. Consider the case `succ k ih`. Take `⟨s, hs, h1⟩` from `ih`. Take `⟨s', hs', h2⟩` from `h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Q ^ (M * k) * s' + s * (Q ^ M - ϖ ^ 1 * s'), S.add_mem (S.mul_mem (S.pow_mem hQ _) hs') (S.mul_mem hs (S.sub_mem (S.pow_mem hQ _) (S.mul_mem (S.pow_mem E.mem _) hs'))), ?_⟩` and prove the remaining obligations. Use `E.mul_le k 1 (Ideal.mul_mem_mul h1 h2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem near_Qpow (E : PerEnv S F ϖ) {Q : B} (hQ : Q ∈ S) {M : ℕ}
     (h : Near S ϖ (F 1) 1 (Q ^ M)) (k : ℕ) : Near S ϖ (F k) 1 (Q ^ (M * k)) := by
@@ -118,7 +118,7 @@ theorem near_Qpow (E : PerEnv S F ϖ) {Q : B} (hQ : Q ∈ S) {M : ℕ}
     convert this using 1; ring
 
 /- English proof (translation)
-Unfold `ltIter`. Rewrite using `[Function.iterate_succ_apply']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem iter_succ (ϖ : B) (q n : ℕ) (x : B) :
     ltIter ϖ q (n + 1) x = ϖ * ltIter ϖ q n x + ltIter ϖ q n x ^ q := by
@@ -126,7 +126,7 @@ theorem iter_succ (ϖ : B) (q n : ℕ) (x : B) :
   rw [Function.iterate_succ_apply']
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa [ltIter] using hQ`. Consider the case `succ n ih`. Rewrite using `[iter_succ]`. Conclude with `S.add_mem (S.mul_mem hϖ ih) (S.pow_mem ih _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iter_mem (hϖ : ϖ ∈ S) {Q : B} (hQ : Q ∈ S) (q n : ℕ) : ltIter ϖ q n Q ∈ S := by
   induction n with
@@ -136,9 +136,9 @@ theorem iter_mem (hϖ : ϖ ∈ S) {Q : B} (hQ : Q ∈ S) (q n : ℕ) : ltIter ϖ
     exact S.add_mem (S.mul_mem hϖ ih) (S.pow_mem ih _)
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => exact ⟨0, S.zero_mem, by simp⟩`. Consider the case `succ e ih`. Take `⟨s, hs, hh⟩` from `h`. Take `⟨u, hu, ih⟩` from `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨y ^ e * s + u * z, S.add_mem (S.mul_mem (S.pow_mem hy _) hs) (S.mul_mem hu hz), ?_⟩` and prove the remaining obligations. Take the linear combination `(y ^ e) * hh + z * ih`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pow_congr' {y z : B} (hy : y ∈ S) (hz : z ∈ S) (h : ∃ s ∈ S, y - z = ϖ * s) (e : ℕ) :
     ∃ s ∈ S, y ^ e - z ^ e = ϖ * s := by
@@ -151,9 +151,9 @@ theorem pow_congr' {y z : B} (hy : y ∈ S) (hz : z ∈ S) (h : ∃ s ∈ S, y -
     linear_combination (y ^ e) * hh + z * ih
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, S.zero_mem, by simp [ltIter]⟩`. Consider the case `succ n ih`. Establish `hy` using `iter_mem hϖ hQ q n`. Take `⟨u, hu, h2⟩` from `pow_congr' hy (S.pow_mem hQ (q ^ n)) ih q`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨ltIter ϖ q n Q + u, S.add_mem hy hu, ?_⟩` and prove the remaining obligations. Rewrite using `[iter_succ, pow_succ q n, pow_mul]`. Take the linear combination `h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem iter_congr (hϖ : ϖ ∈ S) {Q : B} (hQ : Q ∈ S) (q n : ℕ) :
     ∃ s ∈ S, ltIter ϖ q n Q - Q ^ (q ^ n) = ϖ * s := by
@@ -167,11 +167,11 @@ theorem iter_congr (hϖ : ϖ ∈ S) {Q : B} (hQ : Q ∈ S) (q n : ℕ) :
     linear_combination h2
 
 /- English proof (translation)
-Establish `hL : M * k ≤ q ^ (M * k)` using `(Nat.lt_pow_self hq).le`. Take `⟨s, hs, hy⟩` from `iter_congr E.mem hQ q (M * k)`. Establish `e : Q ^ (q ^ (M * k)) = Q ^ (M * k) * Q ^ (q ^ (M * k) - M * k)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hL]`. Establish `h1 : Near S ϖ (F k) 1 (Q ^ (q ^ (M * k)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `near_mul (near_Qpow E hQ h k) (near_of_mem (S.pow_mem hQ _))`. Take `⟨s1, hs1, h1'⟩` from `h1`. Use `⟨s1 + s, S.add_mem hs1 hs, ?_⟩` and prove the remaining obligations. Use `h1' using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hy`.
+A detailed English derivation is pending.
 -/
 theorem near_iter (E : PerEnv S F ϖ) {q : ℕ} (hq : 2 ≤ q) {Q : B} (hQ : Q ∈ S) {M : ℕ}
     (h : Near S ϖ (F 1) 1 (Q ^ M)) (k : ℕ) : Near S ϖ (F k) 1 (ltIter ϖ q (M * k) Q) := by
@@ -188,9 +188,7 @@ theorem near_iter (E : PerEnv S F ϖ) {q : ℕ} (hq : 2 ≤ q) {Q : B} (hQ : Q �
   linear_combination hy
 
 /- English proof (translation)
-Establish `h0 : Near S ϖ J 1 ϖ` using `⟨1, S.one_mem, by simp⟩`. Establish `h1 : Near S ϖ J (b + 1) (ϖ * y)`. Rewrite using `[add_comm]`. Conclude with `near_mul h0 h`. Establish `h2 : Near S ϖ J (b + 1) (y ^ q)` using `near_mono hϖ (by nlinarith) (near_pow h q)`.
-
-Conclude with `near_add h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem near_step (hϖ : ϖ ∈ S) {q : ℕ} (hq : 2 ≤ q) {b : ℕ} (hb : 1 ≤ b) {y : B}
     (h : Near S ϖ J b y) : Near S ϖ J (b + 1) (ϖ * y + y ^ q) := by
@@ -202,7 +200,7 @@ theorem near_step (hϖ : ϖ ∈ S) {q : ℕ} (hq : 2 ≤ q) {b : ℕ} (hb : 1 �
   exact near_add h1 h2
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simpa using h`. Consider the case `succ j ih`. Rewrite using `[show n0 + (j + 1) = n0 + j + 1 from rfl, iter_succ]`. Conclude with `near_step (b := 1 + j) E.mem hq (by omega) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem near_iter_add (E : PerEnv S F ϖ) {q : ℕ} (hq : 2 ≤ q) {Q : B} {k n0 : ℕ}
     (h : Near S ϖ (F k) 1 (ltIter ϖ q n0 Q)) (j : ℕ) :
@@ -214,7 +212,7 @@ theorem near_iter_add (E : PerEnv S F ϖ) {q : ℕ} (hq : 2 ≤ q) {Q : B} {k n0
     exact near_step (b := 1 + j) E.mem hq (by omega) ih
 
 /- English proof (translation)
-Rewrite using `[iter_succ]`. Take the linear combination `(ϖ' ^ n * ltIter ϖ q n Q) * hu`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem iter_diff {ϖ' : B} (hu : ϖ * ϖ' = 1) (q n : ℕ) (Q : B) :
     ϖ' ^ (n + 1) * ltIter ϖ q (n + 1) Q - ϖ' ^ n * ltIter ϖ q n Q =
@@ -223,9 +221,9 @@ theorem iter_diff {ϖ' : B} (hu : ϖ * ϖ' = 1) (q n : ℕ) (Q : B) :
   linear_combination (ϖ' ^ n * ltIter ϖ q n Q) * hu
 
 /- English proof (translation)
-Establish `h1 : Near S ϖ (F k) (2 * j + 2) (ltIter ϖ q (n0 + j) Q ^ q)` using `near_mono E.mem (by nlinarith) (near_pow (near_iter_add E hq h j) q)`. Take `⟨s, hs, hf⟩` from `h1`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `hU : ϖ ^ (n0 + j + 1) * ϖ' ^ (n0 + j + 1) = 1` using `by rw [← mul_pow, hu, one_pow]`. Establish `e : ϖ ^ n0 * (ϖ' ^ (n0 + j + 1) * ltIter ϖ q (n0 + j + 1) Q - ϖ' ^ (n0 + j) * ltIter ϖ q (n0 + j) Q) - ϖ ^ (1 + j) * s = (ϖ ^ n0 * ϖ' ^ (n0 + j + 1)) * (ltIter ϖ q (n0 + j) Q ^ q - ϖ ^ (2 * j + 2) * s)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[iter_diff hu]`. Take the linear combination `(ϖ ^ (1 + j) * s) * hU`. Rewrite using `[e]`. Conclude with `(F k).mul_mem_left _ hf`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem near_diff (E : PerEnv S F ϖ) {ϖ' : B} (hu : ϖ * ϖ' = 1) {q : ℕ} (hq : 2 ≤ q) {Q : B}
     {k n0 : ℕ} (h : Near S ϖ (F k) 1 (ltIter ϖ q n0 Q)) (j : ℕ) :
@@ -245,15 +243,15 @@ theorem near_diff (E : PerEnv S F ϖ) {ϖ' : B} (hu : ϖ * ϖ' = 1) {q : ℕ} (h
   exact (F k).mul_mem_left _ hf
 
 /- English proof (translation)
-Use `choose s hs hf using h`. Take `⟨r, hr, hsum⟩` from `E.sumS s hs`. Establish `tel : ∀ J, ϖ ^ c * (x (n0 + J) - x n0) - ∑ i ∈ Finset.range J, ϖ ^ (1 + i) * s i ∈ F k`. Introduce `J`. Proceed by induction on `J with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ J ih`. Use `(F k).add_mem ih (hf J)` as an intermediate fact. Rewrite using `[Finset.sum_range_succ, show n0 + (J + 1) = n0 + J + 1 from rfl]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc : ϖ ^ c * ϖ' ^ c = 1` using `by rw [← mul_pow, hu, one_pow]`. Use `⟨x n0 + ϖ' ^ c * (ϖ * r), fun m => ⟨n0 + m, fun n hn => ?_⟩⟩` and prove the remaining obligations. Take `⟨J, rfl⟩ : ∃ J, n = n0 + J` from `⟨n - n0, by omega⟩`. Establish `hJ : m ≤ J + 1` using `by omega`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hae⟩` from `hsum J`. Use `near_mono E.mem hJ ⟨-a, S.neg_mem ha, ?_⟩` and prove the remaining obligations. Establish `hmul : ∑ i ∈ Finset.range J, ϖ ^ (1 + i) * s i = ϖ * ∑ i ∈ Finset.range J, ϖ ^ i * s i`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ϖ ^ c * (x (n0 + J) - (x n0 + ϖ' ^ c * (ϖ * r))) - ϖ ^ (J + 1) * (-a) = ϖ ^ c * (x (n0 + J) - x n0) - ∑ i ∈ Finset.range J, ϖ ^ (1 + i) * s i`. Rewrite using `[hmul]`. Take the linear combination `(-(ϖ * r)) * hc - ϖ * hae`. Rewrite using `[e]`. Conclude with `tel J`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_limit (E : PerEnv S F ϖ) {ϖ' : B} (hu : ϖ * ϖ' = 1) (x : ℕ → B) {k : ℕ} (c n0 : ℕ)
     (h : ∀ j, Near S ϖ (F k) (1 + j) (ϖ ^ c * (x (n0 + j + 1) - x (n0 + j)))) :
@@ -287,15 +285,15 @@ theorem level_limit (E : PerEnv S F ϖ) {ϖ' : B} (hu : ϖ * ϖ' = 1) (x : ℕ �
   exact tel J
 
 /- English proof (translation)
-Use `choose c t h using h`. Establish `key : ∀ k, t (k + 1) - t k ∈ F k` using `fun k => by`. Establish `hall : ∀ m, Near S ϖ (F k) m (ϖ ^ (c k + c (k + 1)) * (t (k + 1) - t k))` using `fun m => by`. Take `⟨N1, h1⟩` from `h k m`. Take `⟨N2, h2⟩` from `h (k + 1) m`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a1` using `h1 (max N1 N2) (le_max_left _ _)`. Establish `a2` using `near_anti (E.anti k) (h2 (max N1 N2) (le_max_right _ _))`. Establish `b1` using `near_mul (near_of_mem (S.pow_mem E.mem (c (k + 1)))) a1`. Establish `b2` using `near_mul (near_of_mem (S.pow_mem E.mem (c k))) a2`. Establish `b` using `near_sub b1 b2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b` using `[zero_add]`. Use `b using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `(F k).mul_mem_left (ϖ' ^ (c k + c (k + 1))) (near_all E k hall)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← mul_pow, mul_comm ϖ', hu, one_pow, one_mul]`. Take `⟨T, hT⟩` from `E.complete t key`. Use `⟨T, fun k => ⟨c k, fun m => ?_⟩⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `h k m`. Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hf⟩` from `hN n hn`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Use `(F k).sub_mem hf ((F k).mul_mem_left (ϖ ^ c k) (hT k))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem glue (E : PerEnv S F ϖ) {ϖ' : B} (hu : ϖ * ϖ' = 1) (x : ℕ → B)
     (h : ∀ k, ∃ (c : ℕ) (t : B), ∀ m, ∃ N, ∀ n ≥ N, Near S ϖ (F k) m (ϖ ^ c * (x n - t))) :
@@ -325,7 +323,7 @@ theorem glue (E : PerEnv S F ϖ) {ϖ' : B} (hu : ϖ * ϖ' = 1) (x : ℕ → B)
   convert this using 1; ring
 
 /- English proof (translation)
-Introduce and unpack `B _ S F ϖ E ϖ' hu q hq Q hQ ⟨M, -, hN⟩`. Use `glue E hu _ fun k => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `level_limit E hu (fun n => ϖ' ^ n * ltIter ϖ q n Q) (M * k) (M * k) (near_diff E hu hq (near_iter E hq hQ hN k))`. Conclude with `⟨M * k, t, ht⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem log_converges : ∀ {B : Type} [CommRing B] {S : Subring B} {F : ℕ → Ideal B} {ϖ : B}, PerEnv S F ϖ → ∀ (ϖ' : B), ϖ * ϖ' = 1 → ∀ (q : ℕ), 2 ≤ q →
     ∀ Q ∈ S, (∃ M : ℕ, 0 < M ∧ Near S ϖ (F 1) 1 (Q ^ M)) →

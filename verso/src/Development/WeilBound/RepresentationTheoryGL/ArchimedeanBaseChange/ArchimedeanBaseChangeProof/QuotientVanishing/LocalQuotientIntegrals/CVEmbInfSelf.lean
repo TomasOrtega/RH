@@ -11,16 +11,16 @@ open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D4
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `pInf_algebraMap x v`.
+A detailed English derivation is pending.
 -/
 theorem cV_alg (v : InfinitePlace E) (x : E) : cV v (algebraMap E (Ad E) x) = v.embedding x :=
   pInf_algebraMap x v
 
 open Classical in
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(GeneralLinearGroup.map (pInf E) (embInf n v y)) i j w = _`. Unfold `embInf`. Rewrite using `[MonoidHom.comp_apply, pInf_infGL]`. Express the relevant statement in the definitionally equal form `(MonoidHom.mulSingle (fun _ : InfinitePlace E => GL (Fin n) ℂ) v y w).val i j = _`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cV_embInf (v w : InfinitePlace E) (y : GL (Fin n) ℂ) :
     GeneralLinearGroup.map (cV w) (embInf n v y) = if w = v then y else 1 := by
@@ -35,7 +35,7 @@ theorem cV_embInf (v w : InfinitePlace E) (y : GL (Fin n) ℂ) :
   · simp [h]
 
 /- English proof (translation)
-Rewrite using `[cV_embInf, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cV_embInf_self (v : InfinitePlace E) (y : GL (Fin n) ℂ) :
     GeneralLinearGroup.map (cV v) (embInf n v y) = y := by
@@ -43,7 +43,7 @@ theorem cV_embInf_self (v : InfinitePlace E) (y : GL (Fin n) ℂ) :
   rw [cV_embInf, if_pos rfl]
 
 /- English proof (translation)
-Unfold `embInf`. Conclude with `pFin_infGL _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pFin_embInf (v : InfinitePlace E) (y : GL (Fin n) ℂ) :
     GeneralLinearGroup.map (pFin E) (embInf n v y) = 1 := by
@@ -51,7 +51,7 @@ theorem pFin_embInf (v : InfinitePlace E) (y : GL (Fin n) ℂ) :
   exact pFin_infGL _
 
 /- English proof (translation)
-Establish `e : GeneralLinearGroup.map (cW w) (embInf n v y) = GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) (embInf n v y))` using `rfl`. Rewrite using `[e, pFin_embInf, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cW_embInf (w : HeightOneSpectrum (𝓞 E)) (v : InfinitePlace E) (y : GL (Fin n) ℂ) :
     GeneralLinearGroup.map (cW w) (embInf n v y) = 1 := by
@@ -60,7 +60,7 @@ theorem cW_embInf (w : HeightOneSpectrum (𝓞 E)) (v : InfinitePlace E) (y : GL
   rw [e, pFin_embInf, map_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `pInf_algebraMap (d i j) v`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cV_ratGL (v : InfinitePlace E) (d : GL (Fin n) E) :
     GeneralLinearGroup.map (cV v) (ratGL E n d) = locGL v d := by
@@ -68,14 +68,14 @@ theorem cV_ratGL (v : InfinitePlace E) (d : GL (Fin n) E) :
   exact pInf_algebraMap (d i j) v
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_inv_val {R : Type} [CommRing R] (f : Ad E →+* R) (x : GA E n) :
     ((x⁻¹ : GA E n).val).map f = ((GeneralLinearGroup.map f x)⁻¹ : GL (Fin n) R).val := by
   rw [← map_inv]; rfl
 
 /- English proof (translation)
-Rewrite using `[frame, frame, Matrix.map_mul, Matrix.map_mul, map_inv_val, map_inv_val, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_map_eq {R : Type} [CommRing R] (f : Ad E →+* R) (x y : GA E n)
     (h : GeneralLinearGroup.map f x = GeneralLinearGroup.map f y) {r : ℕ} (M : Matrix (Fin n) (Fin r) E) :
@@ -83,7 +83,7 @@ theorem frame_map_eq {R : Type} [CommRing R] (f : Ad E →+* R) (x y : GA E n)
   rw [frame, frame, Matrix.map_mul, Matrix.map_mul, map_inv_val, map_inv_val, h]
 
 /- English proof (translation)
-Establish `h : (M.map (algebraMap E (Ad E))).map (cV v) = M.map v.embedding`. Use extensionality with `i j`. Conclude with `cV_alg v (M i j)`. Rewrite using `[frame, Matrix.map_mul, h, map_inv_val]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_map (v : InfinitePlace E) (x : GA E n) {r : ℕ} (M : Matrix (Fin n) (Fin r) E) :
     (frame x M).map (cV v) = ((GeneralLinearGroup.map (cV v) x)⁻¹ : GL (Fin n) ℂ).val * M.map v.embedding := by
@@ -93,16 +93,16 @@ theorem frame_map (v : InfinitePlace E) (x : GA E n) {r : ℕ} (M : Matrix (Fin 
   rw [frame, Matrix.map_mul, h, map_inv_val]
 
 /- English proof (translation)
-Rewrite using `[lognInf, frame_map, ploc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lognInf_eq (v : InfinitePlace E) (x : GA E n) {r : ℕ} (M : Matrix (Fin n) (Fin r) E) :
     lognInf v (frame x M) = ploc (M.map v.embedding) (GeneralLinearGroup.map (cV v) x) := by
   rw [lognInf, frame_map, ploc]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `LinearMap.exists_rightInverse_of_surjective A.mulVecLin.rangeRestrict (LinearMap.range_rangeRestrict _)`. Take `⟨h, hh⟩` from `LinearMap.exists_extend g`. Use `⟨LinearMap.toMatrix' h, ?_⟩` and prove the remaining obligations. Apply `Matrix.mulVec_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hz : A *ᵥ z ∈ LinearMap.range A.mulVecLin` using `⟨z, rfl⟩`. Establish `h1 : h (A *ᵥ z) = g ⟨A *ᵥ z, hz⟩` using `LinearMap.congr_fun hh ⟨A *ᵥ z, hz⟩`. Establish `h2 : A *ᵥ g ⟨A *ᵥ z, hz⟩ = A *ᵥ z` using `congrArg Subtype.val (LinearMap.congr_fun hg ⟨A *ᵥ z, hz⟩)`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, LinearMap.toMatrix'_mulVec, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ginv {K : Type} [Field K] {r m : ℕ} (A : Matrix (Fin r) (Fin m) K) :
     ∃ B : Matrix (Fin m) (Fin r) K, A * B * A = A := by
@@ -119,11 +119,11 @@ theorem exists_ginv {K : Type} [Field K] {r m : ℕ} (A : Matrix (Fin r) (Fin m)
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, LinearMap.toMatrix'_mulVec, h1, h2]
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_ginv (basisMat W)`. Establish `hinj : Function.Injective (basisMat W).mulVec`. Use `Matrix.mulVec_injective_iff.2 ?_` and prove the remaining obligations. Conclude with `(Module.finBasis E W).linearIndependent.map' W.subtype (Submodule.ker_subtype W)`. Establish `hBM : B * basisMat W = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Matrix.mulVec_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Matrix.one_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hB]`. Use `⟨B.map v.embedding, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, hBM, Matrix.map_one _ (map_zero _) (map_one _)]`.
+A detailed English derivation is pending.
 -/
 theorem exists_left (v : InfinitePlace E) (W : Submodule E (Fin n → E)) :
     ∃ L : Matrix (Fin (Module.finrank E W)) (Fin n) ℂ, L * (basisMat W).map v.embedding = 1 := by
@@ -140,9 +140,9 @@ theorem exists_left (v : InfinitePlace E) (W : Submodule E (Fin n → E)) :
   rw [← Matrix.map_mul, hBM, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `hps : (Bᴴ * B).PosSemidef` using `posSemidef_conjTranspose_mul_self B`. Establish `h0 : (Bᴴ * B).det ≠ 0`. Introduce `h`. Take `⟨w, hw, hw0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hw` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : B *ᵥ w = 0` using `(conjTranspose_mul_self_mulVec_eq_zero B w).1 hw0`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < (Bᴴ * B).det` using `lt_of_le_of_ne hps.det_nonneg (Ne.symm h0)`. Conclude with `(Complex.pos_iff.1 hpos).1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gram_re_pos {r : ℕ} (B : Matrix (Fin n) (Fin r) ℂ) (L : Matrix (Fin r) (Fin n) ℂ) (hL : L * B = 1) :
     0 < (Bᴴ * B).det.re := by
@@ -158,7 +158,7 @@ theorem gram_re_pos {r : ℕ} (B : Matrix (Fin n) (Fin r) ℂ) (L : Matrix (Fin 
   exact (Complex.pos_iff.1 hpos).1
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_left v W`. Use `gram_re_pos _ (L * g.val) ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc g.val, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, hL]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ploc_re_pos (v : InfinitePlace E) (W : Submodule E (Fin n → E)) (g : GL (Fin n) ℂ) :
     0 < ((((g⁻¹ : GL (Fin n) ℂ).val * (basisMat W).map v.embedding)ᴴ *
@@ -168,7 +168,7 @@ theorem ploc_re_pos (v : InfinitePlace E) (W : Submodule E (Fin n → E)) (g : G
   rw [Matrix.mul_assoc, ← Matrix.mul_assoc g.val, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, hL]
 
 /- English proof (translation)
-Establish `hB : Continuous fun g : GL (Fin n) ℂ => (g⁻¹ : GL (Fin n) ℂ).val * (basisMat W).map v.embedding` using `Units.continuous_coe_inv.matrix_mul continuous_const`. Establish `hd : Continuous fun g : GL (Fin n) ℂ => ((((g⁻¹ : GL (Fin n) ℂ).val * (basisMat W).map v.embedding)ᴴ * ((g⁻¹ : GL (Fin n) ℂ).val * (basisMat W).map v.embedding)).det).re` using `Complex.continuous_re.comp (hB.matrix_conjTranspose.matrix_mul hB).matrix_det`. Conclude with `(hd.log fun g => (ploc_re_pos v W g).ne').congr fun g => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ploc_cont (v : InfinitePlace E) (W : Submodule E (Fin n → E)) :
     Continuous (ploc ((basisMat W).map v.embedding)) := by
@@ -180,9 +180,9 @@ theorem ploc_cont (v : InfinitePlace E) (W : Submodule E (Fin n → E)) :
   exact (hd.log fun g => (ploc_re_pos v W g).ne').congr fun g => rfl
 
 /- English proof (translation)
-Establish `hk' : ((k⁻¹ : GL (Fin n) ℂ).val)ᴴ = k.val`. Establish `h` using `congrArg Units.val hk`. Rewrite `h` using `[thetaR_val]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.conjTranspose_apply]`. Establish `e : ∀ B : Matrix (Fin n) (Fin r) ℂ, ((k⁻¹ : GL (Fin n) ℂ).val * B)ᴴ * ((k⁻¹ : GL (Fin n) ℂ).val * B) = Bᴴ * B` using `fun B => by`. Rewrite using `[Matrix.conjTranspose_mul, hk', Matrix.mul_assoc, ← Matrix.mul_assoc k.val, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Unfold `ploc`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ploc_mul_k {r : ℕ} (M : Matrix (Fin n) (Fin r) ℂ) (x k : GL (Fin n) ℂ) (hk : thC n k = k) :
     ploc M (x * k) = ploc M x := by
@@ -200,25 +200,25 @@ theorem ploc_mul_k {r : ℕ} (M : Matrix (Fin n) (Fin r) ℂ) (x k : GL (Fin n) 
   rw [_root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, e]
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Simplify using `[ploc]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem ploc_empty {r : ℕ} (M : Matrix (Fin n) (Fin r) ℂ) (hr : r = 0) (g : GL (Fin n) ℂ) : ploc M g = 0 := by
   subst hr
   simp [ploc]
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Conclude with `degM_zero x M`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem degM_empty {r : ℕ} (x : GA E n) (M : Matrix (Fin n) (Fin r) E) (hr : r = 0) : degM x M = 0 := by
   subst hr
   exact degM_zero x M
 
 /- English proof (translation)
-Establish `hfin : ∀ w, lognFin w (frame (embInf n v g * x) (basisMat W)) = lognFin w (frame x (basisMat W))` using `fun w => by`. Unfold `lognFin`. Rewrite using `[frame_map_eq (cW w) _ x (by rw [map_mul, cW_embInf, one_mul])]`. Establish `hinf : ∀ w, lognInf w (frame (embInf n v g * x) (basisMat W)) = lognInf w (frame x (basisMat W)) + if w = v then ploc ((basisMat W).map v.embedding) (g * GeneralLinearGroup.map (cV v) x) - ploc ((basisMat W).map v.embedding) (GeneralLinearGroup.map (cV v) x) else 0` using `fun w => by`. Distinguish the cases in `h : w = v`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[if_pos rfl, lognInf_eq, lognInf_eq, map_mul, cV_embInf_self]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, add_zero]`. Unfold `lognInf`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[frame_map_eq (cV w) _ x (by rw [map_mul, cV_embInf, if_neg h, one_mul])]`. Simplify using `only [deg, degM, hfin, hinf, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deg_embInf (v : InfinitePlace E) (W : Submodule E (Fin n → E)) (g : GL (Fin n) ℂ) (x : GA E n) :
     deg (embInf n v g * x) W + ploc ((basisMat W).map v.embedding) (g * GeneralLinearGroup.map (cV v) x) =
@@ -246,7 +246,7 @@ end PositivityTheory.Rg.BcB.CV.LocalPlacePositivity
 
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D4 in
 /- English proof (translation)
-Introduce `E _ _ _ n v W`. Use `⟨fun x => LocalPlacePositivity.lognInf_eq v x _, LocalPlacePositivity.ploc_cont v W, fun x k hk => LocalPlacePositivity.ploc_mul_k _ x k hk, fun hW => ?_, LocalPlacePositivity.cV_embInf_self v, fun v' hv' g => ?_, fun d => LocalPlacePositivity.cV_ratGL v d, fun g x => LocalPlaceP …` and prove the remaining obligations. Substitute `hW` using the available equality. Conclude with `⟨fun x => LocalPlacePositivity.ploc_empty _ (by simp) x, fun x => LocalPlacePositivity.degM_empty x _ (by simp)⟩`. Rewrite using `[LocalPlacePositivity.cV_embInf, if_neg hv']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem PositivityTheory.Rg.BcB.CV.pf_Ploc : PositivityTheory.Rg.BcB.CV.Ploc := by
   intro E _ _ _ n v W

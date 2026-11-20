@@ -15,7 +15,7 @@ def slice (γ : MvPolynomial (S × τ) K →ₗ[K] K) : MvPolynomial (S × τ) K
     (fun e => γ (monomial (e.filter fun v : S × τ => v.1 ∉ A) 1) • monomial (e.filter fun v : S × τ => v.1 ∈ A) 1)
 
 /- English proof (translation)
-Establish `h : (monomial e a : MvPolynomial (S × τ) K) = a • MvPolynomial.basisMonomials (S × τ) K e`. Simplify using `only [MvPolynomial.coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[h, map_smul]`. Simplify using `only [slice, Module.Basis.constr_basis, smul_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem slice_monomial (γ : MvPolynomial (S × τ) K →ₗ[K] K) (e : S × τ →₀ ℕ) (a : K) :
     slice A γ (monomial e a) =
@@ -26,7 +26,7 @@ theorem slice_monomial (γ : MvPolynomial (S × τ) K →ₗ[K] K) (e : S × τ 
   simp only [slice, Module.Basis.constr_basis, smul_smul]
 
 /- English proof (translation)
-Rewrite `hP` using `[mem_supported]`. Establish `key : ∀ v, e v ≠ 0 → q v` using `fun v hv => hP (Finset.mem_coe.2 ((mem_vars v).2 ⟨e, he, Finsupp.mem_support_iff.2 hv⟩))`. Use `⟨(Finsupp.filter_eq_self_iff _ _).2 key, (Finsupp.filter_eq_zero_iff _ _).2 fun v hv => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hv (key v h)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem filter_of_supported {P : MvPolynomial (S × τ) K} {q : S × τ → Prop} [DecidablePred q]
     (hP : P ∈ supported K {v | q v}) {e : S × τ →₀ ℕ} (he : e ∈ P.support) :
@@ -39,9 +39,9 @@ theorem filter_of_supported {P : MvPolynomial (S × τ) K} {q : S × τ → Prop
   exact hv (key v h)
 
 /- English proof (translation)
-Proceed by induction on `R using MvPolynomial.induction_on' with`. Consider the case `monomial f b => conv_lhs => rw [P.as_sum] conv_rhs => rw [P.as_sum]`. Rewrite using `[Finset.sum_mul, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Establish `h` using `filter_of_supported (q := fun v : S × τ => v.1 ∈ A) hP he`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `beta_reduce at h`. Rewrite using `[monomial_mul, slice_monomial, slice_monomial, Finsupp.filter_add, Finsupp.filter_add, h.1, h.2, zero_add, mul_smul_comm, monomial_mul, smul_monomial, smul_monomial, smul_eq_mul, smul_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add p q hp hq => rw [mul_add, map_add, hp, hq, map_add, mul_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem slice_mul_left (γ : MvPolynomial (S × τ) K →ₗ[K] K) (P R : MvPolynomial (S × τ) K)
     (hP : P ∈ supported K {v : S × τ | v.1 ∈ A}) : slice A γ (P * R) = P * slice A γ R := by
@@ -60,11 +60,9 @@ theorem slice_mul_left (γ : MvPolynomial (S × τ) K →ₗ[K] K) (P R : MvPoly
   | add p q hp hq => rw [mul_add, map_add, hp, hq, map_add, mul_add]
 
 /- English proof (translation)
-Use `conv_lhs => rw [Q.as_sum]`. Use `conv_rhs => rw [Q.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Establish `h` using `filter_of_supported (q := fun v : S × τ => v.1 ∉ A) hQ he`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce at h`. Establish `h2 : e.filter (fun v : S × τ => v.1 ∈ A) = 0`. Rewrite using `[Finsupp.filter_eq_zero_iff]`. Introduce `v hv`. Conclude with `(Finsupp.filter_eq_zero_iff _ _).1 h.2 v (not_not.2 hv)`.
-
-Establish `h3 : (monomial e (coeff e Q) : MvPolynomial (S × τ) K) = coeff e Q • monomial e 1`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[slice_monomial, h.1, h2, ← C_apply, C_1, h3, map_smul, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_spec (γ : MvPolynomial (S × τ) K →ₗ[K] K) (Q : MvPolynomial (S × τ) K)
     (hQ : Q ∈ supported K {v : S × τ | v.1 ∉ A}) : slice A γ Q = γ Q • 1 := by
@@ -83,7 +81,7 @@ theorem slice_spec (γ : MvPolynomial (S × τ) K →ₗ[K] K) (Q : MvPolynomial
   rw [slice_monomial, h.1, h2, ← C_apply, C_1, h3, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[slice_mul_left A γ P Q hP, slice_spec A γ Q hQ, mul_smul_comm, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem slice_mul (γ : MvPolynomial (S × τ) K →ₗ[K] K) (P Q : MvPolynomial (S × τ) K)
     (hP : P ∈ supported K {v : S × τ | v.1 ∈ A}) (hQ : Q ∈ supported K {v : S × τ | v.1 ∉ A}) :
@@ -97,7 +95,7 @@ section Tensor
 variable {R K : Type} [CommRing R] [Field K] [Algebra R K] {S : Type} [Fintype S] [DecidableEq S] {k n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[mem_supported]`. Introduce `v hv`. Establish `hv'` using `vars_rename (fun w : Fin k × Fin n => (s, w)) F (Finset.mem_coe.1 hv)`. Take `⟨w, -, rfl⟩` from `Finset.mem_image.1 hv'`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem blockEmb_supported (s : S) (F : MvPolynomial (Fin k × Fin n) K) (q : S → Prop) (hs : q s) :
     blockEmb K s F ∈ supported K {v : S × (Fin k × Fin n) | q v.1} := by
@@ -108,7 +106,7 @@ theorem blockEmb_supported (s : S) (F : MvPolynomial (Fin k × Fin n) K) (q : S 
   exact hs
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prod_split (A : Finset S) (F : S → MvPolynomial (Fin k × Fin n) K) :
     ∏ s, blockEmb K s (F s) =
@@ -118,21 +116,17 @@ theorem prod_split (A : Finset S) (F : S → MvPolynomial (Fin k × Fin n) K) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `u hu`. Unfold `tensorLat at hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hXs : (∏ s, blockEmb K s (if s ∈ A then F s else 1)) ∈ supported K {v : S × (Fin k × Fin n) | v.1 ∈ A}`. Use `Subalgebra.prod_mem _ fun s _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `blockEmb_supported s _ (· ∈ A) h`. Rewrite using `[map_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `one_mem _`. Establish `hYs : (∏ s, blockEmb K s (if s ∈ A then 1 else F s)) ∈ supported K {v : S × (Fin k × Fin n) | v.1 ∉ A}`. Use `Subalgebra.prod_mem _ fun s _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `one_mem _`. Conclude with `blockEmb_supported s _ (· ∉ A) h`. Establish `hYm : (∏ s, blockEmb K s (if s ∈ A then 1 else F s)) ∈ tensorLat R K Msp`. Unfold `tensorLat`. Use `Submodule.subset_span ⟨_, fun s => ?_, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `split_ifs with h`. Conclude with `(h1 s h).2`. Conclude with `(h2 s h).2 (hF s)`. Take `⟨a, ha⟩` from `hγ _ hYm`. Use `⟨a • ∏ s, blockEmb K s (if s ∈ A then F s else 1), Submodule.smul_mem _ a ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Unfold `tensorLat`. Use `Submodule.subset_span ⟨_, fun s => ?_, rfl⟩` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `(h1 s h).1 (hF s)`. Conclude with `(h2 s h).1`.
-
-Rewrite using `[prod_split A F, slice_mul A γ _ _ hXs hYs, ha, mul_smul, algebraMap_smul]`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, ea⟩` from `hx`. Take `⟨b, hb, eb⟩` from `hy`.
-
-Conclude with `⟨a + b, add_mem ha hb, by rw [map_add, ea, eb, smul_add]⟩`. Consider the case `smul r x _ hx`. Take `⟨a, ha, ea⟩` from `hx`. Conclude with `⟨r • a, Submodule.smul_mem _ r ha, by rw [LinearMap.map_smul_of_tower, ea, smul_comm]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem slice_tensor (A : Finset S) (M MT Msp : S → Submodule R (MvPolynomial (Fin k × Fin n) K))
     (h1 : ∀ s ∈ A, M s ≤ MT s ∧ (1 : MvPolynomial (Fin k × Fin n) K) ∈ Msp s)

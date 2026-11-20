@@ -15,11 +15,9 @@ section TwE1J
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Establish `hru : IsUnit (redP P u)`. Establish `h1 : redP P u * redP P u⁻¹ = 1` using `by rw [← reduction_mul hu hu', mul_inv_cancel₀ hu0, redP_one]`. Conclude with `isUnit_iff_exists_inv.2 ⟨_, h1⟩`. Distinguish the cases in `hy : IntAt P y`. Rewrite using `[reduction_mul hy hu, IsUnit.mul_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => h.1, fun h => ⟨h, hru⟩⟩`. Establish `hyu : ¬ IntAt P (y * u)` using `fun h => hy (by`. Establish `e : y = (y * u) * u⁻¹` using `by field_simp`. Rewrite using `[e]`. Conclude with `h.mul hu')`.
-
-Rewrite using `[reduction_eq_zero_of_not_integral P hy, reduction_eq_zero_of_not_integral P hyu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_reduction_mul_iff₂ {u y : E} (hu0 : u ≠ 0) (hu : IntAt P u) (hu' : IntAt P u⁻¹) :
     IsUnit (redP P (y * u)) ↔ IsUnit (redP P y) := by
@@ -35,7 +33,7 @@ theorem isUnit_reduction_mul_iff₂ {u y : E} (hu0 : u ≠ 0) (hu : IntAt P u) (
     rw [reduction_eq_zero_of_not_integral P hy, reduction_eq_zero_of_not_integral P hyu]
 
 /- English proof (translation)
-Unfold `LocE.vP`. Use `congr 1`. Use function extensionality and compare the values at `z`. Establish `e : a * u / (q : E) ^ z = a / (q : E) ^ z * u` using `by ring`. Rewrite using `[e, isUnit_reduction_mul_iff₂ hu0 hu hu']`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuationAt_mul_unit (q : ℕ) {a u : E} (hu0 : u ≠ 0) (hu : IntAt P u) (hu' : IntAt P u⁻¹) : LocE.vP P q (a * u) = LocE.vP P q a := by
   unfold LocE.vP
@@ -45,13 +43,11 @@ theorem valuationAt_mul_unit (q : ℕ) {a u : E} (hu0 : u ≠ 0) (hu : IntAt P u
   rw [e, isUnit_reduction_mul_iff₂ hu0 hu hu']
 
 /- English proof (translation)
-Unfold `LocE.locChar at ha ⊢`. Rewrite using `[valuationAt_mul_unit q hu0 hu hu']`. Establish `h1` using `left_ne_zero_of_mul ha`. Establish `h2` using `right_ne_zero_of_mul ha`. Use `mul_ne_zero h1 ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hU : IsUnit (redP P (a / (q : E) ^ LocE.vP P q a))`. Assume the negation of the conclusion as `hn`. Unfold `LocE.unitV at h2`. Rewrite `h2` using `[dif_neg hn]`. Conclude with `h2 rfl`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hU' : IsUnit (redP P (a * u / (q : E) ^ LocE.vP P q a))`. Establish `e : a * u / (q : E) ^ LocE.vP P q a = a / (q : E) ^ LocE.vP P q a * u` using `by ring`. Rewrite using `[e, isUnit_reduction_mul_iff₂ hu0 hu hu']`. Conclude with `hU`. Unfold `LocE.unitV`.
-
-Rewrite using `[dif_pos hU']`. Conclude with `Units.ne_zero _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twLocChar_mul_unit (q : ℕ) (cq : K) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a u : E} (hu0 : u ≠ 0) (hu : IntAt P u) (hu' : IntAt P u⁻¹)
     (ha : LocE.locChar (P := P) q cq χ a ≠ 0) : LocE.locChar (P := P) q cq χ (a * u) ≠ 0 := by
@@ -74,7 +70,7 @@ theorem twLocChar_mul_unit (q : ℕ) (cq : K) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →
   exact Units.ne_zero _
 
 /- English proof (translation)
-Unfold `Loc.E1`. Simplify using `only [Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem firstUnfolding_const_mul {n' c' n c : ℕ} (psi : E → K) (vals : Finset E) (wt C : K) (Φ : Loc.SF E K (n' + c') (n + c))
     (xj : (Fin n' → E) →ₗ[E] (Fin n → E)) :
@@ -84,7 +80,7 @@ theorem firstUnfolding_const_mul {n' c' n c : ℕ} (psi : E → K) (vals : Finse
   exact Finset.sum_congr rfl fun t _ => by ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Apply `h` to reduce the goal to its premises. Unfold `Loc.E1`. Simplify using `[hn]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_firstUnfolding_ne_zero {n' c' n c : ℕ} (psi : E → K) (vals : Finset E) (wt : K) (Φ : Loc.SF E K (n' + c') (n + c))
     (xj : (Fin n' → E) →ₗ[E] (Fin n → E)) (h : Loc.E1 (n' := n') (c' := c') (n := n) (c := c) psi vals wt Φ xj ≠ 0) : ∃ x, Φ x ≠ 0 := by
@@ -103,7 +99,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)}
 
 /- English proof (translation)
-Unfold `PhiAt`. Rewrite using `[if_neg hP]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem twPhiAt_Q (sharp : Bool) (i : ℕ) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) :
     PhiAt (Pr := Pr) (R := R) Ch mu sharp i P = LocE.PhiQ (qOf P) (resChar (mu : Chr X.F X.E X.K) P) R.k R.r (cOf R i) (R.N i)
@@ -125,31 +121,27 @@ theorem twOmPhi_eq (c : LocCst X (rowSG Pr sel mu)) (i : ℕ) (P : rowSG Pr sel 
   rfl
 
 /- English proof (translation)
-Establish `hJ : κ ∈ LocE.JQ P.1 (qOf P.1) (R.k + (i + 1)) (R.N (i + 1)) (cOf R (i + 1))`. Rewrite using `[← twJat_Q cst.sharp (i + 1) hP]`. Conclude with `hκ`. Establish `hr` using `R.two_le_m`. Establish `hlaw : ∀ g : AutY X R (i + 1), g ∈ LocE.JQ P.1 (qOf P.1) (R.k + (i + 1)) (R.N (i + 1)) (cOf R (i + 1)) → ∀ y, PhiAt Ch mu cst.sharp i P.1 (g.toLinearMap ∘ₗ y) = ((LocE.unitV (resChar (mu : Chr X.F X.E X.K) P.1) ((LinearEquiv.det g : X.Eˣ) : X.E) * LocE.lamQB (resChar (mu : Chr X. …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg y`. Rewrite using `[twPhiAt_Q cst.sharp i hP]`. Establish `e1 : g.toLinearMap ∘ₗ y = g.toLinearMap ∘ₗ y ∘ₗ (1 : AutY X R i).toLinearMap` using `LinearMap.ext fun _ => rfl`. Rewrite using `[e1]`. Use `Formalism.L2.Ker.phiQ_law_lam (ciQ_mem P.1) hd.2 _ R.k R.r (cOf R i) (R.N i) (cOf R (i + 1)) (R.N (i + 1)) (R.k + i) (R.k + (i + 1)) (by omega) (by omega) ?_ ?_ ?_ ?_ (Subgroup.one_mem _) hg y` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `Ranks.N; have := Nat.le_mul_of_pos_right i (show 0 < R.t + 1 by omega); omega`. Unfold `Ranks.N; have := Nat.le_mul_of_pos_right (i + 1) (show 0 < R.t + 1 by omega); omega`. Unfold `cOf Ranks.r`. Use linear arithmetic over natural numbers and integers. Unfold `cOf Ranks.r`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨A₀, B₀, hH⟩` from `H`. Use `⟨A₀, B₀, fun A' B' hA hB hz => ?_⟩` and prove the remaining obligations. Establish `hne` using `hH A' B' hA hB`. Take `⟨xj, hxj⟩` from `Function.ne_iff.1 hne`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set c' : LocCst X (rowSG Pr sel mu) := { cst with A := A', B := B' } with hc'`. Use `set Ψ : Loc.SF X.E X.K (R.N i + cOf R i) (R.N (i + 1) + cOf R (i + 1)) := fun x => PhiAt Ch mu cst.sharp i P.1 (h.symm.toLinearMap ∘ₗ x ∘ₗ hal.toLinearMap) with hΨ`. Establish `hOm0 : omPhi Ch sel mu c' i P hal h = fun x => twOmS (Ch` using `Ch) c' i P hal h * Ψ x := funext fun x => twOmPhi_eq c' i P hal h x`. Use `set F : X.K := (LocE.unitV (resChar (mu : Chr X.F X.E X.K) P.1) ((LinearEquiv.det κ⁻¹ : X.Eˣ) : X.E) * LocE.lamQB (resChar (mu : Chr X.F X.E X.K) P.1) (R.k + (i + 1)) (R.N (i + 1)) κ⁻¹.toLinearMap) * (LocE.unitV (resChar (mu : Chr X.F X.E X.K) P.1) ((LinearEquiv.det (1 : AutY X R …`. Establish `hOm1 : omPhi Ch sel mu c' i P hal (h * κ) = fun x => (twOmS (Ch` using `Ch) c' i P hal (h * κ) * F) * Ψ x := by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[twOmPhi_eq c' i P hal (h * κ) x, mul_assoc]`. Use `congr 1`. Establish `e2 : (h * κ).symm.toLinearMap ∘ₗ x ∘ₗ hal.toLinearMap = κ⁻¹.toLinearMap ∘ₗ (h.symm.toLinearMap ∘ₗ x ∘ₗ hal.toLinearMap)` using `LinearMap.ext fun _ => rfl`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hlaw κ⁻¹ (inv_mem hJ) _`. Establish `hE0 : E1at Ch sel mu c' i P hal h xj = twOmS (Ch` using `Ch) c' i P hal h * Loc.E1 (c'.psi P) (LocE.valsQ X.E (qOf P.1) c'.A c'.B) (((qOf P.1 : X.K) ^ c'.B)⁻¹) Ψ xj := by`. Unfold `E1at`. Rewrite using `[hOm0, firstUnfolding_const_mul]`. Establish `hE1 : E1at Ch sel mu c' i P hal (h * κ) xj = (twOmS (Ch` using `Ch) c' i P hal (h * κ) * F) * Loc.E1 (c'.psi P) (LocE.valsQ X.E (qOf P.1) c'.A c'.B) (((qOf P.1 : X.K) ^ c'.B)⁻¹) Ψ xj := by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `E1at`. Rewrite using `[hOm1, firstUnfolding_const_mul]`. Establish `h0` using `hE0 ▸ hxj`. Establish `hS` using `right_ne_zero_of_mul h0`. Establish `hM` using `left_ne_zero_of_mul h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨x0, hx0⟩` from `exists_ne_zero_of_firstUnfolding_ne_zero _ _ _ Ψ xj hS`. Establish `hF : F ≠ 0`. Introduce `hF0`. Apply `hx0` to reduce the goal to its premises. Establish `e3 : h.symm.toLinearMap ∘ₗ x0 ∘ₗ hal.toLinearMap = κ.toLinearMap ∘ₗ (κ⁻¹.toLinearMap ∘ₗ (h.symm.toLinearMap ∘ₗ x0 ∘ₗ hal.toLinearMap))` using `LinearMap.ext fun v => by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show PhiAt Ch mu cst.sharp i P.1 (h.symm.toLinearMap ∘ₗ x0 ∘ₗ hal.toLinearMap) = 0`. Rewrite using `[e3, hlaw κ hJ, hlaw κ⁻¹ (inv_mem hJ), ← hFdef, hF0, zero_mul, mul_zero]`. Establish `hMk : twOmS (Ch` using `Ch) c' i P hal (h * κ) ≠ 0 := by`. Unfold `twOmS at hM ⊢`. Establish `hA1` using `left_ne_zero_of_mul (left_ne_zero_of_mul (left_ne_zero_of_mul hM))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA2` using `right_ne_zero_of_mul (left_ne_zero_of_mul (left_ne_zero_of_mul hM))`. Establish `hA3` using `right_ne_zero_of_mul (left_ne_zero_of_mul hM)`. Establish `hκG : κ ∈ GLint X.E (R.N (i + 1) + cOf R (i + 1)) P.1` using `hJ.1`. Establish `hmu : muAt Ch sel mu c' i P (LinearEquiv.det (h * κ) : X.Eˣ) ≠ 0`. Establish `e4 : ((LinearEquiv.det (h * κ) : X.Eˣ) : X.E) = ((LinearEquiv.det h : X.Eˣ) : X.E) * ((LinearEquiv.det κ : X.Eˣ) : X.E)`.
-
-Rewrite using `[map_mul, Units.val_mul]`. Rewrite using `[e4]`. Conclude with `twLocChar_mul_unit _ _ _ (Units.ne_zero _) (Formalism.L2.Ker.intAt_det κ hκG) (Formalism.L2.Ker.intAt_det_inv κ hκG) (fun h0 => hA2 (by unfold muAt; rw [h0, inv_zero]))`. Use `mul_ne_zero (mul_ne_zero (mul_ne_zero hA1 (inv_ne_zero hmu)) hA3) (zpow_ne_zero _ hsq)` and prove the remaining obligations. Establish `hz'` using `congrFun hz xj`.
-
-Rewrite `hz'` using `[hE1]`. Conclude with `mul_ne_zero (mul_ne_zero hMk hF) hS hz'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem firstUnfoldingNe_mul_parahoric {i : ℕ} (hi : i + 2 ≤ R.m) {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.vGs) (hd : TwDegOne X P.1) (hsq : cst.sq P ≠ 0)
     {hal : AutY X R i} {h κ : AutY X R (i + 1)} (hκ : κ ∈ Jat (Pr := Pr) cst.sharp (i + 1) P.1)
@@ -241,13 +233,11 @@ def UnfoldingNonvanishingLeftCoset (m2 : ℕ) : Prop :=
       TwBdd (Pr := Pr) (i + 1) P.1 (r * h) → FiniteSumNonzeroLargeDepth Ch sel mu cst i P hal h → FiniteSumNonzeroLargeDepth Ch sel mu cst i P hal (r * h)
 
 /- English proof (translation)
-Introduce `i hi P hP hd hal h h' hbal hb hb' hs hne`. Take `⟨r, hr, κ, hκ, rfl⟩` from `hs`. Establish `hJ : κ ∈ LocE.JQ P.1 (qOf P.1) (R.k + (i + 1)) (R.N (i + 1)) (cOf R (i + 1))`. Rewrite using `[← twJat_Q cst.sharp (i + 1) hP]`. Conclude with `hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hstd : ∀ (g : AutY X R (i + 1)), g ∈ stabL X.E _ (stdAt X.E (R.N (i + 1) + cOf R (i + 1)) P.1) → ∀ x, x ∈ lamYat (Pr` using `Pr) (R := R) (i + 1) P.1 → g x ∈ lamYat (Pr := Pr) (R := R) (i + 1) P.1 := fun g hg x hx => by`. Rewrite `hx`, the goal using `[twLamQ_mem hP]`. Conclude with `(twStd_mem _).1 ((hg x).2 ((twStd_mem _).2 hx))`. Establish `hbrh : TwBdd (Pr` using `Pr) (i + 1) P.1 (r * h) := by`. Introduce `x hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : r * h = (r * h * κ) * κ⁻¹` using `by rw [mul_assoc, mul_inv_cancel, mul_one]`. Rewrite using `[e]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show κ ((r * h * κ)⁻¹ x) ∈ _`. Conclude with `hstd κ hJ.1 _ (hb' x hx).1`.
-
-Use `show ((qOf P.1 : X.E) ^ (i + 1)) • (r * h * κ) (κ⁻¹ x) ∈ _`. Conclude with `(hb' _ (hstd κ⁻¹ (inv_mem hJ.1) x hx)).2`. Establish `h1` using `HL i hi P hP hd hal h r hr hbal hb hbrh hne`. Conclude with `firstUnfoldingNe_mul_parahoric (by omega) hP hd (hsq P hP) hκ h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem doubleCoset_of_leftR1 {m2 : ℕ} (hm : R.m = m2 + 2) (hsq : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → cst.sq P ≠ 0)
     (HL : UnfoldingNonvanishingLeftCoset Ch sel mu cst m2) : UnfoldingNonvanishingDoubleCoset Ch sel mu cst m2 := by

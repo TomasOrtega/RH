@@ -19,23 +19,21 @@ namespace GlobalTheory.ThetaAvgSmooth
 open GlobalTheory.WeilVacMove
 
 /- English proof (translation)
-Use `set M := L.comp (AddMonoidHom.single (fun _ : Fin n => ℝ) i) with hMdef`. Establish `hs : Continuous (AddMonoidHom.single (fun _ : Fin n => ℝ) i)`. Use `continuous_pi fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `continuous_id'`. Simplify `continuous_const` using `[h]`. Establish `hM : Continuous M` using `hL.comp hs`. Establish `hM0 : ∀ s, (M s).map (finPart D) = 0` using `fun s => hL0 _`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set x := w + L t with hx`. Use `set c := phase lam S T (M 1) x with hc`. Take `⟨hd, -⟩` from `hasDerivAt_zero_and_isTheta hψ hM hM0 hf`. Establish `hexp : HasDerivAt (fun s : ℝ => Complex.exp (-((s : ℂ) * c))) (-c) 0`. Use `((HasDerivAt.ofReal_comp (hasDerivAt_id (0 : ℝ))).mul_const c).neg.cexp` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this`. Establish `h1` using `hexp.mul (hd x)`. Establish `hsm : ∀ s : ℝ, s • (Pi.single i (1 : ℝ) : Fin n → ℝ) = Pi.single i s`. Introduce `s`. Use extensionality with `j`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Establish `e1 : ∀ s : ℝ, Complex.exp (-((s : ℂ) * c)) * heisO ψ S T (M s) f x = f (w + L (t + s • Pi.single i 1))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `s`. Rewrite using `[heisO, psi_sympl_line hl hlam hM hM0, ← mul_assoc, ← Complex.exp_add, neg_add_cancel, Complex.exp_zero, one_mul, hsm, map_add, hx, add_assoc]`. Both sides reduce to the same expression. Establish `hg : DifferentiableAt ℝ (fun t => f (w + L t)) (t + (0 : ℝ) • Pi.single i 1)` using `((hf.smooth n L hL hL0 w).differentiable (by simp)).differentiableAt`. Establish `hl' : HasDerivAt (fun s : ℝ => t + s • (Pi.single i (1 : ℝ) : Fin n → ℝ)) (Pi.single i 1) 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const (Pi.single i (1 : ℝ) : Fin n → ℝ)).const_add t`. Establish `h2` using `hg.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hl'`. Rewrite `h2` using `[zero_smul, add_zero]`. Establish `h3 : HasDerivAt (fun s : ℝ => f (w + L (t + s • Pi.single i 1))) (-c * heisO ψ S T (M 0) f x + Complex.exp (-(((0 : ℝ) : ℂ) * c)) * dLine ψ S T M f x) 0`. Establish `e : (fun s : ℝ => f (w + L (t + s • Pi.single i 1))) = fun s : ℝ => Complex.exp (-((s : ℂ) * c)) * heisO ψ S T (M s) f x` using `funext fun s => (e1 s).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `h1`. Use `h2.unique h3` as an intermediate fact. Rewrite using `[this, map_zero, GlobalTheory.WeilVacMove.heisO_zero]`. Simplify using `only [Complex.ofReal_zero, zero_mul, neg_zero, Complex.exp_zero, one_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem key {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     {lam : AF D.host.F →+ ℂ} (hl : Continuous lam)
@@ -90,19 +88,17 @@ theorem key {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)
   ring
 
 /- English proof (translation)
-Introduce `D ψ hψ S T K _ _ _ _ μ _ 𝒢 hc hth hcl F hF n L hL hL0 w`. Take `⟨lam, hl, hlam⟩` from `exists_log hψ`. Establish `hs : ∀ i, Continuous (AddMonoidHom.single (fun _ : Fin n => ℝ) i)`. Introduce `i`. Use `continuous_pi fun j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Conclude with `continuous_id'`. Simplify `continuous_const` using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `M : Fin n → ℝ →+ WO S T` to `fun i => L.comp (AddMonoidHom.single (fun _ : Fin n => ℝ) i)`. Establish `hM : ∀ i, Continuous (M i)` using `fun i => hL.comp (hs i)`. Establish `hM0 : ∀ i s, (M i s).map (finPart D) = 0` using `fun i s => hL0 _`. Set `φ : Fin n → (Fin n → ℝ) → ℂ` to `fun i t => -phase lam S T (M i 1) (w + L t)`. Set `𝒢' : Set (K → (Fin n → ℝ) → ℂ)` to `{G | ∃ F ∈ 𝒢, G = fun k t => F k (w + L t)}`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ i, ContDiff ℝ ∞ (φ i)`. Introduce `i`. Establish `hc' : Continuous ((phase lam S T (M i 1)).comp L)` using `hl.comp (continuous_symplOH S T hL continuous_const)`. Establish `e : φ i = fun t => -(phase lam S T (M i 1) w + ((phase lam S T (M i 1)).comp L) t)`. Use function extensionality and compare the values at `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [φ, map_add, AddMonoidHom.comp_apply]`. Rewrite using `[e]`. Conclude with `(contDiff_const.add (contDiff_additive _ hc')).neg`. Establish `hmem : (fun k t => F k (w + L t)) ∈ 𝒢'` using `⟨F, hF, rfl⟩`. Use `GlobalTheory.T.contDiff_compactAverage_of_closed_partials K μ n φ hφ 𝒢' ?_ ?_ ?_ _ hmem` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `G ⟨F, hF, rfl⟩`. Conclude with `(hc F hF).comp (continuous_fst.prodMk (continuous_const.add (hL.comp continuous_snd)))`. Introduce and unpack `G ⟨F, hF, rfl⟩ k`. Conclude with `((hth F hF k).smooth n L hL hL0 w).differentiable (by simp)`. Introduce and unpack `G ⟨F, hF, rfl⟩ i`.
-
-Use `⟨fun k t => GlobalTheory.WeilVacMove.dLine ψ S T (M i) (F k) (w + L t), ⟨_, hcl F hF (M i) (hM i) (hM0 i), rfl⟩, fun k t => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ThetaAvgSmooth.key hψ hl hlam L hL hL0 w (F k) (hth F hF k) t i`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem avg_smooth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (K : Type) [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [IsFiniteMeasure μ] (𝒢 : Set (K → WO S T → ℂ)), (∀ F ∈ 𝒢, Continuous fun p : K × WO S T => F p.1 p.2) → (∀ F ∈ 𝒢, ∀ k, IsThetaFunO ψ S T (F k)) → (∀ F ∈ 𝒢, ∀ M : ℝ →+ WO S T, Continuous M → (∀ s, (M s).map (finPart D) = 0) → (fun k => GlobalTheory.WeilVacMove.dLine ψ S T M (F k)) ∈ 𝒢) → ∀ F ∈ 𝒢, ∀ (n : ℕ) (L : (Fin n → ℝ) →+ WO S T), Continuous L → (∀ t, (L t).map (finPart D) = 0) → ∀ w, ContDiff ℝ ∞ fun t => ∫ k, F k (w + L t) ∂μ := by
   intro D ψ hψ S T K _ _ _ _ μ _ 𝒢 hc hth hcl F hF n L hL hL0 w

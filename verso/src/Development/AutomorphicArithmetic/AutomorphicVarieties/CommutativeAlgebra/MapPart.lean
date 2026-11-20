@@ -5,13 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueFixe
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Introduce `O _ _ _ _ X _ _ _ _ R _ _ _ W hW R' _ _ _ W' hW' f hf j x hx`. Take `⟨g, hg, rfl⟩` from `hx`. Establish `hm : ∀ s, (f.comp W.π) (MvPowerSeries.X s) ∈ maximalIdeal R'` using `fun s => by show f (W.z s) ∈ maximalIdeal R'`. Rewrite using `[← res_eq_zero_iff O, res_map, res_eq_zero_iff]`. Conclude with `hW s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `part_closed O X R' W' hW' j _ fun N => ⟨_, ?_, GlobalTheory.algHom_sub_aeval_truncTotal_mem (f.comp W.π) hm N g⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_eq]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight W.wt d = j`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.mem_support_iff.1 hd` to reduce the goal to its premises. Rewrite using `[coeff_truncTotal_eq_ite, hg d hne, ite_self]`. Rewrite using `[← Algebra.smul_def]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[← hw, Finsupp.weight_apply, Finsupp.sum]`.
-
-Conclude with `SetLike.prod_pow_mem_graded W'.part W.wt (fun s => f (W.z s)) d (fun s _ => hf s)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.map_part :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [DecidableEq X] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (W : WPres O X R), (∀ s, W.z s ∈ maximalIdeal R) → ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (W' : WPres O X R'), (∀ s, W'.z s ∈ maximalIdeal R') → ∀ f : R →ₐ[O] R', (∀ s, f (W.z s) ∈ W'.part (W.wt s)) → ∀ j, ∀ x ∈ W.part j, f x ∈ W'.part j := by

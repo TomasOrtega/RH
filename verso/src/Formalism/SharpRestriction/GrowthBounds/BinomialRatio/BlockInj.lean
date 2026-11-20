@@ -36,14 +36,14 @@ def rho : MvPolynomial (BVar N r D.T.t) (KK O) →ₐ[KK O] FractionRing (MvPoly
   aeval (rhoF D)
 
 /- English proof (translation)
-Simplify using `[rho, rhoF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rho_inl (a : Fin (N + 1) × Fin r) : rho (O := O) (r := r) D (X (Sum.inl a)) = algebraMap _ _ (X (Sum.inl a) :
     MvPolynomial (BVar N r D.T.t) (KK O)) := by
   simp [rho, rhoF]
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [qq, Fin.lastCases_last, map_sum, map_mul, xiVar, rho_inl]`. Simplify using `only [qq, Fin.lastCases_castSucc, map_sum, map_mul, rho_inl]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rho_qq (i : Fin (D.T.t + 1)) : rho (O := O) (r := r) D (qq (O := O) (r := r) D i) = algebraMap _ _ (qq (O := O) (r := r) D i) := by
   refine Fin.lastCases ?_ (fun i => ?_) i
@@ -51,13 +51,13 @@ theorem rho_qq (i : Fin (D.T.t + 1)) : rho (O := O) (r := r) D (qq (O := O) (r :
   · simp only [qq, Fin.lastCases_castSucc, map_sum, map_mul, rho_inl]
 
 /- English proof (translation)
-Establish `h : (rho (O` using `O) (r := r) D).comp (tau D) = IsScalarTower.toAlgHom (KK O) _ (FractionRing (MvPolynomial (BVar N r D.T.t) (KK O))) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Break down `v with a | ⟨i, _ | _⟩` into its components or cases. Simplify using `[tau, tauF, rho_inl]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[tau, tauF, rho, rhoF]`. Establish `hz : algebraMap (MvPolynomial (BVar N r D.T.t) (KK O)) (FractionRing (MvPolynomial (BVar N r D.T.t) (KK O))) (X (Sum.inr (i, false))) ≠ 0` using `(IsFractionRing.injective (MvPolynomial (BVar N r D.T.t) (KK O)) _).ne_iff.mpr (X_ne_zero _) |>.trans_eq (map_zero _)`. Simplify using `only [AlgHom.comp_apply, IsScalarTower.coe_toAlgHom']`. Rewrite using `[tau, aeval_X]`. Simplify using `only [tauF]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_add, map_mul, rho_qq]`. Rewrite using `[rho, aeval_X, aeval_X]`. Simplify using `only [rhoF]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `AlgHom.congr_fun h f`.
+A detailed English derivation is pending.
 -/
 theorem rho_tau (f : MvPolynomial (BVar N r D.T.t) (KK O)) : rho D (tau D f) = algebraMap _ _ f := by
   have h : (rho (O := O) (r := r) D).comp (tau D) = IsScalarTower.toAlgHom (KK O) _
@@ -81,7 +81,7 @@ theorem rho_tau (f : MvPolynomial (BVar N r D.T.t) (KK O)) : rho D (tau D f) = a
   exact AlgHom.congr_fun h f
 
 /- English proof (translation)
-Introduce `f g h`. Apply `IsFractionRing.injective (MvPolynomial (BVar N r D.T.t) (KK O)) (FractionRing (MvPolynomial (BVar N r D.T.t) (KK O)))` to reduce the goal to its premises. Rewrite using `[← rho_tau D f, ← rho_tau D g, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_inj : Function.Injective (tau (O := O) (r := r) D) := by
   intro f g h
@@ -90,7 +90,7 @@ theorem tau_inj : Function.Injective (tau (O := O) (r := r) D) := by
   rw [← rho_tau D f, ← rho_tau D g, h]
 
 /- English proof (translation)
-Simplify using `only [xiMon, xiExp, monomial_sum_one, X_pow_eq_monomial]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xiMon_prod (K : Type) [CommRing K] (N r t : ℕ) (β : Fin r → ℕ) :
     xiMon K N r t β = ∏ c, X (xiVar N r t c) ^ β c := by
@@ -103,7 +103,7 @@ def base (x : (Fin D.T.t → ℕ) × ℕ) (β : Fin r → ℕ) (y : MvPolynomial
     (rename (chainEmb N r D.T.t) y * xiMon (KK O) N r D.T.t β)
 
 /- English proof (translation)
-Establish `h : (tau (O` using `O) (r := r) D).comp (rename (chainEmb N r D.T.t)) = rename (chainEmb N r D.T.t) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[tau, tauF, chainEmb]`. Conclude with `AlgHom.congr_fun h y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tau_rename (y : MvPolynomial (Fin N × Fin r) (KK O)) :
     tau D (rename (chainEmb N r D.T.t) y) = rename (chainEmb N r D.T.t) y := by
@@ -114,13 +114,13 @@ theorem tau_rename (y : MvPolynomial (Fin N × Fin r) (KK O)) :
   exact AlgHom.congr_fun h y
 
 /- English proof (translation)
-Establish `h1 : ∀ i : Fin D.T.t, tau (O` using `O) (r := r) D (X (scalS N r D.T.t (Fin.castSucc i))) = D.Ehat O (r := r) i := by`. Introduce `i`. Simplify using `[tau, tauF, scalS, scalZ, qq, BlockData.Ehat]`. Establish `h2 : tau (O` using `O) (r := r) D (X (scalS N r D.T.t (Fin.last D.T.t))) = D.Eplus O (r := r) := by`. Simplify using `[tau, tauF, scalS, scalZ, qq, BlockData.Eplus]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : ∀ i, tau (O` using `O) (r := r) D (X (scalZ N r D.T.t i)) = X (scalZ N r D.T.t i) := by`. Introduce `i`. Simplify using `[tau, tauF, scalZ]`. Establish `h4 : tau (O` using `O) (r := r) D (xiMon (KK O) N r D.T.t β) = xiMon (KK O) N r D.T.t β := by`. Rewrite using `[xiMon_prod, map_prod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Simplify using `[tau, tauF, xiVar]`. Rewrite using `[ell_apply]`. Unfold `base pre`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [map_mul, map_prod, map_pow, h1, h2, h3, h4, tau_rename]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ell_eq_tau (x : (Fin D.T.t → ℕ) × ℕ) (β : Fin r → ℕ) (y : MvPolynomial (Fin N × Fin r) (KK O)) :
     ell D x β y = tau D (base D x β y) := by
@@ -153,9 +153,9 @@ def ppi : MvPolynomial (BVar N r D.T.t) (KK O) →ₐ[KK O]
     MvPolynomial (Fin (D.T.t + 1) ⊕ Fin r) (MvPolynomial (Fin N × Fin r) (KK O)) := aeval (piF D)
 
 /- English proof (translation)
-Proceed by induction on `y using MvPolynomial.induction_on`. Use `next a =>`. Simplify using `[ppi]`. Use `next p q hp hq =>`. Rewrite using `[map_add, map_add, hp, hq, C_add]`.
+Proceed by induction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `next p x hp =>`. Rewrite using `[map_mul, rename_X, map_mul, hp, ppi, aeval_X, C_mul]`. Simplify using `[piF, chainEmb]`.
+A detailed English derivation is pending.
 -/
 theorem ppi_rename (y : MvPolynomial (Fin N × Fin r) (KK O)) : ppi D (rename (chainEmb N r D.T.t) y) = C y := by
   induction y using MvPolynomial.induction_on
@@ -172,11 +172,11 @@ def eExp (x : (Fin D.T.t → ℕ) × ℕ) (β : Fin r → ℕ) : (Fin (D.T.t + 1
     ∑ c, Finsupp.single (Sum.inr c) (β c)
 
 /- English proof (translation)
-Establish `hS : ∀ i, ppi (O` using `O) D (X (scalS N r D.T.t i)) = X (Sum.inl i) := by`. Introduce `i`. Simplify using `[ppi, piF, scalS]`. Establish `hZ : ∀ i, ppi (O` using `O) D (X (scalZ N r D.T.t i)) = 1 := by`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ppi, piF, scalZ]`. Establish `hXi : ppi (O` using `O) D (xiMon (KK O) N r D.T.t β) = ∏ c, X (Sum.inr c) ^ β c := by`. Rewrite using `[xiMon_prod, map_prod]`. Simplify using `[ppi, piF, xiVar]`. Rewrite using `[base]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_prod, map_pow, hS, hZ, hXi, ppi_rename, one_pow, Finset.prod_const_one, mul_one]`. Rewrite using `[eExp]`. Simplify using `only [X_pow_eq_monomial, ← monomial_sum_one, C_mul_monomial, monomial_mul, mul_one, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ppi_base (x : (Fin D.T.t → ℕ) × ℕ) (β : Fin r → ℕ) (y : MvPolynomial (Fin N × Fin r) (KK O)) :
     ppi D (base D x β y) = monomial (eExp D x β) y := by
@@ -195,9 +195,9 @@ theorem ppi_base (x : (Fin D.T.t → ℕ) × ℕ) (β : Fin r → ℕ) (y : MvPo
   simp only [X_pow_eq_monomial, ← monomial_sum_one, C_mul_monomial, monomial_mul, mul_one, one_mul]
 
 /- English proof (translation)
-Establish `hv : ∀ v, eExp D x β v = eExp D x' β' v` using `fun v => by rw [h]`. Use `⟨Prod.ext (funext fun i => ?_) ?_, funext fun c => ?_⟩` and prove the remaining obligations. Establish `hi` using `hv (Sum.inl (Fin.castSucc i))`. Simplify `hi` using `[eExp, Finsupp.single_apply]`. Establish `hi` using `hv (Sum.inl (Fin.last D.T.t))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hi` using `[eExp, Finsupp.single_apply]`. Establish `hi` using `hv (Sum.inr c)`. Simplify `hi` using `[eExp, Finsupp.single_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eExp_inj {x x' : (Fin D.T.t → ℕ) × ℕ} {β β' : Fin r → ℕ} (h : eExp D x β = eExp D x' β') :
     x = x' ∧ β = β' := by
@@ -211,15 +211,13 @@ theorem eExp_inj {x x' : (Fin D.T.t → ℕ) × ℕ} {β β' : Fin r → ℕ} (h
     simpa [eExp, Finsupp.single_apply] using hi
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Rewrite `hv` using `[Ltot_apply]`. Simplify using `only [ell_eq_tau] at hv`. Rewrite `hv` using `[← map_sum]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : ∑ i : ↥(IF (r` using `r) D), base D i.1.1 i.1.2 (v i : MvPolynomial (Fin N × Fin r) (KK O)) = 0 := tau_inj D (by rw [hv, map_zero])`. Establish `h1` using `congrArg (ppi D) h0`. Rewrite `h1` using `[map_sum, map_zero]`. Simplify using `only [ppi_base] at h1`. Use function extensionality and compare the values at `i0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2` using `congrArg (coeff (eExp D i0.1.1 i0.1.2)) h1`. Rewrite `h2` using `[coeff_sum, coeff_zero, Finset.sum_eq_single i0]`. Rewrite `h2` using `[coeff_monomial, if_pos rfl]`. Conclude with `Subtype.ext h2`. Introduce `b _ hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_monomial, if_neg]`. Introduce `he`. Take `⟨e1, e2⟩` from `eExp_inj D he`. Conclude with `hb (Subtype.ext (Sigma.ext e1 (heq_of_eq e2)))`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ltot_inj : Function.Injective (Ltot (O := O) (r := r) D) := by
   classical
@@ -249,12 +247,12 @@ theorem ltot_inj : Function.Injective (Ltot (O := O) (r := r) D) := by
 end
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ D` and use `ltot_inj D`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem restInj : RestInj := fun _ _ _ _ _ _ _ D => ltot_inj D
 
 /- English proof (translation)
-The claim follows from `blockRankAt_of restInj`.
+A detailed English derivation is pending.
 -/
 theorem blockRankAt : BlockRankAt := blockRankAt_of restInj
 

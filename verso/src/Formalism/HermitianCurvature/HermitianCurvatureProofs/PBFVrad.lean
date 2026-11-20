@@ -19,9 +19,9 @@ section Lift
 variable {A : Type} [Ring A] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Fintype.sum_prod_type']`. Use `symm`. Use `Fintype.sum_bijective (fun p : Fin 2 × Ix (Fin n) => (Fin.cons p.1 p.2 : Ix (Fin (n + 1)))) ⟨?_, ?_⟩ _ _ (fun p => rfl)` and prove the remaining obligations. Introduce and unpack `⟨i, e⟩ ⟨i', e'⟩ h`. Establish `h'` using `Fin.cons_injective2 h`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only at h'`. Rewrite using `[h'.1, h'.2]`. Introduce `z`. Conclude with `⟨(z 0, Fin.tail z), Fin.cons_self_tail z⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem sum_ix_succ {M : Type*} [AddCommMonoid M] (f : Ix (Fin (n + 1)) → M) :
     ∑ z, f z = ∑ i : Fin 2, ∑ e : Ix (Fin n), f (Fin.cons i e) := by
@@ -37,7 +37,7 @@ theorem sum_ix_succ {M : Type*} [AddCommMonoid M] (f : Ix (Fin (n + 1)) → M) :
     exact ⟨(z 0, Fin.tail z), Fin.cons_self_tail z⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨rfl, rfl⟩`. Introduce and unpack `⟨h0, ht⟩`. Rewrite using `[← Fin.cons_self_tail z, ← Fin.cons_self_tail z', h0, ht]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ix_ext_iff (z z' : Ix (Fin (n + 1))) : z = z' ↔ z 0 = z' 0 ∧ Fin.tail z = Fin.tail z' := by
   constructor
@@ -55,9 +55,9 @@ theorem liftM_apply (M : SlopeTestRemainingChoices (Fin n) A) (z z' : Ix (Fin (n
     liftM M z z' = if z 0 = z' 0 then M (Fin.tail z) (Fin.tail z') else 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `z z'`. Rewrite using `[liftM_apply, Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `h0 : z 0 = z' 0`. Distinguish the cases in `ht : Fin.tail z = Fin.tail z'`. Rewrite using `[if_pos h0, if_pos ht, if_pos ((ix_ext_iff z z').2 ⟨h0, ht⟩)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h0, if_neg ht, if_neg (fun h => ht ((ix_ext_iff z z').1 h).2)]`. Rewrite using `[if_neg h0, if_neg (fun h => h0 ((ix_ext_iff z z').1 h).1)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftM_one : liftM (1 : SlopeTestRemainingChoices (Fin n) A) = 1 := by
   ext z z'
@@ -69,23 +69,23 @@ theorem liftM_one : liftM (1 : SlopeTestRemainingChoices (Fin n) A) = 1 := by
   · rw [if_neg h0, if_neg (fun h => h0 ((ix_ext_iff z z').1 h).1)]
 
 /- English proof (translation)
-Use extensionality with `z z'`. Simplify using `[liftM_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem liftM_zero : liftM (0 : SlopeTestRemainingChoices (Fin n) A) = 0 := by
   ext z z'; simp [liftM_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `ext z z'; simp only [liftM_apply, Matrix.add_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem liftM_add (M N : SlopeTestRemainingChoices (Fin n) A) : liftM (M + N) = liftM M + liftM N := by
   ext z z'; simp only [liftM_apply, Matrix.add_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `z z''`. Rewrite using `[Matrix.mul_apply, sum_ix_succ]`. Simplify using `only [liftM_apply, Fin.cons_zero, Fin.tail_cons, Matrix.mul_apply, ite_mul, zero_mul, mul_ite, mul_zero]`. Rewrite using `[Fin.sum_univ_two]`. Apply the tactic sequence `by_cases h0 : z 0 = 0 <;> by_cases h1 : z'' 0 = 0`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[h0, h1]`. Establish `h1' : z'' 0 = 1` using `by omega`. Simplify using `[h0, h1']`. Establish `h0' : z 0 = 1` using `by omega`. Simplify using `[h0', h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0' : z 0 = 1` using `by omega`. Establish `h1' : z'' 0 = 1` using `by omega`. Simplify using `[h0', h1']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem liftM_mul (M N : SlopeTestRemainingChoices (Fin n) A) : liftM (M * N) = liftM M * liftM N := by
   ext z z''
@@ -115,13 +115,13 @@ Both sides reduce to the same expression.
 theorem liftRingHom_apply_eq_liftM (M : SlopeTestRemainingChoices (Fin n) A) : (liftRingHomSucc M : SlopeTestRemainingChoices (Fin (n + 1)) A) = liftM M := rfl
 
 /- English proof (translation)
-Use extensionality with `x y`. Rewrite using `[liftM_apply]`. Simplify using `only [eU, Matrix.of_apply]`. Establish `key : (x a.succ = i ∧ y a.succ = j ∧ ∀ b, b ≠ a.succ → x b = y b) ↔ (x 0 = y 0 ∧ (Fin.tail x a = i ∧ Fin.tail y a = j ∧ ∀ b, b ≠ a → Fin.tail x b = Fin.tail y b))`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨h3 0 (Fin.succ_ne_zero a).symm, h1, h2, fun b hb => h3 b.succ (fun h => hb (Fin.succ_injective _ h))⟩` and prove the remaining obligations. Introduce and unpack `⟨h0, h1, h2, h3⟩`. Use `⟨h1, h2, fun b hb => ?_⟩` and prove the remaining obligations. Conclude with `Fin.cases (motive := fun b => b ≠ a.succ → x b = y b) (fun _ => h0) (fun b' hb' => h3 b' (fun h => hb' (by rw [h]))) b hb`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : x 0 = y 0`. Rewrite using `[if_pos h0]`. Distinguish the cases in `h : Fin.tail x a = i ∧ Fin.tail y a = j ∧ ∀ b, b ≠ a → Fin.tail x b = Fin.tail y b`. Rewrite using `[if_pos h, if_pos (key.2 ⟨h0, h⟩)]`. Rewrite using `[if_neg h, if_neg (fun h' => h (key.1 h').2)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h0, if_neg (fun h' => h0 (key.1 h').1)]`.
+A detailed English derivation is pending.
 -/
 theorem eU_succ (a : Fin n) (i j : Fin 2) : (eU a.succ i j : SlopeTestRemainingChoices (Fin (n + 1)) A) = liftM (eU a i j) := by
   ext x y
@@ -144,9 +144,9 @@ theorem eU_succ (a : Fin n) (i j : Fin 2) : (eU a.succ i j : SlopeTestRemainingC
   · rw [if_neg h0, if_neg (fun h' => h0 (key.1 h').1)]
 
 /- English proof (translation)
-Use extensionality with `z z'`. Rewrite using `[liftM_apply]`. Simplify using `only [io, Matrix.scalar_apply, Matrix.diagonal_apply]`. Distinguish the cases in `h0 : z 0 = z' 0`. Distinguish the cases in `ht : Fin.tail z = Fin.tail z'`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h0, if_pos ht, if_pos ((ix_ext_iff z z').2 ⟨h0, ht⟩)]`. Rewrite using `[if_pos h0, if_neg ht, if_neg (fun h => ht ((ix_ext_iff z z').1 h).2)]`. Rewrite using `[if_neg h0, if_neg (fun h => h0 ((ix_ext_iff z z').1 h).1)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem io_succ (x : A) : (io x : SlopeTestRemainingChoices (Fin (n + 1)) A) = liftM (io x) := by
   ext z z'
@@ -159,15 +159,15 @@ theorem io_succ (x : A) : (io x : SlopeTestRemainingChoices (Fin (n + 1)) A) = l
   · rw [if_neg h0, if_neg (fun h => h0 ((ix_ext_iff z z').1 h).1)]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[lift0, io_succ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem liftZero_succ_eq_map (M : M2 A) : (lift0 M : M2 (SlopeTestRemainingChoices (Fin (n + 1)) A)) = (lift0 M).map liftM := by
   ext i j; simp [lift0, io_succ]
 
 /- English proof (translation)
-Simplify using `only [ins]`. Rewrite using `[← liftRingHom_apply_eq_liftM, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, liftRingHom_apply_eq_liftM, liftRingHom_apply_eq_liftM, eU_succ, Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ins_succ (a : Fin n) (M : M2 (SlopeTestRemainingChoices (Fin n) A)) : ins a.succ (M.map liftM) = liftM (ins a M) := by
   simp only [ins]
@@ -180,9 +180,9 @@ theorem ins_succ (a : Fin n) (M : M2 (SlopeTestRemainingChoices (Fin n) A)) : in
 def upL (l : Letter ℂ (Fin n)) : Letter ℂ (Fin (n + 1)) := ⟨l.plus, l.intersection_update_fsHerm_neg_one.succ, l.pt⟩
 
 /- English proof (translation)
-Proceed by induction on `u with`. Consider the case `nil => exact liftM_one.symm`. Consider the case `cons l u ih`. Simplify using `only [List.map_cons, UUiw]`. Rewrite using `[ih, liftM_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `show ins l.intersection_update_fsHerm_neg_one.succ (lift0 (Uinv (if l.plus then s else star s))) = _`. Rewrite using `[liftZero_succ_eq_map, ins_succ]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UUiw_succ [Algebra ℂ A] [StarRing A] (s : ℂ) (u : List (Letter ℂ (Fin n))) :
     (UUiw s (u.map upL) : SlopeTestRemainingChoices (Fin (n + 1)) A) = liftM (UUiw s u) := by
@@ -196,7 +196,7 @@ theorem UUiw_succ [Algebra ℂ A] [StarRing A] (s : ℂ) (u : List (Letter ℂ (
     rw [liftZero_succ_eq_map, ins_succ]
 
 /- English proof (translation)
-Simplify using `only [D.positionted, List.ofFn_succ, List.map_ofFn]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem positioned_cons (l : C.Letter) (w : List C.Letter) :
     D.positionted (l :: w) = (⟨l.1, 0, (l.2 : ℂ)⟩ : Letter ℂ (Fin (w.length + 1))) :: (D.positionted w).map upL := by
@@ -212,9 +212,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)} {n : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ (i' : Fin 2) (e' : Ix (Fin n)), (liftM M (Fin.cons i e) (Fin.cons i' e')).1 (X (Fin.cons i' e')) = if i = i' then (M e e').1 (X (Fin.cons i' e')) else 0`. Introduce `i' e'`. Rewrite using `[liftM_apply, Fin.cons_zero, Fin.cons_zero, Fin.tail_cons, Fin.tail_cons]`. Apply the tactic sequence `split_ifs <;> rfl`. Simplify using `only [act]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_ix_succ]`. Simplify using `only [key]`. Rewrite using `[Fin.sum_univ_two]`. Apply the tactic sequence `fin_cases i <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem act_liftM (M : SlopeTestRemainingChoices (Fin n) (Pr (RadSp k r z z' π π'))) (X : Ix (Fin (n + 1)) → RadSp k r z z' π π')
     (i : Fin 2) (e : Ix (Fin n)) :
@@ -231,9 +231,9 @@ theorem act_liftM (M : SlopeTestRemainingChoices (Fin n) (Pr (RadSp k r z z' π 
   fin_cases i <;> simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `t`. Conclude with `h t.succ (Fin.succ_ne_zero t)`. Introduce and unpack `rfl b hb`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl⟩` from `Fin.exists_succ_eq.2 hb`. Simplify using `only [Fin.cons_succ]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cons_ne_zero_iff (i0 i' : Fin 2) (e e' : Ix (Fin n)) :
     (∀ b : Fin (n + 1), b ≠ 0 → (Fin.cons i0 e : Ix (Fin (n + 1))) b = (Fin.cons i' e' : Ix (Fin (n + 1))) b) ↔
@@ -245,11 +245,11 @@ theorem cons_ne_zero_iff (i0 i' : Fin 2) (e e' : Ix (Fin n)) :
     simp only [Fin.cons_succ]
 
 /- English proof (translation)
-Simplify using `only [eU, Matrix.of_apply, Fin.cons_zero]`. Establish `: (i0 = i ∧ z' 0 = j ∧ ∀ b, b ≠ 0 → (Fin.cons i0 e : Ix (Fin (n + 1))) b = z' b) ↔ (i0 = i ∧ z' = Fin.cons j e)`. Rewrite using `[← Fin.cons_self_tail z', cons_ne_zero_iff, Fin.cons_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[h2, ← h3]`. Conclude with `⟨h1, rfl⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `h2'` using `Fin.cons_injective2 h2`. Conclude with `⟨h1, h2'.1, h2'.2.symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Simplify using `only [this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem insert_unit_matrix_zero_apply {B : Type} [Ring B] (i j i0 : Fin 2) (e : Ix (Fin n)) (z' : Ix (Fin (n + 1))) :
     (eU (0 : Fin (n + 1)) i j : SlopeTestRemainingChoices (Fin (n + 1)) B) (Fin.cons i0 e) z' =
@@ -266,7 +266,7 @@ theorem insert_unit_matrix_zero_apply {B : Type} [Ring B] (i j i0 : Fin 2) (e : 
   simp only [this]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [act, Matrix.add_apply, Pi.add_apply, ← Finset.sum_add_distrib]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem act_addM (M N : SlopeTestRemainingChoices (Fin (n + 1)) (Pr (RadSp k r z z' π π'))) (X : Ix (Fin (n + 1)) → RadSp k r z z' π π') :
     act (M + N) X = act M X + act N X := by
@@ -275,7 +275,7 @@ theorem act_addM (M N : SlopeTestRemainingChoices (Fin (n + 1)) (Pr (RadSp k r z
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [act, Matrix.zero_apply, Pi.zero_apply]`. Conclude with `Finset.sum_eq_zero fun _ _ => rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_zeroM (X : Ix (Fin (n + 1)) → RadSp k r z z' π π') :
     act (0 : SlopeTestRemainingChoices (Fin (n + 1)) (Pr (RadSp k r z z' π π'))) X = 0 := by
@@ -284,7 +284,7 @@ theorem act_zeroM (X : Ix (Fin (n + 1)) → RadSp k r z z' π π') :
   exact Finset.sum_eq_zero fun _ _ => rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty]`. Conclude with `act_zeroM X`. Consider the case `insert x s hx ih => rw [Finset.sum_insert hx, Finset.sum_insert hx, act_addM, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem act_sumM {ι : Type} (s : Finset ι) (M : ι → SlopeTestRemainingChoices (Fin (n + 1)) (Pr (RadSp k r z z' π π')))
     (X : Ix (Fin (n + 1)) → RadSp k r z z' π π') : act (∑ i ∈ s, M i) X = ∑ i ∈ s, act (M i) X := by
@@ -294,9 +294,9 @@ theorem act_sumM {ι : Type} (s : Finset ι) (M : ι → SlopeTestRemainingChoic
   | insert x s hx ih => rw [Finset.sum_insert hx, Finset.sum_insert hx, act_addM, ih]
 
 /- English proof (translation)
-Simplify using `only [act, insert_unit_matrix_zero_apply]`. Establish `key : ∀ q : Ix (Fin (n + 1)), ((if i0 = i ∧ q = Fin.cons j e then (1 : Pr (RadSp k r z z' π π')) else 0).1) (W q) = if q = Fin.cons j e then (if i0 = i then W q else 0) else 0`. Introduce `q`. Apply the tactic sequence `by_cases h1 : i0 = i <;> by_cases h2 : q = Fin.cons j e <;> simp [h1, h2] <;> rfl`. Simplify using `only [key]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single (Fin.cons j e) (fun b _ hb => by simp [hb]) (fun h => absurd (Finset.mem_univ _) h)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_unit_matrix_zero_radial (i j i0 : Fin 2) (W : Ix (Fin (n + 1)) → RadSp k r z z' π π') (e : Ix (Fin n)) :
     act (eU (0 : Fin (n + 1)) i j : SlopeTestRemainingChoices (Fin (n + 1)) (Pr (RadSp k r z z' π π'))) W (Fin.cons i0 e) =
@@ -312,7 +312,7 @@ theorem act_unit_matrix_zero_radial (i j i0 : Fin 2) (W : Ix (Fin (n + 1)) → R
   simp
 
 /- English proof (translation)
-Simplify using `only [ins, lift0, Matrix.map_apply]`. Rewrite using `[act_sumM, Finset.sum_apply]`. Simplify using `only [act_sumM, Finset.sum_apply, act_mul, act_unit_matrix_zero_radial, act_io]`. Rewrite using `[Fin.sum_univ_two, Fin.sum_univ_two, Fin.sum_univ_two]`. Apply the tactic sequence `fin_cases i0 <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem act_insert_numeric_matrix_zero (U : M2 (Pr (RadSp k r z z' π π'))) (W : Ix (Fin (n + 1)) → RadSp k r z z' π π')
     (i0 : Fin 2) (e : Ix (Fin n)) :
@@ -349,7 +349,7 @@ theorem uInv_cons {X : Type} [AddCommGroup X] [Module ℂ X] (s : ℂ) (l : C.Le
         (if l.1 then s else conj s) • KB.uInv s w (fun e' => x (Fin.cons 0 e')) (fun a => e a.succ) := rfl
 
 /- English proof (translation)
-The claim follows from `| [], Φ => by funext a show act 1 Φ a = Φ a simp only [act, Matrix.one_apply] rw [Finset.sum_eq_single a (fun b _ hb => by rw [if_neg (Ne.symm hb)]; rfl) (fun h => absurd (Finset.mem_univ a) h)] simp | l :: w, Φ => by funext z0 obtain ⟨i, e, rfl⟩ : ∃ i e, z0 = (Fin.cons i e : Ix …`.
+A detailed English derivation is pending.
 -/
 theorem act_UUiw (s : ℂ) : ∀ (w : List C.Letter) (Φ : Ix (Fin w.length) → RadSp k r z z' π π'),
     act (UUiw s (D.positionted w)) Φ = KB.uInv s w Φ
@@ -377,7 +377,7 @@ theorem act_UUiw (s : ℂ) : ∀ (w : List C.Letter) (Φ : Ix (Fin w.length) →
 end ActU
 
 /- English proof (translation)
-The claim follows from `| [], x, e => rfl | l :: w, x, e => by unfold KB.uInv split_ifs · exact uInv_map T s w _ _ · rw [map_add, map_smul, uInv_map T s w, uInv_map T s w] · rw [map_add, map_smul, uInv_map T s w, uInv_map T s w]`.
+A detailed English derivation is pending.
 -/
 theorem uInv_map {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] (T : X →ₗ[ℂ] Y) (s : ℂ) :
     ∀ (w : List C.Letter) (x : Ix (Fin w.length) → X) (e : Ix (Fin w.length)),

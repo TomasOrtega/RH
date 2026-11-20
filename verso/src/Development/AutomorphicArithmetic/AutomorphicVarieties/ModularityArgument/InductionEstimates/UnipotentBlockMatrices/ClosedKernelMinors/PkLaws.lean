@@ -16,9 +16,9 @@ private def Low (M : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R) : Prop :=
   ∀ i j : Fin (2 + 2), 2 ≤ (i : ℕ) → (j : ℕ) < 2 → M i j = 0
 
 /- English proof (translation)
-Introduce `i j hi hj`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) < 2`. Rewrite using `[hM i k hi hk, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN k j (not_lt.1 hk) hj, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem low_mul {M N : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R} (hM : Low M) (hN : Low N) : Low (M * N) := by
   intro i j hi hj
@@ -29,9 +29,9 @@ private theorem low_mul {M N : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R} (hM : Low M
   · rw [hN k j (not_lt.1 hk) hj, mul_zero]
 
 /- English proof (translation)
-Introduce `i j hi hj`. Take `⟨i, rfl⟩` from `(finSumFinEquiv (m := 2) (n := 2)).surjective i`. Take `⟨j, rfl⟩` from `(finSumFinEquiv (m := 2) (n := 2)).surjective j`. Break down `i with i | i` into its components or cases. Conclude with `absurd (show 2 ≤ (i : ℕ) from hi) (not_le.2 i.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `j with j | j` into its components or cases. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]`. Conclude with `absurd (show 2 + (j : ℕ) < 2 from hj) (by omega)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem low_blocks (A B D : Matrix (Fin 2) (Fin 2) R) :
     Low (Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks A B 0 D)) := by
@@ -49,7 +49,7 @@ private def xm (X : UPos (2 + 2) 2 → R) : Matrix (Fin 2) (Fin 2) R :=
   Matrix.of fun i j => X ⟨(Fin.castAdd 2 i, Fin.natAdd 2 j), i.2, Nat.le_add_right 2 j⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [unipMatrix, blockEntry_apply, xm] <;> rfl`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem unip_eq (X : UPos (2 + 2) 2 → R) :
     unipMatrix X = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks 1 (xm X) 0 1) := by
@@ -57,9 +57,9 @@ private theorem unip_eq (X : UPos (2 + 2) 2 → R) :
   fin_cases i <;> fin_cases j <;> simp [unipMatrix, blockEntry_apply, xm] <;> rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `X Y h`. Apply `unipGL_injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_unipGL, coe_unipGL, unip_eq, unip_eq, h]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `B`. Use `⟨fun p => B ⟨p.1.1, p.2.1⟩ ⟨p.1.2 - 2, by have := p.1.2.2; omega⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[xm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem xm_bij : Function.Bijective (xm : (UPos (2 + 2) 2 → R) → _) := by
   constructor
@@ -73,7 +73,7 @@ private theorem xm_bij : Function.Bijective (xm : (UPos (2 + 2) 2 → R) → _) 
     simp [xm]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, coe_unipGL, unip_eq]`. Simplify using `only [blk, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.one_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem unip_blk (X : UPos (2 + 2) 2 → R) (a b : GL (Fin 2) R) :
     ((unipGL X * blk a b : GL (Fin (2 + 2)) R) : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R) =
@@ -83,7 +83,7 @@ private theorem unip_blk (X : UPos (2 + 2) 2 → R) (a b : GL (Fin 2) R) :
     Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]
 
 /- English proof (translation)
-Establish `h1` using `congrArg Units.val h`. Rewrite `h1` using `[unip_blk, unip_blk]`. Take `⟨ha, hx, -, hb⟩` from `Matrix.fromBlocks_inj.1 ((Matrix.reindex _ _).injective h1)`. Take `rfl : b = b'` from `Units.ext hb`. Conclude with `⟨xm_bij.1 ((Units.mul_left_inj b).1 hx), Units.ext ha, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem unip_blk_inj {X X' : UPos (2 + 2) 2 → R} {a b a' b' : GL (Fin 2) R}
     (h : unipGL X * blk a b = unipGL X' * blk a' b') : X = X' ∧ a = a' ∧ b = b' := by
@@ -94,7 +94,7 @@ private theorem unip_blk_inj {X X' : UPos (2 + 2) 2 → R} {a b a' b' : GL (Fin 
   exact ⟨xm_bij.1 ((Units.mul_left_inj b).1 hx), Units.ext ha, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[mul_inv_rev, Units.val_mul, coe_unipGL_inv, unip_eq]`. Conclude with `low_mul (low_blocks _ _ _) (low_blocks _ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem low_inv_unip_blk (X : UPos (2 + 2) 2 → R) (a b : GL (Fin 2) R) :
     Low (((unipGL X * blk a b)⁻¹ : GL (Fin (2 + 2)) R) : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R) := by
@@ -104,13 +104,11 @@ private theorem low_inv_unip_blk (X : UPos (2 + 2) 2 → R) (a b : GL (Fin 2) R)
 end Ring
 
 /- English proof (translation)
-Use `set M := (Matrix.reindex finSumFinEquiv finSumFinEquiv).symm g.val with hM`. Establish `h21 : M.toBlocks₂₁ = 0`. Use extensionality with `i j`. Conclude with `hg _ _ (Nat.le_add_right 2 i) j.2`. Establish `hb : M = Matrix.fromBlocks M.toBlocks₁₁ M.toBlocks₁₂ 0 M.toBlocks₂₂`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h21, Matrix.fromBlocks_toBlocks]`. Establish `hd : M.det ≠ 0`. Rewrite using `[hM, Matrix.reindex_symm, Matrix.det_reindex_self]`. Conclude with `g.det_ne_zero`. Rewrite `hd` using `[hb, Matrix.det_fromBlocks_zero₂₁, mul_ne_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `a` to `Matrix.GeneralLinearGroup.mkOfDetNeZero _ hd.1`. Set `b` to `Matrix.GeneralLinearGroup.mkOfDetNeZero _ hd.2`. Take `⟨X, hX⟩` from `xm_bij.2 (M.toBlocks₁₂ * (b⁻¹).val)`. Use `⟨X, a, b, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[unip_blk, hX, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`.
-
-Express the relevant statement in the definitionally equal form `_ = Matrix.reindex _ _ (Matrix.fromBlocks M.toBlocks₁₁ M.toBlocks₁₂ 0 M.toBlocks₂₂)`. Rewrite using `[← hb, hM, Equiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem low_decomp {K : Type} [Field K] (g : GL (Fin (2 + 2)) K) (hg : Low g.val) :
     ∃ (X : UPos (2 + 2) 2 → K) (a b : GL (Fin 2) K), g = unipGL X * blk a b := by
@@ -135,9 +133,9 @@ private theorem low_decomp {K : Type} [Field K] (g : GL (Fin (2 + 2)) K) (hg : L
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(finSumFinEquiv (m := 2) (n := 2)).surjective i`. Take `⟨j, rfl⟩` from `(finSumFinEquiv (m := 2) (n := 2)).surjective j`. Rewrite using `[AdelicGLn.diagonal_apply]`. Simplify using `only [blk, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem diag_blk (a b : GL (Fin 2) K) :
     AdelicGLn.diagonal K (2 + 2) (blk a b) = blk (AdelicGLn.diagonal K 2 a) (AdelicGLn.diagonal K 2 b) := by
@@ -149,7 +147,7 @@ private theorem diag_blk (a b : GL (Fin 2) K) :
   rcases i with i | i <;> rcases j with j | j <;> simp
 
 /- English proof (translation)
-Rewrite using `[zt, ← map_one (centralSection K 2)]`. Use `congr 1`. Conclude with `Subtype.ext Real.exp_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem zt_zero : zt K 0 = 1 := by
   rw [zt, ← map_one (centralSection K 2)]
@@ -157,7 +155,7 @@ private theorem zt_zero : zt K 0 = 1 := by
   exact Subtype.ext Real.exp_zero
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun i => forall_congr' fun j => forall_congr' fun _ => forall_congr' fun _ => by rw [AdelicGLn.diagonal_apply] exact map_eq_zero_iff _ (NumberField.AdeleRing.algebraMap_injective (𝓞 K) K)`.
+A detailed English derivation is pending.
 -/
 private theorem low_diag (g : GL (Fin (2 + 2)) K) : Low (AdelicGLn.diagonal K (2 + 2) g).val ↔ Low g.val :=
   forall_congr' fun i => forall_congr' fun j => forall_congr' fun _ => forall_congr' fun _ => by
@@ -165,7 +163,7 @@ private theorem low_diag (g : GL (Fin (2 + 2)) K) : Low (AdelicGLn.diagonal K (2
     exact map_eq_zero_iff _ (NumberField.AdeleRing.algebraMap_injective (𝓞 K) K)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `γ.2`. Conclude with `⟨g, Subtype.ext (Subtype.ext hg.symm)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem gam_cases {n : ℕ} (γ : Gam K n) : ∃ g : GL (Fin n) K,
     γ = ⟨⟨AdelicGLn.diagonal K n g, rationalGL_le_normOneGL ⟨g, rfl⟩⟩, g, rfl⟩ := by
@@ -187,24 +185,24 @@ private def lowΓ (K : Type) [Field K] [NumberField K] : Subgroup (Gam K (2 + 2)
     exact low_inv_unip_blk X a b
 
 /- English proof (translation)
-The claim follows from `Subgroup.closure_eq (lowΓ K)`.
+A detailed English derivation is pending.
 -/
 private theorem par_eq : ParΓ K 2 2 = lowΓ K := Subgroup.closure_eq (lowΓ K)
 
 /- English proof (translation)
-Introduce `K _ _`. Establish `hlv` using `(blkLaws (K := K)).1`. Establish `hco : ∀ (ξ : UPos (2 + 2) 2 → 𝔸[K]) (a b : G1 K 2) (t : ℝ), ((nn ξ * lv a b t : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) = unipGL ξ * blk ((a : AdelicGLn.AdelicGL K 2) * zt K t) ((b : AdelicGLn.AdelicGL K 2) * zt K (-t))` using `fun ξ a b t => by rw [Subgroup.coe_mul, hlv, coe_unipOne]`. Establish `hdg : ∀ (X : UPos (2 + 2) 2 → K) (a b : GL (Fin 2) K) (h₁ h₂), ((nn (fun p => algebraMap K 𝔸[K] (X p)) * lv ⟨AdelicGLn.diagonal K 2 a, h₁⟩ ⟨AdelicGLn.diagonal K 2 b, h₂⟩ 0 : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) = AdelicGLn.diagonal K (2 + 2) (unipGL X * blk a b)` using `fun X a b h₁ h₂ => by rw [hco, neg_zero, zt_zero, mul_one, mul_one, map_mul, diag_blk, diagonal_unipGL]`. Use `⟨fun γ => by rw [par_eq]; rfl, fun γ => ⟨?_, ?_⟩, ?_, fun γ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨γ, hg, rfl⟩`. Take `⟨g, rfl⟩` from `gam_cases γ`. Rewrite `hg` using `[par_eq]`. Take `⟨X, a, b, rfl⟩` from `low_decomp g ((low_diag g).1 hg)`. Conclude with `⟨⟨_, X, rfl⟩, ⟨⟨_, rationalGL_le_normOneGL ⟨a, rfl⟩⟩, a, rfl⟩, ⟨⟨_, rationalGL_le_normOneGL ⟨b, rfl⟩⟩, b, rfl⟩, Subtype.ext (hdg X a b _ _).symm⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨_, X, rfl⟩, γ₁, γ₂, rfl⟩`. Take `⟨a, rfl⟩` from `gam_cases γ₁`. Take `⟨b, rfl⟩` from `gam_cases γ₂`. Establish `h₁ : AdelicGLn.diagonal K 2 a ∈ normOneGL K 2` using `rationalGL_le_normOneGL ⟨a, rfl⟩`. Establish `h₂ : AdelicGLn.diagonal K 2 b ∈ normOneGL K 2` using `rationalGL_le_normOneGL ⟨b, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨_, unipGL X * blk a b, (hdg X a b h₁ h₂).symm⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[par_eq]`. Express the relevant statement in the definitionally equal form `Low (Units.val _)`. Establish `h` using `(low_diag (unipGL X * blk a b)).2 (by rw [unip_blk]; exact low_blocks _ _ _)`. Rewrite `h` using `[← hdg X a b h₁ h₂]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Introduce `ξ ξ' a b a' b' t t' h`. Establish `h1` using `congrArg Subtype.val h`. Rewrite `h1` using `[hco, hco]`. Take `⟨hx, ha, hb⟩` from `unip_blk_inj h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (detModule K 2) ha`. Rewrite `h2` using `[map_mul, map_mul, mem_normOneGL_iff_detModule.1 a.2, mem_normOneGL_iff_detModule.1 a'.2, one_mul, one_mul, zt, zt, detModule_centralSection two_pos, detModule_centralSection two_pos]`. Take `rfl : t = t'` from `Real.exp_injective (congrArg Subtype.val h2)`. Conclude with `⟨hx, Subtype.ext (mul_right_cancel ha), Subtype.ext (mul_right_cancel hb), rfl⟩`. Establish `h : (QuotientGroup.rightRel (ParΓ K 2 2)) γ (Quotient.mk _ γ : Cos K).out` using `Quotient.exact (Quotient.out_eq _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[QuotientGroup.rightRel_apply]`. Use `⟨_, ⟨_, h, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.pkLaws :
     ∀ {K : Type} [Field K] [NumberField K], (∀ γ : Gam K (2 + 2), γ ∈ ParΓ K 2 2 ↔ ∀ i j : Fin (2 + 2), 2 ≤ (i : ℕ) → (j : ℕ) < 2 →

@@ -5,13 +5,13 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.BasicNotions U
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ n r h v hv B hB`. Take `⟨A, hA, κ, P, hP⟩` from `h v hv`. Take `⟨g, rfl⟩` from `exists_smul_eq_of_isPlaceOver (F := F) hA hB`. Establish `hmem : ∀ s ∈ Dec (F` using `F) (g • A), g⁻¹ * s * g ∈ Dec (F := F) A := fun s hs => by`. Establish `h1 : s • g • A = g • A` using `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (g⁻¹ * s * g) • A = A`. Rewrite using `[mul_smul, mul_smul, h1, inv_smul_smul]`. Set `d : ↥(Dec (F` to `F) (g • A)) →* ↥(Dec (F := F) A) := { toFun := fun s => ⟨g⁻¹ * s * g, hmem s s.2⟩ map_one' := by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `map_mul' := fun a b => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mul_assoc] }`. Use `⟨fun i => (κ i).comp d, P * r g⁻¹, fun s => ?_⟩` and prove the remaining obligations. Establish `e : P * r g⁻¹ * r s * (P * r g⁻¹)⁻¹ = P * r (d s) * P⁻¹` using `by show _ = P * r (g⁻¹ * s * g) * P⁻¹`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, map_inv]`. Use `group`. Rewrite using `[e]`. Conclude with `hP (d s)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Win.Dn.flagAll_of :
     FlagAll := by

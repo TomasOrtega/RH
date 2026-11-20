@@ -9,11 +9,9 @@ noncomputable section
 namespace GlobalTheory.GenPt
 
 /- English proof (translation)
-Take `⟨_, ⟨V, hV, rfl⟩, hpV, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ p) isOpen_univ`. Use `haveI := IsLocallyNoetherian.component_noetherian (X := X) ⟨V, hV⟩`. Establish `hN0` using `noetherianSpace_of_isAffineOpen V hV`. Use `haveI : NoetherianSpace (V : Set X) := hN0`. Use `haveI : QuasiSober (V : Set X) := V.isOpen.isOpenEmbedding_subtypeVal.quasiSober`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `p' : V` to `⟨p, hpV⟩`. Establish `hC` using `irreducibleComponent_mem_irreducibleComponents p'`. Take `⟨o, ho, hne, hoC⟩` from `NoetherianSpace.exists_isOpen_nonempty_subset_irreducibleComponent _ hC`. Establish `hg` using `hC.1.isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ hC)`. Establish `hgp : (hC.1.genericPoint).1 = p` using `hp _ ((hg.specializes (mem_irreducibleComponent)).map continuous_subtype_val)`.
-
-Take `⟨x, ⟨r, hro, rfl⟩, hxO⟩` from `hd.inter_open_nonempty _ (V.isOpen.isOpenMap_subtype_val o ho) (hne.image _)`. Establish `hpr : p ⤳ r.1` using `hgp ▸ (hg.specializes (hoC hro)).map continuous_subtype_val`. Conclude with `hpr.mem_open hO hxO`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_of_maximal {X : Scheme.{0}} [IsLocallyNoetherian X] (p : X)
     (hp : ∀ q : X, q ⤳ p → q = p) (O : Set X) (hO : IsOpen O) (hd : Dense O) : p ∈ O := by
@@ -36,13 +34,11 @@ theorem mem_of_maximal {X : Scheme.{0}} [IsLocallyNoetherian X] (p : X)
   exact hpr.mem_open hO hxO
 
 /- English proof (translation)
-Use `letI := φ.toAlgebra`. Use `haveI : Module.Flat A R := hφ`. Rewrite using `[injective_iff_map_eq_zero]`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha, ha0⟩` from `hne`. Establish `hlt : (⊥ : Ideal A) < (⊥ : Ideal R).under A`. Use `lt_of_le_of_ne bot_le fun h => ha0 ?_` and prove the remaining obligations. Establish `: a ∈ (⊥ : Ideal R).under A`. Rewrite using `[Ideal.under, Ideal.mem_comap]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Ideal.mem_bot).2 ha`. Rewrite `this` using `[← h]`. Conclude with `(Ideal.mem_bot).1 this`. Take `⟨P, hP, -, hPo⟩` from `Algebra.HasGoingDown.exists_ideal_le_liesOver_of_lt (p := ⊥) (⊥ : Ideal R) hlt`. Establish `hPb : P = ⊥` using `le_bot_iff.1 hP`.
-
-Substitute `hPb` using the available equality. Conclude with `hlt.ne (hPo.over)`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem injective_of_flat {A R : Type} [CommRing A] [IsDomain A] [CommRing R] [IsDomain R]
     (φ : A →+* R) (hφ : φ.Flat) : Function.Injective φ := by
@@ -66,17 +62,15 @@ theorem injective_of_flat {A R : Type} [CommRing A] [IsDomain A] [CommRing R] [I
 end GlobalTheory.GenPt
 
 /- English proof (translation)
-Introduce `X U _ j _ hd hdom R _ _ _ ξ hfl`. Use `set z := ξ (closedPoint (CommRingCat.of R))`. Use `haveI := hdom z`. Establish `hinj` using `GlobalTheory.GenPt.injective_of_flat _ hfl`. Establish `hξ` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hrange : Set.range (jK R ≫ ξ) ⊆ Set.range j`. Introduce and unpack `_ ⟨x0, rfl⟩`. Use `set η := Spec.map (Scheme.stalkClosedPointTo ξ) (jK R x0) with hη`. Establish `hη0 : η.asIdeal = ⊥`. Establish `h0 : x0.asIdeal = ⊥` using `@Ideal.eq_bot_of_prime _ _ x0.asIdeal x0.isPrime`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Ideal.comap _ (Ideal.comap _ x0.asIdeal) = ⊥`. Rewrite using `[h0, CommRingCat.hom_ofHom, ← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R _), ← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 hinj`. Establish `hp : (jK R ≫ ξ) x0 = X.fromSpecStalk z η`. Rewrite using `[Scheme.Hom.comp_apply, ← hξ, Scheme.Hom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hp]`. Apply `GlobalTheory.GenPt.mem_of_maximal _ _ _ j.isOpenEmbedding.isOpen_range hd` to reduce the goal to its premises. Introduce `q hq`. Establish `hqz : q ∈ Set.range (X.fromSpecStalk z)`. Rewrite using `[Scheme.range_fromSpecStalk]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq.trans (((IsLocalRing.specializes_closedPoint η).map (X.fromSpecStalk z).continuous).trans (specializes_of_eq Scheme.fromSpecStalk_closedPoint))`. Take `⟨Q, rfl⟩` from `hqz`. Establish `hQ : Q ⤳ η` using `(IsPreimmersion.isEmbedding (X.fromSpecStalk z)).specializes_iff.1 hq`. Establish `hQη : Q = η` using `PrimeSpectrum.ext (le_antisymm ((PrimeSpectrum.le_iff_specializes Q η).2 hQ) (hη0 ▸ bot_le))`. Rewrite using `[hQη]`.
-
-Conclude with `⟨IsOpenImmersion.lift j (jK R ≫ ξ) hrange, IsOpenImmersion.lift_fac _ _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GenPt.generic_factors_dense : ∀ (X U : Scheme.{0}) [IsLocallyNoetherian X] (j : U ⟶ X) [IsOpenImmersion j], Dense (Set.range j) →
     (∀ x : X, IsDomain (X.presheaf.stalk x)) → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ X),

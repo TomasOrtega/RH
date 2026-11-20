@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Use `letI : NormedField K := w.toNormedField`. Conclude with `carver σ X wt K z hp hz`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem carver_abs (K : Type) [Field K] [IsAlgClosed K] (w : AbsoluteValue K ℝ) (hp : ∃ p, p ≠ 0 ∧ w p ≠ 1)
     (σ : Type) [Finite σ] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (wt : σ → X) (z : σ → K)
@@ -18,7 +18,7 @@ private theorem carver_abs (K : Type) [Field K] [IsAlgClosed K] (w : AbsoluteVal
   exact carver σ X wt K z hp hz
 
 /- English proof (translation)
-Introduce `l _ 𝔞 A _ _ _ f hf σ _ X _ _ _ wt z hz`. Take `⟨w, hw, hp⟩` from `UpperTheory.V.Ws.Po.ambAbs 𝔞 A f hf`. Take `⟨t, ht⟩` from `carver_abs 𝔞.K w hp σ X wt z fun n hn h0 => (hw _).2 (hz n hn h0)`. Conclude with `⟨t, fun s => (hw _).1 (ht s)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Ws.Po.ambScale :
     ∀ {l : ℕ} [Fact l.Prime] (𝔞 : Amb l) (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] (f : A →+* 𝔞.V), 𝔞.IsDvr f →

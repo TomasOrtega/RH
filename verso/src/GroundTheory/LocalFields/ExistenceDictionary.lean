@@ -16,9 +16,9 @@ attribute [local instance] isDiscreteModule_units
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Rewrite using `[← InfiniteGalois.normal_iff_isGalois, coe_fixingOpenSubgroup]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun n hn g => ?_⟩` and prove the remaining obligations. Use `h.conj_mem ⟨n, Subgroup.mem_top n⟩ (Subgroup.mem_subgroupOf.2 hn) ⟨g, Subgroup.mem_top g⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Subgroup.mem_subgroupOf.1 this`. Introduce `h`. Conclude with `h.subgroupOf _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem normal_subgroupOf_top_fixingOpenSubgroup_iff (L : IntermediateField K Ω)
     [FiniteDimensional K L] :
@@ -34,11 +34,11 @@ theorem normal_subgroupOf_top_fixingOpenSubgroup_iff (L : IntermediateField K Ω
     exact h.subgroupOf _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hn` using `h.normal`. Establish `hG : IsGalois K L` using `(normal_subgroupOf_top_fixingOpenSubgroup_iff L).1 hn`. Use `⟨hG, fun σ τ => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc` using `h.isMulCommutative`. Take `⟨p, rfl⟩` from `(baseQuotientEquiv L).surjective σ`. Take `⟨q, rfl⟩` from `(baseQuotientEquiv L).surjective τ`. Rewrite using `[← map_mul, ← map_mul, hc.is_comm.comm]`. Introduce and unpack `⟨hG, hc⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hn` using `(normal_subgroupOf_top_fixingOpenSubgroup_iff L).2 hG`. Establish `: IsMulCommutative (((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) ⧸ (fixingOpenSubgroup L : Subgroup (Ω ≃ₐ[K] Ω)).subgroupOf ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)))` using `⟨⟨fun p q => (baseQuotientEquiv L).injective (by rw [map_mul, map_mul, hc])⟩⟩`. Conclude with `isAbelianExtension_of_isMulCommutative le_top`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAbelianExtension_fixingOpenSubgroup_iff (L : IntermediateField K Ω) [FiniteDimensional K L] :
     IsAbelianExtension ⊤ (fixingOpenSubgroup L) ↔
@@ -63,9 +63,9 @@ theorem isAbelianExtension_fixingOpenSubgroup_iff (L : IntermediateField K Ω) [
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Establish `: (L.fixingSubgroup.subgroupOf ⊤).FiniteIndex` using `inferInstanceAs (((fixingOpenSubgroup L : Subgroup (Ω ≃ₐ[K] Ω)).subgroupOf ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))).FiniteIndex)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, rfl⟩, rfl⟩`. Conclude with `⟨_, (baseUnitsEquiv_norm L a).symm⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨b, rfl⟩`. Use `⟨_, ⟨(fixedModuleUnitsEquiv L).symm b, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `baseUnitsEquiv (Abstract.norm Ωˣ ⊤ L.fixingSubgroup _) = _`. Rewrite using `[baseUnitsEquiv_norm, MulEquiv.apply_symm_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_baseUnitsEquiv_normGroup (L : IntermediateField K Ω) [FiniteDimensional K L] :
     (normGroup Ωˣ ⊤ (fixingOpenSubgroup L)).map
@@ -86,9 +86,9 @@ theorem map_baseUnitsEquiv_normGroup (L : IntermediateField K Ω) [FiniteDimensi
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Rewrite using `[← map_baseUnitsEquiv_normGroup L]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Conclude with `⟨a, ha, rfl⟩`. Introduce and unpack `⟨b, hb, hba⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← baseUnitsEquiv.injective hba]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_normGroup_iff_mem_range_normUnits (L : IntermediateField K Ω) [FiniteDimensional K L]
     (a : fixedModule Ωˣ (⊤ : Subgroup (Ω ≃ₐ[K] Ω))) :
@@ -103,7 +103,7 @@ theorem mem_normGroup_iff_mem_range_normUnits (L : IntermediateField K Ω) [Fini
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Use extensionality with `a`. Conclude with `mem_normGroup_iff_mem_range_normUnits L a`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem normGroup_eq_comap (L : IntermediateField K Ω) [FiniteDimensional K L] :
     normGroup Ωˣ ⊤ (fixingOpenSubgroup L) =
@@ -122,14 +122,14 @@ instance finiteDimensional_maximalAbelianSubextension :
   finiteDimensional_fixedField_openSubgroup _
 
 /- English proof (translation)
-The claim follows from `fixingOpenSubgroup_fixedField _`.
+A detailed English derivation is pending.
 -/
 theorem fixingOpenSubgroup_maximalAbelianSubextension :
     fixingOpenSubgroup (maximalAbelianSubextension L) = maxAbelian (le_top : fixingOpenSubgroup L ≤ ⊤) :=
   fixingOpenSubgroup_fixedField _
 
 /- English proof (translation)
-Rewrite using `[fixingOpenSubgroup_maximalAbelianSubextension]`. Conclude with `isAbelianExtension_maxAbelian _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAbelianExtension_fixingOpenSubgroup_maximalAbelianSubextension :
     IsAbelianExtension ⊤ (fixingOpenSubgroup (maximalAbelianSubextension L)) := by
@@ -150,7 +150,7 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 attribute [local instance] isDiscreteModule_units
 
 /- English proof (translation)
-Rewrite using `[← map_baseUnitsEquiv_normGroup, ← map_baseUnitsEquiv_normGroup, Subgroup.map_le_map_iff_of_injective baseUnitsEquiv.injective, (localClassFieldTheory K Ω).normGroup_le_normGroup_iff (localClassFieldTheory K Ω).classFieldAxiom ((isAbelianExtension_fixingOpenSubgroup_iff L).2 ⟨inf …`. Conclude with `fixingSubgroup_le_fixingSubgroup_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_normUnits_le_range_normUnits_iff {L L' : IntermediateField K Ω} [FiniteDimensional K L]
     [FiniteDimensional K L'] [IsGalois K L] [IsGalois K L']

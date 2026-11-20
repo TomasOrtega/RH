@@ -19,17 +19,15 @@ noncomputable section
 namespace GlobalTheory.ThK.LeviModulus
 
 /- English proof (translation)
-Take `⟨ei, ev, hei, hloc0, hloc⟩` from `hev.loc`. Establish `hex : ∀ v : Pl F, ∃ p : (Fin n × Fin d → Fv F v) → ℂ, p ∈ SB _ ∧ ev v p = Set.indicator {x : Fin n₁ × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 ∧ (M₁.vac v = Set.indicator {x : Fin n₁ × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 → p = M.vac v)`. Introduce `v`. Distinguish the cases in `h : M₁.vac v = Set.indicator {x : Fin n₁ × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Conclude with `⟨M.vac v, (hM.vac v).1, by rw [← h]; exact (hloc0 v).1, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Establish `hmem' : Set.indicator {x : Fin n₁ × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 ∈ (SB (Fin n × Fin d → Fv F v)).map (ev v)`. Rewrite using `[(hloc0 v).2]`. Conclude with `GlobalTheory.StdVacuum.indicator_mem_SB v`. Take `⟨p, hp, hpe⟩` from `Submodule.mem_map.1 hmem'`. Conclude with `⟨p, hp, hpe, fun h' => absurd h' h⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose φ hφSB hφev hφvac using hex`. Establish `hcof : ∀ᶠ v in cofinite, φ v = M.vac v` using `by filter_upwards [hM₁.std] with v hv`. Conclude with `hφvac v hv`. Establish `hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `by filter_upwards [hcof, hM.std] with v h1 h2`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, ei g ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hei (ContinuousLinearMap.ext h)`. Use `⟨pure g φ, (GlobalTheory.ThK.EvUniqInf.rest_pure g φ hφSB hstd).2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hloc g φ hφSB hcof, show (fun v => ev v (φ v)) = fun v => Set.indicator {x : Fin n₁ × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 from funext hφev]`. Introduce `h0`. Apply `hg` to reduce the goal to its premises. Apply `GlobalTheory.ThK.EvUniqInf.eq_of_pure_std (ei g) 0` to reduce the goal to its premises. Rewrite using `[h0]`.
-
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
@@ -76,19 +74,19 @@ end GlobalTheory.ThK.LeviModulus
 open GlobalTheory.ThK.LeviModulus in
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M χX χW om r s r' s' hpair H H' j₀ j₁ i₀ i₁ M₁ om₁ r₁ s₁ r₁' s₁' hH hH' hpair₁ e hev l g₀ m hL c hc`. Take `⟨M₁', hM₁'⟩` from `GlobalTheory.ModelEx.model_exists F E σ B hpair.base n d₁ X W₁ r s r₁' s₁' hpair.herm hpair₁.skew`. Take `⟨om₁', hom₁'⟩` from `hKP.base.weilRepresentationExists F E σ B hpair.base n d₁ X W₁ r s r₁' s₁' hpair.herm hpair₁.skew M₁' hM₁' χX χW hpair.hX hpair.hW hpair.resX hpair₁.resW`. Establish `P₁' : IsPair B M₁' χX χW om₁' r s r₁' s₁'` using `⟨hpair.base, hpair.herm, hpair₁.skew, hM₁', hpair.hX, hpair.hW, hpair.resX, hpair₁.resW, hom₁'⟩`. Take `⟨e₀, he₀⟩` from `((GlobalTheory.T.theta_evaluation_zero_cone hKP.base).1 F E σ B n d X W M χX χW om r s r' s' hpair d₁ X W₁ H' i₀ i₁ M₁'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `rfl hH' hM₁').1`. Take `⟨e', he', c', hc'0, hfac⟩` from `GlobalTheory.T.adapted_evaluation_seesaw hKP F E σ B n d d₁ X W W₁ M M₁' H' i₀ i₁ hH' hM₁' e₀ he₀ n₁ X₁ H j₀ j₁ M₁ hH hpair₁.good hpair.base hpair.good ⟨r, s, r', s', hpair.herm, hpair.skew⟩ e hev`. Establish `hL1 : IsLevi (W₁` using `W₁) H' 1 1 (1 : UA σ W.J) := by`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> simp [mat]`. Use `set k : ℂ := (χW l : ℂ) * (((absE F E l : ℝ) ^ ((d₁ : ℝ) / 2) : ℝ) : ℂ) with hk`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hlaw : ∀ Φ ∈ schA F (Fin n × Fin d), e (om (m, 1) Φ) = k • om₁ (g₀, 1) (e Φ)`. Introduce `Φ hΦ`. Establish `hpres : om (m, 1) Φ ∈ schA F (Fin n × Fin d)` using `(hpair.weil.isUSplitting).pres _ Φ hΦ`. Establish `h0` using `GlobalTheory.T.adapted_plane_second_variable hKP.base F E σ B n d X W M χX χW om r s r' s' hpair d₁ W₁ H' i₀ i₁ M₁' om₁' r₁' s₁' hH' P₁' e₀ he₀ m 1 1 1 hL1 1 (Subgroup.one_mem _) Φ hΦ`. Establish `h1 : ((χX 1 : ℂ) * (((absE F E 1 : ℝ) ^ ((n : ℝ) / 2) : ℝ) : ℂ)) = 1` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[mul_one, h1, one_smul]`. Establish `h2` using `(GlobalTheory.T.adapted_plane_first_variable hKP.base F E σ B n d₁ X W₁ M₁' χX χW om₁' r s r₁' s₁' P₁' n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hpair₁).2 e' he' 1 l g₀ m hL 1 (Subgroup.one_mem _) (e₀ Φ) (he₀.maps Φ hΦ)`. Rewrite `h2` using `[one_mul]`. Apply `smul_right_injective _ hc'0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ₀, hΦ₀, hne⟩` from `exists_ne_zero hpair.good hpair₁.good hev`. Establish `hinv : ∀ x : Fn F n₁ d₁, om₁ (g₀⁻¹, 1) (om₁ (g₀, 1) x) = x`. Introduce `x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, inv_mul_cancel, one_mul]`. Conclude with `congrArg (fun T : Module.End ℂ (Fn F n₁ d₁) => T x) (map_one om₁)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne' : om₁ (g₀, 1) (e Φ₀) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← hinv (e Φ₀), h0, map_zero]`. Establish `hck : c = k`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(hc Φ₀ hΦ₀).symm.trans (hlaw Φ₀ hΦ₀)`. Rewrite `h` using `[← sub_eq_zero, ← sub_smul]`. Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 h).resolve_right hne')`. Rewrite using `[hck, hk, norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.LeviModulus.norm_const_eq : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (χX χW : Chr F E)

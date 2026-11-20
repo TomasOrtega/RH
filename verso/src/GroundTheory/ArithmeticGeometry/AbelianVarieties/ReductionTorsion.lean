@@ -18,7 +18,7 @@ def pointCongr {W₁ W₂ : WeierstrassCurve F} (h : W₁ = W₂) :
   exact AddEquiv.refl _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pointCongr_some {W₁ W₂ : WeierstrassCurve F} (h : W₁ = W₂) {x y : F}
     (hxy : W₁.toAffine.Nonsingular x y) :
@@ -31,7 +31,7 @@ end Congr
 variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪]
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (residue 𝒪) n, ne_eq, residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, not_not]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_natCast_iff_residue_ne_zero (n : ℕ) : IsUnit (n : 𝒪) ↔ (n : ResidueField 𝒪) ≠ 0 := by
   rw [← map_natCast (residue 𝒪) n, ne_eq, residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff,
@@ -42,7 +42,7 @@ variable [IsAdicComplete (maximalIdeal 𝒪) 𝒪]
   [(W.map (algebraMap 𝒪 K)).IsElliptic] [DecidableEq K] [DecidableEq (ResidueField 𝒪)]
 
 /- English proof (translation)
-Establish `h1` using `(reduceHom_eq_zero_iff K W P).mp hP`. Establish `h2 : n • (P : (curveK K W).Point) = 0`. Rewrite using `[← AddSubgroup.coe_nsmul, hnP, AddSubgroup.coe_zero]`. Conclude with `Subtype.ext (eq_zero_of_mem_E1_of_nsmul_eq_zero K W ((isUnit_natCast_iff_residue_ne_zero n).mpr hn) h1 h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_reduceHom_eq_zero {n : ℕ} (hn : (n : ResidueField 𝒪) ≠ 0) (P : E0 K W)
     (hnP : n • P = 0) (hP : reduceHom K W P = 0) : P = 0 := by
@@ -53,7 +53,7 @@ theorem eq_zero_of_reduceHom_eq_zero {n : ℕ} (hn : (n : ResidueField 𝒪) ≠
     ((isUnit_natCast_iff_residue_ne_zero n).mpr hn) h1 h2)
 
 /- English proof (translation)
-Use `eq_zero_of_reduceHom_eq_zero K W hn (P - Q) (by rw [nsmul_sub, hP, hQ, sub_zero]) (by rw [map_sub, h, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem reduceHom_injOn_torsion {n : ℕ} (hn : (n : ResidueField 𝒪) ≠ 0) {P Q : E0 K W}
     (hP : n • P = 0) (hQ : n • Q = 0) (h : reduceHom K W P = reduceHom K W Q) : P = Q := by
@@ -75,15 +75,13 @@ theorem coe_reduceTorsionHom_apply (n : ℕ) (P : AddSubgroup.torsionBy (E0 K W)
   rfl
 
 /- English proof (translation)
-Establish `hu` using `(isUnit_natCast_iff_residue_ne_zero n).mpr hn`. Use `⟨fun P Q h => ?_, fun R => ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg Subtype.val h`. Rewrite `h'` using `[coe_reduceTorsionHom_apply, coe_reduceTorsionHom_apply]`. Conclude with `Subtype.ext (reduceHom_injOn_torsion K W hn (AddSubgroup.torsionBy.nsmul_iff.mp P.2) (AddSubgroup.torsionBy.nsmul_iff.mp Q.2) h')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP⟩` from `reduceHom_surjective K W (R : (curveRed W).Point)`. Establish `hnP : (((n • P : E0 K W)) : (curveK K W).Point) ∈ E1 K W`. Rewrite using `[← reduceHom_eq_zero_iff, map_nsmul, hP, AddSubgroup.torsionBy.nsmul_iff.mp R.2]`. Take `⟨T, hT⟩` from `(E1_nsmul_bijective K W hu).2 ⟨_, hnP⟩`. Establish `hT0 : (T : (curveK K W).Point) ∈ E0 K W` using `E1_le_E0 K W T.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT' : n • (T : (curveK K W).Point) = ((n • P : E0 K W) : (curveK K W).Point)`. Use `congrArg Subtype.val hT` as an intermediate fact. Simplify using `using this`. Use `set T' : E0 K W := ⟨T, hT0⟩`. Establish `hTred : reduceHom K W T' = 0` using `(reduceHom_eq_zero_iff K W T').mpr T.2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨P - T', ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.torsionBy.nsmul_iff, nsmul_sub, sub_eq_zero]`. Conclude with `Subtype.ext (by rw [AddSubgroup.coe_nsmul, AddSubgroup.coe_nsmul]; exact hT'.symm)`. Rewrite using `[coe_reduceTorsionHom_apply]`. Express the relevant statement in the definitionally equal form `reduceHom K W (P - T') = _`.
-
-Rewrite using `[map_sub, hP, hTred, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduceTorsionHom_bijective {n : ℕ} (hn : (n : ResidueField 𝒪) ≠ 0) :
     Function.Bijective (reduceTorsionHom K W n) := by

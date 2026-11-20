@@ -31,7 +31,7 @@ structure AdTied (D : D7) (H : HermCols D) (aT : ∀ u, AtT D u (H.vT u) (H.Fv u
   dilI : ∀ u i h1 hm v a c, AdI D H u i h1 hm c ((D.fm u).dil i v a c) ((aT u).dilG i v a c) v
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos i with rfl | h1` into its components or cases. Take `⟨c, _⟩` from `(H.lev0 u).y_bij.2 (Quotient.mk'' 1)`. Conclude with `⟨c⟩`. Conclude with `(H.cls u i h1 hm).nonempty`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem HermTied.cls_nonempty {D : D7} (H : HermTied D) (u : D.what₂.Word) (i : ℕ) (hm : i ≤ D.R.m) :
     Nonempty ((D.mem u).C.cls i) := by

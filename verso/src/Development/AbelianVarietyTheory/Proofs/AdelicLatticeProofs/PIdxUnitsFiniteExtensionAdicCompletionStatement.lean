@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Polynomial GlobalTheory.QNorm GlobalTheory.CNo
 open scoped WithZero TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CNorm.pIdx_units_finite_extension_adicCompletion | exact GlobalTheory.CNorm.pIdx_units_finite_extension_adicCompletion | (intros; apply GlobalTheory.CNorm.pIdx_units_finite_extension_adicCompletion <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.pIdx_units_finite_extension_adicCompletion' : ∀ (p : ℕ) (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (e : ℕ) (L : Type) [Field L] [Algebra (v.adicCompletion F) L] [FiniteDimensional (v.adicCompletion F) L], 0 < p → v.valuation F (p : F) = WithZero.exp (-(e : ℤ)) → pTor p (⊤ : Subgroup Lˣ) ≠ 0 ∧ pIdx p (⊤ : Subgroup Lˣ) = p * (Ideal.absNorm v.asIdeal ^ e) ^ Module.finrank (v.adicCompletion F) L * pTor p (⊤ : Subgroup Lˣ) := by
   first | exact @GlobalTheory.CNorm.pIdx_units_finite_extension_adicCompletion | exact GlobalTheory.CNorm.pIdx_units_finite_extension_adicCompletion | (intros; apply GlobalTheory.CNorm.pIdx_units_finite_extension_adicCompletion <;> assumption)

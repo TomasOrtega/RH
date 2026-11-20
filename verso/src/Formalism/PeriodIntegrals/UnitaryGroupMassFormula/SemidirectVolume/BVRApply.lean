@@ -22,9 +22,9 @@ def bVR : Module.Basis (Fin (Fintype.card (Σ _ : Fin M, Fin (Module.finrank F E
     (Fintype.equivFin _)
 
 /- English proof (translation)
-Rewrite using `[bVR, bV, Module.Basis.reindex_apply, Module.Basis.reindex_apply]`. Generalize the expression as in `(Fintype.equivFin (Σ _ : Fin M, Fin (Module.finrank F E))).symm i = p`. Take `⟨a, c⟩` from `p`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.basis_apply, Algebra.TensorProduct.basis_apply, Formalism.L2.SG.Sub.ratV]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hj : j = a`. Substitute `hj` using the available equality. Simplify using `only [Pi.single_eq_same]`. Apply the tactic sequence `first | rfl | simp`. Apply the tactic sequence `simp only [Pi.single_eq_of_ne hj] first | rfl | simp`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bVR_apply (i : Fin (Fintype.card (Σ _ : Fin M, Fin (Module.finrank F E)))) :
     bVR F E M A i = ratV (F := F) A (bV F E M i) := by
@@ -43,29 +43,25 @@ theorem bVR_apply (i : Fin (Fintype.card (Σ _ : Fin M, Fin (Module.finrank F E)
 end Bases
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ g μ hμ`. Take `⟨hlc, hsc, ht2⟩` from `PI.VolStabSW.TopoAF.afTop_holds F`. Establish `: BorelSpace (AF F)` using `⟨rfl⟩`. Establish `: FiniteDimensional F E` using `Lc.finite_nf F E`. Take `⟨htr, ht2R, hlcR, hscR⟩` from `Lc.tensor_adele_topology_holds F E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: BorelSpace (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Use `set k := Fintype.card (Σ _ : Fin M, Fin (Module.finrank F E))`. Use `set b := bV F E M`. Use `set bR := bVR F E M (AF F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set e : (Fin M → AF F ⊗[F] E) ≃ₗ[AF F] (Fin k → AF F) := bR.equivFun`. Establish `c1 : Continuous e.toLinearMap` using `IsModuleTopology.continuous_of_linearMap (R := AF F) _`. Establish `c2 : Continuous e.symm.toLinearMap` using `IsModuleTopology.continuous_of_linearMap (R := AF F) _`. Set `ec : (Fin M → AF F ⊗[F] E) ≃ₜ+ (Fin k → AF F)` to `{ e.toAddEquiv with continuous_toFun := by simpa using c1 continuous_invFun := by simpa using c2 }`. Establish `hec : ∀ u, ec u = e u` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hecs : ∀ x, ec.symm x = e.symm x` using `fun _ => rfl`. Use `set μ' := μ.map ec`. Establish `hμ' : μ'.IsAddHaarMeasure` using `ec.isAddHaarMeasure_map μ`. Set `L : (Fin k → AF F) →ₗ[AF F] (Fin k → AF F)` to `e.toLinearMap ∘ₗ ((lin (AF F) σ J g).restrictScalars (AF F)) ∘ₗ e.symm.toLinearMap`. Use `set X := LinearMap.toMatrix' L`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : ∀ x, X.mulVec x = e (lin (AF F) σ J g (e.symm x))` using `fun x => LinearMap.toMatrix'_mulVec L x`. Use `set G0 : Matrix (Fin k) (Fin k) F := Matrix.of fun i j => Algebra.trace F E (hE σ J (b i) (b j))`. Use `set G := G0.map (algebraMap F (AF F))`. Establish `hGu : IsUnit G.det`. Establish `hd : G.det = algebraMap F (AF F) G0.det`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hd]`. Conclude with `(isUnit_iff_ne_zero.2 (hN F E σ hCM M J hJ k b)).map _`. Establish `hBG : ∀ i j, Bf σ J (bR i) (bR j) = G i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[bVR_apply, bVR_apply, Bf, hB F E (AF F) σ M J]`. Both sides reduce to the same expression. Establish `key : ∀ x y : Fin k → AF F, Bf σ J (e.symm x) (e.symm y) = x ⬝ᵥ (G *ᵥ y)`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Module.Basis.equivFun_symm_apply, Module.Basis.equivFun_symm_apply, Bf_expand]`. Simplify using `only [hBG, dotProduct, Matrix.mulVec, Finset.mul_sum]`. Both sides reduce to the same expression. Establish `e1 : ∀ u w : Fin k → AF F, u ⬝ᵥ ((X.transpose * G * X) *ᵥ w) = u ⬝ᵥ (G *ᵥ w)`. Introduce `u w`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, ← key, hX, hX, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply, Bf_lin, key]`. Establish `hXG : X.transpose * G * X = G`. Use extensionality with `i j`. Simplify using `using e1 (Pi.single i 1) (Pi.single j 1)`. Establish `hinv` using `hO F k G X hGu hXG μ' hμ'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hlin : (lin (AF F) σ J g : (Fin M → AF F ⊗[F] E) → (Fin M → AF F ⊗[F] E)) = ec.symm ∘ X.mulVec ∘ ec`. Use function extensionality and compare the values at `u`. Simplify using `only [Function.comp_apply, hec, hecs, hX, LinearEquiv.symm_apply_apply]`. Establish `mec : Measurable ec` using `ec.continuous.measurable`. Establish `mecs : Measurable ec.symm` using `ec.symm.continuous.measurable`.
-
-Establish `mX : Measurable X.mulVec` using `(continuous_const.matrix_mulVec continuous_id).measurable`. Rewrite using `[hlin, ← Measure.map_map mecs (mX.comp mec), ← Measure.map_map mX mec, hinv, Measure.map_map mecs mec]`. Establish `: (ec.symm ∘ ec : (Fin M → AF F ⊗[F] E) → _) = id`. Use function extensionality and compare the values at `u`. Simplify using the standard rewrite rules.
-
-Rewrite using `[this, Measure.map_id]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vMod_of (hO : OrthInv) (hB : TraceBase) (hN : TraceGramND) : VMod := by
   intro F E _ _ _ _ _ σ hCM M J hJ g μ hμ

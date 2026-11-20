@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Introduce `h₁ h₂ _ _ _ D hB F _ _ k hk` and use `by rw [Nat.add_comm] exact GlobalTheory.FamDimension.finrank_fam (D := D) (F := F) h₁.globalFns h₂.secTwist hB hk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finrank_fam_of_laws : Laws → Laws2 → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ), 1 ≤ k → Module.Finite F (Fam D F k) ∧ Module.finrank F (Fam D F k) = k ^ (D.P.g + D.rank) :=
   fun h₁ h₂ _ _ _ D hB F _ _ k hk => by

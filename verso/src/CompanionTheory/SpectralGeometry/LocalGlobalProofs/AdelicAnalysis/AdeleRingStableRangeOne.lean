@@ -6,19 +6,19 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.AdeleStableRange
 
 /- English proof (translation)
-Establish `hb0 : a = 0 → b ≠ 0`. Introduce and unpack `rfl rfl`. Simplify using `at h`. Distinguish the cases in `hint : w a ≤ 1 ∧ w b ≤ 1 ∧ w x ≤ 1 ∧ w y ≤ 1`. Take `⟨ha, hb, hx, hy⟩` from `hint`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `ha1 : w a = 1`. Use `⟨0, Or.inl rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `: a = 0` using `by simpa using h0`. Rewrite `ha1` using `[this, map_zero]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one ha1`. Introduce `_ _ _ _`. Simplify using `using ha1`. Establish `hlt : w a < 1` using `lt_of_le_of_ne ha ha1`. Establish `hxa : w (x * a) < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hx) hlt`. Establish `hyb : w (y * b) = 1`. Establish `h1 : y * b = 1 + (-(x * a))` using `by linear_combination h`. Rewrite using `[h1, Valuation.map_add_eq_of_lt_left w (by rw [Valuation.map_neg, map_one]; exact hxa), map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb1 : w b = 1`. Use `le_antisymm hb ?_` and prove the remaining obligations. Rewrite `hyb` using `[map_mul]`. Rewrite using `[← hyb]`. Conclude with `mul_le_of_le_one_left' hy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hab : w (a + 1 * b) = 1`. Rewrite using `[one_mul, Valuation.map_add_eq_of_lt_right w (by rw [hb1]; exact hlt), hb1]`. Use `⟨1, Or.inr rfl, ?_, fun _ _ _ _ => hab⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `hab` using `[h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `zero_ne_one hab`. Distinguish the cases in `ha0 : a = 0`. Use `⟨1, Or.inr rfl, ?_, fun h1 h2 h3 h4 => absurd ⟨h1, h2, h3, h4⟩ hint⟩` and prove the remaining obligations. Simplify `hb0 ha0` using `[ha0]`. Use `⟨0, Or.inl rfl, by simpa using ha0, fun h1 h2 h3 h4 => absurd ⟨h1, h2, h3, h4⟩ hint⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem local_val {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] (w : Valuation K Γ)
     (a b x y : K) (h : x * a + y * b = 1) :
@@ -62,9 +62,9 @@ theorem local_val {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] (
     · refine ⟨0, Or.inl rfl, by simpa using ha0, fun h1 h2 h3 h4 => absurd ⟨h1, h2, h3, h4⟩ hint⟩
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero, ha]`. Introduce and unpack `h0`. Establish `hb : b = 0` using `by simpa using h0`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `[ha, hb] at h`. Conclude with `⟨0, by simpa [isUnit_iff_ne_zero] using ha⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem local_field {K : Type*} [Field K] (a b x y : K) (h : x * a + y * b = 1) :
     ∃ t : K, IsUnit (a + t * b) := by
@@ -77,11 +77,9 @@ theorem local_field {K : Type*} [Field K] (a b x y : K) (h : x * a + y * b = 1) 
   · exact ⟨0, by simpa [isUnit_iff_ne_zero] using ha⟩
 
 /- English proof (translation)
-Take `⟨x, y, hxy⟩` from `hab`. Establish `hloc : ∀ v : HeightOneSpectrum R, x v * a v + y v * b v = 1` using `fun v => congrArg (fun z : FiniteAdeleRing R K => z v) hxy`. Use `choose e he hne hval using fun v : HeightOneSpectrum R => local_val (Valued.v : Valuation (v.adicCompletion K) _) (a v) (b v) (x v) (y v) (hloc v)`. Establish `hint : ∀ v : HeightOneSpectrum R, e v ∈ v.adicCompletionIntegers K`. Introduce `v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases he v with h | h <;> rw [h]`. Conclude with `zero_mem _`. Conclude with `one_mem _`. Set `E : FiniteAdeleRing R K` to `⟨e, Filter.Eventually.of_forall hint⟩`. Use `⟨E, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[FiniteAdeleRing.isUnit_iff]`. Use `⟨fun v h0 => hne v h0, ?_⟩` and prove the remaining obligations. Use `filter_upwards [a.2, b.2, x.2, y.2] with v h1 h2 h3 h4`. Conclude with `hval v h1 h2 h3 h4`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_part (R K : Type*) [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] (a b : FiniteAdeleRing R K) (hab : IsCoprime a b) :
@@ -104,7 +102,7 @@ theorem finite_part (R K : Type*) [CommRing R] [IsDedekindDomain R] [Field K] [A
   exact hval v h1 h2 h3 h4
 
 /- English proof (translation)
-Take `⟨x, y, hxy⟩` from `hab`. Establish `hloc : ∀ v : InfinitePlace K, x v * a v + y v * b v = 1` using `fun v => congrArg (fun z : InfiniteAdeleRing K => z v) hxy`. Use `choose t ht using fun v : InfinitePlace K => local_field (a v) (b v) (x v) (y v) (hloc v)`. Conclude with `⟨t, Pi.isUnit_iff.2 ht⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem infinite_part (K : Type*) [Field K] [NumberField K] (a b : InfiniteAdeleRing K)
     (hab : IsCoprime a b) : ∃ t : InfiniteAdeleRing K, IsUnit (a + t * b) := by
@@ -115,7 +113,7 @@ theorem infinite_part (K : Type*) [Field K] [NumberField K] (a b : InfiniteAdele
   exact ⟨t, Pi.isUnit_iff.2 ht⟩
 
 /- English proof (translation)
-Introduce `F _ _ a b hab`. Take `⟨x, y, hxy⟩` from `hab`. Take `⟨t₁, u₁⟩` from `infinite_part F a.1 b.1 ⟨x.1, y.1, congrArg Prod.fst hxy⟩`. Take `⟨t₂, u₂⟩` from `finite_part (𝓞 F) F a.2 b.2 ⟨x.2, y.2, congrArg Prod.snd hxy⟩`. Conclude with `⟨(t₁, t₂), Prod.isUnit_iff.2 ⟨u₁, u₂⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem adeleRing_stableRange_one : ∀ (F : Type) [Field F] [NumberField F] (a b : AdeleRing (𝓞 F) F),
     IsCoprime a b → ∃ t, IsUnit (a + t * b) := by

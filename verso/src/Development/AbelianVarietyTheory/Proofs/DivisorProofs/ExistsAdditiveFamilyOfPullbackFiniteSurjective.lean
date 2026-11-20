@@ -15,17 +15,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Pinch
 
 /- English proof (translation)
-Introduce `S A U U' _ _ hA p hfin hsurj N' h c hc`. Take `⟨L, hL, rfl⟩` from `cls_surj c`. Establish `key : ∀ (Y : Over S) (a : Y ⟶ A) (u : Y ⟶ U'), evc hL a (u ≫ p) = evc h.isLB a u`. Introduce `Y a u`. Apply the tactic sequence `have e : lift a (u ≫ p) = lift a u ≫ (A ◁ p) := by ext <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[evc, e, Over.comp_left, pull_comp, hc]`. Both sides reduce to the same expression. Take `⟨M, hM, hMc⟩` from `cls_surj (cls L hL - CechPic.pull (snd A U).left (evc hL (1 : U ⟶ A) (𝟙 U)))`. Establish `form : ∀ (Y : Over S) (a : Y ⟶ A) (t : Y ⟶ U), evc hM a t = evc hL a t - evc hL (1 : Y ⟶ A) t`. Introduce `Y a t`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[evc, hMc, map_sub, ← pull_comp, ← Over.comp_left, lift_snd, pull_evc, MonObj.comp_one, Category.comp_id]`. Both sides reduce to the same expression. Establish `keyM : ∀ (Y : Over S) (a : Y ⟶ A) (u : Y ⟶ U'), evc hM a (u ≫ p) = evc h.isLB a u`. Introduce `Y a u`. Rewrite using `[form, key, key, h.add.evc_one h.isLB, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨M, ⟨hM, GlobalTheory.T.isAdditive_lineBundleFamily_of_geometricFibres S A U hA M hM ((triv_ev_iff hM _ _).2 (by rw [form, sub_self])) ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `K _ _ s t haveI := hfin haveI := hsurj`. Take `⟨b, hb⟩` from `exists_lift_pt p.left t.left`. Set `t' : Over.mk s ⟶ U'` to `Over.homMk b (by`. Rewrite using `[← Over.w p, ← Category.assoc, hb, Over.w t])`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : t = t' ≫ p` using `Over.OverMorphism.ext hb.symm`. Rewrite using `[ht]`. Use `(isAdditive_iff (pull_isLB hM _)).2 fun Y a a' y ↦ ?_` and prove the remaining obligations. Establish `e : ∀ a₀ : Y ⟶ A, evc (pull_isLB hM _) a₀ y = evc h.isLB a₀ (y ≫ t')` using `fun a₀ ↦ by`. Rewrite using `[evc_ev hM, lift_fst, lift_snd_assoc, ← Category.assoc, keyM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, e, e]`. Conclude with `(isAdditive_iff h.isLB).1 h.add _ _ _ _`. Rewrite using `[same_iff hM h.isLB, Category.comp_id]`. Conclude with `keyM _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fam_of_pull : ∀ (S : Scheme.{0}) (A U U' : Over S) [GrpObj A] [IsLocallyNoetherian U.left],
     IsAbelianScheme A → ∀ (p : U' ⟶ U), IsFinite p.left → Surjective p.left → ∀ (N' : LB (A ⊗ U').left)

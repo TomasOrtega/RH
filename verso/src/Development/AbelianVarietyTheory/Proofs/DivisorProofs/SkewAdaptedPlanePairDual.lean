@@ -12,19 +12,19 @@ noncomputable section
 namespace GlobalTheory.EvTwist
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he h₁ m hL`. Establish `hs` using `IsUWeilPair.isUSplitting hP.weil`. Establish `hs₁` using `IsUWeilPair.isUSplitting hP₁.weil`. Establish `hm1 : ∀ Φ ∈ schA F (Fin n × Fin d), om (1, m) Φ ∈ schA F (Fin n × Fin d)` using `fun Φ hΦ => hs.pres _ _ hΦ`. Establish `hIm : incM F (1 : Matrix (Fin n) (Fin n) E) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[incM]`. Establish `hinv : (mat h₁)ᵀ * (((h₁⁻¹ : UA σ W₁.J) : GL (Fin d₁) (AE F E)) : Matrix (Fin d₁) (Fin d₁) (AE F E))ᵀ = 1`. Establish `h0 : (((h₁⁻¹ : UA σ W₁.J) : GL (Fin d₁) (AE F E)) : Matrix (Fin d₁) (Fin d₁) (AE F E)) * mat h₁ = 1` using `by show (((h₁⁻¹ * h₁ : UA σ W₁.J) : GL (Fin d₁) (AE F E)) : Matrix (Fin d₁) (Fin d₁) (AE F E)) = 1`. Simplify using the standard rewrite rules. Rewrite using `[← Matrix.transpose_mul, h0, Matrix.transpose_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `vmv : ∀ (y : Fin n → AE F E) (v : Fin d → AE F E) (A : Matrix (Fin d) (Fin d) (AE F E)), Matrix.vecMulVec y v * Aᵀ = Matrix.vecMulVec y (A *ᵥ v)`. Introduce `y v A`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_comm, mul_left_comm]`. Use `⟨fun Φ hΦ => ?_, fun z Φ hΦ => ?_, fun u hu Φ hΦ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.comp_apply]`. Conclude with `hs₁.pres _ _ (he.maps _ (hm1 Φ hΦ))`. Simplify using `only [LinearMap.comp_apply]`. Establish `h2 : actAB (cA σ) ((1 : UA σ X.J), m) (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ) = incM F (1 : Matrix (Fin n) (Fin n) E) * (z * (mat h₁)ᵀ) * (incM F H'.ι)ᵀ`. Simplify using `only [actAB, OneMemClass.coe_one, Units.val_one, hIm, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `z * (incM F H'.ι)ᵀ * (mat m)ᵀ = _`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, hL.2.2, Matrix.transpose_mul, Matrix.mul_assoc]`. Establish `h3 : actAB (cA σ) ((1 : UA σ X.J), h₁⁻¹) (z * (mat h₁)ᵀ) = z`. Simplify using `only [actAB, OneMemClass.coe_one, Units.val_one, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hinv, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs.impl _ _ _ hΦ, h2, he.Heisenberg₂ _ _ (hm1 Φ hΦ), hs₁.impl _ _ _ (he.maps _ (hm1 Φ hΦ)), h3]`. Take `⟨y, rfl⟩` from `hu`. Simplify using `only [LinearMap.comp_apply]`. Establish `hx : mat m *ᵥ incV F H'.x = incV F H'.x` using `by rw [hL.1]; simp`. Establish `h4 : actAB (cA σ) ((1 : UA σ X.J), m) (Matrix.vecMulVec y (incV F H'.x)) = Matrix.vecMulVec y (incV F H'.x)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [actAB, OneMemClass.coe_one, Units.val_one, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `Matrix.vecMulVec y (incV F H'.x) * (mat m)ᵀ = _`. Rewrite using `[vmv, hx]`. Rewrite using `[hs.impl _ _ _ hΦ, h4, he.inv _ ⟨y, rfl⟩ _ (hm1 Φ hΦ)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_ev : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

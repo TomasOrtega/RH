@@ -14,7 +14,7 @@ def IsApp {R : Type} [CommRing R] [IsDomain R] {D D₂ D' : DegPre R} {n₁ n₂
       sb = ∑ j, c j • S₂ j ∧ S = ∑ j, c j • S' j
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun _ => 1, fun _ => u, fun _ => sb, fun _ => S, fun _ => h₂, fun _ => h, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isApp_box {R : Type} [CommRing R] [IsDomain R] {D D₂ D' : DegPre R} {n₁ n₂ : ℕ} (pD₂ : IsPowDeg D₂ D n₂)
     (pD : IsPowDeg D' D (n₁ + n₂)) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ)

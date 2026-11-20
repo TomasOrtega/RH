@@ -5,11 +5,11 @@ open scoped Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : DivisibleBy (Additive Circle) ℕ := divisibleByOfSMulRightSurj _ _ fun {n} hn u => by`. Take `⟨t, ht⟩` from `Circle.exp_surjective (Additive.toMul u)`. Use `⟨Additive.ofMul (Circle.exp (t / n)), ?_⟩` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Establish `hn' : (n : ℝ) ≠ 0` using `by exact_mod_cast hn`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [toMul_nsmul, toMul_ofMul]`. Rewrite using `[← ht, ← Circle.exp_nsmul, nsmul_eq_mul, mul_div_cancel₀ _ hn']`. Use `letI : DivisibleBy (Additive Circle) ℤ := AddGroup.divisibleByIntOfDivisibleByNat _`. Take `⟨ρ, hρ⟩` from `(Module.Baer.of_divisible (Additive Circle)).extension_property_addMonoidHom (MonoidHom.toAdditive i) hi (MonoidHom.toAdditive ψ)`. Use `⟨MonoidHom.toAdditive.symm ρ, fun a => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg Additive.toMul (DFunLike.congr_fun hρ (Additive.ofMul a))`.
+A detailed English derivation is pending.
 -/
 theorem circle_hom_extend_of_injective {A B : Type} [CommGroup A] [CommGroup B] (i : A →* B)
     (hi : Function.Injective i) (ψ : A →* Circle) : ∃ χ : B →* Circle, ∀ a, χ (i a) = ψ a := by
@@ -27,11 +27,11 @@ theorem circle_hom_extend_of_injective {A B : Type} [CommGroup A] [CommGroup B] 
   exact congrArg Additive.toMul (DFunLike.congr_fun hρ (Additive.ofMul a))
 
 /- English proof (translation)
-Introduce `G _ _ _ H N ψ hH hψ hN`. Set `f : H →* G ⧸ N` to `(QuotientGroup.mk' N).comp H.subtype`. Establish `hker : f.ker ≤ ψ.ker` using `fun x hx => by`. Rewrite `hx`, the goal using `[MonoidHom.mem_ker]`. Conclude with `hN x ((QuotientGroup.eq_one_iff _).1 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨χ₀, hχ₀⟩` from `circle_hom_extend_of_injective (QuotientGroup.kerLift f) (QuotientGroup.kerLift_injective f) (QuotientGroup.lift f.ker ψ hker)`. Establish `hx : ∀ x : H, (χ₀.comp (QuotientGroup.mk' N)) x = ψ x` using `fun x => hχ₀ (QuotientGroup.mk x)`. Use `⟨χ₀.comp (QuotientGroup.mk' N), ?_, fun x hxN => ?_, hx⟩` and prove the remaining obligations. Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Establish `hc : ContinuousOn (χ₀.comp (QuotientGroup.mk' N)) (H : Set G)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Conclude with `hψ.congr fun x => (hx x).symm`. Conclude with `hc.continuousAt (hH.mem_nhds H.one_mem)`. Establish `: QuotientGroup.mk' N x = 1` using `(QuotientGroup.eq_one_iff _).2 hxN`. Rewrite using `[MonoidHom.comp_apply, this, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_continuous_circle_char_extension :
     ∀ (G : Type) [CommGroup G] [TopologicalSpace G] [IsTopologicalGroup G] (H N : Subgroup G) (ψ : H →* Circle), IsOpen (H : Set G) → Continuous ψ → (∀ x : H, (x : G) ∈ N → ψ x = 1) → ∃ χ : G →* Circle, Continuous χ ∧ (∀ x ∈ N, χ x = 1) ∧ ∀ x : H, χ x = ψ x := by

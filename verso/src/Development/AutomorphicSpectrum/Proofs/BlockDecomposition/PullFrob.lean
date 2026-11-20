@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CrysPhi
 
 /- English proof (translation)
-Rewrite using `[pull_pull τ, pull_pull τ]`. Conclude with `(cr_pull_eq (Bm.comp Ph) ((omMor mo τ h).comp Bm) η nat hτ j x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_frob {O : Type} [CommRing O] {F : Fn O} {b : Base} {ht : b.t = 1} {κ : O →+* b.R ⧸ b.I}
     {Λ : Type} [CommRing Λ] {c : Λ →+* b.R} {σ : b.R →+* b.R} {τ : Λ →+* Λ}
@@ -28,7 +28,7 @@ theorem pull_frob {O : Type} [CommRing O] {F : Fn O} {b : Base} {ht : b.t = 1} {
   exact (cr_pull_eq (Bm.comp Ph) ((omMor mo τ h).comp Bm) η nat hτ j x).symm
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.ringHom_ext (RingHom.ext hm)`.
+A detailed English derivation is pending.
 -/
 theorem qmap_frb {l : ℕ} [Fact l.Prime] {A : Type} [CommRing A] (J : Ideal A) (ph : A →+* A)
     (hl : (l : A ⧸ J) = 0) (hq : J ≤ J.comap ph)
@@ -37,7 +37,7 @@ theorem qmap_frb {l : ℕ} [Fact l.Prime] {A : Type} [CommRing A] (J : Ideal A) 
   Ideal.Quotient.ringHom_ext (RingHom.ext hm)
 
 /- English proof (translation)
-Rewrite using `[qmap_frb J ph hl hq hm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_frb {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] (F : Fn O) {A : Type} [CommRing A] (J : Ideal A) (ph : A →+* A)
     (hl : (l : A ⧸ J) = 0) (hq : J ≤ J.comap ph)
@@ -55,7 +55,7 @@ def etaPhi (n : ℕ) (T : El (F.pt κ)) :
         (l_zero ((gT F κ true n).obj T).y.1.1) h (phi_mk _ n) _
 
 /- English proof (translation)
-The claim follows from `pull_frob (SH.phiM F κ n) ((base l).phi_cris n) (βMor F κ true n) (phiMor (F.pt κ) n) (etaPhi F κ n) (fun f x => (mapAcr_phi ((elπ (F.pt κ)).map f) n x).symm) (fun _ _ => rfl) j x`.
+A detailed English derivation is pending.
 -/
 theorem phi_beta (n j : ℕ) (x : Hc F κ true n j) :
     β F κ true n j (phiHc F κ n j x) = (phiMor (F.pt κ) n).pull j (β F κ true n j x) :=

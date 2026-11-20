@@ -20,14 +20,14 @@ namespace GlobalTheory.IsoDuality
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Use `V.herm.eq x y` as an intermediate fact. Rewrite using `[← starRingEnd_apply]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hT_herm (V : Formalism.BasicNotions.HSpace E) (x y : V.V) : star (V.hT x y) = V.hT y x := by
   have := V.herm.eq x y
   rw [← starRingEnd_apply]; exact this
 
 /- English proof (translation)
-Use `hW hv` as an intermediate fact. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp, Submodule.mem_iInf, LinearMap.mem_ker] at this`. Conclude with `this w hw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iso_zero (V : Formalism.BasicNotions.HSpace E) {W : Submodule E V.V} (hW : W ≤ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp V W)
     {w v : V.V} (hw : w ∈ W) (hv : v ∈ W) : V.hT w v = 0 := by
@@ -36,13 +36,13 @@ theorem iso_zero (V : Formalism.BasicNotions.HSpace E) {W : Submodule E V.V} (hW
   exact this w hw
 
 /- English proof (translation)
-Set `bA` to `Module.finBasis E A`. Set `Φ : B →ₗ[E] (Fin (Module.finrank E A) → E)` to `LinearMap.pi (fun i => (V.hT (bA i : V.V)).comp B.subtype)`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy' : ∀ i, V.hT (bA i : V.V) y = 0` using `fun i => congrFun hy i`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `h y y.2` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : (⟨x, hx⟩ : A) = ∑ i, (bA.repr ⟨x, hx⟩ i) • bA i` using `(bA.sum_repr _).symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: x = ∑ i, (bA.repr ⟨x, hx⟩ i) • (bA i : V.V)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, map_sum]`. Simplify using `[map_smulₛₗ, hy']`. Use `LinearMap.finrank_le_finrank_of_injective hinj` as an intermediate fact.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finrank_le_of_sep (V : Formalism.BasicNotions.HSpace E) (A B : Submodule E V.V)
     (h : ∀ y ∈ B, (∀ x ∈ A, V.hT x y = 0) → y = 0) :
@@ -72,37 +72,33 @@ end GlobalTheory.IsoDuality
 namespace GlobalTheory.IsoDuality
 
 /- English proof (translation)
-Introduce `D V X X' hX0 hX hX' h1 h2`. Establish `hTX` using `fun {w v : V.V} (hw : w ∈ X) (hv : v ∈ X) => iso_zero V hX hw hv`. Establish `hTX'` using `fun {w v : V.V} (hw : w ∈ X') (hv : v ∈ X') => iso_zero V hX' hw hv`. Establish `hle1 : Module.finrank D.host.E X ≤ Module.finrank D.host.E X'` using `finrank_le_of_sep V X' X (fun y hy h => h1 y hy (fun z hz => h z hz))`. Establish `hle2 : Module.finrank D.host.E X' ≤ Module.finrank D.host.E X` using `finrank_le_of_sep V X X' (fun y hy h => h2 y hy (fun z hz => by show V.hT y z = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hT_herm, h z hz, star_zero]))`. Use `set a := Module.finrank D.host.E X with ha`. Set `bx` to `Module.finBasis D.host.E X`. Set `x : Fin a → V.V` to `fun i => (bx i : V.V)`. Establish `hxX : ∀ i, x i ∈ X` using `fun i => (bx i).2`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Φ : X' →ₗ[D.host.E] (Fin a → D.host.E)` to `LinearMap.pi (fun i => (V.hT (x i)).comp X'.subtype)`. Establish `hΦ : ∀ y i, Φ y i = V.hT (x i) y` using `fun y i => rfl`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy' : ∀ i, V.hT (x i) y = 0` using `fun i => congrFun hy i`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `h2 y y.2` to reduce the goal to its premises. Introduce `z hz`. Establish `hz' : (⟨z, hz⟩ : X) = ∑ i, (bx.repr ⟨z, hz⟩ i) • bx i` using `(bx.sum_repr _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: z = ∑ i, (bx.repr ⟨z, hz⟩ i) • x i`. Combine the equalities or inequalities in the displayed calculation. Use `show V.hT (y : V.V) z = 0`. Rewrite using `[← hT_herm, this, map_sum]`. Simplify using `[map_smulₛₗ, hy']`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : Function.Surjective Φ`. Rewrite using `[← LinearMap.injective_iff_surjective_of_finrank_eq_finrank]`. Conclude with `hinj`. Simplify using `[a]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose g hg using fun j : Fin a => hsurj (Pi.single j 1)`. Set `x' : Fin a → V.V` to `fun j => (g j : V.V)`. Establish `hx'X : ∀ j, x' j ∈ X'` using `fun j => (g j).2`. Establish `hxx' : ∀ i j, V.hT (x i) (x' j) = if i = j then 1 else 0`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun (hg j) i` as an intermediate fact. Rewrite `this` using `[hΦ]`. Use `show V.hT (x i) (g j : V.V) = _`. Rewrite using `[this, Pi.single_apply]`. Establish `hxli : LinearIndependent D.host.E x` using `bx.linearIndependent.map' X.subtype (Submodule.ker_subtype X)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hli : LinearIndependent D.host.E (Sum.elim x x')`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Rewrite `hc` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hd : ∀ k, c (Sum.inr k) = 0`. Introduce `k`. Use `congrArg (V.hT (x k)) hc` as an intermediate fact. Rewrite `this` using `[map_add, map_sum, map_sum, map_zero]`. Simplify using `only [map_smul, smul_eq_mul, hTX (hxX k) (hxX _), mul_zero, Finset.sum_const_zero, zero_add, hxx', mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hc' : ∑ i, c (Sum.inl i) • x i = 0`. Simplify `hc` using `[hd]`. Establish `hcl` using `Fintype.linearIndependent_iff.1 hxli _ hc'`. Introduce and unpack `(i | j)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcl i`. Conclude with `hd j`. Establish `hx'li : LinearIndependent D.host.E x'` using `hli.comp Sum.inr Sum.inr_injective`. Use `⟨a, x, x', ?_, ?_, ?_, ?_, hli, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.pos_of_ne_zero (fun h => hX0 (Submodule.finrank_eq_zero.1 h))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.Cusp.finrank_le_wittIndex hX`. Establish `: Set.range x = X.subtype '' Set.range bx`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, bx.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hx'X j`. Rewrite using `[finrank_span_eq_card hx'li]`.
-
-Simplify using `[a]`. Use linear arithmetic over natural numbers and integers. Introduce `i j show V.hT (x j) (x i) = 0`. Conclude with `hTX (hxX j) (hxX i)`. Introduce `i j show V.hT (x' j) (x' i) = 0`.
-
-Conclude with `hTX' (hx'X j) (hx'X i)`. Introduce `i j show V.hT (x' j) (x i) = _`. Rewrite using `[← hT_herm, hxx']`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_dual_bases : ∀ {D : D7} {V : HSp D} (X X' : Submodule D.host.E V.V), X ≠ ⊥ → X ≤ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp V X → X' ≤ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp V X' → (∀ x ∈ X, (∀ y ∈ X', V.hD x y = 0) → x = 0) → (∀ y ∈ X', (∀ x ∈ X, V.hD x y = 0) → y = 0) → ∃ (a : ℕ) (x x' : Fin a → V.V), 0 < a ∧ a ≤ wittIndex V ∧ Submodule.span D.host.E (Set.range x) = X ∧ Submodule.span D.host.E (Set.range x') = X' ∧ LinearIndependent D.host.E (Sum.elim x x') ∧ (∀ i j, V.hD (x i) (x j) = 0) ∧ (∀ i j, V.hD (x' i) (x' j) = 0) ∧ (∀ i j, V.hD (x i) (x' j) = if i = j then 1 else 0) := by
   classical

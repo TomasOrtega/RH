@@ -64,17 +64,17 @@ def ker1 {L : Type} [CommRing L] [Algebra ℚ L] (c : L →ₐ[ℚ] L) : Subgrou
 end Localisation
 
 /- English proof (translation)
-The claim follows from `ker1 (AlgHom.id ℚ (ℚ × ℚ))`.
+A detailed English derivation is pending.
 -/
 example : Subgroup (H1 ℚ (AlgHom.id ℚ (ℚ × ℚ))) := ker1 (AlgHom.id ℚ (ℚ × ℚ))
 
 /- English proof (translation)
-The claim follows from `(ker1 c).one_mem`.
+A detailed English derivation is pending.
 -/
 example {L : Type} [CommRing L] [Algebra ℚ L] (c : L →ₐ[ℚ] L) : (1 : H1 ℚ c) ∈ ker1 c := (ker1 c).one_mem
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 example (a : fixU ℚ (AlgHom.id ℚ ℚ)) :
     fixMap (AlgHom.id ℚ ℚ) (AlgHom.id ℚ ℚ) (RingHom.id ℚ) (fun _ => rfl) a = a := by

@@ -13,9 +13,9 @@ open GlobalTheory.Twist (resM)
 namespace GlobalTheory.FlagZ.Univ
 
 /- English proof (translation)
-Introduce `V h`. Establish `hM' : IsUnit ((resG X h).mapMatrix M)` using `hM.map _`. Establish `hb : Function.Bijective ((resG X h).mapMatrix M).mulVec` using `⟨Matrix.mulVec_injective_of_isUnit hM', Matrix.mulVec_surjective_iff_isUnit.2 hM'⟩`. Establish `key : ⇑(Fintype.linearCombination Γ(X, V) fun j => resM F h (∑ i, M i j • e i)) = (Fintype.linearCombination Γ(X, V) fun i => resM F h (e i)) ∘ ((resG X h).mapMatrix M).mulVec`. Use function extensionality and compare the values at `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, Fintype.linearCombination_apply, map_sum, GlobalTheory.Twist.resM_smul, Matrix.mulVec, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul, RingHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`. Rewrite using `[key]`. Conclude with `(he V h).comp hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame_sum_smul_of_isUnit {X : Scheme.{0}} {F : X.Modules} {U : X.Opens} {n : Type} [Fintype n]
     [DecidableEq n] {e : n → Γ(F, U)} (he : VB.IsFrame e) (M : Matrix n n Γ(X, U)) (hM : IsUnit M) :
@@ -37,7 +37,7 @@ theorem isFrame_sum_smul_of_isUnit {X : Scheme.{0}} {F : X.Modules} {U : X.Opens
   exact (he V h).comp hb
 
 /- English proof (translation)
-Introduce `ι _ N w τ`. Conclude with `isFrame_sum_smul_of_isUnit ((VB.isFrame_freeFrame (Fl ι N) (Fin N)).res le_top) ((cellRing ι N w).mapMatrix (cellGL Prod.fst Prod.snd w τ).1) ((cellGL Prod.fst Prod.snd w τ).isUnit.map _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isFrame_cellCol : ∀ (ι : Type) [Fintype ι] (N : ℕ) (w : ι → Equiv.Perm (Fin N)) (τ : ι),
     VB.IsFrame (cellCol ι N w τ) := by

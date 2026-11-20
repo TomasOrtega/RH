@@ -16,14 +16,14 @@ section Integers
 variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-The claim follows from `mem_normInteger.1 x.2`.
+A detailed English derivation is pending.
 -/
 theorem norm_coe_integer_le_one (x : normInteger K) : ‖(x : K)‖ ≤ 1 := mem_normInteger.1 x.2
 
 /- English proof (translation)
-Rewrite using `[(normInteger_integers (K := K)).isUnit_iff_valuation_eq_one]`. Establish `hx : algebraMap (normInteger K) K x = (x : K)` using `rfl`. Simplify using `only [NormedField.valuation_apply, hx]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg NNReal.toReal h` as an intermediate fact. Simplify using `using this`. Introduce `h`. Use `ext`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_integer_iff_norm_eq_one {x : normInteger K} : IsUnit x ↔ ‖(x : K)‖ = 1 := by
   rw [(normInteger_integers (K := K)).isUnit_iff_valuation_eq_one]
@@ -40,7 +40,7 @@ theorem isUnit_integer_iff_norm_eq_one {x : normInteger K} : IsUnit x ↔ ‖(x 
 variable [IsDiscreteValuationRing (normInteger K)]
 
 /- English proof (translation)
-Rewrite using `[residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, isUnit_integer_iff_norm_eq_one]`. Conclude with `⟨fun h => lt_of_le_of_ne (norm_coe_integer_le_one x) h, fun h => h.ne⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem residue_eq_zero_iff_norm_lt_one {x : normInteger K} :
     residue (normInteger K) x = 0 ↔ ‖(x : K)‖ < 1 := by
@@ -51,23 +51,23 @@ variable {ϖ : normInteger K} (hϖ : Irreducible ϖ)
 include hϖ
 
 /- English proof (translation)
-The claim follows from `lt_of_le_of_ne (norm_coe_integer_le_one ϖ) fun h => hϖ.not_isUnit (isUnit_integer_iff_norm_eq_one.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem norm_unif_lt_one : ‖(ϖ : K)‖ < 1 :=
   lt_of_le_of_ne (norm_coe_integer_le_one ϖ) fun h =>
     hϖ.not_isUnit (isUnit_integer_iff_norm_eq_one.2 h)
 
 /- English proof (translation)
-Establish `: (ϖ : K) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Conclude with `norm_pos_iff.2 this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_unif_pos : 0 < ‖(ϖ : K)‖ := by
   have : (ϖ : K) ≠ 0 := fun h => hϖ.ne_zero (Subtype.ext h)
   exact norm_pos_iff.2 this
 
 /- English proof (translation)
-Establish `hm : x ∈ maximalIdeal (normInteger K)`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, isUnit_integer_iff_norm_eq_one]`. Conclude with `hx.ne`. Rewrite `hm` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, mem_span_singleton']`. Take `⟨y, rfl⟩` from `hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subring.coe_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_le_norm_unif_of_lt_one {x : normInteger K} (hx : ‖(x : K)‖ < 1) :
     ‖(x : K)‖ ≤ ‖(ϖ : K)‖ := by
@@ -81,7 +81,7 @@ theorem norm_le_norm_unif_of_lt_one {x : normInteger K} (hx : ‖(x : K)‖ < 1)
     _ = _ := one_mul _
 
 /- English proof (translation)
-Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hx hϖ`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : normInteger K => ‖(z : K)‖) hu` as an intermediate fact. Simplify using `only [Subring.coe_mul, SubmonoidClass.coe_pow, norm_mul, norm_pow] at this`. Rewrite `this` using `[isUnit_integer_iff_norm_eq_one.1 u.isUnit, mul_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_norm_eq_pow {x : normInteger K} (hx : x ≠ 0) : ∃ n : ℕ, ‖(x : K)‖ = ‖(ϖ : K)‖ ^ n := by
   obtain ⟨n, u, hu⟩ := IsDiscreteValuationRing.associated_pow_irreducible hx hϖ
@@ -91,18 +91,16 @@ theorem exists_norm_eq_pow {x : normInteger K} (hx : x ≠ 0) : ∃ n : ℕ, ‖
   rwa [isUnit_integer_iff_norm_eq_one.1 u.isUnit, mul_one] at this
 
 /- English proof (translation)
-Rewrite using `[← span_singleton_pow, mem_span_singleton_pow_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_span_unif_pow_iff {x : normInteger K} (n : ℕ) :
     x ∈ span {ϖ ^ n} ↔ ‖(x : K)‖ ≤ ‖(ϖ : K)‖ ^ n := by
   rw [← span_singleton_pow, mem_span_singleton_pow_iff]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Take `⟨m, hm⟩` from `exists_norm_eq_pow hϖ hx`. Rewrite `h`, the goal using `[hm]`. Establish `h1` using `norm_unif_lt_one hϖ`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `norm_unif_pos hϖ`. Establish `: n < m`. Assume the negation of the conclusion as `hnm`. Use `replace hnm := not_lt.1 hnm`. Conclude with `absurd h (not_lt.2 (pow_le_pow_of_le_one h0.le h1.le hnm))`.
-
-Conclude with `pow_le_pow_of_le_one h0.le h1.le this`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem norm_le_pow_succ_of_lt {x : normInteger K} {n : ℕ} (h : ‖(x : K)‖ < ‖(ϖ : K)‖ ^ n) :
     ‖(x : K)‖ ≤ ‖(ϖ : K)‖ ^ (n + 1) := by
@@ -125,9 +123,9 @@ section PowCongr
 variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Rewrite using `[← geom_sum₂_mul, norm_mul]`. Establish `hs : ‖∑ i ∈ Finset.range n, x ^ i * y ^ (n - 1 - i)‖ ≤ 1`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, norm_pow]`. Conclude with `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) hx) (by positivity) (pow_le_one₀ (norm_nonneg _) hy)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_pow_sub_pow_le_of_le_one {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) (n : ℕ) :
     ‖x ^ n - y ^ n‖ ≤ ‖x - y‖ := by
@@ -141,15 +139,13 @@ theorem norm_pow_sub_pow_le_of_le_one {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y�
     _ = _ := one_mul _
 
 /- English proof (translation)
-Rewrite using `[← geom_sum₂_mul, norm_mul]`. Establish `hxy : ‖x - y‖ ≤ c` using `h.trans (by simpa using pow_le_pow_of_le_one hc0 hc1 hj)`. Establish `hs : ‖∑ i ∈ Finset.range p, x ^ i * y ^ (p - 1 - i)‖ ≤ c`. Establish `: ∑ i ∈ Finset.range p, x ^ i * y ^ (p - 1 - i) = ∑ i ∈ Finset.range p, (x ^ i - y ^ i) * y ^ (p - 1 - i) + (p : K) * y ^ (p - 1)`. Establish `h2 : ∀ i ∈ Finset.range p, x ^ i * y ^ (p - 1 - i) = (x ^ i - y ^ i) * y ^ (p - 1 - i) + y ^ (p - 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `hi' : i ≤ p - 1` using `by rw [Finset.mem_range] at hi; omega`. Rewrite using `[sub_mul, ← pow_add, Nat.add_sub_cancel' hi']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl h2, Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.card_range, nsmul_eq_mul]`. Rewrite using `[this]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hc0 fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(norm_pow_sub_pow_le_of_le_one hx hy i).trans hxy`. Conclude with `pow_le_one₀ (norm_nonneg _) hy`. Use `_ = c := mul_one c`. Rewrite using `[norm_mul, norm_pow]`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `pow_le_one₀ (norm_nonneg _) hy`. Use `_ = c := mul_one c`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_pow_prime_sub_le {p : ℕ} {c : ℝ} (hc0 : 0 ≤ c) (hp : ‖(p : K)‖ ≤ c) {x y : K}
     (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) {j : ℕ} (hj : 1 ≤ j) (h : ‖x - y‖ ≤ c ^ j) (hc1 : c ≤ 1) :
@@ -192,13 +188,13 @@ variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K]
 variable (p : ℕ) [hp : Fact p.Prime] [CharP (ResidueField (normInteger K)) p]
 
 /- English proof (translation)
-Rewrite using `[map_natCast]`. Conclude with `CharP.cast_eq_zero _ p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_natCast_prime : residue (normInteger K) (p : normInteger K) = 0 := by
   rw [map_natCast]; exact CharP.cast_eq_zero _ p
 
 /- English proof (translation)
-The claim follows from `residue_eq_zero_iff_norm_lt_one.1 (residue_natCast_prime p)`.
+A detailed English derivation is pending.
 -/
 theorem norm_natCast_prime_lt_one : ‖((p : normInteger K) : K)‖ < 1 :=
   residue_eq_zero_iff_norm_lt_one.1 (residue_natCast_prime p)
@@ -211,16 +207,16 @@ instance isAdicComplete_natCast_prime [CompleteSpace K] :
   isAdicComplete_span_singleton (norm_natCast_prime_lt_one p)
 
 /- English proof (translation)
-The claim follows from `norm_le_norm_unif_of_lt_one hϖ (norm_natCast_prime_lt_one p)`.
+A detailed English derivation is pending.
 -/
 theorem norm_natCast_prime_le_unif {ϖ : normInteger K} (hϖ : Irreducible ϖ) :
     ‖((p : normInteger K) : K)‖ ≤ ‖(ϖ : K)‖ :=
   norm_le_norm_unif_of_lt_one hϖ (norm_natCast_prime_lt_one p)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using h`. Consider the case `succ m ih`. Rewrite using `[pow_succ, pow_mul, pow_mul, ← add_assoc]`. Establish `hc` using `norm_natCast_prime_le_unif (K := K) p hϖ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpK : ‖(p : K)‖ ≤ ‖(ϖ : K)‖` using `by simpa using hc`. Conclude with `norm_pow_prime_sub_le (norm_nonneg _) hpK (by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hx) (by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hy) (by omega) ih (norm_unif_lt_one hϖ).le`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_pow_prime_pow_sub_le {ϖ : normInteger K} (hϖ : Irreducible ϖ) {x y : K}
     (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) {j : ℕ} (hj : 1 ≤ j) (h : ‖x - y‖ ≤ ‖(ϖ : K)‖ ^ j) (m : ℕ) :
@@ -236,7 +232,7 @@ theorem norm_pow_prime_pow_sub_le {ϖ : normInteger K} (hϖ : Irreducible ϖ) {x
       (norm_unif_lt_one hϖ).le
 
 /- English proof (translation)
-Establish `: residue (normInteger K) (x - y) = 0` using `by rw [map_sub, h, sub_self]`. Use `norm_le_norm_unif_of_lt_one hϖ (residue_eq_zero_iff_norm_lt_one.1 this)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_sub_le_unif_of_residue_eq {ϖ : normInteger K} (hϖ : Irreducible ϖ)
     {x y : normInteger K} (h : residue (normInteger K) x = residue (normInteger K) y) :
@@ -246,7 +242,7 @@ theorem norm_sub_le_unif_of_residue_eq {ϖ : normInteger K} (hϖ : Irreducible �
   simpa using this
 
 /- English proof (translation)
-Use `(mem_span_singleton_pow_iff (a := (p : normInteger K)) (x := x) 1).2 (by simpa using h)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_span_natCast_prime_of_norm_le {x : normInteger K}
     (h : ‖(x : K)‖ ≤ ‖((p : normInteger K) : K)‖) : x ∈ span {(p : normInteger K)} := by
@@ -256,7 +252,7 @@ theorem mem_span_natCast_prime_of_norm_le {x : normInteger K}
 variable [CharZero K]
 
 /- English proof (translation)
-Introduce `h`. Establish `h' : ((p : normInteger K) : K) = 0` using `by rw [h]; rfl`. Establish `: (p : K) = 0` using `by simpa using h'`. Conclude with `hp.out.ne_zero (by exact_mod_cast this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natCast_prime_ne_zero : (p : normInteger K) ≠ 0 := by
   intro h
@@ -270,20 +266,20 @@ def ramIdx : ℕ :=
   (IsDiscreteValuationRing.associated_pow_irreducible (natCast_prime_ne_zero (K := K) p) hϖ).choose
 
 /- English proof (translation)
-The claim follows from `(IsDiscreteValuationRing.associated_pow_irreducible (natCast_prime_ne_zero (K := K) p) hϖ).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem associated_ramIdx : Associated (p : normInteger K) (ϖ ^ ramIdx p hϖ) :=
   (IsDiscreteValuationRing.associated_pow_irreducible (natCast_prime_ne_zero (K := K) p) hϖ).choose_spec
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `associated_ramIdx p hϖ`. Conclude with `⟨u⁻¹, by rw [← hu, mul_assoc, Units.mul_inv, mul_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unit_natCast_prime_eq : ∃ u : (normInteger K)ˣ, (p : normInteger K) = ϖ ^ ramIdx p hϖ * u := by
   obtain ⟨u, hu⟩ := associated_ramIdx p hϖ
   exact ⟨u⁻¹, by rw [← hu, mul_assoc, Units.mul_inv, mul_one]⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_unit_natCast_prime_eq p hϖ`. Rewrite using `[hu]`. Simplify using `only [Subring.coe_mul, SubmonoidClass.coe_pow, norm_mul, norm_pow]`. Rewrite using `[isUnit_integer_iff_norm_eq_one.1 u.isUnit, mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_natCast_prime_eq : ‖((p : normInteger K) : K)‖ = ‖(ϖ : K)‖ ^ ramIdx p hϖ := by
   obtain ⟨u, hu⟩ := exists_unit_natCast_prime_eq p hϖ
@@ -292,7 +288,7 @@ theorem norm_natCast_prime_eq : ‖((p : normInteger K) : K)‖ = ‖(ϖ : K)‖
   rw [isUnit_integer_iff_norm_eq_one.1 u.isUnit, mul_one]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h0 : ramIdx p hϖ = 0` using `by omega`. Use `norm_natCast_prime_eq p hϖ` as an intermediate fact. Rewrite `this` using `[h0, pow_zero]`. Conclude with `(norm_natCast_prime_lt_one (K := K) p).ne this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramIdx_pos : 0 < ramIdx p hϖ := by
   by_contra h
@@ -317,7 +313,7 @@ def tiltResidue : PreTilt (normInteger K) p →+* ResidueField (normInteger K) :
     rw [map_mul, residue_natCast_prime, mul_zero]).comp (PreTilt.coeff 0)
 
 /- English proof (translation)
-Simplify using `[tiltResidue, ← hy]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tiltResidue_of_mk (x : PreTilt (normInteger K) p) (y : normInteger K)
     (hy : Ideal.Quotient.mk _ y = PreTilt.coeff 0 x) :
@@ -325,7 +321,7 @@ theorem tiltResidue_of_mk (x : PreTilt (normInteger K) p) (y : normInteger K)
   simp [tiltResidue, ← hy]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ', pow_mul, ← add_assoc, PreTilt.coeff_pow_p, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem preTilt_coeff_pow (x : PreTilt (normInteger K) p) (n m : ℕ) :
     PreTilt.coeff (n + m) x ^ p ^ m = PreTilt.coeff n x := by
@@ -337,13 +333,13 @@ theorem preTilt_coeff_pow (x : PreTilt (normInteger K) p) (n m : ℕ) :
 variable [CharZero K]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (normInteger K)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `hsmall : ∀ n, ∀ y : normInteger K, Ideal.Quotient.mk _ y = PreTilt.coeff n x → ‖(y : K)‖ ≤ ‖(ϖ : K)‖`. Introduce `n y hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : tiltResidue K p x = residue _ (y ^ p ^ n)`. Apply `tiltResidue_of_mk` to reduce the goal to its premises. Rewrite using `[map_pow, hy, ← preTilt_coeff_pow p x 0 n, zero_add]`. Rewrite `h1` using `[hx, map_pow, eq_comm, pow_eq_zero_iff (pow_ne_zero _ hp.out.ne_zero)]`. Conclude with `norm_le_norm_unif_of_lt_one hϖ (residue_eq_zero_iff_norm_lt_one.1 h1)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Perfection.ext` to reduce the goal to its premises. Introduce `n`. Rewrite using `[← PreTilt.coeff_def, ← PreTilt.coeff_def, map_zero]`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (PreTilt.coeff (n + ramIdx p hϖ) x)`. Establish `hy1` using `hsmall _ y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← preTilt_coeff_pow p x n (ramIdx p hϖ), ← hy, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Apply `mem_span_natCast_prime_of_norm_le` to reduce the goal to its premises. Rewrite using `[norm_natCast_prime_eq p hϖ, SubmonoidClass.coe_pow, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tiltResidue_injective : Function.Injective (tiltResidue K p) := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible (normInteger K)
@@ -373,19 +369,17 @@ theorem tiltResidue_injective : Function.Injective (tiltResidue K p) := by
 variable [PerfectRing (ResidueField (normInteger K)) p]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (normInteger K)`. Use `set e := ramIdx p hϖ`. Introduce `a`. Use `set r : ℕ → ResidueField (normInteger K) := fun m => ((frobeniusEquiv (ResidueField (normInteger K)) p).symm^[m]) a with hr_def`. Establish `hr : ∀ m, r (m + 1) ^ p = r m`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `m`. Simplify using `only [hr_def, Function.iterate_succ_apply']`. Conclude with `frobenius_apply_frobeniusEquiv_symm _ p _`. Establish `hr0 : ∀ m, r m ^ p ^ m = a`. Introduce `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `m with`. Consider the case `zero => simp [hr_def]`. Consider the case `succ m ih => rw [pow_succ', pow_mul, hr, ih]`. Use `choose z hz using fun m => residue_surjective (R := normInteger K) (r m)`. Set `c : ℕ → ModP (normInteger K) p` to `fun n => Ideal.Quotient.mk _ (z (n + e) ^ p ^ e)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ n, c (n + 1) ^ p = c n`. Introduce `n`. Simplify using `only [c, ← map_pow]`. Rewrite using `[Ideal.Quotient.eq]`. Apply `mem_span_natCast_prime_of_norm_le` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_natCast_prime_eq p hϖ]`. Establish `hres : residue (normInteger K) (z (n + 1 + e) ^ p) = residue (normInteger K) (z (n + e))`. Rewrite using `[map_pow, hz, hz, show n + 1 + e = n + e + 1 by omega, hr]`. Establish `h1` using `norm_sub_le_unif_of_residue_eq hϖ hres`. Establish `h2` using `norm_pow_prime_pow_sub_le p hϖ (x := ((z (n + 1 + e) ^ p : normInteger K) : K)) (y := ((z (n + e) : normInteger K) : K)) (norm_coe_integer_le_one _) (norm_coe_integer_le_one _) le_rfl (by simpa using h1) e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ‖(ϖ : K)‖ ^ (1 + e) ≤ ‖(ϖ : K)‖ ^ e` using `pow_le_pow_of_le_one (norm_nonneg _) (norm_unif_lt_one hϖ).le (by omega)`. Rewrite using `[show ((z (n + 1 + e) ^ p ^ e) ^ p : normInteger K) = (z (n + 1 + e) ^ p) ^ p ^ e by`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]]`. Establish `h4 : (((z (n + 1 + e) ^ p) ^ p ^ e - z (n + e) ^ p ^ e : normInteger K) : K) = ((z (n + 1 + e) ^ p : normInteger K) : K) ^ p ^ e - ((z (n + e) : normInteger K) : K) ^ p ^ e` using `by push_cast; ring`. Rewrite using `[h4]`.
-
-Conclude with `h2.trans h3`. Set `x : PreTilt (normInteger K) p` to `⟨c, hc⟩`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[tiltResidue_of_mk p x (z (0 + e) ^ p ^ e) rfl, map_pow, hz, zero_add, hr0]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tiltResidue_surjective : Function.Surjective (tiltResidue K p) := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible (normInteger K)
@@ -451,7 +445,7 @@ variable (p : ℕ) [hp : Fact p.Prime] [CharP (ResidueField (normInteger K)) p]
 omit [CompleteSpace K] [IsDiscreteValuationRing (normInteger K)] [CharZero K] in
 
 /- English proof (translation)
-Proceed by induction on `n generalizing a with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply, pow_succ, pow_mul, ih]`. Conclude with `frobenius_apply_frobeniusEquiv_symm R p a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobeniusEquiv_symm_iterate_pow {R : Type*} [CommRing R] [CharP R p] [PerfectRing R p]
     (a : R) (n : ℕ) : ((frobeniusEquiv R p).symm^[n] a) ^ p ^ n = a := by
@@ -464,7 +458,7 @@ theorem frobeniusEquiv_symm_iterate_pow {R : Type*} [CommRing R] [CharP R p] [Pe
 omit [CompleteSpace K] [CharZero K] [PerfectRing (ResidueField (normInteger K)) p] in
 
 /- English proof (translation)
-Establish `hn : ∀ n : ℕ, ‖((x - y : normInteger K) : K)‖ ≤ ‖(a : K)‖ ^ n` using `fun n => (mem_span_singleton_pow_iff n).1 (by rw [span_singleton_pow]; exact h n)`. Establish `ht` using `tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) ha`. Establish `h0 : ‖((x - y : normInteger K) : K)‖ ≤ 0` using `ge_of_tendsto' ht hn`. Establish `: ((x - y : normInteger K) : K) = 0` using `norm_le_zero_iff.1 h0`. Conclude with `sub_eq_zero.1 (Subtype.ext this)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_forall_sub_mem_span_pow {a : normInteger K} (ha : ‖(a : K)‖ < 1)
     {x y : normInteger K} (h : ∀ n : ℕ, x - y ∈ span {a ^ n}) : x = y := by
@@ -483,9 +477,9 @@ def cohenMap : WittVector p (ResidueField (normInteger K)) →+* normInteger K :
 
 @[simp]
 /- English proof (translation)
-Establish `h` using `mk_fontaineTheta (WittVector.map (tiltResidueEquiv (K := K) p).symm.toRingHom w)`. Rewrite `h` using `[WittVector.map_coeff]`. Establish `h2 : tiltResidue K p ((tiltResidueEquiv (K` using `K) p).symm (w.coeff 0)) = w.coeff 0 := by`. Rewrite using `[← tiltResidueEquiv_apply, RingEquiv.apply_symm_apply]`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(tiltResidue_of_mk p _ _ h).symm`.
+A detailed English derivation is pending.
 -/
 theorem residue_cohenMap (w : WittVector p (ResidueField (normInteger K))) :
     residue (normInteger K) (cohenMap K p w) = w.coeff 0 := by
@@ -497,17 +491,17 @@ theorem residue_cohenMap (w : WittVector p (ResidueField (normInteger K))) :
   exact (tiltResidue_of_mk p _ _ h).symm
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (normInteger K)`. Establish `hT : ∀ a, f (teichmuller p a) = g (teichmuller p a)`. Introduce `a`. Establish `hn : ∀ n : ℕ, ‖((f (teichmuller p a) : normInteger K) : K) - g (teichmuller p a)‖ ≤ ‖(ϖ : K)‖ ^ n`. Introduce `n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set b := (frobeniusEquiv (ResidueField (normInteger K)) p).symm^[n] a`. Establish `ht : teichmuller p a = teichmuller p b ^ p ^ n`. Rewrite using `[← map_pow, frobeniusEquiv_symm_iterate_pow]`. Rewrite using `[ht, map_pow, map_pow]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `h1` using `norm_sub_le_unif_of_residue_eq hϖ (h (teichmuller p b))`. Use `(norm_pow_prime_pow_sub_le p hϖ (norm_coe_integer_le_one _) (norm_coe_integer_le_one _) le_rfl (by simpa using h1) n).trans ?_` and prove the remaining obligations. Conclude with `pow_le_pow_of_le_one (norm_nonneg _) (norm_unif_lt_one hϖ).le (by omega)`. Establish `ht` using `tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) (norm_unif_lt_one hϖ)`. Establish `h0` using `ge_of_tendsto' ht hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext (sub_eq_zero.1 (norm_le_zero_iff.1 h0))`. Establish `hmod : ∀ n : ℕ, (Ideal.Quotient.mk (span {(p : normInteger K) ^ n})).comp f = (Ideal.Quotient.mk (span {(p : normInteger K) ^ n})).comp g`. Introduce `n`. Apply `WittVector.eq_of_apply_teichmuller_eq` to reduce the goal to its premises. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_natCast (Ideal.Quotient.mk (span {(p : normInteger K) ^ n})), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `mem_span_singleton_self _`. Introduce `x`. Simplify using `[hT x]`. Use extensionality with `w`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `eq_of_forall_sub_mem_span_pow (K := K) (a := (p : normInteger K)) (norm_natCast_prime_lt_one p) (x := f w) (y := g w) fun n => by` as an intermediate fact. Use `congrArg (fun φ => φ w) (hmod n)` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Conclude with `Ideal.Quotient.eq.1 this`. Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_ext_of_residue (f g : WittVector p (ResidueField (normInteger K)) →+* normInteger K)
     (h : ∀ w, residue (normInteger K) (f w) = residue (normInteger K) (g w)) : f = g := by
@@ -548,7 +542,7 @@ theorem ringHom_ext_of_residue (f g : WittVector p (ResidueField (normInteger K)
   rw [this]
 
 /- English proof (translation)
-Apply `ringHom_ext_of_residue` to reduce the goal to its premises. Introduce `w`. Simplify using `[hσ, iterateFrobenius_def]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem comp_cohenMap_of_residue (σ : normInteger K →+* normInteger K) (a : ℕ)
     (hσ : ∀ x, residue (normInteger K) (σ x) = residue (normInteger K) x ^ p ^ a) :
@@ -559,7 +553,7 @@ theorem comp_cohenMap_of_residue (σ : normInteger K →+* normInteger K) (a : �
   simp [hσ, iterateFrobenius_def]
 
 /- English proof (translation)
-Use `le_antisymm (norm_coe_integer_le_one _) (not_lt.1 fun h => hw ?_)` and prove the remaining obligations. Rewrite using `[← residue_cohenMap, residue_eq_zero_iff_norm_lt_one]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_cohenMap_of_coeff_ne_zero {w : WittVector p (ResidueField (normInteger K))}
     (hw : w.coeff 0 ≠ 0) : ‖(cohenMap K p w : K)‖ = 1 := by
@@ -568,9 +562,9 @@ theorem norm_cohenMap_of_coeff_ne_zero {w : WittVector p (ResidueField (normInte
   exact h
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `w hw`. Assume the negation of the conclusion as `h0`. Take `⟨m, b, hb, rfl⟩` from `WittVector.exists_eq_pow_p_mul w h0`. Rewrite `hw` using `[map_mul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb' : cohenMap K p b ≠ 0` using `fun h => hb (by rw [← residue_cohenMap, h, map_zero])`. Conclude with `mul_ne_zero (pow_ne_zero _ (natCast_prime_ne_zero p)) hb' hw`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cohenMap_injective : Function.Injective (cohenMap K p) := by
   rw [injective_iff_map_eq_zero]
@@ -591,7 +585,7 @@ theorem algebraMap_cohen :
     algebraMap (WittVector p (ResidueField (normInteger K))) (normInteger K) = cohenMap K p := rfl
 
 /- English proof (translation)
-The claim follows from `Algebra.smul_def w x`.
+A detailed English derivation is pending.
 -/
 theorem cohen_smul_def (w : WittVector p (ResidueField (normInteger K))) (x : normInteger K) :
     w • x = cohenMap K p w * x := Algebra.smul_def w x
@@ -599,7 +593,7 @@ theorem cohen_smul_def (w : WittVector p (ResidueField (normInteger K))) (x : no
 variable {ϖ : normInteger K} (hϖ : Irreducible ϖ)
 
 /- English proof (translation)
-Take `⟨m, b, hb, rfl⟩` from `WittVector.exists_eq_pow_p_mul w hw`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_natCast]`. Simplify using `only [Subring.coe_mul, SubmonoidClass.coe_pow, norm_mul, norm_pow]`. Rewrite using `[norm_natCast_prime_eq p hϖ, norm_cohenMap_of_coeff_ne_zero p hb, mul_one, ← pow_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_norm_cohenMap_eq {w : WittVector p (ResidueField (normInteger K))} (hw : w ≠ 0) :
     ∃ m : ℕ, ‖(cohenMap K p w : K)‖ = ‖(ϖ : K)‖ ^ (ramIdx p hϖ * m) := by
@@ -610,21 +604,19 @@ theorem exists_norm_cohenMap_eq {w : WittVector p (ResidueField (normInteger K))
   rw [norm_natCast_prime_eq p hϖ, norm_cohenMap_of_coeff_ne_zero p hb, mul_one, ← pow_mul]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨i₀, hi₀⟩` from `hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set S := Finset.univ.filter (fun i => g i ≠ 0) with hS_def`. Establish `hS : S.Nonempty` using `⟨i₀, by simp [hS_def, hi₀]⟩`. Use `set f : Fin (ramIdx p hϖ) → K := fun i => (cohenMap K p (g i) : K) * (ϖ : K) ^ (i : ℕ) with hf`. Establish `hsum : ∑ i ∈ S, f i = 0`. Establish `h1` using `congrArg (fun z : normInteger K => (z : K)) hg`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cohen_smul_def] at h1`. Move the coercions through the operations in `at h1`. Rewrite using `[← h1, hS_def, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Simplify using `[not_not.1 h]`. Establish `hnorm : ∀ i ∈ S, ∃ m : ℕ, ‖f i‖ = ‖(ϖ : K)‖ ^ ((i : ℕ) + ramIdx p hϖ * m)`. Introduce `i hi`. Establish `hgi : g i ≠ 0` using `by simpa [hS_def] using hi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `exists_norm_cohenMap_eq p hϖ hgi`. Conclude with `⟨m, by rw [hf, norm_mul, norm_pow, hm, ← pow_add, add_comm]⟩`. Establish `h0` using `norm_unif_pos hϖ`. Establish `h1` using `norm_unif_lt_one hϖ`. Establish `hpair : Set.Pairwise (S : Set (Fin (ramIdx p hϖ))) (fun i j => ‖f i‖ ≠ ‖f j‖)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i hi j hj hij heq`. Take `⟨m, hm⟩` from `hnorm i hi`. Take `⟨m', hm'⟩` from `hnorm j hj`. Rewrite `heq` using `[hm, hm']`. Use `pow_right_injective₀ h0 h1.ne heq` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmod` using `congrArg (· % ramIdx p hϖ) this`. Simplify using `only [Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt i.2, Nat.mod_eq_of_lt j.2] at hmod`. Conclude with `hij (Fin.ext hmod)`. Use `IsUltrametricDist.norm_sum_eq_sup'_of_pairwise_ne hS hpair` as an intermediate fact. Rewrite `this` using `[hsum, norm_zero]`.
-
-Take `⟨m, hm⟩` from `hnorm i₀ (by simp [hS_def, hi₀])`. Establish `hpos : 0 < ‖f i₀‖` using `by rw [hm]; positivity`. Establish `hle : ‖f i₀‖ ≤ S.sup' hS (fun i => ‖f i‖)` using `Finset.le_sup' (fun i => ‖f i‖) (by simp [hS_def, hi₀])`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem linearIndependent_unif_pow :
     LinearIndependent (WittVector p (ResidueField (normInteger K)))
@@ -672,17 +664,17 @@ theorem linearIndependent_unif_pow :
   linarith
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∃ (d : ℕ → WittVector p (ResidueField (normInteger K))) (y : normInteger K), x = ∑ j ∈ Finset.range n, cohenMap K p (d j) * ϖ ^ j + ϖ ^ n * y`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, x, by simp⟩`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨d, y, hy⟩` from `ih`. Use `set t := teichmuller p (residue (normInteger K) y)`. Establish `hres : residue (normInteger K) (y - cohenMap K p t) = 0`. Rewrite using `[map_sub, residue_cohenMap, teichmuller_coeff_zero, sub_self]`. Establish `hm : y - cohenMap K p t ∈ maximalIdeal (normInteger K)` using `(residue_eq_zero_iff _).1 hres`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, mem_span_singleton']`. Take `⟨y', hy'⟩` from `hm`. Use `⟨fun j => if j = n then t else d j, y', ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_range_succ]`. Simplify using `only [if_true]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : ∑ j ∈ Finset.range n, cohenMap K p (if j = n then t else d j) * ϖ ^ j = ∑ j ∈ Finset.range n, cohenMap K p (d j) * ϖ ^ j` using `Finset.sum_congr rfl fun j hj => by`. Rewrite using `[if_neg (by rw [Finset.mem_range] at hj; omega)]`. Rewrite using `[hs, hy]`. Establish `: y = cohenMap K p t + y' * ϖ` using `by rw [hy']; ring`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨d, y, hy⟩` from `key (ramIdx p hϖ)`. Take `⟨u, hu⟩` from `exists_unit_natCast_prime_eq p hϖ`. Use `⟨fun j => d j, ↑u⁻¹ * y, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, Fin.sum_univ_eq_sum_range (fun j => cohenMap K p (d j) * ϖ ^ j), hu]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[mul_assoc, ← mul_assoc (u : normInteger K), Units.mul_inv, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_digits (x : normInteger K) :
     ∃ (d : Fin (ramIdx p hϖ) → WittVector p (ResidueField (normInteger K))) (y : normInteger K),
@@ -719,25 +711,21 @@ theorem exists_digits (x : normInteger K) :
   rw [mul_assoc, ← mul_assoc (u : normInteger K), Units.mul_inv, one_mul]
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Use `choose D Y hDY using exists_digits p hϖ`. Use `set rem : ℕ → normInteger K := fun n => Y^[n] x with hrem`. Use `set A : ℕ → Fin (ramIdx p hϖ) → WittVector p (ResidueField (normInteger K)) := fun n j => ∑ i ∈ Finset.range n, (p : WittVector p (ResidueField (normInteger K))) ^ i * D (rem i) j with hA`. Establish `hinv : ∀ n, x = ∑ j, cohenMap K p (A n j) * ϖ ^ (j : ℕ) + (p : normInteger K) ^ n * rem n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [hA, hrem]`. Consider the case `succ n ih`. Establish `hr : rem (n + 1) = Y (rem n)`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hrem]`. Rewrite using `[Function.iterate_succ_apply']`. Establish `hA1 : ∀ j, A (n + 1) j = A n j + (p : WittVector p (ResidueField (normInteger K))) ^ n * D (rem n) j`. Introduce `j`. Simplify using `only [hA, Finset.sum_range_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hDY (rem n)]`. Use `_ = ∑ j, cohenMap K p (A (n + 1) j) * ϖ ^ (j : ℕ) + (p : normInteger K) ^ (n + 1) * rem (n + 1) := by`. Rewrite using `[hr]`. Simplify using `only [hA1, map_add, map_mul, map_pow, map_natCast, add_mul, Finset.sum_add_distrib, mul_add, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hlim : ∀ j, ∃ W : WittVector p (ResidueField (normInteger K)), ∀ n, W - A n j ∈ span {(p : WittVector p (ResidueField (normInteger K))) ^ n}`. Introduce `j`. Use `WittLift.exists_limit (fun n => A n j) fun n => ?_` and prove the remaining obligations. Simplify using `only [hA, Finset.sum_range_succ, add_sub_cancel_left]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `mem_span_singleton.2 (dvd_mul_right _ _)`. Use `choose W hW using hlim`. Establish `hx : x = ∑ j, cohenMap K p (W j) * ϖ ^ (j : ℕ)`. Apply `eq_of_forall_sub_mem_span_pow (K := K) (a := (p : normInteger K)) (norm_natCast_prime_lt_one p)` to reduce the goal to its premises. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hc : ∀ j, cohenMap K p (A n j) - cohenMap K p (W j) ∈ span {(p : normInteger K) ^ n}`. Introduce `j`. Take `⟨c, hc⟩` from `mem_span_singleton.1 (hW j n)`. Establish `: A n j - W j = -((p : WittVector p (ResidueField (normInteger K))) ^ n * c)`. Rewrite using `[← hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← map_sub, this, map_neg, map_mul, map_pow, map_natCast]`. Conclude with `neg_mem (mem_span_singleton.2 (dvd_mul_right _ _))`. Use `nth_rewrite 1 [hinv n]`. Establish `: ∑ j, cohenMap K p (A n j) * ϖ ^ (j : ℕ) + (p : normInteger K) ^ n * rem n - ∑ j, cohenMap K p (W j) * ϖ ^ (j : ℕ) = ∑ j, (cohenMap K p (A n j) - cohenMap K p (W j)) * ϖ ^ (j : ℕ) + (p : normInteger K) ^ n * rem n`.
-
-Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `add_mem (Submodule.sum_mem _ fun j _ => ?_) (mem_span_singleton.2 (dvd_mul_right _ _))` and prove the remaining obligations. Conclude with `Ideal.mul_mem_right _ _ (hc j)`.
-
-Rewrite using `[hx]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← cohen_smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_unif_pow_eq_top :
     Submodule.span (WittVector p (ResidueField (normInteger K)))
@@ -803,7 +791,7 @@ def cohenBasis : Module.Basis (Fin (ramIdx p hϖ)) (WittVector p (ResidueField (
 
 @[simp]
 /- English proof (translation)
-The claim follows from `Module.Basis.mk_apply _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cohenBasis_apply (j : Fin (ramIdx p hϖ)) : cohenBasis p hϖ j = ϖ ^ (j : ℕ) :=
   Module.Basis.mk_apply _ _ _

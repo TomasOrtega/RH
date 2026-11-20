@@ -30,11 +30,11 @@ def coordL (k : T × Fin m × Fin n) : Bsp τ m n →L[ℝ] ℂ :=
       ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : T => Fin m → Fin n → ℂ) k.1).comp (extL τ)))
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Use `Function.HasTemperateGrowth.const (E := E) a` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | (funext x; simp)`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately.
 
-Consider the case `add p q hp hq`. Use `hp.add hq` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | (funext x; simp)`. Consider the case `mul_X p k hp`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hp.mul (hv k)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | (funext x; simp)`.
+A detailed English derivation is pending.
 -/
 theorem tg_eval {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {σ : Type} (v : σ → E → ℂ)
     (hv : ∀ k, (v k).HasTemperateGrowth) (p : MvPolynomial σ ℂ) :
@@ -57,11 +57,9 @@ def vC (k : T × Fin m × Fin n × Bool) (b : Bsp τ m n) : ℂ :=
   if k.2.2.2 then conj (coordL τ (k.1, k.2.1, k.2.2.1) b) else coordL τ (k.1, k.2.1, k.2.2.1) b
 
 /- English proof (translation)
-Distinguish the cases in `hk : k.2.2.2 = true`. Establish `e : vC (m` using `m) (n := n) τ k = ⇑(Complex.conjCLE.toContinuousLinearMap.comp (coordL τ (k.1, k.2.1, k.2.2.1))) := by`. Use function extensionality and compare the values at `b`. Simplify using `[vC, hk]`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ContinuousLinearMap.hasTemperateGrowth _`. Establish `e : vC (m` using `m) (n := n) τ k = ⇑(coordL τ (k.1, k.2.1, k.2.2.1)) := by`. Use function extensionality and compare the values at `b`. Simplify using `[vC, hk]`. Rewrite using `[e]`.
-
-Conclude with `ContinuousLinearMap.hasTemperateGrowth _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tg_vC (k : T × Fin m × Fin n × Bool) : (vC (m := m) (n := n) τ k).HasTemperateGrowth := by
   by_cases hk : k.2.2.2 = true
@@ -77,7 +75,7 @@ theorem tg_vC (k : T × Fin m × Fin n × Bool) : (vC (m := m) (n := n) τ k).Ha
     exact ContinuousLinearMap.hasTemperateGrowth _
 
 /- English proof (translation)
-The claim follows from `tg_eval _ (tg_vC τ) p`.
+A detailed English derivation is pending.
 -/
 theorem tg_poly (p : MvPolynomial (T × Fin m × Fin n × Bool) ℂ) :
     (fun b : Bsp τ m n => MvPolynomial.eval (fun k => vC τ k b) p).HasTemperateGrowth :=

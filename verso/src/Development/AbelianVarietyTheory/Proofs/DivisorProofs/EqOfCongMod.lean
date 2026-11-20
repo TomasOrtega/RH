@@ -13,11 +13,11 @@ section Lin
 variable {M : Type} [AddCommGroup M] [Module.Free ℤ M] [Module.Finite ℤ M]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ M`. Rewrite using `[← sub_eq_zero]`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Simplify using `only [map_zero, Finsupp.coe_zero, Pi.zero_apply]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨N, hN⟩ : ∃ N : ℕ, N = (b.repr (x - y) k).natAbs + 1` from `⟨_, rfl⟩`. Take `⟨w, hw⟩` from `h N (by omega)`. Establish `hxy : x - y = N • w` using `by rw [hw]; abel`. Establish `h2 : b.repr (x - y) k = (N : ℤ) * b.repr w k`. Rewrite using `[hxy, map_nsmul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[nsmul_eq_mul]`. Use `Int.eq_zero_of_abs_lt_dvd ⟨_, h2⟩ ?_` and prove the remaining obligations. Rewrite using `[Int.abs_eq_natAbs]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eq_of_congMod (x y : M) (h : ∀ m : ℕ, 1 ≤ m → CongMod m x y) : x = y := by
   let b := Module.Free.chooseBasis ℤ M
@@ -39,7 +39,7 @@ section Diag
 variable {Y : Type} [AddCommGroup Y]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem act_unit (a b : Fin 8) (w : Fin 8 → Y) :
     (fun i => ∑ j, (Matrix.of fun i' j' => if i' = a ∧ j' = b then (1 : ℤ) else 0) i j • w j) = Pi.single a (w b) := by
@@ -49,9 +49,9 @@ theorem act_unit (a b : Fin 8) (w : Fin 8 → Y) :
   · simp [hi]
 
 /- English proof (translation)
-Establish `h1` using `h (Matrix.of fun i' j' => if i' = a ∧ j' = a then (1 : ℤ) else 0) v`. Rewrite `h1` using `[act_unit, act_unit]`. Establish `h2` using `h (Matrix.of fun i' j' => if i' = a ∧ j' = 0 then (1 : ℤ) else 0) (Pi.single 0 (v a))`. Rewrite `h2` using `[act_unit, act_unit]`. Establish `e1` using `congrFun h1 a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `congrFun h2 a`. Simplify using `only [Pi.single_eq_same] at e1 e2`. Rewrite using `[← e1, e2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_diag (θ : (Fin 8 → Y) ≃+ (Fin 8 → Y))
     (h : ∀ (E : Matrix (Fin 8) (Fin 8) ℤ) v, θ (fun a => ∑ b, E a b • v b) = fun a => ∑ b, E a b • θ v b)
@@ -68,9 +68,9 @@ theorem eq_diag (θ : (Fin 8 → Y) ≃+ (Fin 8 → Y))
 end Diag
 
 /- English proof (translation)
-Unfold `qW`. Rewrite using `[Finset.sum_eq_single 0, Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem qW_single {Y : Type} [AddCommGroup Y] (W : Matrix (Fin 8) (Fin 8) ℤ) (β : LinearMap.BilinForm ℤ Y) (y : Y) :
     qW W β (Pi.single 0 y) = W 0 0 * β y y := by
@@ -83,23 +83,23 @@ theorem qW_single {Y : Type} [AddCommGroup Y] (W : Matrix (Fin 8) (Fin 8) ℤ) (
   · simp
 
 /- English proof (translation)
-Introduce `g n F W Z i X ε hdiag p _ z c yy yy' h1 h2`. Take `⟨θ, hq, hl, hE⟩` from `GlobalTheory.T.exists_qW_automorphism_eighthPower_lattice_labels g n F W Z i X ε hdiag p z c yy yy' h1 h2`. Establish `hc : ∀ (E : Matrix (Fin 8) (Fin 8) ℤ) v, θ (fun a => ∑ b, E a b • v b) = fun a => ∑ b, E a b • θ v b` using `fun E v => eq_of_congMod _ _ fun m hm => hE m hm E v`. Set `κ0 : c.T.D.toPre.X →+ c.T.D.toPre.X` to `(Pi.evalAddMonoidHom (fun _ : Fin 8 => c.T.D.toPre.X) 0).comp (θ.toAddMonoidHom.comp (AddMonoidHom.single (fun _ : Fin 8 => c.T.D.toPre.X) 0))`. Establish `hθ : ∀ v a, θ v a = κ0 (v a)` using `fun v a => eq_diag θ hc v a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsingle : ∀ y, θ (Pi.single 0 y) = Pi.single 0 (κ0 y)`. Introduce `y`. Use function extensionality and compare the values at `a`. Rewrite using `[hθ]`. Distinguish the cases in `ha : a = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, ha]`. Establish `inj : Function.Injective κ0`. Introduce `y y' hy`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: θ (Pi.single 0 y) = θ (Pi.single 0 y')` using `by rw [hsingle, hsingle, hy]`. Conclude with `Pi.single_injective 0 (θ.injective this)`. Establish `surj : Function.Surjective κ0`. Introduce `y`. Use `⟨θ.symm (fun _ => y) 0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hθ]`. Simplify using the standard rewrite rules. Set `κ` to `AddEquiv.ofBijective κ0 ⟨inj, surj⟩`. Establish `hκ : ∀ x, κ x = κ0 x` using `fun x => rfl`. Establish `hd : ∀ x, c.T.β (κ0 x) (κ0 x) = c.T.β x x`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `hq (Pi.single 0 x)` as an intermediate fact. Rewrite `this` using `[hsingle, qW_single, qW_single]`. Conclude with `mul_left_cancel₀ (X.diag_pos 0).ne' this`. Use `⟨κ, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Rewrite using `[hκ, hκ]`. Establish `hab` using `hd (a + b)`. Simplify using `only [map_add, LinearMap.map_add₂, LinearMap.add_apply] at hab`. Establish `s1` using `c.T.symm (κ0 a) (κ0 b)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2` using `c.T.symm a b`. Establish `ha` using `hd a`. Establish `hb` using `hd b`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `x μ h`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hl x μ h]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `hθ μ a`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem main : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X : Setup F W i) (ε : Matrix (Fin 8) (Fin 8) ℤ → (X.ρ.P.A ⟶ X.ρ.P.A)), IsDiagEnd F W X.ρ.P X.u ε → ∀ (p : ℕ) [Fact p.Prime] (z : X.M.Z) (c : CTrait X p z) (yy yy' : X.S.Gam →+ ModN (X.S.r * X.S.N) (Fin 8 → c.T.D.toPre.X)), IsLab X ε c yy → IsLab X ε c yy' → ∃ κ : c.T.D.toPre.X ≃+ c.T.D.toPre.X, (∀ a b, c.T.β (κ a) (κ b) = c.T.β a b) ∧ ∀ x μ, yy x = QuotientAddGroup.mk μ → yy' x = QuotientAddGroup.mk (fun a => κ (μ a)) := by
   intro g n F W Z i X ε hdiag p _ z c yy yy' h1 h2

@@ -17,14 +17,14 @@ def unitVal {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) : Γ(X, U)ˣ →* ℂˣ :=
   Units.map ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom.comp (x.appLE U ⊤ h).hom).toMonoidHom
 
 /- English proof (translation)
-Rewrite using `[valAt', dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma valAt'_eq_unitVal {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)ˣ) :
     valAt' x U f.val = unitVal x h f := by
   rw [valAt', dif_pos h]; rfl
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom ((X.presheaf.map (homOfLE hVU).op ≫ x.appLE V ⊤ h).hom f.val) = _`. Rewrite using `[Scheme.Hom.map_appLE]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma unitVal_res {U V : X.Opens} (hVU : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ V) (h' : ⊤ ≤ x ⁻¹ᵁ U)
     (f : Γ(X, U)ˣ) : unitVal x h (res hVU f) = unitVal x h' f := by
@@ -35,7 +35,7 @@ lemma unitVal_res {U V : X.Opens} (hVU : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ V) (h'
   rfl
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom ((φ.app U ≫ x.appLE _ ⊤ h).hom f.val) = _`. Rewrite using `[← Scheme.Hom.comp_appLE x φ U ⊤ h']`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma unitVal_pullU {Y : Scheme.{0}} (φ : X ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U))
     (h' : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U) (f : Γ(Y, U)ˣ) :
@@ -47,20 +47,20 @@ lemma unitVal_pullU {Y : Scheme.{0}} (φ : X ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ x
   rfl
 
 /- English proof (translation)
-Simplify using `only [Category.comp_id]`.
+Simplify using the standard rewrite rules.
 -/
 lemma unitVal_comp_id {U : X.Opens} (h : ⊤ ≤ (x ≫ 𝟙 X) ⁻¹ᵁ U) (h' : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)ˣ) :
     unitVal (x ≫ 𝟙 X) h f = unitVal x h' f := by
   simp only [Category.comp_id]
 
 /- English proof (translation)
-Introduce `_ hp` and use `⟨h hp, h' hp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma inf_of {U V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ x ⁻¹ᵁ V) : ⊤ ≤ x ⁻¹ᵁ (U ⊓ V) :=
   fun _ hp => ⟨h hp, h' hp⟩
 
 /- English proof (translation)
-Introduce `_ hp` and use `Set.mem_iInter.2 fun _ => h hp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma wchart_of {Y : Scheme.{0}} (L : LB Y) (φ : X ⟶ Y) (j : L.ι)
     (h : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ L.U j) :
@@ -68,9 +68,9 @@ lemma wchart_of {Y : Scheme.{0}} (L : LB Y) (φ : X ⟶ Y) (j : L.ι)
   fun _ hp => Set.mem_iInter.2 fun _ => h hp
 
 /- English proof (translation)
-Establish `h : x (default : PrimeSpectrum ℂ) ∈ ⨆ i, L.U i`. Rewrite using `[hL.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Use `⟨i, fun p _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: p = (default : PrimeSpectrum ℂ)` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Substitute `this` using the available equality. Conclude with `hi`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma exists_chart {L : LB X} (hL : L.IsLB) : ∃ i, ⊤ ≤ x ⁻¹ᵁ L.U i := by
   have h : x (default : PrimeSpectrum ℂ) ∈ ⨆ i, L.U i := by
@@ -82,7 +82,7 @@ lemma exists_chart {L : LB X} (hL : L.IsLB) : ∃ i, ⊤ ≤ x ⁻¹ᵁ L.U i :=
   exact hi
 
 /- English proof (translation)
-Use `(map_prod (unitVal x h) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique]`. Use `(map_zpow (unitVal x h) _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (· ^ ε) ((unitVal_res x (U := φ ⁻¹ᵁ (L.U j ⊓ L.U j')) _ h h' _).trans (unitVal_pullU x φ (L.U j ⊓ L.U j') h' h' _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma unitVal_linComb {Y : Scheme.{0}} (L : LB Y) (φ : X ⟶ Y) (ε : ℤ) (j j' : L.ι)
     (h : ⊤ ≤ x ⁻¹ᵁ ((L.LinComb (K := PUnit) (fun _ => φ) (fun _ => ε)).U (fun _ => j) ⊓
@@ -97,9 +97,9 @@ lemma unitVal_linComb {Y : Scheme.{0}} (L : LB Y) (φ : X ⟶ Y) (ε : ℤ) (j j
     (unitVal_pullU x φ (L.U j ⊓ L.U j') h' h' _))
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ x ⁻¹ᵁ ((LB.div M N).U (i, j) ⊓ (LB.div M N).U (i', j'))` using `inf_of x (inf_of x hi hj) (inf_of x hi' hj')`. Use `(unitVal_res x inf_le_left h _ _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (unitVal x h) (hw (i, j) (i', j'))).trans ?_` and prove the remaining obligations. Use `(map_mul (unitVal x h) _ _).trans ?_` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ (unitVal_res x inf_le_right h _ _)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(map_mul (unitVal x h) _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (unitVal_res x _ h _ _) ((map_inv (unitVal x h) _).trans (congrArg (·⁻¹) (unitVal_res x _ h _ _)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma unitVal_iso {M N : LB X} (w : LB.Iso N M) (hw : w.IsGen) (i i' : M.ι) (j j' : N.ι)
     (hi : ⊤ ≤ x ⁻¹ᵁ M.U i) (hi' : ⊤ ≤ x ⁻¹ᵁ M.U i') (hj : ⊤ ≤ x ⁻¹ᵁ N.U j)
@@ -121,7 +121,7 @@ abbrev idx {Y : Scheme.{0}} {L : LB X} {L' : LB Y} (f : X ⟶ Y) (m n : ℕ) (i 
     (LB.div (lbPow L n) (lbPow (L'.pull f) m)).ι := (fun _ => i, fun _ _ => j)
 
 /- English proof (translation)
-The claim follows from `inf_of x (wchart_of x L (𝟙 X) i (by simpa using hi)) (wchart_of x (L'.pull f) (𝟙 X) _ (wchart_of x L' f j hj))`.
+A detailed English derivation is pending.
 -/
 lemma idx_chart {Y : Scheme.{0}} {L : LB X} {L' : LB Y} (f : X ⟶ Y) (m n : ℕ) (i : L.ι) (j : L'.ι)
     (hi : ⊤ ≤ x ⁻¹ᵁ L.U i) (hj : ⊤ ≤ (x ≫ f) ⁻¹ᵁ L'.U j) :
@@ -130,13 +130,13 @@ lemma idx_chart {Y : Scheme.{0}} {L : LB X} {L' : LB Y} (f : X ⟶ Y) (m n : ℕ
     (wchart_of x (L'.pull f) (𝟙 X) _ (wchart_of x L' f j hj))
 
 /- English proof (translation)
-Establish `a` using `wchart_of x L (𝟙 X) i (by simpa using hi)`. Establish `a'` using `wchart_of x L (𝟙 X) i' (by simpa using hi')`. Establish `c` using `wchart_of x L' f j hj`. Establish `c'` using `wchart_of x L' f j' hj'`. Establish `b` using `wchart_of x (L'.pull f) (𝟙 X) (fun _ => j) c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b'` using `wchart_of x (L'.pull f) (𝟙 X) (fun _ => j') c'`. Establish `h` using `unitVal_iso x w hw (fun _ => i) (fun _ => i') (fun _ _ => j) (fun _ _ => j') a a' b b'`. Establish `h1` using `unitVal_linComb x L (𝟙 X) n i i' (inf_of x a a') (inf_of x hi hi')`. Establish `h2` using `unitVal_linComb x (L'.pull f) (𝟙 X) m (fun _ => j) (fun _ => j') (inf_of x b b') (inf_of x c c')`. Establish `h3` using `unitVal_linComb x L' f 1 j j' (inf_of x c c') (inf_of _ hj hj')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `replace h1 := h1.trans (congrArg (· ^ (n : ℤ)) (unitVal_comp_id x _ (inf_of x hi hi') _))`. Use `replace h2 := h2.trans (congrArg (· ^ (m : ℤ)) ((unitVal_comp_id x _ (inf_of x c c') _).trans h3))`. Use `replace h := h.trans (congrArg₂ (fun a b => a * b⁻¹ * _) h1 h2)`. Rewrite using `[valAt'_eq_unitVal x (idx_chart x f m n i j hi hj), valAt'_eq_unitVal x (idx_chart x f m n i' j' hi' hj'), valAt'_eq_unitVal x (inf_of x hi hi'), valAt'_eq_unitVal _ (inf_of _ hj hj')]`. Establish `h4` using `congrArg Units.val h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Units.val_mul, zpow_natCast, zpow_one, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val] at h4`. Use `(congrArg (· * _) h4).trans ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 lemma val_iso_pow {Y : Scheme.{0}} {L : LB X} {L' : LB Y} (f : X ⟶ Y) (m n : ℕ)
     (w : LB.Iso (lbPow (L'.pull f) m) (lbPow L n)) (hw : w.IsGen) (i i' : L.ι) (j j' : L'.ι)
@@ -172,7 +172,7 @@ lemma val_iso_pow {Y : Scheme.{0}} {L : LB X} {L' : LB Y} (f : X ⟶ Y) (m n : �
 end Values
 
 /- English proof (translation)
-Use `choose c hc using hc`. Establish `hr : ∀ i z, z ∈ V i → φ (c z) z = φ i z` using `fun i z hz => ha _ _ z (hc z) hz`. Use `⟨fun z => φ (c z) z, fun z => ?_, hr⟩` and prove the remaining obligations. Establish `hn` using `(hV (c z)).mem_nhds (hc z)`. Conclude with `((hφ (c z)).differentiableAt hn).congr_of_eventuallyEq (Filter.mem_of_superset hn fun y hy => hr _ y hy)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma exists_glue {E κ : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (V : κ → Set E)
     (hV : ∀ i, IsOpen (V i)) (hc : ∀ z, ∃ i, z ∈ V i) (φ : κ → E → ℂ)
@@ -187,7 +187,7 @@ lemma exists_glue {E κ : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (V : 
     (Filter.mem_of_superset hn fun y hy => hr _ y hy)
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.toMatrix'_mulVec F z, ← LinearMap.toMatrix'_mulVec F w]`. Generalize the expression as in `LinearMap.toMatrix' F = P`. Unfold `hermForm`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec z, Matrix.vecMul_transpose, Matrix.mulVec_conjTranspose, star_star, Matrix.vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma hermForm_pull {g g' : ℕ} (H : Matrix (Fin g') (Fin g') ℂ)
     (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)) (z w : Fin g → ℂ) :
@@ -200,7 +200,7 @@ lemma hermForm_pull {g g' : ℕ} (H : Matrix (Fin g') (Fin g') ℂ)
     Matrix.vecMul_transpose, Matrix.mulVec_conjTranspose, star_star, Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Simplify using `[hermForm, Matrix.sub_mulVec, Matrix.smul_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 lemma hermForm_sub_smul {g : ℕ} (H H' : Matrix (Fin g) (Fin g) ℂ) (a b : ℂ) (z w : Fin g → ℂ) :
     hermForm (a • H - b • H') z w = a * hermForm H z w - b * hermForm H' z w := by
@@ -211,35 +211,29 @@ end PullHermitian
 open PullHermitian in
 
 /- English proof (translation)
-Introduce `A A' _ _ L L' hL hL' g g' u u' Hm χ Hm' χ' hu hu' f F hF m n ⟨w, hw⟩`. Establish `hFl : ∀ z, (u'.ex (F z)).left = (u.ex z).left ≫ f.left` using `fun z => by`. Rewrite using `[hF, Over.comp_left]`. Establish `hΛ : ∀ l : u.Λ, F l ∈ u'.Λ` using `fun l => by`. Rewrite using `[← u'.ker, hF, (u.ker l).2 l.2, ← (u.ker 0).2 u.Λ.zero_mem, ← hF, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(u'.ker 0).2 u'.Λ.zero_mem`. Establish `hper : ∀ (l : u.Λ) z, u.ex (z + l) = u.ex z` using `fun l z => by`. Rewrite using `[u.ex_add, (u.ker l).2 l.2, _root_.mul_one]`. Establish `hFd : Differentiable ℂ F` using `(LinearMap.toContinuousLinearMap F).differentiable`. Take `⟨r, hr, hrφ⟩` from `exists_glue (fun p : L.ι × L'.ι => {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U p.1} ∩ F ⁻¹' {z | ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L'.U p.2}) (fun p => (u.hol _ 0).1.inter ((u'.hol _ 0).1.preimage hFd.continuous)) (fun z => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `exists_chart (u.ex z).left hL`. Take `⟨j, hj⟩` from `exists_chart (u'.ex (F z)).left hL'`. Conclude with `⟨(i, j), hi, hj⟩)`. Use the proof step `(fun p z => valAt' (u.ex z).left _ (w.s (idx f.left m n p.1 p.2)).val * u'.fr p.2 (F z) ^ m / u.fr p.1 z ^ n)`. Use the proof step `(fun p => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1` using `(u.hol _ (w.s (idx f.left m n p.1 p.2)).val).2.mono (s := {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U p.1} ∩ F ⁻¹' {z | ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L'.U p.2}) fun z hz => idx_chart _ _ _ _ _ _ hz.1 (hFl z ▸ hz.2)`. Establish `d2` using `(u'.fr_hol p.2).comp (s := {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U p.1} ∩ F ⁻¹' {z | ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L'.U p.2}) hFd.differentiableOn fun z hz => hz.2`. Establish `d3` using `(u.fr_hol p.1).mono (s := {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U p.1} ∩ F ⁻¹' {z | ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L'.U p.2}) Set.inter_subset_left`. Simplify using `only [div_eq_mul_inv]`. Conclude with `(d1.mul (d2.pow m)).mul ((d3.pow n).inv fun z hz => pow_ne_zero n (u.fr_ne p.1 z hz.1)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun p q z hp hq => by`. Establish `h` using `val_iso_pow (u.ex z).left f.left m n w hw p.1 q.1 p.2 q.2 hp.1 hq.1 (hFl z ▸ hp.2) (hFl z ▸ hq.2)`. Establish `h1` using `u.fr_compat p.1 q.1 z (inf_of _ hp.1 hq.1)`. Establish `h2` using `u'.fr_compat p.2 q.2 (F z) (inf_of _ hp.2 hq.2)`. Rewrite `h2` using `[hFl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[div_eq_div_iff (pow_ne_zero _ (u.fr_ne _ _ hp.1)) (pow_ne_zero _ (u.fr_ne _ _ hq.1)), h1, h2, mul_pow, mul_pow, ← _root_.mul_assoc, h]`. Use the proof step `ring)`. Use `set H₂ := (LinearMap.toMatrix' F).transpose * Hm' * (LinearMap.toMatrix' F).transpose.conjTranspose with hH₂`. Establish `hH₂h : H₂.IsHermitian` using `Matrix.isHermitian_mul_mul_conjTranspose _ hu'.1`. Establish `hchart : ∀ z, ∃ i j, ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U i ∧ ⊤ ≤ (u'.ex (F z)).left ⁻¹ᵁ L'.U j` using `fun z => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `exists_chart (u.ex z).left hL`. Take `⟨j, hj⟩` from `exists_chart (u'.ex (F z)).left hL'`. Conclude with `⟨i, j, hi, hj⟩`. Use `haveI := u.discrete`. Establish `key` using `appellHumbert_trivial_of_nowhere_vanishing g u.Λ u.full ((n : ℂ) • Hm - (m : ℂ) • H₂) (fun l => χ l ^ n / χ' ⟨F l, hΛ l⟩ ^ m) r ((hu.1.smul (by simp [IsSelfAdjoint])).sub (hH₂h.smul (by simp [IsSelfAdjoint]))) (fun l => by simp [hu.2.2.1, hu'.2.2.1]) hr (fun z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, j, hi, hj⟩` from `hchart z`. Rewrite using `[hrφ (i, j) z ⟨hi, hj⟩, valAt'_eq_unitVal _ (idx_chart _ _ _ _ _ _ hi (hFl z ▸ hj))]`. Conclude with `div_ne_zero (mul_ne_zero (Units.ne_zero _) (pow_ne_zero _ (u'.fr_ne _ _ hj))) (pow_ne_zero _ (u.fr_ne _ _ hi)))`. Use the proof step `(fun l z => by`. Take `⟨i, j, hi, hj⟩` from `hchart z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hi' : ⊤ ≤ (u.ex (z + l)).left ⁻¹ᵁ L.U i` using `by rwa [hper]`. Establish `hj' : ⊤ ≤ (u'.ex (F (z + l))).left ⁻¹ᵁ L'.U j` using `by rwa [hF, hper, ← hF]`. Establish `h1` using `hu.2.2.2 l i z hi`. Establish `h2` using `hu'.2.2.2 ⟨F l, hΛ l⟩ j (F z) hj`. Establish `h3 : χ l ≠ 0` using `norm_ne_zero_iff.1 (by rw [hu.2.2.1]; exact one_ne_zero)`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `h4 : χ' ⟨F l, hΛ l⟩ ≠ 0` using `norm_ne_zero_iff.1 (by rw [hu'.2.2.1]; exact one_ne_zero)`. Establish `h5` using `u.fr_ne _ _ hi'`. Rewrite using `[hrφ (i, j) z ⟨hi, hj⟩, hrφ (i, j) (z + l) ⟨hi', hj'⟩]`. Simplify using `only [hper, hermForm_sub_smul, hH₂, hermForm_pull, map_add]`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [hermForm]`. Generalize the expression as in `(z ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) = a`. Generalize the expression as in `((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) = b`. Generalize the expression as in `(F z ⬝ᵥ Hm'.mulVec (star (F l))) = a'`. Generalize the expression as in `(F l ⬝ᵥ Hm'.mulVec (star (F l))) = b'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules.
 
-Establish `e : Complex.exp (Real.pi * (n * a - m * a') + Real.pi / 2 * (n * b - m * b')) = Complex.exp (Real.pi * a + Real.pi / 2 * b) ^ n / Complex.exp (Real.pi * a' + Real.pi / 2 * b') ^ m`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_sub]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h6` using `Complex.exp_ne_zero (Real.pi * a + Real.pi / 2 * b)`.
-
-Establish `h7` using `Complex.exp_ne_zero (Real.pi * a' + Real.pi / 2 * b')`. Rewrite using `[e]`. Generalize the expression as in `Complex.exp (Real.pi * a + Real.pi / 2 * b) = s at h6`. Generalize the expression as in `Complex.exp (Real.pi * a' + Real.pi / 2 * b') = s' at h7`. Simplify using `only [mul_pow]`.
-
-Use the proof step `field_simp)`. Introduce `z v`. Establish `h` using `hermForm_sub_smul Hm H₂ n m z v`. Rewrite `h` using `[key.1, hH₂, hermForm_pull]`. Simplify using `only [hermForm, Matrix.zero_mulVec, dotProduct_zero] at h`.
-
-Conclude with `(sub_eq_zero.1 h.symm).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermForm_pull_eq_of_lbIso_pow :
     ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (L : LB A.left) (L' : LB A'.left), L.IsLB → L'.IsLB →

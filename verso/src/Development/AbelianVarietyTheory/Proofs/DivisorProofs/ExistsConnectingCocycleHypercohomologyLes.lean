@@ -16,7 +16,7 @@ namespace GlobalTheory.EtC.LesChar
 variable {R' : Type} [CommRing R']
 
 /- English proof (translation)
-The claim follows from `(InjectiveResolution.Hom.ι'_comp_hom' (⟨InjectiveResolution.desc φ (injectiveResolution G) (injectiveResolution F), InjectiveResolution.desc_commutes_zero φ _ _⟩ : InjectiveResolution.Hom _ _ φ)).symm`.
+A detailed English derivation is pending.
 -/
 theorem resAug_comm (R : Type) [CommRing R] {F G : Shv R} (φ : F ⟶ G) :
     (CochainComplex.singleFunctor (Shv R) 0).map φ ≫ resAug G = resAug F ≫ resMap R φ :=
@@ -25,7 +25,7 @@ theorem resAug_comm (R : Type) [CommRing R] {F G : Shv R} (φ : F ⟶ G) :
       InjectiveResolution.desc_commutes_zero φ _ _⟩ : InjectiveResolution.Hom _ _ φ)).symm
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff]`. Conclude with `⟨-1, by omega, Cochain.ofHomotopy ho, by ext; simp [δ_ofHomotopy]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mk_ofHom_eq {K L : Cx R'} {f g : K ⟶ L} (ho : Homotopy f g) :
     CohomologyClass.mk (Cocycle.ofHom f) = CohomologyClass.mk (Cocycle.ofHom g) := by
@@ -33,21 +33,19 @@ theorem mk_ofHom_eq {K L : Cx R'} {f g : K ⟶ L} (ho : Homotopy f g) :
   exact ⟨-1, by omega, Cochain.ofHomotopy ho, by ext; simp [δ_ofHomotopy]⟩
 
 /- English proof (translation)
-Introduce `R _ S e h K n`. Take `⟨hid, -, hcomp, -, hhtp⟩` from `GlobalTheory.T.hypercohomologyPullbackPushforward_functorial R`. Take `⟨-, -, hass⟩` from `GlobalTheory.T.cocycleCompHomComplex_assoc_on_cohomology_classes R (add_zero n) (zero_add 1) (rfl : n + 1 = n + 1) (rfl : n + 1 = n + 1)`. Take `⟨x1, x2, x3⟩` from `GlobalTheory.T.hypercohomology_mappingCone_second_variable_exact R K (resMap R S.f) n`. Establish `hg : ∀ x, HK.post R K S.g n x = cpush K e.hom n (cpush K (mappingCone.inr (resMap R S.f)) n x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[← hcomp]`. Conclude with `(congrFun (congrArg DFunLike.coe ((hhtp _ _ ⟨h⟩ K n).2)) x).symm`. Establish `hz : ∀ x, HK.ext R K (zcomp (Cocycle.ofHom e.inv) (mappingCone.fst (resMap R S.f)) (zero_add 1)) n (n + 1) rfl x = cpost K (mappingCone.fst (resMap R S.f)) n (n + 1) rfl (cpush K e.inv n x)` using `fun x => hass _ _ _`. Establish `hie : ∀ x, cpush K e.inv n (cpush K e.hom n x) = x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[← hcomp, (hhtp _ _ ⟨e.homotopyHomInvId⟩ K n).2]`. Conclude with `(hid K _ n x).2`. Establish `hei : ∀ x, cpush K e.hom n (cpush K e.inv n x) = x`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hcomp, (hhtp _ _ ⟨e.homotopyInvHomId⟩ K n).2]`. Conclude with `(hid K _ n x).2`. Use `⟨fun y => ?_, fun y => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hg, ← map_zero (cpush K e.hom n)]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hy`. Conclude with `(x1 _).1 (by rw [← hie (cpush K (mappingCone.inr (resMap R S.f)) n y), hy, hie])`. Introduce `hy`. Rewrite using `[(x1 _).2 hy]`. Rewrite using `[hz]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨x, hx⟩` from `(x2 _).1 hy`. Conclude with `⟨x, by rw [hg, hx, hei]⟩`. Introduce and unpack `⟨x, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hg, hie]`. Conclude with `(x2 _).2 ⟨x, rfl⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨x, hx⟩` from `(x3 _).1 hy`.
-
-Conclude with `⟨cpush K e.hom n x, by rw [hz, hie, hx]⟩`. Introduce and unpack `⟨x, rfl⟩`. Rewrite using `[hz]`. Conclude with `(x3 _).2 ⟨_, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exact_part : ∀ (R : Type) [CommRing R] (S : ShortComplex (Shv R))
     (e : HomotopyEquiv (mappingCone (resMap R S.f)) (res R S.X₃)),
@@ -99,7 +97,7 @@ theorem exact_part : ∀ (R : Type) [CommRing R] (S : ShortComplex (Shv R))
       exact (x3 _).2 ⟨_, rfl⟩
 
 /- English proof (translation)
-Use `ext1`. Express the relevant statement in the definitionally equal form `(Cochain.ofHom f).comp ((Cochain.ofHom g).comp b.1 (zero_add n)) (zero_add n) = (Cochain.ofHom (f ≫ g)).comp b.1 (zero_add n)`. Rewrite using `[Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zcomp_ofHom_ofHom {K L M N : Cx R'} {n : ℤ} (f : K ⟶ L) (g : L ⟶ M) (b : Cocycle M N n) :
     zcomp (Cocycle.ofHom f) (zcomp (Cocycle.ofHom g) b (zero_add n)) (zero_add n) =
@@ -110,7 +108,7 @@ theorem zcomp_ofHom_ofHom {K L M N : Cx R'} {n : ℤ} (f : K ⟶ L) (g : L ⟶ M
   rw [Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]
 
 /- English proof (translation)
-Establish `h1 : CohomologyClass.mk (Cocycle.ofHom ((m ≫ eh) ≫ ei)) = CohomologyClass.mk (Cocycle.ofHom m)` using `mk_ofHom_eq (((Homotopy.ofEq (Category.assoc _ _ _)).trans (hh.compLeft m)).trans (Homotopy.ofEq (Category.comp_id m)))`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom q) _ (zero_add 1)) = CohomologyClass.mk (zcomp (Cocycle.ofHom q) w (zero_add 1))`. Rewrite using `[zcomp_ofHom_ofHom, ← key, ← cpost_mk, cmp, cpost_mk, zcomp_ofHom_ofHom, ← cpost_mk, h1, cpost_mk]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem assemble {D C I₃ I₁ X : Cx R'} (q : D ⟶ X) (a : X ⟶ I₃) (m : D ⟶ C) (eh : C ⟶ I₃) (ei : I₃ ⟶ C)
     (fst : Cocycle C I₁ 1) (w : Cocycle X I₁ 1) (hh : Homotopy (eh ≫ ei) (𝟙 C))
@@ -126,11 +124,9 @@ theorem assemble {D C I₃ I₁ X : Cx R'} (q : D ⟶ X) (a : X ⟶ I₃) (m : D
   rw [zcomp_ofHom_ofHom, ← key, ← cpost_mk, cmp, cpost_mk, zcomp_ofHom_ofHom, ← cpost_mk, h1, cpost_mk]
 
 /- English proof (translation)
-Introduce `R _ S hS`. Take `⟨e, ⟨h⟩⟩` from `GlobalTheory.T.shortExact_mappingCone_resolution_homotopyEquiv R S hS`. Use `⟨_, exact_part R S e h, 1, ?_⟩` and prove the remaining obligations. Introduce `φ ψ hφ hψ w hw`. Rewrite using `[one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `resAug_comm R S.f`. Establish `hS' : (S.map (CochainComplex.singleFunctor (Shv R) 0)).ShortExact` using `hS.map_of_exact (HomologicalComplex.single _ _ _)`. Use `haveI := mappingCone.quasiIso_descShortComplex hS'`. Use `haveI : (res R S.X₁).IsKInjective := by unfold res; infer_instance`. Apply `(GlobalTheory.T.hypercohomologyPullback_bijective_of_quasiIso R (mappingCone.descShortComplex (S.map (CochainComplex.singleFunctor (Shv R) 0))) (res R S.X₁) 1).1` to reduce the goal to its premises.
-
-Conclude with `assemble _ _ _ _ _ _ _ e.homotopyHomInvId (GlobalTheory.T.mappingCone_shortExact_augmentation_class_eq R S hS hc e h) (GlobalTheory.T.mappingCone_connecting_cocycle_shortComplex_degree_zero R S hc φ ψ hφ hψ w hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_connecting_cocycle : ∀ (R : Type) [CommRing R] (S : ShortComplex (Shv R)), S.ShortExact →
   ∃ z : Cocycle (res R S.X₃) (res R S.X₁) 1,

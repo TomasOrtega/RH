@@ -9,11 +9,9 @@ noncomputable section
 namespace GlobalTheory.WinLift
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AinfXi.isLocalRing_ainf (p := p) hv`. Use `haveI := ReciprocityTheory.PGsh.Ainf.O_local O hv`. Assume the negation of the conclusion as `hn`. Take `⟨w, hw⟩` from `ReciprocityTheory.PGsh.Ainf.theta_surj p O hv (↑hz.unit⁻¹ : O)`. Establish `hm : z ∈ IsLocalRing.maximalIdeal (Ainf p O)` using `(IsLocalRing.mem_maximalIdeal _).2 hn`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hk : z * w - 1 ∈ IsLocalRing.maximalIdeal (Ainf p O)`. Apply `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top (WittVector.fontaineTheta O p))` to reduce the goal to its premises. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, hw, map_one, IsUnit.mul_val_inv, sub_self]`. Establish `h1` using `Ideal.sub_mem _ (Ideal.mul_mem_right w _ hm) hk`. Rewrite `h1` using `[sub_sub_cancel]`.
-
-Conclude with `(IsLocalRing.maximalIdeal.isMaximal (Ainf p O)).ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_isUnit_theta {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C]
     [CharZero C] {v : Valuation C NNReal} {O : Type} [CommRing O] [Algebra O C]
@@ -32,11 +30,9 @@ theorem isUnit_of_isUnit_theta {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [Is
   exact (IsLocalRing.maximalIdeal.isMaximal (Ainf p O)).ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F ι _ _ U hU`. Use `choose x y hxy using fun i j => F.gen (U i j)`. Use `⟨Matrix.of x, ?_, fun i j => ⟨F.a (y i j), by rw [hxy i j]; simp⟩⟩` and prove the remaining obligations. Establish `hτ` using `GlobalTheory.WinLift.theta_tau F hv hε`. Establish `e : F.θ.mapMatrix (F.a.mapMatrix (Matrix.of x)) = F.θ.mapMatrix U` using `Matrix.ext fun i j => by simp [hxy i j, hτ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : WittVector.fontaineTheta O p (Matrix.of x).det = F.θ U.det`. Rewrite using `[← F.θ_a, RingHom.map_det, RingHom.map_det, e, ← RingHom.map_det]`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Apply `isUnit_of_isUnit_theta hv` to reduce the goal to its premises. Rewrite using `[hdet]`.
-
-Conclude with `((Matrix.isUnit_iff_isUnit_det U).1 hU).map F.θ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_lift_mod_tau : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (U : Matrix ι ι F.B), IsUnit U → ∃ V : Matrix ι ι (Ainf p O), IsUnit V ∧ ∀ i j, F.τ ∣ U i j - F.a (V i j) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F ι _ _ U hU

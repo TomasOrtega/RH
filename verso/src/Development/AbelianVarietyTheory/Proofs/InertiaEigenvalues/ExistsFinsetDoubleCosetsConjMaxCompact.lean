@@ -10,11 +10,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.ClassFinConj
 
 /- English proof (translation)
-Introduce `L _ _ _ n h`. Take `⟨T, hT⟩` from `GlobalTheory.DefiniteClassFinite.exists_finset_double_cosets_Umax L n`. Take `⟨N', hN', hc⟩` from `GlobalTheory.CongConjugate.congConj L n h 1 one_pos`. Take `⟨J, hJ⟩` from `GlobalTheory.AlgFormsFin.exists_cover L n hN'`. Use `⟨(T ×ˢ J).image (fun p => p.1 * p.2), fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, t, u, ht, hu, e⟩` from `hT g`. Take `⟨j, hj, κ, hκ, eu⟩` from `hJ u hu`. Use `⟨(γ : GAf L n), γ.2, t * j, Finset.mem_image.2 ⟨(t, j), Finset.mem_product.2 ⟨ht, hj⟩, rfl⟩, κ, Subgroup.mem_inf.2 ⟨hκ.1, Subgroup.mem_map.2 ⟨h⁻¹ * κ * h, (hc κ hκ).1, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `[MulAut.conj_apply, mul_assoc]`. Rewrite using `[e, eu]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_finset_double_cosets_conj : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (h : GAf L n),
     ∃ T : Finset (GAf L n), ∀ g : GAf L n, ∃ γ ∈ GQ L n, ∃ t ∈ T,

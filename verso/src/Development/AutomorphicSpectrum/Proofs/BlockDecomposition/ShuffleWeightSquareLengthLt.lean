@@ -11,11 +11,9 @@ namespace GlobalTheory.CompanionTheory.MultiSeg.Rank
 variable {T : Type u}
 
 /- English proof (translation)
-Establish `key : ∀ a b : ℕ, a ≤ b → s^[a] t = s^[b] t → a = b`. Introduce `a b hab h`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Rewrite `h` using `[Function.iterate_add_apply]`. Establish `h' : s^[k] t = t` using `((hs.iterate a) h).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos k with hk | hk` into its components or cases. Simplify using `[hk]`. Conclude with `absurd h' (hp t k hk)`. Break down `le_total a b with hab | hab` into its components or cases. Conclude with `key a b hab h`.
-
-Conclude with `(key b a hab h.symm).symm`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem iter_inj {s : T → T} (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) {t : T} {a b : ℕ}
@@ -40,13 +38,13 @@ Both sides reduce to the same expression.
 theorem word_zero (s : T → T) (t : T) : word s t 0 = [] := rfl
 
 /- English proof (translation)
-Simplify using `[word, List.range_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem word_succ (s : T → T) (t : T) (l : ℕ) : word s t (l + 1) = s^[l] t :: word s t l := by
   simp [word, List.range_succ]
 
 /- English proof (translation)
-Simplify using `only [word, List.mem_map, List.mem_reverse, List.mem_range]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_word {s : T → T} {t y : T} {l : ℕ} : y ∈ word s t l ↔ ∃ i < l, s^[i] t = y := by
   simp only [word, List.mem_map, List.mem_reverse, List.mem_range]
@@ -57,7 +55,7 @@ Both sides reduce to the same expression.
 theorem dec_eq_word (s : T → T) (Δ : ASeg T) : Δ.dec s = word s Δ.start Δ.len := rfl
 
 /- English proof (translation)
-Unfold `word`. Conclude with `List.Nodup.map_on (fun x _ y _ h => iter_inj hs hp h) (List.nodup_reverse.2 List.nodup_range)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem word_nodup {s : T → T} (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) (t : T) (l : ℕ) : (word s t l).Nodup := by
@@ -65,15 +63,15 @@ theorem word_nodup {s : T → T} (hs : Function.Injective s)
   exact List.Nodup.map_on (fun x _ y _ h => iter_inj hs hp h) (List.nodup_reverse.2 List.nodup_range)
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `zero`. Introduce `a b h`. Rewrite `h` using `[word_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨rfl, rfl⟩` from `List.append_eq_nil_iff.1 h.symm`. Conclude with `⟨0, le_refl 0, (word_zero s t).symm, fun y hy => by simp at hy⟩`. Consider the case `succ l ih`. Introduce `a b h`. Consider the cases of `a with`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `nil`. Use `⟨l + 1, le_refl _, ?_, fun y hy => by simp at hy⟩` and prove the remaining obligations. Simplify using `using h.symm`. Consider the case `cons y a'`. Rewrite `h` using `[word_succ, List.cons_append]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hy, h'⟩` from `List.cons.inj h`. Take `⟨l', hl', hb, ha⟩` from `ih a' b h'`. Use `⟨l', Nat.le_succ_of_le hl', hb, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Break down `List.mem_cons.1 hz with rfl | hz` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨l, hl', Nat.lt_succ_self l, hy⟩`. Take `⟨i, h1, h2, h3⟩` from `ha z hz`. Conclude with `⟨i, h1, Nat.lt_succ_of_lt h2, h3⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem word_split (s : T → T) (t : T) : ∀ (l : ℕ) (a b : List T), word s t l = a ++ b →
     ∃ l', l' ≤ l ∧ b = word s t l' ∧ ∀ y ∈ a, ∃ i, l' ≤ i ∧ i < l ∧ s^[i] t = y := by
@@ -104,9 +102,9 @@ theorem word_split (s : T → T) (t : T) : ∀ (l : ℕ) (a b : List T), word s 
 def Con (s : T → T) (u : T) (d : ℕ) (x : List T) : Prop := u ∈ x ∧ s^[d] u ∈ x
 
 /- English proof (translation)
-Unfold `Con`. Rewrite using `[mem_word, mem_word]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨i, hi, rfl⟩, ⟨k, hk, hk'⟩⟩`. Use `⟨i, ?_, rfl⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hk'` using `[← Function.iterate_add_apply]`. Use `iter_inj hs hp hk'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨⟨i, by omega, rfl⟩, ⟨d + i, by omega, Function.iterate_add_apply s d i t⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem con_word_iff {s : T → T} (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) {u t : T} {d l : ℕ} :
@@ -123,7 +121,7 @@ theorem con_word_iff {s : T → T} (hs : Function.Injective s)
     exact ⟨⟨i, by omega, rfl⟩, ⟨d + i, by omega, Function.iterate_add_apply s d i t⟩⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[con_word_iff hs hp]`. Take `⟨i, hi, hu⟩` from `h`. Conclude with `⟨i, by omega, hu⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem con_mid {s : T → T} (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) {u t : T} {d j l : ℕ}
@@ -133,13 +131,11 @@ theorem con_mid {s : T → T} (hs : Function.Injective s)
   exact ⟨i, by omega, hu⟩
 
 /- English proof (translation)
-Take `⟨l', _, hb, ha⟩` from `word_split s t l a b hx.symm`. Establish `hc' : u ∈ a ++ b ∧ s^[d] u ∈ a ++ b` using `hc`. Establish `hvb : s^[d] u ∈ b`. Break down `List.mem_append.1 hc'.2 with h | h` into its components or cases. Conclude with `absurd h hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Use `show u ∈ b ∧ s^[d] u ∈ b`. Use `⟨?_, hvb⟩` and prove the remaining obligations. Break down `List.mem_append.1 hc'.1 with h | h` into its components or cases. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi1, _, hi3⟩` from `ha u h`. Rewrite `hvb` using `[hb, mem_word]`. Take `⟨k, hk, hk'⟩` from `hvb`. Rewrite `hk'` using `[← hi3, ← Function.iterate_add_apply]`. Use `iter_inj hs hp hk'` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem con_suffix {s : T → T} (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) {a b : List T} {t : T} {l : ℕ}
@@ -164,11 +160,11 @@ theorem con_suffix {s : T → T} (hs : Function.Injective s)
   · exact h
 
 /- English proof (translation)
-Introduce `D w'`. Proceed by induction on `D with`. Consider the case `nil => intro u v h`. Conclude with `⟨[], u, [], v, rfl, rfl, Interleave.nil, h⟩`. Consider the case `cons a D ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `u v h`. Rewrite `h` using `[List.cons_append]`. Consider the cases of `h with`. Consider the case `left h'`. Take `⟨u1, u2, v1, v2, rfl, rfl, h1, h2⟩` from `ih _ _ h'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a :: u1, u2, v1, v2, rfl, rfl, Interleave.left h1, h2⟩`. Consider the case `right h'`. Take `⟨u1, u2, v1, v2, rfl, rfl, h1, h2⟩` from `ih _ _ h'`. Conclude with `⟨u1, u2, a :: v1, v2, rfl, rfl, Interleave.right h1, h2⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem interleave_split : ∀ (D w' u v : List T), Interleave u v (D ++ w') →
     ∃ u1 u2 v1 v2, u = u1 ++ u2 ∧ v = v1 ++ v2 ∧ Interleave u1 v1 D ∧ Interleave u2 v2 w' := by
@@ -187,13 +183,13 @@ theorem interleave_split : ∀ (D w' u v : List T), Interleave u v (D ++ w') →
       exact ⟨u1, u2, a :: v1, v2, rfl, rfl, Interleave.right h1, h2⟩
 
 /- English proof (translation)
-Introduce `us`. Proceed by induction on `us with`. Consider the case `nil`. Introduce `D w' h`. Generalize the expression as in `hx : D ++ w' = x at h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable.
 
-Consider the cases of `h`. Take `⟨rfl, rfl⟩` from `List.append_eq_nil_iff.1 hx`. Conclude with `⟨[], rfl, Shuffle.nil, Shuffle.nil⟩`. Consider the case `cons u us ih`. Introduce `D w' h`.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Generalize the expression as in `hx : D ++ w' = x at h`. Consider the cases of `h with`. Consider the case `cons hS hI`. Substitute `hx` using the available equality. Take `⟨u1, u2, v1, v2, rfl, rfl, h1, h2⟩` from `interleave_split D w' _ _ hI`.
+Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Treat this case separately. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hP1, hP2⟩` from `ih _ _ hS`. Conclude with `⟨(u1, u2) :: P, by simp [hP], Shuffle.cons hP1 h1, Shuffle.cons hP2 h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem shuffle_split : ∀ (us : List (List T)) (D w' : List T), Shuffle us (D ++ w') →
     ∃ P : List (List T × List T), P.map (fun p => p.1 ++ p.2) = us ∧
@@ -217,7 +213,7 @@ theorem shuffle_split : ∀ (us : List (List T)) (D w' : List T), Shuffle us (D 
       exact ⟨(u1, u2) :: P, by simp [hP], Shuffle.cons hP1 h1, Shuffle.cons hP2 h2⟩
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => simp`. Consider the case `left _ ih => simp only [List.mem_cons, ih]`. The claim follows by propositional logic. Consider the case `right _ ih => simp only [List.mem_cons, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. The claim follows by propositional logic. Treat this case separately.
 
 The claim follows by propositional logic.
 -/
@@ -229,7 +225,7 @@ theorem interleave_mem {u v w : List T} (h : Interleave u v w) {y : T} :
   | right _ ih => simp only [List.mem_cons, ih]; tauto
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => exact List.Perm.refl _`. Consider the case `left _ ih => exact ih.cons _`. Consider the case `right _ ih => exact List.perm_middle.trans (ih.cons _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem interleave_perm {u v w : List T} (h : Interleave u v w) : (u ++ v).Perm w := by
   induction h with
@@ -238,9 +234,9 @@ theorem interleave_perm {u v w : List T} (h : Interleave u v w) : (u ++ v).Perm 
   | right _ ih => exact List.perm_middle.trans (ih.cons _)
 
 /- English proof (translation)
-Use `revert hx`. Proceed by induction on `h with`. Consider the case `nil => intro hx`. Simplify using `at hx`. Consider the case `cons hS hI ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Break down `List.mem_cons.1 hx with rfl | hx'` into its components or cases. Conclude with `(interleave_mem hI).2 (Or.inl hy)`. Conclude with `(interleave_mem hI).2 (Or.inr (ih hx'))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem shuffle_mem {us : List (List T)} {w : List T} (h : Shuffle us w) {x : List T}
     (hx : x ∈ us) {y : T} (hy : y ∈ x) : y ∈ w := by
@@ -254,13 +250,11 @@ theorem shuffle_mem {us : List (List T)} {w : List T} (h : Shuffle us w) {x : Li
     · exact (interleave_mem hI).2 (Or.inr (ih hx'))
 
 /- English proof (translation)
-Use `revert hw`. Proceed by induction on `h with`. Consider the case `nil => intro _`. Simplify using the standard rewrite rules. Consider the case `@cons u us v w hS hI ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hw`. Establish `hnd : (u ++ v).Nodup` using `(interleave_perm hI).nodup_iff.2 hw`. Establish `hvn : v.Nodup` using `hnd.of_append_right`. Rewrite using `[List.countP_cons]`. Distinguish the cases in `hyu : y ∈ u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h0 : us.countP (fun x => decide (y ∈ x)) = 0`. Rewrite using `[List.countP_eq_zero]`. Introduce `x hx hyx`. Conclude with `List.disjoint_of_nodup_append hnd hyu (shuffle_mem hS hx (of_decide_eq_true hyx))`. Simplify using `[h0, hyu]`.
-
-Simplify `ih hvn` using `[hyu]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem shuffle_unique {us : List (List T)} {w : List T} (h : Shuffle us w) (hw : w.Nodup)
     (y : T) : us.countP (fun x => decide (y ∈ x)) ≤ 1 := by
@@ -281,9 +275,9 @@ theorem shuffle_unique {us : List (List T)} {w : List T} (h : Shuffle us w) (hw 
     · simpa [hyu] using ih hvn
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons x l ih`. Establish `ih'` using `ih (fun y hy => h y (by simp [hy]))`. Establish `hx` using `h x (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[List.countP_cons, List.countP_cons, List.countP_cons]`. Apply the tactic sequence `cases hpx : p x <;> cases hqx : q x <;> cases hrx : r x <;> simp [hpx, hqx, hrx] at hx ⊢ <;> omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem countP_le_add {α : Type*} (l : List α) (p q r : α → Bool)
     (h : ∀ x ∈ l, p x = true → q x = true ∨ r x = true) :
@@ -297,21 +291,19 @@ theorem countP_le_add {α : Type*} (l : List α) (p q r : α → Bool)
     cases hpx : p x <;> cases hqx : q x <;> cases hrx : r x <;> simp [hpx, hqx, hrx] at hx ⊢ <;> omega
 
 /- English proof (translation)
-Establish `memC : ∀ (Δ : ASeg T) (x : T), x ∈ Δ.carrier s ↔ ∃ k < Δ.len, s^[k] Δ.start = x` using `fun Δ x => Iff.rfl`. Simplify using `only [dec_eq_word] at hu hv hc ⊢`. Rewrite `hc` using `[con_word_iff hs hp]`. Rewrite using `[con_word_iff hs hp]`. Take `⟨i, hij, hiu⟩` from `hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Apply `hn` to reduce the goal to its premises. Establish `hd : Γ.len ≤ i + d`. Assume the negation of the conclusion as `h`. Conclude with `hcon ⟨i, by omega, hiu⟩`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hΘs : Θ.start = s^[j + 1 + i] Γ.start`. Rewrite using `[hΘ, ← hiu]`. Conclude with `(Function.iterate_add_apply s (j + 1) i Γ.start).symm`. Use `show ((∃ Γ' : ASeg T, Γ'.carrier s = Γ.carrier s ∪ Θ.carrier s) ∧ ¬ Γ.carrier s ⊆ Θ.carrier s ∧ ¬ Θ.carrier s ⊆ Γ.carrier s) ∧ ∃ j' : ℕ, 0 < j' ∧ Θ.start = s^[j'] Γ.start`. Use `⟨⟨⟨⟨Γ.start, max Γ.len (j + 1 + i + Θ.len), lt_max_of_lt_left Γ.len_pos⟩, ?_⟩, ?_, ?_⟩, j + 1 + i, by omega, hΘs⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Rewrite using `[Set.mem_union, memC, memC, memC]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Break down `lt_max_iff.1 hk with hk | hk` into its components or cases.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inl ⟨k, hk, rfl⟩`. Distinguish the cases in `hkl : k < Γ.len`. Conclude with `Or.inl ⟨k, hkl, rfl⟩`. Use `right`. Use `⟨k - (j + 1 + i), by omega, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(by`. Rewrite using `[hΘs, ← Function.iterate_add_apply, Nat.sub_add_cancel (by omega : j + 1 + i ≤ k)] :`. Use the proof step `s^[k - (j + 1 + i)] Θ.start = s^[k] Γ.start)`. Introduce and unpack `(⟨k, hk, rfl⟩ | ⟨k, hk, rfl⟩)`. Conclude with `⟨k, lt_max_iff.2 (Or.inl hk), rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨k + (j + 1 + i), lt_max_iff.2 (Or.inr (by omega)), ?_⟩` and prove the remaining obligations. Conclude with `(by rw [hΘs]; exact Function.iterate_add_apply s k (j + 1 + i) Γ.start : s^[k + (j + 1 + i)] Γ.start = s^[k] Θ.start)`. Introduce `hsub`. Conclude with `hu (mem_word.2 ((memC Θ u).1 (hsub ((memC Γ u).2 ⟨i, by omega, hiu⟩))))`. Introduce `hsub`.
-
-Take `⟨k, hk, hk'⟩` from `(memC Γ _).1 (hsub ((memC Θ _).2 (mem_word.1 hv)))`. Rewrite `hk'` using `[← hiu, ← Function.iterate_add_apply]`. Use `iter_inj hs hp hk'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem con_of_not_precedes {s : T → T} (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) {Γ Θ : ASeg T} {u : T} {j d : ℕ}
@@ -362,23 +354,21 @@ theorem con_of_not_precedes {s : T → T} (hs : Function.Injective s)
     omega
 
 /- English proof (translation)
-Establish `itc : ∀ (m k : ℕ) (x : T), m = k → s^[m] x = s^[k] x`. Introduce `m k x h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Take `⟨l', _, hb, ha0⟩` from `word_split s t l a b hx.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `hc' : u ∈ a ++ b ∧ s^[d] u ∈ a ++ b` using `hc`. Establish `hu2 : u ∈ b`. Break down `List.mem_append.1 hc'.1 with h | h` into its components or cases. Conclude with `absurd (ha u h) hu`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hu2` using `[hb, mem_word]`. Take `⟨i, hi, rfl⟩` from `hu2`. Take `⟨i', hi1, hi2, hi3⟩` from `ha0 _ hv`. Rewrite `hi3` using `[← Function.iterate_add_apply]`. Establish `hi'` using `iter_inj hs hp hi3`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl'a : s^[l'] t ∈ a`. Establish `hin : s^[l'] t ∈ a ++ b`. Rewrite using `[hx, mem_word]`. Conclude with `⟨l', by omega, rfl⟩`. Break down `List.mem_append.1 hin with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. It suffices to derive a contradiction. Rewrite `h` using `[hb, mem_word]`. Take `⟨k, hk, hk'⟩` from `h`. Use `iter_inj hs hp hk'` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hmem` using `ha _ hl'a`. Rewrite `hmem` using `[dec_eq_word, mem_word]`. Take `⟨k1, hk1, hk1'⟩` from `hmem`. Establish `hk1le : k1 + i < l'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hcon`. Apply `hu` to reduce the goal to its premises. Rewrite using `[dec_eq_word, mem_word]`. Use `⟨k1 - (l' - i), by omega, ?_⟩` and prove the remaining obligations. Apply `hs.iterate (l' - i)` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Function.iterate_add_apply, ← Function.iterate_add_apply, show l' - i + (k1 - (l' - i)) = k1 by omega, hk1']`. Conclude with `itc _ _ _ (by omega)`. Use `⟨l' - 1 - i - k1, by omega, ?_, ha _ hv⟩` and prove the remaining obligations. Apply `hs.iterate k1` to reduce the goal to its premises. Rewrite using `[hk1', ← Function.iterate_add_apply, ← Function.iterate_add_apply]`.
-
-Conclude with `itc _ _ _ (by omega)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_start_eq_iterate_of_append_eq_word {s : T → T} (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) {Γ : ASeg T} {a b : List T} {t u : T}
@@ -429,43 +419,39 @@ private theorem exists_start_eq_iterate_of_append_eq_word {s : T → T} (hs : Fu
   exact itc _ _ _ (by omega)
 
 /- English proof (translation)
-Introduce `B`. Proceed by induction on `B with`. Consider the case `nil`. Introduce `_ us hus _ u d`. Establish `h0 : us.countP (fun x => decide (Con s u d x)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[List.countP_eq_zero]`. Introduce `x hx hc`. Establish `hc0 : Con s u d x` using `of_decide_eq_true hc`. Establish `hc' : u ∈ x ∧ s^[d] u ∈ x` using `hc0`. Use `shuffle_mem hus hx hc'.1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at this`. Rewrite using `[h0]`. Conclude with `Nat.zero_le _`. Consider the case `cons Γ1 rest ih`. Introduce `hB us hus hw u d`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hB1, hB2⟩` from `List.pairwise_cons.1 hB`. Take `⟨P, hPus, hP1, hP2⟩` from `shuffle_split us (Γ1.dec s) ((rest.map (ASeg.dec s)).flatten) hus`. Substitute `hPus` using the available equality. Establish `hwP : ∀ p ∈ P, ∃ t l, p.1 ++ p.2 = word s t l`. Introduce `p hpm`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, l, h⟩` from `hw _ (List.mem_map.2 ⟨p, hpm, rfl⟩)`. Conclude with `⟨t, l, h⟩`. Establish `hsnd : ∀ x ∈ P.map Prod.snd, ∃ t l, x = word s t l`. Introduce `x hx`. Take `⟨p, hpm, rfl⟩` from `List.mem_map.1 hx`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, l, h⟩` from `hwP p hpm`. Take `⟨l', _, hb, _⟩` from `word_split s t l p.1 p.2 h.symm`. Conclude with `⟨t, l', hb⟩`. Establish `h2 : ∀ e, P.countP (fun p => decide (Con s u e p.2)) ≤ rest.countP (fun Γ => decide (Con s u e (Γ.dec s)))`. Introduce `e`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `ih hB2 (P.map Prod.snd) hP2 hsnd u e` as an intermediate fact. Rewrite `this` using `[List.countP_map]`. Conclude with `this`. Establish `hfst : ∀ p ∈ P, ∀ y ∈ p.1, y ∈ Γ1.dec s` using `fun p hpm y hy => shuffle_mem hP1 (List.mem_map.2 ⟨p, hpm, rfl⟩) hy`. Establish `hnd1 : (Γ1.dec s).Nodup`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dec_eq_word]`. Conclude with `word_nodup hs hp _ _`. Establish `hRle : rest.countP (fun Γ => decide (Con s u d (Γ.dec s))) ≤ (Γ1 :: rest).countP (fun Γ => decide (Con s u d (Γ.dec s)))`. Rewrite using `[List.countP_cons]`. Conclude with `Nat.le_add_right _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[List.countP_map]`. Distinguish the cases in `hΓ : Con s u d (Γ1.dec s)`. Establish `huniq : P.countP (fun p => decide (s^[d] u ∈ p.1)) ≤ 1`. Use `shuffle_unique hP1 hnd1 (s^[d] u)` as an intermediate fact. Rewrite `this` using `[List.countP_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `this`. Establish `h1 : P.countP (fun p => decide (Con s u d (p.1 ++ p.2))) ≤ P.countP (fun p => decide (Con s u d p.2)) + P.countP (fun p => decide (s^[d] u ∈ p.1))`. Apply `countP_le_add` to reduce the goal to its premises. Introduce `p hpm hc`. Distinguish the cases in `hv : s^[d] u ∈ p.1`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Or.inr (decide_eq_true hv)`. Use `left`. Take `⟨t, l, hx⟩` from `hwP p hpm`. Conclude with `decide_eq_true (con_suffix hs hp hx (of_decide_eq_true hc) hv)`. Establish `hR : rest.countP (fun Γ => decide (Con s u d (Γ.dec s))) + 1 = (Γ1 :: rest).countP (fun Γ => decide (Con s u d (Γ.dec s)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[List.countP_cons_of_pos]`. Conclude with `decide_eq_true hΓ`. Establish `h2d` using `h2 d`. Use `le_trans h1 ?_` and prove the remaining obligations. Rewrite using `[← hR]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hj : ∃ j0, j0 ≤ d ∧ Γ1.start = s^[j0 + 1] u ∧ s^[d] u ∈ Γ1.dec s`. Take `⟨j0, hj0d, hst, hvΓ⟩` from `hj`. Establish `notin : ∀ e, e ≤ j0 → s^[e] u ∉ Γ1.dec s`. Introduce `e he h`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h` using `[dec_eq_word, mem_word, hst]`. Take `⟨k, _, hk⟩` from `h`. Rewrite `hk` using `[← Function.iterate_add_apply]`. Use `iter_inj hs hp hk` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hu1 : u ∉ Γ1.dec s` using `notin 0 (Nat.zero_le _)`. Establish `step1 : P.countP (fun p => decide (Con s u d (p.1 ++ p.2))) ≤ P.countP (fun p => decide (Con s u j0 p.2))`. Apply `List.countP_mono_left` to reduce the goal to its premises. Introduce `p hpm hc`. Take `⟨t, l, hx⟩` from `hwP p hpm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc1 : Con s u d (p.1 ++ p.2)` using `of_decide_eq_true hc`. Establish `hcj : Con s u j0 (p.1 ++ p.2)`. Rewrite `hc1`, the goal using `[hx]`. Conclude with `con_mid hs hp hc1 hj0d`. Conclude with `decide_eq_true (con_suffix hs hp hx hcj (fun h => notin j0 le_rfl (hfst p hpm _ h)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `step3 : rest.countP (fun Γ => decide (Con s u j0 (Γ.dec s))) ≤ rest.countP (fun Γ => decide (Con s u d (Γ.dec s)))`. Apply `List.countP_mono_left` to reduce the goal to its premises. Introduce `Θ hΘ hc`. Conclude with `decide_eq_true (con_of_not_precedes hs hp hst hu1 hvΓ (of_decide_eq_true hc) (hB1 Θ hΘ))`. Conclude with `le_trans (step1.trans ((h2 j0).trans step3)) hRle`.
-
-Establish `step : P.countP (fun p => decide (Con s u d (p.1 ++ p.2))) ≤ P.countP (fun p => decide (Con s u d p.2))`. Apply `List.countP_mono_left` to reduce the goal to its premises. Introduce `p hpm hc`. Take `⟨t, l, hx⟩` from `hwP p hpm`. Establish `hc1 : Con s u d (p.1 ++ p.2)` using `of_decide_eq_true hc`.
-
-Use `decide_eq_true (con_suffix hs hp hx hc1 ?_)` and prove the remaining obligations. Introduce `hv`. Establish `hu : u ∉ Γ1.dec s` using `fun hu => hΓ (show u ∈ Γ1.dec s ∧ s^[d] u ∈ Γ1.dec s from ⟨hu, hfst p hpm _ hv⟩)`. Conclude with `hj (exists_start_eq_iterate_of_append_eq_word hs hp hx (hfst p hpm) hc1 hv hu)`. Conclude with `le_trans (step.trans (h2 d)) hRle`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem count_le (s : T → T) (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) : ∀ (B : List (ASeg T)),
@@ -587,9 +573,9 @@ noncomputable def rank (s : T → T) (m : Multiset (ASeg T)) (u : T) (d : ℕ) :
   m.countP (fun Δ => Con s u d (Δ.dec s))
 
 /- English proof (translation)
-Take `⟨L', hL', hsh⟩` from `hn`. Substitute `hL'` using the available equality. Unfold `rank`. Rewrite using `[Multiset.coe_countP, Multiset.coe_countP]`. Establish `hB : L.reverse.Pairwise (fun a b => ¬ APrecedes s b a)` using `List.pairwise_reverse.2 hL`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `count_le s hs hp L.reverse hB (L'.map (ASeg.dec s)) hsh (fun x hx => by`. Take `⟨Δ, _, rfl⟩` from `List.mem_map.1 hx`. Conclude with `⟨Δ.start, Δ.len, dec_eq_word s Δ⟩) u d`. Rewrite `h` using `[List.countP_map, List.countP_reverse]`. Conclude with `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_le (s : T → T) (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) {L : List (ASeg T)} {n : Multiset (ASeg T)}
@@ -610,7 +596,7 @@ theorem rank_le (s : T → T) (hs : Function.Injective s)
 def wd (d : ℕ) : ℕ := if d = 0 then 1 else 2
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero => simp [wd]`. Consider the case `succ l ih`. Rewrite using `[Finset.sum_range_succ, ih, wd, if_neg (Nat.succ_ne_zero l)]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_wd (l : ℕ) : ∑ d ∈ Finset.range (l + 1), wd d = 2 * l + 1 := by
   induction l with
@@ -620,9 +606,9 @@ theorem sum_wd (l : ℕ) : ∑ d ∈ Finset.range (l + 1), wd d = 2 * l + 1 := b
     ring
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero => simp`. Consider the case `succ l ih`. Establish `h1 : ∑ d ∈ Finset.range (l + 1), (l + 1 - d) * wd d = ∑ d ∈ Finset.range (l + 1), ((l - d) * wd d + wd d)`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: d < l + 1` using `Finset.mem_range.1 hd`. Rewrite using `[show l + 1 - d = (l - d) + 1 by omega, Nat.add_mul, one_mul]`. Rewrite using `[h1, Finset.sum_add_distrib, sum_wd, Finset.sum_range_succ, ih, Nat.sub_self, zero_mul, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_sub_wd (l : ℕ) : ∑ d ∈ Finset.range l, (l - d) * wd d = l ^ 2 := by
   induction l with
@@ -642,11 +628,11 @@ noncomputable def pairs (s : T → T) (Δ : ASeg T) : Finset (T × ℕ) :=
     fun p => (s^[p.2] Δ.start, p.1)
 
 /- English proof (translation)
-Unfold `pairs`. Rewrite using `[dec_eq_word, con_word_iff hs hp, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨d, i⟩, hm, rfl⟩`. Establish `hm'` using `Finset.mem_sigma.1 hm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : d < Δ.len` using `Finset.mem_range.1 hm'.1`. Establish `h2 : i < Δ.len - d` using `Finset.mem_range.1 hm'.2`. Conclude with `⟨i, by show i + d < Δ.len; omega, rfl⟩`. Introduce and unpack `⟨i, hi, h⟩`. Use `⟨⟨q.2, i⟩, Finset.mem_sigma.2 ⟨Finset.mem_range.2 (by omega : q.2 < Δ.len), Finset.mem_range.2 (by omega : i < Δ.len - q.2)⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Prod.ext h rfl`.
+A detailed English derivation is pending.
 -/
 theorem mem_pairs {s : T → T} (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) {Δ : ASeg T} {q : T × ℕ} :
@@ -665,11 +651,11 @@ theorem mem_pairs {s : T → T} (hs : Function.Injective s)
     exact Prod.ext h rfl
 
 /- English proof (translation)
-Unfold `pairs`. Rewrite using `[Finset.sum_image]`. Rewrite using `[Finset.sum_sigma]`. Simplify using `only [Finset.sum_const, Finset.card_range, smul_eq_mul]`. Conclude with `sum_sub_wd Δ.len`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨d, i⟩ _ ⟨d', i'⟩ _ h`. Simplify using `only [Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Use `iter_inj hs hp h1` as an intermediate fact. Substitute `h2` using the available equality.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `this` using the available equality. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_pairs {s : T → T} (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) (Δ : ASeg T) :
@@ -688,17 +674,17 @@ theorem sum_pairs {s : T → T} (hs : Function.Injective s)
     rfl
 
 /- English proof (translation)
-Use `revert hm`. Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => intro _`. Simplify using `[sqLen, rank]`. Consider the case `cons Δ m ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hm`. Establish `hΔ` using `hm Δ (by simp)`. Establish `ih'` using `ih (fun Γ hΓ => hm Γ (by simp [hΓ]))`. Establish `hsplit : ∀ q ∈ P, wd q.2 * rank s (Δ ::ₘ m) q.1 q.2 = wd q.2 * rank s m q.1 q.2 + (if Con s q.1 q.2 (Δ.dec s) then wd q.2 else 0)`. Introduce `q _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `rank`. Rewrite using `[Multiset.countP_cons]`. Distinguish the cases in `hc : Con s q.1 q.2 (Δ.dec s)`. Rewrite using `[if_pos hc, if_pos hc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hc, if_neg hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfil : ∑ q ∈ P, (if Con s q.1 q.2 (Δ.dec s) then wd q.2 else 0) = Δ.len ^ 2`. Rewrite using `[← Finset.sum_filter, ← sum_pairs hs hp Δ]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `q`. Rewrite using `[Finset.mem_filter, mem_pairs hs hp]`. Conclude with `⟨fun h => h.2, fun h => ⟨hΔ ((mem_pairs hs hp).2 h), h⟩⟩`. Rewrite using `[Finset.sum_congr rfl hsplit, Finset.sum_add_distrib, hfil, ← ih']`. Simplify using `only [sqLen, Multiset.map_cons, Multiset.sum_cons]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sqLen_eq {s : T → T} (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) (P : Finset (T × ℕ))
@@ -732,7 +718,7 @@ theorem sqLen_eq {s : T → T} (hs : Function.Injective s)
     ring
 
 /- English proof (translation)
-Consider the cases of `Δ`. Consider the cases of `Γ`. Simplify using `only at h1 h2`. Substitute `h1` using the available equality. Substitute `h2` using the available equality.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -745,7 +731,7 @@ theorem aseg_eq {Δ Γ : ASeg T} (h1 : Δ.start = Γ.start) (h2 : Δ.len = Γ.le
   rfl
 
 /- English proof (translation)
-Rewrite using `[dec_eq_word, con_word_iff hs hp]`. Conclude with `⟨0, by have := Δ.len_pos; omega, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem con_self {s : T → T} (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) (Δ : ASeg T) :
@@ -754,13 +740,13 @@ theorem con_self {s : T → T} (hs : Function.Injective s)
   exact ⟨0, by have := Δ.len_pos; omega, rfl⟩
 
 /- English proof (translation)
-Establish `h1 : 0 < rank s a Δ.start (Δ.len - 1)`. Unfold `rank`. Rewrite using `[Multiset.countP_pos]`. Conclude with `⟨Δ, hΔ, con_self hs hp Δ⟩`. Rewrite `h1` using `[h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `rank at h1`. Rewrite `h1` using `[Multiset.countP_pos]`. Take `⟨Γ, hΓ, hc⟩` from `h1`. Rewrite `hc` using `[dec_eq_word, con_word_iff hs hp]`. Take `⟨i, hi, hst⟩` from `hc`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hl` using `hb Γ hΓ`. Establish `hpos` using `Δ.len_pos`. Establish `hi0 : i = 0` using `by omega`. Substitute `hi0` using the available equality. Establish `: Γ = Δ` using `aseg_eq hst (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `hΓ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_rank {s : T → T} (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) {a b : Multiset (ASeg T)} {Δ : ASeg T}
@@ -785,19 +771,19 @@ theorem mem_of_rank {s : T → T} (hs : Function.Injective s)
   exact hΓ
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `n m hk _`. Rewrite using `[Multiset.card_eq_zero.1 (by omega : Multiset.card n = 0), Multiset.card_eq_zero.1 (by omega : Multiset.card m = 0)]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ k ih`. Introduce `n m hk hr`. Distinguish the cases in `h0 : n + m = 0`. Establish `hc` using `congrArg Multiset.card h0`. Rewrite `hc` using `[Multiset.card_add, Multiset.card_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Multiset.card_eq_zero.1 (by omega : Multiset.card n = 0), Multiset.card_eq_zero.1 (by omega : Multiset.card m = 0)]`. Take `⟨Δ, hΔ, hmax⟩` from `Multiset.exists_max_image (fun Γ : ASeg T => Γ.len) h0`. Establish `key : ∀ (a b : Multiset (ASeg T)), (∀ u d, rank s a u d = rank s b u d) → Δ ∈ a → (∀ Γ ∈ a + b, Γ.len ≤ Δ.len) → Δ ∈ a ∧ Δ ∈ b`. Introduce `a b hab ha hm`. Conclude with `⟨ha, mem_of_rank hs hp ha (fun Γ hΓ => hm Γ (Multiset.mem_add.2 (Or.inr hΓ))) (hab _ _)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Establish `hboth : Δ ∈ n ∧ Δ ∈ m`. Break down `Multiset.mem_add.1 hΔ with h | h` into its components or cases. Conclude with `key n m hr h hmax`. Use `key m n (fun u d => (hr u d).symm) h (fun Γ hΓ => hmax Γ (by rw [add_comm]; exact hΓ))` as an intermediate fact. Conclude with `⟨this.2, this.1⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨n', rfl⟩` from `Multiset.exists_cons_of_mem hboth.1`. Take `⟨m', rfl⟩` from `Multiset.exists_cons_of_mem hboth.2`. Establish `hr' : ∀ u d, rank s n' u d = rank s m' u d`. Introduce `u d`. Use `hr u d` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `rank at this ⊢`. Rewrite `this` using `[Multiset.countP_cons, Multiset.countP_cons]`. Conclude with `Nat.add_right_cancel this`. Establish `hk' : Multiset.card n' + Multiset.card m' ≤ k`. Simplify using `only [Multiset.card_cons] at hk`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[ih n' m' hk' hr']`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_rank {s : T → T} (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) : ∀ (k : ℕ) (n m : Multiset (ASeg T)),
@@ -841,17 +827,15 @@ theorem eq_of_rank {s : T → T} (hs : Function.Injective s)
       rw [ih n' m' hk' hr']
 
 /- English proof (translation)
-Use `set P : Finset (T × ℕ) := (n + (L : Multiset (ASeg T))).toFinset.biUnion (pairs s) with hPdef`. Establish `hsub : ∀ m : Multiset (ASeg T), (∀ Δ ∈ m, Δ ∈ n + (L : Multiset (ASeg T))) → ∀ Δ ∈ m, pairs s Δ ⊆ P`. Introduce `m hm Δ hΔ`. Conclude with `Finset.subset_biUnion_of_mem (pairs s) (Multiset.mem_toFinset.2 (hm Δ hΔ))`. Establish `e1` using `sqLen_eq hs hp P n (hsub n fun Δ h => Multiset.mem_add.2 (Or.inl h))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `sqLen_eq hs hp P L (hsub L fun Δ h => Multiset.mem_add.2 (Or.inr h))`. Establish `hle : ∀ q ∈ P, wd q.2 * rank s n q.1 q.2 ≤ wd q.2 * rank s L q.1 q.2` using `fun q _ => Nat.mul_le_mul_left _ (rank_le s hs hp hL hn q.1 q.2)`. Rewrite using `[e1, e2]`. Assume the negation of the conclusion as `hnot`. Establish `hsum : ∑ q ∈ P, wd q.2 * rank s n q.1 q.2 = ∑ q ∈ P, wd q.2 * rank s L q.1 q.2` using `le_antisymm (Finset.sum_le_sum hle) (not_lt.1 hnot)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `heq : ∀ q ∈ P, wd q.2 * rank s n q.1 q.2 = wd q.2 * rank s L q.1 q.2` using `(Finset.sum_eq_sum_iff_of_le hle).1 hsum`. Apply `hne` to reduce the goal to its premises. Apply `eq_of_rank hs hp _ n L le_rfl` to reduce the goal to its premises. Introduce `u d`. Distinguish the cases in `hq : (u, d) ∈ P`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `heq (u, d) hq`. Establish `hw : 0 < wd d`. Unfold `wd`. Apply the tactic sequence `split_ifs <;> norm_num`. Conclude with `Nat.eq_of_mul_eq_mul_left hw h`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `h0 : ∀ m : Multiset (ASeg T), (∀ Δ ∈ m, Δ ∈ n + (L : Multiset (ASeg T))) → rank s m u d = 0`. Introduce `m hm`. Unfold `rank`. Rewrite using `[Multiset.countP_eq_zero]`. Introduce `Δ hΔ hc`.
-
-Conclude with `hq (hsub m hm Δ hΔ ((mem_pairs hs hp (q := (u, d))).2 hc))`. Rewrite using `[h0 n (fun Δ h => Multiset.mem_add.2 (Or.inl h)), h0 L (fun Δ h => Multiset.mem_add.2 (Or.inr h))]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqLen_lt_of_inSh {T : Type u} (s : T → T) (hs : Function.Injective s)
     (hp : ∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) (L : List (ASeg T)) (n : Multiset (ASeg T))

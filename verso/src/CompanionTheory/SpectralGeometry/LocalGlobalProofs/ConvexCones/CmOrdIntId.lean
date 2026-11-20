@@ -8,7 +8,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
 /- English proof (translation)
-The claim follows from `CMOrd.int`.
+A detailed English derivation is pending.
 -/
 theorem cmOrd_int_id : CMOrd ℤ id := CMOrd.int
 

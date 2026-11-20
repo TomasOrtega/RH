@@ -7,13 +7,13 @@ open GlobalTheory.SplitFlip
 def vdiff (X : ℕ × ℕ) : ℤ := (X.1 : ℤ) - X.2
 
 /- English proof (translation)
-Apply the tactic sequence `cases e <;> simp [vdiff] <;> push_cast <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vdiff_tgt (e : Edge) : vdiff e.tgt = vdiff e.src + 1 := by
   cases e <;> simp [vdiff] <;> push_cast <;> ring
 
 /- English proof (translation)
-The claim follows from `| [], _ => List.Pairwise.nil | [_], _ => List.pairwise_singleton _ _ | a :: b :: l, h => by unfold IsPath at h rw [List.isChain_cons_cons] at h have ih := pairwise_of_isPath (γ := b :: l) h.2 have hab : vdiff a.src < vdiff b.src := by have := vdiff_tgt a; rw [h.1] at this; omega …`.
+A detailed English derivation is pending.
 -/
 theorem pairwise_of_isPath : ∀ {γ : List Edge}, IsPath γ → γ.Pairwise (fun a b => vdiff a.src < vdiff b.src)
   | [], _ => List.Pairwise.nil
@@ -30,7 +30,7 @@ theorem pairwise_of_isPath : ∀ {γ : List Edge}, IsPath γ → γ.Pairwise (fu
     · exact hab.trans (List.rel_of_pairwise_cons ih hc)
 
 /- English proof (translation)
-The claim follows from `(pairwise_of_isPath h).imp fun hab heq => by subst heq; exact lt_irrefl _ hab`.
+A detailed English derivation is pending.
 -/
 theorem nodup_of_isPath {γ : List Edge} (h : IsPath γ) : γ.Nodup :=
   (pairwise_of_isPath h).imp fun hab heq => by subst heq; exact lt_irrefl _ hab
@@ -41,13 +41,13 @@ namespace GlobalTheory.SplitFlip
 open GlobalTheory.SplitFlip.PathSplit
 
 /- English proof (translation)
-Introduce `γ i j hγ hp`. Take `⟨l₁, l₂, rfl⟩` from `hp`. Establish `hnd` using `nodup_of_isPath hγ`. Use `⟨l₁, l₂, rfl, ?_⟩` and prove the remaining obligations. Establish `hfix : ∀ l : List Edge, Edge.theta i j ∉ l → Edge.ex i j ∉ l → l.map (fun e => if e = .theta i j then .ex i (j + 1) else if e = .ex i j then .theta (i + 1) j else e) = l` using `fun l h1 h2 => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(List.map_congr_left fun e he => ?_).trans (List.map_id l)` and prove the remaining obligations. Establish `e1 : e ≠ .theta i j` using `fun h => h1 (h ▸ he)`. Establish `e2 : e ≠ .ex i j` using `fun h => h2 (h ▸ he)`. Simplify using `[e1, e2]`. Rewrite `hnd` using `[List.nodup_append, List.nodup_append]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨_, _, hd1⟩, _, hd2⟩` from `hnd`. Establish `a1 : Edge.theta i j ∉ l₁` using `fun h => hd1 _ h _ (by simp) rfl`. Establish `a2 : Edge.ex i j ∉ l₁` using `fun h => hd1 _ h _ (by simp) rfl`. Establish `b1 : Edge.theta i j ∉ l₂` using `fun h => hd2 _ (by simp) _ h rfl`. Establish `b2 : Edge.ex i j ∉ l₂` using `fun h => hd2 _ (by simp) _ h rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [flipPath, List.map_append, hfix l₁ a1 a2, hfix l₂ b1 b2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem flipPath_split : ∀ {γ : List Edge} {i j : ℕ}, IsPath γ → PassesThrough i j γ →
     ∃ l₁ l₂ : List Edge, γ = l₁ ++ [Edge.theta i j, Edge.ex i j] ++ l₂ ∧

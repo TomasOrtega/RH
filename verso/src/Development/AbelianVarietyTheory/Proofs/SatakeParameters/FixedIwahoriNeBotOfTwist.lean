@@ -26,11 +26,11 @@ namespace GlobalTheory.AboveL.IwaFix
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 
 /- English proof (translation)
-Take `⟨y, hy, h0⟩` from `(Submodule.ne_bot_iff _).1 h`. Take `⟨x, rfl⟩` from `T.toLinearEquiv.surjective y`. Use `(Submodule.ne_bot_iff _).2 ⟨x, GlobalTheory.Parabolic.mem_fixed.2 fun g hg => ?_, fun hx => h0 (by simp [hx])⟩` and prove the remaining obligations. Establish `e` using `T.toIntertwiningMap.isIntertwining _ _ g x`. Establish `hd : absPow k s (Matrix.GeneralLinearGroup.det g) = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.SmGL.LeviInt.nabs_det_eq_one (iwahori_le_KO k (Fin n) hg)`. Use `ext`. Simplify using `[absPow, h1]`. Rewrite `e` using `[twist_apply, detChar_apply, hd, Units.val_one, one_smul]`. Establish `hy'` using `GlobalTheory.Parabolic.mem_fixed.1 hy g hg`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `T.toLinearEquiv.injective (e.trans hy')`.
+A detailed English derivation is pending.
 -/
 theorem fixed_iwahori_ne_bot_of_twist {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]

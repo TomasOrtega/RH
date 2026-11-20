@@ -15,15 +15,15 @@ namespace FDer
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `set w : ℕ → ℤ := fun k => if h : k < n then v ⟨k, h⟩ else 0 with hw`. Establish `hd : ∀ j : Fin n, (if a ≤ j then dif v j else 0) = (fun k : ℕ => if (a : ℕ) ≤ k then w k - w (k + 1) else 0) j`. Introduce `j`. Establish `hiff : a ≤ j ↔ (a : ℕ) ≤ j` using `Iff.rfl`. Simplify using `only [hiff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Simplify using `[dif, hw, j.isLt]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl (fun j _ => hd j), Fin.sum_univ_eq_sum_range (fun k : ℕ => if (a : ℕ) ≤ k then w k - w (k + 1) else 0) n]`. Establish `key : ∀ m, (a : ℕ) ≤ m → ∑ k ∈ range m, (if (a : ℕ) ≤ k then w k - w (k + 1) else 0) = w a - w m`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `m hm`. Proceed by induction on `m, hm using Nat.le_induction with`. Consider the case `base`. Rewrite using `[Finset.sum_eq_zero]`. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `k hk`. Simplify using `[not_le.2 (mem_range.1 hk)]`. Consider the case `succ m hm ih`. Rewrite using `[sum_range_succ, ih, if_pos hm]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key n a.isLt.le]`. Simplify using `[hw]`.
+A detailed English derivation is pending.
 -/
 theorem sum_dif (v : Fin n → ℤ) (a : Fin n) : ∑ j, (if a ≤ j then dif v j else 0) = v a := by
   set w : ℕ → ℤ := fun k => if h : k < n then v ⟨k, h⟩ else 0 with hw
@@ -53,12 +53,12 @@ theorem sum_dif (v : Fin n → ℤ) (a : Fin n) : ∑ j, (if a ≤ j then dif v 
   simp [hw]
 
 /- English proof (translation)
-The claim follows from `Fin.castLE_injective _`.
+A detailed English derivation is pending.
 -/
 theorem ini_injective (j : Fin n) : Function.Injective (ini j) := Fin.castLE_injective _
 
 /- English proof (translation)
-Use `r.isLt` as an intermediate fact. Use `show (r : ℕ) ≤ j`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ini_le (j : Fin n) (r : Fin (j + 1)) : ini j r ≤ j := by
   have := r.isLt
@@ -66,13 +66,13 @@ theorem ini_le (j : Fin n) (r : Fin (j + 1)) : ini j r ≤ j := by
   omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨a, Nat.lt_succ_of_le h⟩, Fin.ext rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ini {j a : Fin n} (h : a ≤ j) : ∃ a' : Fin (j + 1), ini j a' = a :=
   ⟨⟨a, Nat.lt_succ_of_le h⟩, Fin.ext rfl⟩
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Use extensionality with `r s`. Simplify using `[Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, (ini_injective j).eq_iff]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sub_in (j a b : Fin n) (z : ℂ) (a' b' : Fin (j + 1)) (ha : ini j a' = a) (hb : ini j b' = b) :
     (1 + single a b z : Mat n).submatrix (ini j) (ini j) = 1 + single a' b' z := by
@@ -81,9 +81,9 @@ theorem sub_in (j a b : Fin n) (z : ℂ) (a' b' : Fin (j + 1)) (ha : ini j a' = 
   simp [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, (ini_injective j).eq_iff]
 
 /- English proof (translation)
-Use extensionality with `r s`. Establish `h0 : (single a b z : Mat n) (ini j r) (ini j s) = 0`. Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `h ⟨h1 ▸ ini_le j r, h2 ▸ ini_le j s⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.add_apply, h0, Matrix.one_apply, (ini_injective j).eq_iff]`.
+A detailed English derivation is pending.
 -/
 theorem sub_out (j a b : Fin n) (z : ℂ) (h : ¬ (a ≤ j ∧ b ≤ j)) :
     (1 + single a b z : Mat n).submatrix (ini j) (ini j) = 1 := by
@@ -95,15 +95,15 @@ theorem sub_out (j a b : Fin n) (z : ℂ) (h : ¬ (a ≤ j ∧ b ≤ j)) :
   simp [Matrix.add_apply, h0, Matrix.one_apply, (ini_injective j).eq_iff]
 
 /- English proof (translation)
-Establish `hi` using `ini_injective j`. Use `set L := g.submatrix (ini j) (ini j) with hL`. Use `set Q : Matrix (Fin (j + 1)) (Fin n) ℂ := (1 : Mat n).submatrix (ini j) id with hQd`. Establish `hG : g.submatrix (ini j) id = L * Q`. Use extensionality with `r s`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Matrix.mul_apply, hL, hQd, submatrix_apply, id, Matrix.one_apply]`. Distinguish the cases in `hs : s ≤ j`. Take `⟨k, rfl⟩` from `exists_ini hs`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `k' _ hk`. Simplify using `[(ini_injective j).eq_iff, hk]`. Simplify using the standard rewrite rules. Rewrite using `[h _ _ (ini_le j r) (not_le.1 hs), Finset.sum_eq_zero]`. Introduce `k _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ini j k ≠ s` using `fun e => hs (e ▸ ini_le j k)`. Simplify using `[this]`. Establish `hQ : Q * Qᴴ = 1`. Rewrite using `[hQd, conjTranspose_submatrix, ← submatrix_mul _ _ _ _ _ Function.bijective_id]`. Simplify using `[submatrix_one _ hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `gm lm`. Rewrite using `[← hL, hG, conjTranspose_mul, Matrix.mul_assoc L, ← Matrix.mul_assoc Q, hQ, Matrix.one_mul, det_mul, det_conjTranspose]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gm_eq (j : Fin n) (g : Mat n) (h : ∀ r s : Fin n, r ≤ j → j < s → g r s = 0) :
     gm j g = lm j g * conj (lm j g) := by
@@ -132,11 +132,11 @@ theorem gm_eq (j : Fin n) (g : Mat n) (h : ∀ r s : Fin n, r ≤ j → j < s �
   rfl
 
 /- English proof (translation)
-Establish `: (1 + single a a z : Matrix ι ι ℂ) = diagonal fun i => if i = a then 1 + z else 1`. Use extensionality with `r s`. Distinguish the cases in `hrs : r = s`. Substitute `hrs` using the available equality. Distinguish the cases in `hra : r = a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `hra` using the available equality. Simplify using `[Matrix.add_apply]`. Simplify using `[Matrix.add_apply, Matrix.single_apply, hra, Ne.symm hra]`. Establish `: ¬ (a = r ∧ a = s)` using `fun e => hrs (e.1.symm.trans e.2)`. Simplify using `[Matrix.add_apply, Matrix.single_apply, Matrix.one_apply, hrs, this, diagonal_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, det_diagonal, Finset.prod_ite_eq' univ a]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_one_add_single_diag {ι : Type*} [Fintype ι] [DecidableEq ι] (a : ι) (z : ℂ) :
     (1 + single a a z : Matrix ι ι ℂ).det = 1 + z := by
@@ -154,9 +154,9 @@ theorem det_one_add_single_diag {ι : Type*} [Fintype ι] [DecidableEq ι] (a : 
   simp
 
 /- English proof (translation)
-Establish `hlam` using `hl.2 _ _ he`. Establish `hmu : muZ lam lev j = muZ lam lev ⟨j + 1, h⟩`. Simplify using `only [muZ, hlam, he]`. Establish `hy : yZ lam lev j = yZ lam lev ⟨j + 1, h⟩`. Simplify using `only [yZ, hlam, hmu]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[dif, h, hmu, hy]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dif_eq_zero {lam : Fin n → ℤ} {lev : Fin n → ℕ} (hl : IsLev lam lev) (j : Fin n) (h : (j : ℕ) + 1 < n)
     (he : lev j = lev ⟨j + 1, h⟩) : dif (muZ lam lev) j = 0 ∧ dif (yZ lam lev) j = 0 := by
@@ -168,21 +168,21 @@ theorem dif_eq_zero {lam : Fin n → ℤ} {lev : Fin n → ℕ} (hl : IsLev lam 
   simp [dif, h, hmu, hy]
 
 /- English proof (translation)
-Establish `hdet : (1 + single a b z : Mat n) ∈ GLs n` using `by show (1 + single a b z : Mat n).det ≠ 0`. Use `det_transvection_of_ne a b hab z` as an intermediate fact. Rewrite `this` using `[transvection]`. Rewrite using `[this]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fRaw, Set.indicator_of_mem hdet]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `hc : a ≤ j ∧ j < b`. Establish `hj : (j : ℕ) + 1 < n`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (j : ℕ) < b` using `hc.2`. Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1 : lev a ≤ lev j` using `hl.1 hc.1`. Establish `h2 : lev j ≤ lev ⟨j + 1, hj⟩` using `hl.1 (by show (j : ℕ) ≤ j + 1; omega)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : lev ⟨j + 1, hj⟩ ≤ lev b` using `hl.1 (by show (j : ℕ) + 1 ≤ b; exact hc.2)`. Take `⟨e1', e2'⟩` from `dif_eq_zero hl j hj (by omega)`. Simplify using `[e1', e2']`. Establish `hlm : lm j (1 + single a b z) = 1`. Distinguish the cases in `hin : a ≤ j ∧ b ≤ j`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha⟩` from `exists_ini hin.1`. Take `⟨b', hb⟩` from `exists_ini hin.2`. Rewrite using `[lm, sub_in j a b z a' b' ha hb]`. Establish `hne : a' ≠ b'` using `fun e => hab (by rw [← ha, ← hb, e])`. Use `det_transvection_of_ne a' b' hne z` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[transvection]`. Then use the resulting hypothesis. Rewrite using `[lm, sub_out j a b z hin, det_one]`. Establish `hgm : gm j (1 + single a b z) = 1`. Rewrite using `[gm_eq, hlm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r s hr hs`. Establish `hrs : r ≠ s` using `fun e => absurd hr (not_le.2 (e ▸ hs))`. Establish `: ¬ (a = r ∧ b = s)`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hc ⟨hr, hs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.add_apply, Matrix.single_apply, Matrix.one_apply, hrs, this]`. Simplify using `[hlm, hgm]`.
+A detailed English derivation is pending.
 -/
 theorem fRaw_off {lam : Fin n → ℤ} {lev : Fin n → ℕ} (hl : IsLev lam lev) {a b : Fin n} (hab : a ≠ b)
     (hle : lev b ≤ lev a) (z : ℂ) : fRaw lam lev (1 + single a b z) = 1 := by
@@ -226,7 +226,7 @@ theorem fRaw_off {lam : Fin n → ℤ} {lev : Fin n → ℕ} (hl : IsLev lam lev
     simp [hlm, hgm]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [prod_insert hi, sum_insert hi, ih, zpow_add₀ hu]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_eq {ι : Type*} (s : Finset ι) {u : ℂ} (hu : u ≠ 0) (e : ι → ℤ) :
     ∏ j ∈ s, u ^ e j = u ^ ∑ j ∈ s, e j := by
@@ -236,19 +236,19 @@ theorem prod_zpow_eq {ι : Type*} (s : Finset ι) {u : ℂ} (hu : u ≠ 0) (e : 
   | insert i s hi ih => rw [prod_insert hi, sum_insert hi, ih, zpow_add₀ hu]
 
 /- English proof (translation)
-Establish `hdet : (1 + single a a z : Mat n) ∈ GLs n` using `by show (1 + single a a z : Mat n).det ≠ 0`. Rewrite using `[det_one_add_single_diag]`. Conclude with `hz`. Establish `hw : 1 + conj z ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hz` to reduce the goal to its premises. Use `congrArg conj h` as an intermediate fact. Simplify using `using this`. Establish `hlm : ∀ j : Fin n, lm j (1 + single a a z) = if a ≤ j then 1 + z else 1`. Introduce `j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : a ≤ j`. Take `⟨a', ha⟩` from `exists_ini h`. Rewrite using `[lm, sub_in j a a z a' a' ha ha, det_one_add_single_diag, if_pos h]`. Rewrite using `[lm, sub_out j a a z (fun e => h e.1), det_one, if_neg h]`. Establish `hgm : ∀ j : Fin n, gm j (1 + single a a z) = if a ≤ j then (1 + z) * (1 + conj z) else 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[gm_eq, hlm]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `r s hr hs`. Establish `hrs : r ≠ s` using `fun e => absurd hr (not_le.2 (e ▸ hs))`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ¬ (a = r ∧ a = s)` using `fun e => hrs (e.1.symm.trans e.2)`. Simplify using `[Matrix.add_apply, Matrix.single_apply, Matrix.one_apply, hrs, this]`. Rewrite using `[fRaw, Set.indicator_of_mem hdet]`. Establish `hfac : ∀ j : Fin n, lm j (1 + single a a z) ^ dif (muZ lam lev) j * gm j (1 + single a a z) ^ dif (yZ lam lev) j = (1 + z) ^ ((if a ≤ j then dif (muZ lam lev) j else 0) + (if a ≤ j then dif (yZ lam lev) j else 0)) * (1 + conj z) ^ (if a ≤ j then dif (yZ lam lev) j else 0)`. Introduce `j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlm, hgm]`. Distinguish the cases in `h : a ≤ j`. Simplify using `only [if_pos h, mul_zpow, zpow_add₀ hz]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[if_neg h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl (fun j _ => hfac j), Finset.prod_mul_distrib, prod_zpow_eq _ hz, prod_zpow_eq _ hw, Finset.sum_add_distrib, sum_dif, sum_dif]`. Simplify using `[yZ]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fRaw_diag (lam : Fin n → ℤ) (lev : Fin n → ℕ) (a : Fin n) {z : ℂ} (hz : 1 + z ≠ 0) :
     fRaw lam lev (1 + single a a z) = (1 + z) ^ lam a * (1 + conj z) ^ yZ lam lev a := by
@@ -291,11 +291,11 @@ theorem fRaw_diag (lam : Fin n → ℤ) (lev : Fin n → ℕ) (a : Fin n) {z : �
   simp [yZ]
 
 /- English proof (translation)
-Establish `h1 : (1 : Mat n) ∈ GLs n` using `by show (1 : Mat n).det ≠ 0`. Simplify using the standard rewrite rules. Establish `hf` using `(GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth F.2.1 h1).hasFDerivAt`. Establish `hline : HasDerivAt (fun t : ℝ => (1 : Mat n) + t • X) X 0`. Use `((hasDerivAt_id (0 : ℝ)).smul_const X).const_add (1 : Mat n)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [id, one_smul] at this`. Conclude with `this`. Establish `hf' : HasFDerivAt F.1 (fderiv ℝ F.1 1) ((fun t : ℝ => (1 : Mat n) + t • X) 0)`. Simplify using `using hf`. Establish `hc` using `hf'.comp_hasDerivAt (0 : ℝ) hline`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hc.unique h` as an intermediate fact. Use `show fderiv ℝ F.1 1 (1 * X) = D`. Rewrite using `[one_mul]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rd_one (F : SmF n) (X : Mat n) {D : ℂ} (h : HasDerivAt (fun t : ℝ => F.1 (1 + t • X)) D 0) :
     Rd X F.1 1 = D := by
@@ -316,11 +316,11 @@ theorem Rd_one (F : SmF n) (X : Mat n) {D : ℂ} (h : HasDerivAt (fun t : ℝ =>
   exact this
 
 /- English proof (translation)
-Establish `hline : ∀ c : ℂ, HasDerivAt (fun t : ℝ => 1 + (t : ℂ) * c) c 0`. Introduce `c`. Use `(((hasDerivAt_id (0 : ℝ)).ofReal_comp).mul_const c).const_add 1` as an intermediate fact. Simplify using `using this`. Establish `zp : ∀ (m : ℤ) (c : ℂ), HasDerivAt (fun t : ℝ => (1 + (t : ℂ) * c) ^ m) (m * c) 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `m c`. Use `(hasDerivAt_zpow m (1 + ((0 : ℝ) : ℂ) * c) (Or.inl (by simp))).comp (0 : ℝ) (hline c)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Use `(zp L c).mul (zp Y (conj c))` as an intermediate fact. Simplify using `only [Complex.ofReal_zero, zero_mul, add_zero, _root_.one_zpow, mul_one, one_mul] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_line (L Y : ℤ) (c : ℂ) :
     HasDerivAt (fun t : ℝ => (1 + (t : ℂ) * c) ^ L * (1 + (t : ℂ) * conj c) ^ Y) (L * c + Y * conj c) 0 := by
@@ -337,9 +337,9 @@ theorem hasDerivAt_line (L Y : ℤ) (c : ℂ) :
   exact this
 
 /- English proof (translation)
-Apply `Rd_one` to reduce the goal to its premises. Use `(hasDerivAt_line (lam a) (yZ lam lev a) c).congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (fun t : ℝ => 1 + (t : ℂ) * c) 0` using `by fun_prop`. Establish `ev : ∀ᶠ t : ℝ in nhds 0, 1 + (t : ℂ) * c ≠ 0` using `hc.eventually_ne (by simp)`. Use `filter_upwards [ev] with t ht`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : t • (single a a c : Mat n) = single a a ((t : ℂ) * c)`. Rewrite using `[Matrix.smul_single, Complex.real_smul]`. Rewrite using `[hF, hs, fRaw_diag lam lev a ht]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Rd_diag {lam : Fin n → ℤ} {lev : Fin n → ℕ} (F : SmF n) (hF : F.1 = fRaw lam lev) (a : Fin n) (c : ℂ) :
     Rd (single a a c) F.1 1 = lam a * c + yZ lam lev a * conj c := by
@@ -354,9 +354,9 @@ theorem Rd_diag {lam : Fin n → ℤ} {lev : Fin n → ℕ} (F : SmF n) (hF : F.
   simp
 
 /- English proof (translation)
-Apply `Rd_one` to reduce the goal to its premises. Establish `: (fun t : ℝ => F.1 (1 + t • (single a b c : Mat n))) = fun _ => 1`. Use function extensionality and compare the values at `t`. Rewrite using `[hF, Matrix.smul_single, fRaw_off hl hab hle]`. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hasDerivAt_const _ _`.
+A detailed English derivation is pending.
 -/
 theorem Rd_off {lam : Fin n → ℤ} {lev : Fin n → ℕ} (hl : IsLev lam lev) (F : SmF n) (hF : F.1 = fRaw lam lev)
     {a b : Fin n} (hab : a ≠ b) (hle : lev b ≤ lev a) (c : ℂ) : Rd (single a b c) F.1 1 = 0 := by
@@ -368,9 +368,9 @@ theorem Rd_off {lam : Fin n → ℤ} {lev : Fin n → ℕ} (hl : IsLev lam lev) 
   exact hasDerivAt_const _ _
 
 /- English proof (translation)
-Establish `h1 : (1 : Mat n) ∈ GLs n` using `by show (1 : Mat n).det ≠ 0`. Simplify using the standard rewrite rules. Rewrite using `[orderedCechToCatCochainsOne_apply_valueAtSubset a b F h1, liftOneFormsToCompatible_apply a b F h1]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, if_true, Bool.false_eq_true, if_false, Rd_diag F hF a]`. Simplify using the standard rewrite rules. Apply the tactic sequence `constructor <;> (ring_nf; simp; try ring)`. Simplify using `[Eu, hab, Rd_off hl F hF hab hle]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem fder (n : ℕ) (lam : Fin n → ℤ) (_ : Antitone lam) (lev : Fin n → ℕ) (hl : IsLev lam lev) (F : SmF n)
     (hF : F.1 = fRaw lam lev) (a b : Fin n) (hle : lev b ≤ lev a) :

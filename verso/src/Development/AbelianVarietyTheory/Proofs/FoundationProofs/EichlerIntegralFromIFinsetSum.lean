@@ -7,13 +7,13 @@ open scoped Manifold
 namespace GlobalTheory.EichlerSum
 
 /- English proof (translation)
-Establish `hd` using `(UpperHalfPlane.mdifferentiable_iff.mp hf).continuousOn`. Apply `ContinuousOn.intervalIntegrable` to reduce the goal to its premises. Establish `hmap : Set.MapsTo (fun t : ℝ => Complex.I + t * ((τ : ℂ) - Complex.I)) (Set.uIcc 0 1) {z : ℂ | 0 < z.im}`. Introduce `t ht`. Rewrite `ht` using `[Set.uIcc_of_le zero_le_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h0, h1⟩` from `ht`. Establish `hτ` using `τ.im_pos`. Simplify using `only [Set.mem_setOf_eq, Complex.add_im, Complex.I_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.sub_im, Complex.sub_re, Complex.I_re, zero_mul, add_zero]`. Rewrite using `[UpperHalfPlane.coe_im]`. Break down `eq_or_lt_of_le h1 with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `h` using the available equality. Use the polynomial consequences of the given equalities and inequalities. Use polynomial arithmetic with `[mul_nonneg h0 hτ.le]`. Establish `hc : ContinuousOn (fun t : ℝ => Complex.I + t * ((τ : ℂ) - Complex.I)) (Set.uIcc 0 1)` using `by fun_prop`. Use `ContinuousOn.mul (ContinuousOn.mul (hd.comp hc hmap) ?_) continuousOn_const` and prove the remaining obligations.
+Substitute using the available equality. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem eichler_integrand_intervalIntegrable {f : ℍ → ℂ} (hf : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f) (τ : ℍ) (k : ℕ) :
     IntervalIntegrable (fun t : ℝ => (f ∘ UpperHalfPlane.ofComplex) (Complex.I + t * ((τ : ℂ) - Complex.I)) *
@@ -36,9 +36,9 @@ theorem eichler_integrand_intervalIntegrable {f : ℍ → ℂ} (hf : MDifferenti
   fun_prop
 
 /- English proof (translation)
-Unfold `eichler`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, ← map_sum, ← Finset.mul_sum, ← intervalIntegral.integral_finset_sum fun i _ => eichler_integrand_intervalIntegrable (hg i) τ (w - j)]`. Use `congr 4`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply, Finset.sum_apply, Finset.sum_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem eichler_finset_sum (w : ℕ) {ι : Type} [Fintype ι] (g : ι → ℍ → ℂ)
     (hg : ∀ i, MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (g i)) (τ : ℍ) :

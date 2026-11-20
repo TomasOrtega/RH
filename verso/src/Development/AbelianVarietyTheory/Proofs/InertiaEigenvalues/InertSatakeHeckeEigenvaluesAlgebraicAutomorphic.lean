@@ -11,11 +11,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `L _ _ _ n F π U hD v w hw Dv α hα α0 hα0 h hh`. Break down `Nat.eq_zero_or_pos (n / 2) with h2 | h2` into its components or cases. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `absurd i.2 (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hn : 0 < n` using `by omega`. Take `⟨b, hbK, hbJ, p, hp, σ, hcomp, hsat⟩` from `hα0`. Take `⟨hs, hsurj⟩` from `GlobalTheory.T.inert_frame_conj_extends_and_frame_map_surjective L n hn v w hw Dv b hbK hbJ p hp`. Take `⟨φ, hφU, hφ0, hfix, hAe⟩` from `GlobalTheory.T.exists_lift_satake_vector_local_hecke_eigen L n F π U hD v w hw Dv α hα hs b hbK hbJ p hp`. Establish `e1` using `(hAe h hh).symm.trans (GlobalTheory.T.satake_parameters_unramified_unitary L n U hD.1 w Dv.σw Dv.ϖ _ Dv.unram p hsurj σ hcomp α0 hsat φ hφU hfix h hh)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[← sub_eq_zero, ← sub_smul]`. Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 e1).resolve_right hφ0)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.InertHeckeCmp.satU_eq : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (F : FinIso L n) (π : NG.AutRep L n) (U : Submodule ℂ (UA L n → ℂ)), Dict F π U → ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)), NG.OverPl w v → ∀ (Dv : InertDatum L n v w) (α : Fin (n / 2) → ℂ), NG.SatAt π Dv α → ∀ α0 : Fin (n / 2) → ℂˣ, HasSatAt U w Dv.σw Dv.ϖ (Formalism.UG.qV (maximalRealSubfield L) v) α0 → ∀ h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n), Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV (maximalRealSubfield L) v) h α = Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV (maximalRealSubfield L) v) h (fun i => (α0 i : ℂ)) := by
   intro L _ _ _ n F π U hD v w hw Dv α hα α0 hα0 h hh

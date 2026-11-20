@@ -10,9 +10,9 @@ namespace GlobalTheory.GaussSection
 open MvPolynomial
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval₂_eq]`. Apply `sum_mem` to reduce the goal to its premises. Introduce `α _`. Apply `mul_mem` to reduce the goal to its premises. Conclude with `Subring.subset_closure (Or.inl ⟨Set.mem_range_self _, hp α⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `prod_mem` to reduce the goal to its premises. Introduce `i _`. Conclude with `pow_mem (Subring.subset_closure (Set.mem_union_right _ (hS i))) _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eval_mem_closure {Ω U σ : Type} [Field Ω] [Field U] (f : Ω →+* U)
     (v : Valuation U (WithZero (Multiplicative ℤ))) (t : σ → U) (S : Set U)
@@ -28,11 +28,11 @@ theorem eval_mem_closure {Ω U σ : Type} [Field Ω] [Field U] (f : Ω →+* U)
     exact pow_mem (Subring.subset_closure (Set.mem_union_right _ (hS i))) _
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `MvPolynomial.ne_zero_iff.mp hp`. Take `⟨α₀, hα₀, hmax⟩` from `p.support.exists_max_image (fun α => v (f (p.coeff α))) ⟨d, MvPolynomial.mem_support_iff.mpr hd⟩`. Establish `hc : p.coeff α₀ ≠ 0` using `MvPolynomial.mem_support_iff.mp hα₀`. Establish `hfc : 0 < v (f (p.coeff α₀))`. Rewrite using `[zero_lt_iff, Ne, Valuation.zero_iff, map_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`. Use `⟨p.coeff α₀, C (p.coeff α₀)⁻¹ * p, hc, ?_, fun α => ?_, α₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← C_mul, mul_inv_cancel₀ hc, C_1, one_mul]`. Rewrite using `[coeff_C_mul, map_mul, map_mul, map_inv₀, map_inv₀, inv_mul_le_iff₀ hfc, mul_one]`. Distinguish the cases in `hα : α ∈ p.support`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmax α hα`. Rewrite using `[MvPolynomial.notMem_support_iff.mp hα, map_zero, map_zero]`. Conclude with `zero_le`. Rewrite using `[coeff_C_mul, inv_mul_cancel₀ hc, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normalise {Ω U σ : Type} [Field Ω] [Field U] (f : Ω →+* U)
     (v : Valuation U (WithZero (Multiplicative ℤ))) (p : MvPolynomial σ Ω) (hp : p ≠ 0) :
@@ -56,21 +56,19 @@ theorem exists_normalise {Ω U σ : Type} [Field Ω] [Field U] (f : Ω →+* U)
   · rw [coeff_C_mul, inv_mul_cancel₀ hc, map_one, map_one]
 
 /- English proof (translation)
-Distinguish the cases in `hg0 : g = 0`. Conclude with `⟨0, zero_mem _, 1, one_mem _, map_one v, by rw [hg0, zero_mul]⟩`. Establish `hle : Subring.closure (Set.range f ∪ S) ≤ (MvPolynomial.eval₂Hom f t).range`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `u (⟨c, rfl⟩ | hu)`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨C c, by simp⟩`. Take `⟨p, hp⟩` from `hS' u hu`. Conclude with `⟨p, hp⟩`. Take `⟨y, hy, z, hz, rfl⟩` from `Subfield.mem_closure_iff.mp hg`. Take `⟨P, rfl⟩` from `hle hy`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, rfl⟩` from `hle hz`. Simplify using `only [MvPolynomial.coe_eval₂Hom] at hg0 hv ⊢`. Establish `hz0 : eval₂ f t Q ≠ 0` using `fun h => hg0 (by rw [h, div_zero])`. Establish `hy0 : eval₂ f t P ≠ 0` using `fun h => hg0 (by rw [h, zero_div])`. Establish `hQ : Q ≠ 0`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hz0 (eval₂_zero _ _)`. Establish `hP : P ≠ 0`. Introduce and unpack `rfl`. Conclude with `hy0 (eval₂_zero _ _)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, Q', hc, rfl, hQi, hQu⟩` from `exists_normalise f v Q hQ`. Take `⟨c', P', -, rfl, hPi, hPu⟩` from `exists_normalise f v P hP`. Establish `hdQ` using `hG Q' hQi hQu`. Establish `hdP` using `hG P' hPi hPu`. Establish `hfc : f c ≠ 0` using `(map_ne_zero f).mpr hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ0 : eval₂ f t Q' ≠ 0`. Introduce `h`. Rewrite `hdQ` using `[h, map_zero]`. Conclude with `zero_ne_one hdQ`. Simplify using `only [eval₂_mul, eval₂_C] at hv ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f (c' / c) * eval₂ f t P', mul_mem (Subring.subset_closure (Or.inl ⟨Set.mem_range_self _, ?_⟩)) (eval_mem_closure f v t S hS P' hPi), eval₂ f t Q', eval_mem_closure f v t S hS Q' hQi, hdQ, ?_⟩` and prove the remaining obligations. Establish `: v (f (c' / c)) = v (f c' * eval₂ f t P' / (f c * eval₂ f t Q'))`. Rewrite using `[map_div₀, map_div₀, map_div₀, map_mul, map_mul, hdP, hdQ, mul_one, mul_one]`. Rewrite using `[this]`. Conclude with `hv`.
-
-Rewrite using `[map_div₀]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem quotient_of_gauss {Ω U σ : Type} [Field Ω] [Field U] (f : Ω →+* U)
     (v : Valuation U (WithZero (Multiplicative ℤ))) (t : σ → U) (S : Set U)
@@ -123,7 +121,7 @@ theorem quotient_of_gauss {Ω U σ : Type} [Field Ω] [Field U] (f : Ω →+* U)
     field_simp
 
 /- English proof (translation)
-Take `rfl` from `Algebra.algebra_ext A₁ A₂ h`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem algebraicIndependent_congr_algebra {ι R S : Type*} [CommRing R] [CommRing S] (x : ι → S)
     (A₁ A₂ : Algebra R S) (h : ∀ r, (letI := A₁; algebraMap R S r) = (letI := A₂; algebraMap R S r))
@@ -132,7 +130,7 @@ private theorem algebraicIndependent_congr_algebra {ι R S : Type*} [CommRing R]
   exact hx
 
 /- English proof (translation)
-Use `algebraicIndependent_congr_algebra _ (ReciprocityTheory.MultiplicativeHeights.residueAlgebra v.valuationSubring ((algebraMap Ω U).comp (algebraMap K Ω))) _ ?_ ((GlobalTheory.algebraicIndependent_residue_iff_gauss K U _ v τ s hs).mpr hG)` and prove the remaining obligations. Introduce `r`. Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective r`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem indep_comp {K Ω U τ : Type} [Field K] [Field Ω] [Field U] [Algebra K Ω] [Algebra Ω U]
     (v : Valuation U (WithZero (Multiplicative ℤ))) (s : τ → U)
@@ -161,31 +159,29 @@ theorem indep_comp {K Ω U τ : Type} [Field K] [Field Ω] [Field U] [Algebra K 
   rfl
 
 /- English proof (translation)
-Introduce `g hg hv`. Set `_ : Algebra Ω U` to `f.toAlgebra`. Take `⟨k₁, hk₁⟩` from `ha`. Take `⟨k₀, -, hk₀⟩` from `Finset.exists_max_image Finset.univ (fun k => v (f (a k))) ⟨k₁, Finset.mem_univ _⟩`. Establish `ha₀ : a k₀ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h` using `hk₀ k₁ (Finset.mem_univ _)`. Rewrite `h` using `[h0, map_zero, map_zero, le_zero_iff, Valuation.zero_iff, map_eq_zero]`. Conclude with `hk₁ h`. Establish `hfa : f (a k₀) ≠ 0` using `(map_ne_zero f).mpr ha₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hva : 0 < v (f (a k₀))`. Rewrite using `[zero_lt_iff, Ne, Valuation.zero_iff]`. Conclude with `hfa`. Establish `hsV : ∀ j, s j ∈ v.valuationSubring` using `hs`. Use `set t : Fin N ⊕ (Fin D × {k : Fin N // k ≠ k₀}) → U := Sum.elim (fun k => s (0, k)) (fun q => s (q.1.succ, q.2.1)) with ht_def`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `ht : ∀ x, t x ∈ v.valuationSubring`. Introduce and unpack `(k | q)`. Conclude with `hsV _`. Conclude with `hsV _`. Establish `hcoefX : ∀ (x : Fin N ⊕ (Fin D × {k : Fin N // k ≠ k₀})) α, (X x : MvPolynomial _ Ω).coeff α ∈ v.valuationSubring.comap (algebraMap Ω U)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce `x α`. Rewrite using `[coeff_X]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hex : ∀ j : Fin (D + 1) × Fin N, ∃ q : MvPolynomial (Fin N ⊕ (Fin D × {k : Fin N // k ≠ k₀})) Ω, (∀ α, q.coeff α ∈ v.valuationSubring.comap (algebraMap Ω U)) ∧ MvPolynomial.aeval t q = s j`. Introduce and unpack `⟨i, k⟩`. Take `rfl | ⟨i', rfl⟩` from `Fin.eq_zero_or_eq_succ i`. Conclude with `⟨X (Sum.inl k), hcoefX _, by rw [aeval_X]; rfl⟩`. Distinguish the cases in `hk : k = k₀`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk]`. Use `⟨∑ q : {k : Fin N // k ≠ k₀}, C (-(a q / a k₀)) * X (Sum.inr (i', q)), fun α => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_sum]`. Use `sum_mem fun q _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_C_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_mem (neg_mem ?_) (hcoefX _ _)` and prove the remaining obligations. Rewrite using `[ValuationSubring.mem_comap, Valuation.mem_valuationSubring_iff, RingHom.algebraMap_toAlgebra, map_div₀, map_div₀, div_le_one₀ hva]`. Conclude with `hk₀ q (Finset.mem_univ _)`. Establish `hr` using `hrel i'`. Rewrite `hr` using `[Fintype.sum_eq_add_sum_subtype_ne _ k₀]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [map_sum, map_mul, aeval_C, aeval_X, RingHom.algebraMap_toAlgebra]`. Establish `key : ∑ q : {k : Fin N // k ≠ k₀}, f (-(a q / a k₀)) * t (Sum.inr (i', q)) = -(∑ q : {k : Fin N // k ≠ k₀}, s (i'.succ, q.1) * f (a q)) / f (a k₀)`. Rewrite using `[neg_div, Finset.sum_div, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_neg, map_div₀]`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [ht_def, Sum.elim_inr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, div_eq_iff hfa]`. Take the linear combination `-hr`. Conclude with `⟨X (Sum.inr (i', ⟨k, hk⟩)), hcoefX _, by rw [aeval_X]; rfl⟩`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose P hPc hPe using hex`. Establish `hcard : Fintype.card (Fin (D + 1) × Fin N) = Fintype.card (Fin N ⊕ (Fin D × {k : Fin N // k ≠ k₀})) + D`. Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by have := k₀.pos; omega⟩`. Simplify using `only [Fintype.card_prod, Fintype.card_sum, Fintype.card_fin, Fintype.card_subtype_compl, Fintype.card_unique]`. Simplify using `only [Nat.add_sub_cancel]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hind` using `indep_comp (K := K) (Ω := Ω) (U := U) v s hsV hG`. Take `⟨-, -, h3⟩` from `ReciprocityTheory.MultiplicativeHeights.Closed.residueTrdeg K Ω U D hD (Fin N ⊕ (Fin D × {k : Fin N // k ≠ k₀})) t v.valuationSubring ht (Fin (D + 1) × Fin N) (fun j => ⟨s j, hsV j⟩) P hPc hcard hPe hind`. Establish `hGΩ` using `(GlobalTheory.algebraicIndependent_residue_iff_gauss Ω U f v _ t ht).mp h3`. Use `quotient_of_gauss f v t (Set.range s) ?_ ?_ hGΩ g hg hv` and prove the remaining obligations.
-
-Introduce and unpack `(k | q)`. Conclude with `⟨(0, k), rfl⟩`. Conclude with `⟨(q.1.succ, q.2.1), rfl⟩`. Introduce and unpack `u ⟨j, rfl⟩`. Conclude with `⟨P j, (MvPolynomial.aeval_def _ _).symm.trans (hPe j)⟩`.
+A detailed English derivation is pending.
 -/
 theorem integral_elements (K Ω U : Type) [Field K] [Field Ω] [Field U] [Algebra K Ω]
     (f : Ω →+* U) (D N : ℕ) (hD : Algebra.trdeg K Ω = D)

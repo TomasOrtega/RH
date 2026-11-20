@@ -17,15 +17,13 @@ section forms
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] (H : Matrix ι ι ℂ)
 
 /- English proof (translation)
-Use `set d := u - v with hd`. Use `set s := Formalism.QuantumDeterminants.herm H u d with hs`. Establish `hs' : s = Formalism.QuantumDeterminants.herm H u u - Formalism.QuantumDeterminants.herm H u v` using `by rw [hs, hd, herm_sub_right]`. Establish `hs0 : s ≠ 0` using `by rw [hs']; exact sub_ne_zero.mpr hne`. Establish `hss : star s = Formalism.QuantumDeterminants.herm H u u - Formalism.QuantumDeterminants.herm H v u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs, herm_symm H hH, hd, herm_sub_left]`. Establish `hq : Formalism.QuantumDeterminants.herm H d d = s + star s`. Rewrite using `[hss, hs', hd]`. Simplify using `only [herm_sub_left, herm_sub_right]`. Take the linear combination `-huv`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a : ℂ := s⁻¹ with ha'`. Establish `ha : a * s = 1` using `inv_mul_cancel₀ hs0`. Establish `hsa : star a * star s = 1` using `by rw [← star_mul', ha, star_one]`. Use `⟨rk H d 1 (-a), unitary_of_form H _ fun x y => ?_, ?_, fun x hxu hxv => ?_⟩` and prove the remaining obligations. Rewrite using `[rk_mulVec, rk_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hY : star (Formalism.QuantumDeterminants.herm H y d) = Formalism.QuantumDeterminants.herm H d y` using `herm_symm H hH y d`. Simplify using `only [herm_add_left, herm_add_right, herm_smul_left, herm_smul_right, star_mul', hY, hq, star_neg, star_one]`. Take the linear combination `(star a * Formalism.QuantumDeterminants.herm H x d * Formalism.QuantumDeterminants.herm H d y) * ha + (a * Formalism.QuantumDeterminants.herm H x d * Formalism.QuantumDeterminants.herm H d y) * hsa`. Rewrite using `[rk_mulVec, ← hs, neg_mul, ha, hd]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[rk_mulVec, hd, herm_sub_right, hxu, hxv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma quasi_reflection (hH : Hᴴ = H) (u v : ι → ℂ)
     (huv : Formalism.QuantumDeterminants.herm H u u = Formalism.QuantumDeterminants.herm H v v)
@@ -58,15 +56,15 @@ lemma quasi_reflection (hH : Hᴴ = H) (u v : ι → ℂ)
     simp
 
 /- English proof (translation)
-Distinguish the cases in `hne : Formalism.QuantumDeterminants.herm H u u = Formalism.QuantumDeterminants.herm H u v`. Use `swap`. Conclude with `quasi_reflection H hH u v huv hne`. Establish `e1 : Formalism.QuantumDeterminants.herm H ((-1 : ℂ) • u) ((-1 : ℂ) • u) = Formalism.QuantumDeterminants.herm H u u`. Simplify using `only [herm_smul_left, herm_smul_right]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Take `⟨g₁, h1, h2, h3⟩` from `quasi_reflection H hH u ((-1 : ℂ) • u) e1.symm (by`. Rewrite using `[herm_smul_right]`. Introduce `h`. Apply `h0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [star_neg, star_one] at h`. Take the linear combination `h / 2)`. Take `⟨g₂, k1, k2, k3⟩` from `quasi_reflection H hH ((-1 : ℂ) • u) v (e1.trans huv) (by`. Rewrite using `[e1, herm_smul_left, ← hne]`. Introduce `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `h0` to reduce the goal to its premises. Take the linear combination `h / 2)`. Use `⟨g₂ * g₁, ?_, ?_, fun x hxu hxv => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by rw [k1, h1]`. Rewrite using `[← Matrix.mulVec_mulVec, h2, k2]`. Establish `: Formalism.QuantumDeterminants.herm H x ((-1 : ℂ) • u) = 0` using `by rw [herm_smul_right, hxu, mul_zero]`. Rewrite using `[← Matrix.mulVec_mulVec, h3 x hxu this, k3 x this hxv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_isometry (hH : Hᴴ = H) (u v : ι → ℂ)
     (huv : Formalism.QuantumDeterminants.herm H u u = Formalism.QuantumDeterminants.herm H v v) (h0 : Formalism.QuantumDeterminants.herm H u u ≠ 0) :
@@ -101,7 +99,7 @@ open PI.UpqRep PI.HwUniqW
 variable {k r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Hpk_mulVec_apply]`. Simplify using `[Formalism.QuantumDeterminants.herm, bvec, Pi.star_single]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma herm_right_bvec (y : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     Formalism.QuantumDeterminants.herm (Hpk k r) y (bvec i) = epsI k r i * y (piI k r i) := by
@@ -109,7 +107,7 @@ lemma herm_right_bvec (y : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)
   simp [Formalism.QuantumDeterminants.herm, bvec, Pi.star_single]
 
 /- English proof (translation)
-Rewrite using `[← herm_symm _ Hpk_conjTranspose, herm_right_bvec, hy (piI k r i), mul_zero, star_zero]`. Rewrite using `[piI_val]`. Use `i.isLt` as an intermediate fact. Apply the tactic sequence `split_ifs <;> omega`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma herm_bvec_eq_zero {y : Fin (2 * r + k + 1) → ℂ} (hy : inWb k r y) {i : Fin (2 * r + k + 1)}
     (hi : i.val < r ∨ r + k < i.val) : Formalism.QuantumDeterminants.herm (Hpk k r) (bvec i) y = 0 := by
@@ -119,21 +117,17 @@ lemma herm_bvec_eq_zero {y : Fin (2 * r + k + 1) → ℂ} (hy : inWb k r y) {i :
   split_ifs <;> omega
 
 /- English proof (translation)
-Use `set T := Tz k r z with hTdef`. Use `set u : Fin (2 * r + k + 1) → ℂ := ((Real.sqrt T : ℝ) : ℂ) • bvec (wI k r (Fin.last k)) with hu`. Establish `hw : Formalism.QuantumDeterminants.herm (Hpk k r) (bvec (wI k r (Fin.last k))) (bvec (wI k r (Fin.last k))) = -1`. Establish `hp : piI k r (wI k r (Fin.last k)) = wI k r (Fin.last k)`. Unfold `piI; rw [if_pos (by simp [wI])]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[herm_right_bvec, hp, bvec_apply, if_pos rfl]`. Simplify using `[epsI, wI]`. Establish `huu : Formalism.QuantumDeterminants.herm (Hpk k r) u u = -(T : ℂ)`. Rewrite using `[hu, herm_smul_left, herm_smul_right, hw]`. Establish `h1 : star ((Real.sqrt T : ℝ) : ℂ) = ((Real.sqrt T : ℝ) : ℂ)` using `Complex.conj_ofReal _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((Real.sqrt T : ℝ) : ℂ) * ((Real.sqrt T : ℝ) : ℂ) = (T : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hT.le]`. Rewrite using `[h1]`. Take the linear combination `-h2`. Establish `hzz : Formalism.QuantumDeterminants.herm (Hpk k r) z z = -(T : ℂ)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : star (Formalism.QuantumDeterminants.herm (Hpk k r) z z) = Formalism.QuantumDeterminants.herm (Hpk k r) z z` using `herm_symm _ Hpk_conjTranspose z z`. Establish `h2 : T = -(Formalism.QuantumDeterminants.herm (Hpk k r) z z).re` using `rfl`. Rewrite using `[h2, Complex.ofReal_neg, neg_neg]`. Conclude with `(Complex.conj_eq_iff_re.mp h1).symm`. Establish `huW : inWb k r u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `i hi`. Rewrite using `[hu, Pi.smul_apply, bvec_apply, if_neg, smul_zero]`. Introduce and unpack `rfl`. Simplify using `[wI] at hi`. Apply the tactic sequence `obtain ⟨g, h1, h2, h3⟩ := exists_isometry (Hpk k r) Hpk_conjTranspose u z (huu.trans hzz.symm) (by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[huu, neg_ne_zero]`. Conclude with `hT.ne')` after adjusting the coercions. Use `⟨g, h1, fun a => ⟨?_, ?_⟩, h2⟩` and prove the remaining obligations. Establish `ha : (eI k r a).val < r ∨ r + k < (eI k r a).val` using `Or.inl a.isLt`. Conclude with `h3 _ (herm_bvec_eq_zero huW ha) (herm_bvec_eq_zero hz ha)`.
-
-Establish `ha : (esI k r a).val < r ∨ r + k < (esI k r a).val`. Use `a.isLt` as an intermediate fact. Use `right`. Simplify using `only [esI]`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `h3 _ (herm_bvec_eq_zero huW ha) (herm_bvec_eq_zero hz ha)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma exists_isFrameW (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hT : 0 < Tz k r z) :
     ∃ g, IsFrameW k r z g := by
@@ -173,7 +167,7 @@ lemma exists_isFrameW (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hT : 
     exact h3 _ (herm_bvec_eq_zero huW ha) (herm_bvec_eq_zero hz ha)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[mulVec_bvec_apply, bvec_apply]`. Distinguish the cases in `hi : InB k r i`. Rewrite using `[blockW_in_out _ hi hj, if_neg (ne_of_inB hi hj)]`. Rewrite using `[blockW_out _ hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma blockW_fix (x : Matrix (Fin k) (Fin k) ℂ) {j : Fin (2 * r + k + 1)} (hj : ¬ InB k r j) :
     blockW k r x *ᵥ bvec j = bvec j := by
@@ -184,7 +178,7 @@ lemma blockW_fix (x : Matrix (Fin k) (Fin k) ℂ) {j : Fin (2 * r + k + 1)} (hj 
   · rw [blockW_out _ hi]
 
 /- English proof (translation)
-Use `show (blockW k r x)ᴴ * Hpk k r * blockW k r x = Hpk k r`. Rewrite using `[blockW_conjTranspose, ← Hpk_blockW_comm, Matrix.mul_assoc, blockW_mul, mem_UJset_allPos.mp hx, blockW_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma blockW_mem_UH {x : Matrix (Fin k) (Fin k) ℂ} (hx : x ∈ UJset (allPos k)) :
     blockW k r x ∈ UH (Hpk k r) := by
@@ -193,9 +187,9 @@ lemma blockW_mem_UH {x : Matrix (Fin k) (Fin k) ℂ} (hx : x ∈ UJset (allPos k
     blockW_one, Matrix.mul_one]
 
 /- English proof (translation)
-Use `⟨mul_mem_UH (mul_mem_UH hg.1 (blockW_mem_UH hx)) (inv_mem_UH hg.1), fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `a.isLt` as an intermediate fact. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, inv_fix hg.1 (hg.2.1 a).1, blockW_fix x (by unfold InB eI; simp only; omega), (hg.2.1 a).1]`. Use `a.isLt` as an intermediate fact. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, inv_fix hg.1 (hg.2.1 a).2, blockW_fix x (by unfold InB esI; simp only; omega), (hg.2.1 a).2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, frame_inv_mulVec_negativeVector hg, Matrix.mulVec_smul, blockW_fix x (by unfold InB wI; simp), hg.2.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma conj_mem_UW {z : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : IsFrameW k r z g) {x : Matrix (Fin k) (Fin k) ℂ} (hx : x ∈ UJset (allPos k)) :
@@ -211,9 +205,9 @@ lemma conj_mem_UW {z : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r + k 
       blockW_fix x (by unfold InB wI; simp), hg.2.2]
 
 /- English proof (translation)
-Introduce `k r z hz hT`. Establish `hT' : 0 < PI.UpqRep.Tz k r z` using `hT`. Take `⟨g, hg⟩` from `exists_isFrameW z hz hT'`. Use `⟨g, hg, fun x hx => conj_mem_UW hg hx, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, -, e⟩` from `UW_eq_conj hT' hg hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, hx, e⟩`.
+Supply the required witnesses or components.
 -/
 theorem frame_exists : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), Formalism.QuantumDeterminants.inWb k r z → 0 < Formalism.QuantumDeterminants.Tz k r z → ∃ g, PI.UpqRep.IsFrameW k r z g ∧ (∀ x ∈ PI.UpqRep.UJset (PI.UpqRep.allPos k), g * PI.UpqRep.blockW k r x * g⁻¹ ∈ Formalism.QuantumDeterminants.UWset k r z) ∧ ∀ y ∈ Formalism.QuantumDeterminants.UWset k r z, ∃ x ∈ PI.UpqRep.UJset (PI.UpqRep.allPos k), y = g * PI.UpqRep.blockW k r x * g⁻¹ := by
   intro k r z hz hT

@@ -18,13 +18,11 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.PrimDense
 
 /- English proof (translation)
-Establish `e₁ : (1 : 𝟙_ (Over S) ⟶ A) = η[A]` using `by rw [Hom.one_def]; simp`. Establish `key : ∀ I, η[A] ≫ psum A ![𝟙 A, u] I = η[A]` using `fun I => by`. Use `(psum_hom (preHom (G := A) η[A]) _ I).trans ?_` and prove the remaining obligations. Establish `: (fun i => preHom (G` using `A) η[A] (![𝟙 A, u] i)) = fun i => (1 : (A ⟶ A) →* (𝟙_ (Over S) ⟶ A)) (![𝟙 A, u] i) := by`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases i`. Conclude with `(Category.comp_id _).trans e₁.symm`. Conclude with `(IsMonHom.one_hom u).trans e₁.symm`. Rewrite using `[this, ← psum_hom]`. Conclude with `e₁`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, ht, -⟩` from `exists_gen hL (φ' := fun _ : ULift.{0} (Finset (Fin 2)) => eSec A) (ε' := fun I => (-1) ^ (2 - I.down.card)) (fun U _ k => (Fintype.prod_empty _).trans (by`. Establish `: ∑ I : ULift.{0} (Finset (Fin 2)), (-1 : ℤ) ^ (2 - I.down.card) = 0` using `by decide`. Establish `e` using `congrArg Additive.toMul (map_sum (zmultiplesHom (Additive U) (Additive.ofMul (k (eSec A)))) (fun I : ULift.{0} (Finset (Fin 2)) => (-1 : ℤ) ^ (2 - I.down.card)) Finset.univ)`. Rewrite `e` using `[this, map_zero, toMul_sum]`. Conclude with `e)) (LB.oneGen L (Y := (𝟙_ (Over S)).left))`.
-
-Use the proof step `(fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm)`. Conclude with `gen_chartPull (chartPullOut L _ _ (eSec A) _ fun I => congrArg (fun z => z.left) (key I.down).symm) t ht`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_cube_eSec {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {L : LB A.left} (hL : L.IsLB)
     (u : A ⟶ A) [IsMonHom u] : ∃ c : ((cubeLB A ![𝟙 A, u] L).pull (eSec A)).Gen, c.IsGen := by
@@ -54,13 +52,11 @@ end GlobalTheory.PrimDense
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hG S _ A _ _ L u hA hL hamp hrig hu hd`. Establish `hM : (cubeLB A ![𝟙 A, u] L).IsLB` using `DVR.linComb_isLB _ hL _ _`. Use `GlobalTheory.T.seesaw_reduced_base_abelianScheme_of_dense_fibres hG S A L hA hL hamp S A.left (𝟙 _) (𝟙 _) A.hom (LB.div (cubeLB A ![𝟙 A, u] L) L) (IsPullback.of_horiz_isIso ⟨by simp⟩) (LB.isLB_div hM hL) (hd.mono ?_) (eSec A) (Over.w η[A]) ?_` and prove the remaining obligations. Introduce and unpack `p ⟨K, _, x, G, _, _, φ, L', u', hp, h, hL', H, hu', H'⟩`. Use `⟨K, inferInstance, x, G.left, φ, G.hom, hp, h.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `i : LBIso (cubeLB G ![𝟙 G, u'] L') ((cubeLB A ![𝟙 A, u] L).pull φ)`. Take `⟨w, hw⟩` from `H`. Use `LBIso.chartPull (chartPullId _) (chartPullOut L _ _ φ _ fun I => ?_) (iso_linComb ((isGen_iff w).1 hw) _ _)` and prove the remaining obligations. Use `psum_push h _ _ (Over.homMk φ h.1.w) (fun i => ?_) I.down` and prove the remaining obligations. Use `fin_cases i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `exacts [Over.OverMorphism.ext ((Category.id_comp _).trans (Category.comp_id _).symm), Over.OverMorphism.ext hu']`. Establish `a' : (cubeLB G ![𝟙 G, u'] L').IsLB` using `DVR.linComb_isLB _ hL' _ _`. Take `⟨w, hw⟩` from `LBIso.trans (pull_isLB hL φ) hL' (pull_isLB hM φ) H.symm (LBIso.trans hL' a' (pull_isLB hM φ) H' i)`. Conclude with `gen_chartPull (IsoDescent.chartPullDiv _ L _) w hw`. Take `⟨c, hc⟩` from `hrig`.
-
-Take `⟨c', hc'⟩` from `PrimDense.exists_gen_cube_eSec hL u`. Take `⟨w, hw⟩` from `IsoDescent.lbIso_of_gens hL hM _ _ _ _ c hc c' hc'`. Conclude with `gen_chartPull (IsoDescent.chartPullDiv _ L _) w hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lbIso_cube_of_dense : Out.GlobalFnsSt → ∀ (S : Scheme.{0}) [IsReduced S] (A : Over S) [GrpObj A] [IsCommMonObj A] (L : LB A.left) (u : A ⟶ A), IsAbelianScheme A → L.IsLB → Out.RelAmple A L → Out.Rigidified A L → IsMonHom u → Dense {p : S | ∃ (K : Type) (_ : Field K) (x : Sp K ⟶ S) (G : Over (Sp K)) (_ : GrpObj G) (_ : IsCommMonObj G) (φ : G.left ⟶ A.left) (L' : LB G.left) (u' : G ⟶ G), p ∈ Set.range x ∧ IsGrpPullback G A x φ ∧ L'.IsLB ∧ LBIso L' (L.pull φ) ∧ u'.left ≫ φ = φ ≫ u.left ∧ LBIso L' (cubeLB G ![𝟙 G, u'] L')} → LBIso L (cubeLB A ![𝟙 A, u] L) := by
   intro hG S _ A _ _ L u hA hL hamp hrig hu hd

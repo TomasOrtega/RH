@@ -36,26 +36,26 @@ def epsTo (R : Type) [CommRing R] {A : Type} [CommRing A] [Algebra R A] (t : A) 
     DualNumber R →ₐ[R] A := dualTo (Algebra.ofId R A) t ht
 
 /- English proof (translation)
-Simplify using `[epsTo, dualTo_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem epsTo_eps (t : A) (ht : t * t = 0) : epsTo R t ht DualNumber.eps = t := by
   simp [epsTo, dualTo_apply]
 
 /- English proof (translation)
-The claim follows from `DualNumber.algHom_ext (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem comp_epsTo (φ : A →ₐ[R] A') (t : A) (ht : t * t = 0) :
     φ.comp (epsTo R t ht) = epsTo R (φ t) (by rw [← map_mul, ht, map_zero]) :=
   DualNumber.algHom_ext (by simp)
 
 /- English proof (translation)
-The claim follows from `DualNumber.algHom_ext (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem epsTo_zero : epsTo R (0 : A) (mul_zero _) = (Algebra.ofId R A).comp (fstD R) :=
   DualNumber.algHom_ext (by simp)
 
 /- English proof (translation)
-The claim follows from `DualNumber.algHom_ext (by rw [epsTo_eps] change epsTo R t ht (TrivSqZeroExt.map _ (inr 1)) = _ simp [epsTo, dualTo_apply, Algebra.smul_def])`.
+A detailed English derivation is pending.
 -/
 theorem epsTo_comp_scaleD (t : A) (ht : t * t = 0) (a : R) :
     (epsTo R t ht).comp (scaleD a) =
@@ -66,7 +66,7 @@ theorem epsTo_comp_scaleD (t : A) (ht : t * t = 0) (a : R) :
     simp [epsTo, dualTo_apply, Algebra.smul_def])
 
 /- English proof (translation)
-The claim follows from `DualNumber.algHom_ext (by rw [epsTo_eps] change TrivSqZeroExt.map _ (inr 1) = _ rw [TrivSqZeroExt.map_inr, LinearMap.smul_apply, LinearMap.id_apply, smul_eq_mul, mul_one])`.
+A detailed English derivation is pending.
 -/
 theorem scaleD_eq (a : R) :
     scaleD a = epsTo R (inr a : DualNumber R) (TrivSqZeroExt.inr_mul_inr _ _ _) :=
@@ -98,14 +98,14 @@ theorem vecTo_apply {n : ℕ} (α : S →ₐ[R] A) (c : Fin n → A) (hc : ∀ i
     (x : TrivSqZeroExt S (Fin n → S)) : vecTo α c hc x = α x.fst + ∑ i, α (x.snd i) * c i := rfl
 
 /- English proof (translation)
-Simplify using `[vecTo_apply, Pi.single_apply, apply_ite]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vecTo_single {n : ℕ} (α : S →ₐ[R] A) (c : Fin n → A) (hc : ∀ i j, c i * c j = 0)
     (i : Fin n) : vecTo α c hc (inr (Pi.single i 1)) = c i := by
   simp [vecTo_apply, Pi.single_apply, apply_ite]
 
 /- English proof (translation)
-Use `Ideal.mul_mem_mul ha hb` as an intermediate fact. Rewrite `this` using `[← pow_two, hJ, Ideal.mem_bot]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_eq_zero_of_sq {J : Ideal A} (hJ : J ^ 2 = ⊥) {a b : A} (ha : a ∈ J) (hb : b ∈ J) :
     a * b = 0 := by
@@ -113,13 +113,13 @@ theorem mul_eq_zero_of_sq {J : Ideal A} (hJ : J ^ 2 = ⊥) {a b : A} (ha : a ∈
   rwa [← pow_two, hJ, Ideal.mem_bot] at this
 
 /- English proof (translation)
-Rewrite using `[← Ideal.map_pow, hJ, Ideal.map_bot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_sq {J : Ideal A} (hJ : J ^ 2 = ⊥) (φ : A →ₐ[R] A') : (J.map φ) ^ 2 = ⊥ := by
   rw [← Ideal.map_pow, hJ, Ideal.map_bot]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨2, by have := Ideal.Quotient.eq_zero_iff_mem.1 ha rw [pow_two, mul_eq_zero_of_sq hJ this this]⟩`.
+Supply the required witnesses or components.
 -/
 theorem nil_of_sq {J : Ideal A} (hJ : J ^ 2 = ⊥) (a : A) (ha : Ideal.Quotient.mkₐ R J a = 0) :
     IsNilpotent a :=
@@ -128,9 +128,9 @@ theorem nil_of_sq {J : Ideal A} (hJ : J ^ 2 = ⊥) (a : A) (ha : Ideal.Quotient.
     rw [pow_two, mul_eq_zero_of_sq hJ this this]⟩
 
 /- English proof (translation)
-Rewrite using `[pow_two, eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Establish `hx : x.fst = 0` using `hx`. Establish `hy : y.fst = 0` using `hy`. Rewrite using `[Ideal.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [hx, hy]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ker_fst_sq (M : Type) [AddCommGroup M] [Module S M] [Module Sᵐᵒᵖ M] [IsCentralScalar S M]
     [Module R M] [IsScalarTower R S M] [IsScalarTower R Sᵐᵒᵖ M] :
@@ -165,13 +165,13 @@ def redKer (J : Ideal A) : Subgroup (sp (R₀ := R) A ⟶ G) := (pointsMap G (Id
 variable {G}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_redKer {J : Ideal A} {y : sp A ⟶ G} :
     y ∈ redKer G J ↔ spMap (Ideal.Quotient.mkₐ R J) ≫ y = 1 := Iff.rfl
 
 /- English proof (translation)
-Establish `: q = (Ideal.Quotient.liftₐ J q hq).comp (Ideal.Quotient.mkₐ R J)` using `by ext; rfl`. Rewrite using `[this, ← spMap_comp, Category.assoc, mem_redKer.1 hy, comp_one']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_eq_one_of_mem_redKer {J : Ideal A} {y : sp A ⟶ G} (hy : y ∈ redKer G J)
     (q : A →ₐ[R] A₀) (hq : ∀ a ∈ J, q a = 0) : spMap q ≫ y = 1 := by
@@ -179,7 +179,7 @@ theorem comp_eq_one_of_mem_redKer {J : Ideal A} {y : sp A ⟶ G} (hy : y ∈ red
   rw [this, ← spMap_comp, Category.assoc, mem_redKer.1 hy, comp_one']
 
 /- English proof (translation)
-Rewrite using `[mem_redKer, ← Category.assoc, spMap_comp]`. Conclude with `comp_eq_one_of_mem_redKer hy _ fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (hφ a ha)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mem_redKer {J : Ideal A} {J' : Ideal A'} {y : sp A ⟶ G} (hy : y ∈ redKer G J)
     (φ : A →ₐ[R] A') (hφ : ∀ a ∈ J, φ a ∈ J') : spMap φ ≫ y ∈ redKer G J' := by
@@ -187,7 +187,7 @@ theorem comp_mem_redKer {J : Ideal A} {J' : Ideal A'} {y : sp A ⟶ G} (hy : y �
   exact comp_eq_one_of_mem_redKer hy _ fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (hφ a ha)
 
 /- English proof (translation)
-Establish `: Ideal.Quotient.mkₐ R (RingHom.ker q) = ((Ideal.Quotient.mkₐ R (RingHom.ker q)).comp s).comp q`. Use extensionality with `a`. Conclude with `Ideal.Quotient.eq.2 (by simp [RingHom.mem_ker, hs])`. Rewrite using `[mem_redKer, this, ← spMap_comp, Category.assoc, hy, comp_one']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_redKer_of_section (q : A →ₐ[R] A₀) (s : A₀ →ₐ[R] A) (hs : ∀ a, q (s a) = a)
     {y : sp A ⟶ G} (hy : spMap q ≫ y = 1) : y ∈ redKer G (RingHom.ker q) := by
@@ -204,7 +204,7 @@ def UnitInChart : Prop :=
     IsOpenImmersion j.left ∧ spMap u ≫ j = 1
 
 /- English proof (translation)
-Take `⟨B, _, _, j, u, hj, hu⟩` from `h`. Conclude with `⟨B, _, _, j, φ.comp u, hj, by rw [← spMap_comp, Category.assoc, hu, comp_one']⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UnitInChart.map (h : UnitInChart G A) (φ : A →ₐ[R] A') : UnitInChart G A' := by
   obtain ⟨B, _, _, j, u, hj, hu⟩ := h
@@ -212,7 +212,7 @@ theorem UnitInChart.map (h : UnitInChart G A) (φ : A →ₐ[R] A') : UnitInChar
 
 variable (G A) in
 /- English proof (translation)
-Use `span_eq_top_of_forall_maximal fun m hm => ?_` and prove the remaining obligations. Take `⟨f, hf, B, _, _, j, hj, h⟩` from `exists_local_chart (1 : sp A ⟶ G) m hm.isPrime`. Take `⟨u, hu⟩` from `h _ (awayHom R f) (isAway_awayHom f).unit`. Conclude with `⟨f, ⟨B, _, _, j, u, hj, by rw [← hu, comp_one']⟩, hf⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem span_unitInChart :
     Ideal.span {f : A | UnitInChart G (Localization.Away f)} = ⊤ := by
@@ -223,7 +223,7 @@ theorem span_unitInChart :
 
 variable (G A) in
 /- English proof (translation)
-Take `⟨s, hs, hspan⟩` from `(Ideal.span_eq_top_iff_finite _).1 (span_unitInChart G A)`. Conclude with `⟨s, inferInstance, Subtype.val, by rw [Subtype.range_coe_subtype]; exact hspan, fun k => hs k.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fin_unitInChart : ∃ (κ : Type) (_ : Finite κ) (s : κ → A),
     Ideal.span (Set.range s) = ⊤ ∧ ∀ k, UnitInChart G (Localization.Away (s k)) := by
@@ -232,7 +232,7 @@ theorem exists_fin_unitInChart : ∃ (κ : Type) (_ : Finite κ) (s : κ → A),
     fun k => hs k.2⟩
 
 /- English proof (translation)
-Take `⟨φ, h1, h2⟩` from `exists_chart_pt_of_nil j (Ideal.Quotient.mkₐ R J) (Ideal.Quotient.mkₐ_surjective R J) (nil_of_sq hJ) y ((Ideal.Quotient.mkₐ R J).comp u) (by rw [mem_redKer.1 hy, ← spMap_comp, Category.assoc, hu, comp_one'])`. Conclude with `⟨φ, h1, fun b => Ideal.Quotient.eq.1 (AlgHom.congr_fun h2 b)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart_of_mem_redKer {B : Type} [CommRing B] [Algebra R B] (j : sp B ⟶ G)
     [IsOpenImmersion j.left] (u : B →ₐ[R] A) (hu : spMap u ≫ j = 1) {J : Ideal A} (hJ : J ^ 2 = ⊥)
@@ -244,17 +244,17 @@ theorem exists_chart_of_mem_redKer {B : Type} [CommRing B] [Algebra R B] (j : sp
   exact ⟨φ, h1, fun b => Ideal.Quotient.eq.1 (AlgHom.congr_fun h2 b)⟩
 
 /- English proof (translation)
-Take `⟨κ, _, s, hs, hsm⟩` from `exists_fin_unitInChart G A`. Use `away_ext hs (fun k => awayHom R (s k)) (fun k => isAway_awayHom _) fun k => ?_` and prove the remaining obligations. Take `⟨B, _, _, j, u, hj, hu⟩` from `hsm k`. Establish `hρ` using `isAway_awayHom (R := R) (s k)`. Take `⟨φ, e, -⟩` from `exists_chart_of_mem_redKer j u hu (map_sq hJ (awayHom R (s k))) (comp_mem_redKer hy (awayHom R (s k)) fun a ha => Ideal.mem_map_of_mem _ ha)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ', e', -⟩` from `exists_chart_of_mem_redKer j u hu (map_sq hJ (awayHom R (s k))) (comp_mem_redKer hy' (awayHom R (s k)) fun a ha => Ideal.mem_map_of_mem _ ha)`. Rewrite using `[e, e']`. Use `congr 2`. Use extensionality with `b`. Take `⟨N, a, ha⟩` from `hρ.surj (φ b - φ' b)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ {T : Type} [CommRing T] [Algebra R T] (q : A →ₐ[R] T), spMap q ≫ y = spMap q ≫ y' → ∃ M : ℕ, q (s k ^ M * a) = 0`. Introduce `T _ _ q h`. Establish `hρ'` using `isAway_awayHom (R := R) (q (s k))`. Take `⟨ψ, hψ⟩` from `hρ.lift ((awayHom R (q (s k))).comp q) hρ'.unit`. Establish `: spMap (ψ.comp φ) ≫ j = spMap (ψ.comp φ') ≫ j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← spMap_comp, ← spMap_comp, Category.assoc, Category.assoc, ← e, ← e', ← Category.assoc, ← Category.assoc, spMap_comp, hψ, ← spMap_comp, Category.assoc, Category.assoc, h]`. Establish `h3 : ψ (φ b) = ψ (φ' b)` using `AlgHom.congr_fun (chart_inj j this) b`. Take `⟨M, hM⟩` from `hρ'.ker (a := q a) (by`. Rewrite using `[← AlgHom.comp_apply, ← hψ, AlgHom.comp_apply, ← ha, map_mul, map_sub, h3, sub_self, zero_mul])`. Conclude with `⟨M, by rw [map_mul, map_pow, hM]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨M₁, e₁⟩` from `key q₁ h₁`. Take `⟨M₂, e₂⟩` from `key q₂ h₂`. Establish `h0 : s k ^ M₁ * s k ^ M₂ * a = 0` using `hq _ (by rw [mul_right_comm, map_mul, e₁, zero_mul]) (by rw [mul_assoc, map_mul, e₂, mul_zero])`. Establish `h1` using `congrArg (awayHom R (s k)) h0`. Rewrite `h1` using `[map_mul, map_mul, map_pow, map_pow, map_zero, ← ha, ((hρ.unit.pow M₁).mul (hρ.unit.pow M₂)).mul_right_eq_zero, (hρ.unit.pow N).mul_left_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.1 h1`.
+A detailed English derivation is pending.
 -/
 theorem redKer_ext {J : Ideal A} (hJ : J ^ 2 = ⊥) {y y' : sp A ⟶ G} (hy : y ∈ redKer G J)
     (hy' : y' ∈ redKer G J) (q₁ : A →ₐ[R] A') (q₂ : A →ₐ[R] A₀)
@@ -297,7 +297,7 @@ theorem redKer_ext {J : Ideal A} (hJ : J ^ 2 = ⊥) {y y' : sp A ⟶ G} (hy : y 
   exact sub_eq_zero.1 h1
 
 /- English proof (translation)
-Substitute `ht0` using the available equality. Rewrite using `[epsTo_zero, ← spMap_comp, Category.assoc, hw, comp_one']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem epsTo_zero_comp {w : sp (R₀ := R) (DualNumber R) ⟶ G} (hw : IsTan w) (t : A) (ht0 : t = 0)
     (ht : t * t = 0) : spMap (epsTo R t ht) ≫ w = 1 := by
@@ -305,7 +305,7 @@ theorem epsTo_zero_comp {w : sp (R₀ := R) (DualNumber R) ⟶ G} (hw : IsTan w)
   rw [epsTo_zero, ← spMap_comp, Category.assoc, hw, comp_one']
 
 /- English proof (translation)
-Rewrite using `[mem_redKer, ← Category.assoc, spMap_comp, comp_epsTo]`. Conclude with `epsTo_zero_comp hw _ (Ideal.Quotient.eq_zero_iff_mem.2 htJ) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsTo_comp_mem_redKer {w : sp (R₀ := R) (DualNumber R) ⟶ G} (hw : IsTan w) {J : Ideal A}
     {t : A} (htJ : t ∈ J) (ht : t * t = 0) : spMap (epsTo R t ht) ≫ w ∈ redKer G J := by
@@ -313,21 +313,19 @@ theorem epsTo_comp_mem_redKer {w : sp (R₀ := R) (DualNumber R) ⟶ G} (hw : Is
   exact epsTo_zero_comp hw _ (Ideal.Quotient.eq_zero_iff_mem.2 htJ) _
 
 /- English proof (translation)
-Set `E` to `TrivSqZeroExt R (Fin 2 → R)`. Set `e : Fin 2 → E` to `fun i => inr (Pi.single i 1)`. Establish `he : ∀ i j, e i * e j = 0` using `fun i j => TrivSqZeroExt.inr_mul_inr _ _ _`. Establish `he' : (e 0 + e 1) * (e 0 + e 1) = 0` using `by simp [add_mul, mul_add, he]`. Establish `hk : ∀ i, e i ∈ RingHom.ker (TrivSqZeroExt.fstHom R R (Fin 2 → R))` using `fun i => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ax : ∀ i : Fin 2, ∀ a b : Fin 2, (Pi.single i DualNumber.eps : Fin 2 → DualNumber R) a * (Pi.single i DualNumber.eps : Fin 2 → DualNumber R) b = 0`. Introduce `i a b`. Simplify using `only [Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Set `q : Fin 2 → (E →ₐ[R] DualNumber R)` to `fun i => vecTo (Algebra.ofId R _) (Pi.single i DualNumber.eps) (ax i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Establish `hq : ∀ i a, q i (e a) = (Pi.single i DualNumber.eps : Fin 2 → DualNumber R) a` using `fun i a => vecTo_single _ _ _ _`. Establish `univ : spMap (epsTo R (e 0 + e 1) he') ≫ w = (spMap (epsTo R (e 0) (he 0 0)) ≫ w) * (spMap (epsTo R (e 1) (he 1 1)) ≫ w)`. Use `redKer_ext (ker_fst_sq (R := R) (S := R) (Fin 2 → R)) (epsTo_comp_mem_redKer hw (add_mem (hk 0) (hk 1)) _) (mul_mem (epsTo_comp_mem_redKer hw (hk 0) _) (epsTo_comp_mem_redKer hw (hk 1) _)) (q 0) (q 1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a h0 h1`. Establish `a0` using `congrArg TrivSqZeroExt.fst h0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `a1` using `congrArg TrivSqZeroExt.snd h0`. Establish `a2` using `congrArg TrivSqZeroExt.snd h1`. Simplify using `[q, vecTo_apply, Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl] at a0 a1 a2`. Use `TrivSqZeroExt.ext a0 (funext fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `a1`. Conclude with `a2`. Simplify using `only [MonObj.comp_mul, ← Category.assoc, spMap_comp, comp_epsTo]`. Rewrite using `[epsTo_zero_comp hw (q 0 (e 1)) (by simp [hq]), mul_one]`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hq]`. Simplify using `only [MonObj.comp_mul, ← Category.assoc, spMap_comp, comp_epsTo]`. Rewrite using `[epsTo_zero_comp hw (q 1 (e 0)) (by simp [hq]), one_mul]`. Use `congr 3`. Simplify using `[hq]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `let ψ : E →ₐ[R] A := vecTo (Algebra.ofId R A) ![t₁, t₂] (fun a b => by fin_cases a <;> fin_cases b <;> simp [h₁, h₂, h₁₂, mul_comm t₂ t₁])`. Establish `hψ₀ : ψ (e 0) = t₁` using `vecTo_single _ _ _ _`. Establish `hψ₁ : ψ (e 1) = t₂` using `vecTo_single _ _ _ _`. Use `congrArg (spMap ψ ≫ ·) univ` as an intermediate fact. Simplify using `only [MonObj.comp_mul, ← Category.assoc, spMap_comp, comp_epsTo, map_add, hψ₀, hψ₁] at this`.
-
-Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem epsTo_add_comp {w : sp (R₀ := R) (DualNumber R) ⟶ G} (hw : IsTan w) (t₁ t₂ : A)
     (h₁ : t₁ * t₁ = 0) (h₂ : t₂ * t₂ = 0) (h₁₂ : t₁ * t₂ = 0) (h : (t₁ + t₂) * (t₁ + t₂) = 0) :
@@ -384,7 +382,7 @@ def lieExp (v : Fin n → (epsR R ⟶ G)) (c : Fin n → A) (hc : ∀ i, c i * c
   ∏ i, spMap (epsTo R (c i) (hc i)) ≫ v i
 
 /- English proof (translation)
-Rewrite using `[lieExp, ← ptsMap_apply, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ptsMap_apply, ← Category.assoc, spMap_comp, comp_epsTo]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_lieExp (v : Fin n → (epsR R ⟶ G)) (φ : A →ₐ[R] A') (c : Fin n → A)
     (hc : ∀ i, c i * c i = 0) :
@@ -395,7 +393,7 @@ theorem comp_lieExp (v : Fin n → (epsR R ⟶ G)) (φ : A →ₐ[R] A') (c : Fi
   rw [ptsMap_apply, ← Category.assoc, spMap_comp, comp_epsTo]
 
 /- English proof (translation)
-Take `rfl : c = c'` from `funext h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem lieExp_congr (v : Fin n → (epsR R ⟶ G)) {c c' : Fin n → A} (h : ∀ i, c i = c' i)
     (hc : ∀ i, c i * c i = 0) (hc' : ∀ i, c' i * c' i = 0) : lieExp v c hc = lieExp v c' hc' := by
@@ -407,21 +405,21 @@ variable {v : Fin n → (epsR R ⟶ G)} (hv : ∀ i, IsTangent (v i))
 include hv
 
 /- English proof (translation)
-The claim follows from `Finset.prod_eq_one fun i _ => epsTo_zero_comp ((isTan_iff _).2 (hv i)) _ (h0 i) _`.
+A detailed English derivation is pending.
 -/
 theorem lieExp_eq_one (c : Fin n → A) (h0 : ∀ i, c i = 0) (hc : ∀ i, c i * c i = 0) :
     lieExp v c hc = 1 :=
   Finset.prod_eq_one fun i _ => epsTo_zero_comp ((isTan_iff _).2 (hv i)) _ (h0 i) _
 
 /- English proof (translation)
-The claim follows from `prod_mem fun i _ => epsTo_comp_mem_redKer ((isTan_iff _).2 (hv i)) (hcJ i) _`.
+A detailed English derivation is pending.
 -/
 theorem lieExp_mem_redKer {J : Ideal A} (c : Fin n → A) (hcJ : ∀ i, c i ∈ J)
     (hc : ∀ i, c i * c i = 0) : lieExp v c hc ∈ redKer G J :=
   prod_mem fun i _ => epsTo_comp_mem_redKer ((isTan_iff _).2 (hv i)) (hcJ i) _
 
 /- English proof (translation)
-Rewrite using `[lieExp, lieExp, lieExp, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => epsTo_add_comp ((isTan_iff _).2 (hv i)) _ _ _ _ (hcc i) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieExp_add (c c' : Fin n → A) (hc : ∀ i, c i * c i = 0) (hc' : ∀ i, c' i * c' i = 0)
     (hcc : ∀ i, c i * c' i = 0) (h : ∀ i, (c i + c' i) * (c i + c' i) = 0) :
@@ -431,7 +429,7 @@ theorem lieExp_add (c c' : Fin n → A) (hc : ∀ i, c i * c i = 0) (hc' : ∀ i
 
 omit hv in
 /- English proof (translation)
-Rewrite using `[prodPts, List.prod_ofFn, lieExp]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [scaleD_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodPts_eq_lieExp (c : Fin n → R) : prodPts c v =
     lieExp v (fun i => (inr (c i) : DualNumber R)) (fun _ => TrivSqZeroExt.inr_mul_inr _ _ _) := by
@@ -440,7 +438,7 @@ theorem prodPts_eq_lieExp (c : Fin n → R) : prodPts c v =
 
 omit hv in
 /- English proof (translation)
-Rewrite using `[isLieComb_iff, prodPts_eq_lieExp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isLieComb_iff_lieExp (c : Fin n → R) (w : epsR R ⟶ G) : IsLieComb c v w ↔
     w = lieExp v (fun i => (inr (c i) : DualNumber R))

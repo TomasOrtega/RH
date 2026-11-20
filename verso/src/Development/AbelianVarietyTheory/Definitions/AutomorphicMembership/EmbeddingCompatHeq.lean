@@ -16,15 +16,15 @@ namespace GlobalTheory.ShFam.AsmCheck
 variable {D : D7} {A : Amb D}
 
 /- English proof (translation)
-Introduce `_ _ h` and use `D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tauEmb_injective (D : D7) : Function.Injective (DV.tauEmb D) := fun _ _ h =>
   D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))
 
 /- English proof (translation)
-Use `⟨⟨Equiv.ofBijective (fun t => ⟨DV.tauEmb D t, A.cm t⟩) ⟨fun a b h => tauEmb_injective D (congrArg Subtype.val h), ?_⟩, fun _ => rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨τ, hτ⟩`. Take `⟨g, rfl⟩` from `(factEmb D.R D.host).1.2 τ`. Rewrite `hτ` using `[A.cmHost_rootComplex_eq_pm_sqrt, A.rt_eq]`. Take `⟨t, ht⟩` from `(exists_tauEmb_iff D g).2 (by`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : D.host.galE (D.host.sigmaOf g) = g` using `(D.host.gal).apply_symm_apply g`. Rewrite using `[← h1]`. Conclude with `(D.host.toHostAx.galE_mem_Psi_iff _).2 (D.host.φ₀.injective hτ))`. Conclude with `⟨t, Subtype.ext ht.symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_cmList (A : Amb D) : Nonempty (CmList A) := by
   refine ⟨⟨Equiv.ofBijective (fun t => ⟨DV.tauEmb D t, A.cm t⟩) ⟨fun a b h => tauEmb_injective D (congrArg Subtype.val h), ?_⟩,
@@ -40,7 +40,7 @@ theorem nonempty_cmList (A : Amb D) : Nonempty (CmList A) := by
   exact ⟨t, Subtype.ext ht.symm⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `L`. Take `⟨b, hb⟩` from `L'`. Take `rfl : a = b` from `Equiv.ext fun t => Subtype.ext ((ha t).trans (hb t).symm)`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem cmList_unique (L L' : CmList A) : L = L' := by
   obtain ⟨a, ha⟩ := L
@@ -49,7 +49,7 @@ theorem cmList_unique (L L' : CmList A) : L = L' := by
   rfl
 
 /- English proof (translation)
-Establish `h1` using `D.host.finrank_cmField`. Establish `h2 : Nat.card D.what₂.Tau = _` using `(Nat.card_congr D.eTau).trans (factCardPsi D.R D.host).1`. Establish `h3 : Module.finrank ℚ D.host.E = 4 * D.R.ord` using `h1`. Establish `h4 : Nat.card D.what₂.Tau = 2 * D.R.ord` using `h2`. Rewrite using `[← Nat.card_eq_fintype_card, h3, h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -66,13 +66,13 @@ section One
 variable {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ) (L : CmList A) (C : CxSt D.what₂.LL)
 
 /- English proof (translation)
-Rewrite using `[Φ.dim_eq, Formalism.DegreeFormula.dimFl, card_tau]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dim_flag (Φ : s.Flag) (k : s.Comp) : (Φ.C k).Y.dim = Formalism.DegreeFormula.dimFl D.what₂.Tau N := by
   rw [Φ.dim_eq, Formalism.DegreeFormula.dimFl, card_tau]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ Φ := Φ dim_eq := dim_flag s Φ key := ρ B := GlobalTheory.TrueCx.invariantB _ _ (GlobalTheory.TrueCx.first_index_eq_of_unfolded _ s.isUnf S.p_eq) _ fl := fun _ _ => 1 Mb := fun _ _ _ k => ⟨0, 1, fun σ => C.fsMet _ σ 0 (k := Empty) Empty.elim, 0, fun _ _ _ => 0⟩ pad := { X with …`.
+Supply the required witnesses or components.
 -/
 theorem exists_kit (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)) (ng : NgPkg) (Φ : s.Flag)
     (ρ : KeySec s.Xo κ.c) (X : PadPkg D N j s.Comp jC ng) :
@@ -87,9 +87,9 @@ theorem exists_kit (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+
      levIn := fun _ => Iff.rfl }, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Unfold `wtA`. Rewrite using `[Finset.sum_eq_single t]`. Establish `: ¬ DV.tauEmb D t = conjEmb (DV.tauEmb D t)` using `fun h => GlobalTheory.AllWt.conj_not_mem (H := A.H) ⟨_, A.cm t⟩ (h ▸ A.cm t)`. Simplify using `[this]`. Introduce `b _ hb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ¬ DV.tauEmb D t = DV.tauEmb D b` using `fun h => hb (tauEmb_injective D h).symm`. Establish `h2 : ¬ DV.tauEmb D t = conjEmb (DV.tauEmb D b)` using `fun h => GlobalTheory.AllWt.conj_not_mem (H := A.H) ⟨_, A.cm b⟩ (h ▸ A.cm t)`. Simplify using `[h1, h2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem wtA_big (A : Amb D) {i : ℕ} (w : WeightFamilies.Wt D i) (t : D.what₂.Tau) (a : ℕ) :
     wtA w (DV.tauEmb D t, a) = ext0 (w.aP t) a := by
@@ -107,11 +107,11 @@ theorem wtA_big (A : Amb D) {i : ℕ} (w : WeightFamilies.Wt D i) (t : D.what₂
   · simp
 
 /- English proof (translation)
-Unfold `wtA`. Establish `h2 : ∀ b, ¬ conjEmb (DV.tauEmb D t) = DV.tauEmb D b` using `fun b h => GlobalTheory.AllWt.conj_not_mem (H := A.H) ⟨_, A.cm t⟩ (h ▸ A.cm b)`. Rewrite using `[Finset.sum_eq_single t]`. Simplify using `[h2]`. Introduce `b _ hb`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ¬ conjEmb (DV.tauEmb D t) = conjEmb (DV.tauEmb D b)` using `fun h => by`. Use `congrArg conjEmb h` as an intermediate fact. Rewrite `this` using `[GlobalTheory.AllWt.conjEmb_conjEmb, GlobalTheory.AllWt.conjEmb_conjEmb]`. Conclude with `hb (tauEmb_injective D this).symm`. Simplify using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem wtA_small (A : Amb D) {i : ℕ} (w : WeightFamilies.Wt D i) (t : D.what₂.Tau) (a : ℕ) :
     wtA w (conjEmb (DV.tauEmb D t), a) = ext0 (w.aM t) a := by
@@ -130,11 +130,11 @@ theorem wtA_small (A : Amb D) {i : ℕ} (w : WeightFamilies.Wt D i) (t : D.what�
   · simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ a`. Take `⟨t, rfl⟩` from `L.ψ.surjective τ`. Establish `ha` using `a.2`. Use `show wtOfN N w (L.ψ.symm (L.ψ t)) (Fin.cast S.rank_eq a) = _`. Rewrite using `[Equiv.symm_apply_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.AllWt.weightOf, L.ψ_val, wtA_big A, wtA_small A, wtOfN, Fin.val_cast, ext0]`. Distinguish the cases in `h : (a : ℕ) < (D.R.sigW i).1`. Rewrite using `[dif_pos h, if_pos (by omega), dif_pos h]`. Establish `h' : (a : ℕ) - (D.R.sigW i).1 < (D.R.sigW i).2` using `by omega`. Establish `h'' : S.Dw.q - 1 - ((a : ℕ) - S.Dw.p) < (D.R.sigW i).2` using `by omega`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h, dif_pos h', if_neg (by omega), dif_pos h'']`. Use `congr 4`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem wt_wtOfN {i : ℕ} (w : WeightFamilies.Wt D i) (hp : S.Dw.p = (D.R.sigW i).1) (hq : S.Dw.q = (D.R.sigW i).2) :
     S.wt L (wtOfN N w) = GlobalTheory.AllWt.weightOf S.Dw (fun x => (wtA w x : ℤ)) ((w.n / 2 : ℕ) : ℤ) := by
@@ -155,7 +155,7 @@ theorem wt_wtOfN {i : ℕ} (w : WeightFamilies.Wt D i) (hp : S.Dw.p = (D.R.sigW 
     omega
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.ShFam.FlagCheck.Lw_weightOf, ← wt_wtOfN L w hp hq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Lw_wtOfN {i : ℕ} (w : WeightFamilies.Wt D i) (hp : S.Dw.p = (D.R.sigW i).1) (hq : S.Dw.q = (D.R.sigW i).2)
     (Φ : s.Flag) (k : s.Comp) : s.Lw L Φ k (wtOfN N w) = (Φ.C k).LEx (exKey S.Dw (wtA w) w.n) := by
@@ -180,22 +180,22 @@ variable {T : Top D} {h : LawsP T} {F : SrcFam (ambOf T.Q h.pins.1)} {t : ParTie
 include t in
 
 /- English proof (translation)
-The claim follows from `congrArg Sigma.fst (t.same 1 ⟨le_rfl, le_trans one_le_two D.R.two_le_m⟩)`.
+A detailed English derivation is pending.
 -/
 theorem level_eq : T.Q.l = F.κg.l :=
   congrArg Sigma.fst (t.same 1 ⟨le_rfl, le_trans one_le_two D.R.two_le_m⟩)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨congrArg WeightFamilies.Prov.KO hP.base, fun j w => congrArg (fun B : WeightFamilies.Prov D => B.Cusp j w) hP.base⟩`.
+Supply the required witnesses or components.
 -/
 theorem types_eq {P : FormsOver K R k} (hP : FormsAre h t K R k P) :
     P.KO = T.Q.c.F ∧ ∀ j w, P.Cusp j w = (recB h.toLawsCore).Cusp j w :=
   ⟨congrArg WeightFamilies.Prov.KO hP.base, fun j w => congrArg (fun B : WeightFamilies.Prov D => B.Cusp j w) hP.base⟩
 
 /- English proof (translation)
-Establish `e` using `(types_eq hP).2 j w`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, rfl⟩`. Conclude with `⟨cast e f, funext fun i => (hP.cmp j hj w i f _ (cast_heq e f).symm).symm⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨f, rfl⟩`. Conclude with `⟨cast e.symm f, funext fun i => hP.cmp j hj w i _ f (cast_heq e.symm f)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem range_cmp {P : FormsOver K R k} (hP : FormsAre h t K R k P) {j : ℕ} (hj : InR D j) (w : WeightFamilies.Wt D j) :
     Set.range (fun (f : P.Cusp j w) i => P.cmp j w i f) =
@@ -209,7 +209,7 @@ theorem range_cmp {P : FormsOver K R k} (hP : FormsAre h t K R k P) {j : ℕ} (h
     exact ⟨cast e.symm f, funext fun i => hP.cmp j hj w i _ f (cast_heq e.symm f)⟩
 
 /- English proof (translation)
-Establish `e : HeightOneSpectrum (𝓞 P.KO) = HeightOneSpectrum (𝓞 T.Q.c.F)` using `congrArg (fun B : WeightFamilies.Prov D => HeightOneSpectrum (𝓞 B.KO)) hP.base`. Conclude with `⟨cast e la, (cast_heq e la).symm⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_place {P : FormsOver K R k} (hP : FormsAre h t K R k P) (la : HeightOneSpectrum (𝓞 P.KO)) :
     ∃ la' : HeightOneSpectrum (𝓞 T.Q.c.F), HEq la la' := by
@@ -218,7 +218,7 @@ theorem exists_place {P : FormsOver K R k} (hP : FormsAre h t K R k P) (la : Hei
   exact ⟨cast e la, (cast_heq e la).symm⟩
 
 /- English proof (translation)
-Take `⟨la', hl⟩` from `exists_place hP la`. Take `⟨e, -⟩` from `hP.pts j hj la la' hl`. Conclude with `(recPJ_pt_nonempty h j hj la').map e.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pt_nonempty {P : FormsOver K R k} (hP : FormsAre h t K R k P) {j : ℕ} (hj : InR D j)
     (la : HeightOneSpectrum (𝓞 P.KO)) : Nonempty (P.Pt j la) := by
@@ -231,12 +231,12 @@ end Comparison₂
 section More
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => rfl, F.cs_le _⟩`.
+Supply the required witnesses or components.
 -/
 theorem parTie_par (F : SrcFam A) : ParTie F.par F.pins.1 F := ⟨fun _ _ => rfl, F.cs_le _⟩
 
 /- English proof (translation)
-Establish `hM : F.κg.l.M' = D.host.g 0 * D.host.g 1` using `by rw [Level.M', F.κg_M, F.κg_A, Nat.lcm_one_right]`. Rewrite using `[Lv.primes, hM, Nat.primeFactors_mul (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero, (D.host.g_prime 0).primeFactors, (D.host.g_prime 1).primeFactors]`. Use extensionality with `p`. Simplify using `[Fin.exists_fin_two, eq_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem primes_first (F : SrcFam A) : F.κg.primes = Finset.univ.image D.host.g := by
   have hM : F.κg.l.M' = D.host.g 0 * D.host.g 1 := by rw [Level.M', F.κg_M, F.κg_A, Nat.lcm_one_right]
@@ -246,13 +246,13 @@ theorem primes_first (F : SrcFam A) : F.κg.primes = Finset.univ.image D.host.g 
   simp [Fin.exists_fin_two, eq_comm]
 
 /- English proof (translation)
-Introduce `t` and use `hA ((congrArg (fun m : MD Q.H => m.1.A) (t.same 1 ⟨le_rfl, le_trans one_le_two D.R.two_le_m⟩)).trans F.κg_A)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_parTie {Q : Par D} {h : Q.PinHost} {F : SrcFam (ambOf Q h)} (hA : Q.l.A ≠ 1) : ¬ ParTie Q h F := fun t =>
   hA ((congrArg (fun m : MD Q.H => m.1.A) (t.same 1 ⟨le_rfl, le_trans one_le_two D.R.two_le_m⟩)).trans F.κg_A)
 
 /- English proof (translation)
-Substitute `hB` using the available equality. Consider the cases of `hx`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 B.KO) x`. Establish `e : ∀ y : 𝓞 B.KO, D.what₂.embLL (kL (algebraMap _ B.KO y)) = ι (algebraMap _ B.KO y)` using `fun y => (congrArg D.what₂.embLL (h1 y)).trans (h2 y)`. Rewrite using `[map_div₀, map_div₀, map_div₀, e, e]`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem embedding_compat_heq {B B' : WeightFamilies.Prov D} (hB : B = B') (kL : B.KO →+* D.what₂.LL)
     (h1 : ∀ x : 𝓞 B.KO, kL (x : B.KO) = D.what₂.OtoLL (B.eO x)) (ι : B'.KO →+* ℂ)
@@ -270,7 +270,7 @@ variable {T : Top D} {h : LawsP T} {F : SrcFam (ambOf T.Q h.pins.1)}
   {jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)} {ng : NgPkg} {k : Kits F L C jC ng}
 
 /- English proof (translation)
-The claim follows from `embedding_compat_heq hP P.kL P.kL_eO T.Q.c.F.val.toRingHom h.pins.2.2.1 x x' hx`.
+A detailed English derivation is pending.
 -/
 theorem kL_of_base {P : FormsOver K R k} (hP : P.toWeightFamilies = recB h.toLawsCore) (x : P.KO) (x' : T.Q.c.F)
     (hx : HEq x x') : D.what₂.embLL (P.kL x) = (x' : ℂ) :=
@@ -294,7 +294,7 @@ def padAny (N j : ℕ) (hj : j ≤ N) (Comp : Type) (jC : ∀ (p : ℕ) [Fact p.
     htDetT := fun _ _ _ => 0 }
 
 /- English proof (translation)
-Establish `h3 : Module.finrank ℚ D.host.E = 4 * D.R.ord` using `D.host.finrank_cmField`. Establish `h : 2 ^ 2 ≤ D.R.ord` using `(Nat.pow_le_pow_right two_pos D.host.two_le_e).trans D.R.toFrame.two_pow_le_ord`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_lt_half (D : D7) : 2 < Module.finrank ℚ D.host.E / 2 := by
   have h3 : Module.finrank ℚ D.host.E = 4 * D.R.ord := D.host.finrank_cmField
@@ -302,14 +302,14 @@ theorem two_lt_half (D : D7) : 2 < Module.finrank ℚ D.host.E / 2 := by
   omega
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_key_section_unif _ _ _ _ _ _ _ _ (s.U κ.σ₀) κ.good_σ₀ s.isUnf (fun _ => GlobalTheory.OrbitScalar.exists_mem_dom _) (s.unf _ κ.good_σ₀).2.2.1 s.geo S.two_le (two_lt_half D)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_key {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ) : Nonempty (KeySec s.Xo κ.c) :=
   GlobalTheory.T.exists_key_section_unif _ _ _ _ _ _ _ _ (s.U κ.σ₀) κ.good_σ₀ s.isUnf
     (fun _ => GlobalTheory.OrbitScalar.exists_mem_dom _) (s.unf _ κ.good_σ₀).2.2.1 s.geo S.two_le (two_lt_half D)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨k⟩ N j hN hj κ => ⟨(k N j hN hj κ).Φ⟩, fun H => ⟨fun N j hN hj κ => (exists_kit _ L C jC ngJunk (H N j hN hj κ).some (nonempty_key _).some (padAny N j hj _ jC)).choose⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_kits_iff (F : SrcFam A) (L : CmList A) (C : CxSt D.what₂.LL)
     (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)) :

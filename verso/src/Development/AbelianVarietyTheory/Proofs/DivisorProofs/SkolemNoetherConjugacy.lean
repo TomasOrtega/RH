@@ -8,9 +8,9 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKCx
 
 /- English proof (translation)
-Introduce `p _ G a b h hirr`. Establish `hb : IsIntegral G.F (b : G.C)` using `IsIntegral.of_finite G.F _`. Use `haveI : Fact (Irreducible (minpoly G.F (b : G.C))) := ⟨hirr⟩`. Use `haveI : FiniteDimensional G.F (AdjoinRoot (minpoly G.F (b : G.C))) := (AdjoinRoot.powerBasis (minpoly.ne_zero hb)).finite`. Establish `ha : Polynomial.aeval (a : G.C) (minpoly G.F (b : G.C)) = 0` using `by rw [← h]; exact minpoly.aeval _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `GroundTheory.Brauer.exists_unit_conj (evalQuot _ (b : G.C) (minpoly.aeval _ _)) (evalQuot _ (a : G.C) ha)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `hy (AdjoinRoot.root _)` as an intermediate fact. Rewrite `this` using `[evalQuot_root, evalQuot_root]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem units_conj_of_minpoly_eq_of_irreducible : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (a b : G.Cˣ),
     minpoly G.F (a : G.C) = minpoly G.F (b : G.C) → Irreducible (minpoly G.F (b : G.C)) →

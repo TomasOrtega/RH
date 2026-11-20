@@ -13,9 +13,9 @@ def LocalLengthPlaces.Statement : Prop :=
         ∑ᶠ w ∈ {w : FinitePlace L | AbsCentredAt O m fun t ↦ w t}, -Real.log (w (f : L))
 
 /- English proof (translation)
-Set `e : (⊥ : Subalgebra ℤ ℚ) ≃ₐ[ℤ] ℤ` to `Algebra.botEquivOfInjective Int.cast_injective`. Establish `hft : Algebra.FiniteType ℤ (⊥ : Subalgebra ℤ ℚ)` using `Algebra.FiniteType.equiv inferInstance e.symm`. Establish `hfr : IsFractionRing (⊥ : Subalgebra ℤ ℚ) ℚ`. Use `IsFractionRing.of_field (⊥ : Subalgebra ℤ ℚ) ℚ fun z ↦ ⟨algebraMap ℤ _ z.num, algebraMap ℤ _ z.den, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Rat.num_div_den]`. Take `⟨m, hm, -⟩` from `Ideal.exists_le_maximal (⊥ : Ideal (⊥ : Subalgebra ℤ ℚ)) bot_ne_top`. Conclude with `⟨⊥, m, 1, hft, hfr, hm, one_ne_zero⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example : ∃ (O : Subalgebra ℤ ℚ) (m : Ideal O) (f : O), Algebra.FiniteType ℤ O ∧
     IsFractionRing O ℚ ∧ m.IsMaximal ∧ f ≠ 0 := by

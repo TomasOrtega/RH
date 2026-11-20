@@ -10,27 +10,23 @@ noncomputable section
 namespace GlobalTheory.ShapeNeg
 
 /- English proof (translation)
-Introduce `O _ G G' _ _ _ _ i M _ _ ρ p r _ c h`. Use `letI := levZ (M := M) p r h`. Establish `hact : ∀ (g' : G') (x : Lev M c), levRepZ p r h (ρ.comp i.symm.toMulEquiv.toMonoidHom) g' x = levRep ρ c (i.symm g') x` using `fun g' x => rfl`. Prove the components needed by the constructor for the conclusion. Apply `Nat.card_congr` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Equiv.subtypeEquivRight ?_` and prove the remaining obligations. Introduce `x`. Use `show (∀ g, levRep ρ c g x = x) ↔ ∀ g', levRepZ p r h (ρ.comp i.symm.toMulEquiv.toMonoidHom) g' x = x`. Prove the components needed by the constructor for the conclusion. Introduce `hx g'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hact]`. Conclude with `hx _`. Introduce `hx g`. Use `hx (i g)` as an intermediate fact. Rewrite `this` using `[hact, ContinuousMulEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Conclude with `this`. Apply `Nat.card_congr` to reduce the goal to its premises. Set `ρ'` to `levRepZ p r h (ρ.comp i.symm.toMulEquiv.toMonoidHom)`. Establish `hs : Continuous (i.symm : G' → G)` using `i.symm.continuous`. Establish `hi : Continuous (i : G → G')` using `i.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `e : Z1 (levRep ρ c) ≃ Z1 ρ'` to `{ toFun := fun f => ⟨(f : G → Lev M c) ∘ i.symm, f.2.1.comp hs, fun a b => by show (f : G → Lev M c) (i.symm (a * b)) = (f : G → Lev M c) (i.symm a) + ρ' a ((f : G → Lev M c) (i.symm b))`. Rewrite using `[map_mul, f.2.2]`. Use the proof step `rfl⟩`. Use `invFun := fun f => ⟨(f : G' → Lev M c) ∘ i, f.2.1.comp hi, fun a b => by show (f : G' → Lev M c) (i (a * b)) = (f : G' → Lev M c) (i a) + levRep ρ c a ((f : G' → Lev M c) (i b))`. Rewrite using `[map_mul, f.2.2, hact, ContinuousMulEquiv.symm_apply_apply]⟩`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `left_inv := fun f => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show (f : G → Lev M c) (i.symm (i g)) = _`. Rewrite using `[ContinuousMulEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `right_inv := fun f => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show (f : G' → Lev M c) (i (i.symm g)) = _`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply] }`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `Quotient.congr e ?_` and prove the remaining obligations. Introduce `a b`. Rewrite using `[Submodule.quotientRel_def, Submodule.quotientRel_def, Submodule.mem_comap, Submodule.mem_comap, Submodule.coe_subtype, Submodule.coe_subtype, mem_coboundaries1, mem_coboundaries1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨m, fun g' => ?_⟩` and prove the remaining obligations. Use `hm (i.symm g')` as an intermediate fact. Rewrite using `[hact]`. Conclude with `this`. Introduce and unpack `⟨m, hm⟩`.
-
-Use `⟨m, fun g => ?_⟩` and prove the remaining obligations. Use `hm (i g)` as an intermediate fact. Rewrite `this` using `[hact]`. Express the relevant statement in the definitionally equal form `(a : G → Lev M c) (i.symm (i g)) - (b : G → Lev M c) (i.symm (i g)) = _ at this`. Rewrite `this` using `[ContinuousMulEquiv.symm_apply_apply]`.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem transfer_card_H0_H1 : ∀ {O : Type} [CommRing O] {G G' : Type} [Group G] [TopologicalSpace G] [Group G'] [TopologicalSpace G']
     (i : G ≃ₜ* G') {M : Type} [AddCommGroup M] [Module O M] (ρ : Representation O G M)

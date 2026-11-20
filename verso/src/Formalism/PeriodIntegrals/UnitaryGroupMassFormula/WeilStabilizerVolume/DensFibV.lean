@@ -16,13 +16,13 @@ section Local
 variable (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-The claim follows from `(Module.finBasis ℚ F).equivFun.injective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_numberField : Countable F :=
   (Module.finBasis ℚ F).equivFun.injective.countable
 
 /- English proof (translation)
-Use `countable_numberField F` as an intermediate fact. Conclude with `⟨⟨Set.range (algebraMap F (Fv F v)), Set.countable_range _, IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap F v⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem separableSpace_Fv : TopologicalSpace.SeparableSpace (Fv F v) := by
   have := countable_numberField F
@@ -30,21 +30,21 @@ theorem separableSpace_Fv : TopologicalSpace.SeparableSpace (Fv F v) := by
     IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap F v⟩⟩
 
 /- English proof (translation)
-Use `separableSpace_Fv F v` as an intermediate fact. Conclude with `UniformSpace.secondCountable_of_separable (Fv F v)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secondCountable_Fv : SecondCountableTopology (Fv F v) := by
   have := separableSpace_Fv F v
   exact UniformSpace.secondCountable_of_separable (Fv F v)
 
 /- English proof (translation)
-The claim follows from `(isCompact_adicCompletionIntegers F v).locallyCompactSpace_of_mem_nhds_of_addGroup ((Valued.isOpen_valuationSubring _).mem_nhds (zero_mem _))`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompact_Fv : LocallyCompactSpace (Fv F v) :=
   (isCompact_adicCompletionIntegers F v).locallyCompactSpace_of_mem_nhds_of_addGroup
     ((Valued.isOpen_valuationSubring _).mem_nhds (zero_mem _))
 
 /- English proof (translation)
-Establish `: {r : Fv F v | IsUnit r} = {r | r ≠ 0}`. Use extensionality with `r`. Simplify using `[isUnit_iff_ne_zero]`. Rewrite using `[this]`. Conclude with `isOpen_ne`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_units_Fv : IsOpen {r : Fv F v | IsUnit r} := by
   have : {r : Fv F v | IsUnit r} = {r | r ≠ 0} := by
@@ -56,9 +56,9 @@ theorem isOpen_units_Fv : IsOpen {r : Fv F v | IsUnit r} := by
 end Local
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ _ _ a _ _ X0 hT hdet ψ _ v μv hμv νv hνv fibV hfib Φv gv hSB hdens`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Use `secondCountable_Fv F v` as an intermediate fact. Use `locallyCompact_Fv F v` as an intermediate fact. Use `hμv.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hνv.1` as an intermediate fact. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol σ hCM.2.2.2`. Establish `hN` using `isOpen_unitHerm (Fv F v) (isOpen_units_Fv F v) σ a`. Conclude with `DensGen.densGen (B := Set.univ) hfib (continuous_gramH (Fv F v) σ hσ J hJ.1) (fun X => rfl) Subtype.val_injective (fun X hX => linIndep_of_isUnit_det (Fv F v) σ J X hX) hSB.1.continuous hSB.2 hdens Filter.univ_mem (hN.mem_nhds (isUnit_det_hermOf (Fv F v) σ _ hT hdet)) (hN.mem_nhd …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem densFibV_holds : DensFibV := by
   intro F E _ _ _ _ _ σ hCM M J hJ _ _ a _ _ X0 hT hdet ψ _ v μv hμv νv hνv fibV hfib Φv gv

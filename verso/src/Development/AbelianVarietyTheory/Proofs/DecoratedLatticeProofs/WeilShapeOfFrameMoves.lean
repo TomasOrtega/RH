@@ -13,7 +13,7 @@ open GlobalTheory.Core.Mi.LatMatch
 namespace GlobalTheory.Core.Mi.LatMatch
 
 /- English proof (translation)
-Introduce `D u d τ PP G ρ h0 L hβ hm`. Conclude with `GlobalTheory.T.frame_lattice_membership_criterion D u d τ PP G ρ h0 L (GlobalTheory.T.frame_vector_lattice_criterion D u d τ PP G (G.s + 1) (zero_add _) L hβ hm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wShape_chain : ∀ (D : D7) (u : D.what₂.Word) (d : GlobalTheory.SeeSaw.Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (PP : Formalism.L2.DIV.Pl D.host.E) (G : GlobalTheory.LocMod.GAt d τ PP) (ρ : ℕ) (h0 : 0 + 2 * ρ + 2 = D.R.m) (L : Lat (d.st 0).V), Formalism.L2.DIV.IsFrame (d.st 0).β (d.st 0).Λ → Moves (d.st 0).V (d.t 0) (d.st 0).Λ L (· = G.q.v) → WShape G.q (d.bes 0 ρ h0).d (d.bes 0 ρ h0).o (d.bes 0 ρ h0).ζ L (fun i => (((G.S.ϖ : G.kˣ) : G.k) ^ (i.1 + 1))⁻¹) (fun i => (((G.S.ϖ : G.kˣ) : G.k) ^ (2 * ρ - i.1 + 1))⁻¹) ((((G.S.ϖ : G.kˣ) : G.k) ^ (ρ + 1))⁻¹) 1 (d.x 0).L := by
   intro D u d τ PP G ρ h0 L hβ hm

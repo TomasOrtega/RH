@@ -8,19 +8,17 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.Kleiman
 
 /- English proof (translation)
-Introduce `S _ N Ω _ _ x H D j hj`. Establish `hsub : ∀ l I, D.h l ∈ (H.pow D.m).sub I`. Introduce `l I`. Use `D.mem_secs l` as an intermediate fact. Rewrite `this` using `[SubSystem.secs, Submodule.mem_iInf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this I`. Set `R` to `TranslateEq.ampleSub H.toSubSystem D.m (D.h j) (hsub j)`. Establish `hBR : ∀ b ∈ ampleBase (S` using `S) D.h j, b ∈ R := by`. Introduce `b hb`. Use `(Algebra.adjoin_le (R := S) (S := R) ?_) hb` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨l, rfl⟩`. Use `Set.mem_iInter.mpr fun I => ⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, div_mul_cancel₀ _ hj, Nat.mul_one]`. Conclude with `hsub l I`. Take `⟨r, g, hgR, hgen⟩` from `hft S N Ω x H D j hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hfg : Subalgebra.toSubmodule (Algebra.adjoin (ampleBase (S` using `S) D.h j) (Set.range g)) |>.FG := fg_adjoin_of_finite (Set.finite_range g) (by`. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `hint S N Ω x H D j hj (g l) (hgR l))`. Take `⟨n, b, hb⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp hfg`. Establish `hAR : ∀ y ∈ Algebra.adjoin (ampleBase (S` using `S) D.h j) (Set.range g), y ∈ R := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `y hy`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨l, rfl⟩` from `hy`. Conclude with `hgR l`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `algebraMap c => exact hBR c c.2`. Consider the case `add y z _ _ hy hz => exact R.add_mem hy hz`. Consider the case `mul y z _ _ hy hz => exact R.mul_mem hy hz`. Use `⟨n, b, fun l => hAR _ ?_, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hl : b l ∈ Submodule.span (ampleBase (S` using `S) D.h j) (Set.range b) := Submodule.subset_span ⟨l, rfl⟩`.
-
-Rewrite `hl` using `[hb]`. Conclude with `hl`. Rewrite using `[hb]`. Conclude with `hgen hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AmpleRingFinite.proof (hint : AmpleRingIntegral.Statement) (hft : AmpleRingFiniteType.Statement) :
     AmpleRingFinite.Statement := by

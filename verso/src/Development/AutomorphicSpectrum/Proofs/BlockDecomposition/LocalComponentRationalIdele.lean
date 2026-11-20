@@ -12,7 +12,7 @@ open GlobalTheory.CompanionTheory.FexTheta
 namespace GlobalTheory.CompanionTheory.FexTheta
 
 /- English proof (translation)
-Establish `h : ∀ f : ℚ →+* Qv v, f (α : ℚ) = (((α : ℚˣ) : ℚ) : Qv v)` using `fun f => eq_ratCast f _`. Conclude with `h (((GroundTheory.Automorphic.GodementSection.adeleAt v).comp Adele2.finRingHom).comp (algebraMap ℚ 𝔸[ℚ]))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lc_pri (v : Pl) (α : ℚˣ) : ((Ad3.R.lc v (pri α) : (Qv v)ˣ) : Qv v) = (((α : ℚˣ) : ℚ) : Qv v) := by
   have h : ∀ f : ℚ →+* Qv v, f (α : ℚ) = (((α : ℚˣ) : ℚ) : Qv v) := fun f => eq_ratCast f _

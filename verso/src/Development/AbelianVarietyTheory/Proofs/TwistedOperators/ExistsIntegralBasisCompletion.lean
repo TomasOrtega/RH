@@ -13,9 +13,9 @@ namespace GlobalTheory.AscFin.CongrOrbit
 variable {O : Type} [CommRing O] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite using `[Matrix.sub_apply, ← Ideal.Quotient.eq]`. Simplify `this` using `[Matrix.one_apply, apply_ite]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Use extensionality with `i j`. Use `h i j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, ← Ideal.Quotient.eq]`. Simplify `this` using `[Matrix.one_apply, apply_ite]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem quot_mapMatrix_eq_one_iff (I : Ideal O) (A : Matrix n n O) :
     (Ideal.Quotient.mk I).mapMatrix A = 1 ↔ ∀ i j, (A - 1) i j ∈ I := by
@@ -31,9 +31,9 @@ theorem quot_mapMatrix_eq_one_iff (I : Ideal O) (A : Matrix n n O) :
     simpa [Matrix.one_apply, apply_ite] using this
 
 /- English proof (translation)
-Establish `h1` using `(quot_mapMatrix_eq_one_iff I A).2 hA`. Establish `h2 : Ideal.Quotient.mk I A.det = 1`. Rewrite using `[RingHom.map_det, h1, Matrix.det_one]`. Establish `h3 : A.det - 1 ∈ I`. Rewrite using `[← Ideal.Quotient.eq, h2, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `(Ideal.mem_jacobson_bot.1 (hI h3)) 1`. Simplify using `using h4`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_det_of_sub_one_mem (I : Ideal O) (hI : I ≤ Ideal.jacobson ⊥) (A : Matrix n n O)
     (hA : ∀ i j, (A - 1) i j ∈ I) : IsUnit A.det := by
@@ -56,7 +56,7 @@ def rowFix (g : b → n) (ζ : b → n → O) : Matrix n n O :=
     ∑ q, (if i = g q then 1 else 0) * (ζ q j - if g q = j then 1 else 0)
 
 /- English proof (translation)
-Simplify using `only [colFix, Matrix.sub_apply, Matrix.of_apply, Matrix.one_apply, add_sub_cancel_left]`. Conclude with `Ideal.sum_mem _ fun p _ => Ideal.mul_mem_right _ _ (hξ p i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colFix_sub_one_mem (I : Ideal O) (f : a → n) (ξ : a → n → O)
     (hξ : ∀ p i, ξ p i - (if i = f p then 1 else 0) ∈ I) (i j : n) :
@@ -65,9 +65,9 @@ theorem colFix_sub_one_mem (I : Ideal O) (f : a → n) (ξ : a → n → O)
   exact Ideal.sum_mem _ fun p _ => Ideal.mul_mem_right _ _ (hξ p i)
 
 /- English proof (translation)
-Simplify using `only [colFix, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single p₀]`. Rewrite using `[if_pos rfl, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Introduce `p _ hp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (fun h => hp (hf h).symm), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem colFix_apply_col {f : a → n} (hf : Function.Injective f) (ξ : a → n → O) (i : n)
     (p₀ : a) : colFix f ξ i (f p₀) = ξ p₀ i := by
@@ -79,7 +79,7 @@ theorem colFix_apply_col {f : a → n} (hf : Function.Injective f) (ξ : a → n
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Simplify using `only [rowFix, Matrix.sub_apply, Matrix.of_apply, Matrix.one_apply, add_sub_cancel_left]`. Conclude with `Ideal.sum_mem _ fun q _ => Ideal.mul_mem_left _ _ (hζ q j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowFix_sub_one_mem (I : Ideal O) (g : b → n) (ζ : b → n → O)
     (hζ : ∀ q j, ζ q j - (if g q = j then 1 else 0) ∈ I) (i j : n) :
@@ -88,9 +88,9 @@ theorem rowFix_sub_one_mem (I : Ideal O) (g : b → n) (ζ : b → n → O)
   exact Ideal.sum_mem _ fun q _ => Ideal.mul_mem_left _ _ (hζ q j)
 
 /- English proof (translation)
-Simplify using `only [rowFix, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single q₀]`. Rewrite using `[if_pos rfl, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `q _ hq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (fun h => hq (hg h).symm), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rowFix_apply_row {g : b → n} (hg : Function.Injective g) (ζ : b → n → O) (j : n)
     (q₀ : b) : rowFix g ζ (g q₀) j = ζ q₀ j := by
@@ -102,7 +102,7 @@ theorem rowFix_apply_row {g : b → n} (hg : Function.Injective g) (ζ : b → n
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Simplify using `only [rowFix, Matrix.of_apply, hζ, sub_self, mul_zero, Finset.sum_const_zero, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowFix_apply_col (f : a → n) (g : b → n) (ζ : b → n → O)
     (hζ : ∀ q p, ζ q (f p) = if g q = f p then 1 else 0) (i : n) (p : a) :
@@ -110,11 +110,11 @@ theorem rowFix_apply_col (f : a → n) (g : b → n) (ζ : b → n → O)
   simp only [rowFix, Matrix.of_apply, hζ, sub_self, mul_zero, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Establish `e1 : (v ᵥ* A) j = (v ᵥ* (A - 1)) j + v j`. Rewrite using `[Matrix.vecMul_sub, Matrix.vecMul_one, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (if c = j then (1 : O) else 0) = if j = c then 1 else 0`. Distinguish the cases in `h : c = j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Rewrite using `[e1, e2, add_sub_assoc]`. Use `add_mem ?_ (hv j)` and prove the remaining obligations. Simplify using `only [Matrix.vecMul, dotProduct]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (hA i j)`.
+A detailed English derivation is pending.
 -/
 theorem vecMul_sub_single_mem (I : Ideal O) (A : Matrix n n O)
     (hA : ∀ i j, (A - 1) i j ∈ I) (v : n → O) (c : n)
@@ -134,27 +134,25 @@ theorem vecMul_sub_single_mem (I : Ideal O) (A : Matrix n n O)
 end GlobalTheory.AscFin.CongrOrbit
 
 /- English proof (translation)
-Introduce `O _ I hI n a b _ _ _ _ f g hf hg ξ η hξ hη hηξ`. Use `open GlobalTheory.AscFin.CongrOrbit in`. Use `set k₁ := colFix f ξ with hk₁`. Establish `hk₁I` using `colFix_sub_one_mem I f ξ hξ`. Use `set ζ : b → n → O := fun q => η q ᵥ* k₁ with hζdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hζI : ∀ q j, ζ q j - (if g q = j then 1 else 0) ∈ I` using `fun q j => vecMul_sub_single_mem I k₁ hk₁I (η q) (g q) (hη q) j`. Establish `hζcol : ∀ q p, ζ q (f p) = if g q = f p then 1 else 0`. Introduce `q p`. Establish `hc : (fun i => k₁ i (f p)) = ξ p` using `funext fun i => colFix_apply_col hf ξ i p`. Simplify using `only [hζdef, Matrix.vecMul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hc, hηξ]`. Use `set m := rowFix g ζ with hm`. Establish `hmI` using `rowFix_sub_one_mem I g ζ hζI`. Establish `hmcol : ∀ i p, m i (f p) = if i = f p then 1 else 0` using `rowFix_apply_col f g ζ hζcol`. Establish `u₁` using `isUnit_det_of_sub_one_mem I hI k₁ hk₁I`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `um` using `isUnit_det_of_sub_one_mem I hI m hmI`. Use `set U₁ := Matrix.nonsingInvUnit k₁ u₁`. Use `set Um := Matrix.nonsingInvUnit m um`. Use `set Wm : Matrix n n O := ((Um⁻¹ : (Matrix n n O)ˣ) : Matrix n n O) with hWm`. Establish `hWmm : Wm * m = 1` using `Um.inv_mul`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmWm : m * Wm = 1` using `Um.mul_inv`. Establish `hval : ((U₁ * Um⁻¹ : (Matrix n n O)ˣ) : Matrix n n O) = k₁ * Wm` using `rfl`. Use `⟨U₁ * Um⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hval, ← quot_mapMatrix_eq_one_iff]`. Establish `e1` using `(quot_mapMatrix_eq_one_iff I k₁).2 hk₁I`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `(quot_mapMatrix_eq_one_iff I m).2 hmI`. Establish `eW : (Ideal.Quotient.mk I).mapMatrix Wm = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e2, mul_one]`. Use `_ = 1 := by rw [← map_mul, hWmm, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[map_mul, e1, eW, one_mul]`. Introduce `p i`. Rewrite using `[hval]`. Establish `hWcol : ∀ l, Wm l (f p) = if l = f p then 1 else 0`. Introduce `l`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun (congrFun hWmm l) (f p)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify `this` using `only [hmcol, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hWcol, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `colFix_apply_col hf ξ i p`. Introduce `q`. Rewrite using `[hval, ← Matrix.vecMul_vecMul]`. Use function extensionality and compare the values at `j`. Establish `hrow : η q ᵥ* k₁ = fun l => m (g q) l`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `l`. Rewrite using `[hm, rowFix_apply_row hg]`. Rewrite using `[hrow]`. Use `congrFun (congrFun hmWm (g q)) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`.
-
-Simplify using `only [Matrix.vecMul, dotProduct]`. Rewrite using `[this]`. Distinguish the cases in `h : g q = j`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AscFin.exists_gl_congr_cols_rows : ∀ (O : Type) [CommRing O] (I : Ideal O), I ≤ Ideal.jacobson ⊥ → ∀ (n a b : Type) [Fintype n] [DecidableEq n] [Fintype a] [Fintype b] (f : a → n) (g : b → n), Function.Injective f → Function.Injective g → ∀ (ξ : a → n → O) (η : b → n → O), (∀ p i, ξ p i - (if i = f p then 1 else 0) ∈ I) → (∀ q i, η q i - (if i = g q then 1 else 0) ∈ I) → (∀ p q, η q ⬝ᵥ ξ p = if g q = f p then 1 else 0) → ∃ k : GL n O, (∀ i j, (k.1 - 1) i j ∈ I) ∧ (∀ p i, k.1 i (f p) = ξ p i) ∧ ∀ q, η q ᵥ* k.1 = fun i => if i = g q then 1 else 0 := by
   intro O _ I hI n a b _ _ _ _ f g hf hg ξ η hξ hη hηξ

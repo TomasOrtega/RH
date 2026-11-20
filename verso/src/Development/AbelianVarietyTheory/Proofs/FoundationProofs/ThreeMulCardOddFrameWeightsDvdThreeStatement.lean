@@ -7,7 +7,7 @@ open ModularForm (E₄ E₆)
 open scoped MatrixGroups ModularForm Manifold Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.OddFrame.ThirdDiv.three_mul_card_dvd` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FThreeMulCardOddFrameWeightsDvdThree.lean&line=74#L74)
 -/

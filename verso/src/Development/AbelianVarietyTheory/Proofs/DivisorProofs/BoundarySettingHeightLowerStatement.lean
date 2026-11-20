@@ -14,7 +14,7 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.S
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PoincPull.smoothOn_chart_up_off_boundary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBoundarySettingHeightLower.lean&line=16#L16)
 -/

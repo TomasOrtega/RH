@@ -7,9 +7,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField Recipr
 namespace GlobalTheory.CompHS
 
 /- English proof (translation)
-Introduce `Y I h`. Take `⟨D, hD⟩` from `GlobalTheory.EffCartierData.exists_idealSheaf_eq (I := I) h`. Use `⟨{ P := D.lb, isLB := D.isLB_lb, t := D.canonical, reg := fun i y hi => ?_, cut := ?_ }⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Cartier.isRegularFn_iff_germ.1 (D.regular i) y hi`. Use `ideal_ext_stalk fun y => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `D.exists_mem y`. Rewrite using `[stalkId_cutIdeal D.isLB_lb _ i y hi, ← hD, D.stalkId_idealSheaf i y hi, Set.range_const]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nonempty_cartier_of_locally_principal : ∀ (Y : Scheme.{0}) (I : Y.IdealSheafData),
     (∀ y : Y, ∃ (W : Y.affineOpens) (a : Γ(Y, W.1)), y ∈ W.1 ∧ a ∈ nonZeroDivisors Γ(Y, W.1) ∧

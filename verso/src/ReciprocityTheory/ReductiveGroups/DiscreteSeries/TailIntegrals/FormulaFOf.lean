@@ -3,7 +3,7 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.IndexEmbed
 namespace ReciprocityTheory.ChartRestriction.DS.Xi
 
 /- English proof (translation)
-Conclude with `FormulaFAux.formulaF_all`.
+A detailed English derivation is pending.
 -/
 theorem formulaF_of (hB2 : InductiveHeisenbergInputs) : FormulaF := by
   exact FormulaFAux.formulaF_all

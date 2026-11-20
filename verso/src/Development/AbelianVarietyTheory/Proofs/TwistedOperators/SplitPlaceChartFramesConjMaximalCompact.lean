@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.SplitChartLink
 
 /- English proof (translation)
-Simplify using `only [map_mul, map_inv]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem block_frame_conjugation_identity {G H : Type} [Group G] [Group H] (f : G →* H) (a x : G) :
     (f a)⁻¹ * f (a * x * a⁻¹) * f a = 1⁻¹ * f x * 1 := by
@@ -23,9 +23,9 @@ theorem block_frame_conjugation_identity {G H : Type} [Group G] [Group H] (f : G
   group
 
 /- English proof (translation)
-Establish `h1 : GlobalTheory.AdelicU.matHom _ D.sp.cm.sig T.gram g = Formalism.UG.bc (GlobalTheory.AdelicU.compFin D.host.F D.host.E v) (Formalism.L2.Theta.matHom T (embV T v g))`. Establish `h2` using `GlobalTheory.AdelicU.matHom_proj D.sp.cm.sig T.gram v (embV T v g)`. Rewrite `h2` using `[GlobalTheory.AdelicU.proj_emb_self]`. Conclude with `h2`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[splitHom_val, h1, GlobalTheory.SplitProjChart.splitProj_emb]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rdA_matHom_embV {D : D7} (T : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)}
     (φ : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.SplitProj D v) (g : Gv T v) :
@@ -41,21 +41,19 @@ theorem rdA_matHom_embV {D : D7} (T : HSp D) {v : HeightOneSpectrum (𝓞 D.host
   rfl
 
 /- English proof (translation)
-Introduce `D S T v w h hv e he ε hε`. Take `⟨v', φ, hφ, hP⟩` from `(GlobalTheory.SplitIdemDict.idem_dictionary D).1 ε w hε`. Establish `hv' : v' = v`. Use `((GlobalTheory.SplitIdemDict.idem_dictionary D).2 v' φ w hP).1` as an intermediate fact. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `HeightOneSpectrum.ext this.symm`. Substitute `hv'` using the available equality. Establish `hE : IsCMExt D.host.F D.host.E D.sp.cm.sig` using `isCMExt_host D`. Use `set τ := GlobalTheory.SplitProjChart.emb φ with hτdef`. Establish `hφτ : splitProj τ = φ` using `GlobalTheory.SplitProjChart.splitProj_emb φ`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hτ : splitPrime τ = w` using `((GlobalTheory.SplitIdemDict.isProjAt_iff τ w).1 (hφτ ▸ hP)).symm`. Take `⟨hch, -⟩` from `GlobalTheory.SplitProjChart.chart_rdA D v' φ ε hφ`. Establish `hemb : chartEmb hch = τ` using `AlgHom.ext fun x => by`. Rewrite using `[chartEmb_apply, GlobalTheory.SplitProjChart.rdA_incA]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfr : ∀ (V : HSp D) β, GlobalTheory.SplitHecke.Frame V ε (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdA φ) β ↔ IsSplitBasis τ (frameLat V) β` using `fun V β => by rw [GlobalTheory.AdelicU.SplitFrame.frame_iff_isSplitBasis hφ.1 hch, hemb]`. Use `set ψ := ConjPlace.complEquiv hE h hτ with hψ`. Take `⟨⟨a, ha, hea⟩, -⟩` from `he`. Establish `hBT : IsSplitBasis τ (frameLat T) (Formalism.UG.bc (ψ.symm : w.adicCompletion D.host.E →+* Fv D.host.F v') a)`. Rewrite using `[← ConjPlace.isFrameAt_iff hE h hτ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `ha` and compare the differences between its conclusion and the goal. Conclude with `Units.ext (Matrix.ext fun i j => ψ.apply_symm_apply _)`. Use `GlobalTheory.AdelicU.SelfDual.isLattice_frameLat S` as an intermediate fact. Take `⟨BS, hBS⟩` from `exists_isSplitBasis τ (frameLat S) hE`. Use `⟨φ, hφ, ⟨BS, (hfr S BS).2 hBS⟩, _, (hfr T _).2 hBT, ψ, ConjPlace.valued_complMap hE h hτ, ?_, 1, one_mem _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hτ, GlobalTheory.LFun.SplitTie.qV_splitPrime]`. Introduce `x`. Establish `h3` using `hea (e.symm x)`. Rewrite `h3` using `[MulEquiv.apply_symm_apply, ConjPlace.locMat_eq hE h hτ, ← hψ]`. Establish `h4 : splitHom D.sp.cm.sig T.gram τ (e.symm x) = Formalism.UG.bc (ψ.symm : w.adicCompletion D.host.E →+* Fv D.host.F v') (a * x * a⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : Formalism.UG.bc (ψ : Fv D.host.F v' →+* w.adicCompletion D.host.E) (splitHom D.sp.cm.sig T.gram τ (e.symm x)) = a * x * a⁻¹`. Generalize the expression as in `Formalism.UG.bc (ψ : Fv D.host.F v' →+* w.adicCompletion D.host.E) (splitHom D.sp.cm.sig T.gram τ (e.symm x)) = y at h3 ⊢`. Substitute `h3` using the available equality. Use `group`. Rewrite using `[← h5]`.
-
-Conclude with `Units.ext (Matrix.ext fun i j => (ψ.symm_apply_apply _).symm)`. Establish `h6 : Formalism.UG.bc (ψ.symm : w.adicCompletion D.host.E →+* Fv D.host.F v') x = Matrix.GeneralLinearGroup.map (ψ.symm : w.adicCompletion D.host.E →+* Fv D.host.F v') x` using `rfl`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.grpCo, rdA_matHom_embV, show splitHom D.sp.cm.sig T.gram (GlobalTheory.SplitProjChart.emb φ) (e.symm x) = _ from h4, ← h6]`. Conclude with `block_frame_conjugation_identity _ a x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem link : ∀ (D : D7) (S T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), IsSplit (E := D.host.E) v → ∀ e, IsSplitChart D.sp.cm.sig T.gram (frameLat T) h e → ∀ ε : AE D, Formalism.L2.NTheta.IsIdemAt ε w → ∃ φ : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.SplitProj D v, GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.IsIdemOf φ ε ∧ (∃ BS, GlobalTheory.SplitHecke.Frame S ε (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdA φ) BS) ∧ ∃ BT, GlobalTheory.SplitHecke.Frame T ε (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdA φ) BT ∧ ∃ ψ : Fv D.host.F v ≃+* w.adicCompletion D.host.E, (∀ a, Valued.v (ψ a) = Valued.v a) ∧ qV D.host.F v = qV D.host.E w ∧ ∃ κ ∈ KGL v T.rank, ∀ x, GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.grpCo φ T BT (embV T v (e.symm x)) = κ⁻¹ * Matrix.GeneralLinearGroup.map (ψ.symm : w.adicCompletion D.host.E →+* Fv D.host.F v) x * κ := by
   intro D S T v w h hv e he ε hε

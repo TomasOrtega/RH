@@ -20,7 +20,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc.Extend
 
 /- English proof (translation)
-Establish `w : a ≫ G.hom = (A.hom ≫ j) ≫ f` using `by rw [Category.assoc]; exact ha.1.w`. Conclude with `⟨hb.1.lift _ _ w, hb.cancel (ha.congr rfl (hb.1.lift_fst _ _ w).symm) (hb.1.lift_snd _ _ w), hb.1.lift_fst _ _ w⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_factor {S S' U : Scheme.{0}} {G : Over S} {G' : Over S'} {A : Over U} [GrpObj G] [GrpObj G'] [GrpObj A]
     {f : S' ⟶ S} {j : U ⟶ S'} {b : G'.left ⟶ G.left} {a : A.left ⟶ G.left} (hb : IsGrpPullback G' G f b)
@@ -30,9 +30,7 @@ theorem exists_factor {S S' U : Scheme.{0}} {G : Over S} {G' : Over S'} {A : Ove
     hb.1.lift_fst _ _ w⟩
 
 /- English proof (translation)
-Establish `w : (b ≫ e₀.left) ≫ G.hom = G'.hom ≫ f` using `by rw [Category.assoc, Over.w, hb.w]`. Use `⟨Over.homMk (hb.lift _ _ w) (hb.lift_snd _ _ w), hb.lift_fst _ _ w, hb.hom_ext ?_ ?_⟩` and prove the remaining obligations. Use `show (c ≫ hb.lift _ _ w) ≫ b = _`. Rewrite using `[Category.assoc, hb.lift_fst, Category.assoc, h, Category.assoc]`. Use `show (c ≫ hb.lift _ _ w) ≫ _ = _`.
-
-Rewrite using `[Category.assoc, hb.lift_snd, Category.assoc, hc, ← Category.assoc, Over.w]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_end {S S' U : Scheme.{0}} {G : Over S} {G' : Over S'} {A : Over U}
     {f : S' ⟶ S} {j : U ⟶ S'} {b : G'.left ⟶ G.left} {c : A.left ⟶ G'.left} (hb : IsPullback b G'.hom G.hom f)
@@ -46,9 +44,9 @@ theorem exists_end {S S' U : Scheme.{0}} {G : Over S} {G' : Over S'} {A : Over U
     rw [Category.assoc, hb.lift_snd, Category.assoc, hc, ← Category.assoc, Over.w]
 
 /- English proof (translation)
-Establish `u : (f ≫ t) ≫ G.hom = 𝟙 S' ≫ f` using `by rw [Category.assoc, ht, Category.comp_id, Category.id_comp]`. Establish `k : ((w ≫ A.hom) ≫ j) ≫ f = j ≫ f`. Use `congrArg (· ≫ G.hom) h` as an intermediate fact. Simplify using `only [Category.assoc, ht, Category.comp_id, hb.w, reassoc_of% hc] at this`. Simplify `this` using `only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨hb.lift _ _ u, hb.lift_fst _ _ u, hb.lift_snd _ _ u, hb.hom_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hb.lift_fst, ← Category.assoc, k, Category.assoc w, h]`. Rewrite using `[Category.assoc, hb.lift_snd, Category.comp_id, Category.assoc w c, hc, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_sec {S S' U : Scheme.{0}} {G : Over S} {G' : Over S'} {A : Over U}
     {f : S' ⟶ S} {j : U ⟶ S'} {b : G'.left ⟶ G.left} {c : A.left ⟶ G'.left} (hb : IsPullback b G'.hom G.hom f)
@@ -65,11 +63,11 @@ theorem exists_sec {S S' U : Scheme.{0}} {G : Over S} {G' : Over S'} {A : Over U
   · rw [Category.assoc, hb.lift_snd, Category.comp_id, Category.assoc w c, hc, Category.assoc]
 
 /- English proof (translation)
-Establish `hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Sp O)` using `GlobalTheory.Published.SemiAbelianHomExtension.isNormalScheme_spec O`. Establish `: IsPreimmersion (spMap (algebraMap O Ω))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors O)`. Establish `: Flat (spMap (algebraMap O Ω))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat _ (nonZeroDivisors O))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsDominant (spMap (algebraMap O Ω))`. Take `⟨_, _⟩` from `(IsGenericPointHom.fractionField O Ω).quasiCompact_and_dominant`. Use `infer_instance`. Establish `: QuasiCompact (spMap (algebraMap O Ω))` using `inferInstance`. Use `hH.smooth` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `geometricallyIntegral_of_isAbelianScheme H` as an intermediate fact. Use `(GlobalTheory.CechPic.cls_eq_iff hL hL').1 (GlobalTheory.ZH.EndoExtend.pic_ext (spMap (algebraMap O Ω)) hn H (eSec H) (Over.w η[H]) ?_ ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.DualOpen.pic_sp_local_eq_zero O (GlobalTheory.CechPic.pull (eSec H) _), GlobalTheory.DualOpen.pic_sp_local_eq_zero O (GlobalTheory.CechPic.pull (eSec H) _)]`. Conclude with `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB hL _) (pull_isLB hL' _)).2 (GenSpread.lbIso_pull_comp hc.isoPullback.inv hc.isoPullback_inv_fst.symm hc.isoPullback_inv_fst.symm h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_of_generic {O Ω : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [IsNoetherianRing O]
     [IsIntegrallyClosed O] [Field Ω] [Algebra O Ω] [IsFractionRing O Ω] (H : Over (Sp O)) [GrpObj H]
@@ -99,25 +97,23 @@ end GlobalTheory.Poinc.Extend
 open GlobalTheory.Poinc.Extend in
 
 /- English proof (translation)
-Introduce `O Ω R₁ R₂ M Γ _ _ _ _ _ _ _ _ _ _ P₁ P₂ f₁ f₂ e₁ e₂ t₁ t₂ ⟨P, a₁, a₂, h₁, h₂, l₁, l₂, hE, hx⟩`. Establish `spc : ∀ {R : Type} [CommRing R] (f : R →+* O), spMap ((algebraMap O Ω).comp f) = spMap (algebraMap O Ω) ≫ spMap f` using `fun f => by`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite `h₁`, `h₂` using `[spc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [spc] at hx`. Take `⟨Q₁, b₁, g₁, m₁⟩ : ∃ (Q : PolAV (Sp O)) (b : Q.A.left ⟶ P₁.A.left), IsGrpPullback Q.A P₁.A (spMap f₁) b ∧ LBIso Q.L (P₁.L.pull b)` from `⟨StrictPull.polPull P₁ (spMap f₁), _, isGrpPullback_pullback _ _, PolBaseChange.lbIso_refl (pull_isLB P₁.isLB _)⟩`. Take `⟨Q₂, b₂, g₂⟩ : ∃ (Q : PolAV (Sp O)) (b : Q.A.left ⟶ P₂.A.left), IsGrpPullback Q.A P₂.A (spMap f₂) b` from `⟨StrictPull.polPull P₂ (spMap f₂), _, isGrpPullback_pullback _ _⟩`. Take `⟨c₁, k₁, rfl⟩` from `exists_factor g₁ h₁`. Take `⟨c₂, k₂, rfl⟩` from `exists_factor g₂ h₂`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Sp O)` using `GlobalTheory.Published.SemiAbelianHomExtension.isNormalScheme_spec O`. Establish `hj : IsGenericPointHom (spMap (algebraMap O Ω))` using `IsGenericPointHom.fractionField O Ω`. Take `⟨_, _⟩` from `hj.quasiCompact_and_dominant`. Establish `s₁` using `isSemiAbelian_of_isAbelianScheme Q₁.A Q₁.isAb`. Establish `s₂` using `isSemiAbelian_of_isAbelianScheme Q₂.A Q₂.isAb`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `s₁.smooth` as an intermediate fact. Use `s₂.smooth` as an intermediate fact. Use `s₁.separated` as an intermediate fact. Use `s₂.separated` as an intermediate fact. Take `⟨F, ⟨hF, eF⟩, -⟩` from `semiAbelianHomExtension_holds.generic_of_isGrpPullback hn hj s₁ s₂ k₁ k₂ (𝟙 P.A)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨F', ⟨-, eF'⟩, -⟩` from `semiAbelianHomExtension_holds.generic_of_isGrpPullback hn hj s₂ s₁ k₂ k₁ (𝟙 P.A)`. Rewrite `eF`, `eF'` using `[Over.id_left, Category.id_comp]`. Set `I : Q₁.A ≅ Q₂.A` to `⟨F, F', ExtUnique.over_hom_ext_of_isPullback k₁.1 (by`. Rewrite using `[Over.comp_left, ← Category.assoc, ← eF, ← eF', Over.id_left, Category.comp_id]),`. Use the proof step `ExtUnique.over_hom_ext_of_isPullback k₂.1 (by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left, ← Category.assoc, ← eF', ← eF, Over.id_left, Category.comp_id])⟩`. Establish `: IsMonHom I.hom` using `hF`. Establish `g₂' : IsGrpPullback Q₁.A P₂.A (spMap f₂) (F.left ≫ b₂)` using `((isGrpPullback_of_iso I).comp g₂).congr (Category.id_comp _) rfl`. Use `⟨Q₁, b₁, F.left ≫ b₂, g₁, g₂', m₁, ?_, fun E => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `lbIso_of_generic Q₁.A Q₁.isAb k₁.1 Q₁.isLB (pull_isLB P₂.isLB _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `LBIso.trans (pull_isLB Q₁.isLB _) (pull_isLB P₁.isLB _) (pull_isLB (pull_isLB P₂.isLB _) _) (GenSpread.lbIso_pull_of_lbIso m₁ c₁ rfl) ?_` and prove the remaining obligations. Use `LBIso.trans (pull_isLB P₁.isLB _) P.isLB (pull_isLB (pull_isLB P₂.isLB _) _) l₁.symm ?_` and prove the remaining obligations. Conclude with `LBIso.trans P.isLB (pull_isLB P₂.isLB _) (pull_isLB (pull_isLB P₂.isLB _) _) l₂ (GenSpread.lbIso_pull_pull P₂.isLB c₁ (by rw [eF, Category.assoc]))`. Take `⟨e, u₁, u₂⟩` from `hE E`. Take `⟨d₁, v₁, w₁⟩` from `exists_end g₁.1 k₁.1.w (e₁ E) e u₁`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d₂, v₂, w₂⟩` from `exists_end g₂.1 k₂.1.w (e₂ E) e u₂`. Establish `: d₁ ≫ F = F ≫ d₂` using `ExtUnique.over_hom_ext_of_isPullback k₁.1 (by`. Rewrite using `[Over.comp_left, Over.comp_left, ← Category.assoc, w₁, Category.assoc, ← eF, ← Category.assoc, ← eF, w₂])`. Use `⟨d₁, v₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Over.comp_left, this, Over.comp_left, Category.assoc, v₂, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, u₁, u₂⟩` from `hx x`. Take `⟨d₁, v₁, z₁, w₁⟩` from `exists_sec g₁.1 k₁.1.w (t₁ x).left (Over.w (t₁ x)) w u₁`. Take `⟨d₂, v₂, z₂, w₂⟩` from `exists_sec g₂.1 k₂.1.w (t₂ x).left (Over.w (t₂ x)) w u₂`. Establish `: Surjective (w ≫ P.A.hom)` using `⟨fun y => ⟨y, Subsingleton.elim (α := PrimeSpectrum Ω) _ _⟩⟩`. Establish `: d₁ ≫ F.left = d₂` using `ext_of_isDominant_of_isSeparated Q₂.A.hom (by rw [Category.assoc, Over.w, z₁, z₂]) ((w ≫ P.A.hom) ≫ spMap (algebraMap O Ω)) (by rw [← Category.assoc, w₁, w₂, eF, Category.assoc])`.
-
-Conclude with `⟨d₁, v₁, by rw [← Category.assoc, this, v₂]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.sameAt_of_generic : ∀ (O Ω R₁ R₂ M Γ : Type) [CommRing O] [IsDomain O] [IsLocalRing O] [IsNoetherianRing O] [IsIntegrallyClosed O] [Field Ω] [Algebra O Ω] [IsFractionRing O Ω] [CommRing R₁] [CommRing R₂] (P₁ : PolAV (Sp R₁)) (P₂ : PolAV (Sp R₂)) (f₁ : R₁ →+* O) (f₂ : R₂ →+* O) (e₁ : M → (P₁.A ⟶ P₁.A)) (e₂ : M → (P₂.A ⟶ P₂.A)) (t₁ : Γ → (baseOver (Sp R₁) ⟶ P₁.A)) (t₂ : Γ → (baseOver (Sp R₂) ⟶ P₂.A)), SameAt P₁ P₂ ((algebraMap O Ω).comp f₁) ((algebraMap O Ω).comp f₂) e₁ e₂ t₁ t₂ → SameAt P₁ P₂ f₁ f₂ e₁ e₂ t₁ t₂ := by
   intro O Ω R₁ R₂ M Γ _ _ _ _ _ _ _ _ _ _ P₁ P₂ f₁ f₂ e₁ e₂ t₁ t₂ ⟨P, a₁, a₂, h₁, h₂, l₁, l₂, hE, hx⟩

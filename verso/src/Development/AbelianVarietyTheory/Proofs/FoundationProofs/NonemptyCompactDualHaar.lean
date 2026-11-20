@@ -15,31 +15,29 @@ noncomputable section
 namespace GlobalTheory.CompactDualExists
 
 /- English proof (translation)
-Use `haveI : ProperSpace V := FiniteDimensional.proper_real V`. Choose the witnesses or unpack the hypotheses as in `⟨δ₀, hδ₀, hinj⟩ : ∃ δ₀ : ℝ, 0 < δ₀ ∧ InjOn e (closedBall 0 δ₀) := by`. Take `⟨s, hs, ha⟩` from `hd.approximates_deriv_on_nhds (c := 1 / 2) (Or.inr (by norm_num))`. Take `⟨δ, hδ, hsub⟩` from `nhds_basis_closedBall.mem_iff.1 hs`. Use `⟨δ, hδ, fun x hx y hy hxy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `ha x (hsub hx) y (hsub hy)`. Simplify using `only [hxy, sub_self, zero_sub, norm_neg, LinearIsometry.coe_toContinuousLinearMap, LinearIsometry.norm_map] at h1`. Establish `h2 : ‖x - y‖ ≤ 0`. Establish `h3 : ((1 / 2 : ℝ≥0) : ℝ) = 1 / 2` using `by norm_num`. Rewrite `h1` using `[h3]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 h2)`. Establish `hK : MeasurableSet (closedBall (0 : V) δ₀)` using `measurableSet_closedBall`. Establish `hemb` using `ContinuousOn.measurableEmbedding hK he.continuousOn hinj`. Use `set ν : Measure V := (μ.comap ((closedBall (0 : V) δ₀).domRestrict e)).map Subtype.val with hν`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hνS : ∀ S : Set V, MeasurableSet S → ν S = μ (e '' (S ∩ closedBall 0 δ₀))`. Introduce `S hS`. Rewrite using `[hν, Measure.map_apply measurable_subtype_coe hS, hemb.comap_apply]`. Use `congr 1`. Use extensionality with `g`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x.1, ⟨hx, x.2⟩, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨x, hx.2⟩, hx.1, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hνB : ∀ (x : V) (r : ℝ), ‖x‖ + r ≤ δ₀ → ν (ball x r) = μ (e '' ball x r)`. Introduce `x r h`. Rewrite using `[hνS _ measurableSet_ball, inter_eq_left.2]`. Introduce `y hy`. Rewrite `hy` using `[mem_ball_iff_norm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[mem_closedBall_zero_iff]`. Use `norm_le_norm_add_norm_sub' y x` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `haveI : IsFiniteMeasure ν := by`. Use `⟨?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hνS _ MeasurableSet.univ, univ_inter]`. Conclude with `((isCompact_closedBall _ _).image he).measure_lt_top`. Establish `hpos : ∀ r : ℝ, 0 < r → ν (ball 0 r) ≠ 0`. Introduce `r hr`. Establish `h1 : ν (ball 0 (min r δ₀)) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hνB _ _ (by simp)]`. Conclude with `(μ.measure_pos_of_mem_nhds (hn _ (lt_min hr hδ₀))).ne'`. Conclude with `fun h => h1 (measure_mono_null (ball_subset_ball (min_le_left _ _)) h)`. Take `⟨c, hc0, hct, hc⟩` from `GlobalTheory.exists_pos_finite_density_of_almost_translation_invariant V lam ν hpos (by`. Introduce `κ hκ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨δ, hδ, H⟩` from `GlobalTheory.translate_chart_ball_distortion V M G e m ι L he h0 hd hL hL1 hm hn κ hκ`. Establish `hκ0 : 0 < κ + 1` using `by linarith`. Use `⟨min δ (δ₀ / (κ + 1)), lt_min hδ (div_pos hδ₀ hκ0), fun x hx r hr => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[mem_ball_zero_iff, lt_min_iff, lt_div_iff₀ hκ0]`. Take `⟨hr0, hr⟩` from `hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `hr` using `[lt_min_iff, lt_div_iff₀ hκ0]`. Take `⟨H1, H2⟩` from `H x (mem_ball_zero_iff.2 hx.1) r ⟨hr0, hr.1⟩`. Establish `hx0` using `norm_nonneg x`. Establish `hb : ‖x‖ + κ * r ≤ δ₀`. Apply the tactic sequence `rcases le_total ‖x‖ r with h | h <;> nlinarith [hx.2, hr.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `himg : ∀ S : Set G, μ ((fun g => e x * g) '' S) = μ S` using `fun S => by`. Rewrite using `[image_mul_left, measure_preimage_mul]`. Rewrite using `[hνB 0 r (by rw [norm_zero]; nlinarith), hνB x (κ * r) hb, hνB x r (by nlinarith), hνB 0 (κ * r) (by rw [norm_zero]; linarith)]`. Conclude with `⟨(himg _).symm.trans_le (measure_mono H1), (measure_mono H2).trans_eq (himg _)⟩)`. Use `⟨c, hc0, hct, hc.congr' ?_⟩` and prove the remaining obligations.
-
-Use `filter_upwards [Ioo_mem_nhdsGT hδ₀] with r hr`. Rewrite using `[hνB 0 r (by rw [norm_zero]; linarith [hr.2])]`.
+A detailed English derivation is pending.
 -/
 theorem exists_density_of_chart (V M G : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]
@@ -138,7 +136,7 @@ attribute [local instance] sumNormedSpace
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖WithLp.toLp 1 fun i => WithLp.toLp 1 fun j => A i j‖ = _`. Simplify using `[PiLp.norm_eq_of_L1]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem sum_norm_def (A : Matrix n n ℂ) : ‖A‖ = ∑ i, ∑ j, ‖A i j‖ := by
   change ‖WithLp.toLp 1 fun i => WithLp.toLp 1 fun j => A i j‖ = _
@@ -147,7 +145,7 @@ theorem sum_norm_def (A : Matrix n n ℂ) : ‖A‖ = ∑ i, ∑ j, ‖A i j‖ 
 end Matrices
 
 /- English proof (translation)
-Use `letI := Matrix.linftyOpNormedRing (n := n) (α := ℂ)`. Use `letI := Matrix.linftyOpNormedAlgebra (n := n) (R := ℝ) (α := ℂ)`. Conclude with `@hasStrictFDerivAt_exp_zero ℝ (Matrix n n ℂ) _ _ _ (FiniteDimensional.complete ℝ _)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem exp_strict {n : Type} [Fintype n] [DecidableEq n] :
     HasStrictFDerivAt (𝕜 := ℝ) (NormedSpace.exp : Matrix n n ℂ → Matrix n n ℂ)
@@ -157,7 +155,7 @@ theorem exp_strict {n : Type} [Fintype n] [DecidableEq n] :
   exact @hasStrictFDerivAt_exp_zero ℝ (Matrix n n ℂ) _ _ _ (FiniteDimensional.complete ℝ _)
 
 /- English proof (translation)
-Use `letI := Matrix.linftyOpNormedRing (n := n) (α := ℂ)`. Use `letI := Matrix.linftyOpNormedAlgebra (n := n) (R := ℚ) (α := ℂ)`. Conclude with `@NormedSpace.exp_continuous (Matrix n n ℂ) _ _ (inferInstanceAs (CompleteSpace (n → n → ℂ)))`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem exp_cont {n : Type} [Fintype n] [DecidableEq n] :
     Continuous (NormedSpace.exp : Matrix n n ℂ → Matrix n n ℂ) := by
@@ -167,7 +165,7 @@ theorem exp_cont {n : Type} [Fintype n] [DecidableEq n] :
     (inferInstanceAs (CompleteSpace (n → n → ℂ)))
 
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl Y)), neg_add_cancel, NormedSpace.exp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_neg_mul {n : Type} [Fintype n] [DecidableEq n] (Y : Matrix n n ℂ) :
     NormedSpace.exp (-Y) * NormedSpace.exp Y = 1 := by
@@ -175,15 +173,15 @@ theorem exp_neg_mul {n : Type} [Fintype n] [DecidableEq n] (Y : Matrix n n ℂ) 
     NormedSpace.exp_zero]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.Jpq, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jpq_mul_self (P Q : ℕ) : Formalism.UG.Jpq P Q * Formalism.UG.Jpq P Q = 1 := by
   simp [Formalism.UG.Jpq, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Establish `hJ` using `Jpq_mul_self P Q`. Establish `hinv : (Formalism.UG.Jpq P Q)⁻¹ = Formalism.UG.Jpq P Q` using `Matrix.inv_eq_left_inv hJ`. Establish `hu : IsUnit (Formalism.UG.Jpq P Q)` using `⟨⟨_, _, hJ, hJ⟩, rfl⟩`. Establish `hX : X.1.conjTranspose * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * X.1 = 0` using `X.2`. Establish `hYh : X.1.conjTranspose = Formalism.UG.Jpq P Q * (-X.1) * (Formalism.UG.Jpq P Q)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hinv, Matrix.mul_neg, ← eq_neg_of_add_eq_zero_left hX, Matrix.mul_assoc, hJ, Matrix.mul_one]`. Rewrite using `[← Matrix.exp_conjTranspose, hYh, Matrix.exp_conj _ _ hu, hinv, Matrix.mul_assoc (Formalism.UG.Jpq P Q * NormedSpace.exp (-X.1)), hJ, Matrix.mul_one, Matrix.mul_assoc, exp_neg_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem exp_mem {P Q : ℕ} (X : lieU P Q) :
     (NormedSpace.exp X.1).conjTranspose * Formalism.UG.Jpq P Q * NormedSpace.exp X.1 =
@@ -209,13 +207,13 @@ Both sides reduce to the same expression.
 theorem mat_expU {P Q : ℕ} (X : lieU P Q) : (expU X).mat = NormedSpace.exp X.1 := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (Units.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mat_injective {P Q : ℕ} : Function.Injective (UpqT.mat (P := P) (Q := Q)) :=
   fun _ _ h => Subtype.ext (Units.ext h)
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `exp_cont.comp continuous_subtype_val`. Conclude with `exp_cont.comp continuous_subtype_val.neg`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_expU {P Q : ℕ} : Continuous (expU (P := P) (Q := Q)) := by
   refine Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _
@@ -223,15 +221,15 @@ theorem continuous_expU {P Q : ℕ} : Continuous (expU (P := P) (Q := Q)) := by
   · exact exp_cont.comp continuous_subtype_val.neg
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat {P Q : ℕ} : Continuous (UpqT.mat (P := P) (Q := Q)) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX, rfl⟩`. Conclude with `⟨X, hX, rfl⟩`. Introduce and unpack `⟨X, hX, h⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨X, hX, mat_injective h.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem image_expU {P Q : ℕ} (S : Set (lieU P Q)) :
     expU '' S = {g : UpqT P Q | ∃ X ∈ S, UpqT.mat g =
@@ -246,11 +244,11 @@ theorem image_expU {P Q : ℕ} (S : Set (lieU P Q)) :
 attribute [local instance] sumNormedAddCommGroup sumNormedSpace in
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (UpqT P Q) := inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq P Q))`. Use `haveI : BorelSpace (UpqT P Q) := ⟨rfl⟩`. Use `haveI : T2Space (UpqT P Q) := inferInstanceAs (T2Space (Formalism.UG.Upq P Q))`. Take `⟨lam, hlam⟩` from `GlobalTheory.CompactDualOmega.exists_isOmegaLeb P Q`. Establish `hball : ∀ r : ℝ, ball (0 : lieU P Q) r = ballU P Q r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `r`. Use extensionality with `X`. Rewrite using `[mem_ball_zero_iff, Submodule.coe_norm, sum_norm_def]`. Both sides reduce to the same expression. Set `L₀ : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ →ₗ[ℝ] (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ →L[ℝ] Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)` to `LinearMap.toContinuousLinearMap.toLinearMap ∘ₗ LinearMap.mul ℝ _`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL₀ : Continuous L₀` using `L₀.continuous_of_finiteDimensional`. Take `⟨c, hc0, hct, hc⟩` from `@exists_density_of_chart (lieU P Q) (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) (UpqT P Q) _ _ _ _ ⟨rfl⟩ _ _ _ _ _ _ _ _ lam hlam.1 μ _ expU UpqT.mat (lieU P Q).subtypeₗᵢ (fun g => L₀ g.mat) continuous_expU (mat_injective (by rw [mat_expU]; exact (NormedSpace.exp_zero (𝔸 := Matrix …`. Use `⟨c, hc0, hct, lam, hlam, ?_⟩` and prove the remaining obligations. Simplify using `only [image_expU, hball] at hc`. Conclude with `hc`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_omegaDensity {P Q : ℕ} (μ : Measure (UpqT P Q)) [μ.IsHaarMeasure] :
     ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ OmegaDensity μ c := by
@@ -282,9 +280,9 @@ theorem exists_omegaDensity {P Q : ℕ} (μ : Measure (UpqT P Q)) [μ.IsHaarMeas
   exact hc
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (UpqT P Q) := inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq P Q))`. Use `haveI : BorelSpace (UpqT P Q) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (UpqT P Q) := (UpqUnimodular.modelEquiv P Q).toHomeomorph.isClosedEmbedding.locallyCompactSpace`. Take `⟨d, hd0, hdt, hd⟩` from `exists_omegaDensity (Measure.haar : Measure (UpqT P Q))`. Establish `hq : c / d ≠ ⊤` using `ENNReal.div_ne_top ht hd0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hq0 : c / d ≠ 0` using `ENNReal.div_ne_zero.2 ⟨h0, hdt⟩`. Use `⟨(c / d).toNNReal • Measure.haar, Measure.IsHaarMeasure.nnreal_smul _ (ENNReal.toNNReal_ne_zero.2 ⟨hq0, hq⟩), ?_⟩` and prove the remaining obligations. Use `CompactDualUnique.omegaDensity_smul (c / d).toNNReal hd` as an intermediate fact. Rewrite `this` using `[ENNReal.coe_toNNReal hq, ENNReal.div_mul_cancel hd0 hdt]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_haar_of_density (P Q : ℕ) (c : ℝ≥0∞) (h0 : c ≠ 0) (ht : c ≠ ⊤) :
     ∃ μ : Measure (UpqT P Q), μ.IsHaarMeasure ∧ OmegaDensity μ c := by
@@ -301,7 +299,7 @@ theorem exists_haar_of_density (P Q : ℕ) (c : ℝ≥0∞) (h0 : c ≠ 0) (ht :
   rwa [ENNReal.coe_toNNReal hq, ENNReal.div_mul_cancel hd0 hdt] at this
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (UpqT N 0) := inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq N 0))`. Use `haveI : BorelSpace (UpqT N 0) := ⟨rfl⟩`. Use `haveI : CompactSpace (UpqT N 0) := GlobalTheory.compactSpace_UpqT_zero_right N`. Conclude with `⟨Measure.haarMeasure ⊤, inferInstance, ⟨by simpa using Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts (UpqT N 0)))⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_prob_haar (N : ℕ) :
     ∃ μ : Measure (UpqT N 0), μ.IsHaarMeasure ∧ IsProbabilityMeasure μ := by
@@ -312,11 +310,11 @@ theorem exists_prob_haar (N : ℕ) :
     ⟨by simpa using Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts (UpqT N 0)))⟩⟩
 
 /- English proof (translation)
-Use `choose p hp hp1 using exists_prob_haar`. Use `choose c hc0 hct hc using fun N => haveI := hp N`. Use `exists_omegaDensity (p N)`. Use `choose q hq hqc using fun P Q => exists_haar_of_density P Q (c (P + Q)) (hc0 _) (hct _)`. Set `cd : ∀ P Q : ℕ, Measure (UpqT P Q)` to `fun P Q => match Q with`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Consider the case `0 => p P`. Consider the case `Q + 1 => q P (Q + 1)`. Use `⟨⟨cd, fun P Q => ?_, hp1, fun P Q => ⟨c (P + Q), hc0 _, hct _, ?_, hc _⟩⟩⟩` and prove the remaining obligations. Consider the cases of `Q with`. Consider the case `zero => exact hp P`.
+Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ Q => exact hq P (Q + 1)`. Consider the cases of `Q with`. Consider the case `zero => exact hc P`. Consider the case `succ Q => exact hqc P (Q + 1)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_cdHaar : Nonempty CDHaar := by
   choose p hp hp1 using exists_prob_haar

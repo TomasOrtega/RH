@@ -6,11 +6,11 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Set `b` to `fun a => Module.finBasis ℂ (W a)`. Set `B` to `Basis.piTensorProduct b`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ B]`. Establish `hc : ∀ a, LinearMap.trace ℂ (W a) (f a) = ∑ j, (b a).repr (f a (b a j)) j`. Introduce `a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (b a), Matrix.trace]`. Simplify using `only [Matrix.diag, LinearMap.toMatrix_apply]`. Simplify using `only [hc]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, Matrix.trace]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.diag, LinearMap.toMatrix_apply, Basis.piTensorProduct_apply, PiTensorProduct.map_tprod, Basis.piTensorProduct_repr_tprod_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem trace_map_eq_prod {s : ℕ} {W : Fin s → Type} [∀ a, AddCommGroup (W a)]
     [∀ a, Module ℂ (W a)] [∀ a, FiniteDimensional ℂ (W a)] (f : ∀ a, W a →ₗ[ℂ] W a) :
@@ -30,7 +30,7 @@ private theorem trace_map_eq_prod {s : ℕ} {W : Fin s → Type} [∀ a, AddComm
     Basis.piTensorProduct_repr_tprod_apply]
 
 /- English proof (translation)
-Introduce `s Γ W _ _ _ _ κ`. Use `⟨Module.Finite.of_basis (Basis.piTensorProduct fun a => Module.finBasis ℂ (W a)), fun x => ?_⟩` and prove the remaining obligations. Conclude with `trace_map_eq_prod fun a => κ a (x a)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.tensTr :
     TensTr := by

@@ -1,21 +1,19 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K S _ _ _ _ _ _ ω f₀ h`. Take `⟨U, hU, hfix⟩` from `h`. Establish `hmul : ∀ (a b : K) (v : S), ω (a * b) v = ω a (ω b v)`. Introduce `a b v`. Rewrite using `[map_mul, Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `H : Subgroup K` to `{ carrier := {k | ω k f₀ = f₀} one_mem' := by simp mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[hmul, hb, ha]`. Use the proof step `inv_mem' := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Establish `h1 : ω a⁻¹ (ω a f₀) = f₀`. Rewrite using `[← hmul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[ha] at h1 }` and apply the resulting hypothesis. Establish `hmem : ∀ k, k ∈ H ↔ ω k f₀ = f₀` using `fun k => Iff.rfl`. Establish `hopen : IsOpen (H : Set K)` using `H.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset hU (fun k hk => hfix k hk))`. Use `haveI : Finite (K ⧸ H) := Subgroup.quotient_finite_of_isOpen H hopen`. Use `haveI : Fintype (K ⧸ H) := Fintype.ofFinite _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `F : K ⧸ H → S` to `fun q => ω q.out f₀`. Establish `hF : ∀ (g : K) (q : K ⧸ H), ω g (F q) = F (g • q)`. Introduce `g q`. Establish `hq : ((g * q.out : K) : K ⧸ H) = g • q` using `by conv_rhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq' : (((g • q).out : K) : K ⧸ H) = ((g * q.out : K) : K ⧸ H)`. Rewrite using `[hq, QuotientGroup.out_eq']`. Establish `hh : ((g • q).out)⁻¹ * (g * q.out) ∈ H` using `QuotientGroup.eq.mp hq'`. Establish `h2 : g * q.out = (g • q).out * (((g • q).out)⁻¹ * (g * q.out))` using `by group`. Express the relevant statement in the definitionally equal form `ω g (ω q.out f₀) = ω (g • q).out f₀`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[← hmul, h2, hmul, (hmem _).mp hh]`. Take `⟨m, hm⟩ : ∃ m, Fintype.card (K ⧸ H) = m + 1` from `Nat.exists_eq_succ_of_ne_zero Fintype.card_ne_zero`. Set `e : Fin (m + 1) ≃ K ⧸ H` to `(Fintype.equivFinOfCardEq hm).symm`. Use `⟨m, fun i => (e i).out, fun g => ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ i : Fin (m + 1), ω (e i).out f₀ = ∑ q, F q` using `Equiv.sum_comp e F`.
-
-Rewrite using `[hsum, map_sum]`. Repeatedly rewrite using `[hF]`. Conclude with `Equiv.sum_comp (MulAction.toPerm g) F`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.InvariantSumOfTranslates.main :
     ∀ {K S : Type} [inst : Group K] [inst_1 : TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K]

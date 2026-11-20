@@ -8,19 +8,17 @@ open GlobalTheory.BI
 namespace GlobalTheory.BI
 
 /- English proof (translation)
-Introduce `G _ _ x p hp`. Take `⟨k, hk⟩` from `GlobalTheory.T.exists_coprime_orderOf_pow_prime_pow' G x p hp`. Take `⟨H, hCH, hnorm, hpow, hidx⟩` from `GlobalTheory.T.exists_subgroup_ge_normalizing_not_dvd_relIndex G (Subgroup.zpowers (x ^ p ^ k)) p hp`. Establish `hN : ∀ g : G, g ∈ Subgroup.normalizer ((Subgroup.zpowers (x ^ p ^ k) : Subgroup G) : Set G) ↔ ∀ d ∈ Subgroup.zpowers (x ^ p ^ k), g * d * g⁻¹ ∈ Subgroup.zpowers (x ^ p ^ k)`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg d hd`. Conclude with `(Subgroup.mem_normalizer_iff.1 hg d).1 hd`. Introduce `h`. Conclude with `Subgroup.mem_normalizer_fintype h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨H, ⟨p, hp, (Subgroup.zpowers (x ^ p ^ k)).subgroupOf H, ⟨?_⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `n hn g`. Rewrite `hn`, the goal using `[Subgroup.mem_subgroupOf]`. Simplify using `using hnorm g g.2 n hn`. Introduce `a ha b hb`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `ha`, `hb` using `[Subgroup.mem_subgroupOf]`. Take `⟨m, hm⟩` from `ha`. Take `⟨n, hn⟩` from `hb`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hm, ← hn]`. Conclude with `(Commute.refl _).zpow_zpow m n`. Introduce `g`. Take `⟨j, hj⟩` from `hpow g g.2`. Conclude with `⟨j, by rw [Subgroup.mem_subgroupOf]; simpa using hj⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hd haveI : Finite (G ⧸ H) := inferInstance`. Establish `h1` using `GlobalTheory.T.card_fixedBy_quotient_eq_relIndex_normalizer_of_coprime G (x ^ p ^ k) p H _ hk hCH hpow hN`. Establish `h2` using `GlobalTheory.T.card_fixedBy_pow_prime_pow_modEq_card_fixedBy G (G ⧸ H) x p k hp`. Apply `hidx _ hN` to reduce the goal to its premises. Rewrite using `[← h1]`.
-
-Conclude with `(h2.dvd_iff dvd_rfl).2 hd`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_abelianByPrimePower_not_dvd_card_fixedBy₂ :
     ∀ (G : Type) [Group G] [Finite G] (x : G) (p : ℕ), p.Prime →

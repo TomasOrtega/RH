@@ -16,7 +16,7 @@ namespace InnTorus
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `h : (Iwasawa.torusPow F 2 l).val = diagonal fun i => (GLnLocal.uniformizer F : F) ^ l i` using `Iwasawa.coe_torusPow F 2 l`. Unfold `rowAct`. Rewrite using `[h]`. Simplify using `[Matrix.diagonal]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rowAct_torusPow (l : Fin 2 → ℤ) (v : F × F) :
     rowAct (Iwasawa.torusPow F 2 l) v =
@@ -28,13 +28,13 @@ theorem rowAct_torusPow (l : Fin 2 → ℤ) (v : F × F) :
   simp [Matrix.diagonal]
 
 /- English proof (translation)
-The claim follows from `(Iwasawa.uniformizerUnit F).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem unif_ne_zero : (GLnLocal.uniformizer F : F) ≠ 0 :=
   (Iwasawa.uniformizerUnit F).ne_zero
 
 /- English proof (translation)
-Establish `h` using `ord_units_zpow (Iwasawa.uniformizerUnit F) k`. Establish `hz : (((Iwasawa.uniformizerUnit F ^ k : Fˣ)) : F) = (GLnLocal.uniformizer F : F) ^ k`. Simplify using `[Units.val_zpow_eq_zpow_val]`. Rewrite `h` using `[hz, Iwasawa.coe_uniformizerUnit, ord_uniformizer (GLnLocal.irreducible_uniformizer F), mul_one]`. Rewrite using `[ord_mul hx (zpow_ne_zero _ unif_ne_zero), h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_mul_unif_zpow {x : F} (hx : x ≠ 0) (k : ℤ) :
     ord (x * (GLnLocal.uniformizer F : F) ^ k) = ord x + k := by
@@ -46,7 +46,7 @@ theorem ord_mul_unif_zpow {x : F} (hx : x ≠ 0) (k : ℤ) :
   rw [ord_mul hx (zpow_ne_zero _ unif_ne_zero), h]
 
 /- English proof (translation)
-Rewrite using `[mem_valBall_iff_le_ord (mul_ne_zero hx (zpow_ne_zero _ unif_ne_zero)), ord_mul_unif_zpow hx]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mul_unif_zpow_mem_iff {x : F} (hx : x ≠ 0) (k : ℤ) :
     x * (GLnLocal.uniformizer F : F) ^ k ∈ valBall F 0 ↔ -k ≤ ord x := by
@@ -54,7 +54,7 @@ theorem mul_unif_zpow_mem_iff {x : F} (hx : x ≠ 0) (k : ℤ) :
   omega
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Simplify using `[hy, zero_mem]`. Rewrite using `[mul_unif_zpow_mem_iff (mul_ne_zero hu hy), mem_valBall_iff_le_ord hy, ord_mul hu hy]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mul_mul_unif_zpow_mem_iff {u : F} (hu : u ≠ 0) (y : F) (k : ℤ) :
     u * y * (GLnLocal.uniformizer F : F) ^ k ∈ valBall F 0 ↔ y ∈ valBall F (-ord u - k) := by
@@ -66,7 +66,7 @@ theorem mul_mul_unif_zpow_mem_iff {u : F} (hu : u ≠ 0) (y : F) (k : ℤ) :
 variable [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Unfold `GroundTheory.LocalField.selfDualMeasure`. Rewrite using `[hχ.2.2]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem selfDualMeasure_eq {χ : AddChar F Circle} (hχ : IsStd χ) :
     selfDualMeasure χ = haarIntegers F := by
@@ -75,21 +75,19 @@ theorem selfDualMeasure_eq {χ : AddChar F Circle} (hχ : IsStd χ) :
   simp
 
 /- English proof (translation)
-Establish `ht : IsTrivialOn χ 0`. Use `isTrivialOn_addCharConductor hχ.1 hχ.2.1` as an intermediate fact. Rewrite `this` using `[hχ.2.2]`. Then use the resulting hypothesis. Use `split_ifs with hm`. Establish `h1 : Set.EqOn (fun y => ((χ (-y) : Circle) : ℂ)) (fun _ => (1 : ℂ)) (valBall F m : Set F)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `hy0 : -y ∈ valBall F 0` using `neg_mem (valBall_antitone hm hy)`. Simplify using `[ht _ hy0]`. Rewrite using `[integral_indicator (measurableSet_valBall m), setIntegral_congr_fun (measurableSet_valBall m) h1, setIntegral_const, measureReal_def, haarIntegers_valBall, ENNReal.coe_toReal]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hnot` using `not_isTrivialOn_addCharConductor_sub_one hχ.1 hχ.2.1`. Rewrite `hnot` using `[hχ.2.2]`. Unfold `IsTrivialOn at hnot`. Use `push_neg at hnot`. Take `⟨y₀, hy₀, hne⟩` from `hnot`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy₀m : y₀ ∈ valBall F m` using `valBall_antitone (by omega) hy₀`. Use `set f : F → ℂ := (valBall F m : Set F).indicator (fun y => ((χ (-y) : Circle) : ℂ)) with hf`. Establish `shift : ∀ y, f (y + y₀) = ((χ (-y₀) : Circle) : ℂ) * f y`. Introduce `y`. Distinguish the cases in `hy : y ∈ valBall F m`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy' : y + y₀ ∈ valBall F m` using `add_mem hy hy₀m`. Rewrite using `[hf, Set.indicator_of_mem (show y + y₀ ∈ (valBall F m : Set F) from hy'), Set.indicator_of_mem (show y ∈ (valBall F m : Set F) from hy), neg_add, add_comm, AddChar.map_add_eq_mul, Circle.coe_mul]`. Establish `hy' : y + y₀ ∉ valBall F m` using `fun h => hy (by simpa using sub_mem h hy₀m)`. Rewrite using `[hf, Set.indicator_of_notMem (show y + y₀ ∉ (valBall F m : Set F) from hy'), Set.indicator_of_notMem (show y ∉ (valBall F m : Set F) from hy), mul_zero]`. Establish `hI : ∫ y, f y ∂haarIntegers F = ((χ (-y₀) : Circle) : ℂ) * ∫ y, f y ∂haarIntegers F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← integral_const_mul, ← integral_add_right_eq_self f y₀]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall shift)`. Establish `hc : ((χ (-y₀) : Circle) : ℂ) ≠ 1`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : χ (-y₀) = 1` using `Circle.ext (by simpa using h)`. Rewrite `h'` using `[AddChar.map_neg_eq_inv, inv_eq_one]`. Conclude with `h'`. Establish `h0 : (1 - ((χ (-y₀) : Circle) : ℂ)) * ∫ y, f y ∂haarIntegers F = 0`. Rewrite using `[sub_mul, one_mul, ← hI, sub_self]`.
-
-Conclude with `(mul_eq_zero.mp h0).resolve_left (sub_ne_zero.mpr hc.symm)`.
+A detailed English derivation is pending.
 -/
 theorem integral_indicator_valBall {χ : AddChar F Circle} (hχ : IsStd χ) (m : ℤ) :
     ∫ y, (valBall F m : Set F).indicator (fun y => ((χ (-y) : Circle) : ℂ)) y ∂haarIntegers F =
@@ -137,7 +135,7 @@ theorem integral_indicator_valBall {χ : AddChar F Circle} (hχ : IsStd χ) (m :
     exact (mul_eq_zero.mp h0).resolve_left (sub_ne_zero.mpr hc.symm)
 
 /- English proof (translation)
-Unfold `mp`. Rewrite using `[Complex.cpow_one, modulus_of_ne_zero u.ne_zero]`. Use `push_cast`. Rewrite using `[_root_.zpow_neg, inv_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mp_one_inv (u : Fˣ) : (mp u 1)⁻¹ = (residueCard F : ℂ) ^ ord (u : F) := by
   unfold mp
@@ -146,17 +144,17 @@ theorem mp_one_inv (u : Fˣ) : (mp u 1)⁻¹ = (residueCard F : ℂ) ^ ord (u : 
   rw [_root_.zpow_neg, inv_inv]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ χ hχ l u`. Establish `hpt : ∀ y : F, (lat0 F ∘ rowAct (Iwasawa.torusPow F 2 l)) ((u : F), (u : F) * y) * ((χ (-y) : Circle) : ℂ) = if -(l 0) ≤ ord (u : F) then (valBall F (-ord (u : F) - l 1) : Set F).indicator (fun y => ((χ (-y) : Circle) : ℂ)) y else 0`. Introduce `y`. Establish `h1` using `mul_unif_zpow_mem_iff u.ne_zero (l 0)`. Establish `h2` using `mul_mul_unif_zpow_mem_iff u.ne_zero y (l 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.comp, rowAct_torusPow, lat0]`. Distinguish the cases in `hA : -(l 0) ≤ ord (u : F)`. Rewrite using `[if_pos hA]`. Distinguish the cases in `hy : y ∈ valBall F (-ord (u : F) - l 1)`. Rewrite using `[Set.indicator_of_mem (show ((u : F) * (GLnLocal.uniformizer F : F) ^ l 0, (u : F) * y * (GLnLocal.uniformizer F : F) ^ l 1) ∈ Ln F 0 from ⟨h1.2 hA, h2.2 hy⟩), Set.indicator_of_mem (show y ∈ (valBall F (-ord (u : F) - l 1) : Set F) from hy)]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (show ((u : F) * (GLnLocal.uniformizer F : F) ^ l 0, (u : F) * y * (GLnLocal.uniformizer F : F) ^ l 1) ∉ Ln F 0 from fun h => hy (h2.1 h.2)), Set.indicator_of_notMem (show y ∉ (valBall F (-ord (u : F) - l 1) : Set F) from hy)]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hA, Set.indicator_of_notMem (show ((u : F) * (GLnLocal.uniformizer F : F) ^ l 0, (u : F) * y * (GLnLocal.uniformizer F : F) ^ l 1) ∉ Ln F 0 from fun h => hA (h1.1 h.1))]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `inn`. Rewrite using `[selfDualMeasure_eq hχ]`. Repeatedly rewrite using `[hpt]`. Establish `hq : Spherical.qF F = residueCard F` using `rfl`. Establish `hq0 : (residueCard F : ℂ) ≠ 0` using `by exact_mod_cast residueCard_ne_zero`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hA : -(l 0) ≤ ord (u : F)`. Simplify using `only [if_pos hA, integral_indicator_valBall hχ]`. Distinguish the cases in `hD : ord (u : F) ≤ -(l 1)`. Rewrite using `[if_pos (by omega), if_pos ⟨hA, hD⟩, mp_one_inv, hq, ← zpow_add₀ hq0]`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg (by omega), if_neg (fun h => hD h.2)]`. Rewrite using `[if_neg (fun h => hA h.1)]`. Simplify using `[if_neg hA]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_integral_standard_lattice_torus : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (χ : AddChar F Circle), IsStd χ → ∀ (l : Fin 2 → ℤ) (u : Fˣ), GlobalTheory.CompanionTheory.WS.inn χ (GlobalTheory.CompanionTheory.WS.lat0 F ∘ GlobalTheory.CompanionTheory.WS.rowAct (Iwasawa.torusPow F 2 l)) u = if -(l 0) ≤ ord (u : F) ∧ ord (u : F) ≤ -(l 1) then ((Spherical.qF F : ℕ) : ℂ) ^ (l 1) * (mp u 1)⁻¹ else 0 := by
   intro F _ _ _ _ _ _ χ hχ l u

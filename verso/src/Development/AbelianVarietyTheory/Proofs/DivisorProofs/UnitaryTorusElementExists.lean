@@ -19,9 +19,9 @@ section Gen
 variable {A : Type} [CommRing A] {n q : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.AbelianSumIdentityFourth.main`. Consider the case `exact _root_.GlobalTheory.AbelianSumIdentityFourth.main`. Consider the case `(apply _root_.GlobalTheory.AbelianSumIdentityFourth.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AbelianSumIdentityFourth.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.AbelianSumIdentityFourth.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AbelianSumIdentityFourth.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_core (X Y : Matrix (Fin n) (Fin q) A) (RX RY : Matrix (Fin q) (Fin n) A) (a b a' b' : Fin q → A)
     (h1 : RY * X = 1) (h2 : RY * Y = 0) (h3 : RX * X = 0) (h4 : RX * Y = 1)
@@ -42,9 +42,9 @@ section Gen2
 variable {A : Type} [CommRing A] {n q : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.DiagonalKeyIdentity.main`. Consider the case `exact _root_.GlobalTheory.DiagonalKeyIdentity.main`. Consider the case `(apply _root_.GlobalTheory.DiagonalKeyIdentity.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DiagonalKeyIdentity.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.DiagonalKeyIdentity.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DiagonalKeyIdentity.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unitary_core (J : Matrix (Fin n) (Fin n) A) (X Xc Y Yc : Matrix (Fin n) (Fin q) A) (a b : Fin q → A)
     (h1 : Xᵀ * J * Xc = 0) (h2 : Xᵀ * J * Yc = 1) (h3 : Yᵀ * J * Xc = 1) (h4 : Yᵀ * J * Yc = 0)
@@ -60,9 +60,9 @@ theorem unitary_core (J : Matrix (Fin n) (Fin n) A) (X Xc Y Yc : Matrix (Fin n) 
   | (intros; exact _root_.GlobalTheory.DiagonalKeyIdentity.main ..)
 
 /- English proof (translation)
-Establish `hT : (1 + X * diagonal a * RY + Y * diagonal b * RX)ᵀ = 1 + J * Yc * diagonal a * Xᵀ + J * Xc * diagonal b * Yᵀ`. Simplify using `only [Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_mul, Matrix.diagonal_transpose, hRYt, hRXt, Matrix.mul_assoc]`. Establish `hC : (1 + X * diagonal a * RY + Y * diagonal b * RX).map c = 1 + Xc * diagonal a * (Yᵀ * J) + Yc * diagonal b * (Xᵀ * J)`. Rewrite using `[Matrix.map_add _ (map_add c), Matrix.map_add _ (map_add c), Matrix.map_one _ (map_zero c) (map_one c), Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.diagonal_map (map_zero c), Matrix.diagonal_map (map_zero c), hXc, hYc, hRYc, hRXc]`. Simplify using `only [hac, hbc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hT, hC]`. Conclude with `unitary_core J X Xc Y Yc a b h1 h2 h3 h4 hab`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_gen (c : A →+* A) (J : Matrix (Fin n) (Fin n) A) (X Xc Y Yc : Matrix (Fin n) (Fin q) A)
     (RX RY : Matrix (Fin q) (Fin n) A) (a b : Fin q → A)
@@ -90,9 +90,7 @@ section Conc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `realAd`. Simplify using `only [LinearMap.inl_apply, map_mul]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show _ * _ = _`. Rewrite using `[← map_mul]`.
-
-Conclude with `mul_zero _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realAd_mul' (a b : ℝ) : realAd F a * realAd F b = realAd F (a * b) := by
   unfold realAd
@@ -103,21 +101,21 @@ theorem realAd_mul' (a b : ℝ) : realAd F a * realAd F b = realAd F (a * b) := 
   · exact mul_zero _
 
 /- English proof (translation)
-Simplify using `only [realAd, map_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem realAd_add' (s t : ℝ) : realAd F (s + t) = realAd F s + realAd F t := by
   simp only [realAd, map_add]
   rfl
 
 /- English proof (translation)
-Simplify using `only [realAd, map_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem realAd_zero' : realAd F 0 = 0 := by
   simp only [realAd, map_zero]
   rfl
 
 /- English proof (translation)
-Rewrite using `[realAd_mul', ← realAd_add', ← realAd_add']`. Establish `: t - 1 + (t⁻¹ - 1) + (t - 1) * (t⁻¹ - 1) = 0` using `by field_simp; ring`. Rewrite using `[this, realAd_zero']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem realAd_key {t : ℝ} (ht : t ≠ 0) :
     realAd F (t - 1) + realAd F (t⁻¹ - 1) + realAd F (t - 1) * realAd F (t⁻¹ - 1) = 0 := by
@@ -126,14 +124,14 @@ theorem realAd_key {t : ℝ} (ht : t ≠ 0) :
   rw [this, realAd_zero']
 
 /- English proof (translation)
-Simplify using `[cA, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR (σ : E →ₐ[F] E) (e : E) :
     cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ, h.2.2.2 τ, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (e : E) : σ (σ e) = e := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -143,7 +141,7 @@ theorem sigma_sigma {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (e : E) : σ (σ e
 def colMat {n p : ℕ} (u : Fin p → Fin n → E) : Matrix (Fin n) (Fin p) E := Matrix.of fun k i => u i k
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc]`. Simplify using `[Matrix.mul_apply, form, dotProduct, Matrix.mulVec, colMat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem colMat_form (σ : E →ₐ[F] E) {n p p' : ℕ} (J : Matrix (Fin n) (Fin n) E) (u : Fin p → Fin n → E)
     (v : Fin p' → Fin n → E) (i : Fin p) (j : Fin p') :
@@ -152,7 +150,7 @@ theorem colMat_form (σ : E →ₐ[F] E) {n p p' : ℕ} (J : Matrix (Fin n) (Fin
   simp [Matrix.mul_apply, form, dotProduct, Matrix.mulVec, colMat]
 
 /- English proof (translation)
-Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_eq {n p p' : ℕ} (s : E →+* E) (J : Matrix (Fin n) (Fin n) E) (U : Matrix (Fin n) (Fin p) E)
     (V : Matrix (Fin n) (Fin p') E) : (V.map s)ᵀ * Jᵀ * U = (Uᵀ * J * V.map s)ᵀ := by
@@ -161,43 +159,37 @@ theorem tr_eq {n p p' : ℕ} (s : E →+* E) (J : Matrix (Fin n) (Fin n) E) (U :
 end Conc
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X r s hB hX q x y hF t ht`. Establish `hσσ` using `sigma_sigma hB.cm`. Use `set J := X.J with hJdef`. Use `set sg : E →+* E := (σ : E →+* E) with hsg`. Use `set ι : E →+* AE F E := inclR (F := F) (AF F) with hι`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set c : AE F E →+* AE F E := ((cA σ : AE F E →ₐ[AF F] AE F E) : AE F E →+* AE F E) with hc`. Establish `hcι : ∀ e, c (ι e) = ι (sg e)` using `fun e => cA_inclR σ e`. Establish `hconj : ∀ {p p' : ℕ} (M : Matrix (Fin p) (Fin p') E), (M.map ι).map c = (M.map sg).map ι`. Introduce `p p' M`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply]`. Conclude with `hcι _`. Use `set Xe := colMat x with hXe`. Use `set Ye := colMat y with hYe`. Establish `hXX : Xeᵀ * J * Xe.map sg = 0` using `by ext i j; rw [colMat_form]; exact hF.1 i j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hYY : Yeᵀ * J * Ye.map sg = 0` using `by ext i j; rw [colMat_form]; exact hF.2.1 i j`. Establish `hXY : Xeᵀ * J * Ye.map sg = 1` using `by ext i j; rw [colMat_form, hF.2.2 i j, Matrix.one_apply]`. Establish `hJt : Jᵀ.map sg = J` using `by ext i j; exact hX.herm i j`. Establish `hss : ∀ {p p' : ℕ} (M : Matrix (Fin p) (Fin p') E), (M.map sg).map sg = M`. Introduce `p p' M`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[hsg, hσσ]`. Establish `hYX : Yeᵀ * J * Xe.map sg = 1`. Establish `e : Yeᵀ * J * Xe.map sg = ((Xeᵀ * J * Ye.map sg)ᵀ).map sg`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.map_mul, Matrix.map_mul, hJt, Matrix.transpose_map, hss, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, hXY, Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `set RYe : Matrix (Fin q) (Fin n) E := (Ye.map sg)ᵀ * Jᵀ with hRYe`. Use `set RXe : Matrix (Fin q) (Fin n) E := (Xe.map sg)ᵀ * Jᵀ with hRXe`. Establish `mapι : ∀ {p p' : ℕ} (M : Matrix (Fin p) (Fin n) E) (N : Matrix (Fin n) (Fin p') E), M.map ι * N.map ι = (M * N).map ι` using `fun M N => (Matrix.map_mul).symm`. Establish `z0 : ∀ {p p' : ℕ}, (0 : Matrix (Fin p) (Fin p') E).map ι = 0` using `by intros; exact Matrix.map_zero _ (map_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `o1 : ∀ {p : ℕ}, (1 : Matrix (Fin p) (Fin p) E).map ι = 1` using `by intros; exact Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h1 : RYe.map ι * Xe.map ι = 1` using `by rw [mapι, hRYe, tr_eq, hXY, Matrix.transpose_one, o1]`. Establish `h2 : RYe.map ι * Ye.map ι = 0` using `by rw [mapι, hRYe, tr_eq, hYY, Matrix.transpose_zero, z0]`. Establish `h3 : RXe.map ι * Xe.map ι = 0` using `by rw [mapι, hRXe, tr_eq, hXX, Matrix.transpose_zero, z0]`. Establish `h4 : RXe.map ι * Ye.map ι = 1` using `by rw [mapι, hRXe, tr_eq, hYX, Matrix.transpose_one, o1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set al : (Fin q → ℝ) → Fin q → AE F E := fun t i => algebraMap (AF F) (AE F E) (realAd F (t i - 1)) with hal`. Establish `key : ∀ u : Fin q → ℝ, (∀ i, u i ≠ 0) → ∀ i, al u i + al (fun i => (u i)⁻¹) i + al u i * al (fun i => (u i)⁻¹) i = 0`. Introduce `u hu i`. Simplify using `only [hal, ← map_add, ← map_mul, realAd_key (hu i), map_zero]`. Use `set M : (Fin q → ℝ) → Matrix (Fin n) (Fin n) (AE F E) := fun u => 1 + Xe.map ι * diagonal (al u) * RYe.map ι + Ye.map ι * diagonal (al (fun i => (u i)⁻¹)) * RXe.map ι with hM`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ht0 : ∀ i, t i ≠ 0` using `fun i => (ht i).ne'`. Establish `ht0' : ∀ i, (fun i => (t i)⁻¹) i ≠ 0` using `fun i => inv_ne_zero (ht0 i)`. Establish `hinv : M t * M (fun i => (t i)⁻¹) = 1` using `mul_core _ _ _ _ _ _ _ _ h1 h2 h3 h4 (key t ht0) (key _ ht0')`. Establish `hmem : (⟨M t, M (fun i => (t i)⁻¹), hinv, (Matrix.mul_eq_one_comm_of_card_eq (Fin n) (Fin n) (AE F E) rfl).mp hinv⟩ : GL (Fin n) (AE F E)) ∈ UG (cA σ) (incM F X.J)` using `by show (M t)ᵀ * J.map ι * (M t).map c = J.map ι`. Use `unitary_gen c (J.map ι) (Xe.map ι) ((Xe.map sg).map ι) (Ye.map ι) ((Ye.map sg).map ι) (RXe.map ι) (RYe.map ι) (al t) (al (fun i => (t i)⁻¹)) ?_ ?_ (hconj Xe) (hconj Ye) ?_ ?_ (fun i => (cA σ).commutes _) (fun i => (cA σ).commutes _) ?_ ?_ ?_ ?_ (key t ht0)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← Matrix.transpose_map, hRYe, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose, Matrix.map_mul]`. Rewrite using `[← Matrix.transpose_map, hRXe, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose, Matrix.map_mul]`. Rewrite using `[hconj, hRYe, Matrix.map_mul, hJt, Matrix.transpose_map, hss, Matrix.map_mul, Matrix.transpose_map]`. Rewrite using `[hconj, hRXe, Matrix.map_mul, hJt, Matrix.transpose_map, hss, Matrix.map_mul, Matrix.transpose_map]`. Rewrite using `[← Matrix.transpose_map, mapι, mapι, hXX, z0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.transpose_map, mapι, mapι, hXY, o1]`. Rewrite using `[← Matrix.transpose_map, mapι, mapι, hYX, o1]`. Rewrite using `[← Matrix.transpose_map, mapι, mapι, hYY, z0]`. Establish `hM1 : M t - 1 = Xe.map ι * diagonal (al t) * RYe.map ι + Ye.map ι * diagonal (al (fun i => (t i)⁻¹)) * RXe.map ι`. Simplify using `only [hM]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `col : ∀ (N : Matrix (Fin n) (Fin n) (AE F E)) {p : ℕ} (Z : Matrix (Fin n) (Fin p) (AE F E)) (i : Fin p), N *ᵥ (fun k => Z k i) = fun k => (N * Z) k i`. Introduce `N p Z i`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨_, hmem⟩, fun i => ?_, fun i => ?_, fun z hzx hzy => ?_⟩` and prove the remaining obligations. Establish `hx : incV F (x i) = fun k => (Xe.map ι) k i` using `rfl`. Establish `e : (M t - 1) * Xe.map ι = Xe.map ι * diagonal (al t)`. Rewrite using `[hM1]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, h1, h3, Matrix.mul_one, Matrix.mul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show (M t - 1) *ᵥ incV F (x i) = _`. Rewrite using `[hx, col, e]`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mul_diagonal, Algebra.smul_def, hal, mul_comm]`. Establish `hy : incV F (y i) = fun k => (Ye.map ι) k i` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (M t - 1) * Ye.map ι = Ye.map ι * diagonal (al (fun i => (t i)⁻¹))`. Rewrite using `[hM1]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, h2, h4, Matrix.mul_one, Matrix.mul_zero, zero_add]`. Use `show (M t - 1) *ᵥ incV F (y i) = _`. Rewrite using `[hy, col, e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mul_diagonal, Algebra.smul_def, hal, mul_comm]`. Use `set Ze := colMat (fun _ : Fin 1 => z) with hZe`. Establish `hz : incV F z = fun k => (Ze.map ι) k 0` using `rfl`. Establish `hYZ : RYe.map ι * Ze.map ι = 0`.
-
-Establish `e0 : Zeᵀ * J * Ye.map sg = 0` using `by ext i j; rw [colMat_form]; exact hzy j`. Rewrite using `[mapι, hRYe, tr_eq, e0, Matrix.transpose_zero, z0]`. Establish `hXZ : RXe.map ι * Ze.map ι = 0`. Establish `e0 : Zeᵀ * J * Xe.map sg = 0` using `by ext i j; rw [colMat_form]; exact hzx j`. Rewrite using `[mapι, hRXe, tr_eq, e0, Matrix.transpose_zero, z0]`.
-
-Establish `e : (M t - 1) * Ze.map ι = 0`. Rewrite using `[hM1]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, hYZ, hXZ, Matrix.mul_zero, add_zero]`. Use `show (M t - 1) *ᵥ incV F z = 0`. Rewrite using `[hz, col, e]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isTorusU : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E)

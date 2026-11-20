@@ -15,11 +15,11 @@ namespace GlobalTheory.ThetaPar
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hm`. Use `push_neg at hm`. Establish `e : m ^ 2 = (m ^ 2 + a * m - c) + (-(a * m) + c)` using `by ring`. Establish `hb : ‖m ^ 2‖ ≤ ‖m‖`. Rewrite using `[e]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (IsUltrametricDist.norm_add_le_max _ _) (max_le (h.trans hm.le) ?_)` and prove the remaining obligations. Use `le_trans (IsUltrametricDist.norm_add_le_max _ _) (max_le ?_ (hc.trans hm.le))` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hb` using `[norm_pow, sq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: 1 * ‖m‖ < ‖m‖ * ‖m‖` using `mul_lt_mul_of_pos_right hm (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_quad {a c m : ℂ_[p]} (ha : ‖a‖ ≤ 1) (hc : ‖c‖ ≤ 1)
     (h : ‖m ^ 2 + a * m - c‖ ≤ 1) : ‖m‖ ≤ 1 := by
@@ -38,23 +38,21 @@ theorem norm_le_one_of_quad {a c m : ℂ_[p]} (ha : ‖a‖ ≤ 1) (hc : ‖c‖
   linarith
 
 /- English proof (translation)
-Introduce `p _ W x₁ y₁ x₂ y₂ m m' h1 h2 hΔ he1 he2 hx1 hx2 hne hm hm' hq hq'`. Establish `hd : x₁ - x₂ ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hle : ‖x₁ - x₂‖ ≤ 1`. Rewrite using `[sub_eq_add_neg]; exact it_add hx1 (by rwa [norm_neg])`. Use `le_antisymm hle (not_lt.mp fun hs => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `n2 : ‖(2 : ℂ_[p])‖ ≤ 1` using `by simpa using norm_natCast_le (p := p) 2`. Establish `c12 : ‖W.a₂ + x₁ + x₂‖ ≤ 1` using `it_add (it_add h2 hx1) hx2`. Establish `mb : ‖m‖ ≤ 1` using `norm_le_one_of_quad h1 c12 (by rwa [show m ^ 2 + W.a₁ * m - (W.a₂ + x₁ + x₂) = m ^ 2 + W.a₁ * m - W.a₂ - x₁ - x₂ by ring])`. Establish `mb' : ‖m'‖ ≤ 1` using `norm_le_one_of_quad h1 c12 (by rwa [show m' ^ 2 + W.a₁ * m' - (W.a₂ + x₁ + x₂) = m' ^ 2 + W.a₁ * m' - W.a₂ - x₁ - x₂ by ring])`. Establish `s1 : ‖y₁ - y₂‖ < 1` using `by rw [← hm, mul_comm]; exact sm_mul' hs mb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2 : ‖y₁ + y₂ + W.a₁ * x₂ + W.a₃‖ < 1`. Establish `e : y₁ + y₂ + W.a₁ * x₂ + W.a₃ = m' * (x₁ - x₂)`. Rewrite using `[hm']`. Simplify using `only [WeierstrassCurve.Affine.negY]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, mul_comm]`. Conclude with `sm_mul' hs mb'`. Establish `s3 : ‖W.a₁ * (x₁ - x₂)‖ < 1` using `sm_mul h1 hs`. Establish `hy : ‖2 * y₁ + W.a₁ * x₁ + W.a₃‖ < 1`. Rewrite using `[show 2 * y₁ + W.a₁ * x₁ + W.a₃ = (y₁ - y₂) + (y₁ + y₂ + W.a₁ * x₂ + W.a₃) + W.a₁ * (x₁ - x₂) by ring]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sm_add (sm_add s1 s2) s3`. Establish `s4 : ‖y₁ + y₂ + W.a₁ * x₁ + W.a₃‖ < 1`. Rewrite using `[show y₁ + y₂ + W.a₁ * x₁ + W.a₃ = (y₁ + y₂ + W.a₁ * x₂ + W.a₃) + W.a₁ * (x₁ - x₂) by ring]`. Conclude with `sm_add s2 s3`. Establish `e1` using `he1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `he2`. Rewrite `e1`, `e2` using `[WeierstrassCurve.Affine.equation_iff]`. Establish `hN : x₁ ^ 2 + x₁ * x₂ + x₂ ^ 2 + W.a₂ * (x₁ + x₂) + W.a₄ - W.a₁ * y₂ = m * (y₁ + y₂ + W.a₁ * x₁ + W.a₃)`. Apply `mul_right_cancel₀ hd` to reduce the goal to its premises. Establish `hsub : (y₁ - y₂) * (y₁ + y₂ + W.a₁ * x₁ + W.a₃) = (x₁ - x₂) * (x₁ ^ 2 + x₁ * x₂ + x₂ ^ 2 + W.a₂ * (x₁ + x₂) + W.a₄ - W.a₁ * y₂)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `e1 - e2`. Take the linear combination `-hsub - (y₁ + y₂ + W.a₁ * x₁ + W.a₃) * hm`. Establish `hN' : ‖x₁ ^ 2 + x₁ * x₂ + x₂ ^ 2 + W.a₂ * (x₁ + x₂) + W.a₄ - W.a₁ * y₂‖ < 1`. Rewrite using `[hN]`. Conclude with `sm_mul mb s4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx' : ‖3 * x₁ ^ 2 + 2 * W.a₂ * x₁ + W.a₄ - W.a₁ * y₁‖ < 1`. Rewrite using `[show 3 * x₁ ^ 2 + 2 * W.a₂ * x₁ + W.a₄ - W.a₁ * y₁ = (x₁ ^ 2 + x₁ * x₂ + x₂ ^ 2 + W.a₂ * (x₁ + x₂) + W.a₄ - W.a₁ * y₂) - ((x₂ - x₁) * (x₂ + 2 * x₁ + W.a₂) + W.a₁ * (y₁ - y₂)) by ring]`. Use `sm_sub hN' (sm_add ?_ (sm_mul h1 s1))` and prove the remaining obligations. Conclude with `sm_mul' (by rw [← norm_neg, neg_sub]; exact hs) (it_add (it_add hx2 (it_mul n2 hx1)) h2)`. Establish `hc` using `disc_small W x₁ y₁ h1 h2 hx1 he1 hy hx'`.
-
-Rewrite `hc` using `[hΔ]`. Conclude with `lt_irrefl _ hc`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_x_eq_one : ∀ {p : ℕ} [Fact p.Prime] (W : WeierstrassCurve ℂ_[p]) (x₁ y₁ x₂ y₂ m m' : ℂ_[p]), ‖W.a₁‖ ≤ 1 → ‖W.a₂‖ ≤ 1 → ‖W.Δ‖ = 1 → W.toAffine.Equation x₁ y₁ → W.toAffine.Equation x₂ y₂ → ‖x₁‖ ≤ 1 → ‖x₂‖ ≤ 1 → x₁ ≠ x₂ → m * (x₁ - x₂) = y₁ - y₂ → m' * (x₁ - x₂) = y₁ - W.toAffine.negY x₂ y₂ → ‖m ^ 2 + W.a₁ * m - W.a₂ - x₁ - x₂‖ ≤ 1 → ‖m' ^ 2 + W.a₁ * m' - W.a₂ - x₁ - x₂‖ ≤ 1 → ‖x₁ - x₂‖ = 1 := by
   intro p _ W x₁ y₁ x₂ y₂ m m' h1 h2 hΔ he1 he2 hx1 hx2 hne hm hm' hq hq'

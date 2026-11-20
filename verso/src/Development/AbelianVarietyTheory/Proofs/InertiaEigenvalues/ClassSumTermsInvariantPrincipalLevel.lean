@@ -13,18 +13,18 @@ set_option maxHeartbeats 1600000
 namespace GlobalTheory.PrincClassSum
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.ClassRegroup.finEquiv S).apply_symm_apply y`.
+A detailed English derivation is pending.
 -/
 theorem fin_symm {D : D7} (S : HSp D) (y : Bridge.Gf S) :
     finPt S (((GlobalTheory.ClassRegroup.finEquiv S).symm y : GfC S) : GA D S) = y :=
   (GlobalTheory.ClassRegroup.finEquiv S).apply_symm_apply y
 
 /- English proof (translation)
-Establish `e : finPt S (((GlobalTheory.ClassRegroup.finEquiv S).symm (Bridge.ratF S γ * y) : GfC S) : GA D S) = Bridge.ratF S γ * finPt S (((GlobalTheory.ClassRegroup.finEquiv S).symm y : GfC S) : GA D S) * ((1 : (GlobalTheory.FlatVecSum.princ B).levJ ψ) : Bridge.Gf S)`. Rewrite using `[fin_symm, fin_symm, OneMemClass.coe_one, mul_one]`. Establish `hm` using `GlobalTheory.BaseClassSum.series_move (GlobalTheory.FlatVecSum.princ_good hB) hS hψ hQ hω (Subtype.property _) (Subtype.property _) γ 1 e (F (Bridge.ratF S γ * y))`. Establish `hl` using `(B.mem_formsC.1 hF).2 γ y 1`. Rewrite `hl` using `[OneMemClass.coe_one, mul_one, map_one, Units.val_one, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hinv : B.act ((γ⁻¹ : GQ S) : GA D S) (B.act (γ : GA D S) (F y)) = F y`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Subgroup.coe_inv, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite `hm` using `[map_one, Units.val_one, inv_one, one_smul]`. Rewrite `hm`, the goal using `[hl]`. Rewrite `hm` using `[show (GlobalTheory.FlatVecSum.princ B).act = B.act from rfl, hinv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrFun hm g`.
+A detailed English derivation is pending.
 -/
 theorem left_inv {D : D7} {S T : HSp D} (B : Base S T) (hB : B.Good) (hS : S.SigOK) (ψ : Twist D Circle) (hψ : ψ.Good)
     (hQ : B.admitted ψ.Q) (ω : PairRep S T) (hω : B.IsWeil ψ.chi ω) {F : Bridge.Gf S → _} (hF : F ∈ B.formsC ψ)
@@ -49,11 +49,11 @@ theorem left_inv {D : D7} {S T : HSp D} (B : Base S T) (hB : B.Good) (hS : S.Sig
 
 set_option maxHeartbeats 8000000 in
 /- English proof (translation)
-Take `⟨hle, hlam⟩` from `GlobalTheory.T.principalLevel_le_level_characters_agree B hB ψ hQ`. Establish `e : finPt S (((GlobalTheory.ClassRegroup.finEquiv S).symm (y * k) : GfC S) : GA D S) = Bridge.ratF S 1 * finPt S (((GlobalTheory.ClassRegroup.finEquiv S).symm y : GfC S) : GA D S) * ((⟨k, hk⟩ : (GlobalTheory.FlatVecSum.princ B).levJ ψ) : Bridge.Gf S)`. Rewrite using `[fin_symm, fin_symm, (Bridge.ratF S).map_one, one_mul]`. Establish `hm` using `GlobalTheory.BaseClassSum.series_move (GlobalTheory.FlatVecSum.princ_good hB) hS hψ hQ hω (Subtype.property _) (Subtype.property _) 1 ⟨k, hk⟩ e (F (y * k))`. Establish `hl` using `(B.mem_formsC.1 hF).2 1 y ⟨k, hle hk⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hl` using `[(Bridge.ratF S).map_one, one_mul, OneMemClass.coe_one, map_one, Module.End.one_apply]`. Rewrite `hm` using `[show (GlobalTheory.FlatVecSum.princ B).act = B.act from rfl, inv_one, OneMemClass.coe_one, map_one, Module.End.one_apply, hlam k hk]`. Rewrite `hm`, the goal using `[hl]`. Rewrite `hm` using `[LinearMap.map_smul, LinearMap.map_smul, smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul]`. Rewrite using `[LinearMap.map_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun hm g`.
+A detailed English derivation is pending.
 -/
 theorem right_inv {D : D7} {S T : HSp D} (B : Base S T) (hB : B.Good) (hS : S.SigOK) (ψ : Twist D Circle) (hψ : ψ.Good)
     (hQ : B.admitted ψ.Q) (ω : PairRep S T) (hω : B.IsWeil ψ.chi ω) {F : Bridge.Gf S → _} (hF : F ∈ B.formsC ψ)
@@ -78,7 +78,7 @@ theorem right_inv {D : D7} {S T : HSp D} (B : Base S T) (hB : B.Good) (hS : S.Si
   exact congrFun hm g
 
 /- English proof (translation)
-Introduce `B hB hS ψ hψ hQ ω hω _ hF g` and use `⟨fun γ y => left_inv B hB hS ψ hψ hQ ω hω hF g γ y, fun k hk y => right_inv B hB hS ψ hψ hQ ω hω hF g k hk y⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem terms_inv : ∀ {D : D7} {S T : HSp D} (B : Base S T), B.Good → S.SigOK → ∀ (ψ : Twist D Circle), ψ.Good → B.admitted ψ.Q →
     ∀ (ω : PairRep S T), B.IsWeil ψ.chi ω → ∀ F ∈ B.formsC ψ, ∀ g : GA D T,

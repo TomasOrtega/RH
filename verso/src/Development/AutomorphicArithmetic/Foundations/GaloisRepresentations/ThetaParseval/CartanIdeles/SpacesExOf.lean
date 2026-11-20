@@ -59,7 +59,7 @@ def SkewLine : Prop :=
       (GoodField F E → B.IsGood σ) ∧ (∀ n, (stdSpc F E n).IsHerm σ B n 0) ∧ ∀ d, (skewSpc F δ 𝔞 d).IsSkew σ B d 0
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hc hu`. Take `⟨δ, 𝔞, emb, hl, hp, h⟩` from `h₁ F E σ hc hu`. Take `⟨B, e1, -, -, e2, e3, e4⟩` from `h₂ F E σ hc emb 0 0`. Conclude with `⟨B, δ, 𝔞, hl, e1 ▸ hp, e2, e3, e4 hu, h B e1 e2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem skewLine_of (h₁ : SpacesEx) (h₂ : BaseEx) : SkewLine := by
   intro F E _ _ _ _ _ σ hc hu
@@ -122,7 +122,7 @@ def LineSkew : Prop :=
     ∀ d, (skewSpc F δ 𝔞 d).IsSkew σ B d 0
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hc hu`. Take `⟨δ, 𝔞, hl⟩` from `h₁ F E σ hc hu`. Take `⟨emb, hp⟩` from `h₂ F E σ hc δ hl.ne hl.skew`. Conclude with `⟨δ, 𝔞, emb, hl, hp, fun B e1 e2 => ⟨h₃ F E σ hc B e2, h₄ F E σ δ 𝔞 hl B (e1 ▸ hp) e2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem spacesEx_of (h₁ : LineEx) (h₂ : PosEx) (h₃ : StdHerm) (h₄ : LineSkew) : SpacesEx := by
   intro F E _ _ _ _ _ σ hc hu

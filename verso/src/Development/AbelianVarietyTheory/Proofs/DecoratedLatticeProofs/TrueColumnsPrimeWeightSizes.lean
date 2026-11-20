@@ -9,11 +9,11 @@ open GlobalTheory.ColumnNormCompare (numDatumOfParameters codeRec plRec)
 attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 /- English proof (translation)
-Introduce `B X I h l Z L CY hR hX' hx hT`. Establish `hW` using `(GlobalTheory.Mem.wts_ok_and_sizes B X).2`. Establish `hF` using `(GlobalTheory.Mem.FieldsLaws.fields_satisfy_definite_laws B).2`. Take `⟨P⟩` from `hR.1`. Establish `hfN` using `GlobalTheory.ColumnNormCompare.SizeRows.f_mul_N_le_b P hR.2.2.2.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb1` using `GlobalTheory.ColumnNormCompare.SizeRows.one_le_b L.sc`. Use `⟨hW.g_big, fun u => hT u, ?_, GlobalTheory.T.trueColumnWeight_spread_le_two_mul_scale I h l Z L CY hR hX' hx⟩` and prove the remaining obligations. Establish `hab : 2 * L.sc.b ≤ L.sc.a` using `by show 2 * L.sc.b ≤ L.sc.x * L.sc.b`. Use the polynomial consequences of the given equalities and inequalities. Establish `hfN' : ((B.fields.f : ℝ)) * (B.R.N B.R.m : ℝ) ≤ L.sc.b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[hF]`. Conclude with `hfN`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CoreHt.sizes_trueCols : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (h : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) (L : SizeData₂ (I.rec7 l Z)) (CY : ℝ), HtRowsS L CY → 8 ≤ L.sc.X' → 2 ≤ L.sc.x → (∀ u, 4 * L.sc.a < (((I.rec7 l Z).mem u).A.T : ℝ)) → Formalism.L2.Col.Sizes (B.primes X) B.wts L.sc.a := by
   intro B X I h l Z L CY hR hX' hx hT

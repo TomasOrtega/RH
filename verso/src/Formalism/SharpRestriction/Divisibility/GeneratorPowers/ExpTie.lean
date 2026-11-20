@@ -82,7 +82,7 @@ def ExpGaugeOfSt : Prop :=
       ∃ e : ∀ m, ExpFr y (xExp y C φ) m, IsExpGauge y (xExp y C φ) e ∧ IsExpGaugeOf y C φ e
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ hs S _ _ _ y C hT`. Take `⟨φ, hφ, hx⟩` from `h1 E H Dw l Xo c S y C`. Conclude with `⟨φ, hφ, hx, h2 E H Dw l Xo c hs S y C hT φ hφ hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem expOfChart_of (h1 : ExpChartOfSt) (h2 : ExpGaugeOfSt) : ExpOfChartSt := by
   intro E _ _ _ H Dw l Xo c _ hs S _ _ _ y C hT

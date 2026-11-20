@@ -7,9 +7,9 @@ open IsLocalRing RingTheory.Sequence
 variable {R : Type*} [CommRing R] [IsLocalRing R]
 
 /- English proof (translation)
-Establish `h1` using `Ideal.height_le_spanRank_toENat_of_mem_minimal_primes _ p hp`. Establish `hcard : Cardinal.mk {x | x ∈ rs} ≤ rs.length`. Establish `: {x | x ∈ rs} = (rs.toFinset : Set R)` using `by ext; simp`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : (Ideal.ofList rs).spanRank ≤ rs.length`. Unfold `Ideal.ofList`. Conclude with `(Submodule.spanRank_span_le_card _).trans hcard`. Use `h1.trans ?_` and prove the remaining obligations. Simplify using `using OrderHomClass.mono Cardinal.toENat h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem height_le_length_of_mem_minimalPrimes [IsNoetherianRing R] (rs : List R) {p : Ideal R}
     (hp : p ∈ (Ideal.ofList rs).minimalPrimes) : p.height ≤ (rs.length : ℕ∞) := by
@@ -27,15 +27,15 @@ private theorem height_le_length_of_mem_minimalPrimes [IsNoetherianRing R] (rs :
   simpa using OrderHomClass.mono Cardinal.toENat h2
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing R := h.1`. Establish `hIm : I ≤ maximalIdeal R` using `le_maximalIdeal hI`. Establish `hCM` using `(isCM_iff_isCMMod.mp h).quotient_ofList (fun x hx => hIm (hrsI x hx)) reg`. Establish `hJ : (Ideal.ofList rs • (⊤ : Submodule R R) : Ideal R) = Ideal.ofList rs` using `Ideal.mul_top _`. Establish `hass : associatedPrimes R (R ⧸ (Ideal.ofList rs • ⊤ : Submodule R R)) = (Ideal.ofList rs).minimalPrimes`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hCM.associatedPrimes_eq_minimalPrimes, Ideal.annihilator_quotient, hJ]`. Establish `hfin` using `associatedPrimes.finite R (R ⧸ (Ideal.ofList rs • ⊤ : Submodule R R))`. Establish `hnot : ¬ ((I : Set R) ⊆ ⋃ p ∈ (hfin.toFinset : Set (Ideal R)), (p : Set R))`. Introduce `hsub`. Take `⟨p, hp, hIp⟩` from `(Ideal.subset_union_prime (f := id) ⊥ ⊥ (fun i hi _ _ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[Set.Finite.mem_toFinset]`. Conclude with `(IsAssociatedPrime.isPrime hi))).mp hsub`. Rewrite `hp` using `[Set.Finite.mem_toFinset, hass]`. Establish `h1` using `height_le_length_of_mem_minimalPrimes rs hp`. Establish `h2 : I.height ≤ p.height` using `Ideal.height_mono hIp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3 : (rs.length : ℕ∞) < r` using `by exact_mod_cast hlen`. Conclude with `absurd (hr.trans (h2.trans h1)) (not_le.mpr h3)`. Take `⟨x, hxI, hx⟩` from `Set.not_subset.mp hnot`. Use `⟨x, hxI, ?_⟩` and prove the remaining obligations. Establish `hx' : x ∉ ⋃ p ∈ associatedPrimes R (R ⧸ (Ideal.ofList rs • ⊤ : Submodule R R)), (p : Set R)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hx`. Rewrite `hx'` using `[biUnion_associatedPrimes_eq_compl_regular]`. Simplify using `using hx'`.
+A detailed English derivation is pending.
 -/
 theorem grade_step_exists (h : IsCM R) {I : Ideal R} (hI : I ≠ ⊤) {r : ℕ}
     (hr : (r : ℕ∞) ≤ I.height) (rs : List R) (hlen : rs.length < r) (hrsI : ∀ x ∈ rs, x ∈ I)
@@ -68,9 +68,9 @@ theorem grade_step_exists (h : IsCM R) {I : Ideal R} (hI : I ≠ ⊤) {r : ℕ}
   simpa using hx'
 
 /- English proof (translation)
-Use `⟨w, ?_⟩` and prove the remaining obligations. Introduce `heq`. Apply `hI` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Establish `h1 : (Ideal.ofList rs • (⊤ : Submodule R R)) = Ideal.ofList rs` using `Ideal.mul_top _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Ideal.ofList rs ≤ I` using `Ideal.span_le.mpr (fun y hy => hrsI y hy)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem isRegular_of_isWeaklyRegular_of_mem_ne_top {I : Ideal R} (hI : I ≠ ⊤) (rs : List R)
     (hrsI : ∀ x ∈ rs, x ∈ I) (w : IsWeaklyRegular R rs) : IsRegular R rs := by
@@ -85,11 +85,11 @@ private theorem isRegular_of_isWeaklyRegular_of_mem_ne_top {I : Ideal R} (hI : I
     _ ≤ I := h2
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Conclude with `⟨[], rfl, by simp, isRegular_of_isWeaklyRegular_of_mem_ne_top hI [] (by simp) (by simp)⟩`. Consider the case `succ n ih`. Take `⟨rs, hlen, hrsI, reg⟩` from `ih ((Nat.cast_le.mpr (Nat.le_succ n)).trans hr)`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxI, hx⟩` from `grade_step_exists h hI hr rs (by omega) hrsI reg`. Establish `hall : ∀ y ∈ rs ++ [x], y ∈ I`. Introduce `y hy`. Break down `List.mem_append.mp hy with hy | hy` into its components or cases. Conclude with `hrsI y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.mem_singleton.mp hy]`. Conclude with `hxI`. Use `⟨rs ++ [x], by simp [hlen], hall, isRegular_of_isWeaklyRegular_of_mem_ne_top hI _ hall ?_⟩` and prove the remaining obligations. Conclude with `(isWeaklyRegular_append_iff R rs [x]).mpr ⟨reg.1, (isWeaklyRegular_singleton_iff _ x).mpr hx⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsCM.exists_isRegular_of_le_height (h : IsCM R) {I : Ideal R} (hI : I ≠ ⊤) {r : ℕ}
     (hr : (r : ℕ∞) ≤ I.height) :

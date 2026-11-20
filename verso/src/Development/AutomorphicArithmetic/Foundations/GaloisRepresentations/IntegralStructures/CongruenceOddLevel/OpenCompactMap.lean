@@ -14,17 +14,13 @@ namespace UpperTheory.Gal.Int.Cong
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
 
 /- English proof (translation)
-Take `⟨φ₀, hφ₀U, hφ₀0⟩` from `(Submodule.ne_bot_iff U).1 hU.ne_bot`. Establish `hφ₀aut : IsAutFormU φ₀` using `hU.aut φ₀ hφ₀U`. Set `stab : Subgroup (UA E a)` to `{ carrier := {x | RU E a x φ₀ = φ₀} mul_mem' := fun {x y} hx hy => by`. Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at hx hy ⊢`. Rewrite using `[hy, hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := fun {x} hx => by`. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Combine the equalities or inequalities in the displayed calculation. Set `H : HeightOneSpectrum (𝓞 E) → Subgroup (UA E a)` to `fun r => if ∃ φ ∈ U, φ ≠ 0 ∧ ∀ x ∈ intU a r, RU E a x φ = φ then intU a r else intU a r ⊓ stab`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : ∀ w, (∃ φ ∈ U, φ ≠ 0 ∧ ∀ x ∈ intU a w, RU E a x φ = φ) → H w = intU a w` using `fun w h => if_pos h`. Use `⟨H, fun r => ?_, fun r => ?_, fun w u h => ?_, fun r => ?_, hint, ?_⟩` and prove the remaining obligations. Simplify using `only [H] split_ifs exacts [le_rfl, inf_le_left]`. Simplify using `only [H] split_ifs`. Conclude with `(GlobalTheory.T.definiteUnitaryIntegralBelowPlace_compact_open E a r).2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself.
 
-Establish `e : (((intU a r ⊓ stab).subgroupOf (locU a r)) : Set (locU a r)) = (((intU a r).subgroupOf (locU a r)) : Set (locU a r)) ∩ (fun x : locU a r => (⟨x.1, ((GlobalTheory.Cong.LevelExt.mem_locU_iff x.1).1 x.2).1⟩ : finU E a)) ⁻¹' {k : finU E a | RU E a k φ₀ = φ₀}`. Use extensionality with `x`. Conclude with `Iff.rfl`. Rewrite using `[e]`. Conclude with `(GlobalTheory.T.definiteUnitaryIntegralBelowPlace_compact_open E a r).2.inter (hφ₀aut.level.preimage (Continuous.subtype_mk continuous_subtype_val _))`.
-
-Simplify using `only [H, intU_congr h]`. Simplify using `only [H] split_ifs with h1`. Conclude with `h1`. Conclude with `⟨φ₀, hφ₀U, hφ₀0, fun x hx => (Subgroup.mem_inf.1 hx).2⟩`. Use `filter_upwards [GlobalTheory.T.autForm_fixed_by_integralPoints_almostAllPlaces E a φ₀ hφ₀aut] with w hw`.
-
-Conclude with `hint w ⟨φ₀, hφ₀U, hφ₀0, hw⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_locLev {U : Submodule ℂ (UA E a → ℂ)} (hU : IsAutRepU U) (w₀ : HeightOneSpectrum (𝓞 E)) :
     ∃ H : HeightOneSpectrum (𝓞 E) → Subgroup (UA E a), (∀ w, H w ≤ intU a w) ∧
@@ -71,7 +67,7 @@ theorem exists_locLev {U : Submodule ℂ (UA E a → ℂ)} (hU : IsAutRepU U) (w
     exact hint w ⟨φ₀, hφ₀U, hφ₀0, hw⟩
 
 /- English proof (translation)
-Use `le_antisymm ?_ (KGL_le_map hw)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(mem_intU.1 hx).2 w (not_apart_self w)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem map_intU {w : HeightOneSpectrum (𝓞 E)} (hw : IsSplitAt w) : (intU a w).map (cLoc w) = GlobalTheory.LFun.KGL w a := by
   refine le_antisymm ?_ (KGL_le_map hw)
@@ -79,9 +75,9 @@ theorem map_intU {w : HeightOneSpectrum (𝓞 E)} (hw : IsSplitAt w) : (intU a w
   exact (mem_intU.1 hx).2 w (not_apart_self w)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a w hw`. Establish `hle` using `hL.trans (intU_le_locU w)`. Rewrite using `[map_eq_image hle e he]`. Use `⟨e.toHomeomorph.isOpenMap _ ho, IsCompact.image ?_ e.continuous⟩` and prove the remaining obligations. Rewrite using `[Topology.IsInducing.subtypeVal.isCompact_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `isCompact_of_le hL ho (GlobalTheory.T.definiteUnitaryIntegralBelowPlace_compact_open E a w).1 using 1` and compare the differences between its conclusion and the goal. Conclude with `coe_subgroupOf_image hle`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem open_compact_map {w : HeightOneSpectrum (𝓞 E)} (hw : IsSplitAt w) {L : Subgroup (UA E a)} (hL : L ≤ intU a w)
     (ho : IsOpen ((L.subgroupOf (locU a w)) : Set (locU a w))) :
@@ -96,33 +92,27 @@ theorem open_compact_map {w : HeightOneSpectrum (𝓞 E)} (hw : IsSplitAt w) {L 
   exact coe_subgroupOf_image hle
 
 /- English proof (translation)
-Take `⟨H, hleI, hopen, hfib, hfix, hint, hae⟩` from `exists_locLev hU.1 w₀`. Establish `hle : ∀ w, H w ≤ locU a w` using `fun w => (hleI w).trans (intU_le_locU w)`. Establish `hcpt : ∀ w, IsCompact (H w : Set (UA E a))` using `fun w => isCompact_of_le (hleI w) (hopen w) (GlobalTheory.T.definiteUnitaryIntegralBelowPlace_compact_open E a w).1`. Take `⟨φ, hφU, hφ0, hφH⟩` from `GlobalTheory.T.exists_vector_fixed_by_product_localLevels E a U hU.1 w₀ H hle hfib hcpt (hae.mono fun w hw x hx => by rw [hw] at hx; exact (mem_intU.1 hx).2 w (not_apart_self w)) hopen (fun w _ => hfix w)`. Establish `hφ` using `GlobalTheory.T.fixed_of_fixed_by_local_levels E a w₀ H hle hfib hcpt hopen hae φ (hU.1.aut φ hφU) hφH`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `H' : HeightOneSpectrum (𝓞 E) → Subgroup (UA E a)` to `fun w => if Apart w v' then H w else intU a w`. Establish `h1 : ∀ w, Apart w v' → H' w = H w` using `fun w h => if_pos h`. Establish `h2 : ∀ w, ¬ Apart w v' → H' w = intU a w` using `fun w h => if_neg h`. Establish `hleI' : ∀ w, H' w ≤ intU a w` using `fun w => by`. Distinguish the cases in `h : Apart w v'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h1 w h]`. Conclude with `hleI w`. Rewrite using `[h2 w h]`. Establish `hle' : ∀ w, H' w ≤ locU a w` using `fun w => (hleI' w).trans (intU_le_locU w)`. Establish `hopen' : ∀ w, IsOpen (((H' w).subgroupOf (locU a w)) : Set (locU a w))` using `fun w => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : Apart w v'`. Rewrite using `[h1 w h]`. Conclude with `hopen w`. Rewrite using `[h2 w h]`. Conclude with `(GlobalTheory.T.definiteUnitaryIntegralBelowPlace_compact_open E a w).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hcpt' : ∀ w, IsCompact (H' w : Set (UA E a))` using `fun w => isCompact_of_le (hleI' w) (hopen' w) (GlobalTheory.T.definiteUnitaryIntegralBelowPlace_compact_open E a w).1`. Establish `hfib' : ∀ w u, ¬ Apart w u → H' w = H' u` using `fun w u h => by`. Distinguish the cases in `hw : Apart w v'`. Establish `hu : Apart u v'`. Assume the negation of the conclusion as `hu`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `not_apart_trans h hu hw`. Rewrite using `[h1 w hw, h1 u hu, hfib w u h]`. Rewrite using `[h2 w hw, h2 u (not_apart_trans (not_apart_symm h) hw), intU_congr h]`. Establish `hint' : ∀ w, H w = intU a w → H' w = intU a w` using `fun w h => by`. Distinguish the cases in `hw : Apart w v'`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1 w hw, h]`. Conclude with `h2 w hw`. Use `⟨levelOf a w₀ H', fun w => (H' w).map (cLoc w), (H v').map (cLoc v'), GlobalTheory.T.isLevelAway_definiteUnitaryLevelFromLocalLevels E a w₀ H' hle' hfib' hcpt' hopen' (hae.mono hint'), (open_compact_map hv' (hleI v') (hopen v')).1, ⟨φ, hφU, hφ0, fun x hx => hφ x ?_⟩, ?_, fun w hw …` and prove the remaining obligations. Take `⟨hx1, y, hy, e⟩` from `Subgroup.mem_inf.1 hx`. Take `⟨g1, g2, g3⟩` from `mem_levelOf.1 hx1`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mem_levelOf.2 ⟨g1, g2, fun w hw => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : Apart w v'`. Rewrite using `[← h1 w h]`. Conclude with `g3 w hw`. Use `⟨y, by rw [hfib w v' h]; exact hy, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.Cong.LevelExt.one_of_cLoc hv' (y * x⁻¹) (by rw [map_mul, map_inv, e, mul_inv_cancel]) w h` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis. Use `show (H' v').map (cLoc v') = _`. Rewrite using `[h2 v' (not_apart_self v'), map_intU hv']`. Introduce and unpack `w hw - ⟨B, σ, hσ, hB⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨φ', hφ'U, hφ'0, hφ'⟩` from `fix_of_fixed hw σ hσ hB.1`. Use `show (H' w).map (cLoc w) = _`. Rewrite using `[hint' w (hint w ⟨φ', hφ'U, hφ'0, fun x hx => hφ' x (mem_intU.1 hx).1 ((mem_intU.1 hx).2 w (not_apart_self w))⟩), map_intU hw]`. Introduce `w hw hT x hx hk`. Establish `hap : Apart w w₀`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Unfold `Apart`. Introduce `h`. Use `eq_of_not_apart_of_not_split hw (show ¬ Apart w₀ w from fun h' => h' h.symm)` as an intermediate fact. Conclude with `hw (this ▸ hw₀)`. Take `⟨φ', hφ'U, hφ'0, hφ'⟩` from `hU.2 w hw hT`.
-
-Conclude with `(mem_levelOf_iff_of_locU hle' hfib' hap hx).2 (by`. Rewrite using `[hint' w (hint w ⟨φ', hφ'U, hφ'0, fun y hy => hφ' y (mem_intU.1 hy).1 ((mem_intU.1 hy).2 w (not_apart_self w))⟩)]`. Conclude with `mem_intU_of hx hk)`. Introduce `w hw hap x hx`. Rewrite using `[mem_levelOf_iff_of_locU hle' hfib' hap hx]`.
-
-Use `show x ∈ H' w ↔ cLoc w x ∈ (H' w).map (cLoc w)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨x, h, rfl⟩`. Introduce and unpack `⟨y, hy, e⟩`.
-
-Rewrite using `[← eq_of_cLoc_eq (hle' w hy) hx e]`. Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level {T : Finset (HeightOneSpectrum (𝓞 E))} {U : Submodule ℂ (UA E a → ℂ)} (hU : AutOffT T U)
     {w₀ v' : HeightOneSpectrum (𝓞 E)} (hw₀ : IsSplitAt w₀) (hv' : IsSplitAt v') (hap : Apart v' w₀) :
@@ -205,7 +195,7 @@ theorem exists_level {T : Finset (HeightOneSpectrum (𝓞 E))} {U : Submodule �
       exact hy
 
 /- English proof (translation)
-Establish `hc` using `GlobalTheory.BCT.GlobLev.continuous_cLoc (n := a) v'`. Take `⟨N, hN, h1, hNK⟩` from `hK.isOpen`. Use `⟨inf_le_left.trans hK.fin, fun x hx => hK.one x hx.1, hK.compact.inter_right ((Kv.isClosed_of_isOpen ho).preimage hc), N ∩ cLoc v' ⁻¹' Kv, hN.inter (ho.preimage hc), ⟨h1, by simp⟩, fun x hx hf h => ⟨hNK x hx.1 hf h, hx.2⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isLevelAway_inf {w₀ : HeightOneSpectrum (𝓞 E)} {K : Subgroup (UA E a)} (hK : IsLevelAway w₀ K)
     (v' : HeightOneSpectrum (𝓞 E)) {Kv : Subgroup (GL (Fin a) (v'.adicCompletion E))}

@@ -7,7 +7,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.TC.MuZeroCls
 
 /- English proof (translation)
-Introduce `B X I h l u c`. Use `show (I.stp u I.mu0 0).cl _ (I.pt0 u I.mu0 I.mu0 ((I.stp u I.mu0 0).rep c)) = c`. Use `Eq.trans ?_ (GlobalTheory.Mem.Col2.ClsZero.cl_rep _ c)` and prove the remaining obligations. Use `(GlobalTheory.Mem.Col2.ClsZero.cl_eq_iff h u I.mu0 _ _ _ _).2 ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stepZeroClassEquiv_referenceTuple_eq_self : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (u : B.Word)
     (c : (I.stp u I.mu0 0).Cl), I.eCls0 l u I.mu0 c = c := by

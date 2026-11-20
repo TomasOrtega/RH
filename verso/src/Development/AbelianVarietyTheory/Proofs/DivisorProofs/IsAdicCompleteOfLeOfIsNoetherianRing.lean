@@ -3,15 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hle : ∀ n : ℕ, (I ^ n • ⊤ : Submodule R R) ≤ J ^ n • ⊤` using `fun n => Submodule.smul_mono_left (Ideal.pow_right_mono hIJ n)`. Establish `hH : IsHausdorff I R` using `⟨fun x hx => hJ.toIsHausdorff.haus x fun n => (hx n).mono (hle n)⟩`. Establish `hP : IsPrecomplete I R`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨L, hL⟩` from `hJ.toIsPrecomplete.prec (f := f) fun {m n} h => (hf h).mono (hle m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Use `set N : Submodule R R := I ^ n • ⊤ with hN`. Establish `hK : (⨅ m : ℕ, J ^ m • ⊤ : Submodule R (R ⧸ N)) = ⊥` using `Ideal.iInf_pow_smul_eq_bot_of_le_jacobson J (IsAdicComplete.le_jacobson_bot J)`. Rewrite using `[SModEq.sub_mem, ← Submodule.Quotient.mk_eq_zero, ← Submodule.mem_bot R, ← hK, Submodule.mem_iInf]`. Introduce `m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : f n - f (max n m) ∈ N` using `SModEq.sub_mem.1 (hf (le_max_left n m))`. Establish `h2 : f (max n m) - L ∈ (J ^ m • ⊤ : Submodule R R)` using `Submodule.smul_mono_left (Ideal.pow_le_pow_right (le_max_right n m)) (SModEq.sub_mem.1 (hL (max n m)))`. Establish `h3 : N.mkQ (f (max n m) - L) ∈ (J ^ m • ⊤ : Submodule R (R ⧸ N))`. Use `Submodule.mem_map_of_mem (f := N.mkQ) h2` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mono le_rfl le_top this`. Establish `h4 : (Submodule.Quotient.mk (f n - L) : R ⧸ N) = N.mkQ (f (max n m) - L)`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.eq]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[h4]`. Conclude with `h3`. Conclude with `{ toIsHausdorff := hH, toIsPrecomplete := hP }`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_of_le_of_isNoetherianRing (R : Type) [CommRing R] [IsNoetherianRing R]
     (I J : Ideal R) (hIJ : I ≤ J) (hJ : IsAdicComplete J R) : IsAdicComplete I R := by

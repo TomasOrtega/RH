@@ -6,13 +6,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTh
 open scoped Classical
 
 /- English proof (translation)
-Establish `hcl : IsClosed (i '' Cᶜ)` using `hi.isClosedMap _ hCo.isClosed_compl`. Establish `hloc : ∀ y ∈ C, ∃ O : Set X, IsOpen O ∧ IsCompact O ∧ i y ∈ O ∧ O ⊆ (i '' Cᶜ)ᶜ`. Introduce `y hy`. Use `hb (i y) _ (hcl.isOpen_compl.mem_nhds ?_)` and prove the remaining obligations. Introduce and unpack `⟨y', hy', e⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hy' (hi.injective e ▸ hy)`. Use `choose! O hOo hOc hOy hON using hloc`. Take `⟨t, ht, hcov⟩` from `hCc.elim_nhds_subcover (fun y => i ⁻¹' O y) (fun y hy => ((hOo y hy).preimage hi.continuous).mem_nhds (hOy y hy))`. Use `⟨⋃ y ∈ t, O y, isOpen_biUnion fun y hy => hOo y (ht y hy), t.isCompact_biUnion fun y hy => hOc y (ht y hy), ?_⟩` and prove the remaining obligations. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Set.mem_preimage, Set.mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hy⟩`. Assume the negation of the conclusion as `hc`. Conclude with `hON z (ht z hz) hy ⟨y, hc, rfl⟩`.
-
-Introduce `hy`. Simplify using `using hcov hy`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem trace_compactOpen {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] {i : Y → X}
     (hi : IsClosedEmbedding i)
@@ -40,9 +38,9 @@ private theorem trace_compactOpen {X Y : Type} [TopologicalSpace X] [Topological
     simpa using hcov hy
 
 /- English proof (translation)
-Use `⟨?_, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Distinguish the cases in `hx : x ∈ O`. Conclude with `⟨O, hO, hx, fun y hy => by rw [Set.indicator_of_mem hy, Set.indicator_of_mem hx]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨Oᶜ, hc.isClosed.isOpen_compl, hx, fun y hy => by`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem indicator_mem_SB {X : Type} [TopologicalSpace X] [T2Space X] {O : Set X}
     (hO : IsOpen O) (hc : IsCompact O) : O.indicator (fun _ => (1 : ℂ)) ∈ SB X := by
@@ -55,21 +53,19 @@ private theorem indicator_mem_SB {X : Type} [TopologicalSpace X] [T2Space X] {O 
       rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `ha`. Establish `hK : IsCompact (tsupport a)` using `hcs`. Use `haveI : CompactSpace (tsupport a) := isCompact_iff_compactSpace.mp hK`. Establish `hfin : (Set.range ((tsupport a).restrict a)).Finite` using `(hlc.comp_continuous continuous_subtype_val).range_finite`. Establish `hfib : ∀ c : ℂ, c ≠ 0 → ∃ O : Set X, IsOpen O ∧ IsCompact O ∧ i ⁻¹' O = a ⁻¹' {c}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Use `trace_compactOpen hi hb (hlc.isOpen_fiber c) (hK.of_isClosed_subset (hlc.isClosed_fiber c) ?_)` and prove the remaining obligations. Introduce `y hy`. Use `subset_tsupport _ ?_` and prove the remaining obligations. Rewrite using `[Function.mem_support, show a y = c from hy]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hc`. Use `choose! O hOo hOc hOt using hfib`. Set `S : Finset ℂ` to `hfin.toFinset.erase 0`. Use `⟨fun x => ∑ c ∈ S, c * (O c).indicator (fun _ => (1 : ℂ)) x, ?_, ?_⟩` and prove the remaining obligations. Establish `: (fun x => ∑ c ∈ S, c * (O c).indicator (fun _ => (1 : ℂ)) x) = ∑ c ∈ S, c • (O c).indicator (fun _ => (1 : ℂ))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `[Finset.sum_apply]`. Rewrite using `[this]`. Use `Submodule.sum_mem _ fun c hc => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hc0 : c ≠ 0` using `(Finset.mem_erase.mp hc).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `indicator_mem_SB (hOo c hc0) (hOc c hc0)`. Introduce `y`. Establish `hterm : ∀ c ∈ S, c * (O c).indicator (fun _ => (1 : ℂ)) (i y) = if c = a y then c else 0`. Introduce `c hc`. Establish `hc0 : c ≠ 0` using `(Finset.mem_erase.mp hc).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Establish `hm : i y ∈ O c ↔ a y = c`. Use `Set.ext_iff.mp (hOt c hc0) y` as an intermediate fact. Simplify using `using this`. Distinguish the cases in `h : c = a y`. Rewrite using `[Set.indicator_of_mem (hm.mpr h.symm), if_pos h, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `: i y ∉ O c` using `fun h' => h (hm.mp h').symm`. Rewrite using `[Set.indicator_of_notMem this, if_neg h, mul_zero]`. Express the relevant statement in the definitionally equal form `∑ c ∈ S, c * (O c).indicator (fun _ => (1 : ℂ)) (i y) = a y`. Rewrite using `[Finset.sum_congr rfl hterm, Finset.sum_ite_eq' S (a y) (fun c => c)]`. Use `split_ifs with h`.
-
-Both sides reduce to the same expression. Establish `h0 : a y = 0`. Assume the negation of the conclusion as `hne`. Conclude with `h (Finset.mem_erase.mpr ⟨hne, hfin.mem_toFinset.mpr ⟨⟨y, subset_tsupport _ hne⟩, rfl⟩⟩)`. Conclude with `h0.symm`.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem extend_SB {X Y : Type} [TopologicalSpace X] [T2Space X] [TopologicalSpace Y] {i : Y → X}
     (hi : IsClosedEmbedding i)
@@ -119,7 +115,7 @@ private theorem extend_SB {X Y : Type} [TopologicalSpace X] [T2Space X] [Topolog
       exact h0.symm
 
 /- English proof (translation)
-Use `IsClosed.isClosedEmbedding_subtypeVal ?_` and prove the remaining obligations. Conclude with `isClosed_singleton.preimage (continuous_id.matrix_det)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem closedEmbedding_val (F : Type) [Field F] [NumberField F] (v : P F) :
     IsClosedEmbedding (Subtype.val : SL v → M2 v) := by
@@ -127,9 +123,9 @@ private theorem closedEmbedding_val (F : Type) [Field F] [NumberField F] (v : P 
   exact isClosed_singleton.preimage (continuous_id.matrix_det)
 
 /- English proof (translation)
-Establish `h0 : (fun y : M2 v => x + y) ⁻¹' N ∈ 𝓝 (0 : M2 v)` using `(continuous_const.add continuous_id).continuousAt.preimage_mem_nhds (by simpa using hN)`. Take `⟨U, hUo, hUc, hUN⟩` from `(UpperTheory.ConvolutionTheory.R2.I.lgrp F v).2 ((fun y : Multiplicative (M2 v) => Multiplicative.toAdd y) ⁻¹' ((fun y : M2 v => x + y) ⁻¹' N)) (by`. Establish `: Tendsto (fun y : Multiplicative (M2 v) => Multiplicative.toAdd y) (𝓝 1) (𝓝 (0 : M2 v))` using `continuous_toAdd.tendsto _`. Conclude with `this h0)`. Set `e : Multiplicative (M2 v) → M2 v` to `fun y => x + Multiplicative.toAdd y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : IsOpenEmbedding e` using `(Homeomorph.addLeft x).isOpenEmbedding`. Use `⟨e '' U, he.isOpenMap _ hUo, hUc.image he.continuous, ⟨1, U.one_mem, by simp [e]⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hUN hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem compactOpen_basis (F : Type) [Field F] [NumberField F] (v : P F) (x : M2 v) (N : Set (M2 v))
     (hN : N ∈ 𝓝 x) : ∃ O : Set (M2 v), IsOpen O ∧ IsCompact O ∧ x ∈ O ∧ O ⊆ N := by
@@ -148,7 +144,7 @@ private theorem compactOpen_basis (F : Type) [Field F] [NumberField F] (v : P F)
   exact hUN hy
 
 /- English proof (translation)
-Introduce `F _ _ v a`. Take `⟨b, hb, h⟩` from `extend_SB (closedEmbedding_val F v) (compactOpen_basis F v) a.1 a.2`. Conclude with `⟨⟨b, hb⟩, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.ext :
     ∀ (F : Type) [Field F] [NumberField F] (v : P F) (a : SB (SL v)), ∃ b : SB (M2 v), ∀ m : SL v, b.1 m.1 = a.1 m := by

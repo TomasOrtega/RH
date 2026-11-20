@@ -16,43 +16,39 @@ open GlobalTheory.StageGeo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hP hK D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hν₁ hw hstab R Rf c hM hc f hf f' hf' φ φ' s s' v v' hR hfin Φ Φ' hD hD' hint`. Establish `hT` using `hM.triple`. Take `⟨hDec, hK'⟩` from `hK.1 D.host.F D.host.E D.sp.cm.sig Bs W.rank W₁.rank Γ Xc om om' hT`. Take `⟨-, hC⟩` from `hK' R Rf hM`. Establish `hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `by rw [← hO.psi]; exact hT.base.std`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hstd` using `hT.geo.hM'.std`. Take `⟨-, hco, hex, -⟩` from `hC.1 Bs.v₁ hT.chars.good`. Establish `hv₁ : Bs.v₁ ∉ Xc.T` using `hT.chars.good.1`. Establish `hcof : ∀ᶠ w in Filter.cofinite, φ' w = Γ.M'.vac w` using `Filter.Eventually.mono Xc.T.finite_toSet.compl_mem_cofinite fun w hw => v' w hw`. Establish `hφstd : ∀ᶠ w in Filter.cofinite, φ' w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers D.host.F} 1` using `(hcof.and hstd).mono fun w h => h.1.trans h.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor Bs.v₁ f' φ' hφstd`. Take `⟨φo, hφo, hp⟩` from `hex Bs.τ₁ (Rf.p' Bs.v₁ (φ' Bs.v₁))`. Establish `hφoSB : φo ∈ GlobalTheory.WeilM.SB _` using `hφo.1`. Establish `hδ : φ' Bs.v₁ - φo ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.augAt om' Bs.v₁` using `(hco _ (sub_mem (s' Bs.v₁) hφoSB)).1 (by rw [map_sub, hp, sub_self])`. Establish `hupd : ∀ w, Function.update φ' Bs.v₁ φo w ∈ GlobalTheory.WeilM.SB _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Distinguish the cases in `hw : w = Bs.v₁`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hφoSB`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne hw]`. Conclude with `s' w`. Establish `hcof' : ∀ᶠ w in Filter.cofinite, Function.update φ' Bs.v₁ φo w = Γ.M'.vac w` using `by filter_upwards [hcof, Filter.eventually_cofinite_ne Bs.v₁] with w h1 hne`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Φ₀D, eD⟩ : ∃ Φ₀D, Φ₀D = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f' (Function.update φ' Bs.v₁ φo)` from `⟨_, rfl⟩`. Establish `h0a : Φ₀D ∈ GlobalTheory.SquareAgree.algD Γ.M' Bs.ψ Bs.emb` using `Submodule.subset_span ⟨f', _, hf', hupd, hcof', eD⟩`. Establish `h0s : Φ₀D ∈ Γ.M'.So Bs.ψ Bs.τ₁` using `Submodule.subset_span ⟨f', _, hupd, hcof', by rw [Function.update_self]; exact hφo, eD⟩`. Establish `hdiff : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f' φ' - Φ₀D ∈ GlobalTheory.SquareAgree.CoinvPass.relD Γ.M' om' Bs.ψ Bs.emb Bs.v₁`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f' φ' = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin D.host.F Bs.v₁) (φ' Bs.v₁) r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hrt, Function.update_eq_self]`. Rewrite using `[e1, eD, ← hrt, ← GlobalTheory.SquareAgree.CoinvPass.tens_sub']`. Conclude with `GlobalTheory.SquareAgree.CoinvPass.tens_mem_relD Γ.M' om' Bs.ψ Bs.emb Bs.v₁ hstd hf' s' hcof hr hrt _ hδ`. Establish `hpm : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PolMatch Bs Γ Xc R Rf (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) Φ₀D`. Use `⟨insert Bs.v₁ Xc.T, Finset.subset_insert _ _, 1, 1, fun _ => f, fun _ => φ, fun _ => f', fun _ => Function.update φ' Bs.v₁ φo, fun _ => ⟨hf, s, fun w hw => v w fun h => hw (Finset.mem_insert_of_mem h)⟩, fun _ => ⟨hf', hupd, fun w hw => ?_⟩, by simp, by simp [eD], ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `beta_reduce`. Rewrite using `[Function.update_of_ne fun h : w = Bs.v₁ => hw (h ▸ Finset.mem_insert_self _ _)]`. Conclude with `v' w fun h => hw (Finset.mem_insert_of_mem h)`. Rewrite using `[Fin.sum_univ_one, Fin.sum_univ_one, hR]`. Use `congr 2`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `w`. Take `⟨w, hw⟩` from `w`. Distinguish the cases in `h : w = Bs.v₁`. Substitute `h show Rf.p Bs.v₁ (φ Bs.v₁) = Rf.p' Bs.v₁ (Function.update φ' Bs.v₁ φo Bs.v₁)` using the available equality. Rewrite using `[Function.update_self, hp, v _ hv₁, v' _ hv₁]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(hM.fin.sph _ hv₁).1`. Use `show Rf.p w (φ w) = Rf.p' w (Function.update φ' Bs.v₁ φo w)`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hfin w ((Finset.mem_insert.1 hw).resolve_left h)`. Establish `hm` using `GlobalTheory.SquareAgree.PolMatchConst.match_of_polMatch Bs Γ Xc om om' R Rf hT _ _ hpm h0s`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨Φ₀, hΦ₀, hD0⟩` from `hO.algB' Φ₀D h0a`. Establish `hc1 : (-1 : D.host.E) ≠ 0` using `neg_ne_zero.mpr one_ne_zero`. Establish `hk : GlobalTheory.SquareAgree.kapX X e hO.JX 1 = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[GlobalTheory.SquareAgree.kapX]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ Ψ ∈ GlobalTheory.SquareAgree.CoinvPass.relD Γ.M' om' Bs.ψ Bs.emb Bs.v₁, ∃ Φ ∈ finRel ωB (algF ψ θ false A₁ B), GlobalTheory.SquareAgree.IsDatum Γ.M' ψ cB Ψ Φ`. Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨g, hg, Ψ₀, hΨ₀, rfl⟩` from `hz`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ₁, hΦ₁, hD1⟩` from `hO.algB' Ψ₀ hΨ₀`. Establish `hgu : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) hO.JW₁ (GlobalTheory.ConjUTransport.conjUInv W₁ (-1) hc1 hO.JW₁ g) = g` using `(GlobalTheory.ConjUTransport.conjEquiv W₁ (-1) hc1 hO.JW₁).right_inv g`. Establish `hW` using `hO.weilB Ψ₀ Φ₁ hD1 (GlobalTheory.ConjUTransport.conjUInv W₁ (-1) hc1 hO.JW₁ g) 1`. Rewrite `hW` using `[hgu, hk]`. Conclude with `⟨_, Submodule.subset_span ⟨_, GlobalTheory.SquareAgree.CoinvPass.conjUInv_mem_GfC W₁ Γ.V' (-1) hc1 hO.JW₁ Bs.v₁ g hg, Φ₁, hΦ₁, rfl⟩, GlobalTheory.SquareAgree.CoinvPass.isDatum_sub hψ hW hD1⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => exact ⟨0, zero_mem _, GlobalTheory.SquareAgree.CoinvPass.isDatum_zero⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨Φa, ha, hDa⟩` from `ha`. Take `⟨Φb, hb, hDb⟩` from `hb`. Conclude with `⟨Φa + Φb, add_mem ha hb, GlobalTheory.SquareAgree.CoinvPass.isDatum_add hψ hDa hDb⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul c a _ ha`. Take `⟨Φa, ha, hDa⟩` from `ha`. Conclude with `⟨c • Φa, Submodule.smul_mem _ c ha, GlobalTheory.SquareAgree.CoinvPass.isDatum_smul c hDa⟩`. Take `⟨Ψ, hΨ, hDΨ⟩` from `key _ hdiff`. Establish `hrel : Φ' - Φ₀ ∈ finRel ωB (algF ψ θ false A₁ B)` using `GlobalTheory.SquareAgree.CoinvPass.isDatum_unique cB.surjective (GlobalTheory.SquareAgree.CoinvPass.isDatum_sub hψ hD' hD0) hDΨ ▸ hΨ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨hbd, hconv, -⟩` from `hDec.2 Φ₀D h0s`. Take `⟨N, C, hmod⟩` from `GlobalTheory.T.theta_integral_moderate_growth_of_bounded_kernel D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hO hν₁ hT Φ₀ Φ₀D hD0 hconv (by`. Take `⟨C, k, hC⟩` from `hbd 0`. Conclude with `⟨C, k, fun g h => by simpa using hC g h⟩)`. Establish `hlin : ∀ g h, thetaKO ωB g h (Φ' - Φ₀) = thetaKO ωB g h Φ' - thetaKO ωB g h Φ₀` using `fun g h => by`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [thetaKO, map_sub, _root_.Pi.sub_apply]`. Establish `hint' : ∀ h, MeasureTheory.IntegrableOn (fun g => thetaKO ωB g h (Φ' - Φ₀)) 𝓕₁ ν₁` using `fun h => by`. Simplify using `only [hlin]`. Conclude with `(hint h).sub (hmod h).1`. Establish `h0` using `_root_.GlobalTheory.ThetaAgreeConv.thetaIntegral_eq_zero_of_finiteRelation hP hK hθ hTr hν₁ hw hstab hrel hint'`.
-
-Use function extensionality and compare the values at `h`. Establish `e0` using `congrFun h0 h`. Establish `e1 : thetaInt ωB ν₁ 𝓕₁ Φ' h = thetaInt ωB ν₁ 𝓕₁ Φ₀ h`. Simplify using `only [thetaInt, hlin, _root_.Pi.zero_apply] at e0 ⊢`. Rewrite `e0` using `[MeasureTheory.integral_sub (hint h) (hmod h).1]`.
-
-Conclude with `sub_eq_zero.1 e0`. Rewrite using `[_root_.Pi.smul_apply, e1, GlobalTheory.SquareAgree.thetaInt_eq_modelI D W X _ _ _ Γ.M 1 hO.JW ν 𝓕 ωA om (GlobalTheory.SquareAgree.kapX X e hO.JX) _ Φ hO.measW hO.domW (hO.theta_eq_A hD) h, GlobalTheory.SquareAgree.thetaInt_eq_modelI D W₁ X _ _ _ Γ.M' (-1) hO.JW₁ ν₁ 𝓕₁ ωB om' (Gl …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.StageGeo.geometric_stage_constant_on_pure_tensors :
     _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree →

@@ -13,11 +13,11 @@ variable {A : Type} [Ring A] {I J : Type} [Fintype I] [Fintype J] [DecidableEq I
   (u l : I × J → A)
 
 /- English proof (translation)
-Establish `h1 : ∀ d a b, u (a, c) * l (a, d) * (u (b, d) * l (b, e)) = u (a, c) * u (b, d) * (l (a, d) * l (b, e)) + if a = b then u (a, c) * l (a, e) else 0`. Introduce `d a b`. Establish `h` using `hlu (a, d) (b, d)`. Simplify using `only [Prod.mk.injEq, and_true] at h`. Establish `: u (a, c) * l (a, d) * (u (b, d) * l (b, e)) = u (a, c) * (l (a, d) * u (b, d)) * l (b, e)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[this, h]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[mul_add, add_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hab, mul_add, add_mul, mul_assoc]`. Simplify using `only [Finset.sum_mul_sum, h1, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_const, Finset.card_univ]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem left_expand (hlu : ∀ i j, l i * u j = u j * l i + if i = j then 1 else 0) (c e : J) :
     ∑ d, (∑ a, u (a, c) * l (a, d)) * (∑ b, u (b, d) * l (b, e)) =
@@ -38,11 +38,11 @@ theorem left_expand (hlu : ∀ i j, l i * u j = u j * l i + if i = j then 1 else
     Finset.sum_const, Finset.card_univ]
 
 /- English proof (translation)
-Establish `h1 : ∀ a b d, u (b, d) * l (a, d) * (u (a, c) * l (b, e)) = u (b, d) * u (a, c) * (l (a, d) * l (b, e)) + if d = c then u (b, c) * l (b, e) else 0`. Introduce `a b d`. Establish `h` using `hlu (a, d) (a, c)`. Simplify using `only [Prod.mk.injEq, true_and] at h`. Establish `: u (b, d) * l (a, d) * (u (a, c) * l (b, e)) = u (b, d) * (l (a, d) * u (a, c)) * l (b, e)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[this, h]`. Distinguish the cases in `hdc : d = c`. Substitute `hdc` using the available equality. Simplify using `[mul_add, add_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hdc, mul_add, add_mul, mul_assoc]`. Simplify using `only [Finset.sum_mul, h1, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_const, Finset.card_univ]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem right_expand (hlu : ∀ i j, l i * u j = u j * l i + if i = j then 1 else 0) (c e : J) :
     ∑ a, ∑ b, (∑ d, u (b, d) * l (a, d)) * (u (a, c) * l (b, e)) =
@@ -63,9 +63,9 @@ theorem right_expand (hlu : ∀ i j, l i * u j = u j * l i + if i = j then 1 els
     Finset.sum_const, Finset.card_univ]
 
 /- English proof (translation)
-Rewrite using `[left_expand u l hlu, right_expand u l hlu]`. Establish `hT : ∑ d, ∑ a, ∑ b, u (a, c) * u (b, d) * (l (a, d) * l (b, e)) = ∑ a, ∑ b, ∑ d, u (b, d) * u (a, c) * (l (a, d) * l (b, e))` using `by conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun d _ => by rw [huu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hT]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem key (hlu : ∀ i j, l i * u j = u j * l i + if i = j then 1 else 0)
     (huu : ∀ i j, u i * u j = u j * u i) (c e : J) :
@@ -87,7 +87,7 @@ end Ring
 variable {P Q R S : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `hlm : l = m`. Rewrite using `[hlm]`. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Apply the tactic sequence `cases hl : linePos l <;> cases hm : linePos m <;>`. Simplify using `[raiB, hl, hm, MvPolynomial.pderiv_X, Pi.single_apply, hlm, Ne.symm hlm, GlobalTheory.FockCasimir.pderiv_pderiv_comm l m, mul_left_comm]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem raiB_comm (l m : Ln P Q R S) : raiB l * raiB m = raiB m * raiB l := by
   by_cases hlm : l = m
@@ -98,7 +98,7 @@ theorem raiB_comm (l m : Ln P Q R S) : raiB l * raiB m = raiB m * raiB l := by
       GlobalTheory.FockCasimir.pderiv_pderiv_comm l m, mul_left_comm]
 
 /- English proof (translation)
-Rewrite using `[fockAct2_Eab]`. Simplify using `only [omE, Finset.sum_add_distrib, Prod.mk.injEq, true_and]`. Distinguish the cases in `hcd : c = d`. Simplify using `[hcd, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, div_eq_mul_inv, mul_comm]`. Simplify using `[hcd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fockSecondAction_matrixUnit_eq (c d : Ix R S) :
     fockAct2 P Q R S (Eab c d) = ∑ a, raiB (a, c) * lowB (a, d) +
@@ -110,7 +110,7 @@ theorem fockSecondAction_matrixUnit_eq (c d : Ix R S) :
   · simp [hcd]
 
 /- English proof (translation)
-Rewrite using `[fockAct1_Eab]`. Simplify using `only [omE, Finset.sum_add_distrib, Prod.mk.injEq, and_true]`. Distinguish the cases in `hba : b = a`. Simplify using `[hba, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, div_eq_mul_inv, mul_comm]`. Simplify using `[hba]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fockFirstAction_matrixUnit_eq (b a : Ix P Q) :
     fockAct1 P Q R S (Eab b a) = ∑ d, raiB (b, d) * lowB (a, d) +
@@ -122,7 +122,7 @@ theorem fockFirstAction_matrixUnit_eq (b a : Ix P Q) :
   · simp [hba]
 
 /- English proof (translation)
-Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using `[Eab, Matrix.trace, Matrix.single_apply]`. Simplify using `[Eab, Matrix.trace, Matrix.single_apply, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem trace_Eab (b a : Ix P Q) : (Eab b a).trace = if b = a then 1 else 0 := by
   by_cases h : b = a
@@ -134,9 +134,9 @@ section Alg
 variable {A : Type} [Ring A] [Algebra ℂ A] {I J : Type} [Fintype I] [Fintype J] [DecidableEq I] [DecidableEq J]
 
 /- English proof (translation)
-Simplify using `only [mul_add, add_mul, Finset.sum_add_distrib, ite_mul, mul_ite, zero_mul, mul_zero, smul_mul_assoc, one_mul, mul_smul_comm, mul_one, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, smul_smul]`. Distinguish the cases in `hce : c = e`. Substitute `hce` using the available equality. Simplify using `only [if_true]`. Use `module`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hce, if_false]`. Use `module`.
+A detailed English derivation is pending.
 -/
 theorem sq_shift (X : J → J → A) (k : ℂ) (c e : J) :
     ∑ d, (X c d + if c = d then k • (1 : A) else 0) * (X d e + if d = e then k • (1 : A) else 0) =
@@ -149,9 +149,9 @@ theorem sq_shift (X : J → J → A) (k : ℂ) (c e : J) :
   · simp only [hce, if_false]; module
 
 /- English proof (translation)
-Establish `: ∀ a b, (E b a + (if b = a then m • (1 : A) else 0) - (x * if b = a then 1 else 0) • (1 : A)) * Y a b = E b a * Y a b + if b = a then (m - x) • Y a b else 0`. Introduce `a b`. Distinguish the cases in `h : b = a`. Simplify using `only [h, if_true, mul_one, sub_mul, add_mul, smul_mul_assoc, one_mul, sub_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `[h]`. Simplify using `only [this, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rhs_shift (E : I → I → A) (Y : I → I → A) (m x : ℂ) :
     ∑ a, ∑ b, (E b a + (if b = a then m • (1 : A) else 0) - (x * if b = a then 1 else 0) • (1 : A)) * Y a b =
@@ -169,11 +169,11 @@ end Alg
 variable {P Q R S : ℕ}
 
 /- English proof (translation)
-Establish `hk` using `key (fun i : Ln P Q R S => raiB i) (fun i => lowB i) GlobalTheory.FockCasimir.lowB_mul_raiB raiB_comm c e`. Simplify using `only [← Nat.cast_smul_eq_nsmul ℂ] at hk`. Simplify using `only [qop, units, fockSecondAction_matrixUnit_eq, fockFirstAction_matrixUnit_eq, trace_Eab]`. Establish `hs` using `sq_shift (A := Module.End ℂ (Pol P Q R S)) (fun c d => ∑ a, raiB (a, c) * lowB (a, d)) ((Fintype.card (Ix P Q) : ℂ) / 2) c e`. Establish `hr` using `rhs_shift (A := Module.End ℂ (Pol P Q R S)) (fun b a => ∑ d, raiB (b, d) * lowB (a, d)) (fun a b => raiB (a, c) * lowB (b, e)) ((Fintype.card (Ix R S) : ℂ) / 2) x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hs, hr]`. Distinguish the cases in `hce : c = e`. Substitute `hce` using the available equality. Simplify using `only [if_true]`. Take the linear combination `(norm := module) hk`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [hce, if_false]`. Take the linear combination `(norm := module) hk`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem qop_eq (x : ℂ) (c e : Ix R S) :
     qop (units (fockAct2 P Q R S)) (x + (Fintype.card (Ix R S) : ℂ) / 2)
@@ -195,9 +195,9 @@ theorem qop_eq (x : ℂ) (c e : Ix R S) :
     linear_combination (norm := module) hk
 
 /- English proof (translation)
-Use `⟨x + (Fintype.card (Ix R S) : ℂ) / 2, (Fintype.card (Ix P Q) : ℂ) ^ 2 / 4 - (x + (Fintype.card (Ix R S) : ℂ) / 2) * ((Fintype.card (Ix P Q) : ℂ) / 2), fun c e f => ?_⟩` and prove the remaining obligations. Rewrite using `[qop_eq x c e, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨Eab b a, (raiB (a, c) * lowB (b, e)) f, ?_⟩` and prove the remaining obligations. Simplify using `[Module.End.mul_apply, LinearMap.sub_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem qop_mem_coinv (P Q R S : ℕ) (x : ℂ) :
     ∃ α β : ℂ, ∀ a b f, qop (units (fockAct2 P Q R S)) α β a b f ∈ coinv P Q R S x := by

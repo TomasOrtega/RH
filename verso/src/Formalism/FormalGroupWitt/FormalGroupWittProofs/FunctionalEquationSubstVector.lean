@@ -19,19 +19,19 @@ def Bd {τ : Type w} (C : ℝ) (F : MvPowerSeries τ K) : Prop :=
   ∀ d, ‖MvPowerSeries.coeff d F‖ ≤ C
 
 /- English proof (translation)
-The claim follows from `(IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`.
+A detailed English derivation is pending.
 -/
 lemma norm_add_le_of {a b : K} {C : ℝ} (ha : ‖a‖ ≤ C) (hb : ‖b‖ ≤ C) : ‖a + b‖ ≤ C :=
   (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]; exact norm_add_le_of ha (by simpa using hb)`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_sub_le_of {a b : K} {C : ℝ} (ha : ‖a‖ ≤ C) (hb : ‖b‖ ≤ C) : ‖a - b‖ ≤ C := by
   rw [sub_eq_add_neg]; exact norm_add_le_of ha (by simpa using hb)
 
 /- English proof (translation)
-Distinguish the cases in `hfin : (Function.support g).Finite`. Rewrite using `[finsum_eq_sum g hfin]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hC (fun i _ => hg i)`. Rewrite using `[finsum_of_infinite_support hfin]`. Simplify using `using hC`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma norm_finsum_le {α : Type v} {g : α → K} {C : ℝ} (hC : 0 ≤ C) (hg : ∀ n, ‖g n‖ ≤ C) :
     ‖∑ᶠ n, g n‖ ≤ C := by
@@ -43,13 +43,13 @@ lemma norm_finsum_le {α : Type v} {g : α → K} {C : ℝ} (hC : 0 ≤ C) (hg :
     simpa using hC
 
 /- English proof (translation)
-Introduce `d` and use `by rw [map_add]; exact norm_add_le_of (hA d) (hB d)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma bd_add {τ : Type w} {C : ℝ} {A B : MvPowerSeries τ K} (hA : Bd C A) (hB : Bd C B) :
     Bd C (A + B) := fun d => by rw [map_add]; exact norm_add_le_of (hA d) (hB d)
 
 /- English proof (translation)
-Introduce `d`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hC fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma bd_mul_left {τ : Type w} {C : ℝ} (hC : 0 ≤ C) {A B : MvPowerSeries τ K}
     (hA : IntegralMv A) (hB : Bd C B) : Bd C (A * B) := by
@@ -63,14 +63,14 @@ lemma bd_mul_left {τ : Type w} {C : ℝ} (hC : 0 ≤ C) {A B : MvPowerSeries τ
     _ = C := one_mul C
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `bd_mul_left hC hB hA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma bd_mul_right {τ : Type w} {C : ℝ} (hC : 0 ≤ C) {A B : MvPowerSeries τ K}
     (hA : Bd C A) (hB : IntegralMv B) : Bd C (A * B) := by
   rw [mul_comm]; exact bd_mul_left hC hB hA
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.ProductIntegralBounds.goal1 .. | (apply Bl.ProductIntegralBounds.goal1 <;> assumption) | (intros; apply Bl.ProductIntegralBounds.goal1 <;> assumption) | (apply @Bl.ProductIntegralBounds.goal1 <;> assumption) | (intros; apply @Bl.ProductIntegralBounds.goal1 <;> as …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma bd_prod_sub {τ : Type w} {ι : Type v} {C : ℝ} (hC : 0 ≤ C) (X Y : ι → MvPowerSeries τ K)
     (s : Finset ι) (hX : ∀ i ∈ s, IntegralMv (X i)) (hY : ∀ i ∈ s, IntegralMv (Y i))
@@ -79,9 +79,9 @@ lemma bd_prod_sub {τ : Type w} {ι : Type v} {C : ℝ} (hC : 0 ≤ C) (X Y : ι
   first | exact Bl.ProductIntegralBounds.goal1 .. | (apply Bl.ProductIntegralBounds.goal1 <;> assumption) | (intros; apply Bl.ProductIntegralBounds.goal1 <;> assumption) | (apply @Bl.ProductIntegralBounds.goal1 <;> assumption) | (intros; apply @Bl.ProductIntegralBounds.goal1 <;> assumption) | (apply @Bl.ProductIntegralBounds.goal1 <;> first | assumption | infer_instance) | exact @Bl.ProductIntegralBounds.goal1 K ‹_› ‹_› τ ι C hC X Y s hX hY hXY | exact @Bl.ProductIntegralBounds.goal1 K ‹_› ‹_› τ ι C hC X Y s hX hY | exact @Bl.ProductIntegralBounds.goal1 K ‹_› ‹_› τ ι C hC X Y s hX | exact @Bl.ProductIntegralBounds.goal1 K ‹_› ‹_› τ ι C hC X Y s | exact @Bl.ProductIntegralBounds.goal1 K ‹_› ‹_› τ ι C hC X Y | exact @Bl.ProductIntegralBounds.goal1 K ‹_› ‹_› τ ι C hC X | exact @Bl.ProductIntegralBounds.goal1 K ‹_› ‹_› τ ι C hC | exact @Bl.ProductIntegralBounds.goal1 K ‹_› ‹_› τ ι C | exact @Bl.ProductIntegralBounds.goal1 K ‹_› ‹_› τ ι | exact @Bl.ProductIntegralBounds.goal1 K ‹_› ‹_› τ | exact @Bl.ProductIntegralBounds.goal1 K ‹_› ‹_› | exact @Bl.ProductIntegralBounds.goal1 K ‹_› | exact @Bl.ProductIntegralBounds.goal1 K
 
 /- English proof (translation)
-Introduce `d`. Rewrite using `[map_sub, MvPowerSeries.coeff_subst hA, MvPowerSeries.coeff_subst hB, ← finsum_sub_distrib (MvPowerSeries.coeff_subst_finite hA φ d) (MvPowerSeries.coeff_subst_finite hB φ d)]`. Apply `norm_finsum_le hc` to reduce the goal to its premises. Introduce `n`. Rewrite using `[← smul_sub, ← map_sub, smul_eq_mul, norm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H n d`.
+A detailed English derivation is pending.
 -/
 lemma bd_subst_sub {ι : Type v} {τ : Type w} (φ : MvPowerSeries ι K)
     (A B : ι → MvPowerSeries τ K) (hA : MvPowerSeries.HasSubst A) (hB : MvPowerSeries.HasSubst B)
@@ -99,7 +99,7 @@ lemma bd_subst_sub {ι : Type v} {τ : Type w} (φ : MvPowerSeries ι K)
   exact H n d
 
 /- English proof (translation)
-Simplify using `only [MvPowerSeries.expand, MvPowerSeries.substAlgHom_apply]`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.HasSubst.X_pow hq) ha]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[MvPowerSeries.subst_pow ha, MvPowerSeries.subst_X ha]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 lemma subst_expand {ι : Type v} {τ : Type w} {R : Type u} [CommRing R] (q : ℕ) (hq : q ≠ 0)
     {a : ι → MvPowerSeries τ R} (ha : MvPowerSeries.HasSubst a) (φ : MvPowerSeries ι R) :
@@ -112,7 +112,7 @@ lemma subst_expand {ι : Type v} {τ : Type w} {R : Type u} [CommRing R] (q : �
   rw [MvPowerSeries.subst_pow ha, MvPowerSeries.subst_X ha]
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.map_subst ha, MvPowerSeries.expand_subst q hq (ha.map σ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma expand_map_subst {ι : Type v} {τ : Type w} {R : Type u} [CommRing R] (q : ℕ) (hq : q ≠ 0)
     (σ : R →+* R) {a : ι → MvPowerSeries τ R} (ha : MvPowerSeries.HasSubst a)
@@ -123,39 +123,37 @@ lemma expand_map_subst {ι : Type v} {τ : Type w} {R : Type u} [CommRing R] (q 
   rw [MvPowerSeries.map_subst ha, MvPowerSeries.expand_subst q hq (ha.map σ)]
 
 /- English proof (translation)
-Introduce `K _ _ _ p q hq σ hS ι _ M hM f hf0 hfT τ α hα0 hαI`. Take `⟨hp, ⟨h, hh, hqh⟩, hp1, hσ⟩` from `id hS`. Establish `hp1' : ‖(p : K)‖ ≤ 1` using `hp1.le`. Establish `hpne : (p : K) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Establish `hppos : 0 < ‖(p : K)‖` using `norm_pos_iff.mpr hpne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hαS : MvPowerSeries.HasSubst α` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hα0`. Take `⟨αq, hαq⟩ : ∃ αq : ι → MvPowerSeries τ K, αq = fun i => α i ^ q` from `⟨_, rfl⟩`. Take `⟨β, hβ⟩ : ∃ β : ι → MvPowerSeries τ K, β = fun i => MvPowerSeries.expand q hq (MvPowerSeries.map σ (α i))` from `⟨_, rfl⟩`. Establish `hαqS : MvPowerSeries.HasSubst αq`. Apply `MvPowerSeries.hasSubst_of_constantCoeff_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i`. Rewrite using `[hαq, map_pow, hα0, zero_pow hq]`. Establish `hβS : MvPowerSeries.HasSubst β`. Apply `MvPowerSeries.hasSubst_of_constantCoeff_zero` to reduce the goal to its premises. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hβ, MvPowerSeries.constantCoeff_expand, MvPowerSeries.constantCoeff_map, hα0, map_zero]`. Establish `hαqI : ∀ i, IntegralMv (αq i)`. Introduce `i`. Rewrite using `[hαq]`. Conclude with `Formalism.FG.IntegralSubstitution.integral_pow (hαI i) q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiv : ∀ i, DivByMv (p : K) (αq i - β i)`. Introduce `i`. Rewrite using `[hαq, hβ]`. Conclude with `Formalism.LT.FrobCongr_valid K p q hq σ hS τ (α i) (hαI i)`. Establish `hβI : ∀ i, IntegralMv (β i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i d`. Establish `e : MvPowerSeries.coeff d (β i) = MvPowerSeries.coeff d (αq i) - MvPowerSeries.coeff d (αq i - β i)`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `norm_sub_le_of (hαqI i d) ((hdiv i d).trans hp1')`. Establish `e3 : ∀ k, MvPowerSeries.expand q hq (MvPowerSeries.map σ (MvPowerSeries.subst α (f k))) = MvPowerSeries.subst β (MvPowerSeries.map σ (f k))`. Introduce `k`. Rewrite using `[expand_map_subst q hq σ hαS, hβ]`. Establish `e2 : ∀ j, MvPowerSeries.subst α (f j - (p : K)⁻¹ • ∑ k, M j k • MvPowerSeries.expand q hq (MvPowerSeries.map σ (f k))) = MvPowerSeries.subst α (f j) - (p : K)⁻¹ • ∑ k, M j k • MvPowerSeries.subst αq (MvPowerSeries.map σ (f k))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j`. Rewrite using `[← MvPowerSeries.substAlgHom_apply hαS, map_sub, map_smul, map_sum]`. Simplify using `only [map_smul, MvPowerSeries.substAlgHom_apply, subst_expand q hq hαS, hαq]`. Establish `hbr : ∀ k, Bd ‖(p : K)‖ (MvPowerSeries.subst αq (MvPowerSeries.map σ (f k)) - MvPowerSeries.subst β (MvPowerSeries.map σ (f k)))`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `bd_subst_sub _ αq β hαqS hβS (norm_nonneg _)` to reduce the goal to its premises. Introduce `n d`. Take `⟨k', hk'dvd, hk'⟩` from `hC K p q hq σ hS ι M hM ι f hf0 hfT k n`. Rewrite using `[MvPowerSeries.coeff_map]`. Establish `hs : ‖σ (MvPowerSeries.coeff n (f k))‖ * ‖(p : K)‖ ^ k' ≤ 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ‖MvPowerSeries.coeff n (f k) * (p : K) ^ k'‖ ≤ 1`. Rewrite using `[norm_mul, norm_pow]`. Conclude with `hk'`. Establish `h'` using `Formalism.LT.InverseIntegralClassesKeyFacts.norm_sigma_le_one hσ hp1' h0`. Rewrite `h'` using `[map_mul, map_pow, map_natCast, norm_mul, norm_pow]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpow : ∀ i, Bd (‖(p : K)‖ ^ k' * ‖(p : K)‖) (αq i ^ n i - β i ^ n i)`. Introduce `i`. Take `⟨m, hm⟩` from `hk'dvd i`. Establish `hn : n i = p ^ (h * k') * m` using `by rw [hm, hqh, ← pow_mul]`. Establish `hdiv1 : DivByMv ((p : K) ^ 1) (αq i - β i)` using `by simpa using hdiv i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h6` using `Formalism.LT.PowCongr_valid K τ p hp (αq i) (β i) (hαqI i) (hβI i) 1 le_rfl hdiv1 (h * k') m`. Rewrite `h6` using `[← hn]`. Introduce `d'`. Use `(h6 d').trans ?_` and prove the remaining obligations. Rewrite using `[norm_pow, pow_add, pow_one, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_of_le_one (norm_nonneg _) hp1' (Nat.le_mul_of_pos_left k' hh)) (norm_nonneg _)`. Establish `hprod : Bd (‖(p : K)‖ ^ k' * ‖(p : K)‖) (n.prod (fun s e => αq s ^ e) - n.prod (fun s e => β s ^ e))`. Unfold `Finsupp.prod`. Conclude with `bd_prod_sub (by positivity) (fun i => αq i ^ n i) (fun i => β i ^ n i) n.support (fun i _ => Formalism.FG.IntegralSubstitution.integral_pow (hαqI i) _) (fun i _ => Formalism.FG.IntegralSubstitution.integral_pow (hβI i) _) (fun i _ => hpow i)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `j`. Simplify using `only [e3]`. Establish `hgI : IntegralMv (MvPowerSeries.subst α (f j - (p : K)⁻¹ • ∑ k, M j k • MvPowerSeries.expand q hq (MvPowerSeries.map σ (f k))))` using `Formalism.FG.integral_subst_vector K ι τ _ α (hfT j) hα0 hαI`. Rewrite `hgI` using `[e2]`. Establish `e : MvPowerSeries.subst α (f j) - (p : K)⁻¹ • ∑ k, M j k • MvPowerSeries.subst β (MvPowerSeries.map σ (f k)) = (MvPowerSeries.subst α (f j) - (p : K)⁻¹ • ∑ k, M j k • MvPowerSeries.subst αq (MvPowerSeries.map σ (f k))) + (p : K)⁻¹ • ∑ k, M j k • (MvPowerSeries.subst αq (MvPowerSe …`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Introduce `d`. Rewrite using `[map_add, MvPowerSeries.coeff_smul, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `norm_add_le_of (hgI d) ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_inv]`. Establish `hsum : ‖∑ k, MvPowerSeries.coeff d (M j k • (MvPowerSeries.subst αq (MvPowerSeries.map σ (f k)) - MvPowerSeries.subst β (MvPowerSeries.map σ (f k))))‖ ≤ ‖(p : K)‖`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_smul, norm_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem main (hC : Formalism.FG.CoeffBoundV.{u, v, v}) : Formalism.FG.FunEqSubstV.{u, v, w} := by
   intro K _ _ _ p q hq σ hS ι _ M hM f hf0 hfT τ α hα0 hαI
@@ -269,14 +267,14 @@ theorem main (hC : Formalism.FG.CoeffBoundV.{u, v, v}) : Formalism.FG.FunEqSubst
 end Formalism.FG.KeyVAux
 
 /- English proof (translation)
-The claim follows from `Formalism.FG.KeyVAux.main hC`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FG.FunEqSubstV_of (hC : Formalism.FG.CoeffBoundV.{u, v, v}) :
     Formalism.FG.FunEqSubstV.{u, v, w} :=
   Formalism.FG.KeyVAux.main hC
 
 /- English proof (translation)
-The claim follows from `Formalism.FG.FunEqSubstV_of Formalism.FG.coeff_bound_vector.{u, v, v}`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FG.functional_equation_subst_vector : Formalism.FG.FunEqSubstV.{u, v, w} :=
   Formalism.FG.FunEqSubstV_of Formalism.FG.coeff_bound_vector.{u, v, v}

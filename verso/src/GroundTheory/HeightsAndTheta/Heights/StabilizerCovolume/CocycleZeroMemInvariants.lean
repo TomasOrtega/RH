@@ -14,7 +14,7 @@ def IsZBasis {Em : Type} [Field Em] [NumberField Em] {N : ℕ} (I : Submodule (�
   LinearIndependent ℤ b ∧ ∀ v, v ∈ I ↔ v ∈ Submodule.span ℤ (Set.range b)
 
 /- English proof (translation)
-Unfold `rootDiscr`. Use `Real.one_le_rpow ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[← Int.cast_abs]`. Conclude with `Int.one_le_abs (discr_ne_zero Em)` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UnitaryCovolumeLowerBound.one_le_rootDiscr (Em : Type) [Field Em] [NumberField Em] : 1 ≤ rootDiscr Em := by
   unfold rootDiscr
@@ -35,9 +35,9 @@ def hodgeInner (z : (Σ k, ι k) → ℂ) (v w : Fin D.N → Em) : ℝ :=
       ((D.per z τ)⁻¹ *ᵥ fun b => D.herm.emb τ (w b)) a).re
 
 /- English proof (translation)
-Unfold `hodgeInner hodgeNormSq`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hodgeInner_self (z : (Σ k, ι k) → ℂ) (v : Fin D.N → Em) : D.hodgeInner z v v = D.hodgeNormSq z v := by
   unfold hodgeInner hodgeNormSq
@@ -55,7 +55,7 @@ def covolZ (z : (Σ k, ι k) → ℂ) (I : Submodule (𝓞 Em) (Fin D.N → Em))
   else 0
 
 /- English proof (translation)
-The claim follows from `csInf_le ⟨0, by rintro r ⟨w, -, -, rfl⟩; exact Real.sqrt_nonneg _⟩ ⟨v, hv, hv0, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem firstMinimum_le_period_norm (z : (Σ k, ι k) → ℂ) {v : Fin D.N → Em} (hv : v ∈ D.herm.L) (hv0 : v ≠ 0) :
     D.lam1 z ≤ Real.sqrt (D.hodgeNormSq z v) :=

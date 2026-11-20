@@ -60,13 +60,13 @@ def JDRRealInvM : Prop :=
             B.opApply Θ F g = ε • rvhatOp S.G.k S.G.r (T v).base.z (T v).base.z' (y : ℂ) F g
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hD : ∀ l, Continuous fun g : Matrix (Fin (2 * S.G.r + S.G.k + 1)) (Fin (2 * S.G.r + S.G.k + 1)) ℂ => Formalism.QuantumDeterminants.Dmin S.G.k S.G.r (T v).base.z (T v).base.z' g l`. Introduce `l`. Unfold `Formalism.QuantumDeterminants.Dmin Formalism.QuantumDeterminants.Zhat Formalism.QuantumDeterminants.herm`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `fun_prop`. Establish `hG : Continuous fun g : Matrix (Fin (2 * S.G.r + S.G.k + 1)) (Fin (2 * S.G.r + S.G.k + 1)) ℂ => Formalism.QuantumDeterminants.Gf S.G.k S.G.r (T v).base.z (T v).base.z' g`. Unfold `Formalism.QuantumDeterminants.Gf`. Conclude with `(Complex.continuous_normSq.comp (hD _)).sub (continuous_const.mul (Complex.continuous_normSq.comp (hD _)))`. Unfold `OmP`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Set.setOf_and, Set.setOf_forall]`. Conclude with `(isOpen_lt continuous_const hG).inter (isOpen_iInter_of_finite fun a => isOpen_ne_fun (hD _) continuous_const)`. Introduce and unpack `g ⟨-, hgD⟩ s ⟨h, hh, m, hm, rfl⟩ s' ⟨h', hh', m', hm', rfl⟩`. Establish `hs : h * m ∈ Formalism.QuantumDeterminants.Sset S.G.k S.G.r (T v).base.z` using `⟨h, hh, m, hm.1, rfl⟩`. Establish `hs' : h' * m' ∈ Formalism.QuantumDeterminants.Sset S.G.k S.G.r (T v).base.z'` using `⟨h', hh', m', hm'.1, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.QuantumDeterminants.gInv _ _ _ _ (T v).base.z_mem (T v).base.z'_mem _ hs _ hs']`. Conclude with `hgD.1`. Rewrite using `[Formalism.QuantumDeterminants.dInv _ _ _ _ (T v).base.z_mem (T v).base.z'_mem _ hs _ hs']`. Conclude with `hgD.2 a`.
+A detailed English derivation is pending.
 -/
 private theorem isDom_OmP_levTower_base {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
@@ -100,25 +100,25 @@ private theorem isDom_OmP_levTower_base {E : Type} [Field E] [NumberField E] [Is
       exact hgD.2 a
 
 /- English proof (translation)
-Establish `hl` using `l.isLt`. Establish `hes : eI k r l ≠ esI k r l`. Simplify using `only [eI, esI, ne_eq, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hcol : ∀ j q, Q.w1 k r l x j q = if j = (if q = eI k r l then esI k r l else if q = esI k r l then eI k r l else q) then (if q = eI k r l then x else if q = esI k r l then (star x)⁻¹ else 1) else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `j q`. Simplify using `only [Q.w1]`. Apply the tactic sequence `by_cases hq1 : q = eI k r l <;> by_cases hq2 : q = esI k r l <;>`. Apply the tactic sequence `by_cases hj1 : j = eI k r l <;> by_cases hj2 : j = esI k r l <;> simp_all <;>`. Apply the tactic sequence `(intro h; first | exact absurd h.symm hq1 | exact absurd h.symm hq2)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hHe : ∀ p, p ≠ esI k r l → Hpk k r p (eI k r l) = 0`. Introduce `p hp`. Rewrite `hp` using `[Ne, Fin.ext_iff]`. Simplify using `only [esI] at hp`. Simplify using `only [Hpk, eI, Fin.ext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Establish `hHs : ∀ p, p ≠ eI k r l → Hpk k r p (esI k r l) = 0`. Introduce `p hp`. Rewrite `hp` using `[Ne, Fin.ext_iff]`. Simplify using `only [eI] at hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Hpk, esI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Establish `hHe' : ∀ q, q ≠ esI k r l → Hpk k r (eI k r l) q = 0`. Introduce `q hq`. Rewrite `hq` using `[Ne, Fin.ext_iff]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [esI] at hq`. Simplify using `only [Hpk, eI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Establish `hHs' : ∀ q, q ≠ eI k r l → Hpk k r (esI k r l) q = 0`. Introduce `q hq`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[Ne, Fin.ext_iff]`. Simplify using `only [eI] at hq`. Simplify using `only [Hpk, esI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Establish `hHes : Hpk k r (eI k r l) (esI k r l) = 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (l : ℕ) + (2 * r + k - l) = 2 * r + k` using `by omega`. Simplify using `[Hpk, eI, esI, hl, h1]`. Establish `hHse : Hpk k r (esI k r l) (eI k r l) = 1`. Establish `h2 : ¬ (2 * r + k - (l : ℕ) < r)` using `by omega`. Establish `h3 : 2 * r + k - (l : ℕ) + l = 2 * r + k` using `by omega`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Hpk, eI, esI, hl, h2, h3]`. Use `show (Q.w1 k r l x)ᴴ * Hpk k r * Q.w1 k r l x = Hpk k r`. Use extensionality with `p q`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, hcol, apply_ite star, star_zero, ite_mul, mul_ite, zero_mul, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Apply the tactic sequence `by_cases hp1 : p = eI k r l <;> by_cases hp2 : p = esI k r l <;>`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Apply the tactic sequence `by_cases hq1 : q = eI k r l <;> by_cases hq2 : q = esI k r l <;>`. Use `first`. Consider the case `exact absurd (hp1.symm.trans hp2) hes`. Consider the case `exact absurd (hq1.symm.trans hq2) hes`. Consider the case `simp [hp1, hp2, hq1, hq2, hes, hes.symm, hHe, hHs, hHe', hHs', hHes, hHse, hx]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem w1_mem_UH_Hpk_of_ne_zero {k r : ℕ} (l : Fin r) (x : ℂ) (hx : x ≠ 0) :
     Q.w1 k r l x ∈ Formalism.QuantumDeterminants.UH (Hpk k r) := by
@@ -177,7 +177,7 @@ private theorem w1_mem_UH_Hpk_of_ne_zero {k r : ℕ} (l : Fin r) (x : ℂ) (hx :
     | simp [hp1, hp2, hq1, hq2, hes, hes.symm, hHe, hHs, hHe', hHs', hHes, hHse, hx]
 
 /- English proof (translation)
-Establish `hg' : gᴴ * H * g = H` using `hg`. Establish `hh' : hᴴ * H * h = H` using `hh`. Use `show (g * h)ᴴ * H * (g * h) = H`. Rewrite using `[Matrix.conjTranspose_mul, show hᴴ * gᴴ * H * (g * h) = hᴴ * (gᴴ * H * g) * h by simp only [Matrix.mul_assoc], hg', hh']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_mem_UH_of_mem_of_mem {n : ℕ} {H g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH H)
     (hh : h ∈ Formalism.QuantumDeterminants.UH H) : g * h ∈ Formalism.QuantumDeterminants.UH H := by
@@ -188,9 +188,9 @@ private theorem mul_mem_UH_of_mem_of_mem {n : ℕ} {H g h : Matrix (Fin n) (Fin 
     show hᴴ * gᴴ * H * (g * h) = hᴴ * (gᴴ * H * g) * h by simp only [Matrix.mul_assoc], hg', hh']
 
 /- English proof (translation)
-Unfold `Q.wCell`. Proceed by induction on `((List.finRange r).filter fun a => a.val < i.val) with`. Consider the case `nil => show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ᴴ * Hpk k r * 1 = Hpk k r`. Simplify using the standard rewrite rules. Consider the case `cons a L ih`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[List.map_cons, List.prod_cons]`. Conclude with `mul_mem_UH_of_mem_of_mem (w1_mem_UH_Hpk_of_ne_zero a (c a) (hc a)) ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wCell_mem_UH_Hpk_of_ne_zero {k r : ℕ} (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) (i : Fin (r + 1)) :
     Q.wCell k r i c ∈ Formalism.QuantumDeterminants.UH (Hpk k r) := by
@@ -204,18 +204,18 @@ private theorem wCell_mem_UH_Hpk_of_ne_zero {k r : ℕ} (c : Fin r → ℂ) (hc 
     exact mul_mem_UH_of_mem_of_mem (w1_mem_UH_Hpk_of_ne_zero a (c a) (hc a)) ih
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_mem_UH_of_mem_of_mem (wCell_mem_UH_Hpk_of_ne_zero c hc _) hg.1, fun a ha => absurd ha (by simp)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem wCell_last_mul_mem_Glev_zero {k r : ℕ} (c : Fin r → ℂ) (hc : c ∈ OmX r) (g : Q.Mx k r)
     (hg : g ∈ Q.Glev k r (Fin.last r)) : Q.wCell k r (Fin.last r) c * g ∈ Q.Glev k r 0 :=
   ⟨mul_mem_UH_of_mem_of_mem (wCell_mem_UH_Hpk_of_ne_zero c hc _) hg.1, fun a ha => absurd ha (by simp)⟩
 
 /- English proof (translation)
-Introduce `Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v y`. Take `⟨ε, hε⟩` from `hR S.G.k S.G.r`. Take `⟨Θ, hP, hC, hA⟩` from `hI ε Cc E Wp Wq S T f χ ν' m₀ top A₀ hB v y`. Use `⟨Θ, hP, hC, ?_⟩` and prove the remaining obligations. Introduce `J hJ c hc g hg hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `hε (Wp (S.pl v)) (Wq (S.pl v)) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' (OmP S T v) (y : ℂ) (T v).base.z_mem (T v).base.z'_mem (isDom_OmP_levTower_base S T v) J hJ c hc g hg hx`. Rewrite using `[← key]`. Establish `hx0` using `wCell_last_mul_mem_Glev_zero c hc g hg`. Take `⟨U, F, hU, hxU, hF, hFJ⟩` from `hJ.1 _ ⟨hx0, hx⟩`. Establish `hS : Q.SmoothLev S.G.k S.G.r 0 U J` using `fun g₀ hg₀ => ⟨U, F, hU, hg₀.2, hF, hFJ⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hA U J hU hS _ ⟨hx0, hxU⟩` as an intermediate fact. Simplify using `only [Q.resG, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem jDRGrpM_of_parts (hR : JDRRadM) (hI : JDRRealInvM) : JDRGrpM := by
   intro Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v y

@@ -6,25 +6,25 @@ namespace GlobalTheory.Chamber.SumSplit
 
 open Finset in
 /- English proof (translation)
-Use `mem_parF.2 ⟨⟨by simp, by simp⟩, ?_, subset_rfl⟩` and prove the remaining obligations. Simplify using `[aP]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem empty_mem_parF {k : ℕ} (𝔞 : Submodule ℝ (A0 k)) : (∅ : Finset (SV k)) ∈ parF 𝔞 ∅ := by
   refine mem_parF.2 ⟨⟨by simp, by simp⟩, ?_, subset_rfl⟩
   simp [aP]
 
 /- English proof (translation)
-Simplify using `[eL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eL_zero {k : ℕ} (H : A0 k) : eL 0 H = 1 := by simp [eL]
 
 /- English proof (translation)
-Simplify using `only [eL, inner_add_right, Complex.ofReal_add, mul_add, Complex.exp_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eL_add {k : ℕ} (l H H' : A0 k) : eL l (H + H') = eL l H * eL l H' := by
   simp only [eL, inner_add_right, Complex.ofReal_add, mul_add, Complex.exp_add]
 
 /- English proof (translation)
-Introduce `P hP Q e`. Establish `hQ : Q ∈ parF 𝔞 ∅` using `mem_parF.2 ⟨(mem_parF.1 hP).1.mono e, (vecSpan_mono e).trans (mem_parF.1 hP).2.1, Finset.empty_subset _⟩`. Rewrite using `[hW P hP, hW Q hQ, map_add, ← hX P hP Q e, ← hY P hP Q e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_isOrth {k : ℕ} {𝔞 : Submodule ℝ (A0 k)} {X Y W : Finset (SV k) → A0 k} (hX : IsOrth 𝔞 X)
     (hY : IsOrth 𝔞 Y) (hW : ∀ P ∈ parF 𝔞 ∅, W P = X P + Y P) : IsOrth 𝔞 W := by
@@ -34,11 +34,11 @@ theorem sum_isOrth {k : ℕ} {𝔞 : Submodule ℝ (A0 k)} {X Y W : Finset (SV k
   rw [hW P hP, hW Q hQ, map_add, ← hX P hP Q e, ← hY P hP Q e]
 
 /- English proof (translation)
-Establish `hs : sumP ∅ ∅ c = c ∅`. Use function extensionality and compare the values at `l`. Establish `h : ∀ b : SV k → A0 k, epsOf (∅ \ ∅) b l = 1` using `fun b => by`. Establish `: IsEmpty ↥((∅ : Finset (SV k)) \ ∅)` using `⟨fun x => by simpa using x.2⟩`. Rewrite using `[epsOf, Matrix.det_isEmpty]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [sumP, between, Finset.powerset_empty, Finset.filter_singleton, Finset.Subset.refl, if_true, Finset.sum_singleton, eps, epsHat, h]`. Simplify using the standard rewrite rules. Rewrite using `[cP, hs]`. Use `extendFrom_eq (by rw [dense_generic.closure_eq]; trivial) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hc.tendsto l).mono_left nhdsWithin_le_nhds`.
+A detailed English derivation is pending.
 -/
 theorem cP_empty_empty {k : ℕ} (c : Finset (SV k) → A0 k → ℂ) (hc : Continuous (c ∅)) (l : A0 k) :
     cP ∅ ∅ c l = c ∅ l := by
@@ -55,13 +55,11 @@ theorem cP_empty_empty {k : ℕ} (c : Finset (SV k) → A0 k → ℂ) (hc : Cont
   exact (hc.tendsto l).mono_left nhdsWithin_le_nhds
 
 /- English proof (translation)
-Introduce `hI hF k 𝔞 hL X Y W hX hY hW`. Establish `hWo` using `sum_isOrth hX hY hW`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(((hI k 𝔞 hL W hWo).2 ∅ (empty_mem_parF 𝔞)).1.2 0)]`. Simplify using `only [eL_zero, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(integral_ofReal).symm`. Rewrite using `[← hF k 𝔞 hL _ _ hX.isGMFam hY.isGMFam ∅ (empty_mem_parF 𝔞) 0]`. Establish `hs : sumM 𝔞 ∅ (expFam W) = sumM 𝔞 ∅ (expFam X * expFam Y)`. Use function extensionality and compare the values at `l`. Use `Finset.sum_congr rfl fun P hP => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hPF : P ∈ parF 𝔞 ∅` using `mem_parF.2 ⟨(mem_parP.1 hP).1, (mem_parP.1 hP).2.1.le, Finset.empty_subset _⟩`. Simplify using `only [expFam, Pi.mul_apply, hW P hPF, eL_add]`. Simplify using `only [cM, hs]`. Rewrite using `[cP_empty_empty _ (by`. Simplify `(((hY.isGMFam) ∅ (empty_mem_parF 𝔞)).1.continuous)) 0]` using `[expFam]`.
-
-Conclude with `eL_zero _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem volume_sum_split : ExpFamilyIntegral → FamilyProduct → ∀ (k : ℕ) (𝔞 : Submodule ℝ (A0 k)), IsLevi 𝔞 →
     ∀ X Y W : Finset (SV k) → A0 k, IsOrth 𝔞 X → IsOrth 𝔞 Y → (∀ P ∈ parF 𝔞 ∅, W P = X P + Y P) →

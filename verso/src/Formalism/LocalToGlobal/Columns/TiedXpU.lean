@@ -19,7 +19,7 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Establish `hl : lastIdx (n + 1) = Fin.last n` using `Fin.ext (by simp [lastIdx])`. Rewrite using `[hl]`. Use function extensionality and compare the values at `j`. Simplify using `[z0, eLast, Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lastVector_eq_single (n : ℕ) (p : E) : z0 E n p = (Pi.single (lastIdx (n + 1)) p : Fin (n + 1) → E) := by
   have hl : lastIdx (n + 1) = Fin.last n := Fin.ext (by simp [lastIdx])
@@ -28,9 +28,9 @@ theorem lastVector_eq_single (n : ℕ) (p : E) : z0 E n p = (Pi.single (lastIdx 
   simp [z0, eLast, Pi.single_apply]
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `hy' : y ∈ (DecoSet.til (ST` using `ST) pi d).1.Lsh := hy`. Establish `h1 : y ∈ localization₂ P.1.asIdeal (DecoSet.til (ST` using `ST) pi d).1.N := by`. Rewrite using `[← (DecoSet.til (ST := ST) pi d).2.locP_Lsh hb P]`. Conclude with `le_locP _ _ hy'`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show (DecoSet.til (ST := ST) pi d).1.f P y = _`. Rewrite `h1`, the goal using `[DecoSet.til_val d hT hG]`. Establish `h2 : (d.1.til (ST` using `ST) pi).f P y = redP P.1 (hStd E (n + 1) (z0 E n (algebraMap (𝓞 E) E pi)) y) := if_pos h1`. Rewrite using `[h2, lastVector_eq_single, ← hr, reduction_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xp_tilH_f {N n : ℕ} (hN : N = n + 1) [NeZero N] {ST SG : Finset (Pl E)} (d : DecoSet E n ∅ SG) {pi : 𝓞 E}
     (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal) (hG : ∀ w : SG, pi ∉ w.1.asIdeal) {b : 𝓞 E} (hb : SepElt ST b) (P : ST)
@@ -48,9 +48,9 @@ theorem xp_tilH_f {N n : ℕ} (hN : N = n + 1) [NeZero N] {ST SG : Finset (Pl E)
   rw [h2, lastVector_eq_single, ← hr, reduction_coe]
 
 /- English proof (translation)
-Establish `h1 : e.1.f P x = (g • e).1.f P (g.1.1 x)` using `by show _ = e.1.f P (g.1.1.symm (g.1.1 x))`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Establish `h2 : g.1.1 x ∈ (g • e).1.Lsh`. Rewrite using `[rlc_smul_val, Deco.Lsh_act _ g.1.2]`. Conclude with `Submodule.mem_map_of_mem hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Rewrite `h2`, the goal using `[hge]`. Conclude with `xp_tilH_f hN d hT hG hb P _ h2 r hr`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xp_til_f_core {N n : ℕ} (hN : N = n + 1) [NeZero N] {ST SG SG' : Finset (Pl E)} (hSG : SG ⊆ SG') {H : Subgroup (GLG E N SG)}
     (d : DecoSet E n ∅ SG') {pi : 𝓞 E} (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal) (hG : ∀ w : SG', pi ∉ w.1.asIdeal) {b : 𝓞 E}
@@ -75,9 +75,9 @@ section GenJ
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `hform`. Rewrite using `[hStd_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Matrix.one_apply_eq, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `j _ hj`. Rewrite using `[Matrix.one_apply_ne (Ne.symm hj), mul_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem xp_hform_one (hc : CMData F E) {N : ℕ} (x y : Fin N → E) :
     hform (hc.sig : E →+* E) (1 : Matrix (Fin N) (Fin N) E) x y = hStd E N x y := by
@@ -92,7 +92,7 @@ theorem xp_hform_one (hc : CMData F E) {N : ℕ} (x y : Fin N → E) :
   · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Use `xp_til_f_core hN hSG d hT hG hb g e hge P x hx r ?_` and prove the remaining obligations. Rewrite using `[hr, xp_hform_one, ← rlc_ratHom_apply hc N]`. Establish `: ratHom hc N ((ratEquiv hc N).symm g.1) = g.1` using `(ratEquiv hc N).apply_symm_apply g.1`. Rewrite using `[this]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem xp_til_f_coreJ (hc : CMData F E) {N n : ℕ} (hN : N = n + 1) [NeZero N] {ST SG SG' : Finset (Pl E)} (hSG : SG ⊆ SG')
     {H : Subgroup (GLG E N SG)} (d : DecoSet E n ∅ SG') {pi : 𝓞 E} (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal)
@@ -122,14 +122,14 @@ variable (c₀ : DiaG X.E (Pr.vT u)) (s : DecoCl n (Pr.vT u) Pr.vGs Λ.grp → D
   (Q : StepCrd Pr σ₀ n fun c => (s c).1.L)
 
 /- English proof (translation)
-Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem xp_clsG_U : (clsG hc hX hPr σ₀ u Λ c₀ s hS hs Q).lev.U = levU hc n (Pr.vT u) Pr.vGs Λ.grp := by
   obtain ⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩ := Q
   rfl
 
 /- English proof (translation)
-Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem xp_clsG_chi (x : (clsG hc hX hPr σ₀ u Λ c₀ s hS hs Q).lev.U) (hx : x.1 ∈ levU hc n (Pr.vT u) Pr.vGs Λ.grp) :
     (clsG hc hX hPr σ₀ u Λ c₀ s hS hs Q).lev.chi x = levTyp ((Units.map σ₀.toMonoidHom).comp Λ.chr) ⟨x.1, hx⟩ := by
@@ -137,7 +137,7 @@ theorem xp_clsG_chi (x : (clsG hc hX hPr σ₀ u Λ c₀ s hS hs Q).lev.U) (hx :
   rfl
 
 /- English proof (translation)
-Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem xp_clsG_y (c : DecoCl n (Pr.vT u) Pr.vGs Λ.grp) :
     ((clsG hc hX hPr σ₀ u Λ c₀ s hS hs Q).y c).1 = (ptOfD hc n (Pr.vT u) Pr.vGs c₀ (s c)).1 := by
@@ -153,7 +153,7 @@ variable (s : DecoCl n (∅ : Finset (Pl X.E)) Pr.vGs Λ.grp → DecoSet X.E n (
   (Q : StepCrd Pr σ₀ n fun c => (s c).1.N)
 
 /- English proof (translation)
-Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem xp_clsPG_y (c : DecoCl n (∅ : Finset (Pl X.E)) Pr.vGs Λ.grp) :
     ((clsPG hc σ₀ Λ s hS hs Q).y c).1 = (ptOfD hc n ∅ Pr.vGs 1 (s c)).1 := by
@@ -172,7 +172,7 @@ abbrev ColDat.tilC (d : ColDat) (u : d.what₂.Word) (c : PCl d) : StCl (Pr := d
   tilCl (Pr := d.Pr) d.W d.lev (Finset.Subset.refl _) d.levP u c
 
 /- English proof (translation)
-Rewrite using `[← rlc_ratHom_apply d.sp.cm (d.R.N d.R.m)]`. Establish `: ratHom d.sp.cm (d.R.N d.R.m) (d.tilGa u c) = (d.tilMv u c).1` using `(ratEquiv d.sp.cm (d.R.N d.R.m)).apply_symm_apply _`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tilGa_mulVec (u : d.what₂.Word) (c : PCl d) (x : Fin (d.R.N d.R.m) → d.host.E) :
     ((d.tilGa u c : GL (Fin (d.R.N d.R.m)) d.host.E) : Matrix _ _ d.host.E) *ᵥ x = (d.tilMv u c).1.1 x := by
@@ -185,7 +185,7 @@ include hS hH in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `tie_Ld_eq (X := d.X) (Pr := d.Pr) d.sp.cm d.σ₀ u (d.repr u d.R.m) (stepCrd a hS hH u d.R.m le_rfl) c`.
+A detailed English derivation is pending.
 -/
 theorem xp_Ld_eq (u : d.what₂.Word) (c : StCl (Pr := d.Pr) d.W d.lev u d.R.m) :
     CF.Ld (d.colRec a) u d.R.m le_rfl c = (d.repr u d.R.m c).1.Lsh :=
@@ -247,7 +247,7 @@ def tieJM (u : d.what₂.Word) : ((d.colRec a).mem u).P.Mt →ₛₗ[starRingEnd
   jMCL (Pr := d.Pr) d.W d.levP d.σ₀ d.star_cx a.rowOk
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hO.1, hO.2, fun w F => periodC_eq_ipCl' (Pr := d.Pr) d.W d.levP d.hX d.σ₀ d.star_cx a.rowOk w F⟩`.
+Supply the required witnesses or components.
 -/
 theorem perTied (u : d.what₂.Word) (hO : PerOnto d a) : CF.PerTie (D := d.colRec a) u (tieJM a u) :=
   ⟨hO.1, hO.2, fun w F => periodC_eq_ipCl' (Pr := d.Pr) d.W d.levP d.hX d.σ₀ d.star_cx a.rowOk w F⟩

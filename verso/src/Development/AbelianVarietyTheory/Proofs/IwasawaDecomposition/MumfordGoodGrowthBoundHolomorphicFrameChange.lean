@@ -21,32 +21,32 @@ def EntryLe (M : Matrix K K ℂ) (x : ℝ) : Prop := ∀ i j, ‖M i j‖ ≤ x
 variable {M N : Matrix K K ℂ} {x y : ℝ}
 
 /- English proof (translation)
-Introduce `i j` and use `(h i j).trans hxy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntryLe.mono (h : EntryLe M x) (hxy : x ≤ y) : EntryLe M y := fun i j => (h i j).trans hxy
 
 /- English proof (translation)
-Introduce `i j` and use `(norm_add_le _ _).trans (add_le_add (h i j) (h' i j))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntryLe.add (h : EntryLe M x) (h' : EntryLe N y) : EntryLe (M + N) (x + y) :=
   fun i j => (norm_add_le _ _).trans (add_le_add (h i j) (h' i j))
 
 /- English proof (translation)
-Introduce `i j` and use `(norm_sub_le _ _).trans (add_le_add (h i j) (h' i j))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntryLe.sub (h : EntryLe M x) (h' : EntryLe N y) : EntryLe (M - N) (x + y) :=
   fun i j => (norm_sub_le _ _).trans (add_le_add (h i j) (h' i j))
 
 /- English proof (translation)
-Introduce `i j` and use `by simpa using h i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntryLe.neg (h : EntryLe M x) : EntryLe (-M) x := fun i j => by
   simpa using h i j
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (h i l) (h' l j) (norm_nonneg _) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Fintype.card K * x * y := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem EntryLe.mul (hx : 0 ≤ x) (h : EntryLe M x) (h' : EntryLe N y) :
     EntryLe (M * N) (Fintype.card K * x * y) := by
@@ -59,7 +59,7 @@ theorem EntryLe.mul (hx : 0 ≤ x) (h : EntryLe M x) (h' : EntryLe N y) :
         rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg hw] exact mul_le_mul_of_nonneg_left (h i j) hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntryLe.smul {w : ℝ} (hw : 0 ≤ w) (h : EntryLe M x) : EntryLe ((w : ℂ) • M) (w * x) :=
   fun i j => by
@@ -67,7 +67,7 @@ theorem EntryLe.smul {w : ℝ} (hw : 0 ≤ w) (h : EntryLe M x) : EntryLe ((w : 
     exact mul_le_mul_of_nonneg_left (h i j) hw
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg hw, mul_comm] exact h i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem entryLe_smul_of {w c : ℝ} (hw : 0 ≤ w) (h : ∀ i j, ‖M i j‖ * w ≤ c) :
     EntryLe ((w : ℂ) • M) c := fun i j => by
@@ -75,7 +75,7 @@ theorem entryLe_smul_of {w c : ℝ} (hw : 0 ≤ w) (h : ∀ i j, ‖M i j‖ * w
   exact h i j
 
 /- English proof (translation)
-Use `h i j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg hw, mul_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem EntryLe.of_smul {w : ℝ} (hw : 0 ≤ w) (h : EntryLe ((w : ℂ) • M) x) (i j : K) :
     ‖M i j‖ * w ≤ x := by
@@ -84,20 +84,20 @@ theorem EntryLe.of_smul {w : ℝ} (hw : 0 ≤ w) (h : EntryLe ((w : ℂ) • M) 
     mul_comm] at this
 
 /- English proof (translation)
-Introduce `i j` and use `h j i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntryLe.transpose (h : EntryLe M x) : EntryLe Mᵀ x := fun i j => h j i
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [conjTranspose_apply, norm_star]; exact h j i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntryLe.conjTranspose (h : EntryLe M x) : EntryLe Mᴴ x := fun i j => by
   rw [conjTranspose_apply, norm_star]; exact h j i
 
 /- English proof (translation)
-Rewrite using `[det_apply]`. Combine the equalities or inequalities in the displayed calculation. Establish `hs : ‖Equiv.Perm.sign σ • ∏ i, M (σ i) i‖ = ∏ i, ‖M (σ i) i‖`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with hσ | hσ <;> simp [hσ, norm_prod]`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = _ := by rw [Finset.sum_const, Finset.card_univ, Fintype.card_perm, nsmul_eq_mul]`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem EntryLe.norm_det_le [DecidableEq K] (h : EntryLe M x) :
     ‖M.det‖ ≤ (Fintype.card K).factorial * x ^ Fintype.card K := by
@@ -114,9 +114,9 @@ theorem EntryLe.norm_det_le [DecidableEq K] (h : EntryLe M x) :
     _ = _ := by rw [Finset.sum_const, Finset.card_univ, Fintype.card_perm, nsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `n K _ _ G₀ A v hG hGu hA hAu hA0 ξ ζ`. Establish `hA1 : GlobalTheory.HermFrame.MContDiffAt 1 A v` using `hA.of_le one_le_two`. Establish `hc : GlobalTheory.HermFrame.MContDiffAt 1 (fun x => GlobalTheory.HermFrame.conn G₀ x ζ) v` using `hG.conn hGu (by norm_num) ζ`. Establish `hd : GlobalTheory.HermFrame.MContDiffAt 1 (fun x => GlobalTheory.HermFrame.mdel A x ζ) v` using `hA.mdel (by norm_num) ζ`. Establish `he : (fun x => GlobalTheory.HermFrame.conn (fun x => (A x)ᵀ * G₀ x * (A x)ᴴᵀ) x ζ) =ᶠ[nhds v] fun x => (A x)⁻¹ * (GlobalTheory.HermFrame.conn G₀ x ζ * A x + GlobalTheory.HermFrame.mdel A x ζ)` using `by filter_upwards [hG.eventually_two, hG.eventually_isUnit hGu, hA.eventually_two, hA.eventually_isUnit hAu, hA0] with x h1 h2 h3 h4 h5`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.HermFrame.conn_changeFrame (h1.of_le one_le_two) h2 (h3.of_le one_le_two) h4 h5 ζ`. Rewrite using `[GlobalTheory.HermFrame.mdel_congr he, GlobalTheory.HermFrame.mdel_mul (hA1.inv hAu) ((hc.mul hA1).add hd), GlobalTheory.HermFrame.mdel_inv hA1 hAu, GlobalTheory.HermFrame.mdel_add (hc.mul hA1) hd, GlobalTheory.HermFrame.mdel_mul hc hA1]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mdel_conn_changeFrame : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableEq K] (G₀ A : ReciprocityTheory.L2DbarEstimates.V n → Matrix K K ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n), GlobalTheory.HermFrame.MContDiffAt 2 G₀ v → IsUnit (G₀ v).det → GlobalTheory.HermFrame.MContDiffAt 2 A v → IsUnit (A v).det → (∀ᶠ u in nhds v, ∀ η, GlobalTheory.HermFrame.mdbar A u η = 0) → ∀ ξ ζ : ReciprocityTheory.L2DbarEstimates.V n, GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.conn (fun x => (A x)ᵀ * G₀ x * (A x)ᴴᵀ) u ζ) v ξ = (A v)⁻¹ * (GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.conn G₀ u ζ) v ξ * A v + GlobalTheory.HermFrame.conn G₀ v ζ * GlobalTheory.HermFrame.mdel A v ξ + GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.mdel A u ζ) v ξ) - (A v)⁻¹ * GlobalTheory.HermFrame.mdel A v ξ * (A v)⁻¹ * (GlobalTheory.HermFrame.conn G₀ v ζ * A v + GlobalTheory.HermFrame.mdel A v ζ) := by
   intro n K _ _ G₀ A v hG hGu hA hAu hA0 ξ ζ
@@ -135,23 +135,23 @@ theorem mdel_conn_changeFrame : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableE
   noncomm_ring
 
 /- English proof (translation)
-Introduce `K _ X A Ta Tb Dab Dba dAa dAb ddAab ddAba wa wb b c hwa0 hwa1 hwb0 hwb1 hb hc hX hA hdAa hdAb hddab hddba hTa hTb hD`. Use `set k : ℝ := (Fintype.card K : ℝ) with hk`. Establish `hk0 : 0 ≤ k` using `Nat.cast_nonneg _`. Establish `e : (((wa * wb : ℝ) : ℂ) • ((X * (Dab * A + Tb * dAa + ddAab) - X * dAa * X * (Tb * A + dAb)) - (X * (Dba * A + Ta * dAb + ddAba) - X * dAb * X * (Ta * A + dAa)))) = X * (((wa * wb : ℝ) : ℂ) • (Dab - Dba)) * A + X * ((wb : ℂ) • Tb) * ((wa : ℂ) • dAa) - X * ((wa : ℂ) • Ta) * ((wb …`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_sub, smul_add, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, mul_comm (wb : ℂ) (wa : ℂ)]`. Normalize the expressions using the abelian group laws. Establish `hwa : wa * b ≤ b` using `by nlinarith`. Establish `hwb : wb * b ≤ b` using `by nlinarith`. Establish `hw0 : 0 ≤ wa * wb` using `mul_nonneg hwa0 hwb0`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw1 : wa * wb ≤ 1` using `by nlinarith`. Establish `hkb : 0 ≤ k * b * b` using `by positivity`. Establish `t1 : GlobalTheory.GoodMetric.FrameChange.EntryLe (X * (((wa * wb : ℝ) : ℂ) • (Dab - Dba)) * A) (k ^ 2 * b ^ 2 * c)` using `((hX.mul hb hD).mul (by positivity) hA).mono (le_of_eq (by ring))`. Establish `t2 : GlobalTheory.GoodMetric.FrameChange.EntryLe (X * ((wb : ℂ) • Tb) * ((wa : ℂ) • dAa)) (k ^ 2 * b ^ 2 * c)` using `((hX.mul hb hTb).mul (by positivity) (hdAa.smul hwa0)).mono (by`. Use `mul_le_mul_of_nonneg_left hwa (by positivity : 0 ≤ k * (k * b * c))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `nlinarith)`. Establish `t3 : GlobalTheory.GoodMetric.FrameChange.EntryLe (X * ((wa : ℂ) • Ta) * ((wb : ℂ) • dAb)) (k ^ 2 * b ^ 2 * c)` using `((hX.mul hb hTa).mul (by positivity) (hdAb.smul hwb0)).mono (by`. Use `mul_le_mul_of_nonneg_left hwb (by positivity : 0 ≤ k * (k * b * c))` as an intermediate fact. Use the proof step `nlinarith)`. Establish `t4 : GlobalTheory.GoodMetric.FrameChange.EntryLe (X * ((wa : ℂ) • dAa) * X * ((wb : ℂ) • Tb) * A) (k ^ 4 * b ^ 4 * c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `((((hX.mul hb (hdAa.smul hwa0)).mul (by positivity) hX).mul (by positivity) hTb).mul (by positivity) hA)`. Use `h.mono ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left hwa (by positivity : 0 ≤ k ^ 4 * b ^ 2 * c)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `t5 : GlobalTheory.GoodMetric.FrameChange.EntryLe (X * ((wb : ℂ) • dAb) * X * ((wa : ℂ) • Ta) * A) (k ^ 4 * b ^ 4 * c)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `((((hX.mul hb (hdAb.smul hwb0)).mul (by positivity) hX).mul (by positivity) hTa).mul (by positivity) hA)`. Use `h.mono ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left hwb (by positivity : 0 ≤ k ^ 4 * b ^ 2 * c)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `t6 : GlobalTheory.GoodMetric.FrameChange.EntryLe (((wa * wb : ℝ) : ℂ) • (X * dAa * X * dAb)) (k ^ 3 * b ^ 4)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `((((hX.mul hb hdAa).mul (by positivity) hX).mul (by positivity) hdAb).smul hw0).mono ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right hw1 (by positivity : 0 ≤ k ^ 3 * b ^ 4)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `t7 : GlobalTheory.GoodMetric.FrameChange.EntryLe (((wa * wb : ℝ) : ℂ) • (X * dAb * X * dAa)) (k ^ 3 * b ^ 4)`. Use `((((hX.mul hb hdAb).mul (by positivity) hX).mul (by positivity) hdAa).smul hw0).mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_right hw1 (by positivity : 0 ≤ k ^ 3 * b ^ 4)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `t8 : GlobalTheory.GoodMetric.FrameChange.EntryLe (((wa * wb : ℝ) : ℂ) • (X * (ddAab - ddAba))) (2 * k * b ^ 2)`. Use `((hX.mul hb (hddab.sub hddba)).smul hw0).mono ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right hw1 (by positivity : 0 ≤ 2 * k * b ^ 2)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e]`. Use `(((((((t1.add t2).sub t3).sub t4).add t5).sub t6).add t7).add t8).mono (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem entryLe_antisymm_del : ∀ (K : Type) [Fintype K] (X A Ta Tb Dab Dba dAa dAb ddAab ddAba : Matrix K K ℂ) (wa wb b c : ℝ), 0 ≤ wa → wa ≤ 1 → 0 ≤ wb → wb ≤ 1 → 0 ≤ b → 0 ≤ c → GlobalTheory.GoodMetric.FrameChange.EntryLe X b → GlobalTheory.GoodMetric.FrameChange.EntryLe A b → GlobalTheory.GoodMetric.FrameChange.EntryLe dAa b → GlobalTheory.GoodMetric.FrameChange.EntryLe dAb b → GlobalTheory.GoodMetric.FrameChange.EntryLe ddAab b → GlobalTheory.GoodMetric.FrameChange.EntryLe ddAba b → GlobalTheory.GoodMetric.FrameChange.EntryLe ((wa : ℂ) • Ta) c → GlobalTheory.GoodMetric.FrameChange.EntryLe ((wb : ℂ) • Tb) c → GlobalTheory.GoodMetric.FrameChange.EntryLe (((wa * wb : ℝ) : ℂ) • (Dab - Dba)) c → GlobalTheory.GoodMetric.FrameChange.EntryLe (((wa * wb : ℝ) : ℂ) • ((X * (Dab * A + Tb * dAa + ddAab) - X * dAa * X * (Tb * A + dAb)) - (X * (Dba * A + Ta * dAb + ddAba) - X * dAb * X * (Ta * A + dAa)))) (3 * (Fintype.card K : ℝ) ^ 2 * b ^ 2 * c + 2 * (Fintype.card K : ℝ) ^ 4 * b ^ 4 * c + 2 * (Fintype.card K : ℝ) ^ 3 * b ^ 4 + 2 * (Fintype.card K : ℝ) * b ^ 2) := by
   intro K _ X A Ta Tb Dab Dba dAa dAb ddAab ddAba wa wb b c hwa0 hwa1 hwb0 hwb1 hb hc hX hA hdAa hdAb hddab hddba hTa hTb hD
@@ -212,11 +212,11 @@ theorem entryLe_antisymm_del : ∀ (K : Type) [Fintype K] (X A Ta Tb Dab Dba dAa
   ring
 
 /- English proof (translation)
-Unfold `poinWt`. Use `split_ifs with ha`. Establish `h1 : ‖v a‖ < 1` using `(PiLp.norm_apply_le v a).trans_lt hv`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Break down `(norm_nonneg (v a)).eq_or_lt with h0 | h0` into its components or cases.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h0]`. Simplify using the standard rewrite rules. Use `Real.abs_log_mul_self_lt ‖v a‖ h0 h1.le` as an intermediate fact. Rewrite `this` using `[abs_mul, abs_of_pos h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components.
 
-Conclude with `⟨zero_le_one, le_rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem poinWt_mem {n : ℕ} (S : Finset (Fin n)) {v : ReciprocityTheory.L2DbarEstimates.V n} (hv : ‖v‖ < 1) (a : Fin n) :
     0 ≤ poinWt S v a ∧ poinWt S v a ≤ 1 := by
@@ -232,59 +232,51 @@ theorem poinWt_mem {n : ℕ} (S : Finset (Fin n)) {v : ReciprocityTheory.L2DbarE
   · exact ⟨zero_le_one, le_rfl⟩
 
 /- English proof (translation)
-Introduce `n K _ _ S c N B`. Use `set k : ℝ := (Fintype.card K : ℝ) with hk`. Use `set b : ℝ := |B| with hb`. Use `set D : ℝ := ((Fintype.card K).factorial : ℝ) * b ^ Fintype.card K with hD`. Use `⟨D ^ 2 * c + k ^ 2 * b ^ 2 * c + (k ^ 2 * b ^ 2 * c + k * b ^ 2) + k ^ 2 * b ^ 2 * c + (3 * k ^ 2 * b ^ 2 * c + 2 * k ^ 4 * b ^ 4 * c + 2 * k ^ 3 * b ^ 4 + 2 * k * b ^ 2), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `G₀ P v hv hdet hG hP hhol hPu hPb hPib hdPb hddPb hgb`. Establish `hk0 : 0 ≤ k` using `Nat.cast_nonneg _`. Establish `hb0 : 0 ≤ b` using `abs_nonneg _`. Establish `hD0 : 0 ≤ D` using `by positivity`. Use `set s : ℝ := ∑ a ∈ S, |Real.log ‖v a‖| with hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 ≤ s ^ N` using `pow_nonneg (Finset.sum_nonneg fun _ _ => abs_nonneg _) _`. Establish `hcpos : 0 < c`. Establish `h1` using `hgb.det`. Establish `h2 : 0 < ‖(G₀ v).det‖⁻¹` using `inv_pos.2 (norm_pos_iff.2 hdet)`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hc`. Use polynomial arithmetic with `[mul_nonpos_of_nonpos_of_nonneg hc hs0]`. Establish `hc0` using `hcpos.le`. Use `set A : ReciprocityTheory.L2DbarEstimates.V n → Matrix K K ℂ := fun u => (P u)ᵀ with hA`. Establish `hGA : (fun u => P u * G₀ u * (P u)ᴴ) = fun x => (A x)ᵀ * G₀ x * (A x)ᴴᵀ` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG2 : GlobalTheory.HermFrame.MContDiffAt 2 G₀ v` using `hG`. Establish `hP2 : GlobalTheory.HermFrame.MContDiffAt 2 P v` using `hP`. Establish `hA2 : GlobalTheory.HermFrame.MContDiffAt 2 A v` using `hP2.transpose`. Establish `hG1 : GlobalTheory.HermFrame.MContDiffAt 1 G₀ v` using `hG2.of_le one_le_two`. Establish `hA1 : GlobalTheory.HermFrame.MContDiffAt 1 A v` using `hA2.of_le one_le_two`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGu : IsUnit (G₀ v).det` using `hdet.isUnit`. Establish `hAu : IsUnit (A v).det` using `by simpa [hA, det_transpose] using hPu`. Establish `hAhol : ∀ᶠ u in nhds v, ∀ η, GlobalTheory.HermFrame.mdbar A u η = 0` using `hhol.mono fun u hu η => by`. Rewrite using `[hA, GlobalTheory.HermFrame.mdbar_transpose, hu η, transpose_zero]`. Establish `eB : ∀ (M : Matrix K K ℂ), (∀ i j, ‖M i j‖ ≤ B) → EntryLe M b` using `fun M h i j => (h i j).trans (le_abs_self B)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : EntryLe (A v)⁻¹ b`. Introduce `i j`. Use `(eB _ hPib) j i` as an intermediate fact. Use `show ‖((P v)ᵀ)⁻¹ i j‖ ≤ b`. Rewrite using `[← transpose_nonsing_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Establish `hAb : EntryLe (A v) b` using `(eB _ hPb).transpose`. Establish `hdA : ∀ a, EntryLe (GlobalTheory.HermFrame.mdel A v (coordVec a)) b` using `fun a => (eB _ (hdPb a)).transpose`. Establish `hddA : ∀ a b', EntryLe (GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.mdel A u (coordVec b')) v (coordVec a)) b` using `fun a b' => (eB _ (hddPb a b')).transpose`. Establish `hw` using `poinWt_mem S hv`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconn : ∀ ξ, GlobalTheory.HermFrame.conn (fun u => P u * G₀ u * (P u)ᴴ) v ξ = (A v)⁻¹ * (GlobalTheory.HermFrame.conn G₀ v ξ * A v + GlobalTheory.HermFrame.mdel A v ξ)` using `fun ξ => by`. Rewrite using `[hGA]`. Conclude with `GlobalTheory.HermFrame.conn_changeFrame hG1 hGu hA1 hAu hAhol.self_of_nhds ξ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_mul, det_mul, det_conjTranspose]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero (mul_ne_zero hPu.ne_zero hdet) (star_ne_zero.2 hPu.ne_zero)`. Conclude with `(hP2.mul hG2).mul hP2.conjTranspose`. Prove the components needed by the constructor for the conclusion. Introduce `i j`. Establish `hG0e : EntryLe (G₀ v) (c * s ^ N)` using `hgb.entry`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1` using `((eB _ hPb).mul hb0 hG0e).mul (by positivity) (eB _ hPb).conjTranspose`. Use `(h1 i j).trans ?_` and prove the remaining obligations. Establish `e : k * (k * b * (c * s ^ N)) * b = (k ^ 2 * b ^ 2 * c) * s ^ N` using `by ring`. Rewrite using `[← hk, e]`. Use `mul_le_mul_of_nonneg_right ?_ hs0` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: 0 ≤ D ^ 2 * c` using `by positivity`. Establish `: 0 ≤ k ^ 2 * b ^ 2 * c + k * b ^ 2` using `by positivity`. Establish `: 0 ≤ k ^ 2 * b ^ 2 * c` using `by positivity`. Establish `: 0 ≤ 3 * k ^ 2 * b ^ 2 * c + 2 * k ^ 4 * b ^ 4 * c + 2 * k ^ 3 * b ^ 4 + 2 * k * b ^ 2`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPi : ‖(P v).det‖⁻¹ ≤ D`. Establish `h1` using `(eB _ hPib).norm_det_le`. Rewrite `h1` using `[det_nonsing_inv, Ring.inverse_eq_inv', norm_inv]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `e : ‖(P v * G₀ v * (P v)ᴴ).det‖⁻¹ = ‖(P v).det‖⁻¹ ^ 2 * ‖(G₀ v).det‖⁻¹`. Rewrite using `[det_mul, det_mul, det_conjTranspose, norm_mul, norm_mul, norm_star]`. Rewrite using `[mul_inv, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc]`. Use `mul_le_mul_of_nonneg_right ?_ hs0` and prove the remaining obligations. Establish `: 0 ≤ k ^ 2 * b ^ 2 * c + k * b ^ 2` using `by positivity`. Establish `: 0 ≤ k ^ 2 * b ^ 2 * c` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: 0 ≤ 3 * k ^ 2 * b ^ 2 * c + 2 * k ^ 4 * b ^ 4 * c + 2 * k ^ 3 * b ^ 4 + 2 * k * b ^ 2`. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a i j`. Use `set w := poinWt S v a`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hT : EntryLe ((w : ℂ) • GlobalTheory.HermFrame.conn G₀ v (coordVec a)) c` using `entryLe_smul_of (hw a).1 (hgb.form a)`. Establish `e : (w : ℂ) • GlobalTheory.HermFrame.conn (fun u => P u * G₀ u * (P u)ᴴ) v (coordVec a) = (A v)⁻¹ * (((w : ℂ) • GlobalTheory.HermFrame.conn G₀ v (coordVec a)) * A v) + (w : ℂ) • ((A v)⁻¹ * GlobalTheory.HermFrame.mdel A v (coordVec a))`. Rewrite using `[hconn, Matrix.mul_add, smul_add, Matrix.smul_mul, Matrix.mul_smul]`. Establish `h1 : EntryLe ((w : ℂ) • GlobalTheory.HermFrame.conn (fun u => P u * G₀ u * (P u)ᴴ) v (coordVec a)) (k ^ 2 * b ^ 2 * c + k * b ^ 2)`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `((hX.mul hb0 (hT.mul hc0 hAb)).add ((hX.mul hb0 (hdA a)).smul (hw a).1)).mono ?_` and prove the remaining obligations. Rewrite using `[← hk]`. Establish `: (w * (k * b * b)) ≤ k * b ^ 2`. Use `mul_le_mul_of_nonneg_right (hw a).2 (by positivity : 0 ≤ k * b * b)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `(h1.of_smul (hw a).1 i j).trans ?_` and prove the remaining obligations. Establish `: 0 ≤ D ^ 2 * c` using `by positivity`. Establish `: 0 ≤ k ^ 2 * b ^ 2 * c` using `by positivity`. Establish `: 0 ≤ 3 * k ^ 2 * b ^ 2 * c + 2 * k ^ 4 * b ^ 4 * c + 2 * k ^ 3 * b ^ 4 + 2 * k * b ^ 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b' i j`. Use `set w := poinWt S v a * poinWt S v b'`. Establish `hw0 : 0 ≤ w` using `mul_nonneg (hw a).1 (hw b').1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hF : EntryLe ((w : ℂ) • GlobalTheory.HermFrame.curv G₀ v (coordVec a) (coordVec b')) c` using `entryLe_smul_of hw0 (hgb.dbar a b')`. Establish `e : GlobalTheory.HermFrame.curv (fun u => P u * G₀ u * (P u)ᴴ) v (coordVec a) (coordVec b') = (A v)⁻¹ * GlobalTheory.HermFrame.curv G₀ v (coordVec a) (coordVec b') * A v`. Rewrite using `[hGA]`. Conclude with `GlobalTheory.HermFrame.curv_changeFrame hG2 hGu hA2 hAu hAhol _ _`. Establish `h1 : EntryLe ((w : ℂ) • GlobalTheory.HermFrame.curv (fun u => P u * G₀ u * (P u)ᴴ) v (coordVec a) (coordVec b')) (k ^ 2 * b ^ 2 * c)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, Matrix.mul_assoc, ← Matrix.mul_smul, ← Matrix.smul_mul]`. Use `(hX.mul hb0 (hF.mul hc0 hAb)).mono (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← hk]`. Expand and normalize the polynomial expressions, which then agree. Use `(h1.of_smul hw0 i j).trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: 0 ≤ k ^ 2 * b ^ 2 * c` using `by positivity`. Establish `: 0 ≤ D ^ 2 * c` using `by positivity`. Establish `: 0 ≤ k ^ 2 * b ^ 2 * c + k * b ^ 2` using `by positivity`. Establish `: 0 ≤ 3 * k ^ 2 * b ^ 2 * c + 2 * k ^ 4 * b ^ 4 * c + 2 * k ^ 3 * b ^ 4 + 2 * k * b ^ 2`. Check the signs of the components of the expression.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b' i j`. Use `set wa := poinWt S v a`. Use `set wb := poinWt S v b'`. Establish `hw0 : 0 ≤ wa * wb` using `mul_nonneg (hw a).1 (hw b').1`.
-
-Establish `e1` using `mdel_conn_changeFrame n K G₀ A v hG2 hGu hA2 hAu hAhol (coordVec a) (coordVec b')`. Establish `e2` using `mdel_conn_changeFrame n K G₀ A v hG2 hGu hA2 hAu hAhol (coordVec b') (coordVec a)`. Rewrite `e1`, `e2` using `[← hGA]`. Establish `h1` using `entryLe_antisymm_del K (A v)⁻¹ (A v) (GlobalTheory.HermFrame.conn G₀ v (coordVec a)) (GlobalTheory.HermFrame.conn G₀ v (coordVec b')) (GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.conn G₀ u (coordVec b')) v (coordVec a)) (GlobalTheory.HermFrame.mdel (fun u => Glob …`. Rewrite `h1` using `[← e1, ← e2]`.
-
-Use `(h1.of_smul hw0 i j).trans ?_` and prove the remaining obligations. Rewrite using `[← hk]`. Establish `: 0 ≤ D ^ 2 * c` using `by positivity`. Establish `: 0 ≤ k ^ 2 * b ^ 2 * c + k * b ^ 2` using `by positivity`. Establish `: 0 ≤ k ^ 2 * b ^ 2 * c` using `by positivity`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem goodBound_changeFrame : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableEq K] (S : Finset (Fin n)) (c : ℝ) (N : ℕ) (B : ℝ), ∃ c' : ℝ, ∀ (G₀ P : ReciprocityTheory.L2DbarEstimates.V n → Matrix K K ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n), ‖v‖ < 1 → (G₀ v).det ≠ 0 → (∀ i k, ContDiffAt ℝ 2 (fun u => G₀ u i k) v) → (∀ i k, ContDiffAt ℝ 2 (fun u => P u i k) v) → (∀ᶠ u in nhds v, ∀ η, GlobalTheory.HermFrame.mdbar P u η = 0) → IsUnit (P v).det → (∀ i k, ‖P v i k‖ ≤ B) → (∀ i k, ‖(P v)⁻¹ i k‖ ≤ B) → (∀ a i k, ‖GlobalTheory.HermFrame.mdel P v (GlobalTheory.GoodMetric.coordVec a) i k‖ ≤ B) → (∀ a b i k, ‖GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.mdel P u (GlobalTheory.GoodMetric.coordVec b)) v (GlobalTheory.GoodMetric.coordVec a) i k‖ ≤ B) → GlobalTheory.GoodMetric.GoodBound S c N G₀ v → (P v * G₀ v * (P v)ᴴ).det ≠ 0 ∧ (∀ i k, ContDiffAt ℝ 2 (fun u => (P u * G₀ u * (P u)ᴴ) i k) v) ∧ GlobalTheory.GoodMetric.GoodBound S c' N (fun u => P u * G₀ u * (P u)ᴴ) v := by
   intro n K _ _ S c N B

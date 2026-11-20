@@ -6,37 +6,35 @@ open Finset
 namespace Formalism.CountingSumsFrames
 
 /- English proof (translation)
-Introduce `C C₀ hC hC₀ p N N₁ k n' G' Y Yb a b' Ib cl D cStar h`. Take `⟨hY, hp, hN, hN1, hk, hLa8, hIb1, hIb2, hYb, h2Yb, hab, hde, hpab, hkLa, hcl0, hcl, hD, hcS, hb, hb0⟩` from `h`. Use `set La := C₀ * (N₁ : ℝ) ^ 2 * Real.log a with hLadef`. Use `set Q := (p : ℝ) ^ G' with hQdef`. Use `set S := cStar + N * cl + n' * cl with hSdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC0 : 0 < C` using `by linarith`. Establish `hC₀0 : 0 < C₀` using `by linarith`. Establish `hY0 : 0 < Y` using `by linarith`. Establish `hNr : (1:ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hN1r : (1:ℝ) ≤ N₁` using `by exact_mod_cast hN1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkr : (5:ℝ) ≤ k` using `by exact_mod_cast (by omega : 5 ≤ k)`. Establish `hk0 : (0:ℝ) < k` using `by linarith`. Establish `hY2 : 1 ≤ Y ^ 2` using `one_le_pow₀ hY`. Establish `hk2 : (25:ℝ) ≤ (k:ℝ) ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hk3 : (125:ℝ) ≤ (k:ℝ) ^ 3`. Combine the equalities or inequalities in the displayed calculation. Establish `hpr : (25:ℝ) ≤ p`. Combine the equalities or inequalities in the displayed calculation. Establish `hp0 : (0:ℝ) < p` using `by linarith`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpb : (p:ℝ) * b' < a` using `(lt_div_iff₀ hb0).mp hpab`. Establish `ha0 : 0 < a`. Establish `: 0 < (p:ℝ) * b'` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogNY : 0 ≤ Real.log (N * Y)` using `Real.log_nonneg (one_le_mul_of_one_le_of_one_le hNr hY)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLa0 : 0 ≤ La` using `by linarith`. Establish `hc1 : 1 ≤ C₀ * (N₁ : ℝ) ^ 2`. Establish `: 1 ≤ (N₁:ℝ) ^ 2` using `one_le_pow₀ hN1r`. Conclude with `one_le_mul_of_one_le_of_one_le hC₀ this`. Establish `hlog0 : 0 ≤ Real.log a` using `(mul_nonneg_iff_of_pos_left (by linarith : 0 < C₀ * (N₁ : ℝ) ^ 2)).mp hLa0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogb0 : 0 ≤ Real.logb p a` using `div_nonneg hlog0 (Real.log_nonneg (by linarith))`. Establish `hD0 : 0 ≤ D` using `le_trans (mul_nonneg (by positivity) hlogb0) hD`. Establish `hcS8 : 8 ≤ cStar` using `by linarith`. Establish `hQ1 : 1 ≤ Q` using `one_le_pow₀ (by linarith)`. Establish `hQ0 : 0 < Q` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ4 : Q ≤ Q ^ 4` using `le_self_pow₀ hQ1 (by norm_num)`. Establish `hS8 : 8 ≤ S`. Establish `h1 : 0 ≤ (N:ℝ) * cl` using `by positivity`. Establish `h2 : 0 ≤ (n':ℝ) * cl` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hS0 : 0 < S` using `by linarith`. Establish `hkQY : (k:ℝ) ^ 3 * Q * Y ≤ b'`. Combine the equalities or inequalities in the displayed calculation. Establish `hb1000 : 1000 ≤ b'`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `ha25 : 25000 < a`. Establish `: (25:ℝ) * 1000 ≤ (p:ℝ) * b'` using `mul_le_mul hpr hb1000 (by norm_num) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog1 : 1 ≤ Real.log a`. Rewrite using `[Real.le_log_iff_exp_le ha0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLalog : Real.log a ≤ La` using `le_mul_of_one_le_left hlog0 hc1`. Establish `hLa1 : 1 ≤ La` using `by linarith`. Establish `hLa2 : La ≤ La ^ 2` using `le_self_pow₀ hLa1 (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hba : b' ≤ a`. Establish `: b' ≤ (p:ℝ) * b'` using `le_mul_of_one_le_left hb0.le (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLak : La ^ 2 ≤ k`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hYb1 : 1 ≤ Yb` using `by linarith`. Use `⟨⟨hY, hp, ?_, ?_, ?_, by linarith, hLa0, by linarith, hkQY, hba, hpab, by omega, hN, hN1, hQ1, hb0⟩, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `: (N:ℝ) ≤ k`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `this` after adjusting the coercions. Establish `h1 : (N₁:ℝ) ^ 2 ≤ La`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (N₁:ℝ) ^ 4 ≤ La ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `: (N₁:ℝ) ^ 4 ≤ k` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `: a / (k * Y) ≤ a` using `div_le_self ha0.le (one_le_mul_of_one_le_of_one_le (by linarith) hY)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `bLo bHi h1 h2 h3`.
-
-Apply the tactic sequence `constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 theorem segment_hyp_of_interval_hyp : HypSegOfHypI := by
   intro C C₀ hC hC₀ p N N₁ k n' G' Y Yb a b' Ib cl D cStar h
@@ -133,15 +131,15 @@ theorem segment_hyp_of_interval_hyp : HypSegOfHypI := by
     constructor <;> linarith
 
 /- English proof (translation)
-Take `⟨hY, hp, h2, hN, hN1, hlog, hLa0, hLa, h4, hba, h6, hk, hN', hN1', hQ, hb0⟩` from `h`. Move the coercions through the operations in `at hp h2 hlog h4`. Establish `hr : (2:ℝ) ≤ r` using `by exact_mod_cast (by omega : 2 ≤ r)`. Establish `hk2 : (9:ℝ) ≤ ((r:ℝ)+1)^2`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hk3 : (27:ℝ) ≤ ((r:ℝ)+1)^3`. Combine the equalities or inequalities in the displayed calculation. Establish `hY2 : 1 ≤ Y ^ 2` using `one_le_pow₀ hY`. Establish `hpr : (9:ℝ) ≤ p`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hb27 : 27 ≤ b'`. Combine the equalities or inequalities in the displayed calculation. Establish `hkb : (r:ℝ) + 1 ≤ b'`. Establish `h1 : (r:ℝ) + 1 ≤ ((r:ℝ)+1)^3` using `le_self_pow₀ (by linarith) (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hpb : (p:ℝ) * b' < a` using `(lt_div_iff₀ hb0).mp h6`. Establish `ha : 243 < a`. Establish `: (9:ℝ) * 27 ≤ (p:ℝ) * b'` using `mul_le_mul hpr hb27 (by norm_num) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog1 : 1 ≤ Real.log a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN1r : (1:ℝ) ≤ N₁` using `by exact_mod_cast hN1'`. Conclude with `⟨hY, hp, h2, hlog, h4, hba, h6, hr, hQ, hb0, hpr, hb27, hpb, hlog1, hN1r, hkb⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 lemma segment_parameter_bounds {p N N₁ r : ℕ} {Y a b' Q La : ℝ} (h : HypSeg p N N₁ (r + 1) Y a b' Q La) :
     1 ≤ Y ∧ ((r:ℝ)+1)^2 * Y^2 ≤ p ∧ ((r:ℝ)+1) * Y^2 * Real.log a ≤ a / b' ∧ Real.log a ≤ (r:ℝ)+1 ∧
@@ -182,17 +180,17 @@ lemma segment_parameter_bounds {p N N₁ r : ℕ} {Y a b' Q La : ℝ} (h : HypSe
   exact ⟨hY, hp, h2, hlog, h4, hba, h6, hr, hQ, hb0, hpr, hb27, hpb, hlog1, hN1r, hkb⟩
 
 /- English proof (translation)
-Introduce `p N N₁ r Y a b' Q La h`. Take `⟨hY, hp, h2, hlog, h4, hba, h6, hr, hQ, hb0, hp9, hb27, hpb, hL1, hN1, hkb⟩` from `segment_parameter_bounds h`. Establish `hp1 : (1:ℝ) < p` using `by linarith`. Establish `hp0 : (0:ℝ) < p` using `by linarith`. Establish `ha0 : 0 < a` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpa : (p:ℝ) < a`. Establish `: (p:ℝ) * 1 ≤ (p:ℝ) * b'` using `mul_le_mul_of_nonneg_left (by linarith) hp0.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : 1 < Real.logb p a`. Rewrite using `[Real.lt_logb_iff_rpow_lt hp1 ha0, Real.rpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpa`. Establish `h8 : 0 < 8 * a + r` using `by linarith`. Establish `h1' : 1 < Real.logb p (8 * a + r)`. Rewrite using `[Real.lt_logb_iff_rpow_lt hp1 h8, Real.rpow_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h9 : 8 * a + r ≤ (p:ℝ) * a`. Establish `: 9 * a ≤ (p:ℝ) * a` using `mul_le_mul_of_nonneg_right hp9 ha0.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2' : Real.logb p (8 * a + r) ≤ 1 + Real.logb p a`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.logb_mul hp0.ne' ha0.ne', Real.logb_self_eq_one hp1]`. Establish `hlp : 1 ≤ Real.log p`. Rewrite using `[Real.le_log_iff_exp_le hp0]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h5 : Real.logb p a ≤ Real.log a`. Rewrite using `[← Real.log_div_log]`. Conclude with `div_le_self (by linarith) hlp`. Unfold `lgSeg`. Use `⟨h1, by linarith, by linarith, by linarith, h5, by linarith⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem segment_log_bound : SegLg := by
   intro p N N₁ r Y a b' Q La h
@@ -226,15 +224,15 @@ theorem segment_log_bound : SegLg := by
   refine ⟨h1, by linarith, by linarith, by linarith, h5, by linarith⟩
 
 /- English proof (translation)
-Break down `lt_or_ge 1 q with hq1 | hq1` into its components or cases. Conclude with `Or.inr hq1`. Use `left`. Establish `h1 : ∑ l ∈ univ.filter (fun l : Fin s => l ≤ i), q ^ ((i:ℕ) - (l:ℕ)) = ∑ e ∈ (univ.filter (fun l : Fin s => l ≤ i)).image (fun l : Fin s => (i:ℕ) - (l:ℕ)), q ^ e`. Rewrite using `[Finset.sum_image]`.
+Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx y hy hxy`. Establish `hx' : (x:ℕ) ≤ i` using `(mem_filter.1 hx).2`. Establish `hy' : (y:ℕ) ≤ i` using `(mem_filter.1 hy).2`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only at hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : (univ.filter (fun l : Fin s => l ≤ i)).image (fun l : Fin s => (i:ℕ) - (l:ℕ)) ⊆ range ((i:ℕ)+1)`. Introduce `e he`. Simplify using `only [mem_image, mem_filter, mem_univ, true_and] at he`. Take `⟨l, hl, rfl⟩` from `he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_range]`. Use linear arithmetic over natural numbers and integers. Establish `h3 : (1 - q) * ∑ e ∈ range ((i:ℕ)+1), q^e ≤ 1`. Rewrite using `[mul_neg_geom_sum]`. Establish `hpow : 0 ≤ q ^ ((i:ℕ)+1)` using `by positivity`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h1]`. Conclude with `(mul_le_mul_of_nonneg_left (sum_le_sum_of_subset_of_nonneg h2 (fun _ _ _ => by positivity)) (by linarith)).trans h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma geom_sum_filter_le {s : ℕ} (i : Fin s) (q : ℝ) (hq0 : 0 ≤ q) :
     (1 - q) * ∑ l ∈ univ.filter (fun l : Fin s => l ≤ i), q ^ ((i:ℕ) - (l:ℕ)) ≤ 1 ∨ 1 < q := by
@@ -264,27 +262,27 @@ lemma geom_sum_filter_le {s : ℕ} (i : Fin s) (q : ℝ) (hq0 : 0 ≤ q) :
     (by linarith)).trans h3
 
 /- English proof (translation)
-Introduce `p s P A C a ap b' i hp ha hap hP hPl hC hA`. Establish `hpr : (2:ℝ) ≤ p` using `by exact_mod_cast hp`. Take `⟨q, hq⟩ : ∃ q : ℝ, q = ((p:ℝ)^2)⁻¹` from `⟨_, rfl⟩`. Establish `hp2 : (4:ℝ) ≤ (p:ℝ)^2` using `by nlinarith`. Establish `hq0 : 0 ≤ q` using `by rw [hq]; positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq4 : q ≤ 1/4`. Combine the equalities or inequalities in the displayed calculation. Establish `hPi : 0 < (P i)⁻¹` using `inv_pos.2 (hP i)`. Establish `hb : 0 ≤ b'`. Use `(le_div_iff₀ (by have := hP i; positivity : 0 < 2 * P i)).1 ((Nat.cast_nonneg (A i)).trans (hA i))` as an intermediate fact.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinv : ∀ l, l ≤ i → (P l)⁻¹ ≤ q ^ ((i:ℕ)-(l:ℕ)) * (P i)⁻¹`. Introduce `l hl`. Break down `hl.lt_or_eq with h | h` into its components or cases. Establish `h'` using `hPl l h`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `e : q ^ ((i:ℕ)-(l:ℕ)) * (P i)⁻¹ = ((p:ℝ)^(2*((i:ℕ)-(l:ℕ))) * P i)⁻¹`. Rewrite using `[hq, inv_pow, ← pow_mul, mul_inv]`. Rewrite using `[e]; exact inv_anti₀ (mul_pos (by positivity) (hP i)) h'`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hCs : (∑ l ∈ univ.filter (fun l => l < i), (C l:ℝ)) ≤ 2*a*(P i)⁻¹ * ∑ l ∈ univ.filter (fun l => l < i), q^((i:ℕ)-(l:ℕ))`. Rewrite using `[mul_sum]`. Apply `sum_le_sum` to reduce the goal to its premises. Introduce `l hl`. Establish `hl' : l < i` using `(mem_filter.1 hl).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hAs : (∑ l ∈ univ.filter (fun l => l ≤ i), (A l:ℝ)) ≤ 3/2*b'*(P i)⁻¹ * ∑ l ∈ univ.filter (fun l => l ≤ i), q^((i:ℕ)-(l:ℕ))`. Rewrite using `[mul_sum]`. Apply `sum_le_sum` to reduce the goal to its premises. Introduce `l hl`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl' : l ≤ i` using `(mem_filter.1 hl).2`. Combine the equalities or inequalities in the displayed calculation. Establish `hins : univ.filter (fun l : Fin s => l ≤ i) = insert i (univ.filter (fun l => l < i))`. Use extensionality with `l`. Simplify using `[le_iff_eq_or_lt]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hsum : ∑ l ∈ univ.filter (fun l => l ≤ i), q^((i:ℕ)-(l:ℕ)) = 1 + ∑ l ∈ univ.filter (fun l => l < i), q^((i:ℕ)-(l:ℕ))`. Rewrite using `[hins, sum_insert (by simp)]; simp`. Establish `hg` using `(geom_sum_filter_le i q hq0).resolve_right (by linarith)`. Rewrite `hg`, `hAs` using `[hsum]`. Take `⟨T, hT⟩ : ∃ T : ℝ, T = ∑ l ∈ univ.filter (fun l => l < i), q^((i:ℕ)-(l:ℕ))` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hg`, `hAs`, `hCs` using `[← hT]`. Establish `hT0 : 0 ≤ T` using `by rw [hT]; exact sum_nonneg (fun _ _ => by positivity)`. Establish `hTq : T ≤ 4/3 * q` using `by nlinarith [mul_nonneg (sub_nonneg.2 hq4) hT0]`. Establish `hT1 : 1 + T ≤ 4/3` using `by linarith`. Establish `hC2 : 2*a*(P i)⁻¹ * T ≤ 2*a*(P i)⁻¹ * (4/3*q)` using `mul_le_mul_of_nonneg_left hTq (by positivity)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA2 : 3/2*b'*(P i)⁻¹ * (1+T) ≤ 3/2*b'*(P i)⁻¹ * (4/3)` using `mul_le_mul_of_nonneg_left hT1 (by positivity)`. Establish `haq : 0 ≤ a * (P i)⁻¹ * q` using `by positivity`. Rewrite using `[Int.le_floor]`. Use `push_cast`. Unfold `SbdSeg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions.
 
-Establish `e : (4*a/(p:ℝ)^2+2*b')/P i = (4*a*q + 2*b')*(P i)⁻¹` using `by rw [hq]; ring`. Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem segment_degree_sum_bound : SegDegreeSum := by
   intro p s P A C a ap b' i hp ha hap hP hPl hC hA
@@ -346,29 +344,29 @@ theorem segment_degree_sum_bound : SegDegreeSum := by
   nlinarith
 
 /- English proof (translation)
-Introduce `a n P sg hP hsg`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hsg`. Take `⟨c, hc⟩ : ∃ c, c = (d + P - 1) / P` from `⟨_, rfl⟩`. Take `⟨e, he⟩ : ∃ e, e = (d + n + P - 1) / P` from `⟨_, rfl⟩`. Establish `hce : c ≤ e` using `by rw [hc, he]; exact Nat.div_le_div_right (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ m, c ≤ m ↔ d ≤ P * m`. Introduce `m`. Rewrite using `[hc, ← Nat.lt_succ_iff, Nat.div_lt_iff_lt_mul hP]`. Establish `: (m+1) * P = P * m + P` using `by ring`. Rewrite using `[Nat.succ_eq_add_one, this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `key2 : ∀ m, m < e ↔ P * m < d + n`. Introduce `m`. Rewrite using `[he, ← Nat.succ_le_iff, Nat.le_div_iff_mul_le hP]`. Establish `: (m+1) * P = P * m + P` using `by ring`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.succ_eq_add_one, this]`. Use linear arithmetic over natural numbers and integers. Establish `hdiv : ∀ x, sg + d ≤ x → x % P = sg % P → P * ((x - sg) / P) = x - sg`. Introduce `x hx hm`. Establish `: P ∣ x - sg` using `(Nat.modEq_iff_dvd' (by omega)).1 (show sg ≡ x [MOD P] from hm.symm)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Nat.mul_div_cancel' this`. Establish `himg : ((Ico (sg + d) (sg + d + n)).filter (fun x => x % P = sg % P)).image (fun x => (x - sg) / P) = Ico c (c + (e - c))`. Use extensionality with `m`. Simplify using `only [mem_image, mem_filter, mem_Ico]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, ⟨⟨hx1, hx2⟩, hx3⟩, rfl⟩`. Establish `h` using `hdiv x hx1 hx3`. Use `⟨(key _).2 (by omega), ?_⟩` and prove the remaining obligations. Establish `: (x - sg) / P < e` using `(key2 _).2 (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Establish `h1'` using `(key m).1 h1`. Establish `h2'` using `(key2 m).1 (by omega)`. Use `⟨sg + P * m, ⟨⟨by omega, by omega⟩, Nat.add_mul_mod_self_left _ _ _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.add_sub_cancel_left, Nat.mul_div_cancel_left m hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, e - c, himg, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.card_image_of_injOn (f := fun x => (x - sg) / P), himg]`. Simplify using the standard rewrite rules. Introduce `x hx y hy hxy`. Establish `hx'` using `mem_filter.1 hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy'` using `mem_filter.1 hy`. Establish `hx1` using `(mem_Ico.1 hx'.1).1`. Establish `hy1` using `(mem_Ico.1 hy'.1).1`. Establish `ex` using `hdiv x hx1 hx'.2`. Establish `ey` using `hdiv y hy1 hy'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at hxy`. Rewrite `ex` using `[hxy]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : d + n + P - 1 = (d + P - 1) + n` using `by omega`. Rewrite using `[he, hc, h1, Nat.add_div hP]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(d + P - 1) / P = u`. Generalize the expression as in `n / P = v`. Apply the tactic sequence `split_ifs <;> omega`. Establish `h1 : d + n + P - 1 = (d + P - 1) + n` using `by omega`. Rewrite using `[he, hc, h1, Nat.add_div hP]`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(d + P - 1) / P = u`. Generalize the expression as in `n / P = v`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem segment_window_class : SegWindowClass := by
   intro a n P sg hP hsg
@@ -430,23 +428,23 @@ theorem segment_window_class : SegWindowClass := by
     split_ifs <;> omega
 
 /- English proof (translation)
-Introduce `p N N₁ r Y a b' Q La h`. Take `⟨hY, hp, h2, hlog, h4, hba, h6, hr, hQ, hb0, hp9, hb27, hpb, hL1, hN1, hkb⟩` from `segment_parameter_bounds h`. Establish `ha0 : 0 < a` using `by linarith`. Establish `hk2 : (9:ℝ) ≤ ((r:ℝ)+1)^2`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hkQ0 : 0 ≤ ((r:ℝ)+1) * Q` using `by positivity`. Establish `hkQ : 9 * (((r:ℝ)+1) * Q) ≤ b'`. Combine the equalities or inequalities in the displayed calculation. Establish `hp81 : (81:ℝ) ≤ (p:ℝ)^2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h81 : 4/(p:ℝ)^2 ≤ 4/81` using `div_le_div_of_nonneg_left (by norm_num) (by norm_num) hp81`. Establish `ha9 : 9 * b' < a`. Establish `: 9 * b' ≤ (p:ℝ) * b'` using `mul_le_mul_of_nonneg_right hp9 hb0.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz : a * (4/(p:ℝ)^2) ≤ a * (4/81)` using `mul_le_mul_of_nonneg_left h81 ha0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hfirst : 4 * b' + ((r : ℝ) + 1) * Q ≤ a * (1 - 4 / (p : ℝ) ^ 2)`. Establish `: a * (1 - 4 / (p : ℝ) ^ 2) = a - a * (4/(p:ℝ)^2)` using `by ring`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hfirst, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `P C A j hP1 hPQ hC hA hj`. Establish `hP0 : 0 < P` using `by linarith`. Establish `hfl : ((⌊SbdSeg p a b' P⌋ : ℤ) : ℝ) ≤ SbdSeg p a b' P` using `Int.floor_le _`. Establish `hCP : a - ((r:ℝ)+1) * P ≤ C * P`. Use `mul_le_mul_of_nonneg_right hC hP0.le` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (a / P - ((r:ℝ)+1)) * P = a - ((r:ℝ)+1) * P`. Rewrite using `[sub_mul, div_mul_cancel₀ _ hP0.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAP : (A:ℝ) * P ≤ 3 * b' / 2`. Use `(le_div_iff₀ (by positivity : 0 < 2 * P)).1 hA` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hjA : (j:ℝ) * P ≤ A * P`. Establish `: (j:ℝ) ≤ A` using `by exact_mod_cast hj`. Conclude with `mul_le_mul_of_nonneg_right this hP0.le`. Establish `hkP : ((r:ℝ)+1) * P ≤ ((r:ℝ)+1) * Q` using `mul_le_mul_of_nonneg_left hPQ (by linarith)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : SbdSeg p a b' P ≤ (C:ℝ) - j`. Unfold `SbdSeg`. Rewrite using `[div_le_iff₀ hP0]`. Establish `e1 : a * (1 - 4 / (p : ℝ) ^ 2) = a - 4 * a / (p:ℝ)^2` using `by ring`. Rewrite `hfirst` using `[e1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ((C:ℝ) - j) * P = C * P - j * P` using `by ring`. Rewrite using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: ((⌊SbdSeg p a b' P⌋ : ℤ) : ℝ) ≤ (((C:ℤ) - (j:ℤ) : ℤ) : ℝ)` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem segment_terms_above_bound : SegTermsAboveS := by
   intro p N N₁ r Y a b' Q La h
@@ -499,19 +497,19 @@ theorem segment_terms_above_bound : SegTermsAboveS := by
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `p N N₁ r a Y b' Q La h`. Take `⟨hY, hp, h2, hlog, h4, hba, h6, hr, hQ, hb0, hp9, hb27, hpb, hL1, hN1, hkb⟩` from `segment_parameter_bounds h`. Take `⟨k, hk⟩ : ∃ k : ℝ, k = (r:ℝ) + 1` from `⟨_, rfl⟩`. Rewrite `h4`, the goal using `[← hk]`. Establish `hk3 : 3 ≤ k` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkY : 0 < k * Y` using `by positivity`. Establish `h1 : k^2 * Q ≤ (a:ℝ)/(k*Y)`. Rewrite using `[le_div_iff₀ hkY]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `P hP1 hPQ`. Take `⟨M, hM⟩ : ∃ M : ℕ, M = ⌊(a:ℝ)/(k*Y)⌋₊ + 1` from `⟨_, rfl⟩`. Rewrite using `[← hM]`. Establish `hlt : (a:ℝ)/(k*Y) < M` using `by rw [hM]; push_cast; exact Nat.lt_floor_add_one _`. Establish `hPM : P ≤ M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (P:ℝ) ≤ M`. Establish `h9 : (1:ℝ) ≤ k^2` using `one_le_pow₀ (by linarith)`. Establish `: 1 * Q ≤ k^2*Q` using `mul_le_mul_of_nonneg_right h9 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hPM, ?_⟩` and prove the remaining obligations. Introduce `Y' hY'`. Establish `hP0 : 0 < P` using `hP1`. Establish `hq1 : 1 ≤ M / P` using `(Nat.one_le_div_iff hP0).2 hPM`. Establish `hlt2 : M < P * (M/P + 1)` using `Nat.lt_mul_div_succ M hP0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : P * (M/P + 1) ≤ P * (2 * Y')` using `Nat.mul_le_mul_left _ (by omega)`. Establish `hMr : (M:ℝ) ≤ P * (2 * Y')` using `by exact_mod_cast (hlt2.le.trans hle)`. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Establish `hPr : (0:ℝ) < P` using `by exact_mod_cast hP0`. Rewrite using `[div_le_iff₀ (by positivity)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha` using `(div_lt_iff₀ hkY).1 hlt`. Use `mul_le_mul_of_nonneg_right hMr hkY.le` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem segment_no_short_window : SegNoShortWindow := by
   intro p N N₁ r a Y b' Q La h
@@ -553,23 +551,23 @@ theorem segment_no_short_window : SegNoShortWindow := by
     _ = Y' * (2 * k * Y * P) := by ring
 
 /- English proof (translation)
-Introduce `p k Y a b' P hY hk hp hb0 h2 hL haP`. Establish `hkr : (2:ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hY0 : 0 < Y` using `by linarith`. Establish `hL0 : 0 < Real.log a` using `by linarith`. Establish `hk0 : (0:ℝ) < k` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : 0 < a`. Assume the negation of the conclusion as `hneg`. Establish `hneg` using `not_lt.1 hneg`. Establish `h1 : a / b' ≤ 0` using `div_nonpos_of_nonpos_of_nonneg hneg hb0.le`. Establish `h3 : 0 < (k:ℝ)*Y^2*Real.log a` using `by positivity`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨w, hw⟩ : ∃ w : ℝ, w = (k:ℝ) * Y` from `⟨_, rfl⟩`. Establish `hw2 : 2 ≤ w`. Rewrite using `[hw]`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hw0 : 0 < w` using `by linarith`. Rewrite `haP` using `[← hw]`. Establish `hP0 : 0 < P` using `lt_trans (div_pos ha0 hw0) haP`. Establish `hpw : w^2 ≤ (p:ℝ)` using `by rw [hw, mul_pow]; exact hp`. Establish `hp2 : 8 * w ≤ (p:ℝ)^2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8 : (8:ℝ) ≤ w^3`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hp20 : 0 < (p:ℝ)^2` using `by linarith`. Establish `hA : 4 * a / (p:ℝ)^2 ≤ a / (2*w)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_div_iff₀ hp20 (by positivity)]`. Use `mul_le_mul_of_nonneg_left hp2 ha0.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : 2 * b' < a / (2*w)`. Rewrite using `[lt_div_iff₀ (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `(le_div_iff₀ hb0).1 h2`. Establish `h4 : (k:ℝ) * Y * b' ≤ (k:ℝ) * Y^2 * b'`. Establish `: Y ≤ Y^2` using `le_self_pow₀ hY (by norm_num)`. Use `gcongr`. Establish `h5 : (k:ℝ) * Y^2 * b' * 4 < (k:ℝ) * Y^2 * b' * Real.log a` using `mul_lt_mul_of_pos_left hL (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsum : a / (2*w) + a / (2*w) = a / w` using `by field_simp; ring`. Rewrite using `[Int.floor_eq_zero_iff]`. Unfold `SbdSeg`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[div_lt_one hP0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem segment_short_window_free : SegShortWindowNoTie := by
   intro p k Y a b' P hY hk hp hb0 h2 hL haP
@@ -621,7 +619,7 @@ theorem segment_short_window_free : SegShortWindowNoTie := by
   linarith
 
 /- English proof (translation)
-Rewrite using `[div_le_div_iff₀ ha (by positivity)]`. Use `(le_div_iff₀ hb).1 h2` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma segment_ratio_le {k Y L a b' : ℝ} (_hk : 0 < k) (hY : 0 < Y) (hL : 0 < L) (ha : 0 < a) (hb : 0 < b')
     (h2 : k*Y^2*L ≤ a/b') : k * Y * b' / a ≤ 1 / (Y * L) := by
@@ -632,7 +630,7 @@ lemma segment_ratio_le {k Y L a b' : ℝ} (_hk : 0 < k) (hY : 0 < Y) (hL : 0 < L
     _ = 1*a := by ring
 
 /- English proof (translation)
-Establish `hp0 : 0 < p` using `lt_of_lt_of_le (by positivity) hp`. Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma segment_ratio_le_prime {k Y p : ℝ} (hk : 0 < k) (hY : 0 < Y) (hp : k^2*Y^2 ≤ p) :
     k*Y/p^2 ≤ 1/(k^3*Y^3) := by
@@ -643,9 +641,9 @@ lemma segment_ratio_le_prime {k Y p : ℝ} (hk : 0 < k) (hY : 0 < Y) (hp : k^2*Y
     _ = 1*p^2 := by ring
 
 /- English proof (translation)
-Establish `hp0 : 0 < p` using `lt_of_lt_of_le (by positivity) hp`. Establish `hw : 0 < a/(2*k*Y*P)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `segment_ratio_le_prime hk hY hp`. Establish `h3` using `segment_ratio_le hk hY hL ha hb h2`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = _ := by ring`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma segment_sum_ratio_le {k Y L a b' p P S Y' : ℝ} (hk : 0 < k) (hY : 0 < Y) (hL : 0 < L) (ha : 0 < a) (hb : 0 < b')
     (hp : k^2*Y^2 ≤ p) (h2 : k*Y^2*L ≤ a/b') (hP : 0 < P) (hS0 : 0 ≤ S)
@@ -663,7 +661,7 @@ lemma segment_sum_ratio_le {k Y L a b' p P S Y' : ℝ} (hk : 0 < k) (hY : 0 < Y)
     _ = _ := by ring
 
 /- English proof (translation)
-Unfold `kapSeg`. Establish `hs2 : (2:ℝ) ≤ (s:ℝ)+2` using `by have := Nat.cast_nonneg (α:=ℝ) s; linarith`. Establish `hlg'` using `hlg.le`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma forty_eight_le_kappa {p r s : ℕ} {a : ℝ} (hr : (2:ℝ) ≤ r) (hlg : 2 < lgSeg p a r) : 48 ≤ kapSeg p a r s := by
   unfold kapSeg
@@ -673,9 +671,9 @@ lemma forty_eight_le_kappa {p r s : ℕ} {a : ℝ} (hr : (2:ℝ) ≤ r) (hlg : 2
     _ ≤ 3 * ((s : ℝ) + 2) * (r : ℝ) ^ 2 * lgSeg p a r := by gcongr
 
 /- English proof (translation)
-Unfold `firstDepth`. Establish `ht : (0:ℝ) ≤ t` using `Nat.cast_nonneg _`. Establish `h1 : 0 ≤ (t:ℝ) * κ * (Y - 1)` using `mul_nonneg (mul_nonneg ht hκ) (by linarith)`. Establish `h2 : 0 ≤ κ * (Y - 1)` using `mul_nonneg hκ (by linarith)`. Establish `h3 : 0 ≤ (t:ℝ) * (Y * κ + κ)` using `by positivity`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 0 ≤ κ * Y` using `by positivity`. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma first_depth_bounds {t : ℕ} {Y κ : ℝ} (hY : 1 ≤ Y) (hκ : 0 ≤ κ) :
     firstDepth t Y κ ≤ 2 * ((t : ℝ) + 1) * Y * κ ∧ κ ≤ firstDepth t Y κ := by
@@ -690,29 +688,29 @@ lemma first_depth_bounds {t : ℕ} {Y κ : ℝ} (hY : 1 ≤ Y) (hκ : 0 ≤ κ) 
   · linarith
 
 /- English proof (translation)
-Introduce `p N N₁ r s Y a b' Q La P S Y' h hP hS0 hS hY'`. Take `⟨hl1, hl2, hl3, hl4, hl5, hl6⟩` from `segment_log_bound p N N₁ r Y a b' Q La h`. Take `⟨hY, hp, h2, hlog, h4, hba, h6, hr, hQ, hb0, hp9, hb27, hpb, hL1, hN1, hkb⟩` from `segment_parameter_bounds h`. Establish `hκ` using `forty_eight_le_kappa (s := s) hr hl2`. Take `⟨k, hk⟩ : ∃ k : ℝ, k = (r:ℝ) + 1` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨lg, hlg⟩ : ∃ x : ℝ, x = lgSeg p a r` from `⟨_, rfl⟩`. Take `⟨L, hLd⟩ : ∃ x : ℝ, x = Real.log a` from `⟨_, rfl⟩`. Take `⟨κ, hκd⟩ : ∃ x : ℝ, x = kapSeg p a r s` from `⟨_, rfl⟩`. Rewrite `hp`, `h2`, `hl6`, `hY'` using `[← hk]`. Rewrite `hl2`, `hl4`, `hl6`, the goal using `[← hlg]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h2`, `hL1`, `hl5` using `[← hLd]`. Rewrite `hκ`, the goal using `[← hκd]`. Unfold `SbdSeg at hS`. Establish `hk3 : 3 ≤ k` using `by linarith`. Establish `hk0 : 0 < k` using `by linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY0 : 0 < Y` using `by linarith`. Establish `hL0 : 0 < L` using `by linarith`. Establish `ha0 : 0 < a` using `by linarith`. Establish `hlgL : lg ≤ 4 * L` using `by linarith`. Establish `hlg0 : 0 ≤ lg` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `segment_sum_ratio_le hk0 hY0 hL0 ha0 hb0 hp h2 hP hS0 hS hY'`. Establish `hY'0 : 0 < Y'` using `lt_of_lt_of_le (by positivity) hY'`. Take `⟨u, hud⟩ : ∃ x : ℝ, x = S / Y'` from `⟨_, rfl⟩`. Rewrite `hu` using `[← hud]`. Establish `hu0 : 0 ≤ u` using `by rw [hud]; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hY3 : Y ≤ Y^3` using `le_self_pow₀ hY (by norm_num)`. Establish `hk21 : 1 ≤ k^2` using `one_le_pow₀ (by linarith)`. Establish `hk31 : 1 ≤ k^3` using `one_le_pow₀ (by linarith)`. Establish `hYk3 : Y ≤ k^3*Y^3`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hYk2 : Y ≤ k^2*Y^3`. Combine the equalities or inequalities in the displayed calculation. Establish `hYL : Y ≤ Y * L` using `le_mul_of_one_le_right hY0.le hL1`. Establish `hα : 8/(k^3*Y^3) ≤ 8/Y` using `div_le_div_of_nonneg_left (by norm_num) hY0 hYk3`. Establish `hβ : 4/(Y*L) ≤ 4/Y` using `div_le_div_of_nonneg_left (by norm_num) hY0 hYL`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e12 : 8/Y + 4/Y = 12/Y` using `by ring`. Establish `c1 : u ≤ 12 / Y` using `by linarith`. Establish `hα2 : 8/(k^3*Y^3) * lg ≤ 32 / Y`. Combine the equalities or inequalities in the displayed calculation. Establish `hβ2 : 4/(Y*L) * lg ≤ 16 / Y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e48 : 32/Y + 16/Y = 48/Y` using `by ring`. Establish `c2 : u * lg ≤ 48 / Y`. Use `mul_le_mul_of_nonneg_right hu hlg0` as an intermediate fact. Rewrite `this` using `[add_mul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `eS : S * lg / Y' = u * lg` using `by rw [hud]; ring`. Use `⟨by rw [← hud]; exact c1, by rw [eS]; exact c2, hκ, ?_⟩` and prove the remaining obligations. Unfold `epsSeg`. Establish `e1 : 2 * S / Y' = 2 * u` using `by rw [hud]; ring`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e2 : 2 * S * lg / Y' = 2 * (u * lg)` using `by rw [hud]; ring`. Rewrite using `[e1, e2]`. Establish `h48 : 48 / Y ≤ 48` using `div_le_self (by norm_num) hY`. Establish `hκ0 : 0 < κ` using `by linarith`. Establish `c3 : (2 * κ + 2 * (u * lg)) / (Y * κ) ≤ 4 / Y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e28 : 2 * (12 / Y) + 4 / Y = 28 / Y` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem segment_epsilon_bound : SegEps := by
   intro p N N₁ r s Y a b' Q La P S Y' h hP hS0 hS hY'
@@ -782,31 +780,31 @@ theorem segment_epsilon_bound : SegEps := by
   linarith
 
 /- English proof (translation)
-Introduce `p N N₁ r s t Y a b' Q La J Yp h hts hJ0 hJ hYp`. Take `⟨hl1, hl2, hl3, hl4, hl5, hl6⟩` from `segment_log_bound p N N₁ r Y a b' Q La h`. Take `⟨hY, hp, h2, hlog, h4, hba, h6, hr, hQ, hb0, hp9, hb27, hpb, hL1, hN1, hkb⟩` from `segment_parameter_bounds h`. Establish `hκ` using `forty_eight_le_kappa (s := s) hr hl2`. Take `⟨hD1, hD2⟩` from `first_depth_bounds (t := t) hY (by linarith : 0 ≤ kapSeg p a r s)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx0 : initialExponent p a r s t + lgSeg p a r ≤ kapSeg p a r s - 1`. Unfold `initialExponent kapSeg`. Take `⟨lg, hlg⟩ : ∃ x : ℝ, x = lgSeg p a r` from `⟨_, rfl⟩`. Rewrite `hl2`, the goal using `[← hlg]`. Establish `hs0 : (0:ℝ) ≤ s` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htr : (t:ℝ) ≤ s` using `by exact_mod_cast hts`. Establish `h1 : (t:ℝ)*((r:ℝ)+1) ≤ (s:ℝ)*((r:ℝ)+1)` using `mul_le_mul_of_nonneg_right htr (by linarith)`. Establish `h2' : 2*(r:ℝ) ≤ (r:ℝ)^2` using `by nlinarith`. Establish `h3 : ((s:ℝ)+2)*(2*(r:ℝ)) ≤ ((s:ℝ)+2)*(r:ℝ)^2` using `mul_le_mul_of_nonneg_left h2' (by linarith)`. Establish `h4' : 0 ≤ (s:ℝ)*(r:ℝ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : 1 ≤ 3*((s:ℝ)+2)*(r:ℝ)^2 - ((r:ℝ) + (t:ℝ)*((r:ℝ)+1) + (2*(s:ℝ)+2)*((r:ℝ)-1) + 1)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hm : (1:ℝ) * 1 ≤ (3*((s:ℝ)+2)*(r:ℝ)^2 - ((r:ℝ) + (t:ℝ)*((r:ℝ)+1) + (2*(s:ℝ)+2)*((r:ℝ)-1) + 1)) * lg` using `mul_le_mul hc (by linarith) zero_le_one (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hceil : ((⌈initialExponent p a r s t⌉ : ℤ) : ℝ) + lgSeg p a r ≤ kapSeg p a r s`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Int.ceil_lt_add_one (initialExponent p a r s t)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨X, hX⟩ : ∃ x : ℝ, x = ((⌈initialExponent p a r s t⌉ : ℤ) : ℝ)` from `⟨_, rfl⟩`. Take `⟨k, hk⟩ : ∃ k : ℝ, k = (r:ℝ) + 1` from `⟨_, rfl⟩`. Take `⟨lg, hlg⟩ : ∃ x : ℝ, x = lgSeg p a r` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hLd⟩ : ∃ x : ℝ, x = Real.log a` from `⟨_, rfl⟩`. Take `⟨κ, hκd⟩ : ∃ x : ℝ, x = kapSeg p a r s` from `⟨_, rfl⟩`. Rewrite `hp`, `h2`, `hl6`, `hYp` using `[← hk]`. Rewrite `hceil`, the goal using `[← hX]`. Rewrite `hl2`, `hl4`, `hl6`, `hx0`, `hceil`, the goal using `[← hlg]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h2`, `hL1`, `hl5`, the goal using `[← hLd]`. Rewrite `hκ`, `hD1`, `hD2`, `hx0`, `hceil`, the goal using `[← hκd]`. Take `⟨D, hDd⟩ : ∃ x : ℝ, x = firstDepth t Y κ` from `⟨_, rfl⟩`. Rewrite `hD1`, `hD2`, the goal using `[← hDd]`. Establish `hk0 : 0 < k` using `by linarith`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hY0 : 0 < Y` using `by linarith`. Establish `hL0 : 0 < L` using `by linarith`. Establish `ha0 : 0 < a` using `by linarith`. Establish `hlgL : lg ≤ 4 * L` using `by linarith`. Establish `hlg0 : 0 ≤ lg` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : 0 < a / (k * Y)` using `by positivity`. Establish `hv : J / Yp ≤ 3/2 * (1 / (Y * L))`. Combine the equalities or inequalities in the displayed calculation. Establish `hYL0 : 0 < 1 / (Y * L)` using `by positivity`. Establish `c2 : J / Yp ≤ 2 / (Y * L)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 2 / (Y * L) = 2 * (1 / (Y * L))` using `by ring`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `c3 : J * lg / Yp ≤ 8 / Y`. Establish `e : J * lg / Yp = J / Yp * lg` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨hD1, c2, c3, hx0, hceil, ?_⟩` and prove the remaining obligations. Unfold `epsPlusSeg`. Establish `hD0 : 0 < D` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hE : Y * D < ((⌊Y * D⌋ : ℤ) : ℝ) + 1` using `Int.lt_floor_add_one _`. Establish `hYD : 0 < Y * D` using `by positivity`. Establish `h8 : 8 / Y ≤ 8` using `div_le_self (by norm_num) hY`. Establish `c4 : (X + D + lg + J * lg / Yp) / (((⌊Y * D⌋ : ℤ) : ℝ) + 1) ≤ 3 / Y`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `c5 : 2 / (Y * L) ≤ 2 / Y` using `div_le_div_of_nonneg_left (by norm_num) hY0 (le_mul_of_one_le_right hY0.le hL1)`. Establish `e5 : 2 / Y + 3 / Y = 5 / Y` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem segment_epsilon_plus : SegEpsPlus := by
   intro p N N₁ r s t Y a b' Q La J Yp h hts hJ0 hJ hYp
@@ -884,19 +882,19 @@ theorem segment_epsilon_plus : SegEpsPlus := by
   linarith
 
 /- English proof (translation)
-Introduce `p N N₁ r s t Y a b' Q La h hts hsN`. Take `⟨hl1, hl2, hl3, hl4, hl5, hl6⟩` from `segment_log_bound p N N₁ r Y a b' Q La h`. Take `⟨hY, hp, h2, hlog, h4, hba, h6, hr, hQ, hb0, hp9, hb27, hpb, hL1, hN1, hkb⟩` from `segment_parameter_bounds h`. Establish `hκ` using `forty_eight_le_kappa (s := s) hr hl2`. Take `⟨hD1, hD2⟩` from `first_depth_bounds (t := t) hY (by linarith : 0 ≤ kapSeg p a r s)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs0 : (0:ℝ) ≤ s` using `Nat.cast_nonneg _`. Establish `ht0 : (0:ℝ) ≤ t` using `Nat.cast_nonneg _`. Establish `htr : (t:ℝ) ≤ s` using `by exact_mod_cast hts`. Establish `hsr : (s:ℝ) ≤ N₁` using `by exact_mod_cast hsN`. Establish `hlg0 : 0 ≤ lgSeg p a r` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY0 : 0 < Y` using `by linarith`. Establish `c1 : kapSeg p a r s ≤ 9 * N₁ * ((r : ℝ) + 1) ^ 2 * lgSeg p a r`. Unfold `kapSeg`. Establish `hs3 : (s:ℝ) + 2 ≤ 3 * N₁` using `by linarith`. Establish `hrk : (r:ℝ) ≤ (r:ℝ) + 1` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `c3 : 3 * ((s : ℝ) + 1) * lgSeg p a r + 2 * uSeg p a r t ≤ kapSeg p a r s`. Unfold `uSeg kapSeg`. Establish `h1 : ((t:ℝ)+1)*((r:ℝ)+1) ≤ ((s:ℝ)+1)*((r:ℝ)+1)` using `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`. Establish `h2' : 2*(r:ℝ) + 5 ≤ 3 * (r:ℝ)^2` using `by nlinarith`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((s:ℝ)+1)*(2*(r:ℝ)+5) ≤ ((s:ℝ)+1)*(3*(r:ℝ)^2)` using `mul_le_mul_of_nonneg_left h2' (by linarith)`. Establish `h5 : 0 ≤ (r:ℝ)^2` using `by positivity`. Establish `hc : 0 ≤ 3*((s:ℝ)+2)*(r:ℝ)^2 - (3*((s:ℝ)+1) + 2*(((t:ℝ)+1)*((r:ℝ)+1)))` using `by nlinarith`. Establish `hm` using `mul_nonneg hc hlg0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `c2 : Y * firstDepth t Y (kapSeg p a r s) ≤ 36 * Y ^ 2 * (N₁ : ℝ) ^ 2 * ((r : ℝ) + 1) ^ 2 * lgSeg p a r`. Establish `ht2 : (t:ℝ) + 1 ≤ 2 * N₁` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Use `⟨c1, c2, c3, ?_⟩` and prove the remaining obligations. Unfold `DjSeg`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hfl : ((⌊Y * firstDepth t Y (kapSeg p a r s)⌋ : ℤ) : ℝ) ≤ Y * firstDepth t Y (kapSeg p a r s)` using `Int.floor_le _`. Establish `hY2 : 1 ≤ Y ^ 2` using `one_le_pow₀ hY`. Establish `hN2 : (N₁:ℝ) ≤ (N₁:ℝ)^2` using `le_self_pow₀ hN1 (by norm_num)`. Establish `c4 : 9 * N₁ * ((r : ℝ) + 1) ^ 2 * lgSeg p a r ≤ 9 * Y ^ 2 * (N₁ : ℝ) ^ 2 * ((r : ℝ) + 1) ^ 2 * lgSeg p a r`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

@@ -12,11 +12,9 @@ noncomputable section
 variable {X Y : Scheme.{u}} (f : X ⟶ Y)
 
 /- English proof (translation)
-Establish `h1 : IsPullback (f ∣_ U') (f ⁻¹ᵁ U').ι U'.ι f` using `isPullback_morphismRestrict f U'`. Establish `h2 : IsPullback (f ∣_ U) (f ⁻¹ᵁ U).ι U.ι f` using `isPullback_morphismRestrict f U`. Establish `hU : Y.homOfLE h ≫ U.ι = U'.ι` using `Y.homOfLE_ι h`. Establish `hX : X.homOfLE (f.preimage_mono h) ≫ (f ⁻¹ᵁ U).ι = (f ⁻¹ᵁ U').ι` using `X.homOfLE_ι _`. Establish `hsq : X.homOfLE (f.preimage_mono h) ≫ f ∣_ U = f ∣_ U' ≫ Y.homOfLE h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono U.ι, Category.assoc, morphismRestrict_ι, Category.assoc, hU, morphismRestrict_ι, ← Category.assoc, hX]`. Establish `h3 : IsPullback (X.homOfLE (f.preimage_mono h)) (f ∣_ U') (f ∣_ U) (Y.homOfLE h)`. Use `IsPullback.of_right ?_ hsq h2.flip` and prove the remaining obligations. Rewrite using `[hX, hU]`. Conclude with `h1.flip`.
-
-Conclude with `h3.isIso_snd_of_isIso`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isIso_morphismRestrict_of_le {U U' : Y.Opens} (h : U' ≤ U) [IsIso (f ∣_ U)] :
     IsIso (f ∣_ U') := by
@@ -34,9 +32,9 @@ lemma isIso_morphismRestrict_of_le {U U' : Y.Opens} (h : U' ≤ U) [IsIso (f ∣
   exact h3.isIso_snd_of_isIso
 
 /- English proof (translation)
-Use `isIso_morphismRestrict_of_le f hV` as an intermediate fact. Establish `h0 : IsIso ((f ∣_ V).app ⊤)` using `inferInstance`. Establish `h1 : IsIso (f.app (V.ι ''ᵁ ⊤) ≫ X.presheaf.map (eqToHom (image_morphismRestrict_preimage f V ⊤)).op)`. Rewrite using `[← morphismRestrict_app]`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : IsIso (f.app (V.ι ''ᵁ ⊤))` using `IsIso.of_isIso_comp_right _ (X.presheaf.map (eqToHom (image_morphismRestrict_preimage f V ⊤)).op)`. Establish `e : V.ι ''ᵁ ⊤ = V` using `V.ι_image_top`. Rewrite `h2` using `[e]`. Conclude with `ConcreteCategory.bijective_of_isIso _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma bijective_app_of_isIso_morphismRestrict {U : Y.Opens} [IsIso (f ∣_ U)] {V : Y.Opens}
     (hV : V ≤ U) : Function.Bijective (f.app V) := by
@@ -53,7 +51,7 @@ lemma bijective_app_of_isIso_morphismRestrict {U : Y.Opens} [IsIso (f ∣_ U)] {
   exact ConcreteCategory.bijective_of_isIso _
 
 /- English proof (translation)
-Introduce `a ha b hb hab`. Establish `hinj : Function.Injective (f ∣_ U).base` using `(TopCat.homeoOfIso (Scheme.forgetToTop.mapIso (asIso (f ∣_ U)))).injective`. Use `@hinj ⟨a, ha⟩ ⟨b, hb⟩ (Subtype.ext ((morphismRestrict_base_coe f U ⟨a, ha⟩).trans (hab.trans (morphismRestrict_base_coe f U ⟨b, hb⟩).symm)))` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma injOn_of_isIso_morphismRestrict {U : Y.Opens} [IsIso (f ∣_ U)] :
     Set.InjOn f.base (f ⁻¹ᵁ U : Set X) := by
@@ -66,7 +64,7 @@ lemma injOn_of_isIso_morphismRestrict {U : Y.Opens} [IsIso (f ∣_ U)] :
   exact congrArg Subtype.val this
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (f ∣_ U).base` using `(TopCat.homeoOfIso (Scheme.forgetToTop.mapIso (asIso (f ∣_ U)))).surjective`. Take `⟨⟨x, hx⟩, hxy⟩` from `hsurj ⟨y, hy⟩`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Conclude with `(morphismRestrict_base_coe f U ⟨x, hx⟩).symm.trans (congrArg Subtype.val hxy)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma exists_preimage_of_isIso_morphismRestrict {U : Y.Opens} [IsIso (f ∣_ U)] {y : Y}
     (hy : y ∈ U) : ∃ x : X, x ∈ f ⁻¹ᵁ U ∧ f.base x = y := by

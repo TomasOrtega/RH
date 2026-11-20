@@ -8,19 +8,17 @@ open PositivityTheory.Rg.Rs PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.F Up
 open PositivityTheory.Rg.Rs.PExpFin in
 
 /- English proof (translation)
-Take `⟨-, -, -, hDct⟩` from `dict_holds E N`. Distinguish the cases in `hex : ∃ r, 0 < r ∧ r < N ∧ ∃ φ ∈ V, An.ctn r φ.1 ≠ 0`. Use `right`. Take `⟨r, hr, hrN, φ, hφ, hne⟩` from `hex`. Take `⟨hct, -⟩` from `hDct φ (hV.aut φ hφ) r hr hrN`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcont : ∀ g, Continuous fun t => An.ctn r φ.1 (aT E N r t * g)`. Set `_ : MeasurableSpace (BlockIx N r → Ad E)` to `_root_.borel _`. Establish `_ : BorelSpace (BlockIx N r → Ad E)` using `⟨rfl⟩`. Take `⟨μ, 𝓕, hμ, h𝓕, e⟩` from `hct`. Take `⟨F, hF, -⟩` from `GlobalTheory.CompanionTheory.CTSmooth.ct_smooth E N r φ (hV.aut φ hφ).left (hV.aut φ hφ).level μ 𝓕 hμ h𝓕`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : An.ctn r φ.1 = F.1` using `e.trans (funext fun g => (hF g).symm)`. Introduce `g`. Rewrite using `[e2]`. Conclude with `PDich.continuous_aT F r g`. Take `⟨p, hp, hk, hroot⟩` from `killPoly_holds (GA E N) (aT E N r) (An.ctn r φ.1) (fun u v => aT_add r u v) hcont (finTr_holds E N φ (hV.aut φ hφ) r hr hrN _ hct)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : 0 < p.degree` using `hp.degree_pos.2 fun h1 => hne (funext fun g => by`. Use `hk g` as an intermediate fact. Rewrite `this` using `[h1]`. Simplify `this)` using `[aT_zero]`. Take `⟨z, hz⟩` from `Complex.exists_root hdeg`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, -, F, hF, hF0, hFe⟩` from `hroot z hz`. Conclude with `⟨r, hr, hrN, c, φ, hφ, An.ctn r φ.1, hct, F, hF, hF0, hFe⟩`. Use `left push Not at hex`. Establish `hcusp : ∀ φ ∈ V, IsCuspForm φ` using `fun φ hφ => ⟨hV.aut φ hφ, by`. Introduce `r hr hrN inst1 inst2 μ 𝓕 hμ hF g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl : inst1 = _root_.borel _` from `inst2.measurable_eq`. Take `⟨c, -, e⟩` from `(hDct φ (hV.aut φ hφ) r hr hrN).2 _ ⟨μ, 𝓕, hμ, hF, rfl⟩`. Use `congrFun e g` as an intermediate fact. Rewrite `this` using `[hex r hr hrN φ hφ]`. Simplify `this⟩` using `[PositivityTheory.Affgl.CT.ct]`.
-
-Conclude with `⟨⟨V, hcusp, hV.stable, hV.ne_bot, hV.irred⟩, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem cusp_or_exp {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
     (V : Submodule ℂ (Sm E N)) (hV : IsDiscrete V) :
@@ -60,7 +58,7 @@ private theorem cusp_or_exp {E : Type} [Field E] [NumberField E] [IsTotallyCompl
     exact ⟨⟨V, hcusp, hV.stable, hV.ne_bot, hV.irred⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨hs, -⟩` from `h`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hs`. Substitute `hs` using the available equality. Conclude with `⟨Nat.pos_of_mul_pos_left hr, Nat.pos_of_mul_pos_right hr⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem pos_of_ascEmb {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r a d : ℕ}
     {V : Submodule ℂ (Sm E r)} {π : CuspSub E a} (hr : 0 < r) (h : AscEmb V π d) : 0 < a ∧ 0 < d := by
@@ -70,21 +68,21 @@ private theorem pos_of_ascEmb {E : Type} [Field E] [NumberField E] [IsTotallyCom
   exact ⟨Nat.pos_of_mul_pos_left hr, Nat.pos_of_mul_pos_right hr⟩
 
 /- English proof (translation)
-Take `⟨r, c, lam, hr0, hrN, hc, hlam, hpc, hbd⟩` from `PAscAll.exists_extremal (expFin_of dict_holds finTr_holds) expNeg_holds V hV hne`. Take `⟨s, rfl⟩ : ∃ s, N = r + s` from `⟨N - r, by omega⟩`. Establish `hs0 : 0 < s` using `by omega`. Establish `hd : (0 : ℝ) < (Module.finrank ℚ E : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Establish `hdC : (Module.finrank ℚ E : ℂ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpc' : pE E (r + s) r c = -lam * (r * s)` using `by rw [hpc]; push_cast; ring`. Take `⟨T, hT⟩` from `slice_of dict_holds finTr_holds E r s hr0 hs0 V hV c hc`. Establish `hL2` using `chord_of expTw_holds sqIntCrit_holds E r s hr0 hs0 V c T lam hlam hT hpc' hbd`. Take `⟨V₁, V₂, hV₁, hV₂, hemb⟩` from `proj_of pr_holds sliceTens_holds indMap_holds E r s hr0 hs0 V hV c _ _ T hT hL2`. Take `⟨m, hm, hnd, hint⟩` from `hτ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m₁, m₂, hm₁, hm₂, he⟩` from `infInd2_holds E r s V V₁ V₂ _ _ hV hV₁ hV₂ hemb τ m hm`. Establish `hτ₁ : RegInt V₁ τ` using `PAscAll.regInt_of_le hnd hint (he ▸ Multiset.le_add_right _ _) hm₁`. Establish `hτ₂ : RegInt V₂ τ` using `PAscAll.regInt_of_le hnd hint (he ▸ Multiset.le_add_left _ _) hm₂`. Take `⟨a₁, d₁, π₁, hu₁, hn₁, h₁⟩` from `ascAll_holds E r hr0 V₁ hV₁ τ hτ₁`. Take `⟨a₂, d₂, π₂, hu₂, hn₂, h₂⟩` from `ascAll_holds E s hs0 V₂ hV₂ τ hτ₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hr' : (r : ℂ) ≠ 0` using `by exact_mod_cast hr0.ne'`. Establish `hs' : (s : ℂ) ≠ 0` using `by exact_mod_cast hs0.ne'`. Establish `hsum : (r : ℂ) * (c / (r * (Module.finrank ℚ E : ℂ))) + s * (-c / (s * (Module.finrank ℚ E : ℂ))) = 0` using `by field_simp; ring`. Establish `hre : (c / (r * (Module.finrank ℚ E : ℂ))).re < (s : ℝ) / 2`. Establish `e : (r : ℂ) * (Module.finrank ℚ E : ℂ) = (((r : ℝ) * (Module.finrank ℚ E : ℝ) : ℝ) : ℂ)` using `by push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrR : (0 : ℝ) < r` using `by exact_mod_cast hr0`. Rewrite using `[e, Complex.div_ofReal_re, div_lt_iff₀ (mul_pos hrR hd)]`. Establish `h3 : c.re / (Module.finrank ℚ E : ℝ) < (r : ℝ) * s / 2`. Establish `h4` using `hpc'`. Unfold `pE at h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Move the coercions through the operations in `at h4`. Use polynomial arithmetic with `[mul_pos hlam (mul_pos hrR (show (0 : ℝ) < s by exact_mod_cast hs0))]`. Rewrite `h3` using `[div_lt_iff₀ hd]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsS : StringStep` using `stringStep_of PositivityTheory.AdelicQuotientData.jacquetShalika.1 PositivityTheory.AdelicQuotientData.jacquetShalika.2 infInd2_holds infAsc_holds satInd2_holds satAsc_holds satHerm_holds gap_holds`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `e₁` using `h₁ π₁ (Setoid.refl π₁)`. Establish `e₂` using `h₂ π₂ (Setoid.refl π₂)`. Take `⟨ha₁, hd₁⟩` from `pos_of_ascEmb hr0 e₁`. Take `⟨-, hd₂⟩` from `pos_of_ascEmb hs0 e₂`. Take `⟨hsig, hz₁, hz₂⟩` from `hsS E r s hr0 hs0 V V₁ V₂ _ _ hV hV₁ hV₂ hemb τ ⟨m, hm, hnd, hint⟩ hsum hre a₁ d₁ a₂ d₂ π₁ π₂ hu₁ hn₁ e₁ hu₂ hn₂ e₂`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, hq⟩` from `Sigma.mk.inj_iff.mp hsig`. Establish `hiso : π₁.Iso π₂` using `Quotient.exact (eq_of_heq hq)`. Rewrite `hemb` using `[hz₁, hz₂]`. Use `⟨a₁, d₁ + d₂, π₁, ha₁, by omega, hu₁, hn₁, ?_⟩` and prove the remaining obligations. Conclude with `stages_of indMap_holds E r s a₁ d₁ d₂ V V₁ V₂ π₁ hV hV₁ hV₂ hemb e₁ (h₂ π₁ ((CuspSub.setoid E a₁).iseqv.symm hiso))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem two_of_exp {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
     (V : Submodule ℂ (Sm E N)) (hV : IsDiscrete V) (τ : E →+* ℂ) (hτ : RegInt V τ)
@@ -138,7 +136,7 @@ private theorem two_of_exp {E : Type} [Field E] [NumberField E] [IsTotallyComple
     (h₂ π₁ ((CuspSub.setoid E a₁).iseqv.symm hiso))
 
 /- English proof (translation)
-Introduce `E _ _ _ N _ V hV τ hτ`. Break down `cusp_or_exp V hV with h | hne` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (two_of_exp V hV τ hτ hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem UpperTheory.V.Z.Tf.GOne.cuspOrTwo :
     CuspOrTwo := by

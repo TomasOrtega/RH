@@ -10,13 +10,13 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.B
 namespace PositivityTheory.Xgn.StalkPointFactorization
 
 /- English proof (translation)
-Establish `hf' : Set.range f ⊆ Set.range hU.fromSpec`. Rewrite using `[hU.range_fromSpec]`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hf z`. Establish `hg' : Set.range g ⊆ Set.range hU.fromSpec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU.range_fromSpec]`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hg z`. Take `⟨a, ha⟩` from `Spec.map_surjective (IsOpenImmersion.lift hU.fromSpec f hf')`. Take `⟨b, hb⟩` from `Spec.map_surjective (IsOpenImmersion.lift hU.fromSpec g hg')`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ea : Spec.map a ≫ hU.fromSpec = f` using `by rw [ha, IsOpenImmersion.lift_fac]`. Establish `eb : Spec.map b ≫ hU.fromSpec = g` using `by rw [hb, IsOpenImmersion.lift_fac]`. Rewrite `e` using `[← ea, ← eb, ← Category.assoc, ← Category.assoc, cancel_mono, ← Spec.map_comp, ← Spec.map_comp]`. Establish `e2 : a ≫ i = b ≫ i` using `Spec.map_injective e`. Establish `e3 : a = b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `s`. Apply `hi` to reduce the goal to its premises. Conclude with `ConcreteCategory.congr_hom e2 s`. Rewrite using `[← ea, ← eb, e3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_of_affine {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {S T : CommRingCat.{0}} (i : S ⟶ T)
     (hi : Function.Injective i.hom) (f g : Spec S ⟶ X) (hf : ∀ z, f z ∈ U) (hg : ∀ z, g z ∈ U)
@@ -42,7 +42,7 @@ theorem ext_of_affine {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {S T 
   rw [← ea, ← eb, e3]
 
 /- English proof (translation)
-Establish `h : X.fromSpecStalk y z ∈ Set.range (X.fromSpecStalk y)` using `⟨z, rfl⟩`. Rewrite `h` using `[Scheme.range_fromSpecStalk]`. Conclude with `Specializes.mem_open h U.isOpen hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fromSpecStalk_mem {X : Scheme.{0}} {U : X.Opens} {y : X} (hy : y ∈ U) (z : Spec (X.presheaf.stalk y)) :
     X.fromSpecStalk y z ∈ U := by
@@ -53,9 +53,9 @@ theorem fromSpecStalk_mem {X : Scheme.{0}} {U : X.Opens} {y : X} (hy : y ∈ U) 
 end PositivityTheory.Xgn.StalkPointFactorization
 
 /- English proof (translation)
-Introduce `X Ω _ ξ hξ U hU R _ φ x hx hxU q hq ψ hψ`. Use `PositivityTheory.Xgn.StalkPointFactorization.ext_of_affine hU (S := X.presheaf.stalk q.1) (T := CommRingCat.of Ω) (CommRingCat.ofHom (genMap ξ q)) (hξ.inj q) (spMap ψ ≫ x) (X.fromSpecStalk q.1) (fun z => hxU (spMap ψ z)) (PositivityTheory.Xgn.StalkPointFactorization.fromSpecStalk …` and prove the remaining obligations. Establish `h1 : spMap (genMap ξ q) ≫ spMap ψ = spMap φ`. Rewrite using `[← hψ, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `h2 : spMap (genMap ξ q) ≫ spMap ψ ≫ x = ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, h1, hx]`. Conclude with `h2.trans (GlobalTheory.CompanionTheory.Ar.LieStalk.spMap_genMap_fromSpecStalk q).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.stalk_point_factorization : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X), IsCptGen ξ → ∀ (U : X.Opens), IsAffineOpen U → ∀ (R : Type) [CommRing R] (φ : R →+* Ω) (x : Spec (CommRingCat.of R) ⟶ X), spMap φ ≫ x = ξ → (∀ z, x z ∈ U) → ∀ (q : Cpt ξ), q.1 ∈ U → ∀ ψ : R →+* X.presheaf.stalk q.1, (genMap ξ q).comp ψ = φ → spMap ψ ≫ x = X.fromSpecStalk q.1 := by
   intro X Ω _ ξ hξ U hU R _ φ x hx hxU q hq ψ hψ

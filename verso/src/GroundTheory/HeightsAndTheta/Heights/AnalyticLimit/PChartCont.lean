@@ -7,11 +7,9 @@ namespace GroundTheory.Heights₂.Heights.AnalyticLimit
 open ReciprocityTheory.AnForm.M
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨m, hm⟩` from `A.cover x`. Use `set c := A.chart m`. Establish `hT : IsOpen (c.target ∩ c.symm ⁻¹' U)` using `c.isOpen_inter_preimage_symm hU`. Establish `hcx : c x ∈ c.target ∩ c.symm ⁻¹' U` using `⟨c.map_source hm, by simpa [c.left_inv hm] using hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ContinuousAt (h ∘ c.symm) (c x)` using `(hc m).continuousAt (hT.mem_nhds hcx)`. Establish `h2 : ContinuousAt ((h ∘ c.symm) ∘ c) x`. Apply `ContinuousAt.comp (f := c)` to reduce the goal to its premises. Conclude with `h1`. Conclude with `c.continuousAt hm`.
-
-Establish `heq : (h ∘ c.symm) ∘ c =ᶠ[nhds x] h` using `by filter_upwards [c.open_source.mem_nhds hm] with y hy`. Simplify using `[c.left_inv hy]`. Conclude with `(h2.congr heq).continuousWithinAt`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousOn_of_chart_continuousOn {X : Type} [TopologicalSpace X] {D : ℕ} (A : FinHolAtlas D X)
     {U : Set X} (hU : IsOpen U) {E : Type} [TopologicalSpace E] (h : X → E)
@@ -33,7 +31,7 @@ theorem continuousOn_of_chart_continuousOn {X : Type} [TopologicalSpace X] {D : 
   exact (h2.congr heq).continuousWithinAt
 
 /- English proof (translation)
-Introduce `X _ D A U hU`. Use `⟨fun f hf => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `continuousOn_of_chart_continuousOn A hU f fun j => (hf j).continuousOn`. Conclude with `continuousOn_of_chart_continuousOn A hU g fun j => (hg j).continuousOn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ChartCont.proof : ChartCont.Statement := by
   intro X _ D A U hU

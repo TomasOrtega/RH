@@ -10,14 +10,14 @@ namespace PositivityTheory.RgUd.Prod.Pos
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.rpow_pos_of_pos hX0 _), mul_assoc, ← Real.rpow_add hX0, neg_add_cancel, Real.rpow_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_untw (X : ℝ) (hX0 : 0 < X) (y : ℝ) (c : ℂ) : ‖c * ((X ^ (-y) : ℝ) : ℂ)‖ * X ^ y = ‖c‖ := by
   rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.rpow_pos_of_pos hX0 _), mul_assoc,
     ← Real.rpow_add hX0, neg_add_cancel, Real.rpow_zero, mul_one]
 
 /- English proof (translation)
-Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos (Real.rpow_pos_of_pos hX0 _), abs_of_pos (Real.rpow_pos_of_pos hX0 _), show X ^ p * (‖c‖ * X ^ (-y)) * X ^ u = ‖c‖ * (X ^ p * X ^ (-y) * X ^ u) by ring, ← Real.rpow_add hX0, …`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem norm_combo (X : ℝ) (hX0 : 0 < X) (p y u : ℝ) (c : ℂ) (hsum : p + -y + u = 0) :
     ‖((X ^ p : ℝ) : ℂ) * (c * ((X ^ (-y) : ℝ) : ℂ))‖ * X ^ u = ‖c‖ := by
@@ -27,23 +27,23 @@ theorem norm_combo (X : ℝ) (hX0 : 0 < X) (p y u : ℝ) (c : ℂ) (hsum : p + -
     ← Real.rpow_add hX0, ← Real.rpow_add hX0, hsum, Real.rpow_zero, mul_one]
 
 /- English proof (translation)
-Establish `hX0 : 0 < nabs k x` using `nabs_pos' k x`. Establish `hd` using `untw (derivB ψ i (π.cast (Nat.sub_add_cancel hi).symm)) s x cA a hea`. Establish `hm0 : (0 : ℝ) ≤ ((r - i : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Break down `Nat.eq_zero_or_pos i with rfl | hi1` into its components or cases. Establish `hu' : IsUnitarisable (derivB ψ 0 (π.cast (Nat.sub_add_cancel hi).symm)).ρ` using `unit_cast (Nat.sub_add_cancel hi).symm hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h1'` using `norm_eig_of_unit hu' ha0 hd`. Establish `hcA : ‖cA‖ = nabs k x ^ (((r - 0 : ℕ) : ℝ) * s)`. Rewrite using `[← norm_untw _ hX0 (((r - 0 : ℕ) : ℝ) * s) cA, h1', one_mul]`. Establish `hle : ((r - 0 : ℕ) : ℝ) * (s + (((0 : ℕ) : ℝ) - 1) / 2) ≤ ((r - 0 : ℕ) : ℝ) * s`. Simplify using `only [Nat.cast_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `⟨hcA ▸ Real.rpow_le_rpow_of_exponent_ge hX0 hx.le hle, fun heq n' h' e hlt => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Establish `hr : r = 0`. Assume the negation of the conclusion as `hr`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hmpos : (0 : ℝ) < ((r - 0 : ℕ) : ℝ)` using `Nat.cast_pos.2 (by omega)`. Establish `hlt2 : ((r - 0 : ℕ) : ℝ) * (s + (((0 : ℕ) : ℝ) - 1) / 2) < ((r - 0 : ℕ) : ℝ) * s`. Simplify using `only [Nat.cast_zero]`. Use the polynomial consequences of the given equalities and inequalities. Use `Real.rpow_lt_rpow_of_exponent_gt hX0 hx hlt2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite `this` using `[← hcA, ← heq]`. Conclude with `lt_irrefl _ this`. Use linear arithmetic over natural numbers and integers. Establish `hd'` using `retw (derivB ψ i (π.cast (Nat.sub_add_cancel hi).symm)) ((1 - (i : ℝ)) / 2) x _ a hd`. Establish `key` using `norm_combo (nabs k x) hX0 (((r - i : ℕ) : ℝ) * ((1 - (i : ℝ)) / 2)) (((r - i : ℕ) : ℝ) * s) (((r - i : ℕ) : ℝ) * (s + ((i : ℝ) - 1) / 2)) cA (by ring)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT0 : 0 < nabs k x ^ (((r - i : ℕ) : ℝ) * (s + ((i : ℝ) - 1) / 2))` using `Real.rpow_pos_of_pos hX0 _`. Distinguish the cases in `htop : ∃ (n' h' : ℕ) (e : (r - i) + i = n' + h'), i < h' ∧ Nontrivial (derivB ψ h' ((π.cast (Nat.sub_add_cancel hi).symm).cast e)).V`. Establish `hsD` using `isSmooth_tw (isSmooth_derivB ψ i _ (GlobalTheory.CompanionTheory.LeibOrd.Main.isSmooth_gcast (Nat.sub_add_cancel hi).symm hs)) ((1 - (i : ℝ)) / 2)`. Establish `hlD` using `lfin_tw (hLF ψ hc (r - i) i _ (GlobalTheory.CompanionTheory.LeibOrd.Main.isSmooth_gcast (Nat.sub_add_cancel hi).symm hs) (isAdm_cast (Nat.sub_add_cancel hi).symm ha)) ((1 - (i : ℝ)) / 2)`. Take `⟨W, ω, hW, hcc, hωx⟩` from `hC (r - i) _ hsD hlD x _ a ha0 hd'`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlt` using `hP ψ hc h1 (r - i) i (π.cast (Nat.sub_add_cancel hi).symm) hi1 (GlobalTheory.CompanionTheory.LeibOrd.Main.isSmooth_gcast _ hs) (irr_cast _ hirr) (unit_cast _ hu) htop W.toSubmodule W.toRepresentation ω (nontrivial_of_ne_bot W hW) (subquot_sub W) hcc x hx`. Rewrite `hlt` using `[hωx]`. Establish `hlt2 : ‖cA‖ < nabs k x ^ (((r - i : ℕ) : ℝ) * (s + ((i : ℝ) - 1) / 2))`. Rewrite using `[← key]`. Use polynomial arithmetic with `[norm_nonneg (((nabs k x ^ (((r - i : ℕ) : ℝ) * ((1 - (i : ℝ)) / 2)) : ℝ) : ℂ) * (cA * ((nabs k x ^ (-(((r - i : ℕ) : ℝ) * s)) : ℝ) : ℂ)))]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Supply the required witnesses or components.
 
-Conclude with `⟨hlt2.le, fun heq => absurd heq hlt2.ne⟩`. Establish `hnt : Nontrivial (derivB ψ i (π.cast (Nat.sub_add_cancel hi).symm)).V` using `⟨⟨a, 0, ha0⟩⟩`. Establish `htop' : ∀ (n' h' : ℕ) (e : (r - i) + i = n' + h'), i < h' → Subsingleton (derivB ψ h' ((π.cast (Nat.sub_add_cancel hi).symm).cast e)).V` using `fun n' h' e hlt => not_nontrivial_iff_subsingleton.1 (fun hn => htop ⟨n', h', e, hlt, hn⟩)`. Take `⟨-, hun⟩` from `hT ψ hc h1 (r - i) i (π.cast (Nat.sub_add_cancel hi).symm) hi1 (GlobalTheory.CompanionTheory.LeibOrd.Main.isSmooth_gcast _ hs) (irr_cast _ hirr) (unit_cast _ hu) hnt htop'`. Establish `h1'` using `norm_eig_of_unit hun ha0 hd'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : ‖cA‖ = nabs k x ^ (((r - i : ℕ) : ℝ) * (s + ((i : ℝ) - 1) / 2))`. Rewrite using `[← key, h1', one_mul]`. Use `⟨heq.le, fun _ n' h' e hlt => ?_⟩` and prove the remaining obligations. Use `htop' n' h' ((Nat.sub_add_cancel hi).trans e) hlt` as an intermediate fact. Rewrite `this` using `[cast_cast]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fac_bound (hT : DerivTop k) (hP : DerivPos k) (hC : CentralSub k) (hLF : LFDeriv k)
     (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) {r : ℕ} (π : GRep k r) (hs : IsSmooth π.ρ)
@@ -112,19 +112,17 @@ theorem fac_bound (hT : DerivTop k) (hP : DerivPos k) (hC : CentralSub k) (hLF :
 variable (k)
 
 /- English proof (translation)
-Introduce `hT hP hL hLF hC hE hF ψ hc h1 r t π₁ π₂ hs₁ hi₁ hu₁ hs₂ hi₂ hu₂ n h e htop n' j e' hj x hx v c hv0 hv`. Establish `ha₁` using `adm π₁ hs₁ hi₁`. Establish `ha₂` using `adm π₂ hs₂ hi₂`. Take `⟨i, hi, cA, cB, hil, rfl, ⟨a, ha0, hea⟩, b, hb0, heb⟩` from `pipe hL hLF hE hF ψ hc h1 π₁ π₂ hs₁ ha₁ hs₂ ha₂ j n' e' x c v hv0 hv`. Take `⟨b1, t1⟩` from `fac_bound hT hP hC hLF ψ hc h1 π₁ hs₁ hi₁ hu₁ ha₁ i hi.1 _ x hx cA a ha0 hea`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b2, t2⟩` from `fac_bound hT hP hC hLF ψ hc h1 π₂ hs₂ hi₂ hu₂ ha₂ (j - i) hi.2 _ x hx cB b hb0 heb`. Establish `hX0 : 0 < nabs k x` using `nabs_pos' k x`. Establish `hsz : (r - i) + (t - (j - i)) = n'` using `by omega`. Establish `hexp : ((r - i : ℕ) : ℝ) * ((((j - i : ℕ) : ℝ) / 2) + ((i : ℝ) - 1) / 2) + ((t - (j - i) : ℕ) : ℝ) * (((i : ℝ) / 2) + (((j - i : ℕ) : ℝ) - 1) / 2) = (n' : ℝ) * ((j : ℝ) - 1) / 2`. Establish `h3 : ((r - i : ℕ) : ℝ) + ((t - (j - i) : ℕ) : ℝ) = (n' : ℝ)` using `by exact_mod_cast hsz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ((j - i : ℕ) : ℝ) = (j : ℝ) - (i : ℝ)` using `Nat.cast_sub hil`. Rewrite using `[h4, ← h3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hexp, Real.rpow_add hX0, norm_mul]`. Establish `hB1` using `Real.rpow_pos_of_pos hX0 (((r - i : ℕ) : ℝ) * ((((j - i : ℕ) : ℝ) / 2) + ((i : ℝ) - 1) / 2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB2` using `Real.rpow_pos_of_pos hX0 (((t - (j - i) : ℕ) : ℝ) * (((i : ℝ) / 2) + (((j - i : ℕ) : ℝ) - 1) / 2))`. Assume the negation of the conclusion as `hge`. Establish `eqA : ‖cA‖ = nabs k x ^ (((r - i : ℕ) : ℝ) * ((((j - i : ℕ) : ℝ) / 2) + ((i : ℝ) - 1) / 2))`. Assume the negation of the conclusion as `hne`. Conclude with `hge (lt_of_le_of_lt (mul_le_mul_of_nonneg_left b2 (norm_nonneg _)) (mul_lt_mul_of_pos_right (lt_of_le_of_ne b1 hne) hB2))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `eqB : ‖cB‖ = nabs k x ^ (((t - (j - i) : ℕ) : ℝ) * (((i : ℝ) / 2) + (((j - i : ℕ) : ℝ) - 1) / 2))`. Assume the negation of the conclusion as `hne`. Conclude with `hge (lt_of_le_of_lt (mul_le_mul_of_nonneg_right b1 (norm_nonneg _)) (mul_lt_mul_of_pos_left (lt_of_le_of_ne b2 hne) hB1))`. Establish `top1` using `t1 eqA`. Establish `top2` using `t2 eqB`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hnt, -⟩` from `htop`. Take `⟨v', hv'⟩` from `@exists_ne _ hnt 0`. Establish `hsc : sc n (1 : kˣ) = 1` using `map_one _`. Establish `hv1 : (derivB ψ h ((π₁.prod π₂).cast e)).ρ (sc n 1) v' = (1 : ℂ) • v'` using `by simp [hsc]`. Take `⟨i', hi', -, -, hil', -, ⟨a', ha', -⟩, b', hb', -⟩` from `pipe hL hLF hE hF ψ hc h1 π₁ π₂ hs₁ ha₁ hs₂ ha₂ h n e 1 1 v' hv' hv1`.
-
-Distinguish the cases in `hcase : i < i'`. Conclude with `ha' (@Subsingleton.elim _ (top1 (r - i') i' (Nat.sub_add_cancel hi'.1).symm hcase) a' 0)`. Conclude with `hb' (@Subsingleton.elim _ (top2 (t - (h - i')) (h - i') (Nat.sub_add_cancel hi'.2).symm (by omega)) b' 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem posProd_of : DerivTop k → DerivPos k → GlobalTheory.RgGu.Leib.LeibnizOrd k → LFDeriv k → CentralSub k → EigProd k →
     EigFilt k → PosProdD k := by

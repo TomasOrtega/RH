@@ -8,31 +8,27 @@ open CompanionTheory.Rg.Fl CompanionTheory.D.gk.admitted
 namespace GlobalTheory.CompanionTheory.FixedProj
 
 /- English proof (translation)
-Unfold `StProj`. Introduce `G H _ _ _ _ σ hiso K`. Set `V : Submodule ℂ H` to `{ carrier := {v | ∀ k ∈ K, σ k v = v} add_mem' := fun {a b} ha hb k hk => by`. Simplify using `only [Set.mem_ofPred_eq] at ha hb ⊢`. Rewrite using `[map_add, ha k hk, hb k hk]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := fun k _ => map_zero _`. Use the proof step `smul_mem' := fun c v hv k hk => by`. Simplify using `only [Set.mem_ofPred_eq] at hv ⊢`. Rewrite using `[map_smul, hv k hk] }`. Establish `hmem : ∀ v, v ∈ V ↔ ∀ k ∈ K, σ k v = v` using `fun v => Iff.rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVc : IsClosed (V : Set H)`. Establish `hV : (V : Set H) = ⋂ k ∈ K, {v | σ k v = v}`. Use extensionality with `v`. Simplify using `only [Set.mem_iInter]`. Conclude with `hmem v`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hV]`. Conclude with `isClosed_biInter fun k _ => isClosed_eq (σ k).continuous continuous_id`. Use `haveI : CompleteSpace V := hVc.completeSpace_coe`. Establish `hin : ∀ g v w, inner ℂ (σ g v) w = inner ℂ v (σ g⁻¹ w)` using `CompanionTheory.D.gk.admitted.FinOfPIAux.inner_left σ hiso`. Use `⟨V.starProjection, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `IsAvg`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v k hk`. Conclude with `(hmem _).1 (V.starProjection_apply_mem v) k hk`. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.starProjection_eq_self_iff.2 ((hmem v).2 hv)`. Introduce `v k hk`. Establish `horth : σ k v - v ∈ Vᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `u hu`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : inner ℂ u (σ k v) = inner ℂ u v`. Establish `h` using `hin k⁻¹ u v`. Rewrite `h` using `[inv_inv, (hmem u).1 hu k⁻¹ (K.inv_mem hk)]`. Conclude with `h.symm`. Rewrite using `[inner_sub_right, h1, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `(Submodule.starProjection_apply_eq_zero_iff V).2 horth`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Conclude with `h0`. Introduce `u w`. Conclude with `Submodule.inner_starProjection_left_eq_right (K := V) u w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Introduce `T hT`. Establish `hTσ : ∀ g v, T (σ g v) = σ g (T v)` using `fun g v => congrArg (fun S : H →L[ℂ] H => S v) (hT g)`. Establish `hTV : ∀ v ∈ V, T v ∈ V` using `fun v hv k hk => by`. Rewrite using `[← hTσ, (hmem v).1 hv k hk]`. Establish `hadj : ∀ w ∈ V, ContinuousLinearMap.adjoint T w ∈ V`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `w hw k hk`. Apply `ext_inner_right ℂ` to reduce the goal to its premises. Introduce `z`. Rewrite using `[hin, ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.adjoint_inner_left, hTσ, ← hin, (hmem w).1 hw k hk]`. Use extensionality with `v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : V.starProjection (T (V.starProjection v)) = T (V.starProjection v)` using `Submodule.starProjection_eq_self_iff.2 (hTV _ (V.starProjection_apply_mem v))`. Establish `hu : v - V.starProjection v ∈ Vᗮ` using `Submodule.sub_starProjection_mem_orthogonal (K := V) v`. Establish `h2 : V.starProjection (T (v - V.starProjection v)) = 0`. Apply `(Submodule.starProjection_apply_eq_zero_iff V).2` to reduce the goal to its premises. Rewrite `hu`, the goal using `[Submodule.mem_orthogonal]`.
-
-Introduce `w hw`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_left]`. Conclude with `hu _ (hadj w hw)`. Establish `hv : v = V.starProjection v + (v - V.starProjection v)` using `by abel`. Use `show T (V.starProjection v) = V.starProjection (T v)`.
-
-Use `conv_rhs => rw [hv]`. Simplify using `only [map_add]`. Rewrite using `[h1, h2, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem stProj : StProj := by
   unfold StProj

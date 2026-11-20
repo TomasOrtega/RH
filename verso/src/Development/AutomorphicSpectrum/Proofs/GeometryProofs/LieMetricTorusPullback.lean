@@ -12,9 +12,9 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.TorusUnif.GramPos
 
 /- English proof (translation)
-Set `_ : NormedAddCommGroup V` to `core.toNormedAddCommGroup`. Set `_ : InnerProductSpace ℂ V` to `InnerProductSpace.ofCore core.toCore`. Establish `hp` using `Matrix.posDef_gram_of_linearIndependent (𝕜 := ℂ) hv`. Establish `hG : (Matrix.gram ℂ v) = Matrix.of fun a b => core.inner (v a) (v b)`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite `hp` using `[hG]`. Conclude with `hp`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core_gram_posDef {V : Type} [AddCommGroup V] [Module ℂ V] (core : InnerProductSpace.Core ℂ V) {n : ℕ}
     (v : Fin n → V) (hv : LinearIndependent ℂ v) :
@@ -29,11 +29,11 @@ theorem core_gram_posDef {V : Type} [AddCommGroup V] [Module ℂ V] (core : Inne
   exact hp
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ Xc`. Set `ev : (Xc →+ ℤ) →ₗ[ℤ] (Module.Free.ChooseBasisIndex ℤ Xc → ℤ)` to `{ toFun := fun f i => f (b i), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hev : LinearMap.ker ev = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `f hf`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: f.toIntLinearMap = 0` using `b.ext fun i => congrFun hf i`. Use extensionality with `x`. Conclude with `LinearMap.congr_fun this x`. Establish `h1 : LinearIndependent ℤ (ev ∘ β)` using `hβ.map' ev hev`. Establish `h2 : LinearIndependent ℂ (fun a => algebraMap ℤ ℂ ∘ (ev ∘ β) a)` using `linearIndependent_algebraMap_comp_iff.2 h1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `evC : (Xc →+ ℂ) →ₗ[ℂ] (Module.Free.ChooseBasisIndex ℤ Xc → ℂ)` to `{ toFun := fun f i => f (b i), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Conclude with `LinearIndependent.of_comp evC h2`.
+A detailed English derivation is pending.
 -/
 theorem cochar_indep {Xc : Type} [AddCommGroup Xc] [Module.Free ℤ Xc] [Module.Finite ℤ Xc] {r : ℕ}
     (β : Fin r → (Xc →+ ℤ)) (hβ : LinearIndependent ℤ β) :
@@ -55,11 +55,11 @@ theorem cochar_indep {Xc : Type} [AddCommGroup Xc] [Module.Free ℤ Xc] [Module.
   exact LinearIndependent.of_comp evC h2
 
 /- English proof (translation)
-Establish `ht : ∀ e, IsTanAt G x (M.pt e ≫ u)`. Introduce `e`. Establish `h1` using `(LieEx.isTanAt_iff x T _).1 (M.tan e)`. Use `(LieEx.isTanAt_iff x G _).2 ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h1 =≫ u).trans ?_` and prove the remaining obligations. Conclude with `MonObj.one_comp u`. Use `choose A hA using fun e => N.onto _ (ht e)`. Use `⟨{ toFun := A, map_add' := fun e e' => N.inj ?_, map_smul' := fun c e => N.inj ?_ }, hA⟩` and prove the remaining obligations. Rewrite using `[N.add, hA, hA, hA, M.add, MonObj.mul_comp]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[N.smul, hA, hA, Over.comp_left, Over.comp_left, M.smul, Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_diff {S : Scheme.{0}} {T G : Over S} [GrpObj T] [GrpObj G] (u : T ⟶ G) [IsMonHom u]
     {R : Type} [CommRing R] {x : Sp R ⟶ S} {E F : Type} [AddCommGroup E] [Module R E] [AddCommGroup F] [Module R F]
@@ -78,15 +78,15 @@ theorem exists_diff {S : Scheme.{0}} {T G : Over S} [GrpObj T] [GrpObj G] (u : T
     rw [N.smul, hA, hA, Over.comp_left, Over.comp_left, M.smul, Category.assoc]
 
 /- English proof (translation)
-Introduce `X Ω _ K J y ξ G _ _ Li _ _ M h Z' ρ G' _ Φ hΦ Xc _ _ _ u _ r β zc Mz _ hker v hv`. Take `⟨V, _, _, ⟨MR⟩⟩` from `lieModel_exists X G ℂ (zc ≫ ρ)`. Take `⟨A, hA⟩` from `exists_diff u Mz (LiePull.modelPull hΦ zc MR)`. Establish `hA' : ∀ δ, (MR.pt (A δ)).left = (Mz.pt δ ≫ u).left ≫ Φ`. Introduce `δ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hA, ← LiePull.pts_left hΦ (LiePull.eps_assoc zc)]`. Conclude with `congrArg (fun k => k.left) ((LiePull.tanPts hΦ zc).apply_symm_apply (MR.pt (A δ))).symm`. Establish `hk : LinearMap.ker A = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `δ hδ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hker` to reduce the goal to its premises. Rewrite using `[← hA, hδ]`. Use `(LiePull.modelPull hΦ zc MR).add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hli` using `(cochar_indep β β.linearIndependent).map' A hk`. Take `⟨core, hcore⟩` from `h.herm (zc ≫ ρ) V MR`. Establish `key` using `core_gram_posDef core _ hli`. Establish `hv' : ∀ a, v a = MR.pt (A ((Int.castAddHom ℂ).comp (β a)))` using `fun a => Over.OverMorphism.ext ((hv a).trans (hA' _).symm)`. Establish `hm : RootHt.gramAt h (zc ≫ ρ) v = Matrix.of fun a b => core.inner ((A ∘ fun a => (Int.castAddHom ℂ).comp (β a)) a) ((A ∘ fun a => (Int.castAddHom ℂ).comp (β a)) b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `a c`. Simplify using `only [RootHt.gramAt, Matrix.of_apply, hcore, hv', Function.comp_apply]`. Rewrite using `[hm]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramAt_posDef_of_diff_injective : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (K : Type) (J : K → Type)
     (y : (Σ k, J k) → Ω) (ξ : Sp Ω ⟶ X) (G : Over X) [GrpObj G] [IsCommMonObj G]

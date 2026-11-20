@@ -5,17 +5,15 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.Growth
 
 /- English proof (translation)
-Establish `hmul : ∀ γ : Γ, Measurable fun x : G => (γ : G) * x` using `fun γ => measurable_const_mul _`. Establish `hterm : ∀ (γ : Γ) (x : G), M.indicator f (γ • x) = f x * (M.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x))`. Introduce `γ x`. Rewrite using `[Subgroup.smul_def, smul_eq_mul]`. Distinguish the cases in `hx : (γ : G) * x ∈ M`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[Set.indicator_of_mem hx, hinv γ γ.2 x]`. Simplify using `[Set.indicator_of_notMem hx]`. Establish `hcount : ∀ x : G, ∑' γ : Γ, M.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x) ≤ n`. Introduce `x`. Establish `h1 : (fun γ : Γ => M.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x)) = ({γ : Γ | (γ : G) * x ∈ M}).indicator (fun _ => (1 : ℝ≥0∞))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `γ`. Distinguish the cases in `hx : (γ : G) * x ∈ M`. Simplify using `[Set.indicator, hx]`. Simplify using `[Set.indicator, hx]`. Rewrite using `[h1, ← tsum_subtype, ENNReal.tsum_set_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_tsum]`. Introduce `γ`. Conclude with `((hf.indicator hM).comp (hmul γ)).aemeasurable`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ ∫⁻ x in 𝓕, n * f x ∂μ := by`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Simplify using `only [hterm]`. Rewrite using `[ENNReal.tsum_mul_left, mul_comm]`. Conclude with `mul_le_mul_left (hcount x) _`.
-
-Use `_ = n * ∫⁻ x in 𝓕, f x ∂μ := by`. Rewrite using `[lintegral_const_mul _ hf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_le_mul_of_encard_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [Countable Γ]

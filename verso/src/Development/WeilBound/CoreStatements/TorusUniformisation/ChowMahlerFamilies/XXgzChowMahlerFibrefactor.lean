@@ -8,7 +8,7 @@ open scoped ENNReal
 namespace PositivityTheory.Xgn.A_xgz_chow_mahler_fibrefactor
 
 /- English proof (translation)
-Establish `h1 : ((h.mat)⁻¹ *ᵥ p) ⬝ᵥ (h.matᵀ *ᵥ fun i => y i) = p ⬝ᵥ fun i => y i`. Rewrite using `[Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ h.isUnit_det, Matrix.one_mulVec, dotProduct_comm]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_eq {n : ℕ} (h : HermNorm n) (p : Fin n → ℂ) (y : EuclideanSpace ℂ (Fin n)) :
     ∑ j, ((h.mat)⁻¹ *ᵥ p) j * h.pointOf y j = ∑ j, p j * y j := by
@@ -18,9 +18,9 @@ theorem pair_eq {n : ℕ} (h : HermNorm n) (p : Fin n → ℂ) (y : EuclideanSpa
   exact h1
 
 /- English proof (translation)
-Introduce `y y' hy`. Use extensionality with `i`. Establish `h1` using `pair_eq h (Pi.single i 1) y`. Establish `h2` using `pair_eq h (Pi.single i 1) y'`. Rewrite `h1` using `[hy, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h1.symm` using `[Pi.single_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pointOf_inj {n : ℕ} (h : HermNorm n) : Function.Injective h.pointOf := by
   intro y y' hy
@@ -31,7 +31,7 @@ theorem pointOf_inj {n : ℕ} (h : HermNorm n) : Function.Injective h.pointOf :=
   simpa [Pi.single_apply] using h1.symm
 
 /- English proof (translation)
-Establish `h1 : linProj π y 0 = firstCoordVec (e + 1) 0` using `by rw [hy.2]`. Simplify `h1` using `[linProj, firstCoordVec]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem row_zero {n e : ℕ} {S : Set (EuclideanSpace ℂ (Fin n))} {π : Fin (e + 1) → Fin n → ℂ}
     {y : EuclideanSpace ℂ (Fin n)} (hy : y ∈ fibrePts S π) : ∑ j, π 0 j * y j = 1 := by
@@ -39,7 +39,7 @@ theorem row_zero {n e : ℕ} {S : Set (EuclideanSpace ℂ (Fin n))} {π : Fin (e
   simpa [linProj, firstCoordVec] using h1
 
 /- English proof (translation)
-Establish `h1 : linProj π y i.succ = firstCoordVec (e + 1) i.succ` using `by rw [hy.2]`. Simplify `h1` using `[linProj, firstCoordVec]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem row_succ {n e : ℕ} {S : Set (EuclideanSpace ℂ (Fin n))} {π : Fin (e + 1) → Fin n → ℂ}
     {y : EuclideanSpace ℂ (Fin n)} (hy : y ∈ fibrePts S π) (i : Fin e) :
@@ -51,19 +51,19 @@ end PositivityTheory.Xgn.A_xgz_chow_mahler_fibrefactor
 
 open PositivityTheory.Xgn.A_xgz_chow_mahler_fibrefactor in
 /- English proof (translation)
-Introduce `n e δ h W g π u₀ _ hch hmh hcard hne`. Establish `hfin : (fibrePts (coneSet h W) π).Finite` using `Set.finite_of_encard_eq_coe hcard`. Establish `hc : hfin.toFinset.card = δ`. Establish `h1` using `hfin.encard_eq_coe_toFinset_card`. Rewrite `h1` using `[hcard]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm` after adjusting the coercions. Establish `hone : ∀ y ∈ fibrePts (coneSet h W) π, ∑ j, ((h.mat)⁻¹ *ᵥ π 0) j * h.pointOf y j = 1` using `fun y hy => by`. Rewrite using `[pair_eq, row_zero hy]`. Take `⟨c, hc0, hcu⟩` from `GlobalTheory.T.chow_form_specialization_proportional n e δ W g (nrmGroups h e (coefRows h π)) (hfin.toFinset.image h.pointOf) u₀ hch hmh (by`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hx`. Rewrite `hy` using `[Set.Finite.mem_toFinset]`. Use `⟨fun h0 => ?_, hy.1, fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `hone y hy`. Rewrite `h1` using `[h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at h1`. Establish `h1` using `pair_eq h (π i.succ) y`. Rewrite `h1` using `[row_succ hy]`. Simplify using `only [nrmGroups, coefRows, mul_assoc]`. Rewrite using `[← Finset.mul_sum, h1, mul_zero])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(by`. Introduce `x hx x' hx' t ht`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hx`. Take `⟨y', hy', rfl⟩` from `Finset.mem_image.mp hx'`. Rewrite `hy`, `hy'` using `[Set.Finite.mem_toFinset]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hone y hy`. Establish `h2` using `hone y' hy'`. Rewrite `h2` using `[ht]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_left_comm _ t] at h2`. Rewrite `h2` using `[← Finset.mul_sum, h1, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ht, h2, one_smul])`. Use the proof step `(by rw [Finset.card_image_of_injective _ (pointOf_inj h), hc]) hne`. Use `⟨c, hc0, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[hcu u, Finset.prod_image (fun a _ b _ hab => pointOf_inj h hab), finprod_mem_eq_finite_toFinset_prod _ hfin]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_xgz_chow_mahler_fibrefactor : ∀ (n e δ : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
   (g : MvPolynomial (Fin (e + 1) × Fin n) ℂ) (π : Fin (e + 1) → Fin n → ℂ) (u₀ : Fin n → ℂ),

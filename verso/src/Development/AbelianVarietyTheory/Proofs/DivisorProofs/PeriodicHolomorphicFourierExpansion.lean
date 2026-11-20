@@ -9,15 +9,15 @@ open scoped Real ContDiff
 namespace GlobalTheory.FamilyFourier
 
 /- English proof (translation)
-Introduce and unpack `⟨b, z⟩ hP`. Establish `hb : b ∈ U` using `hP.1`. Establish `hopen : IsOpen (cov U g)` using `hU.prod isOpen_univ`. Use `set f : (Fin g → ℂ) → ℂ := fun w => h (b, w) with hfdef`. Establish `hfd : Differentiable ℂ f`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Establish `hw : (b, w) ∈ cov U g` using `⟨hb, Set.mem_univ _⟩`. Establish `h1 : DifferentiableAt ℂ h (b, w)` using `hh.differentiableAt (hopen.mem_nhds hw)`. Establish `h2 : DifferentiableAt ℂ (fun w' : Fin g → ℂ => ((b, w') : Pt E g)) w` using `by fun_prop`. Conclude with `h1.comp w h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hunit : ∀ (i : Fin g) (w : Fin g → ℂ), f (w + Pi.single i 1) = f w` using `fun i w => hper (b, w) ⟨hb, Set.mem_univ _⟩ i`. Take `⟨a, hsum, hcoef⟩` from `GlobalTheory.exists_fourier_expansion_tube (Fin g) Set.univ f isOpen_univ convex_univ hfd.differentiableOn (fun w _ m => GlobalTheory.apply_add_intCast_vec_of_unit_periods hunit m w)`. Establish `ha : ∀ ν, a ν = coef h ν b`. Introduce `ν`. Rewrite using `[hcoef 0 (Set.mem_univ _) ν, coef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : (Set.univ.pi fun _ : Fin g => Set.Ico (0:ℝ) 1) =ᵐ[(volume : Measure (Fin g → ℝ))] Set.Icc (0 : Fin g → ℝ) 1`. Rewrite using `[volume_pi]`. Conclude with `Measure.univ_pi_Ico_ae_eq_Icc`. Rewrite using `[setIntegral_congr_set hs]`. Use `setIntegral_congr_fun measurableSet_Icc fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hfdef, Pi.zero_apply, Complex.ofReal_zero, mul_zero, add_zero]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Use `hsum z (Set.mem_univ _)` as an intermediate fact. Simplify `this` using `[ha, ch]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasSum_coef_mul_ch {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] {U : Set E} (h : Pt E g → ℂ) (hU : IsOpen U)

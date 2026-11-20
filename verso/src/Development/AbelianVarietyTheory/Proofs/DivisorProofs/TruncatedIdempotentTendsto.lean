@@ -13,15 +13,13 @@ noncomputable section
 namespace GlobalTheory.TruncFix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ c hc`. Establish `hinf : At (evI F) (pairA F 1 0)`. Introduce `u hu`. Establish `h1 : u.1 = 0`. Establish `hu' : InfiniteAdeleRing.ringEquiv_mixedSpace F u.1 = 0` using `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective).1 hu'`. Conclude with `Prod.ext (by change u.1 * 1 = 0; rw [h1, zero_mul]) (by change u.2 * 0 = 0; exact mul_zero _)`. Establish `hc' : pairA F 0 1 • c = c`. Establish `e : pairA F 0 1 = 1 - pairA F 1 0` using `Prod.ext (sub_self (1 : Ainf F)).symm (sub_zero (1 : Af F)).symm`. Rewrite using `[e, sub_smul, one_smul, hc _ hinf, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hidem : ∀ T : Finset (Pl F), idem T = pairA F 0 (∑ v ∈ T, GlobalTheory.AdelicU.singleFin v (1 : Fv F v))`. Introduce `T`. Unfold `idem`. Conclude with `(map_sum (LinearMap.inr F (Ainf F) (Af F)) (fun v => GlobalTheory.AdelicU.singleFin v (1 : Fv F v)) T).symm`. Establish `h1 : ∀ v : Pl F, evalV F v (GlobalTheory.AdelicU.singleFin v (1 : Fv F v)) = 1` using `fun v => GlobalTheory.AdelicU.evalV_singleFin_self v 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ v v' : Pl F, v' ≠ v → evalV F v' (GlobalTheory.AdelicU.singleFin v (1 : Fv F v)) = 0` using `fun v v' h => GlobalTheory.AdelicU.evalV_singleFin_ne h 1`. Establish `ht` using `GlobalTheory.VecInv.tendsto_sum_placeIdem (fun v => GlobalTheory.AdelicU.singleFin v (1 : Fv F v)) h1 h0`. Establish `hp : Continuous fun β : Af F => pairA F 0 β` using `continuous_const.prodMk continuous_id`. Establish `hm : Continuous fun a : AF F => a • c` using `continuous_id.smul continuous_const`. Establish `h : Tendsto (fun T : Finset (Pl F) => pairA F 0 (∑ v ∈ T, GlobalTheory.AdelicU.singleFin v (1 : Fv F v)) • c) atTop (𝓝 (pairA F 0 1 • c))` using `((hm.comp hp).tendsto 1).comp ht`.
-
-Rewrite `h` using `[hc']`. Conclude with `h.congr fun T => by rw [hidem]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_idem_smul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : AE F E),
     (∀ u : AF F, At (evI F) u → u • c = 0) →

@@ -17,14 +17,14 @@ namespace SD
 variable (d : SD σ)
 
 /- English proof (translation)
-The claim follows from `Place.ad_ext d.cm d.B.emb h hf`.
+A detailed English derivation is pending.
 -/
 theorem ae_ext (z z' : AE F E) (h : ∀ w, piInf (d.B.emb w) z = piInf (d.B.emb w) z') (hf : finOne F • z = finOne F • z') :
     z = z' :=
   Place.ad_ext d.cm d.B.emb h hf
 
 /- English proof (translation)
-Take `⟨s, -, h1, h2, h3, -⟩` from `Place.exists_sec d.cm d.B.emb`. Use `⟨AddMonoidHom.mk' (fun z => s (Pi.single w z)) (fun a b => by rw [Pi.single_add, h3]), fun z => ?_, fun w' hw' z => ?_, fun z => h2 _⟩` and prove the remaining obligations. Simplify using `[h1]`. Simplify using `[h1, Pi.single_eq_of_ne hw']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_insW (w : InfinitePlace F) : ∃ ins : ℂ →+ AE F E, (∀ z, piInf (d.B.emb w) (ins z) = z) ∧
     (∀ w', w' ≠ w → ∀ z, piInf (d.B.emb w') (ins z) = 0) ∧ ∀ z, finOne F • ins z = 0 := by

@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨k, u, hu, h⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (orderOf_pos x).ne' p hp.ne_one`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h1 : orderOf (x ^ p ^ k) ∣ u`. Apply `orderOf_dvd_of_pow_eq_one` to reduce the goal to its premises. Rewrite using `[← pow_mul, ← h, pow_orderOf_eq_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.Coprime.coprime_dvd_left h1 ((Nat.Prime.coprime_iff_not_dvd hp).2 hu).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_coprime_orderOf_pow_prime_pow (G : Type) [Group G] [Finite G] (x : G) (p : ℕ)
     (hp : p.Prime) : ∃ k : ℕ, Nat.Coprime (orderOf (x ^ p ^ k)) p := by

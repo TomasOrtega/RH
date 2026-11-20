@@ -17,7 +17,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `integrable_cpt hL μ (fun y => K y (f y)) (hK.clm_apply hf) ?_` and prove the remaining obligations. Take `⟨R, hR⟩` from `hc`. Conclude with `⟨R, fun y hy h => by simp [hR y hy h]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem int_of_cpt (hL : LgFacts) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (K : Mat n → (V →L[ℂ] V)) (f : Mat n → V)
@@ -28,20 +28,20 @@ theorem int_of_cpt (hL : LgFacts) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ
   exact ⟨R, fun y hy h => by simp [hR y hy h]⟩
 
 /- English proof (translation)
-Simplify using `only [act, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_one [MeasurableSpace (G n)] (μ : Measure (G n)) (E : KMod n) (k : Mat n → (E.V →L[ℂ] E.V))
     (F : Mat n → E.V) : act μ E k F 1 = ∫ y : G n, k y.val (F y.val) ∂μ := by
   simp only [act, one_mul]
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ E.V`. Establish `hz` using `hKZ n μ E (fun y => k y * Γ - Γ * k y) ((hkc.clm_comp continuousOn_const).sub (continuousOn_const.clm_comp hkc)) (fun y hy k₂ => by`. Simplify using `only [hke y hy k₂, mul_assoc, ← hΓρ, sub_mul]) (fun f hf hfc => by`. Establish `hfcont : ContinuousOn f (GLs n)` using `hf.1.continuousOn`. Establish `i1` using `int_of_cpt hL μ (fun y => k y * Γ) f (hkc.clm_comp continuousOn_const) hfcont hfc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2` using `int_of_cpt hL μ (fun y => Γ * k y) f (continuousOn_const.clm_comp hkc) hfcont hfc`. Simplify using `only [ContinuousLinearMap.sub_apply]`. Rewrite using `[integral_sub i1 i2]`. Establish `e1 : ∫ y : G n, (k y.val * Γ) (f y.val) ∂μ = act μ E k (fun x => Γ (f x)) 1`. Rewrite using `[act_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e2 : ∫ y : G n, (Γ * k y.val) (f y.val) ∂μ = Γ (act μ E k f 1)`. Rewrite using `[act_one]`. Conclude with `ContinuousLinearMap.integral_comp_comm Γ (int_of_cpt hL μ k f hkc hfcont hfc)`. Rewrite using `[e1, e2, hΓ f hf, sub_self])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Use `hz y hy` as an intermediate fact. Conclude with `(sub_eq_zero.1 this).symm`.
+A detailed English derivation is pending.
 -/
 theorem gamma_of_comm (hKZ : KerZero) (hL : LgFacts) {E : KMod n} (Γ : E.V →L[ℂ] E.V)
     (hΓρ : ∀ k, Γ * E.ρ k = E.ρ k * Γ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n))
@@ -70,7 +70,7 @@ theorem gamma_of_comm (hKZ : KerZero) (hL : LgFacts) {E : KMod n} (Γ : E.V →L
   exact (sub_eq_zero.1 this).symm
 
 /- English proof (translation)
-The claim follows from `(hf.continuousOn_fderiv_of_isOpen (isOpen_GLs n) (by simp)).clm_apply (continuous_id.matrix_mul continuous_const).continuousOn`.
+A detailed English derivation is pending.
 -/
 theorem rd_cont {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (f : Mat n → V) (hf : ContDiffOn ℝ ∞ f (GLs n))
     (X : Mat n) : ContinuousOn (Rd X f) (GLs n) :=
@@ -78,7 +78,7 @@ theorem rd_cont {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (f : Mat n
     (continuous_id.matrix_mul continuous_const).continuousOn
 
 /- English proof (translation)
-The claim follows from `((hf.continuousOn_fderiv_of_isOpen (isOpen_GLs n) (by simp)).clm_apply (continuous_const.matrix_mul continuous_id).continuousOn).neg`.
+A detailed English derivation is pending.
 -/
 theorem ld_cont {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (f : Mat n → V) (hf : ContDiffOn ℝ ∞ f (GLs n))
     (X : Mat n) : ContinuousOn (Ld X f) (GLs n) :=
@@ -89,9 +89,9 @@ def mr {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (A : V →L[ℂ] V)
   (ContinuousLinearMap.mul ℂ (V →L[ℂ] V)).flip A
 
 /- English proof (translation)
-Establish `hd : DifferentiableAt ℝ k y` using `(hk.differentiableOn (by simp)).differentiableAt ((isOpen_GLs n).mem_nhds hy)`. Establish `e : (fun y => k y * A) = ⇑((mr A).restrictScalars ℝ) ∘ k` using `rfl`. Establish `hd2` using `(((mr A).restrictScalars ℝ).hasFDerivAt.comp y hd.hasFDerivAt).fderiv`. Simplify using `only [Rd]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun L => L (y * X)) hd2`.
+A detailed English derivation is pending.
 -/
 theorem rd_mr {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (k : Mat n → (V →L[ℂ] V))
     (hk : ContDiffOn ℝ ∞ k (GLs n)) (A : V →L[ℂ] V) (X : Mat n) (y : Mat n) (hy : y ∈ GLs n) :
@@ -104,13 +104,13 @@ theorem rd_mr {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (k : Mat n �
   exact congrArg (fun L => L (y * X)) hd2
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ E.V`. Establish `h1 : (1 : Mat n) ∈ GLs n` using `by simp [GLs]`. Establish `hD` using `(hA hU n μ E k f hks hkc hf).2`. Establish `hfc' : ContinuousOn f (GLs n)` using `hf.continuousOn`. Establish `iL : ∀ p, Integrable (fun y : G n => Ld (hb p) k y.val (f y.val)) μ` using `fun p => int_of_cpt hL μ _ f (ld_cont k hks _) hfc' hfc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iK : Integrable (fun y : G n => k y.val (f y.val)) μ` using `int_of_cpt hL μ _ f hks.continuousOn hfc' hfc`. Establish `iP : ∀ p, Integrable (fun y : G n => (ε (hb p)) (Ld (hb p) k y.val (f y.val) + ((fderiv ℝ Fr 1) (hb p)) (k y.val (f y.val)))) μ` using `fun p => ContinuousLinearMap.integrable_comp _ ((iL p).add (ContinuousLinearMap.integrable_comp _ iK))`. Establish `ek : ∀ y : G n, kapL ε Fr k y.val (f y.val) = ∑ p, (ε (hb p)) (Ld (hb p) k y.val (f y.val) + ((fderiv ℝ Fr 1) (hb p)) (k y.val (f y.val)))`. Introduce `y`. Simplify using `[kapL]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[ek]`. Rewrite using `[integral_finset_sum _ fun p _ => iP p]`. Simplify using `only [DC]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `e1 : ∫ a : G n, (ε (hb p)) ((Ld (hb p) k a.val) (f a.val) + ((fderiv ℝ Fr 1) (hb p)) ((k a.val) (f a.val))) ∂μ = (ε (hb p)) (∫ a : G n, ((Ld (hb p) k a.val) (f a.val) + ((fderiv ℝ Fr 1) (hb p)) ((k a.val) (f a.val))) ∂μ)` using `ContinuousLinearMap.integral_comp_comm _ ((iL p).add (ContinuousLinearMap.integrable_comp _ iK))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∫ a : G n, ((Ld (hb p) k a.val) (f a.val) + ((fderiv ℝ Fr 1) (hb p)) ((k a.val) (f a.val))) ∂μ = (∫ a : G n, (Ld (hb p) k a.val) (f a.val) ∂μ) + ∫ a : G n, ((fderiv ℝ Fr 1) (hb p)) ((k a.val) (f a.val)) ∂μ` using `integral_add (iL p) (ContinuousLinearMap.integrable_comp _ iK)`. Establish `e3 : ∫ a : G n, ((fderiv ℝ Fr 1) (hb p)) ((k a.val) (f a.val)) ∂μ = ((fderiv ℝ Fr 1) (hb p)) (∫ a : G n, (k a.val) (f a.val) ∂μ)` using `ContinuousLinearMap.integral_comp_comm _ iK`. Rewrite using `[e1, e2, e3, hD _ 1 h1, act_one]`. Simplify using `only [one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kapL_int (hA : ActDer) (hU : Unimod) (hL : LgFacts) {E : KMod n} (Fr : Mat n → (E.V →L[ℂ] E.V))
     (ε : Mat n →ₗ[ℝ] (E.V →L[ℂ] E.V)) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n))
@@ -148,7 +148,7 @@ theorem kapL_int (hA : ActDer) (hU : Unimod) (hL : LgFacts) {E : KMod n} (Fr : M
   simp only [one_mul]
 
 /- English proof (translation)
-Use `integrable_cpt hL μ (fun y => K y (f y)) (hK.clm_apply hf) ?_` and prove the remaining obligations. Take `⟨R, hR⟩` from `hc`. Conclude with `⟨R, fun y hy h => by simp [hR y hy h]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem int_of_cptK (hL : LgFacts) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (K : Mat n → (V →L[ℂ] V)) (f : Mat n → V)
@@ -159,21 +159,19 @@ theorem int_of_cptK (hL : LgFacts) [MeasurableSpace (G n)] [BorelSpace (G n)] (�
   exact ⟨R, fun y hy h => by simp [hR y hy h]⟩
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ E.V`. Establish `h1 : (1 : Mat n) ∈ GLs n` using `by simp [GLs]`. Establish `hfc' : ContinuousOn f (GLs n)` using `hf.continuousOn`. Establish `hk' : ∀ p, ContDiffOn ℝ ∞ (fun y => k y * ε (hb p)) (GLs n)` using `fun p => by`. Establish `e : (fun y => k y * ε (hb p)) = ⇑((mr (ε (hb p))).restrictScalars ℝ) ∘ k` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `((mr (ε (hb p))).restrictScalars ℝ).contDiff.comp_contDiffOn hks`. Establish `hkc' : ∀ p, Cpt fun y => k y * ε (hb p)` using `fun p => by`. Take `⟨R, hR⟩` from `hkc`. Conclude with `⟨R, fun y hy h => by simp [hR y hy h]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iA : ∀ p, Integrable (fun y : G n => (k y.val * ε (hb p)) (Rd (hb p) f y.val)) μ` using `fun p => int_of_cptK hL μ _ _ ((hk' p).continuousOn) (rd_cont f hf _) (hkc' p)`. Establish `iB : ∀ p, Integrable (fun y : G n => (k y.val * ε (hb p) * (fderiv ℝ Fr 1) (hb p)) (f y.val)) μ` using `fun p => int_of_cpt hL μ _ f ((hk' p).continuousOn.clm_comp continuousOn_const) hfc' hfc`. Establish `iC : ∀ p, Integrable (fun y : G n => (Rd (hb p) k y.val * ε (hb p)) (f y.val)) μ` using `fun p => int_of_cpt hL μ _ f ((rd_cont k hks _).clm_comp continuousOn_const) hfc' hfc`. Establish `eL : ∀ y : G n, k y.val (DC ε Fr f y.val) = ∑ p, ((k y.val * ε (hb p)) (Rd (hb p) f y.val) + (k y.val * ε (hb p) * (fderiv ℝ Fr 1) (hb p)) (f y.val))`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[DC, map_sum, map_add]`. Establish `eR : ∀ y : G n, kapR ε Fr k y.val (f y.val) = ∑ p, (-((Rd (hb p) k y.val * ε (hb p)) (f y.val)) + (k y.val * ε (hb p) * (fderiv ℝ Fr 1) (hb p)) (f y.val))`. Introduce `y`. Simplify using `[kapR]`. Rewrite using `[act_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[eL, eR]`. Establish `sL : ∫ y : G n, ∑ p, ((k y.val * ε (hb p)) (Rd (hb p) f y.val) + (k y.val * ε (hb p) * (fderiv ℝ Fr 1) (hb p)) (f y.val)) ∂μ = ∑ p, ∫ y : G n, ((k y.val * ε (hb p)) (Rd (hb p) f y.val) + (k y.val * ε (hb p) * (fderiv ℝ Fr 1) (hb p)) (f y.val)) ∂μ` using `integral_finset_sum _ fun p _ => (iA p).add (iB p)`. Establish `sR : ∫ y : G n, ∑ p, (-((Rd (hb p) k y.val * ε (hb p)) (f y.val)) + (k y.val * ε (hb p) * (fderiv ℝ Fr 1) (hb p)) (f y.val)) ∂μ = ∑ p, ∫ y : G n, (-((Rd (hb p) k y.val * ε (hb p)) (f y.val)) + (k y.val * ε (hb p) * (fderiv ℝ Fr 1) (hb p)) (f y.val)) ∂μ` using `integral_finset_sum _ fun p _ => (iC p).neg.add (iB p)`. Rewrite using `[sL, sR]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : ∫ y : G n, ((k y.val * ε (hb p)) (Rd (hb p) f y.val) + (k y.val * ε (hb p) * (fderiv ℝ Fr 1) (hb p)) (f y.val)) ∂μ = (∫ y : G n, (k y.val * ε (hb p)) (Rd (hb p) f y.val) ∂μ) + ∫ y : G n, (k y.val * ε (hb p) * (fderiv ℝ Fr 1) (hb p)) (f y.val) ∂μ` using `integral_add (iA p) (iB p)`. Establish `a2 : ∫ y : G n, (-((Rd (hb p) k y.val * ε (hb p)) (f y.val)) + (k y.val * ε (hb p) * (fderiv ℝ Fr 1) (hb p)) (f y.val)) ∂μ = (∫ y : G n, -((Rd (hb p) k y.val * ε (hb p)) (f y.val)) ∂μ) + ∫ y : G n, (k y.val * ε (hb p) * (fderiv ℝ Fr 1) (hb p)) (f y.val) ∂μ` using `integral_add (iC p).neg (iB p)`. Rewrite using `[a1, a2, integral_neg]`. Use `congr 1`. Establish `hibp` using `hI hU hR n μ E (fun y => k y * ε (hb p)) f (hk' p) (hkc' p) hf (hb p) 1 h1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_mul] at hibp`. Rewrite using `[hibp]`. Use `congr 1`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show (Rd (hb p) (fun y => k y * ε (hb p)) y.val) (f y.val) = (Rd (hb p) k y.val * ε (hb p)) (f y.val)`.
-
-Rewrite using `[rd_mr k hks _ _ _ (mem_GLs_of y)]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapR_int (hI : IBPAct) (hU : Unimod) (hR : RCalc) (hL : LgFacts) {E : KMod n} (Fr : Mat n → (E.V →L[ℂ] E.V))
     (ε : Mat n →ₗ[ℝ] (E.V →L[ℂ] E.V)) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n))

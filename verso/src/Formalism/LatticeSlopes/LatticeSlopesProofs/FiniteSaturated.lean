@@ -18,9 +18,9 @@ section
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
 
 /- English proof (translation)
-Establish `hD : DiscreteTopology (L.toAddSubgroup)` using `hL`. Establish `hcl : IsClosed (L : Set E)` using `AddSubgroup.isClosed_of_discrete (H := L.toAddSubgroup)`. Establish `hs : IsDiscrete (L : Set E)` using `isDiscrete_iff_discreteTopology.mpr hL`. Use `(Metric.finite_isBounded_inter_isClosed hs (Metric.isBounded_closedBall (x := (0 : E)) (r := C)) hcl).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨mem_closedBall_zero_iff.mpr hv.2, hv.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem finite_mem_norm_le (L : Submodule ℤ E) [hL : DiscreteTopology L] (C : ℝ) :
     {v : E | v ∈ L ∧ ‖v‖ ≤ C}.Finite := by
@@ -33,7 +33,7 @@ theorem finite_mem_norm_le (L : Submodule ℤ E) [hL : DiscreteTopology L] (C : 
   exact ⟨mem_closedBall_zero_iff.mpr hv.2, hv.1⟩
 
 /- English proof (translation)
-Establish `h0 : Wᗮ.starProjection (x - z) = 0` using `by rw [map_sub, h, sub_self]`. Rewrite `h0` using `[Submodule.starProjection_apply_eq_zero_iff, Submodule.orthogonal_orthogonal]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mem_of_starProjection_eq (W : Submodule ℝ E) {x z : E}
     (h : Wᗮ.starProjection x = Wᗮ.starProjection z) : x - z ∈ W := by
@@ -42,9 +42,9 @@ theorem sub_mem_of_starProjection_eq (W : Submodule ℝ E) {x z : E}
   exact h0
 
 /- English proof (translation)
-Unfold `quot at hπ`. Rewrite `hπ` using `[Submodule.map_coe]`. Establish `hfun : ⇑(LinearMap.restrictScalars ℤ (((span ℝ (N₁ : Set E))ᗮ.starProjection : E →L[ℝ] E) : E →ₗ[ℝ] E)) = ⇑(((span ℝ (N₁ : Set E))ᗮ.starProjection : E →L[ℝ] E) : E →ₗ[ℝ] E)` using `rfl`. Rewrite `hπ` using `[hfun, Submodule.span_image, Submodule.mem_map]`. Take `⟨y, hy, hyx⟩` from `hπ`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hxy : x - y ∈ span ℝ (N₁ : Set E)` using `sub_mem_of_starProjection_eq _ hyx.symm`. Establish `hle : span ℝ (N₁ : Set E) ≤ span ℝ (M : Set E)` using `span_mono h1`. Use `hM.2 x hx ?_` and prove the remaining obligations. Use `add_mem (hle hxy) hy` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_starProjection_mem_span_orthQuotient {L M N₁ : Submodule ℤ E} (hM : IsSaturated L M) (h1 : N₁ ≤ M)
     {x : E} (hx : x ∈ L)
@@ -65,7 +65,7 @@ theorem mem_of_starProjection_mem_span_orthQuotient {L M N₁ : Submodule ℤ E}
 end
 
 /- English proof (translation)
-Unfold `rk`. Conclude with `Module.finrank_pos_iff_exists_ne_zero.mpr ⟨⟨v, hv⟩, by simpa using hv0⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem rk_pos_of_ne_zero_mem {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] (N : Submodule ℤ E) [DiscreteTopology N]
@@ -74,35 +74,33 @@ private theorem rk_pos_of_ne_zero_mem {E : Type*} [NormedAddCommGroup E]
   exact Module.finrank_pos_iff_exists_ne_zero.mpr ⟨⟨v, hv⟩, by simpa using hv0⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `L hL X`. Use `(Set.finite_singleton (⊥ : Submodule ℤ E)).subset ?_` and prove the remaining obligations. Introduce and unpack `N ⟨hN, hrk, -⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `haveI : DiscreteTopology N := DiscreteTopology.of_subset (s := (L : Set E)) hL hN.1`. Rewrite using `[Set.mem_singleton_iff]`. Assume the negation of the conclusion as `hne`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).mp hne`. Use `rk_pos_of_ne_zero_mem N hv hv0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`. Introduce `L hL X`. Establish `hdisc : ∀ N : Submodule ℤ E, N ≤ L → DiscreteTopology N` using `fun N h => DiscreteTopology.of_subset (s := (L : Set E)) hL h`. Establish `hB : {v : E | v ∈ L ∧ ‖v‖ ≤ Real.sqrt ((k + 1 : ℕ) : ℝ) * max 1 X ∧ v ≠ 0}.Finite` using `(finite_mem_norm_le L _).subset fun v hv => ⟨hv.1, hv.2.1⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((Set.finite_singleton ⊥).union (hB.biUnion (t := fun v => {N : Submodule ℤ E | IsSaturated L N ∧ rk N ≤ k + 1 ∧ covol N ≤ X ∧ satur L (span ℤ ({v} : Set E)) ≤ N}) fun v hv => ?_)).subset ?_` and prove the remaining obligations. Take `⟨hvL, -, hv0⟩` from `hv`. Establish `hspL : span ℤ ({v} : Set E) ≤ L` using `span_le.mpr (Set.singleton_subset_iff.mpr hvL)`. Take `⟨sat1, hsp1, hrk1⟩` from `saturation_properties E L _ hL hspL`. Use `haveI : DiscreteTopology (span ℤ ({v} : Set E)) := hdisc _ hspL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrksp : 0 < rk (span ℤ ({v} : Set E))` using `rk_pos_of_ne_zero_mem _ (mem_span_singleton_self v) hv0`. Establish `dq` using `degree_quotient E L _ hL sat1`. Establish `hc1 : 0 < covol (satur L (span ℤ ({v} : Set E)))` using `covol_pos' E _ (hdisc _ sat1.1)`. Establish `hfin` using `ih (quot L (satur L (span ℤ ({v} : Set E)))) dq.1 (X / covol (satur L (span ℤ ({v} : Set E))))`. Use `Set.Finite.of_finite_image (f := fun N => quot N (satur L (span ℤ ({v} : Set E)))) (hfin.subset ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify by unfolding definitions.
 
-Introduce and unpack `_ ⟨N, ⟨hN, hrkN, hcov, h1⟩, rfl⟩ dsimp only [Set.mem_setOf_eq]`. Establish `hdN` using `hdisc N hN.1`. Establish `satN1 : IsSaturated N (satur L (span ℤ ({v} : Set E)))` using `⟨h1, fun x hx hxs => sat1.2 x (hN.1 hx) hxs⟩`. Establish `dqN` using `degree_quotient E N _ hdN satN1`. Establish `hcQ` using `covol_pos' E _ dqN.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcN` using `covol_pos' E N hdN`. Establish `hlog : Real.log (covol N) = Real.log (covol (satur L (span ℤ ({v} : Set E))) * covol (quot N (satur L (span ℤ ({v} : Set E)))))`. Rewrite using `[Real.log_mul hc1.ne' hcQ.ne']`. Use `dqN.2.2` as an intermediate fact. Unfold `deg at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmul` using `Real.log_injOn_pos (Set.mem_Ioi.mpr hcN) (Set.mem_Ioi.mpr (mul_pos hc1 hcQ)) hlog`. Use `⟨⟨Submodule.map_mono hN.1, fun y hy hys => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hxL, rfl⟩` from `Submodule.mem_map.mp hy`. Conclude with `Submodule.mem_map_of_mem (mem_of_starProjection_mem_span_orthQuotient hN h1 hxL hys)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `dqN.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[le_div_iff₀ hc1, mul_comm, ← hmul]`. Conclude with `hcov`. Introduce `N hN N' hN' heq`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ {A B : Submodule ℤ E}, IsSaturated L B → satur L (span ℤ ({v} : Set E)) ≤ B → quot A (satur L (span ℤ ({v} : Set E))) = quot B (satur L (span ℤ ({v} : Set E))) → A ≤ L → A ≤ B`. Introduce `A B hB hB1 hAB hAL x hx`. Use `mem_of_starProjection_mem_span_orthQuotient hB hB1 (hAL hx) ?_` and prove the remaining obligations. Rewrite using `[← hAB]`. Conclude with `subset_span (Submodule.mem_map_of_mem hx)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact.
 
-Conclude with `le_antisymm (key hN'.1 hN'.2.2.2 heq hN.1.1) (key hN.1 hN.2.2.2 heq.symm hN'.1.1)`. Introduce and unpack `N ⟨hN, hrk, hcov⟩`. Distinguish the cases in `hbot : N = ⊥`. Conclude with `Or.inl hbot`. Use `right`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdN` using `hdisc N hN.1`. Take `⟨v, hvN, hv0, hvle⟩` from `hS E N hdN hbot`. Establish `hr` using `rk_pos_of_ne_zero_mem N hvN hv0`. Establish `hcN` using `covol_pos' E N hdN`. Establish `hsq : Real.sqrt (rk N : ℝ) ≤ Real.sqrt ((k + 1 : ℕ) : ℝ)` using `Real.sqrt_le_sqrt (by exact_mod_cast hrk)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation.
 
-Establish `hpow : covol N ^ ((1 : ℝ) / (rk N : ℝ)) ≤ max 1 X`. Establish `he : (1 : ℝ) / (rk N : ℝ) ≤ 1`. Rewrite using `[div_le_one (by exact_mod_cast hr)]`. Conclude with `hr` after adjusting the coercions. Establish `he0 : (0 : ℝ) ≤ 1 / (rk N : ℝ)` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `le_or_gt (covol N) 1 with h | h` into its components or cases. Conclude with `(Real.rpow_le_one hcN.le h he0).trans (le_max_left _ _)`. Combine the equalities or inequalities in the displayed calculation. Establish `hnorm : ‖v‖ ≤ Real.sqrt ((k + 1 : ℕ) : ℝ) * max 1 X` using `hvle.trans (mul_le_mul hsq hpow (by positivity) (Real.sqrt_nonneg _))`. Use `Set.mem_biUnion (x := v) ⟨hN.1 hvN, hnorm, hv0⟩ ⟨hN, hrk, hcov, ?_⟩` and prove the remaining obligations.
-
-Introduce `x hx`. Take `⟨hxL, hxs⟩` from `Submodule.mem_inf.mp hx`. Use `hN.2 x hxL (span_mono ?_ ((Submodule.restrictScalars_mem _ _ _).mp hxs))` and prove the remaining obligations. Conclude with `span_le.mpr (Set.singleton_subset_iff.mpr hvN)`.
+A detailed English derivation is pending.
 -/
 theorem finite_saturated_rank_le_covol_le (hS : ShortVector.{u}) {E : Type u} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] (k : ℕ) :
@@ -203,7 +201,7 @@ theorem finite_saturated_rank_le_covol_le (hS : ShortVector.{u}) {E : Type u} [N
       exact span_le.mpr (Set.singleton_subset_iff.mpr hvN)
 
 /- English proof (translation)
-Introduce `E _ _ _ L hL X`. Use `(finite_saturated_rank_le_covol_le hS (rk L) L hL X).subset ?_` and prove the remaining obligations. Introduce and unpack `N ⟨hN, hX⟩`. Use `(degree_quotient E L N hL hN).2.1` as an intermediate fact. Conclude with `⟨hN, by omega, hX⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem finiteSaturated_of (hS : ShortVector.{u}) : FiniteSaturated.{u} := by
   intro E _ _ _ L hL X

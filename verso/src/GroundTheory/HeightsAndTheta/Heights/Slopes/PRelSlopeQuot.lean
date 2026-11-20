@@ -15,7 +15,7 @@ namespace HermitianBundle
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[normDegree, deg, degree_eq_arithDegree]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem normDegree_eq_deg_sub (E : HermitianBundle K) (F : Submodule (𝓞 K) E.carrier) :
     E.normDegree F = (E.sub F).deg := by
@@ -25,13 +25,11 @@ theorem normDegree_eq_deg_sub (E : HermitianBundle K) (F : Submodule (𝓞 K) E.
 end HermitianBundle
 
 /- English proof (translation)
-Introduce `K _ _ E F G hF hFG`. Use `set F' := F.comap G.subtype`. Use `set hF' := hF.comap_subtype G`. Use `set X := HermitianBundle.subQuotExtension (E.sub G) F' hF'`. Establish `hdeg : (E.sub G).deg = ((E.sub G).sub F').deg + ((E.sub G).quot F' hF').deg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [HermitianBundle.deg]`. Rewrite using `[X.arithDegree_eq_add, add_div]`. Establish `hsubF : ((E.sub G).sub F').deg = (E.sub F).deg` using `LatticeLemmas.ChainSum.deg_sub_comap E hFG.le`. Establish `hrk` using `X.finrank_eq`. Establish `hrkF : Module.finrank (𝓞 K) ((E.sub G).sub F').carrier = Module.finrank (𝓞 K) F` using `(Submodule.comapSubtypeEquivOfLe hFG.le).finrank_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrk' : (E.rank G : ℝ) - E.rank F = Module.finrank (𝓞 K) ((E.sub G).quot F' hF').carrier`. Establish `h : E.rank G = E.rank F + Module.finrank (𝓞 K) ((E.sub G).quot F' hF').carrier`. Rewrite using `[HermitianBundle.rank, HermitianBundle.rank, ← hrkF]`. Conclude with `hrk`. Rewrite using `[h, Nat.cast_add, add_sub_cancel_left]`.
-
-Rewrite using `[HermitianBundle.relSlope, hrk', HermitianBundle.normDegree_eq_deg_sub, HermitianBundle.normDegree_eq_deg_sub, hdeg, hsubF, add_sub_cancel_left, HermitianBundle.bundleSlope]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem RelSlopeQuot.proof : RelSlopeQuot.Statement := by
   intro K _ _ E F G hF hFG

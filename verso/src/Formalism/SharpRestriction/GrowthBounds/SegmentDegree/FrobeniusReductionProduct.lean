@@ -9,7 +9,7 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.G.Joints.StandardMonomialSpace
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => rw [expand_C, ← map_pow, ZMod.pow_card_pow]`. Consider the case `add u v hu hv => rw [map_add, hu, hv, add_pow_char_pow]`. Consider the case `mul_X q v h => rw [map_mul, h, expand_X, mul_pow]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem expand_pow_zmod (p : ℕ) [Fact p.Prime] {σ : Type} (f : MvPolynomial σ (ZMod p)) (n : ℕ) :
     expand (p ^ n) f = f ^ (p ^ n) := by
@@ -19,7 +19,7 @@ theorem expand_pow_zmod (p : ℕ) [Fact p.Prime] {σ : Type} (f : MvPolynomial �
   | mul_X q v h => rw [map_mul, h, expand_X, mul_pow]
 
 /- English proof (translation)
-Establish `h0 : ((p : ℕ) : FF O) = 0`. Use `(IsLocalRing.residue_eq_zero_iff (p : O)).mpr S.p_mem` as an intermediate fact. Simplify using `using this`. Conclude with `(CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).mpr h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem charP_FF {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (S : UniformizedDVR p O) : CharP (FF O) p := by
@@ -29,7 +29,7 @@ theorem charP_FF {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [
   exact (CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).mpr h0
 
 /- English proof (translation)
-Rewrite using `[← map_expand, expand_pow_zmod, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem expand_pow_of_map (p : ℕ) [Fact p.Prime] {Fd : Type} [Field Fd] (φ : ZMod p →+* Fd) {σ : Type}
     (f : MvPolynomial σ (ZMod p)) (n : ℕ) :
@@ -37,7 +37,7 @@ theorem expand_pow_of_map (p : ℕ) [Fact p.Prime] {Fd : Type} [Field Fd] (φ : 
   rw [← map_expand, expand_pow_zmod, map_pow]
 
 /- English proof (translation)
-Unfold `Dat.detPl`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_detPl {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n' r : ℕ} [NeZero n'] (X : Dat n' r) (j x : ℤ) :
     MvPolynomial.map f (X.detPl R j x) = X.detPl S j x := by
@@ -48,7 +48,7 @@ theorem map_detPl {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n' r :
   simp
 
 /- English proof (translation)
-Unfold `Dat.DlSeg`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_detPl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_DlSeg {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n' r : ℕ} [NeZero n'] (X : Dat n' r)
     (p K : ℕ) (j : ℤ) : MvPolynomial.map f (X.DlSeg p K R j) = X.DlSeg p K S j := by
@@ -58,11 +58,11 @@ theorem map_DlSeg {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n' r :
   rw [map_pow, map_detPl]
 
 /- English proof (translation)
-Rewrite using `[monomial_eq, map_one, one_mul]`. Establish `hsub : e.support ⊆ X.toLate j ×ˢ (Finset.univ : Finset (Fin (r + K)))`. Introduce `v hv`. Rewrite using `[Finset.mem_product]`. Conclude with `⟨he.1 v (Finsupp.mem_support_iff.mp hv), Finset.mem_univ _⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Finsupp.prod_of_support_subset e hsub _ (fun _ _ => pow_zero _), Finset.prod_product]`. Unfold `Dat.ellP Dat.ellN plEmb nmEmb`. Simplify using `only [map_prod, map_pow, rename_X]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.prod_univ_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ell_split {n' r : ℕ} [NeZero n'] (X : Dat n' r) (p K : ℕ) (R : Type) [CommRing R] (j : ℤ)
     (e : ℤ × Fin (r + K) →₀ ℕ) (he : X.IsEll p K j e) :
@@ -81,13 +81,13 @@ theorem ell_split {n' r : ℕ} [NeZero n'] (X : Dat n' r) (p K : ℕ) (R : Type)
   rw [Fin.prod_univ_add]
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X O _ _ _ S j b e q I' I'' hc`. Establish `: Fact p.Prime` using `⟨hc.hX.prime⟩`. Establish `: CharP (FF O) p` using `charP_FF S`. Set `φ : ZMod p →+* FF O` to `ZMod.castHom (dvd_refl p) (FF O)`. Establish `hW : MvPolynomial.map (IsLocalRing.residue O) (segRen X.F j O (r + K) (PsiPl O q.1 I' * PsiTan O q.2 I'')) = MvPolynomial.map φ (segRen X.F j (ZMod p) (r + K) (PsiPl (ZMod p) q.1 I' * PsiTan (ZMod p) q.2 I''))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [segRen, map_rename, map_mul, PsiPl_map, PsiTan_map]`. Establish `hW2 : MvPolynomial.map (IsLocalRing.residue O) (segRen X.F j O (r + K) (PsiPl O q.1 I' * PsiTan O q.2 I'')) = plEmb (FF O) r K (segRen X.F j (FF O) r (Psi (FF O) q.1 I')) * nmEmb (FF O) r K (segRen X.F j (FF O) K (Psi (FF O) q.2 I''))`. Rewrite using `[← segRen_mul]`. Simplify using `only [segRen, map_rename, map_mul, PsiPl_map, PsiTan_map]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Unfold `Dat.zSeg Dat.Aw Dat.Gw`. Rewrite using `[map_mul, map_mul, map_expand, hW, expand_pow_of_map, ← hW, hW2, map_monomial, map_one, ell_split X p K (FF O) j e hc.he]`. Establish `hD : MvPolynomial.map (IsLocalRing.residue O) (plEmb O r K (X.DlSeg p K O j)) = plEmb (FF O) r K (X.DlSeg p K (FF O) j)`. Unfold `plEmb`. Rewrite using `[map_rename, map_DlSeg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD]`. Simplify using `only [map_mul, map_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frobenius_reduction_product (C₀ : ℝ) : FrobeniusReductionProduct C₀ := by
   intro p n' r K _ _ _ X O _ _ _ S j b e q I' I'' hc

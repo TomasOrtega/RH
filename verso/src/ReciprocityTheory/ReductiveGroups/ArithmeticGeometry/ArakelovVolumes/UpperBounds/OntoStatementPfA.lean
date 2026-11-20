@@ -16,31 +16,31 @@ def gch (hU : IsOpen U) [Nonempty U] : OpenPartialHomeomorph U (V n) :=
   hU.isOpenEmbedding_subtypeVal.toOpenPartialHomeomorph Subtype.val
 
 /- English proof (translation)
-Simplify using `[gch]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gch_apply (hU : IsOpen U) [Nonempty U] (x : U) : gch hU x = x.1 := by
   simp [gch]
 
 /- English proof (translation)
-Simplify using `[gch]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gch_source (hU : IsOpen U) [Nonempty U] : (gch hU).source = univ := by
   simp [gch]
 
 /- English proof (translation)
-Simplify using `[gch, Subtype.range_coe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gch_target (hU : IsOpen U) [Nonempty U] : (gch hU).target = U := by
   simp [gch, Subtype.range_coe]
 
 /- English proof (translation)
-Introduce `x _` and use `(gch_apply hU x).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gch_isChart (hU : IsOpen U) [Nonempty U] : IsChart n (Subtype.val : U → V n) (gch hU) :=
   fun x _ => (gch_apply hU x).symm
 
 /- English proof (translation)
-Establish `h` using `(gch hU).right_inv (by rw [gch_target]; exact hy)`. Rewrite `h` using `[gch_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gch_symm (hU : IsOpen U) [Nonempty U] {y : V n} (hy : y ∈ U) :
     ((gch hU).symm y : V n) = y := by
@@ -48,13 +48,13 @@ theorem gch_symm (hU : IsOpen U) [Nonempty U] {y : V n} (hy : y ∈ U) :
   rwa [gch_apply] at h
 
 /- English proof (translation)
-The claim follows from `hU.isOpenEmbedding_subtypeVal.isLocalHomeomorph`.
+A detailed English derivation is pending.
 -/
 theorem val_lh (hU : IsOpen U) : IsLocalHomeomorph (Subtype.val : U → V n) :=
   hU.isOpenEmbedding_subtypeVal.isLocalHomeomorph
 
 /- English proof (translation)
-Rewrite using `[he (e.map_target hy)]`. Conclude with `e.right_inv hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coe_symm_apply_of_isChart_val {e : OpenPartialHomeomorph U (V n)}
     (he : IsChart n (Subtype.val : U → V n) e) {y : V n} (hy : y ∈ e.target) :
@@ -63,9 +63,9 @@ private theorem coe_symm_apply_of_isChart_val {e : OpenPartialHomeomorph U (V n)
   exact e.right_inv hy
 
 /- English proof (translation)
-Introduce `e he`. Use `(hf.mono ?_).congr ?_` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[← coe_symm_apply_of_isChart_val he hy]`. Conclude with `(e.symm y).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Simplify using `only [Function.comp_apply]`. Rewrite using `[coe_symm_apply_of_isChart_val he hy]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_of (hU : IsOpen U) [Nonempty U] {f : V n → ℂ} (hf : ContDiffOn ℝ ∞ f U) :
     Smooth n (Subtype.val : U → V n) (fun x => f x.1) := by
@@ -79,7 +79,7 @@ theorem smooth_of (hU : IsOpen U) [Nonempty U] {f : V n → ℂ} (hf : ContDiffO
     rw [coe_symm_apply_of_isChart_val he hy]
 
 /- English proof (translation)
-Establish `h2 : ContDiffOn ℝ ∞ (fun y => (f y : ℂ)) U` using `Complex.ofRealCLM.contDiff.comp_contDiffOn hf`. Conclude with `smooth_of hU h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothR_of (hU : IsOpen U) [Nonempty U] {f : V n → ℝ} (hf : ContDiffOn ℝ ∞ f U) :
     SmoothR n (Subtype.val : U → V n) (fun x => f x.1) := by
@@ -87,7 +87,7 @@ theorem smoothR_of (hU : IsOpen U) [Nonempty U] {f : V n → ℝ} (hf : ContDiff
   exact smooth_of hU h2
 
 /- English proof (translation)
-Establish `hxt : (x : V n) ∈ e.target`. Rewrite using `[he hx]`. Conclude with `e.map_source hx`. Use `filter_upwards [e.open_target.mem_nhds hxt] with y hy`. Simplify using `only [Function.comp_apply, coe_symm_apply_of_isChart_val he hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem comp_chart_symm_eventuallyEq_of_mem_source {e : OpenPartialHomeomorph U (V n)}
     (he : IsChart n (Subtype.val : U → V n) e) {x : U} (hx : x ∈ e.source) (g : V n → ℂ) :
@@ -99,7 +99,7 @@ private theorem comp_chart_symm_eventuallyEq_of_mem_source {e : OpenPartialHomeo
   simp only [Function.comp_apply, coe_symm_apply_of_isChart_val he hy]
 
 /- English proof (translation)
-Establish `h : ∃ e : OpenPartialHomeomorph U (V n), IsChart n (Subtype.val : U → V n) e ∧ x ∈ e.source` using `⟨gch hU, gch_isChart hU, by rw [gch_source]; trivial⟩`. Unfold `db`. Rewrite using `[dif_pos h]`. Conclude with `wdb_congr (comp_chart_symm_eventuallyEq_of_mem_source (Classical.choose_spec h).1 (Classical.choose_spec h).2 G)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem db_val_eq_wdb_of_isOpen (hU : IsOpen U) [Nonempty U] (j : Fin n) (G : V n → ℂ) (x : U) :
     db n (Subtype.val : U → V n) j (fun y => G y.1) x = wdb n j G x.1 := by
@@ -110,7 +110,7 @@ private theorem db_val_eq_wdb_of_isOpen (hU : IsOpen U) [Nonempty U] (j : Fin n)
   exact wdb_congr (comp_chart_symm_eventuallyEq_of_mem_source (Classical.choose_spec h).1 (Classical.choose_spec h).2 G)
 
 /- English proof (translation)
-Unfold `dbarDot`. Simplify using `only [db_val_eq_wdb_of_isOpen hU]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem dbarDot_eq (hU : IsOpen U) [Nonempty U] (F0 : V n → ℂ) (x : U) (ξ : Fin n → ℂ) :
     dbarDot n (Subtype.val : U → V n) (fun y => F0 y.1) x ξ = ∑ j, wdb n j F0 x.1 * conj (ξ j) := by
@@ -118,7 +118,7 @@ theorem dbarDot_eq (hU : IsOpen U) [Nonempty U] (F0 : V n → ℂ) (x : U) (ξ :
   simp only [db_val_eq_wdb_of_isOpen hU]
 
 /- English proof (translation)
-Establish `h : ∃ e : OpenPartialHomeomorph U (V n), IsChart n (Subtype.val : U → V n) e ∧ x ∈ e.source` using `⟨gch hU, gch_isChart hU, by rw [gch_source]; trivial⟩`. Unfold `d`. Rewrite using `[dif_pos h]`. Conclude with `wd_congr (comp_chart_symm_eventuallyEq_of_mem_source (Classical.choose_spec h).1 (Classical.choose_spec h).2 G)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem d_val_eq_wd_of_isOpen (hU : IsOpen U) [Nonempty U] (j : Fin n) (G : V n → ℂ) (x : U) :
     d n (Subtype.val : U → V n) j (fun y => G y.1) x = wd n j G x.1 := by
@@ -129,7 +129,7 @@ private theorem d_val_eq_wd_of_isOpen (hU : IsOpen U) [Nonempty U] (j : Fin n) (
   exact wd_congr (comp_chart_symm_eventuallyEq_of_mem_source (Classical.choose_spec h).1 (Classical.choose_spec h).2 G)
 
 /- English proof (translation)
-Establish `hin : ∀ k, db n (Subtype.val : U → V n) k (fun y => ((ph y.1 : ℝ) : ℂ)) = fun y => wdb n k (fun w => (ph w : ℂ)) y.1` using `fun k => funext fun y => db_val_eq_wdb_of_isOpen hU k (fun w => (ph w : ℂ)) y`. Unfold `Levi leviV`. Simplify using `only [hin, d_val_eq_wd_of_isOpen hU]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem levi_eq (hU : IsOpen U) [Nonempty U] (ph : V n → ℝ) (x : U) (ξ : Fin n → ℂ) :
     Levi n (Subtype.val : U → V n) (fun y => ph y.1) x ξ =
@@ -141,17 +141,15 @@ theorem levi_eq (hU : IsOpen U) [Nonempty U] (ph : V n → ℝ) (x : U) (ξ : Fi
   simp only [hin, d_val_eq_wd_of_isOpen hU]
 
 /- English proof (translation)
-Establish `hmeas : MeasurableSet U` using `hU.measurableSet`. Use extensionality with `A hA`. Rewrite using `[vol_apply n _ (val_lh hU) A hA, Measure.comap_apply _ Subtype.val_injective (fun s hs => MeasurableSet.subtype_image hmeas hs) _ hA]`. Unfold `volFun`. Establish `hind : ∀ y, (((A ∩ Subtype.val ⁻¹' {y}).encard : ℕ∞) : ℝ≥0∞) = (Subtype.val '' A).indicator 1 y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce `y`. Distinguish the cases in `hy : y ∈ Subtype.val '' A`. Take `⟨a, ha, rfl⟩` from `hy`. Establish `h1 : A ∩ Subtype.val ⁻¹' {(a : V n)} = {a}`. Use extensionality with `b`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hb⟩`. Conclude with `Subtype.ext hb`. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨ha, rfl⟩`. Rewrite using `[h1, Set.encard_singleton]`. Simplify using `[Set.indicator_apply, Set.mem_image_of_mem _ ha]`. Establish `h1 : A ∩ Subtype.val ⁻¹' {y} = ∅`. Use extensionality with `b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hb hby`. Conclude with `hy ⟨b, hb, hby⟩`. Rewrite using `[h1, Set.encard_empty]`. Simplify using `[Set.indicator_apply, hy]`.
-
-Repeatedly rewrite using `[hind]`. Conclude with `lintegral_indicator_one (MeasurableSet.subtype_image hmeas hA)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vol_val_eq_comap_volume (hU : IsOpen U) :
     vol n (Subtype.val : U → V n) = Measure.comap Subtype.val (volume : Measure (V n)) := by
@@ -187,21 +185,19 @@ private theorem vol_val_eq_comap_volume (hU : IsOpen U) :
   exact lintegral_indicator_one (MeasurableSet.subtype_image hmeas hA)
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty U with hE | hne` into its components or cases. Establish `hU0 : U = ∅` using `Set.isEmpty_coe_sort.mp hE`. Substitute `hU0` using the available equality. Conclude with `⟨0, differentiableOn_empty, by simp⟩`. Establish `hmeas : MeasurableSet U` using `hU.measurableSet`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hs1 : SmoothR n S.z (fun y => ph y.1)`. Rewrite using `[hSz]`. Conclude with `smoothR_of hU hph`. Establish `hs2 : LeviNonneg n S.z (fun y => ph y.1)`. Rewrite using `[hSz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x ξ`. Rewrite using `[levi_eq hU ph x ξ]`. Conclude with `hpsh x.1 x.2 ξ`. Establish `hs3 : Smooth n S.z (fun y => F0 y.1)`. Rewrite using `[hSz]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `smooth_of hU hF0`. Establish `hs4 : Measurable (fun y : U => ENNReal.ofReal (hr y.1))` using `(hrc.restrict.measurable).ennreal_ofReal`. Establish `hs5 : ∀ (x : U) (ξ : Fin n → ℂ), ENNReal.ofReal (‖dbarDot n S.z (fun y => F0 y.1) x ξ‖ ^ 2) ≤ ENNReal.ofReal (hr x.1) * ENNReal.ofReal (Levi n S.z (fun y => ph y.1) x ξ).re`. Rewrite using `[hSz]`. Introduce `x ξ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[dbarDot_eq hU, levi_eq hU, ← ENNReal.ofReal_mul (hr0 x.1 x.2)]`. Conclude with `ENNReal.ofReal_le_ofReal (hineq x.1 x.2 ξ)`. Take `⟨F, hHolo, hint⟩` from `ReciprocityTheory.L2DbarEstimates.hormander n U S (fun y => ph y.1) (fun y => F0 y.1) (fun y => ENNReal.ofReal (hr y.1)) hs1 hs2 hs3 hs4 hs5`. Take `⟨F', hF'⟩ : ∃ F' : V n → ℂ, ∀ x : U, F' x.1 = F x` from `⟨fun y => if h : y ∈ U then F ⟨y, h⟩ else 0, fun x => by simp [x.2]⟩`. Establish `hdiff : DifferentiableOn ℂ F' U`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hHolo (gch hU) (hSz ▸ gch_isChart hU)`. Rewrite `h1` using `[gch_target]`. Use `h1.congr ?_` and prove the remaining obligations. Introduce `y hy`. Establish `h2 : (gch hU).symm y = ⟨y, hy⟩` using `Subtype.ext (gch_symm hU hy)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, h2]`. Conclude with `hF' ⟨y, hy⟩`. Use `⟨F', hdiff, ?_⟩` and prove the remaining obligations. Establish `L1` using `lintegral_subtype_comap (μ := (volume : Measure (V n))) hmeas (fun y => ENNReal.ofReal (‖F0 y - F' y‖ ^ 2 * Real.exp (-ph y)))`. Establish `L2` using `lintegral_subtype_comap (μ := (volume : Measure (V n))) hmeas (fun y => ENNReal.ofReal (hr y) * ENNReal.ofReal (Real.exp (-ph y)))`.
-
-Rewrite using `[← L1, ← L2, ← vol_val_eq_comap_volume hU]`. Simplify `hint` using `only [wint, hF', hSz]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem horm_open (hU : IsOpen U) (S : EtaleStein n U) (hSz : S.z = Subtype.val)
     (ph : V n → ℝ) (F0 : V n → ℂ) (hr : V n → ℝ)

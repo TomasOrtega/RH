@@ -11,13 +11,13 @@ open GlobalTheory GlobalTheory.Ex
 namespace GlobalTheory.Ex
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H D R _ _ F _ _ _ A n hn`. Take `⟨-, -, hadd, -, hQ⟩` from `hG R A.D₀ A.even A.bimult F A.N A.ν`. Use `⟨fun a b => ?_, fun a b => ?_, fun q => ?_⟩` and prove the remaining obligations. Take `⟨p, h₁, h₂, h₃⟩` from `A.I.add n hn a b`. Take `⟨q, hq⟩` from `((hQ n).1 p).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : q = A.q n a * A.q n b`. Use `Subtype.ext (Prod.ext ?_ ((hadd _ _ _ _ _ _ (A.hq n a).2 (A.hq n b).2 hq.2).1 h₂))` and prove the remaining obligations. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Apply `A.ν.eX.injective` to reduce the goal to its premises. Rewrite using `[hq.1, h₁, ← (A.hq n a).1, ← (A.hq n b).1, ← map_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `((hQ n).2.2 _ _ _ _ hq (A.hq n _)).1 h₃`. Rewrite using `[← (hQ n).2.2 _ _ _ _ (A.hq n a) (A.hq n b)]`. Conclude with `A.I.ker n hn a b`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p₀, hp₀⟩` from `(hQ n).2.1 q`. Take `⟨a, ha⟩` from `A.I.onto n hn p₀`. Conclude with `⟨a, ((hQ n).2.2 _ _ _ _ (A.hq n a) hp₀).1 ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem arcF_values_add_ker_onto : BrGtSt → AllD fun D => ∀ (R : Type) [CommRing R] [IsDomain R] (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (A : ArcF D R F) (n : ℕ), 0 < n → (∀ a b, A.N.QEq (A.q n a * A.q n b) (A.q n (a + b))) ∧ (∀ a b, A.N.QEq (A.q n a) (A.q n b) ↔ ∃ e, a = b + n • e) ∧ ∀ p, ∃ a, A.N.QEq (A.q n a) p := by
   intro hG E _ _ _ H D R _ _ F _ _ _ A n hn

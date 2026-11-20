@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 namespace LateralTheory.E.LeafGeomPfLoc
 
 /- English proof (translation)
-Establish `h` using `ConcreteCategory.congr_hom (((pullback.snd (bsumOf V W) (PGL.pr (a + b))).app (op (SimplexCategory.mk n))).naturality k.op) x`. Unfold `vec0`. Use `erw [h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem projective_bundle_direct_sum_zero_vertex_coordinates_restrict {E : Spc} {a b : ℕ} (V : E ⟶ ofCat (glCat a)) (W : E ⟶ ofCat (glCat b)) {n : ℕ} {X Y : Scheme.{0}}
     (k : Y ⟶ X) (x : Sx (PB (bsumOf V W)) n X) (j : Fin (a + b)) :
@@ -17,7 +17,7 @@ theorem projective_bundle_direct_sum_zero_vertex_coordinates_restrict {E : Spc} 
   rfl
 
 /- English proof (translation)
-Establish `hu` using `X.toRingedSpace.isUnit_res_basicOpen (U := ⊤) f`. Use `hu.map (X.presheaf.map (homOfLE h).op).hom` as an intermediate fact. Use `erw [← CommRingCat.comp_apply, ← Functor.map_comp] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unit_le {X : Scheme.{0}} (f : Γ(X, ⊤)) {V : X.Opens} (h : V ≤ X.basicOpen f) :
     IsUnit ((X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op).hom f) := by
@@ -27,7 +27,7 @@ theorem unit_le {X : Scheme.{0}} (f : Γ(X, ⊤)) {V : X.Opens} (h : V ≤ X.bas
   exact this
 
 /- English proof (translation)
-Rewrite using `[Scheme.Γ_map_op, Scheme.Opens.ι_appTop]`. Conclude with `unit_le f (X.basicOpen f).ι_image_top.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_basicOpen {X : Scheme.{0}} (f : Scheme.Γ.obj (op X)) :
     IsUnit (Scheme.Γ.map (X.basicOpen f).ι.op f) := by
@@ -35,15 +35,13 @@ theorem unit_basicOpen {X : Scheme.{0}} (f : Scheme.Γ.obj (op X)) :
   exact unit_le f (X.basicOpen f).ι_image_top.le
 
 /- English proof (translation)
-Introduce `E a b V W n X x`. Establish `hspan : Ideal.span (Set.range (vec0 V W x)) = ⊤` using `((show Fin (n + 1) ⥤ Um (a + b) (Scheme.Γ.obj (op X)) from ((pullback.snd (bsumOf V W) (PGL.pr (a + b))).app (op (SimplexCategory.mk n))).app (op X) x).obj 0).2`. Establish `hcov : TopologicalSpace.IsOpenCover (fun j => X.basicOpen (vec0 V W x j))`. Use `AlgebraicGeometry.iSup_basicOpen_of_span_eq_top (X := X) ⊤ (Set.range (vec0 V W x)) hspan` as an intermediate fact. Use `le_antisymm le_top ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← this]`. Conclude with `iSup₂_le fun _ ⟨j, hj⟩ => hj ▸ le_iSup (fun j => X.basicOpen (vec0 V W x j)) j`. Set `𝒰` to `X.openCoverOfIsOpenCover _ hcov`. Use `⟨Sieve.ofArrows 𝒰.X 𝒰.f, Scheme.zariskiTopology_le_etaleTopology _ 𝒰.mem_grothendieckTopology, ?_⟩` and prove the remaining obligations. Introduce `Y k hk`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[Sieve.mem_ofArrows_iff]`. Take `⟨j, g, rfl⟩` from `hk`. Establish `hu : IsUnit (Scheme.Γ.map (g ≫ 𝒰.f j).op (vec0 V W x j))`. Rewrite using `[op_comp, Functor.map_comp]`. Conclude with `(unit_basicOpen (vec0 V W x j)).map (Scheme.Γ.map g.op).hom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨i, rfl⟩ | ⟨i, rfl⟩ : (∃ i, j = Fin.castAdd b i) ∨ ∃ i, j = Fin.natAdd a i` from `Fin.addCases (fun i => Or.inl ⟨i, rfl⟩) (fun i => Or.inr ⟨i, rfl⟩) j`. Use `left`. Simplify using `only [First, projective_bundle_direct_sum_zero_vertex_coordinates_restrict]`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨i, rfl⟩) hu`. Use `right`.
-
-Simplify using `only [Second, projective_bundle_direct_sum_zero_vertex_coordinates_restrict]`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨i, rfl⟩) hu`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leafLocal : LeafLocal := by
   intro E a b V W n X x
@@ -73,7 +71,7 @@ theorem leafLocal : LeafLocal := by
     exact Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨i, rfl⟩) hu
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LeafGeomPf.LeafGeom_of h1 h2 leafLocal`.
+A detailed English derivation is pending.
 -/
 theorem LeafGeom_of (h1 : LeafHalf1) (h2 : LeafHalf2) : LateralTheory.E.D2.LeafGeom :=
   LateralTheory.E.LeafGeomPf.LeafGeom_of h1 h2 leafLocal

@@ -21,7 +21,7 @@ section Term
 variable {D : D7} {X : HidaSetting D} (Y : Full X) {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Establish `hrow` using `(Y.rowsOK u).1 t.lam t.mem`. Establish `hP` using `t.rep.2.2.2.2`. Conclude with `⟨Formalism.L2.SG.NGCut.PtPf.frame_mem (lf D (X.Fu u)) hrow.2.1.2.2.1.1 hrow.2.2, Formalism.L2.SG.NGCut.PtPf.frame_mem t.frame hP.1.1 hP.2.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem frames_mem (t : TauC Y u u') :
     (∀ b, (X.Fu u).fvec b ∈ t.lam) ∧ (∀ b, t.frame.fl.fvec b ∈ t.lam) := by
@@ -31,7 +31,7 @@ theorem frames_mem (t : TauC Y u u') :
     Formalism.L2.SG.NGCut.PtPf.frame_mem t.frame hP.1.1 hP.2.2.2⟩
 
 /- English proof (translation)
-Establish `hrow` using `(Y.rowsOK u).1 t.lam t.mem`. Take `⟨h1, h2⟩` from `frames_mem Y t`. Conclude with `yv_mem hrow.2.1.2.1 (Tu D u) (X.Fu u) t.frame.fl h1 h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem yT_mem (t : TauC Y u u') : NormalVectorPairings.yT Y u u' t ∈ t.lam := by
   have hrow := (Y.rowsOK u).1 t.lam t.mem
@@ -39,9 +39,9 @@ theorem yT_mem (t : TauC Y u u') : NormalVectorPairings.yT Y u u' t ∈ t.lam :=
   exact yv_mem hrow.2.1.2.1 (Tu D u) (X.Fu u) t.frame.fl h1 h2
 
 /- English proof (translation)
-Establish `hrow` using `(Y.rowsOK u).1 t.lam t.mem`. Take `⟨h1, h2⟩` from `frames_mem Y t`. Establish `hv : NormalVectorPairings.yv t.frame.fl (X.Fu u) ∈ t.lam` using `yv_mem hrow.2.1.2.1 (Tu D u') t.frame.fl (X.Fu u) h2 h1`. Establish `hg : Formalism.HermitianLatticesTheory.gmap t.lin t.lam' = t.lam` using `t.rep.2.2.2.1`. Rewrite `hv` using `[← hg]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, hw, hwv⟩` from `Submodule.mem_map.1 hv`. Use `show t.lin.symm (NormalVectorPairings.yv t.frame.fl (X.Fu u)) ∈ t.lam'`. Rewrite using `[← hwv]`. Simplify using `using hw`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem yT'_mem (t : TauC Y u u') : NormalVectorPairings.yT' Y u u' t ∈ t.lam' := by
   have hrow := (Y.rowsOK u).1 t.lam t.mem
@@ -55,11 +55,9 @@ theorem yT'_mem (t : TauC Y u u') : NormalVectorPairings.yT' Y u u' t ∈ t.lam'
   simpa using hw
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hiso : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Establish `hlx : t.lin x ∈ (t.frame.fl).X`. Use `(CorankRelation.mem_Xsp_mapLF (γ := t.lin) hiso (lf D (X.Fu u')) (t.lin x)).2 (by simpa using hx)` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `yv_orth_X t.frame.fl (X.Fu u) (t.lin x) hlx`. Use `show (VS D).hT x (t.lin.symm (NormalVectorPairings.yv t.frame.fl (X.Fu u))) = 0`. Establish `e` using `hiso x (t.lin.symm (NormalVectorPairings.yv t.frame.fl (X.Fu u)))`. Rewrite `e` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[← e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yT'_orth (t : TauC Y u u') : ∀ x ∈ (X.Fu u').X, brS (VS D) (NormalVectorPairings.yT' Y u u' t) x = 0 := by
   intro x hx
@@ -75,9 +73,9 @@ theorem yT'_orth (t : TauC Y u u') : ∀ x ∈ (X.Fu u').X, brS (VS D) (NormalVe
   exact h
 
 /- English proof (translation)
-Establish `hiso : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Use `show (VS D).hT (t.lin.symm _) (t.lin.symm _) = _`. Establish `e` using `hiso (t.lin.symm (NormalVectorPairings.yv t.frame.fl (X.Fu u))) (t.lin.symm (NormalVectorPairings.yv t.frame.fl (X.Fu u)))`. Rewrite `e` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem yT'_self (t : TauC Y u u') :
     brS (VS D) (NormalVectorPairings.yT' Y u u' t) (NormalVectorPairings.yT' Y u u' t) =
@@ -90,7 +88,7 @@ theorem yT'_self (t : TauC Y u u') :
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨congrArg (fun r => (r.1 : Submodule (𝓞 D.host.E) (VS D).V)) h.1, congrArg (fun r => (r.2.1 : Submodule (𝓞 D.host.E) (VS D).V)) h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem lam_eq {t0 t : TauC Y u u'} (h : NormalVectorPairings.RelC Y u u' t0 t) : t.lam = t0.lam ∧ t.lam' = t0.lam' :=
   ⟨congrArg (fun r => (r.1 : Submodule (𝓞 D.host.E) (VS D).V)) h.1,
@@ -99,31 +97,29 @@ theorem lam_eq {t0 t : TauC Y u u'} (h : NormalVectorPairings.RelC Y u u' t0 t) 
 end Term
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u u' hctx γ hNG t0 hGt0 hpt0 => ?_⟩` and prove the remaining obligations. Establish `hT1 : (3 : ℕ) ≤ Tu D u` using `hctx.2.1.2.2.2.1`. Establish `hT2 : (3 : ℕ) ≤ Tu D u'` using `hctx.2.1.2.2.2.2.1`. Establish `hG` using `NormalVectorPairings.gval_occ Y t0 (by rw [hpt0]; exact hNG)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hG` using `[hpt0]`. Establish `hGeq : ∀ t : TauC Y u u', ptPN t = γ → t.G = t0.G`. Introduce `t hpt`. Establish `h1` using `NormalVectorPairings.gval_occ Y t (by rw [hpt]; exact hNG)`. Rewrite `h1` using `[hpt]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Formalism.L2.SG.Pf.SatGram.gterm_G Y t, Formalism.L2.SG.Pf.SatGram.gterm_G Y t0, h1, hG]`. Establish `hGne` using `NormalVectorPairings.GPt_ne_of_NGPt _ _ hNG`. Establish `hTne : ((Tu D u : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast (show Tu D u ≠ 0 by omega)`. Establish `hTne' : ((Tu D u' : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast (show Tu D u' ≠ 0 by omega)`. Establish `hrow` using `(Y.rowsOK u).1 t0.lam t0.mem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hun` using `hrow.2.1.2.1`. Establish `hy0` using `yT_mem Y t0`. Take `⟨c0, hc0⟩` from `Formalism.MainNotions.LatticeGluingRadicals.d_Lam_int hun hy0 hy0`. Establish `hc0' : (c0 : D.host.E) = brS (VS D) (NormalVectorPairings.yT Y u u' t0) (NormalVectorPairings.yT Y u u' t0)` using `hc0`. Establish `hval : brS (VS D) (NormalVectorPairings.yT Y u u' t0) (NormalVectorPairings.yT Y u u' t0) = ((Tu D u : ℕ) : D.host.E) * GPt ((Tu D u : ℕ) * (Tu D u' : ℕ)) γ` using `by show brS (VS D) (NormalVectorPairings.yv (X.Fu u) t0.frame.fl) (NormalVectorPairings.yv (X.Fu u) t0.frame.fl) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[NormalVectorPairings.brS_yv_yv _ _ (by simp), ← hG]`. Both sides reduce to the same expression. Establish `hc0ne : c0 ≠ 0`. Introduce `h`. Establish `: (c0 : D.host.E) = 0` using `by rw [h]; rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hc0', hval]`. Conclude with `mul_ne_zero hTne hGne this`. Establish `hrow'` using `(Y.rowsOK u').1 t0.lam' t0.mem'`. Establish `hun'` using `hrow'.2.1.2.1`. Establish `hy1` using `yT'_mem Y t0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, hc1⟩` from `Formalism.MainNotions.LatticeGluingRadicals.d_Lam_int hun' hy1 hy1`. Establish `hc1' : (c1 : D.host.E) = brS (VS D) (NormalVectorPairings.yT' Y u u' t0) (NormalVectorPairings.yT' Y u u' t0)` using `hc1`. Establish `hval' : brS (VS D) (NormalVectorPairings.yT' Y u u' t0) (NormalVectorPairings.yT' Y u u' t0) = ((Tu D u' : ℕ) : D.host.E) * GPt ((Tu D u : ℕ) * (Tu D u' : ℕ)) γ`. Rewrite using `[yT'_self, NormalVectorPairings.brS_yv_yv _ _ (by simp), NormalVectorPairings.Gflag_swap, ← hG]`. Establish `hc1ne : c1 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `: (c1 : D.host.E) = 0` using `by rw [h]; rfl`. Rewrite `this` using `[hc1', hval']`. Conclude with `mul_ne_zero hTne' hGne this`. Use `⟨Jfrac t0.lam (X.Fu u).X (NormalVectorPairings.yT Y u u' t0) hun (X_iso (X.Fu u)) (yv_orth_X (X.Fu u) t0.frame.fl) hy0 c0 hc0' hc0ne, Jfrac t0.lam' (X.Fu u').X (NormalVectorPairings.yT' Y u u' t0) hun' (X_iso (X.Fu u')) (yT'_orth Y t0) hy1 c1 hc1' hc1ne, Jfrac_ne_zero _ _ _ _ _ _ …` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hl1, -⟩` from `hLine D X Y u u' t0 t hGt0 hGt hrel (hGeq t hpt) hT1 hT2`. Establish `hyt : NormalVectorPairings.yT Y u u' t ∈ t0.lam` using `(lam_eq Y hrel).1 ▸ yT_mem Y t`. Use `show NormalVectorPairings.coefA Y u u' t0 t • NormalVectorPairings.yT Y u u' t0 ∈ t0.lam ⊔ (X.Fu u).X.restrictScalars (𝓞 D.host.E)`. Establish `e : NormalVectorPairings.coefA Y u u' t0 t • NormalVectorPairings.yT Y u u' t0 = NormalVectorPairings.yT Y u u' t - (NormalVectorPairings.yT Y u u' t - NormalVectorPairings.coefA Y u u' t0 t • NormalVectorPairings.yT Y u u' t0)`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left hyt) (Submodule.mem_sup_right hl1)`. Take `⟨-, hl2⟩` from `hLine D X Y u u' t0 t hGt0 hGt hrel (hGeq t hpt) hT1 hT2`. Establish `hyt : NormalVectorPairings.yT' Y u u' t ∈ t0.lam'` using `(lam_eq Y hrel).2 ▸ yT'_mem Y t`. Use `show NormalVectorPairings.coefA' Y u u' t0 t • NormalVectorPairings.yT' Y u u' t0 ∈ t0.lam' ⊔ (X.Fu u').X.restrictScalars (𝓞 D.host.E)`.
+Establish an intermediate fact. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : NormalVectorPairings.coefA' Y u u' t0 t • NormalVectorPairings.yT' Y u u' t0 = NormalVectorPairings.yT' Y u u' t - (NormalVectorPairings.yT' Y u u' t - NormalVectorPairings.coefA' Y u u' t0 t • NormalVectorPairings.yT' Y u u' t0)`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left hyt) (Submodule.mem_sup_right hl2)`. Establish `hb` using `norm_bound t0.lam (X.Fu u).X (NormalVectorPairings.yT Y u u' t0) hun (X_iso (X.Fu u)) (yv_orth_X (X.Fu u) t0.frame.fl) hy0 c0 hc0' hc0ne`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `hb` using `[hc0', hval, abs_norm_TG]`. Unfold `NormalInvariants.PG`. Combine the equalities or inequalities in the displayed calculation. Establish `hb` using `norm_bound t0.lam' (X.Fu u').X (NormalVectorPairings.yT' Y u u' t0) hun' (X_iso (X.Fu u')) (yT'_orth Y t0) hy1 c1 hc1' hc1ne`. Rewrite `hb` using `[hc1', hval', abs_norm_TG]`.
-
-Unfold `NormalInvariants.PG`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nmlInt_of
     (hLine : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) (t0 t : TauC Y u u'),

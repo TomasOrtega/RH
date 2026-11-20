@@ -20,11 +20,9 @@ noncomputable section
 namespace GlobalTheory.Poinc.CompletedStalk
 
 /- English proof (translation)
-Use `haveI : LocallyOfFiniteType M.s := M.lft`. Set `y : PrimeSpectrum o'` to `M.s x`. Use `letI A : Algebra o' ((Sp o').presheaf.stalk (M.s x)) := StructureSheaf.stalkAlgebra _ y`. Use `haveI : @IsLocalization.AtPrime o' _ ((Sp o').presheaf.stalk (M.s x)) _ A y.asIdeal _ := StructureSheaf.IsLocalization.to_stalk _ y`. Set `φ` to `@algebraMap o' ((Sp o').presheaf.stalk (M.s x)) _ _ A`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : (M.s.stalkMap x).hom.EssFiniteType` using `LocallyOfFiniteType.stalkMap M.s x`. Establish `h₂ : φ.EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 (Algebra.EssFiniteType.of_isLocalization _ y.asIdeal.primeCompl)`. Use `haveI : Algebra.FiniteType ℤ o' := hA.ft`. Establish `h₀ : (algebraMap ℤ o').EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 inferInstance`. Establish `h` using `((h₀.comp h₂).comp h₁)`.
-
-Rewrite using `[← RingHom.essFiniteType_algebraMap]`. Use `h` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext_int _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem essFiniteType_int_stalk {o' Ω : Type} [CommRing o'] [Field Ω] [Algebra o' Ω] [hA : ArithBase o' Ω]
     (M : RatModel o' Ω) (x : M.Z) : Algebra.EssFiniteType ℤ (M.Z.presheaf.stalk x) := by
@@ -47,23 +45,17 @@ theorem essFiniteType_int_stalk {o' Ω : Type} [CommRing o'] [Field Ω] [Algebra
 end GlobalTheory.Poinc.CompletedStalk
 
 /- English proof (translation)
-Introduce `o' Ω _ _ _ hA S ρ hB M U₀ EE FinalForm hAdm hEE x hx`. Establish `hinjΩ` using `M.stalkHom_injective x`. Use `haveI : IsDomain (M.Z.presheaf.stalk x) := hinjΩ.isDomain`. Use `haveI : CharZero Ω := hA.char`. Use `haveI : CharZero (M.Z.presheaf.stalk x) := (RingHom.charZero_iff hinjΩ).2 inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsIntegrallyClosed (M.Z.presheaf.stalk x) := (hAdm.1.normal x).2`. Use `haveI : Algebra.EssFiniteType ℤ (M.Z.presheaf.stalk x) := GlobalTheory.Poinc.CompletedStalk.essFiniteType_int_stalk M x`. Use `haveI : IsNoetherianRing (M.Z.presheaf.stalk x) := Algebra.EssFiniteType.isNoetherianRing ℤ _`. Establish `fg : (maximalIdeal (M.Z.presheaf.stalk x)).FG` using `IsNoetherian.noetherian _`. Use `haveI hloc : IsLocalRing (AdicCompletion (maximalIdeal (M.Z.presheaf.stalk x)) (M.Z.presheaf.stalk x)) := AdicCompletion.isLocalRing_of_fg fg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨hRd, hRi⟩` from `GlobalTheory.AnalyticNormality.completion_isDomain_and_isIntegrallyClosed (M.Z.presheaf.stalk x)`. Use `haveI hRn : IsNoetherianRing (AdicCompletion (maximalIdeal (M.Z.presheaf.stalk x)) (M.Z.presheaf.stalk x)) := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion _ _`. Establish `hm` using `AdicCompletion.maximalIdeal_eq_map_of_fg fg`. Use `set R := AdicCompletion (maximalIdeal (M.Z.presheaf.stalk x)) (M.Z.presheaf.stalk x) with hR`. Use `set φ := algebraMap (M.Z.presheaf.stalk x) R with hφ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcpl : IsAdicComplete (maximalIdeal R) R`. Rewrite using `[hm]`. Conclude with `AdicCompletion.isAdicComplete_self _ fg`. Establish `hinj : Function.Injective φ` using `AdicCompletion.of_injective _ _`. Use `haveI : CharZero R := (RingHom.charZero_iff hinj).1 inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ξ : Sp R ⟶ M.Z := spMap φ ≫ M.Z.fromSpecStalk x with hξ`. Establish `hne : (ξ ⁻¹' abLocus FinalForm.G).Nonempty`. Set `w : Sp R` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R)`. Set `p : Sp (M.Z.presheaf.stalk x)` to `spMap φ w`. Establish `hp : p.asIdeal = ⊥` using `by show Ideal.comap φ ⊥ = ⊥`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot φ).1 hinj`. Establish `hgen : genericPoint M.Z ∈ Set.range (M.Z.fromSpecStalk x)`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `genericPoint_specializes x`.
-
-Take `⟨q, hq⟩` from `hgen`. Establish `hpq : p ⤳ q` using `(PrimeSpectrum.le_iff_specializes p q).1 (by show p.asIdeal ≤ q.asIdeal`. Rewrite using `[hp]`. Conclude with `bot_le)`. Establish `hsp : ξ w ⤳ genericPoint M.Z`.
-
-Use `hpq.map (M.Z.fromSpecStalk x).continuous` as an intermediate fact. Rewrite `this` using `[hq]`. Conclude with `this`. Use `⟨w, ?_⟩` and prove the remaining obligations. Use `show ξ w ∈ abLocus FinalForm.G`.
-
-Rewrite using `[FinalForm.ab]`. Conclude with `le_bot_iff.1 ((S.TT_anti M hsp).trans (ThetaSys.TT_genericPoint S M).le)`. Use `haveI : IsCommMonObj ((Over.pullback ξ).obj FinalForm.G) := Functor.isCommMonObj_obj`. Take `⟨D, A, U, hL, hP⟩` from `FinalForm.unif R hRn hRi hcpl ξ hne`. Conclude with `⟨R, inferInstance, hRd, hloc, φ, (Over.pullback ξ).obj FinalForm.G, inferInstance, inferInstance, pullback.fst _ _, D, A, U, ⟨⟨hRn, hRd, hRi, hcpl⟩, inferInstance⟩, isCpl_self _, isGrpPullback_pullback _ _, hL, hP⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.CompletedStalk.exists_completion_unif : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real), S.Big → ∀ (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), S.admitted M U₀ → S.IsEE M U₀ EE → ∀ x : M.Z, IsClosed ({x} : Set M.Z) → ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsLocalRing R) (j : M.Z.presheaf.stalk x →+* R) (G : Over (Sp R)) (_ : GrpObj G) (_ : IsCommMonObj G) (gm : G.left ⟶ FinalForm.G.left) (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G), GlobalTheory.Mum.Base R ∧ IsCpl j ∧ IsGrpPullback G FinalForm.G (spMap j ≫ M.Z.fromSpecStalk x) gm ∧ LBIso U.LG.L (FinalForm.L.L.pull gm) ∧ ∀ y, PsiUnitOn D.toPre y ((spMap j ≫ M.Z.fromSpecStalk x) ⁻¹' abLocus FinalForm.G) := by
   intro o' Ω _ _ _ hA S ρ hB M U₀ EE FinalForm hAdm hEE x hx

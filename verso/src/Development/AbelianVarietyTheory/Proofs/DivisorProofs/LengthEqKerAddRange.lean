@@ -7,7 +7,7 @@ namespace ScalarSnakeLength
 variable {A : Type} [CommRing A]
 
 /- English proof (translation)
-The claim follows from `Module.length_eq_add_of_exact (LinearMap.ker φ).subtype φ.rangeRestrict Subtype.val_injective φ.surjective_rangeRestrict (LinearMap.exact_iff.mpr (by rw [LinearMap.ker_rangeRestrict, Submodule.range_subtype]))`.
+A detailed English derivation is pending.
 -/
 lemma length_eq_ker_add_range {M P : Type} [AddCommGroup M] [Module A M]
     [AddCommGroup P] [Module A P] (φ : M →ₗ[A] P) :
@@ -18,7 +18,7 @@ lemma length_eq_ker_add_range {M P : Type} [AddCommGroup M] [Module A M]
     (LinearMap.exact_iff.mpr (by rw [LinearMap.ker_rangeRestrict, Submodule.range_subtype]))
 
 /- English proof (translation)
-Rewrite using `[length_eq_ker_add_range g, LinearMap.exact_iff.mp h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma length_mid {N₁ N₂ N₃ : Type} [AddCommGroup N₁] [Module A N₁] [AddCommGroup N₂]
     [Module A N₂] [AddCommGroup N₃] [Module A N₃] (f : N₁ →ₗ[A] N₂) (g : N₂ →ₗ[A] N₃)
@@ -28,7 +28,7 @@ lemma length_mid {N₁ N₂ N₃ : Type} [AddCommGroup N₁] [Module A N₁] [Ad
   rw [length_eq_ker_add_range g, LinearMap.exact_iff.mp h]
 
 /- English proof (translation)
-The claim follows from `(LinearEquiv.ofInjective f hf).length_eq`.
+A detailed English derivation is pending.
 -/
 lemma length_of_injective {N₁ N₂ : Type} [AddCommGroup N₁] [Module A N₁] [AddCommGroup N₂]
     [Module A N₂] (f : N₁ →ₗ[A] N₂) (hf : Function.Injective f) :
@@ -36,7 +36,7 @@ lemma length_of_injective {N₁ N₂ : Type} [AddCommGroup N₁] [Module A N₁]
   (LinearEquiv.ofInjective f hf).length_eq
 
 /- English proof (translation)
-Rewrite using `[LinearMap.range_eq_top.mpr hg, Module.length_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma length_of_surjective {N₁ N₂ : Type} [AddCommGroup N₁] [Module A N₁] [AddCommGroup N₂]
     [Module A N₂] (g : N₁ →ₗ[A] N₂) (hg : Function.Surjective g) :
@@ -72,18 +72,16 @@ variable {M₁ M₂ M₃ : Type} [AddCommGroup M₁] [AddCommGroup M₂] [AddCom
   [Module A M₁] [Module A M₂] [Module A M₃]
 
 /- English proof (translation)
-Introduce `x y hxy` and use `Subtype.ext (hf (congrArg Subtype.val hxy))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma kerMap_injective (f : M₁ →ₗ[A] M₂) (hf : Function.Injective f) (b : A) :
     Function.Injective (kerMap f b) := fun x y hxy =>
   Subtype.ext (hf (congrArg Subtype.val hxy))
 
 /- English proof (translation)
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : g x.1 = 0` using `congrArg Subtype.val hx`. Take `⟨y, hy⟩` from `(hfg _).1 hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨y, ?_⟩, Subtype.ext hy⟩` and prove the remaining obligations. Use `show b • y = 0`. Apply `hf` to reduce the goal to its premises. Rewrite using `[map_smul, hy, map_zero]`. Conclude with `x.2`.
-
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `Subtype.ext ((hfg _).2 ⟨y.1, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma exact_kerMap (f : M₁ →ₗ[A] M₂) (g : M₂ →ₗ[A] M₃) (hf : Function.Injective f)
     (hfg : Function.Exact f g) (b : A) : Function.Exact (kerMap f b) (kerMap g b) := by
@@ -101,13 +99,13 @@ lemma exact_kerMap (f : M₁ →ₗ[A] M₂) (g : M₂ →ₗ[A] M₃) (hf : Fun
     exact Subtype.ext ((hfg _).2 ⟨y.1, rfl⟩)
 
 /- English proof (translation)
-Introduce `x`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : (LinearMap.range (LinearMap.lsmul A M₃ b)).mkQ (g x) = 0` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hx'` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨w, hw⟩` from `hx'`. Take `⟨z, rfl⟩` from `hg w`. Establish `hw' : b • g z = g x` using `hw`. Establish `h0 : g (x - b • z) = 0` using `by rw [map_sub, map_smul, hw', sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `(hfg _).1 h0`. Use `⟨(LinearMap.range (LinearMap.lsmul A M₁ b)).mkQ y, ?_⟩` and prove the remaining obligations. Use `show (LinearMap.range (LinearMap.lsmul A M₂ b)).mkQ (f y) = _`. Rewrite using `[hy, map_sub, sub_eq_self, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨z, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hy⟩`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ y`. Rewrite using `[← hy]`. Use `show (LinearMap.range (LinearMap.lsmul A M₃ b)).mkQ (g (f y)) = 0`. Rewrite using `[(hfg _).2 ⟨y, rfl⟩, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exact_quotMap (f : M₁ →ₗ[A] M₂) (g : M₂ →ₗ[A] M₃) (hg : Function.Surjective g)
     (hfg : Function.Exact f g) (b : A) : Function.Exact (quotMap f b) (quotMap g b) := by
@@ -133,7 +131,7 @@ lemma exact_quotMap (f : M₁ →ₗ[A] M₂) (g : M₂ →ₗ[A] M₃) (hg : Fu
     rw [(hfg _).2 ⟨y, rfl⟩, map_zero]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ x`. Take `⟨y, rfl⟩` from `hg x`. Conclude with `⟨(LinearMap.range (LinearMap.lsmul A M₂ b)).mkQ y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma quotMap_surjective (g : M₂ →ₗ[A] M₃) (hg : Function.Surjective g) (b : A) :
     Function.Surjective (quotMap g b) := by
@@ -152,7 +150,7 @@ noncomputable def delta (f : M₁ →ₗ[A] M₂) (g : M₂ →ₗ[A] M₃) (hf 
     hg hf
 
 /- English proof (translation)
-The claim follows from `SnakeLemma.exact_δ'_right _ _ _ _ _ _ _ _ _ _ _ (LinearMap.ker (LinearMap.lsmul A M₂ b)).subtype (LinearMap.exact_subtype_ker_map _) _ _ _ _ _ _ (kerMap g b) (by ext x; rfl) Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 lemma exact_kerMap_delta (f : M₁ →ₗ[A] M₂) (g : M₂ →ₗ[A] M₃) (hf : Function.Injective f)
     (hg : Function.Surjective g) (hfg : Function.Exact f g) (b : A) :
@@ -162,7 +160,7 @@ lemma exact_kerMap_delta (f : M₁ →ₗ[A] M₂) (g : M₂ →ₗ[A] M₃) (hf
     _ _ _ _ _ _ (kerMap g b) (by ext x; rfl) Subtype.val_injective
 
 /- English proof (translation)
-The claim follows from `SnakeLemma.exact_δ'_left _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (LinearMap.range (LinearMap.lsmul A M₂ b)).mkQ (LinearMap.exact_map_mkQ_range _) _ _ (quotMap f b) (by ext x; rfl) (Submodule.mkQ_surjective _)`.
+A detailed English derivation is pending.
 -/
 lemma exact_delta_quotMap (f : M₁ →ₗ[A] M₂) (g : M₂ →ₗ[A] M₃) (hf : Function.Injective f)
     (hg : Function.Surjective g) (hfg : Function.Exact f g) (b : A) :
@@ -174,11 +172,11 @@ lemma exact_delta_quotMap (f : M₁ →ₗ[A] M₂) (g : M₂ →ₗ[A] M₃) (h
 end ScalarSnakeLength
 
 /- English proof (translation)
-Introduce `A _ M₁ M₂ M₃ _ _ _ _ _ _ f g hf hg hfg b`. Use `open ScalarSnakeLength in`. Establish `e1` using `length_of_injective (kerMap f b) (kerMap_injective f hf b)`. Establish `e2` using `length_mid (kerMap f b) (kerMap g b) (exact_kerMap f g hf hfg b)`. Establish `e3` using `length_mid (kerMap g b) (delta f g hf hg hfg b) (exact_kerMap_delta f g hf hg hfg b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4` using `length_mid (delta f g hf hg hfg b) (quotMap f b) (exact_delta_quotMap f g hf hg hfg b)`. Establish `e5` using `length_mid (quotMap f b) (quotMap g b) (exact_quotMap f g hg hfg b)`. Establish `e6` using `length_of_surjective (quotMap g b) (quotMap_surjective g hg b)`. Rewrite using `[e1, e2, e3, e4, e5, ← e6]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. The two sides agree by associativity and commutativity.
 
-The two sides agree by associativity and commutativity. Conclude with `add_le_add le_rfl le_self_add`.
+A detailed English derivation is pending.
 -/
 theorem scalar_snake_length :
     ∀ (A : Type) [CommRing A] (M₁ M₂ M₃ : Type) [AddCommGroup M₁] [AddCommGroup M₂]

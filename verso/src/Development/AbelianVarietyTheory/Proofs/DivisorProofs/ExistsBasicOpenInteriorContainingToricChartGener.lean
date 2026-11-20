@@ -16,19 +16,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LocReg
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y U W hW k _ m d ξ hx hbd`. Set `gp : Sp (ChartRing k m d)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (ChartRing k m d))`. Establish `hprod : (∏ i, bdParam k m d i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ hX => by`. Use `congrArg (MvPowerSeries.coeff (Finsupp.single (Sum.inl i) 1)) hX` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hgbd : ξ gp ∉ genBd Y`. Rewrite using `[hbd]`. Conclude with `fun h => hprod ((Submodule.mem_bot _).1 h)`. Establish `hgab : genι Y (ξ gp) ∈ interior Y`. Use `(mem_genBd_iff (Y := Y) (x := ξ gp)).not.1 hgbd` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[not_not, ← coe_interior]`. Conclude with `this`. Establish `hsp : gp ⤳ closedPoint (ChartRing k m d)` using `(PrimeSpectrum.le_iff_specializes _ _).1 (fun x hx => by`. Rewrite using `[(Submodule.mem_bot _).1 hx]`. Conclude with `Ideal.zero_mem _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgU : ξ gp ∈ genι Y ⁻¹ᵁ U.1` using `(hsp.map ξ.continuous).mem_open (genι Y ⁻¹ᵁ U.1).isOpen hx`. Establish `hyW : genι Y (ξ gp) ∈ W.1`. Rewrite using `[hW]`. Conclude with `⟨hgU, hgab⟩`. Take `⟨h, hle, hmem⟩` from `U.2.exists_basicOpen_le (V := W.1) ⟨_, hyW⟩ hgU`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h, hle, fun h0 => ?_⟩` and prove the remaining obligations. Establish `hg0 : gp ∈ ξ ⁻¹ᵁ (gen Y).basicOpen (((genι Y).app U.1).hom h)` using `by show ξ gp ∈ (gen Y).basicOpen _`. Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `hmem`. Rewrite `hg0` using `[Scheme.preimage_basicOpen]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e` using `congrArg (fun q => q.hom (((genι Y).app U.1).hom h)) (Scheme.germ_stalkClosedPointTo ξ _ hx)`. Simplify using `only [chartHom, RingHom.comp_apply] at h0`. Express the relevant statement in the definitionally equal form `(Scheme.stalkClosedPointTo ξ).hom (((gen Y).presheaf.germ _ _ hx).hom _) = 0 at h0`. Rewrite `h0` using `[← CommRingCat.comp_apply]`. Rewrite `h0` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `h0`. Rewrite `h1` using `[CommRingCat.comp_apply]`. Establish `hz : (ξ.app (genι Y ⁻¹ᵁ U.1)).hom (((genι Y).app U.1).hom h) = 0` using `(ConcreteCategory.bijective_of_isIso _).1 (h1.trans (map_zero _).symm)`. Rewrite `hg0` using `[hz, Scheme.basicOpen_zero]`. Conclude with `hg0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basicOpen_chartHom_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (U W : Y.X.affineOpens), W.1 = U.1 ⊓ interior Y → ∀ (k : Type) [Field k] (m d : ℕ) (ξ : Sp (ChartRing k m d) ⟶ gen Y) (hx : ξ (closedPoint _) ∈ genι Y ⁻¹ᵁ U.1), (∀ p : Sp (ChartRing k m d), ξ p ∈ genBd Y ↔ ∏ i, bdParam k m d i ∈ p.asIdeal) → ∃ h : Γ(Y.X, U.1), Y.X.basicOpen h ≤ W.1 ∧ GlobalTheory.LocReg.chartHom Y U ξ hx h ≠ 0 := by
   intro E _ _ _ H Dw l Xo c Y U W hW k _ m d ξ hx hbd

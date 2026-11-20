@@ -11,11 +11,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 namespace GlobalTheory.GamMul.BlockId
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Take `⟨-, h2, -⟩` from `GlobalTheory.T.block_matrix_values_unipotent_diagonal R n 0 0 m m`. Take `⟨-, h2', -⟩` from `GlobalTheory.T.block_matrix_values_unipotent_diagonal R m o o p p`. Take `⟨-, h2'', -⟩` from `GlobalTheory.T.block_matrix_values_unipotent_diagonal R n o o p p`. Rewrite using `[(h2 _ (by omega)).1, (h2' g hp).1, (h2'' g (by omega)).1]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hadd, hneg, -, -, -, -, -, -⟩` from `put_lin_pack R n 0 0 m m`. Establish `hsub : ∀ X Y : Matrix (Fin m) (Fin m) R, put n 0 0 (X - Y) = put n 0 0 X - put n 0 0 Y`. Introduce `X Y`. Rewrite using `[sub_eq_add_neg, hadd, hneg, ← sub_eq_add_neg]`. Establish `hn1` using `(PutNest.main R n m 0 0 o o p p 0 0).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he1 : put n 0 0 (1 : Matrix (Fin m) (Fin m) R) = eye R n 0 0 m` using `rfl`. Establish `he2 : put n 0 0 (eye R m o o p) = eye R n o o p`. Simplify using `only [eye]`. Rewrite using `[hn1 _ hp hp, zero_add]`. Rewrite using `[hadd, hsub, he1, he2, hn1 _ hp hp, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -37,9 +37,9 @@ theorem dg_dg {R : Type} [CommRing R] (n m o p : ℕ) (hm : m ≤ n) (hp : o + p
   abel
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Take `⟨-, h2d, -⟩` from `GlobalTheory.T.block_matrix_values_unipotent_diagonal R n 0 0 m m`. Take `⟨h1u, -, -⟩` from `GlobalTheory.T.block_matrix_values_unipotent_diagonal R m o₁ o₂ p q`. Take `⟨h1u', -, -⟩` from `GlobalTheory.T.block_matrix_values_unipotent_diagonal R n o₁ o₂ p q`. Rewrite using `[(h2d _ (by omega)).1, (h1u X hd).1, (h1u' X hd).1]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hadd, -, -, -, -, -, -, -⟩` from `put_lin_pack R n 0 0 m m`. Establish `hn1` using `(PutNest.main R n m 0 0 o₁ o₂ p q 0 0).1`. Establish `he1 : put n 0 0 (1 : Matrix (Fin m) (Fin m) R) = eye R n 0 0 m` using `rfl`. Rewrite using `[hadd, hn1 _ h1 h2, he1, zero_add, zero_add]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem dg_uni {R : Type} [CommRing R] (n m o₁ o₂ p q : ℕ) (hm : m ≤ n) (h1 : o₁ + p ≤ m) (h2 : o₂ + q ≤ m)
     (hd : o₁ + p ≤ o₂ ∨ o₂ + q ≤ o₁) (X : Matrix (Fin p) (Fin q) R) :
@@ -56,7 +56,7 @@ theorem dg_uni {R : Type} [CommRing R] (n m o₁ o₂ p q : ℕ) (hm : m ≤ n) 
   abel
 
 /- English proof (translation)
-Introduce `R _ n m m₁ m₂ hm hmn a b x`. Establish `hmul` using `((GlobalTheory.T.block_unipotent_det_one_and_trivial R n 0 0 m m).2.2.2.2.1 (by omega)).1`. Rewrite using `[hmul, hmul, dg_dg n m 0 m₁ hmn (by omega), dg_dg n m m₁ m₂ hmn (by omega), dg_uni n m m₁ 0 m₂ m₁ hmn (by omega) (by omega) (Or.inr (by omega))]`. Establish `hc` using `((GlobalTheory.T.diagonal_block_conj_unipotent R n m₁ 0 m₂ m₁ (Or.inr (by omega)) (by omega) (by omega)).1 b x)`. Rewrite using `[mul_assoc, hc, ← mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ (R : Type) [CommRing R] (n m m₁ m₂ : ℕ), m₁ + m₂ = m → m ≤ n → ∀ (a : GL (Fin m₁) R) (b : GL (Fin m₂) R) (x : Matrix (Fin m₂) (Fin m₁) R), dg n 0 (dg m 0 a * dg m m₁ b * uni m m₁ 0 x) = dg n 0 a * uni n m₁ 0 (b.val * x) * dg n m₁ b := by
   intro R _ n m m₁ m₂ hm hmn a b x

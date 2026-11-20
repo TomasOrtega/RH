@@ -14,9 +14,9 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h` using `A.FSum_smul j α 0 0 v`. Rewrite `h` using `[zero_smul, zero_smul]`. Simplify using `using h`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, A.FSum_add, ih, A.FSum_smul, HahnSeries.single_zero_mul_eq_smul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem AnArc.FSum_sum_smul {O : Type} [CommRing O] [StarRing O] (A : AnArc O) (j : ℕ) [NeZero j] (α : A.X)
     {K : Type} (s : Finset K) (c : K → ℂ) (th : K → (Fin A.gB → ℂ) → ℂ) (v : A.V) :
@@ -32,21 +32,19 @@ theorem AnArc.FSum_sum_smul {O : Type} [CommRing O] [StarRing O] (A : AnArc O) (
       HahnSeries.single_zero_mul_eq_smul]
 
 /- English proof (translation)
-Introduce `O _ _ A hA j _`. Establish `hj : 1 ≤ j` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne j)`. Take `⟨-, e, he⟩` from `exists_representatives_mod_nsmul A.X j hj`. Take `⟨T₀, hT⟩` from `A.exists_isConvLine`. Establish `: ∀ c, Module.Finite ℂ (A.Theta j (e c))` using `fun c => hA.1 j (e c) hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `b` to `fun c => Module.finBasis ℂ (A.Theta j (e c))`. Set `I` to `fun c => Fin (Module.finrank ℂ (A.Theta j (e c)))`. Set `t : ∀ c, I c → (Fin A.gB → ℂ) → ℂ` to `fun c i => b c i`. Establish `ht : ∀ c, LinearIndependent ℂ (t c)` using `fun c => (b c).linearIndependent.map' (A.Theta j (e c)).subtype (Submodule.ker_subtype _)`. Establish `htm : ∀ c i, t c i ∈ A.Theta j (e c)` using `fun c i => (b c i).2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrep : ∀ c c' y, e c = e c' + j • y → c = c'` using `fun c c' y h => (he (e c)).unique ⟨0, by simp⟩ ⟨y, h⟩`. Set `s` to `(Fintype.equivFin (Σ c, I c)).symm`. Use `⟨_, fun i => e (s i).1, fun i => t (s i).1 (s i).2, T₀, fun i => htm _ _, (A.linearIndependent_FSum_sigma hrep ht).comp s s.injective, fun w hw => (A.linearIndependent_Sum_sigma (NeZero.ne j) hrep ht w fun c i z => AnArc.summable_term hT (NeZero.ne j) (htm c i) hw (0, z)).comp s …` and prove the remaining obligations. Take `⟨c, ⟨m, hm⟩, -⟩` from `he α'`. Establish `hα : α' + j • (-m) = e c` using `by rw [hm]; simp`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem` using `A.translate_mem_Theta hth' (-m)`. Rewrite `hmem` using `[hα]`. Set `x` to `(b c).repr ⟨_, hmem⟩`. Establish `hx : (fun z => th' (z + A.ct (-m))) = ∑ i, x i • t c i`. Use `congrArg Subtype.val ((b c).sum_repr ⟨_, hmem⟩)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this.symm`. Set `u : ℂ⸨X⸩` to `HahnSeries.single (A.exponent j α' (-m)) ((A.psi (-m) : ℂ) ^ j * eTwoPi (A.T (-m) α'))`. Take `⟨r, hr1, hr0⟩ : ∃ r : ∀ c', I c' → ℂ⸨X⸩, (∀ i, r c i = u * HahnSeries.single 0 (x i)) ∧ ∀ c', c' ≠ c → ∀ i, r c' i = 0` from `⟨Pi.single (M := fun c' => I c' → ℂ⸨X⸩) c fun i => u * HahnSeries.single 0 (x i), fun i => by rw [Pi.single_eq_same], fun c' h i => by rw [Pi.single_eq_of_ne h]; rfl⟩`. Use `⟨fun i => r (s i).1 (s i).2, fun i T => ?_, fun v => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Use `beta_reduce`. Generalize the expression as in `s i = p`. Take `⟨c', i'⟩` from `p`. Distinguish the cases in `h : c' = c`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr1]`. Conclude with `mul_mem (Conv.single_mem_halfRing _ _ _) (Conv.single_mem_halfRing _ _ _)`. Rewrite using `[hr0 c' h]`. Conclude with `zero_mem _`. Rewrite using `[s.sum_comp (fun p : Σ c, I c => r p.1 p.2 * A.FSum j (e p.1) (t p.1 p.2) v), Fintype.sum_sigma, Finset.sum_eq_single c (fun c' _ h => by simp [hr0 c' h]) (by simp), A.FSum_eq_translate j α' th' (-m) v, hα, hx, A.FSum_sum_smul, Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [hr1, _root_.mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AnArc.exists_basis_FSum : ∀ (O : Type) [CommRing O] [StarRing O] (A : AnArc O), AnFin A → ∀ (j : ℕ) [NeZero j], ∃ (n : ℕ) (α : Fin n → A.X) (th : Fin n → (Fin A.gB → ℂ) → ℂ) (T₀ : ℝ), (∀ i, th i ∈ A.Theta j (α i)) ∧ LinearIndependent ℂ⸨X⸩ (fun i v => A.FSum j (α i) (th i) v) ∧ (∀ w : ℂ, T₀ < w.im → LinearIndependent ℂ (fun i v => A.Sum j (α i) (th i) w v)) ∧ ∀ α', ∀ th' ∈ A.Theta j α', ∃ r : Fin n → ℂ⸨X⸩, (∀ i T, r i ∈ Conv.halfRing T) ∧ ∀ v, A.FSum j α' th' v = ∑ i, r i * A.FSum j (α i) (th i) v := by
   intro O _ _ A hA j _

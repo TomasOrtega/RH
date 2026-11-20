@@ -8,17 +8,17 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.L3.D2.IA
 
 /- English proof (translation)
-Unfold `Subgroup.relIndex AddSubgroup.relIndex Subgroup.index AddSubgroup.index`. Set `g : (T ⧸ H.subgroupOf T) → (N ⧸ N'.addSubgroupOf N)` to `Quotient.lift (s := QuotientGroup.leftRel (H.subgroupOf T)) (fun X : T => ((⟨f X, hf X X.2⟩ : N) : N ⧸ N'.addSubgroupOf N)) (by`. Introduce `X Y hXY`. Establish `hXY` using `QuotientGroup.leftRel_apply.1 hXY`. Establish `h1 : f X - f Y ∈ N'` using `(hc X X.2 Y Y.2).1 (by simpa [Subgroup.mem_subgroupOf] using hXY)`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Use `N'.neg_mem h1` as an intermediate fact. Simplify `this)` using `[neg_add_eq_sub]`. Use `Nat.card_eq_of_bijective g ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `a using QuotientGroup.induction_on with | _ X => ?_`. Proceed by induction on `b using QuotientGroup.induction_on with | _ Y => ?_`. Introduce `hab`. Establish `h1 : ((⟨f X, hf X X.2⟩ : N) : N ⧸ N'.addSubgroupOf N) = ((⟨f Y, hf Y Y.2⟩ : N) : N ⧸ N'.addSubgroupOf N)` using `hab`. Rewrite `h1` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`.
+Proceed by induction. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `h2 : f X - f Y ∈ N'`. Use `N'.neg_mem h1` as an intermediate fact. Simplify `this` using `[neg_add_eq_sub]`. Simplify using `using (hc X X.2 Y Y.2).2 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `b`. Proceed by induction on `b using QuotientAddGroup.induction_on with | _ Z => ?_`. Take `⟨X, hX, hXZ⟩` from `hsurj Z Z.2`. Use `⟨((⟨X, hX⟩ : T) : T ⧸ H.subgroupOf T), ?_⟩` and prove the remaining obligations. Use `show ((⟨f X, hf X hX⟩ : N) : N ⧸ N'.addSubgroupOf N) = (Z : N ⧸ N'.addSubgroupOf N)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Use `N'.neg_mem hXZ` as an intermediate fact. Simplify `this` using `[neg_add_eq_sub]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem relIndex_eq_of_map {G M : Type*} [Group G] [AddCommGroup M] (H T : Subgroup G)
     (N' N : AddSubgroup M) (f : G → M) (hf : ∀ X ∈ T, f X ∈ N)
@@ -59,13 +59,11 @@ variable {K : Type} [Field K] [StarRing K]
 variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective h`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Conclude with `hn.1 x (fun y => by rw [hx]; rfl)`. Establish `hbij : Function.Bijective (h.rangeRestrict)` using `⟨fun a b hab => hinj (congrArg Subtype.val hab), h.surjective_rangeRestrict⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `j : V ≃+ LinearMap.range h` to `AddEquiv.ofBijective (h.rangeRestrict).toAddMonoidHom hbij`. Establish `hr : Module.rank K V = Module.rank K (LinearMap.range h)` using `rank_eq_of_equiv_equiv (starRingEnd K) j star_involutive.bijective (fun r m => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show h (r • m) = (starRingEnd K) r • h m`. Rewrite using `[map_smulₛₗ])`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : finrank K (LinearMap.range h) = finrank K (Dual K V)`. Rewrite using `[Subspace.dual_finrank_eq]`. Unfold `finrank`. Rewrite using `[hr]`. Establish `htop` using `Submodule.eq_top_of_finrank_eq hf`.
-
-Conclude with `LinearMap.range_eq_top.1 htop`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_of_nondegenerate {h : V →ₗ⋆[K] V →ₗ[K] K} (hn : h.Nondegenerate) :
     Function.Surjective h := by
@@ -89,13 +87,13 @@ theorem surjective_of_nondegenerate {h : V →ₗ⋆[K] V →ₗ[K] K} (hn : h.N
   exact LinearMap.range_eq_top.1 htop
 
 /- English proof (translation)
-Establish `hex : ∀ y, ∃ w, ∀ x, h x w = s x y`. Introduce `y`. Set `l : V →ₗ[K] K` to `{ toFun := fun x => star (s x y) map_add' := fun a b => by simp map_smul' := fun a b => by simp [starRingEnd_apply] }`. Take `⟨w, hw⟩` from `surjective_of_nondegenerate hn l`. Use `⟨w, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : h w x = star (s x y)` using `by rw [hw]; rfl`. Establish `h2` using `hs.eq w x`. Rewrite using `[← h2, h1, starRingEnd_apply, star_star]`. Use `choose Y hY using hex`. Use `⟨{ toFun := Y, map_add' := fun a b => ?_, map_smul' := fun a b => ?_ }, fun x y => hY y x⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Use `hn.2 _ (fun x => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, map_add, hY, hY, hY, map_add, sub_self]`. Rewrite using `[← sub_eq_zero]`. Use `hn.2 _ (fun x => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.id_apply, map_sub, map_smul, hY, hY, map_smul, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem exists_adj {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hn : h.Nondegenerate)
     (s : V →ₗ⋆[K] V →ₗ[K] K) : ∃ Y : V →ₗ[K] V, ∀ x y, h x (Y y) = s x y := by
@@ -135,7 +133,7 @@ theorem phi_apply (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V ≃ₗ[K] V) (x y : 
     phi h X x y = h (X x) (X y) - h x y := rfl
 
 /- English proof (translation)
-Establish `e : ∀ a b, star (h a b) = h b a` using `fun a b => hs.eq a b`. Rewrite using `[phi_apply, phi_apply, star_sub, e, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_phi {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (X : V ≃ₗ[K] V) (x y : V) :
     star (phi h X x y) = phi h X y x := by
@@ -143,7 +141,7 @@ theorem star_phi {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (X : V ≃�
   rw [phi_apply, phi_apply, star_sub, e, e]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1 : (π : F) = 0` using `(map_eq_zero (algebraMap F K)).1 h0`. Establish `h2 : π = 0` using `by exact_mod_cast h1`. Conclude with `hπ' (h2 ▸ zero_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unif_ne_zero {𝔭 : Ideal (𝓞 F)} {π : 𝓞 F} (hπ' : π ∉ 𝔭 ^ 2) : algebraMap F K (π : F) ≠ 0 := by
   intro h0
@@ -152,11 +150,11 @@ theorem unif_ne_zero {𝔭 : Ideal (𝓞 F)} {π : 𝓞 F} (hπ' : π ∉ 𝔭 ^
   exact hπ' (h2 ▸ zero_mem _)
 
 /- English proof (translation)
-Take `⟨π, hπ, hπ'⟩` from `exists_unif h𝔭`. Establish `h0 : algebraMap F K (π : F) ≠ 0` using `unif_ne_zero hπ'`. Establish `hst : star (algebraMap F K (π : F)) = algebraMap F K (π : F)` using `(hF _).2 ⟨_, rfl⟩`. Introduce `x hx y hy`. Establish `hx' : algebraMap F K (π : F) ^ r • x ∈ locF 𝔭 B₀` using `hr ((mem_smul_iff_unif h𝔭 hπ hπ' A₀).2 ⟨x, hx, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy' : algebraMap F K (π : F) ^ r • y ∈ locF 𝔭 B₀` using `hr ((mem_smul_iff_unif h𝔭 hπ hπ' A₀).2 ⟨y, hy, rfl⟩)`. Establish `h1` using `pK_anti (K := K) 𝔭 hnm (hs _ hx' _ hy')`. Rewrite `h1` using `[map_smul, map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_pow, hst, smul_eq_mul, smul_eq_mul]`. Take `⟨b, hb, e⟩` from `(mem_pK_iff_unif h𝔭 hπ hπ').1 h1`. Use `(mem_pK_iff_unif h𝔭 hπ hπ').2 ⟨b, hb, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `mul_left_cancel₀ (pow_ne_zero (2 * r) h0)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem sesq_scale (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {A₀ B₀ : Submodule (𝓞 K) V} {r : ℕ}
     (hr : extP K 𝔭 ^ r • locF 𝔭 A₀ ≤ locF 𝔭 B₀) (s : V →ₗ⋆[K] V →ₗ[K] K) {n m : ℕ} (hnm : n + 2 * r ≤ m)
@@ -181,11 +179,11 @@ theorem sesq_scale (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMax
     _ = _ := by ring
 
 /- English proof (translation)
-Take `⟨π, hπ, hπ'⟩` from `exists_unif h𝔭`. Establish `h0 : algebraMap F K (π : F) ≠ 0` using `unif_ne_zero hπ'`. Introduce `x hx`. Establish `hx' : algebraMap F K (π : F) ^ r' • x ∈ locF 𝔭 A₀` using `hr' ((mem_smul_iff_unif h𝔭 hπ hπ' B₀).2 ⟨x, hx, rfl⟩)`. Establish `h1` using `smul_anti 𝔭 (locF 𝔭 A₀) hnm (hY _ hx')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, e⟩` from `(mem_smul_iff_unif h𝔭 hπ hπ' A₀).1 h1`. Establish `ha' : algebraMap F K (π : F) ^ r • a ∈ locF 𝔭 B₀` using `hr ((mem_smul_iff_unif h𝔭 hπ hπ' A₀).2 ⟨a, ha, rfl⟩)`. Use `(mem_smul_iff_unif h𝔭 hπ hπ' B₀).2 ⟨_, ha', ?_⟩` and prove the remaining obligations. Rewrite `e` using `[map_smul]`. Apply `smul_right_injective V (pow_ne_zero r' h0)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show algebraMap F K (π : F) ^ r' • Y x = algebraMap F K (π : F) ^ r' • _`. Rewrite using `[e, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem end_scale {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {A₀ B₀ : Submodule (𝓞 K) V} {r r' : ℕ}
     (hr : extP K 𝔭 ^ r • locF 𝔭 A₀ ≤ locF 𝔭 B₀) (hr' : extP K 𝔭 ^ r' • locF 𝔭 B₀ ≤ locF 𝔭 A₀)

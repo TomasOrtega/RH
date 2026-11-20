@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TendstoExpMulPo
 namespace PositivityTheory.Rg.BcB.E.E3
 
 /- English proof (translation)
-The claim follows from `frobenius_uniformizer_identity GlobalTheory.CompanionTheory.LocExponent.locNonPosGlue_holds`.
+A detailed English derivation is pending.
 -/
 theorem etale_base_change_of_duality : PositivityTheory.Rg.BcB.E.E3 := frobenius_uniformizer_identity GlobalTheory.CompanionTheory.LocExponent.locNonPosGlue_holds
 

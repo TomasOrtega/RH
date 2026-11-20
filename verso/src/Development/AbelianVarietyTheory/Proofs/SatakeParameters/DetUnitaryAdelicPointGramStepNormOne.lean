@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV
 
 /- English proof (translation)
-Introduce `D i hi x`. Conclude with `Formalism.L2.DIV.det_in_unitary_one D.host.F D.host.E (sigD D) _ (gramN D i hi) (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D i hi) x.1 x.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem det_unitary_adelic_point_gram_step_norm_one : ∀ (D : D7) (i : ℕ) (hi : i ≤ D.R.m) (x : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)), Matrix.GeneralLinearGroup.det x.1 ∈ Formalism.L2.DIV.U1 (sigD D) := by
   intro D i hi x

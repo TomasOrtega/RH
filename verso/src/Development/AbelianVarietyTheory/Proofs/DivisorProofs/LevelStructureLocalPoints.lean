@@ -18,9 +18,9 @@ namespace GlobalTheory.GroupBplus.Aff
 attribute [local instance] GlobalTheory.HopfShear.pointsGroup
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Establish `h1 : spMap ψ (IsLocalRing.closedPoint B) ∈ V`. Establish `h2` using `h ⟨IsLocalRing.closedPoint (IsLocalRing.ResidueField B), rfl⟩`. Establish `e : spMap ((IsLocalRing.residue B).comp ψ) (IsLocalRing.closedPoint (IsLocalRing.ResidueField B)) = spMap ψ (IsLocalRing.closedPoint B)` using `congrArg (PrimeSpectrum.comap ψ) (IsLocalRing.comap_closedPoint (IsLocalRing.residue B))`. Conclude with `e ▸ h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : x ⤳ IsLocalRing.closedPoint B` using `IsLocalRing.specializes_closedPoint x`. Conclude with `(hs.map (spMap ψ).continuous).mem_open V.isOpen h1`.
+A detailed English derivation is pending.
 -/
 theorem range_spMap_subset_of_residue {A B : Type} [CommRing A] [CommRing B] [IsLocalRing B] (ψ : A →+* B)
     (V : (Sp A).Opens) (h : Set.range (spMap ((IsLocalRing.residue B).comp ψ)) ⊆ V) : Set.range (spMap ψ) ⊆ V := by
@@ -35,15 +35,15 @@ theorem range_spMap_subset_of_residue {A B : Type} [CommRing A] [CommRing B] [Is
   exact (hs.map (spMap ψ).continuous).mem_open V.isOpen h1
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ G _ _ _ N _ A _ _ _ _ _ θ hθ B _ _ _ φ`. Take `⟨hfin, hsep, -⟩` from `GlobalTheory.T.finite_hopf_points_separate R K A`. Take `⟨V, hV⟩` from `hθ.opn`. Set `k` to `IsLocalRing.ResidueField B`. Set `π : B →ₐ[R] k` to `IsScalarTower.toAlgHom R B k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨s, hs⟩` from `GlobalTheory.finiteAlg_fieldPoint_factors_through_base R K A hsep k (π.comp φ)`. Set `ψ : WithConv (A →ₐ[R] B)` to `toConv φ * (toConv ((Algebra.ofId R B).comp s))⁻¹`. Establish `h1 : GlobalTheory.HopfShear.post π ψ = 1`. Rewrite using `[map_mul, map_inv, mul_inv_eq_one]`. Use `show toConv (π.comp φ) = toConv (π.comp ((Algebra.ofId R B).comp s))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, ← AlgHom.comp_assoc, Subsingleton.elim (π.comp (Algebra.ofId R B)) (Algebra.ofId R k)]`. Establish `h2 : toConv (θ.pt k 1) = 1`. Use `θ.mul k 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_mul.mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : π.comp ψ.ofConv = θ.pt k 1` using `WithConv.toConv_injective (h1.trans h2.symm)`. Establish `h4` using `(hV k).mapsTo (Set.mem_univ 1)`. Rewrite `h4` using `[← h3]`. Take `⟨z, -, hz⟩` from `(hV B).surjOn (range_spMap_subset_of_residue (ψ.ofConv : A →+* B) V h4)`. Use `⟨z, s, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Use `show toConv φ = ψ * _`. Rewrite using `[inv_mul_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem level_point_eq_tors_mul_section : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∀ (A : Type) [CommRing A] [HopfAlgebra R A] [IsCocomm R A] [Module.Finite R A] [Module.Projective R A] (θ : TorsPt G N A), IsLevel K θ → ∀ (B : Type) [CommRing B] [Algebra R B] [IsLocalRing B] (φ : A →ₐ[R] B), ∃ (z : Tors G N B) (s : A →ₐ[R] R), toConv φ = toConv (θ.pt B z) * toConv ((Algebra.ofId R B).comp s) := by
   intro R K _ _ _ _ _ _ _ _ G _ _ _ N _ A _ _ _ _ _ θ hθ B _ _ _ φ

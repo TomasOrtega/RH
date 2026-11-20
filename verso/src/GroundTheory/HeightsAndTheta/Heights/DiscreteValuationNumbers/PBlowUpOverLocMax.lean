@@ -12,11 +12,11 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Establish `key : ∀ (R₁ R₂ : Subring F) (h₁ : B ≤ R₁) (h₂ : B ≤ R₂), (letI` using `(Subring.inclusion h₁).toAlgebra; IsLocalization.AtPrime R₁ 𝔭) → (letI := (Subring.inclusion h₂).toAlgebra; IsLocalization.AtPrime R₂ 𝔭) → R₁ ≤ R₂ := by`. Introduce `R₁ R₂ h₁ h₂ hl₁ hl₂ z hz`. Set `_` to `(Subring.inclusion h₁).toAlgebra`. Set `_` to `(Subring.inclusion h₂).toAlgebra`. Take `⟨⟨b, s⟩, hbs⟩` from `IsLocalization.surj 𝔭.primeCompl (⟨z, hz⟩ : R₁)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `(IsLocalization.map_units R₂ s).exists_right_inv`. Establish `e₁ : z * ((s : B) : F) = ((b : B) : F)` using `congrArg Subtype.val hbs`. Establish `e₂ : ((s : B) : F) * (t : F) = 1` using `congrArg Subtype.val ht`. Establish `hzt : z = (b : F) * t`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hzt]`. Conclude with `R₂.mul_mem (h₂ b.2) t.2`. Conclude with `le_antisymm (key R₁ R₂ h₁ h₂ hl₁ hl₂) (key R₂ R₁ h₂ h₁ hl₂ hl₁)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subring_eq_of_isLocalization_atPrime {F : Type*} [Field F] {B R₁ R₂ : Subring F}
     (h₁ : B ≤ R₁) (h₂ : B ≤ R₂) (𝔭 : Ideal B) [𝔭.IsPrime]
@@ -41,7 +41,7 @@ theorem subring_eq_of_isLocalization_atPrime {F : Type*} [Field F] {B R₁ R₂ 
   exact le_antisymm (key R₁ R₂ h₁ h₂ hl₁ hl₂) (key R₂ R₁ h₂ h₁ hl₂ hl₁)
 
 /- English proof (translation)
-Set `_` to `(Subring.inclusion h).toAlgebra`. Use `hl₁` as an intermediate fact. Use `hl₂` as an intermediate fact. Establish `: IsLocalRing R` using `IsLocalization.AtPrime.isLocalRing R 𝔭₁`. Rewrite using `[← IsLocalization.AtPrime.under_maximalIdeal R 𝔭₁ inferInstance, ← IsLocalization.AtPrime.under_maximalIdeal R 𝔭₂ inferInstance]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prime_eq_of_isLocalization_atPrime {F : Type*} [Field F] {B R : Subring F} (h : B ≤ R)
     (𝔭₁ 𝔭₂ : Ideal B) [𝔭₁.IsPrime] [𝔭₂.IsPrime]
@@ -55,15 +55,15 @@ theorem prime_eq_of_isLocalization_atPrime {F : Type*} [Field F] {B R : Subring 
     ← IsLocalization.AtPrime.under_maximalIdeal R 𝔭₂ inferInstance]
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ J _ P n hP N u hu hu' c x hx hxP W hϖW hWmin hWrel`. Use `hP.multiProj.isPrime` as an intermediate fact. Establish `hpt` using `h₁ O ϖ hϖ K ι J P n hP N u hu hu' c x hx hxP W hϖW hWmin hWrel`. Establish `hmx` using `h₂ O ϖ hϖ K ι J P n hP N u hu hu' c x hx hxP W hϖW hWmin hWrel`. Use `choose f hfT hfloc hfdeg using fun 𝔫 : {𝔫 : Ideal (blowUpOverLoc P W u) // 𝔫.IsMaximal} => hpt 𝔫.1 𝔫.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmh : ∀ W' ∈ (blowUpOf P u ⊔ Ideal.span {liftForm x}).minimalPrimes, IsMultiHomogIdeal W'` using `fun W' hW' => MinimalPrimeMultiHomog.full O (Option K) (extIdx ι J) _ W' (SupSpanMultiHomog.full O (Option K) (extIdx ι J) _ _ (liftMDeg c) (isMultiHomogIdeal_blowUpOf hP.multiProj.multiHomog N u hu) (isMultiHomog_liftForm hx)) hW'`. Use `⟨Equiv.ofBijective (fun 𝔫 => ⟨f 𝔫, hfT 𝔫⟩) ⟨?_, ?_⟩, fun 𝔫 => ⟨hfloc 𝔫, hfdeg 𝔫⟩⟩` and prove the remaining obligations. Introduce `𝔫₁ 𝔫₂ h12`. Establish `hf : f 𝔫₁ = f 𝔫₂` using `congrArg Subtype.val h12`. Establish `hl₁` using `hfloc 𝔫₁`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hl₁` using `[hf]`. Take `⟨k₁, l₁⟩` from `hl₁`. Take `⟨k₂, l₂⟩` from `hfloc 𝔫₂`. Use `𝔫₁.2.isPrime` as an intermediate fact. Use `𝔫₂.2.isPrime` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `Subtype.ext (prime_eq_of_isLocalization_atPrime k₂ 𝔫₁.1 𝔫₂.1 l₁ l₂)`. Introduce and unpack `⟨W', hW'⟩`. Take `⟨k, 𝔫, h𝔫, hl⟩` from `hmx W' hW'.1 hW'.2.1 hW'.2.2`. Use `⟨⟨𝔫, h𝔫⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Take `⟨k', hl'⟩` from `hfloc ⟨𝔫, h𝔫⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h𝔫.isPrime` as an intermediate fact. Establish `hring : blowUpLocRing P u (f ⟨𝔫, h𝔫⟩) = blowUpLocRing P u W'` using `subring_eq_of_isLocalization_atPrime k' k 𝔫 hl' hl`. Establish `hT` using `hfT ⟨𝔫, h𝔫⟩`. Conclude with `h₃ O K ι J P u _ _ hT.1.1.1 (hmh _ hT.1) hT.2.1 (le_trans le_sup_left hT.1.1.2) hW'.1.1.1 (hmh _ hW'.1) hW'.2.1 (le_trans le_sup_left hW'.1.1.2) hring`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem BlowUpOverLocMax.proof (h₁ : BlowUpOverLocMaxPoint.Statement.{u})
     (h₂ : BlowUpOverLocPointMax.Statement.{u}) (h₃ : BlowUpLocRingInj.Statement.{u}) :

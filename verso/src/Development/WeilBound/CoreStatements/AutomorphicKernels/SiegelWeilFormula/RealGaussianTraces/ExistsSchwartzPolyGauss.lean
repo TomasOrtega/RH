@@ -10,11 +10,11 @@ open HeckeCharacterZeroLocus.SiegelWeilU NumberField MeasureTheory PositivityThe
 open scoped TensorProduct Matrix NNReal ComplexOrder
 
 /- English proof (translation)
-Take `⟨a, i, b⟩` from `k`. Set `ℓ : W →L[ℝ] ℂ` to `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℂ) i).comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin M => Fin n → ℂ) a).comp L)`. Establish `hℓ : ∀ w, ℓ w = L w a i` using `fun w => rfl`. Consider the cases of `b`. Establish `h : (fun w => if false = true then star (L w a i) else L w a i) = ⇑ℓ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Simplify using `[hℓ]`. Rewrite using `[h]`. Conclude with `ℓ.hasTemperateGrowth`. Establish `h : (fun w => if true = true then star (L w a i) else L w a i) = ⇑(Complex.conjCLE.toContinuousLinearMap.comp ℓ)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Simplify using `[hℓ]`. Rewrite using `[h]`. Conclude with `(Complex.conjCLE.toContinuousLinearMap.comp ℓ).hasTemperateGrowth`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasTemperateGrowth_evX_comp_clm {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {M n : ℕ}
     (L : W →L[ℝ] (Fin M → Fin n → ℂ)) (k : Fin M × Fin n × Bool) :
@@ -39,13 +39,13 @@ private theorem hasTemperateGrowth_evX_comp_clm {W : Type} [NormedAddCommGroup W
     exact (Complex.conjCLE.toContinuousLinearMap.comp ℓ).hasTemperateGrowth
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `h : (fun w => evX (MvPolynomial.C a : PX M n) (L w)) = fun _ => a`. Use function extensionality and compare the values at `w`. Simplify using `[evX]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Conclude with `Function.HasTemperateGrowth.const a`. Consider the case `add p q hp hq`. Establish `h : (fun w => evX (p + q : PX M n) (L w)) = (fun w => evX p (L w)) + (fun w => evX q (L w))`. Use function extensionality and compare the values at `w`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[evX]`. Rewrite using `[h]`. Conclude with `hp.add hq`. Consider the case `mul_X p k hp`. Establish `h : (fun w => evX (p * MvPolynomial.X k : PX M n) (L w)) = (fun w => evX p (L w)) * (fun w => if k.2.2 = true then star (L w k.1 k.2.1) else L w k.1 k.2.1)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `w`. Simplify using `[evX]`. Rewrite using `[h]`. Conclude with `hp.mul (hasTemperateGrowth_evX_comp_clm L k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasTemperateGrowth_evX {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {M n : ℕ}
     (L : W →L[ℝ] (Fin M → Fin n → ℂ)) (P : PX M n) :
@@ -74,21 +74,21 @@ theorem hasTemperateGrowth_evX {W : Type} [NormedAddCommGroup W] [NormedSpace �
     exact hp.mul (hasTemperateGrowth_evX_comp_clm L k)
 
 /- English proof (translation)
-Set `pr : ι → Fin M → Fin n → ((ι → Fin M → Fin n → ℂ) →L[ℝ] ℂ)` to `fun i a j => (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℂ) j).comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin M => Fin n → ℂ) a).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : ι => Fin M → Fin n → ℂ) i))`. Establish `hpr : ∀ i a j x, pr i a j x = x i a j` using `fun _ _ _ _ => rfl`. Set `re3 : ι → Fin M → Fin n → ((ι → Fin M → Fin n → ℂ) →L[ℝ] ℝ)` to `fun i a j => Complex.reCLM.comp (pr i a j)`. Set `im3 : ι → Fin M → Fin n → ((ι → Fin M → Fin n → ℂ) →L[ℝ] ℝ)` to `fun i a j => Complex.imCLM.comp (pr i a j)`. Establish `hre : ∀ i a j x, re3 i a j x = (x i a j).re` using `fun _ _ _ _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `him : ∀ i a j x, im3 i a j x = (x i a j).im` using `fun _ _ _ _ => rfl`. Set `B : (ι → Fin M → Fin n → ℂ) →L[ℝ] (ι → Fin M → Fin n → ℂ) →L[ℝ] ℝ` to `∑ i, ∑ a, ∑ j, (-c i) • ((re3 i a j).smulRight (re3 i a j) + (im3 i a j).smulRight (im3 i a j))`. Establish `hB : ∀ x, B x x = -∑ i, c i * ∑ a, ∑ j, ‖x i a j‖ ^ 2`. Introduce `x`. Simplify using `only [B, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smulRight_apply, hre, him, smul_eq_mul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hneg : ∀ x, x ≠ 0 → B x x < 0`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hB, neg_lt_zero]`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hx`. Take `⟨a, ha⟩` from `Function.ne_iff.mp hi`. Take `⟨j, hj⟩` from `Function.ne_iff.mp ha`. Apply `Finset.sum_pos' (fun i _ => mul_nonneg (hc i).le (by positivity)) ⟨i, Finset.mem_univ _, ?_⟩` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_pos (hc i)` to reduce the goal to its premises. Apply `Finset.sum_pos' (fun _ _ => by positivity) ⟨a, Finset.mem_univ _, ?_⟩` to reduce the goal to its premises. Apply `Finset.sum_pos' (fun _ _ => by positivity) ⟨j, Finset.mem_univ _, ?_⟩` to reduce the goal to its premises. Conclude with `pow_pos (norm_pos_iff.mpr (by simpa using hj)) 2`. Take `⟨g, hg⟩` from `GlobalTheory.GaussSchwartz.exists_schwartz_exp_diag B hneg`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hg, hB, Complex.ofReal_exp]`. Simplify using `only [gs]`. Rewrite using `[← Complex.exp_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_schwartz_prod_gs {ι : Type} [Fintype ι] {M n : ℕ} (c : ι → ℝ)
     (hc : ∀ i, 0 < c i) :
@@ -139,11 +139,11 @@ private theorem exists_schwartz_prod_gs {ι : Type} [Fintype ι] {M n : ℕ} (c 
   rw [Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_schwartz_prod_gs (M := M) (n := n) c hc`. Establish `hbase : ∀ i, Function.HasTemperateGrowth (fun x : ι → Fin M → Fin n → ℂ => evX (P i) (x i))` using `fun i => hasTemperateGrowth_evX (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : ι => Fin M → Fin n → ℂ) i) (P i)`. Establish `hp : Function.HasTemperateGrowth (fun x : ι → Fin M → Fin n → ℂ => ∏ i, evX (P i) (x i))`. Use `Finset.prod_induction (s := Finset.univ) (fun i => fun x : ι → Fin M → Fin n → ℂ => evX (P i) (x i)) (fun f : (ι → Fin M → Fin n → ℂ) → ℂ => f.HasTemperateGrowth) (fun _ _ h1 h2 => h1.mul h2) (Function.HasTemperateGrowth.const 1) (fun i _ => hbase i)` as an intermediate fact. Establish `h : (∏ i, fun x : ι → Fin M → Fin n → ℂ => evX (P i) (x i)) = fun x => ∏ i, evX (P i) (x i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `[Finset.prod_apply]`. Rewrite `this` using `[h]`. Conclude with `this`. Use `⟨SchwartzMap.smulLeftCLM ℂ (fun x => ∏ i, evX (P i) (x i)) g, fun x => ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply hp, hg, smul_eq_mul, Finset.prod_mul_distrib]`.
+A detailed English derivation is pending.
 -/
 theorem exists_schwartz_polyGauss {ι : Type} [Fintype ι] {M n : ℕ} (c : ι → ℝ) (hc : ∀ i, 0 < c i)
     (P : ι → PX M n) :
@@ -171,9 +171,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Introduce `N e he hes`. Set `A : (Fin N → ℝ) ≃+ (ι → Fin M → Fin n → ℂ)` to `e.symm.trans e0.toAddEquiv`. Establish `hA : Continuous A` using `e0.continuous.comp hes`. Establish `hAs : Continuous A.symm` using `he.comp e0.symm.continuous`. Set `L` to `A.toRealLinearEquiv hA hAs`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ L f, fun x => ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem isSchwartzInf_comp {ι : Type} [Fintype ι] {M n : ℕ}
     (e0 : (Fin n → Fin M → Ainf F ⊗[F] E) ≃ₜ+ (ι → Fin M → Fin n → ℂ))

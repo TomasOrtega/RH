@@ -14,59 +14,59 @@ import ReciprocityTheory.ReductiveGroups.LatticeEmbeddings.IotaPlace
 namespace Formalism.L2.AlgTh
 
 /- English proof (translation)
-The claim follows from `log_derivative_jets_integral`.
+A detailed English derivation is pending.
 -/
 theorem logDerJets : LogDerJets := log_derivative_jets_integral
 /- English proof (translation)
-The claim follows from `power_log_derivative_jets`.
+A detailed English derivation is pending.
 -/
 theorem powLogDer : PowLogDer := power_log_derivative_jets
 /- English proof (translation)
-The claim follows from `product_scaling_jets`.
+A detailed English derivation is pending.
 -/
 theorem prodScaleJets : ProdScaleJets := product_scaling_jets
 /- English proof (translation)
-The claim follows from `linear_scaling_jets`.
+A detailed English derivation is pending.
 -/
 theorem linScale : LinScale := linear_scaling_jets
 /- English proof (translation)
-The claim follows from `unit_kernel_integral_coords`.
+A detailed English derivation is pending.
 -/
 theorem unitKerInt : UnitKerInt := unit_kernel_integral_coords
 /- English proof (translation)
-The claim follows from `etPower_of unitKerInt`.
+A detailed English derivation is pending.
 -/
 theorem etPower : EtPower := etPower_of unitKerInt
 /- English proof (translation)
-The claim follows from `etJetsSigma_of etPower logDerJets powLogDer`.
+A detailed English derivation is pending.
 -/
 theorem etJetsSigma : EtJetsSigma := etJetsSigma_of etPower logDerJets powLogDer
 /- English proof (translation)
-The claim follows from `etJetsTh0_of etJetsSigma`.
+A detailed English derivation is pending.
 -/
 theorem etJetsTh0 : EtJetsTh0 := etJetsTh0_of etJetsSigma
 /- English proof (translation)
-The claim follows from `etThetaZ_of etJetsTh0 prodScaleJets`.
+A detailed English derivation is pending.
 -/
 theorem etThetaZ : EtThetaZ := etThetaZ_of etJetsTh0 prodScaleJets
 /- English proof (translation)
-The claim follows from `tensor_integral_torsion`.
+A detailed English derivation is pending.
 -/
 theorem tensZEt : TensZEt := tensor_integral_torsion
 /- English proof (translation)
-The claim follows from `etLoc_of tensZEt etThetaZ linScale`.
+A detailed English derivation is pending.
 -/
 theorem etLoc : EtLoc := etLoc_of tensZEt etThetaZ linScale
 /- English proof (translation)
-The claim follows from `scalar_constant_value`.
+A detailed English derivation is pending.
 -/
 theorem scalarConst : ScalarConst := scalar_constant_value
 /- English proof (translation)
-The claim follows from `xi_swap`.
+A detailed English derivation is pending.
 -/
 theorem xiSwap : XiSwap := xi_swap
 /- English proof (translation)
-The claim follows from `xiEt_of etLoc`.
+A detailed English derivation is pending.
 -/
 theorem xiEt : XiEt := xiEt_of etLoc
 

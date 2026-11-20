@@ -14,14 +14,14 @@ def act {R κ : Type} [CommRing R] [Fintype κ] (a : Matrix (κ ⊕ κ) (κ ⊕ 
   ((a *ᵥ Sum.elim w.1 w.2) ∘ Sum.inl, (a *ᵥ Sum.elim w.1 w.2) ∘ Sum.inr)
 
 /- English proof (translation)
-Simplify using `only [act, Matrix.mulVec_mulVec, Sum.elim_comp_inl_inr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_mul {R κ : Type} [CommRing R] [Fintype κ] (a b : Matrix (κ ⊕ κ) (κ ⊕ κ) R) (w : (κ → R) × (κ → R)) :
     act (a * b) w = act a (act b w) := by
   simp only [act, Matrix.mulVec_mulVec, Sum.elim_comp_inl_inr]
 
 /- English proof (translation)
-Simplify using `only [act, Matrix.fromBlocks_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_fromBlocks {R κ : Type} [CommRing R] [Fintype κ] (A B C D : Matrix κ κ R) (w : (κ → R) × (κ → R)) :
     act (Matrix.fromBlocks A B C D) w = (A *ᵥ w.1 + B *ᵥ w.2, C *ᵥ w.1 + D *ᵥ w.2) := by
@@ -52,7 +52,7 @@ def HasOp {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ) (a : Matrix (κ ⊕
   ∃ e c ei ev, IsOp ψ a e c ei ev
 
 /- English proof (translation)
-Take `⟨-, -, hbij, -, hind, -⟩` from `h`. Use `⟨fun v => (hbij v).mapsTo (hφ.1 v), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hφ.2, hind] with v h1 h2`. Rewrite using `[h1, h2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsOp.isFam {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} {a : Matrix (κ ⊕ κ) (κ ⊕ κ) F} {e c ei ev}
     (h : IsOp ψ a e c ei ev) {φ : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hφ : IsFam φ) : IsFam fun v => ev v (φ v) := by
@@ -62,15 +62,15 @@ theorem IsOp.isFam {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} {a : Matri
   rw [h1, h2]
 
 /- English proof (translation)
-Take `⟨e₁, c₁, ei₁, ev₁, h₁⟩` from `ha`. Take `⟨e₂, c₂, ei₂, ev₂, h₂⟩` from `hb`. Establish `h₂'` using `h₂`. Take `⟨hc₁, hs₁, hb₁, hw₁, hi₁, hp₁⟩` from `h₁`. Take `⟨hc₂, hs₂, hb₂, hw₂, hi₂, hp₂⟩` from `h₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨e₁ ∘ₗ e₂, c₁ * c₂, ei₁.comp ei₂, fun v => ev₁ v ∘ₗ ev₂ v, mul_ne_zero hc₁ hc₂, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hs₁.comp hs₂`. Introduce `v`. Conclude with `(hb₁ v).comp (hb₂ v)`. Introduce `v w φ hφ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hw₂ v w φ hφ, hw₁ v _ _ ((hb₂ v).mapsTo hφ), Matrix.map_mul, act_mul]`. Use `filter_upwards [hi₁, hi₂] with v h1 h2`. Simplify using `only [LinearMap.comp_apply, h2, h1]`. Introduce `f φ hφ`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hφ' : IsFam fun v => ev₂ v (φ v)` using `IsOp.isFam h₂' hφ`. Take `⟨hq₂, hw₂', ht₂⟩` from `hp₂ f φ hφ`. Take `⟨hq₁, hw₁', ht₁⟩` from `hp₁ (ei₂ f) (fun v => ev₂ v (φ v)) hφ'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.comp_apply, hq₂, hq₁]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hw₂' w, hq₂, hw₁' _, Matrix.map_mul, act_mul]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hq₂, ht₁, ← hq₂, ht₂, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasOp.mul {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} {a b : Matrix (κ ⊕ κ) (κ ⊕ κ) F}
     (ha : HasOp ψ a) (hb : HasOp ψ b) : HasOp ψ (a * b) := by
@@ -101,9 +101,9 @@ theorem HasOp.mul {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} {a b : Matr
       rw [hq₂, ht₁, ← hq₂, ht₂, mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : ∀ {R : Type} [CommRing R] (w : (κ → R) × (κ → R)), act (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) R) w = w`. Introduce `R _ w`. Simplify using `only [act, Matrix.one_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inr]`. Use `⟨LinearMap.id, 1, ContinuousLinearMap.id ℂ _, fun _ => LinearMap.id, one_ne_zero, Function.surjective_id, fun v => Set.bijOn_id _, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v w φ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.id_apply, Matrix.map_one _ (map_zero _) (map_one _), h1]`. Conclude with `Filter.Eventually.of_forall fun v => rfl`. Introduce `f φ _`. Use `⟨rfl, fun w => ?_, by simp⟩` and prove the remaining obligations. Simplify using `only [LinearMap.id_apply, Matrix.map_one _ (map_zero _) (map_one _), h1]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasOp_one {κ : Type} [Fintype κ] [DecidableEq κ] (ψ : AddChar (AF F) ℂ) : HasOp ψ (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) F) := by
   have h1 : ∀ {R : Type} [CommRing R] (w : (κ → R) × (κ → R)), act (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) R) w = w := by

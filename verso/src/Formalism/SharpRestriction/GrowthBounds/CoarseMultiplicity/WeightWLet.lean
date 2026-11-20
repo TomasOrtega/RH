@@ -15,9 +15,9 @@ def OPlusAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :=
 def wLet (X : Loc) (x : X.TT × Bool) : (X.TT × Bool) × Fin (X.m + 1) → ℕ := fun v => if v.1 = x then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype μ (fun v k => k • wLet X x v) (fun _ => zero_smul _ _), Fintype.sum_prod_type, Finset.sum_eq_single x]`. Unfold `multideg wLet`. Simplify using the standard rewrite rules. Introduce `y _ hy`. Unfold `wLet`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using `[hy]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weight_wLet (X : Loc) (x : X.TT × Bool) (μ : (X.TT × Bool) × Fin (X.m + 1) →₀ ℕ) :
     Finsupp.weight (wLet X x) μ = multideg μ x := by
@@ -35,33 +35,33 @@ theorem weight_wLet (X : Loc) (x : X.TT × Bool) (μ : (X.TT × Bool) × Fin (X.
 variable (C0 CE1 CE2 : ℝ) (X : Loc) [NeZero X.m] (j : Fin (numSeg X.TT))
 
 /- English proof (translation)
-Take `⟨t, bb⟩` from `x`. Establish `hterm : ∀ i : Fin (segS X.TT j), ((∑ c : Fin (X.m + 1), (b.rz i c * wLet X (t, bb) ((topOdd X j i, true), c) + b.ry i c * wLet X (t, bb) ((topOdd X j i, false), c))) + (X.seg C0 CE1 CE2 j).P X.p i * (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then (coarseA X.p (X.seg C0 CE1 CE2 j) b …`. Introduce `i`. Establish `hodd` using `(pos_mem X.TT j i).2`. Distinguish the cases in `h : segPos X.TT j i = t.val`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `ht : topOdd X j i = t` using `Subtype.ext h`. Substitute `ht` using the available equality. Rewrite using `[if_pos h]`. Consider the cases of `bb`. Establish `w1 : ∀ c, wLet X (topOdd X j i, false) ((topOdd X j i, true), c) = 0` using `fun c => if_neg (by simp)`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Establish `w2 : ∀ c, wLet X (topOdd X j i, false) ((topOdd X j i, false), c) = 1` using `fun c => if_pos rfl`. Simplify using `only [w1, w2, mul_zero, mul_one, zero_add, add_zero]`. Establish `hd` using `hk.1.2.2 i`. Establish `hPC : (X.seg C0 CE1 CE2 j).P X.p i * coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b i = segATop X.TT X.aT j i - ∑ c, b.ry i c` using `Nat.mul_div_cancel' hd.2`. Establish `hdeg : hhDegs X.TT X.aT X.bT (topOdd X j i, false) = segATop X.TT X.aT j i` using `by show hhDeg X.aT X.bT (segPos X.TT j i) false = X.aT (segPos X.TT j i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `hhDeg`. Simplify using `[hodd]`. Establish `hin : (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then b.sg i + (coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b i - b.sg i) else coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b i) = coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b i` using `by split_ifs with hs`. Use `(hk.2.2.1 i hs).2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Both sides reduce to the same expression. Rewrite using `[hin, hPC, hdeg]`. Use `hd.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `w1 : ∀ c, wLet X (topOdd X j i, true) ((topOdd X j i, true), c) = 1` using `fun c => if_pos rfl`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `w2 : ∀ c, wLet X (topOdd X j i, true) ((topOdd X j i, false), c) = 0` using `fun c => if_neg (by simp)`. Simplify using `only [w1, w2, mul_zero, mul_one, zero_add, add_zero]`. Establish `hd` using `hk.1.2.1 i`. Establish `hPA : (X.seg C0 CE1 CE2 j).P X.p i * coarseA X.p (X.seg C0 CE1 CE2 j) b i = (X.seg C0 CE1 CE2 j).bTop i - ∑ c, b.rz i c` using `Nat.mul_div_cancel' hd.2`. Establish `hdeg : hhDegs X.TT X.aT X.bT (topOdd X j i, true) = (X.seg C0 CE1 CE2 j).bTop i` using `by show hhDeg X.aT X.bT (segPos X.TT j i) true = X.bT (segPos X.TT j i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `hhDeg`. Simplify using `[hodd]`. Establish `hin : (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then coarseA X.p (X.seg C0 CE1 CE2 j) b i - b.w i + b.w i else coarseA X.p (X.seg C0 CE1 CE2 j) b i - b.o i + b.o i) = coarseA X.p (X.seg C0 CE1 CE2 j) b i` using `by split_ifs with hs`. Use `(hk.2.2.1 i hs).2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `(hk.2.1 i (not_lt.1 hs)).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hin, hPA, hdeg]`. Use `hd.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `w0 : ∀ b' c, wLet X (t, bb) ((topOdd X j i, b'), c) = 0` using `fun b' c => if_neg (fun e => h (congrArg (fun z : X.TT × Bool => z.1.val) e))`. Rewrite using `[if_neg h]`. Simplify using `only [w0, mul_zero, add_zero, Finset.sum_const_zero, ite_self]`. Establish `hend : (segAPlus X.TT X.aT j - b.oPlus) * wLet X (t, bb) ((topEnd X j, true), 0) + b.oPlus * wLet X (t, bb) ((topEnd X j, true), Fin.succ 0) + (X.seg C0 CE1 CE2 j).bPlus * wLet X (t, bb) ((topEnd X j, false), Fin.succ 0) = (if segNext X.TT j = t.val then hhDegs X.TT X.aT X.bT (t, …`. Establish `hev` using `(next_mem X.TT j).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h : segNext X.TT j = t.val`. Establish `ht : topEnd X j = t` using `Subtype.ext h`. Substitute `ht` using the available equality. Rewrite using `[if_pos h]`. Consider the cases of `bb`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Establish `w1 : ∀ c, wLet X (topEnd X j, false) ((topEnd X j, true), c) = 0` using `fun c => if_neg (by simp)`. Establish `w2 : ∀ c, wLet X (topEnd X j, false) ((topEnd X j, false), c) = 1` using `fun c => if_pos rfl`. Simplify using `only [w1, w2, mul_zero, mul_one, zero_add]`. Use `show X.bT (segNext X.TT j) = hhDeg X.aT X.bT (segNext X.TT j) false`. Unfold `hhDeg`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `[hev]`. Establish `w1 : ∀ c, wLet X (topEnd X j, true) ((topEnd X j, true), c) = 1` using `fun c => if_pos rfl`. Establish `w2 : ∀ c, wLet X (topEnd X j, true) ((topEnd X j, false), c) = 0` using `fun c => if_neg (by simp)`. Simplify using `only [w1, w2, mul_zero, mul_one, add_zero]`. Rewrite using `[Nat.sub_add_cancel ho]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `show X.aT (segNext X.TT j) = hhDeg X.aT X.bT (segNext X.TT j) true`. Unfold `hhDeg`. Simplify using `[hev]`. Establish `w0 : ∀ b' c, wLet X (t, bb) ((topEnd X j, b'), c) = 0` using `fun b' c => if_neg (fun e => h (congrArg (fun z : X.TT × Bool => z.1.val) e))`. Rewrite using `[if_neg h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [w0, mul_zero, add_zero]`. Unfold `TD`. Rewrite using `[Finset.sum_congr rfl fun i _ => hterm i, add_assoc, add_assoc, ← add_assoc ((segAPlus X.TT X.aT j - b.oPlus) * _), hend, add_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TD_wLet (x : X.TT × Bool) (b : SegBlock (segS X.TT j) X.m)
     (hk : Kept X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b) (ho : b.oPlus ≤ segAPlus X.TT X.aT j) :

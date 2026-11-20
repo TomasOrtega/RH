@@ -21,11 +21,11 @@ namespace GlobalTheory.CompanionTheory.Ar.LieVB
 open GlobalTheory.CompanionTheory.Ar.LieTangent
 
 /- English proof (translation)
-Use `Fintype.ofFinite I` as an intermediate fact. Establish `key : ∀ s : Finset I, ∃ U : X.Opens, p.1 ∈ U ∧ ∀ q : Cpt ξ, q.1 ∈ U → ∀ i ∈ s, P i q`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨⊤, trivial, fun _ _ i hi => absurd hi (Finset.notMem_empty i)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s _ ih`. Take `⟨U, hU, HU⟩` from `ih`. Take `⟨V, hV, HV⟩` from `h a`. Use `⟨U ⊓ V, ⟨hU, hV⟩, fun q hq i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `HV q hq.2`. Conclude with `HU q hq.1 i hi`. Take `⟨U, hU, HU⟩` from `key Finset.univ`. Conclude with `⟨U, hU, fun q hq i => HU q hq i (Finset.mem_univ i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_open_forall {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} (p : Cpt ξ) {I : Type} [Finite I]
     (P : I → Cpt ξ → Prop) (h : ∀ i, ∃ U : X.Opens, p.1 ∈ U ∧ ∀ q : Cpt ξ, q.1 ∈ U → P i q) :
@@ -47,9 +47,9 @@ theorem exists_open_forall {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω �
   exact ⟨U, hU, fun q hq i => HU q hq i (Finset.mem_univ i)⟩
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 he`. Take `⟨U, hU, HU⟩` from `exists_open_forall p (fun (j : Fin n) (q : Cpt ξ) => (f j : Ω) ∈ regAt ξ q) fun j => exists_open_mem_regAt ξ p _ (f j).2`. Use `⟨U, hU, fun q hq => ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `: f j • w j = (⟨(f j : Ω), HU q hq j⟩ : regAt ξ q) • w j` using `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open_mem_span {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Sp Ω ⟶ X) {E : Type} [AddCommGroup E]
     [Module Ω E] (p : Cpt ξ) {n : ℕ} (w : Fin n → E) (e : E)
@@ -65,7 +65,7 @@ theorem exists_open_mem_span {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Sp Ω
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 he`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `: f j • w j = (f j : Ω) • w j` using `rfl`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_field_of_mem_span_regAt {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Sp Ω ⟶ X) {E : Type}
     [AddCommGroup E] [Module Ω E] (p : Cpt ξ) {n : ℕ} (w : Fin n → E) (e : E)
@@ -77,23 +77,19 @@ theorem mem_span_field_of_mem_span_regAt {X : Scheme.{0}} {Ω : Type} [Field Ω]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Introduce `X G _ _ _ Ω _ ξ E _ _ M p g b hb`. Take `⟨R, _, x, hx, F, _, _, MR, n, bR, hp⟩` from `exists_chart G p.1`. Establish `hgen : genPt ξ ∈ x.opensRange` using `p.2.mem_open x.opensRange.isOpen hp`. Take `⟨φ, hφ⟩` from `exists_lift x ξ hgen`. Take `⟨c, hli, hsp, hfr⟩` from `frame_of_basis x MR bR ξ M φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc : ∀ q : Cpt ξ, q.1 ∈ x.opensRange → M.lat.IsFrameAt c q`. Introduce `q hq`. Establish `hq' : (X.fromSpecStalk q.1) (IsLocalRing.closedPoint (X.presheaf.stalk q.1)) ∈ x.opensRange`. Rewrite using `[Scheme.fromSpecStalk_closedPoint]`. Conclude with `hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ⟩` from `exists_lift (A := X.presheaf.stalk q.1) x (X.fromSpecStalk q.1) hq'`. Use `hfr q ψ hψ ?_` and prove the remaining obligations. Establish `h1 : spMap ((genMap ξ q).comp ψ) ≫ x = spMap φ ≫ x`. Establish `e1 : spMap ((genMap ξ q).comp ψ) = spMap (genMap ξ q) ≫ spMap ψ`. Simplify using `only [spMap, ← Spec.map_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, Category.assoc]`. Use `_ = spMap (genMap ξ q) ≫ X.fromSpecStalk q.1 := by rw [hψ]`. Use `_ = ξ := spec_genMap ξ q`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = spMap φ ≫ x := hφ.symm`. Establish `h2` using `Spec.map_injective ((cancel_mono x).1 h1)`. Conclude with `congrArg (fun g => g.hom) h2`. Establish `hbc : Submodule.span (regAt ξ p) (Set.range b) = Submodule.span (regAt ξ p) (Set.range c)` using `hb.2.symm.trans (hc p hp).2`. Establish `hbi : ∀ i, b i ∈ Submodule.span (regAt ξ p) (Set.range c)` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hbc]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Establish `hcj : ∀ j, c j ∈ Submodule.span (regAt ξ p) (Set.range b)` using `fun j => by`. Rewrite using `[hbc]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨top_le_iff.1 (hsp.ge.trans (Submodule.span_le.2 ?_)), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `mem_span_field_of_mem_span_regAt ξ p b _ (hcj j)`. Take `⟨U, hU, HU⟩` from `exists_open_forall p (fun (i : Fin g) (q : Cpt ξ) => b i ∈ Submodule.span (regAt ξ q) (Set.range c)) fun i => exists_open_mem_span ξ p c _ (hbi i)`. Take `⟨V, hV, HV⟩` from `exists_open_forall p (fun (j : Fin n) (q : Cpt ξ) => c j ∈ Submodule.span (regAt ξ q) (Set.range b)) fun j => exists_open_mem_span ξ p b _ (hcj j)`.
-
-Use `⟨x.opensRange ⊓ (U ⊓ V), ⟨hp, hU, hV⟩, fun q hq => ⟨hb.1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(hc q hq.1).2]`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `HV q hq.2.2 j`.
-
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `HU q hq.2.1 i`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isFrameAt_span_and_nhd : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (p : Cpt ξ) (g : ℕ) (b : Fin g → E), M.lat.IsFrameAt b p → Submodule.span Ω (Set.range b) = ⊤ ∧ ∃ N : X.Opens, p.1 ∈ N ∧ ∀ q : Cpt ξ, q.1 ∈ N → M.lat.IsFrameAt b q := by
   intro X G _ _ _ Ω _ ξ E _ _ M p g b hb

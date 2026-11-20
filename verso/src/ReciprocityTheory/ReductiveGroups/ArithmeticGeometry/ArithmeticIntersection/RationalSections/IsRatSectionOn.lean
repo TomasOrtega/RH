@@ -26,7 +26,7 @@ def IsRFamily (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) �
       I P (n + 1) (Fin.snoc L A) = recR I P L A s)
 
 /- English proof (translation)
-The claim follows from `h.2`.
+A detailed English derivation is pending.
 -/
 theorem IsIntersectionFamily.isRFamily {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ}
     (h : IsIntersectionFamily I) : IsRFamily I :=

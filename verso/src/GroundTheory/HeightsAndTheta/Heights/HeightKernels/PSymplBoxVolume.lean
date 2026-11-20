@@ -9,7 +9,7 @@ open Matrix
 namespace PSymplBoxVolume
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[abs_lt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem set_eq_preimage {ι : Type} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι ℝ) (a : ι → ℝ) :
     {x : ι → ℝ | ∀ i, |(A *ᵥ x) i| < a i} =
@@ -22,7 +22,7 @@ end PSymplBoxVolume
 open PSymplBoxVolume in
 
 /- English proof (translation)
-Introduce `ι _ _ A a hA ha`. Rewrite using `[set_eq_preimage, MeasureTheory.Measure.addHaar_preimage_linearMap _ (by rwa [LinearMap.det_toLin']) , Real.volume_pi_Ioo, LinearMap.det_toLin', ← ENNReal.ofReal_prod_of_nonneg (fun i _ => by linarith [ha i]), ← ENNReal.ofReal_mul (abs_nonneg _), abs_inv, div_eq_mul_inv, mul_comm …`. Use `congr 2`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem SymplBoxVolume.proof : SymplBoxVolume.Statement := by
   intro ι _ _ A a hA ha

@@ -12,11 +12,11 @@ def fockEmb (σ : Type) [DecidableEq σ] :
     lp.single 2 α ((Real.sqrt (α.prod fun _ k => (k.factorial : ℝ)) : ℝ) : ℂ)
 
 /- English proof (translation)
-Introduce `α β`. Establish `h : ∀ γ : σ →₀ ℕ, fockEmb σ (monomial γ 1) = lp.single 2 γ ((Real.sqrt (γ.prod fun _ k => (k.factorial : ℝ)) : ℝ) : ℂ)`. Introduce `γ`. Use `(basisMonomials σ ℂ).constr_basis ℂ (fun α : σ →₀ ℕ => (lp.single 2 α ((Real.sqrt (α.prod fun _ k => (k.factorial : ℝ)) : ℝ) : ℂ) : lp (fun _ : σ →₀ ℕ => ℂ) 2)) γ` as an intermediate fact. Simplify `this` using `[fockEmb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[h, h, lp.inner_single_left]`. Use `split_ifs with e`. Substitute `e` using the available equality. Establish `h0 : 0 ≤ α.prod fun _ k => (k.factorial : ℝ)` using `Finset.prod_nonneg fun _ _ => Nat.cast_nonneg _`. Rewrite using `[lp.single_apply_self, RCLike.inner_apply, Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt h0]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.prod]`. Rewrite using `[lp.single_apply_ne _ _ _ e, inner_zero_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFockIsometry_fockEmb (σ : Type) [DecidableEq σ] : IsFockIP (fockEmb σ) := by
   intro α β
@@ -38,7 +38,7 @@ theorem isFockIsometry_fockEmb (σ : Type) [DecidableEq σ] : IsFockIP (fockEmb 
   · rw [lp.single_apply_ne _ _ _ e, inner_zero_right]
 
 /- English proof (translation)
-Introduce `h`. Simplify using `using h 0 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem not_isFockIP_zero (σ : Type) [DecidableEq σ] :
     ¬ IsFockIP (0 : MvPolynomial σ ℂ →ₗ[ℂ] ℂ) := by
@@ -46,7 +46,7 @@ theorem not_isFockIP_zero (σ : Type) [DecidableEq σ] :
   simpa using h 0 0
 
 /- English proof (translation)
-Unfold `minusPart`. Establish `: ∀ d : ℕ, homogeneousComponent d (A (homogeneousComponent (d + 2) P)) = 0`. Introduce `d`. Rewrite using `[homogeneousComponent_eq_zero (d + 2) P (by omega)]; simp`. Simplify using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem minusPart_of_deg {σ : Type} (A : Module.End ℂ (MvPolynomial σ ℂ)) (P : MvPolynomial σ ℂ)
     (h : P.totalDegree ≤ 1) : minusPart A P = 0 := by
@@ -57,16 +57,16 @@ theorem minusPart_of_deg {σ : Type} (A : Module.End ℂ (MvPolynomial σ ℂ)) 
   simp [this]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => minusPart_of_deg _ _ h, fun _ _ => minusPart_of_deg _ _ h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_jointHarm_of_deg {p q r s : ℕ} (P : Pol p q r s) (h : P.totalDegree ≤ 1) :
     P ∈ jointHarm p q r s :=
   ⟨fun _ _ => minusPart_of_deg _ _ h, fun _ _ => minusPart_of_deg _ _ h⟩
 
 /- English proof (translation)
-Use `Set.eq_univ_of_forall fun P Z hZ => ?_` and prove the remaining obligations. Establish `: Z = 0`. Use extensionality with `a b`. Break down `a with a | a` into its components or cases. Break down `b with b | b` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hZ _ _ trivial`. Conclude with `b.elim0`. Conclude with `a.elim0`. Simplify using `[this, minusPart]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem harmonic_all_of_compact (p q r : ℕ) : harm1 p q r 0 = Set.univ := by
   refine Set.eq_univ_of_forall fun P Z hZ => ?_
@@ -80,11 +80,11 @@ theorem harmonic_all_of_compact (p q r : ℕ) : harm1 p q r 0 = Set.univ := by
   simp [this, minusPart]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `h (Eab (.inr 0) (.inl 0)) (by`. Introduce `a b hab`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp_all [Eab, sameBlock, Matrix.single_apply])`. Establish `hom : (X (.inl 0, .inl 0) * X (.inr 0, .inl 0) : Pol 1 1 1 0).IsHomogeneous 2` using `(isHomogeneous_X _ _).mul (isHomogeneous_X _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Unfold `minusPart at h1`. Rewrite `h1` using `[finsum_eq_single _ 0]`. Rewrite `h1` using `[homogeneousComponent_of_mem hom, fockAct1_Eab]`. Simplify using `[omE, raiB, lowB, linePos, pderiv_X, Pi.single_apply] at h1`. Introduce `d hd`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[homogeneousComponent_of_mem hom, if_neg (by omega)]; simp`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem not_mem_harm2 :
     (X (.inl 0, .inl 0) * X (.inr 0, .inl 0) : Pol 1 1 1 0) ∉ harm2 1 1 1 0 := by
@@ -102,14 +102,14 @@ theorem not_mem_harm2 :
     rw [homogeneousComponent_of_mem hom, if_neg (by omega)]; simp
 
 /- English proof (translation)
-Introduce `_ hx` and use `Submodule.mem_sInf.2 fun _ hN => hN.1 hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subset_genSub {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (S : Set V) : S ⊆ genSub act S :=
   fun _ hx => Submodule.mem_sInf.2 fun _ hN => hN.1 hx
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun N hN => hN.2 Z y (Submodule.mem_sInf.1 hy N hN)`.
+A detailed English derivation is pending.
 -/
 theorem genSub_stable {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (S : Set V) (Z : Mat p q) (y : V) (hy : y ∈ genSub act S) :
@@ -120,14 +120,14 @@ def charAct (p q : ℕ) (c : ℚ) : Mat p q →ₗ[ℂ] Module.End ℂ ℂ :=
   ((c : ℂ) • Matrix.traceLinearMap (Ix p q) ℂ ℂ).smulRight 1
 
 /- English proof (translation)
-Simplify using `[charAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem charAct_apply (p q : ℕ) (c : ℚ) (Z : Mat p q) (v : ℂ) :
     charAct p q c Z v = (c : ℂ) * Z.trace * v := by
   simp [charAct]
 
 /- English proof (translation)
-Simplify using `[wtSub, charAct_apply, Eab, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_wt (p q : ℕ) (c : ℚ) (μ : Ix p q → ℚ) (v : ℂ) :
     v ∈ wtSub (charAct p q c) μ ↔ ∀ a, (c : ℂ) * v = μ a * v := by
@@ -144,11 +144,11 @@ theorem mem_wt (p q : ℕ) (c : ℚ) (μ : Ix p q → ℚ) (v : ℂ) :
   wts := fun v => Submodule.mem_iSup_of_mem (fun _ => c) ((mem_wt _ _ _ _ _).2 fun _ => rfl)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨m, -, hm⟩` from `h (fun _ => c) (1 : ℂ) ⟨one_ne_zero, (mem_wt _ _ _ _ _).2 fun _ => rfl, by`. Use `(Submodule.mem_iInf _).2 fun a => (Submodule.mem_iInf _).2 fun b => (Submodule.mem_iInf _).2 fun hab => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd hab (by rw [Subsingleton.elim a b]; exact lt_irrefl _)`. Apply the tactic sequence `all_goals first | exact b.elim0 | exact a.elim0⟩`. Simplify `congrFun hm (.inl 0)` using `[blattner, rhoNC]`. Introduce and unpack `rfl μ v ⟨hv, hw, -⟩`. Use `⟨0, by simp, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Use `(mem_wt _ _ _ _ _).1 hw a` as an intermediate fact. Establish `h2 : (c : ℂ) = μ a` using `mul_right_cancel₀ hv this`. Simplify using `[blattner, rhoNC]`. Conclude with `h2.symm` after adjusting the coercions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coneTypes_rank_one (c d : ℚ) : ConeTypes (charMod 1 0 c) (fun _ => d) ↔ c = d := by
   constructor
@@ -171,18 +171,18 @@ theorem coneTypes_rank_one (c d : ℚ) : ConeTypes (charMod 1 0 c) (fun _ => d) 
 def lamHalf : Ix 1 1 → ℚ := Sum.elim (fun _ => 1 / 2) (fun _ => -1 / 2)
 
 /- English proof (translation)
-Simplify using `only [blattner, rhoNC, Finset.card_filter, Fintype.sum_sum_type]`. Evaluate the numerical expressions using `[lamHalf, sameBlock]`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem blattner_lamHalf : blattner lamHalf (.inl 0) = 1 := by
   simp only [blattner, rhoNC, Finset.card_filter, Fintype.sum_sum_type]
   norm_num [lamHalf, sameBlock]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨m, hm0, hm⟩` from `h (fun _ => 0) (1 : ℂ) ⟨one_ne_zero, (mem_wt _ _ _ _ _).2 fun _ => rfl, by`. Use `(Submodule.mem_iInf _).2 fun a => (Submodule.mem_iInf _).2 fun b => (Submodule.mem_iInf _).2 fun hab => ?_` and prove the remaining obligations. Use `show charAct 1 1 0 _ 1 = 0`. Simplify using `[charAct_apply]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `congrFun hm (.inl 0)`. Establish `h2 : m (.inr 0) (.inl 0) = 0`. Assume the negation of the conclusion as `hh`. Use `hm0 _ _ hh` as an intermediate fact. Evaluate the numerical expressions using `[lamHalf] at this`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Evaluate the numerical expressions. Simplify using the standard rewrite rules.
 
-Simplify using `[blattner_lamHalf, Fintype.sum_sum_type, h2] at h1`. Establish `: (0 : ℚ) ≤ m (.inl 0) (.inr 0)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem not_coneTypes_trivial : ¬ ConeTypes (charMod 1 1 0) lamHalf := by
   intro h
@@ -204,9 +204,9 @@ def vac : Pol 1 0 1 0 →ₗ[ℂ] TensorProduct ℂ (charMod 1 0 (1 / 2)).V (cha
   (lcoeff ℂ 0).smulRight ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ) : TensorProduct ℂ ℂ ℂ)
 
 /- English proof (translation)
-Use extensionality with `a b`. Break down `a with a | a` into its components or cases. Break down `b with b | b` into its components or cases. Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim b 0]`. Simplify using `[Eab]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `b.elim0`. Conclude with `a.elim0`.
+A detailed English derivation is pending.
 -/
 theorem mat_eq (Z : Mat 1 0) : Z = Z (.inl 0) (.inl 0) • Eab (.inl 0) (.inl 0) := by
   ext a b
@@ -217,7 +217,7 @@ theorem mat_eq (Z : Mat 1 0) : Z = Z (.inl 0) (.inl 0) • Eab (.inl 0) (.inl 0)
   · exact a.elim0
 
 /- English proof (translation)
-Use `show coeff 0 (monomial α (1 : ℂ)) • ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ) : TensorProduct ℂ ℂ ℂ) = _`. Rewrite using `[coeff_monomial]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vac_monomial (α : Ln 1 0 1 0 →₀ ℕ) :
     vac (monomial α 1) = (if α = 0 then (1 : ℂ) else 0) • ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ) : TensorProduct ℂ ℂ ℂ) := by
@@ -225,15 +225,13 @@ theorem vac_monomial (α : Ln 1 0 1 0 →₀ ℕ) :
   rw [coeff_monomial]
 
 /- English proof (translation)
-Use `⟨⟨fun Z => ?_, fun Z => ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Use `(basisMonomials _ ℂ).ext fun α => ?_` and prove the remaining obligations. Rewrite using `[mat_eq Z]`. Simplify using `only [coe_basisMonomials, LinearMap.comp_apply, map_smul, LinearMap.smul_apply, cartan1, vac_monomial]`. Use `erw [vac_monomial]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Use `split_ifs with e`. Substitute `e` using the available equality. Apply `(TensorProduct.lid ℂ ℂ).injective` to reduce the goal to its premises. Simplify using `[lineSign, charAct_apply, Eab]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(basisMonomials _ ℂ).ext fun α => ?_` and prove the remaining obligations. Rewrite using `[mat_eq Z]`. Simplify using `only [coe_basisMonomials, LinearMap.comp_apply, map_smul, LinearMap.smul_apply, cartan2, vac_monomial]`. Use `erw [vac_monomial]`. Use `split_ifs with e`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `e show _ = (1 : ℂ) • TensorProduct.map LinearMap.id (_ • charAct 1 0 (1 / 2) _) ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ) : TensorProduct ℂ ℂ ℂ)` using the available equality. Apply `(TensorProduct.lid ℂ ℂ).injective` to reduce the goal to its premises. Simplify using `[lineSign, charAct_apply, Eab]`. Simplify using the standard rewrite rules. Establish `h1` using `vac_monomial 0`.
-
-Rewrite `h1` using `[h]`. Establish `h2` using `congrArg (TensorProduct.lid ℂ ℂ) h1`. Simplify using `at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intw_vac : Intw (charMod 1 0 (1 / 2)) (charMod 1 0 (1 / 2)) vac ∧ vac ≠ 0 := by
   refine ⟨⟨fun Z => ?_, fun Z => ?_⟩, fun h => ?_⟩

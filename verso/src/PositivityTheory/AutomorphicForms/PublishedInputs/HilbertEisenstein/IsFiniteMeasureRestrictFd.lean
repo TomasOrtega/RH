@@ -15,9 +15,9 @@ set_option linter.unusedSectionVars false
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Distinguish the cases in `hf : Summable f`. Establish `hi : Integrable f (Measure.count : Measure (Xi F))`. Rewrite using `[integrable_count_iff]`. Conclude with `summable_norm_iff.mpr hf`. Rewrite using `[integral_countable hi]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[count_real_singleton]`. Rewrite using `[tsum_eq_zero_of_not_summable hf, integral_undef]`. Introduce `hi`. Rewrite `hi` using `[integrable_count_iff]`. Conclude with `hf (summable_norm_iff.mp hi)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_count_Xi (f : Xi F → ℂ) : ∫ ξ, f ξ ∂(Measure.count : Measure (Xi F)) = ∑' ξ, f ξ := by
   by_cases hf : Summable f
@@ -36,11 +36,9 @@ instance isFiniteMeasure_restrict_fd :
   isFiniteMeasure_restrict.mpr (normOneMeasure_normOneFundamentalDomain_lt_top (K := F)).ne
 
 /- English proof (translation)
-Establish `e1 : ∀ p : Pp F, ∫ ξ, h (p, ξ) ∂(Measure.count : Measure (Xi F)) = ∑' ξ : Xi F, h (p, ξ)` using `fun p => integral_count_Xi _`. Establish `hG : Integrable (fun p : Pp F => ∑' ξ : Xi F, h (p, ξ)) ((posRealMeasure.restrict S).prod ((normOneMeasure F).restrict (normOneFundamentalDomain F)))`. Use `hh.integral_prod_left` as an intermediate fact. Simplify using `only [e1] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hG.integral_prod_left` as an intermediate fact. Conclude with `this`. Rewrite using `[μS, integral_prod _ hh]`. Simplify using `only [e1]`.
-
-Rewrite using `[integral_prod _ hG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_iter_eq (S : Set {r : ℝ // 0 < r}) (hS : MeasurableSet S) {h : Pp F × Xi F → ℂ}
     (hh : Integrable h (μS F S)) :

@@ -26,7 +26,7 @@ namespace GlobalTheory.RegSch.Ibp
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `hfd : IsFundamentalDomain (GQ V) (stdDom (GQ V)) m` using `isFundamentalDomain_stdDom _ m`. Conclude with `⟨by`. Rewrite using `[autMeasure, quotMeasure_univ hfd]`. Conclude with `GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol V m _ hm hfd⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFiniteMeasure_autMeasure (m : Measure (GA D V)) [hm : m.IsHaarMeasure] :
     IsFiniteMeasure (autMeasure V m) := by
@@ -37,7 +37,7 @@ theorem isFiniteMeasure_autMeasure (m : Measure (GA D V)) [hm : m.IsHaarMeasure]
     exact GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol V m _ hm hfd⟩
 
 /- English proof (translation)
-Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `hfd : IsFundamentalDomain (GQ V) (stdDom (GQ V)) m` using `isFundamentalDomain_stdDom _ m`. Conclude with `⟨GlobalTheory.AutQuotCheck.rightInvariant_of_covolume (GQ V) m hfd (hfd.measure_ne_zero (NeZero.ne m)) (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol V m _ hm hfd).ne⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isMulRightInvariant (m : Measure (GA D V)) [hm : m.IsHaarMeasure] : m.IsMulRightInvariant := by
   have : BorelSpace (GA D V) := ⟨rfl⟩

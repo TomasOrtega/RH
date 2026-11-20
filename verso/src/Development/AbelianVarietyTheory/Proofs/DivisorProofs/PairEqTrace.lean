@@ -32,7 +32,7 @@ namespace GlobalTheory.PairingTraceExpansion
 variable {K : Type} [Field K] {n d : ℕ}
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.FlipMatch.pairM, trace, diag, mul_apply, transpose_apply]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pair_eq_trace (X Y : Matrix (Fin n) (Fin d) K) :
     GlobalTheory.FlipMatch.pairM X Y = trace (Xᵀ * Y) := by
@@ -40,7 +40,7 @@ theorem pair_eq_trace (X Y : Matrix (Fin n) (Fin d) K) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [trace, diag, mul_apply, transpose_apply]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pair_expand (P M : Matrix (Fin n) (Fin d) K) :
     trace (Pᵀ * M) = ∑ i : Fin n, ∑ j : Fin d, P i j * M i j := by
@@ -48,11 +48,11 @@ theorem pair_expand (P M : Matrix (Fin n) (Fin d) K) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Establish `hb : (↑b⁻¹ : Matrix (Fin n) (Fin n) K)ᵀ * (↑b : Matrix (Fin n) (Fin n) K)ᵀ = 1`. Rewrite using `[← transpose_mul, Units.mul_inv, transpose_one]`. Establish `hc : (↑c : Matrix (Fin d) (Fin d) K) * (↑c⁻¹ : Matrix (Fin d) (Fin d) K) = 1` using `Units.mul_inv c`. Establish `ht : ((↑b⁻¹ : Matrix (Fin n) (Fin n) K) * P * (↑c⁻¹ : Matrix (Fin d) (Fin d) K)ᵀ)ᵀ * -((↑b : Matrix (Fin n) (Fin n) K)ᵀ * A * Q * Bᵀ * (↑c : Matrix (Fin d) (Fin d) K)) = -((↑c⁻¹ : Matrix (Fin d) (Fin d) K) * (Pᵀ * (A * Q * Bᵀ)) * (↑c : Matrix (Fin d) (Fin d) K))`. Simplify using `only [transpose_mul, transpose_transpose, Matrix.mul_neg, neg_inj, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc (↑b⁻¹ : Matrix (Fin n) (Fin n) K)ᵀ, hb, Matrix.one_mul]`. Rewrite using `[pair_eq_trace, ht, trace_neg, trace_mul_comm, ← Matrix.mul_assoc, hc, Matrix.one_mul, pair_expand]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Simplify using `only [mul_apply, transpose_apply, Finset.sum_mul, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ ↦ Finset.sum_congr rfl fun l _ ↦ by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (A : Matrix (Fin n) (Fin n) K) (B : Matrix (Fin d) (Fin d) K)
     (b : GL (Fin n) K) (c : GL (Fin d) K) (P Q : Matrix (Fin n) (Fin d) K) :

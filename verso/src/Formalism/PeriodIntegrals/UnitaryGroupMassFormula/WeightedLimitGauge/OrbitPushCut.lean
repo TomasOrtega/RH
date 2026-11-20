@@ -80,13 +80,13 @@ def HypLF : Prop :=
   ∀ (k : ℕ) (T' : ℝ), 0 < T' → hypM k T' (hypS k T')ᶜ = 0 ∧ ∀ C, IsCompact C → hypM k T' C < ⊤
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun i _ => div_pos (pow_pos (by positivity) _) (Nat.cast_pos.mpr (Nat.factorial_pos i))`.
+A detailed English derivation is pending.
 -/
 theorem op_volU_pos (j : ℕ) : 0 < volU j :=
   Finset.prod_pos fun i _ => div_pos (pow_pos (by positivity) _) (Nat.cast_pos.mpr (Nat.factorial_pos i))
 
 /- English proof (translation)
-Establish `h : Continuous fun x : PI.RhsWLim.Mt k r => Matrix.of x *ᵥ opBase k r T'` using `Continuous.matrix_mulVec (by exact continuous_id) continuous_const`. Unfold `opOrb opCo`. Conclude with `(continuous_pi fun i => (continuous_apply (PI.RhsWLim.wI k r (Fin.castSucc i))).comp h).prodMk ((continuous_apply (PI.RhsWLim.wI k r (Fin.last k))).comp h)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_opOrb (T' : ℝ) : Continuous (opOrb k r T') := by
   have h : Continuous fun x : PI.RhsWLim.Mt k r => Matrix.of x *ᵥ opBase k r T' :=
@@ -96,14 +96,14 @@ theorem continuous_opOrb (T' : ℝ) : Continuous (opOrb k r T') := by
     ((continuous_apply (PI.RhsWLim.wI k r (Fin.last k))).comp h)
 
 /- English proof (translation)
-Unfold `hypPar`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_hypPar (k : ℕ) (T' : ℝ) : Continuous (hypPar k T') := by
   unfold hypPar
   fun_prop
 
 /- English proof (translation)
-Establish `hm : Measurable (hypPar k T')` using `(continuous_hypPar k T').measurable`. Unfold `hypM hypMeas`. Rewrite using `[lintegral_smul_measure, smul_eq_mul, lintegral_map hf hm, lintegral_prod (fun a => f (hypPar k T' a)) (hf.comp hm).aemeasurable]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hypMeas_eq (k : ℕ) (T' : ℝ) {f : (Fin k → ℂ) × ℂ → ℝ≥0∞} (hf : Measurable f) :
     hypMeas k T' f = ∫⁻ p, f p ∂hypM k T' := by
@@ -114,15 +114,15 @@ theorem hypMeas_eq (k : ℕ) (T' : ℝ) {f : (Fin k → ℂ) × ℂ → ℝ≥0�
   rfl
 
 /- English proof (translation)
-Introduce `k r T' hk hT' νg hνg f hf`. Take `⟨νK, hνK⟩` from `hK k r hk`. Take `⟨c, hctop, hc⟩` from `hR k r T' hk hT' νg hνg (hypM k T') (hI k r T' hk hT') (hF k T' hT').1 (hF k T' hT').2`. Establish `hmeas : Measurable (opOrb k r T')` using `(continuous_opOrb T').measurable`. Establish `hU : 0 < PI.RhsWLim.volU k` using `op_volU_pos k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK1 : (νK Set.univ).toReal = PI.RhsWLim.volU k`. Rewrite using `[h2 k r νK hνK, ENNReal.toReal_ofReal hU.le]`. Establish `hlim1` using `hT k r T' hk hT' νg νK hνg hνK`. Rewrite `hlim1` using `[hK1]`. Establish `hlim2` using `hL k r T' hk hT'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `heqfun : (fun ρ : ℝ => (hypM k T' (opE k r T' ρ)).toReal / tVol k ρ) = fun ρ => c.toReal * ((νg (opOrb k r T' ⁻¹' opE k r T' ρ)).toReal / tVol k ρ)`. Use function extensionality and compare the values at `ρ`. Rewrite using `[hc, Measure.smul_apply, Measure.map_apply hmeas (hE k r T' ρ), smul_eq_mul, ENNReal.toReal_mul, mul_div_assoc]`. Rewrite `hlim2` using `[heqfun]`. Establish `hkey : T' ^ k / 2 ^ (k + 1) = c.toReal * PI.RhsWLim.volU k` using `tendsto_nhds_unique hlim2 (hlim1.const_mul c.toReal)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hRHS : hypMeas k T' f = c * ∫⁻ p, f p ∂(νg.map (opOrb k r T'))`. Rewrite using `[hypMeas_eq k T' hf, hc, lintegral_smul_measure, smul_eq_mul]`. Use `show ∫⁻ x, f (opOrb k r T' x) ∂νg = _`. Rewrite using `[← lintegral_map hf hmeas, hRHS, ← mul_assoc]`. Establish `hX : PI.RhsWLim.volU k * 2 ^ (k + 1) / T' ^ k * c.toReal = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT'k : (0 : ℝ) < T' ^ k` using `pow_pos hT' k`. Rewrite using `[show PI.RhsWLim.volU k * 2 ^ (k + 1) / T' ^ k * c.toReal = 2 ^ (k + 1) / T' ^ k * (c.toReal * PI.RhsWLim.volU k) by ring, ← hkey]`. Clear the denominators using the available nonvanishing facts. Establish `hcc : c = ENNReal.ofReal c.toReal` using `(ENNReal.ofReal_toReal hctop).symm`. Rewrite using `[hcc, ← ENNReal.ofReal_mul (div_pos (mul_pos hU (by positivity)) (pow_pos hT' k)).le, hX, ENNReal.ofReal_one, one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitPush_of (h2 : GaugeVolUk) (hK : GaugeK) (hT : TubeLimK) (hI : HypInv) (hR : OrbRepY)
     (hL : HypLocal) (hE : OpEMeas) (hF : HypLF) : OrbitPush := by

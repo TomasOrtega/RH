@@ -7,7 +7,7 @@ namespace GlobalTheory.CharVal.Vp
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_conjP, mem_conjP, cO_cO]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjP_conjP' (P : HeightOneSpectrum (𝓞 E)) : conjPrime₂ (conjPrime₂ P) = P := by
   ext x
@@ -15,18 +15,18 @@ theorem conjP_conjP' (P : HeightOneSpectrum (𝓞 E)) : conjPrime₂ (conjPrime�
 
 omit [StarRing E] in
 /- English proof (translation)
-The claim follows from `FractionalIdeal.coeIdeal_ne_zero.2 P.ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem ne0 (P : HeightOneSpectrum (𝓞 E)) : (P.asIdeal : FractionalIdeal (𝓞 E)⁰ E) ≠ 0 :=
   FractionalIdeal.coeIdeal_ne_zero.2 P.ne_bot
 
 omit [StarRing E] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Take `⟨r, hr, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 ha`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Use `(P.intValuation_le_pow_iff_mem r 1).2 (by simpa using hr)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`. Take `⟨r, hr⟩` from `P.intValuation_exists_uniformizer`. Use `⟨algebraMap _ _ r, (FractionalIdeal.mem_coeIdeal _).2 ⟨r, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `(P.intValuation_le_pow_iff_mem r 1).1 (by simpa using hr.le)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, hr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem maxV_self (P : HeightOneSpectrum (𝓞 E)) :
     MaxV P ((P.asIdeal : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) (WithZero.exp (-1 : ℤ)) := by
@@ -44,9 +44,9 @@ theorem maxV_self (P : HeightOneSpectrum (𝓞 E)) :
 
 omit [StarRing E] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Take `⟨r, hr, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 ha`. Conclude with `Q.valuation_le_one r`. Establish `: ¬ P.asIdeal ≤ Q.asIdeal` using `fun hle => h (HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top hle).symm)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hr'⟩` from `SetLike.not_le_iff_exists.1 this`. Conclude with `⟨algebraMap _ _ r, (FractionalIdeal.mem_coeIdeal _).2 ⟨r, hr, rfl⟩, (HeightOneSpectrum.valuation_eq_one_iff_notMem Q).2 hr'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem maxV_ne (Q P : HeightOneSpectrum (𝓞 E)) (h : Q ≠ P) :
     MaxV Q ((P.asIdeal : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) 1 := by
@@ -62,7 +62,7 @@ theorem maxV_ne (Q P : HeightOneSpectrum (𝓞 E)) (h : Q ≠ P) :
 
 omit [StarRing E] in
 /- English proof (translation)
-The claim follows from `h.inv h0 (by rw [← FractionalIdeal.coe_mul, mul_inv_cancel₀ (ne0 P), FractionalIdeal.coe_one])`.
+A detailed English derivation is pending.
 -/
 theorem maxV_inv {Q P : HeightOneSpectrum (𝓞 E)} {γ : WithZero (Multiplicative ℤ)} (h0 : γ ≠ 0)
     (h : MaxV Q ((P.asIdeal : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) γ) :
@@ -70,9 +70,9 @@ theorem maxV_inv {Q P : HeightOneSpectrum (𝓞 E)} {γ : WithZero (Multiplicati
   h.inv h0 (by rw [← FractionalIdeal.coe_mul, mul_inv_cancel₀ (ne0 P), FractionalIdeal.coe_one])
 
 /- English proof (translation)
-Unfold `vpIdeal`. Rewrite using `[← div_eq_mul_inv, FractionalIdeal.mem_coe, FractionalIdeal.mem_div_iff_of_ne_zero (ne0 _)]`. Prove the components needed by the constructor for the conclusion. Introduce `h r hr`. Conclude with `(FractionalIdeal.mem_coeIdeal _).1 (h _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨r, hr, rfl⟩))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h y hy`. Take `⟨r, hr, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hy`. Conclude with `(FractionalIdeal.mem_coeIdeal _).2 (h r hr)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_vp (P : HeightOneSpectrum (𝓞 E)) (x : E) :
     x ∈ vpIdeal P ↔ ∀ r ∈ (conjPrime₂ P).asIdeal, ∃ s ∈ P.asIdeal, algebraMap _ E s = x * algebraMap _ E r := by
@@ -86,9 +86,9 @@ theorem mem_vp (P : HeightOneSpectrum (𝓞 E)) (x : E) :
     exact (FractionalIdeal.mem_coeIdeal _).2 (h r hr)
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_vp]`. Introduce `r hr`. Rewrite `hr` using `[conjP_conjP']`. Take `⟨s, hs, e⟩` from `h (cO E r) (by rwa [mem_conjP, cO_cO])`. Use `⟨cO E s, by rwa [mem_conjP, cO_cO], ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : algebraMap _ E (cO E s) = star (algebraMap _ E s)` using `rfl`. Establish `e2 : algebraMap _ E (cO E r) = star (algebraMap _ E r)` using `rfl`. Rewrite using `[e1, e, e2, star_mul, star_star, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_mem_vp (P : HeightOneSpectrum (𝓞 E)) (x : E) (h : x ∈ vpIdeal P) : star x ∈ vpIdeal (conjPrime₂ P) := by
   rw [mem_vp] at h ⊢
@@ -101,13 +101,13 @@ theorem star_mem_vp (P : HeightOneSpectrum (𝓞 E)) (x : E) (h : x ∈ vpIdeal 
   rw [e1, e, e2, star_mul, star_star, mul_comm]
 
 /- English proof (translation)
-Unfold `detLat`. Rewrite using `[← Submodule.span_eq (vpIdeal P)]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨A, hA, rfl⟩`. Use `hA _ (single_mem_stdLat (E := E) (0 : Fin 1) 1)` as an intermediate fact. Rewrite using `[Matrix.det_fin_one]`. Simplify `this` using `[vpLat, Matrix.mulVec_single]`. Introduce `hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Matrix.of fun _ _ => x, fun v hv => ?_, by simp⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `(mem_stdLat v).1 hv 0`. Establish `: (Matrix.of fun _ _ => x : Matrix (Fin 1) (Fin 1) E).mulVec v 0 = r • x`. Simplify using `[Matrix.mulVec, dotProduct, ← hr, Algebra.smul_def, mul_comm]`. Use `show (Matrix.of fun _ _ => x : Matrix (Fin 1) (Fin 1) E).mulVec v 0 ∈ vpIdeal P`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(vpIdeal P).smul_mem r hx`.
+A detailed English derivation is pending.
 -/
 theorem detLat_vp (P : HeightOneSpectrum (𝓞 E)) : detLat (vpLat P) = vpIdeal P := by
   unfold detLat
@@ -129,13 +129,11 @@ theorem detLat_vp (P : HeightOneSpectrum (𝓞 E)) : detLat (vpLat P) = vpIdeal 
     exact (vpIdeal P).smul_mem r hx
 
 /- English proof (translation)
-Introduce `E _ _ _ P hP`. Use `⟨⟨vpIdeal (conjPrime₂ P), fun x => ⟨fun h => ?_, fun h => ?_⟩, ?_⟩, ?_, ?_, fun Q h1 h2 => ?_, detLat_vp P⟩` and prove the remaining obligations. Use `star_mem_vp _ _ h` as an intermediate fact. Rewrite `this` using `[conjP_conjP']`. Then use the resulting hypothesis. Simplify using `using star_mem_vp _ _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `vpIdeal`. Rewrite using `[conjP_conjP', ← FractionalIdeal.coe_mul, mul_assoc, inv_mul_cancel_left₀ (ne0 _), mul_inv_cancel₀ (ne0 _), FractionalIdeal.coe_one]`. Use `(maxV_self P).mul (maxV_inv one_ne_zero (maxV_ne P _ hP))` as an intermediate fact. Rewrite `this` using `[inv_one, mul_one, ← FractionalIdeal.coe_mul]`. Conclude with `this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(maxV_ne _ P hP.symm).mul (maxV_inv WithZero.exp_ne_zero (maxV_self (conjPrime₂ P)))` as an intermediate fact. Rewrite `this` using `[one_mul, ← WithZero.exp_neg, neg_neg, ← FractionalIdeal.coe_mul]`. Conclude with `this`. Use `(maxV_ne Q P h1).mul (maxV_inv one_ne_zero (maxV_ne Q _ h2))` as an intermediate fact. Rewrite `this` using `[inv_one, mul_one, ← FractionalIdeal.coe_mul]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vp_main : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)), P ≠ conjPrime₂ P → (∃ J : Submodule (𝓞 E) E, (∀ x, x ∈ J ↔ star x ∈ vpIdeal P) ∧ vpIdeal P * J = 1) ∧ MaxV P (vpIdeal P) (WithZero.exp (-1 : ℤ)) ∧ MaxV (conjPrime₂ P) (vpIdeal P) (WithZero.exp (1 : ℤ)) ∧ (∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → Q ≠ conjPrime₂ P → MaxV Q (vpIdeal P) 1) ∧ detLat (vpLat P) = vpIdeal P := by
   intro E _ _ _ P hP

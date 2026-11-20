@@ -14,7 +14,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[C_apply]`. Establish `: m = 0` using `by simpa using support_monomial_subset hm`. Simplify using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem RegularityDenominator.isMultiHomog_C {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] (n : ℤ) :
     IsMultiHomog (C n : MRing ι) 0 := by
@@ -24,31 +24,27 @@ theorem RegularityDenominator.isMultiHomog_C {K : Type*} [Fintype K] {ι : K →
   simp [this]
 
 /- English proof (translation)
-Introduce `K _ ι _ P x hP`. Establish `hPp : P.IsPrime` using `hP.2.1.1`. Establish `hFL : (x : FractionRing (MRing ι ⧸ P)) ∈ locRing P P`. Establish `hx` using `x.2`. Unfold `funField at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `locRing`. Use `Subring.closure_mono ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, a, hv, hu, hva, rfl⟩`. Use `⟨u, v, a, hv, fun h => ?_, hu, hva, rfl⟩` and prove the remaining obligations. Establish `h0 : Ideal.Quotient.mk P v = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `zero_notMem_nonZeroDivisors (h0 ▸ hv)`. Take `⟨u, v, a, hu, hva, hvP, hxv⟩` from `LocRingFrac.proof K ι P P hPp hPp le_rfl _ hFL`. Establish `key : ∀ W ∈ divSupp P v, ∃ m : ℤ, m ≠ 0 ∧ (x : FractionRing (MRing ι ⧸ P)) * (m : FractionRing (MRing ι ⧸ P)) ∈ locRing P W`. Introduce `W hW`. Take `⟨hWc, hPW, -⟩` from `(hD K ι P v a W hP hva hvP).1 hW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hWp : W.IsPrime` using `hWc.1.1`. Establish `hvert : W.comap (C : ℤ →+* MRing ι) ≠ ⊥` using `fun hh => arithVarZero K ι W ⟨hP.1, hWc.1, hh, by rw [zero_add]; exact hWc.2⟩`. Take `⟨n, hnW, hn0⟩` from `(Submodule.ne_bot_iff _).mp hvert`. Use `choose c hc using hW.2`. Use `set t : MRing ι := ∏ k, (X ⟨k, c k⟩ : MRing ι) ^ a k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : IsMultiHomog t a` using `AvoidRing.isMultiHomog_coordProd c a`. Establish `htW : t ∉ W` using `AvoidRing.coordProd_not_mem hWp c hc a`. Establish `ht0 : algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P t) ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun h => htW (hPW h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1W : (1 : MRing ι) ∉ W` using `fun h => hWp.ne_top ((Ideal.eq_top_iff_one _).mpr h)`. Take `⟨N, z, hz, hNz⟩` from `hPow K ι P v t a W _ (C n) 1 0 (n : FractionRing (MRing ι ⧸ P)) hPp hP.2.1.2.1 hva hvP hW ht htW (div_mul_cancel₀ _ ht0) (RegularityDenominator.isMultiHomog_C n) AvoidRing.isMultiHomog_one hnW h1W (by rw [map_one, map_one, mul_one, eq_intCast C n, map_intCast, map_intCast])`. Use `⟨n ^ N, pow_ne_zero _ hn0, ?_⟩` and prove the remaining obligations. Establish `hut : algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P u) / algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P t) ∈ locRing P W` using `frac_mem_locRing hPW hu ht htW (div_mul_cancel₀ _ ht0)`. Rewrite using `[Int.cast_pow, hNz, ← mul_assoc, mul_div_assoc', hxv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `mul_mem hut hz`. Establish `hfin` using `divSupp_finite P v`. Set `mW : Ideal (MRing ι) → ℤ` to `fun W => if h : W ∈ divSupp P v then (key W h).choose else 1`. Set `M : ℤ` to `∏ W ∈ hfin.toFinset, mW W`. Establish `hM0 : M ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun W hW => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hW'` using `hfin.mem_toFinset.mp hW`. Simplify using `only [mW, dif_pos hW']`. Conclude with `(key W hW').choose_spec.1`. Use `⟨(M : funField P), fun h => hM0 ?_, fun W hWc hPW => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h' : ((M : funField P) : FractionRing (MRing ι ⧸ P)) = 0` using `by rw [h]; rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P (C M)) = 0`. Rewrite using `[eq_intCast C M, map_intCast, map_intCast]`. Simplify using `at h'`. Conclude with `h'`. Rewrite `h2` using `[IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : M ∈ P.comap (C : ℤ →+* MRing ι)` using `h2`. Rewrite `h3` using `[hP.2.2.1]`. Conclude with `Ideal.mem_bot.mp h3`. Establish `hc : ((M : funField P) : FractionRing (MRing ι ⧸ P)) = (M : FractionRing (MRing ι ⧸ P))` using `by simp`. Rewrite using `[hc]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `intCast_mem (locRing P W) M`. Establish `hc : ((x * (M : funField P) : funField P) : FractionRing (MRing ι ⧸ P)) = (x : FractionRing (MRing ι ⧸ P)) * (M : FractionRing (MRing ι ⧸ P))` using `by simp`. Rewrite using `[hc]`. Distinguish the cases in `hvW : v ∈ W`. Establish `hW : W ∈ divSupp P v` using `(hD K ι P v a W hP hva hvP).2 ⟨hWc, hPW, hvW⟩`.
-
-Take `⟨r, hr⟩` from `Finset.dvd_prod_of_mem mW (hfin.mem_toFinset.mpr hW)`. Establish `hm` using `(key W hW).choose_spec.2`. Rewrite using `[show M = mW W * r from hr, Int.cast_mul, ← mul_assoc]`. Simplify using `only [mW, dif_pos hW]`. Conclude with `mul_mem hm (intCast_mem _ r)`.
-
-Conclude with `mul_mem (frac_mem_locRing hPW hu hva hvW hxv) (intCast_mem _ M)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem RegularityDenominator.proof (hD : RegularityDivisorSupportClosed.Statement) (hPow : LocRingPow.Statement) :
     RegularityDenominator.Statement := by

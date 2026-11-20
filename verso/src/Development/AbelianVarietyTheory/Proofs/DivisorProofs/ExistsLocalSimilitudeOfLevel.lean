@@ -18,13 +18,11 @@ noncomputable section
 namespace GlobalTheory.UPel.LocSim
 
 /- English proof (translation)
-Introduce `S A _ _ hA n hn σ σ' hσ hσ' k _ y hy`. Use `haveI := hA.smooth`. Use `haveI : FormallyUnramified (ReciprocityTheory.ChartRestriction.G.Out.mulA A n).left := GlobalTheory.formallyUnramified_mulA S A n hn`. Use `haveI : LocallyOfFiniteType (ReciprocityTheory.ChartRestriction.G.Out.mulA A n).left := by`. Establish `: LocallyOfFiniteType ((ReciprocityTheory.ChartRestriction.G.Out.mulA A n).left ≫ A.hom)` using `by rw [Over.w]; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `locallyOfFiniteType_of_comp _ A.hom`. Establish `hab : σ.left ≫ (ReciprocityTheory.ChartRestriction.G.Out.mulA A n).left = σ'.left ≫ (ReciprocityTheory.ChartRestriction.G.Out.mulA A n).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Use `show σ ≫ 𝟙 A ^ n = σ' ≫ 𝟙 A ^ n`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[MonObj.comp_pow, MonObj.comp_pow, Category.comp_id, Category.comp_id, hσ, hσ']`. Use `haveI := GlobalTheory.isOpenImmersion_equalizer_ι_of_unramified (ReciprocityTheory.ChartRestriction.G.Out.mulA A n).left hab`. Use `⟨(equalizer.ι σ.left σ'.left).opensRange, ?_, ?_⟩` and prove the remaining obligations. Establish `hy' : y ≫ σ.left = y ≫ σ'.left`. Establish `h` using `congrArg CommaMorphism.left hy`.
-
-Simplify using `only [Over.comp_left, GlobalTheory.ObjPull.toUnit_left'] at h`. Conclude with `h`. Conclude with `GlobalTheory.range_subset_range_equalizer_ι y hy'`. Rewrite using `[← cancel_epi (equalizer.ι σ.left σ'.left).isoOpensRange.hom, ← Category.assoc, ← Category.assoc, Scheme.Hom.isoOpensRange_hom_ι, equalizer.condition]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open_eq_of_torsion_point : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (n : ℕ), IsUnit (n : Γ(S, ⊤)) → ∀ (σ σ' : 𝟙_ (Over S) ⟶ A), σ ^ n = 1 → σ' ^ n = 1 → ∀ (k : Type) [Field k] (y : Sp k ⟶ S), toUnit (Over.mk y) ≫ σ = toUnit (Over.mk y) ≫ σ' → ∃ V : S.Opens, Set.range y ⊆ (V : Set S) ∧ V.ι ≫ σ.left = V.ι ≫ σ'.left := by
   intro S A _ _ hA n hn σ σ' hσ hσ' k _ y hy
@@ -53,7 +51,7 @@ variable {F : Type} [Field F] [NumberField F] [IsCMField F] {D : GlobalTheory.UP
   {s : S ⟶ Sp (D.OEp p)} {o : GlobalTheory.UPel.Obj D p N s}
 
 /- English proof (translation)
-Rewrite using `[hβ, MonObj.comp_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_add (β : D.La → (𝟙_ (Over S) ⟶ o.A)) (hβ : ∀ a c, β (a + c) = β a * β c) {k : Type} [Field k]
     (y : Sp k ⟶ S) (a c : D.La) :
@@ -61,7 +59,7 @@ theorem ev_add (β : D.La → (𝟙_ (Over S) ⟶ o.A)) (hβ : ∀ a c, β (a + 
   rw [hβ, MonObj.comp_mul]
 
 /- English proof (translation)
-Rewrite using `[eq_mul_inv_iff_mul_eq, ← ev_add β hβ y, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_sub (β : D.La → (𝟙_ (Over S) ⟶ o.A)) (hβ : ∀ a c, β (a + c) = β a * β c) {k : Type} [Field k]
     (y : Sp k ⟶ S) (a c : D.La) :

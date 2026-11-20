@@ -11,7 +11,7 @@ noncomputable section
 namespace Formalism.TwoAdicCyclotomicDecomposition
 
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton, Ideal.over_def P (span {(2 : ℤ)}), Ideal.under_def, Ideal.mem_comap, eq_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem two_intCast_mem_iff {L : Type} [Field L] [NumberField L]
     (P : Ideal (𝓞 L)) [P.LiesOver (span {(2 : ℤ)})] (m : ℤ) :
@@ -20,14 +20,14 @@ theorem two_intCast_mem_iff {L : Type} [Field L] [NumberField L]
     Ideal.mem_comap, eq_intCast]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.FirstBlockLemmaE.goal1 .. | (apply Bl.FirstBlockLemmaE.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaE.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaE.goal1 <;> assumption) | (intros; apply @Bl.FirstBlockLemmaE.goal1 <;> assumption) | (apply @Bl.Fi …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_int_quad {L : Type} [Field L] [NumberField L] (x : L) (c : ℤ)
     (hx : x ^ 2 = x + c) : ∃ X : 𝓞 L, (X : L) = x ∧ X ^ 2 = X + (c : 𝓞 L) := by
   first | exact Bl.FirstBlockLemmaE.goal1 .. | (apply Bl.FirstBlockLemmaE.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaE.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaE.goal1 <;> assumption) | (intros; apply @Bl.FirstBlockLemmaE.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaE.goal1 <;> first | assumption | infer_instance) | exact @Bl.FirstBlockLemmaE.goal1 L ‹_› ‹_› x c hx | exact @Bl.FirstBlockLemmaE.goal1 L ‹_› ‹_› x c | exact @Bl.FirstBlockLemmaE.goal1 L ‹_› ‹_› x | exact @Bl.FirstBlockLemmaE.goal1 L ‹_› ‹_› | exact @Bl.FirstBlockLemmaE.goal1 L ‹_› | exact @Bl.FirstBlockLemmaE.goal1 L
 
 /- English proof (translation)
-Establish `: (σ x) ^ 2 = x ^ 2` using `by rw [← map_pow, hx, map_intCast]`. Conclude with `sq_eq_sq_iff_eq_or_eq_neg.mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gal_sq_fix {L : Type} [Field L] [Algebra ℚ L] (σ : Gal(L/ℚ)) (x : L) (m : ℤ)
     (hx : x ^ 2 = (m : L)) : σ x = x ∨ σ x = -x := by
@@ -35,9 +35,9 @@ theorem gal_sq_fix {L : Type} [Field L] [Algebra ℚ L] (σ : Gal(L/ℚ)) (x : L
   exact sq_eq_sq_iff_eq_or_eq_neg.mp this
 
 /- English proof (translation)
-Establish `hW2 : ((1 + x) / 2) ^ 2 = (1 + x) / 2 + (c : L)`. Move the coercions through the operations in `at hx`. Take the linear combination `(1 / 4 : L) * hx`. Take `⟨W, hWc, hW⟩` from `exists_int_quad _ c hW2`. Use `⟨W, hW, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `show σ (W : L) = ((1 - W : 𝓞 L) : L)`. Establish `e1 : ((1 - W : 𝓞 L) : L) = 1 - (W : L)` using `by push_cast; rfl`. Rewrite using `[e1, hWc, map_div₀, map_add, map_one, hσ, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem half_elt {L : Type} [Field L] [NumberField L] (σ : Gal(L/ℚ)) (x : L) (c : ℤ)
     (hx : x ^ 2 = ((4 * c + 1 : ℤ) : L)) (hσ : σ x = -x) :
@@ -54,7 +54,7 @@ theorem half_elt {L : Type} [Field L] [NumberField L] (σ : Gal(L/ℚ)) (x : L) 
   ring
 
 /- English proof (translation)
-Conclude with `Bl.general_b_fact_right_ter_form.goal1 x c hx P σ hσ`.
+A detailed English derivation is pending.
 -/
 theorem stab_fix {L : Type} [Field L] [NumberField L] (x : L) (c : ℤ)
     (hx : x ^ 2 = ((4 * (2 * c) + 1 : ℤ) : L))
@@ -63,11 +63,11 @@ theorem stab_fix {L : Type} [Field L] [NumberField L] (x : L) (c : ℤ)
   exact Bl.general_b_fact_right_ter_form.goal1 x c hx P σ hσ
 
 /- English proof (translation)
-Break down `gal_sq_fix σ x _ hx with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Take `⟨W, hW2, hσW⟩` from `half_elt σ x c hx h`. Establish `h1 : 1 - 2 * W ∈ P`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hσ W` as an intermediate fact. Rewrite `this` using `[hσW]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (1 - 2 * W) ^ 2 ∈ P` using `P.pow_mem_of_mem h1 2 (by norm_num)`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (1 - 2 * W) ^ 2 = ((4 * c + 1 : ℤ) : 𝓞 L)`. Use `push_cast`. Take the linear combination `4 * hW2`. Rewrite `h2` using `[h3, two_intCast_mem_iff P]`. Use linear arithmetic over natural numbers and integers.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem inertia_fix {L : Type} [Field L] [NumberField L] (x : L) (c : ℤ)
     (hx : x ^ 2 = ((4 * c + 1 : ℤ) : L))
@@ -90,19 +90,19 @@ theorem inertia_fix {L : Type} [Field L] [NumberField L] (x : L) (c : ℤ)
   omega
 
 /- English proof (translation)
-Establish `hpos` using `P.inertiaDeg_pos ℤ`. Assume the negation of the conclusion as `hlt`. Establish `h1 : P.inertiaDeg ℤ = 1` using `by omega`. Establish `: P.LiesOver (span {((2 : ℕ) : ℤ)})` using `by simpa using (inferInstance : P.LiesOver (span {(2 : ℤ)}))`. Establish `hcard : Nat.card (𝓞 L ⧸ P) = 2`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.pow_inertiaDeg 2 P` as an intermediate fact. Rewrite `this` using `[h1, pow_one, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `this.symm`. Take `⟨x, y, -, huniv⟩` from `Nat.card_eq_two_iff.mp hcard`. Establish `mem : ∀ z : 𝓞 L ⧸ P, z = x ∨ z = y` using `fun z => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: z ∈ ({x, y} : Set (𝓞 L ⧸ P))` using `huniv ▸ Set.mem_univ z`. Simplify using `using this`. Establish `hcP : (c : 𝓞 L) ∉ P` using `fun h => hc ((two_intCast_mem_iff P c).mp h)`. Establish `hW0 : Ideal.Quotient.mk P W ≠ 0`. Introduce `h`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Ideal.Quotient.eq_zero_iff_mem]`. Apply `hcP` to reduce the goal to its premises. Establish `: (c : 𝓞 L) = W * W - W` using `by linear_combination -hW`. Rewrite using `[this]`. Conclude with `P.sub_mem (P.mul_mem_left _ h) h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hW1 : Ideal.Quotient.mk P W ≠ 1`. Introduce `h`. Rewrite `h` using `[← map_one (Ideal.Quotient.mk P), Ideal.Quotient.eq]`. Apply `hcP` to reduce the goal to its premises. Establish `: (c : 𝓞 L) = W * (W - 1)` using `by linear_combination -hW`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `P.mul_mem_left _ h`. Establish `h01 : (0 : 𝓞 L ⧸ P) ≠ 1` using `zero_ne_one`. Apply the tactic sequence `rcases mem 0 with h0 | h0 <;> rcases mem 1 with h1' | h1' <;>`. Apply the tactic sequence `rcases mem (Ideal.Quotient.mk P W) with h2 | h2 <;>`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact h01 (h0.trans h1'.symm)`. Consider the case `exact hW0 (h2.trans h0.symm)`. Consider the case `exact hW1 (h2.trans h1'.symm)`.
+A detailed English derivation is pending.
 -/
 theorem two_le_inertiaDeg {L : Type} [Field L] [NumberField L]
     (P : Ideal (𝓞 L)) [hP : P.IsPrime] [P.LiesOver (span {(2 : ℤ)})]
@@ -144,21 +144,19 @@ theorem two_le_inertiaDeg {L : Type} [Field L] [NumberField L]
     | exact hW1 (h2.trans h1'.symm)
 
 /- English proof (translation)
-Use `set Z : 𝓞 L := ⟨ζ, hζ.isIntegral (by positivity)⟩ with hZdef`. Establish `hZ : IsPrimitiveRoot Z (2 ^ (k + 1))` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap (𝓞 L) L) hζ RingOfIntegers.coe_injective`. Establish `hassoc : Associated ((Z - 1) ^ (2 ^ k)) (2 : 𝓞 L)`. Establish `: Fact (Nat.Prime 2)` using `⟨Nat.prime_two⟩`. Establish `h2 : (Polynomial.cyclotomic (2 ^ (k + 1)) (𝓞 L)).eval 1 = 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Polynomial.eval_one_cyclotomic_prime_pow (R := 𝓞 L) (p := 2) k]`. Rewrite using `[← h2, Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots hZ, Polynomial.eval_prod]`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`. Establish `htot : (2 : ℕ) ^ k = (2 ^ (k + 1)).totient`. Rewrite using `[Nat.totient_prime_pow_succ Nat.prime_two]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[htot, ← hZ.card_primitiveRoots, ← Finset.prod_const]`. Use `Associated.prod _ _ _ fun η hη => ?_` and prove the remaining obligations. Take `⟨i, -, hi, rfl⟩` from `hZ.isPrimitiveRoot_iff.mp (isPrimitiveRoot_of_mem_primitiveRoots hη)`. Simplify using `using (hZ.associated_sub_one_pow_sub_one_of_coprime hi).neg_right`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2P : (2 : 𝓞 L) ∈ P`. Use `(two_intCast_mem_iff P 2).mpr dvd_rfl` as an intermediate fact. Simplify using `using this`. Establish `hZP : Z - 1 ∈ P`. Take `⟨u, hu⟩` from `hassoc`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (Z - 1) ^ (2 ^ k) = 2 * ↑u⁻¹`. Rewrite using `[← hu, mul_assoc, Units.mul_inv, mul_one]`. Conclude with `hP.mem_of_pow_mem _ (this ▸ P.mul_mem_right _ h2P)`. Establish `hmap : map (algebraMap ℤ (𝓞 L)) (span {(2 : ℤ)}) = span {(2 : 𝓞 L)}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hle : span {(2 : 𝓞 L)} ≤ P ^ (2 ^ k)`. Rewrite using `[← Ideal.span_singleton_eq_span_singleton.mpr hassoc, ← Ideal.span_singleton_pow]`. Conclude with `pow_le_pow_left' ((Ideal.span_singleton_le_iff_mem P).mpr hZP) _`. Establish `hne : map (algebraMap ℤ (𝓞 L)) (span {(2 : ℤ)}) ≠ ⊥`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hmap, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `two_ne_zero`. Rewrite using `[IsDedekindDomain.ramificationIdx_eq_multiplicity (span {(2 : ℤ)}) P hne]`. Apply `FiniteMultiplicity.le_multiplicity_of_pow_dvd` to reduce the goal to its premises. Conclude with `FiniteMultiplicity.of_not_isUnit (Ideal.isUnit_iff.not.mpr hP.ne_top) hne`.
-
-Rewrite using `[Ideal.dvd_iff_le, hmap]`. Conclude with `hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_ramificationIdx {L : Type} [Field L] [NumberField L] (k : ℕ) (ζ : L)
     (hζ : IsPrimitiveRoot ζ (2 ^ (k + 1)))
@@ -204,7 +202,7 @@ theorem le_ramificationIdx {L : Type} [Field L] [NumberField L] (k : ℕ) (ζ : 
     exact hle
 
 /- English proof (translation)
-Unfold `sgn`. Use `split_ifs with h`. Simplify using `[h]`. Simplify using `only [h, iff_false]`. Evaluate the decidable proposition.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem sgn_eq_one_iff {L : Type} [Field L] [Algebra ℚ L] (σ : Gal(L/ℚ)) (x : L) :
     sgn σ x = 1 ↔ σ x = x := by
@@ -215,7 +213,7 @@ theorem sgn_eq_one_iff {L : Type} [Field L] [Algebra ℚ L] (σ : Gal(L/ℚ)) (x
     decide
 
 /- English proof (translation)
-Rewrite using `[D2, Subgroup.index_ker, MonoidHom.range_eq_top.mpr, Subgroup.card_top, Nat.card_eq_fintype_card, Fintype.card_units_int]`. Introduce `u`. Conclude with `⟨(1, 1, u), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem decomposition_subgroup_index (n : ℕ) : (D2 n).index = 2 := by
   rw [D2, Subgroup.index_ker, MonoidHom.range_eq_top.mpr, Subgroup.card_top,
@@ -224,7 +222,7 @@ theorem decomposition_subgroup_index (n : ℕ) : (D2 n).index = 2 := by
   exact ⟨(1, 1, u), rfl⟩
 
 /- English proof (translation)
-Rewrite using `[I2, Subgroup.index_ker, MonoidHom.range_eq_top.mpr, Subgroup.card_top, Nat.card_prod, Nat.card_eq_fintype_card, Fintype.card_units_int]`. Introduce `u`. Conclude with `⟨(1, u), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem inertia_subgroup_index (n : ℕ) : (I2 n).index = 4 := by
   rw [I2, Subgroup.index_ker, MonoidHom.range_eq_top.mpr, Subgroup.card_top, Nat.card_prod,
@@ -233,38 +231,36 @@ theorem inertia_subgroup_index (n : ℕ) : (I2 n).index = 4 := by
   exact ⟨(1, u), rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_prime two_ne_zero]`. Conclude with `Int.prime_two`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_isPrime : (span {(2 : ℤ)}).IsPrime := by
   rw [Ideal.span_singleton_prime two_ne_zero]
   exact Int.prime_two
 
 /- English proof (translation)
-Take `⟨hGal, hdeg, hmul, hbij⟩` from `hG n q d hn hqd.toHypOdd L ζ a b h`. Establish `: IsGaloisGroup Gal(L/ℚ) ℤ (𝓞 L)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ L`. Establish `: (span {(2 : ℤ)}).IsPrime` using `two_isPrime`. Establish `hfund` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn (span {(2 : ℤ)}) (𝓞 L) Gal(L/ℚ)`. Rewrite `hfund` using `[ramificationIdxIn_eq_ramificationIdx (span {(2 : ℤ)}) P Gal(L/ℚ), inertiaDegIn_eq_inertiaDeg (span {(2 : ℤ)}) P Gal(L/ℚ), IsGalois.card_aut_eq_finrank, hdeg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hq, hd, hq8, hd8⟩` from `hqd`. Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Establish `he` using `le_ramificationIdx k ζ h.1 P`. Take `⟨c, hc⟩ : ∃ c : ℤ, -(q : ℤ) = 4 * (2 * c + 1) + 1` from `⟨(-(q : ℤ) - 5) / 8, by omega⟩`. Establish `ha : a ^ 2 = ((4 * (2 * c + 1) + 1 : ℤ) : L)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hc, h.2.1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hf : 2 ≤ P.inertiaDeg ℤ`. Establish `hx2 : ((1 + a) / 2) ^ 2 = (1 + a) / 2 + (((2 * c + 1 : ℤ)) : L)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at ha ⊢`. Take the linear combination `(1 / 4 : L) * ha`. Take `⟨W, -, hW⟩` from `exists_int_quad _ _ hx2`. Conclude with `two_le_inertiaDeg P W _ hW (by omega)`. Take `⟨c', hc'⟩ : ∃ c : ℤ, -(d : ℤ) = 4 * (2 * c) + 1` from `⟨(-(d : ℤ) - 1) / 8, by omega⟩`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : b ^ 2 = ((4 * (2 * c') + 1 : ℤ) : L)`. Rewrite using `[← hc', h.2.2.1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨τ, hτ⟩` from `hbij.2 ((1, 1, -1) : GalL (k + 1))`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hτb : τ b ≠ b`. Introduce `hfix`. Establish `: (galMap h.1 a b τ).2.2 = -1` using `by rw [hτ]`. Express the relevant statement in the definitionally equal form `sgn τ b = -1 at this`. Rewrite `this` using `[(sgn_eq_one_iff τ b).mpr hfix]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd this (by decide)`. Establish `hτP : τ • P ≠ P` using `fun heq => hτb (stab_fix b c' hb P τ (MulAction.mem_stabilizer_iff.mpr heq))`. Establish `hne0 : (primesOver (span {(2 : ℤ)}) (𝓞 L)).ncard ≠ 0`. Introduce `h0`. Rewrite `hfund` using `[h0, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd hfund.symm (pow_pos two_pos _).ne'`. Establish `hsub : ({P, τ • P} : Set (Ideal (𝓞 L))) ⊆ primesOver (span {(2 : ℤ)}) (𝓞 L)`. Introduce `Q hQ`. Break down `hQ with rfl | hQ` into its components or cases. Conclude with `⟨inferInstance, inferInstance⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components.
 
-Rewrite `hQ` using `[Set.mem_singleton_iff]`. Substitute `hQ` using the available equality. Conclude with `⟨inferInstance, inferInstance⟩`. Establish `hg : 2 ≤ (primesOver (span {(2 : ℤ)}) (𝓞 L)).ncard`. Rewrite using `[← Set.ncard_pair hτP.symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Set.ncard_le_ncard hsub (Set.finite_of_ncard_ne_zero hne0)`. Use `set g := (primesOver (span {(2 : ℤ)}) (𝓞 L)).ncard`. Use `set e := P.ramificationIdx ℤ`. Use `set f := P.inertiaDeg ℤ`. Establish `hN : 2 ^ (k + 1 + 1) = 2 ^ k * 4` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hfund` using `[hN]`. Simplify using `only [Nat.add_sub_cancel]`. Establish `hef : 2 ^ k * 2 ≤ e * f` using `Nat.mul_le_mul he hf`. Establish `hef2 : e * f ≤ 2 ^ k * 2` using `by nlinarith`. Establish `hef3 : e * f = 2 ^ k * 2` using `le_antisymm hef2 hef`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hpk : 0 < 2 ^ k` using `by positivity`. Establish `hg2 : g = 2`. Rewrite `hfund` using `[hef3]`. Use the polynomial consequences of the given equalities and inequalities. Establish `he2 : e = 2 ^ k`.
-
-Apply `le_antisymm _ he` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Use `⟨he2, ?_, hg2⟩` and prove the remaining obligations. Rewrite `hef3` using `[he2]`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem efg_L (hG : LayerGalois) {n q d : ℕ} (hn : 1 ≤ n) (hqd : HypQD q d)
     {L : Type} [Field L] [NumberField L] {ζ a b : L} (h : IsLayer n q d ζ a b)
@@ -345,17 +341,17 @@ theorem efg_L (hG : LayerGalois) {n q d : ℕ} (hn : 1 ≤ n) (hqd : HypQD q d)
   nlinarith
 
 /- English proof (translation)
-Introduce `n q d hn hqd L _ _ ζ a b h P _ _ σ`. Take `⟨he, hf, -⟩` from `efg_L hG hn hqd h P`. Take `⟨hGal, hdeg, hmul, hbij⟩` from `hG n q d hn hqd.toHypOdd L ζ a b h`. Establish `: IsGaloisGroup Gal(L/ℚ) ℤ (𝓞 L)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ L`. Establish `: (span {(2 : ℤ)}).IsPrime` using `two_isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hq, hd, hq8, hd8⟩` from `hqd`. Take `⟨c', hc'⟩ : ∃ c : ℤ, -(d : ℤ) = 4 * (2 * c) + 1` from `⟨(-(d : ℤ) - 1) / 8, by omega⟩`. Establish `hb : b ^ 2 = ((4 * (2 * c') + 1 : ℤ) : L)`. Rewrite using `[← hc', h.2.2.1]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Set `φ : Gal(L/ℚ) →* GalL n` to `MonoidHom.mk' (galMap h.1 a b) hmul`. Establish `hle : MulAction.stabilizer Gal(L/ℚ) P ≤ (D2 n).comap φ`. Introduce `τ hτ`. Use `show galMap h.1 a b τ ∈ D2 n`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D2, MonoidHom.mem_ker]`. Conclude with `(sgn_eq_one_iff τ b).mpr (stab_fix b c' hb P τ hτ)`. Establish `hcardS : Nat.card (MulAction.stabilizer Gal(L/ℚ) P) = 2 ^ n`. Rewrite using `[card_stabilizer_eq (G := Gal(L/ℚ)) (span {(2 : ℤ)}) P, ramificationIdxIn_eq_ramificationIdx (span {(2 : ℤ)}) P Gal(L/ℚ), inertiaDegIn_eq_inertiaDeg (span {(2 : ℤ)}) P Gal(L/ℚ), he, hf, ← pow_succ]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hcardD : Nat.card ((D2 n).comap φ) = 2 ^ n`. Establish `h1` using `Subgroup.card_mul_index ((D2 n).comap φ)`. Rewrite `h1` using `[Subgroup.index_comap_of_surjective _ hbij.2, decomposition_subgroup_index, IsGalois.card_aut_eq_finrank, hdeg, pow_succ]`. Conclude with `Nat.eq_of_mul_eq_mul_right two_pos h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `heq` using `Subgroup.eq_of_le_of_card_ge hle (by rw [hcardS, hcardD])`. Rewrite using `[heq]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem layerDecompTwo_of (hG : LayerGalois) : LayerDecompTwo := by
   intro n q d hn hqd L _ _ ζ a b h P _ _ σ
@@ -391,19 +387,19 @@ theorem layerDecompTwo_of (hG : LayerGalois) : LayerDecompTwo := by
   rfl
 
 /- English proof (translation)
-Introduce `n q d hn hqd L _ _ ζ a b h P _ _ σ`. Take `⟨he, -, -⟩` from `efg_L hG hn hqd h P`. Take `⟨hGal, hdeg, hmul, hbij⟩` from `hG n q d hn hqd.toHypOdd L ζ a b h`. Establish `: IsGaloisGroup Gal(L/ℚ) ℤ (𝓞 L)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ L`. Establish `: (span {(2 : ℤ)}).IsPrime` using `two_isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hq, hd, hq8, hd8⟩` from `hqd`. Take `⟨c, hc⟩ : ∃ c : ℤ, -(q : ℤ) = 4 * c + 1` from `⟨(-(q : ℤ) - 1) / 4, by omega⟩`. Establish `ha : a ^ 2 = ((4 * c + 1 : ℤ) : L)`. Rewrite using `[← hc, h.2.1]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨c', hc'⟩ : ∃ c : ℤ, -(d : ℤ) = 4 * c + 1` from `⟨(-(d : ℤ) - 1) / 4, by omega⟩`. Establish `hb : b ^ 2 = ((4 * c' + 1 : ℤ) : L)`. Rewrite using `[← hc', h.2.2.1]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Set `φ : Gal(L/ℚ) →* GalL n` to `MonoidHom.mk' (galMap h.1 a b) hmul`. Establish `hle : P.inertia Gal(L/ℚ) ≤ (I2 n).comap φ`. Introduce `τ hτ`. Use `show galMap h.1 a b τ ∈ I2 n`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[I2, MonoidHom.mem_ker]`. Use `show (sgn τ a, sgn τ b) = 1`. Rewrite using `[(sgn_eq_one_iff τ a).mpr (inertia_fix a c ha P τ hτ), (sgn_eq_one_iff τ b).mpr (inertia_fix b c' hb P τ hτ)]`. Both sides reduce to the same expression. Establish `hcardI : Nat.card (P.inertia Gal(L/ℚ)) = 2 ^ (n - 1)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[card_inertia_eq_ramificationIdxIn (G := Gal(L/ℚ)) (span {(2 : ℤ)}) P, ramificationIdxIn_eq_ramificationIdx (span {(2 : ℤ)}) P Gal(L/ℚ), he]`. Establish `hcardD : Nat.card ((I2 n).comap φ) = 2 ^ (n - 1)`. Establish `h1` using `Subgroup.card_mul_index ((I2 n).comap φ)`. Rewrite `h1` using `[Subgroup.index_comap_of_surjective _ hbij.2, inertia_subgroup_index, IsGalois.card_aut_eq_finrank, hdeg, show n + 1 = (n - 1) + 2 by omega, pow_add]`. Conclude with `Nat.eq_of_mul_eq_mul_right (by norm_num) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `heq` using `Subgroup.eq_of_le_of_card_ge hle (by rw [hcardI, hcardD])`. Express the relevant statement in the definitionally equal form `σ ∈ P.inertia Gal(L/ℚ) ↔ _`. Rewrite using `[heq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem layerInertiaTwo_of (hG : LayerGalois) : LayerInertiaTwo := by
   intro n q d hn hqd L _ _ ζ a b h P _ _ σ
@@ -445,43 +441,39 @@ theorem layerInertiaTwo_of (hG : LayerGalois) : LayerInertiaTwo := by
   rfl
 
 /- English proof (translation)
-Introduce `n q d hn hqd L _ _ ζ a b h`. Take `⟨hGal, hdeg, hmul, hbij⟩` from `hG n q d hn hqd.toHypOdd L ζ a b h`. Take `⟨-, hmemK, hdegK⟩` from `hR n q d hn hqd.toHypOdd L ζ a b h`. Establish `: IsGaloisGroup Gal(L/ℚ) ℤ (𝓞 L)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ L`. Establish `: (span {(2 : ℤ)}).IsPrime` using `two_isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨P, hPp, hPl⟩⟩ : Nonempty (primesOver (span {(2 : ℤ)}) (𝓞 L))` from `inferInstance`. Take `⟨he, hf, hg⟩` from `efg_L hG hn hqd h P`. Establish `hq8` using `hqd.2.2.2`. Take `⟨c', hc'⟩ : ∃ c : ℤ, -(d : ℤ) = 4 * (2 * c) + 1` from `⟨(-(d : ℤ) - 1) / 8, by omega⟩`. Establish `hb : b ^ 2 = ((4 * (2 * c') + 1 : ℤ) : L)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hc', h.2.2.1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨by rw [ramificationIdxIn_eq_ramificationIdx (span {(2 : ℤ)}) P Gal(L/ℚ), he], by rw [inertiaDegIn_eq_inertiaDeg (span {(2 : ℤ)}) P Gal(L/ℚ), hf], hg, ?_⟩` and prove the remaining obligations. Use `set K := maximalRealSubfield L with hKdef`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ⟩` from `hbij.2 (JJ n)`. Establish `hτK : ∀ x : L, x ∈ K → τ x = x` using `fun x hx => (hmemK x).mp hx τ hτ`. Establish `hτb : τ b ≠ b`. Introduce `hfix`. Establish `: (galMap h.1 a b τ).2.2 = -1` using `by rw [hτ]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `sgn τ b = -1 at this`. Rewrite `this` using `[(sgn_eq_one_iff τ b).mpr hfix]`. Conclude with `absurd this (by decide)`. Establish `hτP : τ • P ≠ P` using `fun heq => hτb (stab_fix b c' hb P τ (MulAction.mem_stabilizer_iff.mpr heq))`. Establish `hset : primesOver (span {(2 : ℤ)}) (𝓞 L) = {P, τ • P}`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `symm`. Apply `Set.eq_of_subset_of_ncard_le` to reduce the goal to its premises. Introduce `Q hQ`. Break down `hQ with rfl | hQ` into its components or cases. Conclude with `⟨inferInstance, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `hQ` using `[Set.mem_singleton_iff]`. Substitute `hQ` using the available equality. Conclude with `⟨inferInstance, inferInstance⟩`. Rewrite using `[hg, Set.ncard_pair hτP.symm]`. Conclude with `Set.finite_of_ncard_ne_zero (by rw [hg]; norm_num)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `set S := 𝓞 K`. Use `set Pp : Ideal S := P.under S with hPp_def`. Establish `hunder : (τ • P).under S = Pp`. Use extensionality with `x`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, Ideal.mem_pointwise_smul_iff_inv_smul_mem, hPp_def, Ideal.under_def, Ideal.mem_comap]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hfx : τ⁻¹ • (algebraMap S (𝓞 L) x) = algebraMap S (𝓞 L) x`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `show τ⁻¹ ((algebraMap S (𝓞 L) x : 𝓞 L) : L) = ((algebraMap S (𝓞 L) x : 𝓞 L) : L)`. Establish `hmem : ((algebraMap S (𝓞 L) x : 𝓞 L) : L) ∈ K` using `by show ((x : K) : L) ∈ K`. Conclude with `(x : K).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `hτK _ hmem`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hfx]`. Establish `hsetK : primesOver (span {(2 : ℤ)}) S = {Pp}`. Use extensionality with `Q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hQp, hQl⟩`. Take `⟨⟨R, hRp, hRl⟩⟩ : Nonempty (Q.primesOver (𝓞 L))` from `inferInstance`. Establish `: R.LiesOver (span {(2 : ℤ)})` using `Ideal.LiesOver.trans R Q (span {(2 : ℤ)})`. Establish `hR2 : R ∈ primesOver (span {(2 : ℤ)}) (𝓞 L)` using `⟨hRp, this⟩`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `hR2` using `[hset]`. Rewrite using `[Set.mem_singleton_iff, Ideal.over_def R Q]`. Break down `hR2 with rfl | hR2` into its components or cases. Both sides reduce to the same expression. Rewrite `hR2` using `[Set.mem_singleton_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hR2, hunder]`. Introduce and unpack `hQ`. Rewrite `hQ` using `[Set.mem_singleton_iff]`. Substitute `hQ` using the available equality. Conclude with `⟨inferInstance, inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsMulCommutative Gal(L/ℚ)` using `⟨⟨fun x y => hbij.1 (by rw [hmul, hmul, mul_comm])⟩⟩`. Establish `: IsAbelianGalois ℚ L` using `{ }`. Establish `: IsGalois ℚ K` using `(IsAbelianGalois.tower_bot ℚ K L).toIsGalois`. Establish `: IsGaloisGroup Gal(K/ℚ) ℤ S` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ K`. Establish `hfundK` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn (span {(2 : ℤ)}) S Gal(K/ℚ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hfundK` using `[IsGalois.card_aut_eq_finrank, hdegK, hsetK, Set.ncard_singleton, one_mul, ramificationIdxIn_eq_ramificationIdx (span {(2 : ℤ)}) Pp Gal(K/ℚ), inertiaDegIn_eq_inertiaDeg (span {(2 : ℤ)}) Pp Gal(K/ℚ)]`. Rewrite using `[hsetK, Set.ncard_singleton, ramificationIdxIn_eq_ramificationIdx (span {(2 : ℤ)}) Pp Gal(K/ℚ), inertiaDegIn_eq_inertiaDeg (span {(2 : ℤ)}) Pp Gal(K/ℚ)]`. Establish `hte` using `Ideal.ramificationIdx_tower (R := ℤ) Pp P`. Establish `htf` using `Ideal.inertiaDeg_tower (R := ℤ) Pp P`. Establish `hte'` using `P.ramificationIdx_pos S`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htf'` using `P.inertiaDeg_pos S`. Rewrite `hte` using `[he]`. Rewrite `htf` using `[hf]`. Use `set e := Pp.ramificationIdx ℤ`. Use `set f := Pp.inertiaDeg ℤ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `he1 : e ≤ 2 ^ (n - 1)` using `by rw [hte]; exact Nat.le_mul_of_pos_right _ hte'`. Establish `hf1 : f ≤ 2` using `by rw [htf]; exact Nat.le_mul_of_pos_right _ htf'`. Establish `hN : 2 ^ n = 2 ^ (n - 1) * 2` using `by rw [← pow_succ]; congr 1; omega`. Rewrite `hfundK` using `[hN]`. Establish `hpk : 0 < 2 ^ (n - 1)` using `by positivity`.
-
-Establish `he2 : e = 2 ^ (n - 1)`. Apply `le_antisymm he1` to reduce the goal to its premises. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `: e * f < 2 ^ (n - 1) * 2`.
-
-Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers. Use `⟨rfl, he2, ?_⟩` and prove the remaining obligations. Rewrite `hfundK` using `[he2]`. Conclude with `Nat.eq_of_mul_eq_mul_left hpk hfundK`.
+Chain the equalities or inequalities of the calculation. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem layerEFGTwo_of (hG : LayerGalois) (hR : LayerReal) : LayerEFGTwo := by
   intro n q d hn hqd L _ _ ζ a b h

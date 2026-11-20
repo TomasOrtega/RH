@@ -21,11 +21,11 @@ variable (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hX : X.B.fields.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hK` using `mtildeKOk (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX`. Take `⟨hφ, -⟩` from `(mem_MtildeV_iff (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) (TC.Ps I) z.1).1 z.2`. Set `F : (mtildeKGSD (Pr` to `X.B.primes px) X.B.wts I.Ch I.sel (I.tup a)).EqFun := ⟨z.1, hφ⟩`. Establish `h1` using `(mem_lvlPartX_iff (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) (TC.Ps I) hK F).2 z.2`. Rewrite `h1` using `[← LiftForms.range_lvlE]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy⟩` from `h1`. Use `⟨y, F, z.2, ?_, rfl⟩` and prove the remaining obligations. Apply `heq_of_eq` to reduce the goal to its premises. Use `show _ = (MtildeKCSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hK).basis.equivFun.symm ((MtildeKCSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hK).lvlE _ _ _ *ᵥ y)`. Rewrite `hy` using `[Matrix.mulVecLin_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`. Conclude with `((MtildeKCSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hK).basis.equivFun.symm_apply_apply _).symm`.
+A detailed English derivation is pending.
 -/
 theorem isFormOf_exists (z : MtildeV (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) (TC.Ps I)) :
     ∃ y, IsFormOf (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX (TC.Ps I) z
@@ -45,7 +45,7 @@ theorem isFormOf_exists (z : MtildeV (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I
   exact ((MtildeKCSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hK).basis.equivFun.symm_apply_apply _).symm
 
 /- English proof (translation)
-Take `⟨F, hF, e1, rfl⟩` from `h`. Take `⟨F', hF', e2, rfl⟩` from `h'`. Establish `e3` using `eq_of_heq (e1.trans e2.symm)`. Establish `e4` using `((mtildeKGSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a)).res _).injective e3`. Substitute `e4` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -64,9 +64,7 @@ theorem isFormOf_unique {y} {z z' : MtildeV (Pr := X.B.primes px) X.B.wts I.Ch I
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨F, hF, e1, rfl⟩` from `h`. Establish `e2` using `eq_of_heq e1`. Use `(LiftForms.mem_lvlNab _ _ _ _ y).trans ?_` and prove the remaining obligations. Use `show R3.rowForm (D := X.toD7) (R3.famR X I hX Set.univ Xg tr).A (R3.lev1 I) (R3.chr1 I) (tAll I a) y ∈ intForms _ ↔ _`. Rewrite using `[← e2]`.
-
-Conclude with `(GSD.mem_intNab_iff _ (mtildeKOk (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX) _ F).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFormOf_mem_iff {y} {z : MtildeV (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) (TC.Ps I)}
     (h : IsFormOf (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX (TC.Ps I) z
@@ -86,15 +84,15 @@ variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z
   {p0 : BaseLevelRowSide (w.D Z)} {t : RowsT K w Z Wt p0}
 
 /- English proof (translation)
-Take `⟨hg, hiff⟩` from `x.all.latA a`. Establish `hc` using `x.crd a`. Use `⟨fun v hv => ?_, fun z => ⟨fun hz => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hg v hv`. Take `⟨z, -, hz⟩` from `hc y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, hz.symm⟩`. Take `⟨y, hy⟩` from `isFormOf_exists (w.st Z) w.I t.hX t.r.z.Xg t.r.z.tr a z`. Take `⟨z', hz', hj⟩` from `hc y`. Establish `e` using `isFormOf_unique (w.st Z) w.I t.hX t.r.z.Xg t.r.z.tr a hy hz'`. Take `⟨c, hc'⟩` from `(hiff y).1 ((isFormOf_mem_iff (w.st Z) w.I t.hX t.r.z.Xg t.r.z.tr a hy).2 hz)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, by rw [e, ← hj]; exact hc'⟩`. Introduce and unpack `⟨c, hc'⟩ choose! g hgy using hg`. Set `n` to `rDim (w.st Z).toD7 (famAll t) (R3.lev1 w.I) (R3.chr1 w.I) (tAll w.I a)`. Set `y : Fin n → B.LL` to `∑ v ∈ (Z.W.Mtilde a).gen, ((c v : 𝓞 B.LL) : B.LL) • @id (Fin n → B.LL) (g v)`. Establish `hjy : x.all.jA a y = ∑ v ∈ (Z.W.Mtilde a).gen, B.embLL ((c v : 𝓞 B.LL) : B.LL) • v`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `J : (Fin n → B.LL) →ₛₗ[B.embLL] Z.W.Amb a` to `x.all.jA a`. Use `(map_sum J _ _).trans (Finset.sum_congr rfl fun v hv => ?_)` and prove the remaining obligations. Conclude with `(J.map_smulₛₗ _ _).trans (congrArg _ (hgy v hv))`. Take `⟨z', hz', hj⟩` from `hc y`. Establish `e : z' = z`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `toMtilde_injective (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (w.I.tup a) (TC.Ps w.I) B.embLL` to reduce the goal to its premises. Apply `(x.e a).injective` to reduce the goal to its premises. Conclude with `hj.symm.trans (hjy.trans hc'.symm)`. Rewrite using `[← e]`. Conclude with `(isFormOf_mem_iff (w.st Z) w.I t.hX t.r.z.Xg t.r.z.tr a hz').1 ((hiff y).2 ⟨c, hjy⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_of_rx (x : RXs t) (a : w.C.Tup) :
     (∀ v ∈ (Z.W.Mtilde a).gen, ∃ z, x.e a (toCx w.I t.hX a z) = v) ∧
@@ -133,16 +131,16 @@ section Core
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (h : I.Ok) (l : I.Laws) (hX : B.fields.Ok)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun _ => funext fun p => hG p)`.
+A detailed English derivation is pending.
 -/
 theorem eq_rowForm' (u : B.Word) (a : I.ι) (z : MtildeV (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps) (G : (I.per l u a).Mt)
     (hG : SameForm I l u a (toCx I hX a z) G) : G = rowForm I l h u a z :=
   Subtype.ext (funext fun _ => funext fun p => hG p)
 
 /- English proof (translation)
-Establish `key : ∀ z, e (rowForm I l h u a z) = e0 a (toCx I hX a z)` using `fun z => by`. Rewrite using `[← eq_rowForm' I h l hX u a z _ (he _)]`. Conclude with `e.apply_symm_apply _`. Use `⟨fun v hv => ?_, fun z => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hgen v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, (key x).trans hx⟩`. Rewrite using `[key]`. Conclude with `hlat z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowPin_core (Z : TC.Later B (I.cols l)) (e0 : ∀ a : (I.cols l).Tup, MtCx I a ≃ₗ[ℂ] Z.W.Amb a)
     (u : B.Word) (a : (I.cols l).Tup) (e : (I.per l u a).Mt ≃ₗ[ℂ] Z.W.Amb a)
@@ -165,9 +163,9 @@ theorem rowPin_core (Z : TC.Later B (I.cols l)) (e0 : ∀ a : (I.cols l).Tup, Mt
 end Core
 
 /- English proof (translation)
-Introduce `K B f T w Z Wt p0 t x a u`. Take `⟨hg, hl⟩` from `lat_of_rx (t := t) x a`. Distinguish the cases in `ha : a = (w.D Z).what₂.mu0`. Substitute `ha` using the available equality. Conclude with `⟨Z.W.eMt0 u, fun _ => HEq.rfl, fun hn => absurd rfl hn, rowPin_core w.I w.ok w.l t.hX Z x.e u _ (Z.W.eMt0 u) (x.eMt0 u) hg hl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨Z.W.eMtTw u a, fun hn => absurd hn ha, fun _ => rfl, rowPin_core w.I w.ok w.l t.hX Z x.e u a (Z.W.eMtTw u a) (x.eMtTw u a) hg hl⟩`.
+Supply the required witnesses or components.
 -/
 theorem rowPin_of_rx : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl)
     (p0 : BaseLevelRowSide (w.D Z)) (t : RowsT K w Z Wt p0), RX K B f T w Z Wt p0 t → ∀ a, GlobalTheory.AtG.RowPin w.I w.ok w.l Z a := by

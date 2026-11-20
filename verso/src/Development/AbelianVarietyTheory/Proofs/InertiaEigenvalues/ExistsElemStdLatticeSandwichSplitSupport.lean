@@ -16,11 +16,11 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.SuppLatStd
 
 /- English proof (translation)
-Establish `hQ0 : Q.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 E))` using `mem_nonZeroDivisors_of_ne_zero Q.ne_bot`. Establish `hH : Fintype.card (ClassGroup (𝓞 E)) ≠ 0` using `Fintype.card_ne_zero`. Establish `hp : (Q.asIdeal ^ Fintype.card (ClassGroup (𝓞 E))).IsPrincipal`. Use `(ClassGroup.mk0_eq_one_iff (pow_mem hQ0 _)).1 ?_` and prove the remaining obligations. Establish `: (⟨Q.asIdeal ^ Fintype.card (ClassGroup (𝓞 E)), pow_mem hQ0 _⟩ : nonZeroDivisors (Ideal (𝓞 E))) = ⟨Q.asIdeal, hQ0⟩ ^ Fintype.card (ClassGroup (𝓞 E))` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, map_pow, pow_card_eq_one]`. Take `⟨b, hb⟩` from `hp.principal`. Establish `hbm : b ∈ Q.asIdeal ^ Fintype.card (ClassGroup (𝓞 E))` using `hb ▸ Submodule.mem_span_singleton_self b`. Use `⟨b, fun h0 => ?_, Ideal.pow_le_self hH hbm, fun P hP hbP => ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[h0, Submodule.span_singleton_eq_bot.2 rfl]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero _ Q.ne_bot hb`. Establish `hle : Q.asIdeal ^ Fintype.card (ClassGroup (𝓞 E)) ≤ P`. Rewrite using `[hb]`. Conclude with `(Ideal.span_singleton_le_iff_mem P).2 hbP`. Conclude with `(Q.isMaximal.eq_of_le hP.ne_top (hP.le_of_pow_le hle)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_only {E : Type} [Field E] [NumberField E] (Q : HeightOneSpectrum (𝓞 E)) :
     ∃ b : 𝓞 E, b ≠ 0 ∧ b ∈ Q.asIdeal ∧ ∀ P : Ideal (𝓞 E), P.IsPrime → b ∈ P → P = Q.asIdeal := by
@@ -41,7 +41,7 @@ theorem exists_mem_only {E : Type} [Field E] [NumberField E] (Q : HeightOneSpect
     exact (Q.isMaximal.eq_of_le hP.ne_top (hP.le_of_pow_le hle)).symm
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, map_mul, map_mul]`. Conclude with `mul_le_one' (hM i j) (hz j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_mul_mulVec_le {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (z : Fin n → K)
     (c : K) (hz : ∀ j, Valued.v (z j) ≤ 1) (hM : ∀ i j, Valued.v c * Valued.v (M i j) ≤ 1) (i : Fin n) :
@@ -58,59 +58,53 @@ namespace GlobalTheory.SuppLatStd
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D V hg hL h e Ps bad he hbad hs`. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Establish `h4` using `GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3`. Take `⟨hid, hcj⟩` from `GlobalTheory.ConjVal.components_and_conj_valuation D ι h1 h2 h4`. Take `⟨ev, hev⟩ : ∃ ev : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), AE D →+* Q.adicCompletion D.host.E, ∀ Q z, ev Q z = ι (finPart D z) Q` from `⟨fun Q => ((GlobalTheory.CharLocProd.evalAt Q).comp ι.toRingHom).comp (finPart D), fun _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [← hev] at hid hcj`. Take `⟨⟨es, hes, hsum⟩, horth⟩` from `he`. Establish `e1 : ∀ Q ∈ Ps, ev Q e = 1` using `fun Q hQ => by`. Rewrite using `[hsum, map_sum, Finset.sum_eq_single Q (fun Q' h' hne => (hid _ _ (hes Q' h')).2.2 Q hne.symm) (fun h' => absurd hQ h'), (hid _ _ (hes Q hQ)).2.1]`. Establish `e2 : ∀ Q, Q ∉ Ps → ev Q e = 0` using `fun Q hQ => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsum, map_sum]`. Conclude with `Finset.sum_eq_zero fun Q' h' => (hid _ _ (hes Q' h')).2.2 Q fun hh => hQ (hh ▸ h')`. Establish `hP : ∀ Q ∈ Ps, GlobalTheory.IdemSupport.cP Q ∉ Ps` using `fun Q hQ hQ' => by`. Establish `a` using `congrArg (ev (GlobalTheory.IdemSupport.cP Q)) horth`. Rewrite `a` using `[map_mul, e1 _ hQ', one_mul, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `a'` using `hcj e Q`. Rewrite `a'` using `[a, e1 Q hQ, map_zero, map_one]`. Conclude with `zero_ne_one a'`. Establish `hA1 : ∀ Q, Q ∉ Ps → GlobalTheory.IdemSupport.cP Q ∉ Ps → (ev Q).mapMatrix (mt V h) = 1` using `fun Q hQ hQ' => by`. Establish `a` using `hcj e (GlobalTheory.IdemSupport.cP Q)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `a` using `[e2 _ hQ', map_zero, GlobalTheory.ClassScalarValue.cP_cP, map_eq_zero]`. Establish `hu : ev Q (e + cA D e) = 0` using `by rw [map_add, e2 Q hQ, a, add_zero]`. Establish `: (ev Q).mapMatrix (mt V h - 1) = 0`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ev Q ((mt V h - 1) i j) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hs i j, map_mul, hu, zero_mul]`. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `this`. Establish `hinv : ∀ Q, (ev Q).mapMatrix (mt V h) * (ev Q).mapMatrix (mt V h⁻¹) = 1` using `fun Q => by`. Rewrite using `[← map_mul, show mt V h * mt V h⁻¹ = 1 by unfold Formalism.L2.Theta.mt; rw [map_inv]; exact Units.mul_inv _, map_one]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hB1 : ∀ Q, Q ∉ Ps → GlobalTheory.IdemSupport.cP Q ∉ Ps → (ev Q).mapMatrix (mt V h⁻¹) = 1` using `fun Q hQ hQ' => by`. Use `hinv Q` as an intermediate fact. Rewrite `this` using `[hA1 Q hQ hQ', one_mul]`. Then use the resulting hypothesis. Establish `hlog : ∀ x : WithZero (Multiplicative ℤ), ∃ n : ℕ, x ≤ WithZero.exp (n : ℤ)` using `fun x => by`. Distinguish the cases in `hx : x = 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨0, hx ▸ zero_le'⟩`. Conclude with `⟨(WithZero.log x).toNat, by`. Rewrite using `[← WithZero.exp_log hx]; exact WithZero.exp_le_exp.2 (by rw [WithZero.log_exp]; exact Int.self_le_toNat _)⟩`. Use `choose fn hfn using hlog`. Use `set S := Ps ∪ Ps.image GlobalTheory.IdemSupport.cP with hS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Use `set f : HeightOneSpectrum (𝓞 D.host.E) × Fin V.rank × Fin V.rank → ℕ := fun p => fn (Valued.v (ev p.1 (mt V h p.2.1 p.2.2))) ⊔ fn (Valued.v (ev p.1 (mt V h⁻¹ p.2.1 p.2.2))) with hf`. Use `set N : ℕ := (S ×ˢ (Finset.univ ×ˢ Finset.univ : Finset (Fin V.rank × Fin V.rank))).sup f with hN'`. Establish `hN : ∀ Q ∈ S, ∀ i j, Valued.v (ev Q (mt V h i j)) ≤ WithZero.exp (N : ℤ) ∧ Valued.v (ev Q (mt V h⁻¹ i j)) ≤ WithZero.exp (N : ℤ)`. Introduce `Q hQ i j`. Establish `hle : f (Q, i, j) ≤ N` using `Finset.le_sup (Finset.mem_product.2 ⟨hQ, Finset.mem_product.2 ⟨Finset.mem_univ i, Finset.mem_univ j⟩⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Conclude with `(hfn _).trans (WithZero.exp_le_exp.2 (by exact_mod_cast le_sup_left.trans hle))`. Conclude with `(hfn _).trans (WithZero.exp_le_exp.2 (by exact_mod_cast le_sup_right.trans hle))`. Establish `hout : ∀ Q, Q ∉ S → Q ∉ Ps ∧ GlobalTheory.IdemSupport.cP Q ∉ Ps` using `fun Q hQ => ⟨fun h' => hQ (Finset.mem_union_left _ h'), fun h' => hQ (Finset.mem_union_right _ (Finset.mem_image.2 ⟨_, h', GlobalTheory.ClassScalarValue.cP_cP Q⟩))⟩`. Use `choose b hb0 hbQ hbP using fun Q : HeightOneSpectrum (𝓞 D.host.E) => exists_mem_only Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `set m : 𝓞 D.host.E := (∏ Q ∈ S, b Q) ^ N with hm`. Establish `hm1 : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), Valued.v (algebraMap D.host.E (Q.adicCompletion D.host.E) (algebraMap (𝓞 D.host.E) D.host.E m)) ≤ 1` using `fun Q => (GlobalTheory.CharLocProd.val_algebraMap Q _).trans_le (Q.valuation_le_one m)`. Establish `hmN : ∀ Q ∈ S, Valued.v (algebraMap D.host.E (Q.adicCompletion D.host.E) (algebraMap (𝓞 D.host.E) D.host.E m)) ≤ WithZero.exp (-(N : ℤ))` using `fun Q hQ => by`. Rewrite using `[GlobalTheory.CharLocProd.val_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`. Use `(HeightOneSpectrum.intValuation_le_pow_iff_mem _ _ _).2 (Ideal.pow_mem_pow ?_ N)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem b hQ`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ (hbQ Q)`. Establish `hone : ∀ {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] (i j : Fin V.rank), Valued.v ((1 : Matrix (Fin V.rank) (Fin V.rank) K) i j) ≤ 1` using `fun i j => by`. Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcond : ∀ Q i j, Valued.v (algebraMap D.host.E (Q.adicCompletion D.host.E) (algebraMap (𝓞 D.host.E) D.host.E m)) * Valued.v (ev Q (mt V h i j)) ≤ 1 ∧ Valued.v (algebraMap D.host.E (Q.adicCompletion D.host.E) (algebraMap (𝓞 D.host.E) D.host.E m)) * Valued.v (ev Q (mt V h⁻¹ i j)) ≤ …` using `fun Q i j => by`. Distinguish the cases in `hQ : Q ∈ S`. Establish `k : WithZero.exp (-(N : ℤ)) * WithZero.exp (N : ℤ) = 1`. Rewrite using `[← WithZero.exp_add, neg_add_cancel, WithZero.exp_zero]`. Conclude with `⟨(mul_le_mul' (hmN Q hQ) (hN Q hQ i j).1).trans k.le, (mul_le_mul' (hmN Q hQ) (hN Q hQ i j).2).trans k.le⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨o1, o2⟩` from `hout Q hQ`. Establish `a1 : ev Q (mt V h i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) (Q.adicCompletion D.host.E)) i j` using `congrFun (congrFun (hA1 Q o1 o2) i) j`. Establish `a2 : ev Q (mt V h⁻¹ i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) (Q.adicCompletion D.host.E)) i j` using `congrFun (congrFun (hB1 Q o1 o2) i) j`. Rewrite using `[a1, a2]`. Conclude with `⟨mul_le_one' (hm1 Q) (hone i j), mul_le_one' (hm1 Q) (hone i j)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmat : ∀ Q, ((Matrix.GeneralLinearGroup.map ι.toRingHom (finPt V h).1)⁻¹).1.map (GlobalTheory.CharLocProd.evalAt Q) = (ev Q).mapMatrix (mt V h⁻¹)` using `fun Q => by`. Rewrite using `[← map_inv, ← Subgroup.coe_inv, ← map_inv]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.map_apply, hev]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `memG : ∀ x, x ∈ Bridge.hLat V (finPt V h) ↔ ∀ i (Q : HeightOneSpectrum (𝓞 D.host.E)), Valued.v ((((ev Q).mapMatrix (mt V h⁻¹)).mulVec (fun j => algebraMap D.host.E (Q.adicCompletion D.host.E) (x j))) i) ≤ 1` using `fun x => by`. Rewrite using `[GlobalTheory.ClassScalarValue.mem_hLat ι h1 h2 V hL (finPt V h) x]`. Use `forall_congr' fun i => forall_congr' fun Q => ?_` and prove the remaining obligations. Rewrite using `[← hmat Q]`. Use `RingHom.map_mulVec (GlobalTheory.CharLocProd.evalAt Q) ((Matrix.GeneralLinearGroup.map ι.toRingHom (finPt V h).1)⁻¹).1 (fun j => algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) (x j)) i` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `iff_of_eq (congrArg (fun w => Valued.v w ≤ 1) this)`. Establish `memS : ∀ x, x ∈ Formalism.L2.Pj.stdLat D.host.E V.rank ↔ ∀ i (Q : HeightOneSpectrum (𝓞 D.host.E)), Valued.v (algebraMap D.host.E (Q.adicCompletion D.host.E) (x i)) ≤ 1` using `fun x => by`. Rewrite using `[← hL, GlobalTheory.ClassScalarValue.mem_hLat ι h1 h2 V hL 1 x]`. Simplify using `only [OneMemClass.coe_one, map_one, inv_one, Units.val_one, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hsm : ∀ (x : Fin V.rank → D.host.E) i, (m • x) i = algebraMap (𝓞 D.host.E) D.host.E m * x i` using `fun x i => by`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Use `⟨m, pow_ne_zero _ (Finset.prod_ne_zero_iff.2 fun Q _ => hb0 Q), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.smul_le.2 fun r hr x hx => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul]`. Use `Submodule.smul_mem _ a ((memS _).2 fun i Q => ?_)` and prove the remaining obligations. Establish `hx'` using `(memG x).1 hx`. Establish `e3 : algebraMap D.host.E (Q.adicCompletion D.host.E) ((m • x) i) = algebraMap D.host.E (Q.adicCompletion D.host.E) (algebraMap (𝓞 D.host.E) D.host.E m) * ((ev Q).mapMatrix (mt V h)).mulVec (((ev Q).mapMatrix (mt V h⁻¹)).mulVec (fun j => algebraMap D.host.E (Q.adicCompletion D.hos …`. Rewrite using `[Matrix.mulVec_mulVec, hinv Q, Matrix.one_mulVec, hsm, map_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3]`. Conclude with `GlobalTheory.SuppLatStd.val_mul_mulVec_le _ _ _ (fun j => hx' j Q) (fun i j => (hcond Q i j).1) i`. Use `Submodule.smul_le.2 fun r hr x hx => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`. Rewrite using `[mul_smul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Submodule.smul_mem _ a ((memG _).2 fun i Q => ?_)` and prove the remaining obligations. Establish `hx'` using `(memS x).1 hx`. Establish `e3 : (fun j => algebraMap D.host.E (Q.adicCompletion D.host.E) ((m • x) j)) = algebraMap D.host.E (Q.adicCompletion D.host.E) (algebraMap (𝓞 D.host.E) D.host.E m) • (fun j => algebraMap D.host.E (Q.adicCompletion D.host.E) (x j))` using `funext fun j => by`. Rewrite using `[hsm, map_mul]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[e3, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `GlobalTheory.SuppLatStd.val_mul_mulVec_le _ _ _ (fun j => hx' j Q) (fun i j => (hcond Q i j).2) i`. Establish `hmap : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), GlobalTheory.IdemSupport.cP Q ≠ Q → Q.asIdeal.map (GlobalTheory.IdemSupport.cO D : 𝓞 D.host.E →+* 𝓞 D.host.E) ≠ Q.asIdeal` using `fun Q hne heq => by`. Use `hne (HeightOneSpectrum.ext ?_)` and prove the remaining obligations. Rewrite using `[← heq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Use extensionality with `x`. Rewrite using `[GlobalTheory.IdemSupport.mem_cP]`. Establish `hle : Q.asIdeal.map (GlobalTheory.IdemSupport.cO D : 𝓞 D.host.E →+* 𝓞 D.host.E) ≤ Q.asIdeal.comap (GlobalTheory.IdemSupport.cO D : 𝓞 D.host.E →+* 𝓞 D.host.E)` using `Ideal.map_le_iff_le_comap.2 fun y hy => by`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap]`. Simplify `hy` using `[GlobalTheory.IdemSupport.cO_cO]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Simplify `Ideal.mem_map_of_mem (GlobalTheory.IdemSupport.cO D : 𝓞 D.host.E →+* 𝓞 D.host.E) hx` using `[GlobalTheory.IdemSupport.cO_cO]`. Introduce `hx`. Simplify using `using hle hx`.
-
-Introduce `P hPp hmP`. Take `⟨Q, hQS, hbQP⟩` from `(hPp.prod_mem_iff).1 (hPp.mem_of_pow_mem _ hmP)`. Take `rfl` from `hbP Q P hPp hbQP`. Break down `Finset.mem_union.1 hQS with hQ | hQ` into its components or cases. Conclude with `⟨hmap Q fun hc => hP Q hQ (by rw [hc]; exact hQ), hbad Q hQ⟩`.
-
-Take `⟨Q', hQ', rfl⟩` from `Finset.mem_image.1 hQ`. Use `⟨hmap _ fun hc => hP Q' hQ' ?_, fun hm' => hbad Q' hQ' ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[GlobalTheory.ClassScalarValue.cP_cP]`. Rewrite using `[← hc]`. Conclude with `hQ'`.
-
-Rewrite `hm'` using `[GlobalTheory.IdemSupport.mem_cP, map_natCast]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem lat_std_of_suppAt : ∀ (D : D7) (V : HSp D), V.gram = 1 → Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank → ∀ (h : GA D V) (e : AE D) (Ps : Finset (Formalism.L2.DIV.Pl D.host.E)) (bad : ℕ), IsIdemSum e Ps → (∀ PP ∈ Ps, ((bad : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → SuppAt e V h → ∃ m : 𝓞 D.host.E, m ≠ 0 ∧ Ideal.span {m} • Bridge.hLat V (finPt V h) ≤ Formalism.L2.Pj.stdLat D.host.E V.rank ∧ Ideal.span {m} • Formalism.L2.Pj.stdLat D.host.E V.rank ≤ Bridge.hLat V (finPt V h) ∧ ∀ P : Ideal (𝓞 D.host.E), P.IsPrime → m ∈ P → P.map (GlobalTheory.IdemSupport.cO D : 𝓞 D.host.E →+* 𝓞 D.host.E) ≠ P ∧ ((bad : ℕ) : 𝓞 D.host.E) ∉ P := by
   intro D V hg hL h e Ps bad he hbad hs

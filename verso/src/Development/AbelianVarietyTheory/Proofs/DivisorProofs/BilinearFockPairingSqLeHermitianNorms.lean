@@ -21,7 +21,7 @@ namespace GlobalTheory.FockCauchySchwarz
 variable {ι : Type} [Fintype ι] {m : ℕ} (w : ι → DomWeight m)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.BranchNorm.pairK_eq w (1 : ι → GL (Fin m) ℂ) x y`. Rewrite `h` using `[map_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairK_one (x y : VV ℂ w) :
     pairK w (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) x y = pairBK w (GlobalTheory.BranchNorm.cV w x) y := by
@@ -30,7 +30,7 @@ theorem pairK_one (x y : VV ℂ w) :
   exact h
 
 /- English proof (translation)
-Establish `hG : ∀ _ : ι, (1 : Matrix (Fin m) (Fin m) ℂ).PosDef` using `fun _ => Matrix.PosDef.one`. Rewrite using `[← GlobalTheory.CoefModel.inner_toHilb w hG, ← GlobalTheory.CoefModel.inner_toHilb w hG, ← GlobalTheory.CoefModel.inner_toHilb w hG]`. Establish `h` using `inner_mul_inner_self_le (𝕜 := ℂ) (GlobalTheory.CoefModel.toHilb w hG x) (GlobalTheory.CoefModel.toHilb w hG y)`. Rewrite `h` using `[norm_inner_symm (GlobalTheory.CoefModel.toHilb w hG y), ← sq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairK_cs (x y : VV ℂ w) :
     ‖pairK w (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) x y‖ ^ 2 ≤
@@ -43,7 +43,7 @@ theorem pairK_cs (x y : VV ℂ w) :
   exact h
 
 /- English proof (translation)
-Introduce `ι _ m w x y`. Establish `h` using `pairK_cs w (GlobalTheory.BranchNorm.cV w x) y`. Rewrite `h` using `[pairK_one, pairK_one w (GlobalTheory.BranchNorm.cV w x), GlobalTheory.BranchNorm.cV_cV]`. Rewrite using `[pairK_one w x x, pairBK_apply w (GlobalTheory.BranchNorm.cV w x), pairingBSymm_holds, ← pairBK_apply]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairBK_sq_le : ∀ {ι : Type} [Fintype ι] {m : ℕ} (w : ι → DomWeight m) (x y : VV ℂ w),
     ‖pairBK w x y‖ ^ 2 ≤ (pairK w (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) x x).re *

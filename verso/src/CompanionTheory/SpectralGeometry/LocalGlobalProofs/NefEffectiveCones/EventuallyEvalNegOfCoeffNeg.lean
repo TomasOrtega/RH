@@ -14,11 +14,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.NefKleiman
 
 /- English proof (translation)
-Establish `hnd : q.natDegree = D` using `Polynomial.natDegree_eq_of_le_of_coeff_ne_zero hdeg hc.ne`. Break down `Nat.eq_zero_or_pos D with rfl | hD` into its components or cases. Use `Eventually.of_forall fun m => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eq_C_of_natDegree_eq_zero hnd, Polynomial.eval_C]`. Conclude with `hc`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlc : q.leadingCoeff ≤ 0`. Rewrite using `[Polynomial.leadingCoeff, hnd]`. Conclude with `hc.le`. Establish `hdg : 0 < q.degree`. Rewrite using `[Polynomial.degree_eq_natDegree (by rintro rfl; simp at hc), hnd]`.
-
-Conclude with `hD` after adjusting the coercions. Establish `ht` using `(Polynomial.tendsto_atBot_of_leadingCoeff_nonpos q hdg hlc).comp tendsto_natCast_atTop_atTop`. Conclude with `ht.eventually (eventually_lt_atBot 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_eval_neg_of_coeff_neg (q : Polynomial ℝ) (D : ℕ) (hdeg : q.natDegree ≤ D)
     (hc : q.coeff D < 0) : ∀ᶠ m : ℕ in atTop, q.eval (m : ℝ) < 0 := by
@@ -37,17 +35,15 @@ theorem eventually_eval_neg_of_coeff_neg (q : Polynomial ℝ) (D : ℕ) (hdeg : 
     exact ht.eventually (eventually_lt_atBot 0)
 
 /- English proof (translation)
-Introduce `k _ X _ _ hp n hd A hA`. Establish `hv` using `diffVanish_chiPic_of_isProjOver (d := n) (algebraMap_eq_strHom k X) (structureModule X) hp (by rw [suppDim_structureModule, hd])`. Take `⟨p, hdeg, heval, hcoeff⟩` from `hv.exists_polynomial_chi_twistZ ℝ hA.isLB`. Take `⟨D, hD, c, hc, hfreq⟩` from `(IsAmpleLB.isBig k X hp A hA).growth`. Establish `hDn : D = n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hD` using `[hd]`. Conclude with `hD.symm` after adjusting the coercions. Substitute `hDn` using the available equality. Establish `hser` using `eventually_subsingleton_coh_twistZ_of_isProjOver (algebraMap_eq_strHom k X) (structureModule X) hp hA`. Establish `hchi : ∀ᶠ m : ℕ in atTop, (lbH0 k (lbPow A m) : ℝ) = p.eval (m : ℝ)` using `by filter_upwards [tendsto_natCast_atTop_atTop.eventually hser] with m hm`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `heval (m : ℤ)`. Establish `h2` using `chi_eq_hdim_zero k hm`. Move the coercions through the operations in `at h1`. Rewrite using `[h1, h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `hcD : p.coeff D ≤ 0`. Rewrite using `[hcoeff]`. Establish `: ((interNum k (structureModule X) fun _ : Fin D => A : ℤ) : ℝ) ≤ 0` using `by exact_mod_cast hneg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_nonpos_of_nonneg_of_nonpos (by positivity) this`. Establish `hq` using `eventually_eval_neg_of_coeff_neg (p - Polynomial.C c * Polynomial.X ^ D) D ((Polynomial.natDegree_sub_le _ _).trans (max_le hdeg ((Polynomial.natDegree_C_mul_X_pow_le c D)))) (by`. Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_C_mul_X_pow, if_pos rfl]`. Use the proof step `linarith)`. Take `⟨m, h1, h2, h3⟩` from `(hfreq.and_eventually (hchi.and hq)).exists`.
-
-Rewrite `h3` using `[Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem interNum_top_pos_of_isAmpleLB : ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X]
     [Algebra k Γ(X, ⊤)] (hp : IsProjOver (strHom k X)) (n : ℕ)

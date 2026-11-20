@@ -10,12 +10,12 @@ namespace UpperTheory.Esk.EllipticTermsContribution
 open UpperTheory.Esk
 
 /- English proof (translation)
-The claim follows from `Quotient.out_eq' q`.
+A detailed English derivation is pending.
 -/
 theorem mk_out {F : Type} [Field F] (q : PG F) : ((q.out : GL (Fin 2) F) : PG F) = q := Quotient.out_eq' q
 
 /- English proof (translation)
-Introduce `e`. Rewrite `hh` using `[Matrix.trace_fin_two, det_eq, e]`. Use polynomial arithmetic with `[sq_nonneg (h 0 0 - h 1 1)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem elliptic_lower_left_ne_zero (h : GL (Fin 2) ℝ) (hh : h.val.trace ^ 2 < 4 * h.val.det) : h 1 0 ≠ 0 := by
   intro e
@@ -28,7 +28,7 @@ def fpC (h : GL (Fin 2) ℝ) : ℂ :=
   (((h 0 0 - h 1 1) / (2 * h 1 0) : ℝ) : ℂ) + Complex.I * ((Real.sqrt (disc h) / (2 * h 1 0) : ℝ) : ℂ)
 
 /- English proof (translation)
-Establish `hr` using `elliptic_lower_left_ne_zero h hh`. Establish `hd : 0 < disc h` using `by unfold disc; linarith`. Simplify using `only [fpC, Complex.add_im, Complex.ofReal_im, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.ofReal_re, zero_mul, one_mul, zero_add]`. Conclude with `div_ne_zero (Real.sqrt_pos.2 hd).ne' (mul_ne_zero two_ne_zero hr)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fpC_im (h : GL (Fin 2) ℝ) (hh : h.val.trace ^ 2 < 4 * h.val.det) : (fpC h).im ≠ 0 := by
   have hr := elliptic_lower_left_ne_zero h hh
@@ -40,13 +40,13 @@ theorem fpC_im (h : GL (Fin 2) ℝ) (hh : h.val.trace ^ 2 < 4 * h.val.det) : (fp
 def fp (h : GL (Fin 2) ℝ) (hh : h.val.trace ^ 2 < 4 * h.val.det) : P := ⟨fpC h, fpC_im h hh⟩
 
 /- English proof (translation)
-Establish `hr` using `elliptic_lower_left_ne_zero h hh`. Establish `hd : 0 < disc h` using `by unfold disc; linarith`. Establish `hr' : ((h 1 0 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hr`. Establish `hs : ((Real.sqrt (disc h) : ℝ) : ℂ) ^ 2 = ((disc h : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt hd.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : ((disc h : ℝ) : ℂ) = 4 * (((h 0 0 : ℝ) : ℂ) * ((h 1 1 : ℝ) : ℂ) - ((h 0 1 : ℝ) : ℂ) * ((h 1 0 : ℝ) : ℂ)) - (((h 0 0 : ℝ) : ℂ) + ((h 1 1 : ℝ) : ℂ)) ^ 2`. Simplify using `only [disc, Matrix.trace_fin_two, det_eq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : 2 * ((h 1 0 : ℝ) : ℂ) * fpC h = (((h 0 0 : ℝ) : ℂ) - ((h 1 1 : ℝ) : ℂ)) + Complex.I * ((Real.sqrt (disc h) : ℝ) : ℂ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [fpC]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `h4 : (4 * ((h 1 0 : ℝ) : ℂ)) * (((h 1 0 : ℝ) : ℂ) * fpC h ^ 2 + (((h 1 1 : ℝ) : ℂ) - ((h 0 0 : ℝ) : ℂ)) * fpC h - ((h 0 1 : ℝ) : ℂ)) = 0`. Rewrite using `[show (4 * ((h 1 0 : ℝ) : ℂ)) * (((h 1 0 : ℝ) : ℂ) * fpC h ^ 2 + (((h 1 1 : ℝ) : ℂ) - ((h 0 0 : ℝ) : ℂ)) * fpC h - ((h 0 1 : ℝ) : ℂ)) = (2 * ((h 1 0 : ℝ) : ℂ) * fpC h) ^ 2 + 2 * (((h 1 1 : ℝ) : ℂ) - ((h 0 0 : ℝ) : ℂ)) * (2 * ((h 1 0 : ℝ) : ℂ) * fpC h) - 4 * ((h 1 0 : ℝ) : ℂ) * (( …`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take the linear combination `((Real.sqrt (disc h) : ℝ) : ℂ) ^ 2 * Complex.I_sq - hs - hD`. Break down `mul_eq_zero.1 h4 with h5 | h5` into its components or cases. Conclude with `absurd h5 (mul_ne_zero (by norm_num : (4 : ℂ) ≠ 0) hr')`. Conclude with `h5`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem fp_eq (h : GL (Fin 2) ℝ) (hh : h.val.trace ^ 2 < 4 * h.val.det) :
     ((h 1 0 : ℝ) : ℂ) * fpC h ^ 2 + (((h 1 1 : ℝ) : ℂ) - ((h 0 0 : ℝ) : ℂ)) * fpC h - ((h 0 1 : ℝ) : ℂ) = 0 := by
@@ -70,11 +70,11 @@ theorem fp_eq (h : GL (Fin 2) ℝ) (hh : h.val.trace ^ 2 < 4 * h.val.det) :
   · exact h5
 
 /- English proof (translation)
-Establish `hr` using `elliptic_lower_left_ne_zero h hh`. Establish `hr' : ((h 1 0 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hr`. Establish `e00` using `congrArg (fun M : GL (Fin 2) ℝ => M 0 0) hc`. Establish `e10` using `congrArg (fun M : GL (Fin 2) ℝ => M 1 0) hc`. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two] at e00 e10`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e00' : ((g 0 0 : ℝ) : ℂ) * ((h 0 0 : ℝ) : ℂ) + ((g 0 1 : ℝ) : ℂ) * ((h 1 0 : ℝ) : ℂ) = ((h 0 0 : ℝ) : ℂ) * ((g 0 0 : ℝ) : ℂ) + ((h 0 1 : ℝ) : ℂ) * ((g 1 0 : ℝ) : ℂ)` using `by exact_mod_cast e00`. Establish `e10' : ((g 1 0 : ℝ) : ℂ) * ((h 0 0 : ℝ) : ℂ) + ((g 1 1 : ℝ) : ℂ) * ((h 1 0 : ℝ) : ℂ) = ((h 1 0 : ℝ) : ℂ) * ((g 0 0 : ℝ) : ℂ) + ((h 1 1 : ℝ) : ℂ) * ((g 1 0 : ℝ) : ℂ)` using `by exact_mod_cast e10`. Establish `hQ` using `fp_eq h hh`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_smul, div_eq_iff (den_ne g (fp h hh).2)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_left_cancel₀ hr'` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((h 1 0 : ℝ) : ℂ) * (((g 0 0 : ℝ) : ℂ) * fpC h + ((g 0 1 : ℝ) : ℂ)) = ((h 1 0 : ℝ) : ℂ) * (fpC h * (((g 1 0 : ℝ) : ℂ) * fpC h + ((g 1 1 : ℝ) : ℂ)))`. Take the linear combination `e00' - fpC h * e10' - ((g 1 0 : ℝ) : ℂ) * hQ`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem fix_comm (h g : GL (Fin 2) ℝ) (hh : h.val.trace ^ 2 < 4 * h.val.det) (hc : g * h = h * g) :
     g • fp h hh = fp h hh := by
@@ -96,14 +96,14 @@ theorem fix_comm (h g : GL (Fin 2) ℝ) (hh : h.val.trace ^ 2 < 4 * h.val.det) (
   linear_combination e00' - fpC h * e10' - ((g 1 0 : ℝ) : ℂ) * hQ
 
 /- English proof (translation)
-Rewrite using `[Matrix.trace_fin_two, Matrix.trace_fin_two, map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tr_r {F I Gf : Type} [Field F] [Group Gf] (D : Dat F I Gf) (v : I) (g : GL (Fin 2) F) :
     (D.r v g).val.trace = D.σ v g.val.trace := by
   rw [Matrix.trace_fin_two, Matrix.trace_fin_two, map_add]; rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two, Matrix.det_fin_two, map_sub, map_mul, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_r {F I Gf : Type} [Field F] [Group Gf] (D : Dat F I Gf) (v : I) (g : GL (Fin 2) F) :
     (D.r v g).val.det = D.σ v g.val.det := by
@@ -113,35 +113,31 @@ end UpperTheory.Esk.EllipticTermsContribution
 
 open UpperTheory.Esk.EllipticTermsContribution in
 /- English proof (translation)
-Introduce `hB1a _ hB1c hB4 hC1 hE0a hE0c _ hMult hFcen F I Gf ι _ _ _ _ D k a hyp γ ω hT hTe`. Establish `: SigmaFinite (volume : Measure P)` using `hB1a.1`. Take `⟨_, c2, c3, _, c5, c6⟩` from `hE0c F I Gf ι D k a hyp`. Establish `htr : γ.out.val.trace ≠ 0`. Take `⟨i, hi⟩` from `c5 γ ω hTe`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(c6 γ ω i hi).1`. Establish `hTv : ∀ v, (D.r v γ.out).val.trace ^ 2 < 4 * (D.r v γ.out).val.det` using `fun v => by`. Rewrite using `[tr_r, det_r]`. Conclude with `hT v`. Set `z0 : D.Xs` to `fun v => fp (D.r v γ.out) (hTv v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set S := MulAction.stabilizer (PG F) ((γ, ω) : D.Cj × D.Om) with hS`. Establish `memS : ∀ g : PG F, g ∈ S → g * γ * g⁻¹ = γ ∧ g • ω = ω`. Introduce `g hg`. Rewrite `hg` using `[hS, MulAction.mem_stabilizer_iff]`. Conclude with `⟨congrArg Prod.fst hg, congrArg Prod.snd hg⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `fixS : ∀ g : PG F, g ∈ S → g • z0 = z0`. Introduce `g hg`. Take `⟨h1, -⟩` from `memS g hg`. Establish `hc : g.out * γ.out = γ.out * g.out`. Apply `hFcen F γ.out g.out htr` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[mk_out, mk_out]`. Conclude with `h1`. Rewrite using `[← mk_out g, Dat.mk_smulX]`. Use function extensionality and compare the values at `v`. Conclude with `fix_comm _ _ (hTv v) (by rw [← map_mul, ← map_mul, hc])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c₀, hc₀, hmink⟩` from `hyp.ax.mink`. Take `⟨s, hs, hsc⟩` from `hmink z0 (D.rep ω)`. Take `⟨C, hC⟩` from `hMult F I Gf D hyp.ax 1 c₀ one_pos hc₀`. Establish `hfin` using `(hC (ω, z0) s hs hsc).1`. Establish `hSfin : (S : Set (PG F)).Finite` using `hfin.subset fun g hg => ⟨(memS g hg).2, fun v => by show 1 ≤ kap (z0 v) ((g • z0 : D.Xs) v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[fixS g hg, hB1c.2.1]⟩`. Establish `hSF : Finite S` using `hSfin.to_subtype`. Use `⟨hSF, fun β hβ => ?_⟩` and prove the remaining obligations. Set `f : I → P → ℂ` to `fun v w => q1 (k v) w (D.r v γ.out • w) * j1 (k v) (D.r v γ.out) w`. Establish `hu : ∀ z : D.Xs, D.kk k a γ (ω, z) = D.Te a γ.out (D.rep ω) * ∏ v, f v (z v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z`. Use `show D.Te a γ.out (D.rep ω) * (qq k z (D.act γ.out z) * D.J k γ.out z) = D.Te a γ.out (D.rep ω) * ∏ v, (q1 (k v) (z v) (D.r v γ.out • z v) * j1 (k v) (D.r v γ.out) (z v))`. Rewrite using `[Finset.prod_mul_distrib]`. Both sides reduce to the same expression. Establish `hint : Integrable (fun z : D.Xs => ∏ v, f v (z v))` using `Integrable.fintype_prod (f := f) (μ := fun _ => volume) fun v => (hB4 (k v) (hyp.four v) _ (hTv v)).1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : ∫ z : D.Xs, ∏ v, f v (z v) = D.orb k γ.out`. Rewrite using `[show (∫ z : D.Xs, ∏ v, f v (z v)) = ∫ z : I → P, ∏ v, f v (z v) ∂(Measure.pi fun _ => volume) from rfl, integral_fintype_prod_eq_prod]`. Unfold `Dat.orb`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[(hB4 (k v) (hyp.four v) _ (hTv v)).2, tr_r, det_r]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Fintype S := Fintype.ofFinite S`. Establish `hcard : (0 : ℝ) < Fintype.card S` using `by exact_mod_cast Fintype.card_pos_iff.2 ⟨1⟩`. Set `c : ℝ` to `(Fintype.card S : ℝ)⁻¹`. Establish `hcut : IsCut S (fun _ : D.Xs => c)` using `⟨measurable_const, fun _ => inv_nonneg.2 hcard.le, fun _ => by`. Establish `e : ∑ _ : S, c = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_inv_cancel₀ hcard.ne']`. Rewrite using `[← e]`. Conclude with `hasSum_fintype _⟩`. Establish `hP : Pres S (volume : Measure D.Xs)` using `fun g => (hE0a F I Gf D hyp.ax).2.2.1 (g : PG F)`. Establish `hinv : ∀ (g : S) (z : D.Xs), D.kk k a γ (ω, g • z) = D.kk k a γ (ω, z)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `g z`. Take `⟨h1, h2⟩` from `memS g g.2`. Use `c2 g γ (ω, z)` as an intermediate fact. Establish `e : (g : PG F) • ((ω, z) : D.Y) = (ω, g • z)` using `Prod.ext h2 rfl`. Rewrite `this` using `[h1, e]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hmeas : Measurable (fun z : D.Xs => D.kk k a γ (ω, z))` using `(c3 γ).comp measurable_prodMk_left`. Establish `hintc : Integrable (fun z : D.Xs => c • D.kk k a γ (ω, z))`. Rewrite using `[show (fun z : D.Xs => c • D.kk k a γ (ω, z)) = fun z => c • (D.Te a γ.out (D.rep ω) * ∏ v, f v (z v)) from`. Use function extensionality and compare the values at `fun z => by rw [hu]]`.
-
-Conclude with `(hint.const_mul _).smul c`. Take `⟨-, heq⟩` from `(hC1 (↥S) D.Xs volume hP (fun _ => c) β hcut hβ).2 _ hmeas hinv hintc`. Rewrite using `[← heq]`. Repeatedly rewrite using `[hu]`. Rewrite using `[integral_smul, integral_const_mul, hval, Nat.card_eq_fintype_card, Complex.real_smul]`.
-
-Simplify using `only [c, Complex.ofReal_inv, Complex.ofReal_natCast]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.elliptic_terms_contribution_proof : UpperTheory.Esk.B1a → UpperTheory.Esk.B1b → UpperTheory.Esk.B1c → UpperTheory.Esk.B4 → UpperTheory.Esk.C1 → UpperTheory.Esk.E0a → UpperTheory.Esk.KernelTermsInvariantBounded → UpperTheory.Esk.E0d → UpperTheory.Esk.Mult → UpperTheory.Esk.Fcen → UpperTheory.Esk.F3 := by
   intro hB1a _ hB1c hB4 hC1 hE0a hE0c _ hMult hFcen F I Gf ι _ _ _ _ D k a hyp γ ω hT hTe

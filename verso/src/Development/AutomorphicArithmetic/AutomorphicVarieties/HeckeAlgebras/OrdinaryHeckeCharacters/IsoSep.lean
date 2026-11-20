@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IsoSepa
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL GlobalTheory.GalOfCusp GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V UpperTheory.V.Hi
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.IsoSeparation.isoSep`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.isoSep :
     ∀ {H M : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [AddCommGroup M] [Module ℂ M]

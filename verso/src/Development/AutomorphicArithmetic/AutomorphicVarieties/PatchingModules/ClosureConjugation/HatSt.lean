@@ -4,19 +4,17 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraT
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x O _ _ _ _ _ _ r B _ _ _ u P Bh _ _ _ _ hf H`. Establish `key : ∀ g : G.G₀, (algebraMap B Bh) ↑((G.frame.eps O B) g ^ (1 - (n : ℤ))) • ((mat x.ρ) (h.p₀ (G.frame.conj g)⁻¹)).map (algebraMap x.A (FractionRing x.A)) = (((mat x.ρ) (h.p₀ g)).map (algebraMap x.A (FractionRing x.A)))ᵀ`. Introduce `g`. Take `⟨he, hc⟩` from `eps_eq P g`. Establish `hunit : P.f (↑((G.frame.eps O B) g ^ (1 - (n : ℤ))) : B) = ↑((G0.frame.eps ℤ_[l] x.A) (h.p₀ g) ^ (1 - (n : ℤ)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : Units.map (P.f : B →* x.A) ((G.frame.eps O B) g) = (G0.frame.eps ℤ_[l] x.A) (h.p₀ g)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map]`. Conclude with `he`. Rewrite using `[← hu, ← map_zpow (Units.map (P.f : B →* x.A)), Units.coe_map]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hinvM : (mat x.ρ) (h.p₀ (G.frame.conj g)) * (mat x.ρ) (h.p₀ (G.frame.conj g)⁻¹) = 1`. Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel, map_one, map_one]`. Establish `hA : ((mat x.ρ) (h.p₀ g))ᵀ = (↑((G0.frame.eps ℤ_[l] x.A) (h.p₀ g) ^ (1 - (n : ℤ))) : x.A) • (mat x.ρ) (h.p₀ (G.frame.conj g)⁻¹)`. Establish `hform` using `x.form (h.p₀ g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hform` using `[Units.val_one, Matrix.mul_one, ← hc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.transpose_map, hA]`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, hf, hunit]`. Introduce `y`. Take `⟨z, rfl⟩` from `H.surj y`. Use `MonoidAlgebra.induction_on (motive := fun z => H.r (H.T.st (H.ι z)) = (H.r (H.ι z))ᵀ) z ?_ ?_ ?_` and prove the remaining obligations. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidAlgebra.of_apply, H.st, map_smul, H.r_ι, H.r_ι]`. Conclude with `key g`. Introduce `a b ha hb`. Simplify using `only [map_add, ha, hb, Matrix.transpose_add]`. Introduce `c a ha`.
-
-Simplify using `only [map_smul, ha, Matrix.transpose_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.hat_st :
     ∀ {l : ℕ} [Fact l.Prime] {L : Loc} {G G0 : Glob l L} {h : G.Hom G0} {n : ℕ} {x : NP G0.frame n} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] [Algebra O x.K] {r : Resid G.frame O n} {B : Type} [CommRing B] [Algebra O B] [IsCO O B] {u : Pair r B} (P : OoPt h x u), ∀ {Bh : Type} [CommRing Bh] [IsLocalRing Bh] [Algebra B Bh] [Algebra Bh (FractionRing x.A)], (∀ b, algebraMap Bh (FractionRing x.A) (algebraMap B Bh b) = algebraMap x.A (FractionRing x.A) (P.f b)) → ∀ H : Hat h x u.D P.ker Bh (G.frame.eps O B), ∀ y, H.r (H.T.st y) = (H.r y)ᵀ := by

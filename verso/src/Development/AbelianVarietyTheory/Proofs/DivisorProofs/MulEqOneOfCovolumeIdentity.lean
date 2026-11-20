@@ -30,24 +30,24 @@ variable {D : D7}
 abbrev iA (D : D7) (b : 𝓞 D.host.E) : Af D.host.F ⊗[D.host.F] D.host.E := (1 : Af D.host.F) ⊗ₜ (b : D.host.E)
 
 /- English proof (translation)
-Simplify using `[iA, Algebra.TensorProduct.tmul_mul_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iA_mul (a b : 𝓞 D.host.E) : iA D (a * b) = iA D a * iA D b := by
   simp [iA, Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Simplify using `[iA, TensorProduct.tmul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iA_add (a b : 𝓞 D.host.E) : iA D (a + b) = iA D a + iA D b := by
   simp [iA, TensorProduct.tmul_add]
 
 /- English proof (translation)
-Simplify using `[iA, Algebra.TensorProduct.one_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iA_one : iA D 1 = 1 := by simp [iA, Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [iA]`. Consider the case `succ n ih => rw [Nat.cast_succ, iA_add, ih, iA_one, Nat.cast_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iA_nat (n : ℕ) : iA D n = n := by
   induction n with
@@ -68,29 +68,27 @@ theorem halfVec_eq (b : 𝓞 D.host.E) (z : Fin V.rank → Af D.host.F ⊗[D.hos
     halfVec V b z = iA D b • z := rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Member.AALev.fv_add a b`.
+A detailed English derivation is pending.
 -/
 theorem finVec_add (a b : Fin V.rank → D.host.E) : finVec V (a + b) = finVec V a + finVec V b :=
   GlobalTheory.Member.AALev.fv_add a b
 
 /- English proof (translation)
-Rewrite using `[eq_sub_iff_add_eq, ← finVec_add, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finVec_sub (a b : Fin V.rank → D.host.E) : finVec V (a - b) = finVec V a - finVec V b := by
   rw [eq_sub_iff_add_eq, ← finVec_add, sub_add_cancel]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Member.AALev.fv_smul (b : D.host.E) a`.
+A detailed English derivation is pending.
 -/
 theorem finVec_smul (b : 𝓞 D.host.E) (a : Fin V.rank → D.host.E) : finVec V (b • a) = iA D b • finVec V a :=
   GlobalTheory.Member.AALev.fv_smul (b : D.host.E) a
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, rfl⟩` from `hy`. Establish `h` using `GlobalTheory.Member.AALev.hat_smul_adele _ a ha (GlobalTheory.Member.AALev.hat_smul_int L x hz)`. Rewrite `h` using `[smul_smul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Then use the resulting hypothesis.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_smul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [neg_smul]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_hat {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) {y : Af D.host.F ⊗[D.host.F] D.host.E}
     (hy : y ∈ intAE D) {z : Fin n → Af D.host.F ⊗[D.host.F] D.host.E}
@@ -106,13 +104,13 @@ theorem smul_mem_hat {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.
   | neg x _ hx => rw [neg_smul]; exact neg_mem hx
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Member.latG_lattice_and_completion D V 1).2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem latGHat_one (V : HSp D) : latGHat V 1 = GlobalTheory.AdLat.hat D.host.F (latG V 1 : Set (Fin V.rank → D.host.E)) :=
   (GlobalTheory.Member.latG_lattice_and_completion D V 1).2.2.2.2.1
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[latGHat_one]`. Conclude with `smul_mem_hat _ hy hz`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_latGHat {y : Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ intAE D)
     {z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ latGHat V 1) : y • z ∈ latGHat V 1 := by
@@ -120,7 +118,7 @@ theorem smul_mem_latGHat {y : Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ in
   exact smul_mem_hat _ hy hz
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[GlobalTheory.Member.AALev.latHat_eq]`. Conclude with `smul_mem_hat _ hy hz`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_latHat {y : Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ intAE D)
     {z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ latHat V) : y • z ∈ latHat V := by
@@ -128,27 +126,27 @@ theorem smul_mem_latHat {y : Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ int
   exact smul_mem_hat _ hy hz
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, fun _ => one_mem _, b, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem iA_mem (b : 𝓞 D.host.E) : iA D b ∈ intAE D :=
   AddSubgroup.subset_closure ⟨1, fun _ => one_mem _, b, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[latGHat_one]`. Conclude with `GlobalTheory.Member.AALev.fv_mem_hat _ ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finVec_mem {a : Fin V.rank → D.host.E} (ha : a ∈ latG V 1) : finVec V a ∈ latGHat V 1 := by
   rw [latGHat_one]
   exact GlobalTheory.Member.AALev.fv_mem_hat _ ha
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨b, hb, z, hz, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_idl {I : Ideal (𝓞 D.host.E)} {b : 𝓞 D.host.E} (hb : b ∈ I)
     {z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ latGHat V 1) : iA D b • z ∈ idl V I :=
   AddSubgroup.subset_closure ⟨b, hb, z, hz, rfl⟩
 
 /- English proof (translation)
-Use `and_congr Iff.rfl (forall₂_congr fun z hz => ⟨?_, fun h => ⟨_, sub_mem h hz, (one_smul _ _).symm⟩⟩)` and prove the remaining obligations. Introduce and unpack `⟨y, hy, e⟩`. Rewrite `e` using `[one_smul, sub_eq_iff_eq_add]`. Conclude with `e ▸ add_mem hy hz`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_levSet_one {κ : GA D V} :
     κ ∈ IndefiniteRowSideFullHecke.EmbeddingLevelSets.levSet V 1 ↔ κ ∈ GfC V ∧ ∀ z ∈ latHat V, (finHom V κ).1 *ᵥ z ∈ latHat V := by
@@ -158,32 +156,30 @@ theorem mem_levSet_one {κ : GA D V} :
   exact e ▸ add_mem hy hz
 
 /- English proof (translation)
-Rewrite using `[map_mul, Units.val_mul, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finHom_mul (κ κ' : GA D V) (z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
     (finHom V (κ * κ')).1 *ᵥ z = (finHom V κ).1 *ᵥ ((finHom V κ').1 *ᵥ z) := by
   rw [map_mul, Units.val_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite `h`, `h'`, the goal using `[mem_levSet_one]`. Conclude with `⟨mul_mem h.1 h'.1, fun z hz => finHom_mul κ κ' z ▸ h.2 _ (h'.2 z hz)⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem levSet_mul {κ κ' : GA D V} (h : κ ∈ IndefiniteRowSideFullHecke.EmbeddingLevelSets.levSet V 1) (h' : κ' ∈ IndefiniteRowSideFullHecke.EmbeddingLevelSets.levSet V 1) : κ * κ' ∈ IndefiniteRowSideFullHecke.EmbeddingLevelSets.levSet V 1 := by
   rw [mem_levSet_one] at h h' ⊢
   exact ⟨mul_mem h.1 h'.1, fun z hz => finHom_mul κ κ' z ▸ h.2 _ (h'.2 z hz)⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Member.AALev.congruences_agree D V κ).1.2 h.2 z hz`.
+A detailed English derivation is pending.
 -/
 theorem stab_latGHat {κ : GA D V} (h : κ ∈ IndefiniteRowSideFullHecke.EmbeddingLevelSets.levSet V 1) {z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E}
     (hz : z ∈ latGHat V 1) : (finHom V κ).1 *ᵥ z ∈ latGHat V 1 :=
   (GlobalTheory.Member.AALev.congruences_agree D V κ).1.2 h.2 z hz
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, z, hz, rfl⟩` from `hy`. Rewrite using `[halfVec_eq, Matrix.mulVec_smul]`. Conclude with `smul_mem_idl hb (stab_latGHat h hz)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mulVec_neg]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem stab_idl {κ : GA D V} (h : κ ∈ IndefiniteRowSideFullHecke.EmbeddingLevelSets.levSet V 1) {I : Ideal (𝓞 D.host.E)}
     {z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ idl V I) : (finHom V κ).1 *ᵥ z ∈ idl V I := by
@@ -197,17 +193,17 @@ theorem stab_idl {κ : GA D V} (h : κ ∈ IndefiniteRowSideFullHecke.EmbeddingL
   | neg x _ hx => rw [Matrix.mulVec_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Rewrite using `[smul_neg, smul_neg, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_neg_eq {A : Type} [CommRing A] {n : ℕ} (b : A) (x w : Fin n → A) (M : ℕ) (e : b • x = M • w) :
     b • -x = M • -w := by rw [smul_neg, smul_neg, e]
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b', hb', z, hz, rfl⟩` from `hy`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 (h ▸ Ideal.mul_mem_mul hb hb')`. Use `⟨iA D r • z, smul_mem_latGHat (iA_mem r) hz, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[halfVec_eq, smul_smul, ← iA_mul, ← hr, mul_comm, iA_mul, iA_nat, mul_smul, Nat.cast_smul_eq_nsmul]`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨w, hw, e⟩` from `hx`. Take `⟨w', hw', e'⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w + w', add_mem hw hw', by rw [smul_add, smul_add, e, e']⟩`. Consider the case `neg x _ hx`. Take `⟨w, hw, e⟩` from `hx`. Conclude with `⟨-w, neg_mem hw, smul_neg_eq _ _ _ _ e⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smul_idl_eq {I J : Ideal (𝓞 D.host.E)} {M : ℕ} (h : I * J = Ideal.span {(M : 𝓞 D.host.E)}) {b : 𝓞 D.host.E}
     (hb : b ∈ I) {u : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E} (hu : u ∈ idl V J) :
@@ -228,7 +224,7 @@ theorem smul_idl_eq {I J : Ideal (𝓞 D.host.E)} {M : ℕ} (h : I * J = Ideal.s
     exact ⟨-w, neg_mem hw, smul_neg_eq _ _ _ _ e⟩
 
 /- English proof (translation)
-Take `⟨m, hm, c, hc', e⟩` from `Submodule.mem_sup.1 (hc ▸ Submodule.mem_top : (1 : 𝓞 D.host.E) ∈ I ⊔ J)`. Take `⟨w, hw, e1⟩` from `smul_idl_eq h hm hJ`. Take `⟨w', hw', e2⟩` from `smul_idl_eq (mul_comm I J ▸ h) hc' hI`. Use `⟨w + w', add_mem hw hw', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← e1, ← e2, ← add_smul, ← iA_add, e, iA_one, one_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem inf_idl {I J : Ideal (𝓞 D.host.E)} {M : ℕ} (h : I * J = Ideal.span {(M : 𝓞 D.host.E)}) (hc : I ⊔ J = ⊤)
     {u : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E} (hI : u ∈ idl V I) (hJ : u ∈ idl V J) :
@@ -246,7 +242,7 @@ variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : 
 abbrev Mc : Ideal (𝓞 D.host.E) := l.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)
 
 /- English proof (translation)
-Rewrite using `[Ne, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]`. Use `l.three_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem span_ne : Ideal.span {(l.M : 𝓞 D.host.E)} ≠ ⊥ := by
   rw [Ne, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]
@@ -254,17 +250,17 @@ theorem span_ne : Ideal.span {(l.M : 𝓞 D.host.E)} ≠ ⊥ := by
   omega
 
 /- English proof (translation)
-Introduce `h` and use `span_ne l (by rw [← l.prod, h, Ideal.bot_mul])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Mb_ne : l.Mb ≠ ⊥ := fun h => span_ne l (by rw [← l.prod, h, Ideal.bot_mul])
 
 /- English proof (translation)
-Introduce `h` and use `span_ne l (by rw [← l.prod, show l.Mb.map _ = ⊥ from h, Ideal.mul_bot])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Mc_ne : Mc l ≠ ⊥ := fun h => span_ne l (by rw [← l.prod, show l.Mb.map _ = ⊥ from h, Ideal.mul_bot])
 
 /- English proof (translation)
-Establish `h` using `Ideal.mem_span_singleton_self (l.M : 𝓞 D.host.E)`. Rewrite `h` using `[← l.prod]`. Conclude with `(Ideal.mul_le_inf h).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem M_mem : (l.M : 𝓞 D.host.E) ∈ l.Mb := by
   have h := Ideal.mem_span_singleton_self (l.M : 𝓞 D.host.E)
@@ -272,7 +268,7 @@ theorem M_mem : (l.M : 𝓞 D.host.E) ∈ l.Mb := by
   exact (Ideal.mul_le_inf h).1
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sup.1 (by rw [show l.Mb ⊔ Mc l = ⊤ from l.coprime]; exact Submodule.mem_top)`.
+A detailed English derivation is pending.
 -/
 theorem exists_split : ∃ m ∈ l.Mb, ∃ c ∈ Mc l, m + c = 1 :=
   Submodule.mem_sup.1 (by rw [show l.Mb ⊔ Mc l = ⊤ from l.coprime]; exact Submodule.mem_top)
@@ -285,20 +281,20 @@ def Ind (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) (γ : LevGr
 variable {l} {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)}
 
 /- English proof (translation)
-The claim follows from `finVec_mem (hι.2 ▸ LinearMap.mem_range_self ι a)`.
+A detailed English derivation is pending.
 -/
 theorem iota_mem (hι : LatEmb V ι) (a : Dw.La) : finVec V (ι a) ∈ latGHat V 1 :=
   finVec_mem (hι.2 ▸ LinearMap.mem_range_self ι a)
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_smul'', Submodule.map_top, hι.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_top (hι : LatEmb V ι) (I : Ideal (𝓞 D.host.E)) :
     (I • (⊤ : Submodule (𝓞 D.host.E) Dw.La)).map ι = I • latG V 1 := by
   rw [Submodule.map_smul'', Submodule.map_top, hι.2]
 
 /- English proof (translation)
-Use `(GlobalTheory.T.rationalVector_mem_ideal_completedLattice_iff D V I hI (ι a)).trans ?_` and prove the remaining obligations. Rewrite using `[← map_smul_top hι]`. Conclude with `⟨fun ⟨b, hb, e⟩ => hι.1 e ▸ hb, fun h => ⟨a, h, rfl⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem iota_mem_idl (hι : LatEmb V ι) {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥) (a : Dw.La) :
     finVec V (ι a) ∈ idl V I ↔ a ∈ I • (⊤ : Submodule (𝓞 D.host.E) Dw.La) := by
@@ -307,7 +303,7 @@ theorem iota_mem_idl (hι : LatEmb V ι) {I : Ideal (𝓞 D.host.E)} (hI : I ≠
   exact ⟨fun ⟨b, hb, e⟩ => hι.1 e ▸ hb, fun h => ⟨a, h, rfl⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← finVec_sub, ← map_sub, iota_mem_idl hι (Mb_ne l), Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_mem_idl (hι : LatEmb V ι) (a a' : Dw.La) :
     finVec V (ι a) - finVec V (ι a') ∈ idl V l.Mb ↔
@@ -315,7 +311,7 @@ theorem sub_mem_idl (hι : LatEmb V ι) (a a' : Dw.La) :
   rw [← finVec_sub, ← map_sub, iota_mem_idl hι (Mb_ne l), Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]
 
 /- English proof (translation)
-Use `LinearEquiv.ext fun q => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.mkQ_surjective _ q`. Rewrite using `[← liftLa_spec, ← liftLa_spec, ← sub_mem_idl hι]`. Use `sub_mem (h'.2 a) (h.2 a)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Ind.unique (hι : LatEmb V ι) {γ γ' : LevGrp Dw l} {κ : GA D V} (h : Ind V l ι γ κ) (h' : Ind V l ι γ' κ) :
     γ = γ' := by
@@ -326,9 +322,9 @@ theorem Ind.unique (hι : LatEmb V ι) {γ γ' : LevGrp Dw l} {κ : GA D V} (h :
   rwa [sub_sub_sub_cancel_left] at this
 
 /- English proof (translation)
-Use `⟨levSet_mul h.1 h'.1, fun a => ?_⟩` and prove the remaining obligations. Establish `h3 : finVec V (ι (liftLa γ (liftLa γ' a))) - finVec V (ι (liftLa (γ * γ') a)) ∈ idl V l.Mb`. Rewrite using `[sub_mem_idl hι, liftLa_spec, liftLa_spec, liftLa_spec]`. Both sides reduce to the same expression. Use `add_mem (add_mem (stab_idl h.1 (h'.2 a)) (h.2 (liftLa γ' a))) h3` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mulVec_sub, ← finHom_mul]`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws.
 -/
 theorem Ind.mul (hι : LatEmb V ι) {γ γ' : LevGrp Dw l} {κ κ' : GA D V} (h : Ind V l ι γ κ) (h' : Ind V l ι γ' κ') :
     Ind V l ι (γ * γ') (κ * κ') := by
@@ -342,7 +338,7 @@ theorem Ind.mul (hι : LatEmb V ι) {γ γ' : LevGrp Dw l} {κ κ' : GA D V} (h 
   abel
 
 /- English proof (translation)
-Use `smul_mem_idl (M_mem l) hw` as an intermediate fact. Rewrite `this` using `[iA_nat, Nat.cast_smul_eq_nsmul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nsmul_mem_idl {w : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E} (hw : w ∈ latGHat V 1) :
     l.M • w ∈ idl V l.Mb := by
@@ -350,11 +346,11 @@ theorem nsmul_mem_idl {w : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E} (h
   rwa [iA_nat, Nat.cast_smul_eq_nsmul] at this
 
 /- English proof (translation)
-Establish `h1 : κ ∈ IndefiniteRowSideFullHecke.EmbeddingLevelSets.levSet V 1` using `mem_levSet_one.2 ⟨h.1, fun z hz => by`. Establish `: (finHom V κ).1 *ᵥ z ∈ gLat V κ` using `⟨z, hz, rfl⟩`. Rewrite using `[h.2.1] at this⟩` and apply the resulting hypothesis. Use `⟨h1, fun a => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, c, hc, e⟩` from `exists_split l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e0 : (l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)).mkQ (c • liftLa γ a) = γ ((l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)).mkQ (c • a))`. Rewrite using `[LinearMap.map_smul, LinearMap.map_smul, LinearEquiv.map_smul, liftLa_spec]`. Take `⟨w, hw, e1⟩` from `h.2.2 (c • a) (Submodule.smul_mem_smul hc Submodule.mem_top) (c • liftLa γ a) (Submodule.smul_mem_smul hc Submodule.mem_top) e0`. Establish `h0` using `nsmul_mem_idl (l := l) hw`. Rewrite `h0` using `[← e1, ι.map_smul, ι.map_smul, finVec_smul, finVec_smul, Matrix.mulVec_smul, ← smul_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `add_mem (smul_mem_idl hm (sub_mem (stab_latGHat h1 (iota_mem hι a)) (iota_mem hι (liftLa γ a)))) h0`. Rewrite `h2` using `[← add_smul, ← iA_add, e, iA_one, one_smul]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_of_isLevLift (hι : LatEmb V ι) {γ : LevGrp Dw l} {κ : GA D V} (h : IsLevLift l V ι γ κ) :
     Ind V l ι γ κ := by
@@ -375,11 +371,9 @@ theorem ind_of_isLevLift (hι : LatEmb V ι) {γ : LevGrp Dw l} {κ : GA D V} (h
   exact h2
 
 /- English proof (translation)
-Establish `h1` using `mem_levSet_one.1 h.1`. Use `⟨h1.1, ?_, fun a ha a' ha' e => ?_⟩` and prove the remaining obligations. Use `Set.Subset.antisymm ?_ fun z hz => ⟨_, GlobalTheory.RecDict.finHom_inv_mulVec_mem V κ h1.2 z hz, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `h1.2 z hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `show (finHom V κ).1 *ᵥ _ = z`. Rewrite using `[← finHom_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Use `inf_idl l.prod l.coprime ?_ ?_` and prove the remaining obligations. Use `add_mem (h.2 a) ((sub_mem_idl hι (liftLa γ a) a').2 (by rw [liftLa_spec, e]))` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
-
-Conclude with `sub_mem (stab_idl h.1 ((iota_mem_idl hι (Mc_ne l) a).2 ha)) ((iota_mem_idl hι (Mc_ne l) a').2 ha')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem Ind.isLevLift (hι : LatEmb V ι) {γ : LevGrp Dw l} {κ : GA D V} (h : Ind V l ι γ κ) :
     IsLevLift l V ι γ κ := by
@@ -396,7 +390,7 @@ theorem Ind.isLevLift (hι : LatEmb V ι) {γ : LevGrp Dw l} {κ : GA D V} (h : 
     · exact sub_mem (stab_idl h.1 ((iota_mem_idl hι (Mc_ne l) a).2 ha)) ((iota_mem_idl hι (Mc_ne l) a').2 ha')
 
 /- English proof (translation)
-Use `⟨h1, fun a => ?_⟩` and prove the remaining obligations. Use `add_mem (h a) ((sub_mem_idl hι a (liftLa (1 : LevGrp Dw l) a)).2 (by rw [liftLa_spec]; rfl))` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ind_one_of (hι : LatEmb V ι) {κ : GA D V} (h1 : κ ∈ IndefiniteRowSideFullHecke.EmbeddingLevelSets.levSet V 1)
     (h : ∀ a, (finHom V κ).1 *ᵥ finVec V (ι a) - finVec V (ι a) ∈ idl V l.Mb) : Ind V l ι 1 κ := by
@@ -405,11 +399,11 @@ theorem ind_one_of (hι : LatEmb V ι) {κ : GA D V} (h1 : κ ∈ IndefiniteRowS
   rwa [sub_add_sub_cancel] at this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(hK κ).1 ((hH κ).2 ⟨h.1.1, ((GlobalTheory.Member.AALev.congruences_agree D V κ).2 l.M (Mc l)).2 fun a ha => ?_⟩)` and prove the remaining obligations. Rewrite `ha` using `[← map_smul_top hι]`. Take `⟨a, ha, rfl⟩` from `ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(h.isLevLift hι).2.2 a ha a ha rfl`. Introduce `h`. Use `ind_one_of hι ⟨h.1, fun z hz => ?_⟩ fun a => ?_` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `h.2 z hz`. Conclude with `⟨l.M • y, nsmul_mem hy _, by rw [one_smul, e]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, e⟩` from `((GlobalTheory.Member.AALev.congruences_agree D V κ).2 l.M ⊤).1 (fun b _ z hz => h.2 _ (smul_mem_latHat (iA_mem b) hz)) (ι a) (by rw [Submodule.top_smul, ← hι.2]; exact LinearMap.mem_range_self ι a)`. Conclude with `e ▸ nsmul_mem_idl hw`.
+A detailed English derivation is pending.
 -/
 theorem ind_one_iff (hι : LatEmb V ι) {Kf : Subgroup (GA D V)} (hK : IsLevelK V l.M Kf) (hH : KfHalf V Kf l.M (Mc l))
     (κ : GA D V) : Ind V l ι 1 κ ↔ κ ∈ IndefiniteRowSideFullHecke.EmbeddingLevelSets.levSet V l.M := by
@@ -433,7 +427,7 @@ end Lev
 section Char
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Conclude with `e.injective (Prod.ext ((he z).1.trans (h1.trans (he z').1.symm)) ((he z).2.trans (h2.trans (he z').2.symm)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ext_AE {z z' : AE D} (h1 : infPart D z = infPart D z') (h2 : finPart D z = finPart D z') : z = z' := by
   obtain ⟨e, he, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E

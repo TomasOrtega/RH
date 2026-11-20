@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdForm.VacConst
 
 /- English proof (translation)
-Introduce `i j`. Establish `h : mt V 1 - 1 = 0` using `by rw [GlobalTheory.AdelicLatMove.mt_one, sub_self]`. Rewrite using `[h, Matrix.zero_apply, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem suppAt_one {D : D7} (e : Formalism.L2.Theta.AE D) (V : HSp D) : Formalism.L2.Theta.SuppAt e V 1 := by
   intro i j
@@ -25,11 +25,11 @@ theorem suppAt_one {D : D7} (e : Formalism.L2.Theta.AE D) (V : HSp D) : Formalis
   rw [h, Matrix.zero_apply, mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `hs using Subgroup.closure_induction'' with`. Consider the case `mem x hx`. Take `⟨e, he, hx⟩` from `hx`. Conclude with `⟨GlobalTheory.SplitHecke.Stab.mem_GfC he hx, fun g hg h => hP g hg h e he x hx⟩`. Consider the case `inv_mem x hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨e, he, hx⟩` from `hx`. Establish `hx'` using `GlobalTheory.SplitHecke.Stab.suppAt_inv hx`. Conclude with `⟨GlobalTheory.SplitHecke.Stab.mem_GfC he hx', fun g hg h => hP g hg h e he _ hx'⟩`. Consider the case `one => exact ⟨one_mem _, fun g _ h => by rwa [one_mul]⟩`. Consider the case `mul x y _ _ ihx ihy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Use `⟨mul_mem ihx.1 ihy.1, fun g hg h => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `ihx.2 _ (mul_mem ihy.1 hg) (ihy.2 g hg h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_induction {D : D7} (V : HSp D) (P : GA D V → Prop)
     (hP : ∀ g ∈ GfC V, P g → ∀ e, IsSplitIdem D e → ∀ s, Formalism.L2.Theta.SuppAt e V s → P (s * g))
@@ -49,13 +49,13 @@ theorem split_induction {D : D7} (V : HSp D) (P : GA D V → Prop)
     exact ihx.2 _ (mul_mem ihy.1 hg) (ihy.2 g hg h)
 
 /- English proof (translation)
-Introduce `hSA B X I l Z w u A ψ θ hA i hi`. Take `⟨c₀, hc, h1⟩` from `GlobalTheory.T.exists_nonzero_move_constant I l Z w u A ψ θ hA i hi`. Establish `hstd` using `(GlobalTheory.T.standard_pair_along_chain I l Z w u A ψ θ hA i hi).1`. Use `⟨c₀, hc, fun g hg h hh => ?_⟩` and prove the remaining obligations. Take `⟨r, s, k, hr, hs, hk, hkL, rfl⟩` from `GlobalTheory.T.strong_approximation_decomposition hSA _ _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) hstd.gS g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨r', s', k', hr', hs', hk', hkL', rfl⟩` from `GlobalTheory.T.strong_approximation_decomposition hSA _ _ _ (rankN (I.rec7 l Z) (i + 1) hi) hstd.gT h hh`. Establish `h2` using `GlobalTheory.T.move_compact_level_invariant I l Z w u A ψ θ hA i hi c₀ 1 1 (one_mem _) (one_mem _) h1 k hk k' hk' hkL hkL'`. Rewrite `h2` using `[one_mul, one_mul]`. Establish `h3` using `split_induction _ (fun g => A.MoveAt θ i hi c₀ g k') (fun g hg H e he t ht => by`. Use `GlobalTheory.T.move_split_support_invariant I l Z w u A ψ θ hA i hi c₀ g k' hg hk' H e he t 1 ht (suppAt_one e _)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[one_mul] at this) hs` and apply the resulting hypothesis. Establish `hsk` using `mul_mem h3.1 hk`. Establish `h4` using `split_induction _ (fun h => A.MoveAt θ i hi c₀ (s * k) h) (fun h hh H e he t ht => by`. Use `GlobalTheory.T.move_split_support_invariant I l Z w u A ψ θ hA i hi c₀ (s * k) h hsk hh H e he 1 t (suppAt_one e _) ht` as an intermediate fact. Rewrite using `[one_mul] at this) hs'` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h5` using `GlobalTheory.T.move_rational_invariant I l Z w u A ψ θ hA i hi c₀ _ _ hsk (mul_mem h4.1 hk') (h4.2 k' hk' (h3.2 k hk h2)) r r' hr hr'`. Rewrite using `[mul_assoc, mul_assoc]`. Conclude with `h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vacMove : GlobalTheory.Published.StrongApproxSU → ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (w : World I l Z) (u : B.Word) (A : ColDat I l Z u (w.C.herm.base.Ch u)) ψ θ, A.Is (w.C.forms u) ψ θ → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m), A.VacMove θ i hi := by
   intro hSA B X I l Z w u A ψ θ hA i hi

@@ -9,9 +9,9 @@ namespace PI.VolSemiDirect.W.Md
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub NumberField
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ r P T _ hP`. Establish `hσσ` using `sigma_invol hCM`. Establish `h2 : (2 : E) ≠ 0` using `two_ne_zero`. Take `⟨h1, -, -, -⟩` from `Lc.tensor_adele_topology_holds F E`. Use `⟨coordHomeo hσσ hJ hP h2, fun n₀ n => phi_mul hσσ hJ hP h2 n₀ n, fun h hh n n' hn => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e1, e2⟩` from `phi_conj hσσ hJ hP h2 hh n n' hn`. Conclude with `⟨fun a => congrFun e1 a, Subtype.ext e2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem heisenberg_coordinates_holds : HeisenbergCoordinates := by
   intro F E _ _ _ _ _ σ hCM M J hJ r P T _ hP

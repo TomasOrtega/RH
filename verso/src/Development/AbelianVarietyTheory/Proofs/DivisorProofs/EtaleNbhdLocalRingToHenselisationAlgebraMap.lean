@@ -5,9 +5,7 @@ open IsLocalRing GlobalTheory.Henselisation
 namespace GlobalTheory.Henselisation
 
 /- English proof (translation)
-Use `⟨Ideal.Quotient.liftₐ _ (MvPolynomial.aeval (R := R) (S₁ := i.A) Fin.elim0) ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Establish `hcomp : (MvPolynomial.aeval (R` using `R) (S₁ := i.A) Fin.elim0) = (Algebra.ofId R i.A).comp (MvPolynomial.isEmptyAlgEquiv R (Fin 0)).toAlgHom := MvPolynomial.algHom_ext fun x => x.elim0`. Establish `ha' : (MvPolynomial.isEmptyAlgEquiv R (Fin 0)).toAlgHom a = 0` using `ha`. Conclude with `(DFunLike.congr_fun hcomp a).trans ((congrArg (Algebra.ofId R i.A) ha').trans (map_zero _))`.
-
-Conclude with `Ideal.Quotient.algHom_ext R (MvPolynomial.algHom_ext fun x => x.elim0)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem EtNbhd.base_le_all {R : Type} [CommRing R] [IsLocalRing R] (i : EtNbhd R) :
     EtNbhd.base ≤ i := by
@@ -21,9 +19,9 @@ theorem EtNbhd.base_le_all {R : Type} [CommRing R] [IsLocalRing R] (i : EtNbhd R
   · exact Ideal.Quotient.algHom_ext R (MvPolynomial.algHom_ext fun x => x.elim0)
 
 /- English proof (translation)
-Establish `h` using `EtNbhd.base_le_all i`. Express the relevant statement in the definitionally equal form `Hens.of i (algebraMap R i.B r) = Hens.of EtNbhd.base (algebraMap R EtNbhd.base.B r)`. Establish `e : Hens.of EtNbhd.base (algebraMap R EtNbhd.base.B r) = Hens.of i (EtNbhd.trans h (algebraMap R EtNbhd.base.B r))` using `(Ring.DirectLimit.of_f (G := fun i : EtNbhd R => i.B) (f := fun _ _ h => ⇑(EtNbhd.trans h)) h _).symm`. Rewrite using `[e]`. Use `congr 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[IsScalarTower.algebraMap_apply R (EtNbhd.base (R := R)).A (EtNbhd.base (R := R)).B r, EtNbhd.trans, Localization.localRingHom_to_map, RingHom.coe_coe, AlgHom.commutes, ← IsScalarTower.algebraMap_apply R i.A i.B r]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hens.of_algebraMap (R : Type) [CommRing R] [IsLocalRing R] (i : EtNbhd R) (r : R) :
     Hens.of i (algebraMap R i.B r) = algebraMap R (Hens R) r := by

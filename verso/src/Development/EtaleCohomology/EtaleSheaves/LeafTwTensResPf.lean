@@ -16,7 +16,7 @@ instance resGE (q : ℕ) (i : ℤ) : (res (ZMod q) (tw q i)).IsStrictlyGE 0 := b
   infer_instance
 
 /- English proof (translation)
-Use `⟨resGE q i, resAug (tw q i), ?_, fun U ζ => ?_⟩` and prove the remaining obligations. Unfold `resAug`. Conclude with `(inferInstance : QuasiIso (injectiveResolution (tw q i)).ι')`. Simplify using `only [resGen, resι, sglι, Sec.map]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem res_isTwRes (q : ℕ) [NeZero q] (i : ℤ) :
     IsTwRes q i (res (ZMod q) (tw q i)) (fun _ ζ => resGen i ζ) := by
@@ -27,7 +27,7 @@ theorem res_isTwRes (q : ℕ) [NeZero q] (i : ℤ) :
     rfl
 
 /- English proof (translation)
-Introduce `q _ i j T τ hτ`. Conclude with `h1 q i j (i + j) rfl (fun _ ζ => resGen i ζ) (fun _ ζ => resGen j ζ) (res_isTwRes q i) (res_isTwRes q j) (h2 q j) τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem leafTwTensRes_of (h1 : LeafTensTwres) (h2 : LeafResFlat) : LateralTheory.E.LeafTwPairExistsPf.LeafTwTensRes := by
   intro q _ i j T τ hτ

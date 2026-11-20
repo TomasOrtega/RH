@@ -9,7 +9,7 @@ namespace GlobalTheory.TameRelation
 open GlobalTheory.TameQuot
 
 /- English proof (translation)
-Establish `h1 : θ σ ^ θ.ker.index = 1`. Rewrite using `[← map_pow]`. Conclude with `θ.ker.pow_index_mem σ`. Establish `h2 : θ σ ^ l ^ k = 1` using `hN (θ σ).toAdd`. Conclude with `(pow_eq_one_iff_of_coprime (h.pow_right k)).1 ⟨h1, h2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_of_index_coprime {J N : Type} [Group J] [AddCommGroup N] {l k : ℕ}
     (hN : ∀ m : N, (l ^ k) • m = 0) (θ : J →* Multiplicative N) (h : θ.ker.index.Coprime l)
@@ -20,9 +20,9 @@ theorem eq_one_of_index_coprime {J N : Type} [Group J] [AddCommGroup N] {l k : �
   exact (pow_eq_one_iff_of_coprime (h.pow_right k)).1 ⟨h1, h2⟩
 
 /- English proof (translation)
-Establish `hbb : ∀ m : W, b • b • m = 0` using `fun m => by rw [← mul_smul, hb, zero_smul]`. Proceed by induction on `k with`. Consider the case `zero => simpa using hz 1 1`. Consider the case `succ k ih`. Use `⟨fun m => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ', map_mul, Module.End.mul_apply, ih.1, hγ, smul_add, smul_comm b k, hbb, smul_zero, add_zero, succ_nsmul]`. Normalize the expressions using the abelian group laws. Rewrite using `[pow_succ', hz, ih.2, hγ, smul_add, smul_comm b k, smul_comm b (k.choose 2), hbb, smul_zero, add_zero, succ_nsmul, Nat.choose_succ_succ' k 1, Nat.choose_one_right, add_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem pow_formula {Γ R W : Type} [Group Γ] [CommRing R] [AddCommGroup W] [Module R W]
     (ρ : Representation R Γ W) {b : R} (hb : b * b = 0) {γ : Γ} (hγ : ∀ m, ρ γ m = m + b • m)
@@ -41,25 +41,23 @@ theorem pow_formula {Γ R W : Type} [Group Γ] [CommRing R] [AddCommGroup W] [Mo
       abel
 
 /- English proof (translation)
-Introduce `hT F Ω _ _ _ _ _ l hlp A v hA hl k hq M d γ σ hM hd hγ hdγ hσ R _ W _ _ _ _ ρ a b h4 hb hI hρ z`. Take `⟨-, -, hco, ⟨t, tc, ts, hk⟩, -, -⟩` from `hT F Ω l A v hA hl`. Use `haveI : Fact (1 < l ^ M) := ⟨one_lt_pow₀ hlp.out.one_lt (by omega)⟩`. Establish `hdJ : ∀ τ ∈ ineKer F A l, d τ = 1` using `fun τ hτ => eq_one_of_index_coprime (l := l) (k := M) (fun m => by rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]) (d.comp (ineKer F A l).subtype) (hco _ inferInstance (hd.preimage continuous_subtype_val)) ⟨τ, hτ⟩`. Establish `hρJ : ∀ τ ∈ ineKer F A l, ∀ m, ρ τ m = m` using `fun τ hτ m => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI τ (ineKer_le_Ine A l hτ), hdJ τ hτ]`. Simplify using the standard rewrite rules. Establish `hzJ : ∀ τ ∈ ineKer F A l, z.1 τ = 0` using `fun τ hτ => by`. Set `θ : ineKer F A l →* Multiplicative W` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (z.1 g)) fun g h => by`. Use `z.2.2 (g : G F Ω) h` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hρJ _ g.2]`. Conclude with `congrArg Multiplicative.ofAdd this`. Establish `ho : IsOpen (θ.ker : Set (ineKer F A l))` using `(isOpen_discrete {0}).preimage (z.2.1.comp continuous_subtype_val)`. Conclude with `eq_one_of_index_coprime (l := l) (k := k) h4 θ (hco _ inferInstance ho) ⟨τ, hτ⟩`. Use `⟨?_, fun hb0 h0 τ hτ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hj` using `tame_rel hA hl hσ hγ`. Establish `hγ' : ∀ m, ρ γ m = m + b • m` using `fun m => by`. Rewrite using `[hI γ hγ, hdγ, toAdd_ofAdd, ZMod.val_one, Nat.cast_one, one_mul]`. Take `⟨p1, p2⟩` from `pow_formula ρ hb hγ' z.1 z.2.2 (normV v)`. Establish `hqs : ∀ m : W, normV v • m = m` using `KStar.Tree.nsmul_eq_self_of_mod hq h4`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `KStar.Tree.dvd_choose_two hq`. Rewrite `p2` using `[hc, mul_comm (l ^ k), mul_smul, h4, smul_zero, add_zero, hqs]`. Establish `e : σ * γ = γ ^ normV v * (((γ ^ normV v)⁻¹ * (σ * γ * σ⁻¹)) * σ)` using `by group`. Establish `h1` using `z.2.2 σ γ`. Rewrite `h1` using `[e, z.2.2, z.2.2 _ σ, hzJ _ hj, hρJ _ hj, zero_add, p1, p2, hqs, hρ, ← add_assoc, ← add_assoc, add_comm (z.1 γ)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(add_left_cancel h1).symm`. Establish `hg : IsProGen F A l γ`. Use `(isProGen_iff_isUnit F Ω l A t tc ts hk ⟨γ, hγ⟩).2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Take `⟨y, hy⟩` from `(PadicInt.norm_lt_one_iff_dvd _).1 (PadicInt.mem_nonunits.1 hu)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg⟩` from `ts (Multiplicative.ofAdd y)`. Establish `h1 : t ((g ^ l)⁻¹ * ⟨γ, hγ⟩) = 1`. Rewrite using `[map_mul, map_inv, map_pow, inv_mul_eq_one, hg]`. Use `Multiplicative.toAdd.injective ?_` and prove the remaining obligations. Rewrite using `[hy, toAdd_pow, toAdd_ofAdd, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : d (((g : G F Ω) ^ l)⁻¹ * γ) = 1` using `hdJ _ ((hk _).1 h1)`. Rewrite `h2` using `[map_mul, map_inv, map_pow, inv_mul_eq_one, hdγ]`. Establish `h3` using `congrArg (fun x => ZMod.castHom (dvd_pow_self l (by omega : M ≠ 0)) (ZMod l) (Multiplicative.toAdd x)) h2`. Simplify using `only [toAdd_pow, toAdd_ofAdd, map_one, nsmul_eq_mul, map_mul, map_natCast, ZMod.natCast_self, zero_mul] at h3`. Conclude with `zero_ne_one h3`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `θ : Ine (F` to `F) A →* Multiplicative W := MonoidHom.mk' (fun g => Multiplicative.ofAdd (z.1 g)) fun g h => by`. Use `z.2.2 (g : G F Ω) h` as an intermediate fact. Rewrite `this` using `[hI _ g.2, hb0, mul_zero, zero_smul, add_zero]`. Conclude with `congrArg Multiplicative.ofAdd this`. Establish `ho : IsOpen (θ.ker : Set (Ine (F` using `F) A)) := (isOpen_discrete {0}).preimage (z.2.1.comp continuous_subtype_val)`.
-
-Establish `hc : IsClosed ((θ.ker.map (Ine (F` using `F) A).subtype : Subgroup (G F Ω)) : Set (G F Ω)) := (isClosed_Ine A).isClosedEmbedding_subtypeVal.isClosedMap _ (θ.ker.isClosed_of_isOpen ho)`. Establish `h1 : Subgroup.zpowers γ ⊔ ineKer F A l ≤ θ.ker.map (Ine (F` using `F) A).subtype := sup_le (Subgroup.zpowers_le.2 ⟨⟨γ, hγ⟩, h0, rfl⟩) fun τ hτ => ⟨⟨τ, ineKer_le_Ine A l hτ⟩, hzJ τ hτ, rfl⟩`. Take `⟨τ', hτ', rfl⟩` from `Subgroup.topologicalClosure_minimal _ h1 hc (hg.2 hτ)`. Conclude with `hτ'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tame_relation : TameQuotient → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)), IsPlaceOver A v → ((l : ℕ) : 𝓞 F) ∉ v.asIdeal → ∀ (k : ℕ), normV v % (2 * l ^ k) = 1 → ∀ (M : ℕ) (d : G F Ω →* Multiplicative (ZMod (l ^ M))) (γ σ : G F Ω), 1 ≤ M → IsOpen (d.ker : Set (G F Ω)) → γ ∈ Ine (F := F) A → d γ = Multiplicative.ofAdd 1 → IsFrob A (normV v) σ → ∀ (R : Type) [CommRing R] (W : Type) [AddCommGroup W] [Module R W] [TopologicalSpace W] [DiscreteTopology W] (ρ : Representation R (G F Ω) W) (a b : R), (∀ m : W, (l ^ k) • m = 0) → b * b = 0 → (∀ τ ∈ Ine (F := F) A, ∀ m, ρ τ m = m + (((Multiplicative.toAdd (d τ)).val : R) * b) • m) → (∀ m, ρ σ m = m + a • m) → ∀ z : Z1 ρ, a • z.1 γ = b • z.1 σ ∧ (b = 0 → z.1 γ = 0 → ∀ τ ∈ Ine (F := F) A, z.1 τ = 0) := by
   intro hT F Ω _ _ _ _ _ l hlp A v hA hl k hq M d γ σ hM hd hγ hdγ hσ R _ W _ _ _ _ ρ a b h4 hb hI hρ z

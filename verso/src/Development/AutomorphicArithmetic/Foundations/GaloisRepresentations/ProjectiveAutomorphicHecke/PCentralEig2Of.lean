@@ -5,21 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Simu
 open Module
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `W hn hfin hne hW`. Distinguish the cases in `hs : ∀ i, ∃ c : ℂ, ∀ x ∈ W, T i x = c • x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Conclude with `⟨x, hx, hx0, fun i => (hs i).imp fun c hc => hc x hx⟩`. Use `push_neg at hs`. Take `⟨i, hi⟩` from `hs`. Use `haveI : Nontrivial W := Submodule.nontrivial_iff_ne_bot.mpr hne`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue ((T i).restrict (fun x hx => hW i x hx))`. Take `⟨v, hv⟩` from `hμ.exists_hasEigenvector`. Use `set W' : Submodule ℂ E := W ⊓ LinearMap.ker (T i - μ • LinearMap.id) with hW'`. Establish `hmem : ∀ x, x ∈ W' ↔ x ∈ W ∧ T i x = μ • x`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hW', sub_eq_zero]`. Establish `hle : W' ≤ W` using `inf_le_left`. Establish `hlt : W' < W`. Use `lt_of_le_of_ne hle ?_` and prove the remaining obligations. Introduce `heq`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx, hne'⟩` from `hi μ`. Conclude with `hne' ((hmem x).1 (by rw [heq]; exact hx)).2`. Use `haveI : FiniteDimensional ℂ W' := Submodule.finiteDimensional_of_le hle`. Establish `hlt' : finrank ℂ W' < n` using `hn ▸ Submodule.finrank_lt_finrank_of_lt hlt`. Establish `hne' : W' ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hbot`. Establish `hv0 : (v : E) ∈ W'` using `(hmem _).2 ⟨v.2, by`. Use `hv.apply_eq_smul` as an intermediate fact. Simplify using `using congrArg Subtype.val this⟩`. Rewrite `hv0` using `[hbot, Submodule.mem_bot]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hv.2 (Subtype.ext hv0)`. Establish `hW'inv : ∀ j, ∀ x ∈ W', T j x ∈ W'`. Introduce `j x hx`. Rewrite `hx`, the goal using `[hmem]`. Use `⟨hW j x hx.1, ?_⟩` and prove the remaining obligations.
-
-Establish `h1` using `LinearMap.congr_fun (hT i j) x`. Simplify using `only [LinearMap.comp_apply] at h1`. Rewrite using `[h1, hx.2, map_smul]`. Take `⟨x, hx, hx0, hc⟩` from `ih _ hlt' W' rfl inferInstance hne' hW'inv`. Conclude with `⟨x, hle hx, hx0, hc⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_common_eigenvector_of_commute_of_invariant {E ι : Type} [AddCommGroup E] [Module ℂ E]
     (T : ι → E →ₗ[ℂ] E) (hT : ∀ i j, T i ∘ₗ T j = T j ∘ₗ T i) :
@@ -67,19 +65,17 @@ private theorem exists_common_eigenvector_of_commute_of_invariant {E ι : Type} 
     exact ⟨x, hle hx, hx0, hc⟩
 
 /- English proof (translation)
-Introduce `Γ H Z V _ _ _ _ _ ι K ξ ζ hζ M hfin hM hne hinv`. Set `T : Z → (H → V) →ₗ[ℂ] (H → V)` to `fun z => { toFun := fun Φ g => Φ (g * ζ z), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hT : ∀ a b, T a ∘ₗ T b = T b ∘ₗ T a`. Introduce `a b`. Use `LinearMap.ext fun Φ => funext fun g => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Φ (g * ζ a * ζ b) = Φ (g * ζ b * ζ a)`. Rewrite using `[mul_assoc, mul_assoc, hζ a (ζ b)]`. Take `⟨Φ, hΦM, hΦ0, hc⟩` from `exists_common_eigenvector_of_commute_of_invariant T hT _ M rfl hfin hne (fun z Φ hΦ => hinv Φ hΦ z)`. Use `choose c hc using hc`. Establish `hcg : ∀ z g, Φ (g * ζ z) = c z • Φ g` using `fun z g => congrFun (hc z) g`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g0, hg0⟩` from `Function.ne_iff.mp hΦ0`. Establish `hscal : ∀ a b : ℂ, a • Φ g0 = b • Φ g0 → a = b` using `fun a b h => smul_left_injective ℂ hg0 h`. Establish `hF : (∀ (γ : Γ) (g : H), Φ (ι γ * g) = ξ γ (Φ g)) ∧ ∀ k ∈ K, ∀ g : H, Φ (g * k) = Φ g` using `hM hΦM`. Establish `h1 : c 1 = 1`. Apply `hscal` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hcg 1 g0, map_one, mul_one, one_smul]`. Establish `hmul : ∀ a b, c (a * b) = c a * c b`. Introduce `a b`. Apply `hscal` to reduce the goal to its premises. Rewrite using `[← hcg (a * b) g0, map_mul, ← mul_assoc, hcg b, hcg a, smul_smul, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `χ : Z →* ℂ` to `{ toFun := c, map_one' := h1, map_mul' := hmul }`. Use `⟨Φ, hΦM, hΦ0, χ.toHomUnits, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z g`. Conclude with `hcg z g`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show c z = 1`. Apply `hscal` to reduce the goal to its premises. Rewrite using `[← hcg z g0, hF.2 _ hz g0, one_smul]`. Introduce `z γ a hzγ hξ show c z = a`.
-
-Apply `hscal` to reduce the goal to its premises. Rewrite using `[← hcg z g0, ← hξ (Φ g0), ← hF.1 γ g0, ← hzγ, hζ z g0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pCentralEig2_of :
     UpperTheory.Gal.CertificateRingHomMap.CentralEig2 := by

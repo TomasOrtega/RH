@@ -19,9 +19,9 @@ universe u
 namespace ProcyclicCohomology
 
 /- English proof (translation)
-Establish `h1 : Module.length R V = Module.length R (LinearMap.ker f) + Module.length R (LinearMap.range f)` using `Module.length_eq_add_of_exact (LinearMap.ker f).subtype f.rangeRestrict (Submodule.injective_subtype _) f.surjective_rangeRestrict (LinearMap.exact_iff.2 (by rw [LinearMap.ker_rangeRestrict, Submodule.range_subtype]))`. Establish `h2 : Module.length R V = Module.length R (LinearMap.range f) + Module.length R (V ⧸ LinearMap.range f)` using `Module.length_eq_add_of_exact (LinearMap.range f).subtype (LinearMap.range f).mkQ (Submodule.injective_subtype _) (LinearMap.range f).mkQ_surjective (LinearMap.exact_subtype_mkQ _)`. Establish `hVt : Module.length R V ≠ ⊤` using `Module.length_ne_top_iff.2 h`. Establish `hL : Module.length R (LinearMap.range f) ≠ ⊤` using `fun h' => hVt (by rw [h1, h', add_top])`. Rewrite `h2` using `[h1, add_comm (Module.length R (LinearMap.range f))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(WithTop.add_right_cancel hL h2)`.
+A detailed English derivation is pending.
 -/
 theorem length_ker_eq_coker {R : Type u} [CommRing R] {V : Type u} [AddCommGroup V] [Module R V]
     (f : V →ₗ[R] V) (h : IsFiniteLength R V) :
@@ -41,25 +41,23 @@ theorem length_ker_eq_coker {R : Type u} [CommRing R] {V : Type u} [AddCommGroup
 end ProcyclicCohomology
 
 /- English proof (translation)
-Introduce `R _ G _ _ _ _ _ _ s hG M _ htor`. Establish `hs` using `hG.1`. Establish `hidx` using `hG.2`. Establish `hc` using `ProcyclicCohomology.comm_of_dense hs`. Establish `hA` using `ProcyclicCohomology.model_comparison_degree_zero_bijective M hc hs hidx htor`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH2 : ∀ (M' : TRep R G) [DiscreteTopology M'.V], (∀ m : M'.V, ∃ k : ℕ, 0 < k ∧ k • m = 0) → Subsingleton (M'.H 2)`. Introduce `M' _ ht`. Take `⟨-, -, -, e2, -⟩` from `low_holds R G M'`. Use `ProcyclicCohomology.subsingleton_H2_of_procyclic_of_torsion M' hc hs hidx ht` as an intermediate fact. Conclude with `e2.toEquiv.subsingleton`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ∀ n, 1 < n → Subsingleton (M.H n)` using `fun n hn => shift_holds R G 2 hH2 M htor n hn`. Use `⟨hA, hB, fun hM => ?_⟩` and prove the remaining obligations. Take `⟨-, ⟨e0, -⟩, ⟨e1, -⟩, -⟩` from `low_holds R G M`. Take `⟨eA, -⟩` from `hA`. Use `set f := M.rho s - LinearMap.id`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hH0 : H0 M.rho = LinearMap.ker f`. Use extensionality with `m`. Rewrite using `[mem_riemannRochSpace_iff_regularAt_everywhere, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[f, h s]`. Introduce `h g`. Establish `h' : M.rho s m = m`. Use `h` as an intermediate fact. Simplify using `only [f, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Use `ProcyclicCohomology.cocycle_eq_of_apply M hs 0 (Z1 M.rho).zero_mem m (by simp [h']) g` as an intermediate fact. Rewrite `this` using `[Pi.zero_apply, eq_comm, sub_eq_zero]`. Conclude with `this`. Establish `fl0 : IsFiniteLength R (M.H 0)` using `(hM.of_injective (Submodule.injective_subtype (H0 M.rho))).of_injective e0.injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `fl1 : IsFiniteLength R (M.H 1)` using `(hM.of_surjective (Submodule.mkQ_surjective (LinearMap.range f))).of_injective (e1.trans eA).injective`. Establish `hfl : ∀ n, IsFiniteLength R (M.H n)`. Introduce `n`. Break down `n with _ | _ | n` into its components or cases. Conclude with `fl0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `fl1`. Use `hB (n + 2) (by omega); exact .of_subsingleton` as an intermediate fact. Use `⟨⟨hfl, hB⟩, ?_⟩` and prove the remaining obligations. Establish `l0 : Module.length R (M.H 0) = Module.length R (LinearMap.ker f)`. Rewrite using `[e0.length_eq, hH0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `l1 : Module.length R (M.H 1) = Module.length R (M.V ⧸ LinearMap.range f)` using `(e1.trans eA).length_eq`. Establish `l01 : Module.length R (M.H 0) = Module.length R (M.H 1)`. Rewrite using `[l0, l1, ProcyclicCohomology.length_ker_eq_coker f hM]`. Simplify using `only [Cx.chi, Finset.sum_range_succ, Finset.sum_range_zero, pow_zero, pow_one, one_mul, neg_one_mul, zero_add]`. Rewrite using `[show Module.length R (M.coch.H 0) = Module.length R (M.coch.H 1) from l01]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem zHat_holds : ZHatStatement.{u} := by
   intro R _ G _ _ _ _ _ _ s hG M _ htor

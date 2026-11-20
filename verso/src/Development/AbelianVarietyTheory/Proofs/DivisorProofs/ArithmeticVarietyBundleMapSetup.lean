@@ -25,13 +25,11 @@ noncomputable section
 namespace GlobalTheory.TwoLat
 
 /- English proof (translation)
-Introduce `_ _ _ D O ⟨x, P, hc⟩ R hR c`. Establish `: IsGalois ℚ D.host.E` using `D.host.hostE_isGalois`. Take `⟨V, _, j, hj, hdim, hr⟩` from `exists_comp O c`. Take `⟨X, W, q, jB, πB, ρ, ⟨hq, hpb, hfin, hrg, -⟩, hn, hloc⟩` from `GlobalTheory.T.model_base_change_number_field O.s.T.Z O.κ.e j hj hdim`. Use `choose E t hvb hfr hlat using fun σ : D.host.E →+* ℂ => exists_bundle O.s.T.Z O.κ.e hq hn hpb (O.S.Dw.mult σ) σ (ArIn.ind ∅) false (fun y => (hloc σ y).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `choose E' t' hvb' hfr' hgr using fun σ : D.host.E →+* ℂ => GlobalTheory.T.model_change_of_field_points_a O.s.T.Z O.κ.e hq hn hpb (O.S.Dw.mult σ) σ (fun y => (hloc σ y).2)`. Use `choose g hg using fun σ : D.host.E →+* ℂ => GlobalTheory.T.model_change_of_field_points_b O.s.T.Z O.κ.e hq hn hpb (E σ) (E' σ) _ σ (t σ) (t' σ) (hvb σ) (hvb' σ) (hfr σ) (hfr' σ) (hlat σ) (hgr σ)`. Set `G : ∀ σ', EigMet O.s.T.Z σ'` to `fun σ' => x.eigMetAt σ' (some R)`. Establish `hG : EigConj O.s.T.Z G` using `fun σ σ' y y' g g' τ hσ e hg => GlobalTheory.ShFam.ConjMet.eigMetAt_conj x hσ e hg τ _`. Use `choose h hh using fun σ : D.host.E →+* ℂ => GlobalTheory.T.arithmetic_model_flag_height_fifth _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e X W q jB πB hpb (E σ) _ σ false rfl (t σ) G (hvb σ) (hfr σ) hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose h' hh' using fun σ : D.host.E →+* ℂ => GlobalTheory.T.arithmetic_model_flag_height_fifth _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e X W q jB πB hpb (E' σ) _ σ false rfl (t' σ) G (hvb' σ) (hfr' σ) hG`. Establish `hsm` using `O.s.T.smooth`. Establish `hGs : ∀ σ', (G σ').SmoothOn (manifold O.s.T.Z σ') Set.univ` using `fun σ' => ToroidalCompactificationData.smoothOn_eigMetAt_some _ _ _ _ _ _ _ x σ' R hR (ToroidalCompactificationData.hodge_smoothOn _ _ _ _ _ _ _ x σ')`. Use `⟨X, hq.isIntegral, q, E, E', h, h', g, hq, hn, fun σ => GlobalTheory.T.arithmetic_model_smooth_flag_height _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e X W q jB πB hpb (E σ) _ σ false rfl (t σ) G (h σ) (hfr σ) hGs (hh σ), fun σ => GlobalTheory.T.arithmetic_model_smooth_flag_height _ _ _ _ _ _ …` and prove the remaining obligations. Rewrite using `[hc.hm_eq]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_pairBase : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.RegularAlteration →
     ∀ (D : D7) (O : Setup D), O.Core → ∀ R : ℝ, 2 ≤ R → ∀ c : O.s.Comp,

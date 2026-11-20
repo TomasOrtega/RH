@@ -33,7 +33,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   (ε : (Ω ≃ₐ[Ek] Ω) →* Oˣ)
 
 /- English proof (translation)
-Simplify using `[rhoTwo, KLat.rho2, KLat.repL', KLat.M0]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem rhoTwo_eq (g : Ω ≃ₐ[Ek] Ω) (y : {a // bl a = 0} → O) :
     rhoTwo (ρk 0) r χ ε g y = KLat.rho2 r χ bl ρk ε g y := by
@@ -41,7 +41,7 @@ theorem rhoTwo_eq (g : Ω ≃ₐ[Ek] Ω) (y : {a // bl a = 0} → O) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← rhoTwo_eq]`. Apply `pi_equiv` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem pi_equiv2 (e₁ : R') (w : {a // bl a = 0} → O) (g : Ω ≃ₐ[Ek] Ω) (b : FirstSummandSubmodule O e₁) :
     piM (ρk 0) e₁ w (firstSummandRep O r χ e₁ ε g b) = KLat.rho2 r χ bl ρk ε g (piM (ρk 0) e₁ w b) := by
@@ -83,19 +83,19 @@ abbrev rho1 := firstSummandRep (D.nd.O i) Dd.r Dd.χ Dd.e₁ (epsU D.nd i)
 abbrev rho2 := KLat.rho2 Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i)
 
 /- English proof (translation)
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem hKm : ContinuousMul (FractionRing (D.nd.O i)) := by
   infer_instance
 
 /- English proof (translation)
-The claim follows from `KLat.eps_cont_nf (D.nd.l i) (Topo.padicCoeff_O i) (epsU D.nd i) (Topo.isCyc_eps i)`.
+A detailed English derivation is pending.
 -/
 theorem hEps : Continuous fun g : GE D.nd => ((epsU D.nd i g : (D.nd.O i)ˣ) : D.nd.O i) :=
   KLat.eps_cont_nf (D.nd.l i) (Topo.padicCoeff_O i) (epsU D.nd i) (Topo.isCyc_eps i)
 
 /- English proof (translation)
-The claim follows from `haveI := Topo.rTop_addGroup_RD i r π g0 eB e₁ s Dd hD KLat.block_zero_continuous Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (Topo.padicCoeff_O i) (Topo.fgTop_RD i r π g0 eB e₁ s Dd hD) (Topo.uElt_cont i r π g0 eB e₁ s Dd hD hc)`.
+A detailed English derivation is pending.
 -/
 theorem hM0 (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hc : TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r) :
@@ -123,7 +123,7 @@ abbrev modS' (w : ℕ) := KLat.modT' Dd.r Dd.χ (RepresentationBoundsCohomology.
   (hM0 i r π g0 eB e₁ s Dd hD hc) w
 
 /- English proof (translation)
-The claim follows from `KLat.huD Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (Aw i dc) (hKm i) (hEps i) (hM0 i r π g0 eB e₁ s Dd hD hc) w g m`.
+A detailed English derivation is pending.
 -/
 theorem huDS (w : ℕ) (g : decs D.host.E (Aw i dc) w) (m : blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk 0) :
     uDS i r π dc g0 eB e₁ s Dd hD hc w
@@ -138,7 +138,7 @@ variable (hT : Dd.Top (D.nd.T i) (RepresentationBoundsCohomology.one_le_letterBl
 abbrev piS := piDd Dd (D.nd.T i) (RepresentationBoundsCohomology.one_le_letterBlockLength D.R) hT hrk
 
 /- English proof (translation)
-The claim follows from `Topo.rTop_addGroup_RD i r π g0 eB e₁ s Dd hD Continuous fun t => vDS i r π dc g0 eB e₁ s Dd hD hc w (piS i Dd hT hrk t) := haveI := Topo.rTop_addGroup_RD i r π g0 eB e₁ s Dd hD KLat.hpD Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (Aw i dc) (hKm i) (hEps …`.
+A detailed English derivation is pending.
 -/
 theorem hpDS (w : ℕ) :
     haveI := Topo.rTop_addGroup_RD i r π g0 eB e₁ s Dd hD
@@ -150,7 +150,7 @@ theorem hpDS (w : ℕ) :
       (wDd Dd (D.nd.T i) (RepresentationBoundsCohomology.one_le_letterBlockLength D.R) hT hrk)) (Topo.fracTop_O i) w
 
 /- English proof (translation)
-The claim follows from `KLat.heD Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (Aw i dc) (hKm i) (hEps i) (hM0 i r π g0 eB e₁ s Dd hD hc) (rho1 i Dd) (piS i Dd hT hrk) (fun g x => pi_equiv2 Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) Dd.e₁ _ g x) w g t`.
+A detailed English derivation is pending.
 -/
 theorem heDS (w : ℕ) (g : decs D.host.E (Aw i dc) w) (t : FirstSummandSubmodule (D.nd.O i) Dd.e₁) :
     vDS i r π dc g0 eB e₁ s Dd hD hc w (piS i Dd hT hrk (resRep (rho1 i Dd) ((decs D.host.E (Aw i dc)) w) g t)) =
@@ -165,7 +165,7 @@ abbrev evES := evEDd Dd (D.nd.T i) (RepresentationBoundsCohomology.one_le_letter
 abbrev lamS := lamDd Dd (D.nd.T i) (RepresentationBoundsCohomology.one_le_letterBlockLength D.R) hT hrk
 
 /- English proof (translation)
-The claim follows from `evEM_inv Dd.r Dd.χ _ _ _ _ (top_facts Dd (D.nd.T i) (RepresentationBoundsCohomology.one_le_letterBlockLength D.R) hT).2.2.2.2 g a`.
+A detailed English derivation is pending.
 -/
 theorem hevES (g : GE D.nd) (a : LeftId (D.nd.O i) Dd.E) :
     evES i Dd hT (uElt Dd.r Dd.χ g • a) = evES i Dd hT a :=

@@ -22,7 +22,7 @@ namespace GlobalTheory.HatPullback
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[GlobalTheory.UnRep.fm, Matrix.mulVec, dotProduct, TensorProduct.tmul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fm_mulVec_tmul (M : Matrix (Fin n) (Fin n) E) (a : FiniteAdeleRing (𝓞 F) F) (x : Fin n → E) :
     GlobalTheory.UnRep.fm F M *ᵥ (fun i => a ⊗ₜ[F] x i) = fun i => a ⊗ₜ[F] (M *ᵥ x) i := by
@@ -30,7 +30,7 @@ theorem fm_mulVec_tmul (M : Matrix (Fin n) (Fin n) E) (a : FiniteAdeleRing (𝓞
   simp [GlobalTheory.UnRep.fm, Matrix.mulVec, dotProduct, TensorProduct.tmul_sum]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (Algebra.TensorProduct.includeRight : E →ₐ[F] FiniteAdeleRing (𝓞 F) F ⊗[F] E).toRingHom)`.
+A detailed English derivation is pending.
 -/
 theorem fm_mul' (A B : Matrix (Fin n) (Fin n) E) :
     GlobalTheory.UnRep.fm F (A * B) = GlobalTheory.UnRep.fm F A * GlobalTheory.UnRep.fm F B :=
@@ -38,17 +38,15 @@ theorem fm_mul' (A B : Matrix (Fin n) (Fin n) E) :
     E →ₐ[F] FiniteAdeleRing (𝓞 F) F ⊗[F] E).toRingHom)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (by simp) rfl`.
+A detailed English derivation is pending.
 -/
 theorem fm_one' : GlobalTheory.UnRep.fm F (1 : Matrix (Fin n) (Fin n) E) = 1 :=
   Matrix.map_one _ (by simp) rfl
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Rewrite using `[fm_mulVec_tmul]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, M *ᵥ x, h x hx, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mulVec_neg]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fm_mulVec_mem_hat (M : Matrix (Fin n) (Fin n) E) {L L' : Set (Fin n → E)}
     (h : ∀ x ∈ L, M *ᵥ x ∈ L') {w : Fin n → GlobalTheory.AdLat.RA F E} (hw : w ∈ GlobalTheory.AdLat.hat F L) :
@@ -63,11 +61,9 @@ theorem fm_mulVec_mem_hat (M : Matrix (Fin n) (Fin n) E) {L L' : Set (Fin n → 
   | neg x _ hx => rw [Matrix.mulVec_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n A Λ w`. Establish `hmem : ∀ x : Fin n → E, x ∈ ((Λ.comap ((Matrix.mulVecLin A.1).restrictScalars (𝓞 E)) : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E)) ↔ A.1 *ᵥ x ∈ Λ` using `fun x => by`. Simplify using `[Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `fm_mulVec_mem_hat (F := F) (A⁻¹).1 (L := (Λ : Set (Fin n → E))) (L' := ((Λ.comap ((Matrix.mulVecLin A.1).restrictScalars (𝓞 E)) : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E))) (fun y hy => by`. Rewrite using `[hmem, Matrix.mulVec_mulVec, A.mul_inv, Matrix.one_mulVec]`. Conclude with `hy) hw`. Rewrite `h2` using `[Matrix.mulVec_mulVec, ← fm_mul', A.inv_mul, fm_one', Matrix.one_mulVec]`. Then use the resulting hypothesis. Introduce `hw`.
-
-Conclude with `fm_mulVec_mem_hat (F := F) A.1 (fun x hx => (hmem x).1 hx) hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (A : GL (Fin n) E)
     (Λ : Submodule (𝓞 E) (Fin n → E)) (w : Fin n → GlobalTheory.AdLat.RA F E),

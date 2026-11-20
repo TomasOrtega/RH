@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Ws.H5 GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Use `⟨(MonoidAlgebra.lift K K Q χ).toRingHom.comp (MonoidAlgebra.mapRingHom Q x), ?_, ?_, fun y => rfl⟩` and prove the remaining obligations. Introduce `a`. Simplify using `[MonoidAlgebra.coe_algebraMap, MonoidAlgebra.mapRingHom_single, MonoidAlgebra.lift_single]`. Introduce `z`. Simplify using `[MonoidAlgebra.mapRingHom_single, MonoidAlgebra.lift_single]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem lift_map {A K Q : Type} [CommRing A] [CommRing K] [CommGroup Q] (x : A →+* K) (χ : Q →* K) :
     ∃ e : MonoidAlgebra A Q →+* K, (∀ a, e (algebraMap A _ a) = x a) ∧ (∀ z, e (MonoidAlgebra.single z 1) = χ z) ∧
@@ -17,29 +17,23 @@ private theorem lift_map {A K Q : Type} [CommRing A] [CommRing K] [CommGroup Q] 
     simp [MonoidAlgebra.mapRingHom_single, MonoidAlgebra.lift_single]
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s V c n r B J hD hT Q _ _ hQ q hq hA tw htw b hb z`. Set `h0 : s.Wt n` to `fun _ j _ => (j : ℤ)`. Establish `hinc : h0.Incr`. Introduce `v τ a a' hlt`. Use `show ((a : ℕ) : ℤ) < ((a' : ℕ) : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hlt` after adjusting the coercions. Use `hD h0 hinc _ ?_` and prove the remaining obligations. Introduce `x hxJ hxG`. Take `⟨k, hk⟩` from `(IsPGroup.iff_card (p := l) (G := Q)).1 hQ`. Establish `hzero : MonoidAlgebra.mapRingHom Q (x : B.B →+* Qbar l) (tw b) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Ws.H5.fourier (Qbar l) Q` to reduce the goal to its premises. Introduce `χ`. Take `⟨e, he1, he2, he3⟩` from `lift_map (x : B.B →+* Qbar l) ((Units.coeHom (Qbar l)).comp χ)`. Rewrite using `[← he3]`. Set `β : V.frame.G₀ →* (Qbar l)ˣ` to `χ.comp q`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `x' : B.Pt` to `{ toRingHom := e.comp (tw : B.B →+* MonoidAlgebra B.B Q) commutes' := by`. Introduce `o`. Use `show e (tw (algebraMap c.O B.B o)) = algebraMap c.O (Qbar l) o`. Rewrite using `[tw.commutes, IsScalarTower.algebraMap_apply c.O B.B (MonoidAlgebra B.B Q), he1]`. Conclude with `x.commutes o }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : q.ker ≤ β.ker`. Introduce `g hg`. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`. Use `show χ (q g) = 1`. Rewrite using `[hg, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `htw' : TwMap B (x : B.B →+* Qbar l) (x' : B.B →+* Qbar l) β`. Establish `h2` using `htw.comp e`. Establish `ea : e.comp (algebraMap B.B (MonoidAlgebra B.B Q)) = (x : B.B →+* Qbar l)`. Use extensionality with `a`. Conclude with `he1 a`.
+By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `eb : pushCh e ((MonoidAlgebra.of B.B Q).toHomUnits.comp q) = β`. Use extensionality with `g`. Conclude with `he2 (q g)`. Rewrite `h2` using `[ea, eb]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx'J : J ≤ RingHom.ker (x' : B.B →+* Qbar l)`. Use `hT x x' h0 β hxJ hxG (Subgroup.isOpen_mono hker hq) ⟨k, ?_⟩ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use extensionality with `g show (χ (q g) ^ l ^ k : (Qbar l)ˣ).1 = 1`. Rewrite using `[← map_pow, ← hk, pow_card_eq_one', map_one]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `g show (χ (q (V.frame.conj g)) : Qbar l) = ((χ (q g))⁻¹ : (Qbar l)ˣ)`. Rewrite using `[eq_inv_of_mul_eq_one_left (hA.conj g), map_inv]`. Introduce `u`. Conclude with `(hA.iu u).trans hker`. Conclude with `hA.i0.trans hker`.
-
-Conclude with `isTwistOf B _ _ β htw'`. Introduce `v j`. Use extensionality with `g`. Use `show e (tw ((B.u.ψ v j g : (B.B)ˣ) : B.B)) = x ((B.u.ψ v j g : (B.B)ˣ) : B.B) * (χ (q (V.pr (g : G L Ω))) : Qbar l)`. Use `(congrArg e (htw.2 v j g)).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[map_mul, he1]`. Use `congr 1`. Conclude with `he2 _`. Conclude with `hx'J hb`. Use `congrArg (fun y => y.coeff z) hzero` as an intermediate fact.
-
-Simplify using `only [MonoidAlgebra.mapRingHom_apply] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.H5.levelJ :
     ∀ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {V : s.Lev} {c : Coef l} {n : ℕ} {r : Resid V.frame c.O n} (B : UniversalOrdinaryDeterminantRing r) (J : Ideal B.B), B.Dense J → B.TwistOk J → ∀ (Q : Type) [CommGroup Q] [Finite Q], IsPGroup l Q → ∀ q : V.frame.G₀ →* Q, IsOpen (q.ker : Set V.frame.G₀) → Anti V.frame q → ∀ tw : B.B →ₐ[c.O] MonoidAlgebra B.B Q, TwMap B (algebraMap B.B (MonoidAlgebra B.B Q)) (tw : B.B →+* MonoidAlgebra B.B Q) ((MonoidAlgebra.of B.B Q).toHomUnits.comp q) → ∀ b ∈ J, ∀ z : Q, (tw b).coeff z ∈ J := by

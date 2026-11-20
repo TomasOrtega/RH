@@ -15,7 +15,7 @@ variable (F : Type) [Field F] [NumberField F]
 def finU : (Af F)ˣ →* (AF F)ˣ := Units.map (MonoidHom.inr (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_const.prodMk continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finU : Continuous (finU F) :=
   Continuous.units_map _ (continuous_const.prodMk continuous_id)
@@ -23,7 +23,7 @@ theorem continuous_finU : Continuous (finU F) :=
 def sndU : (AF F)ˣ →* (Af F)ˣ := Units.map (MonoidHom.snd (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨continuous_subtype_val, by have h : Continuous fun z : Circle => ((z⁻¹ : Circle) : ℂ) := continuous_subtype_val.comp continuous_inv refine h.congr fun z => ?_ simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_circle_toUnits : Continuous (Circle.toUnits : Circle →* ℂˣ) :=
   Units.continuous_iff.2 ⟨continuous_subtype_val, by
@@ -32,11 +32,11 @@ theorem continuous_circle_toUnits : Continuous (Circle.toUnits : Circle →* ℂ
     simp⟩
 
 /- English proof (translation)
-Rewrite `hK` using `[Units.isInducing_embedProduct.nhds_eq_comap, Filter.mem_comap]`. Take `⟨T, hT, hTK⟩` from `hK`. Take `⟨T1, hT1, T2, hT2, hTT⟩` from `mem_nhds_prod_iff.1 hT`. Establish `hf : Continuous fun b : Af F => 1 + b` using `continuous_const.add continuous_id`. Establish `h1 : (fun b : Af F => 1 + b) ⁻¹' T1 ∈ 𝓝 0` using `hf.continuousAt.preimage_mem_nhds (by rw [add_zero]; exact hT1)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (fun b : Af F => MulOpposite.op (1 + b)) ⁻¹' T2 ∈ 𝓝 0` using `(MulOpposite.continuous_op.comp hf).continuousAt.preimage_mem_nhds (by rw [Function.comp_apply, add_zero]; exact hT2)`. Take `⟨N, hN, hNW⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ (Filter.inter_mem h1 h2)`. Use `⟨N, hN, fun u ⟨a, ha, e⟩ ⟨b, hb, e'⟩ => hTK (hTT ⟨?_, ?_⟩)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(u : Af F) ∈ T1`. Rewrite using `[eq_add_of_sub_eq' e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hNW a ha).1`. Express the relevant statement in the definitionally equal form `MulOpposite.op ((u⁻¹ : (Af F)ˣ) : Af F) ∈ T2`. Rewrite using `[eq_add_of_sub_eq' e']`. Conclude with `(hNW b hb).2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cong_sub (K : Set (Af F)ˣ) (hK : K ∈ 𝓝 1) : ∃ M : ℕ, 0 < M ∧ ∀ u : (Af F)ˣ,
     (∃ c : Af F, (∀ v, c v ∈ v.adicCompletionIntegers F) ∧ (u : Af F) - 1 = M • c) →
@@ -58,15 +58,13 @@ theorem exists_cong_sub (K : Set (Af F)ˣ) (hK : K ∈ 𝓝 1) : ∃ M : ℕ, 0 
     rw [eq_add_of_sub_eq' e']; exact (hNW b hb).2
 
 /- English proof (translation)
-Set `ψ : (Af F)ˣ →* ℂˣ` to `Circle.toUnits.comp (lam.comp (finU F))`. Establish `hψ : Continuous ψ` using `(continuous_circle_toUnits).comp (hlam.comp (continuous_finU F))`. Establish `hK` using `(GlobalTheory.CuspRep.isOpen_ker_finIdele F ψ hψ).mem_nhds (x := 1) (by simp)`. Take `⟨M, hM, hMK⟩` from `exists_cong_sub F _ hK`. Use `⟨M, hM, fun b hb hb' => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc, e⟩` from `hb`. Take `⟨c', hc', e'⟩` from `hb'`. Establish `h2 : ψ (sndU F b) = 1` using `hMK (sndU F b) ⟨c, hc, e⟩ ⟨c', hc', e'⟩`. Establish `h3 : lam (finU F (sndU F b)) = 1`. Use `congrArg Units.val h2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (by simpa [ψ] using this)`. Use `set a : (AF F)ˣ := b * (finU F (sndU F b))⁻¹ with ha`. Establish `hfin : ((a : AF F)).2 = 1` using `by show (b : AF F).2 * ((b⁻¹ : (AF F)ˣ) : AF F).2 = 1`. Conclude with `congrArg Prod.snd (Units.mul_inv b)`. Establish `hA : At (evI F) ((a : AF F) - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu`. Establish `hu1 : u.1 = 0` using `(map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective).1 hu`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 * ((a : AF F).1 - 1) = 0`. Rewrite using `[hu1, zero_mul]`.
-
-Use `show u.2 * ((a : AF F).2 - 1) = 0`. Rewrite using `[hfin, sub_self, mul_zero]`. Establish `hb : b = a * finU F (sndU F b)` using `by rw [ha, inv_mul_cancel_right]`. Rewrite using `[hb, map_mul, h a hA, h3, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cong_ker (lam : (AF F)ˣ →* Circle) (hlam : Continuous lam)
     (h : ∀ a : (AF F)ˣ, At (evI F) ((a : AF F) - 1) → lam a = 1) :

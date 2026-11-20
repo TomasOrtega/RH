@@ -20,19 +20,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.DualCon.Step
 
 /- English proof (translation)
-Use `set N := nilradical R with hNdef`. Establish `hN : N ≠ ⊥`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: x ∈ N` using `(mem_nilradical).2 hx`. Rewrite `this` using `[h0]`. Conclude with `(Submodule.mem_bot R).1 this`. Establish `hnil : IsNilpotent N` using `IsNoetherianRing.isNilpotent_nilradical R`. Set `n` to `Nat.find hnil`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : N ^ n = 0` using `Nat.find_spec hnil`. Establish `hn0 : n ≠ 0`. Introduce `h0`. Establish `: N ^ 0 = 0` using `h0 ▸ hn`. Rewrite `this` using `[pow_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hN` to reduce the goal to its premises. Rewrite using `[eq_bot_iff, ← Ideal.zero_eq_bot, ← this, Ideal.one_eq_top]`. Conclude with `le_top`. Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero hn0`. Establish `hk0 : k ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Apply `hN` to reduce the goal to its premises. Rewrite `hn` using `[hk]`. Simplify using `using hn`. Use `⟨N ^ k, ?_, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Use `Nat.find_min hnil (show k < n by omega)` as an intermediate fact. Conclude with `this h0`. Rewrite using `[← pow_mul]`. Apply `le_bot_iff.1` to reduce the goal to its premises.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_sq_zero (R : Type) [CommRing R] [IsNoetherianRing R] (h : ¬ IsReduced R) :
     ∃ J : Ideal R, J ≠ ⊥ ∧ J ^ 2 = ⊥ := by
@@ -71,7 +69,7 @@ theorem exists_sq_zero (R : Type) [CommRing R] [IsNoetherianRing R] (h : ¬ IsRe
       _ = ⊥ := by rw [← Nat.succ_eq_add_one, ← hk]; exact hn
 
 /- English proof (translation)
-Establish `hr : Set.range V.ι ⊆ Set.range i`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hV`. Set `m : Over.mk V.ι ⟶ Over.mk i` to `Over.homMk (IsOpenImmersion.lift i V.ι hr) (IsOpenImmersion.lift_fac _ _ _)`. Conclude with `GlobalTheory.T.baseChangeBis S A (Over.mk i) (Over.mk V.ι) g m h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem hasRep_opens {S X : Scheme.{0}} (i : X ⟶ S) [IsOpenImmersion i] (A : Over S) [GrpObj A] (g : ℕ)
     (V : S.Opens) (hV : (V : Set S) ⊆ Set.range i) (h : HasRep A g (Over.mk i)) : HasRep A g (Over.mk V.ι) := by
@@ -81,11 +79,11 @@ theorem hasRep_opens {S X : Scheme.{0}} (i : X ⟶ S) [IsOpenImmersion i] (A : O
   exact GlobalTheory.T.baseChangeBis S A (Over.mk i) (Over.mk V.ι) g m h
 
 /- English proof (translation)
-Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Take `⟨⟨x, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers f) y`. Establish `hx : algebraMap R (Localization.Away f) x ∈ J'`. Rewrite using `[← IsLocalization.mk'_spec (Localization.Away f) x s]`. Conclude with `J'.mul_mem_right _ hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx0 : algebraMap R (Localization.Away f) x ≠ 0`. Introduce `h0`. Apply `hy0` to reduce the goal to its premises. Rewrite using `[IsLocalization.mk'_eq_zero_iff]`. Conclude with `(IsLocalization.map_eq_zero_iff (Submonoid.powers f) _ x).1 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hb`. Establish `: x ∈ J'.comap (algebraMap R (Localization.Away f))` using `hx`. Rewrite `this` using `[hb, Submodule.mem_bot]`. Conclude with `hx0 (by rw [this, map_zero])`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_ne_bot_away {R : Type} [CommRing R] (f : R) (J' : Ideal (Localization.Away f)) (h : J' ≠ ⊥) :
     J'.comap (algebraMap R (Localization.Away f)) ≠ ⊥ := by
@@ -105,11 +103,11 @@ theorem comap_ne_bot_away {R : Type} [CommRing R] (f : R) (J' : Ideal (Localizat
   exact hx0 (by rw [this, map_zero])
 
 /- English proof (translation)
-Introduce `J' hJ'`. Use `set J := J'.comap a`. Set `q : R ⧸ J →+* R' ⧸ J'` to `Ideal.quotientMap J' a le_rfl`. Establish `hq : q.comp (Ideal.Quotient.mk J) = (Ideal.Quotient.mk J').comp a`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `w : spMap q ≫ spMap (Ideal.Quotient.mk J) = (Over.mk (spMap (Ideal.Quotient.mk J') ≫ spMap a)).hom` using `by show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Set `m : Over.mk (spMap (Ideal.Quotient.mk J') ≫ spMap a) ⟶ Over.mk (spMap (Ideal.Quotient.mk J))` to `Over.homMk (spMap q) w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.T.baseChangeBis _ A _ _ g m (hJ J (ha J' hJ'))`. Conclude with `((GlobalTheory.T.hasProperSmoothDualRepresentative_grpPullback_iff _ _ (spMap a) A A' φ hφ g (Over.mk (spMap (Ideal.Quotient.mk J')))).1).2 h1`.
+A detailed English derivation is pending.
 -/
 theorem hasRep_quot {R R' : Type} [CommRing R] [CommRing R'] (a : R →+* R')
     (ha : ∀ J' : Ideal R', J' ≠ ⊥ → J'.comap a ≠ ⊥) (A : Over (Sp R)) [GrpObj A] (A' : Over (Sp R')) [GrpObj A']
@@ -131,13 +129,13 @@ theorem hasRep_quot {R R' : Type} [CommRing R] [CommRing R'] (a : R →+* R')
   exact ((GlobalTheory.T.hasProperSmoothDualRepresentative_grpPullback_iff _ _ (spMap a) A A' φ hφ g (Over.mk (spMap (Ideal.Quotient.mk J')))).1).2 h1
 
 /- English proof (translation)
-Take `⟨f, hs, W, hW, hWf⟩` from `GlobalTheory.T.exists_basicOpen_affineOpen_meeting_fibres_grpScheme R A s`. Set `a` to `algebraMap R (Localization.Away f)`. Set `A'` to `(Over.pullback (spMap a)).obj A`. Use `letI : GrpObj A' := Functor.grpObjObj`. Establish `hφ : IsGrpPullback A' A (spMap a) (pullback.fst _ _)` using `isGrpPullback_pullback A (spMap a)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Take `⟨hA', hg'⟩` from `GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback a A A' _ g hφ hA hg`. Take `⟨V, hV, hVs⟩` from `GlobalTheory.T.affineOpen_meeting_fibres_pullback_specRingHom a A W hW hWf`. Use `haveI : @Algebra.FiniteType ℤ (Localization.Away f) _ _ (Ring.toIntAlgebra _) := by`. Establish `h` using `Algebra.FiniteType.trans (inferInstance : Algebra.FiniteType ℤ R) (IsLocalization.finiteType_of_monoid_fg (Submonoid.powers f) (Localization.Away f))`. Apply the tactic sequence `convert h using 1 <;> first | rfl | exact Subsingleton.elim _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1 : HasRep A' g (𝟙_ _)` using `GlobalTheory.T.hasProperSmoothDualRepresentative_noetherianInduction (Localization.Away f) A' g hA' hg' V hV hVs (hasRep_quot a (comap_ne_bot_away f) A A' _ hφ g hJ)`. Establish `h2` using `((GlobalTheory.T.hasProperSmoothDualRepresentative_grpPullback_iff _ _ (spMap a) A A' _ hφ g (𝟙_ _)).1).1 h1`. Establish `h3 : HasRep A g (Over.mk (spMap a))`. Apply the tactic sequence `convert h2 using 2 <;> first | rfl | exact (Category.id_comp _).symm`. Establish `: IsOpenImmersion (spMap a)` using `inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap R (Localization.Away f)))))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(spMap a).opensRange, hs, hasRep_opens (spMap a) A g _ (fun x hx => hx) h3⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem local_rep (R : Type) [CommRing R] [Algebra.FiniteType ℤ R] [IsReduced R] (A : Over (Sp R)) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
@@ -165,9 +163,7 @@ theorem local_rep (R : Type) [CommRing R] [Algebra.FiniteType ℤ R] [IsReduced 
   refine ⟨(spMap a).opensRange, hs, hasRep_opens (spMap a) A g _ (fun x hx => hx) h3⟩
 
 /- English proof (translation)
-Introduce `R _ _ A _ g hA hg hJ`. Use `haveI : IsNoetherianRing R := Algebra.FiniteType.isNoetherianRing ℤ R`. Distinguish the cases in `hr : IsReduced R`. Conclude with `GlobalTheory.T.hasProperSmoothDualRepresentative_of_local _ A g hA (local_rep R A g hA hg hJ)`. Take `⟨J, hJ0, hJ2⟩` from `exists_sq_zero R hr`.
-
-Conclude with `GlobalTheory.T.hasProperSmoothDualRepresentative_of_sqZero R A g hA hg J hJ2 (hJ J hJ0)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem step : ∀ (R : Type) [CommRing R] [Algebra.FiniteType ℤ R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → (∀ J : Ideal R, J ≠ ⊥ → HasRep A g (Over.mk (spMap (Ideal.Quotient.mk J)))) → HasRep A g (𝟙_ _) := by
   intro R _ _ A _ g hA hg hJ

@@ -16,7 +16,7 @@ variable {p : ℕ} [Fact p.Prime] {R K : Type} [CommRing R] [IsDomain R] [IsInte
   [Algebra R K] [IsFractionRing R K]
 
 /- English proof (translation)
-The claim follows from `ofConv_injective (AlgHom.ext fun a => by rw [SemiBialgHom.pts_apply, toBaseChange_apply] exact (bcTate_pt K t n 1 a).trans (one_mul _))`.
+A detailed English derivation is pending.
 -/
 theorem bcTate_conv (G : PDivGroup p R) (t : G.Tate) (n : ℕ) :
     (toBaseChange R K (G.A n)).pts K (fun _ => rfl) ((bcTate K t).conv n) =
@@ -26,7 +26,7 @@ theorem bcTate_conv (G : PDivGroup p R) (t : G.Tate) (n : ℕ) :
     exact (bcTate_pt K t n 1 a).trans (one_mul _))
 
 /- English proof (translation)
-The claim follows from `TateOver.ext_conv fun n => (toBaseChange_pts_bijective (R := R) K (A := G.A n) K fun _ => rfl).1 (by rw [TateOver.add_conv, map_mul, bcTate_conv, bcTate_conv, bcTate_conv, TateOver.add_conv, map_mul])`.
+A detailed English derivation is pending.
 -/
 theorem bcTate_add (G : PDivGroup p R) (x y : G.Tate) :
     bcTate K (x + y) = bcTate K x + bcTate K y :=
@@ -34,11 +34,11 @@ theorem bcTate_add (G : PDivGroup p R) (x y : G.Tate) :
     rw [TateOver.add_conv, map_mul, bcTate_conv, bcTate_conv, bcTate_conv, TateOver.add_conv, map_mul])
 
 /- English proof (translation)
-Establish `hi : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Use `⟨fun x y h => TateOver.ext (funext fun n => AlgHom.ext fun a => hi ?_), fun y => ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : (G.baseChange K).Tate => z.pt n (1 ⊗ₜ a)) h` as an intermediate fact. Rewrite `this` using `[bcTate_pt, bcTate_pt, _root_.one_mul, _root_.one_mul]`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `z : G.TateOver K` to `⟨fun n => ((toBaseChange R K (G.A n)).pts K (fun _ => rfl) (y.conv n)).ofConv, fun n => AlgHom.ext fun a => by`. Express the relevant statement in the definitionally equal form `y.pt (n + 1) (1 ⊗ₜ G.mulP n a) = y.pt n (1 ⊗ₜ a)`. Rewrite using `[← y.pt_mulP n, baseChange_mulP, PDiv.bcMap_tmul]⟩`. Take `⟨x, hx⟩` from `(G.tatePush_bijective K).2 z`. Use `⟨x, TateOver.ext (funext fun n => Algebra.TensorProduct.ext (Subsingleton.elim _ _) (AlgHom.ext fun a => ?_))⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun w : G.TateOver K => w.pt n a) hx`. Simplify using `only [tatePush_pt] at h`. Express the relevant statement in the definitionally equal form `(bcTate K x).pt n (1 ⊗ₜ a) = y.pt n (1 ⊗ₜ a)`. Rewrite using `[bcTate_pt, _root_.one_mul]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcTate_bijective (G : PDivGroup p R) : Function.Bijective (bcTate (G := G) K) := by
   have hi : Function.Injective (algebraMap R K) := IsFractionRing.injective R K
@@ -64,9 +64,9 @@ end GlobalTheory.FracDescend
 namespace GlobalTheory.FracDescend
 
 /- English proof (translation)
-Set `z : (PDivGroup.mu p R).TateOver K` to `⟨fun n => muPoint R (muRoot ε₀ n) (muRoot_pow_self ε₀ n), fun n => mu_algHom_ext (by`. Rewrite using `[AlgHom.comp_apply]`. Use `erw [mu_mulP_muT]`. Rewrite using `[map_pow, muPoint_muT, muPoint_muT, muRoot_succ_pow])⟩`. Take `⟨ε, hε⟩` from `((PDivGroup.mu p R).tatePush_bijective K).2 z`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ε, fun n => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun w : (PDivGroup.mu p R).TateOver K => w.pt n (muT R (p ^ n))) hε`. Simplify using `only [tatePush_pt, z, muPoint_muT] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mu_descend {p : ℕ} [Fact p.Prime] {R K : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K]
     [Algebra R K] [IsFractionRing R K] (ε₀ : (PDivGroup.mu p K).Tate) :
@@ -83,7 +83,7 @@ theorem mu_descend {p : ℕ} [Fact p.Prime] {R K : Type} [CommRing R] [IsDomain 
   exact h.symm
 
 /- English proof (translation)
-Introduce `p _ R K _ _ _ _ _ _ GG GG₀ e L _ ε₀ τ₀`. Take `⟨ε, hε⟩` from `mu_descend (R := R) ε₀`. Set `E` to `AddEquiv.ofBijective (AddMonoidHom.mk' (bcTate (G := GG) K) (bcTate_add GG)) (bcTate_bijective GG)`. Use `⟨ε, (E.symm : (GG.baseChange K).Tate →+ GG.Tate).comp (((tateMap _ _ K e.hom).toAddMonoidHom).comp τ₀), hε, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(E.apply_symm_apply _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem descend_tate_and_mu : ∀ (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [Algebra R K] [IsFractionRing R K] (GG : PDivGroup p R) (GG₀ : PDivGroup p K) (e : GG₀ ≅ GG.baseChange K) (L : Type) [AddCommGroup L] (ε₀ : (PDivGroup.mu p K).Tate) (τ₀ : L →+ GG₀.Tate), ∃ (ε : (PDivGroup.mu p R).Tate) (τ : L →+ GG.Tate), (∀ n, muRoot ε₀ n = algebraMap R K (muRoot ε n)) ∧ ∀ x, tateMap _ _ K e.hom (τ₀ x) = bcTate K (τ x) := by
   intro p _ R K _ _ _ _ _ _ GG GG₀ e L _ ε₀ τ₀

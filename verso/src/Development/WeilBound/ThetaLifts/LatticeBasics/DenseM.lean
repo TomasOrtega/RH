@@ -22,7 +22,7 @@ def cs (θ : Matrix (Fin n) (Fin n) ℂ) (θ' : Matrix (Fin d) (Fin d) ℂ) :
     rw [smul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, star_sum, star_mul']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_star_mul {a b c : ℕ} (x : Matrix (Fin a) (Fin b) ℂ) (y : Matrix (Fin b) (Fin c) ℂ) :
     (x * y).map star = x.map star * y.map star := by
@@ -30,7 +30,7 @@ theorem map_star_mul {a b c : ℕ} (x : Matrix (Fin a) (Fin b) ℂ) (y : Matrix 
   simp only [Matrix.map_apply, Matrix.mul_apply, star_sum, star_mul']
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, star_mul']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_star_smul_matrix {a b : ℕ} (c : ℂ) (M : Matrix (Fin a) (Fin b) ℂ) :
     (c • M).map star = star c • M.map star := by
@@ -38,7 +38,7 @@ private theorem map_star_smul_matrix {a b : ℕ} (c : ℂ) (M : Matrix (Fin a) (
   simp only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, star_mul']
 
 /- English proof (translation)
-Rewrite using `[show cs θ θ' x = Complex.I • (θ * x * θ'ᵀ) from rfl, map_star_smul_matrix, map_star_mul, map_star_mul, Matrix.transpose_map, show star Complex.I = -Complex.I from Complex.conj_I]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem star_cs (θ : Matrix (Fin n) (Fin n) ℂ) (θ' : Matrix (Fin d) (Fin d) ℂ) (x) :
     (cs θ θ' x).map star = (-Complex.I) • (θ.map star * x.map star * (θ'.map star)ᵀ) := by
@@ -46,17 +46,17 @@ theorem star_cs (θ : Matrix (Fin n) (Fin n) ℂ) (θ' : Matrix (Fin d) (Fin d) 
     Matrix.transpose_map, show star Complex.I = -Complex.I from Complex.conj_I]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `hbar : θ.map star * θ.map star = 1`. Rewrite using `[← map_star_mul, h1, Matrix.map_one _ (by simp) (by simp)]`. Establish `hcomm : θᵀ * M = M * θ.map star`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hH : (M * θ.map star).IsHermitian`. Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_mul, hM, ← hcomm]`. Use `congr 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.conjTranspose_apply]`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos hH fun x hx => ?_` and prove the remaining obligations. Establish `hy : θ *ᵥ star x ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h5 : θ *ᵥ (θ *ᵥ star x) = 0` using `by rw [h0, Matrix.mulVec_zero]`. Rewrite `h5` using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Simplify using `using h5`. Establish `hs : star (θ *ᵥ star x) = θ.map star *ᵥ x`. Use extensionality with `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mulVec, dotProduct, star_sum, star_mul']`. Establish `heq : (θ *ᵥ (θ *ᵥ star x)) ⬝ᵥ M *ᵥ star (θ *ᵥ star x) = star x ⬝ᵥ (M * θ.map star) *ᵥ x`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, hs, Matrix.mulVec_mulVec]`. Establish `hpos` using `h3 _ hy`. Rewrite using `[Complex.pos_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨by rw [← heq]; exact hpos, ?_⟩` and prove the remaining obligations. Establish `him` using `hH.im_star_dotProduct_mulVec_self x`. Simplify using `only [RCLike.im_to_complex] at him`. Conclude with `him.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem posDef_cartan {M θ : Matrix (Fin n) (Fin n) ℂ} (hM : Mᴴ = M) (h : IsCartan M θ) : (M * θ.map star).PosDef := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -94,11 +94,11 @@ theorem posDef_cartan {M θ : Matrix (Fin n) (Fin n) ℂ} (hM : Mᴴ = M) (h : I
 variable {A θ : Matrix (Fin n) (Fin n) ℂ} {C θ' : Matrix (Fin d) (Fin d) ℂ}
 
 /- English proof (translation)
-Establish `e : θ'ᵀ * C * θ'.map star = C`. Use `h'.2.1` as an intermediate fact. Rewrite `this` using `[Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `smul_right_injective _ Complex.I_ne_zero this`. Establish `e' : (θ'.map star)ᵀ * Cᵀ * θ' = Cᵀ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `congrArg transpose e` using `only [transpose_mul, transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[hf, star_cs, hf]`. Simplify using `only [cs, LinearMap.coe_mk, AddHom.coe_mk, transpose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, trace_smul, transpose_mul, transpose_transpose]`. Rewrite using `[neg_mul, Complex.I_mul_I, neg_neg, one_smul]`. Use `conv_rhs => rw [← h.2.1, ← e']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hf_cs_cs (h : IsCartan A θ) (h' : IsCartan (Complex.I • C) θ') (x y) :
     hf A C (cs θ θ' x) (cs θ θ' y) = hf A C x y := by
@@ -118,7 +118,7 @@ theorem hf_cs_cs (h : IsCartan A θ) (h' : IsCartan (Complex.I • C) θ') (x y)
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `show Complex.I • (θ * (Complex.I • (θ * x * θ'ᵀ)) * θ'ᵀ) = -x`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, Complex.I_mul_I]`. Establish `e1 : θ * (θ * x * θ'ᵀ) * θ'ᵀ = x`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h.1, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, h'.1, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[e1, neg_one_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cs_cs (h : IsCartan A θ) (h' : IsCartan (Complex.I • C) θ') (x) : cs θ θ' (cs θ θ' x) = -x := by
   show Complex.I • (θ * (Complex.I • (θ * x * θ'ᵀ)) * θ'ᵀ) = -x
@@ -129,14 +129,14 @@ theorem cs_cs (h : IsCartan A θ) (h' : IsCartan (Complex.I • C) θ') (x) : cs
   rw [e1, neg_one_smul]
 
 /- English proof (translation)
-Unfold `hf`. Rewrite using `[Matrix.map_neg _ star_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.trace_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hf_neg_right_lattice_basics (u v : Matrix (Fin n) (Fin d) ℂ) : hf A C u (-v) = -hf A C u v := by
   unfold hf
   rw [Matrix.map_neg _ star_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.trace_neg]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem hf_cs (h : IsCartan A θ) (h' : IsCartan (Complex.I • C) θ') (x y) :
     hf A C (cs θ θ' x) y = -hf A C x (cs θ θ' y) := by
@@ -145,7 +145,7 @@ theorem hf_cs (h : IsCartan A θ) (h' : IsCartan (Complex.I • C) θ') (x y) :
     _ = -hf A C x (cs θ θ' y) := by rw [map_neg, hf_neg_right_lattice_basics]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, dotProduct, Fintype.sum_prod_type, Pi.star_apply, Matrix.map_apply, star_star]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem trace_transpose_mul_eq_star_dotProduct (x W : Matrix (Fin n) (Fin d) ℂ) :
     trace (xᵀ * W) = star (fun p : Fin n × Fin d => x.map star p.1 p.2) ⬝ᵥ (fun p => W p.1 p.2) := by
@@ -154,7 +154,7 @@ private theorem trace_transpose_mul_eq_star_dotProduct (x W : Matrix (Fin n) (Fi
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨i, a⟩` from `p`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.kroneckerMap_apply, Fintype.sum_prod_type, Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -171,11 +171,11 @@ private theorem kroneckerMap_mul_mulVec_eq_mul_mul_transpose (P : Matrix (Fin n)
   ring
 
 /- English proof (translation)
-Establish `hK` using `(posDef_cartan hA h).kronecker (posDef_cartan hC h')`. Establish `key1 : hf A C x (cs θ θ' x) = -trace (xᵀ * (A * θ.map star * x.map star * (Complex.I • C * θ'.map star)ᵀ))`. Unfold `hf`. Rewrite using `[star_cs]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_assoc, neg_smul, Matrix.trace_neg, Matrix.mul_neg, Matrix.neg_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hz : (fun p : Fin n × Fin d => x.map star p.1 p.2) ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Use extensionality with `i a`. Use `congrFun h0 (i, a)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hpos` using `hK.re_dotProduct_pos hz`. Rewrite using `[key1, trace_transpose_mul_eq_star_dotProduct, ← kroneckerMap_mul_mulVec_eq_mul_mul_transpose (A * θ.map star) (Complex.I • C * θ'.map star) (x.map star)]`. Simplify using `only [RCLike.re_to_complex] at hpos`. Rewrite using `[Complex.neg_re]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

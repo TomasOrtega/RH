@@ -10,9 +10,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.SemiAbFibre
 
 /- English proof (translation)
-Introduce `T G _ hG Ω _ x`. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `h : GeometricallyIntegral G.hom` using `GlobalTheory.geometricallyIntegral_of_smooth _`. Establish `: IsIntegral (pullback G.hom x : Scheme.{0})` using `h.geometrically_isIntegral _ _ _ (IsPullback.of_hasPullback G.hom x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem irreducibleSpace_fibre : ∀ (T : Scheme.{0}) (G : Over T) [GrpObj G], IsSemiAbelian G → ∀ (Ω : Type) [Field Ω] (x : Sp Ω ⟶ T), IrreducibleSpace (pullback G.hom x : Scheme.{0}) := by
   intro T G _ hG Ω _ x

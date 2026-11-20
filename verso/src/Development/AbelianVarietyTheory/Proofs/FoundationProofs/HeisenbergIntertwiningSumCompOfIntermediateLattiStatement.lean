@@ -5,7 +5,7 @@ open Classical GlobalTheory.FinWeil
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FinWeil.sumOp_comp_of_between` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FHeisenbergIntertwiningSumCompOfIntermediateLatti.lean&line=10#L10)
 -/

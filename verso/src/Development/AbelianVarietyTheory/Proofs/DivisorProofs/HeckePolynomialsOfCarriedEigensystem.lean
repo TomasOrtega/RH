@@ -30,19 +30,15 @@ attribute [local instance] Formalism.IndefR.principalLevelFrame.instCMHostI
 namespace GlobalTheory.CarriedHecke
 
 /- English proof (translation)
-Establish `hstep : ∀ (i : J) (a : K) (k : ℕ) (g : V), ((h i - σ a • 1) ^ k) (j g) = j (((op (ι i) - a • 1) ^ k) g)`. Introduce `i a k`. Proceed by induction on `k with`. Consider the case `zero => intro g`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `g`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, ih]`. Simplify using `[hj, map_smulₛₗ]`. Establish `himg : ∀ x, ∀ f ∈ Formalism.L2.Col.eigAt op x, j f ∈ Formalism.L2.Col.eigAt h (fun i => σ (x (ι i)))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x f hf`. Rewrite `hf`, the goal using `[Formalism.L2.Col.eigAt, Submodule.mem_iInf]`. Introduce `i`. Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 (hf (ι i))`. Conclude with `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨k, by rw [hstep, hk, map_zero]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set T : Submodule ℂ H := ⨆ (x : I → K) (_ : C x), Formalism.L2.Col.eigAt h (fun i => σ (x (ι i))) with hT`. Establish `hle : Formalism.L2.Col.eigSum op C ≤ T.comap j`. Use `iSup₂_le fun x hx f hf => ?_` and prove the remaining obligations. Conclude with `(le_iSup₂_of_le (f := fun (x : I → K) (_ : C x) => Formalism.L2.Col.eigAt h (fun i => σ (x (ι i)))) x hx le_rfl) (himg x f hf)`. Establish `hvT : v ∈ T`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `(Submodule.span_le.2 ?_) hv` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `hle hf`. Establish `hvl : v ∈ Formalism.L2.Col.eigAt h l` using `Formalism.L2.Col.mem_eigAt_of_forall_apply he`. Assume the negation of the conclusion as `hno`.
-
-Use `push_neg at hno`. Establish `hT' : T ≤ ⨆ (y : J → ℂ) (_ : y ≠ l), Formalism.L2.Col.eigAt h y`. Use `iSup₂_le fun x hx => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hno x hx`. Conclude with `le_iSup₂_of_le (f := fun (y : J → ℂ) (_ : y ≠ l) => Formalism.L2.Col.eigAt h y) (fun i => σ (x (ι i))) (fun e => hi (congrFun e i)) le_rfl`.
-
-Conclude with `hv0 ((Submodule.disjoint_def.1 (Formalism.L2.Col.iSupIndep_eigAt hc l)) v hvl (hT' hvT))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_sys_of_mem_span {K V H I J : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup H] [Module ℂ H]
     (σ : K →+* ℂ) (op : I → Module.End K V) (j : V →ₛₗ[σ] H) (h : J → Module.End ℂ H) (ι : J → I)
@@ -86,7 +82,7 @@ theorem exists_sys_of_mem_span {K V H I J : Type} [Field K] [AddCommGroup V] [Mo
   exact hv0 ((Submodule.disjoint_def.1 (Formalism.L2.Col.iSupIndep_eigAt hc l)) v hvl (hT' hvT))
 
 /- English proof (translation)
-Simplify using `[dualLab, List.map_reverse, List.map_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualLab_dualLab (d : List ℤ) : dualLab (dualLab d) = d := by
   simp [dualLab, List.map_reverse, List.map_map]
@@ -94,39 +90,37 @@ theorem dualLab_dualLab (d : List ℤ) : dualLab (dualLab d) = d := by
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hI hok hW hEx hS hinj p c hcar P hP`. Take `⟨hC, hSF, hEE, -⟩` from `GlobalTheory.T.core_clauses_of_weak_characterisation R F hW hEx`. Take `⟨hG, hcj, hq⟩` from `(GlobalTheory.T.theta_lift_levels_good_primes_properties R.toRealDat F.lv2 hC.lev).2.2.2 hC.fam A3.A.μ0 P hP`. Establish `hq0 : (A3.A.q P : ℂ) ≠ 0`. Rewrite using `[hq, Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(R.pl P).ne_bot`. Take `⟨_, _, _, htie⟩` from `hC.fam.tie`. Take `⟨-, hr, ht⟩` from `htie.ranks`. Establish `hrX : D.sp.X'.rank = A3.A.r + D.R.m * A3.A.t` using `by rw [D.sp.X'_rank, hr, ht]; rfl`. Establish `hrY : (Yc D 0).rank = D.R.r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), Nat.zero_min]`. Simplify using `[Ranks.rankY]`. Establish `hr0 : 0 < D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hm0 : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Take `⟨w, hw, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hcar.1`. Establish `hwp : w ∈ R.EEp3 p` using `(le_iSup₂ (f := fun c (_ : R.Carries p c) => R.EEc c) c hcar) hw`. Establish `hv0 : LinearMap.adjoint (R.Th A3.A.μ0) w ≠ 0` using `fun h0 => hw0 (hinj p w hwp h0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwE : w ∈ EEc R.toRealDat R.SF c` using `(hEE c) ▸ hw`. Take `⟨hX, hXo, hXn⟩` from `(GlobalTheory.T.realization_family_normal_operators R.toRealDat F.lv2 hC.lev hC.fam hC.models).1 A3.A.μ0`. Take `⟨zE, hmE, hpE⟩` from `GlobalTheory.T.exists_splitPrime_heckeTransfer_compositeLift R.toRealDat F.lv2 hI hC hS A3.A.μ0 ⟨P, hP⟩`. Establish `heig : ∀ k : Fin (D.sp.X'.rank + 1), hX (R.pl P) (Finsupp.single (splitLab D.sp.X'.rank k) 1) (LinearMap.adjoint (R.Th A3.A.μ0) w) = GlobalTheory.Hk3.evC (Yc D 0) (R.pl P) (fun d => c (R.pl P) (dualLab d)) (GlobalTheory.Hk3.splitC (Yc D 0).rank (zE k)) • LinearMap.adjoint (R.Th A …` using `fun k => (GlobalTheory.T.matched_spherical_pairs_commute_composite_lift R.toRealDat F.lv2 hC hS R.SF hSF A3.A.μ0 (R.pl P) hG _ _ (hmE k (Nat.lt_succ_iff.1 k.2)) hX hXo).2 c w hwE`. Take `⟨x, hx, hxe⟩` from `exists_sys_of_mem_span D.what₂.embLL (A3.rowI A3.A.μ0).opAll (R.jX A3.A.μ0) (fun k : Fin (D.sp.X'.rank + 1) => hX (R.pl P) (Finsupp.single (splitLab D.sp.X'.rank k) 1)) (fun k => Sum.inl ((⟨P, hP⟩ : A3.A.ok A3.A.μ0), (k : ℕ))) (fun k f => (GlobalTheory.T.familySplitOperators_eq_l …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE : (p.1.1 P).map D.what₂.embLL = (Formalism.L2.Col.heckePolyOf D.R.r (A3.A.q P) fun j => c (R.pl P) (dualLab (splitLab D.R.r j))).comp (C ((A3.A.q P : ℂ) ^ (D.R.m / 2 * D.R.t)) * X)`. Establish `h1` using `hpE fun j => c (R.pl P) (dualLab (splitLab (Yc D 0).rank j))`. Establish `h2 : (Formalism.L2.Col.heckePolyOf (A3.A.r + D.R.m * A3.A.t) (A3.A.q P) fun k => x (Sum.inl (⟨P, hP⟩, k))) = p.1.1 P * (A3.A.fam.R A3.A.μ0).blockProd ⟨P, hP⟩` using `hx.1 ⟨P, hP⟩`. Establish `h3` using `congrArg (Polynomial.map D.what₂.embLL) h2`. Rewrite `h3` using `[Formalism.L2.Col.map_heckePolyOf, Polynomial.map_mul, ← hrX]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[GlobalTheory.Hk3.Link.heckePolyOf_congr _ _ (b := fun k => D.what₂.embLL (x (Sum.inl (⟨P, hP⟩, k)))) ?_, h3, hrY]`. Use `mul_right_cancel₀ ?_ h1` and prove the remaining obligations. Rewrite using `[Ne, Polynomial.map_eq_zero]`. Unfold `BlockDat.blockProd`. Use `List.prod_ne_zero fun h => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, -, hν⟩` from `List.mem_map.1 h`. Conclude with `GlobalTheory.Hk3.Link.blockPoly_ne_zero _ _ _ hν`. Introduce `k hk`. Establish `h5` using `hxe ⟨k, Nat.lt_succ_iff.2 hk⟩`. Conclude with `(h5.trans (GlobalTheory.Hk3.Link.evC_splitC (Yc D 0) (R.pl P) hcj _ _)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hEo, -, -, hev, -⟩` from `GlobalTheory.T.exists_sphericalOperators_rows_normal_eigenspaces R.toRealDat F.lv2 hC hS R.SF hSF`. Establish `hne : R.HE.e w ≠ 0` using `fun h0 => hw0 ((hC.models.HE).1 (h0.trans (map_zero _).symm))`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, R.HE.e w v ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Conclude with `hne (MultilinearMap.ext fun v => not_not.1 fun hv => hcon ⟨v, hv⟩)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨cc, hβ⟩` from `hC.lev.βY 0 hm0`. Establish `hlev` using `(GlobalTheory.T.level_operators_at_prime_off_level_datum (Yc D 0) (R.βY 0) (R.ΛY 0) _ (R.dat0 R.triv) hβ (R.pl P) (by`. Establish `hN` using `((GlobalTheory.T.theta_lift_levels_good_primes_properties R.toRealDat F.lv2 hC.lev).2.1 A3.A.μ0 (R.pl P) hG).1`. Rewrite using `[Nat.cast_pow]`. Introduce `hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos cc with h0 | h0` into its components or cases. Rewrite `hmem` using `[h0, pow_zero]`. Conclude with `(R.pl P).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 hmem)`. Conclude with `hN ((R.pl P).isPrime.mem_of_pow_mem _ hmem))`. Use the proof step `(fun PP hPP => hG PP (Or.inl (hPP.resolve_right (Finset.notMem_empty _))))).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm` using `(Submodule.mem_inf.1 (Submodule.mem_comap.1 hwE)).1`. Establish `hrel` using `GlobalTheory.Hk3.Link.eig_rel (Yc D 0) (R.pl P) hcj _ hv (fun k hk g => (GlobalTheory.Hk3.Link.mult_lev R.θ _ _ _ _ hm v k (hlev k hk).1 g).trans ((congrArg (fun z : ℂ => z * R.HE.e w v g) (hlev k hk).2).trans (one_mul _))) (fun d => c (R.pl P) (dualLab d)) (fun d hd => by`. Establish `h5` using `(hEo (R.pl P) hG (Finsupp.single d 1) w).symm.trans ((congrArg R.HE.e (hev c _ hG (Finsupp.single d 1) w hwE)).trans (map_smul _ _ _))`. Conclude with `congrArg (fun U : MMap (R.MY 0) => U v) (h5.trans (congrArg (fun z : ℂ => z • R.HE.e w) (GlobalTheory.Hk3.Link.evC_single (Yc D 0) (R.pl P) _ d hd))))`. Rewrite `hrel` using `[hrY]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [dualLab_dualLab] at hrel`. Take `⟨hb0, hab⟩` from `hrel`. Establish `hrr : c (R.pl P) (splitLab D.R.r D.R.r) * c (R.pl P) (dualLab (splitLab D.R.r D.R.r)) = 1`. Rewrite using `[hab D.R.r le_rfl, Nat.sub_self, hb0]`. Establish `hbr : c (R.pl P) (dualLab (splitLab D.R.r D.R.r)) ≠ 0` using `right_ne_zero_of_mul_eq_one hrr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ha0 : c (R.pl P) (splitLab D.R.r 0) = 1`. Use `hab 0 (Nat.zero_le _)` as an intermediate fact. Rewrite `this` using `[Nat.sub_zero]`. Conclude with `mul_right_cancel₀ hbr (this.trans (one_mul _).symm)`. Establish `hba : ∀ j, j ≤ D.R.r → c (R.pl P) (dualLab (splitLab D.R.r j)) * c (R.pl P) (splitLab D.R.r D.R.r) = c (R.pl P) (splitLab D.R.r (D.R.r - j))`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `j hj`. Use `hab (D.R.r - j) (Nat.sub_le _ _)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self hj]`. Rewrite using `[← this, mul_assoc, mul_comm _ (c (R.pl P) (splitLab D.R.r D.R.r)), hrr, mul_one]`. Establish `hdual` using `GlobalTheory.T.dualPoly_twistedHeckePoly_eq_contragredient ℂ D.R.r (A3.A.q P) (fun j => c (R.pl P) (splitLab D.R.r j)) (fun j => c (R.pl P) (dualLab (splitLab D.R.r j))) ((A3.A.q P : ℂ) ^ (D.R.m / 2 * D.R.t)) 1 hq0 (pow_ne_zero _ hq0) hr0 ha0 hba`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hs0 : ((A3.A.q P : ℂ) ^ (D.R.m / 2 * D.R.t)) ≠ 0` using `pow_ne_zero _ hq0`. Prove the components needed by the constructor for the conclusion. Unfold `RealDat.polE`. Rewrite using `[hE, Polynomial.comp_assoc, Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp, ← mul_assoc, ← C_mul, mul_inv_cancel₀ hs0, C_1, one_mul, Polynomial.comp_X]`. Unfold `RealDat.polW`.
-
-Rewrite using `[GlobalTheory.Hk3.Link.dualPoly_map, hE, map_pow, map_natCast]`. Establish `hsc : (A3.A.q P : ℂ) ^ (D.R.r - 1 + D.R.m / 2 * D.R.t) = (A3.A.q P : ℂ) ^ (D.R.m / 2 * D.R.t) * 1 * (A3.A.q P : ℂ) ^ (D.R.r - 1)`. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsc, hdual, C_1, one_mul, Polynomial.comp_X]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_polys_of_carries : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, GlobalTheory.Chain.LiftInteg D → A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → (∀ p, ∀ w ∈ R.EEp3 p, LinearMap.adjoint (R.Th A3.A.μ0) w = 0 → w = 0) → ∀ p c, R.Carries p c → ∀ P ∈ A3.A.ok A3.A.μ0, RealDat.polE (A := A3.A) p.1.1 P = Formalism.L2.Col.heckePolyOf D.R.r (A3.A.q P) (fun k => c (R.pl P) (dualLab (splitLab D.R.r k))) ∧ RealDat.polW (A := A3.A) p.1.1 P = Formalism.L2.Col.heckePolyOf D.R.r (A3.A.q P) (fun k => c (R.pl P) (splitLab D.R.r k)) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hI hok hW hEx hS hinj p c hcar P hP

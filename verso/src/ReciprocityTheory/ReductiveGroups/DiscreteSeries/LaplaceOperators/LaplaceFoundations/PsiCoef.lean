@@ -11,37 +11,31 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.Base
 open ReciprocityTheory.ChartRestriction.DS Formalism.QuantumDeterminants SchurOrthogonalityLemmas
 
 /- English proof (translation)
-Introduce `k r ε Λ T μ P u c Vp _ _ _ π ξ μW μN _ hP hW hπ hξn hξ hΛ hμW hμ1 _ hcont hint`. Use `set ψ := Formalism.MainNotions.S.psiGen k r (z0 k r) c with hψ`. Use `set π' : Matrix (Fin k) (Fin k) ℂ → (Vp →L[ℂ] Vp) := fun h => π (Formalism.MainNotions.S.blockW k r h) with hπ'`. Establish `hUR` using `hπ.2.2.1`. Establish `: FiniteDimensional ℂ Vp` using `hπ.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProbabilityMeasure μW` using `⟨hμ1⟩`. Establish `hae : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r (z0 k r)`. Rewrite using `[ae_iff]`. Simplify using `using hμW.2.2.1`. Establish `haeP : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r (z0 k r)` using `Measure.quasiMeasurePreserving_fst.ae hae`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set F : Mt k r × Mt k r → Vp := fun p => psiCoef T μ P T.w T.w ((1 : Mat k r)⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * 1)) • chiInv ψ π (Matrix.of p.1) (Matrix.of p.2) ξ with hF`. Establish `hA : aaFun T μ P μW μN ψ π T.w T.w ξ 1 1 = ∫ p, F p ∂(μW.prod μN)` using `rfl`. Establish `hK : ∀ h : Mt k r, Matrix.of h ∈ UWset k r (z0 k r) → P * Matrix.of h * P⁻¹ ∈ Kset ε`. Introduce `h hh`. Rewrite using `[StandardBasisEmbedding.eq_blockW hh, cay_kE hP hW]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `kE_mem_Kset (fun a ha => cay_eps hP hW a ha) (StandardBasisEmbedding.blk_unitary hh)`. Establish `hPsi : ∀ h m : Mt k r, Matrix.of h ∈ UWset k r (z0 k r) → S7.PsiM T μ (P * (Matrix.of h * Matrix.of m) * P⁻¹) = HW.torepSig T (P * Matrix.of h * P⁻¹) * S7.PsiM T μ (P * Matrix.of m * P⁻¹)`. Introduce `h m hh`. Establish `hu : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1`. Establish `e : P * (Matrix.of h * Matrix.of m) * P⁻¹ = (P * Matrix.of h * P⁻¹) * (P * Matrix.of m * P⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (P * Matrix.of h * P⁻¹) * (P * Matrix.of m * P⁻¹) = P * Matrix.of h * (P⁻¹ * P) * Matrix.of m * P⁻¹` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, Matrix.nonsing_inv_mul _ hu]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Rewrite using `[e, psiM_K T μ (hK h hh)]`. Establish `hunit : ∀ g ∈ UWset k r (z0 k r), ∀ v, ‖π g v‖ = ‖v‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg v`. Rewrite using `[StandardBasisEmbedding.eq_blockW hg]`. Conclude with `hUR.2.1 _ (unit_uj (StandardBasisEmbedding.blk_unitary hg)) v`. Establish `hinvG : ∀ h : Mt k r, Matrix.of h ∈ UWset k r (z0 k r) → (Matrix.of h)⁻¹ ∈ UWset k r (z0 k r)`. Introduce `h hh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(uw_inv hh).1]`. Conclude with `StandardBasisEmbedding.mem_UW (Unitary.star_mem (StandardBasisEmbedding.blk_unitary hh))`. Establish `hFm : AEStronglyMeasurable F (μW.prod μN)`. Establish `hc0 : Continuous (fun p : Mt k r × Mt k r => (P * ((1 : Mat k r)⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * 1)) * P⁻¹ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ))` using `by fun_prop`. Establish `hc1 : Continuous (fun p : Mt k r × Mt k r => (Matrix.of.symm (P * ((1 : Mat k r)⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * 1)) * P⁻¹) : Mt k r))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc0`. Establish `h1 : Measurable (fun p : Mt k r × Mt k r => psiCoef T μ P T.w T.w ((1 : Mat k r)⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * 1)))`. Conclude with `(coef_meas T μ hcont T.w T.w).comp hc1.measurable`. Establish `h2 : Continuous (fun p : Mt k r × Mt k r => star (ψ (Matrix.of p.2)))` using `continuous_star.comp ((psiGen_cont _ _).comp continuous_snd)`. Establish `h3 : AEStronglyMeasurable (fun p : Mt k r × Mt k r => π (Matrix.of p.1)⁻¹ ξ) (μW.prod μN)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ContinuousOn (fun x : Mt k r => π' (star (StandardBasisEmbedding.blk (Matrix.of x))) ξ) {x | Matrix.of x ∈ UWset k r (z0 k r)}` using `(hUR.2.2 ξ).comp blk_cont.star.continuousOn (fun x hx => unit_uj (Unitary.star_mem (StandardBasisEmbedding.blk_unitary hx)))`. Establish `h0` using `hc.aestronglyMeasurable (μ := μW) isClosed_UW.measurableSet`. Rewrite `h0` using `[Measure.restrict_eq_self_of_ae_mem (s := {x : Mt k r | Matrix.of x ∈ UWset k r (z0 k r)}) hae]`. Establish `h0' : AEStronglyMeasurable (fun x : Mt k r => π (Matrix.of x)⁻¹ ξ) μW` using `h0.congr (hae.mono fun x hx => by dsimp only; rw [(uw_inv hx).1])`. Conclude with `h0'.comp_fst`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.aestronglyMeasurable.smul (h2.aestronglyMeasurable.smul h3)`. Establish `hFb : ∀ᵐ p ∂(μW.prod μN), ‖F p‖ ≤ ‖S7.PsiM T μ (P * Matrix.of p.2 * P⁻¹)‖` using `haeP.mono fun p hp => by`. Simplify using `only [hF, chiInv, psiCoef, inv_one, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[hPsi _ _ hp, norm_smul, norm_smul, norm_star, hψ, norm_psiGen, one_mul, hunit _ (hinvG _ hp), hξn, mul_one]`. Establish `hA1 : ‖HW.torepSig T (P * Matrix.of p.1 * P⁻¹)‖ ≤ 1` using `opNorm_le_one_of_isometry_alt _ ((HW.torep_isURepOn T).2.1 _ (hK _ hp))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[T.w_norm]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ ‖HW.torepSig T (P * Matrix.of p.1 * P⁻¹)‖ * ‖S7.PsiM T μ (P * Matrix.of p.2 * P⁻¹)‖ := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul, mul_one]`. Conclude with `ContinuousLinearMap.opNorm_comp_le _ _`. Use `_ ≤ 1 * ‖S7.PsiM T μ (P * Matrix.of p.2 * P⁻¹)‖ := by gcongr`. Use `_ = _ := one_mul _`. Establish `hFi : Integrable F (μW.prod μN)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Establish `hφ : Integrable (fun p : Mt k r × Mt k r => ‖S7.PsiM T μ (P * Matrix.of p.2 * P⁻¹)‖) (μW.prod μN)`. Use `(integrable_const (1 : ℝ) (μ := μW)).mul_prod hint` as an intermediate fact. Simplify using `using this`. Conclude with `hφ.mono' hFm hFb`. Rewrite using `[hA, ← integral_inner hFi ξ, integral_prod_symm _ (hFi.const_inner ξ)]`.
-
-Establish `hin : ∀ m : Mt k r, ∫ h, ⟪ξ, F (h, m)⟫_ℂ ∂μW = (Module.finrank ℂ Vp : ℂ)⁻¹ * (psiCoef T μ P T.w T.w (Matrix.of m) * starRingEnd ℂ (ψ (Matrix.of m)))`. Introduce `m`. Establish `hpt : ∀ᵐ h ∂μW, ⟪ξ, F (h, m)⟫_ℂ = starRingEnd ℂ (ψ (Matrix.of m)) * (⟪ξ, π (Matrix.of h)⁻¹ ξ⟫_ℂ * ⟪T.w, HW.torepSig T (P * Matrix.of h * P⁻¹) (S7.PsiM T μ (P * Matrix.of m * P⁻¹) T.w)⟫_ℂ)` using `hae.mono fun h hh => by`. Simplify using `only [hF, chiInv, psiCoef, inv_one, Matrix.one_mul, Matrix.mul_one, inner_smul_right]`. Establish `e : ∀ (A B : T.V →L[ℂ] T.V) (v : T.V), (A * B) v = A (B v)` using `fun _ _ _ => rfl`.
-
-Rewrite using `[hPsi _ _ hh, e, show star (ψ (Matrix.of m)) = starRingEnd ℂ (ψ (Matrix.of m)) from rfl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae hpt, integral_const_mul, schur_orthogonality_whittaker T π hP hW hπ hξn hξ hΛ hμW hμ1]`. Simplify using `only [psiCoef]`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using `only [hin]`. Rewrite using `[integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem b7b : WhittakerSchurOrthogonality := by
   intro k r ε Λ T μ P u c Vp _ _ _ π ξ μW μN _ hP hW hπ hξn hξ hΛ hμW hμ1 _ hcont hint

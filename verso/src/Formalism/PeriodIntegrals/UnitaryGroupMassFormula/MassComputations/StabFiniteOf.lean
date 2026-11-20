@@ -12,31 +12,27 @@ open scoped TensorProduct
 namespace MassDataMassesW
 
 /- English proof (translation)
-Introduce `D X u x`. Take `⟨e, he⟩` from `splitIso_holds X.B.I.cm.sig X.B.I.J`. Establish `hcK` using `(hK X).1`. Establish `hcI : IsCompact ((Hsub (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u) : Set (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)))` using `by haveI := hH X u`. Conclude with `isCompact_iff_compactSpace.2 this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `homogComponent_comm_second_action : IsCompact ((fun k => (x : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) * k * (x : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)⁻¹) '' (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)))` using `hcK.image ((continuous_const.mul continuous_id).mul continuous_const)`. Establish `hcK3 : IsCompact (e ⁻¹' ((Hsub (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u) : Set (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)) ×ˢ ((fun k => (x : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) * k * (x : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)⁻¹) '' (KX X : Set (HA (Af X.B.I.F) X.B.I.cm.s …` using `e.toHomeomorph.isCompact_preimage.2 (hcI.prod homogComponent_comm_second_action)`. Use `haveI hdisc : DiscreteTopology ↥(show Subgroup (HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) from HFinIn (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) := discHF_setting X`. Establish `pullback_fin_relation : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (Γ : Subgroup G) [DiscreteTopology Γ] (K : Set G), IsCompact K → Finite ↥((Subtype.val : Γ → G) ⁻¹' K)`. Introduce `G _ _ _ Γ _ K hK`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U, hU, hUeq⟩` from `isOpen_induced_iff.1 (isOpen_discrete ({1} : Set Γ))`. Establish `h1U : (1 : G) ∈ U`. Establish `h0 : (1 : Γ) ∈ (Subtype.val : Γ → G) ⁻¹' U` using `by rw [hUeq]; exact Set.mem_singleton 1`. Conclude with `h0`. Establish `hc : Continuous (fun p : G × G => p.1⁻¹ * p.2)` using `continuous_fst.inv.mul continuous_snd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hpre : (fun p : G × G => p.1⁻¹ * p.2) ⁻¹' U ∈ nhds ((1 : G), (1 : G))`. Apply `hc.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Simplify using `using hU.mem_nhds h1U`. Take `⟨V1, hV1, V2, hV2, hVV⟩` from `mem_nhds_prod_iff.1 hpre`. Establish `hV1m : (1 : G) ∈ interior (V1 ∩ V2)` using `mem_interior_iff_mem_nhds.2 (Filter.inter_mem hV1 hV2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun k : K => (fun y => (k : G)⁻¹ * y) ⁻¹' interior (V1 ∩ V2)) (fun k => isOpen_interior.preimage (continuous_const.mul continuous_id)) (by`. Introduce `y hy`. Conclude with `Set.mem_iUnion.2 ⟨⟨y, hy⟩, by rw [Set.mem_preimage, inv_mul_cancel]; exact hV1m⟩)`. Establish `hch : ∀ s : ↥((Subtype.val : Γ → G) ⁻¹' K), ∃ i : t, ((((i : K) : G))⁻¹ * ((s : Γ) : G)) ∈ interior (V1 ∩ V2)`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨i, hi, hs⟩` from `Set.mem_iUnion₂.1 (ht s.2)`. Conclude with `⟨⟨i, hi⟩, hs⟩`. Use `choose f hf using hch`. Use `Finite.of_injective f (fun s1 s2 h => ?_)` and prove the remaining obligations. Establish `a1` using `hf s1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a2` using `hf s2`. Rewrite `a1` using `[h]`. Establish `hmem : ((((f s2 : K) : G))⁻¹ * ((s1 : Γ) : G), (((f s2 : K) : G))⁻¹ * ((s2 : Γ) : G)) ∈ V1 ×ˢ V2` using `⟨(interior_subset a1).1, (interior_subset a2).2⟩`. Establish `hU' : ((((f s2 : K) : G))⁻¹ * ((s1 : Γ) : G))⁻¹ * ((((f s2 : K) : G))⁻¹ * ((s2 : Γ) : G)) ∈ U` using `hVV hmem`. Rewrite `hU'` using `[show ((((f s2 : K) : G))⁻¹ * ((s1 : Γ) : G))⁻¹ * ((((f s2 : K) : G))⁻¹ * ((s2 : Γ) : G)) = ((s1 : Γ) : G)⁻¹ * ((s2 : Γ) : G) by group]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : ((s1 : Γ)⁻¹ * (s2 : Γ) : Γ) ∈ (Subtype.val : Γ → G) ⁻¹' U` using `hU'`. Rewrite `e1` using `[hUeq, Set.mem_singleton_iff, inv_mul_eq_one]`. Conclude with `Subtype.ext e1`. Use `haveI := pullback_fin_relation _ (show Subgroup (HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) from HFinIn (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) _ hcK3`. Establish `hsurj : ∀ t : ↥(GamH X u ⊓ (KH X u).map (MulAut.conj x).toMonoidHom), ∃ γ : Hsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u), γ ∈ ratOf (K` using `Hsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)) ∧ prjF X.B.I.cm.sig X.B.I.J (frameOf X u) γ = t := by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `t`. Establish `ht : (t : Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)) ∈ (ratOf (K` using `Hsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))).map (prjF X.B.I.cm.sig X.B.I.J (frameOf X u)) := by`. Rewrite using `[prjF_map_ratOf]`. Conclude with `t.2.1`. Take `⟨γ, hγ, hγt⟩` from `Subgroup.mem_map.1 ht`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨γ, hγ, hγt⟩`. Use `choose γ hγ hγt using hsurj`. Use `Finite.of_injective (fun t => (⟨⟨(γ t : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J), Subgroup.mem_comap.1 (hγ t)⟩, ?_⟩ : ((↑) ⁻¹' (e ⁻¹' ((Hsub (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u) : Set (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)) ×ˢ ((fun k => (x : HA (Af X.B.I.F) X.B.I.cm. …` and prove the remaining obligations. Simplify using `only [Set.mem_preimage]`. Rewrite using `[he]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `haMap_stabT X.B.I.cm.sig X.B.I.J (fstA X.B.I.F) (tupH (frameOf X u)) (γ t) (γ t).2`. Use `show (splitA X.B.I.cm.sig X.B.I.J (γ t : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J)).2 ∈ (_ : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))`. Rewrite using `[← prjF_val, hγt t]`. Take `⟨k, hk, hkt⟩` from `Subgroup.mem_map.1 t.2.2`.
-
-Rewrite using `[← hkt]`. Use `⟨(k : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J), Subgroup.mem_subgroupOf.1 hk, ?_⟩` and prove the remaining obligations. Simplify using `[MulAut.conj_apply]`. Introduce `t1 t2 h`. Establish `h1 : (γ t1 : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) = γ t2`.
-
-Establish `h0` using `congrArg (fun z => z.1.1) h`. Simplify using `using h0`. Establish `h2 : γ t1 = γ t2` using `Subtype.ext h1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hγt t1, ← hγt t2, h2]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabFinite_of (hH : HinfCompact) (hK : KCompactOpen) : StabFinite := by
   intro D X u x

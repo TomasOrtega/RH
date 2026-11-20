@@ -9,9 +9,9 @@ namespace GlobalTheory.MemLoc
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing e with`. Consider the case `zero => simp [rootT]`. Consider the case `succ n ih`. Establish `h : rootT e (n + 1) = rootT ((frobeniusEquiv (Per.Fl l) l).symm e) n`. Rewrite using `[rootT, rootT, Function.iterate_succ_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, pow_succ, pow_mul, ih, ← map_pow, frobeniusEquiv_symm_pow_p]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rootT_pow_eq_untilt (e : Per.Fl l) (n : ℕ) : rootT e n ^ (l ^ n) = e.untilt := by
   induction n generalizing e with
@@ -26,17 +26,15 @@ end GlobalTheory.MemLoc
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `l _ K bk`. Use `⟨fun n => ?_, fun g y hy => ?_⟩` and prove the remaining obligations. Use `set r : ↥(OL K) := bk.str.symm (Ideal.Quotient.mk _ X) with hr`. Establish `h1 : (GlobalTheory.MemLoc.rootT bk.flat n) ^ (l ^ n) = intToOC K r`. Rewrite using `[GlobalTheory.MemLoc.rootT_pow_eq_untilt, ← WittVector.fontaineTheta_teichmuller, ← bk.ev_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `bk.θ_ev r X (by rw [hr, RingEquiv.apply_symm_apply])`. Use `set a : Om l := ((r : ↥K.1) : Om l)`. Establish `hf : (Polynomial.X ^ (l ^ n) - Polynomial.C a : Polynomial (Om l)) ≠ 0` using `Polynomial.X_pow_sub_C_ne_zero (pow_pos (Fact.out : l.Prime).pos n) a`. Establish `hroot : ((Polynomial.X ^ (l ^ n) - Polynomial.C a : Polynomial (Om l)).map (algebraMap (Om l) ℂ_[l])).IsRoot ((GlobalTheory.MemLoc.rootT bk.flat n : OC l) : ℂ_[l])`. Establish `h2` using `congrArg (fun x : OC l => (x : ℂ_[l])) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[SubmonoidClass.coe_pow]`. Rewrite `h2` using `[coe_intToOC]`. Simplify using `only [Polynomial.IsRoot, Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_C, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C]`. Rewrite using `[h2]`. Conclude with `sub_self _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨z, hz⟩` from `(IsAlgClosed.splits _).mem_range_of_isRoot hf hroot`. Conclude with `⟨z, hz.symm⟩`. Use `Perfection.ext fun n => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PreTilt.coeff n (Per.σF g bk.flat) = PreTilt.coeff n y`. Establish `hit : ∀ k : ℕ, ((frobeniusEquiv (Per.Fl l) l).symm)^[k] (Per.σF g bk.flat) = Per.σF g (((frobeniusEquiv (Per.Fl l) l).symm)^[k] bk.flat)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact Eq.refl (Per.σF g bk.flat)`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ih, RingHom.map_frobeniusEquiv_symm]`.
-
-Establish `hsig : GlobalTheory.MemLoc.rootT (Per.σF g bk.flat) n = Per.σO g (GlobalTheory.MemLoc.rootT bk.flat n)`. Rewrite using `[GlobalTheory.MemLoc.rootT, GlobalTheory.MemLoc.rootT, hit, GlobalTheory.RingBasics.untilt_σF]`. Rewrite using `[GlobalTheory.MemLoc.coeff_eq_mk_rootT, GlobalTheory.MemLoc.coeff_eq_mk_rootT, hsig, hy n]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootT_flat_alg_and_fix : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K), (∀ n : ℕ, ∃ z : Om l, ((GlobalTheory.MemLoc.rootT bk.flat n : OC l) : ℂ_[l]) = (z : ℂ_[l])) ∧ ∀ (g : GQ l) (y : OCb l), (∀ n : ℕ, Per.σO g (GlobalTheory.MemLoc.rootT bk.flat n) = GlobalTheory.MemLoc.rootT y n) → Per.σF g bk.flat = y := by
   intro l _ K bk

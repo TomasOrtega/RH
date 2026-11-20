@@ -9,11 +9,11 @@ open NumberField IsDedekindDomain Formalism.L2.Th1.CM Neutral.HilbertClassField
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Take `⟨p, hpm, hp0⟩` from `id hβ`. Take `⟨q, hpq, hq⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd p hpm.ne_zero 0`. Simplify using `only [map_zero, sub_zero] at hpq hq`. Establish `hq0 : q.coeff 0 ≠ 0` using `fun h => hq (Polynomial.X_dvd_iff.2 h)`. Establish `haq : Polynomial.aeval β q = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Polynomial.aeval β p = 0` using `by rw [Polynomial.aeval_def]; exact hp0`. Rewrite `h1` using `[hpq, map_mul, map_pow, Polynomial.aeval_X]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (pow_ne_zero _ h0)`. Use `⟨q.coeff 0, -(Polynomial.aeval β q.divX), hq0, ?_, ?_⟩` and prove the remaining obligations. Establish `hmem` using `adjoin_le_integralClosure hβ (Polynomial.aeval_mem_adjoin_singleton ℤ β (p := q.divX))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(neg_mem hmem : _ ∈ integralClosure ℤ Ω)`. Establish `h2` using `congrArg (Polynomial.aeval β) (Polynomial.divX_mul_X_add q)`. Rewrite `h2` using `[map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C, haq, eq_intCast]`. Take the linear combination `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_int_multiple {Ω : Type*} [Field Ω] [CharZero Ω] {β : Ω} (hβ : IsIntegral ℤ β) (h0 : β ≠ 0) :
     ∃ (n : ℤ) (γ : Ω), n ≠ 0 ∧ IsIntegral ℤ γ ∧ (n : Ω) = β * γ := by
@@ -33,7 +33,7 @@ theorem exists_int_multiple {Ω : Type*} [Field Ω] [CharZero Ω] {β : Ω} (hβ
     linear_combination h2
 
 /- English proof (translation)
-Establish `hA : IsIntegral A x` using `hx.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hA`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_valuationSubring_of_isIntegral {Ω : Type*} [Field Ω] {x : Ω} (hx : IsIntegral ℤ x)
     (A : ValuationSubring Ω) : x ∈ A := by
@@ -43,11 +43,11 @@ theorem mem_valuationSubring_of_isIntegral {Ω : Type*} [Field Ω] {x : Ω} (hx 
   exact y.2
 
 /- English proof (translation)
-Establish `key : ∀ q ∈ s.offDiag, ∃ (m : ℤ) (γ : Ω), m ≠ 0 ∧ IsIntegral ℤ γ ∧ (m : Ω) = (q.1 - q.2) * γ`. Introduce `q hq`. Rewrite `hq` using `[Finset.mem_offDiag]`. Conclude with `exists_int_multiple ((hs _ hq.1).sub (hs _ hq.2.1)) (sub_ne_zero.2 hq.2.2)`. Use `choose! m γ hm hγ hmγ using key`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∏ q ∈ s.offDiag, m q, Finset.prod_ne_zero_iff.2 hm, ?_⟩` and prove the remaining obligations. Introduce `r hr r' hr' hne A hA`. Establish `hq : (r, r') ∈ s.offDiag` using `Finset.mem_offDiag.2 ⟨hr, hr', hne⟩`. Rewrite using `[Int.cast_prod, ← Finset.mul_prod_erase _ _ hq]`. Rewrite `hA`, the goal using `[ValuationSubring.mem_nonunits_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Valuation.map_mul, hmγ _ hq, Valuation.map_mul]`. Establish `h1 : A.valuation (γ (r, r')) ≤ 1` using `(A.valuation_le_one_iff _).2 (mem_valuationSubring_of_isIntegral (hγ _ hq) A)`. Establish `h2 : A.valuation (∏ q ∈ s.offDiag.erase (r, r'), (m q : Ω)) ≤ 1` using `(A.valuation_le_one_iff _).2 (prod_mem fun q _ => intCast_mem _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sepInt {Ω : Type*} [Field Ω] [CharZero Ω] (s : Finset Ω) (hs : ∀ r ∈ s, IsIntegral ℤ r) :
     ∃ n : ℤ, n ≠ 0 ∧ ∀ r ∈ s, ∀ r' ∈ s, r ≠ r' → ∀ A : ValuationSubring Ω, r - r' ∈ A.nonunits →
@@ -72,9 +72,9 @@ theorem sepInt {Ω : Type*} [Field Ω] [CharZero Ω] (s : Finset Ω) (hs : ∀ r
     _ < 1 := by rw [mul_one, mul_one]; exact hA
 
 /- English proof (translation)
-Establish `hI : Ideal.span {(n : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hn` after adjusting the coercions. Use `(Ideal.finite_factors hI).subset fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hv ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+A detailed English derivation is pending.
 -/
 theorem finite_places (E : Type*) [Field E] [NumberField E] {n : ℤ} (hn : n ≠ 0) :
     {v : HeightOneSpectrum (𝓞 E) | (n : 𝓞 E) ∈ v.asIdeal}.Finite := by

@@ -16,7 +16,7 @@ namespace GlobalTheory.TwBack
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_castSucc (n := 4)]`. Use `show (∏ k : Fin 4, _) * g a.left ^ (0 : ℤ) = _`. Rewrite using `[zpow_zero, _root_.mul_one]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases k <;> rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem prod_tw (D : DegPre R) (a : D.P.A ⟶ D.P.A) (n : ℕ) (β : D.X) {U : Type} [CommGroup U]
     (g : (D.P.A.left ⟶ D.P.A.left) → U) :
@@ -28,9 +28,7 @@ theorem prod_tw (D : DegPre R) (a : D.P.A ⟶ D.P.A) (n : ℕ) (β : D.X) {U : T
   fin_cases k <;> rfl
 
 /- English proof (translation)
-Introduce `j`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose J hJ using fun χ : (thickObj R I e D.P.A).left ⟶ D.P.A.left => exists_chart D.P.isLB (χ y)`. Use `(gs_pull (𝟙 _) _ y _ hy _).trans (Eq.trans ?_ (DVR.gs_zero _ y _ hy).symm)` and prove the remaining obligations. Use `(sec_trans b _ y hy (Good.mem hJ (D.famφB α) _)).trans ?_` and prove the remaining obligations.
-
-Conclude with `(congrArg _ (h _ (𝟙 _) y J hJ)).trans (mul_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vanMod_of_van (I : Ideal R) {D : DegPre R} {k : ℕ} {α : D.X} (b : D.SecB k α) (e : ℕ) (h : Van I b e) :
     VanMod I b e := by
@@ -42,20 +40,18 @@ theorem vanMod_of_van (I : Ideal R) {D : DegPre R} {k : ℕ} {α : D.X} (b : D.S
   exact (congrArg _ (h _ (𝟙 _) y J hJ)).trans (mul_zero _)
 
 /- English proof (translation)
-Rewrite using `[shift, zero_smul, add_zero, natCast_zsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_zero {X : Type} [AddCommGroup X] (h h' : X →+ X) (n : ℕ) (mu : X) :
     shift h h' n 0 mu = n • mu := by
   rw [shift, zero_smul, add_zero, natCast_zsmul]
 
 /- English proof (translation)
-Introduce `mu α u hu hc`. Establish `hT : TRel h mu (F α) (F (α + n • mu))`. Use `hF mu α` as an intermediate fact. Rewrite `this` using `[shift_zero]`. Then use the resulting hypothesis. Take `⟨u', hu', hv⟩` from `exists_gen D.P.isLB (φ' := dφ D a mu α (α + n • mu)) (ε' := dε n 0) (fun U _ g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, DegPre.deltaφ, DegPre.deltaε, dφ, dε, zpow_neg, Finset.prod_inv_distrib, DVR.GC.famφ_eq]`. Rewrite using `[prod_tw D a n _ (fun ψ => g ((DegPre.prB D (FractionRing R)).left ≫ ψ)), prod_tw D a n _ (fun ψ => g ((DegPre.trF D (FractionRing R) mu).left ≫ (DegPre.prB D (FractionRing R)).left ≫ ψ))])`. Use `u hu`. Establish `hfac : IsFac D a h n 0 mu α (α + n • mu) u'`. Use `⟨hu', fun z J hJ => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `val_corr hJ hc (𝟙 _)`. Rewrite `e` using `[val_pull hJ, Category.id_comp, DegPre.famMult, val_pull hJ, val_mul hJ, val_mul hJ, Category.id_comp]`. Rewrite using `[hv _ _ z J hJ, zpow_zero, _root_.mul_one, add_zero, zpow_natCast, zpow_natCast]`. Conclude with `e.trans (congrArg₂ (· * ·) (congrArg₂ (· * ·) (map_pow _ _ _) rfl) (map_pow _ _ _))`. Use `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).2 fun y J hJ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hs _ _ _ y J hJ, hs _ _ _ y J hJ, ← hv _ _ y J hJ, Category.assoc]`. Conclude with `hT u' hfac _ (𝟙 _) y J hJ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famFE_of_tfe (D : DegPre R) (a : D.P.A ⟶ D.P.A) (h h' : D.X →+ D.X) (n : ℕ) (F : ∀ β, SecT D a n 0 β)
     (hF : TFE h h' F)
@@ -84,11 +80,9 @@ theorem famFE_of_tfe (D : DegPre R) (a : D.P.A ⟶ D.P.A) (h h' : D.X →+ D.X) 
   exact hT u' hfac _ (𝟙 _) y J hJ
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D a h h' n F hS hF`. Establish `hL` using `D.toPre.P.isLB`. Use `choose f hf using fun β => exists_sec hL (φ' := D.toPre.famφB β) (ε' := DegPre.famε n) (fun U _ g => prod_tw D.toPre a n β g) (F β)`. Use `choose s hs using fun β => exists_sec hL (φ' := DegPre.famφ D.toPre (FractionRing R) β) (ε' := DegPre.famε n) (fun U _ g => Finset.prod_congr rfl fun i _ => by rw [DVR.GC.famφ_eq]) (DVR.pullSec D.toPre.P.L _ _ (f β) (DegPre.prB D.toPre (FractionRing R)).left)`. Establish `hs' : ∀ β (Z : Scheme.{0}) (x : Z ⟶ (DegPre.BF D.toPre (FractionRing R)).left) (z : Z) (J), Good D.toPre.P.L z J → sval (s β) x z J = sval (f β) (x ≫ (DegPre.prB D.toPre (FractionRing R)).left) z J` using `fun β Z x z J hJ => (hs β Z x z J hJ).trans (DVR.SectionScalarValuation.sval_pullSec _ _ _ _ x z hJ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h1 : Out.scal (DegPre.BF D.toPre (FractionRing R)).hom (1 : R) = 1`. Unfold `Out.scal`. Rewrite using `[map_one, map_one]`. Use `⟨⟨⟨s, famFE_of_tfe D.toPre a h h' n F hF s fun β Z x z J hJ => (hs' β Z x z J hJ).trans (hf β Z _ z J hJ)⟩, f, fun β => ?_, fun e => (hS e).subset fun β hβ hv => hβ (vanMod_of_van _ _ e fun Z x z J hJ => (hf β Z _ z J hJ).trans (hv Z x z J hJ))⟩, hf⟩` and prove the remaining obligations. Rewrite using `[h1]`.
-
-Conclude with `DVR.SectionScalarValuation.secScal_of_sval hL fun y J hJ => (hs' β _ _ y J hJ).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intFam : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)), ∀ (a : D.toPre.P.A ⟶ D.toPre.P.A), ∀ (h h' : D.toPre.X →+ D.toPre.X) (n : ℕ) (F : ∀ β, SecT D.toPre a n 0 β), Small (maximalIdeal R) (w := id) F → TFE h h' F → ∃ Φ : IntFam (maximalIdeal R) D.toPre n, ∀ β, (∀ (Z : Scheme.{0}) (x : Z ⟶ D.toPre.P.A.left) (z : Z) (J), Good D.toPre.P.L z J → sval (Φ.f β) x z J = sval (F β) x z J) := by
   intro R _ _ _ _ D a h h' n F hS hF

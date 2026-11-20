@@ -30,7 +30,7 @@ variable {R : Type} [CommRing R] (W : _root_.WeierstrassCurve R)
 variable [W.IsElliptic]
 
 /- English proof (translation)
-Rewrite using `[show eSec (schemeOver W) = zero W from one_left W]`. Conclude with `appLE_originSec_eq_zero_iff W t i h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_originSec_eq_zero_iff_eSec (T : Scheme.{0}) (t : T ⟶ (schemeOver W).left)
     (i : (originLB W).ι) (h : ⊤ ≤ t ⁻¹ᵁ (originLB W).U i) :
@@ -40,7 +40,7 @@ theorem appLE_originSec_eq_zero_iff_eSec (T : Scheme.{0}) (t : T ⟶ (schemeOver
   exact appLE_originSec_eq_zero_iff W t i h
 
 /- English proof (translation)
-Unfold `Out.Rigidified`. Rewrite using `[show eSec (schemeOver W) = zero W from one_left W]`. Conclude with `⟨_, isGen_one_pull_zero W⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem rigidified_originLB : Out.Rigidified (schemeOver W) (originLB W) := by
   unfold Out.Rigidified
@@ -48,9 +48,9 @@ theorem rigidified_originLB : Out.Rigidified (schemeOver W) (originLB W) := by
   exact ⟨_, isGen_one_pull_zero W⟩
 
 /- English proof (translation)
-Introduce `s`. Use `⟨⊤, trivial, ?_⟩` and prove the remaining obligations. Establish `: IsIso (GrpObj.inv : schemeOver W ⟶ schemeOver W).left` using `inferInstanceAs (IsIso ((Over.forget _).map (GrpObj.inv : schemeOver W ⟶ schemeOver W)))`. Establish `hreg` using `fun i V h => ((isRegularSec_originSec W i).resG (V := V) h).mem`. Use `SameZeroScheme.exists_isGen_linComb (schemeOver W).left _ (originLB W) (originSec W) _ _ (originLB_isLB W) (fun i V h => SymOfZeroDivisor.appLE_mem_nonZeroDivisors _ _ _ (hreg i) V h) (fun i V h => SymOfZeroDivisor.appLE_mem_nonZeroDivisors _ _ _ (hreg i) V h) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `T t i j h h'`. Rewrite using `[appLE_originSec_eq_zero_iff_eSec, appLE_originSec_eq_zero_iff_eSec, ← Category.assoc t]`. Conclude with `SymOfZeroDivisor.inv_eq_zero_iff (schemeOver W) _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sym_originLB : Out.Sym (schemeOver W) (originLB W) := by
   intro s
@@ -67,7 +67,7 @@ theorem sym_originLB : Out.Sym (schemeOver W) (originLB W) := by
   exact SymOfZeroDivisor.inv_eq_zero_iff (schemeOver W) _
 
 /- English proof (translation)
-Use `kTriv_of_sections_vanish_on_zero _ (schemeOver W) (originLB W) (originSec W) (originLB_isLB W) (appLE_originSec_eq_zero_iff_eSec W) ?_` and prove the remaining obligations. Introduce `R' _ f Y φ q H s T t j h e`. Rewrite `e` using `[show eSec (schemeOver W) = zero W from one_left W]`. Conclude with `appLE_sec_pull_originLB_eq_zero W H s t j h e`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kTriv_originLB : Out.KTriv (schemeOver W) (originLB W) := by
   refine kTriv_of_sections_vanish_on_zero _ (schemeOver W) (originLB W) (originSec W)
@@ -115,17 +115,17 @@ Both sides reduce to the same expression.
 theorem ellPolAV_L : (ellPolAV W).L = originLB W := rfl
 
 /- English proof (translation)
-The claim follows from `one_left W`.
+A detailed English derivation is pending.
 -/
 theorem eSec_ellPolAV : eSec (ellPolAV W).A = zero W := one_left W
 
 /- English proof (translation)
-The claim follows from `isAddLawHom_mul W`.
+A detailed English derivation is pending.
 -/
 theorem isAddLawHom_ellPolAV : IsAddLawHom W μ[(ellPolAV W).A] := isAddLawHom_mul W
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hP.neg, (congrArg (_ ≫ ·) (inv_left W)).trans (ptHom_negHom W ρ P hP)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ptHom_ellPolAV_inv {A : Type} [CommRing A] (ρ : R →+* A) (P : Fin 3 → A)
     (hP : IsUnimodularSol (W.map ρ) P) :
@@ -141,13 +141,13 @@ Both sides reduce to the same expression.
 theorem ellTheta_eq : ellTheta W = originSec W := rfl
 
 /- English proof (translation)
-The claim follows from `nonzeroLocus_originSec W`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_ellTheta : Out.nonzeroLocus (ellTheta W) = coordOpen W 2 :=
   nonzeroLocus_originSec W
 
 /- English proof (translation)
-Rewrite using `[eSec_ellPolAV]`. Conclude with `secPull_originSec_eq_zero_iff W t`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secPull_ellTheta_eq_zero_iff {T : Scheme.{0}} (t : T ⟶ (ellPolAV W).A.left) :
     (∀ j, (Cartier.secPull (ellTheta W) t).f j = 0) ↔
@@ -156,14 +156,14 @@ theorem secPull_ellTheta_eq_zero_iff {T : Scheme.{0}} (t : T ⟶ (ellPolAV W).A.
   exact secPull_originSec_eq_zero_iff W t
 
 /- English proof (translation)
-The claim follows from `existsUnique_eq_const_mul_originSec W s`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_eq_const_mul_ellTheta (s : (ellPolAV W).L.Sec) :
     ∃! c : R, ∀ i, s.f i = constFn (ellPolAV W).A.hom ((ellPolAV W).L.U i) c * (ellTheta W).f i :=
   existsUnique_eq_const_mul_originSec W s
 
 /- English proof (translation)
-The claim follows from `WeierstrassLie.isLieBasis_eps R W (one_left W)`.
+A detailed English derivation is pending.
 -/
 theorem exists_isLieBasis_ellPolAV : ∃ v : epsR R ⟶ (ellPolAV W).A,
     (∃ h : IsUnimodularSol (W.map (algebraMap R (DualNumber R))) ![DualNumber.eps, -1, 0],
@@ -177,20 +177,20 @@ variable {R' : Type} [CommRing R'] {W' : _root_.WeierstrassCurve R'} [W'.IsEllip
   (f : R →+* R') (h : W.map f = W')
 
 /- English proof (translation)
-The claim follows from `isGrpPullback_mapHom W f h`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_ellPolAV :
     IsGrpPullback (ellPolAV W').A (ellPolAV W).A (spMap f) (mapHom W f h) :=
   isGrpPullback_mapHom W f h
 
 /- English proof (translation)
-The claim follows from `lbIso_pull_originLB W f h`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_ellPolAV : LBIso (ellPolAV W').L ((ellPolAV W).L.pull (mapHom W f h)) :=
   lbIso_pull_originLB W f h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, isGrpPullback_ellPolAV W f h, (lbIso_ellPolAV W f h).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem ellPolAV_baseChange : (ellPolAV W').g = (ellPolAV W).g ∧
     IsGrpPullback (ellPolAV W').A (ellPolAV W).A (spMap f) (mapHom W f h) ∧
@@ -200,13 +200,13 @@ theorem ellPolAV_baseChange : (ellPolAV W').g = (ellPolAV W).g ∧
 end BaseChange
 
 /- English proof (translation)
-The claim follows from `not_isGen_originLB W t`.
+A detailed English derivation is pending.
 -/
 theorem not_isGen_ellPolAV [Nontrivial R] (t : (ellPolAV W).L.Gen) : ¬ t.IsGen :=
   not_isGen_originLB W t
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by have : (⟨0, 0, 1, -1, 0⟩ : _root_.WeierstrassCurve ℚ).Δ = 37 := by norm_num [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈] rw [this] exact Ne.isUnit (by norm_num)⟩`.
+Supply the required witnesses or components.
 -/
 theorem weierstrass_0_0_1_neg_one_0_isElliptic : (⟨0, 0, 1, -1, 0⟩ : _root_.WeierstrassCurve ℚ).IsElliptic :=
   ⟨by
@@ -217,14 +217,14 @@ theorem weierstrass_0_0_1_neg_one_0_isElliptic : (⟨0, 0, 1, -1, 0⟩ : _root_.
     exact Ne.isUnit (by norm_num)⟩
 
 /- English proof (translation)
-The claim follows from `haveI := weierstrass_0_0_1_neg_one_0_isElliptic ⟨ellPolAV ⟨0, 0, 1, -1, 0⟩, rfl, not_isGen_ellPolAV _⟩`.
+A detailed English derivation is pending.
 -/
 example : ∃ P : Out.PolAV (Spec (CommRingCat.of ℚ)), P.g = 1 ∧ ∀ t : P.L.Gen, ¬ t.IsGen :=
   haveI := weierstrass_0_0_1_neg_one_0_isElliptic
   ⟨ellPolAV ⟨0, 0, 1, -1, 0⟩, rfl, not_isGen_ellPolAV _⟩
 
 /- English proof (translation)
-The claim follows from `weierstrass_0_0_1_neg_one_0_isElliptic ∃ x y z : specOver ℚ ℚ ⟶ (ellPolAV E).A, (∃ h, x.left = pt E ![0, 0, 1] h) ∧ (∃ h, y.left = pt E ![0, -1, 1] h) ∧ (∃ h, z.left = pt E ![1, 0, 1] h) ∧ x⁻¹ = y ∧ x * x = z := by intro E have : E.IsElliptic := weierstrass_0_0_1_neg_one_0_isElli …`.
+A detailed English derivation is pending.
 -/
 example :
     let E : _root_.WeierstrassCurve ℚ := ⟨0, 0, 1, -1, 0⟩

@@ -12,9 +12,9 @@ universe u
 variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Introduce `t t' h`. Use `Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Use `choose v' hv' using fun i => hφ (v i)`. Use `congrFun (congrArg Subtype.val h) v'` as an intermediate fact. Establish `h2 : P.u (t.1 fun i => P.φ (v' i)) = P.u (t'.1 fun i => P.φ (v' i))` using `this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (fun i => P.φ (v' i)) = v` using `funext hv'`. Rewrite `h2` using `[h3]`. Conclude with `hu h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_f_injective {G' : Type u} [Group G'] [TopologicalSpace G'] [IsTopologicalGroup G']
     {M : TRep R G} {M' : TRep R G'} (P : Pair M M') (hφ : Surjective P.φ) (hu : Injective P.u) (n : ℕ) :
@@ -31,9 +31,7 @@ theorem hom_f_injective {G' : Type u} [Group G'] [TopologicalSpace G'] [IsTopolo
 variable (M : TRep R G) (N : Subgroup G) [N.Normal] (Q : TRep R (G ⧸ N)) (P : Pair Q M)
 
 /- English proof (translation)
-Establish `hφa : ∀ a, P.φ a = (a : G ⧸ N)` using `fun a => by rw [hP.1]; rfl`. Use `show P.u (z.1 _) = P.u (z.1 _)`. Use `congrArg (fun v => P.u (z.1 v)) (funext fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `hφa g`.
-
-Conclude with `hφa h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cur_inf (hP : IsInvRep M N Q P) (z : Q.coch.X 2) (g h : G) :
     cur M (P.hom.f 2 z) g h = P.u (cur Q z (g : G ⧸ N) (h : G ⧸ N)) := by
@@ -45,17 +43,17 @@ theorem cur_inf (hP : IsInvRep M N Q P) (z : Q.coch.X 2) (g h : G) :
   · exact hφa h
 
 /- English proof (translation)
-Rewrite using `[hP.1]`. Conclude with `QuotientGroup.mk'_surjective N`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_surjective (hP : IsInvRep M N Q P) : Surjective P.φ := by
   rw [hP.1]; exact QuotientGroup.mk'_surjective N
 
 /- English proof (translation)
-Establish `: DiscreteTopology (G ⧸ N)` using `QuotientGroup.discreteTopology hN`. Establish `hC` using `fun n hn g h => stepC (isTwoCocycle_curried M x hx) (fun n hn g => (h0 n hn g).1) (fun n hn g => (h0 n hn g).2) n hn g h`. Establish `hmem : ∀ g h, ∃ q, P.u q = cur M x g h` using `fun g h => (hP.2.2 _).2 fun n hn => (hC n hn g h).2.2`. Use `choose F0 hF0 using hmem`. Set `z : Q.coch.X 2` to `⟨fun v => F0 (v 0).out (v 1).out, continuous_of_discreteTopology⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hz : P.hom.f 2 z = x`. Use `ext2 M fun g h => ?_` and prove the remaining obligations. Rewrite using `[cur_inf M N Q P hP]`. Use `show P.u (F0 (g : G ⧸ N).out (h : G ⧸ N).out) = _`. Take `⟨a, ha⟩` from `QuotientGroup.mk_out_eq_mul N g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `QuotientGroup.mk_out_eq_mul N h`. Rewrite using `[hF0, ha, hb, (hC _ a.2 _ _).2.1, (hC _ b.2 _ _).1]`. Use `⟨z, ?_, hz⟩` and prove the remaining obligations. Apply `hom_f_injective P (phi_surjective M N Q P hP) hP.2.1.injective 3` to reduce the goal to its premises. Rewrite using `[P.hom.comm, hz, hx, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend2 (hN : IsOpen (N : Set G)) (hP : IsInvRep M N Q P) (x : M.coch.X 2) (hx : M.coch.d 2 x = 0)
     (h0 : ∀ n ∈ N, ∀ g, cur M x n g = 0 ∧ cur M x g n = 0) :
@@ -78,17 +76,17 @@ theorem descend2 (hN : IsOpen (N : Set G)) (hP : IsInvRep M N Q P) (x : M.coch.X
   rw [P.hom.comm, hz, hx, map_zero]
 
 /- English proof (translation)
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite `hy` using `[H_mk, mk_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx` using `(memZ _).1 x.2`. Take `⟨w, hw⟩` from `norm_all M N hN h1 x.1 hx hy`. Take `⟨z, hz, hzx⟩` from `descend2 M N Q P hN hP _ (d_sub_d M x.1 hx w) hw`. Use `⟨Submodule.Quotient.mk ⟨z, (memZ _).2 hz⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[H_mk, Submodule.Quotient.eq, Submodule.mem_comap]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show P.hom.f 2 z - x.1 ∈ M.coch.B 2`. Rewrite using `[hzx, memB]`. Conclude with `⟨-w, by rw [map_neg]; abel⟩`. Introduce and unpack `⟨y0, rfl⟩`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y0`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H_mk, H_mk, mk_eq_zero_iff, memB]`. Establish `hinv : ∀ n ∈ N, M.rho n (P.u (cur Q z.1 1 1)) = P.u (cur Q z.1 1 1)` using `(hP.2.2 _).1 ⟨_, rfl⟩`. Use `⟨mk1 (M.resSub N) (fun _ => P.u (cur Q z.1 1 1)) continuous_const, ?_⟩` and prove the remaining obligations. Use `ext2 (M.resSub N) fun a b => ?_` and prove the remaining obligations. Use `(curried_coboundary_eq (M.resSub N) _ continuous_const a b).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : cur (M.resSub N) ((Pair.res M N.subtype continuous_subtype_val).hom.Z 2 (P.hom.Z 2 z)).1 a b = cur M (P.hom.f 2 z.1) a b`. Use `congrArg (P.hom.f 2 z.1).1 (funext fun i => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[e, cur_inf M N Q P hP, (QuotientGroup.eq_one_iff _).2 a.2, (QuotientGroup.eq_one_iff _).2 b.2]`. Simplify using `only [D1]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hinv a a.2` as an intermediate fact. Establish `h' : (M.resSub N).rho a (P.u (cur Q z.1 1 1)) = P.u (cur Q z.1 1 1)` using `this`. Rewrite using `[h']`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exact2 (hN : IsOpen (N : Set G)) (hP : IsInvRep M N Q P) (h1 : Subsingleton ((M.resSub N).H 1)) :
     Exact (P.hom.H 2) ((Pair.res M N.subtype continuous_subtype_val).hom.H 2) := by

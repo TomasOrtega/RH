@@ -9,7 +9,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.RingIface.tower]`. Conclude with `hj.on0 (algebraMap (Per.Ainf l) (Per.Acris0 l) a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCrisP.on_ainf {l : ℕ} [Fact l.Prime] {j : Per.Acris l →+* Per.BdRp l} (hj : IsCrisP j)
     (a : Per.Ainf l) :

@@ -12,7 +12,7 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
 omit [NumberField F] [Algebra F Ω] [Field F] in
 
 /- English proof (translation)
-Establish `h1 : IsIntegral A y` using `hy.tower_top`. Take `⟨z, hz⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := A) (K := Ω)).mp h1`. Rewrite using `[← hz]`. Conclude with `z.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_isIntegral_int (A : ValuationSubring Ω) {y : Ω} (hy : IsIntegral ℤ y) : y ∈ A := by
   have h1 : IsIntegral A y := hy.tower_top
@@ -31,7 +31,7 @@ instance (A : ValuationSubring Ω) (M : IntermediateField F Ω) : (cutPrime A M)
   Ideal.comap_isPrime _ _
 
 /- English proof (translation)
-Rewrite using `[cutPrime, Ideal.mem_comap, ValuationSubring.valuation_lt_one_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_cutPrime_iff (A : ValuationSubring Ω) (M : IntermediateField F Ω) (z : 𝓞 M) :
     z ∈ cutPrime A M ↔ A.valuation ((z : M) : Ω) < 1 := by
@@ -39,7 +39,7 @@ theorem mem_cutPrime_iff (A : ValuationSubring Ω) (M : IntermediateField F Ω) 
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use extensionality with `x`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, mem_cutPrime_iff, ← hA x]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cutPrime_liesOver {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)}
     (hA : IsPlaceOver A v) (M : IntermediateField F Ω) : (cutPrime A M).LiesOver v.asIdeal := by
@@ -49,21 +49,15 @@ theorem cutPrime_liesOver {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞
   rfl
 
 /- English proof (translation)
-Use `haveI hM : IsGalois F (maxUnramifiedOutside F Ω S) := isGalois_maxUnramifiedOutside S`. Use `haveI : FiniteDimensional F (IntermediateField.adjoin F ({x} : Set Ω)) := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)`. Use `set E : IntermediateField F Ω := IntermediateField.normalClosure F (IntermediateField.adjoin F ({x} : Set Ω)) Ω with hE`. Use `haveI : FiniteDimensional F E := normalClosure.is_finiteDimensional F (IntermediateField.adjoin F ({x} : Set Ω)) Ω`. Use `haveI : Normal F E := normalClosure.normal F (IntermediateField.adjoin F ({x} : Set Ω)) Ω`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsSeparable F E := Algebra.IsSeparable.of_algHom F Ω E.val`. Use `haveI : IsGalois F E := ⟨⟩`. Establish `hxE : x ∈ E` using `IntermediateField.le_normalClosure (IntermediateField.adjoin F ({x} : Set Ω)) (IntermediateField.mem_adjoin_simple_self F x)`. Establish `hEM : E ≤ maxUnramifiedOutside F Ω S`. Rewrite using `[hE, IntermediateField.normalClosure_le_iff_of_normal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IntermediateField.adjoin_simple_le_iff.2 hx`. Establish `hEun : IsUnramifiedOutside S E` using `(isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2 hEM`. Use `haveI hPl : (cutPrime A E).LiesOver v.asIdeal := cutPrime_liesOver hA E`. Use `haveI : NumberField E := NumberField.of_module_finite F E`. Use `haveI : Module.Finite (𝓞 F) (𝓞 E) := Module.Finite.of_restrictScalars_finite ℤ (𝓞 F) (𝓞 E)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `haveI : Algebra.FiniteType (𝓞 F) (𝓞 E) := Algebra.FiniteType.of_restrictScalars_finiteType ℤ (𝓞 F) (𝓞 E)`. Use `haveI : IsGaloisGroup Gal(E/F) (𝓞 F) (𝓞 E) := IsGaloisGroup.of_isFractionRing (G := Gal(E/F)) (A := 𝓞 F) (B := 𝓞 E) (K := F) (L := E)`. Establish `he : (cutPrime A E).ramificationIdx (𝓞 F) = 1` using `Algebra.IsUnramifiedIn.ramificationIdx_eq_one (hEun v hv) hPl`. Establish `hcard : Nat.card ((cutPrime A E).inertia Gal(E/F)) = 1`. Rewrite using `[Ideal.card_inertia_eq_ramificationIdxIn (G := Gal(E/F)) v.asIdeal (cutPrime A E), Ideal.ramificationIdxIn_eq_ramificationIdx (G := Gal(E/F)) v.asIdeal (cutPrime A E), he]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set σ' : Gal(E/F) := σ.restrictNormal E with hσ'`. Establish `hmem : σ' ∈ (cutPrime A E).inertia Gal(E/F)`. Introduce `z`. Use `show σ' • z - z ∈ cutPrime A E`. Rewrite using `[mem_cutPrime_iff]`.
-
-Take `⟨-, hσ2⟩` from `hσ`. Establish `hy : ((z : E) : Ω) ∈ A` using `mem_of_isIntegral_int A ((RingOfIntegers.isIntegral_coe z).map (IsScalarTower.toAlgHom ℤ E Ω))`. Establish `hc : (((σ' • z - z : 𝓞 E) : E) : Ω) = σ ((z : E) : Ω) - ((z : E) : Ω)`. Establish `h1` using `AlgEquiv.restrictNormal_commutes σ E (z : E)`. Simplify using `only [IntermediateField.algebraMap_apply] at h1`.
-
-Rewrite using `[← h1, hσ']`. Both sides reduce to the same expression. Rewrite using `[hc]`. Conclude with `hσ2 _ (A.valuation_le_one ⟨_, hy⟩)`. Establish `hσ'1 : σ' = 1` using `by haveI hsub : Subsingleton ((cutPrime A E).inertia Gal(E/F)) := (Nat.card_eq_one_iff_unique.1 hcard).1`.
-
-Use `Subsingleton.elim (⟨σ', hmem⟩ : (cutPrime A E).inertia Gal(E/F)) ⟨1, Subgroup.one_mem _⟩` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Establish `h1` using `AlgEquiv.restrictNormal_commutes σ E ⟨x, hxE⟩`. Rewrite `h1` using `[← hσ', hσ'1]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertia_apply_eq [IsGalois F Ω] {S : Set (HeightOneSpectrum (𝓞 F))}
     {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) {A : ValuationSubring Ω} (hA : IsPlaceOver A v)
@@ -117,11 +111,9 @@ theorem inertia_apply_eq [IsGalois F Ω] {S : Set (HeightOneSpectrum (𝓞 F))}
   exact h1.symm
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ S`. Use `haveI : IsGalois F Ω := ⟨⟩`. Use `haveI hM : IsGalois F (maxUnramifiedOutside F Ω S) := isGalois_maxUnramifiedOutside S`. Use `haveI : (maxUnramifiedOutside F Ω S).fixingSubgroup.Normal := (InfiniteGalois.normal_iff_isGalois _).2 hM`. Establish `hsub : (⋃ v ∈ Sᶜ, ⋃ A ∈ {A : ValuationSubring Ω | IsPlaceOver A v}, Inertia (F` using `F) A) ⊆ ((maxUnramifiedOutside F Ω S).fixingSubgroup : Set (G F Ω)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `σ hσ`. Simplify using `only [Set.mem_iUnion] at hσ`. Take `⟨v, hv, A, hA, hσA⟩` from `hσ`. Use `show σ ∈ (maxUnramifiedOutside F Ω S).fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`.
-
-Introduce `x hx`. Conclude with `inertia_apply_eq hv hA hσA hx`. Use `show (Subgroup.normalClosure _).topologicalClosure ≤ _`. Conclude with `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal hsub) (InfiniteGalois.fixingSubgroup_isClosed _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem NS_le_fixingSubgroup : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (S : Set (HeightOneSpectrum (𝓞 F))),

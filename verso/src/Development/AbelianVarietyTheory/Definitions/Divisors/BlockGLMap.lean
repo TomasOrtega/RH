@@ -108,7 +108,7 @@ theorem blockGL_val (a b : ℕ) (A : Type) [CommRing A] (g : GL (Fin a) A) (h : 
 
 open CategoryTheory Limits AlgebraicGeometry Opposite in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [_root_.GlobalTheory.EtC.blockGL_val, Matrix.GeneralLinearGroup.map_apply, Matrix.reindex_apply, Matrix.submatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.EtC.blockGL_map (a b : ℕ) {A B : Type} [CommRing A] [CommRing B]
     (f : A →+* B) (g : GL (Fin a) A) (h : GL (Fin b) A) :

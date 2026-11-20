@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CyclotomicInertiaS
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Establish `h2` using `congrArg A.valuation h`. Rewrite `h2` using `[map_pow, map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le' hm).mp h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem thetaEx_val {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0) {ζ : Ω}
     (h : ζ ^ m = 1) : A.valuation ζ = 1 := by
@@ -13,9 +13,9 @@ private theorem thetaEx_val {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m 
   exact (pow_eq_one_iff_of_nonneg zero_le' hm).mp h2
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `e : (1 : Ω) - η ^ (n + 1) = (1 - η ^ n) + η ^ n * (1 - η)` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_add_lt _ ih ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, h1, one_pow, one_mul, ← Valuation.map_neg, neg_sub]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem thetaEx_pow {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {η : Ω} (h1 : A.valuation η = 1)
     (h : A.valuation (η - 1) < 1) (i : ℕ) : A.valuation (1 - η ^ i) < 1 := by
@@ -29,11 +29,9 @@ private theorem thetaEx_pow {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {η
     exact h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hsub : η - 1 ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hg : (∑ i ∈ Finset.range m, η ^ i) = 0`. Use `geom_sum_mul η m` as an intermediate fact. Rewrite `this` using `[hη, sub_self]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.mp this).resolve_right hsub`. Establish `hm' : (m : Ω) = ∑ i ∈ Finset.range m, (1 - η ^ i)`. Rewrite using `[Finset.sum_sub_distrib, hg, sub_zero, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Apply `hv` to reduce the goal to its premises. Rewrite using `[hm']`.
-
-Conclude with `Valuation.map_sum_lt _ one_ne_zero (fun i _ => thetaEx_pow A (thetaEx_val A hm hη) h i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem thetaEx_eta {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0)
     (hv : ¬ A.valuation (m : Ω) < 1) {η : Ω} (hη : η ^ m = 1) (h : A.valuation (η - 1) < 1) : η = 1 := by
@@ -50,13 +48,13 @@ private theorem thetaEx_eta {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m 
   exact Valuation.map_sum_lt _ one_ne_zero (fun i _ => thetaEx_pow A (thetaEx_val A hm hη) h i)
 
 /- English proof (translation)
-Establish `hv1 : A.valuation ζ = 1` using `thetaEx_val A hm hζ`. Establish `hz : ζ ≠ 0`. Introduce `h0`. Rewrite `hv1` using `[h0, map_zero]`. Conclude with `zero_ne_one hv1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg' : g ∈ Inertia A` using `hg`. Unfold `Inertia at hg'`. Establish `hd : A.valuation (g ζ - ζ) < 1` using `hg'.2 ζ hv1.le`. Establish `hpow : (g ζ * ζ⁻¹) ^ m = 1`. Rewrite using `[mul_pow, ← map_pow, hζ, map_one, inv_pow, hζ, inv_one, one_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : A.valuation (g ζ * ζ⁻¹ - 1) < 1`. Establish `e : g ζ * ζ⁻¹ - 1 = (g ζ - ζ) * ζ⁻¹` using `by field_simp`. Rewrite using `[e, map_mul, map_inv₀, hv1, inv_one, mul_one]`. Conclude with `hd`. Establish `h1` using `thetaEx_eta A hm hw hpow hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: g ζ = ζ`. Use `congrArg (· * ζ) h1` as an intermediate fact. Simplify `this` using `[hz]`. Conclude with `this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem thetaEx_fix {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω) {m : ℕ}
     (hm : m ≠ 0) (hw : ¬ A.valuation (m : Ω) < 1) {ζ : Ω} (hζ : ζ ^ m = 1) (g : G ℚ Ω) (hg : g ∈ Ine (F := ℚ) A) :
@@ -82,9 +80,9 @@ private theorem thetaEx_fix {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
   exact this
 
 /- English proof (translation)
-Establish `hc : Nat.card (ZMod w)ˣ = w - 1`. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units]`. Establish `hd : l ∣ Nat.card (ZMod w)ˣ` using `hc ▸ h`. Set `e` to `(zmodCyclicMulEquiv (inferInstance : IsCyclic (ZMod w)ˣ)).symm`. Set `ψ : Multiplicative (ZMod (Nat.card (ZMod w)ˣ)) →* Multiplicative (ZMod l)` to `AddMonoidHom.toMultiplicative (ZMod.castHom hd (ZMod l)).toAddMonoidHom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨ψ.comp e.toMonoidHom, e.symm (Multiplicative.ofAdd 1), ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.apply_symm_apply]`. Use `show Multiplicative.ofAdd ((ZMod.castHom hd (ZMod l)) 1) ≠ 1`. Rewrite using `[map_one, ne_eq, ofAdd_eq_one]`. Conclude with `(one_ne_zero : (1 : ZMod l) ≠ 0)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem thetaEx_hom (l w : ℕ) [hl : Fact l.Prime] [hw : Fact w.Prime] (h : l ∣ w - 1) :
     ∃ φ : (ZMod w)ˣ →* Multiplicative (ZMod l), ∃ b, φ b ≠ 1 := by
@@ -101,21 +99,17 @@ private theorem thetaEx_hom (l w : ℕ) [hl : Fact l.Prime] [hw : Fact w.Prime] 
   exact (one_ne_zero : (1 : ZMod l) ≠ 0)
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ w hw h`. Use `haveI : Fact w.Prime := ⟨hw⟩`. Use `haveI : NeZero w := ⟨hw.ne_zero⟩`. Use `haveI : Fact (1 < w) := ⟨hw.one_lt⟩`. Take `⟨φ, b, hb⟩` from `thetaEx_hom l w h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨φ.comp (UpperTheory.V.B1.cycN ℚ Ω w), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `ho` using `(UpperTheory.V.B1.cycCompat ℚ Ω w).1`. Use `Subgroup.isOpen_mono ?_ ho` and prove the remaining obligations. Introduce `g hg`. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.comp_apply, hg, map_one]`. Introduce `A hA g hg`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply]`. Establish `hA'` using `hA`. Unfold `Raw.Away at hA'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : UpperTheory.V.B1.cycN ℚ Ω w g = 1`. Rewrite using `[UpperTheory.V.B1.cycN_eq_iff]`. Introduce `ζ hζ`. Rewrite using `[Units.val_one, ZMod.val_one, pow_one]`. Conclude with `thetaEx_fix A hw.ne_zero (hA' w (Finset.mem_singleton_self w)) hζ g hg`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, map_one]`. Introduce `A hA`. Establish `hmap` using `UpperTheory.V.B1.cycIne Ω w w A hA`. Establish `hb' : b ∈ UpperTheory.V.B3.pPart w w`. Unfold `UpperTheory.V.B3.pPart`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_ker]`. Establish `hk : ordCompl[w] w = 1`. Rewrite using `[hw.factorization_self, pow_one, Nat.div_self hw.pos]`. Use `haveI : Subsingleton (ZMod (ordCompl[w] w)) := by`. Rewrite using `[ZMod.subsingleton_iff]`.
-
-Conclude with `hk`. Conclude with `Subsingleton.elim _ _`. Rewrite `hb'` using `[← hmap]`. Take `⟨g, hg, hgb⟩` from `hb'`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[MonoidHom.comp_apply, hgb]`. Conclude with `hb`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Rt.thetaEx :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (w : ℕ), w.Prime → l ∣ w - 1 →

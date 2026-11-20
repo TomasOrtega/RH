@@ -18,9 +18,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.BZPsiPG.FibCompact
 
 /- English proof (translation)
-Establish `hopen : IsOpen {s : G | GlobalTheory.PRep.ind H ρ s f.1.1 = f.1.1}` using `f.1.2`. Use `⟨_, hopen, ?_, fun s hs p => ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.PRep.ind H ρ 1 f.1.1 = f.1.1`. Simplify using the standard rewrite rules. Establish `hs' : GlobalTheory.PRep.ind H ρ s f.1.1 = f.1.1` using `hs`.
-
-Conclude with `congrFun (congrArg Subtype.val hs') p`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_right_invariant {G Z : Type} [Group G] [AddCommGroup Z] [Module ℂ Z] [TopologicalSpace G]
     [IsTopologicalGroup G] (H : Subgroup G) (ρ : Representation ℂ H Z) (f : cIndSpace H ρ) :
@@ -33,7 +31,7 @@ theorem exists_right_invariant {G Z : Type} [Group G] [AddCommGroup Z] [Module �
     exact congrFun (congrArg Subtype.val hs') p
 
 /- English proof (translation)
-The claim follows from `f.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_support {G Z : Type} [Group G] [AddCommGroup Z] [Module ℂ Z] [TopologicalSpace G]
     [IsTopologicalGroup G] (H : Subgroup G) (ρ : Representation ℂ H Z) (f : cIndSpace H ρ) :
@@ -48,7 +46,7 @@ def col (n : ℕ) (p : Mir k n) : Fin n → k :=
   fun j => ((p : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.castSucc j) (Fin.last n)
 
 /- English proof (translation)
-Establish `h` using `congrFun ((GlobalTheory.BZMir.mem_Mir_iff k (p : GL (Fin (n + 1)) k)).1 p.2) (Fin.last n)`. Simplify `h` using `[GlobalTheory.BZMir.eLast]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem last_last (n : ℕ) (p : Mir k n) :
     ((p : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) (Fin.last n) = 1 := by
@@ -56,7 +54,7 @@ theorem last_last (n : ℕ) (p : Mir k n) :
   simpa [GlobalTheory.BZMir.eLast] using h
 
 /- English proof (translation)
-Rewrite using `[add_mul, one_mul, GlobalTheory.BZMir.colMat_mul_glEmbMat, add_mul, Matrix.add_apply]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_castSucc, GlobalTheory.BZMir.glEmbMat, GlobalTheory.BZMir.colMat, Matrix.mulVec, dotProduct, hP, Fin.castSucc_ne_last]`. Apply the tactic sequence `all_goals ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem last_column_entry_product_formula (n : ℕ) (a : Fin n → k) (A : Matrix (Fin n) (Fin n) k)
     (P : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (hP : P (Fin.last n) (Fin.last n) = 1) (j : Fin n) :
@@ -68,7 +66,7 @@ theorem last_column_entry_product_formula (n : ℕ) (a : Fin n → k) (A : Matri
   all_goals ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Conclude with `GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.last_column_entry_product_formula k n a (g : Matrix (Fin n) (Fin n) k) ((p : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.last_last k n p) j`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem col_uM_levi_mul (n : ℕ) (a : Fin n → k) (g : GL (Fin n) k) (p : Mir k n) :
     col k n (uM k n a * levi k n g * p) = a + (g : Matrix (Fin n) (Fin n) k).mulVec (col k n p) := by
@@ -77,14 +75,14 @@ theorem col_uM_levi_mul (n : ℕ) (a : Fin n → k) (g : GL (Fin n) k) (p : Mir 
     ((p : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.last_last k n p) j
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.col, Matrix.one_apply, Fin.castSucc_ne_last]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem col_one (n : ℕ) : col k n 1 = 0 := by
   funext j
   simp [GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.col, Matrix.one_apply, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.col_uM_levi_mul k n a g 1`. Rewrite `h` using `[mul_one, GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.col_one, Matrix.mulVec_zero, add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem col_uM_levi (n : ℕ) (a : Fin n → k) (g : GL (Fin n) k) :
     col k n (uM k n a * levi k n g) = a := by
@@ -98,9 +96,9 @@ section Top
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `continuous_pi fun j => ?_` and prove the remaining obligations. Proceed by induction on `j using Fin.addCases with`. Consider the case `left l => show Continuous fun v : Fin t → k => Fin.append (0 : Fin i → k) v (Fin.castAdd t l)`. Simplify using `only [Fin.append_left, Pi.zero_apply]`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `right l => show Continuous fun v : Fin t → k => Fin.append (0 : Fin i → k) v (Fin.natAdd i l)`. Simplify using `only [Fin.append_right]`. Conclude with `continuous_apply l`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_midV (i t : ℕ) : Continuous (midV k i t) := by
   refine continuous_pi fun j => ?_
@@ -115,22 +113,20 @@ theorem continuous_midV (i t : ℕ) : Continuous (midV k i t) := by
     exact continuous_apply l
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun j => (Units.continuous_coe_inv.comp continuous_subtype_val).matrix_elem (Fin.castSucc j) (Fin.last n)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_col_inv (n : ℕ) : Continuous (fun c : Mir k n => col k n c⁻¹) :=
   continuous_pi fun j =>
     (Units.continuous_coe_inv.comp continuous_subtype_val).matrix_elem (Fin.castSucc j) (Fin.last n)
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `y₀`. Establish `hu` using `(GlobalTheory.T.continuous_levi_unipotent_proj k n).2.1`. Use `set L := GlobalTheory.BZMir.levi k n g`. Set `φ : (Fin n → k) → GlobalTheory.BZMir.Mir k n` to `fun y => L⁻¹ * GlobalTheory.CompanionTheory.BZPsiPG.uM k n (y - y₀) * L`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : Continuous φ` using `(continuous_const.mul (hu.comp (continuous_id.sub continuous_const))).mul continuous_const`. Use `⟨φ ⁻¹' S, hS.preimage hφ, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `show L⁻¹ * GlobalTheory.CompanionTheory.BZPsiPG.uM k n (y₀ - y₀) * L ∈ S`. Rewrite using `[sub_self, GlobalTheory.CompanionTheory.BZPsiPG.uM_zero, mul_one, inv_mul_cancel]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hadd : GlobalTheory.CompanionTheory.BZPsiPG.uM k n y = GlobalTheory.CompanionTheory.BZPsiPG.uM k n y₀ * GlobalTheory.CompanionTheory.BZPsiPG.uM k n (y - y₀)`. Rewrite using `[← GlobalTheory.CompanionTheory.BZPsiPG.uM_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `hy' : GlobalTheory.CompanionTheory.BZPsiPG.uM k n y * L = GlobalTheory.CompanionTheory.BZPsiPG.uM k n y₀ * L * φ y`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hadd]`. Simplify using `only [φ]`. Use `group`. Use `show F (GlobalTheory.CompanionTheory.BZPsiPG.uM k n y * L) = F (GlobalTheory.CompanionTheory.BZPsiPG.uM k n y₀ * L)`. Rewrite using `[hy']`.
-
-Conclude with `hF _ hy _`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_uM {Z : Type} (n : ℕ) (F : Mir k n → Z) (S : Set (Mir k n)) (hS : IsOpen S)
     (h1 : (1 : Mir k n) ∈ S) (hF : ∀ s ∈ S, ∀ p, F (p * s) = F p) (g : GL (Fin n) k) :
@@ -162,15 +158,13 @@ theorem isLocallyConstant_uM {Z : Type} (n : ℕ) (F : Mir k n → Z) (S : Set (
 end Top
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t V W _ _ _ _ τ σ _ _ f g`. Prove the components needed by the constructor for the conclusion. Take `⟨S, hS, h1, hSf⟩` from `GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.exists_right_invariant _ _ f`. Conclude with `(GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.isLocallyConstant_uM k (i + t) _ S hS h1 hSf g).comp_continuous (GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.continuous_midV k i t)`. Take `⟨C, hC, hCf⟩` from `GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.exists_compact_support _ _ f`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `proj : GlobalTheory.BZMir.Mir k (i + t) → Fin t → k` to `fun c j => -(((g : Matrix (Fin (i + t)) (Fin (i + t)) k) *ᵥ GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.col k (i + t) c⁻¹) (Fin.natAdd i j))`. Establish `hproj : Continuous proj` using `continuous_pi fun j => ((continuous_apply (Fin.natAdd i j)).comp (continuous_const.matrix_mulVec (GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.continuous_col_inv k (i + t)))).neg`. Use `HasCompactSupport.of_support_subset_isCompact (hC.image hproj) ?_` and prove the remaining obligations. Introduce `v hv`. Take `⟨h, hh, c, hc, hp⟩` from `hCf (GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) (GlobalTheory.CompanionTheory.BZPsiPG.midV k i t v) * GlobalTheory.BZMir.levi k (i + t) g) hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Take `⟨x, q, hxq⟩` from `GlobalTheory.T.parabolic_unipotent_levi_decomp k i t ⟨h, hh⟩`. Establish `hxq' : h = GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) (GlobalTheory.CompanionTheory.BZPsiPG.topV k i t x) * GlobalTheory.BZMir.levi k (i + t) q` using `hxq`. Establish `key : GlobalTheory.CompanionTheory.BZPsiPG.topV k i t x = GlobalTheory.CompanionTheory.BZPsiPG.midV k i t v + (g : Matrix (Fin (i + t)) (Fin (i + t)) k) *ᵥ GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.col k (i + t) c⁻¹`. Rewrite using `[← GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.col_uM_levi_mul, hp, mul_inv_cancel_right, hxq', GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.col_uM_levi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Establish `hj` using `congrFun key (Fin.natAdd i j)`. Simplify using `only [GlobalTheory.CompanionTheory.BZPsiPG.topV, GlobalTheory.CompanionTheory.BZPsiPG.midV, Fin.append_right, Pi.add_apply, Pi.zero_apply] at hj`. Use `show -(((g : Matrix (Fin (i + t)) (Fin (i + t)) k) *ᵥ GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.col k (i + t) c⁻¹) (Fin.natAdd i j)) = v j`. Rewrite using `[neg_eq_iff_add_eq_zero, add_comm]`.
-
-Conclude with `hj.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibV_main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W), IsSmooth τ → IsSmooth σ → ∀ (f : cIndSpace (HPG k i t) (hRep τ σ)) (g : GL (Fin (i + t)) k), IsLocallyConstant (fibV f g) ∧ HasCompactSupport (fibV f g) := by
   intro k _ _ _ _ i t V W _ _ _ _ τ σ _ _ f g

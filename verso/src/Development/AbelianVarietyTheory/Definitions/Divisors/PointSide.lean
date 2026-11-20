@@ -76,7 +76,7 @@ end Count
 section Examples
 
 /- English proof (translation)
-Simplify using `[pointSum]`.
+Simplify using the standard rewrite rules.
 -/
 example {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂] (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (θ : G₂ →* G₂)
     (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (γ : G₁) (δ : G₂) (φ : G₂ → ℂ) :
@@ -84,15 +84,15 @@ example {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂] (ι₁ : Γ �
   simp [pointSum]
 
 /- English proof (translation)
-Simplify using `[vol, Subgroup.relIndex_self]`.
+Simplify using the standard rewrite rules.
 -/
 example {G : Type} [Group G] (C : Subgroup G) : vol C C = 1 := by
   simp [vol, Subgroup.relIndex_self]
 
 /- English proof (translation)
-Unfold `pointSum`. Set `U : Unique (DoubleCoset.Quotient (((MonoidHom.id Unit).prod (MonoidHom.id Unit)).range : Set (Unit × Unit)) (((⊤ : Subgroup Unit).prod (⊤ : Subgroup Unit) : Subgroup (Unit × Unit)) : Set (Unit × Unit)))` to `{ default := DoubleCoset.mk _ _ 1 uniq := fun q => by`. Rewrite using `[← DoubleCoset.out_eq' _ _ q]`. Conclude with `congrArg _ (Subsingleton.elim _ _) }`. Rewrite using `[finsum_unique]`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : Nat.card (stab (MonoidHom.id Unit) (MonoidHom.id Unit) ⊤ ⊤ (Quotient.out (default : DoubleCoset.Quotient (((MonoidHom.id Unit).prod (MonoidHom.id Unit)).range : Set (Unit × Unit)) (((⊤ : Subgroup Unit).prod (⊤ : Subgroup Unit) : Subgroup (Unit × Unit)) : Set (Unit × Unit))))) …` using `Nat.card_eq_one_iff_exists.2 ⟨1, fun x => Subsingleton.elim _ _⟩`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : pointSum (MonoidHom.id Unit) (MonoidHom.id Unit) (MonoidHom.id Unit) ⊤ ⊤ () () (fun _ => 1) (fun _ => 1) = 1 := by
   unfold pointSum
@@ -111,13 +111,13 @@ example : pointSum (MonoidHom.id Unit) (MonoidHom.id Unit) (MonoidHom.id Unit) �
   simp
 
 /- English proof (translation)
-Establish `hv : ∀ C H : Subgroup Unit, vol C H = 1` using `fun C H => by`. Establish `: H = C` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Simplify using `[vol, Subgroup.relIndex_self]`. Establish `ho : ∀ (K : Subgroup Unit) (δ : Unit), orbK (MonoidHom.id Unit) K δ (fun _ => 1) = 1` using `fun K δ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `orbK orbC`. Set `U : Unique (DoubleCoset.Quotient (GlobalTheory.BCT.twCent (MonoidHom.id Unit) δ : Set Unit) (K : Set Unit))` to `{ default := DoubleCoset.mk _ _ 1 uniq := fun q => by`. Rewrite using `[← DoubleCoset.out_eq' _ _ q] }`. Rewrite using `[finsum_unique, hv]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `pointSide`. Rewrite using `[ho]`. Unfold `massC`. Generalize the expression as in `hT : GlobalTheory.BCT.twCent ((MonoidHom.id Unit).prodMap (MonoidHom.id Unit)) ((), ()) = T`. Set `U : Unique (DoubleCoset.Quotient ((((MonoidHom.id Unit).prod (MonoidHom.id Unit)).range.subgroupOf T : Subgroup T) : Set T) (((T ⊓ (⊤ : Subgroup Unit).prod ⊤).subgroupOf T : Subgroup T) : Set T))` to `{ default := DoubleCoset.mk _ _ 1 uniq := fun q => by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression.
 
-Rewrite using `[← DoubleCoset.out_eq' _ _ q]`. Conclude with `congrArg _ (Subsingleton.elim _ _) }`. Rewrite using `[finsum_unique]`. Rewrite using `[Nat.card_eq_one_iff_exists.2 ⟨1, fun x => Subsingleton.elim _ _⟩]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : pointSide (MonoidHom.id Unit) (MonoidHom.id Unit) (MonoidHom.id Unit) ⊤ ⊤ () () (fun _ => 1) (fun _ => 1) = 1 := by
   have hv : ∀ C H : Subgroup Unit, vol C H = 1 := fun C H => by

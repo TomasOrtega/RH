@@ -24,15 +24,15 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 open Reduction
 
 /- English proof (translation)
-Simplify using `only [archPart, prodEquiv_infEmb, ContinuousMulEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem archPart_infEmb (a : archGroup K n) : archPart (infEmb K n a) = a := by
   simp only [archPart, prodEquiv_infEmb, ContinuousMulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Conclude with `⟨infEmb K n a, ha, archPart_infEmb a⟩`. Introduce and unpack `⟨k, hk, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `archPart_mem_archCompact hk`.
+A detailed English derivation is pending.
 -/
 theorem archCompact_eq_image :
     (archCompact K n : Set (archGroup K n)) =
@@ -47,7 +47,7 @@ theorem archCompact_eq_image :
 variable (K n) in
 
 /- English proof (translation)
-Rewrite using `[archCompact_eq_image]`. Conclude with `isCompact_maxCompact.image ((archEquiv K n).continuous.comp (continuous_fst.comp (AdelicGLn.prodEquiv K n).continuous))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_archCompact : IsCompact (archCompact K n : Set (archGroup K n)) := by
   rw [archCompact_eq_image]
@@ -55,7 +55,7 @@ theorem isCompact_archCompact : IsCompact (archCompact K n : Set (archGroup K n)
     (continuous_fst.comp (AdelicGLn.prodEquiv K n).continuous))
 
 /- English proof (translation)
-Introduce `_` and use `by letI := (isExpLieAlgebra K n).chartedSpace exact contMDiff_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isArchSmooth_one : IsArchSmooth (1 : AdelicGLn.AdelicGL K n → ℂ) := fun _ => by
   letI := (isExpLieAlgebra K n).chartedSpace
@@ -64,7 +64,7 @@ theorem isArchSmooth_one : IsArchSmooth (1 : AdelicGLn.AdelicGL K n → ℂ) := 
 def oneSmooth : archSmooth K n := ⟨1, isArchSmooth_one⟩
 
 /- English proof (translation)
-Rewrite using `[unipMeasure, unipFundamentalDomain, Measure.pi_pi]`. Simplify using `[GroundTheory.Global.adeleMeasure_fundamentalSet]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unipMeasure_unipFundamentalDomain (r : ℕ) :
     unipMeasure K n r (unipFundamentalDomain K n r) = 1 := by

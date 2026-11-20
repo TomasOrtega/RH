@@ -5,9 +5,9 @@ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `he : F.eps O B = F.eps O' B`. Use extensionality with `g`. Simplify using `only [GFrame.eps, pushCh, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, RingHom.coe_comp, Function.comp_apply]`. Conclude with `h _`. Establish `hop : F.starOp O B n = F.starOp O' B n`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Simplify using `[GFrame.starOp, he]`. Unfold `GFrame.star`. Rewrite using `[hop]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem star_eq {l : ℕ} [Fact l.Prime] (F : GFrame l) (O O' : Type) [CommRing O] [CommRing O']
     [Algebra ℤ_[l] O] [Algebra ℤ_[l] O'] (B : Type) [CommRing B] [Algebra O B] [Algebra O' B]
@@ -25,9 +25,9 @@ private theorem star_eq {l : ℕ} [Fact l.Prime] (F : GFrame l) (O O' : Type) [C
   rw [hop]
 
 /- English proof (translation)
-Rewrite using `[(UpperTheory.V.CA.d_gmap (GDet.ofRep (diagRep χ))).2.2.2]`. Use `congr 1`. Use extensionality with `g a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[diagRep]`. Simplify using `[diagRep, hab]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem diag_map {H A B : Type} [Group H] [CommRing A] [CommRing B] {n : ℕ} (f : A →+* B)
     (χ : Fin n → H →* Aˣ) :
@@ -41,30 +41,28 @@ private theorem diag_map {H A B : Type} [Group H] [CommRing A] [CommRing B] {n :
   · simp [diagRep, hab]
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ker_comp_of_injective _ _ (Units.map_injective hf)`.
+A detailed English derivation is pending.
 -/
 private theorem push_ker {H A B : Type} [Group H] [CommRing A] [CommRing B] (f : A →+* B)
     (hf : Function.Injective f) (χ : H →* Aˣ) : (pushCh f χ).ker = χ.ker :=
   MonoidHom.ker_comp_of_injective _ _ (Units.map_injective hf)
 
 /- English proof (translation)
-Introduce `l _ F O O' _ _ _ _ _ _ _ _ _ n r`. Set `φ : ResidueField O →+* ResidueField O'` to `ResidueField.map (algebraMap O O')`. Establish `hφ : Function.Injective φ` using `φ.injective`. Establish `hker : ∀ {H : Type} [Group H] (χ : H →* (ResidueField O)ˣ), (pushCh φ χ).ker = χ.ker` using `fun χ => push_ker φ hφ χ`. Establish `hpolar : F.IsPolar O' (GDet.ofRep (diagRep fun i => pushCh φ (r.chib i)))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `B _ _ _ _ y`. Use `letI : Algebra (ResidueField O) B := ((algebraMap (ResidueField O') B).comp φ).toAlgebra`. Use `letI : Algebra O B := ((algebraMap O' B).comp (algebraMap O O')).toAlgebra`. Use `haveI : IsScalarTower O (ResidueField O) B := IsScalarTower.of_algebraMap_eq (fun a => by show algebraMap O' B (algebraMap O O' a) = algebraMap (ResidueField O') B (φ (algebraMap O (ResidueField O) a))`. Rewrite using `[ResidueField.algebraMap_eq, ResidueField.map_residue, ← ResidueField.algebraMap_eq, ← IsScalarTower.algebraMap_apply O' (ResidueField O') B])`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp` using `r.polar B y`. Establish `hs` using `star_eq F O' O B (fun a => by show algebraMap O' B (algebraMap ℤ_[l] O' a) = algebraMap O' B (algebraMap O O' (algebraMap ℤ_[l] O a))`. Rewrite using `[← IsScalarTower.algebraMap_apply ℤ_[l] O O']) n y`. Rewrite using `[hs]`. Establish `hd : ∀ x, (GDet.ofRep (diagRep fun i => pushCh φ (r.chib i))).D B x = (GDet.ofRep (diagRep r.chib)).D B x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[← diag_map φ r.chib]`. Both sides reduce to the same expression. Rewrite using `[hd, hd]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmain : ∀ r' : Resid F O' n, RBC r r' → (∀ u, r'.Ip u = r.Ip u) ∧ r'.Dbar = r.Dbar.map (ResidueField.map (algebraMap O O')) ∧ ∀ i g, r'.chib i g = 1 ↔ r.chib i g = 1`. Introduce `r' ⟨hc, _, _⟩`. Use `⟨fun u => ?_, ?_, fun i g => ?_⟩` and prove the remaining obligations. Rewrite using `[Resid.Ip, Resid.Ip]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hc i]`. Conclude with `hker _`. Establish `hfun : r'.chib = fun i => pushCh φ (r.chib i)` using `funext hc`. Simplify using `only [Resid.Dbar]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hfun, diag_map]`. Rewrite using `[hc i] show Units.map (φ : ResidueField O →* ResidueField O') (r.chib i g) = 1 ↔ _`. Rewrite using `[← map_one (Units.map (φ : ResidueField O →* ResidueField O')), (Units.map_injective (f := (φ : ResidueField O →* ResidueField O')) hφ).eq_iff]`. Use `⟨⟨⟨fun i => pushCh φ (r.chib i), fun i => ?_, fun i j hij => ?_, hpolar, fun v i => pushCh φ (r.psib v i), fun v i => ?_, fun v i => pushCh (algebraMap O O') (r.th v i), fun v i g hg => ?_⟩, fun i => rfl, fun v i => rfl, fun v i => rfl⟩, hmain⟩` and prove the remaining obligations. Rewrite using `[hker]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `r.chib_open i`. Apply `r.chib_inj` to reduce the goal to its premises. Conclude with `MonoidHom.ext fun g => Units.map_injective (f := (φ : ResidueField O →* ResidueField O')) hφ (DFunLike.congr_fun hij g)`. Rewrite using `[hker]`. Conclude with `r.psib_open v i`.
-
-Use `show Units.map (algebraMap O O' : O →* O') (r.th v i g) = 1`. Rewrite using `[r.th_comm v i g hg, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.BC.resid_bc :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (O O' : Type) [CommRing O] [IsLocalRing O] [CommRing O'] [IsLocalRing O'] [Algebra O O'] [IsLocalHom (algebraMap O O')] [Algebra ℤ_[l] O] [Algebra ℤ_[l] O'] [IsScalarTower ℤ_[l] O O'] (n : ℕ) (r : Resid F O n), (∃ r' : Resid F O' n, RBC r r') ∧ ∀ r' : Resid F O' n, RBC r r' → (∀ u, r'.Ip u = r.Ip u) ∧ r'.Dbar = r.Dbar.map (ResidueField.map (algebraMap O O')) ∧ ∀ i g, r'.chib i g = 1 ↔ r.chib i g = 1 := by

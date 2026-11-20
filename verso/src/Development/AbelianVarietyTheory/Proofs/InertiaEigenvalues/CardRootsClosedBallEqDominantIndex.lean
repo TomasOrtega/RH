@@ -7,15 +7,15 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty`. Introduce `c hc`. Simplify using `only [Multiset.map_zero, Multiset.prod_zero, mul_one, Multiset.filter_zero, Multiset.card_zero, pow_zero, coeff_C_zero]`. Use `⟨fun j => ?_, fun j hj => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Nat.eq_zero_or_pos j with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[coeff_C, if_neg (Nat.pos_iff_ne_zero.mp h)]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[coeff_C, if_neg (Nat.pos_iff_ne_zero.mp hj)]`. Simplify using `[hc]`. Consider the case `cons a s ih`. Introduce `c hc`. Take `⟨h1, h2⟩` from `ih c hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `heq : C c * ((a ::ₘ s).map fun a => X - C a).prod = (X - C a) * (C c * (s.map fun a => X - C a).prod)`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, mul_left_comm]`. Rewrite using `[heq, Multiset.filter_cons]`. Distinguish the cases in `ha : ‖a‖ ≤ ρ`. Rewrite using `[if_pos ha, Multiset.singleton_add, Multiset.card_cons]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.newtonPolygon_lastDominantIndex_mul_X_sub_C K _ a ρ _ hρ ha h1 h2`. Rewrite using `[if_neg ha, zero_add]`. Conclude with `GlobalTheory.T.newtonPolygon_dominant_index_X_sub_C_mul K _ a ρ _ hρ (not_le.mp ha) h1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dominantIndex_prod_X_sub_C (K : Type) [NormedField K] [IsUltrametricDist K]
     (ρ : ℝ) (hρ : 0 < ρ) (s : Multiset K) :
@@ -51,7 +51,7 @@ theorem dominantIndex_prod_X_sub_C (K : Type) [NormedField K] [IsUltrametricDist
       exact GlobalTheory.T.newtonPolygon_dominant_index_X_sub_C_mul K _ a ρ _ hρ (not_le.mp ha) h1 h2
 
 /- English proof (translation)
-Introduce `K _ _ _ f ρ hρ hf`. Establish `key` using `dominantIndex_prod_X_sub_C K ρ hρ f.roots f.leadingCoeff (leadingCoeff_ne_zero.mpr hf)`. Rewrite `key` using `[C_leadingCoeff_mul_prod_multiset_X_sub_C IsAlgClosed.card_roots_eq_natDegree]`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_roots_closedBall_eq_dominantIndex :
     ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [IsAlgClosed K] (f : K[X]) (ρ : ℝ), 0 < ρ → f ≠ 0 → (∀ j, ‖f.coeff j‖ * ρ ^ j ≤ ‖f.coeff (Multiset.card (f.roots.filter fun z => ‖z‖ ≤ ρ))‖ * ρ ^ Multiset.card (f.roots.filter fun z => ‖z‖ ≤ ρ)) ∧ ∀ j, Multiset.card (f.roots.filter fun z => ‖z‖ ≤ ρ) < j → ‖f.coeff j‖ * ρ ^ j < ‖f.coeff (Multiset.card (f.roots.filter fun z => ‖z‖ ≤ ρ))‖ * ρ ^ Multiset.card (f.roots.filter fun z => ‖z‖ ≤ ρ) := by

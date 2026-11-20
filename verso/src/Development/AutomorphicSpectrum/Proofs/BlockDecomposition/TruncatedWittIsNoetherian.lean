@@ -9,7 +9,7 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers Crystal
 namespace GlobalTheory.CompanionTheory.WittLevel
 
 /- English proof (translation)
-Introduce `l _ k _ _ _`. Unfold `Wc.Wm`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isNoetherianRing_Wm_one :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing k l],

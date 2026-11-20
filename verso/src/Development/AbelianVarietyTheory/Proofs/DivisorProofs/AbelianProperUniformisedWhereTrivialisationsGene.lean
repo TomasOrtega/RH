@@ -13,7 +13,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hB D A G _ _ hG U W hW`. Conclude with `⟨GlobalTheory.T.uniformised_group_abelian_where_trivialisations_units R hB D A G hG U W hW, GlobalTheory.T.isProper_uniformisedSemiAbelian_over_open_in_abLocus R hB D A G hG U W (GlobalTheory.T.uniformised_group_abelian_where_trivialisations_units R hB D A G hG U W hW)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem abelian_and_proper_of_psiUnitOn : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ W : (Sp R).Opens, (∀ y, PsiUnitOn D.toPre y W) → (W : Set (Sp R)) ⊆ abLocus G ∧ IsProper (G.hom ∣_ W) := by
   intro R _ _ _ hB D A G _ _ hG U W hW

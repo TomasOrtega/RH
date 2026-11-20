@@ -12,26 +12,24 @@ namespace PI.FJMS
 open PI.FJM PI.FJMP
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_upper_bis_form.goal1 .. | (apply Bl.general_b_fact_upper_bis_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_upper_bis_form.goal1 <;> assumption) | (apply @Bl.general_b_fact_upper_bis_form.goal1 <;> assumption) | (intros; apply @Bl.ge …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pos_iff_lt_nP {n : ℕ} (f : Fin n → ℚ) (hseg : ∀ i i' : Fin n, i < i' → 0 < f i' → 0 < f i)
     (i : Fin n) : 0 < f i ↔ i.val < nP f := by
   first | exact Bl.general_b_fact_upper_bis_form.goal1 .. | (apply Bl.general_b_fact_upper_bis_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_upper_bis_form.goal1 <;> assumption) | (apply @Bl.general_b_fact_upper_bis_form.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_upper_bis_form.goal1 <;> assumption) | (apply @Bl.general_b_fact_upper_bis_form.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_upper_bis_form.goal1 n f hseg i | exact @Bl.general_b_fact_upper_bis_form.goal1 n f hseg | exact @Bl.general_b_fact_upper_bis_form.goal1 n f | exact @Bl.general_b_fact_upper_bis_form.goal1 n
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hi`. Establish `hsub : Finset.Ici i ⊆ Finset.univ.filter (fun x => f x < 0)`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_Ici]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.mem_filter]`. Use `⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Break down `hx.lt_or_eq with h | h` into its components or cases. Conclude with `hseg i x h hi`. Rewrite using `[← h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hi`. Establish `h2` using `Finset.card_le_card hsub`. Rewrite `h2` using `[Fin.card_Ici]`. Use `show n ≤ i.val + (Finset.univ.filter fun x => f x < 0).card`. Use `i.isLt` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use linear arithmetic over natural numbers and integers. Introduce `hi`. Assume the negation of the conclusion as `hn`. Establish `hsub : Finset.univ.filter (fun x => f x < 0) ⊆ Finset.Ioi i`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hx` using `[Finset.mem_filter]`. Rewrite using `[Finset.mem_Ioi]`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Break down `hle.lt_or_eq with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hn (hseg x i h hx.2)`. Rewrite `hn` using `[← h]`. Conclude with `hn hx.2`. Establish `h2` using `Finset.card_le_card hsub`. Rewrite `h2` using `[Fin.card_Ioi]`.
-
-Establish `h3 : n ≤ i.val + (Finset.univ.filter fun x => f x < 0).card` using `hi`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem neg_iff_nN {n : ℕ} (f : Fin n → ℚ) (hseg : ∀ i i' : Fin n, i < i' → f i < 0 → f i' < 0)
     (i : Fin n) : f i < 0 ↔ n ≤ i.val + nN f := by
@@ -68,14 +66,14 @@ theorem neg_iff_nN {n : ℕ} (f : Fin n → ℚ) (hseg : ∀ i i' : Fin n, i < i
     omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨i.val, (pos_iff_lt_nP f hseg i).1 h⟩, Fin.ext rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem idxP {n : ℕ} (f : Fin n → ℚ) (hseg : ∀ i i' : Fin n, i < i' → 0 < f i' → 0 < f i)
     (i : Fin n) (h : 0 < f i) : ∃ x : Fin (nP f), Fin.castLE (nP_le_nW f) x = i :=
   ⟨⟨i.val, (pos_iff_lt_nP f hseg i).1 h⟩, Fin.ext rfl⟩
 
 /- English proof (translation)
-Establish `h1` using `(neg_iff_nN f hseg i).1 h`. Establish `h2` using `i.isLt`. Use `⟨⟨n - 1 - i.val, by omega⟩, Fin.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.val_rev, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem idxN {n : ℕ} (f : Fin n → ℚ) (hseg : ∀ i i' : Fin n, i < i' → f i < 0 → f i' < 0)
     (i : Fin n) (h : f i < 0) : ∃ x : Fin (nN f), Fin.rev (Fin.castLE (nN_le f) x) = i := by
@@ -86,14 +84,14 @@ theorem idxN {n : ℕ} (f : Fin n → ℚ) (hseg : ∀ i i' : Fin n, i < i' → 
   omega
 
 /- English proof (translation)
-The claim follows from `(pos_iff_lt_nP f hseg _).2 (by simp only [Fin.val_castLE]; exact x.isLt)`.
+A detailed English derivation is pending.
 -/
 theorem pos_of_lt {n : ℕ} (f : Fin n → ℚ) (hseg : ∀ i i' : Fin n, i < i' → 0 < f i' → 0 < f i)
     (x : Fin (nP f)) : 0 < f (Fin.castLE (nP_le_nW f) x) :=
   (pos_iff_lt_nP f hseg _).2 (by simp only [Fin.val_castLE]; exact x.isLt)
 
 /- English proof (translation)
-Use `(neg_iff_nN f hseg _).2 ?_` and prove the remaining obligations. Use `x.isLt` as an intermediate fact. Use `nN_le f` as an intermediate fact. Simplify using `only [Fin.val_rev, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem neg_of_lt {n : ℕ} (f : Fin n → ℚ) (hseg : ∀ i i' : Fin n, i < i' → f i < 0 → f i' < 0)
     (x : Fin (nN f)) : f (Fin.rev (Fin.castLE (nN_le f) x)) < 0 := by
@@ -108,7 +106,7 @@ section Gen
 variable {σ κ : Type*} [Fintype κ]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.map ⟨j, hj⟩)) (fun c _ hc => hf c (fun ⟨k, hk⟩ => hc (Finset.mem_map.2 ⟨k, Finset.mem_univ _, hk⟩))), Finset.sum_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_range_emb {M : Type*} [AddCommMonoid M] {m : ℕ} (j : Fin m → κ) (hj : Function.Injective j)
     (f : κ → M) (hf : ∀ c, c ∉ Set.range j → f c = 0) : ∑ c, f c = ∑ k, f (j k) := by
@@ -118,9 +116,7 @@ theorem sum_range_emb {M : Type*} [AddCommMonoid M] {m : ℕ} (j : Fin m → κ)
   rfl
 
 /- English proof (translation)
-Unfold `gR`. Rewrite using `[sum_range_emb j hj _ (fun c hc => ?_)]`. Conclude with `Finset.sum_congr rfl (fun k _ => by rw [if_pos (hin k)])`. Use `split_ifs`. Rewrite using `[pderiv_eq_zero_of_noVar (hB c hc), mul_zero]`.
-
-Rewrite using `[pderiv_eq_zero_of_noVar (hA c hc), mul_zero, neg_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gR_pos_block {m : ℕ} (u v : κ → σ) (pos : κ → Bool) (j : Fin m → κ) (hj : Function.Injective j)
     (P : MvPolynomial σ ℂ) (hA : ∀ c, c ∉ Set.range j → NoVar P (u c))
@@ -134,7 +130,7 @@ theorem gR_pos_block {m : ℕ} (u v : κ → σ) (pos : κ → Bool) (j : Fin m 
     · rw [pderiv_eq_zero_of_noVar (hA c hc), mul_zero, neg_zero]
 
 /- English proof (translation)
-Establish `h` using `gR_swap u v pos P`. Rewrite `h` using `[gR_pos_block v u (fun c => !pos c) j hj P hB hA (fun k => by simp [hin k])]`. Rewrite using `[h, neg_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gR_neg_block {m : ℕ} (u v : κ → σ) (pos : κ → Bool) (j : Fin m → κ) (hj : Function.Injective j)
     (P : MvPolynomial σ ℂ) (hA : ∀ c, c ∉ Set.range j → NoVar P (u c))
@@ -145,7 +141,7 @@ theorem gR_neg_block {m : ℕ} (u v : κ → σ) (pos : κ → Bool) (j : Fin m 
   rw [h, neg_neg]
 
 /- English proof (translation)
-Unfold `sw`. Rewrite using `[sum_range_emb j hj _ (fun c hc => by rw [hA c hc]; simp), Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl (fun k _ => by rw [if_pos (hin k)])`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sw_pos_block {m : ℕ} (e : σ →₀ ℕ) (w : κ → σ) (pos : κ → Bool) (j : Fin m → κ) (hj : Function.Injective j)
     (hA : ∀ c, c ∉ Set.range j → e (w c) = 0) (hin : ∀ k, pos (j k) = true) :
@@ -155,7 +151,7 @@ theorem sw_pos_block {m : ℕ} (e : σ →₀ ℕ) (w : κ → σ) (pos : κ →
   exact Finset.sum_congr rfl (fun k _ => by rw [if_pos (hin k)])
 
 /- English proof (translation)
-Unfold `sw`. Rewrite using `[sum_range_emb j hj _ (fun c hc => by rw [hA c hc]; simp), Nat.cast_sum, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl (fun k _ => by rw [if_neg (by simp [hin k])])`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sw_neg_block {m : ℕ} (e : σ →₀ ℕ) (w : κ → σ) (pos : κ → Bool) (j : Fin m → κ) (hj : Function.Injective j)
     (hA : ∀ c, c ∉ Set.range j → e (w c) = 0) (hin : ∀ k, pos (j k) = false) :
@@ -165,14 +161,14 @@ theorem sw_neg_block {m : ℕ} (e : σ →₀ ℕ) (w : κ → σ) (pos : κ →
   exact Finset.sum_congr rfl (fun k _ => by rw [if_neg (by simp [hin k])])
 
 /- English proof (translation)
-Rewrite using `[bRow, LinearMap.sum_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bRow_apply' {m n : ℕ} (ι : Fin m × Fin n → σ) (a b : Fin m) (P : MvPolynomial σ ℂ) :
     bRow ι a b P = ∑ k : Fin n, X (ι (a, k)) * pderiv (ι (b, k)) P := by
   rw [bRow, LinearMap.sum_apply]; simp
 
 /- English proof (translation)
-Rewrite using `[bCol, LinearMap.sum_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bCol_apply' {m n : ℕ} (ι : Fin m × Fin n → σ) (c d : Fin n) (P : MvPolynomial σ ℂ) :
     bCol ι c d P = ∑ i : Fin m, X (ι (i, c)) * pderiv (ι (i, d)) P := by
@@ -185,7 +181,7 @@ section Block
 variable {p q r s : ℕ} {μ : Ix p q → ℚ} {μ' : Ix r s → ℚ} {P : Pol p q r s}
 
 /- English proof (translation)
-The claim follows from `pureJ_of leftDiagonalActionFormula rightDiagonalActionFormula p q r s μ μ' P hM e he l hl`.
+A detailed English derivation is pending.
 -/
 theorem pure_of (hM : MinHyp p q r s μ μ' P) {e : Ln p q r s →₀ ℕ} (he : e ∈ P.support) {l : Ln p q r s}
     (hl : e l ≠ 0) : nu1 p q r s μ l.1 ≠ 0 ∧ nu2 p q r s μ' l.2 ≠ 0 ∧
@@ -193,27 +189,25 @@ theorem pure_of (hM : MinHyp p q r s μ μ' P) {e : Ln p q r s →₀ ℕ} (he :
   pureJ_of leftDiagonalActionFormula rightDiagonalActionFormula p q r s μ μ' P hM e he l hl
 
 /- English proof (translation)
-Establish `hw1` using `mem_leftHighestWeight_of_isMinimalJointVector hM`. Establish `hw2` using `mem_rightHighestWeight_of_isMinimalJointVector hM`. Establish `hP0 : P ≠ 0` using `hM.2.1`. Establish `urow : ∀ i c, c ∉ Set.range jX → NoVar P ((iX i, c) : Ln p q r s)`. Introduce `i c hc e he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Take `⟨-, -, h3, h4⟩` from `pure_of hM he hne`. Conclude with `hc (hcol i c (h3.2 (hnu1 i)) (h4.1 (h3.2 (hnu1 i))))`. Establish `ucol : ∀ k a, a ∉ Set.range iX → NoVar P ((a, jX k) : Ln p q r s)`. Introduce `k a ha e he`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨-, -, h3, h4⟩` from `pure_of hM he hne`. Conclude with `ha (hrow k a (h4.2 (hnu2 k)) (h3.1 (h4.2 (hnu2 k))))`. Establish `rowv : ∀ e ∈ P.support, ∀ i, nu1 p q r s μ (iX i) = ((∑ k, e ((iX i, jX k) : Ln p q r s) : ℕ) : ℚ)`. Introduce `e he i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← monomialLeftWeight_eq_weight_sub leftDiagonalActionFormula hw1 e he (iX i)]`. Establish `h` using `sw_pos_block e (fun c : Ix r s => ((iX i, c) : Ln p q r s)) (fun c => linePos ((iX i, c) : Ln p q r s)) jX hj (fun c hc => urow i c hc e he) (fun k => hlp i k)`. Rewrite using `[show wt1 e (iX i) = sw e (fun c : Ix r s => ((iX i, c) : Ln p q r s)) (fun c => linePos ((iX i, c) : Ln p q r s)) from rfl, h]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `colv : ∀ e ∈ P.support, ∀ k, nu2 p q r s μ' (jX k) = ((∑ i, e ((iX i, jX k) : Ln p q r s) : ℕ) : ℚ)`. Introduce `e he k`. Rewrite using `[← monomialRightWeight_eq_weight_sub rightDiagonalActionFormula hw2 e he (jX k)]`. Establish `h` using `sw_pos_block e (fun a : Ix p q => ((a, jX k) : Ln p q r s)) (fun a => linePos ((a, jX k) : Ln p q r s)) iX hi (fun a ha => ucol k a ha e he) (fun i => hlp i k)`. Rewrite using `[show wt2 e (jX k) = sw e (fun a : Ix p q => ((a, jX k) : Ln p q r s)) (fun a => linePos ((a, jX k) : Ln p q r s)) from rfl, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `push_cast`. Both sides reduce to the same expression. Take `⟨e0, he0⟩` from `exists_mem_support hP0`. Use `⟨fun a b hab => ?_, fun c d hcd => ?_, fun e he => ⟨fun i => ?_, fun k => ?_⟩, fun i => ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `hne` using `ne_of_posC (hmi a b hab)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hR` using `ker_of_hw hw1 (iX a) (iX b) (hmi a b hab)`. Rewrite `hR` using `[leftOffDiagonalActionFormula p q r s _ _ hne, leftRootOperator_eq_signedPolarization _ _ hne (hs1 a b) P, gR_pos_block _ _ _ jX hj P (fun c hc => urow a c hc) (fun c hc => urow b c hc) (fun k => hlp a k)]`. Rewrite using `[bRow_apply']`. Conclude with `hR`. Establish `hne` using `ne_of_posC (hmj c d hcd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hR` using `ker_of_hw hw2 (jX c) (jX d) (hmj c d hcd)`. Rewrite `hR` using `[rightOffDiagonalActionFormula p q r s _ _ hne, rightRootOperator_eq_signedPolarization _ _ hne (hs2 c d) P, gR_pos_block _ _ _ iX hi P (fun a ha => ucol c a ha) (fun a ha => ucol d a ha) (fun i => hlp i c)]`. Rewrite using `[bCol_apply']`. Conclude with `hR`. Rewrite using `[hα i, rowv e he i, Nat.floor_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hβ k, colv e he k, Nat.floor_natCast]`. Rewrite using `[hα i, Nat.floor_pos]`. Establish `h` using `hnu1 i`. Rewrite `h`, the goal using `[rowv e0 he0 i]`. Establish `h' : 0 < ∑ k, e0 ((iX i, jX k) : Ln p q r s)` using `by exact_mod_cast h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h'` after adjusting the coercions. Rewrite using `[hβ k, Nat.floor_pos]`. Establish `h` using `hnu2 k`. Rewrite `h`, the goal using `[colv e0 he0 k]`. Establish `h' : 0 < ∑ i, e0 ((iX i, jX k) : Ln p q r s)` using `by exact_mod_cast h`.
-
-Conclude with `h'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem blkHyp_pos (hM : MinHyp p q r s μ μ' P) {m n : ℕ} (iX : Fin m → Ix p q) (jX : Fin n → Ix r s)
     (hi : Function.Injective iX) (hj : Function.Injective jX)
@@ -287,37 +281,33 @@ theorem blkHyp_pos (hM : MinHyp p q r s μ μ' P) {m n : ℕ} (iX : Fin m → Ix
     exact_mod_cast h'
 
 /- English proof (translation)
-Establish `hw1` using `mem_leftHighestWeight_of_isMinimalJointVector hM`. Establish `hw2` using `mem_rightHighestWeight_of_isMinimalJointVector hM`. Establish `hP0 : P ≠ 0` using `hM.2.1`. Establish `lpf : ∀ l : Ln p q r s, (linePos l = true ↔ 0 < nu1 p q r s μ l.1) → nu1 p q r s μ l.1 < 0 → linePos l = false`. Introduce `l h h'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `hl : linePos l`. Both sides reduce to the same expression. Rewrite `h` using `[hl]`. Combine the linear relations using `[h.1 rfl]`. Establish `urow : ∀ i c, c ∉ Set.range jX → NoVar P ((iX i, c) : Ln p q r s)`.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `i c hc e he`. Assume the negation of the conclusion as `hne`. Take `⟨-, h2, h3, h4⟩` from `pure_of hM he hne`. Establish `hf : linePos ((iX i, c) : Ln p q r s) = false` using `lpf _ h3 (hnu1 i)`. Establish `hneg : nu2 p q r s μ' c < 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[hf]`. Break down `lt_or_gt_of_ne h2 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (h4.2 h) Bool.false_ne_true`. Conclude with `hc (hcol i c hf hneg)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `ucol : ∀ k a, a ∉ Set.range iX → NoVar P ((a, jX k) : Ln p q r s)`. Introduce `k a ha e he`. Assume the negation of the conclusion as `hne`. Take `⟨h1, -, h3, h4⟩` from `pure_of hM he hne`. Establish `hf : linePos ((a, jX k) : Ln p q r s) = false`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the cases of `hl : linePos ((a, jX k) : Ln p q r s)`. Both sides reduce to the same expression. Rewrite `h4` using `[hl]`. Combine the linear relations using `[h4.1 rfl, hnu2 k]`. Establish `hneg : nu1 p q r s μ a < 0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `h3` using `[hf]`. Break down `lt_or_gt_of_ne h1 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (h3.2 h) Bool.false_ne_true`. Conclude with `ha (hrow k a hf hneg)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `rowv : ∀ e ∈ P.support, ∀ i, -nu1 p q r s μ (iX i) = ((∑ k, e ((iX i, jX k) : Ln p q r s) : ℕ) : ℚ)`. Introduce `e he i`. Rewrite using `[← monomialLeftWeight_eq_weight_sub leftDiagonalActionFormula hw1 e he (iX i)]`. Establish `h` using `sw_neg_block e (fun c : Ix r s => ((iX i, c) : Ln p q r s)) (fun c => linePos ((iX i, c) : Ln p q r s)) jX hj (fun c hc => urow i c hc e he) (fun k => hlp i k)`. Rewrite using `[show wt1 e (iX i) = sw e (fun c : Ix r s => ((iX i, c) : Ln p q r s)) (fun c => linePos ((iX i, c) : Ln p q r s)) from rfl, h]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `colv : ∀ e ∈ P.support, ∀ k, -nu2 p q r s μ' (jX k) = ((∑ i, e ((iX i, jX k) : Ln p q r s) : ℕ) : ℚ)`. Introduce `e he k`. Rewrite using `[← monomialRightWeight_eq_weight_sub rightDiagonalActionFormula hw2 e he (jX k)]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `sw_neg_block e (fun a : Ix p q => ((a, jX k) : Ln p q r s)) (fun a => linePos ((a, jX k) : Ln p q r s)) iX hi (fun a ha => ucol k a ha e he) (fun i => hlp i k)`. Rewrite using `[show wt2 e (jX k) = sw e (fun a : Ix p q => ((a, jX k) : Ln p q r s)) (fun a => linePos ((a, jX k) : Ln p q r s)) from rfl, h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e0, he0⟩` from `exists_mem_support hP0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun a b hab => ?_, fun c d hcd => ?_, fun e he => ⟨fun i => ?_, fun k => ?_⟩, fun i => ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `hne` using `ne_of_posC (hmi a b hab)`. Establish `hR` using `ker_of_hw hw1 (iX b) (iX a) (hmi a b hab)`. Rewrite `hR` using `[leftOffDiagonalActionFormula p q r s _ _ hne, leftRootOperator_eq_signedPolarization _ _ hne (hs1 b a) P, gR_neg_block _ _ _ jX hj P (fun c hc => urow b c hc) (fun c hc => urow a c hc) (fun k => hlp b k), neg_eq_zero]`. Rewrite using `[bRow_apply']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hR`. Establish `hne` using `ne_of_posC (hmj c d hcd)`. Establish `hR` using `ker_of_hw hw2 (jX d) (jX c) (hmj c d hcd)`. Rewrite `hR` using `[rightOffDiagonalActionFormula p q r s _ _ hne, rightRootOperator_eq_signedPolarization _ _ hne (hs2 d c) P, gR_neg_block _ _ _ iX hi P (fun a ha => ucol d a ha) (fun a ha => ucol c a ha) (fun i => hlp i d), neg_eq_zero]`. Rewrite using `[bCol_apply']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hR`. Rewrite using `[hα i, rowv e he i, Nat.floor_natCast]`. Rewrite using `[hβ k, colv e he k, Nat.floor_natCast]`. Rewrite using `[hα i, Nat.floor_pos]`. Establish `h` using `hnu1 i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `rowv e0 he0 i`. Rewrite using `[h2]`. Establish `h' : 0 < ∑ k, e0 ((iX i, jX k) : Ln p q r s)`. Establish `: (0 : ℚ) < ((∑ k, e0 ((iX i, jX k) : Ln p q r s) : ℕ) : ℚ)` using `by rw [← h2]; linarith`. Conclude with `this` after adjusting the coercions.
-
-Conclude with `h'` after adjusting the coercions. Rewrite using `[hβ k, Nat.floor_pos]`. Establish `h` using `hnu2 k`. Establish `h2` using `colv e0 he0 k`. Rewrite using `[h2]`.
-
-Establish `h' : 0 < ∑ i, e0 ((iX i, jX k) : Ln p q r s)`. Establish `: (0 : ℚ) < ((∑ i, e0 ((iX i, jX k) : Ln p q r s) : ℕ) : ℚ)` using `by rw [← h2]; linarith`. Conclude with `this` after adjusting the coercions. Conclude with `h'` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem blkHyp_neg (hM : MinHyp p q r s μ μ' P) {m n : ℕ} (iX : Fin m → Ix p q) (jX : Fin n → Ix r s)
     (hi : Function.Injective iX) (hj : Function.Injective jX)

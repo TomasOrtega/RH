@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PrismaticD
 open CategoryTheory Limits AlgebraicGeometry IsLocalRing
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.Vert GlobalTheory.MixedLocalChains GlobalTheory.ChainPts
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainPts.eqChainSt_of_groupAllSt | exact GlobalTheory.ChainPts.eqChainSt_of_groupAllSt | (intros; apply GlobalTheory.ChainPts.eqChainSt_of_groupAllSt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.equivariant_chain_points_hyp : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.PrismaticDieudonnePerfd → GlobalTheory.GroupBplus.GroupAllSt → GlobalTheory.ChainPts.EqChainSt := by
   first | exact @GlobalTheory.ChainPts.eqChainSt_of_groupAllSt | exact GlobalTheory.ChainPts.eqChainSt_of_groupAllSt | (intros; apply GlobalTheory.ChainPts.eqChainSt_of_groupAllSt <;> assumption)

@@ -17,9 +17,9 @@ def VarietyLelongMono.Statement : Prop :=
         ENNReal.ofReal (r ^ (2 * d)) * μH[((2 * d : ℕ) : ℝ)] (zeroSetEuc J ∩ Metric.ball z s)
 
 /- English proof (translation)
-Establish `hf : Module.finrank ℝ (EuclideanSpace ℂ (Fin d)) = 2 * d`. Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ (Fin d)), Complex.finrank_real_complex, finrank_euclideanSpace_fin]`. Establish `h : ((2 * d : ℕ) : ℝ) = ((Module.finrank ℝ (EuclideanSpace ℂ (Fin d)) : ℕ) : ℝ)` using `by rw [hf]`. Break down `Nat.eq_zero_or_pos d with hd | hd` into its components or cases. Substitute `hd` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Establish `hb : ∀ (x : EuclideanSpace ℂ (Fin 0)) (t : ℝ), 0 < t → Metric.ball x t = Set.univ` using `fun x t ht => Set.eq_univ_of_forall fun y => Metric.mem_ball.2 (by rw [Subsingleton.elim y x, dist_self]; exact ht)`. Rewrite using `[hb z r hr, hb 0 1 one_pos]`. Simplify using the standard rewrite rules. Establish `: Nontrivial (EuclideanSpace ℂ (Fin d))` using `Module.nontrivial_of_finrank_pos (R := ℝ) (by rw [hf]; omega)`. Rewrite using `[h, Measure.addHaar_ball _ _ hr.le, hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem VarietyLelongMono.euclBall_measure (d : ℕ) (z : EuclideanSpace ℂ (Fin d)) {r : ℝ} (hr : 0 < r) :
     μH[((2 * d : ℕ) : ℝ)] (Metric.ball z r) =

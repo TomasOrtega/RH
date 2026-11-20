@@ -7,19 +7,17 @@ namespace LateralTheory.E.RelNormPf
 
 open AlgebraicGeometry.Scheme.Hom in
 /- English proof (translation)
-Introduce `b hb`. Use `letI := (g.app U).hom.toAlgebra`. Establish `hle : g ⁻¹ᵁ U ≤ g.toNormalization ⁻¹ᵁ g.fromNormalization ⁻¹ᵁ U`. Simplify using `[← Scheme.Hom.comp_preimage]`. Establish `hle' : g.toNormalization ⁻¹ᵁ g.fromNormalization ⁻¹ᵁ U ≤ g ⁻¹ᵁ U`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[← Scheme.Hom.comp_preimage]`. Use `set ρ := Z.presheaf.map (homOfLE hle).op with hρ`. Establish `key` using `g.normalizationObjIso_hom_val hU`. Establish `hρinj : Function.Injective ρ`. Introduce `u v huv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (Z.presheaf.map (homOfLE hle').op) huv` as an intermediate fact. Establish `h1 : (homOfLE hle).op ≫ (homOfLE hle').op = 𝟙 (Opposite.op (g.toNormalization ⁻¹ᵁ g.fromNormalization ⁻¹ᵁ U))` using `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`. Simplify `this` using `[hρ, ← CommRingCat.comp_apply, ← Functor.map_comp, h1]`. Establish `hint : IsIntegral (integralClosure Γ(S, U) Γ(Z, g ⁻¹ᵁ U)) (ρ b)`. Take `⟨p, hm, hp⟩` from `hb`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p.map (g.normalizationObjIso hU).hom.hom, hm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `e : (algebraMap (integralClosure Γ(S, U) Γ(Z, g ⁻¹ᵁ U)) Γ(Z, g ⁻¹ᵁ U)).comp (g.normalizationObjIso hU).hom.hom = ρ.hom.comp (g.toNormalization.app _).hom`. Use `congrArg CommRingCat.Hom.hom key` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.appLE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[e, ← Polynomial.hom_eval₂, hp, map_zero]`. Establish `hmem : ρ b ∈ (⊥ : Subalgebra (integralClosure Γ(S, U) Γ(Z, g ⁻¹ᵁ U)) Γ(Z, g ⁻¹ᵁ U))`. Rewrite using `[← integralClosure_idem]`. Conclude with `hint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `Algebra.mem_bot.mp hmem`. Use `⟨(g.normalizationObjIso hU).inv z, hρinj ?_⟩` and prove the remaining obligations. Use `congrArg (fun φ => φ ((g.normalizationObjIso hU).inv z)) (congrArg CommRingCat.Hom.hom key)` as an intermediate fact. Simplify using `only [Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply] at this`. Rewrite using `[← this, ← hz]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem closedAt_preimage {Z S : Scheme.{0}} (g : Z ⟶ S) [QuasiCompact g] [QuasiSeparated g]
     (U : S.Opens) (hU : IsAffineOpen U) : ClosedAt g.toNormalization (g.fromNormalization ⁻¹ᵁ U) := by

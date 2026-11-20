@@ -34,7 +34,7 @@ theorem matrixCoords_apply (g : Matrix ι ι (R ⊗[F] E)) (i j : ι) (k : κ) :
 omit [Algebra.IsQuadraticExtension F E] [Fintype ι] [DecidableEq ι] in
 @[simp]
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨i, j, k⟩`. Rewrite using `[matrixCoords_apply]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem matrixCoords_zero : matrixCoords b R (0 : Matrix ι ι (R ⊗[F] E)) = 0 := by
   funext ⟨i, j, k⟩
@@ -46,7 +46,7 @@ variable {R}
 omit [Algebra.IsQuadraticExtension F E] [Fintype κ] in
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul, Finsupp.mapRange_apply]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem repr_tensorMap (f : R →ₐ[F] S) (z : R ⊗[F] E) (k : κ) :
     (Algebra.TensorProduct.basis S b).repr (tensorMap E f z) k =
@@ -60,7 +60,7 @@ theorem repr_tensorMap (f : R →ₐ[F] S) (z : R ⊗[F] E) (k : κ) :
 omit [Algebra.IsQuadraticExtension F E] [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨i, j, k⟩`. Rewrite using `[Function.comp_apply, matrixCoords_apply, matrixCoords_apply, Matrix.map_apply, repr_tensorMap]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem matrixCoords_map (f : R →ₐ[F] S) (g : Matrix ι ι (R ⊗[F] E)) :
     matrixCoords b S (g.map (tensorMap E f)) = f ∘ matrixCoords b R g := by

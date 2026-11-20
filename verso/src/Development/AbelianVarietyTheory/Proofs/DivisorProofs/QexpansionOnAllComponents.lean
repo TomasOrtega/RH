@@ -17,15 +17,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RealMult
 
 /- English proof (translation)
-Introduce `F _ _ _ hf e 𝔞 𝔟 k R₀ g a hg ha haR`. Take `⟨r₀, hr₀, hr₀u⟩` from `hQ F hf e 𝔞 𝔟 k R₀ g a hg ha haR`. Establish `hrap : ∀ (R : Type) [CommRing R] [Algebra ℂ R] (X : Obj F (𝔞 * 𝔟⁻¹) (Sp R)), X.IsRapoport`. Introduce `R _ _ X`. Apply `isRapoport_of_isUnit_discr hDP F (𝔞 * 𝔟⁻¹) R` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0 : ((NumberField.discr F : ℤ) : R) = algebraMap ℂ R ((NumberField.discr F : ℤ) : ℂ)` using `by simp`. Rewrite using `[h0]`. Conclude with `(IsUnit.mk0 _ (by exact_mod_cast NumberField.discr_ne_zero F)).map _`. Set `r₁ : Rule (trivialObjectCondition (𝔞 * 𝔟⁻¹)) ℂ k` to `{ val := fun R _ _ X _ δ ↦ (r₀.extend ℂ).val R X (hrap R X) δ homog := fun R _ _ X _ δ δ' c h ↦ (r₀.extend ℂ).homog R X (hrap R X) δ δ' c h baseChange := fun R R' _ _ _ _ σ X _ X' _ φ δ δ' h h' ↦ (r₀.extend ℂ).baseChange R R' σ X (hrap R X) X' (hrap R' X') φ δ δ' h h' }`. Take `⟨r, hr⟩` from `exists_rule_allObj_of_extend hDP F (𝔞 * 𝔟⁻¹) R₀ ℂ Subtype.val_injective k r₀ r₁ (fun R _ _ X hX δ ↦ rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrr : r.HasValues e 𝔞 𝔟 g`. Introduce `z hz X _ δ hXz`. Rewrite using `[hr ℂ X (hrap ℂ X) δ]`. Conclude with `hr₀ z hz X (hrap ℂ X) δ hXz`. Use `⟨r, hrr, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s hs`. Establish `hres : ∀ t : Rule (trivialObjectCondition (𝔞 * 𝔟⁻¹)) R₀ k, t.HasValues e 𝔞 𝔟 g → (t.restrict (Q'` using `rapObj (𝔞 * 𝔟⁻¹)) (fun _ _ _ _ ↦ trivial)).HasValues e 𝔞 𝔟 g := fun t ht z hz X _ δ hXz ↦ ht z hz X trivial δ hXz`. Establish `h1` using `hr₀u _ (hres s hs)`. Establish `h2` using `hr₀u _ (hres r hrr)`. Apply `rule_eq_of_agree_rapoport hDP F (𝔞 * 𝔟⁻¹) R₀ k s r` to reduce the goal to its premises.
-
-Introduce `R _ _ X hX δ`. Conclude with `congrArg (fun t : Rule (rapObj (𝔞 * 𝔟⁻¹)) R₀ k ↦ t.val R X hX δ) (h1.trans h2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem qExpansionOnAll_of_model (hDP : GlobalTheory.Published.DelignePappasModel) (hQ : GlobalTheory.Published.HilbertQExpansion) :
     QExpansionOnAll := by

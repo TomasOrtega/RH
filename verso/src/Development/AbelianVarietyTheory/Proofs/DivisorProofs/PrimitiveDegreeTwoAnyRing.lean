@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Obs
 
 /- English proof (translation)
-Apply `GlobalTheory.T.primitive_degree_two_extension` to reduce the goal to its premises. Apply `GlobalTheory.T.additiveClassDegreeTwo_structureSheaf_vanish` to reduce the goal to its premises. Introduce `R _ A _ g hA hs`. Take `⟨⟨hfin, hproj, hrk⟩, hw, -, -⟩` from `GlobalTheory.T.abelian_structure_cohomology_statement R A g hA hs`. Conclude with `⟨⟨hfin, hproj, hrk⟩, hw⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem primE2_any_ring : PrimitiveExtendedDegTwoVanish := by
   apply GlobalTheory.T.primitive_degree_two_extension

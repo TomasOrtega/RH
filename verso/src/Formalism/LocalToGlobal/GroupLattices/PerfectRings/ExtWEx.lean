@@ -9,11 +9,11 @@ open Formalism.MainNotions.G IsLocalRing IntermediateField NumberField IsDedekin
 variable {p : ℕ} [hp : Fact p.Prime] {n : ℕ} {LL : Type} [Field LL] [NumberField LL]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hc : Nat.Coprime q M` using `(Nat.Prime.coprime_iff_not_dvd hq).2 h`. Establish `hb` using `Nat.gcd_eq_gcd_ab q M`. Simplify using `only [hc.gcd_eq_one, Nat.cast_one] at hb`. Apply `hI` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e : (1 : R) = (q : R) * ((Nat.gcdA q M : ℤ) : R) + (M : R) * ((Nat.gcdB q M : ℤ) : R)`. Use `congrArg (fun z : ℤ => (z : R)) hb` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `I.add_mem (I.mul_mem_right _ h1) (I.mul_mem_right _ h2)`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_mem {R : Type*} [CommRing R] (I : Ideal R) (hI : I ≠ ⊤) {q M : ℕ} (hq : q.Prime) (h1 : (q : R) ∈ I)
     (h2 : (M : R) ∈ I) : q ∣ M := by
@@ -31,15 +31,13 @@ theorem dvd_of_mem {R : Type*} [CommRing R] (I : Ideal R) (hI : I ≠ ⊤) {q M 
   exact I.add_mem (I.mul_mem_right _ h1) (I.mul_mem_right _ h2)
 
 /- English proof (translation)
-Introduce `h`. Establish `hK : IsIntegral (OO p n) ((p : KO p n)⁻¹)`. Establish `e : ((p : Om p n)⁻¹) = IsScalarTower.toAlgHom (OO p n) (KO p n) (Om p n) ((p : KO p n)⁻¹)`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(isIntegral_algHom_iff _ (algebraMap (KO p n) (Om p n)).injective).1 h`. Set `y : OL p n (KO p n)` to `⟨(p : KO p n)⁻¹, hK⟩`. Establish `hp0 : (p : KO p n) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Establish `hu : IsUnit (algebraMap (OO p n) (OL p n (KO p n)) (p : OO p n))`. Establish `h1 : algebraMap (OO p n) (OL p n (KO p n)) (p : OO p n) * y = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[y, hp0]`. Conclude with `⟨⟨_, y, h1, by rw [mul_comm]; exact h1⟩, rfl⟩`. Establish `hmem : (p : OO p n) ∈ maximalIdeal (OO p n)`. Establish `hw` using `wU_mem_max (p := p) (n := n)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (p : OO p n) = wU p n * wU p n`. Apply the tactic sequence `ext <;> simp [wU]`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ hw`. Rewrite `hmem` using `[← under_max (p := p) (n := n) (KO p n), Ideal.mem_comap]`.
-
-Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hmem hu`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_inv_not_integral : ¬ IsIntegral (OO p n) ((p : Om p n)⁻¹) := by
   intro h
@@ -65,11 +63,11 @@ theorem p_inv_not_integral : ¬ IsIntegral (OO p n) ((p : Om p n)⁻¹) := by
   exact (IsLocalRing.mem_maximalIdeal _).1 hmem hu
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `isUnit_embO (τ := τ) hd`. Establish `hint : IsIntegral (OO p n) (((u⁻¹ : (Ot τ)ˣ) : Ot τ) : Lt τ)` using `((u⁻¹ : (Ot τ)ˣ) : Ot τ).2`. Establish `hint' : IsIntegral (OO p n) ((((u⁻¹ : (Ot τ)ˣ) : Ot τ) : Lt τ) : Om p n)` using `hint.map ((Lt τ).val.restrictScalars (OO p n))`. Establish `hval : (((u : Ot τ) : Lt τ) : Om p n) = τ (d : LL)`. Rewrite using `[hu, embO_val, embL_val]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmul : (((u : Ot τ) : Lt τ) : Om p n) * ((((u⁻¹ : (Ot τ)ˣ) : Ot τ) : Lt τ) : Om p n) = 1`. Rewrite using `[← IntermediateField.coe_mul, ← Subalgebra.coe_mul, u.mul_inv]`. Simplify using the standard rewrite rules. Rewrite `hmul` using `[hval]`. Rewrite using `[← eq_inv_of_mul_eq_one_right hmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hint'`.
+A detailed English derivation is pending.
 -/
 theorem inv_integral (τ : LL →+* Om p n) {d : 𝓞 LL} (hd : d ∉ placeIdeal τ) :
     IsIntegral (OO p n) (τ (d : LL))⁻¹ := by
@@ -87,29 +85,23 @@ theorem inv_integral (τ : LL →+* Om p n) {d : 𝓞 LL} (hd : d ∉ placeIdeal
   exact hint'
 
 /- English proof (translation)
-Use `haveI : CharZero (Om p n) := charZero_of_injective_algebraMap (algebraMap (KO p n) (Om p n)).injective`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Set `τ0 : LL →ₐ[ℚ] Om p n` to `IsAlgClosed.lift`. Establish `hav : ¬ ((w.asIdeal : Set (𝓞 LL)) ⊆ ⋃ σ ∈ ((Finset.univ : Finset (LL →ₐ[ℚ] Om p n)) : Set (LL →ₐ[ℚ] Om p n)), ((placeIdeal σ.toRingHom : Ideal (𝓞 LL)) : Set (𝓞 LL)))`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hsub`. Take `⟨σ, _, hle⟩` from `(Ideal.subset_union_prime (s := Finset.univ) (f := fun σ : LL →ₐ[ℚ] Om p n => placeIdeal σ.toRingHom) τ0 τ0 (fun σ _ _ _ => (placeOf σ.toRingHom).isPrime)).1 hsub`. Apply `hno σ.toRingHom` to reduce the goal to its premises. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Conclude with `((w.isMaximal).eq_of_le (placeOf σ.toRingHom).isPrime.ne_top hle).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨e, hew, hen⟩ : ∃ e ∈ w.asIdeal, ∀ σ : LL →ₐ[ℚ] Om p n, e ∉ placeIdeal σ.toRingHom := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hav (fun x hx => by`. Take `⟨σ, hσ⟩` from `h x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_univ σ)) hσ)`. Establish `hint : IsIntegral (OO p n) (∏ σ : LL →ₐ[ℚ] Om p n, (σ (e : LL))⁻¹)`. Use `(integralClosure (OO p n) (Om p n)).prod_mem (t := Finset.univ) (fun (σ : LL →ₐ[ℚ] Om p n) _ => (show (σ (e : LL))⁻¹ ∈ integralClosure (OO p n) (Om p n) from inv_integral σ.toRingHom (hen σ)))` as an intermediate fact. Conclude with `this`. Use `set Nz : ℤ := Algebra.norm ℤ e with hNz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hN_eq : (∏ σ : LL →ₐ[ℚ] Om p n, (σ (e : LL))⁻¹) = ((Nz : Om p n))⁻¹`. Rewrite using `[Finset.prod_inv_distrib, ← Algebra.norm_eq_prod_embeddings ℚ (Om p n) (e : LL), ← Algebra.coe_norm_int e, map_intCast]`. Establish `he0 : e ≠ 0` using `fun h => hen τ0 (h ▸ (placeIdeal τ0.toRingHom).zero_mem)`. Establish `hN0 : Nz ≠ 0`. Rewrite using `[hNz, Ne, Algebra.norm_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `he0`. Establish `hmemN : ((Nz : ℤ) : 𝓞 LL) ∈ w.asIdeal`. Establish `hd` using `Algebra.dvd_algebraMap_intNorm_self ℤ (𝓞 LL) e`. Rewrite `hd` using `[Algebra.intNorm_eq_norm]`. Take `⟨c, hc⟩` from `hd`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1 : algebraMap ℤ (𝓞 LL) Nz ∈ w.asIdeal`. Rewrite using `[hNz, hc]`. Conclude with `Ideal.mul_mem_right _ _ hew`. Simplify `h1` using `only [algebraMap_int_eq, eq_intCast]`. Establish `hNabs : ((Nz.natAbs : ℕ) : 𝓞 LL) ∈ w.asIdeal`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Break down `Int.natAbs_eq Nz with h | h` into its components or cases. Rewrite `hmemN` using `[h, Int.cast_natCast]`. Conclude with `hmemN`. Rewrite `hmemN` using `[h]`. Use `w.asIdeal.neg_mem hmemN` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `this` using `[Int.cast_neg, neg_neg, Int.cast_natCast]`. Then use the resulting hypothesis. Establish `hdvd : p ∣ Nz.natAbs` using `dvd_of_mem w.asIdeal w.isPrime.ne_top hp.out hw hNabs`. Take `⟨m, hm⟩` from `Int.ofNat_dvd_left.2 hdvd`. Establish `hm0 : (m : Om p n) ≠ 0`. Establish `: m ≠ 0`.
-
-Introduce and unpack `rfl`. Rewrite `hm` using `[mul_zero]`. Conclude with `hN0 hm`. Conclude with `this` after adjusting the coercions. Establish `hp0 : (p : Om p n) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`.
-
-Establish `key : ((p : Om p n))⁻¹ = (m : Om p n) * ((Nz : Om p n))⁻¹`. Rewrite using `[hm]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Apply `p_inv_not_integral (p := p) (n := n)` to reduce the goal to its premises.
-
-Rewrite using `[key]`. Establish `hmI : IsIntegral (OO p n) ((m : ℤ) : Om p n)` using `(integralClosure (OO p n) (Om p n)).intCast_mem m`. Conclude with `hmI.mul (hN_eq ▸ hint)`.
+Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_emb (w : HeightOneSpectrum (𝓞 LL)) (hw : (p : 𝓞 LL) ∈ w.asIdeal) :
     ∃ τ : LL →+* Om p n, placeOf τ = w := by
@@ -184,7 +176,7 @@ theorem exists_emb (w : HeightOneSpectrum (𝓞 LL)) (hw : (p : 𝓞 LL) ∈ w.a
   exact hmI.mul (hN_eq ▸ hint)
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `exists_emb (p := p) (n := n) w hw`. Use `⟨τ, fun x => ?_⟩` and prove the remaining obligations. Use `induces (τ := τ) x` as an intermediate fact. Rewrite `this` using `[hτ]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_ringAt (w : HeightOneSpectrum (𝓞 LL)) (hw : (p : 𝓞 LL) ∈ w.asIdeal) :
     ∃ τ : LL →+* Om p n, ∀ x : LL,
@@ -198,13 +190,13 @@ def tauAt (p : ℕ) [Fact p.Prime] (n : ℕ) (w : HeightOneSpectrum (𝓞 LL)) (
     LL →+* Om p n := (exists_emb (p := p) (n := n) w hw).choose
 
 /- English proof (translation)
-The claim follows from `(exists_emb (p := p) (n := n) w hw).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem placeOf_tauAt (w : HeightOneSpectrum (𝓞 LL)) (hw : (p : 𝓞 LL) ∈ w.asIdeal) :
     placeOf (tauAt p n w hw) = w := (exists_emb (p := p) (n := n) w hw).choose_spec
 
 /- English proof (translation)
-Use `induces (τ := tauAt p n w hw) x` as an intermediate fact. Rewrite `this` using `[placeOf_tauAt]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem induces_tauAt (w : HeightOneSpectrum (𝓞 LL)) (hw : (p : 𝓞 LL) ∈ w.asIdeal) (x : LL) :
     w.valuation LL x ≤ 1 ↔

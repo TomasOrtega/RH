@@ -38,7 +38,7 @@ def LeafExciseLocal : Prop := Base → ∀ (q : ℕ) [NeZero q] {X' X Z : Scheme
   Function.Bijective (relMapBC q (pullback.fst f ι) ι (pullback.snd f ι) f pullback.condition s i n)
 
 /- English proof (translation)
-Introduce `base q _ X' X Z _ f _ ι _ hq U hU hiso n i`. Conclude with `h1 base q (pullback.fst f ι) ι (pullback.snd f ι) f pullback.condition hq i (fun A _ s hA m => h2 base q f ι hq U hU hiso A s hA i m) n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goal_of (h1 : ExcisionRelationSquare) (h2 : LeafExciseLocal) : EtaleExcise := by
   intro base q _ X' X Z _ f _ ι _ hq U hU hiso n i

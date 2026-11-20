@@ -13,11 +13,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {M : ℕ}
 
 /- English proof (translation)
-Use `choose o ho hoe using hY`. Establish `hYy : Y.mulVec y = y + (Y - 1).mulVec y`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Establish `e1 : (a ⊗ₜ[F] (1 : E)) • (Y - 1).mulVec y = k • fun i => ∑ j, o i j * (u • y j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hoe i j]`. Simplify using `only [nsmul_eq_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hYy, smul_add, e1]`. Conclude with `add_mem (latHat_smul L ha hy) (low_vec L hk fun i => AddSubgroup.sum_mem _ fun j _ => Oh_mul (ho i j) (up_Oh L hu hy j))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabT (L : Set (Fin M → E)) {u k : ℕ} (hu : ∀ x ∈ L, ∀ i, IsIntegral ℤ ((u : F) • x i))
     (hk : ∀ i, ∀ e : E, IsIntegral ℤ e → Pi.single i ((k : F) • e) ∈ L) {a : Af F} (ha : a ∈ intAf F)
@@ -41,23 +41,19 @@ theorem stabT (L : Set (Fin M → E)) {u k : ℕ} (hu : ∀ x ∈ L, ∀ i, IsIn
     (low_vec L hk fun i => AddSubgroup.sum_mem _ fun j _ => Oh_mul (ho i j) (up_Oh L hu hy j))
 
 /- English proof (translation)
-Use `set z := (finMat σ J g2⁻¹).mulVec (vinc (F := F) x) with hz`. Establish `hzC : (evT T ⊗ₜ[F] (1 : E)) • z ∈ latHat F E L`. Establish `: z = (finMat σ J (g2⁻¹ * g1)).mulVec ((finMat σ J g1⁻¹).mulVec (vinc (F` using `F) x)) := by`. Rewrite using `[Matrix.mulVec_mulVec, ← finMat_mul, mul_assoc, mul_inv_cancel, mul_one]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hC _ hx`. Establish `hden : ∃ m : ℕ, 0 < m ∧ m • z ∈ latHat F E L` using `by choose mf hmf hmO using fun i => den (F := F) (E := E) (z i)`. Use `⟨k * ∏ i, mf i, Nat.mul_pos hkpos (Finset.prod_pos fun i _ => hmf i), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Apply `low_vec L hk` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem mf (Finset.mem_univ i)`. Use `show (∏ i, mf i) • z i ∈ Oh F E`. Rewrite using `[hq, mul_comm, mul_smul]`. Conclude with `AddSubgroup.nsmul_mem _ (hmO i) _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨m, hm, hmz⟩` from `hden`. Take `⟨a, m2, hm2, hmeq⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hm.ne' p hp`. Use `⟨m2, hm2, ?_⟩` and prove the remaining obligations. Use `show (finMat σ J g2⁻¹).mulVec (vinc (F := F) ((m2 : E) • x)) ∈ latHat F E L`. Establish `e2 : (finMat σ J g2⁻¹).mulVec (vinc (F` using `F) ((m2 : E) • x)) = m2 • z := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul, hz]`. Establish `: vinc (F` using `F) (m2 • x) = m2 • vinc (F := F) x := by funext i; simp [vinc]`. Rewrite using `[this, Matrix.mulVec_smul]`. Rewrite using `[e2]`. Use `set c : Af F := (1 - evT T) * algebraMap F (Af F) ((algebraMap (𝓞 F) F ((p : 𝓞 F) ^ a))⁻¹) with hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcI : c ∈ intAf F` using `one_sub_evT_inv_int T ((p : 𝓞 F) ^ a) (fun w hw hpw => hpT w hw (w.isPrime.mem_of_pow_mem a hpw))`. Establish `hpa : algebraMap (𝓞 F) F ((p : 𝓞 F) ^ a) ≠ 0`. Rewrite using `[map_pow, map_natCast]; exact pow_ne_zero _ (by exact_mod_cast hp0)`. Establish `hA : algebraMap F (Af F) ((algebraMap (𝓞 F) F ((p : 𝓞 F) ^ a))⁻¹) * ((p : Af F) ^ a) = 1`. Rewrite using `[show ((p : Af F) ^ a) = algebraMap F (Af F) (algebraMap (𝓞 F) F ((p : 𝓞 F) ^ a)) by simp, ← map_mul, inv_mul_cancel₀ hpa, map_one]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsc : (m2 : Af F) = m2 * evT T + c * (m : Af F)`. Rewrite using `[hmeq, hc]`. Move the coercions through the operations in `at hA ⊢`. Take the linear combination `(-(1 - evT T) * (m2 : Af F)) * hA`. Establish `e3 : m2 • z = m2 • ((evT T ⊗ₜ[F] (1 : E)) • z) + (c ⊗ₜ[F] (1 : E)) • (m • z)`.
-
-Establish `hι` using `congrArg (Algebra.TensorProduct.includeLeftRingHom : Af F →+* Af F ⊗[F] E) hsc`. Simplify using `only [map_add, map_mul, map_natCast] at hι`. Rewrite using `[← Nat.cast_smul_eq_nsmul (Af F ⊗[F] E) m2 z, ← Nat.cast_smul_eq_nsmul (Af F ⊗[F] E) m2, ← Nat.cast_smul_eq_nsmul (Af F ⊗[F] E) m z, smul_smul, smul_smul, ← add_smul]`. Use `congr 1`. Rewrite using `[e3]`.
-
-Conclude with `add_mem (AddSubgroup.nsmul_mem _ hzC _) (latHat_smul L hcI hmz)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locCmpT (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) (L : Set (Fin M → E)) {k : ℕ} (hkpos : 0 < k)
     (hk : ∀ i, ∀ e : E, IsIntegral ℤ e → Pi.single i ((k : F) • e) ∈ L)
@@ -111,30 +107,26 @@ theorem locCmpT (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) (L : Set (Fi
   exact add_mem (AddSubgroup.nsmul_mem _ hzC _) (latHat_smul L hcI hmz)
 
 /- English proof (translation)
-Simplify using `[PI.UJClassFin.sigR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_tmul_one (σ : E →ₐ[F] E) (e : Af F) :
     PI.UJClassFin.sigR (Af F) σ (e ⊗ₜ[F] (1 : E)) = e ⊗ₜ[F] (1 : E) := by
   simp [PI.UJClassFin.sigR]
 
 /- English proof (translation)
-Use `choose o ho hoe using h`. Use `set U := finMat σ J kk with hUd`. Use `set W := finMat σ J kk⁻¹ with hWd`. Use `set JI := (J⁻¹).map (inclR (F := F) (Af F)) with hJId`. Use `set JA := JR (F := F) (Af F) J with hJAd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set sg := PI.UJClassFin.sigR (Af F) σ with hsg`. Establish `hJI : JI * JA = 1`. Rewrite using `[hJId, hJAd, JR, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hJ), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hWU : W * U = 1` using `by rw [hWd, hUd, ← finMat_mul, inv_mul_cancel, finMat_one]`. Establish `hunit : PI.UJClassFin.cT sg W * JA * W = JA` using `finMat_unitary σ J kk⁻¹`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : U = JI * PI.UJClassFin.cT sg W * JA`. Combine the equalities or inequalities in the displayed calculation. Establish `hcs : PI.UJClassFin.cT sg (W - 1) = PI.UJClassFin.cT sg W - 1`. Establish `h1` using `PI.UJClassFin.cT_one (n := Fin M) sg`. Unfold `PI.UJClassFin.cT at h1 ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.transpose_sub, h1]`. Establish `hU1 : U - 1 = JI * PI.UJClassFin.cT sg (W - 1) * JA`. Rewrite using `[hU, hcs, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hJI]`. Establish `key : ∀ a b, (e ⊗ₜ[F] (1 : E)) * sg ((W - 1) b a) = (dI * dJ * N) • sg (o b a)`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsg, sigR_tmul_one]`. Use `_ = sg ((e ⊗ₜ[F] (1 : E)) * (W - 1) b a) := (map_mul _ _ _).symm`. Use `_ = sg ((dI * dJ * N) • o b a) := by rw [hoe b a]`. Use `_ = (dI * dJ * N) • sg (o b a) := map_nsmul _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Use `⟨∑ a, ∑ b, inclR (F := F) (Af F) ((dI : E) * J⁻¹ i a) * sg (o b a) * inclR (F := F) (Af F) ((dJ : E) * J b j), AddSubgroup.sum_mem _ fun a _ => AddSubgroup.sum_mem _ fun b _ => Oh_mul (Oh_mul (incl_mem_Oh (hdI i a)) (sigR_Oh σ (ho b a))) (incl_mem_Oh (hdJ b j)), ?_⟩` and prove the remaining obligations. Rewrite using `[hU1]`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, Finset.smul_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hk` using `key a b`. Establish `hX : PI.UJClassFin.cT sg (W - 1) a b = sg ((W - 1) b a)` using `rfl`. Establish `hJI' : JI i a = inclR (F` using `F) (Af F) (J⁻¹ i a) := rfl`. Establish `hJA' : JA b j = inclR (F` using `F) (Af F) (J b j) := rfl`.
-
-Rewrite using `[hX, hJI', hJA', map_mul, map_mul, map_natCast, map_natCast]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hk]`. Simplify using `only [nsmul_eq_mul]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem invSmall (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) (hJ : J.det ≠ 0) {dI dJ : ℕ}
     (hdI : ∀ i j, IsIntegral ℤ ((dI : E) * J⁻¹ i j)) (hdJ : ∀ i j, IsIntegral ℤ ((dJ : E) * J i j))

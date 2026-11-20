@@ -194,7 +194,7 @@ def Frame.triv (bk : BK K) (d : ℕ) : Frame bk 0 d (fun _ => 1) where
   gal g := by simp [zW, Matrix.map_one]
 
 /- English proof (translation)
-Introduce `_ i j` and use `by simp [Frame.triv]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Frame.triv_isCr (bk : BK K) (d : ℕ) : (Frame.triv bk d).IsCr := fun _ i j => by simp [Frame.triv]
 

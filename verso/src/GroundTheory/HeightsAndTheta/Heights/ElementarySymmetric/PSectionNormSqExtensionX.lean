@@ -9,7 +9,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 /- English proof (translation)
-The claim follows from `SectionNormSqExtension.proof LeviLogFlat.proof LeviHolPerturb.proof LeviCompHol.proof LeviFSInvariant.proof`.
+A detailed English derivation is pending.
 -/
 theorem SectionNormSqExtension.closed : SectionNormSqExtension.Statement :=
   SectionNormSqExtension.proof LeviLogFlat.proof LeviHolPerturb.proof LeviCompHol.proof LeviFSInvariant.proof

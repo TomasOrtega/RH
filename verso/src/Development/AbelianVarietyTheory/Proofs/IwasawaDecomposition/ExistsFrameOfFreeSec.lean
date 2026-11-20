@@ -31,7 +31,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 open GlobalTheory.FramePull GlobalTheory.ConstFam
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull f t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sabPull {S S' : Scheme.{0}} (f : S' ⟶ S)
     (t : SAB H S) : ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by
@@ -39,11 +39,11 @@ theorem exists_sabPull {S S' : Scheme.{0}} (f : S' ⟶ S)
   exact ⟨_, ⟨m⟩⟩
 
 /- English proof (translation)
-Use `hW.1` as an intermediate fact. Take `⟨Dd, ⟨c0⟩⟩` from `exists_sabPull (spMap gam) u`. Take `⟨tW, ⟨a1⟩⟩` from `exists_sabPull (spMap φ) t`. Take `⟨tW', ⟨a2⟩⟩` from `exists_sabPull χ tC`. Take `⟨n₁, e₁⟩` from `LevelCover.sab_comp c0 aT (e := jK W ≫ spMap φ) (ArcExtends.spMap_jK hg)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨mm, e₂⟩` from `LevelCover.sab_cancel a1 n₁ (jK W) rfl`. Take `⟨n₂, e₃⟩` from `LevelCover.sab_comp c0 aC (e := jK W ≫ χ) h`. Take `⟨mm', e₄⟩` from `LevelCover.sab_cancel a2 n₂ (jK W) rfl`. Establish `hD : IsProper Dd.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) c0.cart.1 hu`. Take `⟨ψ, hψ⟩` from `GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H W hW.2.1 tW tW' Dd hD mm mm'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a3, e₅⟩` from `LevelCover.sab_comp ψ a2 (e := χ) (Category.id_comp _)`. Use `⟨Dd, tW, c0, mm, a1, a3, hD, by rw [e₂, e₁], ?_⟩` and prove the remaining obligations. Rewrite using `[e₅, ← Category.assoc, hψ, e₄, e₃]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_trait_map {R : Type} [CommRing R] [IsDomain R] {Z : Scheme.{0}} {t : SAB H (Sp R)} {tC : SAB H Z}
     {u : SAB H (Sp (FractionRing R))} {x : Sp (FractionRing R) ⟶ Z} (hu : IsProper u.G.hom) (aT : SABMap u t (jK R))
@@ -72,14 +72,14 @@ def RW {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SAB
   PGen w ∧ PMaps w (K := PUnit) (fun _ => eSec t'.G) (fun _ => eSec t.G) (fun _ => 1) t'.PP.rig t.PP.rig m.cm.e
 
 /- English proof (translation)
-Take `⟨w, g, r, -⟩` from `(isPullCubical_iff m.cm t.cub t'.cub).1 m.lin`. Conclude with `⟨w, g, r⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rw {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f) : ∃ w, RW m w := by
   obtain ⟨w, g, r, -⟩ := (isPullCubical_iff m.cm t.cub t'.cub).1 m.lin
   exact ⟨w, g, r⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `⟨w, T⟩` from `exists_comp t₁.PP.isLB wa wc ra.1 rc.1 t.PP.isLB D.PP.isLB`. Conclude with `⟨w, T.pgen_comp t₁.PP.isLB ra.1 rc.1, T.pmaps_comp t₁.PP.isLB (fun _ => c.cm.e_comm) ra.2 rc.2, T⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_comp_rw {S₀ S₁ S : Scheme.{0}} {D : SAB H S₀} {t₁ : SAB H S₁} {t : SAB H S} {f : S₀ ⟶ S₁} {g : S₁ ⟶ S}
     (c : SABMap D t₁ f) (a : SABMap t₁ t g) {wc wa} (rc : RW c wc) (ra : RW a wa) {Φ : D.G.left ⟶ t.G.left}
@@ -93,11 +93,11 @@ theorem exists_comp_rw {S₀ S₁ S : Scheme.{0}} {D : SAB H S₀} {t₁ : SAB H
   exact ⟨w, T.pgen_comp t₁.PP.isLB ra.1 rc.1, T.pmaps_comp t₁.PP.isLB (fun _ => c.cm.e_comm) ra.2 rc.2, T⟩
 
 /- English proof (translation)
-Take `⟨W₁, g₁', p₁, T₁⟩` from `exists_comp_rw c₁ a₁ rc₁ ra₁ rfl`. Take `⟨W₂, g₂', p₂, T₂⟩` from `exists_comp_rw c₂ a₂ rc₂ ra₂ hφ.symm`. Establish `he : c₂.cm.e ≫ a₂.cm.e = c₁.cm.e ≫ a₁.cm.e`. Rewrite using `[c₁.base, c₂.base, a₁.base, a₂.base]`. Conclude with `hb.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `p₂` using `[he]`. Establish `he' : eSec D.G ≫ c₁.φ ≫ a₁.φ = (c₁.cm.e ≫ a₁.cm.e) ≫ eSec t.G`. Rewrite using `[← Category.assoc, c₁.cm.e_comm, Category.assoc, a₁.cm.e_comm, Category.assoc]`. Establish `m₁` using `(maps_iff W₁ _ (fun _ : PUnit => eSec t.G) _ D.PP.rig t.PP.rig (c₁.cm.e ≫ a₁.cm.e) (rigPullOf _ _ he' t.PP.L t.PP.rig) (rigPull_le _ _ he' t.PP.L) (fun _ => rfl)).2 p₁`. Establish `m₂` using `(maps_iff W₂ _ (fun _ : PUnit => eSec t.G) _ D.PP.rig t.PP.rig (c₁.cm.e ≫ a₁.cm.e) (rigPullOf _ _ he' t.PP.L t.PP.rig) (rigPull_le _ _ he' t.PP.L) (fun _ => rfl)).2 p₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : IsAbelianScheme D.G` using `AbelianSchemeGerms.isAbelianScheme_of_proper D.G D.semi`. Establish `e : W₁ = W₂` using `iso_unique_of_rig hG D.G hA D.PP.isLB t.PP.isLB ((isGen_iff _).2 g₁') ((isGen_iff _).2 g₂') m₁ m₂`. Substitute `e` using the available equality. Rewrite using `[← T₁ Y ρ y j i₁ k hj h₁ hk, ← T₂ Y ρ y j i₂ k hj₂ h₂ hk]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gw_tri_eq (hG : GlobalFnsSt) {S₀ S₁ S₂ S : Scheme.{0}} {D : SAB H S₀} {t₁ : SAB H S₁} {t₂ : SAB H S₂} {t : SAB H S}
     {f₁ : S₀ ⟶ S₁} {f₂ : S₀ ⟶ S₂} {g₁ : S₁ ⟶ S} {g₂ : S₂ ⟶ S} (hD : IsProper D.G.hom) (c₁ : SABMap D t₁ f₁)
@@ -129,7 +129,7 @@ variable {S Z : Scheme.{0}} {G₀ : Over S} {G : Over Z} {L₀ : LB G₀.left} {
   {π : Z ⟶ S} {N : ℕ} {w : LB.Iso L (L₀.pull F)}
 
 /- English proof (translation)
-The claim follows from `exists_thr_up hw hL₀ hL (Ψ := inv Φ) (by rw [← hΦ, IsIso.inv_hom_id_assoc]) (IsIso.hom_inv_id _) a`.
+A detailed English derivation is pending.
 -/
 theorem exists_thr_iso (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL : L.IsLB) {T : Over Z} {T₀ : Over S}
     {Φ : (T ⊗ G).left ⟶ (T₀ ⊗ G₀).left} [IsIso Φ] (hΦ : Φ ≫ (snd T₀ G₀).left = (snd T G).left ≫ F)
@@ -137,7 +137,7 @@ theorem exists_thr_iso (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL : L.IsLB) {T : Ove
   exists_thr_up hw hL₀ hL (Ψ := inv Φ) (by rw [← hΦ, IsIso.inv_hom_id_assoc]) (IsIso.hom_inv_id _) a
 
 /- English proof (translation)
-Establish `hu : (Iso.refl V).hom ≫ (Over.mk a₀).hom = (Over.mk a).hom ≫ π` using `(Category.id_comp _).trans e.symm`. Conclude with `⟨SecMove.totMap hF (T' := Over.mk a) (T := Over.mk a₀) (Iso.refl V) hu, SecMove.totMap_isIso hF _ hu, SecMove.totMap_fst hF _ hu, SecMove.totMap_snd hF _ hu⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_iso_cmp (hF : IsPullback F G.hom G₀.hom π) {V : Scheme.{0}} (a : V ⟶ Z) (a₀ : V ⟶ S) (e : a ≫ π = a₀) :
     ∃ Φ : (Over.mk a ⊗ G).left ⟶ (Over.mk a₀ ⊗ G₀).left, IsIso Φ ∧
@@ -148,11 +148,11 @@ theorem exists_iso_cmp (hF : IsPullback F G.hom G₀.hom π) {V : Scheme.{0}} (a
     SecMove.totMap_fst hF _ hu, SecMove.totMap_snd hF _ hu⟩
 
 /- English proof (translation)
-Establish `a₁' : Φ' ≫ (fst (Over.mk χ₀) G₀).left = (fst (Over.mk χ) G).left` using `a₁.trans (Category.comp_id _)`. Rewrite using `[lin_iff, lin_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `H W r z J hJ`. Take `⟨J₀, hJ₀⟩` from `exists_good' hL₀ z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `H W (r ≫ Φ') z J₀ hJ₀` as an intermediate fact. Rewrite `this` using `[Category.assoc r Φ' (fst (Over.mk χ₀) G₀).left, a₁']`. Conclude with `(lin_at_iff hc hb hs r z hJ₀ hJ _).1 this`. Introduce `H W r z J₀ hJ₀`. Take `⟨J, hJ⟩` from `exists_good' hL z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(lin_at_iff hc hb hs (r ≫ inv Φ') z hJ₀ hJ _).2 (H W (r ≫ inv Φ') z J hJ)` as an intermediate fact. Establish `e : (r ≫ inv Φ') ≫ (fst (Over.mk χ) G).left = r ≫ (fst (Over.mk χ₀) G₀).left`. Rewrite using `[← a₁', Category.assoc, IsIso.inv_hom_id_assoc]`. Rewrite `this` using `[Category.assoc r (inv Φ') Φ', IsIso.inv_hom_id, Category.comp_id, e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_thr_iff (hL₀ : L₀.IsLB) (hL : L.IsLB) {V : Scheme.{0}} {χ : V ⟶ Z} {χ₀ : V ⟶ S} {T : Over Z} {T₀ : Over S}
     {h : Over.mk χ ⟶ T} {h₀ : Over.mk χ₀ ⟶ T₀} {Φ : (T ⊗ G).left ⟶ (T₀ ⊗ G₀).left}
@@ -179,9 +179,9 @@ theorem lin_thr_iff (hL₀ : L₀.IsLB) (hL : L.IsLB) {V : Scheme.{0}} {χ : V �
     exact this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H s`. Take `⟨s₀, hs⟩` from `exists_thr_iso hw hL₀ hL a₂ s`. Conclude with `(existsUnique_congr fun c => lin_thr_iff hL₀ hL a₁ hc hb hs c).1 (H s₀)`. Introduce `H s₀`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `exists_thr_down hw hL₀ hL a₂ s₀`. Conclude with `(existsUnique_congr fun c => lin_thr_iff hL₀ hL a₁ hc hb hs c).2 (H s)`.
+A detailed English derivation is pending.
 -/
 theorem basis_thr_iff (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL : L.IsLB) {V : Scheme.{0}} {χ : V ⟶ Z} {χ₀ : V ⟶ S} {T : Over Z}
     {T₀ : Over S} {h : Over.mk χ ⟶ T} {h₀ : Over.mk χ₀ ⟶ T₀} {Φ : (T ⊗ G).left ⟶ (T₀ ⊗ G₀).left}
@@ -202,7 +202,7 @@ theorem basis_thr_iff (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL : L.IsLB) {V : Sche
 end Move
 
 /- English proof (translation)
-Rewrite using `[lin_iff]`. Introduce `W r z J hJ`. Rewrite using `[H W r z J hJ, Fin.sum_univ_one, gs_one, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem lin_one_of {S : Scheme.{0}} {G : Over S} {L : LB G.left} {N : ℕ} {T T' : Over S} {h : T' ⟶ T}
     {b : LB.Sec (LPow G L (N : ℤ) T)} {s : LB.Sec (LPow G L (N : ℤ) T')}
@@ -213,40 +213,40 @@ theorem lin_one_of {S : Scheme.{0}} {G : Over S} {L : LB G.left} {N : ℕ} {T T'
   rw [H W r z J hJ, Fin.sum_univ_one, gs_one, _root_.one_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pullback.lift a b h, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_pt {S : Scheme.{0}} {G : Over S} (T : Over S) {Y : Scheme.{0}} (a : Y ⟶ T.left) (b : Y ⟶ G.left)
     (h : a ≫ T.hom = b ≫ G.hom) : ∃ ρ : Y ⟶ (T ⊗ G).left, ρ ≫ (fst T G).left = a ∧ ρ ≫ (snd T G).left = b :=
   ⟨pullback.lift a b h, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `LevelCover.sab_comp mm a3 (e := jK W ≫ χ) rfl`. Establish `wp : (r ≫ (snd (Over.mk (jK W ≫ χ)) tC.G).left) ≫ tC.G.hom = (r ≫ (fst (Over.mk (jK W ≫ χ)) tC.G).left) ≫ jK W ≫ χ`. Rewrite using `[Category.assoc, Category.assoc, Frames.snd_hom]`. Both sides reduce to the same expression. Take `⟨ρ, ρ₁, ρ₂⟩ : ∃ ρ : Y ⟶ Dd.G.left, ρ ≫ n.φ = r ≫ (snd (Over.mk (jK W ≫ χ)) tC.G).left ∧ ρ ≫ Dd.G.hom = r ≫ (fst (Over.mk (jK W ≫ χ)) tC.G).left` from `⟨n.cart.1.lift _ _ wp, n.cart.1.lift_fst _ _ wp, n.cart.1.lift_snd _ _ wp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite `ρ₁` using `[hn]`. Take `⟨ρu, u₁, u₂⟩` from `exists_pt (Over.mk (𝟙 (Sp (FractionRing R)))) (G := u.G) (ρ ≫ Dd.G.hom ≫ spMap gam) (ρ ≫ c0.φ) (by show (_ ≫ _) ≫ 𝟙 _ = _`. Rewrite using `[Category.comp_id, Category.assoc, c0.cart.1.w])`. Take `⟨ρw, v₁, v₂⟩` from `exists_pt (Over.mk (𝟙 (Sp W))) (G := tW.G) (ρ ≫ Dd.G.hom ≫ jK W) (ρ ≫ mm.φ) (by show (_ ≫ _) ≫ 𝟙 _ = _`. Rewrite using `[Category.comp_id, Category.assoc, mm.cart.1.w])`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `F₁ : ρu ≫ Φx = r ≫ ((Over.homMk (spMap gam) h : Over.mk (jK W ≫ χ) ⟶ Over.mk x) ▷ tC.G).left`. Apply `prod_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, x₁, Category.comp_id, u₁, Category.assoc, FrameGen.wh_fst, ← Category.assoc, ← Category.assoc, ← ρ₂]`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, x₂, reassoc_of% u₂, Category.assoc, FrameGen.wh_snd, e₂, ρ₁]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `F₂ : ρw ≫ Φ3 = r ≫ ((Over.homMk (jK W) rfl : Over.mk (jK W ≫ χ) ⟶ Over.mk χ) ▷ tC.G).left`. Apply `prod_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, s₁, Category.comp_id, v₁, Category.assoc, FrameGen.wh_fst, ← Category.assoc, ← Category.assoc, ← ρ₂]`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, s₂, reassoc_of% v₂, Category.assoc, FrameGen.wh_snd, ρ₁]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `F₃ : ρu ≫ ΦR = ρw ≫ Φ1`. Apply `prod_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, a₁, p₁, reassoc_of% u₁, reassoc_of% v₁, hsq]`. Rewrite using `[Category.assoc, Category.assoc, a₂, p₂, reassoc_of% u₂, reassoc_of% v₂, e₁]`. Take `⟨Ju, hJu⟩` from `exists_good' u.PP.isLB z`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Jw, hJw⟩` from `exists_good' tW.PP.isLB z`. Take `⟨Jt, hJt⟩` from `exists_good' t.PP.isLB z`. Take `⟨J₀, hJ₀⟩` from `exists_good' Dd.PP.isLB z`. Establish `E₁` using `hf Y ρu z J Ju hJ hJu`. Establish `E₂` using `hA Y ρu z Jt Ju hJt hJu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E₃` using `hb' Y ρw z J Jw hJ hJw`. Establish `E₄` using `hc Y ρw z Jt Jw hJt hJw`. Rewrite `E₁`, `E₂` using `[u₂]`. Rewrite `E₃`, `E₄` using `[v₂]`. Rewrite `E₁` using `[F₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `E₃` using `[F₂]`. Rewrite `E₂` using `[F₃, E₄]`. Rewrite using `[E₁, E₃]`. Establish `q₁ : (ρ ≫ c0.φ) ≫ aC.φ = (ρ ≫ mm.φ) ≫ a3.φ` using `by rw [Category.assoc, Category.assoc, e₂]`. Establish `q₂ : (ρ ≫ c0.φ) ≫ aT.φ = (ρ ≫ mm.φ) ≫ a1.φ` using `by rw [Category.assoc, Category.assoc, e₁]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m₁ : ((ρ ≫ mm.φ) ≫ a3.φ) z ∈ tC.PP.L.U (J ((ρ ≫ c0.φ) ≫ aC.φ))` using `by rw [← q₁]; exact hJ _`. Establish `m₂ : ((ρ ≫ mm.φ) ≫ a1.φ) z ∈ t.PP.L.U (Jt ((ρ ≫ c0.φ) ≫ aT.φ))` using `by rw [← q₂]; exact hJt _`. Establish `T₁` using `gw_tri_eq hG hD c0 mm aC a3 e₂ h r0 rm rC r3 Y ρ z (J ((ρ ≫ c0.φ) ≫ aC.φ)) (Ju (ρ ≫ c0.φ)) (Jw (ρ ≫ mm.φ)) (J₀ ρ) (hJ ((ρ ≫ c0.φ) ≫ aC.φ)) m₁ (hJu _) (hJw _) (hJ₀ _)`. Establish `T₂` using `gw_tri_eq hG hD c0 mm aT a1 e₁ hsq r0 rm rT r1 Y ρ z (Jt ((ρ ≫ c0.φ) ≫ aT.φ)) (Ju (ρ ≫ c0.φ)) (Jw (ρ ≫ mm.φ)) (J₀ ρ) (hJt ((ρ ≫ c0.φ) ≫ aT.φ)) m₂ (hJu _) (hJw _) (hJ₀ _)`. Establish `A₁ : wVal w3 z J Jw (ρ ≫ mm.φ) = gw w3 (ρ ≫ mm.φ) z (J ((ρ ≫ c0.φ) ≫ aC.φ)) (Jw (ρ ≫ mm.φ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[q₁]`. Both sides reduce to the same expression. Establish `A₂ : wVal w1 z Jt Jw (ρ ≫ mm.φ) = gw w1 (ρ ≫ mm.φ) z (Jt ((ρ ≫ c0.φ) ≫ aT.φ)) (Jw (ρ ≫ mm.φ))`. Rewrite using `[q₂]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `A₃ : wVal wC z J Ju (ρ ≫ c0.φ) = gw wC (ρ ≫ c0.φ) z (J ((ρ ≫ c0.φ) ≫ aC.φ)) (Ju (ρ ≫ c0.φ))` using `rfl`. Establish `A₄ : wVal wT z Jt Ju (ρ ≫ c0.φ) = gw wT (ρ ≫ c0.φ) z (Jt ((ρ ≫ c0.φ) ≫ aT.φ)) (Ju (ρ ≫ c0.φ))` using `rfl`. Rewrite using `[A₁, A₃]`. Rewrite `E₂` using `[A₂, A₄]`. Generalize the expression as in `gw wC (ρ ≫ c0.φ) z (J ((ρ ≫ c0.φ) ≫ aC.φ)) (Ju (ρ ≫ c0.φ)) = A at T₁ ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `gw w3 (ρ ≫ mm.φ) z (J ((ρ ≫ c0.φ) ≫ aC.φ)) (Jw (ρ ≫ mm.φ)) = C' at T₁ ⊢`. Generalize the expression as in `gw wT (ρ ≫ c0.φ) z (Jt ((ρ ≫ c0.φ) ≫ aT.φ)) (Ju (ρ ≫ c0.φ)) = B at T₂ E₂`. Generalize the expression as in `gw w1 (ρ ≫ mm.φ) z (Jt ((ρ ≫ c0.φ) ≫ aT.φ)) (Jw (ρ ≫ mm.φ)) = Dv at T₂ E₂`. Generalize the expression as in `gw w0 ρ z (Ju (ρ ≫ c0.φ)) (J₀ ρ) = P at T₁ T₂`. Generalize the expression as in `gw wm ρ z (Jw (ρ ≫ mm.φ)) (J₀ ρ) = Q at T₁ T₂`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `key : A * Dv = C' * B`. Apply `mul_right_cancel (b := P * Q)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `key' : A ^ (N : ℤ) * Dv ^ (N : ℤ) = B ^ (N : ℤ) * C' ^ (N : ℤ)`. Rewrite using `[← mul_zpow, key, _root_.mul_comm C' B, mul_zpow]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `(Units.mul_right_inj (B ^ (N : ℤ))).1` to reduce the goal to its premises. Rewrite using `[_root_.mul_left_comm, ← E₂, ← _root_.mul_assoc, ← _root_.mul_assoc, ← Units.val_mul, ← Units.val_mul, key']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem value_eq (hG : GlobalFnsSt) {R W : Type} [CommRing R] [IsDomain R] [CommRing W] [IsDomain W] {Z : Scheme.{0}}
     {t : SAB H (Sp R)} {tC : SAB H Z} {u : SAB H (Sp (FractionRing R))} {x : Sp (FractionRing R) ⟶ Z}
@@ -350,17 +350,15 @@ theorem value_eq (hG : GlobalFnsSt) {R W : Type} [CommRing R] [IsDomain R] [Comm
   rw [_root_.mul_left_comm, ← E₂, ← _root_.mul_assoc, ← _root_.mul_assoc, ← Units.val_mul, ← Units.val_mul, key']
 
 /- English proof (translation)
-Take `⟨n, b, hb⟩` from `hF`. Take `⟨wT, rT⟩` from `exists_rw aT`. Take `⟨wC, rC⟩` from `exists_rw aC`. Take `⟨ΦR, a₁, a₂⟩` from `exists_cmp aT.cart.1 (T := Over.mk (𝟙 (Sp (FractionRing R)))) (T₀ := Over.mk (𝟙 (Sp R))) (jK R) ((Category.comp_id _).trans (Category.id_comp _).symm)`. Take `⟨Φx, i₀, x₁, x₂⟩` from `exists_iso_cmp aC.cart.1 (𝟙 (Sp (FractionRing R))) x (Category.id_comp _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose a hA using fun i => exists_thr_down ((isGen_iff _).2 rT.1) t.PP.isLB u.PP.isLB a₂ (b i)`. Use `choose f hf using fun i => exists_thr_iso ((isGen_iff _).2 rC.1) tC.PP.isLB u.PP.isLB x₂ (a i)`. Use `⟨n, f, fun W _ _ _ hW φ gam hg χ h => ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective φ` using `fun p q e => IsFractionRing.injective R (FractionRing R) (gam.injective (by rw [hg, hg, e]))`. Take `⟨Dd, tW, c0, mm, a1, a3, hD, e₁, e₂⟩` from `exists_trait_map hu aT aC hW φ gam hg χ h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w0, r0⟩` from `exists_rw c0`. Take `⟨wm, rm⟩` from `exists_rw mm`. Take `⟨w1, r1⟩` from `exists_rw a1`. Take `⟨w3, r3⟩` from `exists_rw a3`. Establish `g1` using `(isGen_iff _).2 r1.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `g3` using `(isGen_iff _).2 r3.1`. Take `⟨Φ1, p₁, p₂⟩` from `exists_cmp a1.cart.1 (T := Over.mk (𝟙 (Sp W))) (T₀ := Over.mk (𝟙 (Sp R))) (spMap φ) ((Category.comp_id _).trans (Category.id_comp _).symm)`. Take `⟨Φ1', i₁, q₁, q₂⟩` from `exists_iso_cmp a1.cart.1 (𝟙 (Sp W)) (spMap φ) (Category.id_comp _)`. Take `⟨Φ3, i₃, s₁, s₂⟩` from `exists_iso_cmp a3.cart.1 (𝟙 (Sp W)) χ (Category.id_comp _)`. Use `choose c hc using fun i => exists_thr_down g1 t.PP.isLB tW.PP.isLB p₂ (b i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose b' hb' using fun i => exists_thr_iso g3 tC.PP.isLB tW.PP.isLB s₂ (c i)`. Establish `B₁ : BasisAlong tW.G tW.PP.L N (𝟙 _) c` using `(basis_thr_iff g1 t.PP.isLB tW.PP.isLB (h₀ := toBase φ) (h := 𝟙 _) q₁ q₂ (cmp_comm p₁ p₂ q₁ q₂ ((Category.id_comp _).trans (Category.id_comp _).symm)) hc).1 (hb W hW φ hinj)`. Establish `B₂ : BasisAlong tC.G tC.PP.L N (𝟙 _) b'` using `(basis_thr_iff g3 tC.PP.isLB tW.PP.isLB (h₀ := 𝟙 _) (h := 𝟙 _) s₁ s₂ (by rw [id_whiskerRight, id_whiskerRight, Over.id_left, Over.id_left, Category.comp_id, Category.id_comp]) hb').2 B₁`. Use `⟨b', B₂, fun i => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `exists_isPull (Over.homMk (jK W) rfl : Over.mk (jK W ≫ χ) ⟶ Over.mk χ) (b' i)`.
-
-Use `⟨s, lin_one_of fun Y r z J hJ => (hs Y r z J hJ).trans ?_, lin_one_of hs⟩` and prove the remaining obligations. Conclude with `(value_eq hG h (ArcExtends.spMap_jK hg) hD e₁ e₂ rT rC r0 rm r1 r3 a₁ a₂ x₁ x₂ p₁ p₂ s₁ s₂ (hA i) (hf i) (hc i) (hb' i) r z hJ).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_frame_of_freeSec (hG : GlobalFnsSt) {R : Type} [CommRing R]
     [IsDomain R] {Z : Scheme.{0}} (t : SAB H (Sp R)) (tC : SAB H Z) (u : SAB H (Sp (FractionRing R)))
@@ -406,25 +404,25 @@ theorem exists_frame_of_freeSec (hG : GlobalFnsSt) {R : Type} [CommRing R]
 end Frames
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O O' _ _ β β' C Y R _ _ _ ξ t mt y b m hR hy hs ⟨Z, π, tZ, mZ, hfin, hsurj, ⟨Am⟩⟩ h1 hm`. Take `⟨hL, hL₂, -⟩` from `GlobalTheory.allSixLaws`. Take `⟨_, _, hc, _⟩` from `hR`. Use `hfin` as an intermediate fact. Use `hsurj` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, ⟨n₀⟩⟩` from `exists_sabPull y C.oF.t`. Take `⟨aC, -⟩` from `LevelCover.sab_comp n₀ C.m (e := y ≫ C.j) rfl`. Take `⟨n₁, -⟩` from `LevelCover.sab_comp n₀ C.m0.toSABMap rfl`. Take `⟨n₂, -⟩` from `LevelCover.sab_cancel Y.m0.toSABMap n₁ y rfl`. Take `⟨n₃, -⟩` from `LevelCover.sab_comp n₂ Y.m (e := y ≫ Y.j) rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨aT, -⟩` from `LevelCover.sab_cancel mt n₃ (jK R) hy.symm`. Establish `hu : IsProper u.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) n₀.cart.1 C.oF.proper`. Take `⟨k₁, f₁, hf₁⟩` from `exists_frame_of_freeSec hL.globalFns t C.t u (y ≫ C.j) hu aT aC 1 h1`. Take `⟨n, f₂, hf₂⟩` from `exists_frame_of_freeSec hL.globalFns t C.t u (y ≫ C.j) hu aT aC (m ^ 2) hm`. Set `g : R →+* R` to `RingHom.id R`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `gam : FractionRing R →+* FractionRing R` to `RingHom.id _`. Establish `hgam : ∀ r, gam (algebraMap R _ r) = algebraMap R _ (g r)` using `fun _ => rfl`. Take `⟨L, _, σ, z, hσ, hz⟩` from `ArcExtends.exists_lift_finite π (y ≫ C.j)`. Take `⟨R₂, _, _, _, _, _, hch, g₂, f, hf, hint⟩` from `ArcExtends.exists_normalisation R hc hgam (RingHom.Finite.id R) hσ`. Establish `hx : (spMap f ≫ z) ≫ π = spMap (f.comp σ) ≫ y ≫ C.j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hz, spMap_comp, Category.assoc]`. Establish `hP` using `ArcExtends.polAt_moduli C y`. Take `⟨θ, hθ, bθ⟩` from `FramePull.frame_pull hL hL₂ E H _ Z C.t tZ π mZ R R₂ g₂ _ hf _ _ hx hP 1 k₁ _ hf₁`. Take `⟨ff, hff, bff⟩` from `FramePull.frame_pull hL hL₂ E H _ Z C.t tZ π mZ R R₂ g₂ _ hf _ _ hx hP (m ^ 2) n _ hf₂`. Establish `hab : Set.range (spMap f ≫ z) ⊆ abLocus tZ.G`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Use `(abLocus_pullback abLocusOne C.t.semi mZ.cart.1 _).1 (abLocusOne _ C.t.G C.t.semi _ _ hP.1 ?_)` and prove the remaining obligations. Conclude with `⟨spMap (f.comp σ) p, (congrArg (fun q => q p) hx).symm⟩`. Establish `tθ : ∀ i, FrameGen.TraitBasis tZ.G tZ.PP.L 1 (Am.A.U i) (fun _ : Fin 1 => Am.th i)` using `fun i W _ _ _ hW χ h => (Am.trait i W hW χ h).1`. Take `⟨i₀, hi₀⟩` from `FrameGen.exists_chart_local Am.isLB (spMap f ≫ z)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨xi⟩` from `FrameGen.exists_lift (spMap f ≫ z) _ hi₀`. Take `rfl : k₁ = 1` from `FrameGen.card_eq tZ.PP.isLB (tθ i₀) hab hθ bθ xi`. Take `⟨θ', rfl⟩ : ∃ θ', θ = fun _ : Fin 1 => θ'` from `⟨θ 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Take `⟨e, he, hE⟩` from `FrameGen.exists_gen_of_frames Z tZ.G tZ.PP.L tZ.PP.isLB (m ^ 2) Am Am.A rfl R₂ _ hab θ' n ff hθ hff bθ bff hch`. Use `projProper _ _ _ C.proj` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: CompactSpace Z` using `QuasiCompact.compactSpace_of_compactSpace (π ≫ C.s)`. Establish `: QuasiSeparatedSpace Z` using `quasiSeparatedSpace_of_quasiSeparated (π ≫ C.s)`. Establish `hG : ∀ r, ((f.comp σ).comp gam) (algebraMap R _ r) = algebraMap R₂ _ ((g₂.comp g) r)` using `fun r => (congrArg (f.comp σ) (hgam r)).trans (hf _)`. Establish `hx' : (spMap f ≫ z) ≫ π = spMap ((f.comp σ).comp gam) ≫ y ≫ C.j` using `hx`. Take `⟨χ₂, hχ₂⟩` from `ExtLB.exists_extension Z Am.A Am.isLB Am.ample R₂ _ e he fun V _ _ _ hV φ gV hgV => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hV.1` as an intermediate fact. Take `⟨χ, hχ, -⟩` from `val_exists (π ≫ C.s) (spMap gV ≫ spMap f ≫ z) (spMap φ ≫ spMap (g₂.comp g) ≫ spMap b) (by`. Rewrite using `[Category.assoc, ← Category.assoc (spMap f ≫ z), hx', Category.assoc, Category.assoc, hs, ← Category.assoc (spMap _) (jK _), ArcExtends.spMap_jK hG, Category.assoc, ← Category.assoc (spMap gV), ArcExtends.spMap_jK hgV, Category.assoc])`. Conclude with `⟨χ, hχ.symm, hE V hV φ gV hgV χ hχ.symm⟩`. Take `⟨χ, hχ, -⟩` from `GlobalTheory.extension_descends_of_isIntegral _ R₂ _ _ hG hint C.X (y ≫ C.j) (χ₂ ≫ π) (by rw [← Category.assoc, hχ₂, hx'])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨χ, hχ⟩`.
+Supply the required witnesses or components.
 -/
 theorem extendSt : ExtendSt := by
   intro E _ _ _ H D l Xo c O O' _ _ β β' C Y R _ _ _ ξ t mt y b m hR hy hs ⟨Z, π, tZ, mZ, hfin, hsurj, ⟨Am⟩⟩ h1 hm

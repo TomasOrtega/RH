@@ -19,15 +19,15 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
 omit [NumberField F] in
 
 /- English proof (translation)
-The claim follows from `hN q _ ((map_isIntegral_int φ (RingOfIntegers.isIntegral_coe a)).tower_top)`.
+A detailed English derivation is pending.
 -/
 theorem int_mem_regAt (hN : NormalCpt ξ) (φ : F →+* Ω) (a : 𝓞 F) (q : Cpt ξ) : φ (a : F) ∈ regAt ξ q :=
   hN q _ ((map_isIntegral_int φ (RingOfIntegers.isIntegral_coe a)).tower_top)
 
 /- English proof (translation)
-Use `⟨fun k => ?_, fun c hc a => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `ht.cover ⟨genPt ξ, specializes_rfl⟩`. Conclude with `⟨c k, fun h0 => hc.1 (Finset.prod_eq_zero (Finset.mem_univ k) h0)⟩`. Establish `hc' : (∏ k, y ⟨k, c k⟩) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hc k`. Establish `h1` using `(ht.ring c hc' (φ (a : F))).2 fun p _ => int_mem_regAt hN φ a p`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Algebra.adjoin_le ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `show (∏ k, y ⟨k, j k⟩) / (∏ k, y ⟨k, c k⟩) ∈ chartRingZ y c`. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `prod_mem fun k _ => Algebra.subset_adjoin ⟨⟨k, j k⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem overInt_of_normalCpt {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {y : (Σ k, ι k) → Ω}
     (ht : CoordTie ℤ ξ fun c' : (k : K) → ι k => ∏ k, y ⟨k, c' k⟩) (hN : NormalCpt ξ) (φ : F →+* Ω) :
@@ -44,9 +44,9 @@ theorem overInt_of_normalCpt {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fi
     exact prod_mem fun k _ => Algebra.subset_adjoin ⟨⟨k, j k⟩, rfl⟩
 
 /- English proof (translation)
-Establish `halg : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic a)`. Take `⟨n, hn, hi⟩` from `halg.exists_integral_multiple`. Establish `hu` using `hp n hn`. Establish `h1 : φ (n • a) ∈ regAt ξ p` using `int_mem_regAt hN φ (⟨n • a, hi⟩ : 𝓞 F) p`. Establish `h2 : φ a = (algebraMap ℤ Ω n)⁻¹ * φ (n • a)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[zsmul_eq_mul, map_mul, map_intCast, eq_intCast, inv_mul_cancel_left₀]`. Simplify using `using hu.1`. Rewrite using `[h2]`. Conclude with `mul_mem hu.2.2 h1`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cst_mem_regAt_of_genFibre (hN : NormalCpt ξ) (φ : F →+* Ω) {p : Cpt ξ} (hp : p ∈ genFibre ℤ ξ) (a : F) :
     φ a ∈ regAt ξ p := by
@@ -61,17 +61,15 @@ theorem cst_mem_regAt_of_genFibre (hN : NormalCpt ξ) (φ : F →+* Ω) {p : Cpt
   exact mul_mem hu.2.2 h1
 
 /- English proof (translation)
-Use `Centre.Sep.isLocalRing_regAt ξ p` as an intermediate fact. Set `f : 𝓞 F →+* regAt ξ p` to `(φ.comp (algebraMap (𝓞 F) F)).codRestrict (regAt ξ p) fun a => int_mem_regAt hN φ a p`. Establish `hf : ∀ a : 𝓞 F, ((f a : regAt ξ p) : Ω) = φ (a : F)` using `fun _ => rfl`. Establish `hmem : ∀ a : 𝓞 F, a ∈ (IsLocalRing.maximalIdeal (regAt ξ p)).comap f ↔ ¬ unitAt ξ p (φ (a : F))`. Introduce `a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Centre.Sep.isUnit_regAt_iff, hf]`. Choose the witnesses or unpack the hypotheses as in `⟨o, ho, hu⟩ : ∃ o : ℤ, o ≠ 0 ∧ ¬ unitAt ξ p (algebraMap ℤ Ω o) := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hp h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : (IsLocalRing.maximalIdeal (regAt ξ p)).comap f ≠ ⊥`. Introduce `hbot`. Establish `h1 : (o : 𝓞 F) ∈ (IsLocalRing.maximalIdeal (regAt ξ p)).comap f`. Rewrite using `[hmem]`. Simplify using `using hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[hbot, Ideal.mem_bot]`. Conclude with `ho (by exact_mod_cast h1)`. Use `⟨⟨_, inferInstance, hne⟩, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨n, d, e⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer _ a ha`. Establish `hd : unitAt ξ p (φ ((d : 𝓞 F) : F))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `d.2 ((hmem _).2 h)`. Establish `h2 : φ a = φ (n : F) * (φ ((d : 𝓞 F) : F))⁻¹`. Establish `e' : a * ((d : 𝓞 F) : F) = (n : F)` using `e`. Rewrite using `[← e', map_mul, mul_inv_cancel_right₀ hd.1]`.
-
-Rewrite using `[h2]`. Conclude with `mul_mem (int_mem_regAt hN φ n p) hd.2.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_place_of_notMem_genFibre (hN : NormalCpt ξ) (φ : F →+* Ω) {p : Cpt ξ} (hp : p ∉ genFibre ℤ ξ) :
     ∃ v : HeightOneSpectrum (𝓞 F), ∀ a : F, v.valuation F a ≤ 1 → φ a ∈ regAt ξ p := by

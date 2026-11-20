@@ -5,25 +5,23 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set C := Matrix.toLin' c with hC`. Use `set D := Matrix.toLin' d with hD`. Take `⟨Wc, hW⟩` from `Submodule.exists_isCompl (LinearMap.range D)`. Set `π` to `Submodule.linearProjOfIsCompl Wc (LinearMap.range D) hW.symm`. Establish `hdec : ∀ w : Fin n → κ, C (p *ᵥ w) + D (q *ᵥ w) = w`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `w`. Simplify using `only [hC, hD, Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, h, Matrix.one_mulVec]`. Establish `hπD : ∀ v, π (D v) = 0`. Introduce `v`. Conclude with `Submodule.linearProjOfIsCompl_apply_right hW.symm ⟨D v, LinearMap.mem_range_self _ _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurj : Function.Surjective (π ∘ₗ C)`. Introduce `w`. Use `⟨p *ᵥ (w : Fin n → κ), ?_⟩` and prove the remaining obligations. Establish `h2 : π (w : Fin n → κ) = w` using `Submodule.linearProjOfIsCompl_apply_left _ w`. Use `congrArg π (hdec w)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[map_add, hπD, add_zero, h2]`. Simplify using `using this`. Take `⟨g, hg⟩` from `LinearMap.exists_rightInverse_of_surjective (π ∘ₗ C) (LinearMap.range_eq_top.mpr hsurj)`. Establish `hdim : Module.finrank κ (LinearMap.ker D) = Module.finrank κ Wc`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2` using `Submodule.finrank_add_eq_of_isCompl hW`. Simplify using `only [Module.finrank_fin_fun] at h1 h2`. Use linear arithmetic over natural numbers and integers. Set `e` to `LinearEquiv.ofFinrankEq _ _ hdim`. Take `⟨K', hK⟩` from `Submodule.exists_isCompl (LinearMap.ker D)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `projK` to `Submodule.linearProjOfIsCompl (LinearMap.ker D) K' hK`. Set `Y : (Fin n → κ) →ₗ[κ] (Fin n → κ)` to `g ∘ₗ (e : LinearMap.ker D →ₗ[κ] Wc) ∘ₗ projK`. Use `⟨LinearMap.toMatrix' Y, ?_⟩` and prove the remaining obligations. Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hM : (c * LinearMap.toMatrix' Y + d) *ᵥ v = C (Y v) + D v`. Rewrite using `[Matrix.add_mulVec, ← Matrix.mulVec_mulVec, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression. Rewrite `hv` using `[hM]`. Establish `hp : π (C (Y v)) = e (projK v)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun hg (e (projK v))` as an intermediate fact. Simplify `this` using `[Y]`. Establish `h3 : e (projK v) = 0`. Use `congrArg π hv` as an intermediate fact. Rewrite `this` using `[map_add, hπD, add_zero, hp, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : projK v = 0` using `(LinearEquiv.map_eq_zero_iff e).mp h3`. Establish `hY : Y v = 0` using `by simp [Y, hk]`. Establish `hDv : D v = 0` using `by rw [hY, map_zero, zero_add] at hv; exact hv`. Establish `hvK : v ∈ LinearMap.ker D` using `hDv`. Establish `h4` using `Submodule.linearProjOfIsCompl_apply_left hK ⟨v, hvK⟩`.
-
-Establish `: (⟨v, hvK⟩ : LinearMap.ker D) = 0` using `by rw [← h4]; exact hk`. Conclude with `hv0 (congrArg Subtype.val this)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem matrix_stableRange_one (κ : Type) [Field κ] (n : ℕ) (c d p q : Matrix (Fin n) (Fin n) κ)
     (h : c * p + d * q = 1) : ∃ y : Matrix (Fin n) (Fin n) κ, (c * y + d).det ≠ 0 := by
@@ -79,7 +77,7 @@ theorem matrix_stableRange_one (κ : Type) [Field κ] (n : ℕ) (c d p q : Matri
   exact hv0 (congrArg Subtype.val this)
 
 /- English proof (translation)
-Introduce `κ _ n c d p q h` and use `matrix_stableRange_one κ n c d p q h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem matrix_stableRange_one' : ∀ (κ : Type) [Field κ] (n : ℕ) (c d p q : Matrix (Fin n) (Fin n) κ),
     c * p + d * q = 1 → ∃ y : Matrix (Fin n) (Fin n) κ, (c * y + d).det ≠ 0 :=

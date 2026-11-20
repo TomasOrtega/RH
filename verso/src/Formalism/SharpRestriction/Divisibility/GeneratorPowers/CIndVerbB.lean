@@ -13,9 +13,9 @@ open scoped ComplexConjugate
 open Matrix
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Apply `h` to reduce the goal to its premises. Use extensionality with `x`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_div₀]`. Rewrite using `[show (algebraMap (𝓞 E) E a) = (a : E) from rfl, show (algebraMap (𝓞 E) E b) = (b : E) from rfl, hall a, hall b]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_sep {E : Type} [Field E] [NumberField E] (τ τ' : E →+* ℂ) (h : τ ≠ τ') :
     ∃ a : 𝓞 E, τ (a : E) ≠ τ' (a : E) := by
@@ -29,19 +29,17 @@ theorem emb_sep {E : Type} [Field E] [NumberField E] (τ τ' : E →+* ℂ) (h :
     hall a, hall b]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Establish `hσ : ℓ.1 ≠ ComplexEmbedding.conjugate ℓ'.1`. Introduce `h`. Apply `hc` to reduce the goal to its premises. Rewrite using `[h]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show ℓ'.1 = star (star ℓ'.1)`. Rewrite using `[star_star]`. Take `⟨a, ha⟩` from `emb_sep _ _ hσ`. Establish `hmv : ∀ (b : 𝓞 E) (ℓ₀ : Lt1 Dw), A b *ᵥ uvec ℓ₀ = algebraMap c.F S (embK c ℓ₀.1 b) • uvec ℓ₀`. Introduce `b ℓ₀`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul]`. Conclude with `heig b ℓ₀ i`. Use `set B := uvec ℓ ⬝ᵥ (Matrix.of M *ᵥ uvec ℓ') with hB`. Establish `hBe : B = ∑ i, ∑ j, M i j * uvec ℓ i * uvec ℓ' j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hB]`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.of_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `congrArg (fun N : Matrix (Fin d) (Fin d) S => uvec ℓ ⬝ᵥ (N *ᵥ uvec ℓ')) (hbal a)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, hmv, hmv, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul, ← hB]`. Establish `key : (algebraMap c.F S (embK c ℓ.1 a) - algebraMap c.F S (embK c ℓ'.1 (H.bar a))) * B = 0`. Rewrite using `[sub_mul, h1, sub_self]`. Establish `hu : IsUnit (algebraMap c.F S (embK c ℓ.1 a) - algebraMap c.F S (embK c ℓ'.1 (H.bar a)))`. Rewrite using `[← map_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `IsUnit.map _ (isUnit_iff_ne_zero.2 ?_)` and prove the remaining obligations. Introduce `h0`. Apply `ha` to reduce the goal to its premises. Establish `h2` using `congrArg (fun x : c.F => (x : ℂ)) (sub_eq_zero.1 h0)`. Simplify using `only [embK_coe] at h2`.
-
-Rewrite using `[h2, H.bar_eq, IsCMField.complexEmbedding_complexConj, ComplexEmbedding.conjugate_coe_eq]`. Conclude with `hne (hBe ▸ (hu.mul_right_eq_zero).1 key)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_of_balanced {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     (c : Coeff l) {S : Type} [CommRing S] [Algebra c.F S] {d : ℕ} (A : 𝓞 E → Matrix (Fin d) (Fin d) S)
@@ -86,7 +84,7 @@ theorem pair_of_balanced {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   exact hne (hBe ▸ (hu.mul_right_eq_zero).1 key)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ hs S _ _ _ y C`. Take `⟨e', hfr, hrig, cc, hT, h0, hsym, hbal, hu⟩` from `hFix E H Dw l Xo c hs S y C`. Conclude with `⟨e', hfr, hrig, cc, hT, h0, hsym, fun m ℓ ℓ' hne => pair_of_balanced c (fun a => dLin (C.B.A.act a)) C.uvec (fun a ℓ i => hLE E H Dw l Xo c S y C a ℓ i) (cc m) (hbal m) ℓ ℓ' hne, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frFixB_of (hFix : FrTruncFixSt) (hLE : LinEigSt) : FrTruncFixBSt := by
   intro E _ _ _ H Dw l Xo c _ hs S _ _ _ y C
@@ -95,7 +93,7 @@ theorem frFixB_of (hFix : FrTruncFixSt) (hLE : LinEigSt) : FrTruncFixBSt := by
     (fun a ℓ i => hLE E H Dw l Xo c S y C a ℓ i) (cc m) (hbal m) ℓ ℓ' hne, hu⟩
 
 /- English proof (translation)
-The claim follows from `chartIndep2_verb hTr (frFixB_of hFix linEigSt_holds) hGerm hInv`.
+A detailed English derivation is pending.
 -/
 theorem chartIndep2_of_fix (hTr : ChartIndepTruncSt) (hFix : FrTruncFixSt) (hGerm : GermFixSt) (hInv : HarmInvSt) :
     ChartIndepSt2 :=

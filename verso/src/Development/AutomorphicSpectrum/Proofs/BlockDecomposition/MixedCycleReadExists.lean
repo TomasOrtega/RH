@@ -19,36 +19,34 @@ namespace GlobalTheory.CompanionTheory.MixZ
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ptChart _ k, (h k _).1.1 (CxPts.mem_ptsIn.2 (mem_ptChart _ k))⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_block_ne_zero_of_isUnder {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (h : IsUnder y z) (k : Fin (m + 1)) :
     ∃ i, z ⟨k, i⟩ ≠ 0 :=
   ⟨ptChart _ k, (h k _).1.1 (CxPts.mem_ptsIn.2 (mem_ptChart _ k))⟩
 
 /- English proof (translation)
-Simplify using `[combLine]`.
+Simplify using the standard rewrite rules.
 -/
 theorem combLine_unit_a (A : HermLine (Bk n)) : (combLine (fun _ : Unit => A) 1).a = A.a := by
   simp [combLine]
 
 /- English proof (translation)
-Simplify using `[combLine, if_pos hz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem combLine_unit_h (A : HermLine (Bk n)) {z : (Σ k, Bk n k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     (combLine (fun _ : Unit => A) 1).h z = A.h z := by
   simp [combLine, if_pos hz]
 
 /- English proof (translation)
-The claim follows from `if_neg hz`.
+A detailed English derivation is pending.
 -/
 theorem combLine_unit_h_off (A : HermLine (Bk n)) {z : (Σ k, Bk n k) → ℂ} (hz : ¬ ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     (combLine (fun _ : Unit => A) 1).h z = 0 :=
   if_neg hz
 
 /- English proof (translation)
-Take `⟨u, h₁, h₂, h₃⟩` from `hA`. Use `⟨u, h₁, fun i c c' => ?_, fun i c y z hu hy => ?_⟩` and prove the remaining obligations. Rewrite using `[combLine_unit_a]`. Conclude with `h₂ i c c'`. Rewrite using `[combLine_unit_h A (exists_block_ne_zero_of_isUnder hu), combLine_unit_a]`.
-
-Conclude with `h₃ i c y z hu hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHermRep_combLine_unit {M : HermLB (mpStr ℤ m n)} {A : HermLine (Bk n)} (hA : IsHermRep M A) :
     IsHermRep M (combLine (fun _ : Unit => A) 1) := by
@@ -60,7 +58,7 @@ theorem isHermRep_combLine_unit {M : HermLB (mpStr ℤ m n)} {A : HermLine (Bk n
     exact h₃ i c y z hu hy
 
 /- English proof (translation)
-Introduce and unpack `m n M ⟨c, t, e⟩`. Take `⟨A, hA, -⟩` from `GlobalTheory.T.hermRep_twisted_bundle_exists m n M c t e`. Establish `hs : IsSmoothHerm A` using `GlobalTheory.CompanionTheory.MPDict.SmoothRep.isSmoothHerm_of_isHermRep m n M A hA`. Conclude with `⟨combLine (fun _ : Unit => A) 1, isSmoothHerm_combLine (fun _ => hs) 1, isHermRep_combLine_unit hA, fun z hz => combLine_unit_h_off A hz⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem existsRead : ExistsRead := by
   rintro m n M ⟨c, t, e⟩

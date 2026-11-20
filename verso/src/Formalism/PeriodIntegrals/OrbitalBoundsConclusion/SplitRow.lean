@@ -4,6 +4,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SesquilinearRowSplittin
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SesquilinearRowSplitting.MeasureIsomorphismAtInfinity
 
 /- English proof (translation)
-The claim follows from `PI.SRW.splitRow_of_iso PI.SRW.measure_isomorphism_at_infinity`.
+A detailed English derivation is pending.
 -/
 theorem split_row_iso : PI.SplitRow.SplitRow := PI.SRW.splitRow_of_iso PI.SRW.measure_isomorphism_at_infinity

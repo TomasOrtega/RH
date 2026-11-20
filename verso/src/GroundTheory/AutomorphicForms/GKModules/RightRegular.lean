@@ -22,14 +22,14 @@ def IsSmoothFun (f : G → F) : Prop :=
   letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, F) ∞ f
 
 /- English proof (translation)
-The claim follows from `h.contMDiff_iff_expG f`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothFun_iff {f : G → F} :
     h.IsSmoothFun f ↔ ∀ g : G, ContDiff ℝ ∞ (fun Y : 𝔤 => f (g * h.expG Y)) :=
   h.contMDiff_iff_expG f
 
 /- English proof (translation)
-Use `letI := h.chartedSpace`. Use `haveI := h.lieGroup ∞`. Establish `hm : ContMDiff 𝓘(ℝ, V) 𝓘(ℝ, 𝔤) ∞ (fun p => g₀ * h.expG (φ₁ p) * h.expG (φ₂ p) * h.expG (φ₃ p))` using `((contMDiff_const.mul (h.contMDiff_expG_comp h₁)).mul (h.contMDiff_expG_comp h₂)).mul (h.contMDiff_expG_comp h₃)`. Conclude with `(ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hf hm).contDiff`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsSmoothFun.contDiff_comp {f : G → F} (hf : h.IsSmoothFun f) (g₀ : G) {V : Type*}
     [NormedAddCommGroup V] [NormedSpace ℝ V] {φ₁ φ₂ φ₃ : V → 𝔤} (h₁ : ContDiff ℝ ∞ φ₁)
@@ -47,14 +47,14 @@ noncomputable def rightDeriv (X : 𝔤) (f : G → F) (g : G) : F :=
   fderiv ℝ (fun Y : 𝔤 => f (g * h.expG Y)) 0 X
 
 /- English proof (translation)
-The claim follows from `((h.isSmoothFun_iff).1 hf g).differentiable (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_comp_expG {f : G → F} (hf : h.IsSmoothFun f) (g : G) :
     Differentiable ℝ (fun Y : 𝔤 => f (g * h.expG Y)) :=
   ((h.isSmoothFun_iff).1 hf g).differentiable (by simp)
 
 /- English proof (translation)
-Establish `h1` using `hasDerivAt_comp_line (h.differentiable_comp_expG hf g 0) X`. Simplify using `only [zero_add] at h1`. Conclude with `h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_rightDeriv {f : G → F} (hf : h.IsSmoothFun f) (X : 𝔤) (g : G) :
     HasDerivAt (fun t : ℝ => f (g * h.expG (t • X))) (h.rightDeriv X f g) 0 := by
@@ -63,7 +63,7 @@ theorem hasDerivAt_rightDeriv {f : G → F} (hf : h.IsSmoothFun f) (X : 𝔤) (g
   exact h1
 
 /- English proof (translation)
-Use `letI := h.chartedSpace`. Use `haveI := h.lieGroup ∞`. Conclude with `ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hf (contMDiff_id.mul contMDiff_const)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isSmoothFun_rightTranslate {f : G → F} (hf : h.IsSmoothFun f) (a : G) :
     h.IsSmoothFun (rightTranslate a f) := by
@@ -72,9 +72,9 @@ theorem isSmoothFun_rightTranslate {f : G → F} (hf : h.IsSmoothFun f) (a : G) 
   exact ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hf (contMDiff_id.mul contMDiff_const)
 
 /- English proof (translation)
-Rewrite using `[isSmoothFun_iff]`. Introduce `g₀`. Establish `hΨ : ContDiff ℝ ∞ (Function.uncurry fun Z Y : 𝔤 => f (g₀ * h.expG Z * h.expG Y))`. Use `hf.contDiff_comp h g₀ (φ₁ := fun p : 𝔤 × 𝔤 => p.1) (φ₂ := fun p => p.2) (φ₃ := fun _ => 0) contDiff_fst contDiff_snd contDiff_const` as an intermediate fact. Use `this using 2 with p` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `[Function.uncurry]`. Establish `hd : ContDiff ℝ ∞ (fun Z : 𝔤 => fderiv ℝ (fun Y : 𝔤 => f (g₀ * h.expG Z * h.expG Y)) 0)` using `ContDiff.fderiv hΨ contDiff_const (by simp)`. Conclude with `hd.clm_apply contDiff_const`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSmoothFun_rightDeriv {f : G → F} (hf : h.IsSmoothFun f) (X : 𝔤) :
     h.IsSmoothFun (h.rightDeriv X f) := by
@@ -90,27 +90,27 @@ theorem isSmoothFun_rightDeriv {f : G → F} (hf : h.IsSmoothFun f) (X : 𝔤) :
   exact hd.clm_apply contDiff_const
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[rightDeriv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rightDeriv_add_left (X Y : 𝔤) (f : G → F) :
     h.rightDeriv (X + Y) f = h.rightDeriv X f + h.rightDeriv Y f := by
   funext g; simp [rightDeriv]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[rightDeriv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rightDeriv_smul_left (r : ℝ) (X : 𝔤) (f : G → F) :
     h.rightDeriv (r • X) f = r • h.rightDeriv X f := by
   funext g; simp [rightDeriv]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[rightDeriv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rightDeriv_neg_left (X : 𝔤) (f : G → F) : h.rightDeriv (-X) f = -h.rightDeriv X f := by
   funext g; simp [rightDeriv]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [rightDeriv, Pi.add_apply]`. Rewrite using `[fderiv_fun_add (h.differentiable_comp_expG hf₁ g 0) (h.differentiable_comp_expG hf₂ g 0)]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rightDeriv_add {f₁ f₂ : G → F} (hf₁ : h.IsSmoothFun f₁) (hf₂ : h.IsSmoothFun f₂)
     (X : 𝔤) : h.rightDeriv X (f₁ + f₂) = h.rightDeriv X f₁ + h.rightDeriv X f₂ := by
@@ -120,7 +120,7 @@ theorem rightDeriv_add {f₁ f₂ : G → F} (hf₁ : h.IsSmoothFun f₁) (hf₂
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [rightDeriv, Pi.smul_apply]`. Rewrite using `[fderiv_fun_const_smul (h.differentiable_comp_expG hf g 0) c]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rightDeriv_smul {f : G → F} (hf : h.IsSmoothFun f) (c : ℂ) (X : 𝔤) :
     h.rightDeriv X (c • f) = c • h.rightDeriv X f := by
@@ -130,11 +130,11 @@ theorem rightDeriv_smul {f : G → F} (hf : h.IsSmoothFun f) (c : ℂ) (X : 𝔤
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [rightDeriv, rightTranslate]`. Establish `e : (fun Y : 𝔤 => f (g * h.expG Y * a)) = (fun Y : 𝔤 => f (g * a * h.expG Y)) ∘ h.AdL a⁻¹`. Use function extensionality and compare the values at `Y`. Simplify using `only [Function.comp_apply, AdL_apply, expG_Ad, inv_inv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `group`. Rewrite using `[e]`. Establish `hF : HasFDerivAt (fun Y : 𝔤 => f (g * a * h.expG Y)) (fderiv ℝ (fun Y : 𝔤 => f (g * a * h.expG Y)) 0) (h.AdL a⁻¹ 0)`. Simplify using `using (h.differentiable_comp_expG hf (g * a) 0).hasFDerivAt`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hF.comp (0 : 𝔤) (h.AdL a⁻¹).hasFDerivAt).fderiv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rightDeriv_rightTranslate {f : G → F} (hf : h.IsSmoothFun f) (a : G) (X : 𝔤) :
     h.rightDeriv X (rightTranslate a f) = rightTranslate a (h.rightDeriv (h.Ad a⁻¹ X) f) := by
@@ -154,27 +154,25 @@ theorem rightDeriv_rightTranslate {f : G → F} (hf : h.IsSmoothFun f) (a : G) (
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use `set A : ℝ × ℝ × ℝ → F := fun p => f (g * h.expG (p.1 • X) * h.expG (p.2.1 • Y) * h.expG (p.2.2 • (-X))) with hAdef`. Establish `hA : ContDiff ℝ ∞ A` using `hf.contDiff_comp h g (contDiff_fst.smul contDiff_const) ((contDiff_fst.comp contDiff_snd).smul contDiff_const) ((contDiff_snd.comp contDiff_snd).smul contDiff_const)`. Establish `hAd : Differentiable ℝ A` using `hA.differentiable (by simp)`. Use `set D2 := fderiv ℝ (fderiv ℝ A) 0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set er : ℝ × ℝ × ℝ := (1, 0, 0)`. Use `set et : ℝ × ℝ × ℝ := (0, 1, 0)`. Use `set eu : ℝ × ℝ × ℝ := (0, 0, 1)`. Establish `hY` using `h.isSmoothFun_rightDeriv hf Y`. Establish `hX` using `h.isSmoothFun_rightDeriv hf X`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `da : ∀ r : ℝ, fderiv ℝ A (r • er) et = h.rightDeriv Y f (g * h.expG (r • X))`. Introduce `r`. Establish `h1` using `hasDerivAt_comp_line (hAd (r • er)) et`. Establish `h2` using `h.hasDerivAt_rightDeriv hf Y (g * h.expG (r • X))`. Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[A, er, et]`. Establish `dc : ∀ t : ℝ, fderiv ℝ A (t • et) eu = -h.rightDeriv X f (g * h.expG (t • Y))`. Introduce `t`. Establish `h1` using `hasDerivAt_comp_line (hAd (t • et)) eu`. Establish `h2` using `h.hasDerivAt_rightDeriv hf (-X) (g * h.expG (t • Y))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[rightDeriv_neg_left]`. Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_))` and prove the remaining obligations. Simplify using `[A, et, eu]`. Establish `db : D2 er et = h.rightDeriv X (h.rightDeriv Y f) g`. Establish `h1` using `hasDerivAt_fderiv_line hA 0 er et`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h.hasDerivAt_rightDeriv hY X g`. Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_))` and prove the remaining obligations. Simplify using `only [zero_add]`. Rewrite using `[da]`. Establish `dd : D2 et eu = -h.rightDeriv Y (h.rightDeriv X f) g`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hasDerivAt_fderiv_line hA 0 et eu`. Establish `h2` using `(h.hasDerivAt_rightDeriv hX Y g).neg`. Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_))` and prove the remaining obligations. Simplify using `only [zero_add]`. Rewrite using `[dc]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hsymm : D2 eu et = D2 et eu` using `(hA.contDiffAt.isSymmSndFDerivAt (by`. Simplify using `only [minSmoothness_of_isRCLikeNormedField]`. Conclude with `WithTop.coe_le_coe.2 le_top)) eu et`. Establish `diag : ∀ s : ℝ, fderiv ℝ A (s • (er + eu)) et = fderiv ℝ (fun Z : 𝔤 => f (g * h.expG Z)) 0 (h.Ad (h.expG (s • X)) Y)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Establish `h1` using `hasDerivAt_comp_line (hAd (s • (er + eu))) et`. Establish `h2` using `h.hasDerivAt_rightDeriv hf (h.Ad (h.expG (s • X)) Y) g`. Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun t => ?_))` and prove the remaining obligations. Simplify using `only [A, er, eu, et, Prod.smul_mk, Prod.mk_add_mk, smul_zero, smul_eq_mul, mul_one, mul_zero, add_zero, zero_add]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← map_smul, expG_Ad, smul_neg, expG_neg]`. Simplify using `only [mul_assoc]`. Establish `hg` using `hasDerivAt_fderiv_line hA 0 (er + eu) et`. Establish `hg'` using `(fderiv ℝ (fun Z : 𝔤 => f (g * h.expG Z)) 0).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (h.hasDerivAt_Ad_expG X Y)`. Establish `e` using `hg.unique (hg'.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_))`.
-
-Express the relevant statement in the definitionally equal form `D2 (er + eu) et = h.rightDeriv (h.bracket X Y) f g at e`. Rewrite using `[Pi.sub_apply, ← e, map_add, ContinuousLinearMap.add_apply, db, hsymm, dd, sub_eq_add_neg]`. Simplify using `only [zero_add, Function.comp_apply]`. Rewrite using `[diag]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rightDeriv_bracket {f : G → F} (hf : h.IsSmoothFun f) (X Y : 𝔤) :
     h.rightDeriv (h.bracket X Y) f =
@@ -262,7 +260,7 @@ def smoothFuns : Submodule ℂ (G → F) where
     exact ((c • ContinuousLinearMap.id ℂ F).restrictScalars ℝ).contDiff.comp_contMDiff hf
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_smoothFuns {f : G → F} : f ∈ h.smoothFuns (F := F) ↔ h.IsSmoothFun f := Iff.rfl
 
@@ -304,7 +302,7 @@ noncomputable def rightUAction :
   UniversalEnvelopingAlgebra.lift ℝ h.rightDerivLie
 
 /- English proof (translation)
-The claim follows from `UniversalEnvelopingAlgebra.lift_ι_apply ℝ h.rightDerivLie X`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem rightUAction_ι (X : h.lieSubalgebra) :
     h.rightUAction (F := F) (UniversalEnvelopingAlgebra.ι ℝ X) = h.rightDerivEnd (h.ofLie X) :=

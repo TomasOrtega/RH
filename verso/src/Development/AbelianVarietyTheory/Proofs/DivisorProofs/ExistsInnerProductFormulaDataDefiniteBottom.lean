@@ -32,9 +32,9 @@ noncomputable section
 namespace GlobalTheory.BottomIPData
 
 /- English proof (translation)
-Establish `H` using `gbig_and GlobalTheory.BottomPairData.pair_data (gbig_and GlobalTheory.T.hermitianWittIndex_eq_zero_definiteBottom (gbig_and GlobalTheory.T.isPolynomialFockThetaVector_definiteBottom (gbig_and GlobalTheory.BottomIPData.unram_bottom (gbig_and GlobalTheory.T.const_one_mem_cuspForms_ …`. Use `gbig_mono H ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩ W i j A A' WW X hX hA t`. Take `⟨cA, a, νW, 𝓕W, hP⟩` from `h1 W i j A A' WW X hX hA t`. Take `⟨par, hpar⟩` from `h6 W i j A A' WW X hX t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ, hL⟩` from `h8 W i j A A' WW X hX t par hpar`. Take `⟨P, hloc⟩` from `h9 W i j A A' WW X hX t cA a νW 𝓕W hP`. Use `⟨betaB G i j, betaB G i j / alphaB Lc i j t, fun τ => -X.rA.s τ, X.rW.s, cA, a, νW, 𝓕W, X.rA.Λ, X.rW.Λ, sfB G t, par, κ, P, hP, h2 W i j A A' WW X hX t, h3 W i j A A' WW X hX t P, h4 W i j A A' WW X hX t P, h5 W i j A A' WW X hX t cA hP.setting, hpar, ?_, hκ, h7 W i j A A' WW X h …` and prove the remaining obligations. Introduce `v _ k _ g`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem data_exists : GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW),
   IsBottomTri W i j X → A.SigOK → ∀ t : T,

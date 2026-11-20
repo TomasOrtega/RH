@@ -16,11 +16,11 @@ namespace GlobalTheory.UU
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Introduce `Z t g h₁ h₂`. Apply `TopCat.Presheaf.section_ext Z.left.sheaf ⊤` to reduce the goal to its premises. Introduce `z hz`. Establish `hg : g.left z ∈ V` using `h₂ trivial`. Establish `hf : ((t ≫ i) * g).left z ∈ V` using `h₁ trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : t.left z ∈ (⊤ : (splitTorus S X).left.Opens)` using `trivial`. Establish `key` using `congrArg Units.val (h Z t g z hg)`. Simplify using `only [gm, dif_pos hg, dif_pos hf, dif_pos ht, pullU, MonoidHom.comp_apply, Units.coe_map, Units.val_mul] at key`. Express the relevant statement in the definitionally equal form `Z.left.presheaf.germ ⊤ z hz _ = Z.left.presheaf.germ ⊤ z hz _`. Simplify using `only [Scheme.Hom.appLE, CommRingCat.comp_apply, map_mul, TopCat.Presheaf.germ_res_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem isWt_of_gm {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X] {i : splitTorus S X ⟶ G} {V : G.left.Opens}
     (u : Γ(G.left, V)ˣ) (χ : X)
@@ -45,9 +45,9 @@ attribute [local instance] SplitExt.free SplitExt.finite
 variable {E : SplitExt S} {G : Over S} [GrpObj G]
 
 /- English proof (translation)
-Establish `hk : ∀ k, ∃ a, x ∈ (E.O (E.basis k)).L.U a`. Introduce `k`. Establish `hx : x ∈ (⊤ : E.B.left.Opens)` using `trivial`. Rewrite `hx` using `[← (E.O (E.basis k)).isLB.cover]`. Simplify `hx` using `[TopologicalSpace.Opens.mem_iSup]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose c hc using hk`. Use `⟨c, ?_⟩` and prove the remaining obligations. Unfold `SplitExt.chart`. Rewrite using `[← SetLike.mem_coe, TopologicalSpace.Opens.coe_iInf]`. Conclude with `Set.mem_iInter.2 hc`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_commonChart (E : SplitExt S) (x : E.B.left) : ∃ j, x ∈ E.chart j := by
   have hk : ∀ k, ∃ a, x ∈ (E.O (E.basis k)).L.U a := by
@@ -62,7 +62,7 @@ theorem exists_mem_commonChart (E : SplitExt S) (x : E.B.left) : ∃ j, x ∈ E.
   exact Set.mem_iInter.2 hc
 
 /- English proof (translation)
-Establish `hz' : (p ≫ a) z ∈ U` using `h hz`. Use `ext`. Simplify using `only [gm, dif_pos hz, dif_pos hz', pullU, res, MonoidHom.comp_apply, Units.coe_map]`. Use `erw [← Scheme.Hom.germ_stalkMap_apply p W z hz, TopCat.Presheaf.germ_res_apply, Scheme.Hom.germ_stalkMap_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem gm_res_pullU_eq_gm_comp {Z P Y : Scheme.{0}} (p : Z ⟶ P) (a : P ⟶ Y) {U : Y.Opens} {W : P.Opens}
     (h : W ≤ a ⁻¹ᵁ U) {z : Z} (hz : p z ∈ W) (w : Γ(Y, U)ˣ) :
@@ -75,7 +75,7 @@ private theorem gm_res_pullU_eq_gm_comp {Z P Y : Scheme.{0}} (p : Z ⟶ P) (a : 
   rfl
 
 /- English proof (translation)
-Establish `hz' : (p ≫ a) z ∈ U` using `hz`. Use `ext`. Simplify using `only [gm, dif_pos hz, dif_pos hz', pullU, MonoidHom.comp_apply, Units.coe_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem gm_id_pullU_eq_gm {Z P Y : Scheme.{0}} (p : Z ⟶ P) (a : P ⟶ Y) {U : Y.Opens} {z : Z}
     (hz : p z ∈ a ⁻¹ᵁ U) (w : Γ(Y, U)ˣ) :
@@ -86,13 +86,13 @@ private theorem gm_id_pullU_eq_gm {Z P Y : Scheme.{0}} (p : Z ⟶ P) (a : P ⟶ 
   rfl
 
 /- English proof (translation)
-Use `isWt_of_gm (d.u j k) (E.basis k) ?_` and prove the remaining obligations. Introduce `Z t g z hz`. Establish `hf : (t ≫ d.i) * g = lift t g ≫ (lift (fst (splitTorus S E.X) G ≫ d.i) (snd (splitTorus S E.X) G) ≫ μ)` using `by show lift (t ≫ d.i) g ≫ μ = _`. Rewrite using `[← Category.assoc, comp_lift, lift_fst_assoc, lift_snd]`. Establish `hp : (lift t g).left z ∈ (snd (splitTorus S E.X) G).left ⁻¹ᵁ (d.q.left ⁻¹ᵁ E.chart j)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ((lift t g).left ≫ (snd (splitTorus S E.X) G).left) = g.left`. Rewrite using `[← Over.comp_left, lift_snd]`. Use `show ((lift t g).left ≫ (snd (splitTorus S E.X) G).left) z ∈ d.q.left ⁻¹ᵁ E.chart j`. Rewrite using `[e]`. Conclude with `hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `congrArg (gm (lift t g).left z _) (d.equiv j k)`. Rewrite `key` using `[map_mul]`. Rewrite `key` using `[gm_res_pullU_eq_gm_comp (a := (lift (fst (splitTorus S E.X) G ≫ d.i) (snd (splitTorus S E.X) G) ≫ μ).left) _ _ hp, gm_id_pullU_eq_gm (a := (snd (splitTorus S E.X) G).left) _ hp]`. Rewrite `key` using `[← Over.comp_left, ← Over.comp_left, lift_snd, ← hf]`. Rewrite using `[key]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `erw [gm_res_pullU_eq_gm_comp (a := (fst (splitTorus S E.X) G).left) _ _ hp]`. Rewrite using `[← Over.comp_left, lift_fst]`.
+A detailed English derivation is pending.
 -/
 theorem isWt_coordinate (d : E.GtDatum G) (j : E.ChartIdx) (k : Module.Free.ChooseBasisIndex ℤ E.X) :
     IsWt d.i _ (d.u j k).val (E.basis k) := by
@@ -118,11 +118,11 @@ theorem isWt_coordinate (d : E.GtDatum G) (j : E.ChartIdx) (k : Module.Free.Choo
   rw [← Over.comp_left, lift_fst]
 
 /- English proof (translation)
-Establish `hχ : χ ∈ AddSubgroup.closure (Set.range E.basis)`. Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure, Submodule.mem_toAddSubgroup, E.basis.span_eq]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hχ using AddSubgroup.closure_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `hx`. Conclude with `⟨d.u j k, isWt_coordinate d j k⟩`. Consider the case `zero => exact ⟨1, by simpa using (isWt_one : IsWt d.i (d.q.left ⁻¹ᵁ E.chart j) 1 0)⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a * b, by simpa using ha.mul hb⟩`. Consider the case `neg x _ hx`. Take `⟨a, ha⟩` from `hx`. Conclude with `⟨a⁻¹, ha.inv⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_isWt (d : E.GtDatum G) (j : E.ChartIdx) (χ : E.X) :
     ∃ u : Γ(G.left, d.q.left ⁻¹ᵁ E.chart j)ˣ, IsWt d.i _ u.val χ := by
@@ -159,7 +159,7 @@ def TQ.ofGtDatum (d : E.GtDatum G) : TQ G E.X where
     exact ⟨E.chart j, hj, exists_unit_isWt d j χ⟩
 
 /- English proof (translation)
-Introduce `S E G _ Dat`. Conclude with `⟨TQ.ofGtDatum Dat, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_tq_of_gtDatum :
     ∀ (S : Scheme.{0}) (E : SplitExt S) (G : Over S) [GrpObj G] (Dat : E.GtDatum G), ∃ Q : TQ G E.X, Q.i = Dat.i := by

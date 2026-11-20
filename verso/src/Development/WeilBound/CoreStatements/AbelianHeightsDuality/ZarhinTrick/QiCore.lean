@@ -15,25 +15,23 @@ open TensorProduct
 namespace PositivityTheory.PrwZar.Qi
 
 /- English proof (translation)
-Introduce `K H _ _ _ _ _ Δ ε hL hR hmul hpts`. Take `⟨m, hm, hpt⟩` from `hpts`. Use `set I : Ideal H := RingHom.ker ε with hI`. Take `⟨k, e, he, hIk, hstab⟩` from `exists_stable_pow (K := K) I`. Establish `hk1 : I ^ (k + 1) = Ideal.span {e}` using `by rw [hstab (k + 1) (Nat.le_succ k), hIk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heI : e ∈ I`. Establish `: e ∈ I ^ (k + 1)` using `by rw [hk1]; exact Ideal.subset_span rfl`. Conclude with `Ideal.pow_le_self (Nat.succ_ne_zero k) this`. Establish `hs : ∃ s : ℕ, 0 < s ∧ ∀ x ∈ I, pw Δ ε s x ∈ I ^ k`. Take `⟨p, hp⟩` from `CharP.exists K`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `CharP.char_is_prime_or_zero K p with hpp | hp0` into its components or cases. Establish `: Fact p.Prime` using `⟨hpp⟩`. Use `⟨p ^ k, pow_pos hpp.pos k, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `Ideal.pow_le_pow_right (Nat.lt_two_pow_self).le (pw_charP p Δ ε hL hR hmul k hx)`. Substitute `hp0` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CharZero K` using `CharP.charP_to_charZero K`. Establish `h1 : pw Δ ε 1 = AlgHom.id K H` using `hL`. Establish `hle : ∀ j : ℕ, I ≤ I ^ (j + 1)`. Introduce `j`. Proceed by induction on `j with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Consider the case `zero => rw [zero_add, pow_one]`. Consider the case `succ j ih`. Combine the equalities or inequalities in the displayed calculation. Use `⟨1, one_pos, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.pow_le_pow_right (Nat.le_succ k) (hle k hx)`. Take `⟨s, hs0, hsI⟩` from `hs`. Establish `hme : pw Δ ε m e = 0`. Use `idem_eq_zero (K := K) (he.map (pw Δ ε m)) fun x => ?_` and prove the remaining obligations. Use `congrArg (fun f : H →ₐ[K] K => f e) (hpt x)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply] at this`. Rewrite using `[this]`. Conclude with `heI`. Use `⟨m * s, Nat.mul_pos hm hs0, AlgHom.ext fun x => ?_⟩` and prove the remaining obligations. Establish `hy : x - algebraMap K H (ε x) ∈ I`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ε (x - algebraMap K H (ε x)) = 0`. Rewrite using `[map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 (hIk ▸ hsI _ hy)`. Establish `key : pw Δ ε (m * s) (x - algebraMap K H (ε x)) = 0`. Rewrite using `[hmul, AlgHom.comp_apply, ← ha, map_mul, hme, mul_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : pw Δ ε 0 (x - algebraMap K H (ε x)) = 0`. Express the relevant statement in the definitionally equal form `algebraMap K H (ε (x - algebraMap K H (ε x))) = 0`. Rewrite using `[show ε (x - algebraMap K H (ε x)) = 0 from hy, map_zero]`. Establish `e1` using `congrArg (· + algebraMap K H (ε x)) key`. Establish `e2` using `congrArg (· + algebraMap K H (ε x)) h0`.
-
-Simplify using `only [map_sub, AlgHom.commutes, sub_add_cancel, zero_add] at e1 e2`. Rewrite using `[e1, e2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killedCore : KilledCore := by
   intro K H _ _ _ _ _ Δ ε hL hR hmul hpts

@@ -18,9 +18,9 @@ open GlobalTheory.KeyKa
 namespace GlobalTheory.TransvFin
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h1 : IsUnit ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom ((w.appLE U ⊤ h).hom f))`. Establish `e : valT (T` using `K) w U f = _ := dif_pos h`. Conclude with `e ▸ Ne.isUnit hne`. Establish `h2 : IsUnit ((w.appLE U ⊤ h).hom f)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom` as an intermediate fact. Rewrite `this` using `[Iso.hom_inv_id_apply]`. Then use the resulting hypothesis. Establish `h3` using `(Sp K).basicOpen_of_isUnit h2`. Rewrite `h3` using `[Scheme.basicOpen_appLE]`. Conclude with `hp ((h3.ge (x := p) trivial).2)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valT_eq_zero_of_notMem {K : Type} [Field K] {X : Scheme.{0}} (w : Sp K ⟶ X) {U : X.Opens}
     (h : ⊤ ≤ w ⁻¹ᵁ U) (f : Γ(X, U)) (p : Sp K) (hp : w p ∉ X.basicOpen f) : valT (T := K) w U f = 0 := by
@@ -36,13 +36,13 @@ theorem valT_eq_zero_of_notMem {K : Type} [Field K] {X : Scheme.{0}} (w : Sp K �
   exact hp ((h3.ge (x := p) trivial).2)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hn : ¬ y ⤳ y'` using `fun h' => hne (h.antisymm h').eq`. Rewrite `hn` using `[specializes_iff_forall_open]`. Use `push_neg at hn`. Take `⟨V, hV, hV1, hV2⟩` from `hn`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, hyW, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := y) (U := ⊤) trivial`. Establish `hyW' : y' ∈ W` using `h.mem_open W.isOpen hyW`. Take `⟨g, hg, hg'⟩` from `hW.exists_basicOpen_le (V := ⟨V, hV⟩) ⟨y', hV1⟩ hyW'`. Establish `hle : IsLocalRing.maximalIdeal (X.presheaf.stalk y) ≤ (IsLocalRing.maximalIdeal (X.presheaf.stalk y')).comap (X.presheaf.stalkSpecializes h).hom`. Rewrite using `[← hf, Ideal.span_le]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, rfl⟩ hu`. Use `h0 i ((X.mem_basicOpen (f i) y' (h.mem_open U.isOpen hy)).2 ?_)` and prove the remaining obligations. Establish `e : gs (𝟙 X) y U (f i) = (X.presheaf.germ U y hy).hom (f i)` using `gs_eq (𝟙 X) y U hy (f i)`. Use `beta_reduce at hu`. Rewrite `hu` using `[e, TopCat.Presheaf.germ_stalkSpecializes_apply]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : (X.presheaf.germ W y hyW).hom g ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk y)` using `fun hu => hV2 (hg ((X.mem_basicOpen g y hyW).2 hu))`. Use `hle hm ?_` and prove the remaining obligations. Rewrite using `[TopCat.Presheaf.germ_stalkSpecializes_apply]`. Conclude with `(X.mem_basicOpen g y' hyW').1 hg'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_specializes {X : Scheme.{0}} {J : Type} {U : X.Opens} (f : J → Γ(X, U)) {y y' : X} (h : y' ⤳ y)
     (hy : y ∈ U)
@@ -71,7 +71,7 @@ theorem eq_of_specializes {X : Scheme.{0}} {J : Type} {U : X.Opens} (f : J → �
   exact (X.mem_basicOpen g y' hyW').1 hg'
 
 /- English proof (translation)
-Take `⟨S, hS, hc, hi, rfl⟩` from `TopologicalSpace.NoetherianSpace.exists_finite_set_isClosed_irreducible hZ`. Use `hS.sUnion fun t ht => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `QuasiSober.sober (hi t ht) (hc t ht)`. Rewrite using `[← hy.def, (h y ⟨t, ht, hy.mem⟩).closure_eq]`. Conclude with `Set.finite_singleton y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_of_isClosed_singleton {T : Type} [TopologicalSpace T] [TopologicalSpace.NoetherianSpace T]
     [QuasiSober T] {Z : Set T} (hZ : IsClosed Z) (h : ∀ y ∈ Z, IsClosed ({y} : Set T)) : Z.Finite := by
@@ -86,21 +86,19 @@ end GlobalTheory.TransvFin
 open GlobalTheory.TransvFin in
 
 /- English proof (translation)
-Introduce `K _ _ x n s hs`. Use `x.P.smoothDim` as an intermediate fact. Establish `: Smooth x.P.A.hom` using `SmoothOfRelativeDimension.smooth x.P.g _`. Establish `: IsProper x.P.A.hom` using `x.P.isAb.proper`. Establish `: JacobsonSpace x.P.A.left` using `LocallyOfFiniteType.jacobsonSpace x.P.A.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocallyNoetherian x.P.A.left` using `LocallyOfFiniteType.isLocallyNoetherian x.P.A.hom`. Establish `: CompactSpace x.P.A.left` using `QuasiCompact.compactSpace_of_compactSpace x.P.A.hom`. Establish `: IsNoetherian x.P.A.left` using `{}`. Set `Z : Set x.P.A.left` to `{y | ∀ i, y ∉ Out.nonzeroLocus (s i)}`. Establish `hZ : IsClosed Z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : Z = ⋂ i, (Out.nonzeroLocus (s i) : Set x.P.A.left)ᶜ`. Use extensionality with `y`. Simplify using `[Z]`. Rewrite using `[e]`. Conclude with `isClosed_iInter fun i => (Out.nonzeroLocus (s i)).isOpen.isClosed_compl`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ∀ y ∈ Z, ∀ c i, y ∉ x.P.A.left.basicOpen ((s i).f c)` using `fun y hy c i h => hy i (TopologicalSpace.Opens.mem_iSup.2 ⟨c, h⟩)`. Establish `key : ∀ y ∈ Z, IsClosed ({y} : Set x.P.A.left) → ∃ (z : Pt x) (c : x.P.L.ι), (∀ p, z.left p = y) ∧ ⊤ ≤ z.left ⁻¹ᵁ x.P.L.U c ∧ ∀ i, valT (T` using `K) z.left (x.P.L.U c) ((s i).f c) = 0 := by`. Introduce `y hy hc`. Set `z : Pt x` to `Over.homMk (pointOfClosedPoint (K := K) x.P.A.hom y hc) (pointOfClosedPoint_comp (K := K) x.P.A.hom y hc)`. Establish `hz (p) : z.left p = y` using `pointOfClosedPoint_apply (K := K) x.P.A.hom y hc p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hyc⟩` from `TopologicalSpace.Opens.mem_iSup.1 (x.P.isLB.cover.ge (x := y) trivial)`. Establish `ht : ⊤ ≤ z.left ⁻¹ᵁ x.P.L.U c` using `fun p _ => (congrArg (· ∈ x.P.L.U c) (hz p)).mpr hyc`. Conclude with `⟨z, c, hz, ht, fun i => valT_eq_zero_of_notMem z.left ht _ (IsLocalRing.closedPoint K) fun h => hb y hy c i ((congrArg (· ∈ x.P.A.left.basicOpen ((s i).f c)) (hz _)).mp h)⟩`. Establish `hcl : ∀ y ∈ Z, IsClosed ({y} : Set x.P.A.left)`. Introduce `y' hy'`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hc⟩` from `nonempty_inter_closedPoints (Z := closure ({y'} : Set x.P.A.left)) ⟨y', subset_closure rfl⟩ isClosed_closure.isLocallyClosed`. Establish `hsp : y' ⤳ y` using `specializes_iff_mem_closure.2 hy`. Take `⟨z, c, hz, ht, h0⟩` from `key y (hsp.mem_closed hZ hy') hc`. Establish `h1` using `(jac_ne_zero_iff_span_eq_maximalIdeal K x n s z c (IsLocalRing.closedPoint K) ht h0).1 (hs z c ht h0)`. Establish `hU : z.left (IsLocalRing.closedPoint K) ∈ x.P.L.U c` using `ht (x := IsLocalRing.closedPoint K) trivial`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `eq_of_specializes (fun i => (s i).f c) ((hz _).symm ▸ hsp) hU h1 (hb y' hy' c)`. Rewrite using `[e.trans (hz _)]`. Conclude with `hc`. Establish `hfin` using `finite_of_isClosed_singleton hZ hcl`. Take `⟨d, ⟨e⟩⟩` from `Finite.exists_equiv_fin Z (h := hfin)`.
-
-Use `choose z c hz ht h0 using fun y : Z => key y y.2 (hcl y y.2)`. Use `⟨d, fun a => z (e.symm a), fun a => c (e.symm a), fun a => ht _, fun a => h0 _, fun a => (hs _ _ (ht _) (h0 _)).isUnit, fun a a' hne p h => hne ?_, fun y hy => ⟨e ⟨y, hy⟩, IsLocalRing.closedPoint K, ?_⟩⟩` and prove the remaining obligations. Conclude with `e.symm.injective (Subtype.ext ((hz _ p).symm.trans (h.trans (hz _ p))))`. Conclude with `(hz _ _).trans (congrArg Subtype.val (e.symm_apply_apply ⟨y, hy⟩))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KeyKa.exists_etZ_of_jac_ne_zero : ∀ (K : Type) [Field K] [IsAlgClosed K] (x : KeyIn K) (n : ℕ) (s : Fin x.P.g → RR x n), (∀ (z : Pt x) (c : x.P.L.ι), ⊤ ≤ z.left ⁻¹ᵁ x.P.L.U c → (∀ i, valT (T := K) z.left (x.P.L.U c) ((s i).f c) = 0) → jac x s z c ≠ 0) → ∃ (d : ℕ) (z : Fin d → Pt x) (ch : Fin d → x.P.L.ι), EtZ x s z ch := by
   intro K _ _ x n s hs

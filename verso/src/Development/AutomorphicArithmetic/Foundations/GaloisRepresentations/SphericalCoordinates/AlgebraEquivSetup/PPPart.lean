@@ -5,11 +5,11 @@ open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 AfQ Plc sim mat comp rat le
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Introduce `hJ E _ _ _ A n p _ S T g`. Establish `hext` using `(hJ E A n p S T.toAdT T.μ T.mu T.a T.j T.j_mx).1`. Establish `hoff : ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → comp w (T.sec (T.j g)) = comp w g` using `fun w hw => (T.j_eq (T.sec (T.j g)) g).1 (T.j_sec _) w hw`. Establish `hk1 : ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → comp w ((T.sec (T.j g))⁻¹ * g) = 1`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, map_inv, hoff w hw, inv_mul_cancel]`. Establish `hk2 : ∀ w : Plc E, (p : 𝓞 E) ∈ w.asIdeal → comp w ((T.sec (T.j g))⁻¹ * g) = comp w g`. Introduce `w hw`. Rewrite using `[map_mul, map_inv, T.sec_p _ w hw, inv_one, one_mul]`. Use `⟨(T.sec (T.j g))⁻¹ * g, by group, hk1, hk2, fun h => hext _ _ fun w => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul (comp w) (T.sec h), map_mul (comp w) _ (T.sec h)]`. Distinguish the cases in `hw : (p : 𝓞 E) ∈ w.asIdeal`. Rewrite using `[T.sec_p h w hw, one_mul, mul_one]`. Rewrite using `[hk1 w hw, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.W2.Seed.pPPart :
     JEq → PPart := by

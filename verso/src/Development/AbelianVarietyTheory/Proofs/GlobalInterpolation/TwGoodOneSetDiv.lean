@@ -7,9 +7,9 @@ namespace GlobalTheory.EX.DQ
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Unfold `TwGoodOne at H ⊢`. Establish `e1 : AvRec (setDiv D N h) = AvRec D` using `rfl`. Establish `e2 : twEps (setDiv D N h) i = twEps D i` using `rfl`. Rewrite using `[e1, e2]`. Unfold `IntegralHeckeForms.GoodTw at H ⊢`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Take `⟨h1, ⟨eB, h2, h3, h4⟩, h5, h6, h7, h8⟩` from `H`. Conclude with `⟨h1, ⟨eB, h2, h3, h4⟩, fun j hj c => ⟨(h5 j hj c).1, (h5 j hj c).2⟩, h6, h7, h8⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twGoodOne_setDiv (D : D7) (O : Obj D) (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (h : D.what₂.Word → ℝ)
     (N0 : D.ntw.Tw → ℕ) (S : ∀ (i : D.ntw.Tw) (j : ℕ) (b : Bool), Finset (D.nexp.Dat i j b))
@@ -25,7 +25,7 @@ theorem twGoodOne_setDiv (D : D7) (O : Obj D) (N : ∀ u, Submodule (𝓞 D.what
   exact ⟨h1, ⟨eB, h2, h3, h4⟩, fun j hj c => ⟨(h5 j hj c).1, (h5 j hj c).2⟩, h6, h7, h8⟩
 
 /- English proof (translation)
-Introduce and unpack `D O N h ⟨h1, ⟨hc, N0, S, hS⟩, h3⟩`. Use `⟨h1, ⟨hc, N0, S, fun w hw => ⟨(hS w hw).1, fun a ha => ?_⟩⟩, h3⟩` and prove the remaining obligations. Conclude with `twGoodOne_setDiv D O N h N0 S _ _ _ _ _ ((hS w hw).2 a ha)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem qd_setDiv : ∀ (D : D7) (O : Obj D) (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (h : D.what₂.Word → ℝ),
     QD D O → QD (setDiv D N h) (O.tr N h) := by

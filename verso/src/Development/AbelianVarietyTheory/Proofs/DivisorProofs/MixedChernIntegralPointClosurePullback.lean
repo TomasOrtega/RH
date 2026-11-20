@@ -25,7 +25,7 @@ set_option autoImplicit false
 namespace GlobalTheory.CycPush
 
 /- English proof (translation)
-Take `⟨N, j, hj, rfl⟩` from `hp`. Conclude with `⟨N, i ≫ j, inferInstance, by rw [Category.assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isProjOver_comp {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k} (hp : IsProjOver p)
     (i : Z ⟶ X) [IsClosedImmersion i] : IsProjOver (i ≫ p) := by
@@ -33,7 +33,7 @@ theorem isProjOver_comp {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp
   exact ⟨N, i ≫ j, inferInstance, by rw [Category.assoc]⟩
 
 /- English proof (translation)
-Substitute `hab` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pull_congr {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {σ : k →+* ℂ}
     (A : MLine p σ) {a b : Y ⟶ X} (hab : a = b) (ha : a ≫ p = q) (hb : b ≫ p = q) :
@@ -41,25 +41,21 @@ theorem pull_congr {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {
   subst hab; rfl
 
 /- English proof (translation)
-Introduce `F _ W M _ _ p q hp hq f hπ hη n hM`. Take `⟨N, i, hi, hcomp⟩` from `hp`. Take `⟨N', j, hj, hcomp'⟩` from `hq`. Use `haveI : IsProper (PSpace.str F N) := isProper_str F N`. Use `haveI : IsProper (PSpace.str F N') := isProper_str F N'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsProper p := by rw [← hcomp]; infer_instance`. Use `haveI : IsProper (f ≫ p) := by rw [hπ, ← hcomp']; infer_instance`. Use `haveI : IsProper f := IsProper.of_comp f p`. Establish `hf : LocallyOfFiniteType f` using `inferInstance`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, -⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (genericPoint W)) isOpen_univ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : IsAffineOpen V` using `hV`. Establish `hx : f (genericPoint M) ∈ V` using `hη ▸ hxV`. Take `⟨_, ⟨U, hU, rfl⟩, hy, hUV⟩` from `M.isBasis_affineOpens.exists_subset_of_mem_open (show genericPoint M ∈ f ⁻¹ᵁ V from hx) (f ⁻¹ᵁ V).isOpen`. Establish `hU : IsAffineOpen U` using `hU`. Use `haveI : Nonempty V := ⟨⟨_, hx⟩⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : Nonempty U := ⟨⟨_, hy⟩⟩`. Establish `e : U ≤ f ⁻¹ᵁ V` using `hUV`. Set `φ` to `Spec.preimage (hV.fromSpec ≫ p)`. Establish `hφ : Spec.map φ = hV.fromSpec ≫ p` using `Spec.map_preimage _`. Use `letI : Algebra F Γ(W, V) := φ.hom.toAlgebra`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hftA : Algebra.FiniteType F Γ(W, V)` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := φ)).mp (hφ ▸ inferInstance)`. Use `letI : Algebra Γ(W, V) Γ(M, U) := (f.appLE V U e).hom.toAlgebra`. Establish `hftB : Algebra.FiniteType Γ(W, V) Γ(M, U)` using `HasRingHomProperty.appLE @LocallyOfFiniteType f hf ⟨V, hV⟩ ⟨U, hU⟩ e`. Use `letI : Algebra F Γ(M, U) := (φ ≫ f.appLE V U e).hom.toAlgebra`. Use `haveI : IsScalarTower F Γ(W, V) Γ(M, U) := IsScalarTower.of_algebraMap_eq' rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hftC : Algebra.FiniteType F Γ(M, U)` using `Algebra.FiniteType.trans hftA hftB`. Take `⟨d, h₁, h₂⟩` from `exists_ringKrullDim_eq_and_trdeg_eq F Γ(W, V)`. Establish `hd : topologicalKrullDim (V : Set W) = d`. Rewrite using `[← h₁, ← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim]`. Conclude with `topologicalKrullDim_eq_of_isEmbedding hV.fromSpec.isOpenEmbedding.isEmbedding hV.range_fromSpec`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hd` using `[GlobalTheory.OpenDim.topologicalKrullDim_open F p V ⟨_, hx⟩]`. Establish `hB : Algebra.trdeg F Γ(M, U) = n` using `GlobalTheory.GenFinite.trdeg_affineOpen_eq F (f ≫ p) hU ⟨_, hy⟩ n hM`. Use `letI := (W.evaluation V _ hx).hom.toAlgebra`. Establish `nat : f.appLE V U e ≫ M.evaluation U _ hy = W.evaluation V _ hx ≫ f.residueFieldMap (genericPoint M)`. Rewrite using `[Scheme.evaluation_naturality f _ hx, Scheme.Hom.appLE, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Use `congr 1`. Simplify using `only [Scheme.evaluation]`. Rewrite using `[← Category.assoc, TopCat.Presheaf.germ_res]`. Use `haveI := GenFiniteEtale.isFractionRing_eval W hV hη hx`. Establish `hinj : Function.Injective (IsScalarTower.toAlgHom F Γ(W, V) Γ(M, U))`.
-
-Establish `h₃ : Function.Injective (f.appLE V U e ≫ M.evaluation U _ hy).hom`. Rewrite using `[nat]`. Conclude with `(f.residueFieldMap (genericPoint M)).hom.injective.comp (IsFractionRing.injective Γ(W, V) (W.residueField (f (genericPoint M))))`. Conclude with `Function.Injective.of_comp (f := (M.evaluation U _ hy).hom) h₃`. Establish `hle` using `trdeg_le_of_injective _ hinj`.
-
-Rewrite `hle` using `[h₂, hB]`. Conclude with `⟨d, by exact_mod_cast hle, hd⟩`.
+A detailed English derivation is pending.
 -/
 theorem dim_le_of_dominant : ∀ (F : Type) [Field F] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp F) (q : Y ⟶ Sp F), IsProjOver p → IsProjOver q → ∀ (π : Y ⟶ X), π ≫ p = q → π (genericPoint Y) = genericPoint X → ∀ n : ℕ, topologicalKrullDim Y = n → ∃ m : ℕ, m ≤ n ∧ topologicalKrullDim X = m := by
   intro F _ W M _ _ p q hp hq f hπ hη n hM
@@ -118,25 +114,25 @@ theorem dim_le_of_dominant : ∀ (F : Type) [Field F] (X Y : Scheme.{0}) [IsInte
   exact ⟨d, by exact_mod_cast hle, hd⟩
 
 /- English proof (translation)
-Introduce `F _ X Y p q σ hp hq π hπ e L f hf w hw`. Take `⟨hIw, hgw, hdw, -⟩` from `GlobalTheory.ClosFacts.clos_facts Y w`. Take `⟨hIx, hgx, hdx, hfac⟩` from `GlobalTheory.ClosFacts.clos_facts X (π w)`. Establish `hη : (closι w ≫ π) (genericPoint (clos w)) = π w`. Rewrite using `[Scheme.Hom.comp_apply, hgw]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg, hgg, hgdeg, -⟩` from `hfac (clos w) (closι w ≫ π) hη`. Establish `hpX : IsProjOver (closι (π w) ≫ p)` using `isProjOver_comp hp _`. Establish `hpY : IsProjOver (closι w ≫ q)` using `isProjOver_comp hq _`. Establish `hgp : g ≫ closι (π w) ≫ p = closι w ≫ q`. Rewrite using `[← Category.assoc, hg, Category.assoc, hπ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdY : topologicalKrullDim (clos w) = e` using `hdw.trans hw`. Set `L' : Fin e → MLine (closι (π w) ≫ p) σ` to `fun i => (L i).pull (closι (π w)) rfl`. Set `f' : CxPts (closι (π w) ≫ p) σ → ℝ` to `fun y => f (ptMap (closι (π w)) rfl σ y)`. Establish `hf' : Measurable f'` using `hf.comp (PtsOver.continuous_map _ _ _).measurable`. Establish `h1 : (closι w ≫ π) ≫ p = closι w ≫ q` using `by rw [Category.assoc, hπ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (g ≫ closι (π w)) ≫ p = closι w ≫ q` using `by rw [Category.assoc, hgp]`. Establish `hpart : ∀ ε : ℤˣ, part (fun i => ((L i).pull π hπ).pull (closι w) rfl) ε = part (fun i => (L' i).pull g hgp) ε`. Introduce `ε`. Establish `c1` using `(GlobalTheory.Mix.isom_calculus F X Y p q σ π hπ).2.2.2.2.2 (clos w) (closι w ≫ q) (closι w) rfl h1`. Establish `c2` using `(GlobalTheory.Mix.isom_calculus F X (clos (π w)) p (closι (π w) ≫ p) σ (closι (π w)) rfl).2.2.2.2.2 (clos w) (closι w ≫ q) g hgp h2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `GlobalTheory.Mix.part_eq_of_isom F (clos w) (closι w ≫ q) σ hpY e _ _ (fun i => c1 (L i)) ε`. Establish `e2` using `GlobalTheory.Mix.part_eq_of_isom F (clos w) (closι w ≫ q) σ hpY e _ _ (fun i => c2 (L i)) ε`. Rewrite using `[e1, e2]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `pull_congr _ hg.symm _ _`. Establish `hfun : (fun y => (fun y => f (ptMap π hπ σ y)) (ptMap (closι w) rfl σ y)) = fun y => f' (ptMap g hgp σ y)`. Use function extensionality and compare the values at `y`. Use `show f _ = f _`. Use `congr 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [PtsOver.map_val, Category.assoc, hg]`. Establish `hint : cycInt (fun i => (L i).pull π hπ) (fun y => f (ptMap π hπ σ y)) w = Mix.int (fun i => (L' i).pull g hgp) (fun y => f' (ptMap g hgp σ y))`. Simplify using `only [cycInt, Mix.int]`. Rewrite using `[hfun, hpart 1, hpart (-1)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun hX => ?_, fun hX => ?_⟩` and prove the remaining obligations. Establish `hdX : topologicalKrullDim (clos (π w)) = e` using `hdx.trans hX`. Establish `hne` using `GlobalTheory.DominantProjDegree.residueDegree_ne_zero_of_map_genericPoint F (clos (π w)) (clos w) (closι (π w) ≫ p) (closι w ≫ q) e hpX hpY hdX hdY g hgp hgg`. Establish `hpush` using `(GlobalTheory.T.mixedIntegral_pullback_genericallyFinite F (clos (π w)) (clos w) (closι (π w) ≫ p) (closι w ≫ q) σ e hpX hdX hpY g hgp hgg hne L' f' hf').2`. Establish `hdeg : g.residueDegree (genericPoint (clos w)) = π.residueDegree w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgdeg, GlobalTheory.CurveDegreesCompare.residueDegree_comp, GlobalTheory.ProperCut.residueDegree_of_isClosedImmersion (closι w), mul_one, hgw]`. Rewrite using `[hint, hpush, hdeg]`. Both sides reduce to the same expression. Take `⟨m, hm, hdX⟩` from `dim_le_of_dominant F (clos (π w)) (clos w) (closι (π w) ≫ p) (closι w ≫ q) hpX hpY g hgp hgg e hdY`. Establish `hlt : m < e` using `lt_of_le_of_ne hm fun h => hX (by rw [← hdx, hdX, h])`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `GlobalTheory.T.mixedChernMeasure_pullback_eq_zero_of_lt_dim F (clos (π w)) (clos w) (closι (π w) ≫ p) (closι w ≫ q) σ e m hlt hpX hdX hpY g hgp hgg L'`. Rewrite using `[hint]`. Simplify using `only [Mix.int, h0, integral_zero_measure, sub_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cycInt_pull : ∀ (F : Type) [Field F] (X Y : Scheme.{0}) (p : X ⟶ Sp F) (q : Y ⟶ Sp F) (σ : F →+* ℂ), IsProjOver p → IsProjOver q → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q) (e : ℕ) (L : Fin e → MLine p σ) (f : CxPts p σ → ℝ), Measurable f → ∀ w : Y, topologicalKrullDim (closure ({w} : Set Y)) = e → (topologicalKrullDim (closure ({π w} : Set X)) = e → cycInt (fun i => (L i).pull π hπ) (fun y => f (ptMap π hπ σ y)) w = π.residueDegree w * cycInt L f (π w)) ∧ (topologicalKrullDim (closure ({π w} : Set X)) ≠ e → cycInt (fun i => (L i).pull π hπ) (fun y => f (ptMap π hπ σ y)) w = 0) := by
   intro F _ X Y p q σ hp hq π hπ e L f hf w hw

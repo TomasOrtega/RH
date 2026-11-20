@@ -3,21 +3,19 @@ import Mathlib
 namespace PositivityTheory.RgUd.T.Nil.Orb.BModbound
 
 /- English proof (translation)
-Establish `hinv : ∀ x ∈ I, ∃ u : GL (Fin n) k, u ∈ GI ∧ u.val = 1 + x` using `fun x hx => by`. Take `⟨u, hu⟩` from `hsurj x hx`. Use `⟨u, (hGI u).2 ?_, hu⟩` and prove the remaining obligations. Rewrite using `[hu, add_sub_cancel_left]`. Conclude with `hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `f : GI → I` to `fun u => ⟨u.1.val - 1, (hGI u.1).1 u.2⟩`. Establish `hf_inj : Function.Injective f`. Introduce `a b hab`. Establish `h : a.1.val - 1 = b.1.val - 1` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext (Units.ext (sub_left_inj.mp h))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf_surj : Function.Surjective f`. Introduce `x`. Take `⟨u, hu, hux⟩` from `hinv x.1 x.2`. Use `⟨⟨u, hu⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show u.val - 1 = x.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hux, add_sub_cancel_left]`. Set `e : GI ≃ I` to `Equiv.ofBijective f ⟨hf_inj, hf_surj⟩`. Establish `key : ∀ a b : GI, (QuotientGroup.leftRel (GJ.subgroupOf GI)) a b ↔ (QuotientAddGroup.leftRel (J.addSubgroupOf I)) (e a) (e b)`. Introduce `a b`. Rewrite using `[QuotientGroup.leftRel_apply, QuotientAddGroup.leftRel_apply, Subgroup.mem_subgroupOf, AddSubgroup.mem_addSubgroupOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ((a.1⁻¹ * b.1 : GL (Fin n) k)) ∈ GJ ↔ -(a.1.val - 1) + (b.1.val - 1) ∈ J`. Establish `h1 : -(a.1.val - 1) + (b.1.val - 1) = b.1.val - a.1.val` using `by abel`. Rewrite using `[h1, hGJ, Units.val_mul]`. Establish `ha : a.1⁻¹ ∈ GI` using `GI.inv_mem a.2`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `h2` using `hmul a.1 a.2 _ h`. Establish `e2 : a.1.val * ((a.1⁻¹).val * b.1.val - 1) = b.1.val - a.1.val`. Rewrite using `[mul_sub, ← mul_assoc, Units.mul_inv, one_mul, mul_one]`. Rewrite `h2` using `[e2]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `h2` using `hmul a.1⁻¹ ha _ h`. Establish `e2 : (a.1⁻¹).val * (b.1.val - a.1.val) = (a.1⁻¹).val * b.1.val - 1`. Rewrite using `[mul_sub, Units.inv_mul]`. Rewrite `h2` using `[e2]`. Then use the resulting hypothesis.
-
-Establish `hc` using `Nat.card_congr (Quotient.congr e key)`. Conclude with `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_eq {k : Type} [Field k] {n : ℕ} (I J : AddSubgroup (Matrix (Fin n) (Fin n) k))
     (GI GJ : Subgroup (GL (Fin n) k)) (hJI : J ≤ I)

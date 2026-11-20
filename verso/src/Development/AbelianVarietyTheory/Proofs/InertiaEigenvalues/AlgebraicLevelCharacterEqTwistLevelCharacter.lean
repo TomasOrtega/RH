@@ -26,11 +26,11 @@ open Formalism.L2.DIV
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hex : ∃ u : 𝓞 L, u ∉ s.w.asIdeal ∧ Valued.v (s.i (u : L) - x) < 1` using `⟨u, hu, hux⟩`. Unfold `NX.resRep`. Rewrite using `[dif_pos hex]`. Take `⟨h1, h2⟩` from `hex.choose_spec`. Use `⟨h1, Ideal.Quotient.eq.2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ ∈ s.ideal`. Rewrite using `[s.split_mem_ideal]`. Establish `e : s.i (((hex.choose - u : 𝓞 L)) : L) = (s.i (hex.choose : L) - x) - (s.i (u : L) - x)`. Rewrite using `[show (((hex.choose - u : 𝓞 L)) : L) = (hex.choose : L) - (u : L) by push_cast; ring, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt h2 hux)`.
+A detailed English derivation is pending.
 -/
 theorem resRep_spec {L : Type} [Field L] [NumberField L] [IsCMField L] (s : ReciprocityTheory.Aut.SplitPlace L)
     (x : s.v.adicCompletion (maximalRealSubfield L)) (u : 𝓞 L) (hu : u ∉ s.w.asIdeal)
@@ -53,13 +53,13 @@ theorem resRep_spec {L : Type} [Field L] [NumberField L] [IsCMField L] (s : Reci
 open Classical in
 
 /- English proof (translation)
-Take `⟨θ, -, hθ⟩` from `hgen`. Establish `hsingle : ∀ kv, NX.psiUTot D i b (Pi.mulSingle kv (u kv)) = ((θ kv (Multiplicative.ofAdd (NX.supSum D.R.r ((u kv : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))))) : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i))`. Introduce `kv`. Establish `hu' : u ∈ NX.Uup (fun kv : (Σ kk : Fin 2, D.nd.PlG kk) => D.host.g kv.1) D.R.r` using `hUup ▸ hu`. Establish `hmem : (Pi.mulSingle kv (u kv) : G0g D.nd) ∈ D.nexp.U`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hUup]`. Introduce `kv'`. Distinguish the cases in `h : kv' = kv`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu' kv'`. Rewrite using `[Pi.mulSingle_eq_of_ne h]; exact ⟨Matrix.blockTriangular_one, fun a => by simp⟩`. Unfold `NX.psiUTot`. Rewrite using `[dif_pos hmem, hθ ⟨_, hmem⟩, NX.stdVal, Finset.prod_eq_single kv]`. Simplify using `only [Pi.mulSingle_eq_same]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `kv' _ hne`. Simplify using `only [Pi.mulSingle_eq_of_ne hne, Units.val_one, NX.supSum_one, ofAdd_zero, map_one]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ kv) h`. Rewrite using `[Finset.prod_congr rfl fun kv _ => hsingle kv, hθ ⟨u, hu⟩, NX.stdVal, Units.coe_prod]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiU_prod (i : D.ntw.Tw) (b : Bool)
     (hUup : D.nexp.U = NX.Uup (fun kv : (Σ kk : Fin 2, D.nd.PlG kk) => D.host.g kv.1) D.R.r)
@@ -89,11 +89,11 @@ theorem psiU_prod (i : D.ntw.Tw) (b : Bool)
   rw [Finset.prod_congr rfl fun kv _ => hsingle kv, hθ ⟨u, hu⟩, NX.stdVal, Units.coe_prod]
 
 /- English proof (translation)
-Establish `hg2` using `blockTri_blkOf_le (κ := κ) r (n - r) hg`. Unfold `dBlk`. Rewrite using `[extendOne_of_mem _ hg, extendOne_of_mem _ hg2]`. Apply `Units.ext` to reduce the goal to its premises. Establish `hiff : ∀ a : Fin n, blk2 r a = 1 ↔ blkOf r (n - r) a = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `a`. Use `a.2` as an intermediate fact. Unfold `blk2 blkOf`. Use `split_ifs with h`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [true_iff]; rw [Nat.div_eq_of_lt (by omega)]`. Conclude with `(Matrix.det_submatrix_equiv_self (Equiv.subtypeEquivRight hiff) (((g : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ).submatrix (Subtype.val : {a : Fin n // blkOf r (n - r) a = 1} → Fin n) Subtype.val)).symm`.
+A detailed English derivation is pending.
 -/
 theorem secondBlock_blockOf_eq_blockTwo {κ : Type} [CommRing κ] {n r : ℕ} (g : GL (Fin n) κ) (hg : g ∈ blockTri (blkOf r (n - r))) :
     dBlk (blkOf r (n - r)) 1 g = dBlk (blk2 r) 1 g := by
@@ -113,29 +113,23 @@ theorem secondBlock_blockOf_eq_blockTwo {κ : Type} [CommRing κ] {n r : ℕ} (g
       (Subtype.val : {a : Fin n // blkOf r (n - r) a = 1} → Fin n) Subtype.val)).symm
 
 /- English proof (translation)
-Use `set K := s.v.adicCompletion (maximalRealSubfield D.host.E)`. Use `set O := s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)`. Use `set R := redFn (1 : GL (Fin V.rank) (Lev.EAf D)) s.w (Lev.finE V (P.ψ κ)) with hR`. Establish `hred` using `(GlobalTheory.T.frameKeepsMatrices_splitPlace_reduction_local D V n hF P hP hn κ).2 s hκ`. Set `m : Ideal O` to `{ carrier := {x | Valued.v (x : K) < 1} add_mem' := fun {a b} ha hb => by show Valued.v ((a : K) + b) < 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ha hb)`. Use the proof step `zero_mem' := by show Valued.v ((0 : K)) < 1; simp`. Use the proof step `smul_mem' := fun c x hx => by show Valued.v ((c : K) * x) < 1`. Rewrite using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hm : ∀ x : O, x ∈ m ↔ Valued.v (x : K) < 1` using `fun x => Iff.rfl`. Establish `hsurj` using `fun a c => Ideal.Quotient.mk_surjective ((R : Matrix (Fin V.rank) (Fin V.rank) (kP s.w)) a c)`. Use `choose u hu using hsurj`. Set `A : Matrix {a : Fin V.rank // blk2 r a = 1} {a : Fin V.rank // blk2 r a = 1} O` to `fun a c => ⟨NX.locM s κ (Fin.cast hn a.1) (Fin.cast hn c.1), (hred a.1 c.1).1⟩`. Set `Bm : Matrix {a : Fin V.rank // blk2 r a = 1} {a : Fin V.rank // blk2 r a = 1} O` to `fun a c => ⟨s.i (u a.1 c.1 : D.host.E), s.split_le_one _⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hAB : A.map (Ideal.Quotient.mk m) = Bm.map (Ideal.Quotient.mk m)`. Use extensionality with `a c`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[Ideal.Quotient.eq, hm]`. Establish `hv` using `((hred a.1 c.1).2 (u a.1 c.1)).2 (hu a.1 c.1).symm`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `show Valued.v (NX.locM s κ (Fin.cast hn a.1) (Fin.cast hn c.1) - s.i (u a.1 c.1 : D.host.E)) < 1`. Rewrite using `[← Valuation.map_neg, neg_sub]` and apply the resulting hypothesis. Establish `hdet : Ideal.Quotient.mk m A.det = Ideal.Quotient.mk m Bm.det`. Rewrite using `[RingHom.map_det, RingHom.map_det, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, hAB]`. Set `e : {a : Fin V.rank // blk2 r a = 1} ≃ {i : Fin n // r ≤ (i : ℕ)}` to `{ toFun := fun a => ⟨Fin.cast hn a.1, by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `a.2`. Unfold `blk2 at h`. Establish `h' : ¬ (a.1 : ℕ) < r` using `fun h' => by simp [h'] at h`. Simplify using `only [Fin.val_cast]`. Use the proof step `omega⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `invFun := fun i => ⟨Fin.cast hn.symm i.1, by`. Establish `h` using `i.2`. Unfold `blk2`. Rewrite using `[if_neg (by simp only [Fin.val_cast]; omega)]⟩`. Use `left_inv := fun a => rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `right_inv := fun i => rfl }`. Establish `hdetT : NX.detT r (NX.locM s κ) = ((A.det : O) : K)`. Rewrite using `[show ((A.det : O) : K) = O.subtype A.det from rfl, RingHom.map_det]`. Unfold `NX.detT`. Rewrite using `[← Matrix.det_submatrix_equiv_self e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hdB : ((dBlk (blk2 r) 1 R : (kP s.w)ˣ) : kP s.w) = Ideal.Quotient.mk s.w.asIdeal (Matrix.det (fun a c : {a : Fin V.rank // blk2 r a = 1} => u a.1 c.1))`. Unfold `dBlk`. Rewrite using `[extendOne_of_mem _ hb]`. Use `show (((R : Matrix (Fin V.rank) (Fin V.rank) (kP s.w)).submatrix Subtype.val Subtype.val).det) = _`.
-
-Rewrite using `[show ((R : Matrix (Fin V.rank) (Fin V.rank) (kP s.w)).submatrix Subtype.val Subtype.val) = (Matrix.of fun a c : {a : Fin V.rank // blk2 r a = 1} => u a.1 c.1).map (Ideal.Quotient.mk s.w.asIdeal) from by`. Use extensionality with `a c`. Conclude with `(hu a.1 c.1).symm]`. Conclude with `((Ideal.Quotient.mk s.w.asIdeal).map_det _).symm`. Establish `hBU : ((Bm.det : O) : K) = s.i ((Matrix.det (fun a c : {a : Fin V.rank // blk2 r a = 1} => u a.1 c.1) : 𝓞 D.host.E) : D.host.E)`.
-
-Rewrite using `[show ((Bm.det : O) : K) = O.subtype Bm.det from rfl, RingHom.map_det, show s.i ((Matrix.det (fun a c : {a : Fin V.rank // blk2 r a = 1} => u a.1 c.1) : 𝓞 D.host.E) : D.host.E) = ((s.i : D.host.E →+* K).comp (algebraMap (𝓞 D.host.E) D.host.E)) (Matrix.det (fun a c : {a : Fin V.ra …`. Use `Eq.trans ?_ ((((s.i : D.host.E →+* K).comp (algebraMap (𝓞 D.host.E) D.host.E)).map_det (Matrix.of fun a c : {a : Fin V.rank // blk2 r a = 1} => u a.1 c.1)).symm)` and prove the remaining obligations. Both sides reduce to the same expression. Use `⟨by rw [hdetT]; exact (A.det).2, _, ?_, hdB⟩` and prove the remaining obligations. Rewrite using `[hdetT, ← hBU]`.
-
-Establish `h1` using `(hm _).1 (Ideal.Quotient.eq.1 hdet.symm)`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem detRed {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E} {P : principalLevelFrame.RowPsi V n}
     (hP : IdFrame hF P) (hn : V.rank = n) (r : ℕ) {κ : GAf D.host.E n} (hκ : κ ∈ ReciprocityTheory.Aut.Umax D.host.E n)
@@ -217,9 +211,9 @@ theorem detRed {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host
   simpa using h1
 
 /- English proof (translation)
-Substitute `hw hrr` using the available equality. Take `⟨-, u, hu, hd⟩` from `detRed hP hn r' hκ s hb`. Use `haveI : Nontrivial (kP s.w) := Ideal.Quotient.nontrivial_iff.2 s.w.isPrime.ne_top`. Establish `hun : u ∉ s.w.asIdeal` using `fun hm => (dBlk (blk2 r') 1 (redFn (1 : GL (Fin V.rank) (Lev.EAf D)) s.w (Lev.finE V (P.ψ κ)))).ne_zero (by rw [hd]; exact Ideal.Quotient.eq_zero_iff_mem.2 hm)`. Take `⟨h1, h2⟩` from `resRep_spec s _ u hun hu`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨h1, hd.trans h2.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem qPlace {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E} {P : principalLevelFrame.RowPsi V n}
     (hP : IdFrame hF P) (hn : V.rank = n) {κ : GAf D.host.E n} (hκ : κ ∈ ReciprocityTheory.Aut.Umax D.host.E n)
@@ -238,13 +232,11 @@ theorem qPlace {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host
   exact ⟨h1, hd.trans h2.symm⟩
 
 /- English proof (translation)
-Substitute `hw hrr` using the available equality. Establish `hred` using `(GlobalTheory.T.frameKeepsMatrices_splitPlace_reduction_local D V n hF P hP hn κ).2 s hκ`. Use `⟨fun a c => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[upper_block_val_submatrix hrV hb]`. Take `⟨hint, hiff⟩` from `hred (Fin.castLE hrV a) (Fin.castLE hrV c)`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `Ideal.Quotient.mk_surjective (((redFn (1 : GL (Fin V.rank) (Lev.EAf D)) s.w (Lev.finE V (P.ψ κ)) : GL (Fin V.rank) (kP s.w)) : Matrix (Fin V.rank) (Fin V.rank) (kP s.w)) (Fin.castLE hrV a) (Fin.castLE hrV c))`. Establish `hv` using `(hiff u).2 hu.symm`. Use `show iso (red (NX.intLift s.v (NX.locM s κ (Fin.cast hn (Fin.castLE hrV a)) (Fin.cast hn (Fin.castLE hrV c))))) = _`. Rewrite using `[Formalism.IndefR.NX.intLift_of_mem _ _ hint]`. Conclude with `((GlobalTheory.T.split_place_residue_map_eq_reduction D.host.E s q hq red iso ⟨_, hint⟩ u).1 hv).trans hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hint, u, hu, hd⟩` from `detRed hP hn r' hκ s hb`. Establish `h1 : iso (red (NX.intLift s.v (NX.detT r' (NX.locM s κ)))) = ((dBlk (blk2 r') 1 (redFn (1 : GL (Fin V.rank) (Lev.EAf D)) s.w (Lev.finE V (P.ψ κ))) : (kP s.w)ˣ) : kP s.w)`. Rewrite using `[Formalism.IndefR.NX.intLift_of_mem _ _ hint, hd]`. Conclude with `(GlobalTheory.T.split_place_residue_map_eq_reduction D.host.E s q hq red iso ⟨_, hint⟩ u).1 hu`. Use `⟨Units.map iso.symm.toRingHom.toMonoidHom (dBlk (blk2 r') 1 (redFn (1 : GL (Fin V.rank) (Lev.EAf D)) s.w (Lev.finE V (P.ψ κ)))), ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Units.coe_map, ← h1]`. Conclude with `(iso.symm_apply_apply _).symm`. Rewrite using `[Units.coe_map]`. Conclude with `iso.apply_symm_apply _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typePlace {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E} {P : principalLevelFrame.RowPsi V n}
     (hP : IdFrame hF P) (hn : V.rank = n) {κ : GAf D.host.E n} (hκ : κ ∈ ReciprocityTheory.Aut.Umax D.host.E n)
@@ -285,35 +277,31 @@ set_option maxHeartbeats 8000000 in
 open Classical in
 
 /- English proof (translation)
-Introduce `D i j b k Q ψ e W₀ _ _ ρ₀ τ M B t hF P hP hβ hPg hinj htQ hdQ iso eG heG hU hUup hdisj e₀ ek hek hgen hchi hmu hres hde g h h'`. Take `⟨hn, -⟩` from `id hP`. Establish `hrW : (Wc D j).rank = D.R.r` using `FWT.rank_Wc j`. Use `set X : GL (Fin (Vc D j).rank) (Lev.EAf D) := Lev.finE (Vc D j) (P.ψ g) with hX`. Establish `hXlev : X ∈ lev D.sp.cm (Vc D j).gram B.F.βS (B.levS t)` using `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hXlev` using `[hβ]`. Take `⟨hparL, hPH⟩` from `mem_lev.1 hXlev`. Establish `hPgB : ∀ PP ∈ B.G.Pg, redFn 1 PP X ∈ blockTri (blkOf (Wc D j).rank ((Vc D j).rank - (Wc D j).rank))` using `fun PP hPP => parLev_g hparL hPP`. Establish `hQB : ∀ PP ∈ B.de.Q ∪ t.Q, redFn 1 PP X ∈ blockTri (blk2 (Wc D j).rank)` using `fun PP hPP => parLev_q hparL hPP`. Establish `hUm : g ∈ ReciprocityTheory.Aut.Umax D.host.E D.R.nV` using `((M.J_mem g).1 h).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg ek (M.chi_eq g h)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg Units.val (GlobalTheory.MtLatConj.levelCharacter_apply_eq_levelFunction_swap B t ⟨_, h'⟩)).symm` and prove the remaining obligations. Use `show ek _ = ((levFn B.F.βS (B.levS t) X : ℂˣ) : ℂ)`. Rewrite using `[hβ]`. Unfold `levFn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, map_mul]`. Simplify using `only [Units.val_mul]`. Use `(mul_assoc _ _ _).trans ?_` and prove the remaining obligations. Use `congr (congrArg HMul.hMul ?_) ?_` and prove the remaining obligations. Take `⟨u, hu_def⟩` from `eG.surjective (Subtype.val (⟨_, hPH⟩ : ↥(B.levS t).P.H))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : eG u ∈ B.G.P.H` using `by rw [hu_def]; exact hPH`. Establish `hu : u ∈ D.nexp.U` using `(hU u).1 hH`. Establish `hkv : ∀ kv, ek (NX.gVal D i k b kv (M.sp (NX.pG D kv)) (M.redG kv) (τ kv) (NX.locM (M.sp (NX.pG D kv)) g)) = e₀ (NX.psiUTot D i b (Pi.mulSingle kv (u kv))) * ((B.G.muC (NX.pG D kv) (dBlk (blkOf (Wc D j).rank ((Vc D j).rank - (Wc D j).rank)) 1 (redFn 1 (NX.pG D kv) X)) : ℂˣ) : ℂ)`. Introduce `kv`. Establish `hPGk : NX.pG D kv ∈ B.G.Pg` using `(hPg _).2 ⟨kv, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbOf : redFn 1 (NX.pG D kv) X ∈ blockTri (blkOf (Wc D j).rank ((Vc D j).rank - (Wc D j).rank))` using `hPgB _ hPGk`. Establish `hw : (M.sp (NX.pG D kv)).w = NX.pG D kv` using `M.sp_w _ (Or.inr (Or.inr ⟨kv, rfl⟩))`. Take `⟨hmat, x, hx1, hx2⟩` from `typePlace hP hn hUm (M.sp (NX.pG D kv)) (NX.pG D kv) hw (D.host.g kv.1) (D.host.g_prime kv.1) (M.redG kv) (iso kv) D.R.r (Wc D j).rank hrW (Nat.le_add_right D.R.r D.R.t) B.hr (blockTri_blkOf_le _ _ hbOf)`. Establish `hG : NX.redMat (M.sp (NX.pG D kv)).v (M.redG kv) (NX.topR (Nat.le_add_right D.R.r D.R.t) (NX.locM (M.sp (NX.pG D kv)) g)) = ((u kv : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1)))`. Use extensionality with `a c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `(iso kv).injective` to reduce the goal to its premises. Use `(hmat a c).trans ?_` and prove the remaining obligations. Establish `e1` using `heG u kv hPGk (Fin.cast hrW.symm a) (Fin.cast hrW.symm c)`. Rewrite `e1` using `[hu_def]`. Conclude with `e1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hglOf : NX.glOf (NX.redMat (M.sp (NX.pG D kv)).v (M.redG kv) (NX.topR (Nat.le_add_right D.R.r D.R.t) (NX.locM (M.sp (NX.pG D kv)) g))) = u kv`. Rewrite using `[hG]`. Conclude with `Units.ext (NX.glOf_val _ (Matrix.isUnits_det_units (u kv)))`. Rewrite using `[Formalism.IndefR.NX.gVal_of (D := D) (i := i) (b := b) (k := k) (kv := kv) (s := M.sp (NX.pG D kv)) (red := M.redG kv) (τ' := τ kv) (xm := NX.locM (M.sp (NX.pG D kv)) g) (G := _) (hrn := Nat.le_add_right D.R.r D.R.t) (hG := rfl) (u := x) (hu := hx1), map_mul, hek, hek]`. Use `congr (congrArg HMul.hMul ?_) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `congrArg (fun z => e₀ (NX.psiUTot D i b (Pi.mulSingle kv z))) hglOf`. Use `(hmu kv x _ ?_).symm` and prove the remaining obligations. Rewrite using `[secondBlock_blockOf_eq_blockTwo _ hbOf]`. Conclude with `hx2.symm`. Rewrite using `[map_prod, Finset.prod_congr rfl fun kv _ => hkv kv, Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← map_prod, psiU_prod i b hUup hgen u hu, ← hchi ⟨u, hu⟩ hH, extendOne_of_mem _ hPH]`. Conclude with `congrArg (fun z => ((B.G.P.chi z : ℂˣ) : ℂ)) (Subtype.ext hu_def)`. Use `show _ = ((∏ PP ∈ B.G.Pg, ∏ c ∈ Finset.range 1, B.G.muC PP (dBlk (blkOf (Wc D j).rank ((Vc D j).rank - (Wc D j).rank)) (c + 1) (redFn 1 PP X)) : ℂˣ) : ℂ)`. Establish `hPgeq : B.G.Pg = Finset.univ.image (NX.pG D)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `PP`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, hPg PP, eq_comm]`. Rewrite using `[hPgeq, Finset.prod_image (fun a _ b _ hab => hinj hab), Units.coe_prod]`. Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_range_one]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show _ = ((∏ PP ∈ B.de.Q ∪ t.Q, (B.de.locC PP * t.locC PP) (dBlk (blk2 (Wc D j).rank) 1 (redFn 1 PP X)) : ℂˣ) : ℂ)`. Establish `hQB' : ∀ PP ∈ B.de.Q ∪ t.Q, redFn 1 PP X ∈ blockTri (blk2 (Wc D j).rank)` using `hQB`. Rewrite `hQB'`, the goal using `[hdQ, htQ]`. Rewrite using `[Finset.prod_union hdisj.symm, Units.val_mul, Units.coe_prod, Units.coe_prod, map_prod, map_prod, mul_comm]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Finset.prod_congr rfl fun PP hPP => ?_` and prove the remaining obligations. Establish `hw` using `M.sp_w PP (Or.inr (Or.inl hPP))`. Take `⟨hnot, hd⟩` from `qPlace hP hn hUm (M.sp PP) PP hw D.R.r _ hrW (hQB' PP (Finset.mem_union_left _ hPP))`. Establish `hnT : PP ∉ t.Q` using `by rw [htQ]; exact Finset.disjoint_right.1 hdisj hPP`. Establish `hD : PP ∈ B.de.Q` using `by rw [hdQ]; exact hPP`.
-
-Rewrite using `[MonoidHom.mul_apply, Units.val_mul, Twist.locC, Twist.locC, if_neg hnT, if_pos hD, MonoidHom.one_apply, Units.val_one, mul_one]`. Conclude with `(hde PP hPP _ hnot _ hd).symm`. Use `Finset.prod_congr rfl fun PP hPP => ?_` and prove the remaining obligations. Establish `hw` using `M.sp_w PP (Or.inl hPP)`. Take `⟨hnot, hd⟩` from `qPlace hP hn hUm (M.sp PP) PP hw D.R.r _ hrW (hQB' PP (Finset.mem_union_right _ hPP))`.
-
-Establish `hnD : PP ∉ B.de.Q` using `by rw [hdQ]; exact Finset.disjoint_left.1 hdisj hPP`. Establish `hT : PP ∈ t.Q` using `by rw [htQ]; exact hPP`. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, Twist.locC, Twist.locC, if_neg hnD, if_pos hT, MonoidHom.one_apply, Units.val_one, one_mul]`. Conclude with `(hres PP hPP _ hnot _ hd).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levChi_read : ∀ (D : D7) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (k : ℕ) (Q : Finset (PlE D.host)) (ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ) (e : ℤ) (W₀ : Type) [AddCommGroup W₀] [Module (FractionRing (D.ntw.O i)) W₀] (ρ₀ : Representation (FractionRing (D.ntw.O i)) (ReciprocityTheory.Aut.GQ D.host.E D.R.nV) W₀) (τ : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk), (ZMod (D.host.g kv.1))ˣ →* (FractionRing (D.ntw.O i))ˣ) (M : NX.MtVReal D i (j.1 + 1) b k Q ψ e W₀ ρ₀ τ) (B : GlobalTheory.ExportSeries.Base (Vc D j) (Wc D j)) (t : Twist D Circle) (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi (Vc D j) D.R.nV), IdFrame hF P → B.F.βS = 1 → (∀ PP, PP ∈ B.G.Pg ↔ ∃ kv, PP = NX.pG D kv) → Function.Injective (NX.pG D) → t.Q = M.QP → B.de.Q = M.DP → ∀ (iso : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk), ZMod (D.host.g kv.1) ≃+* kP (NX.pG D kv)) (eG : G0g D.nd ≃* G0 B.G.Pg (Wc D j).rank), (∀ (g : G0g D.nd) kv (h : NX.pG D kv ∈ B.G.Pg) (a c : Fin (Wc D j).rank), (eG g ⟨NX.pG D kv, h⟩).val a c = iso kv ((g kv).val (Fin.cast (FWT.rank_Wc j) a) (Fin.cast (FWT.rank_Wc j) c))) → (∀ g, eG g ∈ B.G.P.H ↔ g ∈ D.nexp.U) → D.nexp.U = NX.Uup (fun kv : (Σ kk : Fin 2, D.nd.PlG kk) => D.host.g kv.1) D.R.r → Disjoint M.QP M.DP → ∀ (e₀ : FractionRing (D.ntw.O i) →+* ℂ) (ek : NX.Kk D i k →+* ℂ), (∀ x, ek (NX.toKk D i k x) = e₀ x) → NX.IsStdGeneric (fun kv : (Σ kk : Fin 2, D.nd.PlG kk) => D.host.g kv.1) D.R.r (D.nexp.psiU i b) → (∀ (u : D.nexp.U) hu, ((B.G.P.chi ⟨eG u, hu⟩ : ℂˣ) : ℂ) = e₀ (D.nexp.psiU i b u : (FractionRing (D.ntw.O i))ˣ)) → (∀ kv (x : (ZMod (D.host.g kv.1))ˣ) (z : (kP (NX.pG D kv))ˣ), (z : kP (NX.pG D kv)) = iso kv x → ((B.G.muC (NX.pG D kv) z : ℂˣ) : ℂ) = e₀ (τ kv x : (FractionRing (D.ntw.O i))ˣ)) → (∀ PP ∈ M.QP, ∀ u : 𝓞 D.host.E, u ∉ PP.asIdeal → ∀ z : (kP PP)ˣ, (z : kP PP) = Ideal.Quotient.mk PP.asIdeal u → ((t.resC PP z : ℂˣ) : ℂ) = ek (NX.ofOk D i k (NX.tameVal ψ PP e u).1)) → (∀ PP ∈ M.DP, ∀ u : 𝓞 D.host.E, u ∉ PP.asIdeal → ∀ z : (kP PP)ˣ, (z : kP PP) = Ideal.Quotient.mk PP.asIdeal u → ((B.de.resC PP z : ℂˣ) : ℂ) = ek (NX.ofO0 D i k (NX.tameVal (D.ntw.delta i) PP (if b then e else -e) u).1)) → ∀ g (h : g ∈ M.J) (h' : frameEquiv P g ∈ B.levJ t), ek ((M.χ ⟨g, h⟩ : (NX.Kk D i k)ˣ) : NX.Kk D i k) = ((B.levLam t ⟨frameEquiv P g, h'⟩ : ℂˣ) : ℂ) := by
   intro D i j b k Q ψ e W₀ _ _ ρ₀ τ M B t hF P hP hβ hPg hinj htQ hdQ iso eG heG hU hUup hdisj e₀ ek hek hgen hchi hmu

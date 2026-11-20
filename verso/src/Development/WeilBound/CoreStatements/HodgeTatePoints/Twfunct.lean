@@ -13,9 +13,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {S : Scheme.{0}} {G : Over S} [Grp
   {x : Spec (CommRingCat.of R) ⟶ S}
 
 /- English proof (translation)
-Set `g : Over.mk (Γ.G.hom ≫ x) ⟶ G` to `Over.homMk i h.isOver`. Establish `hg : g ^ N = 1` using `(h.kernel Γ.G g).2 ⟨𝟙 _, by simp [g]⟩`. Take `⟨k, rfl⟩` from `hN`. Establish `hg' : (g ≫ u) ^ (N * k) = 1`. Rewrite using `[← MonObj.pow_comp, pow_mul, hg, one_pow, MonObj.one_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `(h'.kernel Γ.G (g ≫ u)).1 hg'`. Conclude with `⟨a, by rw [ha]; simp [g]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift {T T' : Type} [CommGroup T] [CommGroup T'] (Γ : QFGroup R T) (Γ' : QFGroup R T')
     {N N' : ℕ} {i : Γ.G.left ⟶ G.left} {i' : Γ'.G.left ⟶ G.left}
@@ -30,7 +30,7 @@ theorem exists_lift {T T' : Type} [CommGroup T] [CommGroup T'] (Γ : QFGroup R T
   exact ⟨a, by rw [ha]; simp [g]⟩
 
 /- English proof (translation)
-Use `h.inj (Over.mk (w ≫ Γ.G.hom)) (Over.homMk v h1) (Over.homMk w rfl) h2` as an intermediate fact. Conclude with `congrArg (fun z => z.left) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem left_ext {T : Type} [CommGroup T] (Γ : QFGroup R T) {N : ℕ} {i : Γ.G.left ⟶ G.left}
     (h : Γ.IsTorsionAlong G x N i) {Y : Scheme.{0}} (v w : Y ⟶ Γ.G.left) (h1 : v ≫ Γ.G.hom = w ≫ Γ.G.hom)
@@ -40,7 +40,7 @@ theorem left_ext {T : Type} [CommGroup T] (Γ : QFGroup R T) {N : ℕ} {i : Γ.G
 
 omit [IsDomain R] in
 /- English proof (translation)
-The claim follows from `Funct.valAt_pullback v a _ rfl ⊤ le_top le_top s`.
+A detailed English derivation is pending.
 -/
 theorem valAt_comp {X Y : Scheme.{0}} (v : Spec (CommRingCat.of R) ⟶ X) (a : X ⟶ Y) (s : Γ(Y, ⊤)) :
     valAt v ⊤ le_top ((a.app ⊤).hom s) = valAt (v ≫ a) ⊤ le_top s :=
@@ -48,7 +48,7 @@ theorem valAt_comp {X Y : Scheme.{0}} (v : Spec (CommRingCat.of R) ⟶ X) (a : X
 
 omit [IsDomain R] in
 /- English proof (translation)
-Establish `h1 : ∀ {Z : Scheme.{0}} (w : Z ⟶ Y), w.appLE ⊤ ⊤ le_top = w.appTop` using `fun w => w.appLE_eq_app`. Simplify using `only [valAt, h1]`. Rewrite using `[Scheme.Hom.comp_appTop]`. Use `congrArg (fun z => z.hom (v.appTop.hom s)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom π))` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valAt_specMap {B : Type} [CommRing B] {Y : Scheme.{0}} (π : R →+* B) (v : Spec (CommRingCat.of R) ⟶ Y)
     (s : Γ(Y, ⊤)) : valAt (Spec.map (CommRingCat.ofHom π) ≫ v) ⊤ le_top s = π (valAt v ⊤ le_top s) := by
@@ -61,9 +61,9 @@ theorem valAt_specMap {B : Type} [CommRing B] {Y : Scheme.{0}} (π : R →+* B) 
 
 omit [IsDomain R] in
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Use `M.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using (left_eq_mul.1 this)`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ k ih => rw [succ_nsmul, M.add, ih, pow_succ]`.
+Treat this case separately.
 -/
 theorem pt_nsmul {L : Type} [AddCommGroup L] [Module R L] (M : LieModel G x L) (e : L) (N : ℕ) :
     M.pt (N • e) = M.pt e ^ N := by
@@ -75,15 +75,15 @@ theorem pt_nsmul {L : Type} [AddCommGroup L] [Module R L] (M : LieModel G x L) (
   | succ k ih => rw [succ_nsmul, M.add, ih, pow_succ]
 
 /- English proof (translation)
-Set `Q` to `R ⧸ Ideal.span {(N : R)}`. Set `q : R →+* Q` to `Ideal.Quotient.mk _`. Set `c : R →+* DualNumber Q` to `(algebraMap Q (DualNumber Q)).comp q`. Set `Y : Over (Spec (CommRingCat.of R))` to `Over.mk (Spec.map (CommRingCat.ofHom c))`. Establish `hc : (dualMap q).comp (algebraMap R (DualNumber R)) = c`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply the tactic sequence `ext r <;> simp [c, dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Set `k : Over.mk (Y.hom ≫ x) ⟶ epsAt x` to `Over.homMk (Spec.map (CommRingCat.ofHom (dualMap q))) (by`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ ≫ x = Spec.map _ ≫ x`. Rewrite using `[← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp, hc])`. Set `k₀ : Over.mk (Y.hom ≫ x) ⟶ Over.mk x` to `Over.homMk Y.hom rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hN : q (N : R) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Establish `hc' : (dualMap q).comp (epsMul (N : R)) = c.comp (TrivSqZeroExt.fstHom R R R).toRingHom`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [c, dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl, -map_natCast, hN]`. Establish `hg : (k ≫ M.pt e) ^ N = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← MonObj.comp_pow, ← pt_nsmul, ← MonObj.comp_one k₀]`. Use `ext1`. Rewrite using `[Over.comp_left, Over.comp_left, ← Nat.cast_smul_eq_nsmul R, M.smul, ← M.tan e]`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ ≫ _ = Spec.map _ ≫ Spec.map _ ≫ _`. Rewrite using `[← Spec.map_comp_assoc, ← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hc']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `(h.kernel Y (k ≫ M.pt e)).1 hg`. Conclude with `⟨v.left, Over.w v, hv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_tan {T : Type} [CommGroup T] (Γ : QFGroup R T) {N : ℕ} {i : Γ.G.left ⟶ G.left}
     (h : Γ.IsTorsionAlong G x N i) {L : Type} [AddCommGroup L] [Module R L] (M : LieModel G x L) (e : L) :
@@ -129,7 +129,7 @@ theorem levMap_lev {La : Type} [AddCommGroup La] (p n : ℕ) (φ : La →+ La) (
     levMap p n φ (lev p n a) = lev p n (φ a) := rfl
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (Multiplicative.toAdd t)`. Conclude with `⟨a, by simp [lev, ha]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lev_surj {La : Type} [AddCommGroup La] (p n : ℕ) (t : LevGrp La p n) : ∃ a, lev p n a = t := by
   obtain ⟨a, ha⟩ := Submodule.Quotient.mk_surjective _ (Multiplicative.toAdd t)
@@ -141,9 +141,9 @@ Both sides reduce to the same expression.
 theorem lev_zero {La : Type} [AddCommGroup La] (p n : ℕ) : lev p n (0 : La) = 1 := rfl
 
 /- English proof (translation)
-Establish `: Finite (La ⧸ LinearMap.range ((p ^ n) • (LinearMap.id : La →ₗ[ℤ] La)))`. Use `Module.finite_of_fg_torsion _ fun t => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ t`. Use `⟨⟨((p ^ n : ℕ) : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast pow_ne_zero n hp)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨a, (natCast_zsmul a (p ^ n)).symm⟩`. Use `infer_instance`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_lev {La : Type} [AddCommGroup La] [Module.Finite ℤ La] {p : ℕ} (hp : p ≠ 0) (n : ℕ) :
     Finite (LevGrp La p n) := by
@@ -160,17 +160,17 @@ variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] {S : Scheme.{0}} {G : Ov
   {L : Type} [AddCommGroup L] [Module O L] (M : LieModel G y L)
 
 /- English proof (translation)
-Take `⟨s, hs, hw⟩` from `hf`. Take `⟨j, hj⟩` from `exists_lift (X.Γ n) (X.Γ (n + 1)) (X.tors n) (X.tors (n + 1)) (pow_dvd_pow p n.le_succ) (𝟙 G)`. Rewrite `hj` using `[Over.id_left, Category.comp_id]`. Use `⟨(j.left.app ⊤).hom s, fun t => ?_, fun e => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `lev_surj p n t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: ((X.Γ n).pt (lev p n a)).left ≫ j.left = ((X.Γ (n + 1)).pt (lev p (n + 1) (p • a))).left`. Use `left_ext _ (X.tors (n + 1)) _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w, Over.w, Over.w]`. Rewrite using `[Category.assoc, hj, X.compat]`. Rewrite using `[valAt_comp, this, hs, hg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv1, hv2, hv3⟩` from `hw e`. Take `⟨v', h1, h2⟩` from `exists_tan (X.Γ n) (X.tors n) M e`. Use `⟨v', h1, h2, ?_⟩` and prove the remaining obligations. Establish `hle : Ideal.span {((p ^ (n + 1) : ℕ) : O)} ≤ Ideal.span {((p ^ n : ℕ) : O)}` using `Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast (pow_dvd_pow p n.le_succ))`. Set `π` to `Ideal.Quotient.factor hle`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: v' ≫ j.left = Spec.map (CommRingCat.ofHom (dualMap π)) ≫ v`. Use `left_ext _ (X.tors (n + 1)) _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, Over.w, h1, hv1, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `ext <;> simp [π, dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[Category.assoc, Category.assoc, hj, h2, hv2, ← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp]`. Use `congr 3`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [π, dualMap]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h0 : g 1 = f 1` using `by simpa [lev_zero] using hg 0`. Rewrite using `[valAt_comp, this, valAt_specMap, hv3, h0]`. Apply the tactic sequence `ext <;> simp [π, dualMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isDer_res (n : ℕ) (f : LevGrp La p (n + 1) → O) (g : LevGrp La p n → O) (w : Module.Dual O L)
     (hf : X.IsDer M (n + 1) f w) (hg : ∀ a : La, g (lev p n a) = f (lev p (n + 1) (p • a))) : X.IsDer M n g w := by
@@ -205,7 +205,7 @@ theorem isDer_res (n : ℕ) (f : LevGrp La p (n + 1) → O) (g : LevGrp La p n �
     ext <;> simp [π, dualMap]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_lift (X.Γ n) (X.Γ n) (X.tors n) (X.tors n) dvd_rfl u`. Use `⟨a, ha, fun t => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `lev_surj p n t`. Use `(X.tors n).inj _ _ _ ?_` and prove the remaining obligations. Rewrite using `[levMap_lev, hu, Over.comp_left, Category.assoc, ha]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_endo (u : G ⟶ G) [IsMonHom u] (φ : La →+ La) (hu : X.Induces u φ) (n : ℕ) :
     ∃ a : (X.Γ n).G ⟶ (X.Γ n).G, a.left ≫ X.i n = X.i n ≫ u.left ∧
@@ -217,11 +217,11 @@ theorem exists_endo (u : G ⟶ G) [IsMonHom u] (φ : La →+ La) (hu : X.Induces
   rw [levMap_lev, hu, Over.comp_left, Category.assoc, ha]
 
 /- English proof (translation)
-Take `⟨a, ha, hpt⟩` from `exists_endo X u φ hu n`. Take `⟨s, hs, hw⟩` from `hf`. Use `⟨(a.left.app ⊤).hom s, fun t => ?_, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[valAt_comp, ← Over.comp_left, hpt, hs]`. Take `⟨v, hv1, hv2, -⟩` from `hw e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v', h1, h2, h3⟩` from `hw (dφ e)`. Use `⟨v, hv1, hv2, ?_⟩` and prove the remaining obligations. Establish `: v ≫ a.left = v'`. Use `left_ext _ (X.tors n) _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w, h1, hv1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ha, h2, hd e, ← Category.assoc, hv2, Over.comp_left, Category.assoc]`. Rewrite using `[valAt_comp, this, h3]`. Simplify using `only [map_one, LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isDer_endo (u : G ⟶ G) [IsMonHom u] (φ : La →+ La) (dφ : L →ₗ[O] L) (hu : X.Induces u φ)
     (hd : M.IsDiffOf u dφ) (n : ℕ) (f : LevGrp La p n → O) (w : Module.Dual O L) (hf : X.IsDer M n f w) :
@@ -242,9 +242,9 @@ theorem isDer_endo (u : G ⟶ G) [IsMonHom u] (φ : La →+ La) (dφ : L →ₗ[
 
 set_option linter.unusedVariables false in
 /- English proof (translation)
-Introduce `p hpp C _ _ _ v O _ _ _ _ _ _ S _ G _ _ _ y La _ _ _ X L _ _ M`. Use `⟨isDer_res X M, fun u _ φ dφ hu hd n f g hg => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `rfl : g = fun t => f (levMap p n φ t) := by`. Use function extensionality and compare the values at `t`. Take `⟨b, rfl⟩` from `lev_surj p n t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hg, levMap_lev]`. Use `⟨fun hf => ?_, isDer_endo X M u φ dφ hu hd n f⟩` and prove the remaining obligations. Take `⟨a, -, hpt⟩` from `exists_endo X u φ hu n`. Establish `: Finite (LevGrp La p n)` using `finite_lev hpp.out.ne_zero n`. Conclude with `Funct.comp_mem_btOrder O _ _ _ _ a _ hpt f hf`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tw_funct : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [IsDomain O] [Algebra O C] (hv : v.Integers O) (hp : v (p : C) < 1) (hO : IsAdicComplete (Ideal.span {(p : O)}) O) (S : Scheme.{0}) [IsLocallyNoetherian S] (G : Over S) [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G) (y : Spec (CommRingCat.of O) ⟶ S) (La : Type) [AddCommGroup La] [Module.Free ℤ La] [Module.Finite ℤ La] (X : TorsTower p G y La) (L : Type) [AddCommGroup L] [Module O L] (M : LieModel G y L), (∀ n f g w, X.IsDer M (n + 1) f w → (∀ a : La, g (lev p n a) = f (lev p (n + 1) (p • a))) → X.IsDer M n g w) ∧ ∀ (u : G ⟶ G) [IsMonHom u] (φ : La →+ La) (dφ : L →ₗ[O] L), X.Induces u φ → M.IsDiffOf u dφ → ∀ n (f g : LevGrp La p n → O), (∀ a, g (lev p n a) = f (lev p n (φ a))) → (f ∈ (X.Γ n).btOrder ⊤ → g ∈ (X.Γ n).btOrder ⊤) ∧ ∀ w, X.IsDer M n f w → X.IsDer M n g (w ∘ₗ dφ) := by
   intro p hpp C _ _ _ v O _ _ _ _ _ _ S _ G _ _ _ y La _ _ _ X L _ _ M

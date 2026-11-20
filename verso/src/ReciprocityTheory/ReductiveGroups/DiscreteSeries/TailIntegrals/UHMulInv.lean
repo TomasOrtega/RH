@@ -13,53 +13,53 @@ section herm
 variable {ι : Type*} [Fintype ι] (H : Matrix ι ι ℂ)
 
 /- English proof (translation)
-Simplify using `[herm, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_add_l (u v w : ι → ℂ) : herm H (u + v) w = herm H u w + herm H v w := by
   simp [herm, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[herm, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_add_r (u v w : ι → ℂ) : herm H u (v + w) = herm H u v + herm H u w := by
   simp [herm, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[herm, Matrix.mulVec_sub, dotProduct_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_sub_l (u v w : ι → ℂ) : herm H (u - v) w = herm H u w - herm H v w := by
   simp [herm, Matrix.mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Simplify using `[herm, sub_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_sub_r (u v w : ι → ℂ) : herm H u (v - w) = herm H u v - herm H u w := by
   simp [herm, sub_dotProduct]
 
 /- English proof (translation)
-Simplify using `[herm, Matrix.mulVec_smul, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_l (a : ℂ) (u w : ι → ℂ) : herm H (a • u) w = a * herm H u w := by
   simp [herm, Matrix.mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Simplify using `[herm, star_smul, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_r (a : ℂ) (u w : ι → ℂ) : herm H u (a • w) = star a * herm H u w := by
   simp [herm, star_smul, smul_dotProduct]
 
 /- English proof (translation)
-Simplify using `[herm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_zero_l (w : ι → ℂ) : herm H 0 w = 0 := by simp [herm]
 
 /- English proof (translation)
-Simplify using `[herm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_zero_r (u : ι → ℂ) : herm H u 0 = 0 := by simp [herm]
 
 /- English proof (translation)
-Establish `hg' : gᴴ * H * g = H` using `hg`. Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_UH [DecidableEq ι] {g : Matrix ι ι ℂ} (hg : g ∈ UH H) (u v : ι → ℂ) :
     herm H (g *ᵥ u) (g *ᵥ v) = herm H u v := by
@@ -68,7 +68,7 @@ theorem herm_UH [DecidableEq ι] {g : Matrix ι ι ℂ} (hg : g ∈ UH H) (u v :
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg']
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify `congrFun (h (Pi.single j 1)) i` using `[Matrix.mulVec_single_one]`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mat_eq_of_mulVec [DecidableEq ι] {A B : Matrix ι ι ℂ} (h : ∀ v, A *ᵥ v = B *ᵥ v) : A = B := by
   ext i j
@@ -80,7 +80,7 @@ section hpk
 variable (k r : ℕ)
 
 /- English proof (translation)
-Break down `i with ⟨i, hi⟩` into its components or cases. Break down `j with ⟨j, hj⟩` into its components or cases. Simplify using `only [Hpk, Fin.mk.injEq] at h ⊢`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_out {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val) (j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j.val = 2 * r + k - i.val then 1 else 0 := by
@@ -89,7 +89,7 @@ theorem Hpk_out {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val) (j :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Break down `i with ⟨i, hi⟩` into its components or cases. Break down `j with ⟨j, hj⟩` into its components or cases. Simplify using `only [Hpk, Fin.mk.injEq] at h ⊢`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_mid {i : Fin (2 * r + k + 1)} (h : ¬(i.val < r ∨ r + k < i.val)) (j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j.val = i.val then (if i.val = r + k then -1 else 1) else 0 := by
@@ -98,13 +98,13 @@ theorem Hpk_mid {i : Fin (2 * r + k + 1)} (h : ¬(i.val < r ∨ r + k < i.val)) 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [mulVec, dotProduct]`. Distinguish the cases in `h1 : i.val < r ∨ r + k < i.val`. Rewrite using `[if_pos h1]`. Simplify using `only [Hpk_out k r h1]`. Rewrite using `[Finset.sum_eq_single ⟨2 * r + k - i.val, by omega⟩]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg (fun h => hb (Fin.ext h))]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h1]`. Simplify using `only [Hpk_mid k r h1]`. Rewrite using `[Finset.sum_eq_single i]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (fun h => hb (Fin.ext h))]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ v) i = if i.val < r ∨ r + k < i.val then v ⟨2 * r + k - i.val, by omega⟩
@@ -125,11 +125,11 @@ theorem Hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     · simp
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[Hpk_mulVec]`. Distinguish the cases in `h1 : i.val < r ∨ r + k < i.val`. Rewrite using `[if_pos h1, Hpk_mulVec]`. Establish `e1 : ((⟨2 * r + k - i.val, by omega⟩ : Fin (2 * r + k + 1)).val) = 2 * r + k - i.val` using `rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos (by rw [e1]; omega)]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Apply the tactic sequence `rw [if_neg h1, Hpk_mulVec, if_neg h1] split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_mulVec_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk k r *ᵥ v) = v := by
   ext i
@@ -143,13 +143,13 @@ theorem Hpk_mulVec_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk 
     split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `mat_eq_of_mulVec fun v => by rw [← Matrix.mulVec_mulVec, Hpk_mulVec_mulVec, Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem Hpk_sq : Hpk k r * Hpk k r = 1 :=
   mat_eq_of_mulVec fun v => by rw [← Matrix.mulVec_mulVec, Hpk_mulVec_mulVec, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use extensionality with `i j`. Break down `i with ⟨i, hi⟩` into its components or cases. Break down `j with ⟨j, hj⟩` into its components or cases. Simplify using `only [conjTranspose_apply, Hpk, Fin.mk.injEq]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_conjT : (Hpk k r)ᴴ = Hpk k r := by
   ext i j
@@ -158,7 +158,7 @@ theorem Hpk_conjT : (Hpk k r)ᴴ = Hpk k r := by
   split_ifs <;> first | (exfalso; omega) | simp
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem UH_left_inv {g : Mat k r} (hg : g ∈ GV k r) : Hpk k r * gᴴ * Hpk k r * g = 1 := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -166,19 +166,19 @@ theorem UH_left_inv {g : Mat k r} (hg : g ∈ GV k r) : Hpk k r * gᴴ * Hpk k r
     _ = 1 := by rw [hg', Hpk_sq]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (UH_left_inv k r hg)`.
+A detailed English derivation is pending.
 -/
 theorem UH_inv {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r :=
   Matrix.inv_eq_left_inv (UH_left_inv k r hg)
 
 /- English proof (translation)
-Rewrite using `[UH_inv k r hg, UH_left_inv k r hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UH_inv_mul {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ * g = 1 := by
   rw [UH_inv k r hg, UH_left_inv k r hg]
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.mp (UH_inv_mul k r hg)`.
+A detailed English derivation is pending.
 -/
 theorem UH_mul_inv {g : Mat k r} (hg : g ∈ GV k r) : g * g⁻¹ = 1 :=
   mul_eq_one_comm.mp (UH_inv_mul k r hg)

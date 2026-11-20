@@ -12,29 +12,27 @@ open NumberField GlobalTheory.CuspRep MeasureTheory PositivityTheory.Affgl Globa
 namespace GlobalTheory.CompanionTheory.CTFin.IwaFin
 
 /- English proof (translation)
-Use `set e := GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) with he`. Use `set Q : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) R := (P : Matrix _ _ R).submatrix e e with hQd`. Use `set Q' : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) R := ((P⁻¹ : GL _ R) : Matrix _ _ R).submatrix e e with hQ'd`. Establish `hQQ : Q * Q' = 1`. Rewrite using `[hQd, hQ'd, Matrix.submatrix_mul_equiv, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.submatrix_one_equiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQQ' : Q' * Q = 1`. Rewrite using `[hQd, hQ'd, Matrix.submatrix_mul_equiv, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.submatrix_one_equiv]`. Establish `hz : Q.toBlocks₂₁ = 0`. Use extensionality with `i j`. Conclude with `h1 _ _ (by simp [he]) (by simp [he])`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz' : Q'.toBlocks₂₁ = 0`. Use extensionality with `i j`. Conclude with `h2 _ _ (by simp [he]) (by simp [he])`. Establish `hb : Q = fromBlocks Q.toBlocks₁₁ Q.toBlocks₁₂ 0 Q.toBlocks₂₂`. Rewrite using `[← hz, fromBlocks_toBlocks]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hb' : Q' = fromBlocks Q'.toBlocks₁₁ Q'.toBlocks₁₂ 0 Q'.toBlocks₂₂`. Rewrite using `[← hz', fromBlocks_toBlocks]`. Generalize the expression as in `Q.toBlocks₁₁ = A at hb`. Generalize the expression as in `Q.toBlocks₁₂ = B at hb`. Generalize the expression as in `Q.toBlocks₂₂ = D at hb`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `Q'.toBlocks₁₁ = A' at hb'`. Generalize the expression as in `Q'.toBlocks₁₂ = B' at hb'`. Generalize the expression as in `Q'.toBlocks₂₂ = D' at hb'`. Rewrite `hQQ`, `hQQ'` using `[hb, hb', fromBlocks_multiply, ← fromBlocks_one, fromBlocks_inj]`. Simplify using `only [Matrix.mul_zero, add_zero, Matrix.zero_mul, zero_add] at hQQ`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using `only [Matrix.mul_zero, add_zero, Matrix.zero_mul, zero_add] at hQQ'`. Take `⟨a1, -, -, d1⟩` from `hQQ`. Take `⟨a2, -, -, d2⟩` from `hQQ'`. Set `X : Matrix (Fin r) (Fin s) R` to `B * D'`. Set `x : BlockIx (r + s) r → R` to `fun p => X ⟨p.1.1, p.2.1⟩ ⟨p.1.2 - r, by have := p.1.2.isLt; have := p.2.2; omega⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `m : GL (Fin r) R × GL (Fin s) R` to `(⟨A, A', a1, a2⟩, ⟨D, D', d1, d2⟩)`. Use `⟨x, m, Units.ext ?_⟩` and prove the remaining obligations. Establish `hn : (nilM x : Matrix (Fin (r + s)) (Fin (r + s)) R).submatrix e e = fromBlocks 0 X 0 0`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[nilM, he]`. Establish `h : (((e (Sum.inl i) : Fin (r + s)) : ℕ) < r ∧ r ≤ ((e (Sum.inr j) : Fin (r + s)) : ℕ))`. Simplify using `[he]`. Simplify using `only [submatrix_apply, nilM, of_apply, dif_pos h, fromBlocks_apply₁₂, x]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `Fin.ext (by simp [he])`. Simplify using `[nilM, he]`. Simplify using `[nilM, he]`. Establish `hu : ((unip x : GL (Fin (r + s)) R) : Matrix _ _ R).submatrix e e = fromBlocks 1 X 0 1`. Express the relevant statement in the definitionally equal form `(1 + nilM x : Matrix _ _ R).submatrix e e = _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `h : (1 + nilM x : Matrix (Fin (r + s)) (Fin (r + s)) R).submatrix e e = (1 : Matrix (Fin (r + s)) (Fin (r + s)) R).submatrix e e + (nilM x).submatrix e e` using `rfl`. Rewrite using `[h, Matrix.submatrix_one_equiv, hn, ← fromBlocks_one, fromBlocks_add]`. Simplify using the standard rewrite rules. Establish `hl : ((lev R r s m : GL (Fin (r + s)) R) : Matrix _ _ R).submatrix e e = fromBlocks A 0 0 D`. Rewrite using `[lev, GlobalTheory.SmGL.val_emb₂]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[m, ← he]`. Establish `hinj : ∀ M N : Matrix (Fin (r + s)) (Fin (r + s)) R, M.submatrix e e = N.submatrix e e → M = N`. Introduce `M N h`. Use extensionality with `i j`.
-
-Use `congrFun (congrFun h (e.symm i)) (e.symm j)` as an intermediate fact. Simplify using `using this`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Units.val_mul, ← Matrix.submatrix_mul_equiv _ _ _ e, hu, hl, fromBlocks_multiply, ← hQd, hb]`. Simplify using `[X, Matrix.mul_assoc, d2]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unip_mul_lev {R : Type} [CommRing R] (r s : ℕ) (P : GL (Fin (r + s)) R)
     (h1 : ∀ i j : Fin (r + s), r ≤ (i : ℕ) → (j : ℕ) < r → (P : Matrix _ _ R) i j = 0)
@@ -106,21 +104,19 @@ theorem exists_unip_mul_lev {R : Type} [CommRing R] (r s : ℕ) (P : GL (Fin (r 
   simp [X, Matrix.mul_assoc, d2]
 
 /- English proof (translation)
-Set `φ` to `GroundTheory.Automorphic.AdelicGLn.finiteRestrictedEquiv E (r + s)`. Set `β : Fin (r + s) → ℕ` to `fun i => if (i : ℕ) < r then 0 else 1`. Establish `hβ : Monotone β`. Introduce `i j hij`. Establish `: (i : ℕ) ≤ j` using `hij`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [β]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `loc : ∀ v : HeightOneSpectrum (𝓞 E), ∃ p ∈ GroundTheory.Automorphic.Iwasawa.blockUpper (v.adicCompletion E) (r + s) β, ∃ c ∈ GroundTheory.Automorphic.GLnLocal.integralGL (v.adicCompletion E) (r + s), (φ k v : GL (Fin (r + s)) (v.adicCompletion E)) = p * c ∧ (φ k v ∈ GroundTheory. …`. Introduce `v`. Distinguish the cases in `h : φ k v ∈ GroundTheory.Automorphic.GLnLocal.integralGL (v.adicCompletion E) (r + s)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨1, one_mem _, φ k v, h, (one_mul _).symm, fun _ => rfl⟩`. Take `⟨p, hp, c, hc, e⟩` from `GroundTheory.Automorphic.Iwasawa.exists_blockUpper_mul_integralGL (v.adicCompletion E) (r + s) hβ (φ k v)`. Conclude with `⟨p, hp, c, hc, e, fun h' => absurd h' h⟩`. Use `choose p hp c hc hk h1 using loc`. Set `P' : RestrictedProduct (fun v : HeightOneSpectrum (𝓞 E) => GL (Fin (r + s)) (v.adicCompletion E)) (fun v => (GroundTheory.Automorphic.GLnLocal.integralGL (v.adicCompletion E) (r + s) : Set _)) Filter.cofinite` to `⟨p, by filter_upwards [(φ k).2] with v hv`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1 v hv]`. Conclude with `one_mem _⟩`. Set `C' : RestrictedProduct (fun v : HeightOneSpectrum (𝓞 E) => GL (Fin (r + s)) (v.adicCompletion E)) (fun v => (GroundTheory.Automorphic.GLnLocal.integralGL (v.adicCompletion E) (r + s) : Set _)) Filter.cofinite` to `⟨c, Filter.Eventually.of_forall hc⟩`. Establish `hs : ∀ y, φ (φ.symm y) = y` using `fun y => φ.apply_symm_apply y`. Establish `hPC : k = φ.symm P' * φ.symm C'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, hs, hs]`. Use extensionality with `v : 1`. Conclude with `hk v`. Establish `hPv : ∀ v, φ (φ.symm P') v = p v` using `fun v => by rw [hs]; rfl`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzero : ∀ (q : GL (Fin (r + s)) (Af E)), (∀ v, φ q v ∈ GroundTheory.Automorphic.Iwasawa.blockUpper (v.adicCompletion E) (r + s) β) → ∀ i j : Fin (r + s), r ≤ (i : ℕ) → (j : ℕ) < r → (q : Matrix _ _ (Af E)) i j = 0`. Introduce `q hq i j hi hj`. Use `FiniteAdeleRing.ext _ fun v => ?_` and prove the remaining obligations. Establish `hlt : β j < β i` using `by simp [β, hj, Nat.not_lt.2 hi]`. Conclude with `hq v hlt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, m, hxm⟩` from `exists_unip_mul_lev r s (φ.symm P') (hzero _ fun v => by rw [hPv]; exact hp v) (hzero _ fun v => by`. Rewrite using `[map_inv, RestrictedProduct.inv_apply, hPv]`. Conclude with `inv_mem (hp v))`. Use `⟨x, m, φ.symm C', ?_, by rw [hPC, hxm]⟩` and prove the remaining obligations. Rewrite using `[GroundTheory.Automorphic.AdelicGLn.mem_integralFiniteGL_iff_forall]`.
-
-Introduce `v`. Establish `: φ (φ.symm C') v = c v` using `by rw [hs]; rfl`. Express the relevant statement in the definitionally equal form `φ (φ.symm C') v ∈ _`. Rewrite using `[this]`. Conclude with `hc v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unip_lev_integral (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : ℕ)
     (k : GL (Fin (r + s)) (Af E)) :

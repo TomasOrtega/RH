@@ -34,16 +34,16 @@ theorem trOp_apply (F : Fin n → Fin n → Module.End ℂ V) (a b : Fin n)
     trOp F a b x = eV V (F a b ((eV V).symm x)) := rfl
 
 /- English proof (translation)
-The claim follows from `HW.uq_kRel_map ε F (LinearEquiv.conjRingEquiv (eV V).toLinearEquiv).toRingHom h`.
+A detailed English derivation is pending.
 -/
 theorem trOp_kRel (ε : Fin n → Bool) (F : Fin n → Fin n → Module.End ℂ V) (h : KRel ε F) :
     KRel ε (trOp F) :=
   HW.uq_kRel_map ε F (LinearEquiv.conjRingEquiv (eV V).toLinearEquiv).toRingHom h
 
 /- English proof (translation)
-Introduce `a b hab x y`. Rewrite using `[trOp_apply, trOp_apply]`. Establish `h1 : y = eV V ((eV V).symm y)` using `((eV V).apply_symm_apply y).symm`. Establish `h2 : x = eV V ((eV V).symm x)` using `((eV V).apply_symm_apply x).symm`. Use `conv_lhs => rw [h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [h2]`. Rewrite using `[(eV V).inner_map_map, (eV V).inner_map_map, h a b hab]`.
+A detailed English derivation is pending.
 -/
 theorem trOp_kUnit (ε : Fin n → Bool) (F : Fin n → Fin n → Module.End ℂ V) (h : KUnit ε F) :
     KUnit ε (trOp F) := by
@@ -56,7 +56,7 @@ theorem trOp_kUnit (ε : Fin n → Bool) (F : Fin n → Fin n → Module.End ℂ
   rw [(eV V).inner_map_map, (eV V).inner_map_map, h a b hab]
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Rewrite using `[trOp_apply, LinearIsometryEquiv.symm_apply_apply, h.1 a, map_smul]`. Rewrite using `[trOp_apply, LinearIsometryEquiv.symm_apply_apply, h.2 a b hab he, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trOp_kHighest (ε : Fin n → Bool) (F : Fin n → Fin n → Module.End ℂ V) {Λ : Fin n → ℝ} {w : V}
     (h : KHighest ε F Λ w) : KHighest ε (trOp F) Λ (eV V w) := by
@@ -65,11 +65,11 @@ theorem trOp_kHighest (ε : Fin n → Bool) (F : Fin n → Fin n → Module.End 
   · rw [trOp_apply, LinearIsometryEquiv.symm_apply_apply, h.2 a b hab he, map_zero]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[kSpan, Submodule.mem_sInf]`. Introduce and unpack `S ⟨hwS, hSK⟩`. Establish `hK : KStable ε F (S.comap (eV V).toLinearEquiv.toLinearMap)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `a b hab y hy`. Use `show eV V (F a b y) ∈ S`. Use `hSK a b hab (eV V y) hy` as an intermediate fact. Rewrite `this` using `[trOp_apply, LinearIsometryEquiv.symm_apply_apply]`. Then use the resulting hypothesis. Establish `hle` using `HW.uq_kSpan_le ε F (show w ∈ S.comap (eV V).toLinearEquiv.toLinearMap from hwS) hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `hle (show (eV V).symm x ∈ kSpan ε F w by rw [hT]; exact Submodule.mem_top)`. Establish `: eV V ((eV V).symm x) ∈ S` using `hx`. Rewrite `this` using `[LinearIsometryEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem trOp_kSpan (ε : Fin n → Bool) (F : Fin n → Fin n → Module.End ℂ V) {w : V}
     (hT : kSpan ε F w = ⊤) : kSpan ε (trOp F) (eV V w) = ⊤ := by
@@ -88,9 +88,9 @@ theorem trOp_kSpan (ε : Fin n → Bool) (F : Fin n → Fin n → Module.End ℂ
   rwa [LinearIsometryEquiv.apply_symm_apply] at this
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨ψ, hψ, -⟩ := HW.uq_exists_isometry ε (trOp F) (trOp F') Λ (eV V w) (eV V' w') (trOp_kRel ε F hR) (trOp_kRel ε F' hR') (trOp_kUnit ε F hU) (trOp_kUnit ε F' hU') (trOp_kHighest ε F hw) (trOp_kHighest ε F' hw') (by rw [(eV V).norm_map, hw1]) (by rw [(eV V').norm_map, hw1']) …`. Use `⟨(eV V).trans (ψ.trans (eV V').symm), fun a b hab v => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearIsometryEquiv.trans_apply]`. Establish `h1 : eV V (F a b v) = trOp F a b (eV V v)`. Rewrite using `[trOp_apply, LinearIsometryEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hψ a b hab, trOp_apply, LinearIsometryEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_kIso {V' : Type*} [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] [FiniteDimensional ℂ V']
     (ε : Fin n → Bool) (F : Fin n → Fin n → Module.End ℂ V) (F' : Fin n → Fin n → Module.End ℂ V')
@@ -121,28 +121,26 @@ def resE (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) (hst :
 variable {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {hst : IsKStableSub ε E V}
 
 /- English proof (translation)
-Rewrite using `[resE, dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_resE {a b : Fin n} (h : ε a = ε b) (v : V) : ((resE E V hst a b v : V) : M) = E a b v := by
   rw [resE, dif_pos h]
   rfl
 
 /- English proof (translation)
-Rewrite using `[resE, dif_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem resE_of_ne {a b : Fin n} (h : ¬ ε a = ε b) : resE E V hst a b = 0 := by
   rw [resE, dif_neg h]
 
 /- English proof (translation)
-Introduce `a b c d hab hcd`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `LinearMap.congr_fun (hE a b c d) (v : M)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h ⊢`. Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Rewrite `h`, the goal using `[if_pos rfl, if_pos rfl]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.coe_sub, coe_resE hab, coe_resE hcd, coe_resE (rfl : ε d = ε d), coe_resE (rfl : ε b = ε b)]`. Conclude with `h`. Substitute `h1` using the available equality. Rewrite `h`, the goal using `[if_pos rfl, if_neg h2]`. Simplify using `only [LinearMap.zero_apply, Submodule.coe_sub, Submodule.coe_zero, coe_resE hab, coe_resE hcd, coe_resE (hab.trans hcd)] at h ⊢`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Conclude with `h`. Substitute `h2` using the available equality. Rewrite `h`, the goal using `[if_neg h1, if_pos rfl]`. Simplify using `only [LinearMap.zero_apply, Submodule.coe_sub, Submodule.coe_zero, coe_resE hab, coe_resE hcd, coe_resE (hcd.trans hab)] at h ⊢`. Conclude with `h`.
-
-Rewrite `h`, the goal using `[if_neg h1, if_neg h2]`. Simplify using `only [LinearMap.zero_apply, Submodule.coe_sub, Submodule.coe_zero, coe_resE hab, coe_resE hcd] at h ⊢`. Conclude with `h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kRel_resE (hE : IsGlRep E) : KRel ε (resE E V hst) := by
   intro a b c d hab hcd
@@ -171,7 +169,7 @@ theorem kRel_resE (hE : IsGlRep E) : KRel ε (resE E V hst) := by
     exact h
 
 /- English proof (translation)
-Introduce `a b hab x y`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, coe_resE hab, coe_resE hab.symm, hU a b]`. Simplify using `[adjSign, hab]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kUnit_resE (hU : IsInfUnitary ε E) : KUnit ε (resE E V hst) := by
   intro a b hab x y
@@ -179,9 +177,9 @@ theorem kUnit_resE (hU : IsInfUnitary ε E) : KUnit ε (resE E V hst) := by
   simp [adjSign, hab]
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_resE rfl, Submodule.coe_smul]`. Conclude with `hw.1 a`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_resE he]`. Conclude with `hw.2 a b hab he`.
+A detailed English derivation is pending.
 -/
 theorem kHighest_resE {Λ : Fin n → ℝ} {w : M} (hwV : w ∈ V) (hw : IsKHWVec ε E Λ w) :
     KHighest ε (resE E V hst) Λ (⟨w, hwV⟩ : V) := by
@@ -194,7 +192,7 @@ theorem kHighest_resE {Λ : Fin n → ℝ} {w : M} (hwV : w ∈ V) (hw : IsKHWVe
     exact hw.2 a b hab he
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hw.1 a, smul_comm]`. Rewrite using `[map_smul, hw.2 a b hab he, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem kHighest_smul {F : Fin n → Fin n → Module.End ℂ V} {Λ : Fin n → ℝ} {w : V}
     (hw : KHighest ε F Λ w) (c : ℂ) : KHighest ε F Λ (c • w) := by
@@ -203,11 +201,11 @@ theorem kHighest_smul {F : Fin n → Fin n → Module.End ℂ V} {Λ : Fin n →
   · rw [map_smul, hw.2 a b hab he, smul_zero]
 
 /- English proof (translation)
-Use `set K := kSpan ε (resE E V hst) w`. Establish `hKs : IsKStableSub ε E (K.map V.subtype)`. Introduce and unpack `a b hab _ ⟨y, hy, rfl⟩`. Conclude with `⟨resE E V hst a b y, HW.uq_kSpan_stable ε _ w a b hab y hy, coe_resE hab y⟩`. Establish `hKV : K.map V.subtype ≤ V`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `y.2`. Break down `hirr _ hKV hKs with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hw0` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (w : M) ∈ K.map V.subtype` using `⟨w, HW.uq_mem_kSpan ε _ w, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `Subtype.ext this`. Apply `Submodule.map_injective_of_injective V.injective_subtype` to reduce the goal to its premises. Rewrite using `[h, Submodule.map_subtype_top]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kSpan_resE_top (hirr : ∀ S' : Submodule ℂ M, S' ≤ V → IsKStableSub ε E S' → S' = ⊥ ∨ S' = V)
     {w : V} (hw0 : w ≠ 0) : kSpan ε (resE E V hst) w = ⊤ := by
@@ -232,7 +230,7 @@ def resZ (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) (hst :
   ∑ a, ∑ b, Z a b • resE E V hst a b
 
 /- English proof (translation)
-Simplify using `only [actM, resZ, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ε a = ε b`. Rewrite using `[coe_resE h]`. Simplify using `only [inK_apply_eq_zero hZ h, zero_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem actM_coe {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inK ε Z) (v : V) :
     actM E Z (v : M) = ((resZ E V hst Z v : V) : M) := by
@@ -243,7 +241,7 @@ theorem actM_coe {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inK ε Z) (v : V) :
   · simp only [inK_apply_eq_zero hZ h, zero_smul]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Both sides reduce to the same expression. Consider the case `succ m ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, actM_coe (hst := hst) hZ, pow_succ', Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem actM_pow_coe {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inK ε Z) (v : V) (m : ℕ) :
     ((actM E Z) ^ m) (v : M) = ((((resZ E V hst Z) ^ m) v : V) : M) := by
@@ -260,11 +258,11 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Take `⟨C, hC0, hC⟩` from `exists_norm_actM_pow_le_of_isKStableSub hst hVf hZ`. Establish `hs : Summable fun m : ℕ => C ^ m * ‖(v : D)‖ * |(1 : ℝ) - 0| ^ m / (m.factorial : ℝ)`. Use `(Real.summable_pow_div_factorial C).mul_right ‖(v : D)‖` as an intermediate fact. Use `this.congr fun m => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsum` using `hasSum_orbit_of_bound hσ hD hZ.1 (v : D) (fun m => C ^ m * ‖(v : D)‖) (fun m => hC (v : D) v.2 m) 0 1 hs`. Rewrite `hsum` using `[exp_zero_smul, hσ.1.1]`. Simplify using `only [Complex.ofReal_one, one_smul, ContinuousLinearMap.one_apply] at hsum`. Use `hsum using 1` and compare the differences between its conclusion and the goal.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `m`. Rewrite using `[actM_pow_coe (hst := hst) hZ v m]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem orbit_hasSum (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {V : Submodule ℂ D}
     (hVf : FiniteDimensional ℂ V) (hst : IsKStableSub ε E V) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inK ε Z)
@@ -290,21 +288,19 @@ variable {H₂ : Type*} [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂]
   {σ₂ : Matrix (Fin n) (Fin n) ℂ → (H₂ →L[ℂ] H₂)} {D₂ : Submodule ℂ H₂} {E₂ : Fin n → Fin n → Module.End ℂ D₂}
 
 /- English proof (translation)
-Use `hVf` as an intermediate fact. Use `hVf₂` as an intermediate fact. Introduce `k hk v w hvw`. Take `⟨Z, hZ, rfl⟩` from `exists_exp_eq_of_mem_Kset hk`. Establish `hc : ∀ a b v, φ (resE E V hst a b v) = resE E₂ V₂ hst₂ a b (φ v)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a b v`. Distinguish the cases in `h : ε a = ε b`. Conclude with `hcomm a b h v`. Simplify using `only [resE_of_ne h, LinearMap.zero_apply, map_zero]`. Establish `hZc : ∀ v, φ (resZ E V hst Z v) = resZ E₂ V₂ hst₂ Z (φ v)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Simplify using `only [resZ, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, hc]`. Establish `hZp : ∀ m v, φ (((resZ E V hst Z) ^ m) v) = ((resZ E₂ V₂ hst₂ Z) ^ m) (φ v)`. Introduce `m`. Proceed by induction on `m with`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => intro v`. Rewrite using `[pow_zero, pow_zero]`. Both sides reduce to the same expression. Consider the case `succ m ih`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ', Module.End.mul_apply, hZc, ih, pow_succ', Module.End.mul_apply]`. Set `ι₁ : V →L[ℂ] H` to `D.subtypeL.comp V.subtypeL`. Set `ι₂ : V₂ →L[ℂ] H₂` to `D₂.subtypeL.comp V₂.subtypeL`. Establish `hi : Topology.IsInducing ι₁` using `Topology.IsInducing.subtypeVal.comp Topology.IsInducing.subtypeVal`. Establish `h1` using `orbit_hasSum hσ hD hVf hst hZ v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← hvw]`. Establish `h1' : HasSum (fun m : ℕ => (((1 : ℝ) / (m.factorial : ℝ) : ℝ) : ℂ) • (((resZ E V hst Z) ^ m) v)) w`. Rewrite using `[← hi.hasSum_iff]`. Conclude with `h1`. Establish `h3` using `(h1'.mapL (LinearMap.toContinuousLinearMap φ)).mapL ι₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4` using `orbit_hasSum hσ₂ hD₂ hVf₂ hst₂ hZ (φ v)`. Use `h3.unique ?_` and prove the remaining obligations. Use `h4 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `only [LinearMap.coe_toContinuousLinearMap', map_smul, hZp]`.
-
-Apply the tactic sequence `try rfl`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phi_K (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {V : Submodule ℂ D}
     (hVf : FiniteDimensional ℂ V) (hst : IsKStableSub ε E V)

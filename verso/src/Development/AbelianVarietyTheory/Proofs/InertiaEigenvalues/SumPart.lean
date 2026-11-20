@@ -9,7 +9,7 @@ namespace GlobalTheory.WachSum
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations
 
 /- English proof (translation)
-Introduce `K s LL h`. Conclude with `GlobalTheory.Survey.UnitsOfFieldRootsOfUnity.sumFor_of_crys fun _ _ _ i i' hs hT hT' => GlobalTheory.Cmp.WachMonoidal.isCrys_of_isSumLat i i' hT hT' hs`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sumPart (l : ℕ) [Fact l.Prime] (P : LocPrime l) (H : LocHW l P) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitDualParts.SumPart l P H := by

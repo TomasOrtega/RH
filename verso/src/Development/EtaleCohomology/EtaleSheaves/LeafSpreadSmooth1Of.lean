@@ -8,7 +8,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4 Lateral
 namespace LateralTheory.E.SpreadingOutSmoothness
 
 /- English proof (translation)
-Use `haveI : Algebra.FormallySmooth R K := Algebra.FormallySmooth.of_isLocalization M`. Use `haveI : Algebra.FormallySmooth K (Localization.AtPrime Q) := inferInstance`. Use `haveI : Algebra.FormallySmooth R (Localization.AtPrime Q) := Algebra.FormallySmooth.comp R K _`. Use `haveI := IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (Algebra.algebraMapSubmonoid A M) (Localization.AtPrime Q) Q`. Conclude with `Algebra.FormallySmooth.of_equiv ((IsLocalization.algEquiv (Q.comap (algebraMap A B)).primeCompl (Localization.AtPrime Q) _).restrictScalars R)`.
+A detailed English derivation is pending.
 -/
 theorem stepB {R K B A : Type} [CommRing R] [CommRing K] [CommRing B] [CommRing A] [Algebra R K] [Algebra R A]
     [Algebra R B] [Algebra K B] [IsScalarTower R K B] [Algebra A B] [IsScalarTower R A B] (M : Submonoid R)
@@ -25,13 +25,9 @@ theorem stepB {R K B A : Type} [CommRing R] [CommRing K] [CommRing B] [CommRing 
 set_option maxHeartbeats 1600000 in
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Use `letI : Algebra (FractionRing R) Ω := FractionRing.liftAlgebra R Ω`. Use `haveI : IsScalarTower R (FractionRing R) Ω := FractionRing.isScalarTower_liftAlgebra R Ω`. Set `e` to `Algebra.TensorProduct.cancelBaseChange R (FractionRing R) Ω Ω A`. Use `haveI : Algebra.Smooth Ω (Ω ⊗[FractionRing R] (FractionRing R ⊗[R] A)) := Algebra.Smooth.of_equiv e.symm`. Use `haveI : Module.Free (FractionRing R) Ω := Module.Free.of_divisionRing _ Ω`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Algebra.Smooth (FractionRing R) (FractionRing R ⊗[R] A) := Algebra.Smooth.of_smooth_tensorProduct_of_faithfullyFlat Ω`. Use `letI : Algebra A (FractionRing R ⊗[R] A) := Algebra.TensorProduct.rightAlgebra`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid A (nonZeroDivisors R)) (FractionRing R ⊗[R] A) := IsLocalization.tensorRight _ _`. Set `φ : FractionRing R ⊗[R] A →+* Ω ⊗[R] A` to `e.toRingHom.comp (Algebra.TensorProduct.includeRight : FractionRing R ⊗[R] A →ₐ[FractionRing R] Ω ⊗[FractionRing R] _).toRingHom`. Use `haveI : (P.asIdeal.comap φ).IsPrime := Ideal.comap_isPrime _ _`.
-
-Establish `hφ : φ.comp (algebraMap A (FractionRing R ⊗[R] A)) = (Algebra.TensorProduct.includeRight : A →ₐ[R] Ω ⊗[R] A).toRingHom`. Use extensionality with `a`. Use `show e (1 ⊗ₜ (1 ⊗ₜ a)) = 1 ⊗ₜ a`. Rewrite using `[Algebra.TensorProduct.cancelBaseChange_tmul, one_smul]`. Establish `hc : PrimeSpectrum.comap (Algebra.TensorProduct.includeRight : A →ₐ[R] Ω ⊗[R] A).toRingHom P = ⟨(P.asIdeal.comap φ).comap (algebraMap A (FractionRing R ⊗[R] A)), inferInstance⟩` using `by ext1; simp only [PrimeSpectrum.comap_asIdeal, Ideal.comap_comap, hφ]`.
-
-Rewrite using `[hc]`. Conclude with `stepB (K := FractionRing R) (nonZeroDivisors R) (P.asIdeal.comap φ)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algDescend (k : Type) [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] (R : Subalgebra k Ω)
     (A : Type) [CommRing A] [Algebra R A] (hfp : Algebra.FinitePresentation R A) (hs : Algebra.Smooth Ω (Ω ⊗[R] A))
@@ -69,12 +65,12 @@ def LeafAlgDescend : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω] [Al
 def LeafStalkOfAlg : Prop := LeafAlgDescend → LateralTheory.E.LeafSpreadSmoothAffSmPf.LeafStalkDescend
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ R A _ _ hfp hs P` and use `algDescend k Ω R A hfp hs P`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leafAlgDescend : LeafAlgDescend := fun k _ Ω _ _ R A _ _ hfp hs P => algDescend k Ω R A hfp hs P
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LeafSpreadSmoothPf.LeafSpreadSmooth_of (LateralTheory.E.LeafSpreadSmoothAffSmPf.LeafSpreadSmoothAffSm_of (hT leafAlgDescend)) hB`.
+A detailed English derivation is pending.
 -/
 theorem LeafSpreadSmooth1_of (hB : LateralTheory.E.LeafSpreadSmoothPf.LeafSpreadRelDim) (hT : LeafStalkOfAlg) :
     LateralTheory.E.SpreadingOutQuasiFiniteness.LeafSpreadSmooth1 :=

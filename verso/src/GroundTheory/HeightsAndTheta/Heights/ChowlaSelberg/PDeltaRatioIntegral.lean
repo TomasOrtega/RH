@@ -14,17 +14,17 @@ open scoped Real MatrixGroups Manifold
 noncomputable section
 
 /- English proof (translation)
-Introduce `L L' p hp hle hidx`. Take `⟨τ, hj, hmem⟩` from `hA L L' p hp hle hidx`. Use `set M := heckeRatios ⟨p, hp.pos⟩ τ with hM`. Use `set R := Algebra.adjoin ℤ {(weierstrassCurve L).j}`. Establish `hes : ∀ k, M.esymm k ∈ R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k`. Take `⟨hd, hx⟩` from `hE p hp k`. Take `⟨Q, hQk⟩` from `hQ _ hd (fun γ τ' ↦ congrArg (fun m : Multiset ℂ ↦ m.esymm k) (hI p hp γ τ')) hx`. Rewrite using `[hM, hQk τ, ← hj]`. Conclude with `Polynomial.aeval_mem_adjoin_singleton ℤ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set P : ℂ[X] := (M.map fun t ↦ X - C t).prod with hP`. Establish `hmon : P.Monic` using `monic_multiset_prod_of_monic _ _ fun t _ ↦ monic_X_sub_C t`. Establish `hlift : P ∈ lifts (algebraMap R ℂ)`. Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Distinguish the cases in `hn : n ≤ Multiset.card M`. Rewrite using `[hP, Multiset.prod_X_sub_C_coeff M hn]`. Establish `hmem' : (-1 : ℂ) ^ (Multiset.card M - n) * M.esymm (Multiset.card M - n) ∈ R` using `R.mul_mem (R.pow_mem (R.neg_mem R.one_mem) _) (hes _)`. Conclude with `⟨⟨_, hmem'⟩, rfl⟩`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[map_zero, eq_comm]`. Apply `coeff_eq_zero_of_natDegree_lt` to reduce the goal to its premises. Rewrite using `[hP, natDegree_multiset_prod_X_sub_C_eq_card]`. Use linear arithmetic over natural numbers and integers. Take `⟨q, hq, -, hqm⟩` from `lifts_and_natDegree_eq_and_monic hlift hmon`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_eq_eval_map, hq, hP, eval_multiset_prod]`. Apply `Multiset.prod_eq_zero` to reduce the goal to its premises. Rewrite using `[Multiset.map_map]`. Conclude with `Multiset.mem_map.2 ⟨_, hmem, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem DeltaRatioIntegral.proof (hA : SuperlatticeRatio.Statement)
     (hI : HeckeRatioInvariant.Statement) (hE : HeckeRatioExpansion.Statement)

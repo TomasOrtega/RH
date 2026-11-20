@@ -15,15 +15,15 @@ section embG
 variable {k p ρ : ℕ}
 
 /- English proof (translation)
-Simplify using `only [U.embG, Ux5.block3_mul_blocks, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embG_mul (a b : B.Mat k ρ) : U.embG k p ρ (a * b) = U.embG k p ρ a * U.embG k p ρ b := by
   simp only [U.embG, Ux5.block3_mul_blocks, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨x, rfl⟩` from `(U.eB k p ρ).surjective i`. Take `⟨y, rfl⟩` from `(U.eB k p ρ).surjective j`. Simplify using `only [Matrix.one_apply, (U.eB k p ρ).injective.eq_iff]`. Simplify using `only [U.embG, U.blk3, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases x with (a | b) | c <;> rcases y with (a' | b') | c' <;> simp [Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem embG_one' : U.embG k p ρ (1 : B.Mat k ρ) = 1 := by
   ext i j
@@ -34,7 +34,7 @@ private theorem embG_one' : U.embG k p ρ (1 : B.Mat k ρ) = 1 := by
   rcases x with (a | b) | c <;> rcases y with (a' | b') | c' <;> simp [Matrix.one_apply]
 
 /- English proof (translation)
-Use `symm`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← embG_mul, Matrix.nonsing_inv_mul _ ha, embG_one']`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem embG_inv {a : B.Mat k ρ} (ha : IsUnit a.det) : U.embG k p ρ a⁻¹ = (U.embG k p ρ a)⁻¹ := by
   symm
@@ -51,7 +51,7 @@ def psiL (k p ρ : ℕ) (x : U.RC k p ρ × ((G.UT p → ℂ) × Mt k ρ)) : Mt 
   Matrix.of.symm (U.embG k p ρ (Matrix.of x.2.2) * U.muP k p ρ (G.upper x.2.1) * U.Rn k p ρ x.1)
 
 /- English proof (translation)
-Unfold `psiL`. Conclude with `(((Formalism.FourierDecayAlt.P.Dx2.SplitF.embg_cont (k := k) p ρ).comp (continuous_snd.comp continuous_snd)).matrix_mul ((Formalism.FourierDecayAlt.P.Dx2.SplitF.mup_cont (k := k) p ρ).comp (continuous_fst.comp continuous_snd))).matrix_mul ((Formalism.FourierDecayAlt.P.Dx2.SplitF. …`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem psiL_cont (p ρ : ℕ) : Continuous (psiL k p ρ) := by
   unfold psiL
@@ -60,7 +60,7 @@ theorem psiL_cont (p ρ : ℕ) : Continuous (psiL k p ρ) := by
     ((Formalism.FourierDecayAlt.P.Dx2.SplitF.rn_cont (k := k) p ρ).comp continuous_fst)
 
 /- English proof (translation)
-Establish `: BorelSpace ((G.UT p → ℂ) × (Fin p → ℝ))` using `Prod.borelSpace`. Establish `: BorelSpace (U.RC k p ρ)` using `Prod.borelSpace`. Establish `: BorelSpace ((G.UT p → ℂ) × Mt k ρ)` using `Prod.borelSpace`. Establish `: BorelSpace (U.RC k p ρ × ((G.UT p → ℂ) × Mt k ρ))` using `Prod.borelSpace`. Conclude with `(psiL_cont p ρ).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psiL_meas (p ρ : ℕ) : Measurable (psiL k p ρ) := by
   have : BorelSpace ((G.UT p → ℂ) × (Fin p → ℝ)) := Prod.borelSpace
@@ -70,15 +70,13 @@ theorem psiL_meas (p ρ : ℕ) : Measurable (psiL k p ρ) := by
   exact (psiL_cont p ρ).measurable
 
 /- English proof (translation)
-Introduce `k p ρ`. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_muN (k := k) ρ` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC (k := k) p ρ` as an intermediate fact. Establish `: SigmaFinite (volume : Measure (G.UT p → ℂ))` using `by rw [MeasureTheory.volume_pi]; infer_instance`. Establish `hs` using `Formalism.FourierDecayAlt.P.Dx2.SplitF.split_all (k := k) p ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv` using `Formalism.FourierDecayAlt.P.haar_measure_inversion k (p + ρ) (Nset k (p + ρ)) (D.muN k (p + ρ)) (Formalism.FourierDecayAlt.P.unipotent_radical_closed k (p + ρ)) (Formalism.FourierDecayAlt.P.Dx2.MN.haar (k := k) (p + ρ))`. Establish `hinvρ` using `Formalism.FourierDecayAlt.P.haar_measure_inversion k ρ (Nset k ρ) (D.muN k ρ) (Formalism.FourierDecayAlt.P.unipotent_radical_closed k ρ) (Formalism.FourierDecayAlt.P.Dx2.MN.haar (k := k) ρ)`. Use `set μ := (U.muRC k p ρ).prod ((volume : Measure (G.UT p → ℂ)).prod (D.muN k ρ)) with hμ`. Use `set T : U.RC k p ρ × ((G.UT p → ℂ) × Mt k ρ) → U.RC k p ρ × ((G.UT p → ℂ) × Mt k ρ) := fun z => (-z.1, (Formalism.FourierDecayAlt.P.PBM.utInv p z.2.1, B2.invM z.2.2)) with hT`. Establish `hTmp : MeasurePreserving T μ μ` using `Formalism.FourierDecayAlt.P.PBM.negRC_mp.prod ((Formalism.FourierDecayAlt.P.PBM.utInv_mp p).prod ⟨Formalism.FourierDecayAlt.P.TwoByOneBlock.invM_meas, hinvρ⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ z ∂μ, (Matrix.of z.2.2 : B.Mat k ρ) ∈ Nset k ρ` using `Measure.quasiMeasurePreserving_snd.ae (Measure.quasiMeasurePreserving_snd.ae (Formalism.FourierDecayAlt.P.B5.haar_ae (Formalism.FourierDecayAlt.P.Dx2.MN.haar (k := k) ρ)))`. Establish `hfun : (B2.invM ∘ Formalism.FourierDecayAlt.P.Dx2.SplitF.Psi k p ρ) =ᵐ[μ] (psiL k p ρ ∘ T)` using `by filter_upwards [hae] with z hz`. Take `⟨x, q, y⟩` from `z`. Establish `hy : IsUnit (Matrix.of y : B.Mat k ρ).det` using `Formalism.FourierDecayAlt.P.HermitianFormFactor.UH_unit (Formalism.FourierDecayAlt.P.Ux3.hpk_det k ρ) hz.1`. Establish `hu : IsUnit (G.upper q).det`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.StabilizerDisintegration.UC.det_UT (Formalism.FourierDecayAlt.P.StabilizerDisintegration.UC.upper_mem _)]`. Conclude with `isUnit_one`. Use `show Matrix.of.symm ((Matrix.of (Matrix.of.symm (U.Rn k p ρ x * U.muP k p ρ (G.upper q) * U.embG k p ρ (Matrix.of y))))⁻¹) = Matrix.of.symm (U.embG k p ρ (Matrix.of (B2.invM y)) * U.muP k p ρ (G.upper (Formalism.FourierDecayAlt.P.PBM.utInv p q)) * U.Rn k p ρ (-x))`. Rewrite using `[Equiv.apply_symm_apply, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Formalism.FourierDecayAlt.P.PBM.rn_inv, Formalism.FourierDecayAlt.P.PBM.leviElement_inv _ hu, Formalism.FourierDecayAlt.P.PBM.upper_utInv, ← embG_inv hy]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Both sides reduce to the same expression. Rewrite using `[← hinv, hs, Measure.map_map Formalism.FourierDecayAlt.P.TwoByOneBlock.invM_meas (Formalism.FourierDecayAlt.P.Dx2.SplitF.psi_meas p ρ), Measure.map_congr hfun, ← Measure.map_map (psiL_meas p ρ) hTmp.measurable, hTmp.map_eq]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unipotent_measure_left_invariant : MuNLeft := by
   intro k p ρ
@@ -136,9 +134,9 @@ def swapL : (Fin (2 * ρ + k + 1) → Fin p → ℂ) ≃ₗ[ℂ] (Fin p → Fin 
   right_inv _ := rfl
 
 /- English proof (translation)
-Establish `e : actLin (p` using `p) y = (swapL (k := k) (ρ := ρ) (p := p)).symm.conj (LinearMap.pi fun a : Fin p => Matrix.toLin' y ∘ₗ LinearMap.proj a) := by`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `c`. Use function extensionality and compare the values at `v a`. Simplify using `[actLin, swapL, LinearEquiv.conj_apply, Matrix.toLin'_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, LinearEquiv.conj_apply, LinearMap.comp_assoc, LinearMap.det_conj, LinearMap.det_pi]`. Simplify using `[LinearMap.det_toLin']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_actLin (y : B.Mat k ρ) : LinearMap.det (actLin (p := p) y) = y.det ^ p := by
   have e : actLin (p := p) y = (swapL (k := k) (ρ := ρ) (p := p)).symm.conj
@@ -151,9 +149,9 @@ theorem det_actLin (y : B.Mat k ρ) : LinearMap.det (actLin (p := p) y) = y.det 
   simp [LinearMap.det_toLin']
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.HermitianFormFactor.isAddHaarMeasure_matrix_volume (A := Fin (2 * ρ + k + 1)) (B := Fin p)` as an intermediate fact. Establish `hdet : LinearMap.det ((actLin (p` using `p) y).restrictScalars ℝ) = 1 := by`. Rewrite using `[LinearMap.det_restrictScalars, det_actLin, Algebra.norm_complex_apply, map_pow, Complex.normSq_eq_norm_sq, hy]`. Evaluate the numerical expressions. Establish `h1` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (Fin (2 * ρ + k + 1) → Fin p → ℂ)) (f := (actLin (p := p) y).restrictScalars ℝ) (by rw [hdet]; exact one_ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite `h1` using `[hdet]`. Simplify using `only [inv_one, abs_one, ENNReal.ofReal_one, one_smul] at h1`. Conclude with `⟨(LinearMap.continuous_of_finiteDimensional ((actLin (p := p) y).restrictScalars ℝ)).measurable, h1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem rcAct_fst_mp (y : B.Mat k ρ) (hy : ‖y.det‖ = 1) :
     MeasurePreserving (fun c : Fin (2 * ρ + k + 1) → Fin p → ℂ => fun v a => (y * Matrix.of c) v a) volume volume := by
@@ -168,7 +166,7 @@ theorem rcAct_fst_mp (y : B.Mat k ρ) (hy : ‖y.det‖ = 1) :
   exact ⟨(LinearMap.continuous_of_finiteDimensional ((actLin (p := p) y).restrictScalars ℝ)).measurable, h1⟩
 
 /- English proof (translation)
-Introduce `k p ρ y hy`. Unfold `U.muRC`. Rewrite using `[Measure.volume_eq_prod]`. Conclude with `(rcAct_fst_mp y hy).prod (MeasurePreserving.id _)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem right_coset_action_measure_preserving : RcActMP := by
   intro k p ρ y hy
@@ -181,9 +179,9 @@ end rc
 section right
 
 /- English proof (translation)
-Unfold `rcAct`. Apply `Continuous.prodMk` to reduce the goal to its premises. Apply `continuous_pi` to reduce the goal to its premises. Introduce `v`. Apply `continuous_pi` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rcAct_cont {k p ρ : ℕ} :
     Continuous (fun q : Mt k ρ × U.RC k p ρ => rcAct (Matrix.of q.1) q.2) := by
@@ -198,19 +196,17 @@ theorem rcAct_cont {k p ρ : ℕ} :
   · fun_prop
 
 /- English proof (translation)
-Introduce `k p ρ z' μj μ0' hH h1 hμ0`. Establish `: IsFiniteMeasure μj` using `⟨by rw [h1]; exact ENNReal.one_lt_top⟩`. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_muN (k := k) ρ` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_muN (k := k) (p + ρ)` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC (k := k) p ρ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SigmaFinite (volume : Measure (G.UT p → ℂ))` using `by rw [MeasureTheory.volume_pi]; infer_instance`. Establish `: IsFiniteMeasure μ0'` using `by rw [hμ0]; infer_instance`. Establish `s1` using `measurePreserving_prodAssoc μj (D.muN k ρ) ((U.muRC k p ρ).prod (volume : Measure (G.UT p → ℂ)))`. Use `set g : Mt k ρ → Mt k ρ × (U.RC k p ρ × (G.UT p → ℂ)) → U.RC k p ρ × ((G.UT p → ℂ) × Mt k ρ) := fun h' w => (rcAct (Matrix.of h') w.2.1, (w.2.2, w.1)) with hg`. Establish `hgm : Measurable (Function.uncurry g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: BorelSpace ((G.UT p → ℂ) × (Fin p → ℝ))` using `Prod.borelSpace`. Establish `: BorelSpace (U.RC k p ρ)` using `Prod.borelSpace`. Establish `: BorelSpace (U.RC k p ρ × (G.UT p → ℂ))` using `Prod.borelSpace`. Establish `: BorelSpace (Mt k ρ × (U.RC k p ρ × (G.UT p → ℂ)))` using `Prod.borelSpace`. Establish `: BorelSpace (Mt k ρ × (Mt k ρ × (U.RC k p ρ × (G.UT p → ℂ))))` using `Prod.borelSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: BorelSpace ((G.UT p → ℂ) × Mt k ρ)` using `Prod.borelSpace`. Establish `: BorelSpace (U.RC k p ρ × ((G.UT p → ℂ) × Mt k ρ))` using `Prod.borelSpace`. Establish `hc : Continuous (Function.uncurry g)`. Use `Continuous.prodMk ?_ ?_` and prove the remaining obligations. Conclude with `rcAct_cont.comp (continuous_fst.prodMk (continuous_fst.comp (continuous_snd.comp continuous_snd)))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(continuous_snd.comp (continuous_snd.comp continuous_snd)).prodMk (continuous_fst.comp continuous_snd)`. Conclude with `hc.measurable`. Establish `hae : ∀ᵐ h' ∂μj, Measure.map (g h') ((D.muN k ρ).prod ((U.muRC k p ρ).prod volume)) = (U.muRC k p ρ).prod ((volume : Measure (G.UT p → ℂ)).prod (D.muN k ρ))` using `by filter_upwards [Formalism.FourierDecayAlt.P.B5.haar_ae hH] with h' hh'`. Establish `hdet : ‖(Matrix.of h' : B.Mat k ρ).det‖ = 1` using `Formalism.FourierDecayAlt.P.HermitianFormFactor.det_norm_one (Formalism.FourierDecayAlt.P.Ux3.hpk_det k ρ) hh'.1`. Establish `a1` using `Measure.measurePreserving_swap (μ := D.muN k ρ) (ν := (U.muRC k p ρ).prod (volume : Measure (G.UT p → ℂ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `measurePreserving_prodAssoc (U.muRC k p ρ) (volume : Measure (G.UT p → ℂ)) (D.muN k ρ)`. Establish `a3` using `(right_coset_action_measure_preserving k p ρ (Matrix.of h') hdet).prod (MeasurePreserving.id ((volume : Measure (G.UT p → ℂ)).prod (D.muN k ρ)))`. Conclude with `(a3.comp (a2.comp a1)).map_eq`. Establish `s2` using `(MeasurePreserving.id μj).skew_product hgm hae`. Establish `hlev : MeasurePreserving (Formalism.FourierDecayAlt.P.PBM.levMt (k` using `k) p ρ rfl) μj μ0' := ⟨(Formalism.FourierDecayAlt.P.PBM.levMt_cont p ρ rfl).measurable, hμ0.symm⟩`.
-
-Establish `hN : MeasurePreserving (psiL k p ρ) ((U.muRC k p ρ).prod ((volume : Measure (G.UT p → ℂ)).prod (D.muN k ρ))) (D.muN k (p + ρ))` using `⟨psiL_meas p ρ, (unipotent_measure_left_invariant k p ρ).symm⟩`. Establish `s3` using `hlev.prod hN`. Conclude with `s3.comp (s2.comp s1)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem right_measure_preserving : RightMP := by
   intro k p ρ z' μj μ0' hH h1 hμ0

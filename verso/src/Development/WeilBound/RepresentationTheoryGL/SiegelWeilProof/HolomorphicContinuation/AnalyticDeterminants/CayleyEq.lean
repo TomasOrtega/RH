@@ -14,11 +14,11 @@ variable {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq 
 
 omit [DecidableEq ι] [DecidableEq κ] in
 /- English proof (translation)
-Take `⟨s, hs0, hAs⟩` from `hF.exists_mem_nhds_analyticOnNhd`. Establish `ht : IsOpen (interior s)` using `isOpen_interior`. Establish `h0t : (0 : Matrix κ κ ℂ) ∈ interior s` using `mem_interior_iff_mem_nhds.mpr hs0`. Establish `hcd : ContDiffOn ℂ ω F (interior s)` using `(hAs.mono interior_subset).contDiffOn ht.uniqueDiffOn`. Establish `hpre : IsOpen (L ⁻¹' interior s)` using `ht.preimage L.continuous`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0 : L 0 ∈ interior s` using `by simpa using h0t`. Establish `h0pre : (0 : Matrix ι ι ℂ) ∈ L ⁻¹' interior s` using `hL0`. Establish `key` using `L.iteratedFDerivWithin_comp_right hcd ht.uniqueDiffOn hpre.uniqueDiffOn hL0 (i := n) le_top`. Establish `e1` using `iteratedFDerivWithin_of_isOpen (𝕜 := ℂ) (f := F ∘ L) n hpre h0pre`. Establish `e2` using `iteratedFDerivWithin_of_isOpen (𝕜 := ℂ) (f := F) n ht h0t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : L 0 = 0` using `L.map_zero`. Rewrite using `[← e1, ← e2]`. Use `erw [key]`. Conclude with `congrArg (fun y => iteratedFDerivWithin ℂ n F (interior s) y (fun i => L (v i))) hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedFDeriv_comp_clm (F : Matrix κ κ ℂ → ℂ) (hF : AnalyticAt ℂ F 0)
     (L : Matrix ι ι ℂ →L[ℂ] Matrix κ κ ℂ) (n : ℕ) (v : Fin n → Matrix ι ι ℂ) :
@@ -41,7 +41,7 @@ theorem iteratedFDeriv_comp_clm (F : Matrix κ κ ℂ → ℂ) (hF : AnalyticAt 
 
 omit [DecidableEq κ] in
 /- English proof (translation)
-The claim follows from `(hF.contDiffAt).iteratedFDeriv_comp_perm v π`.
+A detailed English derivation is pending.
 -/
 theorem symm_perm (F : Matrix κ κ ℂ → ℂ) (hF : AnalyticAt ℂ F 0) {n : ℕ} (v : Fin n → Matrix κ κ ℂ)
     (π : Equiv.Perm (Fin n)) : iteratedFDeriv ℂ n F 0 (v ∘ π) = iteratedFDeriv ℂ n F 0 v :=
@@ -58,9 +58,9 @@ Both sides reduce to the same expression.
 theorem detD_eq_Dg (F : Matrix κ κ ℂ → ℂ) : detD F = Dg (Fintype.equivFin κ) F := rfl
 
 /- English proof (translation)
-Establish `hnm : n = m` using `by simpa using Fintype.card_congr (f.symm.trans g)`. Substitute `hnm` using the available equality. Unfold `Dg`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Substitute using the available equality. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hv : (fun i => Matrix.single (f.symm i) (σ (f.symm i)) (1 : ℂ)) = (fun i => Matrix.single (g.symm i) (σ (g.symm i)) (1 : ℂ)) ∘ (f.symm.trans g)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[hv]`. Conclude with `symm_perm F hF _ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dg_indep (F : Matrix κ κ ℂ → ℂ) (hF : AnalyticAt ℂ F 0) {n m : ℕ} (f : κ ≃ Fin n) (g : κ ≃ Fin m) :
     Dg f F = Dg g F := by
@@ -78,7 +78,7 @@ theorem Dg_indep (F : Matrix κ κ ℂ → ℂ) (hF : AnalyticAt ℂ F 0) {n m :
 
 omit [DecidableEq ι] [DecidableEq κ] in
 /- English proof (translation)
-Use extensionality with `x y`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.single_apply, Equiv.eq_symm_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reindex_single [DecidableEq ι] [DecidableEq κ] (e' : ι ≃ κ) (a b : ι) :
     (Matrix.single a b (1 : ℂ)).reindex e' e' = Matrix.single (e' a) (e' b) 1 := by
@@ -86,11 +86,11 @@ theorem reindex_single [DecidableEq ι] [DecidableEq κ] (e' : ι ≃ κ) (a b :
   simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.single_apply, Equiv.eq_symm_apply]
 
 /- English proof (translation)
-Introduce `ι κ _ _ _ _ e F hF`. Rewrite using `[detD_eq_Dg, detD_eq_Dg, ← Dg_indep F hF (e.symm.trans (Fintype.equivFin ι)) (Fintype.equivFin κ)]`. Unfold `Dg`. Use `Fintype.sum_equiv (Equiv.permCongr e) _ _ fun σ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.Perm.sign_permCongr]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `h1 : iteratedFDeriv ℂ (Fintype.card ι) (fun T => F (Matrix.reindex e e T)) 0 (fun i => Matrix.single ((Fintype.equivFin ι).symm i) (σ ((Fintype.equivFin ι).symm i)) (1 : ℂ)) = iteratedFDeriv ℂ (Fintype.card ι) F 0 (fun i => Matrix.reindex e e (Matrix.single ((Fintype.equivFin ι). …` using `iteratedFDeriv_comp_clm F hF (LinearMap.toContinuousLinearMap (Matrix.reindexLinearEquiv ℂ ℂ e e).toLinearMap) _ _`. Rewrite using `[h1]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[reindex_single]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem reindex_thm : Reindex := by
   intro ι κ _ _ _ _ e F hF
@@ -115,7 +115,7 @@ theorem reindex_thm : Reindex := by
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, Matrix.sum_apply, ite_and]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mul_single_eq [Fintype ι] (A : Matrix ι ι ℂ) (a b : ι) :
     A * Matrix.single a b (1 : ℂ) = ∑ c, A c a • Matrix.single c b (1 : ℂ) := by
@@ -123,19 +123,19 @@ theorem mul_single_eq [Fintype ι] (A : Matrix ι ι ℂ) (a b : ι) :
   simp [Matrix.mul_apply, Matrix.single_apply, Matrix.sum_apply, ite_and]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij, hne⟩ : ∃ i j, r i = r j ∧ i ≠ j := by`. Simplify using `only [Function.Injective, not_forall] at hr`. Take `⟨i, j, h, hne⟩` from `hr`. Conclude with `⟨i, j, h, hne⟩`. Establish `hane : a i ≠ a j` using `fun h => hne (a.injective h)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `key : ∀ σ : Equiv.Perm ι, iteratedFDeriv ℂ n F 0 (fun k => Matrix.single (r k) ((σ * Equiv.swap (a i) (a j)) (a k)) (1 : ℂ)) = iteratedFDeriv ℂ n F 0 (fun k => Matrix.single (r k) (σ (a k)) (1 : ℂ))`. Introduce `σ`. Rewrite using `[← symm_perm F hF (fun k => Matrix.single (r k) (σ (a k)) (1 : ℂ)) (Equiv.swap i j)]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp, Equiv.Perm.mul_apply]`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Rewrite using `[Equiv.swap_apply_left, Equiv.swap_apply_left, hij]`. Distinguish the cases in `hkj : k = j`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hkj` using the available equality. Rewrite using `[Equiv.swap_apply_right, Equiv.swap_apply_right, hij]`. Establish `h1 : a k ≠ a i` using `fun h => hki (a.injective h)`. Establish `h2 : a k ≠ a j` using `fun h => hkj (a.injective h)`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne h1 h2, Equiv.swap_apply_of_ne_of_ne hki hkj]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS` using `(Equiv.sum_comp (Equiv.mulRight (Equiv.swap (a i) (a j))) (fun σ : Equiv.Perm ι => ((Equiv.Perm.sign σ : ℤ) : ℂ) * iteratedFDeriv ℂ n F 0 (fun k => Matrix.single (r k) (σ (a k)) (1 : ℂ)))).symm`. Establish `hg : ∀ σ : Equiv.Perm ι, ((Equiv.Perm.sign (σ * Equiv.swap (a i) (a j)) : ℤ) : ℂ) * iteratedFDeriv ℂ n F 0 (fun k => Matrix.single (r k) ((σ * Equiv.swap (a i) (a j)) (a k)) (1 : ℂ)) = -(((Equiv.Perm.sign σ : ℤ) : ℂ) * iteratedFDeriv ℂ n F 0 (fun k => Matrix.single (r k) (σ (a k) …`. Introduce `σ`. Rewrite using `[key σ, Equiv.Perm.sign_mul, Equiv.Perm.sign_swap hane]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Equiv.coe_mulRight] at hS`. Rewrite `hS` using `[Finset.sum_congr rfl (fun σ _ => hg σ), Finset.sum_neg_distrib]`. Establish `h2 : (2 : ℂ) * ∑ σ : Equiv.Perm ι, ((Equiv.Perm.sign σ : ℤ) : ℂ) * iteratedFDeriv ℂ n F 0 (fun k => Matrix.single (r k) (σ (a k)) (1 : ℂ)) = 0`. Take the linear combination `hS`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem sum_sign_iteratedFDeriv_single_eq_zero_of_not_inj (F : Matrix ι ι ℂ → ℂ) (hF : AnalyticAt ℂ F 0) {n : ℕ}
     (a : Fin n ≃ ι) (r : Fin n → ι) (hr : ¬ Function.Injective r) :
@@ -183,11 +183,11 @@ private theorem sum_sign_iteratedFDeriv_single_eq_zero_of_not_inj (F : Matrix ι
   simpa using h2
 
 /- English proof (translation)
-Establish `hterm : ∀ σ : Equiv.Perm ι, iteratedFDeriv ℂ n F 0 (fun k => Matrix.single (ρ (a k)) (σ (a k)) (1 : ℂ)) = iteratedFDeriv ℂ n F 0 (fun k => Matrix.single (a k) ((σ * ρ⁻¹) (a k)) (1 : ℂ))`. Introduce `σ`. Rewrite using `[← symm_perm F hF (fun k => Matrix.single (a k) ((σ * ρ⁻¹) (a k)) (1 : ℂ)) ((a.trans ρ).trans a.symm)]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Equiv.Perm.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_inv_cancel_right, Equiv.Perm.sign_mul]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sum_sign_iteratedFDeriv_single_perm_eq_sign_mul (F : Matrix ι ι ℂ → ℂ) (hF : AnalyticAt ℂ F 0) {n : ℕ}
     (a : Fin n ≃ ι) (ρ : Equiv.Perm ι) :
@@ -222,21 +222,21 @@ private theorem sum_sign_iteratedFDeriv_single_perm_eq_sign_mul (F : Matrix ι �
         ring
 
 /- English proof (translation)
-Introduce `ι _ _ F A hF`. Set `a : Fin (Fintype.card ι) ≃ ι` to `(Fintype.equivFin ι).symm`. Set `L : Matrix ι ι ℂ →L[ℂ] Matrix ι ι ℂ` to `LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℂ A)`. Establish `hΦ : ∀ σ : Equiv.Perm ι, iteratedFDeriv ℂ (Fintype.card ι) (fun T => F (A * T)) 0 (fun i => Matrix.single (a i) (σ (a i)) (1 : ℂ)) = ∑ r : Fin (Fintype.card ι) → ι, (∏ i, A (r i) (a i)) * iteratedFDeriv ℂ (Fintype.card ι) F 0 (fun i => Matrix.single (r i) (σ (a i)) (1 : ℂ))`. Introduce `σ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : iteratedFDeriv ℂ (Fintype.card ι) (fun T => F (A * T)) 0 (fun i => Matrix.single (a i) (σ (a i)) (1 : ℂ)) = iteratedFDeriv ℂ (Fintype.card ι) F 0 (fun i => A * Matrix.single (a i) (σ (a i)) (1 : ℂ))` using `iteratedFDeriv_comp_clm F hF L _ _`. Rewrite using `[h1]`. Repeatedly rewrite using `[mul_single_eq]`. Rewrite using `[ContinuousMultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ContinuousMultilinearMap.map_smul_univ, smul_eq_mul]`. Establish `hswap : detD (fun T => F (A * T)) = ∑ r : Fin (Fintype.card ι) → ι, (∏ i, A (r i) (a i)) * ∑ σ : Equiv.Perm ι, ((Equiv.Perm.sign σ : ℤ) : ℂ) * iteratedFDeriv ℂ (Fintype.card ι) F 0 (fun i => Matrix.single (r i) (σ (a i)) (1 : ℂ))`. Unfold `detD`. Rewrite using `[Finset.sum_congr rfl fun σ _ => by rw [hΦ σ]]`. Repeatedly rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hswap]`. Establish `hinj : ∀ ρ ∈ (Finset.univ : Finset (Equiv.Perm ι)), ∀ ρ' ∈ (Finset.univ : Finset (Equiv.Perm ι)), (fun i => ρ (a i)) = (fun i => ρ' (a i)) → ρ = ρ'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `ρ _ ρ' _ h`. Use extensionality with `x`. Simplify `congrFun h (Fintype.equivFin ι x)` using `[a]`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ ((Finset.univ : Finset (Equiv.Perm ι)).image fun ρ => (fun i => ρ (a i)))), Finset.sum_image hinj]`. Establish `hD : detD F = ∑ σ : Equiv.Perm ι, ((Equiv.Perm.sign σ : ℤ) : ℂ) * iteratedFDeriv ℂ (Fintype.card ι) F 0 (fun k => Matrix.single (a k) (σ (a k)) (1 : ℂ))` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[sum_sign_iteratedFDeriv_single_perm_eq_sign_mul F hF a, ← hD]`. Rewrite using `[Matrix.det_apply', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[show (∏ i, A (ρ (a i)) (a i)) = ∏ x, A (ρ x) x from Equiv.prod_comp a (fun x => A (ρ x) x)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `r _ hr`. Rewrite using `[sum_sign_iteratedFDeriv_single_eq_zero_of_not_inj F hF a r ?_, mul_zero]`. Introduce `hr'`. Apply `hr` to reduce the goal to its premises. Rewrite using `[Finset.mem_image]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Equiv.ofBijective (fun x => r (a.symm x)) ((hr'.comp a.symm.injective).bijective_of_finite), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem equivar_thm : Equivar := by
   intro ι _ _ F A hF
@@ -299,12 +299,12 @@ end PositivityTheory.Rg.Sw.LVs.CEq
 namespace PositivityTheory.Rg.Sw.LVs
 
 /- English proof (translation)
-The claim follows from `CEq.equivar_thm`.
+A detailed English derivation is pending.
 -/
 theorem equivar : Equivar := CEq.equivar_thm
 
 /- English proof (translation)
-The claim follows from `CEq.reindex_thm`.
+A detailed English derivation is pending.
 -/
 theorem reindex : Reindex := CEq.reindex_thm
 

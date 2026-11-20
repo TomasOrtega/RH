@@ -23,9 +23,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.LieHomOk
 
 /- English proof (translation)
-Take `⟨EK, i1, i2, ⟨N⟩⟩` from `lieModel_exists (Sp O) G K (spMap c ≫ 𝟙 _)`. Establish `hx : spMap c ≫ 𝟙 (Sp O) = 𝟙 (Sp K) ≫ spMap c` using `by simp`. Establish `gen : ∀ (y : Sp K ⟶ Sp O), spMap c ≫ 𝟙 (Sp O) = y → ∃ N' : LieModel G y EK, ∀ x, (N'.pt x).left = (N.pt x).left`. Introduce and unpack `y rfl`. Conclude with `⟨N, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨N', hN'⟩` from `gen _ hx`. Take `⟨MK, hMK⟩` from `(LiePull.lieModel_pullback _ _ G GK (spMap c) φ h K (𝟙 _) EK).1 N'`. Take `⟨j, hj, -⟩` from `LieBaseChange.existsUnique_semilinear_lifts (Sp O) G O K c (𝟙 _) E EK M N`. Conclude with `⟨EK, i1, i2, MK, N, j, fun x => by rw [hMK, hN'], hj⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_generic_model {O K : Type} [CommRing O] [Field K] (c : O →+* K) (G : Over (Sp O)) [GrpObj G]
     [IsCommMonObj G] (GK : Over (Sp K)) [GrpObj GK] (φ : GK.left ⟶ G.left)
@@ -46,19 +46,17 @@ theorem exists_generic_model {O K : Type} [CommRing O] [Field K] (c : O →+* K)
   exact ⟨EK, i1, i2, MK, N, j, fun x => by rw [hMK, hN'], hj⟩
 
 /- English proof (translation)
-Set `X' : Over Y` to `Over.mk (a ≫ p)`. Set `Y' : Over Y` to `Over.mk p`. Set `f' : X' ⟶ Y'` to `Over.homMk a`. Set `g' : X' ⟶ Y'` to `Over.homMk b hab.symm`. Use `haveI : IsSeparated Y'.hom := ‹IsSeparated p›`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `U' : Over Y` to `Over.mk (spMap d ≫ a ≫ p)`. Set `i' : U' ⟶ X'` to `Over.homMk (spMap d)`. Establish `e : i' ≫ f' = i' ≫ g'` using `by ext1`. Conclude with `h`. Set `l` to `equalizer.lift i' e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : spMap d = l.left ≫ (equalizer.ι f' g').left`. Rewrite using `[← Over.comp_left, equalizer.lift_ι]`. Both sides reduce to the same expression. Use `haveI hcl : IsClosedImmersion (equalizer.ι f' g').left := isClosedImmersion_equalizer_ι_left _ _`. Use `haveI : IsAffine X'.left := inferInstanceAs (IsAffine (Sp A))`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hA, hs⟩` from `IsClosedImmersion.isAffine_surjective_of_isAffine (equalizer.ι f' g').left`. Establish `h2 : Function.Injective (spMap d).appTop.hom`. Establish `nat` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom d)`. Establish `inj : Function.Injective ((Scheme.ΓSpecIso (CommRingCat.of A)).hom ≫ CommRingCat.ofHom d).hom`. Rewrite using `[CommRingCat.hom_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd.comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).hom).1`. Rewrite `inj` using `[← nat, CommRingCat.hom_comp]`. Conclude with `Function.Injective.of_comp inj`. Establish `hinj : Function.Injective (equalizer.ι f' g').left.appTop.hom`. Establish `e2 : (spMap d).appTop = (equalizer.ι f' g').left.appTop ≫ l.left.appTop`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hi]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[e2, CommRingCat.hom_comp]`. Conclude with `Function.Injective.of_comp h2`. Use `haveI : IsIso (equalizer.ι f' g').left.appTop := (ConcreteCategory.isIso_iff_bijective _).2 ⟨hinj, hs⟩`.
-
-Use `haveI : IsIso (equalizer.ι f' g').left := (MorphismProperty.arrow_mk_iso_iff (MorphismProperty.isomorphisms _) (arrowIsoSpecΓOfIsAffine (equalizer.ι f' g').left)).mpr (inferInstanceAs (IsIso (Spec.map (equalizer.ι f' g').left.appTop)))`. Establish `h0 : IsIso ((Over.forget Y).map (equalizer.ι f' g'))` using `(inferInstance : IsIso (equalizer.ι f' g').left)`. Establish `: IsIso (equalizer.ι f' g')` using `isIso_of_reflects_iso _ (Over.forget Y)`. Establish `hfg : f' = g'` using `(cancel_epi (equalizer.ι f' g')).1 (equalizer.condition f' g')`. Conclude with `congrArg CommaMorphism.left hfg`.
+A detailed English derivation is pending.
 -/
 theorem ext_of_spMap_injective {A B : Type} [CommRing A] [CommRing B] (d : A →+* B)
     (hd : Function.Injective d) {X Y : Scheme.{0}} (p : X ⟶ Y) [IsSeparated p] (a b : Sp A ⟶ X)
@@ -105,27 +103,25 @@ theorem ext_of_spMap_injective {A B : Type} [CommRing A] [CommRing B] (d : A →
   exact congrArg CommaMorphism.left hfg
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Set `y : Sp T ⟶ Sp O` to `spMap a`. Set `g : Sp K ⟶ Sp T` to `spMap (algebraMap T K)`. Establish `hgy : g ≫ y = spMap ((algebraMap T K).comp a)`. Simplify using `only [g, y, spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `H` to `(Over.pullback y).obj G`. Set `H'` to `(Over.pullback y).obj G'`. Establish `hH : IsGrpPullback H G y (pullback.fst G.hom y)` using `isGrpPullback_pullback G y`. Establish `hH' : IsGrpPullback H' G' y (pullback.fst G'.hom y)` using `isGrpPullback_pullback G' y`. Establish `hA` using `((isGrpPullback_pullback H g).comp hH).congr hgy rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA'` using `((isGrpPullback_pullback H' g).comp hH').congr hgy rfl`. Take `⟨α, hαm, hα⟩` from `grpPullback_iso hA h`. Take `⟨β, hβm, hβ⟩` from `grpPullback_iso h' hA'`. Take `⟨F, ⟨hF, hF'⟩, -⟩` from `GlobalTheory.existsUnique_hom_extension_semiAbelian T K H H' (IsSemiAbelian.pullback y G hG) (IsSemiAbelian.pullback y G' hG') (α.hom ≫ q ≫ β.hom) inferInstance`. Set `w₀ : epsAt (𝟙 (Sp T)) ⟶ H` to `(LiePull.tanPts hH (𝟙 _)).symm t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hw₀ : w₀.left ≫ pullback.fst G.hom y = t.left`. Rewrite using `[← LiePull.pts_left hH (LiePull.eps_assoc _) w₀]`. Conclude with `congrArg (fun z => z.left) ((LiePull.tanPts hH (𝟙 _)).apply_symm_apply t)`. Establish `hw₀t : IsTanAt H _ w₀` using `(LiePull.isTan_iff hH _ w₀).1 (by`. Rewrite using `[show LiePull.tanPts hH (𝟙 _) w₀ = t from (LiePull.tanPts hH (𝟙 _)).apply_symm_apply t]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ht)`. Establish `hw₁t : IsTanAt H' (𝟙 _) (w₀ ≫ F)`. Unfold `IsTanAt at hw₀t ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, hw₀t, ← Over.comp_left, MonObj.one_comp]`. Use `⟨LiePull.tanPts hH' (𝟙 _) (w₀ ≫ F), (LiePull.isTan_iff hH' _ _).2 hw₁t, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpull : ∀ {X Y : Over (Sp T)} (b : X ⟶ Y), ((Over.pullback g).map b).left ≫ pullback.fst Y.hom g = pullback.fst X.hom g ≫ b.left` using `fun b => pullback.lift_fst _ _ _`. Establish `hαi : α.inv.left ≫ pullback.fst H.hom g ≫ pullback.fst G.hom y = φ`. Rewrite using `[← hα, ← Category.assoc, ← Over.comp_left, α.inv_hom_id, Over.id_left, Category.id_comp]`. Establish `hz : v.left ≫ α.inv.left ≫ pullback.fst H.hom g = spMap (dualMap (algebraMap T K)) ≫ w₀.left`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[hαi, hv, hw₀]`. Establish `c1 : pullback.fst H.hom g ≫ pullback.snd G.hom y = pullback.snd H.hom g ≫ g` using `pullback.condition`. Establish `c2 : α.inv.left ≫ pullback.snd H.hom g = GK.hom` using `Over.w α.inv`. Establish `c3 : v.left ≫ GK.hom = (epsAt (𝟙 (Sp K))).hom` using `Over.w v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `c4 : w₀.left ≫ pullback.snd G.hom y = (epsAt (𝟙 (Sp T))).hom` using `Over.w w₀`. Simplify using `only [Category.assoc]`. Rewrite using `[c1, reassoc_of% c2, reassoc_of% c3, c4]`. Establish `c5` using `LieTangent.spec_dual_alg (algebraMap T K)`. Use `show (Spec.map _ ≫ 𝟙 _) ≫ g = spMap _ ≫ Spec.map _ ≫ 𝟙 _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.comp_id, Category.comp_id]`. Conclude with `c5.symm`. Establish `hq : q ≫ β.hom = α.inv ≫ (Over.pullback g).map F`. Rewrite using `[hF', Iso.inv_hom_id_assoc]`. Establish `hql : q.left ≫ β.hom.left = α.inv.left ≫ ((Over.pullback g).map F).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, hq, Over.comp_left]`. Use `show (v.left ≫ q.left) ≫ φ' = _ ≫ (w₀.left ≫ F.left) ≫ pullback.fst G'.hom y`. Rewrite using `[← hβ]`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% hql, reassoc_of% (hpull F)]`.
-
-Rewrite using `[← Category.assoc (spMap _), ← hz]`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_tangent_dvr_semiabelian {O T K : Type} [CommRing O] [CommRing T] [IsDomain T] [IsDiscreteValuationRing T]
     [Field K] [Algebra T K] [IsFractionRing T K] (a : O →+* T) (G G' : Over (Sp O)) [GrpObj G] [GrpObj G']
@@ -197,7 +193,7 @@ theorem exists_tangent_dvr_semiabelian {O T K : Type} [CommRing O] [CommRing T] 
   simp only [Category.assoc]
 
 /- English proof (translation)
-The claim follows from `exists_tangent_dvr_semiabelian a G G' GK GK' φ φ' hG hG' h h' q _ (by simp) t ht v hv`.
+A detailed English derivation is pending.
 -/
 theorem exists_tangent_dvr {O T K : Type} [CommRing O] [CommRing T] [IsDomain T] [IsDiscreteValuationRing T]
     [Field K] [Algebra T K] [IsFractionRing T K] (a : O →+* T) (G G' : Over (Sp O)) [GrpObj G] [GrpObj G']
@@ -212,7 +208,7 @@ theorem exists_tangent_dvr {O T K : Type} [CommRing O] [CommRing T] [IsDomain T]
   exists_tangent_dvr_semiabelian a G G' GK GK' φ φ' hG hG' h h' q _ (by simp) t ht v hv
 
 /- English proof (translation)
-The claim follows from `(Category.comp_id _).symm.trans h`.
+A detailed English derivation is pending.
 -/
 theorem lifts_id {S : Scheme.{0}} {G : Over S} [GrpObj G] {R R' : Type} [CommRing R] [CommRing R'] {x : Sp R ⟶ S}
     {E : Type} [AddCommGroup E] [Module R E] (M : LieModel G x E) (c : R →+* R') (e : E)
@@ -221,14 +217,14 @@ theorem lifts_id {S : Scheme.{0}} {G : Over S} [GrpObj G] {R R' : Type} [CommRin
   (Category.comp_id _).symm.trans h
 
 /- English proof (translation)
-Apply the tactic sequence `ext x <;> simp [dualMap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (d : A →+* B) (d' : B →+* C) :
     dualMap (d'.comp d) = (dualMap d').comp (dualMap d) := by
   ext x <;> simp [dualMap]
 
 /- English proof (translation)
-Rewrite using `[dualMap_comp]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem spMap_dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (d : A →+* B) (d' : B →+* C) :
     spMap (dualMap (d'.comp d)) = spMap (dualMap d') ≫ spMap (dualMap d) := by
@@ -236,17 +232,17 @@ theorem spMap_dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Use `letI : Algebra (Localization.AtPrime P) K := c.toAlgebra`. Establish `hcK : algebraMap (Localization.AtPrime P) K = c` using `rfl`. Use `haveI : IsScalarTower O (Localization.AtPrime P) K := IsScalarTower.of_algebraMap_eq' hc.symm`. Use `haveI : IsFractionRing (Localization.AtPrime P) K := IsFractionRing.isFractionRing_of_isDomain_of_isLocalization P.primeCompl _ K`. Distinguish the cases in `hO : IsField O`.
+Equip the data with the indicated structure. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsur : Function.Surjective c`. Introduce `z`. Take `⟨o, ho⟩` from `(IsFractionRing.surjective_iff_isField (R := O) (K := K)).2 hO z`. Conclude with `⟨algebraMap O _ o, by rw [← ho, ← hc]; rfl⟩`. Establish `hb : Function.Bijective c` using `⟨IsFractionRing.injective (Localization.AtPrime P) K, hsur⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `eqv` to `RingEquiv.ofBijective c hb`. Set `c' : K →+* Localization.AtPrime P` to `eqv.symm.toRingHom`. Establish `h1 : c'.comp c = RingHom.id _` using `RingHom.ext fun z => eqv.symm_apply_apply z`. Establish `h2 : c.comp c' = RingHom.id _` using `RingHom.ext fun z => eqv.apply_symm_apply z`. Establish `h3 : c'.comp (algebraMap O K) = algebraMap O _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hc, ← RingHom.comp_assoc, h1, RingHom.id_comp]`. Establish `hbase : Spec.map (CommRingCat.ofHom c') ≫ (spMap (algebraMap O K) ≫ 𝟙 _) = spMap (algebraMap O (Localization.AtPrime P)) ≫ 𝟙 _`. Rewrite using `[← Category.assoc, LieTangent.spec_comp, h3]`. Use `⟨LieTangent.epsBase c' hbase ≫ u, LieTangent.isTanAt_base c' hbase hu, ?_⟩` and prove the remaining obligations. Use `show u.left = spMap (dualMap c) ≫ spMap (dualMap c') ≫ u.left`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : dualMap (RingHom.id K) = RingHom.id _`. Apply the tactic sequence `ext x <;> simp [dualMap]`. Rewrite using `[← Category.assoc, ← spMap_dualMap_comp, h2, h4]`. Simplify using `[spMap]`. Establish `hP : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField ‹_› hO haveI : IsDiscreteValuationRing (Localization.AtPrime P) := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain O hP _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `h`, `h'` using `[← hc]`. Take `⟨w, hw, hw'⟩` from `exists_tangent_dvr (T := Localization.AtPrime P) (K := K) (algebraMap O _) G G' GK GK' φ φ' hG hG' h h' q t ht v hv`. Conclude with `⟨w, hw, huv.trans hw'⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_local {O K : Type} [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
     (G G' : Over (Sp O)) [GrpObj G] [GrpObj G']
@@ -299,23 +295,21 @@ theorem exists_local {O K : Type} [CommRing O] [IsDedekindDomain O] [Field K] [A
     exact ⟨w, hw, huv.trans hw'⟩
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ G G' _ _ GK GK' _ _ φ φ' hG hG' h h' q _ E _ _ E' _ _ M M'`. Use `hG.comm` as an intermediate fact. Use `hG'.comm` as an intermediate fact. Use `hG'.smooth` as an intermediate fact. Use `hG'.separated` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨EK, i1, i2, MK, N, j, hMK, hj⟩` from `exists_generic_model (algebraMap O K) G GK φ h M`. Take `⟨EK', i1', i2', MK', N', j', hMK', hj'⟩` from `exists_generic_model (algebraMap O K) G' GK' φ' h' M'`. Take `⟨D, hD, -⟩` from `lieModel_exists_unique_diff (Sp K) GK GK' K (𝟙 _) EK EK' MK MK' q`. Establish `hc : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Establish `hj'' : ∀ a, spMap (dualMap (algebraMap O K)) ≫ (M'.pt a).left = (N'.pt (j' a)).left` using `fun a => (lifts_id _ _ _ _ (hj' a)).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjj : ∀ a, spMap (dualMap (algebraMap O K)) ≫ (M.pt a).left = (N.pt (j a)).left` using `fun a => (lifts_id _ _ _ _ (hj a)).symm`. Establish `hinj : Function.Injective j'` using `fun a b hab => M'.inj (Over.OverMorphism.ext (ext_of_spMap_injective (dualMap (algebraMap O K)) (LieTangent.dualMap_injective hc) G'.hom _ _ ((Over.w (M'.pt a)).trans (Over.w (M'.pt b)).symm) (by rw [hj'', hj'', hab])))`. Establish `key : ∀ e, ∃ e', j' e' = D (j e)`. Introduce `e`. Establish `hloc : ∀ (P : Ideal O) [P.IsMaximal] (c : Localization.AtPrime P →+* K), c.comp (algebraMap O _) = algebraMap O K → ∃ w : epsAt (spMap (algebraMap O (Localization.AtPrime P)) ≫ 𝟙 _) ⟶ G', IsTanAt G' _ w ∧ (N'.pt (D (j e))).left = spMap (dualMap c) ≫ w.left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `P _ c hcP`. Take `⟨ET, t1, t2, ⟨L⟩⟩` from `lieModel_exists (Sp O) G (Localization.AtPrime P) (spMap (algebraMap O (Localization.AtPrime P)) ≫ 𝟙 _)`. Take `⟨jT, hjT, -⟩` from `LieBaseChange.existsUnique_semilinear_lifts (Sp O) G O _ (algebraMap O (Localization.AtPrime P)) (𝟙 _) E ET M L`. Use `exists_local G G' GK GK' φ φ' hG hG' h h' q P c hcP (L.pt (jT e)) (L.tan _) (MK.pt (j e)) ?_ (N'.pt (D (j e))) (N'.tan _) ?_` and prove the remaining obligations. Rewrite using `[hMK, ← hjj, lifts_id _ _ _ _ (hjT e), ← Category.assoc, ← spMap_dualMap_comp, hcP]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hD, hMK']`. Take `⟨e', he'⟩` from `GlobalTheory.T.tangent_vector_extends_dvr O K (Sp O) (𝟙 _) G' E' M' (N'.pt (D (j e))) (N'.tan _) hloc`. Establish `he''` using `lifts_id _ _ _ _ he'`. Rewrite `he''` using `[hj'']`. Conclude with `⟨e', N'.inj (Over.OverMorphism.ext he'').symm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Use `choose f hf using key`. Use `⟨{ toFun := f, map_add' := ?_, map_smul' := ?_ }, fun e v hv => ?_⟩` and prove the remaining obligations. Introduce `a b`. Apply `hinj` to reduce the goal to its premises. Simplify using `only [hf, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r a`. Apply `hinj` to reduce the goal to its premises. Simplify using `only [hf, map_smulₛₗ, RingHom.id_apply]`. Establish `hvj : v = MK.pt (j e)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h.1.hom_ext` to reduce the goal to its premises. Unfold `LieModel.Lifts at hv`. Rewrite using `[hv, hMK, ← hjj]`. Conclude with `(Over.w v).trans (Over.w (MK.pt (j e))).symm`. Establish `e1 : v ≫ q = MK'.pt (j' (f e))` using `by rw [hvj, ← hD, hf]`.
-
-Use `show (v ≫ q).left ≫ φ' = spMap (dualMap (algebraMap O K)) ≫ (M'.pt (f e)).left`. Rewrite using `[e1, hMK', hj'']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_maps_lie : ∀ (O K : Type) [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K] [IsFractionRing O K] (G G' : Over (Sp O)) [GrpObj G] [GrpObj G'] (GK GK' : Over (Sp K)) [GrpObj GK] [GrpObj GK'] (φ : GK.left ⟶ G.left) (φ' : GK'.left ⟶ G'.left), IsSemiAbelian G → IsSemiAbelian G' → IsGrpPullback GK G (spMap (algebraMap O K)) φ → IsGrpPullback GK' G' (spMap (algebraMap O K)) φ' → ∀ (q : GK ⟶ GK') [IsMonHom q] (E : Type) [AddCommGroup E] [Module O E] (E' : Type) [AddCommGroup E'] [Module O E'] (M : LieModel G (𝟙 _) E) (M' : LieModel G' (𝟙 _) E'), ∃ f : E →ₗ[O] E', ∀ (e : E) (v : epsAt (𝟙 (Sp K)) ⟶ GK), M.Lifts (algebraMap O K) φ e v → M'.Lifts (algebraMap O K) φ' (f e) (v ≫ q) := by
   intro O K _ _ _ _ _ G G' _ _ GK GK' _ _ φ φ' hG hG' h h' q _ E _ _ E' _ _ M M'

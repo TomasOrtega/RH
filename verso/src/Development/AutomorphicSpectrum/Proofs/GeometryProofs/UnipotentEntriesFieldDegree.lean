@@ -11,13 +11,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.FlagStep.AdjoinLower
 
 /- English proof (translation)
-Introduce `Ω₀ Ω _ _ _ S r u hdiag hup hfin`. Rewrite `hfin` using `[IntermediateField.finrank_eq_one_iff_eq_top]`. Rewrite using `[← hfin]`. Apply `le_antisymm` to reduce the goal to its premises. Apply `IntermediateField.adjoin.mono` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨⟨σ, ⟨l, k⟩, _⟩, rfl⟩`. Conclude with `⟨⟨σ, l, k⟩, rfl⟩`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨σ, l, k⟩, rfl⟩`. Break down `lt_trichotomy l k with h | h | h` into its components or cases.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [hup σ l k h]`. Conclude with `zero_mem _`. Substitute `h` using the available equality. Simplify using `only [hdiag σ l]`. Conclude with `one_mem _`.
-
-Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨σ, ⟨l, k⟩, h⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adjoin_lower_eq_top : ∀ (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [Algebra Ω₀ Ω] (S : Type) (r : S → ℕ)
     (u : ∀ σ, Matrix (Fin (r σ)) (Fin (r σ)) Ω),

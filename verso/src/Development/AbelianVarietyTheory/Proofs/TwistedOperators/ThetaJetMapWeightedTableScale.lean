@@ -15,14 +15,14 @@ def scaleVar (w : σ → ℂ) : MvPolynomial σ ℂ →ₐ[ℂ] MvPolynomial σ 
   aeval fun v => C (w v) * X v
 
 /- English proof (translation)
-Rewrite using `[monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma monomial_eq_prod (s : σ →₀ ℕ) (r : ℂ) :
     (monomial s r : MvPolynomial σ ℂ) = C r * ∏ v, X v ^ s v := by
   rw [monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]
 
 /- English proof (translation)
-Rewrite using `[monomial_eq_prod, monomial_eq_prod, scaleVar, map_mul, aeval_C, map_prod, map_mul C, map_prod C]`. Simplify using `only [map_pow, aeval_X, mul_pow, Finset.prod_mul_distrib, algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma scaleVar_monomial (w : σ → ℂ) (s : σ →₀ ℕ) (r : ℂ) :
     scaleVar w (monomial s r) = monomial s (r * ∏ v, w v ^ s v) := by
@@ -37,7 +37,7 @@ section Jet
 variable {ι : Type} [Fintype ι] {a b : ℕ}
 
 /- English proof (translation)
-Establish `h : (monomial m r : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) ℂ) = r • basisMonomials ((ι × Fin b × Fin b) ⊕ DVar ι a b) ℂ m`. Rewrite using `[coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[h, map_smul, jetLin, Module.Basis.constr_basis, smul_monomial, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma jetLin_monomial (J : (DVar ι a b →₀ ℕ) → ℂ) (m : ((ι × Fin b × Fin b) ⊕ DVar ι a b) →₀ ℕ) (r : ℂ) :
     jetLin J (monomial m r) =
@@ -52,9 +52,9 @@ def wDer (c : ι → ℂ) : (ι × Fin b × Fin b) ⊕ DVar ι a b → ℂ := Su
 def wCoord (c : ι → ℂ) : (ι × Fin b × Fin b) ⊕ DVar ι a b → ℂ := Sum.elim (fun k => c k.1) (fun _ => 1)
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial m r`. Rewrite using `[scaleVar_monomial, jetLin_monomial, jetLin_monomial, Fintype.prod_sum_type]`. Simplify using `[wDer, Finsupp.comapDomain_apply]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 lemma jetLin_scaleDer (c : ι → ℂ) (J : (DVar ι a b →₀ ℕ) → ℂ) (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) ℂ) :
     jetLin J (scaleVar (wDer c) Q) = jetLin (fun m => (∏ k, c k.1 ^ m k) * J m) Q := by
@@ -67,7 +67,7 @@ lemma jetLin_scaleDer (c : ι → ℂ) (J : (DVar ι a b →₀ ℕ) → ℂ) (Q
   | add p q hp hq => rw [map_add, map_add, map_add, hp, hq]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[Formalism.GradedWeylDivisibility.blockAct, scaleVar, Matrix.diagonal_apply, apply_ite C, ite_mul, Finset.sum_ite_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma blockAct_diag (c : ι → ℂ) :
     Formalism.GradedWeylDivisibility.blockAct ℂ (n := b) (fun τ => Matrix.diagonal fun _ : Fin b => c τ) = scaleVar (fun v : ι × Fin b × Fin b => c v.1) := by
@@ -76,9 +76,9 @@ lemma blockAct_diag (c : ι → ℂ) :
   simp [Formalism.GradedWeylDivisibility.blockAct, scaleVar, Matrix.diagonal_apply, apply_ite C, ite_mul, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial m r`. Rewrite using `[scaleVar_monomial, jetLin_monomial, jetLin_monomial, scaleVar_monomial, Fintype.prod_sum_type]`. Simplify using `[wCoord, Finsupp.comapDomain_apply]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 lemma jetLin_scaleCoord (c : ι → ℂ) (J : (DVar ι a b →₀ ℕ) → ℂ) (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) ℂ) :
     jetLin J (scaleVar (wCoord c) Q) = scaleVar (fun v : ι × Fin b × Fin b => c v.1) (jetLin J Q) := by
@@ -91,9 +91,9 @@ lemma jetLin_scaleCoord (c : ι → ℂ) (J : (DVar ι a b →₀ ℕ) → ℂ) 
   | add p q hp hq => simp only [map_add, hp, hq]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, subD, aeval_X]`. Use `split_ifs`. Simplify using `only [map_sum, map_mul, scaleVar, aeval_X, wDer, wCoord, Sum.elim_inl, Sum.elim_inr, map_one, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma scale_subD (c : ι → ℂ) :
     (scaleVar (wDer (a := a) (b := b) c)).comp (subD ℂ ι a b) = (scaleVar (wCoord c)).comp (subD ℂ ι a b) := by
@@ -107,9 +107,9 @@ lemma scale_subD (c : ι → ℂ) :
   · simp
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial m r`. Rewrite using `[jetLin_monomial, jetLin_monomial, smul_monomial, smul_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `add p q hp hq => simp only [map_add, hp, hq, smul_add]`.
+Treat this case separately.
 -/
 lemma jetLin_smul_table (u : ℂ) (J : (DVar ι a b →₀ ℕ) → ℂ) (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) ℂ) :
     jetLin (fun m => u * J m) Q = u • jetLin J Q := by
@@ -123,9 +123,9 @@ lemma jetLin_smul_table (u : ℂ) (J : (DVar ι a b →₀ ℕ) → ℂ) (Q : Mv
 end Jet
 
 /- English proof (translation)
-Establish `hJ : (fun m : DVar ι a b →₀ ℕ => u * ((m.prod fun k e => c k.1 ^ e) * J m)) = fun m => u * ((∏ k, c k.1 ^ m k) * J m)`. Use function extensionality and compare the values at `m`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Rewrite using `[hJ, blockAct_diag]`. Rewrite using `[jetMap, jetMap, LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `DFunLike.congr_fun (scale_subD (a := a) (b := b) c) (LinearMap.mulRight ℂ (∏ τ, frDet ℂ a τ ^ nn τ) P)`. Rewrite `key` using `[AlgHom.comp_apply, AlgHom.comp_apply]`. Rewrite using `[jetLin_smul_table, ← jetLin_scaleDer, key, jetLin_scaleCoord]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetMap_weight_scale {ι : Type} [Fintype ι] {a b : ℕ} (u : ℂ) (c : ι → ℂ) (J : (DVar ι a b →₀ ℕ) → ℂ) (nn : ι → ℕ)
     (P : Formalism.L2.DIV.Pol ℂ ι a) :

@@ -17,7 +17,7 @@ open GlobalTheory.SmGL.CuspMax Matrix
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `(stdSum h).surjective i`. Break down `x with x | x` into its components or cases. Rewrite using `[← two_false, blk_apply]`. Simplify using `[x.2]`. Rewrite using `[← two_true, blk_apply]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -29,7 +29,7 @@ theorem blk_two_stdSum {a b n : ℕ} (h : a + b = n) (i : Fin n) :
   · rw [← two_true, blk_apply]; simp
 
 /- English proof (translation)
-Rewrite using `[blk_two_stdSum, blk_two_stdSum]`. Apply the tactic sequence `by_cases h1 : a ≤ (i : ℕ) <;> by_cases h2 : a ≤ (j : ℕ) <;> simp [h1, h2] <;> omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_two_stdSum_lt {a b n : ℕ} (h : a + b = n) (i j : Fin n) :
     blk (two (stdSum h)) i < blk (two (stdSum h)) j ↔ (i : ℕ) < a ∧ a ≤ (j : ℕ) := by
@@ -37,7 +37,7 @@ theorem blk_two_stdSum_lt {a b n : ℕ} (h : a + b = n) (i j : Fin n) :
   by_cases h1 : a ≤ (i : ℕ) <;> by_cases h2 : a ≤ (j : ℕ) <;> simp [h1, h2] <;> omega
 
 /- English proof (translation)
-Rewrite using `[mem_unipRad_iff_entries]`. Simplify using `only [blk_two_stdSum_lt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_unipRad_two_iff {R : Type} [CommRing R] {a b n : ℕ} (h : a + b = n) {g : GL (Fin n) R} :
     g ∈ unipRad R (two (stdSum h)) ↔ ∀ i j : Fin n, ¬ ((i : ℕ) < a ∧ a ≤ (j : ℕ)) →

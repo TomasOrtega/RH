@@ -6,9 +6,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `a using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => exact absurd rfl ha`. Consider the case `h₂ x hx => exact absurd (I.eq_top_of_isUnit_mem haI hx) hI.ne_top`. Consider the case `h₃ a p ha' hp ih`. Break down `hI.mem_or_mem haI with h | h` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨p, hp, dvd_mul_right _ _, h⟩`. Take `⟨u, hu, hua, huI⟩` from `ih (right_ne_zero_of_mul ha) h`. Conclude with `⟨u, hu, dvd_mul_of_dvd_right hua _, huI⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_prime_factor_mem_prime_ideal_ufd {R : Type} [CommRing R] [IsDomain R]
     [UniqueFactorizationMonoid R] (I : Ideal R) [hI : I.IsPrime] (a : R) (ha : a ≠ 0)
@@ -23,31 +23,29 @@ theorem exists_prime_factor_mem_prime_ideal_ufd {R : Type} [CommRing R] [IsDomai
       exact ⟨u, hu, dvd_mul_of_dvd_right hua _, huI⟩
 
 /- English proof (translation)
-Introduce `U V hU hV ⟨p, hpS, hpU⟩ ⟨q, hqS, hqV⟩`. Establish `hfp : f ∈ p.asIdeal` using `by simpa using hpS.1`. Establish `hgp : g ∉ p.asIdeal` using `by simpa using hpS.2`. Take `⟨u, hu, huf, hup⟩` from `exists_prime_factor_mem_prime_ideal_ufd p.asIdeal f hf0 hfp`. Take `⟨v, rfl⟩` from `huf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hu0 : u ≠ 0` using `hu.ne_zero`. Establish `hv0 : v ≠ 0` using `right_ne_zero_of_mul hf0`. Establish `hdeg` using `MvPolynomial.totalDegree_mul_of_isDomain hu0 hv0`. Establish `hgrad : g ∉ (Ideal.span {u}).radical`. Introduce `hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hgp` to reduce the goal to its premises. Establish `: (Ideal.span {u}).radical ≤ p.asIdeal` using `(Ideal.radical_mono ((Ideal.span_singleton_le_iff_mem _).mpr hup)).trans p.isPrime.radical.le`. Conclude with `this hg`. Rewrite `hgrad` using `[← MvPolynomial.vanishingIdeal_zeroLocus_eq_radical (K := Ω)]`. Simplify using `only [MvPolynomial.mem_vanishingIdeal_iff, not_forall] at hgrad`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hPg⟩` from `hgrad`. Establish `hPu : MvPolynomial.eval P u = 0`. Use `hP u (Ideal.mem_span_singleton_self u)` as an intermediate fact. Simplify `this` using `[MvPolynomial.aeval_eq_eval]`. Establish `hPg' : MvPolynomial.eval P g ≠ 0` using `by simpa [MvPolynomial.aeval_eq_eval] using hPg`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvg : g ∈ (Ideal.span {v}).radical`. Rewrite using `[← MvPolynomial.vanishingIdeal_zeroLocus_eq_radical (K := Ω)]`. Introduce `Q hQ`. Establish `hQv : MvPolynomial.eval Q v = 0`. Use `hQ v (Ideal.mem_span_singleton_self v)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[MvPolynomial.aeval_eq_eval]`. Assume the negation of the conclusion as `hQg`. Apply `hno` to reduce the goal to its premises. Use `⟨u, v, by omega, by omega, rfl, P, Q, hPu, hPg', hQv, ?_⟩` and prove the remaining obligations. Simplify `hQg` using `[MvPolynomial.aeval_eq_eval]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hprime : (Ideal.span {u}).IsPrime` using `(Ideal.span_singleton_prime hu0).mpr hu`. Set `x : PrimeSpectrum (MvPolynomial σ Ω)` to `⟨Ideal.span {u}, hprime⟩`. Establish `key : ∀ y ∈ PrimeSpectrum.zeroLocus {u * v} \ PrimeSpectrum.zeroLocus {g}, y ∈ closure ({x} : Set _)`. Introduce `y hy`. Establish `hfy : u * v ∈ y.asIdeal` using `by simpa using hy.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgy : g ∉ y.asIdeal` using `by simpa using hy.2`. Rewrite using `[← PrimeSpectrum.le_iff_mem_closure]`. Use `show Ideal.span {u} ≤ y.asIdeal`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Break down `y.isPrime.mem_or_mem hfy with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h`. It suffices to derive a contradiction. Apply `hgy` to reduce the goal to its premises. Establish `: (Ideal.span {v}).radical ≤ y.asIdeal` using `(Ideal.radical_mono ((Ideal.span_singleton_le_iff_mem _).mpr h)).trans y.isPrime.radical.le`. Conclude with `this hvg`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hxS : x ∈ PrimeSpectrum.zeroLocus {u * v} \ PrimeSpectrum.zeroLocus {g}`. Prove the components needed by the constructor for the conclusion. Simplify using `only [PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff, SetLike.mem_coe]`. Conclude with `Ideal.mem_span_singleton.mpr (dvd_mul_right u v)`. Simplify using `only [PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff, SetLike.mem_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `hg`. Conclude with `hgp (((Ideal.span_singleton_le_iff_mem _).mpr hup) hg)`. Establish `hxU : x ∈ U`. Use `key p hpS` as an intermediate fact. Rewrite `this` using `[mem_closure_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hzU, hz⟩` from `this U hU hpU`. Rewrite `hzU` using `[Set.mem_singleton_iff.mp hz]`. Conclude with `hzU`. Establish `hxV : x ∈ V`. Use `key q hqS` as an intermediate fact.
-
-Rewrite `this` using `[mem_closure_iff]`. Take `⟨z, hzV, hz⟩` from `this V hV hqV`. Rewrite `hzV` using `[Set.mem_singleton_iff.mp hz]`. Conclude with `hzV`. Conclude with `⟨x, hxS, hxU, hxV⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hypersurface_diff_isPreirreducible (Ω : Type) [Field Ω] [IsAlgClosed Ω] (σ : Type) [Finite σ]
     (f g : MvPolynomial σ Ω) (D : ℕ) (hf0 : f ≠ 0) (hfD : f.totalDegree ≤ D)

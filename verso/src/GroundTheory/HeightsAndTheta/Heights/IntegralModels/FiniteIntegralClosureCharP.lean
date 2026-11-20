@@ -6,19 +6,17 @@ open scoped nonZeroDivisors
 namespace GroundTheory.Heights₂.Heights.Model
 
 /- English proof (translation)
-Establish `: Module.Finite R N` using `Module.Finite.trans B N`. Establish `: IsNoetherian R N` using `isNoetherian_of_isNoetherianRing_of_finite R N`. Set `P : Submodule R N` to `{ carrier := Set.range φ add_mem' := by`. Introduce and unpack `_ _ ⟨x, rfl⟩ ⟨y, rfl⟩`. Conclude with `⟨x + y, map_add φ x y⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `zero_mem' := ⟨0, map_zero φ⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r _ ⟨x, rfl⟩`. Take `⟨b, rfl⟩` from `hσ r`. Conclude with `⟨b • x, hφσ b x⟩ }`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `(IsNoetherian.noetherian P : P.FG)`. Establish `hsP : ∀ n ∈ s, ∃ m, φ m = n` using `fun n hn => by`. Establish `: n ∈ P` using `hs ▸ Submodule.subset_span hn`. Conclude with `this`. Use `choose! g hg using hsP`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Use `⟨⟨s.image g, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `m -`. Set `Q : Submodule B M` to `Submodule.span B (s.image g : Set M)`. Set `Q' : Submodule R N` to `{ carrier := φ '' Q add_mem' := by`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ _ ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩`. Conclude with `⟨x + y, Q.add_mem hx hy, map_add φ x y⟩`. Use the proof step `zero_mem' := ⟨0, Q.zero_mem, map_zero φ⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r _ ⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨b, rfl⟩` from `hσ r`. Conclude with `⟨b • x, Q.smul_mem b hx, hφσ b x⟩ }`. Establish `hsQ' : (s : Set N) ⊆ Q'`. Introduce `n hn`. Use `⟨g n, Submodule.subset_span ?_, hg n hn⟩` and prove the remaining obligations.
-
-Conclude with `Finset.mem_coe.mpr (Finset.mem_image_of_mem g hn)`. Establish `hPQ : P ≤ Q'` using `hs ▸ Submodule.span_le.mpr hsQ'`. Take `⟨m', hm', he⟩` from `hPQ (⟨m, rfl⟩ : φ m ∈ P)`. Conclude with `hφ he ▸ hm'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem module_finite_of_semilinear {B R M N : Type*} [CommRing B] [CommRing R] [Algebra R B]
     [IsNoetherianRing R] [Module.Finite R B] [AddCommGroup M] [Module B M] [AddCommGroup N]
@@ -66,15 +64,13 @@ theorem module_finite_of_semilinear {B R M N : Type*} [CommRing B] [CommRing R] 
   exact hφ he ▸ hm'
 
 /- English proof (translation)
-Use `set B := MvPolynomial (Fin s) (ZMod p)`. Use `set R := (iterateFrobenius B p e).range`. Establish `hpow : ∀ x : B, x ^ p ^ e ∈ R` using `fun x => ⟨x, by rw [iterateFrobenius_def]⟩`. Establish `hint : Algebra.IsIntegral R B` using `⟨fun x => by`. Use `IsIntegral.of_pow (Nat.pos_of_ne_zero (pow_ne_zero e (Fact.out : p.Prime).ne_zero)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: x ^ p ^ e = algebraMap R B ⟨x ^ p ^ e, hpow x⟩` using `rfl`. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap⟩`. Establish `hft : Algebra.FiniteType R B`. Use `⟨⟨Finset.univ.image MvPolynomial.X, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `f -`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `: MvPolynomial.C a = algebraMap R B ⟨MvPolynomial.C a, ⟨MvPolynomial.C a, by`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[iterateFrobenius_def, ← map_pow, ZMod.pow_card_pow]⟩⟩ := rfl`. Rewrite using `[this]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add f g hf hg => exact Subalgebra.add_mem _ hf hg`. Consider the case `mul_X f i hf`.
-
-Use `Subalgebra.mul_mem _ hf (Algebra.subset_adjoin ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `Algebra.IsIntegral.finite`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mvPolynomial_finite_frobenius_range (p : ℕ) [Fact p.Prime] (s e : ℕ) :
     Module.Finite (iterateFrobenius (MvPolynomial (Fin s) (ZMod p)) p e).range
@@ -104,19 +100,17 @@ theorem mvPolynomial_finite_frobenius_range (p : ℕ) [Fact p.Prime] (s e : ℕ)
   exact Algebra.IsIntegral.finite
 
 /- English proof (translation)
-Use `set B := MvPolynomial (Fin s) (ZMod p)`. Establish `hp : p.Prime` using `Fact.out`. Establish `hinjBL : Function.Injective (algebraMap B L)`. Rewrite using `[IsScalarTower.algebraMap_eq B F L]`. Conclude with `(algebraMap F L).injective.comp (IsFractionRing.injective B F)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CharP L p` using `charP_of_injective_ringHom (f := (algebraMap B L).comp MvPolynomial.C) (hinjBL.comp (MvPolynomial.C_injective (Fin s) (ZMod p))) p`. Use `set Ls := separableClosure F L`. Establish `: ExpChar Ls p` using `ExpChar.prime hp`. Establish `: IsScalarTower B Ls L` using `IsScalarTower.of_algebraMap_eq fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply B F L, IsScalarTower.algebraMap_apply B F Ls, IsScalarTower.algebraMap_apply F Ls L]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsPurelyInseparable Ls L` using `separableClosure.isPurelyInseparable F L`. Use `set e := IsPurelyInseparable.exponent Ls L`. Set `fr : L →+* Ls` to `IsPurelyInseparable.iterateFrobenius Ls L p (le_refl e)`. Establish `hfr : ∀ y, algebraMap Ls L (fr y) = y ^ p ^ e` using `fun y => IsPurelyInseparable.algebraMap_iterateFrobenius Ls p (le_refl e) y`. Establish `hinjLs : Function.Injective (algebraMap Ls L)` using `(algebraMap Ls L).injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.IsSeparable F Ls` using `separableClosure.isSeparable F L`. Establish `: Module.Finite B (integralClosure B Ls)` using `IsIntegralClosure.finite B F Ls (integralClosure B Ls)`. Use `mvPolynomial_finite_frobenius_range p s e` as an intermediate fact. Establish `hint : ∀ y : integralClosure B L, IsIntegral B (fr y)` using `fun y => (isIntegral_algHom_iff (IsScalarTower.toAlgHom B Ls L) hinjLs).mp (by`. Rewrite using `[IsScalarTower.toAlgHom_apply, hfr]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `y.2.pow _)`. Set `φ : integralClosure B L →+ integralClosure B Ls` to `{ toFun := fun y => ⟨fr y, hint y⟩ map_zero' := by ext; simp map_add' := fun y z => by ext; simp }`. Use `module_finite_of_semilinear (iterateFrobenius B p e).rangeRestrict (iterateFrobenius B p e).rangeRestrict_surjective φ ?_ ?_` and prove the remaining obligations. Introduce `y z h`. Establish `h' : fr y = fr z` using `congrArg Subtype.val h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (fr.injective h')`. Introduce `b y`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hinjLs` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap Ls L (fr (b • (y : L))) = algebraMap Ls L (((iterateFrobenius B p e b : B) • fr y))`.
-
-Rewrite using `[hfr, Algebra.smul_def, Algebra.smul_def, map_mul, hfr, iterateFrobenius_def, mul_pow, ← map_pow, ← IsScalarTower.algebraMap_apply]`.
+A detailed English derivation is pending.
 -/
 theorem finite_integralClosure_mvPolynomial (p : ℕ) [Fact p.Prime] (s : ℕ)
     (F : Type*) [Field F] [Algebra (MvPolynomial (Fin s) (ZMod p)) F]
@@ -171,27 +165,25 @@ theorem finite_integralClosure_mvPolynomial (p : ℕ) [Fact p.Prime] (s : ℕ)
       ← map_pow, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Set `: Algebra (ZMod p) A` to `ZMod.algebra A p`. Establish `: Algebra.FiniteType (ZMod p) A` using `Algebra.FiniteType.of_restrictScalars_finiteType ℤ (ZMod p) A`. Take `⟨s, g, hginj, hgfin⟩` from `exists_finite_inj_algHom_of_fg (ZMod p) A`. Use `set B := MvPolynomial (Fin s) (ZMod p)`. Set `: Algebra B A` to `g.toRingHom.toAlgebra`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Module.Finite B A` using `hgfin`. Set `: Algebra B K` to `((algebraMap A K).comp (algebraMap B A)).toAlgebra`. Set `: Algebra B L` to `((algebraMap A L).comp (algebraMap B A)).toAlgebra`. Establish `: IsScalarTower B A K` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: IsScalarTower B A L` using `IsScalarTower.of_algebraMap_eq' rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsScalarTower B K L` using `IsScalarTower.of_algebraMap_eq fun x => by`. Express the relevant statement in the definitionally equal form `algebraMap A L (algebraMap B A x) = algebraMap K L (algebraMap A K (algebraMap B A x))`. Conclude with `IsScalarTower.algebraMap_apply A K L _`. Establish `hinjBK : Function.Injective (algebraMap B K)` using `(IsFractionRing.injective A K).comp hginj`. Establish `: FaithfulSMul B K` using `(faithfulSMul_iff_algebraMap_injective B K).mpr hinjBK`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `: Algebra (FractionRing B) K` to `FractionRing.liftAlgebra B K`. Set `: Algebra (FractionRing B) L` to `((algebraMap K L).comp (algebraMap (FractionRing B) K)).toAlgebra`. Establish `: IsScalarTower (FractionRing B) K L` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: IsScalarTower B (FractionRing B) L` using `IsScalarTower.of_algebraMap_eq fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply (FractionRing B) K L, ← IsScalarTower.algebraMap_apply B (FractionRing B) K, ← IsScalarTower.algebraMap_apply B K L]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.IsIntegral B A` using `Algebra.IsIntegral.of_finite B A`. Establish `: FiniteDimensional (FractionRing B) K`. Take `⟨t, ht⟩` from `(Module.Finite.fg_top : (⊤ : Submodule B A).FG)`. Set `T : Set K` to `algebraMap A K '' t`. Establish `hTint : ∀ x ∈ T, IsIntegral (FractionRing B) x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, -, rfl⟩`. Establish `: IsIntegral B (algebraMap A K a)` using `(Algebra.IsIntegral.isIntegral a).map (IsScalarTower.toAlgHom B A K)`. Conclude with `this.tower_top`. Establish `: Finite T` using `(t.finite_toSet.image _).to_subtype`. Establish `hfd` using `IntermediateField.finiteDimensional_adjoin hTint`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `htop : IntermediateField.adjoin (FractionRing B) T = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Establish `hA : ∀ a : A, algebraMap A K a ∈ IntermediateField.adjoin (FractionRing B) T`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `ha : a ∈ Submodule.span B (t : Set A)` using `ht ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem y hy => exact IntermediateField.subset_adjoin (FractionRing B) T ⟨y, hy, rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `add_mem hy hz`. Consider the case `smul b y _ hy`. Rewrite using `[Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply B (FractionRing B) K]`. Conclude with `mul_mem (IntermediateField.algebraMap_mem _ _) hy`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := A) x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `div_mem (hA a) (hA b)`. Rewrite `hfd` using `[htop]`. Conclude with `(IntermediateField.topEquiv (F := FractionRing B) (E := K)).toLinearEquiv.finiteDimensional`. Establish `: FiniteDimensional (FractionRing B) L` using `Module.Finite.trans K L`. Establish `hB` using `finite_integralClosure_mvPolynomial p s (FractionRing B) L`.
-
-Establish `hle : (integralClosure A L).toSubmodule.restrictScalars B ≤ (integralClosure B L).toSubmodule` using `fun y hy => isIntegral_trans (R := B) (A := A) y hy`. Establish `: IsNoetherian B (integralClosure B L).toSubmodule` using `isNoetherian_of_isNoetherianRing_of_finite B (integralClosure B L)`. Establish `: IsNoetherian B ((integralClosure A L).toSubmodule.restrictScalars B)` using `isNoetherian_of_le hle`. Establish `: Module.Finite B (integralClosure A L)` using `Module.IsNoetherian.finite B ((integralClosure A L).toSubmodule.restrictScalars B)`. Conclude with `Module.Finite.of_restrictScalars_finite B A (integralClosure A L)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_integralClosure_of_charP (p : ℕ) [Fact p.Prime]
     (A : Type*) [CommRing A] [IsDomain A] [Algebra.FiniteType ℤ A] [CharP A p]

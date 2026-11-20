@@ -28,7 +28,7 @@ def geoScal (g : GlobalTheory.RealGeo.GeoHalf C R ph) (kap lam err) :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.jEvExists, h.jEvBar, h.evInj, h.jUnif, h.geoAct, h.latFull, h.dimMatch⟩, fun h => ⟨h.jEvExists, h.jEvBar, h.evInj, h.jUnif, h.geoAct, h.latFull, h.dimMatch⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem inGeo_geoScal_iff (g : GlobalTheory.RealGeo.GeoHalf C R ph) (kap lam err) :
     GlobalTheory.RealGeo.InGeo (geoScal g kap lam err) ↔ GlobalTheory.RealGeo.InGeo g :=
@@ -45,7 +45,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T T' : Type}
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.lev, ⟨h.grp.red_R, h.grp.red_L, h.grp.levels, h.grp.record, h.grp.chiW⟩, ⟨h.fam.tie, h.fam.Sb, h.fam.roots, h.fam.pl_onto, h.fam.degR, h.fam.degL, h.fam.muVal, h.fam.etaVal⟩, ⟨h.models.inf, h.models.vpos, h.models.cX, h.models.cV, h.models.prX, h.models.HX, h.models.HV, h.mode …`.
+Supply the required witnesses or components.
 -/
 theorem baseW_scal {A : FamIn D.what₂.LL G Pl0 T D.R.m} {R : RealDat D A Ks} {F : Face D A} (h : R.BaseW F) (k l) :
     (R.upd6 k l).BaseW F :=
@@ -58,7 +58,7 @@ theorem baseW_scal {A : FamIn D.what₂.LL G Pl0 T D.R.m} {R : RealDat D A Ks} {
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨e.ItY, e.ItX, e.ioY, e.ioX, e.Th, e.ioP, e.thF, e.thG⟩`.
+Supply the required witnesses or components.
 -/
 theorem exAt_scal {A : FamIn D.what₂.LL G Pl0 T D.R.m} {R : RealDat D A Ks} (e : R.ExAt) (k l) : (R.upd6 k l).ExAt :=
   ⟨e.ItY, e.ItX, e.ioY, e.ioX, e.Th, e.ioP, e.thF, e.thG⟩
@@ -66,7 +66,7 @@ theorem exAt_scal {A : FamIn D.what₂.LL G Pl0 T D.R.m} {R : RealDat D A Ks} (e
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `e1 : (s0Of (R.updS kap lam) F).Iw j A3.A.μ0 w = (s0Of R F).Iw j A3.A.μ0 w` using `cx_Iw_scal (R.toCx3 F) F.cr (fun _ => kap) lam R.err0 false j A3.A.μ0 w`. Establish `e2 : zsOf (R.updS kap lam) F = zsOf R F` using `RealDat3.zs_updS kap lam`. Unfold `NzAt`. Rewrite using `[e1]`. Conclude with `or_congr Iff.rfl (or_congr (not_congr (Eq.congr_left (congrArg (fun s => Formalism.DivisionValues.jw ((A3.side3 F.P0 F.ψ0 s).HT j A3.A.μ0) w ((A3.side3 F.P0 F.ψ0 s).Tl j A3.A.μ0)) e2))) Iff.rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nzAt_scal (R : RealDat3 D A3 Ks) (F : Face3 D A3) (kap lam)
     (F0 : HeightOneSpectrum (𝓞 D.what₂.LL) → Fin D.R.m → ℝ) (j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) :
@@ -88,7 +88,7 @@ open Classical in
 def kapNew (S : RealDat3 D A3 Ks) : ℝ := if h : ∃ κ, KapFixed S κ then h.choose else S.kap
 
 /- English proof (translation)
-Establish `h' : ∃ κ, KapFixed S κ` using `⟨κ, h⟩`. Unfold `kapNew`. Rewrite using `[dif_pos h']`. Take `⟨t, p, hp, hl⟩` from `h.2`. Conclude with `Lift.IsKap.unique h'.choose_spec.1 h.1 t p hp hl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem kapNew_eq (S : RealDat3 D A3 Ks) {κ : ℝ} (h : KapFixed S κ) : kapNew S = κ := by
   have h' : ∃ κ, KapFixed S κ := ⟨κ, h⟩
@@ -98,12 +98,12 @@ theorem kapNew_eq (S : RealDat3 D A3 Ks) {κ : ℝ} (h : KapFixed S κ) : kapNew
   exact Lift.IsKap.unique h'.choose_spec.1 h.1 t p hp hl
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem kapNew_of_not (S : RealDat3 D A3 Ks) (h : ¬ ∃ κ, KapFixed S κ) : kapNew S = S.kap := dif_neg h
 
 /- English proof (translation)
-Distinguish the cases in `h' : ∃ κ, KapFixed S κ`. Conclude with `kapNew_eq S ⟨h, h'.choose_spec.2⟩`. Conclude with `kapNew_of_not S h'`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem kapNew_of_thmB (S : RealDat3 D A3 Ks) (h : S.PThmB) : kapNew S = S.kap := by
   by_cases h' : ∃ κ, KapFixed S κ
@@ -111,7 +111,7 @@ theorem kapNew_of_thmB (S : RealDat3 D A3 Ks) (h : S.PThmB) : kapNew S = S.kap :
   · exact kapNew_of_not S h'
 
 /- English proof (translation)
-Distinguish the cases in `h' : ∃ κ, KapFixed S κ`. Take `⟨κ, hκ⟩` from `h'`. Conclude with `(kapNew_eq S hκ).trans (h κ hκ.1 hκ.2).symm`. Conclude with `kapNew_of_not S h'`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem kapNew_of_scal (S : RealDat3 D A3 Ks) (h : S.scal_kap) : kapNew S = S.kap := by
   by_cases h' : ∃ κ, KapFixed S κ
@@ -122,9 +122,7 @@ theorem kapNew_of_scal (S : RealDat3 D A3 Ks) (h : S.scal_kap) : kapNew S = S.ka
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `⟨h0, fun κ h h' => kapNew_eq S ⟨h, h'⟩, fun i p v l hv hp he => ?_, fun i t p hp => ?_, fun i p v hv hp => ?_, h4⟩` and prove the remaining obligations. Conclude with `h1 i p v l hv ((RealDat3.partAt_updS _ _ _ _ _).1 hp) ((RealDat3.sim_updS _ _ _ _ _ _).1 he)`. Rewrite using `[RealDat3.zs_updS]`. Conclude with `h2 i t p hp`. Rewrite using `[RealDat3.zs_updS]`.
-
-Conclude with `h3 i p v hv fun hl => hp ((RealDat3.partAt_updS _ _ _ _ _).2 hl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isScal_kapNew (S : RealDat3 D A3 Ks) (F : Face3 D A3) (h0 : S.eigenvalue_at_base_of_scalar) (h1 : S.scal_off F) (h2 : S.zero_part_eigenvalue_convention F)
     (h3 : S.scal_abs F) (h4 : S.scal_tup) : (S.updS (kapNew S) S.lam3).IsScal F := by
@@ -141,7 +139,7 @@ variable {f : T' → T} {μ : T'} {R : RealDat3 D (A3.comap id (f μ)) Ks} {mu :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `i` using `isInert mu tw h.char.inert`. Establish `u` using `isTup hf h.char.tup n`. Establish `kv` using `keep mu tw h.keep`. Conclude with `⟨⟨baseW_scal (baseW (A := A3.A) mu tw hf h.char.base e) k _, ⟨i.tie, i.onto, i.hR, i.hL, i.SF⟩, fun t => h.char.fullY (f t), fun t => h.char.fullX (f t), fun i t => h.char.fullP i (f t), hs, ⟨u.mu_off, u.mu_used, u.mu_ne, u.mu_conj, u.mu_on⟩, h.char.phase, h.char.allPl⟩, ⟨kv.std, …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pins_scal (hf : Function.Injective f) {cG : G0 R.Pg D.R.r ≃* G0g D.nd} (h : Pins R (bare3 _ P0 ψ0 P1 ψ1) cG)
     (e : R.toRealDat.ExAt) (n : NewTup R mu tw) (k l) (hs : ((dat3 f μ R mu tw).updS k l).IsScal (bare3 _ P0 ψ0 P1 ψ1)) :
@@ -157,7 +155,7 @@ theorem pins_scal (hf : Function.Injective f) {cG : G0 R.Pg D.R.r ≃* G0g D.nd}
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `pins_scal hf h e n _ _ (isScal_kapNew _ _ (fun i t => h.char.scal.lam0 i (f t)) h.char.scal.off (fun i t => h.char.scal.abs0 i (f t)) h.char.scal.abs fun i t => h.char.scal.tup i (f t))`.
+A detailed English derivation is pending.
 -/
 theorem pins_kapNew (hf : Function.Injective f) {cG : G0 R.Pg D.R.r ≃* G0g D.nd} (h : Pins R (bare3 _ P0 ψ0 P1 ψ1) cG)
     (e : R.toRealDat.ExAt) (n : NewTup R mu tw) :
@@ -184,7 +182,7 @@ def resRE (h : Wt' ⊆ Wt) : RealDat3 X.toD7 (famR X I hX (usedOf I T Wt') z.Xg 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hp` using `z.pins`. Unfold `resRE`. Rewrite `hp`, the goal using `[columnChoiceReferenceFace_eq_bareFaceTwoLevels]`. Conclude with `Res.pins_kapNew (A3 := famR X I hX (usedOf I T Wt) z.Xg z.tr) (Ks := z.core.Q.c.F) (f := inclU I (usedOf_mono I T h)) (μ := mu0F (X := X.B.fields) (tuOf I (usedOf I T Wt'))) (R := z.R) (P0 := lev0 I) (ψ0 := chr0 I) (P1 := lev1 I) (ψ1 := chr1 I) (mu := z.resMu h) (tw := z.resTw Wt …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pins_resRE (h : Wt' ⊆ Wt) (hc : ConjStable X Wt') (e : z.R.toRealDat.ExAt) :
     Pins (z.resRE h) (face0 X I hX (usedOf I T Wt') z.Xg z.tr) z.cG := by
@@ -198,7 +196,7 @@ theorem pins_resRE (h : Wt' ⊆ Wt) (hc : ConjStable X Wt') (e : z.R.toRealDat.E
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `Res.exAt (A := (famR X I hX (usedOf I T Wt) z.Xg z.tr).A) (f := inclU I (usedOf_mono I T h)) (μ := mu0F (X := X.B.fields) (tuOf I (usedOf I T Wt'))) (R := z.R.toRealDat) (z.resMu h) (z.resTw Wt') e`.
+A detailed English derivation is pending.
 -/
 theorem exAt_resR (h : Wt' ⊆ Wt) (e : z.R.toRealDat.ExAt) : (z.resR h).toRealDat.ExAt :=
   Res.exAt (A := (famR X I hX (usedOf I T Wt) z.Xg z.tr).A) (f := inclU I (usedOf_mono I T h))
@@ -207,7 +205,7 @@ theorem exAt_resR (h : Wt' ⊆ Wt) (e : z.R.toRealDat.ExAt) : (z.resR h).toRealD
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `Res.exAt_scal (z.exAt_resR h e) _ _`.
+A detailed English derivation is pending.
 -/
 theorem exAt_resRE (h : Wt' ⊆ Wt) (e : z.R.toRealDat.ExAt) : (z.resRE h).toRealDat.ExAt := Res.exAt_scal (z.exAt_resR h e) _ _
 
@@ -219,7 +217,7 @@ def resGeoE (h : Wt' ⊆ Wt) : GlobalTheory.RealGeo.GeoHalf z.core (z.resRE h).t
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `Res.pThmB (A3 := famR X I hX (usedOf I T Wt) z.Xg z.tr) (Ks := z.core.Q.c.F) (f := inclU I (usedOf_mono I T h)) (μ := mu0F (X := X.B.fields) (tuOf I (usedOf I T Wt'))) (R := z.R) (z.resMu h) (z.resTw Wt') hB`.
+A detailed English derivation is pending.
 -/
 theorem thmB_resR (h : Wt' ⊆ Wt) (hB : z.R.PThmB) : (z.resR h).PThmB :=
   Res.pThmB (A3 := famR X I hX (usedOf I T Wt) z.Xg z.tr) (Ks := z.core.Q.c.F) (f := inclU I (usedOf_mono I T h))
@@ -228,7 +226,7 @@ theorem thmB_resR (h : Wt' ⊆ Wt) (hB : z.R.PThmB) : (z.resR h).PThmB :=
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun k => (z.resR h).updS k (z.resR h).lam3) (Res.kapNew_of_thmB (z.resR h) (z.thmB_resR h hB))).trans rfl`.
+A detailed English derivation is pending.
 -/
 theorem resRE_of_thmB (h : Wt' ⊆ Wt) (hB : z.R.PThmB) : z.resRE h = z.resR h :=
   (congrArg (fun k => (z.resR h).updS k (z.resR h).lam3) (Res.kapNew_of_thmB (z.resR h) (z.thmB_resR h hB))).trans rfl

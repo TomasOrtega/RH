@@ -24,11 +24,11 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 omit [StarRing E] in
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hN`. Establish `hr : Module.finrank ℚ (Sp E n × (Fin k → ℚ)) = Module.finrank ℚ E * n + k`. Rewrite using `[Module.finrank_prod, ← Module.finrank_mul_finrank ℚ E (Sp E n)]`. Simplify using the standard rewrite rules. Set `b` to `Module.finBasisOfFinrankEq ℚ _ hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `r : G →* Module.End ℚ (Sp E n × (Fin k → ℚ))` to `{ toFun := fun g => ((g.1 : Sp E n →ₗ[E] Sp E n).restrictScalars ℚ).prodMap LinearMap.id map_one' := LinearMap.ext fun _ => rfl map_mul' := fun _ _ => LinearMap.ext fun _ => rfl }`. Establish `hr : Function.Injective r` using `fun g h hgh => Subtype.ext (LinearEquiv.ext fun x => congrArg Prod.fst (LinearMap.congr_fun hgh (x, 0)))`. Set `φ : G →* Matrix.GeneralLinearGroup (Fin (Module.finrank ℚ E * n + k)) ℚ` to `((LinearMap.toMatrixAlgEquiv b).toMulEquiv.toMonoidHom.comp r).toHomUnits`. Establish `hφ : Function.Injective φ` using `fun g h hgh => hr ((LinearMap.toMatrixAlgEquiv b).injective (congrArg Units.val hgh))`. Establish `e` using `MonoidHom.ofInjective hφ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_congr e.toEquiv]`. Conclude with `hM φ.range (Finite.of_equiv _ e.toEquiv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_dvd_of_minkMult {n N M : ℕ} (hM : MinkMult N M) (hN : Module.finrank ℚ E * n ≤ N)
     (G : Subgroup (Sp E n ≃ₗ[E] Sp E n)) [Finite G] : Nat.card G ∣ M := by

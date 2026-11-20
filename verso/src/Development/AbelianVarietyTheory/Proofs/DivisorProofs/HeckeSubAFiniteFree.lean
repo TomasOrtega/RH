@@ -22,13 +22,13 @@ def heckeSubA {b : Base D R} {M : ℕ} {s : S ⟶ Sp R} (o : Obj b M s) (f : D.L
     exact ⟨-x, by rw [map_neg, smul_neg, eta_neg]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_heckeSubA {b : Base D R} {M : ℕ} {s : S ⟶ Sp R} (o : Obj b M s) (f : D.La →+ D.La) (N : ℕ)
     (x : D.La) : o.eta (N • f x) ∈ heckeSubA o f N := ⟨x, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, zero_smul, eta_zero]`. Consider the case `succ n ih => rw [pow_succ, ih, succ_nsmul, o.eta_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem eta_pow {b : Base D R} {M : ℕ} {s : S ⟶ Sp R} (o : Obj b M s) (n : ℕ) (z : D.La) :
     (o.eta z) ^ n = o.eta (n • z) := by
@@ -37,7 +37,7 @@ theorem eta_pow {b : Base D R} {M : ℕ} {s : S ⟶ Sp R} (o : Obj b M s) (n : �
   | succ n ih => rw [pow_succ, ih, succ_nsmul, o.eta_add]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `hh`. Rewrite using `[eta_pow, smul_smul, show k * N = N * k from mul_comm _ _, o.eta_ker]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem pow_eq_one_of_mem {b : Base D R} {N k : ℕ} {s : S ⟶ Sp R} (o : Obj b (N * k) s) (f : D.La →+ D.La)
     (h : 𝟙_ (Over S) ⟶ o.A) (hh : h ∈ heckeSubA o f N) : h ^ k = 1 := by
@@ -45,7 +45,7 @@ theorem pow_eq_one_of_mem {b : Base D R} {N k : ℕ} {s : S ⟶ Sp R} (o : Obj b
   rw [eta_pow, smul_smul, show k * N = N * k from mul_comm _ _, o.eta_ker]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `hh`. Take `⟨z, hz⟩` from `hf a x`. Use `⟨a • x, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, smul_add, o.eta_add, smul_smul, show N * (N * k) = (N * k) * N from mul_comm _ _, ← smul_smul, o.eta_ker, _root_.mul_one, ← o.eta_lin, smul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem act_mem {b : Base D R} {N k : ℕ} {s : S ⟶ Sp R} (o : Obj b (N * k) s) (f : D.La →+ D.La)
     (hf : ∀ (a : D.O) (x : D.La), ∃ z, f (a • x) = a • f x + (N * k) • z) (a : D.O)
@@ -57,19 +57,17 @@ theorem act_mem {b : Base D R} {N k : ℕ} {s : S ⟶ Sp R} (o : Obj b (N * k) s
     o.eta_ker, _root_.mul_one, ← o.eta_lin, smul_comm]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI := D.finLa`. Set `K : Submodule ℤ D.La` to `LinearMap.range ((k : ℤ) • LinearMap.id)`. Use `haveI : Finite (D.La ⧸ K) := by`. Apply `Module.finite_of_fg_torsion` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective K q`. Use `⟨⟨(k : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hk.ne')⟩, ?_⟩` and prove the remaining obligations. Use `show (k : ℤ) • (Submodule.Quotient.mk y : D.La ⧸ K) = 0`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨y, by simp⟩`. Set `σ` to `Function.surjInv (Submodule.Quotient.mk_surjective K)`. Use `Finite.of_surjective (fun q : D.La ⧸ K => (⟨o.eta (N • f (σ q)), mem_heckeSubA o f N _⟩ : heckeSubA o f N)) ?_` and prove the remaining obligations. Introduce and unpack `⟨h, x, rfl⟩`. Use `⟨Submodule.Quotient.mk x, Subtype.ext ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : Submodule.Quotient.mk (σ (Submodule.Quotient.mk x)) = (Submodule.Quotient.mk x : D.La ⧸ K)` using `Function.surjInv_eq _ _`. Rewrite `e` using `[Submodule.Quotient.eq]`. Take `⟨z, hz⟩` from `e`. Establish `hz' : σ (Submodule.Quotient.mk x) = x + k • z`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, natCast_zsmul] at hz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Normalize the expressions using the abelian group laws. Use `show o.eta (N • f (σ (Submodule.Quotient.mk x))) = o.eta (N • f x)`. Rewrite using `[hz', map_add, map_nsmul, smul_add, smul_smul, o.eta_add, o.eta_ker, _root_.mul_one]`. Introduce `κ _ _ x h hh h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x0, rfl⟩` from `hh`. Establish `hβ : x ≫ s = spMap (Spec.preimage (x ≫ s)).hom` using `(Spec.map_preimage _).symm`. Take `⟨I, hI⟩` from `o.geom κ x _ hβ`. Establish `h2 : I.ev (N * k) (N • f x0) = 1` using `by rw [← hI]; exact h1`. Take `⟨y, hy⟩` from `(I.ker (N * k) (Nat.mul_pos hN hk) (Nat.Coprime.mul hNp hkp) _).1 h2`.
-
-Rewrite using `[hy, o.eta_ker]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeSubA_finite_free (b : Base D R) (f : D.La →+ D.La) (k N : ℕ) (hk : 0 < k) (hN : 0 < N)
     (hkp : k.Coprime p) (hNp : N.Coprime p) (s : S ⟶ Sp R) (o : Obj b (N * k) s) :
@@ -109,7 +107,7 @@ theorem heckeSubA_finite_free (b : Base D R) (f : D.La →+ D.La) (k N : ℕ) (h
     rw [hy, o.eta_ker]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `hh`. Rewrite using `[AddMonoidHom.zero_apply, smul_zero, eta_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 example {b : Base D R} {M : ℕ} {s : S ⟶ Sp R} (o : Obj b M s) (N : ℕ) (h : 𝟙_ (Over S) ⟶ o.A)
     (hh : h ∈ heckeSubA o 0 N) : h = 1 := by

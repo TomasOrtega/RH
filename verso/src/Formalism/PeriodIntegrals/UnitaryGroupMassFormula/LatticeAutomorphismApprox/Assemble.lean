@@ -7,7 +7,7 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.ScXuExists
 
 /- English proof (translation)
-The claim follows from `target_of' local_idempotent_existence hS hA hB existsLatticeAutomorphismApprox Gl.glue_holds_var`.
+A detailed English derivation is pending.
 -/
 theorem scXuExists_of (hS : LocSplitP) (hA : BridgeA) (hB : BridgeB) : _root_.PI.ScXuExists.Target :=
   target_of' local_idempotent_existence hS hA hB existsLatticeAutomorphismApprox Gl.glue_holds_var

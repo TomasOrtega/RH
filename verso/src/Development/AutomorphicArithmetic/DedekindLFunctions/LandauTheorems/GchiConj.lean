@@ -8,9 +8,9 @@ noncomputable section
 namespace Deduction
 
 /- English proof (translation)
-Unfold `ramp`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, Complex.conj_ofReal, Complex.conj_ofReal]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `MulChar.star_apply' χ (n : ZMod N)`.
+A detailed English derivation is pending.
 -/
 theorem Gchi_conj_ramp {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (y : ℝ) :
     (starRingEnd ℂ) (ramp (fun n => χ n) y) = ramp (fun n => χ⁻¹ n) y := by
@@ -22,7 +22,7 @@ theorem Gchi_conj_ramp {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (y :
   exact MulChar.star_apply' χ (n : ZMod N)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Establish `h` using `LFunction_conj χ ((starRingEnd ℂ) s)`. Rewrite `h` using `[Complex.conj_conj]`. Simplify using `only [Function.comp_apply]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Gchi_conj_LFunction {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) :
     DirichletCharacter.LFunction χ⁻¹ =
@@ -34,9 +34,7 @@ theorem Gchi_conj_LFunction {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
   exact h
 
 /- English proof (translation)
-Distinguish the cases in `hf : DifferentiableAt ℂ f x`. Conclude with `hf.hasDerivAt.conj_conj.deriv`. Establish `hg : ¬ DifferentiableAt ℂ ((starRingEnd ℂ) ∘ f ∘ (starRingEnd ℂ)) ((starRingEnd ℂ) x)`. Rewrite using `[differentiableAt_conj_conj_iff, Complex.conj_conj]`. Conclude with `hf`.
-
-Rewrite using `[deriv_zero_of_not_differentiableAt hf, deriv_zero_of_not_differentiableAt hg, map_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem deriv_conj_comp_conj (f : ℂ → ℂ) (x : ℂ) :
     deriv ((starRingEnd ℂ) ∘ f ∘ (starRingEnd ℂ)) ((starRingEnd ℂ) x) =
@@ -49,11 +47,11 @@ private theorem deriv_conj_comp_conj (f : ℂ → ℂ) (x : ℂ) :
     rw [deriv_zero_of_not_differentiableAt hf, deriv_zero_of_not_differentiableAt hg, map_zero]
 
 /- English proof (translation)
-Distinguish the cases in `h1 : χ = 1`. Substitute `h1` using the available equality. Simplify using `only [Gchi, inv_one, if_true]`. Rewrite using `[map_add, map_sub, Gchi_conj_ramp, inv_one, Complex.conj_ofReal, Complex.conj_ofReal]`. Establish `h2 : χ⁻¹ ≠ 1` using `fun h => h1 (inv_eq_one.mp h)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Gchi, h1, h2, if_false]`. Establish `hL` using `Gchi_conj_LFunction χ`. Establish `h1c : (starRingEnd ℂ) (1 : ℂ) = 1` using `map_one _`. Rewrite using `[map_add, map_mul, map_div₀, Gchi_conj_ramp, Complex.conj_ofReal, hL]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← h1c, deriv_conj_comp_conj, h1c]`. Simplify using `only [Function.comp_apply, h1c]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Gchi_conj {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (y : ℝ) :
     (starRingEnd ℂ) (Gchi χ y) = Gchi χ⁻¹ y := by

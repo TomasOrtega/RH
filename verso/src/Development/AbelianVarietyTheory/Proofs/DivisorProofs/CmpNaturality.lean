@@ -30,7 +30,7 @@ theorem cmp_hom_app (g' : T ⟶ Y) (π : Y ⟶ B) {g : T ⟶ B} (w : g' ≫ π =
       (Scheme.Modules.pullbackComp g' π).hom.app E ≫ (Scheme.Modules.pullbackCongr w).hom.app E := rfl
 
 /- English proof (translation)
-The claim follows from `(cmp g' π w).hom.naturality u`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem cmp_naturality (g' : T ⟶ Y) (π : Y ⟶ B) {g : T ⟶ B} (w : g' ≫ π = g) {E F : B.Modules} (u : E ⟶ F) :
     (Scheme.Modules.pullback g').map ((Scheme.Modules.pullback π).map u) ≫ (cmp g' π w).hom.app F =
@@ -38,9 +38,9 @@ The claim follows from `(cmp g' π w).hom.naturality u`.
   (cmp g' π w).hom.naturality u
 
 /- English proof (translation)
-Substitute `w w₂ w₁` using the available equality. Use `NatTrans.congr_app (Scheme.Modules.pseudofunctor_associativity h g' π) E` as an intermediate fact. Simplify using `[cmp, Scheme.Modules.pullbackCongr] at this ⊢`. Rewrite using `[← cancel_epi ((Scheme.Modules.pullbackComp h (g' ≫ π)).inv.app E ≫ (Scheme.Modules.pullback h).map ((Scheme.Modules.pullbackComp g' π).inv.app E))]`. Simplify using `only [Category.assoc, reassoc_of% this, eqToHom_trans, eqToHom_refl]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[← Functor.map_comp_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 @[reassoc] theorem cmp_assoc (h : S ⟶ T) (g' : T ⟶ Y) (π : Y ⟶ B) {g : T ⟶ B} (w : g' ≫ π = g) {k : S ⟶ B}
     (w₂ : h ≫ g = k) {h' : S ⟶ Y} (w₁ : h ≫ g' = h') (w₃ : h' ≫ π = k) (E : B.Modules) :
@@ -60,7 +60,7 @@ def IsLineQuot (π : Y ⟶ B) (E : B.Modules) {Q : Y.Modules} (p : (Scheme.Modul
       (Scheme.Modules.pullback g').map p ≫ e = (cmp g' π w).hom.app E ≫ p'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hE.pullback _, inferInstance, fun _ g _ p' _ _ => ⟨g, ⟨Category.comp_id g, (cmp g (𝟙 B) (Category.comp_id g)).hom.app E ≫ p', by simp⟩, fun _ ⟨w, _⟩ => (Category.comp_id _).symm.trans w⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLineQuot_id {E : B.Modules} (hE : IsVB E 1) : IsLineQuot (𝟙 B) E (𝟙 _) :=
   ⟨hE.pullback _, inferInstance, fun _ g _ p' _ _ =>

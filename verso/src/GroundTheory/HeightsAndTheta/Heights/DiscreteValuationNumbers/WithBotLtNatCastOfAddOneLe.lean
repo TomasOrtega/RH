@@ -18,9 +18,9 @@ section General
 variable {A : Type*} [CommRing A]
 
 /- English proof (translation)
-Use `⟨⟨LocalizedModule.mk 1 1, 0, fun e => ?_⟩⟩` and prove the remaining obligations. Rewrite `e` using `[← LocalizedModule.zero_mk (1 : W.primeCompl), LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `e`. Simplify using `only [one_smul, smul_zero] at hu`. Rewrite `hu` using `[Submonoid.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, mul_one, Ideal.Quotient.eq_zero_iff_mem]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `u.2 (h hu)`.
+A detailed English derivation is pending.
 -/
 theorem localizedQuot_nontrivial_of_le (J W : Ideal A) [W.IsPrime] (h : J ≤ W) :
     Nontrivial (LocalizedModule W.primeCompl (A ⧸ J)) := by
@@ -33,9 +33,9 @@ theorem localizedQuot_nontrivial_of_le (J W : Ideal A) [W.IsPrime] (h : J ≤ W)
   exact u.2 (h hu)
 
 /- English proof (translation)
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact WithBot.bot_lt_coe _`. Consider the case `coe y`. Establish `h' : y + 1 ≤ (N : ℕ∞)` using `by exact_mod_cast h`. Establish `hy : y ≠ ⊤`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `at h'`. Conclude with `(ENat.add_one_le_iff hy).mp h'` after adjusting the coercions.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem withBot_lt_natCast_of_add_one_le (x : WithBot ℕ∞) (N : ℕ) (h : x + 1 ≤ (N : WithBot ℕ∞)) :
     x < (N : WithBot ℕ∞) := by
@@ -51,37 +51,31 @@ theorem withBot_lt_natCast_of_add_one_le (x : WithBot ℕ∞) (N : ℕ) (h : x +
 end General
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c s hs hsP hno L`. Establish `: P.IsPrime` using `hP.multiProj.isPrime`. Establish `key : ∀ G, ratDiv P f g G ≠ 0 → vNum G (Matrix.vecCons (fun k => (c k : ℤ)) L) = cycEval (fun U => vNum U L) (divCycle G s)`. Introduce `G hG`. Establish `hmin : ∃ h : MRing ι O, h ∉ P ∧ (∃ e : K → ℕ, IsMultiHomog h e) ∧ G ∈ (P ⊔ Ideal.span {h}).minimalPrimes ∧ IsRelevant G`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨bf, bg, hf, hg, -⟩` from `hD.degrees`. Distinguish the cases in `hfG : divCycle P f G = 0`. Establish `hgG : divCycle P g G ≠ 0`. Introduce `h0`. Apply `hG` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[ratDiv, hfG, h0]`. Unfold `divCycle at hgG`. Use `split_ifs at hgG with hW`. Conclude with `⟨g, hD.den_not_mem, ⟨bg, hg⟩, hW.1, hW.2⟩`. Conclude with `absurd rfl hgG`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Supply the required witnesses or components. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Unfold `divCycle at hfG split_ifs at hfG with hW`. Conclude with `⟨f, hD.num_not_mem, ⟨bf, hf⟩, hW.1, hW.2⟩`. Conclude with `absurd rfl hfG`. Take `⟨h, hhP, ⟨e, he⟩, hGmin, hGrel⟩` from `hmin`. Establish `hGp : G.IsPrime` using `hGmin.1.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPG : P ≤ G` using `le_sup_left.trans hGmin.1.2`. Establish `hhG : h ∈ G` using `hGmin.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Establish `hPltG : P < G` using `lt_of_le_of_ne hPG (fun hPeq => hhP (hPeq ▸ hhG))`. Establish `hGmh : IsMultiHomogIdeal G` using `MinimalPrimeMultiHomog.proof O K ι _ G (SupSpanMultiHomog.proof O K ι P h e hP.multiProj.multiHomog he) hGmin`. Establish `hϖG : (C ϖ : MRing ι O) ∈ G` using `hD.vertical G hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdim : ringKrullDim (MRing ι O ⧸ G) < ((d + 2 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Establish `hdrop` using `DimStrictDrop.proof (MRing ι O) P G hPltG`. Rewrite `hdrop` using `[hP.dim]`. Establish `hN : d + 1 + 1 + Fintype.card K = d + 2 + Fintype.card K` using `by omega`. Rewrite `hdrop` using `[hN]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `withBot_lt_natCast_of_add_one_le _ _ hdrop`. Establish `hsG : s ∉ G`. Introduce `hsG`. Establish `h1` using `mem_minimalPrimes_sup_span_mul (x := h) hsP hGmin`. Establish `hGs : G ∈ (P ⊔ Ideal.span {s}).minimalPrimes`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨⟨hGp, sup_le hPG ((Ideal.span_singleton_le_iff_mem _).mpr hsG)⟩, fun Q hQ hQG => ?_⟩` and prove the remaining obligations. Establish `hsQ : s ∈ Q` using `hQ.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Conclude with `h1.2 ⟨hQ.1, sup_le (le_sup_left.trans hQ.2) ((Ideal.span_singleton_le_iff_mem _).mpr (Q.mul_mem_left h hsQ))⟩ hQG`. Establish `hne : divCycle P s G ≠ 0`. Unfold `divCycle`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dif_pos ⟨hGs, hGrel⟩]`. Use `localizedQuot_nontrivial_of_le (P ⊔ Ideal.span {s}) G hGs.1.2` as an intermediate fact. Establish `h0 : multAt (P ⊔ Ideal.span {s}) G ≠ 0` using `(Module.length_pos (R := Localization.AtPrime G) (M := LocalizedModule G.primeCompl (MRing ι O ⧸ (P ⊔ Ideal.span {s})))).ne'`. Establish `htop` using `length_localizedQuot_ne_top _ G hGs`. Conclude with `(ENat.toNat_pos h0 htop).ne'` after adjusting the coercions.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hG (hno G hϖG hne)`. Conclude with `hcut O ϖ hϖ K ι G d hGp hGmh hϖG hdim s c hs hsG L`. Establish `hfinR : (Function.support (ratDiv P f g)).Finite` using `((DivCycleFiniteSupport.proof O K ι P f).union (DivCycleFiniteSupport.proof O K ι P g)).subset (fun G hG => by`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at hc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `hG (by simp [ratDiv, hc.1, hc.2]))`. Use `set A := hfinR.toFinset with hAdef`. Establish `hfinB : (⋃ G ∈ A, Function.support (divCycle G s)).Finite` using `A.finite_toSet.biUnion (fun G _ => DivCycleFiniteSupport.proof O K ι G s)`. Use `set B := hfinB.toFinset with hBdef`. Establish `hA : ∀ G, ratDiv P f g G ≠ 0 → G ∈ A` using `fun G hG => hfinR.mem_toFinset.mpr hG`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hB : ∀ G ∈ A, ∀ U, divCycle G s U ≠ 0 → U ∈ B` using `fun G hGA U hU => hfinB.mem_toFinset.mpr (Set.mem_biUnion hGA hU)`. Establish `eL : cycEval (fun G => vNum G (Matrix.vecCons (fun k => (c k : ℤ)) L)) (ratDiv P f g) = ∑ G ∈ A, ∑ U ∈ B, ratDiv P f g G * divCycle G s U * vNum U L`. Unfold `cycEval`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := A) (fun G hG => hA G (left_ne_zero_of_mul hG))]`. Use `Finset.sum_congr rfl fun G _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hr : ratDiv P f g G = 0`. Simplify using `[hr]`. Rewrite using `[key G hr, cycEval, finsum_eq_sum_of_support_subset _ (s := B) (fun U hU => hB G (hA G hr) U (left_ne_zero_of_mul hU)), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun U _ => by ring`. Establish `eR : cycEval (fun U => vNum U L) (fun U => cycEval (fun G => divCycle G s U) (ratDiv P f g)) = ∑ U ∈ B, ∑ G ∈ A, ratDiv P f g G * divCycle G s U * vNum U L`.
-
-Unfold `cycEval`. Establish `hsub : Function.support (fun U => (∑ᶠ G, ratDiv P f g G * divCycle G s U) * vNum U L) ⊆ ↑B`. Introduce `U hU`. Establish `h1` using `left_ne_zero_of_mul hU`. Choose the witnesses or unpack the hypotheses as in `⟨G, hG⟩ : ∃ G, ratDiv P f g G * divCycle G s U ≠ 0 := by`.
-
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h1 (finsum_eq_zero_of_forall_eq_zero hc)`. Conclude with `hB G (hA G (left_ne_zero_of_mul hG)) U (right_ne_zero_of_mul hG)`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsub]`.
-
-Use `Finset.sum_congr rfl fun U _ => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := A) (fun G hG => hA G (left_ne_zero_of_mul hG)), Finset.sum_mul]`. Rewrite using `[eL, eR, Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeftExpansion.proof (hcut : VNumCut.Statement.{u}) : LeftExpansion.Statement.{u} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c s hs hsP hno L

@@ -11,7 +11,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Mx n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_word (isUnit_Jm ε) hσ l hl`. Establish `h` using `congrArg Subtype.val (map_sum L (fun i => c i • (⟨x i, hx i⟩ : smooth (Jm ε) σ)) Finset.univ)`. Simplify using `only [map_smul, hL, Submodule.coe_sum, Submodule.coe_smul] at h`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_Dw_sum (hσ : IsURepOn (UJset ε) σ) {l : List (Mx n)} (hl : ∀ X ∈ l, X ∈ lieSet ε) {q : ℕ}
     (c : Fin q → ℂ) {x : Fin q → H} (hx : ∀ i, Sm ε σ (x i)) :
@@ -22,14 +22,14 @@ theorem frame_Dw_sum (hσ : IsURepOn (UJset ε) σ) {l : List (Mx n)} (hl : ∀ 
   exact h
 
 /- English proof (translation)
-The claim follows from `(smooth (Jm ε) σ).sum_mem fun i _ => (smooth (Jm ε) σ).smul_mem (c i) (hx i)`.
+A detailed English derivation is pending.
 -/
 theorem frame_sm_sum {q : ℕ} (c : Fin q → ℂ) {x : Fin q → H} (hx : ∀ i, Sm ε σ (x i)) :
     Sm ε σ (∑ i, c i • x i) :=
   (smooth (Jm ε) σ).sum_mem fun i _ => (smooth (Jm ε) σ).smul_mem (c i) (hx i)
 
 /- English proof (translation)
-Use `frame_Dw_sum hσ (l := [X, X]) (by simp [hX]) c hx` as an intermediate fact. Simplify `this` using `[Dw]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem frame_dRep2_sum (hσ : IsURepOn (UJset ε) σ) {X : Mx n} (hX : X ∈ lieSet ε) {q : ℕ}
     (c : Fin q → ℂ) {x : Fin q → H} (hx : ∀ i, Sm ε σ (x i)) :
@@ -38,7 +38,7 @@ theorem frame_dRep2_sum (hσ : IsURepOn (UJset ε) σ) {X : Mx n} (hX : X ∈ li
   simpa [Dw] using this
 
 /- English proof (translation)
-Simplify using `only [lapOne, onePlusCas, frame_dRep2_sum hσ (hk _) c hx, frame_dRep2_sum hσ (hp _) c hx, smul_sub, Finset.smul_sum, Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_comm (γ := Fin q), Finset.sum_comm (γ := Fin q)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_lapOne_sum (hσ : IsURepOn (UJset ε) σ) (hk : ∀ i, kB ε i ∈ lieSet ε) (hp : ∀ b, pB ε b ∈ lieSet ε)
     {q : ℕ} (c : Fin q → ℂ) {x : Fin q → H} (hx : ∀ i, Sm ε σ (x i)) :
@@ -48,9 +48,9 @@ theorem frame_lapOne_sum (hσ : IsURepOn (UJset ε) σ) (hk : ∀ i, kB ε i ∈
   rw [Finset.sum_comm (γ := Fin q), Finset.sum_comm (γ := Fin q)]
 
 /- English proof (translation)
-Establish `hs : ∑ i, dRep σ (kB ε i) (dRep σ (kB ε i) e) = e - (μ : ℂ) • e`. Rewrite using `[← h, onePlusCas]`. Normalize the expressions using the abelian group laws. Rewrite using `[lapOne, hcas e he, hs, h]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem frame_lapOne_eig {χ : ℂ}
     (hcas : ∀ v, Sm ε σ v → ∑ b, dRep σ (pB ε b) (dRep σ (pB ε b) v) = χ • v + ∑ i, dRep σ (kB ε i) (dRep σ (kB ε i) v))
@@ -70,9 +70,9 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Mx n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ r ih`. Rewrite using `[Function.iterate_succ_apply', ih, frame_lapOne_sum hσ hk hp _ he]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc, smul_smul, pow_succ, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_iterate (hσ : IsURepOn (UJset ε) σ) (hk : ∀ i, kB ε i ∈ lieSet ε) (hp : ∀ b, pB ε b ∈ lieSet ε)
     {q : ℕ} {e : Fin q → H} (he : ∀ j, Sm ε σ (e j)) (c : Fin q → ℂ) (hc : ∀ j, lapOne ε σ (e j) = c j • e j)
@@ -86,9 +86,9 @@ theorem frame_iterate (hσ : IsURepOn (UJset ε) σ) (hk : ∀ i, kB ε i ∈ li
     rw [hc, smul_smul, pow_succ, mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `ho.inner_sum d d Finset.univ`. Rewrite using `[@norm_sq_eq_re_inner ℂ, h]`. Simplify using `only [Complex.conj_mul', map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[RCLike.re_to_complex]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `norm_cast`.
+Put the expressions in a common number system so they can be compared.
 -/
 theorem frame_norm_sq {q : ℕ} {e : Fin q → H} (ho : Orthonormal ℂ e) (d : Fin q → ℂ) :
     ‖∑ j, d j • e j‖ ^ 2 = ∑ j, ‖d j‖ ^ 2 := by
@@ -107,9 +107,9 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Mx n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Establish `hc : ‖((2 * μ : ℝ) : ℂ) - (1 + χ)‖ ≤ (2 + ‖1 + χ‖) * μ`. Combine the equalities or inequalities in the displayed calculation. Establish `hμs : 0 < μ ^ s` using `pow_pos (by linarith) _`. Rewrite using `[norm_mul, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (inv_nonneg.2 hμs.le)]`. Establish `h1 : ‖((2 * μ : ℝ) : ℂ) - (1 + χ)‖ ^ s₀ ≤ ((2 + ‖1 + χ‖) * μ) ^ s₀` using `pow_le_pow_left₀ (norm_nonneg _) hc s₀`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : μ ^ s₀ ≤ μ ^ s` using `pow_le_pow_right₀ hμ hs`. Establish `hK : 0 ≤ (2 + ‖1 + χ‖) ^ s₀` using `by positivity`. Rewrite `h1` using `[mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem frame_coef_bound (χ : ℂ) {μ : ℝ} (hμ : 1 ≤ μ) {s₀ s : ℕ} (hs : s₀ ≤ s) (z : ℂ) :
     ‖((((μ ^ s)⁻¹ : ℝ) : ℂ) * z) * (((2 * μ : ℝ) : ℂ) - (1 + χ)) ^ s₀‖ ≤ (2 + ‖1 + χ‖) ^ s₀ * ‖z‖ := by
@@ -129,11 +129,11 @@ theorem frame_coef_bound (χ : ℂ) {μ : ℝ} (hμ : 1 ≤ μ) {s₀ s : ℕ} (
     _ = (2 + ‖1 + χ‖) ^ s₀ * ‖z‖ := by field_simp
 
 /- English proof (translation)
-Establish `he : ∀ j, Sm ε σ (e j)` using `fun j => hKS _ (hkf j)`. Establish `hc : ∀ j, lapOne ε σ (e j) = (fun j => ((2 * μ j : ℝ) : ℂ) - (1 + χ)) j • e j` using `fun j => frame_lapOne_eig hcas (he j) (heig j)`. Rewrite using `[← frame_Dw_sum hσ hm _ he]`. Establish `h1` using `hest _ (frame_sm_sum (fun j => (((μ j ^ s)⁻¹ : ℝ) : ℂ) * z j) he)`. Rewrite `h1` using `[frame_iterate hσ hk hp he _ hc s₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `h1.trans (mul_le_mul_of_nonneg_right (le_max_left C₀ 0) (norm_nonneg _))`. Establish `h3` using `pow_le_pow_left₀ (norm_nonneg _) h2 2`. Rewrite `h3` using `[mul_pow, frame_norm_sq ho]`. Use `h3.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc (max C₀ 0 ^ 2), Finset.mul_sum Finset.univ (fun j => ‖z j‖ ^ 2) ((2 + ‖1 + χ‖) ^ (2 * s₀))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `gcongr with j`. Use `frame_coef_bound χ (hμ j) hs (z j)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem frame_word (hσ : IsURepOn (UJset ε) σ) (hKS : ∀ v, IsKFin ε σ v → Sm ε σ v)
     (hk : ∀ i, kB ε i ∈ lieSet ε) (hp : ∀ b, pB ε b ∈ lieSet ε) {χ : ℂ}
@@ -165,13 +165,13 @@ end GlobalTheory.TypeSum.CasBasis
 namespace GlobalTheory.TypeSum.CasBasis
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hstd hk hp χ hcas hell T hT`. Establish `hσ` using `hstd.1`. Establish `hKS` using `hstd.2.2.1`. Establish `key : ∀ T : List (List (Mx n)), Words (lieSet ε) T → ∃ (s : ℕ) (C : ℝ), ∀ m ∈ T, ∃ (s₀ : ℕ) (C₀ : ℝ), s₀ ≤ s ∧ (∀ v, Sm ε σ v → ‖Dw σ m v‖ ≤ C₀ * ‖(lapOne ε σ)^[s₀] v‖) ∧ max C₀ 0 ^ 2 * (2 + ‖1 + χ‖) ^ (2 * s₀) ≤ C`. Introduce `T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `T with`. Consider the case `nil => intro _; exact ⟨0, 0, by simp⟩`. Consider the case `cons m T ih`. Introduce `hT`. Take `⟨s₁, C₁, h₁⟩` from `ih (fun l hl => hT l (List.mem_cons_of_mem _ hl))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s₀, C₀, h₀⟩` from `hell m (hT m List.mem_cons_self)`. Use `⟨max s₀ s₁, max (max C₀ 0 ^ 2 * (2 + ‖1 + χ‖) ^ (2 * s₀)) C₁, fun l hl => ?_⟩` and prove the remaining obligations. Break down `List.mem_cons.1 hl with rfl | hl` into its components or cases. Conclude with `⟨s₀, C₀, le_max_left _ _, h₀, le_max_left _ _⟩`. Take `⟨s', C', hs', he', hC'⟩` from `h₁ l hl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s', C', hs'.trans (le_max_right _ _), he', hC'.trans (le_max_right _ _)⟩`. Take `⟨s, C, hsC⟩` from `key T hT`. Use `⟨s, C, fun m hm q e μ ho hkf hμ heig z => ?_⟩` and prove the remaining obligations. Take `⟨s₀, C₀, hs, hest, hC⟩` from `hsC m hm`. Conclude with `(frame_word hσ hKS hk hp hcas (hT m hm) hest hs ho hkf hμ heig z).trans (mul_le_mul_of_nonneg_right hC (Finset.sum_nonneg fun j _ => by positivity))`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem frame_bounded : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → (∀ i, kB ε i ∈ lieSet ε) → (∀ b, pB ε b ∈ lieSet ε) → ∀ χ : ℂ, (∀ v, Sm ε σ v → ∑ b, dRep σ (pB ε b) (dRep σ (pB ε b) v) = χ • v + ∑ i, dRep σ (kB ε i) (dRep σ (kB ε i) v)) → (∀ l : List (Mx n), (∀ X ∈ l, X ∈ lieSet ε) → ∃ (s : ℕ) (C : ℝ), ∀ v, Sm ε σ v → ‖Dw σ l v‖ ≤ C * ‖(lapOne ε σ)^[s] v‖) → ∀ T : List (List (Mx n)), Words (lieSet ε) T → ∃ (s : ℕ) (C : ℝ), ∀ m ∈ T, ∀ (q : ℕ) (e : Fin q → H) (μ : Fin q → ℝ), Orthonormal ℂ e → (∀ i, IsKFin ε σ (e i)) → (∀ i, 1 ≤ μ i) → (∀ i, onePlusCas σ (kB ε) (e i) = (μ i : ℂ) • e i) → ∀ z : Fin q → ℂ, ‖∑ j, ((((μ j ^ s)⁻¹ : ℝ) : ℂ) * z j) • Dw σ m (e j)‖ ^ 2 ≤ C * ∑ j, ‖z j‖ ^ 2 := by
   intro n ε H _ _ _ σ hstd hk hp χ hcas hell T hT

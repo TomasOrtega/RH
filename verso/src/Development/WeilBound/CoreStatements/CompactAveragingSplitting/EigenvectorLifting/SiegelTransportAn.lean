@@ -7,11 +7,11 @@ namespace PositivityTheory.ThK.SiegelT
 open Matrix GlobalTheory.WeilM Topology Filter
 
 /- English proof (translation)
-Establish `hle : ∀ y : k, ‖ψ y‖ ≤ 1` using `fun y => by`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Take `⟨B, hB⟩` from `(IsNonarchimedeanLocalField.isCompact_closedBall k (ValuativeRel.valuation k y)).exists_bound_of_continuousOn hψ.continuousOn`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt B hlt`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hB (n • y) (by` as an intermediate fact. Rewrite using `[Set.mem_ofPred_eq, nsmul_eq_mul, map_mul]`. Conclude with `mul_le_of_le_one_left' (natCast_mem (ValuativeRel.valuation k).integer n))`. Rewrite `this` using `[AddChar.map_nsmul_eq_pow, norm_pow]`. Conclude with `absurd hn (not_lt.mpr this)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h1 : ‖ψ x‖ * ‖ψ (-x)‖ = 1` using `by rw [← norm_mul, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one, norm_one]`. Use `le_antisymm (hle x) ?_` and prove the remaining obligations. Use polynomial arithmetic with `[hle x, hle (-x), norm_nonneg (ψ x), norm_nonneg (ψ (-x))]`.
+A detailed English derivation is pending.
 -/
 theorem norm_psi {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ψ : AddChar k ℂ}
     (hψ : Continuous ψ) (x : k) : ‖ψ x‖ = 1 := by
@@ -31,7 +31,7 @@ theorem norm_psi {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
   nlinarith [hle x, hle (-x), norm_nonneg (ψ x), norm_nonneg (ψ (-x))]
 
 /- English proof (translation)
-Establish `h0 : ψ x ≠ 0` using `fun e => by simpa [e] using h x`. Use `mul_left_cancel₀ h0 ?_` and prove the remaining obligations. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, h x]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_psi {k : Type} [AddCommGroup k] {ψ : AddChar k ℂ} (h : ∀ x, ‖ψ x‖ = 1) (x : k) : star (ψ x) = ψ (-x) := by
   have h0 : ψ x ≠ 0 := fun e => by simpa [e] using h x
@@ -44,7 +44,7 @@ variable {R : Type} [TopologicalSpace R] [T2Space R] {κ κ' : Type}
 
 omit [T2Space R] in
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => by rcases i with i | i · exact (continuous_apply i).comp continuous_fst · exact (continuous_apply i).comp continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem cont_elim : Continuous fun z : (κ → R) × (κ' → R) => (Sum.elim z.1 z.2 : κ ⊕ κ' → R) :=
   continuous_pi fun i => by
@@ -54,18 +54,18 @@ theorem cont_elim : Continuous fun z : (κ → R) × (κ' → R) => (Sum.elim z.
 
 omit [T2Space R] in
 /- English proof (translation)
-The claim follows from `continuous_pi fun _ => continuous_apply _`.
+A detailed English derivation is pending.
 -/
 theorem cont_inl : Continuous fun z : κ ⊕ κ' → R => z ∘ Sum.inl := continuous_pi fun _ => continuous_apply _
 
 omit [T2Space R] in
 /- English proof (translation)
-The claim follows from `continuous_pi fun _ => continuous_apply _`.
+A detailed English derivation is pending.
 -/
 theorem cont_inr : Continuous fun z : κ ⊕ κ' → R => z ∘ Sum.inr := continuous_pi fun _ => continuous_apply _
 
 /- English proof (translation)
-Use `⟨h.1.comp_continuous (cont_elim.comp (Continuous.prodMk_left y)), HasCompactSupport.intro (h.2.isCompact.image cont_inl) fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hx ⟨Sum.elim x y, subset_tsupport _ hne, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem slice_mem {Φ : (κ ⊕ κ' → R) → ℂ} (h : Φ ∈ SB (κ ⊕ κ' → R)) (y : κ' → R) :
     (fun x : κ → R => Φ (Sum.elim x y)) ∈ SB (κ → R) := by
@@ -75,13 +75,11 @@ theorem slice_mem {Φ : (κ ⊕ κ' → R) → ℂ} (h : Φ ∈ SB (κ ⊕ κ' �
   exact hx ⟨Sum.elim x y, subset_tsupport _ hne, rfl⟩
 
 /- English proof (translation)
-Use `⟨(IsLocallyConstant.iff_eventually_eq _).mpr fun y₀ => ?_, HasCompactSupport.intro (h.2.isCompact.image cont_inr) fun y hy => ?_⟩` and prove the remaining obligations. Establish `hK` using `(h.2.isCompact.image (cont_inl (κ := κ) (κ' := κ'))).eventually_forall_of_forall_eventually (x₀ := y₀) (P := fun y x => Φ (Sum.elim x y) = Φ (Sum.elim x y₀)) (fun x _ => by`. Establish `a` using `(h.1.comp_continuous (cont_elim.comp continuous_swap)).eventually_eq (y₀, x)`. Establish `b` using `(h.1.comp_continuous (cont_elim.comp ((Continuous.prodMk_left y₀).comp (continuous_snd (X := κ' → R))))).eventually_eq (y₀, x)`. Use `filter_upwards [a, b] with z ha hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `ha.trans hb.symm)`. Use `filter_upwards [hK] with y hy`. Use `congr 1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ (fun z : κ ⊕ κ' → R => z ∘ Sum.inl) '' tsupport Φ`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy x hx`. Establish `: ∀ y, Φ (Sum.elim x y) = 0` using `fun y => by`. Assume the negation of the conclusion as `hne`. Conclude with `hx ⟨Sum.elim x y, subset_tsupport _ hne, rfl⟩`. Rewrite using `[this, this]`.
-
-Establish `: (fun x : κ → R => Φ (Sum.elim x y)) = 0` using `funext fun x => by`. Assume the negation of the conclusion as `hne`. Conclude with `hy ⟨Sum.elim x y, subset_tsupport _ hne, rfl⟩`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partial_mem {Φ : (κ ⊕ κ' → R) → ℂ} (h : Φ ∈ SB (κ ⊕ κ' → R)) (l : ((κ → R) → ℂ) →ₗ[ℂ] ℂ) :
     (fun y : κ' → R => l fun x => Φ (Sum.elim x y)) ∈ SB (κ' → R) := by
@@ -109,7 +107,7 @@ theorem partial_mem {Φ : (κ ⊕ κ' → R) → ℂ} (h : Φ ∈ SB (κ ⊕ κ'
     rw [this, map_zero]
 
 /- English proof (translation)
-Use `⟨(h₁.1.comp_continuous cont_inl).mul (h₂.1.comp_continuous cont_inr), HasCompactSupport.intro ((h₁.2.isCompact.prod h₂.2.isCompact).image cont_elim) fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hx ⟨(x ∘ Sum.inl, x ∘ Sum.inr), ⟨subset_tsupport _ (left_ne_zero_of_mul hne), subset_tsupport _ (right_ne_zero_of_mul hne)⟩, Sum.elim_comp_inl_inr x⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem box_mem {φ₁ : (κ → R) → ℂ} {φ₂ : (κ' → R) → ℂ} (h₁ : φ₁ ∈ SB (κ → R)) (h₂ : φ₂ ∈ SB (κ' → R)) :
     (fun x : κ ⊕ κ' → R => φ₁ (x ∘ Sum.inl) * φ₂ (x ∘ Sum.inr)) ∈ SB (κ ⊕ κ' → R) := by
@@ -120,7 +118,7 @@ theorem box_mem {φ₁ : (κ → R) → ℂ} {φ₂ : (κ' → R) → ℂ} (h₁
     subset_tsupport _ (right_ne_zero_of_mul hne)⟩, Sum.elim_comp_inl_inr x⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp star, h.2.comp_left (g := star) (star_zero ℂ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem star_mem {X : Type} [TopologicalSpace X] {φ : X → ℂ} (h : φ ∈ SB X) : star φ ∈ SB X :=
   ⟨h.1.comp star, h.2.comp_left (g := star) (star_zero ℂ)⟩
@@ -146,9 +144,9 @@ def boxL {A : Type} (l : ((κ → A) → ℂ) →ₗ[ℂ] ℂ) (l' : ((κ' → A
     rfl
 
 /- English proof (translation)
-Use `show l' _ = _`. Rewrite using `[← smul_eq_mul, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm, ← smul_eq_mul, ← map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem boxL_box {A : Type} (l : ((κ → A) → ℂ) →ₗ[ℂ] ℂ) (l' : ((κ' → A) → ℂ) →ₗ[ℂ] ℂ) (φ₁ : (κ → A) → ℂ) (φ₂ : (κ' → A) → ℂ) :
     boxL l l' (fun x => φ₁ (x ∘ Sum.inl) * φ₂ (x ∘ Sum.inr)) = l φ₁ * l' φ₂ := by
@@ -162,11 +160,11 @@ theorem boxL_box {A : Type} (l : ((κ → A) → ℂ) →ₗ[ℂ] ℂ) (l' : ((�
   exact mul_comm _ _
 
 /- English proof (translation)
-Use `show star (l (star _)) = star (l (star _))`. Rewrite using `[← h₂ _ (star_mem (partial_mem hΦ l))]`. Use `congr 2`. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.star_apply, schr]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h₁ _ (slice_mem hΦ (y + w₂.1)), ← star_star (ψ (y ⬝ᵥ w₂.2 + _)), ← star_mul', conj_psi hψ, ← smul_eq_mul (ψ (-_)) (l _), ← map_smul]`. Use `congr 2`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, schr]`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Simplify using `only [sumElim_dotProduct_sumElim, dotProduct_neg]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> rfl`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem boxL_inv {A : Type} [CommRing A] [Invertible (2 : A)] [TopologicalSpace A] [T2Space A] [Fintype κ] {ψ : AddChar A ℂ}
     (hψ : ∀ x, ‖ψ x‖ = 1) {l : ((κ → A) → ℂ) →ₗ[ℂ] ℂ} {w₁ w₂ : (κ → A) × (κ → A)}

@@ -5,13 +5,13 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `R σ _ _ y M _ _ P _ _ q hs hk hq`. Rewrite using `[isQuasiRegularSeq_iff_qRegAt]`. Introduce `a c hc α`. Simplify using `only [sup_bot_eq] at hc ⊢`. Establish `h` using `hq a (a + 1) (Nat.lt_succ_self a) (fun β => q (a + 1) (c β)) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hc` using `[← hk, LinearMap.mem_ker, map_sum]`. Simplify using `only [map_smul] at hc`. Rewrite using `[hc]`. Conclude with `zero_mem _) α`. Simplify using `only [sup_bot_eq] at h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `htop : (⊤ : Submodule R (P (a + 1))) = Submodule.map (q (a + 1)) ⊤`. Rewrite using `[Submodule.map_top, LinearMap.range_eq_top.2 (hs _)]`. Rewrite `h` using `[htop, ← Submodule.map_smul'']`. Establish `h2 : c α ∈ Submodule.comap (q (a + 1)) (Submodule.map (q (a + 1)) (Ideal.span (Set.range y) • ⊤ : Submodule R M))` using `h`. Rewrite `h2` using `[Submodule.comap_map_eq, hk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : (Ideal.span (Set.range y) ^ (a + 1) • ⊤ : Submodule R M) ≤ Ideal.span (Set.range y) • ⊤` using `Submodule.smul_mono_left (Ideal.pow_le_self (Nat.succ_ne_zero a))`. Rewrite `h2` using `[sup_eq_left.2 hle]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.isQuasiRegularSeq_of_tower :
     ∀ (R σ : Type) [CommRing R] [Finite σ] (y : σ → R) (M : Type) [AddCommGroup M] [Module R M] (P : ℕ → Type) [∀ i, AddCommGroup (P i)] [∀ i, Module R (P i)] (q : ∀ k, M →ₗ[R] P k),

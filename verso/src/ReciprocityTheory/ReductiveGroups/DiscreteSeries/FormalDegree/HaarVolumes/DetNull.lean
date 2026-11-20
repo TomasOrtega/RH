@@ -11,11 +11,11 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {N : ℕ}
 
 /- English proof (translation)
-Establish `h : {p : (Fin m → ℂ) × (Fin n → Fin m → ℂ) | p.1 ∈ Submodule.span ℂ (Set.range p.2)} = Set.range (fun q : (Fin n → ℂ) × (Fin n → Fin m → ℂ) => (∑ j, q.1 j • q.2 j, q.2))`. Use extensionality with `⟨x, W⟩`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_range, Prod.mk.injEq, Prod.exists]`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, W, hc, rfl⟩`. Introduce and unpack `⟨c, W', hc, rfl⟩`. Conclude with `⟨c, hc⟩`. Rewrite using `[h]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨K, hK, hKe⟩` from `isSigmaCompact_range (X := (Fin n → ℂ) × (Fin n → Fin m → ℂ)) (f := fun q => (∑ j, q.1 j • q.2 j, q.2)) (by fun_prop)`. Rewrite using `[← hKe]`. Conclude with `MeasurableSet.iUnion fun k => (hK k).measurableSet`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableSet_mem_span_range (n m : ℕ) :
     MeasurableSet {p : (Fin m → ℂ) × (Fin n → Fin m → ℂ) |
@@ -37,15 +37,15 @@ theorem measurableSet_mem_span_range (n m : ℕ) :
   exact MeasurableSet.iUnion fun k => (hK k).measurableSet
 
 /- English proof (translation)
-Establish `h1 : Module.finrank ℂ (Submodule.span ℂ (Set.range W)) ≤ n` using `by first`. Consider the case `simpa using finrank_span_range_le_card (R := ℂ) W`. Consider the case `simpa using Submodule.finrank_span_range_le_card (R := ℂ) W`. Consider the case `simpa using finrank_range_le_card (R := ℂ) W`. Consider the case `(have h2 := finrank_range_le_card (R := ℂ) W`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Unfold `Set.finrank at h2`. Simplify using `using h2)`. Consider the case `(have h2 := finrank_range_le_card (K := ℂ) W`. Unfold `Set.finrank at h2`. Simplify using `using h2)`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `(have h2 := rank_span_le_of_finite (R := ℂ) (Set.finite_range W)`. Conclude with `absurd h2 (by simp))`. Establish `hne : (Submodule.span ℂ (Set.range W)) ≠ ⊤`. Introduce `htop`. Rewrite `h1` using `[htop, finrank_top, Module.finrank_fin_fun]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hne' : (Submodule.span ℂ (Set.range W)).restrictScalars ℝ ≠ ⊤`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use `first`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Submodule.restrictScalars_eq_top_iff ℝ ℂ _).mp h`. Consider the case `exact Submodule.restrictScalars_injective ℝ ℂ (Fin (n + 1) → ℂ) (by rw [h]; rfl)`. Conclude with `MeasureTheory.Measure.addHaar_submodule volume _ hne'`.
+A detailed English derivation is pending.
 -/
 theorem volume_span_range_eq_zero (n : ℕ) (W : Fin n → Fin (n + 1) → ℂ) :
     volume ((Submodule.span ℂ (Set.range W) : Submodule ℂ (Fin (n + 1) → ℂ)) :
@@ -76,13 +76,11 @@ theorem volume_span_range_eq_zero (n : ℕ) (W : Fin n → Fin (n + 1) → ℂ) 
   exact MeasureTheory.Measure.addHaar_submodule volume _ hne'
 
 /- English proof (translation)
-Establish `hli : ¬ LinearIndependent ℂ Z`. Introduce `h`. Establish `hu : IsUnit (Matrix.of Z)` using `Matrix.linearIndependent_rows_iff_isUnit.mp h`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero hZ`. Establish `hex : ∃ i, Z i ∈ Submodule.span ℂ (Z '' (Set.univ \ {i}))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Apply `hli` to reduce the goal to its premises. Use `first`. Consider the case `exact linearIndependent_iff_not_mem_span.mpr hno`.
+Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `exact linearIndependent_iff_notMem_span.mpr hno`. Take `⟨i, hi⟩` from `hex`. Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `himg : Z '' (Set.univ \ {i}) = Set.range fun j : Fin n => Z (i.succAbove j)`. Rewrite using `[show (fun j : Fin n => Z (i.succAbove j)) = Z ∘ i.succAbove from rfl, Set.range_comp, Fin.range_succAbove, Set.compl_eq_univ_diff]`.
-
-Rewrite `hi` using `[himg]`. Conclude with `hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_row_mem_span_of_det_eq_zero {n : ℕ} (Z : Fin (n + 1) → Fin (n + 1) → ℂ)
     (hZ : (Matrix.of Z).det = 0) :
@@ -107,13 +105,13 @@ theorem exists_row_mem_span_of_det_eq_zero {n : ℕ} (Z : Fin (n + 1) → Fin (n
   exact hi
 
 /- English proof (translation)
-Consider the cases of `N with`. Consider the case `zero`. Establish `h : {Z : Fin 0 → Fin 0 → ℂ | (Matrix.of Z).det = 0} = ∅`. Use extensionality with `Z`. Simplify using `[Matrix.det_isEmpty]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, measure_empty]`. Consider the case `succ n`. Set `T : Set ((Fin (n + 1) → ℂ) × (Fin n → Fin (n + 1) → ℂ))` to `{p | p.1 ∈ Submodule.span ℂ (Set.range p.2)}`. Establish `hT : MeasurableSet T` using `measurableSet_mem_span_range n (n + 1)`. Establish `hsub : {Z : Fin (n + 1) → Fin (n + 1) → ℂ | (Matrix.of Z).det = 0} ⊆ ⋃ i : Fin (n + 1), (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => Fin (n + 1) → ℂ) i) ⁻¹' T`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Z hZ`. Take `⟨i, hi⟩` from `exists_row_mem_span_of_det_eq_zero Z hZ`. Conclude with `Set.mem_iUnion.2 ⟨i, hi⟩`. Use `measure_mono_null hsub (measure_iUnion_null fun i => ?_)` and prove the remaining obligations. Establish `mp` using `measurePreserving_piFinSuccAbove (fun _ : Fin (n + 1) => (volume : Measure (Fin (n + 1) → ℂ))) i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `mp.measure_preimage hT.nullMeasurableSet`. Express the relevant statement in the definitionally equal form `(Measure.pi fun _ : Fin (n + 1) => (volume : Measure (Fin (n + 1) → ℂ))) _ = 0`. Rewrite using `[h1, Measure.prod_apply_symm hT]`. Conclude with `(lintegral_congr fun W => volume_span_range_eq_zero n W).trans lintegral_zero`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_det_eq_zero :
     volume {Z : Fin N → Fin N → ℂ | (Matrix.of Z).det = 0} = 0 := by

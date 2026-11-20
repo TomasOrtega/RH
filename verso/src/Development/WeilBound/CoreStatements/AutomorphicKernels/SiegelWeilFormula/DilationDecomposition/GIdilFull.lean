@@ -11,7 +11,7 @@ open GlobalTheory.Doubling (absE)
 namespace PositivityTheory.SiegelWeilFormula.Kdil
 
 /- English proof (translation)
-The claim follows from `gIdil' hT hAux hLE hAw (locFamG_done hT hAux (fun _ _ P => KFock.isSw_fP P) hLI)`.
+A detailed English derivation is pending.
 -/
 theorem gIdil_full (hT : TAll) (hAux : AuxiliaryPrimeFunction) (hLE : LocOpEx) (hAw : AwayAct) (hLI : LocInst) : GIdil :=
   gIdil' hT hAux hLE hAw (locFamG_done hT hAux (fun _ _ P => KFock.isSw_fP P) hLI)

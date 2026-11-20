@@ -12,13 +12,13 @@ namespace GlobalTheory.SnPos
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `hE hV hL hB Cg cb Cw cT CT C0 hcb hcT`. Take `⟨C1, C0n, CSt, hCSt, a₀, b₀, hL2⟩` from `hL Cg cb Cw cT CT C0`. Take `⟨e₀, f₀, hE2⟩` from `hE Cg cb Cw cT CT C0`. Take `⟨v₀, w₀, hV2⟩` from `hV Cg cb Cw cT CT C0`. Use `⟨C1, C0n, fun A => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨CB, hCB, p₀, q₀, hB2⟩` from `hB Cg cb Cw cT CT C0 hcb hcT A`. Use `⟨CB, CSt, hCB, hCSt, max a₀ (max e₀ (max v₀ p₀)), max b₀ (max f₀ (max w₀ q₀)), fun C' Cl h1 h2 D large₂ X Y u hTi hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk => ?_⟩` and prove the remaining obligations. Establish `ha1 : a₀ ≤ C'` using `le_trans (by simp) h1`. Establish `ha2 : b₀ ≤ Cl` using `le_trans (by simp) h2`. Establish `he1 : e₀ ≤ C'` using `le_trans (by simp) h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he2 : f₀ ≤ Cl` using `le_trans (by simp) h2`. Establish `hv1 : v₀ ≤ C'` using `le_trans (by simp) h1`. Establish `hv2 : w₀ ≤ Cl` using `le_trans (by simp) h2`. Establish `hp1 : p₀ ≤ C'` using `le_trans (by simp) h1`. Establish `hp2 : q₀ ≤ Cl` using `le_trans (by simp) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ν, hν⟩` from `hE2 C' Cl he1 he2 D large₂ X Y u u hc`. Take `⟨s, ng, e1, hs1, hs0, hsb, he0, he3, hLoc, hGen⟩` from `hL2 C' Cl ha1 ha2 D large₂ X Y u hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk ν hν`. Establish `hb0 : 0 ≤ large₂.sc.b ^ (CSt * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3 * D.R.f)` using `le_trans (sq_nonneg _) (hsb 1)`. Conclude with `⟨sc s ν, ν, ng, large₂.sc.b ^ (CSt * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3 * D.R.f), e1, Formalism.L2.SG.NGAnalytic.nuQOK_sc u u s hs1 hs0 ν hν.1, hν.1, hb0, le_rfl, he0, he3, ampVanishG_sc Y u s hs0 ν (ampVanishG_of_term Y u ν (hV2 C' Cl hv1 hv2 D large₂ X Y u hc ν hν)), hLoc, hGen, me …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem stepAnalyticCGP_of_steps : StepPinExists → StepTermVanishG → StepLocGenPinnedG → StepThmBGP →
     StepAnalyticCGP := by
@@ -50,7 +50,7 @@ theorem stepAnalyticCGP_of_steps : StepPinExists → StepTermVanishG → StepLoc
     hB2 C' Cl hp1 hp2 D large₂ X Y u hTi hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk ν hν (sc s ν) ng⟩
 
 /- English proof (translation)
-The claim follows from `stepAnalyticCGP_of_steps`.
+A detailed English derivation is pending.
 -/
 example : StepPinExists → StepTermVanishG → StepLocGenPinnedG → StepThmBGP → StepAnalyticCGP :=
   stepAnalyticCGP_of_steps

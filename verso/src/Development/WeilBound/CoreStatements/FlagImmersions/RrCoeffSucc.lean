@@ -7,7 +7,7 @@ open Polynomial
 namespace RootFieldNumerics.M5
 
 /- English proof (translation)
-Use `h 0` as an intermediate fact. Simplify using `only [pow_zero, mul_one, Nat.factorial_zero, Nat.cast_one, div_one] at this`. Conclude with `(abs_nonneg _).trans this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Maj.nonneg {f : Polynomial ℝ} {c A : ℝ} (h : Maj f c A) : 0 ≤ c := by
   have := h 0
@@ -15,9 +15,9 @@ theorem Maj.nonneg {f : Polynomial ℝ} {c A : ℝ} (h : Maj f c A) : 0 ≤ c :=
   exact (abs_nonneg _).trans this
 
 /- English proof (translation)
-Introduce `s`. Establish `h0` using `h.nonneg`. Use `(h s).trans ?_` and prove the remaining obligations. Establish `h1 : A ^ s ≤ A' ^ s` using `pow_le_pow_left₀ hA hA' s`. Establish `h2 : c * A ^ s ≤ c' * A' ^ s` using `mul_le_mul hc h1 (pow_nonneg hA s) (h0.trans hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `div_le_div_of_nonneg_right h2 (Nat.cast_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem Maj.mono {f : Polynomial ℝ} {c A c' A' : ℝ} (h : Maj f c A) (hA : 0 ≤ A) (hc : c ≤ c') (hA' : A ≤ A') :
     Maj f c' A' := by
@@ -29,7 +29,7 @@ theorem Maj.mono {f : Polynomial ℝ} {c A c' A' : ℝ} (h : Maj f c A) (hA : 0 
   exact div_le_div_of_nonneg_right h2 (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Introduce `s`. Simplify using `only [coeff_zero, abs_zero]`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 -/
 theorem Maj.zero {c A : ℝ} (hc : 0 ≤ c) (hA : 0 ≤ A) : Maj 0 c A := by
   intro s
@@ -37,7 +37,7 @@ theorem Maj.zero {c A : ℝ} (hc : 0 ≤ c) (hA : 0 ≤ A) : Maj 0 c A := by
   positivity
 
 /- English proof (translation)
-Introduce `s`. Break down `s with _ | s` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[coeff_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Maj.one : Maj 1 1 0 := by
   intro s
@@ -46,7 +46,7 @@ theorem Maj.one : Maj 1 1 0 := by
   · simp [coeff_one]
 
 /- English proof (translation)
-Introduce `s`. Rewrite using `[coeff_add, add_mul, add_div]`. Conclude with `(abs_add_le _ _).trans (add_le_add (hf s) (hg s))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Maj.add {f g : Polynomial ℝ} {c d A : ℝ} (hf : Maj f c A) (hg : Maj g d A) : Maj (f + g) (c + d) A := by
   intro s
@@ -54,7 +54,7 @@ theorem Maj.add {f g : Polynomial ℝ} {c d A : ℝ} (hf : Maj f c A) (hg : Maj 
   exact (abs_add_le _ _).trans (add_le_add (hf s) (hg s))
 
 /- English proof (translation)
-Introduce `s`. Rewrite using `[coeff_neg, abs_neg]`. Conclude with `hf s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Maj.neg {f : Polynomial ℝ} {c A : ℝ} (hf : Maj f c A) : Maj (-f) c A := by
   intro s
@@ -62,14 +62,14 @@ theorem Maj.neg {f : Polynomial ℝ} {c A : ℝ} (hf : Maj f c A) : Maj (-f) c A
   exact hf s
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `hf.add hg.neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Maj.sub {f g : Polynomial ℝ} {c d A : ℝ} (hf : Maj f c A) (hg : Maj g d A) : Maj (f - g) (c + d) A := by
   rw [sub_eq_add_neg]
   exact hf.add hg.neg
 
 /- English proof (translation)
-Introduce `s`. Rewrite using `[coeff_C_mul, abs_mul, abs_of_nonneg hr, mul_assoc, mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hf s) hr`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Maj.C_mul {f : Polynomial ℝ} {c A : ℝ} (hf : Maj f c A) (r : ℝ) (hr : 0 ≤ r) : Maj (C r * f) (r * c) A := by
   intro s
@@ -77,7 +77,7 @@ theorem Maj.C_mul {f : Polynomial ℝ} {c A : ℝ} (hf : Maj f c A) (r : ℝ) (h
   exact mul_le_mul_of_nonneg_left (hf s) hr
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Maj.zero le_rfl hA`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Maj.sum {ι : Type*} (s : Finset ι) (f : ι → Polynomial ℝ) (c : ι → ℝ) {A : ℝ} (hA : 0 ≤ A)
     (h : ∀ i ∈ s, Maj (f i) (c i) A) : Maj (∑ i ∈ s, f i) (∑ i ∈ s, c i) A := by
@@ -89,13 +89,13 @@ theorem Maj.sum {ι : Type*} (s : Finset ι) (f : ι → Polynomial ℝ) (c : ι
     exact (h a (Finset.mem_insert_self _ _)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Introduce `s`. Establish `hc` using `hf.nonneg`. Rewrite using `[coeff_mul, (Commute.all A B).add_pow', Finset.mul_sum, Finset.sum_div]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun p hp => ?_)` and prove the remaining obligations. Rewrite using `[abs_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `mul_le_mul (hf p.1) (hg p.2) (abs_nonneg _) (by positivity)`. Use `h1.trans (le_of_eq ?_)` and prove the remaining obligations. Establish `hs : p.1 + p.2 = s` using `by simpa using hp`. Substitute `hs` using the available equality. Establish `h2 : (((p.1 + p.2).choose p.1 : ℕ) : ℝ) * p.1.factorial * p.2.factorial = (p.1 + p.2).factorial`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use `Nat.add_choose_mul_factorial_mul_factorial p.2 p.1` as an intermediate fact. Rewrite `this` using `[add_comm p.2 p.1, mul_right_comm]`. Conclude with `this` after adjusting the coercions. Establish `h3 : (p.1.factorial : ℝ) ≠ 0` using `by positivity`. Establish `h4 : (p.2.factorial : ℝ) ≠ 0` using `by positivity`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (((p.1 + p.2).choose p.1 : ℕ) : ℝ) ≠ 0`. Conclude with `(Nat.choose_pos (Nat.le_add_right _ _)).ne'` after adjusting the coercions. Rewrite using `[← h2, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem Maj.mul {f g : Polynomial ℝ} {c A d B : ℝ} (hf : Maj f c A) (hg : Maj g d B) (hA : 0 ≤ A) (hB : 0 ≤ B) :
     Maj (f * g) (c * d) (A + B) := by
@@ -120,7 +120,7 @@ theorem Maj.mul {f g : Polynomial ℝ} {c A d B : ℝ} (hf : Maj f c A) (hg : Ma
   field_simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Maj.one`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).mul (ih (fun i hi => h i (Finset.mem_insert_of_mem hi)) fun i hi => hA i (Finset.mem_insert_of_mem hi)) (hA a (Finset.mem_insert_self _ _)) (Finset.sum_nonneg fun i hi => hA i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Maj.prod {ι : Type*} (s : Finset ι) (f : ι → Polynomial ℝ) (c A : ι → ℝ)
     (h : ∀ i ∈ s, Maj (f i) (c i) (A i)) (hA : ∀ i ∈ s, 0 ≤ A i) :
@@ -144,7 +144,7 @@ def rr (w : ℕ → R) : ℕ → ℕ → R[X]
   | m + 1, N + 1 => C (w N) * rr w m (N + 1) + (X - C (w N)) * rr w m N
 
 /- English proof (translation)
-The claim follows from `| 0, N, h => by simp [rr, h.ne'] | m + 1, 0, h => absurd h (Nat.not_lt_zero _) | m + 1, N + 1, h => by rw [rr, rr_small w m (N + 1) (by omega), rr_small w m N (by omega)] ring`.
+A detailed English derivation is pending.
 -/
 theorem rr_small (w : ℕ → R) : ∀ m N : ℕ, m < N → rr w m N = X ^ m
   | 0, N, h => by simp [rr, h.ne']
@@ -154,7 +154,7 @@ theorem rr_small (w : ℕ → R) : ∀ m N : ℕ, m < N → rr w m N = X ^ m
     ring
 
 /- English proof (translation)
-The claim follows from `| 0, N, a, h => by simp [rr, show N ≠ 0 by omega] | m + 1, 0, a, h => absurd h (Nat.not_lt_zero _) | m + 1, N + 1, a, h => by rw [rr] simp only [eval_add, eval_mul, eval_C, eval_sub, eval_X] rw [rr_eval w m (N + 1) a h] rcases Nat.lt_succ_iff_lt_or_eq.mp h with h' | h' · rw [rr_e …`.
+A detailed English derivation is pending.
 -/
 theorem rr_eval (w : ℕ → R) : ∀ m N a : ℕ, a < N → (rr w m N).eval (w a) = w a ^ m
   | 0, N, a, h => by simp [rr, show N ≠ 0 by omega]
@@ -168,7 +168,7 @@ theorem rr_eval (w : ℕ → R) : ∀ m N a : ℕ, a < N → (rr w m N).eval (w 
     · subst h'; ring
 
 /- English proof (translation)
-Rewrite using `[rr, sub_mul, coeff_add, coeff_sub, coeff_C_mul, coeff_C_mul, coeff_X_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rr_coeff_succ (w : ℕ → R) (m N n : ℕ) : (rr w (m + 1) (N + 1)).coeff (n + 1) =
     w N * (rr w m (N + 1)).coeff (n + 1) + (rr w m N).coeff n - w N * (rr w m N).coeff (n + 1) := by
@@ -176,7 +176,7 @@ theorem rr_coeff_succ (w : ℕ → R) (m N n : ℕ) : (rr w (m + 1) (N + 1)).coe
   ring
 
 /- English proof (translation)
-Rewrite using `[rr, sub_mul, coeff_add, coeff_sub, coeff_C_mul, coeff_C_mul, coeff_X_mul_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rr_coeff_zero (w : ℕ → R) (m N : ℕ) : (rr w (m + 1) (N + 1)).coeff 0 =
     w N * (rr w m (N + 1)).coeff 0 - w N * (rr w m N).coeff 0 := by
@@ -184,7 +184,7 @@ theorem rr_coeff_zero (w : ℕ → R) (m N : ℕ) : (rr w (m + 1) (N + 1)).coeff
   ring
 
 /- English proof (translation)
-The claim follows from `| 0, N, n, h => by rw [rr] split_ifs with h0 · simp · rw [coeff_one, if_neg (by omega)] | m + 1, 0, n, h => by simp [rr] | m + 1, N + 1, 0, h => absurd h (by omega) | m + 1, N + 1, n + 1, h => by rw [rr_coeff_succ, rr_coeff_big w m (N + 1) (n + 1) h, rr_coeff_big w m N n (by omeg …`.
+A detailed English derivation is pending.
 -/
 theorem rr_coeff_big (w : ℕ → R) : ∀ m N n : ℕ, N ≤ n → (rr w m N).coeff n = 0
   | 0, N, n, h => by
@@ -205,9 +205,9 @@ def cnt (n d N : ℕ) : ℕ :=
   if n < N then (if d = 0 then 1 else (n + d).choose n * (d - 1).choose (N - 1 - n)) else 0
 
 /- English proof (translation)
-Unfold `cnt`. Rewrite using `[if_pos (by omega : n < n + e + 1), show n + e + 1 - 1 - n = e by omega]`. Break down `e with _ | e` into its components or cases. Rewrite using `[if_neg (by omega : ¬ n < n + 0)] split_ifs with h`. Simplify using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨d, rfl⟩ : ∃ d', d = d' + 1` from `⟨d - 1, by omega⟩`. Rewrite using `[if_pos (by omega : n < n + (e + 1)), show n + (e + 1) - 1 - n = e by omega, if_neg (by omega : ¬ d + 1 = 0), if_neg (by omega : ¬ d + 1 = 0), Nat.add_sub_cancel, Nat.choose_succ_succ' d e]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cnt_two (n d e : ℕ) (he : e ≤ d) :
     cnt n d (n + e + 1) + cnt n d (n + e) = (n + d).choose n * d.choose e := by
@@ -224,7 +224,7 @@ theorem cnt_two (n d e : ℕ) (he : e ≤ d) :
     ring
 
 /- English proof (translation)
-Unfold `cnt`. Rewrite using `[if_pos (by omega : n < n + e + 1), show n + e + 1 - 1 - n = e by omega, if_neg (by omega : ¬ d + 1 = 0), Nat.add_sub_cancel, add_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cnt_top (n d e : ℕ) : cnt n (d + 1) (n + e + 1) = (n + d + 1).choose n * d.choose e := by
   unfold cnt
@@ -232,23 +232,23 @@ theorem cnt_top (n d e : ℕ) : cnt n (d + 1) (n + e + 1) = (n + d + 1).choose n
     Nat.add_sub_cancel, add_assoc]
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `n d N h`. Take `rfl : n = 0` from `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : d = 0` from `by omega`. Break down `N with _ | N` into its components or cases. Simplify `Maj.zero le_rfl le_rfl` using `[rr, cnt]`. Simplify `Maj.one` using `[rr, cnt]`. Consider the case `succ m ih`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `n d N h`. Distinguish the cases in `h1 : N ≤ n`. Rewrite using `[rr_coeff_big w _ _ _ h1]`. Conclude with `Maj.zero (by positivity) (by positivity)`. Distinguish the cases in `h2 : m + 1 < N`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rr_small w _ _ h2, coeff_X_pow] split_ifs with h3`. Take `rfl : d = 0` from `by omega`. Simplify `Maj.one` using `[cnt, show n < N by omega]`. Conclude with `Maj.zero (by positivity) (by positivity)`. Take `⟨e, rfl⟩ : ∃ e, N = n + e + 1` from `⟨N - n - 1, by omega⟩`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, rfl⟩ : ∃ d', d = d' + 1` from `⟨d - 1, by omega⟩`. Establish `hm : m = n + d` using `by omega`. Establish `he : e ≤ d` using `by omega`. Establish `hA : (1 / U + (d : ℝ) / U) = ((d + 1 : ℕ) : ℝ) / U` using `by push_cast; ring`. Establish `t1` using `(hw (n + e)).mul (ih n d (n + e + 1) hm) (by positivity) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `t3` using `(hw (n + e)).mul (ih n d (n + e) hm) (by positivity) (by positivity)`. Rewrite `t1`, `t3` using `[hA]`. Establish `c2 : (cnt n d (n + e + 1) : ℝ) + cnt n d (n + e) = (n + d).choose n * d.choose e`. Conclude with `cnt_two n d e he` after adjusting the coercions. Rewrite using `[cnt_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `n with _ | n` into its components or cases. Rewrite using `[rr_coeff_zero]`. Use `(t1.sub t3).mono (by positivity) (le_of_eq ?_) le_rfl` and prove the remaining obligations. Simplify using `only [Nat.choose_zero_right, Nat.cast_one, one_mul] at c2 ⊢`. Rewrite using `[← c2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rr_coeff_succ]`. Establish `t2` using `ih n (d + 1) (n + 1 + e) (by omega)`. Rewrite `t2` using `[show n + 1 + e = n + e + 1 by omega, cnt_top, show n + e + 1 = n + 1 + e by omega]`. Use `((t1.add t2).sub t3).mono (by positivity) (le_of_eq ?_) le_rfl` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[Nat.choose_succ_succ' (n + 1 + d) n, show n + d + 1 = n + 1 + d by omega]`. Move the coercions through the operations in `at c2 ⊢`. Take the linear combination `(U ^ (d + 1)) * c2`.
+A detailed English derivation is pending.
 -/
 theorem rr_maj (U : ℝ) (hU : 0 < U) (w : ℕ → Polynomial ℝ) (hw : ∀ a, Maj (w a) U (1 / U)) :
     ∀ m n d N : ℕ, m = n + d → Maj ((rr w m N).coeff n) (cnt n d N * U ^ d) (d / U) := by

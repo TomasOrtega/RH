@@ -4,7 +4,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutSHChk
 namespace Formalism.FourierDecayAlt.P5.HerD
 
 /- English proof (translation)
-The claim follows from `theorem_P_compact_of_step_density Formalism.FourierDecayAlt.P.level_transport_hermitian h0`.
+A detailed English derivation is pending.
 -/
 theorem thmPActualCpt_of_stepExp0 (h0 : StepExp0) : ThmPActualCpt :=
   theorem_P_compact_of_step_density Formalism.FourierDecayAlt.P.level_transport_hermitian h0

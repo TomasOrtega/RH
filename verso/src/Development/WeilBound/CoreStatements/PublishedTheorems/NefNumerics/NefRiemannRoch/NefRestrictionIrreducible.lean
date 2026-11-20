@@ -21,11 +21,11 @@ noncomputable section
 namespace GlobalTheory.RRPush
 
 /- English proof (translation)
-Introduce `k _ _ d hY X _ hp L hL Z hZ hd G _ i hi`. Use `haveI := isIntegral_red hZ`. Use `letI := algebraΓAlong k (redι Z)`. Establish `hk` using `appTop_algebraMap_along k (redι Z)`. Establish `hp' : IsProjOver (strHom k (Scheme.IdealSheafData.vanishingIdeal Z).subscheme)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, e, he, hs⟩` from `hp`. Conclude with `⟨n, redι Z ≫ e, inferInstance, by rw [Category.assoc, hs, comp_strHom hk]⟩`. Establish `hLZ : IsNef k (L.pull (redι Z))` using `hL.pull_of_isClosedImmersion (redι Z) hk`. Establish `hdV : topologicalKrullDim (Scheme.IdealSheafData.vanishingIdeal Z).subscheme ≤ (d + 1 : ℕ)` using `(topologicalKrullDim_red Z).trans_le hd`. Take `⟨C, hC⟩` from `GlobalTheory.T.higher_cohomology_growth_coherent k _ hp' d (L.pull (redι Z)) hLZ hdV (fun E _ hE j hj => hY _ hp' _ hLZ E hE j hj) G i hi`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.sheafCohomologyDim_twist_pushforward_closedImmersion k X _ (redι Z) L hL.isLB G m i]`. Conclude with `hC m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hdim_pushforward_le : ∀ (k : Type) [Field k] [Infinite k] (d : ℕ), (∀ (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (strHom k Y) → ∀ N : LB Y, IsNef k N → ∀ (E : Y.Modules) [IsFiniteQC E], suppDim E ≤ (d : ℕ) → ∀ j, 0 < j → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist E (lbPow N m)) j ≤ C * (d * (m + 1) ^ (d - 1)))) → ∀ (X : Scheme.{0}) [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ L : LB X, IsNef k L → ∀ Z : Closeds X, IsIrreducible (Z : Set X) → topologicalKrullDim (Z : Set X) ≤ (d + 1 : ℕ) → ∀ (G : (Scheme.IdealSheafData.vanishingIdeal Z).subscheme.Modules) [IsFiniteQC G], ∀ i, 0 < i → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist ((Scheme.Modules.pushforward (redι Z)).obj G) (lbPow L m)) i ≤ C * ((d + 1) * (m + 1) ^ d)) := by
   intro k _ _ d hY X _ hp L hL Z hZ hd G _ i hi

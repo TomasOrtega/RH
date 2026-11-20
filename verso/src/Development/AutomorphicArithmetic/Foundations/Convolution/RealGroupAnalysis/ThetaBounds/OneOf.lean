@@ -6,11 +6,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D y hy`. Take `⟨u, hu, hn⟩` from `normInf F E D (Matrix.GeneralLinearGroup.det y)`. Establish `hu1 : u = 1`. Use `Units.ext (funext fun v => ?_)` and prove the remaining obligations. Rewrite using `[hu v]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ w : InfinitePlace E, ‖(Matrix.GeneralLinearGroup.det y).val w‖ = 1` using `hy`. Express the relevant statement in the definitionally equal form `_ = (1 : ℝ)`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[h1 w, one_pow]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `ideleNorm F E (Matrix.GeneralLinearGroup.det (infGL E 2 y)) = 1`. Rewrite using `[det_infGL, hn, hu1, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.oneOf :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (_D : Dat F E), OneOf F E := by

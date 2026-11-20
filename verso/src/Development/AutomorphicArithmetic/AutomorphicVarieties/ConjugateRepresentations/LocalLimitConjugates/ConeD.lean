@@ -9,21 +9,21 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Introduce `V F _ _ _ _ _ _ Y hYo hYc p hp q w hw`. Establish `hseg : ∀ x ∈ Y, ∀ t ∈ Set.Icc (0:ℝ) 1, p + t • (x - p) ∈ Y`. Introduce `x hx t ht`. Establish `h` using `hYc hp hx (sub_nonneg.2 ht.2) ht.1 (by ring)`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[smul_sub, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Set `g : V × ℝ → V` to `fun z => p + z.2 • (z.1 - p)`. Establish `hg : ContDiff ℝ ⊤ g`. Conclude with `contDiff_const.add (contDiff_snd.smul (contDiff_fst.sub contDiff_const))`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `W : Set (V × ℝ)` to `g ⁻¹' Y`. Establish `hW : IsOpen W` using `hYo.preimage hg.continuous`. Set `Φ : V × ℝ → V [⋀^Fin q]→L[ℝ] F` to `fun z => z.2 ^ q • (w (p + z.2 • (z.1 - p))).curryLeft (z.1 - p)`. Establish `hΦ : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) Φ W`. Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : V × ℝ => w (g z)) W` using `hw.comp (hg.of_le le_top).contDiffOn (fun z hz => hz)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `L` to `(ContinuousAlternatingMap.curryLeftLI (𝕜 := ℝ) (E := V) (F := F) (n := q)).toContinuousLinearMap`. Establish `hfst : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : V × ℝ => z.1 - p)` using `contDiff_fst.sub contDiff_const`. Establish `h2` using `(L.contDiff.comp_contDiffOn h1).clm_apply (hfst.contDiffOn (s := W))`. Establish `hsnd : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : V × ℝ => z.2 ^ q)` using `contDiff_snd.pow q`. Conclude with `hsnd.contDiffOn.smul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : Y ×ˢ Set.Icc (0:ℝ) 1 ⊆ W` using `fun z hz => hseg z.1 hz.1 z.2 hz.2`. Use `⟨UpperTheory.V.Lit.Dr.paramSmooth V (V [⋀^Fin q]→L[ℝ] F) Y W Φ hYo hW hsub hΦ, ?_⟩` and prove the remaining obligations. Introduce `hcl x hx`. Establish `hd` using `UpperTheory.V.Lit.Dr.paramDeriv V (V [⋀^Fin q]→L[ℝ] F) x W Φ hW (fun t ht => hseg x hx t ht) hΦ`. Establish `hI : Set.uIcc (0:ℝ) 1 = Set.Icc 0 1` using `Set.uIcc_of_le zero_le_one`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `A` to `ContinuousAlternatingMap.alternatizeUncurryFinCLM ℝ V F (n := q)`. Establish `hint : IntervalIntegrable (fun t => fderiv ℝ (fun y => Φ (y, t)) x) MeasureTheory.volume 0 1` using `(hI ▸ hd.1).intervalIntegrable`. Establish `hcont' : ContinuousOn (fun t => A (fderiv ℝ (fun y => Φ (y, t)) x)) (Set.uIcc 0 1)` using `hI ▸ (A.continuous.comp_continuousOn hd.1)`. Establish `hderiv : ∀ t ∈ Set.uIcc (0:ℝ) 1, HasDerivAt (fun r : ℝ => r ^ (q + 1) • w (p + r • (x - p))) (A (fderiv ℝ (fun y => Φ (y, t)) x)) t`. Introduce `t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ht` using `[hI]`. Establish `hm` using `hseg x hx t ht`. Establish `hdiff : DifferentiableAt ℝ w (p + t • (x - p))` using `(hw.contDiffAt (hYo.mem_nhds hm)).differentiableAt (by simp)`. Conclude with `UpperTheory.V.Lit.Dr.poinPt V F q w p x t hdiff (hcl _ hm)`. Establish `hfd : fderiv ℝ (UpperTheory.V.Cj.H.coneOp p w) x = ∫ t in (0:ℝ)..1, fderiv ℝ (fun y => Φ (y, t)) x` using `hd.2.fderiv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : extDeriv (UpperTheory.V.Cj.H.coneOp p w) x = A (fderiv ℝ (UpperTheory.V.Cj.H.coneOp p w) x)` using `rfl`. Rewrite using `[key, hfd, ← A.intervalIntegral_comp_comm hint, intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv (hcont'.intervalIntegrable)]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.coneD :
     UpperTheory.V.Cj.H.ConeD := by

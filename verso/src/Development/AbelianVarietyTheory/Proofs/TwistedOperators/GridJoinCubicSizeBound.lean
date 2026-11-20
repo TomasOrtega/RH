@@ -25,11 +25,9 @@ namespace GlobalTheory.GridJoin.ArrXPar
 open GlobalTheory.SignedHC GlobalTheory.RemoveBlock GlobalTheory.PairLift GlobalTheory.Chain
 
 /- English proof (translation)
-Take `⟨a, s⟩` from `x`. Simplify using `only [signed, Finset.mem_union, List.mem_toFinset, List.mem_map, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨y, hy, rfl, rfl⟩ | ⟨y, hy, rfl, rfl⟩)`. Use `left`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hy`. Use `right`. Simplify using `using hy`. Introduce and unpack `(⟨rfl, h⟩ | ⟨rfl, h⟩)`. Use the proof step `left; exact ⟨_, h, by ring, rfl⟩`.
-
-Use the proof step `right; exact ⟨_, h, by ring, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_signed {l₁ l₂ : List ℚ} {c : ℚ} {x : ℚ × Bool} :
     x ∈ signed l₁ l₂ c ↔ (x.2 = true ∧ x.1 - c ∈ l₁) ∨ (x.2 = false ∧ x.1 - c ∈ l₂) := by
@@ -44,9 +42,9 @@ theorem mem_signed {l₁ l₂ : List ℚ} {c : ℚ} {x : ℚ × Bool} :
     · right; exact ⟨_, h, by ring, rfl⟩
 
 /- English proof (translation)
-Substitute `hp hq` using the available equality. Introduce and unpack `(a | a) (b | b) hab`. Conclude with `(hab trivial).elim`. Simplify using `only [ofBlocks, List.getD_eq_getElem _ _ a.2, List.getD_eq_getElem _ _ b.2]`. Conclude with `H _ (List.getElem_mem _) _ (List.getElem_mem _)`.
+Substitute using the available equality. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ofBlocks, List.getD_eq_getElem _ _ a.2, List.getD_eq_getElem _ _ b.2]`. Rewrite using `[← neg_sub, Rat.cast_neg, abs_neg]`. Conclude with `H _ (List.getElem_mem _) _ (List.getElem_mem _)`. Conclude with `(hab trivial).elim`.
+A detailed English derivation is pending.
 -/
 theorem gapGt_ofBlocks {p q : ℕ} {l₁ l₂ : List ℚ} (hp : l₁.length = p) (hq : l₂.length = q) {h : ℝ}
     (H : ∀ x ∈ l₁, ∀ y ∈ l₂, h < |((x - y : ℚ) : ℝ)|) : GapGt (ofBlocks l₁ l₂ : Ix p q → ℚ) h := by
@@ -61,9 +59,9 @@ theorem gapGt_ofBlocks {p q : ℕ} {l₁ l₂ : List ℚ} (hp : l₁.length = p)
   · exact (hab trivial).elim
 
 /- English proof (translation)
-Substitute `hp hq` using the available equality. Introduce and unpack `(a | a) (b | b) hab`. Conclude with `(hab trivial).elim`. Simplify using `only [ofBlocks, List.getD_eq_getElem _ _ a.2, List.getD_eq_getElem _ _ b.2]`. Conclude with `H _ (List.getElem_mem _) _ (List.getElem_mem _)`.
+Substitute using the available equality. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ofBlocks, List.getD_eq_getElem _ _ a.2, List.getD_eq_getElem _ _ b.2]`. Rewrite using `[← neg_sub, Rat.cast_neg, abs_neg]`. Conclude with `H _ (List.getElem_mem _) _ (List.getElem_mem _)`. Conclude with `(hab trivial).elim`.
+A detailed English derivation is pending.
 -/
 theorem gapGe_ofBlocks {p q : ℕ} {l₁ l₂ : List ℚ} (hp : l₁.length = p) (hq : l₂.length = q) {h : ℝ}
     (H : ∀ x ∈ l₁, ∀ y ∈ l₂, h ≤ |((x - y : ℚ) : ℝ)|) : GapGe (ofBlocks l₁ l₂ : Ix p q → ℚ) h := by
@@ -84,7 +82,7 @@ namespace GlobalTheory.GridJoin.ArrXPar
 open GlobalTheory.SignedHC GlobalTheory.RemoveBlock GlobalTheory.PairLift GlobalTheory.Chain GlobalTheory.Grid
 
 /- English proof (translation)
-Establish `e : i + 1 + j = i + j + 1` using `by ring`. Unfold `att`. Simplify using `only [odd_rkV, e, Nat.odd_add_one]`. Apply the tactic sequence `by_cases h : Odd (i + j) <;> simp [h] <;> ring`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem att_succ (c : ℚ) (D : D7) (i j : ℕ) :
     att c (rkV D (i + 1) j) = c + (if Odd (i + j) then -(1 / 2) else 0) ∧
@@ -95,15 +93,15 @@ theorem att_succ (c : ℚ) (D : D7) (i j : ℕ) :
   by_cases h : Odd (i + j) <;> simp [h] <;> ring
 
 /- English proof (translation)
-The claim follows from `pow_le_pow_left₀ (Nat.cast_nonneg _) (by exact_mod_cast h) 3`.
+A detailed English derivation is pending.
 -/
 theorem nat_cube_le {a R : ℕ} (h : a ≤ R) : ((a : ℕ) : ℚ) ^ 3 ≤ (R : ℚ) ^ 3 :=
   pow_le_pow_left₀ (Nat.cast_nonneg _) (by exact_mod_cast h) 3
 
 /- English proof (translation)
-Establish `hn' : (n : ℝ) ≤ N` using `by exact_mod_cast hn`. Establish `hm' : 2 * (mm : ℝ) ≤ N` using `by exact_mod_cast hmm`. Establish `hN' : (1800 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hm0 : (0 : ℝ) ≤ mm` using `Nat.cast_nonneg _`. Establish `e : (mm : ℝ) ^ ((3 : ℝ) / 2) = mm * √(mm : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.sqrt_eq_rpow, show ((3 : ℝ) / 2) = 1 + 1 / 2 by norm_num, Real.rpow_add' hm0 (by norm_num), Real.rpow_one]`. Establish `hs : √(mm : ℝ) ≤ N / 30` using `Real.sqrt_le_iff.2 ⟨by positivity, by nlinarith⟩`. Establish `hm2 : (mm : ℝ) ≤ N / 2` using `by linarith`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem gridJoin_cubic_size_bound {n mm N : ℕ} (hn : n ≤ N) (hmm : 2 * mm ≤ N) (hN : 1800 ≤ N) :
     120 * (n : ℝ) * (mm : ℝ) ^ ((3 : ℝ) / 2) ≤ 2 * (N : ℝ) ^ 3 := by
@@ -120,81 +118,75 @@ theorem gridJoin_cubic_size_bound {n mm N : ℕ} (hn : n ≤ N) (hmm : 2 * mm �
     _ = 2 * (N : ℝ) ^ 3 := by ring
 
 /- English proof (translation)
-Use `set c : ℚ := (cen D τ (D.R.m - i) : ℚ) with hc`. Use `set P := (grid D τ).parD i j with hP`. Take `⟨hS, hT⟩` from `att_succ c D i j`. Rewrite using `[hS, hT]`. Use `set δ : ℚ := if Odd (i + j) then -(1 / 2) else 0 with hδ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `set δ' : ℚ := if Odd (i + 1 + j) then -(1 / 2) else 0 with hδ'`. Use `set Pp : Finset ℚ := (P.filter fun x => x.2 = true).image Prod.fst with hPp`. Use `set Pm : Finset ℚ := (P.filter fun x => x.2 = false).image Prod.fst with hPm`. Establish `mPp : ∀ y, y ∈ Pp ↔ (y, true) ∈ P`. Introduce `y`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [hPp, Finset.mem_image, Finset.mem_filter]`. Conclude with `⟨fun ⟨x, ⟨h1, h2⟩, h3⟩ => by rw [← h3, ← h2]; exact h1, fun h => ⟨_, ⟨h, rfl⟩, rfl⟩⟩`. Establish `mPm : ∀ y, y ∈ Pm ↔ (y, false) ∈ P`. Introduce `y`. Simplify using `only [hPm, Finset.mem_image, Finset.mem_filter]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨fun ⟨x, ⟨h1, h2⟩, h3⟩ => by rw [← h3, ← h2]; exact h1, fun h => ⟨_, ⟨h, rfl⟩, rfl⟩⟩`. Use `set be := (descList Pp).map (· - c) with hbe`. Use `set de := (descList Pm).map (· - c) with hde`. Establish `mbe : ∀ e, e ∈ be ↔ (e + c, true) ∈ P`. Introduce `e`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hbe, List.mem_map, ← mPp]`. Conclude with `⟨fun ⟨y, hy, h⟩ => by rw [← h, sub_add_cancel]; exact mem_descList.1 hy, fun h => ⟨_, mem_descList.2 h, by ring⟩⟩`. Establish `mde : ∀ e, e ∈ de ↔ (e + c, false) ∈ P`. Introduce `e`. Rewrite using `[hde, List.mem_map, ← mPm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun ⟨y, hy, h⟩ => by rw [← h, sub_add_cancel]; exact mem_descList.1 hy, fun h => ⟨_, mem_descList.2 h, by ring⟩⟩`. Establish `mP' : ∀ x, x ∈ (grid D τ).parD (i + 1) j ↔ x ∈ P ∨ (x.1 ∈ (grid D τ).blockC (D.R.m - i) ∧ x.2 = true)`. Introduce `x`. Rewrite using `[hP, GridData.mem_parD, GridData.mem_parD]`. Establish `hm : (grid D τ).m = D.R.m` using `rfl`.
+Prove the first alternative. Prove the first alternative. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative.
 
-Rewrite using `[hm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h | h | ⟨l, hl1, hl2, hx, hs⟩)`. Conclude with `Or.inl (Or.inl h)`. Conclude with `Or.inl (Or.inr (Or.inl h))`.
+Prove the first alternative. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative. Prove the second alternative.
 
-Conclude with `Or.inl (Or.inr (Or.inr (Or.inl h)))`. Break down `(show l = D.R.m - i ∨ D.R.m - i + 1 ≤ l by omega) with rfl | h` into its components or cases. Conclude with `Or.inr ⟨hx, hs⟩`. Conclude with `Or.inl (Or.inr (Or.inr (Or.inr ⟨l, h, hl2, hx, hs⟩)))`. Introduce and unpack `((h | h | h | ⟨l, hl1, hl2, hx, hs⟩) | ⟨hx, hs⟩)`.
+Prove the second alternative. Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl h)`. Conclude with `Or.inr (Or.inr (Or.inl h))`. Conclude with `Or.inr (Or.inr (Or.inr ⟨l, by omega, hl2, hx, hs⟩))`. Conclude with `Or.inr (Or.inr (Or.inr ⟨D.R.m - i, by omega, by omega, hx, hs⟩))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `mblk : ∀ y, y ∈ Formalism.BasicNotions.TH.block (GlobalTheory.Grid.sLen D) ↔ y + c ∈ (grid D τ).blockC (D.R.m - i)`. Introduce `y`. Use `show _ ↔ y + c ∈ TPar.block c (GlobalTheory.Grid.sLen D)`. Establish `h1 : y ∈ Formalism.BasicNotions.TH.block (GlobalTheory.Grid.sLen D) ↔ y ∈ TPar.block 0 (GlobalTheory.Grid.sLen D)`. Simplify using `[mem_block, Formalism.BasicNotions.TH.block, eq_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `sub_mem_block (c := (0 : ℚ)) (x := y + c) (h := c) (t := GlobalTheory.Grid.sLen D)`. Rewrite `h2` using `[add_sub_cancel_right, zero_add]`. Rewrite using `[h1, h2]`. Use `⟨be, de, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hN0 : (0 : ℚ) ≤ 2 * (GlobalTheory.Grid.bigN D : ℚ) ^ 3` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hga` using `GlobalTheory.GridParD.grid_hga D τ`. Establish `hgapA : ∀ i', GapOver ((grid D τ).parD i' j) (2 * (GlobalTheory.Grid.bigN D : ℚ) ^ 3)` using `fun i' => GlobalTheory.GridParD.gapOver_parD (grid D τ) i' j hN0 (grid_nearMid D τ) (GlobalTheory.GridParD.gridDataAtRealPlace_neg_firstLowEnd_lt_cloud D τ) (GlobalTheory.GridParD.grid_heb D τ) (GlobalTheory.GridParD.grid_hbb D τ hN) hga`. Establish `hgap` using `hgapA i`. Establish `hbel : ∀ x ∈ entries P, x + ((GlobalTheory.Grid.sLen D : ℚ) + 1) / 2 ≤ c` using `GlobalTheory.GridParD.entries_parD_le (grid D τ) hi hj (grid_nearMid D τ) (GlobalTheory.GridParD.gridDataAtRealPlace_neg_firstLowEnd_lt_cloud D τ) (GlobalTheory.GridParD.grid_hbe D τ) (by linarith)`. Establish `hint` using `int_parD D τ i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcard0 : P.card ≤ rkV D i j` using `card_parD_le D τ i j hi.le`. Use `set R : ℕ := rkV D D.R.m D.R.m with hRdef`. Use `set H : ℚ := 2 * (GlobalTheory.Grid.bigN D : ℚ) ^ 3 with hH`. Establish `hR0 : (0 : ℚ) ≤ (R : ℚ) ^ 3` using `by positivity`. Establish `hr : Odd D.R.r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Conclude with `⟨a + b - 1, by unfold Ranks.r; omega⟩`. Establish `hs : Odd (GlobalTheory.Grid.sLen D)` using `by unfold GlobalTheory.Grid.sLen; exact hr.add_even (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨q, hq⟩` from `hs`. Establish `hs1 : (1 : ℚ) ≤ (GlobalTheory.Grid.sLen D : ℚ)`. Rewrite using `[hq]; push_cast; have : (0 : ℚ) ≤ q := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbN : (0 : ℚ) ≤ (GlobalTheory.Grid.bigN D : ℚ) ^ 3` using `by positivity`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ebe : ∀ e ∈ be, e + c ∈ entries P` using `fun e he => fst_mem_entries ((mbe e).1 he)`. Establish `ede : ∀ e ∈ de, e + c ∈ entries P` using `fun e he => fst_mem_entries ((mde e).1 he)`. Establish `hneg : ∀ e, e + c ∈ entries P → e + ((GlobalTheory.Grid.sLen D : ℚ) + 1) / 2 ≤ 0`. Introduce `e he`. Use `hbel _ he` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hent : ∀ e ∈ be ++ de, e + c ∈ entries P`. Introduce `e he`. Break down `List.mem_append.1 he with h | h` into its components or cases. Conclude with `ebe e h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ede e h`. Establish `pbe : be.Pairwise (· > ·)` using `(pairwise_descList Pp).map _ fun a b (h : a > b) => show a - c > b - c by linarith`. Establish `pde : de.Pairwise (· > ·)` using `(pairwise_descList Pm).map _ fun a b (h : a > b) => show a - c > b - c by linarith`. Establish `hlen : be.length + de.length = P.card`. Establish `h1 : Pp.card = (P.filter fun x => x.2 = true).card` using `Finset.card_image_of_injOn fun x hx y hy e => Prod.ext e (by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[(Finset.mem_filter.1 (Finset.mem_coe.1 hx)).2, (Finset.mem_filter.1 (Finset.mem_coe.1 hy)).2])`. Establish `h2 : Pm.card = (P.filter fun x => x.2 = false).card` using `Finset.card_image_of_injOn fun x hx y hy e => Prod.ext e (by`. Rewrite using `[(Finset.mem_filter.1 (Finset.mem_coe.1 hx)).2, (Finset.mem_filter.1 (Finset.mem_coe.1 hy)).2])`. Simplify using `only [hbe, hde, List.length_map, descList, Finset.length_sort, h1, h2]`. Conclude with `nPlus_add_nMinus P`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Establish `hv : (((grid D τ).v 2 : ℚ), true) ∈ P` using `GridData.mem_parD.2 (Or.inl ⟨GridData.mem_cloud.2 ⟨2, le_rfl, by have := D.R.m_add_three_le_k; show 2 ≤ D.R.k; omega, rfl⟩, rfl⟩)`. Establish `hvbe : ((grid D τ).v 2 : ℚ) - c ∈ be` using `(mbe _).2 (by rw [sub_add_cancel]; exact hv)`. Establish `hRi : rkV D (i + 1) j = rkV D i j + GlobalTheory.Grid.sLen D` using `by unfold rkV; ring`. Establish `hRm : rkV D (i + 1) j ≤ R`. Establish `a1 : j * D.R.t ≤ D.R.m * D.R.t` using `Nat.mul_le_mul_right _ hj`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `a2 : (i + 1) * GlobalTheory.Grid.sLen D ≤ D.R.m * GlobalTheory.Grid.sLen D` using `Nat.mul_le_mul_right _ hi`. Simplify using `only [hRdef, rkV]`. Use linear arithmetic over natural numbers and integers. Establish `hNR : be.length + de.length + GlobalTheory.Grid.sLen D ≤ R` using `by omega`. Establish `hRB : R ≤ GlobalTheory.Grid.bigN D`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: D.R.m * (D.R.t + GlobalTheory.Grid.sLen D + 1) = D.R.m * D.R.t + D.R.m * GlobalTheory.Grid.sLen D + D.R.m` using `by ring`. Simplify using `only [hRdef, rkV, GlobalTheory.Grid.bigN]`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hRBq : (R : ℚ) ^ 3 ≤ (GlobalTheory.Grid.bigN D : ℚ) ^ 3` using `pow_le_pow_left₀ (by positivity) (by exact_mod_cast hRB) 3`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpm : ∀ x ∈ be, ∀ y ∈ de, H < |x - y|`. Introduce `x hx y hy`. Use `hgap _ ((mbe x).1 hx) _ ((mde y).1 hy) (by simp)` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[show x + c - (y + c) = x - y by ring]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hblen : (Formalism.BasicNotions.TH.block (GlobalTheory.Grid.sLen D)).length = GlobalTheory.Grid.sLen D` using `by simp [Formalism.BasicNotions.TH.block]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨by unfold GlobalTheory.Grid.sLen; omega, ?_, List.Pairwise.nil, pbe, List.Pairwise.nil, pde, ?_, by simp, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `List.length_pos_of_mem hvbe` as an intermediate fact. Simplify using `only [List.length_nil]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[List.nil_append, List.append_nil, List.Nodup, List.pairwise_append]`. Use `⟨pbe.imp ne_of_gt, pde.imp ne_of_gt, fun a ha b hb hab => ?_⟩` and prove the remaining obligations. Use `hpm a ha b hb` as an intermediate fact. Rewrite `this` using `[hab, sub_self, abs_zero]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `e he`. Use `hneg e (hent e he)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `e he`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[List.nil_append, List.append_nil]`. Take `⟨z, hz⟩` from `hint _ (hent e he)`. Use `⟨z - cen D τ (D.R.m - i) - (q + 1), ?_⟩` and prove the remaining obligations. Rewrite `*` using `[hq, hc]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `e he`. Rewrite `he` using `[List.nil_append, List.append_nil]`. Use `hneg e (hent e he)` as an intermediate fact. Rewrite using `[abs_of_neg (by linarith)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Unfold `lamA`. Use `gapGt_ofBlocks (by simp) (by simp) fun x hx y hy => ?_` and prove the remaining obligations. Rewrite `hx`, `hy` using `[List.nil_append]`. Establish `key : ((([] : List ℚ).length + be.length + ([] : List ℚ).length + de.length + GlobalTheory.Grid.sLen D : ℕ) : ℚ) ^ 3 < |x - y|`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2` using `nat_cube_le (a := ([] : List ℚ).length + be.length + ([] : List ℚ).length + de.length + GlobalTheory.Grid.sLen D) (R := R) (by simp only [List.length_nil]; omega)`. Use `hpm x hx y hy` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `key` after adjusting the coercions. Unfold `lamM'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `gapGt_ofBlocks (by simp) (by simp [hblen]; omega) fun x hx y hy => ?_` and prove the remaining obligations. Rewrite `hx` using `[List.nil_append]`. Rewrite `hy` using `[List.nil_append]`. Establish `h2` using `nat_cube_le (a := ([] : List ℚ).length + be.length + ([] : List ℚ).length + de.length + GlobalTheory.Grid.sLen D) (R := R) (by simp only [List.length_nil]; omega)`. Establish `key : ((([] : List ℚ).length + be.length + ([] : List ℚ).length + de.length + GlobalTheory.Grid.sLen D : ℕ) : ℚ) ^ 3 < |x - y|`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Break down `List.mem_append.1 hy with hy | hy` into its components or cases. Use `hgapA (i + 1) (x + c, false) ((mP' _).2 (Or.inl ((mde x).1 hx))) (y + c, true) ((mP' _).2 (Or.inr ⟨(mblk y).1 hy, rfl⟩)) (by simp)` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[show x + c - (y + c) = x - y by ring]`. Combine the linear equalities and inequalities to obtain the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hpm y hy x hx` as an intermediate fact. Rewrite `this` using `[abs_sub_comm]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `key` after adjusting the coercions. Unfold `lamA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `gapGe_ofBlocks (by simp) (by simp) fun x hx y hy => ?_` and prove the remaining obligations. Rewrite `hx`, `hy` using `[List.nil_append]`. Establish `hb` using `gridJoin_cubic_size_bound (n := ([] : List ℚ).length + be.length + ([] : List ℚ).length + de.length) (mm := min (([] : List ℚ).length + be.length) (([] : List ℚ).length + de.length)) (N := GlobalTheory.Grid.bigN D) (by simp only [List.length_nil]; omega) (by simp only [List.lengt …`. Establish `hxy : (H : ℝ) < |((x - y : ℚ) : ℝ)|` using `by exact_mod_cast hpm x hx y hy`. Establish `hH' : (H : ℝ) = 2 * (GlobalTheory.Grid.bigN D : ℝ) ^ 3` using `by rw [hH]; push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use extensionality with `⟨a, s⟩ show (a, s) ∈ flip (parV D (i + 1) j τ) ↔ (a, s) ∈ negate _`. Rewrite using `[mem_flip, mem_negate]`. Use `show (a, !s) ∈ negate (shift δ' _) ↔ _`. Rewrite using `[mem_negate, mem_shift, mem_signed]`.
-
-Simplify using `only`. Rewrite using `[mP', mde, List.mem_append, mbe, mblk]`. Establish `e1 : -a - (c + δ') + c = -a - δ'` using `by ring`. Rewrite using `[e1]`. Apply the tactic sequence `cases s <;> simp [or_comm]`.
-
-Use `show dualPar (shift δ P) = _`. Use `congr 1`. Use extensionality with `⟨a, s⟩`. Rewrite using `[mem_shift, mem_signed]`. Simplify using `only`.
-
-Rewrite using `[mbe, mde]`. Establish `e1 : a - (c + δ) + c = a - δ` using `by ring`. Rewrite using `[e1]`. Apply the tactic sequence `cases s <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem par_pair (D : D7) (hN : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D) (τ : D.what₂.Tau) (i j : ℕ)
     (hi : i < D.R.m) (hj : j ≤ D.R.m) : ∃ be de : List ℚ, Formalism.MainNotions.SchurIrreducible.DataARm (GlobalTheory.Grid.sLen D) [] be [] de ∧
@@ -404,9 +396,9 @@ namespace GlobalTheory.GridJoin.ArrXPar
 open GlobalTheory.SignedHC GlobalTheory.RemoveBlock GlobalTheory.PairLift GlobalTheory.Chain GlobalTheory.Grid
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R F hN hC G hch i j hi hj τ`. Establish `hR : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R` using `⟨hC.lev, hC.models.inf, hC.models.νY, hC.models.νY', hC.models.νX⟩`. Establish `hm1 : 1 ≤ D.R.m - i` using `by omega`. Establish `hm2 : D.R.m - i ≤ D.R.m` using `by omega`. Establish `hexp : HasInfExp D (G.chi (D.R.m - i)) τ (GlobalTheory.Grid.cen D τ (D.R.m - i))` using `(GlobalTheory.HeckeInfExp.hasInfExp_iff_hasInfQ D _ _ (fun τ => (GlobalTheory.Grid.cen D τ (D.R.m - i) : ℚ)) (hch.tie _ hm1 hm2)).2 (hch.aux _ hm1 hm2).inf τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨be, de, hd, e1, e2⟩` from `par_pair D hN τ i j hi hj`. Conclude with `⟨_, _, hasInfExp_att hexp (exp_eta hR τ) _, hasInfExp_att hexp (exp_eta hR τ) _, be, de, hd, e1, e2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem arrowX_par : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → GlobalTheory.Hk3.Core R F → ∀ G : GlobalTheory.Grid.GridPre R, G.IsChars → ∀ i j, i < D.R.m → j ≤ D.R.m → ∀ τ : D.what₂.Tau, ∃ aS aT : ℚ, HasInfExp D (G.chiAt (D.R.m - i) (GlobalTheory.Grid.rkV D (i + 1) j)) τ aS ∧ HasInfExp D (G.chiAt (D.R.m - i) (GlobalTheory.Grid.rkV D i j)) τ aT ∧ ∃ be de : List ℚ, Formalism.MainNotions.SchurIrreducible.DataARm (GlobalTheory.Grid.sLen D) [] be [] de ∧ (GlobalTheory.Grid.parV D (i + 1) j τ).image (fun x => (x.1, !x.2)) = dualPar (GlobalTheory.Chain.signed de (Formalism.BasicNotions.TH.block (GlobalTheory.Grid.sLen D) ++ be) aT) ∧ GlobalTheory.Grid.parV D i j τ = dualPar (GlobalTheory.Chain.signed be de aS) := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R F hN hC G hch i j hi hj τ

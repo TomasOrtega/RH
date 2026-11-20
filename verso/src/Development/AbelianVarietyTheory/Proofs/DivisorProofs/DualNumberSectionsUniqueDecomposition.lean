@@ -9,17 +9,17 @@ noncomputable section
 namespace GlobalTheory.RelConstThickening
 
 /- English proof (translation)
-Set `_ : Algebra K A` to `c.toAlgebra`. Set `_ : Algebra A A'` to `p.hom.toAlgebra`. Set `_ : Algebra (DualNumber K) A'` to `s.toAlgebra`. Set `_ : Algebra K A'` to `(s.comp (algebraMap K (DualNumber K))).toAlgebra`. Establish `: IsScalarTower K (DualNumber K) A'` using `.of_algebraMap_eq fun _ => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsScalarTower K A A'` using `.of_algebraMap_eq fun r => (congrArg (fun q => q.hom r) H.w).symm`. Establish `h : Algebra.IsPushout K A (DualNumber K) A'` using `CommRingCat.isPushout_iff_isPushout.mp H`. Set `b : Module.Basis (Fin 2) K (DualNumber K)` to `Module.Basis.finTwoProd K`. Establish `b0 : b 0 = 1` using `Module.Basis.finTwoProd_zero K`. Establish `b1 : b 1 = DualNumber.eps` using `Module.Basis.finTwoProd_one K`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `B` to `h.out.basis b`. Establish `B0 : B 0 = 1`. Rewrite using `[h.out.basis_apply, b0]`. Conclude with `map_one s`. Establish `B1 : B 1 = s DualNumber.eps`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.out.basis_apply, b1]`. Both sides reduce to the same expression. Establish `key : ∀ x y : A, p.hom x + s DualNumber.eps * p.hom y = B.equivFun.symm ![x, y]` using `fun x y => by`. Rewrite using `[Module.Basis.equivFun_symm_apply, Fin.sum_univ_two, B0, B1, Algebra.smul_def, Algebra.smul_def, _root_.mul_one, _root_.mul_comm (s _)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(B.equivFun F 0, B.equivFun F 1), ?_, fun ab hab => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F = _`. Rewrite using `[key, LinearEquiv.eq_symm_apply]`. Apply the tactic sequence `ext i; fin_cases i <;> rfl`. Use `replace hab : F = _ := hab`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hab` using `[key, LinearEquiv.eq_symm_apply]`. Rewrite using `[hab]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem existsUnique_of_isPushout {K : Type} [CommRing K] {A A' : CommRingCat.{0}} (c : K →+* A) (p : A ⟶ A')
     (s : DualNumber K →+* A')
@@ -56,7 +56,7 @@ def constHom {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) (U : X.Op
   (f.appLE ⊤ U (fun _ _ => trivial)).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom
 
 /- English proof (translation)
-Conclude with `congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) (f.appLE_map (U := ⊤) (fun _ _ => trivial) (homOfLE h).op)`.
+A detailed English derivation is pending.
 -/
 theorem res_constFn {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) {U V : X.Opens} (h : V ≤ U) (a : R) :
     (X.presheaf.map (homOfLE h).op).hom (constFn f U a) = constFn f V a := by
@@ -64,7 +64,7 @@ theorem res_constFn {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) {U
     (f.appLE_map (U := ⊤) (fun _ _ => trivial) (homOfLE h).op)
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.naturality]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_app {X X' : Scheme.{0}} (f : X' ⟶ X) {U V : X.Opens} (h : V ≤ U) (h' : f ⁻¹ᵁ V ≤ f ⁻¹ᵁ U) (a : Γ(X, U)) :
     (X'.presheaf.map (homOfLE h').op).hom ((f.app U).hom a) = (f.app V).hom ((X.presheaf.map (homOfLE h).op).hom a) := by
@@ -72,7 +72,7 @@ theorem res_app {X X' : Scheme.{0}} (f : X' ⟶ X) {U V : X.Opens} (h : V ≤ U)
   rfl
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)) :
     (X.presheaf.map (homOfLE h').op).hom ((X.presheaf.map (homOfLE h).op).hom a) =
@@ -81,7 +81,7 @@ theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Conclude with `(congrArg _ (CategoryTheory.Functor.map_id _ _)).trans (Category.comp_id _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fromSpec_appLE_top {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U)
     (e : (⊤ : (Spec Γ(X, U)).Opens) ≤ hU.fromSpec ⁻¹ᵁ U) :
@@ -90,13 +90,13 @@ theorem fromSpec_appLE_top {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U)
   exact (congrArg _ (CategoryTheory.Functor.map_id _ _)).trans (Category.comp_id _)
 
 /- English proof (translation)
-Use `existsUnique_of_isPushout (K := Γ(X, U.1)) (h.appLE U.1 V hVU).hom (p₂.app V) (constHom p₁ (p₂ ⁻¹ᵁ V)) ?_ F` and prove the remaining obligations. Establish `e0 : (⊤ : (Spec Γ(X, U.1)).Opens) ≤ U.2.fromSpec ⁻¹ᵁ U.1` using `U.2.fromSpec_preimage_self.ge`. Establish `e : (⊤ : (Sp (DualNumber Γ(X, U.1))).Opens) ≤ (spMap (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1))) ≫ GlobalTheory.LogKS.chart U) ⁻¹ᵁ U.1` using `fun x _ => e0 (Set.mem_univ (spMap (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1))) x))`. Establish `po` using `(isIso_pushoutSection_iff H (US := U.1) (UT := ⊤) (UX := V) (UY := p₂ ⁻¹ᵁ V) e hVU (by simp)).mp (isIso_pushoutSection_of_isAffineOpen H _ _ _ U.2 (isAffineOpen_top _) hV)`. Use `po.of_iso (Iso.refl _) (Iso.refl _) (Scheme.ΓSpecIso (.of (DualNumber Γ(X, U.1)))) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `e1 : (spMap (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1))) ≫ GlobalTheory.LogKS.chart U).appLE U.1 ⊤ e = U.2.fromSpec.appLE U.1 ⊤ e0 ≫ (spMap (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1)))).appLE ⊤ ⊤ le_top` using `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`. Establish `e2 : (spMap (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1)))).appLE ⊤ ⊤ le_top ≫ (Scheme.ΓSpecIso (.of (DualNumber Γ(X, U.1)))).hom = (Scheme.ΓSpecIso (.of Γ(X, U.1))).hom ≫ CommRingCat.ofHom (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1)))`. Rewrite using `[← Scheme.ΓSpecIso_naturality, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e3` using `fromSpec_appLE_top U.2 e0`. Rewrite using `[e1, e3]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((Scheme.ΓSpecIso Γ(X, U.1)).inv ≫ ·) e2).trans (Iso.inv_hom_id_assoc _ _))`. Simplify using `[Scheme.Hom.app_eq_appLE]`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[constHom]`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_affine {X Z P : Scheme.{0}} (U : X.affineOpens) (h : Z ⟶ X)
     (p₁ : P ⟶ Sp (DualNumber Γ(X, U.1))) (p₂ : P ⟶ Z)
@@ -134,7 +134,7 @@ section Glue
 variable {R : Type} [CommRing R] {Y Y' : Scheme.{0}} {π : Y' ⟶ Sp R} {ρ : Y' ⟶ Y} {ε : R}
 
 /- English proof (translation)
-Rewrite using `[map_add, map_mul, res_app ρ h, res_app ρ h, res_constFn]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_comb {U V : Y.Opens} (h : V ≤ U) (h' : ρ ⁻¹ᵁ V ≤ ρ ⁻¹ᵁ U) (a b : Γ(Y, U)) :
     (Y'.presheaf.map (homOfLE h').op).hom ((ρ.app U).hom a + constFn π _ ε * (ρ.app U).hom b) =
@@ -143,16 +143,16 @@ theorem res_comb {U V : Y.Opens} (h : V ≤ U) (h' : ρ ⁻¹ᵁ V ≤ ρ ⁻¹�
   rw [map_add, map_mul, res_app ρ h, res_app ρ h, res_constFn]
 
 /- English proof (translation)
-Introduce `x hx` and use `by obtain ⟨_, ⟨U, hU, rfl⟩, hxU, hUO⟩ := Y.isBasis_affineOpens.exists_subset_of_mem_open hx O.isOpen exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, hU, hUO⟩, hxU⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_iSup_affine (O : Y.Opens) : O ≤ ⨆ U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ O}, U.1 := fun x hx => by
   obtain ⟨_, ⟨U, hU, rfl⟩, hxU, hUO⟩ := Y.isBasis_affineOpens.exists_subset_of_mem_open hx O.isOpen
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, hU, hUO⟩, hxU⟩
 
 /- English proof (translation)
-Establish `loc : ∀ U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ O}, ((Y.presheaf.map (homOfLE U.2.2).op).hom a, (Y.presheaf.map (homOfLE U.2.2).op).hom b) = ((Y.presheaf.map (homOfLE U.2.2).op).hom a', (Y.presheaf.map (homOfLE U.2.2).op).hom b')` using `fun U => by`. Establish `h' : ρ ⁻¹ᵁ U.1 ≤ ρ ⁻¹ᵁ O` using `fun x hx => U.2.2 hx`. Establish `e` using `congrArg (Y'.presheaf.map (homOfLE h').op).hom h`. Rewrite `e` using `[res_comb U.2.2, res_comb U.2.2]`. Conclude with `(H _ U.2.1 (U.2.2.trans hO) _).unique rfl e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Y.sheaf.eq_of_locally_eq' _ O (fun U => homOfLE U.2.2) (le_iSup_affine O) a a' fun U => congrArg Prod.fst (loc U), Y.sheaf.eq_of_locally_eq' _ O (fun U => homOfLE U.2.2) (le_iSup_affine O) b b' fun U => congrArg Prod.snd (loc U)⟩`.
+A detailed English derivation is pending.
 -/
 theorem unique_comb {W : Y.Opens}
     (H : ∀ V : Y.Opens, IsAffineOpen V → V ≤ W → ∀ F : Γ(Y', ρ ⁻¹ᵁ V), ∃! ab : Γ(Y, V) × Γ(Y, V),
@@ -173,13 +173,11 @@ theorem unique_comb {W : Y.Opens}
       fun U => congrArg Prod.snd (loc U)⟩
 
 /- English proof (translation)
-Establish `hle : ∀ U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ O}, ρ ⁻¹ᵁ U.1 ≤ ρ ⁻¹ᵁ O` using `fun U x hx => U.2.2 hx`. Use `choose ab hab using fun U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ O} => (H _ U.2.1 (U.2.2.trans hO) ((Y'.presheaf.map (homOfLE (hle U)).op).hom F)).exists`. Establish `comp : ∀ U V : {U : Y.Opens // IsAffineOpen U ∧ U ≤ O}, (Y.presheaf.map (homOfLE (inf_le_left : U.1 ⊓ V.1 ≤ U.1)).op).hom (ab U).1 = (Y.presheaf.map (homOfLE (inf_le_right : U.1 ⊓ V.1 ≤ V.1)).op).hom (ab V).1 ∧ (Y.presheaf.map (homOfLE (inf_le_left : U.1 ⊓ V.1 ≤ U.1)).op).hom (ab …` using `fun U V => by`. Apply `unique_comb H ((inf_le_left.trans U.2.2).trans hO)` to reduce the goal to its premises. Rewrite using `[← res_comb inf_le_left (fun x hx => hx.1), ← res_comb inf_le_right (fun x hx => hx.2), ← hab, ← hab]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(res_res _ _ F).trans (res_res _ _ F).symm`. Take `⟨a, ha, -⟩` from `Y.sheaf.existsUnique_gluing' _ O (fun U => homOfLE U.2.2) (le_iSup_affine O) (fun U => (ab U).1) (fun U V => (comp U V).1)`. Take `⟨b, hb, -⟩` from `Y.sheaf.existsUnique_gluing' _ O (fun U => homOfLE U.2.2) (le_iSup_affine O) (fun U => (ab U).2) (fun U V => (comp U V).2)`. Establish `hF : F = (ρ.app O).hom a + constFn π _ ε * (ρ.app O).hom b`. Use `Y'.sheaf.eq_of_locally_eq' (fun U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ O} => ρ ⁻¹ᵁ U.1) _ (fun U => homOfLE (hle U)) (fun x hx => ?_) _ _ fun U => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U, hU⟩` from `TopologicalSpace.Opens.mem_iSup.1 (le_iSup_affine O hx)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨U, hU⟩`. Use `(hab U).trans (Eq.trans ?_ (res_comb U.2.2 (hle U) a b).symm)` and prove the remaining obligations. Rewrite using `[← ha U, ← hb U]`. Both sides reduce to the same expression.
-
-Use `⟨(a, b), hF, fun c hc => ?_⟩` and prove the remaining obligations. Use `unique_comb H hO (hc.symm.trans hF)` as an intermediate fact. Conclude with `Prod.ext this.1 this.2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem existsUnique_comb {W : Y.Opens}
     (H : ∀ V : Y.Opens, IsAffineOpen V → V ≤ W → ∀ F : Γ(Y', ρ ⁻¹ᵁ V), ∃! ab : Γ(Y, V) × Γ(Y, V),
@@ -217,7 +215,7 @@ theorem existsUnique_comb {W : Y.Opens}
 end Glue
 
 /- English proof (translation)
-Introduce `U h p₁ p₂ H O hO F` and use `existsUnique_comb (fun _ hV hVU F => existsUnique_affine U h p₁ p₂ H hV hVU F) O hO F`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem existsUnique_decomp : ∀ {X Z P : Scheme.{0}} (U : X.affineOpens) (h : Z ⟶ X) (p₁ : P ⟶ Sp (DualNumber Γ(X, U.1))) (p₂ : P ⟶ Z), IsPullback p₂ p₁ h (spMap (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1))) ≫ GlobalTheory.LogKS.chart U) → ∀ (O : Z.Opens), O ≤ h ⁻¹ᵁ U.1 → ∀ F : Γ(P, p₂ ⁻¹ᵁ O), ∃! ab : Γ(Z, O) × Γ(Z, O), F = (p₂.app O).hom ab.1 + constFn p₁ _ DualNumber.eps * (p₂.app O).hom ab.2 :=
   fun U h p₁ p₂ H O hO F =>

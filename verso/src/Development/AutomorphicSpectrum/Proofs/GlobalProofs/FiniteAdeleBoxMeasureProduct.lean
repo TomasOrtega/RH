@@ -10,13 +10,13 @@ open scoped TensorProduct ENNReal NNReal
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ v t`. Take `⟨hc, -, -⟩` from `(GlobalTheory.CompanionTheory.AdeleCharLocal.char_nontrivial_at_every_place F ψ hψ).1 v`. Establish `hU : {x : Fv F v | ‖psiV F ψ v x - 1‖ < 1 / 2} ∈ nhds (0 : Fv F v)`. Establish `hcont : Continuous fun x : Fv F v => ‖psiV F ψ v x - 1‖` using `(hc.sub continuous_const).norm`. Use `(isOpen_lt hcont continuous_const).mem_nhds ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `‖psiV F ψ v 0 - 1‖ < 1 / 2`. Rewrite using `[psiV_zero, sub_self, norm_zero]`. Evaluate the numerical expressions. Take `⟨m, hm⟩` from `GlobalTheory.CompanionTheory.SW.PiV.exists_ball_subset _ hU`. Establish `triv : ∀ x ∈ GlobalTheory.CompanionTheory.SW.PiV.ball v m, psiV F ψ v x = 1` using `fun x hx => char_eq_one_of_near (GlobalTheory.CompanionTheory.SW.PiV.ball v m) (psiV F ψ v) (psiV_zero ψ v) (psiV_add ψ v) (fun z hz => hm hz) hx`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `GlobalTheory.CompanionTheory.SW.PiV.exists_mem_ball t`. Use `filter_upwards [Filter.eventually_ge_atTop (n - m).toNat] with k hk s hs`. Apply `triv` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.SW.PiV.mem_ball, map_mul]`. Establish `hs' : Valued.v s ≤ WithZero.exp (-(k : ℤ))` using `(GlobalTheory.CompanionTheory.SW.PiV.mem_ball _ _).1 hs`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn' : Valued.v t ≤ WithZero.exp n` using `(GlobalTheory.CompanionTheory.SW.PiV.mem_ball _ _).1 hn`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eventually_mem_annV_ball : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (v : HeightOneSpectrum (𝓞 F)) (t : Fv F v), ∀ᶠ k : ℕ in Filter.atTop, t ∈ annV ψ v (GlobalTheory.CompanionTheory.SW.PiV.ball v (-(k : ℤ)) : Set (Fv F v)) := by
   intro F _ _ ψ hψ v t

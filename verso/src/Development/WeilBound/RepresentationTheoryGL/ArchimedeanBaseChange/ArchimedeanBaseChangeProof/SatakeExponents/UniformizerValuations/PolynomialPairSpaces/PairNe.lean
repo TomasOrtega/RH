@@ -8,9 +8,9 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.Rs Positivi
 namespace PositivityTheory.Rg.BcB.F.LemDd.PairSpaceNonzero
 
 /- English proof (translation)
-Unfold `pairSpace`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `F ⟨φ₁, h₁, φ₂, -, rfl⟩`. Rewrite `h₁` using `[Submodule.mem_bot]`. Substitute `h₁` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pairSpace_left_bot {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
     (U₂ : Submodule ℂ (Sm E b)) : pairSpace (⊥ : Submodule ℂ (Sm E a)) U₂ = ⊥ := by
@@ -23,9 +23,9 @@ theorem pairSpace_left_bot {E : Type} [Field E] [NumberField E] [IsCMField E] {a
   simp
 
 /- English proof (translation)
-Unfold `pairSpace`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `F ⟨φ₁, -, φ₂, h₂, rfl⟩`. Rewrite `h₂` using `[Submodule.mem_bot]`. Substitute `h₂` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pairSpace_right_bot {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
     (U₁ : Submodule ℂ (Sm E a)) : pairSpace U₁ (⊥ : Submodule ℂ (Sm E b)) = ⊥ := by
@@ -42,9 +42,9 @@ end PositivityTheory.Rg.BcB.F.LemDd.PairSpaceNonzero
 namespace PositivityTheory.Rg.BcB.F.LemDd
 
 /- English proof (translation)
-Introduce `E _ _ _ a b U₁ U₂ G hG hne`. Use `⟨fun h => hne ?_, fun h => hne ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Rewrite `hG` using `[PairSpaceNonzero.pairSpace_left_bot, Submodule.mem_bot]`. Conclude with `hG`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Rewrite `hG` using `[PairSpaceNonzero.pairSpace_right_bot, Submodule.mem_bot]`. Conclude with `hG`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PairNe_holds : PairNe := by
   intro E _ _ _ a b U₁ U₂ G hG hne

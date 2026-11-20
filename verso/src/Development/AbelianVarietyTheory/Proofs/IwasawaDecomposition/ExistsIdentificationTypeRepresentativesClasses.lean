@@ -12,17 +12,17 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 namespace GlobalTheory.Mem.R3.Rw.RepCls
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F y Φ rep hR`. Set `f : Φ → principalLevelFrame.FTR R.θ y.PY (R.MY 0) (fun b => levS _ (R.βY 0) (R.dat0 (R.levR F b))) (fun b => levChi _ (R.βY 0) (R.dat0 (R.levR F b))) (fun _ => R.e0)` to `fun π => Quotient.mk _ ⟨rep π, hR.mem π⟩`. Establish `hinj : Function.Injective f`. Introduce `π π' h`. Conclude with `hR.inj π π' (Quotient.exact h)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective f`. Introduce `c`. Take `⟨π, hπ⟩` from `hR.all (Formalism.L2.Col.finTypRep _ c) (Formalism.L2.Col.finTypRep_mem _ c)`. Use `⟨π, ?_⟩` and prove the remaining obligations. Rewrite using `[← Quotient.out_eq c]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Quotient.sound hπ`. Use `⟨Equiv.ofBijective f ⟨hinj, hsurj⟩, fun π => ?_⟩` and prove the remaining obligations. Establish `hiso : (principalLevelFrame.rowRepR R.θ (Equiv.ofBijective f ⟨hinj, hsurj⟩ π)).Iso (rep π)` using `Formalism.L2.Col.finTypRep_mk_iso ⟨rep π, hR.mem π⟩`. Use `⟨hiso, fun b => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Unfold `Hd.prtE principalLevelFrame.isotE`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[principalLevelFrame.isotL_iso _ _ _ _ _ _ (principalLevelFrame.conjT_iso hiso)]`. Unfold `Hd.prtW`. Rewrite using `[principalLevelFrame.isotL_iso _ _ _ _ _ _ hiso]`. Take `⟨b, hb⟩` from `hR.mem π`. Use `⟨b, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Unfold `Hd.prtE at h`. Rewrite `h`, the goal using `[eq_bot_iff]`. Introduce `x hx`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h0` using `h (Submodule.mem_map_of_mem hx)`. Rewrite `h0`, the goal using `[Submodule.mem_bot]`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 h0`. Conclude with `Submodule.map_mono inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem reps_classes : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (y : Hd R), ∀ (Φ : Type) (rep : Φ → Formalism.L2.NG.FinTyp D.host.E D.R.r), Reps y F rep → ∃ e : Φ ≃ principalLevelFrame.FTR R.θ y.PY (R.MY 0) (fun b => levS _ (R.βY 0) (R.dat0 (R.levR F b))) (fun b => levChi _ (R.βY 0) (R.dat0 (R.levR F b))) (fun _ => R.e0), ∀ π, (principalLevelFrame.rowRepR R.θ (e π)).Iso (rep π) ∧ (∀ b, y.prtE F b (principalLevelFrame.rowRepR R.θ (e π)) = y.prtE F b (rep π)) ∧ (∀ i, y.prtW F i (principalLevelFrame.rowRepR R.θ (e π)) = y.prtW F i (rep π)) ∧ ∃ b, y.prtE F b (rep π) ≠ ⊥ ∧ y.prtE F b (rep π) ≤ (y.C F).EEc b := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F y Φ rep hR

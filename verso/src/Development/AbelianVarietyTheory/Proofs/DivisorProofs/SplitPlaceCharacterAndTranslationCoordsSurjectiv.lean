@@ -12,7 +12,7 @@ open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 namespace GlobalTheory.FlipOnto
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `h` using `GlobalTheory.det_ne_zero_of_hasSig (hX.sig w)`. Rewrite `h` using `[Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Introduce `h0`. Conclude with `h (by rw [h0, map_zero, mul_zero])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_isSkew {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {B : Base F E} {n r s : ℕ} {X : Spc F E n} (hX : X.IsSkew σ B r s) : X.J.det ≠ 0 := by
@@ -23,7 +23,7 @@ theorem det_ne_zero_of_isSkew {F E : Type} [Field F] [NumberField F] [Field E] [
   exact h (by rw [h0, map_zero, mul_zero])
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `h` using `GlobalTheory.det_ne_zero_of_hasSig (hX.sig w)`. Rewrite `h` using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Introduce `h0`. Conclude with `h (by rw [h0, map_zero])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_isHerm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {B : Base F E} {n r s : ℕ} {X : Spc F E n} (hX : X.IsHerm σ B r s) : X.J.det ≠ 0 := by
@@ -34,7 +34,7 @@ theorem det_ne_zero_of_isHerm {F E : Type} [Field F] [NumberField F] [Field E] [
   exact h (by rw [h0, map_zero])
 
 /- English proof (translation)
-Establish `: (J.map t).det = t J.det`. Rewrite using `[← AlgHom.coe_toRingHom, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Rewrite using `[this, isUnit_iff_ne_zero]`. Conclude with `(map_ne_zero_iff _ t.toRingHom.injective).mpr hJ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_map {F E K : Type} [Field F] [Field E] [Field K] [Algebra F E] [Algebra F K] (t : E →ₐ[F] K)
     {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : J.det ≠ 0) : IsUnit (J.map t).det := by
@@ -44,15 +44,13 @@ theorem isUnit_det_map {F E K : Type} [Field F] [Field E] [Field K] [Algebra F E
   exact (map_ne_zero_iff _ t.toRingHom.injective).mpr hJ
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB n d r s r' s' X W hX hW v t bb cc Z`. Prove the components needed by the constructor for the conclusion. Take `⟨u, hu, h0, h1⟩` from `GlobalTheory.SplitComps.exists_mat_comps hB.cm v t (bb.1 * Z * cc.1ᵀ) 0`. Use `⟨u, hu, h1, ?_⟩` and prove the remaining obligations. Establish `hc : cc.1ᵀ * (cc⁻¹).1ᵀ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]`. Unfold `GlobalTheory.FlipMatch.coX`. Rewrite using `[h0, Matrix.mul_assoc, Matrix.mul_assoc, hc, Matrix.mul_one, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `hA : IsUnit (bb.1ᵀ * X.J.map t).det`. Rewrite using `[Matrix.det_mul, Matrix.det_transpose]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Units.isUnit (Matrix.GeneralLinearGroup.det bb)).mul (isUnit_det_map t (det_ne_zero_of_isHerm hX))`. Establish `hC : IsUnit ((W.J.map t)ᵀ * cc.1).det`. Rewrite using `[Matrix.det_mul, Matrix.det_transpose]`. Conclude with `(isUnit_det_map t (det_ne_zero_of_isSkew hW)).mul (Units.isUnit (Matrix.GeneralLinearGroup.det cc))`. Take `⟨u, hu, h0, h1⟩` from `GlobalTheory.SplitComps.exists_mat_comps hB.cm v t 0 (-((bb.1ᵀ * X.J.map t)⁻¹ * Z * ((W.J.map t)ᵀ * cc.1)⁻¹))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨u, hu, h0, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.FlipMatch.coY`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_assoc]`.
-
-Use `_ = Z := by`. Rewrite using `[Matrix.mul_nonsing_inv _ hA, Matrix.nonsing_inv_mul _ hC, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coX_coY_onto : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (n d r s r' s' : ℕ) (X : Spc F E n) (W : Spc F E d), X.IsHerm σ B r s → W.IsSkew σ B r' s' →

@@ -27,68 +27,68 @@ noncomputable section
 namespace SectionsLatticeFS
 
 /- English proof (translation)
-The claim follows from `FSCoord.proof`.
+A detailed English derivation is pending.
 -/
 theorem FSCoord.full : FSCoord.Statement.{u} := FSCoord.proof
 
 /- English proof (translation)
-The claim follows from `FSIndex.proof FSCoord.full`.
+A detailed English derivation is pending.
 -/
 theorem FSIndex.full : FSIndex.Statement.{u} := FSIndex.proof FSCoord.full
 
 /- English proof (translation)
-The claim follows from `FSValue.proof FSCoord.full`.
+A detailed English derivation is pending.
 -/
 theorem FSValue.full : FSValue.Statement.{u} := FSValue.proof FSCoord.full
 
 /- English proof (translation)
-The claim follows from `FSContinuousFrame.proof FSIndex.full ComplexMetric.RegularContinuous.full`.
+A detailed English derivation is pending.
 -/
 theorem FSContinuousFrame.full : FSContinuousFrame.Statement.{u} :=
   FSContinuousFrame.proof FSIndex.full ComplexMetric.RegularContinuous.full
 
 /- English proof (translation)
-The claim follows from `FSNormConj.proof FSIndex.full`.
+A detailed English derivation is pending.
 -/
 theorem FSNormConj.full : FSNormConj.Statement.{u} := FSNormConj.proof FSIndex.full
 
 /- English proof (translation)
-The claim follows from `PNFlat.proof`.
+A detailed English derivation is pending.
 -/
 theorem PNFlat.full : PNFlat.Statement.{u} := PNFlat.proof
 
 /- English proof (translation)
-The claim follows from `PNReduced.proof`.
+A detailed English derivation is pending.
 -/
 theorem PNReduced.full : PNReduced.Statement.{u} := PNReduced.proof
 
 /- English proof (translation)
-The claim follows from `FSFullSupport.proof`.
+A detailed English derivation is pending.
 -/
 theorem FSFullSupport.full : FSFullSupport.Statement := FSFullSupport.proof
 
 /- English proof (translation)
-The claim follows from `FSConjInvariant.proof`.
+A detailed English derivation is pending.
 -/
 theorem FSConjInvariant.full : FSConjInvariant.Statement := FSConjInvariant.proof
 
 /- English proof (translation)
-The claim follows from `PolySections.proof`.
+A detailed English derivation is pending.
 -/
 theorem PolySections.full : PolySections.Statement.{u} := PolySections.proof
 
 /- English proof (translation)
-The claim follows from `MonomialBasis.proof PolySections.full`.
+A detailed English derivation is pending.
 -/
 theorem MonomialBasis.full : MonomialBasis.Statement.{u} := MonomialBasis.proof PolySections.full
 
 /- English proof (translation)
-The claim follows from `SupMonomial.proof FSValue.full`.
+A detailed English derivation is pending.
 -/
 theorem SupMonomial.full : SupMonomial.Statement := SupMonomial.proof FSValue.full
 
 /- English proof (translation)
-The claim follows from `L2MonomialOrthogonality.proof FSCoord.full FSIndex.full`.
+A detailed English derivation is pending.
 -/
 theorem L2MonomialOrthogonality.full : L2MonomialOrthogonality.Statement := L2MonomialOrthogonality.proof FSCoord.full FSIndex.full
 
@@ -105,12 +105,12 @@ def fsPointMeasuresFull (K : Type) [Field K] [NumberField K] (N : ℕ) : (self (
   fsPointMeasures K N FSFullSupport.full FSConjInvariant.full
 
 /- English proof (translation)
-The claim follows from `fsBundleFull 1`.
+A detailed English derivation is pending.
 -/
 example : (self (𝓞 ℚ) 1).HermitianLineBundle := fsBundleFull 1
 
 /- English proof (translation)
-The claim follows from `fsPointMeasuresFull ℚ 1`.
+A detailed English derivation is pending.
 -/
 example : (self (𝓞 ℚ) 1).PointMeasures := fsPointMeasuresFull ℚ 1
 

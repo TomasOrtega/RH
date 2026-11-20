@@ -6,9 +6,9 @@ variable {k S T : Type*} [CommRing k] [CommRing S] [CommRing T]
   [Algebra k S] [Algebra k T]
 
 /- English proof (translation)
-Establish `hker : s - s' ∈ RingHom.ker f.toRingHom`. Simplify using `[RingHom.mem_ker, h]`. Establish `hD'` using `hD _ hker`. Rewrite `hD'` using `[RingHom.mem_ker, map_sub D s s']`. Establish `h2 : f (D s) - f (D s') = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_sub f (D s) (D s')]`. Conclude with `hD'`. Conclude with `eq_of_sub_eq_zero h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_derivation_eq_of_map_eq (f : S →ₐ[k] T) (D : Derivation k S S)
     (hD : ∀ s ∈ RingHom.ker f.toRingHom, D s ∈ RingHom.ker f.toRingHom)
@@ -27,7 +27,7 @@ noncomputable def derivationOfSurjectiveFun (f : S →ₐ[k] T) (hf : Function.S
   fun t => f (D (Function.surjInv hf t))
 
 /- English proof (translation)
-Establish `h : f (Function.surjInv hf (f s)) = f s` using `Function.surjInv_eq hf (f s)`. Conclude with `map_derivation_eq_of_map_eq f D hD h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem derivationOfSurjectiveFun_apply (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)
@@ -37,9 +37,9 @@ theorem derivationOfSurjectiveFun_apply (f : S →ₐ[k] T) (hf : Function.Surje
   exact map_derivation_eq_of_map_eq f D hD h
 
 /- English proof (translation)
-Introduce `t t'`. Take `⟨a, rfl⟩` from `hf t`. Take `⟨b, rfl⟩` from `hf t'`. Rewrite using `[← map_add f a b]`. Simplify using `only [derivationOfSurjectiveFun_apply f hf D hD]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_add D a b, map_add f (D a) (D b)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem derivationOfSurjectiveFun_add (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)
@@ -54,9 +54,9 @@ theorem derivationOfSurjectiveFun_add (f : S →ₐ[k] T) (hf : Function.Surject
   rw [map_add D a b, map_add f (D a) (D b)]
 
 /- English proof (translation)
-Introduce `c t`. Take `⟨a, rfl⟩` from `hf t`. Establish `h1 : f (c • a) = c • f a` using `map_smul f c a`. Establish `h2 : D (c • a) = c • D a`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : f (c • D a) = c • f (D a)` using `map_smul f c (D a)`. Rewrite using `[← h1]`. Simplify using `only [derivationOfSurjectiveFun_apply f hf D hD]`. Rewrite using `[h2]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivationOfSurjectiveFun_smul (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)
@@ -81,7 +81,7 @@ noncomputable def derivationOfSurjectiveLinearMap (f : S →ₐ[k] T) (hf : Func
   map_smul' := derivationOfSurjectiveFun_smul f hf D hD
 
 /- English proof (translation)
-Establish `h : (1 : T) = f 1` using `(map_one f).symm`. Rewrite using `[h]`. Rewrite using `[derivationOfSurjectiveFun_apply f hf D hD, D.map_one_eq_zero, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem derivationOfSurjectiveFun_one (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)
@@ -92,9 +92,9 @@ theorem derivationOfSurjectiveFun_one (f : S →ₐ[k] T) (hf : Function.Surject
   rw [derivationOfSurjectiveFun_apply f hf D hD, D.map_one_eq_zero, map_zero]
 
 /- English proof (translation)
-Introduce `a b`. Take `⟨x, rfl⟩` from `hf a`. Take `⟨y, rfl⟩` from `hf b`. Rewrite using `[← map_mul f x y]`. Simplify using `only [derivationOfSurjectiveFun_apply f hf D hD]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[D.leibniz]`. Simplify using `[smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem derivationOfSurjectiveFun_mul (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)
@@ -119,7 +119,7 @@ noncomputable def derivationOfSurjective (f : S →ₐ[k] T) (hf : Function.Surj
 
 @[simp]
 /- English proof (translation)
-The claim follows from `derivationOfSurjectiveFun_apply f hf D hD s`.
+A detailed English derivation is pending.
 -/
 theorem derivationOfSurjective_apply (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)

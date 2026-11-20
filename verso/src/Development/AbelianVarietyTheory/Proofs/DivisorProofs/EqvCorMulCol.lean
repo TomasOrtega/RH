@@ -11,7 +11,7 @@ namespace GlobalTheory.JSW.Cut
 open GlobalTheory.JSW.KirFin
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `W (mir h 0 * mir 1 x) = _`. Rewrite using `[mir_mul, hW.apply_mir, mul_one, add_zero]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eqv_cor_mul_col {F : Type} [NormedField F] {ψ : AddChar F ℂ} {m : ℕ} {W : GL (Fin (m + 2)) F → ℂ}
     (hW : Eqv ψ W) (h : GL (Fin (m + 1)) F) (x : Fin (m + 1) → F) :
@@ -21,7 +21,7 @@ theorem eqv_cor_mul_col {F : Type} [NormedField F] {ψ : AddChar F ℂ} {m : ℕ
   rfl
 
 /- English proof (translation)
-Introduce `u hu g` and use `by unfold act rw [Finsupp.mul_sum] refine Finset.sum_congr rfl fun k _ => ?_ simp only rw [mul_assoc u, hW u hu] ring`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eqv_act {F : Type} [NormedField F] {ψ : AddChar F ℂ} {n : ℕ} {W : GL (Fin n) F → ℂ}
     (hW : Eqv ψ W) (T : GL (Fin n) F →₀ ℂ) : Eqv ψ (act T W) := fun u hu g => by
@@ -33,7 +33,7 @@ theorem eqv_act {F : Type} [NormedField F] {ψ : AddChar F ℂ} {n : ℕ} {W : G
   ring
 
 /- English proof (translation)
-Introduce `h0` and use `by have h1 : lr (h * h⁻¹) = 0 := by rw [lr_mul, h0, zero_vecMul] rw [mul_inv_cancel] at h1 have := congrFun h1 (Fin.last m) simp [lr] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lr_ne_zero {F : Type} [NormedField F] {m : ℕ} (h : GL (Fin (m + 1)) F) : lr h ≠ 0 := fun h0 => by
   have h1 : lr (h * h⁻¹) = 0 := by rw [lr_mul, h0, zero_vecMul]

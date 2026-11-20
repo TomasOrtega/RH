@@ -17,11 +17,11 @@ open GroundTheory.Heights₂.Heights.HilbertSamuel
 variable {K : Type} [Fintype K] [DecidableEq K] {J : K → Type} [∀ k, Fintype (J k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[support_rename_of_injective sigma_mk_injective]`. Take `⟨m', hm', rfl⟩` from `Finset.mem_image.1 hm`. Establish `hd : ∑ i, m' i = n`. Use `h (mem_support_iff.1 hm')` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using the standard rewrite rules. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Simplify using `[Finsupp.mapDomain_apply sigma_mk_injective, hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h0 : ∀ i, Finsupp.mapDomain (Sigma.mk k₀) m' ⟨k, i⟩ = 0` using `fun i => Finsupp.mapDomain_notin_range _ _ (by`. Introduce and unpack `⟨i', hi'⟩`. Conclude with `hk (congrArg Sigma.fst hi').symm)`. Simplify using `[h0, Pi.single_apply, hk]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem homog_rename (k₀ : K) {F : MvPolynomial (J k₀) ℤ} {n : ℕ} (h : F.IsHomogeneous n) :
     IsMultiHomog (rename (Sigma.mk k₀) F : MRing J) (Pi.single k₀ n) := by
@@ -43,11 +43,11 @@ theorem homog_rename (k₀ : K) {F : MvPolynomial (J k₀) ℤ} {n : ℕ} (h : F
     simp [h0, Pi.single_apply, hk]
 
 /- English proof (translation)
-Establish `hm : (rename (Sigma.mk k₀) A * X ⟨k, j'⟩ - rename (Sigma.mk k₀) B * X ⟨k, j⟩ : MRing J) ∈ mCoordIdeal y`. Express the relevant statement in the definitionally equal form `mConeMap y _ = 0`. Rewrite using `[map_sub, map_mul, map_mul, ProjLine.mConeMap_eq_of_isMultiHomog y (homog_rename k₀ hA), ProjLine.mConeMap_eq_of_isMultiHomog y (homog_rename k₀ hB)]`. Simplify using `only [mConeMap, aeval_X, aeval_rename]`. Use `congrArg (C : Ω →+* MvPolynomial K Ω) hr` as an intermediate fact.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_mul]`. Simplify using `only [Function.comp_def]`. Take the linear combination `((∏ k, (X k : MvPolynomial K Ω) ^ (Pi.single k₀ n : K → ℕ) k) * X k) * this`. Use `hz.2 _ hm` as an intermediate fact. Simplify using `only [map_sub, map_mul, aeval_X, aeval_rename, Function.comp_def] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.mp this`.
+A detailed English derivation is pending.
 -/
 theorem rel_at_point {y : (Σ k, J k) → Ω} (k₀ k : K) {A B : MvPolynomial (J k₀) ℤ} {n : ℕ}
     (hA : A.IsHomogeneous n) (hB : B.IsHomogeneous n) (j j' : J k)
@@ -74,9 +74,9 @@ def hForm (k₀ : K) (j : ∀ k, J k) : MRing J :=
   ∏ k ∈ Finset.univ.erase k₀, X ⟨k, j k⟩
 
 /- English proof (translation)
-Establish `h` using `isMultiHomog_mul (isMultiHomog_pow (isMultiHomog_X' k₀ i : IsMultiHomog (X ⟨k₀, i⟩ : MRing J) _) e) (isMultiHomog_prod (Finset.univ.erase k₀) (fun k => rename (Sigma.mk k₀) (G k)) (fun k => Pi.single k₀ (d k)) fun k => homog_rename k₀ (hG k))`. Rewrite using `[gForm]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k'`. Distinguish the cases in `hk : k' = k₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using `[Finset.sum_apply]`. Simplify using `[Finset.sum_apply, Pi.single_apply, hk]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gForm_homog (k₀ : K) (i : J k₀) (e : ℕ) {G : K → MvPolynomial (J k₀) ℤ} {d : K → ℕ}
     (hG : ∀ k, (G k).IsHomogeneous (d k)) :
@@ -95,9 +95,9 @@ theorem gForm_homog (k₀ : K) (i : J k₀) (e : ℕ) {G : K → MvPolynomial (J
 def hDeg (k₀ : K) : K → ℕ := fun k => if k = k₀ then 0 else 1
 
 /- English proof (translation)
-Establish `h` using `isMultiHomog_prod (Finset.univ.erase k₀) (fun k => (X ⟨k, j k⟩ : MRing J)) (fun k => Pi.single k 1) fun k => isMultiHomog_X' k (j k)`. Rewrite using `[hForm]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k'`. Distinguish the cases in `hk : k' = k₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using `[hDeg, Finset.sum_apply, Pi.single_apply]`. Simplify using `[hDeg, Finset.sum_apply, Pi.single_apply, hk]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hForm_homog (k₀ : K) (j : ∀ k, J k) : IsMultiHomog (hForm k₀ j) (hDeg k₀) := by
   have h := isMultiHomog_prod (Finset.univ.erase k₀) (fun k => (X ⟨k, j k⟩ : MRing J))
@@ -111,7 +111,7 @@ theorem hForm_homog (k₀ : K) (j : ∀ k, J k) : IsMultiHomog (hForm k₀ j) (h
   · simp [hDeg, Finset.sum_apply, Pi.single_apply, hk]
 
 /- English proof (translation)
-Simplify using `[gForm, map_prod, aeval_rename, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_gForm {L : Type} [Field L] (z : (Σ k, J k) → L) (k₀ : K) (i : J k₀) (e : ℕ)
     (G : K → MvPolynomial (J k₀) ℤ) :
@@ -119,7 +119,7 @@ theorem aeval_gForm {L : Type} [Field L] (z : (Σ k, J k) → L) (k₀ : K) (i :
   simp [gForm, map_prod, aeval_rename, Function.comp_def]
 
 /- English proof (translation)
-Simplify using `[hForm, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_hForm {L : Type} [Field L] (z : (Σ k, J k) → L) (k₀ : K) (j : ∀ k, J k) :
     aeval z (hForm k₀ j) = ∏ k ∈ Finset.univ.erase k₀, z ⟨k, j k⟩ := by
@@ -129,9 +129,9 @@ def sec (y : (Σ k, J k) → Ω) (k₀ : K) (js : ∀ k, J k) (i : J k₀) (e : 
   y ⟨k₀, i⟩ ^ e * ∏ k ∈ Finset.univ.erase k₀, aeval (fun i => y ⟨k₀, i⟩) (G k) / y ⟨k, js k⟩
 
 /- English proof (translation)
-Rewrite using `[aeval_gForm, aeval_hForm, sec, _root_.mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `hjs k` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `(hr k).symm`.
+A detailed English derivation is pending.
 -/
 theorem sec_mul (y : (Σ k, J k) → Ω) (k₀ : K) (js j : ∀ k, J k) (hjs : ∀ k, y ⟨k, js k⟩ ≠ 0) (i : J k₀) (e : ℕ)
     (G G' : K → MvPolynomial (J k₀) ℤ)
@@ -145,29 +145,27 @@ theorem sec_mul (y : (Σ k, J k) → Ω) (k₀ : K) (js j : ∀ k, J k) (hjs : �
   exact (hr k).symm
 
 /- English proof (translation)
-Distinguish the cases in `hy : ∀ k, ∃ j, y ⟨k, j⟩ ≠ 0`. Use `swap`. Use `push_neg at hy`. Take `⟨k, hk⟩` from `hy`. Use `⟨0, 0, Fin.elim0, fun i => i.elim0, fun L _ _ z hz => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-It suffices to derive a contradiction. Take `⟨i, hi⟩` from `hz.1 k`. Establish `hm : (X ⟨k, i⟩ : MRing J) ∈ mCoordIdeal y`. Express the relevant statement in the definitionally equal form `mConeMap y _ = 0`. Simplify using `[mConeMap, hk i]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hi (by simpa using hz.2 _ hm)`. Use `choose js hjs using hy`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, ∀ T : ∀ k, Fin (l k), ∑ k ∈ Finset.univ.erase k₀, n k (T k) ≤ N := by`. Use `⟨∑ k, ∑ t, n k t, fun T => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `eT : (∀ k, Fin (l k)) → ℕ` to `fun T => N - ∑ k ∈ Finset.univ.erase k₀, n k (T k)`. Establish `heT : ∀ T, eT T + ∑ k ∈ Finset.univ.erase k₀, n k (T k) = N` using `fun T => Nat.sub_add_cancel (hN T)`. Set `I` to `(∀ k, Fin (l k)) × J k₀`. Set `S : I → Ω` to `fun p => sec y k₀ js p.2 (eT p.1) fun k => F k (p.1 k) (js k)`. Establish `hdeg : ∀ k, ((Pi.single k₀ N : K → ℕ) k : ℤ) = hDeg k₀ k + (((N + 1 : ℕ) : ℤ) * a k - 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Introduce `k`. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Simplify using `[hDeg, ha₀]`. Simplify using `[hDeg, Pi.single_apply, hk, ha k hk]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hform : ∀ (p : I) (j : ∀ k, J k), IsMultiHomog (gForm k₀ p.2 (eT p.1) fun k => F k (p.1 k) (j k)) (Pi.single k₀ N) ∧ aeval y (gForm k₀ p.2 (eT p.1) fun k => F k (p.1 k) (j k)) = S p * aeval y (hForm k₀ j)`. Introduce `p j`. Use `⟨?_, sec_mul y k₀ js j hjs _ _ _ _ fun k => rel k (p.1 k) (js k) (j k)⟩` and prove the remaining obligations. Use `gForm_homog k₀ p.2 (eT p.1) (G := fun k => F k (p.1 k) (j k)) (d := fun k => n k (p.1 k)) fun k => hom k _ _` as an intermediate fact. Rewrite `this` using `[heT]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `⟨N + 1, Fintype.card I, fun q => S ((Fintype.equivFin I).symm q), fun q c hc => ?_, fun L _ _ z hz => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hform ((Fintype.equivFin I).symm q) c`. Establish `h3` using `FibreNormDehomRoots.aeval_mem_chartLatNm h1 c hc`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[h2, aeval_hForm, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k₀), ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k₀)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : ∏ k ∈ Finset.univ.erase k₀, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * (((N + 1 : ℕ) : ℤ) * a k - 1))) = ∏ k ∈ Finset.univ.erase k₀, y ⟨k, c k⟩`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Simplify using `[ha k (Finset.ne_of_mem_erase hk)]`. Establish `e2 : ∏ k ∈ Finset.univ.erase k₀, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * ((1 * (Pi.single k₀ N : K → ℕ) k : ℕ) : ℤ))) = 1`. Use `Finset.prod_eq_one fun k hk => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[Pi.single_apply, Finset.ne_of_mem_erase hk]`. Rewrite using `[e1, e2]`. Simplify using `[ha₀]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨i, hi⟩` from `hz.1 k₀ choose T jz hF using fun k => pts k L z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzj : ∀ k, z ⟨k, jz k⟩ ≠ 0`. Introduce `k h0`. Take `⟨j', hj'⟩` from `hz.1 k`. Use `rel_at_point k₀ k (hom k (T k) (jz k)) (hom k (T k) j') (jz k) j' (rel k _ _ _) hz` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero (hF k) hj' this`. Take `⟨h1, h2⟩` from `hform (T, i) jz`. Establish `hg : aeval z (gForm k₀ i (eT T) fun k => F k (T k) (jz k)) ≠ 0`. Rewrite using `[aeval_gForm]`. Conclude with `mul_ne_zero (pow_ne_zero _ hi) (Finset.prod_ne_zero_iff.mpr fun k _ => hF k)`.
-
-Establish `hh : aeval z (hForm k₀ jz) ≠ 0`. Rewrite using `[aeval_hForm]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => hzj k`. Use `⟨Fintype.equivFin I (T, i), _ / _, div_ne_zero hg hh, Pi.single k₀ N, hDeg k₀, _, hForm k₀ jz, h1, hForm_homog k₀ jz, hdeg, ?_, hh, (div_mul_cancel₀ _ hh).symm⟩` and prove the remaining obligations. Simplify using `using h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ampleQ_of_forms (y : (Σ k, J k) → Ω) (k₀ : K) (a : K → ℤ) (ha₀ : a k₀ = 1) (ha : ∀ k, k ≠ k₀ → a k = 0)
     (l : K → ℕ) (n : ∀ k, Fin (l k) → ℕ) (F : ∀ k, Fin (l k) → J k → MvPolynomial (J k₀) ℤ)
@@ -249,7 +247,7 @@ theorem ampleQ_of_forms (y : (Σ k, J k) → Ω) (k₀ : K) (a : K → ℤ) (ha�
     simpa using h2
 
 /- English proof (translation)
-Introduce `X Ω _ _ ξ K _ J _ y k₀ a hT hE ha₀ ha`. Use `choose l n F hom rel pts using GlobalTheory.T.coord_relations_homogeneous X Ω ξ K J y k₀ hT hE`. Conclude with `ampleQ_of_forms y k₀ a ha₀ ha l n F hom rel fun k L _ _ z hz => pts k L z hz`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ampleQ_of_embeds : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (k₀ : K) (a : K → ℤ), CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → EmbedsGeneric ξ (fun i : J k₀ => y ⟨k₀, i⟩) → a k₀ = 1 → (∀ k, k ≠ k₀ → a k = 0) → Ht.AmpleQ y a := by
   intro X Ω _ _ ξ K _ J _ y k₀ a hT hE ha₀ ha

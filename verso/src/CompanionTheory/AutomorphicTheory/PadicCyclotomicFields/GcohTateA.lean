@@ -11,9 +11,9 @@ section Alg
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `⟨fun x₁ x₂ hx => ?_, fun φ => ?_⟩` and prove the remaining obligations. Use `eX.injective (hβ.1 (AddMonoidHom.ext fun y' => ?_))` and prove the remaining obligations. Take `⟨y, rfl⟩` from `eY.surjective y'`. Rewrite using `[← h, ← h, hx]`. Take `⟨x', hx'⟩` from `hβ.2 (τ.toAddMonoidHom.comp (φ.toAddMonoidHom.comp eY.symm.toAddMonoidHom))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `eX.surjective x'`. Use `⟨x, LinearMap.ext fun y => τ.injective ?_⟩` and prove the remaining obligations. Rewrite using `[h, hx']`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bij_transport {X Y Z X' Y' : Type*} [AddCommGroup X] [AddCommGroup Y] [AddCommGroup Z]
     [Module (ZMod n) X] [Module (ZMod n) Y] [Module (ZMod n) Z] [AddCommGroup X'] [AddCommGroup Y']
@@ -32,15 +32,15 @@ theorem bij_transport {X Y Z X' Y' : Type*} [AddCommGroup X] [AddCommGroup Y] [A
     simp
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod n), ZMod.natCast_self, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_zmod {Y : Type*} [AddCommGroup Y] [Module (ZMod n) Y] (y : Y) : n • y = 0 := by
   rw [← Nat.cast_smul_eq_nsmul (ZMod n), ZMod.natCast_self, zero_smul]
 
 /- English proof (translation)
-Set `β : Y →+ X →+ ZMod n` to `(AddMonoidHom.compHom τ.toAddMonoidHom).comp (bilinAddHom c.flip)`. Use `bij_transport c.flip β (AddEquiv.refl _) (AddEquiv.refl _) τ (fun _ _ => rfl) ?_` and prove the remaining obligations. Use `bijective_of_bijective_flip (X := Y) nsmul_zmod (bilinAddHom c.flip) τ.toAddMonoidHom ?_` and prove the remaining obligations. Use `⟨fun x₁ x₂ hx => hc.1 (LinearMap.ext fun y => τ.injective ?_), fun χ => ?_⟩` and prove the remaining obligations. Conclude with `DFunLike.congr_fun hx y`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `hc.2 ((τ.symm.toAddMonoidHom.comp χ).toZModLinearMap n)`. Use `⟨x, AddMonoidHom.ext fun y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `τ (c x y) = χ y`. Rewrite using `[hx]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bij_flip [NeZero n] {X Y Z : Type*} [AddCommGroup X] [AddCommGroup Y] [AddCommGroup Z]
     [Module (ZMod n) X] [Module (ZMod n) Y] [Module (ZMod n) Z] [Finite Y]
@@ -73,13 +73,13 @@ variable {n : ℕ} {G : Type} [Group G]
 
 include hbe hA hD in
 /- English proof (translation)
-Set `F : M' →+ (A.V →+ D.V)` to `{ toFun := fun y => eD.toAddMonoidHom.comp ((b.flip y).toAddMonoidHom.comp eA.symm.toAddMonoidHom) map_zero' := by ext; simp map_add' := fun _ _ => by ext; simp }`. Establish `hF : Function.Bijective F`. Use `⟨fun y₁ y₂ hy => hb.1 (LinearMap.ext fun x => eD.injective ?_), fun χ => ?_⟩` and prove the remaining obligations. Simplify `DFunLike.congr_fun hy (eA x)` using `[F]`. Take `⟨y, hy⟩` from `hb.2 ((eD.symm.toAddMonoidHom.comp (χ.comp eA.toAddMonoidHom)).toZModLinearMap n)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨y, AddMonoidHom.ext fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `eD (b.flip y (eA.symm a)) = χ a`. Rewrite using `[hy]`. Simplify using the standard rewrite rules. Set `eB : M' ≃+ (A →ₗ[ULift.{0} ℤ] D)` to `(AddEquiv.ofBijective F hF).trans (uliftIntLinearEquivAddHom A D).symm`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `h2 : ∀ x y, eB y (eA x) = eD (b x y)` using `fun x y => by`. Express the relevant statement in the definitionally equal form `(uliftIntLinearEquivAddHom A D).symm (F y) (eA x) = _`. Rewrite using `[uliftIntLinearEquivAddHom_symm_apply]`. Simplify using `[F]`. Use `⟨eB, fun g y => LinearMap.ext fun a => ?_, h2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `eA.surjective a`. Express the relevant statement in the definitionally equal form `eB (rho' g y) (eA x) = D.ρ g (eB y (A.ρ g⁻¹ (eA x)))`. Rewrite using `[← hA, h2, h2, ← hD, ← hbe, Representation.self_inv_apply]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_dualEquiv (hb : Function.Bijective b.flip) :
     ∃ eB : M' ≃+ (dualRep D A).V, (∀ g y, eB (rho' g y) = (dualRep D A).ρ g (eB y)) ∧

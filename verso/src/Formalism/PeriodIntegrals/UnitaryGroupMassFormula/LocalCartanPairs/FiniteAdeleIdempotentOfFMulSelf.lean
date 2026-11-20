@@ -12,33 +12,33 @@ variable {R : Type} [CommRing R] [StarRing R]
 def e0 : Matrix (Fin 2) (Fin 2) R := diagonal ![1, 0]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [e0]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem finiteAdeleIdempotentOfF_mul_self : (e0 : Matrix (Fin 2) (Fin 2) R) * e0 = e0 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [e0]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;>`. Simplify using `[e0, hyp, Matrix.mul_apply, Fin.sum_univ_two, vecMul, dotProduct, diagonal_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem elementary_hyperbolic : (e0 : Matrix (Fin 2) (Fin 2) R)ᴴ * hyp = hyp - hyp * e0 := by
   ext i j; fin_cases i <;> fin_cases j <;>
     simp [e0, hyp, Matrix.mul_apply, Fin.sum_univ_two, vecMul, dotProduct, diagonal_apply]
 
 /- English proof (translation)
-Rewrite using `[e0, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`. Use extensionality with `i`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem elementary_commutes_diagonal (d : Fin 2 → R) :
     (e0 : Matrix (Fin 2) (Fin 2) R) * diagonal d = diagonal d * e0 := by
   rw [e0, diagonal_mul_diagonal, diagonal_mul_diagonal]; congr 1; ext i; ring
 
 /- English proof (translation)
-The claim follows from `(Matrix.isUnit_iff_isUnit_det _).2 (by rw [det_conjTranspose]; exact hu.star)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_ct {ι : Type} [Fintype ι] [DecidableEq ι] {u : Matrix ι ι R} (hu : IsUnit u.det) :
     IsUnit uᴴ := (Matrix.isUnit_iff_isUnit_det _).2 (by rw [det_conjTranspose]; exact hu.star)
 
 /- English proof (translation)
-Establish `hU : IsUnit u` using `(Matrix.isUnit_iff_isUnit_det _).2 hu`. Establish `h2 : uᴴ * X = uᴴ * Y` using `hU.mul_right_cancel h`. Conclude with `(isUnit_ct hu).mul_left_cancel h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cancel_conj {ι : Type} [Fintype ι] [DecidableEq ι] {u X Y : Matrix ι ι R}
     (hu : IsUnit u.det) (h : uᴴ * X * u = uᴴ * Y * u) : X = Y := by
@@ -47,19 +47,15 @@ theorem cancel_conj {ι : Type} [Fintype ι] [DecidableEq ι] {u X Y : Matrix ι
   exact (isUnit_ct hu).mul_left_cancel h2
 
 /- English proof (translation)
-Use `set E : Matrix (Fin 2 ⊕ κ) (Fin 2 ⊕ κ) R := fromBlocks e0 0 0 e₂ with hEdef`. Use `set F : Matrix (Fin 2 ⊕ κ) (Fin 2 ⊕ κ) R := fromBlocks e0 0 0 f₂ with hFdef`. Use `set D : Matrix (Fin 2 ⊕ κ) (Fin 2 ⊕ κ) R := fromBlocks (diagonal d) 0 0 h₂ with hDdef`. Use `set B : Matrix (Fin 2 ⊕ κ) (Fin 2 ⊕ κ) R := fromBlocks hyp 0 0 A₁ with hBdef`. Establish `hi : u⁻¹ * u = 1` using `nonsing_inv_mul u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : u'⁻¹ * u' = 1` using `nonsing_inv_mul u' hu'`. Establish `hE : E * E = E` using `by simp [hEdef, fromBlocks_multiply, finiteAdeleIdempotentOfF_mul_self, he]`. Establish `hED : E * D = D * F` using `by simp [hEdef, hDdef, hFdef, fromBlocks_multiply, elementary_commutes_diagonal, hef]`. Establish `heA' : e₂ᴴ * A₁ = A₁ - A₁ * e₂` using `by rw [heA, Matrix.mul_sub, Matrix.mul_one]`. Establish `hEB : Eᴴ * B = B - B * E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hEdef, hBdef, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`. Apply the tactic sequence `ext (i | i) (j | j) <;>`. Simplify using `[elementary_hyperbolic, heA', Matrix.sub_apply]`. Use `⟨u * E * u⁻¹, u' * F * u'⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = u * E * u⁻¹ := by rw [hi, Matrix.mul_one, hE]`. Apply `cancel_conj hu` to reduce the goal to its premises. Establish `hct : uᴴ * (u⁻¹)ᴴ = 1` using `by rw [← conjTranspose_mul, hi, conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Eᴴ * B := by rw [hct, Matrix.one_mul, hA]`. Use `_ = B - B * E * (u⁻¹ * u) := by rw [hi, Matrix.mul_one, hEB]`. Use `_ = uᴴ * (A * (1 - u * E * u⁻¹)) * u := by`. Rewrite using `[← hA]`.
-
-Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_assoc]`. Establish `hh' : h = u * D * u'⁻¹`. Rewrite using `[← hh, Matrix.mul_assoc, mul_nonsing_inv u' hu', Matrix.mul_one]`. Rewrite using `[hh']`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = u * (D * (u'⁻¹ * u') * F) * u'⁻¹ := by rw [hi, hi', Matrix.mul_one, Matrix.mul_one, hED]`. Use `_ = u * D * u'⁻¹ * (u' * F * u'⁻¹) := by simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem assemble {κ : Type} [Fintype κ] [DecidableEq κ]
     (A h u u' : Matrix (Fin 2 ⊕ κ) (Fin 2 ⊕ κ) R) (A₁ h₂ : Matrix κ κ R) (d : Fin 2 → R)
@@ -102,9 +98,9 @@ theorem assemble {κ : Type} [Fintype κ] [DecidableEq κ]
       _ = u * D * u'⁻¹ * (u' * F * u'⁻¹) := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h1 : (uᴴ * A * u)ᴴ = uᴴ * A * u`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hA.1, Matrix.mul_assoc]`. Rewrite `h1` using `[h, fromBlocks_conjTranspose]`. Conclude with `(fromBlocks_inj.1 h1).2.2.2`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : IsUnit (uᴴ * A * u).det`. Rewrite using `[det_mul, det_mul, det_conjTranspose]`. Conclude with `(hu.star.mul hA.2).mul hu`. Rewrite `h1` using `[h, det_fromBlocks_zero₂₁]`. Conclude with `isUnit_of_mul_isUnit_right h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_unimod {κ : Type} [Fintype κ] [DecidableEq κ]
     {A u : Matrix (Fin 2 ⊕ κ) (Fin 2 ⊕ κ) R} {A₁ : Matrix κ κ R} (hu : IsUnit u.det)
@@ -120,9 +116,9 @@ theorem blk_unimod {κ : Type} [Fintype κ] [DecidableEq κ]
     exact isUnit_of_mul_isUnit_right h1
 
 /- English proof (translation)
-Establish `e1 : (h * u')ᴴ * A * (h * u') = (ϖ ^ (2 * k)) • fromBlocks hyp 0 0 A₁'`. Rewrite using `[← hA', conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : (h * u')ᴴ * A * (h * u') = (fromBlocks (diagonal d) 0 0 h₂)ᴴ * (uᴴ * A * u) * fromBlocks (diagonal d) 0 0 h₂`. Rewrite using `[hh, conjTranspose_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite `e1` using `[e2, hA, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply, fromBlocks_smul]`. Use `(fromBlocks_inj.1 e1).2.2.2` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem blk_rel {κ : Type} [Fintype κ] [DecidableEq κ] (ϖ : R) (k : ℕ)
     (A A' h u u' : Matrix (Fin 2 ⊕ κ) (Fin 2 ⊕ κ) R) (A₁ A₁' h₂ : Matrix κ κ R) (d : Fin 2 → R)
@@ -143,7 +139,7 @@ theorem blk_rel {κ : Type} [Fintype κ] [DecidableEq κ] (ϖ : R) (k : ℕ)
   simpa using this
 
 /- English proof (translation)
-Take `⟨⟨hA, hAd⟩, ⟨hA', hA'd⟩, hr⟩` from `hP`. Use `⟨⟨by rw [conjTranspose_submatrix, hA], by rw [det_submatrix_equiv_self]; exact hAd⟩, ⟨by rw [conjTranspose_submatrix, hA'], by rw [det_submatrix_equiv_self]; exact hA'd⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, hr, submatrix_smul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phyp_reindex {κ ι : Type} [Fintype κ] [DecidableEq κ] [Fintype ι] [DecidableEq ι]
     (s : κ ≃ ι) {ϖ : R} {A A' h : Matrix ι ι R} {k : ℕ} (hP : PHyp ϖ A A' h k) :
@@ -154,7 +150,7 @@ theorem phyp_reindex {κ ι : Type} [Fintype κ] [DecidableEq κ] [Fintype ι] [
   rw [conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, hr, submatrix_smul]; rfl
 
 /- English proof (translation)
-Take `⟨h₁, hu, he⟩` from `hb`. Use `⟨h₁.submatrix s.symm s.symm, by rw [det_submatrix_equiv_self]; exact hu, ?_⟩` and prove the remaining obligations. Establish `: h = (h.submatrix s s).submatrix s.symm s.symm` using `by simp`. Rewrite using `[this, he, submatrix_smul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isBase_reindex {κ ι : Type} [Fintype κ] [DecidableEq κ] [Fintype ι] [DecidableEq ι]
     (s : κ ≃ ι) {ϖ : R} {h : Matrix ι ι R} {k : ℕ} (hb : IsBase ϖ (h.submatrix s s) k) :
@@ -165,9 +161,9 @@ theorem isBase_reindex {κ ι : Type} [Fintype κ] [DecidableEq κ] [Fintype ι]
   rw [this, he, submatrix_smul]; rfl
 
 /- English proof (translation)
-Take `⟨e, f, he, heA, hef⟩` from `hc`. Establish `hA : A = (A.submatrix s s).submatrix s.symm s.symm` using `by simp`. Establish `hh : h = (h.submatrix s s).submatrix s.symm s.symm` using `by simp`. Use `⟨e.submatrix s.symm s.symm, f.submatrix s.symm s.symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[submatrix_mul_equiv, he]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA, conjTranspose_submatrix, submatrix_mul_equiv, heA, ← submatrix_one_equiv s.symm]`. Rewrite using `[show ((1 : Matrix κ κ R).submatrix s.symm s.symm) - e.submatrix s.symm s.symm = (1 - e).submatrix s.symm s.symm from rfl, submatrix_mul_equiv]`. Rewrite using `[hh, submatrix_mul_equiv, submatrix_mul_equiv, hef]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pconcl_reindex {κ ι : Type} [Fintype κ] [DecidableEq κ] [Fintype ι] [DecidableEq ι]
     (s : κ ≃ ι) {A h : Matrix ι ι R} (hc : PConcl (A.submatrix s s) (h.submatrix s s)) :
@@ -185,17 +181,17 @@ theorem pconcl_reindex {κ ι : Type} [Fintype κ] [DecidableEq κ] [Fintype ι]
 end Alg
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `ι _ _ hc hev A A' h k hP`. Distinguish the cases in `hb : IsBase ϖ h k`. Take `⟨h₁, hh₁, rfl⟩` from `hb`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, heA⟩` from `hB R R₀ ϖ hI ι (hc ▸ hev) A hP.1`. Use `⟨e, h₁⁻¹ * e * h₁, he, heA, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`. Simplify using `only [← Matrix.mul_assoc, mul_nonsing_inv h₁ hh₁, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `match n, ih, hc, hev with`. Consider the case `0, _, hc, _`. Establish `: IsEmpty ι` using `Fintype.card_eq_zero_iff.1 hc`. Conclude with `absurd ⟨1, by simp, by ext i; exact isEmptyElim i⟩ hb`. Consider the case `1, _, _, hev => exact absurd hev (by decide)`.
+Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Consider the case `m + 2, ih, hc, hev`. Set `s : Fin 2 ⊕ Fin m ≃ ι` to `Fintype.equivOfCardEq (by simp [hc]; omega)`. Apply `pconcl_reindex s` to reduce the goal to its premises. Establish `hP'` using `phyp_reindex s hP`. Establish `hb' : ¬ IsBase ϖ (h.submatrix s s) k` using `fun hb' => hb (isBase_reindex s hb')`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, u', A₁, A₁', h₂, d, hu, hu', hA, hA', hh⟩` from `hS R R₀ ϖ hI (Fin m) _ _ _ k hP' hb'`. Establish `hU₁` using `blk_unimod hu hP'.1 hA`. Establish `hU₁'` using `blk_unimod hu' hP'.2.1 hA'`. Establish `hr` using `blk_rel ϖ k _ _ _ u u' A₁ A₁' h₂ d hP'.2.2 hA hA' hh`. Establish `hevm : Even m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `hev; exact ⟨r - 1, by omega⟩`. Take `⟨e₂, f₂, he, heA, hef⟩` from `ih m (by omega) (Fin m) (Fintype.card_fin m) hevm A₁ A₁' h₂ k ⟨hU₁, hU₁', hr⟩`. Conclude with `assemble _ _ u u' A₁ h₂ d hu hu' hA hh e₂ f₂ he heA hef`.
+A detailed English derivation is pending.
 -/
 theorem pgen_main (hB : BaseLag) (hS : Step) {R : Type} [CommRing R] [StarRing R]
     (R₀ : Subring R) [HenselianLocalRing R₀] [Finite (IsLocalRing.ResidueField R₀)] (ϖ : R)
@@ -232,13 +228,13 @@ theorem pgen_main (hB : BaseLag) (hS : Step) {R : Type} [CommRing R] [StarRing R
       exact assemble _ _ u u' A₁ h₂ d hu hu' hA hh e₂ f₂ he heA hef
 
 /- English proof (translation)
-Introduce `R _ σ hσ R₀ hR₀ _ _ _ _ hθ ϖ hϖ N hN k h hh`. Set `_ : StarRing R` to `{ star := σ star_involutive := hσ star_mul := fun a b => by rw [map_mul, mul_comm] star_add := fun a b => map_add σ a b }`. Establish `hR₀' : ∀ x, x ∈ R₀ ↔ star x = x` using `hR₀`. Establish `hθ' : ∃ θ : R, IsUnit (θ - star θ)` using `hθ`. Establish `hh' : hᴴ * 1 * h = ((ϖ : R) ^ (2 * k)) • (1 : Matrix (Fin N) (Fin N) R)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_one]`. Conclude with `hh`. Break down `h1 R R₀ hR₀' hθ' ϖ hϖ with ⟨ε, hε, hεs⟩ | hI` into its components or cases. Use `⟨ε • 1, ε • 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[smul_smul, hε]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(ε • (1 : Matrix (Fin N) (Fin N) R))ᴴ = _`. Rewrite using `[conjTranspose_smul, conjTranspose_one, hεs, sub_smul, one_smul]`. Simplify using the standard rewrite rules. Take `⟨e, f, he, heA, hef⟩` from `pgen_main hB hS R₀ (ϖ : R) hI N (Fin N) (Fintype.card_fin N) hN 1 1 h k ⟨⟨conjTranspose_one, by simp⟩, ⟨conjTranspose_one, by simp⟩, hh'⟩`. Use `⟨e, f, he, ?_, hef⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `heA` using `[Matrix.mul_one, Matrix.one_mul]`. Conclude with `heA`.
+A detailed English derivation is pending.
 -/
 theorem locCartanPair_of (h1 : Dichotomy) (hB : BaseLag) (hS : Step) :
     PI.SqPair.LocCartanPair := by

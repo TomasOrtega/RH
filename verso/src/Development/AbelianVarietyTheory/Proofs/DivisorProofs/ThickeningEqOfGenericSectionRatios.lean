@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Use `first`. Consider the case `(have := congrArg CommaMorphism.left ((Over.mapPullbackAdj (thick R I e)).counit.naturality g)`. Simplify `this)` using `[fstG]`. Consider the case `(simp [fstG]; exact pullback.lift_fst _ _ _)`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fstG_comm_thick (R : Type) [CommRing R] (I : Ideal R) (e : ℕ) (G : Over (Sp R)) (g : G ⟶ G) :
     ((Over.pullback (thick R I e)).map g).left ≫ (fstG I e G).left = (fstG I e G).left ≫ g.left := by
@@ -31,19 +31,17 @@ theorem fstG_comm_thick (R : Type) [CommRing R] (I : Ideal R) (e : ℕ) (G : Ove
     | (simp [fstG]; exact pullback.lift_fst _ _ _)
 
 /- English proof (translation)
-Introduce `R _ _ _ hB D A G _ _ hG U a a' h h' hE b hb N S hS hC φ hφ g hg hgφ e`. Establish `hcomm : φ.left ≫ pullback.fst G.hom (jK R) = pullback.fst G.hom (jK R) ≫ g.left`. Substitute `hgφ` using the available equality. Use `first`. Consider the case `(simp; done)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp; exact pullback.lift_fst _ _ _)`. Consider the case `exact pullback.lift_fst _ _ _`. Establish `hGI : GeometricallyIntegral G.hom` using `GlobalTheory.geometricallyIntegral_of_isSemiAbelian G (h := hG)`. Establish `hfin : Finite (irreducibleComponents (Sp R))`. Rewrite using `[irreducibleComponents_eq_singleton]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `hfl : Flat G.hom`. Take `⟨_, hsm, -, -, -, -⟩` from `hG`. Use `infer_instance`. Establish `hred : IsReduced G.left` using `GeometricallyReduced.isReduced_of_flat_of_finite_irreducibleComponents G.hom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdom : IsDominant (pullback.fst G.hom (jK R))` using `isDominant_genericFibre_of_flat R (FractionRing R) G.hom`. Establish `hGrat : ∀ (k : ℕ) (s₁ s₂ : H0 U.LG.L k), SecRatioEq U.LG.L g.left (𝟙 G.left) s₁ s₂ (S k s₁) (S k s₂)`. Introduce `k s₁ s₂`. Apply `SecRatioEq.of_isDominant (pullback.fst G.hom (jK R))` to reduce the goal to its premises. Rewrite using `[← hcomm, Category.comp_id]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hφ k s₁ s₂`. Establish `hxc : ((Over.pullback (thick R (maximalIdeal R) e)).map g).left ≫ (fstG (maximalIdeal R) e G).left = (fstG (maximalIdeal R) e G).left ≫ g.left` using `fstG_comm_thick R (maximalIdeal R) e G g`. Establish `hxrat : ∀ (k : ℕ) (s₁ s₂ : H0 U.LG.L k), SecRatioEq U.LG.L (((Over.pullback (thick R (maximalIdeal R) e)).map g).left ≫ (fstG (maximalIdeal R) e G).left) (fstG (maximalIdeal R) e G).left s₁ s₂ (S k s₁) (S k s₂)`. Introduce `k s₁ s₂`. Use `secRatioEq_comp U.LG.L g.left (𝟙 G.left) (fstG (maximalIdeal R) e G).left s₁ s₂ (S k s₁) (S k s₂) (hGrat k s₁ s₂)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[Category.comp_id, ← hxc]`. Then use the resulting hypothesis. Establish `hxmon : IsMonHom ((Over.pullback (thick R (maximalIdeal R) e)).map g)` using `inferInstance`. Take `⟨k₀, hk₀, hnear⟩` from `GlobalTheory.T.uniformisedGroup_morphisms_agree_of_sectionRatios R hB D A G hG U`. Take `⟨s₀, hs₀⟩` from `hC k₀ hk₀`. Take `⟨y, i'', i', hy1, hy2⟩` from `formalEnd_secCoNonzero_lift R hB D A G hG U a h' b hb k₀ (N * k₀) s₀ (S k₀ s₀) hs₀ e`.
-
-Take `⟨i, hy0⟩` from `GlobalTheory.T.mem_basicOpen_of_sectionRatioEq_basePoint R hB D A G hG U e k₀ (N * k₀) hk₀ ((Over.pullback (thick R (maximalIdeal R) e)).map g) (S k₀) (hxrat k₀) y s₀ i' hy2`. Take `⟨W, hyW, hW⟩` from `hnear e k₀ (N * k₀) le_rfl ((Over.pullback (thick R (maximalIdeal R) e)).map g) (b e) (S k₀) (hxrat k₀) (fun s₁ s₂ => hS k₀ e s₁ s₂) y s₀ i i' i'' hy0 hy2 hy1`. Conclude with `GlobalTheory.T.semiAbelian_thickening_hom_eq_of_eq_on_open R hB D A G hG U e _ (b e) hxmon (hb.1 e) W y hyW hW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem thick_eq_of_ratios : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ b, FormalEnd U.toUnifPre a h' b → ∀ (N : ℕ) (S : ∀ k : ℕ, H0 U.LG.L k → H0 U.LG.L (N * k)), (∀ (k e : ℕ) (s₁ s₂ : H0 U.LG.L k), SecRatioEq U.LG.L ((b e).left ≫ (fstG (maximalIdeal R) e G).left) (fstG (maximalIdeal R) e G).left s₁ s₂ (S k s₁) (S k s₂)) → (∀ k : ℕ, 3 ≤ k → ∃ s₀ : H0 U.LG.L k, SecCoNonzero U.LG.L ((b 0).left ≫ (fstG (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left s₀ (S k s₀)) → ∀ φ : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G, (∀ (k : ℕ) (s₁ s₂ : H0 U.LG.L k), SecRatioEq U.LG.L (φ.left ≫ pullback.fst G.hom (jK R)) (pullback.fst G.hom (jK R)) s₁ s₂ (S k s₁) (S k s₂)) → ∀ g : G ⟶ G, IsMonHom g → (Over.pullback (jK R)).map g = φ → ∀ e, (Over.pullback (thick R (maximalIdeal R) e)).map g = b e := by
   intro R _ _ _ hB D A G _ _ hG U a a' h h' hE b hb N S hS hC φ hφ g hg hgφ e

@@ -16,9 +16,7 @@ namespace GlobalTheory.Pinch.SemiLoc
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Apply `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isAffineOpen X hV` to reduce the goal to its premises. Apply `TopCat.Presheaf.section_ext X.sheaf` to reduce the goal to its premises. Introduce `z hz`. Simplify using `only [TopCat.Presheaf.restrictOpen, map_zero]`. Use `erw [TopCat.Presheaf.germ_res_apply]`.
-
-Conclude with `(H z (X.basicOpen_le h hz) hz).trans (map_zero _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_eq_zero_of_germ {V : X.Opens} (hV : IsAffineOpen V) (h s : Γ(X, V))
     (H : ∀ z (hz : z ∈ V), z ∈ X.basicOpen h → (X.presheaf.germ V z hz).hom s = 0) :
@@ -31,9 +29,7 @@ theorem exists_pow_mul_eq_zero_of_germ {V : X.Opens} (hV : IsAffineOpen V) (h s 
   exact (H z (X.basicOpen_le h hz) hz).trans (map_zero _).symm
 
 /- English proof (translation)
-Take `⟨n, y, hy⟩` from `exists_eq_pow_mul_of_isAffineOpen X V hV h ((X.presheaf.map (homOfLE hO).op).hom r)`. Use `⟨n, y, fun z hz => ?_⟩` and prove the remaining obligations. Use `congrArg (X.presheaf.germ (X.basicOpen h) z hz).hom hy` as an intermediate fact. Simplify using `only [TopCat.Presheaf.restrictOpen, map_mul, map_pow] at this`. Use `erw [TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply] at this`.
-
-Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_germ_eq_pow_mul {V O : X.Opens} (hV : IsAffineOpen V) (h : Γ(X, V))
     (hO : X.basicOpen h ≤ O) (r : Γ(X, O)) :
@@ -51,7 +47,7 @@ theorem exists_germ_eq_pow_mul {V O : X.Opens} (hV : IsAffineOpen V) (h : Γ(X, 
   exact this
 
 /- English proof (translation)
-Use `congrArg (fun u : Γ(X, L.U a ⊓ L.U b ⊓ L.U c)ˣ => (X.presheaf.germ (L.U a ⊓ L.U b ⊓ L.U c) z ⟨⟨ha, hb⟩, hc⟩).hom u.val) (hL.cocycle a b c)` as an intermediate fact. Simplify using `only [Units.val_mul, map_mul, res, Units.coe_map] at this`. Use `erw [TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem germ_cocycle {L : LB X} (hL : L.IsLB) (a b c : L.ι) (z : X) (ha : z ∈ L.U a)
     (hb : z ∈ L.U b) (hc : z ∈ L.U c) :
@@ -70,31 +66,29 @@ end GlobalTheory.Pinch.SemiLoc
 namespace GlobalTheory.Pinch.SemiLoc
 
 /- English proof (translation)
-Introduce `X L hL W hW J _ f k hk x hxW`. Choose the witnesses or unpack the hypotheses as in `⟨k0, hk0⟩ : ∃ k0, x ∈ L.U k0 := by`. Establish `hx : x ∈ (⨆ i, L.U i)` using `by rw [hL.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hx`. Take `⟨h, hhU, hxh⟩` from `hW.exists_basicOpen_le (V := L.U k0) ⟨x, hk0⟩ hxW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hDW : ∀ j, X.basicOpen (f j) ≤ W` using `fun j => X.basicOpen_le (f j)`. Set `hj : ∀ j, Γ(X, X.basicOpen (f j))` to `fun j => (X.presheaf.map (homOfLE (hDW j)).op).hom h`. Establish `hbj : ∀ j, X.basicOpen (hj j) = X.basicOpen (f j) ⊓ X.basicOpen h` using `fun j => X.basicOpen_res h _`. Establish `hgj : ∀ j z (hz : z ∈ X.basicOpen (f j)), (X.presheaf.germ (X.basicOpen (f j)) z hz).hom (hj j) = (X.presheaf.germ W z (hDW j hz)).hom h` using `fun j z hz => TopCat.Presheaf.germ_res_apply _ _ _ _ _`. Establish `hO : ∀ j, X.basicOpen (hj j) ≤ L.U (k j) ⊓ L.U k0` using `fun j => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbj]`. Conclude with `inf_le_inf (hk j) hhU`. Use `choose n y hy using fun j => exists_germ_eq_pow_mul (hW.basicOpen (f j)) (hj j) (hO j) (L.g (k j) k0).val`. Set `N` to `Finset.univ.sup n`. Set `e : ∀ j, Γ(X, X.basicOpen (f j))` to `fun j => hj j ^ (N - n j) * y j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `he : ∀ j z (hz : z ∈ X.basicOpen (f j)) (hzh : z ∈ X.basicOpen h), (X.presheaf.germ (X.basicOpen (f j)) z hz).hom (e j) = (X.presheaf.germ W z (hDW j hz)).hom h ^ N * (X.presheaf.germ (L.U (k j) ⊓ L.U k0) z ⟨hk j hz, hhU hzh⟩).hom (L.g (k j) k0).val`. Introduce `j z hz hzh`. Establish `hz' : z ∈ X.basicOpen (hj j)` using `by rw [hbj]; exact ⟨hz, hzh⟩`. Establish `h1` using `hy j z hz'`. Simplify using `only [e, map_mul, map_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Simplify using `only [hgj]`. Rewrite using `[← _root_.mul_assoc, ← pow_add, Nat.sub_add_cancel (Finset.le_sup (f := n) (Finset.mem_univ j))]`. Establish `hdef : ∀ j j', ∃ m : ℕ, ∀ z (hz : z ∈ X.basicOpen (f j)) (hz' : z ∈ X.basicOpen (f j')), (X.presheaf.germ W z (hDW j hz)).hom h ^ m * ((X.presheaf.germ (X.basicOpen (f j)) z hz).hom (e j) - (X.presheaf.germ (L.U (k j) ⊓ L.U (k j')) z ⟨hk j hz, hk j' hz'⟩).hom (L.g (k j) (k j')).v …`. Introduce `j j'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, hVdef⟩ : ∃ V, V = X.basicOpen (f j * f j')` from `⟨_, rfl⟩`. Establish `hVeq : V = X.basicOpen (f j) ⊓ X.basicOpen (f j')` using `hVdef.trans (X.basicOpen_mul _ _)`. Establish `hVa : IsAffineOpen V` using `hVdef ▸ hW.basicOpen (f j * f j')`. Establish `hV1 : V ≤ X.basicOpen (f j)` using `hVeq ▸ inf_le_left`. Establish `hV2 : V ≤ X.basicOpen (f j')` using `hVeq ▸ inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hVg : V ≤ L.U (k j) ⊓ L.U (k j')` using `le_inf (hV1.trans (hk j)) (hV2.trans (hk j'))`. Establish `hVW : V ≤ W` using `hV1.trans (hDW j)`. Set `d : Γ(X, V)` to `(X.presheaf.map (homOfLE hV1).op).hom (e j) - (X.presheaf.map (homOfLE hVg).op).hom (L.g (k j) (k j')).val * (X.presheaf.map (homOfLE hV2).op).hom (e j')`. Set `hV : Γ(X, V)` to `(X.presheaf.map (homOfLE hVW).op).hom h`. Establish `hbV : X.basicOpen hV = V ⊓ X.basicOpen h` using `X.basicOpen_res h _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, hm⟩` from `exists_pow_mul_eq_zero_of_germ hVa hV d (by`. Introduce `z hz hzb`. Rewrite `hzb` using `[hbV]`. Simplify using `only [d, map_sub, map_mul]`. Use `erw [TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he j z (hV1 hz) hzb.2, he j' z (hV2 hz) hzb.2, ← germ_cocycle hL (k j) (k j') k0 z (hk j (hV1 hz)) (hk j' (hV2 hz)) (hhU hzb.2)]`. Use the proof step `ring)`. Use `⟨m, fun z hz hz' => ?_⟩` and prove the remaining obligations. Establish `hzV : z ∈ V` using `by rw [hVeq]; exact ⟨hz, hz'⟩`. Use `congrArg (X.presheaf.germ V z hzV).hom hm` as an intermediate fact.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [d, hV, map_mul, map_pow, map_sub, map_zero] at this`. Use `erw [TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply] at this`. Conclude with `this`. Use `choose m hm using hdef`. Set `M` to `Finset.univ.sup (fun p : J × J => m p.1 p.2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun j => hj j ^ M * e j, ?_, ?_⟩` and prove the remaining obligations. Introduce `j j' z hz hz'`. Establish `hle : m j j' ≤ M` using `Finset.le_sup (f := fun p : J × J => m p.1 p.2) (Finset.mem_univ (j, j'))`. Establish `h0` using `hm j j' z hz hz'`. Simplify using `only [map_mul, map_pow]`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hgj]`. Establish `h2 : (X.presheaf.germ W z (hDW j hz)).hom h ^ M * ((X.presheaf.germ (X.basicOpen (f j)) z hz).hom (e j) - (X.presheaf.germ (L.U (k j) ⊓ L.U (k j')) z ⟨hk j hz, hk j' hz'⟩).hom (L.g (k j) (k j')).val * (X.presheaf.germ (X.basicOpen (f j')) z hz').hom (e j')) = 0`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, _root_.mul_assoc, h0, mul_zero]`. Take the linear combination `h2`. Introduce `j hx`.
-
-Establish `hu : IsUnit ((X.presheaf.germ W x (hDW j hx)).hom h)` using `(X.mem_basicOpen h x _).1 hxh`. Simplify using `only [map_mul, map_pow]`. Simplify using `only [hgj]`. Rewrite using `[he j x hx hxh]`. Conclude with `(hu.pow _).mul ((hu.pow _).mul ((L.g (k j) k0).isUnit.map _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_secFam_isUnit_germ : ∀ (X : Scheme.{0}) (L : LB X), L.IsLB → ∀ (W : X.Opens), IsAffineOpen W → ∀ (J : Type) [Fintype J] (f : J → Γ(X, W)) (k : J → L.ι) (hk : ∀ j, X.basicOpen (f j) ≤ L.U (k j)) (x : X), x ∈ W → ∃ e : ∀ j, Γ(X, X.basicOpen (f j)), GlobalTheory.Pinch.IsSecFam L (fun j => X.basicOpen (f j)) k hk e ∧ ∀ j (h : x ∈ X.basicOpen (f j)), IsUnit ((X.presheaf.germ (X.basicOpen (f j)) x h).hom (e j)) := by
   intro X L hL W hW J _ f k hk x hxW

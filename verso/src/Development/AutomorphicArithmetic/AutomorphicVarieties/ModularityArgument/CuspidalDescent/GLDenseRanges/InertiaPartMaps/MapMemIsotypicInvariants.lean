@@ -23,7 +23,7 @@ section Abs
 variable {G W W' : Type} [Group G] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
 
 /- English proof (translation)
-Use `⟨fun k i => ?_, fun k _ i => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg e (hF.1 k i)`. Simplify using `only [map_sum, map_smul, MonoidHom.comp_apply, MonoidHom.coe_fst, h₁ k.1 k.2] at h`. Simplify `h` using `only [MonoidHom.comp_apply, MonoidHom.coe_fst]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 private theorem map_mem_isotypic_invariants {m : ℕ} (K₁ : Subgroup G) (τ₀ : K₁ →* GL (Fin m) ℂ)
     (ρ : Representation ℂ G W) (ρ' : Representation ℂ G W') (e : W →ₗ[ℂ] W')
@@ -36,9 +36,9 @@ private theorem map_mem_isotypic_invariants {m : ℕ} (K₁ : Subgroup G) (τ₀
   · simp
 
 /- English proof (translation)
-Establish `s₁ : ∀ k ∈ K₁, ∀ x, e.symm (ρ' k x) = ρ k (e.symm x)` using `fun k hk x => e.injective (by rw [h₁ k hk, e.apply_symm_apply, e.apply_symm_apply])`. Set `E : (Fin m → W) ≃ₗ[ℂ] (Fin m → W')` to `LinearEquiv.piCongrRight fun _ => e`. Establish `hE : (inv1 K₁ τ₀ ρ).map (E : (Fin m → W) →ₗ[ℂ] (Fin m → W')) = inv1 K₁ τ₀ ρ'`. Use `le_antisymm ?_ fun F hF => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `map_mem_isotypic_invariants K₁ τ₀ ρ ρ' e.toLinearMap h₁ hF`. Use `⟨fun i => e.symm (F i), map_mem_isotypic_invariants K₁ τ₀ ρ' ρ e.symm.toLinearMap s₁ hF, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `e.apply_symm_apply (F i)`. Conclude with `(LinearEquiv.ofSubmodules E _ _ hE).rank_eq`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem rank_isotypic_invariants_eq {m : ℕ} (K₁ : Subgroup G) (τ₀ : K₁ →* GL (Fin m) ℂ)
     (ρ : Representation ℂ G W) (ρ' : Representation ℂ G W') (e : W ≃ₗ[ℂ] W')
@@ -64,7 +64,7 @@ variable {I : Type} {Gi Wi Wi' : I → Type} [∀ i, Group (Gi i)]
   [∀ i, AddCommGroup (Wi i)] [∀ i, Module ℂ (Wi i)] [∀ i, AddCommGroup (Wi' i)] [∀ i, Module ℂ (Wi' i)]
 
 /- English proof (translation)
-Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Simplify using `only [piRep, PiTensorProduct.congr, map_smul, MonoidHom.comp_apply, PiTensorProduct.mapMonoidHom_apply, LinearEquiv.ofLinear_apply, PiTensorProduct.map_tprod]`. Conclude with `congrArg (fun t => r • PiTensorProduct.tprod ℂ t) (funext fun i => h i (f i))`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem congr_piRep (τ : ∀ i, Representation ℂ (Gi i) (Wi i)) (τ' : ∀ i, Representation ℂ (Gi i) (Wi' i))
     (a : ∀ i, Wi i ≃ₗ[ℂ] Wi' i) (g : ∀ i, Gi i) (h : ∀ i x, a i (τ i (g i) x) = τ' i (g i) (a i x))
@@ -78,7 +78,7 @@ private theorem congr_piRep (τ : ∀ i, Representation ℂ (Gi i) (Wi i)) (τ' 
 end Fam
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s n _ V _ c ι m τ₀ σ σ' C C' hu`. Use `rank_isotypic_invariants_eq (KT n (wt s)) _ _ _ (PiTensorProduct.congr fun u => (hu u).some.toLinearEquiv) ?_` and prove the remaining obligations. Introduce `g hg x`. Use `congr_piRep _ _ _ g (fun u y => ?_) x` and prove the remaining obligations. Conclude with `LinearMap.congr_fun ((hu u).some.isIntertwining' ⟨g u, hg u (Set.mem_univ u)⟩) y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem invEq1 : InvEq1 := by
   intro l _ L Ω _ _ _ _ _ _ s n _ V _ c ι m τ₀ σ σ' C C' hu

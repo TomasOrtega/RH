@@ -6,33 +6,29 @@ namespace GroundTheory.Heights₂.Heights.FiniteCovolume
 open NumberField Module
 
 /- English proof (translation)
-Introduce `c hc A hOA hFG hmin r ⟨a, ha, hr⟩`. Establish `: Fact (finrank ℝ (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) = finrank ℚ E)` using `⟨h₄⟩`. Take `⟨e⟩` from `h₁ A hOA hFG`. Establish `hmem : ∀ i, (a i : E) ∈ A` using `fun i => hOA ⟨a i, rfl⟩`. Use `set T : Matrix (Fin (finrank ℚ E)) (Fin (finrank ℚ E)) ℤ := fun i j => e.repr ⟨(a i : E), hmem i⟩ j with hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcoe : ∀ z : Fin (finrank ℚ E) → ℤ, ((∑ j, z j • e j : A) : E) = ∑ j, z j • (e j : E)`. Introduce `z`. Express the relevant statement in the definitionally equal form `A.subtype _ = _`. Rewrite using `[map_sum]`. Simplify using `only [map_zsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `haT : ∀ i, (a i : E) = ∑ j, T i j • (e j : E)`. Introduce `i`. Rewrite using `[← hcoe]`. Conclude with `(congrArg Subtype.val (e.sum_repr ⟨(a i : E), hmem i⟩)).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hidx` using `h₂ A hOA e a T ha haT`. Use `set Φ := weightedEmbed c with hΦ`. Establish `hc0 : ∀ w, 0 ≤ c w` using `fun w => (hc w).le`. Establish `hS : 0 < ∑ w, c w` using `Finset.sum_pos (fun w _ => hc w) Finset.univ_nonempty`. Use `set lam := Real.sqrt (∑ w, c w) with hlam`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlam0 : 0 < lam` using `Real.sqrt_pos.2 hS`. Establish `hlam2 : lam ^ 2 = ∑ w, c w` using `Real.sq_sqrt hS.le`. Establish `hdpos : 0 < finrank ℚ E` using `Module.finrank_pos`. Establish `hsd : 0 < Real.sqrt (finrank ℚ E)` using `Real.sqrt_pos.2 (by exact_mod_cast hdpos)`. Use `set o : Orientation ℝ (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) (Fin (finrank ℚ E)) := (Module.finBasisOfFinrankEq ℝ _ h₄).orientation`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set b : Fin (finrank ℚ E) → EuclideanSpace ℝ (InfinitePlace E × Fin 2) := fun i => Φ (e i : E)`. Establish `hmink : (lam / Real.sqrt (finrank ℚ E)) ^ finrank ℚ E ≤ |o.volumeForm b|`. Use `h₅ o b lam hlam0 fun z hz => ?_` and prove the remaining obligations. Establish `hsum : ∑ i, (z i : ℝ) • b i = Φ ((∑ i, z i • e i : A) : E)`. Rewrite using `[hcoe, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_zsmul, b, Int.cast_smul_eq_zsmul]`. Rewrite using `[hsum]`. Use `set x : A := ∑ i, z i • e i`. Establish `hx : (x : E) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : x = 0` using `Subtype.ext h0`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hz`. Conclude with `hi (Fintype.linearIndependent_iff.1 e.linearIndependent z hx0 i)`. Establish `hq` using `hmin x x.2 hx`. Rewrite using `[hlam, ← Real.sqrt_sq (norm_nonneg (Φ x)), h₃ c hc0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Real.sqrt_le_sqrt hq`. Establish `hab : (fun i => Φ (a i : E)) = fun i => ∑ j, (T i j : ℝ) • b j`. Use function extensionality and compare the values at `i`. Rewrite using `[haT i, map_sum]`. Simplify using `only [map_zsmul, b, Int.cast_smul_eq_zsmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvol : o.volumeForm (fun i => Φ (a i : E)) = (T.det : ℝ) * o.volumeForm b`. Rewrite using `[hab]`. Conclude with `h₆ o b T`. Establish `hr0 : 0 ≤ r`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(norm_nonneg _).trans (hr ⟨0, hdpos⟩ w.embedding)`. Establish `hnorm : ∀ i, ‖Φ (a i : E)‖ ≤ r * lam`. Introduce `i`. Establish `h2 : ‖Φ (a i : E)‖ ^ 2 ≤ (r * lam) ^ 2`. Rewrite using `[h₃ c hc0, mul_pow, hlam2, Finset.mul_sum]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Use `pow_le_pow_left₀ (norm_nonneg _) (hr i w.embedding) 2` as an intermediate fact. Use polynomial arithmetic with `[hc0 w]`. Use polynomial arithmetic with `[norm_nonneg (Φ (a i : E)), mul_nonneg hr0 hlam0.le]`. Establish `hhad : |o.volumeForm (fun i => Φ (a i : E))| ≤ (r * lam) ^ finrank ℚ E`.
-
-Use `(o.abs_volumeForm_apply_le _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < (lam / Real.sqrt (finrank ℚ E)) ^ finrank ℚ E` using `pow_pos (div_pos hlam0 hsd) _`. Establish `hkey : |(T.det : ℝ)| * (lam / Real.sqrt (finrank ℚ E)) ^ finrank ℚ E ≤ (r * Real.sqrt (finrank ℚ E)) ^ finrank ℚ E * (lam / Real.sqrt (finrank ℚ E)) ^ finrank ℚ E`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← mul_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Conclude with `hidx.trans (le_of_mul_le_mul_right hkey hpos)`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem WeightedIndexBound.proof (E : Type*) [Field E] [NumberField E] [IsTotallyComplex E]
     (h₁ : CoeffLatticeBasis.Statement E) (h₂ : IndexLeDet.Statement E)

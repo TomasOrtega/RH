@@ -22,7 +22,7 @@ theorem frobOver_left_apply {k : Type} [Field k] [Fintype k] (X : Over (Sp k)) (
     (GlobalTheory.SS.FrobModel.frobOver X).left x = x := rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AbLaw.rs_self (X := X.left) h (s ^ Fintype.card k)`.
+A detailed English derivation is pending.
 -/
 theorem frobOver_appLE {k : Type} [Field k] [Fintype k] (X : Over (Sp k)) (U : X.left.Opens)
     (h : U ≤ (GlobalTheory.SS.FrobModel.frobOver X).left ⁻¹ᵁ U) (s : Γ(X.left, U)) :
@@ -30,7 +30,7 @@ theorem frobOver_appLE {k : Type} [Field k] [Fintype k] (X : Over (Sp k)) (U : X
   GlobalTheory.AbLaw.rs_self (X := X.left) h (s ^ Fintype.card k)
 
 /- English proof (translation)
-Introduce `K _ _ A`. Use `letI : IsMonHom (GlobalTheory.SS.FrobModel.frobOver A.X) := (GlobalTheory.SS.FrobModel.frobG_frobOver A.X).1`. Conclude with `⟨Hom.mk (GlobalTheory.SS.FrobModel.frobOver A.X), GlobalTheory.AV.FrobEx.isFrob_frobOver K A, fun x => frobOver_left_apply A.X x, fun U h s => frobOver_appLE A.X U h s⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem exists_isFrob_pow : ∀ (K : Type) [Field K] [Fintype K] (A : AbVar K), ∃ π : End A, IsFrob π ∧
     (∀ x : A.X.left, (Hom.hom (A := A) (B := A) π).left x = x) ∧

@@ -4,9 +4,9 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hS : 0 ≤ ∑ k, ‖w k‖ ^ 2` using `Finset.sum_nonneg (fun k _ => by positivity)`. Establish `h : ‖w‖ ≤ Real.sqrt (∑ k, ‖w k‖ ^ 2)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 (fun i => ?_)` and prove the remaining obligations. Establish `hi : ‖w i‖ ^ 2 ≤ ∑ k, ‖w k‖ ^ 2` using `Finset.single_le_sum (f := fun k => ‖w k‖ ^ 2) (fun k _ => by positivity) (Finset.mem_univ i)`. Use `Real.abs_le_sqrt hi` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 -/
 theorem sq_pi_norm_le_sum_sq {e : ℕ} (w : Fin e → ℂ) : ‖w‖ ^ 2 ≤ ∑ k, ‖w k‖ ^ 2 := by
   have hS : 0 ≤ ∑ k, ‖w k‖ ^ 2 := Finset.sum_nonneg (fun k _ => by positivity)
@@ -20,15 +20,15 @@ theorem sq_pi_norm_le_sum_sq {e : ℕ} (w : Fin e → ℂ) : ‖w‖ ^ 2 ≤ ∑
     _ = ∑ k, ‖w k‖ ^ 2 := Real.sq_sqrt hS
 
 /- English proof (translation)
-Introduce `e f hf`. Establish `hK : IsCompact (Metric.closedBall (0 : Fin e → ℂ) (1 / 2))` using `isCompact_closedBall _ _`. Establish `hsub : Metric.closedBall (0 : Fin e → ℂ) (1 / 2) ⊆ Metric.ball 0 1` using `Metric.closedBall_subset_ball (by norm_num)`. Take `⟨B₀, hB₀⟩` from `hK.exists_bound_of_continuousOn (hf.continuousOn.mono hsub)`. Establish `hd : ContinuousOn (fderiv ℝ f) (Metric.ball (0 : Fin e → ℂ) 1)` using `hf.continuousOn_fderiv_of_isOpen Metric.isOpen_ball (by exact_mod_cast le_top)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B₁, hB₁⟩` from `hK.exists_bound_of_continuousOn (hd.mono hsub)`. Use `⟨max B₀ (2 * B₁ ^ 2), le_max_of_le_right (by positivity), fun z hz => ⟨?_, fun w => ?_⟩⟩` and prove the remaining obligations. Use `hB₀ z hz` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Conclude with `this.trans (le_max_left _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hz1` using `hB₁ z hz`. Establish `key : ∀ v : Fin e → ℂ, (fderiv ℝ f z v) ^ 2 ≤ B₁ ^ 2 * ‖v‖ ^ 2`. Introduce `v`. Establish `h1 : |fderiv ℝ f z v| ≤ B₁ * ‖v‖`. Use `(fderiv ℝ f z).le_opNorm v` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Real.norm_eq_abs]`. Conclude with `this.trans (mul_le_mul_of_nonneg_right hz1 (norm_nonneg _))`. Establish `h2` using `pow_le_pow_left₀ (abs_nonneg _) h1 2`. Rewrite `h2` using `[sq_abs, mul_pow]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : ‖Complex.I • w‖ = ‖w‖` using `by rw [norm_smul, Complex.norm_I, one_mul]`. Establish `hS : 0 ≤ ∑ k, ‖w k‖ ^ 2` using `Finset.sum_nonneg (fun k _ => by positivity)`. Establish `hw` using `sq_pi_norm_le_sum_sq w`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem smooth_polydisc_value_fderiv_bound :
     ∀ {e : ℕ} (f : (Fin e → ℂ) → ℝ), ContDiffOn ℝ ∞ f (Metric.ball (0 : Fin e → ℂ) 1) →

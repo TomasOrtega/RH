@@ -18,11 +18,11 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 omit [TopologicalSpace E] in
 /- English proof (translation)
-Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge l i with h | h` into its components or cases. Rewrite using `[hA.1 i l h, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB.1 l j (lt_of_lt_of_le hij h), mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hA.2, hB.2, one_mul]`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hA.1 i l h, zero_mul]`. Rewrite using `[hB.1 l i h, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uni_mul {N : ℕ} {A B : Matrix (Fin N) (Fin N) E} (hA : IsUni A) (hB : IsUni B) :
     IsUni (A * B) := by
@@ -41,7 +41,7 @@ theorem uni_mul {N : ℕ} {A B : Matrix (Fin N) (Fin N) E} (hA : IsUni A) (hB : 
     · simp
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact L.O.sum_mem fun l _ => L.O.mul_mem (hA i l) (hB l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_mul (L : LocE F E) {N : ℕ} {A B : Matrix (Fin N) (Fin N) E} (hA : IsIntM L A)
     (hB : IsIntM L B) : IsIntM L (A * B) := fun i j => by
@@ -49,7 +49,7 @@ theorem int_mul (L : LocE F E) {N : ℕ} {A B : Matrix (Fin N) (Fin N) E} (hA : 
   exact L.O.sum_mem fun l _ => L.O.mul_mem (hA i l) (hB l j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Conclude with `L.O.sum_mem fun σ _ => L.O.mul_mem (intCast_mem _ _) (L.O.prod_mem fun i _ => hA _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem (L : LocE F E) {N : ℕ} {A : Matrix (Fin N) (Fin N) E} (hA : IsIntM L A) :
     A.det ∈ L.O := by
@@ -57,15 +57,15 @@ theorem det_mem (L : LocE F E) {N : ℕ} {A : Matrix (Fin N) (Fin N) E} (hA : Is
   exact L.O.sum_mem fun σ _ => L.O.mul_mem (intCast_mem _ _) (L.O.prod_mem fun i _ => hA _ _)
 
 /- English proof (translation)
-Establish `ht : A.BlockTriangular id` using `fun i j h => hA.1 i j h`. Establish `hd : A.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular ht]`. Simplify using `[hA.2]`. Establish `hu : IsUnit A.det` using `by rw [hd]; exact isUnit_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `letI := A.invertibleOfIsUnitDet hu`. Establish `hti : A⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular ht`. Establish `h1 : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hu`. Use `⟨A⁻¹, ⟨fun i j h => hti h, fun i => ?_⟩, fun i j => ?_, h1, Matrix.nonsing_inv_mul A hu⟩` and prove the remaining obligations. Establish `h2` using `congrFun (congrFun h1 i) i`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.mul_apply, Finset.sum_eq_single i, hA.2, one_mul, Matrix.one_apply_eq]`. Conclude with `h2`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with h | h` into its components or cases. Rewrite using `[hA.1 i l h, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hti (show id i < id l from h), mul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.inv_def, hd, Ring.inverse_one, one_smul, Matrix.adjugate_apply]`. Use `det_mem L fun a b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.updateRow_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[Pi.single_apply] split_ifs`. Conclude with `L.O.one_mem`. Conclude with `L.O.zero_mem`. Conclude with `hI a b`.
+A detailed English derivation is pending.
 -/
 theorem exists_inv (L : LocE F E) {N : ℕ} {A : Matrix (Fin N) (Fin N) E} (hA : IsUni A)
     (hI : IsIntM L A) : ∃ B, IsUni B ∧ IsIntM L B ∧ A * B = 1 ∧ B * A = 1 := by
@@ -96,23 +96,21 @@ theorem exists_inv (L : LocE F E) {N : ℕ} {A : Matrix (Fin N) (Fin N) E} (hA :
     · exact hI a b
 
 /- English proof (translation)
-Use `set I : Ideal L.O := Ideal.span {y : L.O | (y : E) = t} with hI`. Use `haveI : Finite (L.O ⧸ I) := Nat.finite_of_card_ne_zero (by rw [hc]; exact hm)`. Establish `hmem : ∀ y ∈ I, ∃ c ∈ L.O, (y : E) = t * c`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx => exact ⟨1, L.O.one_mem, by rw [mul_one]; exact hx⟩`. Consider the case `zero => exact ⟨0, L.O.zero_mem, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, hc, e⟩` from `hx`. Take `⟨d, hd, e'⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨c + d, L.O.add_mem hc hd, by push_cast; rw [e, e', mul_add]⟩`. Consider the case `smul a x _ hx`. Take `⟨c, hc, e⟩` from `hx`. Conclude with `⟨a * c, L.O.mul_mem a.2 hc, by rw [smul_eq_mul]; push_cast; rw [e]; ring⟩`. Set `lift : ((j : Fin N) → Fin j → L.O ⧸ I) → Matrix (Fin N) (Fin N) E` to `fun x i j => if h : i < j then ((x j ⟨i, h⟩).out : L.O) else if i = j then 1 else 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Set.range lift, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Set.image_univ]`. Use `(Set.encard_image_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Set.encard_univ, ENat.card_eq_coe_natCard]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Nat.card_pi]`. Simplify using `only [Nat.card_fun, Nat.card_eq_fintype_card, Fintype.card_fin, hc]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, Fin.sum_univ_eq_sum_range (fun j => j) N, Finset.sum_range_id]`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `⟨⟨fun i j h => ?_, fun i => ?_⟩, fun i j => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [lift]`. Rewrite using `[dif_neg (not_lt_of_gt h), if_neg (ne_of_gt h)]`. Simplify using `[lift]`. Simplify using `only [lift] split_ifs`. Conclude with `Subtype.property _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `L.O.one_mem`. Conclude with `L.O.zero_mem`. Introduce `B hB hBI`. Use `⟨_, ⟨fun j i => Ideal.Quotient.mk I ⟨B ⟨i, i.2.trans j.2⟩ j, hBI _ _⟩, rfl⟩, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only [lift]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `split_ifs with h1 h2`. Establish `h3 : (⟨B i j, hBI i j⟩ : L.O) - (Ideal.Quotient.mk I ⟨B i j, hBI i j⟩).out ∈ I`. Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `(Quotient.out_eq _).symm`. Conclude with `hmem _ h3`.
-
-Substitute `h2` using the available equality. Conclude with `⟨0, L.O.zero_mem, by rw [hB.2]; simp⟩`. Conclude with `⟨0, L.O.zero_mem, by rw [hB.1 i j (lt_of_le_of_ne (not_lt.1 h1) (Ne.symm h2))]; simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_reps (L : LocE F E) (t : E) (m : ℕ) (hm : m ≠ 0)
     (hc : Nat.card (L.O ⧸ Ideal.span {y : L.O | (y : E) = t}) = m) (N : ℕ) :
@@ -168,7 +166,7 @@ theorem exists_reps (L : LocE F E) (t : E) (m : ℕ) (hm : m ≠ 0)
 
 omit [TopologicalSpace E] in
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rmul_mul {n N : ℕ} (x : Fin N → Fin n → E) (A B : Matrix (Fin N) (Fin N) E) (j : Fin N) :
     ∑ i, (A * B) i j • x i = ∑ l, B l j • ∑ i, A i l • x i := by
@@ -177,13 +175,11 @@ theorem rmul_mul {n N : ℕ} (x : Fin N → Fin n → E) (A B : Matrix (Fin N) (
   simp only [mul_comm]
 
 /- English proof (translation)
-Establish `h1 : ∀ (y : S.V) (c : Fin (r + 1) → E) (x : Fin (r + 1) → S.V), S.h (∑ i, c i • x i) y = ∑ i, c i * S.h (x i) y`. Introduce `y c x`. Simplify using `only [Frames.h, hf, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [Finset.sum_comm]`. Simplify using `only [mul_assoc]`. Establish `h2 : ∀ (y : S.V) (c : Fin (r + 1) → E) (x : Fin (r + 1) → S.V), S.h y (∑ i, c i • x i) = ∑ i, L.cj (c i) * S.h y (x i)`. Introduce `y c x`. Simplify using `only [Frames.h, hf, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations. Rewrite using `[h1]`.
-
-Simplify using `only [h2, Matrix.mul_apply, cT, Frames.Zh, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairing (L : LocE F E) {r k : ℕ} (S : Frames L r k)
     (u u' : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (a b : Fin (r + 1)) :
@@ -214,9 +210,9 @@ def coset (L : LocE F E) {N : ℕ} (u : Matrix (Fin N) (Fin N) E) : Set (Matrix 
   {v | ∃ A, IsUni A ∧ IsIntM L A ∧ v = u * A}
 
 /- English proof (translation)
-Use `⟨fun C => if h : ∃ u, C = coset L u then h.choose else 0, fun u => ?_⟩` and prove the remaining obligations. Establish `h : ∃ v, coset L u = coset L v` using `⟨u, rfl⟩`. Simplify using `only [dif_pos h]`. Establish `h1 : u ∈ coset L u`. Use `⟨1, ⟨fun i j hij => Matrix.one_apply_ne (ne_of_gt hij), fun i => Matrix.one_apply_eq i⟩, fun i j => ?_, (mul_one u).symm⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `L.O.one_mem`. Conclude with `L.O.zero_mem`. Conclude with `h.choose_spec.subset h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section (L : LocE F E) (N : ℕ) :
     ∃ s : Set (Matrix (Fin N) (Fin N) E) → Matrix (Fin N) (Fin N) E,
@@ -234,33 +230,31 @@ theorem exists_section (L : LocE F E) (N : ℕ) :
   exact h.choose_spec.subset h1
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S hvD`. Take `⟨-, -, -, -, -, hcard, hq, -⟩` from `GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr`. Establish `hth : S.th = (S.ϖ : F) ^ S.vth.toNat`. Apply the tactic sequence `unfold Frames.th Frames.vth; split_ifs <;> simp`. Apply the tactic sequence `have hv0 : 0 ≤ S.vth := by unfold Frames.vth; split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨R, hR, hRu, hRs⟩` from `exists_reps L (algebraMap F E S.th) (resQ S.ϖ ^ (2 * S.vth.toNat)) (pow_ne_zero _ (by omega)) (by rw [hth]; exact hcard _) (r + 1)`. Take `⟨s, hs⟩` from `exists_section L (r + 1)`. Use `set T := {C : Set S.FrP | S.IsIntCls C ∧ ∃ u u' : Matrix (Fin (r + 1)) (Fin (r + 1)) E, IsUni u ∧ IsUni u' ∧ (∀ i j : Fin (r + 1), sameBlock S.w.blocks i j = true → u i j ∈ L.O) ∧ C = S.frameCls (fun j => ∑ i, u i j • S.f i) fun j => ∑ i, u' i j • S.f' i} with hT`. Break down `T.eq_empty_or_nonempty with h0 | ⟨C₀, hC₀⟩` into its components or cases. Rewrite using `[h0]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `set Δ : E := ∏ l : Fin (r + 2), (if S.D l ≠ 0 then S.D l else 1) with hΔ`. Establish `hden : ∀ u u' : Matrix (Fin (r + 1)) (Fin (r + 1)) E, IsUni u → IsUni u' → (∀ i j : Fin (r + 1), sameBlock S.w.blocks i j = true → u i j ∈ L.O) → S.IsIntCls (S.frameCls (fun j => ∑ i, u i j • S.f i) fun j => ∑ i, u' i j • S.f' i) → Δ ∈ L.O ∧ IsUnit Δ ∧ vE L S.ϖ (Δ * L.cj Δ) = S.v …`. Introduce `u u' hu hu' hb hint`. Use `GlobalTheory.T.leadingMinors_prod_denominator_unitriangular_factors L r k S u u' hu hu' hb (fun a b => ?_) Δ hΔ` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pairing]`. Conclude with `hint.2 _ (GlobalTheory.HL.FrameClass.frame_classes L r k S _ _).1 a b`. Choose the witnesses or unpack the hypotheses as in `⟨hΔO, hΔu, hΔv⟩ : Δ ∈ L.O ∧ IsUnit Δ ∧ vE L S.ϖ (Δ * L.cj Δ) = S.vD := by`. Take `⟨hi, u, u', hu, hu', hb, rfl⟩` from `hC₀`. Take `⟨a, b, c, -⟩` from `hden u u' hu hu' hb hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨a, b, c⟩`. Establish `hcjO : L.cj Δ ∈ L.O` using `((GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr).2.1 Δ hΔO).1`. Establish `c1` using `GlobalTheory.HL.encard_uniCosets_le L S.ϖ S.ϖ_irr (L.cj Δ) hcjO (hΔu.map L.cj) (r + 1)`. Establish `c2` using `GlobalTheory.HL.encard_uniCosets_le L S.ϖ S.ϖ_irr Δ hΔO hΔu (r + 1)`. Rewrite `c1` using `[L.cj_cj, mul_comm (L.cj Δ) Δ, hΔv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `c2` using `[hΔv]`. Use `set S₁ := {C : Set (Matrix (Fin (r + 1)) (Fin (r + 1)) E) | ∃ u, IsUni u ∧ (∀ i j, L.cj Δ * u i j ∈ L.O) ∧ C = {v | ∃ A, IsUni A ∧ IsIntM L A ∧ v = u * A}} with hS₁`. Use `set S₂ := {C : Set (Matrix (Fin (r + 1)) (Fin (r + 1)) E) | ∃ u, IsUni u ∧ (∀ i j, Δ * u i j ∈ L.O) ∧ C = {v | ∃ A, IsUni A ∧ IsIntM L A ∧ v = u * A}} with hS₂`. Establish `hsub : T ⊆ (fun p => S.frameCls (fun j => ∑ i, s p.1 i j • S.f i) fun j => ∑ i, (s p.2.1 * p.2.2) i j • S.f' i) '' (S₁ ×ˢ S₂ ×ˢ R)`. Introduce and unpack `C ⟨hi, u, u', hu, hu', hb, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, hd⟩` from `hden u u' hu hu' hb hi`. Take `⟨A, hA, hAI, eA⟩` from `hs u`. Take `⟨A', hA', hAI', eA'⟩` from `hs u'`. Take `⟨Ai, hAi, hAiI, -, e2⟩` from `exists_inv L hA hAI`. Take `⟨B₀, hB₀, hcong⟩` from `hRs (A' * Ai) (uni_mul hA' hAi) (int_mul L hAI' hAiI)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Bi, hBi, hBiI, e3, e4⟩` from `exists_inv L (hRu B₀ hB₀).1 (hRu B₀ hB₀).2`. Use `⟨(coset L u, coset L u', B₀), ⟨⟨u, hu, fun i j => (hd i j).1, rfl⟩, ⟨u', hu', fun i j => (hd i j).2, rfl⟩, hB₀⟩, ?_⟩` and prove the remaining obligations. Use `(((GlobalTheory.HL.FrameClass.frame_classes L r k S _ _).2.1 (fun j => ∑ i, u i j • S.f i, fun j => ∑ i, u' i j • S.f' i) ?_).1).symm` and prove the remaining obligations. Establish `hBA` using `uni_mul hBi hA'`. Use `⟨A, Bi * A', hAI, int_mul L hBiI hAI', fun i j h => ⟨hA.1 i j h, hBA.1 i j h⟩, fun i => ⟨hA.2 i, hBA.2 i⟩, ?_, fun j => ?_, fun j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose c hc ec using hcong`. Establish `e5 : A' * Ai - B₀ = algebraMap F E S.th • Matrix.of c`. Use extensionality with `i j`. Simplify using `[ec]`. Establish `e6 : Bi * A' - A = algebraMap F E S.th • (Bi * Matrix.of c * A)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, ← e5, Matrix.mul_sub, Matrix.sub_mul, e4, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_assoc, e2, Matrix.mul_one]`. Introduce `i j`. Conclude with `⟨(Bi * Matrix.of c * A) i j, int_mul L (int_mul L hBiI hc) hAI i j, congrFun (congrFun e6 i) j⟩`. Simplify using `only`. Rewrite using `[← rmul_mul, ← eA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[← rmul_mul, Matrix.mul_assoc, ← Matrix.mul_assoc B₀, e3, Matrix.one_mul, ← eA']`. Establish `h1 : T.encard ≤ S₁.encard * (S₂.encard * R.encard)`. Use `(Set.encard_le_encard hsub).trans ((Set.encard_image_le _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[Set.encard_prod, Set.encard_prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (T.encard : ℝ≥0∞) ≤ (S₁.encard : ℝ≥0∞) * ((S₂.encard : ℝ≥0∞) * (R.encard : ℝ≥0∞))`. Rewrite using `[← ENat.toENNReal_mul, ← ENat.toENNReal_mul]`. Conclude with `ENat.toENNReal_le.2 h1`. Establish `h3 : (R.encard : ℝ≥0∞) ≤ (resQ S.ϖ : ℝ≥0∞) ^ (2 * S.vth.toNat * ((r + 1) * (r + 1 - 1) / 2))`. Use `(ENat.toENNReal_le.2 hR).trans (le_of_eq ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENat.toENNReal_coe, ← pow_mul, Nat.cast_pow]`. Use `h2.trans ((mul_le_mul' c1 (mul_le_mul' c2 h3)).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[← pow_add, ← pow_add, Frames.q, Int.toNat_add hv0 hvD]`. Use `congr 1`. Establish `h4 : (r + 1) * (r + 1 - 1) / 2 * 2 = r * (r + 1)`.
-
-Rewrite using `[Nat.add_sub_cancel, mul_comm (r + 1) r]`. Conclude with `Nat.div_mul_cancel (Nat.even_mul_succ_self r).two_dvd`. Rewrite using `[← h4]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 0 ≤ S.vD → ({C : Set S.FrP | S.IsIntCls C ∧ ∃ u u' : Matrix (Fin (r + 1)) (Fin (r + 1)) E, IsUni u ∧ IsUni u' ∧ (∀ i j : Fin (r + 1), sameBlock S.w.blocks i j = true → u i j ∈ L.O) ∧ C = S.frameCls (fun j => ∑ i, u i j • S.f i) fun j => ∑ i, u' i j • S.f' i}.encard : ℝ≥0∞) ≤ (S.q : ℝ≥0∞) ^ (r * (r + 1) * (S.vth + S.vD).toNat) := by
   intro F _ _ _ _ _ E _ _ _ L r k S hvD

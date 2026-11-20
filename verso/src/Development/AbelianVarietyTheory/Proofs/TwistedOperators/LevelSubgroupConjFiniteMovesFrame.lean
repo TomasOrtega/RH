@@ -19,14 +19,14 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mul_mem_cancel_right H (H.inv_mem hT), Subgroup.mul_mem_cancel_left H hT]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_iff {G : Type} [Group G] (H : Subgroup G) {T : G} (hT : T ∈ H) (x : G) :
     T * x * T⁻¹ ∈ H ↔ x ∈ H := by
   rw [Subgroup.mul_mem_cancel_right H (H.inv_mem hT), Subgroup.mul_mem_cancel_left H hT]
 
 /- English proof (translation)
-Simplify using `only [frGL, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frGL_mul_left (T β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y) :
     frGL (T * β) y = T * frGL β y * T⁻¹ := by
@@ -34,9 +34,9 @@ theorem frGL_mul_left (T β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y) 
   group
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[frGL_mul_left]`. Conclude with `mul_left_cancel (mul_right_cancel hy)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, frGL_mul_left T β y⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem conj_mem_St_iff (T β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
     T * x * T⁻¹ ∈ St (T * β) ↔ x ∈ St β := by
@@ -49,9 +49,9 @@ theorem conj_mem_St_iff (T β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) 
     exact ⟨y, frGL_mul_left T β y⟩
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ St β`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[← frGL_mul_left, redFn_frGL, redFn_frGL]`. Establish `h' : T * x * T⁻¹ ∉ St (T * β)` using `fun h => hx ((conj_mem_St_iff T β x).1 h)`. Unfold `redFn ext1`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_neg hx, dif_neg h']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem redFn_conj (T β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (PP : Pl E) :
     redFn (T * β) PP (T * x * T⁻¹) = redFn β PP x := by
@@ -65,7 +65,7 @@ theorem redFn_conj (T β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (PP :
 variable {LL : Type} [CommRing LL]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `PP`. Use `show upperLeftBlock L.hr (redFn (T * β) PP.1 (T * x * T⁻¹)) = upperLeftBlock L.hr (redFn β PP.1 x)`. Rewrite using `[redFn_conj]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rTup_conj (T β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (L : LevDat E LL n) :
     rTup (T * β) L (T * x * T⁻¹) = rTup β L x := by
@@ -74,7 +74,7 @@ theorem rTup_conj (T β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (L : L
   rw [redFn_conj]
 
 /- English proof (translation)
-Unfold `levFn`. Simplify using `only [rTup_conj, redFn_conj]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem levFn_conj (T β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (L : LevDat E LL n) :
     levFn (T * β) L (T * x * T⁻¹) = levFn β L x := by
@@ -82,7 +82,7 @@ theorem levFn_conj (T β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (L : 
   simp only [rTup_conj, redFn_conj]
 
 /- English proof (translation)
-Rewrite using `[mem_lev, mem_lev, mem_parLev, mem_parLev, conj_mem_iff _ hT, conj_mem_St_iff, rTup_conj]`. Simplify using `only [redFn_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_mem_lev_iff [StarRing E] {hc : CMData F E} {J : Matrix (Fin n) (Fin n) E}
     {T : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hT : T ∈ UA hc J) (β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
@@ -93,9 +93,9 @@ theorem conj_mem_lev_iff [StarRing E] {hc : CMData F E} {J : Matrix (Fin n) (Fin
 end Gen
 
 /- English proof (translation)
-Introduce `D V β L t ht k`. Establish `hfin : finE V (t * k * t⁻¹) = finE V t * finE V k * (finE V t)⁻¹`. Rewrite using `[map_mul, map_mul, map_inv]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show k ∈ levG V β L ↔ t * k * t⁻¹ ∈ levG V (finE V t * β) L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [levG, levA, Subgroup.mem_inf, Subgroup.mem_comap]`. Rewrite using `[conj_mem_iff _ ht, hfin, conj_mem_lev_iff (GlobalTheory.LevSplit.finE_mem_UA V t)]`. Unfold `levChi`. Rewrite using `[hfin, levFn_conj]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levS_conj_frame : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (L : LevDat D.host.E ℂ V.rank) (t : GA D V),
     t ∈ GfC V → ∀ k : GA D V, (k ∈ levS V β L ↔ t * k * t⁻¹ ∈ levS V (finE V t * β) L) ∧

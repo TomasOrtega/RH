@@ -46,7 +46,7 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero
 include hv hε hL hμ
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (GlobalTheory.T.formalChart_hasPeriod_linear_integral p C v O hv ε hε F G d c μ' hL hμ f g t y y' b hg h1 h2).1`. Consider the case `exact (GlobalTheory.T.formalChart_hasPeriod_linear_integral p C v O hv ε hε F G d c μ' hL hμ f g t y y' b h1 h2).1`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hasPeriod_add_smul (t : G.Tate) {f g : MvPowerSeries (Fin d) F.Q} {y y' : F.B} (b : F.B)
     (hg : DIn (⊤ : Ideal F.B) g) (h1 : c.HasPeriod F.θ t f y) (h2 : c.HasPeriod F.θ t g y') :
@@ -56,7 +56,7 @@ theorem hasPeriod_add_smul (t : G.Tate) {f g : MvPowerSeries (Fin d) F.Q} {y y' 
   | exact (GlobalTheory.T.formalChart_hasPeriod_linear_integral p C v O hv ε hε F G d c μ' hL hμ f g t y y' b h1 h2).1
 
 /- English proof (translation)
-Establish `hz` using `hasPeriod_zero c F.frame t`. Establish `hd : DIn (⊤ : Ideal F.B) (0 : MvPowerSeries (Fin d) F.Q)` using `din_of_in (in_zero ⊤)`. Use `first`. Consider the case `exact (GlobalTheory.T.formalChart_hasPeriod_linear_integral p C v O hv ε hε F G d c μ' hL hμ 0 0 t 0 0 0 hd hz hz).2 s hs`. Consider the case `exact (GlobalTheory.T.formalChart_hasPeriod_linear_integral p C v O hv ε hε F G d c μ' hL hμ 0 0 t 0 0 0 hz hz).2 s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hasPeriod_map_zero (t : G.Tate) (s : MvPowerSeries (Fin d) F.B) (hs : constantCoeff s = 0) :
     c.HasPeriod F.θ t (map (algebraMap F.B F.Q) s) 0 := by
@@ -67,9 +67,9 @@ theorem hasPeriod_map_zero (t : G.Tate) (s : MvPowerSeries (Fin d) F.B) (hs : co
   | exact (GlobalTheory.T.formalChart_hasPeriod_linear_integral p C v O hv ε hε F G d c μ' hL hμ 0 0 t 0 0 0 hz hz).2 s hs
 
 /- English proof (translation)
-Unfold `comb`. Proceed by induction on `(Finset.univ : Finset ι) using Finset.induction_on with`. Consider the case `empty => simpa using hasPeriod_zero c F.frame t`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, add_comm, add_comm (b a * y a)]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hasPeriod_add_smul hv hε F c hL hμ t (b a) (hd a) ih (hy a)`.
+A detailed English derivation is pending.
 -/
 theorem hasPeriod_comb (t : G.Tate) {ι : Type} [Fintype ι] (e : ι → MvPowerSeries (Fin d) F.Q)
     (hd : ∀ i, DIn (⊤ : Ideal F.B) (e i)) (y : ι → F.B) (hy : ∀ i, c.HasPeriod F.θ t (e i) (y i))
@@ -83,7 +83,7 @@ theorem hasPeriod_comb (t : G.Tate) {ι : Type} [Fintype ι] (e : ι → MvPower
     exact hasPeriod_add_smul hv hε F c hL hμ t (b a) (hd a) ih (hy a)
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `(in_top_iff D).1 hD`. Establish `hs : constantCoeff s = 0`. Apply `F.frame.inj` to reduce the goal to its premises. Rewrite using `[← constantCoeff_map, h0, map_zero]`. Conclude with `hasPeriod_map_zero hv hε F c hL hμ t s hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasPeriod_integral (t : G.Tate) {D : MvPowerSeries (Fin d) F.Q}
     (hD : In (⊤ : Ideal F.B) D) (h0 : constantCoeff D = 0) : c.HasPeriod F.θ t D 0 := by
@@ -94,14 +94,14 @@ theorem hasPeriod_integral (t : G.Tate) {D : MvPowerSeries (Fin d) F.Q}
   exact hasPeriod_map_zero hv hε F c hL hμ t s hs
 
 /- English proof (translation)
-The claim follows from `h1.unique F.frame h2`.
+A detailed English derivation is pending.
 -/
 theorem hasPeriod_unique (t : G.Tate) {f : MvPowerSeries (Fin d) F.Q} {y y' : F.B}
     (h1 : c.HasPeriod F.θ t f y) (h2 : c.HasPeriod F.θ t f y') : y = y' :=
   h1.unique F.frame h2
 
 /- English proof (translation)
-Establish `h` using `hasPeriod_add_smul hv hε F c hL hμ t (-1) (din_of_in hfg) hf (hasPeriod_integral hv hε F c hL hμ t hfg h0)`. Rewrite `h` using `[map_neg, map_one, neg_one_smul, mul_zero, add_zero, neg_sub, add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hasPeriod_of_in (t : G.Tate) {f g : MvPowerSeries (Fin d) F.Q} {y : F.B}
     (hf : c.HasPeriod F.θ t f y) (hfg : In (⊤ : Ideal F.B) (f - g))
@@ -113,47 +113,43 @@ theorem hasPeriod_of_in (t : G.Tate) {f g : MvPowerSeries (Fin d) F.Q} {y : F.B}
 end Frame
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε G hG hGd F`. Take `⟨d, ⟨c⟩⟩` from `GlobalTheory.T.exists_pDivGroupFormalChart_of_connected p C v O hv G hG`. Establish `hdk` using `GlobalTheory.T.chartDim_add_finrank_dual_lie_eq_height p C v O hv G d c`. Establish `hCf` using `GlobalTheory.T.isTorsionFreePDThickeningFrame_valuation_integers p C v O hv`. Take `⟨k, e0, lb, hB0, hA0, hcob0, hLie0⟩` from `GlobalTheory.T.exists_adapted_quasiLog_basis_pDivGroup_lieDual p C v O hv G d c C hCf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨μ', hL, hμ⟩` from `GlobalTheory.T.exists_formalGroupLawLift_of_surjective F.B O F.θ F.frame.surj d c.μ c.isLaw`. Take `⟨Θ, hΘ⟩` from `frame_fraction_map p F.B O F.Q F.θ F.frame C hCf`. Take `⟨e, he0, hB, hA⟩` from `GlobalTheory.T.exists_lift_adapted_basis_quasi_logarithms_frame p C v O hv ε hε F G d c μ' hL hμ Θ hΘ k e0 hB0 hA0`. Take `⟨U, hU⟩` from `GlobalTheory.T.exists_frobenius_matrix_quasiLogarithm_basis p C v O hv ε hε F G d c μ' hL hμ k e hB hA`. Establish `hUu` using `GlobalTheory.T.frobenius_matrix_isUnit_adapted_basis p C v O hv ε hε F G d c μ' hL hμ k e hB hA U hU`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN1` using `GlobalTheory.T.frobenius_nilpotent_mod_maximal_connected_pDivGroup p C v O hv ε hε F G d c μ' hL hμ k e hB hA U fun i => (hU i).1`. Establish `hN2` using `GlobalTheory.T.isNil_dual_frobenius_alt p C v O hv ε hε F G d c μ' hL hμ k e hB hA hGd U hUu hU`. Use `haveI := integers_isIntegrallyClosedIn hv`. Use `haveI := G.finite_tate C`. Use `haveI := G.free_tate C`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `tb : Module.Basis (Fin G.height) ℤ_[p] G.Tate` to `Module.finBasisOfFinrankEq ℤ_[p] G.Tate (G.finrank_tate C)`. Take `⟨χ, hχ, -⟩` from `GlobalTheory.DieudonneSandwich.exists_dual_basis hε (G.pairing_flip_bijective C) tb.equivFun`. Establish `hpair : ∀ m m', epsPairing hε G (tb m) (χ m') = if m = m' then 1 else 0`. Introduce `m m'`. Establish `h1` using `epsPairing_smul hε G (tb m) (χ m')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hχ m' (tb m)]`. Establish `h2 : epsPairing hε G (tb m) (χ m') = tb.equivFun (tb m) m'` using `(epsEquiv hε).injective h1`. Rewrite using `[h2, Module.Basis.equivFun_self]`. Use `all_goals`. Distinguish the cases in `h : m = m'`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h, Ne.symm h]`. Establish `hQLe : ∀ l, QL μ' ⊤ (e l)` using `hB.1`. Establish `hDe : ∀ l, DIn (⊤ : Ideal F.B) (e l)` using `fun l => GlobalTheory.QLogDiff.dIn_of_QL p F.B O F.Q F.θ F.frame d μ' hL ⊤ (e l) (hQLe l)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose Y hY using fun l m => (GlobalTheory.T.exists_unique_period_quasiLogarithm_pDivGroup p C v O hv ε hε F G d c μ' hL hμ (e l) (tb m) (hQLe l)).exists`. Use `choose fχ wχ hfχ using fun m => GlobalTheory.T.exists_quasiLogarithm_of_dualCharacter p C v O hv ε hε F G d c μ' hL hμ (χ m)`. Use `choose g hg using fun m => (hB.2 (fχ m) (hfχ m).1).exists`. Take `⟨hbij, -⟩` from `GlobalTheory.T.pdDivGroupChart_forms_basis_and_differential p C v O hv G d c`. Set `w : Module.Basis (Fin d) O G.omega` to `Module.Basis.ofEquivFun (LinearEquiv.ofBijective (Fintype.linearCombination O c.form) hbij).symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : ∀ i, w i = c.form i`. Introduce `i`. Simplify using `[w, Module.Basis.ofEquivFun]`. Establish `hcomb0 : ∀ m, constantCoeff (fχ m - comb (g m) e) = 0` using `fun m => by`. Rewrite using `[map_sub, (hfχ m).1.1, (ql_comb hL.const e hQLe (g m)).1, sub_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hred : ∀ m, (∀ j, F.θ (g m (Sum.inr j)) = 0) ∧ ∀ i, lin (map Θ (fχ m)) i = algebraMap O C (F.θ (g m (Sum.inl i)))` using `fun m => by`. Use `GlobalTheory.T.logarithm_integers_adapted_basis_no_lie_components p C v O hv G d c k e0 lb hB0 hA0 hLie0 (map Θ (fχ m)) (ql_map F.θ Θ hΘ hμ hL.const (hfχ m).1) (formalGroupLawCoboundaryOne_map_eq_zero F.θ Θ hΘ hμ hL.const (hfχ m).2.1) (fun l => F.θ (g m l)) ?_` and prove the remaining obligations. Use `in_map_top F.θ Θ hΘ (hg m)` as an intermediate fact. Rewrite `this` using `[map_sub, map_comb F.θ Θ hΘ, show (fun l => map Θ (e l)) = e0 from funext he0]`. Then use the resulting hypothesis. Establish `hperO : ∀ l m, c.HasPeriod (RingHom.id O) (tb m) (e0 l) (F.θ (Y l m))` using `fun l m => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components.
 
-Establish `h` using `GlobalTheory.T.hasPeriod_reduce_along_theta_to_integers p C v O hv ε hε F G d c μ' hL hμ C hCf Θ hΘ (e l) (tb m) (Y l m) (hQLe l) (hY l m)`. Rewrite `h` using `[he0]`. Then use the resulting hypothesis. Use `⟨d, k, U, Matrix.of Y, Matrix.of g, tb, χ, w, lb, ?_, hUu, ?_, ?_, ?_, ?_, ?_, hN1, hN2, hpair, ?_, ?_⟩` and prove the remaining obligations. Use `Module.finrank_eq_card_basis lb` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use extensionality with `i m`. Establish `key : F.σ (Y i m) = ∑ l, (U * blk d k (p : F.B) 1) l i * Y l m`. Establish `hc` using `hasPeriod_comb hv hε F c hL hμ (tb m) e hDe (fun l => Y l m) (fun l => hY l m) (fun l => (U * blk d k (p : F.B) 1) l i)`. Establish `hf` using `GlobalTheory.T.quasiLogarithm_period_frobenius_twist p C v O hv ε hε F G d c μ' hL hμ (e i) (tb m) (Y i m) (hQLe i) (hY i m)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components.
 
-Use `hasPeriod_unique hv hε F c hL hμ (tb m) (hasPeriod_of_in hv hε F c hL hμ (tb m) hf (hU i).1 ?_) hc` and prove the remaining obligations. Rewrite using `[map_sub, constantCoeff_frob p F.s (hQLe i).1, (ql_comb hL.const e hQLe _).1, sub_zero]`. Rewrite using `[Matrix.map_apply, Matrix.of_apply, key, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [blk, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.transpose_apply, Matrix.of_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use extensionality with `l m`. Establish `key : (fun l => ∑ i, (U * blk d k (p : F.B) 1) l i * F.σ (g m i)) = fun l => (p : F.B) * g m l`. Establish `hP : QL μ' ⊤ (algebraMap F.B F.Q (p : F.B) • fχ m)`. Simplify using `using ql_add_smul hL.const (ql_zero (Q := F.Q) hL.const ⊤) (hfχ m).1 (p : F.B)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hB.2 _ hP).unique ?_ ?_` and prove the remaining obligations. Establish `e1 : algebraMap F.B F.Q (p : F.B) • fχ m - comb (fun l => ∑ i, (U * blk d k (p : F.B) 1) l i * F.σ (g m i)) e = -(frob p F.s (fχ m) - (p : F.Q) • fχ m) + frob p F.s (fχ m - comb (g m) e) + ∑ i, algebraMap F.B F.Q (F.σ (g m i)) • (frob p F.s (e i) - comb (fun l => (U * blk d k (p …`. Rewrite using `[comb_sum (fun l i => (U * blk d k (p : F.B) 1) l i) (fun i => F.σ (g m i)) e, frob_sub, frob_comb p F.s F.σ F.s_alg, map_natCast]`. Simplify using `only [comb, smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Use `in_add (in_add (in_neg (hfχ m).2.2.1) (in_frob p F.s F.σ F.s_alg (hg m))) (in_sum _ _ fun i _ => in_smul (hU i).1 _)` and prove the remaining obligations. Establish `e2 : algebraMap F.B F.Q (p : F.B) • fχ m - comb (fun l => (p : F.B) * g m l) e = algebraMap F.B F.Q (p : F.B) • (fχ m - comb (g m) e)`. Simplify using `only [comb, map_mul, mul_smul, smul_sub, Finset.smul_sum]`. Rewrite using `[e2]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `in_smul (hg m) _`. Use `congrFun key l` as an intermediate fact. Simplify using `only [Matrix.smul_apply, Matrix.transpose_apply, Matrix.of_apply, smul_eq_mul, ← this, Matrix.mul_apply, Matrix.map_apply]`. Use extensionality with `m m'`. Establish `key : ∑ l, g m l * Y l m' = F.a (Sandwich.mu ε * ofPadic p O (epsPairing hε G (tb m') (χ m)))`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `hasPeriod_unique hv hε F c hL hμ (tb m') (hasPeriod_comb hv hε F c hL hμ (tb m') e hDe (fun l => Y l m') (fun l => hY l m') (g m)) ?_` and prove the remaining obligations. Conclude with `hasPeriod_of_in hv hε F c hL hμ (tb m') ((hfχ m).2.2.2.2.2 (tb m')) (hg m) (hcomb0 m)`. Rewrite using `[Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[key, hpair]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : m' = m`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Introduce `i m`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hlie` using `GlobalTheory.T.tangent_eq_zero_of_formalGroupLawCoboundaryOne_eq_zero p C v O hv G d c (e0 (Sum.inl i)) (hB0.1 (Sum.inl i)).1 (hcob0 i)`. Establish `h2` using `GlobalTheory.T.quasiLogarithm_period_eq_tangent_hodgeTate p C v O hv G d c C hCf (e0 (Sum.inl i)) 0 (hB0.1 _) hlie (tb m)`. Simplify using `using (hperO _ m).unique hCf h2`. Introduce `m j`. Conclude with `(hred m).1 j`.
-
-Introduce `j m`. Conclude with `(hperO _ m).unique hCf (GlobalTheory.T.quasiLogarithm_period_eq_tangent_hodgeTate p C v O hv G d c C hCf (e0 (Sum.inr j)) (lb j) (hB0.1 _) (hLie0 j) (tb m))`. Introduce `m`. Rewrite using `[(hfχ m).2.2.2.2.1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Establish `h1` using `(hred m).2 i`. Rewrite `h1` using `[lin_map F.θ Θ hΘ, (hfχ m).2.2.2.1 i, hΘ]`. Rewrite using `[hw, Matrix.of_apply, hCf.inj h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem window_matrices : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ G : PDivGroup p O, PDivLat.IsConn G → PDivLat.IsConn G.dual → ∀ F : BFrame ε, ∃ (d k : ℕ) (U : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) (Y : Matrix (Fin d ⊕ Fin k) (Fin G.height) F.B) (Gm : Matrix (Fin G.height) (Fin d ⊕ Fin k) F.B) (tb : Module.Basis (Fin G.height) ℤ_[p] G.Tate) (χ : Fin G.height → G.dual.Tate) (w : Module.Basis (Fin d) O G.omega) (lb : Module.Basis (Fin k) O G.dual.Lie), d + k = G.height ∧ IsUnit U ∧ Y.map F.σ = blk d k (p : F.B) 1 * U.transpose * Y ∧ U * blk d k (p : F.B) 1 * (Gm.transpose.map F.σ) = (p : F.B) • Gm.transpose ∧ Gm * Y = F.a (Sandwich.mu ε) • (1 : Matrix (Fin G.height) (Fin G.height) F.B) ∧ (∀ i m, F.θ (Y (Sum.inl i) m) = 0) ∧ (∀ m j, F.θ (Gm m (Sum.inr j)) = 0) ∧ IsNil F.θ F.σ (U * blk d k (p : F.B) 1) ∧ IsNil F.θ F.σ (U.transpose⁻¹ * blk d k 1 (p : F.B)) ∧ (∀ m m', epsPairing hε G (tb m) (χ m') = if m = m' then 1 else 0) ∧ (∀ j m, F.θ (Y (Sum.inr j) m) = lb j (hodgeTate G (tb m))) ∧ ∀ m, dlog G (χ m) = ∑ i, F.θ (Gm m (Sum.inl i)) • w i := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε G hG hGd F

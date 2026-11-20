@@ -7,7 +7,7 @@ open UpperTheory.Gal.crystallineComparison
 namespace UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_multiset_sum]`. Establish `h` using `Multiset.sum_map_singleton (s.val.map f)`. Rewrite `h` using `[Multiset.map_map]`. Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_map_sum {α P : Type} (s : Finset α) (f : α → P) :
     s.val.map f = ∑ x ∈ s, ({f x} : Multiset P) := by
@@ -18,15 +18,15 @@ private theorem val_map_sum {α P : Type} (s : Finset α) (f : α → P) :
 
 open Classical in
 /- English proof (translation)
-Take `⟨hbij, hrk, -⟩` from `hIn k H C hC`. Use `Finset.sum_bij (fun D _ => D.map C.mkQ) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `D hD`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hD ⊢`. Use `hrk D hD.2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `D₁ h₁ D₂ h₂ he`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at h₁ h₂`. Conclude with `Subtype.ext_iff.mp (@hbij.1 ⟨D₁, h₁.2⟩ ⟨D₂, h₂.2⟩ he)`. Introduce `E hE`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hE`. Take `⟨⟨D, hD⟩, hDE⟩` from `hbij.2 E`. Use `⟨D, ?_, hDE⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use `⟨?_, hD⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hrk D hD` as an intermediate fact. Simplify using `only at hDE`. Rewrite `this` using `[hDE]`. Use linear arithmetic over natural numbers and integers. Introduce `D hD`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem partIn (hIn : CountIn) {k H P : Type} [Field k] [AddCommGroup H] [Module k H]
     [Module.Finite k H] (C : Submodule k H) (hC : Module.finrank k C = 1)
@@ -59,7 +59,7 @@ private theorem partIn (hIn : CountIn) {k H P : Type} [Field k] [AddCommGroup H]
 
 open Classical in
 /- English proof (translation)
-Use extensionality with `D`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false, not_and]`. Introduce `hD hCD`. Use `Submodule.finrank_mono hCD` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem partZero (hIn : CountIn) {k H : Type} [Field k] [AddCommGroup H] [Module k H]
     [Module.Finite k H] (C : Submodule k H) (hC : Module.finrank k C = 1)
@@ -74,15 +74,15 @@ private theorem partZero (hIn : CountIn) {k H : Type} [Field k] [AddCommGroup H]
 
 open Classical in
 /- English proof (translation)
-Take `⟨-, -, hrk⟩` from `hIn k H C hC`. Establish `hmaps : ∀ D ∈ (Finset.univ.filter fun D : Submodule k H => Module.finrank k D = j).filter (fun D => ¬ C ≤ D), D.map C.mkQ ∈ Finset.univ.filter (fun E : Submodule k (H ⧸ C) => Module.finrank k E = j)`. Introduce `D hD`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hD ⊢`. Rewrite using `[← hrk D hD.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hD.1`. Rewrite using `[Finset.smul_sum, ← Finset.sum_fiberwise_of_maps_to hmaps]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `E hE`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hE`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (g := fun _ => g E) (fun D hD => by rw [(Finset.mem_filter.mp hD).2])]`. Rewrite using `[Finset.sum_const]`. Use `congr 1`. Establish `hc : Nat.card k ^ j = Nat.card { D // ¬C ≤ D ∧ Submodule.map C.mkQ D = E }`. Rewrite using `[hOut k H C hC E, hE]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 1`. Use extensionality with `D`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨-, h2⟩, h3⟩`. Conclude with `⟨h2, h3⟩`. Introduce and unpack `⟨h2, h3⟩`. Use `⟨⟨?_, h2⟩, h3⟩` and prove the remaining obligations. Rewrite using `[hrk D h2, h3, hE]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem partOut (hIn : CountIn) (hOut : CountOut) {k H P : Type} [Field k] [Finite k]
     [AddCommGroup H] [Module k H] [Module.Finite k H] (C : Submodule k H)
@@ -124,29 +124,27 @@ private theorem partOut (hIn : CountIn) (hOut : CountOut) {k H P : Type} [Field 
 end UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `hIn hOut q n P F I _ v hv`. Take `⟨k, H, _, _, _, _, _, C, A', e, hq, hn, hC, hve⟩` from `hv`. Use `haveI : Finite H := Module.finite_of_finite k`. Use `haveI : Finite (Submodule k H) := Finite.of_injective (fun S : Submodule k H => (S : Set H)) SetLike.coe_injective`. Use `haveI : Finite (H ⧸ C) := Module.finite_of_finite k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : Finite (Submodule k (H ⧸ C)) := Finite.of_injective (fun S : Submodule k (H ⧸ C) => (S : Set (H ⧸ C))) SetLike.coe_injective`. Use `letI : Fintype (Submodule k H) := Fintype.ofFinite _`. Use `letI : Fintype (Submodule k (H ⧸ C)) := Fintype.ofFinite _`. Use `letI hG : ∀ m : ℕ, Fintype (Gr k H m) := fun m => (inferInstance : Fintype {D : Submodule k H // Module.finrank k D = m})`. Establish `key : ∀ j : Fin (n + 1), Multiset.map (v j) Finset.univ.val = ∑ D ∈ (Finset.univ.filter fun D : Submodule k H => Module.finrank k D = (j : ℕ)).filter (fun D => C ≤ D), ({F (A' (D.map C.mkQ))} : Multiset P) + ∑ D ∈ (Finset.univ.filter fun D : Submodule k H => Module.finrank k D = …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[← Finset.sum_ite]`. Rewrite using `[val_map_sum, ← Equiv.sum_comp (e j).symm]`. Rewrite using `[Finset.sum_subtype (F := hG j) (Finset.univ.filter fun D : Submodule k H => Module.finrank k D = (j : ℕ)) (p := fun D : Submodule k H => Module.finrank k D = (j : ℕ)) (by simp)]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `D _`. Establish `h` using `hve j ((e j).symm D)`. Rewrite `h` using `[Equiv.apply_symm_apply]`. Distinguish the cases in `hCD : C ≤ D.1`. Rewrite using `[h.1 hCD]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hCD]`. Rewrite using `[h.2 hCD]`. Simplify using `[hCD]`. Use `⟨fun j => ∑ E ∈ Finset.univ.filter (fun E : Submodule k (H ⧸ C) => Module.finrank k E = j), ({A' E} : Multiset P), ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Introduce `E hE`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hE`. It suffices to derive a contradiction. Establish `h1` using `Submodule.finrank_le E`. Establish `h2` using `Submodule.finrank_quotient_add_finrank C`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[key 0]`. Simplify using `only [Fin.val_zero]`. Establish `h0` using `partZero hIn C hC`. Establish `h1` using `partOut hIn hOut C hC (fun E => ({A' E} : Multiset P)) 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Treat this case separately.
 
-Simplify using `only [pow_zero, one_smul] at h1`. Use `congrArg₂ (· + ·) (congrArg (fun s => ∑ D ∈ s, ({F (A' (D.map C.mkQ))} : Multiset P)) h0) h1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `simp`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `(ext x; simp)`. Introduce `j`. Rewrite using `[key j.succ]`. Simplify using `only [Fin.val_succ]`. Establish `h2` using `partIn hIn C hC (fun E => ({F (A' E)} : Multiset P)) j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h3` using `partOut hIn hOut C hC (fun E => ({A' E} : Multiset P)) (j + 1)`. Rewrite `h3` using `[hq]`. Establish `h4 : ∑ E ∈ Finset.univ.filter (fun E : Submodule k (H ⧸ C) => Module.finrank k E = j), ({F (A' E)} : Multiset P) = Multiset.map F (∑ E ∈ Finset.univ.filter (fun E : Submodule k (H ⧸ C) => Module.finrank k E = j), ({A' E} : Multiset P))`. Rewrite using `[← val_map_sum, ← val_map_sum, Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← h4]`. Use `congrArg₂ (· + ·) h2 h3` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `simp`.
-
-Consider the case `(ext x; simp)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.ordDecomp_of :
     CountIn → CountOut → OrdDecomp := by

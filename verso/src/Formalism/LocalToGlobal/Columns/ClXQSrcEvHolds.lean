@@ -10,14 +10,14 @@ namespace Formalism.L2.Col
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Ker
 
 /- English proof (translation)
-Unfold `qOf`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem clS_card {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) : Nat.card (𝓞 E ⧸ P.asIdeal) = qOf P := by
   unfold qOf
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
 /- English proof (translation)
-Introduce `E _ _ _ P K _ n' c' n c hc hp hu psi D a b e hadd hint Ψ hsupp haD hinv r hr g hg hx hre _ heD A B hA hB _ wt y`. Substitute `hc` using the available equality. Conclude with `clS_cov (ciQ_mem P) hu hp (clS_card P) psi D a b e hadd hint Ψ hsupp haD hinv hr hg hx hre heD A B hA hB wt y`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem clS_covS : TruncatedUnfoldingChangeOfVarsSource := by
   intro E _ _ _ P K _ n' c' n c hc hp hu psi D a b e hadd hint Ψ hsupp haD hinv r hr g hg hx hre _ heD A B hA hB _ wt y
@@ -31,7 +31,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {cst : LocCst X (rowSG Pr sel mu)}
 
 /- English proof (translation)
-The claim follows from `clXQ_xiLawQ_of hCT clS_covS hok hd hb hD hi al be`.
+A detailed English derivation is pending.
 -/
 theorem clXQ_xiLawQ_ofT {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ} (hCT : TruncatedUnfoldingChangeOfVarsTarget)
     (hok : L.Ok Ch sel mu cst G m2) (hd : ∀ w : rowSG Pr sel mu, w.1 ∉ Pr.vGs → TwDegOne X w.1)

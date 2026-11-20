@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.BasicNot
 open Formalism.MainNotions.G Formalism.UG Formalism.L2.Forms Formalism.L2.G
 
 /- English proof (translation)
-Take `⟨D0, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩` from `h`. Consider the cases of `heq`. Conclude with `⟨D0, Lc, I, ψ, hd, ⟨_, g'⟩, hL, _, B, hBs, hB, iK, lam, hK, hPos, CH, rfl⟩`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem isRecG_retie {sc D Gt c H F} (h : IsRecG sc D Gt c H F) (g') : IsRecG sc D Gt c ⟨H.lev0, g'⟩ F := by
   obtain ⟨D0, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩ := h
@@ -20,7 +20,7 @@ theorem isRecG_retie {sc D Gt c H F} (h : IsRecG sc D Gt c H F) (g') : IsRecG sc
   exact ⟨D0, Lc, I, ψ, hd, ⟨_, g'⟩, hL, _, B, hBs, hB, iK, lam, hK, hPos, CH, rfl⟩
 
 /- English proof (translation)
-Take `⟨D0, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩` from `h`. Consider the cases of `heq`. Introduce `u w hg`. Conclude with `⟨rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem gatNum_of_isRecG {sc D Gt c H F} (h : IsRecG sc D Gt c H F) : GatNum sc D := by
   obtain ⟨D0, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩ := h
@@ -29,7 +29,7 @@ theorem gatNum_of_isRecG {sc D Gt c H F} (h : IsRecG sc D Gt c H F) : GatNum sc 
   exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Take `⟨D0, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩` from `h`. Consider the cases of `heq`. Conclude with `⟨groupCompatibilityOfRecursion D0 sc 1 Lc I ψ hd _ hL _ B hBs hB (CH.toHyp0 fun u w hg v s x => pos_C D0 sc 1 Lc I ψ hd _ hL B hBs hB iK lam hK hPos u w hg v s x).toHyp fun u w h => isHyperbolicAt_rec_of_placeIdentification D0 u w h (I u w h), rfl, rfl, isRecG_retie ⟨D0, Lc, I, ψ …`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem exists_tied_of_isRecG {sc D Gt c H F} (h : IsRecG sc D Gt c H F) :
     ∃ g : GroupCompatibilityAll D Gt c, g.herm.lev0 = H.lev0 ∧ g.forms = F ∧ IsRecG sc D Gt c g.herm g.forms := by
@@ -60,7 +60,7 @@ theorem tauRec_stages (w : B.places.Pl) [h : Fact (B.places.resChar w).Prime] (n
     @tauRec (assemble B C W V S N G) w h n = @tauRec (assemble B C W' V' S' N' G') w h n := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem omTied_stages (δ : ℂ) :
     Formalism.L2.GlobalTheoryTheory.OmegaCompatible (assemble B C W V S N G) δ ↔ Formalism.L2.GlobalTheoryTheory.OmegaCompatible (assemble B C W' V' S' N' G) δ := Iff.rfl
@@ -70,22 +70,22 @@ end Stages
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B}
 
 /- English proof (translation)
-Rewrite using `[aboveF, Set.Finite.mem_toFinset]`. Conclude with `HeightOneSpectrum.ext (w.ok.sel_ok v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem above_auto (w : ColW B f T) (v) : w.I.sel v ∈ aboveF (L := B.host.E) B.host.F v := by
   rw [aboveF, Set.Finite.mem_toFinset]
   exact HeightOneSpectrum.ext (w.ok.sel_ok v)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, (w.ok.xi_reads a _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem vals_auto (w : ColW B f T) (a P) : ∃ z : B.LL, B.embLL z = (((w.I.xi a).val P : ℂˣ) : ℂ) :=
   ⟨_, (w.ok.xi_reads a _).symm⟩
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `TC.root_of_ok w.ok ht.deep a ⟨P, Finset.mem_union_right _ hP⟩ (TC.Q_notMem_of_ok w.ok a P hP)`. Establish `hq : (Formalism.L2.Col.qOf P : B.fields.E) ≠ 0` using `GlobalTheory.Proof.NormalFormAtPrime.qOf_ne_zero P`. Establish `hq0 : Formalism.L2.Col.qOf P ≠ 0` using `Nat.cast_ne_zero.1 hq`. Establish `h1` using `Complex.isPrimitiveRoot_exp (Formalism.L2.Col.qOf P ^ (2 * B.R.m)) (pow_ne_zero _ hq0)`. Rewrite `h1` using `[← hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : IsPrimitiveRoot z (Formalism.L2.Col.qOf P ^ (2 * B.R.m))` using `h1.of_map_of_injective w.I.glob.σ₀.injective`. Establish `hm : 2 * B.R.m = (2 * B.R.m - 1) + 1` using `by have := B.R.two_le_m; omega`. Establish `h3` using `h2.pow (Nat.pos_of_ne_zero (pow_ne_zero _ hq0)) (a := Formalism.L2.Col.qOf P ^ (2 * B.R.m - 1)) (b := Formalism.L2.Col.qOf P) (by conv_lhs => rw [hm, pow_succ])`. Conclude with `⟨_, h3⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem roots_auto (w : ColW B f T) (ht : TC.IsTw w.I) (a) (P) (hP : P ∈ w.I.Q a) :
     ∃ z : B.LL, IsPrimitiveRoot z (Nat.card (𝓞 B.fields.E ⧸ P.asIdeal)) := by
@@ -102,9 +102,9 @@ theorem roots_auto (w : ColW B f T) (ht : TC.IsTw w.I) (a) (P) (hP : P ∈ w.I.Q
   exact ⟨_, h3⟩
 
 /- English proof (translation)
-Establish `hu : ¬ IsUnit (p : 𝓞 L)` using `fun h => by`. Establish `h1` using `h.map (Algebra.norm ℤ)`. Rewrite `h1` using `[show (p : 𝓞 L) = algebraMap ℤ (𝓞 L) p by simp, Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq]`. Conclude with `hp.one_lt.ne' (by simpa using h1)`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {(p : 𝓞 L)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp' : (p : 𝓞 L) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Conclude with `⟨⟨M, hM.isPrime, fun h => hp.ne_zero (by rw [h] at hp'; exact_mod_cast (Ideal.mem_bot.1 hp'))⟩, hp'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_over (L : Type) [Field L] [NumberField L] {p : ℕ} (hp : p.Prime) :
     ∃ v : HeightOneSpectrum (𝓞 L), (p : 𝓞 L) ∈ v.asIdeal := by
@@ -118,9 +118,7 @@ theorem exists_over (L : Type) [Field L] [NumberField L] {p : ℕ} (hp : p.Prime
   exact ⟨⟨M, hM.isPrime, fun h => hp.ne_zero (by rw [h] at hp'; exact_mod_cast (Ideal.mem_bot.1 hp'))⟩, hp'⟩
 
 /- English proof (translation)
-Establish `h` using `w.ok.sel_ok v`. Rewrite `hv` using `[← h]`. Establish `h1 : algebraMap (𝓞 B.host.F) (𝓞 B.host.E) (p : 𝓞 B.host.F) ∈ (w.I.sel v).asIdeal` using `hv`. Use `show algebraMap (𝓞 B.host.K) (𝓞 B.host.E) (p : 𝓞 B.host.K) ∈ (w.I.sel v).asIdeal`. Rewrite `h1`, the goal using `[map_natCast]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem under_mem (w : ColW B f T) {p : ℕ} {v : HeightOneSpectrum (𝓞 B.host.F)} (hv : (p : 𝓞 B.host.F) ∈ v.asIdeal) :
     (p : 𝓞 B.host.K) ∈ ((show HeightOneSpectrum (𝓞 B.host.E) from w.I.sel v).under (𝓞 B.host.K)).asIdeal := by
@@ -132,7 +130,7 @@ theorem under_mem (w : ColW B f T) {p : ℕ} {v : HeightOneSpectrum (𝓞 B.host
   exact h1
 
 /- English proof (translation)
-Use `⟨fun ⟨p⟩ => ⟨p.isTw, p.jets, p.half⟩, fun ⟨a, b, c⟩ => ?_⟩` and prove the remaining obligations. Take `⟨v₀, h₀⟩` from `exists_over B.host.F B.host.pde_prime`. Take `⟨v₁, h₁⟩` from `exists_over B.host.F B.host.pde'_prime`. Conclude with `⟨⟨a, b, (base_fields_primes_ok B w.px).1, above_auto w, c, ⟨_, _, under_mem w h₀, under_mem w h₁, fun v _ => w.I.sel v, fun v _ => w.I.sel v, fun v hv => ⟨above_auto w v, c v v₀ _ B.host.pde_prime hv h₀⟩, fun v hv => ⟨above_auto w v, c v v₁ _ B.host.pde'_prime hv h₁⟩⟩, ⟨fun _ _ = …`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pinned_iff (w : ColW B f T) : Pinned K B f T w ↔ TC.IsTw w.I ∧ ColIn.JetsIn w.I ∧ Half B w.I.sel := by
   refine ⟨fun ⟨p⟩ => ⟨p.isTw, p.jets, p.half⟩, fun ⟨a, b, c⟩ => ?_⟩
@@ -145,7 +143,7 @@ theorem pinned_iff (w : ColW B f T) : Pinned K B f T w ↔ TC.IsTw w.I ∧ ColIn
     ⟨fun _ _ => rfl, fun _ _ => rfl⟩, fun a P _ => vals_auto w a P, roots_auto w a⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h W V S N => ⟨(h W V S N).1, (h W V S N).2.2⟩, fun h W V S N => let ⟨a, ⟨t⟩⟩ := h W V S N; ⟨a, gatNum_of_isRecG t.isRec, ⟨t⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem gIs2_iff (w : ColW B f T) (G : GJStage B w.C) : GIs2 K w G ↔
     ∀ W V S N, Formalism.L2.Theta.VolTieG (w.D ⟨W, V, S, N, G⟩) ∧ Nonempty (ColumnDataSplitPrimes K w ⟨W, V, S, N, G⟩) :=
@@ -153,7 +151,7 @@ theorem gIs2_iff (w : ColW B f T) (G : GJStage B w.C) : GIs2 K w G ↔
     fun h W V S N => let ⟨a, ⟨t⟩⟩ := h W V S N; ⟨a, gatNum_of_isRecG t.isRec, ⟨t⟩⟩⟩
 
 /- English proof (translation)
-Establish `h1` using `(n.tp.psi_is v hv).ram`. Rewrite `h1` using `[n.psi]`. Use extensionality with `P`. Use `(h1 P).symm.trans ((T.psi_is v).ram P)` as an intermediate fact. Conclude with `not_iff_not.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cond_eq_of_twisted {w : ColW B f T} {Z : w.Lt} {Wt} {nch : NChoice (w.D Z)} (n : NchT w Z Wt nch) (v)
     (hv : (w.D Z).what₂.muAt v ≠ (w.D Z).what₂.mu0) : nch.Q v = T.Q v := by

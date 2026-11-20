@@ -8,7 +8,7 @@ open GlobalTheory.CompanionTheory.Ar.Crv
 namespace GlobalTheory.CompanionTheory.Ar.Crv
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Ch.deg_mono`.
+A detailed English derivation is pending.
 -/
 theorem deg_le_deg_of_le : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V] (L L' : C.I → AddSubgroup V), IsBun C L → IsBun C L' → (∀ i, L i ≤ L' i) → deg C L ≤ deg C L' :=
   @PositivityTheory.HtPt.Ch.deg_mono

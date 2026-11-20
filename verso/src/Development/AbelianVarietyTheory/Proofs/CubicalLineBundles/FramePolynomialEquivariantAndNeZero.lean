@@ -25,7 +25,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Frames.algebraic_laws GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c).2.2.2.2.2.2 S hS a n F hF t y y' (((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c S y y' y').1 t).2 ⟨g, h0, hd, h⟩)`.
+A detailed English derivation is pending.
 -/
 theorem evR_frChg_tri {S : Type} [CommRing S] [Algebra c.F S] (hS : IsReduced S) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
     {F : Rul Xo c} (hF : F ∈ sec Xo c a n) (t : Ix Dw → Sˣ)
@@ -36,11 +36,11 @@ theorem evR_frChg_tri {S : Type} [CommRing S] [Algebra c.F S] (hS : IsReduced S)
     (((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c S y y' y').1 t).2 ⟨g, h0, hd, h⟩)
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c K S φ y`. Take `⟨z1, h1, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c S z (fun b => (X b).transpose) 1 (fun b => by rw [Matrix.det_transpose]; exact hX b)`. Take `⟨z2, h2, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c S z1 (fun b => (T b).transpose) 1 (fun b => by rw [Matrix.det_transpose]; exact hT b)`. Establish `h3` using `(GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c S z z1 z2).2 _ _ _ _ h1 h2`. Simplify using `only [Units.val_one, _root_.mul_one, ← Matrix.transpose_mul] at h1 h2 h3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hG S φ z z1 X hX hz h1, ← hG S φ z z2 (fun b => X b * T b) (fun b => by rw [Matrix.det_mul]; exact (hX b).mul (hT b)) hz h3]`. Set `t : Ix Dw → Sˣ` to `fun i => match i with`. Consider the case `none => 1`. Consider the case `some p => (hd p.1 p.2).unit`. Rewrite using `[evR_frChg_tri hS hF t (fun b => (T b).transpose) h0 (fun _ _ => rfl) h2]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[wchar, Fintype.prod_option, Fintype.prod_sigma, t, ex]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem evalFr_mul_tri {K : Type} [CommRing K] [Algebra c.F K] {y : FrPt Xo c K} {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
     {F : Rul Xo c} (hF : F ∈ sec Xo c a n) {G : MvPolynomial (FrVar Dw.mult) K} (hG : IsFrPoly F y G)
@@ -70,27 +70,27 @@ end
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c K _ _ y a n F hF G hG`. Use `⟨fun σ X b t hX ht htri => ?_, fun σ σ₁ w hw hne hG0 => hne ?_⟩` and prove the remaining obligations. Establish `hred : IsReduced (CAt (σ.comp (algebraMap c.F K)))` using `inferInstanceAs (IsReduced ℂ)`. Establish `hdiag : ∀ i, t i i ≠ 0`. Rewrite `ht` using `[Matrix.det_of_upperTriangular htri]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `fun i => Finset.prod_ne_zero_iff.1 ht i (Finset.mem_univ i)`. Set `T : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ` to `Function.update (fun _ => 1) b t`. Establish `hT : ∀ b', IsUnit (T b').det`. Introduce `b'`. Distinguish the cases in `hb : b' = b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hb` using the available equality. Simplify `ht` using `[T]`. Simplify using `[T, Function.update_of_ne hb]`. Establish `h0 : ∀ τ i j, i < j → T τ j i = 0`. Introduce `b' i j hij`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hb : b' = b`. Substitute `hb` using the available equality. Simplify `htri hij` using `[T]`. Simplify using `[T, Function.update_of_ne hb, Matrix.one_apply_ne hij.ne']`. Establish `hd : ∀ τ i, IsUnit (T τ i i)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `b' i`. Distinguish the cases in `hb : b' = b`. Substitute `hb` using the available equality. Simplify `hdiag i` using `[T]`. Simplify using `[T, Function.update_of_ne hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `key : evalFr (MvPolynomial.map σ G) (fun b => X b * T b) = (∏ b, ∏ i : Fin (Dw.mult b), T b i i ^ a (b, i)) * evalFr (MvPolynomial.map σ G) X` using `evalFr_mul_tri hF hG hred (embAlg (c := c) σ) X T (fun b' => (Ne.isUnit (hX b') : IsUnit (X b').det)) hT h0 hd`. Establish `e1 : Function.update X b (X b * t) = fun b => X b * T b`. Use function extensionality and compare the values at `b'`. Distinguish the cases in `hb : b' = b`. Substitute `hb` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[T]`. Simplify using `[T, Function.update_of_ne hb]`. Rewrite using `[e1, key]`. Use `congr 1`. Rewrite using `[Finset.prod_eq_single b]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[T, ReciprocityTheory.MultiplicativeHeights.triChar]`. Introduce `b' _ hb`. Simplify using `[T, Function.update_of_ne hb]`. Simplify using the standard rewrite rules. Establish `hred : IsReduced (CAt σ)` using `inferInstanceAs (IsReduced ℂ)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c K _ σ₁ y`. Take `⟨g, s, hg, hzw⟩` from `(GlobalTheory.Frames.frChg_exists_unique E H Dw l Xo c _ z w).1 (hw.symm.trans hz.1.symm)`. Take `⟨z1, h1, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c _ z g 1 hg`. Take `⟨z2, h2, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c _ z1 (fun _ => 1) s (fun _ => by simp)`. Establish `h3` using `(GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c _ z z1 z2).2 _ _ _ _ h1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Units.val_one, _root_.mul_one, _root_.one_mul] at h1 h3`. Establish `e : z2 = w` using `(GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c _ z g s hg).unique h3 hzw`. Substitute `e` using the available equality. Establish `hv` using `hG _ σ₁ z z1 (fun b => (g b).transpose) (fun b => by rw [Matrix.det_transpose]; exact hg b) hz h1`. Set `t : Ix Dw → (CAt σ)ˣ` to `fun i => match i with`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Consider the case `none => s`. Consider the case `some _ => 1`. Rewrite using `[evR_frChg_tri hred hF t (fun _ => 1) (fun τ i j hij => Matrix.one_apply_ne hij.ne) (fun τ i => Matrix.one_apply_eq i) h2, hv, hG0]`. Simplify using `[evalFr]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isFrPoly_equiv_and_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ F ∈ sec Xo c a n, ∀ G : MvPolynomial (FrVar Dw.mult) K, IsFrPoly F y G → (∀ [DecidableEq (E →+* ℂ)] (σ : K →+* ℂ), IsEquiv (fun b (i : Fin (Dw.mult b)) => a (b, i)) (MvPolynomial.map σ G)) ∧ ∀ (σ : c.F →+* ℂ) (σ₁ : K →ₐ[c.F] CAt σ) (w : FrPt Xo c (CAt σ)), spMap σ₁.toRingHom ≫ y.x = w.x → evR Xo c F w ≠ 0 → G ≠ 0 := by
   intro E _ _ _ H Dw l Xo c K _ _ y a n F hF G hG

@@ -24,19 +24,19 @@ def JRel {d d₁ : ℕ} {W : Spc F E d} (W₁ : Spc F E d₁) (H' : Plane E d d�
       (χ t : ℂ) * ((absE F E t : ℝ) : ℂ) ^ z * ((χ' t' : ℂ) * ((absE F E t' : ℝ) : ℂ) ^ z') * T h = 0
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {d d₁ : ℕ} {W : Spc F E d} (W₁ : Spc F E d₁) (H' : Plane E d d₁) (χ χ' : Chr F E) (z z' : ℂ) :
     JRel (σ := σ) (W := W) W₁ H' χ z χ' z' 0 := fun _ _ _ _ _ _ _ => by simp
 
 /- English proof (translation)
-Use `set c₃ : ℂ := (χ₃ t₀ : ℂ) * ((absE F E t₀ : ℝ) : ℂ) ^ z₃ with hc₃`. Use `set c₄ : ℂ := (χ₄ t₀ : ℂ) * ((absE F E t₀ : ℝ) : ℂ) ^ z₄ with hc₄`. Establish `hD : c₃ - c₄ ≠ 0` using `sub_ne_zero.2 hne`. Use `⟨fun h => (T (m₀ * h) - c₄ * T h) / (c₃ - c₄), fun h => (c₃ * T h - T (m₀ * h)) / (c₃ - c₄), ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Pi.add_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `t m hm h`. Establish `e` using `h34 t t₀ m m₀ hm hm₀ h`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[← hc₄]`. Rewrite using `[eq_comm, ← mul_div_assoc, div_left_inj' hD]`. Take the linear combination `(-1 : ℂ) * e`. Introduce `t m hm h`. Establish `e` using `h43 t t₀ m m₀ hm hm₀ h`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[← hc₃]`. Rewrite using `[eq_comm, ← mul_div_assoc, div_left_inj' hD]`. Take the linear combination `e`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_split {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁} {χ₃ χ₄ : Chr F E} {z₃ z₄ : ℂ}
     {T : UA σ W.J → ℂ} (h34 : JRel W₁ H' χ₃ z₃ χ₄ z₄ T) (h43 : JRel W₁ H' χ₄ z₄ χ₃ z₃ T) {t₀ : (AE F E)ˣ} {m₀ : UA σ W.J}
@@ -64,9 +64,9 @@ theorem exists_split {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : 
     linear_combination e
 
 /- English proof (translation)
-Introduce `heq`. Establish `hn` using `congrArg norm heq`. Simplify using `only [norm_mul, Circle.norm_coe, one_mul, Complex.norm_cpow_eq_rpow_re_of_pos hr] at hn`. Apply `h` to reduce the goal to its premises. Establish `hl` using `congrArg Real.log hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `hl` using `[Real.log_rpow hr, Real.log_rpow hr]`. Conclude with `mul_right_cancel₀ (Real.log_ne_zero_of_pos_of_ne_one hr hr1) hl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_of_re_ne' {u v : Circle} {r : ℝ} (hr : 0 < r) (hr1 : r ≠ 1) {w w' : ℂ} (h : w.re ≠ w'.re) :
     (u : ℂ) * (r : ℂ) ^ w ≠ (v : ℂ) * (r : ℂ) ^ w' := by

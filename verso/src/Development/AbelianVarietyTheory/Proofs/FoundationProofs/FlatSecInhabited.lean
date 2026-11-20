@@ -23,7 +23,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨b, -, -, hb, t, ht⟩` from `GlobalTheory.PointOfFrames.exists_frBor (Formalism.L2.PjFree.Unf.ofPj U) hU hσ k x (U.un k' x') h`. Take `⟨γ, -, b', -, e⟩` from `(hU.2.2.2.1 k k' ⟨_, hb⟩ x').1 ⟨t, ht⟩`. Conclude with `congrArg Sigma.fst e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem comp_eq {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r} (hσ : GoodEmb c σ) (hU : IsUnf U) {k k' : U.Comp}
     (x : (U.X k).dom) (x' : (U.X k').dom) (h : (U.un k x).x = (U.un k' x').x) : k' = k := by
@@ -32,29 +32,27 @@ theorem comp_eq {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r} (hσ : GoodEm
   exact congrArg Sigma.fst e
 
 /- English proof (translation)
-Establish `hpq : 1 ≤ Dw.p + Dw.q` using `by omega`. Establish `hP` using `hasPts U hpq hg hU Z`. Take `⟨y₀, h₀, hy₀⟩` from `GlobalTheory.FlatLine.DefinitePoint.main E H Dw l Xo c hq hF Z`. Take `⟨f, f', m₁, m₂, i₁, i₂, hm, hv⟩` from `exists_flatRule E H Dw l Xo c hq Z τ y₀ h₀ hy₀`. Establish `chg : ∀ (S : Type) [CommRing S] [Algebra c.F S] (y z : FrPt Xo c S), LiesOn Z y → FrMap (Algebra.ofId c.F S) y₀ z → ∃ (g : (∀ ρ : E →+* ℂ, Matrix (Fin (Dw.mult ρ)) (Fin (Dw.mult ρ)) S)) (a : Sˣ), (∀ ρ, IsUnit (g ρ).det) ∧ FrChg g (a : S) y z` using `fun S _ _ y z hy hz => (frChg_exists_unique E H Dw l Xo c S y z).1 (hz.1.trans (hy₀ S y hy).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinf : ∀ σ : c.F →+* ℂ, ∃ b : ℝ, 0 < b ∧ homN (U (goodOf c σ)) x (wtOf Dw (flatWt Dw τ) 0) f '' framesOn (U (goodOf c σ)) Z = {b}`. Introduce `σ₀`. Take `⟨⟨⟨k, x₀⟩, hx₀⟩, ht⟩` from `hP.1 σ₀`. Establish `hσ` using `goodEmb_goodOf c σ₀`. Generalize the expression as in `goodOf c σ₀ = σ at *`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hV` using `hU σ hσ`. Take `⟨z, hz⟩` from `exists_bc (Algebra.ofId c.F (CAt σ)) y₀`. Establish `hτ : ∀ k, relab c σ τ.1 ∈ ((U σ).X k).Ψ` using `fun k => ((hV.2.1 k).2 _).2 (by`. Establish `hσ0 : σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0` using `hσ`. Conclude with `(congrArg σ (Subtype.ext τ.2)).trans hσ0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `rd : ∀ k y (hy : (⟨k, y⟩ : Σ k, Frame ((U σ).X k).Ψ r) ∈ framesOn (U σ) Z) g a, FrChg g a ((U σ).un k ⟨y, hy.1⟩) z → rdU (U σ) f k y = toC (g τ.1).det` using `fun k y hy g a hc => by`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, hy.1, dif_pos]`. Conclude with `congrArg toC (hv _ _ z g a (ht _ hy hy.1) hz hc)`. Establish `hh : IsHorizontal (U σ) Z τ f` using `fun k => by`. Distinguish the cases in `hne : ∃ y, (⟨k, y⟩ : Σ k, Frame ((U σ).X k).Ψ r) ∈ framesOn (U σ) Z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y₁, h₁⟩` from `hne`. Use `⟨hτ k, rdU (U σ) f k y₁ * (mat y₁ ⟨_, hτ k⟩).det, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨g₁, a₁, -, c₁⟩` from `chg _ _ z h₁.2 hz`. Take `⟨g, a, -, c₂⟩` from `(frChg_exists_unique E H Dw l Xo c _ ((U σ).un k ⟨y, hy.1⟩) ((U σ).un k ⟨y₁, h₁.1⟩)).1 ((hy₀ _ _ h₁.2).trans (hy₀ _ _ hy.2).symm)`. Establish `c₃` using `(frChg_refl_and_comp E H Dw l Xo c _ _ _ _).2 _ _ _ _ c₂ c₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `GlobalTheory.FlatChange.det_frChg E H Dw l Xo c σ r (U σ) hq hσ hV k ⟨y, hy.1⟩ ⟨y₁, h₁.1⟩ τ (hτ k) g a c₂`. Rewrite using `[rd k y hy _ _ c₃, rd k y₁ h₁ _ _ c₁, e, horizGen, Matrix.det_mul, mul_assoc, mul_assoc, mul_inv_cancel₀ (hy.1 _).1, mul_one]`. Both sides reduce to the same expression. Conclude with `⟨hτ k, 0, fun y hy => absurd ⟨y, hy⟩ hne⟩`. Take `⟨b, hb⟩` from `hh.homN_const hσ hV x k`.
+Both sides reduce to the same expression. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨b, ?_, image_eq_singleton_iff.2 ⟨⟨_, hx₀⟩, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `homN_mul (U σ) x (even_wtOf (-flatWt Dw τ) 0) (even_wtOf (flatWt Dw τ) 0) f' f ⟨k, x₀⟩ hx₀.1`. Rewrite `h1` using `[← wtOf_add', neg_add_cancel, wtOf_zero, mul_comm f', hm, homN_idem _ x hx₀.1 hx₀.2 (ht _ hx₀ _), hb x₀ hx₀]`. Use `lt_of_le_of_ne (hb x₀ hx₀ ▸ homN_nonneg _ _ _ _ _) fun h0 => ?_` and prove the remaining obligations. Rewrite `h1` using `[← h0, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `one_ne_zero h1`. Introduce and unpack `⟨k', y⟩ hy`. Take `rfl : k' = k` from `comp_eq hσ hV ⟨x₀, hx₀.1⟩ ⟨y, hy.1⟩ ((hy₀ _ _ hx₀.2).trans (hy₀ _ _ hy.2).symm)`. Conclude with `hb y hy`. Use `choose cI hI₁ hI₂ using hinf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `choose ρ hρ using GlobalTheory.FlatLine.PlaceConst.nval_det_frChg_const E H Dw l Xo c hpq hg y₀ τ.1`. Take `⟨S, hS0, hS⟩` from `GlobalTheory.FlatLine.exists_finset_integral_of_definite E H Dw l Xo c hq hp hg y₀`. Use `⟨⟨f, f', m₁, m₂, i₁, i₂, hm, cI, hI₁, hI₂, ρ, fun w => image_eq_singleton_iff.2 ⟨hP.2 w, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨_, T, io, e, ho, y, hy, η, hη, rfl⟩, rfl⟩`. Use `letI := io.toAlgebra`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨z, hz⟩` from `exists_bc (Algebra.ofId c.F T.Fr) y₀`. Take `⟨g, a, -, hc⟩` from `chg _ y.1 z hy.2 hz`. Use `show nval T.V e (evR Xo c f y.1) = _`. Rewrite using `[hv _ _ z g a y.2.1 hz hc, hρ w T io e ho y.1 z g a y.2.2 hz hc]`. Simplify using `[flDefect_vw, hq]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(S.finite_toSet.biUnion fun s hs => finite_vAdd (hS0 s hs)).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_iUnion, Function.mem_support, not_exists, not_not, Int.cast_eq_zero] at hn`. Take `⟨_, ⟨_, T, io, e, ho, -⟩, -⟩` from `hP.2 w`. Use `letI := io.toAlgebra`.
-
-Take `⟨z, hz⟩` from `exists_bc (Algebra.ofId c.F T.Fr) y₀`. Establish `hi` using `hS T io (fun s hs => by rw [ho.2 s]; exact mul_eq_zero_of_right _ (hn s hs)) z hz`. Establish `h1` using `hρ w T io e ho z z _ _ hi hz (frChg_refl_and_comp E H Dw l Xo c _ z z z).1`. Rewrite `h1` using `[Matrix.det_one, nval_of_ne one_ne_zero, EReal.coe_eq_coe_iff]`. Conclude with `hw (h1.symm.trans (by simp [vV]))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_flatSec {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (hq : Dw.q = 0) (hp : 1 ≤ Dw.p)
     (hg : ∀ p : ℕ, p.Prime → l.GoodAt p) (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (hF : FnAlgClosed Xo c)
@@ -130,13 +128,13 @@ theorem nonempty_flatSec {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (
     exact hw (h1.symm.trans (by simp [vV]))
 
 /- English proof (translation)
-Take `⟨D, hp, hq⟩` from `GlobalTheory.CM.CyclotomicTwentyEight.exists_datum`. Establish `hpq : 1 ≤ D.p + D.q` using `by omega`. Take `⟨l, -, hg, -⟩` from `GlobalTheory.exists_level_goodAt_all_primes_and_idx _ GlobalTheory.CM.CyclotomicTwentyEight.host 1 one_pos`. Take `⟨Xo⟩` from `GlobalTheory.Moduli.moduli_scheme_exists _ _ D l hpq`. Take `⟨c₀⟩ : Nonempty (Coeff l)` from `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, c, -, hc⟩` from `GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ D l Xo c₀ hpq`. Take `⟨⟨Z⟩, -⟩` from `GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ D l Xo c hpq`. Establish `hU : ∀ σ : c.F →+* ℂ, ∃ U : Unf Xo c σ (D.p + D.q), GoodEmb c σ → IsUnf U` using `fun σ => by`. Distinguish the cases in `hσ : GoodEmb c σ`. Take `⟨U, hU⟩` from `GlobalTheory.IsUnfEx.exists_isUnf GlobalTheory.closing_of_abelianSchemeLaws GlobalTheory.QNorm.hasseNormSt GlobalTheory.abelianSchemeLaws_all.1.secBaseChange GlobalTheory.abelianSchemeLaws_all.2.secTwist _ _ D l Xo c σ hpq hσ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U.toPj, fun _ => hU⟩`. Conclude with `⟨{ Comp := PEmpty, X := fun k => k.elim, un := fun k => k.elim }, fun h => absurd h hσ⟩`. Use `choose U hU using hU`. Choose the witnesses or unpack the hypotheses as in `⟨τ⟩ : Nonempty (Psi GlobalTheory.CM.CyclotomicTwentyEight.host) := by`. Take `⟨ρ⟩ : Nonempty (GlobalTheory.CM.CyclotomicTwentyEight.CyclotomicFieldTwentyEight →+* ℂ)` from `inferInstance`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : ρ (GlobalTheory.CM.CyclotomicTwentyEight.host.rt : GlobalTheory.CM.CyclotomicTwentyEight.CyclotomicFieldTwentyEight) = GlobalTheory.CM.CyclotomicTwentyEight.host.rt0`. Use `exacts [⟨⟨ρ, h⟩⟩, ⟨⟨_, conj_mem h⟩⟩]`. Conclude with `⟨_, _, _, _, _, D, l, Xo, c, U, Z, τ, hp.ge, hU, nonempty_flatSec U x hq hp.ge hg hU (hc c le_rfl) Z τ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_flatSec (x : ℝ) : ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E)
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l)

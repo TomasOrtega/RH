@@ -94,7 +94,7 @@ def GaloisRepOfPolarizedCuspidal : Prop :=
       ∃ (r : G E Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (E →+* Qbar l) → Multiset ℤ), IsGalRepOf π χ ι r wt HT
 
 /- English proof (translation)
-The claim follows from `H E Ω l ι a ha π _ hr (isPolarized_of_isCsd hc)`.
+A detailed English derivation is pending.
 -/
 theorem GaloisRepOfPolarizedCuspidal.of_isCsd (H : GaloisRepOfPolarizedCuspidal) {E : Type} (Ω : Type) [Field E]
     [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
@@ -110,7 +110,7 @@ namespace GlobalTheory.GalOfCusp
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] {a : ℕ}
 
 /- English proof (translation)
-Take `⟨_, _, _, -, H⟩` from `H`. Conclude with `H.nu_eq _ _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rec_algNorm {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
     {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) (σ : SmIrr (GL (Fin a) (w.adicCompletion E))) :
@@ -122,7 +122,7 @@ variable [IsCMField E] {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {
   {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ} {HT : (E →+* Qbar l) → Multiset ℤ}
 
 /- English proof (translation)
-The claim follows from `((H.away w hl A h rc hrc σ hσ).wdOf_eq hl).trans (rec_algNorm hrc σ)`.
+A detailed English derivation is pending.
 -/
 theorem IsGalRepOf.wdOf_eq (H : IsGalRepOf π χ ι r wt HT) {w : HeightOneSpectrum (𝓞 E)}
     (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {A : ValuationSubring Ω} {h : IsPlaceOver A w}
@@ -132,7 +132,7 @@ theorem IsGalRepOf.wdOf_eq (H : IsGalRepOf π χ ι r wt HT) {w : HeightOneSpect
   ((H.away w hl A h rc hrc σ hσ).wdOf_eq hl).trans (rec_algNorm hrc σ)
 
 /- English proof (translation)
-Take `⟨x, h1, h2⟩` from `H.pure w hl A h`. Rewrite using `[h1.wdOf_eq hl]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem IsGalRepOf.tempered_wdOf (H : IsGalRepOf π χ ι r wt HT) {w : HeightOneSpectrum (𝓞 E)}
     (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {A : ValuationSubring Ω} (h : IsPlaceOver A w) :

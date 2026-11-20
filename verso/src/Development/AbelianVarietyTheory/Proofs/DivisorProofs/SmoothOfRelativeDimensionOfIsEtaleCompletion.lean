@@ -11,7 +11,7 @@ open scoped TensorProduct
 namespace GlobalTheory.RegSmooth
 
 /- English proof (translation)
-Rewrite using `[← TensorProduct.spanFinrank_top_eq_of_residueField (⊤ : Submodule R M) Module.Finite.fg_top, ← Module.finrank_eq_spanFinrank_of_free]`. Conclude with `(TensorProduct.AlgebraTensorModule.congr (LinearEquiv.refl (ResidueField R) (ResidueField R)) (Submodule.topEquiv (R := R) (M := M))).finrank_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanFinrank_top_eq_finrank_residueField (R : Type*) [CommRing R] [IsLocalRing R]
     (M : Type*) [AddCommGroup M] [Module R M] [Module.Finite R M] :
@@ -22,7 +22,7 @@ theorem spanFinrank_top_eq_finrank_residueField (R : Type*) [CommRing R] [IsLoca
     (Submodule.topEquiv (R := R) (M := M))).finrank_eq
 
 /- English proof (translation)
-Rewrite using `[spanFinrank_top_eq_finrank_residueField, spanFinrank_top_eq_finrank_residueField]`. Set `e₁` to `TensorProduct.AlgebraTensorModule.cancelBaseChange A B (ResidueField B) (ResidueField B) N`. Set `e₂` to `TensorProduct.AlgebraTensorModule.cancelBaseChange A (ResidueField A) (ResidueField B) (ResidueField B) N`. Rewrite using `[e₁.finrank_eq, ← e₂.finrank_eq, Module.finrank_baseChange]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem spanFinrank_top_tensor_eq {A B : Type*} [CommRing A] [IsLocalRing A] [CommRing B]
     [IsLocalRing B] [Algebra A B] [IsLocalHom (algebraMap A B)] {N : Type*} [AddCommGroup N]
@@ -36,15 +36,13 @@ theorem spanFinrank_top_tensor_eq {A B : Type*} [CommRing A] [IsLocalRing A] [Co
   rw [e₁.finrank_eq, ← e₂.finrank_eq, Module.finrank_baseChange]
 
 /- English proof (translation)
-Set `g : B ⊗[A] I →ₗ[B] B` to `(TensorProduct.AlgebraTensorModule.rid A B B).toLinearMap ∘ₗ TensorProduct.AlgebraTensorModule.lTensor B B I.subtype`. Establish `hg : Function.Injective g`. Establish `h1 : Function.Injective (TensorProduct.AlgebraTensorModule.lTensor B B I.subtype)` using `Module.Flat.lTensor_preserves_injective_linearMap (M := B) I.subtype Subtype.val_injective`. Conclude with `(TensorProduct.AlgebraTensorModule.rid A B B).injective.comp h1`. Establish `hr : Submodule.map g ⊤ = I.map (algebraMap A B)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, -, rfl⟩`. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `tmul b i`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `: g (b ⊗ₜ i) = b * algebraMap A B i`. Simplify using `[g, Algebra.smul_def, mul_comm]`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ i.2)`. Consider the case `add x y hx hy => rw [map_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `add_mem hx hy`. Rewrite using `[Ideal.map, Ideal.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Use `⟨(1 : B) ⊗ₜ ⟨i, hi⟩, trivial, ?_⟩` and prove the remaining obligations. Simplify using `[g, Algebra.smul_def]`.
-
-Rewrite using `[← hr, Submodule.spanFinrank_map_eq_of_injective g hg]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanFinrank_map_eq_of_flat {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [Module.Flat A B] (I : Ideal A) :
@@ -74,7 +72,7 @@ theorem spanFinrank_map_eq_of_flat {A B : Type*} [CommRing A] [CommRing B] [Alge
   rw [← hr, Submodule.spanFinrank_map_eq_of_injective g hg]
 
 /- English proof (translation)
-Establish `: (maximalIdeal B).LiesOver (maximalIdeal A)` using `⟨(IsLocalRing.maximalIdeal_comap (algebraMap A B)).symm⟩`. Establish `: Algebra.HasGoingDown A B` using `Algebra.HasGoingDown.of_flat`. Establish `e` using `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (maximalIdeal A) (maximalIdeal B)`. Rewrite `e` using `[h, Ideal.map_quotient_self, Ideal.height_bot, add_zero]`. Rewrite using `[← IsLocalRing.maximalIdeal_height_eq_ringKrullDim, ← IsLocalRing.maximalIdeal_height_eq_ringKrullDim, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ringKrullDim_eq_of_flat_of_map_maximalIdeal {A B : Type*} [CommRing A] [IsLocalRing A]
     [IsNoetherianRing A] [CommRing B] [IsLocalRing B] [IsNoetherianRing B] [Algebra A B]
@@ -89,9 +87,9 @@ theorem ringKrullDim_eq_of_flat_of_map_maximalIdeal {A B : Type*} [CommRing A] [
   rw [← IsLocalRing.maximalIdeal_height_eq_ringKrullDim, ← IsLocalRing.maximalIdeal_height_eq_ringKrullDim, e]
 
 /- English proof (translation)
-Establish `hd` using `ringKrullDim_eq_of_flat_of_map_maximalIdeal h`. Use `⟨IsRegularLocalRing.of_spanFinrank_maximalIdeal_le A ?_, hd⟩` and prove the remaining obligations. Establish `e : (maximalIdeal A).spanFinrank = (maximalIdeal B).spanFinrank`. Rewrite using `[← h, spanFinrank_map_eq_of_flat, spanFinrank_top_tensor_eq, Submodule.spanFinrank_top]`. Rewrite using `[e, hd]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((isRegularLocalRing_iff B).mp inferInstance).le`.
+A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_of_flat_of_map_maximalIdeal {A B : Type*} [CommRing A] [IsLocalRing A]
     [IsNoetherianRing A] [CommRing B] [IsRegularLocalRing B] [Algebra A B]
@@ -106,9 +104,9 @@ theorem isRegularLocalRing_of_flat_of_map_maximalIdeal {A B : Type*} [CommRing A
   exact ((isRegularLocalRing_iff B).mp inferInstance).le
 
 /- English proof (translation)
-Use `algebraize [φ]`. Establish `: IsLocalHom (algebraMap A B)`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`. Establish `hm : a ∈ maximalIdeal A` using `(mem_maximalIdeal a).2 hna`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: algebraMap A B a ∈ maximalIdeal B` using `h ▸ Ideal.mem_map_of_mem _ hm`. Conclude with `(mem_maximalIdeal _).1 this ha`. Conclude with `isRegularLocalRing_of_flat_of_map_maximalIdeal h`.
+A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_of_flat_of_map_maximalIdeal' {A B : Type*} [CommRing A] [IsLocalRing A]
     [IsNoetherianRing A] [CommRing B] [IsRegularLocalRing B] (φ : A →+* B) (hf : φ.Flat)
@@ -124,7 +122,7 @@ theorem isRegularLocalRing_of_flat_of_map_maximalIdeal' {A B : Type*} [CommRing 
   exact isRegularLocalRing_of_flat_of_map_maximalIdeal h
 
 /- English proof (translation)
-The claim follows from `isRegularLocalRing_of_flat_of_map_maximalIdeal' φ h.1 h.2.1`.
+A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_of_isEtaleCompletion {A B : Type} [CommRing A] [IsLocalRing A]
     [IsNoetherianRing A] [CommRing B] [IsRegularLocalRing B] (φ : A →+* B)
@@ -133,15 +131,15 @@ theorem isRegularLocalRing_of_isEtaleCompletion {A B : Type} [CommRing A] [IsLoc
   isRegularLocalRing_of_flat_of_map_maximalIdeal' φ h.1 h.2.1
 
 /- English proof (translation)
-Establish `: JacobsonSpace X` using `LocallyOfFiniteType.jacobsonSpace f`. Establish `hloc : IsZariskiLocalAtSource (@SmoothOfRelativeDimension n)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_openCover (P := @SmoothOfRelativeDimension n) X.affineOpenCover.openCover fun i => ?_` and prove the remaining obligations. Set `R : CommRingCat.{0}` to `X.affineOpenCover.X i`. Set `x : Spec R ⟶ X` to `X.affineOpenCover.f i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hx : IsOpenImmersion x` using `X.affineOpenCover.map_prop i`. Set `φ : CommRingCat.of F ⟶ R` to `Spec.preimage (x ≫ f)`. Use `letI : Algebra F R := φ.hom.toAlgebra`. Establish `hφ : x ≫ f = spMap (algebraMap F R)` using `(Spec.map_preimage (x ≫ f)).symm`. Express the relevant statement in the definitionally equal form `SmoothOfRelativeDimension n (x ≫ f)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hφ]`. Establish `hft : LocallyOfFiniteType (spMap (algebraMap F R))` using `by rw [← hφ]; infer_instance`. Rewrite `hft` using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Establish `: Algebra.FiniteType F R` using `RingHom.finiteType_algebraMap.mp hft`. Use `GlobalTheory.RegGenSmooth.smooth_of_regular F R n fun m hm => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `y : Spec R` to `(⟨m, hm.isPrime⟩ : PrimeSpectrum R)`. Establish `hcl : IsClosed ({x y} : Set X)`. Establish `h1 : IsClosed ({y} : Set (Spec R))` using `(PrimeSpectrum.isClosed_singleton_iff_isMaximal _).2 hm`. Establish `he` using `x.isOpenEmbedding`. Establish `hlc` using `IsLocallyClosed.image h1.isLocallyClosed he.isInducing he.isOpen_range.isLocallyClosed`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hlc` using `[Set.image_singleton]`. Conclude with `isClosed_singleton_of_isLocallyClosed_singleton hlc`. Take `⟨h1, h2⟩` from `h (x y) hcl`. Set `e` to `(asIso (x.stalkMap y) ≪≫ Spec.stalkIso R y).commRingCatIsoToRingEquiv`. Conclude with `⟨IsRegularLocalRing.of_ringEquiv e, (ringKrullDim_eq_of_ringEquiv e).symm.trans h2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_isRegularLocalRing {F : Type} [Field F] [PerfectField F]
     {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of F)) [LocallyOfFiniteType f] (n : ℕ)

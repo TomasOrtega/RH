@@ -15,11 +15,9 @@ open ReciprocityTheory.ChartRestriction.T2 (PadicCoeff FracTop IsFGTop cupFG IsC
 
 set_option maxHeartbeats 8000000 in
 /- English proof (translation)
-Take `⟨ha, hb, hc, hEE, hee, hpts, hρπ, hbl, hsurj, hblk, hcard1, hEsum, hE0, hδ0, hτ0, hne, hC0, hOne0⟩` from `hR`. Take `⟨p1, p2, p3, -⟩` from `hOne0`. Substitute `hl` using the available equality. Introduce `ι _ _ colIdx hinj Aw pl Av j e' what₂ qs s H0 Sha uT wT sT mT dT UT cols eO cB vδ N h0 c1 L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz F Vo VS Io IS T₁ T₂ _ _ _ _ _ _ _ ρ₁ ρ₂ inc π γ lam VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ Dat uD huD vD hpD heD _ _ _ _ Fs Hf₁ I γQ ζ ζO nQ u s …`. Conclude with `realization_second_form ℓ O X X' T T' Z p q b ha (fun x _ => hb x) d R' hc Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hEE hee π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum hF L tens v₁ κ V iL qV Ff κz F Vo VS Io IS ε T₁ T₂ ρ₁ ρ₂ …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨δx, q1, q2, q3, q4⟩` from `hpts x'`. Conclude with `⟨δx, q1, q2, q3, q4, (hrat0 x' hx').1, (hrat0 x' hx').2⟩)`. Use `hE0 hτ0 hne hFix hRows`. Use the proof step `(fun c hc2 => ⟨(hC0 c hc2).1, (hC0 c hc2).2.1, (hC0 c hc2).2.2.2, (hC c hc2).1, fun w hw => ⟨((hC c hc2).2.1 w hw).1, fun g _ m => hba c (by rintro rfl; simp at hc2) g m, ((hC c hc2).2.1 w hw).2⟩, (hC c hc2).2.2⟩)`. Use the proof step `⟨p1, p2, p3, hOne⟩`.
-
-Use `hrest conj nlam m cloudC lowsC cloudR lowsR h0C h0R V₂ ρV ρA iV qA wD`. Use `τH DatH bH wH mH hrows hseq hwD hliftR hH0 hJC hJR`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem realDisplay2_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[ℓ] O] [Module.Finite ℤ_[ℓ] O]
@@ -81,11 +79,9 @@ theorem realDisplay2_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [Is
 
 set_option maxHeartbeats 8000000 in
 /- English proof (translation)
-Take `⟨ha, hb, hc, hEE, hee, hpts, hρπ, hbl, hsurj, hblk, hcard1, hEsum, hE0, hδ0, hτ0, hne, hC0, hOne0⟩` from `hR`. Take `⟨p1, p2, p3, -⟩` from `hOne0`. Substitute `hl` using the available equality. Introduce `ι _ _ colIdx hinj Aw pl Av j e' what₂ qs s H0 Sha uT wT sT mT dT UT cols eO cB vδ N h0 c1 L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz F Vo VS Io IS T₁ T₂ _ _ _ _ _ _ _ ρ₁ ρ₂ inc π γ lam VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ Dat uD huD vD hpD heD _ _ _ _ Fs Hf₁ I γQ ζ ζO nQ u s …`. Conclude with `realization_weight_form ℓ O X X' T T' Z p q b ha (fun x _ => hb x) d R' hc Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hEE hee π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum hF L tens v₁ κ V iL qV Ff κz F Vo VS Io IS ε T₁ T₂ ρ₁ ρ₂ …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨δx, q1, q2, q3, q4⟩` from `hpts x'`. Conclude with `⟨δx, q1, q2, q3, q4, (hrat0 x' hx').1, (hrat0 x' hx').2⟩)`. Use `hE0 hτ0 hne hFix hRows`. Use the proof step `(fun c hc2 => ⟨(hC0 c hc2).1, (hC0 c hc2).2.1, (hC0 c hc2).2.2.2, (hC c hc2).1, fun w hw => ⟨((hC c hc2).2.1 w hw).1, fun g _ m => hba c (by rintro rfl; simp at hc2) g m, ((hC c hc2).2.1 w hw).2⟩, (hC c hc2).2.2⟩)`. Use the proof step `⟨p1, p2, p3, hOne⟩`.
-
-Use `hrest conj nlam m cloudC lowsC cloudR lowsR h0C h0R V₂ ρV ρA iV qA wD`. Use `τH DatH bH wH mH hrows hseq hwD hliftR hH0 hJC hJR`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem realDisplayWA_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[ℓ] O] [Module.Finite ℤ_[ℓ] O]
@@ -147,11 +143,9 @@ theorem realDisplayWA_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [I
 
 set_option maxHeartbeats 8000000 in
 /- English proof (translation)
-Take `⟨ha, hb, hc, hEE, hee, hpts, hρπ, hbl, hsurj, hblk, hcard1, hEsum, hE0, hδ0, hτ0, hne, hC0, hOne0⟩` from `hR`. Take `⟨p1, p2, p3, -⟩` from `hOne0`. Substitute `hl` using the available equality. Introduce `ι _ _ colIdx hinj Aw pl Av j e' what₂ qs s H0 Sha uT wT sT mT dT UT cols eO cB vδ N h0 c1 L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz F Vo VS Io IS T₁ T₂ _ _ _ _ _ _ _ ρ₁ ρ₂ inc π γ lam VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u s₀ y _ _ …`. Conclude with `realization_all_second_form ℓ O X X' T T' Z p q b ha (fun x _ => hb x) d R' hc Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hEE hee π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum hF L tens v₁ κ V iL qV Ff κz F Vo VS Io IS ε T₁ T₂ ρ …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨δx, q1, q2, q3, q4⟩` from `hpts x'`. Conclude with `⟨δx, q1, q2, q3, q4, (hrat0 x' hx').1, (hrat0 x' hx').2⟩)`. Use `hE0 hτ0 hne hFix hRows`. Use the proof step `(fun c hc2 => ⟨(hC0 c hc2).1, (hC0 c hc2).2.1, (hC0 c hc2).2.2.2, (hC c hc2).1, fun w hw => ⟨((hC c hc2).2.1 w hw).1, fun g _ m => hba c (by rintro rfl; simp at hc2) g m, ((hC c hc2).2.1 w hw).2⟩, (hC c hc2).2.2⟩)`. Use the proof step `⟨p1, p2, p3, hOne⟩`.
-
-Use `hrest`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem realDisplayAll2_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[ℓ] O] [Module.Finite ℤ_[ℓ] O]
@@ -210,11 +204,9 @@ theorem realDisplayAll2_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] 
 
 set_option maxHeartbeats 8000000 in
 /- English proof (translation)
-Take `⟨ha, hb, hc, hEE, hee, hpts, hρπ, hbl, hsurj, hblk, hcard1, hEsum, hE0, hδ0, hτ0, hne, hC0, hOne0⟩` from `hR`. Take `⟨p1, p2, p3, -⟩` from `hOne0`. Substitute `hl` using the available equality. Introduce `ι _ _ colIdx hinj Aw pl Av j e' what₂ qs s H0 Sha uT wT sT mT dT UT cols eO cB vδ N h0 c1 L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz F Vo VS Io IS T₁ T₂ _ _ _ _ _ _ _ ρ₁ ρ₂ inc π γ lam VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u s₀ y _ _ …`. Conclude with `realization_all_weight_form ℓ O X X' T T' Z p q b ha (fun x _ => hb x) d R' hc Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hEE hee π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum hF L tens v₁ κ V iL qV Ff κz F Vo VS Io IS ε T₁ T₂ ρ …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨δx, q1, q2, q3, q4⟩` from `hpts x'`. Conclude with `⟨δx, q1, q2, q3, q4, (hrat0 x' hx').1, (hrat0 x' hx').2⟩)`. Use `hE0 hτ0 hne hFix hRows`. Use the proof step `(fun c hc2 => ⟨(hC0 c hc2).1, (hC0 c hc2).2.1, (hC0 c hc2).2.2.2, (hC c hc2).1, fun w hw => ⟨((hC c hc2).2.1 w hw).1, fun g _ m => hba c (by rintro rfl; simp at hc2) g m, ((hC c hc2).2.1 w hw).2⟩, (hC c hc2).2.2⟩)`. Use the proof step `⟨p1, p2, p3, hOne⟩`.
-
-Use `hrest`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem realDisplayAllWA_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[ℓ] O] [Module.Finite ℤ_[ℓ] O]

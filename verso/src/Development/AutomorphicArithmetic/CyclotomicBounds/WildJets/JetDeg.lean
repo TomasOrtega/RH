@@ -26,11 +26,9 @@ private def frW (a b : ℕ) (τ : ι) : (ι × Fin b × Fin b) ⊕ DVar ι a b �
 
 omit [Fintype ι] in
 /- English proof (translation)
-Establish `key : ∀ v : ι × Fin a × Fin a, IsWeightedHomogeneous (frW a b τ) (subD K ι a b (X v)) (AddMonoidHom.id ℕ (posW a τ v))`. Introduce `v`. Simplify using `only [subD, MvPolynomial.aeval_X, AddMonoidHom.id_apply]`. Use `split_ifs with h`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `β _`. Establish `hm` using `(isWeightedHomogeneous_X K (frW a b τ) (Sum.inl (v.1, β, ⟨v.2.2, h⟩))).mul (isWeightedHomogeneous_X K (frW a b τ) (Sum.inr (v.1, β, v.2.1)))`. Use `hm using 1` and compare the differences between its conclusion and the goal. Simplify using `[frW, posW]`. Conclude with `isWeightedHomogeneous_zero K _ _`.
-
-Simplify using `using algHom_hom (posW a τ) (frW a b τ) (AddMonoidHom.id ℕ) (subD K ι a b) key hP`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem subD_hom_fr (τ : ι) {P : Pol K ι a} {d : ℕ} (hP : IsWeightedHomogeneous (posW a τ) P d) :
     IsWeightedHomogeneous (frW a b τ) (subD K ι a b P) d := by
@@ -49,7 +47,7 @@ private theorem subD_hom_fr (τ : ι) {P : Pol K ι a} {d : ℕ} (hP : IsWeighte
   simpa using algHom_hom (posW a τ) (frW a b τ) (AddMonoidHom.id ℕ) (subD K ι a b) key hP
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sum_type]`. Simplify using `[frW, posW]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem weight_fr (τ : ι) (μ : (ι × Fin b × Fin b) ⊕ DVar ι a b →₀ ℕ) :
     Finsupp.weight (posW b τ) (μ.comapDomain Sum.inl Sum.inl_injective.injOn) = Finsupp.weight (frW a b τ) μ := by
@@ -58,7 +56,7 @@ private theorem weight_fr (τ : ι) (μ : (ι × Fin b × Fin b) ⊕ DVar ι a b
   simp [frW, posW]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sum_type]`. Simplify using `[derW]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem weight_der (τ : ι) (μ : (ι × Fin b × Fin b) ⊕ DVar ι a b →₀ ℕ) :
     ((μ.comapDomain Sum.inr Sum.inr_injective.injOn).sum fun v e => if v.1 = τ then e else 0) =
@@ -69,9 +67,9 @@ private theorem weight_der (τ : ι) (μ : (ι × Fin b × Fin b) ⊕ DVar ι a 
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use `conv_lhs => rw [Q.as_sum, map_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Establish `e : (monomial μ (coeff μ Q) : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K) = coeff μ Q • (basisMonomials _ K) μ`. Rewrite using `[MvPolynomial.coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [jetLin, Module.Basis.constr_basis]`.
+A detailed English derivation is pending.
 -/
 private theorem jetLin_eq (J : (DVar ι a b →₀ ℕ) → K) (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K) :
     jetLin J Q = ∑ μ ∈ Q.support, coeff μ Q • (monomial (μ.comapDomain Sum.inl Sum.inl_injective.injOn)
@@ -86,19 +84,17 @@ private theorem jetLin_eq (J : (DVar ι a b →₀ ℕ) → K) (Q : MvPolynomial
   simp only [jetLin, Module.Basis.constr_basis]
 
 /- English proof (translation)
-Use `set Q := subD K ι a b (GlobalTheory.IndefiniteRowSideFullHecke.SubstitutionAdjoint.sharp n P) with hQ`. Establish `hJ : ∀ J₀ : (DVar ι a b →₀ ℕ) → K, jetMap J₀ n P = jetLin J₀ Q` using `fun J₀ => rfl`. Establish `hfr : ∀ τ, IsWeightedHomogeneous (frW a b τ) Q (∑ i, (lam τ).natW i + n τ * a)` using `fun τ => subD_hom_fr τ (sharp_hom n τ (VV_hom lam τ hP))`. Establish `hder : ∀ τ, IsWeightedHomogeneous (derW a b τ) Q (∑ i, (lam τ).natW i + n τ * a)` using `fun τ => subD_hom τ (sharp_hom n τ (VV_hom lam τ hP))`. Establish `hdeg : ∀ (J₀ : (DVar ι a b →₀ ℕ) → K) τ, IsWeightedHomogeneous (posW b τ) (jetLin J₀ Q) (∑ i, (lam τ).natW i + n τ * a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `J₀ τ`. Rewrite using `[jetLin_eq]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `μ hμ`. Rewrite using `[smul_monomial]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `isWeightedHomogeneous_monomial` to reduce the goal to its premises. Rewrite using `[weight_fr]`. Conclude with `hfr τ (mem_support_iff.mp hμ)`. Distinguish the cases in `hall : ∀ τ, ∑ i, (lam τ).natW i + n τ * a = ∑ i, (lam' τ).natW i`. Rewrite using `[hJ, hJ, jetLin_eq, jetLin_eq]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `hJJ : J (μ.comapDomain Sum.inr Sum.inr_injective.injOn) = J' (μ.comapDomain Sum.inr Sum.inr_injective.injOn)`. Apply `h` to reduce the goal to its premises. Introduce `τ`. Rewrite using `[weight_der, ← hall τ]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hder τ (mem_support_iff.mp hμ)`. Rewrite using `[hJJ]`. Use `push_neg at hall`. Take `⟨τ, hτ⟩` from `hall`. Establish `hz : ∀ J₀ : (DVar ι a b →₀ ℕ) → K, jetMap J₀ n P = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `J₀`. Assume the negation of the conclusion as `hne`. Establish `h1` using `VV_hom lam' τ (hV J₀ P hP)`. Establish `h2` using `hdeg J₀ τ`. Rewrite `h2` using `[← hJ]`.
-
-Conclude with `hτ (IsWeightedHomogeneous.inj_right hne h2 h1)`. Rewrite using `[hz J, hz J']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem jetMap_congr_deg (lam : ι → DomWeight a) (lam' : ι → DomWeight b) (n : ι → ℕ)
     (hV : JetInVV K lam lam' n) (J J' : (DVar ι a b →₀ ℕ) → K)
@@ -144,7 +140,7 @@ private theorem jetMap_congr_deg (lam : ι → DomWeight a) (lam' : ι → DomWe
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `K _ _ ι _ _ a b lam lam' n hV J J' h`. Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Use `show Formalism.L2.Ker.retrVV K lam' (Formalism.L2.Ker.jetMap J n P.1) = Formalism.L2.Ker.retrVV K lam' (Formalism.L2.Ker.jetMap J' n P.1)`. Rewrite using `[jetMap_congr_deg lam lam' n hV J J' h P.1 P.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.WildA.jetDeg :
     ∀ {K : Type} [Field K] [CharZero K] {ι : Type} [Fintype ι] [DecidableEq ι] {a b : ℕ} (lam : ι → DomWeight a) (lam' : ι → DomWeight b) (n : ι → ℕ),

@@ -11,7 +11,7 @@ open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Simplify using `only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_weightSpace_iff_diagonal_eigen (E : GLOps n K V) (mu : Fin n → ℤ) (x : V) :
     x ∈ weightSp E mu ↔ ∀ a, E a a x = (mu a : K) • x := by
@@ -19,15 +19,13 @@ theorem mem_weightSpace_iff_diagonal_eigen (E : GLOps n K V) (mu : Fin n → ℤ
     LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]
 
 /- English proof (translation)
-Introduce `a b ν x hx`. Rewrite `hx`, the goal using `[mem_weightSpace_iff_diagonal_eigen]`. Introduce `c`. Establish `h1` using `congrArg (fun T : Module.End K V => T x) (hE.1 c c a b)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hx c, map_smul] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[sub_eq_iff_eq_add]`. Rewrite using `[h1]`. Simplify using `only [rootW, Pi.add_apply, Pi.sub_apply, Pi.single_apply]`. Apply the tactic sequence `by_cases hca : c = a <;> by_cases hcb : c = b`. Substitute `hca` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Substitute `hcb` using the available equality. Simplify using the standard rewrite rules. Substitute `hca` using the available equality. Establish `: ¬ b = c` using `fun h => hcb h.symm`. Simplify using `[hcb, this]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `module`. Substitute `hcb` using the available equality. Simplify using `[hca]`. Use `module`. Establish `: ¬ b = c` using `fun h => hcb h.symm`.
-
-Simplify using `[hca, hcb, this]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gl_rep_shifts_weights {E : GLOps n K V} (hE : IsGLRep E) : OperatorsShiftWeightsByRoots E := by
   intro a b ν x hx
@@ -49,11 +47,11 @@ theorem gl_rep_shifts_weights {E : GLOps n K V} (hE : IsGLRep E) : OperatorsShif
     simp [hca, hcb, this]
 
 /- English proof (translation)
-Establish `hfin : ∀ a, Set.Finite {t : ℤ | (E a a).HasEigenvalue (t : K)}` using `fun a => (Module.End.finite_hasEigenvalue (E a a)).preimage (fun x _ y _ h => by exact_mod_cast h)`. Establish `hT : Set.Finite (⋃ a, {t : ℤ | (E a a).HasEigenvalue (t : K)})` using `Set.finite_iUnion hfin`. Take `⟨m, hm⟩` from `(hT.image Int.natAbs).bddAbove`. Use `⟨m, fun ν hν a => ?_⟩` and prove the remaining obligations. Establish `hev : (E a a).HasEigenvalue ((ν a : ℤ) : K)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Module.End.hasEigenvalue_iff]`. Take `⟨x, hx, hx0⟩` from `Submodule.ne_bot_iff _ |>.mp hν`. Rewrite `hx` using `[mem_weightSpace_iff_diagonal_eigen]`. Rewrite using `[Submodule.ne_bot_iff]`. Conclude with `⟨x, Module.End.mem_eigenspace_iff.mpr (hx a), hx0⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `hm ⟨ν a, Set.mem_iUnion.mpr ⟨a, hev⟩, rfl⟩` as an intermediate fact. Rewrite using `[Int.abs_eq_natAbs]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem findim_weights_bounded [CharZero K] [FiniteDimensional K V] (E : GLOps n K V) : WeightsBounded E := by
   classical
@@ -74,9 +72,9 @@ theorem findim_weights_bounded [CharZero K] [FiniteDimensional K V] (E : GLOps n
   exact_mod_cast this
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[List.range_succ, List.map_append, List.prod_append, Finset.prod_range_succ]`. Simplify using `only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one, Module.End.mul_apply, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[(mem_weightSpace_iff_diagonal_eigen E ν x).mp hx a, ← sub_smul, map_smul, ih, smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem diagonal_list_prod_eigen_apply (E : GLOps n K V) (a : Fin n) (ν : Fin n → ℤ) (x : V) (hx : x ∈ weightSp E ν) (k : ℕ) :
     (((List.range k).map fun j : ℕ => E a a - (j : K) • (1 : Module.End K V)).prod) x =
@@ -90,9 +88,9 @@ theorem diagonal_list_prod_eigen_apply (E : GLOps n K V) (a : Fin n) (ν : Fin n
     rw [(mem_weightSpace_iff_diagonal_eigen E ν x).mp hx a, ← sub_smul, map_smul, ih, smul_smul, mul_comm]
 
 /- English proof (translation)
-Establish `hk : (k.factorial : K) ≠ 0` using `by exact_mod_cast k.factorial_ne_zero`. Establish `hZ : (k.factorial : ℤ) * Ring.choose (ν a) k = ∏ j ∈ Finset.range k, (ν a - (j : ℤ))`. Rewrite using `[← descPochhammer_eval_eq_prod_range, Polynomial.eval_eq_smeval, Ring.descPochhammer_eq_factorial_smul_choose, nsmul_eq_mul]`. Establish `hK : (k.factorial : K) * ((Ring.choose (ν a) k : ℤ) : K) = ∏ j ∈ Finset.range k, ((ν a : K) - (j : K))`. Use `congrArg (fun t : ℤ => (t : K)) hZ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[binomE, LinearMap.smul_apply, diagonal_list_prod_eigen_apply E a ν x hx k, ← hK, smul_smul, ← mul_assoc, inv_mul_cancel₀ hk, one_mul]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem binomial_diagonal_apply_weight [CharZero K] (E : GLOps n K V) (a : Fin n) (ν : Fin n → ℤ) (x : V)
     (hx : x ∈ weightSp E ν) (k : ℕ) :
@@ -113,21 +111,21 @@ def ActsByIntegralPolynomial (E : GLOps n K V) (a : Fin n) (g : ℤ → ℤ) : P
   ∃ u ∈ binomialDiagonalSubring E, ∀ ν, ∀ x ∈ weightSp E ν, u x = ((g (ν a) : ℤ) : K) • x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨binomE E a i, Subring.subset_closure ⟨a, i, rfl⟩, fun ν x hx => binomial_diagonal_apply_weight E a ν x hx i⟩`.
+Supply the required witnesses or components.
 -/
 theorem binomial_polynomial_acts_by_choose [CharZero K] (E : GLOps n K V) (a : Fin n) (i : ℕ) :
     ActsByIntegralPolynomial E a (fun z => Ring.choose z i) := ⟨binomE E a i, Subring.subset_closure ⟨a, i, rfl⟩,
     fun ν x hx => binomial_diagonal_apply_weight E a ν x hx i⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, Subring.zero_mem _, fun ν x _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem action_zero (E : GLOps n K V) (a : Fin n) : ActsByIntegralPolynomial E a (fun _ => 0) := ⟨0, Subring.zero_mem _, fun ν x _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨u, hu, hux⟩` from `hg`. Take `⟨v, hv, hvx⟩` from `hh`. Use `⟨u + v, Subring.add_mem _ hu hv, fun ν x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, hux ν x hx, hvx ν x hx, ← add_smul]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem binomial_polynomial_action_add {E : GLOps n K V} {a : Fin n} {g h : ℤ → ℤ} (hg : ActsByIntegralPolynomial E a g) (hh : ActsByIntegralPolynomial E a h) :
     ActsByIntegralPolynomial E a (fun z => g z + h z) := by
@@ -140,7 +138,7 @@ theorem binomial_polynomial_action_add {E : GLOps n K V} {a : Fin n} {g h : ℤ 
   ring
 
 /- English proof (translation)
-Take `⟨u, hu, hux⟩` from `hg`. Use `⟨u * ((c : Module.End K V)), Subring.mul_mem _ hu (intCast_mem (binomialDiagonalSubring E) c), fun ν x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.intCast_apply, map_zsmul, hux ν x hx, ← Int.cast_smul_eq_zsmul K, smul_smul]`. Use `congr 1`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -155,7 +153,7 @@ theorem action_mul_const {E : GLOps n K V} {a : Fin n} {g : ℤ → ℤ} (hg : A
   ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using action_zero E a`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.sum_insert hi]`. Conclude with `binomial_polynomial_action_add (hg i (Finset.mem_insert_self i s)) (ih fun j hj => hg j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem action_finset_sum {E : GLOps n K V} {a : Fin n} {ι : Type*} (s : Finset ι) (g : ι → ℤ → ℤ)
     (hg : ∀ i ∈ s, ActsByIntegralPolynomial E a (g i)) : ActsByIntegralPolynomial E a (fun z => ∑ i ∈ s, g i z) := by
@@ -168,7 +166,7 @@ theorem action_finset_sum {E : GLOps n K V} {a : Fin n} {ι : Type*} (s : Finset
       (ih fun j hj => hg j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Establish `h : (fun z : ℤ => Ring.choose (z + (m : ℤ)) k) = fun z => ∑ ij ∈ Finset.HasAntidiagonal.antidiagonal k, Ring.choose z ij.1 * Ring.choose (m : ℤ) ij.2`. Use function extensionality and compare the values at `z`. Conclude with `Ring.add_choose_eq k (Commute.all z (m : ℤ))`. Rewrite using `[h]`. Conclude with `action_finset_sum _ _ fun ij _ => action_mul_const (binomial_polynomial_acts_by_choose E a ij.1) _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem binomial_shifted_action [CharZero K] (E : GLOps n K V) (a : Fin n) (m k : ℕ) :
     ActsByIntegralPolynomial E a (fun z => Ring.choose (z + (m : ℤ)) k) := by
@@ -180,13 +178,13 @@ theorem binomial_shifted_action [CharZero K] (E : GLOps n K V) (a : Fin n) (m k 
   exact action_finset_sum _ _ fun ij _ => action_mul_const (binomial_polynomial_acts_by_choose E a ij.1) _
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero`. Use `⟨fun _ => f 0, fun N hN => ?_⟩` and prove the remaining obligations. Take `rfl : N = 0` from `Nat.le_zero.mp hN`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Consider the case `succ M ih`. Take `⟨d, hd⟩` from `ih`. Use `set s := ∑ j ∈ Finset.range (M + 1), ((M + 1).choose j : ℤ) * d j with hs`. Use `⟨fun k => if k = M + 1 then f (M + 1) - s else d k, fun N hN => ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `Nat.lt_or_ge N (M + 1) with h | h` into its components or cases. Establish `e : ∑ k ∈ Finset.range (N + 1), (N.choose k : ℤ) * (if k = M + 1 then f (M + 1) - s else d k) = ∑ k ∈ Finset.range (N + 1), (N.choose k : ℤ) * d k` using `Finset.sum_congr rfl fun k hk => by rw [if_neg (by simp at hk; omega)]`. Rewrite using `[e, hd N (by omega)]`. Take `rfl : N = M + 1` from `by omega`. Rewrite using `[Finset.sum_range_succ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∑ k ∈ Finset.range (M + 1), ((M + 1).choose k : ℤ) * (if k = M + 1 then f (M + 1) - s else d k) = s`. Rewrite using `[hs]`. Conclude with `Finset.sum_congr rfl fun k hk => by rw [if_neg (by simp at hk; omega)]`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_binomial_transform_inverse (f : ℕ → ℤ) (M : ℕ) : ∃ d : ℕ → ℤ, ∀ N ≤ M,
     ∑ k ∈ Finset.range (N + 1), (N.choose k : ℤ) * d k = f N := by
@@ -215,11 +213,11 @@ private theorem exists_binomial_transform_inverse (f : ℕ → ℤ) (M : ℕ) : 
       simp
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `exists_binomial_transform_inverse (fun N => if (N : ℤ) - (m : ℤ) = c then 1 else 0) (2 * m)`. Use `⟨d, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `abs_le.mp hz`. Take `⟨N, hN⟩ : ∃ N : ℕ, z + (m : ℤ) = N` from `⟨(z + m).toNat, (Int.toNat_of_nonneg (by omega)).symm⟩`. Establish `hN2 : N ≤ 2 * m` using `by omega`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hN]`. Establish `hc : ∀ k ∈ range (2 * m + 1), Ring.choose (N : ℤ) k * d k = (N.choose k : ℤ) * d k`. Introduce `k _`. Rewrite using `[Ring.choose_natCast]`. Rewrite using `[Finset.sum_congr rfl hc, ← Finset.sum_range_add_sum_Ico _ (show N + 1 ≤ 2 * m + 1 by omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero (s := Finset.Ico (N + 1) (2 * m + 1)) (fun k hk => by`. Rewrite using `[Nat.choose_eq_zero_of_lt (by simp at hk; omega)]; simp), add_zero, hd N hN2]`. Take `rfl : z = (N : ℤ) - m` from `by omega`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem newton_interpolation_indicator (m : ℕ) (c : ℤ) : ∃ d : ℕ → ℤ, ∀ z : ℤ, |z| ≤ (m : ℤ) →
     ∑ k ∈ range (2 * m + 1), Ring.choose (z + (m : ℤ)) k * d k = if z = c then 1 else 0 := by
@@ -239,9 +237,9 @@ theorem newton_interpolation_indicator (m : ℕ) (c : ℤ) : ∃ d : ℕ → ℤ
   rfl
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `newton_interpolation_indicator m c`. Take `⟨u, hu, hux⟩` from `action_finset_sum (E := E) (a := a) (range (2 * m + 1)) (fun k z => Ring.choose (z + (m : ℤ)) k * d k) (fun k _ => action_mul_const (binomial_shifted_action E a m k) (d k))`. Use `⟨u, hu, fun ν x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hux ν x hx]`. Distinguish the cases in `h0 : weightSp E ν = ⊥`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `: x = 0` using `by rw [h0] at hx; exact (Submodule.mem_bot K).mp hx`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Apply the tactic sequence `simp only [hd (ν a) (hm ν h0 a)] split_ifs <;> simp`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem binomial_indicator_exists [CharZero K] (E : GLOps n K V) (a : Fin n) (m : ℕ)
     (hm : ∀ ν, weightSp E ν ≠ ⊥ → ∀ a, |ν a| ≤ (m : ℤ)) (c : ℤ) :
@@ -260,17 +258,15 @@ theorem binomial_indicator_exists [CharZero K] (E : GLOps n K V) (a : Fin n) (m 
     split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `findim_weights_bounded E`. Establish `h` using `fun (μ : Fin n → ℤ) (a : Fin n) => binomial_indicator_exists E a m hm (μ a)`. Use `choose u hu hux using h`. Use `⟨fun μ => ((List.finRange n).map (u μ)).prod, fun μ => ?_, fun μ ν x hx => ?_⟩` and prove the remaining obligations. Apply `Subring.list_prod_mem` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨a, _, rfl⟩` from `List.mem_map.mp hy`. Conclude with `hu μ a`. Establish `key : ∀ L : List (Fin n), (L.map (u μ)).prod x = if ∀ a ∈ L, ν a = μ a then x else 0`. Introduce `L`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons b L ih`. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, ih]`. Distinguish the cases in `hL : ∀ a ∈ L, ν a = μ a`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hL, hux μ b ν x hx]`. Distinguish the cases in `hb : ν b = μ b`. Rewrite using `[if_pos hb, if_pos (fun a ha => by rcases List.mem_cons.mp ha with rfl | ha; exacts [hb, hL a ha])]`. Rewrite using `[if_neg hb, if_neg (fun h => hb (h b (List.mem_cons.mpr (Or.inl rfl))))]`. Rewrite using `[if_neg hL, map_zero, if_neg (fun h => hL fun a ha => h a (List.mem_cons_of_mem _ ha))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `show ((List.finRange n).map (u μ)).prod x = _`. Rewrite using `[key]`. Distinguish the cases in `h : ν = μ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Rewrite using `[if_neg h, if_neg]`. Introduce `h'`. Conclude with `h (funext fun a => h' a (List.mem_finRange a))`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weight_projections_integral_findim [CharZero K] [FiniteDimensional K V] (E : GLOps n K V) : WeightProjectionsIntegralBinomial E := by
   obtain ⟨m, hm⟩ := findim_weights_bounded E

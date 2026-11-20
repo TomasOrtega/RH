@@ -23,7 +23,7 @@ namespace GlobalTheory.FbarCurve
 open TopologicalSpace GlobalTheory.CechPic
 
 /- English proof (translation)
-The claim follows from `degLB_congr (LB.isLB_pull hL _) (LB.isLB_pull (LB.isLB_pull hL b) a) ((cls_eq_iff _ _).1 (pull_comp a b (cls L hL)))`.
+A detailed English derivation is pending.
 -/
 theorem degLB_pull_comp {k : Type} [Field k] {X Y Z : Scheme.{0}} [Algebra k Γ(Z, ⊤)] [IsIntegral Z] (a : Z ⟶ Y)
     (b : Y ⟶ X) {L : LB X} (hL : L.IsLB) : degLB k (L.pull (a ≫ b)) = degLB k ((L.pull b).pull a) :=
@@ -33,17 +33,15 @@ theorem degLB_pull_comp {k : Type} [Field k] {X Y Z : Scheme.{0}} [Algebra k Γ(
 open GlobalTheory.NormCurve in
 
 /- English proof (translation)
-Introduce `k _ _ Z _ _ hp hd`. Set `s` to `strHom k Z`. Set `f` to `Z.fromSpecResidueField (genericPoint Z)`. Set `c` to `f.fromNormalization`. Use `haveI : IsFinite c := isFinite_fromNormalization f s`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `htr : letI` using `(constHom (f ≫ s) ⊤).toAlgebra Algebra.trdeg k Γ(Spec (Z.residueField (genericPoint Z)), ⊤) ≤ 1 := by`. Take `⟨x, hx⟩` from `ProperCurve.exists_ne_genericPoint hd`. Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := x) trivial`. Establish `e : ⊤ ≤ f ⁻¹ᵁ U` using `fun z _ => by`. Express the relevant statement in the definitionally equal form `f z ∈ U`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.fromSpecResidueField_apply]`. Conclude with `VB.genericPoint_mem hxU`. Use `letI := (constHom s U).toAlgebra`. Use `haveI : Algebra.FiniteType k Γ(Z, U) := finiteType_constHom s hU`. Use `haveI : Nonempty (⊤ : (Spec (Z.residueField (genericPoint Z))).Opens) := ⟨⟨Nonempty.some inferInstance, trivial⟩⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI := (isField_sections (⊤ : (Spec (Z.residueField (genericPoint Z))).Opens)).toField`. Use `letI := (constHom (f ≫ s) ⊤).toAlgebra`. Use `letI := (f.appLE U ⊤ e).hom.toAlgebra`. Use `haveI : IsScalarTower k Γ(Z, U) Γ(Spec (Z.residueField (genericPoint Z)), ⊤) := .of_algebraMap_eq' (appLE_comp_constHom s f U ⊤ e).symm`. Conclude with `(finite_integralClosure k (surjectiveOnStalks_appLE f hU ⊤ e)).2 ((ringKrullDim_quotient_le _).trans (ProperCurve.ringKrullDim_eq_one hd hU hxU hx).le)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hξ : genericPoint Z ∈ Set.range c`. Use `⟨f.toNormalization (Nonempty.some inferInstance), ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, f.toNormalization_fromNormalization, Scheme.fromSpecResidueField_apply]`. Establish `hs : Function.Surjective c` using `fun y => (genericPoint_specializes y).mem_closed c.isClosedMap.isClosed_range hξ`. Establish `hη : c (genericPoint _) = genericPoint Z`.
-
-Take `⟨y, hy⟩` from `hξ`. Use `((genericPoint_specializes _).antisymm ?_).eq.symm` and prove the remaining obligations. Conclude with `((genericPoint_specializes y).map c.continuous).trans (specializes_of_eq hy)`. Conclude with `⟨f.normalization, inferInstance, c, inferInstance, hη, ((Published.dim_le_of_isIntegralHom c).antisymm (PosBaseChange.dim_le_of_isClosedMap c.isClosedMap hs)).trans hd, fun U hU _ => isDedekindDomain_sections f s htr U hU⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_normal_finite :
     ∀ (k : Type) [Field k] [PerfectField k] (Z : Scheme.{0}) [IsIntegral Z] [Algebra k Γ(Z, ⊤)],
@@ -91,11 +89,11 @@ theorem exists_normal_finite :
     fun U hU _ => isDedekindDomain_sections f s htr U hU⟩
 
 /- English proof (translation)
-Establish `hT (n : ℕ) : IsScalarTower k K (coh F n)`. Use `⟨fun a b x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cohOn.action F ⊤ n (algebraMap K Γ(X, ⊤) (a • b)) x = cohOn.action F ⊤ n (algebraMap k Γ(X, ⊤) a) (cohOn.action F ⊤ n (algebraMap K Γ(X, ⊤) b) x)`. Rewrite using `[Algebra.smul_def, map_mul, map_mul, hk]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e (n : ℕ) : ((-1 : ℤ) ^ n * hdim k F n) = (Module.finrank k K : ℤ) * ((-1 : ℤ) ^ n * hdim K F n)`. Rewrite using `[hdim_def, hdim_def, ← Module.finrank_mul_finrank k K (coh F n)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[chi_def, chi_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[e]`. Conclude with `(mul_finsum _ _).symm`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_tower {X : Scheme.{0}} (k K : Type) [Field k] [Field K] [Algebra k K] [Algebra K Γ(X, ⊤)]
     [Algebra k Γ(X, ⊤)] (hk : ∀ a : k, algebraMap k Γ(X, ⊤) a = algebraMap K Γ(X, ⊤) (algebraMap k K a))
@@ -115,7 +113,7 @@ theorem chi_tower {X : Scheme.{0}} (k K : Type) [Field k] [Field K] [Algebra k K
   exact (mul_finsum _ _).symm
 
 /- English proof (translation)
-Rewrite using `[interNum_def, interNum_def, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[chi_tower k K hk]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem interNum_tower {X : Scheme.{0}} (k K : Type) [Field k] [Field K] [Algebra k K] [Algebra K Γ(X, ⊤)]
     [Algebra k Γ(X, ⊤)] (hk : ∀ a : k, algebraMap k Γ(X, ⊤) a = algebraMap K Γ(X, ⊤) (algebraMap k K a))
@@ -127,11 +125,9 @@ theorem interNum_tower {X : Scheme.{0}} (k K : Type) [Field k] [Field K] [Algebr
   ring
 
 /- English proof (translation)
-Use `haveI : CompactSpace Y := QuasiCompact.compactSpace_of_compactSpace f`. Use `haveI : QuasiSeparatedSpace Y := (quasiSeparated_iff_quasiSeparatedSpace f).1 inferInstance`. Establish `H` using `IsPullback.of_hasPullback f (spMap c)`. Establish `h1` using `isIso_pushoutSection_of_isQuasiSeparated_of_flat_right H (US := ⊤) (UT := ⊤) (UX := ⊤) (UY := ⊤) le_top le_top (by simp) (isAffineOpen_top _) (isAffineOpen_top _) isCompact_univ isQuasiSeparated_univ`. Establish `h2` using `(isIso_pushoutSection_iff ..).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : IsIso (f.appLE ⊤ ⊤ le_top)`. Establish `: f.appLE ⊤ ⊤ le_top = f.appTop` using `(Scheme.Hom.app_eq_appLE f).symm`. Rewrite using `[this]`. Use `infer_instance`. Establish `h4` using `h2.isIso_inr_of_isIso h3`.
-
-Establish `: IsDomain Γ(pullback f (spMap c), ⊤)` using `(asIso ((pullback.snd f (spMap c)).appLE ⊤ ⊤ _)).symm.commRingCatIsoToRingEquiv.toMulEquiv.isDomain _`. Conclude with `ConnDvr.connectedSpace_of_isDomain _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem connectedSpace_pullback {K k : Type} [Field K] [Field k] (c : K →+* k) {Y : Scheme.{0}} (f : Y ⟶ Sp K)
     [QuasiCompact f] [IsSeparated f] [IsIso f.appTop] : ConnectedSpace (pullback f (spMap c) : Scheme.{0}) := by
@@ -150,23 +146,19 @@ theorem connectedSpace_pullback {K k : Type} [Field K] [Field k] (c : K →+* k)
   exact ConnDvr.connectedSpace_of_isDomain _
 
 /- English proof (translation)
-Establish `hF : IsField Γ(Y, ⊤)` using `isField_of_universallyClosed (ZMod p) (strHom (ZMod p) Y)`. Use `letI : Field Γ(Y, ⊤) := hF.toField`. Use `letI iK : Algebra Γ(Y, ⊤) Γ(Y, ⊤) := Algebra.id _`. Establish `hfin : Module.Finite (ZMod p) Γ(Y, ⊤)`. Establish `h1` using `finite_appTop_of_universallyClosed (ZMod p) (strHom (ZMod p) Y)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (algebraMap (ZMod p) Γ(Y, ⊤)) = (strHom (ZMod p) Y).appTop.hom.comp (Scheme.ΓSpecIso (.of (ZMod p))).inv.hom` using `RingHom.ext fun r => algebraMap_eq_strHom (ZMod p) Y r`. Rewrite using `[← RingHom.finite_algebraMap, h2]`. Conclude with `h1.comp (RingHom.Finite.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of (ZMod p))).symm.commRingCatIsoToRingEquiv.surjective)`. Establish `hcomp : strHom (ZMod p) Y = strHom Γ(Y, ⊤) Y ≫ spMap (algebraMap (ZMod p) Γ(Y, ⊤))`. Rewrite using `[strHom, strHom, Category.assoc, ← Spec.map_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hPK : IsProper (strHom Γ(Y, ⊤) Y)`. Establish `: IsProper (strHom Γ(Y, ⊤) Y ≫ spMap (algebraMap (ZMod p) Γ(Y, ⊤)))` using `hcomp ▸ hP`. Conclude with `IsProper.of_comp _ (spMap (algebraMap (ZMod p) Γ(Y, ⊤)))`. Use `haveI : Finite Γ(Y, ⊤) := Module.finite_of_finite (ZMod p)`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : PerfectField Γ(Y, ⊤) := inferInstance`. Use `letI : Algebra (ZMod p) k := ZMod.algebra k p`. Use `letI : Algebra Γ(Y, ⊤) k := (IsAlgClosed.lift (R := ZMod p) (S := Γ(Y, ⊤)) (M := k)).toRingHom.toAlgebra`. Set `t : Sp k ⟶ Sp Γ(Y, ⊤)` to `spMap (algebraMap Γ(Y, ⊤) k)`. Set `f` to `strHom Γ(Y, ⊤) Y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h1 : SmoothOfRelativeDimension 1 f` using `CurveSmooth.smoothOfRelativeDimension_one _ Y inferInstance hd hD`. Establish `h2 : IsProjOver f` using `ProperCurve.isProjOver_of_isProper _ hd`. Use `haveI : IsIso f.appTop := by`. Establish `e : (Scheme.ΓSpecIso (.of Γ(Y, ⊤))).inv ≫ f.appTop = 𝟙 _`. Use extensionality with `r`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(algebraMap_eq_strHom Γ(Y, ⊤) Y r).symm`. Use `haveI : IsIso ((Scheme.ΓSpecIso (.of Γ(Y, ⊤))).inv ≫ f.appTop) := by rw [e]; infer_instance`. Conclude with `IsIso.of_isIso_comp_left (Scheme.ΓSpecIso (.of Γ(Y, ⊤))).inv _`. Use `haveI : ConnectedSpace (pullback f t : Scheme.{0}) := connectedSpace_pullback _ f`. Use `letI A' : Algebra k Γ(pullback f t, ⊤) := algebraΓOfHom (pullback.snd f t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : strHom k (pullback f t) = pullback.snd f t` using `strHom_eq fun _ => rfl`. Establish `h3 : SmoothOfRelativeDimension 1 (pullback.snd f t)` using `(smoothOfRelativeDimension_isStableUnderBaseChange 1).of_isPullback (IsPullback.of_hasPullback f t) h1`. Use `haveI h4 : Smooth (pullback.snd f t) := SmoothOfRelativeDimension.smooth 1 _`. Use `haveI hI : IsIntegral (pullback f t) := isIntegral_of_smooth_field (pullback.snd f t)`. Establish `hC : IsSmoothProjCurve k (pullback f t)` using `⟨⟨hI, by simpa using GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth (pullback.snd f t) 1 h3, by rw [hs]; exact GlobalTheory.ProjSpace.isProjOver_pullback_snd _ h2⟩, by rw [hs]; exact h4⟩`.
-
-Use `⟨pullback f t, A', hI, pullback.fst f t, Module.finrank (ZMod p) Γ(Y, ⊤), hC, Module.finrank_pos, fun L hL => ?_⟩` and prove the remaining obligations. Establish `hinst : iK = algebraΓOfHom f` using `Algebra.algebra_ext _ _ (algebraMap_eq_strHom Γ(Y, ⊤) Y)`. Establish `P` using `FieldChangeInter.interNum_pull (f := f) (f' := pullback.snd f t) (π := pullback.fst f t) (IsPullback.of_hasPullback f t) (L := ![L]) (isLB_vecOne hL)`. Establish `e₃ : (fun j => ((![L] : Fin 1 → LB Y) j).pull (pullback.fst f t)) = ![L.pull (pullback.fst f t)]`. Use function extensionality and compare the values at `fun j => by fin_cases j; rfl`.
-
-Rewrite `P` using `[e₃, ← hinst]`. Rewrite using `[interNum_tower (ZMod p) Γ(Y, ⊤) (fun _ => rfl), hC.toIsProjCurve.degLB_eq_interNum (LB.isLB_pull hL _), P]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_curve_of_dedekind (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharP k p]
     (Y : Scheme.{0}) [IsIntegral Y] [Algebra (ZMod p) Γ(Y, ⊤)] (hd : topologicalKrullDim Y = 1)
@@ -226,11 +218,11 @@ theorem exists_curve_of_dedekind (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [
   rw [interNum_tower (ZMod p) Γ(Y, ⊤) (fun _ => rfl), hC.toIsProjCurve.degLB_eq_interNum (LB.isLB_pull hL _), P]
 
 /- English proof (translation)
-Take `⟨Yn, _, ν, hν, hη, hdn, hD⟩` from `exists_normal_finite (ZMod p) Y hP hd`. Use `letI : Algebra (ZMod p) Γ(Yn, ⊤) := algebraΓAlong (ZMod p) ν`. Establish `hPn : IsProper (strHom (ZMod p) Yn)`. Rewrite using `[← comp_strHom (k := ZMod p) (g := ν) (fun _ => rfl)]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨C, _, _, g, n, hC, hn, hg⟩` from `exists_curve_of_dedekind p k Yn hdn hPn hD`. Establish `hdeg : 0 < ν.residueDegree (genericPoint Yn)`. Take `⟨w, hw, hw'⟩` from `NefDescent.fibre_point Yn Y ν (genericPoint Y) ⟨_, hη⟩`. Establish `: w = genericPoint Yn` using `(ν.isDiscrete_preimage_singleton (genericPoint Y)).eq_of_specializes (genericPoint_specializes w) hη hw |>.symm`. Rewrite `hw'` using `[this]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C, inferInstance, inferInstance, g ≫ ν, n, _, hC, hn, hdeg, fun L hL => ?_⟩` and prove the remaining obligations. Rewrite using `[degLB_pull_comp g ν hL, hg _ (LB.isLB_pull hL ν), ← ProjFin.interNumOn_eq_residueDegree_mul (ZMod p) Y Yn ν (ProperCurve.isProjOver_of_isProper _ hd) hd hη L hL]`. Conclude with `((interNumOn_eq_interNum_pull (fun _ => rfl) (isLB_vecOne hL)).trans (congrArg _ (funext fun j => by fin_cases j; rfl))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_curve_alg_closed (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharP k p]
     (Y : Scheme.{0}) [IsIntegral Y] [Algebra (ZMod p) Γ(Y, ⊤)] (hd : topologicalKrullDim Y = 1)
@@ -255,29 +247,25 @@ theorem exists_curve_alg_closed (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [I
       (congrArg _ (funext fun j => by fin_cases j; rfl))).symm
 
 /- English proof (translation)
-Introduce `F _ _ X Y p π hp hq hsurj r _ Z i _ _ _ hd`. Establish `: IsProper p` using `(isProper_and_exists_isAmpleLB_of_isProjOver hp).1`. Establish `: IsProper (π ≫ p)` using `(isProper_and_exists_isAmpleLB_of_isProjOver hq).1`. Establish `: IsProper π` using `IsProper.of_comp π p`. Establish `: IsNoetherian Y` using `isNoetherian_of_isProjOver hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherian X` using `isNoetherian_of_isProjOver hp`. Establish `: IsNoetherian Z`. Use `LocallyOfFiniteType.isLocallyNoetherian i` as an intermediate fact. Use `QuasiCompact.compactSpace_of_compactSpace i` as an intermediate fact. Conclude with `{}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `g` to `pullback.snd π i`. Establish `: IsProper g` using `inferInstance`. Establish `: Surjective g` using `inferInstance`. Take `⟨w, hw, hdeg⟩` from `NefDescent.fibre_point _ Z g (genericPoint Z) (g.surjective _)`. Set `C : Closeds (pullback π i : Scheme.{0})` to `⟨closure {w}, isClosed_closure⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsIntegral (Scheme.IdealSheafData.vanishingIdeal C).subscheme` using `isIntegral_red isIrreducible_singleton.closure`. Establish `hgen` using `NefDescent.red_genericPoint _ w C rfl`. Set `f` to `redι C ≫ g`. Set `i'` to `redι C ≫ pullback.fst π i`. Establish `hη : f (genericPoint _) = genericPoint Z`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, Scheme.Hom.comp_apply, hgen, hw]`. Establish `hdeg' : 0 < f.residueDegree (genericPoint _)`. Simplify using `only [f, CurveDegreesCompare.residueDegree_comp, hgen, GlobalTheory.Published.residueDegree_of_isClosedImmersion, mul_one]`. Conclude with `hdeg`. Establish `hd'` using `NefDescent.dim_eq_one _ Z f hd hη hdeg'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherian (Scheme.IdealSheafData.vanishingIdeal C).subscheme`. Use `LocallyOfFiniteType.isLocallyNoetherian i'` as an intermediate fact. Use `QuasiCompact.compactSpace_of_compactSpace i'` as an intermediate fact. Conclude with `{}`. Establish `: IsFinite f` using `NefDescent.isFinite_of_dim _ Z f hd' hd hη`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI : Algebra (ZMod r) Γ((Scheme.IdealSheafData.vanishingIdeal C).subscheme, ⊤) := algebraΓAlong (ZMod r) f`. Establish `hcomm : i' ≫ π = f ≫ i` using `by simp only [i', f, g, Category.assoc, pullback.condition]`. Establish `hZP : IsProper (strHom (ZMod r) Z)`. Establish `: IsFinite (spMap (Int.castRingHom (𝓞 F)))`. Rewrite using `[spMap, IsFinite.SpecMap_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := 𝓞 F)).2 inferInstance`. Establish `e : strHom (ZMod r) Z ≫ spMap (Int.castRingHom (ZMod r)) = i ≫ p ≫ spMap (Int.castRingHom (𝓞 F))` using `specZIsTerminal.hom_ext _ _`. Establish `: IsProper (strHom (ZMod r) Z ≫ spMap (Int.castRingHom (ZMod r)))` using `by rw [e]; infer_instance`. Conclude with `IsProper.of_comp _ (spMap (Int.castRingHom (ZMod r)))`. Establish `hproj : IsProjOver (strHom (ZMod r) Z)` using `ProperCurve.isProjOver_of_isProper _ hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hCP : IsProper (strHom (ZMod r) (Scheme.IdealSheafData.vanishingIdeal C).subscheme)`. Rewrite using `[← comp_strHom (k := ZMod r) (g := f) (fun _ => rfl)]`. Use `infer_instance`. Take `⟨C₀, _, _, g₀, n, d, hC₀, hn, hd0, hg₀⟩` from `exists_curve_alg_closed r (AlgebraicClosure (ZMod r)) _ hd' hCP`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨C₀, inferInstance, inferInstance, g₀ ≫ i', (d : ℝ) * (f.residueDegree (genericPoint _) : ℝ) / n, hC₀, div_pos (mul_pos (by exact_mod_cast hd0) (by exact_mod_cast hdeg')) hn', fun L hL => ?_⟩` and prove the remaining obligations. Establish `hN : (L.pull i).IsLB` using `LB.isLB_pull hL i`. Establish `e1 : interNum (ZMod r) (structureModule _) ![(L.pull i).pull f] = interNumOn (ZMod r) f ![L.pull i]` using `((interNumOn_eq_interNum_pull (fun _ => rfl) (isLB_vecOne hN)).trans (congrArg _ (funext fun j => by fin_cases j; rfl))).symm`. Establish `e4` using `ProjFin.interNumOn_eq_residueDegree_mul (ZMod r) Z _ f hproj hd hη (L.pull i) hN`. Establish `e5 : interNum (ZMod r) (structureModule Z) ![L.pull i] = topSelfIntersection (ZMod r) (L.pull i) 1`.
-
-Rewrite using `[topSelf_def]`. Conclude with `congrArg _ (funext fun j => by fin_cases j; rfl)`. Establish `e6` using `hg₀ _ (LB.isLB_pull hN f)`. Rewrite `e6` using `[e1, e4, e5, ← degLB_pull_comp g₀ f hN, ← degLB_pull_comp _ i hL, Category.assoc, ← hcomm, ← Category.assoc]`. Establish `e7 : (n : ℝ) * (degLB (AlgebraicClosure (ZMod r)) (L.pull ((g₀ ≫ i') ≫ π)) : ℝ) = (d : ℝ) * ((f.residueDegree (genericPoint _) : ℝ) * (topSelfIntersection (ZMod r) (L.pull i) 1 : ℝ))` using `by exact_mod_cast e6`.
-
-Rewrite using `[div_mul_eq_mul_div, eq_div_iff hn'.ne', mul_comm, e7, mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smooth_curve_over : ∀ (F : Type) [Field F] [NumberField F] (X W : Scheme.{0}) (p : X ⟶ Sp (𝓞 F)) (a : W ⟶ X), IsProjOver p → IsProjOver (a ≫ p) → Surjective a →
   ∀ (q : ℕ) [Fact q.Prime] (Z : Scheme.{0}) (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z] [Algebra (ZMod q) Γ(Z, ⊤)],

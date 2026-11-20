@@ -13,21 +13,19 @@ def Indep {r : ℕ} (w : Fin r → X → F) : Prop :=
   ∀ μ : Fin r → F, (∀ i, μ i ∈ S) → (∀ i g, σ g (μ i) = μ i) → (∀ x, ∑ i, μ i * w i x = 0) → μ = 0
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `w hw`. Conclude with `⟨0, w, hw, fun μ _ _ _ => funext fun i => i.elim0, fun β hβ => ⟨β, hβ, fun _ => rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ r ih`. Introduce `w hw`. Distinguish the cases in `hI : Indep σ S w`. Conclude with `⟨r + 1, w, hw, hI, fun β hβ => ⟨β, hβ, fun _ => rfl⟩⟩`. Simplify using `only [Indep, not_forall] at hI`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Take `⟨μ, hμS, hμσ, hμw, hμ0⟩` from `hI`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i0, μ i0 ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hμ0 (funext h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨lam, hlamS, hw0⟩ : ∃ lam : Fin r → F, (∀ i, lam i ∈ S) ∧ ∀ x, w i0 x = ∑ i, lam i * w (i0.succAbove i) x := by`. Use `⟨fun i => -μ (i0.succAbove i) / μ i0, fun i => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `hfrac (-μ (i0.succAbove i)) (S.neg_mem (hμS _)) (μ i0) (hμS i0) _ ?_ hi0 ?_` and prove the remaining obligations. Conclude with `div_mul_cancel₀ _ hi0`. Introduce `g`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_div₀, map_neg, hμσ, hμσ]`. Establish `h` using `hμw x`. Rewrite `h` using `[Fin.sum_univ_succAbove _ i0]`. Establish `h' : μ i0 * w i0 x = -∑ i, μ (i0.succAbove i) * w (i0.succAbove i) x` using `eq_neg_of_add_eq_zero_left h`. Apply `mul_left_cancel₀ hi0` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[h', Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take `⟨r', w', hw', hI', hmap⟩` from `ih (fun i => w (i0.succAbove i)) (fun i x g => hw _ x g)`. Use `⟨r', w', hw', hI', fun β hβ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨β', hβ', heq⟩` from `hmap (fun i => β (i0.succAbove i) + β i0 * lam i) (fun i => S.add_mem (hβ _) (S.mul_mem (hβ _) (hlamS i)))`. Establish `heq' : ∀ x, ∑ i, (β (i0.succAbove i) + β i0 * lam i) * w (i0.succAbove i) x = ∑ i, β' i * w' i x` using `heq`. Use `⟨β', hβ', fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← heq' x, Fin.sum_univ_succAbove _ i0, hw0 x, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem reduce (hfrac : ∀ x ∈ S, ∀ y ∈ S, ∀ w : F, w * y = x → y ≠ 0 → (∀ g, σ g w = w) → w ∈ S) :
     ∀ (r : ℕ) (w : Fin r → X → F), (∀ i x g, σ g (w i x) = w i x) →
@@ -76,27 +74,23 @@ theorem reduce (hfrac : ∀ x ∈ S, ∀ y ∈ S, ∀ w : F, w * y = x → y ≠
       ring
 
 /- English proof (translation)
-It suffices to establish `h : ∀ T : Finset (Fin r), ∀ s : Fin r → F, (∀ i, s i ∈ S) → (∀ i ∉ T, s i = 0) → (∀ x, ∑ i, s i * w i x = 0) → s = 0 from fun s hs hsw => h Finset.univ s hs (fun i hi => absurd (Finset.mem_univ i) hi) hsw`. Introduce `T`. Proceed by induction on `T using Finset.strongInduction with`. Consider the case `H T ih`. Introduce `s hs hT hsw`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i0, s i0 ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne (funext h)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hi0T : i0 ∈ T`. Assume the negation of the conclusion as `h`. Conclude with `hi0 (hT i0 h)`. Establish `key : ∀ g i, σ g (s i0) * s i = s i0 * σ g (s i)`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hsupp : ∀ i ∉ T.erase i0, σ g (s i0) * s i - s i0 * σ g (s i) = 0`. Introduce `i hi`. Break down `eq_or_ne i i0 with rfl | h` into its components or cases. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : s i = 0` using `hT i fun hiT => hi (Finset.mem_erase.2 ⟨h, hiT⟩)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[h0, map_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hrel : ∀ x, ∑ i, (σ g (s i0) * s i - s i0 * σ g (s i)) * w i x = 0`. Introduce `x`. Establish `h1` using `hsw x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ∑ i, σ g (s i) * w i x = 0`. Establish `h3` using `congrArg (σ g) h1`. Rewrite `h3` using `[map_sum, map_zero]`. Simplify `h3` using `only [map_mul, hw]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Use `_ = 0 := by rw [h1, h2]; ring`. Use `ih (T.erase i0) (Finset.erase_ssubset hi0T) (fun i => σ g (s i0) * s i - s i0 * σ g (s i)) (fun i => S.sub_mem (S.mul_mem (hstab g _ (hs i0)) (hs i)) (S.mul_mem (hs i0) (hstab g _ (hs i)))) hsupp hrel` as an intermediate fact. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 (congr_fun this i)`. Establish `hlam` using `hI (fun i => s i / s i0) (fun i => ?_) (fun i g => ?_) (fun x => ?_)`. Establish `h1` using `congr_fun hlam i0`. Simplify using `only [div_self hi0, Pi.zero_apply] at h1`. Conclude with `one_ne_zero h1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `hfrac (s i) (hs i) (s i0) (hs i0) _ (div_mul_cancel₀ _ hi0) hi0 fun g => ?_` and prove the remaining obligations. Establish `hne' : σ g (s i0) ≠ 0` using `(map_ne_zero (σ g)).2 hi0`. Rewrite using `[map_div₀, div_eq_div_iff hne' hi0]`. Take the linear combination `(-1 : F) * key g i`. Establish `hne' : σ g (s i0) ≠ 0` using `(map_ne_zero (σ g)).2 hi0`.
-
-Rewrite using `[map_div₀, div_eq_div_iff hne' hi0]`. Take the linear combination `(-1 : F) * key g i`. Establish `: ∑ i, s i / s i0 * w i x = (∑ i, s i * w i x) / s i0`. Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
-
-Rewrite using `[this, hsw x, zero_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indep_S (hstab : ∀ g, ∀ x ∈ S, σ g x ∈ S)
     (hfrac : ∀ x ∈ S, ∀ y ∈ S, ∀ w : F, w * y = x → y ≠ 0 → (∀ g, σ g w = w) → w ∈ S)
@@ -160,7 +154,7 @@ theorem indep_S (hstab : ∀ g, ∀ x ∈ S, σ g x ∈ S)
     rw [this, hsw x, zero_div]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Yra1.main M hM`.
+A detailed English derivation is pending.
 -/
 theorem exists_minor {r a : ℕ} (M : Matrix (Fin r) (Fin a) F) (hM : ∀ z : Fin a → F, M *ᵥ z = 0 → z = 0) :
     ∃ e : Fin a → Fin r, (M.submatrix e id).det ≠ 0 :=
@@ -168,9 +162,9 @@ theorem exists_minor {r a : ℕ} (M : Matrix (Fin r) (Fin a) F) (hM : ∀ z : Fi
 
 omit [Field F] in
 /- English proof (translation)
-Establish `h : A = S.subtype.mapMatrix (Matrix.of fun i j => (⟨A i j, hA i j⟩ : S))`. Use extensionality with `i j`. Both sides reduce to the same expression. Use `⟨?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[h, ← RingHom.map_det]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `SetLike.coe_mem _`. Rewrite using `[h, ← RingHom.map_adjugate]`. Conclude with `SetLike.coe_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem' [Field F] (S : Subring F) {a : ℕ} (A : Matrix (Fin a) (Fin a) F) (hA : ∀ i j, A i j ∈ S) :
     A.det ∈ S ∧ ∀ i j, A.adjugate i j ∈ S := by
@@ -184,27 +178,23 @@ theorem det_mem' [Field F] (S : Subring F) {a : ℕ} (A : Matrix (Fin a) (Fin a)
     exact SetLike.coe_mem _
 
 /- English proof (translation)
-Take `⟨r', w', hw', hI', hmap⟩` from `reduce σ S hfrac r w hw`. Establish `hsp' : ∀ j, ∃ β : Fin r' → F, (∀ i, β i ∈ S) ∧ ∀ x, c j x = ∑ i, β i * w' i x`. Introduce `j`. Take `⟨β, hβ, hc⟩` from `hspan j`. Take `⟨β', hβ', he⟩` from `hmap β hβ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨β', hβ', fun x => (hc x).trans (he x)⟩`. Use `choose β hβS hβc using hsp'`. Establish `hβσ : ∀ g i j, σ g (β j i) = ∑ k, β k i * ρ g k j`. Introduce `g i j`. Establish `h` using `indep_S σ S hstab hfrac w' hw' hI' (fun i => σ g (β j i) - ∑ k, β k i * ρ g k j) (fun i => S.sub_mem (hstab g _ (hβS j i)) (sum_mem fun k _ => S.mul_mem (hβS k i) (hρS g k j))) (fun x => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : σ g (c j x) = ∑ i, σ g (β j i) * w' i x`. Rewrite using `[hβc j x, map_sum]`. Simplify using `only [map_mul, hw']`. Establish `e2 : ∑ k, ρ g k j * c k x = ∑ i, (∑ k, β k i * ρ g k j) * w' i x`. Simplify using `only [hβc _ x, Finset.mul_sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[← e1, ← e2, hcσ, sub_self])`. Conclude with `sub_eq_zero.1 (congr_fun h i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `exists_minor (Matrix.of fun i j => β j i) fun z hz => hcinj z fun x => by`. Establish `h0 : ∀ i, ∑ j, β j i * z j = 0` using `fun i => by`. Use `congr_fun hz i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [hβc _ x, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Use `_ = 0 := by simp [h0]`. Set `Q : Matrix (Fin a) (Fin a) F` to `Matrix.of fun k j => β j (e k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hQS : ∀ i j, Q i j ∈ S` using `fun i j => hβS _ _`. Establish `hQ : Q.det ≠ 0` using `he`. Establish `hQσ : ∀ g, Q.map (σ g) = Q * ρ g`. Introduce `g`. Use extensionality with `k j`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [Matrix.map_apply, Matrix.mul_apply, Q, Matrix.of_apply]`. Conclude with `hβσ g (e k) j`. Take `⟨hdS, hadjS⟩` from `det_mem' S Q hQS`. Take `⟨y, hyS, hy⟩` from `heig Q.det hdS hQ fun g => by`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hQσ g, Matrix.det_mul, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Set `P : Matrix (Fin a) (Fin a) F` to `y • Q.adjugate`. Establish `hPQ : P * Q = 1`. Simplify using `only [P, Matrix.smul_mul, Matrix.adjugate_mul, smul_smul, mul_comm y, hy, one_smul]`. Establish `hQP : Q * P = 1`. Simplify using `only [P, Matrix.mul_smul, Matrix.mul_adjugate, smul_smul, mul_comm y, hy, one_smul]`.
-
-Use `⟨P, Q, fun i j => ⟨?_, hQS i j⟩, hPQ, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [P, Matrix.smul_apply, smul_eq_mul]`. Conclude with `S.mul_mem hyS (hadjS i j)`. Establish `h1 : Q.map (σ g) * P.map (σ g) = 1`. Rewrite using `[← Matrix.map_mul, hQP]`.
-
-Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem admissible_of_absolute (hstab : ∀ g, ∀ x ∈ S, σ g x ∈ S)
     (hfrac : ∀ x ∈ S, ∀ y ∈ S, ∀ w : F, w * y = x → y ≠ 0 → (∀ g, σ g w = w) → w ∈ S)

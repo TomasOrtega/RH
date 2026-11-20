@@ -9,9 +9,7 @@ namespace UpperTheory.ConeLoc
 open CochainComplex.mappingCone
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Use `choose T hT hT' using fun (V : Scheme.{0}) (g : V ⟶ U) (hg : S.arrows g) => k V g (hP V g hg)`. Use `⟨Sieve.bind S.arrows (fun V g hg => T V g hg), ?_, ?_⟩` and prove the remaining obligations. Conclude with `GrothendieckTopology.bind_covering _ hS (fun V g hg => hT V g hg)`. Introduce and unpack `W t ⟨V, e, g, hg, he, rfl⟩`.
-
-Conclude with `hT' V g hg W e he`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem loc_bind {U : Scheme.{0}} {P P' : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P)
     (k : ∀ (V : Scheme.{0}) (g : V ⟶ U), P V g → Loc V fun W t => P' W (t ≫ g)) : Loc U P' := by
@@ -23,7 +21,7 @@ private theorem loc_bind {U : Scheme.{0}} {P P' : ∀ V : Scheme.{0}, (V ⟶ U) 
     exact hT' V g hg W e he
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Conclude with `⟨S, hS, fun V g hg => k V g (hP V g hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem loc_mono {U : Scheme.{0}} {P P' : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P)
     (k : ∀ (V : Scheme.{0}) (g : V ⟶ U), P V g → P' V g) : Loc U P' := by
@@ -58,7 +56,7 @@ private theorem sm_neg {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a : Sec F 
     Sec.map (-φ) a = - Sec.map φ a := rfl
 
 /- English proof (translation)
-Establish `hn` using `φ.hom.naturality g.op`. Simplify using `only [Sec.res, Sec.map]`. Rewrite using `[← ModuleCat.comp_apply, ← ModuleCat.comp_apply, hn]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sm_res {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (a : Sec F U) :
     Sec.res g (Sec.map φ a) = Sec.map φ (Sec.res g a) := by
@@ -67,45 +65,45 @@ private theorem sm_res {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V �
   rw [← ModuleCat.comp_apply, ← ModuleCat.comp_apply, hn]
 
 /- English proof (translation)
-The claim follows from `map_zero (φ.hom.app (op U)).hom`.
+A detailed English derivation is pending.
 -/
 private theorem ms_zero {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} : Sec.map φ (0 : Sec F U) = 0 :=
   map_zero (φ.hom.app (op U)).hom
 
 /- English proof (translation)
-The claim follows from `map_add _ a b`.
+A detailed English derivation is pending.
 -/
 private theorem ms_add {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a b : Sec F U) :
     Sec.map φ (a + b) = Sec.map φ a + Sec.map φ b := map_add _ a b
 
 /- English proof (translation)
-The claim follows from `map_sub (φ.hom.app (op U)).hom a b`.
+A detailed English derivation is pending.
 -/
 private theorem ms_sub {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a b : Sec F U) :
     Sec.map φ (a - b) = Sec.map φ a - Sec.map φ b :=
   map_sub (φ.hom.app (op U)).hom a b
 
 /- English proof (translation)
-The claim follows from `map_neg (φ.hom.app (op U)).hom a`.
+A detailed English derivation is pending.
 -/
 private theorem ms_neg {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a : Sec F U) :
     Sec.map φ (-a) = - Sec.map φ a :=
   map_neg (φ.hom.app (op U)).hom a
 
 /- English proof (translation)
-The claim follows from `map_add _ a b`.
+A detailed English derivation is pending.
 -/
 private theorem res_add {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (a b : Sec F U) :
     Sec.res g (a + b) = Sec.res g a + Sec.res g b := map_add _ a b
 
 /- English proof (translation)
-The claim follows from `map_zero (F.obj.map g.op).hom`.
+A detailed English derivation is pending.
 -/
 private theorem res_zero {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) : Sec.res g (0 : Sec F U) = 0 :=
   map_zero (F.obj.map g.op).hom
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem res_comp {F : Shv R} {W V U : Scheme.{0}} (h : W ⟶ V) (g : V ⟶ U) (a : Sec F U) :
     Sec.res (h ≫ g) a = Sec.res h (Sec.res g a) := by
@@ -116,7 +114,7 @@ end
 variable {K M : Cx ℤ} (φ : K ⟶ M)
 
 /- English proof (translation)
-Rewrite using `[← sm_comp, d_fst_v φ i j k hij hjk, sm_neg, sm_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem fst_d (i j k : ℤ) (hij : i + 1 = j) (hjk : j + 1 = k) {T : Scheme.{0}} (s : Sec ((mappingCone φ).X i) T) :
     Sec.map ((fst φ).1.v j k hjk) (Sec.map ((mappingCone φ).d i j) s) =
@@ -124,7 +122,7 @@ private theorem fst_d (i j k : ℤ) (hij : i + 1 = j) (hjk : j + 1 = k) {T : Sch
   rw [← sm_comp, d_fst_v φ i j k hij hjk, sm_neg, sm_comp]
 
 /- English proof (translation)
-Rewrite using `[← sm_comp, d_snd_v φ i j hij, sm_add, sm_comp, sm_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem snd_d (i j : ℤ) (hij : i + 1 = j) {T : Scheme.{0}} (s : Sec ((mappingCone φ).X i) T) :
     Sec.map ((snd φ).v j j (add_zero _)) (Sec.map ((mappingCone φ).d i j) s) =
@@ -132,7 +130,7 @@ private theorem snd_d (i j : ℤ) (hij : i + 1 = j) {T : Scheme.{0}} (s : Sec ((
   rw [← sm_comp, d_snd_v φ i j hij, sm_add, sm_comp, sm_comp]
 
 /- English proof (translation)
-Establish `hid` using `id_X φ i j hij`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem decomp (i j : ℤ) (hij : i + 1 = j) {T : Scheme.{0}} (s : Sec ((mappingCone φ).X i) T) :
     s = Sec.map ((inl φ).v j i (by omega)) (Sec.map ((fst φ).1.v i j hij) s) +
@@ -142,7 +140,7 @@ private theorem decomp (i j : ℤ) (hij : i + 1 = j) {T : Scheme.{0}} (s : Sec (
     _ = _ := by rw [← hid]; rfl
 
 /- English proof (translation)
-Rewrite using `[← sm_comp, inl_v_d φ n (n - 1) (n + 1) (by omega) (by omega), sm_sub, sm_comp, sm_comp, ha, ms_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem d_inl (n : ℤ) {T : Scheme.{0}} (a : Sec (K.X n) T) (ha : Sec.map (K.d n (n + 1)) a = 0) :
     Sec.map ((mappingCone φ).d (n - 1) n) (Sec.map ((inl φ).v n (n - 1) (by omega)) a) =
@@ -150,26 +148,24 @@ private theorem d_inl (n : ℤ) {T : Scheme.{0}} (a : Sec (K.X n) T) (ha : Sec.m
   rw [← sm_comp, inl_v_d φ n (n - 1) (n + 1) (by omega) (by omega), sm_sub, sm_comp, sm_comp, ha, ms_zero, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[← sm_comp, inr_f_d, sm_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem d_inr (i j : ℤ) {T : Scheme.{0}} (c : Sec (M.X i) T) :
     Sec.map ((mappingCone φ).d i j) (Sec.map ((inr φ).f i) c) = Sec.map ((inr φ).f j) (Sec.map (M.d i j) c) := by
   rw [← sm_comp, inr_f_d, sm_comp]
 
 /- English proof (translation)
-Establish `hdec` using `decomp φ n (n + 1) rfl b`. Establish `hfd` using `fst_d φ n (n + 1) (n + 1 + 1) rfl rfl b`. Establish `hsd` using `snd_d φ n (n + 1) rfl b`. Use `set x := Sec.map ((fst φ).1.v n (n + 1) rfl) b with hx`. Use `set y := Sec.map ((snd φ).v n n (add_zero n)) b with hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hxd : Sec.map (K.d (n + 1) (n + 1 + 1)) x = 0`. Rewrite `hfd` using `[hb, ms_zero]`. Conclude with `neg_eq_zero.mp hfd.symm`. Establish `hxy : Sec.map (φ.f (n + 1)) x + Sec.map (M.d n (n + 1)) y = 0`. Rewrite `hsd` using `[hb, ms_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hsd.symm`. Establish `hyx : Sec.map (M.d n (n + 1)) y + Sec.map (φ.f (n + 1)) x = 0` using `(add_comm _ _).trans hxy`. Establish `hcob : ∃ c : Sec (M.X (n + 1 - 1)) U, Sec.map (φ.f (n + 1)) x = Sec.map (M.d (n + 1 - 1) (n + 1)) c`. Use `⟨Sec.map (M.XIsoOfEq (show n = n + 1 - 1 by omega)).hom (-y), ?_⟩` and prove the remaining obligations. Rewrite using `[← sm_comp (M.XIsoOfEq (show n = n + 1 - 1 by omega)).hom (M.d (n + 1 - 1) (n + 1)), HomologicalComplex.XIsoOfEq_hom_comp_d, ms_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_neg_of_add_eq_zero_left hxy`. Apply `loc_bind (H2 U hU (n + 1) x hxd hcob)` to reduce the goal to its premises. Introduce and unpack `V g ⟨a', ha'⟩`. Use `set a := Sec.map (K.XIsoOfEq (show n + 1 - 1 = n by omega)).hom a' with ha`. Establish `had : Sec.map (K.d n (n + 1)) a = Sec.res g x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[ha, ← sm_comp (K.XIsoOfEq (show n + 1 - 1 = n by omega)).hom (K.d n (n + 1)), HomologicalComplex.XIsoOfEq_hom_comp_d, ha']`. Use `set y' := Sec.res g y + Sec.map (φ.f n) a with hy'`. Establish `hy'd : Sec.map (M.d n (n + 1)) y' = 0`. Rewrite using `[hy', ms_add, ← sm_res, ← sm_comp (φ.f n) (M.d n (n + 1)), φ.comm n (n + 1), sm_comp, had, ← sm_res, ← res_add, hyx, res_zero]`. Establish `hdc1 : Sec.map ((mappingCone φ).d (n - 1) n) (Sec.map ((inl φ).v n (n - 1) (by omega)) a) = Sec.map ((inr φ).f n) (Sec.map (φ.f n) a) - Sec.map ((inl φ).v (n + 1) n (by omega)) (Sec.res g x)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← sm_comp ((inl φ).v n (n - 1) (by omega)) ((mappingCone φ).d (n - 1) n), inl_v_d φ n (n - 1) (n + 1) (by omega) (by omega), sm_sub, sm_comp, sm_comp, had]`. Apply `loc_mono (H1 V (hQ g hU) n y' hy'd)` to reduce the goal to its premises. Introduce and unpack `W t ⟨a₂, c₂, ha₂, hφ⟩`. Use `⟨Sec.map ((inl φ).v n (n - 1) (by omega)) a₂ - Sec.map ((inr φ).f (n - 1)) c₂ - Sec.res t (Sec.map ((inl φ).v n (n - 1) (by omega)) a), ?_⟩` and prove the remaining obligations. Rewrite using `[res_comp, hdec, ms_sub, ms_sub, d_inl φ n a₂ ha₂, d_inr, ← sm_res, hdc1, hφ, hy']`.
-
-Simplify using `only [sm_res, res_add, map_sub, map_add]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 private theorem core (Q : Scheme.{0} → Prop) (hQ : ∀ {V U : Scheme.{0}}, (V ⟶ U) → Q U → Q V)
     (H1 : ∀ (T : Scheme.{0}), Q T → ∀ (n : ℤ) (b : Sec (M.X n) T), Sec.map (M.d n (n + 1)) b = 0 →
@@ -225,7 +221,7 @@ private theorem core (Q : Scheme.{0} → Prop) (hQ : ∀ {V U : Scheme.{0}}, (V 
 end UpperTheory.ConeLoc
 
 /- English proof (translation)
-Introduce `R _ L B ρ Q hQ H1 H2 U hU n b hb`. Conclude with `UpperTheory.ConeLoc.core ρ.toZ Q hQ (fun T hT m c hc => H1 T hT m c hc) (fun T hT m a ha hc => H2 T hT m a ha hc) U hU n b hb`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.bijective_semiMap_of_locally_surjective_on_cocycles :
     ∀ (R : Type) [CommRing R] (L B : Cx R) (ρ : SemiMap L B) (Q : Scheme.{0} → Prop), (∀ {V U : Scheme.{0}}, (V ⟶ U) → Q U → Q V) →

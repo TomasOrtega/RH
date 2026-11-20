@@ -22,7 +22,7 @@ namespace GlobalTheory.HaarSmallBall
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-The claim follows from `((Formalism.REAL.mem_KG ε (k : Formalism.REAL.UJ ε)).1 k.2).1`.
+A detailed English derivation is pending.
 -/
 lemma toMK_mem_unitary (k : Formalism.REAL.KG ε) : toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ :=
   ((Formalism.REAL.mem_KG ε (k : Formalism.REAL.UJ ε)).1 k.2).1
@@ -33,7 +33,7 @@ Both sides reduce to the same expression.
 lemma toMK_mul' (a b : Formalism.REAL.KG ε) : toMK (a * b) = toMK a * toMK b := rfl
 
 /- English proof (translation)
-Use `show ((((k : Formalism.REAL.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = _`. Conclude with `Units.inv_eq_of_mul_eq_one_right (Unitary.mul_star_self_of_mem (toMK_mem_unitary k))`.
+A detailed English derivation is pending.
 -/
 lemma toMK_inv'' (k : Formalism.REAL.KG ε) : toMK k⁻¹ = star (toMK k) := by
   show ((((k : Formalism.REAL.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) :
@@ -41,21 +41,19 @@ lemma toMK_inv'' (k : Formalism.REAL.KG ε) : toMK k⁻¹ = star (toMK k) := by
   exact Units.inv_eq_of_mul_eq_one_right (Unitary.mul_star_self_of_mem (toMK_mem_unitary k))
 
 /- English proof (translation)
-The claim follows from `entry_norm_bound_of_unitary (toMK_mem_unitary k) i j`.
+A detailed English derivation is pending.
 -/
 lemma norm_entry_le_one (k : Formalism.REAL.KG ε) (i j : Fin n) : ‖toMK k i j‖ ≤ 1 :=
   entry_norm_bound_of_unitary (toMK_mem_unitary k) i j
 
 /- English proof (translation)
-Establish `hA : star (toMK a) * toMK a = 1` using `Unitary.star_mul_self_of_mem (toMK_mem_unitary a)`. Establish `heq : toMK (a⁻¹ * b) - 1 = star (toMK a) * (toMK b - toMK a)`. Rewrite using `[toMK_mul', toMK_inv'', Matrix.mul_sub, hA]`. Rewrite using `[heq]`. Establish `hent : ∀ i j, ‖(star (toMK a) * (toMK b - toMK a)) i j‖ ≤ (n : ℝ) * η`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `l _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_mul, Matrix.star_apply, norm_star, Matrix.sub_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (n : ℝ) * η := by simp`. Unfold `Formalism.REAL.hs`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j _`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hent i j) 2`.
-
-Use `_ = (n : ℝ) * n * ((n : ℝ) * η) ^ 2 := by simp [Finset.sum_const]; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma hs_translate_le (a b : Formalism.REAL.KG ε) (η : ℝ)
     (hη : ∀ i j, ‖toMK b i j - toMK a i j‖ ≤ η) :
@@ -89,13 +87,13 @@ noncomputable def cell (h x : ℝ) : Fin (⌊2 / h⌋₊ + 1) :=
   ⟨min ⌊(x + 1) / h⌋₊ ⌊2 / h⌋₊, Nat.lt_succ_of_le (min_le_right _ _)⟩
 
 /- English proof (translation)
-Establish `hx'` using `abs_le.1 hx`. Establish `hy'` using `abs_le.1 hy`. Establish `ha0 : 0 ≤ (x + 1) / h` using `div_nonneg (by linarith) hh.le`. Establish `hb0 : 0 ≤ (y + 1) / h` using `div_nonneg (by linarith) hh.le`. Establish `hfa : ⌊(x + 1) / h⌋₊ ≤ ⌊2 / h⌋₊` using `Nat.floor_le_floor (div_le_div_of_nonneg_right (by linarith) hh.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfb : ⌊(y + 1) / h⌋₊ ≤ ⌊2 / h⌋₊` using `Nat.floor_le_floor (div_le_div_of_nonneg_right (by linarith) hh.le)`. Establish `hc' : ⌊(x + 1) / h⌋₊ = ⌊(y + 1) / h⌋₊`. Use `congrArg Fin.val hc` as an intermediate fact. Simplify using `only [cell, min_eq_left hfa, min_eq_left hfb] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `Nat.floor_le ha0`. Establish `h2` using `Nat.lt_floor_add_one ((x + 1) / h)`. Establish `h3` using `Nat.floor_le hb0`. Establish `h4` using `Nat.lt_floor_add_one ((y + 1) / h)`. Rewrite `h1`, `h2` using `[hc']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hab : |(x + 1) / h - (y + 1) / h| < 1` using `abs_sub_lt_iff.2 ⟨by linarith, by linarith⟩`. Establish `: (x + 1) / h - (y + 1) / h = (x - y) / h` using `by ring`. Rewrite `hab` using `[this, abs_div, abs_of_pos hh, div_lt_one hh]`. Conclude with `hab`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma abs_sub_lt_of_cell_eq {h x y : ℝ} (hh : 0 < h) (hx : |x| ≤ 1) (hy : |y| ≤ 1)
     (hc : cell h x = cell h y) : |x - y| < h := by
@@ -132,7 +130,7 @@ noncomputable def roundK (h : ℝ) (k : Formalism.REAL.KG ε) :
   fun i j => (cell h (toMK k i j).re, cell h (toMK k i j).im)
 
 /- English proof (translation)
-Establish `e` using `congrFun (congrFun hab i) j`. Simplify using `only [roundK, Prod.mk.injEq] at e`. Establish `hre` using `abs_sub_lt_of_cell_eq hh ((Complex.abs_re_le_norm _).trans (norm_entry_le_one b i j)) ((Complex.abs_re_le_norm _).trans (norm_entry_le_one a i j)) e.1`. Establish `him` using `abs_sub_lt_of_cell_eq hh ((Complex.abs_im_le_norm _).trans (norm_entry_le_one b i j)) ((Complex.abs_im_le_norm _).trans (norm_entry_le_one a i j)) e.2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma norm_sub_lt_of_round_eq {h : ℝ} (hh : 0 < h) {a b : Formalism.REAL.KG ε}
     (hab : roundK h b = roundK h a) (i j : Fin n) : ‖toMK b i j - toMK a i j‖ ≤ 2 * h := by
@@ -147,31 +145,27 @@ lemma norm_sub_lt_of_round_eq {h : ℝ} (hh : 0 < h) {a b : Formalism.REAL.KG ε
     _ ≤ 2 * h := by rw [Complex.sub_re, Complex.sub_im]; linarith
 
 /- English proof (translation)
-Introduce `n ε`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Use `⟨1, one_pos, 0, fun δ hδ _ => ?_⟩` and prove the remaining obligations. Establish `hset : {k : Formalism.REAL.KG ε | Formalism.REAL.hs (toMK k - 1) ≤ δ} = Set.univ`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `k`. Simplify using `[Formalism.REAL.hs, hδ.le]`. Rewrite using `[hset, measure_univ]`. Simplify using the standard rewrite rules. Use `set C : ℝ := 5 * (n : ℝ) ^ 2 with hC`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hCpos : 0 < C` using `by positivity`. Use `⟨(C ^ (2 * n * n))⁻¹, by positivity, 2 * n * n, fun δ hδ hδ1 => ?_⟩` and prove the remaining obligations. Use `set h : ℝ := δ / (2 * (n : ℝ) ^ 2) with hhdef`. Establish `hh : 0 < h` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set B : Set (Formalism.REAL.KG ε) := {k | Formalism.REAL.hs (toMK k - 1) ≤ δ} with hB`. Use `set m : ℕ := ⌊2 / h⌋₊ + 1 with hm`. Set `R : Formalism.REAL.KG ε → Fin n → Fin n → Fin m × Fin m` to `roundK (ε := ε) h`. Establish `hfib : ∀ g, muK ε (R ⁻¹' {g}) ≤ muK ε B`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Distinguish the cases in `hne : (R ⁻¹' {g}).Nonempty`. Take `⟨a, ha⟩` from `hne`. Combine the equalities or inequalities in the displayed calculation. Apply `measure_mono` to reduce the goal to its premises. Introduce `b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hab : R b = R a`. Rewrite `ha`, `hb` using `[Set.mem_preimage, Set.mem_singleton_iff]`. Rewrite using `[ha, hb]`. Use `show Formalism.REAL.hs (toMK (a⁻¹ * b) - 1) ≤ δ`. Use `(hs_translate_le a b (2 * h) (norm_sub_lt_of_round_eq hh hab)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: (n : ℝ) * n * ((n : ℝ) * (2 * h)) ^ 2 = δ ^ 2`. Rewrite using `[hhdef]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Use `_ = muK ε B := measure_preimage_mul _ _ _`. Rewrite using `[Set.not_nonempty_iff_eq_empty.1 hne]`. Simplify using the standard rewrite rules. Establish `hcov : (1 : ENNReal) ≤ (Fintype.card (Fin n → Fin n → Fin m × Fin m) : ENNReal) * muK ε B`. Combine the equalities or inequalities in the displayed calculation.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use extensionality with `k`. Simplify using the standard rewrite rules. Use `_ ≤ ∑ g, muK ε (R ⁻¹' {g}) := measure_iUnion_fintype_le _ _`. Use `_ ≤ ∑ _g : Fin n → Fin n → Fin m × Fin m, muK ε B := Finset.sum_le_sum fun g _ => hfib g`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `_ = _ := by rw [Finset.sum_const, nsmul_eq_mul, Finset.card_univ]`. Establish `hcard : (Fintype.card (Fin n → Fin n → Fin m × Fin m) : ℝ) = (m : ℝ) ^ (2 * n * n)`. Simplify using `only [Fintype.card_fun, Fintype.card_prod, Fintype.card_fin]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hcovR : (1 : ℝ) ≤ (m : ℝ) ^ (2 * n * n) * (muK ε B).toReal`. Use `ENNReal.toReal_mono (ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) (measure_ne_top _ _)) hcov` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_natCast, hcard, ENNReal.toReal_one]`. Conclude with `this`. Establish `hmδ : (m : ℝ) * δ ≤ C`.
-
-Establish `hfl : ((⌊2 / h⌋₊ : ℕ) : ℝ) ≤ 2 / h` using `Nat.floor_le (by positivity)`. Establish `h2h : 2 / h * δ = 4 * (n : ℝ) ^ 2` using `by rw [hhdef]; field_simp; ring`. Establish `hn2 : (1 : ℝ) ≤ (n : ℝ) ^ 2` using `one_le_pow₀ hn1`. Combine the equalities or inequalities in the displayed calculation. Establish `hpow : ((m : ℝ) * δ) ^ (2 * n * n) ≤ C ^ (2 * n * n)` using `pow_le_pow_left₀ (by positivity) hmδ _`.
-
-Establish `hμ0 : 0 ≤ (muK ε B).toReal` using `ENNReal.toReal_nonneg`. Rewrite using `[inv_mul_le_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem smallBall : ∀ {n : ℕ} (ε : Fin n → Bool), ∃ c : ℝ, 0 < c ∧ ∃ D : ℕ, ∀ δ : ℝ, 0 < δ → δ ≤ 1 → c * δ ^ D ≤ (muK ε {k | Formalism.REAL.hs (toMK k - 1) ≤ δ}).toReal := by
   intro n ε

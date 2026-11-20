@@ -4,15 +4,13 @@ open IsLocalRing Polynomial
 namespace GlobalTheory.Izumi
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective φ` using `fun y => by`. Take `⟨r, rfl⟩` from `residue_surjective y`. Conclude with `⟨j r, hφ r⟩`. Use `haveI hmax : (RingHom.ker φ).IsMaximal := RingHom.ker_isMaximal_of_surjective φ hsurj`. Set `B` to `Localization.AtPrime (RingHom.ker φ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ∀ s : S, algebraMap S B s ∈ maximalIdeal B ↔ φ s = 0` using `fun s => by`. Rewrite using `[IsLocalization.AtPrime.to_map_mem_maximal_iff B (RingHom.ker φ), RingHom.mem_ker]`. Use `haveI : IsNoetherianRing B := IsLocalization.isNoetherianRing (RingHom.ker φ).primeCompl B inferInstance`. Use `⟨B, inferInstance, inferInstance, inferInstance, inferInstance, (algebraMap S B).comp j, ?_, ⟨fun r hr => ?_⟩, fun b => ?_, algebraMap S B u, (hmem u).2 hu, ?_⟩` and prove the remaining obligations. Conclude with `(IsLocalization.injective B (RingHom.ker φ).primeCompl_le_nonZeroDivisors).comp hj`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Establish `h1 : φ (j r) = 0`. Rewrite using `[hφ, residue_eq_zero_iff]`. Conclude with `h`. Conclude with `(hmem _).2 h1 hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨⟨s, t⟩, rfl⟩` from `IsLocalization.mk'_surjective (RingHom.ker φ).primeCompl b`. Establish `ht : φ t ≠ 0` using `t.2`. Take `⟨r, hr⟩` from `residue_surjective (φ s / φ t)`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `hunit : IsUnit (algebraMap S B t)` using `IsLocalization.map_units B t`.
-
-Rewrite using `[← Ideal.unit_mul_mem_iff_mem _ hunit, mul_sub]`. Simplify using `only`. Rewrite using `[IsLocalization.mk'_spec', RingHom.comp_apply, ← map_mul, ← map_sub, hmem, map_sub, map_mul, hφ, hr, mul_div_cancel₀ _ ht, sub_self]`. Simplify using `[hf]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_dominating_of_residue_map {R S : Type} [CommRing R] [IsLocalRing R]
     [CommRing S] [IsDomain S] [IsNoetherianRing S] (j : R →+* S) (hj : Function.Injective j)
@@ -50,15 +48,15 @@ theorem exists_dominating_of_residue_map {R S : Type} [CommRing R] [IsLocalRing 
   · simp [hf]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Establish `hunit : IsUnit (P.coeff 0)`. Simplify `hc` using `[mem_maximalIdeal]`. Establish `hinj` using `IsFractionRing.injective R (FractionRing R)`. Establish `hG : G ≠ 0` using `by rintro rfl; exact h (zero_mem _)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG' : algebraMap R (FractionRing R) G ≠ 0` using `(map_ne_zero_iff _ hinj).2 hG`. Establish `hf : f ≠ 0`. Introduce and unpack `rfl`. Rewrite `hP` using `[map_zero, zero_div, ← coeff_zero_eq_aeval_zero']`. Conclude with `hunit.ne_zero ((map_eq_zero_iff _ hinj).1 hP)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hf' : algebraMap R (FractionRing R) f ≠ 0` using `(map_ne_zero_iff _ hinj).2 hf`. Use `set u := algebraMap R (FractionRing R) f / algebraMap R (FractionRing R) G with hu`. Establish `hu0 : u ≠ 0` using `div_ne_zero hf' hG'`. Use `letI := invertibleOfNonzero hu0`. Establish `hrev : aeval (⅟u) P.reverse = 0`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[aeval_def, eval₂_reverse_eq_zero_iff]`. Conclude with `hP`. Establish `hint` using `isIntegral_leadingCoeff_smul P.reverse (⅟u) hrev`. Rewrite `hint` using `[reverse_leadingCoeff, trailingCoeff_eq_coeff_zero hunit.ne_zero]`. Take `⟨r, hr⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[← Ideal.unit_mul_mem_iff_mem _ hunit, Ideal.mem_span_singleton']`. Use `⟨r, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hr, invOf_eq_inv, hu, Algebra.smul_def]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem coeff_zero_mem_maximalIdeal_of_aeval_div {R : Type} [CommRing R] [IsDomain R]
     [IsLocalRing R] [IsIntegrallyClosed R] (f G : R) (h : G ∉ Ideal.span {f}) (P : R[X])
@@ -90,15 +88,15 @@ theorem coeff_zero_mem_maximalIdeal_of_aeval_div {R : Type} [CommRing R] [IsDoma
   field_simp
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ f G h`. Establish `hinj` using `IsFractionRing.injective R (FractionRing R)`. Establish `hG : G ≠ 0` using `by rintro rfl; exact h (zero_mem _)`. Establish `hG' : algebraMap R (FractionRing R) G ≠ 0` using `(map_ne_zero_iff _ hinj).2 hG`. Set `u` to `algebraMap R (FractionRing R) f / algebraMap R (FractionRing R) G`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : R[X] →+* FractionRing R` to `(aeval u : R[X] →ₐ[R] FractionRing R)`. Establish `he : ∀ P, e P = aeval u P` using `fun _ => rfl`. Use `haveI : (RingHom.ker e).IsPrime := RingHom.ker_isPrime e`. Set `φ : (R[X] ⧸ RingHom.ker e) →+* ResidueField R` to `Ideal.Quotient.lift _ ((residue R).comp constantCoeff) fun P hP => by`. Rewrite using `[RingHom.comp_apply, residue_eq_zero_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `coeff_zero_mem_maximalIdeal_of_aeval_div f G h P hP`. Use `exists_dominating_of_residue_map ((Ideal.Quotient.mk (RingHom.ker e)).comp C) ?_ φ ?_ f G (Ideal.Quotient.mk _ X) ?_ ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Rewrite `hr` using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem, RingHom.mem_ker, he, aeval_C]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(map_eq_zero_iff _ hinj).1 hr`. Introduce `r`. Simplify using `[φ]`. Simplify using `[φ]`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, ← map_mul, Ideal.Quotient.eq, RingHom.mem_ker, he]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_sub, map_mul, aeval_C, aeval_X, u]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_dominating_eq_mul_of_not_mem_span :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]

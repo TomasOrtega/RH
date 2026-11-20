@@ -11,7 +11,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CompletionDegrees.NormL
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain Module GlobalTheory.HeightCounting
 
 /- English proof (translation)
-Establish `e1` using `PI.CompDegEF.isEquiv_adicAbv_normAbv τ w hw (fun x => ⟨PI.CompDegEF.norm_le_one_of_integer τ x, hτ x⟩)`. Establish `e2` using `PI.CompDegEF.isEquiv_adicAbv_normAbv φ w hw (fun x => ⟨PI.CompDegEF.norm_le_one_of_integer φ x, hφ x⟩)`. Use `(e1.symm.trans e2).le_one_iff (x := x)` as an intermediate fact. Simplify `this` using `only [PI.CompDegEF.normAbv_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem cj_norm_eq {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E]
     (τ φ : E →+* Om l) (w : HeightOneSpectrum (𝓞 E)) (hw : w ∈ placesOver E l)
@@ -25,15 +25,15 @@ private theorem cj_norm_eq {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [Number
   simpa only [PI.CompDegEF.normAbv_apply] using this
 
 /- English proof (translation)
-Take `⟨j₁, hj₁⟩` from `GlobalTheory.PlaceBridge.exists_embedding (l := l) E Ω w A hw hA`. Establish `hlt : ∀ y : Ω, A.valuation y < 1 ↔ ‖j₁ y‖ < 1`. Introduce `y`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `h0 : 0 < ‖j₁ y‖` using `norm_pos_iff.2 ((map_ne_zero j₁).2 hy)`. Establish `hv : 0 < A.valuation y` using `zero_lt_iff.2 ((map_ne_zero _).2 hy)`. Rewrite using `[← not_le, ← not_le, ← inv_le_one₀ hv, ← inv_le_one₀ h0, ← map_inv₀, ← norm_inv, ← map_inv₀, A.valuation_le_one_iff, hj₁]`. Establish `hn` using `cj_norm_eq τ (j₁.comp (algebraMap E Ω)) w hw (fun x => (hτ x).symm) (fun x => (hlt _).symm.trans (hA x))`. Use `letI : Algebra E (Om l) := τ.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.IsAlgebraic E Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsGalois E Ω := IsAlgClosure.isGalois E Ω`. Set `j₀ : Ω →ₐ[E] Om l` to `IsAlgClosed.lift`. Set `B : ValuationSubring Ω` to `((Valued.v : Valuation (PadicAlgCl l) NNReal).comap j₀.toRingHom).valuationSubring`. Establish `hB : ∀ y, y ∈ B ↔ ‖j₀ y‖ ≤ 1` using `fun y => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Valued.v (j₀ y) ≤ 1 ↔ _`. Rewrite using `[PadicAlgCl.valuation_def]`. Conclude with `Iff.rfl`. Take `⟨σ, hσ⟩` from `GlobalTheory.ValConjClosure.exists_conj_of_isGalois (F := E) A B (fun a => by`. Rewrite using `[hB, hj₁, j₀.commutes]`.
+Unfold both sides to obtain the same proposition, which implies itself. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(hn a).symm)`. Use `⟨j₀.toRingHom.comp σ.toAlgHom.toRingHom, fun x => ((hσ x).symm.trans (hB _)), fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `j₀ (σ (algebraMap E Ω x)) = _`. Rewrite using `[σ.commutes, j₀.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem cj_embedding {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (τ : E →+* Om l) (w : HeightOneSpectrum (𝓞 E)) (hw : w ∈ placesOver E l)
@@ -68,7 +68,7 @@ private theorem cj_embedding {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [N
   rfl
 
 /- English proof (translation)
-Set `K : FinExt l` to `⟨IntermediateField.adjoin ℚ_[l] (Set.range fun x : E => j (algebraMap E Ω x)), GlobalTheory.PlaceBridge.finiteDimensional_adjoin_range (j.comp (algebraMap E Ω))⟩`. Use `K.2` as an intermediate fact. Take `⟨e, he, he', hec⟩` from `GlobalTheory.PlaceBridge.exists_mulEquiv (E := E) hj K rfl`. Conclude with `⟨⟨IntermediateField.normalClosure ℚ_[l] K.1 (PadicAlgCl l), inferInstance⟩, { Kw := K j := j j_E := fun x => IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩ j_dense := GlobalTheory.PlaceBridge.adjoin_range_subset_closure (j.comp (algebraMap E Ω)) e := e e_cont := he e_symm_cont := h …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cj_bridge {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} (j : Ω →+* Om l) (hj : ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1) :
@@ -96,11 +96,11 @@ private theorem cj_bridge {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Al
     fun x hx => AlgHom.fieldRange_le_normalClosure K.1.val ⟨⟨x, hx⟩, rfl⟩, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨L, hL, h⟩` from `GlobalTheory.CompactRepField.exists_finExt_entries_mem l (G E Ω) a r hr L₀`. Set `m : G E Ω →* Matrix (Fin a) (Fin a) ↥L.1` to `{ toFun := fun g => Matrix.of fun i j => ⟨_, h g i j⟩ map_one' := by`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, map_one, Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use the proof step `map_mul' := fun g g' => by`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply] }`. Use `⟨L, hL, m.toHomUnits, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuous_induced_rng.2 (hr.matrix_elem i j)`. Use `MonoidHom.ext fun g => Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem cj_model {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] {a : ℕ} (r : G E Ω →* GL (Fin a) (Om l))
@@ -125,13 +125,13 @@ private theorem cj_model {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Numbe
     rfl
 
 /- English proof (translation)
-Take `⟨lo, hlo⟩` from `Pv.LocalLengthBound.rk_fildR_lo (P.PD K) ρ τ`. Take `⟨hi, hhi⟩` from `Pv.LocalLengthBound.rk_fildR_hi (P.PD K) ρ τ`. Establish `hs` using `Pv.LocalLengthBound.rk_sum_multV (P.PD K) ρ τ (lo) (max (lo + 1) hi) (by omega)`. Rewrite `hs` using `[hlo lo le_rfl, hhi _ (le_max_right _ _), finrank_bot, Nat.cast_zero, sub_zero]`. Establish `hsub : J.toFinset ⊆ Finset.Ico lo (max (lo + 1) hi)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `n hn`. Assume the negation of the conclusion as `hc`. Establish `h0 : multV (P.PD K) ρ τ n = 0`. Use `Pv.LocalLengthBound.rk_multV_of_not_jump (P.PD K) ρ τ n ?_` and prove the remaining obligations. Unfold `IsJumpV`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite `hc` using `[Finset.mem_Ico]`. Break down `lt_or_ge n lo with h | h` into its components or cases. Rewrite using `[hlo n h.le, hlo (n + 1) (by omega)]; simp`. Rewrite using `[hhi n (by omega), hhi (n + 1) (by omega)]; simp`. Rewrite `h0` using `[← hJ, Nat.cast_eq_zero, Multiset.count_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h0 (Multiset.mem_toFinset.1 hn)`. Apply `Nat.cast_injective (R := ℤ)` to reduce the goal to its premises. Rewrite using `[← hs, ← Multiset.sum_count_eq_card (fun n hn => hsub (Multiset.mem_toFinset.2 hn)), Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl fun n _ => hJ n`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cj_count {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K L : FinExt l) {V : Type} [AddCommGroup V]
     [Module ↥L.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥L.1 V] (ρ : Representation ↥L.1 ↥(GK K) V)
@@ -160,13 +160,13 @@ private theorem cj_count {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K L : FinExt
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D T Wd l _ ι a r τ w hr hτ hd`. Establish `hw : w ∈ placesOver D.host.E l`. Use `(hτ _).2 ?_` and prove the remaining obligations. Simplify using `using PI.CompDegEF.norm_natCast_lt_one l`. Take `⟨j, hj, hjτ⟩` from `cj_embedding (Ω := D.nd.Om) τ w hw hτ (D.nd.plOm.1 w) (D.nd.plOm.2 w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨L₀, Bw, hBj, hK, hto⟩` from `cj_bridge (E := D.host.E) j hj`. Take `⟨L, hL, ρ, hρc, hρ⟩` from `cj_model r hr Bw.LL`. Establish `hcl` using `(Wd.loc l ι w hw _ Bw (fun x => by rw [hBj]; exact hj x) (L₀.1.val.toRingHom.comp (OL L₀).val.toRingHom) hto).2 L hL a ρ hρc`. Rewrite `hcl` using `[hρ]`. Establish `hdR` using `hcl.2.1.1 hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥L.1` to `IntermediateField.inclusion (hK.trans hL)`. Establish `hJ` using `(hcl.2.2.2 τ τ' (fun x => by`. Express the relevant statement in the definitionally equal form `τ x = Bw.j _`. Rewrite using `[hBj, hjτ])).2 hdR`. Take `⟨hfin, -, hdim⟩` from `(GlobalTheory.Per.Components.components_finrank l (D.loc l) (D.locA l) (D.locT l) Bw.Kw L (Fin a → ↥L.1) (Bw.repE L (ρ.comp (Dec (F := D.host.E) (D.nd.plOm.1 w)).subtype))).1 τ'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[cj_count (D.loc l) Bw.Kw L _ τ' _ hJ, hdim, Module.finrank_fin_fun]`. Unfold `IsDR`. Rewrite using `[Module.finrank_fin_fun]`. Conclude with `hdR`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Prune.card_jumps :
     ∀ (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (Wd : WDSide D T) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ)

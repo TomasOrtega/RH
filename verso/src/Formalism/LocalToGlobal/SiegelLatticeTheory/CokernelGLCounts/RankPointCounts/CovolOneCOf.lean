@@ -12,45 +12,39 @@ namespace Formalism.L2.SG.NGCut.StabilizerCovolume
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D X Y u u' t hrel hG w hat F' L U hNR γw s s' μw hIs hs hs' hpt hHaar hmap c Φ hD`. Take `⟨BX, hBm, hBd, hB0, hstm, hStm, hinj, hsurj, hmul, hconj⟩` from `hC D X Y u u' t hrel hG w hat γw s s' hIs hs hs' hpt`. Establish `hΦR : ∀ β, c⁻¹ * Φ β * c ∈ Formalism.L2.SG.TermOp.Vanish.Rset t` using `hD.2.1`. Take `⟨σ, h', I, Λ, k, τ, σι, hh', hφ, hΛ, hk, hk0, hs0, hτ, hset, hc0, hconst⟩` from `hL D X Y u u' t hrel hG w hat F' L U hNR γw s s' hIs hs hs' hpt c Φ hD`. Establish `hTC` using `Formalism.MainNotions.InterlacingSignCuts.host_totallyComplex D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsEmpty {w : InfinitePlace D.host.E // w.IsReal}` using `⟨fun w => (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1)) w.2⟩`. Use `set St := Formalism.L2.SG.RealObj.StInf X u u' γw with hStdef`. Use `set sc := Formalism.L2.SG.RealObj.stCoord X u' w γw with hscdef`. Set `gβ : Formalism.L2.SG.Pf.VolPinAsm.StG w → X.B.I.Ginf` to `fun β => s⁻¹ * (c⁻¹ * Φ β * c) * s`. Establish `hgSt : ∀ β, gβ β ∈ St` using `fun β => hconj _ (hΦR β)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg_inv : ∀ β, gβ β⁻¹ = (gβ β)⁻¹`. Introduce `β`. Simplify using `only [gβ, map_inv]`. Use `group`. Establish `hg_mul : ∀ β (y : X.B.I.Ginf), s⁻¹ * (c⁻¹ * (Φ β * y) * c) * s = gβ β * (s⁻¹ * (c⁻¹ * y * c) * s)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Introduce `β y`. Simplify using `only [gβ]`. Use `group`. Set `A : Formalism.L2.SG.RealObj.FreeE w → AddSubgroup (InfinitePlace X.B.I.F → ℂ)` to `fun p => (Λ p).map (Formalism.L2.SG.NGCut.SplitEmbedding.embS (Formalism.L2.SG.Pf.VolPinAsm.phiV X) (σ p))`. Establish `hΓ : ∀ x, (∀ p, (fun v => x v p) - τ p x ∈ A p) ↔ ∃ β : Formalism.L2.SG.Pf.VolPinAsm.StG w, (β : Formalism.L2.SG.PairVal.GLR D) ∈ Formalism.L2.SG.PairVal.stabInt D u u' Y.δ Y.M w ∧ x = sc (gβ β)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Conclude with `(hset x).symm`. Establish `hBd' : ∀ p (x x' y y' : Formalism.L2.SG.RealObj.FreeE w → ℂ), (∀ q, h' q < h' p → x q = x' q ∧ y q = y' q) → BX p x y = BX p x' y'` using `fun p x x' y y' hxy => hBd p x x' y y' fun q hq => hxy q (hh' p q hq)`. Establish `hinv : ∀ γ, (∀ p, (fun v => γ v p) - τ p γ ∈ A p) → ∃ γ', (∀ p, (fun v => γ' v p) - τ p γ' ∈ A p) ∧ ∀ x, lawX BX γ' (lawX BX γ x) = x ∧ lawX BX γ (lawX BX γ' x) = x`. Introduce `γ hγ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ, rfl⟩` from `(hΓ γ).1 hγ`. Establish `hβi : ((β⁻¹ : Formalism.L2.SG.Pf.VolPinAsm.StG w) : Formalism.L2.SG.PairVal.GLR D) ∈ Formalism.L2.SG.PairVal.stabInt D u u' Y.δ Y.M w`. Rewrite using `[Subgroup.coe_inv]`. Conclude with `Subgroup.inv_mem _ hβ`. Use `⟨sc (gβ β⁻¹), (hΓ _).2 ⟨β⁻¹, hβi, rfl⟩, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz, rfl⟩` from `hsurj x`. Establish `h1` using `hmul (gβ β) (hgSt β) z hz`. Establish `h1'` using `hmul (gβ β⁻¹) (hgSt _) z hz`. Prove the components needed by the constructor for the conclusion. Establish `h2` using `hmul (gβ β⁻¹) (hgSt _) (gβ β * z) h1.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← h1.2, ← h2.2, hg_inv, inv_mul_cancel_left]`. Establish `h2` using `hmul (gβ β) (hgSt β) (gβ β⁻¹ * z) h1'.1`. Rewrite using `[← h1'.2, ← h2.2, hg_inv, mul_inv_cancel_left]`. Establish `hfd : ∀ p, ∃ F : Set (InfinitePlace X.B.I.F → ℂ), MeasurableSet F ∧ ∀ v, ∃! b : A p, (b : InfinitePlace X.B.I.F → ℂ) + v ∈ F`. Introduce `p`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF, hFd⟩` from `exists_fd D.host.E (InfinitePlace X.B.I.F) (Formalism.L2.SG.Pf.VolPinAsm.phiV X) σι hφ (I p) (Λ p) (hΛ p) (by rw [hk p]; exact hk0 p) (σ p) (hs0 p)`. Use `⟨F, hF, fun v => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hau⟩` from `hFd v`. Use `⟨⟨Formalism.L2.SG.NGCut.SplitEmbedding.embS (Formalism.L2.SG.Pf.VolPinAsm.phiV X) (σ p) a, AddSubgroup.mem_map_of_mem _ a.2⟩, ha, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩ hyF`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a', ha', rfl⟩` from `AddSubgroup.mem_map.1 hy`. Use `hau ⟨a', ha'⟩ hyF` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Formalism.L2.SG.NGCut.SplitEmbedding.embS (Formalism.L2.SG.Pf.VolPinAsm.phiV X) (σ p) a' = Formalism.L2.SG.NGCut.SplitEmbedding.embS (Formalism.L2.SG.Pf.VolPinAsm.phiV X) (σ p) a`. Rewrite using `[show a' = (a : D.host.E) from congrArg Subtype.val this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose F hF hFd using hfd`. Use `set K' : Set (InfinitePlace X.B.I.F → Formalism.L2.SG.RealObj.FreeE w → ℂ) := {y | ∀ p, (fun v => y v p) ∈ F p} with hK'def`. Establish `hK'm : MeasurableSet K'`. Rewrite using `[hK'def, Set.setOf_forall]`. Conclude with `MeasurableSet.iInter fun p => (measurable_pi_lambda _ fun v => (measurable_pi_apply p).comp (measurable_pi_apply v)) (hF p)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hKd` using `box_fundX h' BX hBd' τ hτ A F hFd`. Establish `hone` using `covol_one_eq_one D.host.E (InfinitePlace X.B.I.F) (Formalism.L2.SG.Pf.VolPinAsm.phiV X) σι hφ (Formalism.L2.SG.RealObj.FreeE w) h' BX hBm hBd' hB0 _ hc0 I Λ hΛ k hk hk0 σ hs0 hconst τ hτ hinv K' hK'm hKd`. Establish `hQm : Measurable (fun y : X.B.I.Ginf => s⁻¹ * (c⁻¹ * y * c) * s)` using `((continuous_const.mul ((continuous_const.mul continuous_id).mul continuous_const)).mul continuous_const).measurable`. Use `set KA := (fun y : X.B.I.Ginf => s⁻¹ * (c⁻¹ * y * c) * s) ⁻¹' (St ∩ sc ⁻¹' K') with hKAdef`. Establish `hKAm : MeasurableSet KA` using `hQm (hStm.inter (hstm hK'm))`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨KA, hKAm, fun y hy => ?_, ?_⟩` and prove the remaining obligations. Use `set z := s⁻¹ * (c⁻¹ * y * c) * s`. Establish `hz : z ∈ St` using `hconj _ hy`. Take `⟨γ, ⟨hγΓ, hγK⟩, hγu⟩` from `hKd (sc z)`. Take `⟨β, hβ, rfl⟩` from `(hΓ γ).1 hγΓ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Φ β, ⟨⟨β, (Subgroup.mem_subgroupOf).2 hβ, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show s⁻¹ * (c⁻¹ * (Φ β * y) * c) * s ∈ St ∩ sc ⁻¹' K'`. Rewrite using `[hg_mul]`. Establish `h1` using `hmul (gβ β) (hgSt β) z hz`. Conclude with `⟨h1.1, by show sc (gβ β * z) ∈ K'; rw [h1.2]; exact hγK⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `x' ⟨hx'm, hx'K⟩`. Take `⟨β', hβ', rfl⟩` from `Subgroup.mem_map.1 hx'm`. Establish `hβ'' : (β' : Formalism.L2.SG.PairVal.GLR D) ∈ Formalism.L2.SG.PairVal.stabInt D u u' Y.δ Y.M w` using `(Subgroup.mem_subgroupOf).1 hβ'`. Establish `hK2 : s⁻¹ * (c⁻¹ * (Φ β' * y) * c) * s ∈ St ∩ sc ⁻¹' K'` using `hx'K`. Rewrite `hK2` using `[hg_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hmul (gβ β') (hgSt β') z hz`. Establish `hin : lawX BX (sc (gβ β')) (sc z) ∈ K'` using `by rw [← h1.2]; exact hK2.2`. Establish `heq` using `hγu (sc (gβ β')) ⟨(hΓ _).2 ⟨β', hβ'', rfl⟩, hin⟩`. Establish `hgg : gβ β' = gβ β` using `hinj (hgSt β') (hgSt β) heq`. Establish `: Φ β' = Φ β`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : c⁻¹ * Φ β' * c = c⁻¹ * Φ β * c`. Use `congrArg (fun g => s * g * s⁻¹) hgg` as an intermediate fact. Simplify `this` using `[gβ, mul_assoc]`. Use `congrArg (fun g => c * g * c⁻¹) e` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
-
-Conclude with `this`. Establish `hc1m : Measurable (fun y : X.B.I.Ginf => c * y * c⁻¹)` using `((continuous_const.mul continuous_id).mul continuous_const).measurable`. Establish `hs1m : Measurable (fun y : X.B.I.Ginf => s * y * s⁻¹)` using `((continuous_const.mul continuous_id).mul continuous_const).measurable`. Rewrite using `[Measure.map_apply hc1m hKAm, Measure.map_apply hs1m (hc1m hKAm)]`. Establish `hset' : (fun y : X.B.I.Ginf => s * y * s⁻¹) ⁻¹' ((fun y : X.B.I.Ginf => c * y * c⁻¹) ⁻¹' KA) = St ∩ sc ⁻¹' K'`.
-
-Use extensionality with `y`. Simplify using `only [Set.mem_preimage, hKAdef]`. Establish `e : s⁻¹ * (c⁻¹ * (c * (s * y * s⁻¹) * c⁻¹) * c) * s = y` using `by group`. Rewrite using `[e]`. Rewrite using `[hset', Set.inter_comm, measure_inter_conull hHaar.2.2.1, ← Measure.map_apply hstm hK'm, hmap]`.
-
-Conclude with `hone`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covolOneC_of (hC : ChartC) (hL : LatC) : Formalism.L2.SG.Pf.VolPinAsm.CovolOneC := by
   intro D X Y u u' t hrel hG w hat F' L U hNR γw s s' μw hIs hs hs' hpt hHaar hmap c Φ hD

@@ -16,13 +16,13 @@ section Basic
 variable {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Hyp1.mk_surjective F a`. Take `⟨b, rfl⟩` from `Hyp1.mk_surjective F b`. Rewrite using `[cupHyp_mk, cupHyp_mk, ← map_add]`. Use `Hyp2.mk_eq_zero.2 ⟨(fun T T' φ ↦ -(a.1.1 T T' φ * b.1.1 T T' φ), 0), ?_⟩` and prove the remaining obligations. Use `Tot2.ext (fun T T' T'' φ ψ ↦ ?_) (fun T T' φ ↦ ?_) fun T ↦ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ = (cupTot F a.1 b.1).1 T T' T'' φ ψ + (cupTot F b.1 a.1).1 T T' T'' φ ψ`. Simplify using `only [cechDeRhamTotalDifferentialOne_functionPart, cupTot_apply, cechDeRhamTotalCocyclesOne.comp a, cechDeRhamTotalCocyclesOne.comp b, map_neg, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `_ = (cupTot F a.1 b.1).2.1 T T' φ + (cupTot F b.1 a.1).2.1 T T' φ`. Simplify using `only [dTot1_a, cupTot_a]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[cechDeRhamTotalCocyclesOne.conn a φ, cechDeRhamTotalCocyclesOne.conn b φ]`. Simplify using `only [Pi.zero_apply, map_zero, sub_zero, map_neg, Derivation.leibniz, smul_add]`. Use `module`. Express the relevant statement in the definitionally equal form `_ = (cupTot F a.1 b.1).2.2 T + (cupTot F b.1 a.1).2.2 T`. Simplify using `only [dTot1_η, cupTot_η]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wedge_swap (a.1.2 T)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cupHyp_add_swap (a b : Hyp1 F) : cupHyp F a b + cupHyp F b a = 0 := by
   obtain ⟨a, rfl⟩ := Hyp1.mk_surjective F a
@@ -46,11 +46,11 @@ theorem cupHyp_add_swap (a b : Hyp1 F) : cupHyp F a b + cupHyp F b a = 0 := by
 variable {F}
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hs (H1.mk F f)`. Take `⟨c, rfl⟩` from `Hyp1.mk_surjective F c`. Take `⟨g, hg⟩` from `H1.mk_eq_mk.1 (show H1.mk F (cechDeRhamTotalCocyclesOne.fn F c) = H1.mk F f from hc)`. Establish `hg' : ∀ (T T' : C) (φ : T ⟶ T'), c.1.1 T T' φ = f.1 T T' φ + (g T' - mp F φ (g T))` using `fun T T' φ ↦ by`. Use `congrFun (congrFun (congrFun hg T) T') φ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[amitsur_d0_apply]`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `_ = _ + (c.1.1 T T' φ - f.1 T T' φ)`. Normalize the expressions using the abelian group laws. Use `⟨fun T ↦ c.1.2 T - D R _ (g T), mem_cechDeRhamTotalCocyclesOne_iff.2 ⟨f.2, fun T T' φ ↦ ?_, fun T ↦ ?_⟩⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sub, p1_D]`. Rewrite using `[cechDeRhamTotalCocyclesOne.conn c φ, hg', map_add, map_sub]`. Normalize the expressions using the abelian group laws. Simplify using `[cechDeRhamTotalCocyclesOne.closed c]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 -/
 theorem exists_lift (hs : Function.Surjective (toO F)) (f : Z1 F) :
     ∃ α : A0 F, ((f.1, α) : Tot1 F) ∈ cechDeRhamTotalCocyclesOne F := by
@@ -71,11 +71,11 @@ theorem exists_lift (hs : Function.Surjective (toO F)) (f : Z1 F) :
   · simp [cechDeRhamTotalCocyclesOne.closed c]
 
 /- English proof (translation)
-Establish `he : e.1 ∈ Z1 F`. Rewrite using `[commAlgFunctorCocyclesOne_eq_ker]`. Conclude with `congrArg Prod.fst h`. Take `⟨α, hα⟩` from `exists_lift hs ⟨e.1, he⟩`. Take `⟨-, h2, h3⟩` from `mem_cechDeRhamTotalCocyclesOne_iff.1 hα`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e.2 - α, fun T T' φ ↦ ?_, fun T ↦ ?_⟩` and prove the remaining obligations. Establish `k : e.2 T' - p1 F φ (e.2 T) - D R _ (e.1 T T' φ) = a T T' φ` using `congrFun (congrFun (congrFun (congrArg (·.2.1) h) T) T') φ`. Establish `k2 : α T' = p1 F φ (α T) + D R _ (e.1 T T' φ)` using `h2 φ`. Rewrite using `[← k, Pi.sub_apply, Pi.sub_apply, map_sub, k2]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `k : dOne R _ (e.2 T) = w T` using `congrFun (congrArg (·.2.2) h) T`. Establish `k3 : dOne R _ (α T) = 0` using `h3 T`. Rewrite using `[← k, Pi.sub_apply, map_sub, k3, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_dTot1 (hs : Function.Surjective (toO F)) (e : Tot1 F) (a : A1 F) (w : W0 F 2)
     (h : dTot1 F e = ((0 : C2 F), a, w)) :
@@ -97,9 +97,9 @@ theorem exists_of_dTot1 (hs : Function.Surjective (toO F)) (e : Tot1 F) (a : A1 
     rw [← k, Pi.sub_apply, map_sub, k3, sub_zero]
 
 /- English proof (translation)
-Take `⟨β, h1, h2⟩` from `exists_of_dTot1 hs e 0 w h`. Establish `hβ : β ∈ Glob1 F` using `fun T T' φ ↦ by`. Use `h1 T T' φ` as an intermediate fact. Conclude with `sub_eq_zero.1 this.symm`. Establish `hcl : (⟨β, hβ⟩ : Glob1 F) ∈ Closed1 F` using `hc ▸ Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `T`. Rewrite using `[h2 T]`. Conclude with `hcl T`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_eq_zero (hc : Closed1 F = ⊤) (hs : Function.Surjective (toO F)) (e : Tot1 F) (w : W0 F 2)
     (h : dTot1 F e = ((0 : C2 F), (0 : A1 F), w)) : w = 0 := by
@@ -120,7 +120,7 @@ variable {R V V' W W' : Type} [CommRing R] [AddCommGroup V] [AddCommGroup V'] [A
   [AddCommGroup W'] [Module R V] [Module R V'] [Module R W] [Module R W']
 
 /- English proof (translation)
-Set `e : (V × V) ≃ₗ[R] V'` to `LinearEquiv.ofBijective (p.coprod q) h`. Establish `he : ∀ x, e x = p x.1 + q x.2` using `fun x ↦ rfl`. Establish `hp : ∀ v, e.symm (p v) = (v, 0)` using `fun v ↦ e.symm_apply_eq.2 (by rw [he]; simp)`. Establish `hq : ∀ v, e.symm (q v) = (0, v)` using `fun v ↦ e.symm_apply_eq.2 (by rw [he]; simp)`. Apply the tactic sequence `refine ⟨LinearMap.fst R V V ∘ₗ e.symm.toLinearMap, LinearMap.snd R V V ∘ₗ e.symm.toLinearMap, fun v ↦ ?_, fun v ↦ ?_, fun v ↦ ?_, fun v ↦ ?_⟩ <;> simp [hp, hq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_proj (p q : V →ₗ[R] V') (h : Function.Bijective fun x : V × V ↦ p x.1 + q x.2) :
     ∃ P Q : V' →ₗ[R] V, (∀ v, P (p v) = v) ∧ (∀ v, P (q v) = 0) ∧ (∀ v, Q (p v) = 0) ∧
@@ -133,13 +133,13 @@ theorem exists_proj (p q : V →ₗ[R] V') (h : Function.Bijective fun x : V × 
     fun v ↦ ?_, fun v ↦ ?_, fun v ↦ ?_, fun v ↦ ?_⟩ <;> simp [hp, hq]
 
 /- English proof (translation)
-Establish `h1 : ∀ t : V ⊗[R] W, TensorProduct.map P Q (TensorProduct.map m m' t) = t` using `fun t ↦ by`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul v w => simp [hm, hm', hPp, hPq, hQp, hQq]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h2 : ∀ t : V ⊗[R] W, TensorProduct.map P Q (TensorProduct.map p p' t) = 0` using `fun t ↦ by`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul v w => simp [hQp]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h3 : ∀ t : V ⊗[R] W, TensorProduct.map P Q (TensorProduct.map q q' t) = 0` using `fun t ↦ by`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul v w => simp [hPq]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `congrArg (TensorProduct.map P Q) ht` as an intermediate fact. Rewrite `this` using `[h1, map_add, h2, h3, add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tensor_prim (p q m : V →ₗ[R] V') (p' q' m' : W →ₗ[R] W') (P : V' →ₗ[R] V) (Q : W' →ₗ[R] W)
     (hPp : ∀ v, P (p v) = v) (hPq : ∀ v, P (q v) = 0) (hQp : ∀ w, Q (p' w) = 0)
@@ -169,14 +169,14 @@ def alt (l l' : V →ₗ[R] R) : ⋀[R]^2 V →ₗ[R] R :=
     (Matrix.detRowAlternating.compLinearMap (LinearMap.pi ![l, l']))
 
 /- English proof (translation)
-The claim follows from `(exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ _).trans (Matrix.det_fin_two _)`.
+A detailed English derivation is pending.
 -/
 theorem alt_ιMulti (l l' : V →ₗ[R] R) (a b : V) :
     alt l l' (exteriorPower.ιMulti R 2 ![a, b]) = l a * l' b - l' a * l b :=
   (exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ _).trans (Matrix.det_fin_two _)
 
 /- English proof (translation)
-Use `exteriorPower.linearMap_ext (AlternatingMap.ext fun v ↦ ?_)` and prove the remaining obligations. Establish `: v = ![v 0, v 1]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Rewrite using `[this]`. Conclude with `h _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext2 {N : Type} [AddCommGroup N] [Module R N] {f g : ⋀[R]^2 V →ₗ[R] N}
     (h : ∀ a b, f (exteriorPower.ιMulti R 2 ![a, b]) = g (exteriorPower.ιMulti R 2 ![a, b])) :
@@ -188,7 +188,7 @@ theorem ext2 {N : Type} [AddCommGroup N] [Module R N] {f g : ⋀[R]^2 V →ₗ[R
   exact h _ _
 
 /- English proof (translation)
-Rewrite using `[exteriorPower.map_apply_ιMulti]`. Use `congr 1`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map2 (f : V →ₗ[R] V') (a b : V) :
     exteriorPower.map 2 f (exteriorPower.ιMulti R 2 ![a, b]) =
@@ -204,13 +204,11 @@ section Wedge
 variable {R V V' : Type} [CommRing R] [AddCommGroup V] [AddCommGroup V'] [Module R V] [Module R V']
 
 /- English proof (translation)
-Establish `e1 : ∀ i j, (u i * v j) • c i j = (if i < j then (u i * v j) • c i j else 0) + (if j < i then (u i * v j) • c i j else 0)`. Introduce `i j`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Simplify using `[h, h.not_gt]`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[hd]`. Simplify using `[h, h.not_gt]`. Establish `e2 : ∀ i j, (if i < j then (u i * v j - u j * v i) • c i j else 0) = (if i < j then (u i * v j) • c i j else 0) + (if i < j then (u j * v i) • c j i else 0)`. Introduce `i j`. Use `split_ifs`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha i j, sub_smul, smul_neg, sub_eq_add_neg]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_add_distrib]`. Use `_ = ∑ i, ∑ j, (if i < j then (u i * v j) • c i j else 0) + ∑ i, ∑ j, (if i < j then (u j * v i) • c j i else 0) := congrArg (_ + ·) Finset.sum_comm`.
-
-Use `_ = _ := by simp only [e2, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_lt {M : Type} [AddCommGroup M] [Module R M] {n : ℕ} (u v : Fin n → R)
     (c : Fin n → Fin n → M) (hd : ∀ i, c i i = 0) (ha : ∀ i j, c j i = -c i j) :
@@ -254,13 +252,13 @@ Both sides reduce to the same expression.
 theorem wd_apply (a b : V) : wd (R := R) a b = exteriorPower.ιMulti R 2 ![a, b] := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [wd_apply, ExteriorAlgebra.ιMulti_apply])`.
+A detailed English derivation is pending.
 -/
 theorem wd_self (a : V) : wd (R := R) a a = 0 :=
   Subtype.ext (by simp [wd_apply, ExteriorAlgebra.ιMulti_apply])
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simpa [wd_apply, ExteriorAlgebra.ιMulti_apply] using eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap (R := R) b a))`.
+A detailed English derivation is pending.
 -/
 theorem wd_swap (a b : V) : wd (R := R) b a = -wd a b :=
   Subtype.ext (by
@@ -268,15 +266,15 @@ theorem wd_swap (a b : V) : wd (R := R) b a = -wd a b :=
       eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap (R := R) b a))
 
 /- English proof (translation)
-Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' R V`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π LinearMap.id hπ`. Set `x : Fin n → V` to `fun i ↦ π fun j ↦ if i = j then 1 else 0`. Set `l : Fin n → V →ₗ[R] R` to `fun i ↦ LinearMap.proj i ∘ₗ s`. Establish `hx : ∀ a, a = ∑ i, l i a • x i` using `fun a ↦ by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `LinearMap.pi_apply_eq_sum_univ π (s a)` as an intermediate fact. Rewrite `this` using `[show π (s a) = a from LinearMap.congr_fun hs a]`. Conclude with `this`. Establish `hw : ∀ a b, wd (R` using `R) a b = ∑ i, ∑ j, (l i a * l j b) • wd (R := R) (x i) (x j) := fun a b ↦ by`. Use `(congrArg₂ (fun y y' ↦ wd (R := R) y y') (hx a) (hx b)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ by rw [mul_comm]`. Establish `key : (LinearMap.id : ⋀[R]^2 V →ₗ[R] ⋀[R]^2 V) = ∑ i, ∑ j, if i < j then (alt (l i) (l j)).smulRight (wd (R` using `R) (x i) (x j)) else 0 := ext2 fun a b ↦ by`. Use `((hw a b).trans (sum_lt (fun i ↦ l i a) (fun j ↦ l j b) (fun i j ↦ wd (R := R) (x i) (x j)) (fun i ↦ wd_self _) (fun i j ↦ wd_swap _ _))).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[LinearMap.smulRight_apply, alt_ιMulti]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ ↦ Finset.sum_eq_zero fun j _ ↦ ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_alt [Module.Finite R V] [Module.Projective R V] (τ : ⋀[R]^2 V)
     (h : ∀ l l' : V →ₗ[R] R, alt l l' τ = 0) : τ = 0 := by
@@ -310,11 +308,11 @@ theorem eq_zero_of_alt [Module.Finite R V] [Module.Projective R V] (τ : ⋀[R]^
       split_ifs <;> simp [h]
 
 /- English proof (translation)
-Use `eq_zero_of_alt τ fun l l' ↦ ?_` and prove the remaining obligations. Establish `h1 : alt (l ∘ₗ P) (l' ∘ₗ Q) ∘ₗ exteriorPower.map 2 m = alt l l'` using `ext2 fun a b ↦ by`. Simplify using `only [LinearMap.comp_apply, map2, alt_ιMulti, hm, map_add, hPp, hPq, hQp, hQq, add_zero, zero_add, map_zero]`. Establish `h2 : alt (l ∘ₗ P) (l' ∘ₗ Q) ∘ₗ exteriorPower.map 2 p = 0` using `ext2 fun a b ↦ by`. Simplify using `only [LinearMap.comp_apply, map2, alt_ιMulti, hQp, LinearMap.zero_apply, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h3 : alt (l ∘ₗ P) (l' ∘ₗ Q) ∘ₗ exteriorPower.map 2 q = 0` using `ext2 fun a b ↦ by`. Simplify using `only [LinearMap.comp_apply, map2, alt_ιMulti, hPq, LinearMap.zero_apply, map_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `e` using `congrArg (alt (l ∘ₗ P) (l' ∘ₗ Q)) h`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `e` using `[map_add, show alt (l ∘ₗ P) (l' ∘ₗ Q) (exteriorPower.map 2 m τ) = alt l l' τ from LinearMap.congr_fun h1 τ, show alt (l ∘ₗ P) (l' ∘ₗ Q) (exteriorPower.map 2 p τ) = 0 from LinearMap.congr_fun h2 τ, show alt (l ∘ₗ P) (l' ∘ₗ Q) (exteriorPower.map 2 q τ) = 0 from LinearMap.congr_fun …`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wedge_prim [Module.Finite R V] [Module.Projective R V] (p q m : V →ₗ[R] V')
     (P Q : V' →ₗ[R] V) (hPp : ∀ v, P (p v) = v) (hPq : ∀ v, P (q v) = 0) (hQp : ∀ v, Q (p v) = 0)
@@ -345,9 +343,9 @@ variable {R : Type} [CommRing R] {C D : Type} [Category.{0} C] [Category.{0} D]
   {F : C ⥤ CommAlgCat.{0} R} {G : D ⥤ CommAlgCat.{0} R}
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul f ω`. Rewrite using `[TensorProduct.map_tmul, hG, hF, prodFirstProjection_smul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`.
+Treat this case separately.
 -/
 theorem mu_pull (m : CoefMap (RingHom.id R) F G) (muF : Z1 F ⊗[R] Glob1 F →ₗ[R] A1 F)
     (muG : Z1 G ⊗[R] Glob1 G →ₗ[R] A1 G)
@@ -364,7 +362,7 @@ theorem mu_pull (m : CoefMap (RingHom.id R) F G) (muF : Z1 F ⊗[R] Glob1 F →�
   | add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul f ω => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem rTensor_pull (m : CoefMap (RingHom.id R) F G) (t : Z1 F ⊗[R] Glob1 F) :
     (H1.mk G).rTensor (Glob1 G) (TensorProduct.map m.pullbackOneCocycle (pullGlob1 m) t) =
@@ -375,13 +373,13 @@ theorem rTensor_pull (m : CoefMap (RingHom.id R) F G) (t : Z1 F ⊗[R] Glob1 F) 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `hex : Function.Exact ((d0 F).codRestrict (Z1 F) (commAlgFunctorCoboundaryZero_mem_cocyclesOne F)) (H1.mk F)` using `LinearMap.exact_map_mkQ_range _`. Take `⟨u, rfl⟩` from `(rTensor_exact (Glob1 F) hex (H1.mk_surjective F) t).1 ht`. Use `clear ht`. Proceed by induction on `u with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul g ω`. Use `⟨fun T ↦ g T • ω.1 T, fun T T' φ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.rTensor_tmul, hF]`. Express the relevant statement in the definitionally equal form `(g T' - mp F φ (g T)) • ω.1 T' = _`. Rewrite using `[oneFormsMapOfFunctorMorphism_smul, ← ω.2 φ, sub_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy`. Take `⟨b, hb⟩` from `hx`. Take `⟨b', hb'⟩` from `hy`. Use `⟨b + b', fun T T' φ ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Pi.add_apply, hb, hb']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem exists_of_rTensor (muF : Z1 F ⊗[R] Glob1 F →ₗ[R] A1 F)
     (hF : ∀ f ω T T' φ, muF (f ⊗ₜ ω) T T' φ = f.1 T T' φ • ω.1 T') (t : Z1 F ⊗[R] Glob1 F)
@@ -406,7 +404,7 @@ theorem exists_of_rTensor (muF : Z1 F ⊗[R] Glob1 F →ₗ[R] A1 F)
     abel
 
 /- English proof (translation)
-Use `cupHyp_add_swap G (pullHyp1 p c) (pullHyp1 q c)` as an intermediate fact. Simplify using `only [pullHyp2_cup, hm, map_add, LinearMap.add_apply]`. Take the linear combination `(norm := abel1) this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem prim_cup (m p q : CoefMap (RingHom.id R) F G)
     (hm : ∀ c, pullHyp1 m c = pullHyp1 p c + pullHyp1 q c) (c : Hyp1 F) :
@@ -416,11 +414,11 @@ theorem prim_cup (m p q : CoefMap (RingHom.id R) F G)
   linear_combination (norm := abel1) this
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Hyp1.mk_surjective F c`. Establish `h` using `hcup (toO F (Hyp1.mk F c))`. Rewrite `h` using `[toO_mk, cup_mk]`. Take `⟨f, hf⟩` from `H2.mk_eq_zero.1 h`. Use `⟨cupZZ F c c - ⟨dTot1 F (f, 0), dTot1_mem F _⟩, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `T T' T'' φ ψ`. Use `congrFun (congrFun (congrFun (congrFun (congrFun hf T) T') T'') φ) ψ` as an intermediate fact. Express the relevant statement in the definitionally equal form `(cupTot F c.1 c.1).1 T T' T'' φ ψ - d1 F f T T' T'' φ ψ = 0`. Rewrite using `[this]`. Conclude with `sub_self _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Hyp2.mk F ⟨dTot1 F (f, 0), dTot1_mem F _⟩ = 0` using `Hyp2.mk_eq_zero.2 ⟨_, rfl⟩`. Rewrite using `[map_sub, this, sub_zero, cupHyp_mk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep (hcup : ∀ c, cup F c c = 0) (c : Hyp1 F) :
     ∃ z : cechDeRhamTotalCocyclesTwo F, z.1.1 = 0 ∧ Hyp2.mk F z = cupHyp F c c := by
@@ -438,9 +436,9 @@ theorem exists_rep (hcup : ∀ c, cup F c c = 0) (c : Hyp1 F) :
     rw [map_sub, this, sub_zero, cupHyp_mk]
 
 /- English proof (translation)
-Establish `h0 : Hyp2.mk G (pullZZ2 m z - pullZZ2 p z - pullZZ2 q z) = 0`. Rewrite using `[map_sub, map_sub, ← pullHyp2_mk, ← pullHyp2_mk, ← pullHyp2_mk, h]`. Normalize the expressions using the abelian group laws. Take `⟨e, he⟩` from `Hyp2.mk_eq_zero.1 h0`. Use `⟨e, he.trans (Prod.ext ?_ rfl)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `T T' T'' φ ψ`. Express the relevant statement in the definitionally equal form `(pullTot2 m z.1).1 T T' T'' φ ψ - (pullTot2 p z.1).1 T T' T'' φ ψ - (pullTot2 q z.1).1 T T' T'' φ ψ = 0`. Simplify using `only [cechDeRhamPullbackTotalDegreeTwo_function_part, hz, Pi.zero_apply, map_zero, sub_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem exists_of_prim (m p q : CoefMap (RingHom.id R) F G) (z : cechDeRhamTotalCocyclesTwo F) (hz : z.1.1 = 0)
     (h : pullHyp2 m (Hyp2.mk F z) = pullHyp2 p (Hyp2.mk F z) + pullHyp2 q (Hyp2.mk F z)) :
@@ -465,7 +463,7 @@ variable {R : Type} [CommRing R] {C D : Type} [Category.{0} C] [Category.{0} D]
   {F : C ⥤ CommAlgCat.{0} R} {G : D ⥤ CommAlgCat.{0} R}
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun ω _ ↦ ?_` and prove the remaining obligations. Take `⟨⟨a, b⟩, rfl⟩` from `hb ω`. Establish `ha : a ∈ Closed1 F` using `hc ▸ Submodule.mem_top`. Establish `hb' : b ∈ Closed1 F` using `hc ▸ Submodule.mem_top`. Conclude with `add_mem (pullClosed1 p ⟨a, ha⟩).2 (pullClosed1 q ⟨b, hb'⟩).2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem closed_of_sum (p q : CoefMap (RingHom.id R) F G)
     (hb : Function.Surjective fun x : Glob1 F × Glob1 F ↦ pullGlob1 p x.1 + pullGlob1 q x.2)
@@ -477,7 +475,7 @@ theorem closed_of_sum (p q : CoefMap (RingHom.id R) F G)
   exact add_mem (pullClosed1 p ⟨a, ha⟩).2 (pullClosed1 q ⟨b, hb'⟩).2
 
 /- English proof (translation)
-Introduce `c`. Take `⟨⟨a, b⟩, rfl⟩` from `hb c`. Take `⟨a, rfl⟩` from `hs a`. Take `⟨b, rfl⟩` from `hs b`. Conclude with `⟨pullHyp1 p a + pullHyp1 q b, by rw [map_add, toO_pullHyp1, toO_pullHyp1]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surj_of_sum (p q : CoefMap (RingHom.id R) F G)
     (hb : Function.Surjective fun x : H1 F × H1 F ↦ p.pull1 x.1 + q.pull1 x.2)
@@ -489,13 +487,13 @@ theorem surj_of_sum (p q : CoefMap (RingHom.id R) F G)
   exact ⟨pullHyp1 p a + pullHyp1 q b, by rw [map_add, toO_pullHyp1, toO_pullHyp1]⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hsur z.1.2.1 fun T T' T'' φ ψ ↦ by`. Use `cechDeRhamTotalCocyclesTwo.one z φ ψ` as an intermediate fact. Rewrite `this` using `[hz]`. Simplify using `using this`. Take `⟨e, he⟩` from `exists_of_prim m p q z hz h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ, -⟩` from `exists_of_dTot1 hsG e _ _ he`. Set `s` to `TensorProduct.map m.pullbackOneCocycle (pullGlob1 m) t - TensorProduct.map p.pullbackOneCocycle (pullGlob1 p) t - TensorProduct.map q.pullbackOneCocycle (pullGlob1 q) t`. Establish `hs : (H1.mk G).rTensor (Glob1 G) s = 0` using `hker s β fun T T' φ ↦ by`. Rewrite using `[← hβ T T' φ]`. Simplify using `only [s, map_sub, Pi.sub_apply]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mu_pull m muF muG hF hG, mu_pull p muF muG hF hG, mu_pull q muF muG hF hG, ht]`. Both sides reduce to the same expression. Take `⟨P, -, hPp, hPq, -, -⟩` from `exists_proj p.pull1 q.pull1 hb1`. Take `⟨-, Q, -, -, hQp, hQq⟩` from `exists_proj (pullGlob1 p) (pullGlob1 q) hb2`. Establish `hT` using `tensor_prim p.pull1 q.pull1 m.pull1 (pullGlob1 p) (pullGlob1 q) (pullGlob1 m) P Q hPp hPq hQp hQq hm1 hm2 ((H1.mk F).rTensor (Glob1 F) t) (by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [s, map_sub, rTensor_pull] at hs`. Rewrite using `[sub_sub, sub_eq_zero] at hs)` and apply the resulting hypothesis. Take `⟨β', hβ'⟩` from `exists_of_rTensor muF hF t hT`. Conclude with `⟨β', fun T T' φ ↦ by rw [← ht]; exact hβ' T T' φ⟩`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem one_cob (m p q : CoefMap (RingHom.id R) F G) (muF : Z1 F ⊗[R] Glob1 F →ₗ[R] A1 F)
     (muG : Z1 G ⊗[R] Glob1 G →ₗ[R] A1 G)
@@ -535,7 +533,7 @@ theorem one_cob (m p q : CoefMap (RingHom.id R) F G) (muF : Z1 F ⊗[R] Glob1 F 
   exact ⟨β', fun T T' φ ↦ by rw [← ht]; exact hβ' T T' φ⟩
 
 /- English proof (translation)
-Establish `e : (LinearMap.proj (φ` using `fun T ↦ Om R (G.obj T) 2) T ∘ₗ nuG ∘ₗ exteriorPower.map 2 (pullGlob1 m)) = ((qOm m 2 T : _ →ₗ[R] _) ∘ₗ LinearMap.proj (φ := fun T ↦ Om R (F.obj T) 2) (m.G.obj T) ∘ₗ nuF) := ext2 fun a b ↦ by`. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply, map2, hG, hF]`. Conclude with `(qOm_wedge m (a.1 _) (b.1 _)).symm`. Conclude with `LinearMap.congr_fun e τ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nu_pull (m : CoefMap (RingHom.id R) F G) (nuF : ⋀[R]^2 (Glob1 F) →ₗ[R] W0 F 2)
     (nuG : ⋀[R]^2 (Glob1 G) →ₗ[R] W0 G 2)
@@ -552,13 +550,13 @@ theorem nu_pull (m : CoefMap (RingHom.id R) F G) (nuF : ⋀[R]^2 (Glob1 F) →�
   exact LinearMap.congr_fun e τ
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `hsur z.1.2.2 fun T T' φ ↦ by`. Use `cechDeRhamTotalCocyclesTwo.two z φ` as an intermediate fact. Rewrite `this` using `[h2]`. Simplify using `using this`. Take `⟨e, he⟩` from `exists_of_prim m p q z h1 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `h0 : (pullTot2 m z.1 - pullTot2 p z.1 - pullTot2 q z.1).2.1 = 0`. Use function extensionality and compare the values at `T T' φ`. Express the relevant statement in the definitionally equal form `(pullTot2 m z.1).2.1 T T' φ - (pullTot2 p z.1).2.1 T T' φ - (pullTot2 q z.1).2.1 T T' φ = 0`. Simplify using `only [pullTot2_a, h2, Pi.zero_apply, map_zero, sub_zero]`. Rewrite `he` using `[h0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw` using `eta_eq_zero hcG hsG e _ he`. Establish `hν : nuG (exteriorPower.map 2 (pullGlob1 m) τ - exteriorPower.map 2 (pullGlob1 p) τ - exteriorPower.map 2 (pullGlob1 q) τ) = 0`. Use function extensionality and compare the values at `T`. Use `congrFun hw T` as an intermediate fact. Rewrite using `[map_sub, map_sub, Pi.sub_apply, Pi.sub_apply, nu_pull m nuF nuG hF hG, nu_pull p nuF nuG hF hG, nu_pull q nuF nuG hF hG, hτ]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hz` using `hinj (hν.trans (map_zero nuG).symm)`. Take `⟨P, Q, hPp, hPq, hQp, hQq⟩` from `exists_proj (pullGlob1 p) (pullGlob1 q) hb2`. Establish `ht : τ = 0` using `wedge_prim (pullGlob1 p) (pullGlob1 q) (pullGlob1 m) P Q hPp hPq hQp hQq hm2 τ (by rwa [sub_sub, sub_eq_zero] at hz)`. Rewrite using `[← hτ, ht, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_zero (m p q : CoefMap (RingHom.id R) F G) [Module.Finite R (Glob1 F)]
     [Module.Projective R (Glob1 F)] (nuF : ⋀[R]^2 (Glob1 F) →ₗ[R] W0 F 2)
@@ -601,19 +599,17 @@ theorem two_zero (m p q : CoefMap (RingHom.id R) F G) [Module.Finite R (Glob1 F)
 end Final
 
 /- English proof (translation)
-Introduce `hOne hTwo R _ C _ F hFr hBi hCl hSurj hcup c`. Take `⟨D, _, G, m, p, q, hSt, hPar, hb1, hb2, hm1, hm2, hm3⟩` from `hBi`. Set `eG : (Glob1 F × Glob1 F) ≃ₗ[R] Glob1 G` to `LinearEquiv.ofBijective ((pullGlob1 p).coprod (pullGlob1 q)) hb2`. Use `haveI := hFr.2.2.1`. Use `haveI := hFr.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFrG : Framed G` using `⟨hSt, hPar, Module.Finite.equiv eG, Module.Projective.of_equiv eG⟩`. Establish `hcG` using `closed_of_sum p q hb2.2 hCl`. Establish `hsG` using `surj_of_sum p q hb1.2 hSurj`. Take `⟨muF, hF, hsur, -⟩` from `hOne R C F hFr`. Take `⟨muG, hG, -, hker⟩` from `hOne R D G hFrG`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨nuF, hνF, -, hνsur⟩` from `hTwo R C F hFr`. Take `⟨nuG, hνG, hνinj, -⟩` from `hTwo R D G hFrG`. Take `⟨z, hz, hzc⟩` from `exists_rep hcup c`. Establish `hprim` using `prim_cup m p q hm3 c`. Rewrite `hprim`, the goal using `[← hzc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨β, hβ⟩` from `one_cob m p q muF muG hF hG hsur hker hsG hb1 hb2 hm1 hm2 z hz hprim`. Set `y : cechDeRhamTotalCocyclesTwo F` to `⟨dTot1 F (0, β), dTot1_mem F _⟩`. Establish `hy : Hyp2.mk F y = 0` using `Hyp2.mk_eq_zero.2 ⟨_, rfl⟩`. Establish `hzy : Hyp2.mk F (z - y) = Hyp2.mk F z` using `by rw [map_sub, hy, sub_zero]`. Establish `h1 : (z - y).1.1 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Use function extensionality and compare the values at `T T' T'' φ ψ`. Express the relevant statement in the definitionally equal form `z.1.1 T T' T'' φ ψ - d1 F 0 T T' T'' φ ψ = 0`. Rewrite using `[hz, map_zero]`. Conclude with `sub_self _`. Establish `h2 : (z - y).1.2.1 = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `T T' φ`. Express the relevant statement in the definitionally equal form `z.1.2.1 T T' φ - (β T' - p1 F φ (β T) - KaehlerDifferential.D R _ ((0 : C1 F) T T' φ)) = 0`. Rewrite using `[hβ]`. Simplify using the standard rewrite rules. Establish `h3` using `two_zero m p q nuF nuG hνF hνG hνinj hνsur hcG hsG hb2 hm2 (z - y) h1 h2 (by rw [hzy]; exact hprim)`.
-
-Establish `h4 : z - y = 0` using `Subtype.ext (Prod.ext h1 (Prod.ext h2 h3))`. Rewrite using `[← hzy, h4, map_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem altSt : OneFormCohSt → TwoFormCohSt → AltSt := by
   intro hOne hTwo R _ C _ F hFr hBi hCl hSurj hcup c

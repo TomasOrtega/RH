@@ -112,9 +112,9 @@ def zVal (q : ℝ) (r t j : ℕ) (x : ℕ → ℂ) : ℂ :=
 def zVal1 (q : ℝ) (r t : ℕ) : ℝ := MainNotions.ZetaProductPairs.qE q 1 r * q ^ (-((t * r : ℕ) : ℤ))
 
 /- English proof (translation)
-Establish `he : MainNotions.ZetaProductPairs.qE q (t + 1) (1 * t) = 1`. Unfold `MainNotions.ZetaProductPairs.qE`. Rewrite using `[Finset.Icc_eq_empty (by omega), Finset.prod_empty]`. Unfold `zVal zVal1`. Rewrite using `[Finset.Ico_self, Finset.prod_empty, mul_one, he, mul_one, Nat.one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zVal_one (q : ℝ) (r t : ℕ) (x : ℕ → ℂ) : zVal q r t 1 x = (zVal1 q r t : ℂ) := by
   have he : MainNotions.ZetaProductPairs.qE q (t + 1) (1 * t) = 1 := by
@@ -179,9 +179,9 @@ def nuP (C : CharFrame D) (P : HeightOneSpectrum (𝓞 D.host.E)) (i : ℕ) : (P
   if h : 1 ≤ i ∧ i ≤ D.R.m then ((C.mu0 ⟨i - 1, by omega⟩)⁻¹).loc P else 1
 
 /- English proof (translation)
-Establish `hj` using `j.2`. Unfold `nuP`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Use `first`. Consider the case `rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(congr 3; ext; simp)`. Consider the case `(congr 2; ext; simp)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nuP_succ (C : CharFrame D) (P : HeightOneSpectrum (𝓞 D.host.E)) (j : Fin D.R.m) :
     nuP C P (j.1 + 1) = ((C.mu0 j)⁻¹).loc P := by
@@ -194,7 +194,7 @@ theorem nuP_succ (C : CharFrame D) (P : HeightOneSpectrum (𝓞 D.host.E)) (j : 
     | (congr 2; ext; simp)
 
 /- English proof (translation)
-Rewrite using `[nuP_succ]`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Use `show ((C.mu0 j).loc P x)⁻¹ * ((Tp.xi μ).loc P x)⁻¹ = ((C.mu0 j * Tp.xi μ).loc P x)⁻¹`. Rewrite using `[← mul_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nuP_mul_delQ (Tp : TupTied D C nch) (μ : D.what₂.Tup) (P : HeightOneSpectrum (𝓞 D.host.E)) (j : Fin D.R.m) :
     nuP C P (j.1 + 1) * delQ Tp μ P = ((Tp.tup μ j)⁻¹).loc P := by
@@ -238,7 +238,7 @@ def QLocJoint (Tp : TupTied D C nch) (Z : DivX D) : Prop :=
   ∃ (T : DivisorCharacterCompatibility D C nch Tp Z) (Pv : HeightOneSpectrum (𝓞 D.host.F) → HeightOneSpectrum (𝓞 D.host.E)), QLocTiedC T Pv
 
 /- English proof (translation)
-Take `⟨T, _, _⟩` from `h`. Conclude with `⟨T⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem QLocJoint.div {Tp : TupTied D C nch} {Z : DivX D} (h : QLocJoint Tp Z) : Nonempty (DivisorCharacterCompatibility D C nch Tp Z) := by
   obtain ⟨T, _, _⟩ := h
@@ -249,7 +249,7 @@ def QLocJointD (B : PlacesOverCommonPrime D.host) (Tp : TupTied D C nch) (Z : Di
     QLocTiedC T Pv ∧ PlacesOverPrimesOfHecke B Pv
 
 /- English proof (translation)
-Take `⟨T, Pv, hC, _⟩` from `h`. Conclude with `⟨T, Pv, hC⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem QLocJointD.joint {B : PlacesOverCommonPrime D.host} {Tp : TupTied D C nch} {Z : DivX D} (h : QLocJointD B Tp Z) : QLocJoint Tp Z := by
   obtain ⟨T, Pv, hC, _⟩ := h
@@ -261,11 +261,11 @@ structure QLocVal (Z : DivX D) : Prop where
   quotientLocalValueFirst : ∀ μ v, Z.quotientLocalValueFirst μ v = (zVal1 (Z.qv μ v) D.R.r D.R.t : ℂ)
 
 /- English proof (translation)
-Take `⟨n, hn, he⟩` from `Tp.xi_fin μ`. Establish `h1 : ((Tp.xi μ).loc P x) ^ n = 1`. Establish `: ((Tp.xi μ) ^ n).loc P x = 1` using `by rw [show (Tp.xi μ) ^ n = 1 from he]; rfl`. Rewrite using `[← this]`. Simplify using `[HChar.loc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : ‖(((Tp.xi μ).loc P x : ℂˣ) : ℂ)‖ ^ n = 1`. Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, h1]`. Simplify using the standard rewrite rules. Establish `h3 : ‖(((Tp.xi μ).loc P x : ℂˣ) : ℂ)‖ = 1` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').mp h2`. Simplify using `[delQ, h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `tame x hx hx1 := by`. Use `Tp.xi_tame μ P x hx (by simpa using hx1)` as an intermediate fact. Simplify using `[delQ, this]`. Use `ram h' := h fun x hx => by simpa [delQ] using h' x hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDel_delQ (Tp : TupTied D C nch) (μ : D.what₂.Tup) {P : HeightOneSpectrum (𝓞 D.host.E)}
     (h : ¬ (Tp.xi μ).UnrAt P) : IsDel P (delQ Tp μ P) where
@@ -286,9 +286,9 @@ theorem isDel_delQ (Tp : TupTied D C nch) (μ : D.what₂.Tup) {P : HeightOneSpe
   ram h' := h fun x hx => by simpa [delQ] using h' x hx
 
 /- English proof (translation)
-Unfold `nuP`. Use `split_ifs with hi`. Establish `hU` using `(C.isMu0 ⟨i - 1, by omega⟩).unitary.inv`. Use `⟨fun x => hU _, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `(C.isMu0 ⟨i - 1, by omega⟩).unr P h x hx`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ((C.mu0 ⟨i - 1, by omega⟩).loc P x)⁻¹ = 1`. Rewrite using `[h1, inv_one]`. Conclude with `⟨fun x => by simp, fun x _ => rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isNu_nuP (C : CharFrame D) {P : HeightOneSpectrum (𝓞 D.host.E)} (h : ∀ k, ¬ OverP D.host (D.host.g k) P) (i : ℕ) :
     IsNu P (nuP C P i) := by
@@ -302,7 +302,7 @@ theorem isNu_nuP (C : CharFrame D) {P : HeightOneSpectrum (𝓞 D.host.E)} (h : 
   · exact ⟨fun x => by simp, fun x _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨j, rfl⟩ : ∃ j : ℕ, i = j + 1` from `⟨i - 1, by omega⟩`. Establish `hj : j < D.R.m` using `by omega`. Rewrite using `[h.nu_eq μ v ⟨j, hj⟩, nuP_succ C (PQ μ v) ⟨j, hj⟩]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem QLocTied.nu_nuP {Tp : TupTied D C nch} {Z : DivX D} {PQ} (h : QLocTied Tp Z PQ) (μ : D.what₂.Tup) (v : Z.QPl μ)
     (i : ℕ) (h1 : 1 ≤ i) (h2 : i ≤ D.R.m) : Z.nu μ v i = ((nuP C (PQ μ v) i (piP (PQ μ v)) : ℂˣ) : ℂ) := by
@@ -312,11 +312,11 @@ theorem QLocTied.nu_nuP {Tp : TupTied D C nch} {Z : DivX D} {PQ} (h : QLocTied T
   rfl
 
 /- English proof (translation)
-Establish `ht : 1 ≤ D.R.t` using `D.R.t_odd.pos`. Establish `hm` using `D.R.two_le_m`. Use `⟨fun μ v j hj => ?_, fun μ v j h1 hj => ?_, fun μ v => ?_⟩` and prove the remaining obligations. Conclude with `(hQ D.host.E (PQ μ v) (h.deg1 μ v) (delQ Tp μ (PQ μ v)) (nuP C (PQ μ v)) (isDel_delQ Tp μ (h.ram μ v)) (fun i => isNu_nuP C (h.off_g μ v) i) D.R.r D.R.t j ht).1 _ (h.typeDim_eq μ v j hj)`. Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz` using `(hQ D.host.E (PQ μ v) (h.deg1 μ v) (delQ Tp μ (PQ μ v)) (nuP C (PQ μ v)) (isDel_delQ Tp μ (h.ram μ v)) (fun i => isNu_nuP C (h.off_g μ v) i) D.R.r D.R.t j' ht).2 _ (h.ZQ_eq μ v j' (by omega))`. Rewrite using `[hz, h.qv_eq μ v]`. Unfold `zVal`. Use `congr 1`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[Finset.mem_Ico]`. Rewrite using `[h.nu_nuP μ v i hi.1 (by omega), h.nu_nuP μ v (j' + 1) (by omega) hj]`. Establish `hz` using `(hQ D.host.E (PQ μ v) (h.deg1 μ v) (delQ Tp μ (PQ μ v)) (fun _ => nuP C (PQ μ v) 1) (isDel_delQ Tp μ (h.ram μ v)) (fun _ => isNu_nuP C (h.off_g μ v) 1) D.R.r D.R.t 0 ht).2 _ (h.quotientLocalValueFirst_eq μ v 1 le_rfl (by omega))`. Rewrite using `[hz, zero_add, zVal_one, h.qv_eq μ v]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem QLocTied.val (hQ : ThmQ) {Tp : TupTied D C nch} {Z : DivX D} {PQ} (h : QLocTied Tp Z PQ) : QLocVal Z := by
   have ht : 1 ≤ D.R.t := D.R.t_odd.pos
@@ -341,9 +341,9 @@ theorem QLocTied.val (hQ : ThmQ) {Tp : TupTied D C nch} {Z : DivX D} {PQ} (h : Q
     rw [hz, zero_add, zVal_one, h.qv_eq μ v]
 
 /- English proof (translation)
-Unfold `MainNotions.ZetaProductPairs.qE`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Icc]`. Establish `hi1 : (0 : ℤ) < i` using `by exact_mod_cast (show 0 < i by omega)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : q ^ (-(i : ℤ)) < 1`. Rewrite using `[_root_.zpow_neg, zpow_natCast]`. Conclude with `inv_lt_one_of_one_lt₀ (one_lt_pow₀ hq (by omega))`. Conclude with `sub_ne_zero.mpr (ne_of_gt hlt)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qE_ne_zero {q : ℝ} (hq : 1 < q) (a c : ℕ) (ha : 1 ≤ a) : MainNotions.ZetaProductPairs.qE q a c ≠ 0 := by
   unfold MainNotions.ZetaProductPairs.qE
@@ -357,9 +357,9 @@ theorem qE_ne_zero {q : ℝ} (hq : 1 < q) (a c : ℕ) (ha : 1 ≤ a) : MainNotio
   exact sub_ne_zero.mpr (ne_of_gt hlt)
 
 /- English proof (translation)
-Unfold `MainNotions.ZetaProductPairs.qE`. Rewrite using `[← Finset.prod_union]`. Use `congr 1`. Use extensionality with `i`. Simplify using `only [Finset.mem_union, Finset.mem_Icc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `constructor <;> intro hh <;> omega`. Rewrite using `[Finset.disjoint_left]`. Introduce `i h1 h2`. Simplify using `only [Finset.mem_Icc] at h1 h2`. Use linear arithmetic over natural numbers and integers.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem qE_split (q : ℝ) {t c : ℕ} (h : t ≤ c) : MainNotions.ZetaProductPairs.qE q 1 c = MainNotions.ZetaProductPairs.qE q 1 t * MainNotions.ZetaProductPairs.qE q (t + 1) c := by
   unfold MainNotions.ZetaProductPairs.qE
@@ -374,9 +374,9 @@ theorem qE_split (q : ℝ) {t c : ℕ} (h : t ≤ c) : MainNotions.ZetaProductPa
     omega
 
 /- English proof (translation)
-Establish `hq0 : q ≠ 0` using `by linarith`. Establish `h1` using `qE_ne_zero hq 1 (r + c) le_rfl`. Establish `h2` using `qE_ne_zero hq 1 r le_rfl`. Establish `h3` using `qE_ne_zero hq 1 t le_rfl`. Establish `h4` using `qE_ne_zero hq (t + 1) c (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `qE_split q h`. Use `show q ^ (r * c) * MainNotions.ZetaProductPairs.qE q 1 (r + c) / (MainNotions.ZetaProductPairs.qE q 1 r * MainNotions.ZetaProductPairs.qE q 1 c) * (MainNotions.ZetaProductPairs.qE q 1 (r + c))⁻¹ * (q ^ (-((c * r : ℕ) : ℤ)) * MainNotions.ZetaProductPairs.qE q 1 r * MainNotions.Zet …`. Rewrite using `[hs, _root_.zpow_neg, zpow_natCast, Nat.mul_comm c r]`. Establish `hQ0 : q ^ (r * c) ≠ 0` using `pow_ne_zero _ hq0`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ell_num {q : ℝ} (hq : 1 < q) (r t c : ℕ) (h : t ≤ c) :
     MainNotions.ZetaProductPairs.idxPar q r c * MainNotions.ZetaProductPairs.zetaProd q (r + c) *
@@ -395,13 +395,13 @@ theorem ell_num {q : ℝ} (hq : 1 < q) (r t c : ℕ) (h : t ≤ c) :
   field_simp
 
 /- English proof (translation)
-Introduce `μ v`. Establish `hq : (1 : ℝ) < Z.qv μ v` using `by exact_mod_cast Z.qv_gt μ v`. Use `⟨fun j hj => h.typeDim μ v j hj, fun j h1 hj => ?_, ?_⟩` and prove the remaining obligations. Unfold `MainNotions.ZetaProductPairs.ellQ`. Rewrite using `[h.ZQ μ v j h1 hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `zVal`. Establish `key` using `ell_num hq D.R.r D.R.t (j * D.R.t) (Nat.le_mul_of_pos_left _ h1)`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, key]`. Unfold `MainNotions.ZetaProductPairs.singleBlockLocalFactor`. Rewrite using `[h.quotientLocalValueFirst μ v]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `zVal1`. Establish `key` using `ell_num hq D.R.r D.R.t D.R.t le_rfl`. Establish `he : MainNotions.ZetaProductPairs.qE (Z.qv μ v) (D.R.t + 1) D.R.t = 1`. Unfold `MainNotions.ZetaProductPairs.qE`. Rewrite using `[Finset.Icc_eq_empty (by omega), Finset.prod_empty]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[he, mul_one]`. Rewrite using `[← Complex.ofReal_mul]`. Use `congr 1`. Rewrite using `[← key]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem QLocVal.l2 {Z : DivX D} (h : QLocVal Z) : MainNotions.ZetaProductPairs.L2 Z := by
   intro μ v
@@ -426,13 +426,13 @@ theorem QLocVal.l2 {Z : DivX D} (h : QLocVal Z) : MainNotions.ZetaProductPairs.L
     ring
 
 /- English proof (translation)
-The claim follows from `(h.val hQ).l2`.
+A detailed English derivation is pending.
 -/
 theorem QLocTied.l2 (hQ : ThmQ) {Tp : TupTied D C nch} {Z : DivX D} {PQ} (h : QLocTied Tp Z PQ) : MainNotions.ZetaProductPairs.L2 Z :=
   (h.val hQ).l2
 
 /- English proof (translation)
-Take `⟨T, Pv, hC⟩` from `h`. Unfold `QLocTiedC at hC`. Conclude with `hC.2.l2 hQ`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem QLocJoint.l2 (hQ : ThmQ) {Tp : TupTied D C nch} {Z : DivX D} (h : QLocJoint Tp Z) : MainNotions.ZetaProductPairs.L2 Z := by
   obtain ⟨T, Pv, hC⟩ := h
@@ -440,25 +440,25 @@ theorem QLocJoint.l2 (hQ : ThmQ) {Tp : TupTied D C nch} {Z : DivX D} (h : QLocJo
   exact hC.2.l2 hQ
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> intro μ v <;> exact (hE μ).elim v`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qLocTied_of_empty (Tp : TupTied D C nch) (Z : DivX D) (hE : ∀ μ, IsEmpty (Z.QPl μ)) (PQ) : QLocTied Tp Z PQ := by
   constructor <;> intro μ v <;> exact (hE μ).elim v
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> intro μ v <;> exact (hE μ).elim v`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qLocVal_of_empty (Z : DivX D) (hE : ∀ μ, IsEmpty (Z.QPl μ)) : QLocVal Z := by
   constructor <;> intro μ v <;> exact (hE μ).elim v
 
 /- English proof (translation)
-The claim follows from `qLocTied_of_empty Tp _ (fun _ => ⟨fun e => Empty.elim e⟩) PQ`.
+A detailed English derivation is pending.
 -/
 theorem qLocTied_divXToy (Tp : TupTied D C nch) (h0 hM PQ) : QLocTied Tp (Examples₂.divXExample D h0 hM) PQ :=
   qLocTied_of_empty Tp _ (fun _ => ⟨fun e => Empty.elim e⟩) PQ
 
 /- English proof (translation)
-The claim follows from `qLocTied_of_empty Tp _ (fun _ => ⟨fun e => Empty.elim e⟩) PQ`.
+A detailed English derivation is pending.
 -/
 theorem qLocTied_divXStd (Tp : TupTied D C nch) (n bM hg kap hk PQ) : QLocTied Tp (Examples₂.NZ.divXStd D n bM hg kap hk) PQ :=
   qLocTied_of_empty Tp _ (fun _ => ⟨fun e => Empty.elim e⟩) PQ

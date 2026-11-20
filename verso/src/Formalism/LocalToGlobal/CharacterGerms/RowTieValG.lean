@@ -23,21 +23,21 @@ def linPt (q : Fin n × Fin dd) : MvPowerSeries Var C := MvPowerSeries.subst (li
 def linPull (F : PS C n dd) : MvPowerSeries Var C := MvPowerSeries.subst (linPt Y M) F
 
 /- English proof (translation)
-Unfold `linPt`. Conclude with `VP.cc_subst (fun s => by simp [linS, MvPowerSeries.smul_eq_C_mul]) (cc_e Y q.2)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cc_linPt (q : Fin n × Fin dd) : MvPowerSeries.constantCoeff (linPt Y M q) = 0 := by
   unfold linPt
   exact VP.cc_subst (fun s => by simp [linS, MvPowerSeries.smul_eq_C_mul]) (cc_e Y q.2)
 
 /- English proof (translation)
-Unfold `linPull`. Conclude with `VP.subst_mul (cc_linPt Y M) F G`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem linPull_mul (F G : PS C n dd) : linPull Y M (F * G) = linPull Y M F * linPull Y M G := by
   unfold linPull
   exact VP.subst_mul (cc_linPt Y M) F G
 
 /- English proof (translation)
-Unfold `linPull`. Conclude with `VP.subst_prod (cc_linPt Y M) s F`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem linPull_prod {ι : Type} (s : Finset ι) (F : ι → PS C n dd) :
     linPull Y M (∏ i ∈ s, F i) = ∏ i ∈ s, linPull Y M (F i) := by
@@ -45,9 +45,9 @@ theorem linPull_prod {ι : Type} (s : Finset ι) (F : ι → PS C n dd) :
   exact VP.subst_prod (cc_linPt Y M) s F
 
 /- English proof (translation)
-Establish `hL : ∀ s, MvPowerSeries.constantCoeff (linS (colLin M b) s : MvPowerSeries Var C) = 0` using `fun s => by`. Simplify using `[linS, MvPowerSeries.smul_eq_C_mul]`. Unfold `linPull ev`. Rewrite using `[VP.subst_subst (fun q => VP.constantCoeff_two_points_zero b q) (cc_linPt Y M), VP.subst_subst (cc_exZero Y) hL]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `q`. Break down `q with ⟨i, k⟩` into its components or cases. Use `fin_cases i`. Simplify using `[pt, exZero, linPt, e, VP.subst_X (cc_linPt Y M)]`. Simplify using `[exZero, VP.subst_zero' (cc_linPt Y M), VP.subst_zero' hL]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linear_pullback_eval_point_zero (b : Fin n) (G : PS C 2 dd) :
     linPull Y M (ev (n := n) ![pt C dd b, 0] G) =
@@ -67,7 +67,7 @@ def RR (b : Fin n) (i j : Fin dd) : MvPowerSeries Var C :=
   linPull Y M (ev (n := n) ![pt C dd b, 0] (MvPowerSeries.pderiv C ((1 : Fin 2), i) (Y.B.FK C j)))
 
 /- English proof (translation)
-Unfold `DofN`. Simplify using `only [← MvPowerSeries.smul_eq_C_mul]`. Simplify using `only [linPull, RR, VP.subst_sum (cc_linPt Y M), VP.subst_mul (cc_linPt Y M), VP.subst_smul (cc_linPt Y M)]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem linPull_DofN (b : Fin n) (u : Fin dd → C) (F : PS C n dd) :
     linPull Y M (DofN (Y.B.FK C) b u F) =
@@ -77,9 +77,9 @@ theorem linPull_DofN (b : Fin n) (u : Fin dd → C) (F : PS C n dd) :
   simp only [linPull, RR, VP.subst_sum (cc_linPt Y M), VP.subst_mul (cc_linPt Y M), VP.subst_smul (cc_linPt Y M)]
 
 /- English proof (translation)
-Establish `hE` using `expODE Y`. Unfold `ExpODESt at hE`. Establish `hJ : ∀ b j, MvPowerSeries.pderiv C x (linPt Y M (b, j)) = ∑ i, MvPowerSeries.C (M x (b, i)) * RR Y M b i j`. Introduce `b j`. Simplify using `only [linPt, e, hE, pderiv_subst_linS, colLin, RR, linear_pullback_eval_point_zero, MvPowerSeries.smul_eq_C_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Unfold `linPull`. Rewrite using `[pderiv_subst (VP.og (cc_linPt Y M)), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl (fun b _ => Finset.sum_congr rfl (fun j _ => ?_))` and prove the remaining obligations. Rewrite using `[hJ b j]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_linPull (x : Var) (F : PS C n dd) :
     MvPowerSeries.pderiv C x (linPull Y M F) =
@@ -97,11 +97,11 @@ theorem pderiv_linPull (x : Var) (F : PS C n dd) :
   rw [hJ b j]
 
 /- English proof (translation)
-Establish `key : ∀ b j, ∑ x, c x • ((∑ i, MvPowerSeries.C (M x (b, i)) * RR Y M b i j) * linPull Y M (MvPowerSeries.pderiv C (b, j) F)) = (∑ i, MvPowerSeries.C (if b = b0 then u i else 0) * RR Y M b i j) * linPull Y M (MvPowerSeries.pderiv C (b, j) F)`. Introduce `b j`. Repeatedly rewrite using `[← hc b]`. Simplify using `only [map_sum, map_mul, Finset.sum_mul, Finset.mul_sum, MvPowerSeries.smul_eq_C_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[linPull_DofN]`. Simplify using `only [pderiv_linPull, Finset.smul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `arg 2`. Use extensionality with `b`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [key]`. Rewrite using `[Finset.sum_eq_single b0 (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dpullG (b0 : Fin n) (u : Fin dd → C) (c : Var → C)
     (hc : ∀ b i, ∑ x, c x * M x (b, i) = if b = b0 then u i else 0) (F : PS C n dd) :
@@ -122,9 +122,9 @@ theorem dpullG (b0 : Fin n) (u : Fin dd → C) (c : Var → C)
   simp
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro q g`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `q g`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.iterate_succ_apply, ih, dpullG Y M b0 u c hc]`. Establish `h` using `jet_lin (fun x : Var => x) (q * (∑ x, MvPolynomial.C (c x) * MvPolynomial.X x) ^ k) c (linPull Y M g)`. Rewrite using `[← h]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jet_iterG (b0 : Fin n) (u : Fin dd → C) (c : Var → C)
     (hc : ∀ b i, ∑ x, c x * M x (b, i) = if b = b0 then u i else 0) (k : ℕ) :
@@ -142,11 +142,11 @@ theorem jet_iterG (b0 : Fin n) (u : Fin dd → C) (c : Var → C)
     ring
 
 /- English proof (translation)
-Introduce `ls`. Proceed by induction on `ls with`. Consider the case `nil => intro _ q`. Simplify using the standard rewrite rules. Consider the case `cons l ls ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `h q`. Simplify using `only [List.foldr_cons, List.map_cons, List.prod_cons]`. Establish `h' : ∀ ℓ ∈ ls, m ℓ ≠ 0 → ∀ b i, ∑ x, co ℓ x * M x (b, i) = if b = cp ℓ then uv ℓ i else 0` using `fun ℓ hℓ => h ℓ (by simp [hℓ])`. Distinguish the cases in `hm : m l = 0`. Rewrite using `[hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.iterate_zero, id, pow_zero, one_mul]`. Conclude with `ih h' q`. Rewrite using `[jet_iterG Y M (cp l) (uv l) (co l) (h l (by simp) hm) (m l), ih h']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem jet_listG {ι : Type} (cp : ι → Fin n) (uv : ι → Fin dd → C) (co : ι → Var → C) (m : ι →₀ ℕ) (f : PS C n dd) :
     ∀ (ls : List ι), (∀ ℓ ∈ ls, m ℓ ≠ 0 → ∀ b i, ∑ x, co ℓ x * M x (b, i) = if b = cp ℓ then uv ℓ i else 0) →
@@ -171,11 +171,11 @@ theorem jet_listG {ι : Type} (cp : ι → Fin n) (uv : ι → Fin dd → C) (co
       ring
 
 /- English proof (translation)
-Establish `hj1 : ∀ G : MvPowerSeries Var C, jetAt0 (1 : MvPolynomial Var C) G = MvPowerSeries.constantCoeff G` using `fun G => by simpa using jet_C (σ := Var) (1 : C) G`. Establish `hD : ∀ m ∈ P.support, MvPowerSeries.constantCoeff (DmonN (Y.B.FK C) cp uv m F) = jetAt0 (∏ ℓ, (∑ x, MvPolynomial.C (co ℓ x) * MvPolynomial.X x) ^ m ℓ) (linPull Y M F)`. Introduce `m hm`. Establish `h1` using `jet_listG Y M cp uv co m F (Finset.univ : Finset ι).toList (fun ℓ _ hmℓ => hco ℓ ((MvPolynomial.mem_vars ℓ).2 ⟨m, hm, Finsupp.mem_support_iff.2 hmℓ⟩)) 1`. Rewrite `h1` using `[one_mul, Finset.prod_map_toList, hj1, linPull, VP.cc_subst_eq (cc_linPt Y M)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Unfold `DpolyN`. Use `conv_rhs => rw [MvPolynomial.as_sum P]`. Simplify using `only [map_sum]`. Rewrite using `[tpjet_jetAt0_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun m hm => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial, map_mul, MvPowerSeries.constantCoeff_C, hD m hm, MvPolynomial.algebraMap_eq, mul_comm (MvPolynomial.C (MvPolynomial.coeff m P)), jet_mul_C, Finsupp.prod_fintype _ _ (fun ℓ => pow_zero _)]`.
+A detailed English derivation is pending.
 -/
 theorem logCoordG {ι : Type} [Fintype ι] (cp : ι → Fin n) (uv : ι → Fin dd → C) (P : MvPolynomial ι C)
     (co : ι → Var → C)

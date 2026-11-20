@@ -3,17 +3,17 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Use `⟨Pi.single j 1, by simp, fun l hl => by simp [hl.ne'], fun i hi hj => ?_⟩` and prove the remaining obligations. Conclude with `absurd (Fin.lt_def.1 hi) (by omega)`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx1, hx0, hx⟩` from `ih`. Distinguish the cases in `h : ∃ k : Fin n, (j : ℕ) = k + m + 1`. Take `⟨k, hk⟩` from `h`. Take `⟨z, hz⟩` from `hr k (b.mulVec x k)`. Establish `hkj : k < j` using `Fin.lt_def.2 (by omega)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ i, b.mulVec (x - Pi.single k z) i = b.mulVec x i - b i k * z`. Introduce `i`. Rewrite using `[Matrix.mulVec_sub, Pi.sub_apply]`. Use `congr 1`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x - Pi.single k z, ?_, fun l hl => ?_, fun i hi hj => ?_⟩` and prove the remaining obligations. Simplify using `[hx1, hkj.ne']`. Simplify using `[hx0 l hl, (hkj.trans hl).ne']`. Rewrite using `[key]`. Distinguish the cases in `hik : i = k`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hik` using the available equality. Conclude with `⟨b.mulVec x i, by rw [← hz]; ring⟩`. Establish `hne : (i : ℕ) ≠ k` using `fun e => hik (Fin.ext e)`. Establish `hki : k < i` using `Fin.lt_def.2 (by omega)`. Rewrite using `[hb i k hki, zero_mul, sub_zero]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx i hi (by omega)`. Use `⟨x, hx1, hx0, fun i hi hj => hx i hi ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `h ⟨i, by omega⟩`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem hermite_reduction_column {R : Type} [CommRing R] {n : ℕ} (b : Matrix (Fin n) (Fin n) R)
     (r : Fin n → R → R) (hb : ∀ i j, j < i → b i j = 0) (hr : ∀ i y, b i i ∣ y - r i y)
@@ -51,7 +51,7 @@ theorem hermite_reduction_column {R : Type} [CommRing R] {n : ℕ} (b : Matrix (
       exact h ⟨i, by omega⟩
 
 /- English proof (translation)
-Introduce `R _ n b r hb hr`. Use `choose x hx1 hx0 hx using fun j : Fin n => hermite_reduction_column b r hb hr j n`. Use `⟨Matrix.of fun i j => x j i, fun i j h => hx0 j i h, fun i => hx1 i, fun i j h => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hx j i h (by have := j.2; omega)`. Conclude with `⟨y, by rw [← hy]; simp [Matrix.mul_apply, Matrix.mulVec, dotProduct]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hermite_reduction_unipotent :
     ∀ (R : Type) [CommRing R] (n : ℕ) (b : Matrix (Fin n) (Fin n) R) (r : Fin n → R → R),

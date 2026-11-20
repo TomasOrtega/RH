@@ -5,7 +5,7 @@ noncomputable def UpperTheory.Reformulated.B.Qk46.colH :
     fun {n : Nat} (mu : Fin n → Int) (c : Int) ↦ @Finset.card (Fin n) {m : Fin n | @LE.le Int Int.instLEInt c (mu m)}
 
 /- English proof (translation)
-Introduce `r μ h c m`. Unfold `UpperTheory.Reformulated.B.Qk46.colH`. Conclude with `(Tuple.lt_card_ge_iff_apply_ge_of_antitone h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk46.le_iff_lt_colH :
     ∀ {r : Nat} {μ : Fin r → Int},

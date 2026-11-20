@@ -41,7 +41,7 @@ def sendsTo (U : Submodule ℂ V) (v : V) : Submodule ℂ (Pr V) where
     rw [LinearMap.smul_apply]; exact U.smul_mem a hx
 
 /- English proof (translation)
-Use `show (algebraMap ℂ (Pr V) a * x * algebraMap ℂ (Pr V) b).1 v ∈ U`. Rewrite using `[pr_fst_mul, pr_fst_mul, pr_fst_algebraMap, pr_fst_algebraMap, Module.End.mul_apply, Module.End.mul_apply, Module.algebraMap_end_apply, Module.algebraMap_end_apply, map_smul]`. Conclude with `U.smul_mem a (U.smul_mem b hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sendsTo_alg_mul_alg (U : Submodule ℂ V) (v : V) {x : Pr V} (hx : x ∈ sendsTo U v) (a b : ℂ) :
     algebraMap ℂ (Pr V) a * x * algebraMap ℂ (Pr V) b ∈ sendsTo U v := by
@@ -57,9 +57,9 @@ section Num
 variable {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => exact (entSub 𝒜).one_mem`. Consider the case `cons l w ih`. Rewrite using `[UUw]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `(entSub 𝒜).mul_mem (Formalism.FourierDecayAlt.P5.HerA.ins_mem _ fun i j => ?_) ih` and prove the remaining obligations. Use `show io ((Formalism.YangianSpanCharacter.T.Um (if l.plus then s else star s) : M2 A) i j) ∈ entSub 𝒜`. Apply `Formalism.FourierDecayAlt.P5.HerA.io_mem` to reduce the goal to its premises. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.Um, 𝒜.algebraMap_mem]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UUw_mem {𝒜 : StarSubalgebra ℂ A} (s : ℂ) :
     ∀ w : List (Letter ℂ S), (UUw s w : SlopeTestRemainingChoices S A) ∈ entSub 𝒜 := by
@@ -74,7 +74,7 @@ theorem UUw_mem {𝒜 : StarSubalgebra ℂ A} (s : ℂ) :
     fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.Um, 𝒜.algebraMap_mem]
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.star_apply]`. Conclude with `star_mem (hM j i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_entSub {𝒜 : StarSubalgebra ℂ A} {M : SlopeTestRemainingChoices S A} (hM : M ∈ entSub 𝒜) : star M ∈ entSub 𝒜 := by
   intro i j
@@ -82,7 +82,7 @@ theorem star_entSub {𝒜 : StarSubalgebra ℂ A} {M : SlopeTestRemainingChoices
   exact star_mem (hM j i)
 
 /- English proof (translation)
-Rewrite `hx` using `[StarSubalgebra.mem_bot]`. Take `⟨a, ha⟩` from `hx`. Conclude with `⟨a, ha.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_bot_alg {x : A} (hx : x ∈ (⊥ : StarSubalgebra ℂ A)) : ∃ a : ℂ, x = algebraMap ℂ A a := by
   rw [StarSubalgebra.mem_bot] at hx
@@ -98,7 +98,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   {π' : Mx P.k P.r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Establish `h : ∀ Y' : ℂ, tprod L Y' l.val = tprod L Y' (l.val + 1) * Ts (site L l) Y'` using `fun Y' => by`. Rewrite using `[tprod, dif_pos l.isLt]`. Unfold `QQi`. Rewrite using `[Fin.val_castSucc, Fin.val_succ, h, h, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem QQi_castSucc' (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r)
     (st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))) (l : Fin P.r) (Y : ℂ) :
@@ -110,7 +110,7 @@ theorem QQi_castSucc' (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r)
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Conclude with `(h i j).eq`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_comm {A : Type*} [Ring A] {f : A} {M : Matrix (Fin 2) (Fin 2) A} (h : ∀ i j, Commute f (M i j)) :
     Matrix.diagonal (fun _ => f) * M = M * Matrix.diagonal (fun _ => f) := by
@@ -119,7 +119,7 @@ theorem diag_comm {A : Type*} [Ring A] {f : A} {M : Matrix (Fin 2) (Fin 2) A} (h
   exact (h i j).eq
 
 /- English proof (translation)
-Use `show fi * x = x * fi`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem commute_inv_of {A : Type*} [Ring A] {f fi x : A} (h1 : f * fi = 1) (h2 : fi * f = 1) (h : Commute f x) :
     Commute fi x := by
@@ -129,17 +129,15 @@ theorem commute_inv_of {A : Type*} [Ring A] {f fi x : A} (h1 : f * fi = 1) (h2 :
     _ = x * fi := by rw [← mul_assoc, h2, one_mul]
 
 /- English proof (translation)
-Introduce `Y`. Take `⟨⟨h1, h2, h3⟩, hc, hci, hp⟩` from `Formalism.FourierDecayAlt.P5.waveSiteAll Wp Wq P z z' π π' X L hAL l s Wv Wv' hW hW'`. Establish `hT : ∀ Y' : ℂ, Ts (site L l) Y' * Matrix.diagonal (fun _ => mkP Wv Wv') = Matrix.diagonal (fun _ => mkP Wv Wv') * Ts (site L l) Y' * Formalism.YangianSpanCharacter.T.Um (R` using `ℂ) (A := Pr (RadSp P.k P.r z z' π π')) s := by`. Introduce `Y'`. Take `⟨-, hUiU, hE⟩` from `Formalism.YangianSpanCharacter.Final.T_PlaneWave ℂ (Pr (RadSp P.k P.r z z' π π')) (site L l).p (site L l).c (site L l).ci (mkP Wv Wv') s Y' hc hci hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hUiU, Matrix.mul_one]`. Use `_ = (Ts (site L l) Y' * Matrix.diagonal (fun _ => mkP Wv Wv') * Formalism.YangianSpanCharacter.T.Uinv (R := ℂ) (A := Pr (RadSp P.k P.r z z' π π')) s) * Formalism.YangianSpanCharacter.T.Um (R := ℂ) (A := Pr (RadSp P.k P.r z z' π π')) s := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Matrix.diagonal (fun _ => mkP Wv Wv') * Ts (site L l) Y' * Formalism.YangianSpanCharacter.T.Um (R := ℂ) (A := Pr (RadSp P.k P.r z z' π π')) s := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Ts`. Rewrite using `[hE]`. Establish `hDf : (Matrix.diagonal (fun _ : Fin 2 => mkP Wv Wv'))ᴴ = Matrix.diagonal (fun _ => mkP Wv' Wv)`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha` using `congrArg Matrix.conjTranspose (hT (star Y))`. Rewrite `ha` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hDf]`. Establish `hci' : ∀ a b, Commute (mkP Wv' Wv) (QQi L st l.succ Y a b)` using `fun a b => commute_inv_of h1 h2 (hC Y a b)`. Establish `hb : Matrix.diagonal (fun _ => mkP Wv' Wv) * QQi L st l.succ Y * Matrix.diagonal (fun _ => mkP Wv Wv') = QQi L st l.succ Y`. Rewrite using `[diag_comm hci', Matrix.mul_assoc, Matrix.diagonal_mul_diagonal, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (Matrix.diagonal fun _ : Fin 2 => (1 : Pr (RadSp P.k P.r z z' π π'))) = 1 from Matrix.diagonal_one, Matrix.mul_one]`. Rewrite using `[QQi_castSucc']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ha, hT Y]`. Use `_ = (Formalism.YangianSpanCharacter.T.Um (R := ℂ) (A := Pr (RadSp P.k P.r z z' π π')) s)ᴴ * (Ts (site L l) (star Y))ᴴ * (Matrix.diagonal (fun _ => mkP Wv' Wv) * QQi L st l.succ Y * Matrix.diagonal (fun _ => mkP Wv Wv')) * Ts (site L l) Y * Formalism.YangianSpanCharacter.T.Um (R : …`.
-
-Use `_ = _ := by rw [hb]; simp only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem waveQQ_castSucc (X : ActualOps P.k P.r z z' π π') (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r)
     (st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))) (hAL : IsActualLevel X L) (l : Fin P.r) (s : ℂ)
@@ -194,15 +192,15 @@ section WordWave
 variable {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Take `⟨hVVi, -, hRR, -⟩` from `Formalism.FourierDecayAlt.P.plane_wave_word_identity ℂ A S QQ f fi s w hW hQ hw`. Take `⟨h1, h2, h3⟩` from `hW`. Establish `hsfi : star fi = f` using `by rw [← h3, star_star]`. Establish `e1 : (io fi : SlopeTestRemainingChoices S A) * io f = 1`. Rewrite using `[← Formalism.FourierDecayAlt.P.Wd11.io_mul, h2, Formalism.FourierDecayAlt.P.Wd11.io_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hUU : UUiw s w * UUw s w = (1 : SlopeTestRemainingChoices S A)`. Establish `hv : io f * UUiw s w * (UUw s w * io fi) = (1 : SlopeTestRemainingChoices S A)`. Use `hVVi` as an intermediate fact. Unfold `Vw Viw at this`. Simplify `this` using `only [mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, one_mul, mul_one]`. Use `_ = io fi * (io f * UUiw s w * (UUw s w * io fi)) * io f := by simp only [mul_assoc]`. Use `_ = 1 := by rw [hv, mul_one, e1]`. Establish `hsVi : star (Viw fi s w) = io f * star (UUw s w)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Viw`. Rewrite using `[star_mul, Formalism.FourierDecayAlt.P.Wd11.io_star, hsfi]`. Establish `hsVV : star (Viw fi s w) * star (Vw f s w) = 1`. Rewrite using `[← star_mul, hVVi, star_one]`. Establish `key : RRw QQ w * Vw f s w = star (Viw fi s w) * RRw QQ w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsVV, one_mul]`. Use `_ = star (Viw fi s w) * (star (Vw f s w) * RRw QQ w * Vw f s w) := by simp only [mul_assoc]`. Use `_ = star (Viw fi s w) * RRw QQ w := by rw [hRR]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rr_io_wave (QQ : ℂ → M2 A) (f fi : A) (s : ℂ) (w : List (Letter ℂ S)) (hW : IsWave f fi)
     (hQ : WaveQQ QQ f fi s) (hw : (w.map Letter.intersection_update_fsHerm_neg_one).Nodup) :
@@ -234,13 +232,13 @@ theorem rr_io_wave (QQ : ℂ → M2 A) (f fi : A) (s : ℂ) (w : List (Letter �
     _ = io f * (star (UUw s w) * RRw QQ w * UUw s w) := by rw [key, hsVi]; simp only [mul_assoc]
 
 /- English proof (translation)
-Simplify using `[io, Matrix.diagonal_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem io_apply_mul (x : A) (M : SlopeTestRemainingChoices S A) (a b : Ix S) : ((io x : SlopeTestRemainingChoices S A) * M) a b = x * M a b := by
   simp [io, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Simplify using `[io, Matrix.mul_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_io_apply (x : A) (M : SlopeTestRemainingChoices S A) (a b : Ix S) : (M * (io x : SlopeTestRemainingChoices S A)) a b = M a b * x := by
   simp [io, Matrix.mul_diagonal]

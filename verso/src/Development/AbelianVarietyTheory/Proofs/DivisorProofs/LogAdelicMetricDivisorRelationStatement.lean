@@ -6,7 +6,7 @@ open CategoryTheory AlgebraicGeometry NumberField ReciprocityTheory.AnForm Recip
 open GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.Mean4O
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mean4O.CombGen.lnAdl_comb_change` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLogAdelicMetricDivisorRelation.lean&line=88#L88)
 -/

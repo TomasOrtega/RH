@@ -5,7 +5,7 @@ open MvPolynomial GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries Gl
 open scoped TensorProduct DirectSum
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TensorKernel.piTensor_map_surjective_and_ker` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FPiTensorMapSurjectiveAndKer.lean&line=9#L9)
 -/

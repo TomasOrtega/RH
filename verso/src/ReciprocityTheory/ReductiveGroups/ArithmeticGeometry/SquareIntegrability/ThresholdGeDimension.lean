@@ -11,11 +11,9 @@ noncomputable section
 namespace Col
 
 /- English proof (translation)
-Use `haveI : VAddInvariantMeasure (↥(Submodule.span ℤ (Set.range b))) (EuclideanSpace ℂ ι) volume := ⟨fun c s _ => measure_preimage_add volume (c : EuclideanSpace ℂ ι) s⟩`. Establish `hfd` using `ZSpan.isAddFundamentalDomain b (volume : Measure (EuclideanSpace ℂ ι))`. Establish `ht` using `hfd.preimage_of_equiv (measurePreserving_sub_right volume a).quasiMeasurePreserving (e := id) Function.bijective_id (fun g x => add_sub_assoc (g : EuclideanSpace ℂ ι) x a)`. Establish `hpre : (fun x => x + a) ⁻¹' ((fun y => y - a) ⁻¹' ZSpan.fundamentalDomain b) = ZSpan.fundamentalDomain b`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h1` using `(measurePreserving_add_right (volume : Measure (EuclideanSpace ℂ ι)) a).setLIntegral_comp_preimage_emb (MeasurableEquiv.addRight a).measurableEmbedding F ((fun y => y - a) ⁻¹' ZSpan.fundamentalDomain b)`. Rewrite `h1` using `[hpre]`. Use `Eq.trans h1 (ht.setLIntegral_eq hfd F fun g x => ?_)` and prove the remaining obligations. Use `show F ((g : EuclideanSpace ℂ ι) + x) = F x`.
-
-Rewrite using `[add_comm]`. Conclude with `hF _ g.2 x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lint_fd_shift {ι : Type} [Fintype ι] {κ : Type} [Finite κ]
     (b : Module.Basis κ ℝ (EuclideanSpace ℂ ι)) (F : EuclideanSpace ℂ ι → ℝ≥0∞)
@@ -40,7 +38,7 @@ theorem lint_fd_shift {ι : Type} [Fintype ι] {κ : Type} [Finite κ]
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h` using `Real.quadratic_le_exp_of_nonneg (show (0 : ℝ) ≤ 3 / 2 by norm_num)`. Evaluate the numerical expressions using `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem three_le_exp : (3 : ℝ) ≤ Real.exp (3 / 2) := by
   have h := Real.quadratic_le_exp_of_nonneg (show (0 : ℝ) ≤ 3 / 2 by norm_num)
@@ -48,15 +46,13 @@ theorem three_le_exp : (3 : ℝ) ≤ Real.exp (3 / 2) := by
   linarith
 
 /- English proof (translation)
-Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hx0 : 0 ≤ x` using `by linarith`. Establish `hpi : 3 < Real.pi` using `Real.pi_gt_three`. Establish `h1 : 3 / 2 * (n : ℝ) + 9 / 4 ≤ Real.pi / 4 * x`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hpi.le) hx0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2 : (3 : ℝ) ^ n ≤ Real.exp (3 / 2 * n)`. Rewrite using `[show (3 / 2 * (n : ℝ)) = n * (3 / 2) by ring, Real.exp_nat_mul]`. Establish `h3e` using `three_le_exp`. Use `gcongr`. Establish `h3 : (2 : ℝ) ≤ Real.exp (9 / 4)` using `by linarith [Real.add_one_le_exp (9 / 4 : ℝ)]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : Real.exp (3 / 2 * n) * Real.exp (9 / 4) ≤ Real.exp (Real.pi / 4 * x)`. Rewrite using `[← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 h1`. Establish `h5 : Real.exp (Real.pi / 4 * x) * Real.exp (-(Real.pi / 4 * x)) = 1`. Rewrite using `[← Real.exp_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hpos` using `Real.exp_pos (-(Real.pi / 4 * x))`. Establish `h6 : 2 * 3 ^ n ≤ Real.exp (Real.pi / 4 * x)`. Use `mul_le_mul h2 h3 (by norm_num) (Real.exp_pos _).le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem num1 (n : ℕ) (x : ℝ) (hx : 2 * (n : ℝ) + 3 ≤ x) :
     2 * 3 ^ n * Real.exp (-(Real.pi / 4 * x)) ≤ 1 := by
@@ -88,11 +84,11 @@ variable {X : PT E} {I : Submodule ℤ (Vsp X.dim)} {DF : ℕ} {P : Par X DF} (h
 include hI
 
 /- English proof (translation)
-Take `⟨ρ, hρ, hr⟩` from `hI.rank`. Establish `h6 : (X.gA : ℝ) * Real.log 2 + 2 * dstar (E` using `E) P.m + 3 + (DF + 1) * (X.r * Real.log X.r + 3 * X.r + 3) ≤ P.q * b0 (E := E) P.q P.R0 := P.C6`. Establish `hdK : (dK (IR I) : ℝ) ≤ dstar (E` using `E) P.m := by`. Establish `h : Module.finrank ℝ (IR I) ≤ 2 * PT.f E * P.m`. Rewrite using `[hr]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_le_mul_left _ hρ`. Conclude with `h` after adjusting the coercions. Establish `hlog : 0 ≤ (X.r : ℝ) * Real.log X.r` using `mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)`. Establish `hg : (0 : ℝ) ≤ X.gA * Real.log 2` using `mul_nonneg (Nat.cast_nonneg _) (Real.log_nonneg one_le_two)`. Establish `hr0 : (0 : ℝ) ≤ X.r` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hDF : 0 ≤ ((DF : ℝ) + 1) * (X.r * Real.log X.r + 3 * X.r + 3)` using `mul_nonneg (by positivity) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem threshold_ge_dimension : 2 * (dK (IR I) : ℝ) + 3 ≤ P.q * b0 (E := E) P.q P.R0 := by
   obtain ⟨ρ, hρ, hr⟩ := hI.rank
@@ -110,15 +106,13 @@ theorem threshold_ge_dimension : 2 * (dK (IR I) : ℝ) + 3 ≤ P.q * b0 (E := E)
   linarith
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hinf`. Establish `hb` using `cutoff_pos P`. Use `set δ := Real.sqrt (b0 (E := E) P.q P.R0)`. Establish `hδ : 0 < δ` using `Real.sqrt_pos.2 hb`. Use `set R' := max R δ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `exists_nat_gt ((3 * R' / δ) ^ (dK (IR I)))`. Take `⟨T, hT, hTc⟩` from `Set.Infinite.exists_subset_card_eq hinf N`. Establish `hinj : Set.InjOn (uQ X I) T`. Introduce `c _ c' _ h`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `uQ_dist hI hne` as an intermediate fact. Rewrite `this` using `[h, dist_self]`. Conclude with `absurd this (not_le.2 hδ)`. Use `pack_K hP (IR I) (T.image (uQ X I)) (fun u hu => by obtain ⟨c, -, rfl⟩ := Finset.mem_image.1 hu; exact uQ_mem c) δ R' hδ (le_max_right _ _) (fun u hu => by` as an intermediate fact. Take `⟨c, hc, rfl⟩` from `Finset.mem_image.1 hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hT hc).trans (le_max_left _ _))`. Use the proof step `(fun u hu u' hu' hne => by`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hu`. Take `⟨c', -, rfl⟩` from `Finset.mem_image.1 hu'`. Conclude with `uQ_dist hI (fun h => hne (by rw [h])))`.
-
-Rewrite `this` using `[Finset.card_image_of_injOn hinj, hTc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem finite_uQ (hP : Ext.PackingCount) (R : ℝ) : {c : Qc X I | ‖uQ X I c‖ ≤ R}.Finite := by
   classical
@@ -151,9 +145,9 @@ theorem finite_uQ (hP : Ext.PackingCount) (R : ℝ) : {c : Qc X I | ‖uQ X I c�
 end Wsec
 
 /- English proof (translation)
-Establish `key : ∀ t : ℝ, 0 ≤ (∑' c, w c) * t * t + (-2 * ∑' c, w c * N c) * t + ∑' c, w c * N c ^ 2`. Introduce `t`. Establish `e : ∑' c, (w c * N c ^ 2 - 2 * t * (w c * N c) + t ^ 2 * w c) = (∑' c, w c * N c ^ 2) - 2 * t * (∑' c, w c * N c) + t ^ 2 * ∑' c, w c`. Rewrite using `[(h2.sub (h3.mul_left _)).tsum_add (h1.mul_left _), h2.tsum_sub (h3.mul_left _), tsum_mul_left, tsum_mul_left]`. Establish `hnn : 0 ≤ ∑' c, (w c * N c ^ 2 - 2 * t * (w c * N c) + t ^ 2 * w c)` using `tsum_nonneg fun c => by nlinarith [mul_nonneg (hw c) (sq_nonneg (N c - t))]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[e, hnn]`. Establish `hd` using `discrim_le_zero (a := ∑' c, w c) (b := -2 * ∑' c, w c * N c) (c := ∑' c, w c * N c ^ 2) (fun t => by nlinarith [key t])`. Unfold `discrim at hd`. Use polynomial arithmetic with `[hd]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem cs_tsum {κ : Type} (w N : κ → ℝ) (hw : ∀ c, 0 ≤ w c) (hN : ∀ c, 0 ≤ N c) (h1 : Summable w)
     (h2 : Summable (fun c => w c * N c ^ 2)) (h3 : Summable (fun c => w c * N c)) :
@@ -179,23 +173,21 @@ variable {X : PT E} {I : Submodule ℤ (Vsp X.dim)} {DF : ℕ} {P : Par X DF} (h
 include hI hP hA
 
 /- English proof (translation)
-Establish `hpi` using `Real.pi_gt_three`. Use `set g : Qc X I → ℝ := fun c => Real.exp (-(Real.pi / 4 * P.q) * ‖uQ X I c‖ ^ 2) with hg`. Establish `hgs : Summable g` using `summable_gauss hI hP hA (Real.pi / 4) (by linarith)`. Establish `htail` using `tailQ hI hP hA (Real.pi / 4) (by positivity) (cond_tail hI (Real.pi / 4) (by linarith))`. Establish `hsplit : ∑' c, g c = g 0 + ∑' c : {c : Qc X I // c ∉ ({0} : Finset (Qc X I))}, g c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hgs.sum_add_tsum_compl (s := {0}), Finset.sum_singleton]`. Both sides reduce to the same expression. Establish `hg0 : g 0 = 1` using `by simp [hg]`. Establish `hnum` using `num1 (dK (IR I)) (P.q * b0 (E := E) P.q P.R0) (threshold_ge_dimension hI)`. Establish `hgle : ∑' c, g c ≤ 2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit, hg0]`. Establish `h2` using `htail.2`. Rewrite `h2` using `[show Real.pi / 4 * P.q * b0 (E := E) P.q P.R0 = Real.pi / 4 * (P.q * b0 (E := E) P.q P.R0) by ring]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨c0, -, hmin⟩` from `Set.exists_min_image {c : Qc X I | ‖uQ X I c‖ ≤ 2 * ‖u‖} (fun c => ‖u - uQ X I c‖) (finite_uQ hI hP _) ⟨0, by simp⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hglob : ∀ c, ‖u - uQ X I c0‖ ≤ ‖u - uQ X I c‖`. Introduce `c`. Distinguish the cases in `hc : ‖uQ X I c‖ ≤ 2 * ‖u‖`. Conclude with `hmin c hc`. Establish `h0` using `hmin 0 (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_zero, sub_zero] at h0`. Use `push Not at hc`. Establish `: ‖uQ X I c‖ - ‖u‖ ≤ ‖u - uQ X I c‖`. Use `norm_sub_norm_le (uQ X I c) u` as an intermediate fact. Rewrite `this` using `[norm_sub_rev]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpt : ∀ c, Real.exp (-(P.q * Real.pi) * ‖u - uQ X I c‖ ^ 2) ≤ g (c - c0)`. Introduce `c`. Simplify using `only [hg, map_sub]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `h1 : ‖uQ X I c - uQ X I c0‖ ≤ 2 * ‖u - uQ X I c‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖uQ X I c - uQ X I c0‖ ^ 2 ≤ 4 * ‖u - uQ X I c‖ ^ 2`. Use polynomial arithmetic with `[norm_nonneg (uQ X I c - uQ X I c0), norm_nonneg (u - uQ X I c)]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : (0 : ℝ) ≤ P.q` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 (by positivity : (0 : ℝ) ≤ Real.pi / 4 * P.q)]`. Establish `hgs' : Summable (fun c => g (c - c0))` using `(Equiv.subRight c0).summable_iff.2 hgs`. Establish `hs : Summable (fun c : Qc X I => Real.exp (-(P.q * Real.pi) * ‖u - uQ X I c‖ ^ 2))` using `Summable.of_nonneg_of_le (fun _ => (Real.exp_pos _).le) hpt hgs'`. Use `⟨hs, (hs.tsum_le_tsum hpt hgs').trans ?_⟩` and prove the remaining obligations.
-
-Use `(Equiv.subRight c0).tsum_eq g` as an intermediate fact. Simplify using `only [Equiv.subRight_apply] at this`. Rewrite using `[this]`. Conclude with `hgle`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_w_le (u : Vsp X.dim) :
     Summable (fun c : Qc X I => Real.exp (-(P.q * Real.pi) * ‖u - uQ X I c‖ ^ 2)) ∧

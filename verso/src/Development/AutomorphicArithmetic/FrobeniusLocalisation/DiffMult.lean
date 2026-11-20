@@ -9,21 +9,19 @@ open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `φ H l hl P _ _`. Use `haveI := H.galois`. Take `⟨-, -, hram, -⟩` from `grp_bridge H hl P`. Establish `hmap : (span {(l : ℤ)}).map (algebraMap ℤ (𝓞 H.E)) = span {(l : 𝓞 H.E)}`. Simplify using `[Ideal.map_span]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne : (span {(l : ℤ)}).map (algebraMap ℤ (𝓞 H.E)) ≠ ⊥` using `map_ne_bot_of_ne_bot (by simp [hl.ne_zero])`. Establish `hmult : multiplicity P (span {(l : 𝓞 H.E)}) = H.el l`. Rewrite using `[← hmap, ← IsDedekindDomain.ramificationIdx_eq_multiplicity _ _ hne, hram]`. Establish `hmem : (l : 𝓞 H.E) ∈ P`. Establish `hle : span {(l : 𝓞 H.E)} ≤ P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmap]`. Conclude with `map_le_of_le_comap (Ideal.LiesOver.over (P := P) (p := span {(l : ℤ)})).le`. Conclude with `hle (Ideal.mem_span_singleton_self _)`. Establish `hrat` using `GlobalTheory.DifferentElement.mult_ratio H.E l hl P inferInstance hmem`. Rewrite `hrat` using `[hmult, Nat.factorization_def _ hl]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hel0 : (0 : ℝ) < H.el l` using `by exact_mod_cast HostRaw.el_pos _ l`. Establish `hvd : H.vdH l = (multiplicity P (differentIdeal ℤ (𝓞 H.E)) : ℝ) / H.el l`. Establish `hr` using `congrArg (fun q : ℚ => (q : ℝ)) hrat`. Move the coercions through the operations in `at hr`. Simplify using `only [HostRaw.vdH]`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `hr.symm`. Establish `h1 : (multiplicity P (differentIdeal ℤ (𝓞 H.E)) : ℝ) = H.el l * H.vdH l`. Rewrite using `[hvd]`. Clear the denominators using the available nonvanishing facts. Take `⟨htw1, htw2, -⟩` from `vd_tame_wild H hl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨h1, hmult, fun hnd => ?_, fun hd => ?_⟩` and prove the remaining obligations. Establish `hv` using `htw1 hnd`. Establish `hle : 1 ≤ H.el l` using `HostRaw.el_pos _ l`. Establish `h2 : (multiplicity P (differentIdeal ℤ (𝓞 H.E)) : ℝ) = ((H.el l - 1 : ℕ) : ℝ)`. Rewrite using `[Nat.cast_sub hle, h1, hv]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h2` after adjusting the coercions. Establish `hv` using `htw2 hd`.
-
-Establish `h2 : (H.el l : ℝ) ≤ multiplicity P (differentIdeal ℤ (𝓞 H.E))`. Rewrite using `[h1]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.diff_mult :
     ∀ {φ : Frame} (H : HostAx φ) {l : ℕ}, l.Prime → ∀ (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(l : ℤ)})], (multiplicity P (differentIdeal ℤ (𝓞 H.E)) : ℝ) = H.el l * H.vdH l ∧ multiplicity P (span {(l : 𝓞 H.E)}) = H.el l ∧ (¬ l ∣ H.el l → multiplicity P (differentIdeal ℤ (𝓞 H.E)) = H.el l - 1) ∧ (l ∣ H.el l → H.el l ≤ multiplicity P (differentIdeal ℤ (𝓞 H.E))) := by

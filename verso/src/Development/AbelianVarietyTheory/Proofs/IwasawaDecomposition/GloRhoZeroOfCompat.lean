@@ -15,7 +15,7 @@ namespace GlobalTheory.Mem.LevStd
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨hz, h⟩` from `he z`. Rewrite using `[gloRho_apply]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gloRho_eq_of_compat (v : HeightOneSpectrum (𝓞 F))
     (spl : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F)
@@ -28,7 +28,7 @@ theorem gloRho_eq_of_compat (v : HeightOneSpectrum (𝓞 F))
   exact h
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite using `[gloRho_eq_of_compat v spl halg w e he, resS_oToS, Ideal.Quotient.eq_zero_iff_mem.2 ha, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem gloRho_zero_of_compat (v : HeightOneSpectrum (𝓞 F))
     (spl : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F)
@@ -40,7 +40,7 @@ theorem gloRho_zero_of_compat (v : HeightOneSpectrum (𝓞 F))
   rw [gloRho_eq_of_compat v spl halg w e he, resS_oToS, Ideal.Quotient.eq_zero_iff_mem.2 ha, map_zero]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Rewrite using `[← resS_oToS (F := F), gloE_resS, gloRho_eq_of_compat v spl halg w e he]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gloE_eq_of_compat (v : HeightOneSpectrum (𝓞 F))
     (spl : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F)
@@ -56,39 +56,37 @@ end GlobalTheory.Mem.LevStd
 open GlobalTheory.Mem.LevStd in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n _ ST SG T f bad gp Jm S G Hw lamw H lam wOf e hJ hLb hU hchi hST hover hprod hcomp hH hlam`. Substitute `hJ` using the available equality. Establish `hcomp' : ∀ a v h (z : Formalism.L2.Herm.intAf F E), ∃ hz : gloPhi v (G.sp a v h) (prV (E` using `E) v z.1) ∈ v.adicCompletionIntegers F, IsLocalRing.residue (v.adicCompletionIntegers F) ⟨_, hz⟩ = e a v h (resS F (wOf a v h).1 z) := hcomp`. Establish `hw` using `fun a v h => gloRho_zero_of_compat v (G.sp a v h) (G.sp_alg a v h) (wOf a v h).1 (e a v h) (hcomp' a v h)`. Establish `hgE` using `fun a v h => gloE_eq_of_compat v (G.sp a v h) (G.sp_alg a v h) (wOf a v h).1 (e a v h) (hcomp' a v h)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc : ∀ v x, x ∈ levelVL hc.sig (1 : Matrix (Fin n) (Fin n) E) v (baseLb E n ST) → (x ∈ S.Uloc v ↔ x ∈ levLoc hc n ST SG (Subgroup.pi Set.univ Hw) v)`. Introduce `v x hx`. Prove the components needed by the constructor for the conclusion. Introduce `hxv`. Establish `hxU : x ∈ UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F)` using `hx.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp : rll_put n v x ∈ S.U`. Use `(S.U_eq _).2 ⟨rll_put_mem_UAd hc n v hxU, fun v' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v' = v`. Substitute `hv` using the available equality. Rewrite using `[rll_put_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxv`. Rewrite using `[rll_put_ne n v v' hv]`. Conclude with `Subgroup.one_mem _`. Rewrite `hp` using `[hU]`. Conclude with `⟨_, hp, rll_put_self n v x⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨k, hk, rfl⟩`. Rewrite `hk` using `[← hU]`. Conclude with `((S.U_eq k).1 hk).2 v`. Establish `hxL : ∀ x : S.U, x.1 ∈ levU hc n ST SG (Subgroup.pi Set.univ Hw)` using `fun x => hU ▸ x.2`. Establish `hkJ : ∀ x : S.U, x.1 ∈ J0 hc n ST` using `fun x => ((mem_levU hc n ST SG _).1 (hxL x)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨{ fr := fun _ _ _ => 1 fr_lat := ?_ mem := ?_ red := fun a v h x => ⟨Matrix.GeneralLinearGroup.map (e a v h).toRingHom ((levRed hc n ST SG (Subgroup.pi Set.univ Hw) ⟨x.1, hU ▸ x.2⟩).1 (wOf a v h)), (hH a v h _).1 ((levRed hc n ST SG (Subgroup.pi Set.univ Hw) ⟨x.1, hU ▸ x.2⟩).2 ( …` and prove the remaining obligations. Introduce `a v h x`. Rewrite using `[hLb]`. Conclude with `gco_fr_lat n ST v (G.sp a v h) (G.sp_alg a v h) (hST a v h) x`. Introduce `a v h x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite `hx` using `[hLb]`. Establish `hG : ∀ y : GL (Fin n) (E ⊗[F] v.adicCompletion F), G.mat a v h 1 y = ((bc (gloPhi v (G.sp a v h)) y : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F))`. Introduce `y`. Simplify using `only [GLoc.mat, inv_one, one_mul, mul_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hloc v x hx, gco_mem_levLoc hc n ST SG v (G.sp a v h) (G.sp_alg a v h) Hw (wOf a v h) (hw a v h) ((hover a v h _).2 rfl) (fun w' hw' => (hover a v h w').1 hw') (hST a v h) x hx, hG]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨M, hM, hMx⟩`. Use `⟨Matrix.GeneralLinearGroup.map (e a v h).toRingHom M, (hH a v h M).1 hM, ?_⟩` and prove the remaining obligations. Rewrite using `[← hMx]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, hgE]`. Both sides reduce to the same expression. Introduce and unpack `⟨M', hM', hM'x⟩`. Use `⟨Matrix.GeneralLinearGroup.map (e a v h).symm.toRingHom M', (hH a v h _).2 ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hM' using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[← hM'x]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_apply, hgE]`. Simplify using the standard rewrite rules. Introduce `a v h x`. Establish `h1` using `gco_red_map n v (G.sp a v h) (G.sp_alg a v h) (wOf a v h).1 (hw a v h) (congruence_subgroup_le_stabilizer hc n ST (hkJ x))`. Establish `hG : G.mat a v h 1 (bc (prV (E` using `E) v) x.1) = ((bc (gloPhi v (G.sp a v h)) (bc (prV (E := E) v) x.1) : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [GLoc.mat, inv_one, one_mul, mul_one]`. Both sides reduce to the same expression. Rewrite using `[hG, ← h1]`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, hgE]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Introduce `x`. Rewrite using `[hchi x, Units.coe_prod]`. Simplify using `only [Units.val_inv_eq_inv_val]`. Rewrite using `[hprod]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Use `congr 1`. Use function extensionality and compare the values at `v`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `h`. Rewrite using `[hlam a v h ⟨(levRed hc n ST SG (Subgroup.pi Set.univ Hw) ⟨x.1, hxL x⟩).1 (wOf a v h), (levRed hc n ST SG (Subgroup.pi Set.univ Hw) ⟨x.1, hxL x⟩).2 (wOf a v h) trivial⟩ _ rfl]`. Introduce `x`. Rewrite using `[hchi x, Units.coe_prod, norm_prod]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Units.val_inv_eq_inv_val, norm_inv, inv_eq_one]`. Generalize the expression as in `(⟨_, _⟩ : Hw w) = m`. Establish `hfo : IsOfFinOrder m` using `isOfFinOrder_of_finite m`. Take `⟨N, hN, hpow⟩` from `hfo.exists_pow_eq_one`. Establish `hp : ((lamw w m : ℂˣ) : ℂ) ^ N = 1`.
-
-Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, hpow, map_one, Units.val_one]`. Conclude with `Complex.norm_eq_one_of_pow_eq_one hp hN.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.LevStd.levU_prod_glevH : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : Finset (HeightOneSpectrum (𝓞 E))) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 F))) (gp : Fin 2 → ℕ) (Jm : Matrix (Fin n) (Fin n) E) (S : StepLevel F E hc.sig Jm T f bad) (G : GLoc F E hc.sig gp) (Hw : ∀ w : SG, Subgroup (GL (Fin n) (𝓞 E ⧸ w.1.asIdeal))) (lamw : ∀ w, Hw w →* ℂˣ) (H : ∀ (a : Fin 2) (v : HeightOneSpectrum (𝓞 F)), (gp a : 𝓞 F) ∈ v.asIdeal → Subgroup (GL (Fin n) (kv F v))) (lam : ∀ a v h, H a v h →* ℂˣ) (wOf : ∀ (a : Fin 2) (v : HeightOneSpectrum (𝓞 F)), (gp a : 𝓞 F) ∈ v.asIdeal → SG) (e : ∀ a v h, (𝓞 E ⧸ (wOf a v h).1.asIdeal) ≃+* kv F v), Jm = 1 → S.Lb = baseLb E n ST → ∀ hU : S.U = levU hc n ST SG (Subgroup.pi Set.univ Hw), (∀ x : S.U, S.chi x = ∏ w : SG, (lamw w ⟨(levRed hc n ST SG (Subgroup.pi Set.univ Hw) ⟨x.1, hU ▸ x.2⟩).1 w, (levRed hc n ST SG (Subgroup.pi Set.univ Hw) ⟨x.1, hU ▸ x.2⟩).2 w trivial⟩)⁻¹) → (∀ a v (_ : (gp a : 𝓞 F) ∈ v.asIdeal), v ∉ plUnder F ST) → (∀ a v h (w : SG), IsOver v w.1 ↔ w = wOf a v h) → (∀ φ : SG → ℂ, ∏ w : SG, φ w = ∏ a : Fin 2, ∏ᶠ (v : HeightOneSpectrum (𝓞 F)) (h : (gp a : 𝓞 F) ∈ v.asIdeal), φ (wOf a v h)) → (∀ a v h (z : Formalism.L2.Herm.intAf F E), ∃ hz : G.phi a v h (prV (E := E) v z.1) ∈ v.adicCompletionIntegers F, IsLocalRing.residue (v.adicCompletionIntegers F) ⟨_, hz⟩ = e a v h (resS F (wOf a v h).1 z)) → (∀ a v h M, M ∈ Hw (wOf a v h) ↔ Matrix.GeneralLinearGroup.map (e a v h).toRingHom M ∈ H a v h) → (∀ a v h (M : Hw (wOf a v h)) (M' : H a v h), M'.1 = Matrix.GeneralLinearGroup.map (e a v h).toRingHom M.1 → lam a v h M' = lamw (wOf a v h) M) → ∃ V : GLevH S G H lam, ∀ a v h, V.fr a v h = 1 := by
   intro F E _ _ _ _ _ _ hc n _ ST SG T f bad gp Jm S G Hw lamw H lam wOf e hJ hLb hU hchi hST hover hprod hcomp hH hlam

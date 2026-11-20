@@ -6,7 +6,7 @@ open ZetaZeros.D.EllReg GlobalTheory.HCA MeasureTheory
 open scoped ContDiff BoundedContinuousFunction
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HCA.dw_solSet_continuous_functional` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEllipticSystemDerivativeContinuousFunctional.lean&line=40#L40)
 -/

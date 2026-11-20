@@ -12,7 +12,7 @@ section Ext
 variable {Kf : Type} [Field Kf] {n' m : ℕ} {A : Finset (Fin n')} {X XT sp : Fin n' → Fin (m + 1) → ℤ}
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `LinearMap.exists_extend G`. Conclude with `⟨γ, fun Q => by rw [← hγ]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ext (G : Module.Dual Kf (Vsp Kf X)) :
     ∃ γ : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf →ₗ[Kf] Kf, ∀ Q : Vsp Kf X, γ (Q : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) = G Q := by
@@ -22,7 +22,7 @@ theorem exists_ext (G : Module.Dual Kf (Vsp Kf X)) :
 def extD (G : Module.Dual Kf (Vsp Kf X)) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf →ₗ[Kf] Kf := (exists_ext G).choose
 
 /- English proof (translation)
-The claim follows from `(exists_ext G).choose_spec Q`.
+A detailed English derivation is pending.
 -/
 theorem extD_spec (G : Module.Dual Kf (Vsp Kf X)) (Q : Vsp Kf X) : extD G (Q : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) = G Q :=
   (exists_ext G).choose_spec Q
@@ -39,7 +39,7 @@ theorem peelMap_coe (hP : Peel A X XT sp) (c : Kf) (G : Module.Dual Kf (Vsp Kf s
 variable {O : Type} [CommRing O] [Algebra O Kf]
 
 /- English proof (translation)
-Take `⟨y, hy, he⟩` from `slice_Hten hP Λ (extD G) c (fun Q hQ => by`. Take `⟨a, ha⟩` from `hG ⟨Q, Hten_le_V hdsp Λ hΛ Q hQ⟩ hQ`. Conclude with `⟨a, by rw [← ha]; exact extD_spec G ⟨Q, _⟩⟩) u hu`. Use `⟨⟨y, Hten_le_V hdT Λ hΛ y hy⟩, hy, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[peelMap_coe, he, smul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -66,11 +66,11 @@ variable {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteVa
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O}
 
 /- English proof (translation)
-Take `⟨I, hI, x, π, _, c2, _, c4, c4', _, c7⟩` from `edge_lattice_adapted_basis h m r X hd e he`. Establish `hw` using `w_ne_zero h`. Establish `hp0 : (p : Kf) ≠ 0` using `by rw [Formalism.L2.G.Model.p_eq h]; exact pow_ne_zero _ hw`. Rewrite using `[← c7, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `mem_scale.2 ⟨w ^ ((M : ℤ) - order r X (π i)).toNat • (((p : Kf) ^ π i)⁻¹ • x.coord i), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← c2, Formalism.L2.G.Model.dualLat_span x (fun i => (p : Kf) ^ π i) (fun i => zpow_ne_zero _ hp0)]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `h1` using `c4' i`. Rewrite using `[← algebraMap_smul Kf (w ^ ((M : ℤ) - order r X (π i)).toNat), smul_smul, smul_smul, map_pow, ← zpow_natCast, Int.toNat_of_nonneg (by omega), ← zpow_add₀ hw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = ((algebraMap O Kf) w ^ (-order r X (π i)) * (p : Kf) ^ (-π i)) • x.coord i`. Rewrite using `[zpow_neg (p : Kf)]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Re'_le_scale (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (X : Fin n' → Fin (m + 1) → ℤ)
     (hd : IsDominant X) (e : Edge W Qq (m + 1)) (he : IsEdge p n' r e) (M : ℕ) (hM : ordMax r X ≤ M) :
@@ -94,22 +94,22 @@ theorem Re'_le_scale (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (X :
 variable {m : ℕ} {A : Finset (Fin n')} {X XT sp : Fin n' → Fin (m + 1) → ℤ}
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.G.Model.p_eq h, ← zpow_natCast, ← zpow_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem p_zpow (h : HidaSetting p n' W Qq O Kf ι σ j w) (z : ℤ) : (p : Kf) ^ z = algebraMap O Kf w ^ (2 * z) := by
   rw [Formalism.L2.G.Model.p_eq h, ← zpow_natCast, ← zpow_mul]
   norm_num
 
 /- English proof (translation)
-Introduce `u hu`. Establish `hw` using `w_ne_zero h`. Establish `hAr : Ar r X = Ar r XT + Ar r sp` using `by rw [hX]; exact Ar_add r _ _`. Take `⟨gs, hgs, _, h2, _⟩` from `Formalism.L2.G.Model.edgeLat h m r e' he'`. Establish `hΛ : ∀ s : Fin n', ∃ g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf, IsUnit g.det ∧ LeAt p ι σ w s.val e' = colSpan O g` using `fun s => ⟨_, by rw [Matrix.det_mul]; exact (hgs _).mul (lb_D_det _ _ _ hw), h2 s.val⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u0, hu0, rfl⟩` from `mem_scale.1 hu`. Establish `hu0' : ((u0 : Vsp Kf X) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) ∈ Hten O X (fun s => LeAt p ι σ w s.val e')` using `hu0`. Take `⟨yv, hy, he⟩` from `peel_Hten hP hdT hdsp (fun s => LeAt p ι σ w s.val e') hΛ ((p : Kf) ^ Ar r sp) (algebraMap O Kf w ^ (N - Ar r sp)) G (by`. Introduce `Qv hQv`. Take `⟨a, ha⟩` from `hG (algebraMap O Kf w ^ (-Ar r sp) • Qv) (mem_scale.2 ⟨Qv, hQv, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[be_smulK_left]`. Unfold `be at ha`. Rewrite `ha` using `[map_smul, smul_eq_mul, p_zpow h, ← mul_assoc, ← zpow_add₀ hw]`. Establish `e1 : -Ar r sp + 2 * Ar r sp = Ar r sp` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ha` using `[e1]`. Rewrite using `[zpow_sub₀ hw, div_mul_eq_mul_div, eq_div_iff (zpow_ne_zero _ hw), mul_comm]`. Conclude with `ha) u0 hu0'`. Rewrite using `[map_smul, he]`. Use `mem_scale.2 ⟨algebraMap O Kf w ^ (-Ar r XT) • yv, mem_scale.2 ⟨yv, hy, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, smul_smul, p_zpow h, ← zpow_add₀ hw, ← zpow_add₀ hw, ← zpow_add₀ hw, hAr]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem peel_Re (h : HidaSetting p n' W Qq O Kf ι σ j w) (hP : Peel A X XT sp) (hX : X = XT + sp) (hdT : IsDominant XT)
     (hdsp : IsDominant sp) (r : ℕ) (e' : Edge W Qq (m + 1)) (he' : IsEdge p n' r e') (N : ℤ)
@@ -145,7 +145,7 @@ theorem peel_Re (h : HidaSetting p n' W Qq O Kf ι σ j w) (hP : Peel A X XT sp)
   ring
 
 /- English proof (translation)
-Introduce `u hu`. Take `⟨yv, hy, he⟩` from `peel_Hten hP hdT hdsp (fun s => extO O ι σ s.val L) hL c0 c G (fun Qv hQv => hG Qv hQv) u hu`. Conclude with `mem_scale.2 ⟨yv, hy, he.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem peel_HL (hP : Peel A X XT sp) (hdT : IsDominant XT) (hdsp : IsDominant sp)
     (L : Submodule W (Fin (m + 1) → Qq))
@@ -160,13 +160,11 @@ theorem peel_HL (hP : Peel A X XT sp) (hdT : IsDominant XT) (hdsp : IsDominant s
 end Lat
 
 /- English proof (translation)
-Establish `h1 : IsWeightedHomogeneous (colW r n) F 0` using `(mem_dualWeyl_iff.1 hF).1`. Use extensionality with `e`. Rewrite using `[coeff_C]`. Use `split_ifs with he`. Rewrite using `[he]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h1.coeff_eq_zero` to reduce the goal to its premises. Introduce `hwt`. Apply `he` to reduce the goal to its premises. Use `symm`. Use extensionality with `v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Use symmetry to reverse the relation. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h2` using `congrFun hwt v.2`. Rewrite `h2` using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Assume the negation of the conclusion as `hv`. Establish `h3` using `(Finset.sum_eq_zero_iff.1 h2) v (Finsupp.mem_support_iff.2 (by simpa using hv))`. Simplify using `[colW] at h3`.
-
-Conclude with `hv (by simpa using h3)`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualWeyl_zero_const {R : Type} [CommRing R] {r n : ℕ} (F : MvPolynomial (Fin r × Fin n) R)
     (hF : F ∈ dualWeyl R r n 0) : F = C (coeff 0 F) := by

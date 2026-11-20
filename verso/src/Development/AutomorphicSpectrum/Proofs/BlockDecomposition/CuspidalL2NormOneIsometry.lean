@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CuspTransfer
 
 /- English proof (translation)
-Establish `h1` using `eLpNorm_nnreal_pow_eq_lintegral (f := F) (μ := m) (p := 2) (by norm_num)`. Establish `h2 : ENNReal.ofReal ‖h.toLp F‖ = eLpNorm F 2 m`. Rewrite using `[Lp.norm_toLp, ENNReal.ofReal_toReal h.2.ne]`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), h2]`. Simplify using `using h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sq_norm_toLp {X : Type*} [MeasurableSpace X] {m : Measure X} {F : X → ℂ} (h : MemLp F 2 m) :
     ENNReal.ofReal (‖h.toLp F‖ ^ 2) = ∫⁻ q, ‖F q‖ₑ ^ 2 ∂m := by
@@ -23,7 +23,7 @@ theorem sq_norm_toLp {X : Type*} [MeasurableSpace X] {m : Measure X} {F : X → 
   simpa using h1
 
 /- English proof (translation)
-Establish `h1 : ∀ s, (B.extendOfNorm A) (A s) = B s` using `fun s => LinearMap.extendOfNorm_eq hd ⟨r, fun s => (hn s).le⟩ s`. Use `⟨B.extendOfNorm A, h1, fun F => ?_⟩` and prove the remaining obligations. Conclude with `hd.induction_on F (isClosed_eq (by fun_prop) (by fun_prop)) fun s => by rw [h1, hn]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_extend {S H K : Type*} [AddCommGroup S] [Module ℂ S] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K] (A : S →ₗ[ℂ] H) (B : S →ₗ[ℂ] K)
@@ -35,9 +35,7 @@ theorem exists_extend {S H K : Type*} [AddCommGroup S] [Module ℂ S] [NormedAdd
   exact hd.induction_on F (isClosed_eq (by fun_prop) (by fun_prop)) fun s => by rw [h1, hn]
 
 /- English proof (translation)
-Take `⟨Φ, hΦ, hΦn⟩` from `exists_extend A B hd r hn`. Use `⟨Φ, hΦn, fun x F => ?_⟩` and prove the remaining obligations. Use `hd.induction_on F (isClosed_eq ?_ ?_) fun s => ?_` and prove the remaining obligations. Conclude with `Φ.continuous.comp (π x).continuous`. Conclude with `(ρ x).continuous.comp Φ.continuous`.
-
-Rewrite using `[hπ, hΦ, hΦ, hρ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extend_equivariant {S H K X : Type*} [AddCommGroup S] [Module ℂ S] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K] (A : S →ₗ[ℂ] H)
@@ -54,7 +52,7 @@ theorem exists_extend_equivariant {S H K X : Type*} [AddCommGroup S] [Module ℂ
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `hd` using `GlobalTheory.T.fundamental_domain_split_centre_product E a ha μ`. Establish `hL : LeftInv (latticeGL E a) φ` using `leftInv_latticeGL hl hz`. Rewrite using `[RightCosetSpace.lintegral_quotientMeasure, lintegral_quotMeasure hd]`. Simplify using `only [resQ_mk hl, hL.descend_mk]`. Rewrite using `[← GlobalTheory.T.integral_split_centre_invariant E a ha μ ν c hmap φ hc hz, Measure.restrict_smul, lintegral_smul_measure]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -95,9 +93,9 @@ Both sides reduce to the same expression.
 theorem coe_toL2cusp (φ : cuspidalL2Functions μ) : (toL2cusp μ φ : L2 (latticeGL E a) μ) = φ.2.2.toL2 := rfl
 
 /- English proof (translation)
-Rewrite using `[DenseRange, Subtype.dense_iff]`. Introduce `y hy`. Use `closure_mono ?_ (show y ∈ closure (cuspContinuousL2 μ : Set (L2 (latticeGL E a) μ)) from hy)` and prove the remaining obligations. Introduce and unpack `F ⟨φ, hφ, e⟩`. Establish `h2` using `memL2_of_ae_eq (leftInv_of_mem_cuspCont hφ) e`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨toL2cusp μ ⟨φ, hφ, h2⟩, ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[coe_toL2cusp]`. Conclude with `l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (h2.lift_toL2_ae_eq.trans e.symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denseRange_toL2cusp : DenseRange (toL2cusp μ) := by
   rw [DenseRange, Subtype.dense_iff]
@@ -140,17 +138,17 @@ def trFn (x : GA E a) (φ : cuspidalL2Functions μ) : cuspidalL2Functions μ :=
   ⟨fun g => φ.1 (g * x), mul_right_mem_cuspCont φ.2.1 x, φ.2.2.mul_right x⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (right_translate_toL2 φ.2.2 x)`.
+A detailed English derivation is pending.
 -/
 theorem Rcusp_toL2cusp (x : GA E a) (φ : cuspidalL2Functions μ) : Rcusp μ x (toL2cusp μ φ) = toL2cusp μ (trFn x φ) :=
   Subtype.ext (right_translate_toL2 φ.2.2 x)
 
 /- English proof (translation)
-Use `Subtype.ext (Lp.ext ?_)` and prove the remaining obligations. Establish `e0 : ((cuspRep ν x (toCusp hm φ) : cuspidalL2 ν) : Lp ℂ 2 (RightCosetSpace.quotientMeasure (rationalGLOne E a) ν)) = RightCosetSpace.rightRegularRep (rationalGLOne E a) ν x (toCusp hm φ)` using `rfl`. Rewrite using `[e0, coe_toCusp, coe_toCusp]`. Use `(RightCosetSpace.coeFn_rightRegularRep _ ν x _).trans ?_` and prove the remaining obligations. Use `(((RightCosetSpace.measurePreserving_rightMul ν x).quasiMeasurePreserving.ae_eq_comp (hm φ).coeFn_toLp).trans ?_).trans (hm (trFn (x : GA E a) φ)).coeFn_toLp.symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.Eventually.of_forall fun q => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `RightCosetSpace.mk_surjective _ q`. Simplify using `only [Function.comp_apply, RightCosetSpace.rightMul_mk]`. Rewrite using `[resQ_mk φ.2.1.2.1]`. Conclude with `(resQ_mk (φ := (trFn (x : GA E a) φ).1) (fun γ g => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [trFn, mul_assoc, φ.2.1.2.1]) y).symm`.
+A detailed English derivation is pending.
 -/
 theorem cuspRep_toCusp (hm : ∀ φ : cuspidalL2Functions μ, MemLp (resQ φ.1) 2 (RightCosetSpace.quotientMeasure (rationalGLOne E a) ν))
     (x : normOneGL E a) (φ : cuspidalL2Functions μ) : cuspRep ν x (toCusp hm φ) = toCusp hm (trFn (x : GA E a) φ) := by
@@ -169,7 +167,7 @@ theorem cuspRep_toCusp (hm : ∀ φ : cuspidalL2Functions μ, MemLp (resQ φ.1) 
     simp only [trFn, mul_assoc, φ.2.1.2.1]) y).symm
 
 /- English proof (translation)
-Use `⟨(continuous_resQ φ.2.1.1 φ.2.1.2.1).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `only [ENNReal.toReal_ofNat, ENNReal.rpow_ofNat]`. Rewrite using `[lintegral_resQ ha μ ν c hmap φ.1 φ.2.1.1 φ.2.1.2.1 φ.2.1.2.2.1, ← sq_norm_toLp φ.2.2.2]`. Conclude with `ENNReal.mul_lt_top hct.lt_top ENNReal.ofReal_lt_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memLp_resQ (ha : 0 < a) (c : ENNReal) (hct : c ≠ ⊤)
     (hmap : Measure.map (fun p : normOneGL E a × ℝ => splitCentre E a p.2 * (p.1 : GA E a)) (ν.prod volume) = c • μ)
@@ -181,9 +179,9 @@ theorem memLp_resQ (ha : 0 < a) (c : ENNReal) (hct : c ≠ ⊤)
   exact ENNReal.mul_lt_top hct.lt_top ENNReal.ofReal_lt_top
 
 /- English proof (translation)
-Establish `h3 : ‖toCusp hm φ‖ ^ 2 = c.toReal * ‖toL2cusp μ φ‖ ^ 2`. Establish `h4` using `lintegral_resQ ha μ ν c hmap φ.1 φ.2.1.1 φ.2.1.2.1 φ.2.1.2.2.1`. Rewrite `h4` using `[← sq_norm_toLp (hm φ), ← sq_norm_toLp φ.2.2.2]`. Establish `h5` using `congrArg ENNReal.toReal h4`. Rewrite `h5` using `[ENNReal.toReal_ofReal (by positivity), ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h5`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (toCusp hm φ)), h3, Real.sqrt_mul ENNReal.toReal_nonneg, Real.sqrt_sq (norm_nonneg _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_toCusp (ha : 0 < a) (c : ENNReal)
     (hmap : Measure.map (fun p : normOneGL E a × ℝ => splitCentre E a p.2 * (p.1 : GA E a)) (ν.prod volume) = c • μ)
@@ -206,7 +204,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 variable {μ : Measure (GA E a)} [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {ν : Measure (normOneGL E a)} [ν.IsHaarMeasure]
 
 /- English proof (translation)
-The claim follows from `have hm := memLp_resQ (μ := μ) (ν := ν) ha c hct hmap exists_extend_equivariant (toL2cusp μ) (toCusp hm) (denseRange_toL2cusp μ) (Real.sqrt c.toReal) (norm_toCusp ha c hmap hm) (fun x : normOneGL E a => Rcusp μ (x : GA E a)) (fun x => cuspRep ν x) (fun x => trFn (x : GA E a)) (fu …`.
+A detailed English derivation is pending.
 -/
 theorem exists_transfer_op (ha : 0 < a) (c : ENNReal) (hct : c ≠ ⊤)
     (hmap : Measure.map (fun p : normOneGL E a × ℝ => splitCentre E a p.2 * (p.1 : GA E a)) (ν.prod volume) = c • μ) :
@@ -224,9 +222,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CuspTransfer
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `h2` using `hU.isRepOp (μ := m) hf hfc v`. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, h2.2, ← Φ.integral_comp_comm h2.1, UnitaryRep.integrated_ccToL1_apply]`. Simplify using `only [map_smul]`. Rewrite using `[h₁]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `integral_congr_ae (.of_forall fun x => by simp only [hact])`.
+A detailed English derivation is pending.
 -/
 theorem comp_repOp_eq_integrated {G Y H K : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G]
     [OpensMeasurableSpace G] {m : Measure G} [IsFiniteMeasureOnCompacts m] [Group Y] [TopologicalSpace Y]
@@ -250,7 +248,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 variable {μ : Measure (GA E a)} [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {ν : Measure (normOneGL E a)} [ν.IsHaarMeasure]
 
 /- English proof (translation)
-The claim follows from `comp_repOp_eq_integrated (isUnitaryRep_Rcusp μ) (cuspRep ν) (fun x : normOneGL E a => (x : GA E a)) Φ hact hf hfc f₁ fun v => h₁ (cuspidalL2 ν) (fun g => Φ (Rcusp μ g v)) (Φ.continuous.comp ((isUnitaryRep_Rcusp μ).continuous_apply v)) (fun t g => by simp only [map_mul, Rcusp_spli …`.
+A detailed English derivation is pending.
 -/
 theorem comp_repOp_eq (Φ : L2cusp μ →L[ℂ] cuspidalL2 ν)
     (hact : ∀ (x : normOneGL E a) (F : L2cusp μ), Φ (Rcusp μ (x : GA E a) F) = cuspRep ν x (Φ F))
@@ -269,7 +267,7 @@ end
 namespace GlobalTheory.CompanionTheory.CuspTransfer
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha μ _ _ ν _` and use `(GlobalTheory.T.haar_measure_norm_one_product E a ha μ ν).elim fun c h => (exists_transfer_op ha c h.2.1 h.2.2).elim fun Φ h' => ⟨Φ, Real.sqrt c.toReal, Real.sqrt_pos.2 (ENNReal.toReal_pos h.1 h.2.1), h'.1, fun f hf hfc => (GlobalTheory.T.compact_support_split_centre_factor E a h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem transfer : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 0 < a →
     ∀ (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]

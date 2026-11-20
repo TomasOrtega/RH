@@ -7,23 +7,23 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `φ : (Fin r → E) →+ ℂ` to `{ toFun := fun x => w ⬝ᵥ (τ ∘ x) map_zero' := by simp [dotProduct] map_add' := fun x y => by simp [dotProduct, mul_add, Finset.sum_add_distrib] }`. Establish `hφ : ∀ x, φ x = w ⬝ᵥ (τ ∘ x)` using `fun _ => rfl`. Establish `hsm : ∀ (c : E) x, φ (c • x) = τ c * φ x`. Introduce `c x`. Simplify using `only [hφ, dotProduct, Finset.mul_sum, Function.comp, Pi.smul_apply, smul_eq_mul, map_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `hmul : ∀ x, φ (γ *ᵥ x) = l * φ x`. Introduce `x`. Establish `: τ ∘ (γ *ᵥ x) = γ.map τ *ᵥ (τ ∘ x)` using `funext fun i => RingHom.map_mulVec τ γ x i`. Rewrite using `[hφ, this, Matrix.dotProduct_mulVec, hl, smul_dotProduct, hφ, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `isIntegral_of_smul_mem_submodule ((Λ.restrictScalars ℤ).map φ.toIntLinearMap) ?_ (hfg.restrictScalars.map _) _ ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1 : ∀ x ∈ Λ, φ x = 0`. Introduce `x hx`. Establish `: φ.toIntLinearMap x ∈ (Λ.restrictScalars ℤ).map φ.toIntLinearMap` using `Submodule.mem_map_of_mem hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0]`. Simplify using `using this`. Establish `h2 : ∀ x ∈ Submodule.span E (Λ : Set (Fin r → E)), φ x = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => exact h1 x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [hsm, hx, mul_zero]`. Apply `hw` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Establish `h3` using `h2 (Pi.single i 1) (hsp ▸ Submodule.mem_top)`. Establish `h4 : τ ∘ (Pi.single i 1 : Fin r → E) = Pi.single i 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`. Rewrite `h3` using `[hφ, h4]`. Simplify using `using h3`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨y, hy, hxy⟩` from `hγ x hx`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg φ hxy`. Rewrite `h` using `[map_sub, hmul, hsm, map_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [AddMonoidHom.coe_toIntLinearMap, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-h`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isIntegral_eigenvalue_sub_one_div {E : Type} [Field E] [NumberField E] {r M : ℕ}
     (Λ : Submodule (𝓞 E) (Fin r → E)) (γ : Matrix (Fin r) (Fin r) E) (τ : E →+* ℂ)
@@ -80,13 +80,13 @@ theorem isIntegral_eigenvalue_sub_one_div {E : Type} [Field E] [NumberField E] {
     linear_combination -h
 
 /- English proof (translation)
-Establish `hM3 : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hM0 : (M : E) ≠ 0` using `by exact_mod_cast (by omega : M ≠ 0)`. Establish `hlt : ∀ φ : E →+* ℂ, ‖φ ((u - 1) / M)‖ < 1`. Introduce `φ`. Establish `h1 : ‖φ u‖ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ‖φ u‖ ^ n = 1` using `by rw [← norm_pow, ← map_pow, hu, map_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this`. Establish `h2 : ‖φ u - 1‖ ≤ 2`. Use `norm_sub_le (φ u) 1` as an intermediate fact. Rewrite `this` using `[h1, norm_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[map_div₀, map_sub, map_one, map_natCast, norm_div, Complex.norm_natCast, div_lt_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hne`. Establish `hx : (u - 1) / M ≠ 0` using `div_ne_zero (sub_ne_zero.2 hne) hM0`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hk1⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_le_one E ℂ hx h fun φ => (hlt φ).le`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h3 : ‖φ ((u - 1) / M)‖ ^ k = 1` using `by rw [← norm_pow, ← map_pow, hk1, map_one, norm_one]`. Conclude with `(hlt φ).ne ((pow_eq_one_iff_of_nonneg (norm_nonneg _) hk.ne').1 h3)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem root_of_unity_eq_one_of_isIntegral_div {E : Type} [Field E] [NumberField E] {M n : ℕ}
     (hM : 3 ≤ M) (hn : 0 < n) {u : E} (hu : u ^ n = 1) (h : IsIntegral ℤ ((u - 1) / M)) :
@@ -114,17 +114,17 @@ theorem root_of_unity_eq_one_of_isIntegral_div {E : Type} [Field E] [NumberField
   exact (hlt φ).ne ((pow_eq_one_iff_of_nonneg (norm_nonneg _) hk.ne').1 h3)
 
 /- English proof (translation)
-Introduce `E _ _ r M n Λ Λ' γ δ u τ Q hr hM hn hu hfg hfg' hsp hsp' hγ hδ hQ hconj`. Establish `hM0 : (M : ℂ) ≠ 0` using `by exact_mod_cast (by omega : M ≠ 0)`. Establish `: Nonempty (Fin r)` using `⟨⟨0, hr⟩⟩`. Take `⟨l, hl⟩` from `Module.End.exists_eigenvalue (Matrix.toLin' (γ.map τ)ᵀ)`. Take `⟨w, hw⟩` from `hl.exists_hasEigenvector`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw0 : w ≠ 0` using `hw.2`. Establish `hw1 : w ᵥ* γ.map τ = l • w`. Use `hw.apply_eq_smul` as an intermediate fact. Rewrite `this` using `[Matrix.toLin'_apply, Matrix.mulVec_transpose]`. Then use the resulting hypothesis. Establish `hwQ : w ᵥ* Q ≠ 0` using `fun h => hw0 (Matrix.eq_zero_of_vecMul_eq_zero hQ h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hs : (u • γ).map τ = τ u • γ.map τ`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hw2 : (w ᵥ* Q) ᵥ* δ.map τ = (τ u * l) • (w ᵥ* Q)`. Rewrite using `[Matrix.vecMul_vecMul, ← hconj, ← Matrix.vecMul_vecMul, hs, Matrix.vecMul_smul, hw1, smul_smul, Matrix.smul_vecMul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha` using `isIntegral_eigenvalue_sub_one_div Λ γ τ hM0 hfg hsp hγ w hw0 l hw1`. Establish `hb` using `isIntegral_eigenvalue_sub_one_div Λ' δ τ hM0 hfg' hsp' hδ _ hwQ _ hw2`. Establish `hui : IsIntegral ℤ (τ u)`. Apply `IsIntegral.of_pow hn` to reduce the goal to its premises. Rewrite using `[← map_pow, hu, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_one`. Establish `hc : τ ((u - 1) / M) = (τ u * l - 1) / M - τ u * ((l - 1) / M)`. Rewrite using `[map_div₀, map_sub, map_one, map_natCast]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `root_of_unity_eq_one_of_isIntegral_div hM hn hu ?_` and prove the remaining obligations. Use `(isIntegral_algHom_iff τ.toIntAlgHom τ.injective).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsIntegral ℤ (τ ((u - 1) / M))`. Rewrite using `[hc]`. Conclude with `hb.sub (hui.mul ha)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_of_unity_eq_one_of_conj_congruence :
     ∀ (E : Type) [Field E] [NumberField E] (r M n : ℕ) (Λ Λ' : Submodule (𝓞 E) (Fin r → E)) (γ δ : Matrix (Fin r) (Fin r) E) (u : E) (τ : E →+* ℂ) (Q : Matrix (Fin r) (Fin r) ℂ), 0 < r → 3 ≤ M → 0 < n → u ^ n = 1 → Λ.FG → Λ'.FG → Submodule.span E (Λ : Set (Fin r → E)) = ⊤ → Submodule.span E (Λ' : Set (Fin r → E)) = ⊤ → (∀ x ∈ Λ, ∃ y ∈ Λ, Matrix.mulVec (γ : Matrix (Fin r) (Fin r) E) x - x = (M : E) • y) → (∀ x ∈ Λ', ∃ y ∈ Λ', Matrix.mulVec (δ : Matrix (Fin r) (Fin r) E) x - x = (M : E) • y) → Q.det ≠ 0 → (u • γ).map τ * Q = Q * δ.map τ → u = 1 := by

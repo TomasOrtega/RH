@@ -15,91 +15,79 @@ open PositivityTheory.ThKF
 open scoped Classical
 
 /- English proof (translation)
-Take `⟨e₁, e₂, hC⟩` from `hC`. Take `⟨s, hS⟩` from `hS`. Use `⟨e₁, e₂, s, fun F E _ _ _ _ _ σ B a b G G₁ H₀ H' cfg R R₁ e e' he he' K μK μ hK hμK hμ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ex : ¬ ∃ X om om', IsTriple B G X om om'`. Conclude with `⟨1, one_ne_zero, fun X om om' _ _ _ _ m => absurd ⟨X, om, om', m.triple⟩ ex⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨X₀, om₀, om₀', t₀⟩` from `not_not.1 ex`. Take `⟨ms, hms⟩` from `J.meas F E σ B _ G.V' _ _ t₀.base t₀.geo.hV' K hK`. Take `⟨ei, ev, h1, h2, h3⟩` from `he.loc`. Establish `hl : IsEvLoc G.M G₁.M e ei ev` using `⟨h1, h2, h3⟩`. Take `⟨ei', ev', h1', h2', h3'⟩` from `he'.loc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hl' : IsEvLoc G.M' G₁.M' e' ei' ev'` using `⟨h1', h2', h3'⟩`. Take `⟨κ, hκ, hC⟩` from `hC F E σ B a b G G₁ H₀ H' cfg e' ei' ev' he' hl' K μK μ ms hK hμK hμ hms`. Take `⟨C₁, hC₁, ct₁⟩` from `J.ctBZ F E σ B a b G G₁ H₀ H' cfg e he`. Take `⟨C₂, hC₂, ct₂⟩` from `J.ctSC F E σ B a b G G₁ H₀ H' cfg e' he' K μK μ hK hμK hμ`. Establish `key` using `one_const (ι := Chars F E × Rep σ G.V G.W × Rep σ G.V' G.W × FinMaps F a (b + 2) × Rep σ G₁.V G₁.W × Rep σ G₁.V' G₁.W × FinMaps F a b) (fun i => IsMatched B G i.1 i.2.1 i.2.2.1 R i.2.2.2.1 ∧ IsMatched B G₁ i.1 i.2.2.2.2.1 i.2.2.2.2.2.1 R₁ i.2.2.2.2.2.2 ∧ Below (G.p + G.q)) (fun i …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc, k⟩` from `key`. Conclude with `⟨κ * c, mul_ne_zero hκ hc, fun X om om' Rf om₁ om₁' Rf₁ m m₁ bl => k (X, om, om', Rf, om₁, om₁', Rf₁) ⟨m, m₁, bl⟩⟩`. Use `rotate_left`. Introduce and unpack `⟨X, om, om', Rf, om₁, om₁', Rf₁⟩ ⟨X', on, on', Rf', on₁, on₁', Rf₁'⟩ L L' ⟨m, -⟩ ⟨m', -⟩ a₁ a₂`. Conclude with `coneI_eq (J.runiq F E σ B _ _ _ _ G.M' _ _ _ _ om' on' _ _ _ _ _ (pairV' m.triple) (pairV' m'.triple) (hasExp_div m.triple.chars.expα m.triple.chars.expβ) (hasExp_div m'.triple.chars.expα m'.triple.chars.expβ)) (nu_eq m.triple.chars m'.triple.chars) a₁ a₂`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨X, om, om', Rf, om₁, om₁', Rf₁⟩ ⟨m, m₁, -⟩ L c c' r r' haveI := m₁.real.nontriv`. Take `⟨f₁, hf₁, n₁⟩` from `ex_p_ne m₁.real.quot.onto`. Take `⟨f, hf, rfl⟩` from `(ev_pol hl m.triple.geo.hM m₁.triple.geo.hM ((H.ev0 F E σ B _ _ _ _ G.M _ _ om _ _ _ _ (pairV m.triple) _ G₁.V G₁.W H' _ _ G₁.M cfg.eV cfg.hH' m₁.triple.geo.hM).2 e he)).2 f₁ hf₁`. Take `⟨f', hf', ef⟩` from `(sideSo H m).ontoI (R.p f)`. Conclude with `smul_left_injective ℂ n₁ ((r f hf f' hf' ef.symm).symm.trans (r' f hf f' hf' ef.symm))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Introduce and unpack `⟨X, om, om', Rf, om₁, om₁', Rf₁⟩ ⟨m, m₁, bl⟩`. Simplify using `only at m m₁ ⊢`. Establish `t` using `m.triple`. Establish `t₁` using `m₁.triple`. Establish `nz : NZ B G₁ om₁ om₁'` using `(bl F E σ B _ _ G₁ X om₁ om₁' R₁ Rf₁ m₁ (by have := cfg.ep; have := cfg.eq; omega)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inj` using `H.inj F E σ B _ _ G₁ X om₁ om₁' R₁ Rf₁ m₁ nz`. Establish `j₁ : Inj B G₁.M om₁ R₁.p Rf₁.p fun _ => SB _` using `fun f hf φ a => inj.1 f hf φ a.1 a.2`. Establish `j₂ : Inj B G₁.M' om₁' R₁.p' Rf₁.p' (SS B G₁.M')` using `fun f hf φ a => inj.2 f hf φ (fun v => SS_le v (a.1 v)) a.2 (Or.inr (SS_self (B := B) (M := G₁.M') ▸ a.1 B.v₁))`. Establish `lev` using `H.levi F E σ B _ _ G.W G₁.W H' _ _ _ _ t.base t.geo.hW cfg.hH'`. Establish `sp` using `H.split F E σ B _ _ G X om om' t _ G₁.W H' _ _ cfg.hH'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `si` using `H.sinv F E σ B _ _ G X om om' t _ G₁.W H' _ _ cfg.hH'`. Establish `ep` using `ev_pol hl t.geo.hM t₁.geo.hM ((H.ev0 F E σ B _ _ _ _ G.M _ _ om _ _ _ _ (pairV t) _ G₁.V G₁.W H' _ _ G₁.M cfg.eV cfg.hH' t₁.geo.hM).2 e he)`. Establish `evS : ∀ v, ∀ x ∈ SB _, ev v x ∈ SB _` using `fun v x hx => (h2 v).2 ▸ Submodule.mem_map_of_mem hx`. Establish `b₁ : Br B G.M om G₁.M om₁ H' X.β ((a : ℝ) / 2) (fun _ => SB _) (fun _ => SB _) e ei ev` using `br_of lev ep.1 evS (fac_ev hl (fun _ => le_rfl) evS) hC₁ fun f hf φ ad => by`. Establish `hp` using `mem_polData hf (fun _ => le_rfl) ad`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨⟨fa, fb⟩, h, -⟩` from `sp.1 _ hp`. Establish `i` using `si _ (Or.inl ⟨_, hp, rfl⟩) fa fb h`. Conclude with `⟨fb, h.2.2, fun u hu g => (i.1 u hu g).2, fun z => (i.2 z).2, ct₁ X om om' om₁ om₁' t t₁ _ hp fa fb h⟩`. Take `⟨L, Λ, u, cI, Lpol, hΛ, hu, cadd, cfac⟩` from `hC X om om' om₁ om₁' t t₁`. Establish `fl` using `J.floc F E σ B a b G G₁ H₀ H' cfg e' ei' ev' he' hl' K ms hK hms X om om' om₁ om₁' t t₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fn` using `H.fac F E σ B _ _ G X om om' t e₁ e₂ s H₀.𝔟 H'.𝔟 (-(((a - (b + 2)) / 2 : ℕ) : ℤ))`. Establish `hk : κ * ((idealVal X.ν H₀.𝔟 ^ (e₁ : ℤ) * idealVal X.ν H'.𝔟 ^ (e₂ : ℤ) : ℂˣ) : ℂ) * charL X.ν (X.S₀ : Set (Pl F)) ((((a - (b + 2)) / 2 + 1) : ℕ) : ℂ) ≠ 0` using `mul_ne_zero (mul_ne_zero hκ (Units.ne_zero _)) (fn.2 _ (by have := t.geo.eBig; omega))`. Establish `v₁T : B.v₁ ∉ X.T` using `t.chars.good.1`. Establish `ΛS : ∀ v, ∀ x ∈ SS B G.M' v, Λ v x ∈ SS B G₁.M' v` using `fun v x hx => by`. Distinguish the cases in `ev₁ : v = B.v₁`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `ev₁` using the available equality. Rewrite `hx`, the goal using `[SS_self]`. Use `(Submodule.map_span_le (Λ B.v₁) _ _).2 (fun y hy => Submodule.subset_span ?_) (Submodule.mem_map_of_mem hx)` and prove the remaining obligations. Rewrite using `[(hΛ _ y hy.1).1]`. Conclude with `fl.2 y hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite `hx`, the goal using `[SS_ne ev₁]`. Conclude with `(hΛ v x hx).2`. Establish `hvac : ∀ v, G.M'.vac v ∈ SS B G.M' v → G₁.M'.vac v ∈ SS B G₁.M' v` using `fun v hv => by`. Distinguish the cases in `ev₁ : v = B.v₁`. Substitute `ev₁` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ΛS _ _ hv` as an intermediate fact. Rewrite `this` using `[(hu _ v₁T).2]`. Conclude with `(Submodule.smul_mem_iff _ (hu _ v₁T).1).1 this`. Rewrite using `[SS_ne ev₁]`. Conclude with `vac_sb t₁.geo.hM' v`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `cf` using `fac_cone hk hu SS_le ΛS hvac cfac`. Establish `b₂ : Br B G.M' om' G₁.M' om₁' H' X.β ((a : ℝ) / 2) (SS B G.M') (SS B G₁.M') _ L Λ` using `br_of lev Lpol ΛS cf hC₂ fun f hf φ ad => by`. Establish `hp` using `mem_polData hf SS_le ad`. Establish `hs` using `pure_mem_so t.geo.hM' f ad`. Take `⟨⟨fa, fb⟩, h, -⟩` from `sp.2 _ ⟨hp, hs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `i` using `si _ (Or.inr ⟨_, hp, Or.inl hs, rfl⟩) fa fb h`. Conclude with `⟨fb, h.2.2, fun u hu g => (i.1 u hu g).2, fun z => (i.2 z).2, ct₂ X om om' om₁ om₁' t t₁ _ ⟨hp, hs⟩ fa fb h⟩`. Establish `co` using `(H.coinv F E σ B _ _ G X om om' R Rf m).1 _ t.chars.good`. Establish `aug : ∀ x ∈ SB _, ∀ y ∈ SB _, Rf.p' B.v₁ x = Rf.p' B.v₁ y → Rf₁.p' B.v₁ (Λ B.v₁ x) = Rf₁.p' B.v₁ (Λ B.v₁ y)`. Introduce `x hx y hy exy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: augAt om' B.v₁ ≤ LinearMap.ker (Rf₁.p' B.v₁ ∘ₗ Λ B.v₁)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g, hg, φ, hφ, φ₁, hφ₁, ac, rfl⟩`. Use `show Rf₁.p' B.v₁ (Λ B.v₁ (φ₁ - φ)) = 0`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun l => ?_` and prove the remaining obligations. Use `fl.1 g hg φ hφ φ₁ hφ₁ ac (l ∘ₗ Rf₁.p' B.v₁) fun z hz => by show l (Rf₁.p' B.v₁ z) = 0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(m₁.fin.inv' B.v₁ hz : Rf₁.p' B.v₁ z = 0), map_zero]`. Rewrite `this` using `[← (hΛ _ _ hφ).1, ← (hΛ _ _ hφ₁).1]`. Rewrite using `[map_sub, map_sub, map_sub]`. Conclude with `sub_eq_zero.2 this)`. Establish `z : Rf₁.p' B.v₁ (Λ B.v₁ (x - y)) = 0` using `this ((co.2.1 _ (sub_mem hx hy)).1 (by rw [map_sub, exy, sub_self]))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `z` using `[map_sub, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `sph₁ : ∀ v ∉ X.T, Rf₁.p' v (G₁.M'.vac v) ≠ 0` using `fun v hv => (m₁.fin.sph v hv).1 ▸ (m₁.fin.sph v hv).2`. Establish `std` using `fun v (hv : v ∈ X.T) => hS F E σ B a b G G₁ H₀ H' cfg e ei ev e' ei' ev' he hl he' hl' K ms hK hms X om om' R Rf om₁ om₁' R₁ Rf₁ m m₁ ⟨v, t.chars.sub hv⟩ hv`. Establish `wne : ∀ v ∈ X.T, wT B X s (-(((a - (b + 2)) / 2 : ℕ) : ℤ)) v ≠ 0`. Use `fn.1` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `this` using `[stepFac_eq t.chars.sub]`. Conclude with `Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul this)`. Establish `std' : ∀ v ∈ X.T, ∃ φ ∈ SB _, ∃ φ' ∈ SB _, Rf.p v φ = Rf.p' v φ' ∧ Rf₁.p v (ev v φ) ≠ 0 ∧ Rf₁.p' v (Λ v φ') = wT B X s (-(((a - (b + 2)) / 2 : ℕ) : ℤ)) v • Rf₁.p v (ev v φ)` using `fun v hv => by`. Take `⟨φ, hφ, φ', hφ', x, y, z⟩` from `std v hv`. Conclude with `⟨φ, hφ, φ', hφ', x, y, by rw [(hΛ v _ hφ').1, wT, dif_pos (t.chars.sub hv)]; exact z⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI := m₁.real.nontriv`. Establish `pt₁ : Pt B G.M (fun _ => SB _) R₁.p Rf₁.p ei ev`. Use `pt_of ?_ X.T (fun v hv => ?_) fun v hv => ⟨vac_sb t.geo.hM v, by rw [(h2 v).1]; exact (m₁.fin.sph v hv).2⟩` and prove the remaining obligations. Take `⟨f₁, hf₁, n₁⟩` from `ex_p_ne m₁.real.quot.onto`. Take `⟨f, hf, rfl⟩` from `ep.2 f₁ hf₁`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `⟨f, hf, n₁⟩`. Take `⟨φ, hφ, -, -, -, y, -⟩` from `std' v hv`. Conclude with `⟨φ, hφ, y⟩`. Establish `pt₂ : Pt B G.M' (SS B G.M') R₁.p' Rf₁.p' L Λ`. Use `pt_of ?_ (insert B.v₁ X.T) (fun v hv => ?_) fun v hv => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Φ, hΦ, n0⟩` from `nz.2`. Use `bump_pt H (pairV' t₁) (sideSo H m₁) (H.dense F E σ B _ _ _ _ _ _ _ om' _ _ _ _ (pairV' t)) Lpol (nz_pure (sideSo H m₁) _ ?_ hΦ.2 n0) (J.bumpB F E σ B a b G G₁ H₀ H' cfg e' ei' ev' he' hl' K ms hK hms X om om' om₁ om₁' t t₁ L cI)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, x, y, z, rfl⟩`. Use `⟨f, φ, ⟨fun v => ?_, y⟩, rfl⟩` and prove the remaining obligations. Distinguish the cases in `ev₁ : v = B.v₁`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `ev₁` using the available equality. Rewrite using `[SS_self]`. Conclude with `Submodule.subset_span z`. Rewrite using `[SS_ne ev₁]`. Conclude with `x v`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases. Take `⟨x, hx, ex⟩` from `co.2.2.1 B.τ₁ (Rf.p' _ (G.M'.vac B.v₁))`. Use `⟨x, by rw [SS_self]; exact Submodule.subset_span hx, ?_⟩` and prove the remaining obligations. Rewrite using `[aug x hx.1 _ (vac_sb t.geo.hM' _) ex, (hu _ v₁T).2, map_smul]`. Conclude with `smul_ne_zero (hu _ v₁T).1 (sph₁ _ v₁T)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, -, φ', hφ', -, y, z⟩` from `std' v hv`. Conclude with `⟨φ', by rwa [SS_ne fun e => v₁T (e ▸ hv)], z ▸ smul_ne_zero (wne v hv) y⟩`. Rewrite `hv` using `[Finset.mem_insert, not_or]`. Use `⟨by rw [SS_ne hv.1]; exact vac_sb t.geo.hM' v, ?_⟩` and prove the remaining obligations. Rewrite using `[(hu _ hv.2).2, map_smul]`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `smul_ne_zero (hu _ hv.2).1 (sph₁ _ hv.2)`. Take `⟨li, lf, e1, e2, i1, i2⟩` from `lams (sideV H m) (sideV H m₁) b₁ j₁ pt₁ (sideV H m).cross (sideV H m₁).cross cfg.hH' t₁.geo.hW`. Take `⟨li', lf', e1', e2', i1', i2'⟩` from `lams (sideSo H m) (sideSo H m₁) b₂ j₂ pt₂ (crossM m) (crossM m₁) cfg.hH' t₁.geo.hW`. Establish `e3 : ∀ v, ∀ x ∈ SB _, lf' v (Rf.p' v x) = Rf₁.p' v (Λ v x)` using `fun v x hx => by`. Distinguish the cases in `ev₁ : v = B.v₁`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Substitute `ev₁` using the available equality. Take `⟨y, hy, ey⟩` from `(sideSo H m).onto _ (Rf.p' _ x)`. Rewrite using `[← ey, e2' _ y hy, aug y (SS_le _ hy) x hx ey]`. Conclude with `e2' v x (by rwa [SS_ne ev₁])`. Establish `ty : StepTy G G₁ X X.β ((a : ℝ) / 2)` using `Or.inl ⟨rfl, rfl, cfg.ep, cfg.eq, rfl, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Take `⟨c, hc⟩` from `J.inf F E σ B _ _ _ _ G G₁ X om om' om₁ om₁' R Rf R₁ Rf₁ H' _ _ _ _ m m₁ ty cfg.hH' li li' i1 i1' (by`. Take `⟨f, hf, -, -, n, -⟩` from `pt₁`. Introduce and unpack `rfl`. Conclude with `n (e1 f hf).symm)`. Establish `hw : ∀ v, lf' v = (if v ∈ X.T then wT B X s (-(((a - (b + 2)) / 2 : ℕ) : ℤ)) v else u v) • lf v` using `fun v => by split_ifs with hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Take `⟨φ, hφ, φ', hφ', x, y, z⟩` from `std' v hv`. Take `⟨k, hk⟩` from `J.ram F E σ B _ _ _ _ G G₁ X om om' om₁ om₁' R Rf R₁ Rf₁ H' _ _ _ _ m m₁ ty cfg.hH' v hv _ _ (i2 v) (i2' v) fun h => y (by rw [← e2 v φ hφ, h]; rfl)`. Use `e3 v φ' hφ'` as an intermediate fact. Rewrite `this` using `[z, hk, ← x, LinearMap.smul_apply, e2 v φ hφ]`. Rewrite using `[hk, smul_left_injective ℂ y this]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `J.unr F E σ B _ _ _ _ G G₁ X om om' om₁ om₁' R Rf R₁ Rf₁ H' _ _ _ _ m m₁ ty cfg.hH' v hv _ _ (i2 v) (i2' v) _ ?_` and prove the remaining obligations. Rewrite using `[e2 v _ (vac_sb t.geo.hM v), (m.fin.sph v hv).1, e3 v _ (vac_sb t.geo.hM' v), (hu v hv).2, map_smul, (h2 v).1, (m₁.fin.sph v hv).1]`. Use `⟨L, c, ?_, cI, fun f hf f' hf' x => by rw [← e1' f' hf', hc, ← x, LinearMap.smul_apply, e1 f hf], fun Φ Φ' hΦ' pm => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨f, hf, -, -, n, -⟩` from `pt₂`. Introduce and unpack `rfl`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `n (by rw [← e1' f hf, hc, zero_smul]; rfl)`. Use `clear pm`. Proceed by induction on `hΦ' using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨f, φ, x, y, z, rfl⟩` from `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `ad : admitted G.M' (SS B G.M') φ` using `⟨fun v => by`. Distinguish the cases in `ev₁ : v = B.v₁`. Substitute `ev₁` using the available equality. Rewrite using `[SS_self]`. Conclude with `Submodule.subset_span z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[SS_ne ev₁]`. Conclude with `x v, y⟩`. Take `⟨k, ψ, -, aψ, -, w⟩` from `cf φ ad B.v₁`. Use `w f _ (ad.1 _)` as an intermediate fact. Rewrite `this` using `[Function.update_eq_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (pure_mem_so t₁.geo.hM' _ (aψ.upd (ΛS _ _ (ad.1 _))))`. Consider the case `zero`. Use `cadd 0 (zero_mem _) 0 (zero_mem _) 1` as an intermediate fact. Simplify using `only [smul_zero, add_zero, one_smul, left_eq_add] at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add x y hx hy ix iy`. Use `cadd x (so_le t.geo.hM' hx) y (so_le t.geo.hM' hy) 1` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[this]`. Conclude with `add_mem ix iy`. Consider the case `smul k x hx ix`. Establish `z` using `cadd 0 (zero_mem _) 0 (zero_mem _) 1`. Simplify using `only [smul_zero, add_zero, one_smul, left_eq_add] at z`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `cadd 0 (zero_mem _) x (so_le t.geo.hM' hx) k` as an intermediate fact. Rewrite `this` using `[zero_add, z, zero_add]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ ix`. Take `⟨T, hT, n, n', f, φ, f', φ', a1, a2, rfl, rfl, tm⟩` from `pm`.
-
-Establish `pne : (∏ v ∈ T \ X.T, u v) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v hv => (hu v (Finset.mem_sdiff.1 hv).2).1`. Use `set k₀ := κ * ((idealVal X.ν H₀.𝔟 ^ (e₁ : ℤ) * idealVal X.ν H'.𝔟 ^ (e₂ : ℤ) : ℂˣ) : ℂ) * charL X.ν (X.S₀ : Set (Pl F)) ((((a - (b + 2)) / 2 + 1) : ℕ) : ℂ) with hk₀`. Use `set K₀ := κ * c * stepFac B X e₁ e₂ s H₀.𝔟 H'.𝔟 (-(((a - (b + 2)) / 2 : ℕ) : ℤ)) * charL X.ν (X.S₀ : Set (Pl F)) ((((a - (b + 2)) / 2 : ℕ) : ℂ) + 1) with hK₀`. Use `⟨T, hT, n, n', fun i => K₀ • ei (f i), fun i v => ev v (φ i v), fun j => ((∏ v ∈ T \ X.T, u v)⁻¹ * k₀) • L (f' j), fun j v => if v ∈ T then Λ v (φ' j v) else G₁.M'.vac v, fun i => ⟨Submodule.smul_mem _ _ (ep.1 _ (a1 i).1), fun v => evS v _ ((a1 i).2.1 v), fun v hv => by beta_redu …` and prove the remaining obligations. Use `beta_reduce split_ifs exacts [(hΛ v _ ((a2 j).2.1 v)).2, vac_sb t₁.geo.hM' v]`.
-
-Rewrite using `[map_sum, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [h3 _ _ (a1 i).2.1 (ev_of_off (a1 i).2.2), pure_smul]`. Rewrite using `[cone_sum cadd _ fun j => admissible_pure_tensor_schwartz t.geo.hM' _ ⟨(a2 j).2.1, ev_of_off (a2 j).2.2⟩]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pure_smul, mul_smul, ← cfac T hT _ _ (a2 j).2.1 (a2 j).2.2, inv_smul_smul₀ pne]`.
-
-Use `tens_step li lf c (fun v => if v ∈ X.T then wT B X s (-(((a - (b + 2)) / 2 : ℕ) : ℤ)) v else u v) _ (fun i v => Rf.p v (φ i v)) _ (fun j v => Rf.p' v (φ' j v)) tm ((∏ v ∈ T \ X.T, u v)⁻¹ * k₀)` as an intermediate fact. Establish `ek : (∏ v ∈ T \ X.T, u v)⁻¹ * k₀ * c * ∏ v ∈ T, (if v ∈ X.T then wT B X s (-(((a - (b + 2)) / 2 : ℕ) : ℤ)) v else u v) = K₀`. Rewrite using `[prod_w hT, hK₀, hk₀, stepFac_eq t.chars.sub]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite `this` using `[ek]`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (this.trans (Finset.sum_congr rfl fun j _ => ?_))` and prove the remaining obligations. Rewrite using `[map_smul, e1 _ (a1 i).1]`. Use `congr 2`. Use function extensionality and compare the values at `v`.
-
-Conclude with `(e2 v _ ((a1 i).2.1 v)).symm`. Rewrite using `[map_smul, ← e1' _ (a2 j).1, hc, LinearMap.smul_apply]`. Use `congr 2`. Use function extensionality and compare the values at `v`. Use `beta_reduce`.
-
-Rewrite using `[if_pos v.2, ← e3 v _ ((a2 j).2.1 v), hw v, LinearMap.smul_apply]`.
+A detailed English derivation is pending.
 -/
 theorem locB_of (H : Hyp) (J : Hyp2) (hC : ConeFacB) (hS : StdB) : LocB' := by
   obtain ⟨e₁, e₂, hC⟩ := hC

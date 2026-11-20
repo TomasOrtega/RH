@@ -11,7 +11,7 @@ def Gen (M : Type) [AddCommGroup M] (r : ℕ) : Prop :=
     ∃ f : F →+ M, Function.Surjective f
 
 /- English proof (translation)
-Take `⟨F, _, h1, h2, h3, f, hf⟩` from `h`. Conclude with `⟨F, inferInstance, h1, h2, h3, g.comp f, hg.comp hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Gen.surj {M N : Type} [AddCommGroup M] [AddCommGroup N] {r : ℕ} (h : Gen M r) (g : M →+ N)
     (hg : Function.Surjective g) : Gen N r := by
@@ -19,32 +19,32 @@ theorem Gen.surj {M N : Type} [AddCommGroup M] [AddCommGroup N] {r : ℕ} (h : G
   exact ⟨F, inferInstance, h1, h2, h3, g.comp f, hg.comp hf⟩
 
 /- English proof (translation)
-Take `⟨F, _, h1, h2, h3, f, hf⟩` from `h`. Conclude with `⟨F, inferInstance, h1, h2, h3.trans hs, f, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Gen.mono {M : Type} [AddCommGroup M] {r s : ℕ} (h : Gen M r) (hs : r ≤ s) : Gen M s := by
   obtain ⟨F, _, h1, h2, h3, f, hf⟩ := h
   exact ⟨F, inferInstance, h1, h2, h3.trans hs, f, hf⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PUnit, inferInstance, inferInstance, inferInstance, (Module.finrank_zero_of_subsingleton).le, 0, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem gen_zero {M : Type} [AddCommGroup M] [Subsingleton M] : Gen M 0 :=
   ⟨PUnit, inferInstance, inferInstance, inferInstance, (Module.finrank_zero_of_subsingleton).le, 0, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ℤ, inferInstance, inferInstance, inferInstance, by simp, Int.castAddHom _, ZMod.intCast_surjective⟩`.
+Supply the required witnesses or components.
 -/
 theorem gen_zmod (q : ℕ) : Gen (ZMod q) 1 :=
   ⟨ℤ, inferInstance, inferInstance, inferInstance, by simp, Int.castAddHom _, ZMod.intCast_surjective⟩
 
 /- English proof (translation)
-Take `⟨F, _, a1, a2, a3, φ, hφ⟩` from `h1`. Take `⟨E, _, b1, b2, b3, ψ, hψ⟩` from `h3`. Set `g'` to `g.toIntLinearMap`. Set `E' : Submodule ℤ E` to `(LinearMap.range g').comap ψ.toIntLinearMap`. Set `u : E' →ₗ[ℤ] LinearMap.range g'` to `LinearMap.codRestrict _ (ψ.toIntLinearMap ∘ₗ E'.subtype) fun x => x.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨w, hw⟩` from `Module.projective_lifting_property g'.rangeRestrict u g'.surjective_rangeRestrict`. Use `⟨F × E', inferInstance, inferInstance, inferInstance, ?_, (f.comp φ).coprod w.toAddMonoidHom, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.finrank_prod]`. Use `Submodule.finrank_le E'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `m`. Take `⟨x, hx⟩` from `hψ (g m)`. Establish `hx' : x ∈ E'` using `⟨m, hx.symm⟩`. Establish `e : g (w ⟨x, hx'⟩) = ψ x` using `congrArg Subtype.val (LinearMap.congr_fun hw ⟨x, hx'⟩)`. Take `⟨y, hy⟩` from `hfg (m - w ⟨x, hx'⟩) (by rw [map_sub, e, hx, sub_self])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hφ y`. Conclude with `⟨(z, ⟨x, hx'⟩), by simp [hy]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Gen.ext {M1 M2 M3 : Type} [AddCommGroup M1] [AddCommGroup M2] [AddCommGroup M3] {a b : ℕ}
     (f : M1 →+ M2) (g : M2 →+ M3) (hfg : ∀ x, g x = 0 → ∃ y, f y = x) (h1 : Gen M1 a) (h3 : Gen M3 b) :
@@ -69,19 +69,17 @@ theorem Gen.ext {M1 M2 M3 : Type} [AddCommGroup M1] [AddCommGroup M2] [AddCommGr
     exact ⟨(z, ⟨x, hx'⟩), by simp [hy]⟩
 
 /- English proof (translation)
-Take `⟨F, _, h1, h2, h3, f, hf⟩` from `h`. Use `choose y hy using fun i => hf (x i)`. Establish `hn : ¬ LinearIndependent ℤ y` using `fun hi => by`. Use `hi.fintype_card_le_finrank` as an intermediate fact. Simplify using `at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hn` using `[Fintype.not_linearIndependent_iff]`. Take `⟨n, hn, t, ht⟩` from `hn`. Establish `key : ∀ (s : ℕ) (n : Fin (r + 1) → ℤ), (n t).natAbs = s → n t ≠ 0 → ∑ i, n i • y i = 0 → ∃ (n : Fin (r + 1) → ℤ) (t : Fin (r + 1)), ¬ (l : ℤ) ∣ n t ∧ ∑ i, n i • y i = 0`. Introduce `s`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `s using Nat.strong_induction_on with`. Consider the case `_ s ih`. Introduce `n hs h0 hn`. Distinguish the cases in `hd : ∀ i, (l : ℤ) ∣ n i`. Use `choose m hm using hd`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm0 : m t ≠ 0` using `fun h => h0 (by rw [hm, h, mul_zero])`. Use `ih (m t).natAbs ?_ m rfl hm0 ?_` and prove the remaining obligations. Rewrite using `[← hs, hm, Int.natAbs_mul, Int.natAbs_natCast]`. Use `Int.natAbs_pos.2 hm0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (l : ℤ) • ∑ i, m i • y i = 0`. Rewrite using `[Finset.smul_sum, ← hn]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hm, mul_smul]`. Conclude with `(smul_eq_zero.1 this).resolve_left (by omega)`. Use `push Not at hd`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `hd`. Conclude with `⟨n, i, hi, hn⟩`. Take `⟨m, t, h1, h2⟩` from `key _ n rfl ht hn`. Use `⟨m, t, h1, ?_⟩` and prove the remaining obligations. Use `congrArg f h2` as an intermediate fact.
-
-Simplify `this` using `[map_sum, hy]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Gen.rel {M : Type} [AddCommGroup M] {r : ℕ} (h : Gen M r) (l : ℕ) (hl : 2 ≤ l) (x : Fin (r + 1) → M) :
     ∃ (n : Fin (r + 1) → ℤ) (t : Fin (r + 1)), ¬ (l : ℤ) ∣ n t ∧ ∑ i, n i • x i = 0 := by
@@ -119,13 +117,13 @@ theorem Gen.rel {M : Type} [AddCommGroup M] {r : ℕ} (h : Gen M r) (l : ℕ) (h
   simpa [map_sum, hy] using this
 
 /- English proof (translation)
-Use `⟨fun j => ∑ i ∈ Finset.range j.val, F i, fun j => ?_⟩` and prove the remaining obligations. Establish `hq : ∑ i ∈ Finset.range q, F i = 0`. Rewrite using `[← hF, Finset.sum_range fun i => F i]`. Take `⟨q, rfl⟩ : ∃ p, q = p + 1` from `Nat.exists_eq_succ_of_ne_zero (NeZero.ne q)`. Conclude with `Finset.sum_congr rfl fun i _ => congrArg F (ZMod.natCast_zmod_val (n := q + 1) i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj : ∑ i ∈ Finset.range (j + 1).val, F i = ∑ i ∈ Finset.range (j.val + 1), F i`. Establish `h1 : (j + 1).val = (j.val + 1) % q`. Rewrite using `[← ZMod.val_natCast]`. Simplify using the standard rewrite rules. Establish `h2` using `ZMod.val_lt j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_or_ge (j.val + 1) q with h | h` into its components or cases. Rewrite using `[h1, Nat.mod_eq_of_lt h]`. Establish `: j.val + 1 = q` using `by omega`. Rewrite using `[h1, this, hq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only []`. Rewrite using `[hj, Finset.sum_range_succ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_prim {k : Type} [CommRing k] {q : ℕ} [NeZero q] (F : ZMod q → k) (hF : ∑ j, F j = 0) :
     ∃ E : ZMod q → k, ∀ j, E (j + 1) - E j = F j := by
@@ -151,20 +149,20 @@ section Cat
 variable {k G : Type} [CommRing k] [Group G]
 
 /- English proof (translation)
-The claim follows from `Gen.ext S.f.hom.toAddMonoidHom S.g.hom.toAddMonoidHom ((ShortComplex.moduleCat_exact_iff S).1 h) h1 h3`.
+A detailed English derivation is pending.
 -/
 theorem gen_exact (S : ShortComplex (ModuleCat k)) (h : S.Exact) {a b : ℕ} (h1 : Gen S.X₁ a) (h3 : Gen S.X₃ b) :
     Gen S.X₂ (a + b) :=
   Gen.ext S.f.hom.toAddMonoidHom S.g.hom.toAddMonoidHom ((ShortComplex.moduleCat_exact_iff S).1 h) h1 h3
 
 /- English proof (translation)
-The claim follows from `h.surj f.hom.toAddMonoidHom ((ModuleCat.epi_iff_surjective f).1 inferInstance)`.
+A detailed English derivation is pending.
 -/
 theorem gen_epi {M N : ModuleCat k} (f : M ⟶ N) [Epi f] {a : ℕ} (h : Gen M a) : Gen N a :=
   h.surj f.hom.toAddMonoidHom ((ModuleCat.epi_iff_surjective f).1 inferInstance)
 
 /- English proof (translation)
-The claim follows from `gen_exact _ (mapShortComplex₃_exact h (i := n + 1) (j := n) rfl) h1 h3`.
+A detailed English derivation is pending.
 -/
 theorem gen_les (S : ShortComplex (Rep k G)) (h : S.ShortExact) (n : ℕ) {a b : ℕ}
     (h1 : Gen (groupHomology S.X₂ (n + 1)) a) (h3 : Gen (groupHomology S.X₁ n) b) :
@@ -172,7 +170,7 @@ theorem gen_les (S : ShortComplex (Rep k G)) (h : S.ShortExact) (n : ℕ) {a b :
   gen_exact _ (mapShortComplex₃_exact h (i := n + 1) (j := n) rfl) h1 h3
 
 /- English proof (translation)
-Apply `(forget₂ _ (ModuleCat k)).reflects_exact_of_faithful` to reduce the goal to its premises. Rewrite using `[ShortComplex.moduleCat_exact_iff]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_exact (S : ShortComplex (Rep k G)) (h : ∀ x, S.g.hom x = 0 → ∃ y, S.f.hom y = x) : S.Exact := by
   apply (forget₂ _ (ModuleCat k)).reflects_exact_of_faithful
@@ -180,11 +178,11 @@ theorem rep_exact (S : ShortComplex (Rep k G)) (h : ∀ x, S.g.hom x = 0 → ∃
   exact h
 
 /- English proof (translation)
-Establish `: Epi s` using `(Rep.epi_iff_surjective s).2 hs`. Establish `: Mono i` using `(Rep.mono_iff_injective i).2 hi`. Establish `E2 : (ShortComplex.mk T s w2).Exact` using `rep_exact _ e2`. Establish `: Epi (kernel.lift s T w2)` using `E2.epi_kernelLift`. Establish `S1 : (ShortComplex.mk (kernel.ι s) s (kernel.condition s)).ShortExact` using `{ exact := ShortComplex.exact_of_f_is_kernel _ (kernelIsKernel s) }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w3 : i ≫ kernel.lift s T w2 = 0`. Rewrite using `[← cancel_mono (kernel.ι s)]`. Simplify using `[w1]`. Establish `S2 : (ShortComplex.mk i (kernel.lift s T w2) w3).ShortExact` using `{ exact := rep_exact _ fun x hx => e1 x (by`. Establish `hx' : (kernel.lift s T w2).hom x = 0` using `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← kernel.lift_ι s T w2, Rep.hom_comp]`. Simplify using `[hx']) }`. Use `⟨fun a b h1 h2 => gen_les _ S1 0 h1 ?_, fun n a b c h1 h2 h3 => gen_les _ S1 (n + 1) h1 (gen_les _ S2 n h2 h3)⟩` and prove the remaining obligations. Conclude with `gen_epi (groupHomology.map (MonoidHom.id G) (kernel.lift s T w2) 0) h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem four (A W : Rep k G) (i : A ⟶ W) (T : W ⟶ W) (s : W ⟶ A) (w1 : i ≫ T = 0) (w2 : T ≫ s = 0)
     (hi : Function.Injective i.hom) (hs : Function.Surjective s.hom)
@@ -247,7 +245,7 @@ def trIso (hp : Function.Surjective p) : Rep.of (tr k p) ≅ Rep.coind p.ker.sub
       simp
 
 /- English proof (translation)
-Conclude with `gen_epi ((indIso p.ker (Rep.trivial k p.ker k) n).symm ≪≫ (functor k G n).mapIso (Rep.indCoindIso (Rep.trivial k p.ker k) ≪≫ (trIso k p hp).symm)).hom h`.
+A detailed English derivation is pending.
 -/
 theorem gen_tr [Finite G] (hp : Function.Surjective p) (n a : ℕ)
     (h : Gen (groupHomology (Rep.trivial k p.ker k) n) a) : Gen (groupHomology (Rep.of (tr k p)) n) a := by
@@ -256,19 +254,15 @@ theorem gen_tr [Finite G] (hp : Function.Surjective p) (n a : ℕ)
     (functor k G n).mapIso (Rep.indCoindIso (Rep.trivial k p.ker k) ≪≫ (trIso k p hp).symm)).hom h
 
 /- English proof (translation)
-Set `i : k →ₗ[k] (ZMod q → k)` to `LinearMap.pi fun _ => LinearMap.id`. Set `T : (ZMod q → k) →ₗ[k] (ZMod q → k)` to `LinearMap.funLeft k k (fun j => j + 1) - LinearMap.id`. Set `s : (ZMod q → k) →ₗ[k] k` to `∑ j, LinearMap.proj j`. Establish `hs : ∀ F, s F = ∑ j, F j` using `fun F => by simp [s]`. Establish `hT : ∀ F j, T F j = F (j + 1) - F j` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : ∀ a j, i a j = a` using `fun _ _ => rfl`. Establish `hsh : ∀ (F : ZMod q → k) (c : ZMod q), ∑ j, F (j + c) = ∑ j, F j` using `fun F c => Equiv.sum_comp (Equiv.addRight c) F`. Use `four (Rep.trivial k G k) (Rep.of (tr k p)) (Rep.ofHom ⟨i, fun g => LinearMap.ext fun _ => rfl⟩) (Rep.ofHom ⟨T, fun g => LinearMap.ext fun F => funext fun j => by show T (tr k p g F) j = tr k p g (T F) j` as an intermediate fact. Simplify using `only [hT, tr_apply, add_right_comm]⟩)`. Use the proof step `(Rep.ofHom ⟨s, fun g => LinearMap.ext fun F => by show s (tr k p g F) = s F`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hs, tr_apply, hsh]⟩)`. Use the proof step `(by`. Use extensionality with `j`. Use `show T (i 1) j = 0`. Rewrite using `[hT, hi, hi, sub_self])`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `(Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun F => by show s (T F) = 0`. Simplify using `only [hs, hT, Finset.sum_sub_distrib, hsh, sub_self])))`. Use the proof step `(fun a b h => congrFun h 0)`. Use the proof step `(fun a => ⟨Pi.single 0 a, by show s (Pi.single 0 a) = a`. Simplify using `[hs]⟩)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun F hF => ⟨F 0, funext fun j => by`. Establish `h1 : ∀ j, F (j + 1) = F j` using `fun j => sub_eq_zero.1 (congrFun hF j)`. Establish `h2 : ∀ m : ℕ, F m = F 0` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => simp`.
-
-Consider the case `succ m ih => rw [Nat.cast_succ, h1, ih]`. Use `show F 0 = F j`. Rewrite using `[← h2 j.val, ZMod.natCast_zmod_val]⟩)`. Use the proof step `(fun F hF => by`. Take `⟨E, hE⟩` from `exists_prim F ((hs F).symm.trans hF)`.
-
-Conclude with `⟨E, funext hE⟩)`. Conclude with `⟨fun a b h1 h2 => this.1 a b (gen_tr k p hp _ _ h1) (gen_tr k p hp _ _ h2), fun n a b c h1 h2 h3 => this.2 n a b c (gen_tr k p hp _ _ h1) (gen_tr k p hp _ _ h2) h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem step [Finite G] (hp : Function.Surjective p) :
     (∀ a b, Gen (groupHomology (Rep.trivial k p.ker k) 1) a → Gen (groupHomology (Rep.trivial k p.ker k) 0) b →
@@ -320,13 +314,13 @@ theorem step [Finite G] (hp : Function.Surjective p) :
 end Perm
 
 /- English proof (translation)
-The claim follows from `gen_epi (H0IsoOfIsTrivial (Rep.trivial (ZMod r) G (ZMod r))).inv (gen_zmod r)`.
+A detailed English derivation is pending.
 -/
 theorem groupHomology_zero_zmod_trivial_rep_generated_by_one (r : ℕ) (G : Type) [Group G] : Gen (groupHomology (Rep.trivial (ZMod r) G (ZMod r)) 0) 1 :=
   gen_epi (H0IsoOfIsTrivial (Rep.trivial (ZMod r) G (ZMod r))).inv (gen_zmod r)
 
 /- English proof (translation)
-Use `ModuleCat.subsingleton_of_isZero (isZero_groupHomology_succ_of_subsingleton (Rep.trivial k G k) n)` as an intermediate fact. Conclude with `gen_zero`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gen_triv (k G : Type) [CommRing k] [Group G] [Subsingleton G] (n : ℕ) :
     Gen (groupHomology (Rep.trivial k G k) (n + 1)) 0 := by
@@ -334,9 +328,9 @@ theorem gen_triv (k G : Type) [CommRing k] [Group G] [Subsingleton G] (n : ℕ) 
   exact gen_zero
 
 /- English proof (translation)
-Establish `: Subsingleton p.ker`. Rewrite using `[(MonoidHom.ker_eq_bot_iff p).2 hp.1]`. Use `infer_instance`. Establish `hs` using `step (ZMod r) p hp.2`. Proceed by induction on `n using Nat.twoStepInduction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact groupHomology_zero_zmod_trivial_rep_generated_by_one r G`. Consider the case `one => exact hs.1 0 1 (gen_triv _ _ 0) (groupHomology_zero_zmod_trivial_rep_generated_by_one r _)`. Consider the case `more n ih _ => exact hs.2 n 0 0 1 (gen_triv _ _ _) (gen_triv _ _ _) ih`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gen_cyc (r : ℕ) {G : Type} [Group G] [Finite G] {q : ℕ} [NeZero q] (p : G →* Multiplicative (ZMod q))
     (hp : Function.Bijective p) (n : ℕ) : Gen (groupHomology (Rep.trivial (ZMod r) G (ZMod r)) n) 1 := by
@@ -349,11 +343,11 @@ theorem gen_cyc (r : ℕ) {G : Type} [Group G] [Finite G] {q : ℕ} [NeZero q] (
   | more n ih _ => exact hs.2 n 0 0 1 (gen_triv _ _ _) (gen_triv _ _ _) ih
 
 /- English proof (translation)
-Set `p : Cq q × Cq q →* Cq q` to `MonoidHom.fst _ _`. Establish `hp : Function.Surjective p` using `Prod.fst_surjective`. Establish `hb : Function.Bijective ((MonoidHom.snd (Cq q) (Cq q)).comp p.ker.subtype)`. Prove the components needed by the constructor for the conclusion. Introduce `x y h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext (Prod.ext (Eq.trans x.2 (Eq.symm y.2)) h)`. Introduce `c`. Conclude with `⟨⟨(1, c), rfl⟩, rfl⟩`. Proceed by induction on `e with`. Consider the case `zero => exact groupHomology_zero_zmod_trivial_rep_generated_by_one r _`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ e ih`. Conclude with `((step (ZMod r) p hp).2 (2 * e) 1 1 _ (gen_cyc r _ hb _) (gen_cyc r _ hb _) ih).mono (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem gen_two (r q : ℕ) [NeZero q] (e : ℕ) :
     Gen (groupHomology (Rep.trivial (ZMod r) (Cq q × Cq q) (ZMod r)) (2 * e)) (2 * e + 1) := by
@@ -371,9 +365,9 @@ theorem gen_two (r q : ℕ) [NeZero q] (e : ℕ) :
     exact ((step (ZMod r) p hp).2 (2 * e) 1 1 _ (gen_cyc r _ hb _) (gen_cyc r _ hb _) ih).mono (by omega)
 
 /- English proof (translation)
-Rewrite using `[inhomogeneousChains.d_def]`. Establish `: (inhomogeneousChains.d (Rep.trivial k G k) m).hom = bd k G m`. Use `Finsupp.lhom_ext' fun g => LinearMap.ext_ring ?_` and prove the remaining obligations. Use `inhomogeneousChains.d_single (A := Rep.trivial k G k) m g 1` as an intermediate fact. Simplify `this` using `[bd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `LinearMap.congr_fun this z`.
+A detailed English derivation is pending.
 -/
 theorem d_eq_bd (k G : Type) [CommRing k] [Group G] (m : ℕ) (z : Ch k G (m + 1)) :
     (inhomogeneousChains (Rep.trivial k G k)).d (m + 1) m z = bd k G m z := by
@@ -385,13 +379,13 @@ theorem d_eq_bd (k G : Type) [CommRing k] [Group G] (m : ℕ) (z : Ch k G (m + 1
   exact LinearMap.congr_fun this z
 
 /- English proof (translation)
-Set `A` to `Rep.trivial k G k`. Set `c : Fin (r + 1) → cycles A (m + 1)` to `fun t => cyclesMk (A := A) (m + 1) m (by simp) (z t) ((d_eq_bd k G m _).trans (hz t))`. Establish `hc : ∀ t, iCycles A (m + 1) (c t) = z t` using `fun t => iCycles_mk _ _ _`. Take `⟨n, t, h1, h2⟩` from `h.rel l hl fun t => π A (m + 1) (c t)`. Use `⟨n, t, h1, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ex` using `ShortComplex.exact_of_g_is_cokernel (ShortComplex.mk _ _ ((inhomogeneousChains A).toCycles_comp_homologyπ (m + 2) (m + 1))) ((inhomogeneousChains A).homologyIsCokernel (m + 2) (m + 1) (by simp))`. Take `⟨y, hy⟩` from `(ShortComplex.moduleCat_exact_iff _).1 ex (∑ i, n i • c i) (by`. Use `Eq.trans ?_ h2` and prove the remaining obligations. Use `show (π A (m + 1)).hom (∑ i, n i • c i) = ∑ i, n i • (π A (m + 1)).hom (c i)`. Simplify using `only [map_sum, map_zsmul])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← d_eq_bd, ← HomologicalComplex.toCycles_i]`. Establish `hy' : (toCycles A (m + 2) (m + 1)).hom y = ∑ i, n i • c i` using `hy`. Use `show (iCycles A (m + 1)).hom ((toCycles A (m + 2) (m + 1)).hom y) = _`. Rewrite using `[hy', map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]`. Conclude with `congrArg _ (hc i)`.
+A detailed English derivation is pending.
 -/
 theorem rel_bd (k G : Type) [CommRing k] [Group G] (m r l : ℕ) (hl : 2 ≤ l)
     (h : Gen (groupHomology (Rep.trivial k G k) (m + 1)) r) (z : Fin (r + 1) → Ch k G (m + 1)) (hz : ∀ t, Cyc (z t)) :
@@ -419,9 +413,9 @@ theorem rel_bd (k G : Type) [CommRing k] [Group G] (m r l : ℕ) (hl : 2 ≤ l)
   exact congrArg _ (hc i)
 
 /- English proof (translation)
-Introduce `l ν e hl`. Take `⟨n, t, h1, h2⟩` from `rel_bd (ZMod (l ^ ν)) (Cq (l ^ ν) × Cq (l ^ ν)) (2 * e + 1) (2 * e + 3) l hl.out.two_le (gen_two (l ^ ν) (l ^ ν) (e + 1)) (fun t => cm (ZMod (l ^ ν)) (dt (l ^ ν) t) _ (zc (l ^ ν) e)) (fun t => by`. Establish `h0 : bd _ _ _ (zc (l ^ ν) e) = 0` using `LateralTheory.Q.SZcT.SZc_of (l ^ ν) e`. Unfold `Cyc`. Rewrite using `[(LateralTheory.Q.SChainPf.SChain_of _).2.1, h0, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun t => (n t : ZMod (l ^ ν)), t, ?_, h2⟩` and prove the remaining obligations. Rewrite using `[ZMod.coe_int_isUnit_iff_isCoprime, Nat.cast_pow]`. Conclude with `((Nat.prime_iff_prime_int.1 hl.out).irreducible.coprime_iff_not_dvd.2 h1).pow_left`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SRel_of : SRel := by
   intro l ν e hl

@@ -12,17 +12,17 @@ noncomputable section
 namespace SecAlgFieldChange
 
 /- English proof (translation)
-Use `letI : Algebra (MvPolynomial (Fin n) R) (MvPolynomial (Fin n) A) := MvPolynomial.algebraMvPolynomial`. Set `e₀ : MvPolynomial (Fin n) R ⊗[R] A ≃ₐ[R] MvPolynomial (Fin n) A` to `(Algebra.TensorProduct.comm R _ A).trans ((MvPolynomial.algebraTensorAlgEquiv R A).restrictScalars R)`. Establish `he₀ : ∀ a : A, e₀ (1 ⊗ₜ a) = C a`. Introduce `a`. Simplify using `[e₀, MvPolynomial.smul_eq_C_mul]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `he₁ : ∀ p, e₀ (p ⊗ₜ 1) = MvPolynomial.map (algebraMap R A) p`. Introduce `p`. Simplify using `[e₀]`. Set `e : MvPolynomial (Fin n) R ⊗[R] A ≃ₐ[MvPolynomial (Fin n) R] MvPolynomial (Fin n) A` to `AlgEquiv.ofRingEquiv (f := e₀.toRingEquiv) (fun p => by`. Simplify using `[Algebra.TensorProduct.algebraMap_apply, he₁])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Set `B` to `(Algebra.TensorProduct.basis (MvPolynomial (Fin n) R) b).map e.toLinearEquiv`. Establish `hB : ∀ i, B i = C (b i)`. Introduce `i`. Simplify using `only [B, Module.Basis.map_apply, Algebra.TensorProduct.basis_apply]`. Conclude with `he₀ (b i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `normForm`. Rewrite using `[Algebra.norm_eq_matrix_det B]`. Use `congr 1`. Use extensionality with `i k`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : (∑ j, X j * C (x j) : MvPolynomial (Fin n) A) * B k = ∑ i, (∑ j, X j * C (b.repr (x j * b k) i)) • B i`. Simplify using `only [hB, Algebra.smul_def, MvPolynomial.algebraMap_def, map_sum, map_mul, MvPolynomial.map_X, MvPolynomial.map_C, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← C_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [← b.sum_repr (x j * b k)]`. Simplify using `only [map_sum, Finset.mul_sum, Algebra.smul_def, C_mul, mul_assoc]`. Rewrite using `[key, B.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normForm_eq_det {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] {ι : Type*}
     [Fintype ι] [DecidableEq ι] (b : Module.Basis ι R A) {n : ℕ} (x : Fin n → A) :
@@ -61,16 +61,16 @@ theorem normForm_eq_det {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] {�
   rw [key, B.repr_sum_self]
 
 /- English proof (translation)
-Simplify using `[linForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_linForm {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {n : ℕ}
     (u : Fin n → R) : MvPolynomial.map φ (linForm u) = linForm (φ ∘ u) := by
   simp [linForm]
 
 /- English proof (translation)
-Establish `h1 : (MvPolynomial.map φ) ∘ secForm y₀ = secForm (φ ∘ y₀)`. Use function extensionality and compare the values at `i`. Simplify using `[secForm, map_linForm]`. Both sides reduce to the same expression. Establish `h2 : MvPolynomial.map φ (chartForm y₀) = chartForm (φ ∘ y₀)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `[chartForm, map_linForm]`. Both sides reduce to the same expression. Simplify using `only [secIdeal, Ideal.map_sup, Ideal.map_span, Set.image_singleton, map_sub, map_one, h2, ← Set.range_comp, h1]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem secIdeal_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {n e : ℕ}
     (Q₀ : Ideal (MvPolynomial (Fin n) R)) (y₀ : Par e n → R) :
@@ -86,31 +86,27 @@ theorem secIdeal_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {n
 end SecAlgFieldChange
 
 /- English proof (translation)
-Introduce `E₀ E _ _ φ n e Q₀ y₀ hfin`. Use `letI : Algebra E₀ E := φ.toAlgebra`. Establish `hI` using `SecAlgFieldChange.secIdeal_map φ Q₀ y₀`. Use `set Q := Q₀.map (MvPolynomial.map φ)`. Use `set y : Par e n → E := φ ∘ y₀`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : SecAlg Q₀ y₀ →ₐ[E₀] SecAlg Q y` to `Ideal.quotientMapₐ (secIdeal Q y) (MvPolynomial.mapAlgHom (Algebra.ofId E₀ E)) (by rw [hI]; exact Ideal.le_comap_map)`. Establish `hg : ∀ p, g (Ideal.Quotient.mk _ p) = Ideal.Quotient.mk _ (MvPolynomial.map φ p)`. Introduce `p`. Both sides reduce to the same expression. Set `ψ : SecAlg Q y →ₐ[E] E ⊗[E₀] SecAlg Q₀ y₀` to `Ideal.Quotient.liftₐ (secIdeal Q y) (aeval fun j => (1 : E) ⊗ₜ[E₀] secCoord Q₀ y₀ j) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a ha`. Rewrite `ha` using `[hI]`. Establish `hle : (secIdeal Q₀ y₀).map (MvPolynomial.map φ) ≤ RingHom.ker (MvPolynomial.aeval (R` using `E) fun j => (1 : E) ⊗ₜ[E₀] secCoord Q₀ y₀ j).toRingHom := by`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `aeval (fun j => (1 : E) ⊗ₜ[E₀] secCoord Q₀ y₀ j) (MvPolynomial.map (algebraMap E₀ E) p) = 0`. Rewrite using `[MvPolynomial.aeval_map_algebraMap, MvPolynomial.aeval_one_tmul]`. Establish `h0 : aeval (secCoord Q₀ y₀) p = 0`. Rewrite using `[show secCoord Q₀ y₀ = (Ideal.Quotient.mkₐ E₀ (secIdeal Q₀ y₀)) ∘ X from rfl, ← MvPolynomial.aeval_unique, Ideal.Quotient.mkₐ_eq_mk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hp`. Rewrite using `[h0, TensorProduct.tmul_zero]`. Conclude with `RingHom.mem_ker.mp (hle ha))`. Establish `hψ : ∀ p, ψ (Ideal.Quotient.mk _ p) = aeval (fun j => (1 : E) ⊗ₜ[E₀] secCoord Q₀ y₀ j) p` using `fun p => rfl`. Set `θ : E ⊗[E₀] SecAlg Q₀ y₀ →ₐ[E] SecAlg Q y` to `Algebra.TensorProduct.lift (Algebra.ofId E _) g (fun _ _ => Commute.all _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hθ : ∀ a, θ (1 ⊗ₜ a) = g a`. Introduce `a`. Simplify using `[θ]`. Set `eqv : E ⊗[E₀] SecAlg Q₀ y₀ ≃ₐ[E] SecAlg Q y` to `AlgEquiv.ofAlgHom θ ψ (by`. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `j`. Use `show θ (ψ (Ideal.Quotient.mk _ (X j))) = Ideal.Quotient.mk _ (X j)`. Rewrite using `[hψ, aeval_X, hθ, secCoord, hg, map_X])`. Use the proof step `(by`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Apply `Algebra.TensorProduct.ext` to reduce the goal to its premises. Conclude with `Subsingleton.elim _ _`. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show ψ (θ (1 ⊗ₜ Ideal.Quotient.mk _ (X j))) = 1 ⊗ₜ Ideal.Quotient.mk _ (X j)`. Rewrite using `[hθ, hg, map_X, hψ, aeval_X]`. Use the proof step `rfl)`. Use `haveI := hfin`. Set `b` to `Module.Free.chooseBasis E₀ (SecAlg Q₀ y₀)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `B` to `(Algebra.TensorProduct.basis E b).map eqv.toLinearEquiv`. Establish `hB : ∀ a i, B.repr (g a) i = φ (b.repr a i)`. Introduce `a i`. Establish `: g a = eqv.toLinearEquiv (1 ⊗ₜ a)` using `(hθ a).symm`. Simplify using `[B, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Both sides reduce to the same expression. Establish `hBk : ∀ k, B k = g (b k)`. Introduce `k`. Simplify using `[B, eqv, hθ]`. Establish `hx : ∀ j, secCoord Q y j = g (secCoord Q₀ y₀ j)`.
-
-Introduce `j`. Simplify using `[secCoord, hg]`. Use `⟨Module.Finite.of_basis B, ?_⟩` and prove the remaining obligations. Rewrite using `[SecAlgFieldChange.normForm_eq_det b, SecAlgFieldChange.normForm_eq_det B, RingHom.map_det]`. Use `congr 1`.
-
-Use `Matrix.ext fun i k => ?_` and prove the remaining obligations. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, map_sum, map_mul, MvPolynomial.map_X, MvPolynomial.map_C, hx, hBk]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← map_mul, hB]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SecAlgFieldChange.proof : SecAlgFieldChange.Statement := by
   intro E₀ E _ _ φ n e Q₀ y₀ hfin

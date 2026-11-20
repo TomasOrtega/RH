@@ -16,7 +16,7 @@ variable {R G : Type u} [CommRing R] [CommGroup G] [Fintype G] (A : Rep.{u} R G)
 include hσ in
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify `Representation.mem_invariants_iff_of_forall_mem_zpowers A.ρ σ hσ x` using `[Rep.sub_hom, Rep.applyAsHom, sub_eq_zero]`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem invariants_eq_ker_normHomCompSub_g :
     A.ρ.invariants = LinearMap.ker (normHomCompSub A σ).g.hom := by
@@ -26,11 +26,11 @@ theorem invariants_eq_ker_normHomCompSub_g :
 
 include hσ in
 /- English proof (translation)
-Use extensionality with `⟨y, hy⟩`. Rewrite using `[Submodule.mem_map, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨z, hz⟩, ⟨m, hm⟩, he⟩`. Use `⟨m, Subtype.ext ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he'` using `congrArg Subtype.val he`. Express the relevant statement in the definitionally equal form `(z : A) = y at he'`. Express the relevant statement in the definitionally equal form `A.ρ.norm m = y`. Rewrite using `[← he']`. Conclude with `hm`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨m, hm⟩`. Establish `hm'` using `congrArg Subtype.val hm`. Express the relevant statement in the definitionally equal form `A.ρ.norm m = y at hm'`. Use `⟨⟨A.ρ.norm m, fun g => Representation.self_norm_apply A.ρ g m⟩, ⟨m, rfl⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `hm'`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem normRangeInvariants_map :
     (normRangeInvariants A).map
@@ -69,13 +69,13 @@ theorem ker_norm_eq_ker_subCompNormHom_g :
 
 include hσ in
 /- English proof (translation)
-Establish `hc` using `Representation.FiniteCyclicGroup.coinvariantsKer_eq_range A.ρ σ hσ`. Use extensionality with `⟨y, hy⟩`. Rewrite using `[Submodule.mem_map, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨z, hz⟩, hzm, he⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `he'` using `congrArg Subtype.val he`. Express the relevant statement in the definitionally equal form `(z : A) = y at he'`. Rewrite `hzm` using `[mem_augmentationKerNorm_iff, hc]`. Take `⟨m, hm⟩` from `hzm`. Use `⟨m, Subtype.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `A.ρ σ m - m = y`. Rewrite using `[← he']`. Conclude with `hm`. Introduce and unpack `⟨m, hm⟩`. Establish `hm'` using `congrArg Subtype.val hm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `A.ρ σ m - m = y at hm'`. Use `⟨⟨y, hy⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_augmentationKerNorm_iff, hc]`. Conclude with `⟨m, hm'⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem augmentationKerNorm_map :
     (augmentationKerNorm A).map
@@ -110,14 +110,14 @@ noncomputable def tateCohomologyNegOneIsoHomology :
     (subCompNormHom A σ).moduleCatHomologyIso.symm
 
 /- English proof (translation)
-Rewrite `h` using `[Int.negSucc_eq, even_neg, ← Nat.cast_succ, Int.even_coe_nat, Nat.even_add_one]`. Conclude with `Nat.not_even_iff_odd.1 h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem odd_of_even_negSucc {i : ℕ} (h : Even (Int.negSucc i)) : Odd i := by
   rw [Int.negSucc_eq, even_neg, ← Nat.cast_succ, Int.even_coe_nat, Nat.even_add_one] at h
   exact Nat.not_even_iff_odd.1 h
 
 /- English proof (translation)
-Rewrite `h` using `[Int.negSucc_eq, odd_neg, ← Nat.cast_succ, Int.odd_coe_nat, Nat.odd_add_one]`. Conclude with `Nat.not_odd_iff_even.1 h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem even_of_odd_negSucc {i : ℕ} (h : Odd (Int.negSucc i)) : Even i := by
   rw [Int.negSucc_eq, odd_neg, ← Nat.cast_succ, Int.odd_coe_nat, Nat.odd_add_one] at h

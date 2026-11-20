@@ -15,7 +15,7 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 namespace GlobalTheory.ArcPts.Special
 
 /- English proof (translation)
-Use `⟨IsOpenImmersion.lift W.ι x ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `h (x := p) trivial`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {Z Z' : Scheme.{0}} (x : Z' ⟶ Z) (W : Z.Opens) (h : ⊤ ≤ x ⁻¹ᵁ W) :
     ∃ x' : Z' ⟶ W.toScheme, x' ≫ W.ι = x := by
@@ -25,13 +25,13 @@ theorem exists_lift {Z Z' : Scheme.{0}} (x : Z' ⟶ Z) (W : Z.Opens) (h : ⊤ �
   exact h (x := p) trivial
 
 /- English proof (translation)
-Introduce `p _` and use `h (x := g p) trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_comp {Z Z' Z'' : Scheme.{0}} (g : Z'' ⟶ Z') (x : Z' ⟶ Z) (W : Z.Opens) (h : ⊤ ≤ x ⁻¹ᵁ W) :
     ⊤ ≤ (g ≫ x) ⁻¹ᵁ W := fun p _ => h (x := g p) trivial
 
 /- English proof (translation)
-Introduce `p _` and use `Set.mem_iInter.2 fun _ => h (x := p) trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_powOver {S Z' : Scheme.{0}} (G : Over S) (L : LB G.left) (U : S.Opens) (N : ℕ)
     (x : Z' ⟶ (G.hom ⁻¹ᵁ U).toScheme) (j : L.ι) (h : ⊤ ≤ (x ≫ (G.hom ⁻¹ᵁ U).ι) ⁻¹ᵁ L.U j) :
@@ -39,7 +39,7 @@ theorem le_powOver {S Z' : Scheme.{0}} (G : Over S) (L : LB G.left) (U : S.Opens
   fun p _ => Set.mem_iInter.2 fun _ => h (x := p) trivial
 
 /- English proof (translation)
-Establish `h : x (default : PrimeSpectrum K) ∈ (⨆ i, L.U i)` using `by rw [hL.cover]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Use `⟨j, fun p _ => ?_⟩` and prove the remaining obligations. Take `rfl : p = (default : PrimeSpectrum K)` from `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Conclude with `hj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_chart {Z : Scheme.{0}} {K : Type} [Field K] (L : LB Z) (hL : L.IsLB) (x : Sp K ⟶ Z) :
     ∃ j, ⊤ ≤ x ⁻¹ᵁ L.U j := by
@@ -50,23 +50,19 @@ theorem exists_chart {Z : Scheme.{0}} {K : Type} [Field K] (L : LB Z) (hL : L.Is
   exact hj
 
 /- English proof (translation)
-Establish `hxU : ⊤ ≤ x ⁻¹ᵁ (G.hom ⁻¹ᵁ U)`. Rewrite using `[← Scheme.Hom.comp_preimage, hx]`. Conclude with `le_comp _ _ _ hyU`. Take `⟨x₁, hx₁⟩` from `exists_lift x _ hxU`. Take `⟨j₀, hj₀⟩` from `exists_chart L hL x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u₀, hu₀⟩` from `(hτ.1 j₀ hj₀).pow 4`. Take `⟨z₁, ⟨hz₁, hz₂, hz₃⟩, -⟩` from `GlobalTheory.T.existsUnique_lift_coords_localSubring S G L U 4 n b R K f y x₁ cf j₀ u₀ hL hU hb hf hyU (by rw [← Category.assoc, hx₁, hx]) (by rw [hx₁]; exact hj₀) (fun i => by rw [hu₀]; exact hv i x₁ j₀ hx₁ hj₀) hcf`. Establish `hz : spMap f ≫ z₁ ≫ (G.hom ⁻¹ᵁ U).ι = x` using `by rw [← Category.assoc, hz₂, hx₁]`. Establish `hzy : (z₁ ≫ (G.hom ⁻¹ᵁ U).ι) ≫ G.hom = y` using `by rw [Category.assoc, hz₁]`. Establish `hzU' : ⊤ ≤ (z₁ ≫ (G.hom ⁻¹ᵁ U).ι) ⁻¹ᵁ (G.hom ⁻¹ᵁ U')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_preimage, hzy]`. Conclude with `hyU'`. Take `⟨z₂, hz₄⟩` from `exists_lift _ _ hzU'`. Establish `key : ∀ j, ⊤ ≤ (z₁ ≫ (G.hom ⁻¹ᵁ U).ι) ⁻¹ᵁ L.U j → ∃ r : R, IsUnit r ∧ f r = τ j`. Introduce `j hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hxj : ⊤ ≤ x ⁻¹ᵁ L.U j` using `by rw [← hz]; exact le_comp _ _ _ hj`. Take `⟨u, hu⟩` from `hz₃ j hj`. Take `⟨i, hi⟩` from `hcf`. Establish `h4 : f u = τ j ^ 4`. Establish `e` using `hv i x₁ j hx₁ hxj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[← hz₂, HolHom.valR_spMap _ _ _ (le_powOver G L U 4 z₁ j hj), hu, map_mul]`. Conclude with `mul_left_cancel₀ (hi.map f).ne_zero e`. Establish `e` using `hv' (spMap f ≫ z₂) j (by rw [Category.assoc, hz₄, hz]) hxj`. Rewrite `e` using `[HolHom.valR_spMap _ _ _ (le_powOver G L U' 5 z₂ j (by rw [hz₄]; exact hj))]`. Take `⟨c, rfl⟩` from `hcf'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a := valR z₂ ((Out.powOver G L U' 5).U (fun _ => j)) (b'.f (fun _ => j))`. Establish `hc : f (↑c⁻¹ : R) * f c = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Establish `hu' : f (↑u⁻¹ : R) * f u = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Establish `hr : f (↑c⁻¹ * ↑u⁻¹ * a) = τ j`. Rewrite using `[map_mul, map_mul, e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hu'` using `[h4]`. Take the linear combination `(f (↑u⁻¹ : R) * τ j ^ 5) * hc + τ j * hu'`. Use `⟨_, ?_, hr⟩` and prove the remaining obligations. Establish `: (↑c⁻¹ * ↑u⁻¹ * a) ^ 4 = (u : R)` using `hf (by rw [map_pow, hr, h4])`. Conclude with `(isUnit_pow_iff (by norm_num : 4 ≠ 0)).1 (this ▸ u.isUnit)`.
-
-Use `choose! σ hσ using key`. Use `⟨z₁ ≫ (G.hom ⁻¹ᵁ U).ι, σ, hzy, hz, ⟨fun j hj => (hσ j hj).1, fun j j' hj => hf ?_⟩, fun j hj => (hσ j hj).2⟩` and prove the remaining obligations. Establish `h1` using `hj.trans (Scheme.Hom.preimage_mono _ (inf_le_left : L.U j ⊓ L.U j' ≤ _))`. Establish `h2` using `hj.trans (Scheme.Hom.preimage_mono _ (inf_le_right : L.U j ⊓ L.U j' ≤ _))`. Rewrite using `[map_mul, (hσ j h1).2, (hσ j' h2).2, ← HolHom.valR_spMap _ _ _ hj, hz]`.
-
-Conclude with `hτ.2 j j' (by rw [← hz]; exact le_comp _ _ _ hj)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsSeparated G.hom] (L : LB G.left) (hL : L.IsLB)
     {R K : Type} [CommRing R] [IsLocalRing R] [Field K] (f : R →+* K) (hf : Function.Injective f)
@@ -127,7 +123,7 @@ theorem exists_ext {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsSeparated G.hom] 
   exact hτ.2 j j' (by rw [← hz]; exact le_comp _ _ _ hj)
 
 /- English proof (translation)
-The claim follows from `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by by_cases h : Γ.ev w a = 0 · exact Or.inr (Γ.unit w _ (by rw [map_sub, h, map_one, sub_zero]; exact one_ne_zero)) · exact Or.inl (Γ.unit w _ h)`.
+A detailed English derivation is pending.
 -/
 theorem germs_local (Γ : Germs) (w : ℂ) : IsLocalRing (Γ.R w) :=
   IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by
@@ -136,25 +132,21 @@ theorem germs_local (Γ : Germs) (w : ℂ) : IsLocalRing (Γ.R w) :=
     · exact Or.inl (Γ.unit w _ h)
 
 /- English proof (translation)
-Introduce `h1 h2 E _ _ _ H _ D l B _ bb S _ s o A y Φ Γ k _ s₀ _ b₀ hy hA hΦ`. Take `⟨C⟩` from `GlobalTheory.T.nonempty_projCoords_convergent_coefficients h1 h2 E H D l B bb S s o A y Φ hA hΦ 4 le_rfl`. Take `⟨C'⟩` from `GlobalTheory.T.nonempty_projCoords_convergent_coefficients h1 h2 E H D l B bb S s o A y Φ hA hΦ 5 (by norm_num)`. Use `haveI := o.proper`. Take `⟨x₀, hx₀⟩` from `hΦ.1 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy₀ : spMap (algebraMap Conv.convLaurent ℂ⸨X⸩) ≫ x₀ ≫ o.t.G.hom = y`. Rewrite using `[← Category.assoc, hx₀]`. Conclude with `Over.w (Φ.x 0)`. Use `set y₀ := x₀ ≫ o.t.G.hom`. Establish `hin : ∀ U : S.Opens, ⊤ ≤ y ⁻¹ᵁ U → ⊤ ≤ y₀ ⁻¹ᵁ U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `U hU p _`. Rewrite `hU` using `[← hy₀]`. Take `rfl : p = spMap (algebraMap Conv.convLaurent ℂ⸨X⸩) (default : PrimeSpectrum ℂ⸨X⸩)` from `Subsingleton.elim (α := PrimeSpectrum Conv.convLaurent) _ _`. Conclude with `hU (x := (default : PrimeSpectrum ℂ⸨X⸩)) trivial`. Establish `hs₀ : y₀ ≫ s₀ = spMap ((algebraMap ℂ Conv.convLaurent).comp b₀)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `HolHom.point_ext (isAffineOpen_top _) le_top le_top fun g => Subtype.ext ?_` and prove the remaining obligations. Establish `e1` using `HolHom.valR_spMap (algebraMap Conv.convLaurent ℂ⸨X⸩) (y₀ ≫ s₀) ⊤ le_top g`. Establish `e2` using `HolHom.valR_spMap (algebraMap Conv.convLaurent ℂ⸨X⸩) (spMap ((algebraMap ℂ Conv.convLaurent).comp b₀)) ⊤ le_top g`. Rewrite `e1` using `[← Category.assoc, hy₀, hy]`. Rewrite `e2` using `[← spMap_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e1.symm.trans e2`. Take `⟨T₁, hT₁, y₁, hy₁U, hy₁, -⟩` from `Conv.exists_halfRing_point s₀ b₀ y₀ hs₀ C.aff (hin _ C.mem) (max C.T C'.T)`. Take `⟨T, hT, hU'⟩` from `Conv.exists_le_preimage_inclusion y₁ (U := C'.U) (by rw [hy₁]; exact hin _ C'.mem)`. Use `set yT := spMap (Subalgebra.inclusion (Conv.halfRing_mono hT) : Conv.halfRing T₁ →+* Conv.halfRing T) ≫ y₁ with hyT`. Establish `hU : ⊤ ≤ yT ⁻¹ᵁ C.U` using `le_comp _ _ _ hy₁U`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen : spMap (Conv.halfRing T).val.toRingHom ≫ yT = y`. Rewrite using `[← hy₀, ← hy₁, hyT, ← Category.assoc, ← Category.assoc, ← spMap_comp, ← spMap_comp]`. Both sides reduce to the same expression. Establish `hC : C.T ≤ T` using `((le_max_left _ _).trans hT₁).trans hT`. Establish `hC' : C'.T ≤ T` using `((le_max_right _ _).trans hT₁).trans hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ (w : ℂ) (hw : T < w.im) (v : A.V), ∃ (z : Sp (Γ.R w) ⟶ o.t.G.left) (σ : o.t.PP.L.ι → Γ.R w), z ≫ o.t.G.hom = spMap (Subalgebra.inclusion (Γ.le T w hw)).toRingHom ≫ yT ∧ spMap (Γ.R w).val.toRingHom ≫ z = (Φ.x v).left ∧ IsFrm o.t.PP.L z σ ∧ ∀ j, ⊤ ≤ z ⁻¹ᵁ o.t.PP.L.U j → (Γ. …`. Introduce `w hw v`. Use `haveI := germs_local Γ w`. Establish `hw₁` using `hC.trans_lt hw`. Establish `hw₂` using `hC'.trans_lt hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, hi⟩` from `C.bpf w hw₁ v`. Take `⟨i', hi'⟩` from `C'.bpf w hw₂ v`. Use `exists_ext o.t.G o.t.PP.L o.t.PP.isLB (Γ.R w).val.toRingHom Subtype.val_injective _ (Φ.x v).left ?_ (Φ.τ v) (Φ.frm v) C.U C.aff (le_comp _ _ _ hU) C.b C.emb (fun i => Subalgebra.inclusion (Γ.le _ w hw₁) (C.cf i v)) ⟨i, Γ.unit w _ (by rw [Γ.ev_eq]; exact hi)⟩ (fun i x' j => C.val …` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← spMap_comp]`. Conclude with `(Over.w (Φ.x v)).trans hgen.symm`.
-
-Use `choose z σ hz1 hz2 hz3 hz4 using key`. Establish `hpi : ∀ (w : ℂ) (hw : T < w.im) (v : A.V), (spMap (Γ.ev w).toRingHom ≫ z w hw v) ≫ o.t.G.hom = Conv.halfCurve yT w`. Introduce `w hw v`. Rewrite using `[Category.assoc, hz1, ← Category.assoc, ← spMap_comp, Conv.halfCurve_eq yT hw]`. Use `congr 2`.
-
-Conclude with `RingHom.ext fun r => Γ.ev_eq T w hw r`. Conclude with `⟨{ T := T yT := yT yT_gen := hgen xt := fun w hw v => Over.homMk (z w hw v) (hz1 w hw v) xt_gen := hz2 τt := fun w v => if hw : T < w.im then σ w hw v else fun _ => 1 τt_frm := fun w hw v => by rw [dif_pos hw]; exact hz3 w hw v τt_gen := fun w hw v j hj => by rw [dif_pos hw]; exa …`.
+Reduce the equality to equality of the corresponding arguments. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem specPts_nonempty : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (B : Type) [CommRing B] (bb : Base l B) (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp B) (o : Obj D l bb s) (A : AnArc (𝓞 E)) (y : Sp ℂ⸨X⸩ ⟶ S) (Φ : GenPts A o.t y) (Γ : Germs) (k : Type) [CommRing k] (s₀ : S ⟶ Sp k) [LocallyOfFiniteType s₀] (b₀ : k →+* ℂ), y ≫ s₀ = spMap ((algebraMap ℂ ℂ⸨X⸩).comp b₀) → AnFin A → Φ.Rational → Nonempty (SpecPts Φ Γ) := by
   intro h1 h2 E _ _ _ H _ D l B _ bb S _ s o A y Φ Γ k _ s₀ _ b₀ hy hA hΦ

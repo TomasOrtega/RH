@@ -6,15 +6,15 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.RealMult.SpanDual
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Set `B : (Fin n → ℂ) →ₗ[ℝ] (Fin n → ℂ) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun z w ↦ (∑ j, (h j : ℂ) * (z j * starRingEnd ℂ (w j))).im) (fun z z' w ↦ by simp [add_mul, mul_add, Finset.sum_add_distrib]) (fun r z w ↦ by`. Establish `: (∑ j, (h j : ℂ) * ((r • z) j * starRingEnd ℂ (w j))) = (r : ℂ) * ∑ j, (h j : ℂ) * (z j * starRingEnd ℂ (w j))`. Rewrite using `[Finset.mul_sum]`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.im_ofReal_mul, smul_eq_mul])`. Use the proof step `(fun z w w' ↦ by simp [add_mul, mul_add, Finset.sum_add_distrib])`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun r z w ↦ by`. Establish `: (∑ j, (h j : ℂ) * (z j * starRingEnd ℂ ((r • w) j))) = (r : ℂ) * ∑ j, (h j : ℂ) * (z j * starRingEnd ℂ (w j))`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, Complex.real_smul, map_mul, Complex.conj_ofReal]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.im_ofReal_mul, smul_eq_mul])`. Establish `h1 : ∀ l ∈ Λ, B l = 0` using `fun l hl ↦ LinearMap.ext_on hspan (fun w hw ↦ by simpa [B] using hcon l hl w hw)`. Establish `h2 : B = 0` using `LinearMap.ext_on hspan (fun z hz ↦ by rw [h1 z hz]; rfl)`. Establish `h3` using `congrArg (fun B : (Fin n → ℂ) →ₗ[ℝ] (Fin n → ℂ) →ₗ[ℝ] ℝ ↦ B (Pi.single ⟨0, hn⟩ 1) (Pi.single ⟨0, hn⟩ Complex.I)) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [B, LinearMap.mk₂_apply] at h3`. Rewrite `h3` using `[Finset.sum_eq_single ⟨0, hn⟩ (fun b _ hb ↦ by simp [Pi.single_apply, hb]) (by simp)]`. Simplify using `at h3`. Conclude with `(hpos ⟨0, hn⟩).ne' h3`.
+A detailed English derivation is pending.
 -/
 theorem exists_im_ne_zero {n : ℕ} (hn : 0 < n) (Λ : Submodule ℤ (Fin n → ℂ))
     (hspan : Submodule.span ℝ (Λ : Set (Fin n → ℂ)) = ⊤) (h : Fin n → ℝ) (hpos : ∀ j, 0 < h j) :
@@ -48,15 +48,11 @@ theorem exists_im_ne_zero {n : ℕ} (hn : 0 < n) (Λ : Submodule ℤ (Fin n → 
   exact (hpos ⟨0, hn⟩).ne' h3
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Set `φ : F →+* (Fin n → ℂ)` to `Pi.ringHom fun j ↦ Complex.ofRealHom.comp (e j)`. Use `letI : Module F (Fin n → ℂ) := Module.compHom _ φ`. Establish `hsmul : ∀ (t : F) (z : Fin n → ℂ), t • z = fun j ↦ (e j t : ℂ) * z j` using `fun _ _ ↦ rfl`. Use `haveI : IsScalarTower ℤ F (Fin n → ℂ) := ⟨fun k x y ↦ by`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [hsmul, Pi.smul_apply, zsmul_eq_mul, map_mul, map_intCast]`. Use `push_cast`. Use the proof step `ring⟩`. Use `haveI : Module.IsTorsionFree F (Fin n → ℂ) := ⟨fun r hr z w hzw ↦ by`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hr0 : r ≠ 0` using `hr.ne_zero`. Use function extensionality and compare the values at `j`. Use `congrFun hzw j` as an intermediate fact. Simplify using `only [hsmul] at this`. Conclude with `mul_left_cancel₀ (by simpa using (e j).injective.ne hr0 |>.trans_eq (map_zero _)) this⟩`.
-
-Use `haveI : IsZLattice ℝ Λ := ⟨hspan⟩`. Use `haveI := ZLattice.module_finite ℝ Λ`. Establish `hfg : Λ.FG` using `Module.Finite.iff_fg.mp inferInstance`. Establish `hne : Λ ≠ ⊥`. Introduce `h0`.
-
-Rewrite `hspan` using `[h0, Submodule.bot_coe, Submodule.span_zero_singleton]`. Conclude with `bot_ne_top hspan`. Conclude with `isIntegral_of_smul_mem_submodule Λ hne hfg s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_stab {F : Type} [Field F] {n : ℕ} (hn : 0 < n)
     (Λ : Submodule ℤ (Fin n → ℂ)) (e : Fin n → (F →+* ℝ))
@@ -86,27 +82,25 @@ theorem isIntegral_of_stab {F : Type} [Field F] {n : ℕ} (hn : 0 < n)
   exact isIntegral_of_smul_mem_submodule Λ hne hfg s hs
 
 /- English proof (translation)
-Use `set C : FractionalIdeal (𝓞 F)⁰ F := (𝔠 : FractionalIdeal (𝓞 F)⁰ F) with hCdef`. Establish `hC : C ≠ 0` using `𝔠.ne_zero`. Establish `hcC : (c : F) ∈ C` using `c.2`. Set `Nf : FractionalIdeal (𝓞 F)⁰ F` to `⟨N, FractionalIdeal.isFractional_of_le hN⟩`. Establish `hNf : Nf ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hN0` to reduce the goal to its premises. Use `congrArg (fun I : FractionalIdeal (𝓞 F)⁰ F ↦ (I : Submodule (𝓞 F) F)) h0` as an intermediate fact. Simplify `this` using `[Nf]`. Use `set cs := FractionalIdeal.spanSingleton (𝓞 F)⁰ (c : F)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcs : cs ≠ 0` using `by simpa [cs, FractionalIdeal.spanSingleton_eq_zero_iff] using hc0`. Establish `key : FractionalIdeal.dual ℤ ℚ (cs * Nf) * (cs * C⁻¹) ≤ 1`. Rewrite using `[FractionalIdeal.mul_le]`. Introduce `t ht u hu`. Take `⟨v, hv, rfl⟩` from `(FractionalIdeal.mem_singleton_mul).mp hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcv : (c : F) * v ∈ (1 : FractionalIdeal (𝓞 F)⁰ F)`. Use `FractionalIdeal.mul_mem_mul hcC hv` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hC]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `(FractionalIdeal.mem_one_iff _).mp hcv`. Establish `hint : IsIntegral ℤ ((a : F) * t)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `H t (fun y hy ↦ ?_) a (fun d ↦ ?_)` and prove the remaining obligations. Establish `hy' : (c : F) * y ∈ cs * Nf` using `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self _ _) hy`. Take `⟨m, hm⟩` from `(FractionalIdeal.mem_dual (mul_ne_zero hcs hNf)).mp ht _ hy'`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[Algebra.traceForm_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (c : F) * t * y = t * ((c : F) * y) by ring, ← hm]; simp`. Establish `hvd : v * d ∈ (1 : FractionalIdeal (𝓞 F)⁰ F)`. Use `FractionalIdeal.mul_mem_mul hv d.2` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ hC]`. Then use the resulting hypothesis. Take `⟨b, hb⟩` from `(FractionalIdeal.mem_one_iff _).mp hvd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨b, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `(a : F) * d = (b : F) * c`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) F a = _ at ha`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) F b = _ at hb`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) F a * d = algebraMap (𝓞 F) F b * c`. Rewrite using `[ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_comm, ← ha]`. Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨⟨_, hint⟩, rfl⟩`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite `key` using `[FractionalIdeal.dual_eq_mul_inv, mul_inv]`. Establish `key2 : FractionalIdeal.dual ℤ ℚ 1 * C⁻¹ * Nf⁻¹ ≤ 1`. Use `key using 1` and compare the differences between its conclusion and the goal. Combine the equalities or inequalities in the displayed calculation. Establish `key3 : FractionalIdeal.dual ℤ ℚ 1 * C⁻¹ * Nf⁻¹ * Nf ≤ 1 * Nf` using `FractionalIdeal.mul_le.mpr fun i hi j hj ↦ FractionalIdeal.mul_mem_mul (key2 hi) hj`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [mul_assoc, inv_mul_cancel₀ hNf, mul_one, one_mul] at key3`. Establish `: dualLat 𝔠 ≤ Nf`. Unfold `dualLat`. Rewrite using `[FractionalIdeal.dual_eq_mul_inv]`. Conclude with `key3`.
-
-Conclude with `(FractionalIdeal.coe_le_coe.mpr this)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualLat_le {F : Type} [Field F] [NumberField F] (𝔠 : FracId F) (c : 𝔠.elt) (hc0 : (c : F) ≠ 0)
     (N : Submodule (𝓞 F) F) (hN0 : N ≠ ⊥) (hN : N ≤ dualLat 𝔠)
@@ -169,27 +163,27 @@ theorem dualLat_le {F : Type} [Field F] [NumberField F] (𝔠 : FracId F) (c : �
   exact (FractionalIdeal.coe_le_coe.mpr this)
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔠 c hc Λ e h hΛa hdisc hspan hpos P _hanti _hadd hlin htr hdual hker`. Establish `hn : 0 < Module.finrank ℚ F` using `Module.finrank_pos`. Establish `hc0 : (c : F) ≠ 0` using `fun h0 ↦ by`. Use `hc (e ⟨0, hn⟩)` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ this`. Establish `hb : ∀ (s : F) (l₀ l : Λ), (∑ j, (h j : ℂ) * (((e j s : ℂ) * (l₀ : Fin (Module.finrank ℚ F) → ℂ) j) * starRingEnd ℂ ((l : Fin (Module.finrank ℚ F) → ℂ) j))).im = 2 * ((Algebra.trace ℚ F ((c : F) * s * P l₀ l) : ℚ) : ℝ)`. Introduce `s l₀ l`. Take `⟨m, hm0, hmint⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ F).mpr (Algebra.IsAlgebraic.isAlgebraic s)).exists_integral_multiple`. Set `a : 𝓞 F` to `⟨m • s, hmint⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ha : (a : F) = (m : F) * s` using `by simp [a, zsmul_eq_mul]`. Establish `hal : (fun j ↦ (e j (a : F) : ℂ) * (l₀ : Fin (Module.finrank ℚ F) → ℂ) j) ∈ Λ` using `hΛa a l₀ l₀.2`. Establish `h1` using `htr ⟨_, hal⟩ l`. Rewrite `h1` using `[hlin a l₀ l ⟨_, hal⟩ rfl]`. Establish `e1 : (∑ j, (h j : ℂ) * (((⟨_, hal⟩ : Λ) : Fin (Module.finrank ℚ F) → ℂ) j * starRingEnd ℂ ((l : Fin (Module.finrank ℚ F) → ℂ) j))) = ((m : ℝ) : ℂ) * ∑ j, (h j : ℂ) * (((e j s : ℂ) * (l₀ : Fin (Module.finrank ℚ F) → ℂ) j) * starRingEnd ℂ ((l : Fin (Module.finrank ℚ F) → ℂ) j))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Simplify using `only [ha, map_mul, map_intCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e2 : Algebra.trace ℚ F ((c : F) * ((a : F) * P l₀ l)) = (m : ℚ) * Algebra.trace ℚ F ((c : F) * s * P l₀ l)`. Rewrite using `[ha, show (c : F) * ((m : F) * s * P l₀ l) = (m : ℚ) • ((c : F) * s * P l₀ l) by`. Rewrite using `[Algebra.smul_def, map_intCast]`. Use the proof step `ring, map_smul, smul_eq_mul]`. Rewrite `h1` using `[e1, e2, Complex.im_ofReal_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h1`. Establish `hm : (m : ℝ) ≠ 0` using `Int.cast_ne_zero.mpr hm0`. Apply `mul_left_cancel₀ hm` to reduce the goal to its premises. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N := Submodule.span (𝓞 F) {t | ∃ l l' : Λ, t = P l l'} with hNdef`. Establish `hN : N ≤ dualLat 𝔠` using `Submodule.span_le.mpr (by rintro _ ⟨l, l', rfl⟩; exact hdual l l')`. Establish `hN0 : N ≠ ⊥`. Take `⟨l, hl, l', hl', hne⟩` from `exists_im_ne_zero hn Λ hspan h hpos`. Introduce `hbot`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmem : P ⟨l, hl⟩ ⟨l', hl'⟩ ∈ N` using `Submodule.subset_span ⟨_, _, rfl⟩`. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`. Apply `hne` to reduce the goal to its premises. Use `htr ⟨l, hl⟩ ⟨l', hl'⟩` as an intermediate fact. Rewrite `this` using `[hmem]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Introduce `t ht`. Use `dualLat_le 𝔠 c hc0 N hN0 hN (fun s hs a ha ↦ ?_) ht` and prove the remaining obligations. Use `isIntegral_of_stab hn Λ e hspan _ (fun l₀ hl₀ ↦ ?_)` and prove the remaining obligations. Establish `hx` using `hker (fun j ↦ (e j s : ℂ) * l₀ j) (fun l ↦ ?_) a ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `hx using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `only [map_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩` from `hs (P ⟨l₀, hl₀⟩ l) (Submodule.subset_span ⟨_, _, rfl⟩)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[hb s ⟨l₀, hl₀⟩ l, hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dualLat_le_span_values : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (c : 𝔠.elt), IsTotPos (c : F) →
     ∀ (Λ : Submodule ℤ (Fin (Module.finrank ℚ F) → ℂ)) (e : Fin (Module.finrank ℚ F) ≃ (F →+* ℝ)) (h : Fin (Module.finrank ℚ F) → ℝ),

@@ -14,15 +14,15 @@ namespace GlobalTheory.FinTranslate
 open GlobalTheory.WeilVacMove
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hb : ∀ n : ℕ, (n : ℝ) / 2 ≤ (∑ k ∈ Finset.range n, z ^ k).re`. Introduce `n`. Rewrite using `[Complex.re_sum]`. Establish `hk : ∀ k ∈ Finset.range n, (1 / 2 : ℝ) ≤ (z ^ k).re`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k _`. Establish `h1 : ‖z ^ k‖ ^ 2 = 1` using `by rw [norm_pow, hz, one_pow, one_pow]`. Establish `h2 : ‖z ^ k - 1‖ ^ 2 < 1` using `by nlinarith [h k, norm_nonneg (z ^ k - 1)]`. Rewrite `h1`, `h2` using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using `only [Complex.sub_re, Complex.sub_im, Complex.one_re, Complex.one_im, sub_zero] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `Finset.card_nsmul_le_sum _ _ _ hk` as an intermediate fact. Rewrite `this` using `[Finset.card_range, nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp : 0 < ‖z - 1‖` using `norm_pos_iff.2 (sub_ne_zero.2 hne)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `exists_nat_gt (2 / ‖z - 1‖)`. Establish `h3 : (∑ k ∈ Finset.range n, z ^ k).re ≤ 1 / ‖z - 1‖`. Use `(Complex.re_le_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[geom_sum_eq hne, norm_div]`. Conclude with `div_le_div_of_nonneg_right (h n).le hp.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `hb n`. Establish `h5 : 2 / ‖z - 1‖ = 2 * (1 / ‖z - 1‖)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_near {z : ℂ} (hz : ‖z‖ = 1) (h : ∀ k : ℕ, ‖z ^ k - 1‖ < 1) : z = 1 := by
   by_contra hne
@@ -50,11 +50,11 @@ theorem eq_one_of_pow_near {z : ℂ} (hz : ‖z‖ = 1) (h : ∀ k : ℕ, ‖z ^
   linarith
 
 /- English proof (translation)
-Establish `hp : Continuous fun α : Af F => pairA F 0 α` using `continuous_const.prodMk continuous_id`. Establish `hc : Continuous fun α : Af F => ‖ψ (pairA F 0 α) - 1‖` using `((hψ.1.comp hp).sub continuous_const).norm`. Establish `h0 : ‖ψ (pairA F 0 0) - 1‖ < 1`. Establish `: pairA F 0 0 = 0` using `rfl`. Rewrite using `[this, AddChar.map_zero_eq_one, sub_self, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_pos`. Take `⟨N, hN, h⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F {α | ‖ψ (pairA F 0 α) - 1‖ < 1} ((isOpen_lt hc continuous_const).mem_nhds h0)`. Use `Filter.mem_of_superset (GlobalTheory.AdLat.OpenLat.nsmul_integral_mem_nhds F N hN) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `eq_one_of_pow_near (hψ.2.1 _) fun k => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : pairA F 0 (N • k • a) = k • pairA F 0 (N • a)` using `Prod.ext (smul_zero k).symm (smul_comm N k a)`. Establish `h1 : ‖ψ (pairA F 0 (N • k • a)) - 1‖ < 1` using `h (k • a) fun v => nsmul_mem (ha v) k`. Rewrite `h1` using `[e, AddChar.map_nsmul_eq_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eventually_fin_eq_one {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
     ∀ᶠ c : Af F in 𝓝 0, ψ (pairA F 0 c) = 1 := by
@@ -90,11 +90,9 @@ def annSub (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (a : WO S T) : AddSubg
       rwa [symplOH_add_right, AddChar.map_add_eq_mul, hx.2, mul_one] at this
 
 /- English proof (translation)
-Use `haveI : IsTopologicalAddGroup (AE D) := IsTopologicalRing.to_topologicalAddGroup`. Use `haveI : IsTopologicalAddGroup (WO S T) := Pi.topologicalAddGroup`. Use `(annSub ψ S T a).isOpen_of_mem_nhds (g := 0) ?_` and prove the remaining obligations. Establish `key : ∀ φ : WO S T → AF D.host.F, Continuous φ → φ 0 = 0 → (∀ u, fstA D.host.F (φ u) = 0) → ∀ᶠ u in 𝓝 (0 : WO S T), ψ (φ u) = 1`. Introduce `φ hφ h0 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun u => sndA D.host.F (φ u)` using `continuous_snd.comp hφ`. Establish `ht : Filter.Tendsto (fun u => sndA D.host.F (φ u)) (𝓝 0) (𝓝 0)` using `hc.tendsto' 0 0 (by rw [h0, map_zero])`. Use `(ht.eventually (eventually_fin_eq_one hψ)).mono fun u hu => ?_` and prove the remaining obligations. Establish `e : pairA D.host.F 0 (sndA D.host.F (φ u)) = φ u` using `Prod.ext (h1 u).symm rfl`. Rewrite `hu` using `[e]`. Then use the resulting hypothesis.
-
-Conclude with `(key (fun u => symplOH S T u a) (continuous_symplOH S T continuous_id continuous_const) (symplOH_zero_left S T a) fun u => fst_symplOH S T u a (Or.inr ha)).and (key (fun u => symplOH S T a u) (continuous_symplOH S T continuous_const continuous_id) (symplOH_zero_right S T a) fun u …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isOpen_annSub (hψ : IsCharAF D.host.F ψ) {a : WO S T} (ha : a.map (infPart D) = 0) :
     IsOpen (annSub ψ S T a : Set (WO S T)) := by
@@ -116,7 +114,7 @@ theorem isOpen_annSub (hψ : IsCharAF D.host.F ψ) {a : WO S T} (ha : a.map (inf
       (symplOH_zero_right S T a) fun u => fst_symplOH S T a u (Or.inl ha))
 
 /- English proof (translation)
-The claim follows from `heisO_quasi ψ S T a f hf.quasi level := by obtain ⟨U, hU, h1⟩ := hf.level refine ⟨U ⊓ annSub ψ S T a, hU.inter (isOpen_annSub hψ ha), fun u hu h0 => ?_⟩ have h2 : ψ (symplOH S T u a) = 1 ∧ ψ (symplOH S T a u) = 1 := hu.2 conv_rhs => rw [← h1 u hu.1 h0] rw [heisO_heisO, heisO_heis …`.
+A detailed English derivation is pending.
 -/
 theorem isTheta_heisO_fin (hψ : IsCharAF D.host.F ψ) {a : WO S T} (ha : a.map (infPart D) = 0) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (heisO ψ S T a f) where
@@ -140,7 +138,7 @@ theorem isTheta_heisO_fin (hψ : IsCharAF D.host.F ψ) {a : WO S T} (ha : a.map 
     exact contDiff_const.mul (hf.smooth k L h1 h2 (w + a))
 
 /- English proof (translation)
-Introduce `D ψ S T hψ f hf ι s a c ha`. Conclude with `Finset.sum_induction _ (IsThetaFunO ψ S T) (fun _ _ => isTheta_add) isTheta_zero fun i hi => isTheta_smul _ (isTheta_heisO_fin hψ (ha i hi) hf)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isTheta_sum_heisO_fin : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsCharAF D.host.F ψ → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → ∀ (ι : Type) (s : Finset ι) (a : ι → WO S T) (c : ι → ℂ), (∀ i ∈ s, (a i).map (infPart D) = 0) → IsThetaFunO ψ S T (∑ i ∈ s, c i • heisO ψ S T (a i) f) := by
   intro D ψ S T hψ f hf ι s a c ha

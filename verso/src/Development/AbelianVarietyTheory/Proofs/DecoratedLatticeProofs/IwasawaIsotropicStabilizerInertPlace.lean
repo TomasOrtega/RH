@@ -23,11 +23,9 @@ open Matrix Formalism.UG GlobalTheory.InertIwasawa
 variable {A : Type} [CommRing A] {n r : ℕ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `e : (P * X).det = (detRowAlternating (n` using `Fin r) (R := A)).toMultilinearMap fun i => ∑ k, P i k • X k := by`. Express the relevant statement in the definitionally equal form `detRowAlternating (P * X) = detRowAlternating _`. Use `congr 1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[mul_apply]`. Rewrite `e` using `[h, det_one, MultilinearMap.map_sum]`. Use `one_ne_zero (e.trans (Finset.sum_eq_zero fun f _ => ?_))` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ]`.
-
-Conclude with `(congrArg (_ • ·) (hc f)).trans (smul_zero _)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_minor_ne_zero [Nontrivial A] {X : Matrix (Fin n) (Fin r) A} {P : Matrix (Fin r) (Fin n) A}
     (h : P * X = 1) : ∃ f : Fin r → Fin n, (X.submatrix f id).det ≠ 0 := by
@@ -44,17 +42,17 @@ theorem exists_minor_ne_zero [Nontrivial A] {X : Matrix (Fin n) (Fin r) A} {P : 
   exact (congrArg (_ • ·) (hc f)).trans (smul_zero _)
 
 /- English proof (translation)
-Use `haveI := φ.toEquiv.nontrivial`. Take `⟨f₀, h₀⟩` from `exists_minor_ne_zero h`. Use `haveI : Nonempty (Fin r → Fin n) := ⟨f₀⟩`. Take `⟨f, hf⟩` from `Finite.exists_max fun f : Fin r → Fin n => V.valuation (φ (X.submatrix f id).det)`. Establish `h1 : 0 < V.valuation (φ (X.submatrix f id).det)` using `lt_of_lt_of_le (zero_lt_iff.2 (by simpa using h₀)) (hf f₀)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit (X.submatrix f id)`. Rewrite using `[isUnit_iff_isUnit_det, ← MulEquiv.isUnit_map (f := φ), isUnit_iff_ne_zero]`. Conclude with `fun e => by simp [e] at h1`. Use `set Y := X * (hu.unit⁻¹).1 with hY`. Establish `hX : X = Y * X.submatrix f id` using `by rw [hY, Matrix.mul_assoc, hu.val_inv_mul, Matrix.mul_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hO : ∀ i j, Y i j ∈ O` using `fun i j => by`. Establish `e : X.submatrix (Function.update f j i) id = (X.submatrix f id).updateRow j (∑ k, Y i k • X.submatrix f id k)`. Use extensionality with `a b`. Distinguish the cases in `ha : a = j`. Substitute `ha` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use `congrFun (congrFun hX i) b` as an intermediate fact. Simplify `this` using `[mul_apply]`. Simplify using `[ha]`. Use `hf (Function.update f j i)` as an intermediate fact. Rewrite `this` using `[e, det_updateRow_sum, smul_eq_mul, map_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hφ, ← V.valuation_le_one_iff]`. Conclude with `(mul_le_iff_le_one_left h1).1 this`. Use `⟨Matrix.of fun i j => ⟨_, hO i j⟩, hu.unit, ⟨(1 : Matrix (Fin n) (Fin n) O).submatrix f id, ?_⟩, hX⟩` and prove the remaining obligations. Establish `e : Y.submatrix f id = 1`. Rewrite using `[← hu.mul_val_inv, hY]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Both sides reduce to the same expression. Use extensionality with `i j`. Use `congrFun (congrFun e i) j` as an intermediate fact. Simplify `this` using `[mul_apply, one_apply, apply_ite ((↑) : O → A)]`.
+A detailed English derivation is pending.
 -/
 theorem exists_frame (O : Subring A) {K : Type} [Field K] (V : ValuationSubring K) (φ : A ≃+* K)
     (hφ : ∀ y, y ∈ O ↔ φ y ∈ V) {X : Matrix (Fin n) (Fin r) A} {P : Matrix (Fin r) (Fin n) A} (h : P * X = 1) :
@@ -92,7 +90,7 @@ theorem exists_frame (O : Subring A) {K : Type} [Field K] (V : ValuationSubring 
   simpa [mul_apply, one_apply, apply_ite ((↑) : O → A)] using this
 
 /- English proof (translation)
-The claim follows from `haveI := φ.toEquiv.nontrivial IsLocalRing.of_surjective' ((φ.symm.toRingHom.comp V.subtype).codRestrict O fun x => (hφ _).2 (by simp)) fun y => ⟨⟨φ y, (hφ _).1 y.2⟩, Subtype.ext (φ.symm_apply_apply _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLocalRing_of_equiv (O : Subring A) {K : Type} [Field K] (V : ValuationSubring K) (φ : A ≃+* K)
     (hφ : ∀ y, y ∈ O ↔ φ y ∈ V) : IsLocalRing O :=
@@ -101,27 +99,25 @@ theorem isLocalRing_of_equiv (O : Subring A) {K : Type} [Field K] (V : Valuation
     fun y => ⟨⟨φ y, (hφ _).1 y.2⟩, Subtype.ext (φ.symm_apply_apply _)⟩
 
 /- English proof (translation)
-Use `haveI := isLocalRing_of_equiv O V φ hφ`. Take `⟨B, hB, eB⟩` from `exists_gram O hσ hu hΛ ha`. Set `s : O →+* O` to `σ.restrict O O hσ`. Establish `hc : ∀ {a b : Type} (M : Matrix a b O), cT σ (M.map O.subtype) = (cT s M).map O.subtype` using `fun M => rfl`. Establish `key : ∀ h ∈ UJ σ J, ∃ (C : Matrix (Fin n) (Fin r) O) (c : GL (Fin r) A), (∃ L : Matrix (Fin r) (Fin n) O, L * C = 1) ∧ cT s C * B * C = 0 ∧ h.1 * X * (c⁻¹).1 = a.1 * C.map O.subtype` using `fun h hh => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, c, h1, h2⟩` from `exists_frame O V φ hφ (X := (a⁻¹ * h).1 * X) (P := P * ((a⁻¹ * h)⁻¹).1) (by rw [Matrix.mul_assoc, ← Matrix.mul_assoc _ _ X, Units.inv_mul, Matrix.one_mul, hP])`. Establish `h3 : h.1 * X * (c⁻¹).1 = a.1 * C.map O.subtype`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel_left]`. Use `_ = _ := by rw [h2, Matrix.mul_assoc, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨C, c, h1, ?_, h3⟩` and prove the remaining obligations. Apply `Matrix.map_injective O.subtype_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Matrix.map _ O.subtype = Matrix.map _ O.subtype`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, ← hc, eB, Matrix.map_zero _ (map_zero _)]`. Combine the equalities or inequalities in the displayed calculation.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT σ (c⁻¹).1 * (cT σ X * (cT σ h.1 * J * h.1) * X) * (c⁻¹).1 := by`. Rewrite using `[← h3, cT_mul, cT_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `_ = 0 := by rw [show cT σ h.1 * J * h.1 = J from hh, hX, Matrix.mul_zero, Matrix.zero_mul]`. Take `⟨C, c, h1, h2, h3⟩` from `key 1 (one_mem _)`. Take `⟨C', c', h1', h2', h3'⟩` from `key g⁻¹ (inv_mem hg)`. Take `⟨k, hk, hkC⟩` from `GlobalTheory.T.exists_unitaryIsometry_isotropicFrame_localRing O s (fun x => Subtype.ext (hs x)) ⟨⟨τ, hτO⟩, Subtype.ext hτ⟩ (fun u hu' hsu => by`. Take `⟨b, hb⟩` from `hu'.exists_right_inv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨x, hx, e⟩` from `hN u u.2 (congrArg Subtype.val hsu) ⟨b, b.2, congrArg Subtype.val hb⟩`. Conclude with `⟨⟨x, hx⟩, Subtype.ext e⟩) n r B (by`. Apply `Matrix.map_injective O.subtype_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Matrix.map _ O.subtype = Matrix.map _ O.subtype`. Rewrite using `[← hc, eB, cT_mul, cT_mul, cT_cT hs, hJ, Matrix.mul_assoc]) hB C' C h1' h1 h2' h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hka : (a * bc O.subtype k * a⁻¹).1 * a.1 = a.1 * k.1.map O.subtype`. Rewrite using `[← Units.val_mul, inv_mul_cancel_right]`. Both sides reduce to the same expression. Use `⟨a * bc O.subtype k * a⁻¹, ?_, fun w => ?_, c'⁻¹ * c, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cT σ (a.1 * k.1.map O.subtype * (a⁻¹).1) * J * (a.1 * k.1.map O.subtype * (a⁻¹).1) = J`.
+Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cT_mul, cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT σ (a.1 * (a⁻¹).1) * J * (a.1 * (a⁻¹).1) := by`. Rewrite using `[← eB, hc, ← Matrix.map_mul, ← Matrix.map_mul, hk, eB, cT_mul]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [Units.mul_inv, cT_one, Matrix.one_mul, Matrix.mul_one]`. Take `⟨w, rfl⟩ : ∃ w', w = a.1 *ᵥ w'` from `⟨(a⁻¹).1 *ᵥ w, by rw [mulVec_mulVec, Units.mul_inv, one_mulVec]⟩`. Rewrite using `[mulVec_mulVec, hka, ← mulVec_mulVec, ← ha, ← ha]`. Conclude with `mulVec_mem_iff O k w`.
+Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : (a * bc O.subtype k * a⁻¹).1 * ((g⁻¹).1 * X * (c'⁻¹).1) = X * (c⁻¹).1`. Rewrite using `[h3', ← Matrix.mul_assoc, hka, Matrix.mul_assoc, ← Matrix.map_mul, hkC, ← h3, Units.val_one, Matrix.one_mul]`. Generalize the expression as in `a * bc O.subtype k * a⁻¹ = κ at e`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`.
-
-Use `_ = ((g * κ⁻¹) * κ * g⁻¹).1 * X * (c'⁻¹ * c).1 := by`. Rewrite using `[← e]`. Simplify using `only [Units.val_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [inv_mul_cancel_right, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_stab (O : Subring A) {K : Type} [Field K] (V : ValuationSubring K) (φ : A ≃+* K)
     (hφ : ∀ y, y ∈ O ↔ φ y ∈ V) {σ : A →+* A} (hσ : ∀ x ∈ O, σ x ∈ O)
@@ -196,7 +192,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n 
   {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R']
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [inclR]`. Consider the case `add y z hy hz => rw [add_mul, map_add, map_add, hy, hz, add_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensNU_mul_inclR (j : R →ₗ[F] R') (hj : ∀ a b, j (a * b) = j a * j b) (y : R ⊗[F] E) (x : E) :
     tensNU j hj (y * inclR R x) = tensNU j hj y * inclR R' x := by
@@ -206,9 +202,9 @@ theorem tensNU_mul_inclR (j : R →ₗ[F] R') (hj : ∀ a b, j (a * b) = j a * j
   | add y z hy hz => rw [add_mul, map_add, map_add, hy, hz, add_mul]
 
 /- English proof (translation)
-Rewrite using `[glue, glue, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one]`. Use `congr 1`. Use extensionality with `a b`. Use `congrArg j (congrFun (congrFun h a) b)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, map_sum, mul_comm (X _ _), hj] at this`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Matrix.map_apply, mul_comm (X' _ _), this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glue_mul_rect {A B : Type} [CommRing A] [CommRing B] (j : B →ₙ+* A) {M : Matrix (Fin n) (Fin n) B}
     {β : Matrix (Fin r) (Fin r) B} {X : Matrix (Fin n) (Fin r) B} {X' : Matrix (Fin n) (Fin r) A}
@@ -221,7 +217,7 @@ theorem glue_mul_rect {A B : Type} [CommRing A] [CommRing B] (j : B →ₙ+* A) 
   simp only [Matrix.mul_apply, Matrix.map_apply, mul_comm (X' _ _), this]
 
 /- English proof (translation)
-Take `⟨β, h⟩` from `h`. Use `⟨⟨glue (tensNU j hj) 1 β.1, glue (tensNU j hj) 1 (β⁻¹).1, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[glue_mul, one_mul, Units.mul_inv, glue_one]`. Rewrite using `[glue_mul, one_mul, Units.inv_mul, glue_one]`. Conclude with `glue_mul_rect (tensNU j hj) (fun y a b => tensNU_mul_inclR j hj y (e a b)) h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extH_stab (j : R →ₗ[F] R') (hj : ∀ a b, j (a * b) = j a * j b) (e : Matrix (Fin n) (Fin r) E) (g : HA R σ J)
     (h : ∃ β : GL (Fin r) (R ⊗[F] E), (HA.mat R σ J g).1 * e.map (inclR R) = e.map (inclR R) * β.1) :
@@ -241,13 +237,11 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.LFun
 
 /- English proof (translation)
-Establish `h` using `(InertChart.under_eq_iff hw w).2 rfl`. Take `⟨a, ha⟩` from `Frames.exists_isLatticeFrame (F := F) L`. Establish `hN` using `GlobalTheory.UnramSelfDual.exists_norm v hσ (GlobalTheory.UnramConjUnit.exists_sub_conj_unit _ _ _ hσ v hv)`. Establish `hO : ∀ z, z ∈ GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal.OEv F E v ↔ z ∈ intLoc F E v` using `GlobalTheory.StabOrbit.mem_OEv_iff v`. Simplify using `only [hO] at hN`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `ι : E →+* Fv F v ⊗[F] E` to `inclR (Fv F v)`. Take `⟨k, h1, h2, h3⟩` from `exists_stab (intLoc F E v) (w.adicCompletionIntegers E) (InertChart.complEquiv hw h) (InertChart.mem_intLoc_iff hw h) (σ := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Fv F v) σ) (fun _ => sigR_mem_intLoc σ) (sigR_invol (InertChart.conj_conj hσ)) (τ := ι c) (t …`. Rewrite using `[← map_add, hc, map_one]) hN`. Use the proof step `(J := JR (Fv F v) J) (by ext i j; exact congrArg ι (hJ.1 i j))`. Use the proof step `((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_det_JR hJ.2)) (Λ := latLoc F L v)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use the proof step `(fun y => Submodule.ext_iff.1 hL y) (ha v) (X := e.map ι) (P := p.map ι)`. Use the proof step `(by rw [← Matrix.map_mul, hp, Matrix.map_one _ (map_zero _) (map_one _)])`. Use the proof step `(by rw [GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.cT_map (σ : E →+* E) _ ι (fun _ => rfl), show JR (Fv F v) J = J.map ι from rfl, ← Matrix.map_mul, ← Matrix.map_mul, he, Matrix.map_zero _ (map_zero _)])`. Use the proof step `(g := matHom _ σ J y) y.2`. Set `κ : GLoc σ J v` to `⟨k, h1⟩`.
-
-Establish `h4 : ∃ β : GL (Fin r) (Fv F v ⊗[F] E), (HA.mat (Fv F v) σ J (y * κ⁻¹)).1 * e.map (inclR (Fv F v)) = e.map (inclR (Fv F v)) * β.1` using `h3`. Use `⟨y * κ⁻¹, κ, ?_, h2, (inv_mul_cancel_right y κ).symm⟩` and prove the remaining obligations. Rewrite using `[emb, MonoidHom.comp_apply, ofFin, embLocFin]`. Conclude with `extH_stab σ J _ _ e _ (extH_stab σ J _ _ e _ h4)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_inert {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {c : 𝓞 E} (hc : (c : E) + σ c = 1) {n r : ℕ}
@@ -297,11 +291,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 
 /- English proof (translation)
-Introduce `D T T₀ r d v hv y`. Use `haveI := isLattice_frameLat_host T`. Use `v.isMaximal` as an intermediate fact. Take `⟨P, hP, hPv⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal`. Set `w : HeightOneSpectrum (𝓞 D.host.E)` to `⟨P, hP.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h : w.under (𝓞 D.host.F) = v` using `HeightOneSpectrum.ext hPv.over.symm`. Establish `hi` using `GlobalTheory.LPositivity.split_or_inert D w`. Rewrite `hi` using `[h]`. Take `⟨c, hc⟩` from `D.host.exists_trace_one`. Rewrite `hc` using `[← show D.sp.cm.sig (c : D.host.E) = D.host.conj c from D.host.φ₀.injective (((isCMExt_host D).2.2.2 _ _).trans (Formalism.HC.HostAx.conjE_apply _ _ _).symm)]`.
-
-Conclude with `exists_of_inert (isCMExt_host D) (c := c) hc (GlobalTheory.Doubling.isHermND_gram T) (hi.resolve_left hv) ((GlobalTheory.SelfDualLatticeCompare.unram_iff ..).2 fun u hu => haveI := u.isPrime GlobalTheory.FinPl.TamePlaces.extUnramAt D v u.asIdeal hu) (SelfDual.isSelfDualAt_frameLa …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawa_inert : ∀ (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec T T₀ r) (v : FinPl D), ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v → ∀ y : Gv T v, ∃ q k : Gv T v, emb D.sp.cm.sig T.gram v q ∈ stab d ∧ k ∈ stabLoc D.sp.cm.sig T.gram (frameLat T) v ∧ y = q * k := by
   intro D T T₀ r d v hv y

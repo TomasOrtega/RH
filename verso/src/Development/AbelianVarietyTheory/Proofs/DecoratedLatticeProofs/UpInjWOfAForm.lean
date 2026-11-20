@@ -18,15 +18,15 @@ open GlobalTheory.DownLift GlobalTheory.Core.Rk.Exh
 namespace GlobalTheory.Core.Rk.UpInjWProof
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC hS hIrr SF hSF hA`. Take `⟨a, ha, hAF⟩` from `hA`. Introduce `i t x hx h0`. Take `⟨h, -, -, -, hspan, -⟩` from `GlobalTheory.SphOpsModel.sphericalOperators_forms_on_rank_space_normal_alt R F hC hS hIrr SF hSF i`. Establish `hpart : ∀ c, GlobalTheory.Hk3.Wcc R SF i c ≤ LinearMap.range (R.thG i t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `c y hy`. Distinguish the cases in `hc : GlobalTheory.Hk3.Wcc R SF i c = ⊥`. Rewrite `hy` using `[hc]`. Rewrite using `[(Submodule.mem_bot ℂ).1 hy]`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, hS'⟩` from `hAF i t c hc`. Take `⟨B, -, -, hzpos, -⟩` from `hz`. Establish `hne : ((a i * z : ℝ) : ℂ) ≠ 0`. Conclude with `(mul_pos (ha i) hzpos).ne'` after adjusting the coercions. Use `⟨((a i * z : ℝ) : ℂ)⁻¹ • LinearMap.adjoint (R.thG i t) y, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul, hS' y hy, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Establish `hxr : x ∈ LinearMap.range (R.thG i t)`. Establish `: x ∈ LinearMap.range (GlobalTheory.Hk3.eH R i)` using `⟨x, hx⟩`. Rewrite `this` using `[← hspan]`. Conclude with `(iSup_le hpart) this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, rfl⟩` from `hxr`. Establish `h1 : ⟪R.thG i t v, R.thG i t v⟫_ℂ = 0`. Rewrite using `[← LinearMap.adjoint_inner_right, h0, inner_zero_right]`. Conclude with `inner_self_eq_zero.1 h1`.
+A detailed English derivation is pending.
 -/
 theorem upInjW_of_aForm : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → GlobalTheory.Hk3.SchurAll R → (∀ χ ∈ A.X, IsAbsIrrChar χ) → ∀ SF, GlobalTheory.Hk3.IsSF R SF → GlobalTheory.LiftRows.AForm R SF → GlobalTheory.LiftRows.UpInjW R := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC hS hIrr SF hSF hA

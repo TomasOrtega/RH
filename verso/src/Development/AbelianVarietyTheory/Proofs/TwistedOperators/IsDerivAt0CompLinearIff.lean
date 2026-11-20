@@ -11,13 +11,11 @@ noncomputable section
 namespace GlobalTheory.ThetaWitness
 
 /- English proof (translation)
-Establish `key : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = e 0 → ∀ (U : X.Opens) (_ : ⊤ ≤ v ⁻¹ᵁ U) (f : Γ(X, U)), fderiv ℂ (fun z => valAt' (e (L z)) U f) 0 w = fderiv ℂ (fun z => valAt' (e z) U f) 0 (L w)`. Introduce `h0 U hU f`. Establish `hmem : (0 : Fin g → ℂ) ∈ {b ∈ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ e b ⁻¹ᵁ U}`. Use `⟨trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[← h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _`. Conclude with `hU (Set.mem_univ _)`. Establish `hd : DifferentiableAt ℂ (fun z => valAt' (e z) U f) 0` using `((he U f).2 0 hmem).differentiableAt ((he U f).1.mem_nhds hmem)`. Set `L'` to `LinearMap.toContinuousLinearMap L`. Establish `hd' : HasFDerivAt (fun z => valAt' (e z) U f) (fderiv ℂ (fun z => valAt' (e z) U f) 0) (L' 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `hd.hasFDerivAt`. Use `(hd'.comp (0 : Fin g' → ℂ) L'.hasFDerivAt).fderiv` as an intermediate fact. Conclude with `DFunLike.congr_fun this w`. Unfold `IsDerivAt0`.
-
-Simplify using `only [map_zero]`. Conclude with `and_congr_right fun h0 => forall_congr' fun U => forall_congr' fun hU => forall_congr' fun f => by`. Rewrite using `[key h0 U hU f]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDerivAt0_comp_linear_iff {g g' : ℕ} {X : Scheme.{0}} (e : (Fin g → ℂ) → (Sp ℂ ⟶ X))
     (he : IsHolTo Set.univ e) (L : (Fin g' → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (w : Fin g' → ℂ)
@@ -44,17 +42,15 @@ theorem isDerivAt0_comp_linear_iff {g g' : ℕ} {X : Scheme.{0}} (e : (Fin g →
     rw [key h0 U hU f]
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Establish `hL : Continuous L` using `L.toLinearMap.continuous_of_finiteDimensional`. Establish `hLd : Differentiable ℂ L` using `(LinearMap.toContinuousLinearMap L.toLinearMap).differentiable`. Establish `hhol : IsHolTo Set.univ (fun z => (e₂ (L z)).left)` using `fun U f => by`. Take `⟨h1, h2⟩` from `he₂.2.2.1 U f`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `h1.preimage hL`. Use `h2.comp hLd.differentiableOn ?_` and prove the remaining obligations. Introduce `z hz`. Conclude with `⟨trivial, hz.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `GlobalTheory.UnifPoint.exists_linearEquiv_of_period hP he₁ hk₁ (e₀ := fun z => e₂ (L z)) (fun z w => by simp only [map_add]; exact he₂.1 _ _) (he₂.2.1.comp L.surjective) hhol (by`. Use `(hc₂.preimage_of_injOn L.injective.injOn).mono ?_` and prove the remaining obligations. Introduce `z hz`. Conclude with `hz)`. Establish `hid : ∀ a, h (Pi.single a 1) = Pi.single a 1` using `fun a => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, h1, h2⟩` from `hb a`. Establish `d2` using `(isDerivAt0_comp_linear_iff _ he₂.2.2.1 L.toLinearMap _ v).2 h2`. Establish `d3 : IsDerivAt0 (fun z => (e₁ (h z)).left) (Pi.single a 1) v`. Use `d2 using 2 with z` and compare the differences between its conclusion and the goal. Rewrite using `[hh]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `d4` using `(isDerivAt0_comp_linear_iff _ he₁.2.2.1 h.toLinearMap _ v).1 d3`. Conclude with `huniq _ _ v d4 h1`. Establish `hlin : h.toLinearMap = LinearMap.id` using `LinearMap.pi_ext' fun a => LinearMap.ext_ring (by simpa using hid a)`. Establish `hid' : ∀ z, h z = z` using `fun z => LinearMap.congr_fun hlin z`.
-
-Introduce `z`. Rewrite using `[← hh z, hid']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_eq_of_der {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S : Scheme.{0}} {t : SAB H S}
     {y₁ y₂ : Sp ℂ ⟶ S} (hy : y₁ = y₂) {D : Datum H} {g₁ g₂ : ℕ} {ty : Fin g₁ → (E →+* ℂ)}
@@ -99,37 +95,33 @@ end GlobalTheory.ThetaWitness
 namespace GlobalTheory.ThetaWitness
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U k x W₁ W₂ Y₁ Y₂ v`. Set `L : (Fin W₁.g → ℂ) ≃ₗ[ℂ] (Fin W₂.g → ℂ)` to `LinearEquiv.funCongrLeft ℂ ℂ (W₂.e.trans W₁.e.symm)`. Establish `hL : ∀ z j, L z j = z (W₁.e.symm (W₂.e j))` using `fun z j => rfl`. Establish `hLd : Differentiable ℂ L` using `(LinearMap.toContinuousLinearMap L.toLinearMap).differentiable`. Establish `hp : (fun j => perFr (U.X k) x.1 v (relab c σ (W₂.e j).1) (W₂.e j).2) = L (fun j => perFr (U.X k) x.1 v (relab c σ (W₁.e j).1) (W₁.e j).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[hL]`. Generalize the expression as in `hs : W₁.e (W₁.e.symm (W₂.e j)) = s`. Rewrite `hs` using `[Equiv.apply_symm_apply]`. Substitute `hs` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Both sides reduce to the same expression. Rewrite using `[hp]`. Generalize the expression as in `(fun j => perFr (U.X k) x.1 v (relab c σ (W₁.e j).1) (W₁.e j).2) = z`. Establish `hPL : ∀ a, L (W₁.Pm a) = W₂.Pm ((W₂.φ k).symm (W₁.φ k a))` using `fun a => by`. Use function extensionality and compare the values at `j`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hL, W₁.pm_eq, W₂.pm_eq, LinearEquiv.apply_symm_apply]`. Generalize the expression as in `hs : W₁.e (W₁.e.symm (W₂.e j)) = s`. Rewrite `hs` using `[Equiv.apply_symm_apply]`. Substitute `hs` using the available equality. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 
-Establish `hEF : ∀ a b, (W₂.F.Di (W₂.ik k)).EF ((W₂.φ k).symm (W₁.φ k a)) ((W₂.φ k).symm (W₁.φ k b)) = (W₁.F.Di (W₁.ik k)).EF a b` using `fun a b => by`. Establish `h1` using `W₂.isom k ((W₂.φ k).symm (W₁.φ k a)) ((W₂.φ k).symm (W₁.φ k b))`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply, ← W₁.isom k a b]`. Conclude with `h1` after adjusting the coercions. Establish `hspan : Submodule.span ℝ (Set.range W₁.Pm) = ⊤` using `W₁.per.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHH : ∀ z w, hermForm Y₂.Hm (L z) (L w) = hermForm Y₁.Hm z w` using `fun z w => by`. Use `GlobalTheory.KeyFam.SamePeriod.hermForm_eq_of_im Y₂.Hm L.toLinearMap Y₁.Hm LinearMap.id hspan (by` as an intermediate fact. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`. Simplify using `only [LinearEquiv.coe_coe, LinearMap.id_coe, id_eq]`. Rewrite using `[hPL, hPL, Y₂.c1, Y₁.c1, hEF]) z w`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hexp : ∀ W : UnfAt U k x, GlobalTheory.UnifPoint.IsExp (W.F.ex (W.ik k) W.Pm)` using `fun W => ⟨W.F.ex_add _ _ W.per, W.F.ex_onto _ _ W.per, GlobalTheory.ClassUniq.isHolTo_ex W.F _ _ W.per, (W.F.ex_diff _ _ W.per).1, (W.F.ex_diff _ _ W.per).2⟩`. Establish `hLs : ∀ a, L (Pi.single a 1) = Pi.single (W₂.e.symm (W₁.e a)) 1` using `fun a => by`. Use function extensionality and compare the values at `j`. Rewrite using `[hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.single_apply]`. Conclude with `if_congr (by rw [Equiv.symm_apply_eq, Equiv.eq_symm_apply]) rfl rfl`. Establish `hex : ∀ z, (W₁.F.ex (W₁.ik k) W₁.Pm z).left = (W₂.F.ex (W₂.ik k) W₂.Pm (L z)).left` using `ex_eq_of_der (t := Xo.univ.t) (W₁.pt.symm.trans W₂.pt) W₁.per (hexp W₁) (W₁.F.ex_ker _ _ W₁.per) (hexp W₂) ((GlobalTheory.UnifPoint.countable_periods W₂.per).mono fun z hz => (W₂.F.ex_ker _ _ W₂.per z).1 hz) L (fun w w' v h h' => by`. Establish `tn` using `GlobalTheory.isDerivAt0_ex_isTanAt _ _ _ _ Xo _ _ _ W₁.F (W₁.ik k) W₁.Pm W₁.per`. Conclude with `(tn.2.2 v (tn.1 w v h)).unique h h')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use the proof step `(fun a => ⟨(U.un k x).u (W₁.e a).1 (W₁.e a).2, by simpa using W₁.der (W₁.e a).1 (W₁.e a).2, by`. Rewrite using `[hLs]`. Simplify using `using W₂.der (W₁.e a).1 (W₁.e a).2⟩)`. Establish `hper1 : ∀ a ∈ W₁.Pm.range, ∀ z, W₁.F.ex (W₁.ik k) W₁.Pm (z + a) = W₁.F.ex (W₁.ik k) W₁.Pm z` using `fun a ha z => by`. Rewrite using `[W₁.F.ex_add _ _ W₁.per, (W₁.F.ex_ker _ _ W₁.per a).2 ha]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `@_root_.mul_one _ (CategoryTheory.Hom.monoid).toMulOneClass _`. Establish `hcov : ∀ z, ∃ j, ⊤ ≤ (W₁.F.ex (W₁.ik k) W₁.Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `fun z => GlobalTheory.ThetaPtChg.exists_chart_point Xo.univ.t.PP.isLB _`. Establish `tr : ∀ j z, ⊤ ≤ (W₁.F.ex (W₁.ik k) W₁.Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → ⊤ ≤ (W₂.F.ex (W₂.ik k) W₂.Pm (L z)).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `fun j z hz => by rw [← hex]; exact hz`. Establish `hspan' : Submodule.span ℝ (W₁.Pm.range : Set (Fin W₁.g → ℂ)) = ⊤`. Rewrite using `[AddMonoidHom.coe_range]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hspan`. Establish `hfr : ∀ j z, ⊤ ≤ (W₁.F.ex (W₁.ik k) W₁.Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → Y₂.fr j (L z) = Y₁.fr j z` using `GlobalTheory.UnitFrameGen.frames_eq W₁.Pm.range hspan' (fun j => {z | ⊤ ≤ (W₁.F.ex (W₁.ik k) W₁.Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}) (fun j => GlobalTheory.FamilyUnif_isOpen_ex W₁.F _ _ W₁.per _) hcov (fun j a ha z hz => by rw [Set.mem_setOf_eq, hper1 a ha]; exact hz) Y₁.fr (fun j …`. Establish `e2` using `Y₂.c4 j j' (L z) ((GlobalTheory.top_le_preimage_inf _ _ _).2 ⟨tr _ _ h1, tr _ _ h2⟩)`. Rewrite `e2` using `[← hex]`. Conclude with `e2)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun j hz => by`. Establish `t0` using `tr j 0 hz`. Simplify using `only [map_zero] at t0 ⊢`. Rewrite using `[Y₁.c5 j hz, Y₂.c5 j t0])`. Use the proof step `(by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `j _ ⟨a, rfl⟩ z hz`. Conclude with `GlobalTheory.UnitFrameGen.norm_factor Y₁.Hm _ _ _ _ _ (Y₁.c6 a j z).1 ((Y₁.c6 a j z).2 hz))`. Use the proof step `(by`. Introduce and unpack `j _ ⟨a, rfl⟩ z hz`. Use `GlobalTheory.UnitFrameGen.norm_factor Y₂.Hm _ _ _ _ _ (Y₂.c6 ((W₂.φ k).symm (W₁.φ k a)) j (L z)).1 ((Y₂.c6 ((W₂.φ k).symm (W₁.φ k a)) j (L z)).2 (tr j z hz))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← hPL, hHH, hHH, ← map_add]`. Conclude with `this)`. Establish `hθ : Y₂.θ (L z) = Y₁.θ z`. Take `⟨j, hj⟩` from `hcov z`. Establish `hw0 : (W₁.F.ex (W₁.ik k) W₁.Pm z).left ≫ Xo.univ.t.G.hom = (U.un k x).x` using `(Over.w (W₁.F.ex (W₁.ik k) W₁.Pm z)).trans W₁.pt.symm`.
-
-Set `p : Over.mk (U.un k x).x ⟶ Xo.univ.t.G` to `Over.homMk (W₁.F.ex (W₁.ik k) W₁.Pm z).left hw0`. Establish `e1` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_snd (𝟙 _) p)`. Establish `e2` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_fst (𝟙 _) p)`. Establish `v1` using `Y₁.c7 j z _ e1 e2 hj`. Establish `v2` using `Y₂.c7 j (L z) _ (e1.trans (hex z)) e2 (tr j z hj)`.
-
-Rewrite `v2` using `[hfr j z hj]`. Conclude with `mul_right_cancel₀ (Y₁.c3 j z hj) (v2.symm.trans v1)`. Rewrite using `[hHH, hθ]`.
+A detailed English derivation is pending.
 -/
 theorem theta_value_indep : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
     {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) (k : U.Comp) (x : (U.X k).dom) (W₁ W₂ : UnfAt U k x)

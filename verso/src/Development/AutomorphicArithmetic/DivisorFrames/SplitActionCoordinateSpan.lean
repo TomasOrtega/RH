@@ -9,9 +9,9 @@ section SlopeTestRemainingChoices
 open Matrix TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `P with`. Consider the case `nil => simp`. Consider the case `cons p P ih`. Rewrite using `[List.map_cons, List.prod_cons, List.map_cons, List.prod_cons, ← Matrix.mulVec_mulVec, ih, Matrix.mulVec_smul, Matrix.sub_mulVec, hw, mul_comm, mul_smul, sub_smul]`. Use `congr 2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i`. Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem product_shift_mulVec_eigen {T O S : Type} [CommRing T] {g : ℕ} (M : O → Matrix (Fin g) (Fin g) T)
     (a : O → T) (b : S → O → T) (w : Fin g → T) (hw : ∀ c, (M c).mulVec w = a c • w)
@@ -28,13 +28,13 @@ private theorem product_shift_mulVec_eigen {T O S : Type} [CommRing T] {g : ℕ}
     simp [Matrix.scalar_apply, Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Set `Φ : K ⊗[ℤ] O →ₐ[K] Matrix (Fin g) (Fin g) K` to `Algebra.TensorProduct.lift (Algebra.ofId K _) ρ.toIntAlgHom fun x y => Algebra.commutes x _`. Establish `h0 : (P.map fun p => ((1 : K) ⊗ₜ[ℤ] p.2 - (χ p.1 p.2) ⊗ₜ[ℤ] (1 : O) : K ⊗[ℤ] O)).prod = 0`. Apply `h.1` to reduce the goal to its premises. Rewrite using `[map_zero, map_list_prod]`. Use function extensionality and compare the values at `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨c, hc⟩` from `hP j`. Use `map_list_prod (Pi.evalRingHom (fun _ : S => K) j) (List.map (GlobalTheory.VB.splitMap χ) (P.map fun p => ((1 : K) ⊗ₜ[ℤ] p.2 - (χ p.1 p.2) ⊗ₜ[ℤ] (1 : O) : K ⊗[ℤ] O)))` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Pi.zero_apply, List.prod_eq_zero_iff]`. Simplify using `only [List.map_map, List.mem_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨(j, c), hc, by simp⟩`. Use `congrArg Φ h0` as an intermediate fact. Rewrite `this` using `[map_zero, map_list_prod, List.map_map]`. Rewrite using `[← this]`. Use `congr 1`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `List.map_congr_left fun p _ => ?_` and prove the remaining obligations. Establish `hΦ : ∀ (x : K) (y : O), Φ (x ⊗ₜ[ℤ] y) = Matrix.scalar (Fin g) x * ρ y` using `fun _ _ => rfl`. Simplify using `only [Function.comp_apply, map_sub, hΦ, map_one, one_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem product_eigen_shift_eq_zero {K O S : Type} [Field K] [CommRing O] {g : ℕ}
     (ρ : O →+* Matrix (Fin g) (Fin g) K) (χ : S → (O →+* K)) (h : GlobalTheory.VB.IsSplitBy χ)
@@ -63,9 +63,9 @@ private theorem product_eigen_shift_eq_zero {K O S : Type} [Field K] [CommRing O
   simp only [Function.comp_apply, map_sub, hΦ, map_one, one_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_transpose, Pi.smul_apply]`. Establish `: (B (e m) ᵥ* C) j = (B * C) (e m) j` using `rfl`. Rewrite using `[this, hBC, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dual_basis_coordinates_sum {T : Type} [CommRing T] {g n : ℕ} (B C : Matrix (Fin g) (Fin g) T)
     (hBC : B * C = 1) (e : Fin n ↪ Fin g) (a : Fin n → T) (j : Fin g) :
@@ -78,11 +78,9 @@ private theorem dual_basis_coordinates_sum {T : Type} [CommRing T] {g n : ℕ} (
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h1 : x = ∑ j, (Cᵀ *ᵥ x) j • B j`. Establish `: x = (x ᵥ* C) ᵥ* B` using `by rw [Matrix.vecMul_vecMul, hCB, Matrix.vecMul_one]`. Rewrite using `[Matrix.mulVec_transpose]`. Use `conv_lhs => rw [this]`. Use extensionality with `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply]`. Use `conv_lhs => rw [h1]`. Rewrite using `[← Finset.sum_map Finset.univ e fun j => (Cᵀ *ᵥ x) j • B j]`. Use `symm`. Use `Finset.sum_subset (Finset.subset_univ _) fun j _ hj => ?_` and prove the remaining obligations.
-
-Rewrite using `[hx j (by simpa using hj), zero_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vector_expand_in_complementary_basis {T : Type} [CommRing T] {g n : ℕ} (B C : Matrix (Fin g) (Fin g) T)
     (hCB : C * B = 1) (e : Fin n ↪ Fin g) (x : Fin g → T)
@@ -104,39 +102,37 @@ private theorem vector_expand_in_complementary_basis {T : Type} [CommRing T] {g 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `O R K S _ _ _ _ ι hι g n ρ χ τ hs hu v e B hB hv hK R' _ α`. Use `⟨fun m c => ?_, fun cf hcf => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hK (fun j => ι (v m j))).2 (Submodule.subset_span ⟨m, rfl⟩) c`. Establish `h2 : (ρ c).mulVec (v m) = χ τ c • v m`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `hι` to reduce the goal to its premises. Use `congrFun h1 j` as an intermediate fact. Rewrite using `[RingHom.map_mulVec]`. Simplify `this` using `[Function.comp_def]`. Use function extensionality and compare the values at `j`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrArg α (congrFun h2 j)` as an intermediate fact. Rewrite `this` using `[RingHom.map_mulVec]`. Simplify `this` using `[Function.comp_def]`. Establish `hu' : ∀ σ, ∃ c, σ ≠ τ → IsUnit (χ τ c - χ σ c)` using `fun σ => by`. Distinguish the cases in `h : σ = τ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨0, fun h' => absurd h h'⟩`. Take `⟨c, hc⟩` from `hu σ h`. Conclude with `⟨c, fun _ => hc⟩`. Use `choose c hc using hu'`. Set `P : List (S × O)` to `(Finset.univ.erase τ).toList.map fun σ => (σ, c σ)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `η : Matrix (Fin g) (Fin g) R` to `(P.map fun p => ρ p.2 - Matrix.scalar (Fin g) (χ p.1 p.2)).prod`. Establish `hη : ∀ (T : Type) [CommRing T] (β : R →+* T), η.map β = (P.map fun p => (ρ p.2).map β - Matrix.scalar (Fin g) (β (χ p.1 p.2))).prod`. Introduce `T _ β`. Use `map_list_prod (β.mapMatrix (m := Fin g)) (P.map fun p => ρ p.2 - Matrix.scalar (Fin g) (χ p.1 p.2))` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, map_sub]`. Simplify using `[Matrix.scalar_apply, Matrix.diagonal_map]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hBC : ∀ (T : Type) [CommRing T] (β : R →+* T), B.map β * (B⁻¹).map β = 1`. Introduce `T _ β`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv B hB, Matrix.map_one _ (map_zero β) (map_one β)]`. Establish `hCB : ∀ (T : Type) [CommRing T] (β : R →+* T), (B⁻¹).map β * B.map β = 1`. Introduce `T _ β`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul B hB, Matrix.map_one _ (map_zero β) (map_one β)]`. Establish `hrow : ∀ (T : Type) [CommRing T] (β : R →+* T) (m : Fin n), (fun j => β (v m j)) = B.map β (e m)`. Introduce `T _ β m`. Rewrite using `[← hv m]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hηK : ∀ (w : Fin g → K) (d : O), ((ρ d).map ι).mulVec ((η.map ι).mulVec w) = ι (χ τ d) • (η.map ι).mulVec w`. Introduce `w d`. Establish `h0` using `product_eigen_shift_eq_zero ((ι.mapMatrix (m := Fin g)).comp ρ) (fun σ => ι.comp (χ σ)) hs ((τ, d) :: P) (fun j => by`. Distinguish the cases in `h : j = τ`. Conclude with `⟨d, by simp [h]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨c j, List.mem_cons_of_mem _ (List.mem_map.2 ⟨j, by simp [h], rfl⟩)⟩)`. Rewrite `h0` using `[List.map_cons, List.prod_cons]`. Establish `h1 : ((ρ d).map ι - Matrix.scalar (Fin g) (ι (χ τ d))) * η.map ι = 0`. Rewrite using `[hη]`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (fun M => Matrix.mulVec M w) h1`. Simplify using `only [← Matrix.mulVec_mulVec, Matrix.sub_mulVec, Matrix.zero_mulVec, sub_eq_zero] at h2`. Rewrite using `[h2]`. Use extensionality with `i`. Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN : ∀ j, j ∉ Set.range e → ∀ i, ((B⁻¹).transpose * η) j i = 0`. Introduce `j hj i`. Apply `hι` to reduce the goal to its premises. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 ((hK _).1 (hηK (Pi.single i 1)))`. Simplify using `only [hrow] at ha`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `dual_basis_coordinates_sum _ _ (hBC K ι) e a j`. Rewrite `h1` using `[ha, Finset.sum_eq_zero (fun m _ => if_neg fun h => hj ⟨m, h⟩), Matrix.mulVec_mulVec, ← Matrix.transpose_map, ← Matrix.map_mul, Matrix.mulVec_single_one]`. Rewrite using `[map_zero]`. Conclude with `h1`. Establish `hunit : IsUnit (P.map fun p => α (χ τ p.2) - α (χ p.1 p.2)).prod`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `List.prod_isUnit fun x hx => ?_` and prove the remaining obligations. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hx`. Take `⟨σ, hσ, rfl⟩` from `List.mem_map.1 hp`. Rewrite using `[← map_sub]`. Conclude with `(hc σ (by simpa using hσ)).map α`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hE` using `product_shift_mulVec_eigen (fun d => (ρ d).map α) (fun d => α (χ τ d)) (fun σ d => α (χ σ d)) cf hcf P`. Rewrite `hE` using `[← hη]`. Establish `hx : ∀ j, j ∉ Set.range e → (((B⁻¹).map α).transpose.mulVec cf) j = 0`. Introduce `j hj`. Establish `h1 : (((B⁻¹).map α).transpose.mulVec ((η.map α).mulVec cf)) j = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.transpose_map, ← Matrix.map_mul]`. Simplify using `[Matrix.mulVec, dotProduct, hN j hj]`. Rewrite `h1` using `[hE, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `hunit.mul_right_eq_zero.1 h1`. Simplify using `only [hrow]`.
-
-Use `⟨fun m => (((B⁻¹).map α).transpose.mulVec cf) (e m), vector_expand_in_complementary_basis _ _ (hCB R' α) e cf hx, fun a ha => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Rewrite using `[ha, dual_basis_coordinates_sum _ _ (hBC R' α) e a (e m)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.split_action_coordinate_span :
     ∀ (O R K S : Type) [CommRing O] [CommRing R] [Field K] [Fintype S] (ι : R →+* K), Function.Injective ι → ∀ (g n : ℕ) (ρ : O →+* Matrix (Fin g) (Fin g) R) (χ : S → (O →+* R)) (τ : S), GlobalTheory.VB.IsSplitBy (fun σ => ι.comp (χ σ)) → (∀ σ, σ ≠ τ → ∃ c, IsUnit (χ τ c - χ σ c)) → ∀ (v : Fin n → Fin g → R) (e : Fin n ↪ Fin g) (B : Matrix (Fin g) (Fin g) R), IsUnit B.det → (∀ m, B (e m) = v m) → (∀ cf : Fin g → K, (∀ c, ((ρ c).map ι).mulVec cf = ι (χ τ c) • cf) ↔ cf ∈ Submodule.span K (Set.range fun m j => ι (v m j))) → ∀ (R' : Type) [CommRing R'] (α : R →+* R'), (∀ m c, ((ρ c).map α).mulVec (fun j => α (v m j)) = α (χ τ c) • fun j => α (v m j)) ∧ ∀ cf : Fin g → R', (∀ c, ((ρ c).map α).mulVec cf = α (χ τ c) • cf) → ∃! a : Fin n → R', cf = ∑ m, a m • fun j => α (v m j) := by

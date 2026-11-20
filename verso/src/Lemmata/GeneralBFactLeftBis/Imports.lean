@@ -3,17 +3,15 @@ import Mathlib
 namespace Bl.general_b_fact_left_bis
 
 /- English proof (translation)
-Introduce `E _ _ N L'' hspan v`. Establish `hv : v ∈ Submodule.span E (L'' : Set (Fin N → E))`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact L''.zero_mem⟩`. Consider the case `add x y _ _ ihx ihy`. Take `⟨d1, hd1, h1⟩` from `ihx`. Take `⟨d2, hd2, h2⟩` from `ihy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d1 * d2, mul_ne_zero hd1 hd2, ?_⟩` and prove the remaining obligations. Establish `e1 : (d1 * d2) • x = d2 • (d1 • x)` using `by rw [mul_comm, mul_smul]`. Establish `e2 : (d1 * d2) • y = d1 • (d2 • y)` using `by rw [mul_smul]`. Rewrite using `[smul_add, e1, e2]`. Conclude with `L''.add_mem (L''.smul_mem d2 h1) (L''.smul_mem d1 h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul a x _ ih`. Take `⟨d, hd, h⟩` from `ih`. Take `⟨⟨b, c⟩, hbc⟩` from `IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers E)) a`. Use `⟨(c : NumberField.RingOfIntegers E) * d, mul_ne_zero (nonZeroDivisors.ne_zero c.2) hd, ?_⟩` and prove the remaining obligations. Establish `key : ((c : NumberField.RingOfIntegers E) * d) • (a • x) = b • (d • x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← algebraMap_smul E ((c : NumberField.RingOfIntegers E) * d), ← algebraMap_smul E b, ← algebraMap_smul E d, smul_smul, smul_smul]`. Use `congr 1`. Simplify using `only at hbc`. Rewrite using `[map_mul, ← hbc]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[key]`. Conclude with `L''.smul_mem b h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {E : Type} [inst : Field.{0} E] [NumberField.{0} E] {N : Nat}

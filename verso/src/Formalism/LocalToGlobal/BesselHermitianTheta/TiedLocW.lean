@@ -68,7 +68,7 @@ def CjOfBas {D : D7} {X : ThetaX D} {T : ThetaTied D X} {Wl : WeilTied D X T} {L
   ∀ V : HSp D, V.SigOK → (h.cj V).P * (Kf.bas V).map (D.sp.cm.sig : D.host.E →+* D.host.E) = Kf.bas V
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => h.sR, fun _ => xi_zero_im_pos D τ⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocWTied.ePlus {D : D7} {X : ThetaX D} {T : ThetaTied D X} {Wl : WeilTied D X T} {L : Formalism.MainNotions.KudlaSiegelWeil.LocW D X}
     (h : LocWTied D X T Wl L) (τ : D.what₂.Tau) : Formalism.MainNotions.KudlaSiegelWeil.ePlus L τ :=

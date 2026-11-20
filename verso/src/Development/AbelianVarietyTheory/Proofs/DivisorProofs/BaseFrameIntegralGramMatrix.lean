@@ -14,17 +14,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FrameGram
 
 /- English proof (translation)
-Introduce `x hx y hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact hT x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Conclude with `S.add_mem ha hb`. Consider the case `smul c a _ ha`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `: ∑ i, ∑ j, σ (x i) * J i j * (c • a) j = (c : R) * ∑ i, ∑ j, σ (x i) * J i j * a j`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show _ * ((c : R) * a j) = _`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `S.mul_mem c.2 ha`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Simplify using `only [Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `S.add_mem ha hb`. Consider the case `smul c a _ ha`. Establish `: ∑ i, ∑ j, σ ((c • a) i) * J i j * y j = σ (c : R) * ∑ i, ∑ j, σ (a i) * J i j * y j`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Use `show σ ((c : R) * a i) * _ * _ = _`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `S.mul_mem (hσ _ c.2) ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_mem_span {R : Type} [CommRing R] (S : Subring R) (σ : R →+* R) (hσ : ∀ s ∈ S, σ s ∈ S) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) R) (T : Set (Fin n → R))
@@ -59,21 +57,19 @@ theorem form_mem_span {R : Type} [CommRing R] (S : Subring R) (σ : R →+* R) (
     rw [this]; exact S.mul_mem (hσ _ c.2) ha
 
 /- English proof (translation)
-Establish `hcol : ∀ j, (fun i => β.1 i j) ∈ H`. Introduce `j`. Rewrite using `[hβ]`. Introduce `k`. Establish `: (β⁻¹).1.mulVec (fun i => β.1 i j) k = ((β⁻¹).1 * β.1) k j` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, Units.inv_mul, Matrix.one_apply]`. Use `split_ifs`. Conclude with `S.one_mem`. Conclude with `S.zero_mem`. Establish `a1 : ∀ i j, ((β.1.map σ)ᵀ * J * β.1) i j ∈ S`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i j`. Use `hH _ (hcol i) _ (hcol j)` as an intermediate fact. Rewrite `this` using `[Finset.sum_comm]`. Simplify `this` using `only [Matrix.mul_apply, Finset.sum_mul, Matrix.transpose_apply, Matrix.map_apply]`. Set `P : Matrix (Fin n) (Fin m) R` to `Matrix.of fun a i => s i a`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `P' : Matrix (Fin n) (Fin m) R` to `Matrix.of fun a i => s' i a`. Establish `hP : P * ((P'.map σ)ᵀ * J) = 1`. Use extensionality with `a j`. Rewrite using `[Matrix.one_apply, ← hd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `a2 : ∀ i j, (((β⁻¹).1 * P) * (((β⁻¹).1 * P').map σ)ᵀ) i j ∈ S`. Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `S.sum_mem fun k _ => S.mul_mem ((hβ _).1 (hs k) i) (hσ _ ((hβ _).1 (hs' k) j))`. Establish `hinv : (((β⁻¹).1 * P) * (((β⁻¹).1 * P').map σ)ᵀ) * ((β.1.map σ)ᵀ * J * β.1) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `e : (((β⁻¹).1 * P').map σ)ᵀ * (β.1.map σ)ᵀ = (P'.map σ)ᵀ`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [e, hP, Matrix.mul_one, Units.inv_mul]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `M : Matrix (Fin n) (Fin n) S` to `fun i j => ⟨_, a1 i j⟩`. Set `M' : Matrix (Fin n) (Fin n) S` to `fun i j => ⟨_, a2 i j⟩`. Establish `hM : S.subtype.mapMatrix M = (β.1.map σ)ᵀ * J * β.1` using `rfl`. Establish `hM' : S.subtype.mapMatrix M' = ((β⁻¹).1 * P) * (((β⁻¹).1 * P').map σ)ᵀ` using `rfl`. Establish `inj : Function.Injective (S.subtype.mapMatrix (m` using `Fin n)) := by`.
-
-Introduce `A B h`. Use extensionality with `i j`. Conclude with `congrFun (congrFun h i) j`. Establish `p2 : M' * M = 1` using `inj (by rw [map_mul, map_one, hM, hM', hinv])`. Conclude with `⟨⟨M, M', mul_eq_one_comm.1 p2, p2⟩, hM⟩`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit {R : Type} [CommRing R] (S : Subring R) (σ : R →+* R) (hσ : ∀ s ∈ S, σ s ∈ S) {n m : ℕ}
     (J : Matrix (Fin n) (Fin n) R) (β : GL (Fin n) R) (H : Set (Fin n → R))
@@ -124,13 +120,11 @@ theorem exists_unit {R : Type} [CommRing R] (S : Subring R) (σ : R →+* R) (h�
   exact ⟨⟨M, M', mul_eq_one_comm.1 p2, p2⟩, hM⟩
 
 /- English proof (translation)
-Set `ι : E →+* E ⊗[F] Formalism.L2.Herm.Af F` to `Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F)`. Use `replace hσι : ∀ x, σ (ι x) = ι (c x) := hσι`. Establish `hmem : ∀ x ∈ Λ, (fun i => ι (x i)) ∈ Formalism.L2.Herm.hatL (F` using `F) Λ := fun x hx => Submodule.subset_span ⟨x, hx, rfl⟩`. Use `exists_unit (Formalism.L2.Herm.intAf F E) σ hσ (J.map ι) β (Formalism.L2.Herm.hatL (F := F) Λ) hβ ?_ (fun i a => ι (s i a)) (fun i a => ι (s' i a)) (fun i => hmem _ (hs i).1) (fun i => hmem _ (hs i).2) ?_` and prove the remaining obligations. Use `form_mem_span _ σ hσ _ _ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`. Take `⟨b, hb⟩` from `hΛ y hy x hx`. Establish `: ∑ i, ∑ j, σ (ι (x i)) * (J.map ι) i j * ι (y j) = ι b`. Rewrite using `[hb]`. Simplify using `only [map_sum, RingHom.map_mul, hσι, Matrix.map_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show ∑ i, ∑ j, σ (ι (x i)) * (J.map ι) i j * ι (y j) ∈ _`. Rewrite using `[this]`. Conclude with `(oToS F E b).2`. Introduce `a j`. Use `congrArg ι (hd a j)` as an intermediate fact.
-
-Simplify using `only [map_sum, RingHom.map_mul, ← hσι, apply_ite ι, RingHom.map_one, RingHom.map_zero] at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unit_adelic {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n m : ℕ}
     (c : E → E) (σ : E ⊗[F] Formalism.L2.Herm.Af F →+* E ⊗[F] Formalism.L2.Herm.Af F)
@@ -164,7 +158,7 @@ theorem exists_unit_adelic {F E : Type} [Field F] [NumberField F] [Field E] [Num
     exact this
 
 /- English proof (translation)
-Introduce `D V β Λ N hB`. Establish `hsd` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D V β Λ N ⟨1, by rw [pow_one]; exact hB⟩`. Take `⟨m, s, s', hs, hd⟩` from `GlobalTheory.LatVacDual.dualFamily D V Λ hsd`. Conclude with `exists_unit_adelic star (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) (fun _ => GlobalTheory.LevSplit.sigR_int) (fun _ => rfl) V.gram β Λ hB.1 (fun y hy => (hsd.2 y).1 hy) s s' hs hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gram_unimodular : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsBaseFrame V β Λ N → ∃ G : GL (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E), (intGL D.host.F D.host.E V.rank G).val = BadPlacesGoodCoefficients.gramIn V β := by
   intro D V β Λ N hB

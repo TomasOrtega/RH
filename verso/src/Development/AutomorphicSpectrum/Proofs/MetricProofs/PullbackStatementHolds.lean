@@ -15,11 +15,11 @@ section PullTop
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Introduce `x j y hy w`. Take `⟨W, hW, hzW, G, hG, hGe⟩` from `hQ.2 x ((A.chart j).symm y) ((A.chart j).symm y) ⟨hy.2, Q.mem_U _⟩`. Establish `hGa : AnalyticAt ℂ (G ∘ (A.chart j).symm) y` using `hG j y ⟨hy.1, hzW⟩`. Establish `ho : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (W ∩ Q.U x ∩ Q.U ((A.chart j).symm y)))` using `(A.chart j).isOpen_inter_preimage_symm ((hW.inter (Q.isOpen_U x)).inter (Q.isOpen_U _))`. Establish `hev : (Q.φ x ∘ (A.chart j).symm) =ᶠ[𝓝 y] fun v => (Q.φ ((A.chart j).symm y) ∘ (A.chart j).symm) v + 1 * ((G ∘ (A.chart j).symm) v).re` using `by filter_upwards [ho.mem_nhds ⟨hy.1, ⟨hzW, hy.2⟩, Q.mem_U _⟩] with v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hGe _ hv.2` as an intermediate fact. Simplify using `only [Function.comp_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ho2 : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Q.U ((A.chart j).symm y))` using `(A.chart j).isOpen_inter_preimage_symm (Q.isOpen_U _)`. Establish `h2 : ContDiffAt ℝ 2 (Q.φ ((A.chart j).symm y) ∘ (A.chart j).symm) y` using `((hQ.1 _ j).contDiffAt (ho2.mem_nhds ⟨hy.1, Q.mem_U _⟩)).of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRe : ContDiffAt ℝ 2 (fun v => ((G ∘ (A.chart j).symm) v).re) y` using `Complex.reCLM.contDiff.contDiffAt.comp y (hGa.restrictScalars (𝕜 := ℝ)).contDiffAt`. Rewrite using `[levi_congr hev, levi_add_smul 1 h2 hRe, levi_re_analytic hGa, mul_zero, add_zero, ← hφ]`. Conclude with `hP _ j y ⟨hy.1, P.mem_U _⟩ w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPsh_of_phi_eq {A : FinHolAtlas e X} {P Q : LocPot X} (hQ : IsPotential A Q)
     (hφ : P.φ = Q.φ) (hP : IsPsh A P) : IsPsh A Q := by
@@ -53,29 +53,27 @@ end GlobalTheory.CompanionTheory.Ar.Giv
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `e e' X X' _ _ _ _ _ _ A A' h hh Θ L Θ' s n n' m W m' W' hΘ hΘp hΘ' hΘ'p hL hs hsnc hs0 hsnc' th ph phT C₅ C t₀ hSW hF hC2`. Take `⟨hth, hSm, hPshOn, hbd⟩` from `hSW`. Establish `hΘpsh : IsPsh A Θ` using `TailBoundAlt.isPsh_of_isPosPot A Θ hΘp`. Establish `hΘ'psh : IsPsh A' Θ'` using `TailBoundAlt.isPsh_of_isPosPot A' Θ' hΘ'p`. Establish `hΘpb : IsPotential A' (Θ.pullback h hh.1)` using `isPotentialPullback A A' h hh Θ hΘ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K, hK0, -, hKpsh⟩` from `TailBoundAlt.exists_psh_chern_bound A' Θ' (Θ.pullback h hh.1) hΘ' hΘ'p hΘpb`. Establish `ht₀ : 0 < t₀` using `hF.1`. Establish `hU : IsOpen (bdry s)ᶜ` using `(LeviFormBoundaryTopology.isClosed_bdry hs).isOpen_compl`. Use `set M : ℝ := max 1 K with hM`. Establish `hM1 : 1 ≤ M` using `le_max_left _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMK : K ≤ M` using `le_max_right _ _`. Use `set C' : ℝ := |C| * M with hC'`. Use `set t₁ : ℝ := min t₀ (Real.exp (-Real.exp 1)) with ht₁`. Establish `ht₁0 : 0 < t₁` using `lt_min ht₀ (Real.exp_pos _)`. Establish `ht₁t₀ : t₁ ≤ t₀` using `min_le_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht₁e : t₁ ≤ Real.exp (-Real.exp 1)` using `min_le_right _ _`. Establish `hCC' : |C| ≤ C'` using `le_mul_of_one_le_right (abs_nonneg C) hM1`. Establish `F1` using `isRegFamily_mono A Θ L s th ph phT C t₀ |C| t₁ hΘ hΘpsh hth hs0 hF le_rfl ht₁0 ht₁t₀ ht₁e`. Establish `F2` using `isRegFamily_mono A Θ L s th ph phT C t₀ C' t₁ hΘ hΘpsh hth hs0 hF hCC' ht₁0 ht₁t₀ ht₁e`. Use `⟨C', t₁, ⟨isPotentialPullback A A' h hh th hth, ?_, ?_, fun y hy => hbd (h y) hy⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `smoothOn_pull hh hU hSm` as an intermediate fact. Rewrite `this` using `[Set.preimage_compl]`. Then use the resulting hypothesis. Use `isPshOn_pull hh hU hth hSm hPshOn` as an intermediate fact. Rewrite `this` using `[Set.preimage_compl]`. Then use the resulting hypothesis. Take `⟨-, -, F1⟩` from `F1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, F2⟩` from `F2`. Use `⟨h1, h2, fun t ht htt => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2, a3, a4, -, a6, a7, a8⟩` from `F2 t ht htt`. Take `⟨b1, -, -, -, b5, -⟩` from `F1 t ht htt`. Establish `hsm : A'.Smooth (phT t ∘ h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `smoothOn_pull hh isOpen_univ a1` as an intermediate fact. Rewrite `this` using `[Set.preimage_univ]`. Then use the resulting hypothesis. Use `⟨hsm, fun y => a2 (h y), fun y hy => a3 (h y) hy, fun y => a4 (h y), ?_, fun y hy hyr => a6 (h y) hy hyr, fun y hy => a7 (h y) hy, fun t' h1 h2 y => a8 t' h1 h2 (h y)⟩` and prove the remaining obligations. Use `set ε : ℝ := epsT |C| t with hε`. Establish `hq` using `loglog_quot_nonneg ht (htt.trans ht₁e)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hε0 : 0 ≤ ε`. Rewrite using `[hε, epsT_eq_mul]`. Conclude with `mul_nonneg (abs_nonneg C) hq`. Establish `hε' : epsT C' t = M * ε`. Rewrite using `[hε, epsT, epsT, hC']`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hεK : 0 ≤ M * ε - K * ε` using `by nlinarith`. Establish `hP0 : IsPotential A (th + LocPot.ofFun (phT t) + Θ.rsmul ε)` using `isPotentialAdd A _ _ (isPotentialAdd A _ _ hth (isPotential_ofFun A _ b1)) (isPotentialRsmul A ε Θ hΘ)`. Establish `hD : IsPotential A' (Θ'.rsmul K + (Θ.pullback h hh.1).rsmul (-1))` using `isPotentialAdd A' _ _ (isPotentialRsmul A' K Θ' hΘ') (isPotentialRsmul A' (-1) _ hΘpb)`. Establish `hS1` using `isPotentialPullback A A' h hh _ hP0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS1p` using `isPsh_pull hh hP0 b5`. Establish `hS2` using `isPotentialRsmul A' ε _ hD`. Establish `hS2p` using `isPshRsmul A' ε _ hε0 hD hKpsh`. Establish `hS3` using `isPotentialRsmul A' (M * ε - K * ε) Θ' hΘ'`. Establish `hS3p` using `isPshRsmul A' (M * ε - K * ε) Θ' hεK hΘ' hΘ'psh`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hS` using `isPshAdd A' _ _ (isPotentialAdd A' _ _ hS1 hS2) hS3 (isPshAdd A' _ _ hS1 hS2 hS1p hS2p) hS3p`. Establish `hT : IsPotential A' (th.pullback h hh.1 + LocPot.ofFun (phT t ∘ h) + Θ'.rsmul (epsT C' t))` using `isPotentialAdd A' _ _ (isPotentialAdd A' _ _ (isPotentialPullback A A' h hh th hth) (isPotential_ofFun A' _ hsm)) (isPotentialRsmul A' _ Θ' hΘ')`. Use `isPsh_of_phi_eq hT ?_ hS` and prove the remaining obligations. Use function extensionality and compare the values at `x y`. Use `show th.φ (h x) (h y) + phT t (h y) + ε * Θ.φ (h x) (h y) + ε * (K * Θ'.φ x y + -1 * Θ.φ (h x) (h y)) + (M * ε - K * ε) * Θ'.φ x y = th.φ (h x) (h y) + phT t (h y) + epsT C' t * Θ'.φ x y`.
-
-Rewrite using `[hε']`. Expand and normalize the polynomial expressions, which then agree. Establish `hev : ∀ᶠ t in nhdsWithin (0 : ℝ) (Set.Ioi 0), A.Smooth (phT t)` using `Filter.mem_of_superset (Ioc_mem_nhdsGT ht₀) fun t ht => (hF.2.2 t ht.1 ht.2).1`. Conclude with `regular_family_C2_pullback_of_open A A' h hh s ph phT hU hSm hev hC2`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pullbackStatement : PullbackStatement := by
   intro e e' X X' _ _ _ _ _ _ A A' h hh Θ L Θ' s n n' m W m' W' hΘ hΘp hΘ' hΘ'p hL hs hsnc hs0

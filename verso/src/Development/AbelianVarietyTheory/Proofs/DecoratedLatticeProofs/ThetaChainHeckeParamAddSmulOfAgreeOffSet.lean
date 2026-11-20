@@ -17,7 +17,7 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
   {B : Multiset ℂˣ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h0, add_mem hx.2.1 hx'.2.1, hx.2.2.1, fun ϖ hϖ j hj => by have e := (heckeLin (Final.GLintComm E w n) (Tj_mem_hecke hϖ j) ρ).map_add x x' simp only [heckeLin_apply] at e rw [e, hx.2.2.2 ϖ hϖ j hj, hx'.2.2.2 ϖ hϖ j hj, smul_add]⟩`.
+Supply the required witnesses or components.
 -/
 theorem satGL_add (hx : IsSatVecGL w ρ x B) (hx' : IsSatVecGL w ρ x' B) (h0 : x + x' ≠ 0) :
     IsSatVecGL w ρ (x + x') B :=
@@ -27,7 +27,7 @@ theorem satGL_add (hx : IsSatVecGL w ρ x B) (hx' : IsSatVecGL w ρ x' B) (h0 : 
     rw [e, hx.2.2.2 ϖ hϖ j hj, hx'.2.2.2 ϖ hϖ j hj, smul_add]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨smul_ne_zero ha hx.1, Submodule.smul_mem _ a hx.2.1, hx.2.2.1, fun ϖ hϖ j hj => by rw [heckeVec_smul (Final.GLintComm E w n) (Tj_mem_hecke hϖ j), hx.2.2.2 ϖ hϖ j hj, smul_comm]⟩`.
+Supply the required witnesses or components.
 -/
 theorem satGL_smul (hx : IsSatVecGL w ρ x B) {a : ℂ} (ha : a ≠ 0) : IsSatVecGL w ρ (a • x) B :=
   ⟨smul_ne_zero ha hx.1, Submodule.smul_mem _ a hx.2.1, hx.2.2.1, fun ϖ hϖ j hj => by
@@ -41,7 +41,7 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {c : L 
   {α : Fin (n / 2) → ℂˣ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h0, add_mem hx.2.1 hx'.2.1, fun t ht => by have e := (heckeLin (P.isCommensurated_integral_unitary_of_unramified hU n) ht ρ).map_add x x' simp only [heckeLin_apply] at e rw [e, hx.2.2 t ht, hx'.2.2 t ht, smul_add]⟩`.
+Supply the required witnesses or components.
 -/
 theorem satU_add (hU : IsUnramInv ϖ c q) (hx : IsSatVecU ϖ q ρ x α) (hx' : IsSatVecU ϖ q ρ x' α) (h0 : x + x' ≠ 0) :
     IsSatVecU ϖ q ρ (x + x') α :=
@@ -51,7 +51,7 @@ theorem satU_add (hU : IsUnramInv ϖ c q) (hx : IsSatVecU ϖ q ρ x α) (hx' : I
     rw [e, hx.2.2 t ht, hx'.2.2 t ht, smul_add]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨smul_ne_zero ha hx.1, Submodule.smul_mem _ a hx.2.1, fun t ht => by rw [heckeVec_smul (P.isCommensurated_integral_unitary_of_unramified hU n) ht, hx.2.2 t ht, smul_comm]⟩`.
+Supply the required witnesses or components.
 -/
 theorem satU_smul (hU : IsUnramInv ϖ c q) (hx : IsSatVecU ϖ q ρ x α) {a : ℂ} (ha : a ≠ 0) :
     IsSatVecU ϖ q ρ (a • x) α :=
@@ -67,7 +67,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ (GLoc σ J v) V} {x x' : V} {B : Multiset ℂˣ}
 
 /- English proof (translation)
-Break down `hx with ⟨hv, e, he, hx⟩ | ⟨hw, c, ϖ, e, α, hU, he, hx, hB⟩` into its components or cases. Conclude with `Or.inl ⟨hv, e, he, satGL_smul hx ha⟩`. Conclude with `Or.inr ⟨hw, c, ϖ, e, α, hU, he, satU_smul hU hx ha, hB⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem paramVec_smul (hx : IsParamVec σ J L h ρ x B) {a : ℂ} (ha : a ≠ 0) : IsParamVec σ J L h ρ (a • x) B := by
   rcases hx with ⟨hv, e, he, hx⟩ | ⟨hw, c, ϖ, e, α, hU, he, hx, hB⟩
@@ -75,9 +75,9 @@ theorem paramVec_smul (hx : IsParamVec σ J L h ρ x B) {a : ℂ} (ha : a ≠ 0)
   · exact Or.inr ⟨hw, c, ϖ, e, α, hU, he, satU_smul hU hx ha, hB⟩
 
 /- English proof (translation)
-Break down `hx with ⟨hv, e, he, hx⟩ | ⟨hw, c, ϖ, e, α, hU, he, hx, hB⟩` into its components or cases. Conclude with `Or.inl ⟨hv, e, he, satGL_add hx (hx'.isSatVecGL hv he) h0⟩`. Break down `hx' with ⟨hv, -⟩ | ⟨-, c', ϖ', e', α', hU', he', hx', hB'⟩` into its components or cases. Conclude with `absurd hv (not_isSplit_of_isInertAt hw)`. Take `rfl : c' = c` from `(InertChart.existsUnique_isConjAt σ hw h).unique he'.1 he.1`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `IsSatVecU.of_unif hU' hU (IsSatVecU.of_chart he' he hx')`. Establish `h2 : IsSatVecU ϖ (qV F v) (ρ.comp e.symm.toMonoidHom) x' α` using `⟨h1.1, h1.2.1, fun t ht => by`. Rewrite using `[h1.2.2 t ht, GlobalTheory.T.unitarySatakeTransform_eq_of_baseChangeSatakeParameter_eq (w.adicCompletion E) ϖ c' (qV F v) n hU α' α (hB'.symm.trans hB) t ht]⟩`. Conclude with `Or.inr ⟨hw, c', ϖ, e, α, hU, he, satU_add hU hx h2 h0, hB⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem paramVec_add (hx : IsParamVec σ J L h ρ x B) (hx' : IsParamVec σ J L h ρ x' B) (h0 : x + x' ≠ 0) :
     IsParamVec σ J L h ρ (x + x') B := by
@@ -107,7 +107,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {S : Set (HeightOneSpectrum (𝓞 F))} {V : Type} [AddCommGroup V] [Module ℂ V] {f f' : GAd σ J → V} {B B' : Fam E}
 
 /- English proof (translation)
-Introduce `v hv w h` and use `by have hw : w ∉ above E S := fun hm => hv (h ▸ hm) rw [hB w hw] exact hf v hv w h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem paramFun_of_agree (hf : IsParamFun σ J L S f B') (hB : ∀ w ∉ above E S, B w = B' w) :
     IsParamFun σ J L S f B := fun v hv w h => by
@@ -116,13 +116,13 @@ theorem paramFun_of_agree (hf : IsParamFun σ J L S f B') (hB : ∀ w ∉ above 
   exact hf v hv w h
 
 /- English proof (translation)
-Introduce `v hv w h` and use `paramVec_add (hf v hv w h) (hf' v hv w h) h0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem paramFun_add (hf : IsParamFun σ J L S f B) (hf' : IsParamFun σ J L S f' B) (h0 : f + f' ≠ 0) :
     IsParamFun σ J L S (f + f') B := fun v hv w h => paramVec_add (hf v hv w h) (hf' v hv w h) h0
 
 /- English proof (translation)
-Introduce `v hv w h` and use `paramVec_smul (hf v hv w h) ha`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem paramFun_smul (hf : IsParamFun σ J L S f B) {a : ℂ} (ha : a ≠ 0) : IsParamFun σ J L S (a • f) B :=
   fun v hv w h => paramVec_smul (hf v hv w h) ha
@@ -142,21 +142,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.LFun.ParLin in
 
 /- English proof (translation)
-Introduce `D c s`. Establish `cne : ∀ f : GA D s.V → ℂ, f ≠ 0 → (fun g => conj (f g)) ≠ 0` using `fun f hf h0 => hf (funext fun g => by simpa using congrFun h0 g)`. Use `⟨fun u u' B B' a hu hu' hB h0 => ⟨h0, fun v hv => ?_⟩, fun u B a hu ha => ⟨smul_ne_zero ha hu.1, fun v hv => ?_⟩⟩` and prove the remaining obligations. Establish `hval : PiLocalization₂.val (u + a • u') v = PiLocalization₂.val u v + a • PiLocalization₂.val u' v` using `by simp [PiLocalization₂.val]`. Establish `hc : (fun g => conj (PiLocalization₂.val (u + a • u') v g)) = (fun g => conj (PiLocalization₂.val u v g)) + (conj a) • (fun g => conj (PiLocalization₂.val u' v g))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Simplify using `[hval]`. Unfold `ParFun`. Rewrite using `[hc]`. Distinguish the cases in `h1 : PiLocalization₂.val u v = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : a • PiLocalization₂.val u' v ≠ 0` using `by rw [hval, h1, zero_add] at hv; exact hv`. Establish `ha : a ≠ 0` using `fun e => h2 (by simp [e])`. Establish `hu'v : PiLocalization₂.val u' v ≠ 0` using `fun e => h2 (by simp [e])`. Establish `hz : (fun g => conj (PiLocalization₂.val u v g)) = 0` using `by funext g; simp [h1]`. Rewrite using `[hz, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `paramFun_smul (paramFun_of_agree (hu'.2 v hu'v) hB) (by simpa using ha)`. Distinguish the cases in `h2 : a • PiLocalization₂.val u' v = 0`. Establish `hz : (conj a) • (fun g => conj (PiLocalization₂.val u' v g)) = 0`. Use function extensionality and compare the values at `g`. Use `congrFun h2 g` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this ⊢`. Rewrite using `[← map_mul, this, map_zero]`. Rewrite using `[hz, add_zero]`. Conclude with `hu.2 v h1`. Establish `ha : a ≠ 0` using `fun e => h2 (by simp [e])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu'v : PiLocalization₂.val u' v ≠ 0` using `fun e => h2 (by simp [e])`. Use `paramFun_add (hu.2 v h1) (paramFun_smul (paramFun_of_agree (hu'.2 v hu'v) hB) (by simpa using ha)) ?_` and prove the remaining obligations. Rewrite using `[← hc]`. Conclude with `cne _ hv`. Establish `hval : PiLocalization₂.val (a • u) v = a • PiLocalization₂.val u v` using `by simp [PiLocalization₂.val]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hu0 : PiLocalization₂.val u v ≠ 0` using `fun e => hv (by rw [hval, e, smul_zero])`. Establish `hc : (fun g => conj (PiLocalization₂.val (a • u) v g)) = (conj a) • (fun g => conj (PiLocalization₂.val u v g))`. Use function extensionality and compare the values at `g`. Simplify using `[hval]`. Unfold `ParFun`.
-
-Rewrite using `[hc]`. Conclude with `paramFun_smul (hu.2 v hu0) (by simpa using ha)`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPar_add_smul : ∀ (D : D7) (c : Com D) (s : PiLocalization₂ D), (∀ (u u' : s.CC c) B B' (a : ℂ), IsPar u B → IsPar u' B' →
     (∀ w ∉ (GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))), B w = B' w) →
@@ -202,6 +200,6 @@ theorem isPar_add_smul : ∀ (D : D7) (c : Com D) (s : PiLocalization₂ D), (�
 end GlobalTheory.ChainOnto
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ChainOnto.isPar_add_smul`.
+A detailed English derivation is pending.
 -/
 example : ∀ (D : D7) (c : GlobalTheory.ChainOnto.Com D) (s : GlobalTheory.ChainOnto.PiLocalization₂ D), (∀ (u u' : s.CC c) B B' (a : ℂ), GlobalTheory.ChainOnto.IsPar u B → GlobalTheory.ChainOnto.IsPar u' B' → (∀ w ∉ (GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))), B w = B' w) → u + a • u' ≠ 0 → GlobalTheory.ChainOnto.IsPar (u + a • u') B) ∧ ∀ (u : s.CC c) B (a : ℂ), GlobalTheory.ChainOnto.IsPar u B → a ≠ 0 → GlobalTheory.ChainOnto.IsPar (a • u) B := GlobalTheory.ChainOnto.isPar_add_smul

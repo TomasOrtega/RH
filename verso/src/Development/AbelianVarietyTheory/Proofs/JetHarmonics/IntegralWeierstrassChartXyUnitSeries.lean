@@ -14,7 +14,7 @@ variable {q : ℕ} [Fact q.Prime]
 def IntLt (n : ℕ) (f : ℂ_[q]⟦X⟧) : Prop := ∀ m < n, ‖coeff m f‖ ≤ 1
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hf m hm) (hg m hm))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma IntLt.add {n : ℕ} {f g : ℂ_[q]⟦X⟧} (hf : IntLt n f) (hg : IntLt n g) : IntLt n (f + g) := by
   intro m hm
@@ -22,9 +22,9 @@ lemma IntLt.add {n : ℕ} {f g : ℂ_[q]⟦X⟧} (hf : IntLt n f) (hg : IntLt n 
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hf m hm) (hg m hm))
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite using `[coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩ hij`. Use `replace hij : i + j = m := by simpa using hij`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf i (by omega)) (norm_nonneg _) (hg j (by omega))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma IntLt.mul {n : ℕ} {f g : ℂ_[q]⟦X⟧} (hf : IntLt n f) (hg : IntLt n g) : IntLt n (f * g) := by
   intro m hm
@@ -37,11 +37,11 @@ lemma IntLt.mul {n : ℕ} {f g : ℂ_[q]⟦X⟧} (hf : IntLt n f) (hg : IntLt n 
   exact mul_le_one₀ (hf i (by omega)) (norm_nonneg _) (hg j (by omega))
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite using `[coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩ hij`. Use `replace hij : i + j = m := by simpa using hij`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Break down `Nat.eq_zero_or_pos i with rfl | hi` into its components or cases. Simplify using `[hf0]`. Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases. Simplify using `[hg0]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf i (by omega)) (norm_nonneg _) (hg j (by omega))`.
+A detailed English derivation is pending.
 -/
 lemma IntLt.mul_succ {n : ℕ} {f g : ℂ_[q]⟦X⟧} (hf : IntLt n f) (hg : IntLt n g)
     (hf0 : constantCoeff f = 0) (hg0 : constantCoeff g = 0) : IntLt (n + 1) (f * g) := by
@@ -59,7 +59,7 @@ lemma IntLt.mul_succ {n : ℕ} {f g : ℂ_[q]⟦X⟧} (hf : IntLt n f) (hg : Int
   exact mul_le_one₀ (hf i (by omega)) (norm_nonneg _) (hg j (by omega))
 
 /- English proof (translation)
-Introduce `m _`. Rewrite using `[coeff_C]`. Use `split_ifs`. Conclude with `ha`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma intLt_C {n : ℕ} {a : ℂ_[q]} (ha : ‖a‖ ≤ 1) : IntLt n (C a : ℂ_[q]⟦X⟧) := by
   intro m _
@@ -69,15 +69,15 @@ lemma intLt_C {n : ℕ} {a : ℂ_[q]} (ha : ‖a‖ ≤ 1) : IntLt n (C a : ℂ_
   · simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ m _ => h m, fun h m => h (m + 1) m (Nat.lt_succ_self m)⟩`.
+Supply the required witnesses or components.
 -/
 lemma bd_iff {f : ℂ_[q]⟦X⟧} : Bd 1 f ↔ ∀ n, IntLt n f :=
   ⟨fun h _ m _ => h m, fun h m => h (m + 1) m (Nat.lt_succ_self m)⟩
 
 /- English proof (translation)
-Rewrite `hU`, the goal using `[bd_iff]`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro m hm`. Use linear arithmetic over natural numbers and integers.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `succ n ih`. Rewrite using `[h]`. Use `(((hU _).mul (hU _)).mul (hU _)).add (IntLt.mul_succ ih ?_ hW0 (by simp [hU0, hW0]))` and prove the remaining obligations. Conclude with `(((((intLt_C h₁).mul (hU _)).add (((intLt_C h₂).mul (hU _)).mul (hU _))).add ((intLt_C h₃).mul ih)).add (((intLt_C h₄).mul (hU _)).mul ih)).add (((intLt_C h₆).mul ih).mul ih)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma bd_w {U W : ℂ_[q]⟦X⟧} {a₁ a₂ a₃ a₄ a₆ : ℂ_[q]} (h₁ : ‖a₁‖ ≤ 1) (h₂ : ‖a₂‖ ≤ 1) (h₃ : ‖a₃‖ ≤ 1)
     (h₄ : ‖a₄‖ ≤ 1) (h₆ : ‖a₆‖ ≤ 1) (hU : Bd 1 U) (hU0 : constantCoeff U = 0) (hW0 : constantCoeff W = 0)
@@ -97,34 +97,34 @@ variable (ι : ℂ ≃+* ℂ_[q]) {ℓ : ℂ_[q]⟦X⟧} (hℓ : constantCoeff �
 include hℓ
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.MomOne.TaylorRead.hat_laws q ι ℓ hℓ).1 F G hF hG).1`.
+A detailed English derivation is pending.
 -/
 lemma hat_add {F G : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) (hG : AnalyticAt ℂ G 0) :
     hat ι ℓ (fun z => F z + G z) = hat ι ℓ F + hat ι ℓ G :=
   ((GlobalTheory.MomOne.TaylorRead.hat_laws q ι ℓ hℓ).1 F G hF hG).1
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.MomOne.TaylorRead.hat_laws q ι ℓ hℓ).1 F G hF hG).2.1`.
+A detailed English derivation is pending.
 -/
 lemma hat_mul {F G : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) (hG : AnalyticAt ℂ G 0) :
     hat ι ℓ (fun z => F z * G z) = hat ι ℓ F * hat ι ℓ G :=
   ((GlobalTheory.MomOne.TaylorRead.hat_laws q ι ℓ hℓ).1 F G hF hG).2.1
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.MomOne.TaylorRead.hat_laws q ι ℓ hℓ).1 F G hF hG).2.2.1 h`.
+A detailed English derivation is pending.
 -/
 lemma hat_congr {F G : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) (hG : AnalyticAt ℂ G 0)
     (h : ∀ᶠ z in 𝓝[≠] (0 : ℂ), F z = G z) : hat ι ℓ F = hat ι ℓ G :=
   ((GlobalTheory.MomOne.TaylorRead.hat_laws q ι ℓ hℓ).1 F G hF hG).2.2.1 h
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.MomOne.TaylorRead.hat_laws q ι ℓ hℓ).2.1 c`.
+A detailed English derivation is pending.
 -/
 lemma hat_const (c : ℂ) : hat ι ℓ (fun _ => c) = C (ι c) :=
   (GlobalTheory.MomOne.TaylorRead.hat_laws q ι ℓ hℓ).2.1 c
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using hat_const ι hℓ 1`. Consider the case `succ n ih`. Simplify using `only [pow_succ]`. Rewrite using `[hat_mul ι hℓ (F := fun z => F z ^ n) (hF.fun_pow n) hF, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma hat_pow {F : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) (n : ℕ) :
     hat ι ℓ (fun z => F z ^ n) = hat ι ℓ F ^ n := by
@@ -135,7 +135,7 @@ lemma hat_pow {F : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) (n : ℕ) :
     rw [hat_mul ι hℓ (F := fun z => F z ^ n) (hF.fun_pow n) hF, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hat_const ι hℓ 0`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Rewrite using `[hat_add ι hℓ (G := fun z => ∑ i ∈ s, F i z) (hF a) (Finset.analyticAt_fun_sum s fun i _ => hF i), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma hat_sum (s : Finset ℕ) {F : ℕ → ℂ → ℂ} (hF : ∀ i, AnalyticAt ℂ (F i) 0) :
     hat ι ℓ (fun z => ∑ i ∈ s, F i z) = ∑ i ∈ s, hat ι ℓ (F i) := by
@@ -152,7 +152,7 @@ noncomputable def homog (D : Polynomial ℂ) (j : ℕ) (u w : ℂ → ℂ) (z : 
   ∑ i ∈ Finset.range (j + 1), D.coeff i * (u z ^ i * w z ^ (j - i))
 
 /- English proof (translation)
-Unfold `homog`. Conclude with `Finset.analyticAt_fun_sum _ fun i _ => by fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma homog_analytic (D : Polynomial ℂ) (j : ℕ) {u w : ℂ → ℂ} (hu : AnalyticAt ℂ u 0) (hw : AnalyticAt ℂ w 0) :
     AnalyticAt ℂ (homog D j u w) 0 := by
@@ -160,7 +160,7 @@ lemma homog_analytic (D : Polynomial ℂ) (j : ℕ) {u w : ℂ → ℂ} (hu : An
   exact Finset.analyticAt_fun_sum _ fun i _ => by fun_prop
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_eq_sum_range' (Nat.lt_succ_of_le hD), Finset.sum_mul, homog]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi))`. Rewrite using `[← h, Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma homog_eq {D : Polynomial ℂ} {j : ℕ} (hD : D.natDegree ≤ j) {u w : ℂ → ℂ} {z x : ℂ} (h : x * w z = u z) :
     homog D j u w z = D.eval x * w z ^ j := by
@@ -171,9 +171,9 @@ lemma homog_eq {D : Polynomial ℂ} {j : ℕ} (hD : D.natDegree ≤ j) {u w : �
   ring
 
 /- English proof (translation)
-Use `hat_sum ι hℓ (Finset.range (j + 1)) (F := fun i z => D.coeff i * (u z ^ i * w z ^ (j - i))) (fun i => by fun_prop)` as an intermediate fact. Unfold `homog`. Rewrite using `[this, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hat_mul ι hℓ (F := fun _ => D.coeff i) (G := fun z => u z ^ i * w z ^ (i + m - i)) (by fun_prop) (by fun_prop), hat_mul ι hℓ (F := fun z => u z ^ i) (G := fun z => w z ^ (i + m - i)) (by fun_prop) (by fun_prop), hat_pow ι hℓ hu, hat_pow ι hℓ hw, hat_const ι hℓ, hU, Nat.add_sub_c …`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma hat_homog (ι : ℂ ≃+* ℂ_[q]) {ℓ : ℂ_[q]⟦X⟧} (hℓ : constantCoeff ℓ = 0) (D : Polynomial ℂ) (j : ℕ)
     {u w : ℂ → ℂ} (hu : AnalyticAt ℂ u 0) (hw : AnalyticAt ℂ w 0) {v ys : ℂ_[q]⟦X⟧}
@@ -193,43 +193,37 @@ lemma hat_homog (ι : ℂ ≃+* ℂ_[q]) {ℓ : ℂ_[q]⟦X⟧} (hℓ : constant
     _ = _ := by rw [hW]; ring
 
 /- English proof (translation)
-Introduce and unpack `q _ M ℓ ⟨hok, hℓ, hU, hU1⟩`. Take `⟨-, -, -, -, hu0, hw0, -, -, hs⟩` from `GlobalTheory.MomOne.uw_elliptic_flow q M hok`. Take `⟨hu, hw, -, -, hxy, heq⟩` from `hs 0 (Or.inl (zero_mem _))`. Take `⟨-, h₁, h₂, h₃, h₄, h₆, -⟩` from `hok`. Take `⟨-, -, -, hc0, hder, -⟩` from `GlobalTheory.MomOne.TaylorRead.hat_laws q M.ι ℓ hℓ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hring, -, hinv, -⟩` from `GlobalTheory.MomOne.sup_norm_laws q`. Establish `hU0 : constantCoeff (hat M.ι ℓ M.u) = 0` using `by rw [hc0, hu0, map_zero]`. Establish `hW0 : constantCoeff (hat M.ι ℓ M.w) = 0` using `by rw [hc0, hw0, map_zero]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (coeff 0) (hder M.u hu)` as an intermediate fact. Rewrite `this` using `[coeff_derivative, coeff_zero_eq_constantCoeff_apply, map_mul, ← coeff_zero_eq_constantCoeff_apply, coeff_derivative]`. Simplify using `only [zero_add, h0, Nat.cast_zero, mul_one, zero_mul] at this`. Rewrite `hU1` using `[this]`. Simplify using `at hU1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨v, hv⟩` from `X_dvd_iff.mpr hU0`. Establish `hvc : ∀ n, coeff n v = coeff (n + 1) (hat M.ι ℓ M.u)` using `fun n => by rw [hv, coeff_succ_X_mul]`. Establish `hvB : Bd 1 v` using `fun n => by rw [hvc]; exact hU _`. Establish `hv0 : ‖constantCoeff v‖ = 1`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, hvc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU1`. Establish `hv0' : constantCoeff v ≠ 0`. Introduce `h`. Rewrite `hv0` using `[h]`. Simplify using `at hv0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hvi : v * v⁻¹ = 1` using `PowerSeries.mul_inv_cancel v hv0'`. Establish `hviB : Bd 1 v⁻¹` using `hinv v _ hvB hv0 hvi`. Establish `hWeq : hat M.ι ℓ M.w = hat M.ι ℓ M.u * hat M.ι ℓ M.u * hat M.ι ℓ M.u + hat M.ι ℓ M.w * (C M.W.a₁ * hat M.ι ℓ M.u + C M.W.a₂ * hat M.ι ℓ M.u * hat M.ι ℓ M.u + C M.W.a₃ * hat M.ι ℓ M.w + C M.W.a₄ * hat M.ι ℓ M.u * hat M.ι ℓ M.w + C M.W.a₆ * hat M.ι ℓ M.w * hat M.ι ℓ M.w)`. Establish `hc : ∀ a : ℂ_[q], C a = hat M.ι ℓ (fun _ => M.ι.symm a)` using `fun a => by`. Rewrite using `[hat_const M.ι hℓ, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc]`. Simplify using `(disch := fun_prop) only [← hat_mul M.ι hℓ, ← hat_add M.ι hℓ]`. Use `hat_congr M.ι hℓ hw (by fun_prop) ?_` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds heq] with z hz`. Take the linear combination `hz.1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWB : Bd 1 (hat M.ι ℓ M.w)` using `bd_w h₁ h₂ h₃ h₄ h₆ hU hU0 hW0 hWeq`. Use `set Q := C M.W.a₁ * hat M.ι ℓ M.u + C M.W.a₂ * hat M.ι ℓ M.u * hat M.ι ℓ M.u + C M.W.a₃ * hat M.ι ℓ M.w + C M.W.a₄ * hat M.ι ℓ M.u * hat M.ι ℓ M.w + C M.W.a₆ * hat M.ι ℓ M.w * hat M.ι ℓ M.w with hQ`. Establish `hQ0 : constantCoeff Q = 0` using `by simp [hQ, hU0, hW0]`. Establish `hQB : Bd 1 Q`. Rewrite `hU`, `hWB`, the goal using `[bd_iff]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `n`. Conclude with `(((((intLt_C h₁).mul (hU _)).add (((intLt_C h₂).mul (hU _)).mul (hU _))).add ((intLt_C h₃).mul (hWB _))).add (((intLt_C h₄).mul (hU _)).mul (hWB _))).add (((intLt_C h₆).mul (hWB _)).mul (hWB _))`. Use `set ys := (C 1 + C (-1) * Q) * (v⁻¹ * v⁻¹ * v⁻¹) with hys`. Establish `hysB : Bd 1 ys`. Rewrite `hQB`, `hviB`, the goal using `[bd_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n`. Conclude with `((intLt_C (by simp)).add ((intLt_C (by simp)).mul (hQB _))).mul (((hviB _).mul (hviB _)).mul (hviB _))`. Establish `hys0 : ‖constantCoeff ys‖ = 1`. Simplify using `[hys, hQ0, hv0]`. Establish `hWys : hat M.ι ℓ M.w * ys = X ^ 3`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1 : hat M.ι ℓ M.w * (1 - Q) = (X * v) ^ 3`. Rewrite using `[← hv]`. Take the linear combination `hWeq`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hys, map_neg, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = X ^ 3 * (v * v⁻¹) ^ 3 := by rw [h1]; ring`. Use `_ = X ^ 3 := by rw [hvi]; ring`. Use `⟨v, v * ys, -ys, hvB, ?_, fun n => by simpa using hysB n, hv0, ?_, by simpa using hys0, hv, by rw [mul_neg, hWys], by ring, ?_⟩` and prove the remaining obligations. Rewrite `hvB`, `hysB`, the goal using `[bd_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun n => (hvB n).mul (hysB n)`. Rewrite using `[map_mul, norm_mul, hv0, hys0, mul_one]`. Introduce `F A B k hF hA hB G hG D j hD h`. Use `clear_value ys Q`. Use `clear hs heq hder hring hinv`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hAa` using `homog_analytic A k hu hw`. Establish `hBa` using `homog_analytic B k hu hw`. Establish `hDa` using `homog_analytic D j hu hw`. Establish `key : hat M.ι ℓ F * hat M.ι ℓ (homog D j M.u M.w) * hat M.ι ℓ M.w ^ (k + 1) + hat M.ι ℓ G * hat M.ι ℓ M.w ^ j * hat M.ι ℓ (homog B k M.u M.w) = hat M.ι ℓ G * hat M.ι ℓ M.w ^ j * (hat M.ι ℓ (homog A k M.u M.w) * hat M.ι ℓ M.w)`. Rewrite using `[← hat_pow M.ι hℓ hw, ← hat_pow M.ι hℓ hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `(disch := fun_prop) only [← hat_mul M.ι hℓ, ← hat_add M.ι hℓ]`. Use `hat_congr M.ι hℓ (by fun_prop) (by fun_prop) ?_` and prove the remaining obligations. Use `filter_upwards [h, hxy] with z hz ⟨_, _, hx, hy⟩`. Rewrite using `[homog_eq hA hx, homog_eq hB hx, homog_eq hD hx]`. Take the linear combination `M.w z ^ (j + k + 1) * hz + G z * M.w z ^ j * (B.eval (M.x z)) * M.w z ^ k * hy`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `eA` using `hat_homog M.ι hℓ A k hu hw hv hWys`. Establish `eB` using `hat_homog M.ι hℓ B k hu hw hv hWys`. Establish `eD` using `hat_homog M.ι hℓ D j hu hw hv hWys`. Establish `hsum : ∑ i ∈ Finset.range (k + 1), (C (M.ι (A.coeff i)) * X ^ (2 * (k - i) + 3) * (v * ys) ^ i + C (M.ι (B.coeff i)) * X ^ (2 * (k - i)) * (v * ys) ^ i * -ys) = (∑ i ∈ Finset.range (k + 1), C (M.ι (A.coeff i)) * X ^ (2 * (k - i)) * (v * ys) ^ i) * X ^ 3 - (∑ i ∈ Finset.range (k + …`. Rewrite using `[Finset.sum_mul, Finset.sum_mul, ← Finset.sum_sub_distrib]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[hsum]`. Use `set SA := ∑ i ∈ Finset.range (k + 1), C (M.ι (A.coeff i)) * X ^ (2 * (k - i)) * (v * ys) ^ i`. Use `set SB := ∑ i ∈ Finset.range (k + 1), C (M.ι (B.coeff i)) * X ^ (2 * (k - i)) * (v * ys) ^ i`. Use `set SD := ∑ i ∈ Finset.range (j + 1), C (M.ι (D.coeff i)) * X ^ (2 * (j - i)) * (v * ys) ^ i`.
-
-Establish `hX : (X : ℂ_[q]⟦X⟧) ^ (j + k) ≠ 0` using `pow_ne_zero _ X_ne_zero`. Apply `mul_left_cancel₀ hX` to reduce the goal to its premises. Establish `key2 : hat M.ι ℓ F * (hat M.ι ℓ (homog D j M.u M.w) * ys ^ j) * (hat M.ι ℓ M.w * ys) ^ (k + 1) + hat M.ι ℓ G * (hat M.ι ℓ M.w * ys) ^ j * (hat M.ι ℓ (homog B k M.u M.w) * ys ^ k) * ys = hat M.ι ℓ G * (hat M.ι ℓ M.w * ys) ^ j * ((hat M.ι ℓ (homog A k M.u M.w) * ys ^ k) * (hat M.ι …`. Take the linear combination `ys ^ (j + k + 1) * key`. Rewrite `key2` using `[eA, eB, eD, hWys]`.
-
-Take the linear combination `key2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem chart_xy : ∀ (q : ℕ) [Fact q.Prime] (M : Mdl q) (ℓ : ℂ_[q]⟦X⟧), M.Chart ℓ → coeff 1 ℓ ≠ 0 ∧ ∃ v xs ys : ℂ_[q]⟦X⟧, Bd 1 v ∧ Bd 1 xs ∧ Bd 1 ys ∧ ‖constantCoeff v‖ = 1 ∧ ‖constantCoeff xs‖ = 1 ∧ ‖constantCoeff ys‖ = 1 ∧ hat M.ι ℓ M.u = X * v ∧ hat M.ι ℓ M.w * ys = -X ^ 3 ∧ xs = -v * ys ∧ ∀ (F : ℂ → ℂ) (A B : Polynomial ℂ) (k : ℕ), AnalyticAt ℂ F 0 → A.natDegree ≤ k → B.natDegree ≤ k → ∀ G : ℂ → ℂ, AnalyticAt ℂ G 0 → ∀ (D : Polynomial ℂ) (j : ℕ), D.natDegree ≤ j → (∀ᶠ z in 𝓝[≠] (0 : ℂ), F z * D.eval (M.x z) = G z * (A.eval (M.x z) + B.eval (M.x z) * M.y z)) → hat M.ι ℓ F * X ^ (2 * k + 3) * (∑ i ∈ Finset.range (j + 1), C (M.ι (D.coeff i)) * X ^ (2 * (j - i)) * xs ^ i) = hat M.ι ℓ G * X ^ (2 * j) * ∑ i ∈ Finset.range (k + 1), (C (M.ι (A.coeff i)) * X ^ (2 * (k - i) + 3) * xs ^ i + C (M.ι (B.coeff i)) * X ^ (2 * (k - i)) * xs ^ i * ys) := by
   rintro q _ M ℓ ⟨hok, hℓ, hU, hU1⟩

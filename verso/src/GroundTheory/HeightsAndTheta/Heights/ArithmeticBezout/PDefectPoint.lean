@@ -12,11 +12,11 @@ noncomputable section
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hw : ∀ j : Fin n, groupWeight 1 n ((0 : Fin 1), j) = fun _ => 1`. Introduce `j`. Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Simplify using `[groupWeight]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsum : IsWeightedHomogeneous (groupWeight 1 n) (∑ j, C (y j) * X ((0 : Fin 1), j) : MvPolynomial (Fin 1 × Fin n) ℂ) (fun _ => 1)`. Rewrite using `[← mem_weightedHomogeneousSubmodule]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Establish `hX` using `isWeightedHomogeneous_X ℂ (groupWeight 1 n) ((0 : Fin 1), j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hX` using `[hw j]`. Simplify `(isWeightedHomogeneous_C (groupWeight 1 n) (y j)).mul hX` using `[zero_add]`. Unfold `IsMultiHomog`. Simplify `(isWeightedHomogeneous_C (groupWeight 1 n) c).mul hsum` using `[zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isMultiHomog_pointForm (c : ℂ) (y : Fin n → ℂ) :
     IsMultiHomog 1 (C c * ∑ j, C (y j) * X ((0 : Fin 1), j) : MvPolynomial (Fin 1 × Fin n) ℂ) := by
@@ -37,17 +37,17 @@ theorem isMultiHomog_pointForm (c : ℂ) (y : Fin n → ℂ) :
   simpa [zero_add] using (isWeightedHomogeneous_C (groupWeight 1 n) c).mul hsum
 
 /- English proof (translation)
-Introduce `n h W g hW hg`. Take `⟨y, hy0, hline, hmem⟩` from `h1 n W g hW hg`. Take `⟨c, hc, hgeq⟩` from `h2 n W g y hg hy0 hline`. Establish `hmass : coneIntegral h W 0 (fun _ => 1) = 1`. Use `h5 n 0 1 h W g hW hg (hgeq ▸ isMultiHomog_pointForm c y)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hd : 0 < h.dualNorm y` using `h.dualNorm_pos hy0`. Use `⟨Real.log ‖c‖ + Real.log (h.dualNorm y), fun u hu => ?_⟩` and prove the remaining obligations. Establish `hpair : ∑ j, u j * y j ≠ 0`. Introduce `h0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hu` to reduce the goal to its premises. Rewrite using `[hmem]`. Introduce `t`. Simplify using `only [linForm, map_sum, map_mul, eval_C, eval_X, Pi.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Use `_ = 0 := by rw [h0, mul_zero]`. Establish `hev : eval (fun ij => u ij.2) g = c * ∑ j, u j * y j`. Rewrite using `[hgeq]`. Simplify using `only [map_mul, map_sum, eval_C, eval_X]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hcone : coneIntegral h W 0 (fsLog h u) = fsLog h u y`. Rewrite using `[h3 n h W y hline (fsLog h u) (fun t ht => h4 n h u y t ht), hmass, mul_one]`. Use `⟨by rw [hev]; exact mul_ne_zero hc hpair, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hev, hcone, fsLog, norm_mul, Real.log_mul (norm_ne_zero_iff.mpr hc) (norm_ne_zero_iff.mpr hpair), Real.log_div (norm_ne_zero_iff.mpr hpair) hd.ne']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem DefectPoint.proof (h1 : PointLine.Statement) (h2 : PointChowForm.Statement)
     (h3 : ConeIntegralLine.Statement) (h4 : FsLogSmul.Statement) (h5 : ConeIntegralMass.Statement) :

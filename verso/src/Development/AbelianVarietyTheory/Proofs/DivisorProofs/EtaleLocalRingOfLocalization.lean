@@ -4,23 +4,21 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨n, f, hf, hK⟩` from `‹Algebra.FinitePresentation B E›`. Use `letI : Algebra (MvPolynomial (Fin n) A) (MvPolynomial (Fin n) B) := MvPolynomial.algebraMvPolynomial`. Use `haveI hL : IsLocalization (M.map (MvPolynomial.C (σ := Fin n))) (MvPolynomial (Fin n) B) := MvPolynomial.isLocalization M B`. Take `⟨s, hs⟩` from `hK`. Use `choose p hp using fun g : (s : Set (MvPolynomial (Fin n) B)) => IsLocalization.surj (M.map (MvPolynomial.C (σ := Fin n))) (g : MvPolynomial (Fin n) B)`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `J₀ : Ideal (MvPolynomial (Fin n) A)` to `Ideal.span (Set.range fun g => (p g).1)`. Establish `hJ : J₀.map (algebraMap (MvPolynomial (Fin n) A) (MvPolynomial (Fin n) B)) = RingHom.ker f`. Establish `hs' : Ideal.span (s : Set (MvPolynomial (Fin n) B)) = RingHom.ker f` using `hs`. Rewrite using `[Ideal.map_span, ← hs']`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨g, rfl⟩, rfl⟩`. Rewrite using `[← hp g]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span g.2)`. Rewrite using `[Ideal.span_le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g hg`. Rewrite using `[SetLike.mem_coe, ← Ideal.mul_unit_mem_iff_mem _ (IsLocalization.map_units _ (p ⟨g, hg⟩).2), hp ⟨g, hg⟩]`. Conclude with `Ideal.subset_span ⟨_, ⟨⟨g, hg⟩, rfl⟩, rfl⟩`. Establish `hJfg : J₀.FG` using `Submodule.fg_span (Set.finite_range _)`. Set `D` to `MvPolynomial (Fin n) A ⧸ J₀`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Algebra.FinitePresentation A D := Algebra.FinitePresentation.quotient hJfg`. Set `Dl` to `MvPolynomial (Fin n) B ⧸ J₀.map (algebraMap (MvPolynomial (Fin n) A) (MvPolynomial (Fin n) B))`. Use `haveI hDl : IsLocalization (Algebra.algebraMapSubmonoid D (M.map (MvPolynomial.C (σ := Fin n)))) Dl := inferInstance`. Set `e : Dl ≃+* E` to `(Ideal.quotEquivOfEq hJ).trans (Ideal.quotientKerAlgEquivOfSurjective hf).toRingEquiv`. Set `φ : D →+* E` to `e.toRingHom.comp (algebraMap D Dl)`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `⟨D, inferInstance, inferInstance, inferInstance, φ, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `e (Ideal.Quotient.mk _ (algebraMap (MvPolynomial (Fin n) A) (MvPolynomial (Fin n) B) (MvPolynomial.C a))) = algebraMap B E (algebraMap A B a)`. Establish `he : ∀ x, e (Ideal.Quotient.mk _ x) = f x` using `fun x => rfl`. Rewrite using `[he, MvPolynomial.algebraMap_def, MvPolynomial.map_C, ← MvPolynomial.algebraMap_eq, f.commutes]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `letI : Algebra D E := φ.toAlgebra`. Set `e' : Dl ≃ₐ[D] E` to `AlgEquiv.ofRingEquiv (f := e) (fun x => rfl)`. Establish `hsub : Algebra.algebraMapSubmonoid D (M.map (MvPolynomial.C (σ` using `Fin n))) = Algebra.algebraMapSubmonoid D M := by`. Use extensionality with `x`. Simplify using `only [Algebra.algebraMapSubmonoid, Submonoid.mem_map]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨_, ⟨a, ha, rfl⟩, rfl⟩`.
-
-Use `haveI := IsLocalization.isLocalization_of_algEquiv (Algebra.algebraMapSubmonoid D (M.map (MvPolynomial.C (σ := Fin n)))) e'`. Rewrite `this` using `[hsub]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_finitePresentation_isLocalization_of_localization (A B E : Type) [CommRing A]
     [CommRing B] [CommRing E] [Algebra A B] (M : Submonoid A) [IsLocalization M B] [Algebra B E]
@@ -82,11 +80,11 @@ theorem exists_finitePresentation_isLocalization_of_localization (A B E : Type) 
     rwa [hsub] at this
 
 /- English proof (translation)
-Take `⟨f, hfP, hfet⟩` from `Algebra.exists_etale_of_isEtaleAt (R := R) P'`. Set `A'` to `Localization.Away f`. Establish `hdisj : Disjoint (Submonoid.powers f : Set D) P'` using `(Ideal.disjoint_powers_iff_notMem_of_isPrime _).mpr hfP`. Set `q' : Ideal A'` to `P'.map (algebraMap D A')`. Use `haveI hq' : q'.IsPrime := IsLocalization.isPrime_of_isPrime_disjoint (Submonoid.powers f) A' P' ‹_› hdisj`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcomap : q'.comap (algebraMap D A') = P'` using `IsLocalization.under_map_of_isPrime_disjoint (Submonoid.powers f) A' ‹_› hdisj`. Use `haveI h1 : IsLocalization.AtPrime (Localization.AtPrime q') (q'.comap (algebraMap D A')) := IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (Submonoid.powers f) (Localization.AtPrime q') q'`. Use `haveI h2 : IsLocalization P'.primeCompl (Localization.AtPrime q') := by`. Establish `h1' : IsLocalization (q'.comap (algebraMap D A')).primeCompl (Localization.AtPrime q')` using `h1`. Establish `hsub : (q'.comap (algebraMap D A')).primeCompl = P'.primeCompl`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use extensionality with `x`. Simplify using `only [Ideal.mem_primeCompl_iff, hcomap]`. Rewrite `h1'` using `[hsub]`. Then use the resulting hypothesis. Set `e : Localization.AtPrime q' ≃ₐ[D] Localization.AtPrime P'` to `IsLocalization.algEquiv P'.primeCompl _ _`. Conclude with `⟨A', inferInstance, inferInstance, hfet, q', hq', ⟨e.restrictScalars R⟩⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_etale_atPrime_algEquiv_of_isEtaleAt (R D : Type) [CommRing R] [CommRing D]
     [Algebra R D] [Algebra.FinitePresentation R D] (P' : Ideal D) [P'.IsPrime]
@@ -115,15 +113,11 @@ theorem exists_etale_atPrime_algEquiv_of_isEtaleAt (R D : Type) [CommRing R] [Co
   exact ⟨A', inferInstance, inferInstance, hfet, q', hq', ⟨e.restrictScalars R⟩⟩
 
 /- English proof (translation)
-Introduce `R A E _ _ _ _ _ q _ _ _ _ _ P _`. Take `⟨D, _, _, _, φ, hφ, hloc⟩` from `exists_finitePresentation_isLocalization_of_localization A (Localization.AtPrime q) E q.primeCompl`. Use `letI : Algebra R D := ((algebraMap A D).comp (algebraMap R A)).toAlgebra`. Use `haveI : IsScalarTower R A D := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Algebra.FinitePresentation R D := Algebra.FinitePresentation.trans R A D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI : Algebra D E := φ.toAlgebra`. Use `haveI : IsScalarTower R D E := by`. Use `IsScalarTower.of_algebraMap_eq' ?_` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_eq R (Localization.AtPrime q) E, IsScalarTower.algebraMap_eq R A (Localization.AtPrime q), ← RingHom.comp_assoc, ← hφ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `EP` to `Localization.AtPrime P`. Use `haveI : IsScalarTower D E EP := inferInstance`. Use `haveI : IsScalarTower R D EP := inferInstance`. Use `haveI hEP : IsLocalization.AtPrime EP (P.comap (algebraMap D E)) := IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (Algebra.algebraMapSubmonoid D q.primeCompl) EP P`. Set `P'` to `P.comap (algebraMap D E)`.
-
-Set `eP : Localization.AtPrime P' ≃ₐ[D] EP` to `IsLocalization.algEquiv P'.primeCompl _ _`. Use `haveI : Algebra.FormallyEtale R A := inferInstance`. Use `haveI : Algebra.FormallyEtale A (Localization.AtPrime q) := Algebra.FormallyEtale.of_isLocalization q.primeCompl`. Use `haveI : Algebra.FormallyEtale R (Localization.AtPrime q) := Algebra.FormallyEtale.comp R A (Localization.AtPrime q)`. Use `haveI : Algebra.FormallyEtale R E := Algebra.FormallyEtale.comp R (Localization.AtPrime q) E`.
-
-Use `haveI : Algebra.FormallyEtale E EP := Algebra.FormallyEtale.of_isLocalization P.primeCompl`. Use `haveI : Algebra.FormallyEtale R EP := Algebra.FormallyEtale.comp R E EP`. Use `haveI : Algebra.IsEtaleAt R P' := Algebra.FormallyEtale.of_equiv (eP.restrictScalars R).symm`. Take `⟨A', i1, i2, i3, q', i4, ⟨e⟩⟩` from `exists_etale_atPrime_algEquiv_of_isEtaleAt R D P'`. Conclude with `⟨A', i1, i2, i3, q', i4, ⟨e.trans (eP.restrictScalars R)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem essEtale_atPrime_of_etale_over_atPrime : ∀ (R A E : Type) [CommRing R] [CommRing A] [CommRing E] [Algebra R A] [Algebra.Etale R A] (q : Ideal A) [q.IsPrime] [Algebra (Localization.AtPrime q) E] [Algebra.Etale (Localization.AtPrime q) E] [Algebra R E] [IsScalarTower R (Localization.AtPrime q) E] (P : Ideal E) [P.IsPrime], (∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] Localization.AtPrime P)) := by
   intro R A E _ _ _ _ _ q _ _ _ _ _ P _

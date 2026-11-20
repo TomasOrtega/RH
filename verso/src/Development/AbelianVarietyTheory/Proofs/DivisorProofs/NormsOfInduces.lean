@@ -25,15 +25,15 @@ def Norms (V : Cover Y) (L : HermLB V.p) (f : Y.X → Y.Fn) (a : ∀ σ : F →+
       l v e y = Real.log (e.w (valAt z (V.φ (f (below y.1)) * (r i : V.G.functionField))))
 
 /- English proof (translation)
-Take `⟨r, hr, hu, hc, hf⟩` from `h`. Use `⟨r, hr, fun i x hx => by rw [map_pow]; exact hu i x hx, fun σ z y y' i e₁ e₂ hi => ?_, fun v e y z yt i e₁ e₂ hi => by rw [map_pow]; exact hf v e y z yt i e₁ e₂ hi⟩` and prove the remaining obligations. Establish `H` using `hc σ z y y' i e₁ e₂ hi`. Establish `hπ : V.π (under z) = under y` using `by show _ = y.1 _`. Rewrite using `[e₁]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hU` using `hu i _ hi`. Rewrite `hU` using `[hπ]`. Establish `h0` using `ratVal_ne_zero (y := z) hU`. Establish `H'` using `congrArg Real.log H`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `H'` using `[Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.2 h0)) (Real.exp_ne_zero _), Real.log_exp, Real.log_pow, Real.log_pow]`. Use `beta_reduce`. Rewrite using `[map_pow]`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using `only [Nat.cast_zero, zero_mul, genAt] at H' ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.cast_ofNat] at H'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp : C.pn Y σ A.D (A.m σ) (C.cx Y σ (genAt A.D (under y))) y ≠ 0` using `fun h => by`. Rewrite `H` using `[h, mul_zero, zero_pow hk.ne']`. Conclude with `(mul_pos (pow_pos (norm_pos_iff.2 h0) 2) (Real.exp_pos _)).ne H`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `H'` using `[Real.log_mul (Real.exp_ne_zero _) hp, Real.log_exp]`. Simplify using `only [lnAdl, lnN, genAt] at H' ⊢`. Simplify using `only [Nat.cast_ofNat] at H'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norms_of_induces {C : CxSt F} {V : Cover Y} {A : Adl C Y} {L : HermLB V.p} {k : ℕ} (h : V.Induces A L k) :
     Norms V L (fun x => genAt A.D x ^ k)
@@ -68,7 +68,7 @@ theorem norms_of_induces {C : CxSt F} {V : Cover Y} {A : Adl C Y} {L : HermLB V.
   linarith
 
 /- English proof (translation)
-Take `rfl : f = f'` from `funext hf`. Take `rfl : a = a'` from `funext₂ ha`. Take `rfl : l = l'` from `funext₃ hl`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Norms.congr {V : Cover Y} {L : HermLB V.p} {f f' : Y.X → Y.Fn} {a a' : ∀ σ : F →+* ℂ, Pts Y σ → ℝ}
     {l l' : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ} (h : Norms V L f a l) (hf : ∀ x, f x = f' x)

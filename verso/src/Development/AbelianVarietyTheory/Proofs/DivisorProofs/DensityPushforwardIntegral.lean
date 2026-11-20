@@ -17,53 +17,43 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.ArchLim
 
 /- English proof (translation)
-Introduce `k _ B Y q p π w n r D ε σ _ _ hq hp hgen ρ g f hρ hg hf hint hcov`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ hq.isProjOver`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ hp.isProjOver`. Use `set Φ := PtsOver.map π w (spMap σ) with hΦ`. Establish `hΦm : Measurable Φ` using `(PtsOver.continuous_map π w (spMap σ)).measurable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set W : Set (CxPts q σ) := {u | ∃ c : AlgChart q σ n, u ∈ c.e.source} with hWdef`. Establish `hWc : Wᶜ = {u | ∀ c : AlgChart q σ n, u ∉ c.e.source}` using `by ext u; simp [W]`. Establish `hWo : IsOpen W`. Establish `: W = ⋃ c : AlgChart q σ n, c.e.source` using `by ext u; simp [W]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `isOpen_iUnion fun c => c.e.open_source`. Establish `hWcm : MeasurableSet Wᶜ` using `hWo.measurableSet.compl`. Establish `hcell : ∀ u ∈ W, ∃ (c : AlgChart q σ n) (c' : AlgChart p σ D), u ∈ c.e.source ∧ IsCell ε π w c c' ∧ ∀ z ∈ c.e.target, ∫ x : Low r → ℂ, ρ c' (c'.e.symm (pt ε z x)) = g c (c.e.symm z)` using `fun u hu => hcov hu.choose u hu.choose_spec`. Set `S : CxPts q σ → Set (CxPts q σ)` to `fun u => if h : u ∈ W then (hcell u h).choose.e.source else Set.univ`. Establish `hSo : ∀ u, IsOpen (S u)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `u`. Distinguish the cases in `h : u ∈ W`. Simplify using `only [S, dif_pos h]`. Conclude with `(hcell u h).choose.e.open_source`. Simplify using `only [S, dif_neg h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `isOpen_univ`. Establish `hSm : ∀ u ∈ W, u ∈ S u`. Introduce `u h`. Simplify using `only [S, dif_pos h]`. Conclude with `(hcell u h).choose_spec.choose_spec.1`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSc : ∀ u ∈ W, ∃ (c : AlgChart q σ n) (c' : AlgChart p σ D), S u = c.e.source ∧ IsCell ε π w c c' ∧ ∀ z ∈ c.e.target, ∫ x : Low r → ℂ, ρ c' (c'.e.symm (pt ε z x)) = g c (c.e.symm z)`. Introduce `u h`. Take `⟨c', -, h2, h3⟩` from `(hcell u h).choose_spec`. Conclude with `⟨_, c', by simp only [S, dif_pos h], h2, h3⟩`. Establish `hρ' : IsDens fun c y => -ρ c y` using `(GlobalTheory.MixDens.isDens_zero.sub hρ).congr fun c y _ => by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : IsDens fun c y => -g c y` using `(GlobalTheory.MixDens.isDens_zero.sub hg).congr fun c y _ => by simp`. Establish `nνP : part g Wᶜ = 0` using `by rw [hWc]; exact GlobalTheory.T.density_null_off_charts k B q σ n g`. Establish `nνM : part (fun c y => -g c y) Wᶜ = 0` using `by rw [hWc]; exact GlobalTheory.T.density_null_off_charts k B q σ n _`. Establish `nμP : part ρ (Φ ⁻¹' Wᶜ) = 0` using `by rw [hWc]; exact GlobalTheory.T.fibre_density_null_off_charts k B Y q p π w n D σ hq hp hgen ρ`. Establish `nμM : part (fun c y => -ρ c y) (Φ ⁻¹' Wᶜ) = 0` using `by rw [hWc]; exact GlobalTheory.T.fibre_density_null_off_charts k B Y q p π w n D σ hq hp hgen _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set fp : CxPts q σ → ℝ≥0∞ := fun u => ENNReal.ofReal (f u) with hfp`. Use `set fm : CxPts q σ → ℝ≥0∞ := fun u => ENNReal.ofReal (-f u) with hfm`. Use `set fa : CxPts q σ → ℝ≥0∞ := fun u => ENNReal.ofReal |f u| with hfa`. Establish `hfpm : Measurable fp` using `hf.ennreal_ofReal`. Establish `hfmm : Measurable fm` using `hf.neg.ennreal_ofReal`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfam : Measurable fa` using `hf.abs.ennreal_ofReal`. Set `Mp : Measure (CxPts p σ) → (CxPts q σ → ℝ≥0∞) → Measure (CxPts q σ)` to `fun μ h => (μ.withDensity (h ∘ Φ)).map Φ`. Establish `Mp_apply : ∀ μ h A, MeasurableSet A → Mp μ h A = ∫⁻ y in Φ ⁻¹' A, h (Φ y) ∂μ`. Introduce `μ h A hA`. Simplify using `only [Mp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Measure.map_apply hΦm hA, withDensity_apply _ (hΦm hA)]`. Both sides reduce to the same expression. Establish `Mp_null : ∀ (μ : Measure (CxPts p σ)) h, μ (Φ ⁻¹' Wᶜ) = 0 → Mp μ h Wᶜ = 0`. Introduce `μ h h0`. Rewrite using `[Mp_apply μ h _ hWcm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `setLIntegral_measure_zero _ _ h0`. Establish `wd_null : ∀ (ν : Measure (CxPts q σ)) h, ν Wᶜ = 0 → ν.withDensity h Wᶜ = 0`. Introduce `ν h h0`. Rewrite using `[withDensity_apply _ hWcm]`. Conclude with `setLIntegral_measure_zero _ _ h0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set μP := part ρ`. Use `set μM := part fun c y => -ρ c y`. Use `set νP := part g`. Use `set νM := part fun c y => -g c y`. Establish `iP : ∫⁻ y, fa (Φ y) ∂μP ≠ ⊤`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hint.1.hasFiniteIntegral`. Simplify using `only [HasFiniteIntegral, Real.enorm_eq_ofReal_abs] at h`. Conclude with `h.ne`. Establish `iM : ∫⁻ y, fa (Φ y) ∂μM ≠ ⊤`. Establish `h` using `hint.2.hasFiniteIntegral`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [HasFiniteIntegral, Real.enorm_eq_ofReal_abs] at h`. Conclude with `h.ne`. Establish `cell : ∀ u ∈ W, ∀ A, MeasurableSet A → A ⊆ S u → (Mp μP fp A + Mp μM fm A + (νM.withDensity fp A + νP.withDensity fm A) = Mp μM fp A + Mp μP fm A + (νP.withDensity fp A + νM.withDensity fm A)) ∧ νP.withDensity fa A + νM.withDensity fa A ≤ Mp μP fa A + Mp μM fa A`. Introduce `u hu A hA hAS`. Take `⟨c, c', hSu, hc, hfib⟩` from `hSc u hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hAS` using `[hSu]`. Establish `jP` using `ne_top_of_le_ne_top iP (setLIntegral_le_lintegral (Φ ⁻¹' A) fun y => fa (Φ y))`. Establish `jM` using `ne_top_of_le_ne_top iM (setLIntegral_le_lintegral (Φ ⁻¹' A) fun y => fa (Φ y))`. Take `⟨e1, e2⟩` from `GlobalTheory.T.fibre_integral_density_formula k B Y q p π w n r D ε σ c c' hq hp hc ρ g f hρ hg hf hfib A hA hAS jP jM`. Simplify using `only [Mp_apply _ _ A hA, withDensity_apply _ hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨e1, e2⟩`. Establish `hN : νP.withDensity fa + νM.withDensity fa ≤ Mp μP fa + Mp μM fa` using `GlobalTheory.T.measure_le_of_local_le _ _ _ S W hSo hSm (by`. Rewrite using `[Measure.add_apply, wd_null _ _ nνP, wd_null _ _ nνM, add_zero])`. Use `fun u hu A hA hAS => by rw [Measure.add_apply, Measure.add_apply]; exact (cell u hu A hA hAS).2`. Establish `hnull₁ : (Mp μP fp + Mp μM fm + (νM.withDensity fp + νP.withDensity fm)) Wᶜ = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Measure.add_apply, Mp_null _ _ nμP, Mp_null _ _ nμM, wd_null _ _ nνP, wd_null _ _ nνM, add_zero]`. Establish `hnull₂ : (Mp μM fp + Mp μP fm + (νP.withDensity fp + νM.withDensity fm)) Wᶜ = 0`. Simplify using `only [Measure.add_apply, Mp_null _ _ nμP, Mp_null _ _ nμM, wd_null _ _ nνP, wd_null _ _ nνM, add_zero]`. Establish `hM₁` using `GlobalTheory.T.measure_le_of_local_le _ _ (Mp μM fp + Mp μP fm + (νP.withDensity fp + νM.withDensity fm)) S W hSo hSm hnull₁ fun u hu A hA hAS => by`. Simplify using `only [Measure.add_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(cell u hu A hA hAS).1.le`. Establish `hM₂` using `GlobalTheory.T.measure_le_of_local_le _ _ (Mp μP fp + Mp μM fm + (νM.withDensity fp + νP.withDensity fm)) S W hSo hSm hnull₂ fun u hu A hA hAS => by`. Simplify using `only [Measure.add_apply]`. Conclude with `(cell u hu A hA hAS).1.ge`. Establish `hu` using `congrArg (fun μ : Measure (CxPts q σ) => μ Set.univ) (le_antisymm hM₁ hM₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hNu` using `Measure.le_iff'.1 hN Set.univ`. Simplify using `only [Measure.add_apply, Mp_apply _ _ _ MeasurableSet.univ, withDensity_apply _ MeasurableSet.univ, Set.preimage_univ, Measure.restrict_univ] at hu hNu`. Establish `pa : ∀ u, fp u ≤ fa u` using `fun u => ENNReal.ofReal_le_ofReal (le_abs_self _)`. Establish `ma : ∀ u, fm u ≤ fa u` using `fun u => ENNReal.ofReal_le_ofReal (neg_le_abs _)`. Establish `kP : ∫⁻ u, fa u ∂νP ≠ ⊤` using `ne_top_of_le_ne_top (ENNReal.add_ne_top.2 ⟨iP, iM⟩) (le_self_add.trans hNu)`.
-
-Establish `kM : ∫⁻ u, fa u ∂νM ≠ ⊤` using `ne_top_of_le_ne_top (ENNReal.add_ne_top.2 ⟨iP, iM⟩) (le_add_self.trans hNu)`. Establish `intP : Integrable f νP` using `⟨hf.aestronglyMeasurable, by`. Simplify using `only [HasFiniteIntegral, Real.enorm_eq_ofReal_abs]`. Conclude with `kP.lt_top⟩`. Establish `intM : Integrable f νM` using `⟨hf.aestronglyMeasurable, by`.
-
-Simplify using `only [HasFiniteIntegral, Real.enorm_eq_ofReal_abs]`. Conclude with `kM.lt_top⟩`. Establish `a1 : ∫⁻ y, fp (Φ y) ∂μP ≠ ⊤` using `ne_top_of_le_ne_top iP (lintegral_mono fun y => pa _)`. Establish `a2 : ∫⁻ y, fm (Φ y) ∂μM ≠ ⊤` using `ne_top_of_le_ne_top iM (lintegral_mono fun y => ma _)`. Establish `a3 : ∫⁻ u, fp u ∂νM ≠ ⊤` using `ne_top_of_le_ne_top kM (lintegral_mono fun y => pa _)`.
-
-Establish `a4 : ∫⁻ u, fm u ∂νP ≠ ⊤` using `ne_top_of_le_ne_top kP (lintegral_mono fun y => ma _)`. Establish `a5 : ∫⁻ y, fp (Φ y) ∂μM ≠ ⊤` using `ne_top_of_le_ne_top iM (lintegral_mono fun y => pa _)`. Establish `a6 : ∫⁻ y, fm (Φ y) ∂μP ≠ ⊤` using `ne_top_of_le_ne_top iP (lintegral_mono fun y => ma _)`. Establish `a7 : ∫⁻ u, fp u ∂νP ≠ ⊤` using `ne_top_of_le_ne_top kP (lintegral_mono fun y => pa _)`. Establish `a8 : ∫⁻ u, fm u ∂νM ≠ ⊤` using `ne_top_of_le_ne_top kM (lintegral_mono fun y => ma _)`.
-
-Establish `ht` using `congrArg ENNReal.toReal hu`. Rewrite `ht` using `[ENNReal.toReal_add (ENNReal.add_ne_top.2 ⟨a1, a2⟩) (ENNReal.add_ne_top.2 ⟨a3, a4⟩), ENNReal.toReal_add (ENNReal.add_ne_top.2 ⟨a5, a6⟩) (ENNReal.add_ne_top.2 ⟨a7, a8⟩), ENNReal.toReal_add a1 a2, ENNReal.toReal_add a3 a4, ENNReal.toReal_add a5 a6, ENNReal.toReal_add a7 a8]`. Simplify using `only [densInt]`. Rewrite using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part hint.1, integral_eq_lintegral_pos_part_sub_lintegral_neg_part hint.2, integral_eq_lintegral_pos_part_sub_lintegral_neg_part intP, integral_eq_lintegral_pos_part_sub_lintegral_neg_part intM]`. Simplify using `only [hfp, hfm] at ht`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem densInt_pull_eq_of_cells : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (n r D : ℕ) (ε : Fin D ≃ Fin n ⊕ Low r) (σ : k →+* ℂ) [IsIntegral B] [IsIntegral Y], IsArithVar q n → IsArithVar p D → π (genericPoint Y) = genericPoint B → ∀ (ρ : AlgChart p σ D → CxPts p σ → ℝ) (g : AlgChart q σ n → CxPts q σ → ℝ) (f : CxPts q σ → ℝ), IsDens ρ → IsDens g → Measurable f → IntegrableDens ρ (fun y => f (PtsOver.map π w (spMap σ) y)) → (∀ (c₀ : AlgChart q σ n), ∀ y ∈ c₀.e.source, ∃ (c : AlgChart q σ n) (c' : AlgChart p σ D), y ∈ c.e.source ∧ IsCell ε π w c c' ∧ ∀ u ∈ c.e.target, ∫ x : Low r → ℂ, ρ c' (c'.e.symm (pt ε u x)) = g c (c.e.symm u)) → densInt ρ (fun y => f (PtsOver.map π w (spMap σ) y)) = densInt g f := by
   intro k _ B Y q p π w n r D ε σ _ _ hq hp hgen ρ g f hρ hg hf hint hcov

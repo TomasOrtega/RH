@@ -19,7 +19,7 @@ open GlobalTheory.FunObj
 namespace GlobalTheory.ChoiceSurjectivity
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R large₂ F _ ch _ Φ`. Take `⟨i⟩` from `GlobalTheory.TestLat.SlopeModel.nonempty_idx (LaP ch.G)`. Use `⟨ch.e.symm ((Φ, Quotient.mk'' 1), i), ?_⟩` and prove the remaining obligations. Simplify using `[Choice.Phi, datumOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem choice_phi_surj : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (large₂ : SizeData₂ D) (F : Face D A), HidaSetting large₂ R F → ∀ (ch : Choice R), ch.Is → ∀ (Φ : ch.G.Datum), ∃ a, ch.Phi a = Φ := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R large₂ F _ ch _ Φ

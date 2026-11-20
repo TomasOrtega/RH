@@ -22,7 +22,7 @@ namespace GlobalTheory.HeckeUChar
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[chi, MonoidHom.zpow_apply, Circle.coe_zpow, MonoidHom.mul_apply, Circle.coe_mul, coe_finChar, coe_infChar]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_chi {N : ℕ} (c : HeckeU D N) (θ : InfFam D) (e : ℤ) (x : (AE D)ˣ) :
     ((chi c θ e x : Circle) : ℂ) = (((c.f (finY D x) : ℂˣ) : ℂ) *
@@ -30,27 +30,25 @@ theorem coe_chi {N : ℕ} (c : HeckeU D N) (θ : InfFam D) (e : ℤ) (x : (AE D)
   rw [chi, MonoidHom.zpow_apply, Circle.coe_zpow, MonoidHom.mul_apply, Circle.coe_mul, coe_finChar, coe_infChar]
 
 /- English proof (translation)
-Introduce `D N c e he`. Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Establish `hcont : Continuous (chi c θ e)`. Establish `h : ((chi c θ e : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => (finChar c x * infChar θ c.n x) ^ e`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[chi, MonoidHom.zpow_apply, MonoidHom.mul_apply]`. Rewrite using `[h]`. Conclude with `((GlobalTheory.T.continuous_heckeCharacterFinitePart c).mul (continuous_infChar hθ c.n)).zpow e`. Establish `haut : ∀ a : D.host.Eˣ, chi c θ e (Units.map (incA D).toMonoidHom a) = 1`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Circle.ext ?_` and prove the remaining obligations. Rewrite using `[coe_chi, finY_incA]`. Establish `h1 : ∀ τ, θ τ (infPart D ((Units.map (incA D).toMonoidHom a : (AE D)ˣ) : AE D)) = embT D τ (a : D.host.E)` using `fun τ => GlobalTheory.FockCompare.comp_incA hθ τ _`. Simplify using `only [h1]`. Rewrite using `[c.aut a, one_zpow, Circle.coe_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨chi c θ e, ⟨hcont, haut⟩, ?_, fun x y hxy => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.heckeChar_restricts_eta_pow_of_sign D _ N ⟨hcont, haut⟩ (fun x y hy => Circle.ext ?_) θ hθ fun τ x h1 h2 h3 => ?_` and prove the remaining obligations. Rewrite using `[coe_chi, finY_mul_conj x y hy, c.norm, Units.val_one, one_mul, Circle.coe_one]`. Establish `h4 : ∀ τ, θ τ (infPart D (y : AE D)) / (‖θ τ (infPart D (y : AE D))‖ : ℂ) = 1`. Introduce `τ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : θ τ (infPart D (y : AE D)) = (Complex.normSq (θ τ (infPart D (x : AE D))) : ℂ)`. Rewrite using `[hy, RingHom.map_mul, map_mul, GlobalTheory.FockCompare.comp_cA hθ, Complex.mul_conj]`. Establish `hne : θ τ (infPart D (x : AE D)) ≠ 0`. Introduce `h0`. Use `congrArg (fun z => θ τ (infPart D z)) (Units.mul_inv x)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.map_mul, map_mul, h0, zero_mul, RingHom.map_one, map_one] at this`. Conclude with `zero_ne_one this`. Establish `hp : 0 < Complex.normSq (θ τ (infPart D (x : AE D)))` using `Complex.normSq_pos.2 hne`. Rewrite using `[e1, Complex.norm_real, Real.norm_of_nonneg hp.le]`. Conclude with `div_self (by exact_mod_cast hp.ne')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h4, one_zpow, Finset.prod_const_one, one_zpow]`. Establish `hf : finY D x = 1` using `Units.ext (by`. Rewrite using `[coe_finY, h1, map_one, map_one, Units.val_one])`. Rewrite using `[coe_chi, hf, map_one, Units.val_one, one_mul, Finset.prod_eq_single τ (fun τ' _ hτ' => by`. Rewrite using `[h3 τ' hτ']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use the proof step `simp) (fun h => absurd (Finset.mem_univ τ) h), h2]`. Establish `hn : (-1 : ℂ) / (‖(-1 : ℂ)‖ : ℂ) = -1` using `by simp`. Rewrite using `[hn, ← zpow_mul]`. Take `⟨k, hk⟩` from `c.par τ`. Apply the tactic sequence `have hodd : Odd e := by rcases he with rfl | rfl <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, hj⟩` from `hodd`. Establish `: c.n τ * e = (N : ℤ) + 2 * (k * e + j * (N : ℤ) - (N : ℤ) * 0)`. Establish `: c.n τ = k + k + N` using `by linarith`. Rewrite using `[this, hj]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, zpow_add₀ (by norm_num), zpow_mul, show ((-1 : ℂ) ^ (2 : ℤ)) = 1 by norm_num, one_zpow, mul_one, zpow_natCast]`. Take `⟨h1, h2⟩` from `hxy`. Establish `hy : finY D x = y` using `Units.ext (by rw [coe_finY, h2, RingEquiv.symm_apply_apply])`. Rewrite using `[coe_chi, hy, h1]`. Simplify using `only [map_one, norm_one, Complex.ofReal_one, div_one, one_zpow, Finset.prod_const_one, mul_one]`.
-
-Rewrite using `[Units.val_zpow_eq_zpow_val]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hecke_of_heckeU : ∀ {D : D7} {N : ℕ} (c : HeckeU D N) (e : ℤ), (e = 1 ∨ e = -1) →
     ∃ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ ∧ ResEta D χ N ∧ HasFinPart χ c e := by

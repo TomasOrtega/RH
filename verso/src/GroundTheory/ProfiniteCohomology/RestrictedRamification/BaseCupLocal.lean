@@ -25,9 +25,9 @@ variable {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Gro
   {B : Rep.{0} (ULift.{0} ℤ) H} [IsDiscreteRep B] {C : Rep.{0} ℤ H} [IsDiscreteRep C]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `cohomologyπ_surjective A m x`. Rewrite using `[cohomologyMapAlong_cohomologyπ, cohomologyULiftIntAddEquiv_cohomologyπ', cohomologyMap_cohomologyπ, cohomologyULiftIntAddEquiv_cohomologyπ', cohomologyMapAlong_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cocyclesULiftInt, cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesULiftInt]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `h`. Conclude with `hf _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem cohomologyMap_uliftInt_cohomologyMapAlong_of (f : Rep.res φ A ⟶ B) (g : uliftIntToIntRep B ⟶ C)
     (f₂ : Rep.res φ (uliftIntToIntRep A) ⟶ C) (hf : ∀ a : A, g.hom (f.hom a) = f₂.hom a) (m : ℕ)
@@ -51,17 +51,17 @@ section Bock
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {n : ℕ}
 
 /- English proof (translation)
-Establish `: NeZero n` using `⟨hn⟩`. Establish `hS` using `bockSeq_shortExact G n hn`. Establish `hχ : ∀ g h : G, zmodCocycleHom z (g * h) = zmodCocycleHom z g + zmodCocycleHom z h` using `zmodCocycleHom_mul z`. Establish `hlc : IsLocallyConstant fun v : Fin 1 → G => (ULift.up ((zmodCocycleHom z (v 0)).val : ℤ) : intRepTriv G)` using `IsLocallyConstant.comp ((isLocallyConstant_zmodCocycleHom z).comp_continuous (continuous_apply 0)) (fun c : ZMod n => (ULift.up (c.val : ℤ) : ULift.{0} ℤ))`. Set `x₂ : (cochainsComplex (bockSeq G n).X₂).X 1` to `mkCochain (bockSeq G n).X₂ (fun v : Fin 1 → G => (ULift.up ((zmodCocycleHom z (v 0)).val : ℤ) : intRepTriv G)) hlc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hx₂ : (cochainsMap (bockSeq G n).g).f 1 x₂ = cocycleι (bockSeq G n).X₃ 1 z`. Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cochainOf_cochainsMap_f]`. Use function extensionality and compare the values at `v`. Establish `hv : v = ![v 0]` using `by funext i; fin_cases i; rfl`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(zmodReduction G n).hom (ULift.up ((zmodCocycleHom z (v 0)).val : ℤ)) = cochainOf _ (cocycleι _ 1 z) v`. Rewrite using `[zmodReduction_hom_apply]`. Apply `ULift.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(((zmodCocycleHom z (v 0)).val : ℤ) : ZMod n) = (cochainOf _ (cocycleι _ 1 z) v).down`. Rewrite using `[Int.cast_natCast, ZMod.natCast_zmod_val]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [hv]`. Both sides reduce to the same expression. Take `⟨x₁, hx₁⟩` from `exists_cocycle_map_f_eq_d hS 2 z x₂ hx₂`. Establish `hδ` using `δ_cohomologyπ_of_lift hS rfl z x₂ hx₂ x₁ hx₁`. Use `⟨x₁, hδ.symm, fun g h => ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : cochainOf (bockSeq G n).X₂ ((cochainsMap (bockSeq G n).f).f 2 (cocycleι _ 2 x₁)) ![g, h] = cochainOf (bockSeq G n).X₂ (((cochainsComplex (bockSeq G n).X₂).d 1 2).hom x₂) ![g, h]` using `congrArg (fun c => cochainOf (bockSeq G n).X₂ c ![g, h]) hx₁`. Rewrite `e` using `[cochainOf_cochainsMap_f, cochainOf_d_one_apply]`. Establish `e2` using `congrArg ULift.down e`. Express the relevant statement in the definitionally equal form `n • (cochainOf _ (cocycleι _ 2 x₁) ![g, h]).down = ((zmodCocycleHom z h).val : ℤ) - ((zmodCocycleHom z (g * h)).val : ℤ) + ((zmodCocycleHom z g).val : ℤ) at e2`. Establish `e3` using `natCast_mul_bockInt (zmodCocycleHom z) hχ g h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[nsmul_eq_mul]`. Apply `mul_left_cancel₀ (show (n : ℤ) ≠ 0 by exact_mod_cast hn)` to reduce the goal to its premises. Rewrite using `[e2, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_cocycle_δ_bockSeq (hn : n ≠ 0) (z : cocycles (zmodRep.{0} G n) 1) :
     ∃ x₁ : cocycles (intRepTriv G) 2,
@@ -118,7 +118,7 @@ def mulIntRight (A : Rep.{0} (ULift.{0} ℤ) H) : A ⊗ Rep.res ψ (intRepTriv G
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpace H] [IsTopologicalGroup H] in
 /- English proof (translation)
-The claim follows from `intMulPairing_tmul H A m a`.
+A detailed English derivation is pending.
 -/
 theorem mulIntRight_tmul (A : Rep.{0} (ULift.{0} ℤ) H) (a : A) (m : ℤ) :
     (mulIntRight ψ A).hom (a ⊗ₜ[ULift.{0} ℤ] (ULift.up m : Rep.res ψ (intRepTriv G)) :
@@ -159,9 +159,9 @@ variable (S : Set (HeightOneSpectrum (𝓞 K.1)))
   (ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))
 
 /- English proof (translation)
-Use `(DFunLike.congr_fun (localInvU_eq (v : HeightOneSpectrum (𝓞 K.1))) _).trans ?_` and prove the remaining obligations. Use `(AddMonoidHom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (placeInv_inr_apply _ _).symm` and prove the remaining obligations. Use `congrArg (brauerInvZOfIsSepClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) ?_` and prove the remaining obligations. Use `(AddMonoidHom.comp_apply _ _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `cohomologyMap_uliftInt_cohomologyMapAlong_of (gsFinFamily S ιs v).toMonoidHom (continuous_toMonoidHom _) (gsUnitsLocalMor S ιs v) (galUnitsToZ _ _) (embUnitsMorZ S (ιs v)) (fun _ => rfl) 2 x`.
+A detailed English derivation is pending.
 -/
 theorem localInvU_cohomologyMapAlong_gsUnitsLocalMor (v : S)
     (x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2) :
@@ -179,7 +179,7 @@ theorem localInvU_cohomologyMapAlong_gsUnitsLocalMor (v : S)
     (gsUnitsLocalMor S ιs v) (galUnitsToZ _ _) (embUnitsMorZ S (ιs v)) (fun _ => rfl) 2 x
 
 /- English proof (translation)
-Conclude with `(congrArg (localInvU (v : HeightOneSpectrum (𝓞 K.1))) (cohomologyMapAlong_cohomologyMap_apply (gsFinFamily S ιs v).toMonoidHom (continuous_toMonoidHom _) (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) (gsUnitsLocalMor S ιs v) 2 y).symm).trans (localInvU_cohomologyMapAlong_gsUn …`.
+A detailed English derivation is pending.
 -/
 theorem localInvU_cohomologyMapAlong_gsSUnitsLocalMor (v : S)
     (y : cohomology (galSUnitsMax K.1 ℚ̄ S) 2) :
@@ -194,9 +194,9 @@ theorem localInvU_cohomologyMapAlong_gsSUnitsLocalMor (v : S)
     (localInvU_cohomologyMapAlong_gsUnitsLocalMor S ιs v _)
 
 /- English proof (translation)
-Distinguish the cases in `hc : v.IsComplex`. Use `subsingleton_cohomology_two_of_isComplex v hc` as an intermediate fact. Rewrite using `[show y = 0 from Subsingleton.elim (α := cohomology (galUnitsZ v.Completion (AlgebraicClosure v.Completion)) 2) y 0, map_zero, smul_zero]`. Distinguish the cases in `hy0 : y = 0`. Rewrite using `[hy0, map_zero, smul_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `2 • quadraticInvFun v.Completion (AlgebraicClosure v.Completion) y = 0`. Rewrite using `[quadraticInvFun_of_ne_zero _ _ hy0, two_nsmul, QZ.mk_half_add_mk_half]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem two_nsmul_placeInv_inl (v : InfinitePlace K.1) (y : localGaloisCohomology K 2 (.inl v)) :
     2 • placeInv (.inl v) y = 0 := by
@@ -212,19 +212,17 @@ theorem two_nsmul_placeInv_inl (v : InfinitePlace K.1) (y : localGaloisCohomolog
 variable [Fintype S]
 
 /- English proof (translation)
-Use `set s := ∑ v : S, placeInv (.inr (v : HeightOneSpectrum (𝓞 K.1))) (brauerLocal ι z (.inr (v : HeightOneSpectrum (𝓞 K.1)))) with hsdef`. Use `set i := ∑ w : InfinitePlace K.1, placeInv (.inl w) (brauerLocal ι z (.inl w)) with hidef`. Establish `hT : brauerSumInv ι z = s + i`. Establish `hdisj : Disjoint (Finset.univ.image (fun v : S => (Sum.inr (v : HeightOneSpectrum (𝓞 K.1)) : Place K.1))) (Finset.univ.image (fun w : InfinitePlace K.1 => (Sum.inl w : Place K.1)))`. Rewrite using `[Finset.disjoint_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w hw1 hw2`. Take `⟨v, -, rfl⟩` from `Finset.mem_image.1 hw1`. Take `⟨u, -, hu⟩` from `Finset.mem_image.1 hw2`. Conclude with `Sum.inl_ne_inr hu`. Establish `hout : ∀ w ∉ Finset.univ.image (fun v : S => (Sum.inr (v : HeightOneSpectrum (𝓞 K.1)) : Place K.1)) ∪ Finset.univ.image (fun w : InfinitePlace K.1 => (Sum.inl w : Place K.1)), placeInv w (brauerLocal ι z w) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Break down `w with w | w` into its components or cases. Conclude with `absurd (Finset.mem_union_right _ (Finset.mem_image.2 ⟨w, Finset.mem_univ _, rfl⟩)) hw`. Conclude with `hz w fun hwS => hw (Finset.mem_union_left _ (Finset.mem_image.2 ⟨⟨w, hwS⟩, Finset.mem_univ _, rfl⟩))`. Use `(AddMonoidHom.comp_apply _ _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[sumPlaceInv_eq_sum_of_placeInv _ _ hout, Finset.sum_union hdisj, Finset.sum_image (fun v _ w _ h => Subtype.ext (Sum.inr_injective h)), Finset.sum_image (fun v _ w _ h => Sum.inl_injective h)]`. Establish `h0 : s + i = 0` using `hT.symm.trans (brauerSumInv_eq_zero ι z)`. Establish `hi2 : 2 • i = 0`. Rewrite using `[hidef, Finset.smul_sum]`. Conclude with `Finset.sum_eq_zero fun w _ => two_nsmul_placeInv_inl w _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hn with ⟨m, hm⟩ | hc` into its components or cases. Establish `hs2 : 2 • s = 0`. Establish `: s = -i` using `eq_neg_of_add_eq_zero_left h0`. Rewrite using `[this, smul_neg, hi2, neg_zero]`. Establish `hs' : n • s = 0` using `hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hs'` using `[hm]`. Establish `: s = (2 * m + 1) • s - m • (2 • s)`. Rewrite using `[← mul_nsmul', add_nsmul, one_nsmul, mul_comm m 2]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, hs', hs2, smul_zero, sub_zero]`.
-
-Establish `hi : i = 0` using `Finset.sum_eq_zero fun w _ => by`. Use `subsingleton_cohomology_two_of_isComplex w (hc.isComplex w)` as an intermediate fact. Rewrite using `[show brauerLocal ι z (.inl w) = 0 from Subsingleton.elim (α := cohomology (galUnitsZ w.Completion (AlgebraicClosure w.Completion)) 2) _ 0, map_zero]`. Rewrite `h0` using `[hi, add_zero]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_placeInv_inr_eq_zero_of {n : ℕ} (hn : Odd n ∨ IsTotallyComplex K.1) (ι : LocalEmbeddings K)
     (z : cohomology (unitsLimitRep K) 2)
@@ -278,11 +276,11 @@ theorem sum_placeInv_inr_eq_zero_of {n : ℕ} (hn : Odd n ∨ IsTotallyComplex K
     exact h0
 
 /- English proof (translation)
-Establish `hdiff : ∑ v : S, localInvU (v : HeightOneSpectrum (𝓞 K.1)) (β v) - ∑ v : S, localInvU (v : HeightOneSpectrum (𝓞 K.1)) (β' v) = ∑ v : S, placeInv (.inr (v : HeightOneSpectrum (𝓞 K.1))) (brauerLocal (gsLocalEmbeddings S ιs) (sUnitsBrauer K S y) (.inr (v : HeightOneSpectrum (𝓞 K.1)) …`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `(map_sub _ _ _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (localInvU (v : HeightOneSpectrum (𝓞 K.1))) (hy v)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(localInvU_cohomologyMapAlong_gsSUnitsLocalMor S ιs v y).trans ?_` and prove the remaining obligations. Use `Eq.symm ?_` and prove the remaining obligations. Use `(congrArg (fun z => placeInv (K := K) (.inr (v : HeightOneSpectrum (𝓞 K.1))) (brauerLocal (gsLocalEmbeddings S ιs) z (.inr (v : HeightOneSpectrum (𝓞 K.1))))) (sUnitsBrauer_apply K S y)).trans ?_` and prove the remaining obligations. Use `(congrArg (placeInv (K := K) (.inr (v : HeightOneSpectrum (𝓞 K.1)))) (brauerLocal_gsBrauerInfl_inr K S _ _ _)).trans ?_` and prove the remaining obligations. Simplify using `only [gsLocalEmbeddings_fin]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hs : n • (∑ v : S, localInvU (v : HeightOneSpectrum (𝓞 K.1)) (β v) - ∑ v : S, localInvU (v : HeightOneSpectrum (𝓞 K.1)) (β' v)) = 0`. Conclude with `(smul_sub n _ _).trans ((congrArg₂ (· - ·) hβ hβ').trans (sub_zero 0))`. Establish `h0` using `sum_placeInv_inr_eq_zero_of S hn (gsLocalEmbeddings S ιs) (sUnitsBrauer K S y) (fun w hw => (congrArg (placeInv (.inr w)) (brauerLocal_sUnitsBrauer_inr K S (gsLocalEmbeddings S ιs) y w hw)).trans (map_zero _)) ((congrArg (n • ·) hdiff).symm.trans hs)`. Conclude with `sub_eq_zero.1 (hdiff.trans h0)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_localInvU_eq_of_sub {n : ℕ} (hn : Odd n ∨ IsTotallyComplex K.1)
     (β β' : ∀ v : S, cohomology (galUnits.{0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)

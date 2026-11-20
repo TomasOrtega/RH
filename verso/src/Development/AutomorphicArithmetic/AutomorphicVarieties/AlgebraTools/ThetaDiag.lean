@@ -33,7 +33,7 @@ private theorem theta_od (z : E) :
     (theta U p q z).od.1 = U.ep p * (z * U.ep q) + U.ep p * (T.st z * U.ep q) := rfl
 
 /- English proof (translation)
-Apply `OddForm.Ext.ext` to reduce the goal to its premises. Rewrite using `[theta_ev, theta_ev, T.tr_st]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[theta_od, theta_od, T.st_st, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem theta_st (z : E) : theta U p q (T.st z) = theta U p q z := by
   apply OddForm.Ext.ext
@@ -44,9 +44,9 @@ private theorem theta_st (z : E) : theta U p q (T.st z) = theta U p q z := by
 variable {p q}
 
 /- English proof (translation)
-Establish `hpq0 : U.ep p * U.ep q = 0` using `U.coi.ortho hpq`. Apply `OddForm.Ext.ext` to reduce the goal to its premises. Rewrite using `[theta_ev, OddForm.ev_one, U.tr_ep]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[theta_od, U.st_ep, OddForm.od_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Break down `ha with h | h` into its components or cases. Rewrite using `[h, ← mul_assoc, (U.coi.idem p).eq, hpq0]`. Simplify using the standard rewrite rules. Rewrite using `[h, (U.coi.idem q).eq, hpq0]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem theta_ep (hpq : p ≠ q) {a : ι} (ha : a = p ∨ a = q) : theta U p q (U.ep a) = 1 := by
   have hpq0 : U.ep p * U.ep q = 0 := U.coi.ortho hpq
@@ -61,15 +61,15 @@ private theorem theta_ep (hpq : p ≠ q) {a : ι} (ha : a = p ∨ a = q) : theta
       simp
 
 /- English proof (translation)
-Establish `hpq0 : U.ep p * U.ep q = 0` using `U.coi.ortho hpq`. Establish `hsu : U.ep a * T.st u * U.ep a = T.st u` using `by conv_rhs => rw [← hu]`. Rewrite using `[T.st_mul, T.st_mul, U.st_ep, mul_assoc]`. Establish `L1 : ∀ w : E, U.ep p * w * U.ep p = w → U.ep p * (w * U.ep q) = 0`. Introduce `w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hw]`. Simplify using `[mul_assoc, hpq0]`. Establish `L2 : ∀ w : E, U.ep q * w * U.ep q = w → U.ep p * (w * U.ep q) = 0`. Introduce `w hw`. Rewrite using `[← hw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (U.ep p), hpq0, zero_mul]`. Apply `OddForm.Ext.ext` to reduce the goal to its premises. Rewrite using `[theta_ev, OddForm.ev_smul, OddForm.ev_one, mul_one]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[theta_od, OddForm.od_smul, OddForm.od_one, smul_zero]`. Break down `ha with h | h` into its components or cases. Rewrite `hu`, `hsu` using `[h]`. Rewrite using `[L1 u hu, L1 _ hsu]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hu`, `hsu` using `[h]`. Rewrite using `[L2 u hu, L2 _ hsu]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem theta_diag (hpq : p ≠ q) {a : ι} (ha : a = p ∨ a = q) {u : E}
     (hu : U.ep a * u * U.ep a = u) : theta U p q u = T.tr u • 1 := by
@@ -99,9 +99,9 @@ private theorem theta_diag (hpq : p ≠ q) {a : ι} (ha : a = p ∨ a = q) {u : 
       simp
 
 /- English proof (translation)
-Establish `hpq0 : U.ep p * U.ep q = 0` using `U.coi.ortho hpq`. Establish `hqp0 : U.ep q * U.ep p = 0` using `U.coi.ortho hpq.symm`. Establish `hsu : U.ep q * T.st u * U.ep p = T.st u` using `by conv_rhs => rw [← hu]`. Rewrite using `[T.st_mul, T.st_mul, U.st_ep, U.st_ep, mul_assoc]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[theta_ev, ← hu, T.tr_comm, ← mul_assoc, hqp0, zero_mul, map_zero]`. Establish `h0 : U.ep p * (T.st u * U.ep q) = 0`. Rewrite using `[← hsu]`. Simplify using `[mul_assoc, hpq0]`. Rewrite using `[theta_od, h0, add_zero, ← mul_assoc, hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem theta_pq (hpq : p ≠ q) {u : E} (hu : U.ep p * u * U.ep q = u) :
     (theta U p q u).ev = 0 ∧ (theta U p q u).od.1 = u := by
@@ -118,9 +118,9 @@ private theorem theta_pq (hpq : p ≠ q) {u : E} (hu : U.ep p * u * U.ep q = u) 
     rw [theta_od, h0, add_zero, ← mul_assoc, hu]
 
 /- English proof (translation)
-Establish `hpq0 : U.ep p * U.ep q = 0` using `U.coi.ortho hpq`. Establish `hqp0 : U.ep q * U.ep p = 0` using `U.coi.ortho hpq.symm`. Establish `hsu : U.ep p * T.st u * U.ep q = T.st u` using `by conv_rhs => rw [← hu]`. Rewrite using `[T.st_mul, T.st_mul, U.st_ep, U.st_ep, mul_assoc]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[theta_ev, ← hu, T.tr_comm, ← mul_assoc, hpq0, zero_mul, map_zero]`. Establish `h0 : U.ep p * (u * U.ep q) = 0`. Rewrite using `[← hu]`. Simplify using `[mul_assoc, hpq0]`. Rewrite using `[theta_od, h0, zero_add, ← mul_assoc, hsu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem theta_qp (hpq : p ≠ q) {u : E} (hu : U.ep q * u * U.ep p = u) :
     (theta U p q u).ev = 0 ∧ (theta U p q u).od.1 = T.st u := by
@@ -137,23 +137,21 @@ private theorem theta_qp (hpq : p ≠ q) {u : E} (hu : U.ep q * u * U.ep p = u) 
     rw [theta_od, h0, zero_add, ← mul_assoc, hsu]
 
 /- English proof (translation)
-Establish `hidem : ∀ i, U.ep i * U.ep i = U.ep i` using `fun i => (U.coi.idem i).eq`. Establish `hL : ∀ {i j : ι} {w : E}, U.ep i * w * U.ep j = w → U.ep i * w = w`. Introduce `i j w hw`. Combine the equalities or inequalities in the displayed calculation. Establish `hR : ∀ {i j : ι} {w : E}, U.ep i * w * U.ep j = w → w * U.ep j = w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `i j w hw`. Combine the equalities or inequalities in the displayed calculation. Establish `hsc : ∀ {i : ι} {w : E}, U.ep i * w * U.ep i = w → w = T.tr w • U.ep i`. Introduce `i w hw`. Establish `h` using `U.corner_eq i w`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[hw]`. Then use the resulting hypothesis. Establish `hbe : ∀ x y, (U.oddForm p q).be x y = T.tr ((x : E) * T.st (y : E))` using `fun x y => rfl`. Establish `hleft : ∀ {i k : ι}, (i = p ∨ i = q) → U.ep i * u * U.ep i = u → U.ep i * v * U.ep k = v → theta U p q (u * v) = theta U p q u * theta U p q v`. Introduce `i k hi hu' hv'`. Establish `huv : u * v = T.tr u • v` using `by conv_lhs => rw [hsc hu', smul_mul_assoc, hL hv']`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[huv, map_smul, theta_diag U hpq hi hu', smul_mul_assoc, one_mul]`. Establish `hright : ∀ {i k : ι}, (k = p ∨ k = q) → U.ep k * v * U.ep k = v → U.ep i * u * U.ep k = u → theta U p q (u * v) = theta U p q u * theta U p q v`. Introduce `i k hk hv' hu'`. Establish `huv : u * v = T.tr v • u` using `by conv_lhs => rw [hsc hv', mul_smul_comm, hR hu']`. Rewrite using `[huv, map_smul, theta_diag U hpq hk hv', mul_smul_comm, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases ha with ha | ha <;> rcases hb with hb | hb <;> rcases hc with hc | hc <;>`. Apply the tactic sequence `rw [ha, hb] at hu <;> rw [hb, hc] at hv`. Conclude with `hleft (Or.inl rfl) hu hv`. Conclude with `hleft (Or.inl rfl) hu hv`. Establish `huv : U.ep p * (u * v) * U.ep p = u * v`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, hL hu, mul_assoc, hR hv]`. Rewrite using `[theta_diag U hpq (Or.inl rfl) huv]`. Take `⟨h1, h2⟩` from `theta_pq U hpq hu`. Take `⟨h3, h4⟩` from `theta_qp U hpq hv`. Apply `OddForm.Ext.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[OddForm.ev_smul, OddForm.ev_one, mul_one, OddForm.ev_mul, h1, h3, zero_mul, zero_add, hbe, h2, h4, T.st_st]`. Rewrite using `[OddForm.od_smul, OddForm.od_one, smul_zero, OddForm.od_mul, h1, h3, zero_smul, zero_smul, add_zero]`. Conclude with `hright (Or.inr rfl) hv hu`. Conclude with `hright (Or.inl rfl) hv hu`. Establish `huv : U.ep q * (u * v) * U.ep q = u * v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← mul_assoc, hL hu, mul_assoc, hR hv]`. Rewrite using `[theta_diag U hpq (Or.inr rfl) huv]`. Take `⟨h1, h2⟩` from `theta_qp U hpq hu`. Take `⟨h3, h4⟩` from `theta_pq U hpq hv`. Apply `OddForm.Ext.ext` to reduce the goal to its premises.
-
-Rewrite using `[OddForm.ev_smul, OddForm.ev_one, mul_one, OddForm.ev_mul, h1, h3, zero_mul, zero_add, hbe, h2, h4, ← T.st_mul, T.tr_st, T.tr_comm]`. Rewrite using `[OddForm.od_smul, OddForm.od_one, smul_zero, OddForm.od_mul, h1, h3, zero_smul, zero_smul, add_zero]`. Conclude with `hleft (Or.inr rfl) hu hv`. Conclude with `hleft (Or.inr rfl) hu hv`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem theta_mul (hpq : p ≠ q) {a b c : ι} (ha : a = p ∨ a = q) (hb : b = p ∨ b = q)
     (hc : c = p ∨ c = q) {u v : E} (hu : U.ep a * u * U.ep b = u) (hv : U.ep b * v * U.ep c = v) :
@@ -214,25 +212,23 @@ private theorem theta_mul (hpq : p ≠ q) {a b c : ι} (ha : a = p ∨ a = q) (h
 end
 
 /- English proof (translation)
-Introduce `B E _ _ _ T ι _ _ o U p q hpq ho`. Take `⟨hA, hB, -, hD, -, -, hG⟩` from `units_basic T o U`. Establish `hvr : ∀ y i j, U.vr p q y i j = theta U p q (U.x i * y * T.st (U.x j))` using `fun _ _ _ => rfl`. Establish `hmul : ∀ y z, U.vr p q (y * z) = U.vr p q y * U.vr p q z`. Introduce `y z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hvr]`. Establish `hs : U.x i * (y * z) * T.st (U.x j) = ∑ k, (U.x i * y * T.st (U.x k)) * (U.x k * z * T.st (U.x j))`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hB, mul_one, mul_assoc (U.x i) y z]`. Use `_ = _ := by simp only [Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[hs, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `theta_mul U hpq (ho i) (ho k) (ho j) (hG i k y) (hG k j z)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hone : U.vr p q 1 = 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[hvr, mul_one, Matrix.one_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[U.x_st]`. Conclude with `theta_ep U hpq (ho i)`. Rewrite using `[hA i j h, map_zero]`. Establish `hadd : ∀ y z, U.vr p q (y + z) = U.vr p q y + U.vr p q z`. Introduce `y z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [hvr, Matrix.add_apply, mul_add, add_mul, map_add]`. Establish `hzero : U.vr p q 0 = 0`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [hvr, mul_zero, zero_mul, map_zero, Matrix.zero_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hsmul : ∀ (r : B) y, U.vr p q (r • y) = r • U.vr p q y`. Introduce `r y`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [hvr, Matrix.smul_apply, mul_smul_comm, smul_mul_assoc, map_smul]`. Establish `hcomm : ∀ r : B, U.vr p q (algebraMap B E r) = algebraMap B (Matrix ι ι (U.oddForm p q).Ext) r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, hsmul, hone]`. Establish `hst : ∀ y, U.vr p q (T.st y) = (U.vr p q y)ᵀ`. Introduce `y`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_apply, hvr, hvr, ← theta_st U p q (U.x j * y * T.st (U.x i)), T.st_mul, T.st_mul, T.st_st, mul_assoc]`. Establish `htr : ∀ y, (U.vr p q y).trace = algebraMap B _ (T.tr y)`. Introduce `y`. Rewrite using `[Matrix.trace, Algebra.algebraMap_eq_smul_one, hD y, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Matrix.diag_apply, hvr]`. Conclude with `theta_diag U hpq (ho i) (hG i i y)`. Set `φ : E →ₐ[B] Matrix ι ι (U.oddForm p q).Ext` to `{ toFun := U.vr p q, map_one' := hone, map_mul' := hmul, map_zero' := hzero, map_add' := hadd, commutes' := hcomm }`. Conclude with `⟨φ, fun y => rfl, hst, htr⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.vr_hom :
     ∀ {B E : Type} [CommRing B] [Ring E] [Algebra B E] (T : TrInv B E) {ι : Type} [Fintype ι] [DecidableEq ι] (o : ι → ι) (U : T.Units ι o) (p q : ι), p ≠ q → (∀ i, o i = p ∨ o i = q) → ∃ φ : E →ₐ[B] Matrix ι ι (U.oddForm p q).Ext, (∀ y, φ y = U.vr p q y) ∧ (∀ y, φ (T.st y) = (φ y)ᵀ) ∧ ∀ y, (φ y).trace = algebraMap B _ (T.tr y) := by

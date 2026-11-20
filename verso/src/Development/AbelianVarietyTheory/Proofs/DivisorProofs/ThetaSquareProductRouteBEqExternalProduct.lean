@@ -32,14 +32,14 @@ def decNN (A B : HSp D) : OrthDec (GlobalTheory.Doubling.hsum A B) A (negSp (neg
   rank_add := (GlobalTheory.BiTransfer.sumDec A B).rank_add
 
 /- English proof (translation)
-Simplify using `only [OrthDec.pB, OrthDec.qB, negSp_gram, neg_neg]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pB_decNN (A B : HSp D) : (decNN A B).pB = (GlobalTheory.BiTransfer.sumDec A B).pB := by
   simp only [OrthDec.pB, OrthDec.qB, negSp_gram, neg_neg]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.SeesawSumTarget.boxT_sumDec]`. Use function extensionality and compare the values at `x`. Simplify using `only [OrthDec.boxT, OrthDec.resT_apply, pB_decNN]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem boxT_decNN (S A B : HSp D) (φ : WO S A → ℂ) (φ' : WO S B → ℂ) :
     (decNN A B).boxT S φ φ' = box2 φ φ' := by
@@ -49,7 +49,7 @@ theorem boxT_decNN (S A B : HSp D) (φ : WO S A → ℂ) (φ' : WO S B → ℂ) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.SeesawSumTarget.emb_sumDec]`. Apply `mt_injective` to reduce the goal to its premises. Rewrite using `[OrthDec.mt_emb, OrthDec.mt_emb, pB_decNN]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem emb_decNN (A B : HSp D) (g : GA D A) (g₁ : GA D B) :
     (decNN A B).emb (g, negGA _ (negGA B g₁)) = GlobalTheory.SquareComm.blk A B (g, g₁) := by
@@ -63,7 +63,7 @@ section Chars
 variable {C : Type*} [CommGroup C]
 
 /- English proof (translation)
-Unfold `Formalism.IndefR.Lift.attChr`. Break down `Nat.even_or_odd n with h | h` into its components or cases. Rewrite using `[if_neg (Nat.not_odd_iff_even.2 h), Nat.even_iff.1 h]`. Simplify using the standard rewrite rules. Rewrite using `[if_pos h, Nat.odd_iff.1 h, pow_one, _root_.mul_inv_rev, inv_inv, mul_assoc, inv_mul_cancel_left, show 2 * 1 = 2 from rfl, pow_two]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem attChr_inv_mul (μ η : C) (n : ℕ) :
     (Formalism.IndefR.Lift.attChr μ η n)⁻¹ * (μ * η ^ (n % 2)) = η ^ (2 * (n % 2)) := by
@@ -75,7 +75,7 @@ theorem attChr_inv_mul (μ η : C) (n : ℕ) :
       show 2 * 1 = 2 from rfl, pow_two]
 
 /- English proof (translation)
-Unfold `Formalism.IndefR.Lift.attChr`. Break down `Nat.even_or_odd n with h | h` into its components or cases. Rewrite using `[if_neg (Nat.not_odd_iff_even.2 h), Nat.even_iff.1 h]`. Simplify using `[mul_comm]`. Rewrite using `[if_pos h, Nat.odd_iff.1 h, pow_one, mul_comm μ η, ← mul_assoc, mul_assoc χ, inv_mul_cancel, mul_one, mul_comm]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem attChr_mul (μ χ η : C) (n : ℕ) :
     Formalism.IndefR.Lift.attChr χ η n * (μ * η ^ (n % 2)) = μ * χ := by
@@ -86,7 +86,7 @@ theorem attChr_mul (μ χ η : C) (n : ℕ) :
   · rw [if_pos h, Nat.odd_iff.1 h, pow_one, mul_comm μ η, ← mul_assoc, mul_assoc χ, inv_mul_cancel, mul_one, mul_comm]
 
 /- English proof (translation)
-Unfold `Formalism.IndefR.Lift.attChr`. Rewrite using `[mul_div_mul_right_eq_div]`. Distinguish the cases in `h : Odd a`. Rewrite using `[if_pos h, if_pos (hab.1 h), _root_.mul_inv_rev, inv_inv, div_eq_mul_inv, mul_assoc, ← mul_assoc η⁻¹, inv_mul_cancel, one_mul]`. Rewrite using `[if_neg h, if_neg (fun h' => h (hab.2 h')), div_eq_mul_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem attChr_div (μ χ η : C) {a b : ℕ} (hab : Odd a ↔ Odd b) (k : ℕ) :
     Formalism.IndefR.Lift.attChr μ η a * (Formalism.IndefR.Lift.attChr χ η b)⁻¹ = μ * η ^ k / (χ * η ^ k) := by
@@ -110,7 +110,7 @@ variable {D : D7}
 def adjFn (S B : HSp D) (f : WO (negSp B) S → ℂ) : WO S B → ℂ := fun y => f (dagger S (negSp B) y)
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `h.1`. Introduce `a`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, h.2 η hη a, h'.2 η hη a, inv_mul_cancel]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem trivOnF_of_resEta {χ χ' : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta D χ n) (h' : ResEta D χ' n) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilDatumUniquenessCriterion.TrivOnF D (χ⁻¹ * χ') := by
@@ -119,12 +119,12 @@ theorem trivOnF_of_resEta {χ χ' : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta 
   simp only [MonoidHom.mul_apply, MonoidHom.inv_apply, h.2 η hη a, h'.2 η hη a, inv_mul_cancel]
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem trivOnF_one : GlobalTheory.IndefiniteRowSideFullHecke.WeilDatumUniquenessCriterion.TrivOnF D 1 := fun _ => rfl
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `h.1`. Rewrite using `[← h.2 x hx]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tildeDet_one {V : HSp D} {g : GA D V} {a : Circle} (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilDatumUniquenessCriterion.IsTildeDet V 1 g a) : a = 1 := by
   obtain ⟨x, hx⟩ := h.1
@@ -132,14 +132,14 @@ theorem tildeDet_one {V : HSp D} {g : GA D V} {a : Circle} (h : GlobalTheory.Ind
   rfl
 
 /- English proof (translation)
-Establish `e : adj (0 : WO S T) = 0` using `by ext a b; simp [adj]`. Simplify using `only [dagger, e, Matrix.zero_mul, Matrix.mul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dagger_zero (S T : HSp D) : dagger S T 0 = 0 := by
   have e : adj (0 : WO S T) = 0 := by ext a b; simp [adj]
   simp only [dagger, e, Matrix.zero_mul, Matrix.mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [GlobalTheory.PairLift.dag, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, GlobalTheory.PairLift.adjO, dagger, giA, gA, adj, rat, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dag_eq_cj (S T : HSp D) (f : WO S T → ℂ) : GlobalTheory.PairLift.dag S T f = GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger T S) f := by
   funext y
@@ -156,35 +156,31 @@ variable {D : D7}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hψ` using `W.ψ_std`. Establish `rg : ∀ a b, a ≤ D.R.m → b ≤ D.R.m → (G.V (.grid a b)).rank = rankV D a b` using `fun a b ha hb => (GlobalTheory.FunObj.node_isV G hL (X := .grid a b) ⟨ha, hb⟩).rank`. Establish `hpar : Odd (spV G i j).rank ↔ Odd (spV₁ G i j).rank`. Rewrite using `[spV, spV₁, rg i (j + 1) (by omega) hj, rg (i + 1) j hi (by omega)]`. Unfold `rankV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[show D.R.r + (j + 1) * D.R.t + i * sLen D = (D.R.r + j * D.R.t + i * sLen D) + D.R.t by ring, show D.R.r + j * D.R.t + (i + 1) * sLen D = (D.R.r + j * D.R.t + i * sLen D) + sLen D by ring]`. Establish `key : ∀ X a b : ℕ, Odd a → Odd b → (Odd (X + a) ↔ Odd (X + b))`. Introduce `X a b ha hb`. Rewrite using `[Nat.odd_add, Nat.odd_add]`. Simplify using `only [Nat.not_even_iff_odd.2 ha, Nat.not_even_iff_odd.2 hb]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `key _ _ _ D.R.t_odd (odd_sLen D)`. Establish `H₁` using `W.om_is (.mu t i j) ⟨by omega, hj⟩`. Establish `H₂` using `W.om_is (.chi i j) ⟨hi, by omega⟩`. Establish `H₂a` using `GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint D W.ψ _ _ _ _ (W.om (.chi i j)) H₂`. Establish `H₂b` using `(GlobalTheory.ConjWeil.conj_isWeilDatumO D W.ψ _ _ _ _ _ H₂a).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : G.chrT (.mu t i j) * (G.chrS (.chi i j))⁻¹ = alpha G t i j / beta G i j` using `attChr_div _ _ _ hpar _`. Establish `hω' : IsWeilDatumO W.ψ (spW₁ G i j) (GlobalTheory.Doubling.hsum (spV G i j) (spV₁ G i j)) (alpha G t i j) (G.chrT (.mu t i j) * (G.chrS (.chi i j))⁻¹) ω` using `by rw [hB]; exact hω`. Take `⟨ωA, HA⟩` from `GlobalTheory.WeilExist.exists_isWeilDatumO D W.ψ hψ (spW₁ G i j) (spV G i j) (alpha G t i j) (G.chrT (.mu t i j)) (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D) hω.hecS H₁.hecT hω.resS H₁.resT`. Take `⟨ωB, HB⟩` from `GlobalTheory.WeilExist.exists_isWeilDatumO D W.ψ hψ (spW₁ G i j) (negSp (negSp (spV₁ G i j))) (alpha G t i j) (G.chrS (.chi i j))⁻¹ (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D) hω.hecS H₂b.hecT hω.resS H₂b.resT`. Use `set A1 := G.chrS (.mu t i j) with hA1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B1 := G.chrT (.mu t i j) with hB1`. Use `set A2 := (G.chrT (.chi i j))⁻¹ with hA2`. Use `set B2 := (G.chrS (.chi i j))⁻¹ with hB2`. Use `set α := alpha G t i j with hα`. Establish `hξ₁ : A1⁻¹ * α = L.eta ^ (2 * eps G i j)` using `attChr_inv_mul _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hξ₂ : A2⁻¹ * α = L.mu t (j + 1) * G.ch.chi (D.R.m - i)`. Rewrite using `[hA2, inv_inv]`. Conclude with `attChr_mul _ _ _ _`. Establish `tr₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilDatumUniquenessCriterion.TrivOnF D (A1⁻¹ * α)` using `trivOnF_of_resEta H₁.resS hω.resS`. Establish `tr₂ : GlobalTheory.IndefiniteRowSideFullHecke.WeilDatumUniquenessCriterion.TrivOnF D (A2⁻¹ * α)` using `trivOnF_of_resEta H₂b.resS hω.resS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `HA' : IsWeilDatumO W.ψ (spW₁ G i j) (spV G i j) (A1 * (A1⁻¹ * α)) (B1 * 1) ωA`. Rewrite using `[mul_inv_cancel_left, mul_one]` and apply the resulting hypothesis. Establish `HB' : IsWeilDatumO W.ψ (spW₁ G i j) (negSp (negSp (spV₁ G i j))) (A2 * (A2⁻¹ * α)) (B2 * 1) ωB`. Rewrite using `[mul_inv_cancel_left, mul_one]` and apply the resulting hypothesis. Use `set F₂ : WO (spW₁ G i j) (negSp (negSp (spV₁ G i j))) → ℂ := GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger (spW₁ G i j) (negSp (spV₁ G i j))) f₂) with hF₂def`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF₂adj : F₂ = adjFn (spW₁ G i j) (spV₁ G i j) f₂`. Use function extensionality and compare the values at `y`. Simplify using `only [hF₂def, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, id, Complex.conj_conj, adjFn]`. Establish `hF₂ : IsThetaFunO W.ψ (spW₁ G i j) (negSp (negSp (spV₁ G i j))) F₂`. Establish `h1` using `(GlobalTheory.AdjLawPf.adjLaw D W.ψ hψ (negSp (spV₁ G i j)) (spW₁ G i j)).theta f₂ hf₂`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[dag_eq_cj]`. Conclude with `((GlobalTheory.CjNeg.theta_heis_neg D W.ψ hψ (spW₁ G i j) (negSp (spV₁ G i j))).1 _).1.2 h1`. Establish `TT` using `GlobalTheory.TensorTargetRule.tensorTarget D W.ψ hψ _ _ _ (decNN (spV G i j) (spV₁ G i j)) (spW₁ G i j)`. Use `⟨?_, fun g u g₁ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hF₂adj, ← boxT_decNN]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `TT.box_theta f₁ F₂ hf₁ hF₂`. Take `⟨a₁, b₁, ha₁, hb₁, e₁⟩` from `GlobalTheory.WeilDetermined.weilDatumTwist D W.ψ _ _ A1 B1 (A1⁻¹ * α) 1 (W.om (.mu t i j)) ωA tr₁ trivOnF_one H₁ HA' u g`. Take `⟨a₂, b₂, ha₂, hb₂, e₂⟩` from `GlobalTheory.WeilDetermined.weilDatumTwist D W.ψ _ _ A2 B2 (A2⁻¹ * α) 1 (conjTarget (conjAdjoint (W.om (.chi i j)))) ωB tr₂ trivOnF_one H₂b HB' u (negGA _ (negGA _ g₁))`. Rewrite `e₁` using `[tildeDet_one ha₁]`. Rewrite `e₂` using `[tildeDet_one ha₂]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `key` using `congrFun (TT.om_box α B1 B2 ω ωA ωB hω' HA HB u g (negGA _ (negGA _ g₁)) f₁ F₂ hf₁ hF₂) 0`. Rewrite `key` using `[OrthDec.boxT_zero, e₁ f₁ hf₁, e₂ F₂ hF₂, emb_decNN, boxT_decNN]`. Establish `k₂ : conjTarget (conjAdjoint (W.om (.chi i j))) (u, negGA _ (negGA _ g₁)) F₂ 0 = W.kerA (.right i j) f₂ u g₁`. Rewrite using `[GlobalTheory.ConjWeil.conjTarget_apply, MulEquiv.symm_apply_apply, hF₂def, GlobalTheory.ConjWeil.cj_id_cj_id]`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (cjEnd (daggerEquiv _ _) (W.om (.chi i j) (negGA _ g₁, u)) (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (daggerEquiv _ _) f₂)) 0 = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[cjEnd_cj]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, id, Complex.conj_conj]`. Use `show W.om (.chi i j) (negGA _ g₁, u) f₂ (dagger _ _ 0) = W.om (.chi i j) (negGA _ g₁, u) f₂ 0`. Rewrite using `[dagger_zero]`. Establish `k₁ : W.om (.mu t i j) (u, g) f₁ 0 = W.kerA (.down t i j) f₁ g u` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `x1 : xiV G i j g = ((b₁ : ℂ))⁻¹`. Unfold `xiV flatDet`. Rewrite using `[← hξ₁, MonoidHom.inv_apply, hb₁.2 _ (GlobalTheory.RecDict.exists_isDetRoot D (spV G i j) g).choose_spec, Circle.coe_inv]`. Establish `x2 : xiV₁ G t i j g₁ = ((b₂ : ℂ))⁻¹`. Unfold `xiV₁ flatDet`.
-
-Rewrite using `[← hξ₂, MonoidHom.inv_apply, hb₂.2 _ (GlobalTheory.RecDict.exists_isDetRoot D (spV₁ G i j) g₁).choose_spec, Circle.coe_inv]`. Establish `n1 : (b₁ : ℂ) ≠ 0` using `Circle.coe_ne_zero b₁`. Establish `n2 : (b₂ : ℂ) ≠ 0` using `Circle.coe_ne_zero b₂`. Rewrite using `[x1, x2, ← hF₂adj]`. Unfold `thetaKO`.
-
-Rewrite using `[key, Pi.smul_apply, Pi.smul_apply, k₂, k₁, smul_eq_mul, smul_eq_mul, inv_one, one_mul, one_mul]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem seesaw_small {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀)
     (W : G.Weil) (t : T) {i j : ℕ} (hi : i + 1 ≤ D.R.m) (hj : j + 1 ≤ D.R.m)
@@ -301,7 +297,7 @@ def toOr (e : Num G i j) (x : Matrix (Fin (spW₁ G i j).rank) (Fin ((spW G i j)
   HMul.hMul (x.submatrix id fun k => e (finSumFinEquiv.symm k))ᵀ ((spW₁ G i j).gram.map (incA D))
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[topR, toOr, mulG, colV, Matrix.mul_apply, incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem topR_toOr (e : Num G i j) (x : Matrix (Fin (spW₁ G i j).rank) (Fin ((spW G i j).rank + (spW₁ G i j).rank)) (AE D)) :
     topR (A := spV G i j) (B := spV₁ G i j) (toOr e x) = mulG (spW₁ G i j) (colV e x)ᵀ := by
@@ -309,7 +305,7 @@ theorem topR_toOr (e : Num G i j) (x : Matrix (Fin (spW₁ G i j).rank) (Fin ((s
   simp [topR, toOr, mulG, colV, Matrix.mul_apply, incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[botR, toOr, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem botR_toOr (e : Num G i j) (x : Matrix (Fin (spW₁ G i j).rank) (Fin ((spW G i j).rank + (spW₁ G i j).rank)) (AE D)) :
     botR (A := spV G i j) (B := spV₁ G i j) (toOr e x) =
@@ -318,11 +314,11 @@ theorem botR_toOr (e : Num G i j) (x : Matrix (Fin (spW₁ G i j).rank) (Fin ((s
   simp [botR, toOr, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[botR_toOr]`. Use `set y := x.submatrix id fun k => e (.inr k)`. Establish `h1 : adj (HMul.hMul yᵀ ((spW₁ G i j).gram.map (incA D)) : WO (spW₁ G i j) (negSp (spV₁ G i j))) = HMul.hMul ((spW₁ G i j).gram.map (incA D)) (y.map (cA D))`. Unfold `adj`. Rewrite using `[Matrix.map_mul, transpose_mul, GlobalTheory.RouteCoords.gram_conj_transpose, transpose_map, transpose_transpose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `dagger`. Rewrite using `[h1, gA, giA, rat, rat, negSp_gram, Matrix.map_neg _ (map_neg _)]`. Establish `h2` using `GlobalTheory.RouteCoords.inv_mul_gram (spW₁ G i j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, Matrix.one_mul, adjV₁, mulG, Matrix.mul_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem dagger_botR_toOr (e : Num G i j)
     (x : Matrix (Fin (spW₁ G i j).rank) (Fin ((spW G i j).rank + (spW₁ G i j).rank)) (AE D)) :
@@ -343,7 +339,7 @@ theorem dagger_botR_toOr (e : Num G i j)
       rfl
 
 /- English proof (translation)
-Unfold `boxB box2 adjFn`. Rewrite using `[topR_toOr, dagger_botR_toOr]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaSquareProductRouteB_eq_externalProduct {t : T} (e : Num G i j) (d : GlobalTheory.FunObj.PureT G (routeB t i j))
     (x : Matrix (Fin (spW₁ G i j).rank) (Fin ((spW G i j).rank + (spW₁ G i j).rank)) (AE D)) :

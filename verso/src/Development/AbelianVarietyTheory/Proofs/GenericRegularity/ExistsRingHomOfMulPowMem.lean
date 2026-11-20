@@ -3,19 +3,17 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hA`. Establish `hden : ∀ x : Ω, ∃ b ∈ B, b ≠ 0 ∧ x * b ∈ B`. Introduce `x`. Take `⟨a, ha, b, hb, hb0, hx⟩` from `hB x`. Conclude with `⟨b, hb, hb0, by rw [hx]; exact ha⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose den hdenB hden0 hdenmul using hden`. Establish `hD : ∏ x ∈ s, den x ∈ B` using `Subalgebra.prod_mem B (fun x _ => hdenB x)`. Use `⟨∏ x ∈ s, den x, hD, Finset.prod_ne_zero_iff.mpr (fun x _ => hden0 x), ?_⟩` and prove the remaining obligations. Introduce `a ha`. Rewrite `ha` using `[← hs]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, ← Finset.mul_prod_erase s den (Finset.mem_coe.mp hx), ← mul_assoc]`. Conclude with `mul_mem (hdenmul x) (Subalgebra.prod_mem B (fun y _ => hdenB y))`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `algebraMap r`. Conclude with `⟨0, by rw [pow_zero, mul_one]; exact B.algebraMap_mem r⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨n, hn⟩` from `hx`. Take `⟨m, hm⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `e : (x + y) * (∏ z ∈ s, den z) ^ (n + m) = x * (∏ z ∈ s, den z) ^ n * (∏ z ∈ s, den z) ^ m + y * (∏ z ∈ s, den z) ^ m * (∏ z ∈ s, den z) ^ n` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem (mul_mem hn (pow_mem hD m)) (mul_mem hm (pow_mem hD n))`. Consider the case `mul x y _ _ hx hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `hx`. Take `⟨m, hm⟩` from `hy`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `e : x * y * (∏ z ∈ s, den z) ^ (n + m) = (x * (∏ z ∈ s, den z) ^ n) * (y * (∏ z ∈ s, den z) ^ m)` using `by ring`. Rewrite using `[e]`.
-
-Conclude with `mul_mem hn hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_pow_mem_of_fg {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω]
     (A B : Subalgebra O Ω) (hA : A.FG)

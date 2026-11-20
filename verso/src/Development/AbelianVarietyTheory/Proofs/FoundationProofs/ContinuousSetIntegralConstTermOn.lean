@@ -19,13 +19,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
 omit [LocallyCompactSpace G] in
 
 /- English proof (translation)
-Use `set a : ℝ≥0∞ := ({γ : Γ | (γ : G) ∈ S * S⁻¹}.encard : ℝ≥0∞) with ha`. Establish `ha' : a ≠ ∞` using `by simpa [ha] using finite_mem_compact (Γ := Γ) (hS.mul hS.inv)`. Establish `hle : (μ.restrict S).map (mk Γ) ≤ a • quotMeasure Γ μ` using `Measure.le_iff.2 fun A hA => by`. Rewrite using `[Measure.map_apply measurable_mk hA, Measure.restrict_apply (measurable_mk hA), ← lintegral_indicator_one ((measurable_mk hA).inter hS.measurableSet), lintegral_eq_lintegral_tsum (Γ := Γ) (measurable_one.indicator ((measurable_mk hA).inter hS.measurableSet)).aemeasurable, Measure …`. Use `lintegral_mono fun q => le_trans (le_of_eq (tsum_congr fun γ => ?_)) (AutomorphicL2Local.tsum_indicator_le Γ S q.out _)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h1 : (γ : G) * q.out ∈ S <;> by_cases h2 : q ∈ A <;> simp [h1, h2]`. Establish `hμ : μ S ≠ ∞` using `hS.measure_lt_top.ne`. Use `⟨(a ^ (1 / 2 : ℝ) * μ S ^ (1 / 2 : ℝ)).toReal, fun F => ?_⟩` and prove the remaining obligations. Establish `hm : AEStronglyMeasurable (lift Γ F) (μ.restrict S)` using `((Lp.stronglyMeasurable F).comp_measurable measurable_mk).aestronglyMeasurable`. Establish `h1` using `eLpNorm_le_eLpNorm_mul_rpow_measure_univ (p := 1) (q := 2) (by norm_num) hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : eLpNorm (lift Γ F) 2 (μ.restrict S) ≤ a ^ (1 / 2 : ℝ) * eLpNorm F 2 (quotMeasure Γ μ)`. Use `(eLpNorm_map_measure (Lp.stronglyMeasurable F).aestronglyMeasurable measurable_mk.aemeasurable).ge.trans ((eLpNorm_mono_measure _ hle).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[eLpNorm_smul_measure_of_ne_top (by norm_num)]`. Evaluate the numerical expressions. Rewrite using `[integral_norm_eq_lintegral_enorm hm, ← eLpNorm_one_eq_lintegral_enorm, Lp.norm_def, ← ENNReal.toReal_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENNReal.toReal_mono (by have := Lp.eLpNorm_ne_top F; finiteness) (h1.trans ?_)` and prove the remaining obligations. Rewrite using `[mul_right_comm, Measure.restrict_apply_univ]`. Evaluate the numerical expressions. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem exists_setIntegral_norm_le (hS : IsCompact S) :
     ∃ c : ℝ, ∀ F : L2 Γ μ, ∫ y in S, ‖lift Γ F y‖ ∂μ ≤ c * ‖F‖ := by
@@ -59,9 +59,9 @@ theorem exists_setIntegral_norm_le (hS : IsCompact S) :
 omit [SecondCountableTopology G] [LocallyCompactSpace G] in
 
 /- English proof (translation)
-Establish `hp` using `measurePreserving_mul_left μ k`. Establish `he` using `measurableEmbedding_mulLeft k`. Establish `h1 : IntegrableOn (fun y => φ (k * y)) ((k * ·) ⁻¹' C) μ` using `(hp.integrableOn_comp_preimage he).2 (hi.integrableOn_isCompact hC)`. Use `⟨h1.mono_set hk, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp.setIntegral_preimage_emb he (fun y => ‖φ y‖) C]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `setIntegral_mono_set h1.norm (.of_forall fun _ => norm_nonneg _) (HasSubset.Subset.eventuallyLE hk)`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_norm_mul_left_le (hi : LocallyIntegrable φ μ) (hS : IsCompact S) {C : Set G} (hC : IsCompact C)
     {k : G} (hk : ∀ y ∈ S, k * y ∈ C) :
@@ -77,9 +77,9 @@ theorem setIntegral_norm_mul_left_le (hi : LocallyIntegrable φ μ) (hS : IsComp
 omit [SecondCountableTopology G] [LocallyCompactSpace G] [DiscreteTopology Γ] in
 
 /- English proof (translation)
-Take `⟨K, hK, hs⟩` from `hc`. Establish `hC` using `(hK.image continuous_subtype_val).mul hS`. Use `⟨_, hC, fun φ hφ hi n => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hs n`. Simplify using `only [← fun y => leftInv_integrand hφ y γ hγ n]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `setIntegral_norm_mul_left_le hi hS hC fun y hy => mul_mem_mul ⟨_, hk, rfl⟩ hy`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_bound (hc : Cocompact Γ N) (hS : IsCompact S) : ∃ C : Set G, IsCompact C ∧
     ∀ φ : G → ℂ, LeftInv Γ φ → LocallyIntegrable φ μ → ∀ n : N,
@@ -94,9 +94,9 @@ theorem exists_compact_bound (hc : Cocompact Γ N) (hS : IsCompact S) : ∃ C : 
 variable [LocallyCompactSpace N]
 
 /- English proof (translation)
-Use `hc.isProbabilityMeasure` as an intermediate fact. Take `⟨C, -, hC⟩` from `exists_compact_bound (μ := μ) hc hS`. Establish `e : (fun p : Quot (Γ.subgroupOf N) × G => φ ((p.1.out : N) * p.2)) = fun p => φ ((sec (Γ.subgroupOf N) p.1 : N) * p.2)` using `funext fun p => (leftInv_integrand hφ p.2).eq_of_mk_eq ((Quotient.out_eq _).trans (mk_sec _).symm)`. Establish `hm' : StronglyMeasurable fun p : Quot (Γ.subgroupOf N) × G => φ ((p.1.out : N) * p.2)` using `e ▸ hm.comp_measurable ((measurable_subtype_coe.comp (measurableEmbedding_sec.measurable.comp measurable_fst)).mul measurable_snd)`. Use `(integrable_prod_iff hm'.aestronglyMeasurable).2 ⟨.of_forall fun q => (hC φ hφ hi q.out).1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `.of_bound hm'.norm.integral_prod_right'.aestronglyMeasurable (∫ y in C, ‖φ y‖ ∂μ) (.of_forall fun q => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Conclude with `(hC φ hφ hi q.out).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_prod (hc : Cocompact Γ N) (hφ : LeftInv Γ φ) (hm : StronglyMeasurable φ)
     (hi : LocallyIntegrable φ μ) (hS : IsCompact S) :
@@ -116,7 +116,7 @@ theorem integrable_prod (hc : Cocompact Γ N) (hφ : LeftInv Γ φ) (hm : Strong
   exact (hC φ hφ hi q.out).2
 
 /- English proof (translation)
-Use `hc.isProbabilityMeasure` as an intermediate fact. Conclude with `(integral_integral_swap (f := fun (q : Quot (Γ.subgroupOf N)) y => φ ((q.out : N) * y)) (integrable_prod hc hφ hm hi hS)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem setIntegral_constTermOn (hc : Cocompact Γ N) (hφ : LeftInv Γ φ) (hm : StronglyMeasurable φ)
     (hi : LocallyIntegrable φ μ) (hS : IsCompact S) :
@@ -126,7 +126,7 @@ theorem setIntegral_constTermOn (hc : Cocompact Γ N) (hφ : LeftInv Γ φ) (hm 
     (integrable_prod hc hφ hm hi hS)).symm
 
 /- English proof (translation)
-Use `hc.isProbabilityMeasure` as an intermediate fact. Conclude with `locallyIntegrable_iff.2 fun S hS => (integrable_prod hc hφ hm hi hS).integral_prod_right`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyIntegrable_constTermOn (hc : Cocompact Γ N) (hφ : LeftInv Γ φ) (hm : StronglyMeasurable φ)
     (hi : LocallyIntegrable φ μ) : LocallyIntegrable (constTermOn Γ N φ) μ := by
@@ -134,11 +134,11 @@ theorem locallyIntegrable_constTermOn (hc : Cocompact Γ N) (hφ : LeftInv Γ φ
   exact locallyIntegrable_iff.2 fun S hS => (integrable_prod hc hφ hm hi hS).integral_prod_right
 
 /- English proof (translation)
-Use `hc.isProbabilityMeasure` as an intermediate fact. Establish `hs' : HasCompactSupport fun y => f (x⁻¹ * y)` using `hs.comp_homeomorph (Homeomorph.mulLeft x⁻¹)`. Take `⟨M, hM⟩` from `hf.bounded_above_of_compact_support hs`. Establish `h0 : ∀ u : G → ℂ, ∫ y in tsupport fun y => f (x⁻¹ * y), f (x⁻¹ * y) * u y ∂μ = ∫ y, f (x⁻¹ * y) * u y ∂μ` using `fun u => setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => by`. Rewrite using `[image_eq_zero_of_notMem_tsupport (f := fun y => f (x⁻¹ * y)) hy, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1` using `integral_integral_swap (f := fun (q : Quot (Γ.subgroupOf N)) y => f (x⁻¹ * y) * φ ((q.out : N) * y)) ((integrable_prod hc hφ hm hi hs'.isCompact).bdd_mul (c := M) (Continuous.aestronglyMeasurable (f := fun y => f (x⁻¹ * y)) (by fun_prop)).comp_snd (.of_forall fun _ => hM _))`. Simplify using `only [h0, integral_const_mul] at h1`. Rewrite using `[convR_eq]`. Use `Eq.trans (integral_congr_ae (.of_forall fun q => ?_)) h1` and prove the remaining obligations. Use `beta_reduce`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_mul_left_eq_self _ x]`. Simplify using `[convR, mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constTermOn_convR (hc : Cocompact Γ N) (hφ : LeftInv Γ φ) (hm : StronglyMeasurable φ)
     (hi : LocallyIntegrable φ μ) {f : G → ℂ} (hf : Continuous f) (hs : HasCompactSupport f) (x : G) :
@@ -165,17 +165,17 @@ variable [μ.IsMulRightInvariant]
 omit [LocallyCompactSpace N] in
 
 /- English proof (translation)
-The claim follows from `locallyIntegrable_iff.2 fun C hC => (AutomorphicL2Local.memLp_restrict_compact G Γ μ F C hC).2`.
+A detailed English derivation is pending.
 -/
 theorem locallyIntegrable_lift (F : L2 Γ μ) : LocallyIntegrable (lift Γ F) μ :=
   locallyIntegrable_iff.2 fun C hC => (AutomorphicL2Local.memLp_restrict_compact G Γ μ F C hC).2
 
 /- English proof (translation)
-Use `hc.isProbabilityMeasure` as an intermediate fact. Take `⟨C, hC, h⟩` from `exists_compact_bound (μ := μ) hc hS`. Take `⟨c, hb⟩` from `exists_setIntegral_norm_le (Γ := Γ) (μ := μ) hC`. Establish `hm : ∀ F : L2 Γ μ, StronglyMeasurable (lift Γ F)` using `fun F => (Lp.stronglyMeasurable F).comp_measurable measurable_mk`. Use `(LipschitzWith.of_dist_le' (K := c) fun F F' => ?_).continuous` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp` using `fun F : L2 Γ μ => (integrable_prod hc (leftInv_lift F) (hm F) (locallyIntegrable_lift F) hS).integral_prod_left`. Establish `h'` using `fun F : L2 Γ μ => h _ (leftInv_lift F) (locallyIntegrable_lift F)`. Simplify using `only [setIntegral_constTermOn hc (leftInv_lift _) (hm _) (locallyIntegrable_lift _) hS, dist_eq_norm]`. Rewrite using `[← integral_sub (hp F) (hp F')]`. Use `(norm_integral_le_of_norm_le_const (C := c * ‖F - F'‖) (.of_forall fun q => ?_)).trans (by simp)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← integral_sub (h' F q.out).1 (h' F' q.out).1]`. Use `(norm_integral_le_integral_norm _).trans (le_trans (le_of_eq ?_) ((h' (F - F') q.out).2.trans (hb _)))` and prove the remaining obligations. Use `integral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [(measurePreserving_mul_left μ ((q.out : N) : G)).quasiMeasurePreserving.ae (ae_quotMeasure_iff.1 (Lp.coeFn_sub F F'))] with y hy`. Conclude with `congrArg norm hy.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_setIntegral_constTermOn (hc : Cocompact Γ N) (hS : IsCompact S) :
     Continuous fun F : L2 Γ μ => ∫ y in S, constTermOn Γ N (lift Γ F) y ∂μ := by
@@ -199,9 +199,9 @@ theorem continuous_setIntegral_constTermOn (hc : Cocompact Γ N) (hS : IsCompact
   exact congrArg norm hy.symm
 
 /- English proof (translation)
-Establish `hm : ∀ F : L2 Γ μ, StronglyMeasurable (lift Γ F)` using `fun F => (Lp.stronglyMeasurable F).comp_measurable measurable_mk`. Use `ae_eq_zero_of_forall_setIntegral_isCompact_eq_zero' (locallyIntegrable_constTermOn hc (leftInv_lift _) (hm F) (locallyIntegrable_lift F)) fun S hS => ?_` and prove the remaining obligations. Use `closure_minimal ?_ (isClosed_eq (continuous_setIntegral_constTermOn hc hS) continuous_const) hF` and prove the remaining obligations. Introduce and unpack `F' ⟨φ, h1, h2, h3, h4⟩`. Establish `h5` using `setIntegral_constTermOn (μ := μ) hc h2 h1.stronglyMeasurable h1.locallyIntegrable hS`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h5` using `[h3]`. Rewrite using `[mem_setOf_eq, setIntegral_constTermOn hc (leftInv_lift _) (hm _) (locallyIntegrable_lift _) hS]`. Use `Eq.trans (integral_congr_ae (.of_forall fun q => integral_congr_ae (ae_restrict_of_ae ?_))) (h5.symm.trans (by simp))` and prove the remaining obligations. Conclude with `(measurePreserving_mul_left μ ((q.out : N) : G)).quasiMeasurePreserving.ae h4`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem constTermOn_ae_eq_zero (hc : Cocompact Γ N) {F : L2 Γ μ} (hF : F ∈ closure {F : L2 Γ μ |
     ∃ φ, Continuous φ ∧ LeftInv Γ φ ∧ constTermOn Γ N φ = 0 ∧ lift Γ F =ᵐ[μ] φ}) :
@@ -222,13 +222,13 @@ theorem constTermOn_ae_eq_zero (hc : Cocompact Γ N) {F : L2 Γ μ} (hF : F ∈ 
 omit [LocallyCompactSpace N] in
 
 /- English proof (translation)
-Use `hW.completeSpace_coe` as an intermediate fact. Rewrite using `[← W.orthogonal_orthogonal, Submodule.mem_orthogonal]`. Introduce `w hw`. Establish `hu : Continuous fun g => ⟪w, R Γ μ g F⟫_ℂ` using `continuous_const.inner (continuous_R F)`. Take `⟨b, hb1, -, hbc, hb⟩` from `exists_continuous_one_zero_of_isCompact (isCompact_singleton (x := (1 : G))) isClosed_empty (disjoint_empty _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hf : Continuous fun g => (b g : ℂ) * conj ⟪w, R Γ μ g F⟫_ℂ` using `by fun_prop`. Establish `hs : HasCompactSupport fun g => (b g : ℂ) * conj ⟪w, R Γ μ g F⟫_ℂ` using `(hbc.comp_left (g := Complex.ofReal) rfl).mul_right`. Establish `hR` using `isRepOp_Rop (Γ := Γ) (hf.integrable_of_hasCompactSupport hs (μ := μ)) F`. Establish `h1` using `(W.mem_orthogonal' _).1 hw _ (h _ hf hs)`. Rewrite `h1` using `[hR.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `replace h1 := (integral_inner (𝕜 := ℂ) hR.1 w).trans h1`. Establish `h2 : ∫ g, b g * ‖⟪w, R Γ μ g F⟫_ℂ‖ ^ 2 ∂μ = 0`. Rewrite using `[← Complex.ofReal_inj, ← integral_complex_ofReal, Complex.ofReal_zero, ← h1]`. Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Use `beta_reduce`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[inner_smul_right, mul_assoc, Complex.conj_mul']`. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `h0`. Use `(Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (b.continuous.mul (hu.norm.pow 2)) hbc.mul_right (fun g => mul_nonneg (hb g).1 (sq_nonneg _)) ?_).ne' h2` and prove the remaining obligations. Simplify `h0` using `[hb1 (mem_singleton _)]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_Rop_mem {W : Submodule ℂ (L2 Γ μ)} (hW : IsClosed (W : Set (L2 Γ μ))) {F : L2 Γ μ}
     (h : ∀ f : G → ℂ, Continuous f → HasCompactSupport f → Rop Γ μ f F ∈ W) : F ∈ W := by
@@ -263,11 +263,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D V μ _ _ F`. Use `⟨fun h 𝔉 h𝔉 => constTermOn_ae_eq_zero (cocompact_flag D V 𝔉) (closure_mono ?_ h), fun h => ?_⟩` and prove the remaining obligations. Introduce and unpack `F' ⟨φ, hφ, e⟩`. Conclude with `⟨φ, hφ.1, hφ.2.1, T.constantTermAlongFlag_eq_zero_of_cuspidal D V φ hφ 𝔉 h𝔉, e⟩`. Use `mem_of_forall_Rop_mem (isSubrep_L2cusp V μ).1 fun f hf hs => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl` using `(leftInv_lift (Γ := GQ V) F).convR (μ := μ) f`. Use `mem_L2cusp_of_ae_eq ⟨(AutomorphicL2Local.continuous_convR_lift _ _ μ f hf hs F).2, hl, isCuspFun_of_forall_flag hl fun 𝔉 h𝔉 => funext fun x => ?_⟩ (AutomorphicL2Pointwise.lift_Rop_eq_convR _ _ μ f (hf.integrable_of_hasCompactSupport hs) F).2` and prove the remaining obligations. Use `(constTermOn_convR (cocompact_flag D V 𝔉) (leftInv_lift _) ((Lp.stronglyMeasurable F).comp_measurable measurable_mk) (locallyIntegrable_lift F) hf hs x).trans ?_` and prove the remaining obligations. Use `(integral_congr_ae ?_).trans (integral_zero _ _)` and prove the remaining obligations. Use `filter_upwards [(measurePreserving_mul_left μ x).quasiMeasurePreserving.ae (h 𝔉 h𝔉)] with y hy`.
-
-Conclude with `mul_eq_zero_of_right _ hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_L2cusp_iff_isCuspAE : ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure]
     [μ.IsMulRightInvariant] (F : DividedPowerChartLift V μ), F ∈ L2cusp V μ ↔ IsCuspAE V μ F := by

@@ -10,7 +10,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Th in
 /- English proof (translation)
-The claim follows from `stUnit_of (twSwap orbFub) twLin cvRing (cvComm2 cvGelfand) theta_involution_facts genTw`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Th.stUnit : UpperTheory.V.Z.Tf.GlobalTraceComparison.StUnit :=
   stUnit_of (twSwap orbFub) twLin cvRing (cvComm2 cvGelfand) theta_involution_facts genTw

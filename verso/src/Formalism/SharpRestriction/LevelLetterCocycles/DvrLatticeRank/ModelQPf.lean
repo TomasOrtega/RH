@@ -12,35 +12,31 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK hA hML l hpf hl K LL hG π' E hR h' hh' T hT hJ c`. Establish `hL` using `hML l hl K LL hG π' E hR h' hh' T hT hJ c`. Take `⟨hL1, -, -, hL4, hL5, -, -⟩` from `hL`. Establish `h1 : adm1 D HW F Cm` using `hA.1`. Establish `hs : 1 ≤ sK l K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `frobpin_sK_pos hl K LL hG` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨-, -, -, -, -, -, -, -, hπu, hπΔ, -⟩` from `gradNPf_hyps D HW F Cm h1 l hl K LL hG π' E hR T hT hs`. Take `⟨w₁, hw₁⟩` from `hR.2.2.1`. Take `⟨w₂, hw₂⟩` from `hR.2.2.2.2.1`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, -, -, -, h9W, -⟩` from `h1 l K 1 LL hG`. Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hp : ((D.loc l).PD K).p ≠ 2` using `by rw [hpl]; exact hl`. Establish `hs1 : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Take `⟨hcard, -, -⟩` from `h9W T hT hs1 hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ⟨π'₀, E₀, -, hm₀⟩, -⟩` from `h9W T hT hs1 hp`. Take `⟨r, b, hbΔ, hbu, hbe⟩` from `hm₀.1`. Use `haveI hdvr : IsDiscreteValuationRing ↥(OL LL) := GenPf.isDVR (D.loc l) LL`. Take `⟨bL⟩` from `MQ.basis_L ((HW l).W K 1 LL hG) T π' (sK l K) hs w₁ hw₁ hR.2.1 b hbΔ hbu hbe c`. Establish `hι : Function.Injective (algebraMap ↥(OL LL) ↥LL.1)` using `Subtype.val_injective`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRv : ∀ y : ↥LL.1, 0 ≤ (D.loc l).v LL y ↔ ∃ a : ↥(OL LL), algebraMap ↥(OL LL) ↥LL.1 a = y`. Introduce `y`. Rewrite using `[(D.loc l).v_O LL y]`. Conclude with `⟨fun h => ⟨⟨y, h⟩, rfl⟩, fun ⟨a, ha⟩ => ha ▸ a.2⟩`. Establish `hlv : (D.loc l).v LL (l : ↥LL.1) = 1` using `(D.loc l).v_l LL`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcpos : 0 < ((HW l).W K 1 LL hG).DelF.card`. Use `Finset.card_pos.2 ⟨1, ((HW l).W K 1 LL hG).DelF_def 1 |>.2 ⟨1, one_pos, one_pow _⟩⟩` and prove the remaining obligations. Establish `hclt : ((HW l).W K 1 LL hG).DelF.card < l`. Rewrite using `[hcard, hpl]`. Use `hpf.out.two_le` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_lt (Nat.div_le_self _ _) (by omega)`. Establish `hΔu : IsUnit ((((HW l).W K 1 LL hG).DelF.card : ℕ) : ↥(OL LL))` using `gradNPf_unit_nat ((D.loc l).v LL) (algebraMap ↥(OL LL) ↥LL.1) hι hRv l hpf.out hlv _ (Nat.not_dvd_of_pos_of_lt hcpos hclt)`. Establish `hpP : ((D.loc l).PD K).p.Prime` using `by rw [hpl]; exact hpf.out`. Use `haveI hcompl : IsAdicComplete (Ideal.span {(((D.loc l).PD K).p : ↥(OL LL))}) ↥(OL LL) := by`. Rewrite using `[hpl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `FrobeniusSpanLemma.phib_OL_complete LL`. Establish `hEΔ : Formalism.MainNotions.DeltaInvariantLattices.Eat E π' ∈ ((HW l).W K 1 LL hG).AΔ` using `by show ∀ δ ∈ ((HW l).W K 1 LL hG).DelF, ((HW l).W K 1 LL hG).γA δ (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') = Formalism.MainNotions.DeltaInvariantLattices.Eat E π'`. Introduce `δ hδ`. Use function extensionality and compare the values at `i`. Use `show ((HW l).W K 1 LL hG).γ₀ δ (Polynomial.aeval (π' i) (E i)) = Polynomial.aeval (π' i) (E i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Polynomial.aeval_algHom_apply, show ((HW l).W K 1 LL hG).γ₀ δ (π' i) = π' i from congrFun (hπΔ δ hδ) i]`. Establish `hEe : Formalism.MainNotions.DeltaInvariantLattices.Eat E π' = ((w₂⁻¹ : (LetA ↥(OL LL) _)ˣ) : LetA ↥(OL LL) _) * ((HW l).W K 1 LL hG).q`. Rewrite using `[hw₂, ← mul_assoc, Units.inv_mul, one_mul]`. Establish `hEu : IsUnit (algebraMap _ ((HW l).W K 1 LL hG).EE (Formalism.MainNotions.DeltaInvariantLattices.Eat E π'))`. Rewrite using `[hEe, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((w₂⁻¹).isUnit.map _).mul (MQ.q_unit ((HW l).W K 1 LL hG) hpP)`. Take `⟨D', S, hdiv⟩` from `MQ.div_at ((HW l).W K 1 LL hG) hpP (sK l K) h' π' (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') w₁ w₂ hw₁ hw₂ hΔu.unit hΔu.unit_spec hR.1 hEΔ c`. Establish `hp0 : (((D.loc l).PD K).p : ↥(OL LL)) ≠ 0`. Introduce `h0`. Establish `: (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 (((D.loc l).PD K).p : ↥(OL LL))) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_natCast, hpl]`. Conclude with `hlv`. Rewrite `this` using `[h0, map_zero, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe this`. Establish `hpu : ¬ IsUnit (((D.loc l).PD K).p : ↥(OL LL))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hU`. Take `⟨bb, hbb⟩` from `hU.exists_right_inv`. Establish `e` using `congrArg (fun z => (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 z)) hbb`. Simplify using `only [map_mul, map_one, AddValuation.map_mul, AddValuation.map_one] at e`. Rewrite `e` using `[map_natCast, hpl, hlv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : 0 ≤ (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 bb)` using `(hRv _).2 ⟨bb, rfl⟩`. Use `revert e hb0`. Generalize the expression as in `(D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 bb) = z`. Introduce `e hb0`. Proceed by induction on `z using WithTop.recTopCoe with`.
-
-Consider the case `top => simp at e`. Consider the case `coe q`. Establish `e' : (1 + q : ℚ) = 0` using `by exact_mod_cast e`. Establish `hq0 : (0 : ℚ) ≤ q` using `by exact_mod_cast hb0`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `⟨MQ.finite_of (Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG) π' (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') h' c hEu hL4 (MQ.finite_L ((HW l).W K 1 LL hG) T π' (sK l K) hs w₁ hw₁ hR.2.1 b hbΔ hbu hbe c) D' S hdiv, ?_⟩` and prove the remaining obligations. Conclude with `MQ.tf_of (Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG) π' (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') h' c hπu hL1 hL5 (MQ.sat_of π' c bL (MQ.hlet_of ((HW l).W K 1 LL hG) (sK l K) hs π' w₁ hw₁ hR.1 hπu c)) (MQ.dvd_pow_of_dvr _ hp0 hpu)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem modelqlink_pf : ModelQLinkStep := by
   intro D HW F Cm CA CB CK hA hML l hpf hl K LL hG π' E hR h' hh' T hT hJ c

@@ -13,11 +13,9 @@ def cstR (M : Model R A) (U : M.Y.left.Opens) : R →+* Γ(M.Y.left, U) :=
   (M.Y.hom.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q => q.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R K)))`. Establish `h1 : M.Y.hom.appLE ⊤ U le_top ≫ M.j.app U = (M.j ≫ M.Y.hom).appLE ⊤ (M.j ⁻¹ᵁ U) le_top`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _`. Establish `h2 : (spMap (algebraMap R K)).appTop ≫ A.hom.appLE ⊤ (M.j ⁻¹ᵁ U) le_top = (A.hom ≫ spMap (algebraMap R K)).appLE ⊤ (M.j ⁻¹ᵁ U) le_top`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Scheme.Hom.comp_appLE A.hom (spMap (algebraMap R K)) ⊤ _ _).symm`. Establish `h3 : M.Y.hom.appLE ⊤ U le_top ≫ M.j.app U = (spMap (algebraMap R K)).appTop ≫ A.hom.appLE ⊤ (M.j ⁻¹ᵁ U) le_top`. Rewrite using `[h1, h2]`. Simplify using `only [M.j_hom]`. Establish `h4` using `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) h3`.
-
-Conclude with `h4.trans (congrArg (A.hom.appLE ⊤ (M.j ⁻¹ᵁ U) le_top).hom e.symm)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem j_cstR (M : Model R A) (U : M.Y.left.Opens) (r : R) :
     (M.j.app U).hom (cstR M U r) = cstK A _ (algebraMap R K r) := by
@@ -33,9 +31,9 @@ theorem j_cstR (M : Model R A) (U : M.Y.left.Opens) (r : R) :
   exact h4.trans (congrArg (A.hom.appLE ⊤ (M.j ⁻¹ᵁ U) le_top).hom e.symm)
 
 /- English proof (translation)
-Introduce `hu`. Take `⟨y, hy, hs⟩` from `h`. Establish `h1 : M.Y.left.basicOpen (cstR M U π) = U` using `M.Y.left.basicOpen_of_isUnit hu`. Establish `h2 : M.Y.left.basicOpen (cstR M U π) = U ⊓ M.Y.hom ⁻¹ᵁ (Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv π)` using `Scheme.basicOpen_appLE M.Y.hom U ⊤ le_top ((Scheme.ΓSpecIso (CommRingCat.of R)).inv π)`. Rewrite `h2` using `[h1, basicOpen_eq_of_affine (R := CommRingCat.of R) π]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `(h2.le hy).2`. Establish `h6 : M.Y.hom y = IsLocalRing.closedPoint R` using `hs`. Establish `h7 : π ∉ PrimeSpectrum.asIdeal (M.Y.hom y)` using `h4`. Rewrite `h7` using `[h6]`. Conclude with `h7 hπ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isUnit_cstR [IsLocalRing R] (M : Model R A) (U : M.Y.left.Opens) (h : ((U : Set M.Y.left) ∩ M.sp).Nonempty)
     {π : R} (hπ : π ∈ IsLocalRing.maximalIdeal R) : ¬ IsUnit (cstR M U π) := by
@@ -52,9 +50,9 @@ theorem not_isUnit_cstR [IsLocalRing R] (M : Model R A) (U : M.Y.left.Opens) (h 
   exact h7 hπ
 
 /- English proof (translation)
-Use `M.smooth` as an intermediate fact. Establish `: IsDominant (spMap (algebraMap R K))` using `⟨PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _ |>.2 (by`. Conclude with `((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R K)).le.trans bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (spMap (algebraMap R K))` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (pullback.fst M.Y.hom (spMap (algebraMap R K)))` using `IsSchemeTheoreticallyDominant.of_isPullback (IsPullback.of_hasPullback M.Y.hom (spMap (algebraMap R K))).flip`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso M.e.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map M.e.inv))`. Establish `: IsSchemeTheoreticallyDominant M.j` using `by unfold Model.j; infer_instance`. Establish `: QuasiCompact M.j` using `by unfold Model.j; infer_instance`. Conclude with `M.j.app_injective U`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem j_app_injective [IsDomain R] [IsFractionRing R K] (M : Model R A) (U : M.Y.left.Opens) :
     Function.Injective (M.j.app U).hom := by
@@ -73,9 +71,9 @@ theorem j_app_injective [IsDomain R] [IsFractionRing R K] (M : Model R A) (U : M
 end
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ π hirr A M U hU σ s a b hs e'`. Assume the negation of the conclusion as `hlt`. Establish `hπ : π ∈ IsLocalRing.maximalIdeal R` using `hirr.not_isUnit`. Take `⟨k, hk⟩ : ∃ k : ℕ, b = a + (k + 1 : ℕ)` from `⟨(b - a - 1).toNat, by omega⟩`. Establish `hp : algebraMap R K π ≠ 0` using `by simpa using hirr.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : IsUnit (cstK A (M.j ⁻¹ᵁ U) (algebraMap R K π ^ a))` using `(IsUnit.mk0 _ (zpow_ne_zero a hp)).map _`. Rewrite `e'` using `[hk, zpow_add₀ hp, map_mul, _root_.mul_assoc, zpow_natCast, ← map_pow, ← j_cstR, ← map_mul]`. Use `j_app_injective M U (hu.mul_left_cancel e')` as an intermediate fact. Rewrite `hs` using `[this, pow_succ, map_mul]`. Conclude with `not_isUnit_cstR M U hU hπ (isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_left hs))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_zpow_mul_unit_eq : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (π : R), Irreducible π → ∀ (A : Over (Sp K)) (M : Model R A) (W : M.Y.left.Opens), ((W : Set M.Y.left) ∩ M.sp).Nonempty → ∀ (σ s : Γ(M.Y.left, W)) (a b : ℤ), IsUnit σ → cstK A (M.j ⁻¹ᵁ W) (algebraMap R K π ^ a) * (M.j.app W).hom σ = cstK A (M.j ⁻¹ᵁ W) (algebraMap R K π ^ b) * (M.j.app W).hom s → b ≤ a := by
   intro R K _ _ _ _ _ _ π hirr A M U hU σ s a b hs e'

@@ -20,7 +20,7 @@ Both sides reduce to the same expression.
     repOf ρ₀ g v = (ρ₀ g : Matrix ι ι F).mulVec v := rfl
 
 /- English proof (translation)
-Rewrite using `[LinearMap.toMatrix_eq_toMatrix']`. Conclude with `LinearMap.toMatrix'_toLin' _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toMatrix_repOf (ρ₀ : G →* GL ι F) (g : G) :
     LinearMap.toMatrix (Pi.basisFun F ι) (Pi.basisFun F ι) (repOf ρ₀ g) = (ρ₀ g : Matrix ι ι F) := by

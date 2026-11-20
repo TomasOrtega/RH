@@ -15,7 +15,7 @@ section
 variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
 /- English proof (translation)
-Use `isTrivialOn_addCharConductor hχ.1 hχ.2.1` as an intermediate fact. Rewrite `this` using `[hχ.2.2]`. Conclude with `this a (mem_valBall_zero_iff.2 ha)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_int {χ : AddChar K Circle} (hχ : IsStd χ) {a : K} (ha : a ∈ 𝒪[K]) : χ a = 1 := by
   have := isTrivialOn_addCharConductor hχ.1 hχ.2.1
@@ -23,7 +23,7 @@ theorem char_int {χ : AddChar K Circle} (hχ : IsStd χ) {a : K} (ha : a ∈ �
   exact this a (mem_valBall_zero_iff.2 ha)
 
 /- English proof (translation)
-Distinguish the cases in `hu : u ∈ 𝒪[K]`. Rewrite using `[intInd_of_mem hu, intInd_of_mem (add_mem hu hb)]`. Rewrite using `[intInd_of_not_mem hu, intInd_of_not_mem (fun h => hu (by simpa using sub_mem h hb))]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem intInd_add_of_mem {b : K} (hb : b ∈ 𝒪[K]) (u : K) : intInd (u + b) = intInd u := by
   by_cases hu : u ∈ 𝒪[K]
@@ -33,7 +33,7 @@ theorem intInd_add_of_mem {b : K} (hb : b ∈ 𝒪[K]) (u : K) : intInd (u + b) 
 variable [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-Unfold `GroundTheory.LocalField.selfDualMeasure`. Rewrite using `[hψ.2.2]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem selfDual_std {ψ : AddChar K Circle} (hψ : IsStd ψ) : GroundTheory.LocalField.selfDualMeasure ψ = haarIntegers K := by
   unfold GroundTheory.LocalField.selfDualMeasure
@@ -55,15 +55,15 @@ def gInt (χ : AddChar F Circle) (δ : F) (y : E) : ℂ :=
   ∫ u : E, (χ (δ * Algebra.norm F u - Algebra.trace F E (y * u)) : ℂ) * intInd u ∂haarIntegers E
 
 /- English proof (translation)
-Establish `key` using `localFourier_indicator_valBall (haarIntegers E) hχE.1 hχE.2.1 0 (-y)`. Unfold `localFourier at key`. Rewrite `key` using `[hχE.2.2, sub_zero, ← intInd_eq_indicator]`. Establish `e : ∀ u : E, (χ (δ * Algebra.norm F u - Algebra.trace F E (y * u)) : ℂ) * intInd u = intInd u * ((chE E χ) (u * -y) : ℂ)`. Introduce `u`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hu : u ∈ 𝒪[E]`. Establish `h2 : δ * Algebra.norm F u - Algebra.trace F E (y * u) = δ * Algebra.norm F u + Algebra.trace F E (u * -y)`. Rewrite using `[sub_eq_add_neg, ← map_neg]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h2, AddChar.map_add_eq_mul, char_int hχ (mul_mem hδ (norm_mem hu)), one_mul, mul_comm]`. Both sides reduce to the same expression. Simplify using `[intInd_of_not_mem hu]`. Establish `i1 : intInd (-y) = intInd y`. Distinguish the cases in `hy : y ∈ 𝒪[E]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[intInd_of_mem hy, intInd_of_mem (neg_mem hy)]`. Rewrite using `[intInd_of_not_mem hy, intInd_of_not_mem (fun h => hy (by simpa using neg_mem h))]`. Unfold `gInt`. Repeatedly rewrite using `[e]`. Rewrite using `[key, i1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[measureReal_def, coe_valBall_zero, haarIntegers_integers]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gInt_of_mem {χ : AddChar F Circle} (hχ : IsStd χ) (hχE : IsStd (chE E χ)) {δ : F} (hδ : δ ∈ 𝒪[F])
     (y : E) : gInt E χ δ y = intInd y := by
@@ -92,15 +92,15 @@ theorem gInt_of_mem {χ : AddChar F Circle} (hχ : IsStd χ) (hχE : IsStd (chE 
   simp [measureReal_def, coe_valBall_zero, haarIntegers_integers]
 
 /- English proof (translation)
-Establish `hD : algebraMap F E δ ≠ 0` using `by simpa using hδ`. Use `set b : E := conj F E y * algebraMap F E δ⁻¹ with hb`. Establish `hbO : b ∈ 𝒪[E]`. Establish `: conj F E (y * algebraMap F E δ⁻¹) = b` using `by simp [hb]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mem_valBall_zero_iff.1 (conj_mem_valBall_iff.2 (mem_valBall_zero_iff.2 hy))`. Establish `ident : ∀ u : E, δ * Algebra.norm F u - Algebra.trace F E (y * u) = δ * Algebra.norm F (u - b) + -(Algebra.norm F y) / δ`. Introduce `u`. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Simplify using `only [map_add, map_sub, map_mul, map_div₀, map_neg, algebraMap_norm_eq_mul_conj, algebraMap_trace_eq_add_conj, hb, conj_conj, conj_algebraMap, map_inv₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Unfold `gInt`. Repeatedly rewrite using `[ident, AddChar.map_add_eq_mul]`. Establish `e2 : ∀ u : E, ((χ (δ * Algebra.norm F (u - b)) * χ (-(Algebra.norm F y) / δ) : Circle) : ℂ) * intInd u = (χ (-(Algebra.norm F y) / δ) : ℂ) * ((χ (δ * Algebra.norm F (u - b)) : ℂ) * intInd (u - b + b))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `u`. Rewrite using `[sub_add_cancel]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e2]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[integral_const_mul]`. Use `congr 1`. Rewrite using `[integral_sub_right_eq_self (fun x => (χ (δ * Algebra.norm F x) : ℂ) * intInd (x + b)) b]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [intInd_add_of_mem hbO, zero_mul, map_zero, sub_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gInt_shift (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) (χ : AddChar F Circle) {δ : F} (hδ : δ ≠ 0) {y : E}
     (hy : y * algebraMap F E δ⁻¹ ∈ 𝒪[E]) :
@@ -135,23 +135,19 @@ theorem gInt_shift (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) (χ : AddCha
   simp only [intInd_add_of_mem hbO, zero_mul, map_zero, sub_zero]
 
 /- English proof (translation)
-Establish `hδ0 : δ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hδ (zero_mem _)`. Establish `hD : algebraMap F E δ ≠ 0` using `by simpa using hδ0`. Establish `hinv : δ⁻¹ ∈ 𝒪[F]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_int_iff_ord (inv_ne_zero hδ0), ord_inv hδ0]`. Use `(mem_int_iff_ord hδ0).not.1 hδ` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `set y' : E := y * algebraMap F E δ⁻¹ with hy'`. Choose the witnesses or unpack the hypotheses as in `⟨a, haO, hc⟩ : ∃ a : E, a ∈ 𝒪[E] ∧ χ (Algebra.trace F E (a * y')) ≠ 1 := by`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `(forall_integer_mul_eq_one_iff hχE.1 hχE.2.1 y').1 (fun a ha => hcon a ha)` as an intermediate fact. Rewrite `this` using `[hχE.2.2]`. Conclude with `hy (mem_valBall_zero_iff.1 this)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set v : E := a * algebraMap F E δ⁻¹ with hv`. Establish `hvO : v ∈ 𝒪[E]` using `mul_mem haO ((algebraMap_mem_integer_iff F E _).2 hinv)`. Use `set f : E → ℂ := fun u => (χ (δ * Algebra.norm F u - Algebra.trace F E (y * u)) : ℂ) * intInd u with hf`. Establish `ident : ∀ u : E, δ * Algebra.norm F (u + v) - Algebra.trace F E (y * (u + v)) = (δ * Algebra.norm F u - Algebra.trace F E (y * u)) + Algebra.trace F E (u * conj F E a) + Algebra.norm F a * δ⁻¹ + -Algebra.trace F E (a * y')`. Introduce `u`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(algebraMap F E).injective` to reduce the goal to its premises. Simplify using `only [map_add, map_sub, map_mul, map_neg, algebraMap_norm_eq_mul_conj, algebraMap_trace_eq_add_conj, hv, hy', conj_conj, conj_algebraMap, map_inv₀]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hsh : ∀ u : E, f (u + v) = ((χ (Algebra.trace F E (a * y')) : ℂ))⁻¹ * f u`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Introduce `u`. Simplify using `only [hf, intInd_add_of_mem hvO]`. Distinguish the cases in `hu : u ∈ 𝒪[E]`. Rewrite using `[ident, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, char_int hχ (trace_mem h1 (mul_mem hu ?_)), char_int hχ (mul_mem (norm_mem haO) hinv), AddChar.map_neg_eq_inv]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Conclude with `mem_valBall_zero_iff.1 (conj_mem_valBall_iff.2 (mem_valBall_zero_iff.2 haO))`. Simplify using `[intInd_of_not_mem hu]`. Establish `h3 : gInt E χ δ y = ((χ (Algebra.trace F E (a * y')) : ℂ))⁻¹ * gInt E χ δ y` using `by show ∫ u, f u ∂haarIntegers E = _ * ∫ u, f u ∂haarIntegers E`.
-
-Rewrite using `[← integral_const_mul, ← integral_add_right_eq_self f v]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall hsh)`. Establish `hne : ((χ (Algebra.trace F E (a * y')) : ℂ))⁻¹ ≠ 1`. Introduce `h`. Apply `hc` to reduce the goal to its premises.
-
-Establish `: (χ (Algebra.trace F E (a * y')) : ℂ) = 1` using `by simpa using h`. Conclude with `Circle.ext (by simpa using this)`. Assume the negation of the conclusion as `h0`. Conclude with `hne (mul_right_cancel₀ h0 (by rw [one_mul]; exact h3.symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem gInt_eq_zero (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {χ : AddChar F Circle} (hχ : IsStd χ) (hχE : IsStd (chE E χ)) {δ : F} (hδ : δ ∉ 𝒪[F]) {y : E}
     (hy : y * algebraMap F E δ⁻¹ ∉ 𝒪[E]) : gInt E χ δ y = 0 := by
@@ -212,14 +208,14 @@ variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchim
   [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-Apply the tactic sequence `first | fun_prop | exact continuous_subtype_val.comp hg | exact continuous_induced_dom.comp hg`.
+A detailed English derivation is pending.
 -/
 theorem cont_circ {X : Type} [TopologicalSpace X] {g : X → Circle} (hg : Continuous g) :
     Continuous fun x => (g x : ℂ) := by
   first | fun_prop | exact continuous_subtype_val.comp hg | exact continuous_induced_dom.comp hg
 
 /- English proof (translation)
-Establish `he : MeasurableEmbedding (fun x : K => c * x)` using `(Homeomorph.mulLeft₀ c hc).measurableEmbedding`. Establish `h : Integrable (intInd : K → ℂ) (Measure.map (fun x => c * x) (haarIntegers K))`. Rewrite using `[map_mul_left_eq_smul _ hc]`. Conclude with `(integrable_intInd (K := K)).smul_measure_nnreal`. Conclude with `(he.integrable_map_iff).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_intInd_mul {c : K} (hc : c ≠ 0) :
     Integrable (fun x => (intInd (c * x) : ℂ)) (haarIntegers K) := by
@@ -230,14 +226,14 @@ theorem integrable_intInd_mul {c : K} (hc : c ≠ 0) :
   exact (he.integrable_map_iff).1 h
 
 /- English proof (translation)
-Rewrite using `[intInd_split hc x]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem uInd_eq {c : K} (hc : ord c = 1) (x : K) : uInd x = intInd x - intInd (c⁻¹ * x) := by
   rw [intInd_split hc x]
   ring
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Rewrite `hc` using `[ord_zero]`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ne_zero_of_ord {c : K} (hc : ord c = 1) : c ≠ 0 := by
   rintro rfl
@@ -245,7 +241,7 @@ theorem ne_zero_of_ord {c : K} (hc : ord c = 1) : c ≠ 0 := by
   omega
 
 /- English proof (translation)
-Establish `h : (uInd : K → ℂ) = fun x => intInd x - intInd ((unifUnit K : K)⁻¹ * x)`. Use function extensionality and compare the values at `(uInd_eq ord_unif)`. Rewrite using `[h]`. Conclude with `integrable_intInd.sub (integrable_intInd_mul (inv_ne_zero (unifUnit K).ne_zero))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_uInd : Integrable (uInd : K → ℂ) (haarIntegers K) := by
   have h : (uInd : K → ℂ) = fun x => intInd x - intInd ((unifUnit K : K)⁻¹ * x) :=
@@ -254,9 +250,9 @@ theorem integrable_uInd : Integrable (uInd : K → ℂ) (haarIntegers K) := by
   exact integrable_intInd.sub (integrable_intInd_mul (inv_ne_zero (unifUnit K).ne_zero))
 
 /- English proof (translation)
-Establish `key` using `localFourier_indicator_valBall (haarIntegers K) hχ.1 hχ.2.1 0 a`. Unfold `localFourier at key`. Rewrite `key` using `[hχ.2.2, sub_zero, ← intInd_eq_indicator]`. Establish `e : ∀ x : K, (χ (a * x) : ℂ) * intInd x = intInd x * (χ (x * a) : ℂ)` using `fun x => by`. Rewrite using `[mul_comm a x, mul_comm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[e]`. Rewrite using `[key]`. Simplify using `[measureReal_def, coe_valBall_zero, haarIntegers_integers]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem four_int {χ : AddChar K Circle} (hχ : IsStd χ) (a : K) :
     ∫ x, (χ (a * x) : ℂ) * intInd x ∂haarIntegers K = intInd a := by
@@ -270,21 +266,21 @@ theorem four_int {χ : AddChar K Circle} (hχ : IsStd χ) (a : K) :
   simp [measureReal_def, coe_valBall_zero, haarIntegers_integers]
 
 /- English proof (translation)
-Rewrite using `[modulus_of_ne_zero (unifUnit K).ne_zero, ord_unif, zpow_neg, zpow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem modulus_unif : modulus (unifUnit K : K) = (residueCard K : NNReal)⁻¹ := by
   rw [modulus_of_ne_zero (unifUnit K).ne_zero, ord_unif, zpow_neg, zpow_one]
 
 /- English proof (translation)
-Use `set c : K := (unifUnit K : K) with hc`. Establish `hc0 : c ≠ 0` using `(unifUnit K).ne_zero`. Establish `hcont : Continuous fun x : K => (χ (a * x) : ℂ)` using `cont_circ (hχ.1.comp (continuous_const.mul continuous_id))`. Establish `i1` using `integrable_mul_intInd hcont (fun x => (Circle.norm_coe _).le)`. Establish `i2 : Integrable (fun x => (χ (a * x) : ℂ) * intInd (c⁻¹ * x)) (haarIntegers K)` using `(integrable_intInd_mul (inv_ne_zero hc0)).bdd_mul hcont.aestronglyMeasurable (Filter.Eventually.of_forall fun x => (Circle.norm_coe _).le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ x, (χ (a * x) : ℂ) * uInd x = (χ (a * x) : ℂ) * intInd x - (χ (a * x) : ℂ) * intInd (c⁻¹ * x)`. Introduce `x`. Rewrite using `[uInd_eq ord_unif x]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_sub i1 i2, four_int hχ]`. Establish `h3` using `integral_comp_mul_left (haarIntegers K) (inv_ne_zero hc0) (fun x => (χ (a * (c * x)) : ℂ) * intInd x)`. Establish `e3 : ∀ x, (χ (a * (c * (c⁻¹ * x))) : ℂ) * intInd (c⁻¹ * x) = (χ (a * x) : ℂ) * intInd (c⁻¹ * x)`. Introduce `x`. Rewrite using `[mul_inv_cancel_left₀ hc0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Rewrite `h3` using `[e3]`. Rewrite using `[h3]`. Establish `e4 : ∀ x, (χ (a * (c * x)) : ℂ) * intInd x = (χ ((c * a) * x) : ℂ) * intInd x`. Introduce `x`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e4]`. Rewrite using `[four_int hχ, modulus_inv, modulus_unif]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uAvg {χ : AddChar K Circle} (hχ : IsStd χ) (a : K) :
     ∫ x, (χ (a * x) : ℂ) * uInd x ∂haarIntegers K =
@@ -319,7 +315,7 @@ theorem uAvg {χ : AddChar K Circle} (hχ : IsStd χ) (a : K) :
   simp
 
 /- English proof (translation)
-Establish `h` using `uAvg hχ 0`. Simplify using `only [zero_mul, AddChar.map_zero_eq_one, Circle.coe_one, one_mul, mul_zero] at h`. Rewrite using `[h, intInd_of_mem (zero_mem _)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_uInd {χ : AddChar K Circle} (hχ : IsStd χ) :
     ∫ x, (uInd x : ℂ) ∂haarIntegers K = 1 - (residueCard K : ℂ)⁻¹ := by
@@ -344,14 +340,14 @@ def hInt (χ : AddChar F Circle) (δ : F) : ℂ :=
   ∫ u : E, (χ (δ * Algebra.norm F u) : ℂ) * uInd u ∂haarIntegers E
 
 /- English proof (translation)
-The claim follows from `cont_circ (hχ.1.comp (continuous_const.mul (continuous_norm' h1)))`.
+A detailed English derivation is pending.
 -/
 theorem cont_chiN (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {χ : AddChar F Circle} (hχ : IsStd χ) (δ : F) :
     Continuous fun u : E => (χ (δ * Algebra.norm F u) : ℂ) :=
   cont_circ (hχ.1.comp (continuous_const.mul (continuous_norm' h1)))
 
 /- English proof (translation)
-Unfold `gInt`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem gInt_zero_eq (χ : AddChar F Circle) (δ : F) :
     gInt E χ δ 0 = ∫ u : E, (χ (δ * Algebra.norm F u) : ℂ) * intInd u ∂haarIntegers E := by
@@ -359,17 +355,17 @@ theorem gInt_zero_eq (χ : AddChar F Circle) (δ : F) :
   simp
 
 /- English proof (translation)
-Use `set c : F := (unifUnit F : F) with hc`. Use `set C : E := algebraMap F E c with hC`. Establish `hC1 : ord C = 1` using `h1`. Establish `hC0 : C ≠ 0` using `ne_zero_of_ord hC1`. Establish `hcont` using `cont_chiN h1 hχ (E := E) δ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ u : E, ‖(χ (δ * Algebra.norm F u) : ℂ)‖ ≤ 1` using `fun u => (Circle.norm_coe _).le`. Establish `i1 : Integrable (fun u : E => (χ (δ * Algebra.norm F u) : ℂ) * uInd u) (haarIntegers E)` using `(integrable_uInd (K := E)).bdd_mul hcont.aestronglyMeasurable (Filter.Eventually.of_forall hb)`. Establish `i2 : Integrable (fun u : E => (χ (δ * Algebra.norm F u) : ℂ) * intInd (C⁻¹ * u)) (haarIntegers E)` using `(integrable_intInd_mul (inv_ne_zero hC0)).bdd_mul hcont.aestronglyMeasurable (Filter.Eventually.of_forall hb)`. Rewrite using `[gInt_zero_eq, gInt_zero_eq]`. Establish `e : ∀ u : E, (χ (δ * Algebra.norm F u) : ℂ) * intInd u = (χ (δ * Algebra.norm F u) : ℂ) * uInd u + (χ (δ * Algebra.norm F u) : ℂ) * intInd (C⁻¹ * u)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `u`. Rewrite using `[intInd_split hC1 u]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[integral_add i1 i2]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `h3` using `integral_comp_mul_left (haarIntegers E) (inv_ne_zero hC0) (fun x => (χ (δ * Algebra.norm F (C * x)) : ℂ) * intInd x)`. Establish `e3 : ∀ x, (χ (δ * Algebra.norm F (C * (C⁻¹ * x))) : ℂ) * intInd (C⁻¹ * x) = (χ (δ * Algebra.norm F x) : ℂ) * intInd (C⁻¹ * x)`. Introduce `x`. Rewrite using `[mul_inv_cancel_left₀ hC0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[e3]`. Rewrite using `[h3]`. Establish `e4 : ∀ x : E, (χ (δ * Algebra.norm F (C * x)) : ℂ) * intInd x = (χ ((c ^ 2 * δ) * Algebra.norm F x) : ℂ) * intInd x`. Introduce `x`. Rewrite using `[show Algebra.norm F (C * x) = c ^ 2 * Algebra.norm F x by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[(Algebra.norm F).map_mul C x, hC, norm_algebraMap_eq_sq],`. Use `show δ * (c ^ 2 * Algebra.norm F x) = c ^ 2 * δ * Algebra.norm F x by ring]`. Repeatedly rewrite using `[e4]`. Rewrite using `[modulus_inv, modulus_of_ne_zero hC0, hC1, card_E hE.out h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gInt_rec (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {χ : AddChar F Circle} (hχ : IsStd χ) (δ : F) :
     gInt E χ δ 0 = hInt E χ δ +
@@ -412,16 +408,16 @@ theorem gInt_rec (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {χ : AddChar 
   simp
 
 /- English proof (translation)
-Unfold `uInd`. Rewrite using `[modulus_mul, hv, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem uInd_mul {v : E} (hv : modulus v = 1) (u : E) : uInd (v * u) = uInd u := by
   unfold uInd
   rw [modulus_mul, hv, one_mul]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hn ε hε`. Establish `hv : modulus (t : E) = 1`. Rewrite using `[← modulus_norm (K := F), ht, hε]`. Establish `h3` using `integral_comp_mul_left (haarIntegers E) t.ne_zero (fun x => (χ (δ * Algebra.norm F x) : ℂ) * uInd x)`. Unfold `hInt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [map_mul, ht, uInd_mul hv, hv] at h3`. Establish `e : ∀ x : E, (χ (δ * ε * Algebra.norm F x) : ℂ) * uInd x = (χ (δ * (ε * Algebra.norm F x)) : ℂ) * uInd x` using `fun x => by rw [mul_assoc]`. Repeatedly rewrite using `[e]`. Rewrite using `[h3]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hInt_unit (χ : AddChar F Circle) (hn : ∀ ε : F, modulus ε = 1 → ∃ t : Eˣ, Algebra.norm F (t : E) = ε)
     (δ : F) {ε : F} (hε : modulus ε = 1) : hInt E χ (δ * ε) = hInt E χ δ := by
@@ -439,25 +435,23 @@ theorem hInt_unit (χ : AddChar F Circle) (hn : ∀ ε : F, modulus ε = 1 → �
   simp
 
 /- English proof (translation)
-Use `set I : F → E → ℂ := fun ε u => (χ (δ * ε * Algebra.norm F u) : ℂ) * (uInd ε * uInd u) with hI`. Establish `hint : Integrable (Function.uncurry I) ((haarIntegers F).prod (haarIntegers E))`. Establish `hp` using `(integrable_uInd (K := F)).mul_prod (integrable_uInd (K := E))`. Establish `hc : Continuous fun z : F × E => (χ (δ * z.1 * Algebra.norm F z.2) : ℂ)` using `cont_circ (hχ.1.comp ((continuous_const.mul continuous_fst).mul ((continuous_norm' h1).comp continuous_snd)))`. Conclude with `hp.bdd_mul hc.aestronglyMeasurable (Filter.Eventually.of_forall fun z => (Circle.norm_coe _).le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `integral_integral_swap (μ := haarIntegers F) (ν := haarIntegers E) (f := I) hint`. Establish `l : ∀ ε : F, ∫ u, I ε u ∂haarIntegers E = uInd ε * hInt E χ δ`. Introduce `ε`. Distinguish the cases in `hε : modulus ε = 1`. Rewrite using `[← hInt_unit χ hn δ hε]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `hInt`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [hI]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: uInd ε = 0` using `by simp [uInd, hε]`. Simplify using `[hI, this]`. Establish `r : ∀ u : E, ∫ ε, I ε u ∂haarIntegers F = uInd u * (intInd δ - (residueCard F : ℂ)⁻¹ * intInd ((unifUnit F : F) * δ))`. Introduce `u`. Distinguish the cases in `hu : modulus u = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hu`. Establish `hN : Algebra.norm F u ≠ 0` using `Algebra.norm_ne_zero_iff.2 hu0`. Establish `hNm : modulus (Algebra.norm F u) = 1` using `by rw [modulus_norm, hu]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hav` using `uAvg hχ (δ * Algebra.norm F u)`. Establish `key : ∀ a : F, intInd (a * Algebra.norm F u) = intInd a`. Introduce `a`. Distinguish the cases in `ha : a ∈ 𝒪[F]`. Rewrite using `[intInd_of_mem ha, intInd_of_mem (modulus_le_one_iff.1 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[modulus_mul, hNm, mul_one]`. Conclude with `modulus_le_one_iff.2 ha))]`. Rewrite using `[intInd_of_not_mem ha, intInd_of_not_mem (fun h => ha (modulus_le_one_iff.1 (by`. Use `modulus_le_one_iff.2 h` as an intermediate fact. Rewrite using `[modulus_mul, hNm, mul_one] at this)))]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hav` using `[key, ← mul_assoc, key]`. Rewrite using `[← hav, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun ε => ?_)` and prove the remaining obligations. Simplify using `only [hI]`. Rewrite using `[show δ * ε * Algebra.norm F u = δ * Algebra.norm F u * ε by ring]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `: uInd u = 0` using `by simp [uInd, hu]`. Simplify using `[hI, this]`. Rewrite `hs` using `[l, r]`. Rewrite `hs` using `[integral_mul_const, integral_mul_const, integral_uInd hχ, integral_uInd hχE]`.
-
-Rewrite using `[mul_comm]`. Conclude with `hs`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hInt_avg (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {χ : AddChar F Circle} (hχ : IsStd χ) (hχE : IsStd (chE E χ))
     (hn : ∀ ε : F, modulus ε = 1 → ∃ t : Eˣ, Algebra.norm F (t : E) = ε) {δ : F} (hδ : δ ≠ 0) :
@@ -523,15 +517,15 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [hE : Fact (Module.finrank F E = 2)]
 
 /- English proof (translation)
-Conclude with `(residueCard_ne_zero (K := F))` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem q_ne : (residueCard F : ℂ) ≠ 0 := by
   exact_mod_cast (residueCard_ne_zero (K := F))
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : (residueCard F : ℂ) = 1`. Use `q_ne (F := F)` as an intermediate fact. Clear denominators, using `at h` for the nonvanishing conditions. Take the linear combination `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h3 : residueCard F = 1` using `by exact_mod_cast h2`. Use `one_lt_residueCard (K := F)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_sub_ne : 1 - (residueCard F : ℂ)⁻¹ ≠ 0 := by
   intro h
@@ -544,9 +538,9 @@ theorem one_sub_ne : 1 - (residueCard F : ℂ)⁻¹ ≠ 0 := by
   omega
 
 /- English proof (translation)
-Establish `hav` using `hInt_avg h1 hχ hχE hn hδ`. Establish `hcδ : (unifUnit F : F) * δ ≠ 0` using `mul_ne_zero (unifUnit F).ne_zero hδ`. Rewrite `hav` using `[intInd_of_not_mem (fun h => by have := (mem_int_iff_ord hδ).1 h; omega), intInd_of_mem ((mem_int_iff_ord hcδ).2 (by rw [ord_mul (unifUnit F).ne_zero hδ, ord_unif, ho]; omega)), card_E hE.out h1]`. Establish `hq` using `q_ne (F := F)`. Use `mul_right_cancel₀ (one_sub_ne (F := F)) (hav.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hInt_neg_one (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {χ : AddChar F Circle} (hχ : IsStd χ) (hχE : IsStd (chE E χ))
     (hn : ∀ ε : F, modulus ε = 1 → ∃ t : Eˣ, Algebra.norm F (t : E) = ε) {δ : F} (hδ : δ ≠ 0) (ho : ord δ = -1) :
@@ -563,9 +557,9 @@ theorem hInt_neg_one (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {χ : AddC
   ring
 
 /- English proof (translation)
-Establish `hav` using `hInt_avg h1 hχ hχE hn hδ`. Establish `hcδ : (unifUnit F : F) * δ ≠ 0` using `mul_ne_zero (unifUnit F).ne_zero hδ`. Rewrite using `[intInd_of_not_mem (fun h => by have := (mem_int_iff_ord hδ).1 h; omega), intInd_of_not_mem (fun h => by`. Use `(mem_int_iff_ord hcδ).1 h` as an intermediate fact. Rewrite `this` using `[ord_mul (unifUnit F).ne_zero hδ, ord_unif]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `omega)] at hav`. Use `mul_right_cancel₀ (one_sub_ne (F := F)) (hav.trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hInt_low (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {χ : AddChar F Circle} (hχ : IsStd χ) (hχE : IsStd (chE E χ))
     (hn : ∀ ε : F, modulus ε = 1 → ∃ t : Eˣ, Algebra.norm F (t : E) = ε) {δ : F} (hδ : δ ≠ 0) (ho : ord δ ≤ -2) :
@@ -581,11 +575,11 @@ theorem hInt_low (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {χ : AddChar 
   simp
 
 /- English proof (translation)
-Establish `hC : algebraMap F E c ≠ 0` using `by simpa using hc`. Establish `hC' : algebraMap F E c⁻¹ ≠ 0` using `by simpa using hc`. Establish `: (∃ t : Eˣ, Algebra.norm F (t : E) = c ^ 2 * δ) ↔ ∃ t : Eˣ, Algebra.norm F (t : E) = δ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨t * Units.mk0 _ hC', ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mk0, (Algebra.norm F).map_mul, ht, norm_algebraMap_eq_sq]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨t, ht⟩`. Use `⟨t * Units.mk0 _ hC, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_mul, Units.val_mk0, (Algebra.norm F).map_mul, ht, norm_algebraMap_eq_sq]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h : ∃ t : Eˣ, Algebra.norm F (t : E) = δ`. Rewrite using `[show nsg E δ = 1 from if_pos h, show nsg E (c ^ 2 * δ) = 1 from if_pos (this.2 h)]`. Rewrite using `[show nsg E δ = -1 from if_neg h, show nsg E (c ^ 2 * δ) = -1 from if_neg (fun h' => h (this.1 h'))]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem nsg_sq {c : F} (hc : c ≠ 0) (δ : F) : nsg E (c ^ 2 * δ) = nsg E δ := by
   have hC : algebraMap F E c ≠ 0 := by simpa using hc
@@ -605,7 +599,7 @@ theorem nsg_sq {c : F} (hc : c ≠ 0) (δ : F) : nsg E (c ^ 2 * δ) = nsg E δ :
   · rw [show nsg E δ = -1 from if_neg h, show nsg E (c ^ 2 * δ) = -1 from if_neg (fun h' => h (this.1 h'))]
 
 /- English proof (translation)
-Unfold `nsg`. Rewrite using `[if_neg]`. Introduce and unpack `⟨t, ht⟩`. Use `ord_normE hE.out h1 (t : E)` as an intermediate fact. Rewrite `this` using `[ht, ho]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -618,7 +612,7 @@ theorem nsg_odd (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {δ : F} (ho : 
   omega
 
 /- English proof (translation)
-Rewrite using `[modulus_of_ne_zero hδ]`. Use `push_cast`. Rewrite using `[zpow_neg, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem modC {δ : F} (hδ : δ ≠ 0) : (((modulus δ : ℝ)⁻¹ : ℝ) : ℂ) = (residueCard F : ℂ) ^ (ord δ) := by
   rw [modulus_of_ne_zero hδ]
@@ -626,21 +620,21 @@ theorem modC {δ : F} (hδ : δ ≠ 0) : (((modulus δ : ℝ)⁻¹ : ℝ) : ℂ)
   rw [zpow_neg, inv_inv]
 
 /- English proof (translation)
-Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `δ hδ ho`. Establish `hc0 : (unifUnit F : F) ≠ 0` using `(unifUnit F).ne_zero`. Establish `hδ' : (unifUnit F : F) ^ 2 * δ ≠ 0` using `mul_ne_zero (pow_ne_zero _ hc0) hδ`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho' : ord ((unifUnit F : F) ^ 2 * δ) = ord δ + 2`. Rewrite using `[ord_mul (pow_ne_zero _ hc0) hδ, ord_pow hc0, ord_unif]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hq` using `q_ne (F := F)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[gInt_rec h1 hχ δ, modC hδ]`. Use `match m, ih, ho with`. Consider the case `0, _, ho`. Establish `ho1 : ord δ = -1` using `by simpa using ho`. Rewrite using `[hInt_neg_one h1 hχ hχE hn hδ ho1, gInt_of_mem hχ hχE ((mem_int_iff_ord hδ').2 (by omega)) 0, intInd_of_mem (zero_mem _), nsg_odd h1 ho1, ho1, zpow_neg_one]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Consider the case `1, _, ho`. Establish `ho1 : ord δ = -2`. Rewrite using `[ho]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Establish `hns : nsg E δ = 1`. Rewrite using `[← nsg_sq hc0 δ]`. Unfold `nsg`. Rewrite using `[if_pos (hn _ ((modulus_eq_one_iff hδ').2 (by omega)))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hInt_low h1 hχ hχE hn hδ ho1.le, gInt_of_mem hχ hχE ((mem_int_iff_ord hδ').2 (by omega)) 0, intInd_of_mem (zero_mem _), hns, ho1]`. Simplify using `[zpow_neg]`. Consider the case `(k + 2), ih, ho`. Establish `hlow : ord δ ≤ -2`. Rewrite using `[ho]`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hInt_low h1 hχ hχE hn hδ hlow, ih k (by omega) _ hδ' (by rw [ho', ho]; push_cast; ring), nsg_sq hc0 δ, modC hδ', ho', zpow_add₀ hq]`. Clear the denominators using the available nonvanishing facts. Use `norm_cast`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem gInt_val (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {χ : AddChar F Circle} (hχ : IsStd χ) (hχE : IsStd (chE E χ))
     (hn : ∀ ε : F, modulus ε = 1 → ∃ t : Eˣ, Algebra.norm F (t : E) = ε) (m : ℕ) :
@@ -689,19 +683,17 @@ theorem gInt_val (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {χ : AddChar 
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ hd _ h1 χ η hχ hχE hη δ y`. Take `⟨hη, hun, -, -⟩` from `hη`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hd`. Use `haveI : Fact (Module.finrank F E = 2) := ⟨hd⟩`. Use `haveI : Algebra.IsSeparable F E := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn : ∀ ε : F, modulus ε = 1 → ∃ t : Eˣ, Algebra.norm F (t : E) = ε`. Introduce `ε hε`. Establish `hε0 : ε ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hε`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : Units.mk0 ε hε0 ∈ unitFiltrationUnits F 0` using `mem_unitFiltrationUnits_zero_iff_ord.2 ((modulus_eq_one_iff hε0).1 hε)`. Establish `h2 : η (Units.mk0 ε hε0) = 1` using `hun hm`. Establish `h3` using `hη (Units.mk0 ε hε0)`. Rewrite `h3` using `[h2, Units.val_mk0]`. Assume the negation of the conclusion as `hcon`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Unfold `nsg at h3`. Rewrite `h3` using `[if_neg hcon]`. Evaluate the numerical expressions using `at h3`. Rewrite using `[selfDual_std hχE]`. Use `⟨fun hδ => gInt_of_mem hχ hχE hδ y, fun hδ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hδ0 : δ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hδ (zero_mem _)`. Express the relevant statement in the definitionally equal form `gInt E χ δ y = _`. Distinguish the cases in `hy : y * algebraMap F E δ⁻¹ ∈ 𝒪[E]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hm : ∃ m : ℕ, ord δ = -(m : ℤ) - 1`. Use `(mem_int_iff_ord hδ0).not.1 hδ` as an intermediate fact. Conclude with `⟨(-ord δ - 1).toNat, by omega⟩`. Take `⟨m, hm⟩` from `hm`. Rewrite using `[gInt_shift h1 χ hδ0 hy, gInt_val h1 hχ hχE hn m δ hδ0 hm, intInd_of_mem hy]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[gInt_eq_zero h1 hχ hχE hδ hy, intInd_of_not_mem hy, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_main : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] [CharZero F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E], Module.finrank F E = 2 → Continuous (algebraMap F E) → GroundTheory.LocalField.ord (algebraMap F E (unifUnit F : F)) = 1 → ∀ (χ : AddChar F Circle) (η : Fˣ →* ℂˣ), Ad3.IsStd χ → Ad3.IsStd (Ad3.K.GL2LocalData.chE E χ) → ((∀ a, ((η a : ℂˣ) : ℂ) = Ad3.K.GL2LocalData.nsg E (a : F)) ∧ IsUnramifiedChar η ∧ η * η = 1 ∧ Ad3.K.GL2LocalData.nsg E (-1 : F) = 1) → ∀ (δ : F) (y : E), (δ ∈ 𝒪[F] → ∫ u : E, (χ (δ * Algebra.norm F u - Algebra.trace F E (y * u)) : ℂ) * intInd u ∂selfDualMeasure (Ad3.K.GL2LocalData.chE E χ) = intInd y) ∧ (δ ∉ 𝒪[F] → ∫ u : E, (χ (δ * Algebra.norm F u - Algebra.trace F E (y * u)) : ℂ) * intInd u ∂selfDualMeasure (Ad3.K.GL2LocalData.chE E χ) = Ad3.K.GL2LocalData.nsg E δ * (((modulus δ : ℝ)⁻¹ : ℝ) : ℂ) * (χ (-(Algebra.norm F y) / δ) : ℂ) * intInd (y * algebraMap F E δ⁻¹)) := by
   intro F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ hd _ h1 χ η hχ hχE hη δ y

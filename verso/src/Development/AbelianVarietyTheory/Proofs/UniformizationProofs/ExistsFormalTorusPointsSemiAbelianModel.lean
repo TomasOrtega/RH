@@ -21,14 +21,14 @@ noncomputable section
 namespace GlobalTheory.UU.FormalTorusPts
 
 /- English proof (translation)
-Rewrite using `[scal, scal, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem scal_comp {W : Type} [CommRing W] {Z Z' : Scheme.{0}} (h : Z' ⟶ Z)
     (r : Z ⟶ Spec (CommRingCat.of W)) (w : W) : scal (h ≫ r) w = h.appTop.hom (scal r w) := by
   rw [scal, scal, Scheme.Hom.comp_appTop]; rfl
 
 /- English proof (translation)
-The claim follows from `congr($(SplitTorusPoints.ΓSpecIso_inv_comp_specMap r (CommRingCat.ofHom φ)).hom w)`.
+A detailed English derivation is pending.
 -/
 theorem scal_specMap {W W' : Type} [CommRing W] [CommRing W'] {Z : Scheme.{0}} (φ : W →+* W')
     (r : Z ⟶ Spec (CommRingCat.of W')) (w : W) :
@@ -36,9 +36,9 @@ theorem scal_specMap {W W' : Type} [CommRing W] [CommRing W'] {Z : Scheme.{0}} (
   congr($(SplitTorusPoints.ΓSpecIso_inv_comp_specMap r (CommRingCat.ofHom φ)).hom w)
 
 /- English proof (translation)
-Set `φ : CommRingCat.of W ⟶ Γ(Z, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of W)).inv ≫ r.appTop`. Use `⟨Z.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.lift J φ.hom h)), ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Spec.map_comp]`. Express the relevant statement in the definitionally equal form `Z.toSpecΓ ≫ Spec.map φ = r`. Apply `ext_of_isAffine` to reduce the goal to its premises.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← cancel_epi (Scheme.ΓSpecIso (CommRingCat.of W)).inv, SplitTorusPoints.ΓSpecIso_inv_comp_specMap, Scheme.toSpecΓ_appTop, Iso.inv_hom_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift_quot {W : Type} [CommRing W] (J : Ideal W) {Z : Scheme.{0}}
     (r : Z ⟶ Spec (CommRingCat.of W)) (h : ∀ w ∈ J, scal r w = 0) :
@@ -56,7 +56,7 @@ theorem exists_lift_quot {W : Type} [CommRing W] (J : Ideal W) {Z : Scheme.{0}}
 variable {R : Type} [CommRing R] (I : Ideal R) (W : Type) [CommRing W] [Algebra R W]
 
 /- English proof (translation)
-Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_le_comap (n : ℕ) : I ^ n ≤ ((I.map (algebraMap R W)) ^ n).comap (algebraMap R W) := by
   rw [← Ideal.map_le_iff_le_comap, Ideal.map_pow]
@@ -66,7 +66,7 @@ def lev (e : ℕ) : Spec (CommRingCat.of (W ⧸ (I.map (algebraMap R W)) ^ (e + 
   Spec.map (CommRingCat.ofHom (Ideal.quotientMap _ (algebraMap R W) (pow_le_comap I W (e + 1))))
 
 /- English proof (translation)
-Rewrite using `[lev, ← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lev_thick (e : ℕ) : lev I W e ≫ thick R I e =
     adicLevelι (I.map (algebraMap R W)) (e + 1) ≫ Spec.map (CommRingCat.ofHom (algebraMap R W)) := by
@@ -85,7 +85,7 @@ def pt (e : ℕ) (a : Multiplicative X →* Wˣ) :
       (adicLevelι (I.map (algebraMap R W)) (e + 1)).appTop).hom.toMonoidHom).comp a)
 
 /- English proof (translation)
-Rewrite using `[pt, pt, pt, ← map_mul]`. Use `congr 1`. Use extensionality with `χ`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pt_mul (e : ℕ) (a b : Multiplicative X →* Wˣ) : pt I e (a * b) = pt I e a * pt I e b := by
   rw [pt, pt, pt, ← map_mul]
@@ -94,7 +94,7 @@ theorem pt_mul (e : ℕ) (a b : Multiplicative X →* Wˣ) : pt I e (a * b) = pt
   simp
 
 /- English proof (translation)
-Rewrite using `[← splitTorusPointsEquiv_val, pt, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pt_char (e : ℕ) (a : Multiplicative X →* Wˣ) (χ : X) :
     (pt I e a).left.appTop.hom (charUnit _ X χ).val =
@@ -103,17 +103,17 @@ theorem pt_char (e : ℕ) (a : Multiplicative X →* Wˣ) (χ : X) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Over.w (pt I e a)`.
+A detailed English derivation is pending.
 -/
 theorem pt_hom (e : ℕ) (a : Multiplicative X →* Wˣ) :
     (pt I e a).left ≫ (splitTorus _ X).hom = lev I W e := Over.w (pt I e a)
 
 /- English proof (translation)
-Establish `hk : ∀ w ∈ (I.map (algebraMap R W)) ^ (e + 1), scal r w = 0`. Establish `: (I.map (algebraMap R W)) ^ (e + 1) ≤ RingHom.ker ((Scheme.ΓSpecIso (CommRingCat.of W)).inv ≫ r.appTop).hom`. Rewrite using `[← Ideal.map_pow, Ideal.map_le_iff_le_comap]`. Introduce `v hv`. Express the relevant statement in the definitionally equal form `scal r (algebraMap R W v) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← scal_specMap, ← h, ← Category.assoc, scal_specMap, Ideal.Quotient.eq_zero_iff_mem.2 hv]`. Simplify using `[scal]`. Conclude with `fun w hw => this hw`. Take `⟨r', hr⟩` from `exists_lift_quot _ r hk`. Use `⟨r', hr, splitTorus_left_hom_ext _ _ ?_ fun χ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← cancel_mono (thick R I e), Category.assoc, Category.assoc, Category.assoc, h, ← Category.assoc (pt I e a).left, pt_hom, lev_thick, ← hr]`. Conclude with `(Category.assoc _ _ _).symm`. Rewrite using `[hχ, ← hr, scal_comp, ← pt_char, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_factor (e : ℕ) (a : Multiplicative X →* Wˣ) {Z : Scheme.{0}}
     (r : Z ⟶ Spec (CommRingCat.of W)) (τ : Z ⟶ (splitTorus _ X).left)
@@ -146,7 +146,7 @@ def gpt (a : Multiplicative X →* Wˣ) (e : ℕ) :
   (pt I e a).left ≫ (i e).left ≫ pullback.fst G.hom (thick R I e)
 
 /- English proof (translation)
-Rewrite using `[← lev_thick, ← pt_hom I e a, ← Over.w (i e), gpt]`. Simplify using `only [Category.assoc]`. Use `congr 2`. Conclude with `pullback.condition`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem gpt_hom (a : Multiplicative X →* Wˣ) (e : ℕ) : gpt I i a e ≫ G.hom =
     adicLevelι (I.map (algebraMap R W)) (e + 1) ≫ Spec.map (CommRingCat.ofHom (algebraMap R W)) := by
@@ -156,9 +156,9 @@ theorem gpt_hom (a : Multiplicative X →* Wˣ) (e : ℕ) : gpt I i a e ≫ G.ho
   exact pullback.condition
 
 /- English proof (translation)
-Introduce `e`. Take `⟨τ, h1, h2, h3⟩` from `hi e`. Establish `h4 : adicLevelMap (I.map (algebraMap R W)) (Nat.le_succ (e + 1)) ≫ (pt I (e + 1) a).left = (pt I e a).left ≫ τ`. Use `splitTorus_left_hom_ext _ _ ?_ fun χ => ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono (thick R I (e + 1))]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[← Category.assoc (pt I (e + 1) a).left, pt_hom, lev_thick, adicLevelMap_ι_assoc, ← Category.assoc τ, h1, Category.assoc, thickTrans_comp, ← Category.assoc, pt_hom, lev_thick]`. Rewrite using `[Scheme.Hom.comp_appTop, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, CommRingCat.hom_comp, RingHom.comp_apply, RingHom.comp_apply, h2, pt_char, pt_char, ← scal_comp, adicLevelMap_ι]`. Establish `h5 : thickMap R I e G ≫ pullback.fst G.hom (thick R I (e + 1)) = pullback.fst G.hom (thick R I e)` using `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Rewrite using `[gpt, gpt, ← Category.assoc, h4, Category.assoc, ← Category.assoc τ, h3, Category.assoc, h5]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isAdicFamily_aux
     (hi : ∀ e, TorusCompat (thickTrans R I e) (thickMap R I e G) (i e) (i (e + 1)))
@@ -179,19 +179,17 @@ theorem isAdicFamily_aux
   rw [gpt, gpt, ← Category.assoc, h4, Category.assoc, ← Category.assoc τ, h3, Category.assoc, h5]
 
 /- English proof (translation)
-Establish `ex` using `fun a : Multiplicative X →* Wˣ => (existsUnique_over_of_isAdicFamily _ G.hom (isAdicFamily_aux I i hi a) (gpt_hom I i a)).exists`. Use `choose g hg hg' using ex`. Set `T : Over (Spec (CommRingCat.of R))` to `Over.mk (Spec.map (CommRingCat.ofHom (algebraMap R W)))`. Set `f : (Multiplicative X →* Wˣ) → (T ⟶ G)` to `fun a => Over.homMk (g a) (hg a)`. Establish `hf : ∀ a e, adicLevelι (I.map (algebraMap R W)) (e + 1) ≫ (f a).left = gpt I i a e` using `hg'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hext : ∀ (x : T ⟶ G) a, (∀ e, adicLevelι (I.map (algebraMap R W)) (e + 1) ≫ x.left = gpt I i a e) → x = f a` using `fun x a h => Over.OverMorphism.ext (hom_ext_of_isHausdorff (I.map (algebraMap R W)) fun e => (h e).trans (hf a e).symm)`. Establish `hmul : ∀ a b, f (a * b) = f a * f b`. Introduce `a b`. Use `(hext _ _ fun e => ?_).symm` and prove the remaining obligations. Use `hm e` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `k : Over.mk ((Over.mk (lev I W e)).hom ≫ thick R I e) ⟶ T` to `Over.homMk (adicLevelι (I.map (algebraMap R W)) (e + 1)) (lev_thick I W e).symm`. Establish `hk : ∀ c, (k ≫ f c).left = (pt I e c ≫ i e).left ≫ pullback.fst G.hom (thick R I e)` using `fun c => (hf c e).trans (Category.assoc _ _ _).symm`. Establish `h` using `SplitTorus.mul_left_comp_fst G (thick R I e) (pt I e a ≫ i e) (pt I e b ≫ i e) (k ≫ f a) (k ≫ f b) (hk a) (hk b)`. Rewrite `h` using `[← MonObj.comp_mul, ← MonObj.mul_comp, ← pt_mul]`. Conclude with `h.trans (Category.assoc _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨MonoidHom.mk' f hmul, fun a b hab => ?_, fun x a => ⟨?_, fun h => hext x a fun e => ?_⟩⟩` and prove the remaining obligations. Use `MonoidHom.ext fun χ => Units.ext ?_` and prove the remaining obligations. Use `IsHausdorff.StrictMono.funext' (I.map (algebraMap R W)) (a := fun n => n + 1) (strictMono_id.add_const 1) (f := fun _ : Unit => (a χ).val) (g := fun _ => (b χ).val) (fun e _ => ?_) |> (congrFun · ())` and prove the remaining obligations. Use `hmono e` as an intermediate fact. Establish `: Mono (i e).left` using `inferInstanceAs (Mono ((Over.forget _).map (i e)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : gpt I i a e = gpt I i b e`. Rewrite using `[← hf, ← hf]`. Conclude with `congrArg (fun y : T ⟶ G => _ ≫ y.left) hab`. Rewrite `h1` using `[gpt, gpt, cancel_mono]`. Establish `h2` using `pt_char I e a χ.toAdd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Rewrite `h2` using `[h1, pt_char, ← Category.id_comp (adicLevelι _ _), scal_specMap, scal_specMap]`. Simplify using `only [scal, Scheme.Hom.id_appTop, CommRingCat.hom_id, RingHom.id_apply] at h2`. Conclude with `((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso _).inv).1 h2).symm`. Introduce and unpack `rfl e Z r τ h hχ`. Take `⟨r', rfl, rfl⟩` from `exists_factor I e a r τ h hχ`.
-
-Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg (r' ≫ ·) (hf a e).symm`. Use `(h e _ _ (pt I e a).left ?_ (pt_char I e a)).symm` and prove the remaining obligations. Rewrite using `[← Category.assoc, pt_hom, lev_thick]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom [GrpObj G] [IsLocalRing W] [IsAdicComplete (I.map (algebraMap R W)) W]
     (hi : ∀ e, TorusCompat (thickTrans R I e) (thickMap R I e G) (i e) (i (e + 1)))
@@ -252,7 +250,7 @@ end GlobalTheory.UU.FormalTorusPts
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Introduce `V _ _ _ A G _ _ s t W _ _ _ hW _`. Use `FormalTorusPts.exists_hom (IsLocalRing.maximalIdeal V) (fun e => (t.l e).Q.i) t.tor (fun e => (t.l e).Q.i_hom) fun e => ?_` and prove the remaining obligations. Conclude with `⟨fun a b h => (t.l e).Q.isKernel.hom_ext h (toUnit_unique _ _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem exists_formalTorus_points :
     AllSet fun {V} _ _ _ {_} {G} _ _ s => ∀ (t : Tower s) (W : Type) [CommRing W] [IsLocalRing W] [Algebra V W], IsAdicComplete ((IsLocalRing.maximalIdeal V).map (algebraMap V W)) W → IsLocalHom (algebraMap V W) → ∃ ι' : (Multiplicative s.X →* Wˣ) →* (Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ G), Function.Injective ι' ∧ ∀ (x : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ G) (a : Multiplicative s.X →* Wˣ), x = ι' a ↔ ∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of W)) (τ : Z ⟶ (splitTorus _ s.X).left), τ ≫ (splitTorus (Spec (CommRingCat.of (V ⧸ IsLocalRing.maximalIdeal V ^ (e + 1)))) s.X).hom ≫ thick V _ e = r ≫ Spec.map (CommRingCat.ofHom (algebraMap V W)) → (∀ χ, τ.appTop.hom (charUnit _ s.X χ).val = scal r (a (Multiplicative.ofAdd χ)).val) → τ ≫ (t.l e).Q.i.left ≫ (fstG _ e G).left = r ≫ x.left := by

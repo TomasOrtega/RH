@@ -9,13 +9,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.SymFrame
 
 /- English proof (translation)
-Establish `e1 : T (∑ i, (N' i m).val • β i) = ∑ l, ((N * N') l m).val • β l`. Rewrite using `[map_sum]`. Simplify using `only [map_nsmul, hT, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_apply, val_mul_nsmul _ (hβ l)]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`. Establish `e2 : ∑ l, (((1 : Matrix ι ι (ZMod g))) l m).val • β l = β m`. Rewrite using `[Finset.sum_eq_single m]`. Rewrite using `[Matrix.one_apply_eq, ZMod.val_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _ hl`. Rewrite using `[Matrix.one_apply_ne hl, ZMod.val_zero, zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ m) h`. Rewrite `e1` using `[hNN', e2]`.
-
-Rewrite using `[← e1, hST]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invMat_quot {Q ι : Type} [AddCommGroup Q] [Fintype ι] [DecidableEq ι] {g : ℕ} [NeZero g] [Fact (1 < g)]
     (T S : Q →+ Q) (hST : ∀ q, S (T q) = q) (β : ι → Q) (hβ : ∀ i, g • β i = 0)
@@ -43,21 +41,19 @@ end GlobalTheory.Mem.SymFrame
 namespace GlobalTheory.Mem.SymFrame
 
 /- English proof (translation)
-Introduce `D X kv hg u hu k hk N hN m`. Use `haveI : NeZero (D.host.g kv.1) := ⟨(D.host.g_prime kv.1).ne_zero⟩`. Use `haveI : Fact (1 < D.host.g kv.1) := ⟨(D.host.g_prime kv.1).one_lt⟩`. Set `W` to `(wLf X (D.naut.plGw kv.1 kv.2)).toAddSubgroup`. Establish `hk' : k⁻¹ ∈ X.B.I.Kset` using `Formalism.L2.SG.Pf.unitaryCongruence.K_inv X.B.I hk`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `fT` to `(Matrix.mulVecLin (X.B.I.fmat k)).toAddMonoidHom`. Set `fS` to `(Matrix.mulVecLin (X.B.I.fmat k⁻¹)).toAddMonoidHom`. Set `T` to `QuotientAddGroup.map W W fT (fun v hv => fmat_mulVec_mem_wLf X _ hk hv)`. Set `S` to `QuotientAddGroup.map W W fS (fun v hv => fmat_mulVec_mem_wLf X _ hk' hv)`. Establish `key : ∀ a b : VA X.B.I, a - b ∈ wLf X (D.naut.plGw kv.1 kv.2) ↔ QuotientAddGroup.mk' W a = QuotientAddGroup.mk' W b` using `fun a b => by show a - b ∈ W ↔ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]`. Establish `hST : ∀ q, S (T q) = q`. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H v => show QuotientAddGroup.mk' W (X.B.I.fmat k⁻¹ *ᵥ (X.B.I.fmat k *ᵥ v)) = QuotientAddGroup.mk' W v`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, Formalism.L2.SG.Pf.unitaryCongruence.fmat_inv_mul X.B.I k, Matrix.one_mulVec]`. Establish `hβ : ∀ i, D.host.g kv.1 • QuotientAddGroup.mk' W (u i) = 0` using `fun i => by`. Rewrite using `[← map_nsmul, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]`. Establish `h1` using `inclE_smul_mem_wLf X (D.naut.plGw kv.1 kv.2) ((D.host.g kv.1 : ℕ) : 𝓞 X.B.I.E) ⟨_, hg, by simp⟩ (y := u i) (hu i)`. Establish `e : Formalism.UG.inclE (F` using `X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (((D.host.g kv.1 : ℕ) : 𝓞 X.B.I.E) : X.B.I.E) = ((D.host.g kv.1 : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[map_natCast]`. Rewrite `h1` using `[e, Nat.cast_smul_eq_nsmul]`. Conclude with `h1`. Establish `hT : ∀ i, T (QuotientAddGroup.mk' W (u i)) = ∑ j, ((N : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) j i).val • QuotientAddGroup.mk' W (u j)`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(key _ _).1 (by simpa only [Nat.cast_smul_eq_nsmul] using hN i)` as an intermediate fact. Rewrite `this` using `[map_sum]`. Simplify using `only [map_nsmul] at this`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `invMat_quot T S hST (fun i => QuotientAddGroup.mk' W (u i)) hβ (N : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) ((N⁻¹ : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) (by rw [← Units.val_mul, mul_inv_cancel, Units.val_on …`. Simplify using `only [Nat.cast_smul_eq_nsmul]`. Rewrite using `[key, map_sum]`. Simplify using `only [map_nsmul]`. Rewrite using `[← h]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isMatIn_inv : ∀ (D : D7) (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k), ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal → ∀ (u : Fin D.R.r → VA X.B.I), (∀ i, u i ∈ X.B.I.Lf) → ∀ k ∈ X.B.I.Kset, ∀ N : GL (Fin D.R.r) (ZMod (D.host.g kv.1)), GlobalTheory.Mem.SymFrame.IsMatIn X (D.naut.plGw kv.1 kv.2) u k (N : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) → GlobalTheory.Mem.SymFrame.IsMatIn X (D.naut.plGw kv.1 kv.2) u k⁻¹ ((N⁻¹ : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) := by
   intro D X kv hg u hu k hk N hN m

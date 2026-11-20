@@ -11,11 +11,11 @@ namespace GlobalTheory.HeightCont
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X d hd W`. Take `⟨w, hw, hΛ, hsp⟩` from `GlobalTheory.LatBasis.exists_basis_mem r X W`. It suffices to establish `H : ContinuousOn (fun x => d x (Submodule.span E (Set.range w))) {x : Frame X.Ψ r | (∀ τ : X.Ψ, (mat x τ).det ≠ 0)} by rwa [hsp] at H`. Use `ContinuousOn.congr ?_ (fun x hx => hd x hx _ w hw hΛ)` and prove the remaining obligations. Use `ContinuousOn.div_const ?_ _` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuousOn_finset_prod _ fun τ _ x hx => ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Establish `hm : Continuous (fun x : Frame X.Ψ r => mat x τ)` using `continuous_apply τ`. Establish `hr : ContinuousAt (Ring.inverse : ℂ → ℂ) (mat x τ).det`. Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ (hx τ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : ContinuousAt (fun x : Frame X.Ψ r => (mat x τ)⁻¹) x` using `ContinuousAt.comp (f := fun x : Frame X.Ψ r => mat x τ) (continuousAt_matrix_inv _ hr) hm.continuousAt`. Establish `hg : Continuous (fun A : Matrix (Fin r) (Fin r) ℂ => ((A * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * (A * (Matrix.of fun k a => τ.1 (w a k)))).det.re)` using `Complex.continuous_re.comp (((continuous_id.matrix_mul continuous_const).matrix_conjTranspose.matrix_mul (continuous_id.matrix_mul continuous_const)).matrix_det)`. Conclude with `ContinuousAt.comp (f := fun x : Frame X.Ψ r => (mat x τ)⁻¹) hg.continuousAt hi`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem height_continuousOn : (∀ (r : ℕ) (X : Data E r) (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → ∀ W, ContinuousOn (fun x => d x W) {x : Frame X.Ψ r | (∀ τ : X.Ψ, (mat x τ).det ≠ 0)}) := by
   intro r X d hd W

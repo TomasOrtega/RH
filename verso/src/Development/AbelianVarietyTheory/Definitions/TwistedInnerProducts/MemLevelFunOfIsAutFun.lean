@@ -50,7 +50,7 @@ theorem coe_locChar (ψ : AddChar (AF F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1) {v :
     (locChar ψ hψ a x : ℂ) = psiV F ψ v (a * x) := rfl
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (hc.comp (continuous_const.prodMk ((GlobalTheory.AdelicU.continuous_singleFin v).comp (continuous_const.mul continuous_id)))) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_locChar {ψ : AddChar (AF F) ℂ} (hc : Continuous ψ) (hψ : ∀ x, ‖ψ x‖ = 1)
     {v : HeightOneSpectrum (𝓞 F)} (a : Fv F v) : Continuous (locChar ψ hψ a) :=
@@ -58,11 +58,11 @@ theorem continuous_locChar {ψ : AddChar (AF F) ℂ} (hc : Continuous ψ) (hψ :
     ((GlobalTheory.AdelicU.continuous_singleFin v).comp (continuous_const.mul continuous_id)))) _
 
 /- English proof (translation)
-Set `A : Af F ⊗[F] E →ₙ+* AF F ⊗[F] E` to `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (R' := AF F) (LinearMap.inr F (Ainf F) (Af F)) (fun _ _ => Prod.ext (mul_zero _).symm rfl)`. Set `B : Fv F v ⊗[F] E →ₙ+* Af F ⊗[F] E` to `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (GlobalTheory.AdelicU.singleFin v) (GlobalTheory.AdelicU.singleFin_mul v)`. Establish `h (y) : A (B y) = tensAt E v y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`. Express the relevant statement in the definitionally equal form `(1 - A 1) * (1 : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) i j + A ((1 - B 1) * (1 : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) i j + B ((GlobalTheory.AdelicU.matHom _ σ J x).val i j)) - (1 : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) i j = _`. Rewrite using `[map_add, h, Matrix.sub_apply, map_sub]`. Distinguish the cases in `e : i = j`.
+Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using `only [Matrix.one_apply_eq, mul_one, map_sub, h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Matrix.one_apply_ne e, mul_zero, map_zero, zero_add, sub_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem mat_emb_sub_one {E : Type} [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (v : HeightOneSpectrum (𝓞 F)) (x : GlobalTheory.AdelicU.GLoc σ J v) (i j : Fin n) :
@@ -107,20 +107,20 @@ theorem cols_apply (β : LatFrame k ι Y) (y : Y) (i : ι) : cols β y i = vec �
 
 omit [Fintype ι] in
 /- English proof (translation)
-Rewrite using `[what₂, cols, ← submatrix_mul _ _ _ _ _ Function.bijective_id, Units.inv_mul, submatrix_one_equiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rows_mul_cols (β : LatFrame k ι Y) : what₂ β * cols β = 1 := by
   rw [what₂, cols, ← submatrix_mul _ _ _ _ _ Function.bijective_id, Units.inv_mul, submatrix_one_equiv]
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[what₂, cols, ← submatrix_mul _ _ _ _ _ β.ord.bijective, Units.mul_inv, submatrix_id_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cols_mul_rows (β : LatFrame k ι Y) : cols β * what₂ β = 1 := by
   rw [what₂, cols, ← submatrix_mul _ _ _ _ _ β.ord.bijective, Units.mul_inv, submatrix_id_id]
 
 /- English proof (translation)
-Establish `h : g.val = (reGL β.ord g).val.submatrix β.ord β.ord`. Rewrite using `[GlobalTheory.StepData.reGL_val, submatrix_submatrix]`. Simplify using the standard rewrite rules. Rewrite using `[LatFrame.conj_apply, Units.val_mul, Units.val_mul, h, what₂, cols, ← submatrix_mul _ _ _ _ _ β.ord.bijective, ← submatrix_mul _ _ _ _ _ β.ord.bijective, submatrix_id_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_val (β : LatFrame k ι Y) (g : GL ι k) : (β.conj g).val = cols β * g.val * what₂ β := by
   have h : g.val = (reGL β.ord g).val.submatrix β.ord β.ord := by
@@ -129,13 +129,13 @@ theorem conj_val (β : LatFrame k ι Y) (g : GL ι k) : (β.conj g).val = cols �
     ← submatrix_mul _ _ _ _ _ β.ord.bijective, submatrix_id_id]
 
 /- English proof (translation)
-Rewrite using `[conj_val, Matrix.mul_assoc, rows_mul_cols, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mul_cols (β : LatFrame k ι Y) (g : GL ι k) : (β.conj g).val * cols β = cols β * g.val := by
   rw [conj_val, Matrix.mul_assoc, rows_mul_cols, Matrix.mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `h` using `congrFun (congrFun (conj_mul_cols β g) y) j`. Rewrite using `[Finset.sum_apply]`. Use `h.trans (Finset.sum_congr rfl fun r _ => mul_comm _ _)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem conj_mulVec_vec (β : LatFrame k ι Y) (g : GL ι k) (j : ι) :
     (β.conj g).val *ᵥ vec β j = ∑ r, g.val r j • vec β r := by
@@ -147,9 +147,9 @@ theorem conj_mulVec_vec (β : LatFrame k ι Y) (g : GL ι k) (j : ι) :
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Set `e` to `Fintype.equivOfCardEq hc`. Establish `h : IsUnit (M.submatrix id e.symm)`. Use `Matrix.mulVec_injective_iff_isUnit.1 ((injective_iff_map_eq_zero (Matrix.mulVecLin _)).2 fun u hu => ?_)` and prove the remaining obligations. Rewrite `hu` using `[mulVecLin_apply, submatrix_mulVec_equiv]`. Use `hM _ hu` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Simplify using `using congrFun this (e.symm y)`. Conclude with `⟨⟨e, h.unit⟩, by ext y i; simp [cols]⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem exists_frame (hc : Fintype.card ι = Fintype.card Y) (M : Matrix Y ι k) (hM : ∀ u, M *ᵥ u = 0 → u = 0) :
     ∃ β : LatFrame k ι Y, cols β = M := by
@@ -163,7 +163,7 @@ theorem exists_frame (hc : Fintype.card ι = Fintype.card Y) (M : Matrix Y ι k)
   exact ⟨⟨e, h.unit⟩, by ext y i; simp [cols]⟩
 
 /- English proof (translation)
-The claim follows from `(continuous_const.mul (Units.continuous_map (f := (Matrix.reindexRingEquiv k β.ord).toMonoidHom) (continuous_id.matrix_submatrix _ _))).mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_conj [TopologicalSpace k] [IsTopologicalRing k] (β : LatFrame k ι Y) : Continuous β.conj :=
   (continuous_const.mul (Units.continuous_map (f := (Matrix.reindexRingEquiv k β.ord).toMonoidHom)
@@ -177,13 +177,13 @@ def piW (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : AE D →+* Fv D.host.F 
   (splitProj τ : Fv D.host.F v ⊗[D.host.F] D.host.E →+* Fv D.host.F v).comp (compFin D.host.F D.host.E v)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EmbChart.chart_idem τ`.
+A detailed English derivation is pending.
 -/
 theorem chart_piW (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : GlobalTheory.SplitHecke.Chart (idem τ) v (piW τ) :=
   GlobalTheory.EmbChart.chart_idem τ
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `splitProj τ (GlobalTheory.AdelicU.evFin D.host.F v 1 ⊗ₜ x) = _`. Rewrite using `[map_one, GlobalTheory.AdelicU.splitProj_tmul, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem piW_incA (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (x : D.host.E) : piW τ (incA D x) = τ x := by
   change splitProj τ (GlobalTheory.AdelicU.evFin D.host.F v 1 ⊗ₜ x) = _
@@ -193,7 +193,7 @@ def weilChar (ψ : AddChar (AF D.host.F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1) (τ 
     AddChar (Fv D.host.F v) Circle := locChar ψ hψ (τ D.host.xi0)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j => congrFun (congrFun (gram_conjTranspose V) i) j, gram_det_ne V⟩`.
+Supply the required witnesses or components.
 -/
 theorem hermND (V : HSp D) : IsHermND D.sp.cm.sig V.gram :=
   ⟨fun i j => congrFun (congrFun (gram_conjTranspose V) i) j, gram_det_ne V⟩
@@ -210,19 +210,19 @@ def locGL : GL ι (Fv D.host.F v) →* GA D V :=
   (GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v).comp (locPt V τ β).toMonoidHom
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdelicU.proj_emb_self _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem proj_locGL (g : GL ι (Fv D.host.F v)) :
     GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v (locGL V τ β g) = locPt V τ β g := GlobalTheory.AdelicU.proj_emb_self _ _ _ _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdelicU.proj_emb_ne _ _ h _`.
+A detailed English derivation is pending.
 -/
 theorem proj_locGL_ne {u : HeightOneSpectrum (𝓞 D.host.F)} (h : u ≠ v) (g : GL ι (Fv D.host.F v)) :
     GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram u (locGL V τ β g) = 1 := GlobalTheory.AdelicU.proj_emb_ne _ _ h _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdelicU.mem_finPts.2 (GlobalTheory.AdelicU.projInf_emb _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem locGL_mem_GfC (g : GL ι (Fv D.host.F v)) : locGL V τ β g ∈ GfC V :=
   GlobalTheory.AdelicU.mem_finPts.2 (GlobalTheory.AdelicU.projInf_emb _ _ _ _)
@@ -234,32 +234,32 @@ theorem map_piW (g : GA D V) :
     (mt V g).map (piW τ) = (splitHom D.sp.cm.sig V.gram τ (GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v g)).val := rfl
 
 /- English proof (translation)
-Rewrite using `[map_piW, proj_locGL]`. Conclude with `congrArg Units.val (GlobalTheory.AdelicU.splitHom_splitLift _ _ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_piW_locGL (g : GL ι (Fv D.host.F v)) : (mt V (locGL V τ β g)).map (piW τ) = (β.conj g).val := by
   rw [map_piW, proj_locGL]
   exact congrArg Units.val (GlobalTheory.AdelicU.splitHom_splitLift _ _ _ _)
 
 /- English proof (translation)
-The claim follows from `(splitEquiv (isCMExt_host D) (hermND V) τ).symm.continuous.comp (continuous_conj β)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_locPt : Continuous (locPt V τ β) :=
   (splitEquiv (isCMExt_host D) (hermND V) τ).symm.continuous.comp (continuous_conj β)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AdelicU.continuous_emb _ _ v).comp (continuous_locPt V τ β)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_locGL : Continuous (locGL V τ β) :=
   (GlobalTheory.AdelicU.continuous_emb _ _ v).comp (continuous_locPt V τ β)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdelicU.commute_emb _ _ _ hh`.
+A detailed English derivation is pending.
 -/
 theorem commute_locGL (g : GL ι (Fv D.host.F v)) {h : GA D V} (hh : GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v h = 1) :
     Commute (locGL V τ β g) h := GlobalTheory.AdelicU.commute_emb _ _ _ hh
 
 /- English proof (translation)
-The claim follows from `commute_locGL V τ β g (proj_locGL_ne V τ' β' h g')`.
+A detailed English derivation is pending.
 -/
 theorem commute_locGL_locGL {u : HeightOneSpectrum (𝓞 D.host.F)} (h : v ≠ u) (τ' : D.host.E →ₐ[D.host.F] Fv D.host.F u)
     {ι' : Type} [Fintype ι'] [DecidableEq ι'] (β' : LatFrame (Fv D.host.F u) ι' (Fin V.rank))
@@ -267,7 +267,7 @@ theorem commute_locGL_locGL {u : HeightOneSpectrum (𝓞 D.host.F)} (h : v ≠ u
   commute_locGL V τ β g (proj_locGL_ne V τ' β' h g')
 
 /- English proof (translation)
-The claim follows from `mat_emb_sub_one D.sp.cm.sig V.gram v _ i j`.
+A detailed English derivation is pending.
 -/
 theorem mt_locGL_sub_one (g : GL ι (Fv D.host.F v)) (i j : Fin V.rank) :
     (mt V (locGL V τ β g) - 1) i j =
@@ -290,9 +290,9 @@ def levelFun : Submodule ℂ (GA D V → ℂ) where
 def IsFinStable (U : Submodule ℂ (GA D V → ℂ)) : Prop := ∀ x ∈ GfC V, ∀ f ∈ U, rTrans x f ∈ U
 
 /- English proof (translation)
-Take `⟨U, hU, h⟩` from `hf`. Use `⟨U.comap (MulAut.conj x⁻¹).toMonoidHom, hU.preimage ((continuous_const.mul continuous_id).mul continuous_const), fun k hk hf g => ?_⟩` and prove the remaining obligations. Establish `h1 : x⁻¹ * k * x⁻¹⁻¹ ∈ GfC V` using `(MonoidHom.normal_ker _).conj_mem k hf x⁻¹`. Establish `h2` using `h _ hk h1 (g * x)`. Express the relevant statement in the definitionally equal form `f (g * x * (x⁻¹ * k * x⁻¹⁻¹)) = _ at h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[rTrans, rTrans, ← h2]`. Use `congr 1`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rTrans_mem_levelFun (x : GA D V) {f : GA D V → ℂ} (hf : f ∈ levelFun V) : rTrans x f ∈ levelFun V := by
   obtain ⟨U, hU, h⟩ := hf
@@ -306,7 +306,7 @@ theorem rTrans_mem_levelFun (x : GA D V) {f : GA D V → ℂ} (hf : f ∈ levelF
   group
 
 /- English proof (translation)
-Introduce `x _ _ hf` and use `rTrans_mem_levelFun V x hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFinStable_levelFun : IsFinStable V (levelFun V) := fun x _ _ hf => rTrans_mem_levelFun V x hf
 
@@ -333,9 +333,9 @@ theorem coe_locRepOn (U : Submodule ℂ (GA D V → ℂ)) (hU : IsFinStable V U)
 def locRep : Representation ℂ (GL ι (Fv D.host.F v)) (levelFun V) := locRepOn V τ β _ (isFinStable_levelFun V)
 
 /- English proof (translation)
-Take `⟨U, hU, h⟩` from `hf`. Use `isOpen_iff_mem_nhds.2 fun g hg => ?_` and prove the remaining obligations. Establish `h1 : IsOpen {x | locGL V τ β (g⁻¹ * x) ∈ U}` using `hU.preimage ((continuous_locGL V τ β).comp (continuous_const.mul continuous_id))`. Use `Filter.mem_of_superset (h1.mem_nhds (by simp)) fun x hx => ?_` and prove the remaining obligations. Establish `h2 : locReg V τ β (g⁻¹ * x) f = f` using `funext fun y => h _ hx (locGL_mem_GfC V τ β _) y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `locReg V τ β x f = f`. Rewrite using `[← mul_inv_cancel_left g x, map_mul, Module.End.mul_apply, h2, hg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isOpen_stab {f : GA D V → ℂ} (hf : f ∈ levelFun V) : IsOpen {g | locReg V τ β g f = f} := by
   obtain ⟨U, hU, h⟩ := hf
@@ -348,7 +348,7 @@ theorem isOpen_stab {f : GA D V → ℂ} (hf : f ∈ levelFun V) : IsOpen {g | l
   rw [← mul_inv_cancel_left g x, map_mul, Module.End.mul_apply, h2, hg]
 
 /- English proof (translation)
-Introduce `f` and use `by simpa only [Subtype.ext_iff, coe_locRepOn] using isOpen_stab V τ β (h f.2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmoothRep_locRepOn {U : Submodule ℂ (GA D V → ℂ)} (hU : IsFinStable V U) (h : U ≤ levelFun V) :
     IsSmoothRep (locRepOn V τ β U hU) := fun f => by
@@ -393,30 +393,30 @@ theorem upIter_succ (p d : ℕ) (l : A → ℂ) : upIter ν σ p (d + 1) l = exU
 def exTo (p q : ℕ) (l : A → ℂ) : A → ℂ := upIter ν σ p (q - p) (downIter ν σ q (p - q) l)
 
 /- English proof (translation)
-Rewrite using `[exTo, Nat.sub_eq_zero_of_le h, upIter_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exTo_of_ge {p q : ℕ} (h : q ≤ p) (l : A → ℂ) : exTo ν σ p q l = downIter ν σ q (p - q) l := by
   rw [exTo, Nat.sub_eq_zero_of_le h, upIter_zero]
 
 /- English proof (translation)
-Rewrite using `[exTo, Nat.sub_eq_zero_of_le h, downIter_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exTo_of_le {p q : ℕ} (h : p ≤ q) (l : A → ℂ) : exTo ν σ p q l = upIter ν σ p (q - p) l := by
   rw [exTo, Nat.sub_eq_zero_of_le h, downIter_zero]
 
 /- English proof (translation)
-Rewrite using `[exTo_of_le ν σ le_rfl, Nat.sub_self, upIter_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exTo_self (p : ℕ) (l : A → ℂ) : exTo ν σ p p l = l := by rw [exTo_of_le ν σ le_rfl, Nat.sub_self, upIter_zero]
 
 /- English proof (translation)
-Establish `hd (d : ℕ) : ∀ l : A → ℂ, downIter ν σ' q d (fun x => z * l (f x)) = fun x => z * downIter ν σ q d l (f x)`. Proceed by induction on `d with`. Consider the case `zero => exact fun _ => rfl`. Consider the case `succ d ih`. Introduce `l`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[downIter_succ, downIter_succ, ← ih]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [exDown, hf, integral_const_mul]`. Establish `hu (d : ℕ) (l : A → ℂ) : upIter ν σ' p d (fun x => z * l (f x)) = fun x => z * upIter ν σ p d l (f x)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Proceed by induction on `d with`. Consider the case `zero => rfl`. Consider the case `succ d ih`. Rewrite using `[upIter_succ, upIter_succ, ih]`. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [exUp, hf, integral_const_mul]`. Rewrite using `[exTo, exTo, hd, hu]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exTo_comp (σ' : Representation ℂ (GL (n ⊕ Fin c) k) A') (f : A' → A) (hf : ∀ g x, f (σ' g x) = σ g (f x))
     (z : ℂ) (p q : ℕ) (l : A → ℂ) : exTo ν σ' p q (fun x => z * l (f x)) = fun x => z * exTo ν σ p q l (f x) := by
@@ -439,7 +439,7 @@ theorem exTo_comp (σ' : Representation ℂ (GL (n ⊕ Fin c) k) A') (f : A' →
   rw [exTo, exTo, hd, hu]
 
 /- English proof (translation)
-Establish `h1` using `congrFun (exTo_comp ν σ σ' T hT 1 p q l) x`. Establish `h2` using `congrFun (exTo_comp ν σ' σ' id (fun _ _ => rfl) z p q l') x`. Simplify using `only [one_mul, h, id] at h1 h2`. Rewrite using `[← h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exTo_law (σ' : Representation ℂ (GL (n ⊕ Fin c) k) A') {T : A' → A} (hT : ∀ g x, T (σ' g x) = σ g (T x))
     {l : A → ℂ} {l' : A' → ℂ} {z : ℂ} (h : ∀ x, l (T x) = z * l' x) (p q : ℕ) (x : A') :
@@ -453,15 +453,15 @@ variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [B
   {ψ : AddChar k Circle} {σ}
 
 /- English proof (translation)
-Establish `hd (d : ℕ) : ∀ l : A →ₗ[ℂ] ℂ, q + d ≤ c → IsNEquiv ψ (q + d) σ l → ∃ l' : A →ₗ[ℂ] ℂ, ⇑l' = downIter ν σ q d l ∧ IsNEquiv ψ q σ l'`. Proceed by induction on `d with`. Consider the case `zero => exact fun l _ h => ⟨l, rfl, h⟩`. Consider the case `succ d ih`. Introduce `l h1 h2`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨l₁, e, h3⟩` from `(Exchange.exchange_isPos k n c (q + d) (by omega) h1 ψ hψ hψ1 ν A σ hσ).2.1 l h2`. Rewrite using `[downIter_succ, ← funext e]`. Conclude with `ih l₁ (by omega) h3`. Establish `hu (d : ℕ) : p + d ≤ c → ∃ l' : A →ₗ[ℂ] ℂ, ⇑l' = upIter ν σ p d l ∧ IsNEquiv ψ (p + d) σ l'`. Proceed by induction on `d with`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact fun _ => ⟨l, rfl, hl⟩`. Consider the case `succ d ih`. Introduce `h1`. Take `⟨l₁, e, h3⟩` from `ih (by omega)`. Take `⟨l₂, e', h4⟩` from `(Exchange.exchange_isPos k n c (p + d) (by omega) h1 ψ hψ hψ1 ν A σ hσ).1 l₁ h3`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨l₂, by rw [upIter_succ, ← e]; exact funext e', h4⟩`. Break down `le_total q p with h | h` into its components or cases. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[exTo_of_ge ν σ h, Nat.add_sub_cancel_left]`. Conclude with `hd d l hpc hl`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[exTo_of_le ν σ h, Nat.add_sub_cancel_left]`. Conclude with `hu d hqc`.
+A detailed English derivation is pending.
 -/
 theorem exTo_isNEquiv (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (hσ : IsSmoothRep σ) {p q : ℕ} (hp : 1 ≤ p) (hpc : p ≤ c)
     (hq : 1 ≤ q) (hqc : q ≤ c) (l : A →ₗ[ℂ] ℂ) (hl : IsNEquiv ψ p σ l) :
@@ -505,7 +505,7 @@ def exList (p q : I → ℕ) (L : List I) (l : A → ℂ) : A → ℂ :=
   L.foldr (fun i l => exTo (ν i) (σ i) (p i) (q i) l) l
 
 /- English proof (translation)
-Proceed by induction on `L generalizing x with`. Consider the case `nil => exact h x`. Consider the case `cons i L ih => exact exTo_law (ν i) (σ i) (σ' i) (hT i) ih _ _ x`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem exList_law (σ' : ∀ i, Representation ℂ (GL (n ⊕ Fin c) (k i)) A') {T : A' → A}
     (hT : ∀ i g x, T (σ' i g x) = σ i g (T x)) {l : A → ℂ} {l' : A' → ℂ} {z : ℂ} (h : ∀ x, l (T x) = z * l' x)
@@ -515,7 +515,7 @@ theorem exList_law (σ' : ∀ i, Representation ℂ (GL (n ⊕ Fin c) (k i)) A')
   | cons i L ih => exact exTo_law (ν i) (σ i) (σ' i) (hT i) ih _ _ x
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons i L ih => exact (exTo_self _ _ _ _).trans ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem exList_self (p : I → ℕ) (L : List I) (l : A → ℂ) : exList ν σ p p L l = l := by
   induction L with
@@ -526,13 +526,13 @@ variable [∀ i, ValuativeRel (k i)] [∀ i, TopologicalSpace (k i)] [∀ i, IsN
   [∀ i, BorelSpace (k i)] [∀ i, (ν i).IsAddHaarMeasure] {ψ : ∀ i, AddChar (k i) Circle} {σ}
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact ⟨l, rfl, by simpa using hl⟩`. Consider the case `cons j L ih`. Take `⟨hj, hL⟩` from `List.nodup_cons.1 hL`. Take `⟨l₁, e, h1⟩` from `ih hL`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `h1 j`. Rewrite `h2` using `[if_neg hj]`. Take `⟨l₂, e', h3⟩` from `exTo_isNEquiv (ν j) (hψ j) (hψ1 j) (hσ j) (hp j).1 (hp j).2 (hq j).1 (hq j).2 l₁ h2`. Use `⟨l₂, by rw [e', e]; rfl, fun i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : i = j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using `using h3`. Simplify using `only [List.mem_cons, hi, false_or]`. Introduce `g hg x`. Rewrite using `[e']`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `exTo_law (ν j) (σ j) (σ j) (fun h x => hcom i j hi g h x) (h1 i g hg) _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem exList_isNEquiv [DecidableEq I] (hψ : ∀ i, Continuous (ψ i)) (hψ1 : ∀ i, ψ i ≠ 1) (hσ : ∀ i, IsSmoothRep (σ i))
     (hcom : ∀ i j, i ≠ j → ∀ g h x, σ i g (σ j h x) = σ j h (σ i g x)) {p q : I → ℕ} (hp : ∀ i, 1 ≤ p i ∧ p i ≤ c)

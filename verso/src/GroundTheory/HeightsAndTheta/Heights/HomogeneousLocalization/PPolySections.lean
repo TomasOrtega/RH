@@ -18,7 +18,7 @@ namespace SectionsLatticeFS.PolySections
 variable {A : Type u} [CommRing A] {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← h, Finsupp.degree_eq_weight_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma degree_eq_of_weight {e : Fin (N + 1) →₀ ℕ} {n : ℕ} (h : Finsupp.weight 1 e = n) :
     e.degree = n := by
@@ -26,9 +26,9 @@ lemma degree_eq_of_weight {e : Fin (N + 1) →₀ ℕ} {n : ℕ} (h : Finsupp.we
   rfl
 
 /- English proof (translation)
-Introduce `m hm`. Distinguish the cases in `hr : m ∈ Set.range (expHom N)`. Take `⟨e, rfl⟩` from `hr`. Rewrite `hm` using `[coeff_toLaurent_expHom]`. Use `⟨?_, fun j _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sum_expHom]`. Conclude with `degree_eq_of_weight ((mem_homogeneousSubmodule n P).mp hP hm)` after adjusting the coercions. Simplify using `[expHom]`. Conclude with `(hm (coeff_toLaurent_eq_zero hr)).elim`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma toLaurent_mem_LDeg {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A} (hP : P ∈ grading A N n)
     (s : Set (Fin (N + 1))) : toLaurent A N P ∈ LDeg A s n := by
@@ -43,21 +43,19 @@ lemma toLaurent_mem_LDeg {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A} (hP : P �
   · exact (hm (coeff_toLaurent_eq_zero hr)).elim
 
 /- English proof (translation)
-Establish `hnn : ∀ m, ℓ.coeff m ≠ 0 → ∀ i, 0 ≤ m i`. Introduce `m hm i`. Distinguish the cases in `h : ∃ j, j ≠ i`. Take `⟨j, hj⟩` from `h`. Conclude with `(hℓ j m hm).2 i (by simpa [eq_comm] using hj)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push Not at h`. Establish `hs : ∑ j, m j = m i` using `Finset.sum_eq_single i (fun j _ hj => absurd (h j) hj) (by simp)`. Use `(hℓ i m hm).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hrange : ∀ m, ℓ.coeff m ≠ 0 → m ∈ Set.range (expHom N)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m hm`. Use `⟨Finsupp.equivFunOnFinite.symm fun i => (m i).toNat, funext fun i => ?_⟩` and prove the remaining obligations. Simplify using `[expHom, Int.toNat_of_nonneg (hnn m hm i)]`. Set `S : Finset (Fin (N + 1) →₀ ℕ)` to `ℓ.coeff.support.preimage (expHom N) expHom_injective.injOn`. Set `P : MvPolynomial (Fin (N + 1)) A` to `∑ e ∈ S, monomial e (ℓ.coeff (expHom N e))`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcoeff : ∀ e, P.coeff e = ℓ.coeff (expHom N e)`. Introduce `e`. Simplify using `only [P, coeff_sum, coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with he`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Simplify using `only [S, Finset.mem_preimage, Finsupp.mem_support_iff, not_not] at he`. Conclude with `he.symm`. Use `⟨P, (mem_homogeneousSubmodule n P).mpr fun e he => ?_, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[hcoeff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(hℓ 0 _ he).1`. Rewrite `h1` using `[sum_expHom]`. Establish `h2 : e.degree = n` using `by exact_mod_cast h1`. Rewrite using `[← h2, Finsupp.degree_eq_weight_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Apply `AddMonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `m`. Distinguish the cases in `hm : m ∈ Set.range (expHom N)`. Take `⟨e, rfl⟩` from `hm`. Rewrite using `[coeff_toLaurent_expHom, hcoeff]`.
-
-Rewrite using `[coeff_toLaurent_eq_zero hm]`. Assume the negation of the conclusion as `h`. Conclude with `hm (hrange m (Ne.symm h))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 lemma exists_toLaurent_eq {n : ℕ} {ℓ : Laurent A N} (hℓ : ∀ j, ℓ ∈ LDeg A {j} (n : ℤ)) :
     ∃ P ∈ grading A N n, toLaurent A N P = ℓ := by
@@ -109,14 +107,14 @@ def lpoly (n : ℕ) (s : (ProjScheme.self A N).H0 (ProjScheme.twistN A N n)) : L
   lval (globalCocycle (twistAb A N n) (cover A N) s).1 (fun _ => 0)
 
 /- English proof (translation)
-The claim follows from `(mem_cocycles _).1 (globalCocycle (twistAb A N n) (cover A N) s).2`.
+A detailed English derivation is pending.
 -/
 lemma isCocycle (n : ℕ) (s : (ProjScheme.self A N).H0 (ProjScheme.twistN A N n)) :
     d _ _ 0 (globalCocycle (twistAb A N n) (cover A N) s).1 = 0 :=
   (mem_cocycles _).1 (globalCocycle (twistAb A N n) (cover A N) s).2
 
 /- English proof (translation)
-Establish `h` using `lval_mem (globalCocycle (twistAb A N n) (cover A N) s).1 (fun _ => j)`. Rewrite using `[lpoly, lval_eq_of_cocycle _ (isCocycle n s) (fun _ => 0) (fun _ => j)]`. Rewrite `h` using `[range_const_fin_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma lpoly_mem (n : ℕ) (s : (ProjScheme.self A N).H0 (ProjScheme.twistN A N n)) (j : Fin (N + 1)) :
     lpoly A N n s ∈ LDeg A {j} (n : ℤ) := by
@@ -125,9 +123,9 @@ lemma lpoly_mem (n : ℕ) (s : (ProjScheme.self A N).H0 (ProjScheme.twistN A N n
   rwa [range_const_fin_one] at h
 
 /- English proof (translation)
-Introduce `s t h`. Apply `globalCocycle_injective (twistAb A N n) (cover A N) (modulesAb (twistingSheaf (grading A N) (n : ℤ))).property iSup_stdOpen` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `cochain_ext` to reduce the goal to its premises. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lval_eq_of_cocycle _ (isCocycle n s) i (fun _ => 0), lval_eq_of_cocycle _ (isCocycle n t) i (fun _ => 0)]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lpoly_injective (n : ℕ) : Function.Injective (lpoly A N n) := by
   intro s t h
@@ -141,7 +139,7 @@ lemma lpoly_injective (n : ℕ) : Function.Injective (lpoly A N n) := by
   exact h
 
 /- English proof (translation)
-Establish `h` using `ProjTwist.mk_mem_awayDeg (xprod_mem i) (Nat.succ_pos 0) (k := (n : ℤ)) (n := 0) (j := n) (a := P) hP (by simp)`. Establish `e : ProjTwist.fpow (xprod (A` using `A) i) 0 = 1 := Subtype.ext (pow_zero _)`. Rewrite `h` using `[e, Localization.mk_one_eq_algebraMap]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma algebraMap_mem_awayDeg {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A} (hP : P ∈ grading A N n)
     (i : Fin 1 → Fin (N + 1)) :
@@ -153,11 +151,11 @@ lemma algebraMap_mem_awayDeg {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A} (hP : 
   rwa [e, Localization.mk_one_eq_algebraMap] at h
 
 /- English proof (translation)
-Establish `hz : (awayDegEquiv (fun _ : Fin 1 => (0 : Fin (N + 1))) (n : ℤ)).symm ⟨toLaurent A N P, toLaurent_mem_LDeg hP _⟩ = ⟨_, algebraMap_mem_awayDeg hP _⟩`. Rewrite using `[AddEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[awayDegEquiv_apply, awayToLaurent_algebraMap]`. Establish `key : (globalCocycle (twistAb A N n) (cover A N) (ProjScheme.polySection hP)).1 (fun _ => 0) = theta (fun _ : Fin 1 => (0 : Fin (N + 1))) (n : ℤ) ⟨toLaurent A N P, toLaurent_mem_LDeg hP _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `ProjTwist.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[val_theta, hz]`. Use `Eq.trans ?_ (ProjTwist.locMap_algebraMap (𝒜 := grading A N) x.1 _ P).symm` and prove the remaining obligations. Rewrite using `[← Localization.mk_one_eq_algebraMap]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[lpoly, lval, key, AddEquiv.symm_apply_apply]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 lemma lpoly_polySection {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A} (hP : P ∈ grading A N n) :
     lpoly A N n (ProjScheme.polySection hP) = toLaurent A N P := by
@@ -178,7 +176,7 @@ lemma lpoly_polySection {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A} (hP : P ∈
   rw [lpoly, lval, key, AddEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Apply `ProjTwist.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Conclude with `(Localization.add_mk_self P 1 Q).symm`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma polySection_add {n : ℕ} {P Q : MvPolynomial (Fin (N + 1)) A} (hP : P ∈ grading A N n)
     (hQ : Q ∈ grading A N n) (hPQ : P + Q ∈ grading A N n) :
@@ -188,7 +186,7 @@ lemma polySection_add {n : ℕ} {P Q : MvPolynomial (Fin (N + 1)) A} (hP : P ∈
   exact (Localization.add_mk_self P 1 Q).symm
 
 /- English proof (translation)
-Apply `ProjTwist.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `Localization.mk (a • P) 1 = projValue (grading A N) (algebraMap A Γ(projectiveSpace A N, ⊤) a) x.1 trivial * Localization.mk P 1`. Rewrite using `[projValue_algebraMap, ← Localization.mk_one_eq_algebraMap, Localization.mk_mul, mul_one, smul_eq_C_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma polySection_smul {n : ℕ} (a : A) {P : MvPolynomial (Fin (N + 1)) A} (hP : P ∈ grading A N n)
     (haP : a • P ∈ grading A N n) :
@@ -202,11 +200,11 @@ lemma polySection_smul {n : ℕ} (a : A) {P : MvPolynomial (Fin (N + 1)) A} (hP 
     smul_eq_C_mul]
 
 /- English proof (translation)
-Introduce `A _ N n`. Set `f : grading A N n →ₗ[A] (ProjScheme.self A N).H0 (ProjScheme.twistN A N n)` to `{ toFun := fun P => ProjScheme.polySection P.2 map_add' := fun P Q => polySection_add P.2 Q.2 _ map_smul' := fun a P => polySection_smul a P.2 _ }`. Establish `hinj : Function.Injective f`. Introduce `P Q h`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `toLaurent_injective` to reduce the goal to its premises. Rewrite using `[← lpoly_polySection P.2, ← lpoly_polySection Q.2]`. Conclude with `congrArg (lpoly A N n) h`. Establish `hsurj : Function.Surjective f`. Introduce `s`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hPs⟩` from `exists_toLaurent_eq (lpoly_mem n s)`. Conclude with `⟨⟨P, hP⟩, lpoly_injective n (by rw [← hPs]; exact lpoly_polySection hP)⟩`. Conclude with `⟨LinearEquiv.ofBijective f ⟨hinj, hsurj⟩, fun P => rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem proof : SectionsLatticeFS.PolySections.Statement.{u} := by
   intro A _ N n

@@ -9,9 +9,9 @@ namespace PI.SqfPrimeFactor.W
 open PI.SqfLab
 
 /- English proof (translation)
-Introduce `g r _ hr hg T hT`. Use `(hA g r T hT).trans (le_trans ?_ (hC g r hr hg))` and prove the remaining obligations. Use `gcongr with p hp`. Establish `hpp : p.Prime` using `(Finset.mem_filter.1 hp).2.1`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hpp.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_iff₀ hp0]`. Use `hB g p hpp` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem claim_of (hA : CountA) (hB : IrrLower) (hC : Analytic) : PI.SqfPrimeFactor.Claim := by
   intro g r _ hr hg T hT

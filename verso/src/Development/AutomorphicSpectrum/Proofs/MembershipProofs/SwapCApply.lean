@@ -20,14 +20,14 @@ def sgl (v : HeightOneSpectrum (𝓞 F)) : v.adicCompletion F →+ FiniteAdeleRi
   map_add' := RestrictedProduct.single_add _ v
 
 /- English proof (translation)
-Conclude with `RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v x`.
+A detailed English derivation is pending.
 -/
 theorem sgl_same (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion F) : sgl v x v = x := by
   classical
   exact RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v x
 
 /- English proof (translation)
-Conclude with `RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) x h`.
+A detailed English derivation is pending.
 -/
 theorem sgl_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (x : v.adicCompletion F) : sgl v x w = 0 := by
   classical

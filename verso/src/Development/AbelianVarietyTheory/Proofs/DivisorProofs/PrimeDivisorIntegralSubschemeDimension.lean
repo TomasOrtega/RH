@@ -19,17 +19,15 @@ namespace GlobalTheory.VertFibre
 open MvPolynomial
 
 /- English proof (translation)
-Simplify using `[lin, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_single_one {ι : Type} [Fintype ι] [DecidableEq ι] (i : ι) : lin (Pi.single i (1 : ℝ)) = X i := by
   simp [lin, Pi.single_apply]
 
 /- English proof (translation)
-Establish `hβ` using `GlobalTheory.IntRealPow.vanish_real_of_vanish_int Ψ (X none) D h`. Set `φ : Module.Dual ℝ (MvPolynomial (Fin D) ℝ)` to `Ψ ∘ₗ LinearMap.mulLeft ℝ (X none) ∘ₗ (rename (R := ℝ) (some : Fin D → Option (Fin D))).toLinearMap`. Establish `hP : PowLinSpan.polOf φ D = 0` using `MvPolynomial.funext fun x => by`. Rewrite using `[PowLinSpan.eval_polOf, map_zero]`. Use `show Ψ (X none * rename some ((∑ i, C (x i) * X i) ^ D)) = 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow]`. Conclude with `hβ x`. Establish `hH : (∏ j, (X j : MvPolynomial (Fin D) ℝ)).IsHomogeneous D`. Simplify using `using IsHomogeneous.prod Finset.univ (fun j => (X j : MvPolynomial (Fin D) ℝ)) (fun _ => 1) (fun j _ => isHomogeneous_X ℝ j)`. Use `PowLinSpan.homog_kill φ D hP _ hH` as an intermediate fact.
-
-Simplify `this` using `[φ, map_prod]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cross_eq_zero_of_diag {D : ℕ} (Ψ : MvPolynomial (Option (Fin D)) ℝ →ₗ[ℝ] ℝ)
     (h : ∀ n : Fin D → ℤ, Ψ (X none * rename some (lin fun i => (n i : ℝ)) ^ D) = 0) :
@@ -51,9 +49,9 @@ theorem cross_eq_zero_of_diag {D : ℕ} (Ψ : MvPolynomial (Option (Fin D)) ℝ 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
 
 /- English proof (translation)
-Establish `h` using `hn (Option (Fin D)) _ Φ hΦ (Fin.cons (Pi.single none 1) fun j => Pi.single (some j) 1)`. Rewrite `h` using `[Fin.prod_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, lin_single_one] at h`. Rewrite using `[h]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[Fintype.sum_option, Pi.single_apply]`. Simplify using `[Fintype.sum_option, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem num_cons_eq {num : Form (Cl p) D} (hn : IsArForm D num) (M : HermLB p) (N : Fin D → HermLB p)
     (Φ : MvPolynomial (Option (Fin D)) ℝ →ₗ[ℝ] ℝ) (hΦ : IsArFun (fun o : Option (Fin D) => o.elim M N) D Φ) :
@@ -70,13 +68,13 @@ theorem num_cons_eq {num : Form (Cl p) D} (hn : IsArForm D num) (M : HermLB p) (
   · simp [Fintype.sum_option, Pi.single_apply]
 
 /- English proof (translation)
-Establish `HE` using `hP.p4.arExists`. Establish `HC` using `hP.p4.arChange`. Take `⟨Φ, hΦ⟩` from `((HE k X p D hX).2 (Option (Fin D)) fun o => o.elim (fnB (fun _ _ => 2 * c) (fun _ y => CxPts.cInfAt_const (2 * c) y) fun _ _ _ _ _ _ _ => rfl : HermLB p) N).1`. Take `⟨Φ₁, hΦ₁⟩` from `((HE k X p D hX).2 (Option (Fin D)) fun o => o.elim (oneB p) N).1`. Rewrite using `[num_cons_eq hn _ N Φ hΦ, num_cons_eq hn _ N Φ₁ hΦ₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `cross_eq_zero_of_diag (Φ - c • Φ₁) fun n => by`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, HC k X p D hX (Fin D) N (fun _ _ => 2 * c) (fun _ y => CxPts.cInfAt_const (2 * c) y) (fun _ _ _ _ _ _ _ => rfl) Φ hΦ n, HC k X p D hX (Fin D) N (fun _ _ => 2) (fun _ y => CxPts.cInfAt_const 2 y) (fun _ _ _ _ _ _ _ => rfl) Φ …`. Establish `e (σ : k →+* ℂ) : ((comb N n).φ σ).chernInt D Set.univ (fun _ => 2 * c) = c * ((comb N n).φ σ).chernInt D Set.univ (fun _ => 2)`. Rewrite using `[← Weight.chernInt_const_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, ← mul_finsum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, sub_eq_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem num_fnB_const (hP : Hypotheses2) (hX : IsArithVar p D) {num : Form (Cl p) D} (hn : IsArForm D num)
     (N : Fin D → HermLB p) (c : ℝ) :
@@ -111,19 +109,19 @@ end GlobalTheory.VertFibre
 namespace GlobalTheory.VertFibre
 
 /- English proof (translation)
-Introduce `hP k _ X _ _ p D hX num hn N l _ d hd`. Establish `hl : l.Prime` using `Fact.out`. Establish `hl0 : ((l : ℕ) : X.functionField) ≠ 0`. Use `hX.charZero` as an intermediate fact. Establish `hinj` using `germ_injective_of_isIntegral X (U := ⊤) (genericPoint X) trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `(Nat.cast_ne_zero (R := Γ(X, ⊤))).2 hl.ne_zero` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_natCast, map_zero]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `T : HermLB p` to `fnB (fun _ _ => 2 * Real.log l) (fun _ y => CxPts.cInfAt_const (2 * Real.log l) y) fun _ _ _ _ _ _ _ => rfl`. Set `r : T.B.ι → X.functionFieldˣ` to `fun _ => Units.mk0 _ hl0`. Establish `hr : IsRatSec T.B r` using `fun a b h => ((congrArg (· * ((l : ℕ) : X.functionField)) (map_one (fnOf _ h))).trans (one_mul _)).symm`. Establish `he (z : X) : (T.div hr).IsEqn z (r PUnit.unit)` using `(presents_divOfRatSec _ hr).isEqn PUnit.unit z trivial`. Establish `hm (z : X) : (T.div hr).mult z = Scheme.ord ((l : X.functionField)) z` using `(he z).mult_eq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : ∀ σ, ∀ y ∈ offSupp p σ (T.div hr), logNorm (T.φ σ) r y = 0`. Introduce `σ y _`. Establish `e` using `ratVal_fnOf (y := y) CxPts.mem_ptsIn_top trivial (l : Γ(X, ⊤))`. Rewrite `e` using `[map_natCast, CxPts.ev_eq CxPts.mem_ptsIn_top, map_natCast]`. Rewrite using `[logNorm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Real.log ‖ratVal ((l : ℕ) : X.functionField) y‖ - 2 * Real.log l / 2 = 0`. Rewrite using `[e, Complex.norm_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv` using `GlobalTheory.T.height_of_rational_section_via_divisor hP k X p D hX num hn T r hr hlog N (fun _ => l) d fun z hz => by`. Rewrite `hz` using `[hm]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Z, i, h1, h2, h3, h4, h5, h6⟩` from `hd z hz`. Conclude with `⟨‹Fact l.Prime›, Z, i, h1, h2, h3, h4, h5, h6⟩`. Establish `hc` using `num_fnB_const hP hX hn N (Real.log l)`. Establish `hpos : 0 < Real.log l` using `Real.log_pos (by exact_mod_cast hl.one_lt)`. Rewrite `hv` using `[hc]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hm] at hv`. Rewrite `hv` using `[← finsum_mul]`. Conclude with `mul_right_cancel₀ hpos.ne' (hv.symm.trans (mul_comm _ _))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_ord_mul_deg_eq : Hypotheses2 → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ num : Form (Cl p) D, IsArForm D num → ∀ (N : Fin D → HermLB p) (l : ℕ) [Fact l.Prime] (d : X → ℝ), (∀ z, Scheme.ord ((l : X.functionField)) z ≠ 0 → ∃ (Z : Scheme.{0}) (i : Z ⟶ X) (_ : IsClosedImmersion i) (_ : IsIntegral Z) (_ : Algebra (ZMod l) Γ(Z, ⊤)), i (genericPoint Z) = z ∧ topologicalKrullDim Z = D ∧ d z = interNum (ZMod l) (structureModule Z) (fun j => (N j).B.pull i)) → ∑ᶠ z, (Scheme.ord ((l : X.functionField)) z : ℝ) * d z = num (Fin.cons (cl (oneB p)) fun j => cl (N j)) := by
   intro hP k _ X _ _ p D hX num hn N l _ d hd

@@ -109,7 +109,7 @@ namespace ColDat
 variable (d : ColDat) (a : ColArgs d)
 
 /- English proof (translation)
-The claim follows from `d.what₂.card_Tau`.
+A detailed English derivation is pending.
 -/
 theorem f_eq : d.X.f = d.R.f := d.what₂.card_Tau
 

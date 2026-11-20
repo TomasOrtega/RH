@@ -25,13 +25,11 @@ section Loc
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {a : ℕ}
 
 /- English proof (translation)
-Take `⟨T, hT1, -, -⟩` from `hT`. Take `⟨f, hf0, hf⟩` from `hσ`. Establish `key : ∀ g x, π.locRep u g (T.symm x) = ((GlobalTheory.CuspRep.CuspSub.locDet a η u g : ℂˣ) : ℂ) • T.symm (π.locRep u g x)`. Introduce `g x`. Establish `h1` using `hT1 (locGL F a u g) (T.symm x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[LinearEquiv.apply_symm_apply, TR.CuspSub.chiDet_locGL]`. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply]`. Conclude with `h1`. Use `⟨T.symm.toLinearMap ∘ₗ f, fun h => hf0 (LinearMap.ext fun v => T.symm.injective ?_), fun g v => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `LinearMap.congr_fun h v`. Rewrite using `[LinearMap.zero_apply, map_zero]`. Conclude with `h2`. Express the relevant statement in the definitionally equal form `T.symm (f (((GlobalTheory.CuspRep.CuspSub.locDet a η u g : ℂˣ) : ℂ) • σ.ρ g v)) = π.locRep u g (T.symm (f v))`. Rewrite using `[key, LinearMap.map_smul, LinearEquiv.map_smul]`.
-
-Use `congr 2`. Conclude with `hf g v`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isLocComp_twist {π : TR.CuspSub F a} {η : HChar F} (hT : IsoTwist π η) {u : HeightOneSpectrum (𝓞 F)}
     {σ : SmIrr (GL (Fin a) (u.adicCompletion F))} (hσ : π.IsLocComp u σ) :
@@ -56,7 +54,7 @@ theorem isLocComp_twist {π : TR.CuspSub F a} {η : HChar F} (hT : IsoTwist π �
     exact hf g v
 
 /- English proof (translation)
-Use `((hL F a π u).2 σ hσ).hasFixed (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL u a).2 ?_` and prove the remaining obligations. Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 hB.1`. Conclude with `⟨x, h0, fun k hk => GlobalTheory.LGrp.mem_fixed.1 hx k hk⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasFixed_of_hasSat (hL : LocCompR) {π : TR.CuspSub F a} {u : HeightOneSpectrum (𝓞 F)} {B : Multiset ℂˣ}
     (hB : π.HasSat u B) {σ : SmIrr (GL (Fin a) (u.adicCompletion F))} (hσ : π.IsLocComp u σ) :
@@ -73,7 +71,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Use `(ParLaws.unr_iff H _).2 ?_` and prove the remaining obligations. Unfold `GlobalTheory.SmGL.IsSpherical GlobalTheory.SmGL.IsSphericalFor`. Rewrite using `[GlobalTheory.SmGL.SphCompletion.KO_completion w n]`. Take `⟨v, h0, hv⟩` from `hf`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 hv, h0⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unr_of_hasFixed {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) {n : ℕ}
     (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (hf : HasFixed σ.ρ (GlobalTheory.LFun.KGL w n)) :
@@ -85,11 +83,11 @@ theorem unr_of_hasFixed {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h 
   exact (Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 hv, h0⟩
 
 /- English proof (translation)
-Rewrite `ht` using `[lpChar_lpOfChar]`. Take `⟨n, b, rfl⟩` from `x.exists_rep`. Rewrite `ht` using `[WD.lpTwist_mk, WD.unr_mk]`. Rewrite `hx` using `[WD.unr_mk]`. Rewrite `hd` using `[WD.lpDim_mk]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `ht.2 s`. Express the relevant statement in the definitionally equal form `((ξ (ineIncl h s) : ℂ) • b.ρ (ineIncl h s)) = 1 at h1`. Rewrite `h1` using `[hx.2 s]`. Establish `hn : 1 ≤ n` using `by simpa using hd`. Establish `h3` using `congrFun (LinearMap.congr_fun h1 (fun _ => 1)) ⟨0, hn⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h3`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ine_trivial {x : WD h} (hx : x.unr) (hd : 1 ≤ x.lpDim) {ξ : Weil h →* ℂˣ} (hξ : IsSmooth ξ)
     (ht : (x.lpChar (WD.lpOfChar h ξ hξ)).unr) (s : Ine (F := E) A) : ξ (ineIncl h s) = 1 := by
@@ -112,17 +110,17 @@ end GlobalTheory.RealGal.TwistUnr
 open GlobalTheory.RealGal.TwistUnr in
 
 /- English proof (translation)
-Introduce `LN hA F _ _ _ a ha π η hT u B hB`. Establish `hL` using `GlobalTheory.T.local_global_compatibility_real hA`. Establish `L` using `LN.loc`. Take `⟨σ, hσ⟩` from `(hL F a π u).1`. Establish `hσ'` using `isLocComp_twist hT hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨A, hAu⟩` from `exists_isPlaceOver (AlgebraicClosure F) u`. Take `⟨rc, hrc⟩` from `L.llc F (AlgebraicClosure F) A u hAu`. Establish `H : IsRec hAu rc` using `GlobalTheory.LocLanglands.isRec_of_isRecLit L.dzc L.dzi L.exh L.multi L.cos L.zel L.geo L.bz F (AlgebraicClosure F) A u hAu rc hrc`. Establish `u1` using `unr_of_hasFixed H σ (hasFixed_of_hasSat hL hB hσ)`. Establish `u2` using `unr_of_hasFixed H _ (hasFixed_of_hasSat hL hB hσ')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ar, har, ε, -, LL⟩` from `H`. Establish `hs` using `GlobalTheory.HeckeComp.smooth_loc η u`. Establish `e : rc (cls (ParLaws.toRep (σ.twist (GlobalTheory.CuspRep.CuspSub.locDet a η u) (TR.CuspSub.isOpen_ker_locDet η u)))) = (rc (cls (ParLaws.toRep σ))).lpChar (rc (.ofChar (η.loc u) hs))`. Rewrite using `[← LL.twist]`. Conclude with `congrArg _ (IrrGL.tw_of σ.ρ σ.smooth σ.irred _ _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `u2` using `[e, LL.one]`. Establish `hd : 1 ≤ (rc (cls (ParLaws.toRep σ))).lpDim` using `by rw [LL.dim]; exact ha`. Establish `hi` using `ine_trivial u1 hd _ u2`. Establish `hU : (WD.lpOfChar hAu ((η.loc u).comp ar) (har.smooth hs)).unr`. Rewrite using `[WD.lpOfChar, WD.unr_mk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨rfl, fun s => LinearMap.ext fun v => funext fun i => ?_⟩` and prove the remaining obligations. Use `hi s` as an intermediate fact. Simplify using `[this]`. Establish `hU'` using `(GlobalTheory.LocLanglands.Test.unr_lpOfChar_iff har hs).1 hU`. Introduce `x hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hU' x ?_` and prove the remaining obligations. Establish `h0 : Valued.v (x : u.adicCompletion F) ≠ 0` using `by simp`. Rewrite using `[← GlobalTheory.SmGL.ord_eq_zero_iff, GlobalTheory.SmGL.SphCompletion.ord_completion, neg_eq_zero]`. Unfold `IsUnitAt at hx`. Rewrite using `[hx, WithZero.log_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RealGal.unrAt_of_isoTwist : GlobalTheory.Mem.LiteralAutomorphy.LitN → AdmissibleReal → ∀ (F : Type) [Field F] [NumberField F]
     [IsTotallyReal F] (a : ℕ), 1 ≤ a → ∀ (π : TR.CuspSub F a) (η : HChar F), IsoTwist π η →

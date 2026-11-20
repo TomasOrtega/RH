@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.SquareComm.ThetaLeft
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, P, hf, rfl⟩` from `hx`. Conclude with `GlobalTheory.GalLift.Vec.theta_pureTensorO hψ hθ _ _ _ _ hf.1 P`. Consider the case `zero => exact GlobalTheory.OrientedHeis.theta_zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact GlobalTheory.OrientedHeis.theta_add hx hy`. Consider the case `smul c x _ hx => exact GlobalTheory.OrientedHeis.theta_smul c hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isThetaFunO_of_mem_algF {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1))
     (hθ : IsInfFam θ) {M X : HSp D} (A : Fr M) (B : Fr X) {Φ : WO M X → ℂ} (hΦ : Φ ∈ algF ψ θ false A B) :
@@ -36,9 +36,9 @@ theorem isThetaFunO_of_mem_algF {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : 
   | smul c x _ hx => exact GlobalTheory.OrientedHeis.theta_smul c hx
 
 /- English proof (translation)
-Introduce `D ψ θ hθ M X A B χ χ' ω hω Φ hΦ γ hγ g h`. Establish `hω' : IsWeilDatumO ψ M X χ χ' ω` using `hω`. Establish `hth : IsThetaFunO ψ M X Φ` using `isThetaFunO_of_mem_algF hω'.std hθ A B hΦ`. Unfold `thetaKO`. Establish `e : (γ * g, h) = (γ, (1 : GA D X)) * (g, h)` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hω'.om_aut _ hγ _ (Subgroup.one_mem _) _ (hω'.om_pres _ _ hth)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (M X : HSp D) (A : Fr M) (B : Fr X)
     (χ χ' : (AE D)ˣ →* Circle) (ω : WRep M X), IsWeil ψ false M X χ χ' ω → ∀ Φ ∈ algF ψ θ false A B, ∀ γ ∈ GQ M,

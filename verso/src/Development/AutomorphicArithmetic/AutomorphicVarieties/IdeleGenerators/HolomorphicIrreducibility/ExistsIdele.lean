@@ -18,7 +18,7 @@ namespace UpperTheory.V.Sd
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `(Valued.toNormedField.norm_le_one_iff (x := x)).2 h.le` as an intermediate fact. Establish `h2` using `(Valued.toNormedField.one_le_norm_iff (x := x)).2 h.ge`. Conclude with `le_antisymm this h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem norm_one {w : Pl F} {x : w.adicCompletion F} (h : Valued.v x = 1) : ‖x‖ = 1 := by
   have := (Valued.toNormedField.norm_le_one_iff (x := x)).2 h.le
@@ -26,11 +26,11 @@ private theorem norm_one {w : Pl F} {x : w.adicCompletion F} (h : Valued.v x = 1
   exact le_antisymm this h2
 
 /- English proof (translation)
-Establish `h1` using `Filter.eventually_cofinite.1 (y : Af F).2`. Establish `h2` using `Filter.eventually_cofinite.1 ((y⁻¹ : (Af F)ˣ) : Af F).2`. Use `(h1.union h2).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Establish `a1 : Valued.v (pLoc F w (y : Af F)) ≤ 1` using `hc.1`. Establish `a2 : Valued.v (pLoc F w ((y⁻¹ : (Af F)ˣ) : Af F)) ≤ 1` using `hc.2`. Establish `a3 : Valued.v (pLoc F w (y : Af F)) * Valued.v (pLoc F w ((y⁻¹ : (Af F)ˣ) : Af F)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Use `hw (norm_one (le_antisymm a1 ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem fin_supp (y : (Af F)ˣ) : Function.HasFiniteMulSupport fun w : Pl F => ‖pLoc F w (y : Af F)‖ := by
   have h1 := Filter.eventually_cofinite.1 (y : Af F).2
@@ -48,7 +48,7 @@ private theorem fin_supp (y : (Af F)ˣ) : Function.HasFiniteMulSupport fun w : P
     _ = _ := mul_one _
 
 /- English proof (translation)
-Unfold `absF`. Rewrite using `[← finprod_mul_distrib (fin_supp y) (fin_supp z)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem absF_mul (y z : (Af F)ˣ) : absF (y * z) = absF y * absF z := by
   unfold absF
@@ -56,40 +56,40 @@ private theorem absF_mul (y z : (Af F)ˣ) : absF (y * z) = absF y * absF z := by
   simp
 
 /- English proof (translation)
-The claim follows from `finprod_induction (fun x : ℝ => 0 < x) one_pos (fun _ _ => mul_pos) fun w => norm_pos_iff.2 (y.isUnit.map (pLoc F w)).ne_zero`.
+A detailed English derivation is pending.
 -/
 private theorem absF_pos (y : (Af F)ˣ) : 0 < absF y :=
   finprod_induction (fun x : ℝ => 0 < x) one_pos (fun _ _ => mul_pos) fun w =>
     norm_pos_iff.2 (y.isUnit.map (pLoc F w)).ne_zero
 
 /- English proof (translation)
-Unfold `ordI`. Rewrite using `[← Associates.mk_mul_mk, Associates.count_mul (Associates.mk_ne_zero.2 hI) (Associates.mk_ne_zero.2 hJ) v.associates_irreducible]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ordI_mul (v : Pl F) {I J : Ideal (𝓞 F)} (hI : I ≠ ⊥) (hJ : J ≠ ⊥) : ordI v (I * J) = ordI v I + ordI v J := by
   unfold ordI
   rw [← Associates.mk_mul_mk, Associates.count_mul (Associates.mk_ne_zero.2 hI) (Associates.mk_ne_zero.2 hJ) v.associates_irreducible]
 
 /- English proof (translation)
-The claim follows from `Associates.count_self w.associates_irreducible`.
+A detailed English derivation is pending.
 -/
 private theorem ordI_self (w : Pl F) : ordI w w.asIdeal = 1 := Associates.count_self w.associates_irreducible
 
 /- English proof (translation)
-The claim follows from `Associates.count_eq_zero_of_ne v.associates_irreducible w.associates_irreducible fun e => h (HeightOneSpectrum.ext (associated_iff_eq.1 (Associates.mk_eq_mk_iff_associated.1 e)))`.
+A detailed English derivation is pending.
 -/
 private theorem ordI_ne {v w : Pl F} (h : v ≠ w) : ordI v w.asIdeal = 0 :=
   Associates.count_eq_zero_of_ne v.associates_irreducible w.associates_irreducible fun e =>
     h (HeightOneSpectrum.ext (associated_iff_eq.1 (Associates.mk_eq_mk_iff_associated.1 e)))
 
 /- English proof (translation)
-Rewrite using `[← Ideal.finprod_heightOneSpectrum_factorization hI, ← Ideal.finprod_heightOneSpectrum_factorization hJ]`. Conclude with `finprod_congr fun v => congrArg (v.asIdeal ^ ·) (h v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ordI_inj {I J : Ideal (𝓞 F)} (hI : I ≠ ⊥) (hJ : J ≠ ⊥) (h : ∀ v : Pl F, ordI v I = ordI v J) : I = J := by
   rw [← Ideal.finprod_heightOneSpectrum_factorization hI, ← Ideal.finprod_heightOneSpectrum_factorization hJ]
   exact finprod_congr fun v => congrArg (v.asIdeal ^ ·) (h v)
 
 /- English proof (translation)
-The claim follows from `ordI_inj hI.1 hJ.1 fun v => by have := WithZero.exp_inj.1 ((hI.2 v).symm.trans (hJ.2 v)) omega`.
+A detailed English derivation is pending.
 -/
 private theorem genD_uniq {y : Af F} {I J : Ideal (𝓞 F)} (hI : GenD y I) (hJ : GenD y J) : I = J :=
   ordI_inj hI.1 hJ.1 fun v => by
@@ -97,14 +97,14 @@ private theorem genD_uniq {y : Af F} {I J : Ideal (𝓞 F)} (hI : GenD y I) (hJ 
     omega
 
 /- English proof (translation)
-Establish `e : ∃ 𝔪, GenD y 𝔪` using `⟨I, h⟩`. Rewrite using `[coefAt, dif_pos e, genD_uniq e.choose_spec h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coefAt_eq (c : Ideal (𝓞 F) → ℂ) {y : Af F} {I : Ideal (𝓞 F)} (h : GenD y I) : coefAt c y = c I := by
   have e : ∃ 𝔪, GenD y 𝔪 := ⟨I, h⟩
   rw [coefAt, dif_pos e, genD_uniq e.choose_spec h]
 
 /- English proof (translation)
-Distinguish the cases in `hI : I = ⊥`. Simplify using `[GenD, hI]`. Use `and_congr (by simp [hI, w.ne_bot]) (forall_congr' fun v => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hu, ordI_mul v w.ne_bot hI, ← eq_div_iff WithZero.exp_ne_zero, ← WithZero.exp_sub]`. Use `push_cast`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Put the polynomial expressions in normal form.
 -/
@@ -118,11 +118,11 @@ private theorem genD_shift {w : Pl F} {u : Af F} (hu : ∀ v, Valued.v (pLoc F v
   ring_nf
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ I, GenD (y * u) I`. Take `⟨I, hI⟩` from `h`. Establish `e : ∃ 𝔫, w.asIdeal * I = w.asIdeal * 𝔫` using `⟨I, rfl⟩`. Rewrite using `[coefAt_eq a hI, coefAt_eq _ ((genD_shift hu y I).1 hI), coefDiv, dif_pos e, ← mul_left_cancel₀ w.ne_bot e.choose_spec]`. Rewrite using `[coefAt.eq_1 a, dif_neg h]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h' : ∃ J, GenD y J`. Take `⟨J, hJ⟩` from `h'`. Rewrite using `[coefAt_eq _ hJ, coefDiv, dif_neg]`. Introduce and unpack `⟨I, rfl⟩`. Conclude with `h ⟨I, (genD_shift hu y I).2 hJ⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coefAt, dif_neg h']`.
+A detailed English derivation is pending.
 -/
 private theorem coefAt_shift {w : Pl F} {u : Af F} (hu : ∀ v, Valued.v (pLoc F v u) = WithZero.exp (ordI v w.asIdeal : ℤ))
     (a : Ideal (𝓞 F) → ℂ) (y : Af F) : coefAt (coefDiv a w.asIdeal) y = coefAt a (y * u) := by
@@ -140,7 +140,7 @@ private theorem coefAt_shift {w : Pl F} {u : Af F} (hu : ∀ v, Valued.v (pLoc F
     · rw [coefAt, dif_neg h']
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_aff {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (y : Rˣ) (x : R) :
     Matrix.GeneralLinearGroup.map f (aff y x) = aff (Units.map f.toMonoidHom y) (f x) := by
@@ -148,34 +148,34 @@ private theorem map_aff {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (
   fin_cases i <;> fin_cases j <;> simp [aff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ, add_comm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem aff_mul {R : Type} [CommRing R] (y z : Rˣ) (x t : R) : aff y x * aff z t = aff (y * z) (x + y * t) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ, add_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem aff_one {R : Type} [CommRing R] : aff (1 : Rˣ) (0 : R) = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [aff]
 
 /- English proof (translation)
-Rewrite using `[inv_eq_iff_mul_eq_one, aff_mul]`. Simplify using `[aff_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem aff_inv {R : Type} [CommRing R] (y : Rˣ) : (aff y (0 : R))⁻¹ = aff y⁻¹ 0 := by
   rw [inv_eq_iff_mul_eq_one, aff_mul]
   simp [aff_one]
 
 /- English proof (translation)
-Set `u : (Af F)ˣ` to `Units.map (corner (sLoc F w)) x`. Establish `h1 : pLoc F w u = x`. Express the relevant statement in the definitionally equal form `pLoc F w (1 - sLoc F w 1 + sLoc F w x) = x`. Simplify using `[pLoc_sLoc]`. Establish `h2 : ∀ v, v ≠ w → pLoc F v u = 1` using `fun v hv => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `pLoc F v (1 - sLoc F w 1 + sLoc F w x) = 1`. Simplify using `[pLoc_sLoc_of_ne hv]`. Use `⟨u, h1, h2, fun t => gl_ext fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_aff]`. Distinguish the cases in `hv : v = w`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hv` using the available equality. Rewrite using `[pLoc_locGL, pLoc_sLoc]`. Use `congr 1`. Conclude with `Units.ext h1.symm`. Rewrite using `[pLoc_locGL_of_ne hv, ← aff_one, pLoc_sLoc_of_ne hv]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Units.ext (h2 v hv).symm`.
+A detailed English derivation is pending.
 -/
 private theorem exists_idele (w : Pl F) (x : (w.adicCompletion F)ˣ) : ∃ u : (Af F)ˣ, pLoc F w u = x ∧
     (∀ v, v ≠ w → pLoc F v u = 1) ∧ ∀ t, locGL F 2 w (aff x t) = aff u (sLoc F w t) := by
@@ -199,7 +199,7 @@ private theorem exists_idele (w : Pl F) (x : (w.adicCompletion F)ˣ) : ∃ u : (
     exact Units.ext (h2 v hv).symm
 
 /- English proof (translation)
-Rewrite using `[absF, finprod_eq_single _ w fun v hv => norm_one (by rw [hu, ordI_ne hv]; rfl), FinitePlace.norm_def, hu, ordI_self, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]`. Express the relevant statement in the definitionally equal form `((((Ideal.absNorm w.asIdeal : ℕ) : NNReal) ^ (1 : ℤ) : NNReal) : ℝ) = _`. Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem absF_of {w : Pl F} {u : (Af F)ˣ} (hu : ∀ v, Valued.v (pLoc F v u) = WithZero.exp (ordI v w.asIdeal : ℤ)) :
     absF u = normV w := by
@@ -209,13 +209,13 @@ private theorem absF_of {w : Pl F} {u : (Af F)ˣ} (hu : ∀ v, Valued.v (pLoc F 
   simp [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`.
+A detailed English derivation is pending.
 -/
 private theorem val_alg (v : Pl F) (x : F) : Valued.v (pLoc F v (algebraMap F (Af F) x)) = v.valuation F x :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x
 
 /- English proof (translation)
-Unfold `coefAt`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem coefAt_add (a b : Ideal (𝓞 F) → ℂ) (e : ℂ) (z : Af F) :
     coefAt (fun m => a m + e * b m) z = coefAt a z + e * coefAt b z := by
@@ -223,7 +223,7 @@ private theorem coefAt_add (a b : Ideal (𝓞 F) → ℂ) (e : ℂ) (z : Af F) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `chiI`. Rewrite using `[finprod_eq_single _ w fun v hv => by rw [ordI_ne hv, pow_zero], ordI_self, pow_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem chi_prime (ω : HChar F) (c : Pl F → ℕ) (w : Pl F) :
     chiI ω c w.asIdeal = if c w = 0 then ((ω.val w : ℂˣ) : ℂ) else 0 := by
@@ -231,7 +231,7 @@ private theorem chi_prime (ω : HChar F) (c : Pl F → ℕ) (w : Pl F) :
   rw [finprod_eq_single _ w fun v hv => by rw [ordI_ne hv, pow_zero], ordI_self, pow_one]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CuspRep.finId_det_locGL w (Matrix.GeneralLinearGroup.scalar (Fin 1) x)`. Rewrite `h`, the goal using `[locGL, GlobalTheory.CuspRep.cornerGL_scalar]`. Rewrite using `[finGL, GlobalTheory.CuspRep.cornerGL_scalar]`. Use `congr 1`. Conclude with `(congrArg (finId F) (GlobalTheory.CuspRep.CG.det_oneByOne _)).symm.trans (h.trans (congrArg (localIdele F w) (GlobalTheory.CuspRep.CG.det_oneByOne _)))`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem fin_scalar (w : Pl F) (x : (w.adicCompletion F)ˣ) :
     finGL F 2 (locGL F 2 w (Matrix.GeneralLinearGroup.scalar (Fin 2) x)) =
@@ -244,15 +244,15 @@ private theorem fin_scalar (w : Pl F) (x : (w.adicCompletion F)ˣ) :
     (h.trans (congrArg (localIdele F w) (GlobalTheory.CuspRep.CG.det_oneByOne _)))
 
 /- English proof (translation)
-Take `⟨c1, c2⟩` from `UpperTheory.addChar_inverseDifferent_and_residue_sum_eq_zero F η`. Establish `sh : ∀ I, GenD z I ↔ GenD (z * ((u⁻¹ : (Af F)ˣ) : Af F)) (w.asIdeal * I)` using `fun I => by`. Rewrite using `[← genD_shift hu, Units.inv_mul_cancel_right]`. Distinguish the cases in `h : ∃ I, GenD z I`. Take `⟨I, hI⟩` from `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[coefAt_eq _ hI, coefAt_eq _ ((sh I).1 hI), Finset.sum_congr rfl fun r _ => c1 (fun v => ?_) (s r)]`. Simplify using `[normV, mul_comm]`. Use `(h2 v).trans ?_` and prove the remaining obligations. Rewrite using `[hI.2 v, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[coefAt.eq_1 _ z, dif_neg h, mul_zero]`. Distinguish the cases in `h' : ∃ I, GenD (z * ((u⁻¹ : (Af F)ˣ) : Af F)) I`. Take `⟨I, hI⟩` from `h'`. Establish `h0 : ordI w I = 0`. Assume the negation of the conclusion as `h0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨J, rfl⟩` from `(Associates.count_ne_zero_iff_dvd hI.1 w.irreducible).1 h0`. Conclude with `h ⟨J, (sh J).2 hI⟩`. Establish `hz : ∀ v, Valued.v (pLoc F v z) = WithZero.exp ((ordI v (differentIdeal ℤ (𝓞 F)) : ℤ) - ordI v I + ordI v w.asIdeal)` using `fun v => by`. Rewrite using `[WithZero.exp_add, ← hI.2 v, ← hu v, ← map_mul, ← map_mul, Units.inv_mul_cancel_right]`. Rewrite using `[c2 w s hs (fun v hv => (h2 v).trans ?_) ?_, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hz, h0, ordI_self]`. Simplify using the standard rewrite rules. Rewrite using `[hz, ordI_ne hv, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[coefAt, dif_neg h', zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem char_sum [IsTotallyReal F] {w : Pl F} [Fintype (𝓞 F ⧸ w.asIdeal)] {u : (Af F)ˣ}
     (hu : ∀ v, Valued.v (pLoc F v u) = WithZero.exp (ordI v w.asIdeal : ℤ)) (s : 𝓞 F ⧸ w.asIdeal → 𝓞 F)
@@ -288,7 +288,7 @@ private theorem char_sum [IsTotallyReal F] {w : Pl F} [Fintype (𝓞 F ⧸ w.asI
   · rw [coefAt, dif_neg h', zero_mul]
 
 /- English proof (translation)
-Rewrite using `[reAt, ← InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v), Complex.ofReal_re]`. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v) (algebraMap F (InfiniteAdeleRing F) x v) = _`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem pInf_alg [IsTotallyReal F] (x : F) (v : InfinitePlace F) : TR.pInf F (algebraMap F (Ad F) x) v = reAt v x := by
   rw [reAt, ← InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v), Complex.ofReal_re]
@@ -296,13 +296,11 @@ private theorem pInf_alg [IsTotallyReal F] (x : F) (v : InfinitePlace F) : TR.pI
   simp
 
 /- English proof (translation)
-Establish `h1` using `UpperTheory.hilbertHolomorphic_invariant_integralTranslation F k c ω φ h (((yf⁻¹ : (Af F)ˣ) : Af F) * (t - algebraMap F (Af F) β)) fun v => by`. Establish `h0 : Valued.v (pLoc F v yf) ≠ 0` using `(_root_.map_ne_zero _).2 (yf.isUnit.map (pLoc F v)).ne_zero`. Rewrite using `[map_mul, map_mul, map_units_inv, map_inv₀, inv_mul_le_one₀ (zero_lt_iff.2 h0)]`. Conclude with `hβ v`. Establish `h2 : TR.infGL F 2 (aff y x) * finGL F 2 (aff yf t) = ratGL F 2 (aff 1 β) * (TR.infGL F 2 (aff y (x - fun v => reAt v β)) * finGL F 2 (aff yf 0) * finGL F 2 (aff 1 (((yf⁻¹ : (Af F)ˣ) : Af F) * (t - algebraMap F (Af F) β))))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `TR.ga_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [map_mul, TR.pInf_infGL, TR.pInf_finGL, mul_one, ratGL, map_aff, map_one, aff_mul, one_mul, Units.val_one]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Simplify using `[pInf_alg]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, TR.pFin_infGL, pFin_finGL, mul_one, ratGL, map_aff, map_one, aff_mul, one_mul, Units.val_one]`. Use `congr 1`. Rewrite using `[Units.mul_inv_cancel_left, zero_add]`. Conclude with `(add_sub_cancel _ _).symm`. Rewrite using `[h2, h.aut.left]`.
-
-Conclude with `congrFun (congrArg Subtype.val h1) _`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem shift [IsTotallyReal F] {k : ℕ} {c : Pl F → ℕ} {ω : HChar F} {φ : TR.Sm F 2} (h : IsHol k c ω φ)
     (y : (TR.Rinf F)ˣ) (x : TR.Rinf F) (yf : (Af F)ˣ) (t : Af F) (β : F)
@@ -329,7 +327,7 @@ private theorem shift [IsTotallyReal F] {k : ℕ} {c : Pl F → ℕ} {ω : HChar
   exact congrFun (congrArg Subtype.val h1) _
 
 /- English proof (translation)
-The claim follows from `gl_ext fun u => by by_cases hu : u = w · subst hu; simp [pLoc_locGL_of_ne h] · simp [pLoc_locGL_of_ne hu]`.
+A detailed English derivation is pending.
 -/
 private theorem loc_comm {w v : Pl F} (h : w ≠ v) (g : GL (Fin 2) (w.adicCompletion F)) (g' : GL (Fin 2) (v.adicCompletion F)) :
     locGL F 2 w g * locGL F 2 v g' = locGL F 2 v g' * locGL F 2 w g := gl_ext fun u => by
@@ -338,9 +336,9 @@ private theorem loc_comm {w v : Pl F} (h : w ≠ v) (g : GL (Fin 2) (w.adicCompl
   · simp [pLoc_locGL_of_ne hu]
 
 /- English proof (translation)
-Establish `: Finite (𝓞 F ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Use `Fintype.ofFinite (𝓞 F ⧸ w.asIdeal)` as an intermediate fact. Establish `hb` using `UpperTheory.bijective_residue_unit_mul_lift F w 1 (by simp) Quotient.out (fun r => Ideal.Quotient.mk_out r)`. Use `⟨Finset.univ.image fun r : 𝓞 F ⧸ w.asIdeal => 1 * algebraMap (𝓞 F) (w.adicCompletionIntegers F) r.out, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Set.mapsTo_univ _ _, ?_, fun y _ => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨r, rfl⟩ _ ⟨r', rfl⟩ e`. Rewrite using `[hb.1 e]`. Take `⟨r, hr⟩` from `hb.2 y`. Conclude with `⟨_, ⟨r, rfl⟩, hr⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_reps (w : Pl F) : ∃ S : Finset (w.adicCompletionIntegers F),
     Set.BijOn (IsLocalRing.residue _) (S : Set (w.adicCompletionIntegers F)) Set.univ := by
@@ -359,7 +357,7 @@ private theorem exists_reps (w : Pl F) : ∃ S : Finset (w.adicCompletionInteger
 variable [IsTotallyReal F]
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `exists_reps w`. Rewrite using `[hk, LinearMap.smul_apply, (uopSum F w _ (locSm F w) c φ hφ).2 S hS]`. Use `W.smul_mem _ (W.add_mem (W.sum_mem fun u _ => hW _) ?_)` and prove the remaining obligations. Use `split_ifs`. Use `exacts [hW _, W.zero_mem]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem hk_mem (k : ℕ) (w : Pl F) (c : ℕ) {φ : TR.Sm F 2} (hφ : φ ∈ Hi.fixd (locSm F w) (K1 w c))
     (W : Submodule ℂ (TR.Sm F 2)) (hW : ∀ g, locSm F w g φ ∈ W) : hk k w c φ ∈ W := by
@@ -370,9 +368,9 @@ private theorem hk_mem (k : ℕ) (w : Pl F) (c : ℕ) {φ : TR.Sm F 2} (hφ : φ
   exacts [hW _, W.zero_mem]
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `exists_reps w`. Establish `hφ' : A φ ∈ Hi.fixd (locSm F w) (K1 w c)` using `fun u hu => by rw [← hA, hφ u hu]`. Rewrite using `[hk, LinearMap.smul_apply, LinearMap.smul_apply, (uopSum F w _ (locSm F w) c φ hφ).2 S hS, (uopSum F w _ (locSm F w) c _ hφ').2 S hS, map_smul, map_add, map_sum]`. Simplify using `only [hA]`. Use `split_ifs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA]`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hk_comm (k : ℕ) (w : Pl F) (c : ℕ) {φ : TR.Sm F 2} (hφ : φ ∈ Hi.fixd (locSm F w) (K1 w c))
     (A : Module.End ℂ (TR.Sm F 2)) (hA : ∀ g ψ, A (locSm F w g ψ) = locSm F w g (A ψ)) : A (hk k w c φ) = hk k w c (A φ) := by
@@ -386,7 +384,7 @@ private theorem hk_comm (k : ℕ) (w : Pl F) (c : ℕ) {φ : TR.Sm F 2} (hφ : �
   · rw [map_zero]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `TR.finRep F 2 (locGL F 2 w g) (TR.finRep F 2 (locGL F 2 v g') ψ) = TR.finRep F 2 (locGL F 2 v g') (TR.finRep F 2 (locGL F 2 w g) ψ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, loc_comm h, map_mul, Module.End.mul_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem locSm_comm {w v : Pl F} (h : w ≠ v) (g : GL (Fin 2) (w.adicCompletion F)) (g' : GL (Fin 2) (v.adicCompletion F))
     (ψ : TR.Sm F 2) : locSm F w g (locSm F v g' ψ) = locSm F v g' (locSm F w g ψ) := by
@@ -395,20 +393,20 @@ private theorem locSm_comm {w v : Pl F} (h : w ≠ v) (g : GL (Fin 2) (w.adicCom
   rw [← Module.End.mul_apply, ← map_mul, loc_comm h, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (TR.lie_rt_fin _ (locGL F 2 w g)) ψ`.
+A detailed English derivation is pending.
 -/
 private theorem eop_comm (v : InfinitePlace F) (i j : Fin 2) (w : Pl F) (g : GL (Fin 2) (w.adicCompletion F)) (ψ : TR.Sm F 2) :
     TR.Eop v i j (locSm F w g ψ) = locSm F w g (TR.Eop v i j ψ) :=
   LinearMap.congr_fun (TR.lie_rt_fin _ (locGL F 2 w g)) ψ
 
 /- English proof (translation)
-Take `⟨a0, a1, a2⟩` from `UpperTheory.hecke_operators_commute_on_automorphic_forms F 2`. Use `⟨?_, fun v => ?_, ?_, fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Set `W : Submodule ℂ (TR.Sm F 2)` to `{ carrier := {ψ | TR.IsAutForm ψ} add_mem' := fun {x y} hx hy => by simpa using a2 x y 1 hx hy zero_mem' := a0 smul_mem' := fun z x hx => by simpa using a2 0 x z a0 hx }`. Conclude with `hk_mem k w _ (h.level w) W fun g => a1 φ _ h.aut`. Distinguish the cases in `hv : v = w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hv` using the available equality. Conclude with `Submodule.smul_mem _ _ (uopSum F v _ (locSm F v) _ φ (h.level v)).1`. Introduce `u hu`. Rewrite using `[hk_comm k w _ (h.level w) _ (locSm_comm hv u), h.level v u hu]`. Set `W : Submodule ℂ (TR.Sm F 2)` to `{ carrier := {ψ | ∀ (z : Ideles F) (g : GA F 2), ψ.1 (Matrix.GeneralLinearGroup.scalar (Fin 2) z * g) = ((ω.1 z : ℂˣ) : ℂ) * ψ.1 g} add_mem' := fun {x y} hx hy z g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_add, Pi.add_apply, hx z g, hy z g, mul_add]`. Use the proof step `zero_mem' := fun z g => by simp`. Use the proof step `smul_mem' := fun t x hx z g => by`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, hx z g, smul_eq_mul]`. Use `ring }`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hk_mem k w _ (h.level w) W fun g z x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (_ * _ * _) = _ * φ.1 (_ * _)`. Rewrite using `[mul_assoc, h.cent]`. Rewrite using `[hk_comm k w _ (h.level w) _ (eop_comm v 0 1 w), hk_comm k w _ (h.level w) _ (eop_comm v 1 0 w), ← map_sub, h.wt, map_smul]`. Rewrite using `[hk_comm k w _ (h.level w) _ (eop_comm v 0 1 w), hk_comm k w _ (h.level w) _ (eop_comm v 1 0 w), hk_comm k w _ (h.level w) _ (eop_comm v 0 0 w), hk_comm k w _ (h.level w) _ (eop_comm v 1 1 w), ← map_sub, h.low, map_smul, map_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hk_hol {k : ℕ} {c : Pl F → ℕ} {ω : HChar F} {φ : TR.Sm F 2} (h : IsHol k c ω φ) (w : Pl F) :
     IsHol k c ω (hk k w (c w) φ) := by
@@ -442,11 +440,11 @@ private theorem hk_hol {k : ℕ} {c : Pl F → ℕ} {ω : HChar F} {φ : TR.Sm F
       map_add]
 
 /- English proof (translation)
-Distinguish the cases in `e : w = w'`. Substitute `e` using the available equality. Both sides reduce to the same expression. Take `⟨S, hS⟩` from `exists_reps w`. Set `A : Module.End ℂ (TR.Sm F 2)` to `(((normV w : ℝ) ^ ((k : ℝ) / 2 - 1) : ℝ) : ℂ) • (∑ u ∈ S, locSm F w (aff (atFin w (unif w)) (u : w.adicCompletion F)) + if c w = 0 then locSm F w (Matrix.GeneralLinearGroup.scalar (Fin 2) (atFin w (unif w)) * (aff (atFin w (unif w)) 0)⁻¹) else 0)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hA : ∀ ψ ∈ Hi.fixd (locSm F w) (K1 w (c w)), hk k w (c w) ψ = A ψ` using `fun ψ hψ => by`. Rewrite using `[hk, LinearMap.smul_apply, (uopSum F w _ (locSm F w) _ ψ hψ).2 S hS]`. Simplify using `only [A, LinearMap.smul_apply, LinearMap.add_apply, LinearMap.sum_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[hA _ ((hk_hol h w').level w), hA _ (h.level w)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `hk_comm k w' _ (h.level w') A fun g ψ => ?_` and prove the remaining obligations. Simplify using `only [A, LinearMap.smul_apply, LinearMap.add_apply, LinearMap.sum_apply, map_smul, map_add, map_sum, locSm_comm e]`. Use `split_ifs`. Rewrite using `[locSm_comm e]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hk_hk {k : ℕ} {c : Pl F → ℕ} {ω : HChar F} {φ : TR.Sm F 2} (h : IsHol k c ω φ) (w w' : Pl F) :
     hk k w (c w) (hk k w' (c w') φ) = hk k w' (c w') (hk k w (c w) φ) := by
@@ -468,49 +466,49 @@ private theorem hk_hk {k : ℕ} {c : Pl F → ℕ} {ω : HChar F} {φ : TR.Sm F 
   · simp
 
 /- English proof (translation)
-The claim follows from `(funext h1 : g = f) ▸ h2 ▸ h`.
+A detailed English derivation is pending.
 -/
 private theorem hs_congr {ι : Type} {f g : ι → ℂ} {d e : ℂ} (h : HasSum f d) (h1 : ∀ i, g i = f i) (h2 : e = d) : HasSum g e :=
   (funext h1 : g = f) ▸ h2 ▸ h
 
 /- English proof (translation)
-Rewrite using `[← pInf_alg, ← pInf_alg, ← pInf_alg, map_mul, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem reAt_mul (v : InfinitePlace F) (x y : F) : reAt v (x * y) = reAt v x * reAt v y := by
   rw [← pInf_alg, ← pInf_alg, ← pInf_alg, map_mul, map_mul]
   rfl
 
 /- English proof (translation)
-Simplify using `[reAt]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem reAt_neg (v : InfinitePlace F) (x : F) : reAt v (-x) = -reAt v x := by
   simp [reAt]
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.scalar_commute (z : R) (fun _ => Commute.all _ _) (g : Matrix (Fin 2) (Fin 2) R)).symm`.
+A detailed English derivation is pending.
 -/
 private theorem scalar_comm {R : Type} [CommRing R] (z : Rˣ) (g : GL (Fin 2) R) :
     g * Matrix.GeneralLinearGroup.scalar (Fin 2) z = Matrix.GeneralLinearGroup.scalar (Fin 2) z * g :=
   Units.ext (Matrix.scalar_commute (z : R) (fun _ => Commute.all _ _) (g : Matrix (Fin 2) (Fin 2) R)).symm
 
 /- English proof (translation)
-Establish `hϖ` using `unif_spec w`. Take `⟨p, hp1, hp2, hp3⟩` from `exists_idele w (atFin w (unif w))`. Use `⟨p⁻¹, fun v => ?_, fun y x yf β b1 b2 => ?_⟩` and prove the remaining obligations. Rewrite using `[map_units_inv, map_inv₀]`. Distinguish the cases in `hv : v = w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hv` using the available equality. Rewrite using `[hp1, ordI_self, show Valued.v ((atFin v (unif v) : (v.adicCompletion F)ˣ) : v.adicCompletion F) = _ from hϖ, ← WithZero.exp_neg]`. Both sides reduce to the same expression. Rewrite using `[hp2 v hv, ordI_ne hv, map_one]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `y0 : pLoc F w yf ≠ 0` using `(yf.isUnit.map (pLoc F w)).ne_zero`. Establish `e1 : Valued.v (pLoc F w (algebraMap F (Af F) β) / pLoc F w yf) = 1`. Rewrite using `[map_div₀, val_alg, b1, div_self ((_root_.map_ne_zero _).2 y0)]`. Set `t₀ : w.adicCompletionIntegers F` to `⟨pLoc F w (algebraMap F (Af F) β) / pLoc F w yf, e1.le⟩`. Establish `hb` using `UpperTheory.bijective_residue_unit_mul_lift F w t₀ e1 s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : 𝓞 F ⧸ w.asIdeal → w.adicCompletionIntegers F` to `fun r => t₀ * algebraMap (𝓞 F) (w.adicCompletionIntegers F) (s r)`. Establish `hf : Function.Injective f` using `fun r r' e => hb.1 (congrArg (IsLocalRing.residue _) e)`. Establish `hS : Set.BijOn (IsLocalRing.residue _) ((Finset.univ.image f : Finset _) : Set (w.adicCompletionIntegers F)) Set.univ`. Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ]`. Use `⟨Set.mapsTo_univ _ _, ?_, fun y _ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨r, rfl⟩ _ ⟨r', rfl⟩ e`. Rewrite using `[hb.1 e]`. Take `⟨r, hr⟩` from `hb.2 y`. Conclude with `⟨_, ⟨r, rfl⟩, hr⟩`. Establish `hv : ∀ g G, (locSm F w g φ).1 G = φ.1 (G * finGL F 2 (locGL F 2 w g))` using `fun _ _ => rfl`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hk, LinearMap.smul_apply, (uopSum F w _ (locSm F w) _ φ (h.level w)).2 _ hS, Finset.sum_image fun r _ r' _ e => hf e, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, Submodule.coe_add, Pi.add_apply, Submodule.coe_sum, Finset.sum_apply, inv_inv, chi_prime]`. Use `congr 2`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hv, hp3, mul_assoc, ← map_mul, aff_mul]`. Use `shift h _ _ _ _ _ fun v => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[zero_add, map_sub, map_mul]`. Distinguish the cases in `e : v = w`. Substitute `e` using the available equality. Establish `: pLoc F v yf * (f r : v.adicCompletion F) = pLoc F v (algebraMap F (Af F) (β * s r))`. Rewrite using `[map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ * (_ / _ * pLoc F v (algebraMap F (Af F) (s r))) = _`. Clear the denominators using the available nonvanishing facts. Rewrite using `[pLoc_sLoc, this, sub_self, map_zero]`. Conclude with `zero_le`. Rewrite using `[pLoc_sLoc_of_ne e, mul_zero, zero_sub, Valuation.map_neg, val_alg, Units.val_mul, map_mul, map_mul, hp2 v e, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_le_of_le_one_right' (v.valuation_le_one (s r))).trans (b2 v)`. Use `split_ifs`. Rewrite using `[hv, map_mul, map_mul, fin_scalar, ← mul_assoc, scalar_comm, mul_assoc, h.cent, map_inv (locGL F 2 w), hp3, map_zero, aff_inv, mul_assoc, ← map_mul, aff_mul, mul_zero, add_zero]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hk_val {k : ℕ} {c : Pl F → ℕ} {ω : HChar F} {φ : TR.Sm F 2} (h : IsHol k c ω φ) (w : Pl F)
     [Fintype (𝓞 F ⧸ w.asIdeal)] (s : 𝓞 F ⧸ w.asIdeal → 𝓞 F) (hs : ∀ r, Ideal.Quotient.mk w.asIdeal (s r) = r) :
@@ -574,23 +572,23 @@ end UpperTheory.V.Sd
 
 open UpperTheory.V UpperTheory.V.Sd in
 /- English proof (translation)
-Introduce `F _ _ _ k hk1 c ω _ φ h w`. Use `⟨hk_hol h w, hk_hk h w, fun c₀ a hE => ?_⟩` and prove the remaining obligations. Establish `: Finite (𝓞 F ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Use `Fintype.ofFinite (𝓞 F ⧸ w.asIdeal)` as an intermediate fact. Establish `hs : ∀ r : 𝓞 F ⧸ w.asIdeal, Ideal.Quotient.mk w.asIdeal r.out = r` using `fun r => Ideal.Quotient.mk_out r`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu, hval⟩` from `hk_val h w _ hs`. Establish `hN : 0 < normV w` using `Nat.card_pos`. Establish `hNr : (0 : ℝ) < normV w` using `by exact_mod_cast hN`. Establish `hNc : (normV w : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Use `⟨fun yf => c₀ (yf * u⁻¹) + chiI ω c w.asIdeal * (normV w : ℂ) ^ (k - 1) * c₀ (yf * u), fun x y hy yf => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨β, b1, b2⟩` from `UpperTheory.exists_global_element_valuation_eq_idele_at_place F yf w`. Establish `H` using `((hasSum_sum fun (r : 𝓞 F ⧸ w.asIdeal) (_ : r ∈ Finset.univ) => hE (x - fun v => reAt v (β * (r.out : 𝓞 F))) y hy (yf * u⁻¹)).mul_left (normV w : ℂ)⁻¹).add ((hE x y hy (yf * u)).mul_left (chiI ω c w.asIdeal * (normV w : ℂ) ^ (k - 1)))`. Use `hs_congr H (fun ξ => ?_) ?_` and prove the remaining obligations. Establish `key` using `char_sum hu _ hs a (algebraMap F (Af F) ξ.1 * yf) (-(ξ.1 * β)) (by rw [Valuation.map_neg, map_mul, map_mul, map_mul, val_alg, b1]) (fun v => by rw [Valuation.map_neg, map_mul, map_mul, map_mul, val_alg]; exact mul_le_mul_right (b2 v) _)`. Establish `e : ∀ r : 𝓞 F ⧸ w.asIdeal, Complex.exp (2 * Real.pi * Complex.I * ∑ v, (reAt v ξ.1 : ℂ) * (((x - fun v => reAt v (β * (r.out : 𝓞 F)) : TR.Rinf F) v : ℂ) + Complex.I * (y.val v : ℂ))) = Complex.exp (2 * Real.pi * Complex.I * ∑ v, (reAt v (-(ξ.1 * β) * (r.out : 𝓞 F)) : ℂ)) * Comple …` using `fun r => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Complex.exp_add, ← mul_add, ← Finset.sum_add_distrib]`. Use `congr 2`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, reAt_mul, reAt_neg]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : coefAt (hkCoef k c ω w a) (algebraMap F (Af F) ξ.1 * yf) = _` using `coefAt_add (fun m => a (w.asIdeal * m)) (coefDiv a w.asIdeal) (chiI ω c w.asIdeal * (normV w : ℂ) ^ (k - 1)) _`. Simplify using `only [e]`. Rewrite using `[e2, coefAt_shift hu, ← Finset.mul_sum, ← Finset.sum_mul, Units.val_mul, Units.val_mul, ← mul_assoc (algebraMap F (Af F) ξ.1), ← mul_assoc (algebraMap F (Af F) ξ.1), ← mul_assoc (coefAt a _), key]`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hy' : 0 < (∏ v, y.val v) * absF yf` using `mul_pos (Finset.prod_pos fun v _ => hy v) (absF_pos yf)`. Establish `a1 : absF u = normV w` using `absF_of hu`. Establish `a2 : absF u⁻¹ = (normV w : ℝ)⁻¹`. Use `absF_mul u u⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, a1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : absF (1 : (Af F)ˣ) = 1` using `by simp [absF]`. Rewrite `this` using `[h1]`. Conclude with `eq_inv_of_mul_eq_one_right this.symm`. Establish `q1 : (normV w : ℝ) ^ ((k : ℝ) / 2 - 1) = (normV w : ℝ) ^ ((k : ℝ) / 2) / normV w` using `Real.rpow_sub_one hNr.ne' _`. Establish `q2 : (normV w : ℂ) ^ (k - 1) = (((normV w : ℝ) ^ ((k : ℝ) / 2) : ℝ) : ℂ) ^ 2 / normV w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.ofReal_pow, ← Real.rpow_natCast, ← Real.rpow_mul hNr.le, eq_div_iff hNc, pow_sub_one_mul (by omega)]`. Simplify using the standard rewrite rules. Establish `hQ : (((normV w : ℝ) ^ ((k : ℝ) / 2) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos hNr _).ne'`. Establish `hD : ((((∏ v, y.val v) * absF yf) ^ ((k : ℝ) / 2) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos hy' _).ne'`. Rewrite using `[hval y x yf β b1 b2, Finset.sum_sub_distrib, ← Finset.sum_div, Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, absF_mul, absF_mul, a1, a2, ← mul_assoc (∏ v, y.val v), ← mul_assoc (∏ v, y.val v), Real.mul_rpow hy'.le hNr.le, Real.mul_rpow hy'.le (inv_pos.2 hNr).le …`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = _ * (_ - (normV w : ℂ) * _) + _`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.holHk :
     UpperTheory.V.Sd.HolHk := by

@@ -16,9 +16,9 @@ section Complex
 variable {R : Type u} [Ring R] (K : CochainComplex (ModuleCat.{u} R) ℕ)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨w, hw⟩` from `(homologyπ_eq_zero_iff K z).1 hz`. Establish `hd : K.d ((ComplexShape.up ℕ).prev 0) 0 = 0` using `K.shape _ _ (by simp)`. Rewrite `hw` using `[hd]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `iCycles_injective K 0` to reduce the goal to its premises. Rewrite using `[← hw, map_zero]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem homologyπ_zero_injective : Function.Injective (K.homologyπ 0).hom := by
   rw [injective_iff_map_eq_zero]
@@ -40,15 +40,15 @@ variable {X : ShortComplex (Rep.{u} k G)} [IsDiscreteRep X.X₁] [IsDiscreteRep 
   [IsDiscreteRep X.X₃]
 
 /- English proof (translation)
-Establish `hepi : Epi (cohomologyMap X.g 0)` using `(cohomology_exact₃ hX 0 1 rfl).epi_f (h1.eq_of_tgt _ _)`. Establish `hsurj : Function.Surjective (cohomologyMap X.g 0).hom` using `(ModuleCat.epi_iff_surjective _).1 hepi`. Set `c₃ : locallyConstantCochains X.X₃ 0` to `invariantsToCochains₀ X.X₃ ⟨x₃, hx₃⟩`. Establish `hc₃ : ((cochainsComplex X.X₃).d 0 (0 + 1)).hom c₃ = 0`. Rewrite using `[cochainsComplex_d]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun φ => ModuleCat.Hom.hom φ (⟨x₃, hx₃⟩ : X.X₃.ρ.invariants)) (shortComplexH0 X.X₃).zero` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, ModuleCat.hom_zero] at this`. Conclude with `this`. Take `⟨z₃, hz₃⟩` from `exists_iCycles_eq_of_d_eq_zero (cochainsComplex X.X₃) 0 c₃ hc₃`. Take `⟨h₂, hh₂⟩` from `hsurj (((cochainsComplex X.X₃).homologyπ 0).hom z₃)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z₂, rfl⟩` from `homologyπ_surjective (cochainsComplex X.X₂) 0 h₂`. Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyMap (cochainsMap X.g) 0).hom _ = _ at hh₂`. Rewrite `hh₂` using `[homologyMap_homologyπ_apply]`. Establish `hcyc` using `homologyπ_zero_injective (cochainsComplex X.X₃) hh₂`. Establish `hcyc'` using `congrArg ((cochainsComplex X.X₃).iCycles 0).hom hcyc`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcyc'` using `[iCycles_cyclesMap_apply, hz₃]`. Establish `hd₂ : (dLocallyConstant X.X₂ 0).hom (((cochainsComplex X.X₂).iCycles 0).hom z₂) = 0`. Rewrite using `[← cochainsComplex_d]`. Conclude with `iCycles_d_apply _ 0 (0 + 1) z₂`. Take `⟨v, hv⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (shortComplexH0_exact X.X₂) (((cochainsComplex X.X₂).iCycles 0).hom z₂) hd₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨v.1, v.2, ?_⟩` and prove the remaining obligations. Establish `e1 : X.g.hom ((((cochainsComplex X.X₂).iCycles 0).hom z₂ : locallyConstantCochains X.X₂ 0).1 Fin.elim0) = x₃` using `congrArg (fun c : locallyConstantCochains X.X₃ 0 => c.1 Fin.elim0) hcyc'`. Establish `e2 : v.1 = (((cochainsComplex X.X₂).iCycles 0).hom z₂ : locallyConstantCochains X.X₂ 0).1 Fin.elim0` using `congrArg (fun c : locallyConstantCochains X.X₂ 0 => c.1 Fin.elim0) hv`. Rewrite using `[e2]`. Conclude with `e1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_invariants_map_eq (hX : X.ShortExact) (h1 : IsZero (cohomology X.X₁ 1))
     (x₃ : X.X₃) (hx₃ : x₃ ∈ X.X₃.ρ.invariants) :
@@ -88,7 +88,7 @@ theorem exists_mem_invariants_map_eq (hX : X.ShortExact) (h1 : IsZero (cohomolog
   exact e1
 
 /- English proof (translation)
-Establish `hm : Mono (δ hX (n + 1) (n + 1 + 1) rfl)` using `(cohomology_exact₃ hX (n + 1) (n + 1 + 1) rfl).mono_g (h₁.eq_of_src _ _)`. Establish `he : Epi (δ hX (n + 1) (n + 1 + 1) rfl)` using `(cohomology_exact₁ hX (n + 1) (n + 1 + 1) rfl).epi_f (h₂.eq_of_tgt _ _)`. Conclude with `isIso_of_mono_of_epi _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_δ_of_isZero (hX : X.ShortExact) (n : ℕ) (h₁ : IsZero (cohomology X.X₂ (n + 1)))
     (h₂ : IsZero (cohomology X.X₂ (n + 1 + 1))) : IsIso (δ hX (n + 1) (n + 1 + 1) rfl) := by
@@ -114,7 +114,7 @@ noncomputable def infResShortComplex (n : ℕ) : ShortComplex (ModuleCat k) wher
   zero := cohomologyInfl_comp_cohomologyRes A N n
 
 /- English proof (translation)
-Use `⟨(ModuleCat.mono_iff_injective _).2 (cohomologyInfl_one_injective A N), ?_⟩` and prove the remaining obligations. Rewrite using `[ShortComplex.moduleCat_exact_iff_ker_sub_range]`. Introduce `h hh`. Conclude with `exists_cohomologyInfl_one_eq A N h hh`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem infResShortComplex_zero_mono_exact :
     Mono (infResShortComplex A N 0).f ∧ (infResShortComplex A N 0).Exact := by
@@ -130,7 +130,7 @@ section Shift
 variable [CompactSpace G] (A : Rep.{u} k G) [IsDiscreteRep A] (N : Subgroup G) [N.Normal]
 
 /- English proof (translation)
-The claim follows from `(Rep.mono_iff_injective _).2 fun x y h => Subtype.ext (coindEmbedding_injective A (congrArg Subtype.val h)) epi_g := (Rep.epi_iff_surjective _).2 fun y => by obtain ⟨x₂, hx₂, hg⟩ := exists_mem_invariants_map_eq (X := (coindShortComplex A).map (Rep.resFunctor N.subtype)) (shortExa …`.
+A detailed English derivation is pending.
 -/
 theorem shortExact_map_quotientToInvariants_coindShortComplex
     (h1 : IsZero (cohomology (Rep.res N.subtype A) 1)) :
@@ -165,13 +165,13 @@ instance isDiscreteRep_res_coindCokernel : IsDiscreteRep (Rep.res N.subtype (coi
 variable [TotallyDisconnectedSpace G]
 
 /- English proof (translation)
-Establish `hX` using `coindShortComplex_shortExact A`. Establish `hS` using `shortExact_map_res N hX`. Establish `hQ` using `shortExact_map_quotientToInvariants_coindShortComplex A N (hA 1 one_pos (by omega))`. Establish `hC : ∀ i, 0 < i → i < n + 1 → IsZero (cohomology (Rep.res N.subtype (coindCokernel A)) i)`. Introduce `i hi hin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, rfl⟩ : ∃ m, i = m + 1` from `⟨i - 1, by omega⟩`. Establish `hδ` using `isIso_δ_of_isZero hS m (isZero_cohomology_res_discreteCoind (k := k) A N hN m) (isZero_cohomology_res_discreteCoind (k := k) A N hN (m + 1))`. Conclude with `(hA (m + 1 + 1) (by omega) (by omega)).of_iso (@asIso _ _ _ _ _ hδ)`. Take `⟨ihm, ihe⟩` from `ih (coindCokernel A) hC`. Establish `hδQ` using `isIso_δ_of_isZero hQ n (isZero_cohomology_quotientToInvariants_discreteCoind (k := k) A N n) (isZero_cohomology_quotientToInvariants_discreteCoind (k := k) A N (n + 1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδX` using `isIso_δ_of_isZero hX n (isZero_cohomology_discreteCoind k G A n) (isZero_cohomology_discreteCoind k G A (n + 1))`. Establish `hδS` using `isIso_δ_of_isZero hS n (isZero_cohomology_res_discreteCoind (k := k) A N hN n) (isZero_cohomology_res_discreteCoind (k := k) A N hN (n + 1))`. Establish `h1` using `δ_comp_cohomologyInfl N hX hQ (n + 1) (n + 1 + 1) rfl`. Establish `h2` using `δ_comp_cohomologyRes N hX (n + 1) (n + 1 + 1) rfl`. Set `e : infResShortComplex (coindCokernel A) N n ≅ infResShortComplex A N (n + 1)` to `ShortComplex.isoMk (@asIso _ _ _ _ _ hδQ) (@asIso _ _ _ _ _ hδX) (@asIso _ _ _ _ _ hδS) h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, (ShortComplex.exact_iff_of_iso e).1 ihe⟩` and prove the remaining obligations. Establish `hf : e.inv.τ₁ ≫ (infResShortComplex (coindCokernel A) N n).f ≫ e.hom.τ₂ = (infResShortComplex A N (n + 1)).f`. Rewrite using `[← Category.assoc, e.inv.comm₁₂, Category.assoc, ← ShortComplex.comp_τ₂, e.inv_hom_id, ShortComplex.id_τ₂, Category.comp_id]`. Rewrite using `[← hf]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infRes_step (hN : IsClosed (N : Set G)) (n : ℕ)
     (ih : ∀ (B : Rep.{u} k G) [IsDiscreteRep B],
@@ -210,7 +210,7 @@ theorem infRes_step (hN : IsClosed (N : Set G)) (n : ℕ)
   infer_instance
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact fun A _ _ => infResShortComplex_zero_mono_exact A N`. Consider the case `succ n ih => exact fun A _ hA => infRes_step A N hN n ih hA`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem infResShortComplex_mono_exact (hN : IsClosed (N : Set G)) (n : ℕ) :
     ∀ (A : Rep.{u} k G) [IsDiscreteRep A],
@@ -223,7 +223,7 @@ theorem infResShortComplex_mono_exact (hN : IsClosed (N : Set G)) (n : ℕ) :
 variable {A N}
 
 /- English proof (translation)
-Take `⟨n, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hq`. Conclude with `(ModuleCat.mono_iff_injective _).1 (infResShortComplex_mono_exact N hN n A hA).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cohomologyInfl_injective (hN : IsClosed (N : Set G)) {q : ℕ} (hq : q ≠ 0)
     (hA : ∀ i, 0 < i → i < q → IsZero (cohomology (Rep.res N.subtype A) i)) :
@@ -232,7 +232,7 @@ theorem cohomologyInfl_injective (hN : IsClosed (N : Set G)) {q : ℕ} (hq : q �
   exact (ModuleCat.mono_iff_injective _).1 (infResShortComplex_mono_exact N hN n A hA).1
 
 /- English proof (translation)
-Take `⟨n, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hq`. Conclude with `(infResShortComplex_mono_exact N hN n A hA).2.moduleCat_range_eq_ker`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem range_cohomologyInfl_eq_ker_cohomologyRes (hN : IsClosed (N : Set G)) {q : ℕ} (hq : q ≠ 0)
     (hA : ∀ i, 0 < i → i < q → IsZero (cohomology (Rep.res N.subtype A) i)) :

@@ -4,19 +4,19 @@ import Formalism.PadicSubsetSums.StableGradedCounts.IRRBBDivides
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 /- English proof (translation)
-Break down `S.eq_empty_or_nonempty with rfl | hne` into its components or cases. Simplify using `only [Finset.card_empty, Nat.cast_zero]`. Check the signs of the components of the expression. Use `set g0 := S.min' hne with hg0def`. Establish `hg0 : g0 ∈ S` using `S.min'_mem hne`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvd : ∀ a ∈ S, g0 ≤ a ∧ M ∣ a - g0`. Introduce `a ha`. Establish `ha0 : g0 ≤ a` using `S.min'_le a ha`. Use `⟨ha0, (Nat.modEq_iff_dvd' ha0).mp ?_⟩` and prove the remaining obligations. Unfold `Nat.ModEq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hS g0 hg0).2.2, (hS a ha).2.2]`. Establish `hinj : Set.InjOn (fun g => (g - g0) / M) (S : Set ℕ)`. Introduce `a ha b hb hab`. Take `⟨ha0, s, hs⟩` from `hdvd a ha`. Take `⟨hb0, t, ht⟩` from `hdvd b hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only at hab`. Rewrite `hab` using `[hs, ht, Nat.mul_div_cancel_left _ hM, Nat.mul_div_cancel_left _ hM]`. Substitute `hab` using the available equality. Use linear arithmetic over natural numbers and integers. Establish `himg : S.image (fun g => (g - g0) / M) ⊆ Finset.range (⌊Y / M⌋₊ + 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.mp hk`. Rewrite using `[Finset.mem_range, Nat.lt_succ_iff]`. Apply `Nat.le_floor` to reduce the goal to its premises. Establish `ha0 : g0 ≤ a` using `(hdvd a ha).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (((a - g0) / M : ℕ) : ℝ) ≤ ((a - g0 : ℕ) : ℝ) / M` using `Nat.cast_div_le`. Establish `h2 : ((a - g0 : ℕ) : ℝ) = (a : ℝ) - g0` using `Nat.cast_sub ha0`. Establish `h3 : (a : ℝ) - g0 ≤ Y` using `by linarith [(hS a ha).2.1, (hS g0 hg0).1]`. Establish `hM' : (0 : ℝ) < M` using `by exact_mod_cast hM`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hc : S.card ≤ ⌊Y / M⌋₊ + 1`. Rewrite using `[← Finset.card_image_of_injOn hinj]`. Simplify using `using Finset.card_le_card himg`. Establish `hfl : ((⌊Y / M⌋₊ : ℕ) : ℝ) ≤ Y / M` using `Nat.floor_le (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_class_le (S : Finset ℕ) (Y : ℝ) (M r : ℕ) (hM : 0 < M) (hY : 0 ≤ Y)
     (hS : ∀ g ∈ S, Y ≤ (g : ℝ) ∧ (g : ℝ) ≤ 2 * Y ∧ g % M = r) :
@@ -60,13 +60,11 @@ theorem card_class_le (S : Finset ℕ) (Y : ℝ) (M r : ℕ) (hM : 0 < M) (hY : 
     _ ≤ Y / M + 1 := by push_cast; linarith
 
 /- English proof (translation)
-Establish `hY0 : 0 < Y` using `by linarith`. Establish `h1 : Y ^ ((1 : ℝ) / 4) ≤ M`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `h4` using `pow_le_pow_left₀ hM.le hcon.le 4`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (Y ^ ((1 : ℝ) / 4)) ^ 4 = Y`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hY0.le]`. Evaluate the numerical expressions. Rewrite `h4` using `[h5]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2 : Y = Y ^ ((3 : ℝ) / 4) * Y ^ ((1 : ℝ) / 4)`. Rewrite using `[← Real.rpow_add hY0]`. Evaluate the numerical expressions. Rewrite using `[div_le_iff₀ hM]`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `mul_le_mul_of_nonneg_left h1 (Real.rpow_nonneg hY0.le _)`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem div_le_rpow (Y M : ℝ) (hY : 1 ≤ Y) (hM : 0 < M) (h : Y < M ^ 4) :
     Y / M ≤ Y ^ ((3 : ℝ) / 4) := by
@@ -88,23 +86,21 @@ theorem div_le_rpow (Y M : ℝ) (hY : 1 ≤ Y) (hM : 0 < M) (h : Y < M ^ 4) :
         exact mul_le_mul_of_nonneg_left h1 (Real.rpow_nonneg hY0.le _)
 
 /- English proof (translation)
-Use `set M := l ^ j with hMdef`. Establish `hM : 0 < M` using `pow_pos hl.pos j`. Establish `hM' : (0 : ℝ) < (M : ℝ)` using `by exact_mod_cast hM`. Use `set R := (Finset.range M).filter (fun x => x ^ d ≡ 1 [MOD M]) with hR`. Establish `hRcard : R.card ≤ 2 * d` using `Formalism.GaloisIrreducibility.residuesLe l j d hl hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmaps : ∀ g ∈ S, g % M ∈ R`. Introduce `g hg`. Take `⟨h1, _, h3⟩` from `hS g hg`. Establish `hg1 : 1 ≤ g`. Establish `: (1 : ℝ) ≤ (g : ℝ)` using `hY.trans h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hgd : 1 ≤ g ^ d` using `Nat.one_le_pow _ _ hg1`. Establish `hmod : 1 ≡ g ^ d [MOD M]` using `(Nat.modEq_iff_dvd' hgd).mpr h3`. Rewrite using `[hR, Finset.mem_filter, Finset.mem_range]`. Use `⟨Nat.mod_lt _ hM, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((Nat.mod_modEq g M).pow d).trans hmod.symm`. Establish `hcard : S.card = ∑ r ∈ R, (S.filter (fun g => g % M = r)).card` using `Finset.card_eq_sum_card_fiberwise hmaps`. Establish `hfib : ∀ r ∈ R, ((S.filter (fun g => g % M = r)).card : ℝ) ≤ Y ^ ((3 : ℝ) / 4) + 1`. Introduce `r _`. Establish `h1` using `card_class_le (S.filter (fun g => g % M = r)) Y M r hM (by linarith) (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `g hg`. Take `⟨hgS, hgr⟩` from `Finset.mem_filter.mp hg`. Conclude with `⟨(hS g hgS).1, (hS g hgS).2.1, hgr⟩)`. Establish `h2 : Y / (M : ℝ) ≤ Y ^ ((3 : ℝ) / 4)`. Apply `div_le_rpow Y M hY hM'` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((M : ℝ)) ^ 4 = (l : ℝ) ^ (4 * j)`. Rewrite using `[hMdef]`. Use `push_cast`. Rewrite using `[← pow_mul, mul_comm]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `hj`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc0 : (0 : ℝ) ≤ Y ^ ((3 : ℝ) / 4) + 1`. Use `Real.rpow_nonneg (by linarith : (0 : ℝ) ≤ Y) ((3 : ℝ) / 4)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcard]`. Use `push_cast`. Both sides reduce to the same expression. Use `_ ≤ ∑ _r ∈ R, (Y ^ ((3 : ℝ) / 4) + 1) := Finset.sum_le_sum hfib`.
-
-Use `_ = (R.card : ℝ) * (Y ^ ((3 : ℝ) / 4) + 1) := by rw [Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ 2 * d * (Y ^ ((3 : ℝ) / 4) + 1) := by`. Apply `mul_le_mul_of_nonneg_right _ hc0` to reduce the goal to its premises. Conclude with `hRcard` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem card_pow_class_le (S : Finset ℕ) (Y : ℝ) (l j d : ℕ) (hl : l.Prime) (hd : 1 ≤ d)
     (hY : 1 ≤ Y) (hj : Y < (l : ℝ) ^ (4 * j))
@@ -153,33 +149,29 @@ theorem card_pow_class_le (S : Finset ℕ) (Y : ℝ) (l j d : ℕ) (hl : l.Prime
         exact_mod_cast hRcard
 
 /- English proof (translation)
-Introduce `N g₁ Y S hN hY hg₁ hS`. Use `set c : ℝ := Y ^ ((3 : ℝ) / 4) + 1 with hc`. Establish `hc0 : (0 : ℝ) ≤ c`. Use `Real.rpow_nonneg (by linarith : (0 : ℝ) ≤ Y) ((3 : ℝ) / 4)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hcover : S ⊆ (BB g₁ N).biUnion (fun l => S.filter (fun g => l ∈ BB g N))`. Introduce `g hg`. Take `⟨_, _, _, hnd⟩` from `hS g hg`. Rewrite `hnd` using `[Finset.not_disjoint_iff]`. Take `⟨l, h1, h2⟩` from `hnd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Finset.mem_biUnion.mpr ⟨l, h1, Finset.mem_filter.mpr ⟨hg, h2⟩⟩`. Establish `hper : ∀ l ∈ BB g₁ N, ((S.filter (fun g => l ∈ BB g N)).card : ℝ) ≤ 1 + 2 * (N : ℝ) ^ 2 * c`. Introduce `l hlB`. Establish `hl : l.Prime`. Simplify using `only [BB, Finset.mem_insert, Finset.mem_filter] at hlB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `hlB with rfl | ⟨_, h2, _⟩` into its components or cases. Conclude with `hg₁`. Conclude with `h2`. Establish `hex : ∃ j : ℕ, Y < (l : ℝ) ^ (4 * j)`. Establish `h1 : (1 : ℝ) < (l : ℝ) ^ 4`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) < (l : ℝ)` using `by exact_mod_cast hl.one_lt`. Conclude with `one_lt_pow₀ this (by norm_num)`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt Y h1`. Conclude with `⟨n, by rw [pow_mul]; exact hn⟩`. Use `set j := Nat.find hex with hjdef`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hj : Y < (l : ℝ) ^ (4 * j)` using `Nat.find_spec hex`. Establish `hmin : ∀ i < j, (l : ℝ) ^ (4 * i) ≤ Y` using `fun i hi => not_lt.mp (Nat.find_min hex hi)`. Use `set F : ℕ → Finset ℕ := fun d => S.filter (fun g => l ^ j ∣ g ^ d - 1) with hF`. Establish `hsub : S.filter (fun g => l ∈ BB g N) ⊆ insert l ((Finset.Icc 1 N).biUnion F)`. Introduce `g hg`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hgS, hlg⟩` from `Finset.mem_filter.mp hg`. Take `⟨hgp, hYg, _, _⟩` from `hS g hgS`. Simplify using `only [BB, Finset.mem_insert, Finset.mem_filter] at hlg`. Break down `hlg with rfl | ⟨_, _, d, hd, h3⟩` into its components or cases. Conclude with `Finset.mem_insert_self _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.mem_insert_of_mem (Finset.mem_biUnion.mpr ⟨d, hd, ?_⟩)` and prove the remaining obligations. Rewrite using `[hF]`. Use `Finset.mem_filter.mpr ⟨hgS, ?_⟩` and prove the remaining obligations. Conclude with `bad_primes_divides l g d j Y hl (Finset.mem_Icc.mp hd).1 hgp.two_le hYg h3 hj hmin`. Establish `hFd : ∀ d ∈ Finset.Icc 1 N, ((F d).card : ℝ) ≤ 2 * N * c`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `d hd`. Take `⟨hd1, hdN⟩` from `Finset.mem_Icc.mp hd`. Establish `h1` using `card_pow_class_le (F d) Y l j d hl hd1 hY hj (by`. Introduce `g hg`. Take `⟨hgS, hdv⟩` from `Finset.mem_filter.mp hg`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨(hS g hgS).2.1, (hS g hgS).2.2.1, hdv⟩)`. Establish `hdN' : (d : ℝ) ≤ (N : ℝ)` using `by exact_mod_cast hdN`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hc0` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : (S.filter (fun g => l ∈ BB g N)).card ≤ (∑ d ∈ Finset.Icc 1 N, (F d).card) + 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ((S.filter (fun g => l ∈ BB g N)).card : ℝ) ≤ (∑ d ∈ Finset.Icc 1 N, ((F d).card : ℝ)) + 1` using `by exact_mod_cast h1`. Establish `h3 : (∑ d ∈ Finset.Icc 1 N, ((F d).card : ℝ)) ≤ ∑ _d ∈ Finset.Icc 1 N, 2 * (N : ℝ) * c` using `Finset.sum_le_sum hFd`. Establish `h4 : (∑ _d ∈ Finset.Icc 1 N, 2 * (N : ℝ) * c) = 2 * (N : ℝ) ^ 2 * c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.sum_const, Nat.card_Icc, nsmul_eq_mul]`. Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB0 : (0 : ℝ) ≤ 1 + 2 * (N : ℝ) ^ 2 * c` using `by positivity`.
-
-Establish `hBB : ((BB g₁ N).card : ℝ) ≤ 3 * N + 1`. Conclude with `bad_primes_cardinality g₁ N hg₁.two_le` after adjusting the coercions. Establish `h1 : S.card ≤ ∑ l ∈ BB g₁ N, (S.filter (fun g => l ∈ BB g N)).card` using `(Finset.card_le_card hcover).trans Finset.card_biUnion_le`. Establish `h2 : (S.card : ℝ) ≤ ∑ l ∈ BB g₁ N, ((S.filter (fun g => l ∈ BB g N)).card : ℝ)`. Conclude with `h1` after adjusting the coercions.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ (3 * N + 1 : ℝ) * (1 + 2 * (N : ℝ) ^ 2 * c) := mul_le_mul_of_nonneg_right hBB hB0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem excluded_count_bound : ExcludedCount := by
   classical

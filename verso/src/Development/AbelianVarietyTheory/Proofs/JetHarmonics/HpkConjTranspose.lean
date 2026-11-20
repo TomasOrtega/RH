@@ -21,11 +21,11 @@ open GlobalTheory.LeadingMinorInv
 namespace OmgRight
 
 /- English proof (translation)
-Establish `hdet : U.det = 1`. Rewrite using `[det_of_isUpperTriangular]`. Simplify using `[hU.2]`. Introduce `i j hij`. Conclude with `hU.1 _ _ hij`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hrow : ∀ b, U.adjugate (Fin.last n) b = if Fin.last n = b then 1 else 0`. Introduce `b`. Establish `h` using `congrFun (congrFun (Matrix.mul_adjugate U) (Fin.last n)) b`. Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.last n), hU.2, one_mul, hdet, one_smul, Matrix.one_apply]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _ hj`. Rewrite using `[hU.1 _ _ (lt_of_le_of_ne (Fin.le_last j) hj), zero_mul]`. Simplify using the standard rewrite rules. Rewrite using `[adjugate_mul_distrib, Matrix.mul_apply]`. Simplify using `[hrow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma adjugate_last_mul {n : ℕ} (Z U : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (hU : UpUni U) (a : Fin (n + 1)) :
     (Z * U).adjugate (Fin.last n) a = Z.adjugate (Fin.last n) a := by
@@ -47,7 +47,7 @@ lemma adjugate_last_mul {n : ℕ} (Z U : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)
   simp [hrow]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[conjTranspose_apply]`. Unfold `Hpk`. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hpk_conjTranspose (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
   ext i j
@@ -57,11 +57,11 @@ lemma hpk_conjTranspose (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
   split_ifs <;> first | (exfalso; omega) | simp
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Rewrite using `[mulVec, dotProduct, Finset.sum_eq_single (eI k r a)]`. Establish `: Hpk k r (esI k r a) (eI k r a) = 1`. Unfold `Hpk esI eI`. Simplify using `only [Fin.ext_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[this, one_mul]`. Introduce `j _ hj`. Establish `hj' : j.val ≠ a.val` using `fun h => hj (Fin.ext h)`. Establish `: Hpk k r (esI k r a) j = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Hpk esI`. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[this, zero_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma hpk_mulVec_esI (k r : ℕ) (w : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     (Hpk k r *ᵥ w) (esI k r a) = w (eI k r a) := by
@@ -82,15 +82,15 @@ lemma hpk_mulVec_esI (k r : ℕ) (w : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
   · simp
 
 /- English proof (translation)
-Establish `key : (fun i : Fin (2 * r + k + 1) => if r ≤ i.val ∧ i.val ≤ r + k then (n *ᵥ v) i else 0) = (fun i : Fin (2 * r + k + 1) => if r ≤ i.val ∧ i.val ≤ r + k then v i else 0)`. Use extensionality with `i`. Use `split_ifs with hi`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single i]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn.2.2 i i (by omega) (by omega) (by omega), if_pos rfl, one_mul]`. Introduce `j _ hji`. Distinguish the cases in `hj1 : j.val < r`. Establish `e : eI k r ⟨j.val, hj1⟩ = j` using `by ext; simp [eI]`. Use `hn.2.1 ⟨j.val, hj1⟩ i (by simp; omega)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[e, if_neg (Ne.symm hji)]`. Rewrite using `[this, zero_mul]`. Distinguish the cases in `hj2 : j.val ≤ r + k`. Rewrite using `[hn.2.2 i j (by omega) hj2 (by omega), if_neg (Ne.symm hji), zero_mul]`. Establish `hlt : 2 * r + k - j.val < r` using `by omega`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : esI k r ⟨2 * r + k - j.val, hlt⟩ = j` using `by ext; simp [esI]; omega`. Use `hv ⟨2 * r + k - j.val, hlt⟩` as an intermediate fact. Rewrite `this` using `[e]`. Rewrite using `[this, mul_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Unfold `Formalism.FourierDecayAlt.D.prW`. Simplify using `only [key]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma prW_mulVec {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) {n : Mx k r} (hn : n ∈ Formalism.QuantumDeterminants.Nset k r)
     {v : Fin (2 * r + k + 1) → ℂ} (hv : ∀ a : Fin r, v (esI k r a) = 0) :
@@ -121,13 +121,13 @@ lemma prW_mulVec {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) {n : Mx k r} (hn 
   simp only [key]
 
 /- English proof (translation)
-Establish `hx : (∑ c, star ((Zhat k r z z' g).adjugate (Fin.last r) c) • fvec k r z c) = flagMat k r z *ᵥ star ((Zhat k r z z' g).adjugate (Fin.last r))`. Use extensionality with `i`. Simplify using `[flagMat, mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `hF : ∀ w : Fin (2 * r + k + 1) → ℂ, w (eI k r a) = ((flagMat k r z')ᴴ *ᵥ w) a.castSucc`. Introduce `w`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[flagMat, mulVec, dotProduct, fvec, bvec, Pi.single_apply, apply_ite]`. Establish `hZ : (flagMat k r z')ᴴ * (gᴴ * Hpk k r * flagMat k r z) = (Zhat k r z z' g)ᴴ`. Rewrite using `[zhat_eq]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hpk_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[hx, Matrix.mul_assoc, ← mulVec_mulVec, hpk_mulVec_esI]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(hF _).trans ?_` and prove the remaining obligations. Rewrite using `[mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc, hZ]`. Use `erw [← star_vecMul]`. Establish `h` using `congrFun (congrFun (Matrix.adjugate_mul (Zhat k r z z' g)) (Fin.last r)) a.castSucc`. Simplify using `only [Matrix.smul_apply, Matrix.one_apply_ne (Fin.castSucc_ne_last a).symm, smul_zero] at h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ((Zhat k r z z' g).adjugate (Fin.last r) ᵥ* Zhat k r z z' g) a.castSucc = 0` using `h`. Rewrite using `[Pi.star_apply, h2, star_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cof_free (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mx k r) (a : Fin r) :
     ((Hpk k r * gᴴ * Hpk k r) *ᵥ
@@ -158,7 +158,7 @@ open OmgRight
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-The claim follows from `_root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.inv_eq_UH hx`.
+A detailed English derivation is pending.
 -/
 private lemma inv_eq_hpk_mul_conjTranspose_mul_hpk_of_mem_UH {x : _root_.Formalism.FourierDecayAlt.Q.Mx k r} (hx : x ∈ _root_.Formalism.QuantumDeterminants.UH (_root_.Formalism.QuantumDeterminants.Hpk k r)) :
     x⁻¹ = _root_.Formalism.QuantumDeterminants.Hpk k r * xᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r :=
@@ -167,7 +167,7 @@ private lemma inv_eq_hpk_mul_conjTranspose_mul_hpk_of_mem_UH {x : _root_.Formali
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, _root_.GlobalTheory.CompanionTheory.ZuckCasSplit.hpk_sq, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma hpk_mul_hpk_mul_eq_self (X : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) ℂ) :
     _root_.Formalism.QuantumDeterminants.Hpk k r * (_root_.Formalism.QuantumDeterminants.Hpk k r * X) = X := by
@@ -176,7 +176,7 @@ private lemma hpk_mul_hpk_mul_eq_self (X : Matrix (Fin (2 * r + k + 1)) (Fin (r 
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-The claim follows from `_root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.Hpk_conjTranspose`.
+A detailed English derivation is pending.
 -/
 private lemma hpk_conjTranspose_eq_self' : (_root_.Formalism.QuantumDeterminants.Hpk k r)ᴴ = _root_.Formalism.QuantumDeterminants.Hpk k r :=
   _root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.Hpk_conjTranspose
@@ -184,9 +184,9 @@ private lemma hpk_conjTranspose_eq_self' : (_root_.Formalism.QuantumDeterminants
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-Rewrite using `[adjugate_apply, det_of_upperTriangular]`. Simplify using `[updateRow_apply, Pi.single_apply, hU.2]`. Introduce `i j hij`. Simplify using `only [updateRow_apply]`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `h` using the available equality. Rewrite using `[Pi.single_apply, if_neg]`. Conclude with `(hij.trans_le (Fin.le_last _)).ne`. Conclude with `hU.1 i j hij`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma adjugate_upUni_last_apply {m : ℕ} {U : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ}
     (hU : _root_.GlobalTheory.LeadingMinorInv.UpUni U) (a : Fin (m + 1)) :
@@ -204,7 +204,7 @@ private lemma adjugate_upUni_last_apply {m : ℕ} {U : Matrix (Fin (m + 1)) (Fin
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[mulVec, dotProduct, _root_.GlobalTheory.LeadingMinorInv.flagMat, Finset.sum_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma flagMat_mulVec_eq_sum_smul_fvec (z : Fin (2 * r + k + 1) → ℂ) (c : Fin (r + 1) → ℂ) :
     _root_.GlobalTheory.LeadingMinorInv.flagMat k r z *ᵥ c = ∑ a, c a • _root_.Formalism.QuantumDeterminants.fvec k r z a := by
@@ -214,7 +214,7 @@ private lemma flagMat_mulVec_eq_sum_smul_fvec (z : Fin (2 * r + k + 1) → ℂ) 
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.WigSh.omg`. Rewrite using `[← mulVec_mulVec _ (_root_.Formalism.QuantumDeterminants.Hpk k r * gᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r) (_root_.GlobalTheory.LeadingMinorInv.flagMat k r z), flagMat_mulVec_eq_sum_smul_fvec]`. Simplify using `[mulVec_single_one, conjTranspose_apply]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma rW_mulVec_adjugate_zhat_single_last_eq (z z' : Fin (2 * r + k + 1) → ℂ) (g : _root_.Formalism.FourierDecayAlt.Q.Mx k r) :
     _root_.GlobalTheory.WigSh.omg k r z z' g = _root_.Formalism.FourierDecayAlt.D.prW k r z'
@@ -227,7 +227,7 @@ private lemma rW_mulVec_adjugate_zhat_single_last_eq (z z' : Fin (2 * r + k + 1)
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.LeadingMinorInv.zhat_eq]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hpk_conjTranspose_eq_self', Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (_root_.Formalism.QuantumDeterminants.Hpk k r) (_root_.Formalism.QuantumDeterminants.Hpk k r), _root_.GlobalTheory.CompanionTheory.ZuckCasSplit.hpk_sq, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma gram_eq_conjTranspose_hpk_mul_flagMat_mul (z z' : Fin (2 * r + k + 1) → ℂ) (g : _root_.Formalism.FourierDecayAlt.Q.Mx k r) :
     _root_.Formalism.QuantumDeterminants.Zhat k r z z' g = (_root_.Formalism.QuantumDeterminants.Hpk k r * gᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r * _root_.GlobalTheory.LeadingMinorInv.flagMat k r z)ᴴ *
@@ -240,13 +240,13 @@ private lemma gram_eq_conjTranspose_hpk_mul_flagMat_mul (z z' : Fin (2 * r + k +
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-Establish `hNC` using `((_root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.mem_Nset_iff m).1 hm).2`. Establish `hb : (fun i : Fin (2 * r + k + 1) => if r ≤ ↑i ∧ ↑i ≤ r + k then (m *ᵥ p) i else 0) = (fun i : Fin (2 * r + k + 1) => if r ≤ ↑i ∧ ↑i ≤ r + k then p i else 0)`. Use extensionality with `i`. Use `split_ifs with hi`. Simplify using `only [mulVec, dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[hNC i i hi.2 (min_le_left _ _)]`. Simplify using the standard rewrite rules. Introduce `j _ hji`. Distinguish the cases in `hj : (j : ℕ) ≤ r + k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hNC i j hj (le_trans (min_le_right _ _) hi.1), if_neg (Ne.symm hji)]`. Simplify using the standard rewrite rules. Rewrite using `[hp j (by omega)]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [_root_.Formalism.FourierDecayAlt.D.prW]`. Rewrite using `[hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma prW_mulVec_eq_of_mem_nset_of_tail_eq_zero {z' : Fin (2 * r + k + 1) → ℂ} {m : _root_.Formalism.FourierDecayAlt.Q.Mx k r}
     (hm : m ∈ _root_.Formalism.QuantumDeterminants.Nset k r) {p : Fin (2 * r + k + 1) → ℂ}
@@ -275,19 +275,17 @@ private lemma prW_mulVec_eq_of_mem_nset_of_tail_eq_zero {z' : Fin (2 * r + k + 1
 open Matrix in
 variable {k r : ℕ} in
 /- English proof (translation)
-Establish `hJP : ∀ (X : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) ℂ) i c, (_root_.Formalism.QuantumDeterminants.Hpk k r * X) i c = _root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.epsI k r i * X (_root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.piI k r i) c`. Introduce `X i c`. Establish `hJa : ∀ i l, _root_.Formalism.QuantumDeterminants.Hpk k r i l = if l = _root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.piI k r i then _root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.epsI k r i else 0` using `fun i l => _root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.Hpk_apply i l`. Rewrite using `[mul_apply]`. Simplify using `only [hJa, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hj2` using `j.isLt`. Take `⟨b, hb⟩ : ∃ b : Fin r, (b : ℕ) = 2 * r + k - j` from `⟨⟨2 * r + k - j, by omega⟩, rfl⟩`. Establish `hpi : _root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.piI k r (_root_.Formalism.QuantumDeterminants.eI k r b) = j`. Establish `hb2` using `b.isLt`. Apply `Fin.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `rw [_root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.piI_val, if_neg] <;> simp only [_root_.Formalism.QuantumDeterminants.eI] <;> omega`. Establish `key : (_root_.Formalism.QuantumDeterminants.Hpk k r * _root_.GlobalTheory.LeadingMinorInv.flagMat k r z')ᴴ * (Q * (Qᴴ * (_root_.Formalism.QuantumDeterminants.Hpk k r * _root_.GlobalTheory.LeadingMinorInv.flagMat k r z')).adjugateᴴ) = ((Qᴴ * (_root_.Formalism.QuantumDeterminants.H …`. Rewrite using `[conjTranspose_mul (adjugate _), conjTranspose_mul Qᴴ, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Establish `h1` using `congrFun (congrFun key (Fin.castSucc b)) (Fin.last r)`. Rewrite `h1` using `[adjugate_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [conjTranspose_apply, Matrix.smul_apply, one_apply, if_neg (Fin.castSucc_lt_last b).ne', smul_zero, star_zero] at h1`. Rewrite `h1` using `[conjTranspose_mul, hpk_conjTranspose_eq_self', Matrix.mul_assoc, mul_apply, Finset.sum_eq_single (_root_.Formalism.QuantumDeterminants.eI k r b)]`. Rewrite `h1` using `[hJP, hpi]`. Establish `heps` using `_root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.epsI_mul_self (k := k) (r := r) (_root_.Formalism.QuantumDeterminants.eI k r b)`. Establish `hF : (_root_.GlobalTheory.LeadingMinorInv.flagMat k r z')ᴴ (Fin.castSucc b) (_root_.Formalism.QuantumDeterminants.eI k r b) = 1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[conjTranspose_apply, _root_.GlobalTheory.LeadingMinorInv.flagMat, _root_.Formalism.QuantumDeterminants.fvec, _root_.Formalism.QuantumDeterminants.bvec]`. Rewrite `h1` using `[hF, one_mul]`. Rewrite using `[mulVec_mulVec]`. Simplify using `only [mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `heps` using `[h, zero_mul]`. Conclude with `absurd heps zero_ne_one`. Conclude with `h`. Introduce `l _ hl`. Simplify using `[conjTranspose_apply, _root_.GlobalTheory.LeadingMinorInv.flagMat, _root_.Formalism.QuantumDeterminants.fvec, _root_.Formalism.QuantumDeterminants.bvec, Pi.single_apply, hl]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma mulVec_adjugate_single_last_apply_eq_zero_of_lt (z' : Fin (2 * r + k + 1) → ℂ)
     (Q : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) ℂ) (j : Fin (2 * r + k + 1))
@@ -340,11 +338,11 @@ private lemma mulVec_adjugate_single_last_apply_eq_zero_of_lt (z' : Fin (2 * r +
 open Matrix in
 
 /- English proof (translation)
-Introduce `k r z z' g m _ hz' _ hm`. Take `⟨U, hU, hmF⟩` from `_root_.GlobalTheory.LeadingMinorInv.exists_N k r z' hz' m hm`. Establish `hmUH : m ∈ _root_.Formalism.QuantumDeterminants.UH (_root_.Formalism.QuantumDeterminants.Hpk k r)` using `((_root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.mem_Nset_iff m).1 hm).1`. Establish `hQm : _root_.Formalism.QuantumDeterminants.Hpk k r * (g * m)ᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r * _root_.GlobalTheory.LeadingMinorInv.flagMat k r z = m⁻¹ * (_root_.Formalism.QuantumDeterminants.Hpk k r * gᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r * _root_.Glob …`. Rewrite using `[inv_eq_hpk_mul_conjTranspose_mul_hpk_of_mem_UH hmUH]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, hpk_mul_hpk_mul_eq_self]`. Establish `hC : (m⁻¹ * (_root_.Formalism.QuantumDeterminants.Hpk k r * gᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r * _root_.GlobalTheory.LeadingMinorInv.flagMat k r z))ᴴ * (_root_.Formalism.QuantumDeterminants.Hpk k r * _root_.GlobalTheory.LeadingMinorInv.flagMat k r z') = ((_root_.Fo …`. Rewrite using `[conjTranspose_mul m⁻¹, inv_eq_hpk_mul_conjTranspose_mul_hpk_of_mem_UH hmUH]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hpk_conjTranspose_eq_self', Matrix.mul_assoc, hpk_mul_hpk_mul_eq_self, hmF]`. Establish `he : U.adjugateᴴ *ᵥ Pi.single (Fin.last r) 1 = Pi.single (Fin.last r) 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a`. Simplify using `[mulVec_single_one, conjTranspose_apply, adjugate_upUni_last_apply hU, Pi.single_apply]`. Rewrite using `[rW_mulVec_adjugate_zhat_single_last_eq, rW_mulVec_adjugate_zhat_single_last_eq, gram_eq_conjTranspose_hpk_mul_flagMat_mul, gram_eq_conjTranspose_hpk_mul_flagMat_mul, hQm, hC, adjugate_mul_distrib, conjTranspose_mul, ← mulVec_mulVec _ (adjugate _)ᴴ, he, ← mulVec_mulVec _ m⁻¹]`. Conclude with `prW_mulVec_eq_of_mem_nset_of_tail_eq_zero ((_root_.PI.QuotSetU.UnitaryGroupMassFormula.SW.nilpotent_subgroup k r).2.2 m hm) (mulVec_adjugate_single_last_apply_eq_zero_of_lt _ _)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.WigSh.omg_mul_N : ∀ (k r : ℕ) (z z' : (Fin (2 * r + k + 1) → ℂ))
     (g m : _root_.Formalism.FourierDecayAlt.Q.Mx k r), _root_.Formalism.QuantumDeterminants.inWb k r z → _root_.Formalism.QuantumDeterminants.inWb k r z' →

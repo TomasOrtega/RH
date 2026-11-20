@@ -42,7 +42,7 @@ theorem B_locJ (hi : i + 1 ≤ D.R.m) (t : GChartTie (X.g u w hg) Lv i em (D.sp.
     (B : GL (Fin (D.sp.X (i + 1)).rank) D.host.E) : (locJ hi t B).B = reGL (rankN D (i + 1) hi) _ B := rfl
 
 /- English proof (translation)
-Introduce `_ a` and use `(X.g u w hg).spl_alg _ _ a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem splAlg_locJ' (hi : i + 1 ≤ D.R.m) (t : GChartTie (X.g u w hg) Lv i em (D.sp.X (i + 1)).gram Lb Uloc ψ eps)
     (B : GL (Fin (D.sp.X (i + 1)).rank) D.host.E) : GlobalTheory.TwV.SplAlg (locJ hi t B) :=
@@ -51,7 +51,7 @@ theorem splAlg_locJ' (hi : i + 1 ≤ D.R.m) (t : GChartTie (X.g u w hg) Lv i em 
 end Step
 
 /- English proof (translation)
-Introduce `_ a` and use `(X.g u w hg).spl_alg _ _ a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem splAlg_locAt {D : D7} (X : Formalism.L2.Herm.Herm0 D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (B0 : GL (Fin D.R.k) D.host.E) :
@@ -61,9 +61,7 @@ theorem splAlg_locAt {D : D7} (X : Formalism.L2.Herm.Herm0 D) (u : D.what₂.Wor
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D Gt c g u w hg Tw μ Z Fl ht`. Use `⟨fun j hj β v => ?_, fun j hj β v => ?_, fun j hj β β' => ?_, fun j hj => rfl, fun j hj β => ?_, splAlg_locAt g.herm u w hg g.cmp.B⟩` and prove the remaining obligations. Conclude with `iw_locJ (hcmp := (Z.loc Fl ht j hj).fin β) hj ((Z.loc Fl ht j hj).t β) (Z.loc Fl ht j hj).B g.cmp.B v`. Conclude with `pl_locJ (hcmp := (Z.loc Fl ht j hj).fin β) hj ((Z.loc Fl ht j hj).t β) (Z.loc Fl ht j hj).B g.cmp.B v`. Conclude with `(B_locJ (hcmp := (Z.loc Fl ht j hj).fin β) hj ((Z.loc Fl ht j hj).t β) (Z.loc Fl ht j hj).B).trans (B_locJ (hcmp := (Z.loc Fl ht j hj).fin β') hj ((Z.loc Fl ht j hj).t β') (Z.loc Fl ht j hj).B).symm`.
-
-Conclude with `splAlg_locJ' (hcmp := (Z.loc Fl ht j hj).fin β) hj ((Z.loc Fl ht j hj).t β) (Z.loc Fl ht j hj).B`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem loc_eq_step0 : ∀ {D : D7} (Gt : GatTies D) (c : LatCmp D) (g : GroupCompatibilityAll D Gt c) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (Tw : TwForms D) (μ : D.what₂.Tup) (Z : SiteD g.herm u w hg (Tw.fm u μ)) (Fl : Fills (D.gat u w hg)) (ht : Fl.t = D.R.t), (∀ j hj β v, (((Z.inTw Fl ht Gt).at' j hj).st.loc β).iw v = (lev0At g u w hg).A.iw v) ∧ (∀ j hj β v, (((Z.inTw Fl ht Gt).at' j hj).st.loc β).pl v = (lev0At g u w hg).A.pl v) ∧ (∀ j hj β β', (((Z.inTw Fl ht Gt).at' j hj).st.loc β).B = (((Z.inTw Fl ht Gt).at' j hj).st.loc β').B) ∧ (∀ j hj, ((Z.inTw Fl ht Gt).at' j hj).st.pos = Gt.gat_pos u w hg) ∧ (∀ j hj β, GlobalTheory.TwV.SplAlg (((Z.inTw Fl ht Gt).at' j hj).st.loc β)) ∧ GlobalTheory.TwV.SplAlg (lev0At g u w hg).A := by
   intro D Gt c g u w hg Tw μ Z Fl ht

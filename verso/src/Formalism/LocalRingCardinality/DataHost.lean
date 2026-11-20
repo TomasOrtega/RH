@@ -14,7 +14,7 @@ open scoped Pointwise
 namespace Formalism.BasicNotions
 
 /- English proof (translation)
-Take `⟨hq, hd, hq8, hd16, -⟩` from `h`. Apply the tactic sequence `refine ⟨hq, hd, ?_, ?_, ?_⟩ <;> rintro rfl <;> omega`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hypOdd_of_hostHyp {q d : ℕ} (h : HostHyp q d) : HypOdd q d := by
   obtain ⟨hq, hd, hq8, hd16, -⟩ := h
@@ -116,7 +116,7 @@ namespace Host
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-The claim follows from `hypOdd_of_hostHyp H.hyp`.
+A detailed English derivation is pending.
 -/
 theorem hypOdd : HypOdd H.q H.d := hypOdd_of_hostHyp H.hyp
 
@@ -206,7 +206,7 @@ def HNeZero {R : Ranks} (H : Host R) (p : ℕ) : Prop :=
     IsArithFrobAt ℤ σ P → Even (orderOf (H.galE σ).2)
 
 /- English proof (translation)
-Introduce `h1`. Use `h P σ hσ` as an intermediate fact. Rewrite `this` using `[h1, orderOf_one]`. Conclude with `Nat.not_even_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HNeZero.ne_one {R : Ranks} {H : Host R} {p : ℕ} (h : HNeZero H p) (P : Ideal (𝓞 H.E)) [P.IsPrime]
     [P.LiesOver (Ideal.span {(p : ℤ)})] (σ : H.E ≃ₐ[ℚ] H.E) (hσ : IsArithFrobAt ℤ σ P) : (H.galE σ).2 ≠ 1 := by

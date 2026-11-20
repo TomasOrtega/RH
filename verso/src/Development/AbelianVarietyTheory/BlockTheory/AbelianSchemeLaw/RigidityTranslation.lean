@@ -51,7 +51,7 @@ def GlobalFunctions : Prop :=
 def Laws : Prop := Cube ∧ Square ∧ Rigidity ∧ GlobalFunctions
 
 /- English proof (translation)
-Establish `h : fst T A ≫ toUnit T = toUnit (T ⊗ A)` using `toUnit_unique _ _`. Unfold `translate`. Rewrite using `[← Category.assoc, h, MonObj.lift_comp_one_left]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 example {S : Scheme.{0}} (A : Over S) [GrpObj A] (T : Over S) :
     translate A (toUnit T ≫ η[A]) = snd T A := by

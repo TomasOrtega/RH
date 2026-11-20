@@ -16,23 +16,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.MBLow
 
 /- English proof (translation)
-Introduce `κ hF hA R _ _ _ _ D hP hT F _ _ _ e N ν g r m k hg hm hk β ζ q hq s hs vB bX σ gm hAd k₀ hK`. Use `letI : Algebra (FractionRing R) ℂ := ((e : F →+* ℂ).comp (algebraMap (FractionRing R) F)).toAlgebra`. Establish `he : ∀ x, e (algebraMap (FractionRing R) F x) = algebraMap (FractionRing R) ℂ x` using `fun _ => rfl`. Take `⟨N', ν', I, hb, hh, hl, heX, hth, hrg, hvE, hfam⟩` from `GlobalTheory.T.degenerationValues_transport_fieldIso R D F ℂ e he N ν`. Take `⟨hform, hlev⟩` from `GlobalTheory.T.degenerationDataValuesIso_transport_formsLevelsFamilies F ℂ e N N' I hb hh hl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β', hβ⟩` from `hform k β`. Take `⟨q', hq', hev⟩` from `hlev m g hm ζ q hq`. Take `⟨hBK, hadp⟩` from `GlobalTheory.T.abelianKeyValue_adaptedVectors_fieldIso κ hF R D F ℂ e he N ν N' ν' I hh hl heX hth hvE vB`. Take `⟨gm', hpull, hAd'⟩` from `hadp r g bX σ gm hAd`. Use `choose s' hs1 hs2 using fun a => hfam (m ^ 2) (s a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs' : ∀ a, ∃ f, ν'.FamV (s' a) f ∧ IsEvFam N' m (q' a) f`. Introduce `a`. Take `⟨f, hf, hf2⟩` from `hs a`. Take `⟨f', hf', hff⟩` from `hs1 a f hf`. Conclude with `⟨f', hf', hev a f f' hf2 hff⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, H⟩` from `hA R D hP hT N' ν' g r m k hg hm hk β' _ q' hq' s' hs' vB _ σ gm' hAd' _ (hBK k₀ hK)`. Establish `h1 : ∀ a j α, (jc ν' (s' a) (gm' j) (I.e α)).fst = e (jc ν (s a) (gm j) α).fst`. Introduce `a j α`. Rewrite using `[hs2 a _ _ (hpull j) α]`. Simplify using `[dualMap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ∀ a j α, (jc ν' (s' a) (gm' j) (I.e α)).snd = e (jc ν (s a) (gm j) α).snd`. Introduce `a j α`. Rewrite using `[hs2 a _ _ (hpull j) α]`. Simplify using `[dualMap]`. Use `⟨ε, hε, fun u hu hu' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hsum, x₀, hg₀, lev₀, ϑ, hϑ, hJ, hκ⟩` from `H u hu hu'`. Use `⟨fun a j => ⟨?_, ?_⟩, x₀, hg₀, lev₀, ϑ, fun a j => ?_, ?_, hκ⟩` and prove the remaining obligations. Use `((I.e.toEquiv.summable_iff.2 (hsum a j).1)).mul_left ‖(e (ν.rg ^ (m ^ 2)))⁻¹‖` as an intermediate fact. Use `this.congr fun α => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, AddEquiv.toEquiv_eq_coe, EquivLike.coe_coe, h1, hβ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← norm_mul, map_div₀, div_eq_inv_mul, _root_.mul_assoc]`. Use `((I.e.toEquiv.summable_iff.2 (hsum a j).2)).mul_left ‖(e (ν.rg ^ (m ^ 2)))⁻¹‖` as an intermediate fact. Use `this.congr fun α => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, AddEquiv.toEquiv_eq_coe, EquivLike.coe_coe, h2, hβ]`. Rewrite using `[← norm_mul, map_div₀, div_eq_inv_mul, _root_.mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hϑ a j, ← I.e.toEquiv.tsum_eq]`. Use `tsum_congr fun α => ?_` and prove the remaining obligations. Simplify using `only [AddEquiv.toEquiv_eq_coe, EquivLike.coe_coe, h1, hβ, hrg, map_div₀, map_pow]`. Use `hJ using 3 with a j` and compare the differences between its conclusion and the goal. Rewrite using `[← I.e.toEquiv.tsum_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun α => ?_` and prove the remaining obligations. Simplify using `only [AddEquiv.toEquiv_eq_coe, EquivLike.coe_coe, h2, hβ, hrg, map_div₀, map_pow]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem archF_of_arch : ∀ κ : Rule, Funct κ → Arch κ → ArchF κ := by
   intro κ hF hA R _ _ _ _ D hP hT F _ _ _ e N ν g r m k hg hm hk β ζ q hq s hs vB bX σ gm hAd k₀ hK

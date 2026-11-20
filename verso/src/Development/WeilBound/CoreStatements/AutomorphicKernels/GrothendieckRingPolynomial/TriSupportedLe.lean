@@ -14,19 +14,19 @@ def toZAlg {σ : Type*} (ψ : MvPolynomial σ ℤ →+* MvPolynomial σ ℤ) :
     exact map_intCast ψ r)
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `x hx`. Establish `he : {t | w t < 0} = (∅ : Set σ)`. Use extensionality with `t`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite `hx` using `[he, supported_empty]`. Take `⟨r, rfl⟩` from `Algebra.mem_bot.1 hx`. Conclude with `Subalgebra.algebraMap_mem _ r`. Consider the case `succ N ih`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite `hx` using `[supported_eq_adjoin_X]`. Use `Algebra.adjoin_le ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Take `⟨ε, p, hp, hψ⟩` from `h s`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs' : w s < N + 1` using `hs`. Establish `hXs : X s ∈ supported ℤ {t | w t < N + 1}` using `X_mem_supported.2 hs`. Establish `h1 : ψ (X s) ∈ (supported ℤ {t | w t < N + 1}).map (toZAlg ψ)` using `Subalgebra.mem_map.2 ⟨X s, hXs, rfl⟩`. Establish `h2 : p ∈ (supported ℤ {t | w t < N + 1}).map (toZAlg ψ)`. Establish `hp' : p ∈ supported ℤ {t | w t < N}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_supported]`. Introduce `t ht`. Use `hp t ht` as an intermediate fact. Use `show w t < N`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Subalgebra.map_mono (supported_mono ?_) (ih hp')` and prove the remaining obligations. Introduce `t ht`. Establish `ht' : w t < N` using `ht`. Use `show w t < N + 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : X s = ((ε⁻¹ : ℤˣ) : ℤ) • (ψ (X s) - p)`. Rewrite using `[hψ, add_sub_cancel_right, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Rewrite using `[key]`. Conclude with `Subalgebra.smul_mem _ (Subalgebra.sub_mem _ h1 h2) _`.
+A detailed English derivation is pending.
 -/
 theorem tri_supported_le {σ : Type*} (w : σ → ℕ) (ψ : MvPolynomial σ ℤ →+* MvPolynomial σ ℤ)
     (h : ∀ s, ∃ (ε : ℤˣ) (p : MvPolynomial σ ℤ), (∀ t ∈ p.vars, w t < w s) ∧
@@ -69,11 +69,11 @@ theorem tri_supported_le {σ : Type*} (w : σ → ℕ) (ψ : MvPolynomial σ ℤ
     exact Subalgebra.smul_mem _ (Subalgebra.sub_mem _ h1 h2) _
 
 /- English proof (translation)
-Establish `hrange : ∀ s, X s ∈ (toZAlg ψ).range`. Introduce `s`. Establish `hmem` using `tri_supported_le w ψ h (w s + 1) (X_mem_supported.2 (show w s < w s + 1 by omega))`. Take `⟨y, -, hy⟩` from `Subalgebra.mem_map.1 hmem`. Conclude with `(AlgHom.mem_range _).2 ⟨y, hy⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htop : (toZAlg ψ).range = ⊤`. Rewrite using `[eq_top_iff, ← adjoin_range_X, Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `hrange s`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : y ∈ (toZAlg ψ).range`. Rewrite using `[htop]`. Conclude with `Algebra.mem_top`. Take `⟨x, hx⟩` from `(AlgHom.mem_range _).1 hy`. Conclude with `⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tri_surj {σ : Type*} (w : σ → ℕ) (ψ : MvPolynomial σ ℤ →+* MvPolynomial σ ℤ)
     (h : ∀ s, ∃ (ε : ℤˣ) (p : MvPolynomial σ ℤ), (∀ t ∈ p.vars, w t < w s) ∧
@@ -96,19 +96,19 @@ theorem tri_surj {σ : Type*} (w : σ → ℕ) (ψ : MvPolynomial σ ℤ →+* M
   exact ⟨x, hx⟩
 
 /- English proof (translation)
-Use `⟨?_, tri_surj w ψ h⟩` and prove the remaining obligations. Establish `hpre : ∀ s, ∃ (ε : ℤˣ) (q : MvPolynomial σ ℤ), (∀ t ∈ q.vars, w t < w s) ∧ ψ ((ε : ℤ) • X s + q) = X s`. Introduce `s`. Take `⟨ε, p, hp, hψ⟩` from `h s`. Establish `hp' : ((ε⁻¹ : ℤˣ) : ℤ) • p ∈ supported ℤ {t | w t < w s}`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Subalgebra.smul_mem` to reduce the goal to its premises. Rewrite using `[mem_supported]`. Introduce `t ht`. Conclude with `hp t ht`. Take `⟨q, hq, hqe⟩` from `Subalgebra.mem_map.1 (tri_supported_le w ψ h (w s) hp')`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ε⁻¹, -q, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Rewrite `ht` using `[vars_neg]`. Conclude with `(mem_supported.1 hq) (Finset.mem_coe.2 ht)`. Establish `hqe' : ψ q = ((ε⁻¹ : ℤˣ) : ℤ) • p` using `hqe`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[map_add, map_neg, map_zsmul, hψ, hqe', smul_add, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul, add_neg_cancel_right]`. Use `choose ε' q hq hψq using hpre`. Set `φ : MvPolynomial σ ℤ →+* MvPolynomial σ ℤ` to `(aeval fun s => ((ε' s : ℤˣ) : ℤ) • X s + q s).toRingHom`. Establish `hφX : ∀ s, φ (X s) = ((ε' s : ℤˣ) : ℤ) • X s + q s` using `fun s => aeval_X _ _`. Establish `hφs : Function.Surjective φ` using `tri_surj w φ (fun s => ⟨ε' s, q s, hq s, hφX s⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcomp : ∀ a, ψ (φ a) = a`. Establish `hc : ψ.comp φ = RingHom.id _`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r show ψ (φ (C r)) = C r`. Simplify using `only [eq_intCast C r, map_intCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s show ψ (φ (X s)) = X s`. Rewrite using `[hφX]`. Conclude with `hψq s`. Introduce `a`. Rewrite using `[← RingHom.comp_apply, hc, RingHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a b hab`. Take `⟨a', rfl⟩` from `hφs a`. Take `⟨b', rfl⟩` from `hφs b`. Rewrite `hab` using `[hcomp, hcomp]`. Rewrite using `[hab]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_bij {σ : Type*} (w : σ → ℕ) (ψ : MvPolynomial σ ℤ →+* MvPolynomial σ ℤ)
     (h : ∀ s, ∃ (ε : ℤˣ) (p : MvPolynomial σ ℤ), (∀ t ∈ p.vars, w t < w s) ∧
@@ -155,13 +155,13 @@ theorem tri_bij {σ : Type*} (w : σ → ℕ) (ψ : MvPolynomial σ ℤ →+* Mv
   rw [hab]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `hne`. Establish `hsupp : a.support.Nonempty` using `Finsupp.support_nonempty_iff.2 hne`. Take `⟨n, hn, hmin⟩` from `a.support.exists_min_image w hsupp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcoef` using `congrArg (fun g => g (L n)) ha`. Simplify using `only [Finsupp.linearCombination_apply, Finsupp.coe_zero, Pi.zero_apply] at hcoef`. Rewrite `hcoef` using `[Finsupp.sum_apply, Finsupp.sum, Finset.sum_eq_single n]`. Simplify using `only [Finsupp.smul_apply, h1, smul_eq_mul, mul_one] at hcoef`. Conclude with `(Finsupp.mem_support_iff.1 hn) hcoef`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm hmn`. Simplify using `only [Finsupp.smul_apply, smul_eq_mul]`. Distinguish the cases in `hf : f m (L n) = 0`. Simplify using `[hf]`. Break down `hlt m n hf with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd h hmn`. Conclude with `absurd (hmin m hm) (not_le.2 h)`. Introduce `hn'`. Conclude with `absurd hn hn'`.
+A detailed English derivation is pending.
 -/
 theorem uni_inj {M I : Type*} (L : M ≃ I) (w : M → ℕ) (f : M → I →₀ ℤ)
     (h1 : ∀ m, f m (L m) = 1) (hlt : ∀ m n, f m (L n) ≠ 0 → m = n ∨ w m < w n) :
@@ -187,27 +187,25 @@ theorem uni_inj {M I : Type*} (L : M ≃ I) (w : M → ℕ) (f : M → I →₀ 
     exact absurd hn hn'
 
 /- English proof (translation)
-Introduce `n`. It suffices to establish `key : ∀ d n, b (c n) - w n = d → ∃ a : M →₀ ℤ, (∀ m ∈ a.support, c m = c n) ∧ Finsupp.linearCombination ℤ f a = Finsupp.single (L n) 1 from key _ n rfl`. Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `n hd`. Use `set v : I →₀ ℤ := Finsupp.single (L n) 1 - f n with hv`. Establish `hvsupp : ∀ i ∈ v.support, c (L.symm i) = c n ∧ b (c (L.symm i)) - w (L.symm i) < d`. Introduce `i hi`. Establish `hvi : v i ≠ 0` using `Finsupp.mem_support_iff.1 hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m := L.symm i with hm`. Establish `hi' : i = L m` using `by rw [hm, Equiv.apply_symm_apply]`. Establish `hne : m ≠ n`. Introduce `hmn`. Apply `hvi` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hi', hmn, hv, Finsupp.sub_apply, Finsupp.single_eq_same, h1, sub_self]`. Establish `hf : f n (L m) ≠ 0`. Introduce `hf0`. Apply `hvi` to reduce the goal to its premises. Rewrite using `[hi', hv, Finsupp.sub_apply, hf0, sub_zero, Finsupp.single_apply, if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `heq`. Conclude with `hne (L.injective heq).symm`. Take `⟨hc, hw⟩` from `hlt n m hf`. Break down `hw with hw | hw` into its components or cases. Conclude with `absurd hw.symm hne`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨hc.symm, ?_⟩` and prove the remaining obligations. Establish `hbm` using `hb m`. Rewrite `hbm`, the goal using `[← hc]`. Use linear arithmetic over natural numbers and integers. Establish `hex : ∀ i ∈ v.support, ∃ a : M →₀ ℤ, (∀ m ∈ a.support, c m = c n) ∧ Finsupp.linearCombination ℤ f a = Finsupp.single i 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi`. Take `⟨hc, hlt'⟩` from `hvsupp i hi`. Take `⟨a, ha1, ha2⟩` from `ih _ hlt' (L.symm i) rfl`. Use `⟨a, fun m hm => (ha1 m hm).trans hc, ?_⟩` and prove the remaining obligations. Rewrite using `[ha2, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose! g hg1 hg2 using hex`. Use `⟨Finsupp.single n 1 + ∑ i ∈ v.support, v i • g i, ?_, ?_⟩` and prove the remaining obligations. Introduce `m hm`. Break down `Finset.mem_union.1 (Finsupp.support_add hm) with hm1 | hm1` into its components or cases. Rewrite `hm1` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hm1]`. Take `⟨i, hi, hmi⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum hm1)`. Conclude with `hg1 i hi m (Finsupp.support_smul hmi)`. Rewrite using `[map_add, map_sum, Finsupp.linearCombination_single, one_smul]`. Rewrite using `[Finset.sum_congr rfl (fun i hi => by rw [map_smul, hg2 i hi])]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hsum : ∑ i ∈ v.support, v i • Finsupp.single i (1 : ℤ) = v` using `by conv_rhs => rw [← Finsupp.sum_single v]`. Rewrite using `[Finsupp.sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[hsum, hv]`.
-
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem uni_exists {M I C : Type*} (L : M ≃ I) (c : M → C) (w : M → ℕ) (b : C → ℕ) (f : M → I →₀ ℤ)
     (hb : ∀ m, w m ≤ b (c m)) (h1 : ∀ m, f m (L m) = 1)
@@ -272,13 +270,11 @@ theorem uni_exists {M I C : Type*} (L : M ≃ I) (c : M → C) (w : M → ℕ) (
       abel
 
 /- English proof (translation)
-Use `⟨uni_inj L w f h1 (fun m n hf => (hlt m n hf).2), ?_⟩` and prove the remaining obligations. Establish `hrange : ∀ i, Finsupp.single i (1 : ℤ) ∈ LinearMap.range (Finsupp.linearCombination ℤ f)`. Introduce `i`. Take `⟨a, -, ha⟩` from `uni_exists L c w b f hb h1 hlt (L.symm i)`. Rewrite `ha` using `[Equiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `LinearMap.mem_range.2 ⟨a, ha⟩`. Introduce `g`. Establish `hg : g ∈ LinearMap.range (Finsupp.linearCombination ℤ f)`. Use `Finsupp.induction_linear g ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hx hy`. Conclude with `Submodule.add_mem _ hx hy`. Introduce `i r`. Establish `hmem` using `Submodule.smul_mem _ r (hrange i)`. Rewrite `hmem` using `[Finsupp.smul_single, smul_eq_mul, mul_one]`. Then use the resulting hypothesis.
-
-Conclude with `LinearMap.mem_range.1 hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem uni_bij {M I C : Type*} (L : M ≃ I) (c : M → C) (w : M → ℕ) (b : C → ℕ) (f : M → I →₀ ℤ)
     (hb : ∀ m, w m ≤ b (c m)) (h1 : ∀ m, f m (L m) = 1)
@@ -306,12 +302,12 @@ end PositivityTheory.Groth.ChartWirtingerDerivatives
 namespace PositivityTheory.Groth
 
 /- English proof (translation)
-Introduce `_ w ψ h` and use `ChartWirtingerDerivatives.tri_bij w ψ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem triAut : TriAut := fun _ w ψ h => ChartWirtingerDerivatives.tri_bij w ψ h
 
 /- English proof (translation)
-Introduce `_ _ _ L c w b f hb h1 hlt` and use `⟨ChartWirtingerDerivatives.uni_bij L c w b f hb h1 hlt, ChartWirtingerDerivatives.uni_exists L c w b f hb h1 hlt⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem uniTri : UniTri := fun _ _ _ L c w b f hb h1 hlt =>
   ⟨ChartWirtingerDerivatives.uni_bij L c w b f hb h1 hlt, ChartWirtingerDerivatives.uni_exists L c w b f hb h1 hlt⟩

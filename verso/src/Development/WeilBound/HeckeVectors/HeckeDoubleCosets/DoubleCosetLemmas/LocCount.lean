@@ -20,11 +20,11 @@ structure Meas (dx : Measure M) (φ : G → M) (J : Subgroup G) (g : G) : Prop w
 variable {dx : Measure M} {φ : G → M} {J : Subgroup G} {g : G}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_setOf_eq, mem_image, stab, QuotientGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, h⟩`. Use `⟨k⁻¹ * x, ⟨J.mul_mem (J.inv_mem hk) hx, ?_⟩, by group⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `J.inv_mem h` as an intermediate fact. Rewrite `this` using `[show ((x * g)⁻¹ * (k * g))⁻¹ = g⁻¹ * (k⁻¹ * x) * g by group]`. Then use the resulting hypothesis. Introduce and unpack `⟨s, ⟨hs, hs'⟩, rfl⟩`. Use `⟨J.mul_mem hk hs, ?_⟩` and prove the remaining obligations. Use `J.inv_mem hs'` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[show (g⁻¹ * s * g)⁻¹ = (k * s * g)⁻¹ * (k * g) by group]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fibre_eq {k : G} (hk : k ∈ J) :
     {x | x ∈ J ∧ ((x * g : G) : G ⧸ J) = (k * g : G)} = (k * ·) '' stab J g := by
@@ -41,11 +41,11 @@ theorem fibre_eq {k : G} (hk : k ∈ J) :
     rwa [show (g⁻¹ * s * g)⁻¹ = (k * s * g)⁻¹ * (k * g) by group] at this
 
 /- English proof (translation)
-Establish `e : φ '' {x | x ∈ J ∧ ((x * g : G) : G ⧸ J) ∈ t} = ⋃ z ∈ t, φ '' {x | x ∈ J ∧ ((x * g : G) : G ⧸ J) = z}`. Use extensionality with `y`. Simplify using `only [mem_image, mem_setOf_eq, mem_iUnion]`. Conclude with `⟨fun ⟨x, ⟨h1, h2⟩, h3⟩ => ⟨_, h2, x, ⟨h1, rfl⟩, h3⟩, fun ⟨z, hz, x, ⟨h1, h2⟩, h3⟩ => ⟨x, ⟨h1, h2 ▸ hz⟩, h3⟩⟩`. Rewrite using `[e, measure_biUnion_finset]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun z hz => ?_, Finset.sum_const, nsmul_eq_mul]`. Take `⟨k, hk, rfl⟩` from `ht hz`. Rewrite using `[fibre_eq hk, h.vol k hk]`. Introduce `a _ b _ hab`. Use `(Set.disjoint_image_iff h.inj).2 (Set.disjoint_left.2 fun x h1 h2 => hab ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1.2.symm.trans h2.2`. Introduce `z hz`. Take `⟨k, hk, rfl⟩` from `ht hz`. Rewrite using `[fibre_eq hk]`. Conclude with `h.meas k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Meas.finset (h : Meas dx φ J g) (t : Finset (G ⧸ J)) (ht : ↑t ⊆ cos J g J) :
     dx (φ '' {x | x ∈ J ∧ ((x * g : G) : G ⧸ J) ∈ t}) = t.card * dx (φ '' stab J g) := by
@@ -66,7 +66,7 @@ theorem Meas.finset (h : Meas dx φ J g) (t : Finset (G ⧸ J)) (ht : ↑t ⊆ c
     rw [fibre_eq hk]; exact h.meas k hk
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hinf`. Take `⟨n, hn⟩` from `ENNReal.exists_nat_mul_gt h.ne h.fin`. Take `⟨t, ht, rfl⟩` from `Set.Infinite.exists_subset_card_eq hinf n`. Rewrite `hn` using `[← h.finset t ht]`. Conclude with `hn.not_ge (measure_mono (image_mono fun x hx => hx.1))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Meas.finite (h : Meas dx φ J g) : (cos J g J).Finite := by
   by_contra hinf
@@ -76,9 +76,9 @@ theorem Meas.finite (h : Meas dx φ J g) : (cos J g J).Finite := by
   exact hn.not_ge (measure_mono (image_mono fun x hx => hx.1))
 
 /- English proof (translation)
-Establish `hsub : cos J g A ⊆ cos J g J` using `fun z ⟨k, hk, e⟩ => ⟨k, hA hk, e⟩`. Establish `hf` using `h.finite.subset hsub`. Rewrite using `[Set.ncard_eq_toFinset_card _ hf, ← h.finset _ (by simpa using hsub)]`. Use `congr 2`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [mem_setOf_eq, Finite.mem_toFinset]`. Use `⟨fun ⟨hx, k, hk, e⟩ => ?_, fun hx => ⟨hA hx, x, hx, rfl⟩⟩` and prove the remaining obligations. Establish `: x ∈ (k * ·) '' stab J g` using `fibre_eq (hA hk) ▸ ⟨hx, e⟩`. Take `⟨s, hs', rfl⟩` from `this`. Conclude with `hs k hk s hs'`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Meas.card (h : Meas dx φ J g) {A : Set G} (hA : A ⊆ J)
     (hs : ∀ k ∈ A, ∀ s ∈ stab J g, k * s ∈ A) :
@@ -99,14 +99,14 @@ section Sum
 variable {Y : Type} [AddCommGroup Y] [Module ℂ Y] {F : G → Y}
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul J x`. Rewrite using `[hk, hR _ _ k.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem out_eq (hR : ∀ z, ∀ k ∈ J, F (z * k) = F z) (x : G) : F ((x : G ⧸ J).out) = F x := by
   obtain ⟨k, hk⟩ := QuotientGroup.mk_out_eq_mul J x
   rw [hk, hR _ _ k.2]
 
 /- English proof (translation)
-Introduce `z hz`. Assume the negation of the conclusion as `hn`. Use `hz (h0 _ fun hm => hn ?_)` and prove the remaining obligations. Take `⟨a, ha, b, hb, e⟩` from `DoubleCoset.mem_doubleCoset.1 hm`. Conclude with `⟨a, ha, by rw [← z.out_eq', e]; exact QuotientGroup.mk_mul_of_mem _ hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem supp_sub (h0 : ∀ z, z ∉ DoubleCoset.doubleCoset g (J : Set G) J → F z = 0) :
     (Function.support fun z : G ⧸ J => F z.out) ⊆ cos J g J := by
@@ -118,11 +118,11 @@ theorem supp_sub (h0 : ∀ z, z ∉ DoubleCoset.doubleCoset g (J : Set G) J → 
 
 open Classical in
 /- English proof (translation)
-Establish `hsub : cos J g A ⊆ cos J g J` using `fun z ⟨k, hk, e⟩ => ⟨k, hA hk, e⟩`. Establish `hf'` using `hf.subset hsub`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hf'.toFinset), Set.ncard_eq_toFinset_card _ hf', Finset.sum_congr rfl fun z hz => ?_, Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Take `⟨k, hk, rfl⟩` from `hf'.mem_toFinset.1 hz`. Rewrite using `[out_eq hR, hF k (hA hk), if_pos hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Take `⟨k, hk, rfl⟩` from `supp_sub h0 hz`. Use `hz` as an intermediate fact. Rewrite `this` using `[Function.mem_support, out_eq hR, hF k hk]`. Establish `hkA : k ∈ A` using `by by_contra hn; exact this (if_neg hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using ⟨k, hkA, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finsum_eq (hf : (cos J g J).Finite) (hR : ∀ z, ∀ k ∈ J, F (z * k) = F z)
     (h0 : ∀ z, z ∉ DoubleCoset.doubleCoset g (J : Set G) J → F z = 0) {A : Set G} (hA : A ⊆ J)
@@ -145,11 +145,11 @@ theorem finsum_eq (hf : (cos J g J).Finite) (hR : ∀ z, ∀ k ∈ J, F (z * k) 
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Rewrite using `[finsum_eq h.finite hR h0 (A := J) subset_rfl (y := 0) (fun k hk => by simp [hF k hk, hy]) fun k hk s hs => J.mul_mem hk hs.1, hy]`. Simplify using the standard rewrite rules. Establish `hs : ∀ k ∈ A, ∀ s ∈ stab J g, k * s ∈ A` using `fun k hk s hs => by`. Establish `h1` using `hF _ (J.mul_mem (hA hk) hs.1)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[show k * s * g = k * g * (g⁻¹ * s * g) by group, hR _ _ hs.2, hF k (hA hk), if_pos hk]`. Assume the negation of the conclusion as `hn`. Conclude with `hy (h1.trans (if_neg hn))`. Rewrite using `[finsum_eq h.finite hR h0 hA hF hs, ← h.card hA hs, ENNReal.toReal_mul]`. Simplify using `only [smul_eq_mul, ENNReal.toReal_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Meas.sum (h : Meas dx φ J g) {F : G → ℂ} (hR : ∀ z, ∀ k ∈ J, F (z * k) = F z)
     (h0 : ∀ z, z ∉ DoubleCoset.doubleCoset g (J : Set G) J → F z = 0) {A : Set G} (hA : A ⊆ J)

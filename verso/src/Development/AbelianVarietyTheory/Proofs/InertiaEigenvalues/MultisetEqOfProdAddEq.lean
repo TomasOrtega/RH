@@ -5,7 +5,7 @@ namespace GlobalTheory.MultisetOfProduct
 open Polynomial
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_multiset_prod, Multiset.map_map, Multiset.map_map]`. Use `congrArg Multiset.prod (Multiset.map_congr rfl fun x _ => ?_)` and prove the remaining obligations. Simplify using `[sub_neg_eq_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem eval_prod_neg (m : Multiset ℂ) (u : ℂ) :
     (((m.map (fun x : ℂ => -x)).map (fun a : ℂ => X - C a)).prod).eval u
@@ -15,9 +15,9 @@ theorem eval_prod_neg (m : Multiset ℂ) (u : ℂ) :
   simp [sub_neg_eq_add]
 
 /- English proof (translation)
-Establish `hp : ((m.map (fun x : ℂ => -x)).map (fun a : ℂ => X - C a)).prod = ((m'.map (fun x : ℂ => -x)).map (fun a : ℂ => X - C a)).prod`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[eval_prod_neg, eval_prod_neg]`. Conclude with `h u`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr` using `congrArg Polynomial.roots hp`. Rewrite `hr` using `[Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Conclude with `Multiset.map_injective neg_injective hr`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multiset_eq_of_prod_add_eq {m m' : Multiset ℂ}
     (h : ∀ (u : ℂ), Multiset.prod (Multiset.map (fun (x : ℂ) ↦ u + x) m)

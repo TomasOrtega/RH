@@ -30,7 +30,7 @@ def negX (X : ErrX D) : ErrX D :=
     rw [map_neg, neg_mul_neg]; exact piG_mul_barE X i
 
 /- English proof (translation)
-Introduce `h`. Establish `hc : ((T.pb i).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))).comap (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = ⊤`. Rewrite using `[show (T.pb i).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = ⊤ from h, Ideal.comap_top]`. Rewrite `hc` using `[Ideal.comap_map_eq_self_of_faithfullyFlat]`. Conclude with `(T.pb i).isPrime.ne_top hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem halfI_ne_top (T : Core D) (i : Fin 2) : halfI T i ≠ ⊤ := by
   intro h
@@ -41,7 +41,7 @@ theorem halfI_ne_top (T : Core D) (i : Fin 2) : halfI T i ≠ ⊤ := by
   exact (T.pb i).isPrime.ne_top hc
 
 /- English proof (translation)
-Unfold `piOf`. Use `split_ifs`. Rewrite using `[barE_barE]`. Conclude with `X.piG_K i`. Conclude with `barE_piG_mem X i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bar_piOf_mem_K (T : Core D) (X : ErrX D) (i : Fin 2) :
     ((barE D (piOf T X i) : 𝓞 D.host.E) : D.host.E) ∈ D.host.K := by
@@ -56,15 +56,13 @@ def orientX (T : Core D) (X : ErrX D) : ErrX D :=
     rw [barE_barE, mul_comm]; exact piOf_mul_barE T X i
 
 /- English proof (translation)
-Establish `hle : ∀ i, T.Q.l.Mb ≤ halfI T i`. Introduce `i`. Rewrite using `[Mb_eq T h]`. Use `fin_cases i`. Conclude with `Ideal.mul_le_left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_le_right`. Use `forall_congr' fun i => ⟨fun hb => ?_, fun hM => ?_⟩` and prove the remaining obligations. Rewrite using `[← (piOf_eq_bar_iff T h X i).2 hb, span_piOf T h]`. Conclude with `hle i`. Assume the negation of the conclusion as `hb`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : piOf T X i = X.piG i` using `by classical`. Unfold `piOf`. Rewrite using `[if_neg hb]`. Establish `h1 : T.Q.l.Mb.map (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) ≤ Ideal.span {barE D (X.piG i)}`. Rewrite using `[← hp, ← bar_core T, span_bar_piOf T h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.map_mono (hle i)`. Establish `ht : Ideal.span {barE D (X.piG i)} = ⊤`. Rewrite using `[eq_top_iff, ← T.Q.l.coprime]`. Conclude with `sup_le hM h1`. Establish `hu : IsUnit (X.piG i)`.
-
-Use `(Ideal.span_singleton_eq_top.1 ht).map (barE D)` as an intermediate fact. Rewrite `this` using `[barE_barE]`. Then use the resulting hypothesis. Apply `halfI_ne_top T i` to reduce the goal to its premises. Rewrite using `[← span_piOf T h X i, hp, Ideal.span_singleton_eq_top]`. Conclude with `hu`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem halfEX_iff_le (T : Core D) (h : LawsM T) (X : ErrX D) :
     HalfEX T X ↔ ∀ i, T.Q.l.Mb ≤ Ideal.span {barE D (X.piG i)} := by

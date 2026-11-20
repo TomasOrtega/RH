@@ -36,7 +36,7 @@ Both sides reduce to the same expression.
 theorem Nto_succ (i j : ℕ) (y : Ω) : t.Nto i (j + 1) y = t.Nto i j (t.N (i + j) y) := rfl
 
 /- English proof (translation)
-Proceed by induction on `j generalizing y with`. Consider the case `zero => simp [Nto]`. Consider the case `succ j ih`. Rewrite using `[Nto_succ, ih, Nto_succ, show i + (j + 1) = i + 1 + j by omega]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem Nto_succ' (i j : ℕ) (y : Ω) : t.Nto i (j + 1) y = t.N i (t.Nto (i + 1) j y) := by
   induction j generalizing y with
@@ -45,7 +45,7 @@ theorem Nto_succ' (i j : ℕ) (y : Ω) : t.Nto i (j + 1) y = t.N i (t.Nto (i + 1
     rw [Nto_succ, ih, Nto_succ, show i + (j + 1) = i + 1 + j by omega]
 
 /- English proof (translation)
-Proceed by induction on `j generalizing y with`. Consider the case `zero => exact hy`. Consider the case `succ j ih => exact ih (t.N_mem (i + j) hy)`. Use the proof step `@[simp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Nto_mem (i : ℕ) {j : ℕ} {y : Ω} (hy : y ∈ t.E (i + j)) : t.Nto i j y ∈ t.E i := by
   induction j generalizing y with
@@ -54,7 +54,7 @@ theorem Nto_mem (i : ℕ) {j : ℕ} {y : Ω} (hy : y ∈ t.E (i + j)) : t.Nto i 
 
 @[simp]
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => simp only [Nto_succ, t.N_one, ih]`. Use the proof step `@[simp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Nto_one (i j : ℕ) : t.Nto i j 1 = 1 := by
   induction j with
@@ -63,7 +63,7 @@ theorem Nto_one (i j : ℕ) : t.Nto i j 1 = 1 := by
 
 @[simp]
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => simp only [Nto_succ, t.N_zero, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem Nto_zero' (i j : ℕ) : t.Nto i j 0 = 0 := by
   induction j with
@@ -74,19 +74,19 @@ def D (i j : ℕ) : ℕ :=
   ∏ m ∈ Finset.range j, p ^ t.k (i + m)
 
 /- English proof (translation)
-Rewrite using `[D, Finset.prod_range_succ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem D_succ (i j : ℕ) : t.D i (j + 1) = t.D i j * p ^ t.k (i + j) := by
   rw [D, Finset.prod_range_succ]; rfl
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun _ _ ↦ pow_pos t.prime.pos _`.
+A detailed English derivation is pending.
 -/
 theorem D_pos (i j : ℕ) : 0 < t.D i j :=
   Finset.prod_pos fun _ _ ↦ pow_pos t.prime.pos _
 
 /- English proof (translation)
-Proceed by induction on `j generalizing y with`. Consider the case `zero => simp [D]`. Consider the case `succ j ih => rw [Nto_succ, ih, t.nrm_N, D_succ, ← pow_mul, mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem nrm_Nto (i j : ℕ) (y : Ω) : nrm K (t.Nto i j y) = nrm K y ^ t.D i j := by
   induction j generalizing y with
@@ -94,13 +94,13 @@ theorem nrm_Nto (i j : ℕ) (y : Ω) : nrm K (t.Nto i j y) = nrm K y ^ t.D i j :
   | succ j ih => rw [Nto_succ, ih, t.nrm_N, D_succ, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[nrm_Nto]`. Conclude with `pow_le_one₀ (nrm_nonneg _) hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrm_Nto_le_one (i j : ℕ) {y : Ω} (hy : nrm K y ≤ 1) : nrm K (t.Nto i j y) ≤ 1 := by
   rw [nrm_Nto]; exact pow_le_one₀ (nrm_nonneg _) hy
 
 /- English proof (translation)
-Proceed by induction on `j generalizing a b with`. Consider the case `zero => exact hab`. Consider the case `succ j ih`. Conclude with `ih (t.N_mem _ ha) (t.N_mem _ hb) (t.nrm_N_le_one _ ha1) (t.nrm_N_le_one _ hb1) (t.nrm_N_sub_N_le_ρ _ ha hb ha1 hb1 hab)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nrm_Nto_sub_Nto_le_ρ (i : ℕ) {j : ℕ} {a b : Ω} (ha : a ∈ t.E (i + j)) (hb : b ∈ t.E (i + j))
     (ha1 : nrm K a ≤ 1) (hb1 : nrm K b ≤ 1) (hab : nrm K (a - b) ≤ t.ρ) :
@@ -112,11 +112,11 @@ theorem nrm_Nto_sub_Nto_le_ρ (i : ℕ) {j : ℕ} {a b : Ω} (ha : a ∈ t.E (i 
       (t.nrm_N_sub_N_le_ρ _ ha hb ha1 hb1 hab)
 
 /- English proof (translation)
-Proceed by induction on `j generalizing a b with`. Consider the case `zero => simp [t.ρ_nonneg]`. Consider the case `succ j ih`. Simplify using `only [Nto_succ]`. Establish `hNa` using `t.N_mem _ ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hNb` using `t.N_mem _ hb`. Establish `hNa1` using `t.nrm_N_le_one (i + j) ha1`. Establish `hNb1` using `t.nrm_N_le_one (i + j) hb1`. Establish `h1` using `t.nrm_Nto_sub_Nto_le_ρ i (t.N_mem _ (add_mem ha hb)) (add_mem hNa hNb) (t.nrm_N_le_one _ (nrm_add_le_one ha1 hb1)) (nrm_add_le_one hNa1 hNb1) (by rw [sub_add_eq_sub_sub]; exact t.nrm_N_add_sub_le_ρ _ ha hb ha1 hb1)`. Establish `h2` using `ih hNa hNb hNa1 hNb1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : t.Nto i j (t.N (i + j) (a + b)) - t.Nto i j (t.N (i + j) a) - t.Nto i j (t.N (i + j) b) = (t.Nto i j (t.N (i + j) (a + b)) - t.Nto i j (t.N (i + j) a + t.N (i + j) b)) + (t.Nto i j (t.N (i + j) a + t.N (i + j) b) - t.Nto i j (t.N (i + j) a) - t.Nto i j (t.N (i + j) b))` using `by ring`. Rewrite using `[e]`. Conclude with `nrm_add_le_of_le h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrm_Nto_add_sub_le_ρ (i : ℕ) {j : ℕ} {a b : Ω} (ha : a ∈ t.E (i + j)) (hb : b ∈ t.E (i + j))
     (ha1 : nrm K a ≤ 1) (hb1 : nrm K b ≤ 1) :
@@ -144,7 +144,7 @@ def cnt (i j : ℕ) : ℕ :=
   ((Finset.range j).filter fun m ↦ t.k (i + m) ≠ 0).card
 
 /- English proof (translation)
-Simplify using `only [cnt, Finset.range_add_one, Finset.filter_insert]`. Use `split_ifs with h`. Rewrite using `[Finset.card_insert_of_notMem (by simp)]`. Rewrite using `[add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cnt_succ (i j : ℕ) : t.cnt i (j + 1) = t.cnt i j + if t.k (i + j) ≠ 0 then 1 else 0 := by
   simp only [cnt, Finset.range_add_one, Finset.filter_insert]
@@ -153,16 +153,16 @@ theorem cnt_succ (i j : ℕ) : t.cnt i (j + 1) = t.cnt i j + if t.k (i + j) ≠ 
   · rw [add_zero]
 
 /- English proof (translation)
-Introduce `j j' h`. Conclude with `Finset.card_le_card (Finset.filter_subset_filter _ (Finset.range_subset_range.mpr h))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cnt_mono (i : ℕ) : Monotone (t.cnt i) := by
   intro j j' h
   exact Finset.card_le_card (Finset.filter_subset_filter _ (Finset.range_subset_range.mpr h))
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero => exact ⟨0, Nat.zero_le _⟩`. Consider the case `succ M ih`. Take `⟨j, hj⟩` from `ih`. Take `⟨m, hm, hk⟩` from `t.frequently_ne_zero (i + j)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m - i + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[cnt_succ, if_pos (by rwa [show i + (m - i) = m by omega])]`. Use `t.cnt_mono i (show j ≤ m - i by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_le_cnt (i M : ℕ) : ∃ j, M ≤ t.cnt i j := by
   induction M with
@@ -176,11 +176,11 @@ theorem exists_le_cnt (i M : ℕ) : ∃ j, M ≤ t.cnt i j := by
     omega
 
 /- English proof (translation)
-Proceed by induction on `j generalizing a b s with`. Consider the case `zero => simpa [cnt] using hab`. Consider the case `succ j ih`. Simplify using `only [Nto_succ]`. Establish `hs0 : 0 ≤ s` using `(nrm_nonneg _).trans hab`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hk : t.k (i + j) ≠ 0`. Establish `h1` using `t.nrm_N_sub_N_le_mul (i + j) hk ha hb ha1 hb1 hs hab`. Establish `hs' : t.ρ * s ≤ t.ρ` using `(mul_le_of_le_one_left hs0 t.ρ_lt_one.le).trans hs`. Use `(ih (t.N_mem _ ha) (t.N_mem _ hb) (t.nrm_N_le_one _ ha1) (t.nrm_N_le_one _ hb1) hs' h1).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[cnt_succ, if_pos hk, pow_succ]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `t.nrm_N_sub_N_le (i + j) ha hb ha1 hb1 hs hab`. Use `(ih (t.N_mem _ ha) (t.N_mem _ hb) (t.nrm_N_le_one _ ha1) (t.nrm_N_le_one _ hb1) hs h1).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[cnt_succ, if_neg hk, add_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_Nto_sub_Nto_le (i : ℕ) {j : ℕ} {a b : Ω} (ha : a ∈ t.E (i + j)) (hb : b ∈ t.E (i + j))
     (ha1 : nrm K a ≤ 1) (hb1 : nrm K b ≤ 1) {s : ℝ} (hs : s ≤ t.ρ) (hab : nrm K (a - b) ≤ s) :
@@ -215,7 +215,7 @@ def IsIntFam (z : ℕ → Ω) : Prop :=
 variable {t}
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => rw [Nto_succ, ← add_assoc, (hz (i + j)).2, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem IsFam.Nto_eq {z : ℕ → Ω} (hz : t.IsFam z) (i j : ℕ) : t.Nto i j (z (i + j)) = z i := by
   induction j with
@@ -223,16 +223,16 @@ theorem IsFam.Nto_eq {z : ℕ → Ω} (hz : t.IsFam z) (i j : ℕ) : t.Nto i j (
   | succ j ih => rw [Nto_succ, ← add_assoc, (hz (i + j)).2, ih]
 
 /- English proof (translation)
-Rewrite using `[← hz.Nto_eq i j, nrm_Nto]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsFam.nrm_eq {z : ℕ → Ω} (hz : t.IsFam z) (i j : ℕ) :
     nrm K (z i) = nrm K (z (i + j)) ^ t.D i j := by
   rw [← hz.Nto_eq i j, nrm_Nto]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[← sub_eq_zero, ← nrm_eq_zero (K := K)]`. Use `le_antisymm ?_ (nrm_nonneg _)` and prove the remaining obligations. Establish `hle : ∀ M : ℕ, nrm K (z i - z' i) ≤ t.ρ ^ M`. Introduce `M`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, hj⟩` from `t.exists_le_cnt i M`. Rewrite using `[← hz.1.Nto_eq i j, ← hz'.1.Nto_eq i j]`. Use `(t.nrm_Nto_sub_Nto_le i (hz.1 _).1 (hz'.1 _).1 (hz.2 _) (hz'.2 _) le_rfl (h _)).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one t.ρ_nonneg t.ρ_lt_one) hle`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem intFam_ext {z z' : ℕ → Ω} (hz : t.IsIntFam z) (hz' : t.IsIntFam z')
     (h : ∀ n, nrm K (z n - z' n) ≤ t.ρ) : z = z' := by
@@ -257,13 +257,13 @@ def intSet (n : ℕ) : Set Ω :=
   {y | y ∈ t.E n ∧ nrm K y ≤ 1}
 
 /- English proof (translation)
-Use `haveI := t.finiteDimensional n`. Establish `hc` using `IsNonarchimedeanLocalField.isCompact_closedBall (t.E n) 1`. Establish `: t.intSet n = Subtype.val '' {x : t.E n | valuation (t.E n) x ≤ 1}`. Use extensionality with `y`. Simplify using `only [intSet, Set.mem_ofPred_eq, Set.mem_image]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hy1⟩`. Use `⟨⟨y, hy⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← map_one (valuation (t.E n)), ← (valuation (t.E n)).vle_iff_le, ← IntermediateField.coe_vle_coe_iff]`. Rewrite using `[← nrm_le_nrm_iff (K := K)]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hy1`. Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨x.2, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← map_one (valuation (t.E n)), ← (valuation (t.E n)).vle_iff_le, ← IntermediateField.coe_vle_coe_iff, ← nrm_le_nrm_iff (K := K)]`. Simplify using `using hx`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hc.image continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_intSet (n : ℕ) : IsCompact (t.intSet n) := by
   haveI := t.finiteDimensional n
@@ -287,15 +287,15 @@ theorem isCompact_intSet (n : ℕ) : IsCompact (t.intSet n) := by
   exact hc.image continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `continuous_finsetProd _ fun σ _ ↦ continuous_algEquiv_of_isAlgebraic σ`.
+A detailed English derivation is pending.
 -/
 theorem continuous_N (n : ℕ) : Continuous (t.N n) :=
   continuous_finsetProd _ fun σ _ ↦ continuous_algEquiv_of_isAlgebraic σ
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp [t.ρ_nonneg]`. Consider the case `succ j ih`. Rewrite using `[Nto_succ, ← add_assoc]`. Establish `h1` using `t.nrm_Nto_sub_Nto_le_ρ i (t.N_mem _ (ha _)) (ha (i + j)) (t.nrm_N_le_one _ (ha1 _)) (ha1 _) (hcong _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `nrm_sub_le_of_le' h1 ih`.
+A detailed English derivation is pending.
 -/
 theorem nrm_Nto_sub_le_of_cong {a : ℕ → Ω} (ha : ∀ n, a n ∈ t.E n) (ha1 : ∀ n, nrm K (a n) ≤ 1)
     (hcong : ∀ n, nrm K (t.N n (a (n + 1)) - a n) ≤ t.ρ) (i j : ℕ) :
@@ -309,19 +309,19 @@ theorem nrm_Nto_sub_le_of_cong {a : ℕ → Ω} (ha : ∀ n, a n ∈ t.E n) (ha1
     exact nrm_sub_le_of_le' h1 ih
 
 /- English proof (translation)
-Set `S : ℕ → Set (ℕ → Ω)` to `fun m ↦ {z | (∀ n < m, nrm K (t.N n (z (n + 1)) - z n) ≤ 0) ∧ ∀ n ≤ m, nrm K (z n - a n) ≤ t.ρ}`. Establish `hP : IsCompact {z : ℕ → Ω | ∀ n, z n ∈ t.intSet n}` using `isCompact_pi_infinite t.isCompact_intSet`. Establish `hcont : ∀ n, Continuous fun z : ℕ → Ω ↦ nrm K (t.N n (z (n + 1)) - z n)` using `fun n ↦ (continuous_nrm K Ω).comp (((t.continuous_N n).comp (continuous_apply _)).sub (continuous_apply _))`. Establish `hcont' : ∀ n, Continuous fun z : ℕ → Ω ↦ nrm K (z n - a n)` using `fun n ↦ (continuous_nrm K Ω).comp ((continuous_apply _).sub continuous_const)`. Establish `hcl : ∀ m, IsClosed (S m)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m`. Establish `e : S m = (⋂ n ∈ {n | n < m}, {z : ℕ → Ω | nrm K (t.N n (z (n + 1)) - z n) ≤ 0}) ∩ ⋂ n ∈ {n | n ≤ m}, {z : ℕ → Ω | nrm K (z n - a n) ≤ t.ρ}`. Use extensionality with `z`. Simplify using `[S]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isClosed_biInter fun n _ ↦ isClosed_le (hcont n) continuous_const).inter (isClosed_biInter fun n _ ↦ isClosed_le (hcont' n) continuous_const)`. Establish `hanti : ∀ {m m'}, m ≤ m' → S m' ⊆ S m` using `fun hmm' z hz ↦ ⟨fun n hn ↦ hz.1 n (by omega), fun n hn ↦ hz.2 n (by omega)⟩`. Establish `hne : ∀ m, ({z : ℕ → Ω | ∀ n, z n ∈ t.intSet n} ∩ S m).Nonempty`. Introduce `m`. Use `⟨fun n ↦ if n ≤ m then t.Nto n (m - n) (a m) else a n, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n dsimp only split_ifs with h`. Establish `ham : a m ∈ t.E (n + (m - n))` using `by rw [Nat.add_sub_cancel' h]; exact ha m`. Conclude with `⟨t.Nto_mem n ham, t.nrm_Nto_le_one _ _ (ha1 m)⟩`. Conclude with `⟨ha n, ha1 n⟩`. Introduce `n hn`.
+Simplify by unfolding definitions. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [if_pos hn.le, if_pos (show n + 1 ≤ m by omega)]`. Rewrite using `[← Nto_succ', show m - n = m - (n + 1) + 1 by omega]`. Simplify using the standard rewrite rules. Introduce `n hn`. Simplify using `only [if_pos hn]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `t.nrm_Nto_sub_le_of_cong ha ha1 hcong n (m - n)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel' hn]`. Then use the resulting hypothesis. Take `⟨z, hzP, hz⟩` from `hP.inter_iInter_nonempty S hcl fun u ↦ by`. Take `⟨z, hzP, hzS⟩` from `hne (u.sup id)`. Use `⟨z, hzP, Set.mem_iInter₂.mpr fun m hm ↦ hanti (Finset.le_sup (f := id) hm) hzS⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hz` using `[Set.mem_iInter]`. Use `⟨z, ⟨fun n ↦ ⟨(hzP n).1, ?_⟩, fun n ↦ (hzP n).2⟩, fun n ↦ (hz n).2 n le_rfl⟩` and prove the remaining obligations. Use `(hz (n + 1)).1 n (Nat.lt_succ_self n)` as an intermediate fact. Rewrite using `[← sub_eq_zero, ← nrm_eq_zero (K := K)]`. Conclude with `le_antisymm this (nrm_nonneg _)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intFam {a : ℕ → Ω} (ha : ∀ n, a n ∈ t.E n) (ha1 : ∀ n, nrm K (a n) ≤ 1)
     (hcong : ∀ n, nrm K (t.N n (a (n + 1)) - a n) ≤ t.ρ) :
@@ -384,27 +384,27 @@ namespace Plus
 variable {t}
 
 /- English proof (translation)
-The claim follows from `(x.2.1 n).1`.
+A detailed English derivation is pending.
 -/
 theorem mem (x : t.Plus) (n : ℕ) : x.1 n ∈ t.E n := (x.2.1 n).1
 
 /- English proof (translation)
-The claim follows from `x.2.2 n`.
+A detailed English derivation is pending.
 -/
 theorem nrm_le (x : t.Plus) (n : ℕ) : nrm K (x.1 n) ≤ 1 := x.2.2 n
 
 /- English proof (translation)
-The claim follows from `(x.2.1 n).2`.
+A detailed English derivation is pending.
 -/
 theorem N_eq (x : t.Plus) (n : ℕ) : t.N n (x.1 (n + 1)) = x.1 n := (x.2.1 n).2
 
 /- English proof (translation)
-The claim follows from `x.2.1`.
+A detailed English derivation is pending.
 -/
 theorem isFam (x : t.Plus) : t.IsFam x.1 := x.2.1
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (intFam_ext x.2 y.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_cong {x y : t.Plus} (h : ∀ n, nrm K (x.1 n - y.1 n) ≤ t.ρ) : x = y :=
   Subtype.ext (intFam_ext x.2 y.2 h)
@@ -433,7 +433,7 @@ Both sides reduce to the same expression.
 @[simp] theorem mul_val (x y : t.Plus) (n : ℕ) : (x * y).1 n = x.1 n * y.1 n := rfl
 
 /- English proof (translation)
-The claim follows from `t.exists_intFam (fun n ↦ add_mem (x.mem n) (y.mem n)) (fun n ↦ nrm_add_le_one (x.nrm_le n) (y.nrm_le n)) fun n ↦ by have := t.nrm_N_add_sub_le_ρ n (x.mem (n + 1)) (y.mem (n + 1)) (x.nrm_le _) (y.nrm_le _) rw [x.N_eq, y.N_eq] at this rwa [sub_add_eq_sub_sub]`.
+A detailed English derivation is pending.
 -/
 theorem exists_add (x y : t.Plus) :
     ∃ z, t.IsIntFam z ∧ ∀ n, nrm K (z n - (x.1 n + y.1 n)) ≤ t.ρ :=
@@ -444,7 +444,7 @@ theorem exists_add (x y : t.Plus) :
       rwa [sub_add_eq_sub_sub]
 
 /- English proof (translation)
-The claim follows from `t.exists_intFam (fun n ↦ neg_mem (x.mem n)) (fun n ↦ by simpa using x.nrm_le n) fun n ↦ by have := t.nrm_N_add_sub_le_ρ n (neg_mem (x.mem (n + 1))) (x.mem (n + 1)) (by simpa using x.nrm_le (n + 1)) (x.nrm_le _) rw [neg_add_cancel, t.N_zero, x.N_eq] at this rw [sub_neg_eq_add, ← n …`.
+A detailed English derivation is pending.
 -/
 theorem exists_neg (x : t.Plus) : ∃ z, t.IsIntFam z ∧ ∀ n, nrm K (z n - -x.1 n) ≤ t.ρ :=
   t.exists_intFam (fun n ↦ neg_mem (x.mem n)) (fun n ↦ by simpa using x.nrm_le n) fun n ↦ by
@@ -461,24 +461,24 @@ instance : Neg t.Plus :=
   ⟨fun x ↦ ⟨(exists_neg x).choose, (exists_neg x).choose_spec.1⟩⟩
 
 /- English proof (translation)
-The claim follows from `(exists_add x y).choose_spec.2 n`.
+A detailed English derivation is pending.
 -/
 theorem add_cong (x y : t.Plus) (n : ℕ) : nrm K ((x + y).1 n - (x.1 n + y.1 n)) ≤ t.ρ :=
   (exists_add x y).choose_spec.2 n
 
 /- English proof (translation)
-The claim follows from `(exists_neg x).choose_spec.2 n`.
+A detailed English derivation is pending.
 -/
 theorem neg_cong (x : t.Plus) (n : ℕ) : nrm K ((-x).1 n - -x.1 n) ≤ t.ρ :=
   (exists_neg x).choose_spec.2 n
 
 /- English proof (translation)
-The claim follows from `t.ρ_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem ρ_nonneg' : 0 ≤ t.ρ := t.ρ_nonneg
 
 /- English proof (translation)
-Rewrite using `[he]`. Conclude with `nrm_sub_le_of_le (nrm_sub_le_of_le (nrm_add_le_of_le h1 h2) h3) h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cong4 {a b c d e : Ω} (h1 : nrm K a ≤ t.ρ) (h2 : nrm K b ≤ t.ρ)
     (h3 : nrm K c ≤ t.ρ) (h4 : nrm K d ≤ t.ρ) (he : e = a + b - c - d) : nrm K e ≤ t.ρ := by

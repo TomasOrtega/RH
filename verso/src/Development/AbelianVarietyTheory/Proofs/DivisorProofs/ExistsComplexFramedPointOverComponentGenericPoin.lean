@@ -17,7 +17,7 @@ namespace GlobalTheory.GenCxPt
 open Cardinal
 
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic ℚ K := Algebra.IsAlgebraic.of_finite ℚ K`. Establish `h` using `Algebra.IsAlgebraic.cardinalMk_le_max ℚ K`. Rewrite `h` using `[Cardinal.mkRat, max_self]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_le_aleph0 (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ K] : #K ≤ ℵ₀ := by
   haveI : Algebra.IsAlgebraic ℚ K := Algebra.IsAlgebraic.of_finite ℚ K
@@ -26,7 +26,7 @@ theorem mk_le_aleph0 (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ K] :
   exact h
 
 /- English proof (translation)
-Rewrite using `[Algebra.transcendental_iff_not_isAlgebraic]`. Introduce `halg`. Establish `h` using `Algebra.IsAlgebraic.cardinalMk_le_max K ℂ`. Rewrite `h` using `[Cardinal.mk_complex, max_eq_right (mk_le_aleph0 K)]`. Conclude with `absurd h (not_le.2 Cardinal.aleph0_lt_continuum)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transcendental_complex (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ K] :
     Algebra.Transcendental K ℂ := by
@@ -37,9 +37,9 @@ theorem transcendental_complex (K : IntermediateField ℚ ℂ) [FiniteDimensiona
   exact absurd h (not_le.2 Cardinal.aleph0_lt_continuum)
 
 /- English proof (translation)
-Use `haveI : Nonempty κ := hw.nonempty_iff_transcendental.2 (transcendental_complex K)`. Establish `h` using `hw.lift_cardinalMk_eq_max_lift`. Simplify using `only [Cardinal.lift_id, Cardinal.mk_complex] at h`. Assume the negation of the conclusion as `hfin`. Rewrite `hfin` using `[not_infinite_iff_finite]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : #κ ≤ ℵ₀` using `(Cardinal.lt_aleph0_of_finite κ).le`. Establish `h2 : #K ⊔ #κ ⊔ ℵ₀ ≤ ℵ₀` using `sup_le (sup_le (mk_le_aleph0 K) h1) le_rfl`. Rewrite `h2` using `[← h]`. Conclude with `absurd h2 (not_le.2 Cardinal.aleph0_lt_continuum)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infinite_of_isTranscendenceBasis (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ K] {κ : Type}
     {w : κ → ℂ} (hw : IsTranscendenceBasis K w) : Infinite κ := by
@@ -54,9 +54,9 @@ theorem infinite_of_isTranscendenceBasis (K : IntermediateField ℚ ℂ) [Finite
   exact absurd h2 (not_le.2 Cardinal.aleph0_lt_continuum)
 
 /- English proof (translation)
-Take `⟨ι, v, hv⟩` from `exists_isTranscendenceBasis' K L`. Take `⟨κ, w, hw⟩` from `exists_isTranscendenceBasis' K ℂ`. Use `haveI := infinite_of_isTranscendenceBasis K hw`. Establish `hι : #ι < ℵ₀` using `by rw [hv.cardinalMk_eq_trdeg, hn]; exact Cardinal.natCast_lt_aleph0`. Use `haveI : Finite ι := Cardinal.lt_aleph0_iff_finite.1 hι`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle : #ι ≤ #κ` using `hι.le.trans (Cardinal.infinite_iff.1 inferInstance)`. Take `⟨f⟩` from `hle`. Take `⟨j, -⟩` from `GlobalTheory.GenericValue.exists_algHom_of_isTranscendenceBasis hv (hw.1.comp f f.injective)`. Conclude with `⟨j⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_algHom_complex (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ K] (L : Type) [Field L]
     [Algebra K L] (n : ℕ) (hn : Algebra.trdeg K L = n) : Nonempty (L →ₐ[K] ℂ) := by
@@ -75,7 +75,7 @@ end GlobalTheory.GenCxPt
 namespace GlobalTheory.GenCxPt
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : A →+* B) (f : B →+* C) :
     spMap f ≫ spMap g = spMap (f.comp g) := by
@@ -86,7 +86,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-The claim follows from `(Spec.map_preimage _).symm`.
+A detailed English derivation is pending.
 -/
 theorem genSp_strK (Z : Comp Xo c) : genSp Z ≫ strK = spMap (algebraMap c.F (kap Z)) :=
   (Spec.map_preimage _).symm
@@ -96,13 +96,13 @@ end GlobalTheory.GenCxPt
 open GlobalTheory.GenCxPt in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Z`. Use `haveI := c.fin`. Take `⟨e⟩` from `nonempty_algHom_complex c.F (kap Z) Dw.dim ((GlobalTheory.Reg.kap_fg_trdeg E H Dw l Xo c).2 Z)`. Establish `hsnd : spMap (e : kap Z →+* ℂ) ≫ genSp Z ≫ strK = spMap (algebraMap c.F ℂ)`. Rewrite using `[genSp_strK, spMap_comp_spMap, AlgHom.comp_algebraMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : (spMap (e : kap Z →+* ℂ) ≫ xGen Z) ≫ Xo.s = sOf c ℂ`. Rewrite using `[xGen, Category.assoc, Category.assoc, pullback.condition, ← Category.assoc (genSp Z), ← Category.assoc, hsnd, sOf, spMap_comp_spMap]`. Take `⟨y, hy⟩` from `GlobalTheory.FlagTan.exists_frPt _ hx`. Use `⟨y, fun s => ?_⟩` and prove the remaining obligations. Establish `hpt : ptF y = spMap (e : kap Z →+* ℂ) ≫ genSp Z`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[ptF, pullback.lift_fst, hy, xGen, Category.assoc]`. Rewrite using `[ptF, pullback.lift_snd, Category.assoc, ← hsnd]`. Rewrite using `[hpt]`. Establish `: (spMap (e : kap Z →+* ℂ) ≫ genSp Z) s ∈ Set.range (genSp Z)` using `⟨spMap (e : kap Z →+* ℂ) s, (Scheme.Hom.comp_apply _ _ _).symm⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[genSp, Scheme.range_fromSpecResidueField]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GenCxPt.exists_frPt_ptF_eq_genPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : Comp Xo c),

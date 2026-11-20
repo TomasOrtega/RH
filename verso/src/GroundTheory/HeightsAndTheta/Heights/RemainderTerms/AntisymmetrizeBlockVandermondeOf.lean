@@ -15,14 +15,14 @@ noncomputable section
 namespace DividedDifferenceVandermonde
 
 /- English proof (translation)
-Simplify using `[rootRingToReal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ringToReal_eq_map (f j k : ℕ) (Φ : RootRing f (j + k)) :
     rootRingToReal f (j + k) j k rfl Φ = map (algebraMap ℚ ℝ) Φ := by
   simp [rootRingToReal]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[← flagIntegralReal_map, flagIntegralReal_eq_mul_ddConst, ringToReal_eq_map]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem flagIntegral_eq_mul_ddConst (f N j k : ℕ) (h : N = j + k) (Φ : RootRing f N) :
     (flagIntegral f N Φ : ℝ) =
@@ -35,7 +35,7 @@ end DividedDifferenceVandermonde
 open DividedDifferenceVandermonde
 
 /- English proof (translation)
-Introduce `f N k τ G hk _`. Establish `h` using `flagIntegral_eq_mul_ddConst f N N 0 rfl (blockPowerSum f N k τ * G)`. Rewrite `h` using `[map_mul, rootRingToReal_blockPowerSum, FlagEq.ddConst_psumAt_mul _ _ _ _ _ _ hk, mul_zero]`. Conclude with `h` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlagIntegralKillsPowerSums.intersectionNumber_baseChange : FlagIntegralKillsPowerSums.Statement := by
   intro f N k τ G hk _

@@ -10,7 +10,7 @@ namespace PositivityTheory.SiegelWeilFormula.Avac
 variable {m : ℕ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unitary_frames_preserve_norm_sq_sum m hm J fr fr' ζ ζ' s s' hζ hζ' h h' v`.
+A detailed English derivation is pending.
 -/
 theorem norm_frame_eq (hm : 1 ≤ m) (J : Matrix (Fin m) (Fin m) ℂ) (fr fr' : GL (Fin m) ℂ) (ζ ζ' : ℂ) (s s' : ℤˣ)
     (hζ : ζ = 1 ∨ ζ = Complex.I) (hζ' : ζ' = 1 ∨ ζ' = Complex.I)

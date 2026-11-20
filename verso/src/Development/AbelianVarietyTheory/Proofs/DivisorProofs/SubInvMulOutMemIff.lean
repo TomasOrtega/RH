@@ -10,7 +10,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 open Classical in
 
 /- English proof (translation)
-Simplify using `only [intInd, Set.indicator_apply, Set.mem_setOf_eq, Pi.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem intInd_apply {n d : ℕ} (M : Matrix (Fin n) (Fin d) k) :
     intInd k n d M = if ∀ i j, M i j ∈ 𝒪[k] then 1 else 0 := by
@@ -18,15 +18,15 @@ theorem intInd_apply {n d : ℕ} (M : Matrix (Fin n) (Fin d) k) :
   simp only [intInd, Set.indicator_apply, Set.mem_setOf_eq, Pi.one_apply]
 
 /- English proof (translation)
-Establish `ht : t = Ideal.Quotient.mk _ (Quotient.out t)` using `(Quotient.out_eq t).symm`. Use `set a := Quotient.out t`. Establish `hϖ0 : (ϖ : k) ≠ 0` using `ϖ.ne_zero`. Prove the components needed by the constructor for the conclusion. Introduce `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy : (ϖ : k) * y = ϖ * (y - (ϖ : k)⁻¹ * a) + a` using `by field_simp; ring`. Establish `hmem : (ϖ : k) * y ∈ 𝒪[k]` using `hy ▸ add_mem (mul_mem hϖ.mem hc) a.2`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[ht, Ideal.Quotient.eq, pow_one, hϖ.maximalIdeal_eq, Ideal.mem_span_singleton']`. Use `⟨-⟨_, hc⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨h, e⟩`. Establish `e'` using `ht.symm.trans e`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[Ideal.Quotient.eq, pow_one, hϖ.maximalIdeal_eq, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `e'`. Establish `hc' : (c : k) * ϖ = a - ϖ * y` using `by simpa using congrArg Subtype.val hc`. Establish `hinv : (ϖ : k)⁻¹ * ϖ = 1` using `inv_mul_cancel₀ hϖ0`. Establish `: y - (ϖ : k)⁻¹ * a = -(c : k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(ϖ : k)⁻¹ * hc' - (y + c) * hinv`. Rewrite using `[this]`. Conclude with `neg_mem c.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_inv_mul_out_mem_iff {ϖ : kˣ} (hϖ : SplitFlip.IsUnif ϖ) (y : k) (t : SplitFlip.Res k 1) :
     y - (ϖ : k)⁻¹ * ((Quotient.out t : 𝒪[k]) : k) ∈ 𝒪[k] ↔
@@ -56,29 +56,27 @@ theorem sub_inv_mul_out_mem_iff {ϖ : kˣ} (hϖ : SplitFlip.IsUnif ϖ) (y : k) (
     exact neg_mem c.2
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d ϖ hϖ i0 Y`. Establish `hL : ∀ i j, ((diagAt ϖ i0).valᵀ * Y) i j = (if i = i0 then (ϖ : k) else 1) * Y i j`. Introduce `i j`. Rewrite using `[diagAt_val, diagonal_transpose, diagonal_mul]`. Establish `hR : ∀ (T : Fin d → SplitFlip.Res k 1) i j, (Y + cosetRep ϖ i0 T) i j = if i = i0 then Y i j - (ϖ : k)⁻¹ * ((Quotient.out (T j) : 𝒪[k]) : k) else Y i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `T i j`. Simplify using `only [cosetRep, Matrix.add_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> ring`. Distinguish the cases in `hQR : (∀ i j, i ≠ i0 → Y i j ∈ 𝒪[k]) ∧ ∀ j, (ϖ : k) * Y i0 j ∈ 𝒪[k]`. Take `⟨hQ, hRR⟩` from `hQR`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Set `T0 : Fin d → SplitFlip.Res k 1` to `fun j => Ideal.Quotient.mk _ ⟨_, hRR j⟩`. Establish `hl : intInd k n d ((diagAt ϖ i0).valᵀ * Y) = 1`. Rewrite using `[intInd_apply, if_pos]`. Introduce `i j`. Rewrite using `[hL]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hRR j`. Rewrite using `[one_mul]`. Conclude with `hQ i j h`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ T, intInd k n d (Y + cosetRep ϖ i0 T) = if T = T0 then 1 else 0`. Introduce `T`. Rewrite using `[intInd_apply]`. Distinguish the cases in `hT : T = T0`. Rewrite using `[if_pos hT, if_pos]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Introduce `i j`. Rewrite using `[hR]`. Use `split_ifs with h`. Substitute `h; exact (sub_inv_mul_out_mem_iff hϖ _ _).2 ⟨hRR j, by rw [hT]⟩` using the available equality. Conclude with `hQ i j h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[if_neg hT, if_neg]`. Introduce `hm`. Apply `hT` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Use `hm i0 j` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[hR, if_pos rfl]`. Take `⟨_, e⟩` from `(sub_inv_mul_out_mem_iff hϖ _ _).1 this`. Conclude with `e`. Rewrite using `[hl, Finset.sum_congr rfl (fun T _ => hs T), Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hl : intInd k n d ((diagAt ϖ i0).valᵀ * Y) = 0`. Rewrite using `[intInd_apply, if_neg]`. Introduce `hm`. Use `hQR ⟨fun i j h => ?_, fun j => ?_⟩` and prove the remaining obligations. Use `hm i j` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[hL, if_neg h, one_mul]`. Then use the resulting hypothesis. Use `hm i0 j` as an intermediate fact. Rewrite `this` using `[hL, if_pos rfl]`. Then use the resulting hypothesis. Rewrite using `[hl]`. Use `symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `T _`. Rewrite using `[intInd_apply, if_neg]`. Introduce `hm`. Use `hQR ⟨fun i j h => ?_, fun j => ?_⟩` and prove the remaining obligations.
-
-Use `hm i j` as an intermediate fact. Rewrite `this` using `[hR, if_neg h]`. Then use the resulting hypothesis. Use `hm i0 j` as an intermediate fact. Rewrite `this` using `[hR, if_pos rfl]`. Conclude with `((sub_inv_mul_out_mem_iff hϖ _ _).1 this).1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intInd_diagAt_eq_sum : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ} (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → ∀ (i0 : Fin n) (Y : Matrix (Fin n) (Fin d) k),
     GlobalTheory.HeisUnit.intInd k n d ((GlobalTheory.HeisUnit.diagAt ϖ i0).valᵀ * Y) =

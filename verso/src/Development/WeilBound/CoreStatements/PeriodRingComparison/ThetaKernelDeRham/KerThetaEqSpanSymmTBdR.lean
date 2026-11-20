@@ -18,14 +18,14 @@ def cD : Reformulated.AutPerF.BdR l (OC l) ≃+* Formalism.Per6.BdR l :=
   IsFractionRing.ringEquivOfRingEquiv (cPd l)
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.ringEquivOfRingEquiv_algebraMap _ y`.
+A detailed English derivation is pending.
 -/
 theorem cD_algebraMap (y : Reformulated.AutPerF.BdRPlus l (OC l)) :
     cD l (algebraMap _ _ y) = algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) (cPd l y) :=
   IsFractionRing.ringEquivOfRingEquiv_algebraMap _ y
 
 /- English proof (translation)
-The claim follows from `(Reformulated.AutPerF.BdRPlus.irreducible_iff _).1 ((MulEquiv.irreducible_iff (f := (cPd l).symm)).2 irreducible_tBdR)`.
+A detailed English derivation is pending.
 -/
 theorem ker_theta_eq_span_symm_tBdR :
     RingHom.ker (Reformulated.AutPerF.BdRPlus.theta l (OC l)) = Ideal.span {(cPd l).symm (tBdR l)} :=
@@ -33,9 +33,9 @@ theorem ker_theta_eq_span_symm_tBdR :
     ((MulEquiv.irreducible_iff (f := (cPd l).symm)).2 irreducible_tBdR)
 
 /- English proof (translation)
-Establish `ht : F (algebraMap A K (f.symm t) ^ a) = algebraMap B L t ^ a`. Rewrite using `[map_zpow₀, h, RingEquiv.apply_symm_apply]`. Rewrite using `[Submodule.mem_span_singleton, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨f c, by rw [Algebra.smul_def, Algebra.smul_def, map_mul, h, ht]⟩`. Introduce and unpack `⟨c, hc⟩`. Use `⟨f.symm c, F.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, Algebra.smul_def, Algebra.smul_def, map_mul, h, ht, RingEquiv.apply_symm_apply]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fil_transport {A B K L : Type} [CommRing A] [CommRing B] [Field K] [Field L] [Algebra A K]
     [Algebra B L] (f : A ≃+* B) (F : K ≃+* L) (h : ∀ y, F (algebraMap A K y) = algebraMap B L (f y))
@@ -53,7 +53,7 @@ theorem fil_transport {A B K L : Type} [CommRing A] [CommRing B] [Field K] [Fiel
     rw [← hc, Algebra.smul_def, Algebra.smul_def, map_mul, h, ht, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `h1 : Formalism.Per6.FilD l a = Submodule.span (Formalism.Per6.BdRp l) {(algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) (tBdR l)) ^ a}` using `fil_eq_span_tBdR a`. Rewrite using `[h1, Reformulated.AutPerF.BdR.fil_eq_span (ker_theta_eq_span_symm_tBdR l)]`. Conclude with `fil_transport (cPd l) (cD l) (cD_algebraMap l) (tBdR l) a x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cD_fil (a : ℤ) (x : Reformulated.AutPerF.BdR l (OC l)) :
     x ∈ Reformulated.AutPerF.BdR.fil l (OC l) a ↔ cD l x ∈ Formalism.Per6.FilD l a := by

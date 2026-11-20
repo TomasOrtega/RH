@@ -20,9 +20,9 @@ def skc (M : Matrix (Fin j) (Fin j) ℂ) : (G.UT j → ℂ) × (Fin j → ℝ) :
   (fun p => M p.1.1 p.1.2, fun a => (M a a).im)
 
 /- English proof (translation)
-Use `congrFun (congrFun (skewOf_ct q) b) a` as an intermediate fact. Rewrite `this` using `[conjTranspose_apply, Matrix.neg_apply]`. Establish `h2 : conj (skewOf q a b) = -skewOf q b a` using `this`. Establish `h3` using `congrArg conj h2`. Rewrite `h3` using `[Complex.conj_conj, map_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 lemma skewOf_gt (q : (G.UT j → ℂ) × (Fin j → ℝ)) {a b : Fin j} (h : b < a) :
     skewOf q a b = -conj (skewOf q b a) := by
@@ -34,13 +34,13 @@ lemma skewOf_gt (q : (G.UT j → ℂ) × (Fin j → ℝ)) {a b : Fin j} (h : b <
   exact h3
 
 /- English proof (translation)
-Establish `hM' : ∀ a b, conj (M b a) = -M a b` using `fun a b => by`. Use `congrFun (congrFun hM a) b` as an intermediate fact. Rewrite `this` using `[conjTranspose_apply]`. Then use the resulting hypothesis. Use extensionality with `a b`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[skewOf_lt _ h]`. Both sides reduce to the same expression. Rewrite using `[skewOf_diag]`. Establish `h1` using `hM' a a`. Apply `Complex.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Complex.mul_re, Complex.I_re, Complex.ofReal_re, Complex.I_im, Complex.ofReal_im]`. Use `congrArg Complex.re h1` as an intermediate fact. Simplify using `only [Complex.conj_re, Complex.neg_re] at this`. Simplify using `[skc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `[skc]`. Rewrite using `[skewOf_gt _ h, skewOf_lt _ h] show -conj (M b a) = M a b`. Rewrite using `[hM']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma skewOf_skc {M : Matrix (Fin j) (Fin j) ℂ} (hM : Mᴴ = -M) : skewOf (skc M) = M := by
   have hM' : ∀ a b, conj (M b a) = -M a b := fun a b => by
@@ -62,11 +62,11 @@ lemma skewOf_skc {M : Matrix (Fin j) (Fin j) ℂ} (hM : Mᴴ = -M) : skewOf (skc
     rw [hM']; ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Simplify using `only [Matrix.add_apply]`. Rewrite using `[skewOf_lt _ h, skewOf_lt _ h, skewOf_lt _ h]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [Matrix.add_apply]`. Rewrite using `[skewOf_diag, skewOf_diag, skewOf_diag]`. Simplify using `only [Prod.snd_add, Pi.add_apply, Complex.ofReal_add]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Matrix.add_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[skewOf_gt _ h, skewOf_gt _ h, skewOf_gt _ h, skewOf_lt _ h, skewOf_lt _ h, skewOf_lt _ h]`. Simplify using `only [Prod.fst_add, Pi.add_apply, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma skewOf_add (q1 q2 : (G.UT j → ℂ) × (Fin j → ℝ)) : skewOf (q1 + q2) = skewOf q1 + skewOf q2 := by
   ext a b
@@ -82,9 +82,9 @@ def kap (c1 c2 : Matrix (Fin (2 * ρ + k + 1)) (Fin j) ℂ) : (G.UT j → ℂ) �
   skc ((1 / 2 : ℂ) • (c2ᴴ * Hpk k ρ * c1 - c1ᴴ * Hpk k ρ * c2))
 
 /- English proof (translation)
-Establish `hH : (Hpk k ρ)ᴴ = Hpk k ρ` using `(hpkFacts k ρ).1`. Rewrite using `[conjTranspose_smul, conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, conjTranspose_mul, conjTranspose_mul, hH, conjTranspose_conjTranspose, conjTranspose_conjTranspose]`. Establish `hs : star (1 / 2 : ℂ) = 1 / 2` using `by simp [Complex.ext_iff]`. Rewrite using `[hs]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 lemma kap_skew (c1 c2 : Matrix (Fin (2 * ρ + k + 1)) (Fin j) ℂ) :
     ((1 / 2 : ℂ) • (c2ᴴ * Hpk k ρ * c1 - c1ᴴ * Hpk k ρ * c2))ᴴ =
@@ -101,7 +101,7 @@ def mulC (x1 x2 : RC k j ρ) : RC k j ρ :=
   (x1.1 + x2.1, x1.2 + x2.2 + kap (Matrix.of x1.1) (Matrix.of x2.1))
 
 /- English proof (translation)
-Rewrite using `[Ux3.rn_eq, Ux3.rn_eq, Ux3.rn_eq, block3_mul]`. Establish `hof : (Matrix.of (x1.1 + x2.1) : Matrix (Fin (2 * ρ + k + 1)) (Fin j) ℂ) = Matrix.of x1.1 + Matrix.of x2.1` using `rfl`. Simplify using `only [mulC, hof, skewOf_add, kap, skewOf_skc (kap_skew _ _)]`. Apply the tactic sequence `refine block3_congr ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> (try simp only [hof, conjTranspose_add]) <;>`. Apply the tactic sequence `simp [-Matrix.of_add_of, Matrix.mul_assoc, Matrix.mul_add, Matrix.add_mul, conjTranspose_add, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul] <;> module`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rn_mul (x1 x2 : RC k j ρ) : Rn k j ρ x1 * Rn k j ρ x2 = Rn k j ρ (mulC x1 x2) := by
   rw [Ux3.rn_eq, Ux3.rn_eq, Ux3.rn_eq, block3_mul]
@@ -118,13 +118,13 @@ section n0
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[eB_ll]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma eB_ll' (a : Fin r) : eB k r 0 (Sum.inl (Sum.inl a)) = eI k r a := by
   ext; rw [eB_ll]; rfl
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `(Equiv.sum_comp (eB k r 0) (fun q => M (eB k r 0 p) q * y q)).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mulVec_eB (M : B.Mat k (r + 0)) (y : Fin (2 * r + k + 1) → ℂ) (p : Ix k r 0) :
     (M *ᵥ y) (eB k r 0 p) = ∑ q : Ix k r 0, M (eB k r 0 p) (eB k r 0 q) * y (eB k r 0 q) := by
@@ -134,13 +134,13 @@ lemma mulVec_eB (M : B.Mat k (r + 0)) (y : Fin (2 * r + k + 1) → ℂ) (p : Ix 
 def yb (y : Fin (2 * r + k + 1) → ℂ) (v : Fin (2 * 0 + k + 1)) : ℂ := y (eB k r 0 (Sum.inl (Sum.inr v)))
 
 /- English proof (translation)
-The claim follows from `hy _ (Or.inl (by rw [eB_ll]; exact a.isLt))`.
+A detailed English derivation is pending.
 -/
 lemma wb_ll {y : Fin (2 * r + k + 1) → ℂ} (hy : inWb k r y) (a : Fin r) : y (eB k r 0 (Sum.inl (Sum.inl a))) = 0 :=
   hy _ (Or.inl (by rw [eB_ll]; exact a.isLt))
 
 /- English proof (translation)
-The claim follows from `hy _ (Or.inr (by rw [eB_r]; omega))`.
+A detailed English derivation is pending.
 -/
 lemma wb_r {y : Fin (2 * r + k + 1) → ℂ} (hy : inWb k r y) (a : Fin r) : y (eB k r 0 (Sum.inr a)) = 0 :=
   hy _ (Or.inr (by rw [eB_r]; omega))
@@ -148,9 +148,9 @@ lemma wb_r {y : Fin (2 * r + k + 1) → ℂ} (hy : inWb k r y) (a : Fin r) : y (
 def a12 (x : RC k r 0) : Matrix (Fin r) (Fin (2 * 0 + k + 1)) ℂ := -(G.wMat r * (Matrix.of x.1)ᴴ * Hpk k 0)
 
 /- English proof (translation)
-Establish `key : ∀ p, (Rn k r 0 x *ᵥ y) (eB k r 0 p) = ∑ v, Rn k r 0 x (eB k r 0 p) (eB k r 0 (Sum.inl (Sum.inr v))) * yb y v`. Introduce `p`. Rewrite using `[mulVec_eB, Fintype.sum_sum_type, Fintype.sum_sum_type]`. Simplify using `only [wb_ll hy, wb_r hy, mul_zero, Finset.sum_const_zero, zero_add, add_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Apply the tactic sequence `refine ⟨fun a => ?_, fun v => ?_, fun a => ?_⟩ <;> rw [key] <;>`. Simplify using `[Ux3.rn_eq, block3_apply, a12, Matrix.mulVec, dotProduct, yb, Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 lemma rn_mulVec (x : RC k r 0) {y : Fin (2 * r + k + 1) → ℂ} (hy : inWb k r y) :
     (∀ a, (Rn k r 0 x *ᵥ y) (eB k r 0 (Sum.inl (Sum.inl a))) = (a12 x *ᵥ yb y) a) ∧
@@ -166,7 +166,7 @@ lemma rn_mulVec (x : RC k r 0) {y : Fin (2 * r + k + 1) → ℂ} (hy : inWb k r 
     simp [Ux3.rn_eq, block3_apply, a12, Matrix.mulVec, dotProduct, yb, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `h` using `(rn_rset x).2.1`. Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, bvec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[h i (eI k r b) (by show b.val < r; exact b.isLt)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma rn_col (x : RC k r 0) (b : Fin r) : Rn k r 0 x *ᵥ bvec (eI k r b) = bvec (eI k r b) := by
   have h := (rn_rset x).2.1
@@ -182,13 +182,13 @@ section coords
 variable {k r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single i]`. Distinguish the cases in `h : r ≤ i.val ∧ i.val ≤ r + k`. Apply the tactic sequence `rw [if_pos h]; congr 1; unfold Hpk split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[if_neg h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `: z i = 0` using `hz i (by omega)`. Simplify using `[this]`. Introduce `j _ hji`. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`. Establish `: Hpk k r i j = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Unfold `Hpk`. Establish `hne : i.val ≠ j.val` using `fun h => hji (Fin.ext h).symm`. Apply the tactic sequence `split_ifs with h1 h2 h3 <;> first | rfl | (exfalso; omega) | (exfalso; exact hne (by rw [h3.2.2]))`. Simplify using `[this]`. Establish `: z j = 0` using `hz j (by omega)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma hpk_mulVec_wb {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (i : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ z) i = (if r ≤ i.val ∧ i.val ≤ r + k then (if i.val = r + k then -1 else 1) else 0) * z i := by
@@ -212,15 +212,15 @@ lemma hpk_mulVec_wb {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (i : Fin
   · simp
 
 /- English proof (translation)
-Introduce `h0`. Establish `hT` using `hz.2`. Unfold `Tz at hT`. Establish `hre : 0 ≤ (herm (Hpk k r) z z).re`. Unfold `herm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [dotProduct, Pi.star_apply, hpk_mulVec_wb hz.1, Complex.re_sum]`. Use `Finset.sum_nonneg fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : r ≤ i.val ∧ i.val ≤ r + k`. Rewrite using `[if_pos h]`. Distinguish the cases in `hl : i.val = r + k`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `: i = ⟨r + k, by omega⟩` using `Fin.ext hl`. Rewrite using `[this, h0]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hl, one_mul]`. Use `Complex.mul_conj' (z i)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_comm]`. Simplify using `only [RCLike.star_def]`. Rewrite using `[this]`. Conclude with `sq_nonneg ‖z i‖` after adjusting the coercions. Rewrite using `[if_neg h]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma wb_last_ne {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) :
     z ⟨r + k, by omega⟩ ≠ 0 := by
@@ -248,9 +248,9 @@ lemma wb_last_ne {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) :
 def hb (z : Fin (2 * r + k + 1) → ℂ) : Fin (2 * 0 + k + 1) → ℂ := Hpk k 0 *ᵥ yb z
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single v]`. Apply the tactic sequence `congr 1; unfold Hpk; have := v.isLt; split_ifs <;> first | rfl | (exfalso; omega)`. Introduce `j _ hjv`. Establish `: Hpk k 0 v j = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `Hpk`. Establish `hne : v.val ≠ j.val` using `fun h => hjv (Fin.ext h).symm`. Apply the tactic sequence `split_ifs with h1 h2 h3 <;> first | rfl | (exfalso; omega) | (exfalso; exact hne (by rw [h3.2.2]))`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma hermitian_form_rank_zero_apply (y : Fin (2 * 0 + k + 1) → ℂ) (v : Fin (2 * 0 + k + 1)) :
     (Hpk k 0 *ᵥ y) v = (if v.val = 0 + k then -1 else 1) * y v := by
@@ -266,11 +266,11 @@ lemma hermitian_form_rank_zero_apply (y : Fin (2 * 0 + k + 1) → ℂ) (v : Fin 
   · simp
 
 /- English proof (translation)
-Unfold `hb`. Rewrite using `[hermitian_form_rank_zero_apply, if_pos (by simp)]`. Use `wb_last_ne hz` as an intermediate fact. Establish `e : yb z (Fin.last (2 * 0 + k)) = z ⟨r + k, by omega⟩`. Unfold `yb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use `ext`. Rewrite using `[eB_lr]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma hb_last_ne {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) : hb z (Fin.last (2 * 0 + k)) ≠ 0 := by
   unfold hb
@@ -287,9 +287,9 @@ def extC (z : Fin (2 * r + k + 1) → ℂ) (c : Fin (2 * 0 + k) → Fin r → �
   fun v a => Fin.lastCases (lastRow z c a) (fun i => c i a) v
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v a`. Use `Fin.lastCases ?_ (fun i => ?_) v` and prove the remaining obligations. Simplify using `only [extC, Fin.lastCases_last, Pi.add_apply, lastRow]`. Rewrite using `[← add_div]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib, neg_add]`. Simplify using `[extC]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma extC_add (z : Fin (2 * r + k + 1) → ℂ) (c c' : Fin (2 * 0 + k) → Fin r → ℂ) :
     extC z (c + c') = extC z c + extC z c' := by
@@ -304,17 +304,17 @@ def Cstr (z : Fin (2 * r + k + 1) → ℂ) (c : Fin (2 * 0 + k + 1) → Fin r �
   (Matrix.of c)ᴴ *ᵥ hb z = 0
 
 /- English proof (translation)
-Establish `hl` using `hb_last_ne hz`. Establish `hl' : conj (hb z (Fin.last (2 * 0 + k))) ≠ 0` using `by simpa using hl`. Establish `hsum : ∀ a, ((Matrix.of c)ᴴ *ᵥ hb z) a = (∑ i : Fin (2 * 0 + k), conj (c i.castSucc a) * hb z i.castSucc) + conj (c (Fin.last _) a) * hb z (Fin.last _)`. Introduce `a`. Simplify using `only [Matrix.mulVec, dotProduct, conjTranspose_apply, Matrix.of_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.sum_univ_castSucc]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `v a`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `ha` using `congrFun h a`. Rewrite `ha` using `[hsum]`. Use `Fin.lastCases ?_ (fun i => ?_) v` and prove the remaining obligations. Simplify using `only [extC, Fin.lastCases_last, lastRow]`. Rewrite using `[eq_div_iff hl']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg conj ha` as an intermediate fact. Simplify using `only [Pi.zero_apply, map_add, map_sum, map_mul, Complex.conj_conj, map_zero] at this`. Take the linear combination `this`. Simplify using `[extC]`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[hsum]`. Establish `hl2 : c (Fin.last _) a = lastRow z (fun i a => c i.castSucc a) a` using `by conv_lhs => rw [h]`. Simplify using `[extC]`. Rewrite using `[hl2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [lastRow, map_div₀, map_neg, map_sum, map_mul, Complex.conj_conj, Pi.zero_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma cstr_iff {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (c : Fin (2 * 0 + k + 1) → Fin r → ℂ) :
     Cstr z c ↔ c = extC z (fun i a => c i.castSucc a) := by
@@ -350,7 +350,7 @@ lemma cstr_iff {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (c : Fin (
     ring
 
 /- English proof (translation)
-Rewrite using `[cstr_iff hz]`. Use function extensionality and compare the values at `v a`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) v <;> simp [extC]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma cstr_extC {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (c : Fin (2 * 0 + k) → Fin r → ℂ) :
     Cstr z (extC z c) := by
@@ -374,14 +374,14 @@ def mulX (z : Fin (2 * r + k + 1) → ℂ) (x1 x2 : X0 k r) : X0 k r :=
   (x1.1 + x2.1, x1.2 + x2.2 + kap (Matrix.of (extC z x1.1)) (Matrix.of (extC z x2.1)))
 
 /- English proof (translation)
-Unfold `E`. Rewrite using `[rn_mul]`. Use `congr 1`. Simplify using `only [mulC, embX, mulX, extC_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem E_mul (z : Fin (2 * r + k + 1) → ℂ) (x1 x2 : X0 k r) : E z x1 * E z x2 = E z (mulX z x1 x2) := by
   unfold E; rw [rn_mul]; congr 1
   simp only [mulC, embX, mulX, extC_add]
 
 /- English proof (translation)
-Use `congrArg (G.wMat d *ᵥ ·) h` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, wMat_sq, Matrix.one_mulVec, Matrix.mulVec_zero] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma w_mulVec_inj {d : ℕ} {v : Fin d → ℂ} (h : G.wMat d *ᵥ v = 0) : v = 0 := by
   have := congrArg (G.wMat d *ᵥ ·) h
@@ -389,15 +389,15 @@ lemma w_mulVec_inj {d : ℕ} {v : Fin d → ℂ} (h : G.wMat d *ᵥ v = 0) : v =
   exact this
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `rn_mulVec x hz.1`. Establish `ha : a12 x *ᵥ yb z = -(G.wMat r *ᵥ ((Matrix.of x.1)ᴴ *ᵥ hb z))`. Simplify using `only [a12, hb, Matrix.neg_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : a12 x *ᵥ yb z = 0`. Use function extensionality and compare the values at `a`. Use `h1 a` as an intermediate fact. Rewrite `this` using `[h, wb_ll hz.1]`. Conclude with `this.symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[ha, neg_eq_zero]`. Conclude with `w_mulVec_inj h0`. Introduce `h`. Unfold `Cstr at h`. Establish `h0 : a12 x *ᵥ yb z = 0` using `by rw [ha, h, Matrix.mulVec_zero, neg_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `i`. Take `⟨p, rfl⟩` from `(eB k r 0).surjective i`. Break down `p with (a | v) | a` into its components or cases. Rewrite using `[h1, h0, wb_ll hz.1]`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h2]`. Both sides reduce to the same expression. Rewrite using `[h3, wb_r hz.1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rn_fix_z_iff {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (x : RC k r 0) :
     Rn k r 0 x *ᵥ z = z ↔ Cstr z x.1 := by
@@ -424,7 +424,7 @@ theorem rn_fix_z_iff {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (x :
     · rw [h3, wb_r hz.1]
 
 /- English proof (translation)
-Establish `hS : n ∈ Sset k r z` using `⟨1, Formalism.FourierDecayAlt.P.Dx2.Rad.one_UW z, n, hn.1, (Matrix.one_mul n).symm⟩`. Rewrite using `[((Formalism.FourierDecayAlt.P.unipotent_map_frame k r z hz).1 n hS).1 b, hn.2]`. Simplify using `[Matrix.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma stabilizer_fixes_flag_vector {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {n : B.Mat k r}
     (hn : n ∈ C2.N0set k r z) (b : Fin (r + 1)) : n *ᵥ fvec k r z b = fvec k r z b := by
@@ -433,9 +433,7 @@ lemma stabilizer_fixes_flag_vector {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.St
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hN : E z x ∈ Nset k r` using `rset_sub_nset (rn_rset (embX z x))`. Use `⟨hN, Formalism.FourierDecayAlt.P.Dx2.VV.uMap_fix hz fun b => ?_⟩` and prove the remaining obligations. Unfold `fvec`. Use `split_ifs with hb`. Conclude with `rn_col _ ⟨b.val, hb⟩`.
-
-Conclude with `(rn_fix_z_iff hz _).2 (cstr_extC hz x.1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem E_mem {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (x : X0 k r) : E z x ∈ C2.N0set k r z := by
   have hN : E z x ∈ Nset k r := rset_sub_nset (rn_rset (embX z x))
@@ -446,13 +444,13 @@ theorem E_mem {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (x : X0 k r
   · exact (rn_fix_z_iff hz _).2 (cstr_extC hz x.1)
 
 /- English proof (translation)
-Establish `hR : n ∈ Rset k r 0`. Use `⟨hn.1.1, fun i b hb => ?_, fun i b hb1 hb2 hi => hn.1.2.2 i b hb1 (by omega) hi⟩` and prove the remaining obligations. Establish `hf` using `stabilizer_fixes_flag_vector hz hn ⟨b.val, by omega⟩`. Unfold `fvec at hf`. Rewrite `hf` using `[dif_pos hb]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun hf i` as an intermediate fact. Establish `e : eI k r ⟨b.val, hb⟩ = b` using `Fin.ext rfl`. Rewrite `this` using `[e]`. Simplify `this` using `[Matrix.mulVec, dotProduct, bvec, Pi.single_apply, Matrix.one_apply, eq_comm]`. Take `⟨x, rfl⟩` from `rset_sub_range hR`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hz' : Rn k r 0 x *ᵥ z = z`. Use `stabilizer_fixes_flag_vector hz hn (Fin.last r)` as an intermediate fact. Unfold `fvec at this; rw [dif_neg (by simp)] at this; exact this`. Establish `hc` using `(cstr_iff hz x.1).1 ((rn_fix_z_iff hz x).1 hz')`. Use `⟨(fun i a => x.1 i.castSucc a, x.2), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `E embX`. Use `congr 1`. Conclude with `Prod.ext hc.symm rfl`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem stabilizer_subset_range {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {n : B.Mat k r}
     (hn : n ∈ C2.N0set k r z) : ∃ x, E z x = n := by
@@ -482,9 +480,7 @@ section haar
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Use `show Continuous fun x : Mt k r => C2.uMap k r z (Matrix.of x) a b`. Unfold `C2.uMap`. Use `split_ifs with h`. Conclude with `(B2x5.continuous_herm _).comp ((Continuous.matrix_mulVec continuous_id continuous_const).prodMk continuous_const)`.
-
-Conclude with `((B2x5.continuous_herm _).comp ((Continuous.matrix_mulVec continuous_id continuous_const).prodMk continuous_const)).div_const _`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_uMap (z : Fin (2 * r + k + 1) → ℂ) : Continuous fun x : Mt k r => C2.uMap k r z (Matrix.of x) := by
   refine continuous_pi fun a => continuous_pi fun b => ?_
@@ -496,7 +492,7 @@ theorem cont_uMap (z : Fin (2 * r + k + 1) → ℂ) : Continuous fun x : Mt k r 
       continuous_const)).div_const _
 
 /- English proof (translation)
-Establish `h1 : IsClosed {x : Mt k r | Matrix.of x ∈ Nset k r}` using `(Formalism.FourierDecayAlt.P.unipotent_radical_closed k r).closed`. Establish `h2 : IsClosed {x : Mt k r | C2.uMap k r z (Matrix.of x) = 1}` using `isClosed_eq (cont_uMap z) continuous_const`. Conclude with `h1.inter h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_setOf_of_mem_n0set (z : Fin (2 * r + k + 1) → ℂ) : IsClosed {x : Mt k r | Matrix.of x ∈ C2.N0set k r z} := by
   have h1 : IsClosed {x : Mt k r | Matrix.of x ∈ Nset k r} := (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r).closed
@@ -504,9 +500,9 @@ theorem isClosed_setOf_of_mem_n0set (z : Fin (2 * r + k + 1) → ℂ) : IsClosed
   exact h1.inter h2
 
 /- English proof (translation)
-Use `continuous_pi fun v => continuous_pi fun a => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun i => ?_) v` and prove the remaining obligations. Simplify using `only [extC, Fin.lastCases_last, lastRow]`. Use `(Continuous.neg ?_).div_const _` and prove the remaining obligations. Conclude with `continuous_finset_sum _ fun i _ => (continuous_apply_apply i a).mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [extC, Fin.lastCases_castSucc]`. Conclude with `continuous_apply_apply i a`.
+A detailed English derivation is pending.
 -/
 theorem cont_extC (z : Fin (2 * r + k + 1) → ℂ) : Continuous (extC (k := k) (r := r) z) := by
   refine continuous_pi fun v => continuous_pi fun a => ?_
@@ -518,14 +514,14 @@ theorem cont_extC (z : Fin (2 * r + k + 1) → ℂ) : Continuous (extC (k := k) 
     exact continuous_apply_apply i a
 
 /- English proof (translation)
-The claim follows from `cont_extC z`.
+A detailed English derivation is pending.
 -/
 theorem cont_ofExtC (z : Fin (2 * r + k + 1) → ℂ) :
     Continuous fun c : Fin (2 * 0 + k) → Fin r → ℂ => (Matrix.of (extC z c) : Matrix (Fin (2 * 0 + k + 1)) (Fin r) ℂ) :=
   cont_extC z
 
 /- English proof (translation)
-Unfold `skc`. Use `Continuous.prodMk (continuous_pi fun p => ?_) (continuous_pi fun a => ?_)` and prove the remaining obligations. Conclude with `continuous_apply_apply p.1.1 p.1.2`. Conclude with `Complex.continuous_im.comp (continuous_apply_apply a a)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_skc {j : ℕ} : Continuous fun M : Matrix (Fin j) (Fin j) ℂ => skc M := by
   unfold skc
@@ -534,7 +530,7 @@ theorem cont_skc {j : ℕ} : Continuous fun M : Matrix (Fin j) (Fin j) ℂ => sk
   · exact Complex.continuous_im.comp (continuous_apply_apply a a)
 
 /- English proof (translation)
-Unfold `kap`. Conclude with `cont_skc.comp ((((hg.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hf).sub ((hf.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hg)).const_smul (1 / 2 : ℂ))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_kap {X : Type*} [TopologicalSpace X] {f g : X → Matrix (Fin (2 * 0 + k + 1)) (Fin r) ℂ}
     (hf : Continuous f) (hg : Continuous g) : Continuous fun x => kap (f x) (g x) := by
@@ -554,7 +550,7 @@ instance instIsAddHaarCoordinates : (volume : Measure (X0 k r)).IsAddHaarMeasure
 def Et (z : Fin (2 * r + k + 1) → ℂ) (x : X0 k r) : Mt k r := Matrix.of.symm (E z x)
 
 /- English proof (translation)
-Establish `h` using `Formalism.FourierDecayAlt.P.Dx2.SplitF.rn_cont (k := k) r 0`. Establish `he : Continuous fun x : X0 k r => embX z x` using `(cont_extC z).comp continuous_fst |>.prodMk continuous_snd`. Conclude with `h.comp he`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_Et (z : Fin (2 * r + k + 1) → ℂ) : Continuous (Et (k := k) (r := r) z) := by
   have h := Formalism.FourierDecayAlt.P.Dx2.SplitF.rn_cont (k := k) r 0
@@ -562,9 +558,9 @@ theorem cont_Et (z : Fin (2 * r + k + 1) → ℂ) : Continuous (Et (k := k) (r :
   exact h.comp he
 
 /- English proof (translation)
-Establish `hk : Continuous fun c : Fin (2 * 0 + k) → Fin r → ℂ => kap (Matrix.of (extC z x0.1)) (Matrix.of (extC z c))` using `cont_kap continuous_const (cont_ofExtC z)`. Use `MeasurePreserving.skew_product (μa := (volume : Measure (Fin (2 * 0 + k) → Fin r → ℂ))) (μc := (volume : Measure ((G.UT r → ℂ) × (Fin r → ℝ)))) (μd := (volume : Measure ((G.UT r → ℂ) × (Fin r → ℝ)))) (measurePreserving_add_left volume x0.1) (g := fun c q => (x0.2 + kap (Matrix.of …` as an intermediate fact. Establish `e : mulX z x0 = fun p : X0 k r => (x0.1 + p.1, (x0.2 + kap (Matrix.of (extC z x0.1)) (Matrix.of (extC z p.1))) + p.2)`. Use function extensionality and compare the values at `x`. Simplify using `only [mulX]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `Prod.ext rfl ?_` and prove the remaining obligations. Use `show x0.2 + x.2 + _ = (x0.2 + _) + x.2`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Measure.volume_eq_prod]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_mulX_left (z : Fin (2 * r + k + 1) → ℂ) (x0 : X0 k r) :
     MeasurePreserving (mulX z x0) volume volume := by
@@ -583,9 +579,9 @@ theorem mp_mulX_left (z : Fin (2 * r + k + 1) → ℂ) (x0 : X0 k r) :
   rw [e, Measure.volume_eq_prod]; exact this
 
 /- English proof (translation)
-Establish `hk : Continuous fun c : Fin (2 * 0 + k) → Fin r → ℂ => kap (Matrix.of (extC z c)) (Matrix.of (extC z x0.1))` using `cont_kap (cont_ofExtC z) continuous_const`. Use `MeasurePreserving.skew_product (μa := (volume : Measure (Fin (2 * 0 + k) → Fin r → ℂ))) (μc := (volume : Measure ((G.UT r → ℂ) × (Fin r → ℝ)))) (μd := (volume : Measure ((G.UT r → ℂ) × (Fin r → ℝ)))) (measurePreserving_add_left volume x0.1) (g := fun c q => (x0.2 + kap (Matrix.of …` as an intermediate fact. Establish `e : (fun x => mulX z x x0) = fun p : X0 k r => (x0.1 + p.1, (x0.2 + kap (Matrix.of (extC z p.1)) (Matrix.of (extC z x0.1))) + p.2)`. Use function extensionality and compare the values at `x`. Simplify using `only [mulX]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `Prod.ext (add_comm _ _) ?_` and prove the remaining obligations. Use `show x.2 + x0.2 + _ = (x0.2 + _) + x.2`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Measure.volume_eq_prod]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_mulX_right (z : Fin (2 * r + k + 1) → ℂ) (x0 : X0 k r) :
     MeasurePreserving (fun x => mulX z x x0) volume volume := by
@@ -614,7 +610,7 @@ def sOf (M : Mt k r) : Matrix (Fin r) (Fin r) ℂ :=
 def Rd (M : Mt k r) : X0 k r := (fun i a => cOf M i.castSucc a, skc (sOf M))
 
 /- English proof (translation)
-Establish `hc : Continuous (cOf (k` using `k) (r := r)) := continuous_pi fun v => continuous_pi fun a => by simp only [cOf, Matrix.of_apply]; exact continuous_apply_apply _ _`. Establish `h13 : Continuous fun M : Mt k r => (Matrix.of fun a b => M (eB k r 0 (Sum.inl (Sum.inl a))) (eB k r 0 (Sum.inr b)) : Matrix (Fin r) (Fin r) ℂ)` using `continuous_pi fun a => continuous_pi fun b => by simp only [Matrix.of_apply]; exact continuous_apply_apply _ _`. Use `Continuous.prodMk (continuous_pi fun i => continuous_pi fun a => ?_) (cont_skc.comp ?_)` and prove the remaining obligations. Conclude with `(continuous_apply a).comp ((continuous_apply i.castSucc).comp hc)`. Conclude with `(continuous_const.matrix_mul h13).add (((hc.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hc).const_smul (1 / 2 : ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_Rd : Continuous (Rd (k := k) (r := r)) := by
   have hc : Continuous (cOf (k := k) (r := r)) :=
@@ -628,7 +624,7 @@ theorem cont_Rd : Continuous (Rd (k := k) (r := r)) := by
       (((hc.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hc).const_smul (1 / 2 : ℂ))
 
 /- English proof (translation)
-Use `Prod.ext (funext fun p => ?_) (funext fun a => ?_)` and prove the remaining obligations. Conclude with `skewOf_lt q p.2`. Use `show (skewOf q a a).im = q.2 a`. Rewrite using `[skewOf_diag]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma skc_skewOf {j : ℕ} (q : (G.UT j → ℂ) × (Fin j → ℝ)) : skc (skewOf q) = q := by
   refine Prod.ext (funext fun p => ?_) (funext fun a => ?_)
@@ -637,13 +633,13 @@ lemma skc_skewOf {j : ℕ} (q : (G.UT j → ℂ) × (Fin j → ℝ)) : skc (skew
     rw [skewOf_diag]; simp
 
 /- English proof (translation)
-Establish `hc : cOf (Et z x) = Matrix.of (extC z x.1)`. Use extensionality with `v a`. Simplify using `[cOf, Et, E, embX, Ux3.rn_eq, block3_apply]`. Establish `hs : sOf (Et z x) = skewOf x.2`. Establish `h13 : (Matrix.of fun a b => (Et z x) (eB k r 0 (Sum.inl (Sum.inl a))) (eB k r 0 (Sum.inr b)) : Matrix (Fin r) (Fin r) ℂ) = G.wMat r * ((-(1 / 2 : ℂ)) • ((Matrix.of (extC z x.1))ᴴ * Hpk k 0 * Matrix.of (extC z x.1)) + skewOf x.2)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `[Et, E, embX, Ux3.rn_eq, block3_apply]`. Unfold `sOf`. Rewrite using `[h13, hc, wMat_sq_assoc]`. Use `module`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Rd`. Rewrite using `[hs, skc_skewOf]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use function extensionality and compare the values at `i a`. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[extC]`.
+A detailed English derivation is pending.
 -/
 theorem Rd_Et (z : Fin (2 * r + k + 1) → ℂ) (x : X0 k r) : Rd (Et z x) = x := by
   have hc : cOf (Et z x) = Matrix.of (extC z x.1) := by
@@ -662,27 +658,25 @@ theorem Rd_Et (z : Fin (2 * r + k + 1) → ℂ) (x : X0 k r) : Rd (Et z x) = x :
 def mu0 (z : Fin (2 * r + k + 1) → ℂ) : Measure (Mt k r) := (volume : Measure (X0 k r)).map (Et z)
 
 /- English proof (translation)
-The claim follows from `E_mul z x1 x2`.
+A detailed English derivation is pending.
 -/
 theorem Et_mul (z : Fin (2 * r + k + 1) → ℂ) (x1 x2 : X0 k r) :
     Matrix.of (Et z x1) * Matrix.of (Et z x2) = Matrix.of (Et z (mulX z x1 x2)) := E_mul z x1 x2
 
 /- English proof (translation)
-Establish `hm : Measurable (Et (k` using `k) (r := r) z) := (cont_Et z).measurable`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show mu0 z ({x : Mt k r | Matrix.of x ∈ C2.N0set k r z}ᶜ) = 0`. Unfold `mu0`. Rewrite using `[Measure.map_apply hm (isClosed_setOf_of_mem_n0set z).measurableSet.compl]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Et z ⁻¹' {x : Mt k r | Matrix.of x ∈ C2.N0set k r z}ᶜ = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_compl_iff, Set.mem_empty_iff_false, iff_false, not_not]`. Conclude with `E_mem hz x`. Rewrite using `[this, measure_empty]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a ha`. Take `⟨x0, rfl⟩` from `stabilizer_subset_range hz ha`. Unfold `mu0`. Rewrite using `[Measure.map_map (Formalism.FourierDecayAlt.P.Dx2.OrbJ.contL _).measurable hm]`. Establish `e : lmulM (E z x0) ∘ Et z = Et z ∘ mulX z x0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Conclude with `E_mul z x0 x`. Rewrite using `[e, ← Measure.map_map hm (mp_mulX_left z x0).measurable, (mp_mulX_left z x0).map_eq]`. Introduce `a ha`. Take `⟨x0, rfl⟩` from `stabilizer_subset_range hz ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `mu0`. Establish `hr : Continuous (B.rmulF (E z x0))`. Unfold `B.rmulF`. Conclude with `(continuous_id.matrix_mul continuous_const)`. Rewrite using `[Measure.map_map hr.measurable hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : B.rmulF (E z x0) ∘ Et z = Et z ∘ fun x => mulX z x x0`. Use function extensionality and compare the values at `x`. Conclude with `E_mul z x x0`. Rewrite using `[e, ← Measure.map_map hm (mp_mulX_right z x0).measurable, (mp_mulX_right z x0).map_eq]`. Introduce `K hK`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `mu0`. Rewrite using `[Measure.map_apply hm hK.isClosed.measurableSet]`. Establish `hsub : Et z ⁻¹' K ⊆ Rd '' K` using `fun x hx => ⟨Et z x, hx, Rd_Et z x⟩`. Conclude with `(measure_mono hsub).trans_lt ((hK.image cont_Rd).measure_lt_top)`. Unfold `mu0`.
-
-Use `(Measure.map_ne_zero_iff hm.aemeasurable).mpr ?_` and prove the remaining obligations. Introduce `h0`. Use `(Measure.IsOpenPosMeasure.open_pos (μ := (volume : Measure (X0 k r))) Set.univ isOpen_univ Set.univ_nonempty)` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `this rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaar_stabilizer_measure {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) : B.IsHaarOn (C2.N0set k r z) (mu0 z) := by
   have hm : Measurable (Et (k := k) (r := r) z) := (cont_Et z).measurable
@@ -739,14 +733,14 @@ section disint
 variable {k r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => hu.1 i j hij)]`. Simplify using `[hu.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma det_UT {m : ℕ} {u : Matrix (Fin m) (Fin m) ℂ} (hu : u ∈ C2.UTset m) : u.det = 1 := by
   rw [Matrix.det_of_upperTriangular (fun i j hij => hu.1 i j hij)]
   simp [hu.2]
 
 /- English proof (translation)
-Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `[G.upper, G.strictUpper, Matrix.one_apply, ne_of_gt hij, not_lt.mpr hij.le]`. Simplify using `[G.upper, G.strictUpper]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma upper_mem {m : ℕ} (u : G.UT m → ℂ) : G.upper u ∈ C2.UTset m := by
   refine ⟨fun i j hij => ?_, fun i => ?_⟩
@@ -754,14 +748,14 @@ lemma upper_mem {m : ℕ} (u : G.UT m → ℂ) : G.upper u ∈ C2.UTset m := by
   · simp [G.upper, G.strictUpper]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `[StabilizerDisintegration.utc, G.upper, G.strictUpper, q.2, ne_of_lt q.2, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma utc_upper {m : ℕ} (u : G.UT m → ℂ) : StabilizerDisintegration.utc (G.upper u) = u := by
   funext q
   simp [StabilizerDisintegration.utc, G.upper, G.strictUpper, q.2, ne_of_lt q.2, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Simplify using `[G.upper, G.strictUpper, StabilizerDisintegration.utc, h, ne_of_lt h, Matrix.one_apply]`. Simplify using `[G.upper, G.strictUpper, hM.2]`. Simplify using `[G.upper, G.strictUpper, h, ne_of_gt h, not_lt.mpr h.le, Matrix.one_apply, hM.1 i j h]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma upper_utc {m : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} (hM : M ∈ C2.UTset m) : G.upper (StabilizerDisintegration.utc M) = M := by
   ext i j
@@ -771,11 +765,11 @@ lemma upper_utc {m : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} (hM : M ∈ C2.UTset 
   · simp [G.upper, G.strictUpper, h, ne_of_gt h, not_lt.mpr h.le, Matrix.one_apply, hM.1 i j h]
 
 /- English proof (translation)
-Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge l i with h | h` into its components or cases. Rewrite using `[hA.1 i l h, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB.1 l j (lt_of_lt_of_le hij h), mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hA.2, hB.2, one_mul]`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hA.1 i l h, zero_mul]`. Rewrite using `[hB.1 l i h, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma UT_mul {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m) (hB : B ∈ C2.UTset m) :
     A * B ∈ C2.UTset m := by
@@ -794,7 +788,7 @@ lemma UT_mul {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m
     · simp
 
 /- English proof (translation)
-Establish `hH : Hpk k r * Hpk k r = 1` using `(hpkFacts k r).2.1`. Establish `h : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, hH]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma inv_GV {g : B.Mat k r} (hg : g ∈ B.GV k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
   have hH : Hpk k r * Hpk k r = 1 := (hpkFacts k r).2.1
@@ -809,7 +803,7 @@ def mXa (k r : ℕ) (vX : Matrix (Fin r) (Fin r) ℂ) : B.Mat k r := fun i j =>
   else if i = j then 1 else 0
 
 /- English proof (translation)
-Establish `hi : (vXᴴ)⁻¹ = (vXᴴ).adjugate`. Rewrite using `[Matrix.inv_def, Matrix.det_conjTranspose, h]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i j`. Simplify using `only [C2.mX, mXa, hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma mX_eq {vX : Matrix (Fin r) (Fin r) ℂ} (h : vX.det = 1) : C2.mX k r vX = mXa k r vX := by
   have hi : (vXᴴ)⁻¹ = (vXᴴ).adjugate := by
@@ -818,9 +812,7 @@ lemma mX_eq {vX : Matrix (Fin r) (Fin r) ℂ} (h : vX.det = 1) : C2.mX k r vX = 
   simp only [C2.mX, mXa, hi]
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `show Continuous fun vX : Matrix (Fin r) (Fin r) ℂ => mXa k r vX i j`. Unfold `mXa`. Use `split_ifs`. Conclude with `continuous_apply_apply _ _`.
-
-Conclude with `continuous_const`. Conclude with `(continuous_apply_apply _ _).comp (continuous_id.matrix_conjTranspose.matrix_adjugate)`. Conclude with `continuous_const`. Conclude with `continuous_const`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma cont_mXa : Continuous (mXa k r) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -835,7 +827,7 @@ lemma cont_mXa : Continuous (mXa k r) := by
   · exact continuous_const
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Unfold `C2.xiV`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma cont_xiV : Continuous (C2.xiV k r) := by
   refine continuous_pi fun i => ?_
@@ -845,7 +837,7 @@ lemma cont_xiV : Continuous (C2.xiV k r) := by
   · exact continuous_const
 
 /- English proof (translation)
-Unfold `C2.nEich`. Establish `hx` using `cont_xiV (k := k) (r := r)`. Use `continuous_const.add (Continuous.const_smul (((hx.matrix_vecMulVec continuous_const).neg.add (continuous_const.matrix_vecMulVec (continuous_const.matrix_mulVec hx).star)).add ((hx.matrix_vecMulVec (continuous_const.matrix_mulVec hx).star).const_smul (1 / 2 : ℂ))) ((1 : ℂ) / ((Tz …` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 lemma cont_nEich (z : Fin (2 * r + k + 1) → ℂ) : Continuous (C2.nEich k r z) := by
   unfold C2.nEich
@@ -856,7 +848,7 @@ lemma cont_nEich (z : Fin (2 * r + k + 1) → ℂ) : Continuous (C2.nEich k r z)
     ((1 : ℂ) / ((Tz k r z : ℝ) : ℂ)))
 
 /- English proof (translation)
-Establish `h` using `upper_mem u`. Use `⟨fun i j hij => h.1 _ _ (Fin.castSucc_lt_castSucc_iff.mpr hij), fun i => h.2 _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 lemma sub_upper_mem (u : G.UT (r + 1) → ℂ) :
     (G.upper u).submatrix Fin.castSucc Fin.castSucc ∈ C2.UTset r := by
@@ -864,9 +856,9 @@ lemma sub_upper_mem (u : G.UT (r + 1) → ℂ) :
   refine ⟨fun i j hij => h.1 _ _ (Fin.castSucc_lt_castSucc_iff.mpr hij), fun i => h.2 _⟩
 
 /- English proof (translation)
-Establish `hup : Continuous (G.upper (d` using `r + 1)) := Formalism.FourierDecayAlt.P.Dx2.SL.cont_upper`. Establish `e : (fun u : G.UT (r + 1) → ℂ => C2.tauM k r z (G.upper u)) = fun u => C2.nEich k r z (fun a => G.upper u a.castSucc (Fin.last r)) * mXa k r ((G.upper u).submatrix Fin.castSucc Fin.castSucc)`. Use function extensionality and compare the values at `u`. Unfold `C2.tauM`. Rewrite using `[mX_eq (det_UT (sub_upper_mem u))]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `((cont_nEich z).comp ?_).matrix_mul (cont_mXa.comp ?_)` and prove the remaining obligations. Conclude with `continuous_pi fun a => (continuous_apply_apply _ _).comp hup`. Conclude with `hup.matrix_submatrix _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_tauU (z : Fin (2 * r + k + 1) → ℂ) :
     Continuous fun u : G.UT (r + 1) → ℂ => C2.tauM k r z (G.upper u) := by
@@ -889,27 +881,27 @@ section disint2
 variable {k r : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Formalism.FourierDecayAlt.P.Dx2.Rad.one_UW z, n, hn, (Matrix.one_mul n).symm⟩`.
+Supply the required witnesses or components.
 -/
 lemma N_sub_S {z : Fin (2 * r + k + 1) → ℂ} {n : B.Mat k r} (hn : n ∈ Nset k r) : n ∈ Sset k r z :=
   ⟨1, Formalism.FourierDecayAlt.P.Dx2.Rad.one_UW z, n, hn, (Matrix.one_mul n).symm⟩
 
 /- English proof (translation)
-The claim follows from `((Formalism.FourierDecayAlt.P.unipotent_map_frame k r z hz).1 s (N_sub_S hs)).2.2 t (N_sub_S ht)`.
+A detailed English derivation is pending.
 -/
 lemma uMap_mul {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {s t : B.Mat k r} (hs : s ∈ Nset k r)
     (ht : t ∈ Nset k r) : C2.uMap k r z (s * t) = C2.uMap k r z s * C2.uMap k r z t :=
   ((Formalism.FourierDecayAlt.P.unipotent_map_frame k r z hz).1 s (N_sub_S hs)).2.2 t (N_sub_S ht)
 
 /- English proof (translation)
-The claim follows from `((Formalism.FourierDecayAlt.P.unipotent_map_frame k r z hz).1 s (N_sub_S hs)).2.1`.
+A detailed English derivation is pending.
 -/
 lemma uMap_UT {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {s : B.Mat k r} (hs : s ∈ Nset k r) :
     C2.uMap k r z s ∈ C2.UTset (r + 1) :=
   ((Formalism.FourierDecayAlt.P.unipotent_map_frame k r z hz).1 s (N_sub_S hs)).2.1
 
 /- English proof (translation)
-Establish `hN` using `Formalism.FourierDecayAlt.P.unipotent_radical_closed k r`. Establish `h1 : C2.uMap k r z n⁻¹ * C2.uMap k r z n = 1`. Rewrite using `[← uMap_mul hz (hN.inv_mem n hn) hn, Matrix.nonsing_inv_mul _ (hN.unit n hn)]`. Conclude with `Formalism.FourierDecayAlt.P.Dx2.Rad.uMap_one z hz`. Conclude with `(Matrix.inv_eq_left_inv h1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma uMap_inv {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {n : B.Mat k r} (hn : n ∈ Nset k r) :
     C2.uMap k r z n⁻¹ = (C2.uMap k r z n)⁻¹ := by
@@ -920,24 +912,24 @@ lemma uMap_inv {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {n : B.Mat
   exact (Matrix.inv_eq_left_inv h1).symm
 
 /- English proof (translation)
-The claim follows from `(Formalism.FourierDecayAlt.P.c2_tau_mem k r z hz v hv).1`.
+A detailed English derivation is pending.
 -/
 lemma tau_N {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {v : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ}
     (hv : v ∈ C2.UTset (r + 1)) : C2.tauM k r z v ∈ Nset k r := (Formalism.FourierDecayAlt.P.c2_tau_mem k r z hz v hv).1
 
 /- English proof (translation)
-The claim follows from `(Formalism.FourierDecayAlt.P.c2_tau_mem k r z hz v hv).2.2`.
+A detailed English derivation is pending.
 -/
 lemma tau_u {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {v : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ}
     (hv : v ∈ C2.UTset (r + 1)) : C2.uMap k r z (C2.tauM k r z v) = v :=
   (Formalism.FourierDecayAlt.P.c2_tau_mem k r z hz v hv).2.2
 
 /- English proof (translation)
-Take `⟨⟨i, j⟩, hij⟩` from `q`. Simplify using `only`. Establish `hterm : ∀ l, A i l * G.upper x l j = (if i < l then A i l * G.upper x l j else 0) + (if l = i then G.upper x i j else 0)`. Introduce `l`. Break down `lt_trichotomy l i with h | rfl | h` into its components or cases.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hA.1 i l h, zero_mul, if_neg (not_lt.mpr h.le), if_neg (ne_of_lt h), add_zero]`. Rewrite using `[hA.2, one_mul, if_neg (lt_irrefl _), if_pos rfl, zero_add]`. Rewrite using `[if_pos h, if_neg (ne_of_gt h), add_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_congr rfl fun l _ => hterm l, Finset.sum_add_distrib, Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hx : G.upper x i j = x ⟨(i, j), hij⟩`. Simplify using `[G.upper, G.strictUpper, hij, ne_of_lt hij, Matrix.one_apply]`. Rewrite using `[hx]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma mul_upper_sub {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m) (x : G.UT m → ℂ) (q : G.UT m) :
     (A * G.upper x) q.1.1 q.1.2 - x q =
@@ -958,11 +950,11 @@ lemma mul_upper_sub {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UT
   rw [hx]; ring
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.ShearMeasurability.shear_mp (fun q : G.UT m => q.1.2.val - q.1.1.val) _ ?_ ?_` and prove the remaining obligations. Use `measurable_pi_lambda _ fun q => ?_` and prove the remaining obligations. Conclude with `((continuous_const.matrix_mul Formalism.FourierDecayAlt.P.Dx2.SL.cont_upper).matrix_elem q.1.1 q.1.2).measurable`. Introduce `q x y hxy show (A * G.upper x) q.1.1 q.1.2 - x q = (A * G.upper y) q.1.1 q.1.2 - y q`. Rewrite using `[mul_upper_sub hA, mul_upper_sub hA]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `split_ifs with hl`. Use `congr 1`. Simplify using `only [G.upper, G.strictUpper, Matrix.add_apply, Matrix.of_apply]`. Use `split_ifs with hlj`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Rewrite using `[hxy ⟨(l, q.1.2), hlj⟩ (by have := q.2; simp only; omega)]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mp_UTleft {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m) :
     MeasurePreserving (fun u : G.UT m → ℂ => StabilizerDisintegration.utc (A * G.upper u)) volume volume := by
@@ -985,13 +977,13 @@ def Phi (z : Fin (2 * r + k + 1) → ℂ) (p : (G.UT (r + 1) → ℂ) × Mt k r)
   Matrix.of.symm (C2.tauM k r z (G.upper p.1) * Matrix.of p.2)
 
 /- English proof (translation)
-The claim follows from `((cont_tauU z).comp continuous_fst).matrix_mul continuous_snd`.
+A detailed English derivation is pending.
 -/
 lemma cont_Phi (z : Fin (2 * r + k + 1) → ℂ) : Continuous (Phi (k := k) (r := r) z) :=
   ((cont_tauU z).comp continuous_fst).matrix_mul continuous_snd
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun q => continuous_apply_apply _ _`.
+A detailed English derivation is pending.
 -/
 lemma cont_utc {m : ℕ} : Continuous (StabilizerDisintegration.utc (m := m)) :=
   continuous_pi fun q => continuous_apply_apply _ _
@@ -1000,9 +992,9 @@ def bC (z : Fin (2 * r + k + 1) → ℂ) (a : B.Mat k r) (u : G.UT (r + 1) → �
   Hpk k r * (C2.tauM k r z (C2.uMap k r z a * G.upper u))ᴴ * Hpk k r * a * C2.tauM k r z (G.upper u)
 
 /- English proof (translation)
-Establish `hA` using `uMap_UT hz ha`. Establish `e : (fun u : G.UT (r + 1) → ℂ => C2.tauM k r z (C2.uMap k r z a * G.upper u)) = (fun u => C2.tauM k r z (G.upper u)) ∘ fun u => StabilizerDisintegration.utc (C2.uMap k r z a * G.upper u)`. Use function extensionality and compare the values at `u`. Simplify using `only [Function.comp, upper_utc (UT_mul hA (upper_mem u))]`. Establish `h1 : Continuous fun u : G.UT (r + 1) → ℂ => C2.tauM k r z (C2.uMap k r z a * G.upper u)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(cont_tauU z).comp (cont_utc.comp (continuous_const.matrix_mul Formalism.FourierDecayAlt.P.Dx2.SL.cont_upper))`. Unfold `bC`. Conclude with `(((continuous_const.matrix_mul h1.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul continuous_const).matrix_mul (cont_tauU z)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma cont_bC (z : Fin (2 * r + k + 1) → ℂ) (a : B.Mat k r) (ha : a ∈ Nset k r)
     (hz : C2.StdZ k r z) : Continuous (bC (k := k) (r := r) z a) := by
@@ -1017,7 +1009,7 @@ lemma cont_bC (z : Fin (2 * r + k + 1) → ℂ) (a : B.Mat k r) (ha : a ∈ Nset
     continuous_const).matrix_mul (cont_tauU z)
 
 /- English proof (translation)
-Establish `hT` using `tau_N hz (UT_mul (uMap_UT hz ha) (upper_mem u))`. Rewrite using `[inv_GV hT.1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma bC_eq {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {a : B.Mat k r} (ha : a ∈ Nset k r)
     (u : G.UT (r + 1) → ℂ) :
@@ -1026,11 +1018,11 @@ lemma bC_eq {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {a : B.Mat k 
   rw [inv_GV hT.1]; rfl
 
 /- English proof (translation)
-Establish `hN` using `Formalism.FourierDecayAlt.P.unipotent_radical_closed k r`. Establish `hA` using `uMap_UT hz ha`. Establish `hAU` using `UT_mul hA (upper_mem u)`. Establish `hT1` using `tau_N hz hAU`. Establish `hT0` using `tau_N hz (upper_mem u)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[bC_eq hz ha]`. Establish `hmem1 : (C2.tauM k r z (C2.uMap k r z a * G.upper u))⁻¹ * a ∈ Nset k r` using `hN.mul_mem _ (hN.inv_mem _ hT1) _ ha`. Use `⟨hN.mul_mem _ hmem1 _ hT0, ?_⟩` and prove the remaining obligations. Rewrite using `[uMap_mul hz hmem1 hT0, uMap_mul hz (hN.inv_mem _ hT1) ha, uMap_inv hz hT1, tau_u hz hAU, tau_u hz (upper_mem u)]`. Establish `hdet : IsUnit (C2.uMap k r z a * G.upper u).det` using `by rw [det_UT hAU]; exact isUnit_one`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdet]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma bC_mem {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {a : B.Mat k r} (ha : a ∈ Nset k r)
     (u : G.UT (r + 1) → ℂ) : bC z a u ∈ C2.N0set k r z := by
@@ -1047,9 +1039,9 @@ lemma bC_mem {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {a : B.Mat k
   rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdet]
 
 /- English proof (translation)
-Establish `hAU` using `UT_mul (uMap_UT hz ha) (upper_mem p.1)`. Establish `hT1` using `tau_N hz hAU`. Unfold `Phi lmulM`. Rewrite using `[upper_utc hAU, bC_eq hz ha]`. Simplify using `only [Matrix.of_symm_apply, Matrix.of_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show C2.tauM k r z (C2.uMap k r z a * G.upper p.1) * ((C2.tauM k r z (C2.uMap k r z a * G.upper p.1))⁻¹ * a * C2.tauM k r z (G.upper p.1) * Matrix.of p.2) = a * (C2.tauM k r z (G.upper p.1) * Matrix.of p.2)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ((Formalism.FourierDecayAlt.P.unipotent_radical_closed k r).unit _ hT1), Matrix.one_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Phi_S {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {a : B.Mat k r} (ha : a ∈ Nset k r)
     (p : (G.UT (r + 1) → ℂ) × Mt k r) :
@@ -1065,33 +1057,29 @@ lemma Phi_S {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {a : B.Mat k 
     Matrix.mul_nonsing_inv _ ((Formalism.FourierDecayAlt.P.unipotent_radical_closed k r).unit _ hT1), Matrix.one_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hNc` using `Formalism.FourierDecayAlt.P.unipotent_radical_closed k r`. Use `haveI := Formalism.FourierDecayAlt.P.Dx2.OrbJ.sigmaF h0`. Use `haveI := Formalism.FourierDecayAlt.P.Dx2.OrbJ.fmoc h0`. Establish `hPm : Measurable (Phi (k` using `k) (r := r) z) := (cont_Phi z).measurable`. Use `set P := ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0).map (Phi z) with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNcl : IsClosed {x : Mt k r | Matrix.of x ∈ Nset k r}` using `hNc.closed`. Establish `hN0cl : IsClosed {x : Mt k r | Matrix.of x ∈ C2.N0set k r z}` using `isClosed_setOf_of_mem_n0set z`. Establish `h0c : μ0 {x : Mt k r | Matrix.of x ∈ C2.N0set k r z}ᶜ = 0` using `h0.conc`. Establish `hbad : ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0) (Set.univ ×ˢ {x : Mt k r | Matrix.of x ∈ C2.N0set k r z}ᶜ) = 0`. Rewrite using `[Measure.prod_prod, h0c, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hconc : P {x : Mt k r | Matrix.of x ∈ Nset k r}ᶜ = 0`. Rewrite using `[hP, Measure.map_apply hPm hNcl.measurableSet.compl]`. Use `measure_mono_null (fun p hp => ?_) hbad` and prove the remaining obligations. Use `⟨Set.mem_univ _, fun h2 => hp ?_⟩` and prove the remaining obligations. Conclude with `hNc.mul_mem _ (tau_N hz (upper_mem p.1)) _ h2.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hleft : ∀ a ∈ Nset k r, P.map (lmulM a) = P`. Introduce `a ha`. Establish `hA` using `uMap_UT hz ha`. Establish `hS : MeasurePreserving (fun p : (G.UT (r + 1) → ℂ) × Mt k r => (StabilizerDisintegration.utc (C2.uMap k r z a * G.upper p.1), lmulM (bC z a p.1) p.2)) ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0) ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0)`. Use `MeasurePreserving.skew_product (mp_UTleft hA) (g := fun u n => lmulM (bC z a u) n) ?_ (Filter.Eventually.of_forall fun u => h0.left _ (bC_mem hz ha u))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcb : Continuous fun p : (G.UT (r + 1) → ℂ) × Mt k r => (lmulM (bC z a p.1) p.2 : Mt k r)` using `((cont_bC z a ha hz).comp continuous_fst).matrix_mul continuous_snd`. Conclude with `hcb.measurable`. Rewrite using `[hP, Measure.map_map (Formalism.FourierDecayAlt.P.Dx2.OrbJ.contL a).measurable hPm]`. Establish `e : lmulM a ∘ Phi z = Phi z ∘ fun p : (G.UT (r + 1) → ℂ) × Mt k r => (StabilizerDisintegration.utc (C2.uMap k r z a * G.upper p.1), lmulM (bC z a p.1) p.2)`. Use function extensionality and compare the values at `p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Phi_S hz ha p).symm`. Rewrite using `[e, ← Measure.map_map hPm hS.measurable, hS.map_eq]`. Establish `hfin : ∀ K : Set (Mt k r), IsCompact K → P K < ⊤`. Introduce `K hK`. Rewrite using `[hP, Measure.map_apply hPm hK.isClosed.measurableSet]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `set f1 : Mt k r → G.UT (r + 1) → ℂ := fun x => StabilizerDisintegration.utc (C2.uMap k r z (Matrix.of x))`. Use `set f2 : Mt k r → Mt k r := fun x => Matrix.of.symm (Hpk k r * (C2.tauM k r z (G.upper (f1 x)))ᴴ * Hpk k r * Matrix.of x)`. Establish `hf1 : Continuous f1` using `cont_utc.comp (cont_uMap z)`. Establish `hf2 : Continuous f2` using `((continuous_const.matrix_mul ((cont_tauU z).comp hf1).matrix_conjTranspose).matrix_mul continuous_const).matrix_mul continuous_id`. Establish `hsub : Phi z ⁻¹' K ⊆ ((f1 '' K) ×ˢ (f2 '' K)) ∪ (Set.univ ×ˢ {x : Mt k r | Matrix.of x ∈ C2.N0set k r z}ᶜ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `p hp`. Distinguish the cases in `h2 : Matrix.of p.2 ∈ C2.N0set k r z`. Use `left`. Establish `hT` using `tau_N hz (upper_mem p.1)`. Establish `hu : C2.uMap k r z (Matrix.of (Phi z p)) = G.upper p.1` using `by show C2.uMap k r z (C2.tauM k r z (G.upper p.1) * Matrix.of p.2) = G.upper p.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[uMap_mul hz hT h2.1, tau_u hz (upper_mem p.1), h2.2, Matrix.mul_one]`. Establish `e1 : f1 (Phi z p) = p.1` using `by simp only [f1, hu, utc_upper]`. Use `⟨⟨Phi z p, hp, e1⟩, ⟨Phi z p, hp, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [f2, e1]`. Rewrite using `[← inv_GV hT.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (C2.tauM k r z (G.upper p.1))⁻¹ * (C2.tauM k r z (G.upper p.1) * Matrix.of p.2) = Matrix.of p.2`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hNc.unit _ hT), Matrix.one_mul]`. Use `right`. Conclude with `⟨Set.mem_univ _, h2⟩`. Use `(measure_mono hsub).trans_lt ((measure_union_le _ _).trans_lt ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hbad, add_zero, Measure.prod_prod]`. Conclude with `ENNReal.mul_lt_top ((hK.image hf1).measure_lt_top) ((hK.image hf2).measure_lt_top)`. Take `⟨c, hc⟩` from `Formalism.FourierDecayAlt.P.haar_measure_unique_up_to_scalar k r (Nset k r) μN P hNc hN hconc hleft hfin`. Establish `hP0 : P ≠ 0`. Rewrite using `[hP]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Measure.map_ne_zero_iff hPm.aemeasurable).mpr ?_` and prove the remaining obligations. Introduce `h`. Use `congrArg (fun μ : Measure ((G.UT (r + 1) → ℂ) × Mt k r) => μ Set.univ) h` as an intermediate fact. Simplify using `only [Measure.coe_zero, Pi.zero_apply] at this`. Rewrite `this` using `[← Set.univ_prod_univ, Measure.prod_prod]`.
-
-Establish `hv : (volume : Measure (G.UT (r + 1) → ℂ)) Set.univ ≠ 0` using `(Measure.IsOpenPosMeasure.open_pos Set.univ isOpen_univ Set.univ_nonempty)`. Establish `hm : μ0 Set.univ ≠ 0` using `Measure.measure_univ_ne_zero.mpr h0.ne_zero`. Conclude with `mul_ne_zero hv hm this`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
-
-Rewrite `hc` using `[zero_smul]`. Conclude with `hP0 hc`. Use `⟨c⁻¹, inv_pos.mpr (pos_iff_ne_zero.mpr hc0), ?_⟩` and prove the remaining obligations. Rewrite using `[hc, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem disint {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {μ0 μN : Measure (Mt k r)}
     (h0 : B.IsHaarOn (C2.N0set k r z) μ0) (hN : B.IsHaarOn (Nset k r) μN) :
@@ -1185,12 +1173,12 @@ end Formalism.FourierDecayAlt.P.StabilizerDisintegration.HC
 namespace Formalism.FourierDecayAlt.P.StabilizerDisintegration
 
 /- English proof (translation)
-Introduce `k r z hz` and use `⟨HC.mu0 z, HC.isHaar_stabilizer_measure hz⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_haar_stabilizer : ExistsHaarStabilizer := fun k r z hz => ⟨HC.mu0 z, HC.isHaar_stabilizer_measure hz⟩
 
 /- English proof (translation)
-Introduce `k r z hz μ0 μN h0 hN` and use `HC.disint hz h0 hN`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem disintN : DisintN := fun k r z hz μ0 μN h0 hN => HC.disint hz h0 hN
 

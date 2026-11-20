@@ -13,33 +13,31 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 namespace GlobalTheory.Mem.R3.DTheta
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hP hH b t k hk κ κ' hκ' c hc y hy φ w g`. Establish `hch : R.toRealDat.IsChain` using `RealDat.chain_of_weak hP.char.base.chain hH.aux.ex`. Establish `hio` using `hch.ioY t k (by omega)`. Establish `e1` using `hio.eq y φ w (g * κ)`. Establish `e2` using `hio.eq y φ w g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e1, ← e2]`. Unfold `Lift.liftInt`. Establish `hm` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 ((mem_multT _ _ _ _ _).1 hy)`. Use `set χ1 := levChi (Yc D (k + 1)) (R.βY (k + 1)) (R.datYt t (k + 1) (R.toRealDat.levR F.lv2 b)) with hχ1`. Establish `hlev : ∀ (u : SmT (R.MY (k + 1))) h, y.1 u (h * κ') = χ1 κ' * y.1 u h`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u h`. Proceed by induction on `u using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`. Use `hm.lev v κ' hκ' h` as an intermediate fact. Simplify using `only [PiTensorProduct.lift_symm, LinearMap.compMultilinearMap_apply] at this`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, this]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add a a' ha ha'`. Simplify using `only [map_add, Pi.add_apply, ha, ha']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hleft : ∀ (u : SmT (R.MY (k + 1))), ∀ γ ∈ GQ (Yc D (k + 1)), ∀ h, y.1 u (γ * h) = y.1 u h`. Introduce `u γ hγ h`. Proceed by induction on `u using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`. Use `(hm.aut v).left γ hγ h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [PiTensorProduct.lift_symm, LinearMap.compMultilinearMap_apply] at this`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, this]`. Consider the case `add a a' ha ha'`. Simplify using `only [map_add, Pi.add_apply, ha, ha']`. Establish `hω` using `hch.ωY t k hk`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt` using `hch.ptY t k hk φ`. Establish `hθ1 : ∀ h, thetaKO (R.ωY t k) (g * κ) h (R.toRealDat.ptY t k φ) = c * thetaKO (R.ωY t k) g (h * κ'⁻¹) (R.toRealDat.ptY t k φ)`. Introduce `h`. Unfold `thetaKO`. Establish `e : ((g * κ, h) : GA D (Yc D k) × GA D (Yc D (k + 1))) = (g, h * κ'⁻¹) * (κ, κ')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp [mul_assoc]`. Rewrite using `[e, map_mul, Module.End.mul_apply, hc φ, map_smul, Pi.smul_apply, smul_eq_mul]`. Establish `hθ2 : ∀ γ ∈ GQ (Yc D (k + 1)), ∀ h, thetaKO (R.ωY t k) g (γ * h) (R.toRealDat.ptY t k φ) = thetaKO (R.ωY t k) g h (R.toRealDat.ptY t k φ)`. Introduce `γ hγ h`. Unfold `thetaKO`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e : ((g, γ * h) : GA D (Yc D k) × GA D (Yc D (k + 1))) = (1, γ) * (g, h)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hω.om_aut 1 (one_mem _) γ hγ _ (hω.om_pres _ _ hpt)`. Establish `hmod` using `hP.char.base.models`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hHF : (R.νY t (k + 1)).IsHaarMeasure ∧ IsFundamentalDomain (GQ (Yc D (k + 1))) (R.fdY t (k + 1)) (R.νY t (k + 1))`. Distinguish the cases in `h2 : k + 1 + 1 < D.R.m`. Establish `h3` using `hmod.νY t (k + 1) h2`. Conclude with `⟨h3.1.1, h3.2⟩`. Establish `h3` using `hmod.νY' t`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : D.R.m - 1 = k + 1` using `by omega`. Rewrite `h3` using `[e]`. Conclude with `⟨h3.1.1, h3.2⟩`. Use `haveI := Formalism.IndefR.Eqv.measurableMul_GA D (Yc D (k + 1))`. Use `haveI := Formalism.IndefR.Eqv.gQ_countable D (Yc D (k + 1))`.
+Supply the required witnesses or components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `haveI := hHF.1`. Use `haveI : (R.νY t (k + 1)).IsMulRightInvariant := Formalism.IndefR.Eqv.unimodGA_holds _ _ hHF.1`. Use `set Ψ : GA D (Yc D (k + 1)) → ℂ := fun h => thetaKO (R.ωY t k) g h (R.toRealDat.ptY t k φ) * y.1 w h with hΨ`. Establish `hRI` using `Formalism.IndefR.Eqv.rightInv_holds (GA D (Yc D (k + 1))) (GQ (Yc D (k + 1))) (R.νY t (k + 1)) (R.fdY t (k + 1)) hHF.2 Ψ (fun γ hγ h => by simp only [hΨ, hθ2 γ hγ h, hleft w γ hγ h]) κ'⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `h`. Establish `e` using `hlev w (h * κ'⁻¹)`. Rewrite `e` using `[inv_mul_cancel_right]`. Simplify using `only [hΨ, hθ1 h, e]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ = c * χ1 κ' * ∫ h in R.fdY t (k + 1), Ψ h ∂(R.νY t (k + 1)) := by`. Rewrite using `[integral_const_mul, hRI.2]`.
+A detailed English derivation is pending.
 -/
 theorem stepLev_change : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), Pins R F cG → Holds R F → ∀ (b : Bool) (t : T) (k : ℕ), k + 1 < D.R.m → ∀ (κ : GA D (Yc D k)), ∀ κ' ∈ levS (Yc D (k + 1)) (R.βY (k + 1)) (R.datYt t (k + 1) (R.toRealDat.levR F.lv2 b)), ∀ c : ℂ, (∀ φ, R.ωY t k (κ, κ') (R.toRealDat.ptY t k φ) = c • R.toRealDat.ptY t k φ) → ∀ y : R.CC t (k + 1), y.1 ∈ MultT R.θ (R.MY (k + 1)) (levS (Yc D (k + 1)) (R.βY (k + 1)) (R.datYt t (k + 1) (R.toRealDat.levR F.lv2 b))) (levChi (Yc D (k + 1)) (R.βY (k + 1)) (R.datYt t (k + 1) (R.toRealDat.levR F.lv2 b))) → ∀ φ w g, (R.ioY t k y).1 (R.ItY k φ w) (g * κ) = c * levChi (Yc D (k + 1)) (R.βY (k + 1)) (R.datYt t (k + 1) (R.toRealDat.levR F.lv2 b)) κ' * (R.ioY t k y).1 (R.ItY k φ w) g := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hP hH b t k hk κ κ' hκ' c hc y hy φ w g

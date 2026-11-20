@@ -6,17 +6,17 @@ open GlobalTheory.PMonE
 namespace GlobalTheory.PMonE
 
 /- English proof (translation)
-Use `set φ := iterateFrobeniusEquiv F p (h * (L - 1)) with hφ`. Establish `hpow : ∀ y : F, φ y = y ^ (p ^ h) ^ (L - 1)` using `fun y => by`. Rewrite using `[hφ, iterateFrobeniusEquiv_def, pow_mul]`. Establish `hN : (p ^ h) ^ (L - 1) ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)`. Establish `hwin : ∀ z : Fin h → F, ∀ j, winPt p π L z j = π j * φ (z j)` using `fun z j => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [winPt, hpow]`. Use `symm`. Use `Nat.card_congr { toFun := fun z => ⟨winPt p π L z.1, fun j => ?_, (hM z.1).1 z.2.2⟩ invFun := fun x => ⟨fun j => φ.symm (x.1 j / π j), fun j => ?_, ?_⟩ left_inv := fun z => ?_ right_inv := fun x => ?_ }` and prove the remaining obligations. Rewrite using `[hwin, norm_mul, hpow, norm_pow]`. Establish `h0 : 0 ≤ ‖z.1 j‖` using `norm_nonneg _`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_of_le_one_right (norm_nonneg _) (pow_le_one₀ h0 (z.2.1 j))`. Establish `hx : ‖φ (φ.symm (x.1 j / π j))‖ ≤ 1`. Rewrite using `[RingEquiv.apply_symm_apply, norm_div, div_le_one (norm_pos_iff.2 (hπ j))]`. Conclude with `x.2.1 j`. Rewrite `hx` using `[hpow, norm_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) hN).1 hx`. Rewrite using `[hM]`. Establish `: winPt p π L (fun j => φ.symm (x.1 j / π j)) = x.1`. Use function extensionality and compare the values at `j`. Rewrite using `[hwin, RingEquiv.apply_symm_apply, mul_div_cancel₀ _ (hπ j)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `x.2.2`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Simplify using `only [hwin]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_cancel_left₀ _ (hπ j), RingEquiv.symm_apply_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Simplify using `only [hwin]`. Rewrite using `[RingEquiv.apply_symm_apply, mul_div_cancel₀ _ (hπ j)]`.
+A detailed English derivation is pending.
 -/
 theorem winPt_card (F : Type) [NormedField F] (p : ℕ) [Fact p.Prime] [CharP F p] [PerfectRing F p] (h : ℕ) (ϖ : F)
     (lam π : Fin h → F) (hπ : ∀ j, π j ≠ 0) (L U : ℕ) (M : ℕ → Matrix (Fin h) (Fin h) F)

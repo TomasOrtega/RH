@@ -18,9 +18,9 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
 omit [IsScalarTower S F Ω] in
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨i, hi, rfl⟩` from `ha`. Rewrite using `[map_X]`. Conclude with `Submonoid.subset_closure ⟨i, hi, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `one => rw [map_one]`. Conclude with `one_mem _`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_mem_monos {I : Finset (Fin (N + 1))} {s : Poly S N} (hs : s ∈ monos I) :
     map (algebraMap S F) s ∈ monos (S := F) I := by
@@ -33,7 +33,7 @@ theorem map_mem_monos {I : Finset (Fin (N + 1))} {s : Poly S N} (hs : s ∈ mono
   | mul a b _ _ ha hb => rw [map_mul]; exact mul_mem ha hb
 
 /- English proof (translation)
-Take `⟨f, s, e, hs, hf, hse, rfl⟩` from `ha`. Conclude with `⟨map (algebraMap S F) f, map (algebraMap S F) s, e, map_mem_monos hs, hf.map _, hse.map _, by rw [aeval_map_algebraMap, aeval_map_algebraMap]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_chartRing_extend {I : Chart x} {a : Ω} (ha : a ∈ chartRing S x I) :
     a ∈ chartRing F x I := by
@@ -42,7 +42,7 @@ theorem mem_chartRing_extend {I : Chart x} {a : Ω} (ha : a ∈ chartRing S x I)
     by rw [aeval_map_algebraMap, aeval_map_algebraMap]⟩
 
 /- English proof (translation)
-Establish `: a • y = (⟨(a : Ω), mem_chartRing_extend a.2⟩ : chartRing F x I) • y`. Rewrite using `[chartRing_smul_def, chartRing_smul_def]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_span_extend {I : Chart x} (P : Set Ω) (a : chartRing S x I) {y : Ω}
     (hy : y ∈ Submodule.span (chartRing F x I) P) : a • y ∈ Submodule.span (chartRing F x I) P := by
@@ -52,11 +52,9 @@ theorem smul_mem_span_extend {I : Chart x} (P : Set Ω) (a : chartRing S x I) {y
   exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr fun y hy => ?_` and prove the remaining obligations. Use `Submodule.span_induction (p := fun y _ => y ∈ Submodule.span (chartRing F x I) P) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce `z hz`. Conclude with `Submodule.subset_span hz`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `a z _ hz`. Conclude with `smul_mem_span_extend P a hz`.
-
-Conclude with `Submodule.span_mono Submodule.subset_span`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem span_extend_span (I : Chart x) (P : Set Ω) :
     Submodule.span (chartRing F x I) (Submodule.span (chartRing S x I) P : Set Ω) =
@@ -72,7 +70,7 @@ theorem span_extend_span (I : Chart x) (P : Set Ω) :
   · exact Submodule.span_mono Submodule.subset_span
 
 /- English proof (translation)
-Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `I.2.1`. Express the relevant statement in the definitionally equal form `Submodule.span (chartRing F x I) (twistMod S x c I : Set Ω) = twistMod F x c I`. Rewrite using `[twistMod_eq_span c I hi, twistMod_eq_span c I hi, span_extend_span]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem SubSystem.extend_twistSys (c : ℤ) : (twistSys S x c).extend F = twistSys F x c := by
   refine SubSystem.ext_sub fun I => ?_
@@ -83,11 +81,11 @@ theorem SubSystem.extend_twistSys (c : ℤ) : (twistSys S x c).extend F = twistS
 omit [Algebra S F] [IsScalarTower S F Ω] in
 
 /- English proof (translation)
-Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line]`. Express the relevant statement in the definitionally equal form `Submodule.span (chartRing F x I) ((Q.twist R).sub I : Set Ω) = Submodule.span (chartRing F x I) (R.sub I : Set Ω) * Submodule.span (chartRing F x I) (Q.sub I : Set Ω)`. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line, Submodule.span_mul_span]`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Submodule.span_le.mpr fun y hy => ?_` and prove the remaining obligations. Use `Submodule.mul_induction_on (C := fun y => y ∈ Submodule.span (chartRing F x I) ((R.sub I : Set Ω) * (Q.sub I : Set Ω))) hy ?_ ?_` and prove the remaining obligations. Introduce `r hr q hq`. Conclude with `Submodule.subset_span (Set.mul_mem_mul hr hq)`. Introduce `a b ha hb`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.add_mem _ ha hb`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨r, hr, q, hq, rfl⟩`. Conclude with `Submodule.subset_span (Submodule.mul_mem_mul hr hq)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem SubSystem.extend_twist (Q R : SubSystem S x Ω) :
     (Q.twist R).extend F = (Q.extend F).twist (R.extend F) := by

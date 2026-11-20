@@ -14,7 +14,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.DualRiemannEx
 
 /- English proof (translation)
-Establish `ht' : (t : ℂ) ≠ 0` using `by exact_mod_cast ht.ne'`. Establish `e : ((t : ℂ) • H)⁻¹ = (t : ℂ)⁻¹ • H⁻¹` using `inv_eq_right_inv (by`. Rewrite using `[smul_mul_smul_comm, mul_inv_cancel₀ ht', mul_nonsing_inv _ hH.det_pos.ne'.isUnit, one_smul])`. Rewrite using `[dualGram, dualGram, e, transpose_smul, form_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_dualGram_smul {n : Type} [Fintype n] [DecidableEq n] {H : Matrix n n ℂ} (hH : H.PosDef)
     {t : ℝ} (ht : 0 < t) (u v : n → ℂ) :
@@ -26,7 +26,7 @@ theorem form_dualGram_smul {n : Type} [Fintype n] [DecidableEq n] {H : Matrix n 
   rw [dualGram, dualGram, e, transpose_smul, form_smul]
 
 /- English proof (translation)
-Establish `e : (t : ℂ) • H.map star = ((t : ℂ) • H).map star`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[e, dualGram_map_star]`. Simplify using `[form_eq_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_dualGram_conj {n : Type} [Fintype n] [DecidableEq n] (H : Matrix n n ℂ) (t : ℝ)
     (u v : n → ℂ) :
@@ -41,7 +41,7 @@ theorem form_dualGram_conj {n : Type} [Fintype n] [DecidableEq n] (H : Matrix n 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
 /- English proof (translation)
-Introduce `z _`. Rewrite `h` using `[mem_ptsIn]`. Rewrite using `[Subsingleton.elim z (IsLocalRing.closedPoint ℂ)]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem top_le_of_mem {U : X.Opens} {y : CxPts p σ} (h : y ∈ ptsIn p σ U) : ⊤ ≤ y.1 ⁻¹ᵁ U := by
   intro z _
@@ -49,9 +49,9 @@ theorem top_le_of_mem {U : X.Opens} {y : CxPts p σ} (h : y ∈ ptsIn p σ U) : 
   rwa [Subsingleton.elim z (IsLocalRing.closedPoint ℂ)]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hc₁ k X p σ P y d c hc`. Use `⟨C, ?_, hC⟩` and prove the remaining obligations. Rewrite using `[← vecMul_injective_iff_isUnit]`. Introduce `u v e`. Establish `e₀ : (u - v) ᵥ* C = 0` using `by rw [sub_vecMul]; exact sub_eq_zero.2 e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `sub_eq_zero.1 (hc₃ X P y.1 d (hc₂ X P y.1 d) _ fun W f hW => ?_)` and prove the remaining obligations. Establish `hy : y ∈ ptsIn p σ (unitSec P.A ⁻¹ᵁ W)` using `mem_ptsIn.2 (hW (show _ ∈ ⊤ from trivial))`. Rewrite using `[hC _ W le_rfl f hy, dotProduct_comm, dotProduct_mulVec, e₀, zero_dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isUnit
     (hc₁ : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (P : PPAS X) (y : CxPts p σ) (d : P.RiemannData y.1) (c : Chart (LieVB.omega P.A) P.g), y ∈ ptsIn p σ c.U → ∃ C : Matrix (Fin P.g) (Fin P.g) ℂ, ∀ (U : X.Opens) (W : P.A.left.Opens) (hU : U ≤ LieVB.unitSec P.A ⁻¹ᵁ W) (f : Γ(P.A.left, W)), y ∈ ptsIn p σ U → d.cov W f = C.mulVec (c.crd p σ (LieVB.dUnit P.A hU f) y))
@@ -77,23 +77,19 @@ namespace GlobalTheory
 open GlobalTheory.DualRiemannEx
 
 /- English proof (translation)
-Introduce `k _ X p P t ht`. Establish `hE` using `P.isVB_omega`. Establish `hex : ∀ (σ : k →+* ℂ) (y : CxPts p σ), ∃ (d : P.RiemannData y.1) (C : Matrix (Fin P.g) (Fin P.g) ℂ), IsUnit C ∧ ∀ (U : X.Opens) (W : P.A.left.Opens) (hU : U ≤ unitSec P.A ⁻¹ᵁ W) (f : Γ(P.A.left, W)), y ∈ ptsIn p σ U → d.cov W f = C *ᵥ (hE.pick y).crd p σ (dUnit P.A hU f) y` using `fun σ y => by`. Take `⟨d⟩` from `hex₀ X P y.1`. Take `⟨C, h₁, h₂⟩` from `exists_isUnit hc₁ hc₂ hc₃ P y d (hE.pick y) (hE.mem_pick y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨d, C, h₁, h₂⟩`. Use `choose D C hCu hC using hex`. Establish `htc : (0 : ℂ) < (t : ℂ)` using `by exact_mod_cast ht`. Set `m (σ : k →+* ℂ) : Met p σ (omega P.A) P.g` to `Met.ofPt hE (fun y => hE.pick y) (fun y => hE.mem_pick y) (fun y => chg (C σ y) (dualGram ((t : ℂ) • (D σ y).H))) (fun y => posDef_chg (hCu σ y) (posDef_dualGram ((D σ y).posDef.smul htc)))`. Establish `hindep (σ : k →+* ℂ) (y : CxPts p σ) (d d' : P.RiemannData y.1) (W : P.A.left.Opens) (f f' : Γ(P.A.left, W)) (hW : ⊤ ≤ (y.1 ≫ unitSec P.A) ⁻¹ᵁ W) : form (dualGram ((t : ℂ) • d.H)) (d.cov W f) (d.cov W f') = form (dualGram ((t : ℂ) • d'.H)) (d'.cov W f) (d'.cov W f')`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[form_dualGram_smul d.posDef ht, form_dualGram_smul d'.posDef ht, hind X P y.1 d d' W f f' hW]`. Establish `hform (σ : k →+* ℂ) (y : CxPts p σ) (d : P.RiemannData y.1) (U : X.Opens) (W : P.A.left.Opens) (hU : U ≤ unitSec P.A ⁻¹ᵁ W) (f f' : Γ(P.A.left, W)) (hy : y ∈ ptsIn p σ U) : (m σ).form (dUnit P.A hU f) (dUnit P.A hU f') y = form (dualGram ((t : ℂ) • d.H)) (d.cov W f) (d.cov W f')`. Establish `hG : (m σ).G (hE.pick y) y = chg (C σ y) (dualGram ((t : ℂ) • (D σ y).H))`. Express the relevant statement in the definitionally equal form `chg ((hE.pick y).tr p σ (hE.pick y) y) _ = _`. Rewrite using `[Chart.tr_self _ (hE.mem_pick y), chg_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : ⊤ ≤ (y.1 ≫ unitSec P.A) ⁻¹ᵁ W` using `fun z hz => hU (mem_ptsIn.1 hy) |> fun h => by`. Rewrite using `[Subsingleton.elim z (IsLocalRing.closedPoint ℂ)]`. Conclude with `h`. Rewrite using `[(m σ).form_eq (hE.pick y) (hE.mem_pick y) _ _ hy, hG, form_chg, ← hC σ y U W hU f hy, ← hC σ y U W hU f' hy]`. Conclude with `hindep σ y _ d W f f' hW`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hconj (σ σ' : k →+* ℂ) : (m σ).IsConj (m σ')` using `Met.isConj_of_exists fun y y' e => by`. Choose the witnesses or unpack the hypotheses as in `⟨d', hH, hcov⟩ : ∃ d' : P.RiemannData y'.1, d'.H = (D σ y).H.map star ∧ ∀ (W : P.A.left.Opens) (f : Γ(P.A.left, W)), ⊤ ≤ (y.1 ≫ unitSec P.A) ⁻¹ᵁ W → d'.cov W f = star ((D σ y).cov W f) := by`. Rewrite using `[e]`. Conclude with `hc₄ X P y.1 (D σ y)`. Use `⟨hE.pick y, hE.mem_pick y, Matrix.ext fun a b => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `hE.mem_pick y`. Take `⟨U', W, hx, hle, cc⟩` from `Conormal.exists_isChart (LieVB.sec_hom (MonObj.one (X := P.A))) (mem_ptsIn.1 hc)`. Establish `hy : y ∈ ptsIn p σ U'` using `mem_ptsIn.2 hx`. Establish `hy' : y' ∈ ptsIn p σ' U'` using `(mem_ptsIn_iff_of_conj e).2 hy`. Use `choose f hf using fun a => cc.d_surjective (LieVB.sec_hom (MonObj.one (X := P.A))) (resM (omega P.A) hle ((hE.pick y).e a))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : ⊤ ≤ (y.1 ≫ unitSec P.A) ⁻¹ᵁ W` using `fun z hz => by`. Rewrite using `[Subsingleton.elim z (IsLocalRing.closedPoint ℂ)]`. Conclude with `cc.le (mem_ptsIn.1 hy)`. Establish `e₁ : (m σ).G (hE.pick y) y a b = form (dualGram ((t : ℂ) • (D σ y).H)) ((D σ y).cov W (f a)) ((D σ y).cov W (f b))`. Rewrite using `[← (m σ).form_frame _ hc, ← Met.form_resM _ _ _ hle hy, ← hf a, ← hf b]`.
-
-Conclude with `hform σ y _ U' W cc.le _ _ hy`. Establish `e₂ : (m σ').G (hE.pick y) y' a b = form (dualGram ((t : ℂ) • d'.H)) (d'.cov W (f a)) (d'.cov W (f b))`. Rewrite using `[← (m σ').form_frame _ ((mem_ptsIn_iff_of_conj e).2 hc), ← Met.form_resM _ _ _ hle hy', ← hf a, ← hf b]`. Conclude with `hform σ' y' _ U' W cc.le _ _ hy'`. Rewrite using `[e₂, map_apply, e₁, hH, hcov _ _ hW, hcov _ _ hW, form_dualGram_conj]`.
-
-Conclude with `⟨⟨hE, m, hconj⟩, fun σ y => ⟨⟨D σ y⟩, fun d U W hU f f' hy => hform σ y d U W hU f f' hy⟩⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PPAS.exists_isDualRiemann_of
     (hc₁ : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (P : PPAS X) (y : CxPts p σ) (d : P.RiemannData y.1) (c : Chart (LieVB.omega P.A) P.g), y ∈ ptsIn p σ c.U → ∃ C : Matrix (Fin P.g) (Fin P.g) ℂ, ∀ (U : X.Opens) (W : P.A.left.Opens) (hU : U ≤ LieVB.unitSec P.A ⁻¹ᵁ W) (f : Γ(P.A.left, W)), y ∈ ptsIn p σ U → d.cov W f = C.mulVec (c.crd p σ (LieVB.dUnit P.A hU f) y))

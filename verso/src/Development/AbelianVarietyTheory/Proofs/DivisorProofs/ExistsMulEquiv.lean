@@ -19,7 +19,7 @@ def cycP (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
       (MulSemiringAction.toRingAut (GK p K) (PadicAlgCl p)))
 
 /- English proof (translation)
-Establish `: NeZero ((l : ℕ) : PadicAlgCl p)` using `⟨Nat.cast_ne_zero.mpr hl.out.ne_zero⟩`. Conclude with `cyclotomicCharacter.spec l (MulSemiringAction.toRingAut _ (PadicAlgCl p) σ) ζ hζ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem localCyclotomicCharacter_spec (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (l : ℕ) [hl : Fact l.Prime]
     (r : ℕ) (σ : GK p K) (ζ : PadicAlgCl p) (hζ : ζ ^ (l ^ r) = 1) :
@@ -28,13 +28,13 @@ theorem localCyclotomicCharacter_spec (p : ℕ) [Fact p.Prime] (K : Intermediate
   exact cyclotomicCharacter.spec l (MulSemiringAction.toRingAut _ (PadicAlgCl p) σ) ζ hζ
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `GlobalTheory.PlaceBridge.exists_embedding (l := p) F Ω v A hv hA`. Set `K : Formalism.BasicNotions.Loc.FinExt p` to `⟨IntermediateField.adjoin ℚ_[p] (Set.range fun x : F => j (algebraMap F Ω x)), GlobalTheory.PlaceBridge.finiteDimensional_adjoin_range (j.comp (algebraMap F Ω))⟩`. Establish `hK` using `K.2`. Take `⟨e, he, he', hec⟩` from `GlobalTheory.PlaceBridge.exists_mulEquiv (E := F) hj K rfl`. Take `⟨hf, hf'⟩` from `GlobalTheory.fixingSubgroupEquiv_bicontinuous ℚ_[p] (PadicAlgCl p) K.1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨K.1, hK, e.trans (IntermediateField.fixingSubgroupEquiv K.1), hf.comp he, he'.comp hf', fun r g => Units.ext ?_⟩` and prove the remaining obligations. Establish `hl : l.Prime` using `Fact.out`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `: CharZero Ω` using `j.charZero`. Establish `: NeZero ((l : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr hl.ne_zero⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero _ hl.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ r)`. Establish `hζ'` using `hζ.map_of_injective j.injective`. Establish `ha : (g : Ω ≃ₐ[F] Ω) ζ = ζ ^ ((cycMod F Ω l r (g : G F Ω) : ZMod (l ^ r))).val` using `cyclotomicCharacter.spec l (MulSemiringAction.toRingAut (Ω ≃ₐ[F] Ω) Ω (g : Ω ≃ₐ[F] Ω)) ζ hζ.pow_eq_one`. Use `set σ : GK p K.1 := (e.trans (IntermediateField.fixingSubgroupEquiv K.1)) g with hσ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : σ (j ζ) = j ζ ^ ((cycP p K.1 l r σ : ZMod (l ^ r))).val` using `localCyclotomicCharacter_spec p K.1 l r σ _ hζ'.pow_eq_one`. Establish `hc : σ (j ζ) = j ((g : Ω ≃ₐ[F] Ω) ζ)` using `hec g ζ`. Rewrite `hb` using `[hc, ha, map_pow]`. Conclude with `(ZMod.val_injective _ (hζ'.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) hb)).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mulEquiv (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (p : ℕ) [Fact p.Prime] (l : ℕ) [Fact l.Prime] (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω)
@@ -69,13 +69,13 @@ theorem exists_mulEquiv (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Alge
   exact (ZMod.val_injective _ (hζ'.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) hb)).symm
 
 /- English proof (translation)
-Establish `: IsSepClosure ↥K (PadicAlgCl p)` using `⟨inferInstance, Algebra.isSeparable_tower_top_of_isSeparable ℚ_[p] K _⟩`. Establish `hn : ((l ^ r : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (pow_ne_zero _ hl.out.ne_zero)`. Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero _ hl.out.ne_zero⟩`. Take `⟨e⟩` from `nonempty_addEquiv_galRootsOfUnity (K := K) (Ksep := PadicAlgCl p) hn`. Use `⟨e.symm, fun g m => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ x : Additive (rootsOfUnity (l ^ r) (PadicAlgCl p)), (galRootsOfUnity.{0} ↥K (PadicAlgCl p) (l ^ r)).ρ g x = (cycP p K l r g : ZMod (l ^ r)).val • x`. Introduce `x`. Rewrite using `[galRootsOfUnity_ρ_apply]`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Rewrite using `[toMul_ofMul, toMul_nsmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_galRootsOfUnityHom_apply, SubmonoidClass.coe_pow, Units.val_pow_eq_pow_val]`. Use `localCyclotomicCharacter_spec p K l r g _ ?_` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, (mem_rootsOfUnity _ _).1 x.toMul.2, Units.val_one]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (key _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (map_nsmul e.symm _ m)` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul, ZMod.natCast_zmod_val]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mu (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (l : ℕ) [hl : Fact l.Prime]
     (r : ℕ) : ∃ e : ZMod (l ^ r) ≃+ (galRootsOfUnity.{0} ↥K (PadicAlgCl p) (l ^ r)).V,
@@ -104,9 +104,9 @@ theorem exists_mu (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (Padic
   rw [nsmul_eq_mul, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Take `⟨hsep, _, _, hloc, -⟩` from `CompanionTheory.LocalTateOrthogonality.Gcoh.gcField p K hK`. Establish `hl : (l ^ r : ℕ) ≠ 0` using `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`. Establish `: NeZero (l ^ r)` using `⟨hl⟩`. Establish `: CharZero K` using `algebraRat.charZero K`. Establish `hn : ((l ^ r : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 hl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨eD, hD⟩` from `exists_mu p K l r`. Conclude with `CompanionTheory.LocalTateOrthogonality.Gcoh.tate_core CompanionTheory.LocalTateOrthogonality.Gcoh.gcRep CompanionTheory.LocalTateOrthogonality.Gcoh.gc0 CompanionTheory.LocalTateOrthogonality.Gcoh.gc1 CompanionTheory.LocalTateOrthogonality.Gcoh.gc2 (galRootsOfUnity.{0} K (PadicAlg …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tate_p (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteDimensional ℚ_[p] K)
     (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod (l ^ r)) M]
@@ -129,9 +129,9 @@ theorem tate_p (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlg
     (cycP p K l r) eD hD M rho hrho
 
 /- English proof (translation)
-Establish `hmax` using `v.isMaximal`. Use `letI : Field (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.field v.asIdeal`. Establish `hfin : Finite (𝓞 F ⧸ v.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Take `⟨p, hp⟩` from `CharP.exists (𝓞 F ⧸ v.asIdeal)`. Use `⟨p, CharP.char_is_prime (𝓞 F ⧸ v.asIdeal) p, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `CharP.cast_eq_zero _ p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_mem {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     ∃ p : ℕ, p.Prime ∧ ((p : ℕ) : 𝓞 F) ∈ v.asIdeal := by
@@ -144,11 +144,9 @@ theorem exists_prime_mem {F : Type} [Field F] [NumberField F] (v : HeightOneSpec
   exact CharP.cast_eq_zero _ p
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ r M _ _ _ _ _ A rho v hr hA hc`. Take `⟨p, hp, hpv⟩` from `exists_prime_mem v`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨K, hK, e, he, he', hcyc⟩` from `exists_mulEquiv F Ω p l v A hpv hA`. Establish `hc' : ContAction (rho.comp e.symm.toMonoidHom)` using `hc.comp' he'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ : ((cycMod F Ω l r).comp (Dec (F` using `F) A).subtype).comp e.symm.toMonoidHom = cycP p K l r := by ext1 σ`. Use `hcyc r (e.symm σ)` as an intermediate fact. Rewrite `this` using `[e.apply_symm_apply]`. Conclude with `this.symm`. Use `GlobalTheory.CohTransport.dualityClauses_of_mulEquiv (ZMod (l ^ r)) _ _ M e.symm he' he _ rho hc hc' ?_` and prove the remaining obligations.
-
-Rewrite using `[hχ]`. Conclude with `tate_p p K hK l r M _ hc'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localTateDuality : ReciprocityTheory.Gal.LocalTateDuality := by
   intro F Ω _ _ _ _ _ l _ r M _ _ _ _ _ A rho v hr hA hc

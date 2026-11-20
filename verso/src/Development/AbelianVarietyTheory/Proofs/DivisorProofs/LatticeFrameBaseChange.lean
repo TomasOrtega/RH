@@ -7,11 +7,11 @@ open scoped ComplexOrder
 namespace GlobalTheory.LieHt
 
 /- English proof (translation)
-Take `⟨hmem, hli, hsp⟩` from `hv`. Use `⟨fun j => Submodule.subset_span ⟨v j, hmem j, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `linearIndependent_algebraMap_comp_iff.2 hli`. Establish `hle : latBC K' L ≤ (Submodule.span K' (Set.range fun j i => algebraMap K K' (v j i))).restrictScalars (𝓞 K')`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 (hsp hx)`. Use `(Submodule.mem_span_range_iff_exists_fun K').2 ⟨fun j => algebraMap K K' (c j), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[← hc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, Algebra.smul_def]`. Introduce `y hy`. Conclude with `hle hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isFrame_latBC (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] (m : ℕ)
     (L : Submodule (𝓞 K) (Fin m → K)) (r : ℕ) (v : Fin r → Fin m → K) (hv : IsFrame K L v) :

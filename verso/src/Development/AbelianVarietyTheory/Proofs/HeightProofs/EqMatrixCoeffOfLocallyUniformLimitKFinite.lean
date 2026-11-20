@@ -23,27 +23,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.TypeSum.CoefClos
 
 /- English proof (translation)
-Introduce `hHC hCW n ε H _ _ _ σ hstd d w hw h hcont humg happ`. Take `⟨N, Φ, hΦ0, hΦD, hΦG⟩` from `humg`. Establish `hCh : CSm ε h` using `⟨Φ, hΦ0, hΦD, GlobalTheory.T.continuousOn_rightDerivativeFamily_moderateGrowth n ε N Φ hΦD hΦG⟩`. Use `set h0 : Mx n → ℂ := (UJset ε).indicator h with hh0def`. Establish `hh0 : ∀ g ∈ UJset ε, h g = h0 g` using `fun g hg => (Set.indicator_of_mem hg h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : h0 ∈ Smo ε` using `⟨fun g hg => Set.indicator_of_notMem hg h, hCh.congr hh0⟩`. Establish `hwS : ∀ a, Sm ε σ (w a)` using `fun a => hstd.2.2.1 _ (hw a)`. Establish `hrel : ∀ (m : ℕ) (c : Fin m → ℂ) (u : Fin m → List (Ltr ε)), (∀ a, ∑ i, c i • wordV σ (u i) (w a) = 0) → ∑ i, c i • wordE ltrM (u i) (⟨h0, hm0⟩ : Smo ε) = 0`. Introduce `m c u hcu`. Establish `hA` using `GlobalTheory.T.rightDerivativeRelation_of_locallyUniformLimit n ε h hCh m c u (fun C hC δ hδ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL, hLa⟩` from `happ C hC δ hδ`. Take `⟨hB1, hB2⟩` from `GlobalTheory.T.coeffSum_smooth_rightDerivWords n ε H σ hstd d L hL w hwS`. Use `⟨_, hB1, hLa, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [fun i => hB2 (u i) y hy]`. Rewrite using `[← Finset.sum_eq_zero (s := (Finset.univ : Finset (Fin d))) (f := fun a => L a (σ y (∑ i, c i • wordV σ (u i) (w a)))) (fun a _ => by rw [hcu a, map_zero, map_zero])]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_smul, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_comm)`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, coe_wordE, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Submodule.coe_zero, Pi.zero_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hg : g ∈ UJset ε`. Rewrite using `[← hA g hg]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [wordF_congr hh0 (u i) g hg]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `(wordE ltrM (u i) (⟨h0, hm0⟩ : Smo ε)).2.1 g hg` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[coe_wordE]`. Rewrite using `[this, mul_zero]`. Take `⟨T, hT1, hT2, hT3⟩` from `GlobalTheory.T.exists_maps_of_relations_alt hHC n ε H σ hstd d w hw (Smo ε) ltrM ⟨h0, hm0⟩ hrel`. Establish `hD : ∀ a, ∃ L : H →ₗ[ℂ] ℂ, Sobolev₂ (lieSet ε) σ L ∧ ∀ v, IsKFin ε σ v → ∀ y ∈ UJset ε, ((Smo ε).subtype ∘ₗ T a) v y = L (σ y v)`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.T.exists_sobolevContinuous_form_of_moderateGrowthMap hCW n ε H σ hstd N ((Smo ε).subtype ∘ₗ T a) (fun v hv => ?_) (fun v hv k hk g hg => ?_) (fun v hv X hX g hg => ?_)` and prove the remaining obligations. Take `⟨m, c, u, e⟩` from `hT3 a v hv`. Establish `hb` using `fun i => GlobalTheory.T.coeffWord_moderateGrowth_bound n ε N h Φ hΦ0 hΦD hΦG (u i)`. Use `choose C hC using hb`. Use `⟨∑ i, ‖c i‖ * C i, fun g hg => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, e, Submodule.coe_sum, Submodule.coe_smul, coe_wordE, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, mul_assoc, ← wordF_congr hh0 (u i) g hg]`. Conclude with `mul_le_mul_of_nonneg_left (hC i g hg) (norm_nonneg _)`. Use `hT1 a v hv (Sum.inr ⟨k, hk⟩)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply]`. Rewrite using `[show σ k v = ltrV σ (Sum.inr ⟨k, hk⟩ : Ltr ε) v from rfl, this]`. Both sides reduce to the same expression. Use `hT1 a v hv (Sum.inl ⟨X, hX⟩)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply]`.
-
-Rewrite using `[show dRep σ X v = ltrV σ (Sum.inl ⟨X, hX⟩ : Ltr ε) v from rfl, this]`. Conclude with `(T a v).2.2.hasDerivAt hX hg`. Use `choose L hL1 hL2 using hD`. Use `⟨L, hL1, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hh0 y hy, show h0 = ((⟨h0, hm0⟩ : Smo ε) : Mx n → ℂ) from rfl, ← hT2, Submodule.coe_sum, Finset.sum_apply]`.
-
-Conclude with `Finset.sum_congr rfl fun a _ => hL2 a (w a) (hw a) y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TypeSum.CoefClos.eq_coef_of_closure : GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach →
     ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

@@ -14,7 +14,7 @@ def zz (q : W → ℕ) (α : W → A → ℂ) (β : W → B → ℂ) (s : ℂ) (
   α w a * conj (β w b) * (q w : ℂ) ^ (-s)
 
 /- English proof (translation)
-Rewrite using `[lterm, map_sum, Finset.sum_mul_sum, Finset.sum_mul, Finset.sum_div]`. Use `Finset.sum_congr rfl fun (a : A) _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.sum_div]`. Use `Finset.sum_congr rfl fun (b : B) _ => ?_` and prove the remaining obligations. Rewrite using `[zz, map_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -29,7 +29,7 @@ theorem lterm_eq (q : W → ℕ) (α : W → A → ℂ) (β : W → B → ℂ) (
 
 omit [Fintype A] [Fintype B] in
 /- English proof (translation)
-Establish `hq0 : (0 : ℝ) < q w` using `by have := hq w; positivity`. Establish `hqn : 0 < q w` using `by have := hq w; omega`. Rewrite using `[zz, norm_mul, norm_mul, Complex.norm_conj, Complex.norm_natCast_cpow_of_pos hqn, Complex.neg_re, sub_eq_add_neg, Real.rpow_add hq0, Real.rpow_one]`. Use `mul_le_mul_of_nonneg_right ?_ (Real.rpow_nonneg hq0.le _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_zz_le {q : W → ℕ} {α : W → A → ℂ} {β : W → B → ℂ} {s : ℂ} (hq : ∀ w, 2 ≤ q w)
     (hα : ∀ w a, ‖α w a‖ ≤ Real.sqrt (q w)) (hβ : ∀ w b, ‖β w b‖ ≤ Real.sqrt (q w)) (w : W) (a : A) (b : B) :
@@ -44,7 +44,7 @@ theorem norm_zz_le {q : W → ℕ} {α : W → A → ℂ} {β : W → B → ℂ}
     _ = q w := Real.mul_self_sqrt hq0.le
 
 /- English proof (translation)
-Establish `h2 : (2 : ℝ) ≤ q w` using `by exact_mod_cast hq w`. Establish `h1 : (1 : ℝ) ≤ q w` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem x_le_half {q : W → ℕ} {s : ℂ} (hq : ∀ w, 2 ≤ q w) (hs : 2 < s.re) (w : W) :
     (q w : ℝ) ^ (1 - s.re) ≤ 1 / 2 := by
@@ -55,22 +55,22 @@ theorem x_le_half {q : W → ℕ} {s : ℂ} (hq : ∀ w, 2 ≤ q w) (hs : 2 < s.
     _ ≤ 1 / 2 := by rw [one_div]; exact inv_anti₀ (by norm_num) h2
 
 /- English proof (translation)
-The claim follows from `Real.rpow_nonneg (Nat.cast_nonneg _) _`.
+A detailed English derivation is pending.
 -/
 theorem x_nonneg {q : W → ℕ} (s : ℂ) (w : W) : 0 ≤ (q w : ℝ) ^ (1 - s.re) := Real.rpow_nonneg (Nat.cast_nonneg _) _
 
 def maj (q : W → ℕ) (s : ℂ) (C : ℝ) (p : W × ℕ) : ℝ := C * ((q p.1 : ℝ) ^ (1 - s.re)) ^ (p.2 + 1)
 
 /- English proof (translation)
-Establish `hx` using `x_le_half hP.two hs`. Establish `hxn` using `x_nonneg (q := q) s`. Establish `hgeo : ∀ w, HasSum (fun k : ℕ => C * ((q w : ℝ) ^ (1 - s.re)) ^ (k + 1)) (C * ((q w : ℝ) ^ (1 - s.re) * (1 - (q w : ℝ) ^ (1 - s.re))⁻¹))`. Introduce `w`. Establish `h` using `hasSum_geometric_of_lt_one (hxn w) (by linarith [hx w])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `(h.mul_left ((q w : ℝ) ^ (1 - s.re))).mul_left C`. Establish `e : (fun k : ℕ => C * ((q w : ℝ) ^ (1 - s.re)) ^ (k + 1)) = fun i => C * ((q w : ℝ) ^ (1 - s.re) * ((q w : ℝ) ^ (1 - s.re)) ^ i)` using `funext fun k => by rw [pow_succ']`. Rewrite using `[e]`. Conclude with `h2`. Use `(summable_prod_of_nonneg (fun p => mul_nonneg hC (pow_nonneg (hxn p.1) _))).2 ⟨fun w => (hgeo w).summable, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hconv` using `hP.conv (s.re - 1) (by linarith)`. Use `Summable.of_nonneg_of_le (fun w => ?_) (fun w => ?_) (hconv.mul_left (2 * C))` and prove the remaining obligations. Rewrite using `[(hgeo w).tsum_eq]`. Establish `: 0 < 1 - (q w : ℝ) ^ (1 - s.re)` using `by linarith [hx w]`. Conclude with `mul_nonneg hC (mul_nonneg (hxn w) (inv_nonneg.2 this.le))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hgeo w).tsum_eq]`. Establish `e : (q w : ℝ) ^ (-(s.re - 1)) = (q w : ℝ) ^ (1 - s.re)` using `by congr 1; ring`. Rewrite using `[e]`. Establish `h1 : (1 - (q w : ℝ) ^ (1 - s.re))⁻¹ ≤ 2`. Rewrite using `[inv_le_comm₀ (by linarith [hx w]) (by norm_num)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Combine the linear relations using `[hx w]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem summable_maj {q : W → ℕ} {s : ℂ} (hP : Primes q) (hs : 2 < s.re) {C : ℝ} (hC : 0 ≤ C) :
     Summable (maj q s C) := by
@@ -103,11 +103,9 @@ theorem summable_maj {q : W → ℕ} {s : ℂ} (hP : Primes q) (hs : 2 < s.re) {
       _ = 2 * C * (q w : ℝ) ^ (1 - s.re) := by ring
 
 /- English proof (translation)
-Rewrite using `[lterm_eq, maj]`. Establish `hd : (1 : ℝ) ≤ ‖((p.2 : ℂ) + 1)‖`. Establish `: ((p.2 : ℂ) + 1) = ((p.2 + 1 : ℕ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_natCast]`. Conclude with `Nat.succ_pos _` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hterm : ∀ a b, ‖zz q α β s p.1 a b ^ (p.2 + 1) / ((p.2 : ℂ) + 1)‖ ≤ ((q p.1 : ℝ) ^ (1 - s.re)) ^ (p.2 + 1)`. Introduce `a b`. Rewrite using `[norm_div, norm_pow]`. Use `(div_le_self (pow_nonneg (norm_nonneg _) _) hd).trans ?_` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (norm_zz_le hq hα hβ p.1 a b) _`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_lterm_le {q : W → ℕ} {α : W → A → ℂ} {β : W → B → ℂ} {s : ℂ} (hq : ∀ w, 2 ≤ q w)
     (hα : ∀ w a, ‖α w a‖ ≤ Real.sqrt (q w)) (hβ : ∀ w b, ‖β w b‖ ≤ Real.sqrt (q w)) (p : W × ℕ) :
@@ -132,15 +130,15 @@ end EulerProductLogLemmas
 
 open EulerProductLogLemmas in
 /- English proof (translation)
-Introduce `W q A B _ _ α β s hP hα hβ hs`. Establish `hq` using `hP.two`. Establish `hsumn : Summable (fun p => ‖lterm q α β s p‖)` using `Summable.of_nonneg_of_le (fun p => norm_nonneg _) (norm_lterm_le hq hα hβ) (summable_maj hP hs (by positivity))`. Establish `hlt : ∀ w a b, ‖zz q α β s w a b‖ < 1` using `fun w a b => (norm_zz_le hq hα hβ w a b).trans_lt (by linarith [x_le_half hq hs w])`. Establish `hfib : ∀ w, HasSum (fun k => lterm q α β s (w, k)) (∑ a, ∑ b, -Complex.log (1 - zz q α β s w a b))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Simplify using `only [lterm_eq]`. Conclude with `hasSum_sum fun a _ => hasSum_sum fun b _ => Complex.hasSum_taylorSeries_neg_log' (hlt w a b)`. Establish `hall : HasSum (lterm q α β s) (∑' p, lterm q α β s p)` using `(hsumn.of_norm).hasSum`. Establish `hw : HasSum (fun w => ∑ a, ∑ b, -Complex.log (1 - zz q α β s w a b)) (∑' p, lterm q α β s p)` using `hall.prod_fiberwise hfib`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod` using `hw.cexp`. Establish `e : ∀ w, (Complex.exp ∘ fun w => ∑ a, ∑ b, -Complex.log (1 - zz q α β s w a b)) w = ∏ a, ∏ b, (1 - α w a * conj (β w b) * (q w : ℂ) ^ (-s))⁻¹`. Introduce `w`. Simplify using `only [Function.comp_apply, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : (1 - zz q α β s w a b) ≠ 0`. Introduce `h`. Use `hlt w a b` as an intermediate fact. Rewrite `this` using `[show zz q α β s w a b = 1 by linear_combination -h, norm_one]`. Conclude with `lt_irrefl _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Complex.exp_neg, Complex.exp_log h0]`. Both sides reduce to the same expression. Simplify using `only [funext e] at hprod`. Conclude with `⟨hsumn, hprod.tprod_eq, hprod.multipliable⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem euler_product_log_bound : EulerLog := by
   intro W q A B _ _ α β s hP hα hβ hs

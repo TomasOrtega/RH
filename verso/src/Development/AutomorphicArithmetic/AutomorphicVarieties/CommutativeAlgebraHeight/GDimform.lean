@@ -7,7 +7,7 @@ import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.RingKrullDimQuotientOf
 open IsLocalRing
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Establish `h : (J.comap φ).map (Ideal.Quotient.mk (RingHom.ker φ)) = J.comap (RingHom.quotientKerEquivOfSurjective hφ)`. Rewrite using `[← Ideal.map_comap_of_surjective (Ideal.Quotient.mk (RingHom.ker φ)) Ideal.Quotient.mk_surjective (J.comap (RingHom.quotientKerEquivOfSurjective hφ))]`. Use `congr 1`. Rewrite using `[h, RingEquiv.height_comap]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 private theorem height_map_mk_comap {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T)
     (hφ : Function.Surjective φ) (I : Ideal S) (hI : I = RingHom.ker φ) (J : Ideal T) :
@@ -22,25 +22,23 @@ private theorem height_map_mk_comap {S T : Type} [CommRing S] [CommRing T] (φ :
 
 attribute [local instance] MvPolynomial.algebraMvPolynomial in
 /- English proof (translation)
-Set `K` to `FractionRing B`. Set `L` to `FractionRing C`. Establish `hBL : Function.Injective (algebraMap B L)`. Rewrite using `[IsScalarTower.algebraMap_eq B C L]`. Conclude with `(IsFractionRing.injective C L).comp (FaithfulSMul.algebraMap_injective B C)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: FaithfulSMul B L` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr hBL`. Use `letI : Algebra K L := FractionRing.liftAlgebra B L`. Establish `: IsScalarTower B K L` using `FractionRing.isScalarTower_liftAlgebra B L`. Set `g' : MvPolynomial (Fin N) K →ₐ[K] L` to `MvPolynomial.aeval fun i => algebraMap C L (g (MvPolynomial.X i))`. Establish `hgg : ∀ x, g' (algebraMap (MvPolynomial (Fin N) B) (MvPolynomial (Fin N) K) x) = algebraMap C L (g x)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Proceed by induction on `x using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.algebraMap_def, MvPolynomial.map_C, MvPolynomial.algHom_C, MvPolynomial.algHom_C, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X a i ha`. Simplify using `only [map_mul, ha]`. Rewrite using `[MvPolynomial.algebraMap_def, MvPolynomial.map_X]`. Simplify using `[g']`. Establish `hL : IsLocalization ((nonZeroDivisors B).map (MvPolynomial.C (σ` using `Fin N))) (MvPolynomial (Fin N) K) := MvPolynomial.isLocalization _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : (RingHom.ker g').IsPrime` using `RingHom.ker_isPrime g'`. Establish `hc : (RingHom.ker g').comap (algebraMap (MvPolynomial (Fin N) B) (MvPolynomial (Fin N) K)) = RingHom.ker (g : MvPolynomial (Fin N) B →+* C)`. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, RingHom.mem_ker, hgg]`. Conclude with `map_eq_zero_iff _ (IsFractionRing.injective C L)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `ReciprocityTheory.CA.height_add_ringKrullDim_quotient_mvPolynomial_field K N (RingHom.ker g')`. Establish `h2 : ringKrullDim (MvPolynomial (Fin N) K ⧸ RingHom.ker g') = ringKrullDim g'.range` using `ringKrullDim_eq_of_ringEquiv (Ideal.quotientKerEquivRange g').toRingEquiv`. Establish `hft : Algebra.FiniteType K g'.range` using `Algebra.FiniteType.of_surjective g'.rangeRestrict g'.rangeRestrict_surjective`. Establish `h3 : Algebra.trdeg K g'.range = t`. Establish `hmem : ∀ c : C, algebraMap C L c ∈ g'.range` using `fun c => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, rfl⟩` from `hg c`. Conclude with `⟨_, hgg x⟩`. Set `j : C →ₐ[B] g'.range.restrictScalars B` to `(IsScalarTower.toAlgHom B C L).codRestrict (g'.range.restrictScalars B) hmem`. Establish `hj : Function.Injective j` using `fun a b hab => IsFractionRing.injective C L (congrArg Subtype.val hab)`. Establish `a1 : Algebra.trdeg B C ≤ Algebra.trdeg B g'.range` using `trdeg_le_of_injective j hj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : Algebra.trdeg B g'.range ≤ Algebra.trdeg B L` using `trdeg_le_of_injective (g'.range.val.restrictScalars B) Subtype.val_injective`. Establish `: Algebra.IsAlgebraic C L` using `IsLocalization.isAlgebraic L (nonZeroDivisors C)`. Establish `: Algebra.IsAlgebraic B K` using `IsLocalization.isAlgebraic K (nonZeroDivisors B)`. Establish `a3 : Algebra.trdeg B L = Algebra.trdeg B C`. Rewrite using `[← trdeg_add_eq B C (A := L), trdeg_eq_zero (R := C) (A := L), add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a4 : Algebra.trdeg B g'.range = Algebra.trdeg K g'.range`. Establish `: FaithfulSMul K g'.range` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (algebraMap K g'.range).injective`. Rewrite using `[← trdeg_add_eq B K (A := g'.range), trdeg_eq_zero (R := B) (A := K), zero_add]`. Rewrite using `[← a4, ← ht]`. Conclude with `le_antisymm (a2.trans a3.le) a1`.
-
-Rewrite `h1` using `[h2, ReciprocityTheory.CA.ringKrullDim_eq_of_trdeg_eq_field t h3, ← IsLocalization.height_comap ((nonZeroDivisors B).map (MvPolynomial.C (σ := Fin N))) (RingHom.ker g'), Ideal.under_def, hc]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem height_ker_add {B C : Type} [CommRing B] [IsDomain B] [CommRing C] [IsDomain C] [Algebra B C]
     [FaithfulSMul B C] (t N : ℕ) (ht : Algebra.trdeg B C = t) (g : MvPolynomial (Fin N) B →ₐ[B] C)
@@ -106,23 +104,21 @@ private theorem height_ker_add {B C : Type} [CommRing B] [IsDomain B] [CommRing 
   exact h1
 
 /- English proof (translation)
-Introduce `B C _ _ _ _ _ _ _ hft t hB ht 𝔪 _ h𝔪`. Take `⟨P, _, _, f, hP, hf⟩` from `hB`. Use `hP.1` as an intermediate fact. Take `⟨N, g, hg⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp hft`. Set `F : MvPolynomial (Fin N) P →+* MvPolynomial (Fin N) B` to `MvPolynomial.map f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hF : Function.Surjective F` using `MvPolynomial.map_surjective f hf`. Set `G : MvPolynomial (Fin N) P →+* C` to `(g : MvPolynomial (Fin N) B →+* C).comp F`. Establish `hG : Function.Surjective G` using `hg.comp hF`. Establish `hGC : ∀ a : P, G (MvPolynomial.C a) = algebraMap B C (f a)` using `fun a => by`. Simplify using `[G, F]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: (𝔪.comap G).IsMaximal` using `Ideal.comap_isMaximal_of_surjective G hG`. Establish `hc : (𝔪.comap G).comap MvPolynomial.C = maximalIdeal P`. Establish `: (𝔪.comap G).comap MvPolynomial.C = (maximalIdeal B).comap f`. Use extensionality with `a`. Rewrite using `[← h𝔪]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Ideal.mem_comap, hGC]`. Rewrite using `[this]`. Conclude with `IsLocalRing.eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective f hf)`. Take `⟨hCM, e1⟩` from `ReciprocityTheory.CA.isCM_localization_mvPolynomial hP N (𝔪.comap G) hc`. Establish `: (RingHom.ker G).IsPrime` using `RingHom.ker_isPrime G`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (RingHom.ker f).IsPrime` using `RingHom.ker_isPrime f`. Establish `e2` using `ReciprocityTheory.CA.height_eq_add_of_isCM_localization (𝔪.comap G) (RingHom.ker G) hCM (Ideal.ker_le_comap G)`. Rewrite `e2` using `[height_map_mk_comap G hG _ rfl]`. Establish `: (RingHom.ker G).LiesOver (RingHom.ker f)` using `⟨by`. Use extensionality with `a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.under_def, Ideal.mem_comap, RingHom.mem_ker, RingHom.mem_ker, MvPolynomial.algebraMap_eq, hGC]`. Conclude with `(map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective B C)).symm⟩`. Establish `e3` using `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (RingHom.ker f) (RingHom.ker G)`. Establish `hk : RingHom.ker G = (RingHom.ker (g : MvPolynomial (Fin N) B →+* C)).comap F` using `rfl`. Establish `e4` using `height_map_mk_comap F hF ((RingHom.ker f).map (algebraMap P (MvPolynomial (Fin N) P))) (by rw [MvPolynomial.algebraMap_eq]; exact (MvPolynomial.ker_map f).symm) (RingHom.ker (g : MvPolynomial (Fin N) B →+* C))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e4` using `[← hk]`. Rewrite `e3` using `[e4]`. Establish `e5` using `height_ker_add t N ht g hg`. Establish `e6` using `hP.height_add_ringKrullDim_quotient (RingHom.ker f)`. Rewrite `e6` using `[ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective hf)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1 : (RingHom.ker G).height ≠ ⊤` using `Ideal.height_ne_top (Ideal.IsPrime.ne_top inferInstance)`. Establish `key : (((RingHom.ker G).height : ℕ∞) : WithBot ℕ∞) + 𝔪.height = (((RingHom.ker G).height : ℕ∞) : WithBot ℕ∞) + (ringKrullDim B + t)`. Rewrite using `[← WithBot.coe_add, ← e2, e1, ← e6, ← e5, e3, WithBot.coe_add]`. Normalize the expressions using the abelian group laws. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp f1`.
-
-Rewrite `key` using `[← hn]`. Conclude with `(ENat.WithBot.natCast_add_cancel).mp key`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.g_dimform :
     ∀ (B C : Type) [CommRing B] [IsDomain B] [IsLocalRing B] [CommRing C] [IsDomain C] [Algebra B C] [FaithfulSMul B C]

@@ -83,7 +83,7 @@ example {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsCommMonObj B] (M : LB B.left
     LB.LinComb M (fun I => twMap B c (Sum.inr I)) (fun I => twExp k (Sum.inr I)) = cubeLB B (twPts B c) M := rfl
 
 /- English proof (translation)
-Take `⟨s, -, hs⟩` from `H`. Take `⟨a, ha, -⟩` from `hs R' f B' h p sq t`. Conclude with `⟨s, a, ha⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example {R : Type} [CommRing R] (B : Over (Spec (CommRingCat.of R))) [GrpObj B] [IsCommMonObj B]
     (M : LB B.left) (c : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ B) (k n : ℕ) (H : HasStableBasis B M c k n)

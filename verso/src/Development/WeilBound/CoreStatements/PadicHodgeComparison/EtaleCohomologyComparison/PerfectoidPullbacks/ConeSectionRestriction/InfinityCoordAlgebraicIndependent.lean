@@ -17,7 +17,7 @@ def infinityDerivation (t : Fin (n + 1) → Rˣ) (D : Fin (n + 1) → Derivation
   Fin.cases (-((t 0 : R) • ∑ k, (t k : R) • D k)) fun j => (t 0 : R) • D j.succ
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => simp [Finset.sum_insert ha, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem derivation_sum_apply {ι : Type} (s : Finset ι) (f : ι → Derivation K R R) (x : R) :
     (∑ k ∈ s, f k) x = ∑ k ∈ s, f k x := by
@@ -27,11 +27,11 @@ theorem derivation_sum_apply {ι : Type} (s : Finset ι) (f : ι → Derivation 
   | insert a s ha ih => simp [Finset.sum_insert ha, ih]
 
 /- English proof (translation)
-Establish `huv : (t 0 : R) * (((t 0)⁻¹ : Rˣ) : R) = 1` using `(t 0).mul_inv`. Establish `hinv : ∀ k, D k (((t 0)⁻¹ : Rˣ) : R) = -(((t 0)⁻¹ : Rˣ) : R) ^ 2 * D k (t 0)` using `fun k => by`. Rewrite using `[Derivation.leibniz_of_mul_eq_one (D k) (Units.inv_mul (t 0)), smul_eq_mul]`. Apply the tactic sequence `induction j using Fin.cases <;> induction l using Fin.cases`. Simplify using `only [infinityDerivation, u0, Fin.cases_zero, Derivation.neg_apply, Derivation.smul_apply, derivation_sum_apply, smul_eq_mul, hinv, hD]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take the linear combination `((t 0 : R) * (((t 0)⁻¹ : Rˣ) : R) + 1) * huv`. Simplify using `only [infinityDerivation, u0, Fin.cases_zero, Fin.cases_succ, Derivation.neg_apply, Derivation.smul_apply, derivation_sum_apply, smul_eq_mul, Units.val_mul, Derivation.leibniz, hinv, hD]`. Simplify using `[show ∀ i : Fin n, (0 : Fin (n + 1)) = i.succ ↔ False from fun i => ⟨fun h => Fin.succ_ne_zero i h.symm, False.elim⟩]`. Take the linear combination `((t _ : R) * ((t 0 : R) * (((t 0)⁻¹ : Rˣ) : R) + 1)) * huv`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `[infinityDerivation, u0, Derivation.smul_apply, smul_eq_mul, hinv, hD, (Fin.succ_ne_zero _)]`. Simplify using `only [infinityDerivation, u0, Fin.cases_succ, Derivation.smul_apply, smul_eq_mul, Units.val_mul, Derivation.leibniz, hinv, hD]`. Simplify using `[Fin.succ_ne_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem infinityDerivation_coord (t : Fin (n + 1) → Rˣ) (D : Fin (n + 1) → Derivation K R R)
     (hD : ∀ k j, D k (t j) = if k = j then 1 else 0) (j l : Fin (n + 1)) :
@@ -53,19 +53,19 @@ theorem infinityDerivation_coord (t : Fin (n + 1) → Rˣ) (D : Fin (n + 1) → 
     simp [Fin.succ_ne_zero]
 
 /- English proof (translation)
-Use `set C : Matrix (Fin (n + 1)) (Fin (n + 1)) R := Matrix.of fun j k => Fin.cases (fun k => -((t 0 : R) * t k)) (fun j k => if j.succ = k then (t 0 : R) else 0) j k with hC`. Establish `hCdet : C.det = -(t 0 : R) ^ (n + 2)`. Rewrite using `[Matrix.det_of_isUpperTriangular]`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `[hC, Finset.prod_const, pow_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `i k hki`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => exact absurd hki (Fin.not_lt_zero k)`. Consider the case `succ i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [id] at hki`. Simplify using `only [hC, Matrix.of_apply, Fin.cases_succ]`. Rewrite using `[if_neg (show i.succ ≠ k from fun h => by subst h; exact lt_irrefl _ hki)]`. Establish `hM : ∀ bs : Fin (n + 1) → B, (Matrix.of fun k l => infinityDerivation t D (id k) ((bs l : R))) = C * Matrix.of fun k l => D (id k) ((bs l : R))`. Introduce `bs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `j l`. Simplify using `only [Matrix.of_apply, id, Matrix.mul_apply, hC]`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp [infinityDerivation, derivation_sum_apply, Finset.mul_sum, mul_assoc]`. Consider the case `succ j => simp [infinityDerivation]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `huv : (t 0 : R) * (((t 0)⁻¹ : Rˣ) : R) = 1` using `(t 0).mul_inv`. Introduce `y hy`. Establish `key : jacS B D id ≤ (jacS B (infinityDerivation t D) id).map (AddMonoidHom.mulLeft (-(((t 0)⁻¹ : Rˣ) : R) ^ (n + 2)))`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, bs, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(b : R) * (Matrix.of fun k l => infinityDerivation t D (id k) ((bs l : R))).det, AddSubgroup.subset_closure ⟨b, bs, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [AddMonoidHom.coe_mulLeft, hM, Matrix.det_mul, hCdet]`. Establish `hp : (((t 0)⁻¹ : Rˣ) : R) ^ (n + 2) * (t 0 : R) ^ (n + 2) = 1`. Rewrite using `[← mul_pow, mul_comm, huv, one_pow]`. Take the linear combination `((b : R) * (Matrix.of fun k l => D (id k) ((bs l : R))).det) * hp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy', rfl⟩` from `key hy`. Conclude with `⟨y', hy', rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem jacobian_infinityDerivation (t : Fin (n + 1) → Rˣ) (D : Fin (n + 1) → Derivation K R R) (B : Subalgebra K R) :
     ∀ y ∈ jacS B D id, ∃ y' ∈ jacS B (infinityDerivation t D) id, y = -(((t 0)⁻¹ : Rˣ) : R) ^ (n + 2) * y' := by
@@ -107,13 +107,13 @@ theorem jacobian_infinityDerivation (t : Fin (n + 1) → Rˣ) (D : Fin (n + 1) �
 section torus
 
 /- English proof (translation)
-Simplify using `[tpow, zpow_add, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tpow_add' {d : ℕ} (t : Fin d → Rˣ) (m m' : Fin d → ℤ) : tpow t (m + m') = tpow t m * tpow t m' := by
   simp [tpow, zpow_add, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Unfold `tpow`. Rewrite using `[Fintype.prod_eq_single k (fun j hj => by simp [Pi.single_apply, hj])]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tpow_single {d : ℕ} (t : Fin d → Rˣ) (k : Fin d) (z : ℤ) : tpow t (Pi.single k z) = ((t k ^ z : Rˣ) : R) := by
   unfold tpow
@@ -121,18 +121,18 @@ theorem tpow_single {d : ℕ} (t : Fin d → Rˣ) (k : Fin d) (z : ℤ) : tpow t
   simp
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨m, hm, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem tpow_mem {d : ℕ} (t : Fin d → Rˣ) (S : Finset (Fin (d + 1))) {m : Fin d → ℤ} (hm : m ∈ expS S) :
     tpow t m ∈ torusS K t S :=
   Algebra.subset_adjoin ⟨m, hm, rfl⟩
 
 /- English proof (translation)
-Set `M : Submonoid R` to `{ carrier := tpow t '' expS S one_mem' := ⟨0, ⟨fun k _ => le_refl 0, fun _ => by simp⟩, by simp [tpow]⟩ mul_mem' := by`. Introduce and unpack `_ _ ⟨m, hm, rfl⟩ ⟨m', hm', rfl⟩`. Use `⟨m + m', ⟨fun k hk => ?_, fun h0 => ?_⟩, tpow_add' t m m'⟩` and prove the remaining obligations. Use `hm.1 k hk` as an intermediate fact. Use `hm'.1 k hk` as an intermediate fact.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Use `hm.2 h0` as an intermediate fact. Use `hm'.2 h0` as an intermediate fact. Simplify using `only [Pi.add_apply, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `omega }`. Introduce `x hx`. Establish `hx' : x ∈ Subalgebra.toSubmodule (Algebra.adjoin K (tpow t '' expS S))` using `hx`. Rewrite `hx'` using `[Algebra.adjoin_eq_span]`. Conclude with `Submodule.span_mono (Submonoid.closure_le (S := M).2 le_rfl) hx'`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusS_le_span {d : ℕ} (t : Fin d → Rˣ) (S : Finset (Fin (d + 1))) :
     (torusS K t S : Set R) ⊆ Submodule.span K (tpow t '' expS S) := by
@@ -150,7 +150,7 @@ theorem torusS_le_span {d : ℕ} (t : Fin d → Rˣ) (S : Finset (Fin (d + 1))) 
   exact Submodule.span_mono (Submonoid.closure_le (S := M).2 le_rfl) hx'
 
 /- English proof (translation)
-Simplify using `[expS, Fin.succ_ne_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_exponentSet_zero_iff {n : ℕ} (m : Fin (n + 1) → ℤ) :
     m ∈ expS (Finset.univ.erase (0 : Fin (n + 2))) ↔ ∑ k, m k ≤ 0 := by
@@ -159,15 +159,15 @@ theorem mem_exponentSet_zero_iff {n : ℕ} (m : Fin (n + 1) → ℤ) :
 def infinityExponent {n : ℕ} (e : Fin (n + 1) → ℕ) : Fin (n + 1) → ℤ := Fin.cons (-(∑ i, (e i : ℤ))) fun j => (e j.succ : ℤ)
 
 /- English proof (translation)
-Simplify using `[infinityExponent, Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_u0Exp {n : ℕ} (e : Fin (n + 1) → ℕ) : ∑ k, infinityExponent e k = -(e 0 : ℤ) := by
   simp [infinityExponent, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Unfold `tpow infinityExponent`. Use `congr 1`. Rewrite using `[Fin.prod_univ_succ, Fin.prod_univ_succ]`. Simplify using `only [u0, Fin.cases_zero, Fin.cases_succ, Fin.cons_zero, Fin.cons_succ, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, zpow_natCast, Fin.sum_univ_succ, zpow_neg]`. Rewrite using `[← Nat.cast_sum, ← Nat.cast_add, zpow_natCast, pow_add, mul_inv]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [inv_pow]`. The two sides agree by associativity and commutativity.
+Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity.
 -/
 theorem infinityCoord_prod_pow (t : Fin (n + 1) → Rˣ) (e : Fin (n + 1) → ℕ) :
     (((∏ i, u0 t i ^ e i : Rˣ)) : R) = tpow t (infinityExponent e) := by
@@ -183,9 +183,9 @@ theorem infinityCoord_prod_pow (t : Fin (n + 1) → Rˣ) (e : Fin (n + 1) → �
 end torus
 
 /- English proof (translation)
-Establish `huv : (t 0 : R) * (((t 0)⁻¹ : Rˣ) : R) = 1` using `(t 0).mul_inv`. Rewrite using `[Fin.prod_univ_succ, Fin.prod_univ_succ]`. Simplify using `only [u0, Fin.cases_zero, Fin.cases_succ, Fin.cons_zero, Fin.cons_succ, Units.val_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite `hα`, the goal using `[Fin.sum_univ_succ]`. Take `⟨k, hk⟩ : ∃ k, N = k + α 0 + ∑ j : Fin n, α j.succ` from `⟨N - (α 0 + ∑ j : Fin n, α j.succ), by omega⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hk' : N - (α 0 + ∑ j : Fin n, α j.succ) = k` using `by omega`. Rewrite using `[hk', hk]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem infinityCoord_monomial_eq (t : Fin (n + 1) → Rˣ) (N : ℕ) (α : Fin (n + 1) → ℕ) (hα : ∑ i, α i ≤ N) :
     (t 0 : R) ^ N * ∏ i, (u0 t i : R) ^ α i =
@@ -207,7 +207,7 @@ theorem infinityCoord_monomial_eq (t : Fin (n + 1) → Rˣ) (N : ℕ) (α : Fin 
     _ = _ := by rw [huv, one_pow, one_pow, mul_one, mul_one]
 
 /- English proof (translation)
-Establish `h` using `infinityCoord_prod_pow t (Pi.single j 1)`. Rewrite `h` using `[Fintype.prod_eq_single j (fun i hi => by simp [Pi.single_apply, hi])]`. Simplify using `only [Pi.single_eq_same, pow_one] at h`. Rewrite using `[h]`. Conclude with `tpow_mem t _ ((mem_exponentSet_zero_iff _).2 (by rw [sum_u0Exp]; exact neg_nonpos.2 (Nat.cast_nonneg _)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infinityCoord_mem_torus (t : Fin (n + 1) → Rˣ) (j : Fin (n + 1)) :
     (u0 t j : R) ∈ torusS K t (Finset.univ.erase 0) := by
@@ -218,9 +218,9 @@ theorem infinityCoord_mem_torus (t : Fin (n + 1) → Rˣ) (j : Fin (n + 1)) :
   exact tpow_mem t _ ((mem_exponentSet_zero_iff _).2 (by rw [sum_u0Exp]; exact neg_nonpos.2 (Nat.cast_nonneg _)))
 
 /- English proof (translation)
-Establish `h : (((u0 t j.succ)⁻¹ : Rˣ) : R) = tpow t (Pi.single 0 1 + Pi.single j.succ (-1))`. Rewrite using `[tpow_add', tpow_single, tpow_single, ← Units.val_mul]`. Use `congr 1`. Simplify using `[u0, mul_comm]`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `tpow_mem t _ ((mem_exponentSet_zero_iff _).2 (by simp [Finset.sum_add_distrib]))`.
+A detailed English derivation is pending.
 -/
 theorem infinityCoord_inv_mem (t : Fin (n + 1) → Rˣ) (j : Fin n) :
     (((u0 t j.succ)⁻¹ : Rˣ) : R) ∈ torusS K t (Finset.univ.erase 0) := by
@@ -232,25 +232,25 @@ theorem infinityCoord_inv_mem (t : Fin (n + 1) → Rˣ) (j : Fin n) :
   exact tpow_mem t _ ((mem_exponentSet_zero_iff _).2 (by simp [Finset.sum_add_distrib]))
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`. Use `set N := f.totalDegree`. Set `deg : (Fin (n + 1) →₀ ℕ) → ℕ` to `fun α => ∑ i, α i`. Establish `hdeg : ∀ α ∈ f.support, deg α ≤ N`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `α hα`. Use `MvPolynomial.le_totalDegree hα` as an intermediate fact. Use `le_trans (le_of_eq ?_) this` and prove the remaining obligations. Simplify using `only [deg]`. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `h : (Fin (n + 1) →₀ ℕ) → (Fin (n + 1) →₀ ℕ)` to `fun α => Finsupp.equivFunOnFinite.symm (Fin.cons (N - deg α) (fun j => α j.succ))`. Establish `hinj : ∀ α ∈ f.support, ∀ β ∈ f.support, h α = h β → α = β`. Introduce `α hα β hβ hab`. Establish `h0` using `DFunLike.congr_fun hab 0`. Establish `hs : ∀ j : Fin n, α j.succ = β j.succ` using `fun j => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `DFunLike.congr_fun hab j.succ` using `[h]`. Simplify using `only [h, deg, Fin.sum_univ_succ] at h0`. Rewrite `h0` using `[Finsupp.coe_equivFunOnFinite_symm, Finsupp.coe_equivFunOnFinite_symm, Fin.cons_zero, Fin.cons_zero]`. Establish `ha` using `hdeg α hα`. Establish `hb` using `hdeg β hβ`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [deg, Fin.sum_univ_succ] at ha hb`. Establish `hsum : ∑ j : Fin n, α j.succ = ∑ j : Fin n, β j.succ` using `Finset.sum_congr rfl fun j _ => hs j`. Use extensionality with `i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => omega`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ j => exact hs j`. Set `g : MvPolynomial (Fin (n + 1)) K` to `∑ α ∈ f.support, MvPolynomial.monomial (h α) (f.coeff α)`. Establish `hu : ∀ α : Fin (n + 1) →₀ ℕ, MvPolynomial.aeval (fun k => (u0 t k : R)) (MvPolynomial.monomial α (1 : K)) = ∏ i, (u0 t i : R) ^ α i` using `fun α => by`. Rewrite using `[MvPolynomial.aeval_monomial, map_one, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Establish `htm : ∀ α : Fin (n + 1) →₀ ℕ, MvPolynomial.aeval (fun k => (t k : R)) (MvPolynomial.monomial α (1 : K)) = ∏ i, (t i : R) ^ α i` using `fun α => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.aeval_monomial, map_one, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Establish `hg : MvPolynomial.aeval (fun k => (t k : R)) g = (t 0 : R) ^ N * MvPolynomial.aeval (fun k => (u0 t k : R)) f` using `by conv_rhs => rw [← MvPolynomial.support_sum_monomial_coeff f]`. Simplify using `only [g, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Rewrite using `[← mul_one (f.coeff α), ← smul_eq_mul, ← MvPolynomial.smul_monomial, ← MvPolynomial.smul_monomial, map_smul, map_smul, hu, htm, mul_smul_comm, infinityCoord_monomial_eq t N α (hdeg α hα)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `hg` using `[hf, mul_zero]`. Establish `hg0 : g = 0` using `ht (hg.trans (map_zero _).symm)`. Use extensionality with `β`. Rewrite using `[MvPolynomial.coeff_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hβ`. Establish `hβ' : β ∈ f.support` using `MvPolynomial.mem_support_iff.2 hβ`. Use `congrArg (MvPolynomial.coeff (h β)) hg0` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coeff_zero, MvPolynomial.coeff_sum, Finset.sum_eq_single β]`. Rewrite `this` using `[MvPolynomial.coeff_monomial, if_pos rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hβ this`. Introduce `α hα hne`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg (fun e => hne (hinj α hα β hβ' e))]`. Introduce `hn`. Conclude with `absurd hβ' hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem infinityCoord_algebraicIndependent (t : Fin (n + 1) → Rˣ) (ht : AlgebraicIndependent K fun k => (t k : R)) :
     Function.Injective (MvPolynomial.aeval fun k => (u0 t k : R) : MvPolynomial (Fin (n + 1)) K →ₐ[K] R) := by
@@ -310,27 +310,27 @@ theorem infinityCoord_algebraicIndependent (t : Fin (n + 1) → Rˣ) (ht : Algeb
   · intro hn; exact absurd hβ' hn
 
 /- English proof (translation)
-Establish `hval : ∀ p : MvPolynomial (Fin (n + 1)) K, ((MvPolynomial.aeval (fun k => (⟨u0 t k, infinityCoord_mem_torus t k⟩ : torusS K t (Finset.univ.erase 0))) p : torusS K t (Finset.univ.erase 0)) : R) = MvPolynomial.aeval (fun k => (u0 t k : R)) p` using `fun p => DFunLike.congr_fun (MvPolynomial.comp_aeval (fun k => (⟨u0 t k, infinityCoord_mem_torus t k⟩ : torusS K t (Finset.univ.erase 0))) (torusS K t (Finset.univ.erase 0)).val) p`. Use `⟨fun p q hpq => infinityCoord_algebraicIndependent t ht (by rw [← hval, ← hval, hpq]), ?_⟩` and prove the remaining obligations. Establish `key : ∀ x ∈ Submodule.span K (tpow t '' expS (Finset.univ.erase (0 : Fin (n + 2)))), ∃ (f : MvPolynomial (Fin (n + 1)) K) (e : Fin n → ℕ), x * ∏ j, (u0 t j.succ : R) ^ e j = MvPolynomial.aeval (fun k => (u0 t k : R)) f`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨m, hm, rfl⟩` from `hx`. Establish `hm'` using `(mem_exponentSet_zero_iff m).1 hm`. Use `⟨MvPolynomial.monomial (Finsupp.equivFunOnFinite.symm (Fin.cons (Int.toNat (-∑ k, m k)) fun j => Int.toNat (m j.succ) : Fin (n + 1) → ℕ)) 1, fun j => Int.toNat (-m j.succ), ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial, map_one, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∏ j : Fin n, (u0 t j.succ : R) ^ Int.toNat (-m j.succ) = (((∏ i, u0 t i ^ (Fin.cons 0 (fun j => Int.toNat (-m j.succ)) : Fin (n + 1) → ℕ) i : Rˣ)) : R)`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using the standard rewrite rules. Establish `e2 : ∏ i, (u0 t i : R) ^ (Finsupp.equivFunOnFinite.symm (Fin.cons (Int.toNat (-∑ k, m k)) fun j => Int.toNat (m j.succ) : Fin (n + 1) → ℕ)) i = (((∏ i, u0 t i ^ (Fin.cons (Int.toNat (-∑ k, m k)) fun j => Int.toNat (m j.succ) : Fin (n + 1) → ℕ) i : Rˣ)) : R)`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, infinityCoord_prod_pow, infinityCoord_prod_pow, ← tpow_add']`. Use `congr 1`. Establish `h1 : ∑ j : Fin n, ((Int.toNat (m j.succ) : ℕ) : ℤ) - ∑ j : Fin n, ((Int.toNat (-m j.succ) : ℕ) : ℤ) = ∑ j : Fin n, m j.succ`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => Int.toNat_sub_toNat_neg _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∑ k, m k = m 0 + ∑ j : Fin n, m j.succ` using `Fin.sum_univ_succ _`. Establish `h4 : ((Int.toNat (-∑ k, m k) : ℕ) : ℤ) = -∑ k, m k` using `Int.toNat_of_nonneg (by linarith)`. Use function extensionality and compare the values at `i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[h2]`. Simplify using `only [infinityExponent, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, Pi.add_apply]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ j`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [infinityExponent, Fin.cons_succ, Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨f1, e1, h1⟩` from `hx`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f2, e2, h2⟩` from `hy`. Use `⟨f1 * ∏ j : Fin n, MvPolynomial.X j.succ ^ e2 j + f2 * ∏ j : Fin n, MvPolynomial.X j.succ ^ e1 j, e1 + e2, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_prod, map_pow, MvPolynomial.aeval_X, Pi.add_apply, pow_add, Finset.prod_mul_distrib]`. Rewrite using `[← h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `smul c x _ hx`. Take `⟨f, e, h⟩` from `hx`. Conclude with `⟨c • f, e, by rw [map_smul, ← h, smul_mul_assoc]⟩`. Introduce `a`. Take `⟨f, e, h⟩` from `key a.1 (torusS_le_span t _ a.2)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f, ∏ j : Fin n, MvPolynomial.X j.succ ^ e j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_pow, MvPolynomial.aeval_X]`. Use `IsUnit.pow _ (IsUnit.of_mul_eq_one ⟨_, infinityCoord_inv_mem t j⟩ (Subtype.ext ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subalgebra.coe_mul, hval, hval, ← h]`. Simplify using `[map_prod]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem infinityCoord_localization (t : Fin (n + 1) → Rˣ) (ht : AlgebraicIndependent K fun k => (t k : R)) :
     Function.Injective (MvPolynomial.aeval (fun k => (⟨u0 t k, infinityCoord_mem_torus t k⟩ : torusS K t (Finset.univ.erase 0))) :
@@ -408,11 +408,11 @@ theorem infinityCoord_localization (t : Fin (n + 1) → Rˣ) (ht : AlgebraicInde
     simp [map_prod]
 
 /- English proof (translation)
-Introduce `a ha`. Establish `hc : (((t 0)⁻¹ : Rˣ) : R) ^ (n + 2) = tpow t (Pi.single 0 (-((n : ℤ) + 2)))`. Rewrite using `[tpow_single, ← Units.val_pow_eq_pow_val]`. Use `congr 1`. Establish `key : Submodule.span K (tpow t '' expS (Finset.univ.erase (0 : Fin (n + 2)))) ≤ (Submodule.span K (tpow t '' {m | ∑ k, m k < -((n : ℤ) + 1)})).comap (LinearMap.mulLeft K ((((t 0)⁻¹ : Rˣ) : R) ^ (n + 2)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Establish `hm'` using `(mem_exponentSet_zero_iff m).1 hm`. Use `Submodule.subset_span ⟨m + Pi.single 0 (-((n : ℤ) + 2)), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, Pi.add_apply, Finset.sum_add_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[tpow_add', ← hc, LinearMap.mulLeft_apply, mul_comm]`. Conclude with `key (torusS_le_span t _ ha)`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infinityCoord_span_residue (t : Fin (n + 1) → Rˣ) :
     ∀ a ∈ torusS K t (Finset.univ.erase 0), (((t 0)⁻¹ : Rˣ) : R) ^ (n + 2) * a ∈
@@ -435,7 +435,7 @@ theorem infinityCoord_span_residue (t : Fin (n + 1) → Rˣ) :
   exact key (torusS_le_span t _ ha)
 
 /- English proof (translation)
-Introduce `a ha`. Use `Submodule.span_mono (Set.image_mono ?_) (infinityCoord_span_residue t a ha)` and prove the remaining obligations. Introduce `m hm heq`. Substitute `heq` using the available equality. Simplify using `at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem infinityCoord_span_residue_ne (t : Fin (n + 1) → Rˣ) :
     ∀ a ∈ torusS K t (Finset.univ.erase 0), (((t 0)⁻¹ : Rˣ) : R) ^ (n + 2) * a ∈

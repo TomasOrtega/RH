@@ -11,15 +11,13 @@ namespace Formalism.L2.G.Model.TS
 open Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Rewrite `hf` using `[standardMonomialSpanDomain B r n ν]`. Establish `key : ∀ m ∈ f.support, ∀ k : ℕ, (∑ a : Fin r with a.val < k, rowDeg m a) ≤ ∑ t : Fin n with t.val < k, ν t`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨K, sz, hsz, I, hshape, rfl⟩` from `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `m hm k`. Establish `h` using `(bidetDominance B r n K sz hsz I m hm).1 k`. Rewrite `h` using `[hshape]`. Conclude with `h`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Simplify using `at hm`. Consider the case `add x y _ _ hx hy`. Introduce `m hm`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Treat this case separately.
 
-Conclude with `hx m h`. Conclude with `hy m h`. Consider the case `smul c x _ hx`. Introduce `m hm`. Conclude with `hx m (support_smul hm)`.
-
-Introduce `m hm k`. Rewrite using `[rowNu_partial_sum ν hnr k]`. Conclude with `key m hm k`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hw_dom {B : Type} [CommRing B] [IsDomain B] {r n : ℕ} (ν : Fin n → ℕ) (hnr : n ≤ r)
     (f : MvPolynomial (Fin r × Fin n) B) (hf : f ∈ dualWeyl B r n ν) :
@@ -52,13 +50,13 @@ theorem hw_dom {B : Type} [CommRing B] [IsDomain B] {r n : ℕ} (ν : Fin n → 
   exact key m hm k
 
 /- English proof (translation)
-Establish `hGp : IsWeightedHomogeneous (lehwP a) G ((∑ a' : Fin r with a'.val < a.val + 1, rowNu (r` using `r) ν a' : ℕ) : ℤ) := by`. Introduce `m hm`. Rewrite using `[lehw_weight_P]`. Establish `hm'` using `hGh hm`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[← lehw_weight_rowW, hm']`. Establish `hsh` using `lehw_rowDiv_shift B (lehwP a) 1 a b (highestWeightCount_self_eq_succ_of_lt hab) _ k G hGp`. Establish `hmem` using `rowDivStable B r n ν a b k G hG`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨m, hm⟩` from `ne_zero_iff.mp hne`. Establish `h1` using `hsh hm`. Rewrite `h1` using `[lehw_weight_P]`. Establish `h2` using `hw_dom ν hn _ hmem m (mem_support_iff.mpr hm) (a.val + 1)`. Establish `h3 : ((∑ a' : Fin r with a'.val < a.val + 1, rowDeg m a' : ℕ) : ℤ) ≤ ((∑ a' : Fin r with a'.val < a.val + 1, rowNu (r` using `r) ν a' : ℕ) : ℤ) := by exact_mod_cast h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk' : (1 : ℤ) ≤ k` using `by exact_mod_cast hk`. Rewrite `h3` using `[h1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem hw_kill {B : Type} [CommRing B] [IsDomain B] {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ)
     (G : MvPolynomial (Fin r × Fin n) B) (hG : G ∈ dualWeyl B r n ν)
@@ -87,9 +85,9 @@ theorem hw_kill {B : Type} [CommRing B] [IsDomain B] {r n : ℕ} (hn : n ≤ r) 
   linarith
 
 /- English proof (translation)
-Unfold `hw`. Rewrite using `[map_prod]`. Use `Finset.prod_eq_one fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Establish `h` using `eval_idPoint_lpMinor R (r := r) (n := n) (s.val + 1) (by omega) (by omega)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `eval (idPoint R r n) _ ^ _ = 1`. Rewrite using `[h, one_pow]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_idFrame_hw (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) :
     eval (idFrame R r n) (hw R hn ν) = 1 := by
@@ -102,21 +100,21 @@ theorem eval_idFrame_hw (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν :
   rw [h, one_pow]
 
 /- English proof (translation)
-Introduce `K _ _ r n hn ν hν F hF`. Establish `: Infinite K` using `Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective`. Use `set G := weightedHomogeneousComponent (rowW r n) (rowNu (r := r) ν) F with hGdef`. Establish `hG : G ∈ dualWeyl K r n ν` using `dualWeylRowGraded K r n ν _ F hF`. Establish `hGh : IsWeightedHomogeneous (rowW r n) G (rowNu (r` using `r) ν) := weightedHomogeneousComponent_isWeightedHomogeneous _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hwLine K r n hn ν hν G hG (fun a b hab k hk => hw_kill hn ν G hG hGh a b hab k hk)`. Establish `hHW` using `hwRowWeight K r n hn ν hν`. Establish `h1 : fockR (hw K hn ν) F = fockR (hw K hn ν) G`. Unfold `fockR`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hGdef, coeff_weightedHomogeneousComponent, if_pos (hHW (mem_support_iff.mp hm))]`. Establish `h2 : fockR (hw K hn ν) G = c * fockR (hw K hn ν) (hw K hn ν)`. Rewrite using `[hc]`. Unfold `fockR`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcolF : IsWeightedHomogeneous (colW r n) F ν` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.mem_inf.mp hF).1`. Establish `hcolH : IsWeightedHomogeneous (colW r n) (hw K hn ν) ν` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.mem_inf.mp (hwMem K r n hn ν hν)).1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : ∀ (a : Fin r) (j : Fin n), a.val ≠ j.val → idFrame K r n (a, j) = 0`. Introduce `a j h`. Simplify using `[idFrame, h]`. Establish `eF` using `lhwline_diag hn ν F hcolF (idFrame K r n) hD`. Establish `eH` using `lhwline_diag hn ν (hw K hn ν) hcolH (idFrame K r n) hD`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev1` using `eval_idFrame_hw K hn ν`. Establish `hDmem : lhwline_mnu hn ν ∈ (hw K hn ν).support`. Rewrite using `[mem_support_iff]`. Introduce `h0`. Rewrite `eH` using `[h0, zero_mul, hev1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `one_ne_zero eH`. Establish `hcoef : coeff (lhwline_mnu hn ν) F = c * coeff (lhwline_mnu hn ν) (hw K hn ν)`. Establish `e : coeff (lhwline_mnu hn ν) F = coeff (lhwline_mnu hn ν) G`. Rewrite using `[hGdef, coeff_weightedHomogeneousComponent, if_pos (hHW (mem_support_iff.mp hDmem))]`. Rewrite using `[e, hc, coeff_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hevF : eval (idFrame K r n) F = c`. Rewrite using `[eF, hcoef, mul_assoc, ← eH, hev1, mul_one]`. Rewrite using `[h1, h2, hevF]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_pairing_highest_weight_proof : FockPairingHighestWeight := by
   intro K _ _ r n hn ν hν F hF

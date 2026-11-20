@@ -20,33 +20,33 @@ open Formalism.MainNotions.N (twistRep coefRep)
 namespace GlobalTheory.AdmLoc
 
 /- English proof (translation)
-Introduce `hρ hT z hz`. Establish `e1 : ρ' = twistRep ρ (chiLL LL χ⁻¹)`. Use extensionality with `g v`. Rewrite using `[hρ g, twistRep_apply]`. Simplify using `[chiLL, tableLineDegreeTwo.charL]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `e1` using the available equality. Establish `e2 : L' = twLattice L χ⁻¹`. Consider the cases of `L'`. Simplify using `only at hT`. Substitute `hT` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Both sides reduce to the same expression. Substitute `e2` using the available equality. Establish `hact : ∀ g (m : ↥L.T ⊗[O] X), twCoef (latRep L) χ X g m = tableLineDegreeTwo.actTw L X χ g m`. Introduce `g m`. Proceed by induction on `m using TensorProduct.induction_on with`.
+Both sides reduce to the same expression. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[coefRep_tmul, twistRep_apply]`. Simplify using `only [tableLineDegreeTwo.actTw, LinearMap.smul_apply, LinearMap.rTensor_tmul, smul_tmul']`. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Establish `hA : toAmb (twCoef (latRep L) χ X) (Submodule.Quotient.mk ⟨z, hz⟩) = Submodule.Quotient.mk z` using `rfl`. Rewrite using `[finiteSelmer, Submodule.mem_comap, hA, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨S, rfl⟩` from `TensorProduct.exists_finset u`. Establish `hrep : ∀ p : ↥(latticeFiniteCohomology PD (twLattice L χ⁻¹)), ∃ c : ↥(latticeCocycles (twLattice L χ⁻¹)), (c : G → V) ∈ latticeFiniteCocycles PD (twLattice L χ⁻¹) ∧ Submodule.Quotient.mk c = (p : LatticeCohomology (twLattice L χ⁻¹))`. Introduce and unpack `⟨p, hp⟩`. Take `⟨c, hc, rfl⟩` from `Submodule.mem_map.mp hp`. Conclude with `⟨c, hc, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose rep hrepf hrepmk using hrep`. Set `e` to `S.equivFin`. Set `cc : Fin S.card → ↥(latticeCocycles (twLattice L χ⁻¹))` to `fun j => rep (e.symm j).1.1`. Set `xx : Fin S.card → X` to `fun j => (e.symm j).1.2`. Establish `key : (tensAmb L χ X ∘ₗ (latticeFiniteCohomology PD (twLattice L χ⁻¹)).subtype.rTensor X) (∑ p ∈ S, p.1 ⊗ₜ[O] p.2) = Submodule.Quotient.mk (∑ j, tensCoc L χ X (cc j) (xx j))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, ← Finset.sum_coe_sort S, ← e.symm.sum_comp]`. Use `Eq.trans ?_ (map_sum (Submodule.mkQ _) _ _).symm` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.rTensor_tmul, Submodule.subtype_apply, ← hrepmk, tensAmb_tmul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[key]`. Take `⟨m, -, hm⟩` from `(Submodule.Quotient.eq _).mp hu`. Use `⟨S.card, fun j g => evT (twLattice L χ⁻¹) g (cc j), xx, -m, fun j => hrepf _, fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : twCoef (latRep L) χ X g m - m = (∑ j, tensCoc L χ X (cc j) (xx j)) g - z g` using `congrFun hm g`. Simplify using `only [Finset.sum_apply] at h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hact]`. Simplify using `only [map_neg]`. Establish `h2 : ∀ j, tensCoc L χ X (cc j) (xx j) g = evT (twLattice L χ⁻¹) g (cc j) ⊗ₜ[O] xx j` using `fun j => rfl`. Simplify using `only [h2] at h1`. Establish `h3 : z g = ∑ j, evT (twLattice L χ⁻¹) g (cc j) ⊗ₜ[O] xx j - (tableLineDegreeTwo.actTw L X χ g m - m)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Normalize the expressions using the abelian group laws. Rewrite using `[h3]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨k, c, x, m, hc, hzc⟩`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `cc : Fin k → ↥(latticeCocycles (twLattice L χ⁻¹))` to `fun j => ⟨fun g => (c j g : V), (hc j).1⟩`. Use `⟨∑ j, (⟨Submodule.Quotient.mk (cc j), Submodule.mem_map_of_mem (hc j)⟩ : ↥(latticeFiniteCohomology PD (twLattice L χ⁻¹))) ⊗ₜ[O] x j, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Establish `h1 : ∀ j, (tensAmb L χ X ∘ₗ (latticeFiniteCohomology PD (twLattice L χ⁻¹)).subtype.rTensor X) ((⟨Submodule.Quotient.mk (cc j), Submodule.mem_map_of_mem (hc j)⟩ : ↥(latticeFiniteCohomology PD (twLattice L χ⁻¹))) ⊗ₜ[O] x j) = Submodule.mkQ _ (tensCoc L χ X (cc j) (x j))` using `fun j => rfl`. Simplify using `only [h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sum, Submodule.mkQ_apply]`. Use `(Submodule.Quotient.eq _).mpr ?_` and prove the remaining obligations. Use `Submodule.mem_map.mpr ⟨-m, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `twCoef (latRep L) χ X g (-m) - (-m) = (∑ j, tensCoc L χ X (cc j) (x j)) g - z g`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, hact, map_neg, hzc g]`. Establish `h2 : ∀ j, tensCoc L χ X (cc j) (x j) g = c j g ⊗ₜ[O] x j` using `fun j => rfl`. Simplify using `only [h2]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem mk_mem_H1fX_iff_inHfX {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀]
     [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]

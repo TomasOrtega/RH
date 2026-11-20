@@ -16,7 +16,7 @@ open GlobalTheory.CompanionTheory.RealMult.Short
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `nsq dot`. Conclude with `sum_congr rfl fun a _ => sq _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nsq_dot (x : Fin n → ℝ) : nsq x = dot x x := by
   unfold nsq dot
@@ -25,7 +25,7 @@ theorem nsq_dot (x : Fin n → ℝ) : nsq x = dot x x := by
 def supp (g : Fin n → ℝ) : ℝ := (∑ a, ∑ b, |g a - g b|) / 4
 
 /- English proof (translation)
-Unfold `supp`. Use `congr 1`. Simplify using `only [Function.comp]`. Rewrite using `[Equiv.sum_comp σ (fun a => ∑ b, |g a - g (σ b)|)]`. Conclude with `sum_congr rfl fun a _ => Equiv.sum_comp σ (fun b => |g a - g b|)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp_perm (g : Fin n → ℝ) (σ : Equiv.Perm (Fin n)) : supp (g ∘ σ) = supp g := by
   unfold supp
@@ -35,9 +35,9 @@ theorem supp_perm (g : Fin n → ℝ) (σ : Equiv.Perm (Fin n)) : supp (g ∘ σ
   exact sum_congr rfl fun a _ => Equiv.sum_comp σ (fun b => |g a - g b|)
 
 /- English proof (translation)
-Establish `h1 : ∑ a, ∑ b, g b * s a b = -∑ a, g a * ∑ b, s a b`. Rewrite using `[sum_comm, ← sum_neg_distrib]`. Use `sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_sum, ← sum_neg_distrib]`. Use `sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs a b]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∑ a, ∑ b, (g a - g b) * s a b = ∑ a, g a * ∑ b, s a b - ∑ a, ∑ b, g b * s a b`. Simplify using `only [sub_mul, sum_sub_distrib, mul_sum]`. Rewrite using `[h2, h1]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -56,11 +56,11 @@ theorem dot_table (g : Fin n → ℝ) (s : Fin n → Fin n → ℝ) (hs : ∀ a 
   ring
 
 /- English proof (translation)
-Establish `e : dot (rhoV n - wtB B) g = (∑ a, g a * ∑ b, sg B a b) / 2`. Simplify using `only [dot, sum_sg, Pi.sub_apply, sum_div]`. Use `sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, dot_table g (sg B) (sg_anti B)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ∑ a, ∑ b, (g a - g b) * sg B a b ≤ ∑ a, ∑ b, |g a - g b|`. Use `sum_le_sum fun a _ => sum_le_sum fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases sg_val B hB hab with h | h <;> rw [h]`. Simplify using `using le_abs_self (g a - g b)`. Simplify using `using neg_le_abs (g a - g b)`. Unfold `supp`. Combine the linear equalities and inequalities to obtain the conclusion.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem dot_rho_sub_le (B : Finset (Fin n × Fin n)) (hB : ∀ p ∈ B, p.1 < p.2) (g : Fin n → ℝ) :
     dot (rhoV n - wtB B) g ≤ supp g := by
@@ -81,13 +81,13 @@ theorem dot_rho_sub_le (B : Finset (Fin n × Fin n)) (hB : ∀ p ∈ B, p.1 < p.
   linarith
 
 /- English proof (translation)
-Establish `e : dot g (rhoV n) = (∑ a, g a * ∑ b, s0 a b) / 2`. Simplify using `only [dot, sum_sign_eq_two_rho, sum_div]`. Use `sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, dot_table g s0 sign_antisymmetric_alt]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ∑ a, ∑ b, (g a - g b) * s0 a b = ∑ a, ∑ b, |g a - g b|`. Use `sum_congr rfl fun a _ => sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Establish `h1 : g b ≤ g a` using `hg h.le`. Rewrite using `[abs_of_nonneg (by linarith)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[s0, h]`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `h1 : g a ≤ g b` using `hg h.le`. Rewrite using `[abs_of_nonpos (by linarith)]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[s0, h, asymm h]`. Rewrite using `[h]`. Unfold `supp`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dot_antitone (g : Fin n → ℝ) (hg : Antitone g) : dot g (rhoV n) = supp g := by
   have e : dot g (rhoV n) = (∑ a, g a * ∑ b, s0 a b) / 2 := by
@@ -111,11 +111,11 @@ theorem dot_antitone (g : Fin n → ℝ) (hg : Antitone g) : dot g (rhoV n) = su
   ring
 
 /- English proof (translation)
-Establish `h : ∀ a, x (Equiv.swap i j a) * g a - x a * g a = (if a = i then (x j - x i) * g i else 0) + (if a = j then (x i - x j) * g j else 0)`. Introduce `a`. Distinguish the cases in `h1 : a = i`. Substitute `h1` using the available equality. Simplify using `[hij]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h2 : a = j`. Substitute `h2` using the available equality. Simplify using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[h1, h2, Equiv.swap_apply_of_ne_of_ne]`. Establish `h3 : dot (x ∘ Equiv.swap i j) g - dot x g = (x j - x i) * g i + (x i - x j) * g j`. Simplify using `only [dot, Function.comp, ← sum_sub_distrib, h, sum_add_distrib, sum_ite_eq', mem_univ, if_true]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem dot_swap (x g : Fin n → ℝ) {i j : Fin n} (hij : i ≠ j) :
     dot (x ∘ Equiv.swap i j) g = dot x g + (x j - x i) * (g i - g j) := by
@@ -136,7 +136,7 @@ theorem dot_swap (x g : Fin n → ℝ) {i j : Fin n} (hij : i ≠ j) :
   linarith
 
 /- English proof (translation)
-Introduce `a b h`. Use `Tuple.monotone_sort (fun a => -x a) h` as an intermediate fact. Simplify `this` using `[domC]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem domC_anti (x : Fin n → ℝ) : Antitone (domC x) := by
   intro a b h
@@ -144,15 +144,15 @@ theorem domC_anti (x : Fin n → ℝ) : Antitone (domC x) := by
   simpa [domC] using this
 
 /- English proof (translation)
-Establish `key` using `Tuple.bubble_sort_induction (f := fun a => -(c + x) a) (P := fun h => ∀ g, dot (-h - c) g ≤ supp g) ?_ ?_`. Introduce `g`. Use `key g using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Simplify using `[domC]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `g`. Use `hx g using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Introduce `h i j hij hji hP g`.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : i ≠ j` using `hij.ne`. Establish `h1` using `hP g`. Establish `h2` using `hP (g ∘ Equiv.swap i j)`. Rewrite `h2` using `[supp_perm, d_comm, dot_swap g _ hne, d_comm g]`. Establish `e : dot (-(h ∘ Equiv.swap i j) - c) g = dot (-h - c) g + (h i - h j) * (g i - g j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : -(h ∘ Equiv.swap i j) = (-h) ∘ Equiv.swap i j` using `rfl`. Rewrite using `[e1, dL_sub, dL_sub, dot_swap _ _ hne]`. Simplify using `only [Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : 0 < h i - h j` using `by linarith`. Establish `hcij : c j ≤ c i` using `hc hij.le`. Simplify using `only [Pi.sub_apply, Pi.neg_apply] at h2`. Break down `le_total 0 (g i - g j) with hE | hE` into its components or cases. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -187,18 +187,18 @@ theorem maj_sort (c x : Fin n → ℝ) (hc : Antitone c) (hx : ∀ g, dot x g �
     · nlinarith
 
 /- English proof (translation)
-Use `Finset.sum_mul_sq_le_sq_mul_sq univ u v` as an intermediate fact. Simplify `this` using `[dot, sq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dot_sq_le (u v : Fin n → ℝ) : dot u v ^ 2 ≤ dot u u * dot v v := by
   have := Finset.sum_mul_sq_le_sq_mul_sq univ u v
   simpa [dot, sq] using this
 
 /- English proof (translation)
-Establish `h1` using `hx x`. Establish `e1 : domC x = x ∘ Tuple.sort (fun a => -x a)` using `rfl`. Establish `h2 : supp x = dot (domC x) (rhoV n)`. Rewrite using `[dot_antitone _ (domC_anti x), e1, supp_perm]`. Establish `h3 : dot (domC x) (domC x) = dot x x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, d_perm]`. Establish `h4` using `dot_sq_le (domC x) (rhoV n)`. Rewrite `h4` using `[h3, ← h2]`. Establish `h5` using `d_self_nonneg x`. Establish `h6` using `d_self_nonneg (rhoV n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Establish `hlt'` using `not_le.1 hlt`. Use the polynomial consequences of the given equalities and inequalities.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem dot_self_le (x : Fin n → ℝ) (hx : ∀ g, dot x g ≤ supp g) :
     dot x x ≤ dot (rhoV n) (rhoV n) := by
@@ -217,9 +217,9 @@ theorem dot_self_le (x : Fin n → ℝ) (hx : ∀ g, dot x g ≤ supp g) :
   nlinarith
 
 /- English proof (translation)
-Use `⟨(Tuple.sort (fun a => -(ν - rhoV n) a))⁻¹, ?_⟩` and prove the remaining obligations. Use `set τ := Tuple.sort (fun a => -(ν - rhoV n) a) with hτ`. Establish `e : domC (ν - rhoV n) + rhoV n = (ν - rhoV n + rhoV n ∘ (τ⁻¹ : Equiv.Perm (Fin n))) ∘ τ`. Use function extensionality and compare the values at `a`. Use `show (ν - rhoV n) (τ a) + rhoV n a = (ν - rhoV n) (τ a) + rhoV n (τ⁻¹ (τ a))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[show τ⁻¹ (τ a) = a from τ.symm_apply_apply a]`. Unfold `spinSq`. Rewrite using `[e, nsq_dot]`. Conclude with `d_perm _ _ τ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_spin (ν : Fin n → ℝ) :
     ∃ π : Equiv.Perm (Fin n), spinSq ν = dot (ν - rhoV n + rhoV n ∘ π) (ν - rhoV n + rhoV n ∘ π) := by
@@ -234,11 +234,11 @@ theorem exists_spin (ν : Fin n → ℝ) :
   exact d_perm _ _ τ
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `a c h`. Establish `: a = c` using `Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[this]`. Consider the case `succ d ih`. Introduce `a c h`. Establish `hm : (a : ℕ) + d < n` using `by have := c.2; omega`. Establish `h1` using `ih a ⟨a + d, hm⟩ rfl`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hs ⟨a + d, hm⟩ c (by simp; omega)`. Simplify using `only at h1 h2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem step_mono (p : Fin n → ℕ) (hs : ∀ a b : Fin n, (b : ℕ) = a + 1 → p a ≤ p b + 1) :
     ∀ (d : ℕ) (a c : Fin n), (c : ℕ) = a + d → (a : ℕ) + p a ≤ c + p c := by
@@ -257,17 +257,17 @@ theorem step_mono (p : Fin n → ℕ) (hs : ∀ a b : Fin n, (b : ℕ) = a + 1 �
     omega
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `a c h hlt`. Use `hs a c (by omega)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ d ih`. Introduce `a c h hlt`. Establish `hc` using `c.2`. Establish `ha1 : (a : ℕ) + 1 < n` using `by omega`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : (a : ℕ) + d + 1 < n` using `by omega`. Use `set a' : Fin n := ⟨a + 1, ha1⟩ with ha'`. Use `set c' : Fin n := ⟨a + d + 1, hc1⟩ with hc'`. Establish `v1 : (a' : ℕ) = a + 1` using `rfl`. Establish `v2 : (c' : ℕ) = a + d + 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1 : p a' ≠ p c` using `fun e => by`. Use `congrArg Fin.val (hinj e)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `n2 : p c' ≠ p a` using `fun e => by`. Use `congrArg Fin.val (hinj e)` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `s1` using `hs a a' v1`. Establish `s2` using `hs c' c (by omega)`. Establish `i1` using `ih a' c (by omega) (by omega)`. Establish `i2` using `ih a c' v2 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1` using `step_mono p hs d a' c' (by omega)`. Establish `m2` using `step_mono p hs (d + 2) a c (by omega)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem key_lev (p : Fin n → ℕ) (hinj : Function.Injective p)
     (hs : ∀ a b : Fin n, (b : ℕ) = a + 1 → p a ≤ p b + 1) :
@@ -302,7 +302,7 @@ theorem key_lev (p : Fin n → ℕ) (hinj : Function.Injective p)
     omega
 
 /- English proof (translation)
-Rewrite using `[sum_sub_distrib, sum_boole, sum_boole]`. Unfold `rhoU`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem two_rhoU (lev : Fin n → ℕ) (a : Fin n) :
     2 * rhoU lev a = ∑ b, ((if lev a < lev b then (1 : ℝ) else 0) - (if lev b < lev a then (1 : ℝ) else 0)) := by
@@ -311,43 +311,39 @@ theorem two_rhoU (lev : Fin n → ℕ) (a : Fin n) :
   ring
 
 /- English proof (translation)
-Establish `hX : Antitone fun a => (lam a : ℝ)` using `fun a b h => by show (lam b : ℝ) ≤ lam a`. Conclude with `hlam h` after adjusting the coercions. Establish `hmono : Monovary (fun a => (lam a : ℝ)) (rhoV n ∘ π)` using `(Monovary.sum_mul_comp_perm_eq_sum_mul_iff (hX.monovary rho_anti.antitone)).1 he`. Establish `hlt : ∀ a c : Fin n, lam c < lam a → π a < π c`. Introduce `a c h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Establish `hne : π a ≠ π c` using `fun e => by`. Establish `: a = c` using `π.injective e`. Substitute `this` using the available equality. Conclude with `lt_irrefl _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : π c < π a` using `lt_of_le_of_ne (not_lt.1 hn) hne.symm`. Establish `h2 : (lam a : ℝ) ≤ lam c` using `hmono (rho_anti h1)`. Establish `h3 : lam a ≤ lam c` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers. Use `set p : Fin n → ℕ := fun a => (π a : ℕ) with hp`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective p` using `fun a b h => π.injective (Fin.ext h)`. Establish `hstep : ∀ a b : Fin n, (b : ℕ) = a + 1 → p a ≤ p b + 1`. Introduce `a b h`. Establish `hab : a < b` using `by rw [Fin.lt_def]; omega`. Break down `(hlam hab.le).lt_or_eq with h1 | h1` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hlt a b h1` as an intermediate fact. Rewrite `this` using `[Fin.lt_def]`. Simplify using `only [hp]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `hs hab`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [h1] at h2`. Establish `h3` using `rho_sub a b`. Establish `h4` using `rho_sub (π a) (π b)`. Establish `h5 : ((b : ℕ) : ℝ) = (a : ℕ) + 1` using `by exact_mod_cast h`. Establish `h6 : ((π a : ℕ) : ℝ) < (π b : ℕ) + 2` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `h7 : (π a : ℕ) < (π b : ℕ) + 2` using `by exact_mod_cast h6`. Simplify using `only [hp]`. Use linear arithmetic over natural numbers and integers. Use `set lev : Fin n → ℕ := fun a => (a : ℕ) + p a with hlev`. Establish `hmon : Monotone lev`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a c hac`. Establish `hac' : (a : ℕ) ≤ c` using `hac`. Conclude with `step_mono p hstep ((c : ℕ) - a) a c (by omega)`. Establish `hL : ∀ a b : Fin n, a < b → lev a = lev b → lam a = lam b`. Introduce `a b hab h`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Break down `(hlam hab.le).lt_or_eq with h1 | h1` into its components or cases. Establish `h2` using `hlt a b h1`. Rewrite `h2`, `hab` using `[Fin.lt_def]`. Simplify using `only [hlev, hp] at h`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.symm`. Establish `hIs : IsLev lam lev`. Use `⟨hmon, fun a b h => ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy a b with h1 | h1 | h1` into its components or cases. Conclude with `hL a b h1 h`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `(hL b a h1 h.symm).symm`. Use `set F : Fin n → Fin n → ℝ := fun a b => 2 * ((if lev a < lev b then (1 : ℝ) else 0) - (if lev b < lev a then (1 : ℝ) else 0)) with hF`. Establish `hFa : ∀ a b, F b a = -F a b` using `fun a b => by`. Simplify using `only [hF]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpos : ∀ a b : Fin n, a < b → F a b = s0 a b + s0 (π a) (π b)`. Introduce `a b hab`. Establish `hne : π a ≠ π b` using `fun e => hab.ne (π.injective e)`. Break down `lt_or_gt_of_ne hne with h1 | h1` into its components or cases.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlv : lev a < lev b`. Establish `h2 : (π a : ℕ) < π b` using `h1`. Establish `h3 : (a : ℕ) < b` using `hab`. Simplify using `only [hlev, hp]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using `[hF, hlv, hlv.not_gt, s0, hab, h1]`. Evaluate the numerical expressions. Establish `hab' : (a : ℕ) < b` using `hab`. Establish `hlv : lev a = lev b` using `key_lev p hinj hstep ((b : ℕ) - a - 1) a b (by omega) h1`. Simplify using `[hF, hlv, s0, hab, h1, asymm h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hall : ∀ a b : Fin n, F a b = s0 a b + s0 (π a) (π b)`. Introduce `a b`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Conclude with `hpos a b h`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hF, sign_self_eq_zero]`. Use `hpos b a h` as an intermediate fact. Rewrite `this` using `[hFa a b, sign_antisymmetric_alt a b, sign_antisymmetric_alt (π a) (π b)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr : ∀ a, 2 * rhoU lev a = rhoV n a + rhoV n (π a)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `a`. Establish `h1 : ∑ b, F a b = 2 * (2 * rhoU lev a)`. Rewrite using `[two_rhoU, mul_sum]`. Establish `h2 : ∑ b, F a b = 2 * rhoV n a + 2 * rhoV n (π a)`. Simplify using `only [hall, sum_add_distrib, sum_sign_eq_two_rho]`.
-
-Rewrite using `[Equiv.sum_comp π (fun b => s0 (π a) b), sum_sign_eq_two_rho]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (fun a => 2 * (lam a : ℝ) + rhoV n a + rhoV n (π a)) = muQ lam lev`. Use function extensionality and compare the values at `a`. Simplify using `only [muQ]`.
-
-Rewrite using `[hr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `GlobalTheory.CompanionTheory.LevelCompress.muQ_mem_harmSet hIs`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem harm_of_eq (lam : Fin n → ℤ) (hlam : Antitone lam) (π : Equiv.Perm (Fin n))
     (hs : StrictAnti fun a => 2 * (lam a : ℝ) + 2 * rhoV n a + rhoV n (π a))
@@ -454,7 +450,7 @@ theorem harm_of_eq (lam : Fin n → ℤ) (hlam : Antitone lam) (π : Equiv.Perm 
   exact GlobalTheory.CompanionTheory.LevelCompress.muQ_mem_harmSet hIs
 
 /- English proof (translation)
-Establish `h : Tuple.sort (fun a => -x a) = Equiv.refl (Fin n)` using `Tuple.sort_eq_refl_iff_monotone.2 fun a b hab => neg_le_neg (hx hab)`. Unfold `domC`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem domC_of_anti (x : Fin n → ℝ) (hx : Antitone x) : domC x = x := by
   have h : Tuple.sort (fun a => -x a) = Equiv.refl (Fin n) :=
@@ -464,11 +460,9 @@ theorem domC_of_anti (x : Fin n → ℝ) (hx : Antitone x) : domC x = x := by
   rfl
 
 /- English proof (translation)
-Establish `h1 : (univ.filter fun c => lev b < lev c).card ≤ (univ.filter fun c => lev a < lev c).card` using `card_le_card fun c hc => by`. Simplify using `only [mem_filter, mem_univ, true_and] at hc ⊢`. Use linear arithmetic over natural numbers and integers. Establish `h2 : (univ.filter fun c => lev c < lev a).card ≤ (univ.filter fun c => lev c < lev b).card` using `card_le_card fun c hc => by`. Simplify using `only [mem_filter, mem_univ, true_and] at hc ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `h1' : ((univ.filter fun c => lev b < lev c).card : ℝ) ≤ ((univ.filter fun c => lev a < lev c).card : ℝ)`. Conclude with `h1` after adjusting the coercions. Establish `h2' : ((univ.filter fun c => lev c < lev a).card : ℝ) ≤ ((univ.filter fun c => lev c < lev b).card : ℝ)`. Conclude with `h2` after adjusting the coercions.
-
-Unfold `rhoU`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rhoU_anti (lev : Fin n → ℕ) {a b : Fin n} (h : lev a ≤ lev b) : rhoU lev b ≤ rhoU lev a := by
   have h1 : (univ.filter fun c => lev b < lev c).card ≤ (univ.filter fun c => lev a < lev c).card :=
@@ -489,13 +483,13 @@ theorem rhoU_anti (lev : Fin n → ℕ) {a b : Fin n} (h : lev a ≤ lev b) : rh
 def levi (lev : Fin n → ℕ) : Finset (Fin n × Fin n) := univ.filter fun p => p.1 < p.2 ∧ lev p.1 = lev p.2
 
 /- English proof (translation)
-Establish `h : ∀ b, s0 a b - mB (levi lev) a b + mB (levi lev) b a = (if lev a < lev b then (1 : ℝ) else 0) - (if lev b < lev a then (1 : ℝ) else 0)`. Introduce `b`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Establish `h1` using `hm h.le`. Distinguish the cases in `he : lev a = lev b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `[s0, mB, levi, h, asymm h, he]`. Establish `h2 : lev a < lev b` using `lt_of_le_of_ne h1 he`. Simplify using `[s0, mB, levi, h, asymm h, he, h2, h2.not_gt]`. Substitute `h` using the available equality. Simplify using `[s0, mB]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hm h.le`. Distinguish the cases in `he : lev a = lev b`. Simplify using `[s0, mB, levi, h, asymm h, he]`. Establish `h2 : lev b < lev a` using `lt_of_le_of_ne h1 (Ne.symm he)`. Simplify using `[s0, mB, levi, h, asymm h, he, h2, h2.not_gt, Ne.symm he]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `two_rhoU lev a`. Simplify using `only [← h, sum_add_distrib, sum_sub_distrib, sum_sign_eq_two_rho, sum_row_count, sum_column_count] at h2`. Unfold `wtB`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem wtB_levi (lev : Fin n → ℕ) (hm : Monotone lev) (a : Fin n) :
     wtB (levi lev) a = 2 * rhoV n a - 2 * rhoU lev a := by
@@ -521,15 +515,15 @@ theorem wtB_levi (lev : Fin n → ℕ) (hm : Monotone lev) (a : Fin n) :
   linarith
 
 /- English proof (translation)
-Introduce `μ hμ`. Unfold `harmSet at hμ`. Take `⟨l, hl, rfl⟩` from `mem_image.1 hμ`. Establish `hl' : IsLev lam fun a => (l a : ℕ)` using `by simpa using hl`. Use `set lev : Fin n → ℕ := fun a => (l a : ℕ) with hlev`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ {a b : Fin n}, a ≤ b → (lam b : ℝ) ≤ lam a` using `fun h => by exact_mod_cast hlam h`. Establish `hanti : StrictAnti (muQ lam lev + rhoV n)`. Introduce `a b hab`. Establish `h1` using `hX hab.le`. Establish `h2` using `rhoU_anti lev (hl'.1 hab.le)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `rho_anti (n := n) hab`. Simplify using `only [Pi.add_apply, muQ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx : (fun a => 2 * (lam a : ℝ) + 2 * rhoV n a) + rhoV n - wtB (levi lev) = muQ lam lev + rhoV n`. Use function extensionality and compare the values at `a`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, Pi.sub_apply, muQ, wtB_levi lev hl'.1 a]`. Expand and normalize the polynomial expressions, which then agree. Unfold `topTypes`. Use `mem_filter.2 ⟨mem_image.2 ⟨levi lev, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `mem_filter.2 ⟨mem_univ _, fun p hp => ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_filter.1 hp).2.1`. Rewrite using `[hx, domC_of_anti _ hanti.antitone]`. Simplify using the standard rewrite rules. Conclude with `hanti`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem harm_sub (lam : Fin n → ℤ) (hlam : Antitone lam) : harmSet lam ⊆ topTypes lam := by
   intro μ hμ
@@ -558,13 +552,13 @@ theorem harm_sub (lam : Fin n → ℤ) (hlam : Antitone lam) : harmSet lam ⊆ t
   · exact hanti
 
 /- English proof (translation)
-Unfold `topTypes at h`. Take `⟨h1, h2⟩` from `mem_filter.1 h`. Take `⟨B, hB, rfl⟩` from `mem_image.1 h1`. Establish `hB'` using `(mem_filter.1 hB).2`. Use `set c : Fin n → ℝ := fun a => 2 * (lam a : ℝ) + 2 * rhoV n a with hc`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcA : Antitone c`. Introduce `a b hab`. Establish `h3 : (lam b : ℝ) ≤ lam a` using `by exact_mod_cast hlam hab`. Establish `h4` using `(rho_anti (n := n)).antitone hab`. Simplify using `only [hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : c + rhoV n - wtB B = c + (rhoV n - wtB B)`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h2`, the goal using `[e]`. Use `⟨domC (c + (rhoV n - wtB B)) - c, maj_sort c _ hcA (dot_rho_sub_le B hB'), ?_, h2⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply, Pi.sub_apply, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem top_form (lam : Fin n → ℤ) (hlam : Antitone lam) {ν : Fin n → ℝ} (h : ν ∈ topTypes lam) :
     ∃ η : Fin n → ℝ, (∀ g, dot η g ≤ supp g) ∧ ν = (fun a => 2 * (lam a : ℝ) + rhoV n a) + η ∧
@@ -591,27 +585,25 @@ theorem top_form (lam : Fin n → ℤ) (hlam : Antitone lam) {ν : Fin n → ℝ
   ring
 
 /- English proof (translation)
-Take `⟨η, hη, rfl, hst⟩` from `top_form lam hlam h`. Take `⟨π, hπ⟩` from `exists_spin ((fun a => 2 * (lam a : ℝ) + rhoV n a) + η)`. Use `set X : Fin n → ℝ := fun a => (lam a : ℝ) with hXd`. Use `set r : Fin n → ℝ := rhoV n ∘ π with hr`. Establish `hXA : Antitone X` using `fun a b hab => by show (lam b : ℝ) ≤ lam a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hlam hab` after adjusting the coercions. Establish `e1 : (fun a => 2 * (lam a : ℝ) + rhoV n a) + η - rhoV n + r = (2 : ℝ) • X + η + r`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, hXd]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : LSq lam = dot ((2 : ℝ) • X + (2 : ℝ) • rhoV n) ((2 : ℝ) • X + (2 : ℝ) • rhoV n)`. Unfold `LSq`. Rewrite using `[nsq_dot]`. Apply the tactic sequence `congr 1 <;>`. Use function extensionality and compare the values at `a`.
+Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hXd]`. Expand and normalize the polynomial expressions, which then agree. Establish `f1` using `dot_self_le η hη`. Establish `f2 : dot r r = dot (rhoV n) (rhoV n)` using `d_perm _ _ π`. Establish `f3 : dot η X ≤ dot X (rhoV n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dot_antitone X hXA]`. Conclude with `hη X`. Establish `f4 : dot X r ≤ dot X (rhoV n)` using `rearr X hXA π`. Establish `f5 : dot η r ≤ dot (rhoV n) (rhoV n)`. Rewrite using `[dot_antitone _ rho_anti.antitone, ← supp_perm (rhoV n) π]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hη r`. Rewrite using `[hπ, e1, e2]`. Simplify using `only [dL_add, dR_add, dL_smul, dR_smul]`. Rewrite `*` using `[d_comm r X, d_comm r η, d_comm η X, d_comm (rhoV n) X]`. Prove the components needed by the constructor for the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `heq`. Establish `t1 : dot η η = dot (rhoV n) (rhoV n)` using `by linarith`. Establish `t4 : dot X r = dot X (rhoV n)` using `by linarith`. Establish `t5 : dot η r = dot (rhoV n) (rhoV n)` using `by linarith`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hz : dot (η - r) (η - r) = 0`. Simplify using `only [dL_sub, dR_sub]`. Rewrite using `[d_comm r η]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hηr : η = r`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Establish `h0` using `(sum_eq_zero_iff_of_nonneg fun a _ => mul_self_nonneg ((η - r) a)).1 hz a (mem_univ a)`. Use `mul_self_eq_zero.1 h0` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Establish `hs : StrictAnti fun a => 2 * (lam a : ℝ) + 2 * rhoV n a + rhoV n (π a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `a b hab`. Use `hst hab` as an intermediate fact. Simplify using `only [Pi.add_apply, hηr, hr, Function.comp] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `harm_of_eq lam hlam π hs t4` as an intermediate fact.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply, hηr, hr, Function.comp]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spin_le (lam : Fin n → ℤ) (hlam : Antitone lam) {ν : Fin n → ℝ} (h : ν ∈ topTypes lam) :
     spinSq ν ≤ LSq lam ∧ (spinSq ν = LSq lam → ν ∈ harmSet lam) := by
@@ -671,7 +663,7 @@ theorem spin_le (lam : Fin n → ℤ) (hlam : Antitone lam) {ν : Fin n → ℝ}
     simp only [Pi.add_apply, hηr, hr, Function.comp]
 
 /- English proof (translation)
-Introduce `_ lam hlam` and use `⟨harm_sub lam hlam, fun _ h => spin_le lam hlam h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lemmaHT : LemmaHT := fun _ lam hlam =>
   ⟨harm_sub lam hlam, fun _ h => spin_le lam hlam h⟩

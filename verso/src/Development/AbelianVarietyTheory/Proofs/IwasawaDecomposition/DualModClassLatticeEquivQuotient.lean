@@ -38,7 +38,7 @@ end GlobalTheory.Mem.Col2.HAt.Disc
 namespace GlobalTheory.Mem.Col2.HAt.Disc
 
 /- English proof (translation)
-Use `le_antisymm ?_ fun r hr => ?_` and prove the remaining obligations. Use `le_iInf fun P => ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `decoFin_mem_of_mem_divs P.2`. Conclude with `Ideal.mem_span_singleton.2 (piT_dvd_of_mem hX hPr u r fun P => Ideal.mem_iInf.1 hr P)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_pi_eq {X : Fields} {Pr : Primes X} (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) :
     Ideal.span {Pr.piT u} = ⨅ P : Pr.vT u, P.1.asIdeal := by
@@ -49,11 +49,9 @@ theorem span_pi_eq {X : Fields} {Pr : Primes X} (hX : X.Ok) (hPr : Pr.Ok) (u : P
   · exact Ideal.mem_span_singleton.2 (piT_dvd_of_mem hX hPr u r fun P => Ideal.mem_iInf.1 hr P)
 
 /- English proof (translation)
-Use `le_antisymm ?_ fun r hr => ?_` and prove the remaining obligations. Use `le_iInf fun P => ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show cO X.E (X.conjO (Pr.piT u)) ∈ P.1.asIdeal`. Rewrite using `[show cO X.E (X.conjO (Pr.piT u)) = Pr.piT u from cO_cO _]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `decoFin_mem_of_mem_divs P.2`. Take `⟨s, hs⟩` from `piT_dvd_of_mem hX hPr u (cO X.E r) fun P => Ideal.mem_iInf.1 hr P`. Use `Ideal.mem_span_singleton.2 ⟨cO X.E s, ?_⟩` and prove the remaining obligations. Use `congrArg (cO X.E) hs` as an intermediate fact. Rewrite `this` using `[cO_cO, map_mul]`.
-
-Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_conj_pi_eq {X : Fields} {Pr : Primes X} (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) :
     Ideal.span {X.conjO (Pr.piT u)} = ⨅ P : Pr.vT u, (conjPrime₂ P.1).asIdeal := by
@@ -74,7 +72,7 @@ end GlobalTheory.Mem.Col2.HAt.Disc
 namespace GlobalTheory.Mem.Col2.HAt.Disc
 
 /- English proof (translation)
-Rewrite using `[← hPr.piT_norm u, ← Ideal.span_singleton_mul_span_singleton]`. Conclude with `Ideal.mul_eq_inf_of_coprime ((Ideal.isCoprime_span_singleton_iff _ _).2 (hPr.piT_cop u)).sup_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_T_eq {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (u : Pr.Word) :
     Ideal.span {((Pr.T u : ℕ) : 𝓞 X.E)} = Ideal.span {Pr.piT u} ⊓ Ideal.span {X.conjO (Pr.piT u)} := by
@@ -82,11 +80,11 @@ theorem span_T_eq {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (u : Pr.Word) :
   exact Ideal.mul_eq_inf_of_coprime ((Ideal.isCoprime_span_singleton_iff _ _).2 (hPr.piT_cop u)).sup_eq
 
 /- English proof (translation)
-Establish `hco : IsCoprime (Ideal.span {Pr.piT u}) (Ideal.span {X.conjO (Pr.piT u)})` using `(Ideal.isCoprime_span_singleton_iff _ _).2 (hPr.piT_cop u)`. Establish `hp1 : Pairwise (Function.onFun IsCoprime fun P : Pr.vT u => P.1.asIdeal)` using `fun P Q hne => by`. Rewrite using `[Function.onFun, Ideal.isCoprime_iff_sup_eq]`. Conclude with `Ideal.IsMaximal.coprime_of_ne P.1.isMaximal Q.1.isMaximal fun h => hne (Subtype.ext (HeightOneSpectrum.ext h))`. Establish `hp2 : Pairwise (Function.onFun IsCoprime fun P : Pr.vT u => (conjPrime₂ P.1).asIdeal)` using `fun P Q hne => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.onFun, Ideal.isCoprime_iff_sup_eq]`. Use `Ideal.IsMaximal.coprime_of_ne (conjPrime₂ P.1).isMaximal (conjPrime₂ Q.1).isMaximal fun h => hne (Subtype.ext ?_)` and prove the remaining obligations. Use extensionality with `x`. Establish `h2` using `congrArg (fun J : Ideal (𝓞 X.E) => cO X.E x ∈ J) h`. Simplify using `only [conjPrime₂, Ideal.mem_comap, cO_cO] at h2`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `Iff.of_eq h2`. Set `φ : (𝓞 X.E ⧸ Ideal.span {((Pr.T u : ℕ) : 𝓞 X.E)}) ≃+* ((∀ P : Pr.vT u, 𝓞 X.E ⧸ P.1.asIdeal) × (∀ P : Pr.vT u, 𝓞 X.E ⧸ (conjPrime₂ P.1).asIdeal))` to `(Ideal.quotEquivOfEq (span_T_eq hPr u)).trans ((Ideal.quotientInfEquivQuotientProd _ _ hco).trans (RingEquiv.prodCongr ((Ideal.quotEquivOfEq (span_pi_eq hX hPr u)).trans (Ideal.quotientInfRingEquivPiQuotient _ hp1)) ((Ideal.quotEquivOfEq (span_conj_pi_eq hX hPr u)).trans (Ideal.q …`. Conclude with `⟨(AlgEquiv.ofRingEquiv (f := φ) fun a => rfl).toLinearEquiv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quotT_equiv {X : Fields} {Pr : Primes X} (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) :
     Nonempty ((𝓞 X.E ⧸ Ideal.span {((Pr.T u : ℕ) : 𝓞 X.E)}) ≃ₗ[𝓞 X.E]
@@ -116,11 +114,11 @@ end GlobalTheory.Mem.Col2.HAt.Disc
 open GlobalTheory.Mem.Col2.HAt.Disc in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z H F _ _ u i hi c`. Take `⟨hG, -, hc⟩` from `(spaces_in_coordinates I hI hP l Z).2.2.2 i hi`. Establish `hL : latCrd (I.rec7 l Z) i hi (I.latAt u I.mu0 i c) = ((I.stp u I.mu0 i).rep c).1.1.deco.1.L` using `(hc u I.mu0).1 c`. Establish `hD : lc ((I.rec7 l Z).sp.X i) (rankN (I.rec7 l Z) i hi) (Formalism.L2.Herm.Ld (I.rec7 l Z) u i c) = ((I.stp u I.mu0 i).rep c).1.1.deco.1.Lsh`. Use `(dual_co (I.rec7 l Z).sp.cm _ (rankN (I.rec7 l Z) i hi) _).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `BwLat.dualL_std (E := B.host.E) (sigD (I.rec7 l Z)).toRingHom (fun x => rfl) ((I.stp u I.mu0 i).rep c).1.1.deco.1.L`. Conclude with `(congrArg₂ (dualL _) hG hL).trans h1`. Establish `hc' : ∀ P Q : (B.primes X).vT u, Q.1 ≠ conjPrime₂ P.1` using `fun P Q => (moveHyp_of_ok l.pr u P).st Q`. Take `⟨e1⟩` from `((I.stp u I.mu0 i).rep c).1.1.deco.2.Lsh_quot_L hc'`. Take `⟨e2⟩` from `quotT_equiv (FieldsLaws.fields_satisfy_definite_laws B).1.ok l.pr u`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(quotMapEquiv ((crdN (I.rec7 l Z) i hi).restrictScalars (𝓞 (I.rec7 l Z).host.E)) _ _ _ _ hD hL) ≪≫ₗ e1 ≪≫ₗ e2.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Col2.TC.disc_cl : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → ∀ u, DiscCl (D := I.rec7 l Z) (u := u) := by
   intro B X I hI hP l Z H F _ _ u i hi c

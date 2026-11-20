@@ -8,7 +8,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-The claim follows from `lIcell_of hAw decompAway unipTau awayIn schFP lNe hLc hLl hLv`.
+A detailed English derivation is pending.
 -/
 theorem lIcell_of' (hAw : AwayAct) (hLc : LIcont) (hLl : LIlaw) (hLv : LIvac) : LIcell :=
   lIcell_of hAw decompAway unipTau awayIn schFP lNe hLc hLl hLv

@@ -14,7 +14,7 @@ open Formalism.IndefR.Links Formalism.IndefR.Lev
 variable {D : D7}
 
 /- English proof (translation)
-Distinguish the cases in `h : FramesExist D Pg Sd Q`. Take `⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, h1, h2⟩` from `h`. Conclude with `⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, h1, fun _ => h2⟩`. Take `⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, h1⟩` from `hSD`. Conclude with `⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, h1, fun h' => absurd h' h⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frames_by_cases {T : Type} (hSD : FrmP.SDFramesExist D) (Pg Sd : Finset (Pl D.host.E)) (Q : T → Finset (Pl D.host.E)) :
     ∃ (ΛY : ∀ j, Submodule (𝓞 D.host.E) (Fin (Yc D j).rank → D.host.E))
@@ -31,7 +31,7 @@ theorem frames_by_cases {T : Type} (hSD : FrmP.SDFramesExist D) (Pg Sd : Finset 
     exact ⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, h1, fun h' => absurd h' h⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : FramesExist D Pg Sd Q`. Take `⟨ΛY, -, -, ΛW, βY, -, -, βW, ⟨h1, -, -, h4⟩, h2⟩` from `h`. Conclude with `⟨ΛY, ΛW, βY, βW, ⟨h1, FrmP.isSDFrame_std _ hX 1, fun i => FrmP.isSDFrame_std _ (hV _) 1, h4⟩, fun _ => h2⟩`. Conclude with `⟨fun j => FrmP.coordL (Yc D j), fun i => FrmP.coordL (Wc D i), fun _ => 1, fun _ => 1, ⟨fun j _ => FrmP.isSDFrame_std _ (hY _) _, FrmP.isSDFrame_std _ hX 1, fun i => FrmP.isSDFrame_std _ (hV _) 1, fun i => FrmP.isSDFrame_std _ (hW _) 1⟩, fun h' => absurd h' h⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem frames_by_cases_std {T : Type} (hY : ∀ j, FrmC.StdLat (D.sp.Y j)) (hX : FrmC.StdLat D.sp.X')
     (hV : ∀ j, FrmC.StdLat (D.sp.V j)) (hW : ∀ j, FrmC.StdLat (D.sp.W j))

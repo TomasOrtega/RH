@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.UTraitHyp
 
 /- English proof (translation)
-Introduce `V _ _ I E _ _ _ H t P`. Use `letI := P.A.isAb.comm`. Take `⟨h1, h2, -⟩` from `GlobalTheory.Ex.GenericFibre.unif_generic P`. Conclude with `GlobalTheory.SymBaseChange.hypS_baseChange _ _ t.G P.A.A (jK V) _ t.PP.L P.A.L t.PP.isLB P.A.isLB h1 h2 ⟨t.act.act H.w0, t.act.act (H.bar H.w0), t.act.hom _, t.act.hom _, by rw [← t.act.add, GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator, add_sub_cancel, t.act.one], t.pri …`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hypS_generic : ∀ (V : Type) [CommRing V] [IsDomain V] (I : Ideal V) (E : Type) [Field E] [NumberField E]
     [IsCMField E] (H : Host E) (t : SAB H (Sp V)) (P : PELUnif I t), (letI := P.A.isAb.comm; GlobalTheory.ZH.HypS P.A.A P.A.L) := by

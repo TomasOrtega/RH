@@ -10,9 +10,9 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
   [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] {i : k ≃+* k'}
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Establish `hb' : i b ≠ 0` using `fun e => hb (by simpa using e)`. Establish `e1` using `h.int (a / b)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[map_div₀, map_div₀, map_div₀, div_le_one₀ (zero_lt_iff.2 ((valuation k').ne_zero_iff.2 hb')), div_le_one₀ (zero_lt_iff.2 ((valuation k).ne_zero_iff.2 hb))]`. Conclude with `e1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iso_le (h : IsoOk i) (a b : k) :
     valuation k' (i a) ≤ valuation k' (i b) ↔ valuation k a ≤ valuation k b := by
@@ -27,13 +27,13 @@ private theorem iso_le (h : IsoOk i) (a b : k) :
     exact e1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => by simpa using (h.int (i.symm a)).symm⟩`.
+Supply the required witnesses or components.
 -/
 private theorem iso_symm (h : IsoOk i) : IsoOk i.symm :=
   ⟨fun a => by simpa using (h.int (i.symm a)).symm⟩
 
 /- English proof (translation)
-Establish `e` using `iso_le h 1 a`. Simplify using `only [map_one] at e`. Rewrite using `[← not_le, ← not_le, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem iso_lt (h : IsoOk i) (a : k) : valuation k' (i a) < 1 ↔ valuation k a < 1 := by
   have e := iso_le h 1 a
@@ -41,9 +41,9 @@ private theorem iso_lt (h : IsoOk i) (a : k) : valuation k' (i a) < 1 ↔ valuat
   rw [← not_le, ← not_le, e]
 
 /- English proof (translation)
-Establish `hex : ∃ x : kˣ, valuation k (x : k) = uniformizer k`. Take `⟨x, hx⟩` from `valuation_surjective (uniformizer k)`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `uniformizer_ne_zero (R := k) (by simpa using hx.symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mk0 x hx0, hx⟩`. Conclude with `Classical.epsilon_spec hex`.
+A detailed English derivation is pending.
 -/
 private theorem val_unif (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     valuation k (UpperTheory.V.Hi.unif k : k) = uniformizer k := by
@@ -56,7 +56,7 @@ private theorem val_unif (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace
   exact Classical.epsilon_spec hex
 
 /- English proof (translation)
-The claim follows from `(inferInstance : IsDiscreteValuationRing 𝒪[k]).toIsLocalRing`.
+A detailed English derivation is pending.
 -/
 private theorem locO (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     IsLocalRing 𝒪[k] :=
@@ -73,7 +73,7 @@ private def intIso (h : IsoOk i) : 𝒪[k] ≃+* 𝒪[k'] where
   map_add' x y := Subtype.ext (by simp)
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun e => hx ((isUnit_map_iff (intIso h) x).1 e)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem intIso_max (h : IsoOk i) (x : 𝒪[k]) (hx : x ∈ IsLocalRing.maximalIdeal 𝒪[k]) :
     intIso h x ∈ IsLocalRing.maximalIdeal 𝒪[k'] := by
@@ -81,7 +81,7 @@ private theorem intIso_max (h : IsoOk i) (x : 𝒪[k]) (hx : x ∈ IsLocalRing.m
   exact fun e => hx ((isUnit_map_iff (intIso h) x).1 e)
 
 /- English proof (translation)
-Establish `h1 : Ideal.map (intIso h : 𝒪[k] →+* 𝒪[k']) (IsLocalRing.maximalIdeal 𝒪[k]) ≤ IsLocalRing.maximalIdeal 𝒪[k']` using `Ideal.map_le_iff_le_comap.2 fun y hy => intIso_max h y hy`. Establish `h2` using `Ideal.mem_map_of_mem (intIso h : 𝒪[k] →+* 𝒪[k']) hx`. Rewrite `h2` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 c h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intIso_pow (h : IsoOk i) (c : ℕ) (x : 𝒪[k]) (hx : x ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ c) :
     intIso h x ∈ IsLocalRing.maximalIdeal 𝒪[k'] ^ c := by
@@ -93,9 +93,9 @@ private theorem intIso_pow (h : IsoOk i) (c : ℕ) (x : 𝒪[k]) (hx : x ∈ IsL
   exact Ideal.pow_right_mono h1 c h2
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `ha`. Establish `hu1 : (u : 𝒪[k]) - 1 ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ c`. Establish `e` using `congrArg Units.val (MonoidHom.mem_ker.1 hu)`. Conclude with `Ideal.Quotient.eq.1 (by simpa using e)`. Use `⟨Units.map (intIso h : 𝒪[k] →* 𝒪[k']) u, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `MonoidHom.mem_ker.2 (Units.ext ?_)` and prove the remaining obligations. Establish `e` using `intIso_pow h c _ hu1`. Rewrite `e` using `[map_sub, map_one]`. Simplify using `using Ideal.Quotient.eq.2 e`. Conclude with `Units.ext rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem Uc_fwd (h : IsoOk i) (c : ℕ) (a : kˣ) (ha : a ∈ UpperTheory.V.Hi.Uc k c) :
     Units.map (i : k →* k') a ∈ UpperTheory.V.Hi.Uc k' c := by
@@ -115,17 +115,15 @@ end SlopeTestRemainingChoices
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `k k' _ _ _ _ _ _ _ _ i h`. Use `⟨iso_le h, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[val_unif k']`. Use `le_uniformizer_iff.2 ((iso_lt h _).2 ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[val_unif k]`. Conclude with `uniformizer_lt_one`. Establish `h1 : valuation k (i.symm (Hi.unif k' : k')) < 1`. Use `(iso_lt (iso_symm h) _).2 ?_` and prove the remaining obligations. Rewrite using `[val_unif k']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `uniformizer_lt_one`. Establish `h2 : valuation k (i.symm (Hi.unif k' : k')) ≤ valuation k (Hi.unif k : k)`. Rewrite using `[val_unif k]`. Conclude with `le_uniformizer_iff.2 h1`. Simplify using `using (iso_le h _ _).2 h2`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Introduce `a`. Express the relevant statement in the definitionally equal form `valuation k' (i (a : k)) = 1 ↔ valuation k (a : k) = 1`. Establish `e1` using `iso_le h (a : k) 1`. Establish `e2` using `iso_le h 1 (a : k)`. Simplify using `only [map_one] at e1 e2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[le_antisymm_iff, le_antisymm_iff, e1, e2]`. Introduce `c a`. Use `⟨fun ha => ?_, Uc_fwd h c a⟩` and prove the remaining obligations. Establish `e` using `Uc_fwd (iso_symm h) c _ ha`. Establish `e' : Units.map (i.symm : k' →* k) (Units.map (i : k →* k') a) = a` using `Units.ext (by simp)`.
-
-Rewrite `e` using `[e']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.isoVal :
     ∀ (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] (i : k ≃+* k'), IsoOk i → (∀ a b, valuation k' (i a) ≤ valuation k' (i b) ↔ valuation k a ≤ valuation k b) ∧ valuation k' (i (Hi.unif k : k)) = valuation k' (Hi.unif k' : k') ∧ (∀ a : kˣ, Units.map (i : k →* k') a ∈ Hi.Uo k' ↔ a ∈ Hi.Uo k) ∧ ∀ (c : ℕ) (a : kˣ), Units.map (i : k →* k') a ∈ Hi.Uc k' c ↔ a ∈ Hi.Uc k c := by

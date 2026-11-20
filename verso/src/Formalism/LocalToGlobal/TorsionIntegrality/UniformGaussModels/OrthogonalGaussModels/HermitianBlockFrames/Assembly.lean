@@ -10,7 +10,7 @@ section Blocks
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Fintype.sum_prod_type, Finset.sum_eq_single a]`. Simplify using `[bd4]`. Introduce `b _ hb`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `[bd4, Ne.symm hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -24,9 +24,9 @@ theorem bd4_mul_apply {R : Type*} [CommRing R] (P : Matrix n n R) (Q : Matrix (F
   · simp
 
 /- English proof (translation)
-Use extensionality with `⟨a, i⟩ ⟨b, j⟩`. Rewrite using `[bd4_mul_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[bd4, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[bd4, hab]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bd4_mul {R : Type*} [CommRing R] (P Q : Matrix n n R) : bd4 P * bd4 Q = bd4 (P * Q) := by
   ext ⟨a, i⟩ ⟨b, j⟩
@@ -37,7 +37,7 @@ theorem bd4_mul {R : Type*} [CommRing R] (P Q : Matrix n n R) : bd4 P * bd4 Q = 
   · simp [bd4, hab]
 
 /- English proof (translation)
-Use extensionality with `x y`. Simplify using `only [Matrix.map_apply, bd4]`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `hf`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bd4_map {R S : Type*} [Zero R] [Zero S] (f : R → S) (hf : f 0 = 0) (P : Matrix n n R) :
     (bd4 P).map f = bd4 (P.map f) := by
@@ -48,7 +48,7 @@ theorem bd4_map {R S : Type*} [Zero R] [Zero S] (f : R → S) (hf : f 0 = 0) (P 
   · exact hf
 
 /- English proof (translation)
-Use extensionality with `x y`. Simplify using `only [Matrix.map_apply, bmv0]`. Use `split_ifs`. Conclude with `hf1`. Conclude with `hf`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockShift_map {R S : Type*} [Zero R] [One R] [Zero S] [One S] (f : R → S) (hf : f 0 = 0) (hf1 : f 1 = 1)
     (k : Fin 4) : (bmv0 (n := n) k : Matrix _ _ R).map f = bmv0 k := by
@@ -61,7 +61,7 @@ theorem blockShift_map {R S : Type*} [Zero R] [One R] [Zero S] [One S] (f : R �
 end Blocks
 
 /- English proof (translation)
-Use `show (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) ^ 2 = -(d : ℂ)`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sq_sq (d : ℕ) : sq d ^ 2 = -(d : ℂ) := by
   show (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) ^ 2 = -(d : ℂ)
@@ -70,7 +70,7 @@ theorem sq_sq (d : ℕ) : sq d ^ 2 = -(d : ℂ) := by
   ring
 
 /- English proof (translation)
-Use extensionality with `x y`. Simplify using `only [lmat, kmat, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_ratCast, hδ]`. Simplify using the standard rewrite rules. Conclude with `Or.inl hδ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the first alternative.
 -/
 theorem lmat_coe {l : ℕ} [Fact l.Prime] {m m' : Type} (d : ℕ) (ι : ℂ ≃+* ℂ_[l]) (δ : MaximalUnramifiedExtension l)
     (hδ : (δ : ℂ_[l]) = ι (sq d)) (A B : Matrix m m' ℚ) :
@@ -82,27 +82,27 @@ theorem lmat_coe {l : ℕ} [Fact l.Prime] {m m' : Type} (d : ℕ) (ι : ℂ ≃+
   exact Or.inl hδ
 
 /- English proof (translation)
-Introduce `a₀ b₀ c₀ dK ha hdK lam hlam hcm l _ hl hldK hsq ι σ hσ n _ _ h Λ g₀ g₁ hlat hiso hidx`. Take `⟨P₀, M₁, M₂, R₁, R₂, c, hc, hg, hRR, hU⟩` from `hR a₀ b₀ c₀ dK ha hdK lam hlam hcm l hl hldK hsq n h Λ g₀ g₁ hlat hiso hidx`. Take `⟨hnorm, δ, hδ, hσδ⟩` from `hF l dK hl hldK hcm.2.2.2 hcm.2.2.1 hsq ι σ hσ`. Establish `hδ2 : δ ^ 2 = -(dK : MaximalUnramifiedExtension l)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1 : ((δ ^ 2 : MaximalUnramifiedExtension l) : ℂ_[l]) = (δ : ℂ_[l]) ^ 2` using `rfl`. Establish `e2 : ((-(dK : MaximalUnramifiedExtension l) : MaximalUnramifiedExtension l) : ℂ_[l]) = -(dK : ℂ_[l])` using `by simp`. Rewrite using `[e1, e2, hδ, ← map_pow, sq_sq, map_neg, map_natCast]`. Establish `hmulι : ∀ {p q r : Type} [Fintype q] (A : Matrix p q ℂ) (B : Matrix q r ℂ), (A * B).map ι = A.map ι * B.map ι`. Introduce `p q r _ A B`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (A * B).map (ι : ℂ →+* ℂ_[l]) = A.map (ι : ℂ →+* ℂ_[l]) * B.map (ι : ℂ →+* ℂ_[l])` using `Matrix.map_mul`. Simplify using `using this`. Establish `hinj : ∀ {p q : Type}, Function.Injective (fun A : Matrix p q (MaximalUnramifiedExtension l) => A.map (MaximalUnramifiedExtension l).subtype)` using `fun {p q} => Matrix.map_injective Subtype.val_injective`. Establish `hLeq : (lmat δ M₁ M₂).transpose * bd4 (lmat δ R₁ R₂) * lmat δ M₁ (-M₂) = (c : MaximalUnramifiedExtension l) • (1 : Matrix (Fin 4 × n) (Fin 4 × n) (MaximalUnramifiedExtension l))`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1` using `congrArg (fun A => A.map ι) hRR`. Simplify using `only [hmulι, Matrix.transpose_map, bd4_map ι (map_zero ι)] at h1`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, bd4_map (MaximalUnramifiedExtension l).subtype (map_zero _), lmat_coe dK ι δ hδ]`. Rewrite using `[h1]`. Use extensionality with `x y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [map_ratCast]`. Establish `hUk : ∀ k : Fin 4, ∃ U₁ U₂ : Matrix (Fin 4 × n) (Fin 4 × n) ℚ, (∀ x y, padicNorm l (U₁ x y) ≤ 1 ∧ padicNorm l (U₂ x y) ≤ 1) ∧ bmv0 k * lmat δ M₁ M₂ = lmat δ M₁ M₂ * lmat δ U₁ U₂`. Introduce `k`. Take `⟨U₁, U₂, hUn, hUe⟩` from `hU k`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨U₁, U₂, hUn, ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Establish `h1` using `congrArg (fun A => A.map ι) hUe`. Simplify using `only [hmulι, blockShift_map ι (map_zero ι) (map_one ι)] at h1`. Simplify using `only [Matrix.map_mul, blockShift_map (MaximalUnramifiedExtension l).subtype (map_zero _) (map_one _), lmat_coe dK ι δ hδ]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h1`. Take `⟨T, Ti, hTTi, hUn⟩` from `hL l dK σ δ hl hldK hsq hnorm hδ2 hσδ n M₁ M₂ R₁ R₂ c hc hLeq hUk`. Use `⟨bd4 Ti * lmat δ M₁ M₂, ι lam⁻¹ • (P₀.map ι * T.map (MaximalUnramifiedExtension l).subtype), hUn, ?_⟩` and prove the remaining obligations. Introduce `i' i w`. Establish `hγ : (bd4 Ti * lmat δ M₁ M₂).map (MaximalUnramifiedExtension l).subtype = bd4 (Ti.map (MaximalUnramifiedExtension l).subtype) * (kmat dK M₁ M₂).map ι`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, bd4_map (MaximalUnramifiedExtension l).subtype (map_zero _), lmat_coe dK ι δ hδ]`. Establish `hTT : T.map (MaximalUnramifiedExtension l).subtype * Ti.map (MaximalUnramifiedExtension l).subtype = 1`. Rewrite using `[← Matrix.map_mul, hTTi, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hB : bd4 (ι lam⁻¹ • (P₀.map ι * T.map (MaximalUnramifiedExtension l).subtype)) * bd4 (Ti.map (MaximalUnramifiedExtension l).subtype) = bd4 (ι lam⁻¹ • P₀.map ι)`. Rewrite using `[bd4_mul, Matrix.smul_mul, Matrix.mul_assoc, hTT, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsm : ∀ (x : ℂ_[l]) (Q : Matrix n n ℂ_[l]), bd4 (x • Q) = x • bd4 Q`. Introduce `x Q`. Use extensionality with `p q`. Simplify using `only [bd4, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hG : (gmat g₁).map ι = bd4 (ι lam⁻¹ • P₀.map ι) * (kmat dK M₁ M₂).map ι`. Rewrite using `[hg, hsm, Matrix.smul_mul, ← bd4_map ι (map_zero ι), ← hmulι]`. Use extensionality with `p q`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bd4_mul_apply]`. Both sides reduce to the same expression. Use `_ = (gmat g₁).map ι (i', i) w := by`. Rewrite using `[hγ, ← Matrix.mul_assoc, hB, hG]`. Use `_ = ι (g₁.symm (Pi.single w 1) (i', i)) := rfl`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermFrame_of (hF : FrobStep) (hR : RatStep) (hL : LocCore) : Formalism.L2.Th1.Top.FrP.HermFrame := by
   intro a₀ b₀ c₀ dK ha hdK lam hlam hcm l _ hl hldK hsq ι σ hσ n _ _ h Λ g₀ g₁ hlat hiso hidx

@@ -19,7 +19,7 @@ variable {k r : ℕ} {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [
 
 omit [DecidableEq ι] [DecidableEq κ] in
 /- English proof (translation)
-Simplify using `only [hh, inner_sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm (s := (univ : Finset κ))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hh_sum_left (Γ : Matrix ι ι ℂ) (R : Rep k r) (f : κ → ι → R.H) (y : ι → R.H) :
     hh Γ R (fun c => ∑ I, f I c) y = ∑ I, hh Γ R (f I) y := by
@@ -30,7 +30,7 @@ theorem hh_sum_left (Γ : Matrix ι ι ℂ) (R : Rep k r) (f : κ → ι → R.H
 
 omit [DecidableEq ι] [DecidableEq κ] in
 /- English proof (translation)
-Simplify using `only [hh, sum_inner, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm (s := (univ : Finset κ))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hh_sum_right (Γ : Matrix ι ι ℂ) (R : Rep k r) (f : κ → ι → R.H) (x : ι → R.H) :
     hh Γ R x (fun c => ∑ I, f I c) = ∑ I, hh Γ R x (f I) := by
@@ -41,14 +41,14 @@ theorem hh_sum_right (Γ : Matrix ι ι ℂ) (R : Rep k r) (f : κ → ι → R.
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-The claim follows from `R.smSub.sum_mem (t := univ) (f := x) fun c _ => hx c`.
+A detailed English derivation is pending.
 -/
 theorem sum_sm (R : Rep k r) (x : ι → R.H) (hx : ∀ c, x c ∈ R.sm) : ∑ c, x c ∈ R.sm :=
   R.smSub.sum_mem (t := univ) (f := x) fun c _ => hx c
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `only [hh, tm, ev, inner_sum, inner_smul_left, inner_smul_right]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hh_tm (Γ : Matrix ι ι ℂ) (R : Rep k r) (a : ι → ℂ) (x : ι → R.H) (v : R.H) :
     hh Γ R x (tm R a v) = ⟪v, ev Γ R a x⟫_ℂ := by
@@ -58,13 +58,13 @@ theorem hh_tm (Γ : Matrix ι ι ℂ) (R : Rep k r) (a : ι → ℂ) (x : ι →
   ring
 
 /- English proof (translation)
-Establish `key : ∑ i, ⟪∑ j, Γ i j • x j, ∑ j, Γ i j • x j⟫_ℂ = ∑ i, ⟪x i, x i⟫_ℂ`. Simplify using `only [sum_inner, inner_sum, inner_smul_left, inner_smul_right]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Establish `h2 : ∀ j, ∑ i, Γ i l * ((starRingEnd ℂ) (Γ i j) * ⟪x j, x l⟫_ℂ) = (if j = l then 1 else 0) * ⟪x j, x l⟫_ℂ`. Introduce `j`. Use `congrFun (congrFun h j) l` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [conjTranspose_apply, RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [inner_self_eq_norm_sq_to_K] at key`. Conclude with `key` after adjusting the coercions.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_sq_mul {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {Γ : Matrix ι ι ℂ}
     (h : Γᴴ * Γ = 1) (x : ι → H) : ∑ i, ‖∑ j, Γ i j • x j‖ ^ 2 = ∑ i, ‖x i‖ ^ 2 := by
@@ -89,9 +89,9 @@ theorem norm_sq_mul {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] 
   exact_mod_cast key
 
 /- English proof (translation)
-Establish `e : hh Γ R x x = ∑ i, ⟪x i, ∑ j, Γ i j • x j⟫_ℂ`. Simplify using `only [hh, inner_sum, inner_smul_right]`. Establish `h1` using `norm_sq_mul h x`. Establish `h2 : ‖hh Γ R x x‖ ≤ ∑ i, (‖x i‖ ^ 2 + ‖∑ j, Γ i j • x j‖ ^ 2) / 2`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Use `(norm_inner_le_norm _ _).trans ?_` and prove the remaining obligations. Use polynomial arithmetic with `[sq_nonneg (‖x i‖ - ‖∑ j, Γ i j • x j‖)]`. Rewrite `h2` using `[← Finset.sum_div, Finset.sum_add_distrib, h1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_hh_le {Γ : Matrix ι ι ℂ} (h : Γᴴ * Γ = 1) (R : Rep k r) (x : ι → R.H) :
     ‖hh Γ R x x‖ ≤ ∑ c, ‖x c‖ ^ 2 := by
@@ -110,16 +110,14 @@ variable {ρ : Mx k r → Matrix ι ι ℂ} {Γ : Matrix ι ι ℂ} {R : Rep k r
   {io : ∀ I, ι → (RI I).H → R.H} {pr : ∀ I, ι → R.H → (RI I).H} {ep : κ → ℝ}
 
 /- English proof (translation)
-The claim follows from `sum_sm (RI I) _ fun c => (hT.raw.pr_sm I c).mem _ (hx c)`.
+A detailed English derivation is pending.
 -/
 theorem proj_sm (hT : TensH ρ Γ R RI io pr ep) (I : κ) {x : ι → R.H} (hx : ∀ c, x c ∈ R.sm) :
     ∑ c, pr I c (x c) ∈ (RI I).sm :=
   sum_sm (RI I) _ fun c => (hT.raw.pr_sm I c).mem _ (hx c)
 
 /- English proof (translation)
-Establish `e : (fun c => ∑ J, io J c (∑ d, pr J d (x d))) = x` using `funext (hT.raw.sum_io_pr x hx)`. Use `conv_lhs => rw [← e]`. Rewrite using `[hh_sum_right Γ R (fun J c => io J c (∑ d, pr J d (x d))), Finset.sum_eq_single I]`. Conclude with `hT.iso I y hy _ (proj_sm hT I hx)`. Introduce `J _ hJ`.
-
-Conclude with `hT.orth I J hJ.symm y hy _ (proj_sm hT J hx)`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adj (hT : TensH ρ Γ R RI io pr ep) (I : κ) (y : (RI I).H) (hy : y ∈ (RI I).sm) (x : ι → R.H)
     (hx : ∀ c, x c ∈ R.sm) :
@@ -133,7 +131,7 @@ theorem adj (hT : TensH ρ Γ R RI io pr ep) (I : κ) (y : (RI I).H) (hy : y ∈
   · simp
 
 /- English proof (translation)
-Establish `e : (fun c => ∑ J, io J c (∑ d, pr J d (x d))) = x` using `funext (hT.raw.sum_io_pr x hx)`. Use `conv_lhs => rw [← e]`. Rewrite using `[hh_sum_left Γ R (fun J c => io J c (∑ d, pr J d (x d)))]`. Conclude with `Finset.sum_congr rfl fun I _ => adj hT I _ (proj_sm hT I hx) x' hx'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parseval (hT : TensH ρ Γ R RI io pr ep) (x x' : ι → R.H) (hx : ∀ c, x c ∈ R.sm)
     (hx' : ∀ c, x' c ∈ R.sm) :
@@ -146,13 +144,13 @@ theorem parseval (hT : TensH ρ Γ R RI io pr ep) (x x' : ι → R.H) (hx : ∀ 
 end
 
 /- English proof (translation)
-Introduce `_ k r ι κ _ _ _ _ ρ Γ d R RI io pr ep ε mu muI hR _ hF hT`. Use `⟨fun I y hy x hx => adj hT I y hy x hx, fun x x' hx hx' => parseval hT x x' hx hx', fun a x v => hh_tm Γ R a x v, ?_, ?_⟩` and prove the remaining obligations. Introduce `I y hy`. Establish `h1` using `norm_hh_le (Γ := Γ) (by rw [hF.1, hF.2.1]) R (fun c => io I c y)`. Rewrite `h1` using `[hT.iso I y hy y hy, norm_mul, inner_self_eq_norm_sq_to_K]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `have h2 : ‖(ep I : ℂ)‖ = 1 := by rcases hT.ep_sq I with h | h <;> simp [h]`. Rewrite `h1` using `[h2]`. Simplify using `using h1`. Introduce `a a' v hv v' hv' g hg`. Establish `ht : ∀ (b : ι → ℂ) (w : R.H), w ∈ R.sm → ∀ c, tm R b w c ∈ R.sm` using `fun b w hw c => R.smSub.smul_mem (b c) hw`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hact : ∀ c, act ρ R g (tm R a' v') c ∈ R.sm` using `fun c => sum_sm R _ fun j => R.smSub.smul_mem _ (PI.UnitaryGroupMassFormula.CapelliEig.smooth_right_action k r ε mu R.H R.σ hR.2 _ (ht a' v' hv' j) g hg)`. Establish `hp` using `parseval hT _ _ hact (ht a v hv)`. Simplify using `only [hT.raw.pr_eq _ g hg _ (ht a' v' hv')] at hp`. Rewrite using `[← hp]`. Simplify using `only [hh, act, tm, Formalism.QuantumDeterminants.herm, inner_sum, inner_smul_left, inner_smul_right, map_smul, smul_smul, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.star_apply, RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tens_adj : PI.KFinSmooth → ∀ (k r : ℕ) (ι κ : Type) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (ρ : Mx k r → Matrix ι ι ℂ) (Γ : Matrix ι ι ℂ) (d : ℕ) (R : Rep k r) (RI : κ → Rep k r) (io : ∀ I, ι → (RI I).H → R.H) (pr : ∀ I, ι → R.H → (RI I).H) (ep : κ → ℝ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (muI : κ → Fin (2 * r + k + 1) → ℝ), R.IsDG ε mu → (∀ I, (RI I).IsDG ε (muI I)) → IsFRep ρ Γ d → TensH ρ Γ R RI io pr ep → (∀ I, ∀ y ∈ (RI I).sm, ∀ x : ι → R.H, (∀ c, x c ∈ R.sm) → hh Γ R (fun c => io I c y) x = (ep I : ℂ) * ⟪∑ c, pr I c (x c), y⟫_ℂ) ∧ (∀ x x' : ι → R.H, (∀ c, x c ∈ R.sm) → (∀ c, x' c ∈ R.sm) → hh Γ R x x' = ∑ I, (ep I : ℂ) * ⟪∑ c, pr I c (x' c), ∑ c, pr I c (x c)⟫_ℂ) ∧ (∀ (a : ι → ℂ) (x : ι → R.H) (v : R.H), hh Γ R x (tm R a v) = ⟪v, ev Γ R a x⟫_ℂ) ∧ (∀ I, ∀ y ∈ (RI I).sm, ‖y‖ ^ 2 ≤ ∑ c, ‖io I c y‖ ^ 2) ∧ ∀ (a a' : ι → ℂ), ∀ v ∈ R.sm, ∀ v' ∈ R.sm, ∀ g ∈ GG k r, Formalism.QuantumDeterminants.herm Γ (ρ g *ᵥ a') a * ⟪v, R.σ g v'⟫_ℂ = ∑ I, (ep I : ℂ) * ⟪∑ c, pr I c (tm R a v c), (RI I).σ g (∑ c, pr I c (tm R a' v' c))⟫_ℂ := by
   intro _ k r ι κ _ _ _ _ ρ Γ d R RI io pr ep ε mu muI hR _ hF hT

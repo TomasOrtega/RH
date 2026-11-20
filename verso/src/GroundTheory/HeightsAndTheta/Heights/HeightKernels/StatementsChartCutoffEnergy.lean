@@ -20,21 +20,21 @@ def ChartCutoffEnergy.Statement : Prop :=
         ReciprocityTheory.AnForm.A.gradDens (fun i => hermChartPot (T i)) (chartCutoff k) (chartCutoff k) y ≤ K
 
 /- English proof (translation)
-Simplify using `only [chartCutoff, Pi.zero_apply, norm_zero]`. Conclude with `Real.smoothTransition.one_of_one_le (by norm_num)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example (D k : ℕ) : chartCutoff k (0 : Fin D → ℂ) = 1 := by
   simp only [chartCutoff, Pi.zero_apply, norm_zero]
   exact Real.smoothTransition.one_of_one_le (by norm_num)
 
 /- English proof (translation)
-Simplify using `only [chartCutoff, Finset.univ_unique, Finset.sum_singleton, Complex.norm_ofNat]`. Conclude with `Real.smoothTransition.zero_of_nonpos (by norm_num)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : chartCutoff 0 (fun _ : Fin 1 => (2 : ℂ)) = 0 := by
   simp only [chartCutoff, Finset.univ_unique, Finset.sum_singleton, Complex.norm_ofNat]
   exact Real.smoothTransition.zero_of_nonpos (by norm_num)
 
 /- English proof (translation)
-Introduce `_` and use `Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ i : Fin 1, ((fun _ => Matrix.diagonal ![(1 : ℂ), 4, 1]) i :
     Matrix (Fin (1 + 1 + 1)) (Fin (1 + 1 + 1)) ℂ).PosDef :=

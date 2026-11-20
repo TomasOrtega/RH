@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SmallSpan
 variable {D : D7} {m n : ℕ}
 /- English proof (translation)
-Introduce `D _ _ _ _ _ _ _ _ _ p j _ _ B hB _ O O' _ hO' h P hP`. Conclude with `harmLat_le_span D.LL0.val.toRingHom D.what₂.embLL (labLL0 D) O O' hO'.int B.w B.F.BS hB.wt (GlobalTheory.CoefLatConj.pq_le hB) (isLattice_latAt hB.frame _) hP`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smallSt_alt : _root_.GlobalTheory.BigOn.Exp.TupLe.SmallnessCondition := by
   intro D _ _ _ _ _ _ _ _ _ p j _ _ B hB _ O O' _ hO' h P hP

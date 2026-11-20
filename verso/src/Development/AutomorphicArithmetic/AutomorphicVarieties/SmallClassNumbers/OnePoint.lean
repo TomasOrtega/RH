@@ -16,13 +16,13 @@ def UpperTheory.V.SmallClassNumbers.OnePoint : Prop :=
       (Adm3U ι e N (D.rhoK r h.mult) ∨ Af.Adm2 ι e (N * (discr K).natAbs) (D.rhoK r h.mult))
 
 /- English proof (translation)
-Introduce `Ω _ _ _ K _ _ _ _ _ l _ c N _ e ψ he hG ι h0`. Take `⟨D⟩` from `exists_dat hG`. Take `⟨g₁, hM, hFin, hB, hW⟩` from `hA Ω K l c N e ψ D he ι`. Take `⟨U⟩` from `exists_uLoc hC D`. Take `⟨S⟩` from `exists_ring hC D U g₁ hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M⟩` from `exists_model hC hLP D hM S`. Establish `hex : ∃ f : S.R →ₐ[c.O] PadicAlgCl l, TwoPt D.η S.r.hom f`. Assume the negation of the conclusion as `hn`. Take `⟨hlen, T, hT, -, hle⟩` from `model_upper S M hG.l_odd hM hLM (hFin U S) (Z.J.ptHyp_ofU hC hK hRI hRII D hM S ι hB hW M.x₀ M.base) 1 (map_one _) fun f hf => absurd ⟨f, hf⟩ hn`. Establish `hT0 : T = ∅` using `Finset.eq_empty_of_forall_notMem fun f hf => hn ⟨f, hT.1 f hf⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hle` using `[hT0, Finset.sum_empty, mul_zero, Chr.nrm, he, ENat.toNat_one, Nat.cast_one, div_one]`. Establish `h1 : M.len.toNat = 0` using `by exact_mod_cast le_antisymm hle (Nat.cast_nonneg _)`. Establish `h2 : M.len = 0` using `(ENat.toNat_eq_zero.1 h1).resolve_right hlen`. Conclude with `h0 (le_antisymm (h2 ▸ vlen_le hC hLM' D hM S M) zero_le')`. Take `⟨f, hf⟩` from `hex`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp` using `isPt_push D hM S f hf.1`. Use `⟨D, U, g₁, _, hp, hM, hf.2.1, hf.2.2, ?_⟩` and prove the remaining obligations. Break down `(twoPt_shape S hG.l_odd hM f hf).1 with h | h` into its components or cases. Conclude with `Or.inl (hAd D hM S f hf.1 hp.mult ι h (hB U S _ _ _ (isPush_push f _) h))`. Conclude with `Or.inr (admissible_of_typeII hC D hM hp ι h (hW U S _ _ (isPush_push f _) h (typeII_facts hC D hM hp h).1))`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.SmallClassNumbers.onePoint (hC : U3.CohInp) (hLM : LemmaM) (hLM' : LemmaM') (hLP : LemmaP) (hK : Z.Kato.KatoTwo)
     (hRI : Th.RigI) (hRII : Th.RigII) (hAd : AdmI) (hA : Aut.AutomorphyUnramifiedCoefficients) : UpperTheory.V.SmallClassNumbers.OnePoint := by

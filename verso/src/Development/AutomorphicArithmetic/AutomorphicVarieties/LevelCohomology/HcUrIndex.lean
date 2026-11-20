@@ -3,13 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.Hc
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.X
 
 /- English proof (translation)
-Establish `hJc : Continuous J.subtype` using `continuous_subtype_val`. Use `show resH1 ρ J.subtype hJc (Submodule.Quotient.mk f) = 0 ↔ _`. Unfold `resH1`. Rewrite using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `show ((restrictCocycles1 ρ J.subtype hJc f : Z1 (ρ.comp J.subtype)) : J → M) ∈ B1 (ρ.comp J.subtype) ↔ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[mem_coboundaries1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`. Use `⟨m, fun j hj => ?_⟩` and prove the remaining obligations. Establish `h` using `hm ⟨j, hj⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[restrictCocycles1_apply ρ J.subtype hJc]`. Simplify using `using h`. Introduce and unpack `⟨m, hm⟩`. Use `⟨m, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[restrictCocycles1_apply ρ J.subtype hJc]`.
-
-Simplify using `using hm j j.2`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem urIndex_mem {k D M : Type} [Field k] [Group D] [TopologicalSpace D] [AddCommGroup M] [Module k M]
     [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation k D M) (J : Subgroup D) (f : Z1 ρ) :
@@ -32,17 +30,15 @@ private theorem urIndex_mem {k D M : Type} [Field k] [Group D] [TopologicalSpace
     simpa using hm j j.2
 
 /- English proof (translation)
-Establish `hNi : N.index ≠ 0` using `fun h => hN (by rw [h, Nat.cast_zero])`. Use `haveI : N.FiniteIndex := ⟨hNi⟩`. Use `haveI : Fintype (Γ ⧸ N) := Fintype.ofFinite _`. Establish `hconst : ∀ g n, n ∈ N → c (g * n) = c g` using `fun g n hn => by`. Rewrite using `[hc, h0 n hn, map_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `c' : Γ ⧸ N → M` to `Quotient.lift (s := QuotientGroup.leftRel N) c (fun a b hab => by`. Establish `hab' : a⁻¹ * b ∈ N` using `QuotientGroup.leftRel_apply.1 hab`. Establish `h` using `hconst a (a⁻¹ * b) hab'`. Rewrite `h` using `[mul_inv_cancel_left]`. Conclude with `h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc' : ∀ (h : Γ) (x : Γ ⧸ N), c' (h • x) = c h + ρ h (c' x)`. Introduce `h x`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective x`. Use `show c (h * g) = c h + ρ h (c g)`. Conclude with `hc h g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Set `S` to `∑ x : Γ ⧸ N, c' x`. Establish `hS : ∀ h, S = Fintype.card (Γ ⧸ N) • c h + ρ h S`. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Establish `hcard : (Fintype.card (Γ ⧸ N) : k) = N.index`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Fintype.card_eq_nat_card]`. Both sides reduce to the same expression. Use `⟨-((N.index : k)⁻¹ • S), fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `hS g`. Establish `h2 : S - ρ g S = (N.index : k) • c g`.
-
-Rewrite using `[← hcard, Nat.cast_smul_eq_nsmul]`. Use `nth_rewrite 1 [h1]`. Rewrite using `[add_sub_cancel_right]`. Rewrite using `[map_neg, map_smul, neg_sub_neg, ← smul_sub, h2, smul_smul, inv_mul_cancel₀ hN, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem urIndex_avg {k Γ M : Type} [Field k] [Group Γ] [AddCommGroup M] [Module k M]
     (ρ : Representation k Γ M) (N : Subgroup Γ) (hN : (N.index : k) ≠ 0) (c : Γ → M)
@@ -82,17 +78,17 @@ private theorem urIndex_avg {k Γ M : Type} [Field k] [Group Γ] [AddCommGroup M
   rw [map_neg, map_smul, neg_sub_neg, ← smul_sub, h2, smul_smul, inv_mul_cancel₀ hN, one_smul]
 
 /- English proof (translation)
-Introduce `l _ k D M _ _ _ _ _ _ _ _ ρ hρ I N hNI hl`. Use extensionality with `c`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective (Submodule.comap (Z1 ρ).subtype (B1 ρ)) c`. Use `(urIndex_mem ρ N f).trans (Iff.trans ?_ (urIndex_mem ρ I f).symm)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨m, hm⟩`. Establish `hf` using `((mem_Z1_iff_cocycle ρ _).1 f.2).2`. Set `cI : I → M` to `fun j => f.1 j - (ρ j m - m)`. Establish `hcI : ∀ g h : I, cI (g * h) = cI g + (ρ.comp I.subtype) g (cI h)`. Introduce `g h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [cI, MonoidHom.comp_apply, Subgroup.coe_subtype, Subgroup.coe_mul, hf, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Establish `h0 : ∀ n ∈ N.subgroupOf I, cI n = 0` using `fun n hn => by`. Simplify using `only [cI]`. Rewrite using `[hm n (Subgroup.mem_subgroupOf.1 hn), sub_self]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hidx : ((N.subgroupOf I).index : k) ≠ 0`. Establish `e : (N.subgroupOf I).index = N.relIndex I` using `rfl`. Rewrite using `[e]`. Introduce `h`. Conclude with `hl ((CharP.cast_eq_zero_iff k l _).1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m', hm'⟩` from `urIndex_avg (ρ.comp I.subtype) (N.subgroupOf I) hidx cI hcI h0`. Use `⟨m + m', fun j hj => ?_⟩` and prove the remaining obligations. Establish `h` using `hm' ⟨j, hj⟩`. Simplify using `only [cI, MonoidHom.comp_apply, Subgroup.coe_subtype] at h`. Rewrite `h` using `[sub_eq_iff_eq_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, map_add]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨m, hm⟩`. Conclude with `⟨m, fun j hj => hm j (hNI hj)⟩`.
+Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.urIndex :
     ∀ (l : ℕ) [Fact l.Prime] {k D M : Type} [Field k] [CharP k l] [Group D] [TopologicalSpace D] [AddCommGroup M] [Module k M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation k D M), ContAction ρ → ∀ (I N : Subgroup D), N ≤ I → ¬ l ∣ N.relIndex I → H1ur ρ N = H1ur ρ I := by

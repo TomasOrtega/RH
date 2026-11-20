@@ -8,23 +8,23 @@ noncomputable section
 namespace Deduction
 
 /- English proof (translation)
-Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hs0 : s ≠ 0`. Introduce `h`. Rewrite `hs` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hs`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs1 : s - 1 ≠ 0`. Introduce `h`. Establish `: s = 1` using `by linear_combination h`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hs` using `[this]`. Simplify using `at hs`. Establish `hnC : (n : ℂ) ≠ 0` using `by exact_mod_cast hn0.ne'`. Rewrite using `[setIntegral_eq_of_subset_of_forall_sdiff_eq_zero (s := Ioi (n : ℝ)) measurableSet_Ioi (Ioi_subset_Ioi hn1)]`. Use `swap`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `hy' : y ≤ n` using `by simpa using hy.2`. Establish `: y / n - 1 ≤ 0`. Rewrite using `[sub_nonpos, div_le_one hn0]`. Conclude with `hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[max_eq_right this]`. Establish `hpt : ∀ y ∈ Ioi (n : ℝ), ((max (y / n - 1) 0 : ℝ) : ℂ) * (y : ℂ) ^ (-s - 1) = (n : ℂ)⁻¹ * (y : ℂ) ^ (-s) - (y : ℂ) ^ (-s - 1)`. Introduce `y hy`. Establish `hy : (n : ℝ) < y` using `hy`. Establish `hypos : (0 : ℝ) < y` using `lt_trans hn0 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyC : (y : ℂ) ≠ 0` using `by exact_mod_cast hypos.ne'`. Establish `hm : y / n - 1 ≥ 0`. Rewrite using `[ge_iff_le, sub_nonneg, le_div_iff₀ hn0]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[max_eq_left hm, cpow_sub _ _ hyC, cpow_one]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[setIntegral_congr_fun measurableSet_Ioi hpt]`. Establish `ha1 : (-s).re < -1` using `by simp; linarith`. Establish `ha2 : (-s - 1).re < -1` using `by simp; linarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[integral_sub ((integrableOn_Ioi_cpow_of_lt ha1 hn0).const_mul _) (integrableOn_Ioi_cpow_of_lt ha2 hn0), integral_const_mul, integral_Ioi_cpow_of_lt ha1 hn0, integral_Ioi_cpow_of_lt ha2 hn0]`. Establish `hcast : ((n : ℝ) : ℂ) = (n : ℂ)` using `by push_cast; rfl`. Rewrite using `[hcast, cpow_add _ _ hnC, cpow_one, sub_add_cancel]`. Establish `h1s : -s + 1 ≠ 0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `hs1` to reduce the goal to its premises. Take the linear combination `-h`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mellin_ramp (n : ℕ) (hn : 1 ≤ n) (s : ℂ) (hs : 1 < s.re) :
     ∫ y in Ioi (1 : ℝ), ((max (y / n - 1) 0 : ℝ) : ℂ) * (y : ℂ) ^ (-s - 1) = (n : ℂ) ^ (-s) / (s * (s - 1)) := by

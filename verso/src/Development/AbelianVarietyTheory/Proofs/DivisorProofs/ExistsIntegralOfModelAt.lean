@@ -9,21 +9,19 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Take `⟨C, hu, hr, hs, ht, ⟨h1, h2, h3, h4, h6⟩, hΔ⟩` from `h`. Establish `hu0 : (⟨(C.u : ℂ), hu⟩ : F) ≠ 0`. Introduce `h0`. Conclude with `C.u.ne_zero (congrArg (fun x : F => (x : ℂ)) h0)`. Set `C' : VariableChange F` to `⟨Units.mk0 _ hu0, ⟨C.r, hr⟩, ⟨C.s, hs⟩, ⟨C.t, ht⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hC : C'.map (algebraMap F ℂ) = C`. Apply the tactic sequence `ext <;> rfl`. Establish `hmap : (C' • A).map (algebraMap F ℂ) = C • A.map (algebraMap F ℂ)`. Rewrite using `[← hC, map_variableChange]`. Rewrite `h1`, `h2`, `h3`, `h4`, `h6`, `hΔ` using `[← hmap]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set W := C' • A with hW`. Establish `hD' : (D : ℂ) ≠ 0` using `fun h0 => hD (Subtype.ext h0)`. Establish `hvD : V.valuation (D : ℂ) ≠ 0` using `by simpa using hD'`. Rewrite `hΔ` using `[map_Δ]`. Establish `hΔ' : V.valuation ((W.Δ : F) : ℂ) = V.valuation (D : ℂ)` using `hΔ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hW0 : W.Δ ≠ 0`. Introduce `h0`. Rewrite `hΔ'` using `[h0]`. Conclude with `hvD (by simpa using hΔ'.symm)`. Establish `hx : W.Δ / D ∈ w.valuationSubringAtPrime F`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hV, ← V.valuation_le_one_iff]`. Use `push_cast`. Rewrite using `[map_div₀, hΔ', div_self hvD]`. Establish `hy : D / W.Δ ∈ w.valuationSubringAtPrime F`. Rewrite using `[← hV, ← V.valuation_le_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Rewrite using `[map_div₀, hΔ', div_self hvD]`. Use `⟨C', ⟨⟨_, hx⟩, ⟨_, hy⟩, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext show W.Δ / D * (D / W.Δ) = 1` to reduce the goal to its premises. Clear the denominators using the available nonvanishing facts.
+Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext show D / W.Δ * (W.Δ / D) = 1` to reduce the goal to its premises. Clear the denominators using the available nonvanishing facts. Use `⟨⟨⟨⟨W.a₁, (hV _).1 h1⟩, ⟨W.a₂, (hV _).1 h2⟩, ⟨W.a₃, (hV _).1 h3⟩, ⟨W.a₄, (hV _).1 h4⟩, ⟨W.a₆, (hV _).1 h6⟩⟩, ?_⟩⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> rfl`. Use `show W.Δ = W.Δ / D * D`.
-
-Clear the denominators using the available nonvanishing facts.
+Apply the first step, then apply the next step to every resulting obligation. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_integral_of_modelAt (F : IntermediateField ℚ ℂ) [NumberField F] (w : HeightOneSpectrum (𝓞 F))
     (V : ValuationSubring ℂ) (A : WeierstrassCurve F) (D : F)

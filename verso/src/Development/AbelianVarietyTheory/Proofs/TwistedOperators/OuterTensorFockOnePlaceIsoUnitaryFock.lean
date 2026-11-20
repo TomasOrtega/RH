@@ -8,16 +8,16 @@ open scoped TensorProduct DirectSum Kronecker Matrix
 namespace GlobalTheory.OneFunctional.FockTensor
 
 /- English proof (translation)
-Simplify using `only [linSub, MonoidHom.coe_mk, OneHom.coe_mk, AlgHom.toLinearMap_apply, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linSub_prod {ι σ : Type} [Fintype ι] [DecidableEq ι] [Fintype σ] [DecidableEq σ] (M : ι → Matrix σ σ ℂ)
     (f : ι → MvPolynomial (ι × σ) ℂ) : linSub M (∏ τ, f τ) = ∏ τ, linSub M (f τ) := by
   simp only [linSub, MonoidHom.coe_mk, OneHom.coe_mk, AlgHom.toLinearMap_apply, map_prod]
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.sub`. Simplify using `only [linSub, MonoidHom.coe_mk, OneHom.coe_mk, AlgHom.toLinearMap_apply, aeval_rename]`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Use `congr 1`. Use `congr 1`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Function.comp_apply, map_sum, Matrix.transpose_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem linSub_rename {ι σ : Type} [Fintype ι] [DecidableEq ι] [Fintype σ] [DecidableEq σ] (M : ι → Matrix σ σ ℂ)
     (τ : ι) (f : MvPolynomial σ ℂ) :
@@ -47,11 +47,11 @@ theorem fock_apply {ι : Type} [Fintype ι] [DecidableEq ι] (a b : ℕ) (α β 
         linSub (fun τ => (g τ).1 ⊗ₖ (star (h τ).1)ᵀ) f := rfl
 
 /- English proof (translation)
-Introduce `ι _ _ a b α β`. Take `⟨e, he⟩` from `GlobalTheory.PolyTensor.exists_piTensor_equiv ι (Fin b × Fin a)`. Use `⟨e, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨h, g⟩ x`. Establish `key : e.toLinearMap ∘ₗ outer₂ (fun τ => fockOne a b (α τ) (β τ)) (h, g) = fock a b α β (h, g) ∘ₗ e.toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `f`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, outer₂_apply, PiTensorProduct.map_tprod, he, fockOne_apply, fock_apply, linSub_prod, linSub_rename]`. Simplify using `only [map_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Algebra.smul_def, Finset.prod_mul_distrib, ← map_prod, Units.coe_prod, Units.val_mul]`. Conclude with `LinearMap.congr_fun key x`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem outer₂_fockOne_iso : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (a b : ℕ) (α β : ι → ℤ),
     Iso (outer₂ fun τ => fockOne a b (α τ) (β τ)) (fock a b α β) := by

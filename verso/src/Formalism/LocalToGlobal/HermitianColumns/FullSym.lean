@@ -89,7 +89,7 @@ def toErrXS {D : D7} (X : FullTiedS D) : ErrX D where
   norm_mem_place_ideal := fun u v => (X.base.vT u v).2
 
 /- English proof (translation)
-Introduce `u i v h`. Establish `h1` using `(X.levelZeroCompatibility u).splitG_pi i v h`. Rewrite `h1` using `[X.piG u D.u₀]`. Simplify `h1` using `[toErrXS, inclE, star_conj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem piGLevelS {D : D7} (X : FullTiedS D) : PiGLevel D X.base.lev0 (toErrXS X) := by
   intro u i v h
@@ -98,7 +98,7 @@ theorem piGLevelS {D : D7} (X : FullTiedS D) : PiGLevel D X.base.lev0 (toErrXS X
   simpa [toErrXS, inclE, star_conj] using h1
 
 /- English proof (translation)
-Introduce `u v z hz y`. Apply the tactic sequence `exact (X.levelZeroCompatibility u).fM_pi _ _ z (by first | exact hz | (simp only [toErrXS] at hz; exact hz)) y`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem piTLevelS {D : D7} (X : FullTiedS D) : PiTLevel D X.base.lev0 (toErrXS X) := by
   intro u v z hz y
@@ -136,7 +136,7 @@ structure SymmetricExtraCompatibility {D : D7} (X : FullTiedS D) {L : SizeData�
     GIwPos u w h (ex.ker u w h)
 
 /- English proof (translation)
-Take `⟨rfl, rfl, _⟩` from `J`. Conclude with `piGLevelS X`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem JoinTiedS.piG_lev {D : D7} {X : FullTiedS D} {lev : LevelData D} {eX : ErrX D} {Gt : GatTies D}
     (J : JoinTiedS X lev eX Gt) : PiGLevel D lev eX := by
@@ -144,7 +144,7 @@ theorem JoinTiedS.piG_lev {D : D7} {X : FullTiedS D} {lev : LevelData D} {eX : E
   exact piGLevelS X
 
 /- English proof (translation)
-Take `⟨rfl, rfl, _⟩` from `J`. Conclude with `piTLevelS X`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem JoinTiedS.piT_lev {D : D7} {X : FullTiedS D} {lev : LevelData D} {eX : ErrX D} {Gt : GatTies D}
     (J : JoinTiedS X lev eX Gt) : PiTLevel D lev eX := by
@@ -223,7 +223,7 @@ Both sides reduce to the same expression.
 theorem FullTied.one_chart_model_base_level_eq {D : D7} (X : FullTied D) : X.toS.base.lev0 = X.base.lev0 := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h.join.lev_eq, h.join.errX_eq, h.join.gpl⟩, h.iw, h.iw_pos⟩`.
+Supply the required witnesses or components.
 -/
 theorem ExtraTied.toS {D : D7} {X : FullTied D} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L}
     {Gl : Formalism.MainNotions.G.LatInst D} {K : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC}

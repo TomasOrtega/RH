@@ -11,9 +11,9 @@ namespace AAInvW
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.C3
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `X Y _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `succ t ih`. Introduce `X Y h`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, mul_assoc, ih (fun i => X i.succ) (fun i => Y i.succ) (fun i => h i.succ), ← mul_assoc, h 0, mul_assoc]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofFn_prod_intertwine {A : Type*} [Ring A] (ρ : A) :
     ∀ (t : ℕ) (X Y : Fin t → A), (∀ k, X k * ρ = ρ * Y k) →
@@ -29,9 +29,9 @@ theorem ofFn_prod_intertwine {A : Type*} [Ring A] (ρ : A) :
       ih (fun i => X i.succ) (fun i => Y i.succ) (fun i => h i.succ), ← mul_assoc, h 0, mul_assoc]
 
 /- English proof (translation)
-Unfold `qminor`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc, ofFn_prod_intertwine ρ t _ _ (fun k => ?_), ← mul_assoc, ← mul_assoc, (Int.cast_commute _ ρ).eq]`. Simplify using `only [Tm, add_mul, mul_add, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Rewrite using `[Algebra.commutes]`. Rewrite using `[zero_mul, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qminor_intertwine {A : Type*} [Ring A] [Algebra ℂ A] {n t : ℕ} (E E' : Fin n → Fin n → A) (ρ : A)
     (h : ∀ a b, E a b * ρ = ρ * E' a b) (a b : Fin t → Fin n) (u : ℂ) :
@@ -47,9 +47,9 @@ theorem qminor_intertwine {A : Type*} [Ring A] [Algebra ℂ A] {n t : ℕ} (E E'
   · rw [zero_mul, mul_zero]
 
 /- English proof (translation)
-Unfold `herm`. Establish `hcol : ∀ (M : Matrix (Fin N) (Fin N) ℂ) (e : Fin N), M *ᵥ bvec e = fun i => M i e`. Introduce `M e`. Use function extensionality and compare the values at `i`. Simplify using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hcol]`. Simplify using `only [Matrix.mulVec_mulVec]`. Simplify using `only [hcol, dotProduct, Matrix.mul_apply (M := H * g), Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun d _ => Finset.sum_congr rfl (fun i _ => ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -68,7 +68,7 @@ theorem herm_mul_bvec {N : ℕ} (H g s : Matrix (Fin N) (Fin N) ℂ) (c : Fin N)
   ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inv_mul_apply {N : ℕ} (g s : Matrix (Fin N) (Fin N) ℂ) (v : Fin N → ℂ) (c : Fin N) :
     ((g * s)⁻¹ *ᵥ v) c = ∑ d, s⁻¹ c d * (g⁻¹ *ᵥ v) d := by
@@ -76,23 +76,23 @@ theorem inv_mul_apply {N : ℕ} (g s : Matrix (Fin N) (Fin N) ℂ) (v : Fin N �
   rfl
 
 /- English proof (translation)
-Unfold `RightAA`. Introduce `E _ _ k r z' m hm u ell f s' g hf hs' hg`. Take `⟨M, cls, Eh, hGl, hQ, hR⟩` from `hM E (2 * r + k + 1) (Hpk k r) (hH k r)`. Establish `hsU : inUH (Hpk k r) s'` using `hUH k r z' s' hs'`. Take `⟨ρ, hρcls, hρev, hρE⟩` from `hR s' hsU`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgs : inUH (Hpk k r) (g * s')` using `ana_mul hg hsU`. Establish `hfs : SmoothOnH (Hpk k r) (fun x => f (x * s'))` using `smooth_right' _ (Hpk k r) E f s' (hH k r) hsU hf`. Establish `hQP : s' * s'⁻¹ = 1` using `ana_mul_inv (hH k r) hsU`. Establish `hint : ∀ {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (w : ℂ), qminor Eh a b w * ρ = ρ * qminor (fun i j => ∑ c, ∑ d, (s'⁻¹ c i * s' j d) • Eh c d) a b w` using `fun a b w => qminor_intertwine Eh _ ρ hρE a b w`. Establish `hev : ∀ {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (w : ℂ), qminorOp (EabH (Hpk k r)) a b w (fun x => f (x * s')) g = (qminor (fun i j => ∑ c, ∑ d, (s'⁻¹ c i * s' j d) • Eh c d) a b w (cls f)).1 ⟨g * s', hgs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t a b w`. Rewrite using `[hQ t a b w _ g hg hfs, hρcls f hf, ← Module.End.mul_apply, hint, Module.End.mul_apply]`. Conclude with `hρev _ g hg (g * s') hgs rfl`. Establish `hev2 : ∀ {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (w : ℂ), qminorOp (EabH (Hpk k r)) a b w f (g * s') = (qminor Eh a b w (cls f)).1 ⟨g * s', hgs⟩` using `fun a b w => hQ _ a b w f (g * s') hgs hf`. Establish `hevsum : ∀ (S : (Fin m → Fin (2 * r + k + 1)) → Prop) [DecidablePred S] (α : (Fin m → Fin (2 * r + k + 1)) → ℂ) (T : (Fin m → Fin (2 * r + k + 1)) → Module.End ℂ M), ((∑ c, if S c then α c • T c else 0 : Module.End ℂ M) (cls f)).1 ⟨g * s', hgs⟩ = ∑ c, if S c then α c • (T c (cls …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S _ α T`. Rewrite using `[LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `hdet : ∀ C : Fin m → Fin (2 * r + k + 1), (Matrix.of fun a l : Fin m => ∑ d, s' d (C l) * herm (Hpk k r) (g *ᵥ bvec d) (bvec (eI k r (Fin.castLE hm a)))) = Matrix.of fun a l : Fin m => herm (Hpk k r) ((g * s') *ᵥ bvec (C l)) (bvec (eI k r (Fin.castLE hm a)))`. Introduce `C`. Use extensionality with `a l`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[herm_mul_bvec]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA'` using `hA (Module.End ℂ M) k r m hm Eh s'⁻¹ s' (fun a j => herm (Hpk k r) (g *ᵥ bvec j) (bvec (eI k r (Fin.castLE hm a)))) u hGl hQP (hIC k r z' s' hs')`. Establish `h1` using `congrArg (fun T : Module.End ℂ M => (T (cls f)).1 ⟨g * s', hgs⟩) hA'`. Use `beta_reduce at h1`. Rewrite `h1` using `[hevsum, hevsum]`. Simplify using `only [hdet] at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [AAop, hev, hev2]`. Use `h1` and compare the differences between its conclusion and the goal. Establish `hdetv : ∀ C : Fin m → Fin (2 * r + k + 1), (Matrix.of fun a l : Fin m => ∑ d, s'⁻¹ (C l) d * (g⁻¹ *ᵥ bvec (eI k r (Fin.castLE hm a))) d) = Matrix.of fun a l : Fin m => ((g * s')⁻¹ *ᵥ bvec (eI k r (Fin.castLE hm a))) (C l)`. Introduce `C`. Use extensionality with `a l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.of_apply]`. Rewrite using `[inv_mul_apply]`. Establish `hA'` using `hAv (Module.End ℂ M) k r m hm Eh s'⁻¹ s' (fun a j => (g⁻¹ *ᵥ bvec (eI k r (Fin.castLE hm a))) j) (ell + (m : ℂ) - 1) hGl hQP (hRS k r z' s' hs')`. Establish `h1` using `congrArg (fun T : Module.End ℂ M => (T (cls f)).1 ⟨g * s', hgs⟩) hA'`. Use `beta_reduce at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hevsum, hevsum]`. Simplify using `only [hdetv] at h1`. Simplify using `only [AAvop, hev, hev2]`. Use `h1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem rightAA_of (hM : OpModel) (hA : AlgAA) (hAv : AlgAAv) (hH : HpkInvol) (hUH : SsetUH)
     (hIC : SsetInvCol) (hRS : SsetRowStar) : RightAA := by

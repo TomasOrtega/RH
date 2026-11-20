@@ -27,9 +27,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A :
   {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (b : Bool)
 
 /- English proof (translation)
-Establish `hsum : Finsupp.linearCombination ℂ (fun k => f (b k)) ((b.repr z).mapRange σ (map_zero σ)) = f z` using `by conv_rhs => rw [← b.linearCombination_repr z]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.linearCombination_apply, Finsupp.sum_mapRange_index (by intros; simp), Finsupp.sum, Finsupp.sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`. Establish `h0` using `linearIndependent_iff.mp hli _ (hsum.trans hz)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : b.repr z = 0`. Use extensionality with `k`. Use `congrArg (fun g => g k) h0` as an intermediate fact. Simplify using `using this`. Conclude with `b.repr.map_eq_zero_iff.mp hc`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_semilinear_eq_zero_of_linearIndependent {K V W ι : Type*} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module ℂ W]
     (σ : K →+* ℂ) (f : V →ₛₗ[σ] W) (b : Module.Basis ι K V) (hli : LinearIndependent ℂ fun k => f (b k)) (z : V)
@@ -49,30 +49,30 @@ private theorem eq_zero_of_semilinear_eq_zero_of_linearIndependent {K V W ι : T
   exact b.repr.map_eq_zero_iff.mp hc
 
 /- English proof (translation)
-Take `⟨hli, -⟩` from `hK j t`. Conclude with `eq_zero_of_semilinear_eq_zero_of_linearIndependent _ (X.jL j t) _ hli z hz`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jL_eq_zero (hK : X.KFormL) (j : Bs.J) (t : Bs.Tup) (z : A.FL j t) (hz : X.jL j t z = 0) : z = 0 := by
   obtain ⟨hli, -⟩ := hK j t
   exact eq_zero_of_semilinear_eq_zero_of_linearIndependent _ (X.jL j t) _ hli z hz
 
 /- English proof (translation)
-Use `choose a ha using hA`. Use `choose c hc using hy`. Establish `key : ∀ (z : Fin d → ℂ) (i : Fin N), ψ i (f z) = ∑ l, σ (a i l) * z l`. Introduce `z i`. Establish `hz : z = ∑ l, z l • Pi.single l (1 : ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `m`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hz]`. Simplify using `only [map_sum, map_smul, ← ha, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : LinearMap.ker (Matrix.of a).mulVecLin = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `z hz`. Establish `h1 : f (fun l => σ (z l)) = 0`. Apply `hψ` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `i`. Rewrite using `[key]`. Establish `hzi` using `congrFun hz i`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply] at hzi`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `hf (h1.trans (map_zero f).symm)`. Use function extensionality and compare the values at `l`. Use `congrFun h2 l` as an intermediate fact. Simplify using `using this`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.of a).mulVecLin hinj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hg' : ∀ z, g ((Matrix.of a).mulVec z) = z` using `fun z => by`. Use `congrArg (fun F => F z) hg` as an intermediate fact. Simplify using `using this`. Establish `hBA : LinearMap.toMatrix' g * Matrix.of a = 1`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun (hg' (Pi.single j 1)) i` as an intermediate fact. Rewrite `this` using `[← LinearMap.toMatrix'_mulVec g]`. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Simplify `this` using `[Matrix.one_apply, Pi.single_apply]`. Establish `hAy : ((Matrix.of a).map σ).mulVec y = fun i => σ (c i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hc i, key]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.map_apply]`. Establish `hy' : y = ((LinearMap.toMatrix' g).map σ).mulVec (fun i => σ (c i))`. Rewrite using `[← hAy, Matrix.mulVec_mulVec, ← Matrix.map_mul, hBA, Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `l`. Use `⟨((LinearMap.toMatrix' g).mulVec c) l, ?_⟩` and prove the remaining obligations. Rewrite using `[hy']`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, Matrix.map_apply]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_rational_solution_of_semilinear {K E : Type*} [Field K] [AddCommGroup E] [Module ℂ E] (σ : K →+* ℂ) {d N : ℕ}
     (f : (Fin d → ℂ) →ₗ[ℂ] E) (hf : Function.Injective f) (ψ : Fin N → Module.Dual ℂ E)
@@ -126,33 +126,29 @@ private theorem exists_rational_solution_of_semilinear {K E : Type*} [Field K] [
   simp [Matrix.mulVec, dotProduct, map_sum, Matrix.map_apply]
 
 /- English proof (translation)
-Establish `hw0 : Function.Injective (X.w0C b j)`. Establish `h1 : Function.Injective (X.wC b j Bs.v0)` using `Formalism.IndefR.Rat.lin_injective _ (hKF j Bs.v0).1`. Establish `h2 : Function.Injective (X.eW b j)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he` using `hEW j u u`. Rewrite `he` using `[hu, inner_zero_left]`. Establish `hnP' : ((X.nP b : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hnP.ne'`. Break down `mul_eq_zero.mp he.symm with h | h` into its components or cases. Conclude with `absurd h hnP'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `inner_self_eq_zero.mp h`. Introduce `u u' h`. Conclude with `h1 (h2 h)`. Take `⟨N, ψ, hψ, hψθ, hψw⟩` from `hT j`. Establish `hcolM : ∀ k, X.w0C b j (fun l => X.liftMatC cr b j t l k) = X.tC cr b j t (Pi.single k 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Introduce `k`. Take `⟨y, hy⟩` from `LinearMap.mem_range.mp (hcol k)`. Use `show X.w0C b j (solve (X.w0C b j) (X.tC cr b j t (Pi.single k 1))) = _`. Unfold `solve`. Rewrite using `[dif_pos ⟨y, hy⟩]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(⟨y, hy⟩ : ∃ y, X.w0C b j y = X.tC cr b j t (Pi.single k 1)).choose_spec`. Establish `htC : ∀ z : Fin ((lv (fc X.zs) b).dZ j t) → K, X.tC cr b j t (cpt Bs.v0.embedding z) = X.θ' j t (X.jL j t (cr.toL X.zs b j t z))`. Introduce `z`. Rewrite using `[CxData.tC_eq, CxData.jL_toL]`. Establish `hrat : ∀ l k, X.liftMatC cr b j t l k ∈ Set.range Bs.v0.embedding`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `l k`. Use `exists_rational_solution_of_semilinear _ (X.w0C b j) hw0 ψ hψ (fun i l => hψw i l) (fun l => X.liftMatC cr b j t l k) (fun i => ?_) l` and prove the remaining obligations. Rewrite using `[hcolM k]`. Establish `e1 : (Pi.single k (1 : ℂ) : Fin ((lv (fc X.zs) b).dZ j t) → ℂ) = cpt Bs.v0.embedding (Pi.single k (1 : K))`. Use extensionality with `m`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[cpt, Pi.single_apply]`. Rewrite using `[e1, htC]`. Conclude with `hψθ t i _`. Establish `hmap : (X.liftMat cr b j t).map Bs.v0.embedding = X.liftMatC cr b j t`. Use extensionality with `l k`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply, CxData.liftMat, kMat]`. Unfold `kOf`. Establish `hr : ∃ a, Bs.v0.embedding a = X.liftMatC cr b j t l k` using `hrat l k`. Rewrite using `[dif_pos hr]`. Conclude with `hr.choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hlin : ∀ z, X.tC cr b j t z = X.w0C b j ((X.liftMatC cr b j t).mulVec z)`. Establish `: X.tC cr b j t = (X.w0C b j).comp (X.liftMatC cr b j t).mulVecLin`. Use `LinearMap.pi_ext fun k c => ?_` and prove the remaining obligations. Establish `hs : (Pi.single k c : Fin ((lv (fc X.zs) b).dZ j t) → ℂ) = c • Pi.single k (1 : ℂ)`. Use extensionality with `m`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `[Pi.single_apply]`. Rewrite using `[hs, map_smul, map_smul, LinearMap.comp_apply, Matrix.mulVecLin_apply, Matrix.mulVec_single_one, ← hcolM k]`. Both sides reduce to the same expression. Introduce `z`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hT0 : X.tC cr b j t (cpt Bs.v0.embedding x) = 0`. Rewrite using `[hlin]`. Establish `: (X.liftMatC cr b j t).mulVec (cpt Bs.v0.embedding x) = cpt Bs.v0.embedding ((X.liftMat cr b j t).mulVec x)`. Rewrite using `[← hmap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `l`. Simplify using `[cpt, Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum]`. Rewrite using `[this, hx]`. Establish `h0 : cpt Bs.v0.embedding (0 : Fin (X.dW b j) → K) = 0` using `by ext m; simp [cpt]`. Rewrite using `[h0, map_zero]`.
-
-Establish `hjz : X.jL j t (cr.toL X.zs b j t x) = 0`. Establish `hmem : X.jL j t (cr.toL X.zs b j t x) ∈ LinearMap.range (LinearMap.adjoint (X.θ' j t))` using `hZ j t x`. Use `Formalism.IndefR.Cx.eq_zero_of_range_adjoint (X.θ' j t) hmem ?_` and prove the remaining obligations. Rewrite using `[← htC]`. Conclude with `hT0`.
-
-Establish `htoL : cr.toL X.zs b j t x = 0` using `jL_eq_zero X hK j t _ hjz`. Conclude with `hinjL (htoL.trans (map_zero _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftMat_inj (hK : X.KFormL) (hZ : X.CrdZL cr b) (hT : Formalism.IndefR.Rat.LiftTestB X b) (hKF : X.KForm b)
     (hEW : X.EWnorm b) (hnP : 0 < X.nP b) (j : Bs.J) (t : Bs.Tup) (hinjL : Function.Injective (cr.toL X.zs b j t))
@@ -231,13 +227,13 @@ theorem liftMat_inj (hK : X.KFormL) (hZ : X.CrdZL cr b) (hT : Formalism.IndefR.R
 omit [StarRing K] in
 
 /- English proof (translation)
-Establish `hm : Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K _) Y v x x = ((∑ i, ‖Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K _) Y v x i‖ ^ 2 : ℝ) : ℂ)`. Simplify using `only [Formalism.HermitianLatticesTheory.majAt]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `first`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `rw [Complex.star_def, Complex.conj_mul']`. Consider the case `simp [Complex.star_def, Complex.conj_mul']`. Establish `hw2 : ⟪w, w⟫_ℂ = ((‖w‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hw2, hm, ← Complex.ofReal_mul, Complex.ofReal_inj]`. Establish `hpos : 0 < ‖w‖ ^ 2` using `by have := norm_pos_iff.mpr hw; positivity`. Establish `hs0 : 0 ≤ ∑ i, ‖Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K _) Y v x i‖ ^ 2` using `Finset.sum_nonneg fun i _ => by positivity`. Assume the negation of the conclusion as `hl`. Use `push_neg at hl`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `mul_nonpos_of_nonpos_of_nonneg hl hs0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem pos_of_inner {n : ℕ} (Y : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (v : InfinitePlace K) (x : Fin n → K)
     {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (w : E) (hw : w ≠ 0) (l : ℝ)
@@ -261,7 +257,7 @@ theorem pos_of_inner {n : ℕ} (Y : InfinitePlace K → Matrix (Fin n) (Fin n) �
   linarith
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_iInf]`. Introduce `h`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `hw h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_iInf_ker_of_eigen {K W G : Type*} [Field K] [AddCommGroup W] [Module ℂ W] [Group G]
     (gW : Representation ℂ G W) (P : Subgroup G) (ψ : P →* Kˣ) (σ : K →+* ℂ) (w : W)
@@ -277,27 +273,25 @@ end General
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hC hE hpos0 hGal hU hT hGE`. Take `⟨hkap, hlam0⟩` from `hpos0`. Use `⟨hkap, fun i t p v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = A3.A.v0`. Substitute `hv` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `hlam0 i t p`. Rewrite using `[hC.scal.tup i t p v hv]`. Distinguish the cases in `hP : R.PartAt F i p v`. Use `swap`. Rewrite using `[hC.scal.abs i p v hv hP]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Real.exp_pos _`. Take `⟨x, hxW, hxm⟩` from `hP`. Establish `key` using `hGal i v hv p x hxW x`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `hxm` to reduce the goal to its premises. Simplify using `[Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord_zero]`. Establish `hirr` using `hOk.ok2.irr`. Establish `hcore` using `(GlobalTheory.CoreOfWeak.core_of_weak R F hC hE).1`. Establish `hcol : ∀ k, (R.toCx3 F).tC F.cr false i A3.A.μ0 (Pi.single k 1) ∈ LinearMap.range ((R.toCx3 F).w0C false i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[GlobalTheory.WType.range_w0C_type R F hOk hC hE hU i]`. Establish `e1 : (R.toCx3 F).tC F.cr false i A3.A.μ0 (Pi.single k 1) = (R.toCx3 F).θ' i A3.A.μ0 ((R.toCx3 F).jL i A3.A.μ0 (F.cr.toL (R.toCx3 F).zs false i A3.A.μ0 (Pi.single k 1)))`. Establish `hs : (Pi.single k (1 : ℂ) : Fin ((lv (F.fc (R.toCx3 F).zs) false).dZ i A3.A.μ0) → ℂ) = cpt A3.A.v0.embedding (Pi.single k (1 : D.what₂.LL))`. Use extensionality with `m`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[cpt, Pi.single_apply]`. Rewrite using `[hs, CxData.tC_eq, CxData.jL_toL]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(GlobalTheory.T.goodProjector_unitaryFormsModel_laws R.toRealDat F.lv2 hcore hirr i).2.2.2 A3.A.μ0 (Tw.out (s := twAt D.what₂.embLL A3.A.v0) ((R.toCx3 F).jL i A3.A.μ0 (F.cr.toL (R.toCx3 F).zs false i A3.A.μ0 (Pi.single k 1))))`. Establish `h2 : cj (twAt D.what₂.embLL A3.A.v0) (R.phs i) • R.thG i A3.A.μ0 (Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) ((R.toCx3 F).jL i A3.A.μ0 (F.cr.toL (R.toCx3 F).zs false i A3.A.μ0 (Pi.single k 1)))) ∈ LinearMap.range (GlobalTheory.Hk3.eH R.toRealDat i) := Submodule.smul_mem _ _ ⟨_, h1⟩`. Conclude with `h2`. Rewrite using `[typeSubspace]`. Use `mem_iInf_ker_of_eigen _ _ _ _ _ fun h => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hop : A3.fam3.amb3.opL i A3.A.μ0 (Sum.inr (h : G)) (F.cr.toL (R.toCx3 F).zs false i A3.A.μ0 (Pi.single k 1)) = ((F.ψ0⁻¹ h : D.what₂.LLˣ) : D.what₂.LL) • F.cr.toL (R.toCx3 F).zs false i A3.A.μ0 (Pi.single k 1)`. Establish `e` using `Formalism.IndefR.CxPass.LevelOperators.range_toF (A3.A.fam.L i A3.A.μ0) (A3.A.fam.lvlA F.P0 F.ψ0) ((R.toCx3 F).zs.Zl i A3.A.μ0)`. Establish `m : (A3.A.fam.L i A3.A.μ0).toF (A3.A.fam.lvlA F.P0 F.ψ0) ((R.toCx3 F).zs.Zl i A3.A.μ0) (Pi.single k 1) ∈ LinearMap.range ((A3.A.fam.L i A3.A.μ0).toF (A3.A.fam.lvlA F.P0 F.ψ0) ((R.toCx3 F).zs.Zl i A3.A.μ0))` using `⟨_, rfl⟩`. Rewrite `m` using `[e]`. Establish `m2` using `m.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `m2` using `[Formalism.IndefR.CxPass.LevelOperators.goodR_eq]`. Conclude with `Formalism.IndefR.CxPass.LevelOperators.opF_goodAt_type _ _ hirr F.P0 F.ψ0⁻¹ h _ m2`. Use `(hGE.2 i A3.A.μ0 (h : G) (F.cr.toL (R.toCx3 F).zs false i A3.A.μ0 (Pi.single k 1))).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hop, map_smulₛₗ, map_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinjL : Function.Injective (F.cr.toL (R.toCx3 F).zs false i A3.A.μ0)` using `Formalism.L2.DIV.BlockDat.toF_injective _ _ _`. Establish `hM : (R.toCx3 F).liftMat F.cr false i A3.A.μ0 *ᵥ x ≠ 0` using `fun h0 => hx0 (liftMat_inj (R.toCx3 F) F.cr false (RealDat3.kFormL_of (RealDat3.characterisation_of_weak hC hE).models) (lift_coordinates_in_subspaces _ false) hT (RealDat3.kForm_of hU false) (RealDat3.ewNorm false) (Formalism.IndefR.Links.RealDat.nP_pos false) i A3.A.μ0 hinjL hc …`. Establish `hw : (R.toCx3 F).wC false i v (cpt v.embedding ((R.toCx3 F).liftMat F.cr false i A3.A.μ0 *ᵥ x)) ≠ 0`. Introduce `h0`. Establish `h1` using `Formalism.IndefR.Rat.lin_injective _ ((RealDat3.kForm_of hU false) i v).1 (h0.trans (map_zero _).symm)`.
-
-Apply `hM` to reduce the goal to its premises. Use function extensionality and compare the values at `l`. Use `congrFun h1 l` as an intermediate fact. Simplify `this` using `[cpt]`. Conclude with `pos_of_inner _ v x _ hw _ key`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem posScal_of_galD : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → (R.toCx3 F).GalD F.cr false → R.toRealDat.LUnif → Formalism.IndefR.Rat.LiftTestB (R.toCx3 F) false → R.PGEquiv F → R.PPos := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hC hE hpos0 hGal hU hT hGE

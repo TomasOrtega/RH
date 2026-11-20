@@ -26,25 +26,17 @@ open TensorProduct
 namespace GlobalTheory.HenselLift
 
 /- English proof (translation)
-Introduce `A R V _ _ _ _ _ _ _ ρ ψ hρl hρf hρe hV hdvr hψ`. Use `letI := ρ.toAlgebra`. Use `letI := ψ.toAlgebra`. Take `⟨hnoeth, hic, hcpl, hchar⟩` from `hV`. Use `haveI : Algebra.Etale A R := hρe`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Module.Finite A R := hρf`. Use `haveI : IsLocalHom (algebraMap A R) := hρl`. Use `haveI : IsLocalHom (algebraMap A V) := hψ`. Use `haveI : Algebra.Etale V (V ⊗[A] R) := Algebra.Etale.baseChange A R V`. Use `haveI : Module.FaithfullyFlat A R := Module.FaithfullyFlat.of_flat_of_isLocalHom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Nontrivial (V ⊗[A] R) := Module.FaithfullyFlat.rTensor_nontrivial A R V`. Take `⟨q, hq⟩` from `Ideal.exists_maximal (V ⊗[A] R)`. Use `haveI : HenselianLocalRing V := GlobalTheory.henselianLocalRing_of_isAdicComplete V`. Take `⟨e, he, H⟩` from `GlobalTheory.exists_idempotent_notMem_iff_of_henselian V q`. Use `haveI := GlobalTheory.isLocalRing_quotient_one_sub he q H`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsLocalization.Away e (V ⊗[A] R ⧸ Ideal.span {1 - e}) := IsLocalization.Away.quotient_of_isIdempotentElem he`. Use `haveI : Algebra.Etale (V ⊗[A] R) (V ⊗[A] R ⧸ Ideal.span {1 - e}) := Algebra.Etale.of_isLocalizationAway e`. Use `haveI : Algebra.Etale V (V ⊗[A] R ⧸ Ideal.span {1 - e}) := Algebra.Etale.comp V (V ⊗[A] R) _`. Use `haveI : Module.Finite V (V ⊗[A] R ⧸ Ideal.span {1 - e}) := Module.Finite.trans (V ⊗[A] R) _`. Establish `hfl : IsLocalHom (algebraMap V (V ⊗[A] R ⧸ Ideal.span {1 - e}))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((local_hom_TFAE _).out 0 4).2 ?_` and prove the remaining obligations. Use `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := V) (maximalIdeal (V ⊗[A] R ⧸ Ideal.span {1 - e}))` as an intermediate fact. Conclude with `IsLocalRing.eq_maximalIdeal this`. Use `haveI := hfl`. Take `⟨hdom, hdvr', -, hff, -⟩` from `GlobalTheory.isDiscreteValuationRing_of_etale_of_isLocalHom V (V ⊗[A] R ⧸ Ideal.span {1 - e})`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (algebraMap V (V ⊗[A] R ⧸ Ideal.span {1 - e}))` using `FaithfulSMul.algebraMap_injective _ _`. Use `haveI : IsNoetherianRing V := hnoeth`. Use `haveI : IsAdicComplete (maximalIdeal V) V := hcpl`. Use `haveI : CharZero V := hchar`. Take `⟨-, hcpl'⟩` from `GlobalTheory.isLocalHom_and_isAdicComplete_of_finite_dvr V (V ⊗[A] R ⧸ Ideal.span {1 - e}) inferInstance hinj`.
-
-Establish `hcomm : ((Ideal.Quotient.mk (Ideal.span {1 - e})).comp (Algebra.TensorProduct.includeRight.toRingHom)).comp ρ = (algebraMap V (V ⊗[A] R ⧸ Ideal.span {1 - e})).comp ψ`. Use extensionality with `a`. Use `show Ideal.Quotient.mk _ ((1 : V) ⊗ₜ[A] ρ a) = Ideal.Quotient.mk _ (ψ a ⊗ₜ[A] (1 : R))`. Rewrite using `[show ρ a = a • (1 : R) from Algebra.algebraMap_eq_smul_one a, show ψ a = a • (1 : V) from Algebra.algebraMap_eq_smul_one a, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Use `⟨V ⊗[A] R ⧸ Ideal.span {1 - e}, inferInstance, hdom, inferInstance, algebraMap V _, (Ideal.Quotient.mk _).comp (Algebra.TensorProduct.includeRight.toRingHom), ⟨?_, inferInstance, hcpl', charZero_of_injective_algebraMap hinj⟩, hdvr', hinj, RingHom.finite_algebraMap.2 inferInstance …` and prove the remaining obligations.
-
-Conclude with `isNoetherian_of_tower V inferInstance`. Use `((local_hom_TFAE _).out 0 4).2 ?_` and prove the remaining obligations. Establish `hA : Ideal.comap (algebraMap A R) (Ideal.comap ((Ideal.Quotient.mk (Ideal.span {1 - e})).comp (Algebra.TensorProduct.includeRight.toRingHom)) (maximalIdeal _)) = maximalIdeal A`. Establish `h1 : Ideal.comap (algebraMap V (V ⊗[A] R ⧸ Ideal.span {1 - e})) (maximalIdeal _) = maximalIdeal V` using `((local_hom_TFAE _).out 0 4).1 hfl`. Establish `h2 : Ideal.comap ψ (maximalIdeal V) = maximalIdeal A` using `((local_hom_TFAE _).out 0 4).1 hψ`.
-
-Express the relevant statement in the definitionally equal form `Ideal.comap ρ _ = _`. Rewrite using `[Ideal.comap_comap, hcomm, ← Ideal.comap_comap, h1, h2]`. Establish `hA' : (Ideal.comap (algebraMap A R) (Ideal.comap ((Ideal.Quotient.mk (Ideal.span {1 - e})).comp (Algebra.TensorProduct.includeRight.toRingHom)) (maximalIdeal _))).IsMaximal`. Rewrite using `[hA]`. Conclude with `maximalIdeal.isMaximal A`.
-
-Establish `hm` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := A) _ hA'`. Conclude with `IsLocalRing.eq_maximalIdeal hm`. Conclude with `hcomm`.
+A detailed English derivation is pending.
 -/
 theorem exists_dvr_of_finite_etale : ∀ (A R V : Type) [CommRing A] [IsLocalRing A] [CommRing R] [IsLocalRing R] [CommRing V] [IsDomain V] [IsLocalRing V] (ρ : A →+* R) (ψ : A →+* V), IsLocalHom ρ → ρ.Finite → ρ.Etale → IsCN V → IsDiscreteValuationRing V → IsLocalHom ψ → ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsLocalRing V') (f : V →+* V') (κ : R →+* V'), IsCN V' ∧ IsDiscreteValuationRing V' ∧ Function.Injective f ∧ f.Finite ∧ IsLocalHom f ∧ IsLocalHom κ ∧ κ.comp ρ = f.comp ψ := by
   intro A R V _ _ _ _ _ _ _ ρ ψ hρl hρf hρe hV hdvr hψ

@@ -9,9 +9,9 @@ open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain F
 namespace GlobalTheory.Mem.R3.TwistedPlaceExtensions
 
 /- English proof (translation)
-Use `show y ∈ Ideal.map (Formalism.DivisionValues.cO K) Q.asIdeal ↔ _`. Rewrite using `[Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `using hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨_, h, (Formalism.DivisionValues.cO K).apply_symm_apply y⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_conjPl_iff {K : Type} [Field K] [StarRing K] (Q : HeightOneSpectrum (𝓞 K)) (y : 𝓞 K) :
     y ∈ (Formalism.DivisionValues.conjPl Q).asIdeal ↔ (Formalism.DivisionValues.cO K).symm y ∈ Q.asIdeal := by
@@ -29,7 +29,7 @@ Both sides reduce to the same expression.
 theorem coe_cO {K : Type} [Field K] [StarRing K] (y : 𝓞 K) : ((Formalism.DivisionValues.cO K y : 𝓞 K) : K) = star (y : K) := rfl
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun u : 𝓞 K => (u : K)) ((Formalism.DivisionValues.cO K).apply_symm_apply y)`. Simplify using `only [coe_cO] at h`. Rewrite using `[← h, star_star]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_cO_symm {K : Type} [Field K] [StarRing K] (y : 𝓞 K) : (((Formalism.DivisionValues.cO K).symm y : 𝓞 K) : K) = star (y : K) := by
   have h := congrArg (fun u : 𝓞 K => (u : K)) ((Formalism.DivisionValues.cO K).apply_symm_apply y)
@@ -37,7 +37,7 @@ theorem coe_cO_symm {K : Type} [Field K] [StarRing K] (y : 𝓞 K) : (((Formalis
   rw [← h, star_star]
 
 /- English proof (translation)
-Rewrite using `[mem_conjPl_iff, mem_conjPl_iff]`. Apply `h` to reduce the goal to its premises. Rewrite using `[coe_cO_symm, coe_cO_symm, D.starLL_cx, D'.starLL_cx, hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem over_conjPl {D D' : D7} {P : HeightOneSpectrum (𝓞 D.what₂.LL)} {P' : HeightOneSpectrum (𝓞 D'.what₂.LL)}
     (h : ∀ (x : 𝓞 D.what₂.LL) (x' : 𝓞 D'.what₂.LL), D.what₂.embLL (x : D.what₂.LL) = D'.what₂.embLL (x' : D'.what₂.LL) →
@@ -49,9 +49,9 @@ theorem over_conjPl {D D' : D7} {P : HeightOneSpectrum (𝓞 D.what₂.LL)} {P' 
   rw [coe_cO_symm, coe_cO_symm, D.starLL_cx, D'.starLL_cx, hx]
 
 /- English proof (translation)
-Establish `hB'` using `over_conjPl (D := X.toD7) (D' := X'.toD7) hB`. Rewrite using `[Dat.mem_nonzero_index_places_iff_at_place_or_conjugate, Dat.mem_nonzero_index_places_iff_at_place_or_conjugate]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj⟩`. Use `⟨⟨j, hm ▸ j.2⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hj.imp (fun h => (hN j ⟨j, hm ▸ j.2⟩ rfl _ _ hB).1 h) (fun h => (hN j ⟨j, hm ▸ j.2⟩ rfl _ _ hB').1 h)`. Introduce and unpack `⟨j', hj⟩`. Use `⟨⟨j', hm.symm ▸ j'.2⟩, ?_⟩` and prove the remaining obligations. Conclude with `hj.imp (fun h => (hN ⟨j', hm.symm ▸ j'.2⟩ j' rfl _ _ hB).2 h) (fun h => (hN ⟨j', hm.symm ▸ j'.2⟩ j' rfl _ _ hB').2 h)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_zeroContentPlaces_iff_over_of_nonvanishing {X X' : Stages} {px : PreX X.B.toPre} {px' : PreX X'.B.toPre} {I : ColIn X.B px} {I' : ColIn X'.B px'}
     {hX : X.B.fields.Ok} {hX' : X'.B.fields.Ok} {T : TwDat X.B} {T' : TwDat X'.B} {Wt : Set X.B.places.Pl}
@@ -74,7 +74,7 @@ theorem mem_zeroContentPlaces_iff_over_of_nonvanishing {X X' : Stages} {px : Pre
     exact hj.imp (fun h => (hN ⟨j', hm.symm ▸ j'.2⟩ j' rfl _ _ hB).2 h) (fun h => (hN ⟨j', hm.symm ▸ j'.2⟩ j' rfl _ _ hB').2 h)
 
 /- English proof (translation)
-Unfold `NzAt`. Conclude with `or_congr hI (or_congr hJ Iff.rfl)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nzAt_iff_of {X X' : Stages} {px : PreX X.B.toPre} {px' : PreX X'.B.toPre} {I : ColIn X.B px} {I' : ColIn X'.B px'}
     {hX : X.B.fields.Ok} {hX' : X'.B.fields.Ok} {T : TwDat X.B} {T' : TwDat X'.B} {Wt : Set X.B.places.Pl}

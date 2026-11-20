@@ -25,7 +25,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open Filter Topology GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Fl
 
 /- English proof (translation)
-Use `⟨IsFractionRing.injective _ _, inferInstance, fun x => ?_⟩` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) x`. Establish `: algebraMap (𝓞 F) F b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Conclude with `⟨a, b, this, div_mul_cancel₀ _ this⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem int_frac (F : Type) [Field F] [NumberField F] : Function.Injective (algebraMap (𝓞 F) F) ∧ IsNoetherianRing (𝓞 F) ∧
     ∀ x : F, ∃ a b : 𝓞 F, algebraMap (𝓞 F) F b ≠ 0 ∧ x * algebraMap (𝓞 F) F b = algebraMap (𝓞 F) F a := by
@@ -35,9 +35,9 @@ theorem int_frac (F : Type) [Field F] [NumberField F] : Function.Injective (alge
   exact ⟨a, b, this, div_mul_cancel₀ _ this⟩
 
 /- English proof (translation)
-Take `⟨α, β, hα, hβ, hA, hB, e⟩` from `h`. Rewrite `e` using `[_root_.one_mul]`. Substitute `e` using the available equality. Use `⟨α * d₁, α * d₂, mul_ne_zero hα h₁, mul_ne_zero hα h₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, ea, smul_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB, eb, smul_smul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem isCoeffAt_of_smul {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {V : Type}
     [AddCommGroup V] [Module Ω V] {A B : Lat ξ V} {p q : ℕ} {a a' : ⋀[Ω]^p V} {b b' : ⋀[Ω]^q V} {x : Cpt ξ}
@@ -52,9 +52,9 @@ theorem isCoeffAt_of_smul {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (Co
   · field_simp
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `Submodule.mem_span_singleton.1 (h ▸ Submodule.mem_span_singleton_self a : a ∈ Submodule.span (regAt ξ p) {b})`. Take `⟨v, hv⟩` from `Submodule.mem_span_singleton.1 (h ▸ Submodule.mem_span_singleton_self b : b ∈ Submodule.span (regAt ξ p) {a})`. Use `⟨div_ne_zero ha hb, ?_, ?_⟩` and prove the remaining obligations. Establish `: a / b = (u : Ω)` using `by rw [← hu]; exact mul_div_cancel_right₀ _ hb`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `u.2`. Establish `: (a / b)⁻¹ = (v : Ω)` using `by rw [inv_div, ← hv]; exact mul_div_cancel_right₀ _ ha`. Rewrite using `[this]`. Conclude with `v.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_of_span_eq {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {p : Cpt ξ}
     {a b : Ω} (ha : a ≠ 0) (hb : b ≠ 0)
@@ -74,15 +74,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   [Field Ω] {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
 /- English proof (translation)
-Establish `hβ` using `int_frac c.F`. Use `haveI : IsProper Y.s := GlobalTheory.SchemeWords.isProper_of_isProjOver Y.proj`. Use `haveI : IsLocallyNoetherian Y.X := LocallyOfFiniteType.isLocallyNoetherian Y.s`. Take `⟨W, hW, -, -⟩` from `cpt_open_integral Y.X 𝔐.Ω₀ 𝔐.ξ₀ 𝔐.gen₀`. Establish `hsq : (𝔐.ξ ≫ 𝔐.f) ≫ Y.s = spMap 𝔐.cst ≫ spMap (algebraMap (𝓞 c.F) c.F)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Category.assoc, 𝔐.cst_over]`. Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Set `w` to `pullback.lift (𝔐.ξ ≫ 𝔐.f) (spMap 𝔐.cst) hsq`. Establish `hw1 : w ≫ pullback.fst _ _ = 𝔐.ξ ≫ 𝔐.f` using `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgen : genPt (𝔐.ξ ≫ 𝔐.f) = genPt 𝔐.ξ₀`. Rewrite using `[show 𝔐.ξ ≫ 𝔐.f = _ from 𝔐.fn_over]`. Conclude with `congrArg (fun x => 𝔐.ξ₀ x) (Subsingleton.elim (α := PrimeSpectrum 𝔐.Ω₀) _ _)`. Establish `hne : ((pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F)) ⁻¹ᵁ W : Scheme.Opens _) : Set ↥(pullback Y.s (spMap (algebraMap (𝓞 c.F) c.F)))).Nonempty`. Use `⟨genPt w, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : genPt (w ≫ pullback.fst _ _) ∈ W`. Rewrite using `[hw1, hgen]`. Conclude with `(hW _).2 specializes_rfl`. Conclude with `e`. Take `⟨_, ⟨u, rfl⟩, hu⟩` from `Y.jQ_dense.exists_mem_open (TopologicalSpace.Opens.isOpen _) hne`.
-
-Establish `hu' : genPt 𝔐.ξ₀ ⤳ Y.j u` using `(hW _).1 hu`. Take `⟨Z⟩` from `nonempty_cptOver_of_fraction hβ.1 hβ.2.2 Y (irreducibleComponent u) (irreducibleComponent_mem_irreducibleComponents u)`. Establish `hz : genPt (Z.ξ₀ ≫ Y.j) ⤳ Y.j u` using `((Z.closure u).1 mem_irreducibleComponent).map Y.j.continuous`. Conclude with `⟨_, Z, ((genPt_specializes_of_specializes _ 𝔐.gen₀ hu' hz).antisymm (genPt_specializes_of_specializes _ Z.gen hz hu')).eq⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cptOver (𝔐 : HodgeCpt Y S y) :
     ∃ (U : Set (Xo.XF c)) (Z : CptOver Y U), genPt 𝔐.ξ₀ = genPt (Z.ξ₀ ≫ Y.j) := by
@@ -115,11 +113,11 @@ theorem exists_cptOver (𝔐 : HodgeCpt Y S y) :
       (genPt_specializes_of_specializes _ Z.gen hz hu')).eq⟩
 
 /- English proof (translation)
-Introduce and unpack `x ⟨f, hf, hx⟩`. Use `letI : Algebra c.F Z.Ω := Z.inc.toAlgebra`. Use `haveI : CharZero Z.Ω := charZero_of_injective_ringHom Z.inc.injective`. Use `haveI : Algebra.IsAlgebraic ℤ c.F := (IsFractionRing.comap_isAlgebraic_iff (A := ℤ) (K := ℚ)).2 inferInstance`. Establish `h0 : IsAlgebraic c.F x` using `⟨f, hf, hx⟩`.
+Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : IsAlgebraic ℤ x` using `h0.restrictScalars ℤ`. Use `hS Z.Ω (Z.ξ₀ ≫ Y.j) Z.inc Z.gen ?_ x h1` and prove the remaining obligations. Establish `e : spMap (Z.inc.comp (algebraMap (𝓞 c.F) c.F)) = spMap Z.inc ≫ spMap (algebraMap (𝓞 c.F) c.F)`. Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, ← Z.over_inc, ← Y.jQ_over]`. Simplify using `only [Model.j, Category.assoc, pullback.condition]`.
+A detailed English derivation is pending.
 -/
 theorem isGeom_of_split (hS : SplitComps Y) {U : Set (Xo.XF c)} (Z : CptOver Y U) : Z.IsGeom := by
   rintro x ⟨f, hf, hx⟩
@@ -136,29 +134,27 @@ theorem isGeom_of_split (hS : SplitComps Y) {U : Set (Xo.XF c)} (Z : CptOver Y U
   simp only [Model.j, Category.assoc, pullback.condition]
 
 /- English proof (translation)
-Establish `hβ` using `int_frac c.F`. Take `⟨U, Z, hgp⟩` from `exists_cptOver 𝔐`. Establish `hgeom` using `isGeom_of_split hS Z`. Take `⟨φ, hφ, hflat, -⟩` from `h0 E H D l Xo c _ _ Y U Z τ.1 hβ hpq τ.2 hgeom`. Take `⟨hinf, -⟩` from `h1 E H D l Xo c _ _ Y U Z τ.1 φ hβ hpq τ.2 hgeom hφ hflat`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose t hinf _ using hinf`. Take `⟨-, a, b, hgen, hrep⟩` from `id hflat`. Take `⟨i, j, hT⟩` from `GlobalTheory.T.hodge_component_matches_model_component E H D l Xo c Y U Z S Ω K J y 𝔐 hgp`. Take `⟨a', b', d₁, d₂, h₁, h₂, ha0, hb0, ha', hb', ea, eb⟩` from `GlobalTheory.T.flag_cm_type_lattice_comparison E H D l Xo c Y U Z S Ω K J y 𝔐 Fl τ i j a b hT hgen`. Establish `hdeg` using `GlobalTheory.T.hodge_cpt_flag_degree E H D l Xo c _ _ Y S Ω K J y 𝔐 Fl xdeg e τ hroot`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∏ i, e (τ, i) ≠ 0` using `hdeg.1`. Establish `hchar : CharZero Ω` using `charZero_of_injective_ringHom 𝔐.cst.injective`. Establish `hfr : ∀ p ∈ genFibre ℤ 𝔐.ξ, IsCoeffAt (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) D.p D.q a' b' p 1`. Introduce `p hp`. Take `⟨⟨x₀, hx₀, ex⟩, hs₁, hs₂⟩` from `GlobalTheory.T.cm_type_lattice_comparison E H D l Xo c Y U Z S Ω K J y 𝔐 τ i j hT p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hv₁, hv₂, -, -⟩` from `GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c _ _ Y U Z τ.1 hβ τ.2`. Take `⟨W₁, hW₁, u₁, -, hu₁⟩` from `hv₁ x₀ hx₀`. Take `⟨W₂, hW₂, u₂, -, hu₂⟩` from `hv₂ x₀ hx₀`. Conclude with `GlobalTheory.T.exterior_coeff_base_change_compat _ _ _ _ _ _ 𝔐.f i _ _ j _ _ _ _ D.p D.q a b a' b' p x₀ u₁ u₂ Z.gen 𝔐.tie.gen hT.1 hT.2.2.1 ex (hu₁ x₀ hx₀ hW₁) (hu₂ x₀ hx₀ hW₂) hs₁ hs₂ (hgen.2.2 x₀ hx₀) ha' hb'`. Establish `haF : exteriorPower.ιMulti Ω _ (Fl.b (.inl τ)) ≠ 0` using `fun h => ha0 (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : d₁ • (exteriorPower.ιMulti Ω (labelRk D (.inl τ)) (Fl.b (.inl τ))) = 0` using `by rw [h, smul_zero]`. Conclude with `ea.trans e2)`. Establish `hbF : exteriorPower.ιMulti Ω _ (Fl.b (.inr τ)) ≠ 0` using `fun h => hb0 (by`. Establish `e2 : d₂ • (exteriorPower.ιMulti Ω (labelRk D (.inr τ)) (Fl.b (.inr τ))) = 0` using `by rw [h, smul_zero]`. Conclude with `eb.trans e2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVA : (𝔐.V (.inl τ)).IsVB (labelRk D (.inl τ)) _` using `𝔐.vb (.inl τ)`. Establish `hVB : (𝔐.V (.inr τ)).IsVB (labelRk D (.inr τ)) _` using `𝔐.vb (.inr τ)`. Establish `hco : ∀ p ∈ genFibre ℤ 𝔐.ξ, IsCoeffAt (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) (labelRk D (.inl τ)) (labelRk D (.inr τ)) (exteriorPower.ιMulti Ω _ (Fl.b (.inl τ))) (exteriorPower.ιMulti Ω _ (Fl.b (.inr τ))) p (d₁ / d₂)⁻¹` using `fun p hp => isCoeffAt_of_smul h₁ h₂ ea eb (hfr p hp)`. Establish `hd0 : d₁ / d₂ ≠ 0` using `div_ne_zero h₁ h₂`. Set `A : HermLine J` to `PB.combLine (fun i => hx (τ, i)) fun _ => 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hAa : A.a = ∑ i, xdeg (τ, i)`. Use function extensionality and compare the values at `k`. Simplify using `[A, PB.combLine_a, hdg, Finset.sum_apply]`. Establish `hAh : ∀ w, A.h w = ∏ i, (hx (τ, i)).h w` using `fun w => by simp [A, PB.combLine_h]`. Use `⟨d₁ / d₂, A.a, t, fun z w hz cc hcc => ⟨?_, fun hint s hs u hu => ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `𝔐.all (centre z)`. Establish `hp : (⟨centre z, hc⟩ : Cpt 𝔐.ξ) ∈ genFibre ℤ 𝔐.ξ` using `fun o ho => by`. Establish `v1` using `valAt_int (ξ := 𝔐.ξ) hc o`. Establish `v2` using `CxVal.inv v1 (by exact_mod_cast ho)`. Take `⟨_, s1, e1, -⟩` from `v1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, s2, e2, -⟩` from `v2`. Conclude with `⟨by simpa using ho, ⟨s1, by simpa using e1⟩, ⟨s2, by simpa using e2⟩⟩`. Take `⟨-, hL2, -⟩` from `GlobalTheory.T.wedge_line_lattice_vector_bundle 𝔐.X Ω 𝔐.ξ 𝔐.Li (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) _ _ _ _ Set.univ (exteriorPower.ιMulti Ω _ (Fl.b (.inl τ))) (exteriorPower.ιMulti Ω _ (Fl.b (.inr τ))) hVA hVB haF hbF ⟨_, trivial, _, hco _ hp⟩`. Establish `hgn` using `(hL2 _ trivial _).2 ⟨hd0, hco _ hp⟩`. Establish `hch` using `(GlobalTheory.T.frame_domain_in_segre_chart 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie z w cc 1 hc hz ⟨hcc, 1, (GlobalTheory.T.valAt_iff_value_at 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie z w hc hz 1 1).1 (CxVal.one hc), one_ne_zero⟩).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `hdeg.2 _ trivial cc hch`. Rewrite `h3` using `[hgn.2, smul_eq_mul, ← hAa]`. Use `exists_val_ne hc (unitAt_of_span_eq hd0 (mul_ne_zero ?_ he) h3)` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hz.2 k (cc k) (IsUnit.mk0 _ (hcc k))).1`. Rewrite using `[← hAh]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.flag_weighted_degree_section E H D l Xo c Y S Ω K J y 𝔐 Fl xdeg e hx A τ (t s) (d₁ / d₂) z w hroot hhod hAa (fun w'' _ => hAh w'') hz hint hd0 ?_ cc u hcc hu` and prove the remaining obligations. Introduce `hc bp bq Γ Δ α κ u' h1 h2 h3 h4 h5 h6 h7 h8 h9`. Use `GlobalTheory.T.cm_type_exterior_lattice_comparison E H D l Xo c Y U Z S Ω K J y 𝔐 τ i j a b a' b' φ s _ z hc bp bq Γ Δ (d₁ * α) (d₂ * κ) u' hT hφ hgen hrep (hinf _) ha' hb' hint hs h1 h2 h3 h4 h5 h6 ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `ea.trans (congrArg (d₁ • ·) h7)`.
-
-Rewrite using `[mul_smul]`. Conclude with `eb.trans (congrArg (d₂ • ·) h8)`. Rewrite using `[← div_mul_div_comm, ← mul_div_assoc]`. Conclude with `h9`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem central (h0 : FlatLineGenerator) (h1 : FlatLineGeneratorComponent) (hS : SplitComps Y) (hpq : 1 ≤ D.p + D.q) (𝔐 : HodgeCpt Y S y)
     (Fl : 𝔐.Flag) (xdeg : CMType H × Fin (D.p + D.q) → K → ℤ) (e : CMType H × Fin (D.p + D.q) → Ω)

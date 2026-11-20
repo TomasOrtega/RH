@@ -10,11 +10,11 @@ section
 variable {R Λ B : Type} [CommRing R] [CommRing Λ] [HopfAlgebra R Λ] [CommRing B] [Algebra R B]
 
 /- English proof (translation)
-Establish `h1 : ∀ w : Λ ⊗[R] Λ, ev Λ l (w * (b ⊗ₜ[R] 1 + 1 ⊗ₜ[R] b)) = ev Λ l w * b + ev Λ (l ∘ₗ LinearMap.mulRight R b) w`. Introduce `w`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add u v hu hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [add_mul, map_add, hu, hv]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul u v => simp [mul_add]`. Establish `h2` using `hl (u * b)`. Rewrite `h2` using `[Bialgebra.comul_mul, hb, h1, hl, ← Algebra.smul_def, Algebra.algebraMap_eq_smul_one]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ev_mulRight_comul_of_primitive (l : Λ →ₗ[R] R)
     (hl : ∀ x, ev Λ l (Coalgebra.comul x) = algebraMap R Λ (l x)) (b : Λ)
@@ -36,17 +36,17 @@ theorem ev_mulRight_comul_of_primitive (l : Λ →ₗ[R] R)
   ring
 
 /- English proof (translation)
-Use `set l' := l ∘ₗ LinearMap.mulRight R b with hl'`. Set `F : B ⊗[R] (Λ ⊗[R] Λ) →ₗ[R] B ⊗[R] Λ` to `((ev Λ l').restrictScalars R).lTensor B`. Establish `h1 : ∀ w : B ⊗[R] Λ, ρ (ev B l' w) = F (TensorProduct.assoc R B Λ Λ (ρ.toLinearMap.rTensor Λ w))`. Introduce `w`. Proceed by induction on `w with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a b`. Rewrite using `[ev_tmul, map_smul, LinearMap.rTensor_tmul, AlgHom.toLinearMap_apply]`. Generalize the expression as in `ρ a = w`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => simp only [map_add, smul_add, add_tmul, hu, hv]`. Consider the case `tmul u v => simp [F]`. Establish `h2 : ∀ w : B ⊗[R] Λ, F ((Coalgebra.comul (R` using `R)).lTensor B w) = ev B l' w ⊗ₜ 1 - ev B l w ⊗ₜ b := by`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add a c ha hc`. Simplify using `only [map_add, add_tmul, ha, hc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Consider the case `tmul a c`. Use `ev_mulRight_comul_of_primitive l hl b hb c` as an intermediate fact. Rewrite `this` using `[← hl']`. Simplify using `only [F, LinearMap.lTensor_tmul, LinearMap.restrictScalars_apply, this, ev_tmul, tmul_sub, smul_tmul]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h1, hassoc, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coact_ev_mulRight_of_primitive (ρ : B →ₐ[R] B ⊗[R] Λ)
     (hassoc : ∀ a, TensorProduct.assoc R B Λ Λ (ρ.toLinearMap.rTensor Λ (ρ a)) =
@@ -89,25 +89,23 @@ theorem coact_ev_mulRight_of_primitive (ρ : B →ₐ[R] B ⊗[R] Λ)
 end
 
 /- English proof (translation)
-Introduce `R Λ B _ _ _ _ _ _ _ ρ hassoc hcounit hsurj b hb0`. Establish `hb : Coalgebra.comul (R` using `R) b = b ⊗ₜ[R] 1 + 1 ⊗ₜ[R] b := by`. Rewrite `hb0` using `[cobOne_apply, sub_sub, sub_eq_zero]`. Conclude with `hb0`. Take `⟨-, -, hff, -⟩` from `finite_faithfullyFlat_ker ρ hassoc hcounit hsurj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `set B₀ := AlgHom.equalizer ρ (Algebra.TensorProduct.includeLeft : B →ₐ[R] B ⊗[R] Λ) with hB₀`. Set `I : Ideal B₀` to `{ carrier := {y | ∃ x : B, ρ x = x ⊗ₜ[R] 1 + (y : B) ⊗ₜ[R] b} add_mem' := by`. Introduce and unpack `y z ⟨x, hx⟩ ⟨x', hx'⟩`. Use `⟨x + x', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hx, hx', Subalgebra.coe_add, add_tmul, add_tmul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components.
 
-Normalize the expressions using the abelian group laws. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `t y ⟨x, hx⟩`. Establish `ht : ρ t = (t : B) ⊗ₜ 1` using `t.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨t * x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ht, hx]`. Simplify using `[mul_add] }`. Take `⟨n, l, T, hl, hT⟩` from `exists_integrals R Λ`. Establish `hmem : ∀ k f, ev B (l k) (ρ f) ∈ I.map (algebraMap B₀ B)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `k f`. Use `Ideal.mem_map_of_mem (algebraMap B₀ B) (x := ⟨ev B (l k) (ρ f), ev_mem_equalizer ρ hassoc _ (hl k) f⟩) ?_` and prove the remaining obligations. Use `⟨-ev B (l k ∘ₗ LinearMap.mulRight R b) (ρ f), ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, coact_ev_mulRight_of_primitive ρ hassoc _ (hl k) b hb, neg_tmul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Establish `hall : ∀ k z, ev B (l k) z ∈ I.map (algebraMap B₀ B)`. Introduce `k z`. Take `⟨w, rfl⟩` from `hsurj z`. Proceed by induction on `w with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add u v hu hv`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem hu hv`. Consider the case `tmul u v`. Establish `: (Algebra.TensorProduct.includeLeft : B →ₐ[R] B ⊗[R] Λ) u * ρ v = u • ρ v`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[Algebra.TensorProduct.productMap_apply_tmul, this, map_smul]`. Conclude with `Ideal.mul_mem_left _ _ (hmem k v)`. Establish `h1 : (1 : B) ∈ I.map (algebraMap B₀ B)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (1 : B) = ∑ k, ev B (l k) (1 ⊗ₜ T k)`. Establish `h` using `hT 1`. Simplify using `only [mul_one, Bialgebra.counit_one] at h`. Simplify using `[← Finset.sum_smul, h]`. Rewrite using `[this]`.
-
-Conclude with `Ideal.sum_mem _ fun k _ => hall k _`. Establish `h2 : (1 : B₀) ∈ I`. Rewrite using `[← Ideal.comap_map_eq_self_of_faithfullyFlat (B := B) I, Ideal.mem_comap, map_one]`. Conclude with `h1`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coact_eq_add_of_primitive : ∀ {R Λ B : Type} [CommRing R] [CommRing Λ] [HopfAlgebra R Λ] [Module.Finite R Λ] [Module.Projective R Λ] [CommRing B] [Algebra R B] (ρ : B →ₐ[R] B ⊗[R] Λ), (∀ a, TensorProduct.assoc R B Λ Λ (ρ.toLinearMap.rTensor Λ (ρ a)) = (Coalgebra.comul (R := R) (A := Λ)).lTensor B (ρ a)) → (∀ a, TensorProduct.rid R B ((Coalgebra.counit (R := R) (A := Λ)).lTensor B (ρ a)) = a) → Function.Surjective (Algebra.TensorProduct.productMap (Algebra.TensorProduct.includeLeft : B →ₐ[R] B ⊗[R] Λ) ρ) → ∀ b : Λ, cobOne R Λ b = 0 → ∃ x : B, ρ x = x ⊗ₜ[R] 1 + 1 ⊗ₜ[R] b := by
   intro R Λ B _ _ _ _ _ _ _ ρ hassoc hcounit hsurj b hb0

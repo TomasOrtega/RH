@@ -24,14 +24,14 @@ open GlobalTheory.CoordToExt GlobalTheory.PolTranslate
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.PolTranslate.comp_transl, transl, _root_.mul_assoc, ← MonObj.comp_mul, _root_.mul_inv_cancel, MonObj.comp_one, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_transl_inv (t : 𝟙_ (Over S) ⟶ A) : transl t ≫ transl t⁻¹ = 𝟙 A := by
   rw [GlobalTheory.PolTranslate.comp_transl, transl, _root_.mul_assoc, ← MonObj.comp_mul, _root_.mul_inv_cancel,
     MonObj.comp_one, _root_.mul_one]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.PolTranslate.comp_transl, transl, _root_.mul_assoc, ← MonObj.comp_mul, _root_.inv_mul_cancel, MonObj.comp_one, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_inv_transl (t : 𝟙_ (Over S) ⟶ A) : transl t⁻¹ ≫ transl t = 𝟙 A := by
   rw [GlobalTheory.PolTranslate.comp_transl, transl, _root_.mul_assoc, ← MonObj.comp_mul, _root_.inv_mul_cancel,
@@ -42,11 +42,11 @@ instance isIso_transl_left (t : 𝟙_ (Over S) ⟶ A) : IsIso (transl t).left :=
     congrArg (fun q => q.left) (transl_inv_transl t)⟩⟩
 
 /- English proof (translation)
-Establish `hL' : (rigTransl L t).IsLB` using `DVR.linComb_isLB _ hL _ _`. Use `AmpleLocal.relAmple_of_locally S A _ hL' inferInstance inferInstance fun s => ?_` and prove the remaining obligations. Set `t₀ : S ⟶ A.left` to `t.left`. Take `⟨i, hi⟩` from `exists_chart hL (t₀ s)`. Set `U : S.Opens` to `t₀ ⁻¹ᵁ L.U i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `⟨U, hi, ?_⟩` and prove the remaining obligations. Establish `hp : IsPullback (transl t).left A.hom A.hom (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨(Over.w _).trans (Category.comp_id _).symm⟩`. Establish `H` using `(isPullback_morphismRestrict A.hom U).flip.paste_horiz hp`. Establish `k : (toUnit A ≫ t).left = A.hom ≫ t₀` using `rfl`. Take `⟨w, hw⟩` from `lbIso_diff_pull hL (transl t).left (toUnit A ≫ t).left (A.hom ⁻¹ᵁ U).ι i fun z => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[k]`. Conclude with `z.2`. Conclude with `relAmple_pull (A' := Over.mk (A.hom ∣_ U)) H hL (pull_isLB hL' _) ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top _) (fun _ => trivial) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relAmple_rigTransl_of_section [IsAffine S] [IsProper A.hom] {L : LB A.left} (t : 𝟙_ (Over S) ⟶ A)
     (hL : L.IsLB) (h : Out.RelAmple A L) : Out.RelAmple A (rigTransl L t) := by
@@ -66,7 +66,7 @@ theorem relAmple_rigTransl_of_section [IsAffine S] [IsProper A.hom] {L : LB A.le
     (isAffineOpen_top _) (fun _ => trivial) h
 
 /- English proof (translation)
-Introduce `K _ B _ hB L hL a h`. Use `hB.proper` as an intermediate fact. Conclude with `relAmple_rigTransl_of_section a hL h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_rigTransl_point : ∀ (K : Type) [Field K] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B →
     ∀ (L : LB B.left), L.IsLB → ∀ a : 𝟙_ (Over (Sp K)) ⟶ B, Out.RelAmple B L →

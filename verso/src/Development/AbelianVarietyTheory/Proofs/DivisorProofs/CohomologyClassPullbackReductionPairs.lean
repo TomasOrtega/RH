@@ -19,7 +19,7 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {X X' Y Y' : Scheme.{0}}
   {φ : X' ⟶ X} {χ : Y' ⟶ Y} {ψ : Y ⟶ X} {ψ' : Y' ⟶ X'}
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.comp_preimage, e, Scheme.Hom.comp_preimage]`. Conclude with `fun x hx ↦ hp hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pre_le_pre (e : ψ' ≫ φ = χ ≫ ψ) {V : Y.Opens} {U : X.Opens} (hp : V ≤ ψ ⁻¹ᵁ U) :
     χ ⁻¹ᵁ V ≤ ψ' ⁻¹ᵁ (φ ⁻¹ᵁ U) := by
@@ -32,7 +32,7 @@ def prePairMap (e : ψ' ≫ φ = χ ≫ ψ) (p : Pair ψ) : Pair ψ' :=
   ⟨(preU χ p.1.1, preU φ p.1.2), pre_le_pre e p.2⟩
 
 /- English proof (translation)
-The claim follows from `fun _ _ h ↦ show _ ∧ _ from ⟨preU_mono χ (Pair.le_fst h), preU_mono φ (Pair.le_snd h)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prePairMap_mono (e : ψ' ≫ φ = χ ≫ ψ) : Monotone (prePairMap e) := fun _ _ h ↦
   show _ ∧ _ from ⟨preU_mono χ (Pair.le_fst h), preU_mono φ (Pair.le_snd h)⟩
@@ -57,19 +57,17 @@ end GlobalTheory.AbCoh
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R R' _ _ σ X X' Y Y' s s' q q' φ χ _ h ψ ψ' w w' e hφ`. Use `haveI := hφ`. Establish `H` using `GlobalTheory.T.cocyclePullback_iff_preimage_affineHom R R' X X' s s' σ φ h`. Set `m` to `preCoefPair s' q' e w'`. Set `Φ` to `preFun (φ := φ) (χ := χ) e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hα : ∀ (p : (Pair ψ)ᵒᵖ) (b : (OAff s).obj ((pairSnd ψ).obj p)), m.α p (preα φ s s' ((pairSnd ψ).obj p) b) = preα χ q q' ((pairFst ψ).obj p) ((pairPull w).α p b)`. Introduce `p b`. Establish `k1` using `congrArg (fun t ↦ t.hom b) (Scheme.Hom.appLE_comp_appLE ψ' φ _ _ _ (prePair φ p.unop.1.2).2 (prePairMap e p.unop).2)`. Establish `k2` using `congrArg (fun t ↦ t.hom b) (Scheme.Hom.appLE_comp_appLE χ ψ _ _ _ p.unop.2 (prePair χ p.unop.1.1).2)`. Establish `k3 : ∀ (g₁ g₂ : Y' ⟶ X) (_ : g₁ = g₂) (h1 : (preU χ p.unop.1.1).1 ≤ g₁ ⁻¹ᵁ p.unop.1.2.1) (h2 : (preU χ p.unop.1.1).1 ≤ g₂ ⁻¹ᵁ p.unop.1.2.1) (x : Γ(X, p.unop.1.2.1)), (g₁.appLE _ _ h1).hom x = (g₂.appLE _ _ h2).hom x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ _ rfl _ _ _`. Both sides reduce to the same expression. Use `k1.trans (Eq.trans ?_ k2.symm)` and prove the remaining obligations. Conclude with `k3 _ _ e _ _ b`. Set `θ1 : ((preRes φ s').comp m).G ⟶ ((pairPull w').comp (CoefMap.restrict (OPair ψ' q') Φ)).G` to `{ app := fun _ ↦ 𝟙 _, naturality := fun _ _ _ ↦ Subsingleton.elim _ _ }`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `θ2 : ((pairRes ψ' q').comp (CoefMap.restrict (OPair ψ' q') Φ)).G ⟶ (CoefMap.restrict (OAff q') (pairFst ψ ⋙ preAff χ)).G` to `{ app := fun _ ↦ 𝟙 _, naturality := fun _ _ _ ↦ Subsingleton.elim _ _ }`. Establish `h1 : ∀ T b, ((pairPull w').comp (CoefMap.restrict (OPair ψ' q') Φ)).α T (mp (OAff s') (θ1.app T) b) = ((preRes φ s').comp m).α T b` using `fun T b ↦ by`. Conclude with `congrArg (((pairPull w').comp (CoefMap.restrict (OPair ψ' q') Φ)).α T) (mp_id (OAff s') _ b)`. Establish `h2 : ∀ T b, (CoefMap.restrict (OAff q') (pairFst ψ ⋙ preAff χ)).α T (mp (OAff q') (θ2.app T) b) = ((pairRes ψ' q').comp (CoefMap.restrict (OPair ψ' q') Φ)).α T b` using `fun T b ↦ by`. Conclude with `congrArg ((CoefMap.restrict (OAff q') (pairFst ψ ⋙ preAff χ)).α T) (mp_id (OAff q') _ b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun f x hr ↦ ?_, fun v z hr ↦ ?_⟩` and prove the remaining obligations. Take `⟨c0, hc0, hcl⟩` from `(H.1 f x).1 hr`. Use `⟨m.pullbackOneCocycle c0, fun a b u ↦ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CoefMap.pullCocycleOne_apply, hc0]`. Conclude with `hα b _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← CoefMap.pullCohomologyOne_class, hcl, ← CoefMap.pullCohomologyOne_comp]`. Conclude with `(CoefMap.pullCohomologyOne_eq_of_natTrans _ _ θ1 h1 x).trans ((CoefMap.pullCohomologyOne_comp _ _ x).trans ((congrArg _ (isPullO_pullHO1 w' x)).trans ((CoefMap.pullCohomologyOne_comp _ _ _).symm.trans (CoefMap.pullCohomologyOne_eq_of_natTrans _ _ θ2 h2 _))))`. Take `⟨c0, hc0, hcl⟩` from `(H.2.1 v z).1 hr`. Establish `k : (pairRes ψ' q').pull2 (pullHO2 w' z) = (pairPull w').pull2 z` using `(LinearEquiv.ofBijective _ (pairRes_pull2_bijective ψ' q')).apply_symm_apply _`. Use `⟨m.pullbackTwoCocycle c0, fun a b d u u' ↦ ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[CoefMap.pullCocycleTwo_apply, hc0]`. Conclude with `hα d _`. Rewrite using `[← CoefMap.pullCohomologyTwo_class, hcl, ← CoefMap.pullCohomologyTwo_comp]`. Conclude with `(CoefMap.pullCohomologyTwo_eq_of_natTrans _ _ θ1 h1 z).trans ((CoefMap.pullCohomologyTwo_comp _ _ z).trans ((congrArg _ k.symm).trans ((CoefMap.pullCohomologyTwo_comp _ _ _).symm.trans (CoefMap.pullCohomologyTwo_eq_of_natTrans _ _ θ2 h2 _))))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_preimage_pairs : ∀ (R R' : Type) [CommRing R] [CommRing R'] (σ : R →+* R') (X X' Y Y' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (q : Y ⟶ Sp R) (q' : Y' ⟶ Sp R') (φ : X' ⟶ X) (χ : Y' ⟶ Y) [IsAffineHom χ] (h : φ ≫ s = s' ≫ spMap σ) (ψ : Y ⟶ X) (ψ' : Y' ⟶ X') (w : ψ ≫ s = q ≫ spMap (RingHom.id R)) (w' : ψ' ≫ s' = q' ≫ spMap (RingHom.id R')), ψ' ≫ φ = χ ≫ ψ → IsAffineHom φ → (∀ (f : C1 (OAff s)) (x : HO1 s'), Red1 h f x → ∃ c : Z1 (pairFst ψ ⋙ OPre χ q'), (∀ a b (u : a ⟶ b), c.1 a b u = preα χ q q' ((pairFst ψ).obj b) ((pairPull w).α b (f _ _ ((pairPull w).G.map u)))) ∧ GlobalTheory.CatCoh.H1.mk _ c = (CoefMap.restrict (OAff q') (pairFst ψ ⋙ preAff χ)).pull1 (pullHO1 w' x)) ∧ ∀ (v : C2 (OAff s)) (z : HO2 s'), Red2 h v z → ∃ c : Z2 (pairFst ψ ⋙ OPre χ q'), (∀ a b d (u : a ⟶ b) (u' : b ⟶ d), c.1 a b d u u' = preα χ q q' ((pairFst ψ).obj d) ((pairPull w).α d (v _ _ _ ((pairPull w).G.map u) ((pairPull w).G.map u')))) ∧ GlobalTheory.CatCoh.H2.mk _ c = (CoefMap.restrict (OAff q') (pairFst ψ ⋙ preAff χ)).pull2 (pullHO2 w' z) := by
   intro R R' _ _ σ X X' Y Y' s s' q q' φ χ _ h ψ ψ' w w' e hφ

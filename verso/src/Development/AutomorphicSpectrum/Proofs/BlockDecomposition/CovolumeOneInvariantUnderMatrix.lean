@@ -14,11 +14,11 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory.CompanionTheory.SiegelND.PiCovol
 
 /- English proof (translation)
-Establish `hq (i : ι)` using `Measure.quasiMeasurePreserving_eval (fun _ : ι => ν) i`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.univ_pi_eq_iInter]`. Conclude with `NullMeasurableSet.iInter fun i => hF.nullMeasurableSet.preimage (hq i)`. Use `(ae_all_iff (μ := (Measure.pi fun _ : ι => ν))).2 fun i => (hq i).ae hF.ae_covers filter_upwards [this] with z hz choose a ha using hz` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨fun i => a i, fun i _ => (a i).2⟩, fun i _ => ha i⟩`. Introduce `a b hab`. Take `⟨i, hi⟩ : ∃ i, a.1 i ≠ b.1 i` from `by by_contra! h`. Conclude with `hab (Subtype.ext (funext h))`. Establish `h` using `hF.aedisjoint (i := ⟨a.1 i, a.2 i trivial⟩) (j := ⟨b.1 i, b.2 i trivial⟩) fun e => hi (congrArg Subtype.val e)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `measure_mono_null ?_ ((hq i).preimage_null h)` and prove the remaining obligations. Introduce and unpack `z ⟨⟨u, hu, hu'⟩, ⟨v, hv, hv'⟩⟩`. Conclude with `⟨⟨u i, hu i trivial, congrFun hu' i⟩, ⟨v i, hv i trivial, congrFun hv' i⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFD_pi {ι Y : Type} [Fintype ι] [AddCommGroup Y] [MeasurableSpace Y] (ν : Measure Y) [SigmaFinite ν]
     {G : AddSubgroup Y} {D : Set Y} (hF : IsAddFundamentalDomain G D ν) :
@@ -43,13 +43,11 @@ theorem isFD_pi {ι Y : Type} [Fintype ι] [AddCommGroup Y] [MeasurableSpace Y] 
     exact ⟨⟨u i, hu i trivial, congrFun hu' i⟩, ⟨v i, hv i trivial, congrFun hv' i⟩⟩
 
 /- English proof (translation)
-Use `haveI : (P.map e).IsAddHaarMeasure := e.isAddHaarMeasure_map P`. Use `set c := Measure.addHaarScalarFactor (P.map e) P with hc`. Establish `h : P.map e = c • P` using `Measure.isAddLeftInvariant_eq_smul _ P`. Establish `hm : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Establish `hpre : IsAddFundamentalDomain G (e ⁻¹' D) P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hD.preimage_of_equiv (f := e) ⟨hm.measurable, ?_⟩ (e := fun b : G => (⟨e.symm b, hG _ b.2⟩ : G)) ⟨fun b b' h => ?_, fun a => ?_⟩ fun b v => ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `Measure.smul_absolutelyContinuous`. Conclude with `Subtype.ext (e.symm.injective (congrArg Subtype.val h))`. Conclude with `⟨⟨e a, hG' _ a.2⟩, Subtype.ext (e.symm_apply_apply _)⟩`.
+Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `e (e.symm b + v) = b + e v`. Simplify using the standard rewrite rules. Establish `e1 : P (e ⁻¹' D) = P D` using `hpre.measure_eq hD`. Establish `e2 : P (e ⁻¹' D) = c * P D` using `by rw [← hm.map_apply, h]; rfl`. Establish `hc1 : (c : ℝ≥0∞) = 1`.
-
-Establish `: (c : ℝ≥0∞) * P D = 1 * P D` using `by rw [← e2, e1, one_mul]`. Conclude with `(ENNReal.mul_left_inj h0 h1).1 this`. Establish `: c = 1` using `by exact_mod_cast hc1`. Rewrite using `[h, this, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_of_isFD {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [LocallyCompactSpace V] [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V]
@@ -81,23 +79,19 @@ end GlobalTheory.CompanionTheory.SiegelND.PiCovol
 open GlobalTheory.CompanionTheory.SiegelND.PiCovol in
 
 /- English proof (translation)
-Introduce `F _ _ ν hν ι _ _ A hA`. Take `⟨hH, D, hD, hD1⟩` from `hν`. Use `haveI := hH`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (AF F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI : Countable F := (Module.finBasis ℚ F).equivFun.injective.countable`. Use `set G₀ : AddSubgroup (AF F) := (algebraMap F (AF F)).toAddMonoidHom.range with hG₀`. Use `set G : AddSubgroup (ι → AF F) := AddSubgroup.pi Set.univ fun _ : ι => G₀ with hGdef`. Establish `hmemG : ∀ v : ι → AF F, v ∈ G ↔ ∃ ξ : ι → F, v = fun i => algebraMap F (AF F) (ξ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv choose ξ hξ using fun i => hv i trivial`. Conclude with `⟨ξ, funext fun i => (hξ i).symm⟩`. Introduce and unpack `⟨ξ, rfl⟩ i _`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨ξ i, rfl⟩`. Use `haveI : Countable G := by`. Establish `: Function.Surjective (fun ξ : ι → F => (⟨fun i => algebraMap F (AF F) (ξ i), (hmemG _).2 ⟨ξ, rfl⟩⟩ : G))`. Introduce and unpack `⟨v, hv⟩`. Take `⟨ξ, rfl⟩` from `(hmemG v).1 hv`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `⟨ξ, rfl⟩`. Conclude with `this.countable`. Establish `hFD` using `isFD_pi (ι := ι) ν hD`. Establish `hmass : (Measure.pi fun _ : ι => ν) (Set.univ.pi fun _ : ι => D) = 1`. Rewrite using `[Measure.pi_pi]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hD1]`. Establish `hrat : ∀ (B : Matrix ι ι F) (ξ : ι → F), (B.map (algebraMap F (AF F))).mulVec (fun i => algebraMap F (AF F) (ξ i)) = fun i => algebraMap F (AF F) (B.mulVec ξ i)`. Introduce `B ξ`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (algebraMap F (AF F)) B ξ i).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hu` using `GlobalTheory.CompanionTheory.SW.SdCoord.isUnit_det_map (R := AF F) A hA`. Establish `hinv : (A.map (algebraMap F (AF F)))⁻¹ = A⁻¹.map (algebraMap F (AF F))`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hA.isUnit, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `map_eq_of_isFD (Measure.pi fun _ : ι => ν) G hFD (by rw [hmass]; simp) (by rw [hmass]; simp) (GlobalTheory.CompanionTheory.SW.SdCoord.matE _ hu) ?_ ?_` as an intermediate fact.
-
-Conclude with `this`. Introduce `v hv`. Take `⟨ξ, rfl⟩` from `(hmemG v).1 hv`. Use `(hmemG _).2 ⟨A⁻¹.mulVec ξ, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(A.map (algebraMap F (AF F)))⁻¹.mulVec _ = _`.
-
-Rewrite using `[hinv, hrat]`. Introduce `v hv`. Take `⟨ξ, rfl⟩` from `(hmemG v).1 hv`. Use `(hmemG _).2 ⟨A.mulVec ξ, ?_⟩` and prove the remaining obligations. Conclude with `hrat A ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SiegelND.piCovol_map_matrix : ∀ (F : Type) [Field F] [NumberField F] (ν : Measure (AF F)), GlobalTheory.CompanionTheory.Hypotheses₂.OneV.IsCovolOne ν → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (A : Matrix ι ι F), A.det ≠ 0 → (Measure.pi fun _ : ι => ν).map (fun x => (A.map (algebraMap F (AF F))).mulVec x) = Measure.pi fun _ : ι => ν := by
   intro F _ _ ν hν ι _ _ A hA

@@ -12,9 +12,9 @@ namespace GlobalTheory.BI
 
 open Polynomial in
 /- English proof (translation)
-Use `_root_.GlobalTheory.BI.isChar_induction ℂ ℂ G (fun a => ∃ c : (G → ℂ) →₀ ℤ, (∀ χ ∈ c.support, _root_.GlobalTheory.BI.IsIrrChar ℂ ℂ χ) ∧ a = c.sum (fun χ m => m • χ)) ⟨0, by simp, by simp⟩ ?_ a ha` and prove the remaining obligations. Introduce and unpack `φ b hφ - ⟨c, hc, rfl⟩`. Use `⟨Finsupp.single φ 1 + c, fun χ hχ => ?_, ?_⟩` and prove the remaining obligations. Break down `Finset.mem_union.1 (Finsupp.support_add hχ) with h | h` into its components or cases. Rewrite `h`, `with`, `e` using `[Finsupp.mem_support_iff, Finsupp.single_apply] at h split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e ▸ hφ`. Conclude with `absurd rfl h`. Conclude with `hc χ h`. Rewrite using `[Finsupp.sum_add_index' (by simp) (fun _ _ _ => add_smul _ _ _), Finsupp.sum_single_index (by simp), one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_irreducible_expansion_of_isCharacter_lemma_3 {G : Type} [Group G] [Finite G]
     (a : G → ℂ) (ha : _root_.GlobalTheory.BI.IsChar ℂ ℂ a) :
@@ -37,9 +37,9 @@ private theorem exists_irreducible_expansion_of_isCharacter_lemma_3 {G : Type} [
 
 open Polynomial in
 /- English proof (translation)
-Take `⟨a, b, ha, hb, rfl⟩` from `(_root_.GlobalTheory.BI.mem_virt_iff_sub ℂ ℂ G φ).1 hφ`. Take `⟨ca, hca, rfl⟩` from `exists_irreducible_expansion_of_isCharacter_lemma_3 a ha`. Take `⟨cb, hcb, rfl⟩` from `exists_irreducible_expansion_of_isCharacter_lemma_3 b hb`. Use `⟨ca - cb, fun χ hχ => ?_, ?_⟩` and prove the remaining obligations. Break down `Finset.mem_union.1 (Finsupp.support_sub hχ) with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hca χ h`. Conclude with `hcb χ h`. Rewrite using `[Finsupp.sum_sub_index (fun _ _ _ => sub_smul _ _ _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_irreducible_expansion_of_mem_lemma {G : Type} [Group G] [Finite G]
     (φ : G → ℂ) (hφ : φ ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G) :
@@ -57,11 +57,9 @@ private theorem exists_irreducible_expansion_of_mem_lemma {G : Type} [Group G] [
 
 open Polynomial in
 /- English proof (translation)
-Establish `hG : (Nat.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Use `split_ifs with h`. Substitute `h` using the available equality. Use `_root_.GlobalTheory.BI.pair_self_of_isIrrChar_algClosed ℂ G χ hχ` as an intermediate fact. Unfold `_root_.GlobalTheory.BI.pair at this`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[inv_mul_eq_one₀ hG, finsum_eq_sum_of_fintype]`. Conclude with `this.symm`. Use `_root_.GlobalTheory.BI.pair_eq_zero_of_isIrrChar_ne G χ ψ hχ hψ h` as an intermediate fact. Unfold `_root_.GlobalTheory.BI.pair at this`. Rewrite `this` using `[finsum_eq_sum_of_fintype]`.
-
-Simplify `this` using `[hG]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem sum_mul_inv_irreducible_lemma_2 {G : Type} [Group G] [Fintype G] (χ ψ : G → ℂ)
     (hχ : _root_.GlobalTheory.BI.IsIrrChar ℂ ℂ χ) (hψ : _root_.GlobalTheory.BI.IsIrrChar ℂ ℂ ψ) :
@@ -82,15 +80,15 @@ private theorem sum_mul_inv_irreducible_lemma_2 {G : Type} [Group G] [Fintype G]
 open Polynomial in
 
 /- English proof (translation)
-Introduce `G _ _ φ hφ`. Use `haveI := Fintype.ofFinite G`. Take `⟨c, hc, he⟩` from `exists_irreducible_expansion_of_mem_lemma φ hφ`. Use `⟨c, hc, he, ?_⟩` and prove the remaining obligations. Establish `hev : ∀ g, φ g = ∑ χ ∈ c.support, (c χ : ℂ) * χ g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[he, Finsupp.sum, Finset.sum_apply]`. Simplify using `[zsmul_eq_mul]`. Rewrite using `[finsum_eq_sum_of_fintype]`. Repeatedly rewrite using `[_root_.GlobalTheory.CuspGL.star_virt_eq_inv G φ hφ, hev, Finset.sum_mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun χ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun ψ _ => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ χ ∈ c.support, (c χ : ℂ) ^ 2 * (Nat.card G : ℂ) := by`. Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl fun ψ hψ => by rw [sum_mul_inv_irreducible_lemma_2 χ ψ (hc χ hχ) (hc ψ hψ)]]`. Simplify using `only [mul_ite, mul_zero]`. Rewrite using `[Finset.sum_ite_eq c.support χ, if_pos hχ]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [Finsupp.sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BI.virt_expand : ∀ (G : Type) [Group G] [Finite G]
     (φ : G → ℂ), φ ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G →

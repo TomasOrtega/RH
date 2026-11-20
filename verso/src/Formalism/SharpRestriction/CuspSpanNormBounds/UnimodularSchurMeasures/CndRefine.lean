@@ -10,23 +10,21 @@ open Formalism.MainNotions.S Formalism.MainNotions.PlaceDegreeData Formalism.Mai
 open Formalism.HermitianLatticeCounting.S7 (P0 b1 Ydat)
 
 /- English proof (translation)
-Take `⟨b', hb1, hb2, hr⟩` from `Formalism.HermitianLatticeCounting.Final.S7.gapPigeonhole a q τ ha haq hpos htop (h1 ▸ hτ2)`. Take `⟨ρ, s, mult, h0, hρ, hs, hK, hstep, hB, hm⟩` from `H b' hb1 hb2`. Rewrite `hr` using `[h1]`. Establish `hC0 : 0 ≤ C` using `by linarith`. Establish `hg0 : 0 ≤ g` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrd0 : 0 ≤ rd` using `by linarith`. Establish `hfR : (1 : ℝ) ≤ (f : ℝ)` using `by exact_mod_cast hf`. Establish `hnR : (0 : ℝ) ≤ (n : ℝ)` using `Nat.cast_nonneg _`. Establish `hb₁ : 0 ≤ b1 n q f b`. Unfold `Formalism.HermitianLatticeCounting.S7.b1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Check the signs of the components of the expression. Use `⟨ρ, s (P0 n q f) ^ 2, h0, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hco : 0 ≤ C * (n : ℝ) ^ 2 * (f : ℝ) * g * rd` using `by positivity`. Establish `hpw : 0 ≤ (2 * τ₁) ^ (1 / (q : ℝ))` using `Real.rpow_nonneg (by linarith) _`. Combine the equalities or inequalities in the displayed calculation.
+Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `: 0 ≤ C * (n : ℝ) ^ 2 * (f : ℝ) * g * rd * (2 * τ₁) ^ (1 / (q : ℝ))` using `mul_nonneg hco hpw`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsq : Real.sqrt ((n : ℝ) ^ 2 * (f : ℝ)) ≤ (n : ℝ) * (f : ℝ)`. Rewrite using `[Real.sqrt_le_iff]`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (n : ℝ) ^ 2 * (f : ℝ) * 1 ≤ (n : ℝ) ^ 2 * (f : ℝ) * (f : ℝ)` using `mul_le_mul_of_nonneg_left hfR (by positivity)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsq0 : 0 ≤ Real.sqrt ((n : ℝ) ^ 2 * (f : ℝ))` using `Real.sqrt_nonneg _`. Use `set Θ : ℝ := ρ * Real.sqrt ((n : ℝ) ^ 2 * (f : ℝ)) * (C * (n : ℝ) * b1 n q f b) with hΘ`. Establish `hΘ0 : 0 ≤ Θ` using `by positivity`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hit` using `Formalism.HermitianLatticeCounting.Final.S7.iterSup s (fun P => ρ * Real.sqrt ((n : ℝ) ^ 2 * (f : ℝ)) * (C * (n : ℝ) * (b ^ 2 + (P : ℝ) * (n : ℝ)))) Θ (P0 n q f) (fun P hP => ⟨by positivity, by`. Establish `h2` using `(Formalism.HermitianLatticeCounting.Final.NearFarVolumeBounds.stepsRoom n q f P b hq).2 (by omega)`. Establish `hc : 0 ≤ ρ * Real.sqrt ((n : ℝ) ^ 2 * (f : ℝ))` using `by positivity`. Establish `hc2 : 0 ≤ C * (n : ℝ)` using `by positivity`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left h2 hc2) hc⟩) hs hstep`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΘle : Θ ≤ (4 * C) * ρ * (n : ℝ) ^ 2 * (f : ℝ) * b1 n q f b`. Establish `e1 : Θ ≤ ρ * ((n : ℝ) * (f : ℝ)) * (C * (n : ℝ) * b1 n q f b)`. Rewrite using `[hΘ]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hsq h0) (by positivity)`. Establish `e2 : 0 ≤ C * ρ * (n : ℝ) ^ 2 * (f : ℝ) * b1 n q f b` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hs0 : s 0 ^ 2 ≤ (Θ ^ P0 n q f * s (P0 n q f)) ^ 2` using `pow_le_pow_left₀ (hs 0) hit 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hcm` using `Formalism.HermitianLatticeCounting.Final.CuspThresholdCounts.cubeMult C n f (b1 n q f b) τ₁ hC hb₁ hτ`. Establish `hDv : 0 ≤ D / volK` using `div_nonneg hD hvK.le`.
-
-Establish `hfac : 0 ≤ (4 / (1 / (C * (n : ℝ) * b1 n q f b))) ^ (n ^ 2 * f)` using `pow_nonneg (div_nonneg (by norm_num) (div_nonneg zero_le_one (by positivity))) _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cnd_refine (C : ℝ) (hC : 1 ≤ C) (n q f : ℕ) (hq : 1 ≤ q) (hf : 1 ≤ f)
     (rd g b τ₁ D volK Kxx : ℝ) (hrd : 1 ≤ rd) (hg : 1 ≤ g) (hτ : 0 < τ₁) (hτ2 : τ₁ < 1 / 2) (hD : 0 ≤ D)

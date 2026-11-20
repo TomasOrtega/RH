@@ -9,11 +9,11 @@ open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.
 namespace GlobalTheory.CompanionTheory.BZMir
 
 /- English proof (translation)
-Introduce `k _ _ _ _ m j`. Establish `hincl : Continuous (GlobalTheory.BZMir.Leib.hgpIncl k m j)`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Establish `hv : Continuous (fun h : GlobalTheory.BZMir.Leib.MirabolicParabolic k m j => ((h : GlobalTheory.BZMir.Mir k (m + j)) : GL (Fin (m + j + 1)) k))` using `by first`. Consider the case `exact continuous_subtype_val.comp continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `fun_prop`. Conclude with `hv`. Establish `hlevi` using `(GlobalTheory.SmGL.LeviInt.levi_integral_facts k _ _ _ (GlobalTheory.BZMir.Leib.eGP m j)).2.2.2.2.2.1`. Establish `hblock` using `hlevi.comp hincl`. Unfold `GlobalTheory.BZMir.Leib.gpProj`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.coe_prod]`. Use `Continuous.prodMk ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_apply false).comp hblock`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Conclude with `(continuous_apply true).comp hblock`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem continuous_gpProj : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (m j : ℕ), Continuous (gpProj k m j) := by

@@ -27,17 +27,17 @@ end Weights
 end GlobalTheory.CovTop.HodgeGapBounds
 namespace GlobalTheory.CovTop.HodgeGapBounds
 /- English proof (translation)
-Establish `hA` using `_root_.GlobalTheory.T.weight_parameter_strict_antitone_alt _root_.GlobalTheory.T.cov_size_bound`. Establish `hB` using `_root_.GlobalTheory.CovTop.WtShape.wtN_z`. Unfold `_root_.GlobalTheory.CovTop.LiftWeightNumerator at hB`. Unfold `_root_.GlobalTheory.CovTop.LiftsCondition at hA hB ⊢`. Use `(hA.and hB).imp fun Fm CH _ h => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨C1, -, x1, h1⟩, ⟨C2, -, x2, h2⟩⟩` from `h`. Use `⟨0, le_rfl, max x1 x2, fun x hx hle ι p hp i hi => ?_⟩` and prove the remaining obligations. Establish `a` using `h1 x hx ((le_max_left _ _).trans hle) ι p hp i hi`. Establish `b` using `h2 x hx ((le_max_right _ _).trans hle) ι p hp i`. Take `⟨hp1, hq1, hdeg, -, hSA, -, hanti⟩` from `a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc0 : 0 ≤ cZero (Fm.D x ι) ((i : ℕ) + 1)` using `Int.natCast_nonneg _`. Establish `hgap : ∀ τ, 1 ≤ gap (uM p i τ) ((dat p i).p - 1)` using `fun τ => one_le_gap_uMinus _ τ hp1 hq1 (hSA τ).1`. Establish `hant0 : ∀ τ, Antitone (uM p i τ)` using `fun τ => by simpa using (hanti 0 (by norm_num) τ).1`. Use `⟨p.fw.laws, hp1, hq1, hdeg, ⟨by omega, i.2⟩, b.dom.2, hant0, hgap, fun s hs => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨t, ht3, hts⟩ : ∃ t : ℕ, t ≤ 3 ∧ s + cZero (Fm.D x ι) ((i : ℕ) + 1) = (t : ℤ) * cZero (Fm.D x ι) ((i : ℕ) + 1) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Break down `hs with hs | hs | hs` into its components or cases. Conclude with `⟨0, by norm_num, by rw [hs]; ring⟩`. Conclude with `⟨1, by norm_num, by rw [hs]; ring⟩`. Conclude with `⟨2, by norm_num, by rw [hs]; ring⟩`. Rewrite using `[laOf_add_smul (kc := (Fm.D x ι).R.k - 1) (c0 := cZero (Fm.D x ι) ((i : ℕ) + 1))]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun τ => antitone_add_par _ _ τ ?_, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[hts]`. Conclude with `(hanti t ht3 τ).1`. Rewrite using `[gap_add_smul_hodge _ _ _ τ hp1 hq1]`. Use `hgap τ` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ s + cZero (Fm.D x ι) ((i : ℕ) + 1)` using `by rw [hts]; positivity`. Conclude with `le_add_of_le_of_nonneg this h2`.
+A detailed English derivation is pending.
 -/
 theorem reading_alt : _root_.GlobalTheory.CovTop.LiftsCondition fun Fm x _ ι p i _ _ => (i : ℕ) + 1 < (Fm.D x ι).R.m → LawsJ p.T ∧ 1 ≤ (dat p i).p ∧
     1 ≤ (dat p i).q ∧ 2 < Module.finrank ℚ (Fm.D x ι).host.E / 2 ∧ InR (Fm.D x ι) ((i : ℕ) + 1) ∧ Even (p.κ i).n ∧

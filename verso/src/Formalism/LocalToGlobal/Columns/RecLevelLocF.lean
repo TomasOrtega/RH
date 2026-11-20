@@ -21,21 +21,21 @@ local notation "𝒪v" => Formalism.BasicNotions.intV E v
 local notation "pE" => algebraMap (𝓞 E) E π
 
 /- English proof (translation)
-Use `le_inf (Deco.base_ok (E := E) (n := n) (ST := ST) (SG := ∅)).L_le_Lsh ?_` and prove the remaining obligations. Conclude with `le_iInf fun P => le_iInf fun _ => le_locP _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rll_baseLb_le_Ker : baseLb E n ST ≤ baseKer E n ST := by
   refine le_inf (Deco.base_ok (E := E) (n := n) (ST := ST) (SG := ∅)).L_le_Lsh ?_
   exact le_iInf fun P => le_iInf fun _ => le_locP _ _
 
 /- English proof (translation)
-The claim follows from `Submodule.Quotient.mk_eq_zero _`.
+A detailed English derivation is pending.
 -/
 theorem rll_fLoc_eq_zero (x : baseDualV hc n ST v) :
     fLoc hc n ST v x = 0 ↔ x.1 ∈ Formalism.L2.Herm.locL v (baseKer E n ST) :=
   Submodule.Quotient.mk_eq_zero _
 
 /- English proof (translation)
-The claim follows from `(rll_fLoc_eq_zero hc n v x).2 (rll_latS_mono n v (rll_baseLb_le_Ker n) hx)`.
+A detailed English derivation is pending.
 -/
 theorem fLoc_L (x : baseDualV hc n ST v)
     (hx : x.1 ∈ latS (F := F) (v.adicCompletion F) (Formalism.BasicNotions.intV E v) (baseLb E n ST)) : fLoc hc n ST v x = 0 :=
@@ -45,11 +45,11 @@ variable (h : BasePi ST π)
 include h
 
 /- English proof (translation)
-Rewrite using `[rll_fLoc_eq_zero, rll_baseKer_eq n h, rll_mem_loc_dLat n v _ (div_ne_zero h.star_ne_zero h.coe_ne_zero)]`. Establish `hx : x.1 ∈ Formalism.L2.Herm.locL v (rll_dLat n (star pE))`. Rewrite using `[← rll_dualV_eq hc n v h]`. Conclude with `x.2`. Rewrite `hx` using `[rll_mem_loc_dLat n v _ h.star_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `hT`. Establish `htv : (((T : Formalism.BasicNotions.intV E v)) : Rv) = ιv pE * ιv (algebraMap (𝓞 E) E q)`. Rewrite using `[← map_mul, ← map_mul, ← hq, map_natCast, map_natCast]`. Both sides reduce to the same expression. Use `⟨fun i hi => mul_mem (T : Formalism.BasicNotions.intV E v).2 (hx.1 i hi), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ιv (star pE / pE) * ((((T : Formalism.BasicNotions.intV E v)) : Rv) * x.1 (lastIdx n)) ∈ 𝒪v`. Rewrite using `[htv, mul_assoc, rll_cp_mul v h, mul_left_comm]`. Conclude with `mul_mem (rll_incl_int v q) hx.2`.
+A detailed English derivation is pending.
 -/
 theorem fLoc_natCast_smul_eq_zero_of_dvd (T : ℕ) (hT : π ∣ (T : 𝓞 E)) (x : baseDualV hc n ST v) :
     fLoc hc n ST v ((T : Formalism.BasicNotions.intV E v) • x) = 0 := by
@@ -67,7 +67,7 @@ theorem fLoc_natCast_smul_eq_zero_of_dvd (T : ℕ) (hT : π ∣ (T : 𝓞 E)) (x
   exact mul_mem (rll_incl_int v q) hx.2
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `h.cop`. Use `⟨a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_cO, ← map_mul, ← map_mul, ← map_mul, ← map_mul, ← map_add, ← map_add, hab, map_one, map_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rll_coprime_v : ∃ a b : 𝓞 E,
     ιv (algebraMap (𝓞 E) E a) * ιv pE + ιv (algebraMap (𝓞 E) E b) * ιv (star pE) = 1 := by
@@ -76,9 +76,9 @@ theorem rll_coprime_v : ∃ a b : 𝓞 E,
   rw [← algebraMap_cO, ← map_mul, ← map_mul, ← map_mul, ← map_mul, ← map_add, ← map_add, hab, map_one, map_one]
 
 /- English proof (translation)
-Introduce `e`. Establish `e1` using `rll_IE_incl_mul v pE s`. Rewrite `e1` using `[e]`. Establish `e2 : Formalism.L2.DIV.lc_eps E v = Formalism.L2.DIV.oToS F E π * (⟨afsplitIE v s, afsplit_IE_int v _ hs⟩ : Formalism.L2.Herm.intAf F E)` using `Subtype.ext e1`. Establish `e3` using `congrArg (resS F P) e2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e3` using `[Formalism.L2.DIV.lc_res_eps P v hov, map_mul, Formalism.L2.DIV.resS_oToS, Ideal.Quotient.eq_zero_iff_mem.2 (h.mem hP), zero_mul]`. Conclude with `one_ne_zero e3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rll_pv_not_unit {P : Pl E} (hP : P ∈ ST) (hov : IsOver v P) (s : Rv) (hs : s ∈ 𝒪v) : ιv pE * s ≠ 1 := by
   intro e
@@ -92,13 +92,11 @@ theorem rll_pv_not_unit {P : Pl E} (hP : P ∈ ST) (hov : IsOver v P) (s : Rv) (
   exact one_ne_zero e3
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨P, hP, hov⟩` from `hv`. Establish `hm : (Pi.single (lastIdx n) 1 : Fin n → Rv) ∈ baseDualV hc n ST v`. Rewrite using `[rll_dualV_eq hc n v h]`. Conclude with `rll_single_mem_Sh n v h _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : fLoc hc n ST v ⟨_, hm⟩ = 0` using `by rw [h0]; rfl`. Rewrite `h1` using `[rll_fLoc_eq_zero, rll_baseKer_eq n h, rll_mem_loc_dLat n v _ (div_ne_zero h.star_ne_zero h.coe_ne_zero)]`. Establish `h2 : ιv (star pE / pE) * (Pi.single (lastIdx n) 1 : Fin n → Rv) (lastIdx n) ∈ 𝒪v` using `h1.2`. Rewrite `h2` using `[Pi.single_eq_same, mul_one]`. Take `⟨a, b, hab⟩` from `rll_coprime_v v h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : ιv (star pE) = ιv pE * ιv (star pE / pE)`. Rewrite using `[← map_mul, mul_div_cancel₀ _ h.coe_ne_zero]`. Use `rll_pv_not_unit v h hP hov (ιv (algebraMap (𝓞 E) E a) + ιv (algebraMap (𝓞 E) E b) * ιv (star pE / pE)) (add_mem (rll_incl_int v a) (mul_mem (rll_incl_int v b) h2)) ?_` and prove the remaining obligations. Rewrite using `[← hab]`. Use `conv_rhs => rw [e1]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fLoc_ne (hv : v ∈ plUnder F ST) : fLoc hc n ST v ≠ 0 := by
   intro h0
@@ -143,7 +141,7 @@ def rll_rho (P : Pl E) : 𝒪v →+ kP P where
     rw [this, map_add]
 
 /- English proof (translation)
-Use `show resS F P ⟨afsplitIE v (ιv (algebraMap (𝓞 E) E r) * s.1), _⟩ = _`. Establish `: (⟨afsplitIE v (ιv (algebraMap (𝓞 E) E r) * s.1), afsplit_IE_int v _ hm⟩ : Formalism.L2.Herm.intAf F E) = Formalism.L2.DIV.oToS F E r * ⟨afsplitIE v s.1, afsplit_IE_int v _ s.2⟩` using `Subtype.ext (rll_IE_incl_mul v _ _)`. Rewrite using `[this, map_mul, Formalism.L2.DIV.resS_oToS]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rll_rho_incl_mul (P : Pl E) (r : 𝓞 E) (s : 𝒪v) (hm : ιv (algebraMap (𝓞 E) E r) * s.1 ∈ 𝒪v) :
     rll_rho v P ⟨_, hm⟩ = Ideal.Quotient.mk P.asIdeal r * rll_rho v P s := by
@@ -154,7 +152,7 @@ theorem rll_rho_incl_mul (P : Pl E) (r : 𝓞 E) (s : 𝒪v) (hm : ιv (algebraM
   rfl
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.DIV.lc_res_eps P v hov`.
+A detailed English derivation is pending.
 -/
 theorem rll_rho_one {P : Pl E} (hov : IsOver v P) : rll_rho v P 1 = 1 :=
   Formalism.L2.DIV.lc_res_eps P v hov
@@ -163,11 +161,11 @@ variable (h : BasePi ST π)
 include h
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `rll_idS_inf h (t := (⟨afsplitIE v s.1, afsplit_IE_int v _ s.2⟩ : Formalism.L2.Herm.intAf F E)) (by`. Introduce `Q hQ`. Distinguish the cases in `hQv : IsOver v Q`. Rewrite using `[huniq Q hQ hQv]`. Conclude with `hs`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Formalism.L2.DIV.resS_eq_zero_of_prV Q (Formalism.L2.DIV.underPl F Q) rfl _ ?_` and prove the remaining obligations. Use `afsplit_prV_IE_ne v _ ?_ _` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hQv rfl)`. Use `⟨prV (E := E) v (u : E ⊗[F] Formalism.L2.Herm.Af F), afsplit_prV_int v _ u.2, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1` using `congrArg (fun t : Formalism.L2.Herm.intAf F E => prV (E := E) v (t : E ⊗[F] Formalism.L2.Herm.Af F)) hu`. Simplify using `only [MulMemClass.coe_mul, map_mul, afsplit_prV_IE] at e1`. Conclude with `e1`.
+A detailed English derivation is pending.
 -/
 theorem rll_rho_eq_zero {P : Pl E} (huniq : ∀ Q ∈ ST, IsOver v Q → Q = P) (s : 𝒪v) (hs : rll_rho v P s = 0) :
     ∃ w ∈ 𝒪v, s.1 = ιv pE * w := by
@@ -184,7 +182,7 @@ theorem rll_rho_eq_zero {P : Pl E} (huniq : ∀ Q ∈ ST, IsOver v Q → Q = P) 
   exact e1
 
 /- English proof (translation)
-Establish `hx : x.1 ∈ Formalism.L2.Herm.locL v (rll_dLat n (star pE))`. Rewrite using `[← rll_dualV_eq hc n v h]`. Conclude with `x.2`. Conclude with `((rll_mem_loc_dLat n v _ h.star_ne_zero _).1 hx).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rll_last_mem (x : baseDualV hc n ST v) : ιv (star pE) * x.1 (lastIdx n) ∈ 𝒪v := by
   have hx : x.1 ∈ Formalism.L2.Herm.locL v (rll_dLat n (star pE)) := by
@@ -202,13 +200,11 @@ def rll_psi (P : Pl E) : baseDualV hc n ST v →+ kP P where
     rw [this, map_add]
 
 /- English proof (translation)
-Introduce `c`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Establish `e0 : ιv (star pE) * ιv ((star pE)⁻¹ * algebraMap (𝓞 E) E r) = ιv (algebraMap (𝓞 E) E r) * ((1 : 𝒪v) : Rv)`. Rewrite using `[← map_mul, mul_inv_cancel_left₀ h.star_ne_zero]`. Conclude with `(mul_one _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : (Pi.single (lastIdx n) (ιv ((star pE)⁻¹ * algebraMap (𝓞 E) E r)) : Fin n → Rv) ∈ baseDualV hc n ST v`. Rewrite using `[rll_dualV_eq hc n v h, rll_mem_loc_dLat n v _ h.star_ne_zero]`. Use `⟨fun i hi => by rw [Pi.single_eq_of_ne hi]; exact zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_eq_same, e0]`. Conclude with `mul_mem (rll_incl_int v r) (one_mem _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨_, hm⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : (⟨_, rll_last_mem hc n v h ⟨_, hm⟩⟩ : 𝒪v) = ⟨ιv (algebraMap (𝓞 E) E r) * ((1 : 𝒪v) : Rv), mul_mem (rll_incl_int v r) (one_mem _)⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ιv (star pE) * (Pi.single (lastIdx n) (ιv ((star pE)⁻¹ * algebraMap (𝓞 E) E r)) : Fin n → Rv) (lastIdx n) = _`. Rewrite using `[Pi.single_eq_same, e0]`.
-
-Use `show rll_rho v P _ = _`. Rewrite using `[e1, rll_rho_incl_mul, rll_rho_one v hov, mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rll_psi_surj {P : Pl E} (hov : IsOver v P) : Function.Surjective (rll_psi hc n v h P) := by
   intro c
@@ -231,15 +227,13 @@ theorem rll_psi_surj {P : Pl E} (hov : IsOver v P) : Function.Surjective (rll_ps
   rw [e1, rll_rho_incl_mul, rll_rho_one v hov, mul_one]
 
 /- English proof (translation)
-Establish `hx : x.1 ∈ Formalism.L2.Herm.locL v (rll_dLat n (star pE))`. Rewrite using `[← rll_dualV_eq hc n v h]`. Conclude with `x.2`. Rewrite `hx` using `[rll_mem_loc_dLat n v _ h.star_ne_zero]`. Rewrite using `[rll_baseKer_eq n h, rll_mem_loc_dLat n v _ (div_ne_zero h.star_ne_zero h.coe_ne_zero)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e0 : ιv (star pE / pE) * x.1 (lastIdx n) = ιv pE⁻¹ * (ιv (star pE) * x.1 (lastIdx n))`. Rewrite using `[← mul_assoc, ← map_mul, div_eq_inv_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Take `⟨w, hw, e⟩` from `rll_rho_eq_zero v h huniq _ h0`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hx.1, ?_⟩` and prove the remaining obligations. Establish `e' : ιv (star pE) * x.1 (lastIdx n) = ιv pE * w` using `e`. Rewrite using `[e0, e', rll_pinv_mul v h]`. Conclude with `hw`. Introduce and unpack `⟨_, h2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1 : (⟨_, rll_last_mem hc n v h x⟩ : 𝒪v) = ⟨ιv pE * ((⟨_, h2⟩ : 𝒪v) : Rv), mul_mem (rll_incl_int v π) h2⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ιv (star pE) * x.1 (lastIdx n) = ιv pE * (ιv (star pE / pE) * x.1 (lastIdx n))`. Rewrite using `[e0, rll_p_mul_pinv v h]`. Use `show rll_rho v P _ = 0`.
-
-Rewrite using `[e1, rll_rho_incl_mul, Ideal.Quotient.eq_zero_iff_mem.2 (h.mem hP), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rll_psi_ker {P : Pl E} (hP : P ∈ ST) (huniq : ∀ Q ∈ ST, IsOver v Q → Q = P) (x : baseDualV hc n ST v) :
     rll_psi hc n v h P x = 0 ↔ x.1 ∈ Formalism.L2.Herm.locL v (baseKer E n ST) := by
@@ -266,9 +260,9 @@ theorem rll_psi_ker {P : Pl E} (hP : P ∈ ST) (huniq : ∀ Q ∈ ST, IsOver v Q
     rw [e1, rll_rho_incl_mul, Ideal.Quotient.eq_zero_iff_mem.2 (h.mem hP), zero_mul]
 
 /- English proof (translation)
-Use `set p := (Formalism.UG.latS (F := F) (v.adicCompletion F) (Formalism.BasicNotions.intV E v) (baseKer E n ST)).comap (baseDualV hc n ST v).subtype with hp`. Establish `e : p.toAddSubgroup = (rll_psi hc n v h P).ker`. Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, rll_psi_ker hc n v h hP huniq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem fMod_card {P : Pl E} (hP : P ∈ ST) (hov : IsOver v P) (huniq : ∀ Q ∈ ST, IsOver v Q → Q = P) :
     Nat.card (fMod hc n ST v) = Nat.card (𝓞 E ⧸ P.asIdeal) := by

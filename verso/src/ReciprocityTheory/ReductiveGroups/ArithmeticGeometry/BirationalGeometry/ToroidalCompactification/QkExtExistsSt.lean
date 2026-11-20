@@ -24,11 +24,11 @@ def LevelSpanBSt : Prop :=
         QkExt (algebraMap (FractionRing k) F) (a.eta v) q₀ ∧ z = q₀.g.b})
 
 /- English proof (translation)
-Establish `h1 : (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.coprime]`. Conclude with `Submodule.mem_top`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.mp h1`. Establish `hle : l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ≤ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `Ideal.mul_le_right (I := l.Mb) (J := l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[l.prod]`. Establish `hM : (l.M : 𝓞 E) ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `SetLike.le_def.mp hle (Ideal.subset_span (Set.mem_singleton _))`. Establish `hua : u • a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) N)`. Take `⟨b, -, hb⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp (ha u hu)`. Rewrite using `[← hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem_smul hM Submodule.mem_top`. Establish `hva : v • a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) N)` using `Submodule.smul_mem_smul hv Submodule.mem_top`. Establish `key` using `Submodule.add_mem _ hua hva`. Rewrite `key` using `[← add_smul, huv, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coverAlg {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (l : Level H) (N : Type)
     [AddCommGroup N] [Module (𝓞 E) N] (a : N)

@@ -18,7 +18,7 @@ def Stable (M : Set G) : Prop := ∀ u ∈ U, ∀ y, y * u ∈ M ↔ y ∈ M
 variable {U ω}
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul U y`. Unfold `cs`. Rewrite using `[hu, Set.indicator_apply, Set.indicator_apply, map_mul, hω u u.2, mul_one]`. Simplify using `only [hM u u.2 y]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cs_mk (hω : ∀ u ∈ U, ω u = 1) {M : Set G} (hM : Stable U M) (y : G) :
     cs U ω M (QuotientGroup.mk y) = M.indicator ω y := by
@@ -29,9 +29,9 @@ theorem cs_mk (hω : ∀ u ∈ U, ω u = 1) {M : Set G} (hM : Stable U M) (y : G
   simp only [hM u u.2 y]
 
 /- English proof (translation)
-Establish `hM' : Stable U {y | π⁻¹ * y ∈ M}` using `fun u hu y => by`. Simplify using `only [Set.mem_setOf_eq, ← mul_assoc]`. Conclude with `hM u hu _`. Rewrite using `[← (Equiv.mulLeft (QuotientGroup.mk π : G ⧸ U)).tsum_eq, ← tsum_mul_left]`. Use `tsum_congr fun z => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective z`. Use `show cs U ω _ (QuotientGroup.mk (π * y)) = _`. Rewrite using `[cs_mk hω hM', cs_mk hω hM, Set.indicator_apply, Set.indicator_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tsum_translate (hω : ∀ u ∈ U, ω u = 1) {M : Set G} (hM : Stable U M) (π : G) :
     ∑' z, cs U ω {y | π⁻¹ * y ∈ M} z = ω π * ∑' z, cs U ω M z := by
@@ -46,16 +46,16 @@ theorem tsum_translate (hω : ∀ u ∈ U, ω u = 1) {M : Set G} (hM : Stable U 
   simp
 
 /- English proof (translation)
-Use `Summable.of_norm_bounded hB.norm fun z => ?_` and prove the remaining obligations. Conclude with `norm_indicator_le_of_subset h _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem summable_mono {B M : Set G} (hB : Summable (cs U ω B)) (h : M ⊆ B) : Summable (cs U ω M) := by
   refine Summable.of_norm_bounded hB.norm fun z => ?_
   exact norm_indicator_le_of_subset h _ _
 
 /- English proof (translation)
-Rewrite using `[← tsum_translate hω hM', ← (summable_mono hB (h₁.trans h)).tsum_add (summable_mono (M := {y | π⁻¹ * y ∈ M'}) hB (fun y hy => h ((hπ y).1 hy).1))]`. Use `tsum_congr fun z => ?_` and prove the remaining obligations. Simplify using `only [cs, Set.indicator_apply, Set.mem_setOf_eq, hπ]`. Distinguish the cases in `a : z.out ∈ M₁`. Simplify using `[a, h₁ a]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[a]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tsum_split (hω : ∀ u ∈ U, ω u = 1) {B M M₁ M' : Set G} (hB : Summable (cs U ω B)) (h : M ⊆ B) (h₁ : M₁ ⊆ M)
     (hM' : Stable U M') (π : G) (hπ : ∀ y, π⁻¹ * y ∈ M' ↔ y ∈ M ∧ y ∉ M₁) :
@@ -70,7 +70,7 @@ theorem tsum_split (hω : ∀ u ∈ U, ω u = 1) {B M M₁ M' : Set G} (hB : Sum
   · simp [a]
 
 /- English proof (translation)
-Establish `h1` using `tsum_translate hω hM u`. Establish `h2 : {y | u⁻¹ * y ∈ M} = M` using `Set.ext h`. Rewrite `h1` using `[h2]`. Establish `h3 : (ω u - 1) * ∑' z, cs U ω M z = 0` using `by linear_combination -h1`. Conclude with `(mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tsum_zero_of (hω : ∀ u ∈ U, ω u = 1) {M : Set G} (hM : Stable U M) (u : G) (hu : ω u ≠ 1)
     (h : ∀ y, u⁻¹ * y ∈ M ↔ y ∈ M) : ∑' z, cs U ω M z = 0 := by
@@ -81,11 +81,11 @@ theorem tsum_zero_of (hω : ∀ u ∈ U, ω u = 1) {M : Set G} (hM : Stable U M)
   exact (mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hu)
 
 /- English proof (translation)
-Establish `h3 : ∑ r ∈ R, ∑' z, cs U ω {y | (g r)⁻¹ * y ∈ M} z = R.card * ∑' z, cs U ω M z`. Rewrite using `[Finset.sum_congr rfl fun r hr => (tsum_translate hω hM (g r)).trans (by rw [hg r hr, one_mul])]`. Simplify using the standard rewrite rules. Rewrite using `[← h3, ← Summable.tsum_finsetSum fun r hr => summable_mono (M := {y | (g r)⁻¹ * y ∈ M}) hB (fun y hy => h (h2 r hr y hy))]`. Use `tsum_congr fun z => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [cs, Set.indicator_apply, Set.mem_setOf_eq]`. Distinguish the cases in `a : z.out ∈ M'`. Take `⟨r, ⟨hr, hr'⟩, hu⟩` from `h1 _ a`. Rewrite using `[if_pos a, Finset.sum_eq_single r, if_pos hr']`. Introduce `b hb hne`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `if_neg fun hh => hne (hu b ⟨hb, hh⟩)`. Conclude with `fun hh => absurd hr hh`. Rewrite using `[if_neg a]`. Conclude with `(Finset.sum_eq_zero fun r hr => if_neg fun hh => a (h2 r hr _ hh)).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_fin (hω : ∀ u ∈ U, ω u = 1) {B M M' : Set G} (hB : Summable (cs U ω B)) (h : M' ⊆ B) (hM : Stable U M)
     {ι : Type} (R : Finset ι) (g : ι → G) (hg : ∀ r ∈ R, ω (g r) = 1)
@@ -109,11 +109,11 @@ theorem tsum_fin (hω : ∀ u ∈ U, ω u = 1) {B M M' : Set G} (hB : Summable (
     exact (Finset.sum_eq_zero fun r hr => if_neg fun hh => a (h2 r hr _ hh)).symm
 
 /- English proof (translation)
-Establish `h0 : ∑' z : G ⧸ U, (if z = 1 then (1 : ℂ) else 0) = 1` using `tsum_ite_eq _ _`. Rewrite using `[← h0]`. Use `tendsto_tsum_of_dominated_convergence hB.norm (fun z => ?_) (Eventually.of_forall fun s z => norm_indicator_le_of_subset (h s) _ _)` and prove the remaining obligations. Establish `h4 : z.out ∈ U ↔ z = 1` using `by rw [← QuotientGroup.eq_one_iff, QuotientGroup.out_eq']`. Distinguish the cases in `a : z = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos a]`. Use `tendsto_const_nhds.congr fun s => ?_` and prove the remaining obligations. Rewrite using `[cs, Set.indicator_of_mem (h1 _ (h4.2 a) s), hω _ (h4.2 a)]`. Rewrite using `[if_neg a]`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [h2 _ (fun hh => a (h4.1 hh))] with s hs`. Rewrite using `[cs, Set.indicator_of_notMem hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_tsum_one (hω : ∀ u ∈ U, ω u = 1) {B : Set G} (hB : Summable (cs U ω B)) {ι : Type} (l : Filter ι)
     (M : ι → Set G) (h : ∀ s, M s ⊆ B) (h1 : ∀ y ∈ U, ∀ s, y ∈ M s) (h2 : ∀ y ∉ U, ∀ᶠ s in l, y ∉ M s) :
@@ -134,11 +134,11 @@ theorem tendsto_tsum_one (hω : ∀ u ∈ U, ω u = 1) {B : Set G} (hB : Summabl
     rw [cs, Set.indicator_of_notMem hs]
 
 /- English proof (translation)
-Establish `h1 : cs U ω M = Set.indicator {z : G ⧸ U | ∃ y : G, (QuotientGroup.mk y : G ⧸ U) = z ∧ y ∈ M} fun z => ω z.out`. Use function extensionality and compare the values at `z`. Establish `: z.out ∈ M ↔ ∃ y : G, (QuotientGroup.mk y : G ⧸ U) = z ∧ y ∈ M`. Use `⟨fun h => ⟨_, QuotientGroup.out_eq' z, h⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl, hy⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul U y`. Rewrite using `[hu]`. Conclude with `(hM u u.2 y).2 hy`. Simplify using `only [cs, Set.indicator_apply, Set.mem_setOf_eq, this]`. Establish `h2` using `hs.hasSum`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1]`. Rewrite using `[h1]`. Conclude with `hasSum_subtype_iff_indicator.2 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_classes {M : Set G} (hM : Stable U M) (hs : Summable (cs U ω M)) :
     HasSum (fun z : {z : G ⧸ U // ∃ y : G, (QuotientGroup.mk y : G ⧸ U) = z ∧ y ∈ M} => ω z.1.out) (∑' z, cs U ω M z) := by
@@ -168,7 +168,7 @@ namespace GlobalTheory.CMVal.Euler
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Unfold `modF`. Simplify using `[h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem modF_unit {y : (Af E)ˣ} (h : ∀ w, Valued.v ((y : Af E) w) = 1) : modF y = 1 := by
   unfold modF
@@ -188,14 +188,14 @@ Both sides reduce to the same expression.
 theorem omega_apply (χ : HChar E) (S : ℂ) (y : (Af E)ˣ) : omega χ S y = (finPart χ y : ℂ) * ((modF y : ℝ) : ℂ) ^ S := rfl
 
 /- English proof (translation)
-Rewrite using `[omega_apply, modF_unit h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem omega_unit (χ : HChar E) (S : ℂ) {y : (Af E)ˣ} (h : ∀ w, Valued.v ((y : Af E) w) = 1) :
     omega χ S y = finPart χ y := by
   rw [omega_apply, modF_unit h]; simp
 
 /- English proof (translation)
-Rewrite using `[omega_apply, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos (IdeleModule.modF_pos y)]`. Establish `: ‖(finPart χ y : ℂ)‖ = 1` using `h _`. Rewrite using `[this, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_omega {χ : HChar E} (h : IsUnitary χ) (S : ℂ) (y : (Af E)ˣ) : ‖omega χ S y‖ = modF y ^ S.re := by
   rw [omega_apply, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos (IdeleModule.modF_pos y)]
@@ -203,21 +203,21 @@ theorem norm_omega {χ : HChar E} (h : IsUnitary χ) (S : ℂ) (y : (Af E)ˣ) : 
   rw [this, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Complex.ofReal_inv, Complex.ofReal_natCast, Complex.inv_cpow _ _ (by rw [Complex.natCast_arg]; exact Real.pi_ne_zero.symm), Complex.cpow_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_natCast_cpow (N : ℕ) (S : ℂ) : ((((N : ℝ)⁻¹ : ℝ)) : ℂ) ^ S = (N : ℂ) ^ (-S) := by
   rw [Complex.ofReal_inv, Complex.ofReal_natCast, Complex.inv_cpow _ _ (by rw [Complex.natCast_arg]; exact Real.pi_ne_zero.symm),
     Complex.cpow_neg]
 
 /- English proof (translation)
-Rewrite using `[omega_apply, finPart_unifAt, modF_unifAt, inv_natCast_cpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem omega_unifAt (χ : HChar E) (S : ℂ) (w : HeightOneSpectrum (𝓞 E)) :
     omega χ S (unifAt w) = (val χ w : ℂ) * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-S) := by
   rw [omega_apply, finPart_unifAt, modF_unifAt, inv_natCast_cpow]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `norm_omega h S (unifAt w)`. Rewrite `h1` using `[← sub_eq_zero.1 h0, norm_one, modF_unifAt]`. Establish `h2 : (1 : ℝ) < ((Ideal.absNorm w.asIdeal : ℕ) : ℝ)` using `by exact_mod_cast NumberField.HeightOneSpectrum.one_lt_absNorm w`. Conclude with `(Real.rpow_lt_one (by positivity) (inv_lt_one_of_one_lt₀ h2) hS).ne' h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_sub_omega_ne {χ : HChar E} (h : IsUnitary χ) {S : ℂ} (hS : 0 < S.re) (w : HeightOneSpectrum (𝓞 E)) :
     1 - omega χ S (unifAt w) ≠ 0 := by
@@ -233,32 +233,32 @@ def MS (m : HeightOneSpectrum (OF E) → ℕ) (T : Finset (HeightOneSpectrum (�
   {y | (∀ v, LocIn (m v) v (y : Af E)) ∧ ∀ w ∈ T, Valued.v ((y : Af E) w) = 1}
 
 /- English proof (translation)
-Introduce `_ hy w` and use `(hy.1 _).val_le (over_under w)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MS_subset (m : HeightOneSpectrum (OF E) → ℕ) (T : Finset (HeightOneSpectrum (𝓞 E))) : MS m T ⊆ intI :=
   fun _ hy w => (hy.1 _).val_le (over_under w)
 
 /- English proof (translation)
-Introduce `_ hy` and use `⟨hy.1, fun w hw => hy.2 w (h hw)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem MS_anti (m : HeightOneSpectrum (OF E) → ℕ) {T T' : Finset (HeightOneSpectrum (𝓞 E))} (h : T ⊆ T') : MS m T' ⊆ MS m T :=
   fun _ hy => ⟨hy.1, fun w hw => hy.2 w (h hw)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun v => (hy.1 v).mul (hu v), fun w hw => by rw [Units.val_mul, mul_coord, map_mul, hy.2 w hw, hu' w, one_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mul_mem_MS {m : HeightOneSpectrum (OF E) → ℕ} {T : Finset (HeightOneSpectrum (𝓞 E))} {u y : (Af E)ˣ}
     (hu : ∀ v, LocIn (m v) v (u : Af E)) (hu' : ∀ w, Valued.v ((u : Af E) w) = 1) (hy : y ∈ MS m T) : y * u ∈ MS m T :=
   ⟨fun v => (hy.1 v).mul (hu v), fun w hw => by rw [Units.val_mul, mul_coord, map_mul, hy.2 w hw, hu' w, one_mul]⟩
 
 /- English proof (translation)
-Rewrite using `[inv_coord, map_inv₀, hu', inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_inv_one {u : (Af E)ˣ} (hu' : ∀ w, Valued.v ((u : Af E) w) = 1) (w : HeightOneSpectrum (𝓞 E)) :
     Valued.v (((u⁻¹ : (Af E)ˣ) : Af E) w) = 1 := by rw [inv_coord, map_inv₀, hu', inv_one]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, mul_mem_MS hu hu'⟩` and prove the remaining obligations. Use `mul_mem_MS (u := u⁻¹) (fun v => (hu v).inv fun P _ => hu' P) (val_inv_one hu') h` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_mem_MS_iff {m : HeightOneSpectrum (OF E) → ℕ} {T : Finset (HeightOneSpectrum (𝓞 E))} {u : (Af E)ˣ}
     (hu : ∀ v, LocIn (m v) v (u : Af E)) (hu' : ∀ w, Valued.v ((u : Af E) w) = 1) (y : (Af E)ˣ) :
@@ -268,29 +268,29 @@ theorem mul_mem_MS_iff {m : HeightOneSpectrum (OF E) → ℕ} {T : Finset (Heigh
   rwa [mul_inv_cancel_right] at this
 
 /- English proof (translation)
-Introduce `_ hu` and use `mul_mem_MS_iff (fun v => (locIn_of_mem_hatO hu.1 v).mono (hm v)) (OrderUnits.val_eq_one hu)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stable_MS {c : Ideal (OF E)} {m : HeightOneSpectrum (OF E) → ℕ} (hm : ∀ v, m v ≤ expIn c v)
     (T : Finset (HeightOneSpectrum (𝓞 E))) : Stable (hatOUnits c) (MS m T) := fun _ hu =>
   mul_mem_MS_iff (fun v => (locIn_of_mem_hatO hu.1 v).mono (hm v)) (OrderUnits.val_eq_one hu)
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, mul_coord, inv_coord, h, inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_coord {π : (Af E)ˣ} (y : (Af E)ˣ) {w : HeightOneSpectrum (𝓞 E)} (h : (π : Af E) w = 1) :
     ((π⁻¹ * y : (Af E)ˣ) : Af E) w = (y : Af E) w := by
   rw [Units.val_mul, mul_coord, inv_coord, h, inv_one, one_mul]
 
 /- English proof (translation)
-Introduce `h'` and use `hne (((over_iff_under _ _).1 h).symm.trans ((over_iff_under _ _).1 h'))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_over {w : HeightOneSpectrum (𝓞 E)} {v v' : HeightOneSpectrum (OF E)} (h : Over w v') (hne : v' ≠ v) : ¬ Over w v :=
   fun h' => hne (((over_iff_under _ _).1 h).symm.trans ((over_iff_under _ _).1 h'))
 
 /- English proof (translation)
-Establish `key : ∀ v' ≠ v, LocIn (m' v') v' ((π⁻¹ * y : (Af E)ˣ) : Af E) ↔ LocIn (m v') v' (y : Af E)` using `fun v' hv' => by`. Rewrite using `[hm v' hv']`. Conclude with `locIn_congr fun P hP => shift_coord y (hπ P (not_over hP hv'))`. Use `⟨fun h => ⟨h v, fun v' hv' => (key v' hv').1 (h v')⟩, fun h v' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv' : v' = v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv']`. Conclude with `h.1`. Conclude with `(key v' hv').2 (h.2 v' hv')`.
+A detailed English derivation is pending.
 -/
 theorem forall_locIn_shift {m m' : HeightOneSpectrum (OF E) → ℕ} {v : HeightOneSpectrum (OF E)} (hm : ∀ v' ≠ v, m' v' = m v')
     {π : (Af E)ˣ} (hπ : ∀ w, ¬ Over w v → (π : Af E) w = 1) (y : (Af E)ˣ) :
@@ -305,7 +305,7 @@ theorem forall_locIn_shift {m m' : HeightOneSpectrum (OF E) → ℕ} {v : Height
   · exact (key v' hv').2 (h.2 v' hv')
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h v, fun v' _ => h v'⟩, fun h v' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv' : v' = v`. Rewrite using `[hv']`. Conclude with `h.1`. Conclude with `h.2 v' hv'`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem forall_locIn_iff (m : HeightOneSpectrum (OF E) → ℕ) (v : HeightOneSpectrum (OF E)) (y : Af E) :
     (∀ v', LocIn (m v') v' y) ↔ LocIn (m v) v y ∧ ∀ v' ≠ v, LocIn (m v') v' y := by
@@ -315,14 +315,14 @@ theorem forall_locIn_iff (m : HeightOneSpectrum (OF E) → ℕ) (v : HeightOneSp
   · exact h.2 v' hv'
 
 /- English proof (translation)
-The claim follows from `suppAt_single P x w fun h => hw (h ▸ hP)`.
+A detailed English derivation is pending.
 -/
 theorem single_off {v : HeightOneSpectrum (OF E)} {P : HeightOneSpectrum (𝓞 E)} (hP : Over P v) (x : (P.adicCompletion E)ˣ)
     (w : HeightOneSpectrum (𝓞 E)) (hw : ¬ Over w v) : (single P x : Af E) w = 1 :=
   suppAt_single P x w fun h => hw (h ▸ hP)
 
 /- English proof (translation)
-Distinguish the cases in `h : w = P`. Substitute `h` using the available equality. Rewrite using `[single_self, hx]`. Rewrite using `[suppAt_single P x w h, map_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_single {P : HeightOneSpectrum (𝓞 E)} {x : (P.adicCompletion E)ˣ} (hx : Valued.v (x : P.adicCompletion E) = 1)
     (w : HeightOneSpectrum (𝓞 E)) : Valued.v ((single P x : Af E) w) = 1 := by
@@ -333,15 +333,15 @@ theorem val_single {P : HeightOneSpectrum (𝓞 E)} {x : (P.adicCompletion E)ˣ}
 open Classical in
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `unifAt_spec w`. Establish `hT : (∀ w' ∈ T, Valued.v ((((unifAt w)⁻¹ * y : (Af E)ˣ) : Af E) w') = 1) ↔ ∀ w' ∈ T, Valued.v ((y : Af E) w') = 1` using `forall₂_congr fun w' hw' => by rw [shift_coord y (h1 w' fun h => hw (h ▸ hw'))]`. Establish `hw1 : Valued.v ((((unifAt w)⁻¹ * y : (Af E)ˣ) : Af E) w) ≤ 1 ↔ Valued.v ((y : Af E) w) ≤ 1 ∧ Valued.v ((y : Af E) w) ≠ 1`. Rewrite using `[Units.val_mul, mul_coord, inv_coord, map_mul, map_inv₀, h2, ← WithZero.exp_log (IdeleModule.coord_ne y w), ← WithZero.exp_neg, ← WithZero.exp_add, ← WithZero.exp_zero, Ne, WithZero.exp_le_exp, WithZero.exp_le_exp, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hL : LocIn 0 (w.under (OF E)) (((unifAt w)⁻¹ * y : (Af E)ˣ) : Af E) ↔ LocIn 0 (w.under (OF E)) (y : Af E) ∧ Valued.v ((y : Af E) w) ≠ 1`. Rewrite using `[locIn_zero_iff, locIn_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun P hP => ?_, (hw1.1 (h w (over_under w))).2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hPw : P = w`. Substitute `hPw` using the available equality. Conclude with `(hw1.1 (h P hP)).1`. Rewrite using `[← shift_coord y (h1 P hPw)]`. Conclude with `h P hP`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `⟨h, h'⟩ P hP`. Distinguish the cases in `hPw : P = w`. Substitute `hPw` using the available equality. Conclude with `hw1.2 ⟨h P hP, h'⟩`. Rewrite using `[shift_coord y (h1 P hPw)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 
-Conclude with `h P hP`. Simplify using `only [MS, Set.mem_setOf_eq, Finset.forall_mem_insert]`. Rewrite using `[hT, forall_locIn_shift (m := m) (v := w.under (OF E)) (fun _ _ => rfl) (fun w' hw' => h1 w' fun h => hw' (h ▸ over_under w)), forall_locIn_iff m (w.under (OF E)), hm, hL]`. The claim follows by propositional logic.
+A detailed English derivation is pending.
 -/
 theorem unif_shift {m : HeightOneSpectrum (OF E) → ℕ} {T : Finset (HeightOneSpectrum (𝓞 E))} {w : HeightOneSpectrum (𝓞 E)}
     (hm : m (w.under (OF E)) = 0) (hw : w ∉ T) (y : (Af E)ˣ) :

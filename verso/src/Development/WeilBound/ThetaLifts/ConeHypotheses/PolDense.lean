@@ -64,13 +64,13 @@ def LocA' : Prop :=
           charL X.ν (X.S₀ : Set (Pl F)) (((b + 2 - a') / 2 : ℕ) : ℂ)) • e' Φ')
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf m q _` and use `h F E σ B a a' G X om om' R Rf m q`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem endB'_of (h : EndB) : EndB' := fun F E _ _ _ _ _ σ B a a' G X om om' R Rf m q _ =>
   h F E σ B a a' G X om om' R Rf m q
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf m q p _` and use `h F E σ B a a' G X om om' R Rf m q p`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem endA'_of (h : EndA) : EndA' := fun F E _ _ _ _ _ σ B a a' G X om om' R Rf m q p _ =>
   h F E σ B a a' G X om om' R Rf m q p

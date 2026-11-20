@@ -12,27 +12,25 @@ noncomputable section
 namespace Formalism.AtG
 
 /- English proof (translation)
-Distinguish the cases in `hm : m = 0`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules. Set `vx : W → ((Fin m × Fin m) × Bool) × (Bool ⊕ (Fin 4 × ℤ × Bool)) → ℝ` to `fun w x => match x.2 with`. Consider the case `Sum.inl false => vA w x.1.1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Treat this case separately.
 
-Consider the case `Sum.inl true => vA' w x.1.1`. Consider the case `Sum.inr (_, s, false) => vT w x.1.1 s`. Consider the case `Sum.inr (_, s, true) => vTd w x.1.1 x.1.2 s`. Set `XX : Fin m × Fin m → Bool → Finset (((Fin m × Fin m) × Bool) × (Bool ⊕ (Fin 4 × ℤ × Bool)))` to `fun ij b => ({(ij, b)} : Finset ((Fin m × Fin m) × Bool)) ×ˢ ((Finset.univ : Finset Bool).disjSum ((Finset.univ : Finset (Fin 4)) ×ˢ (Icc (1 : ℤ) (hh ij) ×ˢ (Finset.univ : Finset Bool))))`. Establish `hB0 : 0 ≤ B`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ij : Fin m × Fin m` using `(⟨0, by omega⟩, ⟨0, by omega⟩)`. Simplify using `using hA ij ∅`. Establish `hsumXX : ∀ w ij b, ∑ x ∈ XX ij b, |vx w x| = |vA w ij| + |vA' w ij| + 4 * (∑ s ∈ Icc (1 : ℤ) (hh ij), (|vT w ij s| + |vTd w ij b s|))`. Introduce `w ij b`. Simplify using `only [XX, sum_product, sum_singleton, sum_disjSum, Fintype.sum_bool, vx, sum_const, card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Establish `: ∑ s ∈ Icc (1 : ℤ) (hh ij), (|vTd w ij b s| + |vT w ij s|) = ∑ s ∈ Icc (1 : ℤ) (hh ij), (|vT w ij s| + |vTd w ij b s|)` using `sum_congr rfl (fun s _ => add_comm _ _)`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcardXX : ∀ ij b, (XX ij b).card ≤ 2 + 8 * N`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `ij b`. Simplify using `only [XX, card_product, card_singleton, card_disjSum, card_univ, Fintype.card_bool, Fintype.card_fin, Int.card_Icc]`. Establish `h1` using `hdh ij`. Establish `h2` using `hdd ij`. Establish `: ((hh ij : ℤ) + 1 - 1).toNat = hh ij` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use linear arithmetic over natural numbers and integers. Establish `key` using `Formalism.ValuationGridEstimates.grid_index_bound W _ S m N lam δ ell N0 vr vx XX ch dd hh yy S0 cc ee qq vq (fun _ => B) BN Bδ W0 hlam hδ hN0 hvq hprime hfib hdh hdd hyy hcc (by`. Introduce `w hw ij`. Rewrite using `[hsumXX]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `hsq w hw ij` as an intermediate fact. Use the proof step `linarith)`. Use the proof step `(by`. Introduce and unpack `⟨⟨ij, b⟩, (t | ⟨k, s, t⟩)⟩ F`. Consider the cases of `t`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Conclude with `hA ij F`. Conclude with `hA' ij F`. Consider the cases of `t`. Conclude with `hT ij s F`. Conclude with `hTd ij b s F)`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hBN hBδ hq`. Establish `hX : ∑ ij : Fin m × Fin m, ∑ b : Bool, ∑ _x ∈ XX ij b, B ≤ (m : ℝ) ^ 2 * (2 * (2 + 8 * N) * B)`. Combine the equalities or inequalities in the displayed calculation. Apply `sum_le_sum` to reduce the goal to its premises. Introduce `ij _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Apply `sum_le_sum` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[sum_const, nsmul_eq_mul]`. Apply `mul_le_mul_of_nonneg_right _ hB0` to reduce the goal to its premises. Conclude with `hcardXX ij b` after adjusting the coercions.
-
-Use `_ = _ := by`. Simplify using `only [sum_const, card_univ, Fintype.card_prod, Fintype.card_fin, Fintype.card_bool, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem grid_squares_index_estimate (W S : Type) (m N : ℕ) (lam δ : W → ℝ) (ell : W → ℕ)
     (N0 : Fin m × Fin m → ℤ → ℕ → ℝ)
@@ -126,59 +124,53 @@ theorem grid_squares_index_estimate (W S : Type) (m N : ℕ) (lam δ : W → ℝ
   linarith
 
 /- English proof (translation)
-Introduce `K _ _ _ _ Sq m N dl S Se N0 rr zA zA' zT zTd gT ch dd hh yy S0 cc ee qq B BN0 Bδ W0 hdl hS hN0 hSe hrr hdd hddN hyy hcc hsq hA hT hTd hBN00 hBN0 hBδ`. Take `⟨ell, hell⟩` from `grid_ell_bound K`. Establish `he : ∀ w : Pl K, (0 : ℝ) < (vw w (ell w : K) : ℝ)`. Introduce `w`. Use `(hell w).2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `Formalism.DivisionValues.PlOver at this`. Conclude with `this` after adjusting the coercions. Establish `hlam : ∀ (w : Pl K) (t : ℝ), lw w * (vw w (ell w : K) : ℝ) * (t / (vw w (ell w : K) : ℝ)) = lw w * t`. Introduce `w t`. Use `(he w).ne'` as an intermediate fact.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `habs : ∀ (w : Pl K) (t : ℝ), |t / (vw w (ell w : K) : ℝ)| = |t| / (vw w (ell w : K) : ℝ)`. Introduce `w t`. Rewrite using `[abs_div, abs_of_pos (he w)]`. Take `⟨N1, hN1⟩ : ∃ f : Fin m × Fin m → ℤ → ℕ → ℝ, ∀ ij s l, f ij s l = if 1 ≤ s ∧ s ≤ (hh ij : ℤ) ∧ l ∈ S then N0 ij s l else 0` from `⟨_, fun _ _ _ => rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN1in : ∀ ij (s : ℤ) l, 1 ≤ s → s ≤ (hh ij : ℤ) → l ∈ S → N1 ij s l = N0 ij s l`. Introduce `ij s l a1 a2 a3`. Rewrite using `[hN1, if_pos ⟨a1, a2, a3⟩]`. Establish `hN1S : ∀ ij (s : ℤ) l, l ∉ S → N1 ij s l = 0`. Introduce `ij s l a3`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN1, if_neg (fun h => a3 h.2.2)]`. Establish `hN1s : ∀ ij (s : ℤ) l, ¬ (1 ≤ s ∧ s ≤ (hh ij : ℤ)) → N1 ij s l = 0`. Introduce `ij s l a3`. Rewrite using `[hN1, if_neg (fun h => a3 ⟨h.1, h.2.1⟩)]`. Establish `hN1nn : ∀ ij s l, 0 ≤ N1 ij s l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ij s l`. Rewrite using `[hN1]`. Use `split_ifs with h`. Conclude with `hN0 ij s h.1 h.2.1 l h.2.2`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbud : ∀ ij (s : ℤ) (P : Finset ℕ), (∀ l ∈ P, l.Prime) → ∑ l ∈ P, N1 ij s l * Real.log l ≤ BN0`. Introduce `ij s P _`. Distinguish the cases in `hs : 1 ≤ s ∧ s ≤ (hh ij : ℤ)`. Use `le_trans ?_ (hBN0 ij s hs.1 hs.2)` and prove the remaining obligations. Establish `h1 : ∑ l ∈ P, N1 ij s l * Real.log l = ∑ l ∈ P.filter (· ∈ S), N0 ij s l * Real.log l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.sum_filter]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Distinguish the cases in `hl : l ∈ S`. Rewrite using `[if_pos hl, hN1in ij s l hs.1 hs.2 hl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg hl, hN1S ij s l hl, zero_mul]`. Rewrite using `[h1]`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `l hl`. Conclude with `(Finset.mem_filter.1 hl).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `l hl _`. Conclude with `mul_nonneg (hN0 ij s hs.1 hs.2 l hl) (Real.log_natCast_nonneg l)`. Use `le_trans (le_of_eq ?_) hBN00` and prove the remaining obligations. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN1s ij s l hs, zero_mul]`. Establish `key` using `grid_squares_index_estimate (Pl K) Sq m N (fun w => lw w * (vw w (ell w : K) : ℝ)) (fun w => dl w / (vw w (ell w : K) : ℝ)) ell N1 (fun w ij => (vw w (rr w ij) : ℝ) / (vw w (ell w : K) : ℝ)) (fun w ij => (vw w (zA ij) : ℝ) / (vw w (ell w : K) : ℝ)) (fun w ij => (vw w (zA' ij) : ℝ …`. Use `le_trans (le_of_eq ?_) (partial_nat K l F)` and prove the remaining obligations. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hF w hw])`. Use `hdd hddN hyy hcc`. Use the proof step `(fun w hw ij => by`. Establish `hE` using `he w`. Establish `h0` using `hsq w hw ij`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hs3 : ∑ s ∈ Icc (1 : ℤ) (hh ij), wt S (N0 ij s) w = (∑ s ∈ Icc (1 : ℤ) (hh ij), N1 ij s (ell w)) * (vw w (ell w : K) : ℝ)`. Rewrite using `[Finset.sum_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s hs`. Rewrite `hs` using `[Finset.mem_Icc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[j3Wt K ell hell S (N0 ij s) hS w]`. Distinguish the cases in `hl : ell w ∈ S`. Rewrite using `[if_pos hl, hN1in ij s _ hs.1 hs.2 hl]`. Rewrite using `[if_neg hl, hN1S ij s _ hl]`. Rewrite `h0` using `[hs3, j3Wt K ell hell Se (fun l => 1 / (l : ℝ) ^ 2) hSe w]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [habs]`. Establish `hs1 : ∑ s ∈ Icc (1 : ℤ) (hh ij), (|((vw w (zT ij s) + gT ij s w : ℤ) : ℝ)| / (vw w (ell w : K) : ℝ) + |((vw w (zTd ij (ch w) s) + gT ij s w : ℤ) : ℝ)| / (vw w (ell w : K) : ℝ)) = (∑ s ∈ Icc (1 : ℤ) (hh ij), (|((vw w (zT ij s) + gT ij s w : ℤ) : ℝ)| + |((vw w (zTd ij (ch w) s) + g …`. Rewrite using `[Finset.sum_div]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hs2 : ∑ s ∈ S0, (cc s : ℝ) * ((vw w (qq s : K) : ℝ) / (vw w (ell w : K) : ℝ)) = (∑ s ∈ S0, (cc s : ℝ) * (vw w (qq s : K) : ℝ)) / (vw w (ell w : K) : ℝ)`. Rewrite using `[Finset.sum_div]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s _`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs1, hs2, div_le_iff₀ hE]`. Use `le_trans h0 ?_` and prove the remaining obligations. Generalize the expression as in `(∑ s ∈ Icc (1 : ℤ) (hh ij), (|((vw w (zT ij s) + gT ij s w : ℤ) : ℝ)| + |((vw w (zTd ij (ch w) s) + gT ij s w : ℤ) : ℝ)|)) = T1`. Generalize the expression as in `(∑ s ∈ S0, (cc s : ℝ) * (vw w (qq s : K) : ℝ)) = T2`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `(∑ s ∈ Icc (1 : ℤ) (hh ij), N1 ij s (ell w)) = T3`. Generalize the expression as in `(vw w (ell w : K) : ℝ) = E at hE ⊢`. Establish `hε : (if ell w ∈ Se then 1 / ((ell w : ℕ) : ℝ) ^ 2 else 0) ≤ (((ell w : ℕ) : ℝ) ^ 2)⁻¹` using `by split_ifs`. Rewrite using `[one_div]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hdd0 : (0 : ℝ) ≤ (dd ij : ℝ)` using `Nat.cast_nonneg _`. Establish `h5 : (dd ij : ℝ) * ((if ell w ∈ Se then 1 / ((ell w : ℕ) : ℝ) ^ 2 else 0) * E) ≤ (dd ij : ℝ) * ((((ell w : ℕ) : ℝ) ^ 2)⁻¹ * E)` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hε hE.le) hdd0`. Establish `h6 : (|(vw w (zA ij) : ℝ)| / E + |(vw w (zA' ij) : ℝ)| / E + 4 * (T1 / E) + 5 * T3 + (dd ij : ℝ) * (((ell w : ℕ) : ℝ) ^ 2)⁻¹ + 6 * (dl w / E) + (yy ij : ℝ) * (2 * (T2 / E))) * E = |(vw w (zA ij) : ℝ)| + |(vw w (zA' ij) : ℝ)| + 4 * T1 + 5 * (T3 * E) + (dd ij : ℝ) * ((((ell w : ℕ) …`. Use `hE.ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h6]`. Use the proof step `linarith)`. Use the proof step `(fun ij F => by`. Use `le_trans (le_of_eq ?_) (partial_ht (hA ij).1 F)` and prove the remaining obligations. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `w _`. Simplify using `only [habs, hlam, add_zero])`. Use the proof step `(fun ij F => by`. Use `le_trans (le_of_eq ?_) (partial_ht (hA ij).2 F)` and prove the remaining obligations. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w _`. Simplify using `only [habs, hlam, add_zero])`. Use the proof step `(fun ij s F => by`. Use `le_trans (le_of_eq ?_) (partial_ht (hT ij s) F)` and prove the remaining obligations. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `w _`. Simplify using `only [habs, hlam])`. Use the proof step `(fun ij b s F => by`. Use `le_trans (le_of_eq ?_) (partial_ht (hTd ij b s) F)` and prove the remaining obligations. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `w _`. Simplify using `only [habs, hlam])`. Use `hbud`. Use the proof step `(fun F => by`. Use `le_trans (le_of_eq ?_) (hBδ F)` and prove the remaining obligations.
-
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w _`. Simplify using `only [hlam])`. Use the proof step `(fun s _ F => by`. Use `le_trans (le_of_eq ?_) (partial_nat K (qq s) F)` and prove the remaining obligations.
-
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w _`. Simplify using `only [hlam])`. Unfold `gridBudgetIdx`. Use `le_trans (le_of_eq ?_) key` and prove the remaining obligations.
-
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w _`. Rewrite using `[Formalism.PairingDivisionLocalBalance.vw_prod w Finset.univ (fun ij => rr w ij) (fun ij _ => hrr w ij), ← Finset.sum_div, hlam]`. Use `push_cast`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gridHeightBoundIndexed : GridHeightBoundIndexed := by
   intro K _ _ _ _ Sq m N dl S Se N0 rr zA zA' zT zTd gT ch dd hh yy S0 cc ee qq B BN0 Bδ W0
@@ -356,7 +348,7 @@ theorem gridHeightBoundIndexed : GridHeightBoundIndexed := by
   rfl
 
 /- English proof (translation)
-Introduce `K W κ _ _ _ _ _ _ _ _ _ _ D hD XE kap b' X' hXE hkap hX' R M Ψ T a dF EM hInf BF p2 bb hR hM hM0 hΨ hincl hEM hh hBF Sq m N dl S Se N0 rr zA zA' zT zTd gT ch dd hh' yy S0 cc ee qq B BN0 Bδ ha hdl hS hN0 hSe hrr hdd hddN hyy hcc hsq hHA hHT hHTd hBN00 hBN0 hBδ hsize`. Establish `hg` using `gridHeightBoundIndexed K Sq m N dl S Se N0 rr zA zA' zT zTd gT ch dd hh' yy S0 cc ee qq B BN0 Bδ T hdl hS hN0 hSe hrr hdd hddN hyy hcc hsq hHA hHT hHTd hBN00 hBN0 hBδ`. Establish `h` using `grid_function_bound K W κ D hD XE kap b' X' hXE hkap hX' R M Ψ T a (fun w => ∏ ij, rr w ij) dF EM hInf (gridBudgetIdx m N B BN0 Bδ S0 ee qq) BF hR hM hM0 hΨ hincl ha hEM hh hg hBF`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem height_h0_index_bound : PassageSizeIndexed := by
   intro K W κ _ _ _ _ _ _ _ _ _ _ D hD XE kap b' X' hXE hkap hX' R M Ψ T a dF EM hInf BF p2 bb
@@ -369,11 +361,11 @@ theorem height_h0_index_bound : PassageSizeIndexed := by
   linarith
 
 /- English proof (translation)
-Establish `hone : ∀ w : Pl K, vw w (1 : K) = 0` using `fun w => (Formalism.DivisionValues.valuation_basic_properties K w).2.2.2.2.1`. Establish `hHt : HtLe (K` using `K) (fun _ => 0) 1 0 := by`. Unfold `Formalism.PairingDivisionLocalBalance.HtLe`. Simplify using `[hone]`. Use `gridHeightBoundIndexed K Empty 1 1 (fun _ => 0) {2} ∅ (fun _ _ _ => 1) (fun _ _ => 32) (fun _ => 1) (fun _ => 1) (fun _ _ => 1) (fun _ _ _ => 1) (fun _ _ _ => 0) (fun _ => false) (fun _ => 2) (fun _ => 1) (fun _ => 0) ∅ (fun _ => 0) (fun _ => 0) (fun _ => 0) 0 (Real.log 2) 0 W0 ( …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w _ ij`. Establish `vmul` using `(Formalism.DivisionValues.valuation_basic_properties K w).1`. Establish `h2 : (2 : K) ≠ 0` using `by norm_num`. Establish `h32 : vw w (32 : K) = 5 * vw w (2 : K)`. Establish `e : (32 : K) = 2 * (2 * (2 * (2 * 2)))` using `by norm_num`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, vmul _ _ h2 (by norm_num), vmul _ _ h2 (by norm_num), vmul _ _ h2 (by norm_num), vmul _ _ h2 h2]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hone, h32, Formalism.PairingDivisionLocalBalance.wt]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 example (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (W0 : Finset (Pl K)) :
     ∑ w ∈ W0, lw w * (vw w (∏ _ij : Fin 1 × Fin 1, (32 : K)) : ℝ) ≤

@@ -8,7 +8,7 @@ namespace LateralTheory.E.LZIdemPowProof
 variable {A K : Type} [CommRing A] [IsLocalRing A] [Field K] [Algebra A K]
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hy (fun r hr n hn => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem_smul hr (S.mul_mem hs hn)`. Rewrite using `[mul_add]`. Conclude with `add_mem hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_left_mem (S : Subalgebra A K) (I : Ideal A) {s y : K} (hs : s ∈ S)
     (hy : y ∈ I • Subalgebra.toSubmodule S) : s * y ∈ I • Subalgebra.toSubmodule S := by
@@ -18,14 +18,14 @@ theorem mul_left_mem (S : Subalgebra A K) (I : Ideal A) {s y : K} (hs : s ∈ S)
   · rw [mul_add]; exact add_mem hx hy
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `mul_left_mem S I hs hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_right_mem (S : Subalgebra A K) (I : Ideal A) {s y : K} (hs : s ∈ S)
     (hy : y ∈ I • Subalgebra.toSubmodule S) : y * s ∈ I • Subalgebra.toSubmodule S := by
   rw [mul_comm]; exact mul_left_mem S I hs hy
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hx (fun r hr n hn => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hr (mul_left_mem S J hn hy)`. Rewrite using `[add_mul]`. Conclude with `add_mem ha hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_mul (S : Subalgebra A K) (I J : Ideal A) {x y : K}
     (hx : x ∈ I • Subalgebra.toSubmodule S) (hy : y ∈ J • Subalgebra.toSubmodule S) :
@@ -36,13 +36,13 @@ theorem mul_mem_mul (S : Subalgebra A K) (I J : Ideal A) {x y : K}
   · rw [add_mul]; exact add_mem ha hb
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨x, hx, by simp, by simpa [mS] using hp⟩`. Consider the case `succ n ih`. Take `⟨y, hy, hyx, hyy⟩` from `ih`. Establish `hle : IsLocalRing.maximalIdeal A ^ (2 ^ n) ≤ IsLocalRing.maximalIdeal A` using `Ideal.pow_le_self (by positivity)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2y : y + y - 1 ∈ S` using `S.sub_mem (S.add_mem hy hy) S.one_mem`. Establish `hpS : y * y - y ∈ S` using `S.sub_mem (S.mul_mem hy hy) hy`. Use `⟨y - (y + y - 1) * (y * y - y), S.sub_mem hy (S.mul_mem h2y hpS), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show y - (y + y - 1) * (y * y - y) - x = (y - x) - (y + y - 1) * (y * y - y) by ring]`. Conclude with `sub_mem hyx (Submodule.smul_mono_left hle (mul_left_mem S _ h2y hyy))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (y * y - y) + (y * y - y) + (y * y - y) + (y * y - y) - 1 - 1 - 1 ∈ S` using `S.sub_mem (S.sub_mem (S.sub_mem (S.add_mem (S.add_mem (S.add_mem hpS hpS) hpS) hpS) S.one_mem) S.one_mem) S.one_mem`. Establish `hsq` using `mul_mem_mul S _ _ hyy hyy`. Rewrite `hsq` using `[← pow_add, ← two_mul, ← pow_succ']`. Use `mul_right_mem S _ h4 hsq` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lift_pow (S : Subalgebra A K) (x : K) (hx : x ∈ S) (hp : x * x - x ∈ mS S) (n : ℕ) :
     ∃ y ∈ S, y - x ∈ mS S ∧
@@ -68,23 +68,21 @@ theorem lift_pow (S : Subalgebra A K) (x : K) (hx : x ∈ S) (hp : x * x - x ∈
       ring
 
 /- English proof (translation)
-Introduce `A _ _ K _ _ B C t hc e f hp k`. Take `⟨he, hf, hee, hff, hef⟩` from `hp`. Take `⟨b, hb, hbe, hbb⟩` from `lift_pow B e he hee (k + 1)`. Take `⟨c, hcC, hcf, hcc⟩` from `lift_pow C f hf hff (k + 1)`. Establish `hBD : B ≤ AdjoinInv B t` using `fun x hx => Algebra.subset_adjoin (Or.inl hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hCD : C ≤ AdjoinInv B t`. Introduce `x hx`. Rewrite using `[hc.glue]`. Conclude with `Algebra.subset_adjoin (Or.inl hx)`. Establish `hbD : b ∈ AdjoinInv B t` using `hBD hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcD : c ∈ AdjoinInv B t` using `hCD hcC`. Establish `hmono : ∀ (I : Ideal A) (S : Subalgebra A K), S ≤ AdjoinInv B t → ∀ x, x ∈ I • Subalgebra.toSubmodule S → x ∈ I • Subalgebra.toSubmodule (AdjoinInv B t)` using `fun I S h x hx => Submodule.smul_mono (le_refl I) (fun y hy => h hy) hx`. Establish `hpow : IsLocalRing.maximalIdeal A ^ (2 ^ (k + 1)) ≤ IsLocalRing.maximalIdeal A ^ (k + 1)` using `Ideal.pow_le_pow_right (Nat.lt_two_pow_self).le`. Establish `hp : b * b - b ∈ (IsLocalRing.maximalIdeal A ^ (k + 1)) • Subalgebra.toSubmodule (AdjoinInv B t)` using `Submodule.smul_mono_left hpow (hmono _ B hBD _ hbb)`. Establish `hq : c * c - c ∈ (IsLocalRing.maximalIdeal A ^ (k + 1)) • Subalgebra.toSubmodule (AdjoinInv B t)` using `Submodule.smul_mono_left hpow (hmono _ C hCD _ hcc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd1 : b - c ∈ (IsLocalRing.maximalIdeal A ^ 1) • Subalgebra.toSubmodule (AdjoinInv B t)`. Rewrite using `[pow_one, show b - c = (b - e) + (e - f) - (c - f) by ring]`. Conclude with `sub_mem (add_mem (hmono _ B hBD _ hbe) hef) (hmono _ C hCD _ hcf)`. Establish `hcube : (b - c) * (b - c) * (b - c) - (b - c) ∈ (IsLocalRing.maximalIdeal A ^ (k + 1)) • Subalgebra.toSubmodule (AdjoinInv B t)`. Rewrite using `[show (b - c) * (b - c) * (b - c) - (b - c) = (b * b - b) - (c * c - c) - (c + c) * (b * b - b) + (b + b) * (c * c - c) + (b - c) * (b * b - b) + (b - c) * (c * c - c) by ring]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbc : b - c ∈ AdjoinInv B t` using `(AdjoinInv B t).sub_mem hbD hcD`. Use `add_mem (add_mem (add_mem (sub_mem (sub_mem hp hq) ?_) ?_) ?_) ?_` and prove the remaining obligations. Conclude with `mul_left_mem _ _ ((AdjoinInv B t).add_mem hcD hcD) hp`. Conclude with `mul_left_mem _ _ ((AdjoinInv B t).add_mem hbD hbD) hq`. Conclude with `mul_left_mem _ _ hbc hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `mul_left_mem _ _ hbc hq`. Establish `key : ∀ j, j + 1 ≤ k + 1 → b - c ∈ (IsLocalRing.maximalIdeal A ^ (j + 1)) • Subalgebra.toSubmodule (AdjoinInv B t)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using hd1`. Consider the case `succ j ih`. Introduce `hj`. Establish `h1` using `ih (by omega)`. Establish `h3` using `mul_mem_mul _ _ _ (mul_mem_mul _ _ _ h1 h1) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[← pow_add, ← pow_add]`. Establish `h3'` using `Submodule.smul_mono_left (Ideal.pow_le_pow_right (show j + 1 + 1 ≤ j + 1 + (j + 1) + (j + 1) by omega)) h3`. Establish `hc'` using `Submodule.smul_mono_left (Ideal.pow_le_pow_right hj) hcube`. Rewrite using `[show b - c = (b - c) * (b - c) * (b - c) - ((b - c) * (b - c) * (b - c) - (b - c)) by ring]`. Conclude with `sub_mem h3' hc'`.
-
-Use `⟨b, hb, c, hcC, ?_, hcf, ?_⟩` and prove the remaining obligations. Rewrite using `[← neg_sub]`. Conclude with `neg_mem hbe`. Conclude with `Submodule.smul_mono_left (Ideal.pow_le_pow_right (by omega)) (key k le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem LZIdemPow_of : LateralTheory.E.LZIdemSumNoetherian.LZIdemPow := by
   intro A _ _ K _ _ B C t hc e f hp k

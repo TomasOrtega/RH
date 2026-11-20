@@ -13,11 +13,11 @@ namespace GlobalTheory.CardJ
 variable {R : Type*} [CommRing R] [IsLocalRing R]
 
 /- English proof (translation)
-Establish `hpm : p ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).2 hp`. Establish `hmem : p ^ n * z ∈ IsLocalRing.maximalIdeal R`. Apply `Ideal.mul_mem_right` to reduce the goal to its premises. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Rewrite using `[pow_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ hpm`. Establish `hu : IsUnit (1 + p ^ n * z)`. Assume the negation of the conclusion as `hc`. Establish `h1 : (1 + p ^ n * z) ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).2 hc`. Establish `h2 : (1 : R) ∈ IsLocalRing.maximalIdeal R`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.sub_mem _ h1 hmem` as an intermediate fact. Simplify using `using this`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 h2)`. Rewrite `hu` using `[← h]`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_mul_eq_one_add_pow (p : R) (hp : ¬ IsUnit p) {n : ℕ} (hn : 1 ≤ n) {x y z : R}
     (h : x * y = 1 + p ^ n * z) : IsUnit x := by
@@ -43,53 +43,47 @@ namespace GlobalTheory.CardJ
 variable {R : Type*} [CommRing R] [IsLocalRing R]
 
 /- English proof (translation)
-Use `set I : Ideal R := Ideal.span {p ^ n} with hI`. Use `set π : R →+* R ⧸ I := Ideal.Quotient.mk I with hπ`. Establish `hdvd : ∀ x : R, p ^ n ∣ x ↔ π x = 0` using `fun x => by`. Rewrite using `[hπ, Ideal.Quotient.eq_zero_iff_mem, hI, Ideal.mem_span_singleton]`. Establish `hpm : p ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).2 hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres0 : IsLocalRing.residue R p = 0` using `(IsLocalRing.residue_eq_zero_iff p).2 hpm`. Establish `hres : ∀ x : R, π x = 0 → IsLocalRing.residue R x = 0`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(hdvd x).2 hx`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[map_mul, map_pow, hres0]`. Use `set M := Q * U with hM`. Use `set S' := Uinv * S with hS'`. Establish `hMS : M * S' = Q * S`. Rewrite using `[hM, hS', Matrix.mul_assoc, ← Matrix.mul_assoc U, hUU', Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hQS1 : ∀ i j, π ((Q * S) i j) = (1 : Matrix (Fin d) (Fin d) (R ⧸ I)) i j`. Introduce `i j`. Use `(hdvd _).1 (hQS i j)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hoff : ∀ j ∉ J, ∀ i, π (M i j) = 0` using `fun j hj i => (hdvd _).1 (hJ j hj i)`. Establish `hsum : ∀ (i : Fin d) (x : Fin d' → R ⧸ I), ∑ j, π (M i j) * x j = ∑ j : J, π (M i (j : Fin d')) * x j`. Introduce `i x`. Establish `h1` using `Finset.sum_coe_sort J (fun j => π (M i j) * x j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1]`. Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ J)` to reduce the goal to its premises. Introduce `j _ hj`. Rewrite using `[hoff j hj i, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set MJ : Matrix (Fin d) J R := M.submatrix id (fun j : J => (j : Fin d')) with hMJ`. Use `set SJ : Matrix J (Fin d) R := S'.submatrix (fun j : J => (j : Fin d')) id with hSJ`. Establish `hMJS : ∀ i k, π ((MJ * SJ) i k) = (1 : Matrix (Fin d) (Fin d) (R ⧸ I)) i k`. Introduce `i k`. Rewrite using `[← hQS1, ← hMS]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, map_sum, map_mul, hMJ, hSJ, Matrix.submatrix_apply, id]`. Conclude with `(hsum i (fun j => π (S' j k))).symm`. Establish `hE : ∀ j j0 : J, IsLocalRing.residue R ((SJ * MJ) j j0) = (1 : Matrix J J (IsLocalRing.ResidueField R)) j j0`. Introduce `j j0`. Use `set c : Fin d' → R := fun j' => if h : j' ∈ J then (SJ * MJ - (1 : Matrix J J R)) ⟨j', h⟩ j0 else 0 with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hUc : Uinv *ᵥ (U *ᵥ c) = c`. Rewrite using `[Matrix.mulVec_mulVec, hUU, Matrix.one_mulVec]`. Establish `hQc : ∀ i, p ^ n ∣ (Q *ᵥ (U *ᵥ c)) i`. Introduce `i`. Rewrite using `[Matrix.mulVec_mulVec, ← hM, hdvd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : (MJ.map π) * ((SJ * MJ - (1 : Matrix J J R)).map π) = 0`. Establish `h1 : (MJ.map π) * (SJ.map π) = 1`. Use extensionality with `i k`. Rewrite using `[← Matrix.map_mul]`. Conclude with `hMJS i k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_sub _ (fun a b => map_sub π a b), Matrix.map_mul, Matrix.map_one _ (map_zero π) (map_one π), Matrix.mul_sub, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_one, sub_self]`. Establish `h2` using `congrFun (congrFun hA i) j0`. Rewrite `h2` using `[Matrix.zero_apply, Matrix.mul_apply]`. Rewrite using `[← h2]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hsum i (fun j' => π (c j'))]`. Use `Finset.sum_congr rfl (fun j' _ => ?_)` and prove the remaining obligations. Simplify using `[hc, hMJ, Matrix.map_apply]`. Establish `hp1` using `hker _ hQc j j.2`. Rewrite `hp1` using `[hUc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcj : c j = (SJ * MJ - (1 : Matrix J J R)) j j0` using `by simp [hc]`. Rewrite `hp1` using `[hcj]`. Take `⟨y, hy⟩` from `hp1`. Use `congrArg (IsLocalRing.residue R) hy` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub, map_mul, hres0, zero_mul, sub_eq_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hcard : Fintype.card J = d` using `by set κ := IsLocalRing.ResidueField R set ρ : R →+* κ := IsLocalRing.residue R`. Establish `hAB : (MJ.map ρ) * (SJ.map ρ) = 1`. Use extensionality with `i k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← Matrix.map_mul, Matrix.map_apply]`. Establish `h` using `hMJS i k`. Establish `h0 : π ((MJ * SJ - (1 : Matrix (Fin d) (Fin d) R)) i k) = 0`. Apply the tactic sequence `rw [Matrix.sub_apply, map_sub, h, Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`. Use `hres _ h0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Apply the tactic sequence `rw [this, Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`. Establish `hBA : (SJ.map ρ) * (MJ.map ρ) = 1`. Use extensionality with `j j0`. Rewrite using `[← Matrix.map_mul, Matrix.map_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hE j j0`. Establish `h1 : d ≤ Fintype.card J`. Use `Matrix.rank_mul_le_left (MJ.map ρ) (SJ.map ρ)` as an intermediate fact. Rewrite `this` using `[hAB, Matrix.rank_one, Fintype.card_fin]`. Conclude with `this.trans (Matrix.rank_le_card_width _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : Fintype.card J ≤ d`. Use `Matrix.rank_mul_le_left (SJ.map ρ) (MJ.map ρ)` as an intermediate fact. Rewrite `this` using `[hBA, Matrix.rank_one]`. Conclude with `(this.trans (Matrix.rank_le_card_width _)).trans (by rw [Fintype.card_fin])`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `e : Fin d ≃ J` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `⟨e, ?_, ?_⟩` and prove the remaining obligations. Use `set T := Q * U.submatrix id (fun k => (e k : Fin d')) with hT set B := S'.submatrix (fun k => (e k : Fin d')) id with hB`. Establish `hTe : ∀ i k, T i k = M i (e k)`. Introduce `i k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `[hT, hM, Matrix.mul_apply]`. Establish `hTB : ∀ i k, π ((T * B) i k) = (1 : Matrix (Fin d) (Fin d) (R ⧸ I)) i k`. Introduce `i k`. Rewrite using `[← hQS1, ← hMS]`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, hTe, hB, Matrix.submatrix_apply, id]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsum i (fun j => π (S' j k))]`. Conclude with `Equiv.sum_comp e (fun j : J => π (M i (j : Fin d')) * π (S' j k))`. Establish `hdet : π ((T * B).det) = 1`. Rewrite using `[RingHom.map_det]`. Establish `: π.mapMatrix (T * B) = 1` using `by ext i k; exact hTB i k`.
-
-Rewrite using `[this, Matrix.det_one]`. Rewrite `hdet` using `[Matrix.det_mul]`. Establish `h0 : π (T.det * B.det - 1) = 0` using `by rw [map_sub, hdet, map_one, sub_self]`. Take `⟨z, hz⟩` from `(hdvd _).2 h0`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`.
-
-Conclude with `GlobalTheory.CardJ.isUnit_of_mul_eq_one_add_pow p hp hn (y := B.det) (z := z) (by rw [← hz]; ring)`. Introduce `i k`. Rewrite using `[hdvd, Matrix.sub_apply, map_sub, sub_eq_zero]`. Establish `hQ : Q = M * Uinv` using `by rw [hM, Matrix.mul_assoc, hUU', Matrix.mul_one]`. Use `conv_lhs => rw [hQ]`.
-
-Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Matrix.submatrix_apply, id]`. Rewrite using `[hsum i (fun j => π (Uinv j k))]`. Rewrite using `[← Equiv.sum_comp e (fun j : J => π (M i (j : Fin d')) * π (Uinv j k))]`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Simplify using `[hM, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cols_of_rightInv (p : R) (hp : ¬ IsUnit p) (d d' n : ℕ)
     (Q : Matrix (Fin d) (Fin d') R) (S : Matrix (Fin d') (Fin d) R)
@@ -230,7 +224,7 @@ end GlobalTheory.CardJ
 namespace GlobalTheory.CardJ
 
 /- English proof (translation)
-Introduce `l _ d d' n Q S U Uinv J hn hQS hUU hUU' hJ hker`. Use `haveI : PerfectRing (Cb l) l := GlobalTheory.OEDvr.perfectRing_Cb`. Conclude with `exists_cols_of_rightInv (l : WCb l) (WittVector.irreducible l).not_isUnit d d' n Q S U Uinv J hn hQS hUU hUU' hJ hker`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_cols_of_rightInv_WCb : ∀ (l : ℕ) [Fact l.Prime] (d d' n : ℕ) (Q : Matrix (Fin d) (Fin d') (WCb l)) (S : Matrix (Fin d') (Fin d) (WCb l)) (U Uinv : Matrix (Fin d') (Fin d') (WCb l)) (J : Finset (Fin d')), 1 ≤ n → (∀ i j, (l : WCb l) ^ n ∣ (Q * S - (1 : Matrix (Fin d) (Fin d) (WCb l))) i j) → Uinv * U = 1 → U * Uinv = 1 → (∀ j ∉ J, ∀ i, (l : WCb l) ^ n ∣ (Q * U) i j) → (∀ v : Fin d' → WCb l, (∀ i, (l : WCb l) ^ n ∣ (Q *ᵥ v) i) → ∀ j ∈ J, (l : WCb l) ∣ (Uinv *ᵥ v) j) → ∃ e : Fin d ≃ J, IsUnit (Q * U.submatrix id (fun k => (e k : Fin d'))) ∧ ∀ i j, (l : WCb l) ^ n ∣ (Q - (Q * U.submatrix id (fun k => (e k : Fin d'))) * Uinv.submatrix (fun k => (e k : Fin d')) id) i j := by
   intro l _ d d' n Q S U Uinv J hn hQS hUU hUU' hJ hker

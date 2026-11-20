@@ -16,9 +16,9 @@ open GlobalTheory.ZJ
 namespace GlobalTheory.ZJ
 
 /- English proof (translation)
-Introduce `C hT hI`. Establish `hF : C.Fib` using `GlobalTheory.T.fibre_eq_specialFibre_of_reduction_indep C hI`. Establish `hS` using `GlobalTheory.T.smoothOfRelativeDimension_groupScheme_of_tests C hT hF`. Establish `hC : C.TestCart` using `GlobalTheory.T.testCart_of_specialFibre_surjective C hF hS`. Establish `hL : C.FibLaw` using `GlobalTheory.T.fibreLaw_of_testCartesian C hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.nonempty_law_abelianSchemeProperClosure C hS hC (GlobalTheory.T.exists_mul_of_isSquare_of_fibLaw C hT hS hC hL) (GlobalTheory.T.exists_inverse_extension_properClosure C hT hS hC hL)`.
+A detailed English derivation is pending.
 -/
 theorem Core.nonempty_law_of_hasTests_of_indep :
     ∀ C : Core, C.HasTests → C.Indep → Nonempty C.Law := by

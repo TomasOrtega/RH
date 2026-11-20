@@ -17,13 +17,11 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨s, hs, hs'⟩` from `hx`. Take `⟨t, ht, ht'⟩` from `hy`. Use `⟨s * t, by rw [map_mul, hs, ht], ?_⟩` and prove the remaining obligations. Break down `hs' with h0 | h1` into its components or cases. Use `left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Break down `ht' with h0 | h2` into its components or cases. Use `left`. Simplify using `[h0]`. Distinguish the cases in `hs0 : s = 0`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use `left`. Simplify using `[hs0]`. Distinguish the cases in `ht0 : t = 0`. Use `left`. Simplify using `[ht0]`.
-
-Use `right`. Rewrite using `[Formalism.DivisionValues.ValuationRepresentative.vw_mul w s t hs0 ht0]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem lossLe_mul_wild_jets {D : D7} (w : PlL D) {x y : ℂ} {a b : ℝ}
     (hx : LossLe w x a) (hy : LossLe w y b) : LossLe w (x * y) (a + b) := by
@@ -43,13 +41,13 @@ private theorem lossLe_mul_wild_jets {D : D7} (w : PlL D) {x y : ℂ} {a b : ℝ
   push_cast
   linarith
 /- English proof (translation)
-Take `⟨s, hs, hs'⟩` from `hx`. Take `⟨t, ht, ht'⟩` from `hy`. Use `⟨s + t, by rw [map_add, hs, ht], ?_⟩` and prove the remaining obligations. Distinguish the cases in `hs0 : s = 0`. Substitute `hs0` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using ht'`. Distinguish the cases in `ht0 : t = 0`. Substitute `ht0` using the available equality. Simplify using `using hs'`. Distinguish the cases in `hst : s + t = 0`.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Use `left`. Conclude with `hst`. Use `right`. Establish `h1 : -a ≤ (vw w s : ℝ)` using `hs'.resolve_left hs0`. Establish `h2 : -a ≤ (vw w t : ℝ)` using `ht'.resolve_left ht0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `Formalism.PairingDivisionLocalBalance.vw_add w s t hs0 ht0 hst`. Establish `h4 : ((min (vw w s) (vw w t) : ℤ) : ℝ) ≤ (vw w (s + t) : ℝ)` using `by exact_mod_cast h3`. Rewrite `h4` using `[Int.cast_min]`. Conclude with `le_trans (le_min h1 h2) h4`.
+A detailed English derivation is pending.
 -/
 private theorem lossLe_add {D : D7} (w : PlL D) {x y : ℂ} {a : ℝ}
     (hx : LossLe w x a) (hy : LossLe w y a) : LossLe w (x + y) a := by
@@ -70,7 +68,7 @@ private theorem lossLe_add {D : D7} (w : PlL D) {x y : ℂ} {a : ℝ}
   rw [Int.cast_min] at h4
   exact le_trans (le_min h1 h2) h4
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp, Or.inl rfl⟩`. Consider the case `insert j S hj ih`. Rewrite using `[Finset.sum_insert hj]`. Conclude with `lossLe_add w (hg j (Finset.mem_insert_self j S)) (ih fun i hi => hg i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lossLe_finset_sum {D : D7} (w : PlL D) {ι : Type*} (S : Finset ι) (g : ι → ℂ) {a : ℝ}
     (hg : ∀ i ∈ S, LossLe w (g i) a) : LossLe w (∑ i ∈ S, g i) a := by
@@ -83,11 +81,11 @@ private theorem lossLe_finset_sum {D : D7} (w : PlL D) {ι : Type*} (S : Finset 
       (ih fun i hi => hg i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Introduce `D n n' lam lam' w l hl hlw Λ Λ' hΛ hΛ' f c hf a v hv`. Apply `UpperTheory.WildA.latCoordB D lam' w l hl hlw Λ' hΛ' (a + c) (f v)` to reduce the goal to its premises. Introduce `i`. Establish `hv'` using `UpperTheory.WildA.latCoordA D lam w l hl hlw Λ hΛ a v hv`. Establish `hsum` using `(bVV ℂ lam).sum_repr v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrepr : (bVV ℂ lam').repr (f v) i = ∑ j, (bVV ℂ lam).repr v j * (bVV ℂ lam').repr (f (bVV ℂ lam j)) i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum, map_sum, Finsupp.coe_finset_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrepr]`. Conclude with `lossLe_finset_sum w _ _ fun j _ => lossLe_mul_wild_jets w (hv' j) (hf i j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.WildA.matLat :
     ∀ (D : D7) {n n' : ℕ} (lam : D.what₂.Tau → DomWeight n) (lam' : D.what₂.Tau → DomWeight n') (w : PlL D) (l : ℕ), l.Prime →

@@ -22,7 +22,7 @@ namespace GlobalTheory.Dict
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Take `⟨-, P', hP'⟩` from `GlobalTheory.PeriodExists.period_of_isTypeFn H (F.Di k') g ty (by rw [(F.sig k').1, (F.sig k').2]; exact hty)`. Apply the tactic sequence `have hP := GlobalTheory.ClassUniq.isPeriod_comp_isometry gam hEF hP'`. Use `set P := P'.comp gam.toLinearMap.toAddMonoidHom with hPdef`. Use `F.disj k k' P P' hP hP' ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.UnifPoint.point_eq_iff_isometry_closed GlobalTheory.thetaUnifAV_all GlobalTheory.firstFiveLaws.1 E H Dw l Xo σ' g ty hr hσ hty (F.Di k) (F.Di k') (F.t k) (F.t k') P P' (F.u k P) (F.u k' P') (F.ex k P) (F.ex k' P') ⟨F.over_σ k P hP, hP, ⟨F.ex_add k P hP, F.ex_onto k …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem index_eq_of_marked_isometry {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {σ' : KA l →+* ℂ} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (F : FamilyUnif Xo σ' ty) (hr : 1 ≤ Dw.p + Dw.q) (hσ : σ' (baseKA l).ρ = H.rt0)
@@ -47,15 +47,15 @@ theorem index_eq_of_marked_isometry {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {σ
     ⟨gam, LinearEquiv.refl ℂ _, hEF, hM, hA, fun a => rfl⟩
 
 /- English proof (translation)
-Take `⟨hr, hX, -, hfib, -⟩` from `hU`. Take `⟨g, e, F, ik, φ, hEF, hP⟩` from `W`. Introduce `k k' hk`. Express the relevant statement in the definitionally equal form `ik k = ik k' at hk`. Take `⟨x, hx⟩` from `CompInj.dom_nonempty (U.X k)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, hx₀⟩` from `CompInj.dom_nonempty (U.X k')`. Take `⟨P, -, hper, hpt, hder, -⟩` from `hP k ⟨x, hx⟩`. Take `⟨P₀, hP₀, hper₀, -⟩` from `hP k' ⟨x₀, hx₀⟩`. Establish `hP'` using `fun y => (hP k' y).imp fun _ h => (⟨h.1, h.2.2.1, h.2.2.2.1⟩ : _ ∧ _ ∧ _)`. Establish `hEF'` using `hEF k'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `φ k' = ψ at hP₀ hP' hEF'`. Use `clear hP hEF φ`. Generalize the expression as in `ik k' = n at *`. Substitute `hk` using the available equality. Take `⟨x', hx', hPx⟩` from `CompInj.exists_frame hσ h1 hr e (U.X k') (hX k').1 (hX k').2 _ (F.sig _).1 (F.sig _).2 ψ hEF' x₀ hx₀ P₀ hP₀ hper₀ P hper`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P', hP', hpt', hder'⟩` from `hP' ⟨x', hx'⟩`. Choose the witnesses or unpack the hypotheses as in `rfl : P = P' := by`. Use extensionality with `a j`. Rewrite using `[hPx, hP']`. Establish `hbor` using `CompInj.frBor_of_eq (U.un k ⟨x, hx⟩) (U.un k' ⟨x', hx'⟩) (hpt'.trans hpt.symm) fun τ i => ((GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ F _ P hper).2.1 _).unique (hder' τ i) (hder τ i)`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ga, -, b, -, h⟩` from `(hfib k k' _ _).1 hbor`. Conclude with `(congrArg Sigma.fst h).symm`.
+A detailed English derivation is pending.
 -/
 theorem UW.ik_injective {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
     {U : Unf Xo c σ r} (hσ : GoodEmb c σ) (hU : IsUnf U) (h1 : 1 ≤ r) (W : UW U) :
@@ -86,15 +86,15 @@ theorem UW.ik_injective {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {
   exact (congrArg Sigma.fst h).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU h1 hA W k k' hS ga hun hΛ hm`. Apply `W.ik_injective hσ hU h1` to reduce the goal to its premises. Establish `hinj : Function.Injective ((Matrix.toLin' (ga : Matrix (Fin r) (Fin r) E)).restrictScalars (𝓞 E))`. Introduce `u v huv`. Establish `h : (ga : Matrix (Fin r) (Fin r) E) *ᵥ u = (ga : Matrix (Fin r) (Fin r) E) *ᵥ v` using `huv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun w => ((ga⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ w) h`. Simplify `h2` using `only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Set `ψ : (U.X k).Λ ≃ₗ[𝓞 E] (U.X k').Λ` to `(Submodule.equivMapOfInjective _ hinj (U.X k).Λ).trans (LinearEquiv.ofEq _ _ hΛ)`. Set `gam : (W.F.Di (W.ik k)).La ≃ₗ[𝓞 E] (W.F.Di (W.ik k')).La` to `(W.φ k).trans (ψ.trans (W.φ k').symm)`. Establish `hgam : ∀ a, (W.φ k' (gam a) : Fin r → E) = (ga : Matrix (Fin r) (Fin r) E) *ᵥ (W.φ k a : Fin r → E)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a`. Express the relevant statement in the definitionally equal form `(W.φ k' ((W.φ k').symm (ψ (W.φ k a))) : Fin r → E) = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Apply the tactic sequence `refine index_eq_of_marked_isometry W.F (hU.1 ▸ h1) hσ ((GlobalTheory.Relab.relab_good E H l c σ hσ).2.2.2 Dw W.g W.e) _ _ gam (fun a b => ?_) (fun a ha => ?_) fun a => ?_`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `W.isom k' (gam a) (gam b)`. Rewrite `h` using `[hgam, hgam, ← hS.gm, ← hS.xi, hun, ← W.isom k a b]`. Conclude with `h` after adjusting the coercions. Take `⟨w, hw, h⟩` from `hm a ha`. Use `⟨(W.φ k').symm ⟨w, hw⟩, (W.φ k').injective (Subtype.ext ?_)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgam, map_add, map_nsmul, LinearEquiv.apply_symm_apply]`. Conclude with `h`. Conclude with `⟨gam (W.F.t _ a) - W.F.t _ a, by rw [hA, one_smul, add_sub_cancel]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem comp_eq_of_matched : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → 1 ≤ r → l.A = 1 → ∀ (W : UW U) (k k' : U.Comp), SameSp (U.X k) (U.X k') → ∀ ga : GL (Fin r) E, IsUn (U.X k) ga → mapL ga (U.X k).Λ = (U.X k').Λ → (∀ a ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La), ∃ u ∈ (U.X k').Λ, (ga : Matrix (Fin r) (Fin r) E) *ᵥ W.mark k a = W.mark k' a + l.M • u) → k = k' := by
   intro E _ _ _ H Dw l Xo c σ r U hσ hU h1 hA W k k' hS ga hun hΛ hm

@@ -11,9 +11,9 @@ section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 /- English proof (translation)
-Establish `hA : ∀ i k, ‖A i k‖ ≤ ‖toL A‖` using `fun i k => (norm_le_pi_norm (toL A i) k).trans (norm_le_pi_norm (toL A) i)`. Establish `hB : ∀ i k, ‖B i k‖ ≤ ‖toL B‖` using `fun i k => (norm_le_pi_norm (toL B i) k).trans (norm_le_pi_norm (toL B) i)`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => (pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(A * B) i j‖ ≤ _`. Rewrite using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_toL_mul_le (A B : Matrix (Fin a) (Fin a) (Cinf E)) :
     ‖toL (A * B)‖ ≤ a * (‖toL A‖ * ‖toL B‖) := by
@@ -32,7 +32,7 @@ theorem norm_toL_mul_le (A B : Matrix (Fin a) (Fin a) (Cinf E)) :
     _ = a * (‖toL A‖ * ‖toL B‖) := by simp
 
 /- English proof (translation)
-Introduce `x hx`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Establish `hd : IsUnit (Matrix.of x).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hx`. Conclude with `continuousAt_matrix_inv _ (NormedRing.inverse_continuousAt hd.unit)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_toL_inv : ContinuousOn (fun x : Lie E a => toL (Matrix.of x)⁻¹) (invSet E a) := by
   intro x hx
@@ -43,27 +43,27 @@ theorem continuousOn_toL_inv : ContinuousOn (fun x : Lie E a => toL (Matrix.of x
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ a ν _ α hα f hf g`. Take `⟨C, N, hC⟩` from `hf g`. Establish `C0 : 0 ≤ C`. Establish `h1` using `(norm_nonneg _).trans (hC 1)`. Establish `hp : 0 < height (1 : GL (Fin a) (Cinf E)) ^ N` using `pow_pos (by linarith [one_le_height (1 : GL (Fin a) (Cinf E))]) N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `nonneg_of_mul_nonneg_left h1 hp`. Establish `hK : IsCompact (tsupport α)` using `hα.2.1`. Choose the witnesses or unpack the hypotheses as in `⟨M, M0, hM⟩ : ∃ M : ℝ, 0 ≤ M ∧ ∀ x ∈ tsupport α, ‖x‖ ≤ M ∧ ‖toL (Matrix.of x)⁻¹‖ ≤ M := by`. Take `⟨M1, h1⟩` from `hK.exists_bound_of_continuousOn continuous_id.continuousOn`. Take `⟨M2, h2⟩` from `hK.exists_bound_of_continuousOn (continuousOn_toL_inv.mono hα.2.2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max 0 (max M1 M2), le_max_left _ _, fun x hx => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(h1 x hx).trans ((le_max_left _ _).trans (le_max_right _ _))`. Conclude with `(h2 x hx).trans ((le_max_right _ _).trans (le_max_right _ _))`. Use `set c : ℝ := 1 + a * M with hc`. Establish `hc1 : 1 ≤ c`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: 0 ≤ (a : ℝ) * M` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨(∫ x, ‖α x‖ ∂ν) * C * c ^ N, N, fun y => ?_⟩` and prove the remaining obligations. Establish `hb : ∀ x, ‖α x * chart f (g * infGL E a y) x‖ ≤ ‖α x‖ * (C * c ^ N * height y ^ N)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Distinguish the cases in `hx : x ∈ tsupport α`. Take `⟨u, hu⟩ : IsUnit (Matrix.of x)` from `hα.2.2 hx`. Establish `hxu : x = toL u.val` using `by rw [hu]; rfl`. Substitute `hxu` using the available equality. Take `⟨m1, m2⟩` from `hM _ hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `m2' : ‖toL (u⁻¹).val‖ ≤ M` using `by rw [Matrix.coe_units_inv]; exact m2`. Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[chart_val, mul_assoc, ← map_mul]`. Use `(hC (y * u)).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hh : height (y * u) ≤ c * height y`. Establish `e2 : ((y * u)⁻¹ : GL (Fin a) (Cinf E)).val = (u⁻¹).val * (y⁻¹).val`. Rewrite using `[_root_.mul_inv_rev]`. Both sides reduce to the same expression. Establish `p1` using `norm_toL_mul_le y.val u.val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p2` using `norm_toL_mul_le (u⁻¹).val (y⁻¹).val`. Establish `n1` using `norm_nonneg (toL y.val)`. Establish `n2` using `norm_nonneg (toL (y⁻¹).val)`. Establish `q1 : (a : ℝ) * (‖toL y.val‖ * ‖toL u.val‖) ≤ a * M * ‖toL y.val‖`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `q2 : (a : ℝ) * (‖toL (u⁻¹).val‖ * ‖toL (y⁻¹).val‖) ≤ a * M * ‖toL (y⁻¹).val‖`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left m2' (Nat.cast_nonneg a)) n2`. Establish `aM : 0 ≤ (a : ℝ) * M` using `by positivity`. Unfold `height`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show toL (y * u).val = toL (y.val * u.val) from rfl, e2, hc]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[image_eq_zero_of_notMem_tsupport hx]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Express the relevant statement in the definitionally equal form `‖∫ x, α x * chart f (g * infGL E a y) x ∂ν‖ ≤ _`. Establish `hi : Integrable (fun x => ‖α x‖) ν` using `hα.1.continuous.norm.integrable_of_hasCompactSupport hα.2.1.norm`. Use `(norm_integral_le_of_norm_le (hi.mul_const _) (.of_forall hb)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[integral_mul_const]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem smoothing_mem_growth : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] (α : Lie E a → ℂ), IsTest (invSet E a) α →

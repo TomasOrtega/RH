@@ -10,11 +10,11 @@ open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspS
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
 /- English proof (translation)
-Establish `inj : ∀ W : Submodule ℂ M, W ⊓ D = ⊥ → Function.Injective (D.mkQ ∘ₗ W.subtype)` using `fun W hW => by`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Establish `hx' : x.1 ∈ W ⊓ D` using `⟨x.2, (Submodule.Quotient.mk_eq_zero D).1 hx⟩`. Rewrite `hx'` using `[hW]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext hx'`. Establish `rg : ∀ W : Submodule ℂ M, LinearMap.range (D.mkQ ∘ₗ W.subtype) = (W ⊔ D).map D.mkQ` using `fun W => by`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype, Submodule.map_sup, Submodule.mkQ_map_self, sup_bot_eq]`. Establish `er : LinearMap.range (D.mkQ ∘ₗ U.subtype) = LinearMap.range (D.mkQ ∘ₗ U'.subtype)`. Rewrite using `[rg, rg, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(LinearEquiv.ofInjective _ (inj U h)).trans ((LinearEquiv.ofEq _ _ er).trans (LinearEquiv.ofInjective _ (inj U' h')).symm), fun u => ?_⟩` and prove the remaining obligations. Use `(Submodule.Quotient.eq D).1 ?_` and prove the remaining obligations. Conclude with `congrArg Subtype.val ((LinearEquiv.ofInjective _ (inj U' h')).apply_symm_apply (LinearEquiv.ofEq _ _ er (LinearEquiv.ofInjective _ (inj U h) u)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_equiv_mod {M : Type} [AddCommGroup M] [Module ℂ M] (U U' D : Submodule ℂ M)
     (h : U ⊓ D = ⊥) (h' : U' ⊓ D = ⊥) (e : U ⊔ D = U' ⊔ D) :
@@ -36,17 +36,15 @@ private theorem exists_equiv_mod {M : Type} [AddCommGroup M] [Module ℂ M] (U U
     (LinearEquiv.ofEq _ _ er (LinearEquiv.ofInjective _ (inj U h) u)))
 
 /- English proof (translation)
-Establish `hst : TR.IsStable (π.V ⊓ (π'.V ⊔ D))`. Introduce and unpack `o φ ⟨h1, h2⟩`. Use `⟨π.stable o φ h1, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, d, hd, rfl⟩` from `Submodule.mem_sup.1 h2`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem_sup (π'.stable o x hx) (hD o d hd)`. Establish `hge : π.V ≤ π'.V ⊔ D`. Break down `π.irred _ inf_le_left hst with h0 | h0` into its components or cases. Use `absurd (eq_bot_iff.2 fun x hx => ?_) π'.ne_bot` and prove the remaining obligations. Take `⟨u, hu, d, hd, rfl⟩` from `Submodule.mem_sup.1 (hle hx)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu' : u ∈ π.V ⊓ (π'.V ⊔ D)` using `⟨hu, by`. Use `Submodule.add_mem_sup hx (D.neg_mem hd)` as an intermediate fact. Rewrite using `[add_neg_cancel_right] at this⟩` and apply the resulting hypothesis. Rewrite `hu'` using `[h0, Submodule.mem_bot]`. Rewrite using `[← h']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hu', zero_add]`. Conclude with `hd`. Conclude with `inf_eq_left.1 h0`. Take `⟨T, hT⟩` from `exists_equiv_mod π.V π'.V D h h' (le_antisymm (sup_le hge le_sup_right) (sup_le hle le_sup_right))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T, fun o φ => Subtype.ext (sub_eq_zero.1 ?_)⟩` and prove the remaining obligations. Rewrite using `[← Submodule.mem_bot ℂ, ← h']`. Use `⟨π'.V.sub_mem (T _).2 (π'.op o _).2, ?_⟩` and prove the remaining obligations. Establish `h1` using `D.sub_mem (hT (π.op o φ)) (hD o _ (hT φ))`. Rewrite `h1` using `[map_sub, TR.CuspSub.op_val, sub_sub_sub_cancel_right]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iso_of_compl {E : Type} [Field E] [NumberField E] [IsTotallyReal E] {n : ℕ} (π π' : CuspSub E n)
     (D : Submodule ℂ (TR.Sm E n)) (hD : TR.IsStable D) (h : π.V ⊓ D = ⊥) (h' : π'.V ⊓ D = ⊥)
@@ -80,9 +78,9 @@ private theorem iso_of_compl {E : Type} [Field E] [NumberField E] [IsTotallyReal
   exact h1
 
 /- English proof (translation)
-Use `⟨fun X φ hφ => ?_, fun k φ hφ => ?_, fun g φ hφ => ?_⟩` and prove the remaining obligations. Use `map_mem_orthRel (A' := fun y => -(gkModuleCusp E n).ρ X y) (Fb.stab_central.ρ X) (fun x hx y hy => ?_) (fun u hu => U.neg_mem (hs.ρ X u hu)) hφ` and prove the remaining obligations. Rewrite using `[map_neg, inner_neg_left, neg_eq_iff_add_eq_zero]`. Conclude with `hρ X x (hU hx) y hy`. Use `map_mem_orthRel (A' := (gkModuleCusp E n).σ k⁻¹) (Fb.stab_central.σ k) (fun x hx y hy => ?_) (hs.σ k⁻¹) hφ` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hσ k _ (hU (hs.σ k⁻¹ x hx)) y hy, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Use `map_mem_orthRel (A' := finRepCusp E n g⁻¹) (Fb.stab_central.τ g) (fun x hx y hy => ?_) (hs.τ g⁻¹) hφ` and prove the remaining obligations. Rewrite using `[← hτ g _ (hU (hs.τ g⁻¹ x hx)) y hy, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stab_orthRel {E : Type} [Field E] [NumberField E] {n : ℕ} {H : Type*} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (ι : cuspForms E n →ₗ[ℂ] H)
@@ -109,9 +107,9 @@ private theorem stab_orthRel {E : Type} [Field E] [NumberField E] {n : ℕ} {H :
       mul_inv_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Establish `hst : TR.IsStable (π'.V ⊓ C.map (Fb.ofCusp E n))` using `fun o x hx => ⟨π'.stable o x hx.1, hC.map o x hx.2⟩`. Break down `π'.irred _ inf_le_left hst with h0 | h0` into its components or cases. Use `absurd (iso_of_compl π π' _ hC.map ?_ h0 ?_) hi` and prove the remaining obligations. Rewrite using `[← Fb.map_carrier, ← Submodule.map_inf _ Fb.ofCusp_injective, hinf, Submodule.map_bot]`. Rewrite using `[← Fb.map_carrier, ← Fb.map_carrier, ← Submodule.map_sup]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.map_mono hle`. Introduce `φ' hφ'`. Take `⟨ψ, hψ, e⟩` from `inf_eq_left.1 h0 (Fb.mem_carrier.1 hφ')`. Take `rfl` from `Fb.ofCusp_injective e`. Conclude with `hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem carrier_le_of_not_iso {E : Type} [Field E] [NumberField E] [IsTotallyReal E] {n : ℕ}
     (π π' : CuspSub E n) (hi : ¬ π.Iso π') (C : Submodule ℂ (cuspForms E n)) (hC : Fb.Stab C)
@@ -129,9 +127,9 @@ private theorem carrier_le_of_not_iso {E : Type} [Field E] [NumberField E] [IsTo
     exact hψ
 
 /- English proof (translation)
-Introduce `E _ _ _ n μ _ π π' hc hc' hi φ hφ φ' hφ'`. Establish `l` using `Fb.carrier_le_central π hc`. Establish `l'` using `Fb.carrier_le_central π' hc'`. Establish `hs` using `Fb.stab_carrier π`. Establish `hC` using `stab_orthRel (CuspidalSpectrum.cuspToL2 μ) (fun X a ha c hc => petersson_inner_lieAlgebra_skewAdjoint μ X ha hc) (fun k a ha c hc => petersson_inner_maximalCompact_invariant μ k ha hc) (fun g a ha c hc => petersson_inner_finiteAdelic_invariant μ g ha hc) l hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsup` using `CuspidalSpectrum.sup_orthRel_centralCuspForms μ _ l hs.ρ hs.τ`. Establish `hinf` using `inf_orthRel_eq_bot (ι := CuspidalSpectrum.cuspToL2 μ) l fun a ha h0 => CuspidalSpectrum.eq_zero_of_cuspVecL_eq_zero (μ := μ) ha h0`. Conclude with `(carrier_le_of_not_iso π π' hi _ hC hinf (l'.trans hsup.ge) hφ').2 φ hφ`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.innerZero :
     UpperTheory.V.Af.Smo.InnerZero := by

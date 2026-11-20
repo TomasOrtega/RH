@@ -29,7 +29,7 @@ abbrev twistMonoid : CommMonoid (SubSystem S x Ω) where
 attribute [local instance] twistMonoid
 
 /- English proof (translation)
-Proceed by induction on `l generalizing F with`. Consider the case `nil => exact (mul_one F).symm`. Consider the case `cons a l ih`. Rewrite using `[List.foldl_cons, ih, List.map_cons, List.prod_cons, ← mul_assoc]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem foldl_twist_eq_mul {n : ℕ} (L : Fin n → SubSystem S x Ω) (l : List (Fin n)) (F : SubSystem S x Ω) :
     l.foldl (fun F i => F.twist (L i)) F = F * (l.map L).prod := by
@@ -40,9 +40,9 @@ theorem foldl_twist_eq_mul {n : ℕ} (L : Fin n → SubSystem S x Ω) (l : List 
     rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Distinguish the cases in `h : p a`. Simplify using `[h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h, ih]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prod_map_filter {α M : Type*} [CommMonoid M] (p : α → Bool) (f : α → M) (l : List α) :
     ((l.filter p).map f).prod = (l.map fun a => if p a then f a else 1).prod := by
@@ -54,9 +54,9 @@ theorem prod_map_filter {α M : Type*} [CommMonoid M] (p : α → Bool) (f : α 
     · simp [h, ih]
 
 /- English proof (translation)
-Unfold `tensorSub`. Rewrite using `[foldl_twist_eq_mul]`. Express the relevant statement in the definitionally equal form `1 * _ = _`. Rewrite using `[one_mul, prod_map_filter, ← Fin.prod_univ_def, ← Finset.prod_filter]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tensorSub_eq_prod {n : ℕ} (L : Fin n → SubSystem S x Ω) (T : Finset (Fin n)) :
     tensorSub L T = ∏ j ∈ T, L j := by
@@ -73,9 +73,9 @@ end Monoid
 section MixDiff
 
 /- English proof (translation)
-Use extensionality with `T`. Simplify using `only [Finset.mem_powerset, Finset.mem_map, Finset.subset_map_iff, RelEmbedding.coe_toEmbedding, Finset.mapEmbedding_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨u, hu, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨u, hu, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem powerset_map_emb {α β : Type*} (e : α ↪ β) (s : Finset α) :
     (s.map e).powerset = s.powerset.map (Finset.mapEmbedding e).toEmbedding := by
@@ -92,9 +92,9 @@ def mixDiff (f : G → ℤ) {n : ℕ} (L : Fin n → G) : ℤ :=
   ∑ T : Finset (Fin n), (-1) ^ (n - T.card) * f (∏ j ∈ T, L j)
 
 /- English proof (translation)
-Unfold `mixDiff`. Rewrite using `[← Finset.powerset_univ, ← Finset.powerset_univ, Fin.univ_castSuccEmb, Finset.cons_eq_insert, Finset.sum_powerset_insert (by simp), powerset_map_emb, Finset.sum_map, Finset.sum_map, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun U _ => ?_` and prove the remaining obligations. Establish `hU : U.card ≤ m` using `by simpa using U.card_le_univ`. Establish `hlast : Fin.last m ∉ U.map Fin.castSuccEmb` using `by simp [Fin.castSucc_ne_last]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∏ j ∈ U.map Fin.castSuccEmb, Fin.snoc (α` using `fun _ => G) L X j = ∏ j ∈ U, L j := by`. Rewrite using `[Finset.prod_map]`. Simplify using the standard rewrite rules. Simplify using `only [RelEmbedding.coe_toEmbedding, Finset.mapEmbedding_apply, Finset.card_insert_of_notMem hlast, Finset.card_map, Finset.prod_insert hlast, hp, Fin.snoc_last]`. Rewrite using `[show m + 1 - U.card = m - U.card + 1 by omega, show m + 1 - (U.card + 1) = m - U.card by omega, pow_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -117,9 +117,9 @@ theorem mixDiff_snoc (f : G → ℤ) {m : ℕ} (L : Fin m → G) (X : G) :
   ring
 
 /- English proof (translation)
-Simplify using `only [mixDiff_snoc]`. Establish `h : mixDiff (fun g => f (Y * (X * g))) L = mixDiff (fun g => f (X * Y * g)) L`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[mul_left_comm, mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mixDiff_snoc_mul (f : G → ℤ) {m : ℕ} (L : Fin m → G) (X Y : G) :
     mixDiff f (Fin.snoc (α := fun _ => G) L (X * Y)) =
@@ -142,7 +142,7 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
 attribute [local instance] twistMonoid
 
 /- English proof (translation)
-Unfold `interSum mixDiff`. Simplify using `only [tensorSub_eq_prod]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem interSum_eq_mixDiff (pp : Ideal (Poly S N)) {n : ℕ} (L : Fin n → SubSystem S x Ω) (c : ℕ) :
     interSum pp L c = mixDiff (fun F => restrLen pp (F.twist (twistSys S x (c : ℤ)))) L := by
@@ -154,19 +154,17 @@ end Main
 attribute [local instance] twistMonoid
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x n pp L i L' L'' hW`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by have := i.pos; omega⟩`. Use `set σ := Equiv.swap i (Fin.last m) with hσ`. Use `set L₀ : Fin m → LineBundle k x := fun j => L (σ (Fin.castSucc j)) with hL₀`. Establish `hfam : ∀ B : LineBundle k x, Function.update (fun j => (L j).toSubSystem) i B.toSubSystem = fun j => (Function.update L i B j).toSubSystem` using `fun B => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Conclude with `(Function.apply_update (fun _ B => B.toSubSystem) L i B j).symm`. Establish `hmove : ∀ (Y : SubSystem k x Ω) (c : ℕ), interSum pp (Function.update (fun j => (L j).toSubSystem) i Y) c = interSum pp (Fin.snoc (α` using `fun _ => SubSystem k x Ω) (fun j => (L₀ j).toSubSystem) Y) c := by`. Introduce `Y c`. Rewrite using `[← interSum_comp_perm pp _ σ c]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[hσ]`. Establish `hne : σ (Fin.castSucc j) ≠ i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hσ, Ne, Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]`. Conclude with `Fin.castSucc_ne_last j`. Simplify using `[Function.update_of_ne hne, hL₀]`. Establish `hev : ∀ B : LineBundle k x, ∀ᶠ c : ℕ in atTop, interSum pp (Function.update (fun j => (L j).toSubSystem) i B.toSubSystem) c = interNum pp (Function.update (fun j => (L j).toSubSystem) i B.toSubSystem)` using `fun B => by`. Take `⟨a, ha⟩` from `hE k Ω N x (m + 1) pp (Function.update L i B) hW`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hfam B]`. Conclude with `interSum_eventually_eq_interNum pp _ ha`. Establish `hz` using `hZ k Ω N x (m + 1) pp (Fin.snoc (α := fun _ => LineBundle k x) (Fin.snoc (α := fun _ => LineBundle k x) L₀ L') L'') hW`. Take `⟨c, h1, h2, h3, h4⟩` from `((hev (L'.tensorProd L'')).and ((hev L').and ((hev L'').and hz))).exists`. Establish `hs : (fun j => (Fin.snoc (α` using `fun _ => LineBundle k x) (Fin.snoc (α := fun _ => LineBundle k x) L₀ L') L'' j).toSubSystem) = Fin.snoc (α := fun _ => SubSystem k x Ω) (Fin.snoc (α := fun _ => SubSystem k x Ω) (fun j => (L₀ j).toSubSystem) L'.toSubSystem) L''.toSubSystem := by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `Fin.comp_snoc (fun B : LineBundle k x => B.toSubSystem) (Fin.snoc (α := fun _ => LineBundle k x) L₀ L') L''`. Establish `e2` using `Fin.comp_snoc (fun B : LineBundle k x => B.toSubSystem) L₀ L'`. Simplify using `only [Function.comp_def] at e1 e2`. Rewrite using `[e1, e2]`. Establish `key` using `mixDiff_snoc_mul (fun F => restrLen pp (F.twist (twistSys k x (c : ℤ)))) (fun j => (L₀ j).toSubSystem) L'.toSubSystem L''.toSubSystem`.
-
-Rewrite `key` using `[← interSum_eq_mixDiff, ← interSum_eq_mixDiff, ← interSum_eq_mixDiff, ← interSum_eq_mixDiff, ← hs, h4, add_zero, ← hmove, ← hmove, ← hmove]`. Establish `e : (L'.tensorProd L'').toSubSystem = L'.toSubSystem.twist L''.toSubSystem` using `rfl`. Rewrite `h1` using `[e]`. Rewrite using `[← h1, ← h2, ← h3]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InterNumAdditive.proof (hE : InterNumEventual.Statement.{u, w})
     (hZ : InterSumTopVanish.Statement.{u, w}) : InterNumAdditive.Statement.{u, w} := by

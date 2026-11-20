@@ -6,35 +6,31 @@ open MeasureTheory
 namespace GlobalTheory.CompanionTheory.GunrVol
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ χ hsd L hLo hLc hadd _ hann`. Take `⟨hH, hinv⟩` from `hsd`. Use `haveI := hH`. Establish `hLcl : IsClosed (L : Set V)` using `AddSubgroup.isClosed_of_isOpen L hLo`. Establish `hLm : MeasurableSet (L : Set V)` using `hLo.measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : μ (L : Set V) ≠ ⊤` using `hLc.measure_lt_top.ne`. Establish `hpos : μ (L : Set V) ≠ 0` using `(hLo.measure_pos μ ⟨0, L.zero_mem⟩).ne'`. Take `⟨Φ, hΦ⟩ : ∃ Φ : V → ℂ, Φ = (L : Set V).indicator 1` from `⟨_, rfl⟩`. Establish `hΦin : ∀ x ∈ L, Φ x = 1` using `fun x hx => by`. Rewrite using `[hΦ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Set.indicator_of_mem (s := (L : Set V)) hx _`. Establish `hΦout : ∀ x, x ∉ L → Φ x = 0` using `fun x hx => by`. Rewrite using `[hΦ]`. Conclude with `Set.indicator_of_notMem (s := (L : Set V)) hx _`. Establish `hΦc : Continuous Φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hΦ]`. Conclude with `continuous_one.indicator (by`. Introduce `a ha`. Rewrite `ha` using `[(IsClopen.frontier_eq ⟨hLcl, hLo⟩)]`. Conclude with `absurd ha (Set.notMem_empty a))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hΦs : HasCompactSupport Φ`. Use `HasCompactSupport.intro hLc ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `hΦout x hx`. Take `⟨m, hm⟩ : ∃ m : ℝ, m = μ.real (L : Set V)` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `hI : ∀ y, ∫ x, Φ x * χ x y ∂μ = (L : Set V).indicator (fun _ => (m : ℂ)) y`. Introduce `y`. Distinguish the cases in `hy : y ∈ L`. Establish `h1 : (fun x => Φ x * χ x y) = Φ`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : x ∈ L`. Rewrite using `[(hann y).2 hy x hx, mul_one]`. Rewrite using `[hΦout x hx, zero_mul]`. Rewrite using `[h1, Set.indicator_of_mem (s := (L : Set V)) hy, hΦ, integral_indicator hLm]`. Simplify using `[hm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Set.indicator_of_notMem (s := (L : Set V)) hy]`. Establish `h2` using `(hann y).not.2 hy`. Use `push_neg at h2`. Take `⟨x0, hx0, hne⟩` from `h2`. Establish `h3 : ∫ x, Φ x * χ x y ∂μ = χ x0 y * ∫ x, Φ x * χ x y ∂μ`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `: Φ (x0 + x) = Φ x`. Distinguish the cases in `hx : x ∈ L`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hΦin _ (L.add_mem hx0 hx), hΦin _ hx]`. Rewrite using `[hΦout _ (fun h => hx ((L.add_mem_cancel_left hx0).1 h)), hΦout _ hx]`. Simplify using `only [this, hadd]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = χ x0 y * ∫ x, Φ x * χ x y ∂μ := integral_const_mul _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (1 - χ x0 y) * ∫ x, Φ x * χ x y ∂μ = 0`. Rewrite using `[sub_mul, one_mul, ← h3, sub_self]`. Conclude with `(mul_eq_zero.1 h4).resolve_left (sub_ne_zero.2 (Ne.symm hne))`. Establish `hInt : Integrable (fun y => ∫ x, Φ x * χ x y ∂μ) μ`. Rewrite using `[funext hI]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(integrable_indicator_iff hLm).2 (integrableOn_const hfin)`. Establish `h0` using `hinv Φ hΦc hΦs hInt 0`. Establish `hout : (fun y => (∫ x, Φ x * χ x y ∂μ) * χ y 0) = (L : Set V).indicator (fun _ => (m : ℂ))`. Use function extensionality and compare the values at `y`. Rewrite using `[hI]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hy : y ∈ L`. Rewrite using `[(hann 0).2 L.zero_mem y hy, mul_one]`. Rewrite using `[Set.indicator_of_notMem (s := (L : Set V)) hy, zero_mul]`. Rewrite `h0` using `[hout, integral_indicator hLm, neg_zero, hΦin 0 L.zero_mem]`. Establish `h5 : (m : ℂ) * m = 1`.
-
-Use `h0` as an intermediate fact. Simplify using `only [setIntegral_const, ← hm, Complex.real_smul] at this`. Conclude with `this`. Establish `h6 : m * m = 1` using `by exact_mod_cast h5`. Establish `hm0 : 0 ≤ m` using `by rw [hm]; exact measureReal_nonneg`.
-
-Establish `h7 : m = 1` using `by nlinarith`. Rewrite `h7` using `[hm, measureReal_def, ENNReal.toReal_eq_one_iff]`. Conclude with `h7`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDualVol : PositivityTheory.SiegelWeilFormula.Gunr.SelfDualVol := by
   intro V _ _ _ _ _ μ χ hsd L hLo hLc hadd _ hann

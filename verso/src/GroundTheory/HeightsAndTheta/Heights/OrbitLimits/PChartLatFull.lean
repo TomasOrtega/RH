@@ -39,9 +39,9 @@ def ratSat [CharZero Ω] (R : Subalgebra ℤ Ω) : Subalgebra ℚ Ω where
     exact R.intCast_mem _
 
 /- English proof (translation)
-Take `⟨d, g, h, hg, hh, hh0, hgt⟩` from `hy t`. Establish `hX : ∏ k, y ⟨k, c k⟩ ^ d k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Establish `hG : aeval y g / ∏ k, y ⟨k, c k⟩ ^ d k ∈ ratSat (chartRingZ y c)` using `⟨1, one_pos, by simpa using HilbertSamuel.ZeroCocycleSection.aeval_div_mem y c hg⟩`. Establish `hH : aeval y h / ∏ k, y ⟨k, c k⟩ ^ d k ∈ ratSat (chartRingZ y c)` using `⟨1, one_pos, by simpa using HilbertSamuel.ZeroCocycleSection.aeval_div_mem y c hh⟩`. Establish `hinv : (aeval y h / ∏ k, y ⟨k, c k⟩ ^ d k)⁻¹ ∈ ratSat (chartRingZ y c)` using `Subalgebra.inv_mem_of_algebraic (A := ratSat (chartRingZ y c)) (x := ⟨_, hH⟩) (Algebra.IsAlgebraic.isAlgebraic _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : t = (aeval y g / ∏ k, y ⟨k, c k⟩ ^ d k) * (aeval y h / ∏ k, y ⟨k, c k⟩ ^ d k)⁻¹`. Rewrite using `[hgt, inv_div, div_mul_div_comm, mul_comm (∏ k, y ⟨k, c k⟩ ^ d k), mul_assoc, mul_div_assoc, div_self (mul_ne_zero hh0 hX), mul_one]`. Use `(ratSat (chartRingZ y c)).mul_mem hG hinv` as an intermediate fact. Rewrite `this` using `[← ht]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem [NumberField Ω] {y : (Σ k, ι k) → Ω} (hy : Birational y) (c : ∀ k, ι k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (t : Ω) : ∃ n : ℕ, 0 < n ∧ (n : Ω) * t ∈ chartRingZ y c := by
@@ -64,15 +64,13 @@ theorem exists_nat_mul_mem [NumberField Ω] {y : (Σ k, ι k) → Ω} (hy : Bira
 end ChartLatFull
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y hy a τ s`. Set `t : (∀ k, ι k) → Ω` to `fun c => s * ∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * a k))`. Set `N : (∀ k, ι k) → ℕ` to `fun c => if hc : ∀ k, y ⟨k, c k⟩ ≠ 0 then (ChartLatFull.exists_nat_mul_mem hy c hc (t c)).choose else 1`. Establish `hNpos : ∀ c, 0 < N c`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [N]`. Use `split_ifs with hc`. Conclude with `(ChartLatFull.exists_nat_mul_mem hy c hc (t c)).choose_spec.1`. Conclude with `one_pos`. Use `⟨∏ c, N c, Finset.prod_pos fun c _ => hNpos c, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show ∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → _`. Introduce `c hc`. Establish `hN : (N c : Ω) * t c ∈ chartRingZ y c`. Simplify using `only [N, dif_pos hc]`. Conclude with `(ChartLatFull.exists_nat_mul_mem hy c hc (t c)).choose_spec.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem N (Finset.mem_univ c)`. Establish `: ((∏ c, N c : ℕ) : Ω) * s * ∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * a k)) = (m : Ω) * ((N c : Ω) * t c)`. Rewrite using `[hm]`. Use `push_cast`. Simplify using `only [t]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(chartRingZ y c).mul_mem ((chartRingZ y c).natCast_mem m) hN`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartLatFull.proof : ChartLatFull.Statement := by
   intro K _ ι _ Ω _ _ y hy a τ s

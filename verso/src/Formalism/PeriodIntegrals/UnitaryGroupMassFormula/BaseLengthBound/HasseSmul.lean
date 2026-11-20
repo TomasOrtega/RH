@@ -8,17 +8,15 @@ open Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.BasicNo
 namespace PoleLengthBounds
 
 /- English proof (translation)
-Introduce `D B P j X ka wL wF G la k o x hx β hβ h h'`. Establish `hmem : ∀ q : Idx D j G.N →₀ ℕ, hasse X la G.w q (x : Lw X la G.w) ∈ HK X la G.w wF` using `fun q => (mem_HK X la G.w).2 (hasse_presentation X la G.w wF q _ ((mem_HK X la G.w).1 x.2))`. Establish `key : (⟨_, h⟩ : ↥(HK X la G.w wF)) = ∑ q ∈ Finset.HasAntidiagonal.antidiagonal β, (algebraMap (Op X la G.N) (Kp X la G.N) (hasseOp X la G.N q.1 o)) • (⟨_, hmem q.2⟩ : ↥(HK X la G.w wF))`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show hasse X la G.w β ((o • x : ↥(HK X la G.w wF)) : Lw X la G.w) = _`. Rewrite using `[Submodule.coe_smul_of_tower, Algebra.smul_def, IsScalarTower.algebraMap_apply (Op X la G.N) (Rp X la G.N) (Lw X la G.w)]`. Use `erw [hasse_mul]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `erw [hasse_algebraMap_Op]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_smul_of_tower, Algebra.smul_def]`. Use `congr 1`. Rewrite using `[key, map_sum, Finset.sum_eq_single (0, β)]`. Rewrite using `[LinearMap.map_smul_of_tower, hasseOp_zero, algebraMap_smul]`. Introduce `q hq hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.map_smul_of_tower]`. Rewrite `hq` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `h1 : q.1 ≠ 0` using `fun h0 => hne (Prod.ext h0 (by rw [← hq, h0, zero_add]))`. Establish `h2 : (q.2.sum fun _ n => n) < k`. Rewrite `hβ`, the goal using `[sumN_eq]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `hβ` using `[← hq, map_add]`. Establish `: Finsupp.degree q.1 ≠ 0` using `fun h0 => h1 ((Finsupp.degree_eq_zero_iff _).1 h0)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hasseVan_holds G la k x hx q.2 h2 (hmem q.2), smul_zero]`. Introduce `h0`.
-
-Conclude with `absurd (Finset.HasAntidiagonal.mem_antidiagonal.2 (zero_add β)) h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasseSmul_holds : HasseSmul := by
   intro D B P j X ka wL wF G la k o x hx β hβ h h'

@@ -25,14 +25,14 @@ def intRing (K : Type) [NormedField K] [IsUltrametricDist K] : Subring K where
   neg_mem' := fun {a} ha => by simpa using ha
 
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_mul_le_of_mem {a b : K} (hb : b ∈ intRing K) : ‖a * b‖ ≤ ‖a‖ := by
   rw [norm_mul]
   exact mul_le_of_le_one_right (norm_nonneg _) hb
 
 /- English proof (translation)
-Break down `le_or_gt ‖y‖ ‖b‖ with hy | hy` into its components or cases. Conclude with `(pow_le_pow_left₀ (norm_nonneg _) hy 2).trans hb`. Establish `: ‖r‖ = ‖y‖ ^ 2`. Rewrite using `[← h, show y ^ 2 + b * y = y * (y + b) by ring, norm_mul, norm_add_eq_of_lt hy, sq]`. Conclude with `this ▸ hr`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma quad_le {y b r : K} {C : ℝ} (h : y ^ 2 + b * y = r) (hb : ‖b‖ ^ 2 ≤ C) (hr : ‖r‖ ≤ C) :
     ‖y‖ ^ 2 ≤ C := by
@@ -43,9 +43,9 @@ lemma quad_le {y b r : K} {C : ℝ} (h : y ^ 2 + b * y = r) (hb : ‖b‖ ^ 2 �
     exact this ▸ hr
 
 /- English proof (translation)
-Break down `le_or_gt ‖y‖ ‖b‖ with hy | hy` into its components or cases. It suffices to derive a contradiction. Establish `h1 : ‖y + b‖ ≤ ‖b‖` using `(norm_add_le_max _ _).trans (max_le hy le_rfl)`. Establish `: ‖r‖ ≤ ‖b‖ * ‖b‖`. Rewrite using `[← h, show y ^ 2 + b * y = y * (y + b) by ring, norm_mul]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `gcongr`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[← h, show y ^ 2 + b * y = y * (y + b) by ring, norm_mul, norm_add_eq_of_lt hy, sq]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma quad_eq {y b r : K} (h : y ^ 2 + b * y = r) (hb : ‖b‖ ^ 2 < ‖r‖) : ‖y‖ ^ 2 = ‖r‖ := by
   rcases le_or_gt ‖y‖ ‖b‖ with hy | hy
@@ -58,7 +58,7 @@ lemma quad_eq {y b r : K} (h : y ^ 2 + b * y = r) (hb : ‖b‖ ^ 2 < ‖r‖) :
   · rw [← h, show y ^ 2 + b * y = y * (y + b) by ring, norm_mul, norm_add_eq_of_lt hy, sq]
 
 /- English proof (translation)
-Establish `hb' : ‖b‖ ≤ 1` using `hb`. Use `quad_le (C := 1) h (pow_le_one₀ (norm_nonneg _) hb') hr` as an intermediate fact. Use `show ‖y‖ ≤ 1`. Use polynomial arithmetic with `[norm_nonneg y]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma quad_mem {y b r : K} (h : y ^ 2 + b * y = r) (hb : b ∈ intRing K) (hr : r ∈ intRing K) :
     y ∈ intRing K := by
@@ -68,7 +68,7 @@ lemma quad_mem {y b r : K} (h : y ^ 2 + b * y = r) (hb : b ∈ intRing K) (hr : 
   nlinarith [norm_nonneg y]
 
 /- English proof (translation)
-Use `(norm_add_le_max _ _).trans (max_le ?_ (by linarith))` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `norm_mul_le_of_mem ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_lin_le {a c x : K} (ha : ‖a‖ ≤ 1) (hc : ‖c‖ ≤ 1) (hx : 1 < ‖x‖) :
     ‖a * x + c‖ ≤ ‖x‖ := by
@@ -77,11 +77,11 @@ lemma norm_lin_le {a c x : K} (ha : ‖a‖ ≤ 1) (hc : ‖c‖ ≤ 1) (hx : 1 
   exact norm_mul_le_of_mem ha
 
 /- English proof (translation)
-Establish `h1 : ‖(a₂ * x + a₄) * x + a₆‖ < ‖x ^ 3‖`. Use `norm_lin_le h₂ h₄ hx` as an intermediate fact. Establish `h3 : ‖x‖ * ‖x‖ < ‖x‖ ^ 3`. Use `pow_lt_pow_right₀ hx (show 2 < 3 by norm_num)` as an intermediate fact. Rewrite `this` using `[sq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[norm_pow]`. Use `(norm_add_le_max _ _).trans_lt (max_lt ?_ (by nlinarith))` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (by gcongr) h3`. Rewrite using `[← norm_pow, ← norm_add_eq_of_lt h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma norm_cubic {a₂ a₄ a₆ x : K} (h₂ : ‖a₂‖ ≤ 1) (h₄ : ‖a₄‖ ≤ 1) (h₆ : ‖a₆‖ ≤ 1)
     (hx : 1 < ‖x‖) : ‖x ^ 3 + a₂ * x ^ 2 + a₄ * x + a₆‖ = ‖x‖ ^ 3 := by
@@ -99,7 +99,7 @@ lemma norm_cubic {a₂ a₄ a₆ x : K} (h₂ : ‖a₂‖ ≤ 1) (h₄ : ‖a�
   ring
 
 /- English proof (translation)
-Rewrite using `[← norm_cubic h₂ h₄ h₆ hx]`. Use `quad_eq (b := a₁ * x + a₃) (by linear_combination h) ?_` and prove the remaining obligations. Rewrite using `[norm_cubic h₂ h₄ h₆ hx]`. Conclude with `(pow_le_pow_left₀ (norm_nonneg _) (norm_lin_le h₁ h₃ hx) 2).trans_lt (pow_lt_pow_right₀ hx (by norm_num))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_y_sq' {a₁ a₂ a₃ a₄ a₆ x y : K} (h₁ : ‖a₁‖ ≤ 1) (h₂ : ‖a₂‖ ≤ 1) (h₃ : ‖a₃‖ ≤ 1)
     (h₄ : ‖a₄‖ ≤ 1) (h₆ : ‖a₆‖ ≤ 1) (hx : 1 < ‖x‖)
@@ -112,11 +112,11 @@ lemma norm_y_sq' {a₁ a₂ a₃ a₄ a₆ x y : K} (h₁ : ‖a₁‖ ≤ 1) (h
     (pow_lt_pow_right₀ hx (by norm_num))
 
 /- English proof (translation)
-Establish `hx1 : 1 < ‖x‖` using `by linarith`. Establish `hn : ‖y * (-y - a₁ * x - a₃)‖ = ‖x‖ ^ 3`. Rewrite using `[← norm_cubic h₂ h₄ h₆ hx1, ← h, ← norm_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `x0 : 0 < ‖x‖` using `by linarith`. Establish `h0 : y * (-y - a₁ * x - a₃) ≠ 0`. Rewrite using `[← norm_pos_iff, hn]`. Check the signs of the components of the expression. Rewrite using `[div_add_div _ _ (left_ne_zero_of_mul h0) (right_ne_zero_of_mul h0), norm_div, hn, show x * (-y - a₁ * x - a₃) + y * x = -(x * (a₁ * x + a₃)) by ring, norm_neg, norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `norm_lin_le h₁ h₃ hx1` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma neg_param {a₁ a₂ a₃ a₄ a₆ x y : K} {M : ℝ} (h₁ : ‖a₁‖ ≤ 1) (h₂ : ‖a₂‖ ≤ 1) (h₃ : ‖a₃‖ ≤ 1)
     (h₄ : ‖a₄‖ ≤ 1) (h₆ : ‖a₆‖ ≤ 1) (hM : 1 < M) (hx : M ≤ ‖x‖)
@@ -138,23 +138,21 @@ lemma neg_param {a₁ a₂ a₃ a₄ a₆ x y : K} {M : ℝ} (h₁ : ‖a₁‖ 
     _ ≤ M⁻¹ := by gcongr
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `set a := ‖x₁‖ with ha`. Use `set b := ‖x₂‖ with hb`. Use `set c := ‖x₃‖ with hc'`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c0 : 0 ≤ c` using `norm_nonneg _`. Establish `hl : ‖l‖ ^ 2 ≤ a`. Use `quad_le (b := a₁) (r := x₁ + x₂ + x₃ + a₂) (by linear_combination -e1) ((pow_le_one₀ (norm_nonneg _) h₁).trans (by linarith)) ?_` and prove the remaining obligations. Use `(norm_add_le_max _ _).trans (max_le ?_ (by linarith))` and prove the remaining obligations. Conclude with `(norm_sum_three_le _ _ _).trans (max_le (max_le le_rfl h12) (by linarith))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hn : ‖n‖ ^ 2 ≤ max (a * b * c) 1`. Use `quad_le (b := a₃) (r := x₁ * x₂ * x₃ + a₆) (by linear_combination -e3) ((pow_le_one₀ (norm_nonneg _) h₃).trans (le_max_right _ _)) ?_` and prove the remaining obligations. Use `(norm_add_le_max _ _).trans (max_le_max ?_ h₆)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨L, L1, Ll, hL⟩ : ∃ L : ℝ, 1 ≤ L ∧ ‖l‖ ≤ L ∧ L ^ 2 ≤ a := by`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_total ‖l‖ 1 with h | h` into its components or cases. Conclude with `⟨1, le_rfl, h, by linarith⟩`. Conclude with `⟨_, h, le_rfl, hl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨N, N1, Nn, hN⟩ : ∃ N : ℝ, 1 ≤ N ∧ ‖n‖ ≤ N ∧ N ^ 2 ≤ max (a * b * c) 1 := by`. Break down `le_total ‖n‖ 1 with h | h` into its components or cases.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨1, le_rfl, h, by simp⟩`. Conclude with `⟨_, h, le_rfl, hn⟩`. Establish `hab : a * b ≤ L * N`. Establish `h1 : ‖x₁ * x₂ + x₁ * x₃ + x₂ * x₃‖ = a * b`. Rewrite using `[add_assoc, norm_add_eq_of_lt, norm_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `refine (norm_add_le_max _ _).trans_lt (max_lt ?_ ?_) <;> rw [norm_mul, norm_mul] <;>`. Use the polynomial consequences of the given equalities and inequalities. Establish `t1 : ‖l * n * 2‖ ≤ ‖l * n‖` using `norm_mul_le_of_mem norm_two_le`. Establish `t2 : ‖n * a₁‖ ≤ ‖n‖` using `norm_mul_le_of_mem h₁`. Establish `t3 : ‖l * a₃‖ ≤ ‖l‖` using `norm_mul_le_of_mem h₃`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `t4 : ‖l * n‖ ≤ L * N` using `by rw [norm_mul]; gcongr`. Rewrite using `[← h1, e2, show a₄ - 2 * l * n - a₁ * n - a₃ * l = a₄ - (l * n * 2 + n * a₁ + l * a₃) by ring]`. Use `(norm_sub_le_max' _ _).trans (max_le (by nlinarith) ?_)` and prove the remaining obligations. Apply the tactic sequence `refine (norm_sum_three_le _ _ _).trans (max_le (max_le ?_ ?_) ?_) <;> nlinarith`. Establish `hab1 : 1 < a * b` using `by nlinarith`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : (a * b) ^ 2 ≤ a * max (a * b * c) 1`. Combine the equalities or inequalities in the displayed calculation. Establish `a0 : 0 < a` using `by linarith`. Establish `h5 : max (a * b * c) 1 < a * b * b`. Use `max_lt ?_ ?_` and prove the remaining obligations.
-
-Conclude with `mul_lt_mul_of_pos_left hc (by linarith)`. Use the polynomial consequences of the given equalities and inequalities. Use `mul_lt_mul_of_pos_left h5 a0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma third_big {a₁ a₂ a₃ a₄ a₆ x₁ x₂ x₃ l n : K} (h₁ : ‖a₁‖ ≤ 1) (h₂ : ‖a₂‖ ≤ 1)
     (h₃ : ‖a₃‖ ≤ 1) (h₄ : ‖a₄‖ ≤ 1) (h₆ : ‖a₆‖ ≤ 1)
@@ -212,7 +210,7 @@ lemma third_big {a₁ a₂ a₃ a₄ a₆ x₁ x₂ x₃ l n : K} (h₁ : ‖a�
   nlinarith
 
 /- English proof (translation)
-Establish `a0 : 0 ≤ a` using `by linarith`. Establish `: M * M ≤ b * c` using `mul_le_mul hb hc (by linarith) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma mul_pow_two_le_triple_prod_of_ge {a b c M : ℝ} (hM : 1 < M) (ha : M ≤ a) (hb : M ≤ b) (hc : M ≤ c) :
     a * M ^ 2 ≤ a * b * c := by
@@ -221,39 +219,37 @@ lemma mul_pow_two_le_triple_prod_of_ge {a b c M : ℝ} (hM : 1 < M) (ha : M ≤ 
   nlinarith
 
 /- English proof (translation)
-Establish `h3 : M ≤ ‖x₃‖`. Break down `le_total ‖x₂‖ ‖x₁‖ with h | h` into its components or cases. Conclude with `h2.trans (third_big h₁ h₂ h₃ h₄ h₆ e1 e2 e3 h (by linarith))`. Conclude with `h1.trans (third_big (x₁ := x₂) (x₂ := x₁) (l := l) (n := n) h₁ h₂ h₃ h₄ h₆ (by linear_combination e1) (by linear_combination e2) (by linear_combination e3) h (by linarith))`. Use `⟨h3, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `q1 : y₁ ^ 2 + a₁ * x₁ * y₁ + a₃ * y₁ = x₁ ^ 3 + a₂ * x₁ ^ 2 + a₄ * x₁ + a₆`. Rewrite using `[hy₁]`. Take the linear combination `(-x₁ ^ 2) * e1 + x₁ * e2 - e3`. Establish `q2 : y₂ ^ 2 + a₁ * x₂ * y₂ + a₃ * y₂ = x₂ ^ 3 + a₂ * x₂ ^ 2 + a₄ * x₂ + a₆`. Rewrite using `[hy₂]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(-x₂ ^ 2) * e1 + x₂ * e2 - e3`. Establish `q3 : y₃ ^ 2 + a₁ * x₃ * y₃ + a₃ * y₃ = x₃ ^ 3 + a₂ * x₃ ^ 2 + a₄ * x₃ + a₆`. Rewrite using `[hy₃]`. Take the linear combination `(-x₃ ^ 2) * e1 + x₃ * e2 - e3`. Establish `n1` using `norm_y_sq' h₁ h₂ h₃ h₄ h₆ (by linarith) q1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2` using `norm_y_sq' h₁ h₂ h₃ h₄ h₆ (by linarith) q2`. Establish `n3` using `norm_y_sq' h₁ h₂ h₃ h₄ h₆ (by linarith) q3`. Use `set a := ‖x₁‖ with ha`. Use `set b := ‖x₂‖ with hb`. Use `set c := ‖x₃‖ with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `M0 : 0 < M` using `by linarith`. Establish `p1` using `mul_pow_two_le_triple_prod_of_ge hM h1 h2 h3`. Establish `p2 : b * M ^ 2 ≤ a * b * c` using `by have := mul_pow_two_le_triple_prod_of_ge hM h2 h1 h3; linarith`. Establish `p3 : c * M ^ 2 ≤ a * b * c` using `by have := mul_pow_two_le_triple_prod_of_ge hM h3 h1 h2; linarith`. Establish `hM2 : 1 < M ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `habc : M ^ 2 ≤ a * b * c` using `by nlinarith`. Establish `hr : ‖x₁ * x₂ * x₃ + a₆‖ = a * b * c`. Rewrite using `[norm_add_eq_of_lt, norm_mul, norm_mul]`. Rewrite using `[norm_mul, norm_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : ‖n‖ ^ 2 = a * b * c`. Rewrite using `[← hr]`. Use `quad_eq (b := a₃) (by linear_combination -e3) ?_` and prove the remaining obligations. Rewrite using `[hr]`. Conclude with `(pow_le_one₀ (norm_nonneg _) h₃).trans_lt (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ‖l‖ * M ≤ ‖n‖`. Use `(pow_le_pow_iff_left₀ (by positivity) (norm_nonneg _) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[hn, mul_pow, ← le_div_iff₀ (by positivity)]`. Establish `u1 : a ≤ a * b * c / M ^ 2` using `by rwa [le_div_iff₀ (by positivity)]`. Establish `u2 : b ≤ a * b * c / M ^ 2` using `by rwa [le_div_iff₀ (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `u3 : c ≤ a * b * c / M ^ 2` using `by rwa [le_div_iff₀ (by positivity)]`. Use `quad_le (b := a₁) (r := x₁ + x₂ + x₃ + a₂) (by linear_combination -e1) ((pow_le_one₀ (norm_nonneg _) h₁).trans (by linarith)) ?_` and prove the remaining obligations. Use `(norm_add_le_max _ _).trans (max_le ?_ (by linarith))` and prove the remaining obligations. Conclude with `(norm_sum_three_le _ _ _).trans (max_le (max_le u1 u2) u3)`. Establish `hMn : M ≤ ‖n‖`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `(pow_le_pow_iff_left₀ (by linarith) (norm_nonneg _) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[hn]`. Conclude with `habc`. Establish `hyy : ‖y₁ * y₂ * y₃‖ = ‖n‖ ^ 3`. Use `(pow_left_inj₀ (norm_nonneg _) (by positivity) two_ne_zero).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_mul, mul_pow, mul_pow, n1, n2, n3, ← pow_mul, mul_comm 3 2, pow_mul, hn]`. Expand and normalize the polynomial expressions, which then agree. Establish `n0 : 0 < ‖n‖` using `by linarith`. Establish `n0' : n ≠ 0` using `norm_pos_iff.1 n0`. Establish `hy0 : y₁ * y₂ * y₃ ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[← norm_pos_iff, hyy]`. Check the signs of the components of the expression. Establish `y1 : y₁ ≠ 0` using `fun h => hy0 (by simp [h])`. Establish `y2 : y₂ ≠ 0` using `fun h => hy0 (by simp [h])`. Establish `y3 : y₃ ≠ 0` using `fun h => hy0 (by simp [h])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : x₁ * y₂ * y₃ + y₁ * x₂ * y₃ + y₁ * y₂ * x₃ = a₃ * l ^ 2 * n - 3 * a₆ * l ^ 2 + 2 * a₄ * l * n - a₁ * l * n ^ 2 - a₂ * n ^ 2`. Rewrite using `[hy₁, hy₂, hy₃]`. Take the linear combination `n ^ 2 * e1 + 2 * l * n * e2 + 3 * l ^ 2 * e3`. Establish `k1 : ‖l / n‖ ≤ M⁻¹`. Rewrite using `[norm_div, inv_eq_one_div, div_le_div_iff₀ n0 M0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `k2 : ‖n⁻¹‖ ≤ M⁻¹` using `by rw [norm_inv]; gcongr`. Establish `Mi : M⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ hM.le`. Establish `m1 : l / n ∈ intRing K` using `k1.trans Mi`. Establish `m₁ : a₁ ∈ intRing K` using `h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `m₂ : a₂ ∈ intRing K` using `h₂`. Establish `m₃ : a₃ ∈ intRing K` using `h₃`. Establish `m₄ : a₄ ∈ intRing K` using `h₄`. Establish `m₆ : a₆ ∈ intRing K` using `h₆`. Establish `hq : x₁ / y₁ + x₂ / y₂ + x₃ / y₃ = n ^ 3 / (y₁ * y₂ * y₃) * (l / n * (a₃ * (l / n) - a₁) + n⁻¹ * (2 * a₄ * (l / n) - 3 * a₆ * (l / n) ^ 2 - a₂))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: n ^ 3 * (l / n * (a₃ * (l / n) - a₁) + n⁻¹ * (2 * a₄ * (l / n) - 3 * a₆ * (l / n) ^ 2 - a₂)) = x₁ * y₂ * y₃ + y₁ * x₂ * y₃ + y₁ * y₂ * x₃`. Rewrite using `[hS]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[div_mul_eq_mul_div, this]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hq, norm_mul, norm_div, hyy, norm_pow, div_self (by positivity), one_mul]`. Use `(norm_add_le_max _ _).trans (max_le ((norm_mul_le_of_mem ?_).trans k1) ((norm_mul_le_of_mem ?_).trans k2))` and prove the remaining obligations. Conclude with `sub_mem (mul_mem m₃ m1) m₁`. Conclude with `sub_mem (sub_mem (mul_mem (mul_mem norm_two_le m₄) m1) (mul_mem (mul_mem norm_three_le m₆) (pow_mem m1 _))) m₂`.
+A detailed English derivation is pending.
 -/
 lemma chord {a₁ a₂ a₃ a₄ a₆ x₁ x₂ x₃ y₁ y₂ y₃ l n : K} {M : ℝ} (h₁ : ‖a₁‖ ≤ 1) (h₂ : ‖a₂‖ ≤ 1)
     (h₃ : ‖a₃‖ ≤ 1) (h₄ : ‖a₄‖ ≤ 1) (h₆ : ‖a₆‖ ≤ 1) (hM : 1 < M)
@@ -349,23 +345,23 @@ lemma chord {a₁ a₂ a₃ a₄ a₆ x₁ x₂ x₃ y₁ y₂ y₃ l n : K} {M 
       (mul_mem (mul_mem norm_three_le m₆) (pow_mem m1 _))) m₂
 
 /- English proof (translation)
-Establish `M0 : 0 ≤ M⁻¹` using `inv_nonneg.2 (by linarith)`. Break down `P with _ | ⟨x₁, y₁, k₁⟩` into its components or cases. Rewrite using `[← Affine.Point.zero_def, zero_add]`. Use `⟨hQ, ?_⟩` and prove the remaining obligations. Simplify `M0` using `[Affine.Point.zero_def, param]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `Q with _ | ⟨x₂, y₂, k₂⟩` into its components or cases. Rewrite using `[← Affine.Point.zero_def, add_zero]`. Use `⟨hP, ?_⟩` and prove the remaining obligations. Simplify `M0` using `[Affine.Point.zero_def, param]`. Distinguish the cases in `hxy : x₁ = x₂ ∧ y₁ = W.negY x₂ y₂`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Affine.Point.add_of_Y_eq hxy.1 hxy.2]`. Use `⟨trivial, ?_⟩` and prove the remaining obligations. Take `⟨rfl, rfl⟩` from `hxy`. Use `neg_param h₁ h₂ h₃ h₄ h₆ hM hQ ((Affine.equation_iff _ _).1 k₂.1)` as an intermediate fact. Rewrite using `[← norm_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_of_eq_of_le (congrArg norm ?_) this` and prove the remaining obligations. Simplify using `only [Affine.Point.zero_def, param, Affine.negY]`. Expand and normalize the polynomial expressions, which then agree. Establish `hp` using `Affine.addPolynomial_slope k₁.1 k₂.1 hxy`. Rewrite `hp` using `[Affine.addPolynomial_eq, neg_inj, Cubic.prod_X_sub_C_eq, Cubic.toPoly_injective]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy₂ : y₂ = W.slope x₁ x₂ y₁ y₂ * x₂ + (y₁ - W.slope x₁ x₂ y₁ y₂ * x₁)`. Distinguish the cases in `hx : x₁ = x₂`. Use `Affine.Y_eq_of_Y_ne k₁.1 k₂.1 hx (fun h => hxy ⟨hx, h⟩)` as an intermediate fact. Rewrite using `[← hx, ← this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Affine.slope_of_X_ne hx]`. Use `sub_ne_zero.2 hx` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `he` using `(Affine.equation_iff _ _).1 (Affine.equation_negAdd k₁.1 k₂.1 hxy)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Affine.Point.add_some hxy]`. Simplify using `only [Near, param, Affine.addY] at hP hQ ⊢`. Generalize the expression as in `W.slope x₁ x₂ y₁ y₂ = l at hp hy₂ he ⊢`. Establish `hb` using `congrArg Cubic.b hp`. Establish `hc` using `congrArg Cubic.c hp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `congrArg Cubic.d hp`. Simplify using `only [Affine.negY, Affine.negAddY] at hb hc hd he ⊢`. Generalize the expression as in `W.addX x₁ x₂ l = x₃ at hb hc hd he ⊢`. Establish `t1` using `chord (x₃ := x₃) (y₁ := y₁) (y₂ := y₂) (y₃ := l * (x₃ - x₁) + y₁) (l := l) (n := y₁ - l * x₁) h₁ h₂ h₃ h₄ h₆ hM (by linear_combination hb) (by linear_combination -hc) (by linear_combination hd) (by ring) hy₂ (by ring) hP hQ`. Use `⟨t1.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `t2` using `neg_param h₁ h₂ h₃ h₄ h₆ hM t1.1 he`. Use `(norm_sub_le_max' _ _).trans (max_le t2 t1.2)` as an intermediate fact. Use `le_of_eq_of_le (congrArg norm ?_) this` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma add_step' [DecidableEq K] {W : Affine K} {M : ℝ} (h₁ : ‖W.a₁‖ ≤ 1) (h₂ : ‖W.a₂‖ ≤ 1)
     (h₃ : ‖W.a₃‖ ≤ 1) (h₄ : ‖W.a₄‖ ≤ 1) (h₆ : ‖W.a₆‖ ≤ 1) (hM : 1 < M)
@@ -418,19 +414,19 @@ lemma add_step' [DecidableEq K] {W : Affine K} {M : ℝ} (h₁ : ‖W.a₁‖ �
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Use `push Not at hx`. Establish `M0 : 0 ≤ ‖x‖⁻¹` using `by positivity`. Establish `hP : Near ‖x‖ (Affine.Point.some x y h)` using `le_refl _`. Establish `key : ∀ k : ℕ, Near ‖x‖ (k • Affine.Point.some x y h) ∧ ‖param (k • Affine.Point.some x y h) - (k : K) * (x / y)‖ ≤ ‖x‖⁻¹`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[zero_nsmul]`. Conclude with `⟨trivial, by simp [Affine.Point.zero_def, param]⟩`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `succ k ih`. Take `⟨s1, s2⟩` from `add_step' h₁ h₂ h₃ h₄ h₆ hx _ _ ih.1 hP`. Rewrite using `[succ_nsmul]`. Use `⟨s1, ?_⟩` and prove the remaining obligations. Use `(norm_add_le_max _ _).trans (max_le s2 ih.2)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_eq_of_le (congrArg norm ?_) this` and prove the remaining obligations. Simplify using `only [param]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `(key N).2`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h0]`. Simplify using `only [Affine.Point.zero_def, param, zero_sub, norm_neg, norm_mul, hN, one_mul, norm_div] at h1`. Establish `hy` using `norm_y_sq' h₁ h₂ h₃ h₄ h₆ hx ((Affine.equation_iff _ _).1 h.1)`. Establish `x0 : 0 < ‖x‖` using `by linarith`. Establish `y0 : 0 < ‖y‖`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_ne (norm_nonneg _) fun h => ?_` and prove the remaining obligations. Rewrite `hy` using `[← h]`. Establish `: 0 < ‖x‖ ^ 3` using `by positivity`. Simplify using `at hy`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[inv_eq_one_div, div_le_div_iff₀ y0 x0, one_mul]`. Establish `h2 : (‖x‖ * ‖x‖) ^ 2 ≤ ‖y‖ ^ 2` using `by gcongr`. Rewrite `h2` using `[hy]`. Establish `: ‖x‖ ^ 3 * 1 < ‖x‖ ^ 3 * ‖x‖` using `by gcongr`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_x_le_one [DecidableEq K] {W : Affine K} (h₁ : ‖W.a₁‖ ≤ 1) (h₂ : ‖W.a₂‖ ≤ 1)
     (h₃ : ‖W.a₃‖ ≤ 1) (h₄ : ‖W.a₄‖ ≤ 1) (h₆ : ‖W.a₆‖ ≤ 1) (N : ℕ) (x y : K)
@@ -475,23 +471,23 @@ theorem norm_x_le_one [DecidableEq K] {W : Affine K} (h₁ : ‖W.a₁‖ ≤ 1)
   nlinarith
 
 /- English proof (translation)
-Establish `m₁ : W.a₁ ∈ intRing K` using `h₁`. Establish `m₂ : W.a₂ ∈ intRing K` using `h₂`. Establish `j₁ : x₁ ∈ intRing K` using `i₁`. Establish `j₂ : x₂ ∈ intRing K` using `i₂`. Establish `hd : x₁ - x₂ ≠ 0` using `sub_ne_zero.2 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ∀ l : K, ‖W.addX x₁ x₂ l‖ ≤ 1 → l ∈ intRing K` using `fun l h => quad_mem (b := W.a₁) (r := W.addX x₁ x₂ l + W.a₂ + x₁ + x₂) (by simp only [Affine.addX]; ring) m₁ (add_mem (add_mem (add_mem h m₂) j₁) j₂)`. Establish `l₃` using `hl _ i₃`. Establish `l₄` using `hl _ i₄`. Establish `e₃ : (y₁ - y₂) / (x₁ - x₂) * (x₁ - x₂) = y₁ - y₂` using `div_mul_cancel₀ _ hd`. Establish `e₄ : (y₁ - W.negY x₂ y₂) / (x₁ - x₂) * (x₁ - x₂) = y₁ - W.negY x₂ y₂` using `div_mul_cancel₀ _ hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `(y₁ - y₂) / (x₁ - x₂) = l at l₃ e₃`. Generalize the expression as in `(y₁ - W.negY x₂ y₂) / (x₁ - x₂) = l' at l₄ e₄`. Rewrite `e₄` using `[Affine.negY]`. Rewrite `k₁`, `k₂` using `[Affine.equation_iff]`. Establish `md : x₁ - x₂ ∈ intRing K` using `sub_mem j₁ j₂`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨α, mα, eα⟩ : ∃ α ∈ intRing K, W.a₃ + x₁ * W.a₁ + 2 * y₁ = (x₁ - x₂) * α` from `⟨l + l' + W.a₁, add_mem (add_mem l₃ l₄) m₁, by linear_combination -e₃ - e₄⟩`. Choose the witnesses or unpack the hypotheses as in `⟨β, mβ, eβ⟩ : ∃ β ∈ intRing K, W.a₄ + 2 * x₁ * W.a₂ - y₁ * W.a₁ + 3 * x₁ ^ 2 = (x₁ - x₂) * β := by`. Use `⟨l * l' + x₁ + x₁ + x₂ + W.a₂, add_mem (add_mem (add_mem (add_mem (mul_mem l₃ l₄) j₁) j₁) j₂) m₂, mul_left_cancel₀ hd ?_⟩` and prove the remaining obligations. Take the linear combination `k₂ - k₁ - l' * (x₁ - x₂) * e₃ - (y₁ - y₂) * e₄`. Set `V : WeierstrassCurve K` to `⟨W.a₁, W.a₂ + 3 * x₁, (x₁ - x₂) * α, (x₁ - x₂) * β, 0⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Establish `hV : (⟨1, x₁, 0, y₁⟩ : VariableChange K) • W = V`. Use `ext`. Simplify using `[V, variableChange_a₁]`. Simplify using `[V, variableChange_a₂]`. Simplify using `[V, variableChange_a₃, ← eα]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[V, variableChange_a₄, ← eβ]`. Simplify using `only [V, variableChange_a₆, inv_one, Units.val_one]`. Take the linear combination `-k₁`. Establish `hΔ' : V.Δ = W.Δ` using `by rw [← hV, variableChange_Δ]; simp`. Use `le_antisymm md ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ma : W.a₂ + 3 * x₁ ∈ intRing K` using `add_mem m₂ (mul_mem norm_three_le j₁)`. Establish `e : V.Δ = (x₁ - x₂) * ((x₁ - x₂) * (-(W.a₁ ^ 2 + 4 * (W.a₂ + 3 * x₁)) ^ 2 * (-(W.a₁ * α * β) + (W.a₂ + 3 * x₁) * α ^ 2 - β ^ 2) - 8 * (x₁ - x₂) * (2 * β + W.a₁ * α) ^ 3 - 27 * (x₁ - x₂) ^ 2 * α ^ 4 + 9 * (W.a₁ ^ 2 + 4 * (W.a₂ + 3 * x₁)) * (2 * β + W.a₁ * α) * (x₁ - x₂) * α ^ 2))`. Simplify using `only [V, Δ, b₂, b₄, b₆, b₈]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hΔ, ← hΔ', e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `norm_mul_le_of_mem ?_` and prove the remaining obligations. Generalize the expression as in `W.a₂ + 3 * x₁ = a at ma`. Generalize the expression as in `x₁ - x₂ = d at md`. Establish `mb : W.a₁ ^ 2 + 4 * a ∈ intRing K` using `add_mem (pow_mem m₁ _) (mul_mem (ofNat_mem _ _) ma)`. Establish `mc : 2 * β + W.a₁ * α ∈ intRing K` using `add_mem (mul_mem (ofNat_mem _ _) mβ) (mul_mem m₁ mα)`.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_mem md (add_mem (sub_mem (sub_mem (mul_mem (neg_mem (pow_mem mb _)) (sub_mem (add_mem (neg_mem (mul_mem (mul_mem m₁ mα) mβ)) (mul_mem ma (pow_mem mα _))) (pow_mem mβ _))) (mul_mem (mul_mem (ofNat_mem _ _) md) (pow_mem mc _))) (mul_mem (mul_mem (ofNat_mem _ _) (pow_mem md _)) …`.
+A detailed English derivation is pending.
 -/
 theorem norm_x_sub_eq_one {W : Affine K} (h₁ : ‖W.a₁‖ ≤ 1) (h₂ : ‖W.a₂‖ ≤ 1)
     (h₃ : ‖W.a₃‖ ≤ 1) (h₄ : ‖W.a₄‖ ≤ 1) (h₆ : ‖W.a₆‖ ≤ 1) (hΔ : ‖W.Δ‖ = 1) {x₁ x₂ y₁ y₂ : K}
@@ -557,17 +553,15 @@ end General
 open Classical in
 
 /- English proof (translation)
-Take `⟨φ, -, hker, hφ⟩` from `Mdl.exists_pointHom q M hM`. Take `⟨-, h₁, h₂, h₃, h₄, h₆, hΔ, -, -⟩` from `hM`. Establish `hNn : ‖(N : ℂ_[q])‖ = 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[q] ℂ_[q]), norm_algebraMap']`. Conclude with `Padic.norm_natCast_eq_one_iff.2 hN.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `int : ∀ (p : ℂ) (x y : ℂ_[q]) (h), (N : ℂ) * p ∈ M.L.lattice → φ p = Affine.Point.some x y h → ‖x‖ ≤ 1` using `fun p x y h hp e => by`. Use `norm_x_le_one (W := M.W.toAffine) h₁ h₂ h₃ h₄ h₆ N x y h hNn ?_` and prove the remaining obligations. Rewrite using `[← e, ← map_nsmul, hker, nsmul_eq_mul]`. Conclude with `hp`. Use `⟨fun p hp hp' => ?_, fun p p' hp hp' np np' ns nd => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, e⟩` from `hφ p hp'`. Conclude with `int p _ _ h hp e`. Take `⟨h, e⟩` from `hφ p np`. Take `⟨h', e'⟩` from `hφ p' np'`. Establish `hx : M.ι (M.x p) ≠ M.ι (M.x p')` using `fun hx => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `Affine.Y_eq_of_X_eq h.1 h'.1 hx with hy | hy` into its components or cases. Use `nd ((hker _).1 ?_)` and prove the remaining obligations. Rewrite using `[map_sub, e, e', sub_eq_zero]`. Simplify using `only [Affine.Point.some.injEq]`. Conclude with `⟨hx, hy⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ns ((hker _).1 ?_)` and prove the remaining obligations. Rewrite using `[map_add, e, e', Affine.Point.add_of_Y_eq hx hy]`. Use `norm_x_sub_eq_one (W := M.W.toAffine) h₁ h₂ h₃ h₄ h₆ hΔ h.1 h'.1 hx (int p _ _ h hp e) (int p' _ _ h' hp' e') ?_ ?_` and prove the remaining obligations. Rewrite using `[← Affine.slope_of_X_ne (W := M.W.toAffine) hx]`. Conclude with `int (p + p') _ _ _ (by rw [mul_add]; exact add_mem hp hp') (by rw [map_add, e, e', Affine.Point.add_of_X_ne hx])`.
-
-Rewrite using `[← Affine.slope_of_X_ne (W := M.W.toAffine) hx]`. Conclude with `int (p - p') _ _ _ (by rw [mul_sub]; exact sub_mem hp hp') (by rw [map_sub, e, e', sub_eq_add_neg, Affine.Point.neg_some, Affine.Point.add_of_X_ne hx])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_integral_and_distinct (q : ℕ) [Fact q.Prime] (M : Mdl q) (N : ℕ) (hM : M.Ok)
     (hN : Nat.Coprime N q) :

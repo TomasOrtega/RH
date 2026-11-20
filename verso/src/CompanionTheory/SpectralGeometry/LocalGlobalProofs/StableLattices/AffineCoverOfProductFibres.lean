@@ -24,15 +24,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.PointSurjectivity
 
 /- English proof (translation)
-Introduce `k _ X T Z a b p q H V hV κ _ _ D hD hc G hG`. Set `π` to `pullback.fst q hV.fromSpec`. Set `f` to `pullback.snd q hV.fromSpec`. Establish `H₁ : IsPullback π f q hV.fromSpec` using `IsPullback.of_hasPullback _ _`. Establish `H' : IsPullback f (π ≫ p) (hV.fromSpec ≫ b) a` using `H₁.flip.paste_vert H.flip`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : IsAffineHom (π ≫ p)` using `MorphismProperty.of_isPullback (P := @IsAffineHom) H' inferInstance`. Establish `hr : π.opensRange = q ⁻¹ᵁ V` using `by ext1`. Rewrite using `[Scheme.Hom.coe_opensRange]`. Use `erw [Scheme.Pullback.range_fst]`. Rewrite using `[hV.range_fromSpec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hE (i : κ) : π ⁻¹ᵁ (p ⁻¹ᵁ D i ⊓ q ⁻¹ᵁ V) = (π ≫ p) ⁻¹ᵁ D i`. Rewrite using `[← hr, Scheme.Hom.preimage_inf, Scheme.Hom.preimage_opensRange, inf_top_eq, Scheme.Hom.comp_preimage]`. Establish `hA (i : κ) : IsAffineOpen ((π ≫ p) ⁻¹ᵁ D i)` using `(hD i).preimage _`. Use `⟨fun i => ?_, _, π, f, fun i => π ⁻¹ᵁ (p ⁻¹ᵁ D i ⊓ q ⁻¹ᵁ V), H₁, fun i => (congrArg IsAffineOpen (hE i)).mpr (hA i), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `(hA i).image_of_isOpenImmersion π`. Rewrite `h` using `[Scheme.Hom.comp_preimage, Scheme.Hom.image_preimage_eq_opensRange_inf, hr, inf_comm]`. Then use the resulting hypothesis. Simplify using `only [hE]`. Rewrite using `[← Scheme.Hom.preimage_iSup, hc, Scheme.Hom.preimage_top]`. Establish `e : f ≫ hV.fromSpec ≫ b = π ≫ p ≫ a`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← H₁.w_assoc, H.w]`. Rewrite using `[e]`. Conclude with `cechLB_pull_iso_of_isOpenImmersion k _ _ G _ π κ _ hG fun i => hr ▸ inf_le_right`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_affineOpen_of_isPullback : ∀ {k : Type} [Field k] {X T Z : Scheme.{0}} (a : X ⟶ Sp k) (b : T ⟶ Sp k) (p : Z ⟶ X) (q : Z ⟶ T)
     (H : IsPullback p q a b) {V : T.Opens} (hV : IsAffineOpen V) {κ : Type} [LinearOrder κ] [Fintype κ]

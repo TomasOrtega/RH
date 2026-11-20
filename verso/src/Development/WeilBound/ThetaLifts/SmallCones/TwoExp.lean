@@ -12,7 +12,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open Matrix (vecMulVec)
 
 /- English proof (translation)
-Establish `h2` using `h.summable.tsum_subtype_add_tsum_subtype_compl (Set.range j)`. Rewrite `h2` using `[tsum_range (fun i => c i * e i a) hj, h.tsum_eq]`. Simplify using `only [h1, mul_one] at h2`. Rewrite using `[← h2, add_sub_cancel_left]`. Conclude with `(h.summable.subtype _).hasSum`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_triv {A I J : Type} {e : I → A → ℂ} {c : I → ℂ} {j : J → I} (hj : Function.Injective j) (h1 : ∀ k a, e (j k) a = 1)
     {a : A} {S : ℂ} (h : HasSum (fun i => c i * e i a) S) :
@@ -24,11 +24,9 @@ theorem split_triv {A I J : Type} {e : I → A → ℂ} {c : I → ℂ} {j : J �
   exact (h.summable.subtype _).hasSum
 
 /- English proof (translation)
-Use `sub_eq_zero.1 (GlobalTheory.CompanionTheory.ThetaInj.charSeries_coeff_eq_zero (A := A) (I := Unit ⊕ (↥(Set.range j₁)ᶜ ⊕ ↥(Set.range j₂)ᶜ)) (Sum.elim (fun _ _ => 1) (Sum.elim (fun i => e₁ i) fun i => e₂ i)) (Sum.elim (fun _ => ∑' k, c₁ (j₁ k) - ∑' k, c₂ (j₂ k)) (Sum.elim (fun i => …` and prove the remaining obligations. Introduce and unpack `(_ | i | i) a b exacts [(one_mul _).symm, m₁ i a b, m₂ i a b]`. Introduce and unpack `(_ | i | i) a exacts [norm_one.le, l₁ i a, l₂ i a]`. Introduce and unpack `(_ | i | i) h exacts [absurd rfl h, n₁ i i.2, n₂ i i.2]`. Conclude with `Summable.sum _ Summable.of_finite (Summable.sum _ (s₁.subtype _) (s₂.subtype _).neg)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasSum.tsum_eq ?_` and prove the remaining obligations. Establish `k₂ : HasSum (fun i : ↥(Set.range j₂)ᶜ => -c₂ i * e₂ i a) (-(S a - ∑' k, c₂ (j₂ k)))`. Simplify `(split_triv i₂ t₂ (h₂ a)).neg` using `only [neg_mul]`. Rewrite using `[show (0 : ℂ) = (∑' k, c₁ (j₁ k) - ∑' k, c₂ (j₂ k)) * 1 + ((S a - ∑' k, c₁ (j₁ k)) + -(S a - ∑' k, c₂ (j₂ k))) by ring]`. Use `HasSum.sum (hasSum_unique _) (HasSum.sum ?_ ?_)` and prove the remaining obligations.
-
-Conclude with `split_triv i₁ t₁ (h₁ a)`. Conclude with `k₂`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem triv_part {A I₁ I₂ J₁ J₂ : Type} [AddCommGroup A] {e₁ : I₁ → A → ℂ} {e₂ : I₂ → A → ℂ} {c₁ : I₁ → ℂ} {c₂ : I₂ → ℂ}
     {j₁ : J₁ → I₁} {j₂ : J₂ → I₂} (i₁ : Function.Injective j₁) (i₂ : Function.Injective j₂)
@@ -61,18 +59,18 @@ variable {n d n₁ d₁ m : ℕ} {B : Base F E} {X : Spc F E n} {W : Spc F E d} 
   {H : Plane E n n₁} {H' : Plane E d d₁} {ε ε' : ℤ}
 
 /- English proof (translation)
-The claim follows from `left_ne_zero_of_mul_eq_one h.rat.ee`.
+A detailed English derivation is pending.
 -/
 theorem PG.eps_ne (h : PG σ X X₁ H ε) : (ε : E) ≠ 0 := left_ne_zero_of_mul_eq_one h.rat.ee
 
 /- English proof (translation)
-The claim follows from `h.nd_low u fun z => by rw [h.rat.symm, hu, map_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem PG.nd_low' (h : PG σ X X₁ H ε) (u) (hu : ∀ z, bf σ.toRingHom X.J (H.ι *ᵥ u) (H.ι *ᵥ z) = 0) : u = 0 :=
   h.nd_low u fun z => by rw [h.rat.symm, hu, map_zero, mul_zero]
 
 /- English proof (translation)
-Take `⟨s, t, z, rfl⟩` from `h.rat.span a`. Simplify using `only [bf_add_l, bf_smul_l, h.rat.xx, h.rat.ix, h.rat.yx, h.rat.xi, h.rat.yi, mul_zero, zero_add, add_zero] at h1 h2`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[h.nd_low' z h2, (mul_eq_zero.1 h1).resolve_right h.eps_ne]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem PG.line (h : PG σ X X₁ H ε) (a) (h1 : bf σ.toRingHom X.J a H.x = 0) (h2 : ∀ z, bf σ.toRingHom X.J a (H.ι *ᵥ z) = 0) :
     ∃ ξ : E, ξ • H.x = a := by
@@ -83,7 +81,7 @@ theorem PG.line (h : PG σ X X₁ H ε) (a) (h1 : bf σ.toRingHom X.J a H.x = 0)
   simp
 
 /- English proof (translation)
-Introduce `h0` and use `by have := h.rat.xy rw [h0] at this simp [bf] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PG.x_ne (h : PG σ X X₁ H ε) : H.x ≠ 0 := fun h0 => by
   have := h.rat.xy
@@ -107,39 +105,39 @@ def capAB : Submodule (AE F E) (Ten F E n d) where
     · rw [e', Matrix.mulVec_smul, Matrix.smul_vecMulVec, Matrix.vecMulVec_smul, smul_add]
 
 /- English proof (translation)
-Rewrite using `[incM_vv]`. Conclude with `⟨⟨incV F H.x, 0, by simp [vv0]⟩, ⟨incV F H'.x, 0, by simp [vv0]⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cap_xx : incM F (vecMulVec H.x H'.x) ∈ capAB (F := F) H H' := by
   rw [incM_vv]
   exact ⟨⟨incV F H.x, 0, by simp [vv0]⟩, ⟨incV F H'.x, 0, by simp [vv0]⟩⟩
 
 /- English proof (translation)
-Rewrite using `[incM_vv, ← inc_mulVec]`. Conclude with `⟨⟨incM F H.ι *ᵥ incV F u, 0, by simp [vv0]⟩, ⟨0, incV F u, by simp [vv0]⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cap_ix (u) : incM F (vecMulVec (H.ι *ᵥ u) H'.x) ∈ capAB (F := F) H H' := by
   rw [incM_vv, ← inc_mulVec]
   exact ⟨⟨incM F H.ι *ᵥ incV F u, 0, by simp [vv0]⟩, ⟨0, incV F u, by simp [vv0]⟩⟩
 
 /- English proof (translation)
-Rewrite using `[incM_vv, ← inc_mulVec]`. Conclude with `⟨⟨0, incV F u, by simp [vv0]⟩, ⟨incM F H'.ι *ᵥ incV F u, 0, by simp [vv0]⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cap_xi (u) : incM F (vecMulVec H.x (H'.ι *ᵥ u)) ∈ capAB (F := F) H H' := by
   rw [incM_vv, ← inc_mulVec]
   exact ⟨⟨0, incV F u, by simp [vv0]⟩, ⟨incM F H'.ι *ᵥ incV F u, 0, by simp [vv0]⟩⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_smul (l : E) (v : Matrix (Fin n) (Fin d) E) : incM F (l • v) = inclR (F := F) (AF F) l • incM F v := by
   ext i j
   simp [incM]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, Algebra.trace F E (-hTens σ X.J W.J x v * l) ≠ 0 := by`. Assume the negation of the conclusion as `h0`. Use `push Not at h0`. Conclude with `h (neg_eq_zero.1 ((traceForm_nondegenerate F E).1 _ fun a => h0 a))`. Take `⟨b, hb⟩` from `DFunLike.ne_iff.1 (std_ne_one hψ)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨(b * algebraMap F (AF F) (Algebra.trace F E (-hTens σ X.J W.J x v * l))⁻¹) • incM F (σ l • v), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (AE F E), incM_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ hv)`. Establish `e` using `sy_inc (σ := σ) (X := X) (W := W) x (σ l • v)`. Rewrite `e` using `[hT_smul_r, cc, mul_comm, ← neg_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Express the relevant statement in the definitionally equal form `B.ψ (symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) _ _) ≠ 1`. Rewrite using `[form_eq M.co, map_smul, ← form_eq M.co, show symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) _ _ = _ from e, smul_eq_mul, mul_assoc, ← map_mul, inv_mul_cancel₀ hl, map_one, mul_one]`. Simplify using `using hb`.
+A detailed English derivation is pending.
 -/
 theorem exists_ne (M : Model σ X W) (hψ : IsStd B.ψ) (cc : ∀ a, σ (σ a) = a) {x v : Matrix (Fin n) (Fin d) E}
     (hv : incM F v ∈ capAB (F := F) H H') (h : hTens σ X.J W.J x v ≠ 0) :
@@ -160,29 +158,27 @@ theorem exists_ne (M : Model σ X W) (hψ : IsStd B.ψ) (cc : ∀ a, σ (σ a) =
     simpa using hb
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' j₀ j₁ i₀ i₁ r s r' s' M M₀ hH hH' hB hX hW hM hM₀ eA eB hA hBv`. Establish `hψ` using `hB.std`. Establish `p` using `pg_herm hB hH hX`. Establish `p'` using `pg_skew hB hH' hW`. Establish `hA'` using `isEv_sumA hψ p' hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB'` using `isEv_sumB hψ p hBv`. Take `⟨C, hC, h1⟩` from `(polA p p').exp hE hB hM hM₀ hA'`. Take `⟨C', hC', h2⟩` from `(polB p p').exp hE hB hM hM₀ hB'`. Establish `eA' : ∀ ξ : E, vA H.y H'.y H'.ι (ξ • H.x, 0) = ξ • vecMulVec H.x H'.y` using `fun ξ => by`. Simplify using `[vv0, vA_apply, Matrix.smul_vecMulVec]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `eB' : ∀ ξ : E, vB H.y H'.y H.ι (ξ • H'.x, 0) = ξ • vecMulVec H.y H'.x` using `fun ξ => by`. Simplify using `[vB_apply, Matrix.vecMulVec_smul]`. Establish `iA : Function.Injective fun ξ : E => ((ξ • H.x, 0) : (Fin n → E) × (Fin d₁ → E))` using `fun a b e => smul_left_injective E p.x_ne (congrArg Prod.fst e)`. Establish `iB : Function.Injective fun ξ : E => ((ξ • H'.x, 0) : (Fin d → E) × (Fin n₁ → E))` using `fun a b e => smul_left_injective E p'.x_ne (congrArg Prod.fst e)`. Establish `hm : ∀ x a b, B.ψ (sy σ X W x (a + b)) = B.ψ (sy σ X W x a) * B.ψ (sy σ X W x b)` using `fun x a b => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← AddChar.map_add_eq_mul]`. Conclude with `congrArg B.ψ ((formL M.co x).map_add a b)`. Use `⟨C⁻¹ * C', mul_ne_zero (inv_ne_zero hC) hC', fun Ψ hΨ => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Simplify `((summable_mul_left_iff hC).1 (h1 Ψ hΨ).summable).comp_injective iA` using `only [Function.comp_def, eA']`. Simplify `((summable_mul_left_iff hC').1 (h2 Ψ hΨ).summable).comp_injective iB` using `only [Function.comp_def, eB']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `key` using `triv_part (A := capAB (F := F) H H') (e₁ := fun t a => B.ψ (sy σ X W (incM F (vA H.y H'.y H'.ι t)) a.1)) (e₂ := fun t a => B.ψ (sy σ X W (incM F (vB H.y H'.y H.ι t)) a.1)) iA iB (fun t a b => hm _ _ _) (fun t a b => hm _ _ _) (fun _ _ => (std_norm hψ _).le) (fun _ _ => (std_norm …`. Simplify using `only [eA', eB', tsum_mul_left] at key`. Rewrite using `[mul_assoc, ← key, inv_mul_cancel_left₀ hC]`. Introduce and unpack `ξ ⟨_, -, y, z, rfl⟩`. Rewrite using `[eA', sy_of_hT, AddChar.map_zero_eq_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[incM_smul, incM_vv, hT_smul_l, hT_add_r, hT_vv, hT_vv, p.ad.xx, p.ad.xi]`. Simplify using the standard rewrite rules. Introduce and unpack `ξ ⟨_, ⟨y, z, rfl⟩, -⟩`. Rewrite using `[eB', sy_of_hT, AddChar.map_zero_eq_one]`. Rewrite using `[incM_smul, incM_vv, hT_smul_l, hT_add_r, hT_vv, hT_vv, p'.ad.xx, p'.ad.xi]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨a, b⟩ hn`. Assume the negation of the conclusion as `h0`. Establish `k : ∀ v, incM F v ∈ capAB (F` using `F) H H' → hTens σ X.J W.J (vA H.y H'.y H'.ι (a, b)) v = 0 := fun v hv => by`. Assume the negation of the conclusion as `h3`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h0 (exists_ne M hψ p.rat.cc hv h3)`. Establish `k1` using `k _ cap_xx`. Establish `k2` using `fun u => k _ (cap_ix u)`. Establish `k3` using `fun u => k _ (cap_xi u)`. Simplify using `only [vA_apply, hT_add_l, hT_vv, p'.rat.yx, p'.rat.ix, p'.rat.yi, p.rat.yx, p.rat.yi, mul_zero, add_zero, zero_add, mul_eq_zero, p.eps_ne, p'.eps_ne, or_false, false_or] at k1 k2 k3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨ξ, rfl⟩` from `p.line a k1 k2`. Conclude with `hn ⟨ξ, by rw [p'.nd_low' b k3]⟩`. Introduce and unpack `⟨a, b⟩ hn`. Assume the negation of the conclusion as `h0`. Establish `k : ∀ v, incM F v ∈ capAB (F` using `F) H H' → hTens σ X.J W.J (vB H.y H'.y H.ι (a, b)) v = 0 := fun v hv => by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h3`. Conclude with `h0 (exists_ne M hψ p.rat.cc hv h3)`. Establish `k1` using `k _ cap_xx`. Establish `k2` using `fun u => k _ (cap_xi u)`. Establish `k3` using `fun u => k _ (cap_ix u)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [vB_apply, hT_add_l, hT_vv, p'.rat.yx, p.rat.ix, p'.rat.yi, p.rat.yx, p.rat.yi, zero_mul, add_zero, zero_add, mul_eq_zero, p.eps_ne, p'.eps_ne, or_false, false_or] at k1 k2 k3`. Take `⟨ξ, rfl⟩` from `p'.line a k1 k2`. Conclude with `hn ⟨ξ, by rw [p.nd_low' b k3]⟩`. Use `h1 _ (rho_mem M hψ a.1 hΨ) using 2 with t` and compare the differences between its conclusion and the goal. Rewrite using `[rho_comm, map_smul, hA'.inv _ a.2.1 _ (rho_mem M hψ _ hΨ), thetaSum_smul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `h2 _ (rho_mem M hψ a.1 hΨ) using 2 with t` and compare the differences between its conclusion and the goal. Rewrite using `[rho_comm, map_smul, hB'.inv _ a.2.2 _ (rho_mem M hψ _ hΨ), thetaSum_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem twoExp_of (hE : ThetaExp) : TwoExp := by
   intro F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' j₀ j₁ i₀ i₁ r s r' s' M M₀ hH hH' hB hX hW hM hM₀ eA eB hA hBv

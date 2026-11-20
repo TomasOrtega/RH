@@ -11,15 +11,13 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `k Ω _ _ _ _ M hn V z hz`. Take `⟨W, hW, hzW, hWV⟩` from `exists_isAffineOpen_mem_and_subset (U := V) hz`. Establish `hWV' : W ≤ V` using `hWV`. Establish `hne : ((W : M.Z.Opens) : Set M.Z).Nonempty` using `⟨z, hzW⟩`. Use `⟨W, hW, hzW, hWV', ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (M.s.appLE ⊤ W le_top).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType M.s M.lft ⟨⊤, isAffineOpen_top _⟩ ⟨W, hW⟩ le_top`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of k)).commRingCatIsoToRingEquiv.symm.surjective`. Establish `h4` using `h1.comp h2`. Use `letI := ((M.s.appLE ⊤ W le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom).toAlgebra`. Use `haveI : Algebra.FiniteType k Γ(M.Z, W) := h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsNoetherianRing Γ(M.Z, W) := Algebra.FiniteType.isNoetherianRing k _`. Conclude with `isNoetherianRing_of_ringEquiv _ (M.sectionsEquiv W hne)`. Use `haveI := GlobalTheory.ZH.RatModel.isFractionRing_ringOn hW hne`. Use `(isIntegrallyClosed_iff Ω).2 fun {x} hx => ?_` and prove the remaining obligations. Establish `hmem : x ∈ M.ringOn W` using `GlobalTheory.ZH.RatModel.mem_ringOn.2 fun z' hz' => by haveI := GlobalTheory.ZH.RatModel.isIntegrallyClosed_O hn z'`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle` using `GlobalTheory.ZH.RatModel.ringOn_le_O (M := M) hz'`. Use `letI : Algebra (M.ringOn W) (M.O z') := (Subalgebra.inclusion hle).toRingHom.toAlgebra`. Use `haveI : IsScalarTower (M.ringOn W) (M.O z') Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hx' : IsIntegral (M.O z') x` using `hx.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hx'`.
-
-Rewrite using `[← hy]`. Conclude with `y.2`. Conclude with `⟨⟨x, hmem⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ZH.RatModel.exists_isAffineOpen_noetherian_integrallyClosed : ∀ (k Ω : Type) [CommRing k] [IsNoetherianRing k] [Field Ω] [Algebra k Ω] (M : RatModel k Ω), Geo.Tor.IsNormalScheme M.Z → ∀ (V : M.Z.Opens) (z : M.Z), z ∈ V → ∃ W : M.Z.Opens, IsAffineOpen W ∧ z ∈ W ∧ W ≤ V ∧ IsNoetherianRing (M.ringOn W) ∧ IsIntegrallyClosed (M.ringOn W) := by
   intro k Ω _ _ _ _ M hn V z hz

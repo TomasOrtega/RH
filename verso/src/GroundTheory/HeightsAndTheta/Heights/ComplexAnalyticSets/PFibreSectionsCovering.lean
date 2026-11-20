@@ -7,59 +7,51 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Filter Topology Matrix
 
 /- English proof (translation)
-Introduce `n e N A Ω X hX hfib hsec`. Set `f : X → Ω` to `Set.MapsTo.restrict _ X Ω hX`. Use `show IsCoveringMap f`. Establish `hAc : Continuous (fun x : Fin n → ℂ => A *ᵥ x)` using `(Matrix.mulVecLin A).continuous_of_finiteDimensional`. Use `choose O V' g hO hAO hV' hxV' hg hgx hAg hXV' using hsec`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ x₀ (h₀ : x₀ ∈ X) x, x ∈ X → x ∈ V' x₀ h₀ → g x₀ h₀ (A *ᵥ x) = x`. Introduce `x₀ h₀ x hx hxv`. Establish `hx' : x ∈ g x₀ h₀ '' O x₀ h₀` using `hXV' x₀ h₀ ▸ ⟨hx, hxv⟩`. Take `⟨o, ho, rfl⟩` from `hx'`. Rewrite using `[hAg x₀ h₀ o ho]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `inX : ∀ x₀ (h₀ : x₀ ∈ X) w, w ∈ O x₀ h₀ → g x₀ h₀ w ∈ X ∧ g x₀ h₀ w ∈ V' x₀ h₀`. Introduce `x₀ h₀ w hw`. Establish `h : g x₀ h₀ w ∈ X ∩ V' x₀ h₀` using `hXV' x₀ h₀ ▸ ⟨w, hw, rfl⟩`. Conclude with `h`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: IsEmpty X`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `hfib _ (hX x.2)`. Rewrite `h` using `[hN, Nat.cast_zero, Set.encard_eq_zero]`. Establish `hm : (x : Fin n → ℂ) ∈ {x' | x' ∈ X ∧ A *ᵥ x' = A *ᵥ (x : Fin n → ℂ)}` using `⟨x.2, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hm` using `[h]`. Conclude with `hm`. Conclude with `IsCoveringMap.of_isEmpty _`. Introduce `y`. Establish `hFenc : {x | x ∈ X ∧ A *ᵥ x = (y : Fin (e + 1) → ℂ)}.encard = N` using `hfib y y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hFfin` using `Set.finite_of_encard_eq_coe hFenc`. Use `hFfin.to_subtype` as an intermediate fact. Establish `hFcard : Nat.card {x | x ∈ X ∧ A *ᵥ x = (y : Fin (e + 1) → ℂ)} = N`. Rewrite using `[Nat.card_coe_set_eq, Set.ncard_def, hFenc]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `eq` to `(Finite.equivFinOfCardEq hFcard).symm`. Set `pt : Fin N → Fin n → ℂ` to `fun i => (eq i : Fin n → ℂ)`. Establish `pt_mem : ∀ i, pt i ∈ X ∧ A *ᵥ pt i = y` using `fun i => (eq i).2`. Establish `pt_inj : Function.Injective pt` using `fun i j h => eq.injective (Subtype.ext h)`. Set `G : Fin N → (Fin (e + 1) → ℂ) → Fin n → ℂ` to `fun i => g (pt i) (pt_mem i).1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `OO : Fin N → Set (Fin (e + 1) → ℂ)` to `fun i => O (pt i) (pt_mem i).1`. Set `VV : Fin N → Set (Fin n → ℂ)` to `fun i => V' (pt i) (pt_mem i).1`. Establish `hGy : ∀ i, G i y = pt i` using `fun i => by`. Rewrite using `[← (pt_mem i).2]`. Conclude with `hgx (pt i) (pt_mem i).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hOy : ∀ i, OO i ∈ 𝓝 (y : Fin (e + 1) → ℂ)` using `fun i => (hO _ _).mem_nhds (by have h : A *ᵥ pt i ∈ OO i := hAO _ _; rwa [(pt_mem i).2] at h)`. Establish `hGc : ∀ i, ∀ w ∈ OO i, ContinuousAt (G i) w` using `fun i w hw => (hg _ _).continuousOn.continuousAt ((hO _ _).mem_nhds hw)`. Establish `hS : ∀ᶠ w in 𝓝 (y : Fin (e + 1) → ℂ), (∀ i, w ∈ OO i) ∧ ∀ i j, i ≠ j → G i w ≠ G j w`. Use `(Filter.eventually_all.2 hOy).and (Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => ?_)` and prove the remaining obligations. Distinguish the cases in `hij : i = j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Filter.Eventually.of_forall fun _ h => absurd hij h`. Establish `hne : G i y ≠ G j y`. Rewrite using `[hGy, hGy]`. Conclude with `fun h => hij (pt_inj h)`. Conclude with `(((hGc i y (mem_of_mem_nhds (hOy i))).ne_iff_eventually_ne (hGc j y (mem_of_mem_nhds (hOy j)))).1 hne).mono fun _ hw _ => hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨W, hWS, hWo, hyW⟩` from `mem_nhds_iff.1 hS`. Establish `hWO : ∀ i, ∀ w ∈ W, w ∈ OO i` using `fun i w hw => (hWS hw).1 i`. Establish `hWd : ∀ w ∈ W, ∀ i j, i ≠ j → G i w ≠ G j w` using `fun w hw => (hWS hw).2`. Establish `hGX : ∀ i, ∀ w ∈ W, G i w ∈ X` using `fun i w hw => (inX _ _ w (hWO i w hw)).1`. Establish `hGV : ∀ i, ∀ w ∈ W, G i w ∈ VV i` using `fun i w hw => (inX _ _ w (hWO i w hw)).2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAG : ∀ i, ∀ w ∈ W, A *ᵥ G i w = w` using `fun i w hw => hAg _ _ w (hWO i w hw)`. Establish `hfc : Continuous f` using `(hAc.comp continuous_subtype_val).subtype_mk fun x => hX x.2`. Establish `hres : ∀ i (q : Ω) (hq : (q : Fin (e + 1) → ℂ) ∈ W), f ⟨G i q, hGX i q hq⟩ = q` using `fun i q hq => Subtype.ext (hAG i q hq)`. Set `V : Set Ω` to `{p | (p : Fin (e + 1) → ℂ) ∈ W}`. Set `U : Fin N → Set X` to `fun i => {x | (x : Fin n → ℂ) ∈ VV i ∧ A *ᵥ (x : Fin n → ℂ) ∈ W}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hVo : IsOpen V` using `continuous_subtype_val.isOpen_preimage _ hWo`. Establish `hUo : ∀ i, IsOpen (U i)` using `fun i => continuous_subtype_val.isOpen_preimage _ ((hV' _ _).inter (hWo.preimage hAc))`. Establish `hUG : ∀ i (x : X), x ∈ U i → G i (A *ᵥ (x : Fin n → ℂ)) = x` using `fun i x hx => key _ _ _ x.2 hx.1`. Establish `open_iff : ∀ i {W' : Set Ω}, W' ⊆ V → (IsOpen W' ↔ IsOpen (f ⁻¹' W' ∩ U i))`. Introduce `i W' hW'V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h => (hfc.isOpen_preimage _ h).inter (hUo i), fun h => ?_⟩` and prove the remaining obligations. Take `⟨T', hT'o, hT'eq⟩` from `isOpen_induced_iff.1 h`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `p hp`. Establish `hpW : (p : Fin (e + 1) → ℂ) ∈ W` using `hW'V hp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hGp : G i p ∈ T'`. Establish `hm : (⟨G i p, hGX i p hpW⟩ : X) ∈ f ⁻¹' W' ∩ U i`. Use `⟨?_, hGV i p hpW, ?_⟩` and prove the remaining obligations. Use `show f ⟨G i p, hGX i p hpW⟩ ∈ W'`. Rewrite using `[hres i p hpW]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hp`. Use `show A *ᵥ G i p ∈ W`. Rewrite using `[hAG i p hpW]`. Conclude with `hpW`. Rewrite `hm` using `[← hT'eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm`. Rewrite using `[mem_nhds_subtype]`. Use `⟨W ∩ G i ⁻¹' T', Filter.inter_mem (hWo.mem_nhds hpW) ((hGc i p (hWO i p hpW)).preimage_mem_nhds (hT'o.mem_nhds hGp)), ?_⟩` and prove the remaining obligations. Introduce and unpack `q ⟨hqW, hqT⟩`. Establish `hm : (⟨G i q, hGX i q hqW⟩ : X) ∈ Subtype.val ⁻¹' T'` using `hqT`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[hT'eq]`. Establish `h1` using `hm.1`. Rewrite `h1` using `[Set.mem_preimage, hres i q hqW]`. Conclude with `h1`. Establish `inj : ∀ i, (U i).InjOn f`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i x hx x' hx' hxx'`. Establish `h : A *ᵥ (x : Fin n → ℂ) = A *ᵥ (x' : Fin n → ℂ)` using `congrArg Subtype.val hxx'`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hUG i x hx, ← hUG i x' hx', h]`. Establish `surj : ∀ i, (U i).SurjOn f V`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `i p hp`. Use `⟨⟨G i p, hGX i p hp⟩, ⟨hGV i p hp, ?_⟩, hres i p hp⟩` and prove the remaining obligations. Use `show A *ᵥ G i p ∈ W`. Rewrite using `[hAG i p hp]`. Conclude with `hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `disj : Pairwise (Function.onFun Disjoint U)`. Introduce `i j hij`. Use `Set.disjoint_left.2 fun x hxi hxj => ?_` and prove the remaining obligations. Conclude with `hWd _ hxi.2 i j hij ((hUG i x hxi).trans (hUG j x hxj).symm)`. Establish `exh : f ⁻¹' V ⊆ ⋃ i, U i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `hxW : A *ᵥ (x : Fin n → ℂ) ∈ W` using `hx`. Use `set w := A *ᵥ (x : Fin n → ℂ) with hw`. Establish `hwΩ : w ∈ Ω` using `hX x.2`. Establish `hFw` using `hfib w hwΩ`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsub : Set.range (fun i => G i w) ⊆ {x' | x' ∈ X ∧ A *ᵥ x' = w}`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨hGX i w hxW, hAG i w hxW⟩`. Establish `hinj : Function.Injective (fun i => G i w)`. Introduce `i j h`.
-
-Assume the negation of the conclusion as `hij`. Conclude with `hWd w hxW i j hij h`. Establish `heq : Set.range (fun i => G i w) = {x' | x' ∈ X ∧ A *ᵥ x' = w}`. Use `((Set.finite_of_encard_eq_coe hFw).subset hsub).eq_of_subset_of_encard_le hsub ?_` and prove the remaining obligations. Rewrite using `[hFw]`.
-
-Use `le_trans ?_ hinj.encard_range` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hxmem : (x : Fin n → ℂ) ∈ Set.range (fun i => G i w)`. Rewrite using `[heq]`. Conclude with `⟨x.2, rfl⟩`.
-
-Take `⟨i, hi⟩` from `hxmem`. Use `Set.mem_iUnion.2 ⟨i, ?_, hxW⟩` and prove the remaining obligations. Use `show (x : Fin n → ℂ) ∈ VV i`. Rewrite using `[← hi]`. Conclude with `hGV i w hxW`.
-
-Establish `: Nonempty (Fin N)` using `⟨⟨0, hN⟩⟩`. Establish `: Nonempty (Ω → X)` using `⟨fun _ => ⟨pt ⟨0, hN⟩, (pt_mem _).1⟩⟩`. Set `T` to `IsOpen.trivializationDiscrete (f := f) U V hVo open_iff inj surj disj exh`. Establish `hyT : y ∈ T.baseSet` using `hyW`. Conclude with `(IsEvenlyCovered.of_trivialization hyT).to_isEvenlyCovered_preimage`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FibreSectionsCovering.proof : FibreSectionsCovering.Statement := by
   intro n e N A Ω X hX hfib hsec

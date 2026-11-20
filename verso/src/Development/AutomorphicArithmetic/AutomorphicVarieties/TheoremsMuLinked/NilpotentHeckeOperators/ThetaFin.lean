@@ -14,16 +14,16 @@ section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨d, -, rfl⟩` from `h`. Conclude with `⟨d, trivial, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem thetaFin_mono {C : Subgroup 𝓀[k]ˣ} {x : kˣ} (h : x ∈ unitsC k C) : x ∈ unitsC k ⊤ := by
   obtain ⟨d, -, rfl⟩ := h
   exact ⟨d, trivial, rfl⟩
 
 /- English proof (translation)
-Establish `hd : Dom t` using `fun a b _ => le_of_eq (by`. Rewrite using `[((memIwC k n ⊤).2.2.2 _).1 (thetaFin_mono (ht a)), ((memIwC k n ⊤).2.2.2 _).1 (thetaFin_mono (ht b))])`. Establish `hm : diagT k (Fin n) t ∈ iwC k n C` using `Subgroup.mem_sup_right ⟨_, fun i' _ => ht i', rfl⟩`. Establish `hn : diagT k (Fin n) t ∈ Subgroup.normalizer (iwC k n C : Set (GL (Fin n) k))` using `Subgroup.le_normalizer hm`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hθ t hd]`. Use extensionality with `v`. Rewrite using `[(hkNorm A _ M ρ _ _ (heckePairIwC k n C).1 hn).1 v]`. Conclude with `v.2 _ hm`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem thetaFin_one {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
     (ρ : Representation A (GL (Fin n) k) M) (C : Subgroup 𝓀[k]ˣ) (θ) (hθ : IsTheta ρ C θ) (t : Fin n → kˣ)
@@ -41,11 +41,11 @@ private theorem thetaFin_one {A M : Type} [CommRing A] [AddCommGroup M] [Module 
 end Loc
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n A M _ _ _ ρ C C' θ hθ δ hδ i`. Take `⟨d, rfl, -⟩` from `hδ`. Use `⟨Nat.card 𝓀[k]ˣ, Nat.card_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Use `thetaFin_one ρ C θ hθ _ fun j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.pow_apply]`. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`. Use `⟨d ^ Nat.card 𝓀[k]ˣ, ?_, map_pow _ _ _⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Units.map (residue 𝒪[k]).toMonoidHom _ ∈ C`. Rewrite using `[map_pow, pow_card_eq_one']`. Conclude with `one_mem _`. Rewrite using `[Pi.mulSingle_eq_of_ne e, one_pow]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.thetaFin :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A (GL (Fin n) k) M) (C C' : Subgroup 𝓀[k]ˣ) (θ), IsTheta ρ C θ → ∀ δ : kˣ, IsGenMod k C' δ → ∀ i : Fin n, ∃ m : ℕ, 0 < m ∧ θ (Pi.mulSingle i δ) ^ m = 1 := by

@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.RealLineAt
 
 /- English proof (translation)
-Take `⟨ρ, h1, h2, h3⟩` from `GlobalTheory.FockCompare.exists_real_chart D θ hθ (GlobalTheory.CMTypePlaces.places_bijective D)`. Conclude with `GlobalTheory.FockCompare.RealChart.exists_chart D θ hθ ρ h1 h2 h3`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_inverse_chart {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) :
     ∃ σ : (D.what₂.Tau → ℂ) →+ AE D, GlobalTheory.FockCompare.Chart θ σ := by
@@ -31,9 +31,9 @@ def ray {ι : Type} (τ : ι) (c : ℂ) : ℝ →+ (ι → ℂ) where
     split_ifs <;> simp [add_mul]
 
 /- English proof (translation)
-Use `continuous_pi fun τ' => ?_` and prove the remaining obligations. Distinguish the cases in `h : τ' = τ`. Establish `: (fun t : ℝ => ray τ c t τ') = fun t : ℝ => (t : ℂ) * c` using `funext fun t => if_pos h`. Rewrite using `[this]`. Conclude with `Complex.continuous_ofReal.mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (fun t : ℝ => ray τ c t τ') = fun _ : ℝ => (0 : ℂ)` using `funext fun t => if_neg h`. Rewrite using `[this]`. Conclude with `continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_ray {ι : Type} (τ : ι) (c : ℂ) : Continuous (ray τ c) := by
   refine continuous_pi fun τ' => ?_
@@ -46,15 +46,11 @@ theorem continuous_ray {ι : Type} (τ : ι) (c : ℂ) : Continuous (ray τ c) :
     exact continuous_const
 
 /- English proof (translation)
-Introduce `θ hθ m n τ z`. Take `⟨σ, hσ⟩` from `exists_inverse_chart hθ`. Set `L : ℝ →+ Mx D m n` to `{ toFun := fun t => Matrix.of fun i j => σ (ray τ (z i j) t) map_zero' := by`. Use function extensionality and compare the values at `i j`. Use `show σ (ray τ (z i j) 0) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(ray τ (z i j)).map_zero, σ.map_zero]`. Use the proof step `map_add' := fun s t => by`. Use function extensionality and compare the values at `i j`. Use `show σ (ray τ (z i j) (s + t)) = σ (ray τ (z i j) s) + σ (ray τ (z i j) t)`. Rewrite using `[(ray τ (z i j)).map_add, σ.map_add] }`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨L, ?_, fun t => ?_, fun t τ' => ?_⟩` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => hσ.cont.comp (continuous_ray τ (z i j))`. Use function extensionality and compare the values at `i j`. Conclude with `hσ.fin _`. Use function extensionality and compare the values at `i j`.
-
-Use `(hσ.comp (ray τ (z i j) t) τ').trans ?_` and prove the remaining obligations. Distinguish the cases in `h : τ' = τ`. Rewrite using `[if_pos h]`. Conclude with `if_pos h`. Rewrite using `[if_neg h]`.
-
-Conclude with `if_neg h`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineAt_exists (D : D7) : LineAtExists D := by
   intro θ hθ m n τ z
@@ -82,9 +78,9 @@ theorem lineAt_exists (D : D7) : LineAtExists D := by
       exact if_neg h
 
 /- English proof (translation)
-Introduce `θ hθ m n τ z L L' hL hL'`. Take `⟨σ, hσ⟩` from `exists_inverse_chart hθ`. Use `AddMonoidHom.ext fun t => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Use `sub_eq_zero.1 (hσ.ext _ ?_ fun τ' => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : finPart D (L t i j) = 0` using `congrFun (congrFun (hL.2.1 t) i) j`. Establish `e2 : finPart D (L' t i j) = 0` using `congrFun (congrFun (hL'.2.1 t) i) j`. Rewrite using `[RingHom.map_sub, e1, e2, sub_zero]`. Establish `e : θ τ' (infPart D (L t i j)) = θ τ' (infPart D (L' t i j))` using `congrFun (congrFun ((hL.2.2 t τ').trans (hL'.2.2 t τ').symm) i) j`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, e, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lineAt_unique (D : D7) : LineAtUnique D := by
   intro θ hθ m n τ z L L' hL hL'
@@ -100,7 +96,7 @@ theorem lineAt_unique (D : D7) : LineAtUnique D := by
     rw [RingHom.map_sub, RingHom.map_sub, e, sub_self]
 
 /- English proof (translation)
-Introduce `D` and use `⟨lineAt_exists D, lineAt_unique D⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lineAt_exists_unique : ∀ D : D7, LineAtExists D ∧ LineAtUnique D :=
   fun D => ⟨lineAt_exists D, lineAt_unique D⟩

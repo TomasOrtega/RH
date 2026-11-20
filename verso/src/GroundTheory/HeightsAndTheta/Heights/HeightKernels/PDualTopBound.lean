@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo
 namespace TopDualBound
 
 /- English proof (translation)
-Establish `h : (1 : ℝ) + ((i - 1 : ℕ) : ℝ) = i`. Rewrite using `[Nat.cast_sub hi]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [grassConst, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
 Evaluate the numerical expressions.
 -/
@@ -21,7 +21,7 @@ theorem grassConst_lines {i : ℕ} (hi : 1 ≤ i) : grassConst 1 1 (i - 1) = 1 /
   norm_num
 
 /- English proof (translation)
-Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dim_lines {i : ℕ} (hi : 1 ≤ i) : ((1 * 1 * (i - 1) + 1 : ℕ) : ℝ) = i := by
   congr 1; omega
@@ -29,15 +29,13 @@ theorem dim_lines {i : ℕ} (hi : 1 ≤ i) : ((1 * 1 * (i - 1) + 1 : ℕ) : ℝ)
 end TopDualBound
 
 /- English proof (translation)
-Introduce `hZ2 K _ _ i F T _ _ b hb II hi hII`. Take `⟨T', _, _, ⟨b'⟩⟩` from `hBasis K i (HermLattice.standard K i)`. Establish `hb'` using `hBij K i (HermLattice.standard K i) T' b'`. Use `set g := geomDeg (grassIdeal 1 1 (i - 1)) (fsMulti (plBlocks 1 1 (i - 1))) (1 * 1 * (i - 1))`. Use `set d : ℝ := (Module.finrank ℚ K : ℝ) with hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `hMetric K i F T b hb II hi hII`. Establish `hB` using `hLattice K i F T T' b hb b' hb' II hi hII`. Establish `hC` using `hStd K i T' b' hb' II hi hII`. Establish `hG` using `hDeg K i F T b hb hi`. Establish `hH` using `hGrass hZ2 1 1 (i - 1) le_rfl II hII`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hH` using `[TopDualBound.dim_lines hi, TopDualBound.grassConst_lines hi]`. Rewrite using `[hA, hB, hC, hG]`. Establish `hd0 : 0 < d` using `by rw [hd]; exact_mod_cast Module.finrank_pos`. Establish `hi0 : (0 : ℝ) < i` using `by exact_mod_cast hi`. Establish `hslope : (i : ℝ) * (-F.slope + 1 / 2 * Real.log i) * (d * g) = -F.degree * g + d * ((i : ℝ) * (1 / 2 * Real.log i) * g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [HermLattice.slope, normalise]`. Rewrite using `[← hd]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hslope]`. Use `mul_le_mul_of_nonneg_left hH hd0.le` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem DualTopBound.proof (hBasis : DualLatticeBasisExists.Statement)
     (hBij : DualEmbBijective.Statement) (hMetric : DualTopMetricChange.Statement)

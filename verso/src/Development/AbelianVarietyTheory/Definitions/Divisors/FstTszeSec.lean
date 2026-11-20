@@ -20,9 +20,9 @@ variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
   {F : _root_.GlobalTheory.AnPer.Fam I g Λ} {K : _root_.GlobalTheory.AnPer.Charts F} in
 
 /- English proof (translation)
-Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Submodule.zero_eq_bot, ← le_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[RingHom.mem_ker]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, TrivSqZeroExt.fstHom_apply] at hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hx, hy]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.AnPer.Charts.tsze_nil {O : Type} [CommRing O] [Algebra ℂ O] :
     IsNilpotent (RingHom.ker (TrivSqZeroExt.fstHom ℂ O (Fin g → O)).toRingHom) := by
@@ -59,7 +59,7 @@ variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
   {F : _root_.GlobalTheory.AnPer.Fam I g Λ} {K : _root_.GlobalTheory.AnPer.Charts F} in
 
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.AnPer.Charts.tszeSec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.AnPer.Charts.fst_tszeSec {O : Type} [CommRing O] [Algebra ℂ O]
     (D : Fin g → Derivation ℂ O O) (h : O) :
@@ -73,7 +73,7 @@ variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
   {F : _root_.GlobalTheory.AnPer.Fam I g Λ} {K : _root_.GlobalTheory.AnPer.Charts F} in
 
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.AnPer.Charts.tszeSec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.AnPer.Charts.snd_tszeSec {O : Type} [CommRing O] [Algebra ℂ O]
     (D : Fin g → Derivation ℂ O O) (h : O) (a : Fin g) :
@@ -89,7 +89,7 @@ variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
   {F : _root_.GlobalTheory.AnPer.Fam I g Λ} {K : _root_.GlobalTheory.AnPer.Charts F} in
 
 /- English proof (translation)
-Use `congr 1`. Simplify using `only [TrivSqZeroExt.inl_mul_inr]`. Use extensionality with `b`. Simplify using `[TrivSqZeroExt.fst_sum]`. Simplify using `[TrivSqZeroExt.snd_sum, Finset.sum_apply, Pi.single_apply]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.AnPer.Charts.tsze_expand {O : Type} [CommRing O] (h : O) (v : Fin g → O) :
     (TrivSqZeroExt.inl h + TrivSqZeroExt.inr v : TrivSqZeroExt O (Fin g → O)) = TrivSqZeroExt.inl h +

@@ -9,11 +9,11 @@ open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspS
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
 /- English proof (translation)
-Introduce `E _ _ _ n π w B hB φ hφ hK g`. Use `⟨hB.card, fun y k hk => ?_, fun ϖ hϖ j hj y => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← mul_assoc, hK _ k hk]`. Distinguish the cases in `h0 : φ = 0`. Substitute `h0` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `he` using `(hB.2 (⟨φ, hφ⟩ : π.V) (GlobalTheory.LGrp.mem_fixed.2 fun k hk => Subtype.ext (Subtype.ext (funext fun x => hK x k hk))) fun h => h0 (congrArg Subtype.val h)).2.2.2 ϖ hϖ j hj`. Set `ev : π.V →+ ℂ` to `{ toFun := fun ψ => ψ.1.1 (g * finGL E n (locGL E n w y)) map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hs` using `ev.map_finsum (GlobalTheory.LFun.finite_heckeVec (Formalism.UG.Final.GLintComm E w n) (GlobalTheory.LFun.Tj_mem_hecke hϖ j) (π.locRep w) ⟨φ, hφ⟩)`. Use `Eq.trans (finsum_congr fun c => ?_) (hs.symm.trans (congrArg ev he))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_mul, ← mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.Af.Smo.eigOfSat :
     UpperTheory.V.Af.Smo.EigOfSat := by

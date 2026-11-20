@@ -9,7 +9,7 @@ open Formalism.IndefR.DatumF
 attribute [-instance] CStarMatrix.instHMulOfFintypeOfMulOfAddCommMonoid
 
 /- English proof (citation)
-Apply `GlobalTheory.HeckeSplitGen.heckeChar_eq_one_of_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeckeCharEqOneOfTrivialSplitPlacesCM.lean&line=19#L19)
 -/

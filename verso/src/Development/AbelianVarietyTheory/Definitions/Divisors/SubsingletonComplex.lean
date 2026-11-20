@@ -22,21 +22,19 @@ Both sides reduce to the same expression.
 theorem conjCC_apply (z : ℂ × ℂ) : conjCC z = ((starRingEnd ℂ) z.1, (starRingEnd ℂ) z.2) := rfl
 
 /- English proof (translation)
-Simplify using `[conjCC_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjCC_invol (z : ℂ × ℂ) : conjCC (conjCC z) = z := by
   simp [conjCC_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using Subgroup.closure_induction with`. Consider the case `mem a ha => exact ha`. Consider the case `one => exact ⟨1, 1, by simp⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul a b _ _ ha hb`. Take `⟨s, x, hs⟩` from `ha`. Take `⟨t, y, ht⟩` from `hb`. Use `⟨s * t, x * y, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Units.val_mul, map_mul, hs, ht]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `inv a _ ha`. Take `⟨s, x, hs⟩` from `ha`. Use `⟨s⁻¹, x⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1 : ((a : Aˣ) : A) * (algebraMap k A ((s⁻¹ : kˣ) : k) * (((x⁻¹ : Aˣ) : A) * c ((x⁻¹ : Aˣ) : A))) = 1`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Subgroup.coe_inv]`. Conclude with `Units.inv_eq_of_mul_eq_one_right h1`. Introduce `h`.
-
-Conclude with `Subgroup.subset_closure h`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_normSub_iff {k : Type} [Field k] {A : Type} [CommRing A] [Algebra k A] (c : A →ₐ[k] A)
     (a : fixU k c) :
@@ -66,11 +64,11 @@ theorem mem_normSub_iff {k : Type} [Field k] {A : Type} [CommRing A] [Algebra k 
     exact Subgroup.subset_closure h
 
 /- English proof (translation)
-Establish `: normSub ℝ conjC = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `a _`. Rewrite using `[mem_normSub_iff]`. Establish `ha : (starRingEnd ℂ) ((a : ℂˣ) : ℂ) = ((a : ℂˣ) : ℂ)` using `a.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hre : (((a : ℂˣ) : ℂ).re : ℂ) = ((a : ℂˣ) : ℂ)` using `Complex.conj_eq_iff_re.mp ha`. Establish `hne : ((a : ℂˣ) : ℂ).re ≠ 0`. Introduce `h`. Rewrite `hre` using `[h]`. Conclude with `(a : ℂˣ).ne_zero (by simpa using hre.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mk0 _ hne, 1, by simp [hre]⟩`. Unfold `H1`. Rewrite using `[this]`. Conclude with `QuotientGroup.subsingleton_quotient_top`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_complex : Subsingleton (H1 ℝ conjC) := by
   have : normSub ℝ conjC = ⊤ := by
@@ -91,18 +89,18 @@ theorem subsingleton_complex : Subsingleton (H1 ℝ conjC) := by
 def u : (ℂ × ℂ)ˣ := ⟨(1, -1), (1, -1), by ext <;> simp, by ext <;> simp⟩
 
 /- English proof (translation)
-Use `show conjCC ((1, -1) : ℂ × ℂ) = (1, -1)`. Simplify using `[conjCC_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem u_mem : u ∈ fixU ℝ conjCC := by
   show conjCC ((1, -1) : ℂ × ℂ) = (1, -1)
   simp [conjCC_apply]
 
 /- English proof (translation)
-Rewrite using `[mem_normSub_iff]`. Introduce and unpack `⟨t, x, h⟩`. Establish `h' : ((1, -1) : ℂ × ℂ) = algebraMap ℝ (ℂ × ℂ) t * (x * conjCC x)` using `h`. Establish `h1` using `congrArg (fun z : ℂ × ℂ => z.1.re) h'`. Establish `h2` using `congrArg (fun z : ℂ × ℂ => z.2.re) h'`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [conjCC_apply, Prod.fst_mul, Prod.snd_mul, Complex.mul_conj, Prod.algebraMap_apply, Complex.coe_algebraMap, ← Complex.ofReal_mul, Complex.ofReal_re, Complex.one_re, Complex.neg_re] at h1 h2`. Establish `a` using `Complex.normSq_nonneg (x : ℂ × ℂ).1`. Establish `b` using `Complex.normSq_nonneg (x : ℂ × ℂ).2`. Break down `le_total 0 (t : ℝ) with ht | ht` into its components or cases. Use polynomial arithmetic with `[mul_nonneg ht b]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_nonneg_of_nonpos_of_nonpos ht (neg_nonpos.mpr a)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem u_not_mem : (⟨u, u_mem⟩ : fixU ℝ conjCC) ∉ normSub ℝ conjCC := by
   rw [mem_normSub_iff]
@@ -119,16 +117,16 @@ theorem u_not_mem : (⟨u, u_mem⟩ : fixU ℝ conjCC) ∉ normSub ℝ conjCC :=
   · nlinarith [mul_nonneg_of_nonpos_of_nonpos ht (neg_nonpos.mpr a)]
 
 /- English proof (translation)
-Unfold `H1`. Conclude with `⟨⟨QuotientGroup.mk ⟨u, u_mem⟩, 1, fun h => u_not_mem ((QuotientGroup.eq_one_iff _).mp h)⟩⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem nontrivial_prod : Nontrivial (H1 ℝ conjCC) := by
   unfold H1
   exact ⟨⟨QuotientGroup.mk ⟨u, u_mem⟩, 1, fun h => u_not_mem ((QuotientGroup.eq_one_iff _).mp h)⟩⟩
 
 /- English proof (translation)
-Introduce `h`. Apply the tactic sequence `have hm : (⟨(1, 2), (1, 2⁻¹), by ext <;> simp, by ext <;> simp⟩ : (ℂ × ℂ)ˣ) ∈ simT ℝ conjCC := by`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨t, ht⟩` from `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Establish `h' : ((1, 2) : ℂ × ℂ) * conjCC (1, 2) = algebraMap ℝ (ℂ × ℂ) t` using `ht`. Establish `h1` using `congrArg (fun z : ℂ × ℂ => z.1.re) h'`. Establish `h2` using `congrArg (fun z : ℂ × ℂ => z.2.re) h'`. Simplify using `only [conjCC_apply, Prod.fst_mul, Prod.snd_mul, Complex.mul_conj, Prod.algebraMap_apply, Complex.coe_algebraMap, Complex.ofReal_re] at h1 h2`. Simplify using `[Complex.normSq_apply] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

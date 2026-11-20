@@ -18,7 +18,7 @@ namespace GlobalTheory.OrbAct
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective x.mulVec` using `Matrix.mulVec_injective_iff.2 hx`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' x) (LinearMap.ker_eq_bot.2 fun a b h => hinj (by simpa only [Matrix.toLin'_apply] using h))`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg LinearMap.toMatrix' hg`. Rewrite `h` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_leftInv {m k : ℕ} (x : Matrix (Fin m) (Fin k) D.host.E) (hx : LinearIndependent D.host.E x.transpose) :
     ∃ L : Matrix (Fin k) (Fin m) D.host.E, L * x = 1 := by
@@ -34,7 +34,7 @@ section Block
 variable {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ)
 
 /- English proof (translation)
-Take `⟨u, hu, b, c, rfl⟩` from `((flag_jacobi_structure D V V₀ ρ d).1 n).1 hn`. Establish `h1 : mt V (d.levi u * (d.nB b * d.nC c)) ⬝ d.jX = d.jX ⬝ u.1`. Rewrite using `[mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.nC_jX, d.nB_jX, d.levi_jX]`. Use `⟨u, hu, ?_, h1⟩` and prove the remaining obligations. Rewrite using `[blockX, h1, ← Matrix.mul_assoc d.pX d.jX, d.pX_jX, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockX_spec {n : GA D V} (hn : n ∈ flagN d) :
     ∃ u ∈ UX D ρ, blockX d n = u.1 ∧ mt V n ⬝ d.jX = d.jX ⬝ u.1 := by
@@ -45,19 +45,19 @@ theorem blockX_spec {n : GA D V} (hn : n ∈ flagN d) :
   rw [blockX, h1, ← Matrix.mul_assoc d.pX d.jX, d.pX_jX, Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨u, -, h1, h2⟩` from `blockX_spec d hn`. Rewrite using `[h2, h1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_jX {n : GA D V} (hn : n ∈ flagN d) : mt V n ⬝ d.jX = d.jX ⬝ blockX d n := by
   obtain ⟨u, -, h1, h2⟩ := blockX_spec d hn
   rw [h2, h1]
 
 /- English proof (translation)
-Rewrite using `[blockX, mt_one, Matrix.one_mul, d.pX_jX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blockX_one : blockX d 1 = 1 := by rw [blockX, mt_one, Matrix.one_mul, d.pX_jX]
 
 /- English proof (translation)
-Establish `h : mt V (n * n') ⬝ d.jX = d.jX ⬝ (blockX d n ⬝ blockX d n')`. Rewrite using `[mt_mul, Matrix.mul_assoc, mt_jX d hn', ← Matrix.mul_assoc (mt V n) d.jX, mt_jX d hn, Matrix.mul_assoc]`. Rewrite using `[blockX, h, ← Matrix.mul_assoc d.pX d.jX, d.pX_jX, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockX_mul {n n' : GA D V} (hn : n ∈ flagN d) (hn' : n' ∈ flagN d) :
     blockX d (n * n') = blockX d n ⬝ blockX d n' := by
@@ -66,13 +66,13 @@ theorem blockX_mul {n n' : GA D V} (hn : n ∈ flagN d) (hn' : n' ∈ flagN d) :
   rw [blockX, h, ← Matrix.mul_assoc d.pX d.jX, d.pX_jX, Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `ratMx_mul (rat_mem d.qX) (ratMx_mul ((mem_GQ_iff V n).1 hn) (rat_mem d.e))`.
+A detailed English derivation is pending.
 -/
 theorem blockX_rat {n : GA D V} (hn : n ∈ GQ V) : blockX d n ∈ ratMx D ρ ρ :=
   ratMx_mul (rat_mem d.qX) (ratMx_mul ((mem_GQ_iff V n).1 hn) (rat_mem d.e))
 
 /- English proof (translation)
-Establish `e : blockX d n ⬝ blockX d n⁻¹ = 1`. Rewrite using `[← blockX_mul d hn (inv_mem hn), mul_inv_cancel, blockX_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cancel_blockX {n : GA D V} (hn : n ∈ flagN d) {m : ℕ} {y y' : Mx D m ρ}
     (h : y ⬝ blockX d n = y' ⬝ blockX d n) : y = y' := by
@@ -85,22 +85,20 @@ theorem cancel_blockX {n : GA D V} (hn : n ∈ flagN d) {m : ℕ} {y y' : Mx D m
 variable {W : HSp D} {x₀ : Matrix (Fin W.rank) (Fin ρ) D.host.E}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (rat_injective (cancel_blockX d hn h))`.
+A detailed English derivation is pending.
 -/
 theorem orb_ext {n : GA D V} (hn : n ∈ flagN d) {y y' : Orb W x₀}
     (h : (rat y.1 : Mx D W.rank ρ) ⬝ blockX d n = rat y'.1 ⬝ blockX d n) : y = y' :=
   Subtype.ext (rat_injective (cancel_blockX d hn h))
 
 /- English proof (translation)
-Establish `hγ` using `Subgroup.mem_prod.1 γ.2`. Establish `hn : γ.1.1.1 ∈ GQ V` using `Subgroup.mem_subgroupOf.1 (hγ.1 : γ.1.1 ∈ (GQ V).subgroupOf (NFlag V d.e))`. Establish `hf : γ.1.1.1 ∈ flagN d` using `γ.1.1.2`. Take `⟨x₁, hx₁, e₁⟩` from `(GlobalTheory.T.rational_frames_same_gram_one_unitary_orbit D W ρ x₀ hx.1).2 γ.1.2 hγ.2 x.1 x.2`. Take `⟨u, hu, hb, -⟩` from `blockX_spec d (inv_mem hf)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `mem_ratMx.1 (blockX_rat d (inv_mem hn))`. Take `⟨w, hw⟩` from `mem_ratMx.1 (blockX_rat d hn)`. Use `replace hv : (rat v : Mx D ρ ρ) = blockX d γ.1.1.1⁻¹ := hv`. Use `replace hw : (rat w : Mx D ρ ρ) = blockX d γ.1.1.1 := hw`. Establish `e2 : w * v = 1` using `rat_injective (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[rat_mul, hv, hw, ← blockX_mul d hf (inv_mem hf), mul_inv_cancel, blockX_one, rat_one])`. Use `⟨x₁ * v, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `Matrix.mulVec_injective_iff.1` to reduce the goal to its premises. Introduce `a b hab`. Establish `hi : Function.Injective x₁.mulVec` using `Matrix.mulVec_injective_iff.2 hx₁.1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : v *ᵥ a = v *ᵥ b` using `hi (by simpa only [Matrix.mulVec_mulVec] using hab)`. Establish `h2` using `congrArg (w *ᵥ ·) h1`. Simplify `h2` using `only [Matrix.mulVec_mulVec, e2, Matrix.one_mulVec]`. Apply `rat_injective` to reduce the goal to its premises. Rewrite using `[show gramQ W (x₁ * v) = vᴴ * (gramQ W x₁ * v) by simp only [gramQ, conjTranspose_mul, Matrix.mul_assoc], hx₁.2, rat_mul, rat_mul, rat_conjTranspose, hv, hb]`.
-
-Conclude with `hx.2 u hu`. Rewrite using `[rat_mul, hv, Matrix.mul_assoc, ← blockX_mul d (inv_mem hf) hf, inv_mul_cancel, blockX_one, Matrix.mul_one, e₁]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_act (hx : IsBase W x₀) (γ : (NFlagQ V d.e).prod (GQ W)) (x : Orb W x₀) :
     ∃ x' ∈ Orb W x₀, (rat x' : Mx D W.rank ρ) ⬝ blockX d γ.1.1.1 = mt W γ.1.2 ⬝ rat x.1 := by
@@ -132,7 +130,7 @@ def act (hx : IsBase W x₀) (γ : (NFlagQ V d.e).prod (GQ W)) (x : Orb W x₀) 
   ⟨Classical.choose (exists_act d hx γ x), (Classical.choose_spec (exists_act d hx γ x)).1⟩
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (exists_act d hx γ x)).2`.
+A detailed English derivation is pending.
 -/
 theorem act_spec (hx : IsBase W x₀) (γ : (NFlagQ V d.e).prod (GQ W)) (x : Orb W x₀) :
     (rat (act d hx γ x).1 : Mx D W.rank ρ) ⬝ blockX d γ.1.1.1 = mt W γ.1.2 ⬝ rat x.1 :=
@@ -168,9 +166,9 @@ Both sides reduce to the same expression.
 theorem base_val (hx : IsBase W x₀) : (base hx).1 = x₀ := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `act_spec d hx γ (base hx)`. Rewrite `h'` using `[h]`. Conclude with `h'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `orb_ext d γ.1.1.2 ((act_spec d hx γ (base hx)).trans h.symm)`.
+A detailed English derivation is pending.
 -/
 theorem act_base_iff (hx : IsBase W x₀) (γ : (NFlagQ V d.e).prod (GQ W)) :
     act d hx γ (base hx) = base hx ↔ (rat x₀ : Mx D W.rank ρ) ⬝ blockX d γ.1.1.1 = mt W γ.1.2 ⬝ rat x₀ := by
@@ -183,7 +181,7 @@ theorem act_base_iff (hx : IsBase W x₀) (γ : (NFlagQ V d.e).prod (GQ W)) :
     exact orb_ext d γ.1.1.2 ((act_spec d hx γ (base hx)).trans h.symm)
 
 /- English proof (translation)
-Take `⟨h, hh, e⟩` from `(GlobalTheory.T.rational_frames_same_gram_one_unitary_orbit D W ρ x₀ hx.1).1 x.1 x.2`. Use `⟨⟨(1, h), Subgroup.mem_prod.2 ⟨one_mem _, hh⟩⟩, orb_ext d (n := 1) (one_mem _) ((act_spec d hx _ _).trans ?_)⟩` and prove the remaining obligations. Use `show mt W h ⬝ rat x₀ = rat x.1 ⬝ blockX d 1`. Rewrite using `[blockX_one, Matrix.mul_one, e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transitive (hx : IsBase W x₀) (x : Orb W x₀) : ∃ γ : (NFlagQ V d.e).prod (GQ W), act d hx γ (base hx) = x := by
   obtain ⟨h, hh, e⟩ := (GlobalTheory.T.rational_frames_same_gram_one_unitary_orbit D W ρ x₀ hx.1).1 x.1 x.2
@@ -192,7 +190,7 @@ theorem transitive (hx : IsBase W x₀) (x : Orb W x₀) : ∃ γ : (NFlagQ V d.
   rw [blockX_one, Matrix.mul_one, e]
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_leftInv x₀ hx.1`. Conclude with `⟨L, by rw [← rat_mul, hL, rat_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem leftInv_rat (hx : IsBase W x₀) : ∃ L : Matrix (Fin ρ) (Fin W.rank) D.host.E,
     (rat L : Mx D ρ W.rank) ⬝ rat x₀ = 1 := by
@@ -200,13 +198,13 @@ theorem leftInv_rat (hx : IsBase W x₀) : ∃ L : Matrix (Fin ρ) (Fin W.rank) 
   exact ⟨L, by rw [← rat_mul, hL, rat_one]⟩
 
 /- English proof (translation)
-Take `⟨L, hLa⟩` from `leftInv_rat hx`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, e'⟩`. Establish `h1` using `(act_base_iff d hx γ).1 hγ`. Rewrite `h1` using `[show γ.1.1 = n from congrArg Prod.fst e', show γ.1.2 = 1 from congrArg Prod.snd e', mt_one, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hB : blockX d n.1 = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hG : n.1 ∈ GQ V`. Rewrite using `[← show γ.1.1 = n from congrArg Prod.fst e']`. Conclude with `Subgroup.mem_subgroupOf.1 ((Subgroup.mem_prod.1 γ.2).1 : γ.1.1 ∈ (GQ V).subgroupOf (NFlag V d.e))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfix : mt V n.1 ⬝ d.jX = d.jX` using `by rw [mt_jX d n.2, hB, Matrix.mul_one]`. Establish `hR : n.1 ∈ radX d` using `Subgroup.mem_inf.2 ⟨n.2, (mem_fixer.2 hfix : n.1 ∈ fixer V d.jX)⟩`. Conclude with `Subgroup.mem_inf.2 ⟨hG, hR⟩`. Introduce `hn`. Take `⟨hG, hR⟩` from `Subgroup.mem_inf.1 hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB : blockX d n.1 = 1` using `blockX_of_fix d (radX_le_stabX d hR)`. Use `⟨⟨(n, 1), Subgroup.mem_prod.2 ⟨(Subgroup.mem_subgroupOf.2 hG : n ∈ (GQ V).subgroupOf (NFlag V d.e)), one_mem _⟩⟩, ?_, rfl⟩` and prove the remaining obligations. Use `(act_base_iff d hx _).2 ?_` and prove the remaining obligations. Use `show rat x₀ ⬝ blockX d n.1 = mt W 1 ⬝ rat x₀`. Rewrite using `[hB, mt_one, Matrix.one_mul, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_left (hx : IsBase W x₀) (n : NFlag V d.e) :
     (∃ γ : (NFlagQ V d.e).prod (GQ W), act d hx γ (base hx) = base hx ∧ γ.1 = (n, 1)) ↔ n.1 ∈ GQ V ⊓ radX d := by
@@ -235,17 +233,15 @@ theorem stab_left (hx : IsBase W x₀) (n : NFlag V d.e) :
     rw [hB, mt_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Take `⟨L, hLa⟩` from `leftInv_rat hx`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, rfl⟩`. Establish `h1` using `(act_base_iff d hx γ).1 hγ`. Take `⟨u, hu, hb, -⟩` from `blockX_spec d γ.1.1.2`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Subgroup.mem_inf.2 ⟨(Subgroup.mem_prod.1 γ.2).2, u, hu, h1.symm.trans (by rw [hb])⟩`. Introduce `hh`. Take `⟨hG, u, hu, hR⟩` from `Subgroup.mem_inf.1 hh`. Establish `hu1 : u.1 ∈ ratMx D ρ ρ`. Establish `e : u.1 = (rat L : Mx D ρ W.rank) ⬝ (mt W h ⬝ rat x₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR, ← Matrix.mul_assoc, hLa, Matrix.one_mul]`. Rewrite using `[e]`. Conclude with `ratMx_mul (rat_mem L) (ratMx_mul ((mem_GQ_iff W h).1 hG) (rat_mem x₀))`. Establish `hR' : mt W h⁻¹ ⬝ rat x₀ = rat x₀ ⬝ (u⁻¹).1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc (mt W h⁻¹), Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `_ = rat x₀ ⬝ (u⁻¹).1 := by rw [← hR, ← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul]`. Establish `hu2 : (u⁻¹).1 ∈ ratMx D ρ ρ`. Establish `e : (u⁻¹).1 = (rat L : Mx D ρ W.rank) ⬝ (mt W h⁻¹ ⬝ rat x₀)`. Rewrite using `[hR', ← Matrix.mul_assoc, hLa, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `ratMx_mul (rat_mem L) (ratMx_mul ((mem_GQ_iff W h⁻¹).1 (inv_mem hG)) (rat_mem x₀))`. Establish `hlevi : d.levi u ∈ flagN d` using `((flag_jacobi_structure D V V₀ ρ d).1 _).2 ⟨u, hu, 0, 0, by rw [d.nB_zero, d.nC_zero, mul_one, mul_one]⟩`. Establish `hQ : d.levi u ∈ GQ V` using `d.levi_mem_GQ hu1 hu2`. Use `⟨⟨(⟨d.levi u, hlevi⟩, h), Subgroup.mem_prod.2 ⟨(Subgroup.mem_subgroupOf.2 hQ : (⟨d.levi u, hlevi⟩ : NFlag V d.e) ∈ (GQ V).subgroupOf (NFlag V d.e)), hG⟩⟩, ?_, rfl⟩` and prove the remaining obligations.
-
-Use `(act_base_iff d hx _).2 ?_` and prove the remaining obligations. Use `show rat x₀ ⬝ blockX d (d.levi u) = mt W h ⬝ rat x₀`. Rewrite using `[blockX_levi, hR]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_right (hx : IsBase W x₀) (h : GA D W) :
     (∃ γ : (NFlagQ V d.e).prod (GQ W), act d hx γ (base hx) = base hx ∧ γ.1.2 = h) ↔ h ∈ GQ W ⊓ Rgrp W (rat x₀) := by
@@ -285,15 +281,15 @@ theorem stab_right (hx : IsBase W x₀) (h : GA D W) :
 end Block
 
 /- English proof (translation)
-Introduce `D V V₀ W ρ d x₀ hx`. Use `⟨mulAct d hx, base hx, base_val hx, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ x`. Rewrite using `[smul_def]`. Conclude with `act_spec d hx γ x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨γ, hγ⟩` from `transitive d hx x`. Conclude with `⟨γ, by rw [smul_def]; exact hγ⟩`. Use extensionality with `n`. Rewrite using `[Subgroup.mem_comap, Subgroup.mem_map, Subgroup.mem_subgroupOf, ← stab_left d hx n]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, e⟩`. Conclude with `⟨γ, (hγ : act d hx γ (base hx) = base hx), e⟩`. Introduce and unpack `⟨γ, hγ, e⟩`. Conclude with `⟨γ, (hγ : act d hx γ (base hx) = base hx), e⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. By extensionality, compare the relevant components.
 
-Use extensionality with `h`. Rewrite using `[← stab_right d hx h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`. Take `⟨γ, hγ, rfl⟩` from `Subgroup.mem_map.1 hp`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨γ, (hγ : act d hx γ (base hx) = base hx), rfl⟩`. Introduce and unpack `⟨γ, hγ, rfl⟩`. Conclude with `Subgroup.mem_map.2 ⟨γ.1, Subgroup.mem_map.2 ⟨γ, (hγ : act d hx γ (base hx) = base hx), rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem action_transitive_stabiliser : ∀ (D : D7) (V V₀ W : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ)
     (x₀ : Matrix (Fin W.rank) (Fin ρ) D.host.E) (hx : IsBase W x₀),

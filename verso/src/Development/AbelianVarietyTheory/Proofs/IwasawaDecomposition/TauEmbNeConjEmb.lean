@@ -42,9 +42,9 @@ end General
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : starRingEnd ℂ A.H.rt0 = A.H.rt0`. Establish `h0 : DV.tauEmb D t (A.H.rt : D.host.E) = A.H.rt0` using `A.cm t`. Rewrite `h`, the goal using `[← h0]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : (0 : ℝ) < A.H.d` using `by exact_mod_cast A.H.d_prime.pos`. Establish `h2` using `congrArg Complex.re A.H.sqrt_neg_disc_sq`. Establish `h3 : A.H.rt0.im = 0` using `Complex.conj_eq_iff_im.1 h1`. Simplify using `[pow_two, h3] at h2`. Use polynomial arithmetic with `[sq_nonneg A.H.rt0.re]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem conj_not_cm (A : Amb D) (t : D.what₂.Tau) : conjEmb (DV.tauEmb D t) (A.H.rt : D.host.E) ≠ A.H.rt0 := by
   intro h
@@ -59,7 +59,7 @@ theorem conj_not_cm (A : Amb D) (t : D.what₂.Tau) : conjEmb (DV.tauEmb D t) (A
   nlinarith [sq_nonneg A.H.rt0.re]
 
 /- English proof (translation)
-Introduce `h` and use `conj_not_cm A t' (h ▸ A.cm t)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tauEmb_ne_conjEmb (A : Amb D) (t t' : D.what₂.Tau) : DV.tauEmb D t ≠ conjEmb (DV.tauEmb D t') := fun h =>
   conj_not_cm A t' (h ▸ A.cm t)

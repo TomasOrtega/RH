@@ -22,14 +22,14 @@ def complSub {a a' d : ℕ} (h : a + a' = d) (s : {s : Fin a → Fin d // Strict
         Fintype.card_fin]; omega), (Finset.orderEmbOfFin _ _).strictMono⟩
 
 /- English proof (translation)
-Simplify using `only [complSub, Finset.range_orderEmbOfFin, Finset.coe_compl, Finset.coe_image, Finset.coe_univ, Set.image_univ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem range_complSub {a a' d : ℕ} (h : a + a' = d) (s : {s : Fin a → Fin d // StrictMono s}) :
     Set.range (complSub h s).1 = (Set.range s.1)ᶜ := by
   simp only [complSub, Finset.range_orderEmbOfFin, Finset.coe_compl, Finset.coe_image, Finset.coe_univ, Set.image_univ]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `(StrictMono.range_inj (complSub h' (complSub h s)).2 s.2).1` to reduce the goal to its premises. Rewrite using `[range_complSub, range_complSub, compl_compl]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem complSub_complSub {a a' d : ℕ} (h : a + a' = d) (h' : a' + a = d) (s : {s : Fin a → Fin d // StrictMono s}) :
     complSub h' (complSub h s) = s := by
@@ -41,7 +41,7 @@ def complTup (D : D7) {a a' d : ℕ} {n : D.what₂.Tau → ℕ} (h : a + a' = d
   fun τ k => complSub h (T τ k)
 
 /- English proof (translation)
-Apply the tactic sequence `refine Function.bijective_iff_has_inverse.2 ⟨complTup D (a := a') (a' := a) (by omega), fun T => ?_, fun T => ?_⟩ <;>`. Apply the tactic sequence `funext τ k <;> simp only [complTup, complSub_complSub]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem complTup_bijective (D : D7) {a a' d : ℕ} {n : D.what₂.Tau → ℕ} (h : a + a' = d) :
     Function.Bijective (complTup D (n := n) h) := by
@@ -49,11 +49,11 @@ theorem complTup_bijective (D : D7) {a a' d : ℕ} {n : D.what₂.Tau → ℕ} (
     funext τ k <;> simp only [complTup, complSub_complSub]
 
 /- English proof (translation)
-Use `⟨fun T T' => if T' = c T then (ε T : ℤ) else 0, fun T' T => if T' = c T then (ε T : ℤ) else 0, fun T₁ T₂ => ?_, fun T f => ?_⟩` and prove the remaining obligations. Take `⟨T, rfl⟩` from `hc.2 T₁`. Rewrite using `[Finset.sum_eq_single T]`. Distinguish the cases in `h : c T = T₂`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[← Units.val_mul]`. Simplify using `[h, Ne.symm h]`. Introduce `b _ hb`. Establish `: c T ≠ c b` using `fun e => hb (hc.1 e).symm`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single (c T)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/

@@ -13,17 +13,15 @@ noncomputable section
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `hγ`. Move the coercions through the operations in `at hr`. Use `set p := γ 0 0`. Use `set q := γ 0 1`. Use `set s := γ 1 1`.
+Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdet' : p * s - (N * l * r) * q = 1`. Rewrite `hdet` using `[Matrix.det_fin_two]`. Rewrite `hdet` using `[hr]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨!![(N : ℤ) * a * d * p + N * l * b * d * r - N * l * a * c * q - l * b * c * s, -(a * b * p) - l * b * b * r + N * a * a * q + a * b * s; N * l * (c * d * p + N * d * d * r - l * c * c * q - c * d * s), -(l * b * c * p) - N * l * b * d * r + N * l * a * c * q + N * a * d * s], ? …` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `hγe : γ = !![p, q; N * l * r, s]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [p, q, s, hr]`. Rewrite using `[hγe]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-(N * a * p + b * N * l * r) * h`. Take the linear combination `-(N * a * q + b * s) * h`. Take the linear combination `-(N * l * c * p + N * d * N * l * r) * h`. Take the linear combination `-(N * l * c * q + N * d * s) * h`. Rewrite using `[Matrix.det_fin_two_of]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `((N : ℤ) * a * d - l * b * c) ^ 2 * hdet' + ((N : ℤ) * a * d - l * b * c + 1) * h`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one]`. Use `push_cast`. Conclude with `Dvd.intro _ rfl`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one]`.
-
-Conclude with `⟨-(b * d * l * r) + l * a * c * q + a * d * s - a * d * p, by linear_combination p * h⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem atkinLehner_conj_int (N l : ℕ) (a b c d : ℤ) (h : (N : ℤ) * a * d - l * b * c = 1) (γ : M2)
     (hγ : ((N * l : ℕ) : ℤ) ∣ γ 1 0) (hdet : γ.det = 1) :
@@ -60,21 +58,21 @@ theorem atkinLehner_conj_int (N l : ℕ) (a b c d : ℤ) (h : (N : ℤ) * a * d 
     exact ⟨-(b * d * l * r) + l * a * c * q + a * d * s - a * d * p, by linear_combination p * h⟩
 
 /- English proof (translation)
-Introduce `k N l χ f a b c d h hk hN hf`. Use `set Q : M2 := !![(N : ℤ) * a, b; N * l * c, N * d] with hQ`. Establish `hQdet : 0 < Q.det`. Establish `: Q.det = N * (N * a * d - l * b * c)` using `by rw [hQ, Matrix.det_fin_two_of]; ring`. Rewrite using `[this, h, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hN` after adjusting the coercions. Establish `hiff` using `(slz_props k (slz k Q f) hk).2.2.1 (N * l) (ch χ⁻¹)`. Establish `hiff0` using `(slz_props k f hk).2.2.1 (N * l) (ch χ)`. Use `hiff.2 fun γ hγ => ?_` and prove the remaining obligations. Establish `hγdet : (γ : M2).det = 1` using `Matrix.SpecialLinearGroup.det_coe γ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hγ' : ((N * l : ℕ) : ℤ) ∣ (γ : M2) 1 0` using `by exact_mod_cast hγ`. Take `⟨g, hg, hgdet, hgdvd, hgcong⟩` from `atkinLehner_conj_int N l a b c d h (γ : M2) hγ' hγdet`. Set `γ₁ : SL(2, ℤ)` to `⟨g, hgdet⟩`. Establish `hf1` using `hiff0.1 hf γ₁ (by exact_mod_cast hgdvd)`. Establish `hcalc : slz k (γ : M2) (slz k Q f) = slz k Q (slz k (γ₁ : M2) f)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← slz_mul k f Q (γ : M2) hQdet (by rw [hγdet]; exact one_pos), hg, slz_mul k f g Q (by rw [hgdet]; exact one_pos) hQdet]`. Rewrite using `[hcalc, hf1]`. Establish `hchar : ch χ (γ₁ 1 1) = ch χ⁻¹ (γ 1 1)`. Simplify using `only [ch]`. Establish `e1 : ((γ₁ 1 1 : ℤ) : ZMod N) = ((γ 0 0 : ℤ) : ZMod N)` using `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).2 (by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (N : ℤ) ∣ g 1 1 - γ 0 0` using `hgcong`. Rewrite using `[← dvd_neg, neg_sub]`. Conclude with `this)`. Establish `e2 : ((γ 0 0 : ℤ) : ZMod N) * ((γ 1 1 : ℤ) : ZMod N) = 1`. Establish `hd` using `hγdet`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hd` using `[Matrix.det_fin_two]`. Take `⟨r, hr⟩` from `hγ'`. Establish `: ((((γ : M2) 0 0 * (γ : M2) 1 1 - (γ : M2) 0 1 * (γ : M2) 1 0 : ℤ)) : ZMod N) = 1`. Rewrite using `[hd]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[hr]`. Move the coercions through the operations in `at this`. Simplify using `using this`. Rewrite using `[e1, MulChar.inv_apply_eq_inv']`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_mul, e2, map_one]`. Use function extensionality and compare the values at `τ`. Simplify using `only [slz]`. Rewrite using `[hchar]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inv_slz_atkinLehner : ∀ (k N l : ℕ) (χ : DirichletCharacter ℂ N) (f : ℍ → ℂ) (a₀ b₀ c₀ d₀ : ℤ),
     N * a₀ * d₀ - l * b₀ * c₀ = 1 → 1 ≤ k → 0 < N → Inv k (N * l) (ch χ) f →

@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.HSAmp.IndepCx
 
 /- English proof (translation)
-Take `⟨N, j, _, hj⟩` from `hX.isProjOver`. Use `isProper_str k N` as an intermediate fact. Establish `: IsProper p` using `hj ▸ inferInstance`. Establish `h1 : (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U).FiniteType` using `(p.finiteType_appLE (isAffineOpen_top _) hU _).comp (.of_surjective _ (ConcreteCategory.bijective_of_isIso _).2)`. Use `hX.finite` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (algebraMap ℤ k).FiniteType` using `RingHom.finiteType_algebraMap.2 inferInstance`. Establish `h2` using `h1.comp h0`. Rewrite `h2` using `[RingHom.ext_int ((ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U).comp (algebraMap ℤ k)) (algebraMap ℤ Γ(X, U))]`. Conclude with `RingHom.finiteType_algebraMap.1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteType_int {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ}
     (hX : IsArithVar p D) {U : X.Opens} (hU : IsAffineOpen U) : Algebra.FiniteType ℤ Γ(X, U) := by
@@ -40,27 +40,25 @@ namespace GlobalTheory.HSAmp
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX) in
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX P a b ι _ f hf hli c hc`. Take `⟨i, hi⟩` from `exists_chart P.L.isLB (genericPoint X)`. Take `⟨j, hj⟩` from `exists_chart P.A.isLB (genericPoint X)`. Take `⟨U, hU, hgU, hle⟩` from `exists_isAffineOpen_mem_and_subset (x := genericPoint X) (U := P.L.B.U i ⊓ P.A.B.U j) ⟨hi, hj⟩`. Establish `hl : U ≤ P.L.B.U i` using `fun x hx => (hle hx).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : U ≤ P.A.B.U j` using `fun x hx => (hle hx).2`. Establish `: Nonempty U` using `⟨⟨_, hgU⟩⟩`. Establish `: CharZero Γ(X, U)` using `((resG X (le_top : U ≤ ⊤)).charZero_iff (map_injective_of_isIntegral X _)).1 hX.charZero`. Use `IndepCx.finiteType_int hX hU` as an intermediate fact. Use `choose g hg using fun l => exists_fnOf_eq hgU fun x hx => hf l x i j (hl hx) (hr hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0 : (P.r i : X.functionField) ^ a * (P.r' j : X.functionField) ^ b ≠ 0` using `mul_ne_zero (zpow_ne_zero _ (P.r i).ne_zero) (zpow_ne_zero _ (P.r' j).ne_zero)`. Establish `hloc : ∀ l, P.loc a b (f l) i j = f l * ((P.r i : X.functionField) ^ a * (P.r' j : X.functionField) ^ b)` using `fun l => by simp only [Pair.loc]; ring`. Establish `hgli : LinearIndependent ℤ g`. Rewrite `hli`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hli n` to reduce the goal to its premises. Establish `h1` using `congrArg (fnOf U hgU) hn`. Rewrite `h1` using `[map_sum, map_zero]`. Simplify using `only [map_zsmul, hg, hloc] at h1`. Establish `h2 : (∑ l, n l • f l) * ((P.r i : X.functionField) ^ a * (P.r' j : X.functionField) ^ b) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Simplify `h1` using `only [smul_mul_assoc]`. Conclude with `(mul_eq_zero.1 h2).resolve_right hu0`. Use `set e := Fintype.equivFin ι`. Take `⟨x, hx⟩` from `GlobalTheory.CxPointsSep.exists_det_ne_zero Γ(X, U) (Fintype.card ι) (g ∘ e.symm) (hgli.comp _ e.symm.injective)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ s, ∑ l, c l * x s (g l) = 0`. Introduce `s`. Establish `hy : ofHom (σ` using `(x s).comp (algX p U)) hU (x s) (fun _ => rfl) ∈ ptsIn p ((x s).comp (algX p U)) U := ofHom_mem hU _ _`. Take `⟨θ, hθ, hval⟩` from `GlobalTheory.T.sectionValueUnitFrame_eq_localFunction_unitScalar k X p P a b _ _ i j (ptsIn_mono hl hy) (ptsIn_mono hr hy)`. Establish `h0` using `hc _ (ofHom (σ := (x s).comp (algX p U)) hU (x s) (fun _ => rfl))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hθ0 : θ ≠ 0`. Introduce `h`. Rewrite `hθ` using `[h, norm_zero]`. Conclude with `zero_ne_one hθ`. Use `set E : ℂ := ((Real.exp (-(a * (P.L.φ ((x s).comp (algX p U))).φ i (ofHom (σ := (x s).comp (algX p U)) hU (x s) (fun _ => rfl)) + b * (P.A.φ ((x s).comp (algX p U))).φ j (ofHom (σ := (x s).comp (algX p U)) hU (x s) (fun _ => rfl))) / 2) : ℝ) : ℂ) with hEdef`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hE : E ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.exp_pos _).ne'`. Establish `hv : ∀ l, val P a b _ (ofHom (σ` using `(x s).comp (algX p U)) hU (x s) (fun _ => rfl)) (f l) = θ * E * x s (g l) := by`. Introduce `l`. Rewrite using `[hval (f l) (hf l), ← hg l, ratVal_fnOf hy hgU, ev_ofHom]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hv] at h0`. Establish `h3 : θ * E * ∑ l, c l * x s (g l) = 0`. Rewrite using `[Finset.mul_sum, ← h0]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Conclude with `(mul_eq_zero.1 h3).resolve_left (mul_ne_zero hθ0 hE)`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hM : Matrix.mulVec (Matrix.of fun s t => x s ((g ∘ e.symm) t)) (c ∘ e.symm) = 0`. Use function extensionality and compare the values at `s`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Function.comp_apply, Pi.zero_apply]`. Rewrite using `[← key s, ← e.symm.sum_comp (fun l => c l * x s (g l))]`. Conclude with `Finset.sum_congr rfl fun t _ => mul_comm _ _`.
-
-Establish `hz` using `Matrix.eq_zero_of_mulVec_eq_zero hx hM`. Use function extensionality and compare the values at `l`. Simplify using `using congrFun hz (e l)`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_vals : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (P : Pair p), ∀ (a b : ℤ) (ι : Type) [Fintype ι] (f : ι → X.functionField),

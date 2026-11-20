@@ -24,17 +24,17 @@ def intEquiv (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Introduce `D T _ w e hw hs hT hT2`. Take `⟨_, _, v, ε, hε, he⟩` from `id hs`. Establish `hsa : SplitAt D v e` using `GlobalTheory.FinPl.SplitPoint.splitAt_of hs hε he`. Establish `hch : Chart e v (comp hsa)` using `chart_comp hsa`. Establish `hTw : ((T : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.absNorm_mem w.asIdeal` as an intermediate fact. Rewrite `this` using `[hT]`. Then use the resulting hypothesis. Establish `hTw2 : ((T : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal ^ 2` using `fun h => hT2 (Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 h))`. Take `⟨⟨p, hp, hirr⟩, hcard⟩` from `GlobalTheory.SplitUnif.unif_chart e w v (comp hsa) hw hch _ hTw hTw2`. Establish `hpT : p = (T : Ov D v)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[show ((p : Fv D.host.F v)) = algebraMap (Ov D v) (Fv D.host.F v) p from rfl, hp]`. Simplify using the standard rewrite rules. Substitute `hpT` using the available equality. Use `haveI : CharZero (Fv D.host.F v) := charZero_of_injective_ringHom (algebraMap D.host.F (v.adicCompletion D.host.F)).injective`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hc1 : Nat.card (IsLocalRing.ResidueField 𝒪[Fv D.host.F v]) = T`. Rewrite using `[← hT, ← hcard]`. Conclude with `(Nat.card_congr (IsLocalRing.ResidueField.mapEquiv (intEquiv D.host.F v)).toEquiv).symm`. Establish `hc2 : Irreducible (T : 𝒪[Fv D.host.F v])`. Rewrite using `[← map_natCast (intEquiv D.host.F v) T]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(MulEquiv.irreducible_iff (intEquiv D.host.F v).toMulEquiv).2 hirr`. Take `⟨φ, hφ, hφ', hφO⟩` from `GlobalTheory.T.exists_ringEquiv_padic_of_residueCard_uniformizer (Fv D.host.F v) T hc1 hc2`. Take `⟨sp, hse, -⟩` from `GlobalTheory.FinPl.SplitPoint.exists_splitPt D v e ε hs hε he`. Use `⟨v, φ.symm.toRingHom.comp sp.pr, sp.sec.comp φ.toRingHom.toAddMonoidHom, ⟨ε, hε, he⟩, fun a => ?_, fun x => ?_, hφ'.comp sp.cont_pr, sp.cont_sec.comp hφ, fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.symm (sp.pr (sp.sec (φ a))) = a`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sp.pr_sec, RingEquiv.symm_apply_apply]`. Express the relevant statement in the definitionally equal form `sp.sec (φ (φ.symm (sp.pr x))) = e * x`. Rewrite using `[RingEquiv.apply_symm_apply, sp.sec_pr, hse]`. Conclude with `(hφO a).symm.trans (sp.int_iff (φ a))`.
+A detailed English derivation is pending.
 -/
 theorem exists_coord_padic : ∀ (D : D7) (T : ℕ) [Fact T.Prime] (w : Formalism.L2.DIV.Pl D.host.E) (e : AE D), Formalism.L2.NTheta.IsIdemAt e w → IsSplitIdem D e → Ideal.absNorm w.asIdeal = T → ¬ (w.asIdeal ^ 2 ∣ Ideal.span {(T : 𝓞 D.host.E)}) → ∃ (v : Pl D) (pr : AE D →+* ℚ_[T]) (sec : ℚ_[T] →+ AE D), (∃ ε, IsPlaceIdem D v ε ∧ e + cA D e = algebraMap (AF D.host.F) (AE D) ε) ∧ (∀ a, pr (sec a) = a) ∧ (∀ x, sec (pr x) = e * x) ∧ Continuous pr ∧ Continuous sec ∧ ∀ a, ‖a‖ ≤ 1 ↔ finPart D (sec a) ∈ intAE D := by
   intro D T _ w e hw hs hT hT2

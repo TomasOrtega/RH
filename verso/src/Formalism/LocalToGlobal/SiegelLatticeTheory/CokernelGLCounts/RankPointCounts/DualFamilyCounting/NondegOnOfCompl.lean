@@ -49,9 +49,9 @@ def GlueAssemble : Prop :=
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Introduce `x hx hxU`. Apply `hnd` to reduce the goal to its premises. Introduce `y`. Establish `hy : y ∈ U ⊔ orthK h U` using `by rw [hUc.sup_eq_top]; exact Submodule.mem_top`. Take `⟨u, hu, z, hz, rfl⟩` from `Submodule.mem_sup.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz' : h x z = 0`. Use `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hz x) hx` as an intermediate fact. Conclude with `LinearMap.mem_ker.1 this`. Rewrite using `[map_add, hxU u hu, hz', add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nondegOn_of_compl {h : V →ₗ⋆[K] V →ₗ[K] K} (hnd : Nondeg h) {U : Submodule K V}
     (hUc : IsCompl U (orthK h U)) : NondegOn h U := by
@@ -66,9 +66,9 @@ theorem nondegOn_of_compl {h : V →ₗ⋆[K] V →ₗ[K] K} (hnd : Nondeg h) {U
   rw [map_add, hxU u hu, hz', add_zero]
 
 /- English proof (translation)
-Introduce `K F V _ _ _ _ _ _ _ _ _ _ _ hK hF h hs hnd U hUc hpos hΛ₀ M hM hMi 𝔭 h𝔭 hc`. Establish `hne : {c | ∃ b a, IsJordanIn h U M 𝔭 b a ∧ c = cJof 𝔭 a}.Nonempty`. Take `⟨b, a, hba⟩` from `(hJ K F V hK hF h hs).1 U M (nondegOn_of_compl hnd hUc) hM hMi 𝔭 h𝔭`. Conclude with `⟨_, b, a, hba, rfl⟩`. Take `⟨b, a, hba, hca⟩` from `Nat.sInf_mem hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hc' : cJof 𝔭 a < finrank K (orthK h U)`. Rewrite using `[← hca]`. Conclude with `hc`. Take `⟨π, w, c, τ, hg⟩` from `hV K F V hK hF h hs hnd U hUc hpos hΛ₀ M hM hMi 𝔭 h𝔭 b a hba hc'`. Conclude with `hA K F V hK hF h hs hnd U hUc M hM hMi 𝔭 h𝔭 b a hba π w c τ hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem glueLocal_of_of (hJ : JordanExists) (hV : GlueVecs) (hA : GlueAssemble) :
     Formalism.L2.SG.Pf.G7.GlueLocal := by

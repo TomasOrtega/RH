@@ -14,13 +14,13 @@ section Linear
 variable {E : Type} [Field E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Establish `e : κ ≃ Fin n` using `Fintype.equivFinOfCardEq hκ`. Establish `h1 : G' * Bᴴ * J * B = 1` using `by rw [← hG, ← hB]; simp only [Matrix.mul_assoc]`. Establish `h2 : G' * B'ᴴ * J * B' = 1` using `by rw [← hG, ← hB']; simp only [Matrix.mul_assoc]`. Generalize the expression as in `G' * Bᴴ * J = C at h1`. Generalize the expression as in `G' * B'ᴴ * J = C' at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `h3 : B * C = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).1 h1`. Establish `h4 : B' * C' = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).1 h2`. Use `⟨⟨B' * C, B * C', ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc C, h1, Matrix.one_mul, h4]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc C', h2, Matrix.one_mul, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(B' * C)ᴴ * J * (B' * C) = J`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (B * C)ᴴ * J * (B * C) := by`. Rewrite using `[hB', ← hB]`.
+Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = J := by rw [h3, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Express the relevant statement in the definitionally equal form `B' * C * B = B'`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_of_gram {κ : Type} [Fintype κ] [DecidableEq κ] (hκ : Fintype.card κ = n)
     (J : Matrix (Fin n) (Fin n) E) (B B' : Matrix (Fin n) κ E) (G G' : Matrix κ κ E) (hG : G' * G = 1)
@@ -50,21 +50,15 @@ def cat {a : ℕ} {j : Fin a → ℕ} (T : ∀ i, Matrix (Fin n) (Fin (j i)) E) 
     Matrix (Fin n) (Σ i, Fin (j i)) E := Matrix.of fun r p => T p.1 r p.2
 
 /- English proof (translation)
-Establish `sw : ∀ {α β : Type} (A : Matrix (Fin n) α E) (B : Matrix (Fin n) β E), Bᴴ * J * A = (Aᴴ * J * B)ᴴ`. Introduce `α β A B`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJ, Matrix.mul_assoc]`. Establish `a11 : (cat T)ᴴ * J * cat T = 0`. Use extensionality with `⟨i, s⟩ ⟨k, t⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `congrFun (congrFun (h1 i k).1 s) t`. Establish `a22 : (cat T')ᴴ * J * cat T' = 0`. Use extensionality with `⟨i, s⟩ ⟨k, t⟩`. Conclude with `congrFun (congrFun (h1 i k).2.1 s) t`. Establish `a12 : (cat T)ᴴ * J * cat T' = 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `⟨i, s⟩ ⟨k, t⟩`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Use `(congrFun (congrFun (h2 i).1 s) t).trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(congrFun (congrFun ((h1 i k).2.2 h) s) t).trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, h]`. Establish `a13 : (cat T)ᴴ * J * T₀ = 0`. Use extensionality with `⟨i, s⟩ t`. Conclude with `congrFun (congrFun (h2 i).2.1 s) t`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `a23 : (cat T')ᴴ * J * T₀ = 0`. Use extensionality with `⟨i, s⟩ t`. Conclude with `congrFun (congrFun (h2 i).2.2 s) t`. Establish `a21 : (cat T')ᴴ * J * cat T = 1` using `by rw [sw, a12, Matrix.conjTranspose_one]`. Establish `a31 : T₀ᴴ * J * cat T = 0` using `by rw [sw, a13, Matrix.conjTranspose_zero]`.
-
-Establish `a32 : T₀ᴴ * J * cat T' = 0` using `by rw [sw, a23, Matrix.conjTranspose_zero]`. Use extensionality with `((p | p) | p) ((q | q) | q)`. Conclude with `congrFun (congrFun a11 p) q`. Conclude with `congrFun (congrFun a12 p) q`. Conclude with `congrFun (congrFun a13 p) q`.
-
-Conclude with `congrFun (congrFun a21 p) q`. Conclude with `congrFun (congrFun a22 p) q`. Conclude with `congrFun (congrFun a23 p) q`. Conclude with `congrFun (congrFun a31 p) q`. Conclude with `congrFun (congrFun a32 p) q`.
-
-Conclude with `congrFun (congrFun h3 p) q`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gram_adapted {a m : ℕ} {j : Fin a → ℕ} (J : Matrix (Fin n) (Fin n) E) (hJ : Jᴴ = J)
     (J₀ : Matrix (Fin m) (Fin m) E) (T T' : ∀ i, Matrix (Fin n) (Fin (j i)) E) (T₀ : Matrix (Fin n) (Fin m) E)
@@ -112,9 +106,9 @@ theorem gram_adapted {a m : ℕ} {j : Fin a → ℕ} (J : Matrix (Fin n) (Fin n)
   · exact congrFun (congrFun h3 p) q
 
 /- English proof (translation)
-Take `⟨γ, hγ, hB⟩` from `exists_unitary_of_gram (κ := ((Σ i, Fin (j i)) ⊕ (Σ i, Fin (j i))) ⊕ Fin m) (by simp [hn]; ring) J _ _ _ (fromBlocks (fromBlocks 0 1 1 0) 0 0 J₀⁻¹) (by simp [Matrix.fromBlocks_multiply, Matrix.nonsing_inv_mul _ (Ne.isUnit hJ₀)]) (gram_adapted J hJ J₀ T T' T₀ h1 h2 h3) (gram_adapt …`. Use `⟨γ, hγ, fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `r s`. Conclude with `congrFun (congrFun hB r) (Sum.inl (Sum.inl ⟨i, s⟩))`. Use extensionality with `r s`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. By extensionality, compare the relevant components. By extensionality, compare the relevant components.
 
-Conclude with `congrFun (congrFun hB r) (Sum.inl (Sum.inr ⟨i, s⟩))`. Use extensionality with `r s`. Conclude with `congrFun (congrFun hB r) (Sum.inr s)`.
+A detailed English derivation is pending.
 -/
 theorem exists_unitary_adapted {a m : ℕ} {j : Fin a → ℕ} (hn : n = m + 2 * ∑ i, j i)
     (J : Matrix (Fin n) (Fin n) E) (hJ : Jᴴ = J) (J₀ : Matrix (Fin m) (Fin m) E) (hJ₀ : J₀.det ≠ 0)
@@ -144,7 +138,7 @@ theorem exists_unitary_adapted {a m : ℕ} {j : Fin a → ℕ} (hn : n = m + 2 *
 end Linear
 
 /- English proof (translation)
-Establish `e : Formalism.UG.cT s (g.map φ) = (Formalism.UG.cT σ g).map φ`. Use extensionality with `i k`. Simplify using `[Formalism.UG.cT, h]`. Rewrite using `[e, ← Matrix.map_mul, ← Matrix.map_mul, hg]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitary_map {E A : Type} [CommRing E] [CommRing A] {n : ℕ} (σ : E →+* E) (s : A →+* A) (φ : E →+* A)
     (h : ∀ e, s (φ e) = φ (σ e)) (J g : Matrix (Fin n) (Fin n) E) (hg : Formalism.UG.cT σ g * J * g = J) :
@@ -155,19 +149,17 @@ theorem unitary_map {E A : Type} [CommRing E] [CommRing A] {n : ℕ} (σ : E →
   rw [e, ← Matrix.map_mul, ← Matrix.map_mul, hg]
 
 /- English proof (translation)
-Establish `hφ : ∀ v e, starRingEnd ℂ (I.φ v e) = I.φ v (starRingEnd I.E e)` using `fun v e => (I.cm.cmUnram.2.1 (I.φ v) e).symm`. Establish `hf : ∀ e, Formalism.UG.sigR I.cm.sig (Af I.F) (Formalism.UG.inclE (F` using `I.F) (Af I.F) e) = Formalism.UG.inclE (F := I.F) (Af I.F) (starRingEnd I.E e) := by`. Introduce `e`. Simplify using `[Formalism.UG.sigR, Formalism.UG.inclE]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hPP : ∀ v, I.P v * (I.P v)⁻¹ = 1` using `fun v => Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v))`. Set `u : ∀ v : InfinitePlace I.F, (Matrix (Fin I.n) (Fin I.n) ℂ)ˣ` to `fun v => (I.P_unit v).unit⁻¹ * Formalism.UG.bc (I.φ v) γ * (I.P_unit v).unit`. Establish `hu : ∀ v, (u v : Matrix (Fin I.n) (Fin I.n) ℂ) = (I.P v)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v`. Introduce `v`. Simplify using `only [u, Units.val_mul, Matrix.coe_units_inv, IsUnit.unit_spec]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hPu : ∀ v, I.P v * (u v : Matrix (Fin I.n) (Fin I.n) ℂ) = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v`. Introduce `v`. Rewrite using `[hu, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPP, Matrix.one_mul]`. Establish `hU : ∀ v, u v ∈ Formalism.REAL.UJ (I.ε v)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v`. Express the relevant statement in the definitionally equal form `(u v : Matrix (Fin I.n) (Fin I.n) ℂ)ᴴ * Formalism.REAL.Jm (I.ε v) * (u v : Matrix (Fin I.n) (Fin I.n) ℂ) = Formalism.REAL.Jm (I.ε v)`. Establish `h` using `unitary_map _ _ (I.φ v) (hφ v) I.J _ hγ`. Establish `hc : Formalism.UG.cT (starRingEnd ℂ) ((γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v)) = ((γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v))ᴴ`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Formalism.UG.cT]`. Rewrite `h` using `[hc]`. Rewrite using `[← I.P_spec v]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = (I.P v)ᴴ * (((γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v))ᴴ * I.J.map (I.φ v) * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v)) * I.P v := by`. Rewrite using `[hPu]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h]`. Establish `hF : Formalism.UG.bc (Formalism.UG.inclE (F` using `I.F) (Af I.F)) γ ∈ Formalism.UG.UPts I.cm.sig I.J (Af I.F) := unitary_map _ _ _ hf I.J _ hγ`.
-
-Conclude with `⟨(fun v => ⟨u v, hU v⟩, ⟨_, hF⟩), hu, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_point (I : AutInst) (γ : GL (Fin I.n) I.E) (hγ : γ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J) :
     ∃ a : I.GA,
@@ -219,32 +211,30 @@ theorem exists_point (I : AutInst) (γ : GL (Fin I.n) I.E) (hγ : γ ∈ Formali
   exact ⟨(fun v => ⟨u v, hU v⟩, ⟨_, hF⟩), hu, rfl⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ratIso (I : AutInst) (γ : GL (Fin I.n) I.E) (N : Submodule (𝓞 I.E) (Fin I.n → I.E))
     (z : Fin I.n → I.E) :
     z ∈ GlobalTheory.PointEquivariance.ratIso I γ N ↔ ∃ y ∈ N, (γ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ y = z := Iff.rfl
 
 /- English proof (translation)
-Introduce `I I₀ e xf a j S Λ x₀ T T' T₀ _ ⟨_, hn, _, h1, h2, h3, h4, h5⟩ xf' S' U U' U₀ ⟨_, _, _, g1, g2, g3, g4, g5⟩`. Establish `hcT : ∀ M : Matrix (Fin I.n) (Fin I.n) I.E, Formalism.UG.cT (starRingEnd I.E) M = Mᴴ` using `fun M => rfl`. Establish `hJ : I.Jᴴ = I.J` using `(hcT _).symm.trans I.J_herm`. Establish `hJ₀ : (I₀.J.map e).det ≠ 0`. Use `RingHom.map_det (e : I₀.E →+* I.E) I₀.J` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `e _ = (I₀.J.map e).det at this`. Rewrite using `[← this]`. Conclude with `(map_ne_zero e).2 I₀.J_det`. Take `⟨γ, hγ, c1, c2, c3⟩` from `exists_unitary_adapted hn I.J hJ _ hJ₀ T T' U U' T₀ U₀ h1 h2 h3 g1 g2 g3`. Establish `hγ' : γ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J` using `hγ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc1, hc2⟩` from `exists_point I γ hγ'`. Establish `d1 : ∀ u : ∀ i, Fin (j i) → I.E, (γ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ ∑ i, T i *ᵥ u i = ∑ i, U i *ᵥ u i`. Introduce `u`. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_mulVec, c1]`. Establish `d2 : ∀ u : ∀ i, Fin (j i) → I.E, (γ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ ∑ i, T' i *ᵥ u i = ∑ i, U' i *ᵥ u i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_mulVec, c2]`. Establish `hS : ∀ k, S' k = GlobalTheory.PointEquivariance.ratIso I γ (S k)`. Introduce `k`. Use extensionality with `z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[g5, mem_ratIso]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, p1, p2, rfl⟩`. Conclude with `⟨_, (h5 k _).2 ⟨u, p1, p2, rfl⟩, d1 u⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨u, p1, p2, rfl⟩` from `(h5 k y).1 hy`. Conclude with `⟨u, p1, p2, d1 u⟩`. Establish `hL : lamX I (c * (1, xf)) = lamX I (1, xf')`. Rewrite using `[GlobalTheory.PointEquivariance.lamX_rat I _ c γ hc2]`. Use extensionality with `z`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[g4, mem_ratIso]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨u, u', w, p1, p2, p3, rfl⟩` from `(h4 y).1 hy`. Use `⟨u, u', w, p1, p2, p3, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_add, d1, d2, Matrix.mulVec_mulVec, c3]`. Introduce and unpack `⟨u, u', w, p1, p2, p3, rfl⟩`. Use `⟨_, (h4 _).2 ⟨u, u', w, p1, p2, p3, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_add, d1, d2, Matrix.mulVec_mulVec, c3]`. Use `⟨c, ⟨γ, hγ', hc1, hc2⟩, xf'⁻¹ * (c.2 * xf), ?_, (mul_inv_cancel_left _ _).symm, fun g => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(GlobalTheory.PointEquivariance.lamX_mul_eq_iff I (1, xf') (((1, xf') : I.GA)⁻¹ * (c * (1, xf)))).2 (by rw [mul_inv_cancel_left, hL])` as an intermediate fact. Conclude with `this`. Use function extensionality and compare the values at `i`. Establish `hfr : frm I (c.1 * g, xf') = frm I (c * (g, xf))` using `rfl`. Unfold `sizesAt`.
-
-Rewrite using `[hfr, hS, hS]`. Conclude with `GlobalTheory.PointEquivariance.sizeQ_eq _ _ _ _ (GlobalTheory.PointEquivariance.zl_ratIso I (g, xf) c γ hc1) (GlobalTheory.PointEquivariance.rkK_ratIso I γ) _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjugate_of_isAdapted : ∀ (I I₀ : AutInst) (e : I₀.E ≃+* I.E) (xf : I.Gf) (a : ℕ) (j : Fin a → ℕ) (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)) (Λ : ∀ i, Submodule (𝓞 I.E) (Fin (j i) → I.E)) (x₀ : I₀.Gf) (T T' : ∀ i, Matrix (Fin I.n) (Fin (j i)) I.E) (T₀ : Matrix (Fin I.n) (Fin I₀.n) I.E), (∀ i, 1 ≤ j i) → IsAdapted I I₀ e xf j S Λ x₀ T T' T₀ → ∀ (xf' : I.Gf) (S' : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)) (U U' : ∀ i, Matrix (Fin I.n) (Fin (j i)) I.E) (U₀ : Matrix (Fin I.n) (Fin I₀.n) I.E), IsAdapted I I₀ e xf' j S' Λ x₀ U U' U₀ → ∃ γ ∈ I.GFset, ∃ k ∈ I.Kset, γ.2 * xf = xf' * k ∧ ∀ g : I.Ginf, sizesAt I xf' S' (γ.1 * g) = sizesAt I xf S g := by
   intro I I₀ e xf a j S Λ x₀ T T' T₀ _ ⟨_, hn, _, h1, h2, h3, h4, h5⟩ xf' S' U U' U₀ ⟨_, _, _, g1, g2, g3, g4, g5⟩

@@ -13,25 +13,25 @@ variable {σ : Type} [DecidableEq σ] {H : Type} [NormedAddCommGroup H] [InnerPr
   {ι : MvPolynomial σ ℂ →ₗ[ℂ] H}
 
 /- English proof (translation)
-Simplify using `[smul_monomial]`.
+Simplify using the standard rewrite rules.
 -/
 theorem monomial_eq_smul (m : σ →₀ ℕ) (c : ℂ) :
     monomial m c = c • (monomial m 1 : MvPolynomial σ ℂ) := by simp [smul_monomial]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `add P P' hP hP' => simp only [mul_add, map_add, inner_add_left, hP, hP']`. Consider the case `monomial α c`. Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `add Q Q' hQ hQ' => simp only [map_add, inner_add_right, hQ, hQ']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `monomial β d`. Rewrite using `[monomial_eq_smul α c, monomial_eq_smul β d, mul_smul_comm, Derivation.map_smul]`. Simplify using `only [map_smul, inner_smul_left, inner_smul_right]`. Use `congr 2`. Rewrite using `[pderiv_monomial, monomial_eq_smul (β - _), map_smul, inner_smul_right, X, monomial_mul, one_mul, h, h, one_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : Finsupp.single i 1 + α = β`. Substitute `e` using the available equality. Rewrite using `[if_pos rfl, if_pos (by simp)]`. Rewrite using `[Finsupp.prod_of_support_subset _ (s := insert i α.support) _ _ (by simp), Finsupp.prod_of_support_subset α (s := insert i α.support) (Finset.subset_insert _ _) _ (by simp), ← Finset.mul_prod_erase _ _ (Finset.mem_insert_self i _), ← Finset.mul_prod_erase (insert i α.support) _ ( …`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[add_comm 1, Nat.factorial_succ]`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Simplify using `[Finsupp.single_apply, (Finset.ne_of_mem_erase hj).symm]`. Introduce `j hj`. Distinguish the cases in `hji : j = i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hji]`. Simplify `hj` using `[hji, Finsupp.single_apply, Ne.symm hji]`. Rewrite using `[if_neg e]`. Distinguish the cases in `hb : β i = 0`. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg, mul_zero]`. Introduce and unpack `rfl`. Apply `e` to reduce the goal to its premises. Use extensionality with `j`. Distinguish the cases in `hji : j = i`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hji` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[Ne.symm hji]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem inner_X_mul (h : IsFockIP ι) (i : σ) (P Q : MvPolynomial σ ℂ) :
     inner ℂ (ι (X i * P)) (ι Q) = inner ℂ (ι P) (ι (pderiv i Q)) := by
@@ -74,21 +74,21 @@ theorem inner_X_mul (h : IsFockIP ι) (i : σ) (P Q : MvPolynomial σ ℂ) :
           · simp [Ne.symm hji]
 
 /- English proof (translation)
-Rewrite using `[← inner_conj_symm, ← inner_X_mul h, inner_conj_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_pderiv (h : IsFockIP ι) (i : σ) (P Q : MvPolynomial σ ℂ) :
     inner ℂ (ι (pderiv i P)) (ι Q) = inner ℂ (ι P) (ι (X i * Q)) := by
   rw [← inner_conj_symm, ← inner_X_mul h, inner_conj_symm]
 
 /- English proof (translation)
-Rewrite using `[polar_apply, polar_apply, inner_X_mul h, inner_pderiv h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_polar (h : IsFockIP ι) (u v : σ) (P Q : MvPolynomial σ ℂ) :
     inner ℂ (ι (polar ℂ u v P)) (ι Q) = inner ℂ (ι P) (ι (polar ℂ v u Q)) := by
   rw [polar_apply, polar_apply, inner_X_mul h, inner_pderiv h]
 
 /- English proof (translation)
-Simplify using `only [colOp, LinearMap.sum_apply, map_sum, sum_inner, inner_sum, inner_polar h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_colOp (h : IsFockIP ι) {I J : Type*} [Fintype I] (z : I × J → σ) (k l : J)
     (P Q : MvPolynomial σ ℂ) :
@@ -96,7 +96,7 @@ theorem inner_colOp (h : IsFockIP ι) {I J : Type*} [Fintype I] (z : I × J → 
   simp only [colOp, LinearMap.sum_apply, map_sum, sum_inner, inner_sum, inner_polar h]
 
 /- English proof (translation)
-Simplify using `only [mixedOp, LinearMap.sub_apply, map_sub, inner_sub_left, inner_sub_right, inner_colOp h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_mixedOp (h : IsFockIP ι) {I I' J : Type*} [Fintype I] [Fintype I'] (z : I × J → σ)
     (y : I' × J → σ) (k l : J) (P Q : MvPolynomial σ ℂ) :
@@ -106,7 +106,7 @@ theorem inner_mixedOp (h : IsFockIP ι) {I I' J : Type*} [Fintype I] [Fintype I'
 end Adjoint
 
 /- English proof (translation)
-Take `⟨_, ⟨u, hu, rfl⟩, o, ho, e⟩` from `Submodule.exists_add_mem_mem_orthogonal (K := R.map ι) (ι w)`. Use `⟨u, hu, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, e, add_sub_cancel_left]`. Conclude with `Submodule.inner_right_of_mem_orthogonal (Submodule.mem_map_of_mem hv) ho`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orth {V H : Type*} [AddCommGroup V] [Module ℂ V] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (ι : V →ₗ[ℂ] H) (R : Submodule ℂ V) [FiniteDimensional ℂ R] (w : V) :
@@ -125,15 +125,13 @@ section Parts
 variable {σ : Type}
 
 /- English proof (translation)
-Establish `hh` using `fun d => homogeneousComponent_isHomogeneous d P`. Establish `key : ∀ (T : Module.End ℂ (MvPolynomial σ ℂ)), ∑ᶠ d, T (homogeneousComponent d P) = T P`. Introduce `T`. Rewrite using `[finsum_eq_sum_of_support_subset (s := Finset.range (P.totalDegree + 1)), ← map_sum, sum_homogeneousComponent]`. Introduce `d hd`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Conclude with `hd (by simp only; rw [homogeneousComponent_eq_zero _ _ (by simpa using h), map_zero])`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← key U, plusPart]`. Use `finsum_congr fun d => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.add_apply, map_add, homogeneousComponent_of_mem (hU _ _ (hh d)), if_pos rfl, homogeneousComponent_of_mem (hD _ _ (hh d)), if_neg (by omega), add_zero]`. Establish `h2 : ∀ d, homogeneousComponent d ((U + D) (homogeneousComponent (d + 2) P)) = D (homogeneousComponent (d + 2) P)` using `fun d => by`. Rewrite using `[LinearMap.add_apply, map_add, homogeneousComponent_of_mem (hU _ _ (hh _)), if_neg (by omega), homogeneousComponent_of_mem (hD _ _ (hh _)), if_pos (by omega), zero_add]`. Rewrite using `[minusPart, finsum_congr h2, ← key D]`. Rewrite using `[finsum_eq_sum_of_support_subset (s := Finset.range (P.totalDegree + 1)), finsum_eq_sum_of_support_subset (s := Finset.range (P.totalDegree + 1 + 1 + 1)), Finset.sum_range_succ' _ (P.totalDegree + 1 + 1), Finset.sum_range_succ' (fun k => D (homogeneousComponent (k + 1) P)) (P.tot …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `all_goals`. Introduce `d hd`. Assume the negation of the conclusion as `h`. Conclude with `hd (by`.
-
-Simplify using `only`. Rewrite using `[homogeneousComponent_eq_zero _ _ (by simp at h; omega), map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parts_of_add (U D : Module.End ℂ (MvPolynomial σ ℂ))
     (hU : ∀ d P, P.IsHomogeneous d → (U P).IsHomogeneous (d + 2))
@@ -189,9 +187,9 @@ def Odd' (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) : Prop :=
   ∀ l l', linePos l = linePos l' → M l l' = 0
 
 /- English proof (translation)
-Rewrite using `[omAct_apply, upOp, dnOp, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Distinguish the cases in `e : linePos l = linePos l'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h l l' e]`. Establish `hne : l ≠ l'` using `fun h => e (by rw [h])`. Apply the tactic sequence `cases h1 : linePos l <;> cases h2 : linePos l' <;> simp_all [omE, raiB, lowB]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression.
 -/
 theorem omAct_odd {M : Matrix (Ln p q r s) (Ln p q r s) ℂ} (h : Odd' M) :
     omAct p q r s M = upOp M + dnOp M := by
@@ -206,7 +204,7 @@ theorem omAct_odd {M : Matrix (Ln p q r s) (Ln p q r s) ℂ} (h : Odd' M) :
     rfl
 
 /- English proof (translation)
-Simplify using `only [upOp, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem upOp_apply (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (P : Pol p q r s) :
     upOp M P = ∑ l, ∑ l', if linePos l then M l l' • (X l * X l' * P) else 0 := by
@@ -215,7 +213,7 @@ theorem upOp_apply (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (P : Pol p q r s) 
   split_ifs <;> rfl
 
 /- English proof (translation)
-Simplify using `only [dnOp, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dnOp_apply (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (P : Pol p q r s) :
     dnOp M P = ∑ l, ∑ l', if linePos l then 0 else -M l l' • pderiv l (pderiv l' P) := by
@@ -224,9 +222,9 @@ theorem dnOp_apply (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (P : Pol p q r s) 
   split_ifs <;> rfl
 
 /- English proof (translation)
-Rewrite using `[upOp_apply]`. Use `IsHomogeneous.sum _ _ _ fun l _ => IsHomogeneous.sum _ _ _ fun l' _ => ?_` and prove the remaining obligations. Use `split_ifs`. Use `(homogeneousSubmodule _ ℂ (d + 2)).smul_mem _ ?_` and prove the remaining obligations. Use `((isHomogeneous_X ℂ l).mul (isHomogeneous_X ℂ l')).mul hP` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[add_comm]`. Then use the resulting hypothesis. Conclude with `isHomogeneous_zero _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem upOp_homog (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (d : ℕ) (P : Pol p q r s)
     (hP : P.IsHomogeneous d) : (upOp M P).IsHomogeneous (d + 2) := by
@@ -239,7 +237,7 @@ theorem upOp_homog (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (d : ℕ) (P : Pol
   · exact isHomogeneous_zero _ _ _
 
 /- English proof (translation)
-Rewrite using `[dnOp_apply]`. Use `IsHomogeneous.sum _ _ _ fun l _ => IsHomogeneous.sum _ _ _ fun l' _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `isHomogeneous_zero _ _ _`. Conclude with `(homogeneousSubmodule _ ℂ (d - 2)).smul_mem _ (hP.pderiv.pderiv)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dnOp_homog (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (d : ℕ) (P : Pol p q r s)
     (hP : P.IsHomogeneous d) : (dnOp M P).IsHomogeneous (d - 2) := by
@@ -250,9 +248,9 @@ theorem dnOp_homog (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (d : ℕ) (P : Pol
   · exact (homogeneousSubmodule _ ℂ (d - 2)).smul_mem _ (hP.pderiv.pderiv)
 
 /- English proof (translation)
-Rewrite using `[dnOp_apply]`. Use `Finset.sum_eq_zero fun l _ => Finset.sum_eq_zero fun l' _ => ?_` and prove the remaining obligations. Use `split_ifs`. Both sides reduce to the same expression. Establish `h : (pderiv l' P).IsHomogeneous 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hP.pderiv (i := l')` as an intermediate fact. Rewrite `this` using `[show d - 1 = 0 by omega]`. Then use the resulting hypothesis. Rewrite using `[totalDegree_eq_zero_iff_eq_C.1 ((totalDegree_zero_iff_isHomogeneous _).2 h), pderiv_C, smul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dnOp_low (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (d : ℕ) (hd : d < 2) (P : Pol p q r s)
     (hP : P.IsHomogeneous d) : dnOp M P = 0 := by
@@ -267,7 +265,7 @@ theorem dnOp_low (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (d : ℕ) (hd : d < 
       smul_zero]
 
 /- English proof (translation)
-Rewrite using `[omAct_odd h]`. Conclude with `parts_of_add _ _ (upOp_homog M) (dnOp_homog M) (dnOp_low M) P`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parts_omAct {M : Matrix (Ln p q r s) (Ln p q r s) ℂ} (h : Odd' M) (P : Pol p q r s) :
     plusPart (omAct p q r s M) P = upOp M P ∧ minusPart (omAct p q r s M) P = dnOp M P := by
@@ -275,9 +273,9 @@ theorem parts_omAct {M : Matrix (Ln p q r s) (Ln p q r s) ℂ} (h : Odd' M) (P :
   exact parts_of_add _ _ (upOp_homog M) (dnOp_homog M) (dnOp_low M) P
 
 /- English proof (translation)
-Rewrite using `[upOp_apply, dnOp_apply, Finset.sum_comm]`. Simplify using `only [map_sum, sum_inner, inner_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Distinguish the cases in `e : linePos l' = linePos l`. Simplify using `[h l' l e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `cases h1 : linePos l <;> cases h2 : linePos l' <;> simp_all [mul_assoc]`. Rewrite using `[inner_smul_left, inner_smul_right, inner_X_mul hι, inner_X_mul hι]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_upOp {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {ι : Pol p q r s →ₗ[ℂ] H} (hι : IsFockIP ι) {M : Matrix (Ln p q r s) (Ln p q r s) ℂ}
@@ -292,13 +290,11 @@ theorem inner_upOp {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     rw [inner_smul_left, inner_smul_right, inner_X_mul hι, inner_X_mul hι]
 
 /- English proof (translation)
-Establish `hle : Submodule.span ℂ R ≤ homog (Ln p q r s) (d + 2)`. Use `Submodule.span_le.2 fun P hP => ?_` and prove the remaining obligations. Take `⟨Q, hQ, M, hM, rfl⟩` from `(hR P).1 hP`. Rewrite using `[(parts_omAct (hS M hM) Q).1]`. Conclude with `upOp_homog M d Q hQ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (fun P hP => ?_) (sup_le inf_le_left hle)` and prove the remaining obligations. Use `Submodule.finiteDimensional_of_le hle` as an intermediate fact. Take `⟨u, hu, ho⟩` from `exists_orth ι (Submodule.span ℂ R) P`. Establish `hh` using `Submodule.sub_mem _ hP (hle hu)`. Rewrite using `[← sub_add_cancel P u]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem_sup ⟨hh, Submodule.subset_span (hK _ fun M hM => ?_)⟩ hu` and prove the remaining obligations. Take `⟨N, hN, rfl⟩` from `hS' M hM`. Rewrite using `[(parts_omAct (hS _ hM) _).2]`. Establish `h1` using `ho _ (Submodule.subset_span ((hR _).2 ⟨_, dnOp_homog N.conjTranspose (d + 2) _ hh, N, hN, rfl⟩))`. Rewrite `h1` using `[(parts_omAct (hS _ hN) _).1, inner_upOp hι (hS _ hN), neg_eq_zero, inner_self_eq_zero]`.
-
-Conclude with `hinj (h1.trans (map_zero ι).symm)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fischer {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {ι : Pol p q r s →ₗ[ℂ] H} (hι : IsFockIP ι) (hinj : Function.Injective ι)
@@ -343,9 +339,9 @@ Both sides reduce to the same expression.
 theorem fockAct2_eq (Z : Mat r s) : fockAct2 p q r s Z = omAct p q r s (kron2 p q Z) := rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨a, c⟩ ⟨b, d⟩ e`. Distinguish the cases in `hcd : c = d`. Substitute `hcd` using the available equality. Establish `: sameBlock a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;>`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[linePos, sameBlock]`. Simplify using `[kron1, h a b this]`. Simplify using `[kron1, hcd]`.
+Simplify the hypotheses and the goal together. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem odd_kron1 {Z : Mat p q} (h : IsPC Z) : Odd' (kron1 r s Z) := by
   rintro ⟨a, c⟩ ⟨b, d⟩ e
@@ -358,9 +354,9 @@ theorem odd_kron1 {Z : Mat p q} (h : IsPC Z) : Odd' (kron1 r s Z) := by
   · simp [kron1, hcd]
 
 /- English proof (translation)
-Introduce and unpack `⟨a, c⟩ ⟨b, d⟩ e`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Establish `: sameBlock c d`. Apply the tactic sequence `rcases a with a | a <;> rcases d with d | d <;> rcases c with c | c <;>`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[linePos, sameBlock]`. Simplify using `[kron2, h c d this]`. Simplify using `[kron2, hab]`.
+Simplify the hypotheses and the goal together. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem odd_kron2 {Z : Mat r s} (h : IsPC Z) : Odd' (kron2 p q Z) := by
   rintro ⟨a, c⟩ ⟨b, d⟩ e
@@ -373,7 +369,7 @@ theorem odd_kron2 {Z : Mat r s} (h : IsPC Z) : Odd' (kron2 p q Z) := by
   · simp [kron2, hab]
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite using `[Matrix.conjTranspose_apply, h b a, star_zero]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isPC_conjTranspose {Z : Mat p q} (h : IsPC Z) : IsPC Z.conjTranspose := by
   intro a b hab
@@ -381,7 +377,7 @@ theorem isPC_conjTranspose {Z : Mat p q} (h : IsPC Z) : IsPC Z.conjTranspose := 
   rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock]
 
 /- English proof (translation)
-Use extensionality with `⟨a, c⟩ ⟨b, d⟩`. Simplify using `[kron1, Matrix.one_apply, eq_comm]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lineKroneckerLeftMatrix_conjTranspose (Z : Mat p q) :
     kron1 r s Z = (kron1 r s Z.conjTranspose).conjTranspose := by
@@ -390,7 +386,7 @@ theorem lineKroneckerLeftMatrix_conjTranspose (Z : Mat p q) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `⟨a, c⟩ ⟨b, d⟩`. Simplify using `[kron2, Matrix.one_apply, eq_comm]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lineKroneckerRightMatrix_conjTranspose (Z : Mat r s) :
     kron2 p q Z = (kron2 p q Z.conjTranspose).conjTranspose := by
@@ -399,9 +395,9 @@ theorem lineKroneckerRightMatrix_conjTranspose (Z : Mat r s) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[fockAct1_eq, (parts_omAct (odd_kron1 h) P).2, dnOp_apply, Fintype.sum_prod_type_right]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `e : linePos ((c, a) : Ln r s p q) = linePos ((a, c) : Ln p q r s)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c <;> rfl`. Rewrite using `[e]`. Use `split_ifs`. Simplify using the standard rewrite rules. Apply the tactic sequence `rw [Finset.sum_eq_single c] <;> simp +contextual [kron1, Matrix.one_apply, eq_comm]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem minusPart_fockAct1_offDiagonal {Z : Mat p q} (h : IsPC Z) (P : Pol p q r s) :
     minusPart (fockAct1 p q r s Z) P = ∑ c, ∑ a, ∑ b,
@@ -418,9 +414,9 @@ theorem minusPart_fockAct1_offDiagonal {Z : Mat p q} (h : IsPC Z) (P : Pol p q r
   · rw [Finset.sum_eq_single c] <;> simp +contextual [kron1, Matrix.one_apply, eq_comm]
 
 /- English proof (translation)
-Rewrite using `[fockAct2_eq, (parts_omAct (odd_kron2 h) P).2, dnOp_apply, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type_right]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `rw [Finset.sum_eq_single a] <;> simp +contextual [kron2, Matrix.one_apply, eq_comm]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem minusPart_fockAct2_offDiagonal {Z : Mat r s} (h : IsPC Z) (P : Pol p q r s) :
     minusPart (fockAct2 p q r s Z) P = ∑ a, ∑ c, ∑ d,

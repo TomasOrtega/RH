@@ -8,9 +8,9 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.ExpSums
 
 /- English proof (translation)
-Establish `ht : |t| < 1` using `by rw [abs_of_nonneg h0]; exact h1`. Establish `hlim : Tendsto (fun n : ℕ => (2 : ℝ) ^ N * ((n : ℝ) ^ N * t ^ n)) atTop (𝓝 0)`. Establish `h` using `(tendsto_pow_const_mul_const_pow_of_abs_lt_one N ht).const_mul ((2 : ℝ) ^ N)`. Rewrite `h` using `[mul_zero]`. Then use the resulting hypothesis. Use `squeeze_zero' (Filter.Eventually.of_forall fun n => mul_nonneg (by positivity) (pow_nonneg h0 n)) ?_ hlim` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [eventually_ge_atTop 1] with n hn`. Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hle : (1 + (n : ℝ)) ^ N ≤ (2 * (n : ℝ)) ^ N` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tendsto_one_add_pow_mul_pow {t : ℝ} (h0 : 0 ≤ t) (h1 : t < 1) (N : ℕ) :
     Tendsto (fun n : ℕ => (1 + (n : ℝ)) ^ N * t ^ n) atTop (𝓝 0) := by
@@ -29,37 +29,35 @@ theorem tendsto_one_add_pow_mul_pow {t : ℝ} (h0 : 0 ≤ t) (h1 : t < 1) (N : �
     _ = (2 : ℝ) ^ N * ((n : ℝ) ^ N * t ^ n) := by ring
 
 /- English proof (translation)
-Introduce `ι _ c lam ρ C N hρ hbound μ hμ`. Take `⟨d, hd⟩ : ∃ d : ℂ → ℂ, ∀ ν, d ν = ∑ i with lam i = ν, c i` from `⟨_, fun _ => rfl⟩`. Rewrite using `[← hd]`. Take `⟨S, hS⟩ : ∃ S : Finset ℂ, S = Finset.univ.image lam` from `⟨_, rfl⟩`. Distinguish the cases in `hμS : μ ∉ S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hd]`. Use `Finset.sum_eq_zero fun i hi => absurd ?_ hμS` and prove the remaining obligations. Rewrite using `[hS, ← (Finset.mem_filter.mp hi).2]`. Conclude with `Finset.mem_image_of_mem lam (Finset.mem_univ i)`. Use `push_neg at hμS`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmaps : ∀ i ∈ (Finset.univ : Finset ι), lam i ∈ S` using `fun i _ => by`. Rewrite using `[hS]`. Conclude with `Finset.mem_image_of_mem lam (Finset.mem_univ i)`. Establish `hsum : ∀ k : ℕ, ∑ i, c i * lam i ^ k = ∑ ν ∈ S, d ν * ν ^ k`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations. Rewrite using `[hd, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.mp hi).2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, -⟩ : ∃ e : Fin S.card ≃ S, e = S.equivFin.symm` from `⟨_, rfl⟩`. Take `⟨α, hα⟩ : ∃ α : Fin S.card → ℂ, ∀ k, α k = (e k : ℂ)` from `⟨_, fun _ => rfl⟩`. Establish `hinj : Function.Injective α`. Introduce `a b hab`. Rewrite `hab` using `[hα, hα]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.injective (Subtype.val_injective hab)`. Establish `hpow : ∀ n : ℕ, ∑ k, d (α k) * α k ^ n = ∑ i, c i * lam i ^ n`. Introduce `n`. Rewrite using `[hsum n]`. Simplify using `only [hα]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(Equiv.sum_comp e (fun x : S => d x * (x : ℂ) ^ n)).trans (Finset.sum_coe_sort S (fun ν => d ν * ν ^ n))`. Take `⟨C', hC'⟩` from `GlobalTheory.CompanionTheory.ExpSums.vandermonde_separation S.card α hinj`. Take `⟨C1, hC1, hC'1⟩ : ∃ C1 : ℝ, 0 ≤ C1 ∧ C' ≤ C1` from `⟨max C' 0, le_max_right _ _, le_max_left _ _⟩`. Take `⟨C2, hC2, hCC2⟩ : ∃ C2 : ℝ, 0 ≤ C2 ∧ C ≤ C2` from `⟨max C 0, le_max_right _ _, le_max_left _ _⟩`. Take `⟨B, hB⟩ : ∃ B : ℝ, B = ∑ s : Fin S.card, (1 + ((s : ℕ) : ℝ)) ^ N * ρ ^ (s : ℕ)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨K0, hK0⟩` from `Filter.eventually_atTop.mp hbound`. Establish `hK0' : ∀ k : ℕ, K0 ≤ k → ‖∑ i, c i * lam i ^ k‖ ≤ C2 * (1 + (k : ℝ)) ^ N * ρ ^ k`. Introduce `k hk`. Use `(hK0 k hk).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hCC2 (pow_nonneg (by positivity) N)) (pow_nonneg hρ k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, hj⟩ : ∃ j : Fin S.card, α j = μ` from `⟨e.symm ⟨μ, hμS⟩, by rw [hα, Equiv.apply_symm_apply]⟩`. Establish `key : ∀ m : ℕ, K0 ≤ m → ‖d μ‖ * ‖μ‖ ^ m ≤ C1 * (C2 * (1 + (m : ℝ)) ^ N * ρ ^ m * B)`. Introduce `m hm`. Establish `h1` using `hC' (fun k => d (α k) * α k ^ m) j`. Establish `hinner : ∀ s : Fin S.card, ∑ k, d (α k) * α k ^ m * α k ^ (s : ℕ) = ∑ i, c i * lam i ^ (m + (s : ℕ))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Introduce `s`. Rewrite using `[← hpow (m + (s : ℕ))]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hinner, hj, norm_mul, norm_pow] at h1`. Establish `hT : 0 ≤ ∑ s : Fin S.card, ‖∑ i, c i * lam i ^ (m + (s : ℕ))‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hsb : ∑ s : Fin S.card, ‖∑ i, c i * lam i ^ (m + (s : ℕ))‖ ≤ C2 * (1 + (m : ℝ)) ^ N * ρ ^ m * B`. Rewrite using `[hB, Finset.mul_sum]`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hk` using `hK0' (m + (s : ℕ)) (le_trans hm (Nat.le_add_right m _))`. Rewrite `hk` using `[Nat.cast_add]`. Establish `hbase : 1 + ((m : ℝ) + ((s : ℕ) : ℝ)) ≤ (1 + (m : ℝ)) * (1 + ((s : ℕ) : ℝ))`. Establish `hms : (0 : ℝ) ≤ (m : ℝ) * ((s : ℕ) : ℝ)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 
-Establish `hle : (1 + ((m : ℝ) + ((s : ℕ) : ℝ))) ^ N ≤ (1 + (m : ℝ)) ^ N * (1 + ((s : ℕ) : ℝ)) ^ N`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) hbase N`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Establish `hμpos : 0 < ‖μ‖` using `lt_of_le_of_lt hρ hμ`. Take `⟨t, ht⟩ : ∃ t : ℝ, t = ρ / ‖μ‖` from `⟨_, rfl⟩`. Establish `ht0 : 0 ≤ t` using `by rw [ht]; exact div_nonneg hρ (norm_nonneg _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht1 : t < 1` using `by rw [ht, div_lt_one hμpos]; exact hμ`. Establish `hlim` using `(tendsto_one_add_pow_mul_pow ht0 ht1 N).const_mul (C1 * (C2 * B))`. Rewrite `hlim` using `[mul_zero]`. Establish `hle : ∀ m : ℕ, K0 ≤ m → ‖d μ‖ ≤ C1 * (C2 * B) * ((1 + (m : ℝ)) ^ N * t ^ m)`. Introduce `m hm`.
-
-Establish `h` using `(le_div_iff₀ (pow_pos hμpos m)).mpr (key m hm)`. Rewrite using `[ht, div_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : ‖d μ‖ ≤ 0` using `ge_of_tendsto hlim (Filter.eventually_atTop.mpr ⟨K0, hle⟩)`. Conclude with `norm_le_zero_iff.mp h0`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem expSum_holds : PositivityTheory.Rg.BcB.F.ExpSum := by
   intro ι _ c lam ρ C N hρ hbound μ hμ

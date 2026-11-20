@@ -16,13 +16,13 @@ set_option autoImplicit false
 namespace GlobalTheory.ConjExph
 
 /- English proof (translation)
-Use `haveI : CompactSpace (CxPts Y.str σ) := CxPts.compactSpace σ Y.isProjOver`. Use `haveI : T2Space (CxPts Y.str σ) := CxPts.t2Space_cxPts_of_isProjOver σ Y.isProjOver`. Establish `hloc : ∀ y : CxPts Y.str σ, ∃ (c : AlgChart Y.str σ Y.dim) (E : ChartMap Y.str σ Y.dim) (W K : Set (CxPts Y.str σ)) (ε : ℝ), IsOpen W ∧ W ⊆ c.e.source ∧ IsCompact K ∧ K ∈ 𝓝 y ∧ K ⊆ W ∧ 0 < ε ∧ ExphOn.IsExphOn a E W ε` using `fun y => by`. Take `⟨c, hc⟩` from `AlgChart.exists_mem_source (p := Y.str) (σ := σ) (D := Y.dim) y`. Take `⟨E, W, ε, hW, hy, hWc, hε, hE⟩` from `GlobalTheory.ChernReg.ExphLoc.exists_isExphOn F _ Y.str σ Y.dim (Y.an σ) a ha c y hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨K, hK, hKW, hKc⟩` from `local_compact_nhds (hW.mem_nhds hy)`. Conclude with `⟨c, E, W, K, ε, hW, hWc, hKc, hK, hKW, hε, hE⟩`. Use `choose c E W K ε hW hWc hKc hK hKW hε hE using hloc`. Establish `hind : ∀ t : Finset (CxPts Y.str σ), ∃ (E' : ChartMap Y.str σ Y.dim) (W' : Set (CxPts Y.str σ)) (ε' : ℝ), IsOpen W' ∧ (⋃ y ∈ t, K y) ⊆ W' ∧ 0 < ε' ∧ ExphOn.IsExphOn a E' W' ε'` using `fun t => by`. Proceed by induction on `t using Finset.induction_on with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `empty => exact ⟨_, ∅, 1, isOpen_empty, by simp, one_pos, ExphOn.isExphOn_empty a 1⟩`. Consider the case `insert y t _ ih`. Take `⟨E', W', ε', hW', hs, hε', hE'⟩` from `ih`. Take `⟨E'', W'', ε'', h1, h2, h3, h4⟩` from `GlobalTheory.ChernReg.ExphOn.exists_isExphOn_union F _ Y.str σ Y.dim (Y.an σ) a ha (c y) E' (E y) W' (W y) (⋃ y ∈ t, K y) (K y) ε' (ε y) hW' (hW y) (hWc y) (t.isCompact_biUnion fun z _ => hKc z) (hKc y) hs (hKW y) hε' (hε y) hE' (hE y)`. Use `⟨E'', W'', ε'', h1, ?_, h3, h4⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.set_biUnion_insert, Set.union_comm]` and apply the resulting hypothesis. Take `⟨t, -, ht⟩` from `(isCompact_univ (X := CxPts Y.str σ)).elim_nhds_subcover K fun y _ => hK y`. Take `⟨E', W', ε', -, hs, hε', hE'⟩` from `hind t`. Conclude with `GlobalTheory.ChernReg.ExphOn.exists_isExph_of_isExphOn_univ F _ Y.str σ Y.dim (Y.an σ) a E' ε' ha hε' (hE'.mono (ht.trans hs) le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem exists_isExph_of_cover (F : Type) [Field F] [NumberField F] (Y : Var F) (σ : F →+* ℂ)
     (a : ChartForm Y.str σ Y.dim) (ha : IsKaehlerForm (Y.an σ) a) : ∃ E : ChartMap Y.str σ Y.dim, IsExph a E := by
@@ -54,23 +54,19 @@ theorem exists_isExph_of_cover (F : Type) [Field F] [NumberField F] (Y : Var F) 
     (hE'.mono (ht.trans hs) le_rfl)
 
 /- English proof (translation)
-Introduce `F _ _ _ Y a ha hpot`. Establish `hne : ∀ σ : F →+* ℂ, ComplexEmbedding.conjugate σ ≠ σ` using `fun σ h => (InfinitePlace.isComplex_mk_iff.1 (IsTotallyComplex.isComplex (InfinitePlace.mk σ))) (ComplexEmbedding.isReal_iff.2 h)`. Use `choose E₀ hE₀ using fun σ => exists_isExph_of_cover F Y σ (a σ) (ha σ)`. Set `τ : (F →+* ℂ) → (F →+* ℂ)` to `fun σ => (InfinitePlace.mk σ).embedding`. Establish `hτ : ∀ σ, σ ≠ τ σ → τ σ = ComplexEmbedding.conjugate σ` using `fun σ h => (InfinitePlace.embedding_mk_eq σ).resolve_left (Ne.symm h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτc : ∀ σ, τ (ComplexEmbedding.conjugate σ) = τ σ` using `fun σ => by`. Simplify using `only [τ, InfinitePlace.mk_conjugate_eq]`. Set `ι₀ : ∀ σ, σ ≠ τ σ → Pts Y σ → Pts Y (τ σ)` to `fun σ h => (exists_isConjMap Y (hτ σ h)).choose`. Establish `hι₀ : ∀ σ h, IsConjMap (ι₀ σ h)` using `fun σ h => (exists_isConjMap Y (hτ σ h)).choose_spec`. Establish `hE' : ∀ σ (h : σ ≠ τ σ), ∃ E' : ChartMap Y.str σ Y.dim, IsExph (a σ) E' ∧ ConjComm (ι₀ σ h) (E₀ (τ σ)) E' ∧ ∀ ι' : Pts Y (τ σ) → Pts Y σ, IsConjMap ι' → ConjComm ι' E' (E₀ (τ σ))` using `fun σ h => GlobalTheory.ConjExph.exists_conj_exph F Y (τ σ) σ (ι₀ σ h) (a (τ σ)) (a σ) (E₀ (τ σ)) (hι₀ σ h) (ha _) (ha _) (hpot _ _ _ (hι₀ σ h)) (hE₀ _)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose E₁ hE₁ using hE'`. Set `E : ∀ σ, ChartMap Y.str σ Y.dim` to `fun σ => if h : σ = τ σ then E₀ σ else E₁ σ h`. Use `⟨E, fun σ => ?_, fun σ σ' ι hι => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : σ = τ σ`. Simplify using `only [E, dif_pos h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Conclude with `hE₀ σ`. Simplify using `only [E, dif_neg h]`. Conclude with `(hE₁ σ h).1`. Distinguish the cases in `hz : Nonempty (Pts Y σ') swap`. Introduce `c c' _ z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hz ⟨z⟩).elim`. Take `⟨z⟩` from `hz`. Establish `hσ` using `eq_conjugate_of_isConjMap Y hι z`. Establish `hσ' : σ' = ComplexEmbedding.conjugate σ` using `by rw [hσ, conjugate_conjugate]`. Establish `hττ : τ σ' = τ σ` using `by rw [hσ', hτc]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `h : σ = τ σ`. Establish `h' : σ' ≠ τ σ'`. Rewrite using `[hττ, ← h, hσ']`. Conclude with `hne σ`. Simplify using `only [E, dif_pos h, dif_neg h']`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key` using `(hE₁ σ' h').2.1`. Establish `gen : ∀ (ρ : F →+* ℂ) (hρ : ρ = σ) (j : Pts Y σ' → Pts Y ρ), IsConjMap j → ConjComm j (E₀ ρ) (E₁ σ' h') → ConjComm ι (E₀ σ) (E₁ σ' h')`. Introduce and unpack `ρ rfl j hj hc`. Rewrite using `[isConjMap_unique Y hι hj]` and apply the resulting hypothesis. Conclude with `gen (τ σ') (hττ.trans h.symm) _ (hι₀ σ' h') key`.
-
-Establish `h' : σ' = τ σ'` using `by rw [hττ, hτ σ h, hσ']`. Simplify using `only [E, dif_neg h, dif_pos h']`. Establish `key` using `(hE₁ σ h).2.2`. Establish `gen : ∀ (ρ : F →+* ℂ) (hρ : ρ = σ'), (∀ ι' : Pts Y ρ → Pts Y σ, IsConjMap ι' → ConjComm ι' (E₁ σ h) (E₀ ρ)) → ConjComm ι (E₁ σ h) (E₀ σ')`. Introduce and unpack `ρ rfl hc`.
-
-Conclude with `hc ι hι`. Conclude with `gen (τ σ) (by rw [← hττ, ← h']) key`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_exph_conjComm : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyComplex F] (Y : Var F) (a : ∀ σ, ChartForm Y.str σ Y.dim), (∀ σ, IsKaehlerForm (Y.an σ) (a σ)) → (∀ σ σ' (ι : Pts Y σ' → Pts Y σ), IsConjMap ι → (∀ W φ, IsPotential (Y.an σ) (a σ) W φ → IsPotential (Y.an σ') (a σ') (ι ⁻¹' W) (φ ∘ ι))) → ∃ E : ∀ σ, ChartMap Y.str σ Y.dim, (∀ σ, IsExph (a σ) (E σ)) ∧ ∀ σ σ' (ι : Pts Y σ' → Pts Y σ), IsConjMap ι → ConjComm ι (E σ) (E σ') := by
   intro F _ _ _ Y a ha hpot

@@ -11,7 +11,7 @@ noncomputable def seg {e : ℕ} (k : Fin e) (t : ℝ) (z : Fin e → ℂ) : Fin 
   z + (((t : ℂ) - 1) * z k) • Pi.single k 1
 
 /- English proof (translation)
-Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality. Simplify using `[seg]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[seg, hi, Pi.single_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem seg_apply {e : ℕ} (k : Fin e) (t : ℝ) (z : Fin e → ℂ) (i : Fin e) :
     seg k t z i = if i = k then (t : ℂ) * z k else z i := by
@@ -20,9 +20,9 @@ theorem seg_apply {e : ℕ} (k : Fin e) (t : ℝ) (z : Fin e → ℂ) (i : Fin e
   · simp [seg, hi, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[mem_ball, dist_pi_lt_iff hr]`. Introduce `i`. Rewrite using `[seg_apply]`. Use `split_ifs with hi`. Substitute `hi` using the available equality.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h1` using `hz i`. Rewrite `h1`, the goal using `[hz0, dist_zero_right]`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg ht.1]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hz i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem seg_mem_ball {e : ℕ} {k : Fin e} {z0 z : Fin e → ℂ} {r : ℝ} (hr : 0 < r) (hz0 : z0 k = 0)
     {t : ℝ} (ht : t ∈ Icc (0 : ℝ) 1) (hz : z ∈ ball z0 r) : seg k t z ∈ ball z0 r := by
@@ -39,44 +39,40 @@ theorem seg_mem_ball {e : ℕ} {k : Fin e} {z0 z : Fin e → ℂ} {r : ℝ} (hr 
   · exact hz i
 
 /- English proof (translation)
-Simplify using `[seg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem seg_one {e : ℕ} (k : Fin e) (z : Fin e → ℂ) : seg k 1 z = z := by simp [seg]
 
 /- English proof (translation)
-Simplify using `[seg_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem seg_zero_apply {e : ℕ} (k : Fin e) (z : Fin e → ℂ) : seg k 0 z k = 0 := by
   simp [seg_apply]
 
 /- English proof (translation)
-Simplify using `[seg, hz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem seg_of_eq_zero {e : ℕ} (k : Fin e) (t : ℝ) {z : Fin e → ℂ} (hz : z k = 0) : seg k t z = z := by
   simp [seg, hz]
 
 /- English proof (translation)
-Introduce `hr hz0 hh hzero`. Use `set U := ball z0 r with hU_def`. Establish `hU : IsOpen U` using `isOpen_ball`. Use `set φ : (Fin e → ℂ) → ℂ := fun w => fderiv ℂ h w (Pi.single k 1) with hφ_def`. Establish `hφa : AnalyticOnNhd ℂ φ U`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hA : AnalyticAt ℂ (fderiv ℂ h) w` using `hh.fderiv w hw`. Conclude with `((ContinuousLinearMap.apply ℂ ℂ (Pi.single k 1 : Fin e → ℂ)).analyticAt _).comp hA`. Establish `hφc : ContinuousOn φ U` using `hφa.continuousOn`. Establish `hφd : DifferentiableOn ℂ φ U` using `hφa.differentiableOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hsegc : Continuous (Function.uncurry (seg k))`. Unfold `Function.uncurry seg`. Use `fun_prop`. Establish `hsegd : ∀ t : ℝ, Differentiable ℂ (seg k t)`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `seg`. Use `fun_prop`. Establish `hmaps : ∀ t ∈ Icc (0 : ℝ) 1, ∀ z ∈ U, seg k t z ∈ U` using `fun t ht z hz => seg_mem_ball hr hz0 ht hz`. Establish `huIcc : [[(0 : ℝ), 1]] = Icc 0 1` using `uIcc_of_le zero_le_one`. Establish `hI` using `differentiableOn_intervalIntegral_of_holomorphic_of_continuousOn (F := fun t z => φ (seg k t z)) hU (a := 0) (b := 1) (by`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hφc.comp hsegc.continuousOn ?_` and prove the remaining obligations. Introduce and unpack `⟨t, z⟩ ⟨ht, hz⟩`. Conclude with `hmaps t (huIcc ▸ ht) z hz)`. Use the proof step `(fun t ht => hφd.comp (hsegd t).differentiableOn fun z hz => hmaps t (huIcc ▸ ht) z hz)`. Use `set g : (Fin e → ℂ) → ℂ := fun z => ∫ t in (0 : ℝ)..1, φ (seg k t z) with hg_def`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨g, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `ha : AnalyticOnNhd ℂ g U` using `ReciprocityTheory.AnForm.Osgood.osgood e U g hU hI.1`. Conclude with `(ha.contDiffOn (n := ∞) hU.uniqueDiffOn).restrict_scalars ℝ`. Simplify using `only [hg_def, seg_of_eq_zero k _ hz0]`. Simplify using `[hφ_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `z hz`. Establish `hderiv : ∀ t ∈ [[(0 : ℝ), 1]], HasDerivAt (fun s : ℝ => h (seg k s z)) (z k * φ (seg k t z)) t`. Introduce `t ht`. Establish `hw : seg k t z ∈ U` using `hmaps t (huIcc ▸ ht) z hz`. Establish `hf : HasFDerivAt h (fderiv ℂ h (seg k t z)) (seg k t z)` using `((hh _ hw).differentiableAt).hasFDerivAt`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hγ : HasDerivAt (fun s : ℝ => seg k s z) (z k • (Pi.single k 1 : Fin e → ℂ)) t`. Establish `h1 : HasDerivAt (fun s : ℝ => (((s : ℂ) - 1) * z k)) (z k) t`. Use `((Complex.ofRealCLM.hasDerivAt (x := t)).sub_const (1 : ℂ)).mul_const (z k)` as an intermediate fact. Simplify using `using this`. Establish `h2` using `(h1.smul_const (Pi.single k 1 : Fin e → ℂ)).const_add z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h2` using `[seg]`. Use `(hf.restrictScalars ℝ).comp_hasDerivAt t hγ` as an intermediate fact. Establish `e1 : fderiv ℂ h (seg k t z) (z k • (Pi.single k 1 : Fin e → ℂ)) = z k * φ (seg k t z)`. Simplify using `[hφ_def, map_smul]`. Rewrite using `[← e1]`.
-
-Conclude with `this`. Establish `hcont : ContinuousOn (fun t => z k * φ (seg k t z)) [[(0 : ℝ), 1]]`. Use `continuousOn_const.mul (hφc.comp (hsegc.comp (Continuous.prodMk_left z)).continuousOn ?_)` and prove the remaining obligations. Introduce `t ht`. Conclude with `hmaps t (huIcc ▸ ht) z hz`.
-
-Establish `hftc` using `intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv (hcont.intervalIntegrable)`. Rewrite `hftc` using `[intervalIntegral.integral_const_mul, seg_one, hzero _ (hmaps 0 ⟨le_rfl, zero_le_one⟩ z hz) (seg_zero_apply k z), sub_zero]`. Conclude with `hftc.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hadamard_coord {e : ℕ} (h : (Fin e → ℂ) → ℂ) (z0 : Fin e → ℂ) (r : ℝ) (k : Fin e) :
     0 < r → z0 k = 0 → AnalyticOnNhd ℂ h (Metric.ball z0 r) →

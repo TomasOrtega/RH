@@ -11,7 +11,7 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory.TestLat
 
 /- English proof (translation)
-Introduce `K _ _ _ _ v₀ hv ι _ n lam R hR hs G hG C _ M hM N e X`. Conclude with `⟨GlobalTheory.T.maxSlope_sum_weyl_and_dualWeyl_lattices_le K v₀ hv ι n lam R hR hs G hG C M hM N e X, GlobalTheory.T.maxSlope_dual_sum_weyl_lattices_le K v₀ hv ι n lam R hR hs G hG C M hM N e X⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem slopeK_holds : SlopeK := by
   intro K _ _ _ _ v₀ hv ι _ n lam R hR hs G hG C _ M hM N e X
@@ -19,7 +19,7 @@ theorem slopeK_holds : SlopeK := by
     GlobalTheory.T.maxSlope_dual_sum_weyl_lattices_le K v₀ hv ι n lam R hR hs G hG C M hM N e X⟩
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ _ _ v₀ hv cE hcE ι _ emb hemb n lam R hR hs J hJ C _ L hL N e X`. Establish `h` using `GlobalTheory.T.defGram_selfDual_after_field_embedding E K cE hcE ι emb hemb n J hJ`. Establish `h1` using `slopeK_holds K v₀ hv ι n lam R hR hs (gramK emb J) (fun τ => (h τ).1) C (fun c τ => tauLat emb τ (L c)) (fun c τ => ((h τ).2.2 (L c) (hL c)).1) N e X`. Establish `h2` using `slopeK_holds K v₀ hv ι n lam R hR hs (gramKd emb J) (fun τ => (h τ).2.1) C (fun c τ => dualFr (tauLat emb τ (L c))) (fun c τ => ((h τ).2.2 (L c) (hL c)).2) N e X`. Conclude with `⟨h1.2, fun hm => (h1.1 hm).1, h2.2, fun hm => (h2.1 hm).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem slopeE_holds : SlopeE := by
   intro E K _ _ _ _ _ _ v₀ hv cE hcE ι _ emb hemb n lam R hR hs J hJ C _ L hL N e X
@@ -31,7 +31,7 @@ theorem slopeE_holds : SlopeE := by
   exact ⟨h1.2, fun hm => (h1.1 hm).1, h2.2, fun hm => (h2.1 hm).1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨slopeK_holds, slopeE_holds⟩`.
+Supply the required witnesses or components.
 -/
 theorem slope_holds : GlobalTheory.TestLat.SlopeK ∧ GlobalTheory.TestLat.SlopeE := ⟨slopeK_holds, slopeE_holds⟩
 

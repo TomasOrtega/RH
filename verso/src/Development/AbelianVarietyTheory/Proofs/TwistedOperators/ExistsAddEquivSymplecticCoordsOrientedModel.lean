@@ -18,13 +18,13 @@ namespace GlobalTheory.Twist.exists_addEquiv_symplecticCoords_orientedModel
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hv0` to reduce the goal to its premises. Use `set x : S.V := ∑ j, v j • S.frame j with hxdef`. Establish `hfr : ∀ i, S.hT (S.frame i) x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `congrFun hv i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at this`. Rewrite using `[hxdef, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Formalism.BasicNotions.HSpace.gram, mul_comm]`. Establish `hx : S.hT.flip x = 0` using `S.frame.ext fun i => by simpa using hfr i`. Establish `hx0 : x = 0` using `S.nondeg.2 x fun y => by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun hx y` as an intermediate fact. Simplify using `using this`. Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 S.frame.linearIndependent v hx0 j`.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem gram_det_ne_zero (S : HSp D) : S.gram.det ≠ 0 := by
   intro h
@@ -48,9 +48,9 @@ theorem gram_det_ne_zero (S : HSp D) : S.gram.det ≠ 0 := by
   exact Fintype.linearIndependent_iff.1 S.frame.linearIndependent v hx0 j
 
 /- English proof (translation)
-Establish `h1 : (c • S.gram).det ≠ 0`. Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hc) (gram_det_ne_zero S)`. Establish `h2 : (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (c • S.gram)).det = (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `D.host.F) (AF D.host.F)) (c • S.gram).det := by`. Rewrite using `[RingHom.map_det]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h2]`. Conclude with `(isUnit_iff_ne_zero.2 h1).map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_incM (S : HSp D) (c : D.host.E) (hc : c ≠ 0) :
     IsUnit (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (c • S.gram)).det := by
@@ -83,7 +83,7 @@ def coordsEquiv {n m d : ℕ} (e : Fin m ≃ Fin d) (G : Matrix (Fin n) (Fin n) 
     rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨coordsEquiv e _ (isUnit_det_incM S c hc), fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem coords (D : D7) (S X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) (c : D.host.E) (hc : c ≠ 0) :
     ∃ f : Matrix (Fin S.rank) (Fin d) (AE D) ≃+ WO S X,

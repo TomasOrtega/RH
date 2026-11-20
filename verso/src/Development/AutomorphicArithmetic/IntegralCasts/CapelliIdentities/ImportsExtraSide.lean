@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `d hd z hz`. Establish `h1 : (z ^ 2).re = z.re * z.re - z.im * z.im`. Rewrite using `[pow_two, Complex.mul_re]`. Establish `h2 : (z ^ 2).im = z.re * z.im + z.im * z.re`. Rewrite using `[pow_two, Complex.mul_im]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (-(d : ℂ)).re = -(d : ℝ)` using `by simp`. Establish `e2 : (-(d : ℂ)).im = 0` using `by simp`. Rewrite `h1` using `[hz, e1]`. Rewrite `h2` using `[hz, e2]`. Establish `hdpos : (0 : ℝ) < (d : ℝ)` using `by exact_mod_cast hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : z.re * z.im = 0` using `by linarith`. Establish `ha : z.re = 0`. Break down `mul_eq_zero.mp hm with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `: z.im * z.im = 0` using `by rw [h]; ring`. Use polynomial arithmetic with `[mul_self_nonneg z.re]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[ha]`. Simplify using the standard rewrite rules.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Ydc3.main :
     ∀ {d : ℕ}, (0 : ℕ) < d → ∀ {z : ℂ}, z ^ (2 : ℕ) = -(↑d : ℂ) → (starRingEnd ℂ : ℂ → ℂ) z = -z := by

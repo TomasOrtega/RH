@@ -4,29 +4,29 @@ open NumberField IsDedekindDomain UpperTheory.V.Kum UpperTheory.V.Stick
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Introduce `M _ A _ x hx β γ hγ`. Use `set F : (ZMod M)ˣ → ℤ := fun t => ∑ s, β s * ((((s : ZMod M).val * (t : ZMod M).val / M : ℕ)) : ℤ) with hF`. Use `set B : ℤ := ∑ s, β s * ((s : ZMod M).val : ℤ) with hB`. Establish `key : ∀ t, (M : ℤ) * (γ t + F t) = B * ((t : ZMod M).val : ℤ)`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_add, hγ t, hF, hB]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[ZMod.val_mul]`. Establish `h0` using `Nat.mod_add_div ((s : ZMod M).val * (t : ZMod M).val) M`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h' : ((((s : ZMod M).val * (t : ZMod M).val % M : ℕ)) : ℤ) + (M : ℤ) * ((((s : ZMod M).val * (t : ZMod M).val / M : ℕ)) : ℤ) = ((s : ZMod M).val : ℤ) * ((t : ZMod M).val : ℤ)` using `by exact_mod_cast h0`. Take the linear combination `β s * h'`. Establish `hdiv : (M : ℤ) ∣ B`. Break down `Nat.lt_or_ge 1 M with hM | hM` into its components or cases. Use `haveI : Fact (1 < M) := ⟨hM⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `h1` using `key 1`. Rewrite `h1` using `[Units.val_one, ZMod.val_one, Nat.cast_one, mul_one]`. Conclude with `⟨_, h1.symm⟩`. Establish `hM1 : M = 1` using `le_antisymm hM (NeZero.pos M)`. Substitute `hM1` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[hB, mul_zero]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.lt_one_iff.mp (ZMod.val_lt (s : ZMod 1))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `hdiv`. Establish `hM : (M : ℤ) ≠ 0` using `by exact_mod_cast NeZero.ne M`. Establish `hγ' : ∀ t, γ t = b * ((t : ZMod M).val : ℤ) - F t`. Introduce `t`. Establish `h1` using `key t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h1` using `[hb, mul_assoc]`. Establish `h2` using `mul_left_cancel₀ hM h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ∏ t, x t ^ ((t : ZMod M).val : ℤ) = 1`. Establish `h3` using `hx M`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [Nat.mul_div_cancel_left _ (NeZero.pos M)] at h3`. Simplify `h3` using `only [zpow_natCast]`. Establish `h2 : ∀ s : (ZMod M)ˣ, ∏ t, x t ^ ((((s : ZMod M).val * (t : ZMod M).val / M : ℕ)) : ℤ) = 1`. Introduce `s`. Simplify `hx (s : ZMod M).val` using `only [zpow_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hzs : ∀ (a : A) (g : (ZMod M)ˣ → ℤ) (u : Finset (ZMod M)ˣ), a ^ (∑ s ∈ u, g s) = ∏ s ∈ u, a ^ g s`. Introduce `a g u`. Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i u hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add, ih]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hFprod : ∏ t, x t ^ F t = 1`. Simplify using `only [hF, hzs]`. Rewrite using `[Finset.prod_comm]`. Establish `h4 : ∀ s : (ZMod M)ˣ, ∏ t, x t ^ (β s * ((((s : ZMod M).val * (t : ZMod M).val / M : ℕ)) : ℤ)) = (∏ t, x t ^ ((((s : ZMod M).val * (t : ZMod M).val / M : ℕ)) : ℤ)) ^ β s`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_mul, mul_comm]`. Simplify using `only [h4, h2, one_zpow, Finset.prod_const_one]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[hγ' t, zpow_sub, ← zpow_mul, mul_comm b, div_eq_mul_inv]`. Use `_ = 1 := by`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_zpow, h1, hFprod]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Stick.comb :
     ∀ (M : ℕ) [NeZero M] (A : Type) [CommGroup A] (x : (ZMod M)ˣ → A),

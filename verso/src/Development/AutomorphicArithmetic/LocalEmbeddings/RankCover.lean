@@ -23,11 +23,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hk : ∀ g, ∀ f ∈ T.cuspA ((i : ℕ) + 1) (wtA (κ i)) (κ i).n, actLev (Xo` using `T.Q.Xo ((i : ℕ) + 1)) T.Q.c (fun g => (lev g, (LinearMap.id : (T.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (T.Q.Dw ((i : ℕ) + 1)).La))) g f ∈ T.cuspA ((i : ℕ) + 1) (wtA (κ i)) (κ i).n := fun g f hf => by`. Take `⟨h, -⟩` from `hρ g ⟨f, hf⟩`. Conclude with `h`. Establish `hI : InR D ((i : ℕ) + 1)` using `⟨Nat.succ_pos _, i.2⟩`. Establish `hC : cuspW (T.Q.Xo ((i : ℕ) + 1)) T.Q.c (T.U ((i : ℕ) + 1)) (wtZ (wtA (κ i)) (κ i).n) = T.cuspA ((i : ℕ) + 1) (wtA (κ i)) (κ i).n` using `cuspW_wtZ _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : ∀ a, algebraMap Y.d.c₂.F ℂ (((Y.d.eF : Y.c'.F →+* Y.d.c₂.F).comp (incF T.Q.c Y.c' Y.hle)) a) = T.σ₀ a` using `fun a => rfl`. Establish `H` using `rep_data fw.laws hI Y hY (dom_wtA (κ i)) lev hact hk θ h1 h2`. Use `H.elim fun π h => h.elim fun τ a => ?_` and prove the remaining obligations. Establish `H'` using `rank_gen fw Fc i _ hρ hC hj π τ θ a.2.1 a.2.2.1 a.2.2.2 c s hs Q hQ lamb hlam e0 he`. Use `H'.imp fun ρ h' => h'.imp fun χ b => ⟨fun g v w hw => ?_, b.2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[b.1, show τ g v = w from Subtype.ext ((a.1 g v).trans hw.symm)]`.
+A detailed English derivation is pending.
 -/
 theorem rank_cover {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F}
     {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
@@ -81,7 +81,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `rank_cover p.fw p.F.lv2 i Y hY (p.O i).lev (p.pins i).2.act.1 ((p.rhoGeo i).1 fun g => GlobalTheory.LevelCusp.actLev_mem_cuspA_of_actLev p.T p.κ i _ p.fw.laws (p.pins i).2.act.1 g fun _ => rfl) θ h1 h2 c s hs Q hQ lamb hlam e0 he`.
+A detailed English derivation is pending.
 -/
 theorem rank_data (p : PtAt ex Csz) (i : Fin D.R.m) (Y : Cov p i) {e : ℕ} {o : ℝ} (hY : Y.Good e o)
     (θ : LevelAut (dat p i) Y.d.l₂ →* p.P.Gp) (h1 : ∀ γ, CongMod p.T.Q.l.Mb (liftLa γ) ((p.O i).lev (θ γ)))

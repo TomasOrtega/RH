@@ -21,7 +21,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto GlobalTheory.MBModel GlobalTheory.SecJet GlobalTheory.CovTop
 
 /- English proof (translation)
-The claim follows from `| 0 => le_rfl | i + 1 => by refine inf_le_inf (filt_le_of_smul J J' a hJ i) fun v hv => ?_ rw [LinearMap.mem_ker] at hv ⊢ rw [hJ, LinearMap.smul_apply, hv, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem filt_le_of_smul {K V : Type} [Field K] [AddCommGroup V] [Module K V] (J J' : ℕ → V →ₗ[K] K) (a : K)
     (hJ : ∀ k, J' k = a ^ k • J k) : ∀ i, filt J i ≤ filt J' i
@@ -40,19 +40,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto GlobalTheory.MBModel GlobalTheory.SecJet GlobalTheory.CovTop
 
 /- English proof (translation)
-Introduce `hP hMB K _ _ F h ρ hh hρ K' _ _ _ x hx n hn`. Take `⟨K'', _, _, _, _, _, P, ψ, AA, _, _, φ, MM, w, b, E, hE, hPF, hM, hbij, hEiff, hL2, hfull, hmu, hdeg⟩` from `hMB K F h hh (4 * n) (by omega) K'`. Take `⟨h'', hbc⟩` from `(GlobalTheory.T.hermitian_lattice_base_change K K'' F.P₀.g h F.lieLat (GlobalTheory.T.semi_fibration_lie_lattice_full K F).1.1).1`. Take `⟨v', hv', hbasis⟩` from `GlobalTheory.T.polarized_fibre_lie_basis_lift K F K'' P ψ hPF`. Take `⟨i₀, hi₀⟩` from `GlobalTheory.T.exists_section_index_covering K'' P (4 * n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set x'' : Fin F.P₀.g → K'' := fun i => algebraMap K' K'' (x i) with hx''def`. Establish `hx'' : x'' ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun h0 i` as an intermediate fact. Simplify `this` using `[x'']`. Use `set J := jetFun (tanComb x'' v') i₀ (rigVal w i₀) b with hJdef`. Use `⟨K'', inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, h'', hbc, (4 * n) ^ F.P₀.g, hE, E, filt J, J, hfull, hmu, hdeg, rfl, fun i hi => ⟨rfl, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.jet_filtration_section_combination K'' P F.P₀.g v' x'' n _ b i₀ (rigVal w i₀) hbasis hx'' (by omega) hbij hi₀ (GlobalTheory.T.rigidified_model_section_nonvanishing K'' P AA φ MM (4 * n) w i₀ hM hi₀) i hi`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `v hvE hvF a ha`. Take `⟨t, ht⟩` from `(hEiff v).1 hvE`. Take `⟨Y, hYt, hYv⟩` from `GlobalTheory.T.polarized_fibre_rigid_model_jets K F K'' P ψ AA φ MM (4 * n) w v' hP hPF hM hv' (a • x'') ha`. Establish `hJa : ∀ k, jetFun (tanComb (a • x'') v') i₀ (rigVal w i₀) b k = a ^ k • J k`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun c => ?_` and prove the remaining obligations. Rewrite using `[jetFun_apply, LinearMap.smul_apply, hJdef, jetFun_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.jet_value_tangent_combination_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.T.rigid_model_section_jet_evaluation K'' P AA φ MM (4 * n) w _ b i₀ (tanComb (a • x'') v') Y v t i hM hi₀ hYt hYv ht (filt_le_of_smul J _ a hJa i hvF)` as an intermediate fact. Rewrite `this` using `[hJa, LinearMap.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis. Introduce `σ q vv cc hvv`. Take `⟨Q, ψσ, wσ, s, u, Hm, χ, ρ', θ, Fd, yq, Y0, Ef, hPFσ, hwσ, hs, hAH, hRig, hFn, hTh, hFd, hyq, hY0, hnrm, hleast, hEf, hEfb, hρ'⟩` from `GlobalTheory.T.polarized_fibre_hermitian_rigid_data K F h ρ K'' h'' P ψ AA φ MM (4 * n) w _ b v' x'' σ (by omega) hh hρ hbc hPF hM hv' hbasis`. Establish `hform` using `fun a b' => hL2 σ Q ψσ wσ s u Hm χ ρ' θ Fd hPFσ hwσ hs hAH hRig hFn hFd a b'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcmp : ∀ c ∈ filt J i, σ (J i c) * ρ' = iteratedDeriv i (fun t : ℂ => ∑ a, σ (c a) * θ a (t • Y0)) 0` using `fun c hc => GlobalTheory.T.complex_embedding_section_pullback K'' P AA φ MM (4 * n) w _ b i₀ (tanComb x'' v') σ Q ψσ wσ s F.P₀.g u ρ' θ yq Y0 c i hM hi₀ (GlobalTheory.T.tangent_linear_combination_isTangent K'' P.A F.P₀.g v' x'' fun k => hbasis.1 k) hPFσ hwσ hs hRig hFn hyq hY0 hc`. Use `GlobalTheory.T.theta_function_rank_bound_setup K'' σ F.P₀.g _ hE Q.A Q.L u Hm χ Ef (4 * n) i θ Fd ρ' (ρ (σ.comp (algebraMap K K''))) Y0 (J i) (filt J i) (by omega) hAH hTh hFd hEf hEfb hleast hform hcmp hρ' q vv cc hvv` as an intermediate fact. Rewrite using `[hnrm]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem secJets4 : Hypotheses2 → GlobalTheory.Published.MoretBaillyModel → GlobalTheory.LieHt.SecJets4 := by
   intro hP hMB K _ _ F h ρ hh hρ K' _ _ _ x hx n hn

@@ -16,29 +16,27 @@ variable {p : ℕ} [Fact p.Prime]
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Introduce `v` and use `by rw [map_one]; exact one_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntAf_one : IsIntAf (1 : AfP p) := fun v => by rw [map_one]; exact one_mem _
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Introduce `v` and use `by rw [map_mul]; exact mul_mem (ha v) (hc v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntAf_mul {a c : AfP p} (ha : IsIntAf a) (hc : IsIntAf c) : IsIntAf (a * c) := fun v => by
   rw [map_mul]; exact mul_mem (ha v) (hc v)
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, x, isIntAf_one, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem inAf_mem (D : Datum p) (x : D.La) : inAf D x ∈ LaHat D :=
   AddSubgroup.subset_closure ⟨1, x, isIntAf_one, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨c, x, hc, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a * c, x, isIntAf_mul ha hc, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_laHat (D : Datum p) {a : AfP p} (ha : IsIntAf a) {v : AfP p ⊗[ℚ] VQ D} (hv : v ∈ LaHat D) :
     a • v ∈ LaHat D := by
@@ -57,9 +55,9 @@ noncomputable def inAfHom (D : Datum p) : D.La →+ AfP p ⊗[ℚ] VQ D where
   map_add' x y := by simp [inAf, TensorProduct.tmul_add]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.AdelicLimitCompactness.main`. Consider the case `exact _root_.GlobalTheory.AdelicLimitCompactness.main`. Consider the case `(apply _root_.GlobalTheory.AdelicLimitCompactness.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AdelicLimitCompactness.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.AdelicLimitCompactness.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AdelicLimitCompactness.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_limit : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (g : ℕ → D.La →+ D.La), (∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → ∀ x, ∃ z, g (n * m) x = g n x + n • z) → ∃ h₀ : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D), (∀ v ∈ LaHat D, h₀ v ∈ LaHat D) ∧ ∀ n : ℕ, 0 < n → n.Coprime p → ∀ x, ∃ w ∈ LaHat D, h₀ (inAf D x) = inAf D (g n x) + n • w := by
   first

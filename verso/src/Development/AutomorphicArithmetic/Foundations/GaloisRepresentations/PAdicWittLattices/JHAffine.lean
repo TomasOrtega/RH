@@ -3,7 +3,7 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.GoodCoverEigens
 open CategoryTheory Limits AlgebraicGeometry Opposite ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.HodgeCoh GlobalTheory.CechDR PositivityTheory.AutomorphicGaloisHodgeTate.G8.HBC
 
 /- English proof (translation)
-Introduce `k k' _ _ φ X X' s s' g h`. Conclude with `MorphismProperty.of_isPullback (P := @IsAffineHom) h.flip inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.jHAffine :
     PositivityTheory.AutomorphicGaloisHodgeTate.G8.HBC.P_affine := by

@@ -14,23 +14,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 def K0 (D : D7) : Coord D.sp.cm (D.sp.X 0) (Fin D.R.k) := ⟨D.sp.crd0, D.sp.gram0, D.sp.hermitianForm_base_coordinates⟩
 
 /- English proof (translation)
-The claim follows from `eq_glob_of_hat ((K0 D).isLat_lat (D.clsLat_lat u 0 c)) _ (fun v => by exact (H.lev0 u).y_lat c v)`.
+A detailed English derivation is pending.
 -/
 theorem level_zero_lattice_eq_global {D : D7} (H : HermCols D) (u : D.what₂.Word) (c : (D.mem u).C.cls 0) :
     (K0 D).lat (D.clsLat u 0 c) = globLat ((H.lev0 u).y c).1 (H.lev0 u).Lb :=
   eq_glob_of_hat ((K0 D).isLat_lat (D.clsLat_lat u 0 c)) _ (fun v => by exact (H.lev0 u).y_lat c v)
 
 /- English proof (translation)
-Introduce `x hx` and use `(mem_dl _ _ _ x).2 ((H.lev0 u).Lb_int x hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Lb_le_dl {D : D7} (H : HermCols D) (u : D.what₂.Word) :
     (H.lev0 u).Lb ≤ dl D.sp.cm.sig (K0 D).J (H.lev0 u).Lb :=
   fun x hx => (mem_dl _ _ _ x).2 ((H.lev0 u).Lb_int x hx)
 
 /- English proof (translation)
-Establish `h1 : (K0 D).lat (D.clsLat u 0 c) ≤ (K0 D).lat (Formalism.HermitianLatticesTheory.dual (D.sp.X 0).hT (D.clsLat u 0 c))`. Rewrite using `[(K0 D).lat_dual, level_zero_lattice_eq_global H u c]`. Conclude with `le_trans (glob_mono _ (Lb_le_dl H u)) (glob_dl_le _ _ _ _ (by exact ((H.lev0 u).y c).2))`. Introduce `x hx`. Establish `h2` using `h1 ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[(K0 D).mem_lat]`. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem level_zero_class_lattice_integral {D : D7} (H : HermCols D) (u : D.what₂.Word) (c : (D.mem u).C.cls 0) :
     D.clsLat u 0 c ≤ Formalism.HermitianLatticesTheory.dual (D.sp.X 0).hT (D.clsLat u 0 c) := by
@@ -43,7 +43,7 @@ theorem level_zero_class_lattice_integral {D : D7} (H : HermCols D) (u : D.what�
   simpa using h2
 
 /- English proof (translation)
-Use extensionality with `x`. Use `show (∀ y ∈ L, S.hT y x ∈ (algebraMap (𝓞 E) E).range) ↔ x ∈ Formalism.HermitianLatticesTheory.dual S.hT L`. Rewrite using `[Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Simplify using `only [Submodule.mem_one, RingHom.mem_range]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualSub_eq {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) (L : Submodule (𝓞 E) S.V) :
     flipTwoThree.dualSub S L = (Formalism.HermitianLatticesTheory.dual S.hT L).toAddSubgroup := by
@@ -53,9 +53,9 @@ theorem dualSub_eq {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace
   simp only [Submodule.mem_one, RingHom.mem_range]
 
 /- English proof (translation)
-Establish `h1` using `Ideal.absNorm_span_singleton (((T : ℕ) : 𝓞 D.host.E))`. Rewrite `h1` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[h1]`. Establish `h2 : ((T : ℕ) : 𝓞 D.host.E) = algebraMap ℤ (𝓞 D.host.E) (T : ℤ)` using `by simp`. Rewrite using `[h2, Algebra.norm_algebraMap, RingOfIntegers.rank, Formalism.MainNotions.StandardLattice.finrank_host D]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Int.natAbs_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem card_ringOfIntegers_quot_natCast_eq_pow (D : D7) (T : ℕ) :
     Nat.card (𝓞 D.host.E ⧸ Ideal.span {((T : ℕ) : 𝓞 D.host.E)}) = T ^ (2 * D.R.f) := by
@@ -67,9 +67,9 @@ theorem card_ringOfIntegers_quot_natCast_eq_pow (D : D7) (T : ℕ) :
   simp [Int.natAbs_pow]
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[dualSub_eq]`. Conclude with `level_zero_class_lattice_integral X.base.toHermCols u c hx`. Take `⟨e⟩` from `(X.atT u).disc 0 (Nat.zero_le _) c`. Rewrite using `[dualSub_eq, AddSubgroup.relIndex, ← card_ringOfIntegers_quot_natCast_eq_pow D (flipTwoThree.Tu D u)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Nat.card_congr e.toEquiv` as an intermediate fact. Establish `hT : flipTwoThree.Tu D u = (D.mem u).A.T` using `rfl`. Rewrite using `[hT, ← this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem latT_of_full {D : D7} (X : FullTied D) (u : D.what₂.Word) (c : (D.mem u).C.cls 0) :
     flipTwoThree.LatT (D.sp.X 0) (flipTwoThree.Tu D u ^ (2 * D.R.f)) (D.clsLat u 0 c) := by

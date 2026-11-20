@@ -9,7 +9,7 @@ namespace UpperTheory.V.Z.Sym.Sig
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `GlAx.val_div_ord x`. Rewrite `h` using `[Units.val_div_eq_div_val, map_div₀, GlAx.val_zpow]`. Conclude with `(div_eq_one_iff_eq (zpow_pos GlAx.unif_pos _).ne').1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_ord (x : kˣ) : valuation k (x : k) = uniformizer k ^ ord k x := by
   have h := GlAx.val_div_ord x
@@ -17,11 +17,11 @@ theorem val_ord (x : kˣ) : valuation k (x : k) = uniformizer k ^ ord k x := by
   exact (div_eq_one_iff_eq (zpow_pos GlAx.unif_pos _).ne').1 h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨Uc_le_Uo k c h, ?_⟩` and prove the remaining obligations. Take `⟨v, hv, rfl⟩` from `h`. Establish `h1 : Ideal.Quotient.mk _ (v : 𝒪[k]) = 1` using `congrArg Units.val hv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq, GlAx.mem_pow]`. Conclude with `h1`. Introduce and unpack `⟨h1, h2⟩`. Take `⟨v, hv⟩` from `(Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.integer.integers (valuation k)) (x := (⟨u, h1.le⟩ : 𝒪[k]))).2 h1`. Use `⟨v, Units.ext ?_, Units.ext (congrArg Subtype.val hv)⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (v : 𝒪[k]) = Ideal.Quotient.mk _ 1`. Rewrite using `[Ideal.Quotient.eq, GlAx.mem_pow, hv]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Uc {c : ℕ} {u : kˣ} : u ∈ Uc k c ↔ valuation k (u : k) = 1 ∧ valuation k ((u : k) - 1) ≤ uniformizer k ^ (c : ℤ) := by
   constructor
@@ -40,14 +40,14 @@ theorem mem_Uc {c : ℕ} {u : kˣ} : u ∈ Uc k c ↔ valuation k (u : k) = 1 �
     exact h2
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `h`. Conclude with `⟨y, (GlAx.map_eq_one c y).2 h', rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_Kc_of {c : ℕ} {g : GL (Fin n) k} (h : g ∈ KO k (Fin n)) (h' : GlAx.Bd c g) : g ∈ Kc k n c := by
   obtain ⟨y, rfl⟩ := h
   exact ⟨y, (GlAx.map_eq_one c y).2 h', rfl⟩
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hg`. Take `⟨z, hz, rfl⟩` from `hx`. Conclude with `⟨y * z * y⁻¹, (MonoidHom.normal_ker _).conj_mem z hz y, by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Kc_conj {c : ℕ} {g x : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) (hx : x ∈ Kc k n c) : g * x * g⁻¹ ∈ Kc k n c := by
   obtain ⟨y, rfl⟩ := hg
@@ -55,7 +55,7 @@ theorem Kc_conj {c : ℕ} {g x : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) (hx : x
   exact ⟨y * z * y⁻¹, (MonoidHom.normal_ker _).conj_mem z hz y, by simp⟩
 
 /- English proof (translation)
-Establish `H : ∀ s : Fin n → kˣ, (∀ i, s i ∈ Uo k) → GlAx.Bd 0 (dg s)` using `fun s h => GlAx.bd_zero.2 fun i j => by`. Rewrite using `[dg, val_diagT, diagonal_apply]`. Use `split_ifs`. Use `exacts [(show valuation k (s i : k) = 1 from h i).le, zero_mem _]`. Conclude with `GlAx.mem_KO.2 ⟨H s h, by rw [dg, ← map_inv]; exact H _ fun i => inv_mem (h i)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dg_mem_KO {s : Fin n → kˣ} (h : ∀ i, s i ∈ Uo k) : dg s ∈ KO k (Fin n) := by
   have H : ∀ s : Fin n → kˣ, (∀ i, s i ∈ Uo k) → GlAx.Bd 0 (dg s) := fun s h => GlAx.bd_zero.2 fun i j => by
@@ -65,13 +65,11 @@ theorem dg_mem_KO {s : Fin n → kˣ} (h : ∀ i, s i ∈ Uo k) : dg s ∈ KO k 
   exact GlAx.mem_KO.2 ⟨H s h, by rw [dg, ← map_inv]; exact H _ fun i => inv_mem (h i)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Establish `a` using `(GlAx.mem_Kc.1 h).1 i i`. Establish `b` using `GlAx.bd_zero.1 (GlAx.mem_KO.1 (GlAx.Kc_le c h)).1 i i`. Establish `b'` using `GlAx.bd_zero.1 (GlAx.mem_KO.1 (GlAx.Kc_le c h)).2 i i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `b'` using `[dg, ← map_inv]`. Simplify using `only [dg, Matrix.sub_apply, val_diagT, diagonal_apply_eq, one_apply_eq] at a b b'`. Use `mem_Uc.2 ⟨le_antisymm b ?_, a⟩` and prove the remaining obligations. Establish `b2 : valuation k ((s i : k)⁻¹) ≤ 1` using `by rw [← Units.val_inv_eq_inv_val]; exact b'`. Rewrite `b2` using `[map_inv₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(inv_le_one₀ (zero_lt_iff.2 (by simp))).1 b2`. Introduce `h`. Use `mem_Kc_of (dg_mem_KO fun i => Uc_le_Uo k c (h i)) fun i j => ?_` and prove the remaining obligations. Rewrite using `[dg, Matrix.sub_apply, val_diagT, diagonal_apply, one_apply]`. Use `split_ifs`.
-
-Use `exacts [(mem_Uc.1 (h i)).2, by simp]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dg_mem_Kc {c : ℕ} {s : Fin n → kˣ} : dg s ∈ Kc k n c ↔ ∀ i, s i ∈ Uc k c := by
   constructor
@@ -96,41 +94,41 @@ namespace Lev
 variable (V : Lev k)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `⟨s, fun i => V.H_le (hs i trivial), rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem levelTorus_le_torus : V.TH n ≤ (glIwa k n).T := by
   rintro _ ⟨s, hs, rfl⟩
   exact ⟨s, fun i => V.H_le (hs i trivial), rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨⟨s, -, rfl⟩, h⟩`. Conclude with `⟨s, fun i _ => V.le (dg_mem_Kc.1 h i), rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem Tc_le_TH : (glIwa k n).Tc V.c ≤ V.TH n := by
   rintro _ ⟨⟨s, -, rfl⟩, h⟩
   exact ⟨s, fun i _ => V.le (dg_mem_Kc.1 h i), rfl⟩
 
 /- English proof (translation)
-The claim follows from `le_sup_left.trans le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem N_le : (glIwa k n).N ≤ V.J n := le_sup_left.trans le_sup_left
 
 /- English proof (translation)
-The claim follows from `le_sup_right.trans le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem TH_le : V.TH n ≤ V.J n := le_sup_right.trans le_sup_left
 
 /- English proof (translation)
-The claim follows from `le_sup_right`.
+A detailed English derivation is pending.
 -/
 theorem Nm_le : (glIwa k n).Nm V.c ≤ V.J n := le_sup_right
 
 /- English proof (translation)
-The claim follows from `V.TH_le ⟨s, fun i _ => h i, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem dg_mem {s : Fin n → kˣ} (h : ∀ i, s i ∈ V.H) : dg s ∈ V.J n := V.TH_le ⟨s, fun i _ => h i, rfl⟩
 
 /- English proof (translation)
-Use `sup_le (sup_le (fun _ h => h.2) ?_) fun _ h => GlAx.Kc_le _ h.2` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `dg_mem_KO fun i => V.H_le (hs i trivial)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem J_le_KO : V.J n ≤ KO k (Fin n) := by
   refine sup_le (sup_le (fun _ h => h.2) ?_) fun _ h => GlAx.Kc_le _ h.2

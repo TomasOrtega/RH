@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights.FlagBundles
 open Finset
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [add_comm]`. Consider the case `succ m ih`. Use `push_cast`. Take the linear combination `(x + y) * ih + ((m : S) + 1) * y ^ m * hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem add_pow_succ_of_sq_eq_zero {S : Type*} [CommRing S] {x y : S} (hx : x ^ 2 = 0)
     (m : ℕ) : (x + y) ^ (m + 1) = y ^ (m + 1) + ((m : S) + 1) * x * y ^ m := by
@@ -18,9 +18,9 @@ theorem add_pow_succ_of_sq_eq_zero {S : Type*} [CommRing S] {x y : S} (hx : x ^ 
     linear_combination (x + y) * ih + ((m : S) + 1) * y ^ m * hx
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `@insert a s ha ih`. Take `⟨h1, h2⟩` from `ih`. Rewrite using `[sum_insert ha, prod_insert ha, card_insert_of_notMem ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[add_pow_succ_of_sq_eq_zero (hx a) (s.card + 1), pow_succ, h1]`. Simplify using the standard rewrite rules. Rewrite using `[add_pow_succ_of_sq_eq_zero (hx a) s.card, h1, h2, Nat.factorial_succ]`. Use `push_cast`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -41,7 +41,7 @@ theorem sum_pow_card_of_sq_eq_zero {S ι : Type*} [CommRing S] [DecidableEq ι] 
       ring
 
 /- English proof (translation)
-Introduce `S _ D ω lam hω`. Establish `h` using `(sum_pow_card_of_sq_eq_zero (fun j => lam j * ω j) (fun j => by rw [mul_pow, hω j, mul_zero]) (univ : Finset (Fin D))).2`. Rewrite `h` using `[card_univ, Fintype.card_fin, prod_mul_distrib]`. Rewrite using `[h, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem TopPowerDiagonal.proof : TopPowerDiagonal.Statement := by
   intro S _ D ω lam hω

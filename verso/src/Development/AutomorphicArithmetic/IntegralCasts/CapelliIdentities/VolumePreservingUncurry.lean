@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `ι κ _ _`. Establish `hm : Measurable (@Function.uncurry ι κ ℝ)` using `measurable_pi_lambda _ fun p ↦ (measurable_pi_apply p.2).comp (measurable_pi_apply p.1)`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Use `symm`. Use `MeasureTheory.Measure.pi_eq (μ := fun _ : ι × κ ↦ (MeasureTheory.volume : MeasureTheory.Measure ℝ)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s hs`. Rewrite using `[MeasureTheory.Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `hpre : (@Function.uncurry ι κ ℝ) ⁻¹' (Set.univ.pi s) = Set.univ.pi fun i ↦ Set.univ.pi fun k ↦ s (i, k)`. Use extensionality with `f`. Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, forall_true_left, Prod.forall, Function.uncurry_apply_pair]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hpre, MeasureTheory.volume_pi_pi, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[MeasureTheory.volume_pi_pi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.VolumePreservingUncurry.volume_preserving_uncurry.{u_1, u_2} :
     ∀ (ι : Type u_1) (κ : Type u_2) [inst : Fintype ι] [inst_1 : Fintype κ],

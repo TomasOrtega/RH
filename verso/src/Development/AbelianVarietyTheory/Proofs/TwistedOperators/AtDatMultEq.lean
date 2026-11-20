@@ -44,13 +44,13 @@ open GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.R3.Rw
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 hG`. Establish `e1` using `(evG_of_ev LedRec.ev_exists_sizeData).inter (evG_of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev)`. Establish `s1 : Step KPx (fun _ _ _ _ => True) _` using `Step.of_evLgG (evLgG_of_evLg GlobalTheory.T.valsIn_and_fam3_ok_of_coefficientField)`. Use `s1.trans (Step.of_evG (e1.imp ?_))` and prove the remaining obligations. Introduce and unpack `K - - - - ⟨hLed, hHost⟩ B f T hO - - hOk w hw Z hX Wt z g1 g2 hEx g4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨Z', g1', hη, hA⟩` from `LedRec.exists_bare hG (B := B) (C := w.C) Z f (6 * K.s.x ^ (-K.C.P.CF))`. Take `⟨L, hsc, hsz, hpar, hn⟩` from `hLed (w.st Z') hO hη hA`. Take `⟨hhost, -⟩` from `hHost (w.st Z') hO`. Establish `s : SameGrp Z Z'` using `LedRec.sameGrp g1 g1'`. Use `(GlobalTheory.T.equalMultiplicities_rowTest_of_sameGroupTransfer B w.C Z Z' w.px w.I hX T Wt s z).1 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hEx'` using `DatCopy.copy_exAt Z' s hEx`. Generalize the expression as in `DatCopy.copy Z' s z = y at hEx' ⊢`. Establish `hch` using `y.pins.char`. Establish `hT : TypesTrue (w.st Z').toD7.ntypes y.R.C.P y.R.C.W`. Rewrite using `[y.lev.C, w.C_eq]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `g1'`. Conclude with `GlobalTheory.T.multiplicity_equality_statement h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 hG y.R y.F ((hOk w.px w.I hX w.ok w.C_eq w.xi_range).2 _ y.Xg y.tr y.good.irr) hch hEx' hhost ⟨L, hpar⟩ B.ccK_top y.pins.keep.guard (GlobalTheory.LiftRows.Inh.goodTypes_of_typesTrue hch.base …`.
+A detailed English derivation is pending.
 -/
 theorem atDat_multEq : GlobalTheory.Published.HarishChandraAnalyticity → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay →
     GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspTraceClass → GlobalTheory.Published.DixmierMalliavinFactorisation →

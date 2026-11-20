@@ -18,7 +18,7 @@ instance ph : (Fsh R).PreservesHomology := by
   infer_instance
 
 /- English proof (translation)
-Unfold `chainsN TubeCut.chainsP`. Rewrite using `[Functor.assoc, AlgebraicTopology.map_alternatingFaceMapComplex]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chainsN_eq : chainsN R = TubeCut.chainsP R ⋙ (Fsh R).mapHomologicalComplex _ := by
   unfold chainsN TubeCut.chainsP
@@ -26,7 +26,7 @@ theorem chainsN_eq : chainsN R = TubeCut.chainsP R ⋙ (Fsh R).mapHomologicalCom
   rfl
 
 /- English proof (translation)
-Conclude with `(GrothendieckTopology.W_iff _ g).1 ((GrothendieckTopology.W_iff_isLocallyBijective _ g).2 ⟨hi, hs⟩)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_F_map {P Q : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (g : P ⟶ Q)
     (hi : Presheaf.IsLocallyInjective Scheme.etaleTopology.{0} g)
@@ -34,7 +34,7 @@ theorem isIso_F_map {P Q : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (g 
   exact (GrothendieckTopology.W_iff _ g).1 ((GrothendieckTopology.W_iff_isLocallyBijective _ g).2 ⟨hi, hs⟩)
 
 /- English proof (translation)
-Establish `e` using `ShortComplex.mapHomologyIso_hom_naturality φ F`. Rewrite using `[(Iso.eq_comp_inv _).2 e]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_iso {C D : Type*} [Category* C] [Category* D] [Preadditive C] [Preadditive D]
     (F : C ⥤ D) [F.Additive] [F.PreservesHomology] {S₁ S₂ : ShortComplex C} (φ : S₁ ⟶ S₂)
@@ -46,11 +46,9 @@ theorem sc_iso {C D : Type*} [Category* C] [Category* D] [Preadditive C] [Preadd
   infer_instance
 
 /- English proof (translation)
-Establish `key : ∀ {K L : ChainComplex (Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)) ℕ} (φ : K ⟶ L), (∀ n, IsIso ((Fsh R).map (HomologicalComplex.homologyMap φ n))) → QuasiIso (((Fsh R).mapHomologicalComplex _).map φ)`. Introduce `K L φ h`. Rewrite using `[quasiIso_iff]`. Introduce `n`. Rewrite using `[quasiIsoAt_iff, ShortComplex.quasiIso_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `ShortComplex.mapHomologyIso_hom_naturality ((HomologicalComplex.shortComplexFunctor _ _ n).map φ) (Fsh R)`. Establish `: IsIso ((Fsh R).map (ShortComplex.homologyMap ((HomologicalComplex.shortComplexFunctor _ _ n).map φ)))` using `h n`. Conclude with `sc_iso (Fsh R) ((HomologicalComplex.shortComplexFunctor _ _ n).map φ)`. Establish `hf` using `key ((TubeCut.chainsP R).map f) (fun n => isIso_F_map R _ (hi n) (hs n))`. Rewrite using `[chainsN_eq]`.
-
-Conclude with `hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quasiIso_chainsN {E E' : Spc} (f : E ⟶ E')
     (hi : ∀ n, Presheaf.IsLocallyInjective Scheme.etaleTopology.{0} (HomologicalComplex.homologyMap ((TubeCut.chainsP R).map f) n))
@@ -71,7 +69,7 @@ theorem quasiIso_chainsN {E E' : Spc} (f : E ⟶ E')
   exact hf
 
 /- English proof (translation)
-Introduce `R _ E E' f hi hs`. Establish `h` using `quasiIso_chainsN R f hi hs`. Use `show QuasiIso (HomologicalComplex.extendMap ((chainsN R).map f) ComplexShape.embeddingDownNat)`. Conclude with `(HomologicalComplex.quasiIso_extendMap_iff _ _).2 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LeafQisLocal_of : TubeCut.LeafQisLocal := by
   intro R _ E E' f hi hs

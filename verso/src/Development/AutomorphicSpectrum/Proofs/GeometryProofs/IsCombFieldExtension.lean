@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CompanionTheory.Ar.CombBase
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [comp_one]`. Consider the case `cons a l ih => simp only [List.prod_cons, List.map_cons, comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_list_prod {S : Scheme.{0}} {G A B : Over S} [GrpObj G] (g : A ⟶ B) (l : List (B ⟶ G)) :
     g ≫ l.prod = (l.map (g ≫ ·)).prod := by
@@ -16,7 +16,7 @@ theorem comp_list_prod {S : Scheme.{0}} {G A B : Over S} [GrpObj G] (g : A ⟶ B
   | cons a l ih => simp only [List.prod_cons, List.map_cons, comp_mul, ih]
 
 /- English proof (translation)
-Introduce and unpack `S G _ _ F _ x F' _ f x' hx n v cf w v' w' hv hw ⟨u, hu, e⟩`. Use `⟨fun i => LieTangent.epsBase f hx ≫ u i, fun i => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap (dualMap f) ≫ (u i).left = _`. Rewrite using `[hu i, ← Category.assoc, LieTangent.spec_dual_eps, Category.assoc, hv i]`. Rewrite using `[(LieTangent.left_eq_iff f hx w' w).1 hw, e, comp_list_prod, List.map_ofFn]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

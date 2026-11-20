@@ -24,13 +24,13 @@ def Mj (k : Type) [Field k] (N j : ℕ) : Submodule k (Fin N → k) where
     simp [hx a ha]
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Mj {j : ℕ} {x : Fin N → k} : x ∈ Mj k N j ↔ ∀ a : Fin N, (a : ℕ) < j → x a = 0 := by
   exact Iff.rfl
 
 /- English proof (translation)
-Use `eq_top_iff.mpr (fun x _ => ?_)` and prove the remaining obligations. Introduce `a ha`. Conclude with `absurd ha (Nat.not_lt_zero _)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Mj_zero : Mj k N 0 = ⊤ := by
   refine eq_top_iff.mpr (fun x _ => ?_)
@@ -38,7 +38,7 @@ theorem Mj_zero : Mj k N 0 = ⊤ := by
   exact absurd ha (Nat.not_lt_zero _)
 
 /- English proof (translation)
-Use `delta gmap`. Simplify using `only [Submodule.mem_map, Matrix.toLin'_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_gmap {g : GL (Fin N) k} {M : Submodule k (Fin N → k)} {y : Fin N → k} :
     y ∈ gmap g M ↔ ∃ x ∈ M, (g : Matrix (Fin N) (Fin N) k) *ᵥ x = y := by
@@ -46,21 +46,21 @@ theorem mem_gmap {g : GL (Fin N) k} {M : Submodule k (Fin N → k)} {y : Fin N �
   simp only [Submodule.mem_map, Matrix.toLin'_apply]
 
 /- English proof (translation)
-Use `delta gmap`. Simplify using `only [Units.val_mul, Matrix.toLin'_mul, Submodule.map_comp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gmap_mul (g h : GL (Fin N) k) (M : Submodule k (Fin N → k)) : gmap (g * h) M = gmap g (gmap h M) := by
   delta gmap
   simp only [Units.val_mul, Matrix.toLin'_mul, Submodule.map_comp]
 
 /- English proof (translation)
-Use `delta gmap`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gmap_one (M : Submodule k (Fin N → k)) : gmap (1 : GL (Fin N) k) M = M := by
   delta gmap
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h1 conv_rhs => rw [← h1]`. Rewrite using `[← gmap_mul, mul_inv_cancel_left]`. Introduce `h1`. Rewrite using `[gmap_mul, h1, ← gmap_mul, inv_mul_cancel, gmap_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem gmap_inv_mul_eq_iff (g h : GL (Fin N) k) (M : Submodule k (Fin N → k)) :
     gmap (g⁻¹ * h) M = M ↔ gmap h M = gmap g M := by
@@ -72,7 +72,7 @@ theorem gmap_inv_mul_eq_iff (g h : GL (Fin N) k) (M : Submodule k (Fin N → k))
     rw [gmap_mul, h1, ← gmap_mul, inv_mul_cancel, gmap_one]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Matrix.toLin' (g : Matrix (Fin N) (Fin N) k))`. Introduce `x y hxy`. Establish `h2` using `congrArg (fun v => ((g⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) *ᵥ v) hxy`. Simplify `h2` using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec]`. Conclude with `(LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ hinj M)).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_gmap (g : GL (Fin N) k) (M : Submodule k (Fin N → k)) :
     finrank k (gmap g M) = finrank k M := by
@@ -83,13 +83,13 @@ theorem finrank_gmap (g : GL (Fin N) k) (M : Submodule k (Fin N → k)) :
   exact (LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ hinj M)).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hle a b ha hb`. Establish `hmem : (Pi.single b 1 : Fin N → k) ∈ Mj k N j`. Introduce `a' ha'`. Establish `hne : a' ≠ b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `he`. Rewrite `ha'` using `[he]`. Use linear arithmetic over natural numbers and integers. Simplify using `[Pi.single_apply, hne]`. Establish `h2` using `hle (mem_gmap.mpr ⟨_, hmem, rfl⟩) a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `h2` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Introduce `hz y hy`. Take `⟨x, hx, rfl⟩` from `mem_gmap.mp hy`. Introduce `a ha`. Use `show ∑ b : Fin N, (g : Matrix (Fin N) (Fin N) k) a b * x b = 0`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Distinguish the cases in `hb : (b : ℕ) < j`. Rewrite using `[hx b hb, mul_zero]`. Rewrite using `[hz a b ha (by omega), zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmap_le_Mj_iff (g : GL (Fin N) k) (j : ℕ) :
     gmap g (Mj k N j) ≤ Mj k N j ↔
@@ -116,9 +116,9 @@ theorem gmap_le_Mj_iff (g : GL (Fin N) k) (j : ℕ) :
     · rw [hz a b ha (by omega), zero_mul]
 
 /- English proof (translation)
-Establish `hmem : g ∈ Formalism.UG.P.tjcosets_par N j ↔ ∀ a b : Fin N, (a : ℕ) < j → j ≤ (b : ℕ) → (g : Matrix (Fin N) (Fin N) k) a b = 0` using `Iff.rfl`. Rewrite using `[hmem, ← gmap_le_Mj_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hle`. Conclude with `Submodule.eq_of_le_of_finrank_eq hle (finrank_gmap g _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `heq`. Conclude with `heq.le`.
+A detailed English derivation is pending.
 -/
 theorem mem_par_iff [Finite k] (g : GL (Fin N) k) (j : ℕ) :
     g ∈ Formalism.UG.P.tjcosets_par N j ↔ gmap g (Mj k N j) = Mj k N j := by
@@ -134,9 +134,9 @@ theorem mem_par_iff [Finite k] (g : GL (Fin N) k) (j : ℕ) :
 def ej (N j m : ℕ) (h : m + j = N) (i : Fin m) : Fin N → k := Pi.single (⟨j + i, by omega⟩ : Fin N) 1
 
 /- English proof (translation)
-Establish `hf : Function.Injective (fun i : Fin m => (⟨j + i, by omega⟩ : Fin N))`. Introduce `a b hab`. Simplify using `only [Fin.mk.injEq] at hab`. Conclude with `Fin.ext (by omega)`. Establish `h2` using `(Pi.basisFun k (Fin N)).linearIndependent.comp _ hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[ej]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linInd_ej (N j m : ℕ) (h : m + j = N) : LinearIndependent k (ej (k := k) N j m h) := by
   have hf : Function.Injective (fun i : Fin m => (⟨j + i, by omega⟩ : Fin N)) := by
@@ -149,21 +149,19 @@ theorem linInd_ej (N j m : ℕ) (h : m + j = N) : LinearIndependent k (ej (k := 
   simp [ej]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : x = ∑ i : Fin m, x ⟨j + i, by omega⟩ • ej (k` using `k) N j m h i := by`. Use extensionality with `a`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, ej, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `ha : (a : ℕ) < j`. Rewrite using `[hx a ha]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `hai`. Rewrite `ha` using `[hai]`. Simplify using `at ha`. Rewrite using `[Finset.sum_eq_single (⟨(a : ℕ) - j, by omega⟩ : Fin m)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (Fin.ext (by simp; omega))]`. Use `congr 1`. Conclude with `Fin.ext (by simp; omega)`. Introduce `i _ hi`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hai`. Apply `hi` to reduce the goal to its premises. Establish `h3` using `congrArg Fin.val hai`. Simplify using `at h3`. Conclude with `Fin.ext (by simp; omega)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hne`. Conclude with `absurd (Finset.mem_univ _) hne`. Rewrite using `[hx']`. Conclude with `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩ a ha`. Establish `hne : a ≠ ⟨j + i, by omega⟩`. Introduce `he`. Rewrite `ha` using `[he]`. Simplify using `at ha`.
-
-Simplify using `[ej, Pi.single_apply, hne]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Mj_eq_span (N j m : ℕ) (h : m + j = N) :
     Mj k N j = Submodule.span k (Set.range (ej (k := k) N j m h)) := by
@@ -205,14 +203,14 @@ theorem Mj_eq_span (N j m : ℕ) (h : m + j = N) :
     simp [ej, Pi.single_apply, hne]
 
 /- English proof (translation)
-Rewrite using `[Mj_eq_span N j (N - j) (by omega), finrank_span_eq_card (linInd_ej N j (N - j) (by omega))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finrank_Mj (N j : ℕ) (h : j ≤ N) : finrank k (Mj k N j) = N - j := by
   rw [Mj_eq_span N j (N - j) (by omega), finrank_span_eq_card (linInd_ej N j (N - j) (by omega))]
   simp
 
 /- English proof (translation)
-Use `delta gmap`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gmap_span {ι : Type} (g : GL (Fin N) k) (u : ι → Fin N → k) :
     gmap g (Submodule.span k (Set.range u)) =
@@ -222,7 +220,7 @@ theorem gmap_span {ι : Type} (g : GL (Fin N) k) (u : ι → Fin N → k) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : Set.range (fun i => (b i : Fin N → k)) = M.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h1, ← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem span_basis_coe {ι : Type} {M : Submodule k (Fin N → k)} (b : Basis ι k M) :
     Submodule.span k (Set.range fun i => (b i : Fin N → k)) = M := by
@@ -232,11 +230,11 @@ theorem span_basis_coe {ι : Type} {M : Submodule k (Fin N → k)} (b : Basis ι
   rw [h1, ← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hm : m + j - j = m` using `by omega`. Set `w : Formalism.UG.P.TjcosetsFr (m + j - j) (m + j) k` to `fun i => u (Fin.cast hm i)`. Establish `hw : LinearIndependent k w` using `hu.comp _ (Fin.cast_injective hm)`. Take `⟨g, hg⟩` from `Formalism.UG.P.tjcosets_exists_smul (m + j) j w hw`.
+Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨g, fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun hg (Fin.cast hm.symm i)`. Rewrite `h1` using `[Formalism.UG.P.GL_smul_standard_tuple]`. Establish `h2 : w (Fin.cast hm.symm i) = u i`. Simplify using `only [w]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[← h2, ← h1]`. Use extensionality with `a`. Apply the tactic sequence `(simp [ej, Matrix.mulVec, dotProduct, Pi.single_apply]) <;> rfl`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_frame [Finite k] (N j m : ℕ) (h : m + j = N) (u : Fin m → Fin N → k) (hu : LinearIndependent k u) :
     ∃ g : GL (Fin N) k, ∀ i : Fin m, (g : Matrix (Fin N) (Fin N) k) *ᵥ ej N j m h i = u i := by
@@ -256,9 +254,9 @@ theorem exists_frame [Finite k] (N j m : ℕ) (h : m + j = N) (u : Fin m → Fin
   (simp [ej, Matrix.mulVec, dotProduct, Pi.single_apply]) <;> rfl
 
 /- English proof (translation)
-Set `b` to `Module.finBasis k M`. Establish `hli : LinearIndependent k (fun i => (b i : Fin N → k))` using `b.linearIndependent.map' M.subtype (Submodule.ker_subtype M)`. Take `⟨g, hg⟩` from `exists_frame N j (finrank k M) h (fun i => (b i : Fin N → k)) hli`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[Mj_eq_span N j _ h, gmap_span]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hg]`. Conclude with `span_basis_coe b`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gmap_Mj [Finite k] (M : Submodule k (Fin N → k)) (j : ℕ) (h : finrank k M + j = N) :
     ∃ g : GL (Fin N) k, gmap g (Mj k N j) = M := by
@@ -272,13 +270,13 @@ theorem exists_gmap_Mj [Finite k] (M : Submodule k (Fin N → k)) (j : ℕ) (h :
   exact span_basis_coe b
 
 /- English proof (translation)
-Establish `hcol : (g : Matrix (Fin N) (Fin N) k) *ᵥ Pi.single i₀ 1 = (g : Matrix (Fin N) (Fin N) k) i₀ i₀ • (Pi.single i₀ 1 : Fin N → k)`. Use extensionality with `a`. Distinguish the cases in `ha : a = i₀`. Substitute `ha` using the available equality. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, ha, h0 a ha]`. Establish `hc : (g : Matrix (Fin N) (Fin N) k) i₀ i₀ ≠ 0`. Introduce `hc`. Rewrite `hcol` using `[hc, zero_smul]`. Establish `hinj : Function.Injective (fun v : Fin N → k => (g : Matrix (Fin N) (Fin N) k) *ᵥ v)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y hxy`. Establish `h2` using `congrArg (fun v => ((g⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) *ᵥ v) hxy`. Simplify `h2` using `[Matrix.mulVec_mulVec]`. Establish `h3 : (Pi.single i₀ (1 : k) : Fin N → k) = 0` using `hinj (by show (g : Matrix (Fin N) (Fin N) k) *ᵥ Pi.single i₀ 1 = (g : Matrix (Fin N) (Fin N) k) *ᵥ 0`. Rewrite using `[hcol, Matrix.mulVec_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `congrFun h3 i₀`. Simplify using `at h4`. Use `delta gmap`. Rewrite using `[Submodule.map_span, Set.image_singleton, Matrix.toLin'_apply, hcol, Submodule.span_singleton_smul_eq (IsUnit.mk0 _ hc)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmap_line (g : GL (Fin N) k) (i₀ : Fin N) (h0 : ∀ a, a ≠ i₀ → (g : Matrix (Fin N) (Fin N) k) a i₀ = 0) :
     gmap g (Submodule.span k {(Pi.single i₀ (1 : k) : Fin N → k)}) =
@@ -307,9 +305,9 @@ theorem gmap_line (g : GL (Fin N) k) (i₀ : Fin N) (h0 : ∀ a, a ≠ i₀ → 
     Submodule.span_singleton_smul_eq (IsUnit.mk0 _ hc)]
 
 /- English proof (translation)
-Use extensionality with `x`. Use `delta H0`. Simplify using `only [LinearMap.mem_ker, LinearMap.proj_apply, mem_Mj]`. Prove the components needed by the constructor for the conclusion. Introduce `hx a ha`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ha0 : a = 0` using `Fin.ext (Nat.lt_one_iff.mp ha)`. Rewrite using `[ha0]`. Conclude with `hx`. Introduce `hx`. Conclude with `hx 0 (by simp)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lattice_height_zero_eq (n : ℕ) : H0 k n = Mj k (n + 1) 1 := by
   ext x
@@ -324,45 +322,41 @@ theorem lattice_height_zero_eq (n : ℕ) : H0 k n = Mj k (n + 1) 1 := by
     exact hx 0 (by simp)
 
 /- English proof (translation)
-Take `⟨r, hr⟩ : ∃ r, r = finrank k M` from `⟨_, rfl⟩`. Establish `hr1 : 1 ≤ r`. Rewrite using `[hr, Nat.one_le_iff_ne_zero, Ne, Submodule.finrank_eq_zero]`. Introduce `hbot`. Rewrite `hM` using `[hbot, Submodule.mem_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : (Pi.single (0 : Fin (n + 1)) (1 : k) : Fin (n + 1) → k) 0 = 0` using `congrFun hM 0`. Simplify using `at h5`. Establish `hrle : r ≤ n + 1`. Rewrite using `[hr]`. Conclude with `(Submodule.finrank_le M).trans (by simp)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hH0 : finrank k (H0 k n) = n`. Rewrite using `[lattice_height_zero_eq, finrank_Mj _ _ (by omega)]`. Simplify using the standard rewrite rules. Establish `hsup : M ⊔ H0 k n = ⊤`. Rewrite using `[eq_top_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Establish `hx : x = x 0 • e0 k n + (x - x 0 • e0 k n)` using `by abel`. Rewrite using `[hx]`. Apply `Submodule.add_mem_sup (Submodule.smul_mem _ _ hM)` to reduce the goal to its premises. Use `delta H0 e0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hdim` using `Submodule.finrank_sup_add_finrank_inf_eq M (H0 k n)`. Rewrite `hdim` using `[hsup, finrank_top, Module.finrank_fin_fun, hH0, ← hr]`. Take `⟨m, hm⟩ : ∃ m, m = r - 1` from `⟨_, rfl⟩`. Take `⟨P, hP⟩ : ∃ P : Submodule k (Fin (n + 1) → k), P = M ⊓ H0 k n` from `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hdim` using `[← hP]`. Establish `hdimMH : finrank k ↥P = m` using `by omega`. Take `⟨b⟩ : Nonempty (Basis (Fin m) k ↥P)` from `⟨Module.finBasisOfFinrankEq k _ hdimMH⟩`. Take `⟨v, hv_def⟩ : ∃ v : Fin m → Fin (n + 1) → k, v = fun i => (b i : Fin (n + 1) → k)` from `⟨_, rfl⟩`. Take `⟨u, hu_def⟩ : ∃ u : Fin (m + 1) → Fin (n + 1) → k, u = Fin.cons (e0 k n) v` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvli : LinearIndependent k v`. Rewrite using `[hv_def]`. Conclude with `b.linearIndependent.map' P.subtype (Submodule.ker_subtype P)`. Establish `hspanv : Submodule.span k (Set.range v) = M ⊓ H0 k n`. Rewrite using `[hv_def, ← hP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `span_basis_coe b`. Establish `hvmem : ∀ i, v i ∈ M ⊓ H0 k n`. Introduce `i`. Rewrite using `[hv_def, ← hP]`. Conclude with `(b i).2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he0 : e0 k n ∉ H0 k n` using `by delta H0 e0`. Simplify using the standard rewrite rules. Establish `hu : LinearIndependent k u`. Rewrite using `[hu_def, linearIndependent_finCons]`. Use `⟨hvli, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hspanv]`. Introduce `hmem`. Conclude with `he0 (Submodule.mem_inf.mp hmem).2`. Establish `hsum : (m + 1) + (n + 1 - r) = n + 1` using `by omega`. Take `⟨g, hg⟩` from `exists_frame (n + 1) (n + 1 - r) (m + 1) hsum u hu`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨n + 1 - r, by omega⟩, g, by simp only; omega, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show gmap g (Mj k (n + 1) (n + 1 - r)) = M`. Rewrite using `[Mj_eq_span (n + 1) (n + 1 - r) (m + 1) hsum, gmap_span]`. Simplify using `only [hg]`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[hu_def]`. Simplify using `using hM`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hu_def, Fin.cons_succ]`. Conclude with `(Submodule.mem_inf.mp (hvmem i)).1`. Rewrite using `[finrank_span_eq_card hu]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `hsum' : m + (n + 1 - r + 1) = n + 1` using `by omega show gmap g (Mj k (n + 1) (n + 1 - r + 1)) = M ⊓ H0 k n`. Rewrite using `[Mj_eq_span (n + 1) (n + 1 - r + 1) m hsum', gmap_span]`. Establish `hgv : ∀ i : Fin m, (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ ej (n + 1) (n + 1 - r + 1) m hsum' i = v i`. Introduce `i`. Establish `hej : ej (k` using `k) (n + 1) (n + 1 - r + 1) m hsum' i = ej (n + 1) (n + 1 - r) (m + 1) hsum i.succ := by`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [ej]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hej, hg i.succ, hu_def, Fin.cons_succ]`. Simplify using `only [hgv]`. Conclude with `hspanv`. Establish `hej : ej (k` using `k) (n + 1) (n + 1 - r) (m + 1) hsum 0 = Pi.single ⟨n + 1 - r, by omega⟩ 1 := by`. Simplify using `only [ej]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[← hej, hg 0, hu_def]`. Both sides reduce to the same expression. Introduce `bb hbb`. Establish `hbb' : n + 1 - r < (bb : ℕ)` using `hbb`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hi : (bb : ℕ) - (n + 1 - r + 1) < m` using `by omega`. Set `i : Fin m` to `⟨(bb : ℕ) - (n + 1 - r + 1), hi⟩`. Establish `hej : ej (k` using `k) (n + 1) (n + 1 - r) (m + 1) hsum i.succ = Pi.single bb 1 := by`. Simplify using `only [ej]`. Use `congr 1`.
-
-Use `ext`. Simplify using `[i]`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `hg i.succ`. Rewrite `h1` using `[hej]`.
-
-Establish `h3 : ((g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ Pi.single bb 1) 0 = (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) 0 bb`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[← h3, h1, hu_def, Fin.cons_succ]`. Conclude with `(Submodule.mem_inf.mp (hvmem i)).2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepMat [Finite k] (n : ℕ) (M : Submodule k (Fin (n + 1) → k)) (hM : e0 k n ∈ M) :
     ∃ (jj : Fin (n + 1)) (g : GL (Fin (n + 1)) k), (jj : ℕ) + finrank k M = n + 1 ∧

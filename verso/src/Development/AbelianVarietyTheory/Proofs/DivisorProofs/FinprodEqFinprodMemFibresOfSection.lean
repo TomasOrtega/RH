@@ -6,19 +6,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `α γ M _ p S f hS hf`. Use `choose g hg using fun x => (hS x).exists`. Establish `key : ∀ s ∈ S, ∀ x, p x = p s ↔ g x = s`. Introduce `s hs x`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `(hS x).unique (hg x) ⟨hs, h.symm⟩`. Introduce and unpack `rfl`. Conclude with `(hg x).2.symm`. Use `set T := hf.toFinset with hT`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Establish `hin : ∀ s ∈ S, ∏ᶠ x ∈ {x | p x = p s}, f x = ∏ x ∈ T with g x = s, f x`. Introduce `s hs`. Apply `finprod_mem_eq_prod_of_subset` to reduce the goal to its premises. Introduce and unpack `x ⟨hx1, hx2⟩`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, hT, Set.Finite.mem_toFinset]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hx2, (key s hs x).1 hx1⟩`. Introduce `x hx`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq] at hx`. Conclude with `(key s hs x).2 hx.2`. Rewrite using `[finprod_mem_congr rfl hin, finprod_eq_prod_of_mulSupport_subset f (s := T) (by simp [hT])]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[finprod_mem_eq_prod_of_subset (t := T.image g)]`. Conclude with `(Finset.prod_fiberwise_of_maps_to (fun i hi => Finset.mem_image_of_mem g hi) f).symm`. Introduce and unpack `s ⟨_, hs⟩`. Rewrite `hs` using `[Function.mem_mulSupport]`. Take `⟨u, hu, _⟩` from `Finset.exists_ne_one_of_prod_ne_one hs`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hu` using `[Finset.mem_filter]`. Rewrite using `[Finset.coe_image]`. Conclude with `⟨u, hu.1, hu.2⟩`. Introduce `s hs`. Rewrite `hs` using `[Finset.coe_image]`.
-
-Take `⟨u, _, rfl⟩` from `hs`. Conclude with `(hg u).1`.
+A detailed English derivation is pending.
 -/
 theorem finprod_eq_finprod_mem_fibres_of_section :
     ∀ {α γ M : Type} [CommMonoid M] (p : α → γ) (S : Set α) (f : α → M),

@@ -20,14 +20,14 @@ variable {E : Type} [Field E] [NumberField E]
 instance finKP (PP : Pl E) : Finite (kP PP) := PP.asIdeal.finiteQuotientOfFreeOfNeBot PP.ne_bot
 
 /- English proof (translation)
-Use `Complex.norm_eq_one_of_pow_eq_one (n := Nat.card G) ?_ Nat.card_pos.ne'` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_char_fin {G : Type} [Group G] [Finite G] (f : G →* ℂˣ) (g : G) : ‖((f g : ℂˣ) : ℂ)‖ = 1 := by
   refine Complex.norm_eq_one_of_pow_eq_one (n := Nat.card G) ?_ Nat.card_pos.ne'
   rw [← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]
 
 /- English proof (translation)
-Rewrite using `[mem_blockTri]`. Introduce `i j h`. Simplify using `[blkOf, i.2, j.2] at h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem mem_blockTri_blkOf {κ : Type} [CommRing κ] {r t : ℕ} (g : GL (Fin r) κ) : g ∈ blockTri (blkOf r t) := by
   rw [mem_blockTri]
@@ -35,9 +35,9 @@ theorem mem_blockTri_blkOf {κ : Type} [CommRing κ] {r t : ℕ} (g : GL (Fin r)
   simp [blkOf, i.2, j.2] at h
 
 /- English proof (translation)
-Establish `hm : g ∈ blockTri (blk2 r)`. Rewrite using `[mem_blockTri]`. Introduce `i j h`. Simplify using `[blk2, i.2, j.2] at h`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Rewrite using `[upper_block_val_submatrix hr hm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem restrictedBlock_self_apply {κ : Type} [CommRing κ] {r : ℕ} (hr : r ≤ r) (g : GL (Fin r) κ) : upperLeftBlock hr g = g := by
   have hm : g ∈ blockTri (blk2 r) := by
@@ -49,7 +49,7 @@ theorem restrictedBlock_self_apply {κ : Type} [CommRing κ] {r : ℕ} (hr : r �
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Matrix.isUnit_iff_isUnit_det]`. Conclude with `⟨fun ⟨g, hg⟩ => ⟨g, hg⟩, fun ⟨g, hg⟩ => ⟨g, hg⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_GL_iff {κ : Type} [CommRing κ] {r : ℕ} (M : Matrix (Fin r) (Fin r) κ) :
     (∃ g : GL (Fin r) κ, (g : Matrix (Fin r) (Fin r) κ) = M) ↔ IsUnit M.det := by
@@ -57,21 +57,19 @@ theorem exists_GL_iff {κ : Type} [CommRing κ] {r : ℕ} (M : Matrix (Fin r) (F
   exact ⟨fun ⟨g, hg⟩ => ⟨g, hg⟩, fun ⟨g, hg⟩ => ⟨g, hg⟩⟩
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem locH_of_mem (Pg : Finset (Pl E)) {r : ℕ} (Hl : ∀ PP : ↥Pg, Subgroup (GL (Fin r) (kP PP.1))) {PP : Pl E}
     (h : PP ∈ Pg) : locH Pg Hl PP = Hl ⟨PP, h⟩ := dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem locH_of_not (Pg : Finset (Pl E)) {r : ℕ} (Hl : ∀ PP : ↥Pg, Subgroup (GL (Fin r) (kP PP.1))) {PP : Pl E}
     (h : PP ∉ Pg) : locH Pg Hl PP = ⊤ := dif_neg h
 
 /- English proof (translation)
-Unfold `omegaQ`. Use `split`. Name the introduced variables `h`. Simplify using `only [norm_prod, norm_zpow, norm_char_fin, _root_.one_zpow, Finset.prod_const_one]`. Name the introduced variables `h`.
-
-Rewrite using `[norm_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_omegaQ {D : D7} {a b : ℕ} (Q : Finset (Pl D.host.E)) (r : ℕ) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (k : ℤ)
     (y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)) :
@@ -84,17 +82,15 @@ theorem norm_omegaQ {D : D7} {a b : ℕ} (Q : Finset (Pl D.host.E)) (r : ℕ) (�
     rw [norm_zero]
 
 /- English proof (translation)
-Distinguish the cases in `hc : ∀ PP (h : PP ∈ Pg), LowZero r (y PP) ∧ ∃ g ∈ Hl ⟨PP, h⟩, ((g : GL (Fin r) (kP PP)) : Matrix (Fin r) (Fin r) (kP PP)) = topL r (y PP)`. Rewrite using `[if_pos hc]`. Unfold `omegaG`. Use `split`. Simplify using `only [norm_mul, norm_prod, norm_inv, norm_char_fin, Finset.prod_const_one, inv_one, mul_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. It suffices to derive a contradiction.
 
-Name the introduced variables `h`. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Use `⟨fun PP hP => (hc PP hP).1, fun PP => (hc PP.1 PP.2).2.choose, fun PP => (hc PP.1 PP.2).2.choose_spec.2, fun PP => mem_blockTri_blkOf _, ?_⟩` and prove the remaining obligations. Use `show (fun PP : ↥Pg => upperLeftBlock hr ((hc PP.1 PP.2).2.choose)) ∈ Subgroup.pi Set.univ Hl`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `PP _`. Simplify using `only [restrictedBlock_self_apply]`. Conclude with `(hc PP.1 PP.2).2.choose_spec.1`. Rewrite using `[if_neg hc]`. Unfold `omegaG`.
+Replace the relevant objects with their definitions. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split`. Name the introduced variables `h`. It suffices to derive a contradiction. Take `⟨hlow, g, hg1, -, hg3⟩` from `h`. Apply `hc` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce `PP hP`. Establish `h3 : (fun PP : ↥Pg => upperLeftBlock hr (g PP)) ∈ Subgroup.pi Set.univ Hl` using `hg3`. Establish `h4` using `h3 ⟨PP, hP⟩ (Set.mem_univ _)`. Simplify using `only [restrictedBlock_self_apply] at h4`. Conclude with `⟨hlow PP hP, g ⟨PP, hP⟩, h4, hg1 ⟨PP, hP⟩⟩`.
-
-Rewrite using `[norm_zero]`.
+A detailed English derivation is pending.
 -/
 theorem norm_omegaG {D : D7} {b r t : ℕ} (hr : r ≤ r) (Pg : Finset (Pl D.host.E))
     (Hl : ∀ PP : ↥Pg, Subgroup (GL (Fin r) (kP PP.1))) (cl : ∀ PP : ↥Pg, Hl PP →* ℂˣ)
@@ -133,15 +129,15 @@ theorem norm_omegaG {D : D7} {b r t : ℕ} (hr : r ≤ r) (Pg : Finset (Pl D.hos
     · rw [norm_zero]
 
 /- English proof (translation)
-Substitute `a` using the available equality. Rewrite using `[norm_mul, norm_omegaG, norm_omegaQ, ite_zero_mul_ite_zero, mul_one]`. Unfold `suppInd`. Rewrite using `[Finset.prod_ite_zero, Finset.prod_const_one]`. Distinguish the cases in `hc : ∀ PP ∈ Pg ∪ Q, LowZero r (y PP) ∧ ∃ g ∈ locH Pg Hl PP, ((g : GL (Fin r) (kP PP)) : Matrix (Fin r) (Fin r) (kP PP)) = topL r (y PP)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hc, if_pos]`. Use `⟨fun PP hP => ?_, fun PP hP => ?_⟩` and prove the remaining obligations. Establish `h1` using `hc PP (Finset.mem_union_left _ hP)`. Rewrite `h1` using `[locH_of_mem Pg Hl hP]`. Then use the resulting hypothesis. Establish `h1` using `hc PP (Finset.mem_union_right _ hP)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `⟨h1.1, ?_⟩` and prove the remaining obligations. Take `⟨g, -, hg⟩` from `h1.2`. Conclude with `(exists_GL_iff _).1 ⟨g, hg⟩`. Rewrite using `[if_neg hc, if_neg]`. Introduce and unpack `⟨hA, hB⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hc` to reduce the goal to its premises. Introduce `PP hP`. Distinguish the cases in `hg : PP ∈ Pg`. Rewrite using `[locH_of_mem Pg Hl hg]`. Conclude with `hA PP hg`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[locH_of_not Pg Hl hg]`. Establish `hq : PP ∈ Q` using `(Finset.mem_union.1 hP).resolve_left hg`. Take `⟨g, hg'⟩` from `(exists_GL_iff _).2 (hB PP hq).2`. Conclude with `⟨(hB PP hq).1, g, Subgroup.mem_top _, hg'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem norm_omegaG_mul_omegaQ {D : D7} {b a r t : ℕ} (hr : r ≤ a) (har : a = r) (Pg Q : Finset (Pl D.host.E))
     (Hl : ∀ PP : ↥Pg, Subgroup (GL (Fin r) (kP PP.1))) (cl : ∀ PP : ↥Pg, Hl PP →* ℂˣ)
@@ -179,7 +175,7 @@ end GlobalTheory.LevelVecNorm.NormFac
 namespace GlobalTheory.LevelVecNorm
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R i t Hl cl m y`. Establish `hW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Conclude with `NormFac.norm_omegaG_mul_omegaQ (le_of_eq hW.symm) hW R.Pg (R.Q t) Hl cl m y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem normFac : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (Hl : ∀ PP : ↥R.Pg, Subgroup (GL (Fin D.R.r) (kP PP.1))) (cl : ∀ PP : ↥R.Pg, Hl PP →* ℂˣ) (m : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (y : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP)),
   ‖omegaG (R.datWp i (LevelP.ofLocal Hl cl)) m y * omegaQ (R.Q t) (Wc D i).rank m (-1) y‖ = ∏ PP ∈ R.Pg ∪ R.Q t, GlobalTheory.LevelVecNorm.suppInd D.R.r (GlobalTheory.LevelVecNorm.locH R.Pg Hl PP) (y PP) := by

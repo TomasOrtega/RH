@@ -14,7 +14,7 @@ noncomputable section
 namespace ProjFrameFibrePt
 
 /- English proof (translation)
-Establish `h` using `congrArg ((Polynomial.aeval s).restrictScalars ℤ) (coneMap_of_isHomogeneous ℤ c hf)`. Rewrite `h` using `[coneMap, comp_aeval_apply]`. Simplify using `only [AlgHom.restrictScalars_apply, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, Algebra.algebraMap_self, RingHom.id_apply] at h`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_mul_of_isHomogeneous {R J : Type*} [CommRing R] (c : J → R) (s : R) {f : MvPolynomial J ℤ}
     {n : ℕ} (hf : f.IsHomogeneous n) : aeval (fun i => c i * s) f = aeval c f * s ^ n := by
@@ -37,21 +37,21 @@ abbrev aV (D : ℕ) (i : κ) : Σ k, Sum.elim (GlobalTheory κ) (GlobalTheory (F
 abbrev bV (κ : Type) (k : Fin (D + 1)) : Σ k, Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1))) k := ⟨Sum.inr (), k⟩
 
 /- English proof (translation)
-Rewrite using `[graphMap, eval₂Hom_X']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem graphMap_inl (P : Ideal (MRing (GlobalTheory κ))) (g : (Σ k, GlobalTheory (Fin (D + 1)) k) → MRing (GlobalTheory κ)) (p : Ix κ) :
     graphMap P g (X (aV D p.2)) = C (Ideal.Quotient.mk P (X p)) := by
   rw [graphMap, eval₂Hom_X']
 
 /- English proof (translation)
-Rewrite using `[graphMap, eval₂Hom_X']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem graphMap_inr (P : Ideal (MRing (GlobalTheory κ))) (g : (Σ k, GlobalTheory (Fin (D + 1)) k) → MRing (GlobalTheory κ))
     (k : Fin (D + 1)) : graphMap P g (X (bV κ k)) = C (Ideal.Quotient.mk P (g ⟨(), k⟩)) * X () := by
   rw [graphMap, eval₂Hom_X']
 
 /- English proof (translation)
-Establish `: (graphMap P g).comp (rename (fun p : Ix κ => aV D p.2)).toRingHom = C.comp (Ideal.Quotient.mk P)`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[graphMap_inl]`. Conclude with `DFunLike.congr_fun this f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem graphMap_rename_inl (P : Ideal (MRing (GlobalTheory κ))) (g : (Σ k, GlobalTheory (Fin (D + 1)) k) → MRing (GlobalTheory κ))
     (f : MRing (GlobalTheory κ)) : graphMap P g (rename (fun p : Ix κ => aV D p.2) f) = C (Ideal.Quotient.mk P f) := by
@@ -64,7 +64,7 @@ theorem graphMap_rename_inl (P : Ideal (MRing (GlobalTheory κ))) (g : (Σ k, Gl
 variable (G : GenFibre (inrV (ι := GlobalTheory κ) (ι₂ := GlobalTheory (Fin (D + 1)))) (graphP x e))
 
 /- English proof (translation)
-Establish `h : rename (fun p : Ix κ => aV D p.2) f ∈ graphP x e`. Rewrite using `[graphP, graphIdeal, RingHom.mem_ker, graphMap_rename_inl, Ideal.Quotient.eq_zero_iff_mem.2 hf, map_zero]`. Rewrite `h` using `[← G.genericFibre_ker_target, RingHom.mem_ker, aeval_rename]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_inl_eq_zero {f : MRing (GlobalTheory κ)} (hf : f ∈ coordIdeal ℤ x) :
     aeval (fun p : Ix κ => G.x' (aV D p.2)) f = 0 := by
@@ -74,9 +74,9 @@ theorem aeval_inl_eq_zero {f : MRing (GlobalTheory κ)} (hf : f ∈ coordIdeal �
   exact h
 
 /- English proof (translation)
-Rewrite using `[← sum_homogeneousComponent f, map_sum]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[aeval_mul_of_isHomogeneous _ _ (homogeneousComponent_isHomogeneous d f)]`. Establish `h0` using `aeval_inl_eq_zero G (coordIdeal_isHomogIdeal ℤ x f hf d)`. Establish `h1` using `comp_aeval_apply (R := ℤ) (f := fun p : Ix κ => G.x' (aV D p.2)) φ.toIntAlgHom (homogeneousComponent d f)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [RingHom.toIntAlgHom_apply] at h1`. Rewrite using `[← h1, h0, map_zero, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_inl_mul_eq_zero {f : MRing (GlobalTheory κ)} (hf : f ∈ coordIdeal ℤ x) {R : Type*} [CommRing R]
     (φ : G.Φ' →+* R) (s : R) : aeval (fun p : Ix κ => φ (G.x' (aV D p.2)) * s) f = 0 := by
@@ -89,7 +89,7 @@ theorem aeval_inl_mul_eq_zero {f : MRing (GlobalTheory κ)} (hf : f ∈ coordIde
   rw [← h1, h0, map_zero, zero_mul]
 
 /- English proof (translation)
-Establish `h` using `aeval_inl_mul_eq_zero G hf φ s`. Rewrite `h` using `[aeval_def, show algebraMap ℤ R = Int.castRingHom R from Subsingleton.elim _ _]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eval₂_inl_mul_eq_zero {f : MRing (GlobalTheory κ)} (hf : f ∈ coordIdeal ℤ x) {R : Type*} [CommRing R]
     (φ : G.Φ' →+* R) (s : R) : eval₂ (Int.castRingHom R) (fun p : Ix κ => φ (G.x' (aV D p.2)) * s) f = 0 := by
@@ -97,9 +97,9 @@ theorem eval₂_inl_mul_eq_zero {f : MRing (GlobalTheory κ)} (hf : f ∈ coordI
   rwa [aeval_def, show algebraMap ℤ R = Int.castRingHom R from Subsingleton.elim _ _] at h
 
 /- English proof (translation)
-Establish `h : X (aV D (e k).2) * X (bV κ 0) - X (aV D (e 0).2) * X (bV κ k) ∈ graphP x e`. Rewrite using `[graphP, graphIdeal, RingHom.mem_ker]`. Simplify using `only [map_sub, map_mul, graphMap_inl, graphMap_inr, ProjFrameGraph.linForm_projMat]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[← G.genericFibre_ker_target, RingHom.mem_ker]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h` using `[sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem x'_frame_mul (k : Fin (D + 1)) :
     G.x' (aV D (e k).2) * G.x' (bV κ 0) = G.x' (aV D (e 0).2) * G.x' (bV κ k) := by
@@ -111,9 +111,7 @@ theorem x'_frame_mul (k : Fin (D + 1)) :
   simpa [sub_eq_zero] using h
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (X (bV κ k) : MRing (Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1))))) ∈ graphP x e`. Rewrite using `[← G.genericFibre_ker_target, RingHom.mem_ker, aeval_X]`. Conclude with `h`. Rewrite `h1` using `[graphP, graphIdeal, RingHom.mem_ker, graphMap_inr, ProjFrameGraph.linForm_projMat, C_mul_X_eq_monomial, monomial_eq_zero, Ideal.Quotient.eq_zero_iff_mem, X_mem_coordIdeal_iff]`.
-
-Conclude with `ProjFrameGraph.frame_ne_zero hF k h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem x'_inr_ne_zero (hF : IsProjFrame x e) (k : Fin (D + 1)) : G.x' (bV κ k) ≠ 0 := by
   intro h
@@ -124,13 +122,13 @@ theorem x'_inr_ne_zero (hF : IsProjFrame x e) (k : Fin (D + 1)) : G.x' (bV κ k)
   exact ProjFrameGraph.frame_ne_zero hF k h1
 
 /- English proof (translation)
-The claim follows from `ProjFrameGraph.genFibre_x'_ne_zero G (e 0).2 (ProjFrameGraph.frame_ne_zero hF 0)`.
+A detailed English derivation is pending.
 -/
 theorem x'_frame_ne_zero (hF : IsProjFrame x e) : G.x' (aV D (e 0).2) ≠ 0 :=
   ProjFrameGraph.genFibre_x'_ne_zero G (e 0).2 (ProjFrameGraph.frame_ne_zero hF 0)
 
 /- English proof (translation)
-Rewrite using `[map_div₀, ← G.compat ⟨(), k⟩, ← G.compat ⟨(), 0⟩]`. Express the relevant statement in the definitionally equal form `_ = G.x' (bV κ k) / G.x' (bV κ 0)`. Rewrite using `[div_eq_div_iff (x'_frame_ne_zero G hF) (x'_inr_ne_zero G hF 0), x'_frame_mul G k]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frame_ratio (hF : IsProjFrame x e) (k : Fin (D + 1)) :
     G.x' (aV D (e k).2) / G.x' (aV D (e 0).2) = algebraMap G.Φ G.Φ' (G.x ⟨(), k⟩ / G.x ⟨(), 0⟩) := by
@@ -140,15 +138,13 @@ theorem frame_ratio (hF : IsProjFrame x e) (k : Fin (D + 1)) :
   ring
 
 /- English proof (translation)
-Take `⟨p, hmon, hp⟩` from `isIntegralElem_coneMap x e hF (X ⟨(), i⟩)`. Use `set F : MRing (GlobalTheory κ) := p.eval₂ (rename e : MvPolynomial (Fin (D + 1)) ℤ →ₐ[ℤ] MRing (GlobalTheory κ)).toRingHom (X ⟨(), i⟩) with hFdef`. Establish `hF0 : F ∈ coordIdeal ℤ x`. Rewrite using `[coordIdeal, RingHom.mem_ker]`. Establish `e1 : (coneMap ℤ x : MRing (GlobalTheory κ) →ₐ[ℤ] Polynomial Ω).toRingHom.comp (rename e : MvPolynomial (Fin (D + 1)) ℤ →ₐ[ℤ] MRing (GlobalTheory κ)).toRingHom = (coneMap ℤ (x ∘ e) : MvPolynomial (Fin (D + 1)) ℤ →+* Polynomial Ω)` using `RingHom.ext fun q => coneMap_rename x e q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(coneMap ℤ x : MRing (GlobalTheory κ) →ₐ[ℤ] Polynomial Ω).toRingHom F = 0`. Rewrite using `[hFdef, Polynomial.hom_eval₂, e1]`. Conclude with `hp`. Establish `h0` using `aeval_inl_mul_eq_zero G hF0 (RingHom.id G.Φ') (G.x' (aV D (e 0).2))⁻¹`. Use `set t : Ix κ → G.Φ' := fun p => RingHom.id G.Φ' (G.x' (aV D p.2)) * (G.x' (aV D (e 0).2))⁻¹ with ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `set cc : Fin (D + 1) → G.Φ := fun k => G.x ⟨(), k⟩ / G.x ⟨(), 0⟩ with hcc`. Establish `e2 : (aeval t : MRing (GlobalTheory κ) →ₐ[ℤ] G.Φ').toRingHom.comp (rename e : MvPolynomial (Fin (D + 1)) ℤ →ₐ[ℤ] MRing (GlobalTheory κ)).toRingHom = (algebraMap G.Φ G.Φ').comp (aeval cc : MvPolynomial (Fin (D + 1)) ℤ →ₐ[ℤ] G.Φ).toRingHom`. Use `MvPolynomial.ringHom_ext (fun r => by simp) (fun k => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X, aeval_X]`. Rewrite using `[hcc, ← frame_ratio G hF k, ht]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[div_eq_mul_inv]`. Establish `e3 : G.x' (aV D i) / G.x' (aV D (e 0).2) = (aeval t : MRing (GlobalTheory κ) →ₐ[ℤ] G.Φ').toRingHom (X ⟨(), i⟩)`. Simplify using `[ht, div_eq_mul_inv]`. Use `⟨p.map (aeval cc : MvPolynomial (Fin (D + 1)) ℤ →ₐ[ℤ] G.Φ).toRingHom, hmon.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, ← e2, e3, ← Polynomial.hom_eval₂, ← hFdef]`.
-
-Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_isIntegral (hF : IsProjFrame x e) (i : κ) :
     IsIntegral G.Φ (G.x' (aV D i) / G.x' (aV D (e 0).2)) := by
@@ -182,19 +178,17 @@ theorem ratio_isIntegral (hF : IsProjFrame x e) (i : κ) :
   exact h0
 
 /- English proof (translation)
-Use `set ℓ := algebraMap G.Φ' (RatFunc G.Φ') with hℓ`. Establish `hu : ℓ (G.x' (aV D (e 0).2)) ≠ 0` using `(map_ne_zero ℓ).2 (x'_frame_ne_zero G hF)`. Establish `hW : (RatFunc.X : RatFunc G.Φ') ≠ 0` using `RatFunc.X_ne_zero`. Use `set s := (ℓ (G.x' (aV D (e 0).2)))⁻¹ * RatFunc.X with hs`. Set `lam0 : MRing (GlobalTheory κ) ⧸ coordIdeal ℤ x →+* RatFunc G.Φ'` to `Ideal.Quotient.lift _ (eval₂Hom (Int.castRingHom (RatFunc G.Φ')) (fun p : Ix κ => ℓ (G.x' (aV D p.2)) * s)) (fun f hf => eval₂_inl_mul_eq_zero G hf ℓ s)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `lam : MvPolynomial Unit (MRing (GlobalTheory κ) ⧸ coordIdeal ℤ x) →+* RatFunc G.Φ'` to `eval₂Hom lam0 fun _ => ℓ (G.x' (bV κ 0)) / RatFunc.X`. Establish `hcomp : lam.comp (graphMap (coordIdeal ℤ x) (linForm (ι` using `GlobalTheory κ) (ι₂ := GlobalTheory (Fin (D + 1))) (projMat e))) = (aeval (fun v : Σ k, Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1))) k => ℓ (G.x' v) * Sum.elim (fun _ => s) (fun _ => 1) v.1)).toRingHom := by`. Establish `hinl : ∀ i : κ, lam (graphMap (coordIdeal ℤ x) (linForm (ι` using `GlobalTheory κ) (ι₂ := GlobalTheory (Fin (D + 1))) (projMat e)) (X (aV D (⟨(), i⟩ : Ix κ).2))) = ℓ (G.x' (aV D i)) * s := by`. Introduce `i`. Rewrite using `[graphMap_inl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [lam, lam0, coe_eval₂Hom, eval₂_C]`. Use `erw [Ideal.Quotient.lift_mk]`. Simplify using the standard rewrite rules. Establish `hinr : ∀ j : Fin (D + 1), lam (graphMap (coordIdeal ℤ x) (linForm (ι` using `GlobalTheory κ) (ι₂ := GlobalTheory (Fin (D + 1))) (projMat e)) (X (bV κ j))) = ℓ (G.x' (bV κ j)) := by`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hj` using `congrArg ℓ (x'_frame_mul G (e := e) j)`. Rewrite `hj` using `[map_mul, map_mul]`. Rewrite using `[graphMap_inr, ProjFrameGraph.linForm_projMat]`. Simplify using `[lam, lam0, hs]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take the linear combination `hj`. Use `MvPolynomial.ringHom_ext (fun r => by simp) ?_` and prove the remaining obligations. Introduce and unpack `⟨(w | w), j⟩`. Consider the cases of `w`. Simplify using `using hinl j`.
+Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts. Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Consider the cases of `w`. Simplify using `using hinr j`. Establish `h1` using `DFunLike.congr_fun hcomp F`. Rewrite `hF'` using `[graphP, graphIdeal, RingHom.mem_ker]`. Rewrite `h1` using `[RingHom.comp_apply, hF', map_zero]`.
-
-Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_scaled_eq_zero (hF : IsProjFrame x e) {F : MRing (Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1))))}
     (hF' : F ∈ graphP x e) :
@@ -243,11 +237,11 @@ theorem aeval_scaled_eq_zero (hF : IsProjFrame x e) {F : MRing (Sum.elim (Global
   exact h1.symm
 
 /- English proof (translation)
-Proceed by induction on `Q using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Take `⟨b₁, hb₁, F₁, e₁⟩` from `hp`. Take `⟨b₂, hb₂, F₂, e₂⟩` from `hq`. Use `⟨b₁ * b₂, by rw [map_mul]; exact mul_ne_zero hb₁ hb₂, Polynomial.C b₂ * F₁ + Polynomial.C b₁ * F₂, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, Polynomial.map_C, Polynomial.map_C, ← e₁, ← e₂]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `monomial n c`. Take `⟨a, b, hb, rfl⟩` from `G.gen c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨b, hb, Polynomial.monomial n a, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.map_monomial, Polynomial.C_mul_monomial]`. Use `congr 1`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_clear_poly (Q : Polynomial G.Φ) : ∃ b : MRing (GlobalTheory (Fin (D + 1))), aeval G.x b ≠ 0 ∧
     ∃ F : Polynomial (MRing (GlobalTheory (Fin (D + 1)))),
@@ -269,19 +263,17 @@ theorem exists_clear_poly (Q : Polynomial G.Φ) : ∃ b : MRing (GlobalTheory (F
     field_simp
 
 /- English proof (translation)
-Rewrite using `[transcendental_iff]`. Introduce `Q hQ`. Take `⟨b, hb, F, hbF⟩` from `exists_clear_poly G Q`. Use `set evx := (aeval G.x : MRing (GlobalTheory (Fin (D + 1))) →ₐ[ℤ] G.Φ).toRingHom with hevx`. Use `set ren := (rename (inrV (ι := GlobalTheory κ) (ι₂ := GlobalTheory (Fin (D + 1)))) : MRing (GlobalTheory (Fin (D + 1))) →ₐ[ℤ] MRing (Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1))))).toRingHom with hren`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set Fz : MRing (Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1)))) := F.eval₂ ren (X (aV D (e 0).2)) with hFz`. Establish `hcx : (aeval G.x' : MRing (Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1)))) →ₐ[ℤ] G.Φ').toRingHom.comp ren = (algebraMap G.Φ G.Φ').comp evx`. Use `MvPolynomial.ringHom_ext (fun r => by simp) (fun q => ?_)` and prove the remaining obligations. Simplify using `[hren, hevx, G.compat]`. Establish `hFz0 : Fz ∈ graphP x e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← G.genericFibre_ker_target, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `(aeval G.x' : MRing (Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1)))) →ₐ[ℤ] G.Φ').toRingHom Fz = 0`. Rewrite using `[hFz, Polynomial.hom_eval₂, hcx, ← Polynomial.eval₂_map, ← hbF, Polynomial.eval₂_mul, Polynomial.eval₂_C]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X]`. Rewrite using `[← Polynomial.aeval_def, hQ, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz` using `aeval_scaled_eq_zero G hF hFz0`. Use `set ℓ := algebraMap G.Φ' (RatFunc G.Φ') with hℓ`. Establish `hu : ℓ (G.x' (aV D (e 0).2)) ≠ 0` using `(map_ne_zero ℓ).2 (x'_frame_ne_zero G hF)`. Use `set z := fun v : Σ k, Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1))) k => ℓ (G.x' v) * Sum.elim (fun _ => (ℓ (G.x' (aV D (e 0).2)))⁻¹ * RatFunc.X) (fun _ => 1) v.1 with hz_def`. Establish `hcz : (aeval z : MRing (Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1)))) →ₐ[ℤ] RatFunc G.Φ').toRingHom.comp ren = (ℓ.comp (algebraMap G.Φ G.Φ')).comp evx`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `MvPolynomial.ringHom_ext (fun r => by simp) (fun q => ?_)` and prove the remaining obligations. Simplify using `[hren, hevx, hz_def, inrV]`. Rewrite using `[← G.compat q]`. Both sides reduce to the same expression. Establish `hzu : (aeval z : MRing (Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1)))) →ₐ[ℤ] RatFunc G.Φ').toRingHom (X (aV D (e 0).2)) = RatFunc.X`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hz_def]`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hu, one_mul]`. Establish `h2 : (aeval z : MRing (Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1)))) →ₐ[ℤ] RatFunc G.Φ').toRingHom Fz = 0` using `hz`. Rewrite `h2` using `[hFz, Polynomial.hom_eval₂, hcz, hzu, ← Polynomial.eval₂_map, ← hbF]`. Establish `h3 : algebraMap (Polynomial G.Φ') (RatFunc G.Φ') ((Polynomial.C (aeval G.x b) * Q).map (algebraMap G.Φ G.Φ')) = 0`.
-
-Rewrite using `[← h2, ← Polynomial.eval₂_C_X (p := (Polynomial.C (aeval G.x b) * Q).map (algebraMap G.Φ G.Φ')), Polynomial.hom_eval₂, Polynomial.eval₂_map, RatFunc.algebraMap_X]`. Use `congr 1`. Rewrite `h3` using `[map_eq_zero_iff _ (RatFunc.algebraMap_injective G.Φ'), Polynomial.map_eq_zero_iff (algebraMap G.Φ G.Φ').injective, mul_eq_zero, Polynomial.C_eq_zero]`. Conclude with `h3.resolve_left hb`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transcendental_frame (hF : IsProjFrame x e) : Transcendental G.Φ (G.x' (aV D (e 0).2)) := by
   rw [transcendental_iff]
@@ -333,15 +325,13 @@ end ProjFrameFibrePt
 open ProjFrameFibrePt in
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ x e _ hF G`. Establish `hk₀ : (Sum.inl () : Unit ⊕ Unit) ∉ Set.range (Sum.inr : Unit → Unit ⊕ Unit)`. Introduce and unpack `⟨_, h⟩`. Conclude with `Sum.inr_ne_inl h`. Set `k₀ : FibreBlock (Sum.inr : Unit → Unit ⊕ Unit)` to `⟨Sum.inl (), hk₀⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hK : ∀ k : FibreBlock (Sum.inr : Unit → Unit ⊕ Unit), k = k₀`. Introduce and unpack `⟨(w' | w'), h⟩`. Consider the cases of `w'`. Both sides reduce to the same expression. Conclude with `absurd ⟨w', rfl⟩ h`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `w : (Σ k : FibreBlock (Sum.inr : Unit → Unit ⊕ Unit), fibreIdx (Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1)))) Sum.inr k) → G.Φ'` to `fun q => G.x' ⟨q.1.1, q.2⟩`. Set `c` to `ProjFrameGraph.fibreChart (κ := κ) (ι₂ := GlobalTheory (Fin (D + 1))) (e 0).2`. Establish `hrat : ∀ q, IsIntegral G.Φ (w q / w ⟨k₀, c k₀⟩)`. Introduce and unpack `⟨⟨(w' | w'), h⟩, j⟩`. Consider the cases of `w'`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ratio_isIntegral G hF j`. Conclude with `absurd ⟨w', rfl⟩ h`. Establish `hfin : Module.Finite G.Φ (Algebra.adjoin G.Φ (Set.range fun p => w p / w ⟨k₀, c k₀⟩))` using `Algebra.finite_adjoin_of_finite_of_isIntegral (Set.finite_range _) (by rintro _ ⟨q, rfl⟩; exact hrat q)`. Establish `htr : Transcendental (Algebra.adjoin G.Φ (Set.range fun p => w p / w ⟨k₀, c k₀⟩)) (w ⟨k₀, c k₀⟩)`. Establish `: Algebra.IsAlgebraic G.Φ (Algebra.adjoin G.Φ (Set.range fun p => w p / w ⟨k₀, c k₀⟩))` using `Algebra.IsAlgebraic.of_finite _ _`.
-
-Conclude with `(transcendental_frame G hF).extendScalars _`. Conclude with `(OneBlockPointDeg.proof G.Φ G.Φ' (FibreBlock (Sum.inr : Unit → Unit ⊕ Unit)) _ k₀ hK w c (x'_frame_ne_zero G hF) hfin htr).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ProjFrameFibrePt.proof : ProjFrameFibrePt.Statement := by
   intro D Ω _ _ κ _ x e _ hF G

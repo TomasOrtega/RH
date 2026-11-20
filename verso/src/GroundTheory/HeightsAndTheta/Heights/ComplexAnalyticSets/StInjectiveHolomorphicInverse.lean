@@ -11,7 +11,7 @@ def InjectiveHolomorphicInverse.Statement : Prop :=
         ∃ g : (Fin k → ℂ) → Fin k → ℂ, DifferentiableOn ℂ g (f '' U) ∧ ∀ t ∈ U, g (f t) = t
 
 /- English proof (translation)
-The claim follows from `InjectiveHolomorphicOpen.hypotheses_inhabited`.
+A detailed English derivation is pending.
 -/
 theorem InjectiveHolomorphicInverse.hypotheses_inhabited :
     IsOpen (Metric.ball (0 : Fin 2 → ℂ) 1) ∧

@@ -10,13 +10,13 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 namespace GlobalTheory.OneValue
 
 /- English proof (translation)
-Establish `hJ : IsJacobsonRing A` using `isJacobsonRing_of_finiteType (A := F)`. Establish `key : ∀ m : Ideal A, m.IsMaximal → ∃ φ : A →ₐ[F] C, (∀ a, φ a = 0 → a ∈ m) ∧ IsAlgebraic F (φ s)`. Introduce `m hm`. Use `letI := Ideal.Quotient.field m`. Establish `: Module.Finite F (A ⧸ m)` using `finite_of_finite_type_of_isJacobsonRing F (A ⧸ m)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Set `σ : (A ⧸ m) →ₐ[F] C` to `IsAlgClosed.lift`. Use `⟨σ.comp (Ideal.Quotient.mkₐ F m), fun a ha => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (σ.toRingHom.injective (ha.trans (map_zero σ.toRingHom).symm))`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (R := F) (Ideal.Quotient.mkₐ F m s)).algHom σ`. Take `⟨m₀, hm₀⟩` from `Ideal.exists_maximal A`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨φ₀, -, P, hP, hPs⟩` from `key m₀ hm₀`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Establish `hj : Polynomial.aeval s P ∈ (⊥ : Ideal A).jacobson`. Use `Ideal.mem_sInf.2 ?_` and prove the remaining obligations. Introduce and unpack `m ⟨-, hm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨φ, hφ, -⟩` from `key m hm`. Use `hφ _ ?_` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_algHom_apply, h φ φ₀, hPs]`. Rewrite `hj` using `[hJ.out (Ideal.isRadical_bot_iff.2 inferInstance), Ideal.mem_bot]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_one_value {F A C : Type} [Field F] [CommRing A] [Nontrivial A] [IsReduced A] [Algebra F A]
     [Algebra.FiniteType F A] [Field C] [IsAlgClosed C] [Algebra F C] (s : A)
@@ -43,11 +43,11 @@ theorem isAlgebraic_of_one_value {F A C : Type} [Field F] [CommRing A] [Nontrivi
   rwa [hJ.out (Ideal.isRadical_bot_iff.2 inferInstance), Ideal.mem_bot] at hj
 
 /- English proof (translation)
-Establish `h0 : ⊤ ≤ hW.fromSpec ⁻¹ᵁ W` using `hW.fromSpec_preimage_self.ge`. Establish `h : ⊤ ≤ (Spec.map (CommRingCat.ofHom φ) ≫ hW.fromSpec : Sp R ⟶ X) ⁻¹ᵁ U` using `fun y _ => e (h0 (Set.mem_univ ((Spec.map (CommRingCat.ofHom φ)) y)))`. Unfold `valR`. Rewrite using `[dif_pos h]`. Establish `e1 : (Spec.map (CommRingCat.ofHom φ) ≫ hW.fromSpec : Sp R ⟶ X).appLE U ⊤ h = X.presheaf.map (homOfLE e).op ≫ hW.fromSpec.appLE W ⊤ h0 ≫ (Spec.map (CommRingCat.ofHom φ)).appTop`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, Scheme.Hom.map_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ U ⊤ ⊤ _ le_rfl).symm`. Establish `e2 : hW.fromSpec.appLE W ⊤ h0 = (Scheme.ΓSpecIso Γ(X, W)).inv`. Rewrite using `[Scheme.Hom.appLE, hW.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Conclude with `(congrArg (_ ≫ ·) ((Spec Γ(X, W)).presheaf.map_id _)).trans (Category.comp_id _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ)`. Express the relevant statement in the definitionally equal form `((Spec.map (CommRingCat.ofHom φ) ≫ hW.fromSpec : Sp R ⟶ X).appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom).hom f = (X.presheaf.map (homOfLE e).op ≫ CommRingCat.ofHom φ).hom f`. Rewrite using `[e1, e2, Category.assoc, Category.assoc]`. Use `erw [n]`. Use `erw [(Scheme.ΓSpecIso Γ(X, W)).inv_hom_id_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_spMap_fromSpec {X : Scheme.{0}} {R : Type} [CommRing R] {U W : X.Opens} (hW : IsAffineOpen W)
     (e : W ≤ U) (φ : Γ(X, W) →+* R) (f : Γ(X, U)) :
@@ -73,17 +73,15 @@ theorem valR_spMap_fromSpec {X : Scheme.{0}} {R : Type} [CommRing R] {U W : X.Op
   erw [(Scheme.ΓSpecIso Γ(X, W)).inv_hom_id_assoc]
 
 /- English proof (translation)
-Establish `: IsIntegral Y` using `GeometricallyIntegral.isIntegral_of_subsingleton p`. Take `⟨U, hU, hxU, hUV⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens (show genericPoint Y ∈ (⊤ : Y.Opens) from trivial)`. Use `replace hU : IsAffineOpen U := hU`. Establish `: Nonempty U` using `⟨⟨_, hxU⟩⟩`. Establish `hc : (algX p U).FiniteType`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (p.appLE ⊤ U (fun _ _ => trivial)).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType p inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ _`. Conclude with `h1.comp (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2)`. Use `letI : Algebra F Γ(Y, U) := (algX p U).toAlgebra`. Establish `: Algebra.FiniteType F Γ(Y, U)` using `hc`. Use `letI : Algebra F ℂ := e.toAlgebra`.
+Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : hU.fromSpec ≫ p = Spec.map (CommRingCat.ofHom (algebraMap F Γ(Y, U)))`. Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec p (isAffineOpen_top _) hU (show U ≤ p ⁻¹ᵁ ⊤ from le_top)`. Rewrite using `[← h, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hpt : ∀ φ : Γ(Y, U) →ₐ[F] ℂ, (Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ hU.fromSpec : Sp ℂ ⟶ Y) ≫ p = spMap e`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `φ`. Rewrite using `[Category.assoc, hg, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Conclude with `φ.commutes a`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨P, hP, hPs⟩` from `isAlgebraic_of_one_value (F := F) (C := ℂ) (resG Y hUV f) fun φ ψ => by`. Use `h _ _ (hpt φ) (hpt ψ)` as an intermediate fact. Rewrite `this` using `[valR_spMap_fromSpec hU hUV, valR_spMap_fromSpec hU hUV]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `GlobalTheory.GeomIntConst.mem_range_constFn F Y p (GlobalTheory.Cartier.fnOf ⊤ trivial f) ⟨P, hP, by`. Rewrite using `[← GlobalTheory.Cartier.fnOf_comp_algX p U hxU, ← GlobalTheory.Cartier.fnOf_resG hUV hxU, ← Polynomial.hom_eval₂]`.
-
-Conclude with `(congrArg _ hPs).trans (map_zero _)⟩`. Conclude with `⟨a, (GlobalTheory.Cartier.fnOf_injective ⊤ trivial ha).symm⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_algX {F : Type} [Field F] {Y : Scheme.{0}} (p : Y ⟶ Sp F) [GeometricallyIntegral p]
     [LocallyOfFiniteType p] (e : F →+* ℂ) (f : Γ(Y, ⊤))
@@ -123,17 +121,15 @@ theorem exists_eq_algX {F : Type} [Field F] {Y : Scheme.{0}} (p : Y ⟶ Sp F) [G
   exact ⟨a, (GlobalTheory.Cartier.fnOf_injective ⊤ trivial ha).symm⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c U e f hU h`. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim _`. Establish `: Smooth (toF Xo c)` using `inferInstanceAs (Smooth (pullback.snd _ _))`. Establish `: GeometricallyIntegral (U.ι ≫ toF Xo c)` using `GlobalTheory.geometricallyIntegral_of_smooth _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : (⊤ : U.toScheme.Opens) ≤ U.ι ⁻¹ᵁ U` using `fun x _ => x.2`. Establish `hval : ∀ y : Sp ℂ ⟶ U.toScheme, valR y ⊤ ((U.ι.appLE U ⊤ hle).hom f) = valR (y ≫ U.ι) U f`. Introduce `y`. Establish `h1 : ⊤ ≤ y ⁻¹ᵁ ⊤` using `le_top`. Establish `h2 : ⊤ ≤ (y ≫ U.ι) ⁻¹ᵁ U` using `fun x _ => (y x).2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `valR`. Rewrite using `[dif_pos h1, dif_pos h2, ← Scheme.Hom.appLE_comp_appLE y U.ι U ⊤ ⊤ hle h1]`. Both sides reduce to the same expression. Establish `hr : ∀ y : Sp ℂ ⟶ U.toScheme, Set.range (y ≫ U.ι) ⊆ U`. Introduce and unpack `y _ ⟨x, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(y x).2`. Take `⟨a, ha⟩` from `exists_eq_algX (U.ι ≫ toF Xo c) e ((U.ι.appLE U ⊤ hle).hom f) fun y y' hy hy' => by`. Rewrite using `[hval, hval]`. Conclude with `h _ _ ((Category.assoc _ _ _).trans hy) ((Category.assoc _ _ _).trans hy') (hr y) (hr y')`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hiso : IsIso (U.ι.appLE U ⊤ hle)`. Rewrite using `[Scheme.Opens.ι_appLE]`. Establish `: U.ι ''ᵁ ⊤ = U` using `U.ι_image_top`. Establish `: IsIso (homOfLE (x` using `U.ι ''ᵁ ⊤) (y := U) this.le) := ⟨homOfLE this.ge, rfl, rfl⟩`. Conclude with `Functor.map_isIso _ (homOfLE (x := U.ι ''ᵁ ⊤) (y := U) U.ι_image_top.le).op`.
-
-Use `(ConcreteCategory.bijective_of_isIso (U.ι.appLE U ⊤ hle)).1 (ha.trans ?_)` and prove the remaining obligations. Use `Scheme.Hom.appLE_comp_appLE U.ι (toF Xo c) ⊤ U ⊤ (fun _ _ => trivial) hle` as an intermediate fact. Conclude with `(congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv.hom a)) this).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_eq_constFn_of_one_value :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : (Xo.XF c).Opens) (e : c.F →+* ℂ) (f : Γ(Xo.XF c, U)), GeometricallyConnected (U.ι ≫ toF Xo c) → (∀ y y' : Sp ℂ ⟶ Xo.XF c, y ≫ toF Xo c = spMap e → y' ≫ toF Xo c = spMap e → Set.range y ⊆ U → Set.range y' ⊆ U → valR y U f = valR y' U f) → ∃ a : c.F, f = ReciprocityTheory.ChartRestriction.G.Geo.Tor.constFn (toF Xo c) U a := by

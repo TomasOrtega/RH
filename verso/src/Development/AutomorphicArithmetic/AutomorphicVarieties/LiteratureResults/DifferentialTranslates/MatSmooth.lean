@@ -10,16 +10,16 @@ namespace UpperTheory.V.Lit.Dr
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 /- English proof (translation)
-The claim follows from `hF.congr fun _ hx => (extGL_eventuallyEq h hx).self_of_nhds`.
+A detailed English derivation is pending.
 -/
 private theorem smooth_of_formula {f : GL (Fin a) (Cinf E) → ℂ} {F : Lie E a → ℂ} (h : ∀ y, f y = F (toL y.val))
     (hF : ContDiffOn ℝ ∞ F (invSet E a)) : ContDiffOn ℝ ∞ (extGL f) (invSet E a) :=
   hF.congr fun _ hx => (extGL_eventuallyEq h hx).self_of_nhds
 
 /- English proof (translation)
-Proceed by induction on `hf using Algebra.adjoin_induction with`. Consider the case `mem f hf`. Take `⟨τ, i, j, rfl⟩ | ⟨τ, rfl⟩` from `hf`. Use `exacts [h1 τ i j, h2 τ]`. Consider the case `algebraMap c => exact smooth_of_formula (F := fun _ => c) (fun _ => rfl) contDiffOn_const`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add f g _ _ hf hg => exact smooth_of_formula (fun y => by simp [extGL_val]) (hf.add hg)`. Consider the case `mul f g _ _ hf hg => exact smooth_of_formula (fun y => by simp [extGL_val]) (hf.mul hg)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem smooth_reg (σ : GL (Fin a) (Cinf E) → GL (Fin a) (Cinf E))
     (h1 : ∀ τ i j, ContDiffOn ℝ ∞ (extGL fun y => coord τ ((σ y).val i j)) (invSet E a))
@@ -35,22 +35,22 @@ private theorem smooth_reg (σ : GL (Fin a) (Cinf E) → GL (Fin a) (Cinf E))
   | mul f g _ _ hf hg => exact smooth_of_formula (fun y => by simp [extGL_val]) (hf.mul hg)
 
 /- English proof (translation)
-The claim follows from `(coordL τ).contDiff.comp contDiff_det`.
+A detailed English derivation is pending.
 -/
 private theorem smooth_det (τ : E →+* ℂ) : ContDiff ℝ ∞ fun x : Lie E a => coord τ (Matrix.of x).det :=
   (coordL τ).contDiff.comp contDiff_det
 
 /- English proof (translation)
-The claim follows from `(smooth_det τ).contDiffOn.inv fun _ hx => (((Matrix.isUnit_iff_isUnit_det _).1 hx).map (coord τ)).ne_zero`.
+A detailed English derivation is pending.
 -/
 private theorem smooth_det_inv (τ : E →+* ℂ) :
     ContDiffOn ℝ ∞ (fun x : Lie E a => (coord τ (Matrix.of x).det)⁻¹) (invSet E a) :=
   (smooth_det τ).contDiffOn.inv fun _ hx => (((Matrix.isUnit_iff_isUnit_det _).1 hx).map (coord τ)).ne_zero
 
 /- English proof (translation)
-Establish `h : ContDiff ℝ ∞ fun x : Lie E a => (Function.update x j (Pi.single i 1) : Lie E a)`. Use `contDiff_pi.2 fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `using contDiff_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `contDiff_apply ℝ _ k` using `[Function.update_of_ne hk]`. Simplify using `only [Matrix.adjugate_apply]`. Conclude with `(smooth_det τ).comp h`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem smooth_adj (τ : E →+* ℂ) (i j : Fin a) :
     ContDiff ℝ ∞ fun x : Lie E a => coord τ ((Matrix.of x).adjugate i j) := by
@@ -65,9 +65,9 @@ private theorem smooth_adj (τ : E →+* ℂ) (i j : Fin a) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `hu : IsUnit y.val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 y.isUnit`. Establish `e : y.val.adjugate = y.val.det • (y⁻¹).val`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`. Use `_ = _ := by rw [Matrix.adjugate_mul, smul_mul_assoc, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.smul_apply, smul_eq_mul, map_mul, inv_mul_cancel_left₀ (hu.map (coord τ)).ne_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem coord_inv_entry (τ : E →+* ℂ) (y : GL (Fin a) (Cinf E)) (i j : Fin a) :
     coord τ ((y⁻¹).val i j) = (coord τ y.val.det)⁻¹ * coord τ (y.val.adjugate i j) := by
@@ -80,7 +80,7 @@ private theorem coord_inv_entry (τ : E →+* ℂ) (y : GL (Fin a) (Cinf E)) (i 
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← Matrix.det_mul, Units.inv_mul, Matrix.det_one, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coord_inv_det (τ : E →+* ℂ) (y : GL (Fin a) (Cinf E)) :
     (coord τ (y⁻¹).val.det)⁻¹ = coord τ y.val.det := by
@@ -88,9 +88,7 @@ private theorem coord_inv_det (τ : E →+* ℂ) (y : GL (Fin a) (Cinf E)) :
   rw [← map_mul, ← Matrix.det_mul, Units.inv_mul, Matrix.det_one, map_one]
 
 /- English proof (translation)
-Introduce `E _ _ a Ξ i j`. Use `⟨smooth_reg id (fun τ k l => ?_) (fun τ => ?_) (Ξ.reg i j), smooth_reg (fun y => y⁻¹) (fun τ k l => ?_) (fun τ => ?_) (Ξ.reg i j)⟩` and prove the remaining obligations. Conclude with `smooth_of_formula (F := fun x => coordL τ (x k l)) (fun _ => rfl) (by fun_prop)`. Conclude with `smooth_of_formula (fun _ => rfl) (smooth_det_inv τ)`. Apply the tactic sequence `exact smooth_of_formula (fun y => coord_inv_entry τ y k l) ((smooth_det_inv τ).mul (smooth_adj τ k l).contDiffOn)`.
-
-Conclude with `smooth_of_formula (fun y => coord_inv_det τ y) (smooth_det τ).contDiffOn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem matSmooth : MatSmooth := by
   intro E _ _ a Ξ i j

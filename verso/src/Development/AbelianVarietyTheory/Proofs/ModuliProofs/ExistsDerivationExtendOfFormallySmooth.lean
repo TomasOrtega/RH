@@ -12,9 +12,9 @@ open GlobalTheory.KS
 namespace GlobalTheory.KS
 
 /- English proof (translation)
-Use `letI : Algebra R E := ψ.toAlgebra`. Use `letI : Algebra R C := (φ.comp (algebraMap R B)).toAlgebra`. Set `f : B →ₐ[R] C` to `{ φ with commutes' := fun _ => rfl }`. Set `g : E →ₐ[R] C` to `{ π with commutes' := fun r => hc r }`. Use `⟨(Algebra.FormallySmooth.liftOfSurjective f g hπ hn).toRingHom, fun b => ?_, fun r => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Algebra.FormallySmooth.liftOfSurjective_apply f g hπ hn b`. Conclude with `(Algebra.FormallySmooth.liftOfSurjective f g hπ hn).commutes r`.
+A detailed English derivation is pending.
 -/
 theorem exists_ringHom_lift_of_formallySmooth (R B E C : Type) [CommRing R] [CommRing B]
     [CommRing E] [CommRing C] [Algebra R B] [Algebra.FormallySmooth R B]
@@ -33,21 +33,19 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct ContDiff in
 
 /- English proof (translation)
-Introduce `R B C _ _ _ _ _ φ D hadd hmul`. Establish `h0 : D 0 = 0`. Use `hadd 0 0` as an intermediate fact. Simplify using `using this`. Establish `h1 : D 1 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h11` using `hmul 1 1`. Establish `e : (1 : R) * 1 = 1` using `mul_one 1`. Rewrite `h11` using `[e, map_one, map_one, _root_.one_mul]`. Take the linear combination `-h11`. Apply the tactic sequence `let ψ : R →+* TrivSqZeroExt C C := { toFun := fun r => TrivSqZeroExt.inl (φ (algebraMap R B r)) + TrivSqZeroExt.inr (D r) map_one' := by ext <;> simp [h1] map_mul' := fun a b => by ext <;> simp [hmul] <;> ring map_zero' := by ext <;> simp [h0] map_add' := fun a b => by ext <;> si …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `letI : Algebra R (TrivSqZeroExt C C) := ψ.toAlgebra`. Use `letI : Algebra R C := (φ.comp (algebraMap R B)).toAlgebra`. Set `g : TrivSqZeroExt C C →ₐ[R] C` to `{ (TrivSqZeroExt.fstHom C C C).toRingHom with commutes' := fun r => by show (ψ r).fst = φ (algebraMap R B r)`. Simplify using `[ψ] }`. Set `f : B →ₐ[R] C` to `{ φ with commutes' := fun r => rfl }`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hg : Function.Surjective g` using `fun c => ⟨TrivSqZeroExt.inl c, by simp [g]⟩`. Establish `hker : IsNilpotent (RingHom.ker g)`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Submodule.zero_eq_bot, eq_bot_iff]`. Use `Ideal.mul_le.mpr fun x hx y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx`, `hy` using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `x.fst = 0 at hx`. Express the relevant statement in the definitionally equal form `y.fst = 0 at hy`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hx, hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `L` to `Algebra.FormallySmooth.liftOfSurjective f g hg hker`. Use `⟨fun b => (L b).snd, fun a b => ?_, fun a b => ?_, fun r => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hfa : (L a).fst = φ a` using `Algebra.FormallySmooth.liftOfSurjective_apply f g hg hker a`. Establish `hfb : (L b).fst = φ b` using `Algebra.FormallySmooth.liftOfSurjective_apply f g hg hker b`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hfa, hfb]`. Expand and normalize the polynomial expressions, which then agree. Use `show (L (algebraMap R B r)).snd = D r`. Rewrite using `[L.commutes r]`. Use `show (ψ r).snd = D r`.
-
-Simplify using `[ψ]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KS.exists_derivation_extend_of_formallySmooth :
     ∀ (R B C : Type) [CommRing R] [CommRing B] [CommRing C] [Algebra R B] [Algebra.FormallySmooth R B] (φ : B →+* C) (D : R → C), (∀ a b, D (a + b) = D a + D b) → (∀ a b, D (a * b) = φ (algebraMap R B a) * D b + φ (algebraMap R B b) * D a) → ∃ d : B → C, (∀ a b, d (a + b) = d a + d b) ∧ (∀ a b, d (a * b) = φ a * d b + φ b * d a) ∧ ∀ r, d (algebraMap R B r) = D r := by

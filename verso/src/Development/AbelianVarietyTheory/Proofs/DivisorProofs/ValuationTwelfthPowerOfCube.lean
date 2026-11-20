@@ -8,7 +8,7 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h3 : Q^12 * (p:ℂ)^9 = s * D^(12*n+3)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow, div_mul_eq_mul_div, div_mul_eq_mul_div, div_mul_eq_mul_div, div_eq_iff (by positivity)]`. Take the linear combination `(-(A^12 * (p:ℂ)^3)) * h3`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma twelfth_power_clear_denom_three_mod_eight (p : ℕ) (D A Q s : ℂ) (n : ℕ) (hp0 : (p:ℂ) ≠ 0) (hD0 : D ≠ 0)
     (hQ0 : Q ≠ 0) (hs2 : s^2 = 1) (hε : Q^4 * (p:ℂ)^3 = s * D^(4*n+1)) :
@@ -22,7 +22,7 @@ private lemma twelfth_power_clear_denom_three_mod_eight (p : ℕ) (D A Q s : ℂ
   linear_combination (-(A^12 * (p:ℂ)^3)) * h3
 
 /- English proof (translation)
-Establish `h3 : Q^12 * (p:ℂ)^9 = s * D^(12*n+9)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow, div_mul_eq_mul_div, div_mul_eq_mul_div, div_mul_eq_mul_div, div_eq_iff (by positivity)]`. Take the linear combination `(A^12 * D^3 * s) * h3 + (A^12 * D^(12*n+12)) * hs2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma twelfth_power_clear_denom_seven_mod_eight (p : ℕ) (D A Q s : ℂ) (n : ℕ) (hD0 : D ≠ 0)
     (hs2 : s^2 = 1) (hε : Q^4 * (p:ℂ)^3 = s * D^(4*n+3)) :
@@ -36,9 +36,9 @@ private lemma twelfth_power_clear_denom_seven_mod_eight (p : ℕ) (D A Q s : ℂ
   linear_combination (A^12 * D^3 * s) * h3 + (A^12 * D^(12*n+12)) * hs2
 
 /- English proof (translation)
-Establish `hs : V.valuation s = 1`. Apply the tactic sequence `rcases sq_eq_sq_iff_eq_or_eq_neg.1 (hs2.trans (one_pow 2).symm) with h1 | h1 <;>`. Simplify using `[h1]`. Establish `h'` using `congrArg V.valuation h`. Simplify using `only [map_mul, map_pow, hs, mul_one] at h'`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hD' : V.valuation D ^ 3 ≠ 0` using `pow_ne_zero _ ((Valuation.ne_zero_iff _).2 hD0)`. Apply `mul_right_cancel₀ hD'` to reduce the goal to its premises. Rewrite using `[h', show 12 = 3 * 4 from rfl, pow_mul, hv, ← pow_succ']`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private lemma twelfth_cancel (V : ValuationSubring ℂ) (D A u P s : ℂ) (e : ℕ) (hD0 : D ≠ 0)
     (hs2 : s^2 = 1) (hv : V.valuation A ^ 3 = V.valuation D)
@@ -54,15 +54,13 @@ private lemma twelfth_cancel (V : ValuationSubring ℂ) (D A u P s : ℂ) (e : �
   rw [h', show 12 = 3 * 4 from rfl, pow_mul, hv, ← pow_succ']
 
 /- English proof (translation)
-Introduce `p V F D A Q hp hD hA hQ hD0 hA0 hv hrel`. Take `⟨k, hk⟩ : ∃ k, p = 4 * k + 3` from `⟨p / 4, by omega⟩`. Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast (show p ≠ 0 by omega)`. Rewrite `hrel` using `[show p - 1 = 2 * (2 * k + 1) by omega, pow_mul']`. Establish `hQ0 : Q ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul] at hrel`. Conclude with `pow_ne_zero _ (pow_ne_zero _ hD0) hrel.symm`. Establish `hsq : (Q^4 * (p:ℂ)^3)^2 = (D^(2*k+1))^2` using `by rw [← hrel]; ring`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs2, hε⟩ : ∃ s : ℂ, s^2 = 1 ∧ Q^4 * (p:ℂ)^3 = s * D^(2*k+1) := by`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with h | h` into its components or cases. Conclude with `⟨1, by norm_num, by rw [h, one_mul]⟩`. Conclude with `⟨-1, by norm_num, by rw [h, neg_one_mul]⟩`. Break down `Nat.even_or_odd' k with ⟨n, rfl | rfl⟩` into its components or cases. Rewrite `hε` using `[show 2 * (2 * n) + 1 = 4 * n + 1 by ring]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A * D^n / (Q * p), div_mem (mul_mem hA (pow_mem hD n)) (mul_mem hQ (natCast_mem F p)), div_ne_zero (mul_ne_zero hA0 (pow_ne_zero _ hD0)) (mul_ne_zero hQ0 hp0), ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos (by omega)]`. Conclude with `twelfth_cancel V D A _ _ s 3 hD0 hs2 hv (twelfth_power_clear_denom_three_mod_eight p D A Q s n hp0 hD0 hQ0 hs2 hε)`. Rewrite `hε` using `[show 2 * (2 * n + 1) + 1 = 4 * n + 3 by ring]`. Use `⟨A * Q / D^(n+1), div_mem (mul_mem hA hQ) (pow_mem hD _), div_ne_zero (mul_ne_zero hA0 hQ0) (pow_ne_zero _ hD0), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[if_neg (by omega)]`. Conclude with `twelfth_cancel V D A _ _ s 9 hD0 hs2 hv (twelfth_power_clear_denom_seven_mod_eight p D A Q s n hD0 hs2 hε)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_twelfth_power_of_cube :
     ∀ (p : ℕ) (V : ValuationSubring ℂ) (F : IntermediateField ℚ ℂ) (D A Q : ℂ), p % 4 = 3 →

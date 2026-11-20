@@ -39,7 +39,7 @@ abbrev yV (G : HTGroup p) (y : G.Cˣ) (v : AwayP p) : (Qv v ⊗[ℚ] G.C)ˣ :=
   Units.map (Algebra.TensorProduct.includeRight : G.C →ₐ[ℚ] Qv v ⊗[ℚ] G.C).toMonoidHom y
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `set φ := Algebra.TensorProduct.map (AfP.eval v) (AlgHom.id ℚ G.C) with hφ`. Establish `h0 : (((piV G v (toAfF G β x t hx y) : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = φ ((x : AfP p ⊗[ℚ] G.C) * ((1 : AfP p) ⊗ₜ[ℚ] (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)) * ((x⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C))` using `rfl`. Rewrite using `[h0, map_mul, map_mul]`. Simplify using `[φ, Algebra.TensorProduct.map_tmul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem piV_toAfF_fst (G : HTGroup p) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
     (hx : Triv G (AfP p) β x t) (y : grp G β) (v : AwayP p) :
@@ -54,15 +54,15 @@ theorem piV_toAfF_fst (G : HTGroup p) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) 
   simp [φ, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-Establish `hcsa` using `GlobalTheory.CentSep.centralizer_eq_adjoin G.F G.C G.n G.rankC y hsep hdeg`. Establish `hcent : ∀ z : G.C, z * y = y * z ↔ z ∈ Set.range ((Algebra.adjoin G.F ({y} : Set G.C)).val.restrictScalars ℚ)`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : z ∈ Subalgebra.centralizer G.F {y}`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Simplify using `using h.symm`. Rewrite `hz` using `[hcsa]`. Conclude with `⟨⟨z, hz⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨w, rfl⟩`. Establish `hw : (w : G.C) ∈ Subalgebra.centralizer G.F {y}` using `by rw [hcsa]; exact w.2`. Rewrite `hw` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(hw _ rfl).symm`. Use `set Xv : Qv v ⊗[ℚ] G.C := (X : Qv v ⊗[ℚ] G.C)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Y : Qv v ⊗[ℚ] G.C := ((X⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C)`. Use `set g : Qv v ⊗[ℚ] G.C := (1 : Qv v) ⊗ₜ[ℚ] y`. Establish `hXY : Xv * Y = 1` using `X.mul_inv`. Establish `hYX : Y * Xv = 1` using `X.inv_mul`. Establish `conj : ∀ c : Qv v ⊗[ℚ] G.C, c * (Xv * g * Y) = (Xv * g * Y) * c → (Y * c * Xv) * g = g * (Y * c * Xv)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `c hc`. Combine the equalities or inequalities in the displayed calculation. Establish `hc` using `GlobalTheory.LKCentAf.commute_of_centralizer ℚ (Qv v) G.C _ y _ hcent _ _ (conj a ha) (conj b hb)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem comm_of_comm (G : HTGroup p) (y : G.C) (hdeg : (minpoly G.F y).natDegree = G.n)
     (hsep : (minpoly G.F y).Separable) (v : AwayP p) (X : (Qv v ⊗[ℚ] G.C)ˣ) (a b : Qv v ⊗[ℚ] G.C)
@@ -112,11 +112,11 @@ namespace GlobalTheory.OrbFinAf.AwayIrr
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `letI : TopologicalSpace (Qv v ⊗[ℚ] G.C) := moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C)`. Establish `he₀ : ((yV G y v : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = (1 : Qv v) ⊗ₜ[ℚ] (y : G.C)` using `rfl`. Establish `hset : {z : (Qv v ⊗[ℚ] G.C)ˣ | ∃ g : (Qv v ⊗[ℚ] G.C)ˣ, z = g * (X * yV G y v * X⁻¹) * g⁻¹} = {z : (Qv v ⊗[ℚ] G.C)ˣ | ∃ g : (Qv v ⊗[ℚ] G.C)ˣ, z = g * yV G y v * g⁻¹}`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨g * X, by group⟩`. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨g * X⁻¹, by group⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hset]`. Conclude with `GlobalTheory.ClosedClass.isClosed_conjClass (Qv v) G.F G.C G.n G.rankC (y : G.C) hsep hdeg (yV G y v) he₀`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_conjClass' (G : HTGroup p) (v : AwayP p) (y : G.Cˣ) (hdeg : (minpoly G.F (y : G.C)).natDegree = G.n)
     (hsep : (minpoly G.F (y : G.C)).Separable) (X : (Qv v ⊗[ℚ] G.C)ˣ) :
@@ -137,15 +137,15 @@ theorem isClosed_conjClass' (G : HTGroup p) (v : AwayP p) (y : G.Cˣ) (hdeg : (m
   exact GlobalTheory.ClosedClass.isClosed_conjClass (Qv v) G.F G.C G.n G.rankC (y : G.C) hsep hdeg (yV G y v) he₀
 
 /- English proof (translation)
-Use `letI : TopologicalSpace (Qv v ⊗[ℚ] G.C) := moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology (Qv v) (Qv v ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Qv v ⊗[ℚ] G.C) := IsModuleTopology.isTopologicalRing (Qv v) (Qv v ⊗[ℚ] G.C)`. Introduce `Ω hΩ`. Take `⟨h2, hlc, hsc⟩` from `GlobalTheory.T.local_units_locally_compact p G v`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set e := X * yV G y v * X⁻¹ with he`. Set `act : MulAction (Qv v ⊗[ℚ] G.C)ˣ (Qv v ⊗[ℚ] G.C)ˣ` to `GlobalTheory.OrbFinAf.LocFinIrr.conjMA _`. Establish `hcs` using `GlobalTheory.OrbFinAf.LocFinIrr.conjMA_cont (Qv v ⊗[ℚ] G.C)ˣ`. Establish `horb : @MulAction.orbit _ _ act.toSMul e = {z : (Qv v ⊗[ℚ] G.C)ˣ | ∃ g : (Qv v ⊗[ℚ] G.C)ˣ, z = g * e * g⁻¹}`. Use extensionality with `z`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨g, rfl⟩`. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨g, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcl : IsClosed (@MulAction.orbit _ _ act.toSMul e)`. Rewrite using `[horb]`. Conclude with `isClosed_conjClass' G v y hdeg hsep X`. Take `⟨C, hC, hCg⟩` from `@GlobalTheory.OrbitSumInt.exists_compact_reach _ _ _ _ _ hlc hsc act _ h2 (by haveI := h2; infer_instance) hcs e hcl Ω hΩ`. Use `⟨C⁻¹, hC.inv, fun g hg => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨c, hc, hce⟩` from `hCg g⁻¹ (by show g⁻¹ * e * g⁻¹⁻¹ ∈ Ω; rwa [inv_inv])`. Express the relevant statement in the definitionally equal form `c * e * c⁻¹ = g⁻¹ * e * g⁻¹⁻¹ at hce`. Use `⟨g * c, ?_, c⁻¹, by simpa using hc, by group⟩` and prove the remaining obligations. Establish `: e = g * (c * e * c⁻¹) * g⁻¹` using `by rw [hce]; group`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem orbA' (G : HTGroup p) (v : AwayP p) (y : G.Cˣ) (hdeg : (minpoly G.F (y : G.C)).natDegree = G.n)
     (hsep : (minpoly G.F (y : G.C)).Separable) (X : (Qv v ⊗[ℚ] G.C)ˣ) :
@@ -190,55 +190,45 @@ variable {p : ℕ} [Fact p.Prime]
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `letI : TopologicalSpace (Qv v ⊗[ℚ] G.C) := moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C)`. Introduce `K hK`. Use `haveI : IsModuleTopology (Qv v) (Qv v ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Qv v ⊗[ℚ] G.C) := IsModuleTopology.isTopologicalRing (Qv v) _`. Use `haveI : ContinuousSMul (Qv v) (Qv v ⊗[ℚ] G.C) := IsModuleTopology.toContinuousSMul (Qv v) _`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT2 : T2Space (Qv v ⊗[ℚ] G.C)ˣ` using `(topA p G v).1`. Establish `hLC : LocallyCompactSpace (Qv v ⊗[ℚ] G.C)ˣ` using `(topA p G v).2.1`. Establish `hSC : SigmaCompactSpace (Qv v ⊗[ℚ] G.C)ˣ` using `(topA p G v).2.2`. Use `haveI := locCpt_Qv v`. Use `haveI := secCount_Qv v`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hS` using `units_topA (Qv v) (Qv v)`. Use `haveI : T2Space (Qv v)ˣ := hS.1`. Use `haveI : LocallyCompactSpace (Qv v)ˣ := hS.2.1`. Use `haveI : SigmaCompactSpace (Qv v)ˣ := hS.2.2`. Use `set e : (Qv v ⊗[ℚ] G.C)ˣ := (g0 : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 with he_def`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsa : ∀ r : Qv v, (starT G.star (Qv v) (algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) r)).unop = algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) r`. Introduce `r`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, starT_tmul, map_one, MulOpposite.unop_one]`. Set `sl : (Qv v ⊗[ℚ] G.C) →ₗ[Qv v] (Qv v ⊗[ℚ] G.C)` to `{ toFun := fun a => (starT G.star (Qv v) a).unop map_add' := fun a b => by simp map_smul' := fun r a => by`. Simplify using `only [RingHom.id_apply, Algebra.smul_def, map_mul, MulOpposite.unop_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[hsa r]`. Conclude with `(Algebra.commutes r _).symm }`. Establish `hsl : ∀ a, sl a = (starT G.star (Qv v) a).unop` using `fun a => rfl`. Establish `hslc : Continuous sl` using `IsModuleTopology.continuous_of_linearMap sl`. Establish `hsl_mul : ∀ a b, sl (a * b) = sl b * sl a` using `fun a b => by simp [hsl]`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsl1 : sl 1 = 1` using `by simp [hsl]`. Establish `hslsl : ∀ a, sl (sl a) = a`. Introduce `a`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `tmul r y => rw [hsl, hsl, starT_tmul, starT_tmul, G.star_star]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Set `stU : (Qv v ⊗[ℚ] G.C)ˣ → (Qv v ⊗[ℚ] G.C)ˣ` to `fun g => ⟨sl g, sl ((g⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C), by rw [← hsl_mul, Units.inv_mul, hsl1], by rw [← hsl_mul, Units.mul_inv, hsl1]⟩`. Establish `hstU : ∀ g, ((stU g : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = sl g` using `fun g => rfl`. Establish `hstUc : Continuous stU` using `Units.continuous_iff.2 ⟨hslc.comp Units.continuous_val, hslc.comp Units.continuous_coe_inv⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : ((e : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) * sl e = algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) ((g0 : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).2 : Qv v)` using `g0.2`. Set `ι₀ : (Qv v)ˣ →* (Qv v ⊗[ℚ] G.C)ˣ` to `Units.map (algebraMap (Qv v) (Qv v ⊗[ℚ] G.C)).toMonoidHom`. Establish `hι₀ : ∀ a, ((ι₀ a : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) a` using `fun a => rfl`. Establish `hcent : ∀ (a : (Qv v)ˣ) (y : (Qv v ⊗[ℚ] G.C)ˣ), ι₀ a * y = y * ι₀ a` using `fun a y => Units.ext (Algebra.commutes _ _)`. Establish `hcomA : ∀ a b : Qv v ⊗[ℚ] G.C, a * e = e * a → b * e = e * b → a * b = b * a` using `hcomA0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsle : ∀ a : Qv v ⊗[ℚ] G.C, a * e = e * a → sl a * e = e * sl a`. Introduce `a ha`. Establish `h1 : sl e * sl a = sl a * sl e` using `by rw [← hsl_mul, ha, hsl_mul]`. Establish `hinv : sl (e : Qv v ⊗[ℚ] G.C) * sl ((e⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = 1`. Rewrite using `[← hsl_mul, Units.inv_mul, hsl1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : sl a * e * sl e = e * sl a * sl e`. Rewrite using `[mul_assoc, he, mul_assoc, ← h1, ← mul_assoc, he]`. Conclude with `(Algebra.commutes _ _).symm`. Combine the equalities or inequalities in the displayed calculation. Establish `hslm : ∀ a b : Qv v ⊗[ℚ] G.C, a * e = e * a → b * e = e * b → sl (a * b) = sl a * sl b` using `fun a b ha hb => by rw [hsl_mul]; exact hcomA _ _ (hsle b hb) (hsle a ha)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨W, hW, hWs⟩` from `GlobalTheory.T.exists_sqrt_fixed_near_one_commutative_centralizer p v (Qv v ⊗[ℚ] G.C) (e : Qv v ⊗[ℚ] G.C) sl hcomA hsle hslm hsl1`. Set `Z : Subgroup (Qv v ⊗[ℚ] G.C)ˣ` to `Subgroup.centralizer {e}`. Establish `hZ : ∀ z : (Qv v ⊗[ℚ] G.C)ˣ, z ∈ Z ↔ (z : Qv v ⊗[ℚ] G.C) * e = e * z`. Introduce `z`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff, Units.ext_iff, Units.val_mul, Units.val_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hZc : IsClosed (Z : Set (Qv v ⊗[ℚ] G.C)ˣ)`. Establish `: (Z : Set (Qv v ⊗[ℚ] G.C)ˣ) = {z | z * e = e * z}`. Use extensionality with `z`. Conclude with `Subgroup.mem_centralizer_singleton_iff`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul continuous_id)`. Use `haveI : LocallyCompactSpace Z := hZc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SigmaCompactSpace Z := hZc.isClosedEmbedding_subtypeVal.sigmaCompactSpace`. Establish `hcommZ : ∀ a b : Z, a * b = b * a` using `fun a b => Subtype.ext (Units.ext (hcomA _ _ ((hZ _).1 a.2) ((hZ _).1 b.2)))`. Set `τ : Z →* Z` to `{ toFun := fun z => ⟨stU z.1, (hZ _).2 (hsle _ ((hZ _).1 z.2))⟩ map_one' := Subtype.ext (Units.ext hsl1) map_mul' := fun a b => Subtype.ext (Units.ext (hslm _ _ ((hZ _).1 a.2) ((hZ _).1 b.2))) }`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hτ : ∀ z : Z, (((τ z : Z) : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = sl ((z : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C)` using `fun z => rfl`. Establish `hτc : Continuous τ` using `continuous_induced_rng.2 (hstUc.comp continuous_subtype_val)`. Establish `hτi : ∀ z, τ (τ z) = z` using `fun z => Subtype.ext (Units.ext (hslsl _))`. Establish `hsq : ∃ W ∈ nhds (1 : Z), ∀ s ∈ W, τ s = s → ∃ r : Z, τ r = r ∧ r * r = s`. Use `⟨(fun z : Z => ((z : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C)) ⁻¹' W, (Units.continuous_val.comp continuous_subtype_val).continuousAt.preimage_mem_nhds (by simpa using hW), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s hs hτs`. Establish `hss : sl ((s : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = ((s : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C)` using `congrArg (fun u : Z => ((u : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C)) hτs`. Take `⟨r, hre, hrs, hrr⟩` from `hWs _ hs ((hZ _).1 s.2) hss`. Establish `hrr2 : r * r = ((s : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C)` using `hrr`. Use `set sA : (Qv v ⊗[ℚ] G.C)ˣ := (s : (Qv v ⊗[ℚ] G.C)ˣ) with hsA`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrsc : r * sA = sA * r` using `by rw [← hrr2]; exact (mul_assoc r r r).symm`. Establish `hrs' : ((sA⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) * r = r * ((sA⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.mul_inv, mul_one]`. Use `_ = ((sA⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) * (r * sA) * ((sA⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression.
 
-Simplify using `only [mul_assoc]`. Use `_ = ((sA⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) * (sA * r) * ((sA⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) := by`. Rewrite using `[hrsc]`. Use `_ = r * ((sA⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) := by rw [← mul_assoc, Units.inv_mul, one_mul]`. Set `ru : (Qv v ⊗[ℚ] G.C)ˣ` to `⟨r, ((sA⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) * r, by rw [hrs', ← mul_assoc, hrr2, Units.mul_inv], by rw [mul_assoc, hrr2, Units.inv_mul]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨⟨ru, (hZ ru).2 hre⟩, Subtype.ext (Units.ext hrs), Subtype.ext (Units.ext hrr2)⟩` and prove the remaining obligations. Set `ι : (Qv v)ˣ →* Z` to `{ toFun := fun a => ⟨ι₀ a, (hZ _).2 (Algebra.commutes _ _)⟩ map_one' := Subtype.ext (map_one ι₀) map_mul' := fun a b => Subtype.ext (map_mul ι₀ a b) }`. Establish `hιc : Continuous ι` using `continuous_induced_rng.2 (Continuous.units_map (algebraMap (Qv v) (Qv v ⊗[ℚ] G.C)).toMonoidHom (continuous_algebraMap (Qv v) _))`. Establish `hτι : ∀ a, τ (ι a) = ι a` using `fun a => Subtype.ext (Units.ext (hsa (a : Qv v)))`. Establish `hU : ∃ U ∈ nhds (1 : (Qv v)ˣ), ∀ a ∈ U, a * a = 1 → a = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : (Qv v)ˣ) ≠ -1`. Introduce `h`. Establish `h'` using `congrArg (fun u : (Qv v)ˣ => (u : Qv v)) h`. Simplify using `only [Units.val_one, Units.val_neg] at h'`. Use `haveI : CharZero (Qv v) := charZero_of_injective_algebraMap (algebraMap ℚ (Qv v)).injective`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (2 : Qv v) = 0` using `by linear_combination h'`. Conclude with `two_ne_zero h2`. Use `⟨{a | a ≠ -1}, isOpen_ne.mem_nhds h1, fun a ha haa => ?_⟩` and prove the remaining obligations. Establish `h2 : (a : Qv v) * a = 1` using `by rw [← Units.val_mul, haa, Units.val_one]`. Break down `mul_self_eq_one_iff.1 h2 with h3 | h3` into its components or cases.
-
-Conclude with `Units.ext h3`. Conclude with `absurd (Units.ext (by rw [h3, Units.val_neg, Units.val_one])) ha`. Set `D : Set Z` to `(fun z : Z => (z : (Qv v ⊗[ℚ] G.C)ˣ)) ⁻¹' ((fun k : (Qv v ⊗[ℚ] G.C)ˣ => (k * stU k)⁻¹) '' K)`. Establish `hD : IsCompact D` using `hZc.isClosedEmbedding_subtypeVal.isCompact_preimage (hK.image ((continuous_id.mul hstUc).inv))`. Take `⟨B, hB, hBs⟩` from `exists_compact_mod_sim Z (Qv v)ˣ hcommZ (fun a b => mul_comm a b) τ hτc hτi hsq ι hιc hτι hU D hD`.
-
-Use `⟨(fun b : Z => (b : (Qv v ⊗[ℚ] G.C)ˣ)) '' B, hB.image continuous_subtype_val, ?_⟩` and prove the remaining obligations. Introduce `z hze s k hk hzk`. Establish `hzZ : z ∈ Z` using `Subgroup.mem_centralizer_singleton_iff.2 hze`. Establish `hU' : z * (k * stU k) * stU z = ι₀ s` using `Units.ext hzk`. Establish `hD' : τ ⟨z, hzZ⟩ * ⟨z, hzZ⟩ * (ι s)⁻¹ ∈ D`.
-
-Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Use `show (k * stU k)⁻¹ = stU z * z * (ι₀ s)⁻¹`. Establish `h1 : k * stU k = z⁻¹ * ι₀ s * (stU z)⁻¹` using `by rw [← hU']; group`. Rewrite using `[h1, ← map_inv ι₀ s]`. Simplify using `only [_root_.mul_inv_rev, inv_inv, ← map_inv ι₀ s, mul_assoc]`.
-
-Rewrite using `[hcent]`. Take `⟨u, l, hul, b, hb, hzub⟩` from `hBs ⟨z, hzZ⟩ s hD'`. Rewrite `hul` using `[hcommZ]`. Use `⟨⟨((u : (Qv v ⊗[ℚ] G.C)ˣ), l), congrArg (fun w : Z => ((w : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C)) hul⟩, ?_, (b : (Qv v ⊗[ℚ] G.C)ˣ), ⟨b, hb, rfl⟩, congrArg Subtype.val hzub⟩` and prove the remaining obligations. Use `show _ * g0 = g0 * _`.
-
-Conclude with `Subtype.ext (Prod.ext (Subgroup.mem_centralizer_singleton_iff.1 u.2) (mul_comm _ _))`.
+A detailed English derivation is pending.
 -/
 theorem normProper (G : HTGroup p) (v : AwayP p) (g0 : Gv G v)
     (hcomA0 : ∀ a b : Qv v ⊗[ℚ] G.C,
@@ -411,7 +401,7 @@ namespace GlobalTheory.OrbFinAf.AwayIrr
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_conj (G : HTGroup p) (v : AwayP p) (y : G.Cˣ) (X : (Qv v ⊗[ℚ] G.C)ˣ) :
     ((X * yV G y v * X⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) =
@@ -419,17 +409,15 @@ theorem val_conj (G : HTGroup p) (v : AwayP p) (y : G.Cˣ) (X : (Qv v ⊗[ℚ] G
   rw [Units.val_mul, Units.val_mul]; rfl
 
 /- English proof (translation)
-Use `letI : TopologicalSpace (Qv v ⊗[ℚ] G.C) := moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology (Qv v) (Qv v ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Qv v ⊗[ℚ] G.C) := IsModuleTopology.isTopologicalRing (Qv v) (Qv v ⊗[ℚ] G.C)`. Establish `hcomA : ∀ a b : Qv v ⊗[ℚ] G.C, a * (((g0 : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = (((g0 : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) * a → b * (((g0 : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = (((g0 …`. Introduce `a b ha hb`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ha`, `hb` using `[hg0, val_conj]`. Conclude with `comm_of_comm G (y : G.C) hdeg hsep v X a b ha hb`. Establish `hcont : Continuous fun d : Gv G v => (d : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1` using `continuous_fst.comp continuous_subtype_val`. Take `⟨K, hK, hKg⟩` from `orbA' G v y hdeg hsep X _ (hΩ.image hcont)`. Take `⟨K', hK', hK'g⟩` from `normProper G v g0 hcomA K hK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set K'' : Set (Qv v ⊗[ℚ] G.C)ˣ := (fun q : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v ⊗[ℚ] G.C)ˣ => q.1 * q.2) '' (K' ×ˢ K)`. Establish `hK'' : IsCompact K''` using `(hK'.prod hK).image continuous_mul`. Use `⟨{d : Gv G v | (d : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 ∈ K''}, GlobalTheory.T.isCompact_unitaryPointsAtPlace_fst_mem_compact p G v K'' hK'', ?_⟩` and prove the remaining obligations. Introduce `g hg`. Establish `h1 : (g : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1⁻¹ * (X * yV G y v * X⁻¹) * (g : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 ∈ (fun d : Gv G v => (d : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1) '' Ω`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hg0]`. Conclude with `⟨_, hg, rfl⟩`. Take `⟨z, hz, k, hk, hgz⟩` from `hKg _ h1`. Rewrite `hz` using `[← hg0]`. Establish `hgm : (((g : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) * (starT G.star (Qv v) (((g : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C)).unop = algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) (((g : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).2 : (Qv v)ˣ) : Qv v)` using `g.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hgm` using `[hgz, Units.val_mul, map_mul, MulOpposite.unop_mul]`. Establish `hgm' : (z : Qv v ⊗[ℚ] G.C) * ((k : Qv v ⊗[ℚ] G.C) * (starT G.star (Qv v) (k : Qv v ⊗[ℚ] G.C)).unop) * (starT G.star (Qv v) (z : Qv v ⊗[ℚ] G.C)).unop = algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) (((g : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).2 : (Qv v)ˣ) : Qv v)`. Rewrite using `[← hgm]`. Simplify using `only [mul_assoc]`. Take `⟨c, hc, m, hm, hzc⟩` from `hK'g z hz _ k hk hgm'`.
-
-Use `⟨c, hc, c⁻¹ * g, ⟨(m, k), ⟨hm, hk⟩, ?_⟩, by group⟩` and prove the remaining obligations. Use `show m * k = ((c : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1)⁻¹ * (g : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1`. Rewrite using `[hgz, hzc]`. Use `group`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_fin' (G : HTGroup p) (v : AwayP p) (y : G.Cˣ) (hdeg : (minpoly G.F (y : G.C)).natDegree = G.n)
     (hsep : (minpoly G.F (y : G.C)).Separable) (X : (Qv v ⊗[ℚ] G.C)ˣ) (g0 : Gv G v)
@@ -480,13 +468,11 @@ namespace GlobalTheory.OrbFinAf.AwayIrr
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `filter_upwards [GlobalTheory.T.eventually_completedTensor_matrix_split_semilocal p G (y : G.C) hdeg hsep, isIntV_mul_eventually G, GlobalTheory.OrbFinAf.KottLat.eventually_isIntV_map G (x : AfP p ⊗[ℚ] G.C), GlobalTheory.OrbFinAf.KottLat.eventually_isIntV_map G ((x⁻¹ : (AfP p ⊗[ℚ] …`. Introduce `g h1 _`. Take `⟨K, _, R, Φ, hfin, hInt, Q, hQs, hQm⟩` from `hA`. Use `set xv := xV G x v with hxv`. Use `set γ₀ := yV G y v with hγ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hγ0 : IsIntV G v (γ₀ : Qv v ⊗[ℚ] G.C)`. Rewrite `hγ1` using `[Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`. Conclude with `hγ1`. Establish `e1 : (xv⁻¹ * g)⁻¹ * γ₀ * (xv⁻¹ * g) = g⁻¹ * (xv * γ₀ * xv⁻¹) * g` using `by group`. Take `⟨U, hU, hU1, hU2⟩` from `GlobalTheory.OrbFinAf.KottLat.conj_integral R Φ hfin Q hQs γ₀ hQm ((hInt _).1 hγ0) (xv⁻¹ * g) (by rw [e1]; exact (hInt _).1 h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hU1' : IsIntV G v (U : Qv v ⊗[ℚ] G.C)` using `(hInt _).2 hU1`. Establish `hU2' : IsIntV G v ((U⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C)` using `(hInt _).2 hU2`. Establish `key : U⁻¹ * γ₀ = ((xv⁻¹ * g)⁻¹ * γ₀ * (xv⁻¹ * g)) * U⁻¹`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, hU, mul_assoc, mul_inv_cancel, mul_one]`. Use `⟨g * U⁻¹ * xv⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (g * U⁻¹ * xv⁻¹)⁻¹ * g = xv * U by group, Units.val_mul]`. Conclude with `hmul _ _ hx1 hU1'`. Rewrite using `[show g⁻¹ * (g * U⁻¹ * xv⁻¹) = U⁻¹ * xv⁻¹ by group, Units.val_mul]`. Conclude with `hmul _ _ hU2' hx2`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice' (G : HTGroup p) (y : G.Cˣ) (hdeg : (minpoly G.F (y : G.C)).natDegree = G.n)
     (hsep : (minpoly G.F (y : G.C)).Separable) (x : (AfP p ⊗[ℚ] G.C)ˣ) :
@@ -524,19 +510,19 @@ theorem lattice' (G : HTGroup p) (y : G.Cˣ) (hdeg : (minpoly G.F (y : G.C)).nat
     exact hmul _ _ hU2' hx2
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ⟩ : ∃ δ : G.F, IsCMField.complexConj G.F δ ≠ δ := by`. Set `τ : G.F →+* ℂ` to `Classical.arbitrary _`. Take `⟨y, -, hy⟩` from `G.hKq.2 τ`. Use `⟨y, fun h => hy ?_⟩` and prove the remaining obligations. Establish `h2` using `IsCMField.complexEmbedding_complexConj G.F τ y`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[h]`. Establish `h3` using `congrArg Complex.im h2`. Rewrite `h3` using `[Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd0 : δ - IsCMField.complexConj G.F δ ≠ 0` using `sub_ne_zero.2 (Ne.symm hδ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `filter_upwards [GlobalTheory.T.eventually_integral_tensor_points_sharp_stable_ring p G, GlobalTheory.T.eventually_isIntV_one_tmul p G (algebraMap G.F G.C δ), GlobalTheory.T.eventually_isIntV_one_tmul p G (algebraMap G.F G.C (δ - IsCMField.complexConj G.F δ)⁻¹), GlobalTheory.T.eve …`. Take `⟨hO1, hOm, hOs⟩` from `hO`. Establish `hmem` using `(g0 v).2`. Establish `hcomm : ∀ a b : Qv v ⊗[ℚ] G.C, a * (((g0 v : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = (((g0 v : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) * a → b * (((g0 v : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = …`. Introduce `a b ha hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha`, `hb` using `[hg0, val_conj]`. Conclude with `comm_of_comm G (y : G.C) hdeg hsep v _ a b ha hb`. Establish `central : ∀ c : G.C, (∀ z : G.C, c * z = z * c) → ∀ w : Qv v ⊗[ℚ] G.C, w * ((1 : Qv v) ⊗ₜ[ℚ] c) = ((1 : Qv v) ⊗ₜ[ℚ] c) * w`. Introduce `c hc w`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul r z => simp [Algebra.TensorProduct.tmul_mul_tmul, hc z]`. Consider the case `add a b ha hb => rw [add_mul, mul_add, ha, hb]`. Establish `cF : ∀ a : G.F, ∀ z : G.C, algebraMap G.F G.C a * z = z * algebraMap G.F G.C a` using `fun a z => Algebra.commutes a z`. Establish `cQ : ∀ a : ℚ, ∀ z : G.C, algebraMap ℚ G.C a * z = z * algebraMap ℚ G.C a` using `fun a z => Algebra.commutes a z`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hstar : (starT G.star (Qv v) ((1 : Qv v) ⊗ₜ[ℚ] algebraMap G.F G.C δ)).unop = (1 : Qv v) ⊗ₜ[ℚ] algebraMap G.F G.C (IsCMField.complexConj G.F δ)`. Rewrite using `[starT_tmul, G.star_F]`. Establish `hprod : ((1 : Qv v) ⊗ₜ[ℚ] algebraMap G.F G.C δ - (starT G.star (Qv v) ((1 : Qv v) ⊗ₜ[ℚ] algebraMap G.F G.C δ)).unop) * ((1 : Qv v) ⊗ₜ[ℚ] algebraMap G.F G.C (δ - IsCMField.complexConj G.F δ)⁻¹) = 1`. Rewrite using `[hstar, ← TensorProduct.tmul_sub, Algebra.TensorProduct.tmul_mul_tmul, mul_one, ← map_sub, ← map_mul, mul_inv_cancel₀ hd0, map_one]`. Conclude with `Algebra.TensorProduct.one_def.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hh : (1 : Qv v) ⊗ₜ[ℚ] algebraMap ℚ G.C (1 / 2) = algebraMap ℚ (Qv v ⊗[ℚ] G.C) (1 / 2)` using `(Algebra.TensorProduct.includeRight : G.C →ₐ[ℚ] Qv v ⊗[ℚ] G.C).commutes (1 / 2)`. Establish `h2h : (2 : Qv v ⊗[ℚ] G.C) * ((1 : Qv v) ⊗ₜ[ℚ] algebraMap ℚ G.C (1 / 2)) = 1`. Rewrite using `[hh, ← map_ofNat (algebraMap ℚ (Qv v ⊗[ℚ] G.C)) 2, ← map_mul, show (2 : ℚ) * (1 / 2) = 1 by norm_num, map_one]`. Conclude with `GlobalTheory.T.integral_order_centralizer_stable p G v _ _ hmem hO1 hOm hOs hcomm _ _ _ (central _ (cF δ) _).symm (central _ (cF _) _).symm (central _ (cQ _) _).symm h1 h2 h3 hprod h2h`.
+A detailed English derivation is pending.
 -/
 theorem norm' (G : HTGroup p) (y : G.Cˣ) (hdeg : (minpoly G.F (y : G.C)).natDegree = G.n)
     (hsep : (minpoly G.F (y : G.C)).Separable) (x : (AfP p ⊗[ℚ] G.C)ˣ) (g0 : ∀ v : AwayP p, Gv G v)
@@ -599,9 +585,9 @@ theorem norm' (G : HTGroup p) (y : G.Cˣ) (hdeg : (minpoly G.F (y : G.C)).natDeg
     (central _ (cF δ) _).symm (central _ (cF _) _).symm (central _ (cQ _) _).symm h1 h2 h3 hprod h2h
 
 /- English proof (translation)
-Use `filter_upwards [GlobalTheory.T.eventually_isIntegralInCompletedTensorBasis_mul_explicit p G, GlobalTheory.T.star_preserves_integrality p G, lattice' G y hdeg hsep x, norm' G y hdeg hsep x g0 hg0] with v h1 h2 h3 h4`. Introduce `g hg`. Establish `h3' : ∀ g : (Qv v ⊗[ℚ] G.C)ˣ, IsIntV G v ((g⁻¹ * (g0 v : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 * g : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) → IsIntV G v ((g⁻¹ * ((g0 v : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1)⁻¹ * g : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) → ∃ e : (Qv v ⊗[ℚ] G.C)ˣ, e * (g0 v : (Qv v ⊗[ℚ] …`. Rewrite using `[hg0]`. Conclude with `h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, hc, d, hd, hgd⟩` from `GlobalTheory.OrbFinAf.KottAlmost.step (K := Qv v) (A := Qv v ⊗[ℚ] G.C) (starT G.star (Qv v)) (GlobalTheory.OrbFinAf.KottAlmost.starT_starT G (Qv v)) (IsIntV G v) (fun z => z ∈ v.1.adicCompletionIntegers ℚ) (one_mem _) h1 h2 (g0 v) h3' h4 g ⟨hg.1, hg.2.1⟩`. Conclude with `⟨c, hc, d, hd, hgd⟩`.
+A detailed English derivation is pending.
 -/
 theorem kottwitz_almost' (G : HTGroup p) (y : G.Cˣ) (hdeg : (minpoly G.F (y : G.C)).natDegree = G.n)
     (hsep : (minpoly G.F (y : G.C)).Separable) (x : (AfP p ⊗[ℚ] G.C)ˣ) (g0 : ∀ v : AwayP p, Gv G v)

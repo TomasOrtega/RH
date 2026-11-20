@@ -12,9 +12,9 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hK` using `KH_pos hCG hL`. Establish `hsy : s * y ∈ GV k r` using `hCG.mul_mem _ hs _ hy`. Establish `hX : gN s ≤ KH k r * (gN y * gN (s * y))`. Establish `e : s * y * y⁻¹ = s` using `by rw [Matrix.mul_assoc, GV_mul_inv hy, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hkb` using `key_bound (hL y hy) (hL _ hsy) (hL s hs) hK ha hX`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem first_pointwise_bound (hCG : IsClosedSubgroup (GV k r)) (hL : ∀ g ∈ GV k r, 1 ≤ gN g) {a : ℝ} (ha : 0 ≤ a)
     {s y : Mat k r} (hs : s ∈ GV k r) (hy : y ∈ GV k r) {c1 c2 C1 C2 : ℝ}
@@ -38,9 +38,9 @@ theorem first_pointwise_bound (hCG : IsClosedSubgroup (GV k r)) (hL : ∀ g ∈ 
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hK` using `KH_pos hCG hL`. Establish `hsi : s⁻¹ ∈ GV k r` using `inv_mem_G hCG hs`. Establish `h3` using `first_pointwise_bound hCG hL ha hsi hy h1 h2 hc1 hc2 hC1 hC2`. Establish `h4 : gN s⁻¹ ^ (-(a / 2)) ≤ KH k r ^ (a / 2) * gN s ^ (-(a / 2))` using `rpow_inv_le (by linarith [hL s hs]) hK (by linarith) (gN_le_inv hCG hs)`. Establish `h5 : 0 ≤ gN y ^ (-(a / 2))` using `Real.rpow_nonneg (gN_nonneg _) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : 0 ≤ C1 * C2 * KH k r ^ (a / 2)` using `mul_nonneg (mul_nonneg hC1 hC2) (Real.rpow_nonneg hK.le _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem second_pointwise_bound (hCG : IsClosedSubgroup (GV k r)) (hL : ∀ g ∈ GV k r, 1 ≤ gN g) {a : ℝ} (ha : 0 ≤ a)
     {s y : Mat k r} (hs : s ∈ GV k r) (hy : y ∈ GV k r) {c1 c2 C1 C2 : ℝ}
@@ -60,7 +60,7 @@ theorem second_pointwise_bound (hCG : IsClosedSubgroup (GV k r)) (hL : ∀ g ∈
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hlt` using `hGI k r μ b hμ hb`. Establish `hm : Measurable (fun y : Mt k r => gN (Matrix.of y) ^ (-b))` using `Measurable.pow_const (show Continuous (fun y : Mt k r => gN (Matrix.of y)) from continuous_gN).measurable _`. Use `integrable_toReal_of_lintegral_ne_top hm.ennreal_ofReal.aemeasurable hlt.ne` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `ENNReal.toReal_ofReal (Real.rpow_nonneg (gN_nonneg _) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem int_G (hGI : GNIntSharp) (μ : Measure (Mt k r)) (hμ : IsHaarOn (GV k r) μ) {b : ℝ} (hb : AB k r ≤ b) :
     Integrable (fun y : Mt k r => gN (Matrix.of y) ^ (-b)) μ := by
@@ -75,7 +75,7 @@ def EE (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : Set (Mt k r × (Mt k r ×
   {q | Matrix.of q.1 ∈ GV k r ∧ Matrix.of q.2.1 ∈ UWset k r z ∧ Matrix.of q.2.2 ∈ Nset k r}
 
 /- English proof (translation)
-The claim follows from `(hCG.closed.preimage continuous_fst).inter ((hCW.closed.preimage (continuous_fst.comp continuous_snd)).inter (hCN.closed.preimage (continuous_snd.comp continuous_snd)))`.
+A detailed English derivation is pending.
 -/
 theorem EE_closed (z : Fin (2 * r + k + 1) → ℂ) (hCG : IsClosedSubgroup (GV k r))
     (hCW : IsClosedSubgroup (UWset k r z)) (hCN : IsClosedSubgroup (Nset k r)) : IsClosed (EE k r z) :=
@@ -87,9 +87,9 @@ section setting
 variable {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Establish `hG : ∀ᵐ y ∂D.μG, Matrix.of y ∈ GV k r` using `ae_iff.2 (measure_mono_null (fun y hy => hy) D.haarG.conc)`. Establish `hW : ∀ᵐ y ∂D.μW, Matrix.of y ∈ UWset k r D.z` using `ae_iff.2 (measure_mono_null (fun y hy => hy) D.haarW.conc)`. Establish `hN : ∀ᵐ y ∂D.μN, Matrix.of y ∈ Nset k r` using `ae_iff.2 (measure_mono_null (fun y hy => hy) D.haarN.conc)`. Establish `h1` using `(Measure.quasiMeasurePreserving_fst (μ := D.μG) (ν := D.μW.prod D.μN)).ae hG`. Establish `hW'` using `(Measure.quasiMeasurePreserving_fst (μ := D.μW) (ν := D.μN)).ae hW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN'` using `(Measure.quasiMeasurePreserving_snd (μ := D.μW) (ν := D.μN)).ae hN`. Establish `h2` using `(Measure.quasiMeasurePreserving_snd (μ := D.μG) (ν := D.μW.prod D.μN)).ae (hW'.and hN')`. Use `filter_upwards [h1, h2] with q hq1 hq2`. Conclude with `⟨hq1, hq2.1, hq2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ae_EE (D : RealPlaceData k r Wp Wp) :
     ∀ᵐ q ∂(D.μG.prod (D.μW.prod D.μN)), q ∈ EE k r D.z := by
@@ -105,7 +105,7 @@ theorem ae_EE (D : RealPlaceData k r Wp Wp) :
   exact ⟨hq1, hq2.1, hq2.2⟩
 
 /- English proof (translation)
-The claim follows from `haveI : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp rep_inv_eq_adjoint D.π_rep D.π_unitary hh (hCW.inv_mem _ hh) (Matrix.mul_nonsing_inv _ (hCW.unit _ hh))`.
+A detailed English derivation is pending.
 -/
 theorem pi_inv (D : RealPlaceData k r Wp Wp) (hCW : IsClosedSubgroup (UWset k r D.z)) {h : Mat k r}
     (hh : h ∈ UWset k r D.z) : D.π h⁻¹ = ContinuousLinearMap.adjoint (D.π h) :=
@@ -113,7 +113,7 @@ theorem pi_inv (D : RealPlaceData k r Wp Wp) (hCW : IsClosedSubgroup (UWset k r 
   rep_inv_eq_adjoint D.π_rep D.π_unitary hh (hCW.inv_mem _ hh) (Matrix.mul_nonsing_inv _ (hCW.unit _ hh))
 
 /- English proof (translation)
-The claim follows from `haveI : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp (ContinuousLinearMap.adjoint : (Wp →L[ℂ] Wp) ≃ₗᵢ⋆[ℂ] (Wp →L[ℂ] Wp)).continuous.comp_continuousOn (D.π_cont.comp (continuous_fst.comp continuous_snd).continuousOn fun q hq => hq.2.1)`.
+A detailed English derivation is pending.
 -/
 theorem cont_adj_pi (D : RealPlaceData k r Wp Wp) :
     ContinuousOn (fun q : Mt k r × (Mt k r × Mt k r) => ContinuousLinearMap.adjoint (D.π (Matrix.of q.2.1)))
@@ -123,21 +123,21 @@ theorem cont_adj_pi (D : RealPlaceData k r Wp Wp) :
     (D.π_cont.comp (continuous_fst.comp continuous_snd).continuousOn fun q hq => hq.2.1)
 
 /- English proof (translation)
-The claim follows from `continuous_star.comp ((psi_cont D.z cStd).comp (continuous_snd.comp continuous_snd))`.
+A detailed English derivation is pending.
 -/
 theorem cont_psi (D : RealPlaceData k r Wp Wp) :
     Continuous (fun q : Mt k r × (Mt k r × Mt k r) => star (psiD D (Matrix.of q.2.2))) :=
   continuous_star.comp ((psi_cont D.z cStd).comp (continuous_snd.comp continuous_snd))
 
 /- English proof (translation)
-The claim follows from `(X.rep.2.2 x).comp continuous_fst.continuousOn fun q hq => hq.1`.
+A detailed English derivation is pending.
 -/
 theorem cont_sig_fst (X : SigData k r) (z : Fin (2 * r + k + 1) → ℂ) (x : X.Hs) :
     ContinuousOn (fun q : Mt k r × (Mt k r × Mt k r) => X.σ (Matrix.of q.1) x) (EE k r z) :=
   (X.rep.2.2 x).comp continuous_fst.continuousOn fun q hq => hq.1
 
 /- English proof (translation)
-Establish `hm : Continuous (fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.2 * Matrix.of q.2.1 : Mat k r))` using `(continuous_snd.comp continuous_snd).matrix_mul (continuous_fst.comp continuous_snd)`. Conclude with `(X.rep.2.2 x).comp hm.continuousOn fun _ hq => hCG.mul_mem _ hq.2.2.1 _ hq.2.1.1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem representation_continuousOn_product (X : SigData k r) (z : Fin (2 * r + k + 1) → ℂ) (hCG : IsClosedSubgroup (GV k r)) (x : X.Hs) :
     ContinuousOn (fun q : Mt k r × (Mt k r × Mt k r) => X.σ (Matrix.of q.2.2 * Matrix.of q.2.1) x) (EE k r z) := by
@@ -146,7 +146,7 @@ theorem representation_continuousOn_product (X : SigData k r) (z : Fin (2 * r + 
   exact (X.rep.2.2 x).comp hm.continuousOn fun _ hq => hCG.mul_mem _ hq.2.2.1 _ hq.2.1.1
 
 /- English proof (translation)
-Establish `hm : Continuous (fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.2 * Matrix.of q.2.1 * Matrix.of q.1 : Mat k r))` using `((continuous_snd.comp continuous_snd).matrix_mul (continuous_fst.comp continuous_snd)).matrix_mul continuous_fst`. Conclude with `(X.rep.2.2 x).comp hm.continuousOn fun _ hq => hCG.mul_mem _ (hCG.mul_mem _ hq.2.2.1 _ hq.2.1.1) _ hq.1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_sig_sy (X : SigData k r) (z : Fin (2 * r + k + 1) → ℂ) (hCG : IsClosedSubgroup (GV k r)) (x : X.Hs) :
     ContinuousOn (fun q : Mt k r × (Mt k r × Mt k r) =>
@@ -164,21 +164,19 @@ section reproducing_fst
 variable {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Establish `: CompleteSpace Wp` using `FiniteDimensional.complete ℂ Wp`. Establish `: IsFiniteMeasureOnCompacts D.μG` using `⟨fun _ hK => D.haarG.finite_compact _ hK⟩`. Establish `: IsFiniteMeasureOnCompacts D.μW` using `⟨fun _ hK => D.haarW.finite_compact _ hK⟩`. Establish `: IsFiniteMeasureOnCompacts D.μN` using `⟨fun _ hK => D.haarN.finite_compact _ hK⟩`. Take `⟨Cu, hCu0, hCu⟩` from `dec_adj X hCG hL ha hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Cv, hCv0, hCv⟩` from `dec_adj X hCG hL ha hv`. Establish `hform : ∀ q ∈ EE k r D.z, ⟪X.σ (Matrix.of q.1) X.w, u⟫_ℂ • beInt D X (X.σ (Matrix.of q.1) X.w) v q.2 = ⟪X.σ (Matrix.of q.1) X.w, u⟫_ℂ • ((⟪v, X.σ (Matrix.of q.2.2 * Matrix.of q.2.1 * Matrix.of q.1) X.w⟫_ℂ * star (psiD D (Matrix.of q.2.2))) • ContinuousLinearMap.adjoint (D.π (Matr …`. Introduce `q hq`. Take `⟨hy, hh, hn⟩` from `hq`. Establish `hs : Matrix.of q.2.2 * Matrix.of q.2.1 ∈ GV k r` using `hCG.mul_mem _ hn.1 _ hh.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : X.σ (Matrix.of q.2.2 * Matrix.of q.2.1) (X.σ (Matrix.of q.1) X.w) = X.σ (Matrix.of q.2.2 * Matrix.of q.2.1 * Matrix.of q.1) X.w`. Rewrite using `[X.rep.1.2 _ hs _ hy]`. Both sides reduce to the same expression. Simplify using `only [beInt, mc]`. Rewrite using `[e1, pi_inv D hCW hh]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcont : ContinuousOn (fun q : Mt k r × (Mt k r × Mt k r) => ⟪X.σ (Matrix.of q.1) X.w, u⟫_ℂ • beInt D X (X.σ (Matrix.of q.1) X.w) v q.2) (EE k r D.z)`. Use `ContinuousOn.congr ?_ hform` and prove the remaining obligations. Conclude with `(ContinuousOn.inner (𝕜 := ℂ) (cont_sig_fst X D.z X.w) continuousOn_const).smul (((ContinuousOn.inner (𝕜 := ℂ) continuousOn_const (cont_sig_sy X D.z hCG X.w)).mul (cont_psi D).continuousOn).smul (cont_adj_pi D))`. Establish `hmeas : AEStronglyMeasurable (fun q : Mt k r × (Mt k r × Mt k r) => ⟪X.σ (Matrix.of q.1) X.w, u⟫_ℂ • beInt D X (X.σ (Matrix.of q.1) X.w) v q.2) (D.μG.prod (D.μW.prod D.μN))`. Use `hcont.aestronglyMeasurable (μ := D.μG.prod (D.μW.prod D.μN)) (EE_closed D.z hCG hCW hCN).measurableSet` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem (ae_EE D)]`. Then use the resulting hypothesis. Establish `hbd : ∀ᵐ q ∂(D.μG.prod (D.μW.prod D.μN)), ‖⟪X.σ (Matrix.of q.1) X.w, u⟫_ℂ • beInt D X (X.σ (Matrix.of q.1) X.w) v q.2‖ ≤ Cu * Cv * KH k r ^ (X.a / 2) * (gN (Matrix.of q.1) ^ (-(X.a / 2)) * gN (Matrix.of q.2.2 * Matrix.of q.2.1) ^ (-(X.a / 2)))` using `by filter_upwards [ae_EE D] with q hq`. Rewrite using `[hform q hq]`. Take `⟨hy, hh, hn⟩` from `hq`. Establish `hs : Matrix.of q.2.2 * Matrix.of q.2.1 ∈ GV k r` using `hCG.mul_mem _ hn.1 _ hh.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `A1 : ‖⟪X.σ (Matrix.of q.1) X.w, u⟫_ℂ‖ ≤ Cu * gN (Matrix.of q.1) ^ (-X.a)`. Rewrite using `[norm_inner_symm]`. Conclude with `hCu _ hy`. Establish `A2 : ‖⟪v, X.σ (Matrix.of q.2.2 * Matrix.of q.2.1 * Matrix.of q.1) X.w⟫_ℂ‖ ≤ Cv * gN (Matrix.of q.2.2 * Matrix.of q.2.1 * Matrix.of q.1) ^ (-X.a)` using `hCv _ (hCG.mul_mem _ hs _ hy)`. Establish `B` using `first_pointwise_bound hCG hL ha hs hy A1 A2 (norm_nonneg _) (norm_nonneg _) hCu0 hCv0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : ‖ContinuousLinearMap.adjoint (D.π (Matrix.of q.2.1))‖ ≤ 1`. Rewrite using `[LinearIsometryEquiv.norm_map]`. Conclude with `opNorm_le_one_of_iso (D.π_unitary _ hh)`. Establish `hψ : ‖star (psiD D (Matrix.of q.2.2))‖ ≤ 1` using `by rw [norm_star]; exact norm_psi_le _ _ _`. Rewrite using `[norm_smul, norm_smul, norm_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `((hIG.mul_prod hIS).const_mul (Cu * Cv * KH k r ^ (X.a / 2))).mono' hmeas hbd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem first_joint_integrable (D : RealPlaceData k r Wp Wp) (X : SigData k r)
     (hCG : IsClosedSubgroup (GV k r)) (hCW : IsClosedSubgroup (UWset k r D.z)) (hCN : IsClosedSubgroup (Nset k r))
@@ -249,15 +247,15 @@ theorem first_joint_integrable (D : RealPlaceData k r Wp Wp) (X : SigData k r)
   exact ((hIG.mul_prod hIS).const_mul (Cu * Cv * KH k r ^ (X.a / 2))).mono' hmeas hbd
 
 /- English proof (translation)
-Establish `: CompleteSpace Wp` using `FiniteDimensional.complete ℂ Wp`. Establish `: IsFiniteMeasureOnCompacts D.μG` using `⟨fun _ hK => D.haarG.finite_compact _ hK⟩`. Establish `: IsFiniteMeasureOnCompacts D.μW` using `⟨fun _ hK => D.haarW.finite_compact _ hK⟩`. Establish `: IsFiniteMeasureOnCompacts D.μN` using `⟨fun _ hK => D.haarN.finite_compact _ hK⟩`. Establish `hint` using `first_joint_integrable D X hCG hCW hCN hL ha hIG hIS hu hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ p : Mt k r × Mt k r, ∫ y : Mt k r, ⟪X.σ (Matrix.of y) X.w, u⟫_ℂ • beInt D X (X.σ (Matrix.of y) X.w) v p ∂D.μG = ((d : ℂ)⁻¹) • beInt D X u v p`. Introduce `p`. Simplify using `only [beInt, smul_smul]`. Rewrite using `[integral_smul_const]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : ∀ y : Mt k r, ⟪X.σ (Matrix.of y) X.w, u⟫_ℂ * (mc X (X.σ (Matrix.of y) X.w) v (Matrix.of p.2 * Matrix.of p.1) * star (psiD D (Matrix.of p.2))) = ⟪X.σ (Matrix.of y) X.w, u⟫_ℂ * ⟪ContinuousLinearMap.adjoint (X.σ (Matrix.of p.2 * Matrix.of p.1)) v, X.σ (Matrix.of y) X.w⟫_ℂ * star …`. Introduce `y`. Rewrite using `[mc, ContinuousLinearMap.adjoint_inner_left]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[integral_mul_const, schur_pt D X hd, ContinuousLinearMap.adjoint_inner_left, mc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsw` using `swap_smul D.μG (D.μW.prod D.μN) (fun y : Mt k r => ⟪X.σ (Matrix.of y) X.w, u⟫_ℂ) (fun (y : Mt k r) (p : Mt k r × Mt k r) => beInt D X (X.σ (Matrix.of y) X.w) v p) hint`. Establish `key : ∫ y : Mt k r, ⟪X.σ (Matrix.of y) X.w, u⟫_ℂ • beOp D X (X.σ (Matrix.of y) X.w) v ∂D.μG = ((d : ℂ)⁻¹) • beOp D X u v`. Simplify using `only [beOp]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsw]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_smul]`. Establish `hd0 : (d : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hd.1.ne'`. Rewrite using `[key, smul_smul, mul_inv_cancel₀ hd0, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem reproducing_fst (D : RealPlaceData k r Wp Wp) (X : SigData k r)
     (hCG : IsClosedSubgroup (GV k r)) (hCW : IsClosedSubgroup (UWset k r D.z)) (hCN : IsClosedSubgroup (Nset k r))

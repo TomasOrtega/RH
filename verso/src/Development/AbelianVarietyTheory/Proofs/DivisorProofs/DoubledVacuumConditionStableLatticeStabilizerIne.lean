@@ -13,17 +13,17 @@ noncomputable section
 namespace GlobalTheory.DblVacTransport
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v dd omd hsp θ hθ g hg φ hφ φ₁ hφ₁ hvac hAct w₁ hw₁ w₂ hw₂ r hr`. Establish `hS` using `hsp.2.1`. Establish `etens : ∀ (c : ℂ) (f : (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a') → Fv F v) → ℂ), tens (evFin F v) (c • f) r = c • tens (evFin F v) f r` using `fun c f => by`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h0 : φ₁ = 0`. Substitute `h0` using the available equality. Establish `e0 : tens (evFin F v) (0 : (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a') → Fv F v) → ℂ) r = 0`. Use function extensionality and compare the values at `x`.
+Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[tens]`. Rewrite using `[smul_zero, e0]`. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`. Establish `hrφ : Rest (evFin F v) φ r` using `GlobalTheory.RestCofactor.rest_of_rest v φ₁ φ r h0 hφ hr`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨δ₁, k₁, δ₂, k₂, he⟩` from `GlobalTheory.DblVacLine.fromCols_mul_transpose G.V' G.W v (GlobalTheory.InertDbl.matD g⁻¹) (fun z hz => (hg.2 z hz).2) hw₁ hw₂`. Establish `hback : actB (cA σ) g (Matrix.fromCols δ₁ δ₂) = Matrix.fromCols w₁ w₂`. Express the relevant statement in the definitionally equal form `Matrix.fromCols δ₁ δ₂ * (GlobalTheory.InertDbl.matD g)ᵀ = _`. Establish `e : GlobalTheory.InertDbl.matD g * GlobalTheory.InertDbl.matD g⁻¹ = 1` using `Units.mul_inv g.1`. Rewrite using `[← he, Matrix.mul_assoc, ← Matrix.transpose_mul, e, Matrix.transpose_one, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsym : symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V'.J) (dbl (incM F G.W.J)) (Matrix.fromCols δ₁ δ₂) (Matrix.fromCols δ₁ δ₂) = symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (dbl (incM F G.W.J)) (Matrix.fromCols w₁ w₂) (Matrix.fromCols w₁ w₂) := by`. Rewrite using `[← he]`. Conclude with `GlobalTheory.InertSph.symp_mul_transpose (cA σ) _ _ _ (GlobalTheory.InertDbl.matD g⁻¹) (g⁻¹).2 _`. Establish `hi` using `hS.impl g (Matrix.fromCols δ₁ δ₂) _ hrφ.2`. Rewrite `hi` using `[hback]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hAct r hrφ, ← hi, hvac δ₁ k₁ δ₂ k₂ r hrφ, hsym, etens, map_smul, hAct r hrφ, etens]`.
+A detailed English derivation is pending.
 -/
 theorem acts_dblVacCond_of_mem_KAtD : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

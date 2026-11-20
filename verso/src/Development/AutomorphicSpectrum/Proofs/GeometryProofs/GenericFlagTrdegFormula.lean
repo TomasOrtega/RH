@@ -8,9 +8,9 @@ namespace GlobalTheory.CompanionTheory.Ar.FlagTrdeg
 open scoped IntermediateField.algebraAdjoinAdjoin
 
 /- English proof (translation)
-Rewrite using `[show Fintype.card {lk : Fin n × Fin n // lk.2 < lk.1} = Fintype.card (Σ a : Fin n, {b : Fin n // b < a}) from Fintype.card_congr (Equiv.subtypeProdEquivSigmaSubtype fun a b : Fin n => b < a), Fintype.card_sigma]`. Establish `h : ∀ a : Fin n, Fintype.card {b : Fin n // b < a} = a`. Introduce `a`. Rewrite using `[Fintype.card_subtype]`. Establish `e : (Finset.univ.filter fun b : Fin n => b < a) = Finset.Iio a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `b`. Simplify using the standard rewrite rules. Rewrite using `[e, Fin.card_Iio]`. Simplify using `only [h]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => i) n, Finset.sum_range_id]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_below_diagonal (n : ℕ) :
     Fintype.card {lk : Fin n × Fin n // lk.2 < lk.1} = n * (n - 1) / 2 := by
@@ -27,7 +27,7 @@ theorem card_below_diagonal (n : ℕ) :
   rw [Fin.sum_univ_eq_sum_range (fun i => i) n, Finset.sum_range_id]
 
 /- English proof (translation)
-Rewrite using `[hx.isTranscendenceBasis_iff_isAlgebraic]`. Conclude with `(IsFractionRing.comap_isAlgebraic_iff (A := ↥(Algebra.adjoin k (Set.range x))) (K := ↥(IntermediateField.adjoin k (Set.range x))) (C := K)).2 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTranscendenceBasis_of_adjoin {k K ι : Type} [Field k] [Field K] [Algebra k K] {x : ι → K}
     (hx : AlgebraicIndependent k x)
@@ -38,15 +38,13 @@ theorem isTranscendenceBasis_of_adjoin {k K ι : Type} [Field k] [Field K] [Alge
     (K := ↥(IntermediateField.adjoin k (Set.range x))) (C := K)).2 h
 
 /- English proof (translation)
-Take `⟨c, u, -, -, -, -, hdiag, hup, -, hind, hd, hfr⟩` from `hg`. Establish `heq : IntermediateField.adjoin Ω₀ (Set.range fun q : Σ σ, Fin (r σ) × Fin (r σ) => u q.1 q.2.1 q.2.2) = IntermediateField.adjoin Ω₀ (Set.range fun q : Σ σ, {lk : Fin (r σ) × Fin (r σ) // lk.2 < lk.1} => u q.1 q.2.1.1 q.2.1.2)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨σ, l, k⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Break down `lt_trichotomy k l with hkl | hkl | hkl` into its components or cases. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨σ, ⟨(l, k), hkl⟩⟩, rfl⟩`. Substitute `hkl` using the available equality. Simplify using `only [hdiag]`. Conclude with `one_mem _`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hup σ l k hkl]`. Conclude with `zero_mem _`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨σ, ⟨⟨l, k⟩, hkl⟩⟩, rfl⟩`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨σ, (l, k)⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Module.Finite (IntermediateField.adjoin Ω₀ (Set.range fun q : Σ σ, Fin (r σ) × Fin (r σ) => u q.1 q.2.1 q.2.2)) Ω := Module.finite_of_finrank_pos (by rw [hfr]; exact hd)`. Establish `halg : Algebra.IsAlgebraic (IntermediateField.adjoin Ω₀ (Set.range fun q : Σ σ, Fin (r σ) × Fin (r σ) => u q.1 q.2.1 q.2.2)) Ω` using `Algebra.IsAlgebraic.of_finite _ _`. Rewrite `halg` using `[heq]`. Establish `hb` using `isTranscendenceBasis_of_adjoin hind halg`. Rewrite using `[← hb.cardinalMk_eq_trdeg, Cardinal.mk_fintype, Fintype.card_sigma]`.
-
-Simplify using `only [card_below_diagonal]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trdeg_of_isGenericFlag (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [Algebra Ω₀ Ω] (E : Type) [AddCommGroup E]
     [Module Ω₀ E] (E' : Type) [AddCommGroup E'] [Module Ω E'] (j : E →+ E') (S : Type) [Fintype S]

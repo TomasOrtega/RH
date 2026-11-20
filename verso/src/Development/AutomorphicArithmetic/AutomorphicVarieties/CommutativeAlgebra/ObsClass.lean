@@ -10,9 +10,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Introduce `a b n`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul]`. Proceed by induction on `(Finset.univ : Finset ι) using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty]`. Conclude with `IsLocallyConstant.const _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert c t hc ih`. Simplify using `only [Finset.sum_insert hc]`. Conclude with `((hM a c n).mul (hN c b n)).add ih`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ac_mul {S A ι : Type} [TopologicalSpace S] [CommRing A] [Fintype ι] (I : Ideal A)
     {M N : S → Matrix ι ι A} (hM : ∀ a b, AdicCont I fun s => M s a b) (hN : ∀ a b, AdicCont I fun s => N s a b) :
@@ -27,9 +27,7 @@ private theorem ac_mul {S A ι : Type} [TopologicalSpace S] [CommRing A] [Fintyp
     exact ((hM a c n).mul (hN c b n)).add ih
 
 /- English proof (translation)
-Introduce `N`. Establish `hle : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap (f : R →+* R')`. Use `le_trans (Ideal.pow_right_mono (fun y hy => ?_) N) (Ideal.le_comap_pow _ N)` and prove the remaining obligations. Use `show f y ∈ maximalIdeal R'`. Rewrite using `[← res_eq_zero_iff O, res_map, res_eq_zero_iff]`.
-
-Conclude with `hy`. Conclude with `(hx N).comp (Ideal.quotientMap _ (f : R →+* R') hle)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ac_map {O S R R' : Type} [CommRing O] [IsLocalRing O] [TopologicalSpace S] [CommRing R] [Algebra O R]
     [IsCO O R] [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') {x : S → R}
@@ -43,7 +41,7 @@ private theorem ac_map {O S R R' : Type} [CommRing O] [IsLocalRing O] [Topologic
   exact (hx N).comp (Ideal.quotientMap _ (f : R →+* R') hle)
 
 /- English proof (translation)
-Introduce `a b`. Rewrite using `[Matrix.mul_apply]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Use `hP _ _ _ _ (hA a c) (hB c b)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem hmul {O ι X R : Type} [CommRing O] [Fintype ι] [AddCommGroup X] [CommRing R] [Algebra O R]
     (P : X → Submodule O R) (hP : ∀ i j x y, x ∈ P i → y ∈ P j → x * y ∈ P (i + j)) (w : ι → X)
@@ -56,9 +54,9 @@ private theorem hmul {O ι X R : Type} [CommRing O] [Fintype ι] [AddCommGroup X
   rwa [sub_add_sub_cancel] at this
 
 /- English proof (translation)
-Introduce `a b`. Rewrite using `[Matrix.map_apply]`. Distinguish the cases in `h : w a = w b`. Rewrite using `[h, sub_self, Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ hP`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM a b h, map_zero]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 private theorem hconst {O ι X R : Type} [CommRing O] [AddCommGroup X] [CommRing R] [Algebra O R]
     (P : X → Submodule O R) (hP : (1 : R) ∈ P 0) (w : ι → X) {M : Matrix ι ι O}
@@ -72,7 +70,7 @@ private theorem hconst {O ι X R : Type} [CommRing O] [AddCommGroup X] [CommRing
     exact zero_mem _
 
 /- English proof (translation)
-Take `⟨h1, ⟨π, h2⟩, h3⟩` from `h`. Conclude with `⟨fun g => h1 (φ g), ⟨π.comp φ, fun g => h2 (φ g)⟩, fun g => h3 (φ g)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem norm_comp {O : Type} [CommRing O] {ι X : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup X]
     {w : ι → X} {Φ : FormData O w} {R : Type} [CommRing R] [Algebra O R] {Γ H : Type} [Group Γ] [Group H]
@@ -81,13 +79,13 @@ private theorem norm_comp {O : Type} [CommRing O] {ι X : Type} [Fintype ι] [De
   exact ⟨fun g => h1 (φ g), ⟨π.comp φ, fun g => h2 (φ g)⟩, fun g => h3 (φ g)⟩
 
 /- English proof (translation)
-Establish `k : ∀ a b : O, residue O a = residue O b → a • η = b • η` using `fun a b h => by`. Rewrite using `[← sub_eq_zero, ← sub_smul, Algebra.smul_def]`. Use `hη _ ?_` and prove the remaining obligations. Rewrite using `[← res_eq_zero_iff O, AlgHom.commutes, ResidueField.algebraMap_eq, map_sub, h, sub_self]`. Use `choose s hs using residue_surjective (R := O)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k2 : ∀ a : O, s (residue O a) • η = a • η` using `fun a => k _ _ (hs _)`. Use `⟨AddMonoidHom.mk' (fun c => s c • η) fun c d => ?_, k2, fun a c => ?_⟩` and prove the remaining obligations. Rewrite using `[← add_smul]`. Conclude with `k _ _ (by rw [map_add, hs, hs, hs])`. Take `⟨b, hb⟩` from `IsCO.res_surj (O := O) a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : res O A a = residue O b`. Use `(res_eq_zero_iff O A _).2 hb` as an intermediate fact. Rewrite `this` using `[map_sub, AlgHom.commutes, sub_eq_zero]`. Then use the resulting hypothesis. Establish `e2 : a * η = b • η`. Use `hη _ hb` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[sub_mul, sub_eq_zero, ← Algebra.smul_def]`. Then use the resulting hypothesis. Use `show s _ • η = a * (s c • η)`. Rewrite using `[mul_smul_comm, e2, smul_smul]`. Conclude with `k _ _ (by rw [map_mul, hs, hs, e, mul_comm])`.
+A detailed English derivation is pending.
 -/
 private theorem ex_mu {O A : Type} [CommRing O] [IsLocalRing O] [CommRing A] [Algebra O A] [IsCO O A] (η : A)
     (hη : ∀ x ∈ maximalIdeal A, x * η = 0) :
@@ -113,14 +111,14 @@ private theorem ex_mu {O A : Type} [CommRing O] [IsLocalRing O] [CommRing A] [Al
     exact k _ _ (by rw [map_mul, hs, hs, e, mul_comm])
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (f : R →+* S))`.
+A detailed English derivation is pending.
 -/
 private theorem mmap {O R S ι : Type} [CommRing O] [CommRing R] [CommRing S] [Algebra O R] [Algebra O S]
     [Fintype ι] (f : R →ₐ[O] S) (A B : Matrix ι ι R) : (A * B).map f = A.map f * B.map f :=
   Matrix.map_mul (f := (f : R →+* S))
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem cmap {O R S ι : Type} [CommRing O] [CommRing R] [CommRing S] [Algebra O R] [Algebra O S]
     (f : R →ₐ[O] S) (A : Matrix ι ι O) : (A.map (algebraMap O R)).map f = A.map (algebraMap O S) := by
@@ -128,53 +126,45 @@ private theorem cmap {O R S ι : Type} [CommRing O] [CommRing R] [CommRing S] [A
   simp
 
 /- English proof (translation)
-Introduce `O _ _ _ _ ι X _ _ _ _ _ w Φ h2 Γ _ _ _ rbar r0 hbar h0 F L hN hL hL0 B _ _ _ ρ hρ A _ _ _ R _ _ _ p hp hs W hz κ _ ε wf hε hK hind i r α hfr hw1 hw2 hw3`. Take `⟨hr, hrL, hα, hα0, hE⟩` from `hfr`. Establish `P1 : ∀ i j x y, x ∈ W.part i → y ∈ W.part j → x * y ∈ W.part (i + j)` using `fun _ _ _ _ hx hy => SetLike.GradedMul.mul_mem hx hy`. Establish `P0 : (1 : A) ∈ W.part 0` using `SetLike.GradedOne.one_mem`. Establish `Q1 : ∀ i j x y, x ∈ (W.part i).map p.toLinearMap → y ∈ (W.part j).map p.toLinearMap → x * y ∈ (W.part (i + j)).map p.toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ _ _ _ ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩`. Conclude with `⟨x * y, P1 _ _ _ _ hx hy, map_mul p x y⟩`. Establish `Q0 : (1 : R) ∈ (W.part 0).map p.toLinearMap` using `⟨1, P0, map_one p⟩`. Establish `c0 : ∀ (S : Type) [CommRing S] [Algebra O S] [IsCO O S] (a b : ι), AdicCont (maximalIdeal S) fun s => ((r0.hom s).map (algebraMap O S)) a b` using `fun S _ _ _ a b => ac_map (Algebra.ofId O S) (r0.cont a b)`. Establish `inv0 : ∀ (S : Type) [CommRing S] [Algebra O S] (s t : Γ), s * t = 1 → (r0.hom s).map (algebraMap O S) * (r0.hom t).map (algebraMap O S) = 1` using `fun S _ _ s t h => by`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, ← map_mul, h, map_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Take `⟨ht, ht1, ht2, ht3, ht4⟩` from `hh_section O ι X w Φ h2 A R p hp hs W hz Γ (fun s => r.hom s * (r0.hom s⁻¹).map (algebraMap O R)) hr (ac_mul _ r.cont fun a b n => (c0 R a b n).comp_continuous continuous_inv) (fun s => hmul _ Q1 w (hw2 s) (hconst (fun i => (W.part i).map p.toLinearMap) Q0 w (h0.2.2 _)))`. Choose the witnesses or unpack the hypotheses as in `⟨rt, r1, r2, r3, r4⟩ : ∃ rt : Γ → Matrix ι ι A, (∀ s, Φ.HH (rt s * (r0.hom s⁻¹).map (algebraMap O A))) ∧ (∀ a b, AdicCont (maximalIdeal A) fun s => rt s a b) ∧ (∀ s a b, rt s a b ∈ W.part (w a - w b)) ∧ ∀ s, (rt s).map p = r.hom s := by`. Use `⟨fun s => ht s * (r0.hom s).map (algebraMap O A), fun s => ?_, ac_mul _ ht2 (c0 A), fun s => hmul _ P1 w (ht3 s) (hconst _ P0 w (h0.2.2 _)), fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, inv0 A _ _ (mul_inv_cancel s), mul_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht1 s`. Rewrite using `[mmap, ht4, cmap, mul_assoc, inv0 R _ _ (inv_mul_cancel s), mul_one]`. Choose the witnesses or unpack the hypotheses as in `⟨αt, a1, a2, a3, a4⟩ : ∃ αt : F.T → Matrix ι ι A, (∀ v, Φ.HH (αt v)) ∧ (∀ v a b, αt v a b ∈ W.part (w a - w b)) ∧ (∀ v, (αt v).map p = α v) ∧ αt F.v0 = 1 := by`. Use `letI : TopologicalSpace F.T := ⊥`. Use `haveI : DiscreteTopology F.T := ⟨rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨β, b1, -, b3, b4⟩` from `hh_section O ι X w Φ h2 A R p hp hs W hz F.T α hα (fun a b n => IsLocallyConstant.of_discrete _) hw3`. Use `⟨fun v => if v = F.v0 then 1 else β v, fun v => ?_, fun v => ?_, fun v => ?_, if_pos rfl⟩` and prove the remaining obligations. Use `beta_reduce split_ifs`. Conclude with `(hh_group O ι X w Φ A).1`. Conclude with `b1 v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `beta_reduce split_ifs`. Use `hconst (R := A) _ P0 w (M := 1) fun a b h => Matrix.one_apply_ne fun e => h (by rw [e])` as an intermediate fact. Rewrite `this` using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Then use the resulting hypothesis. Conclude with `b3 v`. Use `beta_reduce split_ifs with h`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[h, hα0, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `b4 v`. Establish `hhom : IsHomog O W.wt (RingHom.ker (p.comp W.π))`. Use `(homog_span O A X W κ (fun u => ⟨ε u, W.part_le_A (hε u)⟩) wf hε).1` as an intermediate fact. Rewrite `this` using `[← hK]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `this`. Use `choose rq q1 q2 q3 q4 using fun q => loc_graded_top O ι X w Φ h2 (F.Gq q) (rbar.comp (F.ψ q)) (r0.comap (F.ψ q) (F.hψ q)) (norm_comp hbar _) (norm_comp h0 _) (F.N q) (L q) (hL q) A R p hp hs W hz hhom (r.comap (F.ψ q) (F.hψ q)) (fun s => by simpa [Lift.comap] using hr (F.ψ q s)) …`. Take `⟨co, k1, k2, k3, k4⟩` from `ker_coef O X A (RingHom.ker p) hs W κ ε wf hε hK hind`. Establish `inH : ∀ (S S' : Type) [CommRing S] [Algebra O S] [IsCO O S] [CommRing S'] [Algebra O S'] [IsCO O S'] (f : S →ₐ[O] S') (M : Matrix ι ι S) (N : Matrix ι ι O), Φ.HH (M * N.map (algebraMap O S)) → Φ.HH (M.map f * N.map (algebraMap O S'))` using `fun S S' _ _ _ _ _ _ f M N h => by`. Use `(hh_group O ι X w Φ S).2.2.2.1 S' f _ h` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite `this` using `[mmap, cmap]`. Then use the resulting hypothesis. Establish `d1 : ∀ s t, (rt s * rt t).map p = (rt (s * t)).map p` using `fun s t => by`. Rewrite using `[mmap, r4, r4, r4, map_mul]`. Establish `d2 : ∀ v s, (rt (F.φ v s) * αt v).map p = (αt v * ((ρ v).map i).hom s).map p` using `fun v s => by`. Rewrite using `[mmap, mmap, r4, a3, hE]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `d3 : ∀ q s, (rt (F.ψ q s)).map p = ((rq q).hom s).map p` using `fun q s => by`. Rewrite using `[r4]`. Conclude with `(congrArg (fun x : Lift O _ R => x.hom s) (q3 q)).symm`. Use `choose z z0 z1 z2 z3 using fun u : κ => obs_cocycle O ι X w Φ h2 Γ rbar r0 hbar h0 F A R p hp hs W (wf u) (co u) (k1 u) (k2 u) (k3 u) rt r1 r2 r3 d1 αt (fun v => (ρ v).map i) a1 a2 (fun v s => inH _ _ i _ _ (hρ v s)) hw1 d2 rq q1 q4 d3`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ex : ∀ j (u : {u // wf u = j}), ∃ z ∈ F.framedTwoCocycles (FormData.adRep hbar j), (∀ s t, (z.1 (s, t)).1 * rbar (s * t) = (rt s * rt t - rt (s * t)).map (co u)) ∧ (∀ v s, (z.2.1 v s).1 * rbar (F.φ v s) = (rt (F.φ v s) * αt v - αt v * ((ρ v).map i).hom s).map (co u)) ∧ ∀ q s, (z. …`. Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `⟨z u, z0 u, z1 u, z2 u, z3 u⟩`. Use `clear z0 z1 z2 z3 z`. Use `choose z z0 z1 z2 z3 using ex`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun j u => Submodule.Quotient.mk ⟨z j u, z0 j u⟩, ?_⟩` and prove the remaining obligations. Introduce `j _ c hc A' _ _ _ p' p'' η hp' hpp hη hη0 e1 e2`. Establish `hx : ∑ u, residue O (c u) • z j u ∈ F.framedTwoCoboundaries (FormData.adRep hbar j)`. Establish `h1 : (Submodule.Quotient.mk (∑ u, residue O (c u) • (⟨z j u, z0 j u⟩ : F.framedTwoCocycles (FormData.adRep hbar j))) : F.Ob (FormData.adRep hbar j)) = 0`. Rewrite using `[← hc, ← Submodule.mkQ_apply, map_sum]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, map_sum]`. Conclude with `h1`. Take `⟨μ, m1, m2⟩` from `ex_mu (O := O) η hη`. Establish `pp : ∀ x, p'' (p' x) = p x` using `fun x => DFunLike.congr_fun hpp x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ x, p x = 0 → p' x = μ (∑ u : {u // wf u = j}, residue O (c u) * co u x)` using `fun x hx => by`. Take `⟨a, ha, hxa⟩` from `k4 x hx`. Establish `: ∑ u : {u // wf u = j}, residue O (c u) * co u x = residue O (∑ u : {u // wf u = j}, a u * c u)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun u _ => by rw [map_mul, ha, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, m1, Finset.sum_smul]`. Use `conv_lhs => rw [hxa]`. Rewrite using `[map_sum, ← Fintype.sum_subtype_add_sum_subtype (fun u => wf u = j), Finset.sum_eq_zero (s := (Finset.univ : Finset {u // ¬ wf u = j})) fun u _ => by`. Rewrite using `[map_smul, e2 u u.2, smul_zero], add_zero]`. Use `Finset.sum_congr rfl fun u _ => ?_` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, e1, mul_smul]`. Establish `keyM : ∀ (M N : Matrix ι ι A) (Y : {u // wf u = j} → Φ.gw (ResidueField O) j) (g : Matrix ι ι (ResidueField O)), M.map p = N.map p → (∀ u, (Y u).1 * g = (M - N).map (co u)) → M.map p' - N.map p' = ((∑ u, residue O (c u) • Y u).1 * g).map μ` using `fun M N Y g h1 h3 => by`. Use extensionality with `a b`. Establish `h4 : p ((M - N) a b) = 0`. Rewrite using `[Matrix.sub_apply, map_sub, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrFun (congrFun h1 a) b`. Rewrite using `[Matrix.sub_apply, Matrix.map_apply, Matrix.map_apply, ← map_sub, ← Matrix.sub_apply, key _ h4, Matrix.map_apply, Submodule.coe_sum, Finset.sum_mul, Matrix.sum_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, smul_mul_assoc, h3]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `m3 : ∀ d, p'' (μ d) = 0` using `fun d => by`. Take `⟨a, rfl⟩` from `residue_surjective d`. Rewrite using `[m1, map_smul, hη0, smul_zero]`. Establish `hp'' : Function.Surjective p''` using `fun y => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, rfl⟩` from `hp y`. Conclude with `⟨p' x, pp x⟩`. Establish `hs' : maximalIdeal A' * RingHom.ker p'' = ⊥`. Rewrite using `[eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, rfl⟩` from `hp' y`. Rewrite `hy` using `[RingHom.mem_ker, pp]`. Rewrite using `[Ideal.mem_bot, key y hy, ← m2, (res_eq_zero_iff O A' x).2 hx, zero_mul, map_zero]`. Establish `mm : ∀ M : Matrix ι ι A, (M.map p').map p'' = M.map p` using `fun M => by`. Use extensionality with `a b`.
-
-Conclude with `pp _`. Use `(obs_correct O ι X w Φ h2 Γ rbar r0 hbar h0 F L hN hL B ρ A' R p'' hp'' hs' μ μ.map_add m2 m3 (p'.comp i) r (fun s => (rt s).map p') (fun s => inH _ _ p' _ _ (r1 s)) (fun a b => ac_map p' (r2 a b)) (fun s => by rw [mm, r4]) (fun v => (αt v).map p') (fun v => (hh_group O ι X w Φ A …` and prove the remaining obligations. Take `⟨I, hI⟩` from `(hL q).closed A (rq q) (q1 q)`. Use `(hI A' p').2 fun x hx => ?_` and prove the remaining obligations. Establish `: x = 0` using `(hI A (AlgHom.id O A)).1 (q2 q) x hx`.
-
-Rewrite using `[this, map_zero]`. Rewrite using `[← q3 q]`. Use extensionality with `s a b`. Conclude with `pp _`. Use `keyM _ _ (fun u => (z j u).1 (s, t)) _ (d1 s t) fun u => z1 j u s t` as an intermediate fact.
-
-Rewrite `this` using `[mmap]`. Rewrite using `[this, Prod.fst_sum, Finset.sum_apply]`. Both sides reduce to the same expression. Use `keyM _ _ (fun u => (z j u).2.1 v s) _ (d2 v s) fun u => z2 j u v s` as an intermediate fact. Rewrite `this` using `[mmap, mmap]`.
-
-Rewrite using `[Prod.snd_sum, Prod.fst_sum, Finset.sum_apply, Finset.sum_apply]`. Conclude with `this`. Use `keyM _ _ (fun u => (z j u).2.2 q s) _ (d3 q s) fun u => z3 j u q s` as an intermediate fact. Rewrite using `[Prod.snd_sum, Prod.snd_sum, Finset.sum_apply, Finset.sum_apply]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.obs_class :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (ι X : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (w : ι → X) (Φ : FormData O w), IsUnit (2 : O) → ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (rbar : Γ →* Matrix ι ι (ResidueField O)) (r0 : Lift O rbar O) (hbar : Φ.Normalises rbar), Φ.Normalises r0.hom → ∀ (F : Frame Γ) (L : ∀ q, Cond O (rbar.comp (F.ψ q))), (∀ q, ∀ n ∈ F.N q, rbar (F.ψ q n) = 1) → (∀ q, Φ.IsLocCond (r0.hom.comp (F.ψ q)) (F.N q) (L q)) → (∀ q, L q O (r0.comap (F.ψ q) (F.hψ q))) →

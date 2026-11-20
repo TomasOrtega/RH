@@ -31,13 +31,13 @@ namespace GlobalTheory.ChainTw.LevIntProof
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hmem` using `(mem_multT c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) (u₁ : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ))).1 u₁.2`. Establish `hmap` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 hmem`. Take `⟨w, hw, hU⟩` from `GlobalTheory.ChainOnto.mult_equiv_real D c.θ s.V s.par s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) hc.inf v b`. Establish `hUw` using `hU _ hmem`. Establish `ev : ∀ x : s.M.Vec, PiLocalization₂.val u₁ (PiTensorProduct.tprod ℂ x) = PiTensorProduct.lift.symm (u₁ : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) x`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `[PiLocalization₂.val, PiTensorProduct.lift_symm]`. Establish `key : rTr s.V ((b : GA D s.V) * κ) (PiLocalization₂.val u₁ (PiTensorProduct.tprod ℂ v)) = Lev.levChi s.V s.β s.L κ • PiLocalization₂.val u₁ (PiTensorProduct.tprod ℂ w)`. Use function extensionality and compare the values at `g`. Rewrite using `[ev, ev, hUw]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rTr, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc]`. Conclude with `hmap.lev v κ hκ (g * (b : GA D s.V))`. Establish `hsch : s.pet (PiLocalization₂.val u₁ (PiTensorProduct.tprod ℂ w)) (PiLocalization₂.val u₂ (PiTensorProduct.tprod ℂ v)) = ip u₁ u₂ * ipD (PiTensorProduct.tprod ℂ w) (PiTensorProduct.tprod ℂ v)` using `hM.schur u₁ u₂ _ _`. Rewrite using `[key, GlobalTheory.ChainOnto.PetCoef.pet_smul_left, hsch, hM.pure w v]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hw, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem pet_tr {c : Com D} {s : PiLocalization₂ D} (hc : c.Is) {ipD : SmT s.M →ₗ[ℂ] SmT s.M →ₗ⋆[ℂ] ℂ}
     {ip : s.CC c →ₗ[ℂ] s.CC c →ₗ⋆[ℂ] ℂ} (hM : IsMet c s ipD ip) (u₁ u₂ : s.CC c) (v : s.M.Vec) (b : GinfC s.V)
@@ -65,16 +65,16 @@ theorem pet_tr {c : Com D} {s : PiLocalization₂ D} (hc : c.Is) {ipD : SmT s.M 
   simp only [hw, mul_assoc]
 
 /- English proof (translation)
-Introduce `γ hγ x` and use `by simp only [h γ hγ x]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leftInv_conj {V : HSp D} {F : GA D V → ℂ} (h : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ V) F) :
     GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ V) (fun x => conj (F x)) :=
   fun γ hγ x => by simp only [h γ hγ x]
 
 /- English proof (translation)
-Use `haveI := hh`. Establish `hl : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ s.V) (rTr s.V g fun x => conj (F₁ x))` using `(leftInv_conj h₁).mul_right g`. Use `show GlobalTheory.AutomorphicL2Unitary.pet (GQ s.V) s.ν (rTr s.V g fun x => conj (F₁ x)) (fun x => conj (F₂ x)) = _`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.pet_eq hf hl (leftInv_conj h₂)]`. Use `show _ = conj (∫ x in s.fd, rTr s.V g F₁ x * starRingEnd ℂ (F₂ x) ∂s.ν)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[rTr]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rcoef_conj {s : PiLocalization₂ D} (hh : s.ν.IsHaarMeasure) (hf : IsFundamentalDomain (GQ s.V) s.fd s.ν)
     {F₁ F₂ : GA D s.V → ℂ} (h₁ : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ s.V) F₁) (h₂ : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ s.V) F₂) (g : GA D s.V) :
@@ -90,9 +90,9 @@ theorem rcoef_conj {s : PiLocalization₂ D} (hh : s.ν.IsHaarMeasure) (hf : IsF
   simp [rTr]
 
 /- English proof (translation)
-Establish `hmem` using `(mem_multT c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ))).1 u.2`. Establish `hmap` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 hmem`. Establish `e : PiLocalization₂.val u (PiTensorProduct.tprod ℂ v) = PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) v`. Simplify using `[PiLocalization₂.val, PiTensorProduct.lift_symm]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.AutomorphicL2Unitary.leftInv_of_isAutFun (hmap.aut v).toIsAutFun`.
+A detailed English derivation is pending.
 -/
 theorem leftInv_val {c : Com D} {s : PiLocalization₂ D} (u : s.CC c) (v : s.M.Vec) :
     GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ s.V) (PiLocalization₂.val u (PiTensorProduct.tprod ℂ v)) := by
@@ -111,11 +111,11 @@ namespace GlobalTheory.ChainTw.LevIntProof
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨_, h2, h3⟩` from `GlobalTheory.ChainOnto.hgt_one_components D s.V s.Λ hsd`. Take `⟨_, _, hoff⟩` from `GlobalTheory.Core.Rk.IP.hgtL_props D s.V s.Λ a hsd hmaj`. Establish `hb : (b : GA D s.V) ∈ GlobalTheory.Core.Rk.IP.openOff s.V s.Λ ∅` using `fun v _ => by`. Rewrite using `[h3 b b.2 v]`. Conclude with `one_mem _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbk : (b : GA D s.V) * κ ∈ GlobalTheory.Core.Rk.IP.openOff s.V s.Λ ∅` using `fun v _ => by`. Rewrite using `[map_mul, h3 b b.2 v, one_mul]`. Conclude with `hpr v`. Establish `e1` using `(hoff ∅).2 _ hb`. Establish `e2` using `(hoff ∅).2 _ hbk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Finset.prod_empty, mul_one] at e1 e2`. Establish `hA : ∀ w, GlobalTheory.AdelicU.projArch D.sp.cm.sig s.V.gram w ((b : GA D s.V) * κ) = GlobalTheory.AdelicU.projArch D.sp.cm.sig s.V.gram w (b : GA D s.V)` using `fun w => by`. Rewrite using `[map_mul, h2 κ hκf w, mul_one]`. Simplify using `only [hA] at e2`. Conclude with `⟨NNReal.coe_injective (e2.trans e1.symm), e1⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hgtL_real_lev {s : PiLocalization₂ D} (hsd : IsSelfDualC s.V s.Λ) {a : GL (Fin s.V.rank) (AE D)}
     (hmaj : GlobalTheory.Doubling.IsMaj s.V a) (b : GinfC s.V) (κ : GA D s.V) (hκf : κ ∈ GfC s.V)
@@ -139,9 +139,9 @@ theorem hgtL_real_lev {s : PiLocalization₂ D} (hsd : IsSelfDualC s.V s.Λ) {a 
   exact ⟨NNReal.coe_injective (e2.trans e1.symm), e1⟩
 
 /- English proof (translation)
-Establish `hκf : κ ∈ GfC s.V` using `(Subgroup.mem_inf.mp hκ).1`. Take `⟨hn, hpr⟩` from `hstab κ hκ`. Establish `hn' : Lev.levChi s.V s.β s.L κ * conj (Lev.levChi s.V s.β s.L κ) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hn]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Unfold `flatInt GlobalTheory.Core.Rk.IP.integrand`. Rewrite using `[show GlobalTheory.Core.Rk.IP.wcoef p.ω m X (p.pt φ) (p.pt φ) ((b : GA D s.V) * κ) = coefW p.ω m X (p.pt φ) ((b : GA D s.V) * κ) from rfl, GlobalTheory.ChainOnto.ZetaNeProof.coefW_mul_lev p m X φ hlaw _ κ hκ, rcoef_conj hh hf (leftInv_val u₁ v) (leftInv_val u₂ v), pet_tr hc hM u₁ …`. Unfold `zReal`. Simplify using `only [map_mul]`. Take the linear combination `(coefW p.ω m X (p.pt φ) (b : GA D s.V) * GlobalTheory.Doubling.npow (GlobalTheory.Core.Rk.IP.hgtL s.V s.Λ a (b : GA D s.V)) (z - GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.sZero s.V s'.V) * conj (ip u₁ u₂) * conj (∏ τ, ⟪(v τ : s.M.H τ), s.M.rep τ (infMat D.sp.cm.sig s. …`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem flatInt_mul_lev {c : Com D} {s s' : PiLocalization₂ D} (hc : c.Is) (hh : s.ν.IsHaarMeasure)
     (hf : IsFundamentalDomain (GQ s.V) s.fd s.ν) (hsd : IsSelfDualC s.V s.Λ) {ipD : SmT s.M →ₗ[ℂ] SmT s.M →ₗ⋆[ℂ] ℂ}
@@ -174,27 +174,27 @@ theorem flatInt_mul_lev {c : Com D} {s s' : PiLocalization₂ D} (hc : c.Is) (hh
     conj (∏ τ, ⟪(v τ : s.M.H τ), s.M.rep τ (infMat D.sp.cm.sig s.V.gram (c.θ τ) (b : GA D s.V)) (v τ : s.M.H τ)⟫_ℂ)) * hn'
 
 /- English proof (translation)
-Introduce `D hLaw hng c w hw k hk s s' hs hs' p hp ipD ip hM m X hcov mR hmR φ v hRC a hmaj`. Establish `hc : c.Is` using `hw.com`. Take `⟨hr, _, hfl⟩` from `id hs`. Take `⟨hr', _, hfl'⟩` from `id hs'`. Establish `hrk : s.V.rank = D.R.rankY k` using `hfl.rank`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrk' : s'.V.rank = D.R.rankY (k + 1)` using `hfl'.rank`. Establish `hsz : GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.sZero s.V s'.V = (D.R.t : ℂ) / 2`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.sZero`. Rewrite using `[hrk, hrk']`. Simplify using `only [Formalism.BasicNotions.Ranks.rankY]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hh : s.ν.IsHaarMeasure` using `hfl.haar`. Establish `hfd : IsFundamentalDomain (GQ s.V) s.fd s.ν` using `hfl.fund`. Establish `hsd : IsSelfDualC s.V s.Λ` using `hfl.selfDual`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, hstab, _⟩` from `GlobalTheory.T.thetaChainStage_finiteLevel_eq_product_localLevels D c w hw k hk.le s hs`. Establish `hlaw` using `(hLaw hng c w hw k hk s s' hs hs' p hp φ).1`. Take `⟨_, hI⟩` from `hRC`. Take `⟨s₁, hs₁, hI₁⟩` from `hI a hmaj`. Establish `hmj : GlobalTheory.Doubling.IsMaj s.V a` using `hmaj.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hcont, hpos, _⟩` from `GlobalTheory.Core.Rk.IP.hgtL_props D s.V s.Λ a hsd hmj`. Establish `hreal : ∀ b : GinfC s.V, ((GlobalTheory.Core.Rk.IP.hgtL s.V s.Λ a (b : GA D s.V) : ℝ)) = ∏ w, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtW s.V a w (GlobalTheory.AdelicU.projArch D.sp.cm.sig s.V.gram w (b : GA D s.V))` using `fun b => (hgtL_real_lev hsd hmj b 1 (one_mem _) fun v => by rw [map_one]; exact one_mem _).2`. Establish `hint : ∀ z : ℝ, s₁ ≤ z → Integrable (fun b : GinfC s.V => zReal p m X φ v b * GlobalTheory.Doubling.npow (GlobalTheory.Core.Rk.IP.hgtL s.V s.Λ a (b : GA D s.V)) ((z : ℂ) - (D.R.t : ℂ) / 2)) mR`. Introduce `z hz`. Establish `h0 : Integrable (fun b : GinfC s.V => zReal p m X φ v b * GlobalTheory.Doubling.npow (GlobalTheory.Core.Rk.IP.hgtL s.V s.Λ a (b : GA D s.V)) ((s₁ : ℂ) - (D.R.t : ℂ) / 2)) mR`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hI₁.congr (ae_of_all _ fun b => ?_)` and prove the remaining obligations. Simplify using `only [GlobalTheory.Doubling.npow, hreal b]`. Establish `hm : AEStronglyMeasurable (fun b : GinfC s.V => GlobalTheory.Doubling.npow (GlobalTheory.Core.Rk.IP.hgtL s.V s.Λ a (b : GA D s.V)) ((z : ℂ) - s₁)) mR`. Establish `hme : Measurable fun b : GinfC s.V => ((GlobalTheory.Core.Rk.IP.hgtL s.V s.Λ a (b : GA D s.V) : ℝ) : ℂ) ^ ((z : ℂ) - s₁)` using `(Complex.measurable_ofReal.comp (NNReal.continuous_coe.comp (hcont.comp continuous_subtype_val)).measurable).pow_const _`. Conclude with `hme.aestronglyMeasurable`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ᵐ b : GinfC s.V ∂mR, ‖GlobalTheory.Doubling.npow (GlobalTheory.Core.Rk.IP.hgtL s.V s.Λ a (b : GA D s.V)) ((z : ℂ) - s₁)‖ ≤ 1` using `ae_of_all _ fun b => by`. Take `⟨h1, h2⟩` from `hpos (b : GA D s.V)`. Unfold `GlobalTheory.Doubling.npow`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos (NNReal.coe_pos.mpr h1)]`. Apply `Real.rpow_le_one (NNReal.coe_nonneg _) (by exact_mod_cast h2)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.sub_re, Complex.ofReal_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(h0.mul_bdd hm hb).congr (ae_of_all _ fun b => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[mul_assoc, ← GlobalTheory.Doubling.npow_add (hpos _).1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Use `⟨s₁, hs₁, fun u₁ u₂ => ?_⟩` and prove the remaining obligations. Establish `hF : ∀ z : ℝ, s₁ ≤ z → IntegrableOn (flatInt p m X a φ (PiLocalization₂.val u₁ (PiTensorProduct.tprod ℂ v)) (PiLocalization₂.val u₂ (PiTensorProduct.tprod ℂ v)) z) (levSet s) s.ν ∧ ∫ g in levSet s, flatInt p m X a φ (PiLocalization₂.val u₁ (PiTensorProduct.tprod ℂ v)) (PiLocaliza …`. Introduce `z hz`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hmR.2 _ _ ((hint z hz).const_mul _) fun b κ hκ => ?_` and prove the remaining obligations. Rewrite using `[flatInt_mul_lev hc hh hfd hsd hM p m X hmj φ v hlaw hstab u₁ u₂ _ b κ hκ, hsz]`. Use `⟨fun z hz => (hF z hz).1, ?_⟩` and prove the remaining obligations. Rewrite using `[(hF ((D.R.t : ℝ) / 2) hs₁.le).2, integral_const_mul, mul_comm]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (ae_of_all _ fun b => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[show (((D.R.t : ℝ) / 2 : ℝ) : ℂ) - (D.R.t : ℂ) / 2 = 0 by push_cast; ring, GlobalTheory.Doubling.npow_zero, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levInt : ∀ D : D7, LevelLawQ D → LevInt D := by
   intro D hLaw hng c w hw k hk s s' hs hs' p hp ipD ip hM m X hcov mR hmR φ v hRC a hmaj
@@ -269,6 +269,6 @@ end GlobalTheory.ChainTw.LevIntProof
 end
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ChainTw.LevIntProof.levInt`.
+A detailed English derivation is pending.
 -/
 example : ∀ D : D7, LevelLawQ D → LevInt D := GlobalTheory.ChainTw.LevIntProof.levInt

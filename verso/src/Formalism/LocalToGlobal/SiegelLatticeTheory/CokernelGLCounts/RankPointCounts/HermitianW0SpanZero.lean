@@ -16,9 +16,9 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}
 
 /- English proof (translation)
-Establish `hf : ∀ a, t.f a ∈ H.Xp t.f ⊔ H.Xp t.f'` using `fun a => Submodule.mem_sup_left (Submodule.subset_span ⟨a, rfl⟩)`. Establish `hf' : ∀ a, t.f' a ∈ H.Xp t.f ⊔ H.Xp t.f'` using `fun a => Submodule.mem_sup_right (Submodule.subset_span ⟨a, rfl⟩)`. Unfold `HermSp.MMfam`. Break down `M.split with _ | g` into its components or cases. Break down `i with a | a` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hf a`. Conclude with `hf' a`. Break down `i with a | a` into its components or cases. Conclude with `hf a`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (hf' a) (hf a))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem MMfam_mem_sup (t : Term V M r) (i : Fin (r + 1) ⊕ Fin (r + 1)) :
     H.MMfam t i ∈ H.Xp t.f ⊔ H.Xp t.f' := by
@@ -36,7 +36,7 @@ theorem MMfam_mem_sup (t : Term V M r) (i : Fin (r + 1) ⊕ Fin (r + 1)) :
     · exact Submodule.smul_mem _ _ (Submodule.sub_mem _ (hf' a) (hf a))
 
 /- English proof (translation)
-Establish `hle : Submodule.span E (Set.range (H.MMfam t)) ≤ H.Xp t.f ⊔ H.Xp t.f'` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact MMfam_mem_sup H t i)`. Conclude with `hw m (hle hm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hermitian_W0_span_zero (t : Term V M r) {w m : V} (hw : w ∈ H.W0 t.f t.f')
     (hm : m ∈ Submodule.span E (Set.range (H.MMfam t))) : H.h w m = 0 := by
@@ -45,7 +45,7 @@ theorem hermitian_W0_span_zero (t : Term V M r) {w m : V} (hw : w ∈ H.W0 t.f t
   exact hw m (hle hm)
 
 /- English proof (translation)
-Rewrite using `[H.h_herm, hermitian_W0_span_zero H t hw hm, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermitian_span_W0_zero (t : Term V M r) {w m : V} (hw : w ∈ H.W0 t.f t.f')
     (hm : m ∈ Submodule.span E (Set.range (H.MMfam t))) : H.h m w = 0 := by

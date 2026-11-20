@@ -31,14 +31,14 @@ variable (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p]
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero : (p : O) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero
 
 omit [Fact p.Prime] [CharZero O] in
 
 /- English proof (translation)
-The claim follows from `(residue_eq_zero_iff _).1 ((map_natCast _ p).trans (CharP.cast_eq_zero _ p))`.
+A detailed English derivation is pending.
 -/
 theorem natCast_mem_maximalIdeal : (p : O) ∈ maximalIdeal O :=
   (residue_eq_zero_iff _).1 ((map_natCast _ p).trans (CharP.cast_eq_zero _ p))
@@ -46,13 +46,13 @@ theorem natCast_mem_maximalIdeal : (p : O) ∈ maximalIdeal O :=
 omit [CharP (ResidueField O) p] in
 
 /- English proof (translation)
-The claim follows from `ENat.natCast_toNat (mt IsDiscreteValuationRing.addVal_eq_top_iff.1 (natCast_ne_zero O p))`.
+A detailed English derivation is pending.
 -/
 theorem natCast_ramIdx : (ramIdx O p : ℕ∞) = IsDiscreteValuationRing.addVal O p :=
   ENat.natCast_toNat (mt IsDiscreteValuationRing.addVal_eq_top_iff.1 (natCast_ne_zero O p))
 
 /- English proof (translation)
-Introduce `h` and use `natCast_mem_maximalIdeal O p (IsDiscreteValuationRing.addVal_eq_zero_iff.1 ((natCast_ramIdx O p).symm.trans (by rw [h]; rfl)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ramIdx_ne_zero : ramIdx O p ≠ 0 := fun h =>
   natCast_mem_maximalIdeal O p (IsDiscreteValuationRing.addVal_eq_zero_iff.1
@@ -61,7 +61,7 @@ theorem ramIdx_ne_zero : ramIdx O p ≠ 0 := fun h =>
 end Char
 
 /- English proof (translation)
-The claim follows from `charP_of_injective_ringHom (f := PadicInt.residueField.symm.toRingHom) PadicInt.residueField.symm.injective p`.
+A detailed English derivation is pending.
 -/
 theorem charP_residueField_padicInt (p : ℕ) [Fact p.Prime] : CharP (ResidueField ℤ_[p]) p :=
   charP_of_injective_ringHom (f := PadicInt.residueField.symm.toRingHom)
@@ -72,11 +72,11 @@ namespace Model
 variable {O} (Z : Model O)
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `: IsLocalization.Away ϖ K`. Use `(IsLocalization.iff_of_le_of_exists_dvd (.powers ϖ) (nonZeroDivisors O) (powers_le_nonZeroDivisors_of_noZeroDivisors hϖ.ne_zero) fun a ha => ?_).2 inferInstance` and prove the remaining obligations. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible (nonZeroDivisors.ne_zero ha) hϖ`. Conclude with `⟨_, ⟨n, rfl⟩, hn.dvd⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `: IsOpenImmersion (spMap (algebraMap O K))` using `.of_isLocalization ϖ`. Establish `h : Z.str ⁻¹ᵁ (spMap (algebraMap O K)).opensRange = Z.gen.ι.opensRange`. Rewrite using `[Scheme.Opens.opensRange_ι, Z.gen_eq_basicOpen hϖ.ne_zero hϖ.not_isUnit]`. Use extensionality with `x`. Use `Iff.trans ?_ mem_basicOpen_const.symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Set.ext_iff.1 (PrimeSpectrum.localization_away_comap_range K ϖ) _)`. Establish `h' : Set.range (Z.gen.ι ≫ Z.str) ⊆ Set.range (spMap (algebraMap O K))`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `h.ge ⟨x, rfl⟩`. Conclude with `⟨_, (IsOpenImmersion.isPullback _ _ _ _ (IsOpenImmersion.lift_fac _ _ h').symm h).flip⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isPullback_gen (K : Type) [Field K] [Algebra O K] [IsFractionRing O K] :
     ∃ q : Z.gen.toScheme ⟶ Sp K, IsPullback Z.gen.ι q Z.str (spMap (algebraMap O K)) := by
@@ -114,19 +114,19 @@ def capDeg_vp (p : ℕ) : Z.VDivQ →ₗ[ℚ] PicSym Z.X →ₗ[ℚ] ℚ := (ram
 variable {Z}
 
 /- English proof (translation)
-Simplify using `[cDQ, toQ]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem cDQ_toQ (D : Z.VDivZ) : Z.cDQ (toQ D) = firstChernPic (Z.vCls D) := by
   simp [cDQ, toQ]
 
 /- English proof (translation)
-Simplify using `[vDegQ, toQ]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem vDegQ_toQ (D : Z.VDivZ) : Z.vDegQ (toQ D) = Z.vDeg D := by
   simp [vDegQ, toQ]
 
 /- English proof (translation)
-Simplify using `[capDeg_vp, div_eq_inv_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem capDeg_vp_toQ (p : ℕ) (D : Z.VDivZ) (Q : PicSym Z.X) :
     Z.capDeg_vp p (toQ D) Q = Z.vDeg D Q / ramIdx O p := by
@@ -150,13 +150,13 @@ def divP : Z.VDivZ := Z.div p (natCast_ne_zero O p)
 omit [CharP (ResidueField O) p] in
 
 /- English proof (translation)
-The claim follows from `Z.div_eq_addVal_smul hϖ _`.
+A detailed English derivation is pending.
 -/
 theorem divisorOfPrime_eq_ramificationIdx_smul {ϖ : O} (hϖ : Irreducible ϖ) : Z.divP p = ramIdx O p • Z.div ϖ hϖ.ne_zero :=
   Z.div_eq_addVal_smul hϖ _
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Rewrite using `[Z.divisorOfPrime_eq_ramificationIdx_smul p hϖ, Z.div_eq_addVal_smul hϖ, map_nsmul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℚ, ← Nat.cast_smul_eq_nsmul ℚ, smul_smul, div_mul_cancel₀ _ (Nat.cast_ne_zero.2 (ramIdx_ne_zero O p))]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem toQ_div (g : O) (hg : g ≠ 0) : toQ (Z.div g hg) =
     (((IsDiscreteValuationRing.addVal O g).toNat : ℚ) / ramIdx O p) • toQ (Z.divP p) := by
@@ -181,7 +181,7 @@ set_option linter.overlappingInstances false in
 variable {Z}
 
 /- English proof (translation)
-Proceed by induction on `D using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a D => simp [capDeg_vp, vDegQ, vDeg_eq_zero D hn hx]`. Consider the case `add a b ha hb => rw [map_add, LinearMap.add_apply, ha, hb, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem toITh_capDeg_eq_zero (D : Z.VDivQ) {n : ℕ} (hn : n ≠ Z.relDim) {x : PicSym Z.X}
     (hx : x ∈ symDeg (SmallPic Z.X) n) : (Z.toITh p).capDeg D x = 0 := by
@@ -203,7 +203,7 @@ def FlagPair.toFPair (P : FlagPair φ N) : FPair (Z.toITh p) N where
 def FlagModel.toFPair (M : FlagModel φ N) : FPair (M.B.toITh p) N := M.pair.toFPair p
 
 /- English proof (translation)
-The claim follows from `congrArg toQ (FlagPair.cls_div_ofSMul fl _ _ i)`.
+A detailed English derivation is pending.
 -/
 theorem FlagPair.toFPair_ofSMul_Dv (fl : Flag E N) (i : Fin N) :
     ((FlagPair.ofSMul fl p (natCast_ne_zero O p)).toFPair p).Dv i = (Z.toITh p).divP :=
@@ -219,7 +219,7 @@ def base : Model O where
   isProjOver := Models.Point.isProjOver_id O
 
 /- English proof (translation)
-The claim follows from `relDim_eq_iff.2 ((PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := O)).trans (IsDiscreteValuationRing.ringKrullDim_eq_one O))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem relDim_base : (base O).relDim = 0 :=
   relDim_eq_iff.2 ((PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := O)).trans
@@ -235,18 +235,18 @@ def toBase : Hom Z (base O) where
       Z.str.isClosedMap.isClosed_range ⟨_, rfl⟩)⟩
 
 /- English proof (translation)
-Simplify using `[Hom.relDim]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem relDim_toBase : Z.toBase.relDim = Z.relDim := by simp [Hom.relDim]
 
 /- English proof (translation)
-Use `Twist.isFiniteQC_twist (F := structureModule Z.X) hM` as an intermediate fact. Use `finite_coh_of_isProjOver Z.const_eq (twist (structureModule Z.X) M) Z.isProjOver 0` as an intermediate fact. Take `⟨e⟩` from `nonempty_cokernel_iso (.principal (Z.const g) (Z.isRegularFn_const hg)) (φ := smulHom (structureModule Z.X) (Z.const g)) fun _ _ _ => ⟨.refl _ _, fun _ => rfl⟩`. Establish `: Mono (smulHom (structureModule Z.X) (Z.const g))` using `mono_of_locally_app_injective _ fun W x hx => ⟨W, hx, le_rfl, fun _ _ h => (mul_cancel_left_mem_nonZeroDivisors (Z.isRegularFn_const hg W le_top)).1 h⟩`. Establish `hS` using `Twist.shortExact_map hM (S := .mk _ (cokernel.π _) (cokernel.condition (smulHom (structureModule Z.X) (Z.const g)))) { exact := ShortComplex.exact_cokernel _ }`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Twist.map M (smulHom (structureModule Z.X) (Z.const g)) = smulHom _ (Z.const g)` using `Twist.hom_ext fun V s i => by`. Rewrite using `[Twist.coord_map_app, smulHom_app_apply, smulHom_app_apply, Twist.coord_smul]`. Conclude with `congrArg (· • Twist.coord s i) (map_restrictGlobal (homOfLE inf_le_left) _).symm`. Use `(chiLen_congr O ((twistFunctor M).mapIso e)).symm.trans ?_` and prove the remaining obligations. Use `(chiLen_eq_sum_range O 1 fun n hn => cohOn.subsingleton₃ hS ⊤ n (h n hn) (h (n + 1) n.succ_pos)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e'` using `((cohOn.exact₂ O hS ⊤ 0).linearEquivOfSurjective (cohOn.map_g_surjective O hS ⊤ 0 (h 1 one_pos))).length_eq`. Establish `hr : LinearMap.range (cohOn.map O (Twist.map M (smulHom (structureModule Z.X) (Z.const g))) ⊤ 0) = LinearMap.range (LinearMap.lsmul O _ g)`. Rewrite using `[hf]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_range_one, pow_zero, one_mul, ← Nat.cast_mul, Nat.cast_inj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg ENat.toNat (e'.symm.trans ?_)).trans ((ENat.toNat_mul _ _).trans (congrArg _ (ENat.toNat_natCast _)))` and prove the remaining obligations. Conclude with `(Submodule.quotEquivOfEq _ _ hr).length_eq.trans (((Submodule.quotEquivOfEq _ _ (Submodule.map_top _).symm).length_eq).trans (length_quotient_smul_top_dvr (coh (twist (structureModule Z.X) M) 0) g))`.
+A detailed English derivation is pending.
 -/
 theorem chiLen_twist_effConst {g : O} (hg : g ≠ 0) {M : LB Z.X} (hM : M.IsLB)
     (h : ∀ n, 0 < n → Subsingleton (coh (twist (structureModule Z.X) M) n))
@@ -289,7 +289,7 @@ open ProjSpace ProjCoh
 variable (O) (N : ℕ)
 
 /- English proof (translation)
-The claim follows from `.of_pred (Models.isNormalScheme_projSpace O N)`.
+A detailed English derivation is pending.
 -/
 theorem isNormalScheme_projSpace : IsNormalScheme (projSpace O N).X :=
   .of_pred (Models.isNormalScheme_projSpace O N)
@@ -297,7 +297,7 @@ theorem isNormalScheme_projSpace : IsNormalScheme (projSpace O N).X :=
 abbrev formalTwistingSheaf : LB (projSpace O N).X := O1 O N
 
 /- English proof (translation)
-The claim follows from `Algebra.algebra_ext _ _ fun r => congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (.of O)).inv r)) ((PSpace.str O N).app_eq_appLE (U := ⊤))`.
+A detailed English derivation is pending.
 -/
 theorem algebraTop_projSpace : (projSpace O N).algebraTop = algebraSections O N ⊤ :=
   Algebra.algebra_ext _ _ fun r =>
@@ -307,9 +307,9 @@ theorem algebraTop_projSpace : (projSpace O N).algebraTop = algebraSections O N 
 variable {O} in
 
 /- English proof (translation)
-Establish `hM` using `Twist.isLB_lbZPow (O1_isLB O (N + 1)) (-j)`. Establish `H : ∀ A : Algebra O Γ(PSpace O (N + 1), ⊤), A = algebraSections O (N + 1) ⊤ → Module.Free O (coh (sheafO O (N + 1) (-j)) 0) ∧ Module.finrank O (coh (sheafO O (N + 1) (-j)) 0) = (-j + (N + 1 : ℕ) : ℤ).toNat.choose (N + 1)`. Introduce and unpack `_ rfl`. Conclude with `⟨inferInstance, finrank_coh_zero O (by omega) _⟩`. Take `⟨h₁, h₂⟩` from `H _ (algebraTop_projSpace O (N + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← cls_lbZPow (O1_isLB O _) _ hM, chiLenPic_cls]`. Use `(@chiLen_twist_effConst _ _ _ _ (projSpace O (N + 1)) _ hg _ hM (fun n hn => subsingleton_coh_of_neg_le O _ (by omega) hn) h₁).trans ((congrArg (fun n : ℕ => _ * (n : ℤ)) h₂).trans ?_)` and prove the remaining obligations. Use `split_ifs with h`. Simplify using `[h]`. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega)]; simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiLen_projSpace {g : O} (hg : g ≠ 0) {j : ℕ} (hj : j ≤ N + 1) :
     chiLenPic O (divMod ((projSpace O (N + 1)).effConst g hg).1)
@@ -333,9 +333,9 @@ theorem chiLen_projSpace {g : O} (hg : g ≠ 0) {j : ℕ} (hj : j ≤ N + 1) :
 variable {O} in
 
 /- English proof (translation)
-Rewrite using `[← Fin.prod_const, div, vDeg_ofEff_prod, if_pos (by simp), interLen_eq_multiDiff O _ fun _ => O1_isLB O _, multiDiff_apply, Finset.sum_eq_single ∅]`. Use `chiLen_projSpace N hg (j := 0) (by omega)` as an intermediate fact. Simplify using `only [Nat.cast_zero, neg_zero, zero_smul, if_true] at this`. Simplify using `[this]`. Introduce `S _ hS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `chiLen_projSpace N hg (j := S.card) (by simpa using S.card_le_univ)` as an intermediate fact. Rewrite `this` using `[if_neg (by simpa using hS), neg_smul, natCast_zsmul]`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem vDeg_div_projSpace {g : O} (hg : g ≠ 0) :
     (projSpace O (N + 1)).vDeg ((projSpace O (N + 1)).div g hg)
@@ -355,7 +355,7 @@ theorem vDeg_div_projSpace {g : O} (hg : g ≠ 0) :
 variable (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p]
 
 /- English proof (translation)
-Rewrite using `[capDeg_vp_toQ, divP, vDeg_div_projSpace]`. Conclude with `div_self (Nat.cast_ne_zero.2 (ramIdx_ne_zero O p))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capDeg_divP_projSpace : ((projSpace O (N + 1)).toITh p).capDeg
     ((projSpace O (N + 1)).toITh p).divP (c1 (formalTwistingSheaf O (N + 1)) (O1_isLB O _) ^ (N + 1)) = 1 := by
@@ -363,7 +363,7 @@ theorem capDeg_divP_projSpace : ((projSpace O (N + 1)).toITh p).capDeg
   exact div_self (Nat.cast_ne_zero.2 (ramIdx_ne_zero O p))
 
 /- English proof (translation)
-Rewrite using `[← pow_one (c1 _ _)]`. Conclude with `capDeg_divP_projSpace O 0 p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capDeg_divP_line : ((projSpace O 1).toITh p).capDeg ((projSpace O 1).toITh p).divP
     (c1 (formalTwistingSheaf O 1) (O1_isLB O 1)) = 1 := by
@@ -373,13 +373,13 @@ theorem capDeg_divP_line : ((projSpace O 1).toITh p).capDeg ((projSpace O 1).toI
 omit [CharZero O] in
 
 /- English proof (translation)
-Establish `h` using `(projSpace O 1).toBase.fibreDeg_prod (L := ![formalTwistingSheaf O 1]) (isLB_vecOne (O1_isLB O 1))`. Rewrite `h` using `[Fin.prod_univ_one, if_pos (by simp)]`. Use `h.trans ?_` and prove the remaining obligations. Set `k` to `(projSpace O 1).toBase.fnField`. Set `φ : O →+* k` to `(Spec.preimage ((base O).X.fromSpecResidueField (genericPoint _))).hom`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `H` using `isPullback_baseChange 1 φ`. Rewrite `H` using `[show spMap φ = _ from Spec.map_preimage _]`. Set `e : PSpace k 1 ≅ (projSpace O 1).toBase.genFibre` to `H.isoIsPullback _ _ (projSpace O 1).toBase.isPullback_genFibre`. Establish `he : e.hom ≫ (projSpace O 1).toBase.genFibreι = baseChange 1 φ` using `IsPullback.isoIsPullback_hom_fst ..`. Establish `he' : e.hom ≫ (projSpace O 1).toBase.genFibreStr = PSpace.str k 1` using `IsPullback.isoIsPullback_hom_snd ..`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `Semi.LB.isLB_pull (O1_isLB O 1) (projSpace O 1).toBase.genFibreι`. Rewrite using `[interNum_congr k (asIso (unitToPush e.hom)), interNum_pushforward_of_isAffineHom (f := e.hom) (fun r => by rw [algebraMap_top_eq, ← he', Scheme.Hom.comp_appTop]; rfl) _ (by intro i; fin_cases i; exact hL), interNum_congr_cls k _ (by intro i; fin_cases i; exact Semi.LB.isLB_pull …`. Both sides reduce to the same expression. Use `fin_cases i`. Express the relevant statement in the definitionally equal form `pull e.hom (pull _ (cls _ (O1_isLB O 1))) = cls (lbZPow (O1 k 1) 1) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pull_comp, he, cls_lbZPow (O1_isLB k 1), one_zsmul]`. Conclude with `(cls_eq_iff _ _).2 (lbIso_pull_O1 1 φ)`.
+A detailed English derivation is pending.
 -/
 theorem fibreDeg_line : (projSpace O 1).toBase.fibreDeg (c1 (formalTwistingSheaf O 1) (O1_isLB O 1)) = 1 := by
   have h := (projSpace O 1).toBase.fibreDeg_prod (L := ![formalTwistingSheaf O 1]) (isLB_vecOne (O1_isLB O 1))
@@ -409,7 +409,7 @@ theorem fibreDeg_line : (projSpace O 1).toBase.fibreDeg (c1 (formalTwistingSheaf
     exact (cls_eq_iff _ _).2 (lbIso_pull_O1 1 φ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [map_neg, LinearMap.neg_apply, capDeg_divP_line], toITh_capDeg_eq_zero p _ (n := 0) (by simp) (Submodule.subset_span ⟨finZeroElim, by simp⟩)⟩`.
+Supply the required witnesses or components.
 -/
 example : ((projSpace O 1).toITh p).capDeg (-((projSpace O 1).toITh p).divP)
       (c1 (formalTwistingSheaf O 1) (O1_isLB O 1)) = -1 ∧
@@ -418,9 +418,9 @@ example : ((projSpace O 1).toITh p).capDeg (-((projSpace O 1).toITh p).divP)
     toITh_capDeg_eq_zero p _ (n := 0) (by simp) (Submodule.subset_span ⟨finZeroElim, by simp⟩)⟩
 
 /- English proof (translation)
-Establish `hx (i : Fin 2) : smallCls _ ((Flag.ofBiprod h h).isLB_root i) = smallCls (formalTwistingSheaf O 1) (O1_isLB O 1)`. Establish `e : Nonempty ((Flag.ofBiprod h h).gr i ≅ toMod (formalTwistingSheaf O 1))` using `by fin_cases i exacts [(Flag.nonempty_gr_ofBiprod h h).1, (Flag.nonempty_gr_ofBiprod h h).2]`. Conclude with `(smallCls_eq_iff _ h.isLB_det).2 (((Flag.ofBiprod h h).isVB_gr i).lbIso_det_of_iso e.some) |>.trans ((smallCls_eq_iff _ _).2 (VB.lbIso_det_toMod (O1_isLB O 1))).symm`. Establish `hx₁ (i) : ((FlagPair.ofSMul (Flag.ofBiprod h h) p (natCast_ne_zero O p)).toFPair p).x i = smallCls (formalTwistingSheaf O 1) (O1_isLB O 1)` using `hx i`. Establish `hx₂ (i) : ((FlagPair.ofSMul (Flag.ofBiprod h h) p (natCast_ne_zero O p)).toFPair p).x' i = smallCls (formalTwistingSheaf O 1) (O1_isLB O 1)` using `hx i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.BasicNotions.DV.ck, Formalism.BasicNotions.DV.Gk, FlagPair.toFPair_ofSMul_Dv, hx₁, hx₂, Finset.sum_range_succ, Finset.sum_range_zero]`. Establish `h₁` using `capDeg_divP_line O p`. Establish `h₂ : ((projSpace O 1).toITh p).capDeg ((projSpace O 1).toITh p).divP (symOf (smallCls (formalTwistingSheaf O 1) (O1_isLB O 1))) = 1` using `h₁`. Simplify using `only [pow_zero, pow_one, one_mul, mul_one, zero_add, Nat.sub_self, Nat.reduceSub, map_add, h₁, h₂]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 example (h : IsVB (toMod (formalTwistingSheaf O 1)) 1) :
     Formalism.BasicNotions.DV.ck ((FlagPair.ofSMul (Flag.ofBiprod h h) p (natCast_ne_zero O p)).toFPair p) 1
@@ -448,7 +448,7 @@ example (h : IsVB (toMod (formalTwistingSheaf O 1)) 1) :
   norm_num
 
 /- English proof (translation)
-Introduce `h` and use `by have := capDeg_divP_line O p rw [capDeg_vp_toQ, divP, ← VertDiv.cls_const, h.cls_eq, VertDiv.cls_zero] at this simp at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ (VertDiv.const (projSpace O 1) p (natCast_ne_zero O p)).IsIsom (.zero _) := fun h => by
   have := capDeg_divP_line O p
@@ -458,7 +458,7 @@ example : ¬ (VertDiv.const (projSpace O 1) p (natCast_ne_zero O p)).IsIsom (.ze
 omit [CharP (ResidueField O) p] in
 
 /- English proof (translation)
-The claim follows from `(relDim_toBase (Z := projSpace O 1)).trans (relDim_projSpace 1)`.
+A detailed English derivation is pending.
 -/
 example : (FlagModel.ofBiprod (VB.isVB_structureModule _) (VB.isVB_structureModule _)
     (projSpace O 1).toBase p (natCast_ne_zero O p)).relDim = 1 :=
@@ -467,7 +467,7 @@ example : (FlagModel.ofBiprod (VB.isVB_structureModule _) (VB.isVB_structureModu
 end Proj
 
 /- English proof (translation)
-The claim follows from `charP_residueField_padicInt p ((projSpace ℤ_[p] 1).toITh p).dim = 2 ∧ ((projSpace ℤ_[p] 1).toITh p).divP ≠ 0 := haveI := charP_residueField_padicInt p ⟨by simp, fun h => by have := capDeg_divP_line ℤ_[p] p rw [h, map_zero] at this exact zero_ne_one this⟩`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : haveI := charP_residueField_padicInt p
     ((projSpace ℤ_[p] 1).toITh p).dim = 2 ∧ ((projSpace ℤ_[p] 1).toITh p).divP ≠ 0 :=

@@ -21,21 +21,21 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-Use `GlobalTheory.RowReal.big_mono ?_ (GlobalTheory.T.rowTest_tupleTerm_measures_differ_by_scalars.and GlobalTheory.T.unfolding_cell_mass_eq_const_mul_local_coefficients)` and prove the remaining obligations. Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch h s ρ μ hH`. Take `⟨hA, hC⟩` from `h`. Establish `hc` using `hC s ρ μ hH`. Set `cf : ℕ → ℂ` to `fun j => if hj : j ∈ idx D then (hc j hj).choose else 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨((idx D).map cf).prod, fun t Φ β b hb M M' hM hM' => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hx1⟩` from `hA t Φ β M M' hM hM'`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Establish `hlt : ∀ j ∈ idx D, 1 ≤ j ∧ j + 2 ≤ D.R.m` using `fun j hj => by`. Rewrite `hj` using `[idx, List.mem_range'_1]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hgf : ∀ j ∈ idx D, b j ∈ GfC _` using `fun j hj => by`. Take `⟨δ, r, -, -, hf⟩` from `hb.2 j hj (by have := hlt j hj; omega)`. Conclude with `hf.1`. Establish `hfac : ∀ j ∈ idx D, (if h : b j ∈ GfC _ then cellWt (ρ j) (μ j) ((latGrp ch.G j).subgroupOf _) ⟨b j, h⟩ else 0) * ((x (.top j) : ℝ) : ℂ) = cf j * (colCoef ch t β j : ℂ)` using `fun j hj => by`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos (hgf j hj)]`. Establish `hs` using `hx (.top j) (show j ≤ D.R.m by have := hlt j hj; omega) (by simp only [ne_eq, Node.top.injEq]; have := hlt j hj; omega)`. Establish `e` using `(hc j hj).choose_spec t Φ β b hb M M' hM hM' (x (.top j)) hs (hgf j hj)`. Simplify using `only [cf, dif_pos hj]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsP : sProd D x = ((idx D).map fun j => ((x (.top j) : ℝ) : ℂ)).prod`. Establish `h2 : ∏ i ∈ Finset.range (D.R.m + 1), ((x (.grid i D.R.m) : ℝ) : ℂ) = 1`. Use `Finset.prod_eq_one fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hx1 (.grid i D.R.m) ⟨by simp at hi; omega, rfl⟩ (by simp) (fun j _ => by simp)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[sProd, h2, mul_one, ← List.prod_toFinset _ (show (idx D).Nodup from List.nodup_range')]`. Use `symm`. Use `Finset.prod_subset (fun j hj => ?_) (fun j hj0 hj => ?_)` and prove the remaining obligations. Rewrite `hj` using `[List.mem_toFinset]`. Use `hlt j hj` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.mem_range.2 (by omega)`. Rewrite `hj` using `[List.mem_toFinset]`. Establish `hj1` using `Finset.mem_range.1 hj0`. Rewrite using `[hx1 (.top j) (show j ≤ D.R.m by omega) (by simp only [ne_eq, Node.top.injEq]; omega) (fun j' hj' e => by cases e; exact hj hj')]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hwt : GlobalTheory.RowVal.wt ρ μ b = ((idx D).map fun j => if h : b j ∈ GfC _ then cellWt (ρ j) (μ j) ((latGrp ch.G j).subgroupOf _) ⟨b j, h⟩ else 0).prod`. Unfold `GlobalTheory.RowVal.wt`. Use `congr 1`. Rewrite using `[hwt, hsP, ← List.prod_map_mul, List.map_congr_left hfac, List.prod_map_mul, coef_prod]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtAt_big : Big fun ch => ∀ s, WtAt ch s := by
   refine GlobalTheory.RowReal.big_mono ?_ (GlobalTheory.T.rowTest_tupleTerm_measures_differ_by_scalars.and GlobalTheory.T.unfolding_cell_mass_eq_const_mul_local_coefficients)

@@ -29,14 +29,14 @@ def rootHom [PerfectRing R l] (hR : (l : R) = 0) (n : ℕ) : R ≃+* R :=
     (PerfectRing.bijective_frobenius : Function.Bijective fun x : R => x ^ l ^ n)
 
 /- English proof (translation)
-The claim follows from `(rootHom hR n).apply_symm_apply a`.
+A detailed English derivation is pending.
 -/
 theorem rootHom_pow [PerfectRing R l] (hR : (l : R) = 0) (n : ℕ) (a : R) :
     ((rootHom hR n).symm a) ^ l ^ n = a :=
   (rootHom hR n).apply_symm_apply a
 
 /- English proof (translation)
-The claim follows from `(rootHom hR n).symm_apply_apply b`.
+A detailed English derivation is pending.
 -/
 theorem rootHom_symm_pow [PerfectRing R l] (hR : (l : R) = 0) (n : ℕ) (b : R) :
     (rootHom hR n).symm (b ^ l ^ n) = b :=
@@ -49,7 +49,7 @@ def level [PerfectRing R l] (hR : (l : R) = 0) (hS : (l : S) = 0) (π : S)
       (g.comp ((rootHom hR n).symm : R →+* R))
 
 /- English proof (translation)
-Establish `h1 : ((rootHom hR n).symm : R →+* R) (b ^ l ^ n) = b` using `rootHom_symm_pow hR n b`. Simplify using `only [level, RingHom.comp_apply, h1, ← hx, Ideal.quotientMap_mk, powHom_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem level_spec [PerfectRing R l] (hR : (l : R) = 0) (hS : (l : S) = 0) (π : S)
     (g : R →+* S ⧸ Ideal.span {π}) (n : ℕ) (b : R) (x : S)
@@ -59,15 +59,15 @@ theorem level_spec [PerfectRing R l] (hR : (l : R) = 0) (hS : (l : S) = 0) (π :
   simp only [level, RingHom.comp_apply, h1, ← hx, Ideal.quotientMap_mk, powHom_apply]
 
 /- English proof (translation)
-The claim follows from `strictMono_nat_of_lt_succ fun n => Nat.pow_lt_pow_right (Fact.out : l.Prime).one_lt (Nat.lt_succ_self n)`.
+A detailed English derivation is pending.
 -/
 theorem strictMono_pow : StrictMono fun n : ℕ => l ^ n :=
   strictMono_nat_of_lt_succ fun n => Nat.pow_lt_pow_right (Fact.out : l.Prime).one_lt (Nat.lt_succ_self n)
 
 /- English proof (translation)
-Use extensionality with `a`. Take `⟨b, rfl⟩ : ∃ b : R, b ^ l ^ (m + 1) = a` from `⟨_, rootHom_pow hR (m + 1) a⟩`. Take `⟨x, hx⟩` from `Ideal.Quotient.mk_surjective (g b)`. Establish `hx' : Ideal.Quotient.mk (Ideal.span {π}) (x ^ l) = g (b ^ l)`. Rewrite using `[map_pow, map_pow, hx]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : b ^ l ^ (m + 1) = (b ^ l) ^ l ^ m` using `by rw [← pow_mul, pow_succ']`. Establish `e2 : x ^ l ^ (m + 1) = (x ^ l) ^ l ^ m` using `by rw [← pow_mul, pow_succ']`. Rewrite using `[RingHom.comp_apply, level_spec hR hS π g (m + 1) b x hx, e1, level_spec hR hS π g m _ _ hx', e2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem level_compat [PerfectRing R l] (hR : (l : R) = 0) (hS : (l : S) = 0) (π : S)
     (g : R →+* S ⧸ Ideal.span {π}) (m : ℕ) :
@@ -84,11 +84,11 @@ theorem level_compat [PerfectRing R l] (hR : (l : R) = 0) (hS : (l : S) = 0) (π
   rfl
 
 /- English proof (translation)
-Use `⟨IsAdicComplete.StrictMono.liftRingHom (Ideal.span {π}) (strictMono_pow (l := l)) (level hR hS π g) (fun {m} => level_compat hR hS π g m), ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Take `⟨x, hx⟩` from `Ideal.Quotient.mk_surjective (g a)`. Establish `h0` using `IsAdicComplete.StrictMono.mk_liftRingHom (Ideal.span {π}) (strictMono_pow (l := l)) (level hR hS π g) (fun {m} => level_compat hR hS π g m) (n := 0) a`. Establish `h1` using `level_spec hR hS π g 0 a x hx`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ea : a ^ l ^ 0 = a` using `by simp`. Establish `ex : x ^ l ^ 0 = x` using `by simp`. Rewrite `h1` using `[ea, ex]`. Establish `h2` using `Ideal.Quotient.eq.1 (h0.trans h1)`. Establish `eI : Ideal.span {π} ^ l ^ 0 = Ideal.span {π}` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[eI]`. Rewrite using `[RingHom.comp_apply, ← hx]`. Conclude with `Ideal.Quotient.eq.2 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift [PerfectRing R l] (hR : (l : R) = 0) (hS : (l : S) = 0) (π : S)
     [IsAdicComplete (Ideal.span {π}) S] (g : R →+* S ⧸ Ideal.span {π}) :
@@ -110,11 +110,11 @@ theorem exists_lift [PerfectRing R l] (hR : (l : R) = 0) (hS : (l : S) = 0) (π 
   exact Ideal.Quotient.eq.2 h2
 
 /- English proof (translation)
-Apply `DFunLike.coe_injective` to reduce the goal to its premises. Apply `IsHausdorff.StrictMono.funext' (Ideal.span {π}) (strictMono_pow (l := l))` to reduce the goal to its premises. Introduce `n a`. Take `⟨b, rfl⟩ : ∃ b : R, b ^ l ^ n = a` from `⟨_, rootHom_pow hR n a⟩`. Establish `hb : f b - f' b ∈ Ideal.span {π}` using `Ideal.Quotient.eq.1 (RingHom.congr_fun h b)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Establish `e : f (b ^ l ^ n) - f' (b ^ l ^ n) = (f b - f' b) ^ l ^ n`. Use `map_sub (powHom hS n) (f b) (f' b)` as an intermediate fact. Simplify `this.symm` using `only [powHom_apply, map_pow]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.pow_mem_pow hb _`.
+A detailed English derivation is pending.
 -/
 theorem lift_unique [PerfectRing R l] (hR : (l : R) = 0) (hS : (l : S) = 0) (π : S)
     [IsHausdorff (Ideal.span {π}) S] (f f' : R →+* S)
@@ -133,9 +133,9 @@ theorem lift_unique [PerfectRing R l] (hR : (l : R) = 0) (hS : (l : S) = 0) (π 
   exact Ideal.pow_mem_pow hb _
 
 /- English proof (translation)
-Establish `: IsAdicComplete (Ideal.span {A'.pi}) A'.A` using `A'.compl`. Establish `hOb : ((l : ℕ) : Ob l) = 0` using `CharP.cast_eq_zero _ l`. Take `⟨f, hf⟩` from `exists_lift A.natCast_l A'.natCast_l A'.pi g`. Establish `hcomm : f.comp A.s = A'.s`. Use `lift_unique hOb A'.natCast_l A'.pi _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← RingHom.comp_assoc, hf, hg]`. Use `⟨⟨f, hcomm⟩, hf, fun φ hφ => ?_⟩` and prove the remaining obligations. Apply `PAlg.Hom.ext` to reduce the goal to its premises. Conclude with `lift_unique A.natCast_l A'.natCast_l A'.pi _ _ (hφ.trans hf.symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem existsUnique_hom {l : ℕ} [Fact l.Prime] (A A' : PAlg l)
     (g : A.A →+* A'.A ⧸ Ideal.span {A'.pi})

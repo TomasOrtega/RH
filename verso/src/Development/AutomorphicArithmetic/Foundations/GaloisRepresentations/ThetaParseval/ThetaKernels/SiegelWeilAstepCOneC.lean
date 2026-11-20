@@ -19,13 +19,13 @@ namespace PositivityTheory.SiegelWeilFormula.AStep
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 namespace COneB
 /- English proof (translation)
-Take `⟨hnb, hlam, hfd, hvol⟩` from `hc`. Establish `hB` using `d.ok.good`. Establish `hσ : ∀ a, σ (σ a) = a` using `_root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k hB`. Establish `hb` using `d.ok.frame`. Establish `hψ` using `GlobalTheory.StdCharWeilDatum.isCharAF hB.std`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K, hK, hKc⟩` from `kfour.nF_cocompact hσ hb`. Use `⟨K, hK, fun f M hf y hM => ?_⟩` and prove the remaining obligations. Establish `hfin : lam 𝓖 < ⊤` using `by rw [hvol]; exact ENNReal.one_lt_top`. Establish `hbd : ∀ β, ‖f (nb β * y) * d.B.ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T.1.1 * β.1))))‖ ≤ M`. Introduce `β`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ, hγ, hk⟩` from `hKc β`. Rewrite using `[norm_mul, hψ.2.1 _, mul_one]`. Establish `e : f (nb β * y) = f (nb (γ + β) * y)`. Rewrite using `[kfour.nb_add hnb, mul_assoc, hf _ (kfour.nb_rat hnb γ hγ)]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM _ hk`. Establish `h1` using `norm_setIntegral_le_of_norm_le_const hfin (fun β _ => hbd β)`. Establish `hr : lam.real 𝓖 = 1` using `by simp [Measure.real, hvol]`. Rewrite `h1` using `[hr, mul_one]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fcBd'_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) (T : nF σ d.Y d.b) :
     ∃ K : Set (nA σ d.Y d.b), IsCompact K ∧ ∀ (f : d.G → ℂ) (M : ℝ), (∀ γ ∈ rat2 σ d.Y, ∀ g, f (γ * g) = f g) →
@@ -57,23 +57,23 @@ variable (H : _root_.PositivityTheory.SiegelWeilFormula.AStep.Hyps_k) {d : _root
   (hE : _root_.PositivityTheory.SiegelWeilFormula.AStep.EData_k d (d.sec0 Φ) (s0 d.m d.n) (s0 d.m d.n) U p Ê t)
 include H hE in
 /- English proof (translation)
-Take `⟨hUo, hR, hs, hp, hd, hcont, hinv, hfar⟩` from `hE`. Establish `hσ` using `_root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k d.ok.good`. Establish `hb` using `d.ok.frame`. Establish `hnbc` using `kfour.nb_continuous hσ hb hc.1`. Take `⟨iTG, -, -, -⟩` from `kfour.doubled_group_topological_properties σ d.Y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨KN, hKN, hKNb⟩` from `_root_.PositivityTheory.SiegelWeilFormula.AStep.COneB.fcBd'_k d hc T`. Take `⟨KU, hKU, hKUc⟩` from `_root_.PositivityTheory.SiegelWeilFormula.AStep.COneB.ratV_cocompact_k L`. Establish `huc` using `_root_.PositivityTheory.SiegelWeilFormula.AStep.COneB.uM_cont_k L hu`. Set `C : Set d.G` to `(fun q : nA σ d.Y d.b × (Fin L.n → AE F E) => nb q.1 * uM q.2 * x) '' (KN ×ˢ KU)`. Establish `hCc : IsCompact C` using `(hKN.prod hKU).image (((hnbc.comp continuous_fst).mul (huc.comp continuous_snd)).mul continuous_const)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hper : ∀ φ : d.G → ℂ, Continuous φ → (∀ γ ∈ rat2 σ d.Y, ∀ g, φ (γ * g) = φ g) → ∀ u, ∃ k ∈ KU, fc d.B.ψ d.b nb lam 𝓖 φ T (uM u * x) = fc d.B.ψ d.b nb lam 𝓖 φ T (uM k * x)`. Introduce `φ hφ hi u`. Take `⟨r, hr, hk⟩` from `hKUc u`. Use `⟨r + u, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.AStep.COneB.uM_add_k L hu, mul_assoc, (H.fcConj F E σ d L nb lam 𝓖 hc).2 uM ν 𝓤 hu T T' hT φ hφ hi r hr]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hbound : ∀ (φ : d.G → ℂ) (M : ℝ), Continuous φ → (∀ γ ∈ rat2 σ d.Y, ∀ g, φ (γ * g) = φ g) → (∀ y ∈ C, ‖φ y‖ ≤ M) → ∀ u, ‖fc d.B.ψ d.b nb lam 𝓖 φ T (uM u * x)‖ ≤ M`. Introduce `φ M hφ hi hM u`. Take `⟨k, hk, e⟩` from `hper φ hφ hi u`. Rewrite using `[e]`. Use `hKNb φ M hi _ fun β hβ => hM _ ⟨(β, k), ⟨hβ, hk⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_assoc]`. Establish `hmeas : ∀ φ : d.G → ℂ, Continuous φ → (∀ γ ∈ rat2 σ d.Y, ∀ g, φ (γ * g) = φ g) → AEStronglyMeasurable (fun u => fc d.B.ψ d.b nb lam 𝓖 φ T (uM u * x)) ν`. Introduce `φ hφ hi`. Conclude with `((_root_.PositivityTheory.SiegelWeilFormula.AStep.fcCont_k d hc T φ hφ hi).comp (huc.mul continuous_const)).aestronglyMeasurable`. Establish `hfin : ν 𝓤 < ⊤` using `by rw [hu.2.2.2]; exact ENNReal.one_lt_top`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ φ : d.G → ℂ, Continuous φ → (∀ γ ∈ rat2 σ d.Y, ∀ g, φ (γ * g) = φ g) → IntegrableOn (fun u => fc d.B.ψ d.b nb lam 𝓖 φ T (uM u * x)) 𝓤 ν`. Introduce `φ hφ hi`. Take `⟨M, hM⟩` from `hCc.exists_bound_of_continuousOn hφ.continuousOn`. Conclude with `Measure.integrableOn_of_bounded (M := M) hfin.ne (hmeas φ hφ hi) (Filter.Eventually.of_forall fun u => hbound φ M hφ hi hM u)`. Establish `hadd : ∀ (a : ℂ) (f f' : d.G → ℂ), Continuous f → Continuous f' → (∀ γ ∈ rat2 σ d.Y, ∀ g, f (γ * g) = f g) → (∀ γ ∈ rat2 σ d.Y, ∀ g, f' (γ * g) = f' g) → _root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k d L uM ν 𝓤 nb lam 𝓖 (a • f + f') T x = a * _root_.PositivityTheory.Siege …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a f f' hf hf' hi hi'`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k]`. Establish `e : (fun u => fc d.B.ψ d.b nb lam 𝓖 (a • f + f') T (uM u * x)) = fun u => a * fc d.B.ψ d.b nb lam 𝓖 f T (uM u * x) + fc d.B.ψ d.b nb lam 𝓖 f' T (uM u * x)`. Use function extensionality and compare the values at `fun u => (_root_.PositivityTheory.SiegelWeilFormula.AStep.fcAll_k d hc T (uM u * x)).1 a f f' hf hf' hi hi'`. Rewrite using `[e, integral_add ((hint f hf hi).const_mul a) (hint f' hf' hi'), integral_const_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbd : ∃ C : Set d.G, IsCompact C ∧ ∀ (f : d.G → ℂ) (M : ℝ), Continuous f → (∀ γ ∈ rat2 σ d.Y, ∀ g, f (γ * g) = f g) → (∀ y ∈ C, ‖f y‖ ≤ M) → ‖_root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k d L uM ν 𝓤 nb lam 𝓖 f T x‖ ≤ M`. Use `⟨C, hCc, fun f M hf hi hM => ?_⟩` and prove the remaining obligations. Establish `h1` using `norm_setIntegral_le_of_norm_le_const hfin (fun u _ => hbound f M hf hi hM u)`. Establish `hr : ν.real 𝓤 = 1` using `by simp [Measure.real, hu.2.2.2]`. Rewrite `h1` using `[hr, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `h1`. Take `⟨hDiff, hComm⟩` from `lamDeriv (rat2 σ d.Y) (fun φ => _root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k d L uM ν 𝓤 nb lam 𝓖 φ T x) hadd hbd U Ê hUo hd hcont hinv`. Conclude with `⟨hDiff, fun i => hComm _ hs i⟩`.
+A detailed English derivation is pending.
 -/
 theorem avgHol_pf_k {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) (T : nF σ d.Y d.b) {T' : nF σ L.Y L.b}
     (hT : L.IsSub T T') {uM ν 𝓤} (hu : L.UData uM ν 𝓤) (x : d.G) :

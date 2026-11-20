@@ -10,15 +10,15 @@ open CategoryTheory AlgebraicGeometry MvPolynomial
 namespace GlobalTheory.BdDim
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `P hP m hn`. Distinguish the cases in `hm : P.coeff m = 0`. Simplify using `[hm]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `h1 : aeval (fun i => ψ (y i)) P = 0`. Establish `e1` using `comp_aeval_apply (f := y) φ.toIntAlgHom P`. Establish `e2` using `comp_aeval_apply (f := y) ψ.toIntAlgHom P`. Conclude with `e2.symm.trans (hker _ (e1.trans hP))`. Establish `hd : ∀ i, ((ringChar L : ℕ) : ℤ) ∣ P.coeff i` using `fun i => (CharP.intCast_eq_zero_iff L (ringChar L) _).1 (ht P h1 i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P', rfl⟩` from `(C_dvd_iff_dvd_coeff _ _).2 hd`. Rewrite `hm`, `hn`, the goal using `[coeff_C_mul]`. Rewrite `hP` using `[map_mul, aeval_C]`. Break down `mul_eq_zero.1 hP with h | h` into its components or cases. Rewrite using `[Int.cast_mul, show (((ringChar L : ℕ) : ℤ) : K) = 0 from h, zero_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ringChar L ≠ 0` using `fun h0 => hm (by simp [h0])`. Establish `h1 : ringChar L ≠ 1` using `CharP.ringChar_ne_one`. Establish `h2 : 0 < (P'.coeff m).natAbs` using `Int.natAbs_pos.2 (right_ne_zero_of_mul hm)`. Rewrite `hn` using `[Int.natAbs_mul, Int.natAbs_natCast]`. Establish `h3 : 2 ≤ ringChar L` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Int.cast_mul, ih _ (by nlinarith) P' h m le_rfl, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem intRelation_coeff_eq_zero {A K L ι : Type} [CommRing A] [Field K] [Field L] (φ : A →+* K) (ψ : A →+* L)
     (hker : ∀ a, φ a = 0 → ψ a = 0) (y : ι → A)
@@ -49,11 +49,11 @@ theorem intRelation_coeff_eq_zero {A K L ι : Type} [CommRing A] [Field K] [Fiel
       rw [Int.cast_mul, ih _ (by nlinarith) P' h m le_rfl, mul_zero]
 
 /- English proof (translation)
-Set `i : (⊥ : Subring K) →+* (⊥ : Subfield K)` to `Subring.inclusion (show (⊥ : Subring K) ≤ (⊥ : Subfield K).toSubring from bot_le)`. Use `letI := i.toAlgebra`. Use `haveI : IsScalarTower (⊥ : Subring K) (⊥ : Subfield K) K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hi : Function.Injective i` using `fun a b h => Subtype.ext (congrArg (fun z : (⊥ : Subfield K) => (z : K)) h)`. Use `haveI : FaithfulSMul (⊥ : Subring K) (⊥ : Subfield K) := (faithfulSMul_iff_algebraMap_injective _ _).2 hi`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsAlgebraic (⊥ : Subring K) (⊥ : Subfield K) := ⟨fun x => by`. Rewrite using `[← isAlgebraic_algebraMap_iff (A := K) Subtype.val_injective]`. Establish `hx : (x : K) ∈ Subfield.closure (∅ : Set K)` using `by simpa using x.2`. Take `⟨a, ha, b, hb, hab⟩` from `Subfield.mem_closure_iff.1 hx`. Rewrite `ha`, `hb` using `[Subring.closure_empty]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `IsAlgebraic _ (x : K)`. Rewrite using `[← hab, div_eq_mul_inv]`. Conclude with `(isAlgebraic_algebraMap (⟨a, ha⟩ : (⊥ : Subring K))).mul (isAlgebraic_algebraMap (⟨b, hb⟩ : (⊥ : Subring K))).inv⟩`. Rewrite using `[← trdeg_add_eq (⊥ : Subring K) (⊥ : Subfield K) (A := K), trdeg_eq_zero (R := (⊥ : Subring K)) (A := (⊥ : Subfield K)), zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem trdeg_bot_subring_eq (K : Type) [Field K] :
     Algebra.trdeg (⊥ : Subring K) K = Algebra.trdeg (⊥ : Subfield K) K := by
@@ -76,15 +76,15 @@ theorem trdeg_bot_subring_eq (K : Type) [Field K] :
     trdeg_eq_zero (R := (⊥ : Subring K)) (A := (⊥ : Subfield K)), zero_add]
 
 /- English proof (translation)
-Use `le_trans ?_ h` and prove the remaining obligations. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis (⊥ : Subfield L) L`. Rewrite using `[← hs.cardinalMk_eq_trdeg, ← trdeg_bot_subring_eq]`. Use `choose y hy using fun i : s => hψ i`. Establish `ht : ∀ Q : MvPolynomial s ℤ, aeval (fun i => ψ (y i)) Q = 0 → ∀ m, ((Q.coeff m : ℤ) : L) = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Q hQ m`. Establish `h1 : MvPolynomial.map (algebraMap ℤ (⊥ : Subfield L)) Q = 0`. Apply `hs.1` to reduce the goal to its premises. Rewrite using `[map_zero, aeval_map_algebraMap, ← hQ]`. Simplify using `only [hy]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun R => ((coeff m R : (⊥ : Subfield L)) : L)) h1`. Simplify `h2` using `[coeff_map]`. Use `AlgebraicIndependent.cardinalMk_le_trdeg (x := fun i => φ (y i)) ?_` and prove the remaining obligations. Rewrite using `[algebraicIndependent_iff]`. Introduce `Q hQ`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (algebraMap ℤ (⊥ : Subring K))` using `fun z => by`. Take `⟨k, hk⟩` from `Subring.mem_bot.1 z.2`. Conclude with `⟨k, Subtype.ext (by simpa using hk)⟩`. Take `⟨P, rfl⟩` from `map_surjective _ hsurj Q`. Rewrite `hQ` using `[aeval_map_algebraMap]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Simplify `intRelation_coeff_eq_zero φ ψ hker y ht _ P hQ m le_rfl` using `[coeff_map]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem TrLe.of_ker_le {A K L : Type} [CommRing A] [Field K] [Field L] (φ : A →+* K) (ψ : A →+* L)
     (hψ : Function.Surjective ψ) (hker : ∀ a, φ a = 0 → ψ a = 0) {n : ℕ} (h : TrLe K n) : TrLe L n := by
@@ -112,9 +112,9 @@ theorem TrLe.of_ker_le {A K L : Type} [CommRing A] [Field K] [Field L] (φ : A �
   simpa [coeff_map] using intRelation_coeff_eq_zero φ ψ hker y ht _ P hQ m le_rfl
 
 /- English proof (translation)
-Introduce `X x y n hxy h`. Use `h.of_ker_le (X.presheaf.stalkSpecializes hxy ≫ X.residue x).hom (X.residue y).hom (X.residue_surjective y) fun a ha => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hu : IsUnit a`. Assume the negation of the conclusion as `hnu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hne ((IsLocalRing.residue_eq_zero_iff a).2 hnu)`. Conclude with `(hu.map _).ne_zero ha`.
+A detailed English derivation is pending.
 -/
 theorem trLe_residueField_of_specializes :
     ∀ (X : Scheme.{0}) (x y : X) (n : ℕ), x ⤳ y → TrLe (X.residueField x) n → TrLe (X.residueField y) n := by

@@ -6,7 +6,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace GlobalTheory.CompanionTheory.CoordRes
 
 /- English proof (translation)
-Establish `key` using `HasRingHomProperty.appLE @Etale (𝟙 X) inferInstance ⟨V, hV⟩ ⟨W, hW⟩ h`. Establish `e : Scheme.Hom.appLE (𝟙 X) V W h = X.presheaf.map (homOfLE h).op`. Apply the tactic sequence `simp [Scheme.Hom.appLE] <;> rfl`. Rewrite `key` using `[e]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_rs {X : Scheme.{0}} {V W : X.Opens} (h : W ≤ V) (hV : IsAffineOpen V) (hW : IsAffineOpen W) :
     (rs h).Etale := by
@@ -17,7 +17,7 @@ theorem etale_rs {X : Scheme.{0}} {V W : X.Opens} (h : W ≤ V) (hV : IsAffineOp
   exact key
 
 /- English proof (translation)
-Simplify using `only [rs, strV]`. Rewrite using `[← CommRingCat.hom_comp, Category.assoc, Scheme.Hom.appLE_map]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rs_comp_strV {O : Type} [CommRing O] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) {V W : X.Opens}
     (h : W ≤ V) : (rs h).comp (strV q V) = strV q W := by
@@ -25,9 +25,9 @@ theorem rs_comp_strV {O : Type} [CommRing O] {X : Scheme.{0}} (q : X ⟶ Spec (C
   rw [← CommRingCat.hom_comp, Category.assoc, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Introduce `O _ X q V W d c h hW`. Use `⟨⟨hW, fun i => rs h (c.t i), ?_⟩, fun i => rfl⟩` and prove the remaining obligations. Establish `e1 : MvPolynomial.eval₂Hom (strV q W) (fun i => rs h (c.t i)) = (rs h).comp (MvPolynomial.eval₂Hom (strV q V) c.t)`. Rewrite using `[MvPolynomial.comp_eval₂Hom, rs_comp_strV]`. Rewrite using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.Etale.stableUnderComposition _ _ c.etale (etale_rs h c.affine hW)`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {V W : X.Opens} {d : ℕ}
     (c : Coord q V d) (h : W ≤ V) (hW : IsAffineOpen W), ∃ c' : Coord q W d, ∀ i, c'.t i = rs h (c.t i) := by

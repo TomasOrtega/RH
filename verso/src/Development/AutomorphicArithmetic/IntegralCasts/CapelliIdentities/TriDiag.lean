@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R _ n A B hA hB i`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i ?_ ?_` and prove the remaining obligations. Introduce `j _ hji`. Break down `lt_or_gt_of_ne hji with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hA (show id j < id i from h), zero_mul]`. Rewrite using `[hB (show id i < id j from h), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk9.tri_diag :
     ∀ {R : Type} [inst : CommRing R] {n : ℕ}

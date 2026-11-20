@@ -8,13 +8,13 @@ namespace Formalism.ZF
 
 open ArithmeticFunction in
 /- English proof (translation)
-Establish `hy0 : (0 : ℝ) ≤ y` using `by linarith`. Establish `hlog : 0 ≤ Real.log y` using `Real.log_nonneg hy`. Establish `hterm : ∀ n ∈ Finset.Icc 1 ⌊y⌋₊, 0 ≤ ArithmeticFunction.vonMangoldt n * (y / n - 1) ∧ ArithmeticFunction.vonMangoldt n * (y / n - 1) ≤ Real.log y * y`. Introduce `n hn`. Take `⟨hn1, hn2⟩` from `Finset.mem_Icc.mp hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hn1' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn1`. Establish `hnpos : (0 : ℝ) < n` using `by linarith`. Establish `hny : (n : ℝ) ≤ y` using `(Nat.cast_le.mpr hn2).trans (Nat.floor_le hy0)`. Establish `h1 : 0 ≤ y / n - 1`. Rewrite using `[sub_nonneg, le_div_iff₀ hnpos]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : y / n - 1 ≤ y`. Establish `: y / n ≤ y` using `div_le_self hy0 hn1'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hΛ : ArithmeticFunction.vonMangoldt n ≤ Real.log y` using `ArithmeticFunction.vonMangoldt_le_log.trans (Real.log_le_log hnpos hny)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `⟨mul_nonneg ArithmeticFunction.vonMangoldt_nonneg h1, mul_le_mul hΛ h2 h1 hlog⟩`. Unfold `Formalism.Sz`. Use `⟨Finset.sum_nonneg fun n hn => (hterm n hn).1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem zetaPrimeSum_nonneg_and_le (y : ℝ) (hy : 1 ≤ y) :
     0 ≤ Formalism.Sz y ∧ Formalism.Sz y ≤ y * y * Real.log y := by
@@ -45,7 +45,7 @@ theorem zetaPrimeSum_nonneg_and_le (y : ℝ) (hy : 1 ≤ y) :
     _ = y * y * Real.log y := by ring
 
 /- English proof (translation)
-The claim follows from `|Formalism.Gz y| ≤ y * (y * Real.log y + Real.log y + 2) := by obtain ⟨hS0, hS1⟩ := zetaPrimeSum_nonneg_and_le y hy have hy0 : (0 : ℝ) ≤ y := by linarith have hlog : 0 ≤ Real.log y := Real.log_nonneg hy have hγ1 := Real.one_half_lt_eulerMascheroniConstant have hγ2 := Real.eulerMa …`.
+A detailed English derivation is pending.
 -/
 theorem abs_zetaPrimeSumError_le_of_one_le (y : ℝ) (hy : 1 ≤ y) :
     |Formalism.Gz y| ≤ y * (y * Real.log y + Real.log y + 2) := by

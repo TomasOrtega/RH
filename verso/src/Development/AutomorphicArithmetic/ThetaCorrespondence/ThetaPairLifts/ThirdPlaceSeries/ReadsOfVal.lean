@@ -45,15 +45,15 @@ variable {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)}
   {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex)
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Introduce `c v g hg`. Establish `s` using `hC u`. Rewrite using `[mul_one, hf g _ _ v hg (s.what₂.pt c)]`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `fun c' y => (s.eW ((W.R.T.cols.forms u).valP.eW.symm (Pi.single c (j v))) c' y y rfl).symm`. Simplify using `only [LinearEquiv.apply_symm_apply] at e`. Use `(period_single l u I.mu0 φ _ (hG.1 rfl) c (j v) _ (funext fun y => (e c y).trans ?_) fun c' hc => funext fun y => (e c' y).trans ?_).symm` and prove the remaining obligations. Rewrite using `[Pi.single_eq_same]`. Rewrite using `[Pi.single_eq_of_ne' (fun e => hc e.symm : ¬ c = c')]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨l0, t, he, ht, -, -, s⟩` from `hW`. Establish `key : ∀ (Tw : TwForms (I.rec7 l Z)) (t' : Formalism.L2.Forms.SymmetricTwistedColumnsAtPrimes W.R.T.n.tp W.R.T.cols Tw), Tw = I.tw l l0 Z → HEq t' t → ReadsG (t'.pt.cls u a h) (t'.pt.val u a h).eW j 1 (((I.rec7 l Z).eMtTw u a).symm G) f`. Introduce and unpack `_ t' rfl rfl`. Introduce `c v g hg`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_one, hf g _ _ v hg ((s.what₂ u a h).pt c)]`. Establish `e` using `fun c' y => (s.eW u a h ((t'.pt.val u a h).eW.symm (Pi.single c (j v))) c' y y rfl).symm`. Simplify using `only [LinearEquiv.apply_symm_apply] at e`. Use `(period_single l u a φ _ hG.2 c (j v) _ (funext fun y => (e c y).trans ?_) fun c' hc => funext fun y => (e c' y).trans ?_).symm` and prove the remaining obligations. Rewrite using `[Pi.single_eq_same]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne' (fun e => hc e.symm : ¬ c = c')]`. Both sides reduce to the same expression. Conclude with `key _ _ he ht`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem reads_of_pairVal (hC : I.StdC l Z W.R.T.cols) (hW : _root_.GlobalTheory.AdForm.TwStdAlt W) (u : B.Word)
     (j : SmT (_root_.GlobalTheory.Fam.pk_z W).MX →ₗ[ℂ] (Formalism.L2.Forms.FrP (I.rec7 l Z) → ℂ)) (a : (I.rec7 l Z).what₂.Tup) (φ : Frm I a)

@@ -13,19 +13,19 @@ noncomputable def psi (n : ℕ) (q : ℤ) (i : ℕ) (k : U2) : ℂ :=
     (k : Matrix (Fin 2) (Fin 2) ℂ).det ^ q
 
 /- English proof (translation)
-The claim follows from `(continuous_apply b).comp ((continuous_apply a).comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_entry (a b : Fin 2) : Continuous fun k : U2 => (k : Matrix (Fin 2) (Fin 2) ℂ) a b :=
   (continuous_apply b).comp ((continuous_apply a).comp continuous_subtype_val)
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.matrix_det`.
+A detailed English derivation is pending.
 -/
 theorem continuous_det : Continuous fun k : U2 => (k : Matrix (Fin 2) (Fin 2) ℂ).det :=
   continuous_subtype_val.matrix_det
 
 /- English proof (translation)
-Unfold `psi`. Apply the tactic sequence `exact (((continuous_entry 0 0).pow i).mul ((continuous_entry 1 0).pow (n - i))).mul (continuous_det.zpow₀ q fun k => Or.inl (det_ne_zero_of_U2 k))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_psi (n : ℕ) (q : ℤ) (i : ℕ) : Continuous (psi n q i) := by
   unfold psi
@@ -39,16 +39,16 @@ theorem coe_inv_U2 (k : U2) : ((k⁻¹ : U2) : Matrix (Fin 2) (Fin 2) ℂ) = sta
   rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.det_conjTranspose]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_star_U2 (k : U2) :
     (star (k : Matrix (Fin 2) (Fin 2) ℂ)).det = conj ((k : Matrix (Fin 2) (Fin 2) ℂ).det) := by
   rw [Matrix.star_eq_conjTranspose, Matrix.det_conjTranspose]; rfl
 
 /- English proof (translation)
-Establish `h00 : ((k⁻¹ * l : U2) : Matrix (Fin 2) (Fin 2) ℂ) 0 0 = conj ((k : Matrix (Fin 2) (Fin 2) ℂ) 0 0) * (l : Matrix (Fin 2) (Fin 2) ℂ) 0 0 + conj ((k : Matrix (Fin 2) (Fin 2) ℂ) 1 0) * (l : Matrix (Fin 2) (Fin 2) ℂ) 1 0`. Rewrite using `[Matrix.UnitaryGroup.mul_val, coe_inv_U2, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `[Matrix.star_apply]`. Establish `hdet : ((k⁻¹ * l : U2) : Matrix (Fin 2) (Fin 2) ℂ).det = conj ((k : Matrix (Fin 2) (Fin 2) ℂ).det) * (l : Matrix (Fin 2) (Fin 2) ℂ).det`. Rewrite using `[Matrix.UnitaryGroup.mul_val, coe_inv_U2, Matrix.det_mul, det_star_U2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [psi, Nat.sub_self, pow_zero, mul_one]`. Rewrite using `[h00, hdet, add_pow, mul_zpow, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, mul_pow]`. Simplify using `only [map_mul, map_pow, map_zpow₀]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -70,7 +70,7 @@ theorem psi_inv_mul (n : ℕ) (q : ℤ) (k l : U2) :
   ring
 
 /- English proof (translation)
-Simplify using `only [psi, Nat.sub_self, pow_zero, mul_one, coe_inv_U2, det_star_U2, map_mul, map_pow, map_zpow₀]`. Simplify using `[Matrix.star_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem psi_self_inv (n : ℕ) (q : ℤ) (k : U2) : psi n q n k⁻¹ = conj (psi n q n k) := by
   simp only [psi, Nat.sub_self, pow_zero, mul_one, coe_inv_U2, det_star_U2, map_mul, map_pow,
@@ -78,19 +78,19 @@ theorem psi_self_inv (n : ℕ) (q : ℤ) (k : U2) : psi n q n k⁻¹ = conj (psi
   simp [Matrix.star_apply]
 
 /- English proof (translation)
-Simplify using `[psi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_one (n : ℕ) (q : ℤ) : psi n q n 1 = 1 := by
   simp [psi]
 
 /- English proof (translation)
-Establish `h00 : ((tC a b * k : U2) : Matrix (Fin 2) (Fin 2) ℂ) 0 0 = Complex.exp (a * I) * (k : Matrix (Fin 2) (Fin 2) ℂ) 0 0`. Rewrite using `[Matrix.UnitaryGroup.mul_val, coe_tC, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using the standard rewrite rules. Establish `h10 : ((tC a b * k : U2) : Matrix (Fin 2) (Fin 2) ℂ) 1 0 = Complex.exp (b * I) * (k : Matrix (Fin 2) (Fin 2) ℂ) 1 0`. Rewrite using `[Matrix.UnitaryGroup.mul_val, coe_tC, Matrix.mul_apply, Fin.sum_univ_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hdet : ((tC a b * k : U2) : Matrix (Fin 2) (Fin 2) ℂ).det = (Complex.exp (a * I) * Complex.exp (b * I)) * (k : Matrix (Fin 2) (Fin 2) ℂ).det`. Rewrite using `[Matrix.UnitaryGroup.mul_val, Matrix.det_mul, coe_tC, Matrix.det_fin_two_of]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [psi, h00, h10, hdet]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_pow, mul_pow, mul_zpow, ← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add, ← Complex.exp_int_mul]`. Establish `hc : (((n - i : ℕ) : ℂ)) = (n : ℂ) - i` using `by push_cast [Nat.cast_sub hi]; ring`. Establish `e : Complex.exp (I * ((((i : ℝ) + q) * a + ((n : ℝ) - i + q) * b : ℝ) : ℂ)) = Complex.exp (↑i * (↑a * I)) * Complex.exp (↑(n - i) * (↑b * I)) * Complex.exp (↑q * (↑a * I + ↑b * I))`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add, hc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_tC_mul (n : ℕ) (q : ℤ) {i : ℕ} (hi : i ≤ n) (a b : ℝ) (k : U2) :
     psi n q i (tC a b * k) =
@@ -118,13 +118,13 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable (σ : UnitaryRep GL2C H)
 
 /- English proof (translation)
-The claim follows from `(σ.continuous_orbit x).comp continuous_kC`.
+A detailed English derivation is pending.
 -/
 theorem continuous_orbit_K (x : H) : Continuous fun k : U2 => σ (kC k) x :=
   (σ.continuous_orbit x).comp continuous_kC
 
 /- English proof (translation)
-The claim follows from `hf.integrable_of_hasCompactSupport (isCompact_univ.of_isClosed_subset (isClosed_tsupport _) (Set.subset_univ _))`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_continuous {E : Type*} [NormedAddCommGroup E] {f : U2 → E}
     (hf : Continuous f) : Integrable f μK :=
@@ -134,14 +134,14 @@ theorem integrable_of_continuous {E : Type*} [NormedAddCommGroup E] {f : U2 → 
 noncomputable def Kint (φ : U2 → ℂ) (x : H) : H := ∫ k, φ k • σ (kC k) x ∂μK
 
 /- English proof (translation)
-The claim follows from `integrable_of_continuous (hφ.smul (continuous_orbit_K σ x))`.
+A detailed English derivation is pending.
 -/
 theorem integrable_Kint {φ : U2 → ℂ} (hφ : Continuous φ) (x : H) :
     Integrable (fun k => φ k • σ (kC k) x) μK :=
   integrable_of_continuous (hφ.smul (continuous_orbit_K σ x))
 
 /- English proof (translation)
-Unfold `Kint`. Rewrite using `[← integral_add (integrable_Kint σ hφ x) (integrable_Kint σ hφ y)]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[map_add, smul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem Kint_add {φ : U2 → ℂ} (hφ : Continuous φ) (x y : H) :
     Kint σ φ (x + y) = Kint σ φ x + Kint σ φ y := by
@@ -150,7 +150,7 @@ theorem Kint_add {φ : U2 → ℂ} (hφ : Continuous φ) (x y : H) :
   congr 1; funext k; rw [map_add, smul_add]
 
 /- English proof (translation)
-Unfold `Kint`. Rewrite using `[← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[map_smul, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem Kint_smul (φ : U2 → ℂ) (c : ℂ) (x : H) : Kint σ φ (c • x) = c • Kint σ φ x := by
   unfold Kint
@@ -158,7 +158,7 @@ theorem Kint_smul (φ : U2 → ℂ) (c : ℂ) (x : H) : Kint σ φ (c • x) = c
   congr 1; funext k; rw [map_smul, smul_comm]
 
 /- English proof (translation)
-Unfold `Kint`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm (σ g : H →L[ℂ] H) (integrable_Kint σ hφ x)]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[UnitaryRep.map_mul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem map_Kint {φ : U2 → ℂ} (hφ : Continuous φ) (g : GL2C) (x : H) :
     σ g (Kint σ φ x) = ∫ k, φ k • σ (g * kC k) x ∂μK := by
@@ -168,7 +168,7 @@ theorem map_Kint {φ : U2 → ℂ} (hφ : Continuous φ) (g : GL2C) (x : H) :
   simp [UnitaryRep.map_mul_apply]
 
 /- English proof (translation)
-Rewrite using `[map_Kint σ hφ, Kint]`. Use `conv_rhs => rw [← integral_mul_left_K (fun k => φ (l⁻¹ * k) • σ (kC k) x) l]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[map_mul, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_kC_Kint {φ : U2 → ℂ} (hφ : Continuous φ) (l : U2) (x : H) :
     σ (kC l) (Kint σ φ x) = Kint σ (fun k => φ (l⁻¹ * k)) x := by
@@ -178,7 +178,7 @@ theorem map_kC_Kint {φ : U2 → ℂ} (hφ : Continuous φ) (l : U2) (x : H) :
   simp [map_mul, inv_mul_cancel_left]
 
 /- English proof (translation)
-Unfold `Kint`. Rewrite using `[← integral_inner (integrable_Kint σ hφ x)]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[inner_smul_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_Kint_right {φ : U2 → ℂ} (hφ : Continuous φ) (x y : H) :
     ⟪y, Kint σ φ x⟫_ℂ = ∫ k, φ k * ⟪y, σ (kC k) x⟫_ℂ ∂μK := by
@@ -189,17 +189,17 @@ theorem inner_Kint_right {φ : U2 → ℂ} (hφ : Continuous φ) (x y : H) :
 noncomputable def Q (n : ℕ) (q : ℤ) (i : ℕ) (x : H) : H := Kint σ (fun k => conj (psi n q i k)) x
 
 /- English proof (translation)
-The claim follows from `continuous_conj.comp (continuous_psi n q i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_conj_psi (n : ℕ) (q : ℤ) (i : ℕ) : Continuous fun k => conj (psi n q i k) :=
   continuous_conj.comp (continuous_psi n q i)
 
 /- English proof (translation)
-Rewrite using `[Q, map_kC_Kint σ (continuous_conj_psi n q n)]`. Simplify using `only [Q, Kint]`. Repeatedly rewrite using `[← integral_smul]`. Rewrite using `[← integral_finset_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[psi_inv_mul, map_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [map_mul, map_natCast, starRingEnd_self_apply]`. Introduce `i _`. Conclude with `(integrable_Kint σ (continuous_conj_psi n q i) x).smul _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem map_Q (n : ℕ) (q : ℤ) (l : U2) (x : H) :
     σ (kC l) (Q σ n q n x) =
@@ -218,11 +218,11 @@ theorem map_Q (n : ℕ) (q : ℤ) (l : U2) (x : H) :
     exact (integrable_Kint σ (continuous_conj_psi n q i) x).smul _
 
 /- English proof (translation)
-Simplify using `only [Q]`. Rewrite using `[map_kC_Kint σ (continuous_conj_psi n q i), Kint, Kint, ← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `hinv : (tC a b)⁻¹ = tC (-a) (-b)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[inv_eq_iff_mul_eq_one]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Matrix.UnitaryGroup.mul_val, coe_tC, coe_tC]`. Apply the tactic sequence `ext r s; fin_cases r <;> fin_cases s <;> simp [← Complex.exp_add]`. Rewrite using `[hinv, psi_tC_mul n q hi, smul_smul, map_mul, ← Complex.exp_conj]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Simplify using `only [map_mul, conj_I, map_add, map_sub, map_neg, Complex.conj_ofReal, map_intCast, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem map_tC_Q (n : ℕ) (q : ℤ) {i : ℕ} (hi : i ≤ n) (a b : ℝ) (x : H) :
     σ (kC (tC a b)) (Q σ n q i x) =
@@ -243,7 +243,7 @@ theorem map_tC_Q (n : ℕ) (q : ℤ) {i : ℕ} (hi : i ≤ n) (a b : ℝ) (x : H
   ring
 
 /- English proof (translation)
-Rewrite using `[← Complex.exp_conj, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_mul, conj_I, Complex.conj_ofReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_exp_mul_exp (r s : ℝ) :
     conj (Complex.exp (I * r)) * Complex.exp (I * s) = Complex.exp (I * ((s - r : ℝ) : ℂ)) := by
@@ -254,15 +254,13 @@ theorem conj_exp_mul_exp (r s : ℝ) :
   ring
 
 /- English proof (translation)
-Use `set J := ∫ k, conj (psi n q n k) * psi n q i k ∂μK with hJ`. Establish `hlt : (i : ℝ) < n` using `by exact_mod_cast lt_of_le_of_ne hi hin`. Use `set a : ℝ := Real.pi / ((n : ℝ) - i) with ha`. Establish `hexp : Complex.exp (I * ((((i : ℝ) + q) * a + ((n : ℝ) - i + q) * 0 - (((n : ℝ) + q) * a + ((n : ℝ) - n + q) * 0) : ℝ) : ℂ)) = -1`. Establish `: ((i : ℝ) + q) * a + ((n : ℝ) - i + q) * 0 - (((n : ℝ) + q) * a + ((n : ℝ) - n + q) * 0) = -Real.pi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : (n : ℝ) - i ≠ 0` using `by linarith`. Rewrite using `[ha]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[mul_neg, Complex.exp_neg, mul_comm, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions. Establish `key : J = -J` using `by conv_lhs => rw [hJ, ← integral_mul_left_K _ (tC a 0)]`. Rewrite using `[hJ, ← integral_neg]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[psi_tC_mul n q hi, psi_tC_mul n q le_rfl, map_mul, show ∀ e₁ p e₂ r : ℂ, conj e₁ * p * (e₂ * r) = (conj e₁ * e₂) * (p * r) by intros; ring, conj_exp_mul_exp, hexp]`. Expand and normalize the polynomial expressions, which then agree. Establish `: (2 : ℂ) * J = 0` using `by linear_combination key`.
-
-Simplify using `using this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem integral_conj_psi_mul_psi (n : ℕ) (q : ℤ) {i : ℕ} (hi : i ≤ n) (hin : i ≠ n) :
     ∫ k, conj (psi n q n k) * psi n q i k ∂μK = 0 := by
@@ -291,7 +289,7 @@ theorem integral_conj_psi_mul_psi (n : ℕ) (q : ℤ) {i : ℕ} (hi : i ≤ n) (
 noncomputable def normSqInt (n : ℕ) (q : ℤ) : ℝ := ∫ k, ‖psi n q n k‖ ^ 2 ∂μK
 
 /- English proof (translation)
-Establish `hc : Continuous fun k => ‖psi n q n k‖ ^ 2` using `(continuous_psi n q n).norm.pow 2`. Rewrite using `[normSqInt, integral_pos_iff_support_of_nonneg (fun k => by positivity) (integrable_of_continuous hc)]`. Conclude with `(isOpen_ne_fun hc continuous_const).measure_pos μK ⟨1, by simp [psi_one]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normSqInt_pos (n : ℕ) (q : ℤ) : 0 < normSqInt n q := by
   have hc : Continuous fun k => ‖psi n q n k‖ ^ 2 := (continuous_psi n q n).norm.pow 2
@@ -300,7 +298,7 @@ theorem normSqInt_pos (n : ℕ) (q : ℤ) : 0 < normSqInt n q := by
   exact (isOpen_ne_fun hc continuous_const).measure_pos μK ⟨1, by simp [psi_one]⟩
 
 /- English proof (translation)
-Rewrite using `[normSqInt, ← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Complex.conj_mul']`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -311,13 +309,13 @@ theorem integral_conj_psi_self (n : ℕ) (q : ℤ) :
   rw [Complex.conj_mul']; push_cast; ring
 
 /- English proof (translation)
-Establish `hint : ∀ i, Integrable (fun k => (conj (psi n q n k) * ((n.choose i : ℂ) * psi n q i k))) μK` using `fun i => integrable_of_continuous ((continuous_conj_psi n q n).mul (continuous_const.mul (continuous_psi n q i)))`. Establish `e : (fun k => conj (psi n q n k) • ∑ i ∈ range (n + 1), ((n.choose i : ℂ) * psi n q i k) • u i) = fun k => ∑ i ∈ range (n + 1), (conj (psi n q n k) * ((n.choose i : ℂ) * psi n q i k)) • u i`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.smul_sum]`. Repeatedly rewrite using `[smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[e, integral_finset_sum _ (fun i _ => (hint i).smul_const _)]`. Repeatedly rewrite using `[integral_smul_const]`. Rewrite using `[Finset.sum_eq_single n]`. Establish `h1 : ∫ k, conj (psi n q n k) * ((n.choose n : ℂ) * psi n q n k) ∂μK = (normSqInt n q : ℂ)`. Simplify using `only [Nat.choose_self, Nat.cast_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `integral_conj_psi_self n q`. Rewrite using `[h1, smul_smul, inv_mul_cancel₀ (by exact_mod_cast (normSqInt_pos n q).ne'), one_smul]`. Introduce `i hi hin`. Establish `: ∫ k, conj (psi n q n k) * ((n.choose i : ℂ) * psi n q i k) ∂μK = 0`. Repeatedly rewrite using `[show ∀ k, conj (psi n q n k) * ((n.choose i : ℂ) * psi n q i k) = (n.choose i : ℂ) * (conj (psi n q n k) * psi n q i k) from fun k => by ring]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_const_mul, integral_conj_psi_mul_psi n q (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)) hin, mul_zero]`. Rewrite using `[this, zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.2 (Nat.lt_succ_self n)) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem collapse (n : ℕ) (q : ℤ) (u : ℕ → H) :
     ((normSqInt n q)⁻¹ : ℂ) • ∫ k, conj (psi n q n k) •
@@ -346,7 +344,7 @@ theorem collapse (n : ℕ) (q : ℤ) (u : ℕ → H) :
 noncomputable def P (n : ℕ) (q : ℤ) (x : H) : H := ((normSqInt n q)⁻¹ : ℂ) • Q σ n q n x
 
 /- English proof (translation)
-Rewrite using `[P, map_smul, map_Q, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_P (n : ℕ) (q : ℤ) (l : U2) (x : H) :
     σ (kC l) (P σ n q x) = ∑ i ∈ range (n + 1),
@@ -356,7 +354,7 @@ theorem map_P (n : ℕ) (q : ℤ) (l : U2) (x : H) :
   rw [smul_comm]
 
 /- English proof (translation)
-Use `conv_lhs => rw [P, Q, Kint]`. Repeatedly rewrite using `[map_P]`. Rewrite using `[collapse n q (fun i => ((normSqInt n q)⁻¹ : ℂ) • Q σ n q i x)]`. Both sides reduce to the same expression.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem P_P (n : ℕ) (q : ℤ) (x : H) : P σ n q (P σ n q x) = P σ n q x := by
   conv_lhs => rw [P, Q, Kint]
@@ -365,9 +363,9 @@ theorem P_P (n : ℕ) (q : ℤ) (x : H) : P σ n q (P σ n q x) = P σ n q x := 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← inner_conj_symm, Q, inner_Kint_right σ (continuous_conj_psi n q n), Q, inner_Kint_right σ (continuous_conj_psi n q n), ← integral_conj]`. Use `set F : U2 → ℂ := fun k => conj (psi n q n k) * ⟪x, σ (kC k) y⟫_ℂ with hF`. Rewrite using `[← integral_inv_K F]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [hF, map_mul, starRingEnd_self_apply, inner_conj_symm, psi_self_inv, map_inv]`. Rewrite using `[UnitaryRep.inner_map_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_Q_left (n : ℕ) (q : ℤ) (x y : H) : ⟪Q σ n q n x, y⟫_ℂ = ⟪x, Q σ n q n y⟫_ℂ := by
   rw [← inner_conj_symm, Q, inner_Kint_right σ (continuous_conj_psi n q n), Q,
@@ -379,19 +377,19 @@ theorem inner_Q_left (n : ℕ) (q : ℤ) (x y : H) : ⟪Q σ n q n x, y⟫_ℂ =
   rw [UnitaryRep.inner_map_left]
 
 /- English proof (translation)
-Simplify using `only [P, Q, Kint_add σ (continuous_conj_psi n q n), smul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem P_add (n : ℕ) (q : ℤ) (x y : H) : P σ n q (x + y) = P σ n q x + P σ n q y := by
   simp only [P, Q, Kint_add σ (continuous_conj_psi n q n), smul_add]
 
 /- English proof (translation)
-Simplify using `only [P, Q, Kint_smul, smul_comm c]`.
+Simplify using the standard rewrite rules.
 -/
 theorem P_smul (n : ℕ) (q : ℤ) (c : ℂ) (x : H) : P σ n q (c • x) = c • P σ n q x := by
   simp only [P, Q, Kint_smul, smul_comm c]
 
 /- English proof (translation)
-Rewrite using `[P, P, inner_smul_left, inner_smul_right, inner_Q_left]`. Use `congr 1`. Rewrite using `[← Complex.ofReal_inv, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_P_left (n : ℕ) (q : ℤ) (x y : H) : ⟪P σ n q x, y⟫_ℂ = ⟪x, P σ n q y⟫_ℂ := by
   rw [P, P, inner_smul_left, inner_smul_right, inner_Q_left]
@@ -399,9 +397,9 @@ theorem inner_P_left (n : ℕ) (q : ℤ) (x y : H) : ⟪P σ n q x, y⟫_ℂ = �
   rw [← Complex.ofReal_inv, Complex.conj_ofReal]
 
 /- English proof (translation)
-Establish `h : ‖P σ n q x‖ ^ 2 ≤ ‖x‖ * ‖P σ n q x‖`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), inner_P_left, P_P]`. Conclude with `(Complex.re_le_norm _).trans (norm_inner_le_norm _ _)`. Distinguish the cases in `h0 : ‖P σ n q x‖ = 0`. Rewrite using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `norm_nonneg _`. Use polynomial arithmetic with `[norm_nonneg (P σ n q x), lt_of_le_of_ne (norm_nonneg (P σ n q x)) (Ne.symm h0)]`.
+A detailed English derivation is pending.
 -/
 theorem norm_P_le (n : ℕ) (q : ℤ) (x : H) : ‖P σ n q x‖ ≤ ‖x‖ := by
   have h : ‖P σ n q x‖ ^ 2 ≤ ‖x‖ * ‖P σ n q x‖ := by
@@ -433,23 +431,23 @@ def W (n : ℕ) (q : ℤ) : Submodule ℂ H where
     rw [P_smul, show P σ n q x = x from hx]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_W {n : ℕ} {q : ℤ} {x : H} : x ∈ W σ n q ↔ P σ n q x = x := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `isClosed_eq (PL σ n q).continuous continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_divisorComponent (n : ℕ) (q : ℤ) : IsClosed (W σ n q : Set H) :=
   isClosed_eq (PL σ n q).continuous continuous_id
 
 /- English proof (translation)
-The claim follows from `P_P σ n q x`.
+A detailed English derivation is pending.
 -/
 theorem P_mem_alt (n : ℕ) (q : ℤ) (x : H) : P σ n q x ∈ W σ n q := P_P σ n q x
 
 /- English proof (translation)
-Rewrite using `[← inner_P_left, hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_P_of_mem {n : ℕ} {q : ℤ} {y : H} (hy : y ∈ W σ n q) (u : H) :
     ⟪y, P σ n q u⟫_ℂ = ⟪y, u⟫_ℂ := by

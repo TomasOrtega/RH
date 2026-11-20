@@ -19,17 +19,17 @@ noncomputable section
 namespace GlobalTheory.TangentFirstOrder
 
 /- English proof (translation)
-Introduce `K C _ _ _ P ρ k t i₀ hi v w hv hw yv yw hv1 hv2 hw1 hw2 a b a' b' ev ew`. Establish `key : ∀ {X : Scheme.{0}} (y : Sp (DualNumber C) ⟶ X) (U : X.Opens) (s : Γ(X, U)), (valR y U s).fst = valR (spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ y) U s`. Introduce `X y U s`. Distinguish the cases in `h : ⊤ ≤ y ⁻¹ᵁ U`. Conclude with `(GlobalTheory.MBLow.BaseChRig.valR_spMap (TrivSqZeroExt.fstHom C C C).toRingHom y h s).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h' : ¬ ⊤ ≤ (spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ y) ⁻¹ᵁ U` using `fun h' => h ((GlobalTheory.ArcLie.le_iff_fst y U).2 h')`. Unfold `valR`. Rewrite using `[dif_neg h, dif_neg h']`. Both sides reduce to the same expression. Establish `sq : spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ spMap (dualMap (algebraMap K C)) = spMap (algebraMap K C) ≫ spMap (TrivSqZeroExt.fstHom K K K).toRingHom`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `[dualMap]`. Establish `e0 : spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ yv = spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ yw`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `GlobalTheory.AbDual.left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hv1, Category.assoc, hw1]`. Rewrite using `[Category.assoc, hv2, Category.assoc, hw2, ← Category.assoc, ← Category.assoc, sq, Category.assoc, Category.assoc, hv, hw]`. Establish `hU : ⊤ ≤ (spMap (algebraMap K C)) ⁻¹ᵁ (P.L.pull (eSec P.A)).U (fun _ => i₀)` using `fun q hq => Set.mem_iInter.2 fun _ => hi hq`. Establish `hr : valR (spMap (algebraMap K C)) ((P.L.pull (eSec P.A)).U fun _ => i₀) (ρ.s fun _ => i₀).val ≠ 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `valR`. Rewrite using `[dif_pos hU]`. Conclude with `(((ρ.s fun _ => i₀).isUnit.map _).map _).ne_zero`. Establish `h1` using `congrArg TrivSqZeroExt.fst ev`. Establish `h2` using `congrArg TrivSqZeroExt.fst ew`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1`, `h2` using `[key]`. Rewrite `h1` using `[e0, h2]`. Simplify using `only [TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inr, add_zero] at h1`. Conclude with `(mul_left_cancel₀ (pow_ne_zero k hr) h1).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fst_eq_of_tangent : ∀ (K C : Type) [Field K] [Field C] [Algebra K C] (P : PolAV (Sp K))
     (ρ : LB.Gen (P.L.pull (eSec P.A))) (k : ℕ) (t : LB.Sec (LPow P.A P.L (k : ℤ) (Over.mk (spMap (algebraMap K C)))))

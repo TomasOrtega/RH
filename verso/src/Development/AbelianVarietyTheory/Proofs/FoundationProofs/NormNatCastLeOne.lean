@@ -13,37 +13,37 @@ variable {l : ℕ} [Fact l.Prime]
 def Sm (ε : ℝ) (M : Matrix (Fin 2) (Fin 2) (Qbar l)) : Prop := ∀ i j, ‖M i j‖ ≤ ε
 
 /- English proof (translation)
-Introduce `i j` and use `(h i j).trans hεδ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sm.mono {ε δ : ℝ} {M : Matrix (Fin 2) (Fin 2) (Qbar l)} (h : Sm ε M) (hεδ : ε ≤ δ) : Sm δ M :=
   fun i j => (h i j).trans hεδ
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.add_apply] exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hM i j) (hN i j))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sm.add {ε : ℝ} {M N : Matrix (Fin 2) (Fin 2) (Qbar l)} (hM : Sm ε M) (hN : Sm ε N) : Sm ε (M + N) := fun i j => by
   simp only [Matrix.add_apply]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hM i j) (hN i j))
 
 /- English proof (translation)
-Introduce `i j` and use `by simpa using hM i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sm.neg {ε : ℝ} {M : Matrix (Fin 2) (Fin 2) (Qbar l)} (hM : Sm ε M) : Sm ε (-M) := fun i j => by
   simpa using hM i j
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `hM.add hN.neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Sm.sub {ε : ℝ} {M N : Matrix (Fin 2) (Fin 2) (Qbar l)} (hM : Sm ε M) (hN : Sm ε N) : Sm ε (M - N) := by
   rw [sub_eq_add_neg]; exact hM.add hN.neg
 
 /- English proof (translation)
-Introduce `i j` and use `by simpa using hε`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sm_zero {ε : ℝ} (hε : 0 ≤ ε) : Sm (l := l) ε 0 := fun i j => by simpa using hε
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply, Fin.sum_univ_two] refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_) <;> rw [norm_mul] <;> exact mul_le_mul (hM _ _) (hN _ _) (norm_nonneg _) hε`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sm.mul {ε δ : ℝ} {M N : Matrix (Fin 2) (Fin 2) (Qbar l)} (hM : Sm ε M) (hN : Sm δ N) (hε : 0 ≤ ε) :
     Sm (ε * δ) (M * N) := fun i j => by
@@ -52,21 +52,21 @@ theorem Sm.mul {ε δ : ℝ} {M N : Matrix (Fin 2) (Fin 2) (Qbar l)} (hM : Sm ε
     exact mul_le_mul (hM _ _) (hN _ _) (norm_nonneg _) hε
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul, norm_mul]; exact mul_le_mul_of_nonneg_left (hM i j) (norm_nonneg _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sm.smul {ε : ℝ} {M : Matrix (Fin 2) (Fin 2) (Qbar l)} (hM : Sm ε M) (a : Qbar l) : Sm (‖a‖ * ε) (a • M) :=
   fun i j => by
     rw [Matrix.smul_apply, smul_eq_mul, norm_mul]; exact mul_le_mul_of_nonneg_left (hM i j) (norm_nonneg _)
 
 /- English proof (translation)
-The claim follows from `(hM.smul a).mono (by simpa using mul_le_mul_of_nonneg_right ha hε)`.
+A detailed English derivation is pending.
 -/
 theorem Sm.smul_le {ε : ℝ} {M : Matrix (Fin 2) (Fin 2) (Qbar l)} (hM : Sm ε M) (hε : 0 ≤ ε) {a : Qbar l} (ha : ‖a‖ ≤ 1) :
     Sm ε (a • M) :=
   (hM.smul a).mono (by simpa using mul_le_mul_of_nonneg_right ha hε)
 
 /- English proof (translation)
-Introduce `i j` and use `by by_cases h : i = j · subst h; simpa using ha · simpa [Matrix.one_apply_ne h] using hε`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sm_scalar {ε : ℝ} {a : Qbar l} (ha : ‖a‖ ≤ ε) (hε : 0 ≤ ε) : Sm ε (a • (1 : Matrix (Fin 2) (Fin 2) (Qbar l))) :=
   fun i j => by
@@ -75,7 +75,7 @@ theorem sm_scalar {ε : ℝ} {a : Qbar l} (ha : ‖a‖ ≤ ε) (hε : 0 ≤ ε)
     · simpa [Matrix.one_apply_ne h] using hε
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.sum_apply] exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hε fun i hi => h i hi a b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sm.sum {ι : Type*} (s : Finset ι) {ε : ℝ} (hε : 0 ≤ ε) (M : ι → Matrix (Fin 2) (Fin 2) (Qbar l))
     (h : ∀ i ∈ s, Sm ε (M i)) : Sm ε (∑ i ∈ s, M i) := fun a b => by
@@ -83,12 +83,12 @@ theorem Sm.sum {ι : Type*} (s : Finset ι) {ε : ℝ} (hε : 0 ≤ ε) (M : ι 
   exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hε fun i hi => h i hi a b
 
 /- English proof (translation)
-The claim follows from `IsUltrametricDist.norm_natCast_le_one _ b`.
+A detailed English derivation is pending.
 -/
 theorem norm_natCast_le_one (b : ℕ) : ‖(b : Qbar l)‖ ≤ 1 := IsUltrametricDist.norm_natCast_le_one _ b
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two, sq, sub_eq_add_neg]`. Apply the tactic sequence `refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_) <;> simp only [norm_neg, norm_mul] <;>`. Conclude with `mul_le_mul (hM _ _) (hM _ _) (norm_nonneg _) hε`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Sm.det {ε : ℝ} {M : Matrix (Fin 2) (Fin 2) (Qbar l)} (hM : Sm ε M) (hε : 0 ≤ ε) : ‖M.det‖ ≤ ε ^ 2 := by
   rw [Matrix.det_fin_two, sq, sub_eq_add_neg]

@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.FlipIntegrand
 
 /- English proof (translation)
-Take `⟨⟨P, -, -⟩, -⟩` from `h.size`. Establish `key : ∀ p ∈ D.host.levelPrimes, p.Prime → Nat.Coprime p (D.host.QS * D.host.q)` using `fun p hp hpp => UpperTheory.Ram.Fun.coprime_QSq_of_splitK D.host hpp (P.level_split p hp)`. Conclude with `⟨key _ D.host.pde_level.1 D.host.pde_prime, key _ D.host.pde_level.2 D.host.pde'_prime⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pde_ne_q_of_setting {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {large₂ : SizeData₂ D} {F : Face D A}
@@ -26,11 +26,11 @@ theorem pde_ne_q_of_setting {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T 
   exact ⟨key _ D.host.pde_level.1 D.host.pde_prime, key _ D.host.pde_level.2 D.host.pde'_prime⟩
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F CF b hS hch _ _ t Φ _ β _ w X Y`. Establish `hL : R.toLevCh.Is A.μ0` using `hS.core.lev`. Establish `hde` using `pde_ne_q_of_setting hS`. Establish `hc : ∀ P ∈ R.toLevCh.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `hch.guard t`. Establish `hT` using `isTensor_Tflip hL ch.W ch.S.B t Φ hde hc w.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hcond : HasConductor (psiAt ch.W w.1) 1` using `(((Good.locGrid_isGood hL ch.G ch.W t hde hc).1 w.1 w.2).square 0 hm 0 hm).cond`. Use `⟨?_, hasCompactSupport_flatIntegrand one_le_sLen _ hT _ _ X Y⟩` and prove the remaining obligations. Establish `hmv : Continuous ((locGrid ch.G t w).moveArgs .one ((repsAt ch.G t w).elt (β w)))` using `continuous_pi fun b => (continuous_const.matrix_mul (continuous_apply b)).matrix_mul continuous_const`. Establish `hψ : IsLocallyConstant fun e => ((psiAt ch.W w.1 (-phase X e) : Circle) : ℂ)` using `((hcond.isLocallyConstant.comp Subtype.val).comp_continuous (continuous_phase X).neg)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((IsLocallyConstant.const _).mul ((IsLocallyConstant.const _).mul ((isLocallyConstant_of_isTensor hT).comp_continuous (hmv.comp (continuous_fill one_le_sLen X Y))))).mul hψ`.
+A detailed English derivation is pending.
 -/
 theorem flatIntegrand_lc_cpt : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (large₂ : SizeData₂ D) (F : Face D A) (CF b : ℝ), HidaSetting large₂ R F → ch.Is → ch.AtScale CF b → ch.FieldOK → ∀ (t : T) (Φ : ch.G.Datum), ch.S.SumOK t Φ → ∀ β ∈ ch.S.supp t Φ, ∀ (w : locPl ch.G t) X Y, IsLocallyConstant (flatIntegrand one_le_sLen (psiAt ch.W w.1) (moved (locGrid ch.G t w) (keepAt ch.G w) ((repsAt ch.G t w).elt (β w)) (Tflip ch.W ch.S.B t Φ w)) X Y) ∧ HasCompactSupport (flatIntegrand one_le_sLen (psiAt ch.W w.1) (moved (locGrid ch.G t w) (keepAt ch.G w) ((repsAt ch.G t w).elt (β w)) (Tflip ch.W ch.S.B t Φ w)) X Y) := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F CF b hS hch _ _ t Φ _ β _ w X Y

@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `prK`. Conclude with `pullback.lift_snd _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma boxScal_prK_snd {R : Type} [CommRing R] [IsDomain R] {j : ℕ}
     {G G' : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']

@@ -16,7 +16,7 @@ def HAsymp (L : ℝ) (d : ℕ) (W : Ideal (MRing ι)) : Prop :=
     |lg W a - appr L d W a| ≤ C * d * ((tdeg a : ℝ) + 1) ^ (d - 1)
 
 /- English proof (translation)
-The claim follows from `|appr L m V a - appr L m V (a - c)| ≤ K' * m * ((tdeg a : ℝ) + 1) ^ (m - 1) := by refine ⟨|L| / m.factorial * coefB m V * tdeg c * (1 + tdeg c) ^ (m - 1), ?_, fun a hca => ?_⟩ · have := coefB_nonneg m V positivity have h := geoNum_shift_est m V hS (fun k => (a k : ℤ)) (fun k => ( …`.
+A detailed English derivation is pending.
 -/
 theorem appr_shift (L : ℝ) (m : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt m V) (c : K → ℕ) :
     ∃ K' : ℝ, 0 ≤ K' ∧ ∀ a : K → ℕ, (∀ k, c k ≤ a k) →
@@ -50,7 +50,7 @@ theorem appr_shift (L : ℝ) (m : ℕ) (V : Ideal (MRing ι)) (hS : SymmAt m V) 
         rw [mul_pow]; ring
 
 /- English proof (translation)
-Establish `h1` using `dim_quot_minimal_add_one W W' s hsW hW'`. Rewrite `h1` using `[hd, show m + 1 + Fintype.card K = (m + Fintype.card K) + 1 by omega]`. Conclude with `withBot_eq_of_add_one h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_of_minimal {W : Ideal (MRing ι)} [W.IsPrime] {s : MRing ι} (hsW : s ∉ W)
     {W' : Ideal (MRing ι)} (hW' : W' ∈ (W ⊔ Ideal.span {s}).minimalPrimes) {m : ℕ}
@@ -61,9 +61,9 @@ theorem dim_of_minimal {W : Ideal (MRing ι)} [W.IsPrime] {s : MRing ι} (hsW : 
   exact withBot_eq_of_add_one h1
 
 /- English proof (translation)
-Establish `hck : c k ≤ tdeg c`. Unfold `tdeg`. Conclude with `Finset.single_le_sum (f := c) (fun i _ => Nat.zero_le _) (Finset.mem_univ k)`. Establish `hak` using `ha k`. Use `⟨by omega, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Use `show a₀ ≤ a k - c k`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem le_of_tdeg_le {c a : K → ℕ} {a₀ : ℕ} (ha : ∀ k, a₀ + tdeg c ≤ a k) (k : K) :
     c k ≤ a k ∧ a₀ ≤ (a - c) k := by
@@ -78,7 +78,7 @@ theorem le_of_tdeg_le {c a : K → ℕ} {a₀ : ℕ} (ha : ∀ k, a₀ + tdeg c 
 open Classical in
 
 /- English proof (translation)
-The claim follows from `|lg q (a - c) - (if q ∈ divSupp W s then appr L m q a else 0)| ≤ C * m * ((tdeg a : ℝ) + 1) ^ (m - 1) := by classical have hpq : (p : MRing ι) ∈ q := hJq (Ideal.mem_sup_left hpW) by_cases hrel : IsRelevant q swap · have hnot : q ∉ divSupp W s := fun h => hrel h.2 simp only [IsRel …`.
+A detailed English derivation is pending.
 -/
 theorem per_factor {L : ℝ} {m p : ℕ} (hp : p.Prime) {W : Ideal (MRing ι)} [hWp : W.IsPrime]
     (hWm : IsMultiHomogIdeal W) (hpW : (p : MRing ι) ∈ W)

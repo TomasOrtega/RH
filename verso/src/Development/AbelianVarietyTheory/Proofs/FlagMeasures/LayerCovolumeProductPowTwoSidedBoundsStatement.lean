@@ -7,7 +7,7 @@ open scoped Pointwise ENNReal Classical
 open GlobalTheory.DegVol.RefCov
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.DegVol.RefCov.prod_pow_bounds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FLayerCovolumeProductPowTwoSidedBounds.lean&line=9#L9)
 -/

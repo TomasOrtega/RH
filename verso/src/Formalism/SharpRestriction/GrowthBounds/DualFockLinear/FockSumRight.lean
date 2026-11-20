@@ -10,7 +10,7 @@ open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNoti
 open Formalism.L2.G.Model (kapR kapR_alg)
 
 /- English proof (translation)
-Simplify using `only [fock, MvPolynomial.coeff_sum, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_sum_right {R : Type} [CommRing R] {τ : Type} {ι : Type} (s : Finset ι) (F : MvPolynomial τ R)
     (G : ι → MvPolynomial τ R) : fock F (∑ q ∈ s, G q) = ∑ q ∈ s, fock F (G q) := by
@@ -18,7 +18,7 @@ theorem fock_sum_right {R : Type} [CommRing R] {τ : Type} {ι : Type} (s : Fins
   exact Finset.sum_comm
 
 /- English proof (translation)
-Introduce `m`. Conclude with `⟨P.coeff m, by simp [MvPolynomial.coeff_map]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem inWj_map {O : Type} [CommRing O] [IsDomain O] {τ : Type} (w : O) (P : MvPolynomial τ O) :
     InWj w (MvPolynomial.map (algebraMap O (KK O)) P) 0 := by
@@ -26,13 +26,13 @@ theorem inWj_map {O : Type} [CommRing O] [IsDomain O] {τ : Type} (w : O) (P : M
   exact ⟨P.coeff m, by simp [MvPolynomial.coeff_map]⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, c = 2 * D + (k + 1)` from `⟨c - 2 * D - 1, by omega⟩`. Establish `hwc : w ^ c = (p : O) ^ D * w ^ (k + 1)` using `by rw [hk, pow_add, pow_mul, hsq]`. Establish `hwk : w ^ (k + 1) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun h => hw ((isUnit_pow_iff (Nat.succ_ne_zero k)).1 h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hm : b * w ^ (k + 1) * z ∈ IsLocalRing.maximalIdeal O` using `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hwk)`. Establish `hu : IsUnit (1 + b * w ^ (k + 1) * z)`. Assume the negation of the conclusion as `hne`. Establish `h1 : (1 + b * w ^ (k + 1) * z) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hne`. Establish `h2 : (1 : O) ∈ IsLocalRing.maximalIdeal O`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.sub_mem _ h1 hm` as an intermediate fact. Simplify using `using this`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h2)`. Establish `ha' : a + w ^ c * z = a * (1 + b * w ^ (k + 1) * z)` using `by rw [hwc, ← hab]; ring`. Use `⟨a + w ^ c * z, b * ↑hu.unit⁻¹, rfl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha', mul_mul_mul_comm, IsUnit.mul_val_inv, mul_one, hab]`.
+A detailed English derivation is pending.
 -/
 theorem valLe_perturb {O Kf : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [Field Kf] [Algebra O Kf] (p : ℕ) (w : O)
     (hw : ¬ IsUnit w) (hsq : w ^ 2 = (p : O)) (D c : ℕ) (hc : 2 * D < c) (a b z : O) (hab : a * b = (p : O) ^ D) :
@@ -60,33 +60,31 @@ theorem valLe_perturb {O Kf : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [F
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `hA _ h14b`. Take `⟨Ct0, CDf, C₂, h0, h1, hC2, hX⟩` from `hXi hA h14b`. Take `⟨C₃, hC3, hR⟩` from `hRe hA`. Take `⟨C6U, hC6U, h6⟩` from `one_sided_lemma4_of_admitted_theorem_II`. Establish `h6'` using `h6 D CLa Ck Crk Cdeg hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C₄, hC4, hII⟩` from `hypII_at C6U (C6U + 1) C6U`. Use `⟨Ct0, CDf, max (max C₂ C₃) (max C₄ CDf), h0, h1, lt_of_lt_of_le hC2 (le_trans (le_max_left _ _) (le_max_left _ _)), ?_⟩` and prove the remaining obligations. Introduce `C hCC p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K _ _ hk hrk F hFr E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis`. Set `_ : Algebra (WF p n') O` to `algOfIdent j φ`. Introduce `FsB hFsB Θ hΘ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `c2 : C₂ ≤ C` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hCC`. Establish `c3 : C₃ ≤ C` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hCC`. Establish `c4 : C₄ ≤ C` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCC`. Establish `c5 : CDf ≤ C` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hCC`. Take `⟨tF, DX, htF, hDX, hxi⟩` from `hX C c2 p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K hk hrk F hFr E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis FsB hFsB Θ hΘ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨gv, hgv, hreal⟩` from `hR C c3 p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K hk hrk F hFr E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis FsB hFsB Θ hΘ`. Take `⟨hII1, hcP⟩` from `hII C c4 p n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar H F hFr`. Establish `hBas` using `hyps_basic (C := C) (le_trans hC4 c4) H`. Establish `hGn : goodG' r de h x ≤ n'` using `by have := H.2.2.1.2.2.2; omega`. Establish `hH : CommonHypotheses p n' r (m + 1)` using `⟨H.1, H.2.1, hrk, hSet.1.two_le, hSet.1.even⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0 : algebraMap O Kf w ≠ 0` using `Formalism.L2.G.Model.w_ne hSet.1`. Establish `hlog : 0 ≤ (TT.card : ℝ) * ((m + 1 : ℕ) : ℝ) ^ 2 * Real.logb p a`. Establish `h2a` using `hBas.two_le_a`. Establish `hp1 : (1 : ℝ) < (p : ℝ)`. Use `H.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 < p` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `: 0 ≤ Real.logb p a` using `Real.logb_nonneg hp1 (by linarith)`. Check the signs of the components of the expression. Establish `hDp : (DX : ℝ) ≤ Dp`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h10 : C * (TT.card : ℝ) * ((m + 1 : ℕ) : ℝ) ^ 2 * Real.logb p a ≤ Dp` using `H.2.2.2.2.2.2.2.2.2.1`. Establish `: CDf * (TT.card : ℝ) * ((m + 1 : ℕ) : ℝ) ^ 2 * Real.logb p a ≤ C * (TT.card : ℝ) * ((m + 1 : ℕ) : ℝ) ^ 2 * Real.logb p a`. Establish `e1 : ∀ t : ℝ, t * (TT.card : ℝ) * ((m + 1 : ℕ) : ℝ) ^ 2 * Real.logb p a = t * ((TT.card : ℝ) * ((m + 1 : ℕ) : ℝ) ^ 2 * Real.logb p a)` using `fun t => by ring`. Rewrite using `[e1, e1]`. Conclude with `mul_le_mul_of_nonneg_right c5 hlog`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDp' : DX ≤ Dp` using `by exact_mod_cast hDp`. Establish `h2D : 2 * DX < cPrime n' r TT.card c0 cpp cStar`. Establish `h11 : 8 * (Dp + 1) ≤ cStar` using `H.2.2.2.2.2.2.2.2.2.2.1`. Unfold `cPrime`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨tF, DX, htF, hDX, ?_⟩` and prove the remaining obligations. Introduce `F1 f1 f2 f3`. Take `⟨nq, o, sig, hsig, hval⟩` from `hxi F1 f1 f2 f3`. Establish `hT : ∀ q, ∃ T : Module.Dual Kf (Vsp Kf (flW (m` using `m) (dT TT lam0))), T ∈ scale (algebraMap O Kf w ^ (-(tF : ℤ))) (dualLat O Kf (HL (O := O) ι σ (flW (dT TT lam0)) e.tgt)) ∧ T ∈ Re' p ι σ w r (flW (dT TT lam0)) e ∧ (∀ e' : Edge W Qq (m + 1), IsEdge p n' r e' → e'.tgt = e.tgt → e' ≠ e → T ∈ scale (algebraMap O Kf w ^ ((cPrime n' r …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `q`. Take `⟨ho, hmd, hL4⟩` from `hsig q`. Establish `hint : InWj w (sig q) 0`. Take `⟨_, _, _, _, _, _, _, _, _, _, hs⟩` from `hL4`. Rewrite using `[hs]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `inWj_map w _`. Establish `hrl : Realisable p n' w n' r gv (cPrime n' r TT.card c0 cpp cStar) (o q) (sig q)`. Rewrite `hL4`, the goal using `[← hcP]`. Conclude with `one_sided_lemma4_realisable D C6U (C6U + 1) C6U h6' O (dvrOfStd hSet) (oHyp_of hSet φ) hk hH F L₁ (orbitWindowCount r de h x) (goodG' r de h x) hFr.2.1 (twist_of hFr (by have := H.2.1; omega) hGn p (by have := H.1; omega)) (flatDeg lam0) ⌈a⌉₊ Y c0 0 (cStar + 2 * r * n' * cpp) (Dp …`. Take `⟨T, t1, t2, t3, t4⟩` from `hreal (o q) (sig q) hmd hint hrl`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨T, scale_neg_mono w hw0 ho _ t1, t2, t3, t4 F1 f2⟩`. Use `choose T t1 t2 t3 z t4 using hT`. Use `⟨∑ q, T q, Submodule.sum_mem _ fun q _ => t1 q, Submodule.sum_mem _ fun q _ => t2 q, fun e' he' htg hne => Submodule.sum_mem _ fun q _ => t3 q e' he' htg hne, ?_⟩` and prove the remaining obligations. Take `⟨aa, bb, hx1, hab⟩` from `hval`. Establish `hbe : be p r (flW (dT TT lam0)) (Θ F1) (∑ q, T q) = algebraMap O Kf (aa + w ^ (cPrime n' r TT.card c0 cpp cStar) * ∑ q, z q)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : be p r (flW (dT TT lam0)) (Θ F1) (∑ q, T q) = ∑ q, be p r (flW (dT TT lam0)) (Θ F1) (T q)`. Unfold `be`. Rewrite using `[LinearMap.sum_apply]`. Rewrite using `[e1]`. Simplify using `only [t4, Finset.sum_add_distrib]`.
-
-Rewrite using `[← map_sum, ← Finset.sum_div, ← Finset.mul_sum, ← fock_sum_right, hx1, kapR_alg, map_add, ← map_sum, ← Finset.mul_sum]`. Rewrite using `[hbe]`. Conclude with `valLe_perturb p w hSet.2.1.not_isUnit hSet.1.w_sq DX _ h2D aa bb _ hab`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restFlat_of (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 : ℝ)
     (hXi : RestXi D CLa Ck Crk Cdeg CH CE C6 C18) (hRe : RestReal D CLa Ck Crk Cdeg) :

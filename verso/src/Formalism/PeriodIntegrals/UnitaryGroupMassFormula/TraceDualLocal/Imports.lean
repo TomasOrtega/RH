@@ -10,49 +10,45 @@ open NumberField ValuativeRel PI.CntNotIntW
 open scoped TensorProduct
 
 /- English proof (translation)
-Set `π` to `piMap K ℓ Fp ι`. Establish `hπ1 : ∀ y : K, π (1 ⊗ₜ y) = ι y` using `piMap_one_tmul K ℓ Fp ι`. Set `b` to `NumberField.integralBasis K`. Set `bd` to `(Algebra.traceForm ℚ K).dualBasis (traceForm_nondegenerate ℚ K) b`. Establish `hdb : ∀ i j, Algebra.trace ℚ K (bd i * b j) = if j = i then 1 else 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i j`. Use `(Algebra.traceForm ℚ K).apply_dualBasis_left (traceForm_nondegenerate ℚ K) b i j` as an intermediate fact. Rewrite `this` using `[Algebra.traceForm_apply]`. Then use the resulting hypothesis. Set `BD` to `Algebra.TensorProduct.basis ℚ_[ℓ] bd`. Establish `hBD : ∀ i, BD i = 1 ⊗ₜ bd i` using `fun i => Algebra.TensorProduct.basis_apply bd i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: FiniteDimensional ℚ_[ℓ] (ℚ_[ℓ] ⊗[ℚ] K)` using `Module.Finite.of_basis BD`. Establish `htb : ∀ i j, Algebra.trace ℚ_[ℓ] (ℚ_[ℓ] ⊗[ℚ] K) ((1 ⊗ₜ bd i) * (1 ⊗ₜ b j)) = if j = i then 1 else 0`. Introduce `i j`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, trace_one_tmul, hdb]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hnd : ∀ γ : ℚ_[ℓ] ⊗[ℚ] K, (∀ j, Algebra.trace ℚ_[ℓ] (ℚ_[ℓ] ⊗[ℚ] K) (γ * (1 ⊗ₜ b j)) = 0) → γ = 0`. Introduce `γ hγ`. Establish `hexp` using `BD.sum_repr γ`. Establish `hc0 : ∀ j, BD.repr γ j = 0`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hγ j`. Rewrite `h` using `[← hexp, Finset.sum_mul, map_sum]`. Simplify `h` using `only [smul_mul_assoc, map_smul, hBD, htb, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← hexp]`. Simplify using `[hc0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `φ : ℚ_[ℓ] ⊗[ℚ] K →ₗ[ℚ_[ℓ]] ℚ_[ℓ]` to `(Algebra.trace ℚ_[ℓ] Fp).comp π.toLinearMap`. Establish `hφ : ∀ x, φ x = Algebra.trace ℚ_[ℓ] Fp (π x)` using `fun x => rfl`. Set `β : ℚ_[ℓ] ⊗[ℚ] K` to `∑ i, φ (1 ⊗ₜ b i) • (1 ⊗ₜ bd i)`. Establish `hβ : ∀ x, Algebra.trace ℚ_[ℓ] (ℚ_[ℓ] ⊗[ℚ] K) (β * x) = φ x`. Establish `hL : (Algebra.trace ℚ_[ℓ] (ℚ_[ℓ] ⊗[ℚ] K)).comp (LinearMap.mulLeft ℚ_[ℓ] β) = φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `(BA K ℓ).ext` to reduce the goal to its premises. Introduce `j`. Rewrite using `[BA_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply]`. Establish `htb' : ∀ i, Algebra.trace ℚ_[ℓ] (ℚ_[ℓ] ⊗[ℚ] K) ((1 ⊗ₜ bd i) * (1 ⊗ₜ integralBasis K j)) = if j = i then 1 else 0` using `fun i => htb i j`. Simplify using `only [β, Finset.sum_mul, map_sum, smul_mul_assoc, map_smul, htb', smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Introduce `x`. Conclude with `congrArg (fun L => L x) hL`. Establish `hker : ∀ x, π x = 0 → β * x = 0`. Introduce `x hx`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hnd` to reduce the goal to its premises. Introduce `j`. Rewrite using `[mul_assoc, hβ, hφ, map_mul π, hx, zero_mul, map_zero]`. Establish `htr : ∀ x, Algebra.trace ℚ_[ℓ] (ℚ_[ℓ] ⊗[ℚ] K) (β * x) = Algebra.trace ℚ_[ℓ] Fp (π β * π x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[trace_of_ker π hsurj (β * x), map_mul]`. Introduce `y hy`. Rewrite using `[mul_comm β x, mul_assoc, hker y hy, mul_zero]`. Establish `hπβ : π β = 1`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hd0 : π β - 1 ≠ 0` using `sub_ne_zero.2 hne`. Take `⟨x, hx⟩` from `hsurj (π β - 1)⁻¹`. Establish `e1 : Algebra.trace ℚ_[ℓ] Fp ((π β - 1) * π x) = 0`. Rewrite using `[sub_mul, one_mul, map_sub, ← htr, hβ, hφ, sub_self]`. Rewrite `e1` using `[hx, mul_inv_cancel₀ hd0, ← map_one (algebraMap ℚ_[ℓ] Fp), Algebra.trace_algebraMap, nsmul_eq_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Nat.cast_ne_zero.2 Module.finrank_pos.ne') e1`. Establish `hidem : β * β = β`. Establish `h0` using `hker (β - 1) (by rw [map_sub, hπβ, map_one, sub_self])`. Rewrite `h0` using `[mul_sub, mul_one, sub_eq_zero]`. Then use the resulting hypothesis. Take `⟨g, hg⟩` from `π.toLinearMap.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hsurj)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg' : ∀ x, π (g x) = x` using `fun x => LinearMap.congr_fun hg x`. Set `σ : Fp →ₗ[ℚ_[ℓ]] ℚ_[ℓ] ⊗[ℚ] K` to `(LinearMap.mulLeft ℚ_[ℓ] β) ∘ₗ g`. Establish `hσ : ∀ x, σ x = β * g x` using `fun x => rfl`. Establish `hσpow : ∀ (x : Fp) (n : ℕ), σ x ^ (n + 1) = σ (x ^ (n + 1))`. Introduce `x n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hσ, hσ, mul_pow, IsIdempotentElem.pow_succ_eq n hidem]`. Establish `h0` using `hker (g x ^ (n + 1) - g (x ^ (n + 1))) (by rw [map_sub, map_pow, hg', hg', sub_self])`. Rewrite `h0` using `[mul_sub, sub_eq_zero]`. Then use the resulting hypothesis. Use `haveI : ContinuousSMul ℚ_[ℓ] Fp := continuousSMul_of_algebraMap ℚ_[ℓ] Fp hc`. Use `haveI : T2Space Fp := t2Space_of_nonarchimedeanLocalField' Fp`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `F : Fp → (Module.Free.ChooseBasisIndex ℤ (𝓞 K) → ℚ_[ℓ])` to `fun x i => (BA K ℓ).repr (σ x) i`. Establish `hF : Continuous F`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Conclude with `(((BA K ℓ).coord i).comp σ).continuous_of_finiteDimensional`. Establish `hK : IsCompact (𝒪[Fp] : Set Fp)` using `isCompact_iff_compactSpace.mpr (inferInstanceAs (CompactSpace 𝒪[Fp]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hF.continuousOn`. Establish `hℓ1 : (1 : ℝ) < ℓ` using `by exact_mod_cast (Fact.out : ℓ.Prime).one_lt`. Take `⟨D, hD⟩` from `pow_unbounded_of_one_lt C hℓ1`. Establish `hbound : ∀ x ∈ 𝒪[Fp], (ℓ : ℚ_[ℓ] ⊗[ℚ] K) ^ D * σ x ∈ S K ℓ`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_S]`. Introduce `i`. Rewrite using `[BA_repr_natPow_mul, PadicInt.mem_subring_iff, norm_mul, Padic.norm_p_pow, zpow_neg, zpow_natCast]`. Establish `hxi : ‖(BA K ℓ).repr (σ x) i‖ ≤ C` using `(norm_le_pi_norm (F x) i).trans (hC x hx)`. Establish `hpos : (0 : ℝ) < (ℓ : ℝ) ^ D` using `pow_pos (by linarith) D`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Rewrite using `[inv_mul_le_one₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy : σ c ∈ S K ℓ`. Use `mem_S_of_pow (σ c) D fun n => ?_` and prove the remaining obligations. Consider the cases of `n with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `zero`. Rewrite using `[pow_zero, mul_one]`. Conclude with `Subring.pow_mem _ (natCast_mem _ ℓ) D`. Consider the case `succ k`. Rewrite using `[hσpow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hbound _ (pow_mem hcO _)`. Establish `etr : Algebra.trace ℚ_[ℓ] Fp (c * ι t) = Algebra.trace ℚ_[ℓ] (ℚ_[ℓ] ⊗[ℚ] K) (σ c * (1 ⊗ₜ t))`. Rewrite using `[hσ, mul_assoc, hβ, hφ, map_mul π, hg', hπ1]`. Establish `e : Algebra.trace ℚ_[ℓ] (ℚ_[ℓ] ⊗[ℚ] K) (σ c * (1 ⊗ₜ t)) = ∑ i, (BA K ℓ).repr (σ c) i * algebraMap ℚ ℚ_[ℓ] (Algebra.trace ℚ K (integralBasis K i * t))` using `by conv_lhs => rw [← (BA K ℓ).sum_repr (σ c)]`. Rewrite using `[Finset.sum_mul, map_sum]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, BA_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, trace_one_tmul, smul_eq_mul]`. Rewrite using `[etr, e, ← PadicInt.mem_subring_iff]`. Use `Subring.sum_mem _ fun i _ => Subring.mul_mem _ (mem_S.1 hy i) ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `ht (RingOfIntegers.basis K i)`.
-
-Rewrite using `[integralBasis_apply, mul_comm, hz, map_intCast]`. Conclude with `intCast_mem _ z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main {K : Type} [Field K] [NumberField K] {ℓ : ℕ} [Fact ℓ.Prime] {Fp : Type} [Field Fp]
     [CharZero Fp] [ValuativeRel Fp] [TopologicalSpace Fp] [IsNonarchimedeanLocalField Fp] [Algebra ℚ_[ℓ] Fp]

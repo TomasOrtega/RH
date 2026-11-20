@@ -31,7 +31,7 @@ def twOrbU (θ : G →* G) (K : Subgroup G) (δ : G) (U : Subgroup G) (f : G →
   orbSum θ K δ (fun x => volRat U (locPart (GlobalTheory.BCT.twCent θ δ) K x)) f
 
 /- English proof (translation)
-Simplify using `[volRat, Subgroup.relIndex_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem volRat_self (V : Subgroup G) : volRat V V = 1 := by
   simp [volRat, Subgroup.relIndex_self]

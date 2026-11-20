@@ -11,45 +11,41 @@ open scoped ENNReal InnerProductSpace
 namespace GlobalTheory.CompanionTheory.Ar.Cusp
 
 /- English proof (translation)
-Introduce `V _ _ _ L _ _ μ hμ hdual`. Use `set n := Module.finrank ℝ V with hn`. Use `set c : ℝ := (n : ℝ) / μ with hc`. Establish `hc0 : 0 ≤ c` using `div_nonneg (Nat.cast_nonneg _) hμ.le`. Establish `hspan : Submodule.span ℝ (L : Set V) = ⊤` using `IsZLattice.span_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `main : ∀ k, k ≤ n → ∃ b : Fin k → V, (∀ i, b i ∈ L) ∧ LinearIndependent ℝ b ∧ (∀ i, ‖b i‖ ^ 2 ≤ n * c ^ 2) ∧ (∀ w ∈ Submodule.span ℝ (Set.range b), ∃ z ∈ Submodule.span ℤ (Set.range b), ‖w - z‖ ^ 2 ≤ k * c ^ 2 / 4)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Fin.elim0, fun i => i.elim0, linearIndependent_empty_type, fun i => i.elim0, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Establish `hw0 : w = 0`. Rewrite `hw` using `[Set.range_eq_empty, Submodule.span_empty, Submodule.mem_bot]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `hw`. Simplify using `[hw0]`. Consider the case `succ k ih`. Introduce `hk`. Take `⟨b, hbL, hbli, hbn, hcov⟩` from `ih (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set W := Submodule.span ℝ (Set.range b) with hW`. Use `set N := Submodule.span ℤ (Set.range b) with hN`. Establish `hNL : N ≤ L` using `Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact hbL i)`. Establish `hNW : Submodule.span ℝ (N : Set V) = W` using `Submodule.span_span_of_tower ℤ ℝ (Set.range b)`. Establish `hWtop : W ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1 : Module.finrank ℝ W = k` using `by rw [hW, finrank_span_eq_card hbli, Fintype.card_fin]`. Rewrite `h1` using `[h, finrank_top]`. Use linear arithmetic over natural numbers and integers. Establish `hNsubW : ∀ y ∈ N, y ∈ W` using `fun y hy => by rw [← hNW]; exact Submodule.subset_span hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨m, hmL, hp0, hpn⟩` from `Formalism.NormUnitaryCountingLemmas.exists_starProjection_ne_zero_norm_le_of_dualMinimum L hspan hμ hdual W N hNL hNW hWtop`. Use `set p := Wᗮ.starProjection m with hp`. Establish `hpW : p ∈ Wᗮ` using `Wᗮ.starProjection_apply_mem m`. Establish `hwW : m - p ∈ W`. Use `Wᗮ.sub_starProjection_mem_orthogonal m` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Submodule.orthogonal_orthogonal]`. Then use the resulting hypothesis. Take `⟨z, hzN, hz⟩` from `hcov (m - p) hwW`. Establish `hzW : z ∈ W` using `hNsubW z hzN`. Use `set v := m - z with hv`. Establish `hvdec : v = (m - p - z) + p` using `by rw [hv]; abel`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvL : v ∈ L` using `L.sub_mem hmL (hNL hzN)`. Establish `hp2 : ‖p‖ ^ 2 ≤ c ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) hpn 2`. Establish `pyth : ∀ a ∈ W, ∀ q ∈ Wᗮ, ‖a + q‖ ^ 2 = ‖a‖ ^ 2 + ‖q‖ ^ 2`. Introduce `a ha q hq`. Establish `h0 : ⟪a, q⟫_ℝ = 0` using `Submodule.inner_right_of_mem_orthogonal ha hq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sq, sq, sq, norm_add_sq_eq_norm_sq_add_norm_sq_real h0]`. Establish `hvW : v ∉ W`. Introduce `h`. Apply `hp0` to reduce the goal to its premises. Establish `hmW : m ∈ W`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : m = v + z` using `by rw [hv]; abel`. Rewrite using `[e]`. Conclude with `W.add_mem h hzW`. Establish `hm' : m ∈ Wᗮᗮ` using `by rwa [Submodule.orthogonal_orthogonal]`. Conclude with `Wᗮ.starProjection_apply_eq_zero_iff.mpr hm'`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hsub : m - p - z ∈ W` using `W.sub_mem hwW hzW`. Use `⟨Fin.cons v b, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hvL`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hbL j`. Conclude with `linearIndependent_finCons.mpr ⟨hbli, hvW⟩`. Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hvdec, pyth _ hsub _ hpW]`. Establish `hkn : (k : ℝ) + 1 ≤ n` using `by exact_mod_cast hk`. Use polynomial arithmetic with `[sq_nonneg c, mul_le_mul_of_nonneg_right hkn (sq_nonneg c)]`. Simplify using `using hbn j`. Introduce `w' hw'`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hw'` using `[Fin.range_cons, Submodule.mem_span_insert]`. Take `⟨t, u, hu, rfl⟩` from `hw'`. Use `set s := t - round t with hs`. Establish `hs2 : s ^ 2 ≤ 1 / 4`. Establish `h` using `abs_sub_round t`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[← hs]`. Use polynomial arithmetic with `[abs_nonneg s, sq_abs s]`. Establish `hq : s • (m - p - z) + u ∈ W` using `W.add_mem (W.smul_mem _ hsub) hu`. Take `⟨z', hz'N, hz'⟩` from `hcov (s • (m - p - z) + u) hq`. Use `⟨(round t : ℤ) • v + z', ?_, ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Fin.range_cons, Submodule.mem_span_insert]`. Conclude with `⟨round t, z', hz'N, rfl⟩`. Establish `e : t • v + u - ((round t : ℤ) • v + z') = (s • (m - p - z) + u - z') + s • p`. Rewrite using `[← Int.cast_smul_eq_zsmul ℝ, hs, hvdec]`. Use `module`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e, pyth _ (W.sub_mem hq (hNsubW z' hz'N)) _ (Wᗮ.smul_mem _ hpW), norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]`. Establish `h4` using `mul_le_mul hs2 hp2 (sq_nonneg _) (by norm_num : (0 : ℝ) ≤ 1 / 4)`. Use `push_cast`. Use polynomial arithmetic with `[h4, hz']`. Take `⟨b, hbL, hbli, hbn, -⟩` from `main n le_rfl`.
-
-Use `⟨b, hbL, hbli, fun i => ?_⟩` and prove the remaining obligations. Establish `hnR : (0 : ℝ) < n` using `by exact_mod_cast i.pos`. Establish `key : (n : ℝ) ^ (3 / 2 : ℝ) / μ = Real.sqrt (n * c ^ 2)`. Rewrite using `[Real.sqrt_mul (Nat.cast_nonneg _), Real.sqrt_sq hc0, hc, Real.sqrt_eq_rpow, ← mul_div_assoc, ← Real.rpow_add_one hnR.ne']`. Evaluate the numerical expressions.
-
-Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem exists_independent_le_of_dual_min :
     ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]

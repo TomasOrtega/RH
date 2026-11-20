@@ -16,7 +16,7 @@ def CountingTheorem : Prop :=
             GlobalTheory.Count.mainTerm B d
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, hb, -, -, hg, hgb, -⟩` from `h`. Assume the negation of the conclusion as `hC`. Establish `hC' : Cg < 0` using `not_le.mp hC`. Establish `h1 : b ^ Cg < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by linarith) hC'`. Establish `h2 : (1 : ℝ) ≤ (B.g : ℝ)` using `by exact_mod_cast hg`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

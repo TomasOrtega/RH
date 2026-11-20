@@ -31,11 +31,11 @@ def stabL (φ : Sm E a) : Subgroup (GL (Fin a) (Af E)) where
     simp
 
 /- English proof (translation)
-Use `⟨1 + ‖rmul (toL c.val)‖ + ‖lmul (toL (c⁻¹).val)‖, by linarith [norm_nonneg (rmul (toL c.val)), norm_nonneg (lmul (toL (c⁻¹).val))], fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : toL (y * c).val = rmul (toL c.val) (toL y.val)` using `rfl`. Establish `h2 : toL ((y * c)⁻¹).val = lmul (toL (c⁻¹).val) (toL (y⁻¹).val)`. Rewrite using `[_root_.mul_inv_rev]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e1` using `(rmul (toL c.val)).le_opNorm (toL y.val)`. Establish `e2` using `(lmul (toL (c⁻¹).val)).le_opNorm (toL (y⁻¹).val)`. Establish `n1` using `norm_nonneg (toL y.val)`. Establish `n2` using `norm_nonneg (toL (y⁻¹).val)`. Establish `n3` using `norm_nonneg (rmul (toL c.val))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n4` using `norm_nonneg (lmul (toL (c⁻¹).val))`. Unfold `height`. Rewrite using `[h1, h2]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem height_mul_le (c : GL (Fin a) (Cinf E)) : ∃ B : ℝ, 1 ≤ B ∧ ∀ y, height (y * c) ≤ B * height y := by
   refine ⟨1 + ‖rmul (toL c.val)‖ + ‖lmul (toL (c⁻¹).val)‖,
@@ -54,11 +54,11 @@ theorem height_mul_le (c : GL (Fin a) (Cinf E)) : ∃ B : ℝ, 1 ≤ B ∧ ∀ y
   nlinarith
 
 /- English proof (translation)
-Introduce `g`. Take `⟨C, N, hC⟩` from `hφ g`. Take `⟨B, hB, hB'⟩` from `height_mul_le (Unitary.toUnits k : GL (Fin a) (Cinf E))`. Establish `C0 : 0 ≤ C`. Use `(norm_nonneg _).trans (hC 1)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : 0 < height (1 : GL (Fin a) (Cinf E)) ^ N` using `pow_pos (by linarith [one_le_height (1 : GL (Fin a) (Cinf E))]) N`. Conclude with `nonneg_of_mul_nonneg_left this hp`. Use `⟨C * B ^ N, N, fun y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖φ.1 (g * infGL E a y * infGL E a (Unitary.toUnits k))‖ ≤ _`. Rewrite using `[mul_assoc, ← map_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hC _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith [one_le_height (y * Unitary.toUnits k)]) (hB' y) N) C0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem growth_cptRep {φ : Sm E a} (hφ : φ.1 ∈ growth E a) (k : Kinf E a) : (cptRep E a k φ).1 ∈ growth E a := by
   intro g
@@ -77,9 +77,9 @@ theorem growth_cptRep {φ : Sm E a} (hφ : φ.1 ∈ growth E a) (k : Kinf E a) :
   exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith [one_le_height (y * Unitary.toUnits k)]) (hB' y) N) C0
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨k, rfl⟩ := hx`. Conclude with `hk k`. Consider the case `zero => exact h0`. Consider the case `add x y _ _ hx hy => exact hadd x y hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => exact hsmul c x hx`.
+A detailed English derivation is pending.
 -/
 theorem spanK_induction {φ : Sm E a} {p : Sm E a → Prop} (h0 : p 0) (hadd : ∀ x y, p x → p y → p (x + y))
     (hsmul : ∀ (c : ℂ) x, p x → p (c • x)) (hk : ∀ k, p (cptRep E a k φ)) {w : Sm E a}
@@ -91,7 +91,7 @@ theorem spanK_induction {φ : Sm E a} {p : Sm E a → Prop} (h0 : p 0) (hadd : �
   | smul c x _ hx => exact hsmul c x hx
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `rt E a (finGL E a k) * rt E a (infGL E a (Unitary.toUnits c)) = rt E a (infGL E a (Unitary.toUnits c)) * rt E a (finGL E a k)`. Rewrite using `[← map_mul, ← map_mul, infGL_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_cpt_comm (k : GL (Fin a) (Af E)) (c : Kinf E a) :
     finRep E a k * cptRep E a c = cptRep E a c * finRep E a k := by
@@ -102,7 +102,7 @@ theorem fin_cpt_comm (k : GL (Fin a) (Af E)) (c : Kinf E a) :
 variable {φ : Sm E a}
 
 /- English proof (translation)
-The claim follows from `spanK_induction (p := fun w : Sm E a => w.1 ∈ growth E a) (zero_mem _) (fun x y hx hy => by rw [Submodule.coe_add]; exact add_mem hx hy) (fun c x hx => by rw [Submodule.coe_smul]; exact Submodule.smul_mem _ c hx) (fun k => growth_cptRep (φ := φ) hφ.growth k) hw`.
+A detailed English derivation is pending.
 -/
 theorem growth_mem (hφ : IsAutForm φ) {w : Sm E a} (hw : w ∈ spanK E a φ) : w.1 ∈ growth E a :=
   spanK_induction (p := fun w : Sm E a => w.1 ∈ growth E a) (zero_mem _)
@@ -111,7 +111,7 @@ theorem growth_mem (hφ : IsAutForm φ) {w : Sm E a} (hw : w ∈ spanK E a φ) :
     (fun k => growth_cptRep (φ := φ) hφ.growth k) hw
 
 /- English proof (translation)
-The claim follows from `spanK_induction (p := fun w : Sm E a => ∀ γ g, w.1 (ratGL E a γ * g) = w.1 g) (fun _ _ => rfl) (fun x y hx hy γ g => by simp [hx γ g, hy γ g]) (fun c x hx γ g => by simp [hx γ g]) (fun k γ g => by change φ.1 (ratGL E a γ * g * infGL E a (Unitary.toUnits k)) = φ.1 (g * infGL E a ( …`.
+A detailed English derivation is pending.
 -/
 theorem left_mem (hφ : IsAutForm φ) {w : Sm E a} (hw : w ∈ spanK E a φ) :
     ∀ γ g, w.1 (ratGL E a γ * g) = w.1 g :=
@@ -123,7 +123,7 @@ theorem left_mem (hφ : IsAutForm φ) {w : Sm E a} (hw : w ∈ spanK E a φ) :
       rw [mul_assoc, hφ.left]) hw
 
 /- English proof (translation)
-The claim follows from `spanK_induction (p := fun w : Sm E a => finRep E a k w = w) (map_zero _) (fun x y hx hy => by rw [map_add, hx, hy]) (fun c x hx => by rw [map_smul, hx]) (fun c => by have hk' : finRep E a k φ = φ := hk rw [← Module.End.mul_apply, fin_cpt_comm, Module.End.mul_apply, hk']) hw`.
+A detailed English derivation is pending.
 -/
 theorem fixed_mem {k : GL (Fin a) (Af E)} (hk : k ∈ stabL φ) {w : Sm E a} (hw : w ∈ spanK E a φ) :
     finRep E a k w = w :=
@@ -135,7 +135,7 @@ theorem fixed_mem {k : GL (Fin a) (Af E)} (hk : k ∈ stabL φ) {w : Sm E a} (hw
       rw [← Module.End.mul_apply, fin_cpt_comm, Module.End.mul_apply, hk']) hw
 
 /- English proof (translation)
-The claim follows from `spanK_induction (p := fun w : Sm E a => z w = 0) (map_zero _) (fun x y hx hy => by rw [map_add, hx, hy, add_zero]) (fun c x hx => by rw [map_smul, hx, smul_zero]) (fun c => by rw [← Module.End.mul_apply, GlobalTheory.ZalgCpt.zalg_comm_cptRep E a c z hz, Module.End.mul_apply, h0, …`.
+A detailed English derivation is pending.
 -/
 theorem killed_mem {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) (h0 : z φ = 0) {w : Sm E a}
     (hw : w ∈ spanK E a φ) : z w = 0 :=
@@ -148,7 +148,7 @@ theorem killed_mem {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) (h0 : z �
 variable (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] {α : Lie E a → ℂ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, smoothing]`. Use `(integral_congr_ae (.of_forall fun y => ?_)).trans (integral_add (hα.integrable_mul ν isOpen_invSet (φ.2 x).continuousOn) (hα.integrable_mul ν isOpen_invSet (ψ.2 x).continuousOn))` and prove the remaining obligations. Apply the tactic sequence `by_cases h : IsUnit (Matrix.of y) <;> simp [chart, h, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smoothing_add (hα : IsTest (invSet E a) α) (φ ψ : Sm E a) :
     smoothing ν α (φ + ψ).1 = smoothing ν α φ.1 + smoothing ν α ψ.1 := by
@@ -160,7 +160,7 @@ theorem smoothing_add (hα : IsTest (invSet E a) α) (φ ψ : Sm E a) :
   by_cases h : IsUnit (Matrix.of y) <;> simp [chart, h, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, smoothing]`. Use `(integral_congr_ae (.of_forall fun y => ?_)).trans (integral_const_mul c _)` and prove the remaining obligations. Apply the tactic sequence `by_cases h : IsUnit (Matrix.of y) <;> simp [chart, h, mul_left_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smoothing_smul (c : ℂ) (φ : Sm E a) :
     smoothing ν α (c • φ).1 = c • smoothing ν α φ.1 := by
@@ -175,17 +175,15 @@ def smoothMap (hα : IsTest (invSet E a) α) (W : Submodule ℂ (Sm E a)) : W �
   map_smul' c w := Subtype.ext (smoothing_smul ν c w.1)
 
 /- English proof (translation)
-Use `⟨⟨fun k w => ?_, fun w => ⟨?_, fun γ g => ?_, fun k hk => ?_⟩⟩, fun z hz h0 w => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `GlobalTheory.T.smoothing_right_translate_maxCompact E a ν α hK w.1.1 k g`. Introduce `l`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨β, hβ, e⟩ : ∃ β, IsTest (invSet E a) β ∧ ((l.map (lie E a)).prod (smoothMap ν hα (spanK E a φ) w)).1 = smoothing ν β w.1.1 := by`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨α, hα, rfl⟩`. Consider the case `cons X l ih`. Take `⟨β, hβ, e⟩` from `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨dens X β, isTest_dens X hβ, funext fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, lie_apply, e]`. Conclude with `GlobalTheory.T.lieDerivative_realLieSmoothing_eq_density E a ν β hβ w.1.1 w.1.2 X g`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.realLieSmoothing_mem_slowlyIncreasing E a ν β hβ w.1.1 (growth_mem hφ w.2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show smoothing ν α w.1.1 (ratGL E a γ * g) = smoothing ν α w.1.1 g`. Establish `hl` using `left_mem hφ w.2`. Simplify using `only [smoothing, chart, mul_assoc, hl]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g show smoothing ν α w.1.1 (g * finGL E a k) = smoothing ν α w.1.1 g`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hw : (fun x => w.1.1 (x * finGL E a k)) = w.1.1` using `congrArg Subtype.val (fixed_mem hk w.2)`. Simplify using `only [smoothing]`. Rewrite using `[← chart_rt_fin, hw]`. Use `show (z ⟨smoothing ν α w.1.1, GlobalTheory.T.realLieSmoothing_mem_smoothAdelicFunctions E a ν α hα w.1.1 w.1.2⟩) = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[GlobalTheory.T.centreEnvelopingAlgebra_commute_realLieSmoothing E a ν α hα w.1 _ z hz, killed_mem hz h0 w.2]`. Use function extensionality and compare the values at `g`. Simplify using `[smoothing, chart]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothMap_mem (hα : IsTest (invSet E a) α) (hK : KInv α) (hφ : IsAutForm φ) :
     smoothMap ν hα (spanK E a φ) ∈ mapsJ φ (stabL φ) := by
@@ -221,9 +219,7 @@ theorem smoothMap_mem (hα : IsTest (invSet E a) α) (hK : KInv α) (hφ : IsAut
 end
 
 /- English proof (translation)
-Introduce `hP E _ _ _ a ν _ φ hφ`. Set `w0 : spanK E a φ` to `⟨φ, self_mem_spanK φ⟩`. Use `haveI := GlobalTheory.T.finiteDimensional_centreAnnihilatorCompatibleMaps hP E a φ hφ (stabL φ) hφ.level`. Use `⟨(mapsJ φ (stabL φ)).map (LinearMap.applyₗ w0), inferInstance, ?_, fun α hα hK => ⟨GlobalTheory.T.realLieSmoothing_mem_smoothAdelicFunctions E a ν α hα φ.1 φ.2, smoothMap ν hα _, smoothMap_mem ν hα hK hφ, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨T, hT, rfl⟩`.
-
-Conclude with `(hT.1.2 w0).1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_finite_space : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E] [NumberField E]
     [IsTotallyComplex E] (a : ℕ) (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] (φ : Sm E a), IsAutForm φ →

@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.FockForm
 
 /- English proof (translation)
-Use `(Submodule.mem_iInf _).1 h a` as an intermediate fact. Simplify `this` using `[LinearMap.mem_ker, sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem act_of_mem_wtSub {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {act : Mat p q →ₗ[ℂ] Module.End ℂ V} {μ : Ix p q → ℚ} {x : V} (h : x ∈ wtSub act μ)
@@ -18,19 +18,17 @@ theorem act_of_mem_wtSub {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   simpa [LinearMap.mem_ker, sub_eq_zero] using this
 
 /- English proof (translation)
-Establish `hv0 : ∀ y, D v y = 0`. Introduce `y`. Use `Submodule.iSup_induction (motive := fun y => D v y = 0) _ (M.wts y) ?_ ?_ ?_` and prove the remaining obligations. Introduce `ν y hy`. Distinguish the cases in `hν : ν = μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hν` using the available equality. Take `⟨c, rfl⟩` from `hline y hy`. Rewrite using `[hsmul₂, hvv, mul_zero]`. Take `⟨a, ha⟩` from `Function.ne_iff.1 hν`. Establish `h` using `hinv (Eab a a) v y`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h` using `[GlobalTheory.FockTensor.adjZ_Eab, GlobalTheory.FockTensor.sgnIx_mul_self, one_smul, act_of_mem_wtSub hv, act_of_mem_wtSub hy, hsmul₁, hsmul₂]`. Establish `hs : star ((μ a : ℚ) : ℂ) = ((μ a : ℚ) : ℂ)` using `by simp`. Rewrite `h` using `[hs]`. Establish `hne : ((μ a : ℚ) : ℂ) - ((ν a : ℚ) : ℂ) ≠ 0`. Rewrite using `[sub_ne_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha.symm` after adjusting the coercions. Establish `: (((μ a : ℚ) : ℂ) - ((ν a : ℚ) : ℂ)) * D v y = 0` using `by linear_combination h`. Conclude with `(mul_eq_zero.1 this).resolve_left hne`. Use `hsmul₂ 0 v 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y y' h h'`. Rewrite using `[hadd₂, h, h', add_zero]`. Set `N : Submodule ℂ M.V` to `{ carrier := {x | ∀ y, D x y = 0} add_mem' := fun {x x'} h h' y => by rw [hadd₁, h y, h' y, add_zero] zero_mem' := fun y => by simpa using hsmul₁ 0 0 y smul_mem' := fun c x h y => by rw [hsmul₁, h y, mul_zero] }`. Establish `hN : genSub M.act {v} ≤ N`. Apply `sInf_le` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[Set.mem_singleton_iff.1 hx]`. Conclude with `hv0`. Introduce `Z x hx y`.
-
-Rewrite using `[hinv]`. Conclude with `hx _`. Introduce `x y`. Conclude with `hN (hgen ▸ Submodule.mem_top) y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem form_eq_zero {p q : ℕ} (M : GKMod p q) (D : M.V → M.V → ℂ)
     (hadd₁ : ∀ x x' y, D (x + x') y = D x y + D x' y)
@@ -81,7 +79,7 @@ theorem form_eq_zero {p q : ℕ} (M : GKMod p q) (D : M.V → M.V → ℂ)
   exact hN (hgen ▸ Submodule.mem_top) y
 
 /- English proof (translation)
-Introduce `p q M H₁ _ _ H₂ _ _ j E₁ E₂ hj hE μ v hv hline hgen hnorm x y`. Use `form_eq_zero M (fun x y => inner ℂ (E₁ x) (E₂ y) - inner ℂ (E₁ v) (E₂ v) * inner ℂ (j x) (j y)) (fun x x' y => by simp only [map_add, inner_add_left]; ring) (fun c x y => by simp only [map_smul, inner_smul_left, starRingEnd_apply]; ring) (fun x y y' => by simp only [map_add, inne …` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inner_eq_mul : ∀ (p q : ℕ) (M : GKMod p q) (H₁ : Type) [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (H₂ : Type) [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂] (j : M.V →ₗ[ℂ] H₁) (E₁ E₂ : M.V →ₗ[ℂ] H₂), (∀ Z x y, inner ℂ (j (M.act Z x)) (j y) = inner ℂ (j x) (j (M.act (adjZ Z) y))) → (∀ Z x y, inner ℂ (E₁ (M.act Z x)) (E₂ y) = inner ℂ (E₁ x) (E₂ (M.act (adjZ Z) y))) → ∀ (μ : Ix p q → ℚ) (v : M.V), v ∈ wtSub M.act μ → (∀ x ∈ wtSub M.act μ, ∃ c : ℂ, x = c • v) → genSub M.act {v} = ⊤ → ‖j v‖ = 1 → ∀ x y, inner ℂ (E₁ x) (E₂ y) = inner ℂ (E₁ v) (E₂ v) * inner ℂ (j x) (j y) := by
   intro p q M H₁ _ _ H₂ _ _ j E₁ E₂ hj hE μ v hv hline hgen hnorm x y

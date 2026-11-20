@@ -15,15 +15,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.Ade
 namespace GlobalTheory.LowRow
 
 /- English proof (translation)
-Take `⟨hA, q, hq, hS⟩` from `h`. Take `⟨hA', q', hq', hS'⟩` from `h'`. Establish `hqA : StrictAnti q` using `fun a b hab => by`. Use `hA hab` as an intermediate fact. Rewrite `this` using `[hq, hq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Establish `hqA' : StrictAnti q'` using `fun a b hab => by`. Use `hA' hab` as an intermediate fact. Rewrite `this` using `[hq', hq']`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `himg : Finset.univ.image q = Finset.univ.image q'`. Establish `e` using `congrArg (Finset.image Prod.fst) (hS.symm.trans hS')`. Simplify `e` using `[Finset.image_image, Function.comp_def]`. Establish `hr : Set.range q = Set.range q'`. Use `congrArg (fun s : Finset ℚ => (s : Set ℚ)) himg` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[Finset.coe_image]`. Establish `hqq : q = q'` using `(StrictAnti.range_inj hqA hqA').1 hr`. Substitute `hqq` using the available equality. Use `⟨funext fun a => by rw [hq, hq'], funext fun a => ?_⟩` and prove the remaining obligations. Establish `hm : (q a, ε a) ∈ S` using `by rw [hS]; exact Finset.mem_image_of_mem _ (Finset.mem_univ a)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hm` using `[hS']`. Take `⟨b, -, hb⟩` from `Finset.mem_image.1 hm`. Establish `hb1 : b = a` using `hqA.injective (congrArg Prod.fst hb)`. Substitute `hb1` using the available equality. Conclude with `(congrArg Prod.snd hb).symm`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isEnum_unique {n : ℕ} {S : SPar} {lam lam' : Fin n → ℝ} {ε ε' : Fin n → Bool}
     (h : IsEnum S lam ε) (h' : IsEnum S lam' ε') : lam = lam' ∧ ε = ε' := by
@@ -50,7 +50,7 @@ theorem isEnum_unique {n : ℕ} {S : SPar} {lam lam' : Fin n → ℝ} {ε ε' : 
   exact (congrArg Prod.snd hb).symm
 
 /- English proof (translation)
-Establish `hs : sg0 D A = D.what₂.embLL` using `sgAt_mk _ R.hv0`. Establish `hsig : ∀ τ, (Wc D i).sig (tauE D τ) = D.R.sigW ((i : ℕ) + 1)` using `fun τ => D.sp.W_sigval _ (Nat.le_add_left _ _) i.2 _`. Establish `hl` using `((GlobalTheory.GalLift.labels_overK σ).1 hK).2 ρ`. Unfold `parAt kapAt`. Rewrite using `[if_pos hl, hs, GlobalTheory.ThetaFiresProbe.lab_fixed, if_pos (GlobalTheory.ThetaFiresProbe.labE_fixed _), hsig ρ, hsig (lab σ ρ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem parAt_overK {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
@@ -64,7 +64,7 @@ theorem parAt_overK {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A 
   rw [if_pos hl, hs, GlobalTheory.ThetaFiresProbe.lab_fixed, if_pos (GlobalTheory.ThetaFiresProbe.labE_fixed _), hsig ρ, hsig (lab σ ρ)]
 
 /- English proof (translation)
-Establish `h1` using `(R.MW i σ).enum ρ`. Rewrite `h1` using `[parAt_overK R i σ hK ρ]`. Conclude with `isEnum_unique h1 ((R.MW i (sg0 D A)).enum (lab σ ρ))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem model_overK {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
@@ -75,11 +75,11 @@ theorem model_overK {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A 
   exact isEnum_unique h1 ((R.MW i (sg0 D A)).enum (lab σ ρ))
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hc i σ s hE`. Establish `hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.OverK σ` using `hE.2`. Take `⟨hH, w0, hw0⟩` from `holShape_fixed D G Pl0 T A Ks R hc.models.order i`. Establish `hm` using `model_overK R i σ hK`. Use `⟨fun ρ => ?_, fun ρ c => w0 (lab σ ρ) c, fun ρ c => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hH (lab σ ρ)`. Rewrite `h` using `[← (hm ρ).1, ← (hm ρ).2]`. Conclude with `h`. Establish `h` using `hw0 (lab σ ρ) c`. Unfold `extWt at h ⊢`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← (hm ρ).1, ← (hm ρ).2]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem holShape_overK : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Core5 R F →

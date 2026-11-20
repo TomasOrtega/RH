@@ -84,7 +84,7 @@ abbrev piK {k L O : Type} [Field k] [Field L] [CommRing O] [Algebra O k] {H : HT
     H.Z ⟶ pullback C.p (gen O k) := pullback.lift C.π H.q C.ov
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem piK_snd {k L O : Type} [Field k] [Field L] [CommRing O] [Algebra O k] {H : HTower k} {θ : H.Γ → L} (C : Cover H θ O) :
     piK C ≫ pullback.snd C.p (gen O k) = H.q := pullback.lift_snd _ _ _

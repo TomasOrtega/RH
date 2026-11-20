@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Establish `h : (pt (Spec.map s) : Spec B) = PrimeSpectrum.comap s.hom (IsLocalRing.closedPoint Ω)` using `rfl`. Express the relevant statement in the definitionally equal form `(pt (Spec.map s) : Spec B).asIdeal = _`. Rewrite using `[h, RingHom.ker_eq_comap_bot]`. Express the relevant statement in the definitionally equal form `Ideal.comap s.hom (IsLocalRing.maximalIdeal Ω) = _`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pt_map_ideal {Ω : Type} [Field Ω] {B : CommRingCat.{0}} (s : B ⟶ CommRingCat.of Ω) :
     (show PrimeSpectrum B from pt (Spec.map s)).asIdeal = RingHom.ker s.hom := by
@@ -14,11 +14,11 @@ private theorem pt_map_ideal {Ω : Type} [Field Ω] {B : CommRingCat.{0}} (s : B
   rw [IsLocalRing.maximalIdeal_eq_bot]
 
 /- English proof (translation)
-Use `letI : Algebra Ω B := φ.hom.toAlgebra`. Use `haveI : Algebra.IsIntegral Ω B := ⟨hφ⟩`. Establish `hb : Function.Bijective (algebraMap Ω (B ⧸ q))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`. Set `e : Ω ≃+* B ⧸ q` to `RingEquiv.ofBijective (algebraMap Ω (B ⧸ q)) hb`. Use `⟨CommRingCat.ofHom (e.symm.toRingHom.comp (Ideal.Quotient.mk q)), ?_, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Express the relevant statement in the definitionally equal form `e.symm (Ideal.Quotient.mk q (φ.hom a)) = a`. Conclude with `e.symm_apply_apply a`. Use extensionality with `b`. Express the relevant statement in the definitionally equal form `e.symm (Ideal.Quotient.mk q b) = 0 ↔ b ∈ q`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem exists_retract {Ω : Type} [Field Ω] [IsAlgClosed Ω] {B : CommRingCat.{0}} (φ : CommRingCat.of Ω ⟶ B)
     (hφ : φ.hom.IsIntegral) (q : Ideal B) [q.IsPrime] :
@@ -37,15 +37,15 @@ private theorem exists_retract {Ω : Type} [Field Ω] [IsAlgClosed Ω] {B : Comm
     simp
 
 /- English proof (translation)
-Introduce `V U r _ Ω _ _ x v hv`. Take `⟨t, ht1, ht2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := r) (g := x) v (IsLocalRing.closedPoint Ω) hv`. Set `P` to `pullback r x`. Use `haveI : IsIntegralHom (pullback.snd r x) := inferInstance`. Use `haveI : IsAffine P := isAffine_of_isAffineHom (pullback.snd r x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : CommRingCat.of Ω ⟶ Γ(P, ⊤)` to `Spec.preimage (P.isoSpec.inv ≫ pullback.snd r x)`. Establish `hφ' : Spec.map φ = P.isoSpec.inv ≫ pullback.snd r x` using `Spec.map_preimage _`. Establish `hφ : φ.hom.IsIntegral`. Rewrite using `[← IsIntegralHom.SpecMap_iff, hφ']`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `y : Spec Γ(P, ⊤)` to `P.isoSpec.hom t`. Use `haveI : y.asIdeal.IsPrime := PrimeSpectrum.isPrime y`. Take `⟨s, hs, hk⟩` from `exists_retract φ hφ y.asIdeal`. Use `⟨Spec.map s ≫ P.isoSpec.inv ≫ pullback.fst r x, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Spec.map s ≫ Spec.map φ = 𝟙 _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_comp, hs, Spec.map_id]`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc P.isoSpec.inv, ← hφ', ← Category.assoc, h1, Category.id_comp]`. Establish `hy : (pt (Spec.map s) : Spec Γ(P, ⊤)) = y` using `PrimeSpectrum.ext ((pt_map_ideal s).trans hk)`. Rewrite using `[← Category.assoc, pt_comp, pt_comp, hy]`. Express the relevant statement in the definitionally equal form `(pullback.fst r x) (P.isoSpec.inv (P.isoSpec.hom t)) = v`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : P.isoSpec.inv (P.isoSpec.hom t) = t`. Rewrite using `[← Scheme.Hom.comp_apply, Iso.hom_inv_id]`. Both sides reduce to the same expression. Rewrite using `[h2, ht1]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.ptLift_of :
     PtLift := by

@@ -42,13 +42,13 @@ namespace GlobalTheory.ArithmeticHeightTower.FormZc
 open ReciprocityTheory.ChartRestriction.G.Geo.ResK (ResKStatement) in
 
 /- English proof (translation)
-Introduce and unpack `⟨II, hII⟩ hK m n X _ i _ D hX ι _ M tM`. Establish `h₈` using `GlobalTheory.T.archimedean_integrable_on hK`. Establish `h₇` using `GlobalTheory.CompanionTheory.MixZ.archIntEq_of_integrable h₈`. Establish `hR` using `GlobalTheory.CompanionTheory.Ar.Giv.ratR_of_resK hK`. Establish `h₃` using `GlobalTheory.CompanionTheory.MixZ.ptDict`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose A sA RA cA using fun j => GlobalTheory.CompanionTheory.MixZ.existsRead m n (M j) (tM j)`. Establish `hc` using `hX.charZero`. Take `⟨-, hp₃, hp₄, -⟩` from `h₃ m n X i (D + 1) hX.dim_eq`. Establish `hhor : IsHorizontal (ptIdeal (i (genericPoint X)))` using `hp₃.2 hc`. Establish `hP` using `hp₄ hhor`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦ, h0⟩` from `GlobalTheory.CompanionTheory.Polarisation.exists_form ι D (fun f => II (Fin (m + 1)) (Bk n) (ptIdeal (i (genericPoint X))) (D + 1) (A ∘ f)) (fun f s => (hII.1 _ _).1 _ _ (A ∘ f) s hP fun _ => sA _)`. Use `⟨Φ, fun a => ?_, h0⟩` and prove the remaining obligations. Establish `Rc` using `GlobalTheory.CompanionTheory.MixZ.readComb m n ι M A RA a`. Establish `sC` using `isSmoothHerm_combLine sA a`. Establish `H` using `exists_height h₃ codimOne_holds GlobalTheory.T.mixed_cycle_rational_exists GlobalTheory.T.mixed_cycle_of_rational h₇ h₈ GlobalTheory.CompanionTheory.MixZ.Vert.vertEq GlobalTheory.CompanionTheory.MixZ.PtLenProof.ptLen curveInt hR II hII (comb M a) (combLine A a) Rc sC`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, (isometric_comb_pull M a i rfl).symm.isArithHeight hX (H.restrict (mp_var m n) i rfl), ?_⟩` and prove the remaining obligations. Rewrite using `[htFn_eq II _ ((dim_of_generic i).trans hX.dim_eq), cycVal, if_pos hhor, hΦ]`. Use `(expand_comb A sA cA (D + 1) (II (Fin (m + 1)) (Bk n) (ptIdeal (i (genericPoint X))) (D + 1)) (fun L j B C hL hB hC => hII.2.1 _ _ _ _ L j B C hP hL hB hC) a)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem formZ_direct :
     Geo.ArithIntersectionSystemStatement → ResKStatement → GlobalTheory.ArithmeticHeightTower.FormZ := by
@@ -80,7 +80,7 @@ end GlobalTheory.ArithmeticHeightTower.FormZc
 namespace GlobalTheory.CompanionTheory.MixZ
 
 /- English proof (translation)
-Introduce and unpack `⟨II, hII⟩ hK`. Establish `hR` using `GlobalTheory.T.rationality_of_resolution_statement hK`. Establish `hI` using `GlobalTheory.T.archimedean_integrable_on hK`. Establish `hE` using `GlobalTheory.CompanionTheory.MixZ.archIntEq_of_integrable hI`. Conclude with `mixZ_of GlobalTheory.T.mixed_cycle_read_exists GlobalTheory.T.mixed_cycle_read_combination GlobalTheory.T.mixed_cycle_point_dictionary GlobalTheory.T.mixed_cycle_codimension_one GlobalTheory.T.mixed_cycle_rational_exists GlobalTheory.T.mixed_cycle_of_rational hE hI GlobalTheory.T …`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mixZ_direct :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → GlobalTheory.ArithmeticHeightTower.MixZ := by
@@ -97,11 +97,9 @@ namespace GlobalTheory.CompanionTheory.MPDict
 open GlobalTheory.ArithmeticHeightTower ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Introduce `hK II hII m n M A hA h H x d hd`. Establish `hI` using `GlobalTheory.T.archimedean_integrable_on hK`. Establish `hE` using `GlobalTheory.CompanionTheory.MixZ.archIntEq_of_integrable hI`. Establish `hH : GlobalTheory.CompanionTheory.MixZ.HeightEq II` using `GlobalTheory.T.height_eq_of_full_intersection_system GlobalTheory.T.mixed_cycle_point_dictionary GlobalTheory.T.mixed_cycle_codimension_one GlobalTheory.T.mixed_cycle_rational_exists GlobalTheory.T.mixed_cycle_of_rational hE GlobalTheory.CompanionTheory.MixZ.Vert.vertEq GlobalThe …`. Establish `hX` using `isArithVar_mpStr m n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Z, i, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint x`. Use `haveI : IsNoetherian Z := hX.isNoetherian_sub i`. Establish `e` using `hH m n M A hA (GlobalTheory.T.hermitian_line_bundle_smooth m n M A hA) Z i _ (H.restrict hX i rfl) (genericPoint Z) d ((GlobalTheory.CompanionTheory.MixZ.dim_closure_generic Z).trans (dim_of_isArithVar GlobalTheory.T.mixed_cycle_point_dictionary i hd))`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.MixZ.cycVal]`.
-
-Conclude with `if_pos hd.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_eq_direct : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → ∀ (II : Geo.IntersectionSystem), Geo.IsFullIntersectionSystem II → ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (M : HermLB (mpStr ℤ m n)) (A : Geo.HermLine (Bk n)), IsHermRep M A → ∀ h : MP ℤ m n → ℝ, M.IsArithHeight h → ∀ (x : MP ℤ m n) (d : ℕ), Geo.IsArithVar (ptIdeal x) d → h x = II (Fin (m + 1)) (Bk n) (ptIdeal x) d (fun _ => A) := by
   intro hK II hII m n M A hA h H x d hd
@@ -119,17 +117,15 @@ theorem height_eq_direct : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKSta
   exact if_pos hd.2.2.1
 
 /- English proof (translation)
-Take `⟨II, hII⟩` from `hAIS`. Introduce `n' m n Y _ j' _ e hvar hdim hdeg M hM h h' hh hh'`. Set `j : Y ⟶ MP ℤ (m + 1) (consN n' n)` to `j'`. Use `haveI : IsClosedImmersion j := ‹IsClosedImmersion j'›`. Take `⟨A, hA⟩` from `GlobalTheory.CompanionTheory.MPDict.HermRep.exists_isHermRep m n M hM`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA'` using `GlobalTheory.CompanionTheory.MPDict.isHermRep_pull n' m n M A hA`. Establish `hS` using `GlobalTheory.CompanionTheory.MPSmooth.smooth_of_isHermRep m n M A hA`. Use `haveI hc : CharZero ((MP ℤ (m + 1) (consN n' n)).residueField (j (genericPoint Y))) := charZero_genericPt hvar`. Use `haveI hc' : CharZero ((MP ℤ m n).residueField (qpSnd n' m n (j (genericPoint Y)))) := charZero_image _ _ _ _`. Establish `hP' : Geo.IsArithVar (ptIdeal (j (genericPoint Y))) (e + 1)` using `GlobalTheory.CompanionTheory.MPDict.DimVar.isArithVar_ptIdeal (m + 1) (consN n' n) _ _ hc (dim_closure_genericPt hvar)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : Geo.IsArithVar (ptIdeal (qpSnd n' m n (j (genericPoint Y)))) (e + 1)` using `GlobalTheory.CompanionTheory.MPDict.DimVar.isArithVar_ptIdeal m n _ _ hc' hdim`. Establish `e₁` using `height_eq_direct hK II hII (m + 1) (consN n' n) _ _ hA' h' hh' _ _ hP'`. Establish `e₂` using `height_eq_direct hK II hII m n M A hA h hh _ _ hP`. Establish `hi` using `GlobalTheory.CompanionTheory.MPDict.ProjImage.imageZ_ptIdeal n' m n (j (genericPoint Y))`. Establish `pf` using `hII.2.2.1 (Fin (m + 1)) (Bk n) (Fin (m + 2)) (Bk (consN n' n)) Fin.succ (sv n' n) ((MP ℤ (m + 1) (consN n' n)).residueField (j (genericPoint Y))) (ptCoord (j (genericPoint Y))) (e + 1) (fun _ => A) (fun _ => pullLine n' A) (isBlockMap_sv n' n) hP' (by`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Geo.IsArithVar (imageZ (sv n' n) (ptIdeal (j (genericPoint Y)))) (e + 1)`. Rewrite using `[hi]`. Conclude with `hP) (fun _ => hS)`. Use the proof step `(fun _ => isPullHerm_pullLine n' A)`. Establish `hd` using `GlobalTheory.CompanionTheory.MPDict.FnDeg.relfinrank_blockFnField_sv n' m n (j (genericPoint Y))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd' : (IntermediateField.relfinrank (blockFnField (ptCoord (j (genericPoint Y)) ∘ sv n' n)) (blockFnField (ptCoord (j (genericPoint Y)))) : ℝ) = ((qpSnd n' m n).residueDegree (j (genericPoint Y)) : ℝ)`. Conclude with `hd` after adjusting the coercions. Rewrite `pf` using `[hd']`. Express the relevant statement in the definitionally equal form `II _ _ (ptIdeal (j (genericPoint Y))) _ _ = _ * II _ _ (imageZ (sv n' n) (ptIdeal (j (genericPoint Y)))) _ _ at pf`. Rewrite `pf` using `[hi]`.
-
-Use `e₁.trans (pf.trans ?_)` and prove the remaining obligations. Conclude with `congrArg (fun t => (((qpSnd n' m n).residueDegree (j (genericPoint Y)) : ℕ) : ℝ) * t) e₂.symm`.
+A detailed English derivation is pending.
 -/
 theorem projQ_direct (hAIS : Geo.ArithIntersectionSystemStatement)
     (hK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement) : ProjQ := by
@@ -168,7 +164,7 @@ end GlobalTheory.CompanionTheory.MPDict
 namespace GlobalTheory.ArithmeticHeightTower.ArakelovDirectHeights
 
 /- English proof (translation)
-The claim follows from `have H := GlobalTheory.T.arith_intersection_system_of_poincare_lelong hP hR have P := GlobalTheory.ArithmeticHeightTower.Read1.bridge3 (GlobalTheory.ArithmeticHeightTower.FormZc.formZ_direct H hR) (GlobalTheory.CompanionTheory.MixZ.mixZ_direct H hR) (GlobalTheory.CompanionTheory. …`.
+A detailed English derivation is pending.
 -/
 theorem arCalc_direct (hP : GlobalTheory.CompanionTheory.Ar.Pub.PoincareLelong) (hR : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement) : GlobalTheory.Published.ArCalc :=
   have H := GlobalTheory.T.arith_intersection_system_of_poincare_lelong hP hR
@@ -177,7 +173,7 @@ theorem arCalc_direct (hP : GlobalTheory.CompanionTheory.Ar.Pub.PoincareLelong) 
   GlobalTheory.T.arithIntersectionCalculus_of_form_mixed_projection P.1 P.2.1 P.2.2
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.cycleHeights_of_arCalc (arCalc_direct hP hR)`.
+A detailed English derivation is pending.
 -/
 theorem cycleHeights_direct (hP : GlobalTheory.CompanionTheory.Ar.Pub.PoincareLelong)
     (hR : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement) : GlobalTheory.Published.CycleHeights :=

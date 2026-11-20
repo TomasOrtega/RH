@@ -15,17 +15,17 @@ variable {σ : Type} {K : Type} [CommRing K]
 def IsMono (P : MvPolynomial σ K) : Prop := ∃ M : σ →₀ ℕ, P = monomial M 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsMono.one : IsMono (1 : MvPolynomial σ K) := ⟨0, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Finsupp.single v 1, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsMono.X (v : σ) : IsMono (MvPolynomial.X v : MvPolynomial σ K) := ⟨Finsupp.single v 1, rfl⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hP`. Take `⟨b, rfl⟩` from `hQ`. Conclude with `⟨a + b, by rw [monomial_mul, one_mul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsMono.mul {P Q : MvPolynomial σ K} (hP : IsMono P) (hQ : IsMono Q) : IsMono (P * Q) := by
   obtain ⟨a, rfl⟩ := hP
@@ -33,14 +33,14 @@ theorem IsMono.mul {P Q : MvPolynomial σ K} (hP : IsMono P) (hQ : IsMono Q) : I
   exact ⟨a + b, by rw [monomial_mul, one_mul]⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hP`. Conclude with `⟨n • a, by rw [monomial_pow, one_pow]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsMono.pow {P : MvPolynomial σ K} (hP : IsMono P) (n : ℕ) : IsMono (P ^ n) := by
   obtain ⟨a, rfl⟩ := hP
   exact ⟨n • a, by rw [monomial_pow, one_pow]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using IsMono.one (σ := σ) (K := K)`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsMono.prod {ι : Type} (s : Finset ι) (P : ι → MvPolynomial σ K) (h : ∀ i ∈ s, IsMono (P i)) :
     IsMono (∏ i ∈ s, P i) := by
@@ -58,7 +58,7 @@ section Std
 variable (O : Type) [CommRing O] [IsDomain O] {C0 CE1 CE2 mu : ℝ} {X : Loc} [NeZero X.m] {β : GlobalTheory X}
 
 /- English proof (translation)
-Establish `e : ioD O C0 CE1 CE2 mu X β j (MvPolynomial.X v) = (MvPolynomial.X (symVar C0 CE1 CE2 X j v) : RHH O X) ^ symLev X.p C0 CE1 CE2 X j v` using `aeval_X _ _`. Rewrite using `[e]`. Conclude with `(IsMono.X _).pow _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ioDXmono (j : Fin (numSeg X.TT)) (v : BVar (2 * segS X.TT j + 1) X.m (BDk C0 CE1 CE2 mu X β j).T.t) :
     IsMono (ioD O C0 CE1 CE2 mu X β j (MvPolynomial.X v)) := by
@@ -68,11 +68,9 @@ theorem ioDXmono (j : Fin (numSeg X.TT)) (v : BVar (2 * segS X.TT j + 1) X.m (BD
   exact (IsMono.X _).pow _
 
 /- English proof (translation)
-Unfold `LvDat.stdPoly`. Use `(IsMono.mul ?_ ?_).mul ?_` and prove the remaining obligations. Unfold `digitMon`. Conclude with `IsMono.prod _ _ fun i _ => IsMono.prod _ _ fun c _ => ((IsMono.X _).pow _).mul ((IsMono.X _).pow _)`. Unfold `sTopMon`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsMono.prod _ _ fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `((IsMono.X _).pow _).mul ((IsMono.X _).pow _)`. Conclude with `IsMono.one`. Simplify using `only [map_mul, map_prod, map_pow]`.
-
-Conclude with `((IsMono.prod _ _ fun i _ => (ioDXmono O j _).pow _).mul ((ioDXmono O j _).pow _)).mul (IsMono.prod _ _ fun c _ => (ioDXmono O j _).pow _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LvDat.stdPoly_mono (L : LvDat C0 CE1 CE2 mu X β) (j : Fin (numSeg X.TT)) : IsMono (L.stdPoly O j) := by
   unfold LvDat.stdPoly
@@ -89,7 +87,7 @@ theorem LvDat.stdPoly_mono (L : LvDat C0 CE1 CE2 mu X β) (j : Fin (numSeg X.TT)
       (IsMono.prod _ _ fun c _ => (ioDXmono O j _).pow _)
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `IsMono.prod Finset.univ (fun j => L.stdPoly O j) fun j _ => L.stdPoly_mono O j`. Conclude with `⟨M, hM.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LvDat.exists_std (L : LvDat C0 CE1 CE2 mu X β) :
     ∃ Std : MonH X, (monomial Std (1 : KK O) : RHH O X) = ∏ j, L.stdPoly O j := by
@@ -99,13 +97,13 @@ theorem LvDat.exists_std (L : LvDat C0 CE1 CE2 mu X β) :
 end Std
 
 /- English proof (translation)
-Establish `h1 : ∑ i : Fin (2 * s + 1), (if decide ((i : ℕ) % 2 = 0) = true then 0 else 1) = (Finset.univ.filter fun i : Fin (2 * s + 1) => ¬ (i : ℕ) % 2 = 0).card`. Rewrite using `[Finset.card_filter]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : (i : ℕ) % 2 = 0 <;> simp [h]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.card_le_card_of_injOn (t := Finset.range s) (fun i : Fin (2 * s + 1) => (i : ℕ) / 2) ?_ ?_).trans (by simp)` and prove the remaining obligations. Introduce `i hi`. Establish `h2 : ¬ (i : ℕ) % 2 = 0` using `by simpa using hi`. Establish `h3` using `i.2`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `a ha b hb hab`. Establish `h2 : ¬ (a : ℕ) % 2 = 0` using `by simpa using ha`. Establish `h3 : ¬ (b : ℕ) % 2 = 0` using `by simpa using hb`. Establish `h4 : (a : ℕ) / 2 = (b : ℕ) / 2` using `hab`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cov_count (s : ℕ) : ∑ i : Fin (2 * s + 1), (if decide ((i : ℕ) % 2 = 0) = true then 0 else 1) ≤ s := by
   classical
@@ -134,13 +132,13 @@ section Psi
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {N r : ℕ} [NeZero r]
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hKz : CharZero (KK O)` using `dvr_fraction_field_charZero S hp`. Take `⟨hli, hspan⟩` from `hA2 O N r (⟨LL.vec⟩ : Letters (Fin N)) LL.deg`. Establish `hli' : LinearIndependent O (psiR (r` using `r) O LL) := hli`. Establish `hrange : Submodule.span O (Set.range (psiR (r` using `r) O LL)) = Pol O r LL.deg := by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hspan]`. Use `congr 1`. Use extensionality with `G`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x.1.1, x.1.2, x.2, rfl⟩`. Introduce and unpack `⟨P, I, h, rfl⟩`. Conclude with `⟨⟨(P, I), h⟩, rfl⟩`. Establish `hfin : Finite (Tx r LL)` using `tx_finite LL hli' hrange`. Take `⟨Bd, hBd⟩` from `exists_bound (r := r) (Lt := (⟨LL.vec⟩ : Letters (Fin N))) (B := LL.deg)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hC1` using `one_cond D LL hrange hspan (fun th M => (hA3 p O S N r _ LL.deg th M).1) Bd hBd J M hJ`. Use `⟨(psiK_li LL hli').ne_zero x, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← psiR_map]`. Conclude with `(hC1 k _ (psiK_mem LL hrange x).1).2 (Submodule.subset_span ⟨x, hx k, rfl⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_facts {D : Formalism.BasicNotions.D7} (hA2 : Formalism.MainNotions.CovariantDegrees.HyperplaneRank D) (hA3 : Formalism.MainNotions.CovariantDegrees.DefiniteRankOne D) {p : ℕ} [Fact p.Prime]
     (S : UniformizedDVR p O) (LL : ChainLetters N) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ) (hJ : ∀ k, J k ≤ N)
@@ -167,11 +165,11 @@ theorem psi_facts {D : Formalism.BasicNotions.D7} (hA2 : Formalism.MainNotions.C
 end Psi
 
 /- English proof (translation)
-Introduce `X _ _ O _ _ _ _ S hSq hD1 hHI hCB mm hmm n hn1 hnc β hβ s hs`. Establish `hp : X.p.Prime` using `Fact.out`. Use `haveI hKz : CharZero (KK O) := dvr_fraction_field_charZero S hp`. Simplify using `only [colGens, Set.mem_setOf_eq] at hs`. Use `choose lv jp hOK y hy γ hγ hx using hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L : LvDat C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β` to `⟨lv, jp, hOK, γ, hγ⟩`. Establish `hs' : s = fun j => L.word O j (psiR (KK O) (L.LL j) (y j))` using `funext fun j => hx j`. Take `⟨Std, hStd⟩` from `L.exists_std O`. Establish `hfacts` using `fun j => psi_facts hA2 hA3 S (L.LL j) (BDk C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β j).T.J (BDk C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β j).T.thr (blockData_J_le _ _ _ _ _ _) (y j) (hy j)`. Establish `CS` using `fun j => (hC X O S hSq hD1 hHI hCB mm hmm n hn1 hnc β hβ L j (y j) (hy j)).some`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P⟩` from `hP X O S hSq hD1 hHI hCB mm hmm n hn1 hnc β hβ L _ CS (fun j => (hfacts j).1) Std hStd`. Rewrite using `[hs']`. Conclude with `⟨P.toFacSys D hStd (hT X O S hSq hD1 hHI hCB mm hmm n hn1 hnc β hβ L Std hStd) (fun j => (hfacts j).1) (fun j => (hfacts j).2) (fun j => (cov_count (segS X.TT j)).trans (hHI.1.2.2.2.2.1 j).2)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem facSysAt_of {D : Formalism.BasicNotions.D7} (hA2 : Formalism.MainNotions.CovariantDegrees.HyperplaneRank D) (hA3 : Formalism.MainNotions.CovariantDegrees.DefiniteRankOne D)
     {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hC : ColsAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc)
@@ -194,14 +192,14 @@ theorem facSysAt_of {D : Formalism.BasicNotions.D7} (hA2 : Formalism.MainNotions
     (fun j => (hfacts j).2) (fun j => (cov_count (segS X.TT j)).trans (hHI.1.2.2.2.2.1 j).2)⟩
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => facSysAt_of (D := D) hA.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 hA.2.2.2.2.2.1 h.1.1 h.1.2 h.2) ((hC.and hP).and hT)`.
+A detailed English derivation is pending.
 -/
 theorem restFacSys_of {D : Formalism.BasicNotions.D7} (hA : admitted D) (hC : RestCols) (hP : RestPre) (hT : RestTCore) : FacSysCondition :=
   TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h =>
     facSysAt_of (D := D) hA.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 hA.2.2.2.2.2.1 h.1.1 h.1.2 h.2) ((hC.and hP).and hT)
 
 /- English proof (translation)
-The claim follows from `restAsmRT_of_facSys hA (restFacSys_of hA hC hP hT)`.
+A detailed English derivation is pending.
 -/
 theorem rest_assumptions_of_three_interfaces {D : Formalism.BasicNotions.D7} (hA : admitted D) (hC : RestCols) (hP : RestPre) (hT : RestTCore) : RestAsmRT :=
   restAsmRT_of_facSys hA (restFacSys_of hA hC hP hT)

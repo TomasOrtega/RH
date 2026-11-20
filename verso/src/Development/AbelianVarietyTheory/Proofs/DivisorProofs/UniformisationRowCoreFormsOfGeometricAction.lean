@@ -9,7 +9,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HolDict
 
 /- English proof (translation)
-Introduce `hC hV D G _ _ Pl0 T0 A T _ R κ v₀ hI hM hT hpb hκ hn hg`. Conclude with `lUnif_topN T R κ v₀ (nTop T κ) (hasB_nTop T hT.laws κ) hM.HW (GlobalTheory.T.cuspFormReadings_independent_spanning_all_embeddings hC hV D G Pl0 T0 A T R κ v₀ hI hM hT hpb hκ hn) hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lUnif_topR_of_geoAct : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Mem.Vol.FiniteVolume₂ → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.toLevCh.Is A.μ0 → R.IsModels → TieIn T R κ v₀ → T.pb = R.C.P.pb → (∀ i, (κ i).LastPos) → 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → GeoAct T R κ v₀ → (topR T R κ v₀).LUnif := by
   intro hC hV D G _ _ Pl0 T0 A T _ R κ v₀ hI hM hT hpb hκ hn hg

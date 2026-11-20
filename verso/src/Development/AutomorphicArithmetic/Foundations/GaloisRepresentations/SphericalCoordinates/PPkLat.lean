@@ -7,7 +7,7 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Establish `h : (n : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (n : ℚ_[p])` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_int_le_one (n : ℤ)` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_nat_le {p : ℕ} [Fact p.Prime] (n : ℕ) : ‖(n : PadicAlgCl p)‖ ≤ 1 := by
   have h : (n : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (n : ℚ_[p]) := by simp
@@ -15,11 +15,11 @@ private theorem norm_nat_le {p : ℕ} [Fact p.Prime] (n : ℕ) : ‖(n : PadicAl
   exact_mod_cast Padic.norm_int_le_one (n : ℤ)
 
 /- English proof (translation)
-Establish `h : (m : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (m : ℚ_[p])` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends]`. Establish `h1 : ¬ ‖((m : ℤ) : ℚ_[p])‖ < 1`. Introduce `hd0`. Establish `hd : (p : ℤ) ∣ (m : ℤ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← PadicInt.norm_int_lt_one_iff_dvd]`. Simplify `hd0` using `[PadicInt.norm_def]`. Establish `: p ∣ m` using `Int.natCast_dvd_natCast.1 hd`. Conclude with `hp.out.one_lt.ne' (Nat.eq_one_of_dvd_coprimes hm this dvd_rfl)`. Establish `h2 : ‖((m : ℤ) : ℚ_[p])‖ ≤ 1` using `Padic.norm_int_le_one _`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_antisymm h2 (not_lt.1 h1)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private theorem norm_nat_cop {p : ℕ} [hp : Fact p.Prime] {m : ℕ} (hm : m.Coprime p) : ‖(m : PadicAlgCl p)‖ = 1 := by
   have h : (m : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (m : ℚ_[p]) := by simp
@@ -36,7 +36,7 @@ private theorem norm_nat_cop {p : ℕ} [hp : Fact p.Prime] {m : ℕ} (hm : m.Cop
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `h : (p : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p])` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends, Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.out.one_lt)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_p_lt {p : ℕ} [hp : Fact p.Prime] : ‖(p : PadicAlgCl p)‖ < 1 := by
   have h : (p : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p]) := by simp
@@ -44,18 +44,18 @@ private theorem norm_p_lt {p : ℕ} [hp : Fact p.Prime] : ‖(p : PadicAlgCl p)�
   exact inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.out.one_lt)
 
 /- English proof (translation)
-Establish `h1 : IsIntegral ℤ (τ y)` using `h.map τ.toIntAlgHom`. Conclude with `GlobalTheory.CoefCoord.norm_le_one_of_isIntegral _ (h1.tower_top)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem norm_int_emb {p : ℕ} [Fact p.Prime] {F : Type} [Field F] (τ : F →+* PadicAlgCl p) {y : F} (h : IsIntegral ℤ y) : ‖τ y‖ ≤ 1 := by
   have h1 : IsIntegral ℤ (τ y) := h.map τ.toIntAlgHom
   exact GlobalTheory.CoefCoord.norm_le_one_of_isIntegral _ (h1.tower_top)
 
 /- English proof (translation)
-Establish `h1 : ∀ i, ∃ j : ℕ, ‖(p : PadicAlgCl p) ^ j * f i‖ ≤ 1`. Introduce `i`. Distinguish the cases in `h0 : f i = 0`. Conclude with `⟨0, by simp [h0]⟩`. Establish `hpos : 0 < ‖f i‖⁻¹` using `inv_pos.2 (norm_pos_iff.2 h0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `exists_pow_lt_of_lt_one hpos (norm_p_lt (p := p))`. Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Use `choose J hJ using h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.univ.sup J, fun i => ?_⟩` and prove the remaining obligations. Establish `hle : J i ≤ Finset.univ.sup J` using `Finset.le_sup (Finset.mem_univ i)`. Take `⟨r, hr⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite using `[hr, pow_add, _root_.mul_comm ((p : PadicAlgCl p) ^ J i), _root_.mul_assoc, norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) norm_p_lt.le) (norm_nonneg _) (hJ i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_bd {p : ℕ} [Fact p.Prime] {ι' : Type} [Fintype ι'] (f : ι' → PadicAlgCl p) :
     ∃ j : ℕ, ∀ i, ‖(p : PadicAlgCl p) ^ j * f i‖ ≤ 1 := by
@@ -85,25 +85,25 @@ section SlopeTestRemainingChoices
 variable {p : ℕ} [Fact p.Prime] {G : HTGroup p}
 
 /- English proof (translation)
-Introduce `w i` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem intL_zero : IntL (0 : Loc G) := fun w i => by simp
 
 /- English proof (translation)
-Introduce `w i` and use `(PadicAlgCl.isNonarchimedean p (a w i : PadicAlgCl p) (b w i)).trans (max_le (ha w i) (hb w i))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem intL_add {a b : Loc G} (ha : IntL a) (hb : IntL b) : IntL (a + b) := fun w i =>
   (PadicAlgCl.isNonarchimedean p (a w i : PadicAlgCl p) (b w i)).trans (max_le (ha w i) (hb w i))
 
 /- English proof (translation)
-Introduce `w i` and use `by show ‖-(a w i : PadicAlgCl p)‖ ≤ 1 rw [norm_neg]; exact ha w i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem intL_neg {a : Loc G} (ha : IntL a) : IntL (-a) := fun w i => by
   show ‖-(a w i : PadicAlgCl p)‖ ≤ 1
   rw [norm_neg]; exact ha w i
 
 /- English proof (translation)
-Introduce `w i` and use `by show ‖(t w : PadicAlgCl p) * (a w i : PadicAlgCl p)‖ ≤ 1 rw [norm_mul]; exact mul_le_one₀ (ht w) (norm_nonneg _) (ha w i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem intL_scal (t : ∀ w, G.Fw w) (ht : ∀ w, ‖(t w : PadicAlgCl p)‖ ≤ 1) {a : Loc G} (ha : IntL a) :
     IntL (fun w => t w • a w) := fun w i => by
@@ -111,7 +111,7 @@ private theorem intL_scal (t : ∀ w, G.Fw w) (ht : ∀ w, ‖(t w : PadicAlgCl 
   rw [norm_mul]; exact mul_le_one₀ (ht w) (norm_nonneg _) (ha w i)
 
 /- English proof (translation)
-Use `show ((N • a w i : G.Fw w) : PadicAlgCl p) = _`. Simplify using `[nsmul_eq_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem coe_nsmul (N : ℕ) (a : Loc G) (w : Fin G.m) (i : Fin G.n) :
     (((N • a) w i : G.Fw w) : PadicAlgCl p) = (N : PadicAlgCl p) * (a w i : PadicAlgCl p) := by
@@ -119,20 +119,20 @@ private theorem coe_nsmul (N : ℕ) (a : Loc G) (w : Fin G.m) (i : Fin G.n) :
   simp [nsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `w i` and use `by rw [coe_nsmul, norm_mul]; exact mul_le_one₀ (norm_nat_le N) (norm_nonneg _) (ha w i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem intL_nsmul (N : ℕ) {a : Loc G} (ha : IntL a) : IntL (N • a) := fun w i => by
   rw [coe_nsmul, norm_mul]; exact mul_le_one₀ (norm_nat_le N) (norm_nonneg _) (ha w i)
 
 /- English proof (translation)
-Introduce `w i` and use `by have := h w i rwa [coe_nsmul, norm_mul, norm_nat_cop hm, _root_.one_mul] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem intL_of_nsmul {m : ℕ} (hm : m.Coprime p) {a : Loc G} (h : IntL (m • a)) : IntL a := fun w i => by
   have := h w i
   rwa [coe_nsmul, norm_mul, norm_nat_cop hm, _root_.one_mul] at this
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `Nat.exists_eq_add_of_le hjk`. Rewrite using `[Nat.add_comm, pow_add, mul_smul]`. Conclude with `intL_nsmul _ h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intL_le {j k : ℕ} (hjk : j ≤ k) {a : Loc G} (h : IntL (p ^ j • a)) : IntL (p ^ k • a) := by
   obtain ⟨r, rfl⟩ := Nat.exists_eq_add_of_le hjk
@@ -140,25 +140,25 @@ private theorem intL_le {j k : ℕ} (hjk : j ≤ k) {a : Loc G} (h : IntL (p ^ j
   exact intL_nsmul _ h
 
 /- English proof (translation)
-The claim follows from `funext fun w => Matrix.mulVec_add _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem mv_add (A : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)) (a b : Loc G) :
     mv A (a + b) = mv A a + mv A b := funext fun w => Matrix.mulVec_add _ _ _
 
 /- English proof (translation)
-The claim follows from `funext fun w => Matrix.mulVec_neg _ _`.
+A detailed English derivation is pending.
 -/
 private theorem mv_neg (A : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)) (a : Loc G) :
     mv A (-a) = -mv A a := funext fun w => Matrix.mulVec_neg _ _
 
 /- English proof (translation)
-The claim follows from `funext fun w => Matrix.mulVec_zero _`.
+A detailed English derivation is pending.
 -/
 private theorem mv_zero (A : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)) :
     mv A (0 : Loc G) = 0 := funext fun w => Matrix.mulVec_zero _
 
 /- English proof (translation)
-The claim follows from `_root_.funext fun w => by show A w *ᵥ (N • a w) = N • (A w *ᵥ a w) exact Matrix.mulVec_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem mv_nsmul (A : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)) (N : ℕ) (a : Loc G) :
     mv A (N • a) = N • mv A a := _root_.funext fun w => by
@@ -166,13 +166,13 @@ private theorem mv_nsmul (A : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw 
   exact Matrix.mulVec_smul _ _ _
 
 /- English proof (translation)
-The claim follows from `funext fun w => Matrix.mulVec_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem mv_scal (A : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)) (t : ∀ w, G.Fw w) (a : Loc G) :
     mv A (fun w => t w • a w) = fun w => t w • mv A a w := funext fun w => Matrix.mulVec_smul _ _ _
 
 /- English proof (translation)
-The claim follows from `funext fun w => by show B w *ᵥ (A w *ᵥ a w) = a w rw [Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 private theorem mv_mv {A B : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)} (h : ∀ w, B w * A w = 1) (a : Loc G) :
     mv B (mv A a) = a := funext fun w => by
@@ -180,9 +180,9 @@ private theorem mv_mv {A B : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w
   rw [Matrix.mulVec_mulVec, h, Matrix.one_mulVec]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `pow_bd (p := p) (fun q : Fin G.m × Fin G.n × Fin G.n => (A q.1 q.2.1 q.2.2 : PadicAlgCl p))`. Use `⟨j, fun a ha w i => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_nsmul]`. Establish `e : ((mv A a w i : G.Fw w) : PadicAlgCl p) = ∑ k, (A w i k : PadicAlgCl p) * (a w k : PadicAlgCl p)`. Simplify using `[mv, Matrix.mulVec, dotProduct]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Finset.mul_sum]`. Use `Finset.sum_induction _ (fun y : PadicAlgCl p => ‖y‖ ≤ 1) (fun u v hu hv => (PadicAlgCl.isNonarchimedean p u v).trans (max_le hu hv)) (by simp) (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc, norm_mul]`. Use `mul_le_one₀ ?_ (norm_nonneg _) (ha w k)` and prove the remaining obligations. Simplify using `using hj (w, i, k)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mv_bd (A : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)) :
     ∃ j : ℕ, ∀ a : Loc G, IntL a → IntL (p ^ j • mv A a) := by
@@ -199,7 +199,7 @@ private theorem mv_bd (A : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w))
   simpa using hj (w, i, k)
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `pow_bd (p := p) (fun q : s × (Fin G.m × Fin G.n) => (f q.1 q.2.1 q.2.2 : PadicAlgCl p))`. Use `⟨j, fun x hx w i => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_nsmul]`. Simplify using `using hj (⟨x, hx⟩, w, i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem vec_bd {α : Type} (s : Finset α) (f : α → Loc G) :
     ∃ j : ℕ, ∀ x ∈ s, IntL (p ^ j • f x) := by
@@ -209,33 +209,27 @@ private theorem vec_bd {α : Type} (s : Finset α) (f : α → Loc G) :
   simpa using hj (⟨x, hx⟩, w, i)
 
 /- English proof (translation)
-Set `M : AddSubgroup (VQ D)` to `{ carrier := {x | IntL (mv P (T x)) ∧ IntL (mv Q (T' x))} add_mem' := fun {a b} ha hb => by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, mv_add]`. Conclude with `intL_add ha.1 hb.1`. Rewrite using `[map_add, mv_add]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `intL_add ha.2 hb.2`. Use the proof step `zero_mem' := by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, mv_zero]`. Conclude with `intL_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, mv_zero]`. Conclude with `intL_zero`. Use the proof step `neg_mem' := fun {a} ha => by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, mv_neg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `intL_neg ha.1`. Rewrite using `[map_neg, mv_neg]`. Conclude with `intL_neg ha.2 }`. Establish `hMem : ∀ x, x ∈ M ↔ IntL (mv P (T x)) ∧ IntL (mv Q (T' x))` using `fun x => Iff.rfl`. Use `⟨M, hMem, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, k₀, hs, hbd⟩` from `hb`. Take `⟨j1, h1⟩` from `mv_bd (p := p) P'`. Take `⟨j2, h2⟩` from `mv_bd (p := p) Q'`. Take `⟨j3, h3⟩` from `mv_bd (p := p) P`. Take `⟨j4, h4⟩` from `mv_bd (p := p) Q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j5, h5⟩` from `vec_bd (p := p) s (fun x => T x)`. Take `⟨j6, h6⟩` from `vec_bd (p := p) s (fun x => T' x)`. Use `hPL p D M s (k₀ + (j1 + j2) + (j3 + j4 + j5 + j6)) hs ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `c x hx`. Take `⟨t, t', ht, ht', he⟩` from `hact c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hx1, hx2⟩` from `(hMem x).1 hx`. Use `(hMem _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(he x).1, mv_scal]`. Conclude with `intL_scal t ht hx1`. Rewrite using `[(he x).2, mv_scal]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `intL_scal t' ht' hx2`. Introduce `m x hm hx`. Take `⟨hx1, hx2⟩` from `(hMem _).1 hx`. Rewrite `hx1`, `hx2` using `[map_nsmul, mv_nsmul]`. Conclude with `(hMem x).2 ⟨intL_of_nsmul hm hx1, intL_of_nsmul hm hx2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Use `(hMem _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `h3 _ (h5 x hx)`. Rewrite `h` using `[mv_nsmul, ← mul_smul, ← pow_add]`. Rewrite using `[map_nsmul, mv_nsmul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `intL_le (by omega) h`. Establish `h` using `h4 _ (h6 x hx)`. Rewrite `h` using `[mv_nsmul, ← mul_smul, ← pow_add]`. Rewrite using `[map_nsmul, mv_nsmul]`. Conclude with `intL_le (by omega) h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨hx1, hx2⟩` from `(hMem x).1 hx`. Establish `a1 : IntL (T (p ^ (j1 + j2) • x))`. Establish `h` using `h1 _ hx1`. Rewrite `h` using `[mv_mv hP]`.
-
-Rewrite using `[map_nsmul]`. Conclude with `intL_le (by omega) h`. Establish `a2 : IntL (T' (p ^ (j1 + j2) • x))`. Establish `h` using `h2 _ hx2`. Rewrite `h` using `[mv_mv hQ]`.
-
-Rewrite using `[map_nsmul]`. Conclude with `intL_le (by omega) h`. Take `⟨m, hm, hc⟩` from `hbd _ a1 a2`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `e : (m * p ^ (k₀ + (j1 + j2) + (j3 + j4 + j5 + j6))) • x = p ^ (j3 + j4 + j5 + j6) • ((m * p ^ k₀) • (p ^ (j1 + j2) • x))`.
-
-Rewrite using `[← mul_smul, ← mul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `nsmul_mem hc _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem core (hPL : PLatOf) {D : Datum p} (T T' : VQ D →+ Loc G)
     (P P' Q Q' : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w))
@@ -314,23 +308,23 @@ private theorem core (hPL : PLatOf) {D : Datum p} (T T' : VQ D →+ Loc G)
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `hO hMD hPL p _ D G L β A hm g`. Take `⟨d, hd, hdual⟩` from `hMD p G`. Set `c : ℚ_[p]` to `((g.1⁻¹ : ℚ_[p]ˣ) : ℚ_[p])`. Establish `hc : c ≠ 0` using `Units.ne_zero _`. Set `gm : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)` to `fun w => (g.2 w : Matrix (Fin G.n) (Fin G.n) (G.Fw w))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `gi : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)` to `fun w => (((g.2 w)⁻¹ : GL (Fin G.n) (G.Fw w)) : Matrix (Fin G.n) (Fin G.n) (G.Fw w))`. Establish `hgi : ∀ w, gm w * gi w = 1` using `fun w => by simp [gm, gi]`. Set `Q : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)` to `fun w => d w • c • (gm w)ᵀ`. Set `Q' : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)` to `fun w => (d w)⁻¹ • c⁻¹ • (gi w)ᵀ`. Establish `hQ : ∀ w, Q' w * Q w = 1` using `fun w => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [Q, Q', Matrix.smul_mul, Matrix.mul_smul, ← Matrix.transpose_mul, hgi, Matrix.transpose_one]`. Rewrite using `[smul_comm c (d w)⁻¹, smul_inv_smul₀ (hd w), smul_inv_smul₀ hc]`. Establish `hdu : ∀ a : Loc G, (∀ z : Loc G, IntL z → ‖c * pairL a (mv gm z)‖ ≤ 1) ↔ IntL (mv Q a)`. Introduce `a`. Establish `e : ∀ z : Loc G, pairL (fun w => c • ((gm w)ᵀ *ᵥ a w)) z = c * pairL a (mv gm z)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z`. Simplify using `only [pairL, Finset.mul_sum, smul_dotProduct, map_smul, Matrix.mulVec_transpose, mv, ← Matrix.dotProduct_mulVec, smul_eq_mul]`. Establish `e2 : mv Q a = fun w => d w • c • ((gm w)ᵀ *ᵥ a w)`. Use function extensionality and compare the values at `w`. Simplify using `only [mv, Q, Matrix.smul_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, ← hdual]`. Simplify using `only [e]`. Establish `hact : ∀ c' : D.O, ∃ t t' : ∀ w, G.Fw w, (∀ w, ‖(t w : PadicAlgCl p)‖ ≤ 1) ∧ (∀ w, ‖(t' w : PadicAlgCl p)‖ ≤ 1) ∧ ∀ x, A.T (actQ D c' x) = (fun w => t w • A.T x w) ∧ A.T' (actQ D c' x) = (fun w => t' w • A.T' x w)`. Introduce `c'`. Take `⟨c₀, rfl⟩` from `hO p D hm c'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hint : IsIntegral ℤ (L.e (c₀ : D.F))` using `c₀.2.map L.e.toRingHom.toIntAlgHom`. Establish `hint' : IsIntegral ℤ (IsCMField.complexConj G.F (L.e (c₀ : D.F)))` using `hint.map (IsCMField.complexConj G.F : G.F →+* G.F).toIntAlgHom`. Use `⟨fun w => G.embW w (L.e (c₀ : D.F)), fun w => G.embW w (IsCMField.complexConj G.F (L.e (c₀ : D.F))), fun w => norm_int_emb (G.emb w) hint, fun w => norm_int_emb (G.emb w) hint', fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Rewrite using `[← L.rep_F, A.act, G.rho_F]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Simplify using `[HTGroup.embW, Matrix.scalar_apply, Matrix.mulVec_diagonal]`. Use function extensionality and compare the values at `w`. Establish `hs : (β : G.C) * sh G (algebraMap G.F G.C (L.e (c₀ : D.F))) * ((β⁻¹ : G.Cˣ) : G.C) = algebraMap G.F G.C (IsCMField.complexConj G.F (L.e (c₀ : D.F)))`. Rewrite using `[sh_algebraMap, ← Algebra.commutes, _root_.mul_assoc, Units.mul_inv, _root_.mul_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← L.rep_F, A.act', hs, G.rho_F]`. Use extensionality with `i`. Simplify using `[HTGroup.embW, Matrix.scalar_apply, Matrix.mulVec_diagonal]`. Take `⟨M, hM, hLat⟩` from `core hPL A.T A.T' gi gm Q Q' hgi hQ hact A.bound`. Use `⟨M, fun x => ?_, hLat⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hM x, ← hdu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.Gal.W2.pkLat_of :
     UpperTheory.Gal.W2.OOnto → UpperTheory.Gal.W2.MemDual → UpperTheory.Gal.W2.PLatOf → UpperTheory.Gal.W2.PkLat := by

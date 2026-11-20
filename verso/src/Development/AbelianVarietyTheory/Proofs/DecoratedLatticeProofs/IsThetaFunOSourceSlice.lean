@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.MixModel.OrthDec
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ o _ y hf` and use `GlobalTheory.BoxSlice.isThetaFunO_slice_left o hf y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isThetaFunO_slice : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S A L T : HSp D) (o : OrthDec S A L)
     (f : WO S T → ℂ) (y : WO L T), IsThetaFunO ψ S T f →

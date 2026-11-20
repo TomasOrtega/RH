@@ -16,17 +16,17 @@ def chr (x : A.X) : Multiplicative (A.X →+ ℂ) →* ℂ where
   map_mul' l l' := AnArc.e_add _ _
 
 /- English proof (translation)
-Introduce `x y hxy`. Assume the negation of the conclusion as `hne`. Establish `hd : x - y ≠ 0` using `sub_ne_zero.mpr hne`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, (Module.Free.chooseBasis ℤ A.X).repr (x - y) i ≠ 0 := by`. Assume the negation of the conclusion as `hall`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [not_exists, not_not] at hall`. Apply `hd` to reduce the goal to its premises. Apply `(Module.Free.chooseBasis ℤ A.X).repr.map_eq_zero_iff.mp` to reduce the goal to its premises. Use extensionality with `j`. Simplify using `using hall j`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Set `k : ℤ` to `(Module.Free.chooseBasis ℤ A.X).repr (x - y) i`. Set `g : A.X →+ ℂ` to `(Int.castAddHom ℂ).comp ((Module.Free.chooseBasis ℤ A.X).coord i).toAddMonoidHom`. Establish `hg : g (x - y) = k` using `by simp [g, k]`. Establish `hk : (k : ℂ) ≠ 0` using `Int.cast_ne_zero.mpr hi`. Set `l : A.X →+ ℂ` to `(2 * (k : ℂ))⁻¹ • g`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hl : l (x - y) = 1 / 2`. Simplify using `only [l, AddMonoidHom.smul_apply, hg, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `h1 : eTwoPi (l x) = eTwoPi (l y)` using `congrArg (fun χ => χ (Multiplicative.ofAdd l)) hxy`. Establish `h2 : eTwoPi (l x) = eTwoPi (l (x - y)) * eTwoPi (l y)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← AnArc.e_add, map_sub, sub_add_cancel]`. Rewrite `h2` using `[hl, h1]`. Establish `h3 : eTwoPi (1 / 2) = 1` using `mul_right_cancel₀ (AnArc.e_ne_zero (l y)) (h2.symm.trans (one_mul _).symm)`. Establish `h4 : eTwoPi (1 / 2) = -1`. Simplify using `only [eTwoPi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[show 2 * (Real.pi : ℂ) * Complex.I * (1 / 2) = Real.pi * Complex.I by ring, Complex.exp_pi_mul_I]`. Rewrite `h3` using `[h4]`. Evaluate the numerical expressions using `at h3`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem chr_injective : Function.Injective (chr A) := by
   intro x y hxy
@@ -60,9 +60,9 @@ theorem chr_injective : Function.Injective (chr A) := by
   norm_num at h3
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℂ (fun x : A.X => ((chr A x : Multiplicative (A.X →+ ℂ) →* ℂ) : Multiplicative (A.X →+ ℂ) → ℂ))` using `(linearIndependent_monoidHom (Multiplicative (A.X →+ ℂ)) ℂ).comp (chr A) (chr_injective A)`. Set `g : A.X → ℂ` to `fun x => (if x ∈ F then b x else 0) - (if x ∈ G then c x else 0)`. Establish `hsum : ∑ x ∈ F ∪ G, g x • ((chr A x : Multiplicative (A.X →+ ℂ) →* ℂ) : Multiplicative (A.X →+ ℂ) → ℂ) = 0`. Use function extensionality and compare the values at `m`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, g, sub_mul, ite_mul, zero_mul, Finset.sum_sub_distrib, Finset.sum_ite_mem, Finset.union_inter_cancel_left, Finset.union_inter_cancel_right]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.mpr (h (Multiplicative.toAdd m))`. Establish `h0` using `linearIndependent_iff'.mp hli (F ∪ G) g hsum 0 (Finset.mem_union_left _ hF)`. Simplify `h0` using `[g, hF, hG, sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coeff_zero_eq {F G : Finset A.X} {b c : A.X → ℂ} (hF : 0 ∈ F) (hG : 0 ∈ G)
     (h : ∀ l : A.X →+ ℂ, ∑ x ∈ F, b x * eTwoPi (l x) = ∑ x ∈ G, c x * eTwoPi (l x)) : b 0 = c 0 := by
@@ -82,7 +82,7 @@ theorem coeff_zero_eq {F G : Finset A.X} {b c : A.X → ℂ} (hF : 0 ∈ F) (hG 
   simpa [g, hF, hG, sub_eq_zero] using h0
 
 /- English proof (translation)
-Rewrite using `[AnArc.exponent, AnArc.q_add, A.be_symm μ α]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exponent_one (α μ : A.X) : A.exponent 1 α μ = A.q (α + μ) - A.q α := by
   rw [AnArc.exponent, AnArc.q_add, A.be_symm μ α]
@@ -90,13 +90,13 @@ theorem exponent_one (α μ : A.X) : A.exponent 1 α μ = A.q (α + μ) - A.q α
   ring
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[HahnSeries.coeff_single_mul, AnArc.coeff_FSum, AnArc.coeff_FSum, Finset.mul_sum, sub_neg_eq_add]`. Use `Finset.sum_nbij' (fun μ => α + μ) (fun ν => ν - α) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `μ hμ`. Simplify using `only [AnArc.mem_level, exponent_one A, zero_add, AnArc.q_zero, sub_zero] at hμ ⊢`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `ν hν`. Simplify using `only [AnArc.mem_level, exponent_one A, zero_add, AnArc.q_zero, sub_zero] at hν ⊢`. Rewrite using `[show α + (ν - α) = ν by abel]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `μ _`. Simplify using the standard rewrite rules. Introduce `ν _`. Simplify using the standard rewrite rules. Introduce `μ _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : (A.psi α : ℂ) ≠ 0` using `(A.psi α).ne_zero`. Establish `hc : v.2 + A.ct (α + μ) - A.ct α = v.2 + A.ct μ` using `by rw [map_add]; abel`. Simplify using `only [AnArc.term, pow_one, one_smul, zero_add, map_zero, AnArc.e_zero, A.psi_add, A.T_symm α μ, hc]`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hu]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem FSum_shift (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (v : A.V) :
     A.FSum 1 α th v = HahnSeries.single (-A.q α) ((A.psi α : ℂ)⁻¹) * A.FSum 1 0 (fun z => th (z - A.ct α)) v := by
@@ -123,25 +123,25 @@ theorem FSum_shift (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (v : A.V) :
     ring
 
 /- English proof (translation)
-Use `⟨(A.finite_be_le (2 * (n - r.order))).toFinset, fun G hG th v => ?_⟩` and prove the remaining obligations. Establish `hq : ∀ μ, A.exponent 1 0 μ = A.q μ` using `fun μ => by`. Rewrite using `[exponent_one A, zero_add, AnArc.q_zero, sub_zero]`. Establish `hq0 : ∀ μ, 0 ≤ A.q μ` using `fun μ => by`. Establish `h1` using `A.two_mul_q μ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `A.be_self_nonneg μ`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpwo : (Set.Ici (0 : ℤ)).IsPWO` using `bddBelow_Ici.isWF.isPWO`. Establish `hsupp : (A.FSum 1 0 th v).support ⊆ Set.Ici 0`. Introduce `k hk`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.mem_Ici]`. Assume the negation of the conclusion as `hlt`. Conclude with `hk (A.coeff_FSum_eq_zero 1 0 th v (by simpa using not_le.mp hlt))`. Rewrite using `[HahnSeries.coeff_mul_right' hpwo hsupp]`. Simplify using `only [AnArc.coeff_FSum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_sigma']`. Use `Finset.sum_bij_ne_zero (fun a _ _ => a.2) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨i, k⟩, μ⟩ h₁ h₂`. Rewrite `h₁` using `[Finset.mem_sigma, Finset.mem_antidiagonal, AnArc.mem_level, hq]`. Take `⟨⟨-, -, hik⟩, hμ⟩` from `h₁`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ho` using `HahnSeries.order_le_of_coeff_ne_zero (left_ne_zero_of_mul h₂)`. Apply `hG` to reduce the goal to its premises. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_ofPred_eq, ← A.two_mul_q]`. Simplify using `only at hμ hik ho ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨i, k⟩, μ⟩ h₁ _ ⟨⟨i', k'⟩, μ'⟩ h₁' _ heq`. Simplify using `only at heq`. Substitute `heq` using the available equality. Rewrite `h₁`, `h₁'` using `[Finset.mem_sigma, Finset.mem_antidiagonal, AnArc.mem_level, hq]`. Take `⟨⟨-, -, hik⟩, hμ⟩` from `h₁`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨-, -, hik'⟩, hμ'⟩` from `h₁'`. Simplify using `only at hik hμ hik' hμ'`. Establish `hk : k = k'` using `by rw [← hμ, ← hμ']`. Substitute `hk` using the available equality. Establish `hi : i = i'` using `by omega`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Both sides reduce to the same expression. Introduce `μ _ hne`. Use `⟨⟨(n - A.q μ, A.q μ), μ⟩, ?_, hne, rfl⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_sigma, Finset.mem_antidiagonal, AnArc.mem_level, hq]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨(HahnSeries.mem_support _ _).mpr (left_ne_zero_of_mul hne), Set.mem_Ici.mpr (hq0 μ), by simp⟩, rfl⟩`. Introduce and unpack `⟨⟨i, k⟩, μ⟩ h₁ _`. Rewrite `h₁` using `[Finset.mem_sigma, Finset.mem_antidiagonal, AnArc.mem_level, hq]`. Take `⟨⟨-, -, hik⟩, hμ⟩` from `h₁`. Simplify using `only at hik hμ ⊢`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show i = n - A.q μ by omega]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_mul_FSum (r : ℂ⸨X⸩) (n : ℤ) : ∃ G₀ : Finset A.X, ∀ G, G₀ ⊆ G → ∀ (th : (Fin A.gB → ℂ) → ℂ) (v : A.V),
     (r * A.FSum 1 0 th v).coeff n = ∑ μ ∈ G, r.coeff (n - A.q μ) * A.term 1 0 th μ v := by
@@ -194,25 +194,23 @@ theorem coeff_mul_FSum (r : ℂ⸨X⸩) (n : ℤ) : ∃ G₀ : Finset A.X, ∀ G
     rw [show i = n - A.q μ by omega]
 
 /- English proof (translation)
-Take `⟨m, r, α, th, -, hfe⟩` from `hf`. Take `⟨s, ph, hfe'⟩ : ∃ (s : Fin m → ℂ⸨X⸩) (ph : Fin m → (Fin A.gB → ℂ) → ℂ), ∀ w, f w = ∑ i, s i * A.FSum 1 0 (ph i) w` from `⟨fun i => r i * HahnSeries.single (-A.q (α i)) ((A.psi (α i) : ℂ)⁻¹), fun i z => th i (z - A.ct (α i)), fun w => by`. Rewrite using `[hfe w]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp only [FSum_shift A (α i) (th i) w, mul_assoc]⟩`. Establish `hq : ∀ μ, A.exponent 1 0 μ = A.q μ` using `fun μ => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[exponent_one A, zero_add, AnArc.q_zero, sub_zero]`. Establish `hexp : ∀ n : ℤ, ∃ G : Finset A.X, 0 ∈ G ∧ A.level 1 0 n ⊆ G ∧ ∀ w : A.V, (f w).coeff n = ∑ μ ∈ G, ∑ i, (s i).coeff (n - A.q μ) * A.term 1 0 (ph i) μ w`. Introduce `n`. Use `choose G₀ hG₀ using fun i => coeff_mul_FSum A (s i) n`. Establish `hsub : ∀ i, G₀ i ⊆ insert 0 (A.level 1 0 n ∪ Finset.univ.biUnion G₀)` using `fun i => (Finset.subset_biUnion_of_mem G₀ (Finset.mem_univ i)).trans (Finset.subset_union_right.trans (Finset.subset_insert _ _))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨insert 0 (A.level 1 0 n ∪ Finset.univ.biUnion G₀), Finset.mem_insert_self _ _, fun μ hμ => Finset.mem_insert_of_mem (Finset.mem_union_left _ hμ), fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hfe' w, HahnSeries.coeff_sum, Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => hG₀ i _ (hsub i) (ph i) w`. Establish `hkey : ∀ (z : Fin A.gB → ℂ) (n : ℤ), ∑ i, (s i).coeff n * ph i z = if n = 0 then θ z else 0`. Introduce `z n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨G, hG0, -, hG⟩` from `hexp n`. Take `⟨F, b, hF0, hb0, hFb⟩` from `h z n`. Establish `hc` using `coeff_zero_eq A (F := F) (G := G) (b := b) (c := fun μ => (A.psi μ : ℂ) * ∑ i, (s i).coeff (n - A.q μ) * ph i (z + A.ct μ)) hF0 hG0 (fun l => by`. Rewrite using `[← hFb l, hG (l, z)]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [AnArc.term, pow_one, one_smul, zero_add, map_zero, AnArc.e_zero]`. Use the proof step `ring)`. Rewrite using `[← hb0, hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use extensionality with `n`. Take `⟨G, -, hlev, hG⟩` from `hexp n`. Establish `hK : ∀ (μ : A.X) (g : (Fin A.gB → ℂ) → ℂ), A.term 1 0 g μ v = A.term 1 0 (fun _ => 1) μ v * g (v.2 + A.ct μ)`. Introduce `μ g`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [AnArc.term, mul_one]`. Establish `hterm : ∀ μ, ∑ i, (s i).coeff (n - A.q μ) * A.term 1 0 (ph i) μ v = if A.q μ = n then A.term 1 0 θ μ v else 0`. Introduce `μ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [hK μ (ph i)]; ring`. Use `_ = if A.q μ = n then A.term 1 0 θ μ v else 0 := by`. Rewrite using `[hkey, hK μ θ]`. Distinguish the cases in `hμ : A.q μ = n`. Rewrite using `[if_pos (by omega), if_pos hμ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[if_neg (by omega), if_neg hμ, mul_zero]`. Rewrite using `[hG v, AnArc.coeff_FSum]`. Simplify using `only [hterm]`. Rewrite using `[← Finset.sum_filter]`. Use `congr 1`.
-
-Use extensionality with `μ`. Simplify using `only [Finset.mem_filter, AnArc.mem_level, hq]`. Conclude with `⟨fun hμ => hμ.2, fun hμ => ⟨hlev (by rw [AnArc.mem_level, hq]; exact hμ), hμ⟩⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_FSum {f : A.V → ℂ⸨X⸩} (hf : ArcPts.IsComb A 1 Set.univ f) (θ : (Fin A.gB → ℂ) → ℂ)
     (h : ∀ (z : Fin A.gB → ℂ) (n : ℤ), ∃ (F : Finset A.X) (b : A.X → ℂ), 0 ∈ F ∧ b 0 = (if n = 0 then θ z else 0) ∧

@@ -12,14 +12,14 @@ noncomputable section
 namespace GlobalTheory.KernelRepFinite
 
 /- English proof (translation)
-Conclude with `MorphismProperty.overPullbackMap (P := @IsClosedImmersion) f k inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_pullback_map {S S' : Scheme.{0}} (f : S' ⟶ S) {A B : Over S} (k : A ⟶ B)
     [IsClosedImmersion k.left] : IsClosedImmersion ((Over.pullback f).map k).left := by
   exact MorphismProperty.overPullbackMap (P := @IsClosedImmersion) f k inferInstance
 
 /- English proof (translation)
-Establish `e₁ : LBIso ((P.pull β₂).pull (lift (𝟙 B) (𝟙 B)).left) (P.pull ((lift (𝟙 B) (𝟙 B)).left ≫ β₂))` using `GlobalTheory.ZM.SiegPull.lbIso_pull_comp (GlobalTheory.lbIso_refl (pull_isLB hP β₂)) _`. Establish `e₂ : LBIso ((P.pull (lift (𝟙 A) (𝟙 A)).left).pull β) (P.pull (β ≫ (lift (𝟙 A) (𝟙 A)).left))` using `GlobalTheory.ZM.SiegPull.lbIso_pull_comp (GlobalTheory.lbIso_refl (pull_isLB hP _)) _`. Rewrite `e₁` using `[GlobalTheory.DiagAmpleBC.diag_comp A B β β₂ hs]`. Conclude with `LBIso.trans (pull_isLB (pull_isLB hP _) _) (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) e₁ e₂.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_diag {S T : Scheme.{0}} (A : Over S) (B : Over T) (β : B.left ⟶ A.left)
     (β₂ : (G2 B).left ⟶ (G2 A).left) (hs : IsSquare β β₂) {P : LB (G2 A).left} (hP : P.IsLB) :
@@ -32,27 +32,21 @@ theorem lbIso_diag {S T : Scheme.{0}} (A : Over S) (B : Over T) (β : B.left ⟶
   exact LBIso.trans (pull_isLB (pull_isLB hP _) _) (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) e₁ e₂.symm
 
 /- English proof (translation)
-Introduce `S' _ G _ _ P hA hP V₀ hV hRel Z i hi hZ`. Use `haveI : IsNoetherianRing Γ(S', V₀) := IsLocallyNoetherian.component_noetherian ⟨V₀, hV⟩`. Set `t : Sp Γ(S', V₀) ⟶ V₀.toScheme` to `hV.isoSpec.inv`. Set `GV` to `(Over.pullback V₀.ι).obj G`. Set `B` to `(Over.pullback t).obj GV`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hAV : IsAbelianScheme GV` using `GlobalTheory.isAbelianScheme_pullback_obj _ G hA`. Establish `hAB : IsAbelianScheme B` using `GlobalTheory.isAbelianScheme_pullback_obj _ GV hAV`. Set `PV` to `P.pull (Pdiv.PullbackComparison.pφ₂ V₀.ι G)`. Establish `hPV : PV.IsLB` using `pull_isLB hP _`. Establish `h₁` using `Pdiv.PullbackComparison.isGrpPullback V₀.ι G`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂` using `Pdiv.PullbackComparison.isGrpPullback t GV`. Establish `hRelB : Out.RelAmple B ((PV.pull (Pdiv.PullbackComparison.pφ₂ t GV)).pull (lift (𝟙 B) (𝟙 B)).left)` using `GlobalTheory.DiagAmpleBC.relAmple_diag_pull _ _ GV hAV PV hPV hRel t B (Pdiv.PullbackComparison.pφ t GV) (Pdiv.PullbackComparison.pφ₂ t GV) h₂.1 (Pdiv.PullbackComparison.isSquare t GV)`. Take `⟨ZL, iL, hiL, hfinL, -, hrep⟩` from `GlobalTheory.kernelFiniteFlat_holds _ B hAB _ (pull_isLB (pull_isLB hPV _) _) hRelB`. Set `ZV` to `(Over.pullback V₀.ι).obj Z`. Set `ZB` to `(Over.pullback t).obj ZV`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `iV : ZV ⟶ GV` to `(Over.pullback V₀.ι).map i`. Set `iB : ZB ⟶ B` to `(Over.pullback t).map iV`. Establish `hmem : GlobalTheory.MemKL B ((PV.pull (Pdiv.PullbackComparison.pφ₂ t GV)).pull (lift (𝟙 B) (𝟙 B)).left) iB`. Use `GlobalTheory.memKL_of_push h₂ (pull_isLB hPV _) (pull_isLB (pull_isLB hPV _) _) (lbIso_diag GV B _ _ (Pdiv.PullbackComparison.isSquare t GV) hPV) iB ?_` and prove the remaining obligations. Use `GlobalTheory.memKL_of_push h₁ (pull_isLB hP _) (pull_isLB hPV _) (lbIso_diag G GV _ _ (Pdiv.PullbackComparison.isSquare V₀.ι G) hP) _ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `zz : Over.mk ((ZB.hom ≫ t) ≫ V₀.ι) ⟶ Z` to `Over.homMk (pullback.fst ZV.hom t ≫ pullback.fst Z.hom V₀.ι) (by show (pullback.fst ZV.hom t ≫ pullback.fst Z.hom V₀.ι) ≫ Z.hom = (pullback.snd ZV.hom t ≫ t) ≫ V₀.ι`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Use `congr 1`. Conclude with `pullback.condition)`. Establish `e : ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushPt h₁.1.w (ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushPt h₂.1.w iB) = zz ≫ i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (iB.left ≫ Pdiv.PullbackComparison.pφ t GV) ≫ Pdiv.PullbackComparison.pφ V₀.ι G = (pullback.fst ZV.hom t ≫ pullback.fst Z.hom V₀.ι) ≫ i.left`. Simplify using `only [Pdiv.PullbackComparison.pφ]`. Rewrite using `[Pdiv.PullbackComparison.pullback_map_left_fst' t iV, Category.assoc, Pdiv.PullbackComparison.pullback_map_left_fst' V₀.ι i, Category.assoc]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Apply `hZ` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`. Use `show (((ZB.hom ≫ t) ≫ V₀.ι).base y) ∈ V₀`. Conclude with `(Scheme.Opens.range_ι V₀).subset ⟨(ZB.hom ≫ t).base y, rfl⟩`. Take `⟨z, hz⟩` from `(hrep ZB iB).1 hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsClosedImmersion iV.left := isClosedImmersion_pullback_map _ i`. Use `haveI : IsClosedImmersion iB.left := isClosedImmersion_pullback_map _ iV`. Establish `hz' : z.left ≫ iL.left = iB.left` using `congrArg (fun q => q.left) hz`. Use `haveI : IsClosedImmersion (z.left ≫ iL.left) := by rw [hz']; infer_instance`. Use `haveI : IsClosedImmersion z.left := IsClosedImmersion.of_comp z.left iL.left`.
-
-Establish `hZB : IsFinite ZB.hom`. Rewrite using `[← Over.w z]`. Use `infer_instance`. Establish `hV' : IsFinite ZV.hom`. Establish `ec : ZV.hom = inv (pullback.fst ZV.hom t) ≫ pullback.snd ZV.hom t ≫ t`.
-
-Rewrite using `[← pullback.condition, IsIso.inv_hom_id_assoc]`. Rewrite using `[ec]`. Use `haveI : IsFinite (pullback.snd ZV.hom t) := hZB`. Use `infer_instance`. Rewrite using `[← (isPullback_morphismRestrict Z.hom V₀).flip.isoPullback_hom_snd]`.
-
-Use `haveI : IsFinite (pullback.snd Z.hom V₀.ι) := hV'`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinite_restrict : ∀ (S' : Scheme.{0}) [IsLocallyNoetherian S'] (G : Over S') [GrpObj G] [IsCommMonObj G] (P : LB (G2 G).left), IsAbelianScheme G → P.IsLB → ∀ V₀ : S'.Opens, IsAffineOpen V₀ → Out.RelAmple ((Over.pullback V₀.ι).obj G) ((P.pull (Pdiv.PullbackComparison.pφ₂ V₀.ι G)).pull (lift (𝟙 ((Over.pullback V₀.ι).obj G)) (𝟙 ((Over.pullback V₀.ι).obj G))).left) → ∀ (Z : Over S') (i : Z ⟶ G), IsClosedImmersion i.left → (∀ (T : Over S') (z : T ⟶ Z), Set.range T.hom.base ⊆ (V₀ : Set S') → GlobalTheory.MemKL G (P.pull (lift (𝟙 G) (𝟙 G)).left) (z ≫ i)) → IsFinite (Z.hom ∣_ V₀) := by
   intro S' _ G _ _ P hA hP V₀ hV hRel Z i hi hZ

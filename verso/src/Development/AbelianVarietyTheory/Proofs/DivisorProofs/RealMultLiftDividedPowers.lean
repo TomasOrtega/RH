@@ -13,7 +13,7 @@ open scoped ContDiff
 namespace GlobalTheory.ThKSmoothDer
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.one_parameter_skew_hermitian`.
+A detailed English derivation is pending.
 -/
 theorem lieA : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (w : InfinitePlace F) (τ : EmbOver E w)
@@ -22,7 +22,7 @@ theorem lieA : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
     Z.conjTranspose * J.map τ.1 + J.map τ.1 * Z = 0 := GlobalTheory.T.one_parameter_skew_hermitian
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.archimedean_laplacian_pol_data`.
+A detailed English derivation is pending.
 -/
 theorem fockD : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
@@ -40,7 +40,7 @@ section Assembly
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.EvZeroInf.pure_eq_tens, GlobalTheory.EvZeroInf.pure_eq_tens]`. Conclude with `h _ (GlobalTheory.ThK.EvUniqInf.rest_pure f φ hSB hvac) y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_pure {κ : Type} [Fintype κ] (T : ℝ → Module.End ℂ ((κ → AF F) → ℂ)) {f f₁ : SInf F κ}
     (h : ActsD (evI F) (fun t => T t) f f₁) (φ : (v : Pl F) → (κ → Fv F v) → ℂ)
@@ -52,21 +52,21 @@ theorem hasDerivAt_pure {κ : Type} [Fintype κ] (T : ℝ → Module.End ℂ ((�
   exact h _ (GlobalTheory.ThK.EvUniqInf.rest_pure f φ hSB hvac) y
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_add {κ : Type} [Fintype κ] (f g : SInf F κ) (φ : (v : Pl F) → (κ → Fv F v) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f + g) φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_rsmul {κ : Type} [Fintype κ] (r : ℝ) (f : SInf F κ) (φ : (v : Pl F) → (κ → Fv F v) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (r • f) φ = r • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_zero {κ : Type} [Fintype κ] (φ : (v : Pl F) → (κ → Fv F v) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (0 : SInf F κ) φ = 0 := by
@@ -75,57 +75,49 @@ theorem pure_zero {κ : Type} [Fintype κ] (φ : (v : Pl F) → (κ → Fv F v) 
 end Assembly
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc hcσ w τ`. Take `⟨Δ, hΔpol, hΔ⟩` from `fockD F E σ hσ B a a' G X om om' hKP hT c hc hcσ w τ`. Establish `hM` using `hT.geo.hM`. Establish `hle` using `GlobalTheory.ThKDer.polData_le (B := B) hM`. Set `Good : Matrix (Fin (a + a')) (Fin (a + a')) ℂ → (ℝ → GAd σ (c • G.W.J.map σ)) → Prop` to `fun Z γ => (∀ t, embArch σ (c • G.W.J.map σ) w (projArch σ (c • G.W.J.map σ) w (γ t)) = γ t) ∧ (∀ t, GlobalTheory.Orb.archMat σ (c • G.W.J.map σ) τ (projArch σ (c • G.W.J.map σ) w (γ t)) = NormedSpace.exp (t • Z))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `S : Set (Matrix (Fin (a + a')) (Fin (a + a')) ℂ)` to `{Z | ∃ γ, Good Z γ}`. Take `⟨b, hbS, hbspan, hbli⟩` from `exists_linearIndependent ℝ S`. Set `U` to `Submodule.span ℝ (Set.range ((↑) : b → Matrix (Fin (a + a')) (Fin (a + a')) ℂ))`. Establish `hSU : ∀ Z ∈ S, Z ∈ U`. Introduce `Z hZ`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show Z ∈ Submodule.span ℝ (Set.range ((↑) : b → Matrix (Fin (a + a')) (Fin (a + a')) ℂ))`. Rewrite using `[Subtype.range_coe, hbspan]`. Conclude with `Submodule.subset_span hZ`. Set `bb : Module.Basis b ℝ U` to `Module.Basis.span hbli`. Take `⟨q, hq⟩` from `Submodule.exists_isCompl U`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `π` to `Submodule.linearProjOfIsCompl U q hq`. Take `⟨qP, hqP⟩` from `Submodule.exists_isCompl (GlobalTheory.ThK.PolData B G.M)`. Set `P` to `Submodule.linearProjOfIsCompl (GlobalTheory.ThK.PolData B G.M) qP hqP`. Use `choose γb hγb using fun i : b => hbS i.2`. Set `T : b → ℝ → Module.End ℂ ((Fin a × Fin (a + a') → AF F) → ℂ)` to `fun i t => om (1, (toGAd hσ G.W.J hc).symm (γb i t))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvacI : ∀ φ : ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ, (∀ᶠ v in Filter.cofinite, φ v = G.M.vac v) → ∀ᶠ v : Pl F in Filter.cofinite, φ v = {x | ∀ (i : Fin a × Fin (a + a')), x i ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers F v}.indicator 1` using `fun φ hvac => (hvac.and hM.std).mono fun v hv => hv.1.trans hv.2`. Establish `hder : ∀ i : b, ∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M, ∃ Ψ₁ ∈ GlobalTheory.ThK.PolData B G.M, ∀ y, HasDerivAt (fun t => T i t Ψ y) (Ψ₁ y) 0`. Introduce `i Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨f, hf, φ, hSB, hvac, rfl⟩` from `hx`. Conclude with `⟨GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Δ i f) φ, Submodule.subset_span ⟨Δ i f, hΔpol _ f hf, φ, hSB, hvac, rfl⟩, hasDerivAt_pure (T i) (hΔ i (γb i) (hγb i).1 (hγb i).2 f hf) φ hSB (hvacI φ hvac)⟩`. Consider the case `zero => exact ⟨0, zero_mem _, fun y => by simpa using hasDerivAt_const (0 : ℝ) (0 : ℂ)⟩`. Consider the case `add x y hx hy ihx ihy`. Take `⟨x₁, hx₁, ex⟩` from `ihx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨y₁, hy₁, ey⟩` from `ihy`. Use `⟨x₁ + y₁, add_mem hx₁ hy₁, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Pi.add_apply]`. Conclude with `(ex z).add (ey z)`. Consider the case `smul r x hx ihx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨x₁, hx₁, ex⟩` from `ihx`. Use `⟨r • x₁, Submodule.smul_mem _ r hx₁, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(ex z).const_mul r`. Establish `hderv : ∀ i : b, ∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M, ∀ y, HasDerivAt (fun t => T i t Ψ y) (deriv (fun t => T i t Ψ y) 0) 0` using `fun i Ψ hΨ y => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨Ψ₁, -, h⟩` from `hder i Ψ hΨ`. Conclude with `(h y).differentiableAt.hasDerivAt`. Set `dL : b → (GlobalTheory.ThK.PolData B G.M →ₗ[ℂ] ((Fin a × Fin (a + a') → AF F) → ℂ))` to `fun i => { toFun := fun Ψ y => deriv (fun t => T i t Ψ y) 0 map_add' := fun Ψ₁ Ψ₂ => by`. Use function extensionality and compare the values at `y`. Establish `e` using `((hderv i _ Ψ₁.2 y).add (hderv i _ Ψ₂.2 y)).deriv`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Submodule.coe_add, map_add, Pi.add_apply]`. Conclude with `e`. Use the proof step `map_smul' := fun r Ψ => by`. Use function extensionality and compare the values at `y`. Simplify using `only [Submodule.coe_smul, map_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `deriv_const_mul _ (hderv i _ Ψ.2 y).differentiableAt }`. Establish `hdL_mem : ∀ i Ψ, dL i Ψ ∈ GlobalTheory.ThK.PolData B G.M` using `fun i Ψ => by`. Take `⟨Ψ₁, h1, h⟩` from `hder i Ψ Ψ.2`. Establish `e : dL i Ψ = Ψ₁` using `funext fun y => (h y).deriv`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Conclude with `h1`. Establish `hmemP : ∀ f ∈ G.M.Pol B.ψ B.emb, ∀ φ : ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = G.M.vac v) → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ GlobalTheory.ThK.PolData B G.M` using `fun f hf φ hSB hvac => Submodule.subset_span ⟨f, hf, φ, hSB, hvac, rfl⟩`. Set `Ei : b → Module.End ℂ ((Fin a × Fin (a + a') → AF F) → ℂ)` to `fun i => dL i ∘ₗ P`. Establish `hEi_mem : ∀ i Ψ, Ei i Ψ ∈ GlobalTheory.ThK.PolData B G.M` using `fun i Ψ => hdL_mem i _`. Establish `hEi_pure : ∀ (i : b), ∀ f ∈ G.M.Pol B.ψ B.emb, ∀ φ : ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = G.M.vac v) → Ei i (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.Indefi …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i f hf φ hSB hvac`. Establish `hP : P (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = ⟨_, hmemP f hf φ hSB hvac⟩` using `Submodule.linearProjOfIsCompl_apply_left hqP ⟨_, hmemP f hf φ hSB hvac⟩`. Use `show dL i (P _) = _`. Rewrite using `[hP]`. Use function extensionality and compare the values at `y`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hasDerivAt_pure (T i) (hΔ i (γb i) (hγb i).1 (hγb i).2 f hf) φ hSB (hvacI φ hvac) y).deriv`. Set `D₀ : U →ₗ[ℝ] Module.End ℂ ((Fin a × Fin (a + a') → AF F) → ℂ)` to `bb.constr ℝ Ei`. Establish `hD₀_mem : ∀ u Ψ, D₀ u Ψ ∈ GlobalTheory.ThK.PolData B G.M` using `fun u Ψ => by`. Rewrite using `[Module.Basis.constr_apply, Finsupp.sum, LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun i _ => by`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply]`. Conclude with `Submodule.smul_of_tower_mem _ _ (hEi_mem i _)`. Establish `hD₀_pure : ∀ (x) (hx : x ∈ U), ∀ f ∈ G.M.Pol B.ψ B.emb, ∀ φ : ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = G.M.vac v) → D₀ ⟨x, hx⟩ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = Glob …`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Introduce `f hf φ hSB hvac`. Establish `e : (⟨(i : Matrix (Fin (a + a')) (Fin (a + a')) ℂ), Submodule.subset_span ⟨i, rfl⟩⟩ : U) = bb i` using `(Module.Basis.span_apply hbli i).symm`. Rewrite using `[e, Module.Basis.constr_basis]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hEi_pure i f hf φ hSB hvac`. Consider the case `zero`. Introduce `f hf φ hSB hvac`. Establish `e : (⟨0, zero_mem _⟩ : U) = 0` using `rfl`. Rewrite using `[e, map_zero, map_zero, LinearMap.zero_apply, LinearMap.zero_apply, pure_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y hx hy ihx ihy`. Introduce `f hf φ hSB hvac`. Establish `e : (⟨x + y, add_mem hx hy⟩ : U) = ⟨x, hx⟩ + ⟨y, hy⟩` using `rfl`. Rewrite using `[e, map_add, LinearMap.add_apply, ihx f hf φ hSB hvac, ihy f hf φ hSB hvac, map_add, LinearMap.add_apply, pure_add]`. Consider the case `smul r x hx ihx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `f hf φ hSB hvac`. Establish `e : (⟨r • x, Submodule.smul_mem _ r hx⟩ : U) = r • ⟨x, hx⟩` using `rfl`. Rewrite using `[e, map_smul, LinearMap.smul_apply, ihx f hf φ hSB hvac, map_smul, LinearMap.smul_apply, pure_rsmul]`. Use `⟨D₀ ∘ₗ π, fun Z Φ _ => hD₀_mem _ _, ?_⟩` and prove the remaining obligations. Introduce `Z γ h1 h2 Φ hΦ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hZS : Z ∈ S` using `⟨γ, h1, h2⟩`. Establish `hπ : π Z = ⟨Z, hSU Z hZS⟩` using `Submodule.linearProjOfIsCompl_apply_left hq ⟨Z, hSU Z hZS⟩`. Use `set DZ := D₀ ⟨Z, hSU Z hZS⟩ with hDZdef`. Establish `hDZ : (D₀ ∘ₗ π) Z = DZ` using `by rw [LinearMap.comp_apply, hπ]`. Establish `hRL : IsRealLine σ (c • G.W.J.map σ) γ` using `⟨w, τ, Z, lieA F E σ hT.base.cm _ _ w τ Z (fun t => projArch σ (c • G.W.J.map σ) w (γ t)) h2, fun t => ⟨projArch σ (c • G.W.J.map σ) w (γ t), (h1 t).symm, h2 t⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γL, hγL, eγ⟩` from `GlobalTheory.ThKDer.lineA F E σ hσ hT.base.cm G.W c hc γ hRL`. Establish `hk : ∀ Φ ∈ GlobalTheory.ThK.PolData B G.M, ∀ g h, HasDerivAt (fun s : ℝ => theta om Φ g (h * γL (Multiplicative.ofAdd s))) (theta om (DZ Φ) g h) 0`. Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨f, hf, φ, hSB, hvac, rfl⟩` from `hx`. Introduce `g h`. Establish `hact` using `hΔ Z γ h1 h2 f hf`. Simplify using `only [eγ] at hact`. Rewrite using `[hDZdef, hD₀_pure Z _ f hf φ hSB hvac]`.
-
-Conclude with `GlobalTheory.ThKDer.kerDer F E σ B a a' G X om om' hKP hT γL hγL f hf (Δ Z f) hact φ hSB hvac g h`. Consider the case `zero`. Introduce `g h`. Simplify `hasDerivAt_const (0 : ℝ) (0 : ℂ)` using `[GlobalTheory.ThKDer.theta_zero]`. Consider the case `add x y hx hy ihx ihy`.
-
-Introduce `g h`. Rewrite using `[map_add, GlobalTheory.ThKDer.theta_add hT (hle (hD₀_mem _ _)) (hle (hD₀_mem _ _))]`. Simplify using `only [GlobalTheory.ThKDer.theta_add hT (hle hx) (hle hy)]`. Conclude with `(ihx g h).add (ihy g h)`. Consider the case `smul r x hx ihx`.
-
-Introduce `g h`. Rewrite using `[map_smul, GlobalTheory.ThKDer.theta_smul]`. Simplify using `only [GlobalTheory.ThKDer.theta_smul]`. Conclude with `(ihx g h).const_mul r`. Establish `key` using `GlobalTheory.ThKDer.hasDerivAt_I hKP hT hγL hΦ (hD₀_mem _ Φ) (hD₀_mem _ (DZ Φ)) (hk Φ hΦ) (hk _ (hD₀_mem _ Φ)) ((toGAd hσ G.W.J hc).symm x)`.
-
-Rewrite using `[hDZ]`. Use `key.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show G.M.I om Φ ((toGAd hσ G.W.J hc).symm (x * γ s)) = _`. Rewrite using `[map_mul, eγ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_thetaIntegral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

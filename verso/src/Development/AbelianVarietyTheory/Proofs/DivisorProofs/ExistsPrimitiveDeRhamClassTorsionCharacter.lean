@@ -18,11 +18,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 
 /- English proof (translation)
-Introduce `p _ R _ N hN A _ hA hP hs G t b hb`. Establish `: IsCommMonObj A` using `hA.comm`. Establish `hn : ((p ^ N : ℕ) : R) = 0` using `by push_cast; exact hN`. Establish `hR : HasRoots A (p ^ N)` using `fun D _ _ x ↦ GlobalTheory.PtCover.exists_faithfullyFlat_pow_eq R A hA (p ^ N) (pow_pos (Fact.out : p.Prime).pos N) D x`. Take `⟨u, g, hu, hg, hchi⟩` from `GlobalTheory.T.exists_pushout_torsor_nTorsion_character R A (p ^ N) hn hR b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `GlobalTheory.PtExt.cohom_fv_of_toH1O_surjective R A hs u hu`. Take `⟨g', hg', hchi'⟩` from `GlobalTheory.CobChi.exists_isAdd_chi_eq R A (p ^ N) hn u (fv f) g hg hf`. Set `c : primDR A` to `⟨H1.mk _ f, by rw [show primDR A = ⊤ from hP]; exact Submodule.mem_top⟩`. Take `⟨d, -, hd⟩` from `GlobalTheory.PtExt.exists_dat_of_isAdd R A p G t c f rfl g' hg'`. Use `⟨c, d, fun D _ _ x hx ↦ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hd, hchi' D x hx, hchi D x hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.PtExt.exists_dat_chi_eq : ∀ (p : ℕ) [Fact p.Prime]  (R : Type) [CommRing R] (N : ℕ), (p : R) ^ N = 0 → ∀ (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → AllPrim (dp0 R) (𝟙 _) A → Function.Surjective (toH1O (A.hom ≫ 𝟙 _)) → ∀ (G : PDivGroup p R) (t : G.TorsionTower A) (b : Fn0 A), IsTorsChar (p ^ N) b → ∃ (c : primDR A) (d : Dat t c), ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D), x ^ (p ^ N) = 1 → chi (p ^ N) d.g D x = b D x := by
   intro p _ R _ N hN A _ hA hP hs G t b hb

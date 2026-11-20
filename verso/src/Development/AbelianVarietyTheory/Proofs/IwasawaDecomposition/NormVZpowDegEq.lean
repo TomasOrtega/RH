@@ -19,13 +19,11 @@ section Norm
 variable {K L Ω : Type} [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [Field L] [NumberField L] [Algebra L Ω] {A : ValuationSubring Ω}
 
 /- English proof (translation)
-Establish `key : ∀ x, A.valuation x ≤ 1 → A.valuation (x ^ (q ^ a * q' ^ e) - x ^ (q' ^ c * q ^ b)) < 1`. Introduce `x hx`. Establish `hy` using `val_apply_le_one H.1 hx`. Establish `h1` using `cong_pow (val_pow_le_one hy _) (val_pow_le_one hx _) (H.2 x hx) (q' ^ e)`. Establish `h2` using `H'.2 x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[← hσ]`. Establish `h3` using `cong_pow (val_pow_le_one hy _) (val_pow_le_one hx _) h2 (q ^ b)`. Rewrite `h1`, `h3` using `[← pow_mul, ← pow_mul]`. Rewrite `h3` using `[mul_comm (q' ^ e)]`. Conclude with `cong_trans (cong_symm h1) h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy (q ^ a * q' ^ e) (q' ^ c * q ^ b) with hlt | heq | hlt` into its components or cases. Take `⟨x, hx, hx'⟩` from `exists_not_cong_pow (A := A) (by positivity) hlt`. Conclude with `absurd (cong_symm (key x hx)) hx'`. Conclude with `heq`. Take `⟨x, hx, hx'⟩` from `exists_not_cong_pow (A := A) (by positivity) hlt`.
-
-Conclude with `absurd (key x hx) hx'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pow_mul_pow_eq [IsAlgClosed Ω] {q q' : ℕ} (hq : 0 < q) (hq' : 0 < q') {σ : G K Ω} {σ' : G L Ω}
     (hσ : ∀ z, σ z = σ' z) {a b c e : ℕ} (H : ActsAs A q σ a b) (H' : ActsAs A q' σ' c e) :
@@ -54,9 +52,9 @@ variable {K L Ω : Type} [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [Is
   {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 L)} {h : IsPlaceOver A v} {h' : IsPlaceOver A v'}
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed K`. Take `⟨a, b, H⟩` from `σ.2`. Take `⟨c, e, H'⟩` from `σ'.2`. Establish `hq : 0 < normV v` using `zero_lt_one.trans (one_lt_normV v)`. Establish `hq' : 0 < normV v'` using `zero_lt_one.trans (one_lt_normV v')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `pow_mul_pow_eq hq hq' hσ H H'`. Establish `hr : (0 : ℝ) < (normV v : ℕ)` using `by exact_mod_cast hq`. Establish `hr' : (0 : ℝ) < (normV v' : ℕ)` using `by exact_mod_cast hq'`. Rewrite using `[deg_eq H, deg_eq H', zpow_sub₀ hr.ne', zpow_sub₀ hr'.ne', div_eq_div_iff (by positivity) (by positivity), zpow_natCast, zpow_natCast, zpow_natCast, zpow_natCast]`. Conclude with `key` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normV_zpow_deg_eq {σ : Weil h} {σ' : Weil h'} (hσ : ∀ z : Ω, (σ : G K Ω) z = (σ' : G L Ω) z) :
     ((normV v : ℕ) : ℝ) ^ deg σ = ((normV v' : ℕ) : ℝ) ^ deg σ' := by
@@ -73,7 +71,7 @@ theorem normV_zpow_deg_eq {σ : Weil h} {σ' : Weil h'} (hσ : ∀ z : Ω, (σ :
   exact_mod_cast key
 
 /- English proof (translation)
-Establish `key : ∀ (q : ℕ) (k : ℤ), ((q : ℂ) ^ (s : ℂ)) ^ k = ((((q : ℝ) ^ k) ^ s : ℝ) : ℂ)` using `fun q k => by`. Establish `hq : (0 : ℝ) ≤ q` using `Nat.cast_nonneg _`. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_mul hq, mul_comm, Real.rpow_mul hq, Real.rpow_intCast, Complex.ofReal_zpow, Complex.ofReal_cpow hq, Complex.ofReal_natCast]`. Rewrite using `[key, key, normV_zpow_deg_eq hσ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem normV_cpow_deg_eq (s : ℝ) {σ : Weil h} {σ' : Weil h'} (hσ : ∀ z : Ω, (σ : G K Ω) z = (σ' : G L Ω) z) :
     (((normV v : ℕ) : ℂ) ^ (s : ℂ)) ^ deg σ = (((normV v' : ℕ) : ℂ) ^ (s : ℂ)) ^ deg σ' := by

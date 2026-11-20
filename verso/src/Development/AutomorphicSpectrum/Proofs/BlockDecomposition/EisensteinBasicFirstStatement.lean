@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinBasic
 import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.VerticalStrips.UnramifiedEulerProductIntegral
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RSEuler.eulerProduct_integral | exact GlobalTheory.CompanionTheory.RSEuler.eulerProduct_integral | (intros; apply GlobalTheory.CompanionTheory.RSEuler.eulerProduct_integral <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.eisenstein_basic_first : Ad3.R.B0 → Ad3.R.E1 := by
   first | exact @GlobalTheory.CompanionTheory.RSEuler.eulerProduct_integral | exact GlobalTheory.CompanionTheory.RSEuler.eulerProduct_integral | (intros; apply GlobalTheory.CompanionTheory.RSEuler.eulerProduct_integral <;> assumption)

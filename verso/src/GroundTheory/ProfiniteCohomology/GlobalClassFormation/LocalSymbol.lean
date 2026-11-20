@@ -15,9 +15,9 @@ noncomputable section
 variable {K : FiniteSubfield}
 
 /- English proof (translation)
-Distinguish the cases in `hb : b ∈ Set.range (Algebra.norm v.Completion : AlgebraicClosure v.Completion → v.Completion)`. Conclude with `⟨1, iff_of_true rfl hb⟩`. Assume the negation of the conclusion as `hne`. Establish `hall : ∀ g : Gal(AlgebraicClosure v.Completion/v.Completion), g = 1` using `fun g =>`. Assume the negation of the conclusion as `fun hg => hne ⟨g, iff_of_false hg hb⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hcard : Nat.card Gal(AlgebraicClosure v.Completion/v.Completion) = 1` using `Nat.card_eq_one_iff_unique.2 ⟨⟨fun a c => (hall a).trans (hall c).symm⟩, ⟨1⟩⟩`. Rewrite `hcard` using `[IsGalois.card_aut_eq_finrank]`. Conclude with `hb ⟨algebraMap v.Completion _ b, by rw [Algebra.norm_algebraMap, hcard, pow_one]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_one_iff_mem_range_norm (v : InfinitePlace K.1) (b : v.Completion) :
     ∃ g : Gal(AlgebraicClosure v.Completion/v.Completion),
@@ -43,7 +43,7 @@ def localSymbolAt : Place K.1 → K.1ˣ → K.1.fixingSubgroup
       (exists_eq_one_iff_mem_range_norm v (algebraMap K.1 v.Completion (a : K.1))).choose
 
 /- English proof (translation)
-The claim follows from `| .inr v => placeInv_brauerLocal_globalCupClass_inr ι v χ a _ fun y hy => (AlgEquiv.liftNormal_commutes _ _ (⟨y, hy⟩ : GroundTheory.LocalField.maximalAbelianExtension (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)))) | .inl v => placeInv_brauerLocal_globalCupClas …`.
+A detailed English derivation is pending.
 -/
 theorem placeInv_brauerLocal_globalCupClass (χ : Additive K.1.fixingSubgroup →ₜ+ QZ) (a : K.1ˣ) :
     ∀ v : Place K.1, placeInv v (brauerLocal ι (globalCupClass χ a) v) =
@@ -55,7 +55,7 @@ theorem placeInv_brauerLocal_globalCupClass (χ : Additive K.1.fixingSubgroup �
       (exists_eq_one_iff_mem_range_norm v (algebraMap K.1 v.Completion (a : K.1))).choose_spec
 
 /- English proof (translation)
-Use `((brauerLocal ι (globalCupClass χ a)).support.finite_toSet).subset fun v hv => ?_` and prove the remaining obligations. Rewrite `hv` using `[Function.mem_support, ← placeInv_brauerLocal_globalCupClass]`. Rewrite using `[Finset.mem_coe, DFinsupp.mem_support_iff]`. Introduce `h`. Conclude with `hv (by rw [h, map_zero])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_support_char_localSymbolAt (χ : Additive K.1.fixingSubgroup →ₜ+ QZ) (a : K.1ˣ) :
     (Function.support fun v : Place K.1 => χ (Additive.ofMul (localSymbolAt ι v a))).Finite := by
@@ -67,11 +67,9 @@ theorem finite_support_char_localSymbolAt (χ : Additive K.1.fixingSubgroup →�
   exact hv (by rw [h, map_zero])
 
 /- English proof (translation)
-Use `set x := brauerLocal ι (globalCupClass χ a) with hx`. Establish `hsum : brauerSumInv ι (globalCupClass χ a) = ∑ v ∈ x.support, placeInv v (x v)`. Express the relevant statement in the definitionally equal form `sumPlaceInv K x = _`. Use `conv_lhs => rw [← DFinsupp.sum_single (f := x)]`. Rewrite using `[DFinsupp.sum, map_sum]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `sumPlaceInv_of v (x v)`. Rewrite using `[hsum, finsum_eq_sum_of_support_subset _ (s := x.support) ?_]`. Conclude with `Finset.sum_congr rfl fun v _ => placeInv_brauerLocal_globalCupClass ι χ a v`. Introduce `v hv`.
-
-Rewrite `hv` using `[Function.mem_support, ← placeInv_brauerLocal_globalCupClass]`. Rewrite using `[Finset.mem_coe, DFinsupp.mem_support_iff]`. Introduce `h`. Conclude with `hv (by rw [h, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem brauerSumInv_globalCupClass (χ : Additive K.1.fixingSubgroup →ₜ+ QZ) (a : K.1ˣ) :
     brauerSumInv ι (globalCupClass χ a) = ∑ᶠ v : Place K.1, χ (Additive.ofMul (localSymbolAt ι v a)) := by

@@ -7,7 +7,7 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree
 
 /- English proof (translation)
-Unfold `numSeg evenTops`. Rewrite using `[Finset.length_sort]`. Conclude with `Finset.card_filter_le _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem numSeg_le_card {n' : ℕ} (TT : Finset (Fin n')) : numSeg TT ≤ TT.card := by
   unfold numSeg evenTops
@@ -38,41 +38,39 @@ structure Base (K : Cst) (CH : ℝ) (X : Dat) : Prop where
     u ≤ (X.cStar : ℝ) + X.N * X.ccl + X.n' * X.ccl → CH * w * u ≤ X.b'
 
 /- English proof (translation)
-Take `⟨hY, hp, hev, hseg2, hgap, hN1, hm, hLa8, hb, hbl, hbu, hIb1, hIb2, hYb, hk2, hab, hde, hpab, hkLa, hband, hccl, hD, hcs, hsize⟩` from `h`. Establish `hCH1 : (1 : ℝ) ≤ CH` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCH`. Establish `hCHC : 1 / K.C₀ ^ 2 ≤ CH` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hCH`. Establish `hC0 : 0 < K.C₀` using `hK.1`. Establish `hns : numSeg X.TT ≤ X.TT.card` using `numSeg_le_card _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN2n : 2 ≤ X.TT.card` using `le_trans hseg2 hns`. Establish `hN2 : (2 : ℝ) ≤ (X.TT.card : ℝ)` using `by exact_mod_cast hN2n`. Establish `hN1r : (1 : ℝ) ≤ (X.N₁ : ℝ)` using `by exact_mod_cast hN1`. Establish `hm4 : 4 ≤ X.m` using `by omega`. Establish `hk5 : (5 : ℝ) ≤ (X.m : ℝ) + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (4 : ℝ) ≤ (X.m : ℝ)` using `by exact_mod_cast hm4`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hY2 : (1 : ℝ) ≤ X.Y ^ 2` using `one_le_pow₀ hY`. Establish `hkk : ((X.m : ℝ) + 1) ^ 2 ≤ X.p`. Establish `: ((X.m : ℝ) + 1) ^ 2 * 1 ≤ ((X.m : ℝ) + 1) ^ 2 * X.Y ^ 2` using `mul_le_mul_of_nonneg_left hY2 (by positivity)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp25 : (25 : ℝ) ≤ X.p`. Use `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 5) hk5 2` as an intermediate fact. Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hkp : (X.m : ℝ) + 1 ≤ X.p` using `le_trans (le_self_pow₀ (by linarith) (by norm_num)) hkk`. Establish `hQ : (1 : ℝ) ≤ (X.p : ℝ) ^ X.G'` using `one_le_pow₀ (by linarith)`. Establish `hQ4 : (1 : ℝ) ≤ ((X.p : ℝ) ^ X.G') ^ 4` using `one_le_pow₀ hQ`. Establish `hk3 : (1 : ℝ) ≤ ((X.m : ℝ) + 1) ^ 3` using `one_le_pow₀ (by linarith)`. Establish `hG1 : (1 : ℝ) ≤ ((X.m : ℝ) + 1) ^ 3 * X.TT.card * ((X.p : ℝ) ^ X.G') ^ 4 * X.Y` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hk3 (by linarith)) hQ4) hY`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsz : ∀ w u : ℝ, 0 ≤ w → w ≤ ((X.m : ℝ) + 1) ^ 3 * X.TT.card * ((X.p : ℝ) ^ X.G') ^ 4 * X.Y → 0 ≤ u → u ≤ (X.cStar : ℝ) + X.TT.card * X.ccl + X.n' * X.ccl → CH * w * u ≤ X.b'`. Introduce `w u hw0 hw hu0 hu`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : (0 : ℝ) ≤ CH` using `by linarith`. Use `gcongr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = CH * ((X.m : ℝ) + 1) ^ 3 * X.TT.card * ((X.p : ℝ) ^ X.G') ^ 4 * ((X.cStar : ℝ) + X.TT.card * X.ccl + X.n' * X.ccl) * X.Y := by ring`. Use `_ ≤ X.b' := hsize`. Establish `hcs8 : (8 : ℝ) ≤ X.cStar`. Establish `: 8 ≤ X.cStar` using `by omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb8 : (8 : ℝ) ≤ X.b'`. Use `hsz 1 8 zero_le_one hG1 (by norm_num) (by` as an intermediate fact. Establish `h1 : (0 : ℝ) ≤ (X.TT.card : ℝ) * X.ccl` using `by positivity`. Establish `h2 : (0 : ℝ) ≤ (X.n' : ℝ) * X.ccl` using `by positivity`. Use the proof step `linarith)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpa : (X.p : ℝ) * X.b' < X.ar`. Rewrite `hpab` using `[lt_div_iff₀ hb]`. Then use the resulting hypothesis. Establish `har200 : (200 : ℝ) ≤ X.ar`. Use `mul_le_mul hp25 hb8 (by norm_num) (by linarith)` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpar : (X.p : ℝ) ≤ X.ar`. Use `le_mul_of_one_le_right (by linarith : (0 : ℝ) ≤ X.p) (by linarith : (1 : ℝ) ≤ X.b')` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `haa : X.ar ≤ X.a` using `Nat.le_ceil _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `haa1 : (X.a : ℝ) < X.ar + 1` using `Nat.ceil_lt_add_one (by linarith)`. Establish `hp1 : (1 : ℝ) < X.p` using `by linarith`. Establish `hL1 : 1 ≤ Real.logb X.p X.ar`. Rewrite using `[← Real.logb_self_eq_one hp1]`. Conclude with `Real.logb_le_logb_of_le hp1 (by linarith) hpar`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog1 : 1 ≤ Real.log X.ar`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hNY : (2 : ℝ) ≤ (X.TT.card : ℝ) * X.Y`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `mul_le_mul hN2 hY (by norm_num) (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLa1 : 1 ≤ LaI K.C₀ X.N₁ X.ar`. Establish `h2 : Real.log 2 ≤ Real.log ((X.TT.card : ℝ) * X.Y)` using `Real.log_le_log (by norm_num) hNY`. Use `Real.log_two_gt_d9` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLa2 : 1 ≤ LaI K.C₀ X.N₁ X.ar ^ 2` using `one_le_pow₀ hLa1`. Establish `hNk : (X.TT.card : ℝ) ≤ (X.m : ℝ) + 1`. Establish `h1 : (X.TT.card : ℝ) * 1 ≤ (X.TT.card : ℝ) * LaI K.C₀ X.N₁ X.ar ^ 2` using `mul_le_mul_of_nonneg_left hLa2 (by positivity)`. Establish `h2 : 1 * ((X.TT.card : ℝ) * LaI K.C₀ X.N₁ X.ar ^ 2) ≤ CH * ((X.TT.card : ℝ) * LaI K.C₀ X.N₁ X.ar ^ 2)` using `mul_le_mul_of_nonneg_right hCH1 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `sq_level_le_degree : (X.N₁ : ℝ) ^ 2 ≤ (X.m : ℝ) + 1`. Establish `e1 : LaI K.C₀ X.N₁ X.ar ^ 2 = K.C₀ ^ 2 * (X.N₁ : ℝ) ^ 4 * Real.log X.ar ^ 2`. Unfold `LaI`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl2 : 1 ≤ Real.log X.ar ^ 2` using `one_le_pow₀ hlog1`. Establish `hc : 1 ≤ CH * K.C₀ ^ 2`. Establish `hpos : 0 < K.C₀ ^ 2` using `by positivity`. Rewrite `hCHC` using `[div_le_iff₀ hpos]`. Conclude with `hCHC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h4 : (X.N₁ : ℝ) ^ 2 ≤ (X.N₁ : ℝ) ^ 4` using `pow_le_pow_right₀ hN1r (by norm_num)`. Establish `h5 : (X.N₁ : ℝ) ^ 4 ≤ CH * (X.TT.card : ℝ) * LaI K.C₀ X.N₁ X.ar ^ 2`. Rewrite using `[e1]`. Establish `hn4 : (0 : ℝ) ≤ (X.N₁ : ℝ) ^ 4` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `: (1 : ℝ) ≤ (X.TT.card : ℝ)` using `by linarith`. Use `gcongr`. Use `_ = _ := by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨hY, hN2, by exact_mod_cast hns, hN1r, hk5, hp25, hkp, hQ, hb8, hpa, haa, haa1, hL1, hlog1, hLa1, hNk, sq_level_le_degree, hsz⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem base_of (K : Cst) (hK : K.Pos) (CH : ℝ) (hCH : K.TLP ≤ CH) (X : Dat) (h : X.Hyp K.C₀ CH) : Base K CH X := by
   obtain ⟨hY, hp, hev, hseg2, hgap, hN1, hm, hLa8, hb, hbl, hbu, hIb1, hIb2, hYb, hk2, hab, hde, hpab, hkLa, hband,

@@ -20,29 +20,27 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `γ Z F'₂ φ φ' Λ₂ hB β₀ hβ₀ hfr hW0 hOm p w hw hm hm₂`. Establish `hStar` using `hB.2.2.1`. Establish `hT2` using `hStar.2.1 p`. Establish `hId` using `hT2.2.2.2.1`. Establish `hwW` using `OrthogonalLocalComplement.baseChange_mem_W0 Zd p γ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w₂, hw₂, hs1, hs2⟩` from `hId.2.2.1 (baseChange₂ D p w) hwW`. Establish `hzrep : (repF γ).zt = (repF γ).fl.z` using `hB.2.2.2.2.2.2.1.1.2`. Establish `hwHp : w ∈ Hp γ.lam (lf D F0) (repF γ)`. Establish `hle` using `BwdBetaS.UUE_le_span γ.lam (lf D F0) (repF γ) rfl hzrep`. Establish `hspan : Submodule.span D.host.E (Set.range (Sum.elim (lf D F0).fl.fvec (repF γ).fl.fvec)) = F0.Xplus ⊔ (repF γ).fl.Xplus`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.Sum.elim_range, Submodule.span_union, SpanOmPf.Xplus_eq, SpanOmPf.Xplus_eq]`. Rewrite `hle` using `[hspan]`. Use `show w ∈ orth (VS D) (UUE γ.lam (lf D F0) (repF γ))`. Rewrite `hw`, the goal using `[PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth]`. Conclude with `fun x hx => hw x (hle hx)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Take `⟨w₂g, hw₂g, hd1, hd2⟩` from `hW0 w hwHp`. Establish `hu` using `OrthogonalLocalComplement.hu_all Zd p`. Establish `hwperp : baseChange₂ D p w ∈ (locH Zd p).perp ((locH Zd p).X (tLoc Zd p γ).f)` using `baseChange_mem_perp_sup Zd p γ ((PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).2 fun x hx => (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hw x (Submodule.mem_sup_left (le_sup_left (a := F0.X) (b := Submodule.span D.host.E {F0.z}) hx)))`. Establish `hw₂perp : w₂ ∈ (locH Zd p).perp ((locH Zd p).X (tLoc Zd p γ).f)` using `LsDatumA.mem_perp_isotropicSpan_of_mem_framePerp _ hw₂`. Establish `hdiff1 : baseChange₂ D p w - w₂ ∈ (locH Zd p).X (tLoc Zd p γ).f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hs1 ⟨baseChange₂ D p w, hwperp⟩ ⟨w₂, hw₂perp⟩ rfl rfl`. Establish `h1 : (φ p) ((locH Zd p).mkW (tLoc Zd p γ).f ⟨baseChange₂ D p w, hwperp⟩) = (locH Zd p).mkW (tLoc Zd p γ).f ⟨w₂, hw₂perp⟩`. Use `h` as an intermediate fact. Simplify using `only [one_smul] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : ∀ x, (φ p) x = x` using `fun x => by rw [hStar.2.2 p]; rfl`. Conclude with `LsDatumA.sub_mem_X_of_mkW_eq _ ((e' _).symm.trans h1)`. Establish `hdiff2 : baseChange₂ D p w - baseChange₂ D p w₂g ∈ (locH Zd p).X (tLoc Zd p γ).f`. Rewrite using `[← map_sub]`. Conclude with `bcP_X Zd p γ hu hd1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hdX : w₂ - baseChange₂ D p w₂g ∈ (locH Zd p).X (tLoc Zd p γ).f`. Use `Submodule.sub_mem _ hdiff2 hdiff1` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis. Establish `hd0 : ∀ a, (locH Zd p).h (w₂ - baseChange₂ D p w₂g) (locF' Zd p F'₂ a) = 0`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (locH Zd p).h w₂ (locF' Zd p F'₂ a) = 0` using `hw₂ _ (Submodule.mem_sup_right (Submodule.subset_span ⟨a, rfl⟩))`. Establish `h2 : (locH Zd p).h (baseChange₂ D p w₂g) (locF' Zd p F'₂ a) = 0`. Rewrite using `[h_eq, locF'_eq, LocFacts.localForm_smul_right, ← h_eq, localForm_baseChange, (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hw₂g _ (OrthogonalLocalComplement.frame_mem_UUE hB.2.2.2.1.1 (lf D F0) F'₂ a), map_zero, mul_zero]`. Rewrite using `[OmL.h_sub_left, h1, h2, sub_zero]`. Establish `hgen` using `(hB.2.2.2.1.2 p).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : IsUnit ((locH Zd p).Zhat (locF' Zd p F'₂) (tLoc Zd p γ).f).det`. Establish `h` using `hgen.1.2.2.2.1`. Rewrite `h` using `[OmL.dl_last]`. Rewrite using `[LsDatumA.Zhat_swap, Matrix.det_transpose, ← RingHom.map_det]`. Conclude with `h.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : w₂ - baseChange₂ D p w₂g = 0` using `OmL.uniq_loc (locH Zd p) (locF' Zd p F'₂) (tLoc Zd p γ).f hdet (le_trans (Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨i.castSucc, rfl⟩)) le_rfl hdX) hd0`. Establish `hw₂eq : w₂ = baseChange₂ D p w₂g` using `sub_eq_zero.1 hd`. Establish `hw₂perp' : w₂ ∈ (locH Zd p).perp ((locH Zd p).X (locF' Zd p F'₂))` using `LsDatumA.mem_perp_isotropicSpan_of_mem_framePerp' _ hw₂`. Establish `h` using `hs2 ⟨baseChange₂ D p w, hm⟩ ⟨w₂, hw₂perp'⟩ rfl rfl`. Establish `h' : (φ' p) ((locH Zd p).mkW (tLoc Zd p γ).f' ⟨baseChange₂ D p w, hm⟩) = (locH Zd p).mkW (locF' Zd p F'₂) ⟨w₂, hw₂perp'⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `h` as an intermediate fact. Simplify using `only [one_smul] at this`. Conclude with `this`. Rewrite using `[h']`. Apply `Submodule.Quotient.eq _ |>.2` to reduce the goal to its premises.
-
-Use `show w₂ - baseChange₂ D p (β₀ w) ∈ (locH Zd p).X (locF' Zd p F'₂)`. Rewrite using `[hw₂eq, ← map_sub, show w₂g - β₀ w = -(β₀ w - w₂g) by abel, map_neg]`. Conclude with `Submodule.neg_mem _ (bcP_X' Zd p F'₂ hd2)`.
+A detailed English derivation is pending.
 -/
 theorem localOrthogonal_holds : PartialIsometryExtension Zd u u' F0 what₂ := by
   intro γ Z F'₂ φ φ' Λ₂ hB β₀ hβ₀ hfr hW0 hOm p w hw hm hm₂

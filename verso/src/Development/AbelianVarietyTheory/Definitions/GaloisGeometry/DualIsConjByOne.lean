@@ -48,7 +48,7 @@ def DualIsConj (π : CuspSub L a) : Prop := Paired π π conjOp
 def DualIsConjBy (π : CuspSub L a) (ψ : HChar L) : Prop := Paired (π.twist ψ⁻¹) π conjOp
 
 /- English proof (translation)
-Rewrite using `[DualIsConjBy, inv_one, CuspSub.twist_one, DualIsConj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dualIsConjBy_one (π : CuspSub L a) : DualIsConjBy π 1 ↔ DualIsConj π := by
   rw [DualIsConjBy, inv_one, CuspSub.twist_one, DualIsConj]

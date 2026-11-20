@@ -6,15 +6,15 @@ open scoped Matrix
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.Mink
 
 /- English proof (translation)
-Introduce `E _ _`. Use `⟨(4 / Real.pi) ^ InfinitePlace.nrComplexPlaces E * ((Module.finrank ℚ E).factorial : ℝ) / (Module.finrank ℚ E : ℝ) ^ Module.finrank ℚ E * Real.sqrt |(discr E : ℝ)|, ?_, ?_⟩` and prove the remaining obligations. Establish `hn : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `hd : (0 : ℝ) < |(discr E : ℝ)|` using `abs_pos.mpr (by exact_mod_cast discr_ne_zero E)`. Establish `h1 : (0 : ℝ) < (4 / Real.pi) ^ InfinitePlace.nrComplexPlaces E` using `pow_pos (div_pos (by norm_num) Real.pi_pos) _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℝ) < ((Module.finrank ℚ E).factorial : ℝ)` using `Nat.cast_pos.mpr (Nat.factorial_pos _)`. Establish `h3 : (0 : ℝ) < (Module.finrank ℚ E : ℝ) ^ Module.finrank ℚ E` using `pow_pos (Nat.cast_pos.mpr hn) _`. Conclude with `mul_pos (div_pos (mul_pos h1 h2) h3) (Real.sqrt_pos.mpr hd)`. Introduce `𝔞 h𝔞`. Establish `hmem : (𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]` and apply the resulting hypothesis. Take `⟨a, ha, ha0, hle⟩` from `exists_ne_zero_mem_ideal_of_norm_le_mul_sqrt_discr E (Units.mk0 _ hmem)`. Rewrite `ha` using `[Units.val_mk0]`. Take `⟨t, ht, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).mp ha`. Use `⟨t, ht, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using `at ha0`. Establish `key : ((Ideal.absNorm (Ideal.span {t}) : ℚ)) = |Algebra.norm ℚ (algebraMap (𝓞 E) E t)|`. Rewrite using `[← FractionalIdeal.coeIdeal_absNorm (K := E), FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.absNorm_span_singleton]`. Establish `key' : (Ideal.absNorm (Ideal.span {t}) : ℝ) = ((|Algebra.norm ℚ (algebraMap (𝓞 E) E t)| : ℚ) : ℝ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key, Rat.cast_natCast]`. Rewrite using `[key']`. Use `hle.trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Units.val_mk0, FractionalIdeal.coeIdeal_absNorm, Rat.cast_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_mem_absNorm_le :
     ∀ (E : Type) [Field E] [NumberField E], ∃ C : ℝ, 0 < C ∧ ∀ 𝔞 : Ideal (𝓞 E), 𝔞 ≠ ⊥ →

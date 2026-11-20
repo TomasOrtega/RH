@@ -6,9 +6,9 @@ open scoped ContDiff nonZeroDivisors
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `b` to `(Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L`. Use `⟨∑ i, ‖b i‖ + 1, by positivity, fun y => ?_⟩` and prove the remaining obligations. Establish `hmem : (ZSpan.floor b y : V) ∈ L` using `((Module.Free.chooseBasis ℤ L).ofZLatticeBasis_span ℝ).le (ZSpan.floor b y).2`. Use `⟨-⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `ZSpan.norm_fract_le b y`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[ZSpan.fract_apply]`. Establish `e : y + ((-⟨_, hmem⟩ : L) : V) = y - (ZSpan.floor b y : V)`. Rewrite using `[Submodule.coe_neg, sub_eq_add_neg]`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_radius_lattice_translate_norm_le (V : Type) [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (L : Submodule ℤ V) [DiscreteTopology L]
@@ -27,31 +27,29 @@ theorem exists_radius_lattice_translate_norm_le (V : Type) [NormedAddCommGroup V
   linarith
 
 /- English proof (translation)
-Introduce `V _ _ _ L _ _`. Take `⟨R, hR, hcov⟩` from `exists_radius_lattice_translate_norm_le V L`. Set `φ : ContDiffBump (0 : V)` to `⟨R + 1, R + 2, by linarith, by linarith⟩`. Establish `hrIn : φ.rIn = R + 1` using `rfl`. Set `b` to `(Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hspan : Submodule.span ℤ (Set.range b) = L` using `(Module.Free.chooseBasis ℤ L).ofZLatticeBasis_span ℝ`. Establish `hfin : ∀ (x : V) (r : ℝ), {l : L | ‖x + (l : V)‖ < r}.Finite`. Introduce `x r`. Establish `hs` using `ZSpan.setFinite_inter b (Metric.isBounded_ball (x := -x) (r := r))`. Rewrite `hs` using `[hspan]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hs.preimage Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations. Introduce `l hl`. Use `⟨?_, l.2⟩` and prove the remaining obligations. Use `show dist (l : V) (-x) < r`. Rewrite using `[dist_eq_norm, sub_neg_eq_add, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hl`. Set `S : V → ℝ` to `fun y => ∑' l : L, φ (y + l)`. Establish `hsupp : ∀ y, (Function.support fun l : L => φ (y + l)).Finite`. Introduce `y`. Use `(hfin y φ.rOut).subset fun l hl => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : y + (l : V) ∈ Metric.ball (0 : V) φ.rOut`. Rewrite using `[← φ.support_eq]`. Conclude with `hl`. Simplify `h` using `[mem_ball_zero_iff]`. Establish `hsum : ∀ y, HasSum (fun l : L => φ (y + l)) (S y)` using `fun y => (summable_of_hasFiniteSupport (hsupp y)).hasSum`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Establish `hper : ∀ y (l₀ : L), S (y + l₀) = S y`. Introduce `y l₀`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [S, Submodule.coe_add, add_assoc]`. Use `_ = S y := (Equiv.addLeft l₀).tsum_eq (fun l : L => φ (y + l))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpos : ∀ y, 0 < S y`. Introduce `y`. Take `⟨l, hl⟩` from `hcov y`. Establish `h1 : φ (y + l) = 1` using `φ.one_of_mem_closedBall (by rw [mem_closedBall_zero_iff, hrIn]; linarith)`. Establish `h2` using `le_hasSum (hsum y) l (fun _ _ => φ.nonneg)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS : ContDiff ℝ ∞ S`. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`. Set `F` to `(hfin x (φ.rOut + 1)).toFinset`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `heq : S =ᶠ[nhds x] fun y => ∑ l ∈ F, φ (y + l)` using `by filter_upwards [Metric.ball_mem_nhds x one_pos] with y hy`. Use `(hsum y).unique (hasSum_sum_of_ne_finset_zero ?_)` and prove the remaining obligations. Introduce `l hl`. Rewrite `hl` using `[Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_lt]`. Apply `φ.zero_of_le_dist` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[dist_zero_right]`. Establish `h2 : ‖x + (l : V)‖ ≤ ‖y + (l : V)‖ + ‖x - y‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖x - y‖ < 1`. Rewrite using `[← dist_eq_norm, dist_comm]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hy`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(ContDiff.contDiffAt (ContDiff.sum fun l _ => φ.contDiff.comp (contDiff_id.add contDiff_const))).congr_of_eventuallyEq heq`. Use `⟨fun y => φ y / S y, φ.contDiff.div hS fun y => (hpos y).ne', ?_, ?_⟩` and prove the remaining obligations. Use `φ.hasCompactSupport.mono fun y hy => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `only [Function.mem_support] at hy ⊢`. Introduce `h`. Apply `hy` to reduce the goal to its premises. Simplify using `[h]`. Introduce `y show HasSum (fun l : L => φ (y + l) / S (y + l)) 1`.
-
-Repeatedly rewrite using `[hper y]`. Rewrite using `[← div_self (hpos y).ne']`. Conclude with `(hsum y).div_const _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smooth_compactSupport_hasSum_lattice_translates :
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L], ∃ η : V → ℝ, ContDiff ℝ ∞ η ∧ HasCompactSupport η ∧ ∀ y, HasSum (fun l : L => η (y + l)) 1 := by

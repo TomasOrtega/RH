@@ -15,7 +15,7 @@ namespace GlobalTheory.Cofactor
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Continuous fun x : InfiniteAdeleRing F => ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun (v : {w : InfinitePlace F // w.IsComplex}) => InfinitePlace.Completion.extensionEmbedding v.1 (x v)))`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem cont_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
   change Continuous fun x : InfiniteAdeleRing F =>
@@ -26,9 +26,7 @@ private theorem cont_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpac
   · exact (InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)
 
 /- English proof (translation)
-Use `continuous_pi fun v => ?_` and prove the remaining obligations. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]`. Conclude with `((continuous_apply _).comp continuous_fst).congr fun y => (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]`.
-
-Conclude with `((continuous_apply _).comp continuous_snd).congr fun y => (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cont_ofMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm := by
   refine continuous_pi fun v => ?_
@@ -41,7 +39,7 @@ private theorem cont_ofMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpac
       (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm
 
 /- English proof (translation)
-The claim follows from `(hf.comp (continuous_pi fun i => cont_toMixed.comp (continuous_fst.comp (continuous_apply i)))).mul (hg.comp (continuous_pi fun i => continuous_snd.comp (continuous_apply i)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pureA {f : (κ → mixedEmbedding.mixedSpace F) → ℂ} {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hf : Continuous f) (hg : Continuous g) : Continuous (pureA F f g) :=
@@ -49,9 +47,9 @@ theorem continuous_pureA {f : (κ → mixedEmbedding.mixedSpace F) → ℂ} {g :
     (hg.comp (continuous_pi fun i => continuous_snd.comp (continuous_apply i)))
 
 /- English proof (translation)
-Set `H : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F) → (κ → AdeleRing (𝓞 F) F)` to `fun p i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (p.1 i), p.2 i)`. Establish `hH : Continuous H` using `continuous_pi fun i => (cont_ofMixed.comp ((continuous_apply i).comp continuous_fst)).prodMk ((continuous_apply i).comp continuous_snd)`. Use `HasCompactSupport.intro ((hf.isCompact.prod hg.isCompact).image hH) fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Apply `hx` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1, fun i => (x i).2), ⟨subset_tsupport _ (left_ne_zero_of_mul h), subset_tsupport _ (right_ne_zero_of_mul h)⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `Prod.ext ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm_apply_apply _) rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_pureA {f : (κ → mixedEmbedding.mixedSpace F) → ℂ} {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hf : HasCompactSupport f) (hg : HasCompactSupport g) : HasCompactSupport (pureA F f g) := by
@@ -70,9 +68,9 @@ theorem hasCompactSupport_pureA {f : (κ → mixedEmbedding.mixedSpace F) → �
 variable (F κ) in
 
 /- English proof (translation)
-Set `b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport fun x => (b x : ℂ)` using `b.hasCompactSupport.comp_left (g := fun t : ℝ => (t : ℂ)) Complex.ofReal_zero`. Establish `h2 : ContDiff ℝ ∞ fun x => (b x : ℂ)` using `Complex.ofRealCLM.contDiff.comp b.contDiff`. Use `⟨h1.toSchwartzMap h2, h1, ?_⟩` and prove the remaining obligations. Use `show (b 0 : ℂ) = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one), Complex.ofReal_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_bump : ∃ f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ, HasCompactSupport f ∧ f 0 = 1 := by
   let b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F) := ⟨1, 2, one_pos, one_lt_two⟩
@@ -88,30 +86,30 @@ variable (κ) in
 def intPts (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) : Set (κ → Fv F v) := {x | ∀ i, x i ∈ v.adicCompletionIntegers F}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[intPts]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem intPts_eq (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) :
     intPts κ v = Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v)) := by
   ext x; simp [intPts]
 
 /- English proof (translation)
-Rewrite using `[intPts_eq]`. Conclude with `isCompact_univ_pi fun _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_intPts (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) : IsCompact (intPts κ v) := by
   rw [intPts_eq]
   exact isCompact_univ_pi fun _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers v
 
 /- English proof (translation)
-Rewrite using `[intPts_eq]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => Valued.isOpen_valuationSubring _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_intPts (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) : IsOpen (intPts κ v) := by
   rw [intPts_eq]
   exact isOpen_set_pi Set.finite_univ fun _ _ => Valued.isOpen_valuationSubring _
 
 /- English proof (translation)
-Use `⟨?_, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ U`. Use `filter_upwards [ho.mem_nhds hx] with y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hy]`. Both sides reduce to the same expression. Use `filter_upwards [hc.isClosed.isOpen_compl.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hy]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indicator_mem_SB {X : Type} [TopologicalSpace X] [T2Space X] {U : Set X} (hc : IsCompact U) (ho : IsOpen U) :
     U.indicator (1 : X → ℂ) ∈ GlobalTheory.WeilM.SB X := by
@@ -125,33 +123,29 @@ theorem indicator_mem_SB {X : Type} [TopologicalSpace X] [T2Space X] {U : Set X}
     rw [Set.indicator_of_notMem hx, Set.indicator_of_notMem hy]
 
 /- English proof (translation)
-Introduce `F _ _ κ _ v`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Take `⟨f, hfc, hf0⟩` from `exists_bump F κ`. Set `φ : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F w) → ℂ` to `fun w => (intPts κ w).indicator 1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ w, φ w ∈ GlobalTheory.WeilM.SB _` using `fun w => indicator_mem_SB (isCompact_intPts w) (isOpen_intPts w)`. Establish `hstd : ∀ᶠ w in Filter.cofinite, φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `Filter.Eventually.of_forall fun _ => rfl`. Take `⟨r, hr, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hstd`. Establish `key : ∀ ψ ∈ GlobalTheory.WeilM.SB (κ → Fv F v), ∃ g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) ψ r = pureA F f g`. Introduce `ψ hψ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ∀ w, Function.update φ v ψ w ∈ GlobalTheory.WeilM.SB _` using `fun w => by`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hψ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hw]`. Conclude with `hφ w`. Establish `h2` using `GlobalTheory.PureFactor.update_eventually φ v ψ hstd`. Conclude with `⟨_, ⟨isLocallyConstant_finprod_evalV _ h1 h2, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod _ h1 h2⟩, hrt ψ⟩`. Establish `hev : Continuous fun x : κ → AF F => fun i => evFin F v (x i)` using `continuous_pi fun i => (RestrictedProduct.continuous_eval v).comp (continuous_snd.comp (continuous_apply i))`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (0 : κ → Fv F v) ∈ intPts κ v` using `fun _ => zero_mem _`. Establish `hrc : Continuous r`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Set `y : κ → Fv F v` to `fun i => evFin F v (x i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `U : Set (κ → Fv F v)` to `Homeomorph.addRight y '' intPts κ v`. Establish `hUo : IsOpen U` using `(Homeomorph.addRight y).isOpenMap _ (isOpen_intPts v)`. Establish `hUc : IsCompact U` using `(isCompact_intPts v).image (Homeomorph.addRight y).continuous`. Establish `hy : y ∈ U` using `⟨0, h0, by simp⟩`. Take `⟨g, hg, e⟩` from `key _ (indicator_mem_SB hUc hUo)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `(continuous_pureA f.continuous hg.1.continuous).continuousAt.congr ?_` and prove the remaining obligations. Use `filter_upwards [hev.continuousAt.preimage_mem_nhds (hUo.mem_nhds hy)] with z hz`. Rewrite using `[← e]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens`. Rewrite using `[Set.indicator_of_mem (show (fun i => evFin F v (z i)) ∈ U from hz), Pi.one_apply, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨r, intPts κ v, hrc.measurable, hr, fun ψ hψ => ?_, isCompact_intPts v, ⟨0, by rw [(isOpen_intPts v).interior_eq]; exact h0⟩, fun μ hμ => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, e⟩` from `key ψ hψ`. Conclude with `Submodule.subset_span ⟨f, g, hg, e⟩`. Take `⟨g, hg, e⟩` from `key _ (hφ v)`. Use `set P := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) (φ v) r with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hPc : Continuous P` using `e ▸ continuous_pureA f.continuous hg.1.continuous`. Establish `hPs : HasCompactSupport P` using `e ▸ hasCompactSupport_pureA hfc hg.2`. Establish `hP0 : P 0 = 1`. Rewrite using `[hP, hrt (φ v), Function.update_eq_self]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `a1 : (fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F ((0 : κ → AF F) i)) = 0`. Use function extensionality and compare the values at `i`. Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Rewrite using `[a1, hf0, one_mul]`. Use `finprod_eq_one_of_forall_eq_one fun w => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `: (fun i => evFin F w ((0 : κ → AF F) i)) ∈ intPts κ w`. Introduce `i`. Use `show evFin F w 0 ∈ _`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Set.indicator_of_mem this _`. Establish `hI : (fun x : κ → AF F => (intPts κ v).indicator 1 (fun i => evFin F v (x i)) * ‖r x‖ₑ ^ 2) = fun x => ‖(P * P) x‖ₑ`. Use function extensionality and compare the values at `x`. Simplify using `only [hP, Pi.mul_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, φ]`. Distinguish the cases in `hx : (fun i => evFin F v (x i)) ∈ intPts κ v`.
-
-Simplify using `[Set.indicator_of_mem hx, sq]`. Simplify using `[Set.indicator_of_notMem hx]`. Rewrite using `[hI]`. Establish `hPP : Continuous (P * P)` using `hPc.mul hPc`. Use `⟨fun h => ?_, (hPP.integrable_of_hasCompactSupport hPs.mul_left).2.ne⟩` and prove the remaining obligations.
-
-Rewrite `h` using `[lintegral_eq_zero_iff hPP.measurable.enorm]`. Establish `h3 : (P * P) =ᵐ[μ] 0` using `h.mono fun x hx => by simpa using hx`. Establish `h4` using `congrFun ((hPP.ae_eq_iff_eq μ continuous_zero).1 h3) 0`. Simplify using `[hP0] at h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cofactor : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F),
     ∃ (r : (κ → AF F) → ℂ) (K : Set (κ → Fv F v)), @Measurable _ _ (borel _) _ r ∧

@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.GridJoin
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.under_asIdeal, Ideal.mem_under, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_mem_under_iff (Aa : Type) [CommRing Aa] [IsDomain Aa] {B : Type} [CommRing B] [IsDomain B]
     [Algebra Aa B] [Algebra.IsIntegral Aa B] (w : HeightOneSpectrum B) (n : ℕ) :
@@ -25,59 +25,49 @@ theorem natCast_mem_under_iff (Aa : Type) [CommRing Aa] [IsDomain Aa] {B : Type}
   rw [HeightOneSpectrum.under_asIdeal, Ideal.mem_under, map_natCast]
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R sc F hR G' hPg hsplit hg hT e he`. Establish `hPgOver : ∀ PP ∈ R.Pg, ∃ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Introduce `PP hPP`. Take `⟨k, hk⟩` from `(hR.lev.Pg PP).1 hPP`. Use `⟨k, (natCast_mem_under_iff (𝓞 D.host.K) PP _).1 ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show PP.under (𝓞 D.host.K) = R.C.P.pb k from hk]`. Conclude with `R.C.P.pb_over k`. Establish `gS1 : ∀ (v : Pl D.host.F) (k : Fin 2), ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal → v ∈ S1 D`. Introduce `v k hk`. Rewrite using `[S1_mem_OmF]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the first alternative.
 
-Use `fin_cases k`. Conclude with `Or.inl hk`. Conclude with `Or.inr (Or.inl hk)`. Establish `hPgS1 : ∀ PP ∈ R.Pg, PP.under (𝓞 D.host.F) ∈ S1 D`. Introduce `PP hPP`.
+Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hPgOver PP hPP`. Conclude with `gS1 _ k ((natCast_mem_under_iff (𝓞 D.host.F) PP _).2 hk)`. Use `set P := G'.pl with hPdef`. Establish `hS0 : ∀ v ∈ S1 D, v ∈ insert P.v0 (S1 D)` using `fun v hv => Finset.mem_insert_of_mem hv`. Establish `hv0 : P.v0 ∈ insert P.v0 (S1 D)` using `Finset.mem_insert_self _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hPgw : ∀ PP ∈ R.Pg, P.w (PP.under (𝓞 D.host.F)) = PP`. Introduce `PP hPP`. Take `⟨k, hk⟩` from `hPgOver PP hPP`. Establish `hkF` using `(natCast_mem_under_iff (𝓞 D.host.F) PP _).2 hk`. Conclude with `hPg _ (P.w_g _ k hkF) _ hPP (P.w_over _ (hS0 _ (gS1 _ k hkF)))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `pd : Pl D.host.F → Prop` to `fun v => ((D.host.pde : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal ∨ ((D.host.pde' : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal`. Set `Wd : Finset (Pl D.host.E)` to `((S1 D).filter pd).image P.w`. Set `Z : GlobalTheory.Grid.PlaceDat D` to `⟨q0 D, P.w P.v0, P.depth sc P.v0, Wd⟩`. Establish `hmemWd : ∀ w, w ∈ Wd ↔ ∃ v ∈ S1 D, pd v ∧ P.w v = w`. Introduce `w`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Wd, Finset.mem_image, Finset.mem_filter, and_assoc]`. Establish `hW : Z.W R.Pg = P.W0`. Use extensionality with `x`. Simplify using `only [GlobalTheory.Grid.PlaceDat.W, Places.W0, Places.S0, Finset.mem_union, Finset.mem_singleton, Finset.mem_image, Finset.mem_insert, Z]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce and unpack `((hx | hx) | rfl)`. Conclude with `⟨_, Or.inr (hPgS1 x hx), hPgw x hx⟩`. Take `⟨v, hv, -, rfl⟩` from `(hmemWd x).1 hx`. Conclude with `⟨v, Or.inr hv, rfl⟩`. Conclude with `⟨P.v0, Or.inl rfl, rfl⟩`.
+Assume the hypotheses and unpack their components. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the first alternative.
 
-Introduce and unpack `⟨v, hv | hv, rfl⟩`. Conclude with `Or.inr (by rw [hv])`. Break down `(S1_mem_OmF D).1 hv with h | h | h | h` into its components or cases. Conclude with `Or.inl (Or.inl (P.w_g v 0 h))`. Conclude with `Or.inl (Or.inl (P.w_g v 1 h))`.
+Prove the first alternative. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inl (Or.inr ((hmemWd _).2 ⟨v, hv, Or.inl h, rfl⟩))`. Conclude with `Or.inl (Or.inr ((hmemWd _).2 ⟨v, hv, Or.inr h, rfl⟩))`. Establish `hinj : ∀ v ∈ P.S0, ∀ v' ∈ P.S0, P.w v = P.w v' → v = v'` using `fun v hv v' hv' h => (P.under_w hv).symm.trans ((congrArg _ h).trans (P.under_w hv'))`. Establish `hIdeal : Z.ideal R.Pg = G'.modul`. Rewrite using `[GlobalTheory.Grid.PlaceDat.ideal, hW, Places.W0, Finset.prod_image hinj]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hv0' : P.v0 ∈ P.S0` using `P.mem_S0_of_sum_eq.2 (Or.inl rfl)`. Simplify using `only [GlobalTheory.Grid.PlaceDat.depth, Z]`. Distinguish the cases in `h : v = P.v0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h, if_pos rfl]`. Rewrite using `[if_neg (fun h' => h (hinj v hv _ hv0' h'))]`. Unfold `Places.depth`. Rewrite using `[if_neg h]`. Establish `hS0eq : Z.S0 R.Pg = P.S0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use extensionality with `v`. Simplify using `only [GlobalTheory.Grid.PlaceDat.S0, hW, Places.W0, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨v', hv', rfl⟩, rfl⟩`. Rewrite using `[P.under_w hv']` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hv`. Conclude with `⟨_, ⟨v, hv, rfl⟩, P.under_w hv⟩`. Establish `hWdS1 : ∀ w ∈ Wd, w.under (𝓞 D.host.F) ∈ S1 D`. Introduce `w hw`. Take `⟨v, hv, -, rfl⟩` from `(hmemWd w).1 hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[P.w_over v (hS0 v hv)]`. Conclude with `hv`. Establish `hq` using `leastSplitAuxiliaryPrimeThetaChain_spec D`. Use `⟨Z, ?_, rfl, rfl, rfl, hW, hIdeal, hS0eq, ?_⟩` and prove the remaining obligations. Use `{ prime := hq.1 five_le := ?_ referencePlaceOverPrime := ?_ split := hsplit ne_g := hg ne_pde := leastSplitAuxiliaryPrime_ne_typePrimes D referencePrimeNeTwist := hT coprime := Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hq.1).2 hq.2.2) offQ := ?_ depth_pos := P.depth_pos sc …` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 0 < LevelStarExponents.condE D`. Use `D.host.qd_big` as an intermediate fact. Unfold `LevelStarExponents.condE`. Conclude with `mul_pos (mul_pos D.host.QS_pos (by omega)) (by omega)`. Establish `h4 : 4 ≤ LevelStarExponents.condE D` using `Nat.le_of_dvd h1 (by unfold LevelStarExponents.condE; exact dvd_mul_of_dvd_left (dvd_mul_of_dvd_left ((Dvd.intro_left (2 ^ D.R.e) (by rw [pow_add]; norm_num)).trans D.host.tower_dvd) _) _)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `(rPr_spec D).1.two_le`. Establish `h3 : 5 < Formalism.MainNotions.rPrAv D * LevelStarExponents.condE D` using `by nlinarith`. Use `show 5 ≤ q0 D`. Assume the negation of the conclusion as `hlt`. Establish `hm` using `hq.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hm` using `[Nat.mod_eq_of_lt (by show q0 D < _; omega)]`. Conclude with `hq.1.one_lt.ne' hm`. Use `show (((q0 D : ℕ) : 𝓞 D.host.E) ∈ (P.w P.v0).asIdeal)`. Use `(natCast_mem_under_iff (𝓞 D.host.F) _ _).1 ?_` and prove the remaining obligations. Rewrite using `[P.w_over _ hv0]`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `P.basePlace_over_qZero`. Introduce `t w hw show w.under (𝓞 D.host.F) ≠ (P.w P.v0).under (𝓞 D.host.F)`. Rewrite using `[P.w_over _ hv0]`. Conclude with `P.levelPlace_ne_basePlace t w hw`. Introduce `w hw`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨v, hv, hpd, rfl⟩` from `(hmemWd w).1 hw`. Establish `hu` using `P.w_over v (hS0 v hv)`. Break down `hpd with h | h` into its components or cases. Use `left`. Use `show ((D.host.pde : ℕ) : 𝓞 D.host.E) ∈ (P.w v).asIdeal`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `(natCast_mem_under_iff (𝓞 D.host.F) _ _).1 (by rw [hu]; exact h)`. Use `right`. Use `show ((D.host.pde' : ℕ) : 𝓞 D.host.E) ∈ (P.w v).asIdeal`. Conclude with `(natCast_mem_under_iff (𝓞 D.host.F) _ _).1 (by rw [hu]; exact h)`. Introduce `p hp`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpd : ∀ v : Pl D.host.F, ((p : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal → pd v`. Introduce `v h`. Break down `hp with rfl | rfl` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr h`.
-
-Establish `hS1 : ∀ v : Pl D.host.F, ((p : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal → v ∈ S1 D`. Introduce `v h`. Break down `hp with rfl | rfl` into its components or cases. Conclude with `(S1_mem_OmF D).2 (Or.inr (Or.inr (Or.inl h)))`. Conclude with `(S1_mem_OmF D).2 (Or.inr (Or.inr (Or.inr h)))`.
-
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Establish `h` using `(natCast_mem_under_iff (𝓞 D.host.F) w p).2 hw`. Conclude with `⟨P.w (w.under (𝓞 D.host.F)), (hmemWd _).2 ⟨_, hS1 _ h, hpd _ h, rfl⟩, P.w_over _ (hS0 _ (hS1 _ h))⟩`. Take `⟨𝔭, h𝔭⟩` from `P.w_de p hp`.
-
-Use `⟨𝔭, fun w hw hpw => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, -, rfl⟩` from `(hmemWd w).1 hw`. Establish `h` using `(natCast_mem_under_iff (𝓞 D.host.F) (P.w v) p).2 hpw`. Rewrite `h` using `[P.w_over v (hS0 v hv)]`. Conclude with `h𝔭 v h`.
-
-Introduce `t w hw hpw`. Establish `h` using `(natCast_mem_under_iff (𝓞 D.host.F) w p).2 hpw`. Rewrite using `[P.w_Q t w hw (hS1 _ h)]`. Conclude with `(hmemWd _).2 ⟨_, hS1 _ h, hpd _ h, rfl⟩`. Introduce and unpack `w (hw | hw)`.
-
-Conclude with `hPgS1 w hw`. Conclude with `hWdS1 w hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem placeDat_of_grid : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : GlobalTheory.ChiGrid.Consts}, ∀ {F : Face D A}, GlobalTheory.Hk3.Core R F → ∀ {G' : GlobalTheory.ChiGrid.GridData R.toLevCh sc}, (∀ PP ∈ R.Pg, ∀ PP' ∈ R.Pg, PP.under (𝓞 D.host.F) = PP'.under (𝓞 D.host.F) → PP = PP') → Formalism.L2.Host.SplitsCompletely {G'.pl.w G'.pl.v0} → (∀ k, GlobalTheory.ChiGrid.q0 D ≠ D.host.g k) → (GlobalTheory.ChiGrid.q0 D ≠ D.sp.T ∧ ∀ u : D.what₂.Word, GlobalTheory.ChiGrid.q0 D ≠ (D.mem u).A.T) → ∀ e : AE D, IsIdemSum e G'.pl.W0 → ∃ Z : GlobalTheory.Grid.PlaceDat D, Z.Is R.Pg R.Q e ∧ Z.q0 = GlobalTheory.ChiGrid.q0 D ∧ Z.w0 = G'.pl.w G'.pl.v0 ∧ Z.e0 = G'.pl.depth sc G'.pl.v0 ∧ Z.W R.Pg = G'.pl.W0 ∧ Z.ideal R.Pg = G'.modul ∧ Z.S0 R.Pg = G'.pl.S0 ∧ ∀ w, w ∈ R.Pg ∨ w ∈ Z.Wd → w.under (𝓞 D.host.F) ∈ GlobalTheory.ChiGrid.S1 D := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R sc F hR G' hPg hsplit hg hT e he

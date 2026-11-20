@@ -12,7 +12,7 @@ def fibreBlk₀ : FibreBlock (Sum.inr : Unit → Unit ⊕ Unit) :=
   ⟨Sum.inl (), fun ⟨_, h⟩ => Sum.inr_ne_inl h⟩
 
 /- English proof (translation)
-Break down `k with ⟨⟨⟩ | ⟨⟩, h⟩` into its components or cases. Both sides reduce to the same expression. Conclude with `absurd ⟨(), rfl⟩ h`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_fibreBlk₀ (k : FibreBlock (Sum.inr : Unit → Unit ⊕ Unit)) : k = fibreBlk₀ := by
   rcases k with ⟨⟨⟩ | ⟨⟩, h⟩
@@ -25,9 +25,9 @@ def fibreCoord {T : Type} {i : ℕ} (c : T) :
   | ⟨Sum.inr (), h⟩ => absurd ⟨(), rfl⟩ h
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨⟨⟩ | ⟨⟩, h⟩, t⟩, rfl⟩`. Conclude with `⟨t, rfl⟩`. Conclude with `absurd ⟨(), rfl⟩ h`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨⟨fibreBlk₀, t⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_eq {T Φ' : Type} [Field Φ'] {i : ℕ} (x' : (Σ k, Sum.elim (dualBlocks T) (PBlk i) k) → Φ') (d : Φ') :
     (Set.range fun p : (Σ k : FibreBlock (Sum.inr : Unit → Unit ⊕ Unit),
@@ -46,9 +46,9 @@ end DualStdGenDeg
 open DualStdGenDeg in
 
 /- English proof (translation)
-Introduce `K _ _ i T _ _ b G J hi hJ`. Take `⟨c, hc, hrank, htr⟩` from `hRat K i T b G hi`. Establish `hfin : Module.Finite G.Φ (Algebra.adjoin G.Φ (Set.range fun t : T => G.x' (⟨Sum.inl (), t⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k) / G.x' (⟨Sum.inl (), c⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k)))` using `Module.finite_of_finrank_pos (hrank ▸ Module.finrank_pos)`. Establish `key` using `hPt G.Φ G.Φ' (FibreBlock (Sum.inr : Unit → Unit ⊕ Unit)) (fibreIdx (Sum.elim (dualBlocks T) (PBlk i)) Sum.inr) fibreBlk₀ eq_fibreBlk₀ (fun q => G.x' ⟨q.1.1, q.2⟩) (fibreCoord c) hc`. Use `beta_reduce at key`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[range_eq G.x']`. Take `⟨hV, hch, hdeg⟩` from `key hfin htr`. Establish `hJ0` using `hJ.1 (fibreIdeal Sum.inr G) Fin.elim0 (fibreCoord c) hV hch`. Rewrite using `[hJ0]`. Conclude with `congrArg ((↑) : ℕ → ℤ) (hdeg.trans hrank)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DualStdGenDeg.proof (hPt : OneBlockPointDeg.Statement) (hRat : DualStdFibreRatios.Statement) :
     DualStdGenDeg.Statement := by

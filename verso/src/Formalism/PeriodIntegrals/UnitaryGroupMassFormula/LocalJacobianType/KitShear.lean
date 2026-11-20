@@ -22,11 +22,11 @@ variable {W : Type} [AddCommGroup W] [TopologicalSpace W] [IsTopologicalAddGroup
   [LocallyCompactSpace W] [SecondCountableTopology W] [T2Space W] [MeasurableSpace W] [BorelSpace W]
 
 /- English proof (translation)
-Establish `hmap : ∀ T, (μ.map Φ) T = μ (Φ ⁻¹' T)` using `fun T => (Φ.toHomeomorph.toMeasurableEquiv).map_apply (μ := μ) T`. Establish `e` using `Measure.isAddLeftInvariant_eq_smul (μ.map Φ) μ`. Establish `hpos : μ K ≠ 0` using `hKo.measure_ne_zero μ hK0`. Establish `hfin : μ K ≠ ⊤` using `hK.measure_lt_top.ne`. Establish `h1` using `congrArg (fun ν : Measure W => ν K) e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hmap, hΦ, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h1`. Establish `hc : ((Measure.addHaarScalarFactor (μ.map Φ) μ : NNReal) : ENNReal) = 1`. Establish `h2 : (1 : ENNReal) * μ K = (Measure.addHaarScalarFactor (μ.map Φ) μ : ENNReal) * μ K`. Rewrite using `[one_mul]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((ENNReal.mul_left_inj hpos hfin).1 h2).symm`. Rewrite using `[← hmap, e, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, hc, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem haar_shear (μ : Measure W) [μ.IsAddHaarMeasure] (Φ : W ≃ₜ+ W) (K : Set W)
     (hK : IsCompact K) (hKo : IsOpen K) (hK0 : K.Nonempty) (hΦ : Φ ⁻¹' K = K) (S : Set W) :
@@ -50,11 +50,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Establish `: IsModuleTopology (Fv F v) (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `h : ∀ x : Fv F v ⊗[F] E, sigR (Fv F v) σ x = (σ.toLinearMap.baseChange (Fv F v)) x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul r e => simp [sigR]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `: (sigR (Fv F v) σ : Fv F v ⊗[F] E → Fv F v ⊗[F] E) = (σ.toLinearMap.baseChange (Fv F v))`. Use function extensionality and compare the values at `h`. Rewrite using `[this]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsModuleTopology.continuous_of_linearMap _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sigR' (σ : E →ₐ[F] E) : Continuous (sigR (Fv F v) σ) := by
   have : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩
@@ -74,7 +74,7 @@ namespace SD
 variable (D : SD σ v)
 
 /- English proof (translation)
-Rewrite using `[mul_sub, mul_one, D.he.eq, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem e_mul_f : D.e * (1 - D.e) = 0 := by
   rw [mul_sub, mul_one, D.he.eq, sub_self]
@@ -106,21 +106,21 @@ theorem shear_apply {ι : Type} (τ : ι → ι) (z : ι → Fv F v ⊗[F] E) (k
     D.shear τ z k = z k + D.e * sigR (Fv F v) σ (z (τ k)) := rfl
 
 /- English proof (translation)
-Rewrite using `[shear_apply, map_add, map_mul, D.p_e.1, (D.p_sig _).1, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shear_first_coordinate {ι : Type} (τ : ι → ι) (z : ι → Fv F v ⊗[F] E) (k : ι) :
     D.p 0 (D.shear τ z k) = D.p 0 (z k) + D.p 1 (z (τ k)) := by
   rw [shear_apply, map_add, map_mul, D.p_e.1, (D.p_sig _).1, one_mul]
 
 /- English proof (translation)
-Rewrite using `[shear_apply, map_add, map_mul, D.p_e.2, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shear_second_coordinate {ι : Type} (τ : ι → ι) (z : ι → Fv F v ⊗[F] E) (k : ι) :
     D.p 1 (D.shear τ z k) = D.p 1 (z k) := by
   rw [shear_apply, map_add, map_mul, D.p_e.2, zero_mul, add_zero]
 
 /- English proof (translation)
-Simplify using `only [Obox, Set.mem_pi, Set.mem_univ, true_implies, D.mem_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_box_iff {ι : Type} (z : ι → Fv F v ⊗[F] E) :
     z ∈ Obox (E := E) v ι ↔ ∀ k, D.p 0 (z k) ∈ v.adicCompletionIntegers F ∧
@@ -128,9 +128,9 @@ theorem mem_box_iff {ι : Type} (z : ι → Fv F v ⊗[F] E) :
   simp only [Obox, Set.mem_pi, Set.mem_univ, true_implies, D.mem_iff]
 
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[Set.mem_preimage, D.mem_box_iff, D.mem_box_iff]`. Simplify using `only [D.shear_first_coordinate, D.shear_second_coordinate]`. Prove the components needed by the constructor for the conclusion. Introduce `h k`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, (h k).2⟩` and prove the remaining obligations. Use `sub_mem (h k).1 (h (τ k)).2` as an intermediate fact. Simplify using `using this`. Introduce `h k`. Conclude with `⟨add_mem (h k).1 (h (τ k)).2, (h k).2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem shear_box {ι : Type} (τ : ι → ι) : D.shear τ ⁻¹' Obox (E := E) v ι = Obox (E := E) v ι := by
   ext z
@@ -145,7 +145,7 @@ theorem shear_box {ι : Type} (τ : ι → ι) : D.shear τ ⁻¹' Obox (E := E)
     exact ⟨add_mem (h k).1 (h (τ k)).2, (h k).2⟩
 
 /- English proof (translation)
-Rewrite using `[D.mem_iff, map_mul, map_mul, D.p_sc, D.p_sc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_sc_mul (t : Fv F v) (c : Fv F v ⊗[F] E) :
     sc (E := E) v t * c ∈ OEv (E := E) v ↔
@@ -155,12 +155,12 @@ theorem mem_sc_mul (t : Fv F v) (c : Fv F v ⊗[F] E) :
 def pt (s t : Fv F v) : Fv F v ⊗[F] E := s • D.e + t • (1 - D.e)
 
 /- English proof (translation)
-The claim follows from `D.p_pair s t`.
+A detailed English derivation is pending.
 -/
 theorem p_pt (s t : Fv F v) : D.p 0 (D.pt s t) = s ∧ D.p 1 (D.pt s t) = t := D.p_pair s t
 
 /- English proof (translation)
-Use `IsUnit.of_mul_eq_one (D.pt s⁻¹ t⁻¹) (D.ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[map_mul, (D.p_pt _ _).1, (D.p_pt _ _).1, map_one, mul_inv_cancel₀ hs]`. Rewrite using `[map_mul, (D.p_pt _ _).2, (D.p_pt _ _).2, map_one, mul_inv_cancel₀ ht]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_pt {s t : Fv F v} (hs : s ≠ 0) (ht : t ≠ 0) : IsUnit (D.pt s t) := by
   refine IsUnit.of_mul_eq_one (D.pt s⁻¹ t⁻¹) (D.ext ?_ ?_)
@@ -168,7 +168,7 @@ theorem isUnit_pt {s t : Fv F v} (hs : s ≠ 0) (ht : t ≠ 0) : IsUnit (D.pt s 
   · rw [map_mul, (D.p_pt _ _).2, (D.p_pt _ _).2, map_one, mul_inv_cancel₀ ht]
 
 /- English proof (translation)
-Rewrite using `[D.mem_iff, map_mul, map_mul, (D.p_pt _ _).1, (D.p_pt _ _).2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_pt_mul (s t : Fv F v) (c : Fv F v ⊗[F] E) :
     D.pt s t * c ∈ OEv (E := E) v ↔
@@ -176,7 +176,7 @@ theorem mem_pt_mul (s t : Fv F v) (c : Fv F v ⊗[F] E) :
   rw [D.mem_iff, map_mul, map_mul, (D.p_pt _ _).1, (D.p_pt _ _).2]
 
 /- English proof (translation)
-Rewrite using `[D.norm_eq, (D.p_pt _ _).1, (D.p_pt _ _).2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_pt (s t : Fv F v) : Algebra.norm (Fv F v) (D.pt s t) = s * t := by
   rw [D.norm_eq, (D.p_pt _ _).1, (D.p_pt _ _).2]
@@ -184,19 +184,19 @@ theorem norm_pt (s t : Fv F v) : Algebra.norm (Fv F v) (D.pt s t) = s * t := by
 end SD
 
 /- English proof (translation)
-The claim follows from `isCompact_univ_pi fun _ => (integer_ring_topology (E := E) v).1`.
+A detailed English derivation is pending.
 -/
 theorem obox_compact (ι : Type) [Finite ι] : IsCompact (Obox (E := E) v ι) :=
   isCompact_univ_pi fun _ => (integer_ring_topology (E := E) v).1
 
 /- English proof (translation)
-The claim follows from `isOpen_set_pi Set.finite_univ fun _ _ => (integer_ring_topology (E := E) v).2.1`.
+A detailed English derivation is pending.
 -/
 theorem obox_open (ι : Type) [Finite ι] : IsOpen (Obox (E := E) v ι) :=
   isOpen_set_pi Set.finite_univ fun _ _ => (integer_ring_topology (E := E) v).2.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ => Sd.oev_zero v⟩`.
+Supply the required witnesses or components.
 -/
 theorem obox_nonempty (ι : Type) : (Obox (E := E) v ι).Nonempty :=
   ⟨0, fun _ _ => Sd.oev_zero v⟩

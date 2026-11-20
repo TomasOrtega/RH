@@ -27,9 +27,9 @@ section Unif
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
 
 /- English proof (translation)
-Unfold `IsTangent`. Establish `e : (1 : epsR ℂ ⟶ A).left = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ η[A].left`. Rewrite using `[Hom.one_def, Over.comp_left]`. Use `congr 1`. Rewrite using `[e, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `: (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp (algebraMap ℂ (DualNumber ℂ)) = RingHom.id ℂ`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isTangent_one' : IsTangent (1 : epsR ℂ ⟶ A) := by
   unfold IsTangent
@@ -44,9 +44,9 @@ theorem isTangent_one' : IsTangent (1 : epsR ℂ ⟶ A) := by
   simp
 
 /- English proof (translation)
-Establish `hv : IsTangent (1 : epsR ℂ ⟶ A)` using `isTangent_one'`. Establish `hvU` using `(tangent_mem_iff (u := u) hv U).2 h0`. Use `(isDiff_iff hv hU hvU h0 w).2 ?_` and prove the remaining obligations. Rewrite using `[(isDiff_iff hv hU hvU h0 0).1 (GlobalTheory.UnifDifferential.isDiff_one u)]`. Use `RingHom.ext fun s => TrivSqZeroExt.ext rfl ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[jet_snd, jet_snd, map_zero]`. Conclude with `(hw s).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDiff_one_of_fderiv (u : HolUnif A L g) {U : A.left.Opens} (hU : IsAffineOpen U)
     (h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U) {w : Fin g → ℂ}
@@ -63,20 +63,20 @@ theorem isDiff_one_of_fderiv (u : HolUnif A L g) {U : A.left.Opens} (hU : IsAffi
 def transl (u : HolUnif A L g) (z : Fin g → ℂ) : A ⟶ A := (toUnit A ≫ u.ex z) * 𝟙 A
 
 /- English proof (translation)
-Rewrite using `[transl, MonObj.comp_mul, u.ex_add, Category.comp_id, ← Category.assoc, toUnit_unique (u.ex y ≫ toUnit A) (𝟙 _), Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_comp_transl (u : HolUnif A L g) (z y : Fin g → ℂ) : u.ex y ≫ transl u z = u.ex (z + y) := by
   rw [transl, MonObj.comp_mul, u.ex_add, Category.comp_id, ← Category.assoc, toUnit_unique (u.ex y ≫ toUnit A) (𝟙 _),
     Category.id_comp]
 
 /- English proof (translation)
-Establish `hv : IsTangent (1 : epsR ℂ ⟶ A)` using `isTangent_one'`. Use `set T := transl u z with hT`. Establish `h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ (T.left ⁻¹ᵁ W)`. Establish `e : (u.ex 0 ≫ T).left = (u.ex z).left` using `by rw [hT, ex_comp_transl, add_zero]`. Introduce `p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hz hp` as an intermediate fact. Rewrite `this` using `[← e]`. Conclude with `this`. Establish `hvU` using `(tangent_mem_iff (u := u) hv _).2 h0`. Establish `e1` using `h _ hvU ((T.left.app W).hom s)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `GlobalTheory.UnifDifferential.isDiff_one u _ hvU ((T.left.app W).hom s)`. Establish `e3 : fderiv ℂ (fun y => valAt' (u.ex y).left (T.left ⁻¹ᵁ W) ((T.left.app W).hom s)) 0 w = 0`. Rewrite using `[← e1, e2, map_zero]`. Establish `e4 : (fun y => valAt' (u.ex y).left (T.left ⁻¹ᵁ W) ((T.left.app W).hom s)) = fun y => valAt' (u.ex (z + y)).left W s`. Use function extensionality and compare the values at `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← GlobalTheory.HomLinear.valAt'_comp_left, hT, ex_comp_transl]`. Rewrite `e3` using `[e4, fderiv_comp_add_left (f := fun y => valAt' (u.ex y).left W s), add_zero]`. Conclude with `e3`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h : u.IsDiff w (1 : epsR ℂ ⟶ A))
     (z : Fin g → ℂ) {W : A.left.Opens} (hz : ⊤ ≤ (u.ex z).left ⁻¹ᵁ W) (s : Γ(A.left, W)) :
@@ -102,23 +102,21 @@ theorem fderiv_eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h 
   exact e3
 
 /- English proof (translation)
-Set `pt : (𝟙_ (Over (Sp ℂ))).left` to `(default : PrimeSpectrum ℂ)`. Establish `hsub : ∀ q : (𝟙_ (Over (Sp ℂ))).left, q = pt` using `fun q => Subsingleton.elim (α := PrimeSpectrum ℂ) q pt`. Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := (u.ex 0).left pt) (U := ⊤) (Set.mem_univ _)`. Establish `h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U`. Introduce `q _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsub q]`. Conclude with `hpU`. Establish `hcont : Continuous fun t : ℂ => t • w` using `continuous_id.smul continuous_const`. Establish `hopen : IsOpen ((fun t : ℂ => t • w) ⁻¹' {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ U})` using `(u.hol U 0).1.preimage hcont`. Take `⟨ρ, hρ, hball⟩` from `Metric.isOpen_iff.1 hopen 0 (by simpa using h0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hconst : ∀ (s : Γ(A.left, U)) (t : ℂ), t ∈ Metric.ball (0 : ℂ) ρ → valAt' (u.ex (t • w)).left U s = valAt' (u.ex ((0 : ℂ) • w)).left U s`. Introduce `s t ht`. Establish `hder : ∀ t ∈ Metric.ball (0 : ℂ) ρ, HasDerivAt (fun t : ℂ => valAt' (u.ex (t • w)).left U s) 0 t`. Introduce `t ht`. Establish `hm : ⊤ ≤ (u.ex (t • w)).left ⁻¹ᵁ U` using `hball ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : DifferentiableAt ℂ (fun y => valAt' (u.ex y).left U s) (t • w)` using `(u.hol U s).2.differentiableAt ((u.hol U s).1.mem_nhds hm)`. Establish `hl : HasDerivAt (fun t : ℂ => t • w) w t`. Simplify using `using (hasDerivAt_id t).smul_const w`. Use `hd.hasFDerivAt.comp_hasDerivAt t hl` as an intermediate fact. Rewrite `this` using `[fderiv_eq_zero_of_isDiff_one u h _ hm s]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Conclude with `Metric.isOpen_ball.is_const_of_deriv_eq_zero (convex_ball _ _).isPreconnected (fun t ht => (hder t ht).differentiableAt.differentiableWithinAt) (fun t ht => (hder t ht).deriv) ht (Metric.mem_ball_self hρ)`. Establish `hmem : ∀ t ∈ Metric.ball (0 : ℂ) ρ, t • w ∈ u.Λ`. Introduce `t ht`. Establish `hm : ⊤ ≤ (u.ex (t • w)).left ⁻¹ᵁ U` using `hball ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm0 : ⊤ ≤ (u.ex ((0 : ℂ) • w)).left ⁻¹ᵁ U` using `by simpa using h0`. Establish `e : (u.ex (t • w)).left = (u.ex ((0 : ℂ) • w)).left` using `ext_evalPt hU hm hm0 (RingHom.ext fun s => by`. Rewrite using `[← valAt'_eq_evalPt _ _ hm, ← valAt'_eq_evalPt _ _ hm0]`. Conclude with `hconst s t ht)`. Establish `e' : u.ex (t • w) = u.ex ((0 : ℂ) • w)` using `Over.OverMorphism.ext e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← u.ker, e', zero_smul, ex_zero]`. Assume the negation of the conclusion as `hw`. Use `u.discrete` as an intermediate fact. Take `⟨O, hO, hO0⟩` from `isDiscrete_iff_forall_mem_exists_isOpen.1 (isDiscrete_iff_discreteTopology.2 this) 0 u.Λ.zero_mem`. Establish `hev : ∀ᶠ t in 𝓝[≠] (0 : ℂ), t • w ∈ O ∧ t ∈ Metric.ball (0 : ℂ) ρ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `Filter.Eventually.filter_mono nhdsWithin_le_nhds ?_` and prove the remaining obligations. Use `((hcont.tendsto 0).eventually (hO.mem_nhds ?_)).and (Metric.ball_mem_nhds _ hρ)` and prove the remaining obligations. Simplify using `using (hO0.ge rfl).1`. Take `⟨t, ⟨h1, h2⟩, ht⟩` from `(hev.and self_mem_nhdsWithin).exists`. Establish `h3 : t • w = 0` using `hO0.le ⟨h1, hmem t h2⟩`.
-
-Conclude with `hw ((smul_eq_zero.1 h3).resolve_left ht)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h : u.IsDiff w (1 : epsR ℂ ⟶ A)) : w = 0 := by
   let pt : (𝟙_ (Over (Sp ℂ))).left := (default : PrimeSpectrum ℂ)
@@ -171,9 +169,9 @@ theorem eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h : u.IsD
   exact hw ((smul_eq_zero.1 h3).resolve_left ht)
 
 /- English proof (translation)
-Set `pt : (𝟙_ (Over (Sp ℂ))).left` to `(default : PrimeSpectrum ℂ)`. Establish `hsub : ∀ q : (𝟙_ (Over (Sp ℂ))).left, q = pt` using `fun q => Subsingleton.elim (α := PrimeSpectrum ℂ) q pt`. Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := (u.ex 0).left pt) (U := ⊤) (Set.mem_univ _)`. Use `⟨U, hU, ?_⟩` and prove the remaining obligations. Introduce `q _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsub q]`. Conclude with `hpU`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_affine (u : HolUnif A L g) : ∃ U : A.left.Opens, IsAffineOpen U ∧ ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U := by
   let pt : (𝟙_ (Over (Sp ℂ))).left := (default : PrimeSpectrum ℂ)
@@ -187,7 +185,7 @@ theorem exists_affine (u : HolUnif A L g) : ∃ U : A.left.Opens, IsAffineOpen U
   exact hpU
 
 /- English proof (translation)
-Take `⟨U, hU, h0⟩` from `exists_affine u`. Establish `hvU` using `(tangent_mem_iff (u := u) hv U).2 h0`. Conclude with `sub_eq_zero.1 (eq_zero_of_isDiff_one u (isDiff_one_of_fderiv u hU h0 fun s => by`. Rewrite using `[map_sub, ← h U hvU s, ← h' U hvU s, sub_self]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_isDiff (u : HolUnif A L g) {v : epsR ℂ ⟶ A} (hv : IsTangent v) {d d' : Fin g → ℂ}
     (h : u.IsDiff d v) (h' : u.IsDiff d' v) : d = d' := by
@@ -197,15 +195,13 @@ theorem eq_of_isDiff (u : HolUnif A L g) {v : epsR ℂ ⟶ A} (hv : IsTangent v)
     rw [map_sub, ← h U hvU s, ← h' U hvU s, sub_self]))
 
 /- English proof (translation)
-Use `letI : CommGroup (𝟙_ (Over (Sp ℂ)) ⟶ A) := { (inferInstance : Group (𝟙_ (Over (Sp ℂ)) ⟶ A)) with mul_comm := fun a b => by`. Take `⟨z, rfl⟩` from `u.ex_onto a`. Take `⟨w, rfl⟩` from `u.ex_onto b`. Conclude with `(u.ex_add z w).symm.trans ((congrArg u.ex (add_comm z w)).trans (u.ex_add w z)) }`. Set `ex : (Fin g → ℂ) →+ Additive (𝟙_ (Over (Sp ℂ)) ⟶ A)` to `AddMonoidHom.mk' (fun z => Additive.ofMul (u.ex z)) u.ex_add`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `G' : (Fin g' → ℂ) →+ Additive (𝟙_ (Over (Sp ℂ)) ⟶ A)` to `AddMonoidHom.mk' (fun z => Additive.ofMul (u'.ex z ≫ f)) (fun z w => by`. Express the relevant statement in the definitionally equal form `u'.ex (z + w) ≫ f = (u'.ex z ≫ f) * (u'.ex w ≫ f)`. Rewrite using `[u'.ex_add]`. Conclude with `MonObj.mul_comp _ _ f)`. Establish `hhol` using `GlobalTheory.HomLinear.isHolTo_ex_comp u' f`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U, hU, h0⟩` from `exists_affine u`. Establish `hker : (ex.ker : Set (Fin g → ℂ)) = u.Λ` using `Set.ext fun z => u.ker z`. Take `⟨F, hF, -⟩` from `GlobalTheory.existsUnique_linear_lift_of_separating (ex := ex) (G := G') u.ex_onto (hker ▸ isDiscrete_iff_discreteTopology.2 u.discrete) (S := {a | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U}) (f := fun (s : Γ(A.left, U)) a => valAt' (Additive.toMul a).left U s) (by rw [← map_zero ex]; ex …`. Introduce `a ha b hb h`. Use `Over.OverMorphism.ext (f := Additive.toMul a) (g := Additive.toMul b) (ext_evalPt (R := ℂ) hU ha hb (RingHom.ext fun s => ?_))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(valAt'_eq_evalPt _ U ha s).symm.trans ((h s).trans (valAt'_eq_evalPt _ U hb s)))`. Use the proof step `(u.hol U 0).1 (by`. Use `(hhol U 0).1` as an intermediate fact. Simplify using `only [Set.mem_univ, true_and] at this`. Conclude with `this) (fun s => (u.hol U s).2) (fun s => by`.
-
-Use `(hhol U s).2` as an intermediate fact. Simplify using `only [Set.mem_univ, true_and] at this`. Conclude with `this) (fun w hw => eq_zero_of_isDiff_one u (isDiff_one_of_fderiv u hU h0 hw))`. Conclude with `⟨F, hF⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_linear_compare {A' : Over (Sp ℂ)} [GrpObj A'] {L' : LB A'.left} {g' : ℕ} (u : HolUnif A L g)
     (u' : HolUnif A' L' g') (f : A' ⟶ A) [IsMonHom f] :
@@ -257,7 +253,7 @@ def push (h : IsGrpPullback A G z φ) {T : Over (Sp ℂ)} (x : T ⟶ A) : Over.m
     rfl)
 
 /- English proof (translation)
-Establish `e` using `h.2 T 1 1 (push h 1) (push h 1) rfl rfl`. Rewrite `e` using `[_root_.mul_one]`. Establish `e' : push h 1 * push h 1 = push h (1 : T ⟶ A)` using `Over.OverMorphism.ext e`. Conclude with `congrArg (·.left) (mul_eq_left.1 e')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_left_comp (h : IsGrpPullback A G z φ) (T : Over (Sp ℂ)) :
     (1 : T ⟶ A).left ≫ φ = (1 : Over.mk (T.hom ≫ z) ⟶ G).left := by
@@ -267,7 +263,7 @@ theorem one_left_comp (h : IsGrpPullback A G z φ) (T : Over (Sp ℂ)) :
   exact congrArg (·.left) (mul_eq_left.1 e')
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Over.comp_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem one_left {Y : Scheme.{0}} (y : Y ⟶ X) : (1 : Over.mk y ⟶ G).left = y ≫ η[G].left := by
   rw [Hom.one_def, Over.comp_left]
@@ -277,32 +273,32 @@ def lft (h : IsGrpPullback A G z φ) (v : epsAt z ⟶ G) : epsR ℂ ⟶ A :=
   Over.homMk (h.1.lift v.left (spMap (algebraMap ℂ (DualNumber ℂ))) (Over.w v)) (h.1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `h.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem lft_left (h : IsGrpPullback A G z φ) (v : epsAt z ⟶ G) : (lft h v).left ≫ φ = v.left :=
   h.1.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (h.1.hom_ext (e.trans (lft_left h v).symm) (by rw [Over.w, Over.w]))`.
+A detailed English derivation is pending.
 -/
 theorem lft_unique (h : IsGrpPullback A G z φ) {v : epsAt z ⟶ G} {v' : epsR ℂ ⟶ A} (e : v'.left ≫ φ = v.left) :
     v' = lft h v :=
   Over.OverMorphism.ext (h.1.hom_ext (e.trans (lft_left h v).symm) (by rw [Over.w, Over.w]))
 
 /- English proof (translation)
-The claim follows from `(lft_unique h (h.2 (epsR ℂ) (lft h v) (lft h w) v w (lft_left h v).symm (lft_left h w).symm).symm).symm`.
+A detailed English derivation is pending.
 -/
 theorem lft_mul (h : IsGrpPullback A G z φ) (v w : epsAt z ⟶ G) : lft h (v * w) = lft h v * lft h w :=
   (lft_unique h (h.2 (epsR ℂ) (lft h v) (lft h w) v w (lft_left h v).symm (lft_left h w).symm).symm).symm
 
 /- English proof (translation)
-Unfold `IsTangent`. Use `h.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, lft_left]`. Use `Eq.trans hv ?_` and prove the remaining obligations. Establish `e` using `one_left_comp h (𝟙_ (Over (Sp ℂ)))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[Hom.one_def, toUnit_unit, Category.id_comp]`. Rewrite using `[e, one_left, one_left]`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc]`. Establish `e1 : (lft h v).left ≫ A.hom = spMap (algebraMap ℂ (DualNumber ℂ))` using `Over.w _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : η[A].left ≫ A.hom = 𝟙 _` using `by simpa using Over.w η[A]`. Rewrite using `[e1, e2, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp (algebraMap ℂ (DualNumber ℂ)) = RingHom.id ℂ`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isTangent_lft (h : IsGrpPullback A G z φ) {v : epsAt z ⟶ G} (hv : IsTanAt G z v) : IsTangent (lft h v) := by
   unfold IsTangent
@@ -324,9 +320,9 @@ theorem isTangent_lft (h : IsGrpPullback A G z φ) {v : epsAt z ⟶ G} (hv : IsT
     simp
 
 /- English proof (translation)
-Set `f : A' ⟶ A` to `Over.homMk (h.1.lift φ' A'.hom h'.1.w) (h.1.lift_snd _ _ _)`. Establish `hf : f.left ≫ φ = φ'` using `h.1.lift_fst _ _ _`. Use `⟨f, isMonHom_of_mul _ fun T x y => ?_, hf⟩` and prove the remaining obligations. Use `Over.OverMorphism.ext (h.1.hom_ext ?_ (by rw [Over.w, Over.w]))` and prove the remaining obligations. Establish `e1` using `h'.2 T x y (push h' x) (push h' y) rfl rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `h.2 T (x ≫ f) (y ≫ f) (push h' x) (push h' y) (by simp [push, hf]) (by simp [push, hf])`. Rewrite using `[Over.comp_left, Category.assoc, hf, ← e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_map (h : IsGrpPullback A G z φ) {A' : Over (Sp ℂ)} [GrpObj A'] {φ' : A'.left ⟶ G.left}
     (h' : IsGrpPullback A' G z φ') : ∃ f : A' ⟶ A, IsMonHom f ∧ f.left ≫ φ = φ' := by
@@ -342,9 +338,9 @@ theorem exists_map (h : IsGrpPullback A G z φ) {A' : Over (Sp ℂ)} [GrpObj A']
 variable {L₀ : LB A.left} {g : ℕ}
 
 /- English proof (translation)
-Take `⟨f, _, hf⟩` from `exists_map h h'`. Take `⟨F, hF⟩` from `exists_linear_compare u₀ u f`. Establish `ht : IsTangent v'`. Rewrite using `[lft_unique h' e]`. Conclude with `isTangent_lft h' hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e' : v' ≫ f = lft h v` using `lft_unique h (by rw [Over.comp_left, Category.assoc, hf, e])`. Conclude with `⟨F α, e' ▸ GlobalTheory.HomLinear.isDiff_comp u u₀ f F hF ht d⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coords (h : IsGrpPullback A G z φ) (u₀ : HolUnif A L₀ g) {v : epsAt z ⟶ G} (hv : IsTanAt G z v)
     {A' : Over (Sp ℂ)} [GrpObj A'] {φ' : A'.left ⟶ G.left} (h' : IsGrpPullback A' G z φ') {L' : LB A'.left}
@@ -359,7 +355,7 @@ theorem exists_coords (h : IsGrpPullback A G z φ) (u₀ : HolUnif A L₀ g) {v 
   exact ⟨F α, e' ▸ GlobalTheory.HomLinear.isDiff_comp u u₀ f F hF ht d⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.span_induction (p := fun x _ => p x) hm h0 (fun x y _ _ => hadd x y) (fun c x _ => hsm c x) (hspan ▸ Submodule.mem_top)`.
+A detailed English derivation is pending.
 -/
 theorem forall_of_span {V : Type} [AddCommGroup V] [Module ℂ V] {W : Set V} (hspan : Submodule.span ℂ W = ⊤)
     {p : V → Prop} (h0 : p 0) (hm : ∀ a ∈ W, p a) (hadd : ∀ a b, p a → p b → p (a + b))
@@ -368,15 +364,15 @@ theorem forall_of_span {V : Type} [AddCommGroup V] [Module ℂ V] {W : Set V} (h
     (hspan ▸ Submodule.mem_top)
 
 /- English proof (translation)
-Establish `ht : ∀ a, IsTangent (lft h (Mz.pt a))` using `fun a => isTangent_lft h (Mz.tan a)`. Establish `hadd : ∀ a b, lft h (Mz.pt (a + b)) = lft h (Mz.pt a) * lft h (Mz.pt b)` using `fun a b => by`. Rewrite using `[Mz.add, lft_mul]`. Establish `hmul : ∀ {a b d d'}, u₀.IsDiff d (lft h (Mz.pt a)) → u₀.IsDiff d' (lft h (Mz.pt b)) → u₀.IsDiff (d + d') (lft h (Mz.pt (a + b)))` using `fun {a b d d'} e e' => by`. Rewrite using `[hadd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.UnifDifferential.isDiff_mul u₀ ((Chart.isTan_iff _).2 (ht a)) ((Chart.isTan_iff _).2 (ht b)) e e'`. Establish `hsm : ∀ (c : ℂ) {a d}, u₀.IsDiff d (lft h (Mz.pt a)) → u₀.IsDiff (c • d) (lft h (Mz.pt (c • a)))` using `fun c {a d} e => by`. Use `GlobalTheory.CMNormIdentity.isDiff_of_isLieComb u₀ e c ⟨![lft h (Mz.pt (c • a))], fun i => ?_, by simp⟩` and prove the remaining obligations. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(lft h (Mz.pt (c • a))).left = spMap (epsScaleR c) ≫ (lft h (Mz.pt a)).left`. Use `h.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[lft_left, Category.assoc, lft_left]`. Conclude with `Mz.smul c a`. Establish `e1 : (lft h (Mz.pt (c • a))).left ≫ A.hom = spMap (algebraMap ℂ (DualNumber ℂ))` using `Over.w _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (lft h (Mz.pt a)).left ≫ A.hom = spMap (algebraMap ℂ (DualNumber ℂ))` using `Over.w _`. Rewrite using `[e1, Category.assoc, e2, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (epsScaleR c).comp (algebraMap ℂ (DualNumber ℂ)) = algebraMap ℂ (DualNumber ℂ)`. Apply the tactic sequence `ext x <;> simp [epsScaleR]`. Rewrite using `[this]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hall : ∀ a, ∃ d, u₀.IsDiff d (lft h (Mz.pt a))` using `forall_of_span hspan (hW 0 h0) hW (fun a b ⟨d, e⟩ ⟨d', e'⟩ => ⟨_, hmul e e'⟩) (fun c a ⟨d, e⟩ => ⟨_, hsm c e⟩)`. Use `choose D hD using hall`. Conclude with `⟨{ toFun := D map_add' := fun a b => eq_of_isDiff u₀ (ht _) (hD _) (hmul (hD a) (hD b)) map_smul' := fun c a => eq_of_isDiff u₀ (ht _) (hD _) (hsm c (hD a)) }, hD⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_linear_coords {V : Type} [AddCommGroup V] [Module ℂ V] (Mz : LieModel G z V)
     (h : IsGrpPullback A G z φ) (u₀ : HolUnif A L₀ g) {W : Set V} (h0 : (0 : V) ∈ W)
@@ -414,21 +410,19 @@ theorem exists_linear_coords {V : Type} [AddCommGroup V] [Module ℂ V] (Mz : Li
 end Pull
 
 /- English proof (translation)
-Introduce `E _ _ _ H S' S t₀ t f m z₀ V _ _ Mz core W h0 hspan hW`. Take `⟨hLB, -, -, A₀, _, φ₀, g, u₀, Hm₀, χ₀, -, -, -, -, hpb, hAH, -, -, -, -, -⟩` from `hW 0 h0 0 h0`. Take `⟨D, hD⟩` from `exists_linear_coords Mz hpb u₀ h0 hspan fun a ha => by`. Take `⟨-, -, -, A, _, φ, g', u, Hm, χ, v', -, α, -, hpb', -, e1, -, d1, -, -⟩` from `hW a ha a ha`. Conclude with `exists_coords hpb u₀ (Mz.tan a) hpb' u e1 d1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `T : V → V → ℂ` to `fun a b => Real.pi * (D b ⬝ᵥ Hm₀.mulVec (star (D a)))`. Establish `hT : ∀ a b, HodgeIP t.G t.PP.L (z₀ ≫ f) (Mz.pt a) (Mz.pt b) (T a b)` using `fun a b => ⟨hLB, Mz.tan a, Mz.tan b, A₀, _, φ₀, g, u₀, Hm₀, χ₀, lft hpb _, lft hpb _, D a, D b, hpb, hAH, lft_left hpb _, lft_left hpb _, hD a, hD b, rfl⟩`. Establish `hlift : ∀ v : epsAt (z₀ ≫ f) ⟶ t.G, ∃ v' : epsAt z₀ ⟶ t₀.G, v'.left ≫ m.φ = v.left` using `fun v => ⟨Over.homMk (m.cart.1.lift v.left (Spec.map (CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ))) ≫ z₀) (by simpa using Over.w v)) (m.cart.1.lift_snd _ _ _), m.cart.1.lift_fst _ _ _⟩`. Establish `hWW : ∀ a ∈ W, ∀ b ∈ W, T a b = core.inner a b` using `fun a ha b hb => by`. Take `⟨a', ea⟩` from `hlift (Mz.pt a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b', eb⟩` from `hlift (Mz.pt b)`. Conclude with `(GlobalTheory.T.hodge_inner_product_pullback_unique E H S' S t₀ t f m z₀ a' b' _ _ ea eb).2 _ _ (hT a b) (hW a ha b hb)`. Establish `hr : ∀ x y y', core.inner x (y + y') = core.inner x y + core.inner x y'` using `fun x y y' => by`. Rewrite using `[← core.conj_inner_symm, core.add_left, map_add, core.conj_inner_symm, core.conj_inner_symm]`. Establish `hs : ∀ (c : ℂ) x y, core.inner x (c • y) = c * core.inner x y` using `fun c x y => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← core.conj_inner_symm, core.smul_left, map_mul, core.conj_inner_symm, Complex.conj_conj]`. Establish `h1 : ∀ a ∈ W, ∀ b, T a b = core.inner a b` using `fun a ha => forall_of_span hspan (hWW a ha 0 h0) (hWW a ha) (fun b b' e e' => by`. Rewrite using `[hr, ← e, ← e']`. Simplify using `only [T, map_add, add_dotProduct, mul_add])`. Use the proof step `(fun c b e => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hs, ← e]`. Simplify using `only [T, map_smul, smul_dotProduct, smul_eq_mul]`. Use the proof step `ring)`. Establish `h2 : ∀ a b, T a b = core.inner a b` using `fun a b => forall_of_span hspan (p := fun a => T a b = core.inner a b) (h1 0 h0 b) (fun a ha => h1 a ha b) (fun a a' e e' => by`. Express the relevant statement in the definitionally equal form `_ = core.inner (a + a') b`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[core.add_left]`. Rewrite using `[← e, ← e']`. Simplify using `only [T, map_add, star_add, mulVec_add, dotProduct_add, mul_add])`. Use the proof step `(fun c a e => by`. Express the relevant statement in the definitionally equal form `_ = core.inner (c • a) b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[core.smul_left]`. Rewrite using `[← e]`. Simplify using `only [T, map_smul, star_smul, mulVec_smul, dotProduct_smul, smul_eq_mul]`. Simplify using the standard rewrite rules. Use the proof step `ring) a`.
-
-Introduce `a b`. Rewrite using `[← h2]`. Conclude with `hT a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hodgeInnerProduct_of_span : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S' S : Scheme.{0}) (t₀ : SAB H S') (t : SAB H S) (f : S' ⟶ S) (_ : SABMap t₀ t f) (z₀ : Sp ℂ ⟶ S') (V : Type) [AddCommGroup V] [Module ℂ V] (Mz : LieModel t.G (z₀ ≫ f) V) (core : InnerProductSpace.Core ℂ V) (W : Set V), (0 : V) ∈ W → Submodule.span ℂ W = ⊤ → (∀ a ∈ W, ∀ b ∈ W, HodgeIP t.G t.PP.L (z₀ ≫ f) (Mz.pt a) (Mz.pt b) (core.inner a b)) → ∀ a b : V, HodgeIP t.G t.PP.L (z₀ ≫ f) (Mz.pt a) (Mz.pt b) (core.inner a b) := by
   intro E _ _ _ H S' S t₀ t f m z₀ V _ _ Mz core W h0 hspan hW

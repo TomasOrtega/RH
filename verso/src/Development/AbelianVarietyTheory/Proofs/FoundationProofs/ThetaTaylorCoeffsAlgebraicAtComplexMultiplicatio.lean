@@ -31,7 +31,7 @@ inductive Gen (v : ι → V) : (V → ℂ) → Prop
 variable {v : ι → V}
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `const c _ => exact contDiff_const`. Consider the case `lin g hg _ l _ => exact hg.contDiff.comp l.contDiff`. Consider the case `add F G _ _ hF hG => exact hF.add hG`. Consider the case `mul F G _ _ hF hG => exact hF.mul hG`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem Gen.contDiff {G : V → ℂ} (h : Gen v G) (n : WithTop ℕ∞) : ContDiff ℂ n G := by
   induction h with
@@ -41,13 +41,13 @@ theorem Gen.contDiff {G : V → ℂ} (h : Gen v G) (n : WithTop ℕ∞) : ContDi
   | mul F G _ _ hF hG => exact hF.mul hG
 
 /- English proof (translation)
-The claim follows from `(h.contDiff 1).differentiable (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem Gen.differentiable {G : V → ℂ} (h : Gen v G) : Differentiable ℂ G :=
   (h.contDiff 1).differentiable (by simp)
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `const c hc => exact hc`. Consider the case `lin g _ hc l _ => simpa using hc 0`. Consider the case `add F G _ _ hF hG => exact add_mem hF hG`. Consider the case `mul F G _ _ hF hG => exact mul_mem hF hG`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem Gen.val_mem {G : V → ℂ} (h : Gen v G) : G 0 ∈ Qbar := by
   induction h with
@@ -57,17 +57,15 @@ theorem Gen.val_mem {G : V → ℂ} (h : Gen v G) : G 0 ∈ Qbar := by
   | mul F G _ _ hF hG => exact mul_mem hF hG
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `const c hc => simpa using Gen.const (v := v) 0 (zero_mem _)`. Consider the case `lin g hg hc l hl`. Establish `e : (fun y => fderiv ℂ (fun z => g (l z)) y (v k)) = fun y => _root_.deriv g (l y) * l (v k)`. Use function extensionality and compare the values at `y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `((hg (l y)).hasDerivAt.comp_hasFDerivAt y l.hasFDerivAt).fderiv` as an intermediate fact. Rewrite using `[show (fun z => g (l z)) = g ∘ l from rfl, this]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Use `Gen.mul _ _ (Gen.lin _ hg.deriv (fun n => ?_) l hl) (Gen.const _ (hl k))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← iteratedDeriv_succ']`. Conclude with `hc _`. Consider the case `add F G hF hG iF iG`. Establish `e : (fun y => fderiv ℂ (fun z => F z + G z) y (v k)) = fun y => fderiv ℂ F y (v k) + fderiv ℂ G y (v k)`. Use function extensionality and compare the values at `y`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fderiv_fun_add (hF.differentiable y) (hG.differentiable y)]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `Gen.add _ _ iF iG`. Consider the case `mul F G hF hG iF iG`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun y => fderiv ℂ (fun z => F z * G z) y (v k)) = fun y => F y * fderiv ℂ G y (v k) + G y * fderiv ℂ F y (v k)`. Use function extensionality and compare the values at `y`. Rewrite using `[fderiv_fun_mul (hF.differentiable y) (hG.differentiable y)]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
-
-Conclude with `Gen.add _ _ (Gen.mul _ _ hF iG) (Gen.mul _ _ hG iF)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gen.deriv {G : V → ℂ} (h : Gen v G) (k : ι) : Gen v (fun y => fderiv ℂ G y (v k)) := by
   induction h with
@@ -101,9 +99,9 @@ theorem Gen.deriv {G : V → ℂ} (h : Gen v G) (k : ι) : Gen v (fun y => fderi
     exact Gen.add _ _ (Gen.mul _ _ hF iG) (Gen.mul _ _ hG iF)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro G h κ`. Simplify using `using h.val_mem`. Consider the case `succ n ih`. Introduce `G h κ`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[iteratedFDeriv_succ_apply_right, ← iteratedFDeriv_clm_apply_const_apply (n := n) ((h.contDiff (n + 1)).fderiv_right le_rfl) le_rfl]`. Conclude with `ih (h.deriv (κ (Fin.last n))) (fun i => κ i.castSucc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gen.iterated_mem (n : ℕ) : ∀ {G : V → ℂ}, Gen v G → ∀ κ : Fin n → ι,
     iteratedFDeriv ℂ n G 0 (fun i => v (κ i)) ∈ Qbar := by
@@ -116,7 +114,7 @@ theorem Gen.iterated_mem (n : ℕ) : ∀ {G : V → ℂ}, Gen v G → ∀ κ : F
     exact ih (h.deriv (κ (Fin.last n))) (fun i => κ i.castSucc)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Gen.const (v := v) 0 (zero_mem _)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `Gen.add _ _ (h a (by simp)) (ih fun b hb => h b (by simp [hb]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Gen.sum {α : Type} (s : Finset α) (F : α → V → ℂ) (h : ∀ a ∈ s, Gen v (F a)) :
     Gen v (fun z => ∑ a ∈ s, F a z) := by
@@ -127,7 +125,7 @@ theorem Gen.sum {α : Type} (s : Finset α) (F : α → V → ℂ) (h : ∀ a �
     exact Gen.add _ _ (h a (by simp)) (ih fun b hb => h b (by simp [hb]))
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Gen.const (v := v) 1 (one_mem _)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `Gen.mul _ _ (h a (by simp)) (ih fun b hb => h b (by simp [hb]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Gen.prod {α : Type} (s : Finset α) (F : α → V → ℂ) (h : ∀ a ∈ s, Gen v (F a)) :
     Gen v (fun z => ∏ a ∈ s, F a z) := by
@@ -140,11 +138,11 @@ theorem Gen.prod {α : Type} (s : Finset α) (F : α → V → ℂ) (h : ∀ a �
 end Germs
 
 /- English proof (translation)
-Rewrite using `[mem_algebraicClosure_iff]`. Use `IsAlgebraic.of_pow (n := 2 * q.den) (by have := q.den_pos; omega) ?_` and prove the remaining obligations. Establish `: Complex.exp ((Real.pi : ℂ) * Complex.I * (q : ℂ)) ^ (2 * q.den) = 1`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_int_mul_two_pi_mul_I q.num]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: (q.num : ℂ) = q * q.den` using `by exact_mod_cast (Rat.mul_den_eq_num q).symm`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isAlgebraic_one`.
+A detailed English derivation is pending.
 -/
 theorem exp_rat_mem (q : ℚ) : Complex.exp ((Real.pi : ℂ) * Complex.I * (q : ℂ)) ∈ Qbar := by
   rw [mem_algebraicClosure_iff]
@@ -157,7 +155,7 @@ theorem exp_rat_mem (q : ℚ) : Complex.exp ((Real.pi : ℂ) * Complex.I * (q : 
   rw [this]; exact isAlgebraic_one
 
 /- English proof (translation)
-Rewrite using `[mem_algebraicClosure_iff]`. Use `IsAlgebraic.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg n)]`. Simplify using `using isAlgebraic_nat (R := ℚ) (A := ℂ) n`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sqrt_nat_mem (n : ℕ) : ((Real.sqrt (n : ℝ) : ℝ) : ℂ) ∈ Qbar := by
   rw [mem_algebraicClosure_iff]
@@ -166,7 +164,7 @@ theorem sqrt_nat_mem (n : ℕ) : ((Real.sqrt (n : ℝ) : ℝ) : ℂ) ∈ Qbar :=
   simpa using isAlgebraic_nat (R := ℚ) (A := ℂ) n
 
 /- English proof (translation)
-Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom σ.toRatAlgHom`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_mem {E : Type} [Field E] [NumberField E] (σ : E →+* ℂ) (x : E) : σ x ∈ Qbar := by
   rw [mem_algebraicClosure_iff]
@@ -175,7 +173,7 @@ theorem hom_mem {E : Type} [Field E] [NumberField E] (σ : E →+* ℂ) (x : E) 
 variable {D : D7} {N N' : ℕ}
 
 /- English proof (translation)
-Introduce `α`. Use `div_mem (h.iterated_mem _ _) ?_` and prove the remaining obligations. Conclude with `prod_mem fun k _ => natCast_mem _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Gen.coefIn {G : VC D N N' → ℂ} (h : Gen (coordV D) G) : CoefIn D G Qbar := by
   intro α
@@ -185,31 +183,31 @@ theorem Gen.coefIn {G : VC D N N' → ℂ} (h : Gen (coordV D) G) : CoefIn D G Q
 def sq (z w : VC D N N') : ℂ := ∑ τ, ∑ i, ∑ j, z τ i j * (starRingEnd ℂ) (w τ i j)
 
 /- English proof (translation)
-Simplify using `[sq, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sq_smul_left (c : ℂ) (z w : VC D N N') : sq (c • z) w = c * sq z w := by
   simp [sq, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[sq, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sq_add_left (z z' w : VC D N N') : sq (z + z') w = sq z w + sq z' w := by
   simp [sq, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[sq, map_sum, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sq_conj (z w : VC D N N') : sq w z = (starRingEnd ℂ) (sq z w) := by
   simp [sq, map_sum, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[sq_conj, sq_smul_left, map_mul, ← sq_conj, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_smul_right (c : ℂ) (z w : VC D N N') : sq z (c • w) = sq z w * (starRingEnd ℂ) c := by
   rw [sq_conj, sq_smul_left, map_mul, ← sq_conj, mul_comm]
 
 /- English proof (translation)
-Simplify using `[sq, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sq_add_right (z w w' : VC D N N') : sq z (w + w') = sq z w + sq z w' := by
   simp [sq, mul_add, Finset.sum_add_distrib]
@@ -226,13 +224,13 @@ Both sides reduce to the same expression.
 theorem sqL_apply (z w : VC D N N') : sqL w z = sq z w := rfl
 
 /- English proof (translation)
-The claim follows from `map_sum (sqL w) x s`.
+A detailed English derivation is pending.
 -/
 theorem sq_sum_left {α : Type} (s : Finset α) (x : α → VC D N N') (w : VC D N N') :
     sq (∑ a ∈ s, x a) w = ∑ a ∈ s, sq (x a) w := map_sum (sqL w) x s
 
 /- English proof (translation)
-Rewrite using `[sq_conj, sq_sum_left, map_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => (sq_conj _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_sum_right {α : Type} (s : Finset α) (x : α → VC D N N') (w : VC D N N') :
     sq w (∑ a ∈ s, x a) = ∑ a ∈ s, sq w (x a) := by
@@ -245,13 +243,13 @@ Both sides reduce to the same expression.
 theorem Hf_eq (T : Tor D) (z w : VC D N N') : Hf D T z w = sq z w / (area T.abelian₂ : ℂ) := rfl
 
 /- English proof (translation)
-Rewrite using `[Hf_eq, Hf_eq, sq_conj, map_div₀, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hf_conj (T : Tor D) (z w : VC D N N') : Hf D T w z = (starRingEnd ℂ) (Hf D T z w) := by
   rw [Hf_eq, Hf_eq, sq_conj, map_div₀, Complex.conj_ofReal]
 
 /- English proof (translation)
-Rewrite using `[Hf_eq, Hf_eq, ← Nat.cast_smul_eq_nsmul ℂ, ← Nat.cast_smul_eq_nsmul ℂ, sq_smul_left, sq_smul_right]`. Simplify using `only [map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_nsmul (T : Tor D) (m n : ℕ) (z w : VC D N N') :
     Hf D T (m • z) (n • w) = (m * n : ℝ) * Hf D T z w := by
@@ -262,23 +260,23 @@ theorem Hf_nsmul (T : Tor D) (m n : ℕ) (z w : VC D N N') :
   ring
 
 /- English proof (translation)
-Rewrite using `[qH, qH, Hf_nsmul, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qH_nsmul (T : Tor D) (m : ℕ) (z : VC D N N') : qH D T (m • z) = (m : ℝ) ^ 2 * qH D T z := by
   rw [qH, qH, Hf_nsmul, Complex.re_ofReal_mul]
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[U, Hf]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem U_zero (T : Tor D) (G : VC D N N' → ℂ) : U D T 0 G = G := by
   funext z
   simp [U, Hf]
 
 /- English proof (translation)
-Establish `h : Complex.I * ((Hf D T x t).im : ℂ) = (Hf D T x t - Hf D T t x) / 2`. Rewrite using `[Hf_conj T x t, Complex.sub_conj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [U]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_assoc z x t, mul_assoc (G _), ← Complex.exp_add, mul_left_comm _ (G _), ← Complex.exp_add]`. Use `congr 2`. Rewrite using `[mul_neg, mul_assoc, h]`. Simplify using `only [Hf_eq, sq_add_left, sq_add_right]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem U_U (T : Tor D) (x t : VC D N N') (G : VC D N N' → ℂ) (z : VC D N N') :
     U D T x (U D T t G) z =
@@ -303,7 +301,7 @@ theorem embV_apply (x : Matrix (Fin N') (Fin N) D.host.E) (τ i j) :
     embV D (tor0 D cc δ) x τ i j = embT D τ (x i j) := rfl
 
 /- English proof (translation)
-Rewrite using `[hYY, ← hG.2]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [map_sum, map_mul, embV_apply]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.HC.HostAx.conjE_apply D.host.toHostAx]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_embV (hG : admG1 D) (x y : Matrix (Fin N') (Fin N) D.host.E) :
     sq (embV D (tor0 D cc δ) x) (embV D (tor0 D cc δ) y) =
@@ -315,7 +313,7 @@ theorem sq_embV (hG : admG1 D) (x y : Matrix (Fin N') (Fin N) D.host.E) :
   rw [Formalism.HC.HostAx.conjE_apply D.host.toHostAx]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `only [embV_apply, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, ← hG.1 τ a, ← map_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem embV_smul (hG : admG1 D) (a : D.host.K) (x : Matrix (Fin N') (Fin N) D.host.E) :
     embV D (tor0 D cc δ) (a • x) = D.host.φ₀ (a : D.host.E) • embV D (tor0 D cc δ) x := by
@@ -324,7 +322,7 @@ theorem embV_smul (hG : admG1 D) (a : D.host.K) (x : Matrix (Fin N') (Fin N) D.h
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `[embV_apply, Matrix.sum_apply, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem embV_sum {ι : Type} (s : Finset ι) (x : ι → Matrix (Fin N') (Fin N) D.host.E) :
     embV D (tor0 D cc δ) (∑ i ∈ s, x i) = ∑ i ∈ s, embV D (tor0 D cc δ) (x i) := by
@@ -332,11 +330,9 @@ theorem embV_sum {ι : Type} (s : Finset ι) (x : ι → Matrix (Fin N') (Fin N)
   simp [embV_apply, Matrix.sum_apply, Finset.sum_apply]
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨c, hc, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨a * c, cc.mul_mem_left a hc, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `[map_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`.
-
-Conclude with `neg_mem hx`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lam_mul (a : 𝓞 D.host.K) {w : ℂ} (hw : w ∈ lamOf D cc δ) :
     D.host.φ₀ ((a : D.host.K) : D.host.E) * w ∈ lamOf D cc δ := by
@@ -351,9 +347,9 @@ theorem lam_mul (a : 𝓞 D.host.K) {w : ℂ} (hw : w ∈ lamOf D cc δ) :
   | neg x _ hx => rw [mul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨w, hw, A, hA, rfl⟩` from `hw`. Conclude with `AddSubgroup.subset_closure ⟨_, lam_mul cc δ a hw, A, hA, by rw [smul_smul]⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem la_mul (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (a : 𝓞 D.host.K) {x : VC D N N'}
@@ -382,7 +378,7 @@ def sat {A : Type} [AddCommGroup A] (B : AddSubgroup A) : AddSubgroup A where
     exact ⟨m, hm, by rw [smul_neg]; exact neg_mem hx⟩
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `h`. Conclude with `⟨n * m, mul_pos hn hm, by rwa [mul_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sat_of_nsmul {A : Type} [AddCommGroup A] {B : AddSubgroup A} {x : A} {m : ℕ} (hm : 0 < m)
     (h : m • x ∈ sat B) : x ∈ sat B := by
@@ -390,11 +386,11 @@ theorem sat_of_nsmul {A : Type} [AddCommGroup A] {B : AddSubgroup A} {x : A} {m 
   exact ⟨n * m, mul_pos hn hm, by rwa [mul_smul]⟩
 
 /- English proof (translation)
-Take `⟨m, hm, hw⟩` from `hw`. Establish `ha : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ _).2 (Algebra.IsAlgebraic.isAlgebraic a)`. Take `⟨y, hy, hi⟩` from `ha.exists_integral_multiple`. Establish `hi' : IsIntegral ℤ ((y.natAbs : D.host.K) * a)`. Break down `Int.natAbs_eq y with e | e` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hi` using `[e]`. Simplify using `using hi`. Rewrite `hi` using `[e]`. Simplify using `using hi.neg`. Use `⟨m * y.natAbs, mul_pos hm (Int.natAbs_pos.2 hy), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `lam_mul cc δ ⟨_, hi'⟩ hw` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `_ = D.host.φ₀ ((((y.natAbs : D.host.K) * a : D.host.K)) : D.host.E) * _`. Move the coercions through the operations in `[map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rationalLatticePoint_mul_imagQuadratic (a : D.host.K) {w : ℂ} (hw : InRationalLattice (lamOf D cc δ) w) :
     InRationalLattice (lamOf D cc δ) (w * D.host.φ₀ (a : D.host.E)) := by
@@ -413,7 +409,7 @@ theorem rationalLatticePoint_mul_imagQuadratic (a : D.host.K) {w : ℂ} (hw : In
   ring
 
 /- English proof (translation)
-Use `⟨Ideal.absNorm cc, Nat.pos_of_ne_zero (by rwa [Ne, Ideal.absNorm_eq_zero_iff]), ?_⟩` and prove the remaining obligations. Use `AddSubgroup.subset_closure ⟨_, Ideal.absNorm_mem cc, ?_⟩` and prove the remaining obligations. Simplify using `[mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem delta_mem_rationalIdealLattice (hc : cc ≠ ⊥) : InRationalLattice (lamOf D cc δ) δ := by
   refine ⟨Ideal.absNorm cc, Nat.pos_of_ne_zero (by rwa [Ne, Ideal.absNorm_eq_zero_iff]), ?_⟩
@@ -423,9 +419,9 @@ theorem delta_mem_rationalIdealLattice (hc : cc ≠ ⊥) : InRationalLattice (la
 variable {r : ℕ} {b : Fin r → Matrix (Fin N') (Fin N) D.host.E}
 
 /- English proof (translation)
-Establish `hA : A ∈ Submodule.span D.host.K (Set.range b)` using `by rw [hb.2]; trivial`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hA`. Rewrite using `[embV_sum, Finset.smul_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[embV_smul cc δ hG, smul_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm, h⟩` from `rationalLatticePoint_mul_imagQuadratic cc δ (a j) hw`. Use `⟨m, hm, AddSubgroup.subset_closure ⟨_, h, j, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_embV_mem (hG : admG1 D) (hb : OnB D b) {w : ℂ} (hw : InRationalLattice (lamOf D cc δ) w)
     (A : Matrix (Fin N') (Fin N) D.host.E) :
@@ -440,7 +436,7 @@ theorem smul_embV_mem (hG : admG1 D) (hb : OnB D b) {w : ℂ} (hw : InRationalLa
   rw [← Nat.cast_smul_eq_nsmul ℂ, smul_smul]
 
 /- English proof (translation)
-Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, A, -, rfl⟩`. Conclude with `smul_embV_mem cc δ hG hb ⟨1, one_pos, by rw [Nat.cast_one, one_mul]; exact hw⟩ A`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem la_le (hG : admG1 D) (hb : OnB D b) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) :
@@ -450,17 +446,17 @@ theorem la_le (hG : admG1 D) (hb : OnB D b) (L : Submodule (𝓞 D.host.E) (Fin 
   exact smul_embV_mem cc δ hG hb ⟨1, one_pos, by rw [Nat.cast_one, one_mul]; exact hw⟩ A
 
 /- English proof (translation)
-Take `⟨m, hm, hx⟩` from `hx`. Establish `key : ∀ y ∈ LaB D (tor0 D cc δ) b, ∃ c : Fin r → ℂ, (∀ j, c j ∈ lamOf D cc δ) ∧ y = ∑ j, c j • embV D (tor0 D cc δ) (b j)`. Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨w, hw, j, rfl⟩` from `hw`. Use `⟨Pi.single j w, fun i => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw`. Simplify using `[h]`. Apply the tactic sequence `rw [Finset.sum_eq_single j] <;> simp +contextual`. Consider the case `zero => exact ⟨0, fun _ => zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, rfl⟩` from `hx`. Take `⟨c', hc', rfl⟩` from `hy`. Conclude with `⟨c + c', fun j => add_mem (hc j) (hc' j), by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `neg x _ hx`. Take `⟨c, hc, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨-c, fun j => neg_mem (hc j), by simp⟩`. Take `⟨c, hc, e⟩` from `key _ hx`. Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Use `⟨fun j => (m : ℂ)⁻¹ * c j, fun j => ⟨m, hm, by simpa [hm'] using hc j⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [mul_smul, ← Finset.smul_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, ← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ hm']`.
+A detailed English derivation is pending.
 -/
 theorem exists_coords {x : VC D N N'} (hx : x ∈ sat (LaB D (tor0 D cc δ) b)) :
     ∃ c : Fin r → ℂ, (∀ j, InRationalLattice (lamOf D cc δ) (c j)) ∧
@@ -498,13 +494,13 @@ theorem coordB_eq (T : Tor D) (j : Fin r) (z : VC D N N') :
     coordB D T b j z = sq z (embV D T (b j)) := rfl
 
 /- English proof (translation)
-Establish `h1 : ∀ j, sq (∑ j, c j • embV D (tor0 D cc δ) (b j)) (embV D (tor0 D cc δ) (b j)) = c j`. Introduce `j`. Rewrite using `[sq_sum_left, Finset.sum_eq_single j]`. Rewrite using `[sq_smul_left, sq_embV cc δ hG, hb.1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i _ hi`. Rewrite using `[sq_smul_left, sq_embV cc δ hG, hb.1]`. Simplify using `[hi]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ y, sq y (∑ j, c j • embV D (tor0 D cc δ) (b j)) = ∑ j, sq y (embV D (tor0 D cc δ) (b j)) * (starRingEnd ℂ) (c j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[sq_sum_right]`. Conclude with `Finset.sum_congr rfl fun j _ => sq_smul_right _ _ _`. Simplify using `only [U, U1, pullB, coordB_eq, Finset.prod_mul_distrib, ← Complex.exp_sum, sq_add_left, h1, Hf_eq, h2]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_div, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ / (area (tor0 D cc δ).abelian₂ : ℂ) - _ / (2 * (area (tor0 D cc δ).abelian₂ : ℂ))`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem U_pullB (hG : admG1 D) (hb : OnB D b) (c : Fin r → ℂ) (g : ℂ → ℂ) (z : VC D N N') :
     U D (tor0 D cc δ) (∑ j, c j • embV D (tor0 D cc δ) (b j)) (pullB D (tor0 D cc δ) b g) z =
@@ -530,36 +526,36 @@ theorem U_pullB (hG : admG1 D) (hb : OnB D b) (c : Fin r → ℂ) (g : ℂ → �
   ring
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.OddTheta.exists_periodPair _ (GlobalTheory.T.idealPeriodLattice_of_curveDatum D hG cc δ hC).1`.
+A detailed English derivation is pending.
 -/
 theorem exists_pair (hG : admG1 D) (hC : Crv D cc δ) :
     ∃ P : PeriodPair, ∀ z, z ∈ lamOf D cc δ ↔ z ∈ P.lattice :=
   GlobalTheory.OddTheta.exists_periodPair _ (GlobalTheory.T.idealPeriodLattice_of_curveDatum D hG cc δ hC).1
 
 /- English proof (translation)
-Rewrite using `[Hf_eq, Complex.div_ofReal_im]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem im_Hf (T : Tor D) (z w : VC D N N') : (Hf D T z w).im = (sq z w).im / area T.abelian₂ := by
   rw [Hf_eq, Complex.div_ofReal_im]
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_pair cc δ hG hC`. Take `⟨-, hdual⟩` from `GlobalTheory.T.latticeCovolume_pos_and_selfDual L _ hL`. Establish `hLam : (tor0 D cc δ).abelian₂ = lamOf D cc δ` using `rfl`. Establish `hsq : ∀ z ∈ A, ∀ x ∈ S, sq z (embV D (tor0 D cc δ) x) ∈ lamOf D cc δ`. Introduce `z hz x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hz` using `[hA]`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨w, hw, x', hx', rfl⟩` from `hz`. Take `⟨a, ha⟩` from `hS x' hx' x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sq_smul_left, sq_embV cc δ hG, ← ha, mul_comm]`. Conclude with `lam_mul cc δ a hw`. Consider the case `zero => simp [sq]`. Consider the case `add a b _ _ ha hb => rw [sq_add_left]`. Conclude with `add_mem ha hb`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `neg a _ ha => rw [← sqL_apply, map_neg]`. Conclude with `neg_mem ha`. Establish `hint : ∀ z, (∀ x ∈ S, sq z (embV D (tor0 D cc δ) x) ∈ lamOf D cc δ) → ∀ y ∈ A, ∃ m : ℤ, (Hf D (tor0 D cc δ) z y).im = m`. Introduce `z hz u hu`. Rewrite `hu` using `[hA]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Simplify using `only [im_Hf, hLam]`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨w, hw, x, hx, rfl⟩` from `hu`. Rewrite using `[sq_smul_right]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `(hdual _).1 (hz x hx) w hw`. Consider the case `zero => exact ⟨0, by simp [sq]⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨m, hm⟩` from `ha`. Take `⟨n, hn⟩` from `hb`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨m + n, by rw [sq_add_right, Complex.add_im, add_div, hm, hn, Int.cast_add]⟩`. Consider the case `neg a _ ha`. Take `⟨m, hm⟩` from `ha`. Establish `e : sq z (-a) = -sq z a` using `by simp [sq]`. Conclude with `⟨-m, by rw [e, Complex.neg_im, neg_div, hm, Int.cast_neg]⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun x hx => hint x (hsq x hx), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_integer_map_eq_halfOneAddSqrt D`. Take `⟨m, hm⟩` from `hint (w0 D • x) (fun y hy => by`. Rewrite using `[sq_smul_left, ← ha]`. Conclude with `lam_mul cc δ a (hsq x hx _ hy)) x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h0 : (sq x x).im = 0` using `by simp [sq, Complex.im_sum, Complex.mul_conj]`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm, im_Hf, sq_smul_left, qH, Hf_eq, Complex.div_ofReal_re, Complex.mul_im, h0]`. Simplify using `[w0]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem integral_of_gen (hG : admG1 D) (hC : Crv D cc δ)
     (S : Set (Matrix (Fin N') (Fin N) D.host.E))
@@ -615,9 +611,9 @@ theorem integral_of_gen (hG : admG1 D) (hC : Crv D cc δ)
   ring
 
 /- English proof (translation)
-Use `integral_of_gen cc δ hG hC (Set.range b) ?_ _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`. Rewrite using `[hb.1 i j]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `LaB`. Use `congr 1`. Use extensionality with `z`. Simplify using `[tor0]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_laB (hG : admG1 D) (hC : Crv D cc δ) (hb : OnB D b) :
     (∀ x ∈ LaB D (tor0 D cc δ) b, ∀ y ∈ LaB D (tor0 D cc δ) b,
@@ -634,7 +630,7 @@ theorem integral_laB (hG : admG1 D) (hC : Crv D cc δ) (hb : OnB D b) :
     simp [tor0]
 
 /- English proof (translation)
-The claim follows from `(integral_of_gen cc δ hG hC {x | x ∈ YYl D L L'} (fun x hx y hy => GlobalTheory.T.hermitian_pairing_integral_values D N N' L L' hL hL' x hx y hy) _ rfl).2`.
+A detailed English derivation is pending.
 -/
 theorem integral_la (hG : admG1 D) (hC : Crv D cc δ)
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
@@ -649,7 +645,7 @@ def Good (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (G : VC D N N' → ℂ
 variable {cc δ}
 
 /- English proof (translation)
-Use `h 0 (zero_mem _)` as an intermediate fact. Rewrite `this` using `[U_zero]`. Conclude with `this.coefIn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Good.coefIn {G : VC D N N' → ℂ} (h : Good cc δ b G) : CoefIn D G Qbar := by
   have := h 0 (zero_mem _)
@@ -657,9 +653,9 @@ theorem Good.coefIn {G : VC D N N' → ℂ} (h : Good cc δ b G) : CoefIn D G Qb
   exact this.coefIn
 
 /- English proof (translation)
-Introduce `x hx`. Establish `e : U D (tor0 D cc δ) x (fun z => c * G z) = fun z => c * U D (tor0 D cc δ) x G z`. Use function extensionality and compare the values at `z`. Simplify using `only [U, mul_assoc]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Gen.mul _ _ (Gen.const c hc) (h x hx)`.
+A detailed English derivation is pending.
 -/
 theorem Good.const_mul {G : VC D N N' → ℂ} (h : Good cc δ b G) {c : ℂ} (hc : c ∈ Qbar) :
     Good cc δ b (fun z => c * G z) := by
@@ -670,9 +666,9 @@ theorem Good.const_mul {G : VC D N N' → ℂ} (h : Good cc δ b G) {c : ℂ} (h
   exact Gen.mul _ _ (Gen.const c hc) (h x hx)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `e : U D (tor0 D cc δ) x (fun z => ∑ a ∈ s, F a z) = fun z => ∑ a ∈ s, U D (tor0 D cc δ) x (F a) z`. Use function extensionality and compare the values at `z`. Simplify using `only [U, Finset.sum_mul]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Gen.sum s _ fun a ha => h a ha x hx`.
+A detailed English derivation is pending.
 -/
 theorem Good.sum {α : Type} (s : Finset α) (F : α → VC D N N' → ℂ)
     (h : ∀ a ∈ s, Good cc δ b (F a)) : Good cc δ b (fun z => ∑ a ∈ s, F a z) := by
@@ -684,9 +680,9 @@ theorem Good.sum {α : Type} (s : Finset α) (F : α → VC D N N' → ℂ)
   exact Gen.sum s _ fun a ha => h a ha x hx
 
 /- English proof (translation)
-Take `⟨m, hm, hx⟩` from `hx`. Take `⟨n, hn, hy⟩` from `hy`. Take `⟨k, hk⟩` from `(integral_laB cc δ hG hC hb).1 _ hx _ hy`. Rewrite `hk` using `[Hf_nsmul, Complex.im_ofReal_mul]`. Use `⟨k / (m * n), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm' : (m : ℝ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `hn' : (n : ℝ) ≠ 0` using `by exact_mod_cast hn.ne'`. Use `push_cast`. Rewrite using `[← hk]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem im_rat (hG : admG1 D) (hC : Crv D cc δ) (hb : OnB D b) {x y : VC D N N'}
     (hx : x ∈ sat (LaB D (tor0 D cc δ) b)) (hy : y ∈ sat (LaB D (tor0 D cc δ) b)) :
@@ -702,9 +698,9 @@ theorem im_rat (hG : admG1 D) (hC : Crv D cc δ) (hb : OnB D b) {x y : VC D N N'
   rw [← hk]; field_simp
 
 /- English proof (translation)
-Take `⟨m, hm, hx⟩` from `hx`. Take `⟨k, hk⟩` from `(integral_laB cc δ hG hC hb).2 _ hx`. Rewrite `hk` using `[qH_nsmul]`. Use `⟨k / m ^ 2, ?_⟩` and prove the remaining obligations. Establish `hm' : (m : ℝ) ≠ 0` using `by exact_mod_cast hm.ne'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[← hk]`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem qH_rat (hG : admG1 D) (hC : Crv D cc δ) (hb : OnB D b) {x : VC D N N'}
     (hx : x ∈ sat (LaB D (tor0 D cc δ) b)) : ∃ q : ℚ, qH D (tor0 D cc δ) x = q := by
@@ -718,9 +714,9 @@ theorem qH_rat (hG : admG1 D) (hC : Crv D cc δ) (hb : OnB D b) {x : VC D N N'}
   rw [← hk]; field_simp
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨q, hq⟩` from `im_rat hG hC hb hx ht`. Establish `e` using `funext (U_U (tor0 D cc δ) x t G)`. Rewrite using `[show U D (tor0 D cc δ) x (U D (tor0 D cc δ) t G) = _ from e, hq]`. Use `Gen.mul _ _ (Gen.const _ ?_) (h _ (add_mem hx ht))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using exp_rat_mem (-q)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Good.transl (hG : admG1 D) (hC : Crv D cc δ) (hb : OnB D b) {G : VC D N N' → ℂ}
     (h : Good cc δ b G) {t : VC D N N'} (ht : t ∈ sat (LaB D (tor0 D cc δ) b)) :
@@ -733,11 +729,9 @@ theorem Good.transl (hG : admG1 D) (hC : Crv D cc δ) (hb : OnB D b) {G : VC D N
   simpa using exp_rat_mem (-q)
 
 /- English proof (translation)
-Distinguish the cases in `hi : (A₁.addSubgroupOf A₂).index = 0`. Establish `e : Iop D (tor0 D cc δ) A₁ A₂ G = fun z => 0 * G z`. Use function extensionality and compare the values at `z`. Simplify using `[Iop, hi]`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.const_mul (zero_mem _)`. Use `haveI : Finite (A₂ ⧸ A₁.addSubgroupOf A₂) := Nat.finite_of_card_ne_zero hi haveI := Fintype.ofFinite (A₂ ⧸ A₁.addSubgroupOf A₂)`. Unfold `Iop`. Simplify using `only [finsum_eq_sum_of_fintype]`. Use `Good.const_mul (Good.sum _ _ fun q _ => ?_) (inv_mem (sqrt_nat_mem _))` and prove the remaining obligations.
-
-Conclude with `(h.transl hG hC hb (hA (Quotient.out q).2)).const_mul (zpow_mem (neg_mem (one_mem _)) _)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Good.iop (hG : admG1 D) (hC : Crv D cc δ) (hb : OnB D b) {G : VC D N N' → ℂ}
     (h : Good cc δ b G) (A₁ A₂ : AddSubgroup (VC D N N'))
@@ -757,7 +751,7 @@ theorem Good.iop (hG : admG1 D) (hC : Crv D cc δ) (hb : OnB D b) {G : VC D N N'
       (zpow_mem (neg_mem (one_mem _)) _)
 
 /- English proof (translation)
-Unfold `U1`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_U1 (Λ : AddSubgroup ℂ) (c : ℂ) {g : ℂ → ℂ} (hg : Differentiable ℂ g) :
     Differentiable ℂ (U1 Λ c g) := by
@@ -765,7 +759,7 @@ theorem differentiable_U1 (Λ : AddSubgroup ℂ) (c : ℂ) {g : ℂ → ℂ} (hg
   fun_prop
 
 /- English proof (translation)
-Establish `hn : (n.factorial : ℂ) ≠ 0` using `by exact_mod_cast n.factorial_ne_zero`. Use `mul_mem (h n) (natCast_mem Qbar n.factorial)` as an intermediate fact. Rewrite `this` using `[coef1, div_mul_cancel₀ _ hn]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem iteratedDeriv_mem {g : ℂ → ℂ} (h : ∀ n, coef1 g n ∈ Qbar) (n : ℕ) :
     iteratedDeriv n g 0 ∈ Qbar := by
@@ -774,11 +768,11 @@ theorem iteratedDeriv_mem {g : ℂ → ℂ} (h : ∀ n, coef1 g n ∈ Qbar) (n :
   rwa [coef1, div_mul_cancel₀ _ hn] at this
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨c, hc, rfl⟩` from `exists_coords cc δ hx`. Take `⟨P, hP⟩` from `exists_pair cc δ hG hC`. Establish `hs : Differentiable ℂ (sgStar (lamOf D cc δ))`. Rewrite using `[GlobalTheory.OddTheta.sgStar_eq P _ hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.OddTheta.canonicalSigma_spec P _ hP).1`. Rewrite using `[show U D (tor0 D cc δ) _ _ = _ from funext (U_pullB cc δ hG hb c _)]`. Use `Gen.prod _ _ fun j _ => ?_` and prove the remaining obligations. Use `Gen.lin _ (differentiable_U1 _ _ hs) (iteratedDeriv_mem ((hU cc δ hC).1 _ (hc j))) (sqL (embV D (tor0 D cc δ) (b j))) fun k => ?_` and prove the remaining obligations. Rewrite using `[sqL_apply, sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_mem fun τ _ => sum_mem fun i _ => sum_mem fun i' _ => mul_mem ?_ ?_` and prove the remaining obligations. Unfold `coordV split_ifs exacts [one_mem _, zero_mem _]`. Conclude with `hom_mem ((starRingEnd ℂ).comp (embT D τ)) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem good_sigma (hG : admG1 D) (hU : use1 D) (hC : Crv D cc δ) (hb : OnB D b) :
     Good cc δ b (pullB D (tor0 D cc δ) b (sgStar (lamOf D cc δ))) := by
@@ -800,9 +794,9 @@ theorem good_sigma (hG : admG1 D) (hU : use1 D) (hC : Crv D cc δ) (hb : OnB D b
   · exact hom_mem ((starRingEnd ℂ).comp (embT D τ)) _
 
 /- English proof (translation)
-Establish `h2 : InRationalLattice (lamOf D cc δ) t0` using `⟨2, two_pos, by simpa using ht.1⟩`. Establish `h0 : U1 (lamOf D cc δ) t0 (sgStar (lamOf D cc δ)) 0 ∈ Qbar`. Simplify `(hU cc δ hC).1 _ h2 0` using `[coef1]`. Establish `e : pullB D (tor0 D cc δ) b (GL3Theta.th0 (lamOf D cc δ) t0) = fun z => ((U1 (lamOf D cc δ) t0 (sgStar (lamOf D cc δ)) 0)⁻¹) ^ r * U D (tor0 D cc δ) (∑ j, t0 • embV D (tor0 D cc δ) (b j)) (pullB D (tor0 D cc δ) b (sgStar (lamOf D cc δ))) z`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[U_pullB cc δ hG hb (fun _ => t0)]`. Simplify using `[pullB, GL3Theta.th0, div_eq_mul_inv, Finset.prod_mul_distrib, mul_comm]`. Rewrite using `[e]`. Conclude with `((good_sigma hG hU hC hb).transl hG hC hb (sum_mem fun j _ => smul_embV_mem cc δ hG hb h2 _)).const_mul (pow_mem (inv_mem h0) _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_theta (hG : admG1 D) (hU : use1 D) (hC : Crv D cc δ) (hb : OnB D b) {t0 : ℂ}
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0) :
@@ -822,9 +816,9 @@ theorem good_theta (hG : admG1 D) (hU : use1 D) (hC : Crv D cc δ) (hb : OnB D b
     (sum_mem fun j _ => smul_embV_mem cc δ hG hb h2 _)).const_mul (pow_mem (inv_mem h0) _)
 
 /- English proof (translation)
-Establish `e : (p ^ n) • liftY D (tor0 D cc δ) δ p n ε b y = ∑ i, (y i : ℕ) • (D.host.φ₀ ((ε : D.host.K) : D.host.E) • δ • embV D (tor0 D cc δ) (b i))`. Simplify using `only [← Nat.cast_smul_eq_nsmul ℂ]`. Use function extensionality and compare the values at `τ i j`. Establish `hp' : (p : ℂ) ≠ 0` using `by exact_mod_cast hp`. Simplify using `only [liftY, Pi.smul_apply, embV_apply, Finset.sum_apply, Matrix.smul_apply, Matrix.sum_apply, smul_eq_mul, map_mul, map_sum, map_div₀, map_pow, map_natCast, hG.1 τ, Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `sum_mem fun i _ => nsmul_mem (la_mul cc δ L L' ε (hb i)) _`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_smul_liftY (hG : admG1 D) {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} {p : ℕ} (hp : p ≠ 0) (n : ℕ)
@@ -846,17 +840,17 @@ theorem pow_smul_liftY (hG : admG1 D) {L : Submodule (𝓞 D.host.E) (Fin N → 
   exact sum_mem fun i _ => nsmul_mem (la_mul cc δ L L' ε (hb i)) _
 
 /- English proof (translation)
-Introduce `D cc δ hC t0 ht N N' L L' hL hL' _ G hE`. Establish `hG : admG1 D` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `hU : use1 D` using `GlobalTheory.T.forall_use1 D`. Take `⟨b, κ, hb, hκ, rfl⟩` from `hE`. Establish `hg` using `((good_theta hG hU hC hb ht).iop hG hC hb (LaB D (tor0 D cc δ) b) _ (la_le cc δ hG hb L L')).const_mul hκ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQ : ∀ x, LaQ D (tor0 D cc δ) L L' x → x ∈ sat (LaB D (tor0 D cc δ) b)`. Introduce and unpack `x ⟨m, hm, hx⟩`. Conclude with `sat_of_nsmul hm (la_le cc δ hG hb L L' hx)`. Use `⟨hg.coefIn, fun x hx => (hg.transl hG hC hb (hQ x hx)).coefIn, fun k a t ha hta => ?_, fun L₁ L₁' _ _ => (hg.iop hG hC hb _ _ (la_le cc δ hG hb L₁ L₁')).coefIn, ?_⟩` and prove the remaining obligations. Conclude with `(Good.sum _ _ fun j _ => (hg.transl hG hC hb (hQ _ (hta j))).const_mul (ha j)).coefIn`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p hp lam _ _ r b' n ε Φ hb' _ _ hΦ`. Establish `hd` using `delta_mem_rationalIdealLattice cc δ hC.1.1`. Use `Good.coefIn (cc := cc) (δ := δ) (b := b) (Good.const_mul (Good.sum _ _ fun a _ => Good.const_mul (Good.sum _ _ fun y _ => ?_) (hΦ _)) (inv_mem (pow_mem (natCast_mem _ _) _)))` and prove the remaining obligations. Establish `hy : liftY D (tor0 D cc δ) δ p n ε b' y ∈ sat (LaB D (tor0 D cc δ) b)` using `smul_embV_mem cc δ hG hb hd _`. Establish `ha : vecN D (tor0 D cc δ) δ p n b' a ∈ sat (LaB D (tor0 D cc δ) b)` using `smul_embV_mem cc δ hG hb hd _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `Good.const_mul (Good.const_mul (hg.transl hG hC hb hy) ?_) (inv_mem ?_)` and prove the remaining obligations. Unfold `wPh split_ifs`. Take `⟨q, hq⟩` from `qH_rat hG hC hb hy`. Rewrite using `[hq]`. Simplify using `using exp_rat_mem q`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, hm⟩` from `integral_la cc δ hG hC hL hL' _ (pow_smul_liftY hG hp.out.ne_zero n ε hb'.2 y)`. Rewrite `hm` using `[qH_nsmul]`. Take `⟨k, m', -, e⟩` from `Classical.epsilon_spec (p := fun s : ℂ => ∃ (k : ℕ) (m : ℤ), (p : ℝ) ^ k * qH D (tor0 D cc δ) (liftY D (tor0 D cc δ) δ p n ε b' y) = (m : ℝ) ∧ s = (-1 : ℂ) ^ m) ⟨_, n * 2, m, by rw [← hm]; push_cast; ring, rfl⟩`. Rewrite using `[e]`. Conclude with `zpow_mem (neg_mem (one_mem _)) _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Take `⟨q, hq⟩` from `im_rat hG hC hb ha hy`. Rewrite using `[kap, hq]`. Use `exp_rat_mem (-2 * q) using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem taylor_algebraic : ∀ D : D7, useAlg D := by
   intro D cc δ hC t0 ht N N' L L' hL hL' _ G hE

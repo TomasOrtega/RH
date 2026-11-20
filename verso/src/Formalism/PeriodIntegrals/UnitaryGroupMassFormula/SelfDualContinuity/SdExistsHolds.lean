@@ -9,7 +9,7 @@ namespace PI.SelfDualBridge.W
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes NumberField IsDedekindDomain
 
 /- English proof (translation)
-The claim follows from `sdExists_of_sdEx (PI.OmFibreUniq.W.SdInst.sdEx_of_psiNT PI.OmFibreUniq.W.Sd.additive_character_nontrivial) σ J ψ v a ι`.
+A detailed English derivation is pending.
 -/
 theorem sdExists_holds {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)

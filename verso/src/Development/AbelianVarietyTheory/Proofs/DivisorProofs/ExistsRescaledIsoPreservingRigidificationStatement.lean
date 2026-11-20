@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RigRescale.exists_isGen_maps_rig | exact GlobalTheory.RigRescale.exists_isGen_maps_rig | (intros; apply GlobalTheory.RigRescale.exists_isGen_maps_rig <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_rescaled_iso_preserving_rigidification : ∀ {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] (L₁ L₂ : RigLB G)
     (e : LB.Iso L₁.L L₂.L), e.IsGen → ∃ e' : LB.Iso L₁.L L₂.L, e'.IsGen ∧

@@ -9,17 +9,13 @@ open ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.IndefiniteRowSideFul
 namespace GlobalTheory.Hartogs
 
 /- English proof (translation)
-Introduce `X _ _ hN f x hreg`. Assume the negation of the conclusion as `hf`. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Use `haveI : Nonempty U := ⟨⟨x, hx⟩⟩`. Use `haveI := isIntegrallyClosed_sections_of_stalks hN hU`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsNoetherianRing Γ(X, U) := IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Use `haveI := functionField_isFractionRing_of_isAffineOpen X U hU`. Establish `key : ∀ y : U, RegAt (y : X) f ↔ ∃ s c : Γ(X, U), algebraMap _ X.functionField s * f = algebraMap _ X.functionField c ∧ s ∉ (hU.primeIdealOf y).asIdeal` using `fun y => haveI := hU.isLocalization_stalk y GlobalTheory.NormalPole.mem_range_iff (B := X.presheaf.stalk (y : X)) (hU.primeIdealOf y).asIdeal f`. Take `⟨p, hp, hpQ, h1, hpf⟩` from `GlobalTheory.NormalPole.exists_height_one f (hU.primeIdealOf ⟨x, hx⟩).asIdeal fun s c e => by_contra fun hs => hf ((key ⟨x, hx⟩).2 ⟨s, c, e, hs⟩)`. Set `P : PrimeSpectrum Γ(X, U)` to `⟨p, hp⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Establish `hz : hU.fromSpec P ∈ U`. Establish `: hU.fromSpec P ∈ Set.range hU.fromSpec` using `⟨P, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Set `z : U` to `⟨hU.fromSpec P, hz⟩`. Establish `hP : hU.primeIdealOf z = P` using `hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hzx : (z : X) ⤳ x`. Establish `h` using `((PrimeSpectrum.le_iff_specializes P (hU.primeIdealOf ⟨x, hx⟩)).mp hpQ).map hU.fromSpec.continuous`. Rewrite `h` using `[hU.fromSpec_primeIdealOf ⟨x, hx⟩]`. Then use the resulting hypothesis. Establish `hfz : ¬ RegAt (z : X) f` using `fun h => by`. Take `⟨s, c, e, hs⟩` from `(key z).1 h`.
-
-Rewrite `hs` using `[hP]`. Conclude with `hs (hpf s c e)`. Use `clear_value z`. Use `haveI := hU.isLocalization_stalk z`. Use `haveI : IsDiscreteValuationRing (X.presheaf.stalk (z : X)) := isDiscreteValuationRing_of_height_eq_one (hU.primeIdealOf z).asIdeal (by rw [hP]; exact h1) _`.
-
-Conclude with `hfz (hreg z hzx inferInstance)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regAt_of_forall_dvr : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X],
     (∀ x : X, IsIntegrallyClosed (X.presheaf.stalk x)) →

@@ -12,7 +12,7 @@ namespace GlobalTheory.MaxIdealTensorPadic
 variable {p : ℕ} [Fact p.Prime] (G : HTGroup p)
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [conjT_tmul, NumberField.IsCMField.complexConj_apply_apply]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem conjT_conjT (y : ℚ_[p] ⊗[ℚ] G.F) : conjT G.F ℚ_[p] (conjT G.F ℚ_[p] y) = y := by
   induction y using TensorProduct.induction_on with
@@ -21,11 +21,11 @@ theorem conjT_conjT (y : ℚ_[p] ⊗[ℚ] G.F) : conjT G.F ℚ_[p] (conjT G.F �
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Establish `e : (a ⊗ₜ[ℚ] x : ℚ_[p] ⊗[ℚ] G.F) = (a ⊗ₜ 1) * (1 ⊗ₜ x)`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, map_mul, hf, h, map_mul, MulMemClass.coe_mul, map_mul]`. Use `congr 1`. Simplify using `[HTGroup.liftW, Algebra.TensorProduct.lift_tmul, HTGroup.embW]`. Use `congr 1`. Simplify using `only [HTGroup.liftW, Algebra.TensorProduct.lift_tmul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, hx, hy, map_add, AddMemClass.coe_add, map_add]`.
+Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem eq_sigma_liftW (f : ℚ_[p] ⊗[ℚ] G.F →+* PadicAlgCl p)
     (hf : ∀ a : ℚ_[p], f (a ⊗ₜ 1) = algebraMap ℚ_[p] (PadicAlgCl p) a)
@@ -46,17 +46,15 @@ theorem eq_sigma_liftW (f : ℚ_[p] ⊗[ℚ] G.F →+* PadicAlgCl p)
   | add x y hx hy => rw [map_add, hx, hy, map_add, AddMemClass.coe_add, map_add]
 
 /- English proof (translation)
-Introduce `p _ G M hM`. Use `letI : Field ((ℚ_[p] ⊗[ℚ] G.F) ⧸ M) := Ideal.Quotient.field M`. Use `haveI : Module.Finite ℚ_[p] ((ℚ_[p] ⊗[ℚ] G.F) ⧸ M) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ ℚ_[p] M).toLinearMap Ideal.Quotient.mk_surjective`. Use `haveI : Algebra.IsAlgebraic ℚ_[p] ((ℚ_[p] ⊗[ℚ] G.F) ⧸ M) := Algebra.IsAlgebraic.of_finite _ _`. Set `ι : ((ℚ_[p] ⊗[ℚ] G.F) ⧸ M) →ₐ[ℚ_[p]] PadicAlgCl p` to `IsAlgClosed.lift`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : ℚ_[p] ⊗[ℚ] G.F →+* PadicAlgCl p` to `(ι.comp (Ideal.Quotient.mkₐ ℚ_[p] M)).toRingHom`. Establish `hker : ∀ y, y ∈ M ↔ f y = 0`. Introduce `y`. Use `show y ∈ M ↔ ι (Ideal.Quotient.mk M y) = 0`. Rewrite using `[map_eq_zero, Ideal.Quotient.eq_zero_iff_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hf : ∀ a : ℚ_[p], f (a ⊗ₜ 1) = algebraMap ℚ_[p] (PadicAlgCl p) a` using `fun a => (ι.comp (Ideal.Quotient.mkₐ ℚ_[p] M)).commutes a`. Set `τ : G.F →+* PadicAlgCl p` to `f.comp (Algebra.TensorProduct.includeRight : G.F →ₐ[ℚ] _).toRingHom`. Break down `GlobalTheory.T.padicEmbedding_liesOver_or_complexConj_liesOver p G τ with hτ | hτ` into its components or cases. Take `⟨i, σ, hσ⟩` from `G.emb_all τ hτ`. Use `⟨i, Or.inl ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ∀ x : G.F, f (1 ⊗ₜ x) = σ (G.emb i x)` using `fun x => RingHom.congr_fun hσ x`. Use extensionality with `y`. Rewrite using `[hker, RingHom.mem_ker, eq_sigma_liftW G f hf i σ h y, map_eq_zero_iff _ σ.injective]`. Conclude with `ZeroMemClass.coe_eq_zero`. Take `⟨i, σ, hσ⟩` from `G.emb_all _ hτ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨i, Or.inr ?_⟩` and prove the remaining obligations. Set `g : ℚ_[p] ⊗[ℚ] G.F →+* PadicAlgCl p` to `f.comp (conjT G.F ℚ_[p])`. Establish `hg : ∀ a : ℚ_[p], g (a ⊗ₜ 1) = algebraMap ℚ_[p] (PadicAlgCl p) a` using `fun a => by`. Simplify using `only [g, RingHom.comp_apply, conjT_tmul, map_one, hf]`. Establish `h : ∀ x : G.F, g (1 ⊗ₜ x) = σ (G.emb i x)` using `fun x => RingHom.congr_fun hσ x`.
-
-Use extensionality with `y`. Establish `e : f y = g (conjT G.F ℚ_[p] y)` using `by simp only [g, RingHom.comp_apply, conjT_conjT]`. Rewrite using `[hker, e, eq_sigma_liftW G g hg i σ h, map_eq_zero_iff _ σ.injective, RingHom.mem_ker]`. Conclude with `ZeroMemClass.coe_eq_zero`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (M : Ideal (TensorProduct ℚ ℚ_[p] G.F)), M.IsMaximal →
     ∃ i : Fin G.m, M = RingHom.ker (G.liftW i) ∨

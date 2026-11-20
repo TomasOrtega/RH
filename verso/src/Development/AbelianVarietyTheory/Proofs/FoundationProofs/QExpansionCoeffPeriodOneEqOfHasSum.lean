@@ -7,9 +7,9 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Establish `h1` using `Function.Periodic.im_invQParam_pos_of_norm_lt_one one_pos hq1 hq0`. Set `τ : ℍ` to `⟨Function.Periodic.invQParam 1 q, h1⟩`. Establish `h2` using `Function.Periodic.cuspFunction_eq_of_nonzero 1 (f ∘ ofComplex) hq0`. Establish `h3 : cuspFunction 1 f q = f τ`. Simplify `h2` using `[cuspFunction, UpperHalfPlane.ofComplex_apply_of_im_pos h1]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h4 : Function.Periodic.qParam 1 (τ : ℂ) = q` using `Function.Periodic.qParam_right_inv one_ne_zero hq0`. Rewrite using `[h3, ← h4]`. Conclude with `hs τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_cuspFunction_of_hasSum {f : ℍ → ℂ} {a : ℕ → ℂ}
     (hs : ∀ τ : ℍ, HasSum (fun m => a m • Function.Periodic.qParam 1 τ ^ m) (f τ))
@@ -26,19 +26,17 @@ theorem hasSum_cuspFunction_of_hasSum {f : ℍ → ℂ} {a : ℕ → ℂ}
   exact hs τ
 
 /- English proof (translation)
-Use `set p : FormalMultilinearSeries ℂ ℂ ℂ := FormalMultilinearSeries.ofScalars ℂ a with hp`. Establish `hrad : 1 ≤ p.radius`. Use `ENNReal.le_of_forall_nnreal_lt fun r hr => ?_` and prove the remaining obligations. Break down `eq_or_ne r 0 with rfl | hr0` into its components or cases. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hq0 : ((r : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hr0`. Establish `hq1 : ‖((r : ℝ) : ℂ)‖ < 1`. Establish `: (r : ℝ) < 1` using `by exact_mod_cast hr`. Simplify using `using this`. Establish `ht` using `(hasSum_cuspFunction_of_hasSum hs hq0 hq1).summable.tendsto_atTop_zero.norm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `p.le_radius_of_tendsto (l := 0) ?_` and prove the remaining obligations. Establish `ht' : Tendsto (fun n : ℕ => ‖a n‖ * (r : ℝ) ^ n) atTop (𝓝 0)` using `by simpa using ht`. Use `ht' using 2 with n` and compare the differences between its conclusion and the goal. Simplify using `[hp, FormalMultilinearSeries.ofScalars_norm]`. Establish `hpos : 0 < p.radius` using `lt_of_lt_of_le zero_lt_one hrad`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `p.hasFPowerSeriesOnBall hpos`. Establish `hAn : AnalyticAt ℂ p.sum 0` using `hP.analyticAt`. Establish `hne : ∀ q : ℂ, q ≠ 0 → ‖q‖ < 1 → cuspFunction 1 f q = p.sum q`. Introduce `q hq0 hq1`. Rewrite using `[hp, ← FormalMultilinearSeries.ofScalarsSum, FormalMultilinearSeries.ofScalars_sum_eq a q, (hasSum_cuspFunction_of_hasSum hs hq0 hq1).tsum_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hball : Metric.ball (0 : ℂ) 1 ∈ 𝓝 (0 : ℂ)` using `Metric.ball_mem_nhds 0 one_pos`. Establish `hev : ∀ᶠ q in 𝓝[≠] (0 : ℂ), cuspFunction 1 f q = p.sum q` using `by filter_upwards [nhdsWithin_le_nhds hball, self_mem_nhdsWithin] with q hq hq0`. Conclude with `hne q hq0 (by simpa using hq)`. Establish `h0 : cuspFunction 1 f 0 = p.sum 0`. Establish `ht : Tendsto (cuspFunction 1 f) (𝓝[≠] 0) (𝓝 (p.sum 0))` using `(hAn.continuousAt.tendsto.mono_left nhdsWithin_le_nhds).congr' (hev.mono fun q hq => hq.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [cuspFunction, Function.Periodic.cuspFunction, Function.update_self]`. Use `Tendsto.limUnder_eq ?_` and prove the remaining obligations. Use `ht.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with q hq0`. Simplify using `[cuspFunction, Function.Periodic.cuspFunction, Function.update_of_ne hq0]`.
-
-Use `hAn.congr ?_` and prove the remaining obligations. Use `filter_upwards [hball] with q hq`. Break down `eq_or_ne q 0 with rfl | hq0` into its components or cases. Conclude with `h0.symm`. Conclude with `(hne q hq0 (by simpa using hq)).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem analyticAt_cuspFunction_of_hasSum {f : ℍ → ℂ} {a : ℕ → ℂ}
     (hs : ∀ τ : ℍ, HasSum (fun m => a m • Function.Periodic.qParam 1 τ ^ m) (f τ)) :
@@ -83,9 +81,9 @@ theorem analyticAt_cuspFunction_of_hasSum {f : ℍ → ℂ} {a : ℕ → ℂ}
   · exact (hne q hq0 (by simpa using hq)).symm
 
 /- English proof (translation)
-Introduce `f a hs n`. Establish `han` using `analyticAt_cuspFunction_of_hasSum hs`. Establish `h1` using `(hasFPowerSeriesOnBall_cuspFunction one_pos han hs).hasFPowerSeriesAt`. Establish `h2 : HasFPowerSeriesAt (cuspFunction 1 f) (FormalMultilinearSeries.ofScalars ℂ fun m => coef f m) 0`. Simplify `han.hasFPowerSeriesAt` using `[coef, qExpansion_coeff, div_eq_mul_inv, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congr_arg (FormalMultilinearSeries.coeff · n) (h2.eq_formalMultilinearSeries h1)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coef_of_hasSum : ∀ (f : ℍ → ℂ) (a : ℕ → ℂ),
     (∀ τ : ℍ, HasSum (fun m => a m • Function.Periodic.qParam 1 τ ^ m) (f τ)) →

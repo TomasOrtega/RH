@@ -16,30 +16,28 @@ open scoped Matrix TensorProduct
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨y, hy, h⟩` from `exists_integral_multiples ℤ ℚ s`. Conclude with `⟨y, hy, fun x hx => by simpa [zsmul_eq_mul] using h x hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_den (s : Finset E) : ∃ N : ℤ, N ≠ 0 ∧ ∀ x ∈ s, IsIntegral ℤ ((N : E) * x) := by
   obtain ⟨y, hy, h⟩ := exists_integral_multiples ℤ ℚ s
   exact ⟨y, hy, fun x hx => by simpa [zsmul_eq_mul] using h x hx⟩
 
 /- English proof (translation)
-Establish `hsm : ∀ c : E, IsIntegral ℤ c → ∀ a ∈ L, c • a ∈ L` using `fun c hc a ha => L.smul_mem (⟨c, hc⟩ : 𝓞 E) ha`. Establish `hspan : ∀ i : Fin d, ∃ (f : (Fin d → E) → E) (t : Finset (Fin d → E)), (t : Set (Fin d → E)) ⊆ L ∧ ∑ a ∈ t, f a • a = Pi.single i 1`. Introduce `i`. Establish `hi : Pi.single i (1 : E) ∈ Submodule.span E (L : Set (Fin d → E))`. Rewrite using `[hL.span_eq_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨f, t, ht, -, hsum⟩` from `Submodule.mem_span_iff_exists_finset_subset.1 hi`. Conclude with `⟨f, t, ht, hsum⟩`. Use `choose f t ht hsum using hspan`. Take `⟨D, hD0, hD⟩` from `exists_int_den (Finset.univ.biUnion fun i => (t i).image (f i))`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∀ i (x : E), IsIntegral ℤ x → (D : E) • Pi.single i x ∈ L`. Introduce `i x hx`. Establish `heq : (D : E) • Pi.single i x = ∑ a ∈ t i, (x * ((D : E) * f i a)) • a`. Establish `: (D : E) • Pi.single i x = (x * D) • Pi.single i (1 : E)`. Apply the tactic sequence `funext k; by_cases hk : k = i <;> simp [hk, Pi.single_apply, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← hsum i, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_assoc]`. Rewrite using `[heq]`. Conclude with `Submodule.sum_mem _ fun a ha => hsm _ (hx.mul (hD _ (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, Finset.mem_image_of_mem _ ha⟩))) _ (ht i ha)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `hL.fg`. Take `⟨D', hD'0, hD'⟩` from `exists_int_den (Finset.univ.biUnion fun p : Fin m × Fin d => S.image fun y => e p.1 * y p.2)`. Establish `h2 : ∀ y ∈ L, ∀ j l, IsIntegral ℤ ((D' : E) * (e j * y l))`. Introduce `y hy`. Rewrite `hy` using `[← hS]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => intro j l`. Conclude with `hD' _ (Finset.mem_biUnion.2 ⟨(j, l), Finset.mem_univ _, Finset.mem_image_of_mem (fun y => e (j, l).1 * y (j, l).2) hy⟩)`. Consider the case `zero => intro j l`. Simplify using `using (isIntegral_zero : IsIntegral ℤ (0 : E))`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => intro j l`. Simplify `(hy j l).add (hz j l)` using `[mul_add]`. Consider the case `smul o y _ hy`. Introduce `j l`. Establish `: (D' : E) * (e j * (o • y) l) = (algebraMap (𝓞 E) E o) * ((D' : E) * (e j * y l))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(RingOfIntegers.isIntegral_coe o).mul (hy j l)`. Use `⟨D * D', mul_ne_zero hD0 hD'0, fun y hy i l j => ?_⟩` and prove the remaining obligations.
-
-Use `h1 i _ (h2 y hy j l)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `funext k; by_cases hk : k = i <;> simp [hk, Pi.single_apply]; ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_int_single {d : ℕ} (L : Submodule (𝓞 E) (Fin d → E)) (hL : L.IsLattice E) {m : ℕ}
     (e : Fin m → E) : ∃ N : ℤ, N ≠ 0 ∧ ∀ y ∈ L, ∀ i l j, (N : E) • Pi.single i (e j * y l) ∈ L := by
@@ -93,7 +91,7 @@ def nbhd (N : ℤ) : Set (AF F) :=
   {b | ∀ v : Pl F, evFin F v (algebraMap F (AF F) (N : F)⁻¹ * b) ∈ v.adicCompletionIntegers F}
 
 /- English proof (translation)
-Establish `h : IsOpen {x : Af F | ∀ v : Pl F, x.1 v ∈ v.adicCompletionIntegers F}` using `RestrictedProduct.isOpen_forall_mem (R := fun v : Pl F => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun v => Valued.isOpen_valuationSubring _)`. Conclude with `h.preimage (continuous_snd.comp (continuous_const.mul continuous_id))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_nbhd (N : ℤ) : IsOpen (nbhd F N) := by
   have h : IsOpen {x : Af F | ∀ v : Pl F, x.1 v ∈ v.adicCompletionIntegers F} :=
@@ -103,25 +101,23 @@ theorem isOpen_nbhd (N : ℤ) : IsOpen (nbhd F N) := by
   exact h.preimage (continuous_snd.comp (continuous_const.mul continuous_id))
 
 /- English proof (translation)
-Introduce `v` and use `by rw [mul_zero, map_zero]; exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zero_mem_nbhd (N : ℤ) : (0 : AF F) ∈ nbhd F N := fun v => by
   rw [mul_zero, map_zero]; exact zero_mem _
 
 /- English proof (translation)
-Establish `hexp : ∀ k l, M k l * inclR (F` using `F) (AF F) (y l) = ∑ j, B.repr (M k l) j • inclR (F := F) (AF F) (e j * y l) := by`. Introduce `k l`. Use `conv_lhs => rw [← B.sum_repr (M k l)]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_mul_assoc, hB, map_mul]`. Establish `hinc : ∀ t : E, inclR (F` using `F) (AF F) ((N : E) * t) = algebraMap F (AF F) (N : F) • inclR (F := F) (AF F) t := by`. Introduce `t`. Rewrite using `[map_mul, map_intCast, map_intCast, Int.cast_smul_eq_zsmul, zsmul_eq_mul]`. Establish `hNc : algebraMap F (AF F) (N : F)⁻¹ * algebraMap F (AF F) (N : F) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, inv_mul_cancel₀ (Int.cast_ne_zero.2 hN0), map_one]`. Establish `hterm : ∀ k l j, Pi.single k ((a * B.repr (M k l) j) • inclR (F` using `F) (AF F) (e j * y l)) ∈ GlobalTheory.InertSph.latAt W w := by`. Introduce `k l j`. Use `set r := B.repr (M k l) j`. Use `AddSubgroup.subset_closure ⟨a * (algebraMap F (AF F) (N : F)⁻¹ * r), ?_, ?_, (N : E) • Pi.single k (e j * y l), hN y hy k l j, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu`. Rewrite using `[smul_eq_mul, ← mul_assoc, ← smul_eq_mul u a, ha u hu, zero_mul]`. Rewrite using `[map_mul]`. Conclude with `mul_mem hai (hM k l j w)`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality. Simplify using `only [Pi.single_eq_same, Pi.smul_apply, smul_eq_mul, hinc, smul_smul]`. Use `congr 1`. Take the linear combination `(-(a * r)) * hNc`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Pi.single_eq_of_ne hik]`. Rewrite using `[← Finset.univ_sum_single (a • _)]`. Use `AddSubgroup.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Establish `hk : (a • (M *ᵥ fun i => inclR (F` using `F) (AF F) (y i))) k = ∑ l, ∑ j, (a * B.repr (M k l) j) • inclR (F := F) (AF F) (e j * y l) := by`. Simplify using `only [Pi.smul_apply, Matrix.mulVec, dotProduct, hexp, Finset.smul_sum, smul_smul]`.
-
-Rewrite using `[hk]`. Express the relevant statement in the definitionally equal form `_ ∈ (GlobalTheory.InertSph.latAt W w).comap (AddMonoidHom.single _ k)`. Conclude with `AddSubgroup.sum_mem _ fun l _ => AddSubgroup.sum_mem _ fun j _ => hterm k l j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem smul_mulVec_mem {d : ℕ} (W : Spc F E d) (w : Pl F) {m : ℕ} (B : Module.Basis (Fin m) (AF F) (AE F E))
     (e : Fin m → E) (hB : ∀ j, B j = inclR (F := F) (AF F) (e j)) (N : ℤ) (hN0 : N ≠ 0)
@@ -172,11 +168,11 @@ theorem smul_mulVec_mem {d : ℕ} (W : Spc F E d) (w : Pl F) {m : ℕ} (B : Modu
   exact AddSubgroup.sum_mem _ fun l _ => AddSubgroup.sum_mem _ fun j _ => hterm k l j
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hai, y, hy, rfl⟩` from `hz`. Establish `e1 : P *ᵥ (a • fun i => inclR (F` using `F) (AF F) (y i)) = a • (fun i => inclR (F := F) (AF F) (y i)) + a • ((P - 1) *ᵥ fun i => inclR (F := F) (AF F) (y i)) := by`. Rewrite using `[Matrix.mulVec_smul, Matrix.sub_mulVec, Matrix.one_mulVec, smul_sub]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Conclude with `add_mem (AddSubgroup.subset_closure ⟨a, ha, hai, y, hy, rfl⟩) (smul_mulVec_mem W w B e hB N hN0 hN _ hP a ha hai y hy)`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem_latAt {d : ℕ} (W : Spc F E d) (w : Pl F) {m : ℕ} (B : Module.Basis (Fin m) (AF F) (AE F E))
     (e : Fin m → E) (hB : ∀ j, B j = inclR (F := F) (AF F) (e j)) (N : ℤ) (hN0 : N ≠ 0)
@@ -197,15 +193,13 @@ theorem mulVec_mem_latAt {d : ℕ} (W : Spc F E d) (w : Pl F) {m : ℕ} (B : Mod
   | neg x _ hx => rw [Matrix.mulVec_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d W hL`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Set `B` to `Algebra.TensorProduct.basis (AF F) b`. Establish `hB : ∀ j, B j = inclR (F` using `F) (AF F) (b j) := fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[B, Algebra.TensorProduct.basis_apply, inclR]`. Take `⟨N, hN0, hN⟩` from `exists_int_single W.L hL (fun j => b j)`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Establish `hm : Continuous fun g : UA σ W.J => mat g` using `Units.continuous_val.comp continuous_subtype_val`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmi : Continuous fun g : UA σ W.J => mat g⁻¹` using `Units.continuous_coe_inv.comp continuous_subtype_val`. Establish `hc : ∀ j, Continuous fun x : AE F E => B.repr x j` using `fun j => IsModuleTopology.continuous_of_linearMap (B.coord j)`. Establish `hent : ∀ (f : UA σ W.J → Matrix (Fin d) (Fin d) (AE F E)), Continuous f → ∀ i l j, IsOpen {g | B.repr ((f g - 1) i l) j ∈ nbhd F N}` using `fun f hf i l j => (isOpen_nbhd N).preimage ((hc j).comp (((continuous_apply l).comp (continuous_apply i)).comp (hf.sub continuous_const)))`. Use `⟨{g | ∀ i l j, B.repr ((mat g - 1) i l) j ∈ nbhd F N ∧ B.repr ((mat g⁻¹ - 1) i l) j ∈ nbhd F N}, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.setOf_forall, Set.setOf_and]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun l => isOpen_iInter_of_finite fun j => (hent _ hm i l j).inter (hent _ hmi i l j)`. Introduce `i l j`. Rewrite using `[inv_one, show mat (1 : UA σ W.J) = 1 from rfl, sub_self]`. Simplify using `only [Matrix.zero_apply, map_zero, Finsupp.coe_zero, Pi.zero_apply, and_self]`. Conclude with `zero_mem_nbhd N`.
-
-Introduce and unpack `k ⟨hkU, hkF⟩`. Use `⟨hkF, fun w z hz => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `mulVec_mem_latAt W w B (fun j => b j) hB N hN0 hN _ (fun i l j => (hkU i l j).1) hz`. Conclude with `mulVec_mem_latAt W w B (fun j => b j) hB N hN0 hN _ (fun i l j => (hkU i l j).2) hz`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_open_latLevel : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (d : ℕ) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d), W.L.IsLattice E →

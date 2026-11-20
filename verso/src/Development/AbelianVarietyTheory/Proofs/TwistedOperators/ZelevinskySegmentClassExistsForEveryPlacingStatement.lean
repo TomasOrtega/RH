@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Gr
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.JHMult
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.segmentClass_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FZelevinskySegmentClassExistsForEveryPlacing.lean&line=140#L140)
 -/

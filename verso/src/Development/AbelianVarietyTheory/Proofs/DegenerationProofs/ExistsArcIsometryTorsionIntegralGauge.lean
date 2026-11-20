@@ -11,7 +11,7 @@ open GlobalTheory GlobalTheory.Ex
 namespace GlobalTheory.Ex.ArcLift
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← W.valuation_le_one_iff]`. Rewrite `h` using `[map_pow]`. Conclude with `(pow_le_one_iff hn).1 h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_pow_mem {K : Type} [Field K] (W : ValuationSubring K) {x : K} {n : ℕ} (hn : n ≠ 0) (h : x ^ n ∈ W) :
     x ∈ W := by
@@ -20,7 +20,7 @@ theorem mem_of_pow_mem {K : Type} [Field K] (W : ValuationSubring K) {x : K} {n 
   exact (pow_le_one_iff hn).1 h
 
 /- English proof (translation)
-Break down `h with ⟨h, -⟩ | ⟨h, -⟩` into its components or cases. Use `letI := h.toField`. Conclude with `⟨inferInstance, inferInstance⟩`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem local_noeth {O' : Type} [CommRing O'] [IsDomain O'] {ϖ : O'} (h : GlobalTheory.LN.ArcBase O' ϖ) :
     IsLocalRing O' ∧ IsNoetherianRing O' := by
@@ -30,23 +30,17 @@ theorem local_noeth {O' : Type} [CommRing O'] [IsDomain O'] {ϖ : O'} (h : Globa
   · exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Introduce `hL hG E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a hb F _ _ _ S hS`. Take `⟨_, _⟩` from `local_noeth hb`. Take `⟨N, ν, hν⟩` from `GlobalTheory.T.exists_integral_degeneration_values hL O' a.D₀ a.even a.bimult F S hS`. Establish `hr : H.rt0 ∈ c.F` using `c.le (IntermediateField.subset_adjoin _ _ (by simp))`. Establish `hz : zeta l.A ∈ c.F` using `c.le (IntermediateField.subset_adjoin _ _ (by simp))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrW : H.rt0 ∈ W₀` using `mem_of_pow_mem W₀ two_ne_zero (by`. Rewrite using `[H.sqrt_neg_disc_sq]`. Conclude with `neg_mem (natCast_mem W₀ _))`. Establish `hzW : zeta l.A ∈ W₀` using `mem_of_pow_mem W₀ l.A_pos.ne' (by`. Rewrite using `[zeta, (Complex.isPrimitiveRoot_exp l.A l.A_pos.ne').pow_eq_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `one_mem _)`. Set `r : c.V W₀` to `⟨⟨H.rt0, hr⟩, hrW⟩`. Set `z : c.V W₀` to `⟨⟨zeta l.A, hz⟩, hzW⟩`. Take `⟨hdet, I, hζ, hA, hM⟩` from `a.geom F r z rfl rfl _ rfl`. Establish `hq` using `fun n (v : D.La) => (((hG O' a.D₀ a.even a.bimult F N ν).2.2.2.2 n).1 (I.ev n v)).exists`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `choose q hq using hq`. Establish `hr2 : r ^ 2 = -(H.d : c.V W₀)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `H.sqrt_neg_disc_sq` using `[r]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨{ ρ := algebraMap (FractionRing O') F (algebraMap O' _ (b r)) ρ_sq := by rw [← map_pow, ← map_pow, ← map_pow, hr2, map_neg, map_neg, map_neg, map_natCast, map_natCast, map_natCast] det := fun τ => by` and prove the remaining obligations. Take `⟨n, h1, h2⟩` from `hdet τ`. Conclude with `⟨n, h1, by`. Rewrite using `[h2]`. Distinguish the cases in `h : τ H.rt = algebraMap (FractionRing O') F (algebraMap O' _ (b r))`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[if_pos h]`. Conclude with `if_pos h`. Rewrite using `[if_neg h]`. Conclude with `if_neg h⟩`. Use `I := I, N := N, ν := ν, q := q, hq := hq`.
-
-Use `be := { be := a.be.comp ν.eX.toIntLinearEquiv.toLinearMap ν.eX.toIntLinearEquiv.toLinearMap`. Use symmetry as in `:= fun y z => a.be_symm _ _`. Use `pos := fun y hy => a.be_pos _ (by simpa using hy)`. Use `dvd := fun y z => a.be_dvd _ _ }`. Use `be_eq := fun _ _ => rfl`.
-
-Use `ρ_eq := fun r' h => by`. Take `rfl : r' = r` from `Subtype.ext (Subtype.ext h)`. Both sides reduce to the same expression. Use `ζ_eq := fun z' h => by`. Take `rfl : z' = z` from `Subtype.ext (Subtype.ext h)`.
-
-Conclude with `hζ`. Use `levA := hA`. Use `levM := hM`. Use `closed := inferInstance }, hν⟩`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_lift : Laws → BrGtSt → AllA fun {_} _ _ _ {_} {_} {_} {_} {_} {_} _ {O'} _ _ {_} a => ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing O') F] (S : ValuationSubring F), (∀ r : O', algebraMap (FractionRing O') F (algebraMap O' _ r) ∈ S) → ∃ A : Lift a F, A.ν.Integral S := by
   intro hL hG E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a hb F _ _ _ S hS

@@ -17,15 +17,13 @@ namespace GlobalTheory.CompanionTheory.SpAlg
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Use `set u₁ : SemiLocal.PlacesOver K v := ⟨w₁, h₁⟩`. Use `set u₂ : SemiLocal.PlacesOver K v := ⟨w₂, h₂⟩`. Establish `hu : u₁ ≠ u₂` using `fun h => hne (congrArg Subtype.val h)`. Use `set f : SemiLocal.PlacesOver K v → ℕ := fun u => Module.finrank (Qv v) (Kv K u.1) with hf`. Establish `hpos : ∀ u, 1 ≤ f u` using `fun u => Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∑ u, f u = 2` using `by rw [← hK]; exact SemiLocal.sum_finrank_eq K v`. Establish `h12 : f u₁ + f u₂ ≤ 2`. Rewrite using `[← hs, ← Finset.sum_pair hu]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`. Establish `p1` using `hpos u₁`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `p2` using `hpos u₂`. Use `⟨?_, by show f u₁ = 1; omega, by show f u₂ = 1; omega⟩` and prove the remaining obligations. Introduce `u`. Assume the negation of the conclusion as `hc`. Establish `c1 : u ≠ u₁` using `fun h => hc (Or.inl (congrArg Subtype.val h))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c2 : u ≠ u₂` using `fun h => hc (Or.inr (congrArg Subtype.val h))`. Establish `h3 : f u + (f u₁ + f u₂) ≤ 2`. Rewrite using `[← hs, ← Finset.sum_pair hu, ← Finset.sum_insert (by simp [c1, c2])]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`. Use `hpos u` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem places_of_split (hK : Module.finrank ℚ K = 2) (v : Pl) (w₁ w₂ : PlK K)
     [h₁ : w₁.asIdeal.LiesOver v.asIdeal] [h₂ : w₂.asIdeal.LiesOver v.asIdeal] (hne : w₁ ≠ w₂) :
@@ -55,7 +53,7 @@ theorem places_of_split (hK : Module.finrank ℚ K = 2) (v : Pl) (w₁ w₂ : Pl
   omega
 
 /- English proof (translation)
-Establish `hb` using `Subalgebra.bot_eq_top_of_finrank_eq_one h`. Establish `hy : algebraMap K (Kv K w) ξ ∈ (⊥ : Subalgebra (Qv v) (Kv K w))` using `by rw [hb]; trivial`. Conclude with `Function.invFun_eq (Algebra.mem_bot.1 hy)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraMap_degreeOneEmbedding_local (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal]
     (h : Module.finrank (Qv v) (Kv K w) = 1) (ξ : K) :
@@ -65,15 +63,15 @@ theorem algebraMap_degreeOneEmbedding_local (v : Pl) (w : PlK K) [w.asIdeal.Lies
   exact Function.invFun_eq (Algebra.mem_bot.1 hy)
 
 /- English proof (translation)
-Introduce `K _ _ hK v w₁ w₂ h₁ h₂ hne`. Take `⟨hall, hf1, hf2⟩` from `places_of_split hK v w₁ w₂ hne`. Establish `s1` using `algebraMap_degreeOneEmbedding_local v w₁ hf1`. Establish `s2` using `algebraMap_degreeOneEmbedding_local v w₂ hf2`. Use `⟨s1, s2, fun ξ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : (⟨w₁, h₁⟩ : SemiLocal.PlacesOver K v) ≠ ⟨w₂, h₂⟩` using `fun h => hne (congrArg Subtype.val h)`. Establish `huniv : (Finset.univ : Finset (SemiLocal.PlacesOver K v)) = {⟨w₁, h₁⟩, ⟨w₂, h₂⟩}`. Use extensionality with `u`. Simplify using `only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton, true_iff]`. Break down `hall u with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl (Subtype.ext h)`. Conclude with `Or.inr (Subtype.ext h)`. Establish `hn` using `SemiLocal.algebraMap_norm_eq_prod (K := ℚ) (L := K) v ξ`. Rewrite `hn` using `[huniv, Finset.prod_pair hu]`. Simplify using `only [] at hn`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : Algebra.norm (Qv v) (algebraMap K (Kv K w₁) ξ) = dg1 v w₁ ξ`. Rewrite using `[← s1, Algebra.norm_algebraMap, hf1, pow_one]`. Establish `e2 : Algebra.norm (Qv v) (algebraMap K (Kv K w₂) ξ) = dg1 v w₂ ξ`. Rewrite using `[← s2, Algebra.norm_algebraMap, hf2, pow_one]`. Rewrite using `[← e1, ← e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hn.symm.trans ?_` and prove the remaining obligations. Conclude with `eq_ratCast (@algebraMap ℚ (Qv v) _ _ (HeightOneSpectrum.instAlgebraAdicCompletion (𝓞 ℚ) ℚ v)) _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem split_place_embeddings_norm : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (v : Pl) (w₁ w₂ : PlK K)
   [w₁.asIdeal.LiesOver v.asIdeal] [w₂.asIdeal.LiesOver v.asIdeal], w₁ ≠ w₂ →

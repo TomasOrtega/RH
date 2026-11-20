@@ -48,7 +48,7 @@ def glueC (e₁ : Matrix (Fin n) (Fin d₁) A ≃ₗ[R] (Fin n × Fin d₁ → R
       ((LinearEquiv.sumArrowLequivProdArrow _ _ R R).symm ≪≫ₗ LinearEquiv.funCongrLeft R R (idx rfl)))
 
 /- English proof (translation)
-Apply the tactic sequence `ext k <;> simp [glueC, LinearEquiv.funCongrLeft_apply, LinearEquiv.sumArrowLequivProdArrow] <;> rcases idx rfl k with p | p <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glueC_apply (e₁ : Matrix (Fin n) (Fin d₁) A ≃ₗ[R] (Fin n × Fin d₁ → R) × (Fin n × Fin d₁ → R))
     (p q : (Fin n → A) ≃ₗ[R] (Fin n × Fin 2 → R)) (Y : Matrix (Fin n) (Fin (d₁ + 2)) A) :
@@ -57,7 +57,7 @@ theorem glueC_apply (e₁ : Matrix (Fin n) (Fin d₁) A ≃ₗ[R] (Fin n × Fin 
   ext k <;> simp [glueC, LinearEquiv.funCongrLeft_apply, LinearEquiv.sumArrowLequivProdArrow] <;> rcases idx rfl k with p | p <;> simp
 
 /- English proof (translation)
-Simplify using `only [dotProduct]`. Rewrite using `[(idx rfl).sum_comp (fun k => Sum.elim f f' k * Sum.elim g g' k), Fintype.sum_sum_type]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dot_idx (f g : Fin n × Fin d₁ → R) (f' g' : Fin n × Fin 2 → R) :
     (fun k => Sum.elim f f' (idx (n := n) (d := d₁ + 2) rfl k)) ⬝ᵥ (fun k => Sum.elim g g' (idx rfl k)) = f ⬝ᵥ g + f' ⬝ᵥ g' := by
@@ -75,21 +75,21 @@ def embC (Z : Matrix (Fin n) (Fin d₁) A) (a b : Fin n → A) : Matrix (Fin n) 
   Matrix.of fun i c => Fin.addCases (motive := fun _ => A) (fun k => Z i k) (fun t => ![a i, b i] t) c
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[embC]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem embC_left (Z : Matrix (Fin n) (Fin d₁) A) (a b : Fin n → A) :
     (Matrix.of fun i k => embC Z a b i (Fin.castAdd 2 k)) = Z := by
   ext i k; simp [embC]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[embC]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem embC_zero (Z : Matrix (Fin n) (Fin d₁) A) (a b : Fin n → A) :
     (fun i => embC Z a b i (Fin.natAdd d₁ 0)) = a := by
   funext i; simp [embC]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[embC]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem embC_one (Z : Matrix (Fin n) (Fin d₁) A) (a b : Fin n → A) :
     (fun i => embC Z a b i (Fin.natAdd d₁ 1)) = b := by
@@ -98,35 +98,33 @@ Use function extensionality and compare the values at `i`. Simplify using `[embC
 end Emb
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M₁ hd hB hX hW hH hM₁`. Substitute `hd` using the available equality. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Apply `((B.emb w).1 : E →+* ℂ).injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`. Establish `hXdet : X.J.det ≠ 0` using `fun h0 => by`. Apply `GlobalTheory.RatDarboux.det_ne_zero_of_isCartan (hX.cartan w)` to reduce the goal to its premises. Use `((B.emb w).1 : E →+* ℂ).map_det X.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Take `⟨p, q, hpq, hpq', hpr, hqr⟩` from `GlobalTheory.T.quadratic_trace_form_coordinates σ n X.J hσ hB.cm.2.2.1 hX.herm hXdet`. Set `Q : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E` to `Matrix.of fun r c => Fin.addCases (motive := fun _ => E) (fun i => H'.ι r i) (fun t => ![H'.x r, H'.y r] t) c`. Establish `hQι : ∀ r i, Q r (Fin.castAdd 2 i) = H'.ι r i` using `fun r i => by simp [Q]`. Establish `hQx : ∀ r, Q r (Fin.natAdd d₁ 0) = H'.x r` using `fun r => by simp [Q]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQy : ∀ r, Q r (Fin.natAdd d₁ 1) = H'.y r` using `fun r => by simp [Q]`. Establish `hQdet` using `GlobalTheory.T.adapted_plane_basis_change_matrix F E σ B d₁ r' s' i₀ i₁ W W₁ H' Q hW hH hQι hQx hQy`. Take `⟨hG1, hG2, hG3, hG00, hG11, hG01, hG10⟩` from `GlobalTheory.T.hyperbolic_basis_matrix_gram σ d₁ W.J W₁.J H'.x H'.y H'.ι Q hσ hW.skew hH.xx hH.yy hH.xy hH.orth hH.gram hQι hQx hQy`. Establish `hQQ : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv Q (Ne.isUnit hQdet)`. Establish `hQQ' : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul Q (Ne.isUnit hQdet)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinc : ∀ {a b c : ℕ} (U : Matrix (Fin a) (Fin b) E) (V : Matrix (Fin b) (Fin c) E), incM F (U * V) = incM F U * incM F V` using `fun U V => Matrix.map_mul`. Establish `hinc1 : incM F (1 : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h1 : (incM F Q)ᵀ * (incM F Q⁻¹)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← hinc, hQQ', hinc1, Matrix.transpose_one]`. Establish `h2 : (incM F Q⁻¹)ᵀ * (incM F Q)ᵀ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.transpose_mul, ← hinc, hQQ, hinc1, Matrix.transpose_one]`. Set `mR : Matrix (Fin n) (Fin (d₁ + 2)) (AE F E) ≃ₗ[AF F] Matrix (Fin n) (Fin (d₁ + 2)) (AE F E)` to `{ toFun := fun u => u * (incM F Q⁻¹)ᵀ invFun := fun Y => Y * (incM F Q)ᵀ map_add' := fun u u' => Matrix.add_mul u u' _ map_smul' := fun a u => Matrix.smul_mul a u _ left_inv := fun u => by show u * (incM F Q⁻¹)ᵀ * (incM F Q)ᵀ = u`. Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_one]`. Use `right_inv := fun Y => by show Y * (incM F Q)ᵀ * (incM F Q⁻¹)ᵀ = Y`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_one] }`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e` to `mR ≪≫ₗ glueC M₁.co.e p q`. Establish `he : ∀ u, e u = glueC M₁.co.e p q (u * (incM F Q⁻¹)ᵀ)` using `fun _ => rfl`. Establish `hback : ∀ Y : Matrix (Fin n) (Fin (d₁ + 2)) (AE F E), Y * (incM F Q)ᵀ * (incM F Q⁻¹)ᵀ = Y` using `fun Y => by`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_one]`. Establish `hG : (incM F Q)ᵀ * incM F W.J * (incM F Q).map (cA σ) = incM F (Qᵀ * W.J * Q.map σ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hinc, hinc]`. Both sides reduce to the same expression. Establish `key : ∀ Y Y' : Matrix (Fin n) (Fin (d₁ + 2)) (AE F E), symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) (Y * (incM F Q)ᵀ) (Y' * (incM F Q)ᵀ) = (e (Y * (incM F Q)ᵀ)).1 ⬝ᵥ (e (Y' * (incM F Q)ᵀ)).2 - (e (Y' * (incM F Q)ᵀ)).1 ⬝ᵥ (e (Y * (incM F Q)ᵀ)).2 := fun Y Y' => by`. Rewrite using `[he, he, hback, hback, glueC_apply, glueC_apply, dot_idx, dot_idx, GlobalTheory.T.symplectic_form_right_mul_transpose, hG, GlobalTheory.T.block_gram_matrix_orthogonal_sum (cA σ) (-1) (incM F X.J) (incM F W₁.J) _ (fun a a' => by simp [incM, hG1]) (fun a t => by simp [incM, hG2]) ( …`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨e, fun u u' => ?_⟩, fun z => ?_, fun a => ?_, fun b => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `key (u * (incM F Q⁻¹)ᵀ) (u' * (incM F Q⁻¹)ᵀ)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, h2, Matrix.mul_one, Matrix.mul_assoc, h2, Matrix.mul_one]`. Then use the resulting hypothesis. Establish `hz : z * (incM F H'.ι)ᵀ = embC z 0 0 * (incM F Q)ᵀ`. Use extensionality with `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_add, embC, incM, hQι]`. Rewrite using `[hz, he, hback, glueC_apply, embC_left, embC_zero, embC_one, map_zero, map_zero]`. Both sides reduce to the same expression. Establish `ha : Matrix.vecMulVec a (incV F H'.x) = embC (0 : Matrix (Fin n) (Fin d₁) (AE F E)) a 0 * (incM F Q)ᵀ`. Use extensionality with `i j`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_add, embC, incM, incV, hQx, Matrix.vecMulVec_apply]`. Rewrite using `[ha, he, hback, glueC_apply, embC_left, embC_zero, embC_one, map_zero, map_zero]`. Use `⟨funext fun k => ?_, fun k => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases idx rfl k with k | k <;> simp`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hb : Matrix.vecMulVec b (incV F H'.y) = embC (0 : Matrix (Fin n) (Fin d₁) (AE F E)) 0 b * (incM F Q)ᵀ`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_add, embC, incM, incV, hQy, Matrix.vecMulVec_apply]`. Rewrite using `[hb, he, hback, glueC_apply, embC_left, embC_zero, embC_one, map_zero, map_zero]`. Use `⟨funext fun k => ?_, fun k => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases idx rfl k with k | k <;> simp`. Simplify using the standard rewrite rules. Rewrite using `[he, show incM F x * (incM F Q⁻¹)ᵀ = incM F (x * (Q⁻¹)ᵀ) from (hinc _ _).symm, glueC_apply]`. Take `⟨y₁, z₁, hM⟩` from `hM₁.rat (Matrix.of fun i a => (x * (Q⁻¹)ᵀ) i (Fin.castAdd 2 a))`. Take `⟨yb, hyb⟩` from `hpr (fun i => (x * (Q⁻¹)ᵀ) i (Fin.natAdd d₁ 1))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨za, hza⟩` from `hqr (fun i => (x * (Q⁻¹)ᵀ) i (Fin.natAdd d₁ 0))`. Use `⟨fun k => Sum.elim y₁ yb (idx rfl k), fun k => Sum.elim z₁ za (idx rfl k), ?_⟩` and prove the remaining obligations. Establish `e1 : (Matrix.of fun i a => incM F (x * (Q⁻¹)ᵀ) i (Fin.castAdd 2 a)) = incM F (Matrix.of fun i a => (x * (Q⁻¹)ᵀ) i (Fin.castAdd 2 a))` using `rfl`. Establish `e2 : ∀ c, (fun i => incM F (x * (Q⁻¹)ᵀ) i c) = incV F (fun i => (x * (Q⁻¹)ᵀ) i c)` using `fun _ => rfl`. Rewrite using `[e1, e2, e2, hM, hyb, hza]`.
-
-Apply the tactic sequence `ext k <;> dsimp only <;> rcases idx rfl k with k | k <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_coords : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ r s r' s' i₀ i₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (M₁ : Model σ X W₁)

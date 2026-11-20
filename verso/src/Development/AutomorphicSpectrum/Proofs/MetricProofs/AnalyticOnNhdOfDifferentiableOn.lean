@@ -30,14 +30,14 @@ def sheetNorm (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ
   (Ψ (segre z) 0)⁻¹ • segre z
 
 /- English proof (translation)
-Introduce `t ht` and use `analyticAt_pi_iff.mpr fun p => osgood n _ _ hV (differentiableOn_pi.mp hγ p) t ht`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_of_differentiableOn {V : Set (Fin n → ℂ)} (hV : IsOpen V)
     {γ : (Fin n → ℂ) → (Σ k, J k) → ℂ} (hγ : DifferentiableOn ℂ γ V) : AnalyticOnNhd ℂ γ V :=
   fun t ht => analyticAt_pi_iff.mpr fun p => osgood n _ _ hV (differentiableOn_pi.mp hγ p) t ht
 
 /- English proof (translation)
-Establish `h1 : AnalyticAt ℂ (fun t' => segre (γ t')) t` using `analyticAt_pi_iff.mpr fun (i : (k : K) → J k) => Finset.analyticAt_fun_prod _ fun k _ => analyticAt_coord h ⟨k, i k⟩`. Conclude with `((LinearMap.toContinuousLinearMap Ψ).analyticAt _).comp h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem analyticAt_psi_segre (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ))
     {γ : (Fin n → ℂ) → (Σ k, J k) → ℂ} {t : Fin n → ℂ} (h : AnalyticAt ℂ γ t) :
@@ -49,7 +49,7 @@ theorem analyticAt_psi_segre (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin 
   exact ((LinearMap.toContinuousLinearMap Ψ).analyticAt _).comp h1
 
 /- English proof (translation)
-Establish `hc` using `fun j => analyticAt_pi_iff.mp (analyticAt_psi_segre Ψ h) j`. Conclude with `analyticAt_pi_iff.mpr fun i => (hc i.succ).div (hc 0) h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem analyticAt_sheetProj (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ))
     {γ : (Fin n → ℂ) → (Σ k, J k) → ℂ} {t : Fin n → ℂ} (h : AnalyticAt ℂ γ t)
@@ -58,9 +58,9 @@ theorem analyticAt_sheetProj (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin 
   exact analyticAt_pi_iff.mpr fun i => (hc i.succ).div (hc 0) h0
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `t ⟨htV, h0, hd⟩`. Establish `hc0` using `(analyticAt_pi_iff.mp (analyticAt_psi_segre Ψ (hγ t htV)) 0).continuousAt`. Establish `hcd` using `(analyticAt_det_fderiv (analyticAt_sheetProj Ψ (hγ t htV) h0)).continuousAt`. Use `filter_upwards [hV.mem_nhds htV, hc0.eventually_ne h0, hcd.eventually_ne hd] with u h1 h2 h3`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨h1, h2, h3⟩`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_sheetReg (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ))
     {γ : (Fin n → ℂ) → (Σ k, J k) → ℂ} {V : Set (Fin n → ℂ)} (hV : IsOpen V)
@@ -73,13 +73,13 @@ theorem isOpen_sheetReg (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 
   exact ⟨h1, h2, h3⟩
 
 /- English proof (translation)
-Take `⟨k0⟩` from `hK`. Use `set c : K → ℂ := Function.update (fun _ => 1) k0 (Ψ (segre (γ t)) 0)⁻¹ with hc`. Establish `hc0 : ∀ k, c k ≠ 0`. Introduce `k`. Distinguish the cases in `hk : k = k0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hk` using the available equality. Simplify using `[hc, h0]`. Simplify using `[hc, hk]`. Establish `hprod : ∏ k, c k = (Ψ (segre (γ t)) 0)⁻¹`. Rewrite using `[hc, Finset.prod_update_of_mem (Finset.mem_univ k0)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨fun p => c p.1 * γ t p, mcPts_smul hP c hc0 hz, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[segre_smul, hprod]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[sheetNorm, h0]`. Simplify using `[sheetNorm, sheetProj, div_eq_inv_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sheetNorm_mem_fibre {P : Ideal (MRing J)} (hK : Nonempty K) (hP : IsMultiHomogIdeal P)
     (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) (γ : (Fin n → ℂ) → (Σ k, J k) → ℂ)
@@ -104,7 +104,7 @@ theorem sheetNorm_mem_fibre {P : Ideal (MRing J)} (hK : Nonempty K) (hP : IsMult
     · simp [sheetNorm, sheetProj, div_eq_inv_mul]
 
 /- English proof (translation)
-Establish `hs : segre z = (Ψ (segre z) 0 * (Ψ (segre z') 0)⁻¹) • segre z'`. Use `congrArg (fun v => Ψ (segre z) 0 • v) h` as an intermediate fact. Simplify `this` using `[sheetNorm, smul_smul, h0]`. Take `⟨c, hc, hcz⟩` from `sameOrbit_of_segre hz' _ (mul_ne_zero h0 (inv_ne_zero h0')) hs`. Conclude with `⟨z', rfl, c, hc, hcz⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sheetNorm_eq_torusSat (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ))
     {z z' : (Σ k, J k) → ℂ} (hz' : ∀ k, ∃ i, z' ⟨k, i⟩ ≠ 0) (h0 : Ψ (segre z) 0 ≠ 0)
@@ -116,9 +116,9 @@ theorem sheetNorm_eq_torusSat (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin
   exact ⟨z', rfl, c, hc, hcz⟩
 
 /- English proof (translation)
-Use `Set.Finite.of_finite_image (f := fun t => sheetNorm Ψ (γ t)) ((fibreFinite K J P n Ψ hP hΨ y).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ⟨⟨htV, h0⟩, hy⟩, rfl⟩`. Use `sheetNorm_mem_fibre hP.1 hP.2.1.2.1 Ψ γ (hmem t htV) h0` as an intermediate fact. Rewrite `this` using `[show sheetProj Ψ γ t = y from hy]`. Then use the resulting hypothesis. Introduce and unpack `t ⟨⟨ht, h0⟩, -⟩ t' ⟨⟨ht', h0'⟩, -⟩ h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Conclude with `hinj t ht t' ht' (sheetNorm_eq_torusSat Ψ (hmem t' ht').1 h0 h0' h)`.
+A detailed English derivation is pending.
 -/
 theorem sheetProj_fibre_finite {P : Ideal (MRing J)} (hP : IsArithVar P (n + 1))
     {Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)} (hΨ : IsGoodProj P Ψ)
@@ -134,7 +134,7 @@ theorem sheetProj_fibre_finite {P : Ideal (MRing J)} (hP : IsArithVar P (n + 1))
     exact hinj t ht t' ht' (sheetNorm_eq_torusSat Ψ (hmem t' ht').1 h0 h0' h)
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `exists_infinite_fibre hO hne (fun t ht => analyticAt_sheetProj Ψ (hγ t (hOV ht)) (h0 t ht)) hdet`. Conclude with `hy ((sheetProj_fibre_finite hP hΨ hmem hinj y).subset fun t ht => ⟨⟨hOV ht.1, h0 t ht.1⟩, ht.2⟩)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sheet_not_flat {P : Ideal (MRing J)} (hP : IsArithVar P (n + 1))
     {Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)} (hΨ : IsGoodProj P Ψ)

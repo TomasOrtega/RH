@@ -14,7 +14,7 @@ variable {G : Type} [TopologicalSpace G] [Group G] [IsTopologicalGroup G] [Local
   [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-The claim follows from `hc.locallyCompactSpace ∃ a : ℝ≥0, μ = a • (Measure.haar : Measure H).map Subtype.val := by haveI : LocallyCompactSpace H := hc.locallyCompactSpace haveI : SecondCountableTopology H := TopologicalSpace.Subtype.secondCountableTopology (H : Set G) have hme : MeasurableEmbedding (Sub …`.
+A detailed English derivation is pending.
 -/
 theorem exists_coef (H : Subgroup G) (hc : IsClosed (H : Set G)) {μ : Measure G} (hs : μ (H : Set G)ᶜ = 0)
     (hcpt : ∀ s : Set G, IsCompact s → μ s ≠ ⊤) (hi : ∀ h ∈ H, μ.map (fun x => h * x) = μ) :
@@ -41,11 +41,11 @@ theorem exists_coef (H : Subgroup G) (hc : IsClosed (H : Set G)) {μ : Measure G
   rw [Measure.map_smul]
 
 /- English proof (translation)
-Take `⟨a1, h1⟩` from `exists_coef H hc s1 c1 i1`. Take `⟨a2, h2⟩` from `exists_coef H hc s2 c2 i2`. Establish `ha1 : (a1 : ℝ≥0∞) ≠ 0`. Introduce `h`. Apply `n1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h1, ENNReal.smul_def, h, zero_smul]`. Establish `ha2 : (a2 : ℝ≥0∞) ≠ 0`. Introduce `h`. Apply `n2` to reduce the goal to its premises. Rewrite using `[h2, ENNReal.smul_def, h, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(a2 : ℝ≥0∞) / a1, (ENNReal.div_pos ha2 ENNReal.coe_ne_top).ne', ENNReal.div_ne_top ENNReal.coe_ne_top ha1, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h2, ENNReal.smul_def a1, ENNReal.smul_def a2, smul_smul, ENNReal.div_mul_cancel ha1 ENNReal.coe_ne_top]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_smul_of_sub (H : Subgroup G) (hc : IsClosed (H : Set G)) {μ1 μ2 : Measure G} (n1 : μ1 ≠ 0)
     (s1 : μ1 (H : Set G)ᶜ = 0) (c1 : ∀ s : Set G, IsCompact s → μ1 s ≠ ⊤) (i1 : ∀ h ∈ H, μ1.map (fun x => h * x) = μ1)
@@ -63,7 +63,7 @@ theorem eq_smul_of_sub (H : Subgroup G) (hc : IsClosed (H : Set G)) {μ1 μ2 : M
 end Uniq
 
 /- English proof (translation)
-Use `Measure.pi_eq fun s _ => ?_` and prove the remaining obligations. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, Measure.pi_pi, ENNReal.coe_finset_prod, Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem pi_smul_nn {ι : Type} [Fintype ι] {α : ι → Type} [∀ i, MeasurableSpace (α i)] (μ : ∀ i, Measure (α i))
     [∀ i, SigmaFinite (μ i)] (c : ι → ℝ≥0) :
@@ -84,7 +84,7 @@ section Prod
 variable {I : AutInst} {J : ℕ} (Fr : WittFrame I J) (c : Composition J)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun v => Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 h).2 v, (Subgroup.mem_inf.1 h).1⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `Subgroup.mem_inf.2 ⟨h2, Subgroup.mem_iInf.2 h1⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_uniA_iff (x : I.GA) : x ∈ Fr.uniA c ↔ (∀ v, x.1 v ∈ uniV Fr c v) ∧ x.2 ∈ uniF Fr c := by
   constructor

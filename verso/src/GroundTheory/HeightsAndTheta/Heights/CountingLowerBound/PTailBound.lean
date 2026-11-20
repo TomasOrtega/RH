@@ -9,17 +9,15 @@ open Real MeasureTheory
 universe u
 
 /- English proof (translation)
-Introduce `X _ μ lam cnt a ka r hH x hx`. Establish `hprob` using `hH.isProbability`. Use `set t := exp (-x) * r with ht_def`. Establish `ht_pos : 0 < t` using `mul_pos (exp_pos _) hH.r_pos`. Establish `ht_le : t ≤ r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: exp (-x) ≤ 1` using `exp_le_one_iff.mpr (by linarith)`. Use polynomial arithmetic with `[hH.r_pos]`. Establish `hS : MeasurableSet {z | lam z < t}` using `measurableSet_lt hH.lam_meas measurable_const`. Establish `hmarkov : μ.real {z | lam z < t} ≤ meanCount μ cnt t`. Rewrite using `[← integral_indicator_one hS, meanCount]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_mono ((integrable_const (1 : ℝ)).indicator hS) (hH.integrable t ht_pos) ?_` and prove the remaining obligations. Introduce `z`. Distinguish the cases in `hz : z ∈ {z | lam z < t}`. Rewrite using `[Set.indicator_of_mem hz]`. Conclude with `hH.one t ht_pos ht_le z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem hz]`. Conclude with `hH.cnt_nonneg t z`. Establish `hscale : meanCount μ cnt t = exp (-x) ^ ka * meanCount μ cnt r` using `hH.scaling (exp (-x)) r (exp_pos _) hH.r_pos`. Establish `hpow : exp (-x) ^ ka = exp (-(ka * x))`. Rewrite using `[← exp_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact.
 
-Put the polynomial expressions in normal form. Establish `hmean` using `h1 X μ lam cnt a ka r hH`. Establish `hbound : μ.real {z | lam z < t} ≤ 2 * 36 ^ a * exp (-(ka * x))`. Combine the equalities or inequalities in the displayed calculation. Establish `hone : μ.real {z | lam z < t} ≤ 1` using `measureReal_le_one`.
-
-Conclude with `le_min hone hbound`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem TailBound.proof (h1 : MeanCountBound.Statement.{u}) :
     TailBound.Statement.{u} := by

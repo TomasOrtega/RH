@@ -10,9 +10,9 @@ noncomputable section
 variable {p q : ℕ}
 
 /- English proof (translation)
-Establish `h4 : ((2 : ℝ) ^ j) ^ 2 = (4 : ℝ) ^ j`. Rewrite using `[← pow_mul, mul_comm, pow_mul]`. Evaluate the numerical expressions. Establish `h5 : ((4 : ℝ) ^ j) ^ s = ((4 : ℝ) ^ s) ^ j`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by norm_num), mul_comm, Real.rpow_mul (by norm_num), Real.rpow_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4, Real.div_rpow hB (by positivity), mul_pow, div_pow, h5]`. Establish `h6 : (0 : ℝ) < (4 : ℝ) ^ s` using `by positivity`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sumBd_id (A0 B s : ℝ) (N j : ℕ) (hB : 0 ≤ B) :
     (A0 * ((2 : ℝ) ^ j) ^ 2) ^ N * (B / 4 ^ j) ^ s = A0 ^ N * B ^ s * ((4 : ℝ) ^ N / 4 ^ s) ^ j := by
@@ -28,9 +28,9 @@ theorem sumBd_id (A0 B s : ℝ) (N j : ℕ) (hB : 0 ≤ B) :
   ring
 
 /- English proof (translation)
-Establish `h1` using `sumBd_detD_ge h`. Establish `h2` using `sumBdFsq_nonneg M.toBlocks₁₂`. Establish `hN : 1 ≤ Complex.normSq (det M.toBlocks₂₂)` using `by linarith`. Establish `hpos : 0 < Complex.normSq (det M.toBlocks₂₂)` using `by linarith`. Establish `hinv : (Complex.normSq (det M.toBlocks₂₂))⁻¹ ≤ 1` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact inv_le_one_of_one_le₀ hN`. Consider the case `exact inv_le_one hN`. Conclude with `⟨Real.rpow_nonneg (inv_nonneg.2 hpos.le) _, Real.rpow_le_one (inv_nonneg.2 hpos.le) hinv hs⟩`.
+Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 -/
 theorem sumBd_w_le_one {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq M) {s : ℝ} (hs : 0 ≤ s) :
     0 ≤ (Complex.normSq (det M.toBlocks₂₂))⁻¹ ^ s ∧ (Complex.normSq (det M.toBlocks₂₂))⁻¹ ^ s ≤ 1 := by
@@ -45,11 +45,11 @@ theorem sumBd_w_le_one {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h :
   exact ⟨Real.rpow_nonneg (inv_nonneg.2 hpos.le) _, Real.rpow_le_one (inv_nonneg.2 hpos.le) hinv hs⟩
 
 /- English proof (translation)
-Establish `h1` using `sumBd_detD_ge h`. Establish `h2` using `sumBdFsq_nonneg M.toBlocks₁₂`. Establish `hpos : 0 < Complex.normSq (det M.toBlocks₂₂)` using `by linarith`. Establish `he` using `sumBd_entry_bound h i j`. Establish `hR2 : R ^ 2 < Complex.normSq (M i j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Complex.normSq_eq_norm_sq (M i j)` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg (M i j)]`. Establish `hc : (0 : ℝ) < ((p + q : ℕ) : ℝ) + 1` using `by positivity`. Establish `hle : (Complex.normSq (det M.toBlocks₂₂))⁻¹ ≤ (((p + q : ℕ) : ℝ) + 1) / R ^ 2`. Rewrite using `[inv_le_comm₀ hpos (by positivity), inv_div, div_le_iff₀ hc]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[mul_comm (Complex.normSq (det M.toBlocks₂₂)) (((p + q : ℕ) : ℝ) + 1)]`. Conclude with `Real.rpow_le_rpow (inv_nonneg.2 hpos.le) hle hs`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sumBd_w_le_big {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq M) {s R : ℝ} (hs : 0 ≤ s)
     (hR : 0 < R) {i j : Fin p ⊕ Fin q} (hij : R < ‖M i j‖) :
@@ -68,7 +68,7 @@ theorem sumBd_w_le_big {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h :
   exact Real.rpow_le_rpow (inv_nonneg.2 hpos.le) hle hs
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase Finset.univ w (Finset.mem_univ k0)]`. Establish `h2 : ∏ k ∈ Finset.univ.erase k0, w k ≤ 1` using `Finset.prod_le_one (fun k _ => h0 k) (fun k _ => h1 k)`. Establish `h3 : 0 ≤ ∏ k ∈ Finset.univ.erase k0, w k` using `Finset.prod_nonneg fun k _ => h0 k`. Use polynomial arithmetic with `[h0 k0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sumBd_prod_le_big {f : ℕ} (w : Fin f → ℝ) (h0 : ∀ k, 0 ≤ w k) (h1 : ∀ k, w k ≤ 1) (k0 : Fin f)
     {b : ℝ} (hb : w k0 ≤ b) : ∏ k, w k ≤ b := by
@@ -78,21 +78,19 @@ theorem sumBd_prod_le_big {f : ℕ} (w : Fin f → ℝ) (h0 : ∀ k, 0 ≤ w k) 
   nlinarith [h0 k0]
 
 /- English proof (translation)
-Establish `hpq : (0 : ℝ) < ((p + q : ℕ) : ℝ) + 1` using `by positivity`. Establish `hR0 : (0 : ℝ) < R` using `by linarith`. Use `set η : ℝ := c / (((p + q : ℕ) : ℝ) + 1) / R / 2 with hη_def`. Establish `hη : 0 < η` using `by positivity`. Establish `hsep2 : ∀ a, (∀ k i j, ‖x a k i j‖ ≤ R) → ∀ b, (∀ k i j, ‖x b k i j‖ ≤ R) → a ≠ b → ∃ k i j, 2 * η ≤ ‖x b k i j - x a k i j‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b _ hab`. Take `⟨k, i, j, hk⟩` from `hsep a b hab`. Take `⟨l, hl⟩` from `sumBd_sep_diff (hU a k) hR0 hc (ha k) hk`. Use `⟨k, i, l, ?_⟩` and prove the remaining obligations. Establish `h2η : 2 * η = c / (((p + q : ℕ) : ℝ) + 1) / R` using `by rw [hη_def]; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2η]`. Conclude with `hl`. Establish `hE : Fintype.card (Fin f × (Fin p ⊕ Fin q) × (Fin p ⊕ Fin q) × Bool) = f * ((p + q) * ((p + q) * 2))`. Simplify using `[Fintype.card_prod, Fintype.card_sum]`. Establish `hcount` using `sumBd_count x hη hsep2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hcount` using `[Fintype.card_piFinset, Finset.prod_const, Int.card_Icc, Finset.card_univ, hE]`. Establish `hm0 : (0 : ℤ) ≤ ⌈R / η⌉` using `Int.ceil_nonneg (by positivity)`. Establish `hbase : (((⌈R / η⌉ + 1 - -⌈R / η⌉).toNat : ℕ) : ℝ) ≤ (4 * (((p + q : ℕ) : ℝ) + 1) / c + 3) * R ^ 2`. Establish `h1 : (((⌈R / η⌉ + 1 - -⌈R / η⌉).toNat : ℕ) : ℝ) = 2 * (⌈R / η⌉ : ℝ) + 1`. Establish `h0 : (((⌈R / η⌉ + 1 - -⌈R / η⌉).toNat : ℕ) : ℤ) = ⌈R / η⌉ + 1 - -⌈R / η⌉` using `Int.toNat_of_nonneg (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0' : (((⌈R / η⌉ + 1 - -⌈R / η⌉).toNat : ℕ) : ℝ) = ((⌈R / η⌉ + 1 - -⌈R / η⌉ : ℤ) : ℝ)`. Conclude with `h0` after adjusting the coercions. Rewrite using `[h0']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (⌈R / η⌉ : ℝ) < R / η + 1` using `Int.ceil_lt_add_one _`. Establish `h3 : R / η = 2 * (((p + q : ℕ) : ℝ) + 1) * R ^ 2 / c`. Rewrite using `[hη_def]`. Clear the denominators using the available nonvanishing facts. Establish `hR2 : 1 ≤ R ^ 2` using `by nlinarith`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h5 : (4 * (((p + q : ℕ) : ℝ) + 1) / c + 3) * R ^ 2 = 2 * (R / η) + 3 * R ^ 2`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h5]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENat.toENNReal_coe, ← Nat.cast_pow, ENNReal.ofReal_natCast]`. Use `_ ≤ _ := ENNReal.ofReal_le_ofReal (pow_le_pow_left₀ (Nat.cast_nonneg _) hbase _)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumBd_count_real {f : ℕ} {ι : Type*} (x : ι → Fin f → Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)
     (hU : ∀ a k, IsUpq (x a k)) {c : ℝ} (hc : 0 < c)
@@ -146,33 +144,27 @@ theorem sumBd_count_real {f : ℕ} {ι : Type*} (x : ι → Fin f → Matrix (Fi
     _ ≤ _ := ENNReal.ofReal_le_ofReal (pow_le_pow_left₀ (Nat.cast_nonneg _) hbase _)
 
 /- English proof (translation)
-Use `set P : ℝ := ((p + q : ℕ) : ℝ) with hP`. Establish `hP0 : 0 ≤ P` using `Nat.cast_nonneg _`. Use `set K : ℝ := 4 * (P + 1) / c + 3 with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Use `set D : ℕ := f * ((p + q) * ((p + q) * 2)) with hD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B : ℝ := 4 * (P + 1) with hB`. Establish `hB1 : 1 ≤ B` using `by rw [hB]; linarith`. Establish `hDs : (D : ℝ) < s`. Establish `: (D : ℝ) = 2 * (f : ℝ) * P ^ 2` using `by rw [hD, hP]; push_cast; ring`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`. Establish `hs0 : 0 ≤ s` using `le_trans (Nat.cast_nonneg _) hDs.le`. Use `set ρ : ℝ := (4 : ℝ) ^ D / 4 ^ s with hρ`. Establish `hρ0 : 0 ≤ ρ` using `by positivity`. Establish `hρ1 : ρ < 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hρ, div_lt_one (by positivity), ← Real.rpow_natCast]`. Conclude with `Real.rpow_lt_rpow_of_exponent_lt (by norm_num) hDs`. Use `⟨ENNReal.ofReal (K ^ D * B ^ s) * ∑' j : ℕ, ENNReal.ofReal (ρ ^ j), ?_, ?_⟩` and prove the remaining obligations. Establish `hg : ∑' j : ℕ, ENNReal.ofReal (ρ ^ j) = (1 - ENNReal.ofReal ρ)⁻¹`. Rewrite using `[← ENNReal.tsum_geometric]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `tsum_congr fun j => ENNReal.ofReal_pow hρ0 j`. Rewrite using `[hg]`. Use `ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_` and prove the remaining obligations. Rewrite using `[ENNReal.inv_lt_top]`. Conclude with `tsub_pos_of_lt (ENNReal.ofReal_lt_one.mpr hρ1)`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ι x hU hsep`. Use `set Bs : ℕ → Set ι := fun m => {a | ∀ k i j, ‖x a k i j‖ ≤ (2 : ℝ) ^ m} with hBs`. Use `set g : ι → ℝ≥0∞ := fun a => ENNReal.ofReal (∏ k, (Complex.normSq (det (x a k).toBlocks₂₂))⁻¹ ^ s) with hgdef`. Establish `hex : ∀ a, ∃ m, a ∈ Bs m`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩` from `pow_unbounded_of_one_lt (∑ k, ∑ i, ∑ j, ‖x a k i j‖) (by norm_num : (1 : ℝ) < 2)`. Use `⟨m, fun k i j => le_trans ?_ hm.le⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hw0 : ∀ a k, 0 ≤ (Complex.normSq (det (x a k).toBlocks₂₂))⁻¹ ^ s` using `fun a k => (sumBd_w_le_one (hU a k) hs0).1`. Establish `hw1 : ∀ a k, (Complex.normSq (det (x a k).toBlocks₂₂))⁻¹ ^ s ≤ 1` using `fun a k => (sumBd_w_le_one (hU a k) hs0).2`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Establish `hpt : ∀ a, g a ≤ ∑' m : ℕ, (Bs m).indicator (fun _ => ENNReal.ofReal ((B / 4 ^ m) ^ s)) a`. Introduce `a`. Set `m0` to `Nat.find (hex a)`. Establish `hm0 : a ∈ Bs m0` using `Nat.find_spec (hex a)`. Use `le_trans ?_ (ENNReal.le_tsum m0)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_mem hm0]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos m0 with h0 | hpos` into its components or cases. Rewrite using `[h0, pow_zero, div_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Take `⟨m, hm⟩ : ∃ m, m0 = m + 1` from `⟨m0 - 1, by omega⟩`. Establish `hnot : a ∉ Bs m` using `Nat.find_min (hex a) (by omega)`. Simplify using `only [hBs, Set.mem_setOf_eq, not_forall, not_le] at hnot`. Take `⟨k, i, j, hkij⟩` from `hnot`. Establish `hbig` using `sumBd_w_le_big (hU a k) hs0 (by positivity : (0 : ℝ) < 2 ^ m) hkij`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfac : (P + 1) / ((2 : ℝ) ^ m) ^ 2 = B / 4 ^ m0`. Establish `h4 : ((2 : ℝ) ^ m) ^ 2 = 4 ^ m`. Rewrite using `[← pow_mul, mul_comm, pow_mul]`. Evaluate the numerical expressions. Rewrite using `[h4, hm, hB, pow_succ]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite `hbig` using `[hfac]`. Conclude with `sumBd_prod_le_big _ (hw0 a) (hw1 a) k hbig`. Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun m => ?_` and prove the remaining obligations.
-
-Rewrite using `[← tsum_subtype (Bs m) (fun _ => ENNReal.ofReal ((B / 4 ^ m) ^ s)), ENNReal.tsum_set_const]`. Use `_ ≤ ∑' m : ℕ, ENNReal.ofReal ((K * ((2 : ℝ) ^ m) ^ 2) ^ D) * ENNReal.ofReal ((B / 4 ^ m) ^ s) := by`. Use `ENNReal.tsum_le_tsum fun m => ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `sumBd_count_real x hU hc hsep (R := (2 : ℝ) ^ m) (one_le_pow₀ (by norm_num : (1 : ℝ) ≤ 2))`.
-
-Use `_ = ∑' m : ℕ, ENNReal.ofReal (K ^ D * B ^ s) * ENNReal.ofReal (ρ ^ m) := by`. Use `tsum_congr fun m => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (by positivity), sumBd_id K B s D m (by linarith), ENNReal.ofReal_mul (by positivity)]`. Use `_ = ENNReal.ofReal (K ^ D * B ^ s) * ∑' j : ℕ, ENNReal.ofReal (ρ ^ j) := ENNReal.tsum_mul_left`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumBd_sum {f : ℕ} {s c : ℝ} (hs : 2 * (f : ℝ) * ((p + q : ℕ) : ℝ) ^ 2 < s) (hc : 0 < c) :
     ∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ (ι : Type) (x : ι → Fin f → Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ),

@@ -7,9 +7,9 @@ open UpperTheory.V.Af.Bc (cPl)
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
 /- English proof (translation)
-Establish `hk : ((-1 : ℂˣ) ^ k)⁻¹ = (-1 : ℂˣ) ^ k`. Rewrite using `[← inv_pow, inv_neg_one]`. Use `conv_rhs => rw [← h]`. Simplify using `only [UpperTheory.V.Z.Tf.GlobalTraceComparison.inv, Multiset.map_map]`. Use `Multiset.map_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, mul_inv, hk]`.
+A detailed English derivation is pending.
 -/
 private theorem inv_map_sign (B : Multiset ℂˣ) (k : ℕ) (h : inv B = B) :
     inv (B.map (· * (-1 : ℂˣ) ^ k)) = B.map (· * (-1 : ℂˣ) ^ k) := by
@@ -21,7 +21,7 @@ private theorem inv_map_sign (B : Multiset ℂˣ) (k : ℕ) (h : inv B = B) :
   simp only [Function.comp_apply, mul_inv, hk]
 
 /- English proof (translation)
-Introduce `E _ _ _ μ a b w B₁ B₂ hμ h₁ h₂`. Establish `hadd : ∀ X Y : Multiset ℂˣ, inv (X + Y) = inv X + inv Y` using `fun X Y => Multiset.map_add _ _ _`. Simplify using `only [un, hμ]`. Rewrite using `[hadd, inv_map_sign B₁ b h₁, inv_map_sign B₂ a h₂]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.unStable :
     UnStable := by

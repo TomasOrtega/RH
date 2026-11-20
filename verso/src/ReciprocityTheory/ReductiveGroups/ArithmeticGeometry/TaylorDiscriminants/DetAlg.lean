@@ -9,11 +9,9 @@ def DetAlgSt : Prop :=
         (φ : (MvPolynomial (Fin n) K ⧸ I) →ₐ[K] L), φ r = 0) → r = 0
 
 /- English proof (translation)
-Introduce `K _ n I hI r hr`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, ← IsJacobsonRing.out inferInstance hI]`. Unfold `Ideal.jacobson`. Rewrite using `[Ideal.mem_sInf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `J ⟨hIJ, hJ⟩`. Use `haveI := hJ`. Use `letI : Field (MvPolynomial (Fin n) K ⧸ J) := Ideal.Quotient.field J`. Use `haveI : Algebra.FiniteType K (MvPolynomial (Fin n) K ⧸ J) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ K J) (Ideal.Quotient.mkₐ_surjective K J)`. Use `haveI : FiniteDimensional K (MvPolynomial (Fin n) K ⧸ J) := finite_of_finite_type_of_isJacobsonRing K _`.
-
-Establish `h` using `hr (MvPolynomial (Fin n) K ⧸ J) (Ideal.Quotient.factorₐ K hIJ)`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h`.
+Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detAlg_holds : DetAlgSt := by
   intro K _ n I hI r hr
@@ -34,7 +32,7 @@ theorem detAlg_holds : DetAlgSt := by
   exact h
 
 /- English proof (translation)
-The claim follows from `Ideal.isRadical_bot`.
+A detailed English derivation is pending.
 -/
 example : (⊥ : Ideal (MvPolynomial (Fin 0) ℚ)).IsRadical := Ideal.isRadical_bot
 

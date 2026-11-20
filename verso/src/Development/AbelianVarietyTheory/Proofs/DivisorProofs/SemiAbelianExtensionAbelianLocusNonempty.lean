@@ -14,11 +14,11 @@ open Classical
 namespace GlobalTheory.ZHAbLocusNonempty
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρ M U₀ EE Zh hO`. Take `⟨z, hz⟩` from `hO.ne`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[Zh.ab]`. Use `show S.TT M z = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpp` using `(GlobalTheory.thetaSys_FF_mem_finite_perp_proj o Ω S).2.2.1`. Establish `h1 : S.perp ⊥ = ⊤`. Use `top_unique fun a _ h hh => ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_bot.mp hh]`. Simplify using `[ZH.eStd]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZH.ThetaSys.TT, ZH.ThetaSys.HH, hO.supI_eq hz, S.supp, ← h1, hpp]`.
+A detailed English derivation is pending.
 -/
 theorem abLocus_nonempty : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ZH.ArithBase o Ω] (S : ZH.ThetaSys o Ω) (ρ : S.Real) (M : ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Zh : ZH.ZHOut ρ M U₀ EE), S.Over₀ M U₀ → (abLocus Zh.G).Nonempty := by
   intro o Ω _ _ _ _ S ρ M U₀ EE Zh hO

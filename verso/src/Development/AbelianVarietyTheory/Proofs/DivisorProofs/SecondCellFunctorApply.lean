@@ -11,21 +11,17 @@ noncomputable section
 namespace GlobalTheory.DetProdCells
 
 /- English proof (translation)
-Set `s : Bool → kˣ` to `fun j => cond j 1 ϖ`. Establish `hZ : ∀ j, (leviTwo k (Fin 1) (Fin (u + v)) (GeneralLinearGroup.scalar (Fin 1) ϖ, 1)) j = GeneralLinearGroup.scalar (Two (Fin 1) (Fin (u + v)) j) (s j)`. Introduce `j`. Consider the cases of `j`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 
-Conclude with `(map_one (GeneralLinearGroup.scalar (n := Fin (u + v)) (R := k))).symm`. Establish `hmem : leviTwo k (Fin 1) (Fin (u + v)) (GeneralLinearGroup.scalar (Fin 1) ϖ, 1) ∈ relParab k g`. Introduce `j _`. Rewrite using `[hZ j]`. Conclude with `GlobalTheory.ScalRight.scalar_mem_parab _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ x : Levi k (Two (Fin 1) (Fin (u + v))), x * leviTwo k (Fin 1) (Fin (u + v)) (GeneralLinearGroup.scalar (Fin 1) ϖ, 1) = leviTwo k (Fin 1) (Fin (u + v)) (GeneralLinearGroup.scalar (Fin 1) ϖ, 1) * x`. Introduce `x`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.mul_apply, Pi.mul_apply, hZ j]`. Conclude with `(GeneralLinearGroup.scalar_commute _ _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hP : relProj k g ⟨_, hmem⟩ = fun j i => GeneralLinearGroup.scalar (Fin (B.1 i j)) (s j)`. Use function extensionality and compare the values at `j`. Conclude with `GlobalTheory.ScalRight.leviProj_eq_scalar (g j) (s j) _ (hZ j)`. Use `GlobalTheory.ScalRight.relInd_eq_smul g _ _ hmem hc _ ?_` and prove the remaining obligations. Rewrite using `[hP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : ∀ i, GeneralLinearGroup.det (relEmb k f (fun i j => GeneralLinearGroup.scalar (Fin (B.1 i j)) (s j)) i) = ϖ ^ B.1 i false`. Introduce `i`. Rewrite using `[relEmb_apply, det_leviEmb, Fintype.prod_bool]`. Use `show GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin (B.1 i true)) 1) * GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin (B.1 i false)) ϖ) = _`. Rewrite using `[GlobalTheory.ScalRight.det_scalar_gl, GlobalTheory.ScalRight.det_scalar_gl, one_pow, one_mul, Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hJ` using `GlobalTheory.ScalRight.relJac_eq_smul (k := k) f ((extTensor (detRep (Fin (u + 1)) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin (u + 1)) (Fin v)).symm.toMonoidHom) (fun i j => GeneralLinearGroup.scalar (Fin (B.1 i j)) (s j)) ((χ₁ (ϖ ^ B.1 false false) : ℂ) * (χ₂ (ϖ ^ B.1 true fa …`. Rewrite using `[MonoidHom.comp_apply, GlobalTheory.ScalRight.extTensor_detRep_eq]`. Use `show ((χ₁ (GeneralLinearGroup.det (relEmb k f _ false)) : ℂ) * (χ₂ (GeneralLinearGroup.det (relEmb k f _ true)) : ℂ)) • LinearMap.id = _`. Rewrite using `[hdet, hdet])`. Use `show _ • relJac f _ (fun i j => GeneralLinearGroup.scalar (Fin (B.1 i j)) (s j)) = _`.
-
-Rewrite using `[hJ, smul_smul]`. Use `congr 1`. Use `clear hJ hP hc hmem hZ hdet`. Simplify using `only [relDeltaHalf_apply, deltaHalf_apply, GlobalTheory.ScalRight.det_scalar_gl, Fintype.card_fin, Fintype.prod_bool]`. Simplify using `only [s, cond_true, cond_false, one_pow, map_one, GlobalTheory.ScalRight.modExp_bool_true, GlobalTheory.ScalRight.modExp_bool_false, one_mul, mul_one, h00, h10, pow_zero, pow_one]`.
-
-Simplify using `only [Int.cast_natCast, h11, Nat.cast_zero, neg_zero, Int.cast_zero, zero_div, GlobalTheory.ScalRight.absPow_zero_apply, Units.val_one, one_mul]`. Rewrite using `[MonoidHom.mul_apply, show (1 - (v : ℂ)) / 2 = -(((v : ℂ) - 1) / 2) by ring, absPow_neg, MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val, mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_scalar_col_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (ϖ : kˣ) (B : SizeMatrix (Two (Fin (u + 1)) (Fin v)) (Two (Fin 1) (Fin (u + v))))
@@ -88,7 +84,7 @@ theorem cell_scalar_col_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
     MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val, mul_comm]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ χ₁ χ₂ u v hv ϖ`. Establish `h11 : ((cellSecond u v hv).1 true true : ℂ) = (v : ℂ) - 1`. Rewrite using `[show (cellSecond u v hv).1 true true = v - 1 from rfl, Nat.cast_sub hv, Nat.cast_one]`. Conclude with `⟨(cellSecond u v hv).nonempty_rows.some, (cellSecond u v hv).nonempty_cols.some, fun w => LinearMap.congr_fun (cell_scalar_col_one χ₁ χ₂ u v ϖ (cellSecond u v hv) rfl rfl h11 _ _) w⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cellSecond_scalar : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (hv : 1 ≤ v) (ϖ : kˣ), ∃ (f : ∀ i, (Σ j, Fin ((GlobalTheory.DetProdCells.cellSecond u v hv).1 i j)) ≃ Two (Fin (u + 1)) (Fin v) i) (g : ∀ j, (Σ i, Fin ((GlobalTheory.DetProdCells.cellSecond u v hv).1 i j)) ≃ Two (Fin 1) (Fin (u + v)) j), ∀ w, cellFunctor f g ((extTensor (detRep (Fin (u + 1)) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin (u + 1)) (Fin v)).symm.toMonoidHom) (leviTwo k (Fin 1) (Fin (u + v)) (GeneralLinearGroup.scalar (Fin 1) ϖ, 1)) w = (((χ₂ * absPow k ((1 - (v : ℂ)) / 2)) ϖ : ℂˣ) : ℂ) • w := by
   intro k _ _ _ _ χ₁ χ₂ u v hv ϖ

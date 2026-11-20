@@ -16,15 +16,15 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Set `g : fixd ρ I →ₗ[ℂ] fixd ρ' I` to `f.restrict fun x hx u hu => by rw [← hf, hx u hu]`. Take `rfl : v' = g v` from `Subtype.ext hv`. It suffices to establish `h : ev' T (g v) = g (ev T v) from congrArg Subtype.val h`. Use `clear hv`. Take `⟨T, hT'⟩` from `T`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Proceed by induction on `hT' using Algebra.adjoin_induction generalizing v with`. Consider the case `mem T h`. Take `⟨x, rfl⟩` from `h`. Use `(LinearMap.congr_fun (hev' x) _).trans (Eq.trans ?_ (congrArg g (LinearMap.congr_fun (hev x) v)).symm)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `((hkApply ℂ _ M' ρ' _ _ _ (hI x)).1 (g v)).trans ?_` and prove the remaining obligations. Use `((dcSum ℂ G M ρ I I x (hI x)).2.2.2 ℂ M' ρ' f.toAddMonoidHom hf v).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg f ((hkApply ℂ _ M ρ _ _ _ (hI x)).1 v).symm`. Consider the case `algebraMap c`. Express the relevant statement in the definitionally equal form `ev' (algebraMap ℂ _ c) _ = g (ev (algebraMap ℂ _ c) _)`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[AlgHom.commutes, AlgHom.commutes, Module.algebraMap_end_apply, Module.algebraMap_end_apply, map_smul]`. Consider the case `add T T' h1 h2 h h'`. Express the relevant statement in the definitionally equal form `ev' (⟨T, h1⟩ + ⟨T', h2⟩) _ = g (ev (⟨T, h1⟩ + ⟨T', h2⟩) _)`. Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, map_add, h, h']`. Consider the case `mul T T' h1 h2 h h'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ev' (⟨T, h1⟩ * ⟨T', h2⟩) _ = g (ev (⟨T, h1⟩ * ⟨T', h2⟩) _)`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h', h]`.
+A detailed English derivation is pending.
 -/
 private theorem sphScalar_ev {G M M' : Type} [Group G] [AddCommGroup M] [Module ℂ M] [AddCommGroup M'] [Module ℂ M']
     (ρ : Representation ℂ G M) (ρ' : Representation ℂ G M') (I : Subgroup G) (hI : HeckePair I)
@@ -56,9 +56,9 @@ private theorem sphScalar_ev {G M M' : Type} [Group G] [AddCommGroup M] [Module 
     rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h', h]
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on generalizing v with`. Consider the case `C c`. Rewrite using `[← MvPolynomial.algebraMap_eq, AlgHom.commutes, AlgHom.commutes]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => simp [hp, hq]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p a hp => simp [h, hp]`.
+Treat this case separately.
 -/
 private theorem sphScalar_int {W W' κ : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     (act : MvPolynomial κ ℂ →ₐ[ℂ] Module.End ℂ W) (act' : MvPolynomial κ ℂ →ₐ[ℂ] Module.End ℂ W') (g : W →ₗ[ℂ] W')
@@ -72,7 +72,7 @@ private theorem sphScalar_int {W W' κ : Type} [AddCommGroup W] [Module ℂ W] [
   | mul_X p a hp => simp [h, hp]
 
 /- English proof (translation)
-Apply `hg` to reduce the goal to its premises. Rewrite using `[← sphScalar_int act act' g (fun i v => ?_), map_smul, hv]`. Rewrite using `[hu, hu', LinearMap.smul_apply, LinearMap.smul_apply, map_smul, h]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sphScalar_tr {W W' κ : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     (act : MvPolynomial κ ℂ →ₐ[ℂ] Module.End ℂ W) (act' : MvPolynomial κ ℂ →ₐ[ℂ] Module.End ℂ W') (g : W →ₗ[ℂ] W')
@@ -85,11 +85,11 @@ private theorem sphScalar_tr {W W' κ : Type} [AddCommGroup W] [Module ℂ W] [A
   rw [hu, hu', LinearMap.smul_apply, LinearMap.smul_apply, map_smul, h]
 
 /- English proof (translation)
-Establish `h1 : ∀ k : ℕ, ((φ - algebraMap ℂ _ c) ^ k) m = (c' - c) ^ k • m`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ', Module.End.mul_apply, ih, map_smul, LinearMap.sub_apply, h, Module.algebraMap_end_apply, ← sub_smul, smul_smul, pow_succ]`. Establish `h2` using `h1 N`. Rewrite `h2` using `[hN, LinearMap.zero_apply]`. Break down `smul_eq_zero.1 h2.symm with h3 | h3` into its components or cases. Rewrite using `[h, sub_eq_zero.1 (pow_eq_zero_iff'.1 h3).1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sphScalar_nil {W : Type} [AddCommGroup W] [Module ℂ W] (φ : Module.End ℂ W) (c c' : ℂ) (N : ℕ) (m : W)
     (h : φ m = c' • m) (hN : (φ - algebraMap ℂ _ c) ^ N = 0) : φ m = c • m := by
@@ -107,19 +107,19 @@ private theorem sphScalar_nil {W : Type} [AddCommGroup W] [Module ℂ W] (φ : M
   · rw [h3, map_zero, smul_zero]
 
 /- English proof (translation)
-Use `⟨ev.comp b.th, hu, ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `hkEv ℂ _ V ρ _ hI`. Establish `hp : ∀ v : fixd ρ I, (v : V) ∈ fixd ρ K → (e (b.th z) v : V) ∈ fixd ρ K`. Introduce `v hv`. Use `(hs _).2 fun i j hij => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrArg e ((hkBern ℂ n _ _ b).2 z hz (Equiv.swap i j))`. Rewrite `h1` using `[map_mul, map_mul, hb, he]`. Establish `h2` using `LinearMap.congr_fun h1 v`. Rewrite `h2` using `[Module.End.mul_apply, Module.End.mul_apply, (hs v).1 hv i j hij, map_smul]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∃ c : ℂ, ∀ v : fixd ρ I, (v : V) ∈ fixd ρ K → e (b.th z) v = c • v`. Distinguish the cases in `h : ∃ u : fixd ρ I, (u : V) ∈ fixd ρ K ∧ (u : V) ≠ 0`. Take `⟨u, hu, hu0⟩` from `h`. Take `⟨c, hc⟩` from `hl _ hu _ (hp u hu) hu0`. Establish `hc' : e (b.th z) u = c • u` using `Subtype.ext hc`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hl _ hu _ hv hu0`. Take `rfl : v = a • u` from `Subtype.ext ha`. Rewrite using `[map_smul, hc', smul_comm]`. Use `⟨0, fun v hv => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl : v = 0` from `Subtype.ext (by_contra fun h0 => h ⟨v, hv, h0⟩)`. Rewrite using `[map_zero, smul_zero]`. Take `⟨c, hc⟩` from `hc`. Use `⟨c, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hsub : (⨆ f : {f : V →ₗ[ℂ] Y // ∀ g v, f (ρ g v) = π g (f v)}, (fixd ρ K).map f.1) ≤ (Module.End.eigenspace (ev (b.th z)) c).map (fixd π I).subtype`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le ?_` and prove the remaining obligations. Introduce and unpack `⟨f, hf⟩ _ ⟨v, hv, rfl⟩`. Establish `hv' : v ∈ fixd ρ I` using `fixd_anti ρ hle hv`. Use `⟨⟨f v, fun u hu => by rw [← hf, hv' u hu]⟩, Module.End.mem_eigenspace_iff.2 (Subtype.ext ?_), rfl⟩` and prove the remaining obligations. Rewrite using `[sphScalar_ev ρ π _ hI e he ev hev f hf _ ⟨v, hv'⟩ _ rfl, hc _ hv]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `map_smul f c v`. Take `⟨y', hy', e'⟩` from `hsub (hiso y hy)`. Take `rfl : y' = y` from `Subtype.ext e'`. Conclude with `Module.End.mem_eigenspace_iff.1 hy'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem sphScalar_gen {G V Y : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup Y] [Module ℂ Y]
     {n : ℕ} {q : ℂ} (ρ : Representation ℂ G V) (π : Representation ℂ G Y) (I K : Subgroup G) (hle : I ≤ K)
@@ -170,13 +170,13 @@ private theorem sphScalar_gen {G V Y : Type} [Group G] [AddCommGroup V] [Module 
   exact Module.End.mem_eigenspace_iff.1 hy'
 
 /- English proof (translation)
-Set `up : MvPolynomial κ ℂ →ₐ[ℂ] MvPolynomial κ ℂ` to `MvPolynomial.aeval fun i => a i • MvPolynomial.X i`. Set `dn : MvPolynomial κ ℂ →ₐ[ℂ] MvPolynomial κ ℂ` to `MvPolynomial.aeval fun i => (a i)⁻¹ • MvPolynomial.X i`. Establish `hud : dn.comp up = AlgHom.id ℂ _`. Use `MvPolynomial.algHom_ext fun i => ?_` and prove the remaining obligations. Simplify using `only [up, dn, AlgHom.comp_apply, MvPolynomial.aeval_X, map_smul, smul_smul, AlgHom.id_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_inv_cancel₀ (ha i), one_smul]`. Use `⟨act.comp dn, up (z - algebraMap ℂ _ c), fun i => ?_, fun s hs => ?_, fun N => ?_⟩` and prove the remaining obligations. Simplify using `only [dn, AlgHom.comp_apply, MvPolynomial.aeval_X, map_smul, hact, smul_smul]`. Rewrite using `[inv_mul_cancel₀ (ha i), one_smul]`. Establish `h3 : (MvPolynomial.aeval s).comp up = MvPolynomial.aeval fun i => a i * s i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `MvPolynomial.algHom_ext fun i => ?_` and prove the remaining obligations. Simplify using `only [up, AlgHom.comp_apply, MvPolynomial.aeval_X, map_smul, smul_eq_mul]`. Establish `h4` using `AlgHom.congr_fun h3 (z - algebraMap ℂ _ c)`. Rewrite `h4` using `[AlgHom.comp_apply, map_sub (MvPolynomial.aeval (R := ℂ) fun i => a i * s i), AlgHom.commutes, MvPolynomial.aeval_eq_eval, MvPolynomial.aeval_eq_eval, hs]`. Conclude with `h4.trans (sub_self c)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, AlgHom.comp_apply, ← AlgHom.comp_apply dn up, hud, AlgHom.id_apply, map_sub, AlgHom.commutes]`.
+A detailed English derivation is pending.
 -/
 private theorem sphScalar_fin {W κ : Type} [AddCommGroup W] [Module ℂ W] (act : MvPolynomial κ ℂ →ₐ[ℂ] Module.End ℂ W)
     (a : κ → ℂ) (ha : ∀ i, a i ≠ 0) (u : κ → Module.End ℂ W) (hact : ∀ i, act (MvPolynomial.X i) = a i • u i)
@@ -207,7 +207,7 @@ section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Establish `ho : IsOpen (iwC k n ⊤ : Set (GL (Fin n) k))` using `Subgroup.isOpen_mono (H₁ := KOne k (Fin n)) (le_sup_left.trans le_sup_left) GlobalTheory.StepData.isOpen_KOne`. Use `haveI : CompactSpace (KO k (Fin n)) := isCompact_iff_compactSpace.1 GlobalTheory.SplitFlip.isCompact_KO`. Use `haveI := Subgroup.quotient_finite_of_isOpen ((iwC k n ⊤).subgroupOf (KO k (Fin n))) (ho.preimage continuous_subtype_val)`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem sphScalar_idx : (iwC k n ⊤).relIndex (KO k (Fin n)) ≠ 0 := by
   have ho : IsOpen (iwC k n ⊤ : Set (GL (Fin n) k)) :=
@@ -218,9 +218,9 @@ private theorem sphScalar_idx : (iwC k n ⊤).relIndex (KO k (Fin n)) ≠ 0 := b
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Establish `hI` using `(heckePairIwC k n ⊤).1`. Establish `hle : iwC k n ⊤ ≤ KO k (Fin n)` using `(memIwC k n ⊤).2.1 ▸ iwahori_le_KO k (Fin n)`. Establish `hq : IsUnit (resCard k : ℂ)` using `(Nat.cast_ne_zero.2 (Nat.card_pos (α := 𝓀[k])).ne').isUnit`. Establish `hreg : IsSMulRegular σ.V ((iwC k n ⊤).relIndex (KO k (Fin n)) : ℂ)` using `smul_right_injective σ.V (Nat.cast_ne_zero.2 sphScalar_idx)`. Use `(thetaEx k n ⊤ ℂ Y π hq).exists.elim fun θ hθ => ⟨θ, hθ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(bernHk k n ℂ x hx hq).elim fun b hb => ?_` and prove the remaining obligations. Use `(hkEv ℂ _ Y π _ hI).elim fun ev hev => ?_` and prove the remaining obligations. Establish `htie` using `thetaTie k n ℂ Y π x hx hq b ev θ hev hθ hb.2`. Conclude with `sphScalar_gen σ.ρ π _ _ hle hI b (fun w => pm k n w) hb.1 ev hev (sphEq k n ℂ σ.V σ.ρ hreg) (sphLine hBZ k n σ) (isoFix k n Y π σ _ GlobalTheory.SplitFlip.isCompact_KO hs) z hz _ htie`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem sphScalar_loc (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness)
     {Y : Type} [AddCommGroup Y] [Module ℂ Y] (π : Representation ℂ (GL (Fin n) k) Y)
@@ -245,13 +245,11 @@ private theorem sphScalar_loc (hBZ : GlobalTheory.Published.BernsteinZelevinskyF
 end Loc
 
 /- English proof (translation)
-Introduce `hG hBZ L _ _ n q w Y _ _ π Θ hΘ j σ hs x hx act hact z c hz hc m hm`. Establish `hq0 : (qj w j : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.card_pos (α := 𝓀[(w j).adicCompletion L])).ne'`. Take `⟨θY, hY, actY, haY, c', hc'⟩` from `sphScalar_loc hBZ (π.comp (atJ n w j)) σ hs x hx z hz`. Establish `hle : fixd π (UC n w fun _ => ⊤) ≤ fixd (π.comp (atJ n w j)) (iwC _ n ⊤)`. Introduce `x hx u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hx (atJ n w j u) fun j' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : j' = j`. Substitute `h` using the available equality. Simplify `hu` using `[atJ]`. Establish `: atJ n w j u j' = 1` using `Pi.mulSingle_eq_of_ne (M := fun j => GLw n (w j)) h u`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(iwC _ n ⊤).one_mem`. Establish `h1 : act z m = c' • m` using `sphScalar_tr act actY (Submodule.inclusion hle) (Submodule.inclusion_injective hle) _ _ _ hact haY (fun a v => Subtype.ext (thetaLoc L n q w ℂ Y π _ Θ hΘ j θY hY _ v _ rfl)) z c' m (hc' _ hm)`. Take `⟨act', F, h2, h3, h4⟩` from `sphScalar_fin act (fun i : Fin n => (qj w j : ℂ) ^ (i : ℕ)) (fun _ => pow_ne_zero _ hq0) _ hact z c`. Establish `h5` using `nilKill hG hBZ L n q w Y π _ Θ hΘ j σ hs (Fin n) (fun i => Pi.mulSingle i x) act' h2 F fun θ hθ χ hχ => h3 _ (hc θ hθ χ hχ)`.
-
-Conclude with `sphScalar_nil _ c c' _ m h1 ((h4 _).symm.trans h5)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Lev.sphScalar :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (L : Type) [Field L] [NumberField L] (n q : ℕ) (w : Fin q → Plc L) (Y : Type) [AddCommGroup Y] [Module ℂ Y] (π : Representation ℂ (GV n w) Y) (Θ), IsThetaQ π (fun _ => ⊤) Θ → ∀ (j : Fin q) (σ : SmIrr (GLw n (w j))), IsoSum (π.comp (atJ n w j)) ⊤ σ → ∀ (x : ((w j).adicCompletion L)ˣ), IsUnif x → ∀ (act : MvPolynomial (Fin n) ℂ →ₐ[ℂ] Module.End ℂ (fixd π (UC n w fun _ => ⊤))), (∀ i : Fin n, act (MvPolynomial.X i) = ((qj w j : ℂ) ^ (i : ℕ)) • (Θ j (Pi.mulSingle i x) : Module.End ℂ _)) → ∀ (z : MvPolynomial (Fin n) ℂ) (c : ℂ), z.IsSymmetric → (∀ θ, IsTheta σ.ρ ⊤ θ → ∀ χ : (Fin n → ((w j).adicCompletion L)ˣ) →* ℂˣ, (⨅ t, Module.End.maxGenEigenspace (θ t : Module.End ℂ (fixd σ.ρ (iwC _ n ⊤))) (χ t : ℂ)) ≠ ⊥ → MvPolynomial.eval (fun i : Fin n => (qj w j : ℂ) ^ (i : ℕ) * (χ (Pi.mulSingle i x) : ℂ)) z = c) → ∀ m : fixd π (UC n w fun _ => ⊤), (m : Y) ∈ fixd (π.comp (atJ n w j)) (KO _ (Fin n)) → act z m = c • m := by

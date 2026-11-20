@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.ThK.ConeLocInt
 
 /- English proof (translation)
-Rewrite using `[Measure.map_prod_map _ _ hi.measurable hj.measurable, (hi.prodMap hj).integrable_map_iff, (hi.prodMap hj).integral_map]`. Conclude with `⟨hf, integral_prod _ hf⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem integrable_integral_map_prod {α β α' β' : Type} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace α']
     [MeasurableSpace β'] {i : α' → α} {j : β' → β} (hi : MeasurableEmbedding i) (hj : MeasurableEmbedding j)
@@ -34,11 +34,11 @@ theorem integrable_integral_map_prod {α β α' β' : Type} [MeasurableSpace α]
   exact ⟨hf, integral_prod _ hf⟩
 
 /- English proof (translation)
-Establish `e : (fun q : α × β => f (p q.1) q.2) = fun q => ∑ c ∈ hp.range_finite.toFinset, ({k | p k = c}.indicator (fun _ => (1 : ℂ)) q.1) * f c q.2`. Use function extensionality and compare the values at `q`. Rewrite using `[Finset.sum_eq_single (p q.1)]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.indicator_of_notMem (by simpa using hc.symm), zero_mul]`. Introduce `h`. Conclude with `absurd (hp.range_finite.mem_toFinset.2 ⟨q.1, rfl⟩) h`. Rewrite using `[e]`. Use `integrable_finsetSum _ fun c hc => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `hp.range_finite.mem_toFinset.1 hc`. Conclude with `((integrable_const _).indicator (hp.isOpen_fiber _).measurableSet).mul_prod (hf k)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_prod_of_locallyConstant {α β γ : Type} [TopologicalSpace α] [CompactSpace α] [MeasurableSpace α]
     [OpensMeasurableSpace α] [MeasurableSpace β] (μ : Measure α) (ν : Measure β) [IsFiniteMeasure μ] [SFinite ν]
@@ -62,11 +62,11 @@ theorem integrable_prod_of_locallyConstant {α β γ : Type} [TopologicalSpace �
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `haveI : ProperSpace (Fv F v) := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Take `⟨x, hx⟩` from `DFunLike.ne_iff.1 hχ`. Take `⟨ε, hε, hb⟩` from `Metric.mem_nhds_iff.1 hV`. Use `⟨Metric.closedBall 0 (‖x‖ / ε), isCompact_closedBall _ _, fun t ht => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[mem_closedBall_zero_iff, not_le]`. Establish `hp : 0 < ‖t‖` using `lt_of_le_of_lt (by positivity) h`. Establish `ht0 : t ≠ 0` using `norm_pos_iff.1 hp`. Use `hx ?_` and prove the remaining obligations. Use `ht (x / t) (hb (by` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_ball_zero_iff, norm_div, div_lt_iff₀ hp, mul_comm]`. Conclude with `(div_lt_iff₀ hε).1 h))`. Rewrite `this` using `[div_mul_cancel₀ _ ht0]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_compact_of_annih (v : Pl F) (χ : AddChar (Fv F v) ℂ) (hχ : χ ≠ 1) {V : Set (Fv F v)} (hV : V ∈ 𝓝 0) :
     ∃ U : Set (Fv F v), IsCompact U ∧ ∀ t, (∀ a ∈ V, χ (a * t) = 1) → t ∈ U := by
@@ -91,14 +91,14 @@ def crdV (v : Pl F) : (Fv F v ⊗[F] E) ≃ₗ[Fv F v] (Fin (Module.finrank F E)
   (Algebra.TensorProduct.basis (Fv F v) (Module.finBasis F E)).equivFun
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Conclude with `IsModuleTopology.continuous_of_linearMap (crdV E v).toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_crdV (v : Pl F) : Continuous (crdV E v) := by
   haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩
   exact IsModuleTopology.continuous_of_linearMap (crdV E v).toLinearMap
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Conclude with `IsModuleTopology.continuous_of_linearMap (crdV E v).symm.toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_crdV_symm (v : Pl F) : Continuous (crdV E v).symm := by
   haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩
@@ -106,9 +106,9 @@ theorem continuous_crdV_symm (v : Pl F) : Continuous (crdV E v).symm := by
   exact IsModuleTopology.continuous_of_linearMap (crdV E v).symm.toLinearMap
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [GlobalTheory.XTermMaj.crd]`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy, GlobalTheory.XTermMaj.crd]`. Consider the case `tmul r x`. Establish `h : compFin F E v (r ⊗ₜ[F] x) = evFin F v r ⊗ₜ[F] x` using `rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[h]`. Simplify using `[crdV, GlobalTheory.XTermMaj.crd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem crdV_compFin (v : Pl F) (x : AE F E) (i : Fin (Module.finrank F E)) :
     crdV E v (compFin F E v x) i = evFin F v (GlobalTheory.XTermMaj.crd F E x i) := by
@@ -121,7 +121,7 @@ theorem crdV_compFin (v : Pl F) (x : AE F E) (i : Fin (Module.finrank F E)) :
     simp [crdV, GlobalTheory.XTermMaj.crd]
 
 /- English proof (translation)
-Apply the tactic sequence `refine Prod.ext (funext fun k => ?_) (funext fun k => ?_) <;> simp [GlobalTheory.LatVac.locCo]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem locCo_smul {V : Type} [AddCommGroup V] [Module (AF F) V] {Bf : V → V → AF F} {κ : Type} [Fintype κ]
     (co : Darboux Bf κ) (v : Pl F) (a : AF F) (u : V) :
@@ -129,9 +129,9 @@ theorem locCo_smul {V : Type} [AddCommGroup V] [Module (AF F) V] {Bf : V → V �
   refine Prod.ext (funext fun k => ?_) (funext fun k => ?_) <;> simp [GlobalTheory.LatVac.locCo]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)`. Use `⟨fun x => ∑ i, crdV E v x i • GlobalTheory.LatVac.locCo M.co v (b i • u), continuous_finsetSum _ fun i _ => ((continuous_apply i).comp (continuous_crdV v)).smul continuous_const, fun l => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr l, Finset.sum_smul, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[smul_assoc, locCo_smul, crdV_compFin]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_locCo_smul {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (v : Pl F)
     (u : Matrix (Fin n) (Fin d) (AE F E)) :
@@ -149,9 +149,9 @@ theorem exists_locCo_smul {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model
 open scoped GlobalTheory.VacAny in
 
 /- English proof (translation)
-Establish `h : evFin F v (Bf s u) = (GlobalTheory.LatVac.locCo co v s).1 ⬝ᵥ (GlobalTheory.LatVac.locCo co v u).2 - (GlobalTheory.LatVac.locCo co v u).1 ⬝ᵥ (GlobalTheory.LatVac.locCo co v s).2`. Rewrite using `[co.form]`. Simplify using `[GlobalTheory.LatVac.locCo, dotProduct]`. Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, h, ← mul_assoc, ← AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_right_comm x (GlobalTheory.LatVac.locCo co v s).1]`. Use `congr 2`. Simplify using `only [add_dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_locCo_comm {V : Type} [AddCommGroup V] [Module (AF F) V] {Bf : V → V → AF F} {κ : Type} [Fintype κ]
     (co : Darboux Bf κ) (v : Pl F) (χ : AddChar (Fv F v) ℂ) (s u : V) (φ : (κ → Fv F v) → ℂ) :
@@ -169,13 +169,13 @@ theorem schr_locCo_comm {V : Type} [AddCommGroup V] [Module (AF F) V] {Bf : V �
   ring
 
 /- English proof (translation)
-Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hP.weil`. Establish `h1W : (1 : UA σ W.J) ∈ UAt σ W (evFin F v)` using `(UAtSub σ W (evFin F v)).one_mem`. Take `⟨U, hU, hUact⟩` from `(hA F E σ B n d X W M χX χW om r s r' s' hP v).2.2 φ hφ`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `k₀`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Establish `hc : Continuous fun k : KAt K (evFin F v) => ((k₀⁻¹ * k : KAt K (evFin F v)).1, (1 : UA σ W.J))` using `(continuous_subtype_val.comp (continuous_const.mul continuous_id)).prodMk continuous_const`. Establish `h0 : ((k₀⁻¹ * k₀ : KAt K (evFin F v)).1, (1 : UA σ W.J)) = 1`. Rewrite using `[inv_mul_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hev : ∀ᶠ k in 𝓝 k₀, ((k₀⁻¹ * k : KAt K (evFin F v)).1, (1 : UA σ W.J)) ∈ U` using `hc.continuousAt.preimage_mem_nhds (by rw [h0]; exact hU)`. Use `filter_upwards [hev] with k hk`. Establish `hfix : Acts (evFin F v) (om ((k₀⁻¹ * k).1, 1)) φ φ` using `hUact _ hk (mem_KAt.1 (k₀⁻¹ * k).2).2 h1W`. Establish `ha` using `acts_locOp_om hA hP (mem_KAt.1 k₀.2).2 h1W hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ek : (k.1, (1 : UA σ W.J)) = (k₀.1, 1) * ((k₀⁻¹ * k).1, 1)`. Rewrite using `[Prod.mk_mul_mk, mul_one, ← Subgroup.coe_mul, mul_inv_cancel_left]`. Use `locOp_eq hφ (locOp_mem _ _ _) fun ρ hρ => ?_` and prove the remaining obligations. Rewrite using `[ek, map_mul, Module.End.mul_apply, hfix ρ hρ, ha ρ hρ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_locOp_om (hA : ActsEx) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W}
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') (K : Subgroup (UA σ X.J))
@@ -205,21 +205,19 @@ theorem isLocallyConstant_locOp_om (hA : ActsEx) {n d : ℕ} {X : Spc F E n} {W 
 open scoped GlobalTheory.VacAny in
 
 /- English proof (translation)
-Establish `hc : Continuous B.ψ` using `hB.std.1`. Use `set χ := GlobalTheory.LatVac.psiAt B.ψ v with hχ`. Establish `hχl : IsLocallyConstant χ` using `GlobalTheory.SchrSB.isLocallyConstant_addChar _ (GlobalTheory.SchrSB.continuous_psiAt B.ψ hc v)`. Establish `hχ0 : ∀ᶠ y in 𝓝 (0 : Fv F v), χ y = 1` using `by simpa using hχl.eventually_eq 0`. Establish `hS` using `GlobalTheory.SchrLocConst.schr_isLocallyConstant χ hχ0 ψ hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL, hLe⟩` from `exists_locCo_smul M v (Matrix.vecMulVec (incV F H.x) (incV F H'.y))`. Use `choose c hcc using GlobalTheory.XTermSupp.trace_mul_dual (F := F) (E := E)`. Set `u : Fin (Module.finrank F E) → Matrix (Fin n) (Fin d) (AE F E)` to `fun i => inclR (F := F) (AF F) (σ (c i)) • Matrix.vecMulVec (incV F H.y) (incV F H'.x)`. Establish `hfix : ∀ᶠ a in 𝓝 (0 : Fv F v), ∀ i, schr χ (a • GlobalTheory.LatVac.locCo M.co v (u i)) ψ = ψ`. Use `Filter.eventually_all.2 fun i => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hct : Continuous fun a : Fv F v => a • GlobalTheory.LatVac.locCo M.co v (u i)` using `continuous_id.smul continuous_const`. Establish `ht : Tendsto (fun a : Fv F v => a • GlobalTheory.LatVac.locCo M.co v (u i)) (𝓝 0) (𝓝 0)` using `hct.tendsto' _ _ (zero_smul _ _)`. Use `filter_upwards [ht.eventually (hS.eventually_eq 0)] with a ha`. Rewrite using `[ha]`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[schr]`. Take `⟨U, hU, hUm⟩` from `exists_compact_of_annih v χ (GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hB.std v) hfix`. Use `⟨fun x => ev (schr χ (L x) ψ), (crdV E v).symm '' Set.pi Set.univ fun _ => U, (hS.comp_continuous hL).comp ev, (isCompact_univ_pi fun _ => hU).image (continuous_crdV_symm v), fun l => ?_⟩` and prove the remaining obligations. Establish `hl : GlobalTheory.LatVac.locCo M.co v (shiftA H H' l) = L (compFin F E v l)` using `hLe l.1`. Use `⟨by rw [(locOp_rho M.co hc v _ hψ).2, hl], fun hn => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `beta_reduce`. Rewrite using `[← hl]`. Assume the negation of the conclusion as `hne`. Use `hn ⟨crdV E v (compFin F E v l), fun i _ => hUm _ fun a ha => ?_, (crdV E v).symm_apply_apply _⟩` and prove the remaining obligations. Establish `hat : At (evFin F v) (GlobalTheory.LatVac.liftV v a • u i)` using `fun b hb => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, ← smul_eq_mul, GlobalTheory.LatVac.at_liftV v a b hb, zero_smul]`. Establish `h1` using `congrArg ev (schr_locCo_comm M.co v χ (shiftA H H' l) (GlobalTheory.LatVac.liftV v a • u i) ψ)`. Establish `h2` using `hinv (GlobalTheory.LatVac.liftV v a • u i) ⟨GlobalTheory.LatVac.liftV v a • inclR (F := F) (AF F) (σ (c i)) • incV F H.y, by`. Rewrite using `[Matrix.smul_vecMulVec, Matrix.smul_vecMulVec]⟩ hat _`. Use the proof step `(GlobalTheory.SchrSB.schr_mem_SB B.ψ hc v (GlobalTheory.LatVac.locCo M.co v (shiftA H H' l)) ψ hψ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `(locOp_rho M.co hc v (GlobalTheory.LatVac.liftV v a • u i) (GlobalTheory.SchrSB.schr_mem_SB B.ψ hc v (GlobalTheory.LatVac.locCo M.co v (shiftA H H' l)) ψ hψ)).2`. Rewrite `h3` using `[partFin_of_at hat]`. Rewrite `h2` using `[h3]`. Establish `h4 : schr χ (GlobalTheory.LatVac.locCo M.co v (GlobalTheory.LatVac.liftV v a • u i)) ψ = ψ`. Rewrite using `[locCo_smul, GlobalTheory.LatVac.evFin_liftV]`.
-
-Conclude with `ha i`. Rewrite `h1` using `[h4, map_smul, h2, GlobalTheory.XTermSupp.symp_shiftA hB.cm hJ H H' hH hH', hcc, map_mul, GlobalTheory.LatVac.evFin_liftV, ← crdV_compFin]`. Conclude with `smul_left_injective ℂ hne (h1.symm.trans (one_smul ℂ _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locallyConstant_compact {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} (hB : B.IsGood σ)
     (M : Model σ X W) (hJ : ∀ i j, σ (W.J j i) = -W.J i j) (H : Plane E n n₁) (H' : Plane E d d₁)
@@ -278,21 +276,15 @@ theorem exists_locallyConstant_compact {n d n₁ d₁ : ℕ} {X : Spc F E n} {W 
 set_option synthInstance.maxHeartbeats 100000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hP B b a' G G₁ H H' hC e hE ei ev hL K hK μKv hμK μEv hμE _ _ _ _ X om om' hT hM₁ v φ hφ y`. Establish `hPair : IsPair B G.M X.β (X.β / X.α) om (b + 2 - G.p) G.p (b + 2 + a' - (G.p + G.q)) (G.p + G.q)` using `{ base := hT.base, herm := hT.geo.hV, skew := hT.geo.hW, good := hT.geo.hM, hX := hT.chars.heckeβ, hW := GlobalTheory.ThKRatInv.isHecke_div hT.chars.heckeβ hT.chars.heckeα, resX := hT.chars.resβ, resW := GlobalTheory.ThKRatInv.resEtaPow_div hT.chars.resβ hT.chars.resα, weil := hT …`. Establish `hKc : IsCompact (K : Set (UA σ G.V.J))`. Take `⟨K₀, -, -, h1, h2, -⟩` from `GlobalTheory.StabHaar.stabEx hP F E σ B (b + 2) G.V _ _ hT.base hT.geo.hV`. Rewrite using `[show K = K₀ from Subgroup.ext fun g => (hK g).trans (h1 g).symm]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `haveI : CompactSpace (KAt K (evFin F v)) := isCompact_iff_compactSpace.1 (isCompact_KAt hKc _)`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evFin F v)`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : T2Space (AE F E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`. Use `haveI : IsProbabilityMeasure (μKv v) := ⟨(hμK v).2⟩`. Use `haveI := (hμE v).1`. Use `haveI hKf : IsFiniteMeasure (μKv v) := ⟨by rw [(hμK v).2]; exact ENNReal.one_lt_top⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : SigmaFinite (μKv v) := IsFiniteMeasure.toSigmaFinite _`. Use `haveI : SFinite (μKv v) := instSFiniteOfSigmaFinite`. Use `haveI : SigmaFinite (μEv v) := inferInstance`. Establish `hz : 1 ≤ (b + 2 - a') / 2` using `by have := hT.geo.eBig; omega`. Use `integrable_integral_map_prod (MeasurableEmbedding.subtype_coe (isCompact_KAt hKc (evFin F v)).isClosed.measurableSet) (MeasurableEmbedding.subtype_coe (isClosed_idelesAt (E := E) (evFin F v)).measurableSet) (μKv v) (μEv v) (fun k l => coneFinInt B G.M om v (ev v) (shiftA H H') X. …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `integrable_prod_of_locallyConstant (μKv v) (μEv v) (isLocallyConstant_locOp_om (GlobalTheory.T.theta_action_exists hP) hPair K v hφ) (fun ψ l => ev v (locOp v (G.M.co.rho B.ψ (partFin v (shiftA H H' l.1))) ψ) y * (X.ν l.1 : ℂ) * ((absE F E l.1 : ℝ) : ℂ) ^ ((b + 2 - a') / 2)) fun …` and prove the remaining obligations. Take `⟨g, C, hg, hCc, hgC⟩` from `exists_locallyConstant_compact hT.base G.M hT.geo.hW.skew H H' hC.hH.xy hC.hH'.xy v (ev v) (fun u hu => (GlobalTheory.ThK.EvLocParts.locParts F E σ B _ _ _ _ _ _ _ _ G.M G₁.M _ _ _ e hT.base hT.geo.hM hM₁ hE ei ev hL.1 hL.2.1 hL.2.2 v).2 u (Or.inl hu)) (locOp_mem v (om (k.1, 1)) …`. Establish `hcl : Continuous fun l : idelesAt E (evFin F v) => compFin F E v l.1.1` using `Units.continuous_val.comp ((GlobalTheory.Doubling.continuous_unitFin v).comp continuous_subtype_val)`. Establish `hgy : Continuous fun x => g x y` using `(hg.comp fun f => f y).continuous`. Establish `hν : Continuous fun l : (AE F E)ˣ => (X.ν l : ℂ)` using `continuous_subtype_val.comp (show Continuous fun l => X.α l / X.β l from hT.chars.heckeα.1.div' hT.chars.heckeβ.1)`.
-
-Establish `habs : Continuous fun l : idelesAt E (evFin F v) => ((absE F E l.1 : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp continuous_subtype_val))`. Take `⟨R, hR⟩` from `hCc.exists_bound_of_continuousOn hgy.continuousOn`. Use `haveI : T2Space (Fv F v ⊗[F] E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`. Establish `hA : MeasurableSet {l : idelesAt E (evFin F v) | compFin F E v l.1.1 ∈ C}` using `(hCc.isClosed.preimage hcl).measurableSet`. Establish `hI` using `((integrable_indicator_iff hA).2 (GlobalTheory.T.idele_power_integrable_compact F E v (μEv v) (hμE v).1 C hCc _ hz)).const_mul R`.
-
-Simplify using `only [fun l => (hgC l).1]`. Use `hI.mono' (((hgy.comp hcl).mul (hν.comp continuous_subtype_val)).mul (habs.pow _)).aestronglyMeasurable (ae_of_all _ fun l => ?_)` and prove the remaining obligations. Distinguish the cases in `hl : compFin F E v l.1.1 ∈ C`. Rewrite using `[Set.indicator_of_mem (show l ∈ {l : idelesAt E (evFin F v) | compFin F E v l.1.1 ∈ C} from hl)]`. Simplify using `only [norm_mul, norm_pow, Circle.norm_coe, mul_one, Complex.norm_real, NNReal.norm_eq]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (hR _ hl) (by positivity)`. Apply the tactic sequence `rw [Set.indicator_of_notMem (show l ∉ {l : idelesAt E (evFin F v) | compFin F E v l.1.1 ∈ C} from hl), (hgC l.1).2 hl] all_goals simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneFinInt_integrable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), GlobalTheory.FunPr.Hypotheses₂ → ∀ (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

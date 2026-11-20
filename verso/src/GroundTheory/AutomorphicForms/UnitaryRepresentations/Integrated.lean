@@ -15,7 +15,7 @@ variable {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteS
 variable (π : UnitaryRep G H) (μ : Measure G)
 
 /- English proof (translation)
-The claim follows from `(continuous_const.inner (π.continuous_orbit v)).aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 lemma aestronglyMeasurable_inner_orbit (w v : H) :
     AEStronglyMeasurable (fun g => ⟪w, π g v⟫_ℂ) μ :=
@@ -23,14 +23,14 @@ lemma aestronglyMeasurable_inner_orbit (w v : H) :
 
 omit [MeasurableSpace G] [OpensMeasurableSpace G] in
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma norm_inner_orbit_le (w v : H) (g : G) : ‖⟪w, π g v⟫_ℂ‖ ≤ ‖w‖ * ‖v‖ := by
   calc ‖⟪w, π g v⟫_ℂ‖ ≤ ‖w‖ * ‖π g v‖ := norm_inner_le_norm _ _
     _ = ‖w‖ * ‖v‖ := by rw [norm_map]
 
 /- English proof (translation)
-The claim follows from `(L1.integrable_coeFn f).mul_bdd (π.aestronglyMeasurable_inner_orbit μ w v) (Eventually.of_forall fun g => π.norm_inner_orbit_le w v g)`.
+A detailed English derivation is pending.
 -/
 lemma integrable_mul_inner_orbit (f : G →₁[μ] ℂ) (w v : H) :
     Integrable (fun g => f g * ⟪w, π g v⟫_ℂ) μ :=
@@ -39,7 +39,7 @@ lemma integrable_mul_inner_orbit (f : G →₁[μ] ℂ) (w v : H) :
 
 omit [OpensMeasurableSpace G] in
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (π.norm_inner_orbit_le w v g) (norm_nonneg _))`. Use `_ = ‖f‖ * ‖w‖ * ‖v‖ := by rw [integral_mul_const, L1.norm_eq_integral_norm, mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_integral_mul_inner_orbit_le (f : G →₁[μ] ℂ) (w v : H) :
     ‖∫ g, f g * ⟪w, π g v⟫_ℂ ∂μ‖ ≤ ‖f‖ * ‖w‖ * ‖v‖ := by
@@ -75,7 +75,7 @@ noncomputable def integratedOp (f : G →₁[μ] ℂ) : H →L[ℂ] H :=
   adjoint (InnerProductSpace.continuousLinearMapOfBilin (π.integratedForm μ f))
 
 /- English proof (translation)
-Rewrite using `[integratedOp, adjoint_inner_right, InnerProductSpace.continuousLinearMapOfBilin_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma inner_integratedOp (f : G →₁[μ] ℂ) (w v : H) :
     ⟪w, π.integratedOp μ f v⟫_ℂ = ∫ g, f g * ⟪w, π g v⟫_ℂ ∂μ := by
@@ -83,11 +83,9 @@ lemma inner_integratedOp (f : G →₁[μ] ℂ) (w v : H) :
   rfl
 
 /- English proof (translation)
-Use `set x := π.integratedOp μ f v`. Establish `h` using `π.norm_integral_mul_inner_orbit_le μ f x v`. Rewrite `h` using `[← inner_integratedOp]`. Establish `h' : ‖x‖ * ‖x‖ ≤ ‖x‖ * (‖f‖ * ‖v‖)`. Establish `e : ‖⟪x, x⟫_ℂ‖ = ‖x‖ * ‖x‖` using `by rw [inner_self_eq_norm_sq_to_K]; simp [sq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `eq_or_lt_of_le (norm_nonneg x) with h0 | hpos` into its components or cases. Rewrite using `[← h0]`. Check the signs of the components of the expression.
-
-Conclude with `le_of_mul_le_mul_left h' hpos`.
+Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 lemma norm_integratedOp_apply_le (f : G →₁[μ] ℂ) (v : H) :
     ‖π.integratedOp μ f v‖ ≤ ‖f‖ * ‖v‖ := by
@@ -123,27 +121,27 @@ noncomputable def integrated : (G →₁[μ] ℂ) →L[ℂ] (H →L[ℂ] H) :=
       exact opNorm_le_bound _ (norm_nonneg _) fun v => π.norm_integratedOp_apply_le μ f v)
 
 /- English proof (translation)
-The claim follows from `π.inner_integratedOp μ f w v`.
+A detailed English derivation is pending.
 -/
 theorem inner_integrated (f : G →₁[μ] ℂ) (w v : H) :
     ⟪w, π.integrated μ f v⟫_ℂ = ∫ g, f g * ⟪w, π g v⟫_ℂ ∂μ :=
   π.inner_integratedOp μ f w v
 
 /- English proof (translation)
-The claim follows from `π.norm_integratedOp_apply_le μ f v`.
+A detailed English derivation is pending.
 -/
 theorem norm_integrated_apply_le (f : G →₁[μ] ℂ) (v : H) :
     ‖π.integrated μ f v‖ ≤ ‖f‖ * ‖v‖ :=
   π.norm_integratedOp_apply_le μ f v
 
 /- English proof (translation)
-The claim follows from `opNorm_le_bound _ (norm_nonneg _) fun v => π.norm_integrated_apply_le μ f v`.
+A detailed English derivation is pending.
 -/
 theorem norm_integrated_le (f : G →₁[μ] ℂ) : ‖π.integrated μ f‖ ≤ ‖f‖ :=
   opNorm_le_bound _ (norm_nonneg _) fun v => π.norm_integrated_apply_le μ f v
 
 /- English proof (translation)
-Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[inner_integrated, ← integral_inner hint]`. Repeatedly rewrite using `[inner_smul_right]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem integrated_apply_eq_integral (f : G →₁[μ] ℂ) (v : H)
     (hint : Integrable (fun g => f g • π g v) μ) :
@@ -153,7 +151,7 @@ theorem integrated_apply_eq_integral (f : G →₁[μ] ℂ) (v : H)
   simp_rw [inner_smul_right]
 
 /- English proof (translation)
-The claim follows from `(L1.integrable_coeFn f).smul_bdd ‖v‖ (π.continuous_orbit v).aestronglyMeasurable (Eventually.of_forall fun g => (π.norm_map g v).le)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_smul_orbit [SecondCountableTopologyEither G H] (f : G →₁[μ] ℂ) (v : H) :
     Integrable (fun g => f g • π g v) μ :=
@@ -161,16 +159,14 @@ theorem integrable_smul_orbit [SecondCountableTopologyEither G H] (f : G →₁[
     (Eventually.of_forall fun g => (π.norm_map g v).le)
 
 /- English proof (translation)
-The claim follows from `π.integrated_apply_eq_integral μ f v (π.integrable_smul_orbit μ f v)`.
+A detailed English derivation is pending.
 -/
 theorem integrated_apply [SecondCountableTopologyEither G H] (f : G →₁[μ] ℂ) (v : H) :
     π.integrated μ f v = ∫ g, f g • π g v ∂μ :=
   π.integrated_apply_eq_integral μ f v (π.integrable_smul_orbit μ f v)
 
 /- English proof (translation)
-Use `set hmem := f.continuous.memLp_of_hasCompactSupport (μ := μ) (p := 1) f.hasCompactSupport`. Establish `hae : ((hmem.toLp f : G →₁[μ] ℂ) : G → ℂ) =ᵐ[μ] f` using `hmem.coeFn_toLp`. Establish `hint : Integrable (fun g => f g • π g v) μ` using `(f.continuous.smul (π.continuous_orbit v)).integrable_of_hasCompactSupport (f.hasCompactSupport.smul_right)`. Establish `hint' : Integrable (fun g => (hmem.toLp f : G →₁[μ] ℂ) g • π g v) μ` using `hint.congr (hae.mono fun g hg => by simp only [hg])`. Rewrite using `[π.integrated_apply_eq_integral μ _ v hint']`.
-
-Conclude with `integral_congr_ae (hae.mono fun g hg => by simp only [hg])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrated_toLp_apply [IsFiniteMeasureOnCompacts μ]
     (f : CompactlySupportedContinuousMap G ℂ) (v : H) :
@@ -187,7 +183,7 @@ theorem integrated_toLp_apply [IsFiniteMeasureOnCompacts μ]
   exact integral_congr_ae (hae.mono fun g hg => by simp only [hg])
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[comp_apply, comp_apply, ← adjoint_inner_left, inner_integrated, inner_integrated]`. Use `congr 1`. Use extensionality with `g`. Rewrite using `[adjoint_inner_left, hT]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_integrated_of_mem_intertwiners {σ : UnitaryRep G K} {T : H →L[ℂ] K}
     (hT : T ∈ π.intertwiners σ) (f : G →₁[μ] ℂ) :
@@ -198,9 +194,9 @@ theorem comp_integrated_of_mem_intertwiners {σ : UnitaryRep G K} {T : H →L[�
   rw [adjoint_inner_left, hT]
 
 /- English proof (translation)
-Establish `: CompleteSpace V` using `hcl.completeSpace_coe`. Establish `hP : V.starProjection ∈ π.intertwiners π` using `mem_intertwiners_self_iff.mpr fun g => ((isInvariant_iff_commute_starProjection V).mp hV g).symm`. Establish `h` using `congrArg (fun T : H →L[ℂ] H => T v) (π.comp_integrated_of_mem_intertwiners μ hP f)`. Simplify using `only [comp_apply, Submodule.starProjection_eq_self_iff.mpr hv] at h`. Rewrite using `[← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `V.starProjection_apply_mem _`.
+A detailed English derivation is pending.
 -/
 theorem IsInvariant.integrated_mem {V : Submodule ℂ H} (hcl : IsClosed (V : Set H))
     (hV : π.IsInvariant V) (f : G →₁[μ] ℂ) {v : H} (hv : v ∈ V) :
@@ -215,7 +211,7 @@ theorem IsInvariant.integrated_mem {V : Submodule ℂ H} (hcl : IsClosed (V : Se
   exact V.starProjection_apply_mem _
 
 /- English proof (translation)
-Rewrite using `[adjoint_inner_right, ← inner_conj_symm, inner_integrated, ← integral_conj]`. Use `congr 1`. Use extensionality with `g`. Rewrite using `[_root_.map_mul, inner_conj_symm, inner_map_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_adjoint_integrated (f : G →₁[μ] ℂ) (w v : H) :
     ⟪w, adjoint (π.integrated μ f) v⟫_ℂ = ∫ g, conj (f g) * ⟪w, π g⁻¹ v⟫_ℂ ∂μ := by
@@ -232,16 +228,16 @@ noncomputable def leftTranslate [μ.IsMulLeftInvariant] (h : G) (f : G →₁[μ
 
 omit [OpensMeasurableSpace G] in
 /- English proof (translation)
-The claim follows from `Lp.coeFn_compMeasurePreserving _ _`.
+A detailed English derivation is pending.
 -/
 lemma coeFn_leftTranslate [μ.IsMulLeftInvariant] (h : G) (f : G →₁[μ] ℂ) :
     (leftTranslate μ h f : G → ℂ) =ᵐ[μ] fun g => f (h⁻¹ * g) :=
   Lp.coeFn_compMeasurePreserving _ _
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[comp_apply, inner_map_right, inner_integrated, inner_integrated]`. Rewrite using `[integral_congr_ae ((coeFn_leftTranslate μ h f).mono fun g hg => show (leftTranslate μ h f) g * ⟪w, π g v⟫_ℂ = f (h⁻¹ * g) * ⟪w, π g v⟫_ℂ by rw [hg])]`. Rewrite using `[← integral_mul_left_eq_self (fun g => f (h⁻¹ * g) * ⟪w, π g v⟫_ℂ) h]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `g`. Rewrite using `[inv_mul_cancel_left, inner_map_left, inv_inv, map_mul_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_comp_integrated [μ.IsMulLeftInvariant] (h : G) (f : G →₁[μ] ℂ) :
     π h ∘L π.integrated μ f = π.integrated μ (leftTranslate μ h f) := by
@@ -259,7 +255,7 @@ noncomputable def involution [μ.IsInvInvariant] (f : G →₁[μ] ℂ) : G →�
 
 omit [OpensMeasurableSpace G] in
 /- English proof (translation)
-Establish `h1` using `(Complex.conjCLE : ℂ →L[ℝ] ℂ).coeFn_compLp (Lp.compMeasurePreserving (fun g => g⁻¹) (Measure.measurePreserving_inv μ) f)`. Establish `h2` using `Lp.coeFn_compMeasurePreserving f (Measure.measurePreserving_inv μ)`. Use `filter_upwards [h1, h2] with g hg1 hg2`. Rewrite using `[involution, hg1, hg2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma coeFn_involution [μ.IsInvInvariant] (f : G →₁[μ] ℂ) :
     (involution μ f : G → ℂ) =ᵐ[μ] fun g => conj (f g⁻¹) := by
@@ -271,7 +267,7 @@ lemma coeFn_involution [μ.IsInvInvariant] (f : G →₁[μ] ℂ) :
   rfl
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[inner_adjoint_integrated, inner_integrated]`. Rewrite using `[integral_congr_ae ((coeFn_involution μ f).mono fun g hg => show (involution μ f) g * ⟪w, π g v⟫_ℂ = conj (f g⁻¹) * ⟪w, π g v⟫_ℂ by rw [hg])]`. Rewrite using `[← integral_inv_eq_self (fun g => conj (f g⁻¹) * ⟪w, π g v⟫_ℂ) μ]`. Simplify using `only [inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adjoint_integrated [μ.IsInvInvariant] (f : G →₁[μ] ℂ) :
     adjoint (π.integrated μ f) = π.integrated μ (involution μ f) := by

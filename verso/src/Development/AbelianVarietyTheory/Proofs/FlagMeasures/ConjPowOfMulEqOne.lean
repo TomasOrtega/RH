@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.NearElement
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [mul_eq_one_comm.1 h]`. Consider the case `succ m ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_pow_of_mul_eq_one {A n : Type} [CommRing A] [Fintype n] [DecidableEq n]
     (X Y G : Matrix n n A) (h : X * Y = 1) (m : ℕ) : (Y * G * X) ^ m = Y * G ^ m * X := by
@@ -32,20 +32,20 @@ theorem conj_pow_of_mul_eq_one {A n : Type} [CommRing A] [Fintype n] [DecidableE
       _ = _ := by rw [h]; simp only [mul_assoc, mul_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[conj_pow_of_mul_eq_one X Y G h, Matrix.trace_mul_cycle, h, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_conj_pow {A n : Type} [CommRing A] [Fintype n] [DecidableEq n]
     (X Y G : Matrix n n A) (h : X * Y = 1) (m : ℕ) : ((Y * G * X) ^ m).trace = (G ^ m).trace := by
   rw [conj_pow_of_mul_eq_one X Y G h, Matrix.trace_mul_cycle, h, one_mul]
 
 /- English proof (translation)
-Establish `hpow : ∀ (M : Matrix (Fin n) (Fin n) E), (∀ y ∈ Λ, M *ᵥ y ∈ Λ) → ∀ m : ℕ, ∀ y ∈ Λ, (M ^ m) *ᵥ y ∈ Λ`. Introduce `M hM m`. Proceed by induction on `m with`. Consider the case `zero => intro y hy`. Simplify using `using hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ m ih => intro y hy`. Rewrite using `[pow_succ, ← mulVec_mulVec]`. Conclude with `ih _ (hM y hy)`. Use `set S := ∑ i ∈ Finset.range j, G ^ i with hS`. Establish `hSΛ : ∀ y ∈ Λ, S *ᵥ y ∈ Λ`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Rewrite using `[hS, Matrix.sum_mulVec]`. Conclude with `Λ.sum_mem fun i _ => hpow G hG i y hy`. Establish `e : G ^ j - 1 = (G - 1) * S` using `(mul_geom_sum G j).symm`. Establish `hc : Commute (G - 1) S` using `by show (G - 1) * S = S * (G - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hS, mul_geom_sum, geom_sum_mul]`. Take `⟨t, ht⟩` from `GlobalTheory.trace_mem_of_nilpotent_mod_radical E n n g Λ (G ^ j - 1) hfg hsp hrad hg (fun y hy => by rw [sub_mulVec, one_mulVec]; exact Λ.sub_mem (hpow G hG j y hy) hy) (fun y hy => by rw [e, hc.mul_pow, ← mulVec_mulVec]; exact hU _ (hpow S hSΛ n y hy))`. Conclude with `⟨t, by rw [← ht]; simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem trace_pow_cong (E : Type) [Field E] [NumberField E] (n g : ℕ) (Λ : Submodule (𝓞 E) (Fin n → E))
     (G : Matrix (Fin n) (Fin n) E) (hfg : Λ.FG) (hsp : Submodule.span E (Λ : Set (Fin n → E)) = ⊤)
@@ -72,9 +72,9 @@ theorem trace_pow_cong (E : Type) [Field E] [NumberField E] (n g : ℕ) (Λ : Su
   exact ⟨t, by rw [← ht]; simp⟩
 
 /- English proof (translation)
-Use `⟨(InfinitePlace.mk ι).comap (algebraMap I.F I.E), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases GlobalTheory.Count.Test.embedding_cases I (InfinitePlace.mk ι) with h | h <;>`. Break down `InfinitePlace.embedding_mk_eq ι with h' | h'` into its components or cases. Conclude with `Or.inl (h'.symm.trans h)`. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, h']`. Simplify using the standard rewrite rules. Conclude with `Or.inr (h'.symm.trans h)`. Use `left`. Conclude with `star_injective (h'.symm.trans h)`.
+Simplify using the standard rewrite rules. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem embedding_eq_or_conj (I : AutInst) (ι : I.E →+* ℂ) :
     ∃ v, ι = I.φ v ∨ ι = ComplexEmbedding.conjugate (I.φ v) := by
@@ -89,15 +89,13 @@ theorem embedding_eq_or_conj (I : AutInst) (ι : I.E →+* ℂ) :
     exact star_injective (h'.symm.trans h)
 
 /- English proof (translation)
-Establish `key : n * (c / (n ^ 8 * f ^ 2)) * (n ^ 3 * f ^ 2) ≤ c`. Establish `e : n * (c / (n ^ 8 * f ^ 2)) * (n ^ 3 * f ^ 2) = c / n ^ 4` using `by field_simp`. Rewrite using `[e]`. Conclude with `div_le_self hc.le (one_le_pow₀ hn)`. Establish `h0 : 0 ≤ n * (c / (n ^ 8 * f ^ 2))` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `n * (c / (n ^ 8 * f ^ 2)) = a at key h0`. Establish `h1 : 1 ≤ n ^ 3 * f ^ 2` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ hn) (one_le_pow₀ hf)`. Establish `ha : a ≤ c` using `le_trans (le_mul_of_one_le_right h0 h1) key`. Use `⟨by linarith, ?_, fun q hq hqn => ?_⟩` and prove the remaining obligations. Establish `: Real.sqrt a < 1 / 12`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.sqrt_lt' (by norm_num)]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(pow_le_pow_iff_left₀ (by positivity) (by norm_num) two_ne_zero).1 ?_` and prove the remaining obligations. Establish `e : (3 * Real.sqrt a * q * n * f) ^ 2 = 9 * (a * (q ^ 2 * n ^ 2 * f ^ 2))`. Rewrite using `[mul_pow, mul_pow, mul_pow, mul_pow, Real.sq_sqrt h0]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : a * (q ^ 2 * n ^ 2 * f ^ 2) ≤ a * (n ^ 3 * f ^ 2)`. Rewrite using `[pow_succ' n 2]`. Use `gcongr`. Rewrite using `[e]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem radius_bounds (c : ℝ) (hc : 0 < c) (hc' : c ≤ 1 / 10 ^ 5) (n f : ℝ) (hn : 1 ≤ n) (hf : 1 ≤ f) :
     n * (c / (n ^ 8 * f ^ 2)) ≤ 1 / 4 ∧ 3 * Real.sqrt (n * (c / (n ^ 8 * f ^ 2))) < 1 / 4 ∧
@@ -122,29 +120,27 @@ theorem radius_bounds (c : ℝ) (hc : 0 < c) (hc' : c ≤ 1 / 10 ^ 5) (n f : ℝ
     rw [e]; linarith
 
 /- English proof (translation)
-Introduce `B d c hc hc' hn hg hrad ep δ hep hδ`. Establish `hf : 1 ≤ B.I.f` using `Module.finrank_pos`. Take `⟨r1, r2, r3⟩` from `radius_bounds c hc hc' B.I.n B.I.f (by exact_mod_cast hn) (by exact_mod_cast hf)`. Rewrite `r1`, `r2`, `r3` using `[← hep]`. Rewrite `r2`, `r3` using `[← hδ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨?_, r2, fun q hq => r3 q (Nat.cast_nonneg q) (by exact_mod_cast hq)⟩` and prove the remaining obligations. Introduce and unpack `x a ⟨ha, hne, hd⟩`. Establish `hep0 : 0 ≤ ep` using `by rw [hep]; positivity`. Establish `he : B.e (x⁻¹ * a * x).2 ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hK` using `B.e_adm.2.2.2.2.1 _ he`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `B.e_adm.2.2.2.2.2.2 _ he`. Take `⟨γ, -, hinf, hfin⟩` from `id ha`. Establish `hg1 : 1 ≤ B.g₀` using `by omega`. Take `⟨hG, hGU⟩` from `GlobalTheory.PointLattice.lamX_unipMod B.I x a γ B.g₀ hg1 hfin hK hU`. Take `⟨-, hfg, hsp, -⟩` from `GlobalTheory.PointLattice.lamX_selfDual B.I x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Generalize the expression as in `(γ : Matrix (Fin B.I.n) (Fin B.I.n) B.I.E) = G at hinf hfin hG hGU`. Establish `hP : ∀ v, B.I.P v * (B.I.P v)⁻¹ = 1` using `fun v => Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (B.I.P_unit v))`. Establish `htr : ∀ v j, (uMat ((x⁻¹ * a * x).1 v) ^ j).trace = B.I.φ v (G ^ j).trace`. Introduce `v j`. Establish `e : uMat ((x⁻¹ * a * x).1 v) = uMat (x.1 v)⁻¹ * uMat (a.1 v) * uMat (x.1 v)` using `rfl`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e, trace_conj_pow _ _ _ (Units.mul_inv _), hinf, trace_conj_pow _ _ _ (hP v), AddMonoidHom.map_trace]`. Use `congr 1`. Conclude with `(map_pow (B.I.φ v).mapMatrix G j).symm`. Establish `harch : ∀ v, (∀ j : ℕ, j ≤ B.I.n → ‖(uMat ((x⁻¹ * a * x).1 v) ^ j).trace - B.I.n‖ ≤ 3 * B.I.n) ∧ ((uMat ((x⁻¹ * a * x).1 v)).trace = B.I.n → Real.sqrt (hs (uMat ((x⁻¹ * a * x).1 v) - 1)) ≤ 3 * Real.sqrt (B.I.n * ep))`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, X, hk, hX, e⟩` from `(polar B.I.n (B.I.ε v)).1 (uMat ((x⁻¹ * a * x).1 v)) ((x⁻¹ * a * x).1 v).2`. Establish `h1` using `hd v`. Rewrite `h1` using `[e, (GlobalTheory.Count.Cartan.cartan_distances _ _).1 k X hk hX]`. Rewrite using `[e]`. Conclude with `GlobalTheory.NearUnitaryExp.near_arch _ k X ep hk.1 ((pChar _ _ X).1.1 hX).1 hep0 h1 r1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htn : ∀ j, j ≤ B.I.n → (G ^ j).trace = B.I.n`. Introduce `j hj`. Take `⟨t, ht⟩` from `trace_pow_cong B.I.E B.I.n B.g₀ _ G hfg hsp hrad hg1 hG hGU j`. Establish `e : (((B.g₀ : 𝓞 B.I.E) * t : 𝓞 B.I.E) : B.I.E) = (G ^ j).trace - B.I.n` using `by rw [ht]; simp`. Establish `h0` using `GlobalTheory.ringOfIntegers_eq_zero_of_natCast_dvd_of_norm_embedding_le B.I.E B.g₀ (3 * B.I.n) ((B.g₀ : 𝓞 B.I.E) * t) (dvd_mul_right _ _) (fun ι => ?_) ?_`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `e` using `[h0]`. Conclude with `sub_eq_zero.1 (by simpa using e.symm)`. Take `⟨v, hv⟩` from `embedding_eq_or_conj B.I ι`. Establish `h2` using `(harch v).1 j hj`. Rewrite `h2` using `[htr, ← map_natCast (B.I.φ v), ← map_sub, ← e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Break down `hv with rfl | rfl` into its components or cases. Conclude with `h2`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, Complex.norm_conj]` and apply the resulting hypothesis. Establish `: 3 * B.I.n < B.g₀` using `by omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hnil` using `(GlobalTheory.unipotent_of_trace_pow_eq_size B.I.E B.I.n G fun j _ hj => htn j hj).2`. Establish `hmap : ∀ {A : Type} [CommRing A] (ι : B.I.E →+* A), (G.map ι - 1) ^ B.I.n = 0`. Introduce `A _ ι`. Use `congrArg ι.mapMatrix hnil` as an intermediate fact. Rewrite `this` using `[map_pow, map_sub, map_one, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `⟨by rw [hfin]; exact hmap _, fun v => ?_, ha, hK, fun v => ?_⟩` and prove the remaining obligations. Establish `e : uMat (a.1 v) - 1 = (B.I.P v)⁻¹ * (G.map (B.I.φ v) - 1) * B.I.P v`. Rewrite using `[hinf, mul_sub, sub_mul, mul_one, mul_eq_one_comm.1 (hP v)]`. Rewrite using `[e, conj_pow_of_mul_eq_one _ _ _ (hP v), hmap, mul_zero, zero_mul]`.
-
-Rewrite using `[hδ]`. Apply `(harch v).2` to reduce the goal to its premises. Use `htr v 1` as an intermediate fact. Rewrite `this` using `[htn 1 hn, pow_one, map_natCast]`. Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem near_unipotent : NearUnip := by
   intro B d c hc hc' hn hg hrad ep δ hep hδ

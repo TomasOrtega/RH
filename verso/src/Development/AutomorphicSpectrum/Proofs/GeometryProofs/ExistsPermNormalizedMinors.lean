@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.Ar.FlagBun.Sm.Cell
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.FlagBun GlobalTheory.CompanionTheory.Ar.FlagBun.Sm
 
 /- English proof (translation)
-Unfold `kMinor`. Establish `e : A.submatrix (I ∘ σ) (Fin.castLE hk) = (A.submatrix I (Fin.castLE hk)).submatrix σ id`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[e, Matrix.det_permute]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem kMinor_comp_perm {F : Type} [CommRing F] {n r : ℕ} (A : Matrix (Fin n) (Fin r) F) (k : ℕ)
     (hk : k ≤ r) (I : Fin k → Fin n) (σ : Equiv.Perm (Fin k)) :
@@ -20,9 +20,9 @@ theorem kMinor_comp_perm {F : Type} [CommRing F] {n r : ℕ} (A : Matrix (Fin n)
   rw [e, Matrix.det_permute]
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `h`. Use `⟨?_, fun J => ?_⟩` and prove the remaining obligations. Rewrite using `[kMinor_comp_perm]`. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs` into its components or cases. Simplify `h0` using `[hs]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h0` using `[hs]`. Rewrite using `[kMinor_comp_perm]`. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs` into its components or cases. Simplify `h1 J` using `[hs]`. Simplify `O.neg_mem (h1 J)` using `[hs, div_neg]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem normAt_comp_perm {F : Type} [Field F] (O : Subring F) {n r : ℕ} (Y : Matrix (Fin n) (Fin r) F)
     (k : ℕ) (hk : k ≤ r) (I : Fin k → Fin n) (σ : Equiv.Perm (Fin k)) (h : NormAt O Y k hk I) :
@@ -39,9 +39,9 @@ theorem normAt_comp_perm {F : Type} [Field F] (O : Subring F) {n r : ℕ} (Y : M
     · simpa [hs, div_neg] using O.neg_mem (h1 J)
 
 /- English proof (translation)
-Set `e : {x // x ∈ Set.range (Fin.castSucc : Fin k → Fin (k + 1))} ≃ {x // x ∈ Set.range f}` to `(Equiv.ofInjective _ (Fin.castSucc_injective k)).symm.trans (Equiv.ofInjective f hf)`. Use `⟨e.extendSubtype, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `e.extendSubtype_apply_of_mem a.castSucc ⟨a, rfl⟩`. Rewrite using `[h]`. Establish `h2 : (Equiv.ofInjective _ (Fin.castSucc_injective k)).symm ⟨a.castSucc, ⟨a, rfl⟩⟩ = a` using `Equiv.ofInjective_symm_apply _ a`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e, Equiv.trans_apply]`. Use `erw [h2]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_perm_castSucc {k : ℕ} (f : Fin k → Fin (k + 1)) (hf : Function.Injective f) :
     ∃ g : Equiv.Perm (Fin (k + 1)), ∀ a : Fin k, g a.castSucc = f a := by
@@ -60,15 +60,15 @@ theorem exists_perm_castSucc {k : ℕ} (f : Fin k → Fin (k + 1)) (hf : Functio
 def castEmb {m n : ℕ} (h : m ≤ n) : Fin m ↪ Fin n := ⟨Fin.castLE h, Fin.castLE_injective h⟩
 
 /- English proof (translation)
-Use `⟨g.viaFintypeEmbedding (castEmb hm), fun a => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : (a : ℕ) < m`. Establish `e1 : Fin.castLE hj a = castEmb hmr ⟨a, ha⟩` using `by ext; simp [castEmb]`. Establish `e2 : a = castEmb hm ⟨a, ha⟩` using `by ext; simp [castEmb]`. Rewrite using `[e1, Equiv.Perm.viaFintypeEmbedding_apply_image]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [e2, Equiv.Perm.viaFintypeEmbedding_apply_image]`. Use `ext`. Simplify using `[castEmb]`. Establish `n1 : Fin.castLE hj a ∉ Set.range (castEmb hmr)`. Introduce and unpack `⟨b, hb⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `congrArg Fin.val hb` as an intermediate fact. Establish `hb2` using `b.2`. Simplify using `[castEmb] at this`. Use linear arithmetic over natural numbers and integers. Establish `n2 : a ∉ Set.range (castEmb hm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨b, hb⟩`. Use `congrArg Fin.val hb` as an intermediate fact. Establish `hb2` using `b.2`. Simplify using `[castEmb] at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.Perm.viaFintypeEmbedding_apply_notMem_range _ _ n1, Equiv.Perm.viaFintypeEmbedding_apply_notMem_range _ _ n2]`.
+A detailed English derivation is pending.
 -/
 theorem exists_perm_restrict {m j r : ℕ} (hm : m ≤ j) (hj : j ≤ r) (hmr : m ≤ r)
     (g : Equiv.Perm (Fin m)) :
@@ -98,9 +98,9 @@ theorem exists_perm_restrict {m j r : ℕ} (hm : m ≤ j) (hj : j ≤ r) (hmr : 
       Equiv.Perm.viaFintypeEmbedding_apply_notMem_range _ _ n2]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective I`. Introduce `a b hab`. Assume the negation of the conclusion as `hne`. Use `h.1 ?_` and prove the remaining obligations. Unfold `kMinor`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `Matrix.det_zero_of_row_eq hne ?_` and prove the remaining obligations. Use extensionality with `c`. Simplify using `[hab]`. Conclude with `⟨Equiv.ofBijective I (Finite.injective_iff_bijective.1 hinj), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_perm_top {F : Type} [Field F] (O : Subring F) {r : ℕ} (Y : Matrix (Fin r) (Fin r) F)
     (I : Fin r → Fin r) (h : NormAt O Y r le_rfl I) : ∃ w : Equiv.Perm (Fin r), ⇑w = I := by
@@ -115,13 +115,13 @@ theorem exists_perm_top {F : Type} [Field F] (O : Subring F) {r : ℕ} (Y : Matr
   exact ⟨Equiv.ofBijective I (Finite.injective_iff_bijective.1 hinj), rfl⟩
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_perm_castSucc f hf`. Use `⟨w * g.viaFintypeEmbedding (castEmb hk), fun j hj hkj => ?_⟩` and prove the remaining obligations. Break down `Nat.eq_or_lt_of_le hkj with rfl | hlt` into its components or cases. Establish `e : (⇑(w * g.viaFintypeEmbedding (castEmb hk)) ∘ Fin.castLE hj) = (w ∘ Fin.castLE hk) ∘ f`. Use function extensionality and compare the values at `a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1 : Fin.castLE hj a = castEmb hk a.castSucc` using `by ext; simp [castEmb]`. Simplify using `only [Function.comp_apply, Equiv.Perm.mul_apply]`. Rewrite using `[e1, Equiv.Perm.viaFintypeEmbedding_apply_image, hg]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hn`. Take `⟨σ, hσ⟩` from `exists_perm_restrict (m := k + 1) (j := j) hlt hj hk g`. Establish `e : (⇑(w * g.viaFintypeEmbedding (castEmb hk)) ∘ Fin.castLE hj) = (w ∘ Fin.castLE hj) ∘ σ`. Use function extensionality and compare the values at `a`. Simplify using `only [Function.comp_apply, Equiv.Perm.mul_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hσ]`. Rewrite using `[e]`. Conclude with `normAt_comp_perm O Y j hj _ σ (hw j hj hlt)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perm_step {F : Type} [Field F] (O : Subring F) {r : ℕ} (Y : Matrix (Fin r) (Fin r) F) (k : ℕ)
     (hk : k + 1 ≤ r) (w : Equiv.Perm (Fin r)) (f : Fin k → Fin (k + 1)) (hf : Function.Injective f)
@@ -151,17 +151,17 @@ theorem perm_step {F : Type} [Field F] (O : Subring F) {r : ℕ} (Y : Matrix (Fi
     exact normAt_comp_perm O Y j hj _ σ (hw j hj hlt)
 
 /- English proof (translation)
-Establish `key : ∀ d : ℕ, d ≤ r → ∃ w : Equiv.Perm (Fin r), ∀ (j : ℕ) (hj : j ≤ r), r - d ≤ j → NormAt O Y j hj (w ∘ Fin.castLE hj)`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨I, hI⟩` from `hall r le_rfl`. Take `⟨w, hw⟩` from `exists_perm_top O Y I hI`. Use `⟨w, fun j hj hrj => ?_⟩` and prove the remaining obligations. Establish `hjr : j = r` using `le_antisymm hj (by simpa using hrj)`. Substitute `hjr` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e : (⇑w ∘ Fin.castLE hj) = I`. Use function extensionality and compare the values at `a`. Simplify using `[hw]`. Rewrite using `[e]`. Conclude with `hI`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ d ih`. Introduce `hd`. Take `⟨w, hw⟩` from `ih (by omega)`. Take `⟨k, hkd⟩ : ∃ k, k + 1 = r - d` from `⟨r - d - 1, by omega⟩`. Establish `hk : k + 1 ≤ r` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨I, hI⟩` from `hall k (Nat.le_of_succ_le hk)`. Take `⟨f, hf, hn⟩` from `hex k hk (w ∘ Fin.castLE hk) I (hw _ hk (by omega)) hI`. Take `⟨w', hw'⟩` from `perm_step O Y k hk w f hf (fun j hj h => hw j hj (by omega)) hn`. Conclude with `⟨w', fun j hj h => hw' j hj (by omega)⟩`. Take `⟨w, hw⟩` from `key r le_rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨w, fun k hk => hw k hk (by omega)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_perm_normAt {F : Type} [Field F] (O : Subring F) {r : ℕ} (Y : Matrix (Fin r) (Fin r) F)
     (hex : ∀ (k : ℕ) (hk : k + 1 ≤ r) (I' : Fin (k + 1) → Fin r) (I : Fin k → Fin r),

@@ -14,15 +14,15 @@ namespace GlobalTheory.RealSpan
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Set `J : Subgroup (ι → GL (Fin n) ℂ)` to `((MonoidHom.pi fun τ => cEmb (E := E) (n := n) (σ τ)).comp (infU E n).subtype).range`. Set `Hs : ι → Subgroup (GL (Fin n) ℂ)` to `fun _ => (GlobalTheory.Branching.unitaryIncl n).range`. Establish `hle : Subgroup.pi Set.univ Hs ≤ J`. Rewrite using `[Subgroup.pi_le_iff]`. Introduce `τ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨_, ⟨u, rfl⟩, rfl⟩`. Take `⟨e, he⟩` from `GlobalTheory.T.archimedeanUnitaryPoints_equiv_unitaryGroup E n (σ τ)`. Set `x` to `e.symm u`. Establish `hx` using `Subgroup.mem_inf.1 x.2`. Use `⟨⟨x.1, hx.1⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `τ'`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Express the relevant statement in the definitionally equal form `cEmb (σ τ') x.1 = _`. Rewrite using `[← he, e.apply_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hne : InfinitePlace.mk (σ τ') ≠ InfinitePlace.mk (σ τ)` using `fun e' => h (hσ e')`. Establish `h5 : x.1 ∈ (cEmb (E` using `E) (n := n) (σ τ')).ker := Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hx.2 (σ τ')) hne`. Express the relevant statement in the definitionally equal form `cEmb (σ τ') x.1 = _`. Rewrite using `[MonoidHom.mem_ker.1 h5]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h]`. Take `⟨y, hy⟩ : g ∈ J` from `hle fun τ _ => ⟨⟨(g τ).val, hg τ⟩, Units.ext rfl⟩`. Conclude with `⟨y, hy⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cEmb_pi (σ : ι → (E →+* ℂ)) (hσ : Function.Injective (fun τ => InfinitePlace.mk (σ τ)))
     (g : ι → GL (Fin n) ℂ) (hg : ∀ τ, (g τ : Matrix (Fin n) (Fin n) ℂ) ∈ Matrix.unitaryGroup (Fin n) ℂ) :
@@ -55,11 +55,9 @@ theorem exists_cEmb_pi (σ : ι → (E →+* ℂ)) (hσ : Function.Injective (fu
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ n ι _ σ lam hσ`. Use `haveI : ∀ τ, Finite (Formalism.GradedWeylDivisibility.ssIdx n n (lam τ).natW) := fun _ => (Formalism.GradedWeylDivisibility.sSIdxFinite n n _).to_subtype`. Use `haveI hfd : FiniteDimensional ℂ (Formalism.L2.DIV.VV ℂ lam) := Module.Finite.of_basis (Formalism.L2.DIV.bVV ℂ lam)`. Use `⟨hfd, ?_⟩` and prove the remaining obligations. Break down `subsingleton_or_nontrivial (Formalism.L2.DIV.VV ℂ lam) with hs | hs` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Subsingleton (Module.End ℂ (Formalism.L2.DIV.VV ℂ lam)) := inferInstance`. Conclude with `Subsingleton.elim _ _`. Conclude with `GlobalTheory.ClassFin.span_range_eq_top_of_isIrreducible _ _ _ ((CuspRep.isIrreducible_iff _).2 ⟨inferInstance, fun U hU => GlobalTheory.CoefIrred.vv_irreducible_unitary ι n lam U fun g hg x hx => by`. Take `⟨y, hy⟩` from `exists_cEmb_pi (E := E) σ hσ g hg`. Use `hU y x hx` as an intermediate fact.
-
-Simplify `this⟩)` using `[hy]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem span_rhoK_infU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (ι : Type) [Fintype ι]
     (σ : ι → (E →+* ℂ)) (lam : ι → DomWeight n), Function.Injective (fun τ => InfinitePlace.mk (σ τ)) →

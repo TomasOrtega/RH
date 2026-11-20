@@ -16,7 +16,7 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Establish `hU : IsUnit (redP P a)` using `by rw [h]; exact isUnit_one`. Unfold `LocE.unitV`. Rewrite using `[dif_pos hU]`. Establish `: hU.unit = 1` using `Units.ext (by rw [IsUnit.unit_spec, h]; rfl)`. Rewrite using `[this, map_one, Units.val_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tqk_unitV_one {K : Type} [Field K] (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a : E} (h : redP P a = 1) : LocE.unitV χ a = 1 := by
   have hU : IsUnit (redP P a) := by rw [h]; exact isUnit_one

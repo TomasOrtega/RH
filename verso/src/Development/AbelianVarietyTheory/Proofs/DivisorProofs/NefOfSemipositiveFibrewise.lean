@@ -25,9 +25,9 @@ open GlobalTheory.VB (degOfRank)
 namespace GlobalTheory.NefGeneric
 
 /- English proof (translation)
-Introduce `k _ W q L hW hL`. Use `haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩`. Take `⟨e1, e2⟩` from `GlobalTheory.T.eulerChar_lineBundle_fibre_modp_eq_rat_projective k W q 1 hW 2 L.B L.isLB`. Take `⟨hproj, hdim⟩` from `GlobalTheory.T.arithmeticSurface_fibre_isProjOver_zmod_dim_le_one k W q hW 2`. Use `letI := GlobalTheory.algebraΓOfHom (pullback.snd (q ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod 2))))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.T.degree_nonneg_of_curveDegree_nonneg_over_zmod 2 _ hproj hdim _ (LB.isLB_pull L.isLB _) (fun Z i _ _ _ hZ => GlobalTheory.T.curveDegree_nonneg_zmodFibre_of_nefOnFiniteFieldFibres k W q L 2 hL Z i hZ)`. Rewrite using `[ratDeg, degOfRank, ← e1, ← e2]`. Simplify `h` using `[degOfRank]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ratDeg_nonneg : ∀ (k : Type) [CommRing k] (W : Scheme.{0}) (q : W ⟶ Sp k) (L : HermLB q),
     IsArithVar q 1 → ArInt.NefFib L → 0 ≤ ratDeg q L.B := by
@@ -43,9 +43,9 @@ theorem ratDeg_nonneg : ∀ (k : Type) [CommRing k] (W : Scheme.{0}) (q : W ⟶ 
   simpa [degOfRank] using h
 
 /- English proof (translation)
-Introduce `F _ _ Y P L hL`. Use `⟨LB.isLB_pull L.isLB P.j, fun Z hZ => ?_⟩` and prove the remaining obligations. Take `⟨W, w, z, _, hW, hz, hpb⟩` from `GlobalTheory.T.complete_curve_arith_model_closure F Y P Z hZ`. Establish `e` using `GlobalTheory.T.curve_model_rational_degree F Y P Z hZ W w z hW hz hpb L.B L.isLB`. Establish `h0` using `ratDeg_nonneg (𝓞 F) W (w ≫ P.p) (L.pull w rfl) hW (ArInt.nefFib_pull (𝓞 F) P.X W P.p (w ≫ P.p) P.ar.isProjOver hW.isProjOver w rfl L hL)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `0 ≤ ratDeg (w ≫ P.p) (L.B.pull w) at h0`. Rewrite `h0` using `[e]`. Establish `hpos : (0 : ℤ) < (Module.finrank ℚ F : ℤ)` using `by exact_mod_cast Module.finrank_pos`. Conclude with `(mul_nonneg_iff_of_pos_left hpos).mp h0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isNef_model : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (P : TrueGeo.Model Y) (L : HermLB P.p),
     ArInt.NefFib L → IsNef F (L.B.pull P.j) := by
@@ -63,7 +63,7 @@ theorem isNef_model : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (P : 
 end GlobalTheory.NefGeneric
 
 /- English proof (translation)
-Introduce `_ _ F _ _ C Y M _ ⟨P, L, k, cf, ⟨_, r, hr, _⟩, hL⟩`. Establish `h` using `GlobalTheory.NefGeneric.isNef_model F Y P L hL`. Conclude with `(Var.nef_nsmul_iff k.pos).1 ((Var.nef_iff_of_toPic_eq _ hr.toPic_eq).2 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CovHt.Link.nef_of_semiPos_nefFib : Hypotheses2 → HypothesesH → ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F)
     (Y : Var F) (M : Adl C Y), M.SemiPos → M.NefFib → Y.nef M.D := by

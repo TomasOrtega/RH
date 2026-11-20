@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.GenericRegularity.SectionEqZeroOf
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Reg.sec_eq_zero_of_finite_values` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FWeightSectionEqZeroOfVanishingFiniteExtensions.lean&line=11#L11)
 -/

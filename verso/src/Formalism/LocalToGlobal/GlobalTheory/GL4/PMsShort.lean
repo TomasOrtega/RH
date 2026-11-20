@@ -11,7 +11,7 @@ section Short
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Take `⟨K, hK, hL⟩` from `h`. Conclude with `⟨K, hK.trans hB, hL⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem keyBound_mono (S : HSpace E) (q : ℕ) {B B' : ℝ} (h : KeyBound S q B) (hB : B ≤ B') : KeyBound S q B' := by
   obtain ⟨K, hK, hL⟩ := h
@@ -35,7 +35,7 @@ def ShortAt (D : D7) (u : D.what₂.Word) (C₀ : ℝ) (S : HSpace D.host.E) (q 
   ShortFrame S q (msRho D u C₀ n) ∧ CSAt S ∧ CoordCount S q (msRho D u C₀ n) (coordinateLogBound D u C₀ n)
 
 /- English proof (translation)
-Establish `hv : 1 ≤ D.host.v` using `one_le_hostv D`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast one_le_f D`. Establish `hT : (1 : ℝ) ≤ (Tu D u : ℝ)` using `by exact_mod_cast (D.mem u).A.T_prime.one_lt.le`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hC hf) (one_le_pow₀ hn1)) (one_le_pow₀ hv)) (one_le_pow₀ hT)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_radius_sq (D : D7) (u : D.what₂.Word) (C₀ : ℝ) (hC : 1 ≤ C₀) (n : ℕ) (hn : 1 ≤ n) :
     1 ≤ radiusSq D u C₀ n := by
@@ -47,13 +47,13 @@ theorem one_le_radius_sq (D : D7) (u : D.what₂.Word) (C₀ : ℝ) (hC : 1 ≤ 
     (one_le_mul_of_one_le_of_one_le hC hf) (one_le_pow₀ hn1)) (one_le_pow₀ hv)) (one_le_pow₀ hT)
 
 /- English proof (translation)
-Take `⟨hS, hCS, hCC⟩` from `h`. Establish `h1` using `one_le_radius_sq D u C₀ (by linarith) n hn`. Establish `hρ : 0 ≤ msRho D u C₀ n`. Unfold `msRho`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hB2 : 0 ≤ coordinateLogBound D u C₀ n`. Unfold `coordinateLogBound`. Use `Real.log_nonneg h1` as an intermediate fact. Check the signs of the components of the expression. Use `keyBound_mono S q (keyBound_of S q _ _ hρ hB2 hS hCS hCC) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hr, Formalism.MainNotions.flipTwoThree.b_finrank_host]`. Establish `hle : Real.log (2 * msRho D u C₀ n + 1) ≤ Real.log (C₀ * radiusSq D u C₀ n)`. Unfold `msRho`. Conclude with `Real.log_le_log (by linarith) (by nlinarith)`. Establish `hn2 : (0 : ℝ) ≤ (n : ℝ) ^ 2 * ((2 * D.R.f : ℕ) : ℝ)` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `mul_le_mul_of_nonneg_left hle hn2`. Unfold `msLat coordinateLogBound`. Unfold `radiusSq at key ⊢`. Move the coercions through the operations in `at key ⊢`. Combine the linear relations using `[key]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem keyBound_of_shortAt (D : D7) (u : D.what₂.Word) (C₀ : ℝ) (hC : 3 ≤ C₀) (S : HSpace D.host.E) (q n : ℕ)
     (hn : 1 ≤ n) (hr : S.rank = n) (h : ShortAt D u C₀ S q n) : KeyBound S q (msLat D u C₀ n) := by
@@ -79,11 +79,11 @@ theorem keyBound_of_shortAt (D : D7) (u : D.what₂.Word) (C₀ : ℝ) (hC : 3 �
   linarith [key]
 
 /- English proof (translation)
-Use `msCount_of_keys D C₀ (by linarith) fun u => ⟨fun i hi => ?_, ?_⟩` and prove the remaining obligations. Use `keyBound_of_shortAt D u C₀ hC _ _ _ ?_ (D.sp.X_rank i hi) ((h u).1 i hi)` and prove the remaining obligations. Use `D.R.k_ge` as an intermediate fact. Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Establish `hN : D.R.N D.R.m - 1 = D.R.rankX'`. Use `Formalism.BasicNotions.factXm D.R` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `keyBound_of_shortAt D u C₀ hC _ _ _ ?_ (by rw [D.sp.X'_rank, hN]) (h u).2` and prove the remaining obligations. Rewrite using `[hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `Ranks.rankX' Ranks.r`. Use `D.R.k_ge` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem msCount_of_short (D : D7) (C₀ : ℝ) (hC : 3 ≤ C₀)
     (h : ∀ u : D.what₂.Word,

@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.FockModels.FockAnis
 section
 namespace UpperTheory.Lit.Sw47
 /- English proof (translation)
-The claim follows from `fa D`.
+A detailed English derivation is pending.
 -/
 theorem siegelWeil_fock_anisotropic_unconditional (D : Formalism.BasicNotions.D7) :
     GlobalTheory.BottomRallis.SiegelWeilFockAniso D := fa D

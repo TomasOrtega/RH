@@ -15,17 +15,17 @@ section Shift
 variable {k G : Type u} [CommRing k] [Group G] [Fintype G]
 
 /- English proof (translation)
-Use `Int.inductionOn' (motive := fun q => ∀ M : Rep.{u} k G, P M → IsZero (tateCohomology M q) → TateAcyclic M ∧ CohTrivial M) q (-2) hbase ?_ ?_ M hM hq` and prove the remaining obligations. Introduce `n _ ih M hM hq`. Establish `h1 : IsZero (tateCohomology (coindShift M) n)` using `hq.of_iso (coindShiftIso M n)`. Take `⟨t, c⟩` from `ih (coindShift M) (hcoind M hM) h1`. Establish `hS` using `coindSES_shortExact M`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `t2 : TateAcyclic (coindSES.obj M).X₂` using `tateAcyclic_coindSES_X₂ M`. Establish `c2 : CohTrivial (coindSES.obj M).X₂`. Rewrite using `[coindSES_obj_X₂]`. Conclude with `cohTrivial_coind_bot _`. Establish `t1` using `TateAcyclic.of_shortExact_X₃ hS t2 t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1` using `CohTrivial.of_shortExact_X₃ hS c2 c`. Rewrite `t1`, `c1` using `[coindSES_obj_X₁]`. Conclude with `⟨t1, c1⟩`. Introduce `n _ ih M hM hq`. Establish `h1 : IsZero (tateCohomology (indShift M) n)`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hq.of_iso (indShiftIso M (n - 1)).symm`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Take `⟨t, c⟩` from `ih (indShift M) (hind M hM) h1`. Establish `hS` using `indSES_shortExact M`. Establish `t2 : TateAcyclic (indSES.obj M).X₂` using `tateAcyclic_indSES_X₂ M`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : CohTrivial (indSES.obj M).X₂`. Rewrite using `[indSES_obj_X₂]`. Conclude with `cohTrivial_ind_bot _`. Establish `t3` using `TateAcyclic.of_shortExact_X₁ hS t2 t`. Establish `c3` using `CohTrivial.of_shortExact_X₁ hS c2 c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `t3`, `c3` using `[indSES_obj_X₃]`. Conclude with `⟨t3, c3⟩`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_cohTrivial_of_isZero_of_shift (P : Rep.{u} k G → Prop)
     (hcoind : ∀ M, P M → P (coindShift M)) (hind : ∀ M, P M → P (indShift M))

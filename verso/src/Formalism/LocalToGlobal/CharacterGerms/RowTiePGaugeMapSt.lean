@@ -11,11 +11,9 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 variable {R : Type} [CommRing R] {d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.constantCoeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero ha)]`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `e he`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, e s ≠ 0 := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `he (Finsupp.ext h)`. Rewrite using `[map_finsuppProd]`. Simplify using `only [map_pow, ha, Finsupp.prod]`.
-
-Rewrite using `[Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (zero_pow hs), smul_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cc_subst_lemma_2 {σ τ A : Type} [Finite σ] [CommRing A] (a : σ → MvPowerSeries τ A)
     (ha : ∀ s, constantCoeff (a s) = 0) (f : MvPowerSeries σ A) :
@@ -33,7 +31,7 @@ private theorem cc_subst_lemma_2 {σ τ A : Type} [Finite σ] [CommRing A] (a : 
     rw [Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (zero_pow hs), smul_zero]
 
 /- English proof (translation)
-Unfold `ev`. Conclude with `cc_subst_lemma_2 (fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2) f`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cc_ev_eq {m n : ℕ} (a : Fin m → Pt R n d) (ha : ∀ j i, constantCoeff (a j i) = 0)
     (f : PS R m d) : constantCoeff (ev a f) = constantCoeff f := by
@@ -41,7 +39,7 @@ theorem cc_ev_eq {m n : ℕ} (a : Fin m → Pt R n d) (ha : ∀ j i, constantCoe
   exact cc_subst_lemma_2 (fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2) f
 
 /- English proof (translation)
-The claim follows from `cc_ev_eq ![a, b] (by intro j i; fin_cases j <;> simp [ha, hb]) f`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_eval_pair {n : ℕ} (a b : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0)
     (hb : ∀ i, constantCoeff (b i) = 0) (f : PS R 2 d) :

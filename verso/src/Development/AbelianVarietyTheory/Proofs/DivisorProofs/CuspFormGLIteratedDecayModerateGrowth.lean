@@ -9,21 +9,21 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrow
 namespace GlobalTheory.CuspRapid
 
 /- English proof (translation)
-Introduce `hfin E _ _ _ a N t ht i j hij m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `ψ _ htame Ω hΩ`. Take `⟨C0, hC0⟩` from `htame []`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB1, hB⟩` from `GlobalTheory.T.exists_height_mul_le_of_isCompact E a Ω hΩ`. Use `⟨|C0| * B ^ N, by positivity, ?_⟩` and prove the remaining obligations. Introduce `r d _ _ _ c hc`. Establish `h1` using `hC0 (d * c)`. Simplify using `only [List.map_nil, List.prod_nil, Module.End.one_apply] at h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hh0 : 0 ≤ height (d * c)` using `le_trans zero_le_one (one_le_height _)`. Establish `hh : height (d * c) ^ N ≤ (B * height d) ^ N` using `pow_le_pow_left₀ hh0 (hB c hc d) N`. Combine the equalities or inequalities in the displayed calculation. Consider the case `succ m ih`. Introduce `ψ hψ htame Ω hΩ`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Ω', B, C, hΩ', hC, hstep⟩` from `GlobalTheory.T.cuspForm_GL_siegel_cone_decay_one_step E a ψ hψ t ht i j hij Ω hΩ`. Establish `hY : ∀ Y ∈ B, ∃ C' : ℝ, 0 ≤ C' ∧ ∀ (r : Fin a → ℝ) (d : GL (Fin a) (Cinf E)), (∀ i, 0 < r i) → (∀ i j : Fin a, (j : ℕ) = i + 1 → t * r j ≤ r i) → d.val = Matrix.diagonal (fun i => fun _ => (r i : ℂ)) → ∀ c ∈ Ω', ‖(lie E a Y ψ).1 (infGL E a (d * c))‖ ≤ C' * (r j / r i) ^ m * heigh …`. Introduce `Y _`. Establish `hcusp : IsCuspForm (lie E a Y ψ)` using `GlobalTheory.T.isCuspForm_operator_act hfin E a (.lie Y) ψ hψ`. Use `ih (lie E a Y ψ) hcusp ?_ Ω' hΩ'` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `l`. Take `⟨C1, hC1⟩` from `htame (l ++ [Y])`. Use `⟨C1, fun y => ?_⟩` and prove the remaining obligations. Establish `e : (l.map (lie E a)).prod (lie E a Y ψ) = ((l ++ [Y]).map (lie E a)).prod ψ`. Simplify using `[List.map_append, List.prod_append, Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `hC1 y`. Use `choose! CY hCY0 hCY using hY`. Use `⟨C * ∑ Y ∈ B, CY Y, mul_nonneg hC (Finset.sum_nonneg hCY0), ?_⟩` and prove the remaining obligations. Introduce `r d hr hrt hd c hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : 0 ≤ (r j / r i) ^ m * height d ^ N` using `mul_nonneg (pow_nonneg (div_nonneg (hr j).le (hr i).le) m) (pow_nonneg (le_trans zero_le_one (one_le_height d)) N)`. Establish `hM0 : 0 ≤ (∑ Y ∈ B, CY Y) * ((r j / r i) ^ m * height d ^ N)` using `mul_nonneg (Finset.sum_nonneg hCY0) hq`. Establish `h` using `hstep r d hr hrt hd _ hM0 (fun Y hYB c' hc' => by`. Establish `h2 : lieD Y ψ.1 = (lie E a Y ψ).1` using `rfl`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem iterated_decay : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (N : ℕ) (t : ℝ), 0 < t → ∀ i j : Fin a, (j : ℕ) = i + 1 → ∀ (m : ℕ) (ψ : Sm E a), IsCuspForm ψ → (∀ l : List (Lie E a), ∃ C : ℝ, ∀ y, ‖((l.map (lie E a)).prod ψ).1 (infGL E a y)‖ ≤ C * height y ^ N) → ∀ (Ω : Set (GL (Fin a) (Cinf E))), IsCompact Ω → ∃ C : ℝ, 0 ≤ C ∧ ∀ (r : Fin a → ℝ) (d : GL (Fin a) (Cinf E)), (∀ i, 0 < r i) → (∀ i j : Fin a, (j : ℕ) = i + 1 → t * r j ≤ r i) → d.val = Matrix.diagonal (fun i => fun _ => (r i : ℂ)) → ∀ c ∈ Ω, ‖ψ.1 (infGL E a (d * c))‖ ≤ C * (r j / r i) ^ m * height d ^ N := by
   intro hfin E _ _ _ a N t ht i j hij m

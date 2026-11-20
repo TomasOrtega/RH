@@ -29,7 +29,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
 
 /- English proof (translation)
-Use `choose θ hθ using fun x => h (s x)`. Use `⟨{ toFun := θ, map_add' := fun x y => hj ?_, map_smul' := fun a x => hj ?_ }, hθ⟩` and prove the remaining obligations. Rewrite using `[j1, hθ, hθ, hθ, map_add, L1, smul_add]`. Rewrite using `[RingHom.id_apply, j2, hθ, hθ, map_smul, L2, smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linear {K X X' Y M : Type} [Field K] [AddCommGroup X] [Module K X] [AddCommGroup X'] [Module K X']
     [AddCommGroup Y] [Module K Y] [AddCommGroup M] [Module ℂ M] (σ : K →+* ℂ) (j : Y → M) (hj : Function.Injective j)
@@ -46,20 +46,20 @@ section Linear
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m}
 
 /- English proof (translation)
-The claim follows from `DFunLike.congr_fun (sgAt_mk _ R.hv0) a`.
+A detailed English derivation is pending.
 -/
 theorem base_embedding_apply (R : RealDat D A Ks) (a : D.what₂.LL) : sg0 D A a = D.what₂.embLL a :=
   DFunLike.congr_fun (sgAt_mk _ R.hv0) a
 
 /- English proof (translation)
-Unfold `adForm`. Rewrite using `[map_add, map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adForm_add (x y : Fin (R.nW i) → D.what₂.LL) : adForm R i (x + y) = adForm R i x + adForm R i y := by
   unfold adForm
   rw [map_add, map_add]
 
 /- English proof (translation)
-Unfold `adForm`. Rewrite using `[map_smulₛₗ, map_smul, base_embedding_apply R]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adForm_smul (a : D.what₂.LL) (x : Fin (R.nW i) → D.what₂.LL) :
     adForm R i (a • x) = D.what₂.embLL a • adForm R i x := by
@@ -67,7 +67,7 @@ theorem adForm_smul (a : D.what₂.LL) (x : Fin (R.nW i) → D.what₂.LL) :
   rw [map_smulₛₗ, map_smul, base_embedding_apply R]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (adForm R i)` using `(hHW i _).1.comp (j_injective hU i)`. Set `L : (A.MtCSD i t).Forms → MMap (R.MW i (sg0 D A))` to `fun x => R.thF i t (R.jV i t x)`. Establish `h1 : ∀ x y, L (x + y) = L x + L y` using `fun x y => (congrArg (R.thF i t) ((R.jV i t).map_add x y)).trans ((R.thF i t).map_add _ _)`. Establish `h2 : ∀ (a : D.what₂.LL) x, L (a • x) = D.what₂.embLL a • L x` using `fun a x => (congrArg (R.thF i t) ((R.jV i t).map_smulₛₗ a x)).trans ((R.thF i t).map_smul _ _)`. Conclude with `exists_linear D.what₂.embLL (adForm R i) hinj adForm_add adForm_smul L h1 h2 ph h (srcForm A i t U ψ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem classSumRational_of_forall (hHW : R.models_HW) (hU : R.LUnif) {t : T0} {ph : ℂ}
     (h : ∀ x : A.fam.amb.FL i t, ∃ y, adForm R i y = ph • R.thF i t (jVx R i t x)) (U : Subgroup G) (ψ : U →* D.what₂.LLˣ) :
@@ -81,9 +81,9 @@ theorem classSumRational_of_forall (hHW : R.models_HW) (hU : R.LUnif) {t : T0} {
   exact exists_linear D.what₂.embLL (adForm R i) hinj adForm_add adForm_smul L h1 h2 ph h (srcForm A i t U ψ)
 
 /- English proof (translation)
-Introduce `γ hγ g`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem F hF => exact (hF.aut v).left γ hγ g`. Consider the case `zero => rfl`. Consider the case `add F F' _ _ h h' => simp only [MultilinearMap.add_apply, Pi.add_apply, h, h']`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul s F _ h => simp only [MultilinearMap.smul_apply, Pi.smul_apply, h]`.
+Treat this case separately.
 -/
 theorem left_of_mem {σ : D.what₂.LL →+* ℂ} {Θ : MMap (R.MW i σ)} (h : Θ ∈ R.Wall i σ) (v : (R.MW i σ).Vec) :
     ∀ γ ∈ GQ (Wc D i), ∀ g, Θ v (γ * g) = Θ v g := by
@@ -95,7 +95,7 @@ theorem left_of_mem {σ : D.what₂.LL →+* ℂ} {Θ : MMap (R.MW i σ)} (h : �
   | smul s F _ h => simp only [MultilinearMap.smul_apply, Pi.smul_apply, h]
 
 /- English proof (translation)
-The claim follows from `ratio_mem ((R.FW i).j (sg0 D A)) (hU i _).1 D.what₂.embLL.toRatAlgHom.fieldRange (fun a => ⟨a, (base_embedding_apply R a).symm⟩) (fun _ : Fin 1 => 1) (fun _ => y) (fun _ : Fin 1 => 1) (fun _ => y') (fun _ => one_mem _) (fun _ => one_mem _) ρ (by simpa using h) (by simpa using h0)`.
+A detailed English derivation is pending.
 -/
 theorem ratio_of_j (hU : R.LUnif) {y y' : Fin (R.nW i) → D.what₂.LL} {ρ : ℂ}
     (h : (R.FW i).j (sg0 D A) y = ρ • (R.FW i).j (sg0 D A) y') (h0 : (R.FW i).j (sg0 D A) y ≠ 0) : ∃ a, D.what₂.embLL a = ρ :=
@@ -109,9 +109,9 @@ def AllRational (ph : Fin D.R.m → ℂ) : Prop :=
   ∀ (i : Fin D.R.m) (t : T0) (x₀ : A.fam.amb.FL i t), ∃ y, adForm R i y = ph i • R.thF i t (jVx R i t x₀)
 
 /- English proof (translation)
-Use `Classical.byContradiction fun hn => ?_` and prove the remaining obligations. Establish `hd : 0 < Module.finrank D.what₂.LL (R.WL F false i)` using `hRk.1.trans_eq (hRk.2 i).symm`. Take `⟨y, hy⟩ : ∃ y, (GlobalTheory.OntoChain.thetaMat R F i A.μ0).mulVec y = fun _ => 1` from `((R.toCx F).liftMat_bij F.cr false (RealDat.kForm hU false) (RealDat.ewNorm false) (RealDat.nP_pos false) (h5 false) (hr false) i A.μ0).2 _`. Establish `h1` using `GlobalTheory.OntoChain.j_thetaMat h5 hr i A.μ0 y`. Use `hn ⟨(A.fam.L i A.μ0).toF (GlobalTheory.OntoChain.liftLvl F) (GlobalTheory.OntoChain.liftSub R F i A.μ0) y, GlobalTheory.OntoChain.coordMap R F i ((GlobalTheory.OntoChain.thetaMat R F i A.μ0).mulVec y), h1, fun h0 => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : GlobalTheory.OntoChain.coordMap R F i ((GlobalTheory.OntoChain.thetaMat R F i A.μ0).mulVec y) = 0` using `(injective_iff_map_eq_zero _).1 (j_injective hU i) _ h0`. Establish `h3` using `(injective_iff_map_eq_zero _).1 (GlobalTheory.OntoChain.coordMap_injective (R := R) (F := F) i) _ h2`. Conclude with `one_ne_zero (congrFun (hy.symm.trans h3) ⟨0, hd⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_base_lift {F : Face D A} (hU : R.LUnif) (h5 : R.LTheta F) (hr : R.LRatTh F)
     (hRk : Formalism.L2.Indef.Tree.RankRows ((R.toCx F).data F.cr false)) (i : Fin D.R.m) :
@@ -137,17 +137,17 @@ variable {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F}
   {i : Fin D.R.m}
 
 /- English proof (translation)
-Introduce `w _ i` and use `classSumRational_of_forall hHW hU (h i (R.mu w)) _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem AllRational.twisted {F : Face D A} {ph : Fin D.R.m → ℂ} (h : AllRational R ph) (hHW : R.models_HW) (hU : R.LUnif) :
     TwistedRational R F ph := fun w _ i => classSumRational_of_forall hHW hU (h i (R.mu w)) _ _
 
 /- English proof (translation)
-Introduce `i σ hσ hV`. Use `fw.ev i σ hσ hV (by_contra fun hn => hn ⟨0, fun f => ?_⟩)` and prove the remaining obligations. Establish `h0` using `fw.ev0 i σ hσ hV hn`. Establish `h1 : f = 0`. Assume the negation of the conclusion as `hf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2 : ((fw.e i f : (R.FW i).WK) : Fin (R.nW i) → D.what₂.LL) ≠ 0` using `fun h => hf ((fw.e i).injective ((Subtype.ext h).trans (map_zero _).symm))`. Conclude with `((hU i σ).1 1 _ (linearIndependent_unique_iff.2 h2 : LinearIndependent _ fun _ : Fin 1 => _)).ne_zero 0 (by rw [h0]; rfl)`. Establish `key : ∀ (σ' : T.Q.c.F →+* ℂ) (W : HSp D) (hV : T.V ((i : ℕ) + 1) σ' = W), phiC T hV (wtA (κ i)) (0 : T.R ((i : ℕ) + 1)) = 0`. Introduce and unpack `σ' W rfl`. Use `show (_ : ℂ) • adel _ _ _ (rdU _ 0) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[map_zero, map_zero, smul_zero]`. Substitute `h1` using the available equality. Use `Eq.trans ?_ (key _ _ hV).symm` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, map_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem evaluates (fw : FWTie T R κ v₀) (hU : R.LUnif) : fw.Evaluates := by
   intro i σ hσ hV
@@ -170,9 +170,9 @@ theorem evaluates (fw : FWTie T R κ v₀) (hU : R.LUnif) : fw.Evaluates := by
   rfl
 
 /- English proof (translation)
-Establish `e : res T (sg0 D A) = T.σ₀`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0, res_embLL T fw.alg_eq fw.laws.pins.2.2.1]`. Establish `key : ∀ (σ' : T.Q.c.F →+* ℂ) (_ : σ' = T.σ₀) (W : HSp D) (h' : T.V ((i : ℕ) + 1) σ' = W) (h : T.V ((i : ℕ) + 1) T.σ₀ = W), phiC T h' (wtA (κ i)) (f : T.R ((i : ℕ) + 1)) = (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℂ) • psi T _ h (f : T.R ((i : ℕ) + 1))`. Introduce and unpack `σ' rfl W rfl h`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Establish `hV' : T.V ((i : ℕ) + 1) (res T (sg0 D A)) = Wc D i` using `e ▸ hV`. Conclude with `(evaluates fw hU i _ (e ▸ T.good_σ₀) hV' f).trans (key _ e _ hV' hV)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adForm_e (fw : FWTie T R κ v₀) (hU : R.LUnif) (hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i) (f : Cu T κ i) :
     adForm R i (fw.e i f) (v₀ i (sg0 D A)) =
@@ -188,13 +188,13 @@ theorem adForm_e (fw : FWTie T R κ v₀) (hU : R.LUnif) (hV : T.V ((i : ℕ) + 
   exact (evaluates fw hU i _ (e ▸ T.good_σ₀) hV' f).trans (key _ e _ hV' hV)
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `(hHW i _).2.1.ge hΘ`. Establish `hg` using `base_embedding_good T R fw.alg_eq fw.laws.pins.2.2.1`. Set `y : Fin m → Fin (R.nW i) → D.what₂.LL` to `fun l => fw.e i (f l)`. Establish `e : adForm R i (∑ l, b l • y l) = ∑ l, D.what₂.embLL (b l) • adForm R i (y l)`. Unfold `adForm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => adForm_smul _ _`. Establish `e' : (R.HW i (sg0 D A)).e (c • (R.FW i).j (sg0 D A) (∑ l, b l • y l)) = c • adForm R i (∑ l, b l • y l)` using `(R.HW i (sg0 D A)).e.map_smul c _`. Establish `key : evAt R i _ (v₀ i (sg0 D A)) w = evAt R i _ (v₀ i (sg0 D A)) (c • (R.FW i).j (sg0 D A) (∑ l, b l • y l))`. Use `sub_eq_zero.1 (eq_zero_of_out _ (fun γ hγ g => ?_) 1 fun q => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.sub_apply, evAt, left_of_mem ((hHW i _).2.1.le (LinearMap.mem_range_self _ _)) _ γ hγ g]`. Rewrite using `[mul_one, Pi.sub_apply, sub_eq_zero]`. Use `(h q).trans ?_` and prove the remaining obligations. Rewrite using `[evAt, e', e, MultilinearMap.smul_apply, MultilinearMap.sum_apply, Pi.smul_apply, Finset.sum_apply]`. Use `congrArg (c * ·) (Finset.sum_congr rfl fun l _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MultilinearMap.smul_apply, adForm_e fw hU hV]`. Both sides reduce to the same expression. Conclude with `⟨_, (congrArg _ (GlobalTheory.EvalAtUnitVector.evInj T R v₀ hHW fw.hv₀ i _ hg key)).trans e'⟩`.
+Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_adForm (fw : FWTie T R κ v₀) (hHW : R.models_HW) (hU : R.LUnif) (hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i)
     {Θ : MMap (R.MW i (sg0 D A))} (hΘ : Θ ∈ R.Wall i (sg0 D A)) {m : ℕ} (b : Fin m → D.what₂.LL) (f : Fin m → Cu T κ i) (c : ℂ)
@@ -235,9 +235,7 @@ abbrev cuspOf (κ : WeightFamilies.Wt D ((i : ℕ) + 1)) : Submodule O.c'.F (Rul
 variable {O}
 
 /- English proof (translation)
-Rewrite using `[rdAd, rdU_unfBC O.hle (T.U ((i : ℕ) + 1)) (inC O.c') h]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `show _ = (as l : ℂ) * (T.cE ((i : ℕ) + 1) O.s0 (O.dict g).1 * O.mu g * rdU (T.U ((i : ℕ) + 1) O.s0) (fs l) (O.dict g).1 (O.dict g).2)`. Use `show _ * (_ * ((as l : ℂ) * _)) = _`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rdAd_of_isBC (hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i) {m : ℕ} {f : Rul (T.Q.Xo ((i : ℕ) + 1)) O.c'} {as : Fin m → O.c'.F}
     {fs : Fin m → T.R ((i : ℕ) + 1)} (h : IsBC O.hle f as fs) (g : GA D (Wc D i)) :
@@ -251,19 +249,19 @@ theorem rdAd_of_isBC (hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i) {m : ℕ} {f : 
   ring
 
 /- English proof (translation)
-The claim follows from `(fw.kap i (D.eTau.symm 1)).2.2.trans (D.sp.V_rank ((i : ℕ) + 1) (Nat.le_add_left _ _) i.2).symm`.
+A detailed English derivation is pending.
 -/
 theorem weight_eq (fw : FWTie T R κ v₀) (i : Fin D.R.m) : (κ i).n = (Vc D i).rank :=
   (fw.kap i (D.eTau.symm 1)).2.2.trans (D.sp.V_rank ((i : ℕ) + 1) (Nat.le_add_left _ _) i.2).symm
 
 /- English proof (translation)
-Take `⟨hE, ⟨-, hC, hA, -, -, z, -, h1⟩, -⟩` from `hrow`. Take `⟨k, hk, -⟩` from `hP.lift.lev z`. Establish `hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i` using `O.hV`. Use `⟨z, k, hk, fun t => ?_⟩` and prove the remaining obligations. Take `⟨s, ⟨ze, rfl⟩, -, h1⟩` from `h1 t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨ze, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨⟨f, hf, hf'⟩, h2⟩` from `h1 x hx`. Establish `hs` using `((mem_cusp _ _ _ _ _ _).1 hf).1`. Use `⟨f, hf, hf', fun q => ?_⟩` and prove the remaining obligations. Take `⟨m, as, fs, hfs, hBC⟩` from `hC _ _ f hf`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `rdAd_of_isBC hV (hA _ _ z m as fs f hs (fun l => ((mem_cusp _ _ _ _ _ _).1 (hfs l)).1) hBC) q.out`. Establish `h4 : ∀ l, psi T _ hV (actLev T.Q.c O.lev2 z (fs l)) q.out = chiG R i z * psi T _ hV (fs l) (q.out * k)` using `fun l => (hE z k hk (fs l) (by rw [weight_eq fw]; exact hfs l)).2 q.out`. Establish `h5 : ph * O.thAd t x q = D.what₂.embLL ze * T.cE ((i : ℕ) + 1) O.s0 (O.dict q.out).1 * (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℂ) * (O.mu q.out * rdU (unfBC O.hle (T.U ((i : ℕ) + 1)) (inC O.c')) (actLev O.c' O.lev2 z f) (O.dict q.out).1 (O.dict q.out).2)` using `h2 f hs hf' q`. Establish `h6 : rdAd O (actLev O.c' O.lev2 z f) q.out = chiG R i z * rdAd O f (q.out * k)`. Rewrite using `[h3, rdAd_of_isBC hV hBC, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun l _ => by rw [h4]; ring`. Rewrite using `[← h6, h5, rdAd]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_translate (fw : FWTie T R κ v₀) {ph : ℂ}
     (hP : O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0))
@@ -294,11 +292,11 @@ theorem exists_translate (fw : FWTie T R κ v₀) {ph : ℂ}
   ring
 
 /- English proof (translation)
-Establish `hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i` using `O.hV`. Take `⟨m, as, fs, hfs, hBC⟩` from `(GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ O'.hle).2 _ (T.U ((i : ℕ) + 1)) _ _ f hf`. Establish `hb : ∀ l, ∃ b : D.what₂.LL, D.what₂.embLL b = (as l : ℂ)` using `fun l => (hF ▸ (as l).2 : (as l : ℂ) ∈ D.what₂.embLL.toRatAlgHom.fieldRange)`. Use `choose b hb using hb`. Establish `h4` using `fun l => hE z k hk (fs l) (by rw [weight_eq fw]; exact hfs l)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_adForm fw hHW hU hV hΘ b (fun l => ⟨_, (h4 l).1⟩) c fun q => ?_` and prove the remaining obligations. Rewrite using `[h q, rdAd_of_isBC hV hBC, Finset.mul_sum, Finset.mul_sum]`. Use `congrArg (c * ·) (Finset.sum_congr rfl fun l _ => ?_)` and prove the remaining obligations. Establish `h5 : psi T _ hV (actLev T.Q.c O.lev2 z (fs l)) q.out = chiG R i z * psi T _ hV (fs l) (q.out * k)` using `(h4 l).2 q.out`. Rewrite using `[hb]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = _ * (_ * psi T _ hV (actLev T.Q.c O.lev2 z (fs l)) q.out)`. Rewrite using `[h5]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_adForm_of_translate (fw : FWTie T R κ v₀) (hHW : R.models_HW) (hU : R.LUnif)
     (hE : O.EquivAt (κ i) (T.cE ((i : ℕ) + 1) O.s0)) {z : G} {k : GA D (Wc D i)}
@@ -329,7 +327,7 @@ end Data
 section Descent
 
 /- English proof (translation)
-Establish `hu` using `left_ne_zero_of_mul h0`. Use `mul_left_cancel₀ (mul_ne_zero h0 hl) ?_` and prove the remaining obligations. Establish `h1 : u' / u * u = u'` using `div_mul_cancel₀ _ hu`. Take the linear combination `e * h - c * l * e * m * a' * h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ennreal_volume_ratio_step_cancel {u u' c l m a a' : ℂ} (h0 : u * c ≠ 0) (hl : l ≠ 0) (h : u * c * l * m * a = u' * c * l * m * a') (e : ℂ) :
     e * (m * a) = u' / u * (e * (m * a')) := by
@@ -341,13 +339,13 @@ theorem ennreal_volume_ratio_step_cancel {u u' c l m a a' : ℂ} (h0 : u * c ≠
 variable {Tp : Type} {tup : Tp → T0} {O O' : OMDat T.toCore R i Tp tup}
 
 /- English proof (translation)
-Use `Classical.byContradiction fun hn => ?_` and prove the remaining obligations. Take `⟨z, k, hk, h⟩` from `exists_translate (O := O) fw hP hrow`. Take `⟨ze, h⟩` from `h t`. Take `⟨r, J, hr, h2, h3, h4⟩` from `(hP.tuple t).reps`. Take `⟨r', J', hr', h2', -, -⟩` from `(hP'.tuple t).reps`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `h2 x₀`. Take `⟨x', hx'⟩` from `h2' x₀`. Take `⟨f, hf, hc, h⟩` from `h x ((h4 x).2 ⟨x₀, hx⟩)`. Take `⟨f', hf', hc'⟩` from `hex t x'`. Establish `hl : ((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (lieFac_pos _ _ _).ne'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : ∀ g, rdAd O f g = u' / u * rdAd O' f' g` using `fun g => by`. Establish `e1` using `hS.2.2 t r J hr _ x hx f ((mem_cusp _ _ _ _ _ _).1 hf).1 hc g`. Establish `e2` using `hS'.2.2 t r' J' hr' _ x' hx' f' ((mem_cusp _ _ _ _ _ _).1 hf').1 hc' g`. Establish `h0 : u * cc (O.dict g).1 ≠ 0` using `norm_ne_zero_iff.1 ((hS.1 (O.dict g).1).trans_ne one_ne_zero)`. Establish `e3 : u * cc (O.dict g).1 * (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℂ) * O.mu g * rdU (unfBC O.hle (T.U ((i : ℕ) + 1)) (inC O.c')) f (O.dict g).1 (O.dict g).2 = u' * cc (O.dict g).1 * (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℂ) * O.mu g * rdU (unfBC O'.hle …` using `e1.symm.trans e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ennreal_volume_ratio_step_cancel h0 hl e3 _`. Establish `hm : ph • R.thF i (tup t) (jVx R i (tup t) x₀) ∈ R.Wall i (sg0 D A)` using `(R.Wall i (sg0 D A)).smul_mem ph (hmem i _ _)`. Take `⟨y, hy⟩` from `exists_adForm_of_translate (O := O) (O' := O') fw hHW hU hrow.1 hk hF hf' hm (u' / u * D.what₂.embLL ze) fun q => ((congrArg (ph * ·) (congrFun (h3 _ x hx) q).symm).trans (h q)).trans (by rw [e]; ring)`. Conclude with `hn ⟨ze • y, hy.trans ((mul_smul _ _ _).trans (congrArg ((u' / u) • ·) (adForm_smul ze y).symm))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rational_upTo (fw : FWTie T R κ v₀) (hHW : R.models_HW) (hmem : R.thP_thF_mem) (hU : R.LUnif) {ph : ℂ}
     (hP : O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0))
@@ -383,13 +381,11 @@ theorem rational_upTo (fw : FWTie T R κ v₀) (hHW : R.models_HW) (hmem : R.thP
   exact hn ⟨ze • y, hy.trans ((mul_smul _ _ _).trans (congrArg ((u' / u) • ·) (adForm_smul ze y).symm))⟩
 
 /- English proof (translation)
-Take `⟨x₀, hne⟩` from `hne`. Take `⟨y, hy⟩` from `h x₀`. Take `⟨m, a, f, hf⟩` from `hrat x₀`. Establish `hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i` using `O.hV`. Establish `hm : ph • (R.HW i (sg0 D A)).e (R.thG i A.μ0 (jVx R i A.μ0 x₀)) ∈ R.Wall i (sg0 D A)` using `(R.Wall i (sg0 D A)).smul_mem ph ((hHW i _).2.1.le (LinearMap.mem_range_self _ _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y₁, h1⟩` from `exists_adForm fw hHW hU hV hm a f 1 fun q => (hf q.out).trans (one_mul _).symm`. Use `replace h1 := h1.trans (one_smul _ _)`. Establish `h2 : adForm R i y₁ = ρ • adForm R i (GlobalTheory.OntoChain.goodOp R i y)`. Use `h1.symm.trans ((congrArg (ph • ·) (hG i A.μ0 _)).trans ?_)` and prove the remaining obligations. Use `((LinearMap.map_smul _ ph _).symm.trans (congrArg _ hy)).trans ((LinearMap.map_smul _ ρ _).trans ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `congrArg (ρ • ·) (adForm_goodOp hU i y).symm`. Establish `h3 : (R.FW i).j (sg0 D A) y₁ = ρ • (R.FW i).j (sg0 D A) (GlobalTheory.OntoChain.goodOp R i y)` using `(hHW i _).1 (h2.trans ((R.HW i (sg0 D A)).e.map_smul ρ _).symm)`. Establish `h4 : (R.FW i).j (sg0 D A) y₁ ≠ 0` using `fun h0 => by`. Establish `h5 : adForm R i y₁ = 0` using `(congrArg (R.HW i (sg0 D A)).e h0).trans (map_zero _)`. Conclude with `hne ((hHW i _).1 (((smul_eq_zero.1 (h1.trans h5)).resolve_left hph).trans (map_zero _).symm))`.
-
-Conclude with `ratio_of_j hU h3 h4`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ratio_rational (fw : FWTie T R κ v₀) (hHW : R.models_HW) (hU : R.LUnif) (hG : R.thP_thG) {ph ρ : ℂ}
     (hph : ph ≠ 0) (hrat : O.PhRat (κ i) (v₀ i (sg0 D A)) (T.cE ((i : ℕ) + 1) O.s0) ph)
@@ -431,9 +427,9 @@ def SeriesIdentity (i : Fin D.R.m) : Prop :=
         (∃ u : ℂ, SerOf O (κ i) (v₀ i (sg0 D A)) (u • cc) 1) ∧ ∀ t x, ∃ f ∈ cuspOf O (κ i), IsCls O t x f
 
 /- English proof (translation)
-Use `Classical.byContradiction fun hn => ?_` and prove the remaining obligations. Take `⟨O₁, -, hP₁, h₁⟩` from `hrow.2 hQ`. Take `⟨O₂, hF, hP₂⟩` from `hL`. Take `⟨cc, hcc⟩` from `hS O₁ hP₁`. Take `⟨⟨u₁, s₁⟩, -⟩` from `hcc O₁ hP₁`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨u₂, s₂⟩, hex⟩` from `hcc O₂ hP₂`. Establish `key` using `rational_upTo (O := O₁) (O' := O₂) fw hHW hmem hU hP₁ h₁ hF hP₂ s₁ s₂ hex`. Take `⟨a, ha⟩` from `ratio_rational (O := O₁) fw hHW hU hG (norm_ne_zero_iff.1 (h₁.2.1.2.2.2.2.1.trans_ne one_ne_zero)) h₁.2.2 (key A.μ0) (hne i)`. Take `⟨y, hy⟩` from `key t x₀`. Conclude with `hn ⟨a • y, ((adForm_smul a y).trans (congrArg (· • adForm R i y) ha)).trans hy.symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rational_of_series (hHW : R.models_HW) (hmem : R.thP_thF_mem) (hG : R.thP_thG) (fw : FWTie T R κ v₀) (hU : R.LUnif)
     {O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)} (hQ : QGuard R) (hrow : OneMapRowR T R κ v₀ O ph i)
@@ -452,12 +448,12 @@ theorem rational_of_series (hHW : R.models_HW) (hmem : R.thP_thF_mem) (hG : R.th
   exact hn ⟨a • y, ((adForm_smul a y).trans (congrArg (· • adForm R i y) ha)).trans hy.symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fw.laws, fw.alg_eq, fw.kap, fw.hv₀, fw.chiR, fw.x0⟩`.
+Supply the required witnesses or components.
 -/
 theorem tieIn (fw : FWTie T R κ v₀) : TieIn T R κ v₀ := ⟨fw.laws, fw.alg_eq, fw.kap, fw.hv₀, fw.chiR, fw.x0⟩
 
 /- English proof (translation)
-Introduce `O₀ h₀` and use `by have hI := GlobalTheory.chartIndependence_unconditional obtain ⟨cc, hcc⟩ := GlobalTheory.T.exists_frameConstants_of_characterisationCore hI D G Pl0 T0 A T R F κ v₀ hC (tieIn fw) i _ _ O₀ h₀ exact ⟨cc, fun O h => ⟨(GlobalTheory.T.exists_adelicLift_eq_geometric_classSum_all_tupl …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem seriesIdentity_of_core (hC : GlobalTheory.Hk3.Core R F) (fw : FWTie T R κ v₀) (hio : IoExt R) (i : Fin D.R.m) :
     SeriesIdentity T R κ v₀ i := fun O₀ h₀ => by
@@ -467,7 +463,7 @@ theorem seriesIdentity_of_core (hC : GlobalTheory.Hk3.Core R F) (fw : FWTie T R 
     GlobalTheory.T.exists_cuspForm_classSum_normalisedData hI D G Pl0 T0 A T R F κ v₀ hC (tieIn fw) i _ _ O h⟩⟩
 
 /- English proof (translation)
-Introduce `i` and use `rational_of_series hC.models.HW hC.thP.thF_mem hC.thP.thG fw hU hQ (hrow i) (hL i) (seriesIdentity_of_core hC fw hio i) hne`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem allRational_of_core (hC : GlobalTheory.Hk3.Core R F) (fw : FWTie T R κ v₀) (hio : IoExt R) (hU : R.LUnif)
     {O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)} (hQ : QGuard R) (hrow : ∀ i, OneMapRowR T R κ v₀ O ph i)
@@ -475,7 +471,7 @@ theorem allRational_of_core (hC : GlobalTheory.Hk3.Core R F) (fw : FWTie T R κ 
   rational_of_series hC.models.HW hC.thP.thF_mem hC.thP.thG fw hU hQ (hrow i) (hL i) (seriesIdentity_of_core hC fw hio i) hne
 
 /- English proof (translation)
-The claim follows from `(allRational_of_core hC fw hio hU hQ hrow hL hne).twisted hC.models.HW hU`.
+A detailed English derivation is pending.
 -/
 theorem twistedRational_of_core (hC : GlobalTheory.Hk3.Core R F) (fw : FWTie T R κ v₀) (hio : IoExt R) (hU : R.LUnif)
     {O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)} (hQ : QGuard R) (hrow : ∀ i, OneMapRowR T R κ v₀ O ph i)
@@ -483,7 +479,7 @@ theorem twistedRational_of_core (hC : GlobalTheory.Hk3.Core R F) (fw : FWTie T R
   (allRational_of_core hC fw hio hU hQ hrow hL hne).twisted hC.models.HW hU
 
 /- English proof (translation)
-The claim follows from `twistedRational_of_core ⟨hC.lev, hC.grp, hC.fam, hC.models, hC.chain, hC.thP⟩ fw hio hU hQ hrow (fun i => GlobalTheory.T.exists_normalisedTupleData_over_coefficientField D G Pl0 T0 A T R F κ v₀ O i hC ⟨fw⟩ (hO i) hQ hK) hne`.
+A detailed English derivation is pending.
 -/
 theorem twistedRational (hC : R.Char F) (fw : FWTie T R κ v₀) (hio : IoExt R) (hU : R.LUnif)
     {O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)} (hO : ∀ i, OMPins T R κ v₀ O i) (hQ : QGuard R)

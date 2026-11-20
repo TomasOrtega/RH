@@ -23,7 +23,7 @@ def Lre : Ainf F →+ ℝ where
       (Complex.add_re _ _)).trans Finset.sum_add_distrib
 
 /- English proof (translation)
-Use `show Continuous (fun a : Ainf F => ∑ w : InfinitePlace F, (extensionEmbedding w (a w)).re)`. Conclude with `continuous_finset_sum _ fun w _ => Complex.continuous_re.comp ((isometry_extensionEmbedding w).continuous.comp (continuous_apply w))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_Lre : Continuous (Lre F) := by
   show Continuous (fun a : Ainf F => ∑ w : InfinitePlace F, (extensionEmbedding w (a w)).re)
@@ -31,9 +31,9 @@ theorem continuous_Lre : Continuous (Lre F) := by
     Complex.continuous_re.comp ((isometry_extensionEmbedding w).continuous.comp (continuous_apply w))
 
 /- English proof (translation)
-Establish `hreal : ∀ φ : F →+* ℂ, NumberField.ComplexEmbedding.IsReal φ` using `fun φ => InfinitePlace.isReal_mk_iff.1 (NumberField.IsTotallyReal.isReal _)`. Establish `e1 : ∀ φ : F →+* ℂ, (InfinitePlace.mk φ).embedding = φ` using `fun φ => InfinitePlace.embedding_mk_eq_of_isReal (hreal φ)`. Set `eqv : (F →ₐ[ℚ] ℂ) ≃ InfinitePlace F` to `{ toFun := fun σ => InfinitePlace.mk σ.toRingHom invFun := fun w => w.embedding.toRatAlgHom left_inv := fun σ => by`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[e1]`. Use `right_inv := fun w => by simp [InfinitePlace.mk_embedding] }`. Rewrite using `[trace_eq_sum_embeddings ℂ]`. Conclude with `(Fintype.sum_equiv eqv _ _ fun σ => by simp [eqv, e1]).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_embedding_eq_trace [IsTotallyReal F] (y : F) :
     ∑ v : InfinitePlace F, v.embedding y = algebraMap ℚ ℂ (Algebra.trace ℚ F y) := by
@@ -53,9 +53,9 @@ theorem sum_embedding_eq_trace [IsTotallyReal F] (y : F) :
   exact (Fintype.sum_equiv eqv _ _ fun σ => by simp [eqv, e1]).symm
 
 /- English proof (translation)
-Use `show ∑ w : InfinitePlace F, (extensionEmbedding w (algebraMap F (Ainf F) b w)).re = _`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `first`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately.
 
-Consider the case `exact extensionEmbedding_coe w b`. Consider the case `simp [InfiniteAdeleRing.algebraMap_apply, extensionEmbedding_coe]`.
+A detailed English derivation is pending.
 -/
 theorem Lre_algebraMap (b : F) :
     Lre F (algebraMap F (Ainf F) b) = (∑ v : InfinitePlace F, v.embedding b).re := by
@@ -68,7 +68,7 @@ theorem Lre_algebraMap (b : F) :
     | simp [InfiniteAdeleRing.algebraMap_apply, extensionEmbedding_coe]
 
 /- English proof (translation)
-Rewrite using `[Lre_algebraMap, sum_embedding_eq_trace]`. Establish `hint : IsIntegral ℤ (Algebra.trace ℚ F (b : F))` using `Algebra.isIntegral_trace (RingOfIntegers.isIntegral_coe b)`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -82,9 +82,9 @@ theorem Lre_int [IsTotallyReal F] (b : 𝓞 F) : ∃ n : ℤ, Lre F (algebraMap 
   simp
 
 /- English proof (translation)
-Establish `hn : 0 < Fintype.card (InfinitePlace F)` using `Fintype.card_pos`. Use `⟨algebraMap F (Ainf F) ((1 : F) / (2 * (Fintype.card (InfinitePlace F) : F))), ?_⟩` and prove the remaining obligations. Rewrite using `[Lre_algebraMap]`. Simplify using `only [map_div₀, map_one, map_mul, map_ofNat, map_natCast]`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hn' : (Fintype.card (InfinitePlace F) : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Rewrite using `[show ((Fintype.card (InfinitePlace F) : ℂ) * (1 / (2 * (Fintype.card (InfinitePlace F) : ℂ)))) = 1 / 2 by field_simp]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem exists_Lre_half [IsTotallyReal F] : ∃ t : Ainf F, Lre F t = 1 / 2 := by
   have hn : 0 < Fintype.card (InfinitePlace F) := Fintype.card_pos
@@ -98,27 +98,23 @@ theorem exists_Lre_half [IsTotallyReal F] : ∃ t : Ainf F, Lre F t = 1 / 2 := b
   norm_num
 
 /- English proof (translation)
-Introduce `F _ _ hTR`. Set `mk1 : ℝ →+ AddCircle (1 : ℝ)` to `QuotientAddGroup.mk' _`. Set `g : AF F →+ AddCircle (1 : ℝ)` to `mk1.comp ((Lre F).comp (AddMonoidHom.fst (Ainf F) (Af F)))`. Establish `hg : Continuous g` using `(continuous_quotient_mk').comp ((continuous_Lre F).comp continuous_fst)`. Set `K : AddSubgroup (AF F)` to `(algebraMap F (AF F)).toAddMonoidHom.range`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hU : IsOpen (PI.GaugeCharW.intSub F : Set (AF F))` using `PI.GaugeCharW.isOpen_intSub F PI.GaugeCharW.openInt`. Establish `hKU : ∀ x ∈ K, x ∈ PI.GaugeCharW.intSub F → g x = 0`. Introduce and unpack `_ ⟨a, rfl⟩ hx`. Establish `hx' : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), sndA F (algebraMap F (AF F) a) v ∈ v.adicCompletionIntegers F` using `hx`. Take `⟨b, hb⟩` from `PI.GaugeCharW.intInter F a (fun v => hx' v)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `Lre_int F b`. Use `show ((Lre F (algebraMap F (Ainf F) a) : ℝ) : AddCircle (1 : ℝ)) = 0`. Rewrite using `[← hb, hn]`. Conclude with `(QuotientAddGroup.eq_zero_iff _).2 (AddSubgroup.mem_zmultiples_iff.2 ⟨n, by simp⟩)`. Take `⟨h, hcont, hK, hUeq⟩` from `PI.GaugeCharW.extChar (AF F) K _ hU g hg hKU`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : AddChar (AF F) ℂ` to `{ toFun := fun x => ((AddCircle.toCircle (h x) : Circle) : ℂ) map_zero_eq_one' := by simp [AddCircle.toCircle_zero] map_add_eq_mul' := fun a b => by simp [map_add, AddCircle.toCircle_add] }`. Establish `hψ : ∀ x, ψ x = ((AddCircle.toCircle (h x) : Circle) : ℂ)` using `fun _ => rfl`. Establish `hpair : ∀ x : Ainf F, pairA F x 0 ∈ PI.GaugeCharW.intSub F`. Introduce `x`. Use `show ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), sndA F (pairA F x 0) v ∈ v.adicCompletionIntegers F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Establish `e : sndA F (pairA F x 0) = 0` using `rfl`. Rewrite using `[e]`. Conclude with `zero_mem _`. Establish `hval : ∀ x : Ainf F, ψ (pairA F x 0) = Complex.exp (2 * Real.pi * Complex.I * ((Lre F x : ℝ) : ℂ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `x`. Rewrite using `[hψ, hUeq _ (hpair x)]`. Use `show ((AddCircle.toCircle ((Lre F x : ℝ) : AddCircle (1 : ℝ)) : Circle) : ℂ) = _`. Rewrite using `[AddCircle.toCircle_apply_mk, Circle.coe_exp]`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨ψ, ⟨?_, ?_, ?_, ?_⟩, fun x => hval x⟩` and prove the remaining obligations. Conclude with `continuous_subtype_val.comp (AddCircle.continuous_toCircle.comp hcont)`. Introduce `x`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hψ]`. Use `first`. Consider the case `exact Circle.norm_coe _`. Consider the case `exact Circle.abs_coe _`. Consider the case `simp [Circle.norm_coe]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Establish `e : h (algebraMap F (AF F) a) = 0` using `hK _ ⟨a, rfl⟩`. Rewrite using `[hψ, e, AddCircle.toCircle_zero]`. Both sides reduce to the same expression. Take `⟨t, ht⟩` from `exists_Lre_half F`.
-
-Use `⟨pairA F t 0, ?_⟩` and prove the remaining obligations. Rewrite using `[hval, ht]`. Establish `e : Complex.exp (2 * Real.pi * Complex.I * ((1 / 2 : ℝ) : ℂ)) = -1`. Rewrite using `[show 2 * (Real.pi : ℂ) * Complex.I * ((1 / 2 : ℝ) : ℂ) = Real.pi * Complex.I by push_cast; ring]`. Conclude with `Complex.exp_pi_mul_I`.
-
-Rewrite using `[e]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem stdCharTR_main : PI.StdCharTR.Target := by
   intro F _ _ hTR

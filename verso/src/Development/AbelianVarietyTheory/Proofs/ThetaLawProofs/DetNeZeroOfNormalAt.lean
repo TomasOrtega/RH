@@ -21,13 +21,13 @@ noncomputable section
 namespace GlobalTheory.KeyEq
 
 /- English proof (translation)
-Take `⟨u, -, -, -, -, -, h₆⟩` from `h`. Take `⟨u₀, -, -, -, -, -, -, hd, -⟩` from `hU x.P x.rig x.rig_gen`. Use `x.P.isAb.comm` as an intermediate fact. Take `⟨hex, htan, -⟩` from `LieComb.lieComb_algebra ℂ x.P.A x.P.g x.v x.basis.1`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨d, hd0, hdM⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Establish `key : ∀ (e : Fin x.P.g → ℂ) (w), Matrix.vecMul e M = 0 → IsLieComb e x.v w → u₀.IsDiff 0 w`. Introduce `e w he hw`. Establish `h1` using `UnifDifferential.isDiff_of_isLieComb _ _ _ _ u _ x.v e w x.basis.1 h₆ hw`. Establish `e1 : ∑ j, e j • (2 * Real.pi * Complex.I : ℂ)⁻¹ • M j = (2 * Real.pi * Complex.I : ℂ)⁻¹ • Matrix.vecMul e M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.vecMul_eq_sum, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => smul_comm _ _ _`. Rewrite `h1` using `[e1, he, smul_zero]`. Introduce `U hU' f`. Rewrite using `[h1 U hU' f, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `(hex d).exists`. Take `⟨w', hw'⟩` from `(hex 0).exists`. Establish `hww : w = w'` using `(hd 0).unique ⟨htan _ _ hw, key _ _ hdM hw⟩ ⟨htan _ _ hw', key _ _ (Matrix.zero_vecMul M) hw'⟩`. Substitute `hww` using the available equality. Conclude with `hd0 ((x.basis.2 w (htan _ _ hw)).unique hw hw')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_normalAt (hU : ThetaUnifAV) (x : KeyIn ℂ) {τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ}
     {a b : Fin x.P.g → ℂ} {c : ℂ} (h : NormalAt x τ M a b c) : M.det ≠ 0 := by

@@ -12,7 +12,7 @@ open Formalism.REAL
 def cyc0 (m : ℕ) (j : Fin (m + 1)) : Equiv.Perm (Fin (m + 1)) := (Fin.cycleRange j).symm
 
 /- English proof (translation)
-Unfold `cyc0`. Use `first`. Consider the case `exact Fin.cycleRange_symm_zero j`. Consider the case `rw [Equiv.symm_apply_eq, Fin.cycleRange_self]`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cycle_perm_zero (m : ℕ) (j : Fin (m + 1)) : cyc0 m j 0 = j := by
   unfold cyc0
@@ -21,7 +21,7 @@ theorem cycle_perm_zero (m : ℕ) (j : Fin (m + 1)) : cyc0 m j 0 = j := by
   | rw [Equiv.symm_apply_eq, Fin.cycleRange_self]
 
 /- English proof (translation)
-Unfold `cyc0`. Use `first`. Consider the case `exact Fin.cycleRange_symm_succ j k`. Consider the case `rw [Equiv.symm_apply_eq, Fin.cycleRange_succAbove]`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cycle_perm_succ (m : ℕ) (j : Fin (m + 1)) (k : Fin m) : cyc0 m j k.succ = j.succAbove k := by
   unfold cyc0
@@ -30,7 +30,7 @@ theorem cycle_perm_succ (m : ℕ) (j : Fin (m + 1)) (k : Fin m) : cyc0 m j k.suc
   | rw [Equiv.symm_apply_eq, Fin.cycleRange_succAbove]
 
 /- English proof (translation)
-Unfold `cyc0`. Rewrite using `[Equiv.Perm.sign_symm, Fin.sign_cycleRange]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sign_cycle_perm (m : ℕ) (j : Fin (m + 1)) :
     Equiv.Perm.sign (cyc0 m j) = (-1) ^ (j : ℕ) := by
@@ -41,19 +41,19 @@ def ext0 {m : ℕ} (τ : Equiv.Perm (Fin m)) : Equiv.Perm (Fin (m + 1)) :=
   ((finSuccEquiv m).trans (Equiv.optionCongr τ)).trans (finSuccEquiv m).symm
 
 /- English proof (translation)
-Simplify using `[ext0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matrixExtendByZero_zero {m : ℕ} (τ : Equiv.Perm (Fin m)) : ext0 τ 0 = 0 := by
   simp [ext0]
 
 /- English proof (translation)
-Simplify using `[ext0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extByZero_succ {m : ℕ} (τ : Equiv.Perm (Fin m)) (k : Fin m) : ext0 τ k.succ = (τ k).succ := by
   simp [ext0]
 
 /- English proof (translation)
-Unfold `ext0`. Use `first`. Consider the case `exact (Equiv.Perm.sign_symm_trans_trans _ _).trans (Equiv.optionCongr_sign τ)`. Consider the case `exact (Equiv.Perm.sign_permCongr _ _).trans (Equiv.optionCongr_sign τ)`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sign_extend_perm {m : ℕ} (τ : Equiv.Perm (Fin m)) :
     Equiv.Perm.sign (ext0 τ) = Equiv.Perm.sign τ := by
@@ -66,11 +66,11 @@ def phi0 (m : ℕ) (p : Fin (m + 1) × Equiv.Perm (Fin m)) : Equiv.Perm (Fin (m 
   cyc0 m p.1 * ext0 p.2
 
 /- English proof (translation)
-Use `(Fintype.bijective_iff_injective_and_card _).mpr ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, τ⟩ ⟨j', τ'⟩ h`. Establish `h0 : j = j'`. Use `congrArg (fun σ : Equiv.Perm (Fin (m + 1)) => σ 0) h` as an intermediate fact. Simplify `this` using `[phi0, Equiv.Perm.mul_apply, matrixExtendByZero_zero, cycle_perm_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `h0` using the available equality. Establish `h1 : ext0 τ = ext0 τ'` using `mul_left_cancel (show cyc0 m j * ext0 τ = cyc0 m j * ext0 τ' from h)`. Establish `h2 : τ = τ'`. Use `Equiv.ext fun k => ?_` and prove the remaining obligations. Use `congrArg (fun σ : Equiv.Perm (Fin (m + 1)) => σ k.succ) h1` as an intermediate fact.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[extByZero_succ]`. Substitute `h2` using the available equality. Both sides reduce to the same expression. Simplify using `[Fintype.card_perm, Fintype.card_prod, Fintype.card_fin, Nat.factorial_succ]`.
+Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem firstColumnSplit_bijective (m : ℕ) : Function.Bijective (phi0 m) := by
   refine (Fintype.bijective_iff_injective_and_card _).mpr ⟨?_, ?_⟩
@@ -90,15 +90,15 @@ theorem firstColumnSplit_bijective (m : ℕ) : Function.Bijective (phi0 m) := by
   · simp [Fintype.card_perm, Fintype.card_prod, Fintype.card_fin, Nat.factorial_succ]
 
 /- English proof (translation)
-Unfold `qminor`. Use `conv_lhs => rw [← (firstColumnSplit_bijective m).sum_comp]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hs : Equiv.Perm.sign (phi0 m (j, τ)) = (-1) ^ (j : ℕ) * Equiv.Perm.sign τ`. Simplify using `only [phi0, Equiv.Perm.sign_mul, sign_cycle_perm, sign_extend_perm]`. Establish `h0 : phi0 m (j, τ) 0 = j`. Simplify using `only [phi0, Equiv.Perm.mul_apply, matrixExtendByZero_zero, cycle_perm_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hk : ∀ k : Fin m, phi0 m (j, τ) k.succ = j.succAbove (τ k)`. Introduce `k`. Simplify using `only [phi0, Equiv.Perm.mul_apply, extByZero_succ, cycle_perm_succ]`. Establish `hu : ∀ k : Fin m, u - (((k.succ : Fin (m + 1)) : ℕ) : ℂ) = u - 1 - ((k : ℕ) : ℂ)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.val_succ, Nat.cast_succ]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hs, List.ofFn_succ, List.prod_cons, h0, hk, hu, Function.comp_apply, Fin.val_zero, Nat.cast_zero, sub_zero]`. Simplify using `only [← zsmul_eq_mul, smul_mul_assoc, mul_smul_comm, smul_smul]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Use `first`. Consider the case `(push_cast; ring)`. Consider the case `push_cast`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem expFirst {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n → Fin n → A)
     (a b : Fin (m + 1) → Fin n) (u : ℂ) :
@@ -131,17 +131,17 @@ theorem expFirst {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n →
   | simp
 
 /- English proof (translation)
-Unfold `qminor`. Establish `hr : ∀ k : Fin m, finRotate (m + 1) k.castSucc = k.succ`. Introduce `k`. Use `first`. Consider the case `exact finRotate_castSucc k`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Fin.ext (by rw [coe_finRotate_of_ne_last (Fin.castSucc_lt_last k).ne, Fin.coe_castSucc, Fin.val_succ])`. Establish `hbij : Function.Bijective (fun p : Fin (m + 1) × Equiv.Perm (Fin m) => phi0 m p * finRotate (m + 1))` using `(Equiv.mulRight (finRotate (m + 1))).bijective.comp (firstColumnSplit_bijective m)`. Use `conv_lhs => rw [← hbij.sum_comp]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hs : Equiv.Perm.sign (phi0 m (j, τ) * finRotate (m + 1)) = (-1) ^ (j : ℕ) * Equiv.Perm.sign τ * (-1) ^ m` using `by clear hr hbij`. Establish `h1 : Equiv.Perm.sign (phi0 m (j, τ)) = (-1) ^ (j : ℕ) * Equiv.Perm.sign τ`. Simplify using `only [phi0, Equiv.Perm.sign_mul, sign_cycle_perm, sign_extend_perm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Equiv.Perm.sign_mul, h1, sign_finRotate]`. Apply the tactic sequence `all_goals first | rfl | exact rfl | simp [mul_comm, mul_left_comm, mul_assoc]`. Establish `hl : (phi0 m (j, τ) * finRotate (m + 1)) (Fin.last m) = j`. Simplify using `only [Equiv.Perm.mul_apply, finRotate_last, phi0, matrixExtendByZero_zero, cycle_perm_zero]`. Establish `hk : ∀ k : Fin m, (phi0 m (j, τ) * finRotate (m + 1)) k.castSucc = j.succAbove (τ k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `k`. Simplify using `only [Equiv.Perm.mul_apply, hr, phi0, extByZero_succ, cycle_perm_succ]`. Simplify using `only [hs, List.ofFn_succ', List.concat_eq_append, List.prod_append, List.prod_cons, List.prod_nil, mul_one, hl, hk, Function.comp_apply, Fin.val_last, Fin.coe_castSucc]`. Simplify using `only [← zsmul_eq_mul, smul_mul_assoc, mul_smul_comm, smul_smul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `(push_cast; ring)`. Consider the case `push_cast`. Consider the case `simp`.
+A detailed English derivation is pending.
 -/
 theorem expLast {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n → Fin n → A)
     (a b : Fin (m + 1) → Fin n) (u : ℂ) :
@@ -183,12 +183,12 @@ theorem expLast {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n → 
   | simp
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ E a b u` and use `expFirst E a b u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem expFirstCol : PI.ExpFirstCol := fun _ _ _ _ _ E a b u => expFirst E a b u
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ E a b u` and use `expLast E a b u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem expLastCol : PI.ExpLastCol := fun _ _ _ _ _ E a b u => expLast E a b u
 

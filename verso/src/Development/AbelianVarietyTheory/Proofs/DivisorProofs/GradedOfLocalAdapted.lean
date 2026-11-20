@@ -25,19 +25,17 @@ open GlobalTheory.Twist (resM)
 namespace GlobalTheory.GrFilt
 
 /- English proof (translation)
-Introduce `k _ X _ p ι _ L g E E' r hL m o h T u hu hloc hT`. Use `set o' : ι → ℕ := fun a => (o a : ℕ) with ho'`. Establish `ho : Function.Injective o'` using `Fin.val_injective.comp o.injective`. Establish `hgen : GenSpanEq r o' T u` using `fun V f hf f' hf' c hc hA hV k => GlobalTheory.T.adapted_frames_filtration_generic o' ho T u f hf f' hf' c hc hA hV (fun a => GlobalTheory.T.frame_image_spans_generic_stalk (u a) (hu a) (f a) (f' a) (hf a) (hf' a) hV) k`. Establish `hmem : FrameMem r o' T u` using `fun k V f hf f' hf' c hc hA V' hV' a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.T.generic_span_submodule_section_sum c hc (fun z => o' z.1 < k) (genSpan o' T k) (fun hV => hgen V f hf f' hf' c hc hA hV k) V' hV' a` as an intermediate fact. Simplify `this` using `only [not_lt, filtSub]`. Establish `hP (k : ℕ) {V : X.Opens} {f : ∀ a, Fin (r a) → Γ(E a, V)} (hf : ∀ a, IsFrame (f a)) {f' : ∀ a, Fin (r a) → Γ(E' a, V)} {hf' : ∀ a, IsFrame (f' a)} {c : (Σ a, Fin (r a)) → Γ(L, V)} {hc : IsFrame c} (hA : AdaptedAt o' T u f f' hf' c hc) : ∀ (V' : X.Opens) (h : V' ≤ V) (a : (Σ a, Fi …` using `fun V' h a => by`. Simplify `hmem k V f hf f' hf' c hc hA V' h a` using `only [not_lt]`. Use `choose κ hκ using GlobalTheory.T.filtration_graded_projection_exists o' ho T u hu hloc hmem hgen`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hvb (k : ℕ) : IsVB (filtSub o' T k).toMod (Fintype.card {z : Σ a, Fin (r a) // o' z.1 < k})` using `fun x => by`. Take `⟨V, hx, f, hf, f', hf', c, hc, hA⟩` from `hloc x`. Take `⟨t, ht, -⟩` from `exists_isFrame_subP (filtSub o' T k) c hc _ (hP k hf hA)`. Conclude with `⟨V, t ∘ (Fintype.equivFin _).symm, hx, ht.comp_equiv _⟩`. Establish `hsub (k : ℕ) : IsSubbundle (filtSub o' T k).incl` using `⟨inferInstance, Fintype.card {z : Σ a, Fin (r a) // ¬ o' z.1 < k}, fun x => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hx, f, hf, f', hf', c, hc, hA⟩` from `hloc x`. Take `⟨e, he⟩` from `exists_isFrame_cokernelP (filtSub o' T k) c hc _ (hP k hf hA)`. Conclude with `⟨V, e, hx, he⟩⟩`. Establish `hex` using `fun b => GlobalTheory.T.filtration_graded_short_exact o' ho T u hloc hmem b (κ b) (hκ b)`. Use `⟨fun i => (filtSub o' T i).toMod, fun i => (filtSub o' T i).incl, fun i => stepMap o' T i, κ, fun a => liftT o' T a, fun a => (hex a).choose, fun i => ⟨hsub i, _, hvb i⟩, ?_, ?_, fun i => rfl, fun a => (hex a).choose_spec, fun a => GlobalTheory.T.filtration_lift_projection_comp o …` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hvb 0` as an intermediate fact. Rewrite `this` using `[show Fintype.card {z : Σ a, Fin (r a) // o' z.1 < 0} = 0 from by simp]`. Conclude with `isVB_zero_iff.1 this`. Use `isIso_of_frames (ι := {z : Σ a, Fin (r a) // o' z.1 < m}) _ fun x => ?_` and prove the remaining obligations. Take `⟨V, hx, f, hf, f', hf', c, hc, hA⟩` from `hloc x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨t, ht, hct⟩` from `exists_isFrame_subP (filtSub o' T m) c hc _ (hP m hf hA)`. Use `⟨V, t, hx, ht, ?_⟩` and prove the remaining obligations. Establish `e : (fun i => (filtSub o' T m).incl.app V (t i)) = c ∘ (Equiv.subtypeUnivEquiv fun z => (o z.1).isLt)`. Use function extensionality and compare the values at `hct`. Express the relevant statement in the definitionally equal form `IsFrame fun i => (filtSub o' T m).incl.app V (t i)`.
-
-Rewrite using `[e]`. Conclude with `hc.comp_equiv _`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGraded_of_locAdapted : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {ι : Type} [Fintype ι] {L : X.Modules} {g : ℕ}
     {E E' : ι → X.Modules} {r : ι → ℕ} (hL : VMetric p L g) {m : ℕ} (o : ι ≃ Fin m) (h : ∀ a, VMetric p (E a) (r a))

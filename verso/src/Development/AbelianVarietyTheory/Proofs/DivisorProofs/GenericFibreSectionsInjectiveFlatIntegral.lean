@@ -12,7 +12,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `gp.denseRange.exists_mem_open W.isOpen hW`. Use `top_unique fun z _ => ?_` and prove the remaining obligations. Establish `: z = q` using `Subsingleton.elim (α := PrimeSpectrum F) z q`. Substitute `this` using the available equality. Conclude with `hq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem genFib_preimage_eq_top {S : Scheme.{0}} (F : Type) [Field F] (gp : Sp F ⟶ S) [IsDominant gp]
     (W : S.Opens) (hW : (W : Set S).Nonempty) : gp ⁻¹ᵁ W = ⊤ := by
@@ -23,15 +23,13 @@ theorem genFib_preimage_eq_top {S : Scheme.{0}} (F : Type) [Field F] (gp : Sp F 
   exact hq
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Establish `h1 : (Sp F).basicOpen (gp.appLE W ⊤ e r) = ⊥` using `by rw [hr]; simp`. Establish `h2 : S.basicOpen r = ⊥`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hne' : (S.basicOpen r : Set S).Nonempty`. Rewrite using `[Set.nonempty_iff_ne_empty]`. Introduce `h`. Conclude with `hne (by ext1; simpa using h)`. Establish `h3` using `genFib_preimage_eq_top F gp _ hne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (Sp F).basicOpen (gp.appLE W ⊤ e r) = ⊤`. Rewrite using `[Scheme.Hom.appLE, CommRingCat.comp_apply, Scheme.basicOpen_res, ← Scheme.preimage_basicOpen, h3]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h4]`. Establish `: (⊤ : (Sp F).Opens) ≠ ⊥`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hm : (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum F) ∈ ((⊤ : (Sp F).Opens) : Set (Sp F))` using `trivial`. Rewrite `hm` using `[h]`. Conclude with `hm`. Conclude with `this h1`.
-
-Conclude with `(basicOpen_eq_bot_iff r).mp h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genFib_appLE_injective {S : Scheme.{0}} [IsIntegral S] (F : Type) [Field F] (gp : Sp F ⟶ S)
     [IsDominant gp] (W : S.Opens) (e : (⊤ : (Sp F).Opens) ≤ gp ⁻¹ᵁ W) :
@@ -59,9 +57,9 @@ theorem genFib_appLE_injective {S : Scheme.{0}} [IsIntegral S] (F : Type) [Field
   exact (basicOpen_eq_bot_iff r).mp h2
 
 /- English proof (translation)
-Use `algebraize [φ.hom, ψ.hom]`. Establish `h' : IsPushout φ ψ (CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom) (CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R` using `A) (A := B) (B := C)).toRingHom) := CommRingCat.isPushout_tensorProduct A B C`. Establish `e` using `h'.inl_isoPushout_inv`. Establish `hinj : Function.Injective (Algebra.TensorProduct.includeLeft (R` using `A) (S := A) (A := B) (B := C)) := Algebra.TensorProduct.includeLeft_injective hψ`. Introduce `x y hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Use `congrArg (fun z => h'.isoPushout.inv.hom z) hxy` as an intermediate fact. Rewrite `this` using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genFib_pushout_inl_injective {A B C : CommRingCat.{0}} (φ : A ⟶ B) (ψ : A ⟶ C) (hφ : φ.hom.Flat)
     (hψ : Function.Injective ψ.hom) : Function.Injective (pushout.inl φ ψ).hom := by
@@ -79,9 +77,9 @@ theorem genFib_pushout_inl_injective {A B C : CommRingCat.{0}} (φ : A ⟶ B) (�
   exact this
 
 /- English proof (translation)
-Establish `hT : (⊤ : (Sp F).Opens) ≤ gp ⁻¹ᵁ W` using `(genFib_preimage_eq_top F gp W hWne).ge`. Establish `hUY : a ⁻¹ᵁ V = a ⁻¹ᵁ V ⊓ t ⁻¹ᵁ ⊤` using `by simp`. Establish `hiso` using `isIso_pushoutSection_of_isAffineOpen H hT e hUY hW (isAffineOpen_top _) hV`. Establish `hfac : a.appLE V (a ⁻¹ᵁ V) le_rfl = pushout.inl _ _ ≫ pushoutSection H hT e hUY`. Conclude with `(pushout.inl_desc _ _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfac, CommRingCat.hom_comp, RingHom.coe_comp]`. Conclude with `(ConcreteCategory.bijective_of_isIso (pushoutSection H hT e hUY)).1.comp (genFib_pushout_inl_injective _ _ (f.flat_appLE hW hV e) (genFib_appLE_injective F gp W hT))`.
+A detailed English derivation is pending.
 -/
 theorem genFib_affine_injective {S X Y : Scheme.{0}} (F : Type) [Field F] (f : X ⟶ S) (gp : Sp F ⟶ S)
     (a : Y ⟶ X) (t : Y ⟶ Sp F) (H : IsPullback a t f gp) [Flat f] [IsIntegral S] [IsDominant gp]
@@ -101,11 +99,11 @@ end GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `S X Y F _ f gp a t H hf hS hd U`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `X.IsSheaf.section_ext (s := x) (t := 0) fun z hz => ?_` and prove the remaining obligations. Take `⟨W, hW, hzW, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp S.isBasis_affineOpens) (show f z ∈ (⊤ : S.Opens) from trivial)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, hzV, hVle⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) (show z ∈ U ⊓ f ⁻¹ᵁ W from ⟨hz, hzW⟩)`. Establish `hVU : V ≤ U` using `hVle.trans inf_le_left`. Establish `e : V ≤ f ⁻¹ᵁ W` using `hVle.trans inf_le_right`. Use `⟨V, hVU, hzV, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `genFib_affine_injective F f gp a t H hW ⟨f z, hzW⟩ hV e` to reduce the goal to its premises. Rewrite using `[map_zero, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE, Scheme.Hom.appLE, CommRingCat.comp_apply, hx, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem genFib_app_injective : ∀ {S X Y : Scheme.{0}} (F : Type) [Field F] (f : X ⟶ S) (gp : Sp F ⟶ S)
     (a : Y ⟶ X) (t : Y ⟶ Sp F), IsPullback a t f gp → Flat f → IsIntegral S → IsDominant gp →

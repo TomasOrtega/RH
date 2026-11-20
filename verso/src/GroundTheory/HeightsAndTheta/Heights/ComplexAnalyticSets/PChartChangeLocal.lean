@@ -40,9 +40,9 @@ namespace ChartChangeLocalOnZero
 variable {D : ℕ}
 
 /- English proof (translation)
-Take `⟨G, hG, heq⟩` from `ReciprocityTheory.AnForm.A.exists_re_analytic_eq_log_norm h z hh hz`. Establish `h1 : (fun w => ψ w + c * Real.log ‖h w‖) =ᶠ[𝓝 z] fun w => ψ w + ((c : ℂ) * G w).re` using `heq.mono fun w hw => by`. Simplify using `only at hw`. Use `show ψ w + c * Real.log ‖h w‖ = ψ w + ((c : ℂ) * G w).re`. Rewrite using `[hw, Complex.re_ofReal_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ReciprocityTheory.AnForm.A.hessC_congr' h1]`. Conclude with `ReciprocityTheory.AnForm.A.hessC_add_re_analytic ψ (fun w => (c : ℂ) * G w) z hψ (analyticAt_const.mul hG)`.
+A detailed English derivation is pending.
 -/
 theorem hessC_add_smul_log_norm (ψ : (Fin D → ℂ) → ℝ) (h : (Fin D → ℂ) → ℂ) (c : ℝ) (z : Fin D → ℂ)
     (hψ : ContDiffAt ℝ 2 ψ z) (hh : AnalyticAt ℂ h z) (hz : h z ≠ 0) :
@@ -60,43 +60,35 @@ theorem hessC_add_smul_log_norm (ψ : (Fin D → ℂ) → ℝ) (h : (Fin D → �
 end ChartChangeLocalOnZero
 
 /- English proof (translation)
-Introduce and unpack `n d J J' A A' u u' U U' Φ Ψ f f' φ φ' c g x' hU hU' hZU hZU' hΦd hΨd hΦm hΨm hΨΦ hΦΨ hf hf' hff' hφ hφ' hgd hg0 hφφ' hx' hux' ⟨s', V1', hV1', hxV1', hsd', -, hsec', N', hN', hNs'⟩ ⟨s, V1, hV1, hxV1, hsd, -, hsec, N, hN, hNs⟩`. Establish `hAc : Continuous fun z : Fin n → ℂ => A *ᵥ z` using `by fun_prop`. Establish `hAc' : Continuous fun z : Fin n → ℂ => A' *ᵥ z` using `by fun_prop`. Establish `hlin : Continuous (linEval u')` using `by unfold linEval; fun_prop`. Use `set W := interior N ∩ (fun z => A *ᵥ z) ⁻¹' V1 with hWdef`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : IsOpen W` using `isOpen_interior.inter (hV1.preimage hAc)`. Use `set W' := ((interior N' ∩ (fun z => A' *ᵥ z) ⁻¹' V1') ∩ {x | linEval u' x ≠ 0}) ∩ (U' ∩ Φ ⁻¹' W) with hW'def`. Establish `hW' : IsOpen W'` using `((isOpen_interior.inter (hV1'.preimage hAc')).inter (isOpen_ne_fun hlin continuous_const)).inter (hΦd.continuousOn.isOpen_inter_preimage hU' hW)`. Establish `hZ'U' : ∀ p ∈ zeroSet J' ∩ W', p ∈ zeroSet J' \ {x | linEval u' x = 0}` using `fun p hp => ⟨hp.1, hp.2.1.2⟩`. Establish `hWs' : ∀ p ∈ zeroSet J' ∩ W', A' *ᵥ p ∈ V1' ∧ s' (A' *ᵥ p) = p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `p ⟨hZ, ⟨⟨hN1, hV⟩, -⟩, -⟩`. Conclude with `⟨hV, (hNs' p ⟨hZ, interior_subset hN1⟩ hV).symm⟩`. Establish `hWs : ∀ p ∈ zeroSet J ∩ W, A *ᵥ p ∈ V1 ∧ s (A *ᵥ p) = p`. Introduce and unpack `p ⟨hZ, hN1, hV⟩`. Conclude with `⟨hV, (hNs p ⟨hZ, interior_subset hN1⟩ hV).symm⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦW : ∀ p ∈ zeroSet J' ∩ W', Φ p ∈ zeroSet J ∩ W` using `fun p hp => ⟨(hΦm (hZ'U' p hp)).1, hp.2.2.2⟩`. Establish `hxW' : x' ∈ W'` using `⟨⟨⟨mem_interior_iff_mem_nhds.2 hN', hxV1'⟩, hux'⟩, hZU' ⟨hx', hux'⟩, ⟨mem_interior_iff_mem_nhds.2 hN, hxV1⟩⟩`. Use `⟨W', hW', hxW', fun E' _ hEW' => ?_⟩` and prove the remaining obligations. Use `set E := Φ '' (E' ∩ zeroSet J') with hEdef`. Establish `hEW : E ⊆ W`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨p, ⟨hpE, -⟩, rfl⟩`. Conclude with `(hEW' hpE).2.2`. Repeatedly rewrite using `[PosPartLocal.chartPosDens_eq hV1' hsd' hsec' hW' hWs' hEW', PosPartLocal.chartPosDens_eq hV1 hsd hsec hW hWs hEW]`. Use `set O' := V1' ∩ s' ⁻¹' W' with hO'def`. Use `set τ : (Fin d → ℂ) → Fin d → ℂ := fun z => A *ᵥ Φ (s' z) with hτdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO' : IsOpen O'` using `hsd'.continuousOn.isOpen_inter_preimage hV1' hW'`. Establish `hs'Z : ∀ z ∈ O', s' z ∈ zeroSet J' ∩ W'` using `fun z hz => ⟨(hsec' z hz.1).2, hz.2⟩`. Establish `hτU : ∀ z ∈ O', τ z ∈ V1 ∧ s (τ z) = Φ (s' z)` using `fun z hz => hWs _ (hΦW _ (hs'Z z hz))`. Establish `hs'O : DifferentiableOn ℂ s' O'` using `hsd'.mono Set.inter_subset_left`. Establish `hτd : DifferentiableOn ℂ τ O'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦs : DifferentiableOn ℂ (fun z => Φ (s' z)) O'` using `hΦd.comp hs'O fun z hz => (hs'Z z hz).2.2.1`. Conclude with `(Matrix.mulVecLin A).toContinuousLinearMap.differentiable.comp_differentiableOn hΦs`. Establish `hτan : AnalyticOnNhd ℂ τ O'` using `IndefiniteRowSideFullHecke.ComplexSets.analyticOnNhd_of_differentiableOn hO' hτd`. Establish `hΦinj : ∀ p ∈ zeroSet J' ∩ W', ∀ q ∈ zeroSet J' ∩ W', Φ p = Φ q → p = q` using `fun p hp q hq h => by`. Rewrite using `[← hΨΦ p (hZ'U' p hp), ← hΨΦ q (hZ'U' q hq), h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use symmetry to reverse the relation.
 
-Establish `hτinj : Set.InjOn τ O'` using `fun z₁ h₁ z₂ h₂ h => by`. Establish `h'` using `congrArg s h`. Rewrite `h'` using `[(hτU z₁ h₁).2, (hτU z₂ h₂).2]`. Establish `h''` using `hΦinj _ (hs'Z z₁ h₁) _ (hs'Z z₂ h₂) h'`. Rewrite using `[← (hsec' z₁ h₁.1).1, ← (hsec' z₂ h₂.1).1, h'']`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hsan : AnalyticOnNhd ℂ s V1` using `IndefiniteRowSideFullHecke.ComplexSets.analyticOnNhd_of_differentiableOn hV1 hsd`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Use `(setLIntegral_eq_of_support_subset fun y hy => ?_).symm` and prove the remaining obligations. Establish `hyE : y ∈ V1 ∩ s ⁻¹' E`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h`. Conclude with `hy (by simp [Set.indicator_of_notMem h])`. Take `⟨p, ⟨hpE, hpZ⟩, hp⟩` from `hyE.2`. Establish `hpW : p ∈ zeroSet J' ∩ W'` using `⟨hpZ, hEW' hpE⟩`. Use `⟨A' *ᵥ p, ⟨(hWs' p hpW).1, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show s' (A' *ᵥ p) ∈ W'`. Rewrite using `[(hWs' p hpW).2]`. Conclude with `hpW.2`. Use `show A *ᵥ Φ (s' (A' *ᵥ p)) = y`. Rewrite using `[(hWs' p hpW).2, hp, (hsec y hyE.1).1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = ∫⁻ z in O', ENNReal.ofReal (Complex.normSq (ReciprocityTheory.AnForm.A.jacC τ z).det) * ENNReal.ofReal ((V1 ∩ s ⁻¹' E).indicator (fun y => max (f (s y) * ReciprocityTheory.AnForm.maDens (fun k => φ k ∘ s) y) 0) (τ z)) := ReciprocityTheory.AnForm.A.lintegral_image_eq_lintegral …`. Use `_ = ∫⁻ z in O', ENNReal.ofReal ((V1' ∩ s' ⁻¹' E').indicator (fun y => max (f' (s' y) * ReciprocityTheory.AnForm.maDens (fun k => φ' k ∘ s') y) 0) z) := by`. Use `setLIntegral_congr_fun hO'.measurableSet fun z hz => ?_` and prove the remaining obligations. Establish `hzW` using `hs'Z z hz`. Distinguish the cases in `hzE : s' z ∈ E'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : τ z ∈ V1 ∩ s ⁻¹' E` using `⟨(hτU z hz).1, by rw [Set.mem_preimage, (hτU z hz).2]; exact ⟨s' z, ⟨hzE, hzW.1⟩, rfl⟩⟩`. Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem (show z ∈ V1' ∩ s' ⁻¹' E' from ⟨hz.1, hzE⟩)]`. Establish `hC2 : ∀ k, ContDiffAt ℝ 2 (φ k ∘ s) (τ z)` using `fun k => by`. Take `⟨Ok, hOk, hZOk, hφk⟩` from `hφ k`. Establish `hsZ : s (τ z) ∈ Ok` using `hZOk (by rw [(hτU z hz).2]; exact (hΦW _ hzW).1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφa : ContDiffAt ℝ 2 (φ k) (s (τ z))` using `(hφk.contDiffAt (hOk.mem_nhds hsZ)).of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`. Establish `hsa : ContDiffAt ℝ 2 s (τ z)` using `((hsan (τ z) (hτU z hz).1).contDiffAt).restrict_scalars ℝ`. Conclude with `hφa.comp (τ z) hsa`. Establish `h1 : ∀ k, ReciprocityTheory.AnForm.hessC (φ' k ∘ s') z = ReciprocityTheory.AnForm.hessC ((φ k ∘ s) ∘ τ) z` using `fun k => by`. Establish `hgs : AnalyticAt ℂ (fun w => g k (s' w)) z` using `ReciprocityTheory.AnForm.Osgood.osgood d O' _ hO' ((hgd k).comp hs'O fun w hw => (hs'Z w hw).2.2.1) z hz`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `heq : φ' k ∘ s' =ᶠ[𝓝 z] fun w => ((φ k ∘ s) ∘ τ) w + c k * Real.log ‖g k (s' w)‖` using `by filter_upwards [hO'.mem_nhds hz] with w hw show φ' k (s' w) = φ k (s (τ w)) + c k * Real.log ‖g k (s' w)‖`. Rewrite using `[(hτU w hw).2, hφφ' k (s' w) (hs'Z w hw).2.2.1]`. Rewrite using `[ReciprocityTheory.AnForm.A.hessC_congr' heq]`. Conclude with `ChartChangeLocalOnZero.hessC_add_smul_log_norm _ _ _ z ((hC2 k).comp z ((hτan z hz).contDiffAt.restrict_scalars ℝ)) hgs (hg0 k _ (hs'Z z hz).2.2.1)`. Establish `h2 : ReciprocityTheory.AnForm.maDens (fun k => φ' k ∘ s') z = ReciprocityTheory.AnForm.maDens (fun k => φ k ∘ s) (τ z) * Complex.normSq (ReciprocityTheory.AnForm.A.jacC τ z).det`.
-
-Rewrite using `[← ReciprocityTheory.AnForm.A.maDens_comp (fun k => φ k ∘ s) τ z (hτan z hz) hC2]`. Simplify using `only [ReciprocityTheory.AnForm.maDens, h1]`. Establish `h3 : f' (s' z) = f (s (τ z))` using `by rw [(hτU z hz).2, hff' _ (hZ'U' _ hzW)]`. Rewrite using `[h2, h3, ← ENNReal.ofReal_mul (Complex.normSq_nonneg _), mul_comm, max_mul_of_nonneg _ _ (Complex.normSq_nonneg _), zero_mul, mul_assoc]`. Establish `hnm : τ z ∉ V1 ∩ s ⁻¹' E`.
-
-Introduce and unpack `⟨-, hm⟩`. Rewrite `hm` using `[Set.mem_preimage, (hτU z hz).2]`. Take `⟨p, ⟨hpE, hpZ⟩, hp⟩` from `hm`. Conclude with `hzE (by rw [← hΦinj _ ⟨hpZ, hEW' hpE⟩ _ hzW hp]; exact hpE)`. Rewrite using `[Set.indicator_of_notMem hnm, Set.indicator_of_notMem (show z ∉ V1' ∩ s' ⁻¹' E' from fun hm => hzE hm.2)]`.
-
-Simplify using the standard rewrite rules. Use `_ = _ := by`. Use `setLIntegral_eq_of_support_subset fun z hz => ?_` and prove the remaining obligations. Establish `hzE : z ∈ V1' ∩ s' ⁻¹' E'`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hz (by simp [Set.indicator_of_notMem h])`. Conclude with `⟨hzE.1, hEW' hzE.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ChartChangeLocalOnZero.proof : ChartChangeLocalOnZero.Statement := by
   rintro n d J J' A A' u u' U U' Φ Ψ f f' φ φ' c g x' hU hU' hZU hZU' hΦd hΨd hΦm hΨm hΨΦ hΦΨ hf hf'

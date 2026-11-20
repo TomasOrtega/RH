@@ -91,7 +91,7 @@ Both sides reduce to the same expression.
 theorem frobOrder_eq (D : D7) (p : ℕ) : frobOrder D p = nFr D p := rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `with_reducible rfl`. Consider the case `(delta pack locPackC frobOrder nFr; with_reducible rfl)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pack_eq (D : D7) (u : D.what₂.Word)
     (Lc : ColLevel D.R D.host.F D.host.E D.sp D.host.g (D.mem u).C (D.mem u).A (D.clsLat u)) (w : D.what₂.places.Pl)
@@ -122,14 +122,14 @@ variable (D : D7) (sc : Scale) (Ce : ℝ)
     (epSc D.R sc Ce (D.what₂.places.resChar w))).d = Module.finrank ℂ (D.mem u).A.Mu0)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u w h`. Conclude with `pack_eq D u (Lc u) w h.2.1 (nFr_spec D h).1 (nFr_spec D h).2 (I u w h) (ψ u w h)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem packAll_eq : packAll D Lc I ψ = packC D Lc I ψ := by
   funext u w h
   exact pack_eq D u (Lc u) w h.2.1 (nFr_spec D h).1 (nFr_spec D h).2 (I u w h) (ψ u w h)
 
 /- English proof (translation)
-Establish `key : ∀ X X' (_ : X = X') h h', recG D sc Ce Lc X h = recG D sc Ce Lc X' h'`. Introduce `X X' e h h'`. Substitute `e` using the available equality. Both sides reduce to the same expression. Conclude with `key _ _ (packAll_eq D Lc I ψ) hd' hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem record_eq (hd' : ∀ u w h, ((packAll D Lc I ψ u w h).gat (rSc sc D.R.k (D.what₂.places.resChar w))
     (epSc D.R sc Ce (D.what₂.places.resChar w))).d = Module.finrank ℂ (D.mem u).A.Mu0) :
@@ -141,7 +141,7 @@ theorem record_eq (hd' : ∀ u w h, ((packAll D Lc I ψ u w h).gat (rSc sc D.R.k
   exact key _ _ (packAll_eq D Lc I ψ) hd' hd
 
 /- English proof (translation)
-The claim follows from `hL u`.
+A detailed English derivation is pending.
 -/
 theorem recordAllTies_level (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
     (T : ∀ u : D.what₂.Word, Forms0 (recC D sc Ce Lc I ψ hd) u)
@@ -157,13 +157,13 @@ theorem recordAllTies_forms (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ 
     (groupCompatibilityOfRecursion D sc Ce Lc I ψ hd H0 hL T B hBs hB CH hH).forms = T := rfl
 
 /- English proof (translation)
-The claim follows from `standardSub_of_ringTie _ (ringTie_record D sc Ce Lc I ψ hd)`.
+A detailed English derivation is pending.
 -/
 example : Joints.StdSubAt (recC D sc Ce Lc I ψ hd) :=
   standardSub_of_ringTie _ (ringTie_record D sc Ce Lc I ψ hd)
 
 /- English proof (translation)
-The claim follows from `localIs_of_hyperspecial D sc Ce Lc (packC D Lc I ψ) hd Lc (fun _ => rfl) (fun u w h => isHyperbolicAt_rec_of_placeIdentification D u w h (I u w h)) u w hg`.
+A detailed English derivation is pending.
 -/
 example (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
     LocalIs (recC D sc Ce Lc I ψ hd) Lc u w hg :=
@@ -177,20 +177,20 @@ abbrev IsConcrete := @Formalism.L2.G.IsRecC
 alias IsConcrete.intro := Formalism.L2.G.IsRecC.intro
 
 /- English proof (translation)
-The claim follows from `gTiedAll_of_isRecC h`.
+A detailed English derivation is pending.
 -/
 theorem IsConcrete.nonempty_allTies {D : D7} {Gt : GatTies D} {c : LatCmp D} (h : IsConcrete D Gt c) :
     Nonempty (GroupCompatibilityAll D Gt c) :=
   gTiedAll_of_isRecC h
 
 /- English proof (translation)
-The claim follows from `standardSub_of_ringTie D G.ring`.
+A detailed English derivation is pending.
 -/
 theorem AllTies.standardSub {D : D7} {Gt : GatTies D} {c : LatCmp D} (G : AllTies D Gt c) : Joints.StdSubAt D :=
   standardSub_of_ringTie D G.ring
 
 /- English proof (translation)
-The claim follows from `h.nonempty_allTies.elim fun G => G.ring u w hg v`.
+A detailed English derivation is pending.
 -/
 theorem IsConcrete.ringTie {D : D7} {Gt : GatTies D} {c : LatCmp D} (h : IsConcrete D Gt c) (u : D.what₂.Word)
     (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (v : Fin (D.gat u w hg).P.nV) :
@@ -198,7 +198,7 @@ theorem IsConcrete.ringTie {D : D7} {Gt : GatTies D} {c : LatCmp D} (h : IsConcr
   h.nonempty_allTies.elim fun G => G.ring u w hg v
 
 /- English proof (translation)
-The claim follows from `h.elim fun e _ => ⟨e⟩`.
+A detailed English derivation is pending.
 -/
 example {D : D7} {u : D.what₂.Word} {w : D.what₂.places.Pl} {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)}
     {v : Fin (D.gat u w hg).P.nV} (h : RingTie D u w hg v) :
@@ -206,7 +206,7 @@ example {D : D7} {u : D.what₂.Word} {w : D.what₂.places.Pl} {hg : GIdx D.hos
   h.elim fun e _ => ⟨e⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example {D : D7} {Gt : GatTies D} {c : LatCmp D} : IsConcrete D Gt c ↔ IsRecC D Gt c := Iff.rfl
 

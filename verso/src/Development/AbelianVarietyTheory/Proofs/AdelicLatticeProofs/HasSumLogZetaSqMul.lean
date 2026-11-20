@@ -6,7 +6,7 @@ open scoped ContDiff nonZeroDivisors
 namespace GlobalTheory.LogEulerSeries
 
 /- English proof (translation)
-Establish `h` using `Complex.hasSum_taylorSeries_neg_log hz`. Establish `h2` using `(hasSum_nat_add_iff' 1).mpr h`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasSum_neg_log_succ {z : ℂ} (hz : ‖z‖ < 1) :
     HasSum (fun k : ℕ => z ^ (k + 1) / ((k : ℂ) + 1)) (-Complex.log (1 - z)) := by
@@ -15,11 +15,11 @@ theorem hasSum_neg_log_succ {z : ℂ} (hz : ‖z‖ < 1) :
   simpa using h2
 
 /- English proof (translation)
-Establish `hsum : Summable (fun p : ι × ℕ => z p.1 ^ (p.2 + 1) / ((p.2 : ℂ) + 1))`. Establish `hb : Summable (fun p : ι × ℕ => ‖z p.1‖ * ((1 / 2 : ℝ) ^ p.2))` using `hs.mul_of_nonneg summable_geometric_two (fun i => norm_nonneg _) (fun k => by positivity)`. Use `Summable.of_norm_bounded hb ?_` and prove the remaining obligations. Introduce and unpack `⟨i, k⟩`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `h1 : (1 : ℝ) ≤ ‖(k : ℂ) + 1‖`. Establish `: ((k : ℂ) + 1) = ((k + 1 : ℕ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_natCast]`. Conclude with `Nat.le_add_left 1 k` after adjusting the coercions. Rewrite using `[norm_div, norm_pow, pow_succ, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hf : ∀ i, HasSum (fun k : ℕ => z i ^ (k + 1) / ((k : ℂ) + 1)) (-Complex.log (1 - z i))` using `fun i => hasSum_neg_log_succ (by linarith [hz i])`. Establish `h3` using `hsum.hasSum.prod_fiberwise hf`. Rewrite using `[h3.tsum_eq]`. Conclude with `hsum.hasSum`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_prod_neg_log {ι : Type} (z : ι → ℂ) (hz : ∀ i, ‖z i‖ ≤ 1 / 2)
     (hs : Summable fun i => ‖z i‖) :
@@ -45,13 +45,13 @@ theorem hasSum_prod_neg_log {ι : Type} (z : ι → ℂ) (hz : ∀ i, ‖z i‖ 
   exact hsum.hasSum
 
 /- English proof (translation)
-Establish `hpos : ∀ i, 0 < N i` using `fun i => by have := hN i; omega`. Establish `hn : ∀ i, ‖c i * ((N i : ℕ) : ℂ) ^ (-s)‖ ≤ (N i : ℝ) ^ (-s.re)` using `fun i => by`. Rewrite using `[norm_mul, Complex.norm_natCast_cpow_of_pos (hpos i), Complex.neg_re]`. Conclude with `mul_le_of_le_one_left (by positivity) (hc i)`. Establish `h` using `hasSum_prod_neg_log (fun i => c i * ((N i : ℕ) : ℂ) ^ (-s)) (fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hn i).trans ?_` and prove the remaining obligations. Establish `h2 : (2 : ℝ) ≤ N i` using `by exact_mod_cast hN i`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `(Summable.of_nonneg_of_le (fun i => norm_nonneg _) hn hsum)`. Use `h using 2 with p` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, k⟩` from `p`. Establish `hne : ((N i : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast (hpos i).ne'`. Simplify using `only`. Rewrite using `[mul_pow, Complex.cpow_def_of_ne_zero hne, ← Complex.exp_nat_mul, ← Complex.natCast_log]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[show ((k : ℂ) + 1) * (Complex.log (N i) * -s) = -(((k : ℂ) + 1) * Complex.log (N i)) * s by ring]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hasSum_one {ι : Type} (N : ι → ℕ) (c : ι → ℂ) (hN : ∀ i, 2 ≤ N i) (hc : ∀ i, ‖c i‖ ≤ 1)
     (s : ℂ) (hs : 1 < s.re) (hsum : Summable fun i => (N i : ℝ) ^ (-s.re)) :
@@ -80,13 +80,13 @@ theorem hasSum_one {ι : Type} (N : ι → ℕ) (c : ι → ℂ) (hN : ∀ i, 2 
   ring
 
 /- English proof (translation)
-Introduce `ι N c hN hc hsum s hs`. Establish `h1` using `hasSum_one N (fun _ => 1) hN (fun _ => by simp) s hs (hsum _ hs)`. Establish `h2` using `hasSum_one N c hN hc s hs (hsum _ hs)`. Establish `h3` using `hasSum_one N (fun i => starRingEnd ℂ (c i)) hN (fun i => by simpa using hc i) s hs (hsum _ hs)`. Establish `h` using `((h1.mul_left 2).add h2).add h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Use function extensionality and compare the values at `p`. Use `revert p`. Introduce and unpack `⟨i, k⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Generalize the expression as in `Complex.exp _ = E`. Rewrite using `[← map_pow]`. Use `Complex.add_conj (c i ^ (k + 1))` as an intermediate fact. Rewrite using `[Complex.ofReal_div, Complex.ofReal_add, ← this]`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasSum_log_zeta_sq_mul : ∀ (ι : Type) (N : ι → ℕ) (c : ι → ℂ), (∀ i, 2 ≤ N i) → (∀ i, ‖c i‖ ≤ 1) → (∀ σ : ℝ, 1 < σ → Summable fun i => (N i : ℝ) ^ (-σ)) → ∀ s : ℂ, 1 < s.re → HasSum (fun p : ι × ℕ => (((2 + 2 * (c p.1 ^ (p.2 + 1)).re) / ((p.2 : ℝ) + 1) : ℝ) : ℂ) * Complex.exp (-((((p.2 : ℝ) + 1) * Real.log (N p.1) : ℝ) : ℂ) * s)) (2 * (∑' i, -Complex.log (1 - 1 * ((N i : ℕ) : ℂ) ^ (-s))) + (∑' i, -Complex.log (1 - c i * ((N i : ℕ) : ℂ) ^ (-s))) + (∑' i, -Complex.log (1 - starRingEnd ℂ (c i) * ((N i : ℕ) : ℂ) ^ (-s)))) := by
   intro ι N c hN hc hsum s hs

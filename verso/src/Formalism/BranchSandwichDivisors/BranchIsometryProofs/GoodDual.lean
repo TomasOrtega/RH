@@ -25,9 +25,9 @@ def tw (g : V →ₗ⋆[K] K) : V →ₗ[K] K where
 omit [IsDedekindDomain R] [StarRing K] in
 
 /- English proof (translation)
-Establish `: Nontrivial R` using `(algebraMap R K).domain_nontrivial`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors R) Finset.univ (fun i => b.repr v i)`. Use `choose a ha using fun i => RingHom.mem_rangeS.mp (hd i (Finset.mem_univ i))`. Use `⟨d, a, nonZeroDivisors.coe_ne_zero d, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr v, Finset.smul_sum]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_assoc, ← algebraMap_smul K (a i), ha i]`.
+A detailed English derivation is pending.
 -/
 theorem denom {ι : Type*} [Fintype ι] (b : Basis ι K V) (v : V) :
     ∃ (d : R) (n : ι → R), d ≠ 0 ∧ d • v = ∑ i, n i • b i := by
@@ -44,9 +44,9 @@ theorem denom {ι : Type*} [Fintype ι] (b : Basis ι K V) (v : V) :
 omit [IsDedekindDomain R] [StarRing K] in
 
 /- English proof (translation)
-Take `⟨d, n, hd, hdn⟩` from `denom (R := R) b (a : V)`. Establish `h1 : d • a = ∑ i, n i • (⟨b i, hb i⟩ : A)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hdn]`. Establish `h2 : d • D a = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← map_smul, h1, map_sum]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [map_smul, hD, smul_zero]`. Establish `hd' : algebraMap R K d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr hd`. Rewrite `h2` using `[Algebra.smul_def]`. Conclude with `(mul_eq_zero.mp h2).resolve_left hd'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_zero {ι : Type*} [Fintype ι] (b : Basis ι K V) (A : Submodule R V) (hb : ∀ i, b i ∈ A)
     (D : A →ₗ[R] K) (hD : ∀ i, D ⟨b i, hb i⟩ = 0) (a : A) : D a = 0 := by
@@ -62,43 +62,39 @@ theorem ext_zero {ι : Type*} [Fintype ι] (b : Basis ι K V) (A : Submodule R V
   exact (mul_eq_zero.mp h2).resolve_left hd'
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Establish `: Module.IsTorsionFree R V` using `Module.IsTorsionFree.trans_faithfulSMul R K V`. Take `⟨s0, _, b, hbs, hs0⟩` from `Formalism.HermitianLatticesTheory.dualLattice_basis (R := R) A hsp`. Establish `hb : ∀ i, b i ∈ A` using `fun i => by rw [hbs]; exact hs0 i.2`. Set `N : Submodule R A` to `((LinearMap.range e).restrictScalars R).comap A.subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hN : ∀ a : A, a ∈ N ↔ e a = a`. Introduce `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Establish `hw' : e w = (a : V)` using `hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← hw', hee]`. Introduce `h`. Conclude with `⟨a, h⟩`. Establish `: Module.IsTorsionFree R (A ⧸ N)`. Rewrite using `[Module.isTorsionFree_iff_smul_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `r q hq`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective N q`. Rewrite `hq` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `right`. Rewrite using `[Submodule.Quotient.mk_eq_zero, hN]`. Rewrite `hq` using `[hN]`. Establish `hq' : r • e (a : V) = r • (a : V)`. Rewrite using `[← LinearMap.map_smul_of_tower]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hq`. Establish `hr' : algebraMap R K r ≠ 0` using `(map_ne_zero_iff _ hinj).mpr hr`. Rewrite `hq'` using `[← algebraMap_smul K r, ← algebraMap_smul K r]`. Conclude with `smul_right_injective V hr' hq'`. Establish `: Module.Finite R A` using `Module.Finite.iff_fg.mpr hfg`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Module.FinitePresentation R (A ⧸ N)` using `Module.finitePresentation_of_finite R _`. Establish `: Module.Projective R (A ⧸ N)` using `Module.Flat.projective_of_finitePresentation`. Take `⟨s, hs⟩` from `Module.projective_lifting_property N.mkQ LinearMap.id N.mkQ_surjective`. Establish `hsN : ∀ a : A, a - s (N.mkQ a) ∈ N`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `LinearMap.congr_fun hs (N.mkQ a)`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_sub]`. Express the relevant statement in the definitionally equal form `N.mkQ a - N.mkQ (s (N.mkQ a)) = 0`. Rewrite using `[h, sub_self]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ : A →ₗ[R] K` to `(tw (h.flip x)).restrictScalars R ∘ₗ A.subtype ∘ₗ (LinearMap.id - s ∘ₗ N.mkQ)`. Establish `hψ : ∀ a : A, ψ a = star (h ((a - s (N.mkQ a) : A) : V) x)` using `fun a => rfl`. Establish `hψN : ∀ a : A, e a = a → ψ a = star (h (a : V) x)`. Introduce `a ha`. Establish `h0 : N.mkQ a = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, hN]`. Conclude with `ha`. Rewrite using `[hψ, h0, map_zero, sub_zero]`. Set `L : V →ₗ[K] (s0 → K)` to `{ toFun := fun z i => h (b i) z map_add' := fun a c => by ext i; simp map_smul' := fun k a => by ext i; simp }`. Establish `hLinj : Function.Injective L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`. Apply `hnd` to reduce the goal to its premises. Establish `hz0 : h.flip z = 0` using `b.ext fun i => by`. Use `congr_fun hz i` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[L]`. Introduce `y`. Use `LinearMap.congr_fun hz0 y` as an intermediate fact. Simplify using `using this`. Establish `hLsurj : Function.Surjective L` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by rw [Module.finrank_fintype_fun_eq_card, Module.finrank_eq_card_basis b])).mp hLinj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hzL⟩` from `hLsurj (fun i => star (ψ ⟨b i, hb i⟩))`. Establish `hzb : ∀ i, h (b i) z = star (ψ ⟨b i, hb i⟩)` using `fun i => congr_fun hzL i`. Establish `hzA : ∀ a : A, star (h (a : V) z) = ψ a`. Introduce `a`. Establish `h0` using `ext_zero b A hb ((tw (h.flip z)).restrictScalars R ∘ₗ A.subtype - ψ) (fun i => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `star (h (b i) z) - ψ ⟨b i, hb i⟩ = 0`. Rewrite using `[hzb, star_star, sub_self]) a`. Conclude with `sub_eq_zero.mp h0`. Establish `hzV : ∀ v : V, e v = v → h v z = h v x`. Introduce `v hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, n, hd, hdn⟩` from `denom (R := R) b v`. Establish `hdA : d • v ∈ A`. Rewrite using `[hdn]`. Conclude with `A.sum_mem fun i _ => A.smul_mem _ (hb i)`. Establish `hev : e (d • v) = d • v` using `by rw [LinearMap.map_smul_of_tower, hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : star (h (d • v) z) = star (h (d • v) x)`. Rewrite using `[hzA ⟨d • v, hdA⟩, hψN ⟨d • v, hdA⟩ hev]`. Establish `h2` using `star_injective h1`. Establish `hd' : star (algebraMap R K d) ≠ 0` using `star_ne_zero.mpr ((map_ne_zero_iff _ hinj).mpr hd)`. Rewrite `h2` using `[← algebraMap_smul K d v]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, smul_eq_mul] at h2`. Conclude with `mul_left_cancel₀ hd' h2`. Use `⟨z, fun y hy => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hzA ⟨y, hy⟩`. Rewrite `h1` using `[hψ]`.
-
-Rewrite using `[show h y z = h (((⟨y, hy⟩ : A) - s (N.mkQ ⟨y, hy⟩) : A) : V) x from star_injective h1]`. Conclude with `hx _ (Subtype.mem _) ((hN _).mp (hsN _))`. Establish `key : ∀ w, h w (e z - x) = 0`. Introduce `w`. Rewrite using `[map_sub, ← hsa, hzV (e w) (hee w), hsa, hxe, sub_self]`.
-
-Conclude with `sub_eq_zero.mp (hnd _ key)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_exists [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[K] K)
     (hnd : ∀ x, (∀ y, h y x = 0) → x = 0) (e : V →ₗ[K] V) (hee : ∀ x, e (e x) = e x)
@@ -213,11 +209,11 @@ end GoodDualLattice
 
 open GoodDualLattice in
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ h hnd e he hsa A hfg hsp`. Establish `hee : ∀ x, e (e x) = e x` using `fun x => LinearMap.congr_fun he x`. Use extensionality with `x`. Simplify using `only [Submodule.mem_inf, Submodule.mem_map, Formalism.HermitianLatticesTheory.dualBasic_mem_dual, Submodule.restrictScalars_mem, LinearMap.mem_range, LinearMap.coe_restrictScalars]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hx, x0, rfl⟩`. Conclude with `dual_exists h hnd e hee hsa A hfg hsp (e x0) (hee x0) (fun y hy hye => hx y ⟨hy, y, hye⟩)`. Introduce and unpack `⟨z, hz, rfl⟩`. Use `⟨?_, z, rfl⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hyA, w, rfl⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsa, hee]`. Conclude with `hz _ hyA`.
+A detailed English derivation is pending.
 -/
 theorem good_dual_deduction : GoodDualDed := by
   intro K V _ _ _ _ _ _ _ _ h hnd e he hsa A hfg hsp
@@ -237,27 +233,25 @@ theorem good_dual_deduction : GoodDualDed := by
 
 open Formalism.DivisionValues.RationalHermitianForm in
 /- English proof (translation)
-Introduce `K _ _ _ n' n H' E I0 hH' hE hsaM hinj hrange A Bd hA G dG hG hdG hdual hGE`. Establish `hform_I0 : ∀ x y, Formalism.DivisionValues.hform (I0ᴴ * H' * I0) x y = Formalism.DivisionValues.hform H' (I0.mulVec x) (I0.mulVec y)`. Introduce `x y`. Rewrite using `[hform_eq_dot, hform_eq_dot, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Establish `hnd : ∀ x, (∀ y, Formalism.DivisionValues.hform H' y x = 0) → x = 0` using `fun x hx => hform_sepRight H' hH'.ne_zero x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : E.mulVecLin ∘ₗ E.mulVecLin = E.mulVecLin`. Rewrite using `[← Matrix.mulVecLin_mul, hE]`. Establish `hsa : ∀ x y, Formalism.DivisionValues.hform H' (E.mulVecLin x) y = Formalism.DivisionValues.hform H' x (E.mulVecLin y)`. Introduce `x y`. Simplify using `only [Matrix.mulVecLin_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hform_eq_dot, hform_eq_dot, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hsaM]`. Establish `GD` using `good_dual_deduction K (Fin n' → K) (Formalism.DivisionValues.hform H') hnd E.mulVecLin he hsa A hA.fg hA.span_eq_top`. Establish `hrE : ∀ y : Fin n' → K, y ∈ LinearMap.range E.mulVecLin ↔ ∃ x, I0.mulVec x = y`. Introduce `y`. Rewrite using `[hrange, LinearMap.mem_range]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hE]`. Introduce `hy`. Conclude with `⟨y, hy⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `set M : Submodule (𝓞 K) (Fin n → K) := A.comap ((Matrix.mulVecLin I0).restrictScalars (𝓞 K)) with hM`. Establish `hMmem : ∀ x, x ∈ M ↔ I0.mulVec x ∈ A` using `fun x => Iff.rfl`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : (M.map ((Matrix.mulVecLin I0).restrictScalars (𝓞 K))).FG`. Conclude with `Submodule.FG.of_le hA.fg (Submodule.map_comap_le _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.fg_of_fg_map_injective _ hinj h1`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨s0, _, b, hbs, hs0⟩` from `Formalism.HermitianLatticesTheory.dualLattice_basis (R := 𝓞 K) A hA.span_eq_top`. Take `⟨d, m, hd, hdm⟩` from `GoodDualLattice.denom (R := 𝓞 K) b (I0.mulVec x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdM : d • x ∈ M`. Rewrite using `[hMmem, Matrix.mulVec_smul, hdm]`. Conclude with `A.sum_mem fun i _ => A.smul_mem _ (by rw [hbs]; exact hs0 i.2)`. Establish `hd' : algebraMap (𝓞 K) K d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hd`. Establish `: x = (algebraMap (𝓞 K) K d)⁻¹ • (d • x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K d x, smul_smul, inv_mul_cancel₀ hd', one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hdM)`. Introduce `x hx`. Rewrite `hx` using `[Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `h1 : I0.mulVec x ∈ Formalism.HermitianLatticesTheory.dual (Formalism.DivisionValues.hform H') (A ⊓ (LinearMap.range E.mulVecLin).restrictScalars (𝓞 K)) ⊓ (LinearMap.range E.mulVecLin).restrictScalars (𝓞 K)`. Use `⟨?_, (hrE _).mpr ⟨x, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Introduce and unpack `y ⟨hyA, hyE⟩`. Take `⟨y0, rfl⟩` from `(hrE y).mp hyE`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hform_I0]`. Conclude with `hx y0 hyA`. Rewrite `h1` using `[GD]`. Take `⟨z, hz, hzx⟩` from `h1`. Establish `hzx' : E.mulVec z = I0.mulVec x` using `hzx`.
-
-Establish `h2` using `hGE _ (hdual z hz)`. Rewrite using `[hMmem, pow_one, Matrix.mulVec_smul, ← hzx', Nat.cast_mul, mul_smul]`. Rewrite `h2` using `[Matrix.mulVec_smul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem divisor_bounds_first : BoundsI := by
   intro K _ _ _ n' n H' E I0 hH' hE hsaM hinj hrange A Bd hA G dG hG hdG hdual hGE

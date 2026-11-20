@@ -3,33 +3,33 @@ import Formalism.RankGapBounds.RandomSubsetCounterexample
 namespace Formalism.RankGapBounds.LocalQuadraticParts
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← Int.cast_one, ← Int.cast_sub, ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma zmod_int_eq_one_iff (n : ℕ) (x : ℤ) : ((x : ZMod n) = 1) ↔ (n : ℤ) ∣ x - 1 := by
   rw [← sub_eq_zero, ← Int.cast_one, ← Int.cast_sub, ZMod.intCast_zmod_eq_zero_iff_dvd]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, sub_neg_eq_add, ← Int.cast_one, ← Int.cast_add, ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma zmod_int_eq_neg_one_iff (n : ℕ) (x : ℤ) : ((x : ZMod n) = -1) ↔ (n : ℤ) ∣ x + 1 := by
   rw [← sub_eq_zero, sub_neg_eq_add, ← Int.cast_one, ← Int.cast_add, ZMod.intCast_zmod_eq_zero_iff_dvd]
 
 /- English proof (translation)
-Establish `h` using `zmod_int_eq_one_iff n (l : ℤ)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma zmod_nat_eq_one_iff (n l : ℕ) : ((l : ZMod n) = 1) ↔ (n : ℤ) ∣ (l : ℤ) - 1 := by
   have h := zmod_int_eq_one_iff n (l : ℤ)
   simpa using h
 
 /- English proof (translation)
-Establish `h` using `zmod_int_eq_neg_one_iff n (l : ℤ)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma zmod_nat_eq_neg_one_iff (n l : ℕ) : ((l : ZMod n) = -1) ↔ (n : ℤ) ∣ (l : ℤ) + 1 := by
   have h := zmod_int_eq_neg_one_iff n (l : ℤ)
   simpa using h
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hy`. Establish `h : (2 * k + 1) ^ 2 + 1 = 4 * (k ^ 2 + k) + 2` using `by ring`. Rewrite using `[h]`. Generalize the expression as in `k ^ 2 + k = t`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 lemma four_not_dvd_odd_sq_add_one (y : ℤ) (hy : Odd y) : ¬ (4 : ℤ) ∣ y ^ 2 + 1 := by
   obtain ⟨k, rfl⟩ := hy
@@ -39,17 +39,15 @@ lemma four_not_dvd_odd_sq_add_one (y : ℤ) (hy : Odd y) : ¬ (4 : ℤ) ∣ y ^ 
   omega
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, m = n + 1` from `⟨m - 1, by omega⟩`. Take `⟨k, rfl⟩` from `hx`. Establish `e1 : (2 * k + 1) ^ 2 - 1 = 4 * (k * (k + 1))` using `by ring`. Establish `e2 : 2 * k + 1 - 1 = 2 * k` using `by ring`. Establish `e3 : 2 * k + 1 + 1 = 2 * (k + 1)` using `by ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p1 : (2 : ℤ) ^ (n + 1 + 1) = 4 * 2 ^ n` using `by ring`. Establish `p2 : (2 : ℤ) ^ (n + 1) = 2 * 2 ^ n` using `by ring`. Rewrite using `[e1, e2, e3, p1, p2, mul_dvd_mul_iff_left (by norm_num : (4 : ℤ) ≠ 0), mul_dvd_mul_iff_left (by norm_num : (2 : ℤ) ≠ 0), mul_dvd_mul_iff_left (by norm_num : (2 : ℤ) ≠ 0)]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Int.even_or_odd k with ⟨b, hb⟩ | ⟨b, hb⟩` into its components or cases. Use `left`. Establish `hc : IsCoprime ((2 : ℤ) ^ n) (k + 1)`. Apply `IsCoprime.pow_left` to reduce the goal to its premises. Use `⟨-b, 1, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hc.dvd_of_dvd_mul_right h`. Use `right`. Establish `hc : IsCoprime ((2 : ℤ) ^ n) k`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `IsCoprime.pow_left` to reduce the goal to its premises. Use `⟨-b, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hc.dvd_of_dvd_mul_left h`.
-
-Introduce and unpack `(h | h)`. Conclude with `dvd_mul_of_dvd_left h _`. Conclude with `dvd_mul_of_dvd_right h _`.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma sq_sub_one_dvd_iff (x : ℤ) (hx : Odd x) (m : ℕ) (hm : 1 ≤ m) :
     (2 : ℤ) ^ (m + 1) ∣ x ^ 2 - 1 ↔ ((2 : ℤ) ^ m ∣ x - 1 ∨ (2 : ℤ) ^ m ∣ x + 1) := by
@@ -84,15 +82,13 @@ lemma sq_sub_one_dvd_iff (x : ℤ) (hx : Odd x) (m : ℕ) (hm : 1 ≤ m) :
     · exact dvd_mul_of_dvd_right h _
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => intro x _ m _`. Simplify using the standard rewrite rules. Consider the case `succ j ih`. Introduce `x hx m hm`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : Odd (x ^ (2 ^ j))` using `hx.pow`. Establish `hpow : x ^ (2 ^ (j + 1)) = (x ^ (2 ^ j)) ^ 2` using `by rw [pow_succ, pow_mul]`. Establish `hnot : ¬ (2 : ℤ) ^ (m + (j + 1)) ∣ (x ^ (2 ^ j)) ^ 2 + 1`. Introduce `h`. Apply `four_not_dvd_odd_sq_add_one _ hy` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `dvd_trans ?_ h` and prove the remaining obligations. Establish `: (4 : ℤ) = 2 ^ 2` using `by norm_num`. Rewrite using `[this]`. Conclude with `pow_dvd_pow 2 (by omega)`. Rewrite using `[hpow, ← ih x hx m hm, show m + (j + 1) = m + j + 1 by omega, ← sq_sub_one_dvd_iff _ hy (m + j) (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h)`. Conclude with `h`. Conclude with `absurd h (by rw [show m + j + 1 = m + (j + 1) by omega]; exact hnot)`. Introduce `h`.
-
-Conclude with `Or.inl h`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative. A detailed English derivation is pending.
 -/
 lemma pow_two_pow_pm_iff (j : ℕ) : ∀ (x : ℤ), Odd x → ∀ m : ℕ, 1 ≤ m →
     (((2 : ℤ) ^ (m + j) ∣ x ^ (2 ^ j) - 1 ∨ (2 : ℤ) ^ (m + j) ∣ x ^ (2 ^ j) + 1) ↔
@@ -120,7 +116,7 @@ lemma pow_two_pow_pm_iff (j : ℕ) : ∀ (x : ℤ), Odd x → ∀ m : ℕ, 1 ≤
       exact Or.inl h
 
 /- English proof (translation)
-Establish `h` using `pow_two_pow_pm_iff j x hx (e + 2 - j) (by omega)`. Rewrite `h` using `[show e + 2 - j + j = e + 2 by omega]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pm_iff (e j : ℕ) (hj : j ≤ e) (x : ℤ) (hx : Odd x) :
     (((2 : ℤ) ^ (e + 2) ∣ x ^ (2 ^ j) - 1 ∨ (2 : ℤ) ^ (e + 2) ∣ x ^ (2 ^ j) + 1) ↔
@@ -130,9 +126,9 @@ lemma pm_iff (e j : ℕ) (hj : j ≤ e) (x : ℤ) (hx : Odd x) :
   exact h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Break down `Int.even_or_odd k with h | h` into its components or cases. Conclude with `Or.inl h.neg_one_zpow`. Conclude with `Or.inr h.neg_one_zpow`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Introduce and unpack `(rfl | rfl)`. Conclude with `⟨0, zpow_zero _⟩`. Conclude with `⟨1, zpow_one _⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 lemma units_zpow_neg_one_iff (n : ℕ) (u : (ZMod n)ˣ) :
     (∃ k : ℤ, (-1 : (ZMod n)ˣ) ^ k = u) ↔ (u = 1 ∨ u = -1) := by
@@ -146,13 +142,11 @@ lemma units_zpow_neg_one_iff (n : ℕ) (u : (ZMod n)ˣ) :
     · exact ⟨1, zpow_one _⟩
 
 /- English proof (translation)
-Unfold `hOf`. Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff, Subgroup.mem_zpowers_iff, units_zpow_neg_one_iff]`. Establish `hv : ((ZMod.unitOfCoprime l hl ^ (2 ^ j) : (ZMod (4 * 2 ^ e))ˣ) : ZMod (4 * 2 ^ e)) = (((l : ℤ) ^ (2 ^ j) : ℤ) : ZMod (4 * 2 ^ e))`. Simplify using `[Units.val_pow_eq_pow_val, ZMod.coe_unitOfCoprime]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `(h | h)`. Use `left`. Rewrite using `[← hv, h, Units.val_one]`. Use `right`. Rewrite using `[← hv, h, Units.val_neg, Units.val_one]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `(h | h)`. Use `left`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hv, h, Units.val_one]`. Use `right`.
-
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hv, h, Units.val_neg, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hOf_pow_eq_one_iff (e j l : ℕ) (hl : Nat.Coprime l (4 * 2 ^ e)) :
     (hOf e l hl) ^ (2 ^ j) = 1 ↔
@@ -179,7 +173,7 @@ lemma hOf_pow_eq_one_iff (e j l : ℕ) (hl : Nat.Coprime l (4 * 2 ^ e)) :
       rw [hv, h, Units.val_neg, Units.val_one]
 
 /- English proof (translation)
-Establish `h2 : ¬ 2 ∣ l` using `fun h => by`. Use `Nat.Coprime.eq_one_of_dvd (Nat.Coprime.coprime_dvd_left h hl) (dvd_mul_of_dvd_left (by norm_num) _)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `Int.odd_iff.mpr (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma odd_of_coprime (e l : ℕ) (hl : Nat.Coprime l (4 * 2 ^ e)) : Odd (l : ℤ) := by
   have h2 : ¬ 2 ∣ l := fun h => by
@@ -189,7 +183,7 @@ lemma odd_of_coprime (e l : ℕ) (hl : Nat.Coprime l (4 * 2 ^ e)) : Odd (l : ℤ
   exact Int.odd_iff.mpr (by omega)
 
 /- English proof (translation)
-Introduce `e j l hl hj`. Rewrite using `[hOf_pow_eq_one_iff, zmod_int_eq_one_iff, zmod_int_eq_neg_one_iff, zmod_nat_eq_one_iff, zmod_nat_eq_neg_one_iff]`. Use `push_cast`. Rewrite using `[show (4 : ℤ) * 2 ^ e = 2 ^ (e + 2) by ring]`. Conclude with `pm_iff e j hj l (odd_of_coprime e l hl)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powTwoPowEqOneIff_holds : OrdersIff := by
   intro e j l hl hj
@@ -200,21 +194,21 @@ theorem powTwoPowEqOneIff_holds : OrdersIff := by
   exact pm_iff e j hj l (odd_of_coprime e l hl)
 
 /- English proof (translation)
-Introduce `e J l hl hJ hl1 hord`. Establish `hodd` using `odd_of_coprime e l hl`. Establish `hE : (hOf e l hl) ^ (2 ^ e) = 1`. Rewrite using `[powTwoPowEqOneIff_holds e e l hl le_rfl, show e + 2 - e = 2 by omega, zmod_nat_eq_one_iff, zmod_nat_eq_neg_one_iff]`. Take `⟨k, hk⟩` from `hodd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Break down `Int.even_or_odd k with ⟨b, hb⟩ | ⟨b, hb⟩` into its components or cases. Use `left`. Rewrite using `[hk, hb]`. Conclude with `⟨b, by ring⟩`.
+Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Rewrite using `[hk, hb]`. Conclude with `⟨b + 1, by ring⟩`. Take `⟨k, hk, hko⟩` from `(Nat.dvd_prime_pow Nat.prime_two).mp (orderOf_dvd_of_pow_eq_one hE)`. Establish `hk1 : (hOf e l hl) ^ (2 ^ k) = 1`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hko]`. Conclude with `pow_orderOf_eq_one _`. Establish `hres` using `(powTwoPowEqOneIff_holds e k l hl hk).mp hk1`. Rewrite `hres` using `[zmod_nat_eq_one_iff, zmod_nat_eq_neg_one_iff]`. Establish `hM : ((2 : ℤ) ^ (e + 2 - k)) ≤ (l : ℤ) + 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Break down `hres with h | h` into its components or cases. Move the coercions through the operations in `at h`. Establish `hpos : (0 : ℤ) < l - 1` using `by omega`. Use `Int.le_of_dvd hpos h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h`. Establish `hpos : (0 : ℤ) < l + 1` using `by omega`. Use `Int.le_of_dvd hpos h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hJn : 2 ^ k ≤ J` using `hko ▸ hord`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ' : (2 : ℝ) ^ k ≤ J` using `by exact_mod_cast hJn`. Establish `key : (4 * 2 ^ e : ℝ) = 2 ^ (e + 2 - k) * 2 ^ k`. Rewrite using `[← pow_add, show e + 2 - k + k = e + 2 by omega]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (4 * 2 ^ e : ℝ) / J ≤ 4 * 2 ^ e / 2 ^ k` using `div_le_div_of_nonneg_left (by positivity) (by positivity) hJ'`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `h2 : (4 * 2 ^ e : ℝ) / 2 ^ k = 2 ^ (e + 2 - k)`. Rewrite using `[key]`. Clear the denominators using the available nonvanishing facts. Establish `h3 : (2 : ℝ) ^ (e + 2 - k) ≤ l + 1` using `by exact_mod_cast hM`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem leOfOrderOfLe_holds : OrdersBound := by
   intro e J l hl hJ hl1 hord

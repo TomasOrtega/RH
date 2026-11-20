@@ -19,14 +19,14 @@ variable {M : Type} [TopologicalSpace M] {n : ℕ} {A : HolAtlas M n} {r : Type}
   {G G' : M → M → Matrix r r ℂ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun y => (h.smooth y).symm, fun y => (h.trans y).mono fun _ ⟨T, K, K', hT, hK, hK', e⟩ => ⟨T, K', K, hT, hK', hK, e.mono fun _ hw => hw.symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem pair_symm (h : IsGramPair A G G') : IsGramPair A G' G :=
   ⟨fun y => (h.smooth y).symm, fun y => (h.trans y).mono fun _ ⟨T, K, K', hT, hK, hK', e⟩ =>
     ⟨T, K', K, hT, hK', hK, e.mono fun _ hw => hw.symm⟩⟩
 
 /- English proof (translation)
-Use `⟨((h.smooth x.pt).1.2 x.1.1 x.2).self_of_nhds, ?_⟩` and prove the remaining obligations. Rewrite using `[x.ch.left_inv x.2]`. Conclude with `(h.smooth x.pt).1.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_crd (h : IsGramPair A G G') (x : A.Pt) :
     MContDiffAt ∞ (fun u => G x.pt (x.ch.symm u)) x.crd ∧ IsUnit (G x.pt (x.ch.symm x.crd)).det := by
@@ -35,7 +35,7 @@ theorem smooth_crd (h : IsGramPair A G G') (x : A.Pt) :
   exact (h.smooth x.pt).1.1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h₁` using `smooth_crd h x`. Use `((GlobalTheory.T.dbar_operator_local_calculus_complex_forms n x.crd).1 _ _ ((GlobalTheory.T.gramConnectionPair_chernFields_local_frame M n A r G G' h x k).mono fun _ hv => hv.1)).trans ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.T.curvature_power_sum_transgression_smooth_dbar_closed n r _ _ x.crd h₁.1 h₁.2 h₁.1 h₁.2 k).2.1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dbar_powFld (h : IsGramPair A G G') (k : ℕ) : A.dbar (fld A (powFld A G k)) = 0 := by
   funext x
@@ -44,9 +44,9 @@ theorem dbar_powFld (h : IsGramPair A G G') (k : ℕ) : A.dbar (fld A (powFld A 
   exact (GlobalTheory.T.curvature_power_sum_transgression_smooth_dbar_closed n r _ _ x.crd h₁.1 h₁.2 h₁.1 h₁.2 k).2.1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h₁` using `smooth_crd h x`. Establish `h₂` using `smooth_crd (pair_symm h) x`. Use `symm`. Use `((GlobalTheory.T.dbar_operator_local_calculus_complex_forms n x.crd).1 _ _ ((GlobalTheory.T.gramConnectionPair_chernFields_local_frame M n A r G G' h x k).mono fun _ hv => hv.2.2)).trans ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.T.dbar_chernTransgressionForm_eq_power_sum_diff n r _ _ x.crd h₁.1 h₁.2 h₂.1 h₂.2 k`.
+A detailed English derivation is pending.
 -/
 theorem dbar_transFld (h : IsGramPair A G G') (k : ℕ) :
     fld A (powFld A G k) - fld A (powFld A G' k) = A.dbar (transFld A G G' k) := by
@@ -58,7 +58,7 @@ theorem dbar_transFld (h : IsGramPair A G G') (k : ℕ) :
   exact GlobalTheory.T.dbar_chernTransgressionForm_eq_power_sum_diff n r _ _ x.crd h₁.1 h₁.2 h₂.1 h₂.2 k
 
 /- English proof (translation)
-Introduce `M _ n A r _ _ G G' h k` and use `⟨(GlobalTheory.T.curvaturePowerSum_transgression_isForm M n A r G G' h k).1, (GlobalTheory.T.curvaturePowerSum_transgression_isForm M n A r G' G (pair_symm h) k).1, dbar_powFld h k, dbar_powFld (pair_symm h) k, _, (GlobalTheory.T.curvaturePowerSum_transgression_isForm M n A r G G …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem dbarCoh_powFld : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n) (r : Type) [Fintype r]
     [DecidableEq r] (G G' : M → M → Matrix r r ℂ), IsGramPair A G G' → ∀ k,

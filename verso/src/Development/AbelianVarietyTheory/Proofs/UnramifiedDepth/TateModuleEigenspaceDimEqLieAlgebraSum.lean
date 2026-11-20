@@ -20,7 +20,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Simplify using `[Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem td_mem {C OE κ : Type} [Field C] [CommRing OE] [Fintype κ] [DecidableEq κ]
     (ρ : OE → Matrix κ κ C) (τ : OE →+* C) (x : κ → C) :
@@ -29,13 +29,13 @@ private theorem td_mem {C OE κ : Type} [Field C] [CommRing OE] [Fintype κ] [De
   simp [Submodule.mem_iInf, Module.End.mem_eigenspace_iff]
 
 /- English proof (translation)
-Unfold `eigDim`. Rewrite using `[← LinearEquiv.finrank_map_eq (LinearEquiv.funCongrLeft C C e) (⨅ a : OE, Module.End.eigenspace (Matrix.toLin' ((ρ a).map (algebraMap C C))) (τ a))]`. Use `congrArg (fun S : Submodule C _ => Module.finrank C ↥S) ?_` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[Submodule.mem_map_equiv, td_mem (fun a => (ρ a).submatrix e e), td_mem ρ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_mulVec_equiv]`. Establish `hx : (LinearEquiv.funCongrLeft C C e).symm x = x ∘ e.symm`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i`. Use `congrFun h (e.symm i)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `h`. Use extensionality with `i`. Use `congrFun h (e i)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem td_reindex {C OE κ κ' : Type} [Field C] [CommRing OE] [Fintype κ] [DecidableEq κ]
     [Fintype κ'] [DecidableEq κ'] (e : κ' ≃ κ) (ρ : OE → Matrix κ κ C) (τ : OE →+* C) :
@@ -70,11 +70,11 @@ private theorem td_base {C O OE κ : Type} [Field C] [CommRing O] [Algebra O C] 
   rfl
 
 /- English proof (translation)
-Unfold `eigDim`. Use `congrArg (fun S : Submodule C _ => Module.finrank C ↥S) ?_` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[td_mem (fun a => ρ (s a)), td_mem ρ]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h a`. Use `h (s a)` as an intermediate fact. Rewrite `this` using `[hs]`. Simplify using `using this`. Introduce `h a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h (s a)` as an intermediate fact. Simplify `this` using `[hs]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem td_twist {C OE κ : Type} [Field C] [CommRing OE] [Fintype κ]
     [DecidableEq κ] (ρ : OE → Matrix κ κ C) (τ : OE →+* C) (s : OE →+* OE) (hs : ∀ a, s (s a) = a) :
@@ -93,27 +93,25 @@ private theorem td_twist {C OE κ : Type} [Field C] [CommRing OE] [Fintype κ]
     simpa [hs] using this
 
 /- English proof (translation)
-Use `set A : Matrix (Fin g ⊕ Fin g) (Fin g) C := E⁻¹ * Hᵀ with hA`. Use `set A' : Matrix (Fin g) (Fin g ⊕ Fin g) C := (-c⁻¹) • B with hA'`. Use `set B' : Matrix (Fin g ⊕ Fin g) (Fin g) C := c⁻¹ • (E⁻¹ * Bᵀ) with hB'`. Establish `h1 : A * A' + B' * H = 1`. Establish `: A * A' + B' * H = c⁻¹ • (E⁻¹ * (Bᵀ * H - Hᵀ * B))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hA, hA', hB', Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc, Matrix.mul_sub, smul_sub, neg_smul, Matrix.mul_neg]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, hform, Matrix.mul_smul, Matrix.nonsing_inv_mul _ hE, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Establish `h2 : Matrix.fromRows A' H * Matrix.fromCols A B' = 1`. Rewrite using `[← Matrix.fromCols_mul_fromRows_eq_one_comm (Equiv.refl _), Matrix.fromCols_mul_fromRows, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.fromRows_mul_fromCols, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`. Take `⟨h21, -, h23, h24⟩` from `h2`. Establish `hρA : ∀ a, ρ a * A = A * L a`. Introduce `a`. Establish `e1 : ρ a * E⁻¹ = E⁻¹ * (ρ (s a))ᵀ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `hinv (s a)` as an intermediate fact. Rewrite `this` using `[hs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hE, Matrix.one_mul]`. Use `_ = E⁻¹ * (ρ (s a))ᵀ * (E * E⁻¹) := by rw [← this]; simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `_ = _ := by rw [Matrix.mul_nonsing_inv _ hE, Matrix.mul_one]`. Establish `e2` using `congrArg Matrix.transpose (hH (s a))`. Rewrite `e2` using `[hs, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose]`. Rewrite using `[hA, ← Matrix.mul_assoc, e1, Matrix.mul_assoc, e2, Matrix.mul_assoc]`. Set `e : Fin (g + g) ≃ Fin g ⊕ Fin g` to `finSumFinEquiv.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `ρ' : OE →+* Matrix (Fin (g + g)) (Fin (g + g)) C` to `(Matrix.reindexAlgEquiv C C e.symm).toRingEquiv.toRingHom.comp ρ`. Establish `hρ' : ∀ a, ρ' a = (ρ a).submatrix e e` using `fun a => rfl`. Set `LT : OE →+* Matrix (Fin g) (Fin g) C` to `{ toFun := fun a => (L (s a))ᵀ map_one' := by simp map_mul' := fun a b => by rw [mul_comm a b, map_mul, map_mul, Matrix.transpose_mul] map_zero' := by simp map_add' := fun a b => by simp }`. Establish `hsp : SplitEx (A.submatrix e id) (H.submatrix id e)`. Use `⟨?_, A'.submatrix id e, B'.submatrix e id, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.submatrix_mul_equiv, h23]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.submatrix_mul_equiv, h21]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.submatrix_mul_equiv, h24]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[← Matrix.submatrix_one_equiv e, ← h1]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Establish `k1` using `(GlobalTheory.T.eigenspaceDim_add_split_exact_transpose C C OE (g + g) g g _ _ hsp ρ' L LT (fun a => by`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[hρ', Matrix.submatrix_mul_equiv, hH]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, LT])`. Use the proof step `(fun a => by`. Rewrite using `[hρ', Matrix.submatrix_mul_equiv, hρA]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]) τ).1`. Set `Z : OE →+* Matrix (Fin 0) (Fin 0) C` to `{ toFun := fun _ => 0 map_one' := Subsingleton.elim _ _ map_mul' := fun _ _ => Subsingleton.elim _ _ map_zero' := rfl map_add' := fun _ _ => Subsingleton.elim _ _ }`. Establish `k2` using `(GlobalTheory.T.eigenspaceDim_add_split_exact_transpose C C OE g g 0 _ _ (splitEx_one g) (L.comp s) (L.comp s) Z (fun a => Subsingleton.elim _ _) (fun a => by simp) τ).2`. Establish `k3 : eigDim C ρ' τ = eigDim C ρ τ` using `td_reindex e ρ τ`.
-
-Establish `k4 : eigDim C LT τ = eigDim C L (τ.comp s)` using `k2.trans (td_twist L τ s hs)`. Rewrite using `[← k3, k1, k4]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem td_field {C OE : Type} [Field C] [IsAlgClosed C] [CharZero C] [CommRing OE] [IsDomain OE]
     [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] {g : ℕ}
@@ -188,21 +186,17 @@ private theorem td_field {C OE : Type} [Field C] [IsAlgClosed C] [CharZero C] [C
   rw [← k3, k1, k4]
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ _ _ _ _ cp hU g H τ`. Set `j : OE →+* ℤ_[p] ⊗[ℤ] OE` to `(Algebra.TensorProduct.includeRight (R := ℤ) (A := ℤ_[p]) (B := OE)).toRingHom`. Set `f : ℤ_[p] →+* C` to `(algebraMap O C).comp (algebraMap ℤ_[p] O)`. Set `s : OE →+* OE` to `((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom`. Establish `hs : ∀ a, s (s a) = a` using `fun a => star_star a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hj : ∀ a, sigE p OE (j a) = j (s a)` using `fun a => rfl`. Set `ρ : OE →+* Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) C` to `(f.mapMatrix.comp H.ρ.toRingHom).comp j`. Set `L : OE →+* Matrix (Fin g) (Fin g) C` to `((algebraMap O C).mapMatrix.comp H.ρL).comp j`. Establish `hρ : ∀ a, ρ a = (H.ρ (j a)).map f` using `fun a => rfl`. Establish `hL : ∀ a, L a = (H.ρL (j a)).map (algebraMap O C)` using `fun a => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : algebraMap O C cp ≠ 0`. Introduce `h`. Establish `h1` using `hU.cp_val`. Establish `h2 : p - 1 ≠ 0` using `by have := (Fact.out : p.Prime).two_le; omega`. Rewrite `h1` using `[h, map_zero, zero_pow h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hU.p_ne h1.symm`. Establish `key` using `td_field ρ L s hs (H.E.map f) (by`. Use `H.isUnit_det_E.map f` as an intermediate fact. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply] at this)` and apply the resulting hypothesis. Use the proof step `(fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hρ, hρ, ← hj, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, H.E_equivariant])`. Use the proof step `(H.Ht.map (algebraMap O C)) (H.Bt.map (algebraMap O C))`. Use the proof step `(fun a => by`. Use `congrArg (fun M => M.map (algebraMap O C)) (H.Ht_equivariant.1 (j a))` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.transpose_map] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hρ, hL, ← hj, ← this]`. Use the proof step `rfl)`. Use the proof step `(algebraMap O C cp) hc`. Use the proof step `(by`. Use `congrArg (fun M => M.map (algebraMap O C)) H.form_eq_alt` as an intermediate fact.
-
-Simplify using `only [Matrix.map_sub _ (map_sub (algebraMap O C)), Matrix.map_mul, Matrix.transpose_map] at this`. Rewrite using `[this]`. Use extensionality with `i k`. Simplify using `[f]) τ`. Rewrite using `[td_base, td_base (fun a : OE => H.ρL (1 ⊗ₜ[ℤ] a)) τ, td_base (fun a : OE => H.ρL (1 ⊗ₜ[ℤ] a))]`.
-
-Conclude with `key`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigDim_tate : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (OE : Type) [CommRing OE] [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] [StarRing OE] (cp : O), HodgeTateSetting p v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp → ∀ (g : ℕ) (H : HodgeTateDatum p g v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp) (τ : OE →+* C), eigDim C (fun a : OE => (H.ρ (1 ⊗ₜ[ℤ] a)).map (algebraMap ℤ_[p] O)) τ = eigDim C (fun a : OE => H.ρL (1 ⊗ₜ[ℤ] a)) τ + eigDim C (fun a : OE => H.ρL (1 ⊗ₜ[ℤ] a)) (τ.comp ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom) := by
   intro p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ _ _ _ _ cp hU g H τ

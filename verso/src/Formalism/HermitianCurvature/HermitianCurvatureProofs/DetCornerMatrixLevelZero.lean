@@ -15,7 +15,7 @@ section lev
 variable {k : ℕ}
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Conclude with `(Matrix.det_fin_one _).trans rfl`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem det_corner_matrix_level_zero {r' : ℕ} (hr : r' = 0) (z z' : Fin (2 * r' + k + 1) → ℂ) (g : B.Mat k r') :
     (Zhat k r' z z' g).det = Q.zetaL k r' z z' (Fin.last r') g := by
@@ -23,7 +23,7 @@ theorem det_corner_matrix_level_zero {r' : ℕ} (hr : r' = 0) (z z' : Fin (2 * r
   exact (Matrix.det_fin_one _).trans rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castV_herm {a b : ℕ} (h : a = b) (v w : Fin (2 * a + k + 1) → ℂ) :
     herm (Hpk k b) (D.castV h v) (D.castV h w) = herm (Hpk k a) v w := by
@@ -31,7 +31,7 @@ theorem castV_herm {a b : ℕ} (h : a = b) (v w : Fin (2 * a + k + 1) → ℂ) :
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem capRep_cast {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] {a b m : ℕ} (h : a = b)
     (π : Q.Mx k b → (Wp →L[ℂ] Wp)) (Bs : Fin m → Fin (2 * a + k + 1) → ℂ) (w : ℂ) (v : Wp) :
@@ -47,15 +47,13 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hG : 0 < Complex.normSq (Q.zetaL P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last _) x.2) - Tz P.k (P.r - P.r) (p.T.bs P.r).z * Tz P.k (P.r - P.r) (p.T.bs P.r).z'` using `hx.2.2`. Establish `hT` using `mul_pos (p.T.bs P.r).T_pos (p.T.bs P.r).T'_pos`. Establish `hdet : (Zhat P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' γ₀).det ≠ 0`. Rewrite using `[det_corner_matrix_level_zero (Nat.sub_self P.r), hζ]`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hG` using `[h0, map_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdom : ((x.1, γ₀) : (Fin (JC.parLev P P.r).r → ℂ) × Q.Mx (JC.parLev P P.r).k (JC.parLev P P.r).r) ∈ Q.DomR (JC.parLev P P.r).k (JC.parLev P P.r).r (p.T.bs P.r).z (p.T.bs P.r).z'`. Use `⟨hx.1, ⟨hγG, fun a _ => ?_⟩, ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction.
 
-Establish `ha` using `a.isLt`. Use `revert ha`. Use `show ¬ (a.val < P.r - P.r)`. Use linear arithmetic over natural numbers and integers. Use `show 0 < Complex.normSq (Q.zetaL P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last _) γ₀) - Tz P.k (P.r - P.r) (p.T.bs P.r).z * Tz P.k (P.r - P.r) (p.T.bs P.r).z'`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hζ]`. Conclude with `hG`. Take `⟨-, -, he⟩` from `Ψ.2`. Introduce `hB hhB hBν`. Establish `e` using `he (x.1, γ₀) hdom _ (Formalism.FourierDecayAlt.P.Topx1.vecw_conj_mem _ hLev.2.2 hhB) _ (Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hhB)`.
-
-Apply the tactic sequence `try dsimp only at e`. Establish `hc` using `Formalism.FourierDecayAlt.P.PBI.dframe_commute _ (Nat.sub_self P.r) hLev.2.2 hγG hγF hdet hhB hBν`. Conclude with `e.symm.trans (congrArg (fun g => (Ψ : Q.Fn (JC.parLev P P.r).k (JC.parLev P P.r).r (Wq →L[ℂ] Wp)) x.1 g) hc)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem grpInt_at_dframe (p : KB.Pl P Wp Wq) {ν'r : Fin (2 * (P.r - P.r) + P.k + 1) → ℂ}
     {m₀r : B.Mat P.k (P.r - P.r)} (hLev : LevFrame p ν'r m₀r)

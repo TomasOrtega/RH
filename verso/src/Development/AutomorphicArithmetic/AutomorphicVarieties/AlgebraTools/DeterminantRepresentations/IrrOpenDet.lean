@@ -7,15 +7,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open Polynomial Matrix UpperTheory.V UpperTheory.V.W
 
 /- English proof (translation)
-Introduce `n A G _ _ D H`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Use `⟨Set.univ, isOpen_univ, ?_⟩` and prove the remaining obligations. Introduce `K _ _ φ ρ p _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[UpperTheory.V.AlgebraTools.Det.matIrrIff H ρ]`. Conclude with `⟨fun _ => Subsingleton.elim _ _, fun _ => Set.mem_univ _⟩`. Take `⟨U, hU, h⟩` from `UpperTheory.V.AlgebraTools.Det.irrOpen (ι := Fin n) (fun h : H => D.tr (MonoidAlgebra.single (h : G) 1))`. Use `⟨U, hU, ?_⟩` and prove the remaining obligations. Introduce `K _ _ φ ρ p hp hD`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[UpperTheory.V.AlgebraTools.Det.matIrrIff H ρ]`. Use `h K φ (ρ.comp H.subtype) p hp ?_` and prove the remaining obligations. Introduce `g`. Establish `h1` using `(UpperTheory.V.AlgebraTools.Det.mapApi D φ).2.2.1 1 (g : G)`. Establish `h2` using `(UpperTheory.V.AlgebraTools.Det.repApi ρ).2.2.1 hn (MonoidAlgebra.single (g : G) 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : GDet.repAlg ρ K (MonoidAlgebra.single (g : G) 1) = ρ g`. Use extensionality with `i j`. Simplify using `[GDet.repAlg]`. Rewrite `h1` using `[hD]`. Rewrite `h2` using `[h3]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(ρ g).trace = φ (D.lam 1 _)`. Rewrite using `[← h1, ← h2]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.irrOpenDet :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (H : Subgroup G),

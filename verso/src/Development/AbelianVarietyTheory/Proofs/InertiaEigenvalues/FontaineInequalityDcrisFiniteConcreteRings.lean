@@ -11,9 +11,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.Per.FontaineBound
 
 /- English proof (translation)
-Use `isDomain_cris (P.PD K) (isField_of_tied T)` as an intermediate fact. Use `(P.PD K).finK₀` as an intermediate fact. Use `LL.2` as an intermediate fact. Use `finite_finrank_le (P.PD K).actB (fun b b' hb h => GlobalTheory.T.ratio_invariant_in_K0 l P AI T K b' b hb fun g hg => ?_) ρ` and prove the remaining obligations. Establish `h1` using `h ⟨g, hg⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[P.PD_actB, P.PD_actB]`. Rewrite using `[mul_comm, h1, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dcris_finite_le_of_tied {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI)
     (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V]
@@ -29,7 +29,7 @@ theorem dcris_finite_le_of_tied {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : 
   rw [mul_comm, h1, mul_comm]
 
 /- English proof (translation)
-Introduce `_ _ _ _ T K LL` and use `⟨fun V _ _ _ _ _ ρ => (dcris_finite_le_of_tied T K LL V ρ).2, fun V _ _ _ _ _ ρ => (dcris_finite_le_of_tied T K LL V ρ).1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fontaineLe_of_tied : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →
     ∀ K LL : FinExt l, FontaineLe (P.PD K) ↥LL.1 ∧

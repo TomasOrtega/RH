@@ -20,9 +20,9 @@ open MvPolynomial
 variable {S : Type} [Field S] {ρ : Type}
 
 /- English proof (translation)
-Take `⟨P, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `⟨MvPolynomial.constantCoeff P, Ideal.Quotient.mk _ (P - C (MvPolynomial.constantCoeff P)), ?_, ?_⟩` and prove the remaining obligations. Use `⟨m + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow (sub_const_mem_orig P) _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, ← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem jet_const_add_nil (m : ℕ) (x : Jet S ρ m) :
     ∃ c : S, ∃ n : Jet S ρ m, IsNilpotent n ∧ x = algebraMap S (Jet S ρ m) c + n := by
@@ -35,11 +35,9 @@ theorem jet_const_add_nil (m : ℕ) (x : Jet S ρ m) :
     ring
 
 /- English proof (translation)
-Use `haveI : Nontrivial (Jet S ρ m) := (jetAug : Jet S ρ m →ₐ[S] S).toRingHom.domain_nontrivial`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => ?_` and prove the remaining obligations. Take `⟨c, n, hn, rfl⟩` from `jet_const_add_nil m x`. Distinguish the cases in `hc : c = 0`. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hc` using the available equality. Rewrite using `[map_zero, zero_add]`. Use `hn.neg.isUnit_add_right_of_commute isUnit_one (Commute.one_right _) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `left`.
-
-Use `hn.isUnit_add_right_of_commute ((isUnit_iff_ne_zero.2 hc).map (algebraMap S (Jet S ρ m))) (Commute.all _ _) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isLocalRing_jet (m : ℕ) : IsLocalRing (Jet S ρ m) := by
   haveI : Nontrivial (Jet S ρ m) := (jetAug : Jet S ρ m →ₐ[S] S).toRingHom.domain_nontrivial
@@ -56,11 +54,11 @@ theorem isLocalRing_jet (m : ℕ) : IsLocalRing (Jet S ρ m) := by
     ring
 
 /- English proof (translation)
-Establish `hle : RingHom.ker (jetTrunc : Jet S ρ (m + 1) →ₐ[S] Jet S ρ m) ≤ Ideal.map (Ideal.Quotient.mk (orig S ρ ^ (m + 1 + 1))) (orig S ρ ^ (m + 1))`. Introduce `x hx`. Take `⟨P, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[RingHom.mem_ker]`. Establish `hP : P ∈ orig S ρ ^ (m + 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hx`. Conclude with `Ideal.mem_map_of_mem _ hP`. Use `le_bot_iff.1 ((Ideal.pow_right_mono hle 2).trans ?_)` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Ideal.map_mono (Ideal.pow_le_pow_right (show m + 1 + 1 ≤ (m + 1) * 2 by omega))).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_quotient_self]`.
+A detailed English derivation is pending.
 -/
 theorem ker_trunc_sq (m : ℕ) :
     RingHom.ker (jetTrunc : Jet S ρ (m + 1) →ₐ[S] Jet S ρ m) ^ 2 = ⊥ := by
@@ -79,9 +77,9 @@ theorem ker_trunc_sq (m : ℕ) :
   rw [Ideal.map_quotient_self]
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `r`. Establish `h0 : (Ideal.Quotient.mk (orig S ρ ^ (0 + 1)) (X r)) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, zero_add, pow_one]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X_mem_orig r`. Use `show algebraMap S (Jet S ρ 0) ((jetAug : Jet S ρ 0 →ₐ[S] S) (Ideal.Quotient.mk (orig S ρ ^ (0 + 1)) (X r))) = Ideal.Quotient.mk (orig S ρ ^ (0 + 1)) (X r)`. Rewrite using `[h0, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jet_zero_const :
     (Algebra.ofId S (Jet S ρ 0)).comp (jetAug : Jet S ρ 0 →ₐ[S] S) = AlgHom.id S (Jet S ρ 0) := by
@@ -96,7 +94,7 @@ theorem jet_zero_const :
   rw [h0, map_zero, map_zero]
 
 /- English proof (translation)
-Introduce `m` and use `⟨isLocalRing_jet m, ker_trunc_sq m, jet_zero_const⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem jet_basic : ∀ {S : Type} [Field S] {ρ : Type} (m : ℕ),
     IsLocalRing (Jet S ρ m) ∧ RingHom.ker (jetTrunc : Jet S ρ (m + 1) →ₐ[S] Jet S ρ m) ^ 2 = ⊥ ∧

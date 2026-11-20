@@ -12,11 +12,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `hg : ∀ g : GL (Fin 0) k, g = 1` using `fun g => Units.ext (Subsingleton.elim _ _)`. Set `f : ℂ →ₗ[ℂ] IndSp e ρ` to `{ toFun := fun c => ⟨⟨fun _ => L c, fun p g => by`. Take `rfl : p = 1` from `Subtype.ext (hg _)`. Use the proof step `simp⟩, mem_smoothPart_of_nhds (Filter.Eventually.of_forall fun g => rfl)⟩`. Use the proof step `map_add' := fun a b => Subtype.ext (Subtype.ext (funext fun _ => map_add L a b))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `map_smul' := fun a b => Subtype.ext (Subtype.ext (funext fun _ => map_smul L a b)) }`. Use `⟨equivOfBijective ⟨f, fun g => by rw [hg g, map_one, map_one]; rfl⟩ ⟨fun a b h => ?_, fun φ => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : L a = L b` using `congrArg (fun φ : IndSp e ρ => φ.1.1 1) h`. Conclude with `L.injective h1`. Use `⟨L.symm (φ.1.1 1), Subtype.ext (Subtype.ext (funext fun g => ?_))⟩` and prove the remaining obligations.
-
-Rewrite using `[hg g]`. Conclude with `L.apply_symm_apply _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_parInd_zero {d : Fin 0 → ℕ} (e : (Σ a, Fin (d a)) ≃ Fin 0)
     (ρ : Representation ℂ (Levi k fun a => Fin (d a)) V) (L : ℂ ≃ₗ[ℂ] V) :
@@ -36,14 +34,14 @@ theorem nonempty_equiv_parInd_zero {d : Fin 0 → ℕ} (e : (Σ a, Fin (d a)) �
     exact L.apply_symm_apply _
 
 /- English proof (translation)
-The claim follows from `nonempty_equiv_parInd_zero _ _ (PiTensorProduct.isEmptyEquiv (R := ℂ) (Fin 0) (s := fun a => (x a).2.rep.V)).symm`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_prodIrr_zero (x : Fin 0 → IrrGL k) (hd : ∑ a, (x a).1 = 0) :
     Nonempty ((detRep (Fin 0) (1 : kˣ →* ℂˣ)).Equiv (prodIrr x hd)) :=
   nonempty_equiv_parInd_zero _ _ (PiTensorProduct.isEmptyEquiv (R := ℂ) (Fin 0) (s := fun a => (x a).2.rep.V)).symm
 
 /- English proof (translation)
-Take `⟨φ⟩` from `nonempty_equiv_prodIrr_zero (k := k) Fin.elim0 rfl`. Establish `ho : IsOrderedForm (k` using `k) (Fin.elim0 : Fin 0 → Segment k) 0 := ⟨rfl, fun i => i.elim0⟩`. Conclude with `⟨⟨0, Fin.elim0, rfl, ⟨_, ho, fun i => i.elim0⟩, (isSocle_self (isIrreducible_ofChar _)).of_equiv (.refl _) φ⟩, ⟨0, Fin.elim0, rfl, ⟨_, ho, fun i => i.elim0⟩, (isCosocle_self (isIrreducible_ofChar _)).of_equiv (.refl _) φ⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem empty_spec : IsZ (0 : Multiset (Segment k)) (detRep (Fin 0) (1 : kˣ →* ℂˣ)) ∧
     IsL (0 : Multiset (Segment k)) (detRep (Fin 0) (1 : kˣ →* ℂˣ)) := by
@@ -53,7 +51,7 @@ theorem empty_spec : IsZ (0 : Multiset (Segment k)) (detRep (Fin 0) (1 : kˣ →
     ⟨0, Fin.elim0, rfl, ⟨_, ho, fun i => i.elim0⟩, (isCosocle_self (isIrreducible_ofChar _)).of_equiv (.refl _) φ⟩⟩
 
 /- English proof (translation)
-Take `⟨_, x, rfl, ⟨Δ, ⟨rfl, -⟩, hΔ⟩, -⟩` from `h`. Rewrite using `[Multiset.map_map]`. Conclude with `Finset.sum_congr rfl fun i _ => (hΔ i).deg_eq`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsL_deg {N : ℕ} {𝔪 : Multiset (Segment k)} {π : Representation ℂ (GL (Fin N) k) V} (h : IsL 𝔪 π) :
     (𝔪.map Segment.deg).sum = N := by
@@ -62,7 +60,7 @@ theorem IsL_deg {N : ℕ} {𝔪 : Multiset (Segment k)} {π : Representation ℂ
   exact Finset.sum_congr rfl fun i _ => (hΔ i).deg_eq
 
 /- English proof (translation)
-Take `⟨n, c⟩` from `x`. Take `⟨d, c'⟩` from `ρ`. Take `rfl : d = n` from `(one_mul d).symm.trans h.deg_eq`. Conclude with `congrArg _ (irrCl_eq_iff.2 ((single_spec hρ).1.unique h))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_isZSeg_single {ρ x : IrrGL k} (hρ : ρ.IsCusp) (h : IsZSeg (.single ρ hρ) x.rep) : x = ρ := by
   obtain ⟨n, c⟩ := x
@@ -71,19 +69,19 @@ theorem eq_of_isZSeg_single {ρ x : IrrGL k} (hρ : ρ.IsCusp) (h : IsZSeg (.sin
   exact congrArg _ (irrCl_eq_iff.2 ((single_spec hρ).1.unique h))
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `h`. Establish `h1 : ∀ g : GL (Fin 2) k, (f 1).1.1 g = (ψ (GeneralLinearGroup.det g) : ℂ) • (f 1).1.1 1` using `fun g => by`. Use `congrArg (fun φ => φ.1.1 1) (f.isIntertwining _ _ g 1)` as an intermediate fact. Establish `h2 : detRep (Fin 2) ψ g 1 = (ψ (GeneralLinearGroup.det g) : ℂ) • (1 : ℂ)` using `ofChar_apply _ _ _`. Simplify using `only [h2, map_smul] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← one_mul g]`. Conclude with `this.symm.trans (by rw [one_mul]; rfl)`. Establish `h0 : (f 1).1.1 1 ≠ 0` using `fun h0 => one_ne_zero (hf (by`. Rewrite using `[map_zero]`. Conclude with `Subtype.ext (Subtype.ext (funext fun g => by rw [h1, h0, smul_zero]; rfl))))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (g : Levi k fun _ : Fin 2 => Fin 1) y, piTensor (fun a => detRep (Fin 1) (χ a)) g y = ((∏ a, χ a (GeneralLinearGroup.det (g a)) : ℂˣ) : ℂ) • y`. Introduce `g y`. Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `smul_tprod c x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_smul, smul_comm, piTensor_tprod, Units.coe_prod, ← MultilinearMap.map_smul_univ]`. Use `congr 2`. Establish `law : ∀ g : Levi k fun _ : Fin 2 => Fin 1, ψ (∏ a, GeneralLinearGroup.det (g a)) = deltaHalf k _ g * ∏ a, χ a (GeneralLinearGroup.det (g a))` using `fun g => by`. Use `parInd_law e _ (f 1) ⟨_, leviEmb_mem_parab k e g⟩ 1` as an intermediate fact. Rewrite `this` using `[mul_one, leviProj_leviEmb, key, h1, smul_smul, det_leviEmb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Units.ext (smul_left_injective ℂ h0 this)`. Use `MonoidHom.ext fun z => ?_` and prove the remaining obligations. Establish `hz : GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin 1) z) = z` using `by ext; simp [GeneralLinearGroup.scalar]`. Establish `a` using `law ![GeneralLinearGroup.scalar (Fin 1) z, 1]`. Establish `b` using `law ![1, GeneralLinearGroup.scalar (Fin 1) z]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `a`, `b` using `[deltaHalf_apply]`. Simplify using `only [Fin.prod_univ_two, modExp_fin (fun _ : Fin 2 => Fin 1) (fun _ => by simp), Matrix.cons_val_zero, Matrix.cons_val_one, hz, map_one, mul_one, one_mul] at a b`. Establish `c : absPow k 1 = absPow k (1 / 2) * absPow k (1 / 2)` using `by rw [← absPow_add]; norm_num`. Establish `d : absPow k (-1 / 2) = (absPow k (1 / 2))⁻¹` using `by rw [← absPow_neg, neg_div]`. Evaluate the numerical expressions using `at a b`.
+Establish an intermediate fact. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b` using `[← neg_div, d, a]`. Rewrite using `[c, MonoidHom.mul_apply, MonoidHom.mul_apply]`. Rewrite `b` using `[MonoidHom.inv_apply, eq_inv_mul_iff_mul_eq]`. Rewrite using `[← b, mul_comm ((χ 0) z), mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_embeds {e : (Σ _ : Fin 2, Fin 1) ≃ Fin 2} {χ : Fin 2 → kˣ →* ℂˣ} {ψ : kˣ →* ℂˣ}
     (h : Embeds (detRep (Fin 2) ψ) (multiProd e fun a => detRep (Fin 1) (χ a))) : χ 1 = χ 0 * absPow k 1 := by
@@ -127,7 +125,7 @@ theorem eq_of_embeds {e : (Σ _ : Fin 2, Fin 1) ≃ Fin 2} {χ : Fin 2 → kˣ �
   rw [← b, mul_comm ((χ 0) z), mul_assoc]
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Set `φ` to `multiProdEquiv (stdBlocks (fun _ : Fin 2 => 1) hd) fun a => equivRep (IrrRep.det (Fin 1) (c a) (hc a))`. Conclude with `eq_of_embeds (h.trans (.of_equiv φ.symm))`.
+Substitute using the available equality. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem eq_of_embeds_prodIrr {c : Fin 2 → kˣ →* ℂˣ} {ψ : kˣ →* ℂˣ} (hc : ∀ a, IsSmoothChar (c a)) {x : Fin 2 → IrrGL k}
     (hx : x = fun a => IrrGL.ofChar (c a) (hc a)) {hd : ∑ a, (x a).1 = 2}
@@ -137,13 +135,13 @@ theorem eq_of_embeds_prodIrr {c : Fin 2 → kˣ →* ℂˣ} {ψ : kˣ →* ℂˣ
   exact eq_of_embeds (h.trans (.of_equiv φ.symm))
 
 /- English proof (translation)
-Introduce and unpack `⟨h, x, hd, ⟨Δ, ⟨hm, ho⟩, hΔ⟩, hs⟩`. Take `rfl : h = 2` from `by simpa using congrArg Multiset.card hm`. Establish `hm' : ({Δ 0, Δ 1} : Multiset (Segment k)) = _` using `hm`. Establish `hp` using `single_precedes χ hχ`. Establish `h01 : Δ 0 = .single _ ((IrrGL.isCusp_ofChar χ hχ).nu 1) ∧ Δ 1 = .single _ (IrrGL.isCusp_ofChar χ hχ)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Multiset.cons_eq_cons.1 hm' with ⟨a, b⟩ | ⟨-, s, a, b⟩` into its components or cases. Conclude with `absurd hp.1 (by rw [← a, ← Multiset.singleton_inj.1 b]; exact ho 0 1 (by decide))`. Take `rfl : s = 0` from `by simpa using congrArg Multiset.card a`. Conclude with `⟨(Multiset.singleton_inj.1 b).symm, Multiset.singleton_inj.1 a⟩`. Set `c : Fin 2 → kˣ →* ℂˣ` to `![χ * absPow k 1, χ]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc : ∀ a, IsSmoothChar (c a)` using `Fin.forall_fin_two.2 ⟨hχ.mul (isSmoothChar_absPow 1), hχ⟩`. Establish `hx : x = fun a => IrrGL.ofChar (c a) (hc a)`. Use `funext (Fin.forall_fin_two.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `(eq_of_isZSeg_single _ (h01.1 ▸ hΔ 0)).trans (IrrGL.tw_ofChar _ _ _ _)`. Conclude with `eq_of_isZSeg_single _ (h01.2 ▸ hΔ 1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `eq_of_embeds_prodIrr hc hx hs.embeds` as an intermediate fact. Establish `h2 : χ = χ * absPow k 1 * absPow k 1` using `this`. Rewrite `h2` using `[mul_assoc, ← absPow_add, left_eq_mul]`. Establish `h3 : (2 : ℝ) = 0` using `(absPow_ofReal_eq_one (k := k)).1 (by rw [← h2]; norm_num)`. Evaluate the numerical expressions using `at h3`.
+Establish an intermediate fact. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem not_isZ_pair {χ ψ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     ¬ IsZ {.single _ (IrrGL.isCusp_ofChar χ hχ), .single _ ((IrrGL.isCusp_ofChar χ hχ).nu 1)} (detRep (Fin 2) ψ) := by
@@ -169,11 +167,11 @@ theorem not_isZ_pair {χ ψ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
   norm_num at h3
 
 /- English proof (translation)
-Introduce and unpack `⟨ψ, -, hψ, h⟩`. Take `⟨t, ht⟩ : ∃ t, ψ t ≠ 1` from `by by_contra! h; exact hψ (AddChar.ext _ _ h)`. Set `u : GL (Fin 2) k` to `GeneralLinearGroup.mkOfDetNeZero !![1, t; 0, 1] (by simp)`. Apply the tactic sequence `have hu : u ∈ unipB k (Fin 2) := (mem_unipB k).2 ⟨fun i j hij => by show (!![1, t; 0, 1] : Matrix (Fin 2) (Fin 2) k) i j = 0 fin_cases i <;> fin_cases j <;> simp at hij ⊢, fun i => by show (!![1, t; 0, 1] : Matrix (Fin 2) (Fin 2) k) i i = 1 fin_cases i <;> simp⟩`. Establish `hw : (whitChar ψ 2 ⟨u, hu⟩ : ℂ) = ψ t` using `by show ((ψ (∑ p : Fin 2 × Fin 2 with (p.2 : ℕ) = p.1 + 1, (!![1, t; 0, 1] : Matrix (Fin 2) (Fin 2) k) p.1 p.2) : Circle) : ℂ) = _`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `[Finset.sum_filter, Fintype.sum_prod_type, Fin.sum_univ_two]`. Establish `hdet : GeneralLinearGroup.det u = 1` using `by ext; simp [u]`. Use `Submodule.Quotient.nontrivial_iff.1 h (eq_top_iff.2 fun v _ => ?_)` and prove the remaining obligations. Establish `hne : (1 : ℂ) - ψ t ≠ 0` using `sub_ne_zero.2 fun e => ht (Circle.ext e.symm)`. Use `Submodule.subset_span ⟨⟨u, hu⟩, v / (1 - ψ t), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hw]`. Use `show v = ofChar _ u _ - _`. Rewrite using `[ofChar_apply, detChar_apply, hdet, map_one]`. Simplify using `only [Units.val_one, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem not_isGeneric_detRep (χ : kˣ →* ℂˣ) : ¬ IsGeneric (detRep (Fin 2) χ) := by
   rintro ⟨ψ, -, hψ, h⟩
@@ -199,13 +197,13 @@ theorem not_isGeneric_detRep (χ : kˣ →* ℂˣ) : ¬ IsGeneric (detRep (Fin 2
   field_simp
 
 /- English proof (translation)
-Establish `inj : ∀ a b : ℤ, (IrrGL.ofChar χ hχ).nu a = (IrrGL.ofChar χ hχ).nu b → a = b` using `fun a b h => by`. Conclude with `(IrrGL.nu_ofChar_inj χ hχ (s := a) (t := b)).1 (by simpa using h)` after adjusting the coercions. Use `⟨⟨⟨⟨.icc _ (IrrGL.isCusp_ofChar χ hχ) 0 2 (by decide), ?_⟩, fun h => ?_, fun h => ?_⟩, 1, one_pos, ?_⟩, fun h => h.2.2 fun x hx => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [Set.mem_union, Segment.mem_icc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, h1, h2, rfl⟩`. Break down `le_or_gt a 1 with h | h` into its components or cases. Use `exacts [Or.inl ⟨a, h1, h, rfl⟩, Or.inr ⟨a, h.le, h2, rfl⟩]`. Apply the tactic sequence `rintro (⟨a, h1, h2, rfl⟩ | ⟨a, h1, h2, rfl⟩) <;> exact ⟨a, by omega, by omega, rfl⟩`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, h1, -, h2⟩` from `Segment.mem_icc.1 (h (Segment.mem_icc.2 ⟨0, by decide, by decide, rfl⟩))`. Use `inj _ _ h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨a, -, h1, h2⟩` from `Segment.mem_icc.1 (h (Segment.mem_icc.2 ⟨2, by decide, by decide, rfl⟩))`. Use `inj _ _ h2` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[Segment.icc]`. Take `⟨a, h1, h2, rfl⟩` from `Segment.mem_icc.1 hx`. Conclude with `Segment.mem_icc.2 ⟨a, by omega, by omega, rfl⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem linked_tests (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     (Segment.icc _ (IrrGL.isCusp_ofChar χ hχ) 0 1 (by decide)).Precedes (.icc _ (IrrGL.isCusp_ofChar χ hχ) 1 2 (by decide)) ∧

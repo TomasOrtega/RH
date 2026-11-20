@@ -17,9 +17,9 @@ section loc
 variable {k r : ℕ} {E₁ E₂ : Type*} [NormedAddCommGroup E₁] [NormedSpace ℂ E₁] [NormedAddCommGroup E₂] [NormedSpace ℂ E₂]
 
 /- English proof (translation)
-Use `show deriv (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) 0 = deriv (fun t : ℝ => f' (g * NormedSpace.exp ((t : ℂ) • X))) 0`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Establish `hc : Continuous (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X))` using `(Formalism.FourierDecayAlt.P.B5.curve_contDiff g X).continuous`. Establish `hev : ∀ᶠ t : ℝ in nhds (0 : ℝ), g * NormedSpace.exp (((t : ℝ) : ℂ) • X) ∈ U`. Apply `hc.continuousAt.preimage_mem_nhds` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show U ∈ nhds (g * NormedSpace.exp (((0 : ℝ) : ℂ) • X))`. Rewrite using `[Formalism.FourierDecayAlt.P.B5.curve_zero]`. Conclude with `hU.mem_nhds hg`. Use `filter_upwards [hev] with t ht`. Conclude with `he _ ht (Formalism.FourierDecayAlt.P.B5.curve_mem hgG hX t)`.
+A detailed English derivation is pending.
 -/
 theorem dop_rdV_local {X : B.Mat k r} (hX : B.inLie k r X) {U : Set (B.Mat k r)} (hU : IsOpen U)
     {f f' : B.Mat k r → E₁} (he : ∀ x ∈ U, x ∈ B.GV k r → f x = f' x) {g : B.Mat k r} (hg : g ∈ U)
@@ -38,7 +38,7 @@ theorem dop_rdV_local {X : B.Mat k r} (hX : B.inLie k r X) {U : Set (B.Mat k r)}
   exact he _ ht (Formalism.FourierDecayAlt.P.B5.curve_mem hgG hX t)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact he`. Consider the case `cons X w ih`. Introduce `x hx hxG`. Conclude with `dop_rdV_local (hw X (by simp)) hU (ih (fun Y hY => hw Y (by simp [hY]))) hx hxG`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dop_rw_local (w : List (B.Mat k r)) (hw : ∀ X ∈ w, B.inLie k r X) {U : Set (B.Mat k r)} (hU : IsOpen U)
     {f f' : B.Mat k r → E₁} (he : ∀ x ∈ U, x ∈ B.GV k r → f x = f' x) :
@@ -50,7 +50,7 @@ theorem dop_rw_local (w : List (B.Mat k r)) (hw : ∀ X ∈ w, B.inLie k r X) {U
     exact dop_rdV_local (hw X (by simp)) hU (ih (fun Y hY => hw Y (by simp [hY]))) hx hxG
 
 /- English proof (translation)
-The claim follows from `| [] => rfl | X :: v => by show Formalism.REAL.RdV X (B.Rw v 0) = 0 rw [dop_rw_zero v] funext g simp [Formalism.REAL.RdV]`.
+A detailed English derivation is pending.
 -/
 theorem dop_rw_zero : ∀ v : List (B.Mat k r), B.Rw v (0 : B.Mat k r → E₁) = 0
   | [] => rfl
@@ -61,9 +61,9 @@ theorem dop_rw_zero : ∀ v : List (B.Mat k r), B.Rw v (0 : B.Mat k r → E₁) 
     simp [Formalism.REAL.RdV]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, a', hU, hgU, hc, hff⟩` from `ha g₀ hg₀`. Take `⟨U₂, Φ', hU₂, hgU₂, hc₂, hff₂⟩` from `hΦ g₀ hg₀`. Use `⟨U ∩ U₂, fun g => a' g (Φ' g), hU.inter hU₂, ⟨hgU, hgU₂⟩, ?_, fun g hg hgG => by simp only [hff g hg.1 hgG, hff₂ g hg.2 hgG]⟩` and prove the remaining obligations. Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun g => ContinuousLinearMap.restrictScalarsL ℂ E₁ E₂ ℝ ℝ (a' g)) (U ∩ U₂)` using `(ContinuousLinearMap.restrictScalarsL ℂ E₁ E₂ ℝ ℝ).contDiff.comp_contDiffOn (hc.mono Set.inter_subset_left)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h1.clm_apply (hc₂.mono Set.inter_subset_right)`.
+A detailed English derivation is pending.
 -/
 theorem dop_ckOn_ap {UU : Set (B.Mat k r)} {a : B.Mat k r → (E₁ →L[ℂ] E₂)} {Φ : B.Mat k r → E₁}
     (ha : B.CkOn ⊤ UU a) (hΦ : B.CkOn ⊤ UU Φ) : B.CkOn ⊤ UU (fun g => a g (Φ g)) := by
@@ -79,7 +79,7 @@ theorem dop_ckOn_ap {UU : Set (B.Mat k r)} {a : B.Mat k r → (E₁ →L[ℂ] E�
   exact h1.clm_apply (hc₂.mono Set.inter_subset_right)
 
 /- English proof (translation)
-Rewrite using `[← Formalism.FourierDecayAlt.P.BetaSesquilinearity.Dw_wR]`. Apply `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_Dw (fun x hx => Formalism.FourierDecayAlt.P.BetaSesquilinearity.lie_LR (u := []) (by simp) hw x (by simpa [Formalism.FourierDecayAlt.P.BetaSesquilinearity.wL] using hx))` to reduce the goal to its premises. Establish `e : ((⊤ : ℕ∞) + ((Formalism.FourierDecayAlt.P.BetaSesquilinearity.wR w).length : ℕ∞)) = ⊤` using `top_add _`. Rewrite using `[e]`. Conclude with `hf`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dop_ckOn_Rw {UU : Set (B.Mat k r)} {w : List (B.Mat k r)} (hw : ∀ X ∈ w, B.inLie k r X)
     {f : B.Mat k r → E₁} (hf : B.CkOn ⊤ UU f) : B.CkOn ⊤ UU (B.Rw w f) := by
@@ -97,7 +97,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-The claim follows from `| [], _ => by have e : B.opApply ([] : B.DiffOp k r Wp Wq) J = fun _ => 0 := by funext g; simp [B.opApply] rw [e]; exact Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_zero | T :: Θ, h => by have e : B.opApply (T :: Θ) J = fun g => T.coef g (B.Rw T.word J g) + B.opApply Θ J …`.
+A detailed English derivation is pending.
 -/
 theorem dop_ckOn_opApply {UU : Set (B.Mat k r)} {J : B.Mat k r → (Wq →L[ℂ] Wp)} (hJ : B.CkOn ⊤ UU J) :
     ∀ Θ : B.DiffOp k r Wp Wq, (∀ T ∈ Θ, B.CkOn ⊤ UU T.coef) → B.CkOn ⊤ UU (B.opApply Θ J)
@@ -112,9 +112,9 @@ theorem dop_ckOn_opApply {UU : Set (B.Mat k r)} {J : B.Mat k r → (Wq →L[ℂ]
       (dop_ckOn_opApply hJ Θ (fun T' hT' => h T' (by simp [hT'])))
 
 /- English proof (translation)
-Introduce `g hg hgG`. Unfold `B.opApply`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `x hx`. Take `⟨T, _, rfl⟩` from `List.mem_map.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[dop_rw_local T.word T.word_lie hO (f' := 0) hJ g hg hgG, dop_rw_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dop_opApply_zero (Θ : B.DiffOp k r Wp Wq) {O : Set (B.Mat k r)} (hO : IsOpen O)
     {J : B.Mat k r → (Wq →L[ℂ] Wp)} (hJ : ∀ g ∈ O, g ∈ B.GV k r → J g = 0) :
@@ -130,29 +130,23 @@ theorem dop_opApply_zero (Θ : B.DiffOp k r Wp Wq) {O : Set (B.Mat k r)} (hO : I
 end op
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p X w Cb hD hX hw e`. Take `⟨nf, fib, o, κ, Dop, hfib, hDD, -, -, hΘ⟩` from `hD w hw e`. Use `set Bs := p.T.base with hBs`. Take `⟨hXs, ⟨R, hR⟩, ⟨ε, hε, hXε⟩⟩` from `hX`. Use `set O : Set (B.Mat P.k P.r) := {g | R < B.gN g} ∪ {g | Gf P.k P.r Bs.z Bs.z' g < ε} with hOdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO : IsOpen O` using `(isOpen_lt continuous_const Formalism.FourierDecayAlt.P.B6.gN_continuous).union (isOpen_lt (Formalism.FourierDecayAlt.P.PositiveOrbitOpen.gf_cont _ _) continuous_const)`. Establish `hX0 : ∀ g ∈ O, g ∈ B.GV P.k P.r → X g = 0`. Introduce `g hg hgG`. Assume the negation of the conclusion as `hne`. Break down `hg with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (hR g hgG hne) (not_le.2 h)`. Conclude with `absurd (hXε g hgG hne) (not_le.2 h)`. Use `set Y : B.Mat P.k P.r → (Wq →L[ℂ] Wp) := B.opApply Dop X with hYdef`. Establish `hY0 : ∀ g ∈ O, g ∈ B.GV P.k P.r → Y g = 0` using `dop_opApply_zero Dop hO hX0`. Establish `hYs : B.CkOn ⊤ (B.GV P.k P.r) Y`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `g₀ hg₀`. Distinguish the cases in `hgO : g₀ ∈ O`. Conclude with `⟨O, 0, hO, hgO, contDiffOn_const, fun g hg hgG => hY0 g hg hgG⟩`. Establish `hG : ε ≤ Gf P.k P.r Bs.z Bs.z' g₀`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hgO (Or.inr (not_le.1 h))`. Establish `hdom : g₀ ∈ C6.domL Bs ∅` using `⟨hg₀, lt_of_lt_of_le hε hG, fun l hl => absurd hl (Finset.notMem_empty l)⟩`. Establish `hXd : B.CkOn ⊤ (C6.domL Bs ∅) X` using `fun g hg => hXs g hg.1`. Conclude with `dop_ckOn_opApply hXd Dop (fun T hT => (hDD.1 T hT).1) g₀ hdom`. Use `⟨Y, fun g hg hG => ?_, fun A => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hΘ X g ⟨hg, hG, fun l hl => absurd hl (Finset.notMem_empty l)⟩).symm`. Use `set K : Set (B.Mat P.k P.r) := B.GV P.k P.r ∩ ({g | B.gN g ≤ R} ∩ {g | ε ≤ Gf P.k P.r Bs.z Bs.z' g}) with hKdef`. Establish `hK : IsCompact K` using `(Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le P.k P.r R).of_isClosed_subset (Formalism.FourierDecayAlt.P.B5.GV_closed.inter ((isClosed_le Formalism.FourierDecayAlt.P.B6.gN_continuous continuous_const).inter (isClosed_le continuous_const (Formalism.FourierDecayAlt.P.PositiveOrb …`. Establish `hYc : ContinuousOn Y (B.GV P.k P.r)` using `Formalism.FourierDecayAlt.P.B5.ckOn_continuousOn hYs`. Establish `hfc : ContinuousOn (fun g => B.gN g ^ A * ‖Y g‖) K`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ContinuousOn.mul ?_ ((hYc.mono Set.inter_subset_left).norm)` and prove the remaining obligations. Conclude with `(Formalism.FourierDecayAlt.P.B6.gN_continuous.continuousOn).rpow_const (fun g hg => Or.inl (ne_of_gt (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_pos hg.1)))`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hfc`. Use `⟨max C 0, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `g₀ hg₀`.
+Substitute using the available equality. Substitute using the available equality. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨U, f', hU, hgU, hc, he⟩` from `hYs g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hc.of_le (by exact_mod_cast le_top), he⟩`. Introduce `u v _ _ huv g hg`. Establish `hu : u = []` using `List.eq_nil_of_length_eq_zero (by omega)`. Establish `hv : v = []` using `List.eq_nil_of_length_eq_zero (by omega)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Substitute `hu` using the available equality. Substitute `hv` using the available equality. Use `show B.gN g ^ A * ‖Y g‖ ≤ max C 0`. Distinguish the cases in `hgK : g ∈ K`. Use `hC g hgK` as an intermediate fact.
-
-Rewrite `this` using `[Real.norm_of_nonneg (mul_nonneg (Real.rpow_nonneg (le_of_lt (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_pos hg)) _) (norm_nonneg _))]`. Conclude with `le_trans this (le_max_left _ _)`. Establish `hgO : g ∈ O`. Assume the negation of the conclusion as `hgO`. Apply `hgK` to reduce the goal to its premises.
-
-Use `⟨hg, ?_, ?_⟩` and prove the remaining obligations. Use `show B.gN g ≤ R`. Assume the negation of the conclusion as `h`. Conclude with `hgO (Or.inl (not_le.1 h))`. Use `show ε ≤ Gf P.k P.r Bs.z Bs.z' g`.
-
-Assume the negation of the conclusion as `h`. Conclude with `hgO (Or.inr (not_le.1 h))`. Rewrite using `[hY0 g hgO hg, norm_zero, mul_zero]`. Conclude with `le_max_right _ _`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diff_operator_in_class_CC : DopCC := by
   intro Wp Wq _ _ _ _ _ _ P p X w Cb hD hX hw e

@@ -19,13 +19,13 @@ noncomputable section
 namespace GlobalTheory.TraitInputExt
 
 /- English proof (translation)
-Introduce `R _ _ _ D O _ V₁ _ _ _ ρ₁ b₁ hV₁ iρ₁ fρ₁ lρ₁ ib₁ N hN`. Take `⟨D₁, ⟨h₁⟩⟩` from `GlobalTheory.MumPull.exists_pull R V₁ ρ₁ iρ₁ lρ₁ D`. Take `⟨hdvr, hcpl, hch⟩` from `(GlobalTheory.LN.cDvr_iff V₁).1 hV₁`. Set `T₁ : Formalism.L2.Pj.CDVR` to `{ V := V₁ }`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible V₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨T', g, ϖ, e, ig, fg, hϖ, he, hass, rat⟩` from `GlobalTheory.QkRationalExt.exists_cdvr_ext_rational T₁ D₁.toPre D₁.tau_bimult N hN π hπ`. Establish `lg : IsLocalHom g` using `fg.to_isIntegral.isLocalHom ig`. Take `⟨D', ⟨hD⟩⟩` from `GlobalTheory.MumPull.exists_pull V₁ T'.V g ig lg D₁`. Establish `hc : Nonempty (IsPullDeg (g.comp ρ₁) D.toPre D'.toPre)` using `GlobalTheory.Mum.nonempty_isPullDeg_comp_of_injective R V₁ T'.V ρ₁ g D.toPre D₁.toPre D'.toPre ig ⟨h₁⟩ ⟨hD⟩`. Use `choose Q₁ hQ₁ using ReciprocityTheory.ChartRestriction.G.DVR.QForm.exists_QVal hπ D₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNe : (N : ℤ) ∣ (e : ℤ)` using `by exact_mod_cast he`. Use `⟨T', g.comp ρ₁, g.comp b₁, ϖ, D', ig.comp iρ₁, fg.comp fρ₁, ig.comp ib₁, hϖ, hc, ?_, ?_⟩` and prove the remaining obligations. Introduce `Q hQ u v`. Establish `hq : ∀ y, Q y = e * Q₁ (hD.xe y)` using `fun y => ReciprocityTheory.ChartRestriction.G.DVR.QForm.QVal_unique hϖ D' (hQ y) (GlobalTheory.QValPull.main T₁ T' g D₁.toPre D'.toPre hD π ϖ e ig hπ hϖ hass y _ (hQ₁ _))`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.DVR.QForm.bOf, hq, hq, hq]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `dvd_sub (dvd_sub (hNe.mul_right _) (hNe.mul_right _)) (hNe.mul_right _)`. Introduce `k hk`. Conclude with `rat D'.toPre hD D'.tau_bimult k hk`.
+A detailed English derivation is pending.
 -/
 theorem exists_ext_dvd_rational : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegData R (maximalIdeal R)) (O : Type) [CommRing O] (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁] (ρ₁ : R →+* V₁) (b₁ : O →+* V₁), GlobalTheory.LN.CDvr V₁ → Function.Injective ρ₁ → ρ₁.Finite → IsLocalHom ρ₁ → Function.Injective b₁ → ∀ N : ℕ, 0 < N → ∃ (T : Formalism.L2.Pj.CDVR) (ρ : R →+* T.V) (b : O →+* T.V) (ϖ : T.V) (D' : DegData T.V (maximalIdeal T.V)), Function.Injective ρ ∧ ρ.Finite ∧ Function.Injective b ∧ Irreducible ϖ ∧ Nonempty (IsPullDeg ρ D.toPre D'.toPre) ∧ (∀ Q : D'.toPre.X → ℤ, ReciprocityTheory.ChartRestriction.G.DVR.QForm.IsQ D'.toPre ϖ Q → ∀ u v, (N : ℤ) ∣ ReciprocityTheory.ChartRestriction.G.DVR.QForm.bOf D'.toPre Q u v) ∧ ∀ k : ℕ, k ∣ N → ∀ q : QkPt D'.toPre (AlgebraicClosure (FractionRing T.V)) k, ∃ p : QkPt D'.toPre (FractionRing T.V) k, QkExt (algebraMap (FractionRing T.V) (AlgebraicClosure (FractionRing T.V))) p q := by
   intro R _ _ _ D O _ V₁ _ _ _ ρ₁ b₁ hV₁ iρ₁ fρ₁ lρ₁ ib₁ N hN

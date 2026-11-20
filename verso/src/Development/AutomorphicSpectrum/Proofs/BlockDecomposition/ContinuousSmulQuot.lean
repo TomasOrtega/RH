@@ -13,7 +13,7 @@ open PositivityTheory.Rg.Rsw.Cell
 variable {G : Type} [Group G] [TopologicalSpace G]
 
 /- English proof (translation)
-Rewrite using `[QuotientGroup.eq]`. Simplify using `using hp`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mk_inv_mul' {P : Subgroup G} {p : G} (hp : p ∈ P) (g : G) :
     (QuotientGroup.mk (p * g)⁻¹ : G ⧸ P) = QuotientGroup.mk g⁻¹ := by
@@ -21,13 +21,13 @@ theorem mk_inv_mul' {P : Subgroup G} {p : G} (hp : p ∈ P) (g : G) :
   simpa using hp
 
 /- English proof (translation)
-Simplify using `[rp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mk_inv_rp' {P : Subgroup G} (q : G ⧸ P) : (QuotientGroup.mk (rp q)⁻¹ : G ⧸ P) = q := by
   simp [rp]
 
 /- English proof (translation)
-Establish `hmem : rp (QuotientGroup.mk g⁻¹ : G ⧸ P) * g⁻¹ ∈ P`. Use `mk_inv_rp' (QuotientGroup.mk g⁻¹ : G ⧸ P)` as an intermediate fact. Rewrite `this` using `[QuotientGroup.eq]`. Simplify using `using this`. Conclude with `⟨_, hmem, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem rp_mk_inv {P : Subgroup G} (g : G) :
     ∃ p ∈ P, rp (QuotientGroup.mk g⁻¹ : G ⧸ P) = p * g := by
@@ -38,7 +38,7 @@ theorem rp_mk_inv {P : Subgroup G} (g : G) :
   exact ⟨_, hmem, by simp⟩
 
 /- English proof (translation)
-Use `conv_rhs => rw [← mk_inv_rp' q]`. Rewrite using `[mul_inv_rev]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mk_inv_rp_mul {P : Subgroup G} (q : G ⧸ P) (x : G) :
     (QuotientGroup.mk (rp q * x)⁻¹ : G ⧸ P) = x⁻¹ • q := by
@@ -47,9 +47,9 @@ theorem mk_inv_rp_mul {P : Subgroup G} (q : G ⧸ P) (x : G) :
   rfl
 
 /- English proof (translation)
-Take `⟨p, hp, e⟩` from `rp_mk_inv (P := P) g`. Rewrite using `[e]`. Establish `h1` using `(S.pos (p * g)).ne'`. Establish `h2` using `(S.pos g).ne'`. Rewrite using `[div_eq_div_iff h1 h2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `S.law p hp g (g * x)` as an intermediate fact. Rewrite using `[mul_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem density_rp {P : Subgroup G} {h : G → ℝ} {mu : (G → ℂ) → ℂ} (S : Setup P h mu) (x g : G) :
     h (rp (QuotientGroup.mk g⁻¹ : G ⧸ P) * x) / h (rp (QuotientGroup.mk g⁻¹ : G ⧸ P)) =
@@ -64,9 +64,9 @@ theorem density_rp {P : Subgroup G} {h : G → ℝ} {mu : (G → ℂ) → ℂ} (
   linarith
 
 /- English proof (translation)
-Use `⟨hf.1.comp (continuous_mul_right x), fun p hp g => ?_⟩` and prove the remaining obligations. Establish `h1` using `hf.2 p hp (g * x)`. Establish `h2 : ((h (p * g) : ℂ)) * h (g * x) = h g * h (p * (g * x))`. Conclude with `S.law p hp g (g * x)` after adjusting the coercions. Establish `h3 : (h (g * x) : ℂ) ≠ 0` using `by exact_mod_cast (S.pos _).ne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_right_cancel₀ h3` to reduce the goal to its premises. Use `show f (p * g * x) * (h g : ℂ) * (h (g * x) : ℂ) = f (g * x) * (h (p * g) : ℂ) * (h (g * x) : ℂ)`. Rewrite using `[mul_assoc p g x]`. Take the linear combination `(h g : ℂ) * h1 - f (g * x) * h2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sec_translate {P : Subgroup G} {h : G → ℝ} {mu : (G → ℂ) → ℂ} [ContinuousMul G] (S : Setup P h mu)
     {f : G → ℂ} (hf : Sec P h f) (x : G) : Sec P h (fun g => f (g * x)) := by
@@ -83,7 +83,7 @@ theorem sec_translate {P : Subgroup G} {h : G → ℝ} {mu : (G → ℂ) → ℂ
 variable [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use `⟨?_, fun p hp g => ?_⟩` and prove the remaining obligations. Establish `: Continuous fun g : G => (QuotientGroup.mk g⁻¹ : G ⧸ P)` using `QuotientGroup.continuous_mk.comp continuous_inv`. Conclude with `(Complex.continuous_ofReal.comp (hF.comp this)).mul (Complex.continuous_ofReal.comp hc)`. Simplify using `only [mk_inv_mul' hp]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sec_of_real {P : Subgroup G} {h : G → ℝ} (hc : Continuous h) {F : G ⧸ P → ℝ} (hF : Continuous F) :
     Sec P h (fun g => ((F (QuotientGroup.mk g⁻¹) : ℝ) : ℂ) * (h g : ℂ)) := by
@@ -95,9 +95,9 @@ theorem sec_of_real {P : Subgroup G} {h : G → ℝ} (hc : Continuous h) {F : G 
     ring
 
 /- English proof (translation)
-Establish `hq : IsQuotientMap fun g : G => (QuotientGroup.mk g⁻¹ : G ⧸ P)` using `(QuotientGroup.isOpenQuotientMap_mk (N := P)).isQuotientMap.comp (Homeomorph.inv G).isQuotientMap`. Rewrite using `[hq.continuous_iff]`. Establish `: ((fun q : G ⧸ P => h (rp q * x) / h (rp q)) ∘ fun g : G => (QuotientGroup.mk g⁻¹ : G ⧸ P)) = fun g => h (g * x) / h g`. Use function extensionality and compare the values at `g`. Conclude with `density_rp S x g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(S.cont.comp (continuous_mul_right x)).div S.cont fun g => (S.pos g).ne'`.
+A detailed English derivation is pending.
 -/
 theorem continuous_density {P : Subgroup G} {h : G → ℝ} {mu : (G → ℂ) → ℂ} (S : Setup P h mu) (x : G) :
     Continuous fun q : G ⧸ P => h (rp q * x) / h (rp q) := by
@@ -112,18 +112,18 @@ theorem continuous_density {P : Subgroup G} {h : G → ℝ} {mu : (G → ℂ) �
   exact (S.cont.comp (continuous_mul_right x)).div S.cont fun g => (S.pos g).ne'
 
 /- English proof (translation)
-Rewrite using `[(QuotientGroup.isOpenQuotientMap_mk (N := P)).isQuotientMap.continuous_iff]`. Conclude with `QuotientGroup.continuous_mk.comp (continuous_mul_left x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_smul_quot {P : Subgroup G} (x : G) : Continuous fun q : G ⧸ P => x • q := by
   rw [(QuotientGroup.isOpenQuotientMap_mk (N := P)).isQuotientMap.continuous_iff]
   exact QuotientGroup.continuous_mk.comp (continuous_mul_left x)
 
 /- English proof (translation)
-Take `⟨C, hC, hcov⟩` from `hco`. Establish `hK : IsCompact ((fun g : G => (QuotientGroup.mk g⁻¹ : G ⧸ P)) '' C)` using `hC.image (QuotientGroup.continuous_mk.comp continuous_inv)`. Use `⟨?_⟩` and prove the remaining obligations. Use `hK using 1` and compare the differences between its conclusion and the goal. Use `symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Use symmetry to reverse the relation.
 
-Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective x`. Take `⟨q, hq, c, hc, hqc⟩` from `hcov y⁻¹`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `: y = (q * c)⁻¹` using `by rw [← hqc, inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, QuotientGroup.eq]`. Simplify using `using hq`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem compact_quot' {P : Subgroup G}
     (hco : ∃ C : Set G, IsCompact C ∧ ∀ g, ∃ q ∈ P, ∃ c ∈ C, g = q * c) : CompactSpace (G ⧸ P) := by
@@ -142,11 +142,11 @@ theorem compact_quot' {P : Subgroup G}
   simpa using hq
 
 /- English proof (translation)
-Establish `hs` using `sec_of_real (P := P) S.cont hF`. Establish `h1` using `(hR.2 _ hs).2`. Establish `h2` using `(hR.2 _ (sec_translate S hs x)).2`. Establish `h3` using `hx _ hs`. Rewrite `h3` using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : ∀ q : G ⧸ P, (((F (QuotientGroup.mk (rp q)⁻¹) : ℝ) : ℂ) * (h (rp q) : ℂ)) / (h (rp q) : ℂ) = ((F q : ℝ) : ℂ)` using `fun q => by`. Establish `: (h (rp q) : ℂ) ≠ 0` using `by exact_mod_cast (S.pos _).ne'`. Rewrite using `[mk_inv_rp', mul_div_cancel_right₀ _ this]`. Establish `e2 : ∀ q : G ⧸ P, (((F (QuotientGroup.mk (rp q * x)⁻¹) : ℝ) : ℂ) * (h (rp q * x) : ℂ)) / (h (rp q) : ℂ) = ((h (rp q * x) / h (rp q) * F (x⁻¹ • q) : ℝ) : ℂ)` using `fun q => by`. Rewrite using `[mk_inv_rp_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e1, e2] at h3`. Rewrite `h3` using `[integral_complex_ofReal, integral_complex_ofReal]`. Conclude with `h3` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_translate {P : Subgroup G} [MeasurableSpace (G ⧸ P)] {h : G → ℝ} {mu : (G → ℂ) → ℂ}
     (S : Setup P h mu) {ν : Measure (G ⧸ P)} (hR : Repr P h mu ν) {x : G} (hx : Inv P h mu x)
@@ -171,11 +171,11 @@ theorem integral_translate {P : Subgroup G} [MeasurableSpace (G ⧸ P)] {h : G �
   exact_mod_cast h3
 
 /- English proof (translation)
-Establish `: IsClosed (P : Set G)` using `S.closed`. Establish `: CompactSpace (G ⧸ P)` using `compact_quot' S.cocpt`. Establish `: IsFiniteMeasure ν` using `hR.1`. Establish `hj` using `continuous_density S x`. Establish `hsm` using `continuous_smul_quot (P := P) x⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjm : Measurable fun q : G ⧸ P => ENNReal.ofReal (h (rp q * x) / h (rp q))` using `ENNReal.measurable_ofReal.comp hj.measurable`. Establish `hjnn : ∀ q : G ⧸ P, 0 ≤ h (rp q * x) / h (rp q)` using `fun q => (div_pos (S.pos _) (S.pos _)).le`. Establish `hfin : IsFiniteMeasure (ν.withDensity fun q => ENNReal.ofReal (h (rp q * x) / h (rp q)))` using `isFiniteMeasure_withDensity_ofReal (hj.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)).2`. Establish `hfin' : IsFiniteMeasure ((ν.withDensity fun q => ENNReal.ofReal (h (rp q * x) / h (rp q))).map (fun q => x⁻¹ • q))` using `Measure.isFiniteMeasure_map _ _`. Use `ext_of_forall_integral_eq_of_IsFiniteMeasure fun f => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_map hsm.aemeasurable f.continuous.aestronglyMeasurable, integral_withDensity_eq_integral_toReal_smul hjm (ae_of_all _ fun _ => ENNReal.ofReal_lt_top)]`. Use `integral_translate S hR hx f.continuous` as an intermediate fact. Rewrite using `[← this]`. Use `integral_congr_ae (ae_of_all _ fun q => ?_)` and prove the remaining obligations. Simplify using `only [ENNReal.toReal_ofReal (hjnn q), smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem inv_measure [T2Space G] [SecondCountableTopology G] (P : Subgroup G) [MeasurableSpace (G ⧸ P)]
     [BorelSpace (G ⧸ P)] (h : G → ℝ) (mu : (G → ℂ) → ℂ) (S : Setup P h mu) (ν : Measure (G ⧸ P))
@@ -204,9 +204,9 @@ theorem inv_measure [T2Space G] [SecondCountableTopology G] (P : Subgroup G) [Me
   simp only [ENNReal.toReal_ofReal (hjnn q), smul_eq_mul]
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ P _ _ h mu S ν hR x hx`. Use `⟨continuous_density S x, fun F hF => ?_⟩` and prove the remaining obligations. Establish `hsm` using `continuous_smul_quot (P := P) x⁻¹`. Establish `hjm : Measurable fun q : G ⧸ P => ENNReal.ofReal (h (rp q * x) / h (rp q))` using `ENNReal.measurable_ofReal.comp (continuous_density S x).measurable`. Establish `key : ∫⁻ q, F q ∂((ν.withDensity fun q => ENNReal.ofReal (h (rp q * x) / h (rp q))).map (fun q => x⁻¹ • q)) = ∫⁻ q, F q ∂ν` using `by rw [inv_measure P h mu S ν hR x hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `key` using `[lintegral_map hF hsm.measurable, lintegral_withDensity_eq_lintegral_mul ν hjm (show Measurable fun a => F (x⁻¹ • a) from hF.comp hsm.measurable)]`. Rewrite using `[← key]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem invM : InvM := by
   intro G _ _ _ _ _ _ P _ _ h mu S ν hR x hx

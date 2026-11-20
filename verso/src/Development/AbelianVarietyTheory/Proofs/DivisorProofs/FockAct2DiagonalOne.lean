@@ -9,9 +9,9 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 namespace GlobalTheory.VacuumWeight
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, Eab, Matrix.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Matrix.diagonal_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg h]`. Use `symm`. Conclude with `Finset.sum_eq_zero fun c _ => if_neg fun hc => h (hc.1.symm.trans hc.2)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 theorem diagonal_eq_sum_Eab {r s : ℕ} (D : Ix r s → ℂ) :
     Matrix.diagonal D = ∑ c, D c • Eab c c := by
@@ -25,16 +25,16 @@ theorem diagonal_eq_sum_Eab {r s : ℕ} (D : Ix r s → ℂ) :
     exact Finset.sum_eq_zero fun c _ => if_neg fun hc => h (hc.1.symm.trans hc.2)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases c with c | c <;> simp [Fintype.sum_sum_type, lineSign] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_lineSign {p q r s : ℕ} (c : Ix r s) :
     ∑ a : Ix p q, lineSign a c = ((p : ℂ) - q) * Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1) c := by
   rcases c with c | c <;> simp [Fintype.sum_sum_type, lineSign] <;> ring
 
 /- English proof (translation)
-Establish `h1 : (1 : Formalism.BasicNotions.TH.Pol p q r s) = MvPolynomial.monomial 0 1` using `rfl`. Rewrite using `[diagonal_eq_sum_Eab, map_sum, LinearMap.sum_apply, Finset.mul_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply, h1, cartan2, smul_smul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Finsupp.coe_zero, Pi.zero_apply, Nat.cast_zero, zero_add]`. Rewrite using `[← Finset.sum_mul, sum_lineSign]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockAct2_diagonal_one (p q r s : ℕ) (D : Ix r s → ℂ) :
     fockAct2 p q r s (Matrix.diagonal D) (1 : Formalism.BasicNotions.TH.Pol p q r s) =

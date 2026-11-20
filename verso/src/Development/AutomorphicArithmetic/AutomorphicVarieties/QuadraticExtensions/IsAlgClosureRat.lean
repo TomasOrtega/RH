@@ -30,7 +30,7 @@ noncomputable section
 namespace UpperTheory.V.Two
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `h`. Conclude with `nrRealPlaces_eq_zero_iff.1 (InfinitePlace.IsPrimitiveRoot.nrRealPlaces_eq_zero_of_two_lt hn hζ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem complex_of_root {L : Type} [Field L] [NumberField L] {n : ℕ} (hn : 2 < n) (h : ∃ ζ : L, IsPrimitiveRoot ζ n) :
     IsTotallyComplex L := by
@@ -38,7 +38,7 @@ theorem complex_of_root {L : Type} [Field L] [NumberField L] {n : ℕ} (hn : 2 <
   exact nrRealPlaces_eq_zero_iff.1 (InfinitePlace.IsPrimitiveRoot.nrRealPlaces_eq_zero_of_two_lt hn hζ)
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `hFW l K hμ`. Use `⟨r, fun Ω _ _ _ => infRk K Ω l 1 r ⊤ one_ne_zero isClosed_univ fun n hn => ?_⟩` and prove the remaining obligations. Use `haveI := (fnCyc K Ω l n).1`. Conclude with `levelRk K Ω l n r hn (hr n _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fwRk (hFW : Published.FerreroWashington) (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [NumberField K]
     [IsAbelianGalois ℚ K] (hμ : HasMuQ l K) :
@@ -49,16 +49,16 @@ theorem fwRk (hFW : Published.FerreroWashington) (l : ℕ) [Fact l.Prime] (K : T
   exact levelRk K Ω l n r hn (hr n _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsAlgClosure.isAlgClosed L, Algebra.IsAlgebraic.trans ℚ L Ω⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAlgClosure_rat (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra ℚ Ω] :
     IsAlgClosure ℚ Ω :=
   ⟨IsAlgClosure.isAlgClosed L, Algebra.IsAlgebraic.trans ℚ L Ω⟩
 
 /- English proof (translation)
-Take `⟨K, _, _, hK⟩` from `abExists A`. Use `haveI := (abProps A K hK).1`. Take `⟨r, hr⟩` from `fwRk hFW l K (hμ K hK)`. Use `⟨r, fun Ω _ _ _ => ?_⟩` and prove the remaining obligations. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `letI : Algebra K Ω := (IsAlgClosed.lift : K →ₐ[ℚ] Ω).toRingHom.toAlgebra`. Use `haveI : IsAlgClosure K Ω := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`. Rewrite using `[← abField Ω A K hK]`. Conclude with `(rkTransport ℚ Ω K l 1 r).1 (hr Ω)`.
+A detailed English derivation is pending.
 -/
 theorem abRk (hFW : Published.FerreroWashington) (l : ℕ) [Fact l.Prime] (A : AbF)
     (hμ : ∀ (L : Type) [Field L] [NumberField L], IsAbField A L → HasMuQ l L) :
@@ -75,7 +75,7 @@ theorem abRk (hFW : Published.FerreroWashington) (l : ℕ) [Fact l.Prime] (A : A
   exact (rkTransport ℚ Ω K l 1 r).1 (hr Ω)
 
 /- English proof (translation)
-Rewrite `h` using `[← abField _ A L hL]`. Conclude with `genOfRk L _ l N r ⊤ isClosed_univ (((rkTransport ℚ _ L l 1 r).2 h).of_one N)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genLE_of_abRk {l : ℕ} [Fact l.Prime] {A : AbF} {r : ℕ} (N : ℕ) (L : Type) [Field L] [NumberField L]
     [IsAlgClosure ℚ (AlgebraicClosure L)] (hL : IsAbField A L)
@@ -84,11 +84,11 @@ theorem genLE_of_abRk {l : ℕ} [Fact l.Prime] {A : AbF} {r : ℕ} (N : ℕ) (L 
   exact genOfRk L _ l N r ⊤ isClosed_univ (((rkTransport ℚ _ L l 1 r).2 h).of_one N)
 
 /- English proof (translation)
-Take `⟨hq, hq8, hd, hd16, hc⟩` from `hp`. Establish `q2 : q.Coprime 2` using `(Nat.coprime_two_right).2 (Nat.odd_iff.2 (by omega))`. Establish `d2 : d.Coprime 2` using `(Nat.coprime_two_right).2 (Nat.odd_iff.2 (by omega))`. Establish `h0 : CardLe (CharOff (cycU 2 (abU Ω (withI M))) (ineOff ℚ Ω 1) 2) (2 ^ g)` using `CardLe.of_injective h _ (Submodule.inclusion_injective (xDual_one _ 2).ge)`. Establish `h1` using `charStep ℚ Ω 2 _ 1 q _ _ q2 (orbTwo Ω M q 2 hq (Or.inl ⟨hq8, rfl⟩)) (fun A hA => ineTwo Ω M q A (q2.mul_right (Nat.Coprime.coprime_mul_right hc)) hA) h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `charStep ℚ Ω 2 _ (1 * q) d _ _ d2 (orbTwo Ω M d 4 hd (Or.inr ⟨hd16, rfl⟩)) (fun A hA => ineTwo Ω M d A (d2.mul_right (Nat.Coprime.coprime_mul_left hc)) hA) h1`. Establish `h3` using `quadStep Ω _ q _ _ hq (by simp) h2`. Establish `h4` using `quadStep Ω _ d _ _ hd (by simp) h3`. Use `(h4.of_injective _ (Submodule.inclusion_injective (xDual_le_charOff 1 _ _ 2))).mono (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← pow_add, ← pow_add, ← pow_mul, ← pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem baseRk (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (M : AbF) (q d g : ℕ) (hp : PrimePair M.m q d)
     (h : XRk 2 1 (cycU 2 (abU Ω (withI M))) g) : XRk 2 1 (cycU 2 (abU Ω (base2 M q d))) (4 * (g + 6 * M.deg)) := by
@@ -109,9 +109,9 @@ theorem baseRk (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (M 
   ring
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `abRk hFW 2 (withI M) fun L _ _ hL => hasMuQ.2.1 M L hL`. Use `⟨4 * (g + 6 * M.deg), fun q d hp L _ _ hL => ?_⟩` and prove the remaining obligations. Use `haveI := isAlgClosure_rat L (AlgebraicClosure L)`. Establish `h` using `baseRk (AlgebraicClosure L) M q d g hp (hg _)`. Establish `hμ` using `hasMuQ.2.2 M q d L hL`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho` using `((abBasic (AlgebraicClosure L)).2.1 M).2.1`. Conclude with `⟨genLE_of_abRk 1 L hL h, complex_of_root (by norm_num) hμ, hμ, by omega, genLE_of_abRk 2 L hL h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem towerTwo (hFW : Published.FerreroWashington) (M : AbF) : ∃ R : ℕ, ∀ q d : ℕ, PrimePair M.m q d →
     ∀ (L : Type) [Field L] [NumberField L], IsAbField (base2 M q d) L →
@@ -125,9 +125,9 @@ theorem towerTwo (hFW : Published.FerreroWashington) (M : AbF) : ∃ R : ℕ, �
   exact ⟨genLE_of_abRk 1 L hL h, complex_of_root (by norm_num) hμ, hμ, by omega, genLE_of_abRk 2 L hL h⟩
 
 /- English proof (translation)
-Establish `hμ : ∀ (L : Type) [Field L] [NumberField L], IsAbField A L → HasMuQ l L` using `fun L _ _ hL => by`. Unfold `HasMuQ`. Rewrite using `[if_neg h2]`. Conclude with `hasMuQ.1 l A L hA hL`. Take `⟨r, hr⟩` from `abRk hFW l A hμ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max 1 r, fun L _ _ hL => ?_⟩` and prove the remaining obligations. Use `haveI := isAlgClosure_rat L (AlgebraicClosure L)`. Establish `h` using `(hr (AlgebraicClosure L)).mono hl.out.pos (le_max_right 1 r)`. Conclude with `⟨genLE_of_abRk 1 L hL h, complex_of_root (lt_of_le_of_ne hl.out.two_le h2.symm) (hasMuQ.1 l A L hA hL), hμ L hL, le_max_left _ _, genLE_of_abRk l L hL h⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem towerFixed (hFW : Published.FerreroWashington) (l : ℕ) [hl : Fact l.Prime] (h2 : l ≠ 2) (A : AbF) (hA : A.HasMu l) :
     ∃ R : ℕ, ∀ (L : Type) [Field L] [NumberField L], IsAbField A L →
@@ -144,11 +144,11 @@ theorem towerFixed (hFW : Published.FerreroWashington) (l : ℕ) [hl : Fact l.Pr
     hμ L hL, le_max_left _ _, genLE_of_abRk l L hL h⟩
 
 /- English proof (translation)
-Take `⟨hq, -, hd, -, -⟩` from `hp`. Take `⟨-, h1, h2⟩` from `abProps _ L hL`. Establish `hμ` using `hasMuQ.2.2 M q d L hL`. Use `⟨hμ, h1 ▸ degBasic.2.2.2 M q d hq hd, ?_, fun e _ E _ _ hE => ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[modulus_adjoinISqrtNegPrimes M hq.pos hd.pos, mul_comm M.m 4]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `haveI := isAlgClosure_rat L (AlgebraicClosure L)`. Use `letI : Algebra E (AlgebraicClosure L) := (IsAlgClosed.lift : E →ₐ[ℚ] AlgebraicClosure L).toRingHom.toAlgebra`. Take `⟨ζ, hζ⟩` from `hμ`. Take `⟨m, hm, hlay⟩` from `layerFn L (AlgebraicClosure L) 2 (e + 2) ⟨ζ ^ 2, hζ.pow (by norm_num) (by norm_num)⟩`. Use `haveI := (fnCyc L (AlgebraicClosure L) 2 (e + 2)).1`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `galOfCyc ℚ (AlgebraicClosure L) 2 (e + 2) L (Fn L (AlgebraicClosure L) 2 (e + 2))`. Rewrite `e1` using `[abField _ _ L hL]`. Take `⟨a, b⟩` from `compIndex (AlgebraicClosure L) M e q d E hq hd hE`. Conclude with `⟨m, Fn L (AlgebraicClosure L) 2 (e + 2), inferInstance, inferInstance, inferInstance, hlay, hm, fun k _ => shaTwo (AlgebraicClosure L) E _ k (e1 ▸ a) (e1 ▸ b)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twoBase (M : AbF) (q d : ℕ) (hp : PrimePair M.m q d) (L : Type) [Field L] [NumberField L]
     (hL : IsAbField (base2 M q d) L) : Win.TwoBase M q d L := by
@@ -172,7 +172,7 @@ def TowerBound : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (L : Type) [Field L] [NumberField L] (R : ℕ), Tower.IsTower l L R → Win.ABound l R L
 
 /- English proof (translation)
-Introduce `M` and use `by obtain ⟨R, hR⟩ := towerTwo hFW M refine ⟨R, fun q d hp => ?_⟩ obtain ⟨L, _, _, hL⟩ := abExists (base2 M q d) exact ⟨L, inferInstance, inferInstance, twoBase M q d hp L hL, hA 2 L R (hR q d hp L hL).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twoIn (hFW : Published.FerreroWashington) (hA : TowerBound) : Win.TwoIn := fun M => by
   obtain ⟨R, hR⟩ := towerTwo hFW M
@@ -181,7 +181,7 @@ theorem twoIn (hFW : Published.FerreroWashington) (hA : TowerBound) : Win.TwoIn 
   exact ⟨L, inferInstance, inferInstance, twoBase M q d hp L hL, hA 2 L R (hR q d hp L hL).2⟩
 
 /- English proof (translation)
-Introduce `l _ h2 A hμ L _ _ hL` and use `by obtain ⟨R, hR⟩ := towerFixed hFW l h2 A hμ exact ⟨R, hA l L R (hR L hL).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fixedIn (hFW : Published.FerreroWashington) (hA : TowerBound) : Win.FixedIn := fun l _ h2 A hμ L _ _ hL => by
   obtain ⟨R, hR⟩ := towerFixed hFW l h2 A hμ

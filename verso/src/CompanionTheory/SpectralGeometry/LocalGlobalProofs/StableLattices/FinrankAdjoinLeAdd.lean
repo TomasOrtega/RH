@@ -13,7 +13,7 @@ noncomputable def compr (W W' : Submodule ℂ V) (hc : IsCompl W W') :
   map_smul' t b := by ext w; simp
 
 /- English proof (translation)
-Use `show W.linearProjOfIsCompl W' hc (b w) = _`. Conclude with `Submodule.linearProjOfIsCompl_apply_left hc ⟨b w, hb w w.2⟩`.
+A detailed English derivation is pending.
 -/
 lemma compr_of_inv (W W' : Submodule ℂ V) (hc : IsCompl W W') (b : End ℂ V)
     (hb : ∀ w ∈ W, b w ∈ W) (w : W) : compr W W' hc b w = ⟨b w, hb w w.2⟩ := by
@@ -21,7 +21,7 @@ lemma compr_of_inv (W W' : Submodule ℂ V) (hc : IsCompl W W') (b : End ℂ V)
   exact Submodule.linearProjOfIsCompl_apply_left hc ⟨b w, hb w w.2⟩
 
 /- English proof (translation)
-Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Rewrite using `[compr_of_inv W W' hc b hb w]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma compr_eq_restrict (W W' : Submodule ℂ V) (hc : IsCompl W W') (b : End ℂ V)
     (hb : ∀ w ∈ W, b w ∈ W) : compr W W' hc b = b.restrict hb := by
@@ -30,7 +30,7 @@ lemma compr_eq_restrict (W W' : Submodule ℂ V) (hc : IsCompl W W') (b : End �
   rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, compr_of_inv W W' hc c hcW w]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma compr_mul (W W' : Submodule ℂ V) (hc : IsCompl W W') (b c : End ℂ V)
     (hcW : ∀ w ∈ W, c w ∈ W) :
@@ -40,9 +40,9 @@ lemma compr_mul (W W' : Submodule ℂ V) (hc : IsCompl W W') (b c : End ℂ V)
   rfl
 
 /- English proof (translation)
-Establish `hb : ∀ w ∈ W, algebraMap ℂ (End ℂ V) t w ∈ W` using `fun w hw => by`. Rewrite using `[Module.algebraMap_end_apply]`. Conclude with `W.smul_mem t hw`. Rewrite using `[compr_eq_restrict W W' hc _ hb]`. Use extensionality with `w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Module.algebraMap_end_apply]`.
+A detailed English derivation is pending.
 -/
 lemma compr_algebraMap (W W' : Submodule ℂ V) (hc : IsCompl W W') (t : ℂ) :
     compr W W' hc (algebraMap ℂ (End ℂ V) t) = algebraMap ℂ (End ℂ W) t := by
@@ -54,15 +54,13 @@ lemma compr_algebraMap (W W' : Submodule ℂ V) (hc : IsCompl W W') (t : ℂ) :
   simp [Module.algebraMap_end_apply]
 
 /- English proof (translation)
-Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Use `⟨h i, ?_⟩` and prove the remaining obligations. Rewrite using `[compr_eq_restrict W W' hc _ (h i)]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.subset_adjoin ⟨i, rfl⟩`. Consider the case `algebraMap r`. Use `⟨fun w hw => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.algebraMap_end_apply]`. Conclude with `W.smul_mem r hw`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[compr_algebraMap]`. Conclude with `Subalgebra.algebraMap_mem _ r`. Consider the case `add x y _ _ hx hy`. Use `⟨fun w hw => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `W.add_mem (hx.1 w hw) (hy.1 w hw)`. Rewrite using `[map_add]`. Conclude with `Subalgebra.add_mem _ hx.2 hy.2`. Consider the case `mul x y _ _ hx hy`. Use `⟨fun w hw => ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Module.End.mul_apply]`. Conclude with `hx.1 _ (hy.1 w hw)`. Rewrite using `[compr_mul W W' hc x y hy.1]`. Conclude with `Subalgebra.mul_mem _ hx.2 hy.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma adjoin_compr {l : ℕ} (a : Fin l → End ℂ V) (W W' : Submodule ℂ V) (hc : IsCompl W W')
     (h : ∀ i, ∀ w ∈ W, a i w ∈ W) (b : End ℂ V) (hb : b ∈ Algebra.adjoin ℂ (Set.range a)) :
@@ -94,17 +92,15 @@ lemma adjoin_compr {l : ℕ} (a : Fin l → End ℂ V) (W W' : Submodule ℂ V) 
       exact Subalgebra.mul_mem _ hx.2 hy.2
 
 /- English proof (translation)
-Introduce `V _ _ _ l a W W' hc h h'`. Set `AW` to `Algebra.adjoin ℂ (Set.range fun i => ((a i).restrict (h i) : Module.End ℂ W))`. Set `AW'` to `Algebra.adjoin ℂ (Set.range fun i => ((a i).restrict (h' i) : Module.End ℂ W'))`. Set `Φ : Algebra.adjoin ℂ (Set.range a) →ₗ[ℂ] AW × AW'` to `{ toFun := fun b => (⟨compr W W' hc b, (adjoin_compr a W W' hc h b b.2).2⟩, ⟨compr W' W hc.symm b, (adjoin_compr a W' W hc.symm h' b b.2).2⟩) map_add' := fun b c => by`. Apply the tactic sequence `ext <;> simp [map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Use the proof step `map_smul' := fun t b => by`. Apply the tactic sequence `ext <;> simp [map_smul] }`. Establish `hinj : Function.Injective Φ`. Introduce `b c hbc`. Establish `h1` using `congrArg (fun p => (p.1 : Module.End ℂ W)) hbc`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun p => (p.2 : Module.End ℂ W')) hbc`. Simplify using `only [Φ, LinearMap.coe_mk, AddHom.coe_mk] at h1 h2`. Apply `Subtype.ext` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hv : v ∈ W ⊔ W'` using `by rw [hc.sup_eq_top]; exact Submodule.mem_top`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, w', hw', rfl⟩` from `Submodule.mem_sup.mp hv`. Establish `e1 : (b : Module.End ℂ V) w = (c : Module.End ℂ V) w`. Establish `e` using `LinearMap.congr_fun h1 ⟨w, hw⟩`. Rewrite `e` using `[compr_of_inv W W' hc _ (adjoin_compr a W W' hc h b b.2).1, compr_of_inv W W' hc _ (adjoin_compr a W W' hc h c c.2).1]`. Conclude with `congrArg Subtype.val e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (b : Module.End ℂ V) w' = (c : Module.End ℂ V) w'`. Establish `e` using `LinearMap.congr_fun h2 ⟨w', hw'⟩`. Rewrite `e` using `[compr_of_inv W' W hc.symm _ (adjoin_compr a W' W hc.symm h' b b.2).1, compr_of_inv W' W hc.symm _ (adjoin_compr a W' W hc.symm h' c c.2).1]`. Conclude with `congrArg Subtype.val e`. Rewrite using `[map_add, map_add, e1, e2]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem finrank_adjoin_le_add :
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (l : ℕ)

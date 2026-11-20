@@ -11,39 +11,37 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology
 
 /- English proof (translation)
-Introduce `σ _ X B k f d A D hB hf hXB hDo hmaps hprop hopen y₀ hy₀`. Take `⟨U₁, g, hU₁o, hy₀U₁, hU₁D, hg, hgd, hsec⟩` from `hR σ X B k f d A D hB hf hXB hDo hmaps hprop hopen y₀ hy₀`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 hU₁o y₀ hy₀U₁`. Use `set U := Metric.ball y₀ r with hUdef`. Establish `hUo : IsOpen U` using `Metric.isOpen_ball`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy₀U : y₀ ∈ U` using `Metric.mem_ball_self hr`. Establish `hUD : U ⊆ D` using `hball.trans hU₁D`. Establish `hgU : AnalyticOnNhd ℂ g U` using `hg.mono hball`. Establish `hgdU : ∀ W : Set (Fin d → ℂ), IsOpen W → W ⊆ U → W.Nonempty → ∃ t ∈ W, g t ≠ 0` using `fun W hW hWU hWne => hgd W hW (hWU.trans hball) hWne`. Use `set Y : Set (σ → ℂ) := {x | x ∈ X ∩ B ∧ A x ∈ U} with hYdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfib : ∀ y ∈ U, {x | x ∈ Y ∧ A x = y} = {x | x ∈ X ∩ B ∧ A x = y}`. Introduce `y hy`. Use extensionality with `x`. Simplify using `only [hYdef, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨hx, _⟩, hAx⟩`. Conclude with `⟨hx, hAx⟩`. Introduce and unpack `⟨hx, hAx⟩`. Conclude with `⟨⟨hx, hAx ▸ hy⟩, hAx⟩`. Establish `hYmaps : Set.MapsTo A Y U` using `fun x hx => hx.2`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hYprop : ∀ K ⊆ U, IsCompact K → IsCompact {x | x ∈ Y ∧ A x ∈ K}`. Introduce `K hKU hK`. Establish `: {x | x ∈ Y ∧ A x ∈ K} = {x | x ∈ X ∩ B ∧ A x ∈ K}`. Use extensionality with `x`. Simplify using `only [hYdef, Set.mem_ofPred_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => ⟨h.1.1, h.2⟩, fun h => ⟨⟨h.1, hKU h.2⟩, h.2⟩⟩`. Rewrite using `[this]`. Conclude with `hprop K (hKU.trans hUD) hK`. Establish `hYsec : ∀ x ∈ Y, g (A x) ≠ 0 → ∃ (O : Set (Fin d → ℂ)) (V : Set (σ → ℂ)) (h : (Fin d → ℂ) → σ → ℂ), IsOpen O ∧ IsOpen V ∧ x ∈ V ∧ ContinuousOn h O ∧ (∀ y ∈ O, A (h y) = y) ∧ Y ∩ V = h '' O`. Introduce `x hx hgx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Take `⟨O, V, h, hO, hV, hxV, hh, hAh, hXV⟩` from `hsec (A x) (hball hx.2) hgx x hx.1 rfl`. Use `⟨O ∩ U, V ∩ A ⁻¹' U, h, hO.inter hUo, hV.inter (hUo.preimage A.continuous), ⟨hxV, hx.2⟩, hh.continuousOn.mono Set.inter_subset_left, fun y hy => hAh y hy.1, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hzXB, hzU⟩, hzV, -⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `: z ∈ h '' O` using `hXV ▸ ⟨hzXB, hzV⟩`. Take `⟨y, hyO, rfl⟩` from `this`. Conclude with `⟨y, ⟨hyO, by rwa [hAh y hyO] at hzU⟩, rfl⟩`. Introduce and unpack `⟨y, ⟨hyO, hyU⟩, rfl⟩`. Establish `hmem : h y ∈ X ∩ B ∩ V` using `hXV ▸ ⟨y, hyO, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hAy : A (h y) ∈ U` using `by rw [hAh y hyO]; exact hyU`. Conclude with `⟨⟨hmem.1, hAy⟩, hmem.2, hAy⟩`. Take `⟨n, hn⟩` from `UnbranchedProperCountConstant.proof UnbranchedProperCountLocallyConstant.proof ManifoldZerosComplementConnected.proof σ Y d A U g hUo (convex_ball y₀ r).isPreconnected hYmaps hYprop hgU hYsec`. Establish `hcount : ∀ y ∈ U, g y ≠ 0 → {x | x ∈ X ∩ B ∧ A x = y}.encard = n`. Introduce `y hy hgy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hfib y hy]`. Conclude with `hn y hy hgy`. Establish `hle : ∀ y ∈ U, {x | x ∈ X ∩ B ∧ A x = y}.encard ≤ n`. Introduce `y hy`. Assume the negation of the conclusion as `hlt`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hlt` using `[not_le]`. Establish `hn1 : ((n + 1 : ℕ) : ℕ∞) ≤ {x | x ∈ X ∩ B ∧ A x = y}.encard`. Rewrite using `[Nat.cast_add, Nat.cast_one]`. Conclude with `Order.add_one_le_of_lt hlt`. Take `⟨T, hTF, hTcard⟩` from `Set.exists_subset_encard_eq hn1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hTfin : T.Finite` using `Set.finite_of_encard_eq_coe hTcard`. Take `⟨S, hS, hSdisj⟩` from `hTfin.t2_separation`. Establish `hW : U ∩ ⋂ x ∈ T, A '' (X ∩ B ∩ S x) ∈ 𝓝 y`. Use `Filter.inter_mem (hUo.mem_nhds hy) ((Filter.biInter_mem hTfin).2 fun x hx => ?_)` and prove the remaining obligations. Establish `hxF` using `hTF hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hopen x hxF.1 (S x) ((hS x).2.mem_nhds (hS x).1)` as an intermediate fact. Rewrite `this` using `[hxF.2]`. Then use the resulting hypothesis. Take `⟨t, ⟨htW, hgt⟩⟩` from `hgdU (interior (U ∩ ⋂ x ∈ T, A '' (X ∩ B ∩ S x))) isOpen_interior (interior_subset.trans Set.inter_subset_left) ⟨y, mem_interior_iff_mem_nhds.2 hW⟩`. Establish `htW'` using `interior_subset htW`. Establish `htU : t ∈ U` using `htW'.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hpick : ∀ x ∈ T, ∃ z, z ∈ X ∩ B ∩ S x ∧ A z = t`. Introduce `x hx`. Use `Set.mem_iInter₂.1 htW'.2 x hx` as an intermediate fact. Take `⟨z, hz, hAz⟩` from `this`. Conclude with `⟨z, hz, hAz⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `choose! z hz hAz using hpick`. Establish `hinj : Set.InjOn z T`. Introduce `a ha b hb hab`. Assume the negation of the conclusion as `hne`. Conclude with `Set.disjoint_left.1 (hSdisj ha hb hne) (hz a ha).2 (hab ▸ (hz b hb).2)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : z '' T ⊆ {x | x ∈ X ∩ B ∧ A x = t}`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨(hz x hx).1, hAz x hx⟩`. Use `(Set.encard_le_encard hsub).trans_eq (hcount t htU hgt)` as an intermediate fact. Rewrite `this` using `[hinj.encard_image, hTcard]`.
-
-Conclude with `absurd this (by norm_cast; omega)`. Use `⟨U, g, n, hUo, hy₀U, hUD, hgU, hgdU, hle, fun y hy hgy => ⟨hcount y hy hgy, ?_⟩⟩` and prove the remaining obligations. Introduce `x hx hAx`. Conclude with `hsec y (hball hy) hgy x hx hAx`.
+A detailed English derivation is pending.
 -/
 theorem ProperOpenProjectionLocalCover.proof (hR : ProperOpenProjectionLocalUnbranched.Statement) :
     ProperOpenProjectionLocalCover.Statement := by

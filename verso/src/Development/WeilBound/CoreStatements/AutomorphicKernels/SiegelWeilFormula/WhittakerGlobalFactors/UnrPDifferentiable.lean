@@ -9,17 +9,17 @@ open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureThe
 open scoped TensorProduct Matrix
 
 /- English proof (translation)
-Set `x : ι → ℂ → ℂ` to `fun v z => -(c v * (q v : ℂ) ^ (-(2 * z + (k + 1 : ℕ))))`. Establish `h1 : ∀ v, (1 : ℝ) ≤ q v` using `fun v => by exact_mod_cast one_le_two.trans (hq v)`. Establish `hx : ∀ v z (t : ℝ), t ≤ 2 * z.re + 1 → ‖x v z‖ ≤ (q v : ℝ) ^ (-t)` using `fun v z t ht => by`. Rewrite using `[norm_neg, norm_mul, Complex.norm_natCast_cpow_of_pos (two_pos.trans_le (hq v))]`. Use `(mul_le_of_le_one_left (by positivity) (hc v)).trans (Real.rpow_le_rpow_of_exponent_le (h1 v) ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (0 : ℝ) ≤ k` using `k.cast_nonneg`. Simplify using `only [Complex.neg_re, Complex.add_re, Complex.natCast_re, Complex.mul_re, Complex.re_ofNat, Complex.im_ofNat]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hh : ∀ v z, 0 < z.re → ‖x v z‖ ≤ 1 / 2` using `fun v z hz => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `(hx v z 1 (by linarith)).trans ?_` and prove the remaining obligations. Rewrite using `[Real.rpow_neg_one, one_div]`. Conclude with `inv_anti₀ two_pos (by exact_mod_cast hq v)`. Establish `hb : ∀ v z (t : ℝ), 0 < z.re → t ≤ 2 * z.re + 1 → ‖Complex.log (1 + x v z)‖ ≤ 3 / 2 * (q v : ℝ) ^ (-t)` using `fun v z t hz ht => (Complex.norm_log_one_add_half_le_self (hh v z hz)).trans (by gcongr; exact hx v z t ht)`. Establish `hsl : ∀ v z, 0 < z.re → 1 + x v z ∈ Complex.slitPlane` using `fun v z hz => Complex.mem_slitPlane_of_norm_lt_one ((hh v z hz).trans_lt (by norm_num))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun z => Complex.exp (∑' v, Complex.log (1 + x v z)), fun z hz => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz' : 0 < z.re` using `hz`. Establish `ho : IsOpen {w : ℂ | z.re / 2 < w.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Use `Complex.differentiableOn_tsum_of_summable_norm (F := fun v w => Complex.log (1 + x v w)) ((hs (z.re + 1) (by linarith)).mul_left (3 / 2)) (fun v w hw => ?_) ho fun v w (hw : z.re / 2 < w.re) => hb v w _ (by linarith) (by linarith)` as an intermediate fact. Conclude with `(this.differentiableAt (ho.mem_nhds (show z.re / 2 < z.re by linarith))).cexp.differentiableWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw' : z.re / 2 < w.re` using `hw`. Establish `hw0 : 0 < w.re` using `by linarith`. Use `(DifferentiableAt.clog (f := fun w => 1 + x v w) ?_ (hsl v w hw0)).differentiableWithinAt` and prove the remaining obligations. Establish `: (q v : ℂ) ≠ 0` using `by exact_mod_cast (two_pos.trans_le (hq v)).ne'`. Conclude with `(((by fun_prop : DifferentiableAt ℂ (fun z : ℂ => -(2 * z + (k + 1 : ℕ))) w).const_cpow (Or.inl this)).const_mul _).neg.const_add _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `(Summable.of_norm_bounded ((hs (2 * z.re + 1) (by linarith)).mul_left (3 / 2)) fun v => hb v z _ hz le_rfl).hasSum.cexp` as an intermediate fact. Use `this using 2 with v` and compare the differences between its conclusion and the goal. Rewrite using `[Function.comp_apply, Complex.exp_log (Complex.slitPlane_ne_zero (hsl v z hz)), sub_eq_add_neg]`.
+A detailed English derivation is pending.
 -/
 theorem euler_prod {ι : Type} (q : ι → ℕ) (hq : ∀ v, 2 ≤ q v) (hs : ∀ s : ℝ, 1 < s → Summable fun v => (q v : ℝ) ^ (-s))
     (c : ι → ℂ) (hc : ∀ v, ‖c v‖ ≤ 1) (k : ℕ) : ∃ d : ℂ → ℂ, DifferentiableOn ℂ d {z | 0 < z.re} ∧ ∀ z : ℂ, 0 < z.re →
@@ -63,7 +63,7 @@ def unrP (n M : ℕ) (e : ℤˣ) (q : ℕ) (z : ℂ) : ℂ :=
   ∏ i : Fin n, (1 - ((e : ℤ) : ℂ) ^ (M + (i : ℕ)) * (q : ℂ) ^ (-(2 * z + n - (i : ℕ))))
 
 /- English proof (translation)
-Establish `hq' : (q : ℂ) ≠ 0` using `by exact_mod_cast hq`. Unfold `unrP`. Use `Differentiable.fun_finsetProd fun i _ => ?_` and prove the remaining obligations. Conclude with `(differentiable_const _).sub ((differentiable_const _).mul ((by fun_prop : Differentiable ℂ (fun z : ℂ => -(2 * z + n - (i : ℕ)))).const_cpow (Or.inl hq')))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unramifiedPart_differentiable (n M : ℕ) (e : ℤˣ) (q : ℕ) (hq : q ≠ 0) : Differentiable ℂ (unrP n M e q) := by
   have hq' : (q : ℂ) ≠ 0 := by exact_mod_cast hq
@@ -73,17 +73,15 @@ theorem unramifiedPart_differentiable (n M : ℕ) (e : ℤˣ) (q : ℕ) (hq : q 
     ((by fun_prop : Differentiable ℂ (fun z : ℂ => -(2 * z + n - (i : ℕ)))).const_cpow (Or.inl hq')))
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or e with h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_unit_pow (e : ℤˣ) (k : ℕ) : ‖((e : ℤ) : ℂ) ^ k‖ ≤ 1 := by
   rcases Int.units_eq_one_or e with h | h <;> simp [h]
 
 /- English proof (translation)
-Establish `key : ∀ i : Fin n, ∃ d : ℂ → ℂ, DifferentiableOn ℂ d {z | 0 < z.re} ∧ ∀ z : ℂ, 0 < z.re → HasProd (fun v : ↥Sᶜ => 1 - ((e v : ℤ) : ℂ) ^ (M + (i : ℕ)) * (Ideal.absNorm v.1.asIdeal : ℂ) ^ (-(2 * z + n - (i : ℕ)))) (d z)`. Introduce `i`. Take `⟨d, hd, hp⟩` from `euler_prod (ι := ↥Sᶜ) (fun v => Ideal.absNorm v.1.asIdeal) (fun v => NumberField.HeightOneSpectrum.one_lt_absNorm v.1) (fun s hs => (ReciprocityTheory.Cheb.summable_absNorm_rpow_ideal F hs).comp_injective (HeightOneSpectrum.asIdeal_injective.comp Subtype.val_injective)) (fun v => …`. Use `⟨d, hd, fun z hz => ?_⟩` and prove the remaining obligations. Use `hp z hz using 4 with v` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hi : (n - 1 - (i : ℕ) + 1 : ℕ) = n - i` using `by omega`. Rewrite using `[hi, Nat.cast_sub i.2.le]`. Put the polynomial expressions in normal form. Use `choose d hd hp using key`. Use `⟨fun z => ∏ i, d i z, DifferentiableOn.fun_finsetProd fun i _ => hd i, fun z hz => ?_⟩` and prove the remaining obligations.
-
-Conclude with `hasProd_prod fun i _ => hp i z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unr_prod {F : Type} [Field F] [NumberField F] (n M : ℕ) (S : Set (HeightOneSpectrum (𝓞 F)))
     (e : HeightOneSpectrum (𝓞 F) → ℤˣ) :
@@ -108,9 +106,9 @@ theorem unr_prod {F : Type} [Field F] [NumberField F] (n M : ℕ) (S : Set (Heig
   exact hasProd_prod fun i _ => hp i z hz
 
 /- English proof (translation)
-Establish `ho : IsOpen {w : ℂ | t < w.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hz : ((t + 1 : ℝ) : ℂ) ∈ {w : ℂ | t < w.re}` using `by simp`. Establish `hev : f =ᶠ[nhds ((t + 1 : ℝ) : ℂ)] g` using `Filter.eventually_of_mem (ho.mem_nhds hz) fun w hw => h w hw`. Use `AnalyticOnNhd.eqOn_of_preconnected_of_eventuallyEq (f := f) (g := g) (U := Set.univ) (fun z _ => hf.analyticAt z) (fun z _ => hg.analyticAt z) isPreconnected_univ (Set.mem_univ _) hev` as an intermediate fact. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `this (Set.mem_univ z)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_eqOn_right {f g : ℂ → ℂ} (hf : Differentiable ℂ f) (hg : Differentiable ℂ g) (t : ℝ)
     (h : ∀ z : ℂ, t < z.re → f z = g z) : f = g := by
@@ -123,7 +121,7 @@ theorem eq_of_eqOn_right {f g : ℂ → ℂ} (hf : Differentiable ℂ f) (hg : D
   exact this (Set.mem_univ z)
 
 /- English proof (translation)
-Establish `ha : HasProd (fun v : ↥(↑S : Set α) => f v) (∏ v ∈ S, f v)`. Use `hasProd_fintype (fun v : ↥(↑S : Set α) => f v) using 1` and compare the differences between its conclusion and the goal. Conclude with `(Finset.prod_coe_sort S f).symm`. Conclude with `ha.mul_compl h`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem hasProd_split {α : Type} (f : α → ℂ) (S : Finset α) (D : ℂ)
     (h : HasProd (fun v : ↥((↑S : Set α)ᶜ) => f v) D) : HasProd f ((∏ v ∈ S, f v) * D) := by

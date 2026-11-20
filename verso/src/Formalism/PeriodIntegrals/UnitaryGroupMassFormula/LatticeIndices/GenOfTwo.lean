@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain Polynomial
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[Ideal.over_def P q]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_iff_algebraMap_mem_of_liesOver (P : Ideal (𝓞 E)) (q : Ideal (𝓞 F)) [P.LiesOver q]
     (c : 𝓞 F) : c ∈ q ↔ algebraMap (𝓞 F) (𝓞 E) c ∈ P := by
@@ -18,7 +18,7 @@ private theorem mem_iff_algebraMap_mem_of_liesOver (P : Ideal (𝓞 E)) (q : Ide
   exact Iff.rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne (hQ.eq_of_le hQ'.ne_top (fun x hx => h x hx))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem exists_mem_not_mem_of_ne_of_isMaximal {R : Type*} [CommRing R] (Q Q' : Ideal R)
     [hQ : Q.IsMaximal] [hQ' : Q'.IsMaximal] (hne : Q ≠ Q') : ∃ a ∈ Q, a ∉ Q' := by
@@ -27,27 +27,25 @@ private theorem exists_mem_not_mem_of_ne_of_isMaximal {R : Type*} [CommRing R] (
   exact hne (hQ.eq_of_le hQ'.ne_top (fun x hx => h x hx))
 
 /- English proof (translation)
-Take `⟨a, ha, ha'⟩` from `exists_mem_not_mem_of_ne_of_isMaximal Q Q' hne`. Establish `hnot : ∀ c : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) c ≠ a`. Introduce `c hc`. Apply `ha'` to reduce the goal to its premises. Establish `hcQ : c ∈ p.asIdeal` using `(mem_iff_algebraMap_mem_of_liesOver Q p.asIdeal c).2 (by rw [hc]; exact ha)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← hc]`. Conclude with `(mem_iff_algebraMap_mem_of_liesOver Q' p.asIdeal c).1 hcQ`. Establish `hint_r : IsIntegral (𝓞 F) a` using `Algebra.IsIntegral.isIntegral a`. Establish `hFE : FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [h2]; norm_num)`. Establish `hfield : minpoly F (algebraMap (𝓞 E) E a) = (minpoly (𝓞 F) a).map (algebraMap (𝓞 F) F)` using `minpoly.isIntegrallyClosed_eq_field_fractions F E hint_r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : (minpoly (𝓞 F) a).natDegree ≤ 2`. Establish `h : (minpoly F (algebraMap (𝓞 E) E a)).natDegree ≤ Module.finrank F E`. Apply `minpoly.natDegree_le` to reduce the goal to its premises. Rewrite `h` using `[hfield, (minpoly.monic hint_r).natDegree_map, h2]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < (minpoly (𝓞 F) a).natDegree` using `minpoly.natDegree_pos hint_r`. Establish `hne1 : (minpoly (𝓞 F) a).natDegree ≠ 1`. Introduce `h1`. Establish `hX` using `(minpoly.monic hint_r).eq_X_add_C h1`. Establish `hev` using `minpoly.aeval (𝓞 F) a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hev` using `[hX]`. Simplify using `only [map_add, aeval_X, aeval_C] at hev`. Apply `hnot (-(minpoly (𝓞 F) a).coeff 0)` to reduce the goal to its premises. Rewrite using `[map_neg]`. Take the linear combination `-hev`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : (minpoly (𝓞 F) a).natDegree = 2` using `by omega`. Establish `hP : minpoly (𝓞 F) a = X ^ 2 + C ((minpoly (𝓞 F) a).coeff 1) * X + C ((minpoly (𝓞 F) a).coeff 0)`. Use `(minpoly.monic hint_r).as_sum.trans ?_` and prove the remaining obligations. Rewrite using `[hdeg]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, pow_zero, pow_one, mul_one, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hev` using `minpoly.aeval (𝓞 F) a`. Rewrite `hev` using `[hP]`. Simplify using `only [map_add, map_mul, map_pow, aeval_X, aeval_C] at hev`. Establish `heq : a * a + algebraMap (𝓞 F) (𝓞 E) ((minpoly (𝓞 F) a).coeff 1) * a + algebraMap (𝓞 F) (𝓞 E) ((minpoly (𝓞 F) a).coeff 0) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `hev`. Establish `hc0 : (minpoly (𝓞 F) a).coeff 0 ∈ p.asIdeal`. Use `(mem_iff_algebraMap_mem_of_liesOver Q p.asIdeal _).2 ?_` and prove the remaining obligations. Establish `h : algebraMap (𝓞 F) (𝓞 E) ((minpoly (𝓞 F) a).coeff 0) = -(a * (a + algebraMap (𝓞 F) (𝓞 E) ((minpoly (𝓞 F) a).coeff 1)))`. Take the linear combination `heq`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h]`. Conclude with `neg_mem (Q.mul_mem_right _ ha)`. Establish `hc1 : (minpoly (𝓞 F) a).coeff 1 ∉ p.asIdeal`. Introduce `h`. Establish `h1` using `(mem_iff_algebraMap_mem_of_liesOver Q' p.asIdeal _).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `(mem_iff_algebraMap_mem_of_liesOver Q' p.asIdeal _).1 hc0`. Establish `haa : a * a ∈ Q'`. Establish `h' : a * a = -(algebraMap (𝓞 F) (𝓞 E) ((minpoly (𝓞 F) a).coeff 1) * a + algebraMap (𝓞 F) (𝓞 E) ((minpoly (𝓞 F) a).coeff 0))`. Take the linear combination `heq`. Rewrite using `[h']`.
-
-Conclude with `neg_mem (add_mem (Q'.mul_mem_right _ h1) h0)`. Apply the tactic sequence `rcases hQ'.isPrime.mem_or_mem haa with h | h <;> exact ha' h`. Conclude with `⟨a, _, _, hnot, heq, hP, hdeg, hc0, hc1⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gen_of_two (h2 : Module.finrank F E = 2) (p : HeightOneSpectrum (𝓞 F)) (Q Q' : Ideal (𝓞 E)) [hQ : Q.IsMaximal]
     [hQ' : Q'.IsMaximal] (hne : Q ≠ Q') [Q.LiesOver p.asIdeal] [Q'.LiesOver p.asIdeal] :
@@ -122,7 +120,7 @@ private theorem finitePlace_embedding_eq_algebraMap (p : HeightOneSpectrum (𝓞
     FinitePlace.embedding p k = algebraMap F (p.adicCompletion F) k := rfl
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F (p.adicCompletion F), ← finitePlace_embedding_eq_algebraMap]`. Conclude with `(FinitePlace.norm_lt_one_iff_mem F p c).2 hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_algebraMap_adicCompletion_lt_one_of_mem (p : HeightOneSpectrum (𝓞 F)) (c : 𝓞 F)
     (hc : c ∈ p.asIdeal) : ‖algebraMap (𝓞 F) (p.adicCompletion F) c‖ < 1 := by
@@ -130,7 +128,7 @@ private theorem norm_algebraMap_adicCompletion_lt_one_of_mem (p : HeightOneSpect
   exact (FinitePlace.norm_lt_one_iff_mem F p c).2 hc
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F (p.adicCompletion F), ← finitePlace_embedding_eq_algebraMap]`. Conclude with `(FinitePlace.norm_eq_one_iff_notMem F p c).2 hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_algebraMap_adicCompletion_eq_one_of_not_mem (p : HeightOneSpectrum (𝓞 F)) (c : 𝓞 F)
     (hc : c ∉ p.asIdeal) : ‖algebraMap (𝓞 F) (p.adicCompletion F) c‖ = 1 := by
@@ -138,13 +136,13 @@ private theorem norm_algebraMap_adicCompletion_eq_one_of_not_mem (p : HeightOneS
   exact (FinitePlace.norm_eq_one_iff_notMem F p c).2 hc
 
 /- English proof (translation)
-Take `⟨a, c0, c1, -, -, hP, hdeg, hc0, hc1⟩` from `gen_of_two h2 p Q Q' hne`. Establish `hint_r : IsIntegral (𝓞 F) a` using `Algebra.IsIntegral.isIntegral a`. Establish `hFE : FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [h2]; norm_num)`. Establish `hfield : minpoly F (algebraMap (𝓞 E) E a) = (minpoly (𝓞 F) a).map (algebraMap (𝓞 F) F)` using `minpoly.isIntegrallyClosed_eq_field_fractions F E hint_r`. Establish `hbint : IsIntegral F (algebraMap (𝓞 E) E a)` using `IsIntegral.of_finite F _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htop : IntermediateField.adjoin F {algebraMap (𝓞 E) E a} = ⊤`. Rewrite using `[Field.primitive_element_iff_minpoly_natDegree_eq, hfield, (minpoly.monic hint_r).natDegree_map, hdeg, h2]`. Take `⟨x, hx⟩` from `quad_root (algebraMap (𝓞 F) (p.adicCompletion F) c0) (algebraMap (𝓞 F) (p.adicCompletion F) c1) (norm_algebraMap_adicCompletion_eq_one_of_not_mem p c1 hc1) (norm_algebraMap_adicCompletion_lt_one_of_mem p c0 hc0)`. Establish `hroot : aeval x (minpoly F (algebraMap (𝓞 E) E a)) = 0`. Rewrite using `[hfield, aeval_map_algebraMap F, hP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_mul, map_pow, aeval_X, aeval_C]`. Take the linear combination `hx`. Establish `hpb : aeval x (minpoly F (IntermediateField.adjoin.powerBasis hbint).gen) = 0`. Rewrite using `[IntermediateField.adjoin.powerBasis_gen, IntermediateField.minpoly_gen]`. Conclude with `hroot`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : ↥(IntermediateField.adjoin F {algebraMap (𝓞 E) E a}) ≃ₐ[F] E` to `(IntermediateField.equivOfEq htop).trans IntermediateField.topEquiv`. Conclude with `⟨((IntermediateField.adjoin.powerBasis hbint).lift x hpb).comp e.symm.toAlgHom⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem emb_of_two (h2 : Module.finrank F E = 2) (p : HeightOneSpectrum (𝓞 F)) (Q Q' : Ideal (𝓞 E))
     [Q.IsMaximal] [Q'.IsMaximal] (hne : Q ≠ Q') [Q.LiesOver p.asIdeal] [Q'.LiesOver p.asIdeal] :

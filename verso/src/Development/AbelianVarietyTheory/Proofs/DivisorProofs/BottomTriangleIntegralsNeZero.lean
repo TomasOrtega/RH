@@ -16,14 +16,14 @@ noncomputable section
 namespace GlobalTheory.NonVanBottom
 
 /- English proof (translation)
-Unfold `h0 halfRank botBig botSmall`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem squareBottomHalfRankSum_le_halfRank (D : D7) (i j : ℕ) : h0 D i j ≤ halfRank D i j := by
   unfold h0 halfRank botBig botSmall
   omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h (by simp [hc])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_integral {Y : Type} [MeasurableSpace Y] {ν : Measure Y} {S : Set Y} {f : Y → ℂ}
     (h : (∫ y in S, ‖f y‖ ^ 2 ∂ν) ≠ 0) : ∃ y, f y ≠ 0 := by
@@ -32,7 +32,7 @@ theorem exists_ne_zero_of_integral {Y : Type} [MeasurableSpace Y] {ν : Measure 
   exact h (by simp [hc])
 
 /- English proof (translation)
-Use `exists_ne_zero_of_integral (ν := ν) (S := S) fun h0 => ?_` and prove the remaining obligations. Establish `hp : ∏ s ∈ Icc a b, Λ s ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s hs => hΛ s (mem_Icc.1 hs).1 (mem_Icc.1 hs).2`. Rewrite `h` using `[h0, Complex.ofReal_zero]`. Conclude with `mul_ne_zero hc hp h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_norm_formula {Y : Type} [MeasurableSpace Y] {ν : Measure Y} {S : Set Y} {f : Y → ℂ} {c : ℂ}
     {Λ : ℂ → ℂ} {a b : ℤ} (hc : c ≠ 0) (hΛ : ∀ s : ℤ, a ≤ s → s ≤ b → Λ s ≠ 0)
@@ -43,17 +43,17 @@ theorem exists_ne_zero_of_norm_formula {Y : Type} [MeasurableSpace Y] {ν : Meas
   exact mul_ne_zero hc hp h.symm
 
 /- English proof (translation)
-Introduce `hP hK hM hL`. Take `⟨a1, h1⟩` from `GlobalTheory.T.petersson_norm_hecke_product hP`. Take `⟨a2, h2⟩` from `GlobalTheory.T.bottom_triangle_polynomial_factor hP.howeDualityReal hP hK hM hL`. Take `⟨a3, h3⟩` from `hL`. Use `⟨max (max a1 a2) a3, fun ε CF hCF => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C1, x1, k1⟩` from `h1 ε CF (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hCF)`. Take `⟨C2, x2, k2⟩` from `h2 ε CF (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hCF)`. Take `⟨C3, x3, k3⟩` from `h3 ε CF (le_trans (le_max_right _ _) hCF)`. Use `⟨max (max C1 C2) C3, max (max x1 x2) x3, fun C hC D large₂ he hx hr T Lc μ₀ hμ G W i j A A' WW X hX t => ?_⟩` and prove the remaining obligations. Establish `n1` using `k1 C (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hC) D large₂ he (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx) hr T Lc μ₀ hμ G W i j A A' WW X hX t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `n2` using `k2 C (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hC) D large₂ he (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx) hr T Lc μ₀ hμ G W i j A A' WW X hX`. Take `⟨Λ, hΛ, hne⟩` from `((k3 C (le_trans (le_max_right _ _) hC) D large₂ he (le_trans (le_max_right _ _) hx) hr T Lc μ₀ hμ G) i j).1 t`. Establish `hh : ((h0 D i j : ℕ) : ℤ) ≤ (halfRank D i j : ℤ)` using `by exact_mod_cast squareBottomHalfRankSum_le_halfRank D i j`. Take `⟨P, ν, 𝓕, c, hc, -, -, hf⟩` from `n1`. Take `⟨Pi, p, p', J, -, ⟨P', hP'⟩, hJ, hI, hI'⟩` from `n2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `exists_ne_zero_of_norm_formula hc (fun s hs hs' => hne s hs (hs'.trans hh)) (hf Λ hΛ)`. Use `⟨⟨P, y, hy⟩, P', ?_⟩` and prove the remaining obligations. Take `⟨lam, hlam⟩` from `hI t`. Establish `hinj : Function.Injective (J t)`. Use `(hJ t).resolve_left fun h0 => hy ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hlam P, h0]`. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hc'`. Use `push_neg at hc'`. Apply `hP'` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hI' t P', map_zero]`. Conclude with `funext hc'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonvan : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → LNe →
     GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW),

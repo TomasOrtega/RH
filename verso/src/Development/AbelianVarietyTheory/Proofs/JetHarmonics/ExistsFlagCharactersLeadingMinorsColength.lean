@@ -14,11 +14,9 @@ open ReciprocityTheory.PGsh.Up
 namespace GlobalTheory.CharDepth
 
 /- English proof (translation)
-Use `choose X hX using fun j => (Submodule.mem_span_range_iff_exists_fun R).1 (h j)`. Rewrite using `[Matrix.det_succ_row A (Fin.last n)]`. Use `Finset.dvd_sum fun j _ => Dvd.dvd.mul_left ?_ _` and prove the remaining obligations. Establish `e : A.submatrix (Fin.last n).succAbove j.succAbove = B * Matrix.of (fun i k => X (j.succAbove k) i)`. Use extensionality with `a k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrFun (hX (j.succAbove k)) a` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[Matrix.mul_apply, Matrix.submatrix_apply, Fin.succAbove_last, ← this]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[e, Matrix.det_mul]`.
-
-Conclude with `Dvd.intro _ rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_dvd_det_of_trunc_mem_span {R : Type} [CommRing R] {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) R)
     (B : Matrix (Fin n) (Fin n) R)
@@ -37,9 +35,9 @@ theorem det_dvd_det_of_trunc_mem_span {R : Type} [CommRing R] {n : ℕ} (A : Mat
   exact Dvd.intro _ rfl
 
 /- English proof (translation)
-Proceed by induction on `m, hnm using Nat.le_induction with`. Consider the case `base => exact dvd_rfl`. Consider the case `succ m hnm ih`. Use `(ih (Nat.le_of_succ_le hm)).trans (det_dvd_det_of_trunc_mem_span _ _ fun j => ?_)` and prove the remaining obligations. Establish `h` using `hι m (Nat.le_of_succ_le hm)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (fun a : Fin m => M (Fin.castLE (Nat.le_of_succ_le hm) a) (ι (Fin.castLE hm j))) ∈ omTr M m (Nat.le_of_succ_le hm)` using `Submodule.subset_span ⟨_, rfl⟩`. Rewrite `h2` using `[← h]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_dvd_minor {R : Type} [CommRing R] {g N : ℕ} (M : Matrix (Fin g) (Fin N) R) (ι : Fin g → Fin N)
     (hι : ∀ s (hs : s ≤ g), Submodule.span R (Set.range fun b : Fin s => fun a : Fin s =>
@@ -58,11 +56,11 @@ theorem minor_dvd_minor {R : Type} [CommRing R] {g N : ℕ} (M : Matrix (Fin g) 
     exact h2
 
 /- English proof (translation)
-Take `⟨m, c, ⟨e⟩, hc⟩` from `h`. Establish `hc' : v (algebraMap R C (∏ i, c i)) = x` using `by rw [map_prod, map_prod, hc]`. Use `⟨hc' ▸ hv.map_le_one _, ∏ i, c i, ?_, fun z => ?_⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `hc'` using `[h0, map_zero, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx hc'.symm`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_smul, map_zero]`. Use function extensionality and compare the values at `i`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (e z i)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, ← hy, Pi.zero_apply, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton.2 ((Finset.dvd_prod_of_mem c (Finset.mem_univ i)).mul_right y)`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_zero_of_hasLen {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R]
     [Algebra R C] (hv : v.Integers R) {M : Type} [AddCommGroup M] [Module R M] {x : NNReal}
@@ -82,17 +80,15 @@ theorem exists_smul_eq_zero_of_hasLen {C : Type} [Field C] {v : Valuation C NNRe
     exact Ideal.mem_span_singleton.2 ((Finset.dvd_prod_of_mem c (Finset.mem_univ i)).mul_right y)
 
 /- English proof (translation)
-Take `⟨N, u, hu, hlen⟩` from `h`. Take `⟨hx1, c, hc, hkill⟩` from `exists_smul_eq_zero_of_hasLen hv hlen hx`. Use `⟨hx1, ?_⟩` and prove the remaining obligations. Set `M : Matrix (Fin s) (Fin N) O` to `fun a k => res w (dl (u k)) a`. Establish `hom : omTr M s le_rfl = Submodule.span O (Set.range fun k => res w (dl (u k)))` using `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hspan : ∀ n (hn : n ≤ s), ∀ y : Fin n → O, c • y ∈ omTr M n hn`. Introduce `n hn y`. Set `y' : Fin s → O` to `Function.extend (Fin.castLE hn) y 0`. Establish `h1 : c • y' ∈ Submodule.span O (Set.range fun k => res w (dl (u k)))`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hkill _`. Take `⟨r, hr⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 h1`. Use `(Submodule.mem_span_range_iff_exists_fun O).2 ⟨r, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Establish `h2` using `congrFun hr (Fin.castLE hn a)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : y' (Fin.castLE hn a) = y a` using `(Fin.castLE_injective hn).extend_apply y 0 a`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, h3] at h2 ⊢`. Conclude with `h2`. Take `⟨ι, -, hι⟩` from `charThm C v O hv s N M c hc hspan`. Use `haveI : IsDomain O := Function.Injective.isDomain _ hv.hom_inj`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfull` using `char_len hv M ι s le_rfl (hι s le_rfl)`. Rewrite `hfull` using `[hom]`. Establish `hxe` using `hasLen_unique hv hlen hfull`. Use `⟨fun b => u (ι b), fun b => hu _, fun i => ?_⟩` and prove the remaining obligations. Establish `hd` using `hv.le_of_dvd (minor_dvd_minor M ι hι (i.val + 1) s i.isLt le_rfl)`.
-
-Rewrite `hd` using `[← hxe]`. Conclude with `hd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_flag_characters (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C]
     (hv : v.Integers O) (d s : ℕ) (F : Fin d → PS O 2 d) (w : Fin s → Fin d → O) (x : NNReal)

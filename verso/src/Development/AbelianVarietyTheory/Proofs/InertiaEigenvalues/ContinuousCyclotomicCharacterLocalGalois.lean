@@ -6,27 +6,23 @@ open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC Reciproc
 namespace GlobalTheory.FunctorialityH2
 
 /- English proof (translation)
-Use `hO.ring` as an intermediate fact. Use `set ε' : GK p K →* Oˣ := carry i ε with hε'`. Establish `key : ∀ k : ℕ, ∃ H : Subgroup (GK p K), IsOpen (H : Set (GK p K)) ∧ ∀ h ∈ H, ((ε' h : Oˣ) : O) - 1 ∈ Ideal.span {(p : O) ^ k}`. Introduce `k`. Establish `hN : 0 < p ^ k` using `pow_pos hp.out.pos k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : NeZero ((p ^ k : ℕ) : PadicAlgCl p) := ⟨by exact_mod_cast hN.ne'⟩`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic (p ^ k) (PadicAlgCl p)) (Polynomial.degree_cyclotomic_pos (p ^ k) (PadicAlgCl p) hN).ne'`. Establish `hpr : IsPrimitiveRoot ζ (p ^ k)` using `Polynomial.isRoot_cyclotomic_iff.1 hζ`. Establish `hint : IsIntegral K ζ` using `IsIntegral.of_pow hN (by rw [hpr.pow_eq_one]; exact isIntegral_one)`. Use `haveI := IntermediateField.adjoin.finiteDimensional hint`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨(IntermediateField.adjoin K {ζ}).fixingSubgroup, IntermediateField.fixingSubgroup_isOpen _, fun h hh => ?_⟩` and prove the remaining obligations. Establish `hfix : h ζ = ζ` using `hh ⟨ζ, IntermediateField.mem_adjoin_simple_self K ζ⟩`. Take `⟨a, ha, hmem⟩` from `hc h k ζ hpr.pow_eq_one`. Establish `hz : ζ ≠ 0` using `hpr.ne_zero hN.ne'`. Establish `h1 : ζ ^ ((a : ℤ) - 1) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[zpow_sub₀ hz, zpow_natCast, zpow_one, ← ha, hfix, div_self hz]`. Take `⟨c, hcdef⟩` from `(hpr.zpow_eq_one_iff_dvd _).1 h1`. Establish `h2 : ((a : O) - 1) = ((p : O) ^ k) * (c : O)`. Use `congrArg (fun z : ℤ => (z : O)) hcdef` as an intermediate fact. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h3 : ((ε' h : Oˣ) : O) - 1 = (((ε' h : Oˣ) : O) - a) + ((a : O) - 1)` using `by ring`. Rewrite using `[h3, h2]`. Conclude with `Ideal.add_mem _ hmem (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`. Establish `hcont' : Continuous (fun g : GK p K => ((ε' g : Oˣ) : O))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g0`. Rewrite using `[ContinuousAt, Filter.tendsto_def]`. Introduce `U hU`. Establish `hV : (fun o : O => ((ε' g0 : Oˣ) : O) + o) ⁻¹' U ∈ nhds (0 : O)` using `(continuous_const.add continuous_id).continuousAt.preimage_mem_nhds (by simpa using hU)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hm⟩` from `(isAdic_iff.1 hO.adic).2 _ hV`. Take `⟨H, hHo, hH⟩` from `key m`. Establish `hle : Ideal.span {(p : O) ^ m} ≤ IsLocalRing.maximalIdeal O ^ m` using `(Ideal.span_singleton_le_iff_mem _).2 (Ideal.pow_mem_pow hO.p_mem m)`. Use `Filter.mem_of_superset ((hHo.preimage (continuous_const_mul g0⁻¹)).mem_nhds (by simpa using H.one_mem)) ?_` and prove the remaining obligations. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hH _ hg`. Establish `h2 : ((ε' g : Oˣ) : O) - (ε' g0 : O) ∈ Ideal.span {(p : O) ^ m}`. Establish `e : ((ε' g : Oˣ) : O) - (ε' g0 : O) = (ε' g0 : O) * (((ε' (g0⁻¹ * g) : Oˣ) : O) - 1)`. Rewrite using `[map_mul, Units.val_mul, mul_sub, ← mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, one_mul, mul_one]`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `Ideal.mul_mem_left _ _ h1`. Establish `h3` using `hm (hle h2)`. Simplify using `using h3`. Establish `e : (fun g : G => ((ε g : Oˣ) : O)) = (fun g : GK p K => ((ε' g : Oˣ) : O)) ∘ i`. Use function extensionality and compare the values at `g`.
-
-Simplify using `only [Function.comp_apply, hε', carry, MonoidHom.coe_comp, MulEquiv.coe_toMonoidHom]`. Use `first`. Consider the case `rw [ContinuousMulEquiv.symm_apply_apply]`. Consider the case `exact congrArg (fun x => ((ε x : Oˣ) : O)) (i.toMulEquiv.symm_apply_apply g).symm`. Rewrite using `[e]`.
-
-Conclude with `hcont'.comp i.continuous`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyc_char_continuous {p : ℕ} [hp : Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
     {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]

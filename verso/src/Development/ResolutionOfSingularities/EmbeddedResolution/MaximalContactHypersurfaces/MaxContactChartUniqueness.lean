@@ -39,7 +39,7 @@ theorem coordTop_topIso_eq_coord (c : EtaleChart p U m) (j : Fin m) :
   rfl
 
 /- English proof (translation)
-Simplify using the standard rewrite rules. Conclude with `AlgebraicGeometry.Scheme.presheaf_map_eq_of_parallel ..`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem opensι_appLE_self_top_eq_topIso_inv {X₁ : Scheme.{u}} (V : X₁.Opens)
     (e : (⊤ : (V.toScheme).Opens) ≤ V.ι ⁻¹ᵁ V) :
@@ -48,13 +48,11 @@ private theorem opensι_appLE_self_top_eq_topIso_inv {X₁ : Scheme.{u}} (V : X�
   exact AlgebraicGeometry.Scheme.presheaf_map_eq_of_parallel ..
 
 /- English proof (translation)
-Establish `e : (⊤ : (V.toScheme).Opens) ≤ V.ι ⁻¹ᵁ V` using `fun z _ => z.2`. Establish `hy' : pointOfMem V y hy ∈ V.ι ⁻¹ᵁ V` using `hy`. Establish `hnu : ¬ IsUnit ((X₁.presheaf.germ V y hy).hom s)`. Rewrite `hs` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `happ : V.topIso.inv = V.ι.app V ≫ V.toScheme.presheaf.map (homOfLE e).op` using `(opensι_appLE_self_top_eq_topIso_inv V e).symm`. Establish `h1 : V.topIso.inv ≫ V.toScheme.presheaf.germ ⊤ (pointOfMem V y hy) htop = V.ι.app V ≫ V.toScheme.presheaf.germ (V.ι ⁻¹ᵁ V) (pointOfMem V y hy) hy'`. Rewrite using `[happ, Category.assoc, TopCat.Presheaf.germ_res]`. Establish `h2 : (V.toScheme.presheaf.germ ⊤ (pointOfMem V y hy) htop).hom (V.topIso.inv.hom s) = (V.toScheme.presheaf.germ (V.ι ⁻¹ᵁ V) (pointOfMem V y hy) hy').hom ((V.ι.app V).hom s)`. Establish `h` using `congrArg (fun f : Γ(X₁, V) ⟶ V.toScheme.presheaf.stalk (pointOfMem V y hy) => CommRingCat.Hom.hom f s) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, h2]`. Introduce `hu`. Apply `hnu` to reduce the goal to its premises. Establish `hmem : pointOfMem V y hy ∈ V.ι ⁻¹ᵁ (X₁.basicOpen s)`.
-
-Rewrite using `[Scheme.preimage_basicOpen]`. Conclude with `(V.toScheme.mem_basicOpen ((V.ι.app V).hom s) (pointOfMem V y hy) hy').2 hu`. Conclude with `(X₁.mem_basicOpen s y hy).1 hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem germ_topIso_inv_mem_maximalIdeal {X₁ : Scheme.{u}} (V : X₁.Opens) (y : ↥X₁)
     (hy : y ∈ V) (htop : pointOfMem V y hy ∈ (⊤ : (V.toScheme).Opens)) (s : Γ(X₁, V))
@@ -87,13 +85,13 @@ private theorem germ_topIso_inv_mem_maximalIdeal {X₁ : Scheme.{u}} (V : X₁.O
   exact (X₁.mem_basicOpen s y hy).1 hmem
 
 /- English proof (translation)
-Use `chartsAgreeAt_of_germ_sub_mem_maximalIdeal c₁ c₂ x hx ?_` and prove the remaining obligations. Introduce `i`. Distinguish the cases in `hij : i = j`. Rewrite using `[hij]`. Establish `e1 : U.topIso.inv.hom (c₁.coord j) = c₁.coordTop j` using `Iso.hom_inv_id_apply U.topIso (c₁.coordTop j)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : U.topIso.inv.hom (c₂.coord j) = c₂.coordTop j` using `Iso.hom_inv_id_apply U.topIso (c₂.coordTop j)`. Establish `h1` using `germ_topIso_inv_mem_maximalIdeal U x hx (by trivial) (c₁.coord j) hg₁`. Establish `h2` using `germ_topIso_inv_mem_maximalIdeal U x hx (by trivial) (c₂.coord j) hg₂`. Rewrite `h1` using `[e1]`. Rewrite `h2` using `[e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sub]`. Conclude with `Submodule.sub_mem _ h1 h2`. Establish `hc` using `hcoord i hij`. Establish `h' : U.topIso.inv.hom (U.topIso.hom.hom (c₁.coordTop i)) = U.topIso.inv.hom (U.topIso.hom.hom (c₂.coordTop i))` using `congrArg (fun z => U.topIso.inv.hom z) hc`. Establish `h'' : c₁.coordTop i = c₂.coordTop i` using `(Iso.hom_inv_id_apply U.topIso (c₁.coordTop i)).symm.trans (h'.trans (Iso.hom_inv_id_apply U.topIso (c₂.coordTop i)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h'', sub_self, map_zero]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem chartsAgreeAt_of_coord_eq_of_germ_mem {n : ℕ} (c₁ c₂ : EtaleChart p U n) (j : Fin n)
     (x : X) (hx : x ∈ U)
@@ -128,11 +126,9 @@ theorem chartsAgreeAt_of_coord_eq_of_germ_mem {n : ℕ} (c₁ c₂ : EtaleChart 
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Establish `hUaff : IsAffine U.toScheme` using `hU`. Establish `hcf : ∀ i ∈ S, (c₁.map.appTop).hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i : ULift.{u} (Fin n))) = (c₂.map.appTop).hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i : ULift.{u} (Fin n)))`. Introduce `i hi`. Establish `h1` using `congrArg (fun z : Γ(X, U) => U.topIso.inv.hom z) (h i hi)`. Establish `key : c₁.coordTop i = c₂.coordTop i` using `(Iso.hom_inv_id_apply U.topIso (c₁.coordTop i)).symm.trans (h1.trans (Iso.hom_inv_id_apply U.topIso (c₂.coordTop i)))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key`. Rewrite using `[EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, coordSubspaceIdeal_eq_ofIdealTop_span_coord, Scheme.IdealSheafData.comap_ofIdealTop, Scheme.IdealSheafData.comap_ofIdealTop, Ideal.map_span, Ideal.map_span]`. Use `congrArg Scheme.IdealSheafData.ofIdealTop (congrArg Ideal.span ?_)` and prove the remaining obligations. Use `Set.image_congr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`.
-
-Conclude with `hcf i (Finset.mem_coe.mp hi)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem coordIdeal_eq_of_coord_eq {n : ℕ} (hU : IsAffineOpen U) (c₁ c₂ : EtaleChart p U n)
     (S : Finset (Fin n)) (h : ∀ i ∈ S, c₁.coord i = c₂.coord i) :
@@ -160,7 +156,7 @@ theorem coordIdeal_eq_of_coord_eq {n : ℕ} (hU : IsAffineOpen U) (c₁ c₂ : E
 end
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Establish `h1 : IsUnit (σ a)` using `hu.map σ`. Rewrite `h1` using `[ha]`. Conclude with `zero_ne_one (isUnit_zero_iff.mp h1)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_maximalIdeal_of_map_eq_zero {A C : Type*} [CommRing A] [CommRing C]
     [IsLocalRing A] [Nontrivial C] (σ : A →+* C) {a : A} (ha : σ a = 0) :
@@ -172,7 +168,7 @@ private theorem mem_maximalIdeal_of_map_eq_zero {A C : Type*} [CommRing A] [Comm
   exact zero_ne_one (isUnit_zero_iff.mp h1)
 
 /- English proof (translation)
-Substitute `hfg` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem eqToHom_comp_stalkMap_congr {X W : Scheme.{u}} (f g : W ⟶ X) (hfg : f = g)
     (z : ↥W) (x : ↥X) (hf : f.base z = x) (hg : g.base z = x) :
@@ -182,7 +178,7 @@ private theorem eqToHom_comp_stalkMap_congr {X W : Scheme.{u}} (f g : W ⟶ X) (
   rfl
 
 /- English proof (translation)
-Substitute `hfz` using the available equality. Rewrite using `[eqToHom_refl, Category.id_comp]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_stalkMap_stalkIdeal_eq {X W : Scheme.{u}} (f : W ⟶ X) (I : X.IdealSheafData)
     (z : ↥W) (x : ↥X) (hfz : f.base z = x) :
@@ -193,9 +189,9 @@ private theorem map_stalkMap_stalkIdeal_eq {X W : Scheme.{u}} (f : W ⟶ X) (I :
   rw [eqToHom_refl, Category.id_comp]
 
 /- English proof (translation)
-Substitute `hfz` using the available equality. Establish `key : X.presheaf.germ U (f.base z) hxU ≫ f.stalkMap z = f.appLE U V e ≫ W.presheaf.germ V z hzV`. Rewrite using `[Scheme.Hom.appLE, Category.assoc, W.presheaf.germ_res (homOfLE e) z hzV]`. Simplify using the standard rewrite rules. Establish `h2` using `congrArg (fun t : Γ(X, U) ⟶ W.presheaf.stalk z => CommRingCat.Hom.hom t s) key`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[eqToHom_refl, Category.id_comp]`. Simplify `h2` using `only [CommRingCat.hom_comp, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eqToHom_comp_stalkMap_germ {X W : Scheme.{u}} (f : W ⟶ X) (z : ↥W) (x : ↥X)
     (hfz : f.base z = x) (U : X.Opens) (hxU : x ∈ U) (V : W.Opens) (hzV : z ∈ V)
@@ -213,7 +209,7 @@ private theorem eqToHom_comp_stalkMap_germ {X W : Scheme.{u}} (f : W ⟶ X) (z :
   simpa only [CommRingCat.hom_comp, RingHom.comp_apply] using h2
 
 /- English proof (translation)
-Substitute `hfz` using the available equality. Rewrite using `[eqToHom_refl, Category.id_comp]`. Rewrite `ha`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Conclude with `ha (isUnit_of_map_unit ((f.stalkMap z).hom) a hu)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem eqToHom_comp_stalkMap_mem_maximalIdeal {X W : Scheme.{u}} (f : W ⟶ X) (z : ↥W)
     (x : ↥X) (hfz : f.base z = x) {a : ↥(X.presheaf.stalk x)}
@@ -227,11 +223,11 @@ private theorem eqToHom_comp_stalkMap_mem_maximalIdeal {X W : Scheme.{u}} (f : W
   exact ha (isUnit_of_map_unit ((f.stalkMap z).hom) a hu)
 
 /- English proof (translation)
-Substitute `hfg` using the available equality. Establish `e₀ : (⊤ : (U.toScheme).Opens) ≤ U.ι ⁻¹ᵁ U` using `fun z _ => z.2`. Establish `e' : (⊤ : W.Opens) ≤ g ⁻¹ᵁ (⊤ : (U.toScheme).Opens)` using `fun z _ => trivial`. Establish `hcomp : (g ≫ U.ι).appLE U ⊤ e = U.ι.appLE U ⊤ e₀ ≫ g.appLE ⊤ ⊤ e'` using `(Scheme.Hom.appLE_comp_appLE ..).symm`. Establish `hpar : W.presheaf.map (homOfLE e').op = W.presheaf.map (𝟙 (Opposite.op (⊤ : W.Opens)))` using `AlgebraicGeometry.Scheme.presheaf_map_eq_of_parallel ..`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmapid : W.presheaf.map (homOfLE e').op = 𝟙 Γ(W, ⊤)`. Rewrite using `[hpar, CategoryTheory.Functor.map_id]`. Establish `happ : g.appLE (⊤ : (U.toScheme).Opens) (⊤ : W.Opens) e' = g.appTop` using `by show g.app ⊤ ≫ W.presheaf.map (homOfLE e').op = g.appTop`. Rewrite using `[hmapid]`. Conclude with `Category.comp_id _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomp, opensι_appLE_self_top_eq_topIso_inv U e₀, happ]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `congrArg ((g.appTop).hom) (Iso.hom_inv_id_apply U.topIso t)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem appLE_topIso_hom_eq_appTop {X W : Scheme.{u}} (U : X.Opens) (f : W ⟶ X)
     (g : W ⟶ U.toScheme) (hfg : f = g ≫ U.ι) (e : (⊤ : W.Opens) ≤ f ⁻¹ᵁ U)
@@ -256,21 +252,17 @@ private theorem appLE_topIso_hom_eq_appTop {X W : Scheme.{u}} (U : X.Opens) (f :
   exact congrArg ((g.appTop).hom) (Iso.hom_inv_id_apply U.topIso t)
 
 /- English proof (translation)
-Establish `hD1 : (EtaleCoordinates.partialDeriv kk ι R j) (EtaleCoordinates.coord kk ι R j) = 1` using `EtaleCoordinates.partialDeriv_coord_self kk ι R j`. Establish `hD0 : ∀ i : ι, i ≠ j → (EtaleCoordinates.partialDeriv kk ι R j) (EtaleCoordinates.coord kk ι R i) = 0` using `fun i hi => EtaleCoordinates.partialDeriv_coord_of_ne kk ι R j i (Ne.symm hi)`. Establish `hderivConst : ∀ c : kk, (EtaleCoordinates.partialDeriv kk ι R j) (algebraMap (MvPolynomial ι kk) R (MvPolynomial.C c)) = 0`. Introduce `c`. Establish `hmap : algebraMap (MvPolynomial ι kk) R (MvPolynomial.C c) = algebraMap kk R c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_apply kk (MvPolynomial ι kk) R c]`. Simplify using `[MvPolynomial.algebraMap_eq]`. Rewrite using `[hmap]`. Conclude with `Derivation.map_algebraMap _ c`. Establish `hvar : ∀ (i : ι) (N : ℕ), 1 ≤ N → TaylorExpansion.truncatedSeries φ (EtaleCoordinates.partialDeriv kk ι R j) (φ b) N (algebraMap (MvPolynomial ι kk) R (MvPolynomial.X i)) - φ' (algebraMap (MvPolynomial ι kk) R (MvPolynomial.X i)) ∈ IsLocalRing.maximalIdeal B ^ N`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i N hN`. Establish `hco : algebraMap (MvPolynomial ι kk) R (MvPolynomial.X i) = EtaleCoordinates.coord kk ι R i` using `rfl`. Break down `Nat.lt_or_ge N 2 with h2 | h2` into its components or cases. Establish `hN1 : N = 1` using `by omega`. Substitute `hN1` using the available equality.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hco, truncatedSeries_length_one, pow_one]`. Break down `eq_or_ne i j with hij | hij` into its components or cases. Substitute `hij` using the available equality. Establish `hsub : φ (EtaleCoordinates.coord kk ι R i) - φ' (EtaleCoordinates.coord kk ι R i) = -(φ b)`. Rewrite using `[← hj]`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsub]`. Conclude with `Submodule.neg_mem _ hβ`. Rewrite using `[hne i hij, sub_self]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_ne i j with hij | hij` into its components or cases. Substitute `hij` using the available equality. Rewrite using `[hco, truncatedSeries_of_deriv_deriv_eq_zero φ _ (φ b) N h2 _ (by rw [hD1]; simp), hD1, map_one, one_mul, hj, sub_self]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[hco, truncatedSeries_of_deriv_deriv_eq_zero φ _ (φ b) N h2 _ (by rw [hD0 i hij]; simp), hD0 i hij, map_zero, zero_mul, add_zero, hne i hij, sub_self]`.
-
-Conclude with `Submodule.zero_mem _`. Establish `hrep` using `isTaylorExpansionOn_mvPolynomial (k := kk) (ι := ι) φ φ' (EtaleCoordinates.partialDeriv kk ι R j) (φ b) hβ hconst hderivConst hvar`. Establish `: Algebra.FormallyUnramified (MvPolynomial ι kk) R` using `inferInstance`. Use `⟨fun M J hbM hMJ => ?_, fun Iid hbI f => ?_⟩` and prove the remaining obligations. Conclude with `map_le_map_of_pow_mul_iterate_deriv_mem (MvPolynomial ι kk) φ φ' (EtaleCoordinates.partialDeriv kk ι R j) (φ b) b J hcong hβ hrep rfl (pow_mul_iterate_deriv_mem_of_mul_derivIdeal_le kk M J (EtaleCoordinates.partialDeriv kk ι R j) b hMJ hbM)`.
-
-Conclude with `sub_mem_of_isTaylorExpansionOn (MvPolynomial ι kk) φ φ' (EtaleCoordinates.partialDeriv kk ι R j) (φ b) hcong hβ hrep Iid hbI f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem map_le_map_and_sub_mem_of_etaleCoordinates_shift (kk : Type u) [Field kk] {ι : Type u} {R : Type u}
     [CommRing R] {B : Type u} [CommRing B] [IsLocalRing B] [IsNoetherianRing B] [Algebra ℚ B]
@@ -342,19 +334,17 @@ private theorem map_le_map_and_sub_mem_of_etaleCoordinates_shift (kk : Type u) [
       (EtaleCoordinates.partialDeriv kk ι R j) (φ b) hcong hβ hrep Iid hbI f
 
 /- English proof (translation)
-Set `instP : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) ↥(X.presheaf.stalk x)` to `RingHom.toAlgebra ((X.presheaf.germ U x hx).hom.comp c.coordRingHom)`. Establish `instScalarTower : IsScalarTower k (MvPolynomial (ULift.{u} (Fin n)) k) ↥(X.presheaf.stalk x)`. Use `IsScalarTower.of_algebraMap_eq fun a => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.algebraMap_eq, halg a]`. Use `show stalkAlgebraMap k p x a = (X.presheaf.germ U x hx).hom (c.coordRingHom (MvPolynomial.C a))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[EtaleChart.coordRingHom_C, germ_sectionsAlgebraMap_apply]`. Establish `instFormallyEtale : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) ↥(X.presheaf.stalk x)`. Set `instChart : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, U)` to `c.algebra`. Set `instGerm : Algebra Γ(X, U) ↥(X.presheaf.stalk x)` to `(X.presheaf.germ U x hx).hom.toAlgebra`. Establish `: IsScalarTower (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, U) ↥(X.presheaf.stalk x)` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, U)` using `c.algebra_formallyEtale hU`. Establish `: IsLocalization (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl ↥(X.presheaf.stalk x)` using `hU.isLocalization_stalk ⟨x, hx⟩`. Establish `: Algebra.FormallyEtale Γ(X, U) ↥(X.presheaf.stalk x)` using `Algebra.FormallyEtale.of_isLocalization (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl`. Conclude with `Algebra.FormallyEtale.comp (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, U) ↥(X.presheaf.stalk x)`. Establish `hcd : ∀ i : Fin n, EtaleCoordinates.coord k (ULift.{u} (Fin n)) ↥(X.presheaf.stalk x) (ULift.up i) = (X.presheaf.germ U x hx).hom (c.coord i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Use `show (X.presheaf.germ U x hx).hom (c.coordRingHom (MvPolynomial.X (ULift.up i))) = _`. Rewrite using `[EtaleChart.coordRingHom_X]`. Establish `hconst' : ∀ a : k, φ (algebraMap (MvPolynomial (ULift.{u} (Fin n)) k) ↥(X.presheaf.stalk x) (MvPolynomial.C a)) = φ' (algebraMap (MvPolynomial (ULift.{u} (Fin n)) k) ↥(X.presheaf.stalk x) (MvPolynomial.C a))`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : algebraMap (MvPolynomial (ULift.{u} (Fin n)) k) ↥(X.presheaf.stalk x) (MvPolynomial.C a) = stalkAlgebraMap k p x a` using `by show (X.presheaf.germ U x hx).hom (c.coordRingHom (MvPolynomial.C a)) = _`. Rewrite using `[EtaleChart.coordRingHom_C, germ_sectionsAlgebraMap_apply]`. Rewrite using `[hA, hconst a]`. Establish `hne' : ∀ i : ULift.{u} (Fin n), i ≠ ULift.up j → φ (EtaleCoordinates.coord k (ULift.{u} (Fin n)) ↥(X.presheaf.stalk x) i) = φ' (EtaleCoordinates.coord k (ULift.{u} (Fin n)) ↥(X.presheaf.stalk x) i)`. Introduce and unpack `⟨i⟩ hi`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hij : i ≠ j` using `fun hc => hi (by rw [hc])`. Rewrite using `[hcd i]`. Conclude with `hne i hij`. Establish `hj' : φ (EtaleCoordinates.coord k (ULift.{u} (Fin n)) ↥(X.presheaf.stalk x) (ULift.up j)) + φ b = φ' (EtaleCoordinates.coord k (ULift.{u} (Fin n)) ↥(X.presheaf.stalk x) (ULift.up j))`. Rewrite using `[hcd j]`.
-
-Conclude with `hj`. Conclude with `map_le_map_and_sub_mem_of_etaleCoordinates_shift k φ φ' (ULift.up j) b hcong hβ hconst' hne' hj'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_le_map_and_sub_mem_of_etaleChart_coord_shift (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] [LocallyOfFiniteType p]
@@ -431,23 +421,21 @@ private theorem map_le_map_and_sub_mem_of_etaleChart_coord_shift (k : Type u) [F
   exact map_le_map_and_sub_mem_of_etaleCoordinates_shift k φ φ' (ULift.up j) b hcong hβ hconst' hne' hj'
 
 /- English proof (translation)
-Establish `hfb : (chartPullbackFst c₁ c₂).base (chartPullbackPoint c₁ c₂ x hx h) = x` using `chartPullbackFst_base_chartPullbackPoint c₁ c₂ x hx h`. Establish `hsb : (chartPullbackSnd c₁ c₂).base (chartPullbackPoint c₁ c₂ x hx h) = x` using `chartPullbackSnd_base_chartPullbackPoint c₁ c₂ x hx h`. Establish `e₁ : (⊤ : (chartPullback c₁ c₂).Opens) ≤ (chartPullbackFst c₁ c₂) ⁻¹ᵁ U` using `fun z _ => ((pullback.fst c₁.map c₂.map).base z).2`. Establish `e₂ : (⊤ : (chartPullback c₁ c₂).Opens) ≤ (chartPullbackSnd c₁ c₂) ⁻¹ᵁ U` using `fun z _ => ((pullback.snd c₁.map c₂.map).base z).2`. Establish `hcoordEach : ∀ i : Fin n, (chartPullbackFstStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₁.coord i)) = (chartPullbackSndStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₂.coord i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[chartPullbackFstStalkMap_eq, chartPullbackSndStalkMap_eq, eqToHom_comp_stalkMap_germ (chartPullbackFst c₁ c₂) (chartPullbackPoint c₁ c₂ x hx h) x hfb U hx ⊤`. Use `trivial e₁ (c₁.coord i),`. Use `eqToHom_comp_stalkMap_germ (chartPullbackSnd c₁ c₂) (chartPullbackPoint c₁ c₂ x hx h) x hsb U hx ⊤`. Use `trivial e₂ (c₂.coord i)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Establish `hc₁ : c₁.coord i = U.topIso.hom.hom (c₁.coordTop i)` using `rfl`. Establish `hc₂ : c₂.coord i = U.topIso.hom.hom (c₂.coordTop i)` using `rfl`. Rewrite using `[hc₁, hc₂, appLE_topIso_hom_eq_appTop U (chartPullbackFst c₁ c₂) (pullback.fst c₁.map c₂.map) rfl e₁ (c₁.coordTop i), appLE_topIso_hom_eq_appTop U (chartPullbackSnd c₁ c₂) (pullback.snd c₁.map c₂.map) rfl e₂ (c₂.coordTop i)]`. Conclude with `congrArg _ (chartPullback_coordTop_eq c₁ c₂ i)`. Establish `hscalar : ∀ a : k, (chartPullbackFstStalkMap c₁ c₂ x hx h).hom (stalkAlgebraMap k p x a) = (chartPullbackSndStalkMap c₁ c₂ x hx h).hom (stalkAlgebraMap k p x a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Rewrite using `[← germ_sectionsAlgebraMap_apply k p U x hx a, chartPullbackFstStalkMap_eq, chartPullbackSndStalkMap_eq, eqToHom_comp_stalkMap_germ (chartPullbackFst c₁ c₂) (chartPullbackPoint c₁ c₂ x hx h) x hfb U hx ⊤`. Use `trivial e₁ (sectionsAlgebraMap k p U a),`. Use `eqToHom_comp_stalkMap_germ (chartPullbackSnd c₁ c₂) (chartPullbackPoint c₁ c₂ x hx h) x hsb U hx ⊤`. Use `trivial e₂ (sectionsAlgebraMap k p U a),`.
+Check the elementary cases of the proposition. Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sectionsAlgebraMap_appLE_apply k p (chartPullbackFst c₁ c₂) U ⊤ e₁ a,`. Use `sectionsAlgebraMap_appLE_apply k p (chartPullbackSnd c₁ c₂) U ⊤ e₂ a,`. Use `chartPullbackFst_comp_eq_chartPullbackSnd_comp c₁ c₂]`. Use `⟨hcoordEach, hscalar, ?_⟩` and prove the remaining obligations. Establish `hmor : chartPullbackLift c₁ c₂ x hx h ≫ chartPullbackFst c₁ c₂ = chartPullbackLift c₁ c₂ x hx h ≫ chartPullbackSnd c₁ c₂` using `by show chartPullbackLift c₁ c₂ x hx h ≫ (pullback.fst c₁.map c₂.map ≫ U.ι) = chartPullbackLift c₁ c₂ x hx h ≫ (pullback.snd c₁.map c₂.map ≫ U.ι)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[chartPullbackLift_fst_assoc, chartPullbackLift_snd_assoc]`. Establish `hbf : (chartPullbackLift c₁ c₂ x hx h ≫ chartPullbackFst c₁ c₂).base (specResidueFieldPoint (pointOfMem U x hx)) = x` using `hfb`. Establish `hbs : (chartPullbackLift c₁ c₂ x hx h ≫ chartPullbackSnd c₁ c₂).base (specResidueFieldPoint (pointOfMem U x hx)) = x` using `hsb`. Establish `hstalkeq` using `eqToHom_comp_stalkMap_congr (chartPullbackLift c₁ c₂ x hx h ≫ chartPullbackFst c₁ c₂) (chartPullbackLift c₁ c₂ x hx h ≫ chartPullbackSnd c₁ c₂) hmor (specResidueFieldPoint (pointOfMem U x hx)) x hbf hbs`. Take `⟨σ, hσ⟩ : ∃ σ : (chartPullback c₁ c₂).presheaf.stalk (chartPullbackPoint c₁ c₂ x hx h) ⟶ (Spec (U.toScheme.residueField (pointOfMem U x hx))).presheaf.stalk (specResidueFieldPoint (pointOfMem U x hx)), σ = (chartPullbackLift c₁ c₂ x hx h).stalkMap (specResidueFieldPoint (pointOfM …` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp1 : (chartPullbackLift c₁ c₂ x hx h ≫ chartPullbackFst c₁ c₂).stalkMap (specResidueFieldPoint (pointOfMem U x hx)) = (chartPullbackFst c₁ c₂).stalkMap (chartPullbackPoint c₁ c₂ x hx h) ≫ σ`. Rewrite using `[hσ]`. Conclude with `Scheme.Hom.stalkMap_comp _ _ _`. Establish `hcomp2 : (chartPullbackLift c₁ c₂ x hx h ≫ chartPullbackSnd c₁ c₂).stalkMap (specResidueFieldPoint (pointOfMem U x hx)) = (chartPullbackSnd c₁ c₂).stalkMap (chartPullbackPoint c₁ c₂ x hx h) ≫ σ`. Rewrite using `[hσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Scheme.Hom.stalkMap_comp _ _ _`. Establish `hkey : chartPullbackFstStalkMap c₁ c₂ x hx h ≫ σ = chartPullbackSndStalkMap c₁ c₂ x hx h ≫ σ`. Rewrite using `[chartPullbackFstStalkMap_eq, chartPullbackSndStalkMap_eq, Category.assoc, Category.assoc, ← hcomp1, ← hcomp2]`. Conclude with `hstalkeq`. Introduce `a`.
-
-Establish `hc` using `congrArg CommRingCat.Hom.hom hkey`. Establish `h0 : σ.hom ((chartPullbackFstStalkMap c₁ c₂ x hx h).hom a) = σ.hom ((chartPullbackSndStalkMap c₁ c₂ x hx h).hom a)` using `DFunLike.congr_fun hc a`. Use `mem_maximalIdeal_of_map_eq_zero σ.hom ?_` and prove the remaining obligations. Rewrite using `[map_sub, ← h0, sub_self]`.
+A detailed English derivation is pending.
 -/
 private theorem chartPullbackStalkMap_compat (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] [LocallyOfFiniteType p]
@@ -543,21 +531,21 @@ private theorem chartPullbackStalkMap_compat (k : Type u) [Field k] {X : Scheme.
   rw [map_sub, ← h0, sub_self]
 
 /- English proof (translation)
-Take `⟨hcoordEach, hscalar, hcong21⟩` from `chartPullbackStalkMap_compat k p c₁ c₂ x hx h`. Establish `hcong12 : ∀ a : ↥(X.presheaf.stalk x), (chartPullbackFstStalkMap c₁ c₂ x hx h).hom a - (chartPullbackSndStalkMap c₁ c₂ x hx h).hom a ∈ IsLocalRing.maximalIdeal ↥((chartPullback c₁ c₂).presheaf.stalk (chartPullbackPoint c₁ c₂ x hx h))`. Introduce `a`. Establish `hneg` using `Submodule.neg_mem _ (hcong21 a)`. Rewrite `hneg` using `[neg_sub]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hfb : (chartPullbackFst c₁ c₂).base (chartPullbackPoint c₁ c₂ x hx h) = x` using `chartPullbackFst_base_chartPullbackPoint c₁ c₂ x hx h`. Establish `hsb : (chartPullbackSnd c₁ c₂).base (chartPullbackPoint c₁ c₂ x hx h) = x` using `chartPullbackSnd_base_chartPullbackPoint c₁ c₂ x hx h`. Set `instRk : Algebra k ↥(X.presheaf.stalk x)` to `stalkAlgebra k p x`. Establish `instBnoeth : IsNoetherianRing ↥((chartPullback c₁ c₂).presheaf.stalk (chartPullbackPoint c₁ c₂ x hx h))` using `inferInstance`. Set `instAlgebraRat : Algebra ℚ ↥((chartPullback c₁ c₂).presheaf.stalk (chartPullbackPoint c₁ c₂ x hx h))` to `RingHom.toAlgebra ((stalkAlgebraMap k (chartPullbackFst c₁ c₂ ≫ p) (chartPullbackPoint c₁ c₂ x hx h)).comp (algebraMap ℚ k))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hinv' : maxContactIdeal k p I m * derivIdealSheaf k p I ≤ I` using `hinv`. Establish `hMJ : stalkIdeal (maxContactIdeal k p I m) x * derivIdeal k (stalkIdeal I x) ≤ stalkIdeal I x`. Establish `h0` using `stalkIdeal_mono hinv' x`. Rewrite `h0` using `[stalkIdeal_mul, stalkIdeal_derivIdealSheaf k p I x]`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hM₁ : (X.presheaf.germ U x hx).hom (c₁.coord j) ∈ stalkIdeal (maxContactIdeal k p I m) x` using `germ_mem_stalkIdeal (maxContactIdeal k p I m) x ⟨U, hU⟩ hx hmem₁`. Establish `hM₂ : (X.presheaf.germ U x hx).hom (c₂.coord j) ∈ stalkIdeal (maxContactIdeal k p I m) x` using `germ_mem_stalkIdeal (maxContactIdeal k p I m) x ⟨U, hU⟩ hx hmem₂`. Establish `hcoordNe : ∀ i : Fin n, i ≠ j → (X.presheaf.germ U x hx).hom (c₁.coord i) = (X.presheaf.germ U x hx).hom (c₂.coord i)` using `fun i hi => congrArg _ (hcoord i hi)`. Establish `h12 : Ideal.map (chartPullbackFstStalkMap c₁ c₂ x hx h).hom (stalkIdeal I x) ≤ Ideal.map (chartPullbackSndStalkMap c₁ c₂ x hx h).hom (stalkIdeal I x)`. Establish `hne : ∀ i : Fin n, i ≠ j → (chartPullbackSndStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₁.coord i)) = (chartPullbackFstStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₁.coord i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Rewrite using `[hcoordNe i hi, ← hcoordEach i, hcoordNe i hi]`. Establish `hj' : (chartPullbackSndStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₁.coord j)) + (chartPullbackSndStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₂.coord j) - (X.presheaf.germ U x hx).hom (c₁.coord j)) = (chartPullbackFstStalkMap c₁ c₂ x hx h).hom ((X.pr …`. Rewrite using `[map_sub, hcoordEach j]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hβ : (chartPullbackSndStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₂.coord j) - (X.presheaf.germ U x hx).hom (c₁.coord j)) ∈ IsLocalRing.maximalIdeal ↥((chartPullback c₁ c₂).presheaf.stalk (chartPullbackPoint c₁ c₂ x hx h))` using `eqToHom_comp_stalkMap_mem_maximalIdeal (chartPullbackSnd c₁ c₂) (chartPullbackPoint c₁ c₂ x hx h) x hsb (Submodule.sub_mem _ hg₂ hg₁)`. Conclude with `(map_le_map_and_sub_mem_of_etaleChart_coord_shift k p hU c₁ j x hx (fun _ => rfl) (chartPullbackSndStalkMap c₁ c₂ x hx h).hom (chartPullbackFstStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₂.coord j) - (X.presheaf.germ U x hx).hom (c₁.coord j)) hcong21 hβ (fun a => ( …`. Establish `h21 : Ideal.map (chartPullbackSndStalkMap c₁ c₂ x hx h).hom (stalkIdeal I x) ≤ Ideal.map (chartPullbackFstStalkMap c₁ c₂ x hx h).hom (stalkIdeal I x)`. Establish `hne : ∀ i : Fin n, i ≠ j → (chartPullbackFstStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₂.coord i)) = (chartPullbackSndStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₂.coord i))`. Introduce `i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hcoordNe i hi, hcoordEach i, hcoordNe i hi]`. Establish `hj' : (chartPullbackFstStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₂.coord j)) + (chartPullbackFstStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₁.coord j) - (X.presheaf.germ U x hx).hom (c₂.coord j)) = (chartPullbackSndStalkMap c₁ c₂ x hx h).hom ((X.pr …`. Rewrite using `[map_sub, ← hcoordEach j]`. Expand and normalize the polynomial expressions, which then agree. Establish `hβ : (chartPullbackFstStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₁.coord j) - (X.presheaf.germ U x hx).hom (c₂.coord j)) ∈ IsLocalRing.maximalIdeal ↥((chartPullback c₁ c₂).presheaf.stalk (chartPullbackPoint c₁ c₂ x hx h))` using `eqToHom_comp_stalkMap_mem_maximalIdeal (chartPullbackFst c₁ c₂) (chartPullbackPoint c₁ c₂ x hx h) x hfb (Submodule.sub_mem _ hg₁ hg₂)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_le_map_and_sub_mem_of_etaleChart_coord_shift k p hU c₂ j x hx (fun _ => rfl) (chartPullbackFstStalkMap c₁ c₂ x hx h).hom (chartPullbackSndStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₁.coord j) - (X.presheaf.germ U x hx).hom (c₂.coord j)) hcong12 hβ hscalar hne …`. Establish `key : Ideal.map (chartPullbackFstStalkMap c₁ c₂ x hx h).hom (stalkIdeal I x) = Ideal.map (chartPullbackSndStalkMap c₁ c₂ x hx h).hom (stalkIdeal I x)` using `le_antisymm h12 h21`. Rewrite using `[stalkIdeal_comap, stalkIdeal_comap, map_stalkMap_stalkIdeal_eq (chartPullbackFst c₁ c₂) I (chartPullbackPoint c₁ c₂ x hx h) x hfb, map_stalkMap_stalkIdeal_eq (chartPullbackSnd c₁ c₂) I (chartPullbackPoint c₁ c₂ x hx h) x hsb]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem stalkIdeal_comap_chartPullbackPoint_eq
     (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
@@ -681,7 +669,7 @@ theorem stalkIdeal_comap_chartPullbackPoint_eq
   exact key
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Rewrite using `[hαβ, eqToHom_refl, Category.id_comp]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem spec_map_comp_fromSpecStalk_eq {X Z : Scheme.{u}} (z : ↥Z) {x₁ x₂ : ↥X}
     (hx : x₁ = x₂) (α : X.presheaf.stalk x₁ ⟶ Z.presheaf.stalk z)
@@ -692,13 +680,11 @@ private theorem spec_map_comp_fromSpecStalk_eq {X Z : Scheme.{u}} (z : ↥Z) {x�
   rw [hαβ, eqToHom_refl, Category.id_comp]
 
 /- English proof (translation)
-Substitute `hφ₁` using the available equality. Substitute `hφ₂` using the available equality. Substitute `hρ` using the available equality. Substitute `hw` using the available equality. Substitute `hf` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Establish `hstalk : f.stalkMap (ιm.base z) ≫ ιm.stalkMap z = eqToHom (congrArg (fun y : ↥X => X.presheaf.stalk y) hg.symm) ≫ (g.stalkMap (ιm.base z) ≫ ιm.stalkMap z)`. Use `CommRingCat.hom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations. Establish `ha` using `hker a`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, eqToHom_refl, CommRingCat.hom_id, RingHom.id_apply] at ha ⊢`. Conclude with `ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key` using `spec_map_comp_fromSpecStalk_eq (X := X) z hg.symm (f.stalkMap (ιm.base z) ≫ ιm.stalkMap z) (g.stalkMap (ιm.base z) ≫ ιm.stalkMap z) hstalk`. Establish `L : ∀ u : Y ⟶ X, Z.fromSpecStalk z ≫ ιm ≫ u = Spec.map (u.stalkMap (ιm.base z) ≫ ιm.stalkMap z) ≫ X.fromSpecStalk (u.base (ιm.base z))`. Introduce `u`. Rewrite using `[← Category.assoc, ← Scheme.SpecMap_stalkMap_fromSpecStalk ιm (x := z), Category.assoc, ← Scheme.SpecMap_stalkMap_fromSpecStalk u (x := ιm.base z), ← Category.assoc, ← Spec.map_comp]`. Rewrite using `[L f, L g]`.
-
-Conclude with `key`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fromSpecStalk_comp_eq_of_stalkMap_eq {X Y Z : Scheme.{u}} (ιm : Z ⟶ Y) (f g : Y ⟶ X) (z : ↥Z)
     (w : ↥Y) (hw : ιm.base z = w) (x : ↥X) (hf : f.base w = x) (hg : g.base w = x)
@@ -735,7 +721,7 @@ private theorem fromSpecStalk_comp_eq_of_stalkMap_eq {X Y Z : Scheme.{u}} (ιm :
   exact key
 
 /- English proof (translation)
-Establish `hker : J.subschemeι.ker = J` using `Scheme.IdealSheafData.ker_subschemeι ..`. Establish `h2 : s ∈ (J.subschemeι.ker).ideal V` using `by rw [hker]; exact hs`. Establish `h3 : (J.subschemeι.app V.1).hom s = 0` using `RingHom.mem_ker.mp (J.subschemeι.ideal_ker_le V h2)`. Rewrite using `[Scheme.Hom.appLE]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, h3, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem subschemeι_appLE_eq_zero {Y : Scheme.{u}} (J : Y.IdealSheafData)
     (V : Y.affineOpens) {s : Γ(Y, V.1)} (hs : s ∈ J.ideal V) :
@@ -748,9 +734,9 @@ private theorem subschemeι_appLE_eq_zero {Y : Scheme.{u}} (J : Y.IdealSheafData
   simp only [CommRingCat.hom_comp, RingHom.comp_apply, h3, map_zero]
 
 /- English proof (translation)
-Rewrite using `[eqToHom_comp_stalkMap_germ f w x hf U hxU V hwV eV s]`. Establish `hzV : z ∈ (M.comap f).subschemeι ⁻¹ᵁ V` using `by show (M.comap f).subschemeι.base z ∈ V`. Rewrite using `[hw]`. Conclude with `hwV`. Rewrite using `[eqToHom_comp_stalkMap_germ (M.comap f).subschemeι z w hw V hwV ((M.comap f).subschemeι ⁻¹ᵁ V) hzV le_rfl ((f.appLE U V eV).hom s)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (f.appLE U V eV).hom s ∈ (M.comap f).ideal ⟨V, hV⟩` using `Scheme.IdealSheafData.appLE_mem_comap_ideal M f ⟨U, hU⟩ ⟨V, hV⟩ eV hs`. Rewrite using `[subschemeι_appLE_eq_zero (M.comap f) ⟨V, hV⟩ h3, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stalkMap_germ_eq_zero_of_mem_ideal {X Y : Scheme.{u}} (f : Y ⟶ X) (M : X.IdealSheafData)
     (z : ↥((M.comap f).subscheme)) (w : ↥Y)
@@ -774,15 +760,15 @@ private theorem stalkMap_germ_eq_zero_of_mem_ideal {X Y : Scheme.{u}} (f : Y ⟶
   rw [subschemeι_appLE_eq_zero (M.comap f) ⟨V, hV⟩ h3, map_zero]
 
 /- English proof (translation)
-Take `⟨hcoordEach, hscalar, hcong21⟩` from `chartPullbackStalkMap_compat k p c₁ c₂ x hx h`. Establish `hcong12 : ∀ a : ↥(X.presheaf.stalk x), (chartPullbackFstStalkMap c₁ c₂ x hx h).hom a - (chartPullbackSndStalkMap c₁ c₂ x hx h).hom a ∈ IsLocalRing.maximalIdeal ↥((chartPullback c₁ c₂).presheaf.stalk (chartPullbackPoint c₁ c₂ x hx h))`. Introduce `a`. Establish `hneg` using `Submodule.neg_mem _ (hcong21 a)`. Rewrite `hneg` using `[neg_sub]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hfb : (chartPullbackFst c₁ c₂).base (chartPullbackPoint c₁ c₂ x hx h) = x` using `chartPullbackFst_base_chartPullbackPoint c₁ c₂ x hx h`. Establish `hcoordNe : ∀ i : Fin n, i ≠ j → (X.presheaf.germ U x hx).hom (c₁.coord i) = (X.presheaf.germ U x hx).hom (c₂.coord i)` using `fun i hi => congrArg _ (hcoord i hi)`. Set `instRk : Algebra k ↥(X.presheaf.stalk x)` to `stalkAlgebra k p x`. Establish `instBnoeth : IsNoetherianRing ↥((chartPullback c₁ c₂).presheaf.stalk (chartPullbackPoint c₁ c₂ x hx h))` using `inferInstance`. Set `instAlgebraRat : Algebra ℚ ↥((chartPullback c₁ c₂).presheaf.stalk (chartPullbackPoint c₁ c₂ x hx h))` to `RingHom.toAlgebra ((stalkAlgebraMap k (chartPullbackFst c₁ c₂ ≫ p) (chartPullbackPoint c₁ c₂ x hx h)).comp (algebraMap ℚ k))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hne : ∀ i : Fin n, i ≠ j → (chartPullbackFstStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₂.coord i)) = (chartPullbackSndStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₂.coord i))`. Introduce `i hi`. Rewrite using `[← hcoordNe i hi, hcoordEach i, hcoordNe i hi]`. Establish `hj' : (chartPullbackFstStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₂.coord j)) + (chartPullbackFstStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₁.coord j) - (X.presheaf.germ U x hx).hom (c₂.coord j)) = (chartPullbackSndStalkMap c₁ c₂ x hx h).hom ((X.pr …`. Rewrite using `[map_sub, ← hcoordEach j]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hβ : (chartPullbackFstStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₁.coord j) - (X.presheaf.germ U x hx).hom (c₂.coord j)) ∈ IsLocalRing.maximalIdeal ↥((chartPullback c₁ c₂).presheaf.stalk (chartPullbackPoint c₁ c₂ x hx h))` using `eqToHom_comp_stalkMap_mem_maximalIdeal (chartPullbackFst c₁ c₂) (chartPullbackPoint c₁ c₂ x hx h) x hfb (Submodule.sub_mem _ hg₁ hg₂)`. Establish `hbI : (chartPullbackFstStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₁.coord j) - (X.presheaf.germ U x hx).hom (c₂.coord j)) ∈ RingHom.ker ρ.hom`. Rewrite using `[RingHom.mem_ker, map_sub, map_sub, hv₁, hv₂, sub_zero]`. Establish `hsub` using `(map_le_map_and_sub_mem_of_etaleChart_coord_shift k p hU c₂ j x hx (fun _ => rfl) (chartPullbackFstStalkMap c₁ c₂ x hx h).hom (chartPullbackSndStalkMap c₁ c₂ x hx h).hom ((X.presheaf.germ U x hx).hom (c₁.coord j) - (X.presheaf.germ U x hx).hom (c₂.coord j)) hcong12 hβ hscalar hne …`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Establish `ha` using `hsub a`. Rewrite `ha` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chartPullbackFstStalkMap_eq_snd_of_coord_eq_zero
     (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
@@ -862,11 +848,9 @@ private theorem chartPullbackFstStalkMap_eq_snd_of_coord_eq_zero
   exact ha
 
 /- English proof (translation)
-Take `⟨V₀, hwV₀, hV₀⟩` from `AlgebraicGeometry.Scheme.exists_isAffineOpen_mem (chartPullbackPoint c₁ c₂ x hx h)`. Establish `hwpre : chartPullbackPoint c₁ c₂ x hx h ∈ (chartPullbackFst c₁ c₂) ⁻¹ᵁ U` using `by show (chartPullbackFst c₁ c₂).base (chartPullbackPoint c₁ c₂ x hx h) ∈ U`. Rewrite using `[chartPullbackFst_base_chartPullbackPoint c₁ c₂ x hx h]`. Conclude with `hx`. Take `⟨t, htle, hwt⟩` from `hV₀.exists_basicOpen_le (V := (V₀ ⊓ ((chartPullbackFst c₁ c₂) ⁻¹ᵁ U) : (chartPullback c₁ c₂).Opens)) ⟨chartPullbackPoint c₁ c₂ x hx h, ⟨hwV₀, hwpre⟩⟩ hwV₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hVaff : IsAffineOpen ((chartPullback c₁ c₂).basicOpen t)` using `hV₀.basicOpen t`. Establish `hVle : ((chartPullback c₁ c₂).basicOpen t) ≤ (chartPullbackFst c₁ c₂) ⁻¹ᵁ U` using `fun y hy => (htle hy).2`. Use `fromSpecStalk_comp_eq_of_stalkMap_eq ((maxContactIdeal k p I m).comap (chartPullbackFst c₁ c₂)).subschemeι (chartPullbackFst c₁ c₂) (chartPullbackSnd c₁ c₂) z (chartPullbackPoint c₁ c₂ x hx h) hz x (chartPullbackFst_base_chartPullbackPoint c₁ c₂ x hx h) (chartPullbackSnd_base_cha …` and prove the remaining obligations. Use `chartPullbackFstStalkMap_eq_snd_of_coord_eq_zero k p hU c₁ c₂ j hcoord x hx hg₁ hg₂ h _ _ ?_ ?_` and prove the remaining obligations. Conclude with `stalkMap_germ_eq_zero_of_mem_ideal (chartPullbackFst c₁ c₂) (maxContactIdeal k p I m) z (chartPullbackPoint c₁ c₂ x hx h) hz x (chartPullbackFst_base_chartPullbackPoint c₁ c₂ x hx h) U hU hx ((chartPullback c₁ c₂).basicOpen t) hVaff hwt hVle (c₁.coord j) hmem₁`.
-
-Conclude with `stalkMap_germ_eq_zero_of_mem_ideal (chartPullbackFst c₁ c₂) (maxContactIdeal k p I m) z (chartPullbackPoint c₁ c₂ x hx h) hz x (chartPullbackFst_base_chartPullbackPoint c₁ c₂ x hx h) U hU hx ((chartPullback c₁ c₂).basicOpen t) hVaff hwt hVle (c₂.coord j) hmem₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fromSpecStalk_comp_subschemeι_chartPullback_eq
     (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
@@ -923,7 +907,7 @@ theorem fromSpecStalk_comp_subschemeι_chartPullback_eq
       ((chartPullback c₁ c₂).basicOpen t) hVaff hwt hVle (c₂.coord j) hmem₂
 
 /- English proof (translation)
-Establish `hind` using `(AlgebraicGeometry.Scheme.Hom.isClosedEmbedding f).toIsEmbedding.toIsInducing`. Take `⟨t, ht, hteq⟩` from `hind.isOpen_iff.mp W.2`. Conclude with `⟨⟨t, ht⟩, TopologicalSpace.Opens.ext hteq⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_preimage_eq_of_isClosedImmersion {Y Z : Scheme.{u}} (f : Z ⟶ Y) [IsClosedImmersion f]
     (W : Z.Opens) : ∃ V : Y.Opens, f ⁻¹ᵁ V = W := by
@@ -932,26 +916,24 @@ private theorem exists_preimage_eq_of_isClosedImmersion {Y Z : Scheme.{u}} (f : 
   exact ⟨⟨t, ht⟩, TopologicalSpace.Opens.ext hteq⟩
 
 /- English proof (translation)
-Rewrite using `[← Scheme.homOfLE_ι _ hle, Category.assoc, hfg, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ι_comp_eq_of_le {Z Y : Scheme.{u}} {W₀ W' : Z.Opens} (hle : W₀ ≤ W')
     {f g : Z ⟶ Y} (hfg : W'.ι ≫ f = W'.ι ≫ g) : W₀.ι ≫ f = W₀.ι ≫ g := by
   rw [← Scheme.homOfLE_ι _ hle, Category.assoc, hfg, Category.assoc]
 
 /- English proof (translation)
-Establish `hagree : ChartsAgreeAt c₁ c₂ x hx` using `chartsAgreeAt_of_coord_eq_of_germ_mem c₁ c₂ j x hx hcoord hg₁ hg₂`. Establish `hst : stalkIdeal (I.comap (chartPullbackFst c₁ c₂)) (chartPullbackPoint c₁ c₂ x hx hagree) = stalkIdeal (I.comap (chartPullbackSnd c₁ c₂)) (chartPullbackPoint c₁ c₂ x hx hagree)` using `stalkIdeal_comap_chartPullbackPoint_eq k p I hm hinv hU c₁ c₂ j hcoord x hx hmem₁ hmem₂ hg₁ hg₂ hagree`. Take `⟨W₁, hW₁mem, hW₁⟩` from `exists_opens_stalkIdeal_eq (I.comap (chartPullbackFst c₁ c₂)) (I.comap (chartPullbackSnd c₁ c₂)) (chartPullbackPoint c₁ c₂ x hx hagree) hst`. Establish `hsupp' : chartPullbackPoint c₁ c₂ x hx hagree ∈ ((maxContactIdeal k p I m).comap (chartPullbackFst c₁ c₂)).support`. Establish `hz : (chartPullbackFst c₁ c₂).base (chartPullbackPoint c₁ c₂ x hx hagree) ∈ (maxContactIdeal k p I m).support`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[chartPullbackFst_base_chartPullbackPoint c₁ c₂ x hx hagree]`. Conclude with `hsupp`. Rewrite using `[Scheme.IdealSheafData.support_comap]`. Conclude with `hz`. Establish `hrange : chartPullbackPoint c₁ c₂ x hx hagree ∈ Set.range (((maxContactIdeal k p I m).comap (chartPullbackFst c₁ c₂)).subschemeι.base)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Scheme.IdealSheafData.range_subschemeι]`. Conclude with `hsupp'`. Take `⟨z, hz⟩` from `hrange`. Establish `hmor` using `fromSpecStalk_comp_subschemeι_chartPullback_eq k p I hm hinv hU c₁ c₂ j hcoord x hx hmem₁ hmem₂ hg₁ hg₂ hsupp hagree z hz`. Take `⟨W', hzW', hW'⟩` from `AlgebraicGeometry.spread_out_unique_of_isGermInjective' (((maxContactIdeal k p I m).comap (chartPullbackFst c₁ c₂)).subschemeι ≫ chartPullbackFst c₁ c₂) (((maxContactIdeal k p I m).comap (chartPullbackFst c₁ c₂)).subschemeι ≫ chartPullbackSnd c₁ c₂) hmor`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, hV⟩` from `_root_.FunctorialResolution.EmbeddedResolution.exists_preimage_eq_of_isClosedImmersion ((maxContactIdeal k p I m).comap (chartPullbackFst c₁ c₂)).subschemeι W'`. Establish `hptV : chartPullbackPoint c₁ c₂ x hx hagree ∈ V`. Establish `h1 : z ∈ ((maxContactIdeal k p I m).comap (chartPullbackFst c₁ c₂)).subschemeι ⁻¹ᵁ V`. Rewrite using `[hV]`. Conclude with `hzW'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((maxContactIdeal k p I m).comap (chartPullbackFst c₁ c₂)).subschemeι.base z ∈ V` using `h1`. Rewrite `h2` using `[hz]`. Conclude with `h2`. Establish `hstalk : ∀ y : ↥(chartPullback c₁ c₂), y ∈ W₁ ⊓ V → stalkIdeal (I.comap (chartPullbackFst c₁ c₂)) y = stalkIdeal (I.comap (chartPullbackSnd c₁ c₂)) y` using `fun y hy => hW₁ y hy.1`. Establish `hle : (((maxContactIdeal k p I m).comap (chartPullbackFst c₁ c₂)).subschemeι ⁻¹ᵁ (W₁ ⊓ V)) ≤ W'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hV]`. Introduce `w hw`. Conclude with `hw.2`. Conclude with `⟨hagree, W₁ ⊓ V, ⟨hW₁mem, hptV⟩, hstalk, restrictIdeal_eq_of_stalkIdeal_eq _ _ (W₁ ⊓ V) hstalk, ι_comp_eq_of_le hle hW', chartPullback_comap_coordIdeal_eq c₁ c₂ {j}, fun S hS => coordIdeal_eq_of_coord_eq hU c₁ c₂ S (by`. Introduce `i hi`.
-
-Use `hcoord i ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hS hi)⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_opens_chartPullback_eq_of_mem_maxContactIdeal
     (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}

@@ -13,9 +13,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ}
 
 /- English proof (translation)
-Introduce `D hD f`. Establish `key` using `distribution_sigma_invariant ψ₀ hψ hψ₁ D (fun f u₁ u₂ hu₁ hu₂ => by`. Establish `e : (⟨fun x => (f : GL (Fin n) F → ℂ) (u₁⁻¹ * x * u₂), twoSided_mem f.2 u₁ u₂⟩ : locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ) = biTranslL u₁ u₂ f` using `Subtype.ext (coe_biTranslL u₁ u₂ f).symm`. Rewrite using `[e]`. Conclude with `hD f ⟨u₁, hu₁⟩ ⟨u₂, hu₂⟩) f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : compHomeoL sigmaHomeo f = (⟨fun x => (f : GL (Fin n) F → ℂ) (sigma x), comp_sigma_mem f.2⟩ : locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ)` using `Subtype.ext rfl`. Rewrite using `[e]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biEquivariantSigmaInvariant_GL (ψ₀ : AddChar F ℂ) (hψ : Continuous ψ₀) (hψ₁ : ψ₀ ≠ 1) :
     BiEquivariantSigmaInvariant (Iwasawa.unipotent F n)
@@ -45,19 +45,17 @@ def thetaEquiv : GL (Fin n) F ≃* GL (Fin n) F where
   map_mul' := theta_mul
 
 /- English proof (translation)
-Establish `hθc : Continuous (theta : GL (Fin n) F → GL (Fin n) F)` using `continuous_theta`. Establish `hθm : Measurable (theta : GL (Fin n) F → GL (Fin n) F)` using `hθc.measurable`. Establish `: (μ.map theta).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map μ (thetaEquiv (F := F) (n := n)) hθc hθc`. Use `set c := haarScalarFactor (μ.map theta) μ`. Establish `e : μ.map theta = c • μ` using `isMulLeftInvariant_eq_smul (μ.map theta) μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : μ = (c * c) • μ`. Establish `h1 : (μ.map theta).map theta = μ`. Rewrite using `[Measure.map_map hθm hθm]`. Establish `: (theta ∘ theta : GL (Fin n) F → GL (Fin n) F) = id` using `funext theta_theta`. Rewrite using `[this, Measure.map_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (μ.map theta).map theta = (c * c) • μ`. Rewrite using `[e, Measure.map_smul, e, smul_smul]`. Conclude with `h1.symm.trans h2`. Use `set K := GLnLocal.integralGL F n`. Establish `hK0 : μ K ≠ 0` using `(GLnLocal.isOpen_integralGL F n).measure_ne_zero μ ⟨1, K.one_mem⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKT : μ K ≠ ⊤` using `(GLnLocal.isCompact_integralGL F n).measure_lt_top.ne`. Establish `hc : c = 1`. Establish `h` using `congrArg (fun ν : Measure (GL (Fin n) F) => ν K) e2`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h`. Establish `h'` using `(ENNReal.mul_eq_right hK0 hKT).1 h.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : (c * c : NNReal) = 1` using `by exact_mod_cast h'`. Establish `hr : ((c : ℝ) * (c : ℝ)) = 1` using `by exact_mod_cast hcc`. Establish `hc0 : (0 : ℝ) ≤ c` using `c.2`. Establish `: (c : ℝ) = 1` using `by nlinarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `eθ : μ.map theta = μ` using `by rw [e, hc, one_smul]`. Establish `hσ : (sigma : GL (Fin n) F → GL (Fin n) F) = (fun g => g⁻¹) ∘ theta`. Use function extensionality and compare the values at `g`. Simplify using `[theta]`. Rewrite using `[hσ, ← Measure.map_map continuous_inv.measurable hθm, eθ]`.
-
-Conclude with `Measures.inv_eq_self_GL F n μ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_sigma_eq (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] : μ.map sigma = μ := by
   have hθc : Continuous (theta : GL (Fin n) F → GL (Fin n) F) := continuous_theta
@@ -96,7 +94,7 @@ theorem map_sigma_eq (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] : μ.map s
 end Measure
 
 /- English proof (translation)
-Set `_ : MeasurableSpace (GL (Fin n) F)` to `_root_.borel _`. Establish `: BorelSpace (GL (Fin n) F)` using `⟨rfl⟩`. Establish `: (haar : Measure (GL (Fin n) F)).IsInvInvariant` using `⟨Measures.inv_eq_self_GL F n _⟩`. Conclude with `rank_mul_rank_le_one (haar : Measure (GL (Fin n) F)) (σ := sigmaHomeo) (fun x y => sigma_mul x y) (map_sigma_eq _) (biEquivariantSigmaInvariant_GL ψ₀ hψ hψ₁) hπ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rank_whittaker_mul_rank_whittaker_contragredient_le_one (ψ₀ : AddChar F ℂ)
     (hψ : Continuous ψ₀) (hψ₁ : ψ₀ ≠ 1) {V : Type*} [AddCommGroup V] [Module ℂ V]
@@ -112,7 +110,7 @@ theorem rank_whittaker_mul_rank_whittaker_contragredient_le_one (ψ₀ : AddChar
     (fun x y => sigma_mul x y) (map_sigma_eq _) (biEquivariantSigmaInvariant_GL ψ₀ hψ hψ₁) hπ
 
 /- English proof (translation)
-Set `_ : MeasurableSpace (GL (Fin n) F)` to `_root_.borel _`. Establish `: BorelSpace (GL (Fin n) F)` using `⟨rfl⟩`. Establish `: (haar : Measure (GL (Fin n) F)).IsInvInvariant` using `⟨Measures.inv_eq_self_GL F n _⟩`. Conclude with `rank_le_one_of_ne_bot (haar : Measure (GL (Fin n) F)) (σ := sigmaHomeo) (fun x y => sigma_mul x y) (map_sigma_eq _) (biEquivariantSigmaInvariant_GL ψ₀ hψ hψ₁) hπ hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rank_whittaker_le_one_of_contragredient (ψ₀ : AddChar F ℂ) (hψ : Continuous ψ₀)
     (hψ₁ : ψ₀ ≠ 1) {V : Type*} [AddCommGroup V] [Module ℂ V]

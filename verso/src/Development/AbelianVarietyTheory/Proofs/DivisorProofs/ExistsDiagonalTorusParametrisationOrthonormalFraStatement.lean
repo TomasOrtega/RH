@@ -8,7 +8,7 @@ open NumberField MeasureTheory Matrix Filter Topology GlobalTheory.SUVol GlobalT
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TorusFrame.torus_param` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDiagonalTorusParametrisationOrthonormalFra.lean&line=28#L28)
 -/

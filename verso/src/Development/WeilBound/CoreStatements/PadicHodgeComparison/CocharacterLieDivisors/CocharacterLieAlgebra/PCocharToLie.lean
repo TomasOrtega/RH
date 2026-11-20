@@ -7,13 +7,11 @@ open Polynomial
 namespace PositivityTheory.AutomorphicGaloisHodgeTate.Div.CochLie
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on`. Use `next a =>`. Simplify using `[MvPolynomial.eval₂_C, MvPolynomial.pderiv_C]`. Use `next p q hp hq =>`. Simplify using `only [MvPolynomial.eval₂_add, hp, hq, map_add, add_mul, Finset.sum_add_distrib]`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `next p n hp =>`. Establish `hterm : ∀ i, MvPolynomial.eval₂ φ x (MvPolynomial.pderiv i (p * MvPolynomial.X n)) * v i = x n * (MvPolynomial.eval₂ φ x (MvPolynomial.pderiv i p) * v i) + (if i = n then MvPolynomial.eval₂ φ x p * v n else 0)`. Introduce `i`. Rewrite using `[MvPolynomial.pderiv_mul, MvPolynomial.pderiv_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : i = n`. Substitute `h` using the available equality. Simplify using `[MvPolynomial.eval₂_add, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X]`. Apply the tactic sequence `try ring`. Apply the tactic sequence `simp [MvPolynomial.eval₂_add, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X, Pi.single_apply, h, Ne.symm h] try ring`.
-
-Rewrite using `[MvPolynomial.eval₂_mul, hp, Finset.sum_congr rfl fun i _ => hterm i, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_ite_eq']`. Simplify using `only [MvPolynomial.eval₂_X, MvPolynomial.eval₂_mul, Finset.mem_univ, if_true, map_add, map_mul]`. Take the linear combination `(algebraMap K (DualNumber K) (∑ i, MvPolynomial.eval₂ φ x (MvPolynomial.pderiv i p) * v i) * algebraMap K (DualNumber K) (v n)) * DualNumber.eps_mul_eps (R := K)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eval₂_dual {R K σ : Type} [CommRing R] [Field K] [Fintype σ] (φ : R →+* K)
     (x v : σ → K) (f : MvPolynomial σ R) :
@@ -54,13 +52,13 @@ def epsUnit (K : Type) [Field K] : (DualNumber K)ˣ where
   inv_val := by linear_combination (-1 : DualNumber K) * DualNumber.eps_mul_eps (R := K)
 
 /- English proof (translation)
-Establish `key : ∀ a b : K, (1 + DualNumber.eps * algebraMap K (DualNumber K) a) * (1 + DualNumber.eps * algebraMap K (DualNumber K) b) = 1 + DualNumber.eps * algebraMap K (DualNumber K) (a + b)`. Introduce `a b`. Rewrite using `[map_add]`. Take the linear combination `(algebraMap K (DualNumber K) a * algebraMap K (DualNumber K) b) * DualNumber.eps_mul_eps (R := K)`. Establish `hv : ((epsUnit K : (DualNumber K)ˣ) : DualNumber K) = 1 + DualNumber.eps * algebraMap K (DualNumber K) 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [map_one, mul_one]`. Both sides reduce to the same expression. Establish `hvi : (((epsUnit K)⁻¹ : (DualNumber K)ˣ) : DualNumber K) = 1 + DualNumber.eps * algebraMap K (DualNumber K) (-1)`. Simplify using `only [map_neg, map_one, mul_neg, mul_one, ← sub_eq_add_neg]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Proceed by induction on `m using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[zpow_add_one, Units.val_mul, ih, hv, key]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Apply the tactic sequence `try rfl`. Consider the case `pred i ih`. Rewrite using `[zpow_sub_one, Units.val_mul, ih, hvi, key]`. Use `push_cast`. Apply the tactic sequence `try ring_nf`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem epsUnit_zpow (K : Type) [Field K] (m : ℤ) :
     ((epsUnit K ^ m : (DualNumber K)ˣ) : DualNumber K) =
@@ -90,11 +88,9 @@ theorem epsUnit_zpow (K : Type) [Field K] (m : ℤ) :
     try ring_nf
 
 /- English proof (translation)
-Take `⟨m, p, hp⟩` from `LaurentPolynomial.exists_T_pow L`. Establish `hp0 : p = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.Infinite.mono ?_ (Set.finite_singleton (0 : K)).infinite_compl` and prove the remaining obligations. Introduce `t ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ht0 : t ≠ 0` using `Set.mem_compl_singleton_iff.mp ht`. Establish `h1` using `congrArg (LaurentPolynomial.eval₂ (RingHom.id K) (Units.mk0 t ht0)) hp`. Rewrite `h1` using `[LaurentPolynomial.eval₂_toLaurent, map_mul, h (Units.mk0 t ht0), zero_mul]`. Conclude with `h1`. Rewrite `hp` using `[hp0, map_zero]`.
-
-Conclude with `(LaurentPolynomial.isUnit_T (m : ℤ)).mul_left_eq_zero.mp hp.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem laurent_eq_zero {K : Type} [Field K] [Infinite K] (L : LaurentPolynomial K)
     (h : ∀ u : Kˣ, LaurentPolynomial.eval₂ (RingHom.id K) u L = 0) : L = 0 := by
@@ -111,7 +107,7 @@ theorem laurent_eq_zero {K : Type} [Field K] [Infinite K] (L : LaurentPolynomial
   exact (LaurentPolynomial.isUnit_T (m : ℤ)).mul_left_eq_zero.mp hp.symm
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_apply {R ι : Type} [CommRing R] [Fintype ι] [DecidableEq ι] (A : Matrix ι ι R) (d : ι → R)
     (B : Matrix ι ι R) (a b : ι) : (A * Matrix.diagonal d * B) a b = ∑ j, A a j * d j * B j b := by
@@ -119,7 +115,7 @@ theorem conj_apply {R ι : Type} [CommRing R] [Fintype ι] [DecidableEq ι] (A :
   simp only [Matrix.mul_diagonal]
 
 /- English proof (translation)
-Establish `hc` using `Matrix.charpoly_units_conj (Matrix.nonsingInvUnit P hP) (Matrix.diagonal d)`. Establish `hval : (Matrix.nonsingInvUnit P hP).val = P` using `rfl`. Rewrite `hc` using `[hval]`. Rewrite using `[Polynomial.IsRoot, hc, Matrix.charpoly_diagonal, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ j) (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRoot_conj {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] (P : Matrix ι ι K) (hP : IsUnit P.det)
     (d : ι → K) (j : ι) : (P * Matrix.diagonal d * P⁻¹).charpoly.IsRoot (d j) := by
@@ -130,25 +126,23 @@ theorem isRoot_conj {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] (P : M
   exact Finset.prod_eq_zero (Finset.mem_univ j) (by simp)
 
 /- English proof (translation)
-Use `set X : Matrix ι ι K' := P * Matrix.diagonal (fun j => ((k j : ℤ) : K')) * P⁻¹ with hX`. Set `ent : ι × ι → LaurentPolynomial K'` to `fun p => ∑ j, LaurentPolynomial.C (P p.1 j) * LaurentPolynomial.T (k j) * LaurentPolynomial.C (P⁻¹ j p.2)`. Set `Lp : LaurentPolynomial K'` to `MvPolynomial.eval₂ (LaurentPolynomial.C.comp (algebraMap K K')) ent f`. Establish `hev : ∀ {S : Type} [CommRing S] (ψ : K' →+* S) (u : Sˣ), LaurentPolynomial.eval₂ ψ u Lp = MvPolynomial.eval₂ (ψ.comp (algebraMap K K')) (fun p => ∑ j, ψ (P p.1 j) * ((u ^ (k j) : Sˣ) : S) * ψ (P⁻¹ j p.2)) f`. Introduce `S _ ψ u`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : (LaurentPolynomial.eval₂ ψ u).comp (LaurentPolynomial.C.comp (algebraMap K K')) = ψ.comp (algebraMap K K')`. Use extensionality with `c`. Simplify using `[LaurentPolynomial.eval₂_C]`. Establish `h2 : (⇑(LaurentPolynomial.eval₂ ψ u) ∘ ent) = fun p => ∑ j, ψ (P p.1 j) * ((u ^ (k j) : Sˣ) : S) * ψ (P⁻¹ j p.2)`. Use function extensionality and compare the values at `p`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[ent, map_sum, map_mul, LaurentPolynomial.eval₂_C, LaurentPolynomial.eval₂_T]`. Rewrite using `[MvPolynomial.eval₂_comp_left, h1, h2]`. Establish `hL0 : Lp = 0`. Apply `laurent_eq_zero` to reduce the goal to its premises. Introduce `u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev]`. Use `hf (u : K') u.ne_zero` as an intermediate fact. Rewrite `this` using `[MvPolynomial.eval_map]`. Establish `e1 : (RingHom.id K').comp (algebraMap K K') = algebraMap K K'` using `RingHom.id_comp _`. Establish `hfun : (fun p : ι × ι => ∑ j, (RingHom.id K') (P p.1 j) * ((u ^ (k j) : K'ˣ) : K') * (RingHom.id K') (P⁻¹ j p.2)) = fun p => ((P * Matrix.diagonal fun j => (u : K') ^ k j) * P⁻¹) p.1 p.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Rewrite using `[conj_apply]`. Simplify using `[Units.val_zpow_eq_zpow_val]`. Rewrite using `[e1, hfun]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd` using `hev (algebraMap K' (DualNumber K')) (epsUnit K')`. Rewrite `hd` using `[hL0, map_zero]`. Establish `hent : ∀ p : ι × ι, (∑ j, algebraMap K' (DualNumber K') (P p.1 j) * ((epsUnit K' ^ (k j) : (DualNumber K')ˣ) : DualNumber K') * algebraMap K' (DualNumber K') (P⁻¹ j p.2)) = algebraMap K' (DualNumber K') ((1 : Matrix ι ι K') p.1 p.2) + DualNumber.eps * algebraMap K' (DualNumber K' …`. Introduce `p`. Establish `h1 : (1 : Matrix ι ι K') p.1 p.2 = ∑ j, P p.1 j * P⁻¹ j p.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_apply, Matrix.mul_nonsing_inv P hP]`. Simplify using `only [epsUnit_zpow]`. Rewrite using `[h1, hX, conj_apply]`. Simplify using `only [map_sum, map_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hent] at hd`. Establish `hd2` using `eval₂_dual (algebraMap K K') (fun p : ι × ι => (1 : Matrix ι ι K') p.1 p.2) (fun p : ι × ι => X p.1 p.2) f`. Rewrite `hd2` using `[← hd]`. Establish `hB` using `congrArg TrivSqZeroExt.snd hd2`. Simplify using `[TrivSqZeroExt.snd_mul, TrivSqZeroExt.algebraMap_eq_inl] at hB`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hconv : ∀ g : MvPolynomial (ι × ι) K, MvPolynomial.eval₂ (algebraMap K K') (fun p : ι × ι => (1 : Matrix ι ι K') p.1 p.2) g = algebraMap K K' (MvPolynomial.eval (fun q : ι × ι => (1 : Matrix ι ι K) q.1 q.2) g)`. Introduce `g`. Use `show _ = algebraMap K K' (MvPolynomial.eval₂ (RingHom.id K) (fun q : ι × ι => (1 : Matrix ι ι K) q.1 q.2) g)`. Establish `h3 : (⇑(algebraMap K K') ∘ fun q : ι × ι => (1 : Matrix ι ι K) q.1 q.2) = fun p : ι × ι => (1 : Matrix ι ι K') p.1 p.2`. Use function extensionality and compare the values at `q`.
-
-Simplify using `[Matrix.one_apply, apply_ite]`. Rewrite using `[MvPolynomial.eval₂_comp_left, RingHom.comp_id, h3]`. Simplify using `only [hconv, TrivSqZeroExt.fst_sum, TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_inl] at hB`. Conclude with `hB.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inLie_of_cochar {K K' ι : Type} [Field K] [Field K'] [Algebra K K'] [IsAlgClosed K']
     [Fintype ι] [DecidableEq ι] (P : Matrix ι ι K') (hP : IsUnit P.det) (k : ι → ℤ)
@@ -232,13 +226,11 @@ namespace PositivityTheory.AutomorphicGaloisHodgeTate.Div
 
 open PositivityTheory.AutomorphicGaloisHodgeTate.Div.CochLie in
 /- English proof (translation)
-Introduce `hHT E Ω _ _ _ _ _ l _ N n V hV hL`. Take `⟨K', _, _, _, P, k, e, hP, he, hlac, hke, hvan⟩` from `hHT E Ω l N n V hV hL`. Use `haveI : CharZero K' := charZero_of_injective_algebraMap (algebraMap (Formalism.ConjugateSelfDual.Qbar l) K').injective`. Use `⟨K', inferInstance, inferInstance, inferInstance, P * Matrix.diagonal (fun j => ((k j : ℤ) : K')) * P⁻¹, ?_, fun i => ((e i : ℤ) : K'), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `inLie_of_cochar P hP k f (hvan f hf)`. Introduce `i j hij`. Conclude with `he (by simpa using hij)`. Introduce `A B hA hB hAB heq`. Apply `hlac A B hA hB hAB` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ((((B.card : ℚ) * ∑ i ∈ A, ((e i : ℤ) : ℚ) : ℚ)) : K') = ((((A.card : ℚ) * ∑ i ∈ B, ((e i : ℤ) : ℚ) : ℚ)) : K')`. Use `push_cast`. Conclude with `heq`. Use `show (B.card : ℚ) * ∑ i ∈ A, ((e i : ℤ) : ℚ) = (A.card : ℚ) * ∑ i ∈ B, ((e i : ℤ) : ℚ)`. Conclude with `h1` after adjusting the coercions.
-
-Introduce `i`. Take `⟨j, hj⟩` from `hke i`. Use `isRoot_conj P hP (fun j => ((k j : ℤ) : K')) j` as an intermediate fact. Simplify `this` using `[hj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cocharToLie_holds : CocharToLie := by
   intro hHT E Ω _ _ _ _ _ l _ N n V hV hL

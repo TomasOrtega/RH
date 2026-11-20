@@ -11,13 +11,13 @@ section Abstract
 variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℂ 𝔸] [CompleteSpace 𝔸]
 
 /- English proof (translation)
-Establish `h` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) x`. Establish `h2` using `(hasSum_nat_add_iff' 2).mpr h`. Establish `e : ∑ i ∈ Finset.range 2, ((i !⁻¹ : ℂ) • x ^ i) = 1 + x`. Simplify using `[Finset.sum_range_succ]`. Rewrite `h2` using `[e, ← sub_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) ‖x‖`. Rewrite `hr` using `[← Real.exp_eq_exp_ℝ]`. Establish `hg` using `hr.mul_left (‖x‖ ^ 2)`. Use `h2.norm_le_of_bounded hg ?_` and prove the remaining obligations. Introduce `m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_smul, norm_inv, Complex.norm_natCast, smul_eq_mul]`. Establish `hf : ((m + 2)! : ℝ)⁻¹ ≤ ((m ! : ℕ) : ℝ)⁻¹`. Apply `inv_anti₀ (by exact_mod_cast Nat.factorial_pos m)` to reduce the goal to its premises. Conclude with `Nat.factorial_le (by omega)` after adjusting the coercions. Establish `hp : ‖x ^ (m + 2)‖ ≤ ‖x‖ ^ (m + 2)` using `norm_pow_le' x (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_exp_sub_one_sub_le (x : 𝔸) :
     ‖NormedSpace.exp x - 1 - x‖ ≤ ‖x‖ ^ 2 * Real.exp ‖x‖ := by
@@ -41,7 +41,7 @@ theorem norm_exp_sub_one_sub_le (x : 𝔸) :
     _ = ‖x‖ ^ 2 * (((m ! : ℕ) : ℝ)⁻¹ * ‖x‖ ^ m) := by ring
 
 /- English proof (translation)
-Use `noncomm_ring`.
+A detailed English derivation is pending.
 -/
 theorem conj_identity (a b u M : 𝔸) :
     a * M * b - M - (u * M - M * u) =
@@ -50,7 +50,7 @@ theorem conj_identity (a b u M : 𝔸) :
   noncomm_ring
 
 /- English proof (translation)
-Establish `h1` using `norm_add_le (a - b + c + d - e) f`. Establish `h2` using `norm_sub_le (a - b + c + d) e`. Establish `h3` using `norm_add_le (a - b + c) d`. Establish `h4` using `norm_add_le (a - b) c`. Establish `h5` using `norm_sub_le a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -64,38 +64,34 @@ theorem norm_six (a b c d e f : 𝔸) :
   linarith
 
 /- English proof (translation)
-The claim follows from `(norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _))`.
+A detailed English derivation is pending.
 -/
 theorem norm_matrix_triple_product_le (x y z : 𝔸) : ‖x * y * z‖ ≤ ‖x‖ * ‖y‖ * ‖z‖ :=
   (norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _))
 
 /- English proof (translation)
-The claim follows from `mul_le_mul (mul_le_mul h1 h2 hb (ha.trans h1)) h3 hc (mul_nonneg (ha.trans h1) (hb.trans h2))`.
+A detailed English derivation is pending.
 -/
 theorem le3 {a b c A B C : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c) (h1 : a ≤ A) (h2 : b ≤ B)
     (h3 : c ≤ C) : a * b * c ≤ A * B * C :=
   mul_le_mul (mul_le_mul h1 h2 hb (ha.trans h1)) h3 hc (mul_nonneg (ha.trans h1) (hb.trans h2))
 
 /- English proof (translation)
-Use `set u : 𝔸 := (τ : ℂ) • Y with hu`. Establish `hr0 : 0 ≤ r` using `(norm_nonneg _).trans hY`. Establish `hm0 : 0 ≤ m` using `(norm_nonneg _).trans hM`. Establish `hsm : (τ : ℂ) • (Y * M - M * Y) = u * M - M * u`. Rewrite using `[hu, smul_sub, smul_mul_assoc, mul_smul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsm, conj_identity]`. Use `set p : ℝ := τ * r with hp`. Use `set E : ℝ := Real.exp r with hE`. Use `set q : ℝ := p ^ 2 * E with hq`. Establish `hp0 : 0 ≤ p` using `mul_nonneg hτ0 hr0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hE0 : 0 ≤ E` using `(Real.exp_pos r).le`. Establish `hq0 : 0 ≤ q` using `mul_nonneg (pow_nonneg hp0 2) hE0`. Establish `hu' : ‖u‖ ≤ p`. Rewrite using `[hu, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hτ0]`. Conclude with `mul_le_mul_of_nonneg_left hY hτ0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hexp : Real.exp ‖u‖ ≤ E`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hA : ‖NormedSpace.exp u - 1 - u‖ ≤ q`. Use `(norm_exp_sub_one_sub_le u).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mul_le_mul (pow_le_pow_left₀ (norm_nonneg _) hu' 2) hexp (Real.exp_pos _).le (pow_nonneg hp0 2)`. Establish `hB : ‖NormedSpace.exp (-u) - 1 + u‖ ≤ q`. Use `norm_exp_sub_one_sub_le (-u)` as an intermediate fact. Rewrite `this` using `[sub_neg_eq_add, norm_neg]`. Use `this.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul (pow_le_pow_left₀ (norm_nonneg _) hu' 2) hexp (Real.exp_pos _).le (pow_nonneg hp0 2)`. Use `set A := NormedSpace.exp u - 1 - u`. Use `set B := NormedSpace.exp (-u) - 1 + u`. Establish `t1 : ‖M * B‖ ≤ m * q` using `(norm_mul_le _ _).trans (mul_le_mul hM hB (norm_nonneg _) hm0)`. Establish `t2 : ‖u * M * u‖ ≤ p * m * p` using `(norm_matrix_triple_product_le _ _ _).trans (le3 (norm_nonneg _) (norm_nonneg _) (norm_nonneg _) hu' hM hu')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `t3 : ‖u * M * B‖ ≤ p * m * q` using `(norm_matrix_triple_product_le _ _ _).trans (le3 (norm_nonneg _) (norm_nonneg _) (norm_nonneg _) hu' hM hB)`. Establish `t4 : ‖A * M‖ ≤ q * m` using `(norm_mul_le _ _).trans (mul_le_mul hA hM (norm_nonneg _) hq0)`. Establish `t5 : ‖A * M * u‖ ≤ q * m * p` using `(norm_matrix_triple_product_le _ _ _).trans (le3 (norm_nonneg _) (norm_nonneg _) (norm_nonneg _) hA hM hu')`. Establish `t6 : ‖A * M * B‖ ≤ q * m * q` using `(norm_matrix_triple_product_le _ _ _).trans (le3 (norm_nonneg _) (norm_nonneg _) (norm_nonneg _) hA hM hB)`. Use `(norm_six _ _ _ _ _ _).trans ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hτ3 : τ ^ 3 ≤ τ ^ 2` using `pow_le_pow_of_le_one hτ0 hτ1 (by norm_num)`. Establish `hτ4 : τ ^ 4 ≤ τ ^ 2` using `pow_le_pow_of_le_one hτ0 hτ1 (by norm_num)`. Establish `key : m * q + p * m * p + p * m * q + q * m + q * m * p + q * m * q = m * (2 * r ^ 2 * E * τ ^ 2 + r ^ 2 * τ ^ 2 + 2 * r ^ 3 * E * τ ^ 3 + r ^ 4 * E ^ 2 * τ ^ 4)`. Rewrite using `[hq, hp]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `c3 : 2 * r ^ 3 * E * τ ^ 3 ≤ 2 * r ^ 3 * E * τ ^ 2` using `mul_le_mul_of_nonneg_left hτ3 (by positivity)`. Establish `c4 : r ^ 4 * E ^ 2 * τ ^ 4 ≤ r ^ 4 * E ^ 2 * τ ^ 2` using `mul_le_mul_of_nonneg_left hτ4 (by positivity)`. Establish `fin : m * q + p * m * p + p * m * q + q * m + q * m * p + q * m * q ≤ m * (2 * r ^ 2 * E + r ^ 2 + 2 * r ^ 3 * E + r ^ 4 * E ^ 2) * τ ^ 2`. Rewrite using `[key]`. Use `mul_le_mul_of_nonneg_left (add_le_add (add_le_add (le_refl (2 * r ^ 2 * E * τ ^ 2 + r ^ 2 * τ ^ 2)) c3) c4) hm0` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem conj_taylor (Y M : 𝔸) (τ r m : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ 1) (hY : ‖Y‖ ≤ r)
     (hM : ‖M‖ ≤ m) :
@@ -180,7 +176,7 @@ attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNorm
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h : ‖A i j‖₊ ≤ ‖A‖₊`. Rewrite using `[Matrix.linfty_opNNNorm_def]`. Use `le_trans ?_ (Finset.le_sup (f := fun i : Fin n => ∑ j : Fin n, ‖A i j‖₊) (Finset.mem_univ i))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ‖A i j‖₊) (fun _ _ => bot_le) (Finset.mem_univ j)`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem entry_le_op (A : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖A i j‖ ≤ ‖A‖ := by
   have h : ‖A i j‖₊ ≤ ‖A‖₊ := by
@@ -191,11 +187,9 @@ theorem entry_le_op (A : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖A i j‖
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `h' : ‖A‖₊ ≤ (n : ℝ≥0) * c.toNNReal`. Rewrite using `[Matrix.linfty_opNNNorm_def]`. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `i _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Use `Real.toNNReal_le_toNNReal (h i j)` as an intermediate fact. Rewrite using `[norm_toNNReal] at this)` and apply the resulting hypothesis. Use `_ = (n : ℝ≥0) * c.toNNReal := by simp`. Use `NNReal.coe_le_coe.mpr h'` as an intermediate fact. Move the coercions through the operations in `[Real.coe_toNNReal _ hc] at this`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem op_le_of_entry (A : Matrix (Fin n) (Fin n) ℂ) (c : ℝ) (hc : 0 ≤ c)
     (h : ∀ i j, ‖A i j‖ ≤ c) : ‖A‖ ≤ n * c := by
@@ -213,7 +207,7 @@ theorem op_le_of_entry (A : Matrix (Fin n) (Fin n) ℂ) (c : ℝ) (hc : 0 ≤ c)
   exact this
 
 /- English proof (translation)
-The claim follows from `(entry_le_op _ i j).trans (conj_taylor Y M τ (n * R) (n * R) hτ0 hτ1 (op_le_of_entry Y R hR hY) (op_le_of_entry M R hR hM))`.
+A detailed English derivation is pending.
 -/
 theorem conj_taylor_entry (R : ℝ) (hR : 0 ≤ R) (Y M : Matrix (Fin n) (Fin n) ℂ)
     (hY : ∀ i j, ‖Y i j‖ ≤ R) (hM : ∀ i j, ‖M i j‖ ≤ R) (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ 1)
@@ -234,9 +228,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.Base
 
 open ConjugationTaylorBound in
 /- English proof (translation)
-Introduce `n R`. Establish `hR : (0 : ℝ) ≤ max R 0` using `le_max_right _ _`. Use `⟨(n * max R 0) * (2 * (n * max R 0) ^ 2 * Real.exp (n * max R 0) + (n * max R 0) ^ 2 + 2 * (n * max R 0) ^ 3 * Real.exp (n * max R 0) + (n * max R 0) ^ 4 * Real.exp (n * max R 0) ^ 2), by positivity, ?_⟩` and prove the remaining obligations. Introduce `Y M hY hM τ h0 h1`. Establish `hY' : ∀ i j, ‖Y i j‖ ≤ max R 0` using `fun i j => (Matrix.norm_entry_le_entrywise_sup_norm Y).trans (hY.trans (le_max_left _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hM' : ∀ i j, ‖M i j‖ ≤ max R 0` using `fun i j => (Matrix.norm_entry_le_entrywise_sup_norm M).trans (hM.trans (le_max_left _ _))`. Apply the tactic sequence `exact (Matrix.norm_le_iff (by positivity)).2 (fun i j => conj_taylor_entry (max R 0) hR Y M hY' hM' τ h0 h1 i j)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem b3c : ConjugationSecondOrderBound := by
   intro n R

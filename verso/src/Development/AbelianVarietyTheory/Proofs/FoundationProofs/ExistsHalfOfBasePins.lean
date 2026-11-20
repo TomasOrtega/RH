@@ -14,11 +14,11 @@ namespace GlobalTheory.CoverHalf
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `h0 : I ≠ ⊥` using `hI.ne_zero`. Establish `hnd : (normalizedFactors I).Nodup` using `(squarefree_iff_nodup_normalizedFactors h0).1 hI`. Establish `himg : P.image HeightOneSpectrum.asIdeal = (normalizedFactors I).toFinset`. Use extensionality with `J`. Rewrite using `[Finset.mem_image, Multiset.mem_toFinset, Ideal.mem_normalizedFactors_iff h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨v.isPrime, (hP v).1 hv⟩`. Introduce and unpack `⟨hp, hle⟩`. Conclude with `⟨⟨J, hp, fun h => h0 (eq_bot_iff.2 (h ▸ hle))⟩, (hP _).2 hle, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `h1 : ∏ v ∈ P, v.asIdeal = ∏ J ∈ P.image HeightOneSpectrum.asIdeal, J` using `(Finset.prod_image (f := fun J => J) (fun a _ b _ h => HeightOneSpectrum.ext h)).symm`. Rewrite using `[h1, himg, Finset.prod_eq_multiset_prod, Multiset.map_id', Multiset.toFinset_val, hnd.dedup, Ideal.prod_normalizedFactors_eq_self h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_prod_of_squarefree {S : Type} [CommRing S] [IsDedekindDomain S] {I : Ideal S} (hI : Squarefree I)
     (P : Finset (HeightOneSpectrum S)) (hP : ∀ v, v ∈ P ↔ I ≤ v.asIdeal) : I = ∏ v ∈ P, v.asIdeal := by
@@ -39,7 +39,7 @@ theorem eq_prod_of_squarefree {S : Type} [CommRing S] [IsDedekindDomain S] {I : 
     Ideal.prod_normalizedFactors_eq_self h0]
 
 /- English proof (translation)
-Introduce `hb`. Choose the witnesses or unpack the hypotheses as in `⟨u, v, huv⟩ : IsCoprime (a : S) (b : S) := by`. Simplify using `using (Nat.isCoprime_iff_coprime.2 hab).map (Int.castRingHom S)`. Conclude with `hJ ((Ideal.eq_top_iff_one _).2 (huv ▸ J.add_mem (J.mul_mem_left _ ha) (J.mul_mem_left _ hb)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem not_mem_of_coprime {S : Type} [CommRing S] {J : Ideal S} (hJ : J ≠ ⊤) {a b : ℕ} (hab : Nat.Coprime a b)
     (ha : (a : S) ∈ J) : (b : S) ∉ J := by
@@ -51,9 +51,9 @@ theorem not_mem_of_coprime {S : Type} [CommRing S] {J : Ideal S} (hJ : J ≠ ⊤
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hs : ∀ k, Squarefree (Ideal.span {((D.host.g k : ℕ) : 𝓞 D.host.E)})` using `fun k => by`. Use `(squarefree_iff_nodup_normalizedFactors ?_).2 (Formalism.MainNotions.ModuliIntegralCharts.H1.GSplit.g_splits D k).2` and prove the remaining obligations. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(D.host.g_prime k).ne_zero` after adjusting the coercions. Rewrite using `[Nat.cast_mul, ← Ideal.span_singleton_mul_span_singleton, squarefree_mul_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IsCoprime.isRelPrime ?_, hs 0, hs 1⟩` and prove the remaining obligations. Rewrite using `[Ideal.isCoprime_span_singleton_iff]`. Simplify using `using (Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne)).map (Int.castRingHom (𝓞 D.host.E))`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem squarefree_span_g (D : D7) :
     Squarefree (Ideal.span {((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E)}) := by
@@ -68,9 +68,9 @@ theorem squarefree_span_g (D : D7) :
     ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne)).map (Int.castRingHom (𝓞 D.host.E))
 
 /- English proof (translation)
-Establish `hc` using `D.ntypes.g_cond k`. Establish `h1 : Nat.Coprime (D.host.g k) (D.host.QS * D.host.q * D.host.d)`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, hc, Nat.gcd_one_left]`. Use `Nat.Coprime.mul_right (h1.coprime_dvd_right (dvd_mul_right _ _)) ?_` and prove the remaining obligations. Use `(D.host.ccK_coprime _ ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[D.host.g_level k]`.
+Simplify using the standard rewrite rules.
 -/
 theorem g_coprime (D : D7) (k : Fin 2) :
     Nat.Coprime (D.host.g k) (D.host.QS * D.host.q * Ideal.absNorm D.host.ccK) := by
@@ -82,32 +82,30 @@ theorem g_coprime (D : D7) (k : Fin 2) :
   simp [D.host.g_level k]
 
 /- English proof (translation)
-The claim follows from `not_mem_of_coprime PP.isPrime.ne_top (Nat.Coprime.mul_left (g_coprime D 0) (g_coprime D 1)) h`.
+A detailed English derivation is pending.
 -/
 theorem not_mem_of_over_g (PP : Pl D.host.E) (h : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) :
     ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal :=
   not_mem_of_coprime PP.isPrime.ne_top (Nat.Coprime.mul_left (g_coprime D 0) (g_coprime D 1)) h
 
 /- English proof (translation)
-Use `Fact.mk hq` as an intermediate fact. Establish `: Finite (kP PP)` using `Nat.finite_of_card_ne_zero (hc ▸ hq.ne_zero)`. Set `_ : Fintype (kP PP)` to `Fintype.ofFinite _`. Establish `hc' : Fintype.card (kP PP) = q` using `by rw [← Nat.card_eq_fintype_card, hc]`. Set `φ : ZMod q ≃+* kP PP` to `ZMod.ringEquivOfPrime (kP PP) hq hc'`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hint : ∀ n : ℤ, (n : 𝓞 D.host.E) ∈ PP.asIdeal ↔ (q : ℤ) ∣ n` using `fun n => by`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_intCast, ← ZMod.intCast_zmod_eq_zero_iff_dvd, ← map_intCast φ, map_eq_zero_iff φ φ.injective]`. Establish `hqm : (q : 𝓞 D.host.E) ∈ PP.asIdeal` using `by exact_mod_cast (hint q).2 dvd_rfl`. Take `⟨e, he⟩` from `ZMod.intCast_surjective (φ.symm (Ideal.Quotient.mk _ (w0E D)))`. Establish `hw : w0E D - (e : 𝓞 D.host.E) ∈ PP.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq, map_intCast, ← map_intCast φ, he, RingEquiv.apply_symm_apply]`. Establish `hsq` using `w0E_sq D`. Establish `e4 : (4 : ℤ) * (mE D : ℤ) = (D.host.d : ℤ) + 1` using `by exact_mod_cast mE_spec D`. Establish `hdv : (q : ℤ) ∣ e ^ 2 - e + mE D`. Rewrite using `[← hint]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((e ^ 2 - e + mE D : ℤ) : 𝓞 D.host.E) = (w0E D - (e : 𝓞 D.host.E)) * (1 - w0E D - e)`. Use `push_cast`. Take the linear combination `hsq`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ hw`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnd : ¬ (q : ℤ) ∣ 1 - 2 * e`. Introduce `hdiv`. Establish `hd : (D.host.d : ℤ) = 4 * (e ^ 2 - e + mE D) - (1 - 2 * e) ^ 2` using `by linear_combination (-1 : ℤ) * e4`. Establish `hpd : (q : ℤ) ∣ D.host.d`. Rewrite using `[hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `dvd_sub (hdv.mul_left 4) (dvd_pow hdiv two_ne_zero)`. Establish `hpeq : q = D.host.d` using `(Nat.prime_dvd_prime_iff_eq hq D.host.hyp.2.1).1 (Int.natCast_dvd_natCast.1 hpd)`. Establish `hr : rtE D ∈ PP.asIdeal`. Establish `h1` using `(hint _).2 hdiv`. Establish `: rtE D = 2 * (w0E D - (e : 𝓞 D.host.E)) - ((1 - 2 * e : ℤ) : 𝓞 D.host.E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `push_cast`. Take the linear combination `(-1 : 𝓞 D.host.E) * two_w0E D`. Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ hw) h1`. Apply `hu` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (q : 𝓞 D.host.E) = -(rtE D ^ 2)` using `by rw [rtE_sq, hpeq, neg_neg]`. Rewrite using `[this]`. Conclude with `neg_mem (Ideal.pow_mem_pow hr 2)`. Use `⟨hqm, hq, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 (by exact_mod_cast hqm)`. Establish `hmod : (-(D.host.d : ℤ)) % (q : ℤ) = (1 - 2 * e) ^ 2 % (q : ℤ)`. Use `(Int.modEq_iff_dvd.2 ?_ : Int.ModEq (q : ℤ) _ _)` and prove the remaining obligations. Establish `: (1 - 2 * e) ^ 2 - (-(D.host.d : ℤ)) = 4 * (e ^ 2 - e + mE D)` using `by linear_combination (-1 : ℤ) * e4`. Rewrite using `[this]`.
-
-Conclude with `hdv.mul_left 4`. Rewrite using `[jacobiSym.mod_left' hmod]`. Use `jacobiSym.sq_one' ?_` and prove the remaining obligations. Conclude with `Int.isCoprime_iff_gcd_eq_one.1 ((Prime.coprime_iff_not_dvd (Nat.prime_iff_prime_int.mp hq)).2 hnd).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem splitOK_of_place (PP : Pl D.host.E) {q : ℕ} (hq : q.Prime) (hc : Nat.card (kP PP) = q)
     (hu : (q : 𝓞 D.host.E) ∉ PP.asIdeal ^ 2) (h2 : (2 : 𝓞 D.host.E) ∉ PP.asIdeal) :
@@ -170,7 +168,7 @@ def coverHalf (Q : Finset (Pl D.host.E)) : Ideal (𝓞 D.host.E) :=
   ∏ 𝔭 ∈ Q.image (fun PP => PP.under (𝓞 D.host.K)), 𝔭.asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))
 
 /- English proof (translation)
-Unfold `coverHalf`. Use `(Ideal.prod_le_inf.trans (Finset.inf_le (b := PP.under (𝓞 D.host.K)) ?_)).trans Ideal.map_comap_le` and prove the remaining obligations. Use `Finset.mem_image_of_mem _ h` and compare the differences between its conclusion and the goal.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem coverHalf_le {Q : Finset (Pl D.host.E)} {PP : Pl D.host.E} (h : PP ∈ Q) : coverHalf D Q ≤ PP.asIdeal := by
   classical
@@ -184,7 +182,7 @@ def IsCoverLevel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recipro
     I ⊔ I.map (H.bar : 𝓞 E →+* 𝓞 E) = ⊤ ∧ l₂.A = 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(h t).1.1, (h t).1.2.1, (h t).1.2.2.1, (h t).1.2.2.2.1, (h t).1.2.2.2.2.1, (h t).2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCoverLevel_of_covPin {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} {Tup : Type} {dδ : Tup → DeltaDat Xo c n}
@@ -192,11 +190,11 @@ theorem isCoverLevel_of_covPin {E : Type} [Field E] [NumberField E] [IsCMField E
   ⟨(h t).1.1, (h t).1.2.1, (h t).1.2.2.1, (h t).1.2.2.2.1, (h t).1.2.2.2.2.1, (h t).2.1⟩
 
 /- English proof (translation)
-Establish `hcop : IsCoprime (Ideal.span {(l.M : 𝓞 E)}) (Ideal.span {(pd : 𝓞 E)})`. Rewrite using `[Ideal.isCoprime_span_singleton_iff]`. Simplify using `using (Nat.isCoprime_iff_coprime.2 hc.symm).map (Int.castRingHom (𝓞 E))`. Rewrite `hcop` using `[← l.prod, ← hp]`. Use `⟨{ M := l.M * pd three_le := l.three_le.trans (Nat.le_mul_of_pos_right _ hodd.pos) odd := l.odd.mul hodd Mb := l.Mb * I fromK := ?_ prod := ?_ coprime := ?_ A := 1 A_pos := Nat.one_pos }, ⟨dvd_mul_right _ _, Ideal.mul_le_left, hA.dvd⟩, rfl, hc, rfl, hI, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨G, hG, hGA⟩` from `hK`. Use `fromK_of_gen ⟨{a | a ∈ l.Mb ∧ a ∈ Algebra.adjoin ℤ {H.w0}} * G, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.span_mul_span', ← l.fromK, ← hG]`. Introduce `x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `Set.mem_mul.1 hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Subalgebra.mul_mem _ ha.2 (hGA hb)`. Rewrite using `[Ideal.map_mul, mul_mul_mul_comm, l.prod, hp, Ideal.span_singleton_mul_span_singleton, Nat.cast_mul]`. Rewrite using `[← Ideal.isCoprime_iff_sup_eq, Ideal.map_mul]`. Conclude with `IsCoprime.mul_left (IsCoprime.mul_right (Ideal.isCoprime_iff_sup_eq.2 l.coprime) hcop.of_mul_left_left.of_mul_right_right) (IsCoprime.mul_right hcop.of_mul_left_right.of_mul_right_left.symm (Ideal.isCoprime_iff_sup_eq.2 hI))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coverLevel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (l : Level H)
     (hA : l.A = 1) (pd : ℕ) (I : Ideal (𝓞 E)) (hodd : Odd pd) (hc : Nat.Coprime pd l.M)
@@ -229,29 +227,25 @@ theorem exists_coverLevel {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
       (IsCoprime.mul_right hcop.of_mul_left_right.of_mul_right_left.symm (Ideal.isCoprime_iff_sup_eq.2 hI))
 
 /- English proof (translation)
-Use `set S := Q.image (fun PP => PP.under (𝓞 D.host.K)) with hS`. Establish `key : ∀ 𝔭 : HeightOneSpectrum (𝓞 D.host.K), ∃ (q : ℕ) (e : ℤ), 𝔭 ∈ S → SplitOK D q ∧ (∀ i, q ≠ D.host.g i) ∧ (q : 𝓞 D.host.K) ∈ 𝔭.asIdeal ∧ (q : ℤ) ∣ e ^ 2 - e + mE D ∧ IsCoprime (1 - 2 * e) (q : ℤ) ∧ 𝔭.asIdeal = JK D q e`. Introduce `𝔭`. Distinguish the cases in `h : 𝔭 ∈ S`. Take `⟨PP, hPP, rfl⟩` from `Finset.mem_image.1 h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨q, hq, hc, hu, hg⟩, -⟩` from `hQ PP hPP`. Take `⟨hm, hs⟩` from `splitOK_of_place PP hq hc hu (h2 PP hPP)`. Establish `hm' : (q : 𝓞 D.host.K) ∈ (PP.under (𝓞 D.host.K)).asIdeal` using `by show algebraMap (𝓞 D.host.K) (𝓞 D.host.E) q ∈ PP.asIdeal`. Rewrite using `[map_natCast]` and apply the resulting hypothesis. Take `⟨e, he⟩` from `pb_eq_JK D hs _ hm'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨q, e, fun _ => ⟨hs, hg, hm', he⟩⟩`. Conclude with `⟨0, 0, fun h' => absurd h' h⟩`. Use `choose q e hqe using key`. Establish `hinj : ∀ a ∈ S, ∀ b ∈ S, a ≠ b → q a ≠ q b`. Introduce `a ha b hb hab h`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha'` using `(hqe a ha).2.2.1`. Establish `hb'` using `(hqe b hb).2.2.1`. Establish `hp` using `(hqe a ha).1.1`. Rewrite `hb'` using `[← h]`. Take `⟨PP, hPP, rfl⟩` from `Finset.mem_image.1 ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨PP', hPP', rfl⟩` from `Finset.mem_image.1 hb`. Use `hab (HeightOneSpectrum.ext (h1 PP hPP PP' hPP' ⟨_, hp, ?_, ?_⟩))` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))]`. Conclude with `ha'`. Rewrite using `[← map_natCast (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hb'`. Establish `hI : coverHalf D Q = ∏ a ∈ S, QE D (q a) (e a)`. Unfold `coverHalf`. Use `Finset.prod_congr (by convert rfl) fun a ha => ?_` and prove the remaining obligations. Rewrite using `[(hqe a ha).2.2.2.2.2, map_JK]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hIb : (coverHalf D Q).map (bH D) = ∏ a ∈ S, QE D (q a) (1 - e a)`. Rewrite using `[hI, ← Ideal.mapHom_apply, map_prod]`. Conclude with `Finset.prod_congr rfl fun a _ => QE_map_bar D _ _`. Use `⟨∏ a ∈ S, q a, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_induction _ Odd (fun _ _ => Odd.mul) odd_one fun a ha => (hqe a ha).1.1.odd_of_ne_two (hqe a ha).1.2.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Nat.Coprime.prod_left fun a ha => Nat.Coprime.mul_right ?_ ?_` and prove the remaining obligations. Conclude with `(Nat.coprime_primes (hqe a ha).1.1 (D.host.g_prime 0)).2 ((hqe a ha).2.1 0)`. Conclude with `(Nat.coprime_primes (hqe a ha).1.1 (D.host.g_prime 1)).2 ((hqe a ha).2.1 1)`. Rewrite using `[hI]`. Use `Finset.prod_induction _ (fun J => ∃ G : Set (𝓞 D.host.E), J = Ideal.span G ∧ G ⊆ Algebra.adjoin ℤ {w0E D}) ?_ ?_ ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ _ ⟨G, rfl, hG⟩ ⟨G', rfl, hG'⟩`. Use `⟨G * G', Ideal.span_mul_span' _ _, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Set.mem_mul.1 hx`. Conclude with `Subalgebra.mul_mem _ (hG ha) (hG' hb)`. Conclude with `⟨{1}, by simp, fun x hx => by rw [Set.mem_singleton_iff.1 hx]; exact Subalgebra.one_mem _⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `a _`. Use `⟨_, rfl, fun y hy => ?_⟩` and prove the remaining obligations. Break down `hy with rfl | hy` into its components or cases. Conclude with `Subalgebra.natCast_mem _ _`. Rewrite using `[Set.mem_singleton_iff.1 hy]`.
-
-Conclude with `Subalgebra.sub_mem _ (Algebra.subset_adjoin (Set.mem_singleton _)) (Subalgebra.intCast_mem _ _)`. Rewrite using `[hIb, hI, ← Finset.prod_mul_distrib, Nat.cast_prod, ← Ideal.prod_span_singleton]`. Conclude with `Finset.prod_congr rfl fun a ha => QE_mul D _ _ (hqe a ha).2.2.2.1 (hqe a ha).2.2.2.2.1`. Rewrite using `[hIb, hI, ← Ideal.isCoprime_iff_sup_eq]`. Use `IsCoprime.prod_left fun a ha => IsCoprime.prod_right fun b hb => ?_` and prove the remaining obligations.
-
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Conclude with `QE_cop_self D _ _ (hqe a ha).2.2.2.2.1`. Conclude with `QE_cop_ne D (hqe a ha).1.1 (hqe b hb).1.1 (hinj a ha b hb hab) _ _`.
+A detailed English derivation is pending.
 -/
 theorem coverHalf_spec {Q : Finset (Pl D.host.E)} (hQ : IsTwistPlaces D.host.g Q)
     (h2 : ∀ PP ∈ Q, (2 : 𝓞 D.host.E) ∉ PP.asIdeal)
@@ -333,15 +327,13 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.L
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `hw : Q.H.w0 = w0E D`. Establish `h1` using `Q.H.two_weight_eq_one_add_root`. Establish `h3 : Q.H.rt = rtE D` using `RingOfIntegers.ext hH.2.1`. Rewrite `h1` using `[h3, ← two_w0E D]`. Conclude with `mul_left_cancel₀ two_ne_zero h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : (Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = bH D` using `RingHom.ext fun a => RingOfIntegers.ext (Q.H.bar_eq a)`. Establish `h2 : ∀ PP ∈ R.Q t, (2 : 𝓞 D.host.E) ∉ PP.asIdeal` using `fun PP hPP h => hG.2 t PP hPP (by`. Rewrite using `[Nat.cast_mul, Nat.cast_mul, mul_assoc]`. Take `⟨c, hc⟩` from `D.host.two_dvd_QS`. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (by exact_mod_cast h))`. Take `⟨pd, hodd, hc, hK, hp, hI⟩` from `coverHalf_spec hQ h2 (hG.1 t)`. Take `⟨l₂, hl₂⟩` from `exists_coverLevel Q.l hl.2 pd _ hodd (by rw [hl.1]; exact hc) (by rw [hw]; exact hK) (by rw [hb]; exact hp) (by rw [hb]; exact hI)`. Establish `hprod` using `Q.l.prod`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hprod` using `[hl.1]`. Use `⟨pd, l₂, hl₂, eq_prod_of_squarefree ?_ _ hP, fun PP h => coverHalf_le h, fun PP h => ?_⟩` and prove the remaining obligations. Conclude with `(hprod ▸ squarefree_span_g D : Squarefree (Q.l.Mb * _)).of_mul_left`. Break down `h with h | h` into its components or cases. Use `not_mem_of_over_g PP ((hP PP).1 h (?_ : _ ∈ Q.l.Mb))` and prove the remaining obligations.
-
-Rewrite using `[← Ideal.span_singleton_le_iff_mem, ← hprod]`. Conclude with `Ideal.mul_le_left`. Conclude with `hG.2 t PP h`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cover_of_places (Q : Par D) (R : RealDat D A Ks) (hH : Q.PinHost) (hl : Q.PinLevel)
     (hP : ∀ PP, PP ∈ R.Pg ↔ Q.l.Mb ≤ PP.asIdeal) (hG : QGuard R) (t : T0) (hQ : IsTwistPlaces D.host.g (R.Q t)) :
@@ -374,13 +366,13 @@ theorem exists_cover_of_places (Q : Par D) (R : RealDat D A Ks) (hH : Q.PinHost)
     · exact hG.2 t PP h
 
 /- English proof (translation)
-Use `set b := (Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) with hbdef`. Establish `hn : ∀ i, pb i * b (pb i) = (D.host.g i : 𝓞 D.host.E)` using `fun i => by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `h1` using `hT.norm i`. Establish `h2 : ((b (pb i) : 𝓞 D.host.E) : D.host.E) = star (pb i : D.host.E)` using `Q.H.bar_eq (pb i)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← h2]`. Conclude with `h1`. Establish `hprod` using `Q.l.prod`. Take `⟨C, hC⟩` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hO)`. Establish `h1 : Ideal.span {pb 0 * pb 1} * (Ideal.span {pb 0 * pb 1}).map b = Ideal.span {(Q.l.M : 𝓞 D.host.E)}`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.span_singleton_mul_span_singleton, map_mul, mul_mul_mul_comm, hn, hn, hl.1, Nat.cast_mul]`. Rewrite `h1` using `[hC, Ideal.map_mul, mul_mul_mul_comm, hprod]`. Establish `h0 : Ideal.span {(Q.l.M : 𝓞 D.host.E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Use `Q.l.three_le` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(by omega : Q.l.M ≠ 0)` after adjusting the coercions. Establish `h2 : C * C.map b = 1` using `mul_left_cancel₀ h0 (h1.trans (mul_one _).symm)`. Establish `h3 : C = ⊤` using `top_le_iff.1 (by rw [← Ideal.one_eq_top, ← h2]; exact Ideal.mul_le_left)`. Rewrite using `[hC, h3, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_eq_span (Q : Par D) (hl : Q.PinLevel) {pb : Fin 2 → 𝓞 D.host.E} (hT : IsTypeDatum D.host.g pb)
     (hO : Oriented Q.l pb) : Q.l.Mb = Ideal.span {pb 0 * pb 1} := by
@@ -406,9 +398,9 @@ theorem half_eq_span (Q : Par D) (hl : Q.PinLevel) {pb : Fin 2 → 𝓞 D.host.E
   rw [hC, h3, Ideal.mul_top]
 
 /- English proof (translation)
-Use `exists_cover_of_places Q R hH hl (fun PP => ?_) hG t (hQ t)` and prove the remaining obligations. Establish `h` using `half_eq_span Q hl hP.1 hO`. Rewrite using `[hP.2, mem_primesOf, h, Ideal.span_singleton_le_iff_mem]`. Use `and_iff_right fun h0 => ?_` and prove the remaining obligations. Establish `hprod` using `Q.l.prod`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hprod` using `[h, h0, Ideal.span_singleton_zero, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot]`. Use `Q.l.three_le` as an intermediate fact. Conclude with `(by omega : Q.l.M ≠ 0) (by exact_mod_cast hprod)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_half (Q : Par D) (R : RealDat D A Ks) (pb : Fin 2 → 𝓞 D.host.E) (hH : Q.PinHost) (hl : Q.PinLevel)
     (hO : Oriented Q.l pb) (hP : IsTypePlaces D.host.g pb R.Pg) (hQ : ∀ t, IsTwistPlaces D.host.g (R.Q t))
@@ -425,9 +417,9 @@ theorem exists_half (Q : Par D) (R : RealDat D A Ks) (pb : Fin 2 → 𝓞 D.host
   exact (by omega : Q.l.M ≠ 0) (by exact_mod_cast hprod)
 
 /- English proof (translation)
-Rewrite using `[PP.isPrime.prod_le]`. Use `exists_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[and_iff_right (Finset.mem_univ k), Ideal.map_le_iff_le_comap]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `HeightOneSpectrum.ext ((pb k).isMaximal.eq_of_le (PP.under (𝓞 D.host.K)).isPrime.ne_top h).symm`. Introduce `h`. Rewrite using `[← h]`. Conclude with `le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_map_le_iff (pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K)) (PP : Pl D.host.E) :
     ∏ k, (pb k).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) ≤ PP.asIdeal ↔ ∃ k, PP.under (𝓞 D.host.K) = pb k := by
@@ -442,7 +434,7 @@ theorem prod_map_le_iff (pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K)) (PP :
     exact le_rfl
 
 /- English proof (translation)
-Use `exists_cover_of_places T.Q R hT.pins.1 hT.pins.2.1 (fun PP => ?_) hG t (hL.Q_pl t)` and prove the remaining obligations. Rewrite using `[hL.Pg, hT.half.2, prod_map_le_iff, hO]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_half_of_laws (T : Core D) (R : RealDat D A Ks) {μ0 : T0} (hT : LawsM T) (hL : R.toLevCh.Is μ0)
     (hO : T.pb = R.C.P.pb) (hG : QGuard R) (t : T0) :
@@ -453,15 +445,15 @@ theorem exists_half_of_laws (T : Core D) (R : RealDat D A Ks) {μ0 : T0} (hT : L
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `(R.C.P.pb k).isPrime` as an intermediate fact. Take `⟨P, hP, hPc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain (S := 𝓞 D.host.E) (R.C.P.pb k).asIdeal (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))).1 (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `bot_le)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP0 : P ≠ ⊥`. Introduce and unpack `rfl`. Apply `(R.C.P.pb k).ne_bot` to reduce the goal to its premises. Rewrite using `[← hPc, Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)]`. Set `PP : Pl D.host.E` to `⟨P, hP, hP0⟩`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu : PP.under (𝓞 D.host.K) = R.C.P.pb k` using `HeightOneSpectrum.ext hPc`. Establish `hmem : PP ∈ R.Pg` using `(hL.Pg PP).2 ⟨k, hu⟩`. Establish `hle : T.Q.l.Mb ≤ PP.asIdeal`. Rewrite using `[h.1]`. Conclude with `Ideal.prod_le_inf.trans (Finset.inf_le hmem)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hle` using `[hT.half.2, prod_map_le_iff]`. Take `⟨k', hk'⟩` from `hle`. Rewrite `hk'` using `[hu]`. Distinguish the cases in `hkk : k' = k`. Rewrite using `[hk', hkk]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `hne : D.host.g k' ≠ D.host.g k`. Use `D.host.g_ne` as an intermediate fact. Apply the tactic sequence `fin_cases k <;> fin_cases k' <;> simp_all [eq_comm]`. Conclude with `not_mem_of_coprime (T.pb k').isPrime.ne_top ((Nat.coprime_primes (D.host.g_prime k') (D.host.g_prime k)).2 hne) (hT.half.1 k') (hk' ▸ R.C.P.pb_over k)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem primes_eq_of_halfIs (T : Core D) (R : RealDat D A Ks) {μ0 : T0} (hT : LawsM T) (hL : R.toLevCh.Is μ0)
     {t : T0} {I : Ideal (𝓞 D.host.E)} (h : HalfIs R t T.Q.l.Mb I) : T.pb = R.C.P.pb := by

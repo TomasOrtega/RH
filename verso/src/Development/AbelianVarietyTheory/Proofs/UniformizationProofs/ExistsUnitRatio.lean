@@ -19,9 +19,9 @@ namespace GlobalTheory.UU.BiTrivUniq
 variable {X Y : Scheme.{0}} {M : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
 
 /- English proof (translation)
-Take `⟨t, -, hv⟩` from `exists_gen hM (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_empty _).symm)` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel])`. Use the proof step `(LB.mulGen M _ _ _ _ u (LB.invGen M _ _ u')) (DVR.mulGen_isGen _ _ _ _ _ _ _ hu (DVR.invGen_isGen _ _ _ _ hu'))`. Establish `le : (⊤ : Y.Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨res le (t.s PEmpty.elim), fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_inv_eq_iff_eq_mul, ← val_inv, ← val_mul hJ, ← hv Z r z J hJ, val_of t r z J PEmpty.elim (fun k => k.elim)]`. Conclude with `(gm_res r z le trivial _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_ratio (hM : M.IsLB) {u u' : LB.Gen (LB.LinComb M φ ε)} (hu : u.IsGen) (hu' : u'.IsGen) :
     ∃ a : Γ(Y, ⊤)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good M z J →
@@ -37,9 +37,9 @@ theorem exists_unit_ratio (hM : M.IsLB) {u u' : LB.Gen (LB.LinComb M φ ε)} (hu
   exact (gm_res r z le trivial _).symm
 
 /- English proof (translation)
-Take `⟨s⟩` from `t`. Take `⟨s'⟩` from `t'`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `unit_ext (V := LB.wchart M φ j) fun y hy => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨I, hI⟩` from `exists_good_pt hM y`. Conclude with `(gen_trans ht (𝟙 Y) y hy (Good.mem hI φ (𝟙 Y))).trans ((congrArg _ (h y I hI)).trans (gen_trans ht' (𝟙 Y) y hy (Good.mem hI φ (𝟙 Y))).symm)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gen_eq_of_val (hM : M.IsLB) {t t' : LB.Gen (LB.LinComb M φ ε)} (ht : t.IsGen) (ht' : t'.IsGen)
     (h : ∀ y J, Good M y J → val t (𝟙 Y) y J = val t' (𝟙 Y) y J) : t = t' := by
@@ -58,17 +58,17 @@ namespace GlobalTheory.UU
 open BiTrivUniq
 
 /- English proof (translation)
-Introduce `S X _ G _ _ _ L c i _ s s'`. Take `⟨ρ, hρ⟩` from `exists_unit_ratio L.isLB s.gen s'.gen`. Take `⟨χ, hχ, -⟩` from `GlobalTheory.existsUnique_character_of_mul S X G ρ fun Z t t' y => by`. Establish `e : Units.map (lift (t * t') y).left.appTop.hom.toMonoidHom ρ = Units.map (lift t y).left.appTop.hom.toMonoidHom ρ * Units.map (lift t' y).left.appTop.hom.toMonoidHom ρ`. Use `unit_ext fun z _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨J, hJ⟩` from `exists_good_pt L.isLB z`. Establish `a` using `s.law1 Z t t' y z J hJ`. Rewrite `a` using `[hρ _ _ z J hJ, hρ _ _ z J hJ, hρ _ _ z J hJ, s'.law1 Z t t' y z J hJ]`. Rewrite using `[map_mul, ← gm_top, ← gm_top, ← gm_top]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `a'` using `congrArg Additive.ofMul a`. Simplify using `only [ofMul_mul] at a' ⊢`. Take the linear combination `(norm := abel) a'`. Conclude with `congrArg Units.val e`. Establish `key : ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (x : Z ⟶ G) (z : Z.left), gm (lift t x).left z ⊤ ρ = gm (𝟙 Z.left) z ⊤ (chV t χ)` using `fun Z t x z => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gm_top]`. Use `congr 1`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[chV_val]`. Use `show (lift t x).left.appTop.hom ρ.val = _`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hχ, Rosenlicht.over_appTop_comp, lift_fst]`. Establish `hs : s.s = s'.s` using `gen_eq_of_val L.isLB s.gen s'.gen fun y J hJ => by`. Establish `a` using `hρ _ (lift (fst (splitTorus S X) G) (1 : _ ⟶ G)).left y J hJ`. Rewrite `a` using `[s.val_one_right hJ, s'.val_one_right hJ, key, _root_.mul_one, ← key _ _ (snd _ _), lift_fst_snd, Over.id_left]`. Rewrite using `[hρ _ _ y J hJ, ← a, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, _, _, _⟩` from `s`. Take `⟨s', _, _, _⟩` from `s'`. Take `rfl : s = s'` from `hs`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem biTriv_unique : ∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] (G : Over S) [GrpObj G] [IsCommMonObj G]
     [ConnectedSpace G.left] (L : RigLB G) (c : CubicalStr G L) (i : splitTorus S X ⟶ G), IsMonHom i →

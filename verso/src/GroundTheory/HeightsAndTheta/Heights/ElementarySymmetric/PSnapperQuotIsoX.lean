@@ -10,7 +10,7 @@ noncomputable section
 universe u v w v'
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x E _ _ _ _ E' _ _ _ _ F₁ F₂ G₁ G₂ e`. Unfold `eulerCharQuot`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Conclude with `(Cech.equivH e.equiv e.comm i).finrank_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem SnapperQuotIso.proof : SnapperQuotIso.Statement.{u, v, w, v'} := by
   intro k _ Ω _ _ N x E _ _ _ _ E' _ _ _ _ F₁ F₂ G₁ G₂ e

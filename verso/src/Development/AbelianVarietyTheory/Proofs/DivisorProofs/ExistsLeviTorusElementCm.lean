@@ -15,19 +15,17 @@ namespace GlobalTheory.ThK
 open GlobalTheory.LeviPlane
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' r s i₀ i₁ hcm hW hH t`. Use `set c : AE F E →+* AE F E := (cA σ).toRingHom with hcdef`. Establish `hc : ∀ z, c (c z) = z` using `cA_invol (sigma_invol hcm)`. Establish `hJ : ∀ i j, c (incM F W.J j i) = -incM F W.J i j`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hcdef, incM, Matrix.map_apply, cAr_inclR, hW.skew, map_neg]`. Establish `hxx : fm c (incM F W.J) (incV F H'.x) (incV F H'.x) = 0` using `by rw [fm_inc, hH.xx, map_zero]`. Establish `hyy : fm c (incM F W.J) (incV F H'.y) (incV F H'.y) = 0` using `by rw [fm_inc, hH.yy, map_zero]`. Establish `hxy : fm c (incM F W.J) (incV F H'.x) (incV F H'.y) = 1` using `by rw [fm_inc, hH.xy, map_one]`. Establish `hι : ∀ j, fm c (incM F W.J) (fun i => incM F H'.ι i j) (incV F H'.x) = 0 ∧ fm c (incM F W.J) (fun i => incM F H'.ι i j) (incV F H'.y) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `ho` using `hH.orth (Pi.single j 1)`. Rewrite `ho` using `[Matrix.mulVec_single_one]`. Establish `h1 : form σ W.J (fun i => H'.ι i j) H'.x = 0` using `ho.1`. Establish `h2 : form σ W.J (fun i => H'.ι i j) H'.y = 0` using `ho.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun i => incM F H'.ι i j) = incV F (fun i => H'.ι i j)` using `rfl`. Rewrite using `[e, fm_inc, fm_inc, h1, h2, map_zero]`. Conclude with `⟨rfl, rfl⟩`. Set `L : AE F E → AE F E → Matrix (Fin d) (Fin d) (AE F E)` to `lev c (incM F W.J) (incV F H'.x) (incV F H'.y)`. Establish `hinv : ∀ u : (AE F E)ˣ, L u (c (u⁻¹ : (AE F E)ˣ)) * L (u⁻¹ : (AE F E)ˣ) (c u) = 1`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Use `show lev c _ _ _ _ _ * lev c _ _ _ _ _ = 1`. Rewrite using `[lev_mul hc hJ hxx hyy hxy, ← map_mul, Units.mul_inv, Units.inv_mul, map_one, lev_one hc hJ hxx hyy hxy]`. Set `g : GL (Fin d) (AE F E)` to `⟨L t (c (t⁻¹ : (AE F E)ˣ)), L (t⁻¹ : (AE F E)ˣ) (c t), hinv t, by simpa using hinv t⁻¹⟩`. Establish `hg : g ∈ UG (cA σ) (incM F W.J)` using `by show (L t (c (t⁻¹ : (AE F E)ˣ)))ᵀ * incM F W.J * (L t (c (t⁻¹ : (AE F E)ˣ))).map c = incM F W.J`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lev_unitary hc hJ hxx hyy hxy _ _ (by rw [hc, Units.mul_inv])`. Use `⟨⟨g, hg⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `lev_X hxx hxy _ _`. Conclude with `lev_Y hc hJ hxx hyy hxy _ _`. Use `show L t (c (t⁻¹ : (AE F E)ˣ)) * incM F H'.ι = incM F H'.ι * 1`.
-
-Rewrite using `[Matrix.mul_one]`. Conclude with `lev_mul_ι _ hι _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_isLevi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (r s i₀ i₁ : ℕ), IsCMExt F E σ → W.IsSkew σ B r s → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ t : (AE F E)ˣ, ∃ m : UA σ W.J, IsLevi (W₁ := W₁) H' t 1 m := by
   intro F E _ _ _ _ _ σ B d d₁ W W₁ H' r s i₀ i₁ hcm hW hH t

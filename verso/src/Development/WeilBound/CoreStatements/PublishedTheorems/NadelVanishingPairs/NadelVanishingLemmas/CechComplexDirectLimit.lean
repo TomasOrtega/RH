@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.IsIs
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechComplexDirectLimit
 open CategoryTheory Limits Filter GlobalTheory
 /- English proof (citation)
-Apply `GlobalTheory.cechComplex_homology_isZero_of_colimit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCechComplexDirectLimit.lean&line=89#L89)
 -/

@@ -8,7 +8,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.SJ
 
 /- English proof (translation)
-Rewrite using `[L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hf, hg] with x h1 h2`. Rewrite using `[h1, h2, RCLike.inner_apply, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inner_eq_integral_of_ae {α : Type} [MeasurableSpace α] {m : Measure α} (f g : Lp ℂ 2 m) (f' g' : α → ℂ)
     (hf : f =ᵐ[m] f') (hg : g =ᵐ[m] g') : ⟪f, g⟫_ℂ = ∫ x, star (f' x) * g' x ∂m := by
@@ -19,13 +19,13 @@ theorem inner_eq_integral_of_ae {α : Type} [MeasurableSpace α] {m : Measure α
   rfl
 
 /- English proof (translation)
-Establish `hmix : ∀ T : E, ⟪j' T, j F⟫_ℂ = (a * p v₁ v₀) * ⟪j' T, j' (e F)⟫_ℂ`. Introduce `T`. Take `⟨k, hk⟩` from `hS T (e F)`. Establish `h1` using `inner_eq_integral_of_ae _ _ _ _ (hj' T) (hj F)`. Establish `h2` using `inner_eq_integral_of_ae _ _ _ _ (hj' T) (hj' (e F))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hk, hp, mul_one]`. Establish `h3 : ∫ x, star (φ T v₁ x) * (a * φ (e F) v₀ x) ∂m = a * ∫ x, star (φ T v₁ x) * φ (e F) v₀ x ∂m`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h3, hk]`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨T, hT⟩` from `j'.surjective (j F - (a * p v₁ v₀) • j' (e F))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `hz : ⟪j F - (a * p v₁ v₀) • j' (e F), j F - (a * p v₁ v₀) • j' (e F)⟫_ℂ = 0` using `by conv_lhs => enter [2]; rw [← hT]`. Rewrite using `[inner_sub_right, inner_smul_right, hmix, sub_self]`. Conclude with `sub_eq_zero.mp (inner_self_eq_zero.mp hz)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_smul_of_eval {α A E V : Type} [MeasurableSpace α] {m : Measure α} [AddCommGroup E] [Module ℂ E]
     (W : Submodule ℂ (Lp ℂ 2 m)) (φ : E → V → α → ℂ) (p : V → V → ℂ)
@@ -54,9 +54,9 @@ theorem eq_smul_of_eval {α A E V : Type} [MeasurableSpace α] {m : Measure α} 
   exact sub_eq_zero.mp (inner_self_eq_zero.mp hz)
 
 /- English proof (translation)
-Distinguish the cases in `h0 : β = 0`. Use `⟨1, one_ne_zero, fun F => ?_⟩` and prove the remaining obligations. Establish `hF : j F = 0` using `by rw [h, h0, zero_smul]`. Establish `hF0 : F = 0` using `hj (hF.trans (map_zero j).symm)`. Substitute `hF0` using the available equality.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Use `⟨(starRingEnd ℂ β)⁻¹, inv_ne_zero ((map_ne_zero _).2 h0), fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[h, LinearMap.map_smulₛₗ, smul_smul, inv_mul_cancel₀ ((map_ne_zero _).2 h0), one_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_conj_scalar {A W H : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup W] [Module ℂ W] [AddCommGroup H]
     [Module ℂ H] (s : W →ₗ⋆[ℂ] H) (j f : A →ₗ[ℂ] W) (hj : Function.Injective j) (β : ℂ) (h : ∀ F, j F = β • f F) :
@@ -71,11 +71,11 @@ theorem exists_conj_scalar {A W H : Type} [AddCommGroup A] [Module ℂ A] [AddCo
     rw [h, LinearMap.map_smulₛₗ, smul_smul, inv_mul_cancel₀ ((map_ne_zero _).2 h0), one_smul]
 
 /- English proof (translation)
-Introduce `D S M E St G μ 𝓕 ι t c hS hT e j v₀ a hj`. Establish `hv` using `hT.choose_spec.1`. Establish `hj'` using `fun T => (hT.choose_spec.2.choose_spec T).1`. Establish `hp : ∏ τ, ⟪(hT.choose τ : M.H τ), (hT.choose τ : M.H τ)⟫_ℂ = 1`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inner_self_eq_norm_sq_to_K, hv τ]`. Simplify using the standard rewrite rules. Establish `hkey` using `eq_smul_of_eval (m := muX St) (EEC St G) (fun (T : E) (v : M.Vec) x => (T : MMap M) v (ι.symm x * t)) (fun v v' => ∏ τ, ⟪(v τ : M.H τ), (v' τ : M.H τ)⟫_ℂ) (fun T T' => hS T T.2 T' T'.2) hT.choose v₀ hp hT.choose_spec.2.choose hj' e j a hj`. Establish `hs : sEEofTT M μ 𝓕 E St G ι t c = (conjHH St G).toLinearMap.comp hT.choose_spec.2.choose.toLinearMap` using `dif_pos hT`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `exists_conj_scalar (conjHH St G).toLinearMap j.toLinearEquiv.toLinearMap (hT.choose_spec.2.choose.toLinearMap.comp e) j.injective _ hkey`.
+A detailed English derivation is pending.
 -/
 theorem sEEofTT_eq_smul_conjHH : ∀ (D : D7) (S : D.what₂.Tau → Formalism.BasicNotions.TH.SPar) (M : DSModel (D.sp.Y 0) S) (E : Submodule ℂ (MMap M)) (St : Formalism.L2.SG.HidaSetting.HidaSetting D) (G : GoodOp St) (μ : Measure (GA D (D.sp.Y 0))) (𝓕 : Set (GA D (D.sp.Y 0))) (ι : GA D (D.sp.Y 0) ≃* St.B.I.GA) (t : GA D (D.sp.Y 0)) (c : ℝ), (∀ T ∈ E, ∀ T' ∈ E, ∃ c : ℂ, ∀ v v' : M.Vec, ∫ x, star (T v (ι.symm x * t)) * T' v' (ι.symm x * t) ∂(muX St) = c * ∏ τ, ⟪(v τ : M.H τ), (v' τ : M.H τ)⟫_ℂ) → EvalTieT M μ 𝓕 E St G ι t c → ∀ (e : D.what₂.EE →ₗ[ℂ] E) (j : D.what₂.EE ≃ₗᵢ[ℂ] EEC St G) (v₀ : M.Vec) (a : ℂ), (∀ F, ((j F : EEC St G) : L2X St) =ᵐ[muX St] fun x => a * ev M v₀ (e F : MMap M) (ι.symm x * t)) → ∃ κ₀ : ℂ, κ₀ ≠ 0 ∧ ∀ F, sEEofTT M μ 𝓕 E St G ι t c (e F) = κ₀ • conjHH St G (j F) := by
   intro D S M E St G μ 𝓕 ι t c hS hT e j v₀ a hj

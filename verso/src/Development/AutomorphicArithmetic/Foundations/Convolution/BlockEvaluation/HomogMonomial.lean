@@ -9,7 +9,7 @@ private noncomputable def cm {κ R R' : Type} [CommRing R] [CommRing R'] (φ : R
     MvPolynomial κ R' := ∑ β ∈ P.support, monomial β (φ (P.coeff β))
 
 /- English proof (translation)
-Rewrite using `[cm, coeff_sum]`. Simplify using `only [coeff_monomial, Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[notMem_support_iff.mp h, h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_cm {κ R R' : Type} [CommRing R] [CommRing R'] {φ : R → R'} (h0 : φ 0 = 0)
     (P : MvPolynomial κ R) (β : κ →₀ ℕ) : (cm φ P).coeff β = φ (P.coeff β) := by
@@ -25,7 +25,7 @@ private noncomputable def sb {κ κ' R T : Type} [CommRing R] [CommRing T] (h : 
   eval₂Hom (C.comp ψ) fun x => map a (h x)
 
 /- English proof (translation)
-Rewrite using `[sb, eval₂Hom_monomial, map_finsuppProd]`. Simplify using `only [map_pow, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sb_monomial {κ κ' R T : Type} [CommRing R] [CommRing T] (h : κ → MvPolynomial κ' ℂ) (a : ℂ →+* T)
     (ψ : R →+* T) (β : κ →₀ ℕ) (r : R) :
@@ -34,13 +34,13 @@ private theorem sb_monomial {κ κ' R T : Type} [CommRing R] [CommRing T] (h : �
   simp only [map_pow, RingHom.comp_apply]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial β r`. Establish `e : cm φ (monomial β r) = monomial β (φ r)`. Use extensionality with `γ`. Rewrite using `[coeff_cm h0, coeff_monomial, coeff_monomial]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Both sides reduce to the same expression. Conclude with `h0`. Rewrite using `[e, sb_monomial, sb_monomial]`. Use extensionality with `γ`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[coeff_cm h0', coeff_C_mul, coeff_C_mul, coeff_map, coeff_map, hl, hc]`. Consider the case `add p q hp hq`. Establish `e : cm φ (p + q) = cm φ p + cm φ q`. Use extensionality with `γ`. Rewrite using `[coeff_add, coeff_cm h0, coeff_cm h0, coeff_cm h0, coeff_add, ha]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[e, map_add, map_add, ← hp, ← hq]`. Use extensionality with `γ`. Rewrite using `[coeff_add, coeff_cm h0', coeff_cm h0', coeff_cm h0', coeff_add, ha']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cm_sb {κ κ' R R' T T' : Type} [CommRing R] [CommRing R'] [CommRing T] [CommRing T']
     (h : κ → MvPolynomial κ' ℂ) (a : ℂ →+* T) (a' : ℂ →+* T') (ψ : R →+* T) (ψ' : R' →+* T')
@@ -69,7 +69,7 @@ private theorem cm_sb {κ κ' R R' T T' : Type} [CommRing R] [CommRing R'] [Comm
     rw [coeff_add, coeff_cm h0', coeff_cm h0', coeff_cm h0', coeff_add, ha']
 
 /- English proof (translation)
-Use `Finset.sum_subset hs fun α _ hα => ?_` and prove the remaining obligations. Rewrite using `[notMem_support_iff.mp hα]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem homog_eq {ι : Type} (d : ℕ) (p : MvPolynomial ι ℂ) (s : Finset (ι →₀ ℕ)) (hs : p.support ⊆ s) :
     homog d p = ∑ α ∈ s, X none ^ (d - α.degree) * rename some (monomial α (p.coeff α)) := by
@@ -78,7 +78,7 @@ private theorem homog_eq {ι : Type} (d : ℕ) (p : MvPolynomial ι ℂ) (s : Fi
   simp
 
 /- English proof (translation)
-Rewrite using `[homog_eq d _ _ support_add, homog_eq d p _ Finset.subset_union_left, homog_eq d q _ Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add, map_add, map_add, mul_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem homog_add {ι : Type} (d : ℕ) (p q : MvPolynomial ι ℂ) : homog d (p + q) = homog d p + homog d q := by
   classical
@@ -88,7 +88,7 @@ private theorem homog_add {ι : Type} (d : ℕ) (p q : MvPolynomial ι ℂ) : ho
   rw [coeff_add, map_add, map_add, mul_add]
 
 /- English proof (translation)
-Rewrite using `[homog_eq d _ _ support_monomial_subset, Finset.sum_singleton, coeff_monomial, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem homog_monomial {ι : Type} (d : ℕ) (α : ι →₀ ℕ) (c : ℂ) :
     homog d (monomial α c) = X none ^ (d - α.degree) * rename some (monomial α c) := by
@@ -96,7 +96,7 @@ private theorem homog_monomial {ι : Type} (d : ℕ) (α : ι →₀ ℕ) (c : �
   rw [homog_eq d _ _ support_monomial_subset, Finset.sum_singleton, coeff_monomial, if_pos rfl]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial α r`. Rewrite using `[homog_monomial, mul_comm, C_mul_monomial, homog_monomial, ← C_mul_monomial, map_mul, rename_C]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add p q hp hq => rw [add_mul, homog_add, homog_add, hp, hq, add_mul]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 private theorem homog_mul {ι : Type} (d : ℕ) (p : MvPolynomial ι ℂ) (c : ℂ) : homog d (p * C c) = homog d p * C c := by
   induction p using MvPolynomial.induction_on' with
@@ -106,9 +106,9 @@ private theorem homog_mul {ι : Type} (d : ℕ) (p : MvPolynomial ι ℂ) (c : �
   | add p q hp hq => rw [add_mul, homog_add, homog_add, hp, hq, add_mul]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial α r`. Rewrite using `[homog_monomial, map_mul, map_pow, rename_X, rename_rename]`. Use `conv_lhs => rw [rename_monomial, homog_monomial, ← rename_monomial, rename_rename, Finsupp.degree_mapDomain]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `add p q hp hq => rw [map_add, homog_add, homog_add, hp, hq, map_add]`.
+A detailed English derivation is pending.
 -/
 private theorem homog_rename {ι ι' : Type} (δ : ι → ι') (d : ℕ) (p : MvPolynomial ι ℂ) :
     homog d (rename δ p) = rename (Option.map δ) (homog d p) := by
@@ -120,9 +120,9 @@ private theorem homog_rename {ι ι' : Type} (δ : ι → ι') (d : ℕ) (p : Mv
   | add p q hp hq => rw [map_add, homog_add, homog_add, hp, hq, map_add]
 
 /- English proof (translation)
-Take `⟨ha, h0, hs⟩` from `UpperTheory.ConvolutionTheory.FX.piece_add ι k`. Proceed by induction on `f using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => rw [zero_mul, h0, zero_mul]`. Consider the case `add f g hf hg => rw [add_mul, ha, ha, hf, hg, add_mul]`. Consider the case `single v p`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `e : algebraMap ℂ (EP ι) c = AddMonoidAlgebra.single 0 (C c)` using `rfl`. Rewrite using `[e, AddMonoidAlgebra.single_mul_single, add_zero, hs, hs, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm p, homogeneousComponent_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem piece_mul {ι : Type} [Fintype ι] (k : ℕ) (f : EP ι) (c : ℂ) :
     piece k (f * algebraMap ℂ (EP ι) c) = piece k f * C c := by
@@ -138,7 +138,7 @@ private theorem piece_mul {ι : Type} [Fintype ι] (k : ℕ) (f : EP ι) (c : �
     ring
 
 /- English proof (translation)
-Establish `e : algebraMap ℂ (EP ι) c = AddMonoidAlgebra.single 0 (C c)` using `rfl`. Rewrite using `[e]`. Simplify using `[lift, AddMonoidAlgebra.liftNCRingHom]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem lift_alg {ι A : Type} [CommRing A] [Algebra ℂ A] (x : ι → A) (τ : Multiplicative (ι → ℝ) →* A) (c : ℂ) :
     lift x τ (algebraMap ℂ (EP ι) c) = algebraMap ℂ A c := by
@@ -147,9 +147,9 @@ private theorem lift_alg {ι A : Type} [CommRing A] [Algebra ℂ A] (x : ι → 
   simp [lift, AddMonoidAlgebra.liftNCRingHom]
 
 /- English proof (translation)
-Unfold `ren`. Rewrite using `[(UpperTheory.ConvolutionTheory.FX.subst ι ι' _ _ f).2]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (δ i)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -168,7 +168,7 @@ private theorem ren_ren {ι ι' ι'' : Type} [Fintype ι] [Fintype ι'] [Fintype
     · simp
 
 /- English proof (translation)
-Unfold `ren`. Rewrite using `[(UpperTheory.ConvolutionTheory.FX.subst ι ι' _ _ f).1]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[apply_ite]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem ev_ren {ι ι' : Type} [Fintype ι] [Fintype ι'] [DecidableEq ι']
     (δ : ι → ι') (L : ι' → ℂ) (f : EP ι) : ev L (ren δ f) = ev (fun i => L (δ i)) f := by
@@ -179,15 +179,15 @@ private theorem ev_ren {ι ι' : Type} [Fintype ι] [Fintype ι'] [DecidableEq �
   simp [apply_ite]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, rfl⟩ : ∃ a : Fin n → ℂ, s = Finset.univ.val.map a := by`. Proceed by induction on `s using Quotient.inductionOn with`. Consider the case `h l`. Establish `hl : l.length = n` using `by simpa using hs`. Substitute `hl` using the available equality.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨l.get, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.univ_val_map, List.ofFn_get]`. Both sides reduce to the same expression. Establish `h1 : aeval (fun j : Fin n => esymm (Fin n) ℂ (j + 1)) (powE f i) = expand f (esymm (Fin n) ℂ (i + 1))`. Rewrite using `[← esymmAlgHom_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Subtype.val ((esymmAlgEquiv (Fin n) ℂ (Fintype.card_fin n)).apply_symm_apply ⟨expand f (esymm (Fin n) ℂ (i + 1)), fun w => by rw [rename_expand, esymm_isSymmetric]⟩)` as an intermediate fact. Conclude with `this`. Establish `h2` using `congrArg (aeval a) h1`. Rewrite `h2` using `[← AlgHom.comp_apply, comp_aeval, ← AlgHom.comp_apply]`. Establish `h3 : (aeval a : MvPolynomial (Fin n) ℂ →ₐ[ℂ] ℂ).comp (expand f) = aeval fun r => a r ^ f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules. Rewrite `h2` using `[h3]`. Simplify using `only [aeval_esymm_eq_multiset_esymm] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.map_map, ← coe_aeval_eq_eval]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 private theorem eval_powE {n : ℕ} (f : ℕ) (i : Fin n) (s : Multiset ℂ) (hs : s.card = n) :
     eval (fun j : Fin n => s.esymm (j + 1)) (powE f i) = (s.map (· ^ f)).esymm (i + 1) := by
@@ -218,7 +218,7 @@ private theorem eval_powE {n : ℕ} (f : ℕ) (i : Fin n) (s : Multiset ℂ) (hs
   exact h2
 
 /- English proof (translation)
-Use extensionality with `γ`. Rewrite using `[coeff_map, coeff_cm (map_zero φ)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_eq_cm {κ R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') (P : MvPolynomial κ R) :
     map φ P = cm φ P := by
@@ -226,7 +226,7 @@ private theorem map_eq_cm {κ R R' : Type} [CommRing R] [CommRing R'] (φ : R �
   rw [coeff_map, coeff_cm (map_zero φ)]
 
 /- English proof (translation)
-Rewrite using `[map_eq_cm, map_eq_cm]`. Conclude with `cm_sb h a a' ψ ψ' φ φ' (map_zero _) (map_zero _) (map_add _) (map_add _) (fun x c => by rw [map_mul, hl]) hc P`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_sb {κ κ' R R' T T' : Type} [CommRing R] [CommRing R'] [CommRing T] [CommRing T']
     (h : κ → MvPolynomial κ' ℂ) (a : ℂ →+* T) (a' : ℂ →+* T') (ψ : R →+* T) (ψ' : R' →+* T')
@@ -238,25 +238,25 @@ private theorem map_sb {κ κ' R R' T T' : Type} [CommRing R] [CommRing R'] [Com
     (fun x c => by rw [map_mul, hl]) hc P
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n SE SF hS Φ G hΦ hG`. Set `res : Ix E n → Ix F n` to `fun x => (x.1.comp (algebraMap F E), x.2)`. Set `h : Pl E × Fin n → MvPolynomial (Pl F × Fin n) ℂ` to `fun x => rename (fun i => (x.1.under (𝓞 F), i)) (powE (resDeg F x.1) x.2)`. Use `⟨sb h (algebraMap ℂ _) (ren res) Φ, fun k => sb h C (rename res).toRingHom (G k), ⟨fun w => ?_, ?_⟩, fun k => ?_, fun d => ?_, fun L' t' ht => ?_⟩` and prove the remaining obligations. Establish `h1` using `hΦ.1 fun τ => w (τ.comp (algebraMap F E))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(map_sb h (algebraMap ℂ _) (algebraMap ℂ _) (ren res) (ren res) (ren fun x : Ix E n => (x.1, w (x.1.comp (algebraMap F E)) x.2)) _ ?_ ?_ Φ).trans (by rw [h1])` and prove the remaining obligations. Introduce `c`. Conclude with `lift_alg _ _ c`. Introduce `r`. Rewrite using `[ren_ren, ren_ren]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `y hy`. Establish `e : sb h (algebraMap ℂ _) (ren res) Φ = bind₁ (fun x => map (algebraMap ℂ (EP (Ix F n))) (h x)) (map (ren res) Φ)`. Rewrite using `[bind₁, aeval_def, eval₂_map]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[e]`. Take `⟨y', hy', hy2⟩` from `mem_vars_bind₁ _ _ hy`. Take `⟨i, -, rfl⟩` from `mem_vars_rename _ _ (vars_map _ _ hy2)`. Conclude with `fun hh => hΦ.2 y' (vars_map _ _ hy') ((hS _).2 hh)`. Take `⟨ha, h0, -⟩` from `UpperTheory.ConvolutionTheory.FX.piece_add (Ix E n) k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ha', h0', -⟩` from `UpperTheory.ConvolutionTheory.FX.piece_add (Ix F n) k`. Establish `h1` using `hG k`. Use `Eq.trans ?_ (cm_sb h (algebraMap ℂ _) C (ren res) (rename res).toRingHom (piece k) (piece k) h0 h0' ha ha' (piece_mul k) (fun r => UpperTheory.ConvolutionTheory.FX.piece_ren _ r _ res k) Φ).symm` and prove the remaining obligations. Use `(map_sb h C C (rename res).toRingHom (rename res).toRingHom (aeval blockE).toRingHom _ ?_ ?_ _).trans (by rw [h1]; rfl)` and prove the remaining obligations. Introduce `c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `r`. Establish `e : (aeval (blockE (τ` using `F →+* ℂ) (n := n))).comp (rename res) = (rename res).comp (aeval (blockE (τ := E →+* ℂ) (n := n))) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgHom.comp_apply, rename_X, aeval_X, blockE, rename_rename]`. Both sides reduce to the same expression. Conclude with `DFunLike.congr_fun e r`. Unfold `trunc`. Rewrite using `[map_sum]`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `cm_sb h C C (rename res).toRingHom (rename (Option.map res)).toRingHom (homog d) (homog d) (by simp [homog]) (by simp [homog]) (homog_add d) (homog_add d) (homog_mul d) (homog_rename res d) (G k)`. Rewrite using `[← RingHom.comp_apply]`. Use `hom_congr_vars (p₁ := Φ) (p₂ := Φ) ?_ ?_ rfl` and prove the remaining obligations. Use `RingHom.ext fun f => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [evK, sb, RingHom.comp_apply, eval₂Hom_C]`. Conclude with `ev_ren res L' f`. Introduce `y hy _`. Establish `h1` using `eval_powE (resDeg F y.1) y.2 _ (ht _ fun hh => hΦ.2 y hy ((hS _).2 hh))`. Simplify using `only [evK, sb, h, RingHom.comp_apply, eval₂Hom_X', coe_eval₂Hom, eval₂_map, eval₂_rename, eval₂_X]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hval, bcSat, ← h1]`. Establish `hc : (ev L').comp (algebraMap ℂ (EP (Ix F n))) = RingHom.id ℂ` using `RingHom.ext fun c => lift_alg _ _ c`. Rewrite using `[hc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Ci.kfBc :
     KfBc := by

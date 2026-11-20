@@ -17,9 +17,9 @@ variable {D : D7}
 def tw0 (c : Com D) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) : Twist D := ⟨c.Pg, ∅, c.chi, ξ⟩
 
 /- English proof (translation)
-Take `⟨H, χ⟩` from `P`. Take `rfl : H = ⊥` from `h`. Unfold `LevelP.triv`. Use `congr 1`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[Subsingleton.elim x 1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eq_triv {Pg : Finset (Pl D.host.E)} {r : ℕ} (P : LevelP Pg r ℂ) (h : P.H = ⊥) : P = LevelP.triv _ _ _ := by
   obtain ⟨H, χ⟩ := P
@@ -30,7 +30,7 @@ theorem eq_triv {Pg : Finset (Pl D.host.E)} {r : ℕ} (P : LevelP Pg r ℂ) (h :
   rw [Subsingleton.elim x 1]; simp
 
 /- English proof (translation)
-The claim follows from `hc union := by simp [tw0] disj := by simp [tw0] chiPg := fun _ _ _ => rfl chiQ := fun _ _ h => by simp [tw0] at h ne := fun _ h => by simp [tw0] at h grp := fun g => by rw [h, Subgroup.mem_bot] exact ⟨fun e PP _ => by rw [e]; rfl, fun e => funext fun PP => e PP PP.2⟩ chr := by ex …`.
+A detailed English derivation is pending.
 -/
 theorem trivialTwist_isChain {c : Com D} (hc : c.Is) (h : c.P.H = ⊥) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) : (tw0 c ξ).Is c where
   com := hc
@@ -48,7 +48,7 @@ theorem trivialTwist_isChain {c : Com D} (hc : c.Is) (h : c.P.H = ⊥) (ξ : ∀
     rw [this]; simp
 
 /- English proof (translation)
-Take `⟨hr, ξ, e⟩` from `hs.lev`. Use `⟨ξ, hr, ?_, ⟨hs.rank, hs.sigOK, hs.sig, hs.par, hs.selfDual, hs.frame, hs.base, ⟨hr, _, rfl⟩, hs.haar, hs.fund⟩⟩` and prove the remaining obligations. Rewrite using `[e, eq_triv c.P h]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isStage_trivialTwist {c : Com D} (h : c.P.H = ⊥) {j : ℕ} {s : PiLocalization₂ D} (hs : s.Is c j) : ∃ ξ, IsStage c (tw0 c ξ) j s := by
   obtain ⟨hr, ξ, e⟩ := hs.lev
@@ -56,7 +56,7 @@ theorem isStage_trivialTwist {c : Com D} (h : c.P.H = ⊥) {j : ℕ} {s : PiLoca
   rw [e, eq_triv c.P h]; rfl
 
 /- English proof (translation)
-Take `⟨ξ', f₀, h⟩` from `hp.vec`. Conclude with `⟨hp.weil, ⟨f₀, h⟩, hp.theta, hp.it, hp.io⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isStep_trivialTwist {c : Com D} {j : ℕ} {s s' : PiLocalization₂ D} {p : Step c s s'} (hp : p.Is j) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) :
     IsStep (tw0 c ξ) j p := by
@@ -73,7 +73,7 @@ def comQ (c : Com D) (Q : Finset (Pl D.host.E)) (ξ : ∀ PP : Pl D.host.E, (kP 
 open Classical in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hc.inf, hc.std, hc.chars, hc.exp, hc.unr, fun j => by obtain ⟨H, h1, h2⟩ := hc.res j refine ⟨H, h1, fun PP hP => ?_⟩ have := h2 PP hP by_cases h : PP ∈ Q · simpa [comQ, h, hχ j PP h] using this · simpa [comQ, h] using this, hc.split⟩ union := (Finset.sdiff_union_of_subset hQ).sy …`.
+Supply the required witnesses or components.
 -/
 theorem twist_is {c : Com D} (hc : c.Is) {Q : Finset (Pl D.host.E)} (hQ : Q ⊆ c.Pg) {ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ}
     (hξ : ∀ PP ∈ Q, ξ PP ≠ 1) (hχ : ∀ j : Fin D.R.m, ∀ PP ∈ Q, c.chi ((j : ℕ) + 1) PP = (ξ PP)⁻¹) :
@@ -102,7 +102,7 @@ def twStage (w : Twist D) (j : ℕ) (s : PiLocalization₂ D) (hr : D.R.r ≤ s.
   { s with L := Lev.datY s.V.rank D.R.r D.R.t j hr w.Pg w.Q (LevelP.triv _ _ _) w.chi w.ξ Lev.Frm.B }
 
 /- English proof (translation)
-Take `⟨hr, -, -⟩` from `hs.lev`. Conclude with `⟨hr, hr, rfl, ⟨hs.rank, hs.sigOK, hs.sig, hs.par, hs.selfDual, hs.frame, hs.base, ⟨hr, _, rfl⟩, hs.haar, hs.fund⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isStage_twStage {c : Com D} (w : Twist D) {j : ℕ} {s : PiLocalization₂ D} (hs : s.Is c j) :
     ∃ hr, IsStage c w j (twStage w j s hr) := by
@@ -110,13 +110,13 @@ theorem isStage_twStage {c : Com D} (w : Twist D) {j : ℕ} {s : PiLocalization�
   exact ⟨hr, hr, rfl, ⟨hs.rank, hs.sigOK, hs.sig, hs.par, hs.selfDual, hs.frame, hs.base, ⟨hr, _, rfl⟩, hs.haar, hs.fund⟩⟩
 
 /- English proof (translation)
-Conclude with `GlobalTheory.LFun.one_lt_absNorm PP` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem one_lt_norm (PP : Pl D.host.E) : (1 : ℝ) < (Ideal.absNorm PP.asIdeal : ℝ) := by
   exact_mod_cast GlobalTheory.LFun.one_lt_absNorm PP
 
 /- English proof (translation)
-Use `Finset.prod_pos fun n hn => sub_pos.2 (inv_lt_one_of_one_lt₀ (one_lt_pow₀ (one_lt_norm PP) ?_))` and prove the remaining obligations. Use `(Finset.mem_Ioc.1 hn).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem zinv_pos (PP : Pl D.host.E) (a b : ℕ) : 0 < zinv PP a b := by
   refine Finset.prod_pos fun n hn => sub_pos.2 (inv_lt_one_of_one_lt₀ (one_lt_pow₀ (one_lt_norm PP) ?_))
@@ -124,15 +124,15 @@ theorem zinv_pos (PP : Pl D.host.E) (a b : ℕ) : 0 < zinv PP a b := by
   omega
 
 /- English proof (translation)
-The claim follows from `Finset.prod_Ioc_consecutive _ h h'`.
+A detailed English derivation is pending.
 -/
 theorem zinv_mul (PP : Pl D.host.E) {a b c : ℕ} (h : a ≤ b) (h' : b ≤ c) : zinv PP a b * zinv PP b c = zinv PP a c :=
   Finset.prod_Ioc_consecutive _ h h'
 
 /- English proof (translation)
-Establish `h1 : D.R.t ≤ (k + 1) * D.R.t` using `Nat.le_mul_of_pos_left _ (Nat.succ_pos k)`. Establish `e1` using `zinv_mul PP (Nat.zero_le D.R.t) h1`. Establish `e2` using `zinv_mul PP (Nat.zero_le D.R.t) (h1.trans (Nat.le_add_left _ D.R.r))`. Establish `p0` using `(zinv_pos PP 0 D.R.t).ne'`. Establish `p1` using `(zinv_pos PP 0 D.R.r).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p2` using `(zinv_pos PP D.R.t ((k + 1) * D.R.t)).ne'`. Establish `p3 : (Ideal.absNorm PP.asIdeal : ℝ) ≠ 0` using `(zero_lt_one.trans (one_lt_norm PP)).ne'`. Unfold `idxQ volOne`. Rewrite using `[← e1, ← e2]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem idx_vol (PP : Pl D.host.E) (k : ℕ) :
     idxQ PP (k + 1) * volOne PP (k + 1) * zinv PP D.R.t ((k + 1) * D.R.t) = zinv PP D.R.t (D.R.r + (k + 1) * D.R.t) := by
@@ -148,11 +148,11 @@ theorem idx_vol (PP : Pl D.host.E) (k : ℕ) :
   field_simp
 
 /- English proof (translation)
-Establish `e : (∏ PP ∈ w.Q, zinv PP D.R.t (D.R.r + (k + 1) * D.R.t)) = (∏ PP ∈ w.Q, idxQ PP (k + 1)) * (∏ PP ∈ w.Q, volOne PP (k + 1)) * ∏ PP ∈ w.Q, zinv PP D.R.t ((k + 1) * D.R.t)`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun PP _ => (idx_vol PP k).symm`. Establish `n : (∏ PP ∈ w.Q, zinv PP D.R.t (D.R.r + (k + 1) * D.R.t)) ≠ 0` using `(Finset.prod_pos fun PP _ => zinv_pos PP _ _).ne'`. Rewrite `n` using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `n1 : ((∏ PP ∈ w.Q, idxQ PP (k + 1) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast left_ne_zero_of_mul (left_ne_zero_of_mul n)`. Establish `n2 : ((∏ PP ∈ w.Q, volOne PP (k + 1) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast right_ne_zero_of_mul (left_ne_zero_of_mul n)`. Establish `n3 : ((∏ PP ∈ w.Q, zinv PP D.R.t ((k + 1) * D.R.t) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast right_ne_zero_of_mul n`. Establish `l : locQ c w k = (∏ PP ∈ w.Q, blockL c k PP) * ((∏ PP ∈ w.Q, zinv PP D.R.t ((k + 1) * D.R.t) : ℝ) : ℂ)`. Rewrite using `[locQ, Finset.prod_mul_distrib, Complex.ofReal_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kapOf, hd, e, l, hH, Complex.ofReal_mul, Complex.ofReal_mul, Complex.ofReal_div]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem const_eq {c : Com D} {s s' : PiLocalization₂ D} (w : Twist D) (k : ℕ) (p : Step c s s') (m : Measure (WO s.V s'.V)) (X : Set (WO s.V s'.V))
     (mR : Measure (GinfC s.V)) (φ : PolF D s'.V.rank s.V.rank) (v : s.M.Vec) (L H H₀ : ℂ)
@@ -176,9 +176,9 @@ theorem const_eq {c : Com D} {s s' : PiLocalization₂ D} (w : Twist D) (k : ℕ
   field_simp
 
 /- English proof (translation)
-Establish `: (qPar c PP x k).card = k * D.R.t`. Proceed by induction on `k with`. Consider the case `zero => simp [qPar]`. Consider the case `succ k ih => show (Multiset.map _ (qPar c PP x k) + _).card = _`. Simplify using `[ih, GlobalTheory.LFun.seg, Nat.succ_mul]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem card_qPar (c : Com D) (PP : Pl D.host.E) (x : (AE D)ˣ) (k : ℕ) :
     (qPar c PP x k).card = Fintype.card (GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection.Blocks k D.R.t) := by
@@ -191,23 +191,21 @@ theorem card_qPar (c : Com D) (PP : Pl D.host.E) (x : (AE D)ˣ) (k : ℕ) :
   simp [this]
 
 /- English proof (translation)
-Simplify using `[locQ, blockL, zinv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem locQ_zero (c : Com D) (w : Twist D) : locQ c w 0 = 1 := by
   simp [locQ, blockL, zinv]
 
 /- English proof (translation)
-Introduce `hG c w hw k hk s s' hs hs' p hp ipD ip ipD' ip' hM hM' m X hX mR hmR φ v hv H₀ hH₀ hκ B hB u₁ hu hq`. Take `⟨H, -, hH, -, hL, hol⟩` from `h7 c hw.com B hB k hk`. Take `⟨r1, -, r2, r3⟩` from `h8 hG c w hw k hk s s' hs hs' p hp`. Establish `hKF : PiTensorProduct.tprod ℂ v ∈ s.KF` using `Submodule.subset_span ⟨v, hv.1, rfl⟩`. Establish `ex` using `fun u₂ => h6 hG c w hw k hk s s' hs hs' p hp ipD ip hM m X hX mR hmR φ v hv u₁ u₂ _ hu hq _ hol`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [const_eq w k p m X mR φ v _ H H₀ (r1 H H₀ hH hH₀) r2 r3] at ex`. Establish `hne : p.up φ (PiLocalization₂.val u₁ (PiTensorProduct.tprod ℂ v)) ≠ 0` using `fun h0 => by`. Establish `e` using `ex u₁`. Rewrite `e` using `[h0]`. Establish `z : s'.pet 0 0 = 0` using `by simp [PiLocalization₂.pet, Lift.pet]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[z]`. Break down `mul_eq_zero.1 e.symm with e | e` into its components or cases. Conclude with `mul_ne_zero hκ hL ((map_eq_zero _).1 e)`. Use `hM.pos u₁ hu.1` as an intermediate fact. Rewrite `this` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Take `⟨v1, v2⟩` from `h5 hG c w hw k hk s s' hs hs' p hp ipD ip ipD' ip' hM hM' φ _ hKF`. Take `⟨w₀, hw0, hadj⟩` from `v1 ⟨u₁, hne⟩`. Use `⟨w₀, hw0, hadj, fun x₁ hx₁ => ?_⟩` and prove the remaining obligations. Establish `e1` using `v2 w₀ hadj u₁ x₁ hx₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, fun u₂ x₂ hx₂ => ?_⟩` and prove the remaining obligations. Conclude with `(h1 c w hw (k + 1) hk s' hs').2.2.2 x₁ w₀ _ (e1 ▸ hne) (e1 ▸ h2 hG c w hw k hk s s' hs hs' p hp u₁ _ φ hu _ hKF hne)`. Conclude with `(h4 c w hw (k + 1) hk s' hs').1 x₁ w₀ (e1 ▸ hne) (e1 ▸ h3 hG c w hw k hk s s' hs hs' p hp u₁ φ hq _ hKF)`. Establish `e` using `ex u₂`. Rewrite `e` using `[e1, v2 w₀ hadj u₂ x₂ hx₂]`.
-
-Rewrite using `[← e]`. Conclude with `(hM'.schur x₁ x₂ w₀ w₀).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepLam_of (h1 : SoftQ D) (h2 : UpParQ D) (h3 : UpQ D) (h4 : QOfVal D) (h5 : UpVal D) (h6 : StepExact D) (h7 : LFull D)
     (h8 : Restore D) : StepLam D := by

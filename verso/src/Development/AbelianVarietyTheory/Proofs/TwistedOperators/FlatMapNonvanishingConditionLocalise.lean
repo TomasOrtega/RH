@@ -15,7 +15,7 @@ namespace GlobalTheory.AscFin.LocCond
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.FinPlLoc.mem_idAt_iff P a).1 ha`. Establish `h2` using `(GlobalTheory.FinPlLoc.mem_idOff_iff P b).1 hb`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem idAt_mul_idOff {P : GlobalTheory.FinPl.Pl D → Prop} {a b : AE D} (ha : a ∈ idAt D P) (hb : b ∈ idOff D P) :
     a * b = 0 := by
@@ -26,7 +26,7 @@ theorem idAt_mul_idOff {P : GlobalTheory.FinPl.Pl D → Prop} {a b : AE D} (ha :
     _ = 0 := by rw [h2, mul_zero]
 
 /- English proof (translation)
-Unfold `GlobalTheory.FinPl.idOff at *`. Rewrite `*` using `[Submodule.mem_iInf]`. Introduce `w`. Conclude with `ha ⟨w.1, trivial⟩`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idOff_true_le {P : GlobalTheory.FinPl.Pl D → Prop} {a : AE D} (ha : a ∈ idOff D (fun _ => True)) : a ∈ idOff D P := by
   unfold GlobalTheory.FinPl.idOff at *
@@ -35,7 +35,7 @@ theorem idOff_true_le {P : GlobalTheory.FinPl.Pl D → Prop} {a : AE D} (ha : a 
   exact ha ⟨w.1, trivial⟩
 
 /- English proof (translation)
-Unfold `GlobalTheory.FinPl.idAt at *`. Take `⟨h0, -⟩` from `Ideal.mem_inf.1 ha`. Conclude with `Ideal.mem_inf.2 ⟨h0, (Submodule.mem_iInf _).2 fun w => absurd trivial w.2⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem idAt_le_true {P : GlobalTheory.FinPl.Pl D → Prop} {a : AE D} (ha : a ∈ idAt D P) : a ∈ idAt D (fun _ => True) := by
   unfold GlobalTheory.FinPl.idAt at *
@@ -43,7 +43,7 @@ theorem idAt_le_true {P : GlobalTheory.FinPl.Pl D → Prop} {a : AE D} (ha : a �
   exact Ideal.mem_inf.2 ⟨h0, (Submodule.mem_iInf _).2 fun w => absurd trivial w.2⟩
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.mul_apply] exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hE i l)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_mem_left' {I : Ideal (AE D)} {m n k : ℕ} (E : Matrix (Fin m) (Fin n) (AE D))
     (Z : Matrix (Fin n) (Fin k) (AE D)) (hE : ∀ i j, E i j ∈ I) : ∀ i j, (E ⬝ Z) i j ∈ I := fun i j => by
@@ -51,7 +51,7 @@ theorem mul_mem_left' {I : Ideal (AE D)} {m n k : ℕ} (E : Matrix (Fin m) (Fin 
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hE i l)
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.mul_apply] exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hZ l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_mem_right' {I : Ideal (AE D)} {m n k : ℕ} (E : Matrix (Fin m) (Fin n) (AE D))
     (Z : Matrix (Fin n) (Fin k) (AE D)) (hZ : ∀ i j, Z i j ∈ I) : ∀ i j, (E ⬝ Z) i j ∈ I := fun i j => by
@@ -59,7 +59,7 @@ theorem mul_mem_right' {I : Ideal (AE D)} {m n k : ℕ} (E : Matrix (Fin m) (Fin
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hZ l j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.zero_apply]`. Conclude with `Finset.sum_eq_zero fun l _ => by rw [mul_comm]; exact idAt_mul_idOff (hZ l j) (hE i l)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_eq_zero_of {P : GlobalTheory.FinPl.Pl D → Prop} {m n k : ℕ} (E : Matrix (Fin m) (Fin n) (AE D))
     (Z : Matrix (Fin n) (Fin k) (AE D)) (hE : ∀ i j, E i j ∈ idOff D P) (hZ : ∀ i j, Z i j ∈ idAt D P) :
@@ -69,7 +69,7 @@ theorem mul_eq_zero_of {P : GlobalTheory.FinPl.Pl D → Prop} {m n k : ℕ} (E :
   exact Finset.sum_eq_zero fun l _ => by rw [mul_comm]; exact idAt_mul_idOff (hZ l j) (hE i l)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.sub_apply] exact (GlobalTheory.FinPlLoc.mem_congGrp _ g).1 hg i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem off_entries {P : GlobalTheory.FinPl.Pl D → Prop} {S : HSp D} {g : GA D S} (hg : g ∈ grpOff S P) :
     ∀ i j, (mt S g - 1) i j ∈ idOff D P := fun i j => by
@@ -77,7 +77,7 @@ theorem off_entries {P : GlobalTheory.FinPl.Pl D → Prop} {S : HSp D} {g : GA D
   exact (GlobalTheory.FinPlLoc.mem_congGrp _ g).1 hg i j
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem mt_off_mul {P : GlobalTheory.FinPl.Pl D → Prop} {S : HSp D} {g : GA D S} (hg : g ∈ grpOff S P) {k : ℕ}
     (Z : Matrix (Fin S.rank) (Fin k) (AE D)) (hZ : ∀ i j, Z i j ∈ idAt D P) : mt S g ⬝ Z = Z := by
@@ -89,17 +89,15 @@ end GlobalTheory.AscFin.LocCond
 open GlobalTheory.AscFin.LocCond in
 
 /- English proof (translation)
-Introduce `D ψ _ V V₀ W W₀ ρ σ dV dW p x y P h₁ h₂ _ h2 hc`. Establish `e2` using `off_entries (inv_mem h2)`. Establish `hinv : mt W (h₁ * h₂)⁻¹ = mt W h₂⁻¹ ⬝ mt W h₁⁻¹`. Rewrite using `[_root_.mul_inv_rev, GlobalTheory.FinPlLoc.mt_mul]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, a, ha, hoff⟩` from `hc.pt`. Use `⟨u, a, ha, fun i j => ?_⟩` and prove the remaining obligations. Establish `hk` using `idOff_true_le (P := P) (hoff i j)`. Establish `hm` using `mul_mem_left' (mt W h₂⁻¹ - 1) (mt W h₁⁻¹ ⬝ (x ⬝ u.1.1)) e2 i j`. Establish `eq : mt W h₁⁻¹ ⬝ (x ⬝ u.1.1) - x - a = (mt W (h₁ * h₂)⁻¹ ⬝ (x ⬝ u.1.1) - x - a) - (mt W h₂⁻¹ - 1) ⬝ (mt W h₁⁻¹ ⬝ (x ⬝ u.1.1))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hinv, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[eq, Matrix.sub_apply]`. Conclude with `sub_mem hk hm`. Introduce `N hN hlow hA`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hc.shift N (fun i j => idAt_le_true (hN i j)) hlow ?_` and prove the remaining obligations. Establish `hZ : ∀ i j, (mt W h₁⁻¹ ⬝ (x ⬝ N)) i j ∈ idAt D P` using `mul_mem_right' _ _ (mul_mem_right' _ _ hN)`. Rewrite using `[hinv, Matrix.mul_assoc, mt_off_mul (inv_mem h2) _ hZ]`. Conclude with `hA`. Introduce `ξ hξ ξ' hP heq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hc.iso ξ hξ ξ' (fun i j => idAt_le_true (hP i j)) ?_` and prove the remaining obligations. Establish `hZ : ∀ i j, (dW.incX V₀ ξ) i j ∈ idAt D P`. Rewrite using `[HypDec.incX_apply]`. Conclude with `mul_mem_right' _ _ hP`. Rewrite using `[GlobalTheory.FinPlLoc.mt_mul, Matrix.mul_assoc, mt_off_mul h2 _ hZ]`.
-
-Conclude with `heq`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AscFin.cond_loc : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V₀ W W₀ : HSp D) (ρ σ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (p : Pieces V₀ W W₀ ρ σ) (x : Mx D W.rank ρ) (y : Mx D V₀.rank σ) (P : GlobalTheory.FinPl.Pl D → Prop) (h₁ h₂ : GA D W), h₁ ∈ grpAt W P → h₂ ∈ grpOff W P → Cond dW p x y ψ (fun _ => True) (h₁ * h₂) → Cond dW p x y ψ P h₁ := by
   intro D ψ _ V V₀ W W₀ ρ σ dV dW p x y P h₁ h₂ _ h2 hc

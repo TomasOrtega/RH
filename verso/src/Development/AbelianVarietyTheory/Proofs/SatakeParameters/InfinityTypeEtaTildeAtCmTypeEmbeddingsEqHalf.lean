@@ -11,9 +11,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.EtaInfType
 
 /- English proof (translation)
-Introduce `D cf C tp N t`. Establish `hI : (N.e1 D.naut.etaT).1.HasInfQ (embPsi D.host) (fun _ => (1 / 2 : ℚ))`. Rewrite using `[N.etaT]`. Conclude with `⟨fun _ => 1, fun _ => by norm_num, cf.isEta.inf⟩`. Establish `h1` using `(N.infG _ _ hI (D.eTau t)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e0 : Formalism.L2.embT D t = embPsi D.host (D.eTau t)` using `rfl`. Rewrite using `[e0, h1]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem main : ∀ (D : D7) (cf : CharFrame D) (C : NChoice D) (tp : TupTied D cf C), NCharTied D cf C tp → ∀ t, D.naut.infG D.naut.etaT (Formalism.L2.embT D t) = {(1 / 2 : ℂ)} := by
   intro D cf C tp N t

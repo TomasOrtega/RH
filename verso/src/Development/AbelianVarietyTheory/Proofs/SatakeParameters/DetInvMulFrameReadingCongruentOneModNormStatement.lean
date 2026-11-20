@@ -12,7 +12,7 @@ open scoped TensorProduct
 open GlobalTheory.TopStep
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FramesDet.det_frame_mul_congAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FDetInvMulFrameReadingCongruentOneModNorm.lean&line=182#L182)
 -/

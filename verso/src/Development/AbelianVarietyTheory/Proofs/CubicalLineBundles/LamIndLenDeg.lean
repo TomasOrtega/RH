@@ -12,9 +12,9 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsKronecke
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj
 
 /- English proof (translation)
-Take `⟨hdeg, hind, hlen⟩` from `GlobalTheory.T.cmLieStatements_iff_library`. Establish `hL : ReciprocityTheory.ChartRestriction.G.Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Use `⟨hind.1 GlobalTheory.LamF.Ind.lamInd, hlen.1 (GlobalTheory.LamF.lamLen GlobalTheory.thetaUnifAV_all hL), fun D Q hQ large₂ => ?_⟩` and prove the remaining obligations. Take `⟨_, χ, hχ, h⟩` from `GlobalTheory.T.exists_kronecker_cmLogPeriod_eq D Q hQ large₂`. Rewrite using `[← h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hdeg _ _ _).1 (GlobalTheory.LamF.lamDegSt_logOm GlobalTheory.thetaUnifAV_all hL _ Q.H χ hχ)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LamF.lam_ind_len_deg :
     Formalism.L2.Pj.abelian₂.LamIndSt ∧ Formalism.L2.Pj.abelian₂.LamLenSt ∧

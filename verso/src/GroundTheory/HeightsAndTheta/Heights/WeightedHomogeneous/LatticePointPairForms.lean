@@ -31,7 +31,7 @@ def pairForms {d i N : ℕ} (om : Module.Basis (Fin d) ℤ (𝓞 K)) (e : Fin d 
 omit [NumberField K] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `_ t`. Simplify using `only [latticePoint, pairForms]`. Rewrite using `[Finset.sum_eq_single (e.symm t).2 (fun j _ hj ↦ by simp [hj]) (by simp)]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem latticePoint_pairForms {R : Type*} [CommRing R] {d i N : ℕ} (om : Module.Basis (Fin d) ℤ (𝓞 K))
     (e : Fin d × Fin i ≃ Fin (N + 1)) (σ : K →+* R) (w : Fin i → R) :
@@ -42,9 +42,9 @@ theorem latticePoint_pairForms {R : Type*} [CommRing R] {d i N : ℕ} (om : Modu
   simp
 
 /- English proof (translation)
-Take `⟨h, -, -⟩` from `GroundTheory.Heights₂.Heights.OneBlockStandard.proof K e' r om`. Set `g : Fin (N + 1) ≃ Fin (oneBlockSize e' r + 1)` to `e.symm.trans (oneBlockIndex e' r).symm`. Establish `hφ : pairForms om e = oneBlockForms om ∘ g`. Use function extensionality and compare the values at `b`. Simplify using `[pairForms, oneBlockForms, g]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hφ]`. Conclude with `⟨h.independent.comp g g.injective, by rw [g.surjective.range_comp]; exact h.span_eq⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isDualBasis_pairForms {e' r N : ℕ} (om : Module.Basis (Fin (e' + 1)) ℤ (𝓞 K))
     (e : Fin (e' + 1) × Fin (r + 1) ≃ Fin (N + 1)) :
@@ -58,13 +58,11 @@ theorem isDualBasis_pairForms {e' r N : ℕ} (om : Module.Basis (Fin (e' + 1)) �
   exact ⟨h.independent.comp g g.injective, by rw [g.surjective.range_comp]; exact h.span_eq⟩
 
 /- English proof (translation)
-Introduce `hA K _ _ d om i N e H hH hc A hdeg hmet K' _ _ _ E φ hE ψ v hv`. Take `_ | r` from `i`. Conclude with `absurd (funext fun j ↦ j.elim0) hv`. Take `_ | e'` from `d`. Conclude with `absurd (om.repr.injective (Subsingleton.elim _ _) : (1 : 𝓞 K) = 0) one_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F` to `stdLatticeWith K (r + 1) H hH hc`. Establish `hv' : (fun j ↦ (v j : K')) ≠ 0` using `fun h ↦ hv (funext fun j ↦ by`. Simplify using `using congrFun h j)`. Establish `h` using `(hA K r N F (pairForms om e) (isDualBasis_pairForms om e)).2 A (funext hdeg) (fun σ w hw ↦ by rw [latticePoint_pairForms]; exact hmet σ w hw) K' (fun j ↦ (v j : K')) hv' ψ`. Rewrite `h` using `[latticePoint_pairForms]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hL K (r + 1) F rfl K' E φ hE v hv]`. Establish `hpt : (fun (_ : Unit) (t : Fin (N + 1)) ↦ (ψ.comp (algebraMap K K')) (om (e.symm t).1 : K) * ψ (v (e.symm t).2 : K')) = fun _ t ↦ ψ (algebraMap K K' (om (e.symm t).1 : K) * (v (e.symm t).2 : K'))`. Use function extensionality and compare the values at `_ t`. Simplify using the standard rewrite rules. Rewrite `h` using `[hpt]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem PointHeightDegree.forward (hL : LineDegreeBundle.Statement) :
     GroundTheory.Heights₂.Heights.PointHeightDegree.Statement → PointHeightDegree.Statement := by

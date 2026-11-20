@@ -16,7 +16,7 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ d h Z hZ hne`. Establish `h₁` using `GlobalTheory.topologicalKrullDim_add_one_le hZ isClosed_univ fun x _ => ⟨genericPoint X, Set.mem_univ _, fun hg => hne (Set.eq_univ_of_forall fun z => (genericPoint_specializes z).mem_closed hZ hg), genericPoint_specializes x⟩`. Rewrite `h₁` using `[(Homeomorph.Set.univ X).isHomeomorph.topologicalKrullDim_eq]`. Conclude with `ENat.WithBot.add_le_add_one_right_iff.1 (h₁.trans (h.trans_eq (Nat.cast_succ d)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_le_of_isClosed_ne_univ :
     ∀ (X : Scheme.{0}) [IsIntegral X] (d : ℕ), topologicalKrullDim X ≤ (d + 1 : ℕ) → ∀ Z : Set X, IsClosed Z → Z ≠ Set.univ → topologicalKrullDim Z ≤ (d : ℕ) := by

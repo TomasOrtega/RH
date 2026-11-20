@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open Polynomial Matrix UpperTheory.V UpperTheory.V.W
 
 /- English proof (translation)
-Introduce `K G _ _ _ n H ρ`. Establish `h` using `UpperTheory.V.AlgebraTools.Det.irrIffSpan (K := K) (ρ.comp H.subtype)`. Use `Iff.trans ?_ h` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h1 N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1 N fun g hg v hv => hN ⟨g, hg⟩ v hv`. Introduce `h1 N hN`. Conclude with `h1 N fun g v hv => hN g g.2 v hv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.matIrrIff :
     ∀ {K G : Type} [Field K] [IsAlgClosed K] [Group G] {n : ℕ} (H : Subgroup G) (ρ : G →* Matrix (Fin n) (Fin n) K),

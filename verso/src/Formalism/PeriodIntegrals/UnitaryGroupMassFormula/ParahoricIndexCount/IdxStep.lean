@@ -8,13 +8,13 @@ open Matrix Formalism.DoubleCosetMeasures.P.GLRed
 namespace PI.ParahoricIdxZ.W
 
 /- English proof (translation)
-Introduce `F _ O ϖ hϖ hϖ0 hloc hfin a t J' hKJ hJint J hJ`. Use `hfin` as an intermediate fact. Use `set H := J.subgroupOf (Formalism.DoubleCosetMeasures.GLint O (a + t)) with hH`. Establish `hker : (red O (a + t) ϖ hϖ).ker ≤ H`. Rewrite using `[ker_red O ϖ hϖ hϖ0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite `hg`, the goal using `[Subgroup.mem_subgroupOf]`. Conclude with `(hJ _).2 (cong_blockCond O hϖ hϖ0 hloc hKJ hg)`. Establish `hidx` using `Subgroup.index_map_eq H (red_surj O (a + t) ϖ hϖ hloc) hker`. Establish `hcm` using `Subgroup.card_mul_index (H.map (red O (a + t) ϖ hϖ))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Nat.card (H.map (red O (a + t) ϖ hϖ)) = Nat.card (J' ⧸ (Formalism.DoubleCosetMeasures.congSub O ϖ a).subgroupOf J') * (Nat.card (Formalism.DoubleCosetMeasures.kF O ϖ hϖ) ^ (a * t) * Nat.card (GL (Fin t) (Formalism.DoubleCosetMeasures.kF O ϖ hϖ)))`. Establish `e1 : Nat.card (H.map (red O (a + t) ϖ hϖ)) = Nat.card ((fun g : GL (Fin (a + t)) (Formalism.DoubleCosetMeasures.kF O ϖ hϖ) => (g : Matrix (Fin (a + t)) (Fin (a + t)) (Formalism.DoubleCosetMeasures.kF O ϖ hϖ))) '' ((H.map (red O (a + t) ϖ hϖ) : Subgroup _) : Set _))` using `(Nat.card_image_of_injective Units.val_injective _).symm`. Establish `e2 : Nat.card (Matrix (Fin a) (Fin t) (Formalism.DoubleCosetMeasures.kF O ϖ hϖ)) = Nat.card (Formalism.DoubleCosetMeasures.kF O ϖ hϖ) ^ (a * t)` using `by show Nat.card (Fin a → Fin t → Formalism.DoubleCosetMeasures.kF O ϖ hϖ) = _`. Rewrite using `[Nat.card_fun, Nat.card_fun, Nat.card_fin, Nat.card_fin, ← pow_mul, mul_comm]`. Rewrite using `[e1, image_eq O hϖ hϖ0 hloc J' hJint J hJ, Nat.card_range_of_injective (param_injective (t := t) O hϖ J' hJint), Nat.card_prod, Nat.card_prod, card_range_redJ O ϖ hϖ hϖ0 J' hJint, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hcm, ← hidx, hcard]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem idxStep : IdxStep := by
   intro F _ O ϖ hϖ hϖ0 hloc hfin a t J' hKJ hJint J hJ

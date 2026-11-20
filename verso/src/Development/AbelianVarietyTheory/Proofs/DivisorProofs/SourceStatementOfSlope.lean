@@ -37,7 +37,7 @@ noncomputable section
 namespace GlobalTheory.CovHt.Link
 
 /- English proof (translation)
-Simplify using `only [Adl.nrmInf, Adl.twist, Pi.add_apply]`. Rewrite using `[← mul_assoc, ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nrmInf_twist {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} (M : Adl C Y) (t : ℝ)
     (cf : HeightOneSpectrum (𝓞 F) → ℝ) (σ : F →+* ℂ) (τ : ℕ) (f : Y.Fn) (y : Pts Y σ) :
@@ -48,7 +48,7 @@ theorem nrmInf_twist {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var 
   ring
 
 /- English proof (translation)
-Establish `hn : ((M.n : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast M.n.ne_zero`. Simplify using `only [Adl.nrmFin, Adl.twist]`. Rewrite using `[mul_left_comm, ← Real.exp_add]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -64,7 +64,7 @@ theorem nrmFin_twist {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var 
   ring
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨ψ.sum_comp fun τ => ∑ i, |(u τ i : ℝ)|, (ψ.prodCongr (Equiv.refl _)).iSup_comp (g := fun x => |(u x.1 x.2 : ℝ)|), ψ.sum_comp fun τ => (⨆ i, (u τ i : ℝ)) - ⨅ i, (u τ i : ℝ), ?_⟩` and prove the remaining obligations. Rewrite using `[show ((vdm u : ℤ) : ℝ) = _ from map_vdm (Int.castRingHom ℝ) u, ← weylProd_eq]`. Conclude with `ψ.prod_comp fun τ => ∏ i, ∏ k, if i < k then ((u τ i : ℝ) - u τ k) / ((k : ℝ) - (i : ℝ)) else 1`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reindex {ι ι' : Type} [Fintype ι] [Fintype ι'] (ψ : ι ≃ ι') {n n' : ℕ} (h : n' = n) (u : ι' → Fin n' → ℤ) :
     (∑ t, ∑ i, |(u (ψ t) (Fin.cast h.symm i) : ℝ)| = ∑ τ, ∑ i, |(u τ i : ℝ)|) ∧
@@ -79,7 +79,7 @@ theorem reindex {ι ι' : Type} [Fintype ι] [Fintype ι'] (ψ : ι ≃ ι') {n 
   exact ψ.prod_comp fun τ => ∏ i, ∏ k, if i < k then ((u τ i : ℝ) - u τ k) / ((k : ℝ) - (i : ℝ)) else 1
 
 /- English proof (translation)
-Simplify using `[l1, Finset.mul_sum, abs_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem l1_nsmul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     (τ : ℕ) (u : AllWt.Weight Dw) : l1 (τ • u) = τ * l1 u := by
@@ -90,19 +90,19 @@ section Small
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} {Φ : s.Flag}
 
 /- English proof (translation)
-Establish `hs : g ∈ secZ s.Xo κ.c (exOf S.Dw la 0)` using `cuspW_le_secZ _ hg.1`. Establish `hl : 0 ≤ l1 la` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Take `⟨-, -, hL⟩` from `GlobalTheory.T.height_log_sum_and_prime_bound D A κ B`. Distinguish the cases in `h : ∃ p ∈ htPrimes κ.l B, ((p : ℕ) : 𝓞 κ.c.F) ∈ pl.asIdeal`. Take `⟨p, hp, hpl⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite `hw` using `[mixVals_of_mem hp hpl]`. Establish `: IsGalois ℚ D.host.E` using `(GlobalTheory.PlaceInt.host_galois_discr_moves D A.H).1`. Take `⟨v, hv, hle⟩` from `GlobalTheory.T.height_valuation_le_recursive (GlobalTheory.T.diagonal_height_bound_of_lattice_bound (GlobalTheory.T.lattice_bound_of_height hP)) _ A.H S.Dw κ.l s.Xo κ.c p pl hp.1 hpl w hw`. Establish `h1` using `(GlobalTheory.T.cusp_section_valuation_bound_prime hP hH D A N j S κ s Φ k Z hZ la g hs hg.2 h0 pl p hp.1 hpl (htEx D.host.E p * l1 la) (fun v _ e y => (hf v e y).trans ?_) v hv).trans (hle la g hs)`. Rewrite `h1` using `[mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `hx : w g using EReal.rec with`. Consider the case `bot => rw [hx, EReal.bot_add] at h1`. Conclude with `absurd h1 (EReal.bot_lt_coe _).not_ge`. Consider the case `top => exact le_top`. Consider the case `coe b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hx, ← EReal.coe_add, EReal.coe_le_coe_iff]`. Conclude with `EReal.coe_nonneg.2 (by linarith)`. Establish `h2 : 0 < NumberField.HeightOneSpectrum.adicAbv D.what₂.LL v (p : D.what₂.LL)` using `AbsoluteValue.pos _ (Nat.cast_ne_zero.2 hp.1.ne_zero)`. Rewrite using `[Real.rpow_def_of_pos h2, Real.exp_le_exp]`. Use `mul_le_mul_of_nonneg_right ((hL v).2 p hp) hl` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (mixVals s.Xo κ.c B).1 pl = (recVals s.Xo κ.c).1 pl` using `if_neg h`. Rewrite `hw` using `[e]`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp, hpl⟩ : ∃ p : ℕ, p.Prime ∧ (p : 𝓞 κ.c.F) ∈ pl.asIdeal := by`. Use `pl.isMaximal` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `Ideal.finiteQuotientOfFreeOfNeBot pl.asIdeal pl.ne_bot` as an intermediate fact. Use `letI := Ideal.Quotient.field pl.asIdeal`. Use `⟨ringChar (𝓞 κ.c.F ⧸ pl.asIdeal), CharP.char_prime_of_ne_zero (𝓞 κ.c.F ⧸ pl.asIdeal) (CharP.ringChar_ne_zero_of_finite _), Ideal.Quotient.eq_zero_iff_mem.1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1` using `GlobalTheory.T.cusp_section_valuation_bound_prime hP hH D A N j S κ s Φ k Z hZ la g hs hg.2 h0 pl p hp hpl 0 (fun v _ e y => (hf v e y).trans (by`. Rewrite using `[Real.rpow_zero]`. Conclude with `Real.exp_le_one_iff.2 (neg_nonpos.2 (mul_nonneg (hL v).1 hl)))) w hw`. Simplify using `using h1`.
+A detailed English derivation is pending.
 -/
 theorem nonneg_mixVals (hP : Hypotheses2) (hH : HypothesesH) {k : s.Comp} {Z : Comp s.Xo κ.c} (hZ : Over Φ k Z)
     {la : AllWt.Weight S.Dw} {g : Rul s.Xo κ.c} (hg : g ∈ cuspOn (unf s) Z (wtOf S.Dw la 0))
@@ -148,13 +148,13 @@ theorem nonneg_mixVals (hP : Hypotheses2) (hH : HypothesesH) {k : s.Comp} {Z : C
     simpa using h1
 
 /- English proof (translation)
-Rewrite using `[nsmul_wtOf, smul_zero]`. Use `(Set.encard_le_encard fun f hf => ?_).trans (Set.encard_image_le (fun g : cuspOn (unf s) Z (wtOf S.Dw (τ • u) 0) => (Φ.C k).val g) _)` and prove the remaining obligations. Establish `hs : f ∈ M.secs τ` using `hf.1`. Take `⟨g, hg, rfl⟩` from `GlobalTheory.T.cusp_section_extends_component D A N j S κ s Φ k Z hZ (τ • u) (fun a _ _ h => nsmul_le_nsmul_right (hu a h) τ) f (h1 f hs)`. Use `⟨⟨g, hg⟩, ⟨nonneg_mixVals hP hH hZ hg (h1 _ hs).1 fun v e y => (h3 _ hs v e y).trans ?_, fun σ hσ z hz => ?_⟩, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4` using `hf.2.2 v e y`. Rewrite `h4` using `[nrmFin_twist, Real.exp_neg, inv_mul_le_iff₀ (Real.exp_pos _), mul_one]`. Use `(mul_le_mul_of_nonneg_right h4 (Real.exp_pos _).le).trans_eq ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_add, l1_nsmul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨σ', y, hy, e⟩` from `GlobalTheory.T.hom_norm_sq_eq_infinite_sq D A N j S κ s Φ x k Z hZ (τ • u) g hg σ hσ z hz`. Establish `h4` using `hf.2.1 σ' y`. Rewrite `h4` using `[nrmInf_twist, Real.exp_neg, inv_mul_le_iff₀ (Real.exp_pos _), mul_one]`. Establish `h5 : 0 ≤ M.nrmInf σ' τ ((Φ.C k).val g) y` using `mul_nonneg (Real.exp_pos _).le (Real.rpow_nonneg (CxSt.pn_nonneg _ _ _ _ _ _ _) _)`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(pow_le_pow_iff_left₀ (homN_nonneg _ _ _ _ _) (Real.exp_pos _).le two_ne_zero).1 (e.trans_le ((h2 _ hs σ' y hy).trans (pow_le_pow_left₀ (mul_nonneg (Real.exp_pos _).le h5) ?_ 2)))` and prove the remaining obligations. Use `(mul_le_mul_of_nonneg_left h4 (Real.exp_pos _).le).trans_eq ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem encard_small_le (hP : Hypotheses2) (hH : HypothesesH) {k : s.Comp} {Z : Comp s.Xo κ.c} (hZ : Over Φ k Z) (x : ToroidalCompactificationData s)
     {u : AllWt.Weight S.Dw} (hu : ∀ τ, Antitone (u τ)) (M : Adl (cxSt D.what₂.LL) (Φ.C k).Y) {B C r : ℝ} (t : ℝ)
@@ -191,16 +191,16 @@ theorem encard_small_le (hP : Hypotheses2) (hH : HypothesesH) {k : s.Comp} {Z : 
     ring
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.ShFam.CmDim.cm_dim D A).2.2 N j S κ s Φ k, dimFlag, Formalism.DegreeFormula.dimFl, Formalism.DegreeFormula.dimFl, S.rank_eq, Fintype.card_congr L.ψ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dim_eq_dimFlag (L : CmList A) (k : s.Comp) : (Φ.C k).Y.dim = dimFlag S.Dw := by
   rw [(GlobalTheory.ShFam.CmDim.cm_dim D A).2.2 N j S κ s Φ k, dimFlag, Formalism.DegreeFormula.dimFl, Formalism.DegreeFormula.dimFl, S.rank_eq,
     Fintype.card_congr L.ψ]
 
 /- English proof (translation)
-Use `le_trans ?_ (GlobalTheory.T.nef_section_growth_le_intersection hP.q7 _ _ _ hn)` and prove the remaining obligations. Rewrite using `[growthOn, ← dim_eq_dimFlag (Φ := Φ) L k]`. Use `limsup_le_limsup (Eventually.of_forall fun τ => ENNReal.div_le_div_right (mul_le_mul_right (ENat.toENNReal_le.2 ?_) _) _)` and prove the remaining obligations. Establish `e : τ • (Φ.C k).Lw u = (Φ.C k).Lw (τ • u)`. Proceed by induction on `τ with`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp [FlagCpt.Lw_zero]`. Consider the case `succ n ih => rw [succ_nsmul, succ_nsmul, FlagCpt.Lw_add, ih]`. Use `beta_reduce`. Rewrite using `[nsmul_wtOf, smul_zero, e]`. Conclude with `GlobalTheory.T.cusp_form_rank_le_sections D A N j S κ s Φ k Z hZ (τ • u) fun a _ _ h => nsmul_le_nsmul_right (hu a h) τ`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem growthOn_le (hP : Hypotheses2) (L : CmList A) {k : s.Comp} {Z : Comp s.Xo κ.c} (hZ : Over Φ k Z)
     {u : AllWt.Weight S.Dw} (hu : ∀ τ, Antitone (u τ)) (hn : (Φ.C k).Y.nef ((Φ.C k).Lw u)) :
@@ -228,7 +228,7 @@ def wtQ (u : AllWt.Weight O.S.Dw) : D.what₂.Tau → Fin O.Y.N → ℚ := fun t
 def wtY (u : AllWt.Weight O.S.Dw) : D.what₂.Tau → Fin O.Y.N → ℝ := wtR O.L u
 
 /- English proof (translation)
-The claim follows from `funext₂ fun _ _ => Rat.cast_intCast _`.
+A detailed English derivation is pending.
 -/
 theorem realWt_wtQ (u : AllWt.Weight O.S.Dw) : GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.realWt O.Y (wtQ O u) = wtY O u :=
   funext₂ fun _ _ => Rat.cast_intCast _
@@ -236,11 +236,9 @@ theorem realWt_wtQ (u : AllWt.Weight O.S.Dw) : GlobalTheory.IndefiniteRowSideFul
 variable {O}
 
 /- English proof (translation)
-Establish `hp` using `O.S.p_eq`. Establish `hr` using `O.S.rank_eq`. Establish `hi` using `O.indef`. Establish `h1 : ∀ τ (a b : Fin O.N), a < b → wtR O.L u τ b < wtR O.L u τ a` using `fun τ a b hab => Int.cast_lt.2 (h.2.1 _ (show Fin.cast O.S.rank_eq.symm a < Fin.cast O.S.rank_eq.symm b from hab))`. Establish `h2 : ∀ τ (a b : Fin O.N), O.j ≤ (a : ℕ) → a ≠ b → g ≤ |wtR O.L u τ a - wtR O.L u τ b|` using `fun τ a b ha hab => h.2.2 _ _ _ (hp.trans_le ha) fun e => hab (Fin.cast_injective _ e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨h.1, h1, fun τ => ?_, fun τ a b ha => h2 τ a b ?_⟩` and prove the remaining obligations. Establish `a1` using `h2 τ ⟨O.j, hi.2⟩ ⟨O.j - 1, by omega⟩ le_rfl (fun e => by have := congrArg Fin.val e; simp at this; omega)`. Establish `a2` using `h1 τ ⟨O.j - 1, by omega⟩ ⟨O.j, hi.2⟩ (by simp [Fin.lt_def]; omega)`. Rewrite `a1` using `[abs_of_neg (sub_neg.2 a2), neg_sub]`. Conclude with `a1`.
-
-Conclude with `(if_neg (show ¬ O.j ≤ O.N - O.j by omega)).mp ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weightHyp (hj : O.N - O.j < O.j) {u : AllWt.Weight O.S.Dw} {g : ℝ} (h : WtGap u g) :
     WeightThresholdDefs.WeightHyp O.Y (wtY O u) g := by
@@ -259,7 +257,7 @@ theorem weightHyp (hj : O.N - O.j < O.j) {u : AllWt.Weight O.S.Dw} {g : ℝ} (h 
   · exact (if_neg (show ¬ O.j ≤ O.N - O.j by omega)).mp ha
 
 /- English proof (translation)
-Establish `e` using `(reindex O.L.ψ O.S.rank_eq u).2.1`. Rewrite using `[bndB, ← e, ← Fintype.card_congr O.L.ψ, D.what₂.card_Tau]`. Rewrite using `[show ((O.S.Dw.p + O.S.Dw.q : ℕ) : ℝ) = (O.N : ℝ) from congrArg Nat.cast O.S.rank_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bigB0_eq (u : AllWt.Weight O.S.Dw) (g : ℝ) : WeightThresholdDefs.bigB0 O.Y (wtY O u) g = bndB u g := by
   have e := (reindex O.L.ψ O.S.rank_eq u).2.1
@@ -268,9 +266,9 @@ theorem bigB0_eq (u : AllWt.Weight O.S.Dw) (g : ℝ) : WeightThresholdDefs.bigB0
   rfl
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) ≤ Fintype.card (Psi O.A.H)`. Use `(GlobalTheory.ShFam.CmDim.cm_dim D O.A).2.1` as an intermediate fact. Establish `: Nonempty (Psi O.A.H)` using `⟨⟨D.host.φ₀, by rw [O.A.rt_eq, O.A.cmHost_rootComplex_eq_pm_sqrt]⟩⟩`. Conclude with `Fintype.card_pos` after adjusting the coercions. Establish `h2 : (1 : ℝ) ≤ ((O.S.Dw.p + O.S.Dw.q : ℕ) : ℝ) ^ 2` using `one_le_pow₀ (by exact_mod_cast (one_le_two.trans O.S.two_le).trans O.S.rank_eq.ge)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (1 : ℝ) ≤ 1 + (⨆ k : Psi O.A.H × Fin (O.S.Dw.p + O.S.Dw.q), |(u k.1 k.2 : ℝ)|) / g` using `le_add_of_nonneg_right (div_nonneg (Real.iSup_nonneg fun _ => abs_nonneg _) hg.le)`. Rewrite using `[bndB, mul_assoc, mul_assoc]`. Conclude with `le_mul_of_one_le_right (by norm_num) (one_le_mul_of_one_le_of_one_le h1 (one_le_mul_of_one_le_of_one_le h2 h3))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem four_le_bndB (u : AllWt.Weight O.S.Dw) {g : ℝ} (hg : 0 < g) : 4 ≤ bndB u g := by
   have h1 : (1 : ℝ) ≤ Fintype.card (Psi O.A.H) := by
@@ -285,15 +283,15 @@ theorem four_le_bndB (u : AllWt.Weight O.S.Dw) {g : ℝ} (hg : 0 < g) : 4 ≤ bn
   exact le_mul_of_one_le_right (by norm_num) (one_le_mul_of_one_le_of_one_le h1 (one_le_mul_of_one_le_of_one_le h2 h3))
 
 /- English proof (translation)
-The claim follows from `Real.one_le_rpow (by exact_mod_cast Int.one_le_abs (discr_ne_zero D.host.E)) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem one_le_rd (D : D7) : 1 ≤ D.host.rdE :=
   Real.one_le_rpow (by exact_mod_cast Int.one_le_abs (discr_ne_zero D.host.E)) (by positivity)
 
 /- English proof (translation)
-Take `⟨e1, -, e3, -⟩` from `reindex O.L.ψ O.S.rank_eq u`. Establish `hp` using `O.S.p_eq`. Establish `hr` using `O.S.rank_eq`. Establish `hq : WeightThresholdDefs.jS O.Y = O.S.Dw.q`. Express the relevant statement in the definitionally equal form `min O.j (O.N - O.j) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.errTerm, errX, l1, ← e1, ← e3, hq, ell, Real.log_mul (by linarith [four_le_bndB u hg]) (by linarith [one_le_rd D]), add_assoc (Real.log _)]`. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem errTerm_eq (hj : O.N - O.j < O.j) (u : AllWt.Weight O.S.Dw) {g : ℝ} (hg : 0 < g) :
     GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.errTerm O.Y (bndB u g) (wtY O u) = errX (ell D) u g := by
@@ -310,7 +308,7 @@ theorem errTerm_eq (hj : O.N - O.j < O.j) (u : AllWt.Weight O.S.Dw) {g : ℝ} (h
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FlagPoly.flagDegFormula, ← (reindex O.L.ψ O.S.rank_eq u).2.2.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem flagDeg_eq (u : AllWt.Weight O.S.Dw) : Formalism.DegreeFormula.flagDeg D.what₂.Tau O.Y.N (wtY O u) =
     (Nat.factorial (Formalism.DegreeFormula.dimFl D.what₂.Tau O.N) : ℝ) *
@@ -319,7 +317,7 @@ theorem flagDeg_eq (u : AllWt.Weight O.S.Dw) : Formalism.DegreeFormula.flagDeg D
   rfl
 
 /- English proof (translation)
-Use `⟨one_pos, strictAnti_stdWt, fun τ a b _ hab => ?_⟩` and prove the remaining obligations. Establish `: (a : ℕ) ≠ b` using `Fin.val_ne_of_ne hab`. Establish `h : (1 : ℤ) ≤ |stdWt (Psi O.A.H) (O.S.Dw.p + O.S.Dw.q) τ a - stdWt (Psi O.A.H) (O.S.Dw.p + O.S.Dw.q) τ b|` using `Int.one_le_abs (by simp only [stdWt]; omega)`. Conclude with `h` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wtGap_std : WtGap (Dw := O.S.Dw) (stdWt _ _) 1 := by
   refine ⟨one_pos, strictAnti_stdWt, fun τ a b _ hab => ?_⟩
@@ -333,23 +331,21 @@ end Weights
 open Classical in
 
 /- English proof (translation)
-Establish `hpos : ∀ (u : AllWt.Weight O.S.Dw) g, WtGap u g → ∀ᶠ r : ℚ in 𝓝[>] 0, ∀ k : O.s.Comp, (O.Mb (bndB u g) (wtR O.L u) r k).SemiPos ∧ (O.Mb (bndB u g) (wtR O.L u) r k).NefFib` using `fun u g hu => by`. Rewrite using `[← bigB0_eq]`. Conclude with `GlobalTheory.T.mbar_semipositive_nef_small_r hX hP hH hR D O hC hf (wtR O.L u) g (fun _ _ => ⟨_, (Rat.cast_intCast _).symm⟩) (weightHyp hj hu)`. Establish `hdeg` using `fun (u : AllWt.Weight O.S.Dw) g (hu : WtGap u g) => hw.2.2 (wtQ O u) g (by rw [realWt_wtQ]; exact weightHyp hj hu) k`. Simplify using `only [realWt_wtQ, bigB0_eq, flagDeg_eq] at hdeg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨x, P, hc⟩` from `hC`. Establish `hM : ∀ B u r, O.Y.Mbar B u r k = mbarOf P B u r k` using `fun B u r => congrFun (congrFun (congrFun (congrFun hc.Mb B) u) r) k`. Establish `hgeo : ∀ B u r, O.Y.geoC (O.Y.Mbar B u r) k = (mbarOf P B u r k).deg` using `fun B u r => congrArg Adl.deg (hM B u r)`. Establish `har : ∀ B u r, O.Y.arSelfC (O.Y.Mbar B u r) k = (mbarOf P B u r k).arTop` using `fun B u r => congrArg Adl.arTop (hM B u r)`. Use `replace hdeg := fun u g hu => (hdeg u g hu).congr fun r => hgeo _ _ r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hpos` using `[hc.Mb]`. Establish `hv0 : (0 : ℝ) < (vdm (stdWt (Psi O.A.H) (O.S.Dw.p + O.S.Dw.q)) : ℤ)` using `Int.cast_pos.2 (vdm_pos strictAnti_stdWt)`. Establish `hv : (0 : ℝ) < (vdm u : ℤ)` using `Int.cast_pos.2 (vdm_pos hu.2.1)`. Establish `hfac : (0 : ℝ) < Nat.factorial (Formalism.DegreeFormula.dimFl D.what₂.Tau O.N)` using `Nat.cast_pos.2 (Nat.factorial_pos _)`. Establish `htop : topDeg (unf O.s) Z u ≤ w k * ((Nat.factorial (Formalism.DegreeFormula.dimFl D.what₂.Tau O.N) : ℝ) * (((vdm u : ℤ) : ℝ) / (vdm (stdWt (Psi O.A.H) (O.S.Dw.p + O.S.Dw.q)) : ℤ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a1, a2⟩` from `GlobalTheory.T.mbar_degree_tendsto_intersection D O.A O.N O.j O.S O.κ O.s O.Φ O.L x P (bndB (Dw := O.S.Dw) (stdWt _ _) 1) (stdWt _ _) k`. Establish `a3` using `tendsto_nhds_unique a1 (hdeg _ _ wtGap_std)`. Establish `a4` using `growthOn_le hP O.L hZ (fun τ => (strictAnti_stdWt τ).antitone) (a2 ((hpos _ _ wtGap_std).mono fun r h => GlobalTheory.T.nef_of_semipositive_fibrewise hP hH _ _ _ _ (h k).1 (h k).2))`. Rewrite `a4` using `[a3, div_self hv0.ne', mul_one]`. Establish `a5` using `ENNReal.toReal_le_of_le_ofReal (mul_pos (hw.1 k) hfac).le a4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[topDeg, vZero, div_mul_eq_mul_div, mul_div_assoc, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right a5 (div_pos hv hv0).le`. Take `⟨C, hinf⟩` from `GlobalTheory.T.infinite_norm_sq_exponential_bound hP hH hR D O x P hc hf u hu.2.1 (bndB u g) (by linarith [four_le_bndB u hu.1]) k`. Take `⟨cX, hcX, hfin⟩` from `GlobalTheory.T.finite_norm_bounded_mbar hP hH D O.A O.N O.j O.S O.κ O.s O.Φ O.L x P (bndB u g) u k`. Take `⟨hL1, hL2, -⟩` from `GlobalTheory.T.height_log_sum_and_prime_bound D O.A O.κ (bndB u g)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : (0 : ℝ) < Module.finrank ℚ D.what₂.LL` using `Nat.cast_pos.2 Module.finrank_pos`. Use `le_volSlope_of_tendsto (C := C + (∑ᶠ v, cX v) / Module.finrank ℚ D.what₂.LL) (Dm := WeightThresholdDefs.dimY O.Y) (ar := fun r => (mbarOf P (bndB u g) (wtR O.L u) r k).arTop) htop (mul_pos (hw.1 k) (mul_pos hfac (div_pos hv hv0))) (hdeg u g hu) (hs.congr fun r => congrArg₂ (fun a …` and prove the remaining obligations. Use `filter_upwards [hpos u g hu, hinf, self_mem_nhdsWithin] with r h1 h2 hr t`. Establish `hr : 0 < r` using `hr`. Establish `s1 : (Function.support fun v => (r : ℝ) * cX v).Finite` using `hcX.subset fun v h => right_ne_zero_of_mul h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `s2 : (Function.support fun v => 2 * (htLog O.κ (bndB u g) v * l1 u)).Finite` using `hL1.subset fun v h => left_ne_zero_of_mul (right_ne_zero_of_mul h)`. Establish `h3` using `GlobalTheory.T.arithmetic_volume_le_count hP.p2 hP.p4 hH.deg _ _ _ _ (h1 k).1 (h1 k).2 (t - C * r) (fun v => -(r * cX v + 2 * (htLog O.κ (bndB u g) v * l1 u))) ((s1.union s2).subset fun v h => Function.support_add _ _ (neg_ne_zero.1 h)) 8 (by norm_num)`. Rewrite `h3` using `[finsum_neg_distrib, finsum_add_distrib s1 s2, ← mul_finsum, ← mul_finsum, ← finsum_mul, hL2]`. Establish `e1 : Module.finrank ℚ D.what₂.LL = Module.finrank ℚ O.κ.c.F` using `(O.κ.e.toRingHom.toRatAlgHom.toLinearMap.finrank_le_finrank_of_injective O.κ.e.injective).antisymm (O.κ.e.symm.toRingHom.toRatAlgHom.toLinearMap.finrank_le_finrank_of_injective O.κ.e.symm.injective)`. Use `le_of_eq_of_le (congrArg ENNReal.ofReal ?_) (h3.trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[O.dim_eq k]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[compVol, ← e1, ← dim_eq_dimFlag (Φ := O.Φ) O.L k]`.
-
-Conclude with `countVol_mono_pos _ _ (by norm_num) fun τ hτ => encard_small_le hP hH hZ x (fun a => (hu.2.1 a).antitone) _ t (GlobalTheory.T.mbar_sections_cuspidal D O.A O.N O.j O.S O.κ O.s O.Φ O.L x P _ u r hr k τ hτ) (h2 τ hτ) (hfin r hr τ hτ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slope_le (hX : HypothesesXH) (hP : Hypotheses2) (hH : HypothesesH) (hR : RegSt) {D : D7} {O : Setup D} (hC : O.Core)
     (hf : 2 < D.R.f * (O.N - 1)) (hj : O.N - O.j < O.j) {w : O.Y.Comp → ℝ} (hw : GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.IsCompVol O.Y w)
@@ -412,7 +408,7 @@ theorem slope_le (hX : HypothesesXH) (hP : Hypotheses2) (hH : HypothesesH) (hR :
       (GlobalTheory.T.mbar_sections_cuspidal D O.A O.N O.j O.S O.κ O.s O.Φ O.L x P _ u r hr k τ hτ) (h2 τ hτ) (hfin r hr τ hτ)
 
 /- English proof (translation)
-Introduce `u g hu` and use `by obtain ⟨w, hw, -⟩ := hV obtain ⟨sl, h1, -, h2⟩ := hS (wtQ O u) g (by rw [realWt_wtQ]; exact weightHyp hj hu) rw [realWt_wtQ, bigB0_eq (O := O) u g] at h1 h2 rw [errTerm_eq hj u hu.1] at h2 obtain ⟨q, hq⟩ := GlobalTheory.T.flag_components_biject_moduli_components D O.A O.N O.j …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem meanAll (hX : HypothesesXH) (hP : Hypotheses2) (hH : HypothesesH) (hR : RegSt) {D : D7} {O : Setup D} (hC : O.Core)
     (hf : 2 < D.R.f * (O.N - 1)) (hj : O.N - O.j < O.j) (hb : FewBad O.Y) {C : ℝ}
@@ -450,9 +446,9 @@ theorem meanAll (hX : HypothesesXH) (hP : Hypotheses2) (hH : HypothesesH) (hR : 
     linarith
 
 /- English proof (translation)
-Introduce and unpack `hX hP hH hR ⟨C, hC, h⟩`. Use `⟨C + 88, by linarith, fun D A N j S κ s hj hN hf hb => ?_⟩` and prove the remaining obligations. Take `⟨L⟩` from `(GlobalTheory.ShFam.CmDim.cm_dim D A).1`. Take `⟨Φ⟩` from `GlobalTheory.ShFam.KitEx.flag_nonempty s`. Take `⟨ng, k, adm, met, -, hc⟩` from `(GlobalTheory.Mean4.exists_setup_core D).2 A N j ⟨by omega, hN⟩ S κ s L Φ fun p _ _ => (GlobalTheory.WittFracComplex.nonempty_ringHom_complex p).some`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `meanAll hX hP hH hR hc hf hj hb (h D _ hc hf hb).1 (h D _ hc hf hb).2`.
+A detailed English derivation is pending.
 -/
 theorem srcSt_of_slopeSt : HypothesesXH → Hypotheses2 → HypothesesH → RegSt → SlopeSt → SrcSt := by
   rintro hX hP hH hR ⟨C, hC, h⟩

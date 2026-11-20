@@ -6,14 +6,14 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 namespace LateralTheory.E.DescentPf
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (h : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res (h ≫ g) x = Sec.res h (Sec.res g x) := by
   simp [Sec.res]
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Use `congr 1`. Apply `ULift.ext` to reduce the goal to its premises. Rewrite using `[ULift.down_natCast, ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_smul {q : ℕ} [NeZero q] (i : ℤ) {U : Scheme.{0}} (c : ZMod q) (x : Sec (tw q i) U) :
     c.val • x = (ULift.up c : ULift.{1} (ZMod q)) • x := by
@@ -23,33 +23,31 @@ theorem val_smul {q : ℕ} [NeZero q] (i : ℤ) {U : Scheme.{0}} (c : ZMod q) (x
   rw [ULift.down_natCast, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Introduce `q _ i m hm B _ ζ y hloc`. Take `⟨S, hS, hP⟩` from `hloc`. Establish `hform : ∀ {V W : Scheme.{0}} (g : V ⟶ Spec (CommRingCat.of B)) (h : W ⟶ V) (c : ZMod q), Sec.res g y = c.val • twGen i ((gam ζ).map g.appTop.hom) → Sec.res (h ≫ g) y = c.val • twGen i ((gam ζ).map (h ≫ g).appTop.hom)`. Introduce `V W g h c hc`. Establish `hs : ∀ x : Sec (tw q i) V, Sec.res h (c.val • x) = c.val • Sec.res h x` using `fun x => map_nsmul _ _ x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[res_comp, hc, hs, LateralTheory.E.LCBijPf.twGen_res]`. Both sides reduce to the same expression. Establish `huniq : ∀ {V1 V2 : Scheme.{0}} (g1 : V1 ⟶ Spec (CommRingCat.of B)) (g2 : V2 ⟶ Spec (CommRingCat.of B)) (c1 c2 : ZMod q), Sec.res g1 y = c1.val • twGen i ((gam ζ).map g1.appTop.hom) → Sec.res g2 y = c2.val • twGen i ((gam ζ).map g2.appTop.hom) → ∀ v1 v2, g1 v1 = g2 v2 → c1 = c2`. Introduce `V1 V2 g1 g2 c1 c2 h1 h2 v1 v2 hv`. Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback v1 v2 hv`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `A` to `(pullback g1 g2).affineOpenCover`. Take `⟨w, -⟩` from `A.covers z`. Set `a` to `A.f (A.idx z)`. Establish `e1` using `hform g1 (a ≫ pullback.fst g1 g2) c1 h1`. Establish `e2` using `hform g2 (a ≫ pullback.snd g1 g2) c2 h2`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : (a ≫ pullback.snd g1 g2) ≫ g2 = (a ≫ pullback.fst g1 g2) ≫ g1`. Simplify using `[pullback.condition]`. Rewrite `e2` using `[hcomp]`. Establish `hne : Nontrivial (A.X (A.idx z))` using `PrimeSpectrum.nontrivial w`. Take `⟨φ, hφ⟩` from `Spec.map_surjective ((a ≫ pullback.fst g1 g2) ≫ g1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key` using `LateralTheory.E.LCBijPf.twGenNZ_of hAC q i (A.X (A.idx z)) (ζ.map φ.hom) (c1 - c2)`. Use `sub_eq_zero.1 (key ?_)` and prove the remaining obligations. Establish `e` using `e1.symm.trans e2`. Rewrite `e` using `[← hφ]`. Rewrite using `[LateralTheory.E.LCBijPf.gam_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[val_smul, val_smul]`. Establish `hup : (ULift.up (c1 - c2) : ULift.{1} (ZMod q)) = ULift.up c1 - ULift.up c2` using `rfl`. Rewrite using `[val_smul, hup, sub_smul, sub_eq_zero]`. Conclude with `e`. Take `⟨𝒰, h𝒰⟩` from `(Scheme.mem_grothendieckTopology_iff (P := @Etale)).1 hS`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpiece : ∀ x : PrimeSpectrum B, ∃ (R : CommRingCat.{0}) (g : Spec R ⟶ Spec (CommRingCat.of B)), Etale g ∧ S.arrows g ∧ x ∈ Set.range g`. Introduce `x`. Take `⟨j, v, hv⟩` from `((Scheme.presieve₀_mem_precoverage_iff _).1 𝒰.mem₀).1 x`. Set `A` to `(𝒰.X j).affineOpenCover`. Take `⟨w, hw⟩` from `A.covers v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Etale (𝒰.f j)` using `((Scheme.presieve₀_mem_precoverage_iff _).1 𝒰.mem₀).2 j`. Use `⟨A.X (A.idx v), A.f (A.idx v) ≫ 𝒰.f j, inferInstance, S.downward_closed (h𝒰 _ _ (Presieve.ofArrows.mk j)) _, ⟨w, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, hw, hv]`. Use `choose R g hg hSg hx using hpiece`. Establish `hc : ∀ x, ∃ c : ZMod q, Sec.res (g x) y = c.val • twGen i ((gam ζ).map (g x).appTop.hom)` using `fun x => hP _ _ (hSg x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose c hc using hc`. Establish `key : ∀ (x : PrimeSpectrum B) {V : Scheme.{0}} (g' : V ⟶ Spec (CommRingCat.of B)) (c' : ZMod q), Sec.res g' y = c'.val • twGen i ((gam ζ).map g'.appTop.hom) → ∀ v, g' v = x → c x = c'`. Introduce `x V g' c' h' v hv`. Take `⟨u, hu⟩` from `hx x`. Conclude with `huniq (g x) g' _ _ (hc x) h' u v (hu.trans hv.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hlc : IsLocallyConstant c`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `hg x` as an intermediate fact. Use `⟨Set.range (g x), (g x).isOpenMap.isOpen_range, hx x, fun x' hx' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu⟩` from `hx'`. Conclude with `key x' (g x) (c x) (hc x) u hu`. Set `ψ : LocallyConstant (PrimeSpectrum B) (ZMod q)` to `⟨c, hlc⟩`. Use `⟨ψ, Sieve.ofArrows (fun x => Spec (R x)) g, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Scheme.Cover.mem_grothendieckTopology (Scheme.Cover.mkOfCovers (P := @Etale) (PrimeSpectrum B) (fun x => Spec (R x)) g (fun x => by obtain ⟨u, hu⟩ := hx x; exact ⟨x, u, hu⟩) hg)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Introduce `V k hk`. Take `⟨W, h, k', hk', rfl⟩` from `hk`. Take `⟨x⟩` from `hk'`. Rewrite using `[res_comp, res_comp]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hc x]`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (g x)`. Establish `hlc' : lcMap φ.hom ψ = LocallyConstant.const _ (c x)`. Use extensionality with `u`. Conclude with `key _ (g x) (c x) (hc x) u (by rw [← hφ]; rfl)`.
-
-Establish `e` using `hm.1 B (R x) φ.hom ζ ψ`. Rewrite `e` using `[hlc', hm.2, LateralTheory.E.LCBijPf.gam_map]`. Rewrite using `[← hφ]`. Conclude with `e.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Descent_of (hAC : LateralTheory.E.LCBijPf.TwGenNZAC) : LateralTheory.E.LCSurjPf.Descent := by
   intro q _ i m hm B _ ζ y hloc

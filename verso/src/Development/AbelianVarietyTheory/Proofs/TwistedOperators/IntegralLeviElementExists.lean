@@ -25,25 +25,25 @@ section Generic
 variable {A : Type} [CommRing A] (s : A →+* A) {n r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add' {m p : Type} (X Y : Matrix m p A) : cT s (X + Y) = cT s X + cT s Y := by
   ext i j; simp [cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_sub' {m p : Type} (X Y : Matrix m p A) : cT s (X - Y) = cT s X - cT s Y := by
   ext i j; simp [cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, hs]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT' (hs : ∀ x, s (s x) = x) {m p : Type} (X : Matrix m p A) : cT s (cT s X) = X := by
   ext i j; simp [cT, hs]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply, cT, hform, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_mul_mulVec_apply {k : Type} [Fintype k] (X : Matrix (Fin n) k A) (J : Matrix (Fin n) (Fin n) A)
     (y : Fin n → A) (i : k) : ((cT s X * J) *ᵥ y) i = hform s J (fun l => X l i) y := by
@@ -58,9 +58,9 @@ def frameLevi (J : Matrix (Fin n) (Fin n) A) (E0 F0 : Matrix (Fin n) (Fin r) A) 
 variable {s} {J : Matrix (Fin n) (Fin n) A} {E0 F0 : Matrix (Fin n) (Fin r) A}
 
 /- English proof (translation)
-Establish `e1 : ∀ {k : Type} (Z : Matrix (Fin r) k A), cT s F0 * (J * (E0 * Z)) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hFE, Matrix.one_mul]`. Establish `e2 : ∀ {k : Type} (Z : Matrix (Fin r) k A), cT s F0 * (J * (F0 * Z)) = 0` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hFF, Matrix.zero_mul]`. Establish `e3 : ∀ {k : Type} (Z : Matrix (Fin r) k A), cT s E0 * (J * (E0 * Z)) = 0` using `fun Z => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hEE, Matrix.zero_mul]`. Establish `e4 : ∀ {k : Type} (Z : Matrix (Fin r) k A), cT s E0 * (J * (F0 * Z)) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hEF, Matrix.one_mul]`. Simplify using `only [frameLevi, Matrix.add_mul, Matrix.mul_add, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, e1, e2, e3, e4, Matrix.mul_zero, add_zero, zero_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem frameLevi_mul (hEE : cT s E0 * J * E0 = 0) (hFF : cT s F0 * J * F0 = 0) (hFE : cT s F0 * J * E0 = 1)
     (hEF : cT s E0 * J * F0 = 1) (a b a' b' : Matrix (Fin r) (Fin r) A) :
@@ -78,13 +78,13 @@ theorem frameLevi_mul (hEE : cT s E0 * J * E0 = 0) (hFF : cT s F0 * J * F0 = 0) 
   abel
 
 /- English proof (translation)
-Simplify using `[frameLevi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frameLevi_zero : frameLevi s J E0 F0 0 0 = 1 := by
   simp [frameLevi]
 
 /- English proof (translation)
-Establish `e1 : cT s F0 * (J * E0) = 1` using `by rw [← Matrix.mul_assoc, hFE]`. Establish `e3 : cT s E0 * (J * E0) = 0` using `by rw [← Matrix.mul_assoc, hEE]`. Simplify using `only [frameLevi, Matrix.add_mul, Matrix.mul_add, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, e1, e3, Matrix.mul_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem frameLevi_mul_isotropic (hEE : cT s E0 * J * E0 = 0) (hFE : cT s F0 * J * E0 = 1) (a b : Matrix (Fin r) (Fin r) A) :
     frameLevi s J E0 F0 a b * E0 = E0 * (1 + a) := by
@@ -94,11 +94,11 @@ theorem frameLevi_mul_isotropic (hEE : cT s E0 * J * E0 = 0) (hFE : cT s F0 * J 
     Matrix.mul_zero, add_zero]
 
 /- English proof (translation)
-Establish `e1 : ∀ {k : Type} (Z : Matrix (Fin r) k A), cT s F0 * (J * (E0 * Z)) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hFE, Matrix.one_mul]`. Establish `e2 : ∀ {k : Type} (Z : Matrix (Fin r) k A), cT s F0 * (J * (F0 * Z)) = 0` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hFF, Matrix.zero_mul]`. Establish `e3 : ∀ {k : Type} (Z : Matrix (Fin r) k A), cT s E0 * (J * (E0 * Z)) = 0` using `fun Z => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hEE, Matrix.zero_mul]`. Establish `e4 : ∀ {k : Type} (Z : Matrix (Fin r) k A), cT s E0 * (J * (F0 * Z)) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hEF, Matrix.one_mul]`. Establish `key : J * (E0 * ((a + cT s b + cT s b * a) * (cT s F0 * J))) + J * (F0 * ((b + cT s a + cT s a * b) * (cT s E0 * J))) = 0`. Rewrite using `[ha, hb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [frameLevi, cT_add', Formalism.UG.cT_mul, Formalism.UG.cT_one, cT_cT' s hs, hJ, Matrix.add_mul, Matrix.mul_add, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, e1, e2, e3, e4, Matrix.mul_zero, add_zero, zero_add]`. Normalize the expressions using the abelian group laws. Use `_ = J := by rw [key, add_zero]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem frameLevi_unitary (hs : ∀ x, s (s x) = x) (hJ : cT s J = J) (hEE : cT s E0 * J * E0 = 0)
     (hFF : cT s F0 * J * F0 = 0) (hFE : cT s F0 * J * E0 = 1) (hEF : cT s E0 * J * F0 = 1)
@@ -146,7 +146,7 @@ def frameMat (R : Type) [CommRing R] [Algebra F R] {k : ℕ} (x : Fin k → V.V)
   Matrix.of fun y i => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := F) V R (x i) y
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR, CMData.sig]`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sig_sig (R : Type) [CommRing R] [Algebra F R] (z : R ⊗[F] E) :
     sigR R hc.sig (sigR R hc.sig z) = z := by
@@ -156,9 +156,9 @@ theorem sig_sig (R : Type) [CommRing R] [Algebra F R] (z : R ⊗[F] E) :
   | add y z hy hz => rw [map_add, map_add, hy, hz]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.cT_gram hc V`. Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun h i) j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply] at hij ⊢`. Simplify using `only [JR, Matrix.map_apply, inclR, sigR]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hij]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cT_JR (R : Type) [CommRing R] [Algebra F R] : cT (sigR R hc.sig) (JR R V.gram) = JR R V.gram := by
   have h := GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.cT_gram hc V
@@ -170,7 +170,7 @@ theorem cT_JR (R : Type) [CommRing R] [Algebra F R] : cT (sigR R hc.sig) (JR R V
   simp
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.hT_coord]`. Simplify using `[hform, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR, JR, inclR, sigR, CMData.sig, TensorProduct.tmul_sum, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hform_coordR (R : Type) [CommRing R] [Algebra F R] (x y : V.V) :
     hform (sigR R hc.sig) (JR R V.gram) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := F) V R x) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := F) V R y) =
@@ -179,7 +179,7 @@ theorem hform_coordR (R : Type) [CommRing R] [Algebra F R] (x y : V.V) :
   simp [hform, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR, JR, inclR, sigR, CMData.sig, TensorProduct.tmul_sum, starRingEnd_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, ← hform_coordR hc V R]`. Simplify using `only [Matrix.mul_apply, cT, hform, Matrix.transpose_apply, Matrix.map_apply, frameMat, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_frameMat_mul (R : Type) [CommRing R] [Algebra F R] {k l : ℕ} (x : Fin k → V.V) (y : Fin l → V.V) :
     cT (sigR R hc.sig) (frameMat (F := F) V R x) * JR (F := F) R V.gram * frameMat (F := F) V R y =
@@ -211,7 +211,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
   (hc : CMData F E) {V : HSpace E} (Φ : WittFrame V) (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Rewrite using `[cT_frameMat_mul]`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, Matrix.zero_apply, show V.hT (Φ.e i) (Φ.e j) = 0 from Φ.ee j i, map_zero]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_ee : cT (sigR R hc.sig) (frameMat (F := F) V R Φ.e) * JR (F := F) R V.gram *
     frameMat (F := F) V R Φ.e = 0 := by
@@ -220,7 +220,7 @@ theorem frame_ee : cT (sigR R hc.sig) (frameMat (F := F) V R Φ.e) * JR (F := F)
   rw [Matrix.of_apply, Matrix.zero_apply, show V.hT (Φ.e i) (Φ.e j) = 0 from Φ.ee j i, map_zero]
 
 /- English proof (translation)
-Rewrite using `[cT_frameMat_mul]`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, Matrix.zero_apply, show V.hT (Φ.f i) (Φ.f j) = 0 from Φ.ff j i, map_zero]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_ff : cT (sigR R hc.sig) (frameMat (F := F) V R Φ.f) * JR (F := F) R V.gram *
     frameMat (F := F) V R Φ.f = 0 := by
@@ -229,9 +229,9 @@ theorem frame_ff : cT (sigR R hc.sig) (frameMat (F := F) V R Φ.f) * JR (F := F)
   rw [Matrix.of_apply, Matrix.zero_apply, show V.hT (Φ.f i) (Φ.f j) = 0 from Φ.ff j i, map_zero]
 
 /- English proof (translation)
-Rewrite using `[cT_frameMat_mul]`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, show V.hT (Φ.f i) (Φ.e j) = _ from Φ.ef j i, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem frame_fe : cT (sigR R hc.sig) (frameMat (F := F) V R Φ.f) * JR (F := F) R V.gram *
     frameMat (F := F) V R Φ.e = 1 := by
@@ -243,7 +243,7 @@ theorem frame_fe : cT (sigR R hc.sig) (frameMat (F := F) V R Φ.f) * JR (F := F)
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Establish `h` using `congrArg (cT (sigR R hc.sig)) (frame_fe hc Φ R)`. Rewrite `h` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, cT_cT' _ (sig_sig hc R), cT_JR, Formalism.UG.cT_one, ← Matrix.mul_assoc]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_ef : cT (sigR R hc.sig) (frameMat (F := F) V R Φ.e) * JR (F := F) R V.gram *
     frameMat (F := F) V R Φ.f = 1 := by
@@ -259,7 +259,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
   (hc : CMData F E) {V : HSpace E} {L : Submodule (𝓞 E) (Fin V.rank → E)} {v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Use `GlobalTheory.AdelicU.tmul_mem_latLoc (F := F) (v := v) (one_mem (v.adicCompletionIntegers F)) hx` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR, inclR]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coordR_mem_latLoc {x : V.V} (hx : V.frame.equivFun x ∈ L) :
     GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := F) V (Fv F v) x ∈ GlobalTheory.AdelicU.latLoc F L v := by
@@ -269,7 +269,7 @@ theorem coordR_mem_latLoc {x : V.V} (hx : V.frame.equivFun x ∈ L) :
   simp [GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR, inclR]
 
 /- English proof (translation)
-Establish `e : frameMat (F` using `F) V (Fv F v) x *ᵥ c = ∑ i, (⟨c i, hcv i⟩ : intLoc F E v) • GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := F) V (Fv F v) (x i) := by`. Use function extensionality and compare the values at `y`. Simplify using `[Matrix.mulVec, dotProduct, frameMat, Finset.sum_apply, Subring.smul_def, mul_comm]`. Rewrite using `[e]`. Conclude with `sum_mem fun i _ => Submodule.smul_mem _ _ (coordR_mem_latLoc (hx i))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameMat_mulVec_mem {k : ℕ} (x : Fin k → V.V) (hx : ∀ i, V.frame.equivFun (x i) ∈ L)
     (c : Fin k → Fv F v ⊗[F] E) (hcv : ∀ i, c i ∈ intLoc F E v) :
@@ -282,7 +282,7 @@ theorem frameMat_mulVec_mem {k : ℕ} (x : Fin k → V.V) (hx : ∀ i, V.frame.e
   exact sum_mem fun i _ => Submodule.smul_mem _ _ (coordR_mem_latLoc (hx i))
 
 /- English proof (translation)
-Rewrite using `[cT_mul_mulVec_apply]`. Establish `hy' : y ∈ dualLoc hc.sig V.gram L v` using `hsd ▸ hy`. Conclude with `hy' _ (coordR_mem_latLoc (hx i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coef_mem (hsd : IsSelfDualAt hc.sig V.gram L v) {k : ℕ} (x : Fin k → V.V)
     (hx : ∀ i, V.frame.equivFun (x i) ∈ L) {y : Fin V.rank → Fv F v ⊗[F] E} (hy : y ∈ GlobalTheory.AdelicU.latLoc F L v)
@@ -294,7 +294,7 @@ theorem coef_mem (hsd : IsSelfDualAt hc.sig V.gram L v) {k : ℕ} (x : Fin k →
   exact hy' _ (coordR_mem_latLoc (hx i))
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `sum_mem fun j _ => mul_mem (ha i j) (hw j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_intLoc {k l : ℕ} (a : Matrix (Fin k) (Fin l) (Fv F v ⊗[F] E)) (ha : ∀ i j, a i j ∈ intLoc F E v)
     (w : Fin l → Fv F v ⊗[F] E) (hw : ∀ j, w j ∈ intLoc F E v) (i : Fin k) : (a *ᵥ w) i ∈ intLoc F E v := by
@@ -302,7 +302,7 @@ theorem mulVec_mem_intLoc {k l : ℕ} (a : Matrix (Fin k) (Fin l) (Fv F v ⊗[F]
   exact sum_mem fun j _ => mul_mem (ha i j) (hw j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`. Use `sub_mem (ha i j) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sub_one_mem_intLoc {k : ℕ} (a : Matrix (Fin k) (Fin k) (Fv F v ⊗[F] E)) (ha : ∀ i j, a i j ∈ intLoc F E v)
     (i j : Fin k) : (a - 1) i j ∈ intLoc F E v := by
@@ -313,9 +313,7 @@ theorem sub_one_mem_intLoc {k : ℕ} (a : Matrix (Fin k) (Fin k) (Fv F v ⊗[F] 
   · exact zero_mem _
 
 /- English proof (translation)
-Use `set s := sigR (Fv F v) hc.sig`. Use `set J := JR (F := F) (Fv F v) V.gram`. Use `set E0 := frameMat (F := F) V (Fv F v) Φ.e`. Use `set F0 := frameMat (F := F) V (Fv F v) Φ.f`. Establish `e : frameLevi s J E0 F0 a b *ᵥ y = y + E0 *ᵥ (a *ᵥ ((cT s F0 * J) *ᵥ y)) + F0 *ᵥ (b *ᵥ ((cT s E0 * J) *ᵥ y))`.
-
-Simplify using `only [frameLevi, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[e]`. Use `add_mem (add_mem hy ?_) ?_` and prove the remaining obligations. Conclude with `frameMat_mulVec_mem Φ.e he _ (mulVec_mem_intLoc a ha _ (coef_mem hc hsd Φ.f hf hy))`. Conclude with `frameMat_mulVec_mem Φ.f hf _ (mulVec_mem_intLoc b hb _ (coef_mem hc hsd Φ.e he hy))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem levi_mulVec_mem (hsd : IsSelfDualAt hc.sig V.gram L v) (Φ : WittFrame V)
     (he : ∀ i, V.frame.equivFun (Φ.e i) ∈ L) (hf : ∀ i, V.frame.equivFun (Φ.f i) ∈ L)
@@ -355,25 +353,23 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
 /- English proof (translation)
-Use `set s := sigR (Fv F v) hc.sig`. Use `set J := JR (F := F) (Fv F v) V.gram`. Use `set E0 := frameMat (F := F) V (Fv F v) Φ.e`. Use `set F0 := frameMat (F := F) V (Fv F v) Φ.f`. Establish `hs : ∀ z, s (s z) = z` using `sig_sig hc (Fv F v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : cT s J = J` using `cT_JR hc V (Fv F v)`. Establish `hEE : cT s E0 * J * E0 = 0` using `frame_ee hc Φ (Fv F v)`. Establish `hFF : cT s F0 * J * F0 = 0` using `frame_ff hc Φ (Fv F v)`. Establish `hFE : cT s F0 * J * E0 = 1` using `frame_fe hc Φ (Fv F v)`. Establish `hEF : cT s E0 * J * F0 = 1` using `frame_ef hc Φ (Fv F v)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `Mof : GL (Fin (wittIndex V)) (Fv F v ⊗[F] E) → Matrix (Fin V.rank) (Fin V.rank) (Fv F v ⊗[F] E)` to `fun X => frameLevi s J E0 F0 (X.1 - 1) (cT s (X⁻¹).1 - 1)`. Establish `hmul : ∀ X, Mof X * Mof X⁻¹ = 1`. Introduce `X`. Simplify using `only [Mof]`. Rewrite using `[frameLevi_mul hEE hFF hFE hEF, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : X.1 - 1 + ((X⁻¹).1 - 1) + (X.1 - 1) * ((X⁻¹).1 - 1) = 0`. Establish `: X.1 - 1 + ((X⁻¹).1 - 1) + (X.1 - 1) * ((X⁻¹).1 - 1) = X.1 * (X⁻¹).1 - 1` using `by noncomm_ring`. Rewrite using `[this, Units.mul_inv, sub_self]`. Establish `h2 : cT s (X⁻¹).1 - 1 + (cT s X.1 - 1) + (cT s (X⁻¹).1 - 1) * (cT s X.1 - 1) = 0`. Establish `: cT s (X⁻¹).1 - 1 + (cT s X.1 - 1) + (cT s (X⁻¹).1 - 1) * (cT s X.1 - 1) = cT s (X⁻¹).1 * cT s X.1 - 1` using `by noncomm_ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, ← Formalism.UG.cT_mul, Units.mul_inv, Formalism.UG.cT_one, sub_self]`. Rewrite using `[h1, h2, frameLevi_zero]`. Establish `hmul' : Mof α⁻¹ * Mof α = 1`. Use `hmul α⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hunit : cT s (Mof α) * J * Mof α = J`. Use `frameLevi_unitary hs hJ hEE hFF hFE hEF ?_ ?_` and prove the remaining obligations. Rewrite using `[cT_sub', cT_cT' s hs, Formalism.UG.cT_one]`. Establish `: α.1 - 1 + ((α⁻¹).1 - 1) + ((α⁻¹).1 - 1) * (α.1 - 1) = (α⁻¹).1 * α.1 - 1` using `by noncomm_ring`. Rewrite using `[this, Units.inv_mul, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[cT_sub', Formalism.UG.cT_one]`. Establish `: cT s (α⁻¹).1 - 1 + (cT s α.1 - 1) + (cT s α.1 - 1) * (cT s (α⁻¹).1 - 1) = cT s α.1 * cT s (α⁻¹).1 - 1` using `by noncomm_ring`. Rewrite using `[this, ← Formalism.UG.cT_mul, Units.inv_mul, Formalism.UG.cT_one, sub_self]`. Establish `hstab : ∀ X : GL (Fin (wittIndex V)) (Fv F v ⊗[F] E), (∀ i j, X.1 i j ∈ intLoc F E v) → (∀ i j, (X⁻¹).1 i j ∈ intLoc F E v) → ∀ y, y ∈ GlobalTheory.AdelicU.latLoc F L v → Mof X *ᵥ y ∈ GlobalTheory.AdelicU.latLoc F L v` using `fun X hX hX' y hy => levi_mulVec_mem hc hsd Φ he hf (sub_one_mem_intLoc _ hX) (sub_one_mem_intLoc _ fun i j => GlobalTheory.AdelicU.sigR_mem_intLoc hc.sig (hX' j i)) hy`. Set `u : GL (Fin V.rank) (Fv F v ⊗[F] E)` to `⟨Mof α, Mof α⁻¹, hmul α, hmul'⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : u ∈ HR (Fv F v) hc.sig V.gram` using `hunit`. Set `m : GlobalTheory.AdelicU.GLoc hc.sig V.gram v` to `(⟨u, hu⟩ : HR (Fv F v) hc.sig V.gram)`. Use `⟨m, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.AdelicU.mem_stabLoc]`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `y ∈ _ ↔ Mof α *ᵥ y ∈ _`. Prove the components needed by the constructor for the conclusion. Conclude with `hstab α hα hα' y`. Introduce `hy`. Use `hstab α⁻¹ hα' (by rw [inv_inv]; exact hα) _ hy` as an intermediate fact.
-
-Rewrite `this` using `[Matrix.mulVec_mulVec, hmul', Matrix.one_mulVec]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `Mof α * E0 = E0 * α.1`. Simplify using `only [Mof]`. Rewrite using `[frameLevi_mul_isotropic hEE hFE, add_sub_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_stabLoc_mul_frame (hc : CMData F E) {V : HSpace E} (Φ : WittFrame V)
     (L : Submodule (𝓞 E) (Fin V.rank → E)) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F))
@@ -450,7 +446,7 @@ end
 namespace GlobalTheory.LeviIntegral
 
 /- English proof (translation)
-Introduce `D V Φ L a hgood v α hα hα'`. Conclude with `exists_mem_stabLoc_mul_frame D.sp.cm Φ L v (hgood.2.1 v) (fun i => (hgood.2.2.1 i).1) (fun i => (hgood.2.2.1 i).2) α hα hα'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_stabLoc_mul_frame_of_isGood : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (a : GL (Fin V.rank) (TensorProduct D.host.F (AF D.host.F) D.host.E)), Φ.IsGood D.sp.cm L a → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (α : GL (Fin (wittIndex V)) (TensorProduct D.host.F (Fv D.host.F v) D.host.E)), (∀ i j, α.1 i j ∈ intLoc D.host.F D.host.E v) → (∀ i j, (α⁻¹).1 i j ∈ intLoc D.host.F D.host.E v) → ∃ m : GLoc D.sp.cm.sig V.gram v, m ∈ stabLoc D.sp.cm.sig V.gram L v ∧ (HA.mat (F := D.host.F) (Fv D.host.F v) D.sp.cm.sig V.gram m).1 * (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) = (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) * α.1 := by
   intro D V Φ L a hgood v α hα hα'

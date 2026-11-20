@@ -17,16 +17,14 @@ theorem lf_eq : I.Lf = Submodule.span (IntAf I.F I.E)
     (Set.range fun x : I.L => iv I (x : Fin I.n → I.E)) := rfl
 
 /- English proof (translation)
-Rewrite using `[lf_eq]`. Conclude with `Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iv_mem {l : Fin I.n → I.E} (hl : l ∈ I.L) : iv I l ∈ I.Lf := by
   rw [lf_eq]
   exact Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `rw [Nat.cast_smul_eq_nsmul (I.E ⊗[I.F] Af I.F)]`. Conclude with `nsmul_mem hw k`. Consider the case `rw [Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hw k`.
-
-Consider the case `exact I.Lf.smul_mem (k : IntAf I.F I.E) hw`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem natSmul_mem (k : ℕ) {w : Fin I.n → I.E ⊗[I.F] Af I.F} (hw : w ∈ I.Lf) :
     (k : I.E ⊗[I.F] Af I.F) • w ∈ I.Lf := by
@@ -38,7 +36,7 @@ theorem natSmul_mem (k : ℕ) {w : Fin I.n → I.E ⊗[I.F] Af I.F} (hw : w ∈ 
     | exact I.Lf.smul_mem (k : IntAf I.F I.E) hw
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `first`. Consider the case `simp [iv, nsmul_eq_mul]`. Consider the case `simp only [iv, Pi.smul_apply, map_nsmul, nsmul_eq_mul, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem iv_nsmul (N : ℕ) (v : Fin I.n → I.E) :
     iv I (N • v) = (N : I.E ⊗[I.F] Af I.F) • iv I v := by
@@ -48,9 +46,9 @@ theorem iv_nsmul (N : ℕ) (v : Fin I.n → I.E) :
     | simp only [iv, Pi.smul_apply, map_nsmul, nsmul_eq_mul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hu : IsUnit (N : (I.E ⊗[I.F] Af I.F))`. Establish `h0 : (N : I.F) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `h1` using `(IsUnit.mk0 _ h0).map (algebraMap I.F (I.E ⊗[I.F] Af I.F))`. Rewrite `h1` using `[map_natCast]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hi` using `congrFun h i`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at hi`. Conclude with `hu.mul_left_cancel hi`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem natCast_cancel (N : ℕ) (hN : 0 < N) {a b : Fin I.n → I.E ⊗[I.F] Af I.F}
     (h : (N : I.E ⊗[I.F] Af I.F) • a = (N : I.E ⊗[I.F] Af I.F) • b) : a = b := by
@@ -64,7 +62,7 @@ theorem natCast_cancel (N : ℕ) (hN : 0 < N) {a b : Fin I.n → I.E ⊗[I.F] Af
   exact hu.mul_left_cancel hi
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Units.mul_inv (x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F))`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fmat_mul_inv (x : I.Gf) : I.fmat x * I.fmat x⁻¹ = 1 := by
   first
@@ -72,7 +70,7 @@ theorem fmat_mul_inv (x : I.Gf) : I.fmat x * I.fmat x⁻¹ = 1 := by
     | simp
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Units.inv_mul (x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F))`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fmat_inv_mul (x : I.Gf) : I.fmat x⁻¹ * I.fmat x = 1 := by
   first
@@ -104,13 +102,11 @@ def lamM (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Submodule (�
     exact I.Lf.smul_mem ⟨_, ha⟩ hv
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hy` using `[lf_eq]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨⟨l, hl⟩, rfl⟩` from `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `(show M *ᵥ iv I l ∈ I.Lf from h hl)`. Consider the case `zero`. Rewrite using `[Matrix.mulVec_zero]`. Conclude with `I.Lf.zero_mem`. Consider the case `add a b _ _ ha hb`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Matrix.mulVec_add]`. Conclude with `I.Lf.add_mem ha hb`. Consider the case `smul s a _ ha`. Establish `e : M *ᵥ (s • a) = s • (M *ᵥ a)` using `by show M *ᵥ ((s : (I.E ⊗[I.F] Af I.F)) • a) = (s : (I.E ⊗[I.F] Af I.F)) • (M *ᵥ a)`. Conclude with `Matrix.mulVec_smul M _ a`.
-
-Rewrite using `[e]`. Conclude with `I.Lf.smul_mem s ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_of_le {M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)} (h : I.L ≤ lamM I M) :
     ∀ y ∈ I.Lf, M *ᵥ y ∈ I.Lf := by
@@ -134,7 +130,7 @@ theorem mulVec_mem_of_le {M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)} 
     exact I.Lf.smul_mem s ha
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Matrix.smul_mulVec c M y`. Consider the case `exact Matrix.smul_mulVec_assoc c M y`. Consider the case `(ext i; simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc])`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem smul_mulVec_lemma {A : Type} [CommRing A] {n : ℕ} (c : A)
     (M : Matrix (Fin n) (Fin n) A) (y : Fin n → A) : (c • M) *ᵥ y = c • (M *ᵥ y) := by
@@ -144,11 +140,9 @@ private theorem smul_mulVec_lemma {A : Type} [CommRing A] {n : ℕ} (c : A)
     | (ext i; simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc])
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `I.L_fg`. Use `choose m hm0 hm using fun v : Fin I.n → I.E => hD I (M *ᵥ iv I v)`. Use `⟨∏ j ∈ s, m j, Finset.prod_pos fun j _ => hm0 j, ?_⟩` and prove the remaining obligations. Establish `hle : I.L ≤ lamM I (((∏ j ∈ s, m j : ℕ) : (I.E ⊗[I.F] Af I.F)) • M)`. Rewrite using `[← hs, Submodule.span_le]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Use `show (((∏ j ∈ s, m j : ℕ) : (I.E ⊗[I.F] Af I.F)) • M) *ᵥ iv I v ∈ I.Lf`. Rewrite using `[smul_mulVec_lemma, ← Finset.prod_erase_mul s m hv, Nat.cast_mul, mul_smul]`. Conclude with `natSmul_mem I _ (hm v)`. Introduce `y hy`.
-
-Establish `h2` using `mulVec_mem_of_le I hle y hy`. Rewrite `h2` using `[smul_mulVec_lemma]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem denom (hD : LDenom) (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) :
     ∃ N : ℕ, 0 < N ∧ ∀ y ∈ I.Lf, (N : I.E ⊗[I.F] Af I.F) • (M *ᵥ y) ∈ I.Lf := by
@@ -167,9 +161,9 @@ theorem denom (hD : LDenom) (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F
   rwa [smul_mulVec_lemma] at h2
 
 /- English proof (translation)
-Take `⟨N1, h1, hN1⟩` from `denom I hD (I.fmat x)`. Take `⟨N2, h2, hN2⟩` from `denom I hD (I.fmat x⁻¹)`. Use `⟨N1 * N2, Nat.mul_pos h1 h2, fun y hy => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `natSmul_mem I _ (hN1 y hy)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_mul, mul_smul]`. Conclude with `natSmul_mem I _ (hN2 y hy)`.
+A detailed English derivation is pending.
 -/
 theorem exists_denominator_fmat (hD : LDenom) (x : I.Gf) : ∃ N : ℕ, 0 < N ∧ ∀ y ∈ I.Lf,
     (N : I.E ⊗[I.F] Af I.F) • (I.fmat x *ᵥ y) ∈ I.Lf ∧
@@ -183,7 +177,7 @@ theorem exists_denominator_fmat (hD : LDenom) (x : I.Gf) : ∃ N : ℕ, 0 < N �
     exact natSmul_mem I _ (hN2 y hy)
 
 /- English proof (translation)
-Use `show I.fmat x⁻¹ *ᵥ iv I (N • l) ∈ I.Lf`. Rewrite using `[iv_nsmul, Matrix.mulVec_smul]`. Conclude with `(hN _ (iv_mem I hl)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nL_sub (x : I.Gf) (N : ℕ)
     (hN : ∀ y ∈ I.Lf, (N : I.E ⊗[I.F] Af I.F) • (I.fmat x *ᵥ y) ∈ I.Lf ∧
@@ -194,9 +188,9 @@ theorem nL_sub (x : I.Gf) (N : ℕ)
   exact (hN _ (iv_mem I hl)).2
 
 /- English proof (translation)
-Apply `hInt I` to reduce the goal to its premises. Establish `hv' : I.fmat x⁻¹ *ᵥ iv I v ∈ I.Lf` using `hv`. Establish `e : iv I v = I.fmat x *ᵥ (I.fmat x⁻¹ *ᵥ iv I v)`. Rewrite using `[Matrix.mulVec_mulVec, fmat_mul_inv, Matrix.one_mulVec]`. Rewrite using `[iv_nsmul, e]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hN _ hv').1`.
+A detailed English derivation is pending.
 -/
 theorem nLam_sub (hInt : LInter) (x : I.Gf) (N : ℕ)
     (hN : ∀ y ∈ I.Lf, (N : I.E ⊗[I.F] Af I.F) • (I.fmat x *ᵥ y) ∈ I.Lf ∧
@@ -212,15 +206,15 @@ theorem nLam_sub (hInt : LInter) (x : I.Gf) (N : ℕ)
 end DictGen
 
 /- English proof (translation)
-Introduce `I x`. Take `⟨N, hN, hN'⟩` from `DictGen.exists_denominator_fmat I hD x`. Establish `hNE : (N : I.E) ≠ 0` using `by exact_mod_cast hN.ne'`. Prove the components needed by the constructor for the conclusion. Set `ψ : (Fin I.n → I.E) →ₗ[𝓞 I.E] (Fin I.n → I.E)` to `(((N : I.E)⁻¹ • LinearMap.id : (Fin I.n → I.E) →ₗ[I.E] (Fin I.n → I.E))).restrictScalars (𝓞 I.E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression.
 
-Establish `hle : abelian₂ I x ≤ I.L.map ψ`. Introduce `v hv`. Establish `h1 : N • v ∈ I.L` using `DictGen.nLam_sub I hInt x N hN' hv`. Establish `e : ψ (N • v) = v` using `by show (N : I.E)⁻¹ • (N • v) = v`. Rewrite using `[← Nat.cast_smul_eq_nsmul I.E, smul_smul, inv_mul_cancel₀ hNE, one_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `Submodule.mem_map_of_mem h1`. Use `haveI : IsNoetherian (𝓞 I.E) (I.L.map ψ) := isNoetherian_of_fg_of_noetherian _ (I.L_fg.map ψ)`. Use `haveI : IsNoetherian (𝓞 I.E) (abelian₂ I x) := isNoetherian_of_le hle`. Use `first`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `exact (Submodule.fg_top _).mp (IsNoetherian.noetherian _)`. Consider the case `exact Module.Finite.iff_fg.mp inferInstance`. Rewrite using `[eq_top_iff, ← I.L_span, Submodule.span_le]`. Introduce `v hv`. Establish `h1 : N • v ∈ abelian₂ I x` using `DictGen.nL_sub I x N hN' hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : N • v ∈ Submodule.span I.E ((abelian₂ I x : Submodule (𝓞 I.E) (Fin I.n → I.E)) : Set (Fin I.n → I.E))` using `Submodule.subset_span h1`. Establish `e : v = (N : I.E)⁻¹ • (N • v)`. Rewrite using `[← Nat.cast_smul_eq_nsmul I.E, smul_smul, inv_mul_cancel₀ hNE, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ h2`.
+A detailed English derivation is pending.
 -/
 theorem mLat_of (hInt : LInter) (hD : LDenom) : MLat := by
   intro I x
@@ -254,21 +248,19 @@ theorem mLat_of (hInt : LInter) (hD : LDenom) : MLat := by
     exact Submodule.smul_mem _ _ h2
 
 /- English proof (translation)
-Introduce `I x y hy`. Take `⟨N, hN, hN'⟩` from `DictGen.exists_denominator_fmat I hD x`. Establish `hNE : (N : I.E) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hNL : ∀ u ∈ I.Lf, (N : (I.E ⊗[I.F] Af I.F)) • u ∈ Submodule.span (IntAf I.F I.E) (Set.range fun v : abelian₂ I x => iv I (v : Fin I.n → I.E))`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hu` using `[DictGen.lf_eq]`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨⟨l, hl⟩, rfl⟩` from `hz`. Use `show (N : (I.E ⊗[I.F] Af I.F)) • iv I l ∈ _`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← DictGen.iv_nsmul]`. Conclude with `Submodule.subset_span ⟨⟨N • l, DictGen.nL_sub I x N hN' hl⟩, rfl⟩`. Consider the case `zero`. Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul s a _ ha`. Establish `e : (N : (I.E ⊗[I.F] Af I.F)) • (s • a) = s • ((N : (I.E ⊗[I.F] Af I.F)) • a)` using `by show (N : (I.E ⊗[I.F] Af I.F)) • ((s : (I.E ⊗[I.F] Af I.F)) • a) = (s : (I.E ⊗[I.F] Af I.F)) • ((N : (I.E ⊗[I.F] Af I.F)) • a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_smul, smul_smul, mul_comm]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ s ha`. Take `⟨l, hl, y', hy', hw⟩` from `hDen I (N * N) (Nat.mul_pos hN hN) _ (hN' y hy).1`. Take `⟨v, hv⟩ : ∃ v : Fin I.n → I.E, v = (N : I.E)⁻¹ • l` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hNv : N • v = l`. Rewrite using `[hv, ← Nat.cast_smul_eq_nsmul I.E, smul_smul, mul_inv_cancel₀ hNE, one_smul]`. Establish `hz : I.fmat x *ᵥ y = iv I v + (N : (I.E ⊗[I.F] Af I.F)) • y'`. Apply `DictGen.natCast_cancel I N hN` to reduce the goal to its premises. Rewrite using `[smul_add, ← DictGen.iv_nsmul, hNv, hw, smul_smul, Nat.cast_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hvL : v ∈ abelian₂ I x` using `by show I.fmat x⁻¹ *ᵥ iv I v ∈ I.Lf`. Establish `e : iv I v = I.fmat x *ᵥ y - (N : (I.E ⊗[I.F] Af I.F)) • y'` using `by first`. Consider the case `rw [hz, add_sub_cancel_right]`. Consider the case `(rw [hz]; abel)`. Rewrite using `[e, Matrix.mulVec_sub, Matrix.mulVec_mulVec, DictGen.fmat_inv_mul, Matrix.one_mulVec, Matrix.mulVec_smul]`.
-
-Conclude with `I.Lf.sub_mem hy (hN' y' hy').2`. Rewrite using `[hz]`. Conclude with `Submodule.add_mem _ (Submodule.subset_span ⟨⟨v, hvL⟩, rfl⟩) (hNL y' hy')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mGen_of (hD : LDenom) (hDen : LDense) : MGen := by
   intro I x y hy

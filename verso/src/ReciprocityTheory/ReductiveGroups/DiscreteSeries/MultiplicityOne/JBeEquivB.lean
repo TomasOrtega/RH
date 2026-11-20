@@ -12,7 +12,7 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
 
 /- English proof (translation)
-Unfold `mc`. Rewrite using `[X.rep.1.2 a ha b hb, ContinuousLinearMap.comp_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mc_sig_left (X : SigData k r) (u u' : X.Hs) {a b : Mat k r} (ha : a ∈ GV k r) (hb : b ∈ GV k r) :
     mc X (X.σ b u) u' a = mc X u u' (a * b) := by
@@ -20,13 +20,13 @@ theorem mc_sig_left (X : SigData k r) (u u' : X.Hs) {a b : Mat k r} (ha : a ∈ 
   rw [X.rep.1.2 a ha b hb, ContinuousLinearMap.comp_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single (if i.val < r ∨ r + k < i.val then i.rev else i)]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Rewrite using `[if_pos h]`. Simplify using `only [Hpk, Fin.val_rev, Fin.ext_iff, and_true]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | norm_num`. Rewrite using `[if_neg h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Hpk, Fin.ext_iff, and_true]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | norm_num`. Introduce `l _ hl`. Establish `hl'` using `l.isLt`. Simplify using `only [Hpk, Fin.ext_iff, Fin.val_rev, and_true, ne_eq] at hl ⊢`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs at hl ⊢ <;> (try simp only [ne_eq, Fin.ext_iff, Fin.val_rev] at hl) <;> first | (exfalso; omega) | norm_num`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem Hpk_mul_self_eq_one : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -49,7 +49,7 @@ private theorem Hpk_mul_self_eq_one : Hpk k r * Hpk k r = 1 := by
   · simp
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `hl : (Hpk k r * gᴴ * Hpk k r) * g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg', Hpk_mul_self_eq_one]`. Establish `hdet : IsUnit g.det` using `Matrix.isUnit_det_of_left_inverse hl`. Conclude with `⟨Matrix.mul_nonsing_inv g hdet, Matrix.nonsing_inv_mul g hdet⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem mul_inv_and_inv_mul_of_mem_UH_Hpk {g : Mat k r} (hg : g ∈ UH (Hpk k r)) : g * g⁻¹ = 1 ∧ g⁻¹ * g = 1 := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -59,9 +59,9 @@ private theorem mul_inv_and_inv_mul_of_mem_UH_Hpk {g : Mat k r} (hg : g ∈ UH (
   exact ⟨Matrix.mul_nonsing_inv g hdet, Matrix.nonsing_inv_mul g hdet⟩
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Take `⟨h1, -⟩` from `mul_inv_and_inv_mul_of_mem_UH_Hpk hg`. Use `show (g⁻¹)ᴴ * Hpk k r * g⁻¹ = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [h1]; simp`.
+A detailed English derivation is pending.
 -/
 private theorem inv_mem_UH_Hpk {g : Mat k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ ∈ UH (Hpk k r) := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -73,11 +73,11 @@ private theorem inv_mem_UH_Hpk {g : Mat k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ 
     _ = Hpk k r := by rw [h1]; simp
 
 /- English proof (translation)
-Take `⟨hinv, -⟩` from `mul_inv_and_inv_mul_of_mem_UH_Hpk hb`. Establish `hbi : b⁻¹ ∈ GV k r` using `inv_mem_UH_Hpk hb`. Unfold `mc`. Establish `hcomp` using `X.rep.1.2 b hb b⁻¹ hbi`. Rewrite `hcomp` using `[hinv, X.rep.1.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy : X.σ b (X.σ b⁻¹ (X.σ a u)) = X.σ a u`. Use `congrArg (fun f : X.Hs →L[ℂ] X.Hs => f (X.σ a u)) hcomp` as an intermediate fact. Simplify using `using this.symm`. Set `T : X.Hs →ₗᵢ[ℂ] X.Hs` to `⟨(X.σ b : X.Hs →ₗ[ℂ] X.Hs), X.rep.2.1 b hb⟩`. Rewrite using `[X.rep.1.2 b⁻¹ hbi a ha, ContinuousLinearMap.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← hy]`. Conclude with `T.inner_map_map u' (X.σ b⁻¹ (X.σ a u))`.
+A detailed English derivation is pending.
 -/
 theorem mc_sig_right (X : SigData k r) (u u' : X.Hs) {a b : Mat k r} (ha : a ∈ GV k r) (hb : b ∈ GV k r) :
     mc X u (X.σ b u') a = mc X u u' (b⁻¹ * a) := by
@@ -95,9 +95,9 @@ theorem mc_sig_right (X : SigData k r) (u u' : X.Hs) {a b : Mat k r} (ha : a ∈
   exact T.inner_map_map u' (X.σ b⁻¹ (X.σ a u))
 
 /- English proof (translation)
-Establish `h` using `hF.pmul 1 hN1 1 hN1`. Rewrite `h` using `[mul_one]`. Establish `hne : psiD D 1 ≠ 0` using `by unfold psiD psi; exact Complex.exp_ne_zero _`. Establish `h2 : psiD D 1 * (psiD D 1 - 1) = 0` using `by rw [mul_sub, ← h]; ring`. Break down `mul_eq_zero.mp h2 with h0 | h0` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h0 hne`. Conclude with `sub_eq_zero.mp h0`.
+A detailed English derivation is pending.
 -/
 theorem psiD_one (D : RealPlaceData k r Wp Wp) (hF : BEFacts D) (hN1 : (1 : Mat k r) ∈ Nset k r) :
     psiD D 1 = 1 := by
@@ -110,11 +110,11 @@ theorem psiD_one (D : RealPlaceData k r Wp Wp) (hF : BEFacts D) (hN1 : (1 : Mat 
   · exact sub_eq_zero.mp h0
 
 /- English proof (translation)
-Establish `hmi : m⁻¹ ∈ Nset k r` using `hF.ninv m hm`. Establish `h1 : m * m⁻¹ = 1` using `(mul_inv_and_inv_mul_of_mem_UH_Hpk hm.1).1`. Establish `hN1 : (1 : Mat k r) ∈ Nset k r` using `h1 ▸ hF.nmul m hm m⁻¹ hmi`. Establish `hp` using `hF.pmul m hm m⁻¹ hmi`. Rewrite `hp` using `[h1, psiD_one D hF hN1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hstar : psiD D m * star (psiD D m) = 1`. Unfold `psiD psi`. Simplify using `only [Complex.star_def]`. Rewrite using `[← Complex.exp_conj, ← Complex.exp_add]`. Simplify using `[map_mul, Complex.conj_I, Complex.conj_ofReal]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hne : psiD D m ≠ 0` using `by unfold psiD psi; exact Complex.exp_ne_zero _`. Conclude with `mul_left_cancel₀ hne (hp.symm.trans hstar.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psiD_inv (D : RealPlaceData k r Wp Wp) (hF : BEFacts D) {m : Mat k r} (hm : m ∈ Nset k r) :
     psiD D m⁻¹ = star (psiD D m) := by
@@ -139,9 +139,9 @@ def shR (h0 m : Mat k r) (p : Mt k r × Mt k r) : Mt k r × Mt k r :=
   ((h0⁻¹ * Matrix.of p.1 : Mat k r), (h0⁻¹ * (m⁻¹ * Matrix.of p.2) * h0⁻¹⁻¹ : Mat k r))
 
 /- English proof (translation)
-Establish `hG : Continuous fun p : Mt k r × Mt k r => ((Matrix.of p.2 * (Matrix.of p.1 * m * (Matrix.of p.1 : Mat k r).adjugate) : Mat k r) : Mt k r)` using `by fun_prop`. Establish `hs : Measurable fun p : Mt k r × Mt k r => ((Matrix.of p.1 : Mat k r).det)⁻¹` using `(Continuous.measurable (by fun_prop : Continuous fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mat k r).det)).inv`. Establish `heq : Function.uncurry (shG (k` using `k) (r := r) m) = fun p => fun i j => ((Matrix.of p.1 : Mat k r).det)⁻¹ * ((Matrix.of p.2 * (Matrix.of p.1 * m * (Matrix.of p.1 : Mat k r).adjugate) : Mat k r) : Mt k r) i j := by`. Use function extensionality and compare the values at `p i j`. Simplify using `only [Function.uncurry, shG, Matrix.inv_def, Ring.inverse_eq_inv', Matrix.mul_smul, Matrix.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[heq]`. Use `measurable_pi_iff.mpr fun i => measurable_pi_iff.mpr fun j => hs.mul ?_` and prove the remaining obligations. Use `first`. Consider the case `exact (hG.matrix_elem i j).measurable`. Consider the case `exact (by fun_prop : Continuous fun p : Mt k r × Mt k r => (Matrix.of p.2 * (Matrix.of p.1 * m * (Matrix.of p.1 : Mat k r).adjugate) : Mat k r) i j).measurable`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem measurable_shG (m : Mat k r) : Measurable (Function.uncurry (shG (k := k) (r := r) m)) := by
   have hG : Continuous fun p : Mt k r × Mt k r =>
@@ -163,13 +163,11 @@ theorem measurable_shG (m : Mat k r) : Measurable (Function.uncurry (shG (k := k
         (Matrix.of p.2 * (Matrix.of p.1 * m * (Matrix.of p.1 : Mat k r).adjugate) : Mat k r) i j).measurable
 
 /- English proof (translation)
-Establish `hW : ∀ᵐ x ∂D.μW, (Matrix.of x : Mat k r) ∈ UWset k r D.z` using `ae_iff.mpr D.haarW.conc`. Establish `hc : Continuous (rmulF (n` using `2 * r + k + 1) h0) := by unfold rmulF; fun_prop`. Establish `hf : MeasurePreserving (rmulF h0) D.μW D.μW` using `⟨hc.measurable, D.haarW.right h0 hh0⟩`. Use `haveI : IsFiniteMeasureOnCompacts D.μW := ⟨fun K hK => D.haarW.finite_compact K hK⟩`. Use `haveI : SigmaFinite D.μW := by first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `infer_instance`. Consider the case `exact sigmaFinite_of_locallyFinite`. Use `haveI : IsFiniteMeasureOnCompacts D.μN := ⟨fun K hK => D.haarN.finite_compact K hK⟩`. Use `haveI : SigmaFinite D.μN := by first`. Consider the case `infer_instance`.
+Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Consider the case `exact sigmaFinite_of_locallyFinite`. Unfold `shL`. Use `hf.skew_product (measurable_shG m) ?_` and prove the remaining obligations. Use `filter_upwards [hW] with x hx`. Take `⟨hc', -⟩` from `hF.nrm _ hx m hm`.
-
-Establish `e : shG m x = rmulF (Matrix.of x * m * (Matrix.of x)⁻¹)` using `rfl`. Rewrite using `[e]`. Conclude with `D.haarN.right _ hc'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shL_mp (D : RealPlaceData k r Wp Wp) (hF : BEFacts D) {h0 m : Mat k r} (hh0 : h0 ∈ UWset k r D.z)
     (hm : m ∈ Nset k r) : MeasurePreserving (shL h0 m) (D.μW.prod D.μN) (D.μW.prod D.μN) := by
@@ -195,7 +193,7 @@ theorem shL_mp (D : RealPlaceData k r Wp Wp) (hF : BEFacts D) {h0 m : Mat k r} (
   exact D.haarN.right _ hc'
 
 /- English proof (translation)
-Take `⟨-, him⟩` from `mul_inv_and_inv_mul_of_mem_UH_Hpk hg.1`. Establish `fix : ∀ v, g *ᵥ v = v → g⁻¹ *ᵥ v = v` using `fun v hv => by conv_lhs => rw [← hv]`. Rewrite using `[Matrix.mulVec_mulVec, him, Matrix.one_mulVec]`. Conclude with `⟨inv_mem_UH_Hpk hg.1, fun a => ⟨fix _ (hg.2.1 a).1, fix _ (hg.2.1 a).2⟩, fix _ hg.2.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem inv_mem_UWset' {z : Fin (2 * r + k + 1) → ℂ} {g : Mat k r} (hg : g ∈ UWset k r z) :
     g⁻¹ ∈ UWset k r z := by
@@ -206,7 +204,7 @@ private theorem inv_mem_UWset' {z : Fin (2 * r + k + 1) → ℂ} {g : Mat k r} (
   exact ⟨inv_mem_UH_Hpk hg.1, fun a => ⟨fix _ (hg.2.1 a).1, fix _ (hg.2.1 a).2⟩, fix _ hg.2.2⟩
 
 /- English proof (translation)
-Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hb' : bᴴ * Hpk k r * b = Hpk k r` using `hb`. Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem mul_mem_UH_Hpk {a b : Mat k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) :
     a * b ∈ UH (Hpk k r) := by
@@ -218,13 +216,11 @@ private theorem mul_mem_UH_Hpk {a b : Mat k r} (ha : a ∈ UH (Hpk k r)) (hb : b
     _ = Hpk k r := by rw [ha', hb']
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts D.μW := ⟨fun K hK => D.haarW.finite_compact K hK⟩`. Use `haveI : IsFiniteMeasureOnCompacts D.μN := ⟨fun K hK => D.haarN.finite_compact K hK⟩`. Use `haveI : SigmaFinite D.μW := by first`. Consider the case `infer_instance`. Consider the case `exact sigmaFinite_of_locallyFinite`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `haveI : SigmaFinite D.μN := by first`. Consider the case `infer_instance`. Consider the case `exact sigmaFinite_of_locallyFinite`. Establish `hlm : ∀ a : Mat k r, Continuous (lmulM (k` using `k) (r := r) a) := fun a => by unfold lmulM; fun_prop`. Establish `hcm : ∀ a : Mat k r, Continuous (conjM (k` using `k) (r := r) a) := fun a => by unfold conjM; fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : MeasurePreserving (lmulM h0⁻¹) D.μW D.μW` using `⟨(hlm _).measurable, D.haarW.left _ (inv_mem_UWset' hh0)⟩`. Establish `h2 : MeasurePreserving (lmulM m⁻¹) D.μN D.μN` using `⟨(hlm _).measurable, D.haarN.left _ (hF.ninv m hm)⟩`. Establish `h3 : MeasurePreserving (conjM h0⁻¹) D.μN D.μN` using `⟨(hcm _).measurable, hF.conj _ (inv_mem_UWset' hh0)⟩`. Establish `e : shR h0 m = Prod.map (lmulM h0⁻¹) (conjM h0⁻¹ ∘ lmulM m⁻¹)` using `rfl`. Rewrite using `[e]`.
-
-Conclude with `h1.prod (h3.comp h2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shR_mp (D : RealPlaceData k r Wp Wp) (hF : BEFacts D) {h0 m : Mat k r} (hh0 : h0 ∈ UWset k r D.z)
     (hm : m ∈ Nset k r) : MeasurePreserving (shR h0 m) (D.μW.prod D.μN) (D.μW.prod D.μN) := by
@@ -257,7 +253,7 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Establish `h1 : ∀ᵐ x ∂D.μW, (Matrix.of x : Mat k r) ∈ UWset k r D.z` using `ae_iff.mpr D.haarW.conc`. Establish `h2 : ∀ᵐ y ∂D.μN, (Matrix.of y : Mat k r) ∈ Nset k r` using `ae_iff.mpr D.haarN.conc`. Conclude with `(Measure.quasiMeasurePreserving_fst.ae h1).and (Measure.quasiMeasurePreserving_snd.ae h2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ae_mem_S (D : RealPlaceData k r Wp Wp) :
     ∀ᵐ p ∂(D.μW.prod D.μN), (Matrix.of p.1 : Mat k r) ∈ UWset k r D.z ∧ (Matrix.of p.2 : Mat k r) ∈ Nset k r := by
@@ -266,9 +262,9 @@ theorem ae_mem_S (D : RealPlaceData k r Wp Wp) :
   exact (Measure.quasiMeasurePreserving_fst.ae h1).and (Measure.quasiMeasurePreserving_snd.ae h2)
 
 /- English proof (translation)
-Take `⟨hmi, him⟩` from `mul_inv_and_inv_mul_of_mem_UH_Hpk hh0.1`. Establish `fix : ∀ v, h0 *ᵥ v = v → h0⁻¹ *ᵥ v = v` using `fun v hv => by conv_lhs => rw [← hv]`. Rewrite using `[Matrix.mulVec_mulVec, him, Matrix.one_mulVec]`. Establish `hi : h0⁻¹ ∈ UWset k r D.z`. Use `⟨inv_mem_UH_Hpk hh0.1, fun a => ⟨fix _ (hh0.2.1 a).1, fix _ (hh0.2.1 a).2⟩, fix _ hh0.2.2⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `D.π_rep.2 h0 hh0 h0⁻¹ hi`. Rewrite `h` using `[hmi, D.π_rep.1]`. Use `congrArg (fun f : Wp →L[ℂ] Wp => f w) h` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pi_cancel (D : RealPlaceData k r Wp Wp) {h0 : Mat k r} (hh0 : h0 ∈ UWset k r D.z) (w : Wp) :
     D.π h0 (D.π h0⁻¹ w) = w := by
@@ -284,21 +280,19 @@ theorem pi_cancel (D : RealPlaceData k r Wp Wp) {h0 : Mat k r} (hh0 : h0 ∈ UWs
   simpa using this.symm
 
 /- English proof (translation)
-Use `set μ := D.μW.prod D.μN with hμ`. Establish `hmp` using `shL_mp D hF hh0 hm`. Establish `hIS : Integrable (fun p => beInt D X u u' (shL h0 m p)) μ` using `(hmp.integrable_comp hI.aestronglyMeasurable).mpr hI`. Establish `hint : ∫ p, beInt D X u u' (shL h0 m p) ∂μ = ∫ p, beInt D X u u' p ∂μ`. Rewrite using `[← integral_map hmp.measurable.aemeasurable (by rw [hmp.map_eq]; exact hI.aestronglyMeasurable), hmp.map_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmi : m⁻¹ ∈ Nset k r` using `hF.ninv m hm`. Establish `hm1 : m * m⁻¹ = 1` using `(mul_inv_and_inv_mul_of_mem_UH_Hpk hm.1).1`. Establish `hN1 : (1 : Mat k r) ∈ Nset k r` using `hm1 ▸ hF.nmul m hm m⁻¹ hmi`. Establish `hpsi : psiD D m * star (psiD D m) = 1`. Rewrite using `[← psiD_inv D hF hm, ← hF.pmul m hm m⁻¹ hmi, hm1, psiD_one D hF hN1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hπ : ∀ T : Wp →L[ℂ] Wp, (D.π h0).comp ((D.π h0⁻¹).comp T) = T`. Introduce `T`. Use extensionality with `w`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Conclude with `pi_cancel D hh0 (T w)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hae : ∀ᵐ p ∂μ, beInt D X (X.σ (m * h0) u) u' p = psiD D m • (D.π h0).comp (beInt D X u u' (shL h0 m p))` using `by filter_upwards [ae_mem_S D] with p hp`. Take `⟨hh, hn⟩` from `hp`. Use `set h : Mat k r := Matrix.of p.1 with hdef`. Use `set nn : Mat k r := Matrix.of p.2 with ndef`. Establish `e1 : beInt D X u u' (shL h0 m p) = (mc X u u' (nn * (h * m * h⁻¹) * (h * h0)) * star (psiD D (nn * (h * m * h⁻¹)))) • D.π (h * h0)⁻¹` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : beInt D X (X.σ (m * h0) u) u' p = (mc X (X.σ (m * h0) u) u' (nn * h) * star (psiD D nn)) • D.π h⁻¹` using `rfl`. Establish `hhi : h⁻¹ * h = 1` using `(mul_inv_and_inv_mul_of_mem_UH_Hpk hh.1).2`. Establish `e3 : nn * (h * m * h⁻¹) * (h * h0) = nn * h * (m * h0)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc h⁻¹ h h0, hhi, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hc, hcp⟩` from `hF.nrm h hh m hm`. Establish `e4 : psiD D (nn * (h * m * h⁻¹)) = psiD D nn * psiD D m`. Rewrite using `[hF.pmul nn hn _ hc, hcp]`. Establish `e5 : D.π (h * h0)⁻¹ = (D.π h0⁻¹).comp (D.π h⁻¹)`. Rewrite using `[Matrix.mul_inv_rev]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `D.π_rep.2 _ (inv_mem_UWset' hh0) _ (inv_mem_UWset' hh)`. Establish `e6` using `mc_sig_left X u u' (mul_mem_UH_Hpk hn.1 hh.1) (mul_mem_UH_Hpk hm.1 hh0.1)`. Rewrite using `[e1, e2, e3, e4, e5, e6, ContinuousLinearMap.comp_smul, hπ, smul_smul, star_mul]`. Use `congr 1`. Take the linear combination `(-(mc X u u' (nn * h * (m * h0)) * star (psiD D nn))) * hpsi`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Conclude with `(ContinuousLinearMap.compL ℂ Wp Wp Wp (D.π h0)).integral_comp_comm hIS`. Use `_ = psiD D m • (D.π h0).comp (beOp D X u u') := by rw [hint]; rfl`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem beOp_left (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hF : BEFacts D) (u u' : X.Hs)
     (hI : Integrable (beInt D X u u') (D.μW.prod D.μN)) {h0 m : Mat k r} (hh0 : h0 ∈ UWset k r D.z)
@@ -351,23 +345,19 @@ theorem beOp_left (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hF : BEFacts 
     _ = psiD D m • (D.π h0).comp (beOp D X u u') := by rw [hint]; rfl
 
 /- English proof (translation)
-Use `set μ := D.μW.prod D.μN with hμ`. Establish `hmp` using `shR_mp D hF hh0 hm`. Establish `hIS : Integrable (fun p => beInt D X u u' (shR h0 m p)) μ` using `(hmp.integrable_comp hI.aestronglyMeasurable).mpr hI`. Establish `hint : ∫ p, beInt D X u u' (shR h0 m p) ∂μ = ∫ p, beInt D X u u' p ∂μ`. Rewrite using `[← integral_map hmp.measurable.aemeasurable (by rw [hmp.map_eq]; exact hI.aestronglyMeasurable), hmp.map_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmi : m⁻¹ ∈ Nset k r` using `hF.ninv m hm`. Establish `hm1 : m * m⁻¹ = 1` using `(mul_inv_and_inv_mul_of_mem_UH_Hpk hm.1).1`. Establish `hN1 : (1 : Mat k r) ∈ Nset k r` using `hm1 ▸ hF.nmul m hm m⁻¹ hmi`. Establish `hpsi : psiD D m * star (psiD D m) = 1`. Rewrite using `[← psiD_inv D hF hm, ← hF.pmul m hm m⁻¹ hmi, hm1, psiD_one D hF hN1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hh0i : h0⁻¹ ∈ UWset k r D.z` using `inv_mem_UWset' hh0`. Establish `hh0ii : h0⁻¹⁻¹ ∈ UWset k r D.z` using `inv_mem_UWset' hh0i`. Establish `hinvinv : h0⁻¹⁻¹ * h0⁻¹ = 1` using `(mul_inv_and_inv_mul_of_mem_UH_Hpk hh0i.1).2`. Establish `hid : (D.π h0⁻¹⁻¹).comp (D.π h0⁻¹) = ContinuousLinearMap.id ℂ Wp`. Use `D.π_rep.2 _ hh0ii _ hh0i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hinvinv, D.π_rep.1]`. Conclude with `this.symm`. Establish `hae : ∀ᵐ p ∂μ, beInt D X u (X.σ (m * h0) u') p = star (psiD D m) • (beInt D X u u' (shR h0 m p)).comp (D.π h0⁻¹)` using `by filter_upwards [ae_mem_S D] with p hp`. Take `⟨hh, hn⟩` from `hp`. Use `set h : Mat k r := Matrix.of p.1 with hdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set nn : Mat k r := Matrix.of p.2 with ndef`. Establish `e1 : beInt D X u u' (shR h0 m p) = (mc X u u' (h0⁻¹ * (m⁻¹ * nn) * h0⁻¹⁻¹ * (h0⁻¹ * h)) * star (psiD D (h0⁻¹ * (m⁻¹ * nn) * h0⁻¹⁻¹))) • D.π (h0⁻¹ * h)⁻¹` using `rfl`. Establish `e2 : beInt D X u (X.σ (m * h0) u') p = (mc X u (X.σ (m * h0) u') (nn * h) * star (psiD D nn)) • D.π h⁻¹` using `rfl`. Establish `e6` using `mc_sig_right X u u' (mul_mem_UH_Hpk hn.1 hh.1) (mul_mem_UH_Hpk hm.1 hh0.1)`. Establish `e3 : h0⁻¹ * (m⁻¹ * nn) * h0⁻¹⁻¹ * (h0⁻¹ * h) = (m * h0)⁻¹ * (nn * h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_inv_rev]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc h0⁻¹⁻¹ h0⁻¹ h, hinvinv, Matrix.one_mul]`. Establish `e4 : psiD D (h0⁻¹ * (m⁻¹ * nn) * h0⁻¹⁻¹) = star (psiD D m) * psiD D nn`. Take `⟨-, hcp⟩` from `hF.nrm h0⁻¹ hh0i (m⁻¹ * nn) (hF.nmul _ hmi _ hn)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcp, hF.pmul _ hmi _ hn, psiD_inv D hF hm]`. Establish `e5 : D.π (h0⁻¹ * h)⁻¹ = (D.π h⁻¹).comp (D.π h0⁻¹⁻¹)`. Rewrite using `[Matrix.mul_inv_rev]`. Conclude with `D.π_rep.2 _ (inv_mem_UWset' hh) _ hh0ii`. Rewrite using `[e1, e2, e6, e3, e4, e5, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_assoc, hid, ContinuousLinearMap.comp_id, smul_smul, star_mul, star_star]`.
-
-Use `congr 1`. Take the linear combination `(-(mc X u u' ((m * h0)⁻¹ * (nn * h)) * star (psiD D nn))) * hpsi`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Conclude with `((ContinuousLinearMap.compL ℂ Wp Wp Wp).flip (D.π h0⁻¹)).integral_comp_comm hIS`.
-
-Use `_ = star (psiD D m) • (beOp D X u u').comp (D.π h0⁻¹) := by rw [hint]; rfl`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem beOp_right (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hF : BEFacts D) (u u' : X.Hs)
     (hI : Integrable (beInt D X u u') (D.μW.prod D.μN)) {h0 m : Mat k r} (hh0 : h0 ∈ UWset k r D.z)

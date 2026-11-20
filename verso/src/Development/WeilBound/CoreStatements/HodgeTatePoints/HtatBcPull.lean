@@ -17,7 +17,7 @@ namespace Pull
 variable {B B' : Type} [CommRing B] [CommRing B'] {Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Simplify using `only [valAt, Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem valAt_comp (y : Spec (CommRingCat.of B) ⟶ Y) (φ : Y ⟶ Z) (W : Z.Opens) (h : ⊤ ≤ (y ≫ φ) ⁻¹ᵁ W) (f : Γ(Z, W)) :
     valAt (y ≫ φ) W h f = valAt y (φ ⁻¹ᵁ W) h ((φ.app W).hom f) := by
@@ -25,9 +25,9 @@ theorem valAt_comp (y : Spec (CommRingCat.of B) ⟶ Y) (φ : Y ⟶ Z) (W : Z.Ope
   rfl
 
 /- English proof (translation)
-Establish `e : (Spec.map (CommRingCat.ofHom φ) ≫ y).appLE W ⊤ h' = y.appLE W ⊤ h ≫ (Spec.map (CommRingCat.ofHom φ)).appTop`. Use `Scheme.Hom.appLE_comp_appLE (Spec.map (CommRingCat.ofHom φ)) y W ⊤ ⊤ h le_top` as an intermediate fact. Rewrite using `[← this]`. Simplify using `[Scheme.Hom.appLE]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ)`. Simplify using `only [valAt, e]`. Conclude with `congrArg (fun z => z.hom ((y.appLE W ⊤ h).hom f)) n`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valAt_spec (φ : B →+* B') (y : Spec (CommRingCat.of B) ⟶ Y) (W : Y.Opens)
     (h : ⊤ ≤ y ⁻¹ᵁ W) (h' : ⊤ ≤ (Spec.map (CommRingCat.ofHom φ) ≫ y) ⁻¹ᵁ W) (f : Γ(Y, W)) :
@@ -43,7 +43,7 @@ theorem valAt_spec (φ : B →+* B') (y : Spec (CommRingCat.of B) ⟶ Y) (W : Y.
   exact congrArg (fun z => z.hom ((y.appLE W ⊤ h).hom f)) n
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem valAt_congr {B : Type} [CommRing B] {Y : Scheme.{0}} {y y' : Spec (CommRingCat.of B) ⟶ Y} (e : y = y') (W : Y.Opens)
     (h : ⊤ ≤ y ⁻¹ᵁ W) (h' : ⊤ ≤ y' ⁻¹ᵁ W) (f : Γ(Y, W)) : valAt y W h f = valAt y' W h' f := by
@@ -52,11 +52,11 @@ theorem valAt_congr {B : Type} [CommRing B] {Y : Scheme.{0}} {y y' : Spec (CommR
 end Pull
 
 /- English proof (translation)
-Introduce `R _ _ T _ _ Γ R' _ _ _ Γ' F hF κ hκ f g' ⟨U, hU, s, hs⟩`. Use `⟨F ⁻¹ᵁ U, hU, (F.app U).hom s, fun t h => ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.T.base_change_points_compat R T Γ R' Γ' F hF κ hκ t`. Establish `h1 : ⊤ ≤ ((Γ'.pt t).left ≫ F) ⁻¹ᵁ U` using `h`. Establish `h2 : ⊤ ≤ (Spec.map (CommRingCat.ofHom κ) ≫ (Γ.pt t).left) ⁻¹ᵁ U` using `e ▸ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ⊤ ≤ (Γ.pt t).left ⁻¹ᵁ U` using `fun z _ => by`. Establish `hz : z = Spec.map (CommRingCat.ofHom κ) (IsLocalRing.closedPoint (FractionRing R'))` using `Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) _ _`. Rewrite using `[hz]`. Conclude with `h2 (by trivial)`. Use `(Pull.valAt_comp _ F U h1 s).symm.trans ((Pull.valAt_congr e U h1 h2 s).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pull.valAt_spec κ _ U h3, hs t h3]`.
+A detailed English derivation is pending.
 -/
 theorem reg_pull : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (R' : Type) [CommRing R'] [IsDomain R'] [Algebra R R'] (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left), Γ'.IsBaseChange Γ (algebraMap R R') F → ∀ κ : FractionRing R →+* FractionRing R', κ.comp (algebraMap R _) = (algebraMap R' _).comp (algebraMap R R') → ∀ (f : T → FractionRing R) (g' : Γ'.G.left), Γ.RegularAt f (F g') → Γ'.RegularAt (fun t => κ (f t)) g' := by
   intro R _ _ T _ _ Γ R' _ _ _ Γ' F hF κ hκ f g' ⟨U, hU, s, hs⟩

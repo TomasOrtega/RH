@@ -18,13 +18,13 @@ section Cycles
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-The claim follows from `hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_mem_divSupp' {P W : Ideal (MRing ι)} {f : MRing ι} (hW : W ∈ divSupp P f) : f ∈ W :=
   hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))
 
 /- English proof (translation)
-Use `⟨⟨⟨hW.1.1.1, (sup_span_mul_le P f g).trans hW.1.1.2⟩, fun Q hQ hQW => ?_⟩, hW.2⟩` and prove the remaining obligations. Establish `hfg : f * g ∈ Q` using `hQ.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Break down `hQ.1.mem_or_mem hfg with hf | hg` into its components or cases. Conclude with `hW.1.2 ⟨hQ.1, sup_le (le_sup_left.trans hQ.2) (Ideal.span_singleton_le_iff_mem _ |>.mpr hf)⟩ hQW`. Conclude with `(eq_of_le_of_mem_minimalPrimes hP hW.1 hQ.1 (le_sup_left.trans hQ.2) hg hgP hQW).ge`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mem_divSupp_mul_left' {P W : Ideal (MRing ι)} (hP : P.IsPrime) {f g : MRing ι}
     (hgP : g ∉ P) (hW : W ∈ divSupp P f) : W ∈ divSupp P (f * g) := by
@@ -37,7 +37,7 @@ theorem mem_divSupp_mul_left' {P W : Ideal (MRing ι)} (hP : P.IsPrime) {f g : M
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨hW.1.1.1, sup_le (le_sup_left.trans hW.1.1.2) (Ideal.span_singleton_le_iff_mem _ |>.mpr hf)⟩, fun _ hQ hQW => hW.1.2 ⟨hQ.1, (sup_span_mul_le P f g).trans hQ.2⟩ hQW⟩, hW.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_divSupp_of_mul' {P W : Ideal (MRing ι)} {f g : MRing ι}
     (hW : W ∈ divSupp P (f * g)) (hf : f ∈ W) : W ∈ divSupp P f :=
@@ -46,18 +46,18 @@ theorem mem_divSupp_of_mul' {P W : Ideal (MRing ι)} {f g : MRing ι}
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Simplify using `[multAt, hW, locLen]`.
+Simplify using the standard rewrite rules.
 -/
 theorem multAt_eq' (J W : Ideal (MRing ι)) (hW : W.IsPrime) :
     multAt J W = (locLen (MRing ι ⧸ J) ⟨W, hW⟩).toNat := by
   simp [multAt, hW, locLen]
 
 /- English proof (translation)
-Use extensionality with `W`. Simplify using `only [Finsupp.add_apply, divCycle, Finsupp.ofSupportFinite_coe]`. Distinguish the cases in `h : W ∈ divSupp P (f * g)`. Establish `hWp` using `h.1.1.1`. Establish `h' : W ∈ divSupp P (g * f)` using `by rwa [mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `locLen_mul hP hf g ⟨W, hWp⟩`. Establish `hfin` using `locLen_ne_top h.1`. Rewrite `hfin` using `[key]`. Rewrite using `[if_pos h, multAt_eq' _ _ hWp, key]`. Apply the tactic sequence `by_cases hfW : f ∈ W <;> by_cases hgW : g ∈ W`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[if_pos (mem_divSupp_of_mul' h hfW), if_pos (mem_divSupp_of_mul' h' hgW), multAt_eq' _ _ hWp, multAt_eq' _ _ hWp, ENat.toNat_add (WithTop.add_ne_top.mp hfin).1 (WithTop.add_ne_top.mp hfin).2, add_comm]`. Rewrite using `[if_pos (mem_divSupp_of_mul' h hfW), if_neg fun h2 => hgW (mem_of_mem_divSupp' h2), multAt_eq' _ _ hWp, locLen_quot_eq_zero _ hgW, zero_add, add_zero]`. Rewrite using `[if_neg fun h2 => hfW (mem_of_mem_divSupp' h2), if_pos (mem_divSupp_of_mul' h' hgW), multAt_eq' _ _ hWp, locLen_quot_eq_zero (V := P) (g := f) _ hfW, add_zero, zero_add]`. Conclude with `absurd (hWp.mem_or_mem (mem_of_mem_divSupp' h)) (by tauto)`. Rewrite using `[if_neg h, if_neg fun h2 => h (mem_divSupp_mul_left' hP hg h2), if_neg fun h2 => h (by rw [mul_comm]; exact mem_divSupp_mul_left' hP hf h2)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divCycle_mul' {P : Ideal (MRing ι)} (hP : P.IsPrime) {f g : MRing ι}
     (hf : f ∉ P) (hg : g ∉ P) : divCycle P (f * g) = divCycle P f + divCycle P g := by
@@ -90,13 +90,13 @@ def cycWeight (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) �
   if IsHorizontal W then I W n L else (geoNum n W (fun j => (L j).a) : ℝ) * Real.log (charOf W)
 
 /- English proof (translation)
-Unfold `cycR`. Rewrite using `[finsum_mem_def, finsum_eq_sum_of_support_subset _ (s := (divCycle P s).support)]`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : W ∈ divSupp P s`. Simplify using `[Set.indicator, h, divCycle, Finsupp.ofSupportFinite_coe, cycWeight]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator, h, divCycle, Finsupp.ofSupportFinite_coe]`. Introduce `W hW`. Rewrite `hW` using `[Function.mem_support]`. Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Introduce `h0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hW` to reduce the goal to its premises. Distinguish the cases in `h : W ∈ divSupp P s`. Establish `: multAt (P ⊔ Ideal.span {s}) W = 0`. Simplify `h0` using `[divCycle, Finsupp.ofSupportFinite_coe, h]`. Simplify using `[Set.indicator, h, this]`.
+Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cycR_eq_sum (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ) (P : Ideal (MRing ι))
     {n : ℕ} (L : Fin n → HermLine ι) (s : MRing ι) :
@@ -120,7 +120,7 @@ theorem cycR_eq_sum (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine 
     · simp [Set.indicator, h]
 
 /- English proof (translation)
-Rewrite using `[cycR_eq_sum, cycR_eq_sum, cycR_eq_sum, divCycle_mul' hP hs ht]`. Conclude with `Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by push_cast; ring)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycR_mul (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ) {P : Ideal (MRing ι)}
     (hP : P.IsPrime) {n : ℕ} (L : Fin n → HermLine ι) {s t : MRing ι} (hs : s ∉ P) (ht : t ∉ P) :
@@ -133,7 +133,7 @@ end Cycles
 section NoHorizontal
 
 /- English proof (translation)
-Introduce `hh` and use `h0 K ι W ((divSuppArith K ι P 0 A s W hP hs hW).1 hh)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isHorizontal_of_dimOne (h0 : ArithVarZeroStatement) {P : Ideal (MRing ι)} {A : HermLine ι}
     {s : MRing ι} {W : Ideal (MRing ι)} (hP : IsArithVar P 1) (hs : IsSectionOn P A s)
@@ -141,15 +141,15 @@ theorem not_isHorizontal_of_dimOne (h0 : ArithVarZeroStatement) {P : Ideal (MRin
   h0 K ι W ((divSuppArith K ι P 0 A s W hP hs hW).1 hh)
 
 /- English proof (translation)
-Introduce `hzero`. Set `φ : MRing ι →+* ℂ` to `(eval z).comp (map (Int.castRingHom ℂ))`. Establish `hQ : (RingHom.ker φ).IsPrime` using `RingHom.ker_isPrime φ`. Establish `hle : P ⊔ Ideal.span {s} ≤ RingHom.ker φ`. Use `sup_le (fun f hf => ?_) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.mem_ker]`. Conclude with `hz.2 f hf`. Rewrite using `[Ideal.span_singleton_le_iff_mem, RingHom.mem_ker]`. Conclude with `hzero`. Take `⟨W, hW, hWQ⟩` from `Ideal.exists_minimalPrimes_le hle`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hrel : IsRelevant W` using `fun k => by`. Take `⟨i, hi⟩` from `hz.1 k`. Use `⟨i, fun hX => hi ?_⟩` and prove the remaining obligations. Establish `h1` using `hWQ hX`. Rewrite `h1` using `[RingHom.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h1` using `[φ]`. Establish `hhor : IsHorizontal W`. Unfold `IsHorizontal`. Use `eq_bot_iff.mpr fun n hn => ?_` and prove the remaining obligations. Rewrite `hn` using `[Ideal.mem_comap]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hWQ hn`. Rewrite `h1` using `[RingHom.mem_ker]`. Simplify using `[φ] at h1`. Simplify using `[h1]`. Conclude with `not_isHorizontal_of_dimOne h0 hP hs ⟨hW, hrel⟩ hhor`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_ne_zero_of_dimOne (h0 : ArithVarZeroStatement) {P : Ideal (MRing ι)} {A : HermLine ι}
     {s : MRing ι} (hP : IsArithVar P 1) (hs : IsSectionOn P A s) {z : (Σ k, ι k) → ℂ}
@@ -185,11 +185,11 @@ end NoHorizontal
 section Integral
 
 /- English proof (translation)
-Unfold `ptsIntegral`. Use `split_ifs with hΨ`. Unfold `ptsIntegralAt`. Rewrite using `[MeasureTheory.integral_unique, MeasureTheory.integral_unique, MeasureTheory.integral_unique, ← smul_add]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hfin : ∀ y, (fibre P hΨ.choose y).Finite` using `hFF K ι P 0 hΨ.choose hP hΨ.choose_spec`. Use `Eq.trans ?_ (finsum_mem_add_distrib' ((hfin _).subset Set.inter_subset_left) ((hfin _).subset Set.inter_subset_left))` and prove the remaining obligations. Use `finsum_mem_congr rfl fun w _ => ?_` and prove the remaining obligations. Unfold `sheetDensity`. Use `split_ifs with hγ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ∀ y : Fin 0 → ℂ, hγ.choose y ∈ mcPts P` using `fun y => (Subsingleton.elim _ y) ▸ hγ.choose_spec.2.self_of_nhds.2.1`. Rewrite using `[h _ (hz _), add_mul]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_add_of_dimOne (hFF : FibreFiniteStatement) {P : Ideal (MRing ι)}
     (hP : IsArithVar P 1) (φ : Fin 0 → ((Σ k, ι k) → ℂ) → ℝ) {g g₁ g₂ : ((Σ k, ι k) → ℂ) → ℝ}
@@ -214,9 +214,9 @@ theorem ptsIntegral_add_of_dimOne (hFF : FibreFiniteStatement) {P : Ideal (MRing
   · simp
 
 /- English proof (translation)
-Unfold `arInt`. Use `ptsIntegral_add_of_dimOne hFF hP _ fun z hz => ?_` and prove the remaining obligations. Establish `hs0` using `eval_ne_zero_of_dimOne h0 hP hs hz`. Establish `ht0` using `eval_ne_zero_of_dimOne h0 hP ht hz`. Establish `hA` using `A.pos z hz.1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `B.pos z hz.1`. Unfold `logNorm`. Rewrite using `[show (A.tensor B).h z = A.h z * B.h z from rfl, map_mul, map_mul, norm_mul, mul_div_mul_comm]`. Conclude with `Real.log_mul (div_ne_zero (norm_ne_zero_iff.mpr hs0) hA.ne') (div_ne_zero (norm_ne_zero_iff.mpr ht0) hB.ne')`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arInt_mul_of_dimOne (h0 : ArithVarZeroStatement) (hFF : FibreFiniteStatement)
     {P : Ideal (MRing ι)} (hP : IsArithVar P 1) {A B : HermLine ι} {s t : MRing ι}
@@ -237,9 +237,9 @@ theorem arInt_mul_of_dimOne (h0 : ArithVarZeroStatement) (hFF : FibreFiniteState
 end Integral
 
 /- English proof (translation)
-Introduce `K _ ι _ I P A s hP _ hs`. Rewrite using `[recR_eq]`. Use `congr 1`. Unfold `cycR vertR`. Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[not_isHorizontal_of_dimOne h0 hP hs hW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem SpecIntHeightFormula.proof (h0 : ArithVarZeroStatement) : SpecIntHeightFormula.Statement := by
   intro K _ ι _ I P A s hP _ hs
@@ -250,7 +250,7 @@ theorem SpecIntHeightFormula.proof (h0 : ArithVarZeroStatement) : SpecIntHeightF
   simp [not_isHorizontal_of_dimOne h0 hP hs hW]
 
 /- English proof (translation)
-Introduce `K _ ι _ I P A B s t hP _ _ hs ht`. Take `⟨_, _, _, hsP⟩` from `id hs`. Take `⟨_, _, _, htP⟩` from `id ht`. Rewrite using `[recR_eq, recR_eq, recR_eq, cycR_mul I hP.2.1.1 _ hsP htP, arInt_mul_of_dimOne h0 hFF hP hs ht]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem RegularityAdditive.proof (h0 : ArithVarZeroStatement) (hFF : FibreFiniteStatement) : RegularityAdditive.Statement := by
   intro K _ ι _ I P A B s t hP _ _ hs ht
@@ -260,7 +260,7 @@ theorem RegularityAdditive.proof (h0 : ArithVarZeroStatement) (hFF : FibreFinite
   ring
 
 /- English proof (translation)
-Unfold `cycR vertR`. Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations. Simplify using `[not_isHorizontal_of_dimOne h0 hP hs hW]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem cycR_eq_vertR_of_dimOne (h0 : ArithVarZeroStatement) (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ)
     {P : Ideal (MRing ι)} {A : HermLine ι} {s : MRing ι} (hP : IsArithVar P 1) (hs : IsSectionOn P A s) :
@@ -270,13 +270,13 @@ theorem cycR_eq_vertR_of_dimOne (h0 : ArithVarZeroStatement) (I : Ideal (MRing �
   simp [not_isHorizontal_of_dimOne h0 hP hs hW]
 
 /- English proof (translation)
-Introduce `K _ ι _ I P A s t hP hs ht`. Take `⟨a, ha, hsa, hsP⟩` from `id hs`. Take `⟨b, hb, htb, htP⟩` from `id ht`. Establish `hab : b = a` using `funext fun k => by exact_mod_cast (hb k).symm.trans (ha k)`. Substitute `hab` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hφ : (fun (j : Fin 0) (z : (Σ k, ι k) → ℂ) => Real.log (((Fin.elim0 : Fin 0 → HermLine ι) j).h z)) = (Fin.elim0 : Fin 0 → ((Σ k, ι k) → ℂ) → ℝ)` using `funext fun j => j.elim0`. Establish `hsplit : arInt P s A (Fin.elim0 : Fin 0 → HermLine ι) = ptsIntegral P (Fin.elim0 : Fin 0 → ((Σ k, ι k) → ℂ) → ℝ) (fun z => Real.log (‖eval z (map (Int.castRingHom ℂ) s)‖ / ‖eval z (map (Int.castRingHom ℂ) t)‖)) + arInt P t A (Fin.elim0 : Fin 0 → HermLine ι)`. Unfold `arInt`. Rewrite using `[hφ]`. Use `ptsIntegral_add_of_dimOne hFF hP _ fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs0` using `norm_ne_zero_iff.mpr (eval_ne_zero_of_dimOne h0 hP hs hz)`. Establish `ht0` using `norm_ne_zero_iff.mpr (eval_ne_zero_of_dimOne h0 hP ht hz)`. Establish `hA` using `(A.pos z hz.1).ne'`. Unfold `logNorm`. Rewrite using `[← Real.log_mul (div_ne_zero hs0 ht0) (div_ne_zero ht0 hA)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hpf` using `hPF K ι P s t b hP hsa htb hsP htP`. Rewrite using `[recR_eq, recR_eq, cycR_eq_vertR_of_dimOne h0 I hP hs, cycR_eq_vertR_of_dimOne h0 I hP ht, hsplit]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem RegularityIndependence.proof (h0 : ArithVarZeroStatement) (hFF : FibreFiniteStatement)
     (hPF : RegularityProductFormula.Statement) : RegularityIndependence.Statement := by
@@ -306,7 +306,7 @@ theorem RegularityIndependence.proof (h0 : ArithVarZeroStatement) (hFF : FibreFi
   linarith
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.R1.of_first ⟨RegularityIndependence.proof h0 hFF hPF, RegularityAdditive.proof h0 hFF⟩`.
+A detailed English derivation is pending.
 -/
 theorem R1.proof (h0 : ArithVarZeroStatement) (hFF : FibreFiniteStatement)
     (hPF : RegularityProductFormula.Statement) : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.R1.Statement :=

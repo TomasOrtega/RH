@@ -22,7 +22,7 @@ def leviBl {R : Type} [CommRing R] {n ρ p : ℕ} (hn : ρ + p = n) (a : GL (Fin
     by rw [blockMatrix_multiply]; simp [blockMatrix_one], by rw [blockMatrix_multiply]; simp [blockMatrix_one]⟩
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply, leviBl, bl]`. Rewrite using `[Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_leviBl {R : Type} [CommRing R] {n ρ p : ℕ} (hn : ρ + p = n) (a : GL (Fin ρ) R) :
     Matrix.GeneralLinearGroup.det (leviBl hn a) = Matrix.GeneralLinearGroup.det a := by
@@ -31,25 +31,25 @@ theorem det_leviBl {R : Type} [CommRing R] {n ρ p : ℕ} (hn : ρ + p = n) (a :
   rw [Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]
 
 /- English proof (translation)
-Simplify using `only [bl, Matrix.fromBlocks_zero, Matrix.submatrix_zero, Pi.zero_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockMatrix_zero {R : Type} [CommRing R] {n ρ p : ℕ} (hn : ρ + p = n) :
     bl hn (0 : Matrix (Fin ρ) (Fin ρ) R) 0 0 0 = 0 := by
   simp only [bl, Matrix.fromBlocks_zero, Matrix.submatrix_zero, Pi.zero_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blkA, blk4, Matrix.toBlocks₁₁]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blkA_blk4 {R : Type} {k : ℕ} (a b c d : Matrix (Fin k) (Fin k) R) : blkA (blk4 a b c d) = a := by
   ext i j
   simp [blkA, blk4, Matrix.toBlocks₁₁]
 
 /- English proof (translation)
-Introduce `D n ρ p hn ι hc hblk H hH`. Use `⟨hH.1.comp hc, fun g => hH.2.1 _, ?_⟩` and prove the remaining obligations. Introduce `q hq a ha g`. Take `⟨b, d, hm⟩` from `GlobalTheory.StdUnn.LeftInvSect.siegelParabolicUnn_matrix_blockUpperTriangular hq`. Rewrite `hm` using `[ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hι` using `hblk q a.1 b 0 d hm`. Rewrite `hι` using `[blockMatrix_zero]`. Establish `hqP : ι q ∈ P D n` using `GlobalTheory.CompanionTheory.SwUnf.SmallCell.mem_siegelParabolic_of_lowerLeft_entries_eq_zero hι`. Establish `hA : blkA (mat (ι q)) = (leviBl hn a).1`. Rewrite using `[hι, blkA_blk4]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `show H (ι (q * g)) = _ * H (ι g)`. Rewrite using `[map_mul, hH.2.2 _ hqP (leviBl hn a) hA, det_leviBl]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHt_blockPull : ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (ι : G D ρ →* G D n), Continuous ι →
   (∀ (h : G D ρ) (a b c d : Mx D ρ ρ), mat h = blk4 a b c d →

@@ -16,7 +16,7 @@ section pb2
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `B.gN`. Establish `h1 : ‖M i j‖ ^ 2 ≤ ∑ a, ∑ b, Complex.normSq (M a b)`. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 lemma pb_entry_le_gN (M : B.Mat k r) (i j : Fin (2 * r + k + 1)) : ‖M i j‖ ≤ B.gN M := by
   unfold B.gN
@@ -32,16 +32,16 @@ lemma pb_entry_le_gN (M : B.Mat k r) (i j : Fin (2 * r + k + 1)) : ‖M i j‖ �
     _ ≤ _ := Real.sqrt_le_sqrt h1
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ B.gN g` using `by unfold B.gN; positivity`. Conclude with `(Matrix.norm_le_iff h0).2 (fun i j => pb_entry_le_gN g i j)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma pb_sup_le_gN (g : B.Mat k r) : ‖g‖ ≤ B.gN g := by
   have h0 : 0 ≤ B.gN g := by unfold B.gN; positivity
   exact (Matrix.norm_le_iff h0).2 (fun i j => pb_entry_le_gN g i j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.norm_le_iff (by positivity)]`. Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (Matrix.norm_entry_le_entrywise_sup_norm A) (Matrix.norm_entry_le_entrywise_sup_norm A') (norm_nonneg _) (norm_nonneg _)`. Use `_ = _ := by simp`.
+A detailed English derivation is pending.
 -/
 lemma pb_mul_norm_le (A A' : B.Mat k r) : ‖A * A'‖ ≤ ((2 * r + k + 1 : ℕ) : ℝ) * (‖A‖ * ‖A'‖) := by
   rw [Matrix.norm_le_iff (by positivity)]
@@ -55,11 +55,9 @@ lemma pb_mul_norm_le (A A' : B.Mat k r) : ‖A * A'‖ ≤ ((2 * r + k + 1 : ℕ
     _ = _ := by simp
 
 /- English proof (translation)
-Establish `hX : ‖x.2‖ ≤ 1` using `(Matrix.norm_le_iff zero_le_one).2 hx.2`. Unfold `dirL`. Use `split_ifs`. Use `show ‖-x.2 * g‖ ≤ _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[norm_neg]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_of_le_one_left (norm_nonneg _) hX) (by positivity)`. Use `first`. Consider the case `show ‖g * x.2‖ ≤ _`. Combine the equalities or inequalities in the displayed calculation.
-
-Consider the case `(unfold mulRightRealCLM; done)`.
+Chain the equalities or inequalities of the calculation. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma pb_dirL_le {x : Bool × B.Mat k r} (hx : B.unitLie k r x.2) (g : B.Mat k r) :
     ‖dirL x g‖ ≤ ((2 * r + k + 1 : ℕ) : ℝ) * ‖g‖ := by
@@ -78,15 +76,13 @@ lemma pb_dirL_le {x : Bool × B.Mat k r} (hx : B.unitLie k r x.2) (g : B.Mat k r
     | (unfold mulRightRealCLM; done)
 
 /- English proof (translation)
-Establish `hD : ∀ (L : B.Mat k r →L[ℝ] ℂ) (x : Bool × B.Mat k r), Dx x (fun g => L g) = fun g => L (dirL x g)`. Introduce `L x`. Use function extensionality and compare the values at `g`. Rewrite using `[Dx_eq, dirL_apply]`. Conclude with `(L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (crv_hasDerivAt x g)).deriv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `w with`. Consider the case `nil`. Introduce `Λ c hc hΛ`. Use `⟨Λ, rfl, fun g => ?_⟩` and prove the remaining obligations. Simplify using `using hΛ g`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `cons x w ih`. Introduce `Λ c hc hΛ`. Take `⟨Λ₁, h₁, hb₁⟩` from `ih (fun y hy => hw y (by simp [hy])) Λ c hc hΛ`. Use `⟨Λ₁.comp (dirL x), ?_, fun g => ?_⟩` and prove the remaining obligations. Use `show Dx x (Dw w fun g => Λ g) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h₁, hD]`. Both sides reduce to the same expression. Establish `hx` using `hw x (by simp) g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[List.length_cons, pow_succ]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma pb_Dw_clm {K : ℝ} (hK : 0 ≤ K) (w : List (Bool × B.Mat k r))
     (hw : ∀ x ∈ w, ∀ g, ‖dirL x g‖ ≤ K * ‖g‖) :
@@ -120,9 +116,9 @@ lemma pb_Dw_clm {K : ℝ} (hK : 0 ≤ K) (w : List (Bool × B.Mat k r))
           ring
 
 /- English proof (translation)
-Use `⟨Λ.contDiff, fun n => ?_⟩` and prove the remaining obligations. Establish `hK1 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)`. Conclude with `(by omega : 1 ≤ 2 * r + k + 1)` after adjusting the coercions. Use `⟨((2 * r + k + 1 : ℕ) : ℝ) ^ n, fun w hw hn g _ => ?_⟩` and prove the remaining obligations. Take `⟨Λ', hΛ', hb⟩` from `pb_Dw_clm (by linarith) w (fun x hx g => pb_dirL_le (hw x hx) g) Λ 1 zero_le_one hΛ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΛ', Real.rpow_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]`. Conclude with `mul_le_mul (pow_le_pow_right₀ hK1 hn) (pb_sup_le_gN g) (norm_nonneg _) (by positivity)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pb_clm (Λ : B.Mat k r →L[ℝ] ℂ) (hΛ : ∀ g, ‖Λ g‖ ≤ 1 * ‖g‖) : PG 1 (fun g => Λ g) := by
   refine ⟨Λ.contDiff, fun n => ?_⟩
@@ -149,13 +145,13 @@ def pbVar (g : B.Mat k r) : (Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) ⊕ (Fi
   Sum.elim (fun x => g x.1 x.2) (fun x => star (g x.1 x.2))
 
 /- English proof (translation)
-Break down `i with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases. Establish `e : (fun g : B.Mat k r => pbVar g (Sum.inl (a, b))) = fun g => pbCo a b g`. Use function extensionality and compare the values at `g`. Apply the tactic sequence `simp [pbVar, pbCo] <;> rfl`. Rewrite using `[e]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `pb_clm (pbCo a b) (fun g => ?_)` and prove the remaining obligations. Apply the tactic sequence `have e2 : pbCo a b g = g a b := by simp [pbCo] <;> rfl`. Rewrite using `[e2, one_mul]`. Conclude with `Matrix.norm_entry_le_entrywise_sup_norm g`. Establish `e : (fun g : B.Mat k r => pbVar g (Sum.inr (a, b))) = fun g => pbCc a b g`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Apply the tactic sequence `simp [pbVar, pbCc] <;> rfl`. Rewrite using `[e]`. Use `pb_clm (pbCc a b) (fun g => ?_)` and prove the remaining obligations. Apply the tactic sequence `have e2 : pbCc a b g = star (g a b) := by simp [pbCc] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, one_mul, norm_star]`. Conclude with `Matrix.norm_entry_le_entrywise_sup_norm g`.
+A detailed English derivation is pending.
 -/
 lemma pb_var (i : (Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) ⊕ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) :
     PG 1 (fun g : B.Mat k r => pbVar g i) := by
@@ -178,9 +174,9 @@ lemma pb_var (i : (Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) ⊕ (Fin (2 * r +
     exact Matrix.norm_entry_le_entrywise_sup_norm g
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Establish `h : PG 0 (fun _ : B.Mat k r => (1 : ℂ))` using `pb_const 1`. Simplify using `using h`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Establish `h` using `pb_mul ih hf`. Establish `e1 : ((m + 1 : ℕ) : ℝ) * e = (m : ℝ) * e + e` using `by push_cast; ring`. Rewrite using `[e1]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -198,11 +194,11 @@ lemma pb_pow {e : ℝ} {f : B.Mat k r → ℂ} (hf : PG e f) (m : ℕ) : PG ((m 
     ring
 
 /- English proof (translation)
-Use `revert hF`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Establish `h : PG 0 (fun _ : B.Mat k r => (1 : ℂ))` using `pb_const 1`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a s ha ih hF`. Establish `h1` using `hF a (Finset.mem_insert_self a s)`. Establish `h2` using `ih (fun i hi => hF i (Finset.mem_insert_of_mem hi))`. Rewrite using `[Finset.sum_insert ha]`. Use `pb_mul h1 h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Finset.prod_insert ha]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pb_prod {ι : Type*} (s : Finset ι) (e : ι → ℝ) (F : ι → B.Mat k r → ℂ)
     (hF : ∀ i ∈ s, PG (e i) (F i)) : PG (∑ i ∈ s, e i) (fun g => ∏ i ∈ s, F i g) := by
@@ -221,11 +217,11 @@ lemma pb_prod {ι : Type*} (s : Finset ι) (e : ι → ℝ) (F : ι → B.Mat k 
     rw [Finset.prod_insert ha]
 
 /- English proof (translation)
-Use `revert hF`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Establish `h : PG e (fun _ : B.Mat k r => (0 : ℂ))` using `pb_zero e`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a s ha ih hF`. Establish `h1` using `hF a (Finset.mem_insert_self a s)`. Establish `h2` using `ih (fun i hi => hF i (Finset.mem_insert_of_mem hi))`. Use `pb_add h1 h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert ha]`.
+A detailed English derivation is pending.
 -/
 lemma pb_sum {ι : Type*} (s : Finset ι) {e : ℝ} (F : ι → B.Mat k r → ℂ)
     (hF : ∀ i ∈ s, PG e (F i)) : PG e (fun g => ∑ i ∈ s, F i g) := by
@@ -243,13 +239,13 @@ lemma pb_sum {ι : Type*} (s : Finset ι) {e : ℝ} (F : ι → B.Mat k r → �
     rw [Finset.sum_insert ha]
 
 /- English proof (translation)
-Take `⟨q, hq, hPq⟩` from `hP`. Establish `hfun : P = fun g => ∑ d ∈ q.support, q.coeff d * ∏ i ∈ d.support, pbVar g i ^ d i`. Use function extensionality and compare the values at `g`. Rewrite using `[hPq g, MvPolynomial.eval_eq]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hfun]`. Use `pb_sum q.support (fun d g => q.coeff d * ∏ i ∈ d.support, pbVar g i ^ d i) (fun d hd => ?_)` and prove the remaining obligations. Establish `h1 : PG (∑ i ∈ d.support, ((d i : ℕ) : ℝ) * 1) (fun g => ∏ i ∈ d.support, pbVar g i ^ d i)` using `pb_prod d.support (fun i => ((d i : ℕ) : ℝ) * 1) (fun i g => pbVar g i ^ d i) (fun i _ => pb_pow (pb_var i) (d i))`. Establish `h0 : PG 0 (fun _ : B.Mat k r => q.coeff d)` using `pb_const _`. Establish `h2` using `pb_mul h0 h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pb_mono h2 ?_` and prove the remaining obligations. Establish `hdeg : (d.sum fun _ e => e) ≤ κ` using `(MvPolynomial.le_totalDegree hd).trans hq`. Establish `hs : (∑ i ∈ d.support, ((d i : ℕ) : ℝ) * 1) = ((d.sum fun _ e => e : ℕ) : ℝ)`. Simplify using `[Finsupp.sum]`. Rewrite using `[zero_add, hs]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdeg` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem pb_poly {κ : ℕ} {P : B.Mat k r → ℂ} (hP : IsPolyDeg κ P) : PG (κ : ℝ) P := by
   obtain ⟨q, hq, hPq⟩ := hP

@@ -108,7 +108,7 @@ def CollWin : Prop := Win CollAt
 def NscWin : Prop := Win NscAt
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Real.one_lt_rpow large₂.sc.one_lt_alt large₂.sc.eps_pos, h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem hypL_of {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (h : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) :
     HypL D large₂.sc.L C' Cl Cg cb Cu cT CT :=

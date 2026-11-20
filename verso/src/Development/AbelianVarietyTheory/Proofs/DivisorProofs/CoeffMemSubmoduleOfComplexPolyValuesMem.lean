@@ -6,13 +6,13 @@ open Matrix GlobalTheory.TorFin
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ S N c h k hk`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `f`. Use `set p : Polynomial ℂ := ∑ j ∈ Finset.range N, Polynomial.C (f (Submodule.Quotient.mk (c j))) * Polynomial.X ^ j with hpdef`. Establish `hp : p = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `u`. Establish `h1 : S.mkQ (∑ k ∈ Finset.range N, u ^ k • c k) = 0` using `(Submodule.Quotient.mk_eq_zero S).mpr (h u)`. Establish `h0` using `congrArg f h1`. Simplify using `only [map_sum, map_smul, Submodule.mkQ_apply, smul_eq_mul, map_zero] at h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hpdef, Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_zero]`. Rewrite using `[← h0]`. Conclude with `Finset.sum_congr rfl (fun j _ => mul_comm _ _)`. Establish `hc` using `congrArg (fun q : Polynomial ℂ => q.coeff k) hp`. Simplify using `only [hpdef, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow, Polynomial.coeff_zero, mul_ite, mul_one, mul_zero] at hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hc` using `[Finset.sum_ite_eq]`. Simplify `hc` using `[Finset.mem_range.mpr hk]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_mem_of_poly_values_mem : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (S : Submodule ℂ V) (N : ℕ) (c : ℕ → V), (∀ u : ℂ, ∑ k ∈ Finset.range N, u ^ k • c k ∈ S) → ∀ k < N, c k ∈ S := by
   intro V _ _ S N c h k hk

@@ -4,17 +4,15 @@ open MeasureTheory Topology PositivityTheory.Rg.Tf.Loc
 open scoped ENNReal
 
 /- English proof (translation)
-Introduce `hC hI G _ _ _ _ _ _ _ _ μG hμ H H' y hH hc hy μ μ' h1 h2 hm F hF hFH`. Establish `hy' : ∀ z, z ∈ H' ↔ y * z * y⁻¹ ∈ H` using `fun z => by rw [hy]; simp [mul_assoc]`. Establish `hH' : IsClosed (H' : Set G)`. Establish `: (H' : Set G) = (fun z => y * z * y⁻¹) ⁻¹' H` using `Set.ext hy'`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hH.preimage (by fun_prop)`. Establish `hc' : ∀ a ∈ H', ∀ b ∈ H', Commute a b` using `fun a ha b hb => by`. Use `(hc _ ((hy' a).1 ha) _ ((hy' b).1 hb)).eq` as an intermediate fact. Establish `h : y * a * b = y * b * a` using `by simpa [← mul_assoc] using this`. Rewrite `h` using `[mul_assoc, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_left_cancel h`. Take `⟨s1, i1, -⟩` from `hC G H hH hc μ h1`. Take `⟨s2, i2, -⟩` from `hC G H' hH' hc' μ' h2`. Establish `key : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ h : H, f (y⁻¹ * h * y) ∂μ = ∫⁻ h : H', f h ∂μ'` using `fun f hf => by`. Rewrite using `[← lintegral_map hf (g := fun x : H => y⁻¹ * (x : G) * y) (by fun_prop), hm, lintegral_map hf (g := fun x : H' => (x : G)) measurable_subtype_coe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hex : ∃ ρ, IsQuotNormaliser H μ ρ`. Take `⟨ρ, hρ⟩` from `hex`. Establish `hρ' : IsQuotNormaliser H' μ' fun g => ρ (y * g)` using `⟨hρ.1.comp (measurable_const_mul y), fun g => by`. Rewrite using `[← key (fun z => ρ (y * (z * g))) (hρ.1.comp (by fun_prop)), ← hρ.2 (y * g)]`. Conclude with `lintegral_congr fun h => by simp [mul_assoc]⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hI G μG hμ H μ s1 i1 F hF hFH ρ hρ, hI G μG hμ H' μ' s2 i2 (fun g => F (y * g)) (hF.comp (measurable_const_mul y)) (fun h hh g => by`. Rewrite using `[← hFH _ ((hy' h).1 hh) (y * g)]`. Simplify using `[mul_assoc]) _ hρ']`. Conclude with `integral_mul_left_eq_self (fun g => F g * ((ρ g).toReal : ℂ)) y`. Establish `hex' : ¬ ∃ ρ, IsQuotNormaliser H' μ' ρ` using `fun ⟨ρ, hρ⟩ => hex ⟨fun g => ρ (y⁻¹ * g), hρ.1.comp (measurable_const_mul _), fun g => by`.
-
-Rewrite using `[← hρ.2 (y⁻¹ * g), ← key (fun z => ρ (z * (y⁻¹ * g))) (hρ.1.comp (by fun_prop))]`. Conclude with `lintegral_congr fun h => by simp [mul_assoc]⟩`. Rewrite using `[quotIntegral, quotIntegral, dif_neg hex, dif_neg hex']`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.quotConj :
     UpperTheory.V.Z.Tf.Orb.HaarComm → UpperTheory.V.Z.Tf.Orb.QuotIndep → UpperTheory.V.Z.Tf.Orb.QuotConj := by

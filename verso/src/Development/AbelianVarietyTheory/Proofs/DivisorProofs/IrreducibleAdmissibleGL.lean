@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsSideMore
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FourClauses.adm GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FourClauses.irreducibleAdmissibleGL : GlobalTheory.Published.IrreducibleAdmissibleGL :=
   GlobalTheory.FourClauses.adm GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness

@@ -9,14 +9,14 @@ namespace GlobalTheory.Mass.Witt
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Simplify using `[perp, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_perp (h : V →ₗ⋆[K] V →ₗ[K] K) (U : Submodule K V) (v : V) :
     v ∈ perp h U ↔ ∀ x ∈ U, h x v = 0 := by
   simp [perp, Submodule.mem_iInf, LinearMap.mem_ker]
 
 /- English proof (translation)
-Establish `hα' : star α ≠ 0` using `star_ne_zero.mpr hα`. Simplify using `only [map_sub, LinearMap.sub_apply, LinearMap.map_smulₛₗ₂, map_smul, smul_eq_mul, starRingEnd_apply]`. Rewrite using `[← hsym w a, hww, star_mul, star_inv₀]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma h_sub_smul_sub_smul_eq_of_hww (h : V →ₗ⋆[K] V →ₗ[K] K) (hsym : ∀ a b, star (h a b) = h b a)
     (w : V) (α : K) (hα : α ≠ 0) (hww : h w w = α + star α) (a b : V) :
@@ -29,17 +29,17 @@ private lemma h_sub_smul_sub_smul_eq_of_hww (h : V →ₗ⋆[K] V →ₗ[K] K) (
   ring
 
 /- English proof (translation)
-Establish `hsym : ∀ a b, star (h a b) = h b a` using `fun a b => by`. Rewrite using `[← starRingEnd_apply]`. Conclude with `hs.eq a b`. Establish `hww : h (x - y) (x - y) = h (x - y) x + star (h (x - y) x)`. Rewrite using `[hsym]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub, LinearMap.sub_apply]`. Rewrite using `[hxy]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hα : h (x - y) x = 0`. Establish `h0 : h (x - y) (x - y) = 0` using `by rw [hww, hα, star_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxy' : x = y` using `sub_eq_zero.mp (ha _ h0)`. Conclude with `⟨1, (isom h).one_mem, by simp [hxy'], fun v _ => rfl⟩`. Set `f : V →ₗ[K] V` to `LinearMap.id - LinearMap.smulRight ((h (x - y) x)⁻¹ • h (x - y)) (x - y)`. Establish `hf : ∀ v, f v = v - ((h (x - y) x)⁻¹ * h (x - y) v) • (x - y)` using `fun v => rfl`. Establish `key : ∀ a b, h (f a) (f b) = h a b` using `fun a b => by`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, hf]`. Conclude with `h_sub_smul_sub_smul_eq_of_hww h hsym (x - y) _ hα hww a b`. Establish `hinj : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `ha a` to reduce the goal to its premises. Rewrite using `[← key a a, ha0, map_zero]`. Set `g : V ≃ₗ[K] V` to `LinearEquiv.ofInjectiveEndo f hinj`. Establish `hg : ∀ v, g v = f v` using `fun v => rfl`. Use `⟨g, fun a b => by rw [hg, hg, key], ?_, fun v hv => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, hf, inv_mul_cancel₀ hα, one_smul, sub_sub_cancel]`. Rewrite using `[hg, hf, hv, mul_zero, zero_smul, sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isom_move [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm)
     (ha : ∀ x, h x x = 0 → x = 0) (x y : V) (hxy : h x x = h y y) :
@@ -71,13 +71,11 @@ theorem exists_isom_move [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[K]
     · rw [hg, hf, hv, mul_zero, zero_smul, sub_zero]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => exact ⟨1, (isom h).one_mem, by simp⟩`. Consider the case `insert j s hj ih`. Take `⟨g, hg, hgs⟩` from `ih`. Establish `hg' : ∀ u v, h (g u) (g v) = h u v` using `hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgx : h (g (a j)) (g (a j)) = h (b j) (b j)` using `by rw [hg', hab]`. Take `⟨k, hk, hkx, hkfix⟩` from `exists_isom_move h hs ha (g (a j)) (b j) hgx`. Use `⟨k * g, (isom h).mul_mem hk hg, fun i hi => ?_⟩` and prove the remaining obligations. Use `show k (g (a i)) = b i`. Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hkx`. Rewrite using `[hgs i hi]`. Apply `hkfix` to reduce the goal to its premises. Establish `e1 : h (g (a j)) (b i) = h (b j) (b i)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[map_sub, LinearMap.sub_apply, e1, sub_self]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isom_finset [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm)
     (ha : ∀ x, h x x = 0 → x = 0) {ι : Type} (a b : ι → V)
@@ -104,17 +102,17 @@ theorem exists_isom_finset [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[
       rw [map_sub, LinearMap.sub_apply, e1, sub_self]
 
 /- English proof (translation)
-Establish `hdis : Disjoint U (perp h U)`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hxU hxP`. Conclude with `ha x (((mem_perp h U x).1 hxP) x hxU)`. Set `bU` to `Module.finBasis K U`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T : V →ₗ[K] (Fin (Module.finrank K U) → K)` to `LinearMap.pi fun i => h (bU i : V)`. Establish `hker : LinearMap.ker T ≤ perp h U`. Introduce `v hv`. Rewrite using `[mem_perp]`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv' : ∀ i, h (bU i : V) v = 0` using `fun i => by`. Use `congrFun (LinearMap.mem_ker.mp hv) i` as an intermediate fact. Simplify `this` using `[T]`. Establish `hx' : x = ∑ i, (bU.repr ⟨x, hx⟩ i) • (bU i : V)`. Establish `e` using `congrArg Subtype.val (bU.sum_repr ⟨x, hx⟩)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at e`. Conclude with `e.symm`. Rewrite using `[hx', map_sum, LinearMap.sum_apply]`. Simplify using `[hv']`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker T`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : Module.finrank K (LinearMap.range T) ≤ Module.finrank K U`. Simplify using `using Submodule.finrank_le (LinearMap.range T)`. Establish `h3` using `Submodule.finrank_mono hker`. Establish `h4` using `Submodule.finrank_sup_add_finrank_inf_eq U (perp h U)`. Rewrite `h4` using `[hdis.eq_bot, finrank_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hdis, ?_⟩` and prove the remaining obligations. Rewrite using `[codisjoint_iff]`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Establish `h5` using `Submodule.finrank_le (U ⊔ perp h U)`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isCompl_perp [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[K] K)
     (ha : ∀ x, h x x = 0 → x = 0) (U : Submodule K V) : IsCompl U (perp h U) := by
@@ -150,9 +148,9 @@ theorem isCompl_perp [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[K] K)
   omega
 
 /- English proof (translation)
-Establish `hle : U ≤ perp h (perp h U)`. Introduce `u hu`. Rewrite using `[mem_perp]`. Introduce `w hw`. Establish `h0 : h u w = 0` using `(mem_perp h U w).1 hw u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hs.eq u w, h0, map_zero]`. Establish `c1` using `Submodule.finrank_add_eq_of_isCompl (isCompl_perp h ha U)`. Establish `c2` using `Submodule.finrank_add_eq_of_isCompl (isCompl_perp h ha (perp h U))`. Conclude with `(Submodule.eq_of_le_of_finrank_eq hle (by omega)).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem perp_perp [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm)
     (ha : ∀ x, h x x = 0 → x = 0) (U : Submodule K V) : perp h (perp h U) = U := by
@@ -167,15 +165,13 @@ theorem perp_perp [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (hs
   exact (Submodule.eq_of_le_of_finrank_eq hle (by omega)).symm
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ h _ hs hpd`. Establish `ha : ∀ x, h x x = 0 → x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Take `⟨τ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `hpd τ x hne` as an intermediate fact. Rewrite `this` using `[hx, map_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`. Use `⟨?_, fun U => ⟨isCompl_perp h ha U, ?_, ?_, perp_perp h hs ha U⟩⟩` and prove the remaining obligations. Introduce `U U' e he`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `bU` to `Module.finBasis K U`. Take `⟨g, hg, hgb⟩` from `exists_isom_finset h hs ha (fun i => (bU i : V)) (fun i => (e (bU i) : V)) (fun i j => he _ _) Finset.univ`. Use `⟨g, hg, fun x => ?_⟩` and prove the remaining obligations. Establish `hcomp : (g : V →ₗ[K] V).comp U.subtype = U'.subtype.comp (e : U →ₗ[K] U')`. Apply `bU.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Simplify using `using hgb i (Finset.mem_univ i)`. Conclude with `LinearMap.congr_fun hcomp x`. Conclude with `⟨fun x y => hs.eq x y⟩`. Introduce `τ x hx show 0 < (τ (h x x)).re`.
-
-Conclude with `hpd τ x (fun h0 => hx (Subtype.ext h0))`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem witt_definite : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → PD h → (∀ U U' : Submodule K V, ∀ e : U ≃ₗ[K] U', (∀ x y, h (e x : V) (e y : V) = h (x : V) (y : V)) → ∃ g ∈ isom h, ∀ x : U, g (x : V) = (e x : V)) ∧ ∀ U : Submodule K V, IsCompl U (perp h U) ∧ (hRes h U).IsSymm ∧ PD (hRes h U) ∧ perp h (perp h U) = U := by
   intro K V _ _ _ _ _ _ _ _ h _ hs hpd

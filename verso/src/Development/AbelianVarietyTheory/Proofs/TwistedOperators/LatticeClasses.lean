@@ -13,7 +13,7 @@ namespace GlobalTheory.LatClass
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨r, hr, w, hw, rfl⟩` from `(DoubleCoset.eq _ _ _ _).1 h`. Conclude with `⟨r, hr, by rw [latOf_mul_congr _ (latOf_eq_of_KO (hJ hw)), mul_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lat_of_coset {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {J : Subgroup (GL (n ⊕ Fin c) k)}
     (hJ : J ≤ KO k _) {a b : GL (n ⊕ Fin c) k}
@@ -34,7 +34,7 @@ variable {s : ℕ} {X : ℕ → Type} [∀ j, Fintype (X j)] [∀ j, DecidableEq
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] in
 include hb in
 /- English proof (translation)
-Rewrite using `[latOf_mul_congr _ (hb j c h), mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lat_bas {j c h} (g : GL (X j ⊕ Fin c) k) : latOf (g * T.bas j c h) = latOf g := by
   rw [latOf_mul_congr _ (hb j c h), mul_one]
@@ -42,7 +42,7 @@ theorem lat_bas {j c h} (g : GL (X j ⊕ Fin c) k) : latOf (g * T.bas j c h) = l
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] in
 include hb in
 /- English proof (translation)
-Use `⟨0, 0, fun i => by simp, fun i => zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[lat_bas hb]`. Use extensionality with `y`. Simplify using `[mem_normal, mem_latOf_one, mem_pow_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem normal_one (c : ℕ) (h : 0 + c = s) : IsNormalRep T ϖ 0 c h 1 := by
   refine ⟨0, 0, fun i => by simp, fun i => zero_mem _, ?_⟩
@@ -53,13 +53,13 @@ theorem normal_one (c : ℕ) (h : 0 + c = s) : IsNormalRep T ϖ 0 c h 1 := by
 include hϖ hψ hb hs hp hJ
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Introduce `c h g hg`. Rewrite `hg` using `[hA.zero]`. Take `rfl : g = 1` from `hg`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨1, one_mem _, by rw [one_mul]; exact normal_one hb c h⟩`. Consider the case `succ j ih`. Introduce `c h g' hg'`. Take `⟨g, hg, a, ha, hf⟩` from `Set.mem_iUnion₂.1 ((hA.bij j c h).mapsTo hg')`. Take `⟨r, hr, e', z', he', hz', hl⟩` from `ih _ _ g hg`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hl` using `[lat_bas hb, ← nfBasis_one]`. Take `⟨x₀, h0⟩` from `Function.ne_iff.1 (GlobalTheory.FlatSourceStable.flat_ne_zero_of_mem_R k _ _ c ψ ν _ _ g a hf r hr)`. Take `⟨r₂, hr₂, e, z, he, hz, hl₂⟩` from `step_normal (NormalForm.normalFormModN k) hϖ hψ he' hz' (hl ▸ om_supp (hs _ _ _) (r * g) a) (hl ▸ om_per hϖ (hp _ _ _) (r * g) a) h0`. Take `⟨r₃, hr₃, hl₃⟩` from `lat_of_coset (hJ _ _ _) ha`. Use `⟨r₂ * r₃⁻¹, mul_mem hr₂ (inv_mem hr₃), e, z, he, hz, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lat_bas hb, latOf_mul_congr _ hl₃, ← hl₂]`. Use `congr 1`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_normal {A : RepFam k s X} (hA : T.IsRepSystem A ψ ν) (j : ℕ) :
     ∀ c h, ∀ g ∈ A j c h, ∃ r ∈ R k (X j) (c + 1) 1, IsNormalRep T ϖ j c h (r * g) := by

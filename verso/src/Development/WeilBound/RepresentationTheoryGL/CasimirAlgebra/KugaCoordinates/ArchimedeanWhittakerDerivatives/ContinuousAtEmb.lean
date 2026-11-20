@@ -11,7 +11,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Rewrite using `[atEmb_eq τ (z + w), atEmb_eq τ z, atEmb_eq τ w, Complex.add_re, Complex.add_im, add_smul, add_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem atEmb_add (τ : E →+* ℂ) (z w : ℂ) : atEmb τ (z + w) = atEmb τ z + atEmb τ w := by
   rw [atEmb_eq τ (z + w), atEmb_eq τ z, atEmb_eq τ w, Complex.add_re, Complex.add_im, add_smul, add_smul]
@@ -19,14 +19,14 @@ theorem atEmb_add (τ : E →+* ℂ) (z w : ℂ) : atEmb τ (z + w) = atEmb τ z
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Rewrite using `[atEmb_eq τ (t * z), atEmb_eq τ z, Complex.re_ofReal_mul, Complex.im_ofReal_mul, smul_add, smul_smul, smul_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem atEmb_real_mul (τ : E →+* ℂ) (t : ℝ) (z : ℂ) : atEmb τ (t * z) = t • atEmb τ z := by
   rw [atEmb_eq τ (t * z), atEmb_eq τ z, Complex.re_ofReal_mul, Complex.im_ofReal_mul, smul_add, smul_smul, smul_smul]
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Establish `e : atEmb τ = fun z : ℂ => z.re • atEmb τ 1 + z.im • atEmb τ Complex.I` using `funext fun z => atEmb_eq τ z`. Rewrite using `[e]`. Conclude with `(Complex.continuous_re.smul continuous_const).add (Complex.continuous_im.smul continuous_const)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_atEmb (τ : E →+* ℂ) : Continuous (atEmb τ) := by
   have e : atEmb τ = fun z : ℂ => z.re • atEmb τ 1 + z.im • atEmb τ Complex.I := funext fun z => atEmb_eq τ z
@@ -34,23 +34,21 @@ theorem continuous_atEmb (τ : E →+* ℂ) : Continuous (atEmb τ) := by
   exact (Complex.continuous_re.smul continuous_const).add (Complex.continuous_im.smul continuous_const)
 
 /- English proof (translation)
-The claim follows from `((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sInf' : Continuous (sInf E) :=
   ((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))
 
 /- English proof (translation)
-Use `haveI : Nontrivial (Af E) := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 E)`. Set `v : IsDedekindDomain.HeightOneSpectrum (𝓞 E)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField E)⟩`. Use `⟨0, 1, fun h => ?_⟩` and prove the remaining obligations. Establish `h2 : (0 : v.adicCompletion E) = 1` using `congrArg (fun x : Af E => x v) h`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `zero_ne_one h2`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hpi : ∀ x, pInf E (sInf E x) = x` using `fun x => (infEq E).symm_apply_apply x`. Establish `hpf : ∀ x, pFin E (sInf E x) = 0` using `fun x => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ c : E, ψ (sInf E (atEmb τ 1) * algebraMap E (Ad E) c) = 1` using `fun c => by`. Establish `e : sInf E (atEmb τ 1) * algebraMap E (Ad E) c = sInf E (atEmb τ (coord τ (pInf E (algebraMap E (Ad E) c)) * 1))` using `ad_ext (by rw [map_mul, hpi, hpi, ← mul_embeddingScalar_eq_coord_mul, mul_comm]) (by rw [map_mul, hpf, hpf, zero_mul])`. Rewrite using `[e]`. Conclude with `hc _`. Take `⟨d, hd⟩` from `hψ.ann _ key`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd0 : d = 0`. Establish `h1` using `congrArg (pFin E) hd`. Rewrite `h1` using `[hpf]`. Establish `h2 : pFin E (algebraMap E (Ad E) d) = algebraMap E (Af E) d` using `rfl`. Rewrite `h1` using `[h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Conclude with `(algebraMap E (Af E)).injective (h1.symm.trans (map_zero _).symm)`. Rewrite `hd` using `[hd0, map_zero]`. Establish `h3` using `congrArg (fun x => pInf E x (InfinitePlace.mk τ)) hd`. Simplify using `only [hpi, map_zero, Pi.zero_apply] at h3`. Unfold `atEmb at h3`.
-
-Rewrite `h3` using `[Pi.single_eq_same]`. Apply the tactic sequence `split_ifs at h3 <;> simp at h3`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem psi_nontriv {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (τ : E →+* ℂ) : ∃ z : ℂ, ψ (sInf E (atEmb τ z)) ≠ 1 := by
   classical

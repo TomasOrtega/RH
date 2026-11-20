@@ -26,9 +26,9 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Take `⟨p, hp, hp'⟩` from `h`. Take `⟨q, hq, hq'⟩` from `h'`. Establish `e : p = q`. Use function extensionality and compare the values at `i`. Conclude with `Over.OverMorphism.ext ((hp i).trans (hq i).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp', ← hq', e]`.
+A detailed English derivation is pending.
 -/
 theorem isCombAtG_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} {t : SAB H X} {K : Type} [CommRing K] {x : Sp K ⟶ X} {m : ℕ}
@@ -42,7 +42,7 @@ theorem isCombAtG_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
   rw [← hp', ← hq', e]
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sigma]`. Conclude with `Finset.sum_eq_single τ (fun τ' _ h => Finset.sum_eq_zero fun j _ => hf ⟨τ', j⟩ h) (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sigma_block {ι : Type} [Fintype ι] {r : ι → ℕ} {M : Type} [AddCommMonoid M]
     (f : (Σ τ, Fin (r τ)) → M) (τ : ι) (hf : ∀ s : Σ τ, Fin (r τ), s.1 ≠ τ → f s = 0) :
@@ -59,45 +59,41 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections MonoidalCategory Cart
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z C _ _ φ xO x hx g ch hO r u hu hG P hPm`. Establish `: IsProper Z.s` using `projProper _ _ _ Z.proj`. Establish `hsep : Z.X.IsSeparated` using `⟨by rw [← Limits.terminal.comp_from Z.s]; infer_instance⟩`. Establish `hV : ⊤ ≤ x ⁻¹ᵁ ch.U`. Substitute `hx` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `fun q _ => hO (Set.mem_univ (spMap (intO C).subtype q))`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.LocM.TanPair.exists_tanM_equiv _ _ _ Z.t C x ch.U hV g ch.e ch.isFrame`. Set `U : (Σ τ, Fin (r τ)) → TanM x Z.t.G` to `fun s => LieMet.tanOf ((hu s.1).1 s.2).1`. Establish `hUe : ∀ (s : Σ τ, Fin (r τ)) (o : 𝓞 E), actR Z.t.act o (U s) = φ (embK c s.1 o) • U s` using `fun s o => LieMet.tan_ext (((hu s.1).1 s.2).2 o)`. Establish `hP : ∀ s b, P b s = Φ (U s) b` using `fun s b => (hPm s ((hu s.1).1 s.2).1 hV b).trans (hΦ (U s) b).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomb : ∀ d : (Σ τ, Fin (r τ)) → C, Φ (∑ s, d s • U s) = P.mulVec d` using `fun d => by`. Use function extensionality and compare the values at `b`. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, hP]`. Conclude with `Finset.sum_congr rfl fun s _ => mul_comm _ _`. Establish `hlat : ∀ v : TanM x Z.t.G, (tv v).left ∈ latDR Z.t x ↔ ∀ b, ‖Φ v b‖ ≤ 1` using `fun v => (GlobalTheory.TanSec.Norm.mem_latDR_iff_tanEv Z.t hsep hx hO hV ch.isFrame (LieMet.isTan_tv v)).trans (forall_congr' fun b => by rw [hΦ]; rfl)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heig : ∀ (τ : E →+* ℂ) {n : ℕ} (d : Fin n → C) (V : Fin n → TanM x Z.t.G), (∀ i (o : 𝓞 E), actR Z.t.act o (V i) = φ (embK c τ o) • V i) → IsEigTan Z φ x τ (tv (∑ i, d i • V i)).left` using `fun τ n d V hV' => by`. Use `⟨LieMet.isTan_tv _, fun o => ?_⟩` and prove the remaining obligations. Establish `e3 : actR Z.t.act o (∑ i, d i • V i) = φ (embK c τ o) • ∑ i, d i • V i`. Simplify using `only [map_sum, map_smul, hV', Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => smul_comm _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `congrArg (fun z => (tv z).left) e3`. Introduce `k a ha`. Distinguish the cases in `hk : ∃ τ, (Fintype.equivFin (E →+* ℂ) τ : ℕ) = k`. Take `⟨τ, rfl⟩` from `hk`. Establish `ha' : ∀ s : Σ τ, Fin (r τ), s.1 ≠ τ → a s = 0` using `fun s h => ha s fun h' => h ((Fintype.equivFin _).injective (Fin.ext h'))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hWτ : ∑ s, a s • U s = ∑ j, a ⟨τ, j⟩ • U ⟨τ, j⟩` using `sum_sigma_block (fun s => a s • U s) τ fun s h => by rw [ha' s h, zero_smul]`. Establish `hWe : IsEigTan Z φ x τ (tv (∑ s, a s • U s)).left`. Rewrite using `[hWτ]`. Conclude with `heig τ _ _ fun j o => hUe ⟨τ, j⟩ o`. Establish `hWc : IsCombAtG Z.t x (u τ) (fun j => a ⟨τ, j⟩) (tv (∑ s, a s • U s)).left` using `(LieMet.isComb_iff (fun j => U ⟨τ, j⟩) _ _).2 hWτ`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Establish `h1 : (∀ z, ‖a z‖ ≤ 1) ↔ ∃ a'' : Fin (r τ) → C, (∀ i, ‖a'' i‖ ≤ 1) ∧ IsCombAtG Z.t x (u τ) a'' (tv (∑ s, a s • U s)).left`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun j => a ⟨τ, j⟩, fun j => h _, hWc⟩`. Introduce and unpack `⟨a'', h'', hc⟩ z`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Distinguish the cases in `hz : z.1 = τ`. Take `⟨z1, z2⟩` from `z dsimp only at hz`. Substitute `hz` using the available equality. Establish `e` using `((hu z1).2 _ hWe).unique hc hWc`. Rewrite using `[← congrFun e z2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `h'' z2`. Rewrite using `[ha' z hz, norm_zero]`. Conclude with `zero_le_one`. Rewrite using `[h1, hG τ _ hWe]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨m, ρ, v, hv, w', hw', hc⟩`. Establish `hexp : ∀ i, ∃ e : (Σ τ, Fin (r τ)) → C, (∀ s : Σ τ, Fin (r τ), s.1 ≠ ρ i → e s = 0) ∧ LieMet.tanOf (hv i).2.1 = ∑ s, e s • U s` using `fun i => by`. Take `⟨b, hb, -⟩` from `(hu (ρ i)).2 (v i) (hv i).2`. Establish `hb'` using `(LieMet.isComb_iff (fun j => U ⟨ρ i, j⟩) b (LieMet.tanOf (hv i).2.1)).1 hb`. Use `⟨fun s => if h : s.1 = ρ i then b (Fin.cast (congrArg r h) s.2) else 0, fun s hs => dif_neg hs, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sum_sigma_block _ (ρ i) fun s hs => by simp only [dif_neg hs, zero_smul], hb']`. Conclude with `Finset.sum_congr rfl fun j _ => by dsimp only; rw [dif_pos rfl]; rfl`. Use `choose e he1 he2 using hexp`. Set `V : Fin m → TanM x Z.t.G` to `fun i => LieMet.tanOf (hv i).2.1`. Use `⟨∑ i, e i, fun s hs => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => he1 i s fun h => hs ?_` and prove the remaining obligations. Use `show (Fintype.equivFin (E →+* ℂ) s.1 : ℕ) < Fintype.equivFin (E →+* ℂ) τ`. Rewrite using `[h]`. Conclude with `(hv i).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hfam : (fun i => (tv ((Fin.cons (∑ s, a s • U s) V : Fin (m + 1) → TanM x Z.t.G) i)).left) = (Fin.cons (tv (∑ s, a s • U s)).left v : Fin (m + 1) → _)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> rfl`. Establish `hc'` using `(LieMet.isComb_iff (Fin.cons (∑ s, a s • U s) V) (fun _ => 1) ((∑ s, a s • U s) + ∑ i, V i)).2 (by simp [Fin.sum_univ_succ])`. Rewrite `hc'` using `[hfam]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hw'eq` using `isCombAtG_eq hc hc'`. Establish `hsum : (∑ s, a s • U s) + ∑ i, V i = ∑ s, (a + ∑ i, e i) s • U s`. Simplify using `only [V, he2, Pi.add_apply, Finset.sum_apply, add_smul, Finset.sum_smul, Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_comm]`. Introduce `b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcomb, ← hsum]`. Conclude with `(hlat _).1 (hw'eq ▸ hw') b`. Introduce and unpack `⟨a', ha'1, ha'2⟩`. Set `S` to `{ρ : E →+* ℂ // (Fintype.equivFin (E →+* ℂ) ρ : ℕ) < Fintype.equivFin (E →+* ℂ) τ}`. Set `ρ : Fin (Fintype.card S) → (E →+* ℂ)` to `fun i => ((Fintype.equivFin S).symm i).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `V : Fin (Fintype.card S) → TanM x Z.t.G` to `fun i => ∑ j, a' ⟨ρ i, j⟩ • U ⟨ρ i, j⟩`. Establish `hVs : ∑ i, V i = ∑ s, a' s • U s`. Set `p : (E →+* ℂ) → Prop` to `fun ρ' => (Fintype.equivFin (E →+* ℂ) ρ' : ℕ) < Fintype.equivFin (E →+* ℂ) τ`. Establish `h0 : ∑ ρ' : {ρ' // ¬ p ρ'}, ∑ j, a' ⟨ρ'.1, j⟩ • U ⟨ρ'.1, j⟩ = 0` using `Finset.sum_eq_zero fun ρ' _ => Finset.sum_eq_zero fun j _ => by rw [ha'1 ⟨ρ'.1, j⟩ ρ'.2, zero_smul]`. Rewrite using `[Fintype.sum_sigma, ← Fintype.sum_subtype_add_sum_subtype p (fun ρ' => ∑ j, a' ⟨ρ', j⟩ • U ⟨ρ', j⟩), h0, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `((Fintype.equivFin S).symm.sum_comp (fun ρ' : S => ∑ j, a' ⟨ρ'.1, j⟩ • U ⟨ρ'.1, j⟩))`. Use `⟨Fintype.card S, ρ, fun i => (tv (V i)).left, fun i => ⟨((Fintype.equivFin S).symm i).2, heig _ _ _ fun j o => hUe ⟨ρ i, j⟩ o⟩, (tv ((∑ s, a s • U s) + ∑ i, V i)).left, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlat, hVs, ← Finset.sum_add_distrib]`. Simplify using `only [← add_smul]`. Introduce `b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `hcomb (a + a')` as an intermediate fact. Simplify using `only [Pi.add_apply] at this`. Rewrite using `[this]`. Conclude with `ha'2 b`. Establish `hfam : (fun i => (tv ((Fin.cons (∑ s, a s • U s) V : Fin (Fintype.card S + 1) → TanM x Z.t.G) i)).left) = (Fin.cons (tv (∑ s, a s • U s)).left (fun i => (tv (V i)).left) : Fin (Fintype.card S + 1) → _)`.
-
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> rfl`. Establish `hc'` using `(LieMet.isComb_iff (Fin.cons (∑ s, a s • U s) V) (fun _ => 1) ((∑ s, a s • U s) + ∑ i, V i)).2 (by simp [Fin.sum_univ_succ])`. Rewrite `hc'` using `[hfam]`. Then use the resulting hypothesis. Establish `ha0 : a = 0` using `funext fun s => ha s fun h => hk ⟨s.1, h⟩`.
-
-Substitute `ha0` using the available equality. Use `iff_of_true (fun z => by simp) ⟨0, fun _ _ => rfl, fun b => by simp⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem grCond_tanMat_of_inGr : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}

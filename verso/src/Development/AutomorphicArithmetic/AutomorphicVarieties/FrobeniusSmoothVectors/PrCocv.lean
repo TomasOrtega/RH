@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Establish `ha' : (a : Matrix (Fin n) (Fin n) C).BlockTriangular id` using `fun i j h => ha i j h`. Establish `hb' : (b : Matrix (Fin n) (Fin n) C).BlockTriangular id` using `fun i j h => hb i j h`. Establish `hc' : (c : Matrix (Fin n) (Fin n) C).BlockTriangular id` using `fun i j h => hc i j h`. Use `letI : Invertible (c : Matrix (Fin n) (Fin n) C) := c.invertible`. Establish `hi` using `Matrix.blockTriangular_inv_of_blockTriangular hc'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite `hi` using `[← Matrix.coe_units_inv]`. Introduce `i j h`. Establish `h1` using `((ha'.mul hb').mul hi) (show id j < id i from h)`. Rewrite using `[Matrix.sub_apply, Units.val_mul, Units.val_mul, h1, Matrix.one_apply_ne (ne_of_gt h), sub_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem upT_gl {C : Type} [CommRing C] {n : ℕ} (a b c : GL (Fin n) C)
     (ha : UpT (a : Matrix (Fin n) (Fin n) C)) (hb : UpT (b : Matrix (Fin n) (Fin n) C))
@@ -24,9 +24,9 @@ private theorem upT_gl {C : Type} [CommRing C] {n : ℕ} (a b c : GL (Fin n) C)
   rw [Matrix.sub_apply, Units.val_mul, Units.val_mul, h1, Matrix.one_apply_ne (ne_of_gt h), sub_zero]
 
 /- English proof (translation)
-Establish `e1 : (1 + o) * (1 + c) = 1 + o + c + o * c` using `by noncomm_ring`. Establish `e2 : (1 + x) * (1 + a) * (1 + w) = 1 + x + a + w + x * a + x * w + a * w + x * a * w` using `by noncomm_ring`. Rewrite `h` using `[e1, e2, h1, h2, h3, h4]`. Simplify using `only [add_zero, zero_mul] at h`. Establish `: o = 1 + x + a + w - c - 1` using `by rw [← h]; abel`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem ring_id {R : Type} [Ring R] (o c x a w : R) (h : (1 + o) * (1 + c) = (1 + x) * (1 + a) * (1 + w))
     (h1 : o * c = 0) (h2 : x * a = 0) (h3 : x * w = 0) (h4 : a * w = 0) : o - (x - c + a) = w := by
@@ -38,29 +38,25 @@ private theorem ring_id {R : Type} [Ring R] (o c x a w : R) (h : (1 + o) * (1 + 
   rw [this]; abel
 
 /- English proof (translation)
-Introduce `l _ k _ _ F C₀ n hF O _ _ C' _ _ _ C _ _ _ p B D u hK v s t`. Take `⟨hom, ha, -, -⟩` from `pr_omk hF O C' C p B D hK`. Establish `hle : RingHom.ker p ≤ maximalIdeal C'` using `fun x hx => by`. Rewrite using `[← res_eq_zero_iff O, ← res_map p, (RingHom.mem_ker).1 hx, map_zero]`. Establish `ev` using `pr_evk O C' n (RingHom.ker p) u hK hle`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdel : ∀ s, F.del (F.loc v s) = 1` using `fun s => (F.loc0 v s).2`. Establish `hright : ∀ s, (B.r (F.loc v s)).right = 1` using `fun s => (B.nu _).trans (hdel s)`. Establish `hres : ∀ x : GL (Fin n) C', GeneralLinearGroup.map (res O C : C →+* ResidueField O) (GeneralLinearGroup.map (p : C' →+* C) x) = GeneralLinearGroup.map (res O C' : C' →+* ResidueField O) x`. Introduce `x`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `res_map p _`. Establish `hval : ∀ x : GL (Fin n) C', (x : Matrix (Fin n) (Fin n) C').map (res O C') = ((GeneralLinearGroup.map (res O C' : C' →+* ResidueField O) x : GL (Fin n) (ResidueField O)) : Matrix (Fin n) (Fin n) (ResidueField O))` using `fun x => rfl`. Use `set T : Matrix (Fin n) (Fin n) C' := ((D.t v s * D.t v t * (D.t v (s * t))⁻¹ : GL (Fin n) C') : Matrix (Fin n) (Fin n) C') - 1 with hT`. Establish `hTup : UpT T` using `upT_gl _ _ _ (D.t_tri v s) (D.t_tri v t) (D.t_tri v _)`. Establish `hTK : ∀ i j, T i j ∈ RingHom.ker p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : GeneralLinearGroup.map (p : C' →+* C) (D.t v s * D.t v t * (D.t v (s * t))⁻¹) = 1`. Rewrite using `[map_mul, map_mul, map_inv, D.t_map, D.t_map, D.t_map, map_mul, map_mul, SemidirectProduct.mul_left, hright, sgnAct_one]`. Use `group`. Introduce `i j`. Establish `e2` using `congrArg (fun x : GL (Fin n) C => (x : Matrix (Fin n) (Fin n) C) i j) e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[RingHom.mem_ker, hT, Matrix.sub_apply, map_sub]`. Use `sub_eq_zero.2 (Eq.trans e2 ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`. Use `set gi : Matrix (Fin n) (Fin n) C' := (((D.g v)⁻¹ : GL (Fin n) C') : Matrix (Fin n) (Fin n) C') with hgi`. Use `set g : Matrix (Fin n) (Fin n) C' := ((D.g v : GL (Fin n) C') : Matrix (Fin n) (Fin n) C') with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ri : Matrix (Fin n) (Fin n) C' := (((D.r (F.loc v s))⁻¹ : GL (Fin n) C') : Matrix (Fin n) (Fin n) C') with hri`. Use `set r : Matrix (Fin n) (Fin n) C' := ((D.r (F.loc v s) : GL (Fin n) C') : Matrix (Fin n) (Fin n) C') with hr`. Establish `hW1 : ∀ i j, (gi * T) i j ∈ RingHom.ker p` using `fun i j => (((ev T hTK).2.1 gi).1 i j).1`. Establish `hW : ∀ i j, (gi * T * g) i j ∈ RingHom.ker p` using `fun i j => (((ev _ hW1).2.1 g).1 i j).2`. Establish `hX1 : ∀ i j, (r * D.a v t) i j ∈ RingHom.ker p` using `fun i j => (((ev _ (ha v t)).2.1 r).1 i j).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hX : ∀ i j, (r * D.a v t * ri) i j ∈ RingHom.ker p` using `fun i j => (((ev _ hX1).2.1 ri).1 i j).2`. Establish `key : D.om (F.loc v s, F.loc v t) - (r * D.a v t * ri - D.a v (s * t) + D.a v s) = gi * T * g`. Use `ring_id _ _ _ _ _ ?_ ((ev _ (hom _)).1 _ (ha v _)).1 ((ev _ hX).1 _ (ha v _)).1 ((ev _ hX).1 _ hW).1 ((ev _ (ha v _)).1 _ hW).1` and prove the remaining obligations. Establish `e1 : 1 + r * D.a v t * ri = ((D.r (F.loc v s) * (D.r (F.loc v t) * ((D.g v)⁻¹ * D.t v t * D.g v)⁻¹) * (D.r (F.loc v s))⁻¹ : GL (Fin n) C') : Matrix (Fin n) (Fin n) C')`. Rewrite using `[SetLift.a, mul_sub, sub_mul, mul_one, hr, hri, Units.mul_inv, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Both sides reduce to the same expression. Establish `e2 : 1 + gi * T * g = (((D.g v)⁻¹ * (D.t v s * D.t v t * (D.t v (s * t))⁻¹) * D.g v : GL (Fin n) C') : Matrix (Fin n) (Fin n) C')`. Rewrite using `[hT, mul_sub, sub_mul, mul_one, hg, hgi, Units.inv_mul, add_sub_cancel]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [SetLift.om, SetLift.a, add_sub_cancel, hdel, sgnAct_one, ← Units.val_mul, map_mul]`. Use `congr 1`. Use `group`. Establish `hXc : ∀ i j, (r * D.a v t * ri - D.a v (s * t)) i j ∈ RingHom.ker p` using `fun i j => sub_mem (hX i j) (ha v _ i j)`. Establish `hXca : ∀ i j, (r * D.a v t * ri - D.a v (s * t) + D.a v s) i j ∈ RingHom.ker p` using `fun i j => add_mem (hXc i j) (ha v _ i j)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `k2` using `congrArg (fun M : Matrix (Fin n) (Fin n) C' => M.map (evK (RingHom.ker p) u)) key`. Rewrite `k2` using `[((ev _ (hom _)).1 _ hXca).2.2, ((ev _ hXc).1 _ (ha v _)).2.1, ((ev _ hX).1 _ (ha v _)).2.2, ((ev _ hX1).2.1 ri).2.2, ((ev _ (ha v t)).2.1 r).2.1, ((ev _ hW1).2.1 g).2.2, ((ev _ hTK).2.1 gi).2.1, hr, hri, hg, hgi, hval, hval, hval, hval, map_inv, map_inv, ← hres, ← hres (D.g v), …`. Establish `k3 : (D.co u).1 (F.loc v s, F.loc v t) - dOne ((B.bar O).ad.comp (F.loc v)) ((D.co u).2 v) (s, t) = ((((B.bar O).g v)⁻¹ : GL (Fin n) (ResidueField O)) : Matrix (Fin n) (Fin n) (ResidueField O)) * T.map (evK (RingHom.ker p) u) * ((B.bar O).g v : Matrix (Fin n) (Fin n) (ResidueFiel …`. Use `Eq.trans ?_ k2` and prove the remaining obligations. Establish `e : ((B.bar O).ad.comp (F.loc v)) s ((D.co u).2 v t) = ((B.bar O).r (F.loc v s)).adFun ((D.a v t).map (evK (RingHom.ker p) u))` using `rfl`.
-
-Establish `e' : ((B.bar O).r (F.loc v s)).right = 1` using `hright s`. Simplify using `only [dOne]`. Rewrite using `[e, GG.adFun, if_pos e', add_sub_assoc, add_comm]`. Both sides reduce to the same expression. Rewrite using `[k3]`.
-
-Introduce `i j h`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, Matrix.map_apply, hTup i j h, evK_of_mem u (zero_mem _)]`. Conclude with `map_zero u`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.pr_cocv :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ (C' : Type) [CommRing C'] [Algebra O C'] [IsCO O C'] (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (p : C' →ₐ[O] C) (B : Box F n C) (D : SetLift p B) (u : RingHom.ker p →ₗ[O] ResidueField O), maximalIdeal C' * RingHom.ker p = ⊥ → ∀ v s t, (D.co u).1 (F.loc v s, F.loc v t) - dOne ((B.bar O).ad.comp (F.loc v)) ((D.co u).2 v) (s, t) ∈ (B.bar O).b v := by

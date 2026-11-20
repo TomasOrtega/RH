@@ -24,13 +24,11 @@ variable {k k' : Type} [CommRing k] [CommRing k'] {X Y : Scheme.{0}} {p : X ⟶ 
   {σ : k →+* ℂ} {σ' : k' →+* ℂ} {D : ℕ} {u : CxPts q σ' → CxPts p σ}
 
 /- English proof (translation)
-Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Use `choose V G hV hG using fun a => hL W (g a) y h₁`. Establish `hg : ContDiffAt ℝ ∞ (fun w a => ev p σ (V a) (G a) (c.e.symm w)) v` using `contDiffAt_pi.2 fun a => by`. Establish `ho` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (V a))`. Conclude with `(ChartGlue.contDiffOn_real ho (c.holo (V a) (G a))).contDiffAt (ho.mem_nhds ⟨hv, by rw [Set.mem_preimage, hy]; exact hV a⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hpt : (fun a => ev p σ (V a) (G a) (c.e.symm v)) = fun a => ev q σ' W (g a) y`. Use function extensionality and compare the values at `fun a => by rw [hy]; exact (hG a y (hV a)).2`. Establish `hF : ContDiffAt ℝ ∞ F (fun a => ev p σ (V a) (G a) (c.e.symm v))`. Rewrite using `[hpt]`. Conclude with `h₄.contDiffAt (h₂.mem_nhds h₃)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : f =ᶠ[𝓝 (c.e.symm v)] fun z => F fun a => ev p σ (V a) (G a) z`. Rewrite using `[hy, ← hu.map_nhds_eq]`. Establish `hall : ∀ᶠ y' in 𝓝 y, ∀ a, u y' ∈ ptsIn p σ (V a)` using `eventually_all.2 fun a => hu.continuous.continuousAt.eventually ((isOpen_ptsIn (V a)).mem_nhds (hV a))`. Express the relevant statement in the definitionally equal form `∀ᶠ y' in 𝓝 y, f (u y') = F fun a => ev p σ (V a) (G a) (u y')`. Use `filter_upwards [h₅, hall] with y' e hy'`.
-
-Rewrite using `[show (fun a => ev p σ (V a) (G a) (u y')) = fun a => ev q σ' W (g a) y' from`. Use function extensionality and compare the values at `fun a => (hG a y' (hy' a)).2]`. Conclude with `e`. Conclude with `(hF.comp v hg).congr_of_eventuallyEq ((c.e.continuousAt_symm hv).eventually hev)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem contDiffAt_chart_of_lifts (hu : IsOpenEmbedding u)
     (hL : ∀ (W : Y.Opens) (g : Γ(Y, W)) (y : CxPts q σ'), y ∈ ptsIn q σ' W →
@@ -63,23 +61,21 @@ theorem contDiffAt_chart_of_lifts (hu : IsOpenEmbedding u)
   exact (hF.comp v hg).congr_of_eventuallyEq ((c.e.continuousAt_symm hv).eventually hev)
 
 /- English proof (translation)
-Use `⟨fun x => (R.finAtlas_smoothOn_iff ((pot u hu hc ψ.locPot).isOpen_U x)).2 fun i v hv => ?_, fun x x' z hz => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ Set.range u`. Take `⟨y, rfl⟩` from `hx`. Take `⟨hv, hv'⟩` from `hv`. Rewrite `hv'` using `[Set.mem_preimage, pot_U_up]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y', hy', e⟩` from `hv'`. Use `(contDiffAt_chart_of_lifts hu hL (y := y') ?_ _ hv e.symm).contDiffWithinAt` and prove the remaining obligations. Use `((hψ _ y' hy').const_mul 2⁻¹).congr (Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, pot_φ_up, Weight.locPot_φ]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : (pot u hu hc ψ.locPot).φ x = fun _ => 0` using `funext (pot_φ_of_not hu hc _ hx)`. Rewrite using `[e]`. Conclude with `contDiffWithinAt_const`. Distinguish the cases in `hx : x ∈ Set.range u`. Take `⟨y, rfl⟩` from `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz₁` using `hz.1`. Rewrite `hz₁` using `[pot_U_up]`. Take `⟨w, hw, rfl⟩` from `hz₁`. Establish `hx' : x' ∈ Set.range u`. Assume the negation of the conclusion as `hx'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `hz.2` as an intermediate fact. Rewrite `this` using `[pot_U_of_not hu hc _ hx']`. Conclude with `this (Set.mem_range_self w)`. Take `⟨y', rfl⟩` from `hx'`. Establish `mem : ∀ (a b : CxPts q σ'), u b ∈ (pot u hu hc ψ.locPot).U (u a) → b ∈ ψ.locPot.U a`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a b hb`. Rewrite `hb` using `[pot_U_up]`. Conclude with `hu.injective.mem_set_image.1 hb`. Establish `hw'` using `mem _ _ hz.2`. Take `⟨V, G, hV, hG⟩` from `hL _ (B.g (pick ψ.isLB y) (pick ψ.isLB y')).val w (mem_ptsIn_inf.2 ⟨hw, hw'⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, hwW, hs, G', hG', e⟩` from `(R.holoOn_ev V G).exists_log (isOpen_ptsIn _) hV (by rw [(hG w hV).2]; exact gv_ne_zero hw hw')`. Use `⟨W, hW, hwW, G', (R.finAtlas_holoOn_iff hW).2 hG', fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `pot_U_subset hu hc _ (Set.mem_range_self y) ht.1.2`. Rewrite using `[e _ ht.1.1, (hG s (hs ht.1.1)).2, pot_φ_up, pot_φ_up, Weight.locPot_φ, Weight.locPot_φ, ψ.half_eq (mem _ _ ht.1.2) (mem _ _ ht.2), CxPts.gv, add_sub_cancel_left]`. Establish `hx' : x' ∉ Set.range u` using `fun hx' => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hz.1` as an intermediate fact. Rewrite `this` using `[pot_U_of_not hu hc _ hx]`. Conclude with `this (pot_U_subset hu hc _ hx' hz.2)`. Use `⟨Set.univ, isOpen_univ, trivial, fun _ => 0, fun _ => analyticOnNhd_const, fun t _ => ?_⟩` and prove the remaining obligations. Rewrite using `[pot_φ_of_not hu hc _ hx, pot_φ_of_not hu hc _ hx']`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPotential_pot_of_lifts [CompactSpace (CxPts p σ)] (R : AnRead p σ D)
     (hu : IsOpenEmbedding u) (hc : IsClosed (Set.range u))
@@ -137,7 +133,7 @@ theorem isPotential_pot_of_lifts [CompactSpace (CxPts p σ)] (R : AnRead p σ D)
 end General
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z _ Y q j hj σ _ hu hc hL B ψ hψ`. Conclude with `isPotential_pot_of_lifts _ hu hc hL ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isPotential_pot_up : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz] {β : Oz →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) [SmoothOfRelativeDimension Dw.dim (genStr Z)] {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ) [CompactSpace (CxPts (genStr Z) σ)] (hu : IsOpenEmbedding (up j hj σ)) (hc : IsClosed (Set.range (up j hj σ))), ClopenPush.LiftsFns j hj σ → ∀ {B : LB Y} (ψ : Weight q (σ.comp β) B), ψ.IsCInf → IsPotential (manifold Z σ).finAtlas (ClopenPush.pot (up j hj σ) hu hc ψ.locPot) := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z _ Y q j hj σ _ hu hc hL B ψ hψ

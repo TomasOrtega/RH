@@ -17,7 +17,7 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k
   {y : CxPts p σ} {f g : X.functionField}
 
 /- English proof (translation)
-Take `⟨U, hU, a, rfl⟩` from `hf.exists_fnOf`. Take `⟨W, hW, b, rfl⟩` from `hg.exists_fnOf`. Establish `hy : y ∈ ptsIn p σ (U ⊓ W)` using `mem_ptsIn.2 ⟨hU, hW⟩`. Rewrite using `[← fnOf_resG (inf_le_left : U ⊓ W ≤ U) (gen_mem (memInf hU hW)), ← fnOf_resG (inf_le_right : U ⊓ W ≤ W) (gen_mem (memInf hU hW)), ← map_sub, ratVal_fnOf hy, ratVal_fnOf hy, ratVal_fnOf hy, ev_eq hy, ev_eq hy, ev_eq hy, map_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratVal_sub (hf : RegAt (under y) f) (hg : RegAt (under y) g) :
     ratVal (f - g) y = ratVal f y - ratVal g y := by
@@ -29,14 +29,14 @@ theorem ratVal_sub (hf : RegAt (under y) f) (hg : RegAt (under y) g) :
     ratVal_fnOf hy, ratVal_fnOf hy, ratVal_fnOf hy, ev_eq hy, ev_eq hy, ev_eq hy, map_sub]
 
 /- English proof (translation)
-Establish `h0 : RegAt (under y) (0 : X.functionField)` using `⟨0, map_zero _⟩`. Simplify using `using ratVal_sub h0 h0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ratVal_zero : ratVal (0 : X.functionField) y = 0 := by
   have h0 : RegAt (under y) (0 : X.functionField) := ⟨0, map_zero _⟩
   simpa using ratVal_sub h0 h0
 
 /- English proof (translation)
-Take `⟨U, hU, a, rfl⟩` from `hf.exists_fnOf`. Establish `hy : y ∈ ptsIn p σ U` using `mem_ptsIn.2 hU`. Rewrite using `[← map_nsmul, ratVal_fnOf hy, ratVal_fnOf hy, ev_eq hy, ev_eq hy, map_nsmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratVal_nsmul (hf : RegAt (under y) f) (n : ℕ) : ratVal (n • f) y = n • ratVal f y := by
   obtain ⟨U, hU, a, rfl⟩ := hf.exists_fnOf
@@ -48,32 +48,32 @@ namespace Pair
 variable (P : Pair p) (a b : ℤ)
 
 /- English proof (translation)
-The claim follows from `hf _ _ _ (mem_ptsIn.1 (mem_pick _ y)) (mem_ptsIn.1 (mem_pick _ y))`.
+A detailed English derivation is pending.
 -/
 theorem regAt_loc {f : X.functionField} (hf : f ∈ P.H a b) (σ : k →+* ℂ) (y : CxPts p σ) :
     RegAt (under y) (P.loc a b f (pick (P.L.φ σ).isLB y) (pick (P.A.φ σ).isLB y)) :=
   hf _ _ _ (mem_ptsIn.1 (mem_pick _ y)) (mem_ptsIn.1 (mem_pick _ y))
 
 /- English proof (translation)
-Simplify using `only [VolBr.Pair.loc]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem loc_sub (f g : X.functionField) (i j) : P.loc a b (f - g) i j = P.loc a b f i j - P.loc a b g i j := by
   simp only [VolBr.Pair.loc]; ring
 
 /- English proof (translation)
-Simplify using `only [VolBr.Pair.loc, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem loc_nsmul (n : ℕ) (f : X.functionField) (i j) : P.loc a b (n • f) i j = n • P.loc a b f i j := by
   simp only [VolBr.Pair.loc, nsmul_eq_mul]; ring
 
 /- English proof (translation)
-Simplify using `only [VolBr.Pair.nu, VolBr.Pair.loc, zero_mul, ratVal_zero, norm_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nu_zero (σ : k →+* ℂ) (y : CxPts p σ) : P.nu a b σ y 0 = 0 := by
   simp only [VolBr.Pair.nu, VolBr.Pair.loc, zero_mul, ratVal_zero, norm_zero]
 
 /- English proof (translation)
-Simplify using `only [VolBr.Pair.nu]`. Rewrite using `[loc_sub, ratVal_sub (regAt_loc P a b hf σ y) (regAt_loc P a b hg σ y), ← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_sub_le _ _) (Real.exp_pos _).le`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nu_sub {f g : X.functionField} (hf : f ∈ P.H a b) (hg : g ∈ P.H a b) (σ : k →+* ℂ) (y : CxPts p σ) :
     P.nu a b σ (y) (f - g) ≤ P.nu a b σ y f + P.nu a b σ y g := by
@@ -82,7 +82,7 @@ theorem nu_sub {f g : X.functionField} (hf : f ∈ P.H a b) (hg : g ∈ P.H a b)
   exact mul_le_mul_of_nonneg_right (norm_sub_le _ _) (Real.exp_pos _).le
 
 /- English proof (translation)
-Simplify using `only [VolBr.Pair.nu]`. Rewrite using `[loc_nsmul, ratVal_nsmul (regAt_loc P a b hf σ y), nsmul_eq_mul, norm_mul, Complex.norm_natCast, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nu_nsmul {f : X.functionField} (hf : f ∈ P.H a b) (n : ℕ) (σ : k →+* ℂ) (y : CxPts p σ) :
     P.nu a b σ y (n • f) = n * P.nu a b σ y f := by
@@ -96,7 +96,7 @@ end GlobalTheory.VolBr.BallFam
 open GlobalTheory.VolBr.BallFam in
 
 /- English proof (translation)
-Introduce `k _ X _ p P a b`. Conclude with `{ subset := fun r f hf => hf.1 zero_mem := fun r hr => ⟨zero_mem _, fun σ y => by rw [Pair.nu_zero]; exact hr⟩ sub_mem := fun r r' f g hf hg => ⟨sub_mem hf.1 hg.1, fun σ y => (Pair.nu_sub P a b hf.1 hg.1 σ y).trans (add_le_add (hf.2 σ y) (hg.2 σ y))⟩ nsmul_iff := fun n r f hn hf …`. Establish `h0 : (0 : ℝ) < n` using `by exact_mod_cast hn`. Simplify using `only [VolBr.Pair.Bl, Set.mem_setOf_eq, Pair.nu_nsmul P a b hf, mul_le_mul_iff_right₀ h0, and_iff_right (nsmul_mem hf n), and_iff_right hf] }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.VolBr.Pair.isBallFam : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (P : Pair p), ∀ a b : ℤ, IsBallFam (P.H a b) (P.Bl a b) := by
   intro k _ X _ p P a b

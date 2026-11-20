@@ -16,11 +16,11 @@ namespace UpperTheory.Lit.Branch
 open GlobalTheory.PackLoc
 
 /- English proof (translation)
-Introduce and unpack `⟨C, hC, hF⟩`. Use `⟨C, hC, ?_⟩` and prove the remaining obligations. Introduce `m k N hk hN e ε lam ε' mu B hP H H' _ _ _ _ π σ hπ hσ`. Substitute `hk` using the available equality. Substitute `hN` using the available equality.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Substitute using the available equality.
 
-Establish `he : ((finCongr (rfl : m = m)).optionCongr.trans (e.trans (finCongr (rfl : m + 1 = m + 1).symm))) = e`. Use extensionality with `x`. Apply the tactic sequence `cases x <;> simp`. Rewrite using `[he]`. Establish `hP' : GlobalTheory.SepReal.Par e ε lam ε' mu B` using `hP`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨v₀, v, g₀, w', c, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩` from `hF m e ε lam ε' mu B hP' H H' π σ hπ hσ`. Conclude with `⟨v₀, v, g₀, w', c, h1, h2, h3, h4, h5, h6, h7, hP'.signs, h8, h9, h10, h11⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem realInputE_transport : RealInputE → ∃ C : ℝ, 0 < C ∧
   ∀ (m k N : ℕ) (hk : m = k) (hN : N = k + 1) (e : Option (Fin k) ≃ Fin (k + 1)) (ε : Fin N → Bool) (lam : Fin N → ℝ)
@@ -65,15 +65,13 @@ theorem realInputE_transport : RealInputE → ∃ C : ℝ, 0 < C ∧
   exact ⟨v₀, v, g₀, w', c, h1, h2, h3, h4, h5, h6, h7, hP'.signs, h8, h9, h10, h11⟩
 
 /- English proof (translation)
-Introduce `D θ Y V d S S' M₀ MP τ e v₀ v g₀ w' c₁ lam h1 h2 hH hw ha b`. Use `set b' : (GlobalTheory.ConjDS.conjModel M₀).H τ := (GlobalTheory.ConjDS.cj (M₀.H τ)).symm b with hb'`. Establish `key : ∀ x : Matrix (Fin Y.rank) (Fin Y.rank) ℂ, ⟪b, M₀.σ τ (GlobalTheory.ConjDS.rv x) (GlobalTheory.ConjDS.cj (M₀.H τ) w')⟫_ℂ = star ⟪b', (GlobalTheory.ConjDS.conjModel M₀).σ τ x w'⟫_ℂ`. Introduce `x`. Conclude with `(inner_conj_symm (𝕜 := ℂ) b (M₀.σ τ (GlobalTheory.ConjDS.rv x) (GlobalTheory.ConjDS.cj (M₀.H τ) w'))).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : Matrix (Fin Y.rank) (Fin Y.rank) ℂ → ℂ` to `fun x => ⟪v, MP.σ τ (GlobalTheory.PackLoc.embOpt e x) v⟫_ℂ * ⟪b, M₀.σ τ (GlobalTheory.ConjDS.rv x) (GlobalTheory.ConjDS.cj (M₀.H τ) w')⟫_ℂ`. Establish `e1 : ∀ u, GlobalTheory.PackLoc.mco MP τ g₀ v₀ (GlobalTheory.PackLoc.embAt θ d τ (GlobalTheory.PackLoc.ptY M₀ τ u)) * ⟪b, M₀.rep τ (GlobalTheory.PackLoc.ptY M₀ τ u) (GlobalTheory.ConjDS.cj (M₀.H τ) w')⟫_ℂ = F (GlobalTheory.ConjDS.rv (Formalism.MainNotions.S.umat u))`. Introduce `u`. Simplify using `only [F, h1, h2, GlobalTheory.ConjDS.rv_rv]`. Establish `e2 : ∀ h : Formalism.REAL.UJ ((GlobalTheory.ConjDS.conjModel M₀).ε τ), F (Formalism.MainNotions.S.umat h) = star (star ⟪v, MP.σ τ (GlobalTheory.PackLoc.embOpt e (Formalism.MainNotions.S.umat h)) v⟫_ℂ * ⟪b', (GlobalTheory.ConjDS.conjModel M₀).σ τ (Formalism.MainNotions.S.umat h) w …`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Simplify using `only [F, key, star_mul, star_star, mul_comm]`. Establish `hww : ⟪w', w'⟫_ℂ = 1`. Rewrite using `[inner_self_eq_norm_sq_to_K, hw]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : star ⟪b', w'⟫_ℂ = ⟪b, GlobalTheory.ConjDS.cj (M₀.H τ) w'⟫_ℂ` using `inner_conj_symm (𝕜 := ℂ) b (GlobalTheory.ConjDS.cj (M₀.H τ) w')`. Rewrite using `[integral_congr_ae (ae_of_all _ e1), hH F, integral_congr_ae (ae_of_all _ e2)]`. Rewrite using `[show (∫ h : Formalism.REAL.UJ ((GlobalTheory.ConjDS.conjModel M₀).ε τ), star (star ⟪v, MP.σ τ (GlobalTheory.PackLoc.embOpt e (Formalism.MainNotions.S.umat h)) v⟫_ℂ * ⟪b', (GlobalTheory.ConjDS.conjModel M₀).σ τ (Formalism.MainNotions.S.umat h) w'⟫_ℂ) ∂(Formalism.REAL.muG ((Global …`. Rewrite using `[ha b', hww, one_mul, star_mul, e4]`. Simplify using `[Complex.real_smul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem act_of_eigen : ∀ (D : D7) (θ : InfFam D) (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (S S' : D.what₂.Tau → SPar) (M₀ : DSModel Y S')
   (MP : DSModel V S) (τ : D.what₂.Tau) (e : Option (Fin Y.rank) ≃ Fin V.rank) (v₀ v : MP.H τ)
@@ -123,27 +121,23 @@ theorem act_of_eigen : ∀ (D : D7) (θ : InfFam D) (Y V : HSp D) (d : Hermitian
   ring
 
 /- English proof (translation)
-Introduce `hRI`. Take `⟨C, hC, hT1⟩` from `realInputE_transport hRI`. Use `⟨C, hC.le, ?_⟩` and prove the remaining obligations. Introduce `ε0 CF hCF`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.T.branchingHypotheses_gridParameters_largeScale ε0 CF hCF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨x₀, fun D large₂ h1 h2 h3 T L μ0 hL G W M hM => ?_⟩` and prove the remaining obligations. Establish `hP` using `hx₀ D large₂ h1 h2 h3 T L μ0 hL G W M hM`. Introduce `M₀ MP τ`. Establish `hY : (Yc D 0).rank = D.R.r`. Establish `h` using `D.sp.Y_rank 0 (Nat.zero_le _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `[Yc, Ranks.rankY]`. Establish `hN : (G.V (.core 0)).rank = D.R.r + 1`. Establish `h : (Yc D 0).rank + 1 = (G.V (.core 0)).rank` using `G.sp.dec0.rank`. Use linear arithmetic over natural numbers and integers. Take `⟨⟨e, hPar⟩, hlog, -⟩` from `hP τ (fun i => MP.ε τ (Fin.cast hN.symm i)) (fun i => MP.lam τ (Fin.cast hN.symm i)) (fun i => (GlobalTheory.ConjDS.conjModel M₀).ε τ (Fin.cast hY.symm i)) (fun i => (GlobalTheory.ConjDS.conjModel M₀).lam τ (Fin.cast hY.symm i)) (isEnum_cast' hN.symm (MP.enum τ)) (isEnum_cast' hY …`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨v₀, v, g₀', w', c₁, hlow, hg₀', hv, hsmv, hsmw, hw1, hc₁, ⟨hs0, hs1⟩, ha, hb, hc, A₀, hA₀⟩` from `hT1 (Yc D 0).rank D.R.r (G.V (.core 0)).rank hY hN e (MP.ε τ) (MP.lam τ) ((GlobalTheory.ConjDS.conjModel M₀).ε τ) ((GlobalTheory.ConjDS.conjModel M₀).lam τ) (large₂.sc.b ^ 2) hPar (MP.H τ) ((GlobalTheory.ConjDS.conjModel M₀).H τ) (MP.σ τ) ((GlobalTheory.ConjDS.conjModel M₀).σ τ) …`. Use `set e' : Option (Fin (Yc D 0).rank) ≃ Fin (G.V (.core 0)).rank := (finCongr hY).optionCongr.trans (e.trans (finCongr hN.symm)) with he'`. Take `⟨B, hBu, hBg, hBad, hBz, hBmem, hBemb⟩` from `GlobalTheory.T.exists_signature_matrix_extension D W.θ W.θ_is (Yc D 0) (G.V (.core 0)) G.sp.dec0 τ ((GlobalTheory.ConjDS.conjModel M₀).ε τ) ((GlobalTheory.ConjDS.conjModel M₀).fr τ) (MP.ε τ) e' ((GlobalTheory.ConjDS.conjModel M₀).fr_unit τ) ((GlobalTheory.ConjDS.conjModel M₀).fr_ …`. Take `⟨lam, hlam, hH⟩` from `GlobalTheory.T.unitary_haar_coordinate_reversal_positive_multiple _ (M₀.ε τ)`. Take `⟨hreal, hmco⟩` from `GlobalTheory.T.translated_matrix_coefficient_in_adapted_frame D _ _ MP τ B g₀' v₀ hBu hBg hg₀'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hpt, hlieX⟩` from `GlobalTheory.T.conjugate_model_frame_matrix_facts_at_place D W.θ W.θ_is (Yc D 0) _ M₀ τ`. Establish `hAu` using `(GlobalTheory.ConjDS.conjModel M₀).fr_unit τ`. Establish `hbig : GlobalTheory.SepReal.big C D.R.r (large₂.sc.b ^ 2) ≤ Real.exp (6 * C * ((D.R.r : ℝ) + 1) ^ 4 * Real.log large₂.sc.b)`. Unfold `GlobalTheory.SepReal.big`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h` using `mul_le_mul_of_nonneg_left hlog (show 0 ≤ C * ((D.R.r : ℝ) + 1) ^ 4 by positivity)`. Combine the equalities or inequalities in the displayed calculation. Establish `hm0 : ∀ u, GlobalTheory.PackLoc.mco MP τ (B⁻¹ * g₀' * MP.fr τ) v₀ (GlobalTheory.PackLoc.embAt W.θ G.sp.dec0 τ (GlobalTheory.PackLoc.ptY M₀ τ u)) = ⟪v, MP.σ τ (GlobalTheory.PackLoc.embOpt e' (GlobalTheory.ConjDS.rv (Formalism.MainNotions.S.umat u))) v⟫_ℂ` using `fun u => by`. Rewrite using `[hmco _ (hBmem _ (hpt u).1), hBemb _ (hpt u).1, (hpt u).2.1, ← hv]`. Establish `hmg : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D (G.V (.core 0)) τ), ∀ u, GlobalTheory.PackLoc.mco MP τ (B⁻¹ * g₀' * MP.fr τ) v₀ (g * GlobalTheory.PackLoc.embAt W.θ G.sp.dec0 τ (GlobalTheory.PackLoc.ptY M₀ τ u)) = ⟪v, MP.σ τ (B * g * B⁻¹ * GlobalTheory.PackLoc.embOpt e' (Gl …`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg u`. Rewrite using `[hmco _ (UH_mul' hg (hBmem _ (hpt u).1)), conj_mul' hBu, hBemb _ (hpt u).1, (hpt u).2.1, ← hv]`. Establish `hm1 : ∀ X ∈ lieAt (Yc D 0) τ, ∀ (s : ℝ) u, GlobalTheory.PackLoc.mco MP τ (B⁻¹ * g₀' * MP.fr τ) v₀ (GlobalTheory.PackLoc.embAt W.θ G.sp.dec0 τ (cmp W.θ τ (oneP W.θ (Yc D 0) τ X s) * GlobalTheory.PackLoc.ptY M₀ τ u)) = ⟪v, MP.σ τ (GlobalTheory.PackLoc.embOpt e' (NormedSpace.exp (s …`. Introduce `X hX s u`. Establish `hmem` using `UH_mul' ((hlieX X hX).2 s).1 (hpt u).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmco _ (hBmem _ hmem), hBemb _ hmem, conj_mul' hAu, ((hlieX X hX).2 s).2, (hpt u).2.1, ← hv]`. Establish `hK : lam * (c₁ * GlobalTheory.SepReal.big C D.R.r (large₂.sc.b ^ 2)) ≤ Real.exp (6 * C * ((D.R.r : ℝ) + 1) ^ 4 * Real.log large₂.sc.b) * ‖((lam * c₁ : ℝ) : ℂ)‖`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (mul_pos hlam hc₁)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hL` using `GlobalTheory.T.smooth_vector_matrixCoeff_integrable (Yc D 0).rank (G.V (.core 0)).rank e' (MP.ε τ) ((GlobalTheory.ConjDS.conjModel M₀).ε τ) (MP.H τ) (MP.σ τ) v (c₁ * GlobalTheory.SepReal.big C D.R.r (large₂.sc.b ^ 2)) (MP.ds τ).2.2.1 hs0 hs1 hsmv (fun g hg => (hb g hg).1) hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Cd, hCd⟩` from `GlobalTheory.T.matrix_coefficient_decay_in_frame_of_translate_decay D.R.r (G.V (.core 0)).rank hN (MP.ε τ) (MP.H τ) (MP.σ τ) v₀ g₀' (MP.fr τ) (gramAt D (G.V (.core 0)) τ) A₀ (MP.ds τ).2.2.1 hg₀' (MP.fr_unit τ) (MP.fr_gram τ) (fun g hg => by rw [← hv]; exact hA₀ g hg)`. Use `⟨(GlobalTheory.ConjDS.conjModel M₀).ε τ, (GlobalTheory.ConjDS.conjModel M₀).fr τ, MP.ε τ, B, v₀, B⁻¹ * g₀' * MP.fr τ, GlobalTheory.ConjDS.cj (M₀.H τ) w', ((lam * c₁ : ℝ) : ℂ), ?_⟩` and prove the remaining obligations. Conclude with `{ unitA := hAu gramA := (GlobalTheory.ConjDS.conjModel M₀).fr_gram τ unitB := hBu gramB := hBg adapted := hBad real := hreal kfin := GlobalTheory.isKFin_of_mem_lowKSub _ _ _ _ _ _ hlow.2 dec := ⟨Cd, hCd⟩ sm := GlobalTheory.T.conj_smooth_vector_conjugate_model_mem_smooth D _ _ M₀ …`. Introduce `h`. Establish `h' : ‖GlobalTheory.ConjDS.cj (M₀.H τ) w'‖ = 1` using `(GlobalTheory.ConjDS.cj (M₀.H τ)).norm_map w' ▸ hw1`.
-
-Rewrite `h'` using `[h, norm_zero]`. Conclude with `zero_ne_one h'`. Use `cne := Complex.ofReal_ne_zero.2 (mul_pos hlam hc₁).ne'`. Use `act := act_of_eigen D W.θ _ _ G.sp.dec0 _ _ M₀ MP τ e' v₀ v (B⁻¹ * g₀' * MP.fr τ) w' c₁ lam hm0 (fun u => (hpt u).2.2) (fun F => (hH ℂ F).2) hw1 ha`. Use `far := GlobalTheory.T.transversal_coefficient_decay_at_real_place D W.θ _ _ G.sp.dec0 _ _ M₀ MP τ e' v₀ v (B⁻¹ * g₀' * MP.fr τ) B c₁ lam _ _ D.R.r hBu hBg hBz hN hmg (fun F => (hH ℂ F).1) (fun F => (hH ℝ F).2) hc₁ hlam hbig hb`.
-
-Use `lip := GlobalTheory.T.matrix_coefficient_lipschitz_at_real_place D W.θ _ _ G.sp.dec0 _ _ M₀ MP τ e' v₀ v (B⁻¹ * g₀' * MP.fr τ) ((GlobalTheory.ConjDS.conjModel M₀).fr τ) _ lam _ _ hm0 hm1 (fun X hX => (hlieX X hX).1) hL (fun F => hH ℝ F) hlam hK }`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locOK_of_eigen : RealInputE → ∃ C : ℝ, 0 ≤ C ∧ Ev fun {D} _ _ {sc} {G} W _ => ∀ (M₀ : DSModel (Yc D 0) (parB (Ptw D) 0))
   (MP : DSModel (G.V (.core 0)) (Node.par D sc.cGap (.core 0))) (τ : D.what₂.Tau),
@@ -244,13 +238,11 @@ theorem locOK_of_eigen : RealInputE → ∃ C : ℝ, 0 ≤ C ∧ Ev fun {D} _ _ 
         ((GlobalTheory.ConjDS.conjModel M₀).fr τ) _ lam _ _ hm0 hm1 (fun X hX => (hlieX X hX).1) hL (fun F => hH ℝ F) hlam hK }
 
 /- English proof (translation)
-Introduce `hRI`. Take `⟨C, hC, hloc⟩` from `locOK_of_eigen hRI`. Use `⟨6 * C, by positivity, ?_⟩` and prove the remaining obligations. Introduce `ε CF hCF`. Take `⟨x₀, hx⟩` from `hloc ε CF hCF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨x₀, ?_⟩` and prove the remaining obligations. Introduce `D large₂ hε hx0 hS T L μ0 hL G W M hM M₀ MP`. Establish `h` using `hx D large₂ hε hx0 hS T L μ0 hL G W M hM M₀ MP`. Use `choose εA A εB B v₀ g₀ w c hOK using h`. Take `⟨p, hp⟩` from `GlobalTheory.T.realVectors_allPlaces_of_localData W.θ W.θ_is G.sp.dec0 M₀ MP _ εA A εB B v₀ g₀ w c hOK`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p, ?_⟩` and prove the remaining obligations. Establish `e : loss D (6 * C) large₂.sc.b = Fintype.card D.what₂.Tau * (6 * C * ((D.R.r : ℝ) + 1) ^ 4 * Real.log large₂.sc.b)`. Unfold `loss`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `hp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem packEx_of_eigen : RealInputE → PackEx := by
   intro hRI

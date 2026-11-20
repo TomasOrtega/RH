@@ -14,16 +14,16 @@ def principalPolarisationOneSection : Prop :=
 namespace principalPolarisationOneSection
 
 /- English proof (translation)
-Introduce `K _ _ P`. Simplify using `using h K P 1 le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem of_h0Field (h : GlobalSectionsRankAlgClosed) : principalPolarisationOneSection := by
   intro K _ _ P
   simpa using h K P 1 le_rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hs`. Use `push Not at hs`. Establish `: Subsingleton (SecM P.A P.L 1 (baseOver (Spec (CommRingCat.of K))))` using `⟨fun a b => (hs a).trans (hs b).symm⟩`. Establish `: Nontrivial Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.symm.injective.nontrivial`. Establish `h1` using `h K P`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Module.finrank_zero_of_subsingleton]`. Conclude with `zero_ne_one h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_ne_zero (h : principalPolarisationOneSection) (K : Type) [Field K] [IsAlgClosed K]
     (P : PolAV (Spec (CommRingCat.of K))) :
@@ -39,19 +39,17 @@ theorem exists_ne_zero (h : principalPolarisationOneSection) (K : Type) [Field K
   exact zero_ne_one h1
 
 /- English proof (translation)
-Establish `: Nontrivial Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.symm.injective.nontrivial`. Use `set S := Spec (CommRingCat.of K)`. Use `set P := Inh.zeroPolAV S with hP`. Establish `hU : ∀ j, (LPow P.A P.L 1 (baseOver S)).U j = ⊤` using `fun j => top_unique fun x _ => Set.mem_iInter.2 fun _ => trivial`. Establish `hbij : ∀ j, Function.Bijective (liftHom P.A (T` using `baseOver S) ((LPow P.A P.L 1 (baseOver S)).U j)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[hU j]`. Establish `: IsIso (fst (baseOver S) P.A)`. Express the relevant statement in the definitionally equal form `IsIso (fst (baseOver S) (𝟙_ (Over S)))`. Rewrite using `[← rightUnitor_hom]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `: IsIso (fst (baseOver S) P.A).left` using `inferInstanceAs (IsIso ((Over.forget S).map (fst (baseOver S) P.A)))`. Establish `h2` using `ConcreteCategory.bijective_of_isIso ((fst (baseOver S) P.A).left.app ⊤)`. Establish `h3 : Function.Bijective (fst (baseOver S) P.A).left.appTop.hom` using `h2`. Simplify `h3` using `[liftHom]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `one : SecM P.A P.L 1 (baseOver S)` to `⟨fun _ => 1, by`. Introduce `i j`. Use `erw [Inh.linComb_triv_g]`. Simplify using `only [map_one]`. Conclude with `(_root_.mul_one _).symm⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Set `j₀ : (LPow P.A P.L 1 (baseOver S)).ι` to `fun _ => PUnit.unit`. Establish `hj : ∀ j, j = j₀` using `fun j => funext fun _ => rfl`. Establish `hsm : ∀ r : Γ((baseOver S).left, ⊤), (r • one).1 j₀ = liftHom P.A _ r` using `fun r => _root_.mul_one _`. Establish `hb : Function.Bijective (LinearMap.toSpanSingleton Γ((baseOver S).left, ⊤) _ one)`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `r r' e`. Apply `(hbij j₀).1` to reduce the goal to its premises. Rewrite using `[← hsm, ← hsm]`. Conclude with `congrArg (fun s : SecM P.A P.L 1 (baseOver S) => s.1 j₀) e`. Introduce `s`.
-
-Take `⟨r, hr⟩` from `(hbij j₀).2 (s.1 j₀)`. Use `⟨r, Subtype.ext (funext fun j => ?_)⟩` and prove the remaining obligations. Take `rfl` from `hj j`. Conclude with `(hsm r).trans hr`. Rewrite using `[← (LinearEquiv.ofBijective _ hb).finrank_eq, Module.finrank_self]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_case (K : Type) [Field K] :
     Module.finrank Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤)
@@ -102,6 +100,6 @@ end GlobalTheory.Published
 abbrev GlobalTheory.AbLaw.principalPolarisationOneSection : Prop := GlobalTheory.Published.principalPolarisationOneSection
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example : GlobalTheory.AbLaw.principalPolarisationOneSection ↔ ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))), Module.finrank Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L 1 (baseOver (Spec (CommRingCat.of K)))) = 1 := Iff.rfl

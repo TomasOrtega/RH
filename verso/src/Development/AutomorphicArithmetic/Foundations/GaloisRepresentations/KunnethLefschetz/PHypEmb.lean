@@ -11,13 +11,13 @@ open scoped TensorProduct DirectSum
 open MvPolynomial in
 attribute [local instance] MvPolynomial.gradedAlgebra in
 /- English proof (translation)
-Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C r => simp`. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, add_sub_add_comm]`. Conclude with `Ideal.add_mem _ hp hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul_X p n hp`. Rewrite using `[map_mul, map_mul]`. Consider the cases of `n using Fin.cases with`. Consider the case `zero`. Establish `h0 : killCompl (R` using `k) (Fin.succ_injective (d + 1)) (X 0) = 0 := by`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[killCompl, aeval_X, Fin.succ_ne_zero]`. Rewrite using `[h0, map_zero, mul_zero, sub_zero]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span rfl)`. Consider the case `succ j`. Establish `h1 : rename Fin.succ (killCompl (R` using `k) (Fin.succ_injective (d + 1)) (X j.succ)) = X j.succ := by`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[killCompl, aeval_X]`. Rewrite using `[h1, ← sub_mul]`. Conclude with `Ideal.mul_mem_right _ _ hp`.
+A detailed English derivation is pending.
 -/
 private theorem sec_sub (k : Type) [Field k] (d : ℕ) (a : MvPolynomial (Fin (d + 2)) k) :
     a - rename Fin.succ (killCompl (R := k) (Fin.succ_injective (d + 1)) a) ∈
@@ -52,25 +52,23 @@ private def chartIso (k : Type) [Field k] (d : ℕ) :
 open MvPolynomial in
 attribute [local instance] MvPolynomial.gradedAlgebra in
 /- English proof (translation)
-Unfold `Off`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `hx ⟨y, rfl⟩`. Establish `hb` using `GlobalTheory.ProjSpace.linearι_preimage_chart_of_notMem k (Fin.succ_injective (d + 1)) (k := 0) (by simp [Fin.succ_ne_zero])`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hy : y ∈ GlobalTheory.ProjSpace.linearι k (Fin.succ_injective (d + 1)) ⁻¹ᵁ GlobalTheory.ProjSpace.chart k (d + 1) 0` using `hx`. Rewrite `hy` using `[hb]`. Conclude with `hy`. Introduce `hx`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : (X 0 : MvPolynomial (Fin (d + 2)) k) ∈ x.asHomogeneousIdeal`. Assume the negation of the conclusion as `h`. Conclude with `hc h`. Set `ρ : GlobalTheory.ProjSpace.grading k d →+*ᵍ GlobalTheory.ProjSpace.grading k (d + 1)` to `{ toRingHom := (rename (R := k) Fin.succ).toRingHom map_mem := fun {i a} ha => by`. Establish `ha'` using `(mem_homogeneousSubmodule _ _).1 ha`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mem_homogeneousSubmodule _ _).2 (ha'.rename_isHomogeneous) }`. Establish `hρ : ∀ a, ρ a = rename Fin.succ a` using `fun a => rfl`. Establish `hrel : ¬ HomogeneousIdeal.irrelevant (GlobalTheory.ProjSpace.grading k d) ≤ x.asHomogeneousIdeal.comap ρ`. Introduce `hle`. Establish `htop` using `GroundTheory.Arith.SchemeCoh.ProjSpace.iSup_basicOpen_X (A := k) (n := d + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hxm : x ∈ (⊤ : (Proj (GlobalTheory.ProjSpace.grading k (d + 1))).Opens)` using `trivial`. Rewrite `hxm` using `[← htop, TopologicalSpace.Opens.mem_iSup]`. Take `⟨j, hj⟩` from `hxm`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => exact hj h0`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Consider the case `succ i`. Establish `hi` using `hle (GroundTheory.Arith.SchemeCoh.ProjSpace.X_mem_irrelevant (A := k) (n := d) i)`. Express the relevant statement in the definitionally equal form `ρ (X i) ∈ x.asHomogeneousIdeal at hi`. Rewrite `hi` using `[hρ, rename_X]`. Conclude with `hj hi`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Set `y : ProjectiveSpectrum (GlobalTheory.ProjSpace.grading k d)` to `⟨x.asHomogeneousIdeal.comap ρ, x.2.comap ρ, hrel⟩`. Apply `hx` to reduce the goal to its premises. Use `⟨y, ?_⟩` and prove the remaining obligations. Apply `ProjectiveSpectrum.ext` to reduce the goal to its premises. Apply `HomogeneousIdeal.toIdeal_injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a`. Express the relevant statement in the definitionally equal form `rename Fin.succ (killCompl (R := k) (Fin.succ_injective (d + 1)) a) ∈ x.asHomogeneousIdeal ↔ a ∈ x.asHomogeneousIdeal`. Establish `hs` using `sec_sub k d a`. Establish `hs' : a - rename Fin.succ (killCompl (R` using `k) (Fin.succ_injective (d + 1)) a) ∈ x.asHomogeneousIdeal.toIdeal := (Ideal.span_le.2 (Set.singleton_subset_iff.2 h0)) hs`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h2` using `Ideal.add_mem _ hs' h`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `h`. Establish `h2` using `Ideal.sub_mem _ h hs'`.
-
-Rewrite `h2` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem off_hyp (k : Type) [Field k] (d : ℕ) :
     Off (GlobalTheory.ProjSpace.linearι k (Fin.succ_injective (d + 1))) (GlobalTheory.ProjSpace.chart k (d + 1) 0) := by
@@ -131,7 +129,7 @@ private theorem off_hyp (k : Type) [Field k] (d : ℕ) :
       rwa [sub_sub_cancel] at h2
 
 /- English proof (translation)
-Introduce `k _ d`. Use `⟨GlobalTheory.ProjSpace.linearι k (Fin.succ_injective (d + 1)), GlobalTheory.ProjSpace.chart k (d + 1) 0, inferInstance, GlobalTheory.ProjSpace.linearι_str k _, off_hyp k d, ⟨chartIso k d⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.hypEmb_holds :
     UpperTheory.Gal.KunnethLefschetz.HypEmb := by

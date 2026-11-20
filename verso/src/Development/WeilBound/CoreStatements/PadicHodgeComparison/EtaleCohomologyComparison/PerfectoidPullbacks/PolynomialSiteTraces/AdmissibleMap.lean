@@ -64,7 +64,7 @@ theorem descOf_φ {T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (g : B →+* 
 end OfMap
 
 /- English proof (translation)
-Rewrite using `[pt, ← φ.pt]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pt_hom {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') :
     pt T' = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ pt T := by
@@ -72,7 +72,7 @@ theorem pt_hom {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') :
   rfl
 
 /- English proof (translation)
-Introduce `x _`. Establish `hx` using `h (show (Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle))).base x ∈ (⊤ : (Spec (CommRingCat.of (T.B ⧸ T.J))).Opens) from trivial)`. Rewrite using `[pt_hom φ]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inU_hom {V : X.Opens} {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (h : InU V T) : InU V T' := by
   intro x _
@@ -82,7 +82,7 @@ theorem inU_hom {V : X.Opens} {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T')
   exact hx
 
 /- English proof (translation)
-Use `⟨fun h => by simpa using (T.adm.1 h).map f, fun h => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `T.adm.2 h`. Conclude with `⟨n, by rw [← Ideal.map_pow, hn, Ideal.zero_eq_bot, Ideal.map_bot]; rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissible_map (T : Thick (nlFun γ p X q κ)) {B : Type} [CommRing B] (f : T.B →+* B) :
     (p ≠ 0 → IsNilpotent (p : B)) ∧ (p = 0 → IsNilpotent (T.J.map f)) := by
@@ -96,13 +96,13 @@ def eta {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) : DividedPo
   Classical.choose (FubiniStudyChowHeightFormula₂.Adr.exists_std B J δ (pq B))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.exists_std B J δ (pq B))`.
+A detailed English derivation is pending.
 -/
 theorem eta_std {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) : (pq B).IsStd δ (eta δ) :=
   Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.exists_std B J δ (pq B))
 
 /- English proof (translation)
-Introduce `_ hx` and use `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_ext {B : Type} [CommRing B] (J : Ideal B) : J ≤ ((pq B).ext J).comap (algebraMap B (pq B).P) :=
   fun _ hx => Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hx)
@@ -116,7 +116,7 @@ def polyJ (T : Thick (nlFun γ p X q κ)) (hp : p ≠ 0) : T ⟶ polyT T hp := h
 abbrev trI (T : Thick (nlFun γ p X q κ)) (s : ℕ) : Ideal (pq T.B).P := fil (eta T.δ) (max s 1)
 
 /- English proof (translation)
-The claim follows from `FubiniStudyChowHeightFormula₂.Adr.Fil.fil_isSubDPIdeal _ _ (le_max_right _ _)`.
+A detailed English derivation is pending.
 -/
 theorem trI_sub (T : Thick (nlFun γ p X q κ)) (s : ℕ) : (eta T.δ).IsSubDPIdeal (trI T s) :=
   FubiniStudyChowHeightFormula₂.Adr.Fil.fil_isSubDPIdeal _ _ (le_max_right _ _)
@@ -129,7 +129,7 @@ def trD (T : Thick (nlFun γ p X q κ)) (s : ℕ) : DividedPowers (trJ T s) :=
   Classical.choose (FubiniStudyChowHeightFormula₂.Adr.Fil.exists_quot (eta T.δ) (trI T s) (trI_sub T s))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.Fil.exists_quot (eta T.δ) (trI T s) (trI_sub T s))`.
+A detailed English derivation is pending.
 -/
 theorem trD_spec (T : Thick (nlFun γ p X q κ)) (s : ℕ) :
     IsDPMorphism (eta T.δ) (trD T s) (Ideal.Quotient.mk (trI T s)) ∧
@@ -141,13 +141,13 @@ abbrev trF (T : Thick (nlFun γ p X q κ)) (s : ℕ) : T.B →+* trB T s :=
   (Ideal.Quotient.mk (trI T s)).comp (algebraMap T.B (pq T.B).P)
 
 /- English proof (translation)
-Introduce `_ hx` and use `Ideal.mem_map_of_mem _ (le_ext T.J hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trF_le (T : Thick (nlFun γ p X q κ)) (s : ℕ) : T.J ≤ (trJ T s).comap (trF T s) :=
   fun _ hx => Ideal.mem_map_of_mem _ (le_ext T.J hx)
 
 /- English proof (translation)
-The claim follows from `IsDPMorphism.comp _ (trD_spec T s).1 (eta_std T.δ).dp`.
+A detailed English derivation is pending.
 -/
 theorem trF_dp (T : Thick (nlFun γ p X q κ)) (s : ℕ) : IsDPMorphism T.δ (trD T s) (trF T s) :=
   IsDPMorphism.comp _ (trD_spec T s).1 (eta_std T.δ).dp
@@ -160,7 +160,7 @@ def locD (T : Thick (nlFun γ p X q κ)) (f : T.B) : DividedPowers (T.J.map (alg
   Classical.choose (FubiniStudyChowHeightFormula₂.Adr.flatExt T.B (Localization.Away f) T.J T.δ)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.flatExt T.B (Localization.Away f) T.J T.δ)`.
+A detailed English derivation is pending.
 -/
 theorem locD_dp (T : Thick (nlFun γ p X q κ)) (f : T.B) :
     IsDPMorphism T.δ (locD T f) (algebraMap T.B (Localization.Away f)) :=
@@ -176,7 +176,7 @@ def quoD (T : Thick (nlFun γ p X q κ)) {K : Ideal T.B} (hK : T.δ.IsSubDPIdeal
   Classical.choose (FubiniStudyChowHeightFormula₂.Adr.Fil.exists_quot T.δ K hK)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.Fil.exists_quot T.δ K hK)`.
+A detailed English derivation is pending.
 -/
 theorem quoD_spec (T : Thick (nlFun γ p X q κ)) {K : Ideal T.B} (hK : T.δ.IsSubDPIdeal K) :
     IsDPMorphism T.δ (quoD T hK) (Ideal.Quotient.mk K) ∧

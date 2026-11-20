@@ -18,15 +18,15 @@ def IsDom (g n : ℕ) (B : (Fin n → ℤ) → (Fin n → ℤ) → ℝ) : Prop :
 variable {g n m : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X₁, _, _, s, B₁, hs, hq, hB, hd, he⟩`. Establish `he' : ∀ a b, B (r a) (r b) = B₁ (s a) (s b)` using `he`. Establish `: Module.Finite ℤ X₁` using `Module.Finite.of_surjective s hs`. Establish `: Module.IsTorsionFree ℤ X₁` using `inferInstance`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : LinearMap.ker r ≤ LinearMap.ker s` using `fun a ha => by`. Rewrite `ha`, the goal using `[LinearMap.mem_ker]`. Use `OffDom.eq_zero_of_posDef hd ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Set `s'` to `(LinearMap.ker r).liftQ s hk ∘ₗ (r.quotKerEquivOfSurjective hr).symm.toLinearMap`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression.
 
-Establish `hs' : ∀ a, s' (r a) = s a` using `fun a => by`. Establish `e : (r.quotKerEquivOfSurjective hr).symm (r a) = Submodule.Quotient.mk a` using `(LinearEquiv.symm_apply_eq _).2 (by simp)`. Simplify using `only [s', LinearMap.comp_apply, LinearEquiv.coe_coe, e]`. Both sides reduce to the same expression. Use `⟨X₁, _, inferInstance, s', B₁, fun y => ?_, hq, hB, hd, fun x y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩` from `hs y`. Conclude with `⟨r a, hs' a⟩`. Take `⟨a, rfl⟩` from `hr x`. Take `⟨b, rfl⟩` from `hr y`. Rewrite using `[hs', hs']`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he' a b`. Introduce and unpack `⟨X₁, _, _, s, B₁, hs, hq, hB, hd, he⟩`. Conclude with `⟨X₁, _, inferInstance, s ∘ₗ r, B₁, hs.comp hr, hq, hB, hd, fun a b => he _ _⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isDom_comp_iff {r : (Fin n → ℤ) →ₗ[ℤ] (Fin m → ℤ)} (hr : Function.Surjective r)
     (B : (Fin m → ℤ) → (Fin m → ℤ) → ℝ) :
@@ -60,7 +60,7 @@ theorem isDom_comp_iff {r : (Fin n → ℤ) →ₗ[ℤ] (Fin m → ℤ)} (hr : F
     exact ⟨X₁, _, inferInstance, s ∘ₗ r, B₁, hs.comp hr, hq, hB, hd, fun a b => he _ _⟩
 
 /- English proof (translation)
-Take `⟨X₁, _, _, s, B₁, hs, hq, hB, hd, he⟩` from `h`. Use `⟨X₁, _, inferInstance, s, t • B₁, hs, hq, Submodule.smul_mem _ _ hB, fun k x hx c hc => ?_, fun a b => by simp [he a b]⟩` and prove the remaining obligations. Use `(mul_pos ht (hd k x hx c hc)).trans_eq ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDom_smul {t : ℝ} (ht : 0 < t) {B : (Fin n → ℤ) → (Fin n → ℤ) → ℝ} (h : IsDom g n B) :
     IsDom g n (fun a b => t * B a b) := by
@@ -72,7 +72,7 @@ theorem isDom_smul {t : ℝ} (ht : 0 < t) {B : (Fin n → ℤ) → (Fin n → �
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `isDom_smul (inv_pos.2 ht) h` as an intermediate fact. Simplify `this` using `only [inv_mul_cancel_left₀ ht.ne']`. Conclude with `isDom_smul ht`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isDom_smul_iff {t : ℝ} (ht : 0 < t) (B : (Fin n → ℤ) → (Fin n → ℤ) → ℝ) :
     IsDom g n (fun a b => t * B a b) ↔ IsDom g n B := by
@@ -83,7 +83,7 @@ theorem isDom_smul_iff {t : ℝ} (ht : 0 < t) (B : (Fin n → ℤ) → (Fin n �
   · exact isDom_smul ht
 
 /- English proof (translation)
-Use `φ.inv n 0 0 (fun y => ⟨0, Subsingleton.elim _ _⟩) (fun _ _ => 0)` as an intermediate fact. Rewrite `this` using `[φ.zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFun_zeroForm (φ : InvFun ℤ) (n : ℕ) : φ.toFun n (fun _ _ => 0) = 0 := by
   have := φ.inv n 0 0 (fun y => ⟨0, Subsingleton.elim _ _⟩) (fun _ _ => 0)
@@ -108,25 +108,25 @@ def cutFun (φ : InvFun ℤ) : InvFun ℤ where
 variable {φ : InvFun ℤ}
 
 /- English proof (translation)
-The claim follows from `if_pos h`.
+A detailed English derivation is pending.
 -/
 theorem cutFun_of {B : (Fin n → ℤ) → (Fin n → ℤ) → ℝ} (h : IsDom g n B) :
     (cutFun g φ).toFun n B = φ.toFun n B := if_pos h
 
 /- English proof (translation)
-The claim follows from `if_neg h`.
+A detailed English derivation is pending.
 -/
 theorem cutFun_of_not {B : (Fin n → ℤ) → (Fin n → ℤ) → ℝ} (h : ¬ IsDom g n B) :
     (cutFun g φ).toFun n B = 0 := if_neg h
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using `only [Nat.cast_zero, zero_mul]`. Distinguish the cases in `h : IsDom g n (fun _ _ => (0 : ℝ))`. Rewrite using `[cutFun_of h, toFun_zeroForm]`. Rewrite using `[cutFun_of_not h]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : (0 : ℝ) < k` using `by exact_mod_cast hk`. Distinguish the cases in `h : IsDom g n B`. Rewrite using `[cutFun_of ((isDom_smul_iff ht B).2 h), cutFun_of h]`. Take `⟨X₁, _, _, s, B₁, hs, hq, hB, hd, he⟩` from `h`. Take `rfl : B = fun a b => B₁ (s a) (s b)` from `funext fun a => funext fun b => he a b`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: Module.Finite ℤ X₁` using `Module.Finite.of_surjective s hs`. Establish `e1` using `φ.eval_eq hs (fun x y => (k : ℝ) * B₁ x y)`. Establish `e2` using `φ.eval_eq hs (fun x y => B₁ x y)`. Rewrite using `[← e1, ← e2]`. Use `(hpol X₁ hq).homog B₁ (hd.mem_psdCone hB) k ht.le` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[evalR]`. Rewrite using `[cutFun_of_not (mt (isDom_smul_iff ht B).1 h), cutFun_of_not h, mul_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem cutFun_homog (hpol : IsPolFan id g φ) (n k : ℕ) (B : (Fin n → ℤ) → (Fin n → ℤ) → ℝ) :
     (cutFun g φ).toFun n (fun a b => k * B a b) = k * (cutFun g φ).toFun n B := by
@@ -149,9 +149,9 @@ theorem cutFun_homog (hpol : IsPolFan id g φ) (n k : ℕ) (B : (Fin n → ℤ) 
   · rw [cutFun_of_not (mt (isDom_smul_iff ht B).1 h), cutFun_of_not h, mul_zero]
 
 /- English proof (translation)
-Distinguish the cases in `h : IsDom g n B`. Rewrite using `[cutFun_of h]`. Take `⟨X₁, _, _, s, B₁, hs, hq, hB, hd, he⟩` from `h`. Take `rfl : B = fun a b => B₁ (s a) (s b)` from `funext fun a => funext fun b => he a b`. Establish `: Module.Finite ℤ X₁` using `Module.Finite.of_surjective s hs`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : φ.toFun n (fun a b => B₁ (s a) (s b)) = evalR φ B₁`. Rewrite using `[evalR, φ.eval_eq hs]`. Rewrite using `[e]`. Conclude with `(hpol X₁ hq).evalR_nonneg (hd.mem_psdCone hB)`. Rewrite using `[cutFun_of_not h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutFun_nonneg (hpol : IsPolFan id g φ) (n : ℕ) (B : (Fin n → ℤ) → (Fin n → ℤ) → ℝ) :
     0 ≤ (cutFun g φ).toFun n B := by
@@ -167,11 +167,11 @@ theorem cutFun_nonneg (hpol : IsPolFan id g φ) (n : ℕ) (B : (Fin n → ℤ) �
   · rw [cutFun_of_not h]
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' ℤ X`. Unfold `evalR`. Rewrite using `[(cutFun g φ).eval_eq hr, φ.eval_eq hr]`. Use `cutFun_of ?_` and prove the remaining obligations. Take `⟨X₁, _, i₁, _, s, B₁, hs, hB₁, hd, he⟩` from `hB`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl : i₁ = AddCommGroup.toIntModule X₁` from `Subsingleton.elim _ _`. Establish `: Module.Finite ℤ X₁` using `Module.Finite.of_surjective s hs`. Establish `hrk : Module.finrank ℤ X₁ ≤ g`. Use `LinearMap.finrank_range_le s` as an intermediate fact. Rewrite `this` using `[LinearMap.range_eq_top.2 hs, finrank_top]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.trans hX`. Conclude with `⟨X₁, _, inferInstance, s ∘ₗ r, B₁, hs.comp hr, hrk, hB₁, hd, fun a b => he _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem evalR_cutFun {X : Type} [AddCommGroup X] [Module.Finite ℤ X] (hX : Module.finrank ℤ X ≤ g)
     {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} (hB : B ∈ psdCone (id : ℤ → ℤ) X) : evalR (cutFun g φ) B = evalR φ B := by
@@ -189,7 +189,7 @@ theorem evalR_cutFun {X : Type} [AddCommGroup X] [Module.Finite ℤ X] (hX : Mod
   exact ⟨X₁, _, inferInstance, s ∘ₗ r, B₁, hs.comp hr, hrk, hB₁, hd, fun a b => he _ _⟩
 
 /- English proof (translation)
-Use `ConeSub.sum_smul_toReal_mem_psdCone ℤ id X 1 ![β] ![1] (by simp [hβ]) (by simp [hp]) (by simp)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toReal_mem_psdCone_int {X : Type} [AddCommGroup X] [Module.Finite ℤ X] {β : LinearMap.BilinForm ℤ X}
     (hβ : β ∈ balForms (id : ℤ → ℤ) X) (hp : ∀ y, 0 ≤ β y y) : toReal β ∈ psdCone (id : ℤ → ℤ) X := by
@@ -197,9 +197,9 @@ theorem toReal_mem_psdCone_int {X : Type} [AddCommGroup X] [Module.Finite ℤ X]
   simpa using this
 
 /- English proof (translation)
-Establish `hz : ∀ β ∈ balForms (id : ℤ → ℤ) X, (∀ y, 0 ≤ β y y) → φ₁.evalZ β = φ₂.evalZ β` using `fun β hβ hp => by`. Rewrite using `[← evalR_toReal, ← evalR_toReal]`. Conclude with `h _ (toReal_mem_psdCone_int hβ hp)`. Use `⟨hc.mem, hc.nonneg, hc.basis, (linearOn_iff φ₂ γ).2 fun c hcn => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h _ (ConeSub.sum_smul_toReal_mem_psdCone ℤ id X m γ c hc.mem hc.nonneg hcn), (linearOn_iff φ₁ γ).1 hc.linear c hcn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [hz _ (hc.mem i) (hc.nonneg i)]`. Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hc.strict`. Conclude with `⟨N, ℓ, hN, fun i => by rw [← hz _ (hc.mem i) (hc.nonneg i)]; exact h1 i, fun β hβ hp => by rw [← hz β hβ hp]; exact h2 β hβ hp, fun β hβ hp he => h3 β hβ hp (by rw [hz β hβ hp]; exact he)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCone_of_agree {X : Type} [AddCommGroup X] [Module.Finite ℤ X] {φ₁ φ₂ : InvFun ℤ}
     (h : ∀ B ∈ psdCone (id : ℤ → ℤ) X, evalR φ₁ B = evalR φ₂ B) {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X}
@@ -217,15 +217,13 @@ theorem isCone_of_agree {X : Type} [AddCommGroup X] [Module.Finite ℤ X] {φ₁
       fun β hβ hp he => h3 β hβ hp (by rw [hz β hβ hp]; exact he)⟩
 
 /- English proof (translation)
-Establish `hz : ∀ β ∈ balForms (id : ℤ → ℤ) X, (∀ y, 0 ≤ β y y) → φ₂.evalZ β = φ₁.evalZ β` using `fun β hβ hp => by`. Rewrite using `[← evalR_toReal, ← evalR_toReal]`. Conclude with `agree _ (toReal_mem_psdCone_int hβ hp)`. Establish `hc : ∀ {m : ℕ} (γ : Fin m → LinearMap.BilinForm ℤ X), IsCone id φ₂ γ ↔ IsCone id φ₁ γ` using `fun γ => ⟨isCone_of_agree agree, isCone_of_agree fun B hB => (agree B hB).symm⟩`. Use `⟨fun B hB t ht => ?_, fun B hB B' hB' => ?_, fun β hβ hp => ?_, fun β hβ hp h0 => ?_, fun m m' γ s hγ => ?_, fun B hB => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[agree _ (smul_mem_psdCone hB ht), agree _ hB]`. Conclude with `h.homog B hB t ht`. Establish `hsum : B + B' ∈ psdCone (id : ℤ → ℤ) X`. Take `⟨m, γ, c, hγ, hc, rfl⟩` from `h.cover B hB`. Take `⟨m', γ', c', hγ', hc', rfl⟩` from `h.cover B' hB'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 
-Apply the tactic sequence `have := ConeSub.sum_smul_toReal_mem_psdCone ℤ id X (m + m') (Fin.append γ γ') (Fin.append c c') (fun i => by refine Fin.addCases (fun j => ?_) (fun j => ?_) i <;> simp [hγ.mem, hγ'.mem]) (fun i => by refine Fin.addCases (fun j => ?_) (fun j => ?_) i <;> simp [hγ.nonneg, hγ'.nonne …`. Simplify `this` using `[Fin.sum_univ_add]`. Rewrite using `[agree _ hB, agree _ hB', agree _ hsum]`. Conclude with `h.superadd B hB B' hB'`. Rewrite using `[hz β hβ hp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `h.integral β hβ hp`. Rewrite using `[hz β hβ hp]`. Conclude with `h.pos β hβ hp h0`. Conclude with `(hc _).2 (h.face m m' γ s ((hc _).1 hγ))`. Take `⟨m, γ, c, hγ, hc', e⟩` from `h.cover B hB`.
-
-Conclude with `⟨m, γ, c, (hc _).2 hγ, hc', e⟩`. Take `⟨S, hS, h1⟩` from `h.finite`. Conclude with `⟨S, hS, fun m γ hγ => h1 m γ ((hc _).1 hγ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPolFanOn_of_agree {X : Type} [AddCommGroup X] [Module.Finite ℤ X] {φ₁ φ₂ : InvFun ℤ}
     (agree : ∀ B ∈ psdCone (id : ℤ → ℤ) X, evalR φ₂ B = evalR φ₁ B) (h : IsPolFanOn id φ₁ X) :
@@ -260,7 +258,7 @@ theorem isPolFanOn_of_agree {X : Type} [AddCommGroup X] [Module.Finite ℤ X] {�
     exact ⟨S, hS, fun m γ hγ => h1 m γ ((hc _).1 hγ)⟩
 
 /- English proof (translation)
-Introduce `g φ hpol`. Use `⟨cutFun g φ, fun X _ i _ _ hX => ?_, ⟨cutFun_homog hpol, cutFun_nonneg hpol⟩, fun X _ _ _ hX B hB => evalR_cutFun hX hB⟩` and prove the remaining obligations. Take `rfl : i = AddCommGroup.toIntModule X` from `Subsingleton.elim _ _`. Conclude with `isPolFanOn_of_agree (fun B hB => evalR_cutFun hX hB) (hpol X hX)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_tame : ∀ (g : ℕ) (φ : InvFun ℤ), IsPolFan id g φ →
     ∃ φs : InvFun ℤ, IsPolFan id g φs ∧ IsTame φs ∧ AgreesPsd g φs φ := by

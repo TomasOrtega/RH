@@ -48,7 +48,7 @@ def SharpBy (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ) {T : Scheme.{0}} 
     LBIso P.L (LB.LinComb c.P (K := Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨c, h, pr, h'⟩ => ⟨c, pr, h, h'⟩, fun ⟨c, pr, h, h'⟩ => ⟨c, h, pr, h'⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem sharpOver_iff (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ) {T : Scheme.{0}} (P : PolAV T) (u : T ⟶ F.X) :
     SharpOver F W P u ↔ ∃ c pr, SharpBy F W P u c pr :=
@@ -64,7 +64,7 @@ def IsCpl {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] (j : O →+* R)
   ∃ e : AdicCompletion (maximalIdeal O) O ≃+* R, ∀ a, e (algebraMap O _ a) = j a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨RingEquiv.refl _, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCpl_self (O : Type) [CommRing O] [IsLocalRing O] :
     IsCpl (algebraMap O (AdicCompletion (maximalIdeal O) O)) :=

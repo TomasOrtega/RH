@@ -30,7 +30,7 @@ def LeafSpreadV : Prop := ∀ (k : Type) [Field k] [IsAlgClosed k] {X : Scheme.{
       Surjective γ1 → Surjective γ2 → FamilyVe (k := k) X c0 e γ1 γ2
 
 /- English proof (translation)
-Establish `hc : IsClosed (Set.range f)` using `f.isClosedMap.isClosed_range`. Establish `h1 : closure ({genericPoint X} : Set X) ⊆ Set.range f` using `closure_minimal (Set.singleton_subset_iff.mpr hη) hc`. Rewrite `h1` using `[(genericPoint_spec X).def]`. Conclude with `⟨fun x => h1 (Set.mem_univ x)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem surj_of_generic {Y X : Scheme.{0}} [IrreducibleSpace X] (f : Y ⟶ X) [IsProper f]
     (hη : genericPoint X ∈ Set.range f) : Surjective f := by
@@ -41,11 +41,11 @@ theorem surj_of_generic {Y X : Scheme.{0}} [IrreducibleSpace X] (f : Y ⟶ X) [I
   exact ⟨fun x => h1 (Set.mem_univ x)⟩
 
 /- English proof (translation)
-Introduce `k _ _ X _ p _ hd`. Take `⟨Ω, iF, iA, iK, C0, c0, e, hc0, he, hη, hdim⟩` from `hC k p hd`. Use `⟨Ω, iF, iA, iK, C0, c0, hc0, fun C1 C2 γ1 γ2 h1 h2 s1 s2 => ?_⟩` and prove the remaining obligations. Take `⟨B, Y0, Y1, Y2, b, V, π, g1, g2, h, s, u0, u1, u2, iB, pb, hs, m0, m1, m2, f1, dB, irr, dY, fin, ne, P0, P1, P2, w1, w2, ue⟩` from `hS k p Ω hdim c0 e hc0 he C1 C2 γ1 γ2 h1 h2 s1 s2`. Use `⟨B, Y0, Y1, Y2, b, V, π, g1, g2, h, s, u0, u1, u2, iB, pb, hs, m0, m1, m2, f1, ?_, dB, irr, dY, fin, ne, P0, P1, P2, w1, w2⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x0, hx0⟩` from `hη`. Take `⟨x1, rfl⟩` from `s1.surj x0`. Take `⟨x2, rfl⟩` from `s2.surj x1`. Establish `key : u2 ≫ g2 ≫ g1 ≫ h = γ2 ≫ γ1 ≫ e`. Rewrite using `[← ue, ← Category.assoc u2 g2, ← w2, Category.assoc, ← Category.assoc u1 g1, ← w1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Use `f1` as an intermediate fact. Use `surj_of_generic (g2 ≫ g1 ≫ h) ⟨u2 x2, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, key, ← hx0]`. Simplify using `only [Scheme.Hom.comp_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem goal_of (hC : LeafCurveV) (hS : LeafSpreadV) : LateralTheory.E.LeafGeoCut.LeafGeoV := by
   intro k _ _ X _ p _ hd

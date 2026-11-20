@@ -17,7 +17,7 @@ namespace Adp
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
 abbrev _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix : Type := Fin d.m × Fin d.n × Fin 2
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cmb, _root_.PositivityTheory.SiegelWeilFormula.SD_k.crd]`. Use `conv_rhs => rw [← (Algebra.TensorProduct.basis (AF F) d.bs).sum_repr (X i j)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.cmb_crd (X : Mx F E d.m d.n) : d.cmb (d.crd X) = X := by
   ext i j
@@ -26,9 +26,9 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.cmb_crd (X : Mx F E
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨i, j, k⟩`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.crd, _root_.PositivityTheory.SiegelWeilFormula.SD_k.cmb]`. Establish `h : ∑ k', c (i, j, k') ⊗ₜ[F] d.bs k' = ∑ k', c (i, j, k') • (Algebra.TensorProduct.basis (AF F) d.bs) k'`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `congrFun (Module.Basis.repr_sum_self _ (fun k' => c (i, j, k'))) k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.crd_cmb (c : _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d → AF F) : d.crd (d.cmb c) = c := by
   funext ⟨i, j, k⟩
@@ -39,12 +39,12 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.crd_cmb (c : _root_
   rw [h]
   exact congrFun (Module.Basis.repr_sum_self _ (fun k' => c (i, j, k'))) k
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.crd]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.crd_add (X X' : Mx F E d.m d.n) : d.crd (X + X') = d.crd X + d.crd X' := by
   funext k; simp [_root_.PositivityTheory.SiegelWeilFormula.SD_k.crd]
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.crd]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.crd_smul (a : AF F) (X : Mx F E d.m d.n) : d.crd (a • X) = a • d.crd X := by
   funext k; simp [_root_.PositivityTheory.SiegelWeilFormula.SD_k.crd]
@@ -54,14 +54,14 @@ def _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.cmbL : (_root_.Positivi
   map_smul' a c := by ext i j; simp [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cmb, Finset.smul_sum, TensorProduct.smul_tmul']
 def _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.ek (k : _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) : Mx F E d.m d.n := d.cmb fun j => if k = j then 1 else 0
 /- English proof (translation)
-The claim follows from `LinearMap.pi_apply_eq_sum_univ (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.cmbL d) c`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.cmb_sum (c : _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d → AF F) : d.cmb c = ∑ k, c k • _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.ek d k :=
   LinearMap.pi_apply_eq_sum_univ (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.cmbL d) c
 /- English proof (translation)
-Use `⟨Matrix.of fun i j => (∑ k', (if k = (i, j, k') then (1 : F) else 0) • d.bs k' : E), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.ek, _root_.PositivityTheory.SiegelWeilFormula.SD_k.cmb, incM, Matrix.map_apply, Matrix.of_apply, map_sum]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Use `show _ = (1 : AF F) ⊗ₜ[F] _`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.ek_rat (k : _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) : ∃ M : Matrix (Fin d.m) (Fin d.n) E, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.ek d k = incM F M := by
   refine ⟨Matrix.of fun i j => (∑ k', (if k = (i, j, k') then (1 : F) else 0) • d.bs k' : E), ?_⟩
@@ -71,7 +71,7 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.ek_rat (k : _root_.
   show _ = (1 : AF F) ⊗ₜ[F] _
   split_ifs <;> simp
 /- English proof (translation)
-Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.crd, incM, Matrix.map_apply]`. Rewrite using `[show inclR (F := F) (AF F) (M k.1 k.2.1) = (1 : AF F) ⊗ₜ[F] M k.1 k.2.1 from rfl, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.crd_incM (M : Matrix (Fin d.m) (Fin d.n) E) (k : _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) :
     d.crd (incM F M) k = algebraMap F (AF F) (d.bs.repr (M k.1 k.2.1) k.2.2) := by
@@ -80,14 +80,14 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.crd_incM (M : Matri
     Algebra.TensorProduct.basis_repr_tmul]
   simp
 /- English proof (translation)
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.xs, ← incM_transpose, ← incM_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.xs_incM (x : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) E) :
     _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.xs d (incM F x) = incM F ((x * ((d.b⁻¹ : GL (Fin d.n ⊕ Fin d.n) E).1)ᵀ).toCols₂) := by
   rw [_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.xs, ← incM_transpose, ← incM_mul]
   rfl
 /- English proof (translation)
-Rewrite using `[dotProduct, Equiv.sum_comp τ (fun i => d.crd X i * _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.sy d (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.ek d i * (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.yy d)ᵀ) w), ← _root_.PositivityTheory.SiegelWeilFormu …`. Use `congr 1`. Use `conv_rhs => rw [← _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.cmb_crd d X, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.cmb_sum, Matrix.sum_mul]`. Simplify using `only [Matrix.smul_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.dot_sv {κ : Type} [Fintype κ] (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) (X : Mx F E d.m d.n)
     (w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
@@ -113,14 +113,14 @@ Both sides reduce to the same expression.
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_apply {κ : Type} [Fintype κ] (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) (w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ w = (fun k => d.crd (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.xs d w) (τ k), fun k => _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.sy d (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.ek d (τ k) * (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.yy d)ᵀ) w) := rfl
 /- English proof (translation)
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_apply, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_apply, om, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.dot_sv, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.dot_sv]`. Conclude with `(_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.sy_split d w w').symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.symplecticForm_coordinates {κ : Type} [Fintype κ] (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) (w w' : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     om (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ w) (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ w') = _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.sy d w w' := by
   rw [_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_apply, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_apply, om, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.dot_sv, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.dot_sv]
   exact (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.sy_split d w w').symm
 /- English proof (translation)
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_apply, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.xs_frame]`. Use `Prod.ext rfl (funext fun k => ?_)` and prove the remaining obligations. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.sy_frame d _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_frame {κ : Type} [Fintype κ] (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) (X : Mx F E d.m d.n) :
     _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ (X * (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.yy d)ᵀ) = (fun k => d.crd X (τ k), 0) := by
@@ -128,9 +128,9 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_frame {
   refine Prod.ext rfl (funext fun k => ?_)
   exact _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.sy_frame d _ _
 /- English proof (translation)
-Establish `h1 : d.crd (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.xs d w) = 0`. Use function extensionality and compare the values at `i`. Use `congrFun h (τ.symm i)` as an intermediate fact. Simplify `this` using `[_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_apply]`. Establish `h2 : _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.xs d w = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.cmb_crd d (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.xs d w), h1]`. Conclude with `(_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.cmbL d).map_zero`. Take `⟨Z, hZ⟩` from `_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.decomp d w`. Conclude with `⟨Z, by rw [hZ, h2, Matrix.zero_mul, add_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_fst_eq_zero {κ : Type} [Fintype κ] (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) (w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E))
     (h : (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ w).1 = 0) : ∃ Z : Mx F E d.m d.n, w = Z * (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.dg d)ᵀ := by
@@ -144,11 +144,11 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_fst_eq_
   obtain ⟨Z, hZ⟩ := _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.decomp d w
   exact ⟨Z, by rw [hZ, h2, Matrix.zero_mul, add_zero]⟩
 /- English proof (translation)
-Establish `hs : ∀ k, ∃ r : F, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.sy d (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.ek d (τ k) * (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.yy d)ᵀ) (incM F x) = algebraMap F (AF F) r`. Introduce `k`. Take `⟨M, hM⟩` from `_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.ek_rat d (τ k)`. Rewrite using `[hM, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.yy, ← incM_transpose, ← incM_mul, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.sy_eq]`. Take `⟨y, z, h⟩` from `d.ok.dbl.rat (M * (d.b.1.toCols₂)ᵀ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y', z', h'⟩` from `d.ok.dbl.rat x`. Conclude with `⟨om (y, z) (y', z'), by rw [h, h']; exact om_ratV y z y' z'⟩`. Use `choose r hr using hs`. Use `⟨fun k => d.bs.repr (((x * ((d.b⁻¹ : GL (Fin d.n ⊕ Fin d.n) E).1)ᵀ).toCols₂) (τ k).1 (τ k).2.1) (τ k).2.2, r, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_apply, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.xs_incM]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.crd_incM d _ (τ k)`. Conclude with `hr k`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_rational {κ : Type} [Fintype κ] (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) (x : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) E) :
     ∃ y z : κ → F, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ (incM F x) = ratV y z := by

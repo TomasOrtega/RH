@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.DownKer
 
 /- English proof (translation)
-Introduce `D T L sc G W t i j hi hj Ψ hΨ h γ hγ g`. Establish `hR : (Pair.mu t i j : Pair T).InRange D.R.m` using `⟨hi, hj⟩`. Establish `hw` using `W.om_is (.mu t i j) hR`. Use `show (W.om (.mu t i j)) (h, γ * g) Ψ 0 = (W.om (.mu t i j)) (h, g) Ψ 0`. Establish `e : ((h, γ * g) : GA D (G.pS (.mu t i j)) × GA D (G.pT (.mu t i j))) = (1, γ) * (h, g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hw.om_aut 1 (one_mem _) γ hγ _ (hw.om_pres _ _ hΨ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerA_down_left_inv : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (t : T) (i j : ℕ),
     i ≤ D.R.m → j < D.R.m → ∀ Ψ : WO (G.pS (.mu t i j)) (G.pT (.mu t i j)) → ℂ,

@@ -24,9 +24,9 @@ open Matrix
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hpos` using `(GroundTheory.Global.IdeleGroup.ideleModule E (GeneralLinearGroup.det g)).2`. Rewrite using `[Real.rpow_def_of_pos hpos, ← GlobalTheory.IdeleLogNormCompare.logNorm_eq_log_ideleModule]`. Simplify using `only [GlobalTheory.RSJ.detPow, chiDet, GlobalTheory.HeckeGal.Model.absPow, MonoidHom.coe_comp, Function.comp_apply]`. Express the relevant statement in the definitionally equal form `‖Complex.exp ((x : ℂ) * (GlobalTheory.Mem.Chr.CharModel.logNorm E (GeneralLinearGroup.det g) : ℂ))‖ = _`. Rewrite using `[Complex.norm_exp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem detPow_eq_rpow {n : ℕ} (x : ℝ) (g : GA E n) :
     GlobalTheory.RSJ.detPow E n x g =
@@ -40,7 +40,7 @@ theorem detPow_eq_rpow {n : ℕ} (x : ℝ) (g : GA E n) :
   simp [mul_comm]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GeneralLinearGroup.val_det_apply, GlobalTheory.SmGL.val_diagT, det_diagonal, Units.coe_prod]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_diagT {R : Type} [CommRing R] {n : ℕ} (t : Fin n → Rˣ) :
     GeneralLinearGroup.det (GlobalTheory.SmGL.diagT R (Fin n) t) = ∏ i, t i := by
@@ -53,7 +53,7 @@ def posVal : {r : ℝ // 0 < r} →* ℝ where
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `lt_of_le_of_ne (Nat.cast_nonneg _) (GlobalTheory.AdeleScale.qV_ne_zero v).symm`.
+A detailed English derivation is pending.
 -/
 theorem qV_pos (v : HeightOneSpectrum (𝓞 E)) : (0 : ℝ) < qV E v :=
   lt_of_le_of_ne (Nat.cast_nonneg _) (GlobalTheory.AdeleScale.qV_ne_zero v).symm
@@ -63,15 +63,15 @@ end GlobalTheory.CellEvalDet
 open GlobalTheory.CellEvalDet Matrix in
 
 /- English proof (translation)
-Introduce `E _ _ _ n ϖ hϖ l x g`. Rewrite using `[GlobalTheory.RSJ.Model.detPow_mul, detPow_eq_rpow x (GlobalTheory.CellDec.tl n ϖ l)]`. Use `congr 1`. Establish `hdet : GeneralLinearGroup.det (GlobalTheory.CellDec.tl n ϖ l) = ∏ i, finId E (GlobalTheory.CellDec.adl ϖ (Finsupp.mapRange (fun y : Fin n → ℤ => y i) rfl l))`. Unfold `GlobalTheory.CellDec.tl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[det_finGL, det_diagT, map_prod]`. Establish `hmod : ((GroundTheory.Global.IdeleGroup.ideleModule E (GeneralLinearGroup.det (GlobalTheory.CellDec.tl n ϖ l)) : ℝ)) = ∏ i, ∏ v ∈ l.support, ((qV E v : ℝ) ^ (l v i))⁻¹`. Rewrite using `[hdet, map_prod]`. Express the relevant statement in the definitionally equal form `posVal (∏ i, _) = _`. Rewrite using `[map_prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((GroundTheory.Global.IdeleGroup.ideleModule E _ : ℝ)) = _`. Rewrite using `[GlobalTheory.AdeleScale.ideleModule_finId_adl ϖ hϖ _ l.support (fun v hv => by`. Rewrite `hv` using `[Finsupp.notMem_support_iff]`. Simplify using `[hv])]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hmod, Finset.prod_comm, ← Real.finset_prod_rpow _ _ (fun v _ => Finset.prod_nonneg fun i _ => inv_nonneg.2 (zpow_nonneg (Nat.cast_nonneg _) _))]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hq` using `qV_pos (E := E) v`. Establish `e : ∀ i, ((qV E v : ℝ) ^ (l v i))⁻¹ = (qV E v : ℝ) ^ (-(l v i : ℝ))` using `fun i => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.rpow_neg hq.le, Real.rpow_intCast]`. Repeatedly rewrite using `[e]`. Rewrite using `[← Real.rpow_sum_of_pos hq, ← Real.rpow_mul hq.le]`. Use `congr 1`. Rewrite using `[Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

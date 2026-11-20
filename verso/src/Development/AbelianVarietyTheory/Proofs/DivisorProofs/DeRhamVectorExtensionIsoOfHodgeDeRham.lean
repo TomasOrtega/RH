@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hHdR p _`. Take `⟨e, hN, hF, hT, -⟩` from `GlobalTheory.T.exists_canonical_deRham_rigidExtension_family hHdR p`. Conclude with `⟨e, hN, hF, hT⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem deRhamVectorExtension_of_abelianHodgeDeRham :
     GlobalTheory.Published.AbelianHodgeDeRham → GlobalTheory.Published.DeRhamVectorExtension := by

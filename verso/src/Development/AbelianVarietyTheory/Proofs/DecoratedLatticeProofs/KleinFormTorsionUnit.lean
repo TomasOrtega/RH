@@ -14,27 +14,27 @@ namespace GlobalTheory.KleinUnit
 def pt (L : PeriodPair) (m : ℕ) (c d : ℤ) : ℂ := ((c : ℂ) * L.ω₁ + (d : ℂ) * L.ω₂) / (m : ℂ)
 
 /- English proof (translation)
-Simplify using `only [pt]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma pt_add (L : PeriodPair) (m : ℕ) (c d c' d' : ℤ) :
     pt L m (c + c') (d + d') = pt L m c d + pt L m c' d' := by
   simp only [pt]; push_cast; ring
 
 /- English proof (translation)
-Simplify using `only [pt]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma pt_sub (L : PeriodPair) (m : ℕ) (c d c' d' : ℤ) :
     pt L m c d - pt L m c' d' = pt L m (c - c') (d - d') := by
   simp only [pt]; push_cast; ring
 
 /- English proof (translation)
-Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, b, e⟩` from `PeriodPair.mem_lattice.mp h`. Simplify using `only [pt] at e`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[eq_div_iff hm']`. Establish `e' : (((m * a - c : ℤ) : ℝ) : ℂ) * L.ω₁ + (((m * b - d : ℤ) : ℝ) : ℂ) * L.ω₂ = 0` using `by push_cast; linear_combination e`. Use `LinearIndependent.pair_iff.mp L.indep ((m * a - c : ℤ) : ℝ) ((m * b - d : ℤ) : ℝ) (by simpa only [Complex.real_smul] using e')` as an intermediate fact. Take `⟨h1, h2⟩` from `this`. Establish `h1' : (m : ℤ) * a - c = 0` using `by exact_mod_cast h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2' : (m : ℤ) * b - d = 0` using `by exact_mod_cast h2`. Conclude with `⟨⟨a, by linarith⟩, ⟨b, by linarith⟩⟩`. Introduce and unpack `⟨⟨a, rfl⟩, ⟨b, rfl⟩⟩`. Use `PeriodPair.mem_lattice.mpr ⟨a, b, ?_⟩` and prove the remaining obligations. Simplify using `only [pt]`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 lemma pt_mem_iff (L : PeriodPair) {m : ℕ} (hm : 0 < m) (c d : ℤ) :
     pt L m c d ∈ L.lattice ↔ (m : ℤ) ∣ c ∧ (m : ℤ) ∣ d := by
@@ -59,7 +59,7 @@ lemma pt_mem_iff (L : PeriodPair) {m : ℕ} (hm : 0 < m) (c d : ℤ) :
 def rep (L : PeriodPair) (m : ℕ) (x : ZMod m × ZMod m) : ℂ := pt L m (x.1.val : ℤ) (x.2.val : ℤ)
 
 /- English proof (translation)
-Use `haveI : NeZero m := ⟨hm.ne'⟩`. Simplify using `only [rep, h1, h2, ZMod.val_intCast]`. Rewrite using `[pt_sub, pt_mem_iff L hm]`. Conclude with `⟨⟨-(c / m), by rw [Int.emod_def]; ring⟩, ⟨-(d / m), by rw [Int.emod_def]; ring⟩⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma rep_sub_pt_mem (L : PeriodPair) {m : ℕ} (hm : 0 < m) (x : ZMod m × ZMod m) (c d : ℤ)
     (h1 : x.1 = (c : ZMod m)) (h2 : x.2 = (d : ZMod m)) : rep L m x - pt L m c d ∈ L.lattice := by
@@ -69,7 +69,7 @@ lemma rep_sub_pt_mem (L : PeriodPair) {m : ℕ} (hm : 0 < m) (x : ZMod m × ZMod
   exact ⟨⟨-(c / m), by rw [Int.emod_def]; ring⟩, ⟨-(d / m), by rw [Int.emod_def]; ring⟩⟩
 
 /- English proof (translation)
-Use `haveI : NeZero m := ⟨hm.ne'⟩`. Use `rep_sub_pt_mem L hm (x + y) ((x.1.val : ℤ) + (y.1.val : ℤ)) ((x.2.val : ℤ) + (y.2.val : ℤ)) (by simp) (by simp)` as an intermediate fact. Rewrite `this` using `[pt_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma rep_add (L : PeriodPair) {m : ℕ} (hm : 0 < m) (x y : ZMod m × ZMod m) :
     rep L m (x + y) - (rep L m x + rep L m y) ∈ L.lattice := by
@@ -79,7 +79,7 @@ lemma rep_add (L : PeriodPair) {m : ℕ} (hm : 0 < m) (x y : ZMod m × ZMod m) :
   rwa [pt_add] at this
 
 /- English proof (translation)
-Use `haveI : NeZero m := ⟨hm.ne'⟩`. Use `rep_sub_pt_mem L hm (x - y) ((x.1.val : ℤ) - (y.1.val : ℤ)) ((x.2.val : ℤ) - (y.2.val : ℤ)) (by simp) (by simp)` as an intermediate fact. Rewrite `this` using `[← pt_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma rep_sub (L : PeriodPair) {m : ℕ} (hm : 0 < m) (x y : ZMod m × ZMod m) :
     rep L m (x - y) - (rep L m x - rep L m y) ∈ L.lattice := by
@@ -89,7 +89,7 @@ lemma rep_sub (L : PeriodPair) {m : ℕ} (hm : 0 < m) (x y : ZMod m × ZMod m) :
   rwa [← pt_sub] at this
 
 /- English proof (translation)
-Simplify using `[rep, pt]`.
+Simplify using the standard rewrite rules.
 -/
 lemma rep_zero (L : PeriodPair) (m : ℕ) : rep L m 0 = 0 := by
   simp [rep, pt]

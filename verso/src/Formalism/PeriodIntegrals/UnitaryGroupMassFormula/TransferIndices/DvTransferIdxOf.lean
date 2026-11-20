@@ -83,9 +83,9 @@ variable {K : Type} [Field K] [NumberField K] {G : Type} [Group G] [Fintype G]
   {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[← MonoidAlgebra.sum_single z]`. Rewrite using `[Finsupp.sum, map_sum, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun g _ => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `hz g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Representation.asAlgebraHom_single, LinearMap.smul_apply, ← ho, algebraMap_smul]`. Conclude with `L.smul_mem o (hL g x hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intEl_mem (ρ : Representation K G V) (L : Submodule (𝓞 K) V) (hL : ∀ g, ∀ x ∈ L, ρ g x ∈ L)
     (z : MonoidAlgebra K G) (hz : IntEl z) : ∀ x ∈ L, ρ.asAlgebraHom z x ∈ L := by
@@ -100,71 +100,59 @@ theorem intEl_mem (ρ : Representation K G V) (L : Submodule (𝓞 K) V) (hL : �
 end Lat
 
 /- English proof (translation)
-Introduce `K _ _ _ _ G _ _ T P0 P hM1`. Take `⟨hO, hZ, hE, hIe, hD⟩` from `hG K G T P0 P hM1`. Use `choose a b Γ hdet hnorm ha hb hba haX hbY hsurj using hD`. Use `⟨Γ, hdet, ?_⟩` and prove the remaining obligations. Introduce `A ρ B hA hBL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hAG, hAL, -⟩` from `hA`. Take `⟨hBG, hBL', -⟩` from `hBL`. Establish `hAfg : A.L.FG` using `hAG.2.1`. Establish `hAsp : Submodule.span K (A.L : Set A.V) = ⊤` using `hAG.2.2`. Establish `hBfg : B.FG` using `hBG.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBsp : Submodule.span K (B : Set A.V) = ⊤` using `hBG.2.2`. Establish `hblk : ∀ s, _` using `fun s => hB K A.V (nS T P s) (LinearMap.range (ρ.asAlgebraHom (eps P0 * eS T s))) (LinearMap.range (ρ.asAlgebraHom (eps P * eS T s))) (fun i => ρ.asAlgebraHom (a s i)) (fun j => ρ.asAlgebraHom (b s j)) (Γ s) (hdet s) (by`. Introduce and unpack `i j x ⟨y, rfl⟩`. Use `congrArg (fun z => ρ.asAlgebraHom z y) (hba s i j)` as an intermediate fact. Simplify `this)` using `only [map_mul, Module.End.mul_apply, map_smul, LinearMap.smul_apply]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Use the proof step `(by`. Introduce and unpack `i x ⟨y, rfl⟩`. Use `⟨ρ.asAlgebraHom (a s i * (eps P0 * eS T s)) y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← mul_assoc, ← haX s i, map_mul, Module.End.mul_apply])`. Use the proof step `(by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `j x ⟨y, rfl⟩`. Use `⟨ρ.asAlgebraHom (b s j * (eps P * eS T s)) y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← mul_assoc, ← hbY s j, map_mul, Module.End.mul_apply])`. Use the proof step `(by`. Introduce and unpack `y ⟨y', rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b', hb'1, hb'2⟩` from `hsurj s`. Use `⟨fun i => ρ.asAlgebraHom (b' i * (eps P * eS T s)) y', fun i => ?_, ?_⟩` and prove the remaining obligations. Use `⟨ρ.asAlgebraHom (b' i * (eps P * eS T s)) y', ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← mul_assoc, ← hb'1 i]`. Use `conv_lhs => rw [← hb'2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, map_mul, Module.End.mul_apply])`. Use the proof step `A.L B hAfg hBfg hAsp hBsp`. Use the proof step `(fun i x hx _ => intEl_mem ρ A.L hAL (a s i) (ha s i) x hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(fun j x hx _ => intEl_mem ρ A.L hAL (b s j) (hb s j) x hx)`. Use the proof step `(fun i x hx _ => intEl_mem ρ B hBL' (a s i) (ha s i) x hx)`. Use the proof step `(fun j x hx _ => intEl_mem ρ B hBL' (b s j) (hb s j) x hx)`. Establish `hπ : ∑ t, ρ.asAlgebraHom (eps P * eS T t) = ρ.asAlgebraHom (eps P * eG T)`. Rewrite using `[eG, Finset.mul_sum, map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcomm : ∀ s, eps P * eS T s = eS T s * eps P` using `fun s => (hZ s (eps P)).symm`. Establish `hsum` using `hS K A.V T.S (fun s => ρ.asAlgebraHom (eps P * eS T s)) (Fintype.card G) Fintype.card_pos (by`. Introduce `s t`. Rewrite using `[← Module.End.mul_eq_comp, ← map_mul]`. Establish `: eps P * eS T s * (eps P * eS T t) = eps P * (eS T s * eS T t)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← mul_assoc (eS T s), ← hcomm s, mul_assoc, ← mul_assoc, hE]`. Rewrite using `[this, hO s t]`. Apply the tactic sequence `split_ifs <;> simp)`. Use the proof step `A.L B hAfg hBfg hAsp hBsp`. Use the proof step `(by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `s x hx hxr`. Rewrite `hxr` using `[hπ]`. Take `⟨y, rfl⟩` from `hxr`. Establish `h1 : ρ.asAlgebraHom (eps P * eS T s) (ρ.asAlgebraHom (eps P * eG T) y) = ρ.asAlgebraHom (eS T s) (ρ.asAlgebraHom (eps P * eG T) y)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, hcomm s, mul_assoc, ← mul_assoc (eps P) (eps P), hE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1]`. Establish `h2` using `intEl_mem ρ A.L hAL _ (hIe s) _ hx`. Rewrite `h2` using `[map_smul, LinearMap.smul_apply, Nat.cast_smul_eq_nsmul]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `h2)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(by`. Introduce `s x hx hxr`. Rewrite `hxr` using `[hπ]`. Take `⟨y, rfl⟩` from `hxr`. Establish `h1 : ρ.asAlgebraHom (eps P * eS T s) (ρ.asAlgebraHom (eps P * eG T) y) = ρ.asAlgebraHom (eS T s) (ρ.asAlgebraHom (eps P * eG T) y)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, hcomm s, mul_assoc, ← mul_assoc (eps P) (eps P), hE]`. Rewrite using `[h1]`. Establish `h2` using `intEl_mem ρ B hBL' _ (hIe s) _ hx`. Rewrite `h2` using `[map_smul, LinearMap.smul_apply, Nat.cast_smul_eq_nsmul]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `h2)`. Simplify using `only [hπ] at hsum`. Take `⟨hrkY, hsumw⟩` from `hsum`. Establish `hcardK : algebraMap (𝓞 K) K ((Fintype.card G : ℕ) : 𝓞 K) = ((Fintype.card G : ℕ) : K)` using `map_natCast _ _`. Establish `hvG : ∀ w : HeightOneSpectrum (𝓞 K), 0 ≤ vAdd w ((Fintype.card G : ℕ) : K)` using `fun w => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `hV0 K w ((Fintype.card G : ℕ) : 𝓞 K)` as an intermediate fact. Rewrite `this` using `[hcardK]`. Then use the resulting hypothesis. Establish `hrk : rkL A (cut A ρ (eps P * eG T) A.L) = rkT T P0 P A ρ` using `by show Formalism.HN.rkK (A.L ⊓ _) = _`. Rewrite using `[hrkY, rkT]`. Conclude with `Finset.sum_congr rfl fun s _ => (hblk s).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hdel : ∀ w, delRk T P0 P A ρ Γ w = ∑ s, (rS T P0 A ρ s : ℝ) * (vAdd w (algebraMap (𝓞 K) K (Γ s).det) : ℝ) + (rkT T P0 P A ρ : ℝ) * (vAdd w ((Fintype.card G : ℕ) : K) : ℝ)`. Introduce `w`. Simplify using `only [delRk, rkT, vCard, Nat.cast_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `hn : nS T P s = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsEmpty (Fin (nS T P s)) := by rw [hn]; infer_instance`. Establish `h0 : vAdd w (algebraMap (𝓞 K) K (Γ s).det) = 0` using `by simp [Matrix.det_isEmpty, vAdd]`. Rewrite using `[h0, hn]`. Simplify using the standard rewrite rules. Establish `: (nS T P s : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr hn push_cast`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hdelnn : ∀ w, 0 ≤ delRk T P0 P A ρ Γ w`. Introduce `w`. Rewrite using `[hdel]`. Use `add_nonneg (Finset.sum_nonneg fun s _ => mul_nonneg (Nat.cast_nonneg _) ?_) (mul_nonneg (Nat.cast_nonneg _) (by exact_mod_cast hvG w))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the first alternative. Establish an intermediate fact.
 
-Conclude with `hV0 K w _` after adjusting the coercions. Use `⟨fun w => ⟨hdelnn w, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, hdel]`. Establish `e1` using `hsumw w`. Establish `e2` using `fun s => (hblk s).2 w`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the second alternative. Establish an intermediate fact.
 
-Simplify using `only [cut, cutE]`. Rewrite `e1` using `[show (Formalism.HN.rkK (A.L ⊓ (LinearMap.range (ρ.asAlgebraHom (eps P * eG T))).restrictScalars (𝓞 K)) : ℝ) = (rkT T P0 P A ρ : ℝ) from by exact_mod_cast hrk]`. Establish `: ∀ s, |(idxAt w (A.L ⊓ (LinearMap.range (ρ.asAlgebraHom (eps P * eS T s))).restrictScalars (𝓞 K)) (B ⊓ (LinearMap.range (ρ.asAlgebraHom (eps P * eS T s))).restrictScalars (𝓞 K)) : ℝ) - (nS T P s : ℝ) * (idxAt w (A.L ⊓ (LinearMap.range (ρ.asAlgebraHom (eps P0 * eS T s))).restrict …` using `e2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_sub_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Put the polynomial expressions in normal form. Use `_ ≤ _ := abs_add_le _ _`. Use `_ ≤ _ := add_le_add e1 ((Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun s _ => this s))`. Use `_ = _ := add_comm _ _`. Establish `hc0 : ((Fintype.card G : ℕ) : 𝓞 K) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set F : Finset (HeightOneSpectrum (𝓞 K)) := (hVF K _ hc0).toFinset ∪ Finset.univ.biUnion (fun s => (hVF K _ (hdet s)).toFinset) with hF`. Establish `hsG : (Function.support fun w => lw K w * (vAdd w ((Fintype.card G : ℕ) : K) : ℝ)) ⊆ F`. Introduce `w hw`. Simplify using `only [Function.mem_support, ne_eq, mul_eq_zero, not_or, Int.cast_eq_zero] at hw`. Simplify using `only [hF, Finset.coe_union, Set.mem_union, Set.Finite.coe_toFinset, Function.mem_support, hcardK]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Or.inl hw.2`. Establish `hss : ∀ s, (Function.support fun w => lw K w * (vAdd w (algebraMap (𝓞 K) K (Γ s).det) : ℝ)) ⊆ F`. Introduce `s w hw`. Simplify using `only [Function.mem_support, ne_eq, mul_eq_zero, not_or, Int.cast_eq_zero] at hw`. Simplify using `only [hF, Finset.coe_union, Set.mem_union, Finset.coe_biUnion, Finset.coe_univ, Set.mem_univ, Set.iUnion_true, Set.mem_iUnion, Set.Finite.coe_toFinset, Function.mem_support]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `Or.inr ⟨s, hw.2⟩`. Establish `hout : ∀ w, w ∉ F → delRk T P0 P A ρ Γ w = 0`. Introduce `w hw`. Simplify using `only [hF, Finset.mem_union, Finset.mem_biUnion, Finset.mem_univ, true_and, Set.Finite.mem_toFinset, Function.mem_support, ne_eq, not_or, not_exists, not_not] at hw`. Rewrite using `[hdel, ← hcardK, hw.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `[hw.2]`. Establish `hsd : (Function.support fun w => lw K w * delRk T P0 P A ρ Γ w) ⊆ F`. Introduce `w hw`. Assume the negation of the conclusion as `hwF`. Conclude with `hw (by simp only [hout w hwF, mul_zero])`.
+Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_sum_of_support_subset _ hsd]`. Establish `hcpos : (0 : ℝ) < ((Fintype.card G : ℕ) : ℝ)` using `by exact_mod_cast Fintype.card_pos`. Establish `hla : 0 ≤ laG G` using `Real.log_nonneg (by exact_mod_cast Fintype.card_pos)`. Establish `hG1 : ∑ᶠ w, lw K w * (vAdd w ((Fintype.card G : ℕ) : K) : ℝ) ≤ laG G`. Use `hVS K ((Fintype.card G : ℕ) : 𝓞 K) ((Fintype.card G : ℕ) : ℝ) hc0 hcpos (fun σ => by rw [hcardK, map_natCast, Complex.norm_natCast])` as an intermediate fact.
-
-Rewrite `this` using `[hcardK]`. Conclude with `this`. Establish `hS1 : ∀ s, ∑ w ∈ F, lw K w * (vAdd w (algebraMap (𝓞 K) K (Γ s).det) : ℝ) ≤ 4 * (nS T P s : ℝ) * laG G`. Introduce `s`. Rewrite using `[← finsum_eq_sum_of_support_subset _ (hss s)]`.
-
-Use `(hVS K _ _ (hdet s) (pow_pos hcpos _) (hnorm s)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.log_pow, laG]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hG2 : ∑ w ∈ F, lw K w * (vAdd w ((Fintype.card G : ℕ) : K) : ℝ) ≤ laG G`.
-
-Rewrite using `[← finsum_eq_sum_of_support_subset _ hsG]`. Conclude with `hG1`. Establish `hrkT : (rkT T P0 P A ρ : ℝ) = ∑ s, (nS T P s : ℝ) * (rS T P0 A ρ s : ℝ)`. Rewrite using `[rkT]`. Use `push_cast`.
-
-Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hdel, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`.
-
-Conclude with `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun w _ => by ring`. Conclude with `Finset.sum_congr rfl fun w _ => by ring`. Use `_ ≤ ∑ s, (rS T P0 A ρ s : ℝ) * (4 * (nS T P s : ℝ) * laG G) + (rkT T P0 P A ρ : ℝ) * laG G := add_le_add (Finset.sum_le_sum fun s _ => mul_le_mul_of_nonneg_left (hS1 s) (Nat.cast_nonneg _)) (mul_le_mul_of_nonneg_left hG2 (Nat.cast_nonneg _))`. Use `_ = 5 * laG G * (rkT T P0 P A ρ : ℝ) := by`. Rewrite using `[hrkT, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`.
-
-Conclude with `Finset.sum_congr rfl fun s _ => by ring`. Use `_ ≤ 8 * laG G * (rkT T P0 P A ρ : ℝ) := by`. Establish `: 0 ≤ (rkT T P0 P A ρ : ℝ)` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem dvTransferIdx_of (hB : BlockIdx) (hS : SumIdx) (hG : GrpData) (hV0 : VNonneg) (hVF : VFin)
     (hVS : VSumLe) : PI.Dv.Conclusion4b 1 := by

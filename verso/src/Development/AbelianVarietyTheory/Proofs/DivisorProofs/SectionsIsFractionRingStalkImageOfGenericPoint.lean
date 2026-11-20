@@ -7,15 +7,15 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.NormSheafDescent
 
 /- English proof (translation)
-Introduce `Y Z π _ _ U hU hUr h`. Use `set ζ := genPt π with hζ`. Establish `hcl : (U : Set Z) ⊆ closure {ζ}`. Introduce and unpack `_ hx`. Take `⟨y, rfl⟩` from `hUr hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `specializes_iff_mem_closure.mp ((genericPoint_specializes y).map π.continuous)`. Establish `hirr : IsIrreducible (U : Set Z)` using `⟨⟨ζ, h⟩, (isIrreducible_singleton.closure).isPreirreducible.open_subset U.isOpen hcl⟩`. Take `⟨hD, -⟩` from `GlobalTheory.IsNormalScheme.isDomain_and_isIntegrallyClosed_of_isIrreducible hirr`. Use `⟨hD, ?_⟩` and prove the remaining obligations. Use `letI := algAK π U h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `hU.isLocalization_stalk ⟨ζ, h⟩`. Establish `hbot : (hU.primeIdealOf ⟨ζ, h⟩).asIdeal = ⊥`. Set `q : PrimeSpectrum Γ(Z, U)` to `⟨⊥, Ideal.bot_prime⟩`. Establish `hq : hU.fromSpec q ∈ U` using `hU.range_fromSpec.le ⟨_, rfl⟩`. Establish `hs : hU.fromSpec (hU.primeIdealOf ⟨ζ, h⟩) ⤳ hU.fromSpec q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hU.fromSpec_primeIdealOf]`. Conclude with `specializes_iff_mem_closure.mpr (hcl hq)`. Establish `hs'` using `hU.fromSpec.isOpenEmbedding.toIsInducing.specializes_iff.mp hs`. Conclude with `le_bot_iff.mp ((PrimeSpectrum.le_iff_specializes _ q).mpr hs')`. Establish `hc : (hU.primeIdealOf ⟨ζ, h⟩).asIdeal.primeCompl = nonZeroDivisors Γ(Z, U)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `x`. Simplify using `[hbot, Ideal.primeCompl, mem_nonZeroDivisors_iff_ne_zero]`. Unfold `IsLocalization.AtPrime at hl`. Rewrite `hl` using `[hc]`. Conclude with `hl`.
+A detailed English derivation is pending.
 -/
 theorem sections_isDomain_isFractionRing_stalk : ∀ (Y Z : Scheme.{0}) (π : Y ⟶ Z) [IsIntegral Y] [GlobalTheory.IsNormalScheme Z] (U : Z.Opens), IsAffineOpen U →
     (U : Set Z) ⊆ Set.range π → ∀ h : GlobalTheory.NormSheafDescent.genPt π ∈ U,

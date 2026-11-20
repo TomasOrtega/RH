@@ -19,14 +19,14 @@ variable {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [Algebra ℚ_[l] E] [Fini
   [IsTopologicalRing E]
 
 /- English proof (translation)
-The claim follows from `(Units.continuous_val.comp (h.comp continuous_fst)).mul continuous_snd`.
+A detailed English derivation is pending.
 -/
 private theorem cont_ch {G : Type} [Group G] [TopologicalSpace G] {κ : G →* Eˣ} (h : Continuous κ) :
     ContAction (chRep κ) :=
   (Units.continuous_val.comp (h.comp continuous_fst)).mul continuous_snd
 
 /- English proof (translation)
-The claim follows from `(h.comp (continuous_fst.prodMk continuous_snd.fst)).prodMk (h'.comp (continuous_fst.prodMk continuous_snd.snd))`.
+A detailed English derivation is pending.
 -/
 private theorem cont_prod {G V V' : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module E V]
     [TopologicalSpace V] [AddCommGroup V'] [Module E V'] [TopologicalSpace V'] {ρ : Representation E G V}
@@ -34,7 +34,7 @@ private theorem cont_prod {G V V' : Type} [Group G] [TopologicalSpace G] [AddCom
   (h.comp (continuous_fst.prodMk continuous_snd.fst)).prodMk (h'.comp (continuous_fst.prodMk continuous_snd.snd))
 
 /- English proof (translation)
-The claim follows from `crUnr H.subtype hH.isOpenEmbedding_subtypeVal _ (cont_ch (hκ.comp continuous_subtype_val)) w fun g hg x => by rw [Subgroup.subtype_apply, ← hw g g.2 hg] rfl`.
+A detailed English derivation is pending.
 -/
 private theorem isCr_char (H : Subgroup (GQ l)) (hH : IsOpen (H : Set (GQ l))) (κ : GQ l →* Eˣ) (hκ : Continuous κ)
     (w : ℤ) (hw : ∀ g ∈ H, g ∈ Iq l → κ g = cycA l l E g ^ w) : IsCr H.subtype (chRep (κ.comp H.subtype)) :=
@@ -43,11 +43,9 @@ private theorem isCr_char (H : Subgroup (GQ l)) (hH : IsOpen (H : Set (GQ l))) (
     rfl
 
 /- English proof (translation)
-Establish `hφ : IsOpenEmbedding H.subtype` using `hH.isOpenEmbedding_subtypeVal`. Establish `hc : ∀ a, ContAction (chRep ((κ a).comp H.subtype))` using `fun a => cont_ch ((hκ a).comp continuous_subtype_val)`. Establish `hcr` using `fun a => isCr_char H hH (κ a) (hκ a) (w a) (hw a)`. Establish `hp` using `fun a g x => proj_diag (κ := fun a => (κ a).comp H.subtype) hρ a g x`. Establish `h0 : ContAction (colRep ρ)` using `continuous_pi fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hc a).comp (continuous_fst.prodMk ((continuous_apply a).comp continuous_snd) : Continuous fun p : ↥H × (Fin 3 → E) => (p.1, p.2 a))` as an intermediate fact. Conclude with `this.congr fun p => (hp a p.1 p.2).symm`. Establish `h1` using `(isCrys_isDR_prod _ hφ _ _ (hc 0) (cont_prod (hc 1) (hc 2))).1 (hcr 0) ((isCrys_isDR_prod _ hφ _ _ (hc 1) (hc 2)).1 (hcr 1) (hcr 2))`. Use `((isCrys_isDR_sub_quot _ hφ _ _ h0 (cont_prod (hc 0) (cont_prod (hc 1) (hc 2))) ((LinearMap.proj 0).prod ((LinearMap.proj 1).prod (LinearMap.proj 2))) fun g x => ?_).1 fun x y h => ?_).1 h1` and prove the remaining obligations. Conclude with `Prod.ext (hp 0 g x) (Prod.ext (hp 1 g x) (hp 2 g x))`.
-
-Use function extensionality and compare the values at `a fin_cases a`. Conclude with `congrArg Prod.fst h`. Conclude with `congrArg (fun z => z.2.1) h`. Conclude with `congrArg (fun z => z.2.2) h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem isCr_diag (H : Subgroup (GQ l)) (hH : IsOpen (H : Set (GQ l))) (κ : Fin 3 → GQ l →* Eˣ)
     (hκ : ∀ a, Continuous (κ a)) (w : Fin 3 → ℤ) (hw : ∀ a, ∀ g ∈ H, g ∈ Iq l → κ a g = cycA l l E g ^ w a)
@@ -75,14 +73,14 @@ private theorem isCr_diag (H : Subgroup (GQ l)) (hH : IsOpen (H : Set (GQ l))) (
     · exact congrArg (fun z => z.2.2) h
 
 /- English proof (translation)
-The claim follows from `haveI := K.2 IntermediateField.fixingSubgroup_isOpen K.1`.
+A detailed English derivation is pending.
 -/
 private theorem open_GK (K : FinExt l) : IsOpen (GK K : Set (GQ l)) :=
   haveI := K.2
   IntermediateField.fixingSubgroup_isOpen K.1
 
 /- English proof (translation)
-The claim follows from `charFil (GK K).subtype (open_GK K).isOpenEmbedding_subtypeVal _ (Units.continuous_val.comp (hκ.comp continuous_subtype_val)) w ⟨H.comap (GK K).subtype, hH.preimage continuous_subtype_val, fun g hg hI => hw g hg hI⟩`.
+A detailed English derivation is pending.
 -/
 private theorem fil_char (K : FinExt l) (H : Subgroup (GQ l)) (hH : IsOpen (H : Set (GQ l))) (κ : GQ l →* Eˣ)
     (hκ : Continuous κ) (w : ℤ) (hw : ∀ g ∈ H, g ∈ Iq l → κ g = cycA l l E g ^ w) :
@@ -95,13 +93,13 @@ private theorem fil_char (K : FinExt l) (H : Subgroup (GQ l)) (hH : IsOpen (H : 
     ⟨H.comap (GK K).subtype, hH.preimage continuous_subtype_val, fun g hg hI => hw g hg hI⟩
 
 /- English proof (translation)
-Take `⟨x, hx, hb⟩` from `char_cr (κ / τ) (isCr_char _ (open_GK _) _ (hκ.div' hτ) w fun g _ hg => by`. Rewrite using `[MonoidHom.div_apply, hw g hg, mul_div_cancel_right])`. Establish `e : (κ.comp (GK K).subtype).comp (incl h) = (κ / τ).comp (GK L).subtype` using `by ext1 g`. Express the relevant statement in the definitionally equal form `κ g = κ g / τ g`. Rewrite using `[hL g g.2, div_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `⟨x, (mem_Dcr _ _ _).2 fun g => hx g, hb L, fun γ => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← hx γ]`. Generalize the expression as in `x = y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp only [map_zero, smul_zero]`. Consider the case `tmul v b`. Express the relevant statement in the definitionally equal form `((κ γ : E) • v) ⊗ₜ _ = ((τ γ : E) • (((κ γ / τ γ : Eˣ) : E) • v)) ⊗ₜ _`. Rewrite using `[smul_smul, ← Units.val_mul, mul_div_cancel]`. Both sides reduce to the same expression.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb, smul_add]`.
+A detailed English derivation is pending.
 -/
 private theorem cr_char {K L : FinExt l} (h : K.1 ≤ L.1) (κ τ : GQ l →* Eˣ) (hκ : Continuous κ) (hτ : Continuous τ)
     (w : ℤ) (hw : ∀ g ∈ Iq l, κ g = cycA l l E g ^ w * τ g) (hL : ∀ g ∈ GK L, τ g = 1) :
@@ -130,33 +128,31 @@ private theorem cr_char {K L : FinExt l} (h : K.1 ≤ L.1) (κ τ : GQ l →* E�
 end UpperTheory.V.Loc.R0
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ _ _ D E _ _ _ _ _ _ _`. Use `letI : TopologicalSpace E := moduleTopology ℚ_[l] E`. Use `haveI : IsModuleTopology ℚ_[l] E := ⟨rfl⟩`. Use `haveI : IsTopologicalRing E := IsModuleTopology.isTopologicalRing ℚ_[l] E`. Set `j : Oˣ →* Eˣ` to `Units.map (algebraMap O E : O →* E)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `κ : Fin 3 → GQ l →* Eˣ` to `fun a => (zpowGroupHom (wt1 a)).comp (j.comp D.Ψ)`. Set `τ : Fin 3 → GQ l →* Eˣ` to `fun a => (zpowGroupHom (wt1 a)).comp (j.comp D.τ)`. Set `w : Fin 3 → ℤ` to `fun a => D.e * wt1 a`. Establish `hΨ : Continuous fun g => ((j (D.Ψ g) : Eˣ) : E)` using `(ptCont (l := l) O E (Algebra.ofId O E)).1 _ _ D.Ψ_cont`. Establish `hΨ' : Continuous (j.comp D.Ψ)` using `Units.continuous_iff.2 ⟨hΨ, (hΨ.comp continuous_inv).congr fun g => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, map_inv, MonoidHom.comp_apply]⟩`. Establish `hτ' : Continuous (j.comp D.τ)` using `continuous_of_continuousAt_one _ (continuousAt_const.congr (Filter.eventually_of_mem (D.τ_open.mem_nhds D.τ.ker.one_mem) fun g hg => by`. Express the relevant statement in the definitionally equal form `1 = j (D.τ g)`. Rewrite using `[show D.τ g = 1 from hg, map_one]))`. Establish `hκ : ∀ a, Continuous (κ a)` using `fun a => hΨ'.zpow _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : ∀ a, Continuous (τ a)` using `fun a => hτ'.zpow _`. Establish `hw : ∀ a, ∀ g ∈ Iq l, κ a g = cycA l l E g ^ w a * τ a g`. Introduce `a g hg`. Establish `h1 : j (cycA l l O g) = cycA l l E g` using `Units.ext (IsScalarTower.algebraMap_apply ℤ_[l] O E _).symm`. Express the relevant statement in the definitionally equal form `j (D.Ψ g) ^ wt1 a = _ * j (D.τ g) ^ wt1 a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[D.Ψ_I g hg, map_mul, map_pow, h1, mul_zpow, ← zpow_natCast, ← zpow_mul]`. Establish `hτ1 : ∀ a, ∀ g ∈ D.HL, τ a g = 1` using `fun a g hg => by`. Express the relevant statement in the definitionally equal form `j (D.τ g) ^ wt1 a = 1`. Rewrite using `[show D.τ g = 1 from hg.2, map_one, one_zpow]`. Establish `hw' : ∀ a, ∀ g ∈ D.HL, g ∈ Iq l → κ a g = cycA l l E g ^ w a` using `fun a g hg hI => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hw a g hI, hτ1 a g hg, mul_one]`. Establish `hker : D.η.ker = GK D.Kv` using `Subgroup.ext D.η_ker`. Establish `hH : IsOpen (D.HL : Set (GQ l))`. Use `(R0.open_GK D.Kv).inter D.τ_open` as an intermediate fact. Rewrite `this` using `[← hker]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `σ : GQ l →* GL (Fin 3) E` to `(tor E).comp (j.comp D.Ψ)`. Establish `hσ : ∀ g, σ g = (D.rz E g).left` using `fun g => Units.ext (by`. Express the relevant statement in the definitionally equal form `Matrix.diagonal _ = (Matrix.diagonal _).map (algebraMap O E)`. Rewrite using `[Matrix.diagonal_map (map_zero _)]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `a`. Conclude with `congrArg Units.val (map_zpow j _ _).symm)`. Use `⟨⟨σ.comp (GK D.Kv).subtype, fun g => hσ g, ?_, ?_⟩, σ.comp D.HL.subtype, fun g => hσ g, R0.isCr_diag _ hH κ hκ w hw' _ fun _ => rfl⟩` and prove the remaining obligations. Establish `he` using `D.e_pos`. Use `R0.hodge_diag (κ := fun a => (κ a).comp (GK D.Kv).subtype) (fun _ => rfl) (fun a => -w a) ?_ _ ?_ ?_ (fun a => (R0.fil_char D.Kv _ hH _ (hκ a) _ (hw' a)).2) fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `intro a b hab fin_cases a <;> fin_cases b <;> simp [w, wt1] at hab ⊢ <;> omega`. Apply the tactic sequence `intro a fin_cases a <;> simp [w, wt1, hodge0]`. Introduce `i hi`. Establish `h0` using `hi 0`. Establish `h1` using `hi 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hi 2`. Simplify using `[w, wt1] at h0 h1 h2`. Rewrite using `[hodge0, if_neg (by omega)]`. Take `⟨x, hx, hb⟩` from `R0.char_dr (κ a) (R0.fil_char _ _ hH _ (hκ a) _ (hw' a)).1`. Conclude with `⟨x, (R0.mem_Ddr _ _ _).2 fun g => hx g, hb D.Kv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨L, -, -, -, -, hL, -, -⟩` from `openField D.HL.subtype hH.isOpenEmbedding_subtypeVal`. Rewrite `hL` using `[Subgroup.range_subtype]`. Establish `hle : GK L ≤ GK D.Kv`. Rewrite using `[← hL, ← hker]`. Conclude with `inf_le_left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : D.Kv.1 ≤ L.1`. Establish `: IsGalois ℚ_[l] (Om l)` using `inferInstance`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup D.Kv.1, ← InfiniteGalois.fixedField_fixingSubgroup L.1]`. Conclude with `IntermediateField.fixedField_le hle`. Use `choose x hx hb ht using fun a => R0.cr_char h (κ a) (τ a) (hκ a) (hτ a) (w a) (hw a) (hL ▸ hτ1 a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hN : (GK L).Normal`. Rewrite using `[← hL, Dat3.HL]`. Use `infer_instance`. Establish `hC` using `(isCrIff L _).1.1 (R0.isCr_diag (GK L) (R0.open_GK L) κ hκ w (hL ▸ hw') (σ.comp (GK L).subtype) fun _ => rfl)`. Establish `key` using `R0.crys_diag (ρ := σ.comp (GK D.Kv).subtype) (κ := fun a => (κ a).comp (GK D.Kv).subtype) (fun _ => rfl) h inferInstance hC (fun a γ => (τ a γ : E)) x hx hb ht`.
-
-Use `⟨L, h, ?_⟩` and prove the remaining obligations. Use `key using 2 with γ` and compare the differences between its conclusion and the goal. Simplify using `[Fin.sum_univ_three, τ, j, wt1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.isType_and_isLocallyCrystalline_rz :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E], D.IsType (D.rz E) ∧ D.IsLCr (D.rz E) := by

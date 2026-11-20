@@ -8,13 +8,13 @@ open scoped ComplexConjugate
 namespace GlobalTheory.MomN
 
 /- English proof (translation)
-Introduce `q _ κ _ μ μ' h`. Set `e` to `Fintype.equivFin κ`. Set `π : C(κ → ℤ_[q], Fin (Fintype.card κ) → ℤ_[q])` to `⟨fun b i => b (e.symm i), by fun_prop⟩`. Set `π' : C(Fin (Fintype.card κ) → ℤ_[q], κ → ℤ_[q])` to `⟨fun a i => a (e i), by fun_prop⟩`. Set `Φ : C(Fin (Fintype.card κ) → ℤ_[q], ℂ_[q]) →L[ℂ_[q]] C(κ → ℤ_[q], ℂ_[q])` to `{ toFun := fun G => G.comp π map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl cont := ContinuousMap.continuous_precomp π }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hz : (μ - μ').comp Φ = 0`. Use `GlobalTheory.MonomialDense.eq_zero_of_monomials q _ _ fun m k g hg => ?_` and prove the remaining obligations. Use `h m (fun l => e.symm (k l)) (Φ g) fun b => hg (π b)` as an intermediate fact. Simplify using `[this]`. Use extensionality with `F`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `hF : Φ (F.comp π') = F`. Use extensionality with `b`. Express the relevant statement in the definitionally equal form `F (π' (π b)) = F b`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[π, π']`. Use `congrArg (fun ν => ν (F.comp π')) hz` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply, hF, ContinuousLinearMap.sub_apply, ContinuousLinearMap.zero_apply] at this`. Conclude with `sub_eq_zero.mp this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measure_eq_of_moments : ∀ (q : ℕ) [Fact q.Prime] (κ : Type) [Fintype κ]
     (μ μ' : C(κ → ℤ_[q], ℂ_[q]) →L[ℂ_[q]] ℂ_[q]),

@@ -19,7 +19,7 @@ theorem map_comp {F G K : Shv R} (a : F ⟶ G) (b : G ⟶ K) {U : Scheme.{0}} (x
     Sec.map (a ≫ b) x = Sec.map b (Sec.map a x) := rfl
 
 /- English proof (translation)
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_congr {F G : Shv R} {a b : F ⟶ G} (h : a = b) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map a x = Sec.map b x := by rw [h]
@@ -31,37 +31,37 @@ theorem map_zero_hom {F G : Shv R} {U : Scheme.{0}} (x : Sec F U) :
     Sec.map (0 : F ⟶ G) x = 0 := rfl
 
 /- English proof (translation)
-The claim follows from `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem map_add' {F G : Shv R} (a : F ⟶ G) {U : Scheme.{0}} (x y : Sec F U) :
     Sec.map a (x + y) = Sec.map a x + Sec.map a y := map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `map_neg _ _`.
+A detailed English derivation is pending.
 -/
 theorem map_neg' {F G : Shv R} (a : F ⟶ G) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map a (-x) = -Sec.map a x := map_neg _ _
 
 /- English proof (translation)
-The claim follows from `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem map_zero' {F G : Shv R} (a : F ⟶ G) {U : Scheme.{0}} :
     Sec.map a (0 : Sec F U) = 0 := map_zero _
 
 /- English proof (translation)
-The claim follows from `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem res_add {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (x y : Sec F U) :
     Sec.res g (x + y) = Sec.res g x + Sec.res g y := map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem res_zero {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) :
     Sec.res g (0 : Sec F U) = 0 := map_zero _
 
 /- English proof (translation)
-Use `congrArg (fun t => t.hom x) (a.hom.naturality g.op)` as an intermediate fact. Conclude with `this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_map {F G : Shv R} (a : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map a x) = Sec.map a (Sec.res g x) := by
@@ -69,7 +69,7 @@ theorem res_map {F G : Shv R} (a : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x 
   exact this.symm
 
 /- English proof (translation)
-Use `congrArg (fun t => t.hom x) (F.obj.map_comp g.op k.op)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_comp {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := by
@@ -77,30 +77,28 @@ theorem res_comp {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x
   exact this
 
 /- English proof (translation)
-The claim follows from `map_congr (f.comm i j) x`.
+A detailed English derivation is pending.
 -/
 theorem comm' {I J : Cx R} (f : I ⟶ J) (i j : ℤ) {U : Scheme.{0}} (x : Sec (I.X i) U) :
     Sec.map (J.d i j) (Sec.map (f.f i) x) = Sec.map (f.f j) (Sec.map (I.d i j) x) :=
   map_congr (f.comm i j) x
 
 /- English proof (translation)
-Take `⟨Lall, Lmono, -, -, Ltrans, -, -⟩` from `GlobalTheory.T.etaleLocal_property_calculus_rules`. Establish `hι` using `((GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R F).2.2.2.2.2.2.2 G φ).2`. Establish `hd` using `(GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R F).2.2.2.2.2.2.1`. Break down `lt_or_ge n 0 with hn | hn` into its components or cases. Establish `hb₂ : b₂ = 0` using `((GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R G U).2.2.2 n hn).elim _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hb₁ : b₁ = 0`. Break down `lt_or_ge k 0 with hk0 | hk0` into its components or cases. Conclude with `((GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R F U).2.2.2 k hk0).elim _ _`. Take `rfl : k = 0` from `by omega`. Take `rfl : l = 1` from `by omega`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl⟩` from `((GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R F U).1 b₁).1 h₁`. Rewrite `h₂` using `[hb₂, map_zero', add_zero, ← map_comp, map_congr hι, map_comp]`. Establish `h3 : Sec.map φ s = 0` using `(GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R G U).2.1 (by rw [h₂, map_zero'])`. Establish `h4 : s = 0` using `(hφ U hU).1 (by rw [h3, map_zero'])`. Rewrite using `[h4, map_zero']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Lall _ _ fun V g => ⟨0, 0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hb₁, map_zero', res_zero, neg_zero]`. Rewrite using `[hb₂, map_zero', map_zero', res_zero, add_zero]`. Apply `Ltrans` to reduce the goal to its premises. Use `Lmono _ _ _ ((GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R F U).2.2.1 n k l (by omega) hk b₁ hl h₁) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `V g ⟨y, hy⟩`. Establish `hc : Sec.map ((res R G).d n k) (Sec.res g b₂ + Sec.map ((resMap R φ).f n) y) = 0`. Rewrite using `[map_add', comm', hy, ← res_map, ← res_map, ← res_add, add_comm, h₂, res_zero]`. Break down `lt_or_eq_of_le hn with hn' | hn'` into its components or cases. Use `Lmono _ _ _ ((GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R G V).2.2.1 m n k hn' hm _ hk hc) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `W j ⟨z, hz⟩`. Use `⟨-Sec.res j y, z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg', ← res_map, hy, res_comp]`. Rewrite using `[hz, map_neg', res_add, res_map, res_comp]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Substitute using the available equality.
 
-Substitute `hn'` using the available equality. Take `rfl : k = 1` from `by omega`. Take `⟨s, hs⟩` from `((GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R G V).1 _).1 hc`. Take `⟨x⟩` from `hU`. Take `⟨t, rfl⟩` from `(hφ V ⟨Sx.res g x⟩).2 s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Lall _ _ fun W j => ⟨Sec.res j (-y + Sec.map (resι R F) t), 0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← res_map, map_add', map_neg', hy, ← map_comp, map_congr hd, map_zero_hom, add_zero, res_comp]`. Conclude with `map_neg _ _`. Rewrite using `[map_zero', add_zero, ← res_map, map_add', map_neg', ← map_comp, map_congr hι, map_comp, hs, res_comp]`. Use `congr 1`.
-
-Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem mappingCone_resolution_localChase_of_succ (E : Spc) {F G : Shv R} (φ : F ⟶ G)
     (hφ : ∀ U : Scheme.{0}, Nonempty (Sx E 0 U) → Function.Bijective (Sec.map φ (U := U)))
@@ -153,7 +151,7 @@ theorem mappingCone_resolution_localChase_of_succ (E : Spc) {F G : Shv R} (φ : 
         abel
 
 /- English proof (translation)
-Introduce `_ _ E _ _ φ hφ U hU n b₁ b₂ h₁ h₂` and use `mappingCone_resolution_localChase_of_succ E φ hφ U hU (n - 1) n (n + 1) (n + 2) (by ring) rfl (by ring) b₁ b₂ h₁ h₂`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chase : ∀ (R : Type) [CommRing R] (E : Spc) {F G : Shv R} (φ : F ⟶ G), (∀ U : Scheme.{0}, Nonempty (Sx E 0 U) → Function.Bijective (Sec.map φ (U := U))) → ∀ (U : Scheme.{0}), Nonempty (Sx E 0 U) → ∀ (n : ℤ) (b₁ : Sec ((res R F).X (n + 1)) U) (b₂ : Sec ((res R G).X n) U), Sec.map ((res R F).d (n + 1) (n + 2)) b₁ = 0 → Sec.map ((resMap R φ).f (n + 1)) b₁ + Sec.map ((res R G).d n (n + 1)) b₂ = 0 → Loc U fun V g => ∃ (a₁ : Sec ((res R F).X n) V) (a₂ : Sec ((res R G).X (n - 1)) V), Sec.map ((res R F).d n (n + 1)) a₁ = -Sec.res g b₁ ∧ Sec.map ((resMap R φ).f n) a₁ + Sec.map ((res R G).d (n - 1) n) a₂ = Sec.res g b₂ :=
   fun _ _ E _ _ φ hφ U hU n b₁ b₂ h₁ h₂ =>

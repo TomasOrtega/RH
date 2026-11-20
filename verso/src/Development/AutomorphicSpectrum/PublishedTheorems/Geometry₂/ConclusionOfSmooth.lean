@@ -22,14 +22,14 @@ inductive IsBlowupSeq {X : Scheme.{0}} : ∀ {X' : Scheme.{0}}, (X' ⟶ X) → P
       IsBlowupSeq s → FinalTheorems.Blowup π J → IsBlowupSeq (π ≫ s)
 
 /- English proof (translation)
-Simplify using `using IsBlowupSeq.step J π .id h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsBlowupSeq.single {X X' : Scheme.{0}} (J : X.IdealSheafData) (π : X' ⟶ X) (h : FinalTheorems.Blowup π J) :
     IsBlowupSeq π := by
   simpa using IsBlowupSeq.step J π .id h
 
 /- English proof (translation)
-Proceed by induction on `ht with`. Consider the case `id => simpa using hs`. Consider the case `step J π _ h ih => rw [Category.assoc]`. Conclude with `.step J π ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsBlowupSeq.comp {X X' X'' : Scheme.{0}} {s : X' ⟶ X} {t : X'' ⟶ X'} (hs : IsBlowupSeq s)
     (ht : IsBlowupSeq t) : IsBlowupSeq (t ≫ s) := by
@@ -38,7 +38,7 @@ theorem IsBlowupSeq.comp {X X' X'' : Scheme.{0}} {s : X' ⟶ X} {t : X'' ⟶ X'}
   | step J π _ h ih => rw [Category.assoc]; exact .step J π ih h
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `id => exact .id`. Consider the case `step J π _ _ _ h ih => exact .step J π ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem IsBlowupSeq.of_smooth {S Y Y' : Scheme.{0}} {f : Y ⟶ S} {B : Set Y} {s : Y' ⟶ Y}
     (h : IsSmoothBlowupSeq f B s) : IsBlowupSeq s := by
@@ -47,9 +47,9 @@ theorem IsBlowupSeq.of_smooth {S Y Y' : Scheme.{0}} {f : Y ⟶ S} {B : Set Y} {s
   | step J π _ _ _ h ih => exact .step J π ih h
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `id => simpa using hg`. Consider the case `@step X₁ X₂ s J π _ hπ ih`. Take `⟨G, b, hb, ⟨N, i, hi, e⟩, -⟩` from `ProjBlowup.exists_blowup (s ≫ g) ih J`. Take `⟨φ, hφ, rfl⟩` from `ProjBlowup.exists_iso_of_blowup J π b hπ hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, φ ≫ i, inferInstance, by simp [e]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsBlowupSeq.isProjOver {R : Type} [CommRing R] [IsNoetherianRing R] {X X' : Scheme.{0}} {g : X ⟶ Sp R}
     {s : X' ⟶ X} (h : IsBlowupSeq s) (hg : IsProjOver g) : IsProjOver (s ≫ g) := by
@@ -72,7 +72,7 @@ def ResolutionCharZero : Prop :=
         FinalTheorems.Snc (preRed s (g.smoothLocus : Set X)ᶜ g.smoothLocus.isOpen.isClosed_compl)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.id, inferInstance, inferInstance, fun y => sncAt_of_not_mem _ y (fun h => h (g.smoothLocus_eq_top.ge (Set.mem_univ y))) (GroundTheory.Arith.SchemeCoh.isRegularLocalRing_stalk_of_smooth_field g y)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Resolution.conclusion_of_smooth {k : Type} [Field k] {X : Scheme.{0}} (g : X ⟶ Sp k) [Smooth g] :
     IsBlowupSeq (𝟙 X) ∧ Smooth (𝟙 X ≫ g) ∧ IsIso (𝟙 X ∣_ g.smoothLocus) ∧
@@ -81,9 +81,9 @@ theorem Resolution.conclusion_of_smooth {k : Type} [Field k] {X : Scheme.{0}} (g
     (fun h => h (g.smoothLocus_eq_top.ge (Set.mem_univ y))) (GroundTheory.Arith.SchemeCoh.isRegularLocalRing_stalk_of_smooth_field g y)⟩
 
 /- English proof (translation)
-Establish `hp : IsProper g`. Take `⟨N, i, hi, rfl⟩` from `hg`. Establish `: IsProper (PSpace.str k N)` using `isProper_str k N`. Use `infer_instance`. Take `⟨X', s, h₁, h₂⟩` from `h k X g inferInstance inferInstance inferInstance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨X', s, h₁, h₁.isProjOver hg, h₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem ResolutionCharZero.projective (h : ResolutionCharZero) {k : Type} [Field k] [CharZero k] {X : Scheme.{0}}
     (g : X ⟶ Sp k) [LocallyOfFiniteType g] [IsReduced X] (hg : IsProjOver g) :

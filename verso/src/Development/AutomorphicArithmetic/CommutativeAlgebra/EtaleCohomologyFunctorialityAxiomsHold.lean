@@ -10,14 +10,14 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace UpperTheory.Cb.SHAcyc
 
 /- English proof (translation)
-The claim follows from `congrArg (fun h => h.hom x) (φ.hom.naturality g.op)`.
+A detailed English derivation is pending.
 -/
 private theorem map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U)
     (x : Sec F U) : Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) :=
   congrArg (fun h => h.hom x) (φ.hom.naturality g.op)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(F.obj.map (k ≫ g).op).hom x = _`. Rewrite using `[op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U)
     (x : Sec F U) : Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := by
@@ -26,7 +26,7 @@ private theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(F.obj.map (𝟙 U).op).hom x = x`. Rewrite using `[op_id, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem res_id {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (x : Sec F U) :
     Sec.res (𝟙 U) x = x := by
@@ -35,13 +35,13 @@ private theorem res_id {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (x :
   rfl
 
 /- English proof (translation)
-Set `φ : CommRingCat.of A ⟶ Γ(V, ⊤)` to `Spec.preimage (V.isoSpec.inv ≫ g)`. Establish `hφ : Spec.map φ = V.isoSpec.inv ≫ g` using `Spec.map_preimage _`. Establish `hE : Etale (Spec.map φ)` using `by rw [hφ]; infer_instance`. Use `letI : Algebra A Γ(V, ⊤) := φ.hom.toAlgebra`. Use `haveI : Algebra.Etale A Γ(V, ⊤) := RingHom.etale_algebraMap.1 ((HasRingHomProperty.Spec_iff (P := @Etale)).1 hE)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `y : Spec Γ(V, ⊤)` to `V.isoSpec.hom v`. Establish `hy : Spec.map φ y = (IsLocalRing.closedPoint A : PrimeSpectrum A)`. Rewrite using `[hφ, Scheme.Hom.comp_apply, ← hv]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(V.isoSpec.hom ≫ V.isoSpec.inv) v = v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hq : (PrimeSpectrum.asIdeal y).comap (algebraMap A Γ(V, ⊤)) = IsLocalRing.maximalIdeal A` using `congrArg PrimeSpectrum.asIdeal hy`. Use `haveI : (PrimeSpectrum.asIdeal y).IsPrime := PrimeSpectrum.isPrime y`. Take `⟨s, -⟩` from `(GlobalTheory.StrictHensel.strictlyHenselian_iff A).2 ⟨inferInstance, inferInstance⟩ Γ(V, ⊤) (PrimeSpectrum.asIdeal y) hq`. Use `⟨Spec.map (CommRingCat.ofHom s.toRingHom) ≫ V.isoSpec.inv, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp]`. Establish `: φ ≫ CommRingCat.ofHom s.toRingHom = 𝟙 _`. Use extensionality with `a`. Conclude with `s.commutes a`. Rewrite using `[this, Spec.map_id]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_section (A : Type) [CommRing A] [HenselianLocalRing A]
     [IsSepClosed (IsLocalRing.ResidueField A)] {V : Scheme.{0}} [IsAffine V]
@@ -77,13 +77,13 @@ end UpperTheory.Cb.SHAcyc
 open UpperTheory.Cb.SHAcyc in
 
 /- English proof (translation)
-Introduce `R _ A _ hA F n hn`. Take `⟨hH, hS⟩` from `hA`. Use `haveI := hH`. It suffices to establish `h : ∀ x : H R (sp A) F n, x = 0 from ⟨fun a b => by rw [h a, h b]⟩`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨α, rfl⟩` from `x.mk_surjective`. Establish `hz` using `(GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R (Spec (CommRingCat.of A)) (res R F) (n - 1) n (n + 1) (by ring) rfl).2 α`. Establish `hloc` using `(GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R F (Spec (CommRingCat.of A))).2.2.1 (n - 1) n (n + 1) hn (by ring) _ rfl hz.1`. Establish `hpts` using `(GlobalTheory.T.etaleLocally_iff_affine_etale_point_cover (Spec (CommRingCat.of A)) _ (by`. Introduce and unpack `V W g k ⟨y, hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Sec.res k y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_res, hy, res_comp])).1 hloc`. Take `⟨V, g, hV, hg, ⟨v, hv⟩, y, hy⟩` from `hpts (IsLocalRing.closedPoint A : PrimeSpectrum A)`. Take `⟨σ, hσ⟩` from `exists_section A g v hv`. Use `hz.2.2 ⟨Sec.res σ y, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_res, hy, ← res_comp, hσ, res_id]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.etaleCohomology_functorialityAxioms_hold : GlobalTheory.EtC.B2 := by
   intro R _ A _ hA F n hn

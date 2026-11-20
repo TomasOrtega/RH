@@ -19,15 +19,15 @@ namespace GlobalTheory.PointAtPlaceComm
 open GlobalTheory.PointAtPlace GlobalTheory.PointAtPlaceHom Formalism.MainNotions.StandardLattice
 
 /- English proof (translation)
-Introduce `D θ hθ V τ τ' hne g hg g' hg'`. Establish `ha` using `atTau_spec hθ V τ hg`. Establish `hb` using `atTau_spec hθ V τ' hg'`. Use `set a := atTau θ V τ g`. Use `set b := atTau θ V τ' g'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k : ∀ (φ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (x : GA D V), infMat D.sp.cm.sig V.gram φ x * infMat D.sp.cm.sig V.gram φ x⁻¹ = 1` using `fun φ x => by`. Rewrite using `[← infMat_mul, mul_inv_cancel, infMat_one]`. Establish `triv : ∀ (φ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (x : GA D V), infMat D.sp.cm.sig V.gram φ x = 1 → infMat D.sp.cm.sig V.gram φ x⁻¹ = 1` using `fun φ x h => by`. Use `k φ x` as an intermediate fact. Rewrite `this` using `[h, Matrix.one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : IsAtTau θ V τ 1 (a * b * a⁻¹ * b⁻¹)`. Establish `all : ∀ ρ, infMat D.sp.cm.sig V.gram (θ ρ) (a * b * a⁻¹ * b⁻¹) = 1` using `fun ρ => by`. Simplify using `only [infMat_mul]`. Distinguish the cases in `c : ρ = τ`. Substitute `c` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : infMat D.sp.cm.sig V.gram (θ ρ) b = 1` using `hb.2.2 ρ hne`. Rewrite using `[hB, triv _ _ hB, Matrix.mul_one, Matrix.mul_one, k]`. Establish `hA : infMat D.sp.cm.sig V.gram (θ ρ) a = 1` using `ha.2.2 ρ c`. Rewrite using `[hA, triv _ _ hA, Matrix.one_mul, Matrix.mul_one, k]`. Conclude with `⟨mul_mem (mul_mem (mul_mem ha.1 hb.1) (inv_mem ha.1)) (inv_mem hb.1), all τ, fun ρ _ => all ρ⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsAtTau θ V τ 1 (1 : GA D V)` using `⟨one_mem _, infMat_one V _, fun _ _ => infMat_one V _⟩`. Establish `e : a * b * a⁻¹ * b⁻¹ = 1` using `(existsUnique_isAtTau V τ θ hθ 1 (one_mem_UH _)).unique hc h1`. Establish `e2 : a * b * a⁻¹ = b` using `mul_inv_eq_one.1 e`. Conclude with `mul_inv_eq_iff_eq_mul.1 e2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem atTau_comm : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (τ τ' : D.what₂.Tau), τ ≠ τ' → ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ g' ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ'), atTau θ V τ g * atTau θ V τ' g' = atTau θ V τ' g' * atTau θ V τ g := by
   intro D θ hθ V τ τ' hne g hg g' hg'

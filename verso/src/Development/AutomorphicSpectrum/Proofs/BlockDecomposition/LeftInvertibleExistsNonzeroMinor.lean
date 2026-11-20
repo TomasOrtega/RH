@@ -11,9 +11,9 @@ open GlobalTheory.CompanionTheory.GodementH
 namespace GlobalTheory.CompanionTheory.GodementH
 
 /- English proof (translation)
-Establish `h1 : (L * M).det = (Matrix.detRowAlternating (R` using `R) (n := Fin n)).toMultilinearMap (fun i => ∑ j, L i j • M j) := by`. Establish `: (L * M) = Matrix.of (fun i => ∑ j, L i j • M j)`. Use extensionality with `i k`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1, MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_mul_eq_sum_mnr {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι] {n : ℕ}
     (M : Matrix ι (Fin n) R) (L : Matrix (Fin n) ι R) :
@@ -32,9 +32,9 @@ theorem det_mul_eq_sum_mnr {R : Type} [CommRing R] {ι : Type} [Fintype ι] [Dec
   rfl
 
 /- English proof (translation)
-Introduce `R _ _ ι _ _ n M L h`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `key` using `det_mul_eq_sum_mnr M L`. Rewrite `key` using `[h, Matrix.det_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hc] at key`.
+A detailed English derivation is pending.
 -/
 theorem exists_mnr_ne_zero_of_left_inverse :
     ∀ (R : Type) [CommRing R] [Nontrivial R] (ι : Type) [Fintype ι] [DecidableEq ι] (n : ℕ)

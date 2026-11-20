@@ -15,9 +15,9 @@ variable {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDi
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective f`. Introduce `a b hab`. Establish `h0 : ‖a - b‖ = 0` using `by rw [← hn, map_sub, hab, sub_self, norm_zero]`. Conclude with `sub_eq_zero.mp (norm_eq_zero.mp h0)`. Set `e : E ≃ₗ[ℝ] F` to `LinearEquiv.ofBijective f ⟨hinj, hs⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g : E ≃ₗᵢ[ℝ] F` to `{ e with norm_map' := hn }`. Conclude with `g.measurePreserving`.
+A detailed English derivation is pending.
 -/
 theorem mp_of_isom (f : E →ₗ[ℝ] F) (hn : ∀ x, ‖f x‖ = ‖x‖) (hs : Function.Surjective f) :
     MeasurePreserving f volume volume := by
@@ -34,13 +34,13 @@ variable {U V : Type} [NormedAddCommGroup U] [InnerProductSpace ℝ U] [FiniteDi
   [MeasurableSpace V] [BorelSpace V]
 
 /- English proof (translation)
-Set `L : WithLp 2 (U × V) ≃ₗ[ℝ] U × V` to `WithLp.linearEquiv 2 ℝ (U × V)`. Establish `h1 : MeasurePreserving (f.comp L.toLinearMap) volume volume`. Apply `mp_of_isom` to reduce the goal to its premises. Introduce `t`. Establish `h` using `hn (L t).1 (L t).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `WithLp.prod_norm_sq_eq_of_L2 t`. Establish `e : (L t) = ((L t).1, (L t).2)` using `rfl`. Rewrite `h` using `[← e]`. Establish `h3 : ‖f (L t)‖ ^ 2 = ‖t‖ ^ 2` using `by rw [h, h2]; rfl`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hs.comp L.surjective`. Establish `h2` using `WithLp.volume_preserving_toLp U V`. Establish `h3 : (⇑(f.comp L.toLinearMap) ∘ WithLp.toLp 2) = ⇑f`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h4` using `h1.comp h2`. Rewrite `h4` using `[h3]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mp_of_isom_prod (f : U × V →ₗ[ℝ] F) (hn : ∀ a b, ‖f (a, b)‖ ^ 2 = ‖a‖ ^ 2 + ‖b‖ ^ 2)
     (hs : Function.Surjective f) : MeasurePreserving f volume volume := by
@@ -81,7 +81,7 @@ Both sides reduce to the same expression.
 theorem reimL_apply {n m : ℕ} (Y : Matrix (Fin n) (Fin m) ℂ) : reimL Y = reim Y := rfl
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg (fun _ _ => sq_nonneg _))]`. Simplify using `only [reim, Fintype.sum_prod_type, Fintype.sum_bool]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -95,7 +95,7 @@ theorem norm_reim_sq {n m : ℕ} (Y : Matrix (Fin n) (Fin m) ℂ) :
   ring
 
 /- English proof (translation)
-Use `⟨Matrix.of fun i j => ⟨y.ofLp (i, j, true), y.ofLp (i, j, false)⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `p`. Break down `p with ⟨i, j, s⟩` into its components or cases. Apply the tactic sequence `cases s <;> simp [reim]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem reim_surj {n m : ℕ} (y : EuclideanSpace ℝ (Fin n × Fin m × Bool)) :
     ∃ Y : Matrix (Fin n) (Fin m) ℂ, reim Y = y := by
@@ -105,9 +105,9 @@ theorem reim_surj {n m : ℕ} (y : EuclideanSpace ℝ (Fin n × Fin m × Bool)) 
   cases s <;> simp [reim]
 
 /- English proof (translation)
-Establish `hA' : ∀ i j, A j i = conj (A i j)` using `fun i j => by`. Simplify `(congrFun (congrFun hA j) i).symm` using `[Matrix.conjTranspose_apply]`. Establish `hB' : ∀ i j, B j i = conj (B i j)` using `fun i j => by`. Simplify `(congrFun (congrFun hB j) i).symm` using `[Matrix.conjTranspose_apply]`. Establish `hc : conj (∑ i, ∑ j, A i j * conj (B i j)) = ∑ i, ∑ j, A i j * conj (B i j)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_mul, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hA' j i, hB' j i, Complex.conj_conj]`. Conclude with `Complex.conj_eq_iff_im.mp hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_cross {m : ℕ} (A B : Matrix (Fin m) (Fin m) ℂ) (hA : Aᴴ = A) (hB : Bᴴ = B) :
     (∑ i, ∑ j, A i j * conj (B i j)).im = 0 := by
@@ -123,9 +123,9 @@ theorem herm_cross {m : ℕ} (A B : Matrix (Fin m) (Fin m) ℂ) (hA : Aᴴ = A) 
   exact Complex.conj_eq_iff_im.mp hc
 
 /- English proof (translation)
-Establish `key : ∀ i j, ‖(Complex.I • A + B) i j‖ ^ 2 = ‖A i j‖ ^ 2 + ‖B i j‖ ^ 2 - 2 * (A i j * conj (B i j)).im`. Introduce `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Complex.sq_norm, Complex.normSq_apply, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `herm_cross A B hA hB`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Complex.im_sum] at h0`. Simplify using `only [key, Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, h0]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_pyth {m : ℕ} (A B : Matrix (Fin m) (Fin m) ℂ) (hA : Aᴴ = A) (hB : Bᴴ = B) :
     ∑ i, ∑ j, ‖(Complex.I • A + B) i j‖ ^ 2 = ∑ i, ∑ j, ‖A i j‖ ^ 2 + ∑ i, ∑ j, ‖B i j‖ ^ 2 := by
@@ -162,17 +162,15 @@ theorem psiLp_apply {m : ℕ} {η : Type} [Fintype η] (H : EuclideanSpace ℝ �
     (z : EuclideanSpace ℝ η × EuclideanSpace ℝ η) : psiLp H z = reim (Complex.I • H z.1 + H z.2) := rfl
 
 /- English proof (translation)
-Apply `mp_of_isom_prod` to reduce the goal to its premises. Introduce `a b`. Rewrite using `[psiLp_apply, norm_reim_sq, herm_pyth _ _ (hH a) (hH b), hn a, hn b]`. Introduce `y`. Take `⟨Y, rfl⟩` from `reim_surj y`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set A : Matrix (Fin m) (Fin m) ℂ := (-(Complex.I / 2)) • (Y - Yᴴ) with hAdef`. Use `set B : Matrix (Fin m) (Fin m) ℂ := (1 / 2 : ℂ) • (Y + Yᴴ) with hBdef`. Establish `hA : Aᴴ = A`. Rewrite using `[hAdef, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_conjTranspose]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[Complex.ext_iff]`. Apply the tactic sequence `constructor <;> ring`. Establish `hB : Bᴴ = B`. Rewrite using `[hBdef, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_conjTranspose]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[Complex.ext_iff]`. Apply the tactic sequence `constructor <;> ring`. Take `⟨s, hsA⟩` from `hs A hA`. Take `⟨t, htB⟩` from `hs B hB`. Use `⟨(s, t), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[psiLp_apply]`. Use `congr 1`. Simplify using `only [hsA, htB]`. Use extensionality with `i j`. Simplify using `[hAdef, hBdef, Complex.ext_iff]`.
-
-Apply the tactic sequence `constructor <;> ring`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem psi_mp {m : ℕ} {η : Type} [Fintype η] (H : EuclideanSpace ℝ η →ₗ[ℝ] Matrix (Fin m) (Fin m) ℂ)
     (hH : ∀ t, (H t)ᴴ = H t) (hn : ∀ t, ∑ i, ∑ j, ‖H t i j‖ ^ 2 = ‖t‖ ^ 2)

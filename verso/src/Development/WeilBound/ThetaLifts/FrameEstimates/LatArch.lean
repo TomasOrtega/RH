@@ -13,9 +13,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * _ = 0`. Rewrite using `[h1, zero_mul]`. Express the relevant statement in the definitionally equal form `u.2 * 0 = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_realAd {u : AF F} (hu : evI F u = 0) (t : ℝ) : u * realAd F t = 0 := by
   have h1 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)
@@ -26,9 +26,9 @@ theorem mul_realAd {u : AF F} (hu : evI F u = 0) (t : ℝ) : u * realAd F t = 0 
     rw [mul_zero]
 
 /- English proof (translation)
-Establish `hw : w.IsReal` using `IsTotallyReal.isReal w`. Use `set a := (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ t) with ha`. Establish `h1 : InfiniteAdeleRing.ringEquiv_mixedSpace F a = algebraMap ℝ _ t`. Rewrite using `[ha, RingEquiv.apply_symm_apply]`. Establish `h2` using `congrFun (congrArg Prod.fst h1) ⟨w, hw⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : InfinitePlace.Completion.extensionEmbeddingOfIsReal hw (a w) = t` using `h2`. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding w (a w) = t`. Rewrite using `[← h3]`. Conclude with `(InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw (a w)).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_realAd (hF : IsTotallyReal F) (w : InfinitePlace F) (t : ℝ) :
     InfinitePlace.Completion.extensionEmbedding w (evInf F w (realAd F t)) = t := by
@@ -43,7 +43,7 @@ theorem emb_realAd (hF : IsTotallyReal F) (w : InfinitePlace F) (t : ℝ) :
   exact (InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw (a w)).symm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `infEmb τ (evInf F w a ⊗ₜ[F] (1 : E)) = _`. Rewrite using `[infEmb_tmul, map_one, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem piInf_alg {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) :
     piInf τ (algebraMap (AF F) (AE F E) a) = InfinitePlace.Completion.extensionEmbedding w (evInf F w a) := by
@@ -51,7 +51,7 @@ theorem piInf_alg {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) :
   rw [infEmb_tmul, map_one, mul_one]
 
 /- English proof (translation)
-Rewrite using `[piInf_alg, rId, map_add, map_add, map_one, map_one, emb_realAd hF]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem piInf_rId (hF : IsTotallyReal F) {w : InfinitePlace F} (τ : EmbOver E w) (t : ℝ) :
     piInf τ (algebraMap (AF F) (AE F E) (rId F t)) = (Real.exp t : ℝ) := by
@@ -60,18 +60,18 @@ theorem piInf_rId (hF : IsTotallyReal F) {w : InfinitePlace F} (τ : EmbOver E w
   ring
 
 /- English proof (translation)
-Unfold `sz`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem sz_nonneg (τ : ∀ w : InfinitePlace F, EmbOver E w) {n d : ℕ} (z : Ten F E n d) : 0 ≤ sz τ z := by
   unfold sz
   positivity
 
 /- English proof (translation)
-Unfold `sz`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : ∀ j, ‖piInf (τ w) ((y * Bᵀ) i j)‖ ≤ M * ∑ k, ‖piInf (τ w) (y i k)‖` using `fun j => by`. Rewrite using `[Matrix.mul_apply, map_sum, Finset.mul_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, Matrix.transpose_apply, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hB w j k) (norm_nonneg _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_le_sum fun j _ => h j).trans ?_` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sz_mul_le (τ : ∀ w : InfinitePlace F, EmbOver E w) {n d : ℕ} (y : Ten F E n d)
     (B : Matrix (Fin d) (Fin d) (AE F E)) (M : ℝ) (hB : ∀ w i j, ‖piInf (τ w) (B i j)‖ ≤ M) :
@@ -90,33 +90,31 @@ theorem sz_mul_le (τ : ∀ w : InfinitePlace F, EmbOver E w) {n d : ℕ} (y : T
   simp [mul_assoc]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem incM_mul {n : ℕ} (x y : Matrix (Fin n) (Fin n) E) : incM F (x * y) = incM F x * incM F y :=
   Matrix.map_mul
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem incM_one {n : ℕ} : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Take `⟨b, lam, ix, iy, -, h2, h3, -, h5⟩` from `hb F E σ hc d J hJ fr hg`. Use `set P := incM F b.1 with hP`. Use `set Q := incM F (b⁻¹).1 with hQ`. Establish `hPQ : P * Q = 1`. Rewrite using `[hP, hQ, ← incM_mul, Units.mul_inv, incM_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨∑ w, ∑ i, ∑ j, ∑ k, ‖piInf (τ w) (P i k)‖ * ‖piInf (τ w) (Q k j)‖, by positivity, fun t ht => ?_⟩` and prove the remaining obligations. Use `set D : Matrix (Fin d) (Fin d) (AE F E) := Matrix.diagonal fun k => algebraMap (AF F) (AE F E) (rId F (lam k t)) with hD`. Establish `hB : mat (fr.a t) = P * D * Q`. Rewrite using `[← h5 t, Matrix.mul_assoc, hPQ, Matrix.mul_one]`. Establish `hlam : ∀ k, lam k t ≤ ∑ j, t j` using `fun k => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : 0 ≤ ∑ j, t j` using `Finset.sum_nonneg fun j _ => ht.2 j`. Distinguish the cases in `hk : ∀ i, ix i ≠ k ∧ iy i ≠ k`. Rewrite using `[h3 k hk]`. Conclude with `h0`. Take `⟨i, hi⟩` from `not_forall.1 hk`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `not_and_or.1 hi with e | e` into its components or cases. Rewrite using `[← not_not.1 e, (h2 i t).1]`. Conclude with `Finset.single_le_sum (fun j _ => ht.2 j) (Finset.mem_univ i)`. Rewrite using `[← not_not.1 e, (h2 i t).2]`. Conclude with `(neg_nonpos.2 (ht.2 i)).trans h0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `⟨fun u hu => ?_, fun w i j => ?_⟩` and prove the remaining obligations. Establish `hu' : u • (D - 1) = 0`. Use extensionality with `k l`. Distinguish the cases in `e : k = l`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hD, Matrix.smul_apply, Matrix.sub_apply, Matrix.diagonal_apply_eq, Matrix.one_apply_eq, Matrix.zero_apply, rId, map_add, map_one, add_sub_cancel_left]`. Rewrite using `[Algebra.smul_def, ← map_mul, mul_realAd hu, map_zero]`. Simplify using `[hD, Matrix.diagonal_apply_ne _ e, Matrix.one_apply_ne e]`. Establish `e : mat (fr.a t) - 1 = P * (D - 1) * Q`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hPQ, hB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, ← Matrix.smul_mul, ← Matrix.mul_smul, hu', Matrix.mul_zero, Matrix.zero_mul]`. Establish `h1 : ‖piInf (τ w) (mat (fr.a t) i j)‖ ≤ (∑ k, ‖piInf (τ w) (P i k)‖ * ‖piInf (τ w) (Q k j)‖) * Real.exp (∑ j, t j)`. Rewrite using `[hB, Matrix.mul_apply, map_sum, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[hD, Matrix.mul_diagonal, map_mul, map_mul, piInf_rId hc.1, norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, mul_right_comm]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 (hlam k)) (by positivity)`. Use `h1.trans (mul_le_mul_of_nonneg_right ?_ (Real.exp_pos _).le)` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun w => ∑ i, ∑ j, ∑ k, ‖piInf (τ w) (P i k)‖ * ‖piInf (τ w) (Q k j)‖) (fun _ _ => by positivity) (Finset.mem_univ w))` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun i => ∑ j, ∑ k, ‖piInf (τ w) (P i k)‖ * ‖piInf (τ w) (Q k j)‖) (fun _ _ => by positivity) (Finset.mem_univ i))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ∑ k, ‖piInf (τ w) (P i k)‖ * ‖piInf (τ w) (Q k j)‖) (fun _ _ => by positivity) (Finset.mem_univ j)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem torus (hb : FrameBasis) (hc : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {d : ℕ}
     {J : Matrix (Fin d) (Fin d) E} (hJ : EpsHerm σ J) (fr : Frame σ J) (hg : fr.IsGood) :
@@ -171,15 +169,13 @@ theorem torus (hb : FrameBasis) (hc : IsCMExt F E σ) (τ : ∀ w : InfinitePlac
       ‖piInf (τ w) (P i k)‖ * ‖piInf (τ w) (Q k j)‖) (fun _ _ => by positivity) (Finset.mem_univ j)
 
 /- English proof (translation)
-Establish `hy` using `sz_nonneg τ y`. Establish `hz` using `sz_nonneg τ (y * Bᵀ)`. Establish `hs0 : 0 < s` using `by linarith`. Unfold `maj`. Use `split_ifs with h2 h3 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h4` using `sz_mul_le τ y B _ hB`. Establish `h5 : 1 + sz τ (y * Bᵀ) ≤ (1 + d * K) * s * (1 + sz τ y)`. Establish `: 0 ≤ d * K * s` using `by positivity`. Establish `: 0 ≤ s * sz τ y` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← div_eq_mul_inv, inv_eq_one_div, div_le_div_iff₀ (by positivity) (by positivity), one_mul, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) h5 N`. Use `absurd ?_ h3` and prove the remaining obligations. Take `⟨c, hc, h⟩` from `h2`. Use `⟨c, hc, fun u hu => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : y * Bᵀ - c = (y - c) + y * (B - 1)ᵀ`. Rewrite using `[Matrix.transpose_sub, Matrix.mul_sub, Matrix.transpose_one, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_add, h u hu, zero_add, ← Matrix.mul_smul, ← Matrix.transpose_smul, h1 u hu, Matrix.transpose_zero, Matrix.mul_zero]`. Check the signs of the components of the expression.
-
-Simplify using the standard rewrite rules.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem maj_le (τ : ∀ w : InfinitePlace F, EmbOver E w) {n d : ℕ} (C : Set (Ten F E n d)) (N : ℕ) (y : Ten F E n d)
     (B : Matrix (Fin d) (Fin d) (AE F E)) (K s : ℝ) (hK : 0 ≤ K) (hs : 1 ≤ s) (h1 : At (evI F) (B - 1))
@@ -217,13 +213,13 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK LatArchPf
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hc τ n d J J' _ hJ' fr hg C N hC`. Take `⟨K, hK, h⟩` from `torus hb hc τ hJ' fr hg`. Use `⟨C, Real.toNNReal ((1 + d * K) ^ N), hC, fun S g t ht => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h t ht`. Unfold `latSum`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite using `[← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun x => ?_` and prove the remaining obligations. Establish `h0 : 0 ≤ ∑ j, t j` using `Finset.sum_nonneg fun j _ => ht.2 j`. Establish `h3` using `maj_le τ C N (mat g⁻¹ * incM F x.1 * (mat (fr.a t)⁻¹)ᵀ) (mat (fr.a t)) K _ hK (Real.one_le_exp h0) h1 h2`. Establish `e : mat (fr.a t) * mat (fr.a t)⁻¹ = mat (1 : UA σ J')⁻¹`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inv_one, ← mul_inv_cancel (fr.a t)]`. Both sides reduce to the same expression. Rewrite `h3` using `[Matrix.mul_assoc _ _ (mat (fr.a t))ᵀ, ← Matrix.transpose_mul, e]`. Express the relevant statement in the definitionally equal form `_ ≤ ENNReal.ofReal ((1 + d * K) ^ N) * _ * _`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `ENNReal.ofReal_le_ofReal (h3.trans_eq ?_)` and prove the remaining obligations. Rewrite using `[mul_pow, Real.exp_nat_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem latArch_of (hb : FrameBasis) : LatArch := by
   intro F E _ _ _ _ _ σ hc τ n d J J' _ hJ' fr hg C N hC

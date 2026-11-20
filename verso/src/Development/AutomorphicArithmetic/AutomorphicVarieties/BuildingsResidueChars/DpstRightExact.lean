@@ -7,11 +7,11 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KummerNotFrac
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.Pst GlobalTheory.WeilDeligne TensorProduct Module GlobalTheory.Pst.DpstMap
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F D' := Module.rank_lt_aleph0_iff.mp (h'.trans_lt (Cardinal.natCast_lt_aleph0))`. Use `haveI : FiniteDimensional F D'' := Module.rank_lt_aleph0_iff.mp (h''.trans_lt (Cardinal.natCast_lt_aleph0))`. Use `haveI : FiniteDimensional F D := Module.rank_lt_aleph0_iff.mp (h.le.trans_lt (Cardinal.natCast_lt_aleph0))`. Rewrite `h'`, `h''`, `h` using `[← finrank_eq_rank]`. Rewrite using `[← finrank_eq_rank, ← finrank_eq_rank]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : finrank F D' ≤ a` using `Nat.cast_le.mp h'`. Establish `e2 : finrank F D'' ≤ c` using `Nat.cast_le.mp h''`. Establish `e3 : finrank F D = a + c` using `Nat.cast_injective h`. Establish `e4` using `q.finrank_range_add_finrank_ker`. Establish `e5 : finrank F (LinearMap.ker q) = finrank F D'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.exact_iff.mp hex, LinearMap.finrank_range_of_inj hj]`. Establish `e6 : finrank F (LinearMap.range q) ≤ finrank F D''` using `Submodule.finrank_le _`. Use `⟨by rw [show finrank F D' = a by omega], by rw [show finrank F D'' = c by omega], ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.range_eq_top]`. Conclude with `Submodule.eq_top_of_finrank_eq (by omega)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem count_dims {F D' D D'' : Type} [Field F] [AddCommGroup D'] [Module F D'] [AddCommGroup D] [Module F D]
     [AddCommGroup D''] [Module F D''] (j : D' →ₗ[F] D) (q : D →ₗ[F] D'') (hj : Function.Injective j)
@@ -44,13 +44,13 @@ private noncomputable def dmapUr {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K : 
   map_smul' := fun c x => dmap_mulD P hf c ((toUr P ρ).symm x)
 
 /- English proof (translation)
-Introduce `l _ K L V' V V'' _ _ _ _ _ _ _ _ _ _ _ _ _ ρ' ρ ρ'' f p hf hp hfi hps hex hV`. Take `⟨hdom, hreg, -⟩` from `GlobalTheory.Pst.stRegular l (UpperTheory.V.Loc.PP l) (UpperTheory.V.Loc.AIP l) (UpperTheory.V.Loc.tiedP l)`. Use `haveI : FiniteDimensional ℚ_[l] ↥L.1 := L.2`. Use `haveI : FiniteDimensional ℚ_[l] V := Module.Finite.trans ↥L.1 V`. Use `haveI : FiniteDimensional ℚ_[l] V' := Module.Finite.of_injective (f.restrictScalars ℚ_[l]) hfi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℚ_[l] V'' := Module.Finite.of_surjective (p.restrictScalars ℚ_[l]) hps`. Take `⟨hdi, hdex⟩` from `UpperTheory.weilDeligne_dpst_leftExact l (UpperTheory.V.Loc.PP l) K L V' V V'' ρ' ρ ρ'' f p hf hp hfi hex`. Establish `h'` using `GlobalTheory.T.finrank_dpst_unramified_le_dim_representation (UpperTheory.V.Loc.PP l) hdom hreg ρ'`. Establish `h''` using `GlobalTheory.T.finrank_dpst_unramified_le_dim_representation (UpperTheory.V.Loc.PP l) hdom hreg ρ''`. Establish `hsum : finrank ℚ_[l] V = finrank ℚ_[l] V' + finrank ℚ_[l] V''`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hexq : Function.Exact (f.restrictScalars ℚ_[l]) (p.restrictScalars ℚ_[l])` using `hex`. Establish `e4` using `(p.restrictScalars ℚ_[l]).finrank_range_add_finrank_ker`. Rewrite `e4` using `[LinearMap.exact_iff.mp hexq, LinearMap.finrank_range_of_inj (f := f.restrictScalars ℚ_[l]) hfi, LinearMap.range_eq_top.mpr (show Function.Surjective (p.restrictScalars ℚ_[l]) from hps), finrank_top]`. Use linear arithmetic over natural numbers and integers. Establish `h : Module.rank ↥(MaximalUnramifiedExtension l) (DpstUr (UpperTheory.V.Loc.PP l) ρ) = (finrank ℚ_[l] V' + finrank ℚ_[l] V'' : ℕ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hsum, finrank_eq_rank]`. Conclude with `hV`. Take `⟨r1, r2, r3⟩` from `count_dims (dmapUr (UpperTheory.V.Loc.PP l) hf) (dmapUr (UpperTheory.V.Loc.PP l) hp) hdi hdex _ _ h' h'' h`. Rewrite `r1`, `r2` using `[finrank_eq_rank]`. Conclude with `⟨r1, r2, r3⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.dpst_right_exact :
     UpperTheory.V.Af.Wd.DRight := by

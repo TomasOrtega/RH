@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.F.RS
 
 /- English proof (translation)
-Introduce `E _ _ _ N V w σ hV hσ`. Conclude with `Leaf.sepOfIso_of _ _ _ V σ (fun g x hx => hV.stable (.fin (GlobalTheory.CuspRep.locGL E N w g)) x hx) (Leaf.leafIso_of E N V w σ hV hσ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem leafMod_holds : LeafMod := by
   intro E _ _ _ N V w σ hV hσ

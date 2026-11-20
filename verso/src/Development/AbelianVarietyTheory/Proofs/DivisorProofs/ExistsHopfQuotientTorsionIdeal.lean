@@ -12,11 +12,11 @@ open scoped TensorProduct
 namespace GlobalTheory.PDiv
 
 /- English proof (translation)
-Introduce `O _ B _ _ _ n`. Use `haveI : (torsionIdeal O B n).IsHopfIdeal O := isHopfIdeal_kerIdeal_of_bialgHom O B B (mulBy O B n)`. Set `π : B →ₐc[O] B ⧸ torsionIdeal O B n` to `Bialgebra.Quotient.mkBialgHom _`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mk_surjective`. Establish `cocomm : IsCocomm O (B ⧸ torsionIdeal O B n)` using `{ comm_comp_comul := LinearMap.ext fun b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hπ b`. Establish `h : ∀ t : B ⊗[O] B, TensorProduct.comm O (B ⧸ torsionIdeal O B n) (B ⧸ torsionIdeal O B n) (TensorProduct.map (π : B →ₗ[O] B ⧸ torsionIdeal O B n) (π : B →ₗ[O] B ⧸ torsionIdeal O B n) t) = TensorProduct.map (π : B →ₗ[O] B ⧸ torsionIdeal O B n) (π : B →ₗ[O] B ⧸ torsionIdeal O B n) …`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x y => simp`. Express the relevant statement in the definitionally equal form `TensorProduct.comm O (B ⧸ torsionIdeal O B n) (B ⧸ torsionIdeal O B n) (comul (π a)) = comul (π a)`. Rewrite using `[← CoalgHomClass.map_comp_comul_apply π a, h, comm_comul] }`. Conclude with `⟨B ⧸ torsionIdeal O B n, inferInstance, inferInstance, cocomm, π, hπ, Ideal.ext fun _ => Ideal.Quotient.eq_zero_iff_mem⟩`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hopf_quotient_torsionIdeal :
     ∀ (O : Type) [CommRing O] (B : Type) [CommRing B] [HopfAlgebra O B] [IsCocomm O B] (n : ℕ),

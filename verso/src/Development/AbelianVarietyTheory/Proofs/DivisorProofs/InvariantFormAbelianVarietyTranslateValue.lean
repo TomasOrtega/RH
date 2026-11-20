@@ -18,7 +18,7 @@ section Val
 variable {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sec_sub_id_eq_val (E : SqExt R) {x : Sp E.B ⟶ X} (hx : x ≫ s = spMap (algebraMap R E.B))
     (y : Sp E.C ⟶ X) (hy : y ≫ s = spMap (algebraMap R E.C))
@@ -29,7 +29,7 @@ theorem sec_sub_id_eq_val (E : SqExt R) {x : Sp E.B ⟶ X} (hx : x ≫ s = spMap
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem val_congr (E : SqExt R) {y y' : Sp E.C ⟶ X} (e : y = y') (hy : y ≫ s = spMap (algebraMap R E.C))
     (hy' : y' ≫ s = spMap (algebraMap R E.C)) (f : Z1 (O (dp0 R) s)) : E.val y hy f = E.val y' hy' f := by
@@ -41,7 +41,7 @@ end Val
 variable {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A]
 
 /- English proof (translation)
-The claim follows from `sec_sub_id_eq_val (SqExt.ofModule K P.B P.B) P.w (P.trx v) (P.tr v).w ((P.isTransl_trx v).red hv) f`.
+A detailed English derivation is pending.
 -/
 theorem ev_sec_sub_ev_tan_eq_val (P : GPt A) {v : epsR K ⟶ A} (hv : IsTangent v)
     (f : Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K)))) :
@@ -49,7 +49,7 @@ theorem ev_sec_sub_ev_tan_eq_val (P : GPt A) {v : epsR K ⟶ A} (hv : IsTangent 
   sec_sub_id_eq_val (SqExt.ofModule K P.B P.B) P.w (P.trx v) (P.tr v).w ((P.isTransl_trx v).red hv) f
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun c ↦ by ext <;> simp [dualMap]`.
+A detailed English derivation is pending.
 -/
 theorem dualMap_id (B : Type) [CommRing B] : dualMap (RingHom.id B) = RingHom.id (DualNumber B) :=
   RingHom.ext fun c ↦ by ext <;> simp [dualMap]
@@ -62,9 +62,9 @@ theorem dualMap_id (B : Type) [CommRing B] : dualMap (RingHom.id B) = RingHom.id
     exact (Cris.spMap_id K).symm
 
 /- English proof (translation)
-Use `⟨1, Over.homMk (spMap (dualMap (algebraMap K K)) ≫ v.left) (by` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w v]`. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ = spMap _`. Rewrite using `[← Cris.spMap_comp, dualMap_comp_algebraMap]), rfl, rfl, ?_⟩`. Rewrite using `[_root_.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `spMap (dualMap (RingHom.id K)) ≫ v.left = v.left`. Rewrite using `[dualMap_id, Cris.spMap_id, Category.id_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTransl_origin (v : epsR K ⟶ A) : IsTransl (algebraMap K K) η[A].left v v.left := by
   refine ⟨1, Over.homMk (spMap (dualMap (algebraMap K K)) ≫ v.left) (by
@@ -76,7 +76,7 @@ theorem isTransl_origin (v : epsR K ⟶ A) : IsTransl (algebraMap K K) η[A].lef
   rw [dualMap_id, Cris.spMap_id, Category.id_comp]
 
 /- English proof (translation)
-The claim follows from `((Pt.origin A).isTransl_trx v).unique (isTransl_origin v)`.
+A detailed English derivation is pending.
 -/
 theorem origin_trx (v : epsR K ⟶ A) : (Pt.origin A).trx v = v.left :=
   ((Pt.origin A).isTransl_trx v).unique (isTransl_origin v)
@@ -91,7 +91,7 @@ def tanFn (v : epsR K ⟶ A) (f : Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K)))) : PtFn
   fun P ↦ ((SqExt.ofModule K P.B P.B).val (P.trx v) (P.tr v).w f).snd
 
 /- English proof (translation)
-Introduce `P Q φ _`. Apply the tactic sequence `have := (SqExt.ofModule K P.B P.B).val_map (SqExt.ofModule K Q.B Q.B) (dualAlg φ.ρ) φ.ρ (fun c ↦ (fst_dualAlg φ.ρ c).symm) (fun b ↦ by ext <;> simp) (P.trx v) (P.tr v).w (Q.trx v) (Q.tr v).w (φ.tr v).pt ω`. Simplify using `only [tanFn]`. Rewrite using `[this, snd_dualAlg]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isNat_tanFn (v : epsR K ⟶ A) (ω : Form (A.hom ≫ 𝟙 (Sp K))) : IsNat ⊤ (tanFn v ω.1) := by
   intro P Q φ _
@@ -102,13 +102,13 @@ theorem isNat_tanFn (v : epsR K ⟶ A) (ω : Form (A.hom ≫ 𝟙 (Sp K))) : IsN
   rw [this, snd_dualAlg]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `GlobalTheory.T.exists_section_of_natural_on_algebraPoints_of_cover K A.left (A.hom ≫ 𝟙 (Sp K)) Unit (fun _ ↦ ⊤) ⊤ (fun _ ↦ le_rfl) (le_iSup_of_le () le_rfl) (tanFn v ω.1) (fun _ ↦ isNat_tanFn v ω)`. Take `⟨g₀, rfl⟩` from `(GlobalTheory.globalFns_holds (Sp K) A hA).2 g`. Establish `key : ∀ Q : GPt A, tanFn v ω.1 Q = algebraMap K Q.B (valR (𝟙 (Sp K)) ⊤ g₀)`. Introduce `Q`. Rewrite using `[hg () Q (fun _ _ ↦ trivial)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : valR Q.x ⊤ (A.hom.appTop.hom g₀) = valR (Q.x ≫ A.hom) ⊤ g₀`. Rewrite using `[GlobalTheory.Points.valR_comp Q.x A.hom ⊤ g₀]`. Both sides reduce to the same expression. Establish `e2 : Q.x ≫ A.hom = spMap (algebraMap K Q.B) ≫ 𝟙 (Sp K)` using `(Category.comp_id (Q.x ≫ A.hom)).symm.trans ((Category.assoc _ _ _).trans (Q.w.trans (Category.comp_id _).symm))`. Rewrite using `[e1, e2, GlobalTheory.Points.valR_spMap_comp _ _ _ (GlobalTheory.Points.le_preimage_top _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : tanFn v ω.1 (Pt.origin A) = tanVal v ω`. Simplify using `only [tanFn]`. Rewrite using `[tanVal_apply]`. Conclude with `congrArg TrivSqZeroExt.snd (val_congr (SqExt.dual K) (origin_trx v) _ _ ω.1)`. Rewrite using `[key, ← h0, key]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem tanFn_eq (hA : IsAbelianScheme A) (v : epsR K ⟶ A) (ω : Form (A.hom ≫ 𝟙 (Sp K))) (P : GPt A) :
     tanFn v ω.1 P = algebraMap K P.B (tanVal v ω) := by
@@ -131,9 +131,7 @@ theorem tanFn_eq (hA : IsAbelianScheme A) (v : epsR K ⟶ A) (ω : Form (A.hom �
   rfl
 
 /- English proof (translation)
-Introduce `K _ A _ hA v hv ω P`. Rewrite using `[ev_sec_sub_ev_tan_eq_val P hv ω.1]`. Use `ext`. Rewrite using `[TrivSqZeroExt.fst_inr]`. Conclude with `SqExt.π_val (SqExt.ofModule K P.B P.B) _ _ ω`.
-
-Conclude with `tanFn_eq hA v ω P`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_sec_sub_ev_tan : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A →
     ∀ (v : epsR K ⟶ A) (hv : IsTangent v) (ω : Form (A.hom ≫ 𝟙 (Sp K))) (P : GPt A),

@@ -15,15 +15,15 @@ open scoped ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set β := α.restrictScalars (𝓞 K) with hβ`. Establish `hβinj : Function.Injective β` using `hα`. Take `⟨v, hv⟩` from `exists_isFrame E hE`. Establish `hv' : IsFrame K (E.map β) (fun i => α (v i))`. Use `⟨fun i => Submodule.mem_map_of_mem (hv.1 i), hv.2.1.map' α (LinearMap.ker_eq_bot.mpr hα), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : x ∈ Submodule.span K (Set.range v)` using `hv.2.2 hx`. Establish `: α x ∈ (Submodule.span K (Set.range v)).map α` using `Submodule.mem_map_of_mem hx'`. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hEm : (E.map β).FG` using `hE.map _`. Rewrite using `[arakelovDegree_eq_degreeOfFamily hW hE hv, arakelovDegree_eq_degreeOfFamily h hEm hv']`. Unfold `degreeOfFamily`. Establish `hspan : Submodule.span (𝓞 K) (Set.range (fun i => α (v i))) = (Submodule.span (𝓞 K) (Set.range v)).map β`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hidx : ((Submodule.span (𝓞 K) (Set.range (fun i => α (v i)))).toAddSubgroup.relIndex (E.map β).toAddSubgroup) = (Submodule.span (𝓞 K) (Set.range v)).toAddSubgroup.relIndex E.toAddSubgroup`. Rewrite using `[hspan, Submodule.map_toAddSubgroup, Submodule.map_toAddSubgroup]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ hβinj`. Establish `hgram : ∀ σ, h.gram σ (fun i => α (v i)) = hW.gram σ v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `σ`. Use extensionality with `i j`. Simplify using `[HermFam.gram, hiso]`. Rewrite using `[hidx]`. Simplify using `only [hgram]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deg_map_of_isometry (K : Type) [Field K] [NumberField K] (n m : ℕ) (hW : HermFam K (Fin n → K))
     (h : HermFam K (Fin m → K)) (α : (Fin n → K) →ₗ[K] (Fin m → K)) (hα : Function.Injective α)

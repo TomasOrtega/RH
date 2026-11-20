@@ -14,24 +14,24 @@ def betaK (A : Et F E) : LinearMap.BilinForm F (A.K × A.K) :=
     (Algebra.traceForm F A.K).compl₁₂ (LinearMap.snd F A.K A.K) (LinearMap.fst F A.K A.K)
 
 /- English proof (translation)
-Simplify using `[betaK, Algebra.traceForm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem betaK_apply (A : Et F E) (x y : A.K × A.K) :
     betaK A x y = Algebra.trace F A.K (x.1 * y.2) + Algebra.trace F A.K (x.2 * y.1) := by
   simp [betaK, Algebra.traceForm_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x y => by rw [betaK_apply, betaK_apply, mul_comm x.1, mul_comm x.2, add_comm]⟩`.
+Supply the required witnesses or components.
 -/
 theorem betaK_isSymm (A : Et F E) : (betaK A).IsSymm :=
   ⟨fun x y => by rw [betaK_apply, betaK_apply, mul_comm x.1, mul_comm x.2, add_comm]⟩
 
 /- English proof (translation)
-Establish `hl : LinearMap.SeparatingLeft (betaK A)`. Introduce `x hx`. Establish `h1 : x.1 = 0` using `h.1 x.1 fun z => by`. Use `hx (0, z)` as an intermediate fact. Rewrite `this` using `[betaK_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[Algebra.traceForm_apply]`. Establish `h2 : x.2 = 0` using `h.1 x.2 fun z => by`. Use `hx (z, 0)` as an intermediate fact. Rewrite `this` using `[betaK_apply]`. Simplify `this` using `[Algebra.traceForm_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Prod.ext h1 h2`. Use `⟨hl, fun y hy => hl y fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[(betaK_isSymm A).eq]`. Conclude with `hy x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem betaK_nondeg (A : Et F E) (h : (Algebra.traceForm F A.K).Nondegenerate) : (betaK A).Nondegenerate := by
   have hl : LinearMap.SeparatingLeft (betaK A) := by
@@ -45,9 +45,7 @@ theorem betaK_nondeg (A : Et F E) (h : (Algebra.traceForm F A.K).Nondegenerate) 
   rw [(betaK_isSymm A).eq]; exact hy x
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace F := Unram.lcF E`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Set `e : A.K ≃ₗ[F] (Fin (Module.finrank F A.K) → F)` to `(Module.finBasis F A.K).equivFun`. Establish `h1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `h2 : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`.
-
-Conclude with `(Homeomorph.mk e.toEquiv h1 h2).secondCountableTopology`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secondCountable [Unram F E] (A : Et F E) : SecondCountableTopology A.K := by
   haveI : LocallyCompactSpace F := Unram.lcF E
@@ -58,9 +56,9 @@ theorem secondCountable [Unram F E] (A : Et F E) : SecondCountableTopology A.K :
   exact (Homeomorph.mk e.toEquiv h1 h2).secondCountableTopology
 
 /- English proof (translation)
-Apply `IsLocallyConstant.continuous` to reduce the goal to its premises. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `filter_upwards [Metric.closedBall_mem_nhds x one_pos] with y hy`. Establish `: ψ y = ψ x * ψ (y - x)` using `by rw [← AddChar.map_add_eq_mul]; congr 1; abel`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, hψ.1 (y - x) (by rwa [Metric.mem_closedBall, dist_eq_norm] at hy), mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem psi_continuous (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) : Continuous ψ := by
   apply IsLocallyConstant.continuous
@@ -71,15 +69,13 @@ theorem psi_continuous (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) : Continuous ψ
   rw [this, hψ.1 (y - x) (by rwa [Metric.mem_closedBall, dist_eq_norm] at hy), mul_one]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ hψ μK hsd φ' hφ`. Use `haveI := secondCountable A`. Use `haveI : μK.IsAddHaarMeasure := hsd.1`. Use `haveI : (μK.prod μK).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Establish `hnd` using `(GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `(GlobalTheory.T.selfDual_measure_exists_unique_fourier_inversion F E ψ hψ (A.K × A.K) (betaK A) (betaK_isSymm A) (betaK_nondeg A hnd)).2 (μK.prod μK) inferInstance φ' hφ`. Establish `hψc` using `psi_continuous ψ hψ`. Establish `heq : A.fourK μK ψ φ' = fourB (μK.prod μK) (fun x y => ψ (betaK A x y)) φ'`. Use function extensionality and compare the values at `p`. Simplify using `only [fourB, Et.fourK]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_prod]`. Use `integral_congr_ae (Eventually.of_forall fun b' => ?_)` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun c' => ?_)` and prove the remaining obligations. Simplify using `only [Et.psiK, betaK_apply, map_add]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, mul_comm p.1, mul_comm c' p.1]`. Expand and normalize the polynomial expressions, which then agree. Apply `Continuous.integrable_of_hasCompactSupport` to reduce the goal to its premises. Conclude with `hφ.1.continuous.mul (hψc.comp (IsModuleTopology.continuous_of_linearMap ((betaK A).flip p)))`. Conclude with `hφ.2.mul_right`.
-
-Rewrite using `[heq]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fourK_isTest : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (μK : Measure A.K), SelfDual μK (A.kerK ψ) → ∀ φ' : A.K × A.K → ℂ, IsTest φ' → IsTest (A.fourK μK ψ φ') := by
   intro F E _ _ _ _ _ A ψ hψ μK hsd φ' hφ

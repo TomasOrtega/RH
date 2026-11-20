@@ -16,9 +16,9 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.WR.G
 variable {m n : ℕ}
 
 /- English proof (translation)
-Establish `hg : gramX (fun _ : Fin m => true) x = (Matrix.of x)ᴴ * Matrix.of x`. Use extensionality with `i j`. Simplify using `[gramX, evX, Qp, Qb, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[hg]`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hu : IsUnit ((Matrix.of x)ᴴ * Matrix.of x)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hne)`. Establish `h1` using `Matrix.rank_of_isUnit _ hu`. Establish `h2` using `Matrix.rank_mul_le_right (Matrix.of x)ᴴ (Matrix.of x)`. Establish `h3` using `Matrix.rank_le_height (Matrix.of x)`. Simplify using `only [Fintype.card_fin] at h1 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -37,7 +37,7 @@ theorem det_gram_eq_zero (hmn : m < n) (x : Fin m → Fin n → ℂ) : (gramX (f
   omega
 
 /- English proof (translation)
-Rewrite using `[← Matrix.trace_transpose, Matrix.transpose_mul, Matrix.transpose_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_transpose_mul' (X Y : Matrix (Fin n) (Fin n) ℂ) : (Xᵀ * Y).trace = (Yᵀ * X).trace := by
   rw [← Matrix.trace_transpose, Matrix.transpose_mul, Matrix.transpose_transpose]

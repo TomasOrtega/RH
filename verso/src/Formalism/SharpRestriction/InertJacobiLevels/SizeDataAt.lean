@@ -11,7 +11,7 @@ section Norm
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-Establish `h1` using `H.gal_sqd H.conj`. Establish `h2 : H.gal H.conj = R.cc` using `H.galE_conjE`. Rewrite `h1` using `[h2]`. Simplify `h1` using `[Formalism.HC.Frame.cc, c0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_bE : H.conj (H.sqd) = - H.sqd := by
   have h1 := H.gal_sqd H.conj
@@ -20,13 +20,13 @@ theorem conj_bE : H.conj (H.sqd) = - H.sqd := by
   simpa [Formalism.HC.Frame.cc, c0] using h1
 
 /- English proof (translation)
-Conclude with `H.sqd_sq`.
+A detailed English derivation is pending.
 -/
 theorem bE_sq : H.sqd ^ 2 = -(H.d : H.E) := by
   exact H.sqd_sq
 
 /- English proof (translation)
-Use `⟨Polynomial.X ^ 2 + Polynomial.C (H.d : ℤ), by monicity!, ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_C]`. Simplify using `only [eq_intCast, Int.cast_natCast]`. Take the linear combination `bE_sq H`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem bE_integral : IsIntegral ℤ (H.sqd) := by
   refine ⟨Polynomial.X ^ 2 + Polynomial.C (H.d : ℤ), by monicity!, ?_⟩
@@ -37,13 +37,13 @@ theorem bE_integral : IsIntegral ℤ (H.sqd) := by
 def bO : 𝓞 H.E := ⟨H.sqd, bE_integral H⟩
 
 /- English proof (translation)
-Establish `hbc : ((bO H : 𝓞 H.E) : H.E) = H.sqd` using `rfl`. Establish `hco : (((1 + (M : 𝓞 H.E) * ((x : 𝓞 H.E) + (y : 𝓞 H.E) * bO H) : 𝓞 H.E)) : H.E) = 1 + (M : H.E) * ((x : H.E) + (y : H.E) * H.sqd)`. Rewrite using `[← hbc]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `⟨1 + (M : 𝓞 H.E) * ((x : 𝓞 H.E) + (y : 𝓞 H.E) * bO H), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hco]`. Establish `hb : H.sqd ∈ H.K` using `IntermediateField.mem_adjoin_simple_self ℚ _`. Conclude with `add_mem (one_mem _) (mul_mem (natCast_mem _ _) (add_mem (intCast_mem _ _) (mul_mem (intCast_mem _ _) hb)))`. Rewrite using `[hco]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT' : (T : H.E) = (1 + M * x) ^ 2 + H.d * (M * y) ^ 2` using `by exact_mod_cast congrArg (Int.cast : ℤ → H.E) hT`. Simplify using `only [map_add, map_mul, map_one, map_natCast, map_intCast, conj_bE]`. Rewrite using `[hT']`. Take the linear combination `(-(M : H.E) ^ 2 * (y : H.E) ^ 2) * bE_sq H`. Rewrite using `[← hM, Ideal.mem_span_singleton]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨(x : 𝓞 H.E) + (y : 𝓞 H.E) * bO H, by ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem tnorm_of (x y : ℤ) (T M : ℕ) (hT : (T : ℤ) = (1 + M * x) ^ 2 + H.d * (M * y) ^ 2)
     (hM : M = H.QS * H.q * H.d * (H.g 0 * H.g 1) ^ 2) : TNorm H T := by
@@ -66,9 +66,9 @@ theorem tnorm_of (x y : ℤ) (T M : ℕ) (hT : (T : ℤ) = (1 + M * x) ^ 2 + H.d
 end Norm
 
 /- English proof (translation)
-Establish `hM : 0 < 2 ^ (2 + 2) * A.q * A.d * (A.g0 * A.g1) ^ 2`. Use `A.hyp.1.pos` as an intermediate fact. Use `A.hyp.2.1.pos` as an intermediate fact. Use `A.first_prime_isPrime.pos` as an intermediate fact. Use `A.second_prime_isPrime.pos` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Take `⟨x, y, T, hN, hp, hT⟩` from `h A.d _ N A.hyp.2.1 hM`. Conclude with `⟨T, hN, hp, fun u0 T' Lw => tnorm_of (hostOf A u0 T' Lw) x y T _ hT rfl⟩`.
+Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_strictHenselian_absolutely_closed_local_ring (h : RayPrimes) {s B : ℕ} (A : Arith B (4 * (2 * s + 15) * 9 + 1)) (N : ℕ) :
     ∃ T : ℕ, N < T ∧ T.Prime ∧ ∀ (u0 : (Rt s).A) (T' Lw : ℕ), TNorm (hostOf A u0 T' Lw) T := by
@@ -79,11 +79,11 @@ theorem exists_strictHenselian_absolutely_closed_local_ring (h : RayPrimes) {s B
   exact ⟨T, hN, hp, fun u0 T' Lw => tnorm_of (hostOf A u0 T' Lw) x y T _ hT rfl⟩
 
 /- English proof (translation)
-Establish `hx : 0 < sc.x` using `by linarith [sc.one_lt_alt]`. Establish `hb : 0 < sc.b` using `Real.exp_pos _`. Establish `hX : 1 ≤ sc.X'` using `Real.one_le_exp (by positivity)`. Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `e : sc.w'' n = sc.b / (n * sc.X')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Scale.w'', Scale.b', Scale.a]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by positivity)]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : ℝ) ≤ n * sc.X'` using `one_le_mul_of_one_le_of_one_le hn' hX`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem scale_w''_bounds (sc : Scale) (n : ℕ) (hn : 1 ≤ n) : 0 ≤ sc.w'' n ∧ sc.w'' n ≤ sc.b := by
   have hx : 0 < sc.x := by linarith [sc.one_lt_alt]
@@ -197,9 +197,9 @@ def sizeDataOfAjZero (D : D7) (sc : Scale)
   lenMN := fun _ _ => 0
 
 /- English proof (translation)
-Use `⟨⌈(L - 15) / 2⌉₊, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `Nat.le_ceil ((L - 15) / 2)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `Nat.ceil_lt_add_one (by linarith : (0 : ℝ) ≤ (L - 15) / 2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_odd (L : ℝ) (hL : 20 < L) : ∃ s : ℕ, L ≤ ((2 * s + 15 : ℕ) : ℝ) ∧ ((2 * s + 15 : ℕ) : ℝ) < L + 2 := by
   refine ⟨⌈(L - 15) / 2⌉₊, ?_, ?_⟩
@@ -211,49 +211,45 @@ theorem exists_odd (L : ℝ) (hL : 20 < L) : ∃ s : ℕ, L ≤ ((2 * s + 15 : �
     linarith
 
 /- English proof (translation)
-Introduce `eps he0 he1`. Establish `hx1 : (1 : ℝ) < (30 : ℝ) ^ (1 / eps)` using `Real.one_lt_rpow (by norm_num) (by positivity)`. Use `⟨(30 : ℝ) ^ (1 / eps), hx1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx0 : 1 < x` using `hx1.trans hx`. Establish `hL : 30 < x ^ eps`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((30 : ℝ) ^ (1 / eps)) ^ eps < x ^ eps` using `Real.rpow_lt_rpow (by positivity) hx he0`. Rewrite `h1` using `[← Real.rpow_mul (by norm_num), one_div_mul_cancel he0.ne', Real.rpow_one]`. Then use the resulting hypothesis. Take `⟨s, hs1, hs2⟩` from `exists_odd (x ^ eps - 2) (by linarith)`. Use `set sc : Scale := ⟨x, eps, hx0, he0, he1, 1, le_rfl⟩ with hsc`. Establish `hscL : sc.L = x ^ eps` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hscb : sc.b = Real.exp (x ^ eps)` using `rfl`. Establish `hb0 : 0 < sc.b` using `Real.exp_pos _`. Establish `hbL : x ^ eps + 1 ≤ sc.b` using `Real.add_one_le_exp _`. Establish `hβ1 : sc.b ≤ (⌈sc.b⌉₊ : ℝ)` using `Nat.le_ceil _`. Establish `hβ2 : (⌈sc.b⌉₊ : ℝ) < sc.b + 1` using `Nat.ceil_lt_add_one hb0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs2' : 2 * (s : ℝ) + 15 < x ^ eps + 2` using `by push_cast at hs2; linarith`. Establish `hs0 : (0 : ℝ) ≤ s` using `Nat.cast_nonneg s`. Establish `hbsq : 21 * sc.b ≤ sc.b ^ 2` using `by nlinarith`. Use `⟨s, ⌊x ^ (eps / 5)⌋₊, 10 * ⌈Real.logb 5 (((Rt s).n : ℝ) * (Rt s).N (Rt s).m / (Rt s).m)⌉₊ + 20, ⌈sc.b⌉₊, Real.exp (256 * x ^ eps), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.one_le_ceil_iff.2 hb0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Real.one_lt_exp_iff.2 (by linarith)`. Introduce `lb D A u0 T Tstar hT hF`. Establish `hR : D.R = Rt s` using `congrArg Sigma.fst hF.host_eq`. Establish `hTT : D.host.TT = ∅` using `(congrArg (fun p : Σ R : Ranks, Host R => p.2.TT = ∅) hF.host_eq).mpr rfl`. Establish `hLw : D.host.Lw = _` using `congrArg (fun p : Σ R : Ranks, Host R => p.2.Lw) hF.host_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsb : D.host.splitBound = _` using `congrArg (fun p : Σ R : Ranks, Host R => p.2.splitBound) hF.host_eq`. Establish `hQS : D.host.QS = 16` using `congrArg (fun p : Σ R : Ranks, Host R => p.2.QS) hF.host_eq`. Establish `hone : (1 : ℝ) ≤ sc.x ^ (sc.eps / 100)` using `Real.one_le_rpow hx0.le (by positivity)`. Establish `hk : D.R.k = 8` using `by rw [hR]; rfl`. Establish `hm : D.R.m = 2` using `by rw [hR]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : D.R.n = 4` using `by rw [hR]; rfl`. Establish `hf : D.R.f = 8` using `by rw [hR]; rfl`. Establish `ht : D.R.t = 2 * s + 15` using `by rw [hR]; rfl`. Establish `hSc : (D.R.k : ℝ) * (4 * (D.s.Del : ℝ)) = 32` using `by rw [hk, hF.Del_eq]; norm_num`. Establish `hw` using `scale_w''_bounds sc D.R.n (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hwj : ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ τ, sc.b ≤ wj D j τ ∧ wj D j τ ≤ sc.b + 1 + 3 * ((s : ℝ) + 9)`. Introduce `j h1 h2 τ`. Establish `h : j - 1 < D.R.m` using `by omega`. Unfold `wj`. Rewrite using `[dif_pos h, hF.he]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Take `h3 | h3 : j - 1 = 0 ∨ j - 1 = 1` from `by omega`. Use `all_goals`. Simplify using `only [h3]`. Use `push_cast`. Apply the tactic sequence `constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Use `⟨sizeDataOfAjZero D sc hTT hF.Aj_eq ?_ ?_ ?_ ?_ ?_ ⌈Real.logb 5 (((Rt s).n : ℝ) * (Rt s).N (Rt s).m / (Rt s).m)⌉₊ ?_ ?_ (2 * sc.b + 4 * ((s : ℝ) + 9) + 2) 2 (by positivity) ?_ ?_ ?_ ?_ ?_ ?_ (by rw [hSc]; norm_num) eps ?_ 1 one_pos ?_ (x ^ eps) (congrArg (fun p : Σ R : Ranks, Hos …` and prove the remaining obligations. Introduce `u`. Rewrite using `[hm, hF.T_eq]`. Evaluate the numerical expressions. Conclude with `hT`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Introduce `τ j`. Rewrite using `[hF.hb]`. Take `h3 | h3 : (j : ℕ) = 0 ∨ (j : ℕ) = 1` from `by omega`. Use `all_goals`. Rewrite using `[h3]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hsb] show ⌊x ^ (eps / 1 / 5)⌋₊ ≤ ⌊x ^ (eps / 5)⌋₊`. Rewrite using `[div_one]`. Establish `h1 : D.R.o = 1` using `by rw [hR]; exact Formalism.HC.cyclicFrame_index 2`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Nat.cast_one]`. Conclude with `hone`. Rewrite using `[hQS, hn]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hR]`. Conclude with `Nat.le_ceil _`. Rewrite using `[hLw]`. Use `show _ ≤ _ + 20 + 4`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Introduce `j h1 h2 τ _`. Take `⟨a1, a2⟩` from `hwj j h1 h2 τ`. Apply the tactic sequence `constructor <;> linarith`. Introduce `j h1 h2 τ _`. Take `⟨a1, a2⟩` from `hwj j h1 h2 τ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Apply the tactic sequence `constructor <;> linarith [hw.1, hw.2]`. Introduce `τ h0 _`. Rewrite using `[hSc, hF.hu0, hF.hv]`. Evaluate the numerical expressions. Introduce `τ i`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hSc, hF.hv]`. Establish `h3 : ((i : ℕ) : ℝ) ≤ 6` using `by exact_mod_cast (by omega : (i : ℕ) ≤ 6)`. Establish `h4 : (0 : ℝ) ≤ ((i : ℕ) : ℝ)` using `by positivity`. Use `push_cast`. Apply the tactic sequence `constructor <;> linarith`.
+Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `u τ i h1 h2`. Rewrite using `[hSc, hF.hu u τ i h1 h2]`. Establish `h3 : ((i : ℕ) : ℝ) ≤ 6` using `by exact_mod_cast (by omega : (i : ℕ) ≤ 6)`. Establish `h4 : (1 : ℝ) ≤ ((i : ℕ) : ℝ)` using `by exact_mod_cast h1`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`. Introduce `τ i j`. Rewrite using `[hF.hb, hF.he]`. Take `h3 | h3 : (i : ℕ) = 0 ∨ (i : ℕ) = 1` from `by omega`. Use `all_goals`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `h4 | h4 : (j : ℕ) = 0 ∨ (j : ℕ) = 1` from `by omega`. Use `all_goals`. Rewrite using `[h3, h4]`. Use `push_cast`. Rewrite using `[abs_le]`.
-
-Apply the tactic sequence `constructor <;> linarith`. Rewrite using `[ht] show 1 ≤ _ ∧ _ ≤ x ^ eps`. Move the coercions through the operations in `at hs1 hs2 ⊢`. Apply the tactic sequence `constructor <;> linarith`. Introduce `u`.
-
-Rewrite using `[hF.Gam_eq, Real.log_exp, hm, hf, hscL]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem sizeDataAt : SizeDataAt := by
   intro eps he0 he1

@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.AscFin
 
 /- English proof (translation)
-Establish `hus : φ u * φ s = 1` using `by rw [← map_mul, mul_comm, h, map_one]`. Simplify using `only [map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Take the linear combination `(φ (b k) * φ (G k l) * x l) * hus`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem coeff_monic_poly_sum {K R : Type} [CommRing K] [CommRing R] (φ : K →+* R) {n : ℕ} (u s : K) (h : s * u = 1)
     (b : Fin n → K) (G : Matrix (Fin n) (Fin n) K) (x : Fin n → R) :
@@ -39,15 +39,15 @@ Both sides reduce to the same expression.
 private theorem cA_incA_apply_eq_incA_star {D : D7} (e : D.host.E) : cA D (incA D e) = incA D (star e) := rfl
 
 /- English proof (translation)
-Introduce `D A B B₀ c ρ a d hc hA i hi x`. Take `⟨h2, he, s, he'⟩` from `hA`. Establish `hle : ρ ≤ c` using `by omega`. Establish `hj : ∀ hle : ρ ≤ c, (Fin.castLE hle i).rev = (⟨2 * ρ - 1 - i.1, hi⟩ : Fin c)` using `fun hle => by`. Use `ext`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Fin.val_rev, Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers. Establish `g1` using `congrFun (congrFun a.gram ⟨2 * ρ - 1 - i.1, hi⟩) (Fin.castLE hle i)`. Establish `g2` using `congrFun (congrFun d.e'e i) i`. Rewrite `g2` using `[he, he']`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [antiDiagonalSignGramMatrix, cT_sig_eq_conjTranspose', Matrix.mul_apply, Matrix.conjTranspose_apply, colsOf, star_mul', Matrix.one_apply_eq, hj, Fin.coe_castLE] at g1 g2`. Rewrite `g1` using `[if_pos (by omega), if_neg (fun h => by have := congrArg Fin.val h; simp only [Fin.coe_castLE] at this; omega)]`. Establish `g3 : ∑ l, (∑ k, star (s i) * star (a.a k ⟨2 * ρ - 1 - i.1, hi⟩) * HSpace.gram B k l) * ((-D.host.xi0) ^ (i.1 + 1) * a.a l (Fin.castLE hle i)) = star (s i) * (-D.host.xi0) ^ (i.1 + 1) * ∑ l, (∑ k, star (a.a k ⟨2 * ρ - 1 - i.1, hi⟩) * HSpace.gram B k l) * a.a l (Fin.castLE hle i)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_assoc (star (s i)), ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : star (s i) * (-D.host.xi0) ^ (i.1 + 1) = 1`. Take the linear combination `g2 - g3 - (star (s i) * (-D.host.xi0) ^ (i.1 + 1)) * g1`. Simplify using `only [HypDec.pX, HypDec.qX, GlobalTheory.MixModel.rat, Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, he', colsOf, star_mul', hj, cA_incA_apply_eq_incA_star]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Conclude with `coeff_monic_poly_sum (incA D) _ _ key (fun k => star (a.a k ⟨2 * ρ - 1 - i.1, hi⟩)) (HSpace.gram B) x`.
+A detailed English derivation is pending.
 -/
 theorem incA_neg_xi0_pow_mul_pX_mulVec_eq_sum : ∀ {D : D7} {A B B₀ : HSp D} {c ρ : ℕ} (a : HermitianOrthogonalExtensionData A B c (-1)) (d : HypDec B B₀ ρ), c = 2 * ρ → IsAuxiliaryVectorWittDec a d → ∀ (i : Fin ρ) (hi : 2 * ρ - 1 - i.1 < c) (x : Fin B.rank → AE D), incA D ((-D.host.xi0) ^ (i.1 + 1)) * (d.pX *ᵥ x) i = ∑ k, ∑ l, cA D (incA D (a.a k ⟨2 * ρ - 1 - i.1, hi⟩)) * incA D (B.gram k l) * x l := by
   intro D A B B₀ c ρ a d hc hA i hi x

@@ -9,9 +9,9 @@ open scoped Classical TensorProduct
 namespace PositivityTheory.Rg.BcB.G3.GenUnitP
 
 /- English proof (translation)
-Establish `hR : rStab (fun _ : H => c) = ⊤`. Use extensionality with `k`. Simplify using `[GlobalTheory.TwOrbConj.mem_rStab]`. Unfold `avg`. Rewrite using `[hR, Subgroup.index_top]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Subsingleton (H ⧸ (⊤ : Subgroup H)) := QuotientGroup.subsingleton_quotient_top`. Rewrite using `[finsum_eq_single _ (1 : H ⧸ (⊤ : Subgroup H)) (fun q hq => absurd (Subsingleton.elim q 1) hq)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := by
   have hR : rStab (fun _ : H => c) = ⊤ := by
@@ -23,11 +23,11 @@ theorem avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := b
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Establish `e : (x * (k : G))⁻¹ * y * θ (x * k) = (k : G)⁻¹ * (x⁻¹ * y * θ x) * θ k`. Simplify using `only [map_mul, _root_.mul_inv_rev]`. Use `group`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hm : x⁻¹ * y * θ x ∈ K`. Rewrite using `[Set.indicator_of_mem (show _ ∈ (K : Set G) from K.mul_mem (K.mul_mem (K.inv_mem k.2) hm) (hKθ _ k.2)), Set.indicator_of_mem (show _ ∈ (K : Set G) from hm)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show _ ∉ (K : Set G) from hm), Set.indicator_of_notMem]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hm` to reduce the goal to its premises. Use `K.mul_mem (K.mul_mem k.2 h) (K.inv_mem (hKθ _ k.2))` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ind_const {G : Type} [Group G] (θ : G →* G) (K : Subgroup G) (hKθ : ∀ k ∈ K, θ k ∈ K) (y x : G) :
     (fun k : K => (K : Set G).indicator (1 : G → ℂ) ((x * k)⁻¹ * y * θ (x * k))) =
@@ -47,9 +47,9 @@ theorem ind_const {G : Type} [Group G] (θ : G →* G) (K : Subgroup G) (hKθ : 
     simpa [mul_assoc] using this
 
 /- English proof (translation)
-Unfold `GlobalTheory.TwOrbConj.summand`. Rewrite using `[ind_const θ K hKθ y x, avg_const]`. Distinguish the cases in `hm : x⁻¹ * y * θ x ∈ K`. Rewrite using `[Set.indicator_of_mem (show _ ∈ (K : Set G) from hm), if_pos hm]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.indicator_of_notMem (show _ ∉ (K : Set G) from hm), if_neg hm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem summand_eq {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G) (K : Subgroup G)
     (hKθ : ∀ k ∈ K, θ k ∈ K) (y x : G) :
@@ -65,17 +65,17 @@ theorem summand_eq {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G) (K 
 end PositivityTheory.Rg.BcB.G3.GenUnitP
 
 /- English proof (translation)
-Introduce `G _ _ _ θ K z hKθ hzK huniq hcptK g`. Establish `hidx : ∀ x : G, (rStab fun k : K => (K : Set G).indicator (1 : G → ℂ) ((x * k)⁻¹ * z * θ (x * k))).index ≠ 0`. Introduce `x`. Rewrite using `[PositivityTheory.Rg.BcB.G3.GenUnitP.ind_const θ K hKθ z x]`. Establish `: rStab (fun _ : K => (K : Set G).indicator (1 : G → ℂ) (x⁻¹ * z * θ x)) = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `k`. Simplify using `[GlobalTheory.TwOrbConj.mem_rStab]`. Rewrite using `[this, Subgroup.index_top]`. Conclude with `one_ne_zero`. Rewrite using `[GlobalTheory.TwOrbConj.twOrb_twConj G θ K z g ((K : Set G).indicator 1) hidx]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcpt : cptPart (twCent θ z) ≤ twCent θ z ⊓ K` using `le_inf ((Subgroup.closure_le _).2 fun t ht => ht.1) ((Subgroup.closure_le _).2 fun t ht => hcptK t ht.1 ht.2)`. Establish `hval : GlobalTheory.TwOrbConj.summand θ K z ((K : Set G).indicator 1) 1 = 1`. Rewrite using `[PositivityTheory.Rg.BcB.G3.GenUnitP.summand_eq θ K hKθ z 1, if_pos (by simpa using hzK), GlobalTheory.TwOrbConj.map_conj_self K (K.one_mem), (Subgroup.relIndex_eq_one).2 hcpt]`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.TwOrbConj.twOrb_eq, finsum_eq_single _ (DoubleCoset.mk (twCent θ z) K 1)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, k, hk, he⟩` from `(DoubleCoset.eq _ _ _ _).1 (DoubleCoset.out_eq' (twCent θ z) K (DoubleCoset.mk (twCent θ z) K 1)).symm`. Rewrite using `[he, GlobalTheory.TwOrbConj.summand_rep θ K z _ 1 ht hk, hval]`. Introduce `q hq`. Rewrite using `[PositivityTheory.Rg.BcB.G3.GenUnitP.summand_eq θ K hKθ z]`. Use `split_ifs with hm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to derive a contradiction. Apply `hq` to reduce the goal to its premises. Take `⟨t, ht, k, hk, he⟩` from `huniq _ hm`. Use `symm`. Use `conv_rhs => rw [← DoubleCoset.out_eq' (twCent θ z) K q]`.
+Extract witnesses or component facts from the available result. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Both sides reduce to the same expression.
 
-Rewrite using `[DoubleCoset.eq]`. Conclude with `⟨t, ht, k, hk, by rw [he]; group⟩`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.BcB.G3.genUnit_pf : PositivityTheory.Rg.BcB.G3.GenUnit := by
   intro G _ _ _ θ K z hKθ hzK huniq hcptK g

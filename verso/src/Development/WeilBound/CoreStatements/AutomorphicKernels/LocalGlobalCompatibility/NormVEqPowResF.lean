@@ -24,7 +24,7 @@ Both sides reduce to the same expression.
 @[simp] theorem resG_apply (σ : G E' Ω) (x : Ω) : resG E σ x = σ x := rfl
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictScalarsHom_injective E`.
+A detailed English derivation is pending.
 -/
 theorem resG_injective : Function.Injective (resG E (E' := E') (Ω := Ω)) :=
   AlgEquiv.restrictScalarsHom_injective E
@@ -32,9 +32,9 @@ theorem resG_injective : Function.Injective (resG E (E' := E') (Ω := Ω)) :=
 variable [NumberField E] [NumberField E'] {A : ValuationSubring Ω}
 
 /- English proof (translation)
-Establish `h1 : σ • A = A` using `hσ`. Use `show resG E σ • A = A`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Use `conv_rhs => rw [← h1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← map_inv]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem resG_mem_Dec {σ : G E' Ω} (hσ : σ ∈ Dec (F := E') A) : resG E σ ∈ Dec (F := E) A := by
   have h1 : σ • A = A := hσ
@@ -61,13 +61,13 @@ Both sides reduce to the same expression.
 variable {w : HeightOneSpectrum (𝓞 E)} {w' : HeightOneSpectrum (𝓞 E')}
 
 /- English proof (translation)
-Establish `hcomap : w.asIdeal = w'.asIdeal.comap (algebraMap (𝓞 E) (𝓞 E'))`. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, ← h x, ← h' (algebraMap (𝓞 E) (𝓞 E') x)]`. Establish `e : algebraMap E' Ω ((algebraMap (𝓞 E) (𝓞 E') x : 𝓞 E') : E') = algebraMap E Ω (x : E)`. Rewrite using `[IsScalarTower.algebraMap_apply E E' Ω]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Use `w.isMaximal` as an intermediate fact. Use `w'.isMaximal` as an intermediate fact. Use `letI := Ideal.Quotient.field w.asIdeal`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI := Ideal.Quotient.field w'.asIdeal`. Establish `: Finite (𝓞 E ⧸ w.asIdeal)` using `w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot`. Establish `: Finite (𝓞 E' ⧸ w'.asIdeal)` using `w'.asIdeal.finiteQuotientOfFreeOfNeBot w'.ne_bot`. Use `letI := Fintype.ofFinite (𝓞 E ⧸ w.asIdeal)`. Use `letI := Fintype.ofFinite (𝓞 E' ⧸ w'.asIdeal)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra (𝓞 E ⧸ w.asIdeal) (𝓞 E' ⧸ w'.asIdeal) := (Ideal.quotientMap w'.asIdeal (algebraMap (𝓞 E) (𝓞 E')) hcomap.le).toAlgebra`. Use `⟨Module.finrank (𝓞 E ⧸ w.asIdeal) (𝓞 E' ⧸ w'.asIdeal), ?_⟩` and prove the remaining obligations. Rewrite using `[normV, normV, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`. Conclude with `Module.card_eq_pow_finrank`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normV_pow (h : IsPlaceOver A w) (h' : IsPlaceOver A w') : ∃ f : ℕ, normV w' = normV w ^ f := by
   classical
@@ -95,13 +95,13 @@ theorem exists_normV_pow (h : IsPlaceOver A w) (h' : IsPlaceOver A w') : ∃ f :
 def resF (h : IsPlaceOver A w) (h' : IsPlaceOver A w') : ℕ := (exists_normV_pow h h').choose
 
 /- English proof (translation)
-The claim follows from `(exists_normV_pow h h').choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem normV_eq_pow_resF (h : IsPlaceOver A w) (h' : IsPlaceOver A w') : normV w' = normV w ^ resF h h' :=
   (exists_normV_pow h h').choose_spec
 
 /- English proof (translation)
-Use `⟨resG_mem_Dec hσ.1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hσ.2 x hx`. Rewrite `h1` using `[hf, ← pow_mul, ← pow_mul]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actsAs_resG {f : ℕ} (hf : normV w' = normV w ^ f) {σ : G E' Ω} {a b : ℕ}
     (hσ : ActsAs A (normV w') σ a b) : ActsAs A (normV w) (resG E σ) (f * a) (f * b) := by
@@ -113,7 +113,7 @@ theorem actsAs_resG {f : ℕ} (hf : normV w' = normV w ^ f) {σ : G E' Ω} {a b 
 variable (h : IsPlaceOver A w) (h' : IsPlaceOver A w')
 
 /- English proof (translation)
-Take `⟨a, b, hσ⟩` from `σ.2`. Conclude with `⟨_, _, actsAs_resG (normV_eq_pow_resF h h') hσ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem resG_mem_Weil (σ : ↥(Weil h')) : resG E (σ : G E' Ω) ∈ Weil h := by
   obtain ⟨a, b, hσ⟩ := σ.2
@@ -132,7 +132,7 @@ Both sides reduce to the same expression.
 variable [IsAlgClosure E Ω] [IsAlgClosure E' Ω]
 
 /- English proof (translation)
-Take `⟨a, b, hσ⟩` from `σ.2`. Rewrite using `[deg_eq (σ := resW h h' σ) (actsAs_resG (normV_eq_pow_resF h h') hσ), deg_eq hσ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deg_resW (σ : ↥(Weil h')) : deg (resW h h' σ) = (resF h h' : ℤ) * deg σ := by
   obtain ⟨a, b, hσ⟩ := σ.2
@@ -140,7 +140,7 @@ theorem deg_resW (σ : ↥(Weil h')) : deg (resW h h' σ) = (resF h h' : ℤ) * 
   push_cast; ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨resG_mem_Dec hσ.1, fun x hx => hσ.2 x hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem resG_mem_Ine {σ : G E' Ω} (hσ : σ ∈ Ine (F := E') A) : resG E σ ∈ Ine (F := E) A :=
   ⟨resG_mem_Dec hσ.1, fun x hx => hσ.2 x hx⟩
@@ -148,13 +148,13 @@ theorem resG_mem_Ine {σ : G E' Ω} (hσ : σ ∈ Ine (F := E') A) : resG E σ �
 omit [NumberField E] [NumberField E'] [IsAlgClosure E Ω] in
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one (resG E) ?_` and prove the remaining obligations. Introduce `s hs`. Rewrite `hs` using `[map_one]`. Rewrite using `[Filter.mem_map, krullTopology_mem_nhds_one_iff]`. Take `⟨L, hL, hLs⟩` from `(krullTopology_mem_nhds_one_iff E Ω s).mp hs`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `b` to `Module.finBasis E L`. Establish `: Algebra.IsAlgebraic E' Ω` using `IsAlgClosure.isAlgebraic`. Use `⟨IntermediateField.adjoin E' (Set.range fun i => (b i : Ω)), IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x, fun σ hσ => hLs ?_⟩` and prove the remaining obligations. Rewrite `hσ`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : ∀ i, σ (b i : Ω) = b i` using `fun i => hσ _ (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`. Establish `hx'` using `congrArg (fun y : L => (y : Ω)) (b.sum_repr ⟨x, hx⟩)`. Simplify using `only [IntermediateField.coe_sum, IntermediateField.coe_smul] at hx'`. Rewrite using `[← hx']`. Use `show (resG E σ) _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, resG_apply, hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_resG : Continuous (resG E : G E' Ω →* G E Ω) := by
   refine continuous_of_continuousAt_one (resG E) ?_
@@ -178,7 +178,7 @@ theorem continuous_resG : Continuous (resG E : G E' Ω →* G E Ω) := by
   rw [map_smul, resG_apply, hb]
 
 /- English proof (translation)
-Establish `hc : Continuous fun σ : ↥(Ine (F` using `E') A) => (⟨resG E (σ : G E' Ω), resG_mem_Ine σ.2⟩ : ↥(Ine (F := E) A)) := (continuous_resG.comp continuous_subtype_val).subtype_mk _`. Conclude with `hφ.preimage hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsSmooth.resW {M : Type*} [Monoid M] {φ : ↥(Weil h) →* M} (hφ : IsSmooth φ) :
     IsSmooth (φ.comp (resW h h')) := by
@@ -221,7 +221,7 @@ Both sides reduce to the same expression.
 @[simp] theorem resRep_N (a : WDRep h V) : (resRep h h' a).N = a.N := rfl
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `hab`. Conclude with `⟨e, fun σ v => h1 _ v, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iso_resRep {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) : (resRep h h' a).Iso (resRep h h' b) := by
   obtain ⟨e, h1, h2⟩ := hab
@@ -231,7 +231,7 @@ def WD.res : WD h → WD h' :=
   Quotient.map (fun a => ⟨a.1, resRep h h' a.2⟩) (fun _ _ hab => iso_resRep h h' hab)
 
 /- English proof (translation)
-Use `show Quotient.mk _ (⟨_, resRep h h' (WD.std a).2⟩ : Σ n : ℕ, WDRep h' (Fin n → ℂ)) = _`. Rewrite using `[WD.quotientMk_eq]`. Conclude with `WD.sound (iso_resRep h h' (WD.iso_std a).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem WD.res_mk (a : WDRep h V) : WD.res h h' (WD.mk a) = WD.mk (resRep h h' a) := by
   show Quotient.mk _ (⟨_, resRep h h' (WD.std a).2⟩ : Σ n : ℕ, WDRep h' (Fin n → ℂ)) = _

@@ -13,14 +13,14 @@ def mixRing : TR.Rinf E ≃+* mixedSpace E := (TR.infEq E).trans (InfiniteAdeleR
 
 variable {E} in
 /- English proof (translation)
-The claim follows from `(InfinitePlace.Completion.ringEquivRealOfIsReal w.2).apply_symm_apply (x w.1)`.
+A detailed English derivation is pending.
 -/
 theorem mixRing_fst (x : TR.Rinf E) (w : {w : InfinitePlace E // w.IsReal}) : (mixRing E x).1 w = x w.1 :=
   (InfinitePlace.Completion.ringEquivRealOfIsReal w.2).apply_symm_apply (x w.1)
 
 variable {E} in
 /- English proof (translation)
-The claim follows from `Prod.ext (funext h) (funext fun w => absurd (IsTotallyReal.isReal w.1) (InfinitePlace.not_isReal_iff_isComplex.2 w.2))`.
+A detailed English derivation is pending.
 -/
 theorem mixed_ext {x y : mixedSpace E} (h : ∀ w, x.1 w = y.1 w) : x = y :=
   Prod.ext (funext h) (funext fun w => absurd (IsTotallyReal.isReal w.1) (InfinitePlace.not_isReal_iff_isComplex.2 w.2))
@@ -62,12 +62,12 @@ Both sides reduce to the same expression.
     (((grpEq E a y : archGroup E a) : (ArchMatrix E a)ˣ) : ArchMatrix E a) = matEq E a y.val := rfl
 
 /- English proof (translation)
-The claim follows from `map_one (matEq E a)`.
+A detailed English derivation is pending.
 -/
 theorem lieEq_oneL : (lieEq E a (TR.oneL E a) : ArchMatrix E a) = 1 := map_one (matEq E a)
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `matEq E a (Matrix.of X * Matrix.of Y - Matrix.of Y * Matrix.of X) = _`. Rewrite using `[map_sub, map_mul, map_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lieEq_lie (X Y : TR.Lie E a) :
     lieEq E a (TR.toL (Matrix.of X * Matrix.of Y) - TR.toL (Matrix.of Y * Matrix.of X)) = ⁅lieEq E a X, lieEq E a Y⁆ := by
@@ -78,7 +78,7 @@ theorem lieEq_lie (X Y : TR.Lie E a) :
 
 omit [IsTotallyReal E] in
 /- English proof (translation)
-Use `MonoidHom.ext fun k => (AdelicGLn.prodEquiv E a).injective ?_` and prove the remaining obligations. Rewrite using `[prodEquiv_finEmb]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `(map_cornerGL_of_zero (sFin E) (RingHom.fst (InfiniteAdeleRing E) (Af E)) (fun _ => rfl) k).symm`. Conclude with `(map_cornerGL_of_hom (sFin E) (pFin E) (RingHom.id _) (fun _ => rfl) k).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finEmb_eq : finEmb E a = finGL E a := by
   refine MonoidHom.ext fun k => (AdelicGLn.prodEquiv E a).injective ?_
@@ -88,9 +88,9 @@ theorem finEmb_eq : finEmb E a = finGL E a := by
   · exact (map_cornerGL_of_hom (sFin E) (pFin E) (RingHom.id _) (fun _ => rfl) k).symm
 
 /- English proof (translation)
-Use `(AdelicGLn.prodEquiv E a).injective ?_` and prove the remaining obligations. Rewrite using `[prodEquiv_infEmb]`. Use `Prod.ext ?_ (TR.pFin_infGL y).symm` and prove the remaining obligations. Use `Eq.trans ?_ (map_cornerGL_of_hom (TR.sInf E) (RingHom.fst (InfiniteAdeleRing E) (Af E)) (TR.infEq E).toRingHom (fun _ => rfl) y).symm` and prove the remaining obligations. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace E).symm_apply_apply (TR.infEq E (y.val i j))`.
+A detailed English derivation is pending.
 -/
 theorem infEmb_grpEq (y : GL (Fin a) (TR.Rinf E)) : infEmb E a (grpEq E a y) = TR.infGL E a y := by
   refine (AdelicGLn.prodEquiv E a).injective ?_

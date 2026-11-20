@@ -24,28 +24,28 @@ def U (p : ℕ) [Fact p.Prime] (g : ℕ) : Polynomial ℚ_[p] :=
   Polynomial.C ((p : ℚ_[p])⁻¹) * phiIter p g
 
 /- English proof (translation)
-Conclude with `hp.1.ne_zero` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 lemma pQ_ne : (p : ℚ_[p]) ≠ 0 := by exact_mod_cast hp.1.ne_zero
 
 /- English proof (translation)
-Simplify using `only [phiIter, Function.iterate_succ_apply']`.
+Simplify using the standard rewrite rules.
 -/
 lemma phiIter_succ' (g : ℕ) : phiIter p (g + 1) = (phiPoly p).comp (phiIter p g) := by
   simp only [phiIter, Function.iterate_succ_apply']
 
 /- English proof (translation)
-Simplify using `[U, phiIter]`.
+Simplify using the standard rewrite rules.
 -/
 lemma U_zero : U p 0 = Polynomial.C ((p : ℚ_[p])⁻¹) * Polynomial.X := by
   simp [U, phiIter]
 
 /- English proof (translation)
-Establish `hab : Polynomial.C ((p : ℚ_[p])⁻¹) * Polynomial.C (p : ℚ_[p]) = 1`. Rewrite using `[← Polynomial.C_mul, inv_mul_cancel₀ pQ_ne, Polynomial.C_1]`. Establish `hQ : phiIter p g = Polynomial.C (p : ℚ_[p]) * U p g`. Rewrite using `[U, ← mul_assoc, mul_comm (Polynomial.C (p : ℚ_[p])), hab, one_mul]`. Establish `hpow : ∀ x : Polynomial ℚ_[p], x ^ p = x ^ (p - 1) * x` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_succ, Nat.sub_add_cancel hp.1.one_le]`. Rewrite using `[U, phiIter_succ', hQ]`. Simplify using `only [phiPoly, Polynomial.add_comp, Polynomial.sub_comp, Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_pow_comp]`. Rewrite using `[hpow, mul_pow, Polynomial.C_pow]`. Use `set a := Polynomial.C (p : ℚ_[p])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `set b := Polynomial.C ((p : ℚ_[p])⁻¹)`. Use `set u := U p g`. Take the linear combination `(a ^ (p - 1) * u ^ (p - 1) * u - a ^ (p - 1) * u ^ (p - 1) + 1) * hab`.
+A detailed English derivation is pending.
 -/
 lemma U_succ (g : ℕ) : U p (g + 1) =
     Polynomial.C ((p : ℚ_[p]) ^ (p - 1)) * U p g ^ (p - 1) * (U p g - 1) + 1 := by
@@ -65,21 +65,21 @@ lemma U_succ (g : ℕ) : U p (g + 1) =
   linear_combination (a ^ (p - 1) * u ^ (p - 1) * u - a ^ (p - 1) * u ^ (p - 1) + 1) * hab
 
 /- English proof (translation)
-Proceed by induction on `g with`. Consider the case `zero`. Rewrite using `[U_zero, pow_zero]`. Use `⟨(Polynomial.natDegree_C_mul_le _ _).trans (by simp), by simp⟩` and prove the remaining obligations. Consider the case `succ g ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Take `⟨h1, h2⟩` from `ih`. Establish `hp1` using `hp.1.one_le`. Establish `hdegpow : (U p g ^ (p - 1)).natDegree ≤ (p - 1) * p ^ g` using `Polynomial.natDegree_pow_le.trans (Nat.mul_le_mul_left _ h1)`. Establish `hdegsub : (U p g - 1).natDegree ≤ p ^ g` using `(Polynomial.natDegree_sub_le _ _).trans (max_le h1 (by simp))`. Establish `hsum : (p - 1) * p ^ g + p ^ g = p ^ (g + 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_succ, mul_comm (p ^ g) p]`. Use `nth_rw 2 [← one_mul (p ^ g)]`. Rewrite using `[← Nat.add_mul, Nat.sub_add_cancel hp1]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[U_succ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Polynomial.natDegree_add_le _ _).trans (max_le ?_ (by simp))` and prove the remaining obligations. Use `(Polynomial.natDegree_mul_le).trans ?_` and prove the remaining obligations. Use `(Nat.add_le_add_right ((Polynomial.natDegree_C_mul_le _ _).trans hdegpow) _).trans ?_` and prove the remaining obligations. Conclude with `(Nat.add_le_add_left hdegsub _).trans hsum.le`. Establish `hform : U p (g + 1) = Polynomial.C ((p : ℚ_[p]) ^ (p - 1)) * (U p g ^ p - U p g ^ (p - 1)) + 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[U_succ]`. Establish `: U p g ^ p = U p g ^ (p - 1) * U p g`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hp1]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : p ^ (g + 1) ≠ 0` using `pow_ne_zero _ hp.1.ne_zero`. Establish `hc1 : (U p g ^ p).coeff (p ^ (g + 1)) = ((p : ℚ_[p])⁻¹) ^ p`. Rewrite using `[pow_succ', Polynomial.coeff_pow_of_natDegree_le h1, h2]`. Establish `hc2 : (U p g ^ (p - 1)).coeff (p ^ (g + 1)) = 0`. Apply `Polynomial.coeff_eq_zero_of_natDegree_lt` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `lt_of_le_of_lt hdegpow ?_` and prove the remaining obligations. Rewrite using `[← hsum]`. Use `pow_pos hp.1.pos g` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hform, Polynomial.coeff_add, Polynomial.coeff_C_mul, Polynomial.coeff_sub, hc1, hc2, Polynomial.coeff_one, if_neg hne, sub_zero, add_zero]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((p : ℚ_[p])⁻¹) ^ p = ((p : ℚ_[p])⁻¹) ^ (p - 1) * (p : ℚ_[p])⁻¹`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hp1]`. Rewrite using `[this, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ pQ_ne, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma U_deg (g : ℕ) : (U p g).natDegree ≤ p ^ g ∧ (U p g).coeff (p ^ g) = (p : ℚ_[p])⁻¹ := by
   induction g with
@@ -125,20 +125,20 @@ lemma U_deg (g : ℕ) : (U p g).natDegree ≤ p ^ g ∧ (U p g).coeff (p ^ g) = 
       rw [this, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ pQ_ne, one_pow, one_mul]
 
 /- English proof (translation)
-The claim follows from `(Polynomial.natDegree_sub_le _ _).trans (max_le (U_deg g).1 (by simp))`.
+A detailed English derivation is pending.
 -/
 lemma Z_deg (g : ℕ) : (U p g - 1).natDegree ≤ p ^ g :=
   (Polynomial.natDegree_sub_le _ _).trans (max_le (U_deg g).1 (by simp))
 
 /- English proof (translation)
-Rewrite using `[mul_comm, Polynomial.coeff_pow_of_natDegree_le (Z_deg g), Polynomial.coeff_sub, (U_deg g).2, Polynomial.coeff_one, if_neg (pow_ne_zero _ hp.1.ne_zero), sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Z_pow_top (g r : ℕ) : ((U p g - 1) ^ r).coeff (p ^ g * r) = ((p : ℚ_[p])⁻¹) ^ r := by
   rw [mul_comm, Polynomial.coeff_pow_of_natDegree_le (Z_deg g), Polynomial.coeff_sub,
     (U_deg g).2, Polynomial.coeff_one, if_neg (pow_ne_zero _ hp.1.ne_zero), sub_zero]
 
 /- English proof (translation)
-Apply `Polynomial.coeff_eq_zero_of_natDegree_lt` to reduce the goal to its premises. Use `lt_of_le_of_lt (Polynomial.natDegree_pow_le.trans (Nat.mul_le_mul_left _ (Z_deg g))) ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `Nat.mul_lt_mul_of_pos_left h (pow_pos hp.1.pos g)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Z_pow_lt (g r n : ℕ) (h : n < r) : ((U p g - 1) ^ n).coeff (p ^ g * r) = 0 := by
   apply Polynomial.coeff_eq_zero_of_natDegree_lt
@@ -153,13 +153,13 @@ section Norms
 variable {p : ℕ} [hp : Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[norm_pow, norm_inv, Padic.norm_p, inv_inv, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_pinv_pow (k : ℕ) : ‖((p : ℚ_[p])⁻¹) ^ k‖ = (p : ℝ) ^ (k : ℤ) := by
   rw [norm_pow, norm_inv, Padic.norm_p, inv_inv, zpow_natCast]
 
 /- English proof (translation)
-Conclude with `hp.1.one_lt` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 lemma one_lt_p : (1 : ℝ) < p := by exact_mod_cast hp.1.one_lt
 
@@ -178,15 +178,13 @@ def K (p : ℕ) [Fact p.Prime] (g : ℕ) : Prop :=
     ‖((U p g - 1) ^ n).coeff (p ^ g * r)‖ ≤ (p : ℝ) ^ ((r : ℤ) - 1) * ‖((n.choose r : ℕ) : ℚ_[p])‖
 
 /- English proof (translation)
-Rewrite using `[← Finset.add_sum_erase s _ hr]`. Establish `hmain : ‖((U p g - 1) ^ r).coeff (p ^ g * r) * a r‖ = (p : ℝ) ^ (r : ℤ) * ‖a r‖`. Rewrite using `[Z_pow_top, norm_mul, norm_pinv_pow]`. Establish `har' : 0 < ‖a r‖` using `norm_pos_iff.mpr har`. Establish `hrest : ‖∑ n ∈ s.erase r, ((U p g - 1) ^ n).coeff (p ^ g * r) * a n‖ ≤ (p : ℝ) ^ ((r : ℤ) - 1) * ‖a r‖`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `n hn`. Establish `hnr : n ≠ r` using `Finset.ne_of_mem_erase hn`. Rewrite using `[norm_mul]`. Break down `lt_or_gt_of_ne hnr with hlt | hgt` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Z_pow_lt g r n hlt, norm_zero, zero_mul]`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Establish `hlt : (p : ℝ) ^ ((r : ℤ) - 1) * ‖a r‖ < (p : ℝ) ^ (r : ℤ) * ‖a r‖` using `by gcongr`. Conclude with `one_lt_p`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hne : ‖((U p g - 1) ^ r).coeff (p ^ g * r) * a r‖ ≠ ‖∑ n ∈ s.erase r, ((U p g - 1) ^ n).coeff (p ^ g * r) * a n‖`. Rewrite using `[hmain]`. Conclude with `(lt_of_le_of_lt hrest hlt).ne'`. Rewrite using `[Padic.add_eq_max_of_ne hne, hmain]`.
-
-Conclude with `max_eq_left (hrest.trans hlt.le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma core (g : ℕ) (hK : K p g) (r : ℕ) (s : Finset ℕ) (hr : r ∈ s) (a : ℕ → ℚ_[p])
     (ha : ∀ n, r < n → ‖a n‖ * ‖((n.choose r : ℕ) : ℚ_[p])‖ ≤ ‖a r‖) (har : a r ≠ 0) :

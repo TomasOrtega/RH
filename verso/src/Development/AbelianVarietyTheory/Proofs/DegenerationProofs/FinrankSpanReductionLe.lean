@@ -18,9 +18,9 @@ namespace GlobalTheory.ZH
 namespace ModHilb
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ResidueSpanScale.finrank_span_residue_le`. Consider the case `exact _root_.GlobalTheory.ResidueSpanScale.finrank_span_residue_le`. Consider the case `(apply _root_.GlobalTheory.ResidueSpanScale.finrank_span_residue_le <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ResidueSpanScale.finrank_span_residue_le <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ResidueSpanScale.finrank_span_residue_le <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ResidueSpanScale.finrank_span_residue_le ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finrank_span_reduction_le {O K I A B : Type} [CommRing O] [IsDomain O] [ValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] [Finite I] (f : I → A → K) (g : I → B → IsLocalRing.ResidueField O)
@@ -36,13 +36,13 @@ theorem finrank_span_reduction_le {O K I A B : Type} [CommRing O] [IsDomain O] [
   | (intros; exact _root_.GlobalTheory.ResidueSpanScale.finrank_span_residue_le ..)
 
 /- English proof (translation)
-Unfold `hilb`. Establish `: (MvPolynomial.homogeneousSubmodule J k d).map (LinearMap.pi fun v : C => (MvPolynomial.aeval (R` using `k) v.1).toLinearMap) = Submodule.span k (Set.range fun (m : {m : J →₀ ℕ // m.degree = d}) (v : C) => m.1.prod fun j n => v.1 j ^ n) := by`. Rewrite using `[MvPolynomial.homogeneousSubmodule_eq_finsupp_supported]`. Rewrite using `[AddMonoidAlgebra.supported_eq_span_single, Submodule.map_span]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨m, hm, rfl⟩, rfl⟩`. Use `⟨⟨m, hm⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `_ = MvPolynomial.aeval v.1 (MvPolynomial.monomial m (1 : k))`. Simplify using `[MvPolynomial.aeval_monomial]`. Introduce and unpack `⟨⟨m, hm⟩, rfl⟩`. Use `⟨_, ⟨m, hm, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `MvPolynomial.aeval v.1 (MvPolynomial.monomial m (1 : k)) = _`. Simplify using `[MvPolynomial.aeval_monomial]`. Rewrite using `[this]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hilb_eq_finrank_span {k J : Type} [Field k] [Finite J] (C : Set (J → k)) (d : ℕ) :
     hilb C d = Module.finrank k (Submodule.span k (Set.range
@@ -70,9 +70,9 @@ theorem hilb_eq_finrank_span {k J : Type} [Field k] [Finite J] (C : Set (J → k
   rw [this]
 
 /- English proof (translation)
-Introduce `O K J _ _ _ _ _ _ _ C C' h d`. Rewrite using `[hilb_eq_finrank_span, hilb_eq_finrank_span]`. Use `haveI : Finite {m : J →₀ ℕ // m.degree = d} := ((Finsupp.finite_of_degree_le d).subset fun m (hm : m.degree = d) => hm.le).to_subtype`. Apply `finrank_span_reduction_le` to reduce the goal to its premises. Introduce and unpack `⟨v', hv'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, rfl⟩` from `h v' hv'`. Use `⟨⟨_, hw⟩, fun m => m.1.prod fun j n => w j ^ n, fun m => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `[Finsupp.prod]`. Simplify using `[Finsupp.prod]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hilb_reduction_le : (∀ (O K J : Type) [CommRing O] [IsDomain O] [ValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] [Fintype J] (C : Set (J → K)) (C' : Set (J → IsLocalRing.ResidueField O)), (∀ v' ∈ C', ∃ w : J → O, (fun j => algebraMap O K (w j)) ∈ C ∧ v' = fun j => IsLocalRing.residue O (w j)) → ∀ d, hilb C' d ≤ hilb C d) := by
   intro O K J _ _ _ _ _ _ _ C C' h d
@@ -89,15 +89,13 @@ theorem hilb_reduction_le : (∀ (O K J : Type) [CommRing O] [IsDomain O] [Valua
 end ModHilb
 
 /- English proof (translation)
-Introduce `p _ V _ j G _ g N _ X _ q H J _ σ cls m d`. Use `ModHilb.hilb_reduction_le (OO p) (PadicAlgCl p) J _ _ ?_ d` and prove the remaining obligations. Introduce and unpack `v ⟨x, hx, hv⟩`. Establish `hred : Crd H σ (x ≫ m.r) v` using `m.red (Over.homMk x hx) v hv`. Use `haveI := m.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Smooth G.hom := SmoothOfRelativeDimension.smooth g G.hom`. Take `⟨c, hc, hcx⟩` from `GlobalTheory.ZJ.exists_classical_lift_of_smooth p G.left (Sp V) G.hom (spMap j) (x ≫ m.r) (by`. Rewrite using `[Category.assoc, m.cart.1.w, ← Category.assoc, hx]`. Conclude with `Category.id_comp _)`. Take `⟨w, hw⟩` from `CrdCalc.crd_exists m.isLB σ c`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hw' : Crd H σ (x ≫ m.r) (fun i => IsLocalRing.residue (OO p) (w i))`. Rewrite using `[← hcx]`. Conclude with `CrdCalc.crd_map _ hw`. Take `⟨u, hu⟩` from `CrdCalc.crd_unique hw' hred`. Take `⟨u₀, hu₀⟩` from `IsLocalRing.residue_surjective (u : kb p)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hunit : IsUnit u₀`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, hu₀]`. Conclude with `u.ne_zero`. Take `⟨u₁, rfl⟩` from `hunit`. Use `⟨fun i => (u₁ : OO p) * w i, ⟨gPt p ≫ c, by rw [Category.assoc, hc], ?_⟩, ?_⟩` and prove the remaining obligations.
-
-Conclude with `CrdCalc.crd_map (OO p).subtype (CrdCalc.crd_smul u₁ hw)`. Use function extensionality and compare the values at `i`. Rewrite using `[hu, map_mul, hu₀]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Mod.hilb_special_le_generic : ∀ (p : ℕ) [Fact p.Prime] (V : Type) [CommRing V] (j : V →+* OO p) (G : Over (Sp V)) [GrpObj G] (g N N' : ℕ) (X : Type) [AddCommGroup X] (q : QuadraticMap ℤ X ℝ) (H : LB G.left) (J : Type) [Fintype J] (σ : J → H.Sec) (cls : J → X) (m : Mod p j G g N q H σ cls) (d : ℕ), hilb (cone m.Φ.G.hom (m.Φ.H 1) m.F) d ≤ hilb {w : J → PadicAlgCl p | ∃ a : Sp (PadicAlgCl p) ⟶ G.left, a ≫ G.hom = gPt p ≫ spMap j ∧ Crd H σ a w} d := by
   intro p _ V _ j G _ g N _ X _ q H J _ σ cls m d

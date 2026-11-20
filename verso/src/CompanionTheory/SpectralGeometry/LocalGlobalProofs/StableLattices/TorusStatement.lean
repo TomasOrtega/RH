@@ -13,9 +13,7 @@ def gens {l : ℕ} (e f : Fin l → V) (W : Submodule L V) : Set V :=
   Set.range e ∪ Set.range f ∪ (W : Set V)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨a, b, w, hw, rfl⟩` from `hF.2.2.2.2.2 x`. Use `Submodule.add_mem _ (Submodule.add_mem _ ?_ ?_) (Submodule.subset_span (Or.inr hw))` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (Or.inl (Or.inl ⟨i, rfl⟩)))`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (Or.inl (Or.inr ⟨i, rfl⟩)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem span_gens {h : V → V → L} {δ : L} {l : ℕ} {e f : Fin l → V} {W : Submodule L V}
     (hF : IsFrame h δ e f W) : Submodule.span L (gens e f W) = ⊤ := by
@@ -29,9 +27,9 @@ theorem span_gens {h : V → V → L} {δ : L} {l : ℕ} {e f : Fin l → V} {W 
       (Submodule.subset_span (Or.inl (Or.inr ⟨i, rfl⟩)))
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span L (gens e f W)`. Rewrite using `[span_gens hF]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => exact hg x h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact h0`. Consider the case `add x y _ _ hx hy => exact ha x y hx hy`. Consider the case `smul a x _ hx => exact hm a x hx`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem gens_induction {h : V → V → L} {δ : L} {l : ℕ} {e f : Fin l → V} {W : Submodule L V}
     (hF : IsFrame h δ e f W) {P : V → Prop} (hg : ∀ x ∈ gens e f W, P x) (h0 : P 0)
@@ -57,14 +55,14 @@ Both sides reduce to the same expression.
     pair hH x y = h x y := rfl
 
 /- English proof (translation)
-Rewrite using `[hH.2.2.1 y (x + x'), hH.1, map_add, ← hH.2.2.1, ← hH.2.2.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem add_left {s : L →+* L} {h : V → V → L} (hH : IsHerm s h) (x x' y : V) :
     h (x + x') y = h x y + h x' y := by
   rw [hH.2.2.1 y (x + x'), hH.1, map_add, ← hH.2.2.1, ← hH.2.2.1]
 
 /- English proof (translation)
-Rewrite using `[hH.2.2.1 y (a • x), hH.2.1, map_mul, ← hH.2.2.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_left {s : L →+* L} {h : V → V → L} (hH : IsHerm s h) (a : L) (x y : V) :
     h (a • x) y = s a * h x y := by
@@ -76,7 +74,7 @@ def tor {s : L →+* L} {h : V → V → L} (hH : IsHerm s h) (δ : L) {l : ℕ}
     ∑ i, (((s (u i))⁻¹ - 1) * δ⁻¹) • (pair hH (e i)).smulRight (f i)
 
 /- English proof (translation)
-Simplify using `[tor, LinearMap.add_apply, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tor_apply {s : L →+* L} {h : V → V → L} (hH : IsHerm s h) (δ : L) {l : ℕ} (e f : Fin l → V)
     (u : Fin l → L) (x : V) :
@@ -89,7 +87,7 @@ section Frame
 variable {s : L →+* L} {h : V → V → L} {δ : L} {l : ℕ} {e f : Fin l → V} {W : Submodule L V}
 
 /- English proof (translation)
-Rewrite using `[hH.2.2.1 (e j) (f i), hF.2.2.1 j i]`. Distinguish the cases in `hij : i = j`. Simplify using `[hij]`. Simplify using `[hij, Ne.symm hij]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pair_fe (hH : IsHerm s h) (hF : IsFrame h δ e f W) (i j : Fin l) :
     h (f i) (e j) = if i = j then s δ else 0 := by
@@ -99,7 +97,7 @@ theorem pair_fe (hH : IsHerm s h) (hF : IsFrame h δ e f W) (i j : Fin l) :
   · simp [hij, Ne.symm hij]
 
 /- English proof (translation)
-Establish `hs : s δ ≠ 0` using `(map_ne_zero s).2 hδ`. Rewrite using `[tor_apply]`. Simplify using `only [pair_fe hH hF, hF.1, zero_smul, smul_zero, Finset.sum_const_zero, add_zero, ite_smul, smul_ite, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[smul_smul, mul_assoc, inv_mul_cancel₀ hs, mul_one, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem tor_e (hH : IsHerm s h) (hF : IsFrame h δ e f W) (hδ : δ ≠ 0) (u : Fin l → L) (j : Fin l) :
     tor hH δ e f u (e j) = u j • e j := by
@@ -111,7 +109,7 @@ theorem tor_e (hH : IsHerm s h) (hF : IsFrame h δ e f W) (hδ : δ ≠ 0) (u : 
   abel
 
 /- English proof (translation)
-Rewrite using `[tor_apply]`. Simplify using `only [hF.2.1, hF.2.2.1, zero_smul, smul_zero, Finset.sum_const_zero, add_zero, ite_smul, smul_ite, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[smul_smul, mul_assoc, inv_mul_cancel₀ hδ, mul_one, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem tor_f (hH : IsHerm s h) (hF : IsFrame h δ e f W) (hδ : δ ≠ 0) (u : Fin l → L) (j : Fin l) :
     tor hH δ e f u (f j) = (s (u j))⁻¹ • f j := by
@@ -122,7 +120,7 @@ theorem tor_f (hH : IsHerm s h) (hF : IsFrame h δ e f W) (hδ : δ ≠ 0) (u : 
   abel
 
 /- English proof (translation)
-Rewrite using `[tor_apply]`. Simplify using `[(hF.2.2.2.1 w hw _).1, (hF.2.2.2.1 w hw _).2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tor_w (hH : IsHerm s h) (hF : IsFrame h δ e f W) (u : Fin l → L) {w : V} (hw : w ∈ W) :
     tor hH δ e f u w = w := by
@@ -130,9 +128,9 @@ theorem tor_w (hH : IsHerm s h) (hF : IsFrame h δ e f W) (u : Fin l → L) {w :
   simp [(hF.2.2.2.1 w hw _).1, (hF.2.2.2.1 w hw _).2]
 
 /- English proof (translation)
-Use `LinearMap.ext_on (span_gens hF) ?_` and prove the remaining obligations. Introduce and unpack `x ((⟨i, rfl⟩ | ⟨i, rfl⟩) | hx)`. Simplify using `[tor_e hH hF hδ, hu i]`. Establish `: s (u i) ≠ 0` using `(map_ne_zero s).2 (hu i)`. Simplify using `[tor_e hH hF hδ, tor_f hH hF hδ, this]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[tor_w hH hF _ hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tor_inv (hH : IsHerm s h) (hF : IsFrame h δ e f W) (hδ : δ ≠ 0) (u : Fin l → L)
     (hu : ∀ i, u i ≠ 0) :
@@ -145,15 +143,15 @@ theorem tor_inv (hH : IsHerm s h) (hF : IsFrame h δ e f W) (hδ : δ ≠ 0) (u 
   · simp [tor_w hH hF _ hx]
 
 /- English proof (translation)
-Establish `hsu : ∀ i, s (u i) ≠ 0` using `fun i => (map_ne_zero s).2 (hu i)`. Establish `hwe : ∀ {w : V}, w ∈ W → ∀ i, h w (e i) = 0` using `fun hw i => by`. Rewrite using `[hH.2.2.1 (e i) _, (hF.2.2.2.1 _ hw i).1, map_zero]`. Establish `hwf : ∀ {w : V}, w ∈ W → ∀ i, h w (f i) = 0` using `fun hw i => by`. Rewrite using `[hH.2.2.1 (f i) _, (hF.2.2.2.1 _ hw i).2, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases hx with (⟨i, rfl⟩ | ⟨i, rfl⟩) | hx <;> rcases hy with (⟨j, rfl⟩ | ⟨j, rfl⟩) | hy`. Simplify using `[tor_e hH hF hδ, smul_left hH, hH.2.1, hF.1]`. Rewrite using `[tor_e hH hF hδ, tor_f hH hF hδ, smul_left hH, hH.2.1, hF.2.2.1]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hsu i]`. Simplify using `[hij]`. Rewrite using `[tor_e hH hF hδ, tor_w hH hF u hy, smul_left hH, (hF.2.2.2.1 _ hy i).1, mul_zero]`. Rewrite using `[tor_f hH hF hδ, tor_e hH hF hδ, smul_left hH, hH.2.1, pair_fe hH hF]`. Distinguish the cases in `hij : i = j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using `[hs, hu i]`. Simplify using `[hij]`. Simplify using `[tor_f hH hF hδ, smul_left hH, hH.2.1, hF.2.1]`. Rewrite using `[tor_f hH hF hδ, tor_w hH hF u hy, smul_left hH, (hF.2.2.2.1 _ hy i).2, mul_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tor_w hH hF u hx, tor_e hH hF hδ, hH.2.1, hwe hx, mul_zero]`. Rewrite using `[tor_w hH hF u hx, tor_f hH hF hδ, hH.2.1, hwf hx, mul_zero]`. Rewrite using `[tor_w hH hF u hx, tor_w hH hF u hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tor_iso_gens (hs : ∀ x, s (s x) = x) (hH : IsHerm s h) (hF : IsFrame h δ e f W) (hδ : δ ≠ 0)
     (u : Fin l → L) (hu : ∀ i, u i ≠ 0) {x y : V} (hx : x ∈ gens e f W) (hy : y ∈ gens e f W) :
@@ -183,13 +181,13 @@ theorem tor_iso_gens (hs : ∀ x, s (s x) = x) (hH : IsHerm s h) (hF : IsFrame h
   · rw [tor_w hH hF u hx, tor_w hH hF u hy]
 
 /- English proof (translation)
-Establish `hz : ∀ z, h z 0 = 0` using `fun z => by simpa using hH.2.1 0 z 0`. Establish `hz' : ∀ z, h 0 z = 0` using `fun z => by simpa using smul_left hH 0 0 z`. Establish `step : ∀ g ∈ gens e f W, ∀ y, h (tor hH δ e f u g) (tor hH δ e f u y) = h g y`. Introduce `g hg`. Use `gens_induction hF (fun y hy => tor_iso_gens hs hH hF hδ u hu hg hy) ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hz]`. Introduce `y y' hy hy'`. Simplify using `only [map_add, hH.1, hy, hy']`. Introduce `a y hy`. Simplify using `only [map_smul, hH.2.1, hy]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `gens_induction hF (P := fun x => ∀ y, h (tor hH δ e f u x) (tor hH δ e f u y) = h x y) step ?_ ?_ ?_ x y` and prove the remaining obligations. Simplify using `[hz']`. Introduce `x x' hx hx' y`. Rewrite using `[map_add, add_left hH, hx, hx', add_left hH]`. Introduce `a x hx y`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_smul, smul_left hH, hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tor_iso (hs : ∀ x, s (s x) = x) (hH : IsHerm s h) (hF : IsFrame h δ e f W) (hδ : δ ≠ 0)
     (u : Fin l → L) (hu : ∀ i, u i ≠ 0) (x y : V) :
@@ -215,11 +213,11 @@ theorem tor_iso (hs : ∀ x, s (s x) = x) (hH : IsHerm s h) (hF : IsFrame h δ e
 end Frame
 
 /- English proof (translation)
-Unfold `StTor ForAll`. Introduce `L _ _ _ _ s hs δ hδ V _ _ _ h hH l e f W hF u hu`. Establish `hδ0 : δ ≠ 0` using `hδ.1`. Establish `hui : ∀ i, (u i)⁻¹ ≠ 0` using `fun i => inv_ne_zero (hu i)`. Set `t : V ≃ₗ[L] V` to `LinearEquiv.ofLinear (tor hH δ e f u) (tor hH δ e f fun i => (u i)⁻¹) (tor_inv hH hF hδ0 u hu) (by simpa using tor_inv hH hF hδ0 (fun i => (u i)⁻¹) hui)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨t, fun x y => tor_iso hs.1 hH hF hδ0 u hu x y, ⟨fun i => tor_e hH hF hδ0 u i, fun i => tor_f hH hF hδ0 u i, fun w hw => tor_w hH hF u hw⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `t' ⟨h1, h2, h3⟩`. Apply `LinearEquiv.toLinearMap_injective` to reduce the goal to its premises. Use `LinearMap.ext_on (span_gens hF) ?_` and prove the remaining obligations. Introduce and unpack `x ((⟨i, rfl⟩ | ⟨i, rfl⟩) | hx)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(h1 i).trans (tor_e hH hF hδ0 u i).symm`. Conclude with `(h2 i).trans (tor_f hH hF hδ0 u i).symm`. Conclude with `(h3 x hx).trans (tor_w hH hF u hx).symm`.
+A detailed English derivation is pending.
 -/
 theorem stTor : StTor := by
   unfold StTor ForAll

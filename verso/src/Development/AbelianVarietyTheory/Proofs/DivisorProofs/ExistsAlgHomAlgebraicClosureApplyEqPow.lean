@@ -7,9 +7,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Ω _ K0 x hx m hm`. Establish `h1 : AlgebraicIndepOn K0 id ({x} : Set Ω)` using `algebraicIndependent_unique_type_iff.2 hx`. Take `⟨s, hxs, hs⟩` from `exists_isTranscendenceBasis_superset h1`. Set `i₀ : s` to `⟨x, hxs rfl⟩`. Establish `h2` using `(algebraicIndependent_update_pow hs.1 i₀ hm).map' (f := IsScalarTower.toAlgHom K0 Ω (AlgebraicClosure Ω)) (algebraMap Ω (AlgebraicClosure Ω)).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `GlobalTheory.GenericValue.exists_algHom_of_isTranscendenceBasis hs h2`. Conclude with `⟨j, by simpa [i₀] using hj i₀⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_algHom_algebraicClosure_apply_eq_pow :
     ∀ (Ω : Type) [Field Ω] (K0 : Subfield Ω) (x : Ω), Transcendental K0 x → ∀ m : ℕ, 0 < m →

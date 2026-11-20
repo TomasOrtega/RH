@@ -29,7 +29,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Use `hV.isNoetherian` as an intermediate fact. Conclude with `(AlgebraicGeometry.Scheme.Hom.isClosedEmbedding (T.boundary.get ⟨j, hj⟩).subschemeι).toIsEmbedding.toIsInducing.noetherianSpace`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem noetherianSpace_boundary_subscheme (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -45,7 +45,7 @@ abbrev divisorComponentsInOrderLocus (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
       ⇑(T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹' orderAtLeastLocus T.ideal T.mult}
 
 /- English proof (translation)
-Use `noetherianSpace_boundary_subscheme T hV j hj` as an intermediate fact. Conclude with `TopologicalSpace.NoetherianSpace.isClosed_setOf_connectedComponent_subset ↥(T.boundary.get ⟨j, hj⟩).subscheme (⇑(T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹' orderAtLeastLocus T.ideal T.mult)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_divisorComponentsInOrderLocus (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -56,7 +56,7 @@ theorem isClosed_divisorComponentsInOrderLocus (T : MarkedIdealWithBoundary.{u})
     (⇑(T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹' orderAtLeastLocus T.ideal T.mult)
 
 /- English proof (translation)
-The claim follows from `DivisorReduction.containedComponentsIdeal_eq_ker T j hj h`.
+A detailed English derivation is pending.
 -/
 theorem containedComponentsIdeal_eq_openSubschemeKer (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (h : IsOpen (divisorComponentsInOrderLocus T j hj)) :
@@ -65,7 +65,7 @@ theorem containedComponentsIdeal_eq_openSubschemeKer (T : MarkedIdealWithBoundar
   DivisorReduction.containedComponentsIdeal_eq_ker T j hj h
 
 /- English proof (translation)
-The claim follows from `DivisorReduction.containedComponentsIdeal_eq_top_of_not_isOpen T j hj h`.
+A detailed English derivation is pending.
 -/
 theorem containedComponentsIdeal_eq_top_of_not_isOpen (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (h : ¬ IsOpen (divisorComponentsInOrderLocus T j hj)) :
@@ -73,7 +73,7 @@ theorem containedComponentsIdeal_eq_top_of_not_isOpen (T : MarkedIdealWithBounda
   DivisorReduction.containedComponentsIdeal_eq_top_of_not_isOpen T j hj h
 
 /- English proof (translation)
-Establish `hmem : T.boundary.get ⟨j, hj⟩ ∈ T.boundary`. Simplify using `only [List.get_eq_getElem]`. Conclude with `List.getElem_mem hj`. Conclude with `((inStrictNormalCrossingPosition_iff T.structMap T.boundary).1 hV.snc).1 _ hmem`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSmoothDivisor_boundary_get (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -84,11 +84,9 @@ theorem isSmoothDivisor_boundary_get (T : MarkedIdealWithBoundary.{u}) (hV : T.I
   exact ((inStrictNormalCrossingPosition_iff T.structMap T.boundary).1 hV.snc).1 _ hmem
 
 /- English proof (translation)
-Distinguish the cases in `h : IsOpen (divisorComponentsInOrderLocus T j hj)`. Establish `hcl : IsClosed (((⟨divisorComponentsInOrderLocus T j hj, h⟩ : (T.boundary.get ⟨j, hj⟩).subscheme.Opens) : Set ↥(T.boundary.get ⟨j, hj⟩).subscheme))` using `isClosed_divisorComponentsInOrderLocus T hV j hj`. Rewrite using `[containedComponentsIdeal_eq_openSubschemeKer T j hj h, support_openSubschemeKer (T.boundary.get ⟨j, hj⟩) ⟨divisorComponentsInOrderLocus T j hj, h⟩ hcl]`. Introduce and unpack `y ⟨x, hx, rfl⟩`. Establish `hx' : connectedComponent x ⊆ ⇑(T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹' orderAtLeastLocus T.ideal T.mult` using `hx`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hx' mem_connectedComponent`. Rewrite using `[containedComponentsIdeal_eq_top_of_not_isOpen T j hj h]`. Introduce `x hx`. Establish `hx' : x ∈ (⊤ : T.scheme.IdealSheafData).support` using `hx`. Rewrite `hx'` using `[mem_support_iff_stalkIdeal_ne_top]`.
-
-Conclude with `absurd (stalkIdeal_top x) hx'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_containedComponentsIdeal_subset_orderAtLeastLocus (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -110,9 +108,9 @@ theorem support_containedComponentsIdeal_subset_orderAtLeastLocus (T : MarkedIde
     exact absurd (stalkIdeal_top x) hx'
 
 /- English proof (translation)
-Establish `hsmp : AlgebraicGeometry.Smooth T.structMap` using `hV.smooth`. Distinguish the cases in `h : IsOpen (divisorComponentsInOrderLocus T j hj)`. Establish `hsm : AlgebraicGeometry.Smooth ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap)` using `((isSmoothDivisor_iff T.structMap (T.boundary.get ⟨j, hj⟩)).1 (isSmoothDivisor_boundary_get T hV j hj)).2`. Rewrite using `[containedComponentsIdeal_eq_openSubschemeKer T j hj h]`. Conclude with `smooth_subschemeι_openSubschemeKer_comp (T.boundary.get ⟨j, hj⟩) ⟨divisorComponentsInOrderLocus T j hj, h⟩ (isClosed_divisorComponentsInOrderLocus T hV j hj) T.structMap`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[containedComponentsIdeal_eq_top_of_not_isOpen T j hj h]`. Conclude with `((isSmoothDivisor_iff T.structMap (⊤ : T.scheme.IdealSheafData)).1 (isSmoothDivisor_top T.structMap)).2`.
+A detailed English derivation is pending.
 -/
 theorem smooth_subschemeι_containedComponentsIdeal_comp (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -131,23 +129,21 @@ theorem smooth_subschemeι_containedComponentsIdeal_comp (T : MarkedIdealWithBou
       (isSmoothDivisor_top T.structMap)).2
 
 /- English proof (translation)
-Distinguish the cases in `hopen : IsOpen (divisorComponentsInOrderLocus T j hj)`. Establish `hWclosed : IsClosed (divisorComponentsInOrderLocus T j hj)` using `isClosed_divisorComponentsInOrderLocus T hV j hj`. Establish `hpre : DivisorReduction.containedComponentsIdeal T j hj = openSubschemeKer (T.boundary.get ⟨j, hj⟩) (⟨divisorComponentsInOrderLocus T j hj, hopen⟩ : (T.boundary.get ⟨j, hj⟩).subscheme.Opens)` using `containedComponentsIdeal_eq_openSubschemeKer T j hj hopen`. Establish `h1 : x ∈ ((openSubschemeKer (T.boundary.get ⟨j, hj⟩) (⟨divisorComponentsInOrderLocus T j hj, hopen⟩ : (T.boundary.get ⟨j, hj⟩).subscheme.Opens)).support : Set ↥T.scheme)`. Rewrite using `[← hpre]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Rewrite `h1` using `[support_openSubschemeKer (T.boundary.get ⟨j, hj⟩) (⟨divisorComponentsInOrderLocus T j hj, hopen⟩ : (T.boundary.get ⟨j, hj⟩).subscheme.Opens) hWclosed]`. Take `⟨U₀, hxU₀, hU₀⟩` from `exists_opens_preimage_subschemeι_le (T.boundary.get ⟨j, hj⟩) (⟨divisorComponentsInOrderLocus T j hj, hopen⟩ : (T.boundary.get ⟨j, hj⟩).subscheme.Opens) x h1`. Take `⟨U₁, hxU₁, n, c, a, hinj, hnone, hsome⟩` from `(((inStrictNormalCrossingPosition_iff T.structMap T.boundary).1 hV.snc).2 x).exists_etaleChart`. Establish `hUle : U₀ ⊓ U₁ ≤ U₁` using `inf_le_right`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxU : x ∈ U₀ ⊓ U₁` using `⟨hxU₀, hxU₁⟩`. Establish `hpreU : ((T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹ᵁ (U₀ ⊓ U₁)) ≤ (⟨divisorComponentsInOrderLocus T j hj, hopen⟩ : (T.boundary.get ⟨j, hj⟩).subscheme.Opens)`. Introduce `y hy`. Conclude with `hU₀ hy.1`. Establish `hrestr : restrictIdeal (DivisorReduction.containedComponentsIdeal T j hj) (U₀ ⊓ U₁) = restrictIdeal (T.boundary.get ⟨j, hj⟩) (U₀ ⊓ U₁)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hpre]`. Conclude with `restrictIdeal_openSubschemeKer_of_preimage_le _ _ hWclosed _ hpreU`. Establish `hajne : a j ≠ none`. Introduce `haj`. Establish `h2 : restrictIdeal (T.boundary.get ⟨j, hj⟩) U₁ = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `hnone j hj haj` using `only [List.get_eq_getElem]`. Establish `h3 : restrictIdeal (DivisorReduction.containedComponentsIdeal T j hj) (U₀ ⊓ U₁) = ⊤`. Rewrite using `[hrestr]`. Conclude with `restrictIdeal_eq_top_of_le _ hUle h2`. Conclude with `notMem_support_of_restrictIdeal_eq_top _ _ x hxU h3 hx`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b : Fin n, a j = some b := by`. Consider the cases of `h : a j with`. Consider the case `none => exact absurd h hajne`. Consider the case `some b => exact ⟨b, rfl⟩`. Use `⟨U₀ ⊓ U₁, hxU, n, c.restrict hUle, a, b, hb, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi hai`. Use `restrictIdeal_eq_top_of_le _ hUle ?_` and prove the remaining obligations. Simplify `hnone i hi hai` using `only [List.get_eq_getElem]`. Introduce `i hi t hai`. Use `restrictIdeal_eq_restrict_coordIdeal_of_le hUle c _ {t} ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hsome i hi t hai` using `only [List.get_eq_getElem]`. Introduce `i i' hi hi' t h4 h5`. Conclude with `hinj i hi i' hi' t h4 h5`. Rewrite using `[hrestr]`. Use `restrictIdeal_eq_restrict_coordIdeal_of_le hUle c _ {b} ?_` and prove the remaining obligations.
-
-Simplify `hsome j hj b hb` using `only [List.get_eq_getElem]`. It suffices to derive a contradiction. Rewrite `hx` using `[containedComponentsIdeal_eq_top_of_not_isOpen T j hj hopen]`. Conclude with `(mem_support_iff_stalkIdeal_ne_top (⊤ : T.scheme.IdealSheafData) x).1 hx (stalkIdeal_top x)`.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_etaleChart_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) (x : ↥T.scheme)
@@ -220,9 +216,7 @@ theorem exists_etaleChart_containedComponentsIdeal (T : MarkedIdealWithBoundary.
       (stalkIdeal_top x)
 
 /- English proof (translation)
-Establish `hsmp : AlgebraicGeometry.Smooth T.structMap` using `hV.smooth`. Distinguish the cases in `h : IsOpen (divisorComponentsInOrderLocus T j hj)`. Rewrite using `[containedComponentsIdeal_eq_openSubschemeKer T j hj h]`. Conclude with `isLocallyGeneratedByNonZeroDivisor_openSubschemeKer (T.boundary.get ⟨j, hj⟩) ⟨divisorComponentsInOrderLocus T j hj, h⟩ (isClosed_divisorComponentsInOrderLocus T hV j hj) (((isSmoothDivisor_iff T.structMap (T.boundary.get ⟨j, hj⟩)).1 (isSmoothDivisor_boundary_get T hV j hj)).1)`. Rewrite using `[containedComponentsIdeal_eq_top_of_not_isOpen T j hj h]`.
-
-Conclude with `((isSmoothDivisor_iff T.structMap (⊤ : T.scheme.IdealSheafData)).1 (isSmoothDivisor_top T.structMap)).1`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyGeneratedByNonZeroDivisor_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -239,9 +233,9 @@ theorem isLocallyGeneratedByNonZeroDivisor_containedComponentsIdeal (T : MarkedI
       (isSmoothDivisor_top T.structMap)).1
 
 /- English proof (translation)
-Use `hasStrictNormalCrossingsWith_of_forall_exists_etaleChart ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨U, hxU, n, c, a, b, hab, hnone, hsome, hinj, hZ⟩` from `exists_etaleChart_containedComponentsIdeal T hV j hj x hx`. Use `⟨U, hxU, n, c, a, {b}, ?_, ?_, ?_, hZ⟩` and prove the remaining obligations. Introduce `i hi i' hi' t hti hti'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hinj i i' hi hi' t hti hti'`. Introduce `i hi hni`. Conclude with `hnone i hi hni`. Introduce `i hi t hti`. Conclude with `hsome i hi t hti`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasStrictNormalCrossingsWith_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -259,7 +253,7 @@ theorem hasStrictNormalCrossingsWith_containedComponentsIdeal (T : MarkedIdealWi
     exact hsome i hi t hti
 
 /- English proof (translation)
-The claim follows from `Blowup.isBlowupAlongIdealSheaf_id_of_isLocallyGeneratedByNonZeroDivisor _ (isLocallyGeneratedByNonZeroDivisor_containedComponentsIdeal T hV j hj)`.
+A detailed English derivation is pending.
 -/
 theorem isBlowupAlongIdealSheaf_id_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -267,7 +261,7 @@ theorem isBlowupAlongIdealSheaf_id_containedComponentsIdeal (T : MarkedIdealWith
   Blowup.isBlowupAlongIdealSheaf_id_of_isLocallyGeneratedByNonZeroDivisor _ (isLocallyGeneratedByNonZeroDivisor_containedComponentsIdeal T hV j hj)
 
 /- English proof (translation)
-Use `hV.isNoetherian` as an intermediate fact. Establish `: CharZero T.base` using `hV.charZero`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hV.smooth`. Establish `hle : T.ideal ≤ DivisorReduction.containedComponentsIdeal T j hj ^ T.mult` using `le_pow_of_hasStrictNormalCrossingsWith T.structMap (DivisorReduction.containedComponentsIdeal T j hj) T.ideal T.boundary (hasStrictNormalCrossingsWith_containedComponentsIdeal T hV j hj) T.mult (support_containedComponentsIdeal_subset_orderAtLeastLocus T hV j hj)`. Conclude with `Blowup.IsLocallyGeneratedByNonZeroDivisor.exists_mul_eq ((isLocallyGeneratedByNonZeroDivisor_containedComponentsIdeal T hV j hj).pow T.mult) hle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_mul_pow_containedComponentsIdeal_eq_ideal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :

@@ -6,9 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Take `⟨e, -, hX⟩` from `GlobalTheory.T.exists_sheafHom_linearMapsSheaf_curry_equiv R J`. Use `haveI : Module.Projective (ULift.{1} R) M := (IsProjective.iff_projective (P := M)).2 ‹_›`. Prove the components needed by the constructor for the conclusion. Introduce `X Y g i _`. Establish `surj : Function.Surjective (Linear.leftComp (ULift.{1} R) J i)` using `fun k => ⟨Injective.factorThru k i, Injective.comp_factorThru k i⟩`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h', hh'⟩` from `Module.projective_lifting_property _ (e X M g) surj`. Use `⟨(e Y M).symm h', ?_⟩` and prove the remaining obligations. Apply `(e X M).injective` to reduce the goal to its premises. Rewrite using `[hX, Equiv.apply_symm_apply, hh']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homSh_injective (R : Type) [CommRing R] (J : Shv R) [Injective J] (M : ModuleCat.{1} (ULift.{1} R)) [Projective M] :
     Injective ((homSh J).obj (op M)) := by

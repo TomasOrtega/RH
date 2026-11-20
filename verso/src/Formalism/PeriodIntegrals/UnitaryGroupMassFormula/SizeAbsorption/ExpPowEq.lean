@@ -7,9 +7,9 @@ namespace PI.SzEatI.W
 open Formalism.BasicNotions Formalism.MainNotions.G
 
 /- English proof (translation)
-Establish `hw1 : 1 ≤ w` using `by have := abs_nonneg c0; linarith`. Establish `hw2 : w ≤ w ^ 2` using `by nlinarith`. Establish `hw21 : 1 ≤ w ^ 2` using `one_le_pow₀ hw1`. Establish `hw3 : w ^ 3 ≤ w ^ 6` using `pow_le_pow_right₀ hw1 (by norm_num)`. Establish `h1 : |c0| ≤ |c0| * w ^ 2` using `le_mul_of_one_le_right (abs_nonneg _) hw21`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : E * w ≤ E * w ^ 2` using `mul_le_mul_of_nonneg_left hw2 hE`. Establish `h3 : (|c0| + 18 + 4 * E) * w ^ 2 ≤ w * w ^ 2` using `mul_le_mul_of_nonneg_right (by linarith) (sq_nonneg w)`. Establish `h4 : w * w ^ 2 = w ^ 3` using `by ring`. Establish `h5` using `le_abs_self c0`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem key_ineq (c0 E w : ℝ) (hE : 0 ≤ E) (hw : 1 + |c0| + 18 + 4 * E ≤ w) :
     c0 + 4 * (E * w) + 2 * w ^ 2 + 12 * w ≤ w ^ 6 := by
@@ -26,50 +26,46 @@ theorem key_ineq (c0 E w : ℝ) (hE : 0 ≤ E) (hw : 1 + |c0| + 18 + 4 * E ≤ w
   nlinarith
 
 /- English proof (translation)
-The claim follows from `(Real.exp_nat_mul y k).symm`.
+A detailed English derivation is pending.
 -/
 theorem exp_pow_eq (y : ℝ) (k : ℕ) : Real.exp y ^ k = Real.exp (k * y) := (Real.exp_nat_mul y k).symm
 
 /- English proof (translation)
-Substitute `hb ha hY` using the available equality. Establish `hw1 : 1 ≤ w` using `by have := abs_nonneg (Real.log ((2 + |d1| + 2 * |d2|) * (10 + 4 * E) ^ 2)); linarith`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hn0 : 0 < n` using `by linarith`. Establish `hN0 : 0 < N` using `by linarith`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he2 : 0 < Real.exp (w ^ 2)` using `Real.exp_pos _`. Establish `he6 : 0 < Real.exp (w ^ 6)` using `Real.exp_pos _`. Establish `hl0 : 0 ≤ Real.log x` using `Real.log_nonneg hx.le`. Establish `hw6 : 0 ≤ w ^ 6` using `by positivity`. Establish `hw2 : 1 ≤ w ^ 2` using `one_le_pow₀ hw1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEw : 0 ≤ E * w` using `mul_nonneg hE (by linarith)`. Establish `hlogn : Real.log n ≤ 3 * Real.log x`. Combine the equalities or inequalities in the displayed calculation. Establish `hlogn0 : 0 ≤ Real.log n` using `Real.log_nonneg hn1`. Establish `hlogN0 : 0 ≤ Real.log N` using `Real.log_nonneg hN1`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogN : Real.log N ≤ w ^ 2`. Establish `h1 : Real.log (N ^ 2) ≤ w ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[Real.log_pow]`. Move the coercions through the operations in `at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hxb : 0 < x * Real.exp (w ^ 6)` using `mul_pos hx0 he6`. Establish `hloga : Real.log (x * Real.exp (w ^ 6)) = Real.log x + w ^ 6`. Rewrite using `[Real.log_mul hx0.ne' he6.ne', Real.log_exp]`. Establish `h8n : (0 : ℝ) < 8 * n` using `by linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h8nN : 0 < 8 * n * N` using `mul_pos h8n hN0`. Establish `hL1 : Real.log (8 * n * N * (x * Real.exp (w ^ 6))) = Real.log 8 + Real.log n + Real.log N + (Real.log x + w ^ 6)`. Rewrite using `[Real.log_mul h8nN.ne' hxb.ne', Real.log_mul h8n.ne' hN0.ne', Real.log_mul (by norm_num) hn0.ne', hloga]`. Establish `hL2 : Real.log (x * n * Real.exp (w ^ 2)) = Real.log x + Real.log n + w ^ 2`. Rewrite using `[Real.log_mul (mul_pos hx0 hn0).ne' he2.ne', Real.log_mul hx0.ne' hn0.ne', Real.log_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL3 : Real.log (2 * (x * Real.exp (w ^ 6))) = Real.log 2 + (Real.log x + w ^ 6)`. Rewrite using `[Real.log_mul (by norm_num) hxb.ne', hloga]`. Establish `hlog8 : Real.log 8 ≤ 7`. Use `Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 8); linarith` as an intermediate fact. Establish `hlog80 : 0 ≤ Real.log 8` using `Real.log_nonneg (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog2 : Real.log 2 ≤ 1`. Use `Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2); linarith` as an intermediate fact. Establish `hlog20 : 0 ≤ Real.log 2` using `Real.log_nonneg (by norm_num)`. Use `set P : ℝ := 8 + 4 * (E * w) + w ^ 2 + w ^ 6 with hPdef`. Use `set L1 := Real.log (8 * n * N * (x * Real.exp (w ^ 6))) with hL1def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `set L2 := Real.log (x * n * Real.exp (w ^ 2)) with hL2def`. Use `set L3 := Real.log (2 * (x * Real.exp (w ^ 6))) with hL3def`. Apply the tactic sequence `have A1 : 0 ≤ L1 ∧ L1 ≤ P := by rw [hL1]; constructor <;> linarith`. Apply the tactic sequence `have A2 : 0 ≤ L2 ∧ L2 ≤ P := by rw [hL2]; constructor <;> linarith`. Apply the tactic sequence `have A3 : 0 ≤ L3 ∧ L3 ≤ P := by rw [hL3]; constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hlogY : 1 ≤ L2` using `by rw [hL2]; linarith`. Establish `hY1 : 1 < x * n * Real.exp (w ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Use `set R := N ^ 2 * (L1 + L2) + |d1| * N ^ 2 * L3 + 2 * |d2| * L3 ^ 2 with hRdef`. Establish `hR0 : 0 ≤ R` using `add_nonneg (add_nonneg (mul_nonneg (sq_nonneg N) (add_nonneg A1.1 A2.1)) (mul_nonneg (by positivity) A3.1)) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hR0, ?_, hY1, hlogY⟩` and prove the remaining obligations. Establish `hP1 : 1 ≤ P` using `by linarith`. Establish `hPP : P ≤ P ^ 2` using `by nlinarith`. Establish `he21 : 1 ≤ Real.exp (w ^ 2)` using `Real.one_le_exp (by positivity)`. Use `set Aa : ℝ := 2 + |d1| + 2 * |d2| with hAa`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : N ^ 2 * (L1 + L2) ≤ Real.exp (w ^ 2) * (2 * P ^ 2)` using `mul_le_mul hN (by linarith) (add_nonneg A1.1 A2.1) he2.le`. Establish `t2 : N ^ 2 * L3 ≤ Real.exp (w ^ 2) * P ^ 2` using `mul_le_mul hN (A3.2.trans hPP) A3.1 he2.le`. Establish `t2' : |d1| * N ^ 2 * L3 ≤ |d1| * (Real.exp (w ^ 2) * P ^ 2)`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left t2 (abs_nonneg _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `t3 : L3 ^ 2 ≤ Real.exp (w ^ 2) * P ^ 2` using `(pow_le_pow_left₀ A3.1 A3.2 2).trans (le_mul_of_one_le_left (sq_nonneg _) he21)`. Establish `t3' : 2 * |d2| * L3 ^ 2 ≤ 2 * |d2| * (Real.exp (w ^ 2) * P ^ 2)` using `mul_le_mul_of_nonneg_left t3 (by positivity)`. Establish `hRle : R ≤ Real.exp (w ^ 2) * P ^ 2 * Aa`. Rewrite using `[hRdef, hAa]`. Combine the linear relations using `only [t1, t2', t3']`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hxle : x ≤ Real.exp (E * w)`. Combine the equalities or inequalities in the displayed calculation. Establish `hYle : x * n * Real.exp (w ^ 2) ≤ Real.exp (4 * (E * w)) * Real.exp (w ^ 2)`. Establish `h1 : x * n ≤ x ^ 4`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h2 : x ^ 4 ≤ Real.exp (4 * (E * w))`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul_of_nonneg_right (h1.trans h2) he2.le`. Establish `hP6 : P ≤ (10 + 4 * E) * w ^ 6`. Establish `a1 : 1 ≤ w ^ 6` using `one_le_pow₀ hw1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : w ≤ w ^ 6`. Combine the equalities or inequalities in the displayed calculation. Establish `a3 : w ^ 2 ≤ w ^ 6` using `pow_le_pow_right₀ hw1 (by norm_num)`. Establish `a4 : E * w ≤ E * w ^ 6` using `mul_le_mul_of_nonneg_left a2 hE`. Rewrite using `[hPdef]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `only [a1, a3, a4]`. Establish `hwexp : w ≤ Real.exp w` using `by linarith [Real.add_one_le_exp w]`. Establish `hw12 : w ^ 12 ≤ Real.exp (12 * w)`. Combine the equalities or inequalities in the displayed calculation. Establish `hPsq : P ^ 2 ≤ (10 + 4 * E) ^ 2 * Real.exp (12 * w)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hAa0 : 0 < Aa` using `by rw [hAa]; positivity`. Use `set c0 := Real.log (Aa * (10 + 4 * E) ^ 2) with hc0`. Establish `hc0e : Real.exp c0 = Aa * (10 + 4 * E) ^ 2` using `Real.exp_log (by positivity)`. Establish `hkey` using `key_ineq c0 E w hE hW`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_add, Real.exp_add, Real.exp_add, hc0e]`. Establish `: Real.exp (2 * w ^ 2) = Real.exp (w ^ 2) * Real.exp (w ^ 2)`. Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form.
-
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Real.exp (w ^ 6) := Real.exp_le_exp.2 hkey`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem core (x w E n N d1 d2 a b Y : ℝ) (hx : 1 < x) (hE : 0 ≤ E)
     (hW : 1 + |Real.log ((2 + |d1| + 2 * |d2|) * (10 + 4 * E) ^ 2)| + 18 + 4 * E ≤ w)

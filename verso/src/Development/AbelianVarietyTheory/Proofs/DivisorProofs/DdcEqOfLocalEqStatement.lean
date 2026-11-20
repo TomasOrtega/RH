@@ -9,7 +9,7 @@ open GlobalTheory.GoodMetric (coordVec)
 open scoped ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SecForm.DdcGerm.ddc_eq_of_eventuallyEq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDdcEqOfLocalEq.lean&line=33#L33)
 -/

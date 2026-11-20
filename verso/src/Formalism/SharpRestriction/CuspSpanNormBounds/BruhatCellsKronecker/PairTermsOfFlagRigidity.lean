@@ -18,14 +18,14 @@ variable {H G : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDi
   [NormedAddCommGroup G] [InnerProductSpace ℂ G] [FiniteDimensional ℂ G]
 
 /- English proof (translation)
-Rewrite using `[FrobeniusProjectedBounds.hsNormSq_eq]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem q_hs_nonneg (A : H →L[ℂ] G) : 0 ≤ hsNormSq A := by
   rw [FrobeniusProjectedBounds.hsNormSq_eq]
   positivity
 
 /- English proof (translation)
-Rewrite using `[FrobeniusProjectedBounds.hsNormSq_eq, FrobeniusProjectedBounds.hsNormSq_eq, FrobeniusProjectedBounds.hsNormSq_eq, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.add_apply]`. Establish `h` using `norm_add_le (A (stdOrthonormalBasis ℂ H i)) (B (stdOrthonormalBasis ℂ H i))`. Use polynomial arithmetic with `[norm_nonneg (A (stdOrthonormalBasis ℂ H i) + B (stdOrthonormalBasis ℂ H i)), norm_nonneg (A (stdOrthonormalBasis ℂ H i)), norm_nonneg (B (stdOrthonormalBasis ℂ H i)), sq_nonneg (‖A (stdOrthonormalBasis ℂ H i)‖ - ‖B (stdOrthonormalBasis ℂ H i)‖)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem q_hs_add_le (A B : H →L[ℂ] G) : hsNormSq (A + B) ≤ 2 * hsNormSq A + 2 * hsNormSq B := by
   rw [FrobeniusProjectedBounds.hsNormSq_eq, FrobeniusProjectedBounds.hsNormSq_eq, FrobeniusProjectedBounds.hsNormSq_eq, Finset.mul_sum, Finset.mul_sum,
@@ -44,7 +44,7 @@ section Sizes
 variable (D : D7) (large₂ : SizeData₂ D)
 
 /- English proof (translation)
-Establish `h1` using `D.R.m_add_three_le_k`. Establish `h2` using `D.R.two_le_m`. Establish `h : 5 ≤ D.R.k` using `by omega`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem q_five_le_k : (5 : ℝ) ≤ D.R.k := by
   have h1 := D.R.m_add_three_le_k
@@ -53,28 +53,28 @@ theorem q_five_le_k : (5 : ℝ) ≤ D.R.k := by
   exact_mod_cast h
 
 /- English proof (translation)
-Unfold `Scale.L`. Conclude with `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem q_one_le_L : 1 ≤ large₂.sc.L := by
   unfold Scale.L
   exact Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le
 
 /- English proof (translation)
-Unfold `Scale.b`. Conclude with `Real.one_le_exp (by linarith [q_one_le_L D large₂])`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem q_one_le_b : 1 ≤ large₂.sc.b := by
   unfold Scale.b
   exact Real.one_le_exp (by linarith [q_one_le_L D large₂])
 
 /- English proof (translation)
-Unfold `Ranks.f`. Conclude with `D.R.f_le_k` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem q_f_le_k : (D.R.f : ℝ) ≤ D.R.k := by
   unfold Ranks.f
   exact_mod_cast D.R.f_le_k
 
 /- English proof (translation)
-Establish `h1` using `D.R.m_le_f`. Establish `h2` using `D.R.two_le_m`. Unfold `Ranks.f`. Establish `h : 1 ≤ 2 * D.R.ord` using `by omega`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem q_one_le_f : (1 : ℝ) ≤ D.R.f := by
   have h1 := D.R.m_le_f
@@ -84,9 +84,9 @@ theorem q_one_le_f : (1 : ℝ) ≤ D.R.f := by
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `hf` using `q_one_le_f D`. Establish `hL` using `q_one_le_L D large₂`. Establish `h5 : (32 : ℝ) ≤ (D.R.m : ℝ) ^ 5`. Use `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 2) hm 5` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 -/
 theorem q_M_ge : (32 : ℝ) ≤ (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L := by
   have hm : (2 : ℝ) ≤ D.R.m := by exact_mod_cast D.R.two_le_m
@@ -101,9 +101,9 @@ theorem q_M_ge : (32 : ℝ) ≤ (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L := by
     _ ≤ (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L := by gcongr
 
 /- English proof (translation)
-Establish `hk` using `q_five_le_k D`. Establish `hb` using `q_one_le_b D large₂`. Establish `hf` using `q_f_le_k D`. Establish `hy : (5 : ℝ) ≤ D.R.k * large₂.sc.b` using `by nlinarith`. Establish `h7 : (10 : ℝ) ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 7`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h8 : 10 * ((D.R.k : ℝ) * large₂.sc.b) ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8`. Establish `: ((D.R.k : ℝ) * large₂.sc.b) ^ 8 = ((D.R.k : ℝ) * large₂.sc.b) ^ 7 * ((D.R.k : ℝ) * large₂.sc.b)` using `by ring`. Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -122,19 +122,17 @@ theorem q_g_ge {g : ℝ} (h : ((D.R.k : ℝ) * large₂.sc.b) ^ 8 ≤ g) : 10 * 
   nlinarith
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, hg1, _, hg2, _⟩` from `hH.1`. Establish `e` using `typed_factor_split_of_data D hH.2.1`. Unfold `HostFactorProductPowerIdentity at e`. Rewrite using `[e, Fin.prod_univ_two]`. Establish `hf` using `q_one_le_f D`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1` using `q_g_ge D large₂ hg1`. Establish `a2` using `q_g_ge D large₂ hg2`. Establish `p1 : (0 : ℝ) < D.host.g 0` using `by linarith`. Establish `p2 : (0 : ℝ) < D.host.g 1` using `by linarith`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `b1 : 1 + 3 / (D.host.g 0 : ℝ) ≤ Real.exp (3 / (D.host.g 0 : ℝ))`. Use `Real.add_one_le_exp (3 / (D.host.g 0 : ℝ))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `b2 : 1 + 3 / (D.host.g 1 : ℝ) ≤ Real.exp (3 / (D.host.g 1 : ℝ))`. Use `Real.add_one_le_exp (3 / (D.host.g 1 : ℝ))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `b3 : (1 + 3 / (D.host.g 0 : ℝ)) * (1 + 3 / (D.host.g 1 : ℝ)) ≤ Real.exp (3 / (D.host.g 0 : ℝ) + 3 / (D.host.g 1 : ℝ))`. Rewrite using `[Real.exp_add]`. Conclude with `mul_le_mul b1 b2 (by positivity) (Real.exp_pos _).le`. Establish `c1 : (D.R.f : ℝ) * (3 / (D.host.g 0 : ℝ)) ≤ 3 / 10`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_assoc', div_le_div_iff₀ p1 (by norm_num)]; linarith`. Establish `c2 : (D.R.f : ℝ) * (3 / (D.host.g 1 : ℝ)) ≤ 3 / 10`. Rewrite using `[mul_div_assoc', div_le_div_iff₀ p2 (by norm_num)]; linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_nat_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `_ ≤ Real.exp (Real.log 2) := by`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use `Real.log_two_gt_d9` as an intermediate fact. Rewrite using `[mul_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `_ = 2 := Real.exp_log (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem typed_places_factor_bounds {C' Cl Cg cb Cu cT CT C0 : ℝ} (hH : FrobeniusProjectedBounds.Hyp D large₂ C' Cl Cg cb Cu cT CT C0) :
     0 ≤ f3G D ∧ f3G D ≤ 2 := by
@@ -172,11 +170,11 @@ theorem typed_places_factor_bounds {C' Cl Cg cb Cu cT CT C0 : ℝ} (hH : Frobeni
     _ = 2 := Real.exp_log (by norm_num)
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, hg1, _, hg2, _⟩` from `hH.1`. Rewrite using `[gaG_eq D hH.2.1.2.2.2.2.2.2.2.2.2.2.1 hH.2.1.2.2.2.2.2.2.2.2.2.2.2.1]`. Establish `hf` using `q_one_le_f D`. Establish `a1` using `q_g_ge D large₂ hg1`. Establish `a2` using `q_g_ge D large₂ hg2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ g : ℝ, 10 * (D.R.f : ℝ) ≤ g → 0 < ∏ i ∈ Finset.Icc 1 D.R.k, (g ^ i - 1)`. Introduce `g hg`. Use `Finset.prod_pos fun i hi => ?_` and prove the remaining obligations. Establish `h1 : (1 : ℝ) < g` using `by linarith`. Establish `hi' : i ≠ 0` using `by have := (Finset.mem_Icc.1 hi).1; omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `one_lt_pow₀ h1 hi'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `mul_pos (pow_pos (key _ a1) _) (pow_pos (key _ a2) _)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem q_gaG_pos {C' Cl Cg cb Cu cT CT C0 : ℝ} (hH : FrobeniusProjectedBounds.Hyp D large₂ C' Cl Cg cb Cu cT CT C0) : 0 < gaG D := by
   obtain ⟨_, _, _, _, _, _, _, _, _, _, _, hg1, _, hg2, _⟩ := hH.1
@@ -194,27 +192,27 @@ theorem q_gaG_pos {C' Cl Cg cb Cu cT CT C0 : ℝ} (hH : FrobeniusProjectedBounds
   exact mul_pos (pow_pos (key _ a1) _) (pow_pos (key _ a2) _)
 
 /- English proof (translation)
-Unfold `FrobeniusProjectedBounds.Gam`. Rewrite using `[← large₂.Gam_eq D.u₀, Real.exp_log (lt_trans one_pos (D.mem D.u₀).A.one_lt_gammaP)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem q_Gam_eq : FrobeniusProjectedBounds.Gam D = Real.exp (large₂.CGam * (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L) := by
   unfold FrobeniusProjectedBounds.Gam
   rw [← large₂.Gam_eq D.u₀, Real.exp_log (lt_trans one_pos (D.mem D.u₀).A.one_lt_gammaP)]
 
 /- English proof (translation)
-Unfold `FrobeniusProjectedBounds.Dst`. Rewrite using `[← D.Dstar_eq D.u₀]`. Conclude with `(D.mem D.u₀).A.Dstar_pos`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_Dst_pos : 0 < FrobeniusProjectedBounds.Dst D := by
   unfold FrobeniusProjectedBounds.Dst
   rw [← D.Dstar_eq D.u₀]; exact (D.mem D.u₀).A.Dstar_pos
 
 /- English proof (translation)
-Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hE1 : 1 ≤ Real.exp (mx * M)` using `Real.one_le_exp (mul_nonneg hmx hM0)`. Establish `hN : Real.exp (CN * M) ≤ Real.exp (mx * M)` using `Real.exp_le_exp.mpr (mul_le_mul_of_nonneg_right hCN hM0)`. Establish `hEE : Real.exp (CE * M) ≤ Real.exp (mx * M)` using `Real.exp_le_exp.mpr (mul_le_mul_of_nonneg_right hCE hM0)`. Establish `hG : Real.exp (mx * M) * Real.exp M ≤ Real.exp (CG * M)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `hexpM : 33 ≤ Real.exp M`. Use `Real.add_one_le_exp M` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpN` using `Real.exp_pos (CN * M)`. Establish `hpE` using `Real.exp_pos (CE * M)`. Establish `h1' : a2 * Real.exp (CN * M) ≤ Real.exp (mx * M)` using `by nlinarith`. Establish `hs0 : 0 ≤ a3 + Real.exp (CE * M)` using `by linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : f3 * (a3 + Real.exp (CE * M)) ≤ 2 * (1 + Real.exp (mx * M))`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.mpr hf') hs0]`. Establish `h33 : 33 * Real.exp (mx * M) ≤ Real.exp (mx * M) * Real.exp M` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem q_const {M mx CN CE CG a1 a2 a3 f3 : ℝ} (hM : 32 ≤ M) (hCN : CN ≤ mx) (hCE : CE ≤ mx) (hmx : 0 ≤ mx)
     (hCG : mx + 1 ≤ CG) (h1 : a1 ≤ 1) (_h2 : 0 ≤ a2) (h2' : a2 ≤ 1) (h3' : 0 ≤ a3) (h3 : a3 ≤ 1) (_hf : 0 ≤ f3) (hf' : f3 ≤ 2) :
@@ -248,19 +246,19 @@ section B
 variable {D : D7} {large₂ : SizeData₂ D} {X : TermTie D} {C' Cl Cg cb Cu cT CT C0 : ℝ}
 
 /- English proof (translation)
-Take `⟨hE, _⟩` from `h1 hH u u`. Take `⟨c1, c2, c3, _, c5, _, _, _⟩` from `ha hH u`. Establish `hs : Summable (fun t => D.s.aTerm u u t)` using `hE.summable`. Use `set a : D.s.Term u u → (D.s.Cu u →L[ℂ] D.s.Cu u) := fun t => D.s.aTerm u u t with ha'`. Establish `i1 : ({t | D.s.inS t} : Set (D.s.Term u u)).indicator a = ({t | D.s.isId t} : Set (D.s.Term u u)).indicator a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Distinguish the cases in `hi : D.s.isId t`. Simplify using `[Set.indicator, hi, c2 t hi]`. Distinguish the cases in `hS : D.s.inS t`. Establish `hr : ¬ D.s.relevant t` using `fun hr => hi (c3 t hS hr)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator, hi, hS, ha', c5 t hr]`. Simplify using `[Set.indicator, hi, hS]`. Establish `s1 : HasSum (({t | D.s.isId t} : Set (D.s.Term u u)).indicator a) (ContinuousLinearMap.id ℂ (D.s.Cu u))`. Rewrite using `[← i1]`. Conclude with `(hasSum_subtype_iff_indicator (s := {t | D.s.inS t})).1 c1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sS : ∀ S : Set (D.s.Term u u), HasSum (S.indicator a) (KOf D.s u u S)` using `fun S => (hasSum_subtype_iff_indicator (s := S)).1 (hs.subtype S).hasSum`. Establish `s2` using `sS {t | D.s.Gterm t = 0 ∧ ¬ D.s.isId t}`. Establish `s3` using `sS (famNG D.s)`. Establish `s4` using `sS (famG D.s)`. Establish `e : (fun t => ({t | D.s.isId t} : Set (D.s.Term u u)).indicator a t + ({t | D.s.Gterm t = 0 ∧ ¬ D.s.isId t} : Set (D.s.Term u u)).indicator a t + (famNG D.s : Set (D.s.Term u u)).indicator a t + (famG D.s : Set (D.s.Term u u)).indicator a t) = a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `t`. Distinguish the cases in `hi : D.s.isId t`. Simplify using `[Set.indicator, famNG, famG, hi]`. Distinguish the cases in `hG : D.s.Gterm t = 0`. Simplify using `[Set.indicator, famNG, famG, hi, hG]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hg : D.s.generic t`. Simplify using `[Set.indicator, famNG, famG, hi, hG, hg]`. Simplify using `[Set.indicator, famNG, famG, hi, hG, hg]`. Establish `tot` using `((s1.add s2).add s3).add s4`. Rewrite `tot` using `[e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hE.unique tot` as an intermediate fact. Rewrite using `[this]`. Unfold `FrobeniusProjectedBounds.Kpp`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem q_split (hH : FrobeniusProjectedBounds.Hyp D large₂ C' Cl Cg cb Cu cT CT C0) (h1 : FrobeniusProjectedBounds.adm1 D large₂ C' Cl Cg cb Cu cT CT C0)
     (ha : FrobeniusProjectedBounds.Conclusion1 D large₂ X C' Cl Cg cb Cu cT CT C0) (u : D.what₂.Word) :
@@ -306,35 +304,29 @@ theorem q_split (hH : FrobeniusProjectedBounds.Hyp D large₂ C' Cl Cg cb Cu cT 
   abel
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, c8⟩` from `ha hH u`. Establish `hg` using `q_gaG_pos D large₂ hH`. Take `⟨hf0, _⟩` from `typed_places_factor_bounds D large₂ hH`. Use `set v : D.s.Pair u u → ℂ := fun p => D.s.pval p with hv`. Use `set P : Set (D.s.Pair u u) := pairsIn D.s (famG D.s) with hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set Lp : Set (D.s.Pair u u) := {p | p ∈ P ∧ loopP D.s p} with hLp`. Use `set Sc : Set (D.s.Pair u u) := {p | FrobeniusProjectedBounds.scalG p} with hSc`. Use `set BL := Real.exp (-(cL * FrobeniusProjectedBounds.kR D * FrobeniusProjectedBounds.fR D * Real.log (FrobeniusProjectedBounds.kR D))) * (FrobeniusProjectedBounds.du D u * FrobeniusProjectedBounds.du D u) / FrobeniusProjectedBounds.Dst D with hBL`. Use `set BE := Real.exp (CE * FrobeniusProjectedBounds.mR D ^ 5 * FrobeniusProjectedBounds.fR D * large₂.sc.L) * FrobeniusProjectedBounds.du D u ^ 2 / FrobeniusProjectedBounds.Dst D with hBE`. Establish `hU : P = Lp ∪ Sc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `p`. Prove the components needed by the constructor for the conclusion. Introduce `hp`. Distinguish the cases in `hs : scalarP D.s p`. Conclude with `Or.inr ⟨hp, hs⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Prove the second alternative.
 
-Use `Or.inl ⟨hp, hp.1.2.1, hp.2.2.1, ?_⟩` and prove the remaining obligations. Establish `h1` using `c8 p hp.1.2.1 hp.2.2.1`. Distinguish the cases in `h2 : 2 ≤ D.s.s0 p`. Conclude with `Or.inl h2`. Establish `h3 : D.s.s0 p = 1` using `by omega`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inr ⟨hp.1.2.2, hp.2.2.2, h3, fun hsc => hs ⟨hp.1.2.2, hp.2.2.2, h3, hsc⟩⟩`. Introduce and unpack `(h | h)`. Conclude with `h.1`. Conclude with `h.1`. Establish `hDj : Disjoint Lp Sc`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.disjoint_left]`. Introduce and unpack `p ⟨_, _, _, h⟩ ⟨_, _, _, h1, hsc⟩`. Break down `h with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `h.2.2.2 hsc`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLfin : ∀ S : Finset Lp, ∑ p ∈ S, ‖v p.1‖ ≤ BL / gaG D`. Introduce `S`. Establish `h` using `h4 hH u u (S.map (Function.Embedding.subtype _)) (by`. Introduce `p hp`. Take `⟨q, _, rfl⟩` from `Finset.mem_map.1 hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `q.2.2)`. Rewrite `h` using `[Finset.sum_map]`. Rewrite using `[le_div_iff₀ hg, mul_comm]`. Conclude with `h`. Establish `nL : Summable (fun p : Lp => ‖v p.1‖)` using `summable_of_sum_le (fun _ => norm_nonneg _) hLfin`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tL : ∑' p : Lp, ‖v p.1‖ ≤ BL / gaG D` using `nL.tsum_le_of_sum_le hLfin`. Establish `sL : Summable (fun p : Lp => v p.1)` using `nL.of_norm`. Take `⟨sS, bS⟩` from `h6 hH u`. Establish `nS : Summable (fun p : Sc => ‖v p.1‖)` using `summable_norm_iff.2 sS`. Establish `nP : Summable (fun p : P => ‖v p.1‖)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a1` using `(summable_subtype_iff_indicator (s := Lp) (f := fun p => ‖v p‖)).1 nL`. Establish `a2` using `(summable_subtype_iff_indicator (s := Sc) (f := fun p => ‖v p‖)).1 nS`. Use `(summable_subtype_iff_indicator (s := P) (f := fun p => ‖v p‖)).2 ?_` and prove the remaining obligations. Rewrite using `[hU, Set.indicator_union_of_disjoint hDj]`. Conclude with `a1.add a2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `tP : ∑' p : P, v p.1 = ∑' p : Lp, v p.1 + ∑' p : Sc, v p.1`. Establish `a1` using `(hasSum_subtype_iff_indicator (s := Lp) (f := v)).1 sL.hasSum`. Establish `a2` using `(hasSum_subtype_iff_indicator (s := Sc) (f := v)).1 sS.hasSum`. Establish `a3` using `a1.add a2`. Establish `e : (fun p => Lp.indicator v p + Sc.indicator v p) = P.indicator v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU, Set.indicator_union_of_disjoint hDj]`. Rewrite `a3` using `[e]`. Conclude with `((hasSum_subtype_iff_indicator (s := P) (f := v)).2 a3).tsum_eq`. Establish `main` using `h2 hH u u (famG D.s) (Or.inl rfl) (fun t ht => ht.2.1) nP`. Establish `r1 : gaG D * (∑' p : Lp, v p.1).re ≤ BL`.
-
-Establish `b1 : (∑' p : Lp, v p.1).re ≤ BL / gaG D` using `le_trans (Complex.re_le_norm _) (le_trans (norm_tsum_le_tsum_norm nL) tL)`. Combine the equalities or inequalities in the displayed calculation. Establish `r2 : gaG D * (∑' p : Sc, v p.1).re ≤ BE`. Establish `b1 : ‖(gaG D : ℂ) * ∑' p : Sc, v p.1‖ = gaG D * ‖∑' p : Sc, v p.1‖`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hg]`.
-
-Establish `b2 : gaG D * ‖∑' p : Sc, v p.1‖ ≤ BE` using `by rw [← b1]; exact bS`. Conclude with `le_trans (mul_le_mul_of_nonneg_left (Complex.re_le_norm _) hg.le) b2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tP, Complex.add_re]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ f3G D * (BL + BE) := mul_le_mul_of_nonneg_left (add_le_add r1 r2) hf0`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem q_gen_le {cL CE : ℝ} (hH : FrobeniusProjectedBounds.Hyp D large₂ C' Cl Cg cb Cu cT CT C0)
     (h2 : FrobeniusProjectedBounds.adm2 D large₂ C' Cl Cg cb Cu cT CT C0) (h4 : FrobeniusProjectedBounds.ArchimedeanSignatureMatching D large₂ C' Cl Cg cb Cu cT CT C0 cL)
@@ -424,31 +416,29 @@ theorem q_gen_le {cL CE : ℝ} (hH : FrobeniusProjectedBounds.Hyp D large₂ C' 
     _ ≤ f3G D * (BL + BE) := mul_le_mul_of_nonneg_left (add_le_add r1 r2) hf0
 
 /- English proof (translation)
-Introduce and unpack `⟨hcL, hcN, hCN, hCE, hCG⟩ ⟨h1, h2, h4, h5, h6⟩ ha hH u`. Rewrite using `[q_split hH h1 ha u]`. Establish `g1` using `h5 hH u u`. Establish `g2` using `q_gen_le hH h2 h4 h6 ha u`. Take `⟨hf0, hf2⟩` from `typed_places_factor_bounds D large₂ hH`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hD` using `q_Dst_pos D`. Use `set Q := FrobeniusProjectedBounds.du D u ^ 2 / FrobeniusProjectedBounds.Dst D with hQ`. Establish `hQ0 : 0 ≤ Q` using `by positivity`. Use `set M := (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L with hM`. Establish `hk` using `q_five_le_k D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : 0 ≤ Real.log (D.R.k : ℝ)` using `Real.log_nonneg (by linarith)`. Establish `hfp : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Use `set a1 := Real.exp (-(cN * FrobeniusProjectedBounds.kR D * FrobeniusProjectedBounds.fR D * Real.log (FrobeniusProjectedBounds.kR D))) with ha1`. Use `set a2 := (2 : ℝ) ^ (-(FrobeniusProjectedBounds.kR D - 2 * FrobeniusProjectedBounds.rR D - 5)) with ha2`. Use `set a3 := Real.exp (-(cL * FrobeniusProjectedBounds.kR D * FrobeniusProjectedBounds.fR D * Real.log (FrobeniusProjectedBounds.kR D))) with ha3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `b1 : a1 ≤ 1`. Rewrite using `[ha1, Real.exp_le_one_iff]`. Unfold `FrobeniusProjectedBounds.kR FrobeniusProjectedBounds.fR`. Establish `: 0 ≤ cN * (D.R.k : ℝ) * D.R.f * Real.log (D.R.k : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `b3 : a3 ≤ 1`. Rewrite using `[ha3, Real.exp_le_one_iff]`. Unfold `FrobeniusProjectedBounds.kR FrobeniusProjectedBounds.fR`. Establish `: 0 ≤ cL * (D.R.k : ℝ) * D.R.f * Real.log (D.R.k : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `b2 : a2 ≤ 1`. Rewrite using `[ha2]`. Apply `Real.rpow_le_one_of_one_le_of_nonpos (by norm_num)` to reduce the goal to its premises. Unfold `FrobeniusProjectedBounds.kR FrobeniusProjectedBounds.rR`. Establish `hn : 2 * D.R.rS + 5 ≤ D.R.k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨t, ht⟩` from `D.R.m_even`. Establish `h3` using `D.R.m_add_three_le_k`. Establish `h4` using `D.R.two_le_m`. Simplify using `only [Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (2 : ℝ) * D.R.rS + 5 ≤ D.R.k` using `by exact_mod_cast hn`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `b2' : 0 ≤ a2` using `by rw [ha2]; positivity`. Establish `key` using `q_const (M := M) (mx := max CE CN) (CN := CN) (CE := CE) (CG := large₂.CGam) (a1 := a1) (a2 := a2) (a3 := a3) (f3 := f3G D) (q_M_ge D large₂) (le_max_right _ _) (le_max_left _ _) (le_trans hCE (le_max_left _ _)) hCG b1 b2' b2 (Real.exp_pos _).le b3 hf0 hf2`. Establish `eN : Real.exp (CN * FrobeniusProjectedBounds.mR D ^ 5 * FrobeniusProjectedBounds.fR D * large₂.sc.L) = Real.exp (CN * M)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Unfold `FrobeniusProjectedBounds.mR FrobeniusProjectedBounds.fR`. Rewrite using `[hM]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `eE : Real.exp (CE * FrobeniusProjectedBounds.mR D ^ 5 * FrobeniusProjectedBounds.fR D * large₂.sc.L) = Real.exp (CE * M)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Unfold `FrobeniusProjectedBounds.mR FrobeniusProjectedBounds.fR`. Rewrite using `[hM]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `eG : FrobeniusProjectedBounds.Gam D = Real.exp (large₂.CGam * M)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[q_Gam_eq D large₂, hM]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `g1` using `[eN]`. Rewrite `g2` using `[eE]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `g1' : hsNormSq (KOf D.s u u (famNG D.s)) ≤ (a1 + a2 * Real.exp (CN * M)) * Q`. Use `le_trans g1 (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hQ]`. Expand and normalize the polynomial expressions, which then agree. Establish `g2' : hsNormSq (KOf D.s u u (famG D.s)) ≤ (f3G D * (a3 + Real.exp (CE * M))) * Q`.
-
-Use `le_trans g2 (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hQ]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem theorem_S_equal_words (D : D7) (large₂ : SizeData₂ D) (X : TermTie D) (C' Cl Cg cb Cu cT CT C0 cL cN CN CE : ℝ) :
     FrobeniusProjectedBounds.HodgeTateFromSandwich D large₂ X C' Cl Cg cb Cu cT CT C0 cL cN CN CE := by
@@ -514,17 +504,17 @@ theorem theorem_S_equal_words (D : D7) (large₂ : SizeData₂ D) (X : TermTie D
     _ = FrobeniusProjectedBounds.Gam D * FrobeniusProjectedBounds.du D u ^ 2 / FrobeniusProjectedBounds.Dst D := by rw [eG, hQ]; ring
 
 /- English proof (translation)
-Introduce `h3 hb hH u`. Establish `k2` using `h3 hH u`. Establish `k0` using `hb hH u`. Establish `hw` using `(hH.2.1.2.2.2.2.2.2.2.2.2.1 u).2`. Establish `e : KD D u u - ContinuousLinearMap.id ℂ (D.s.Cu u) = (Kmat D.s u u - FrobeniusProjectedBounds.Kpp D u u - ContinuousLinearMap.id ℂ (D.s.Cu u)) + FrobeniusProjectedBounds.Kpp D u u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `KD`. Normalize the expressions using the abelian group laws. Unfold `hsDiagAllD`. Rewrite using `[e]`. Use `le_trans (q_hs_add_le _ _) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hG : 0 < FrobeniusProjectedBounds.Gam D` using `lt_trans one_pos (D.mem D.u₀).A.one_lt_gammaP`. Establish `hD` using `q_Dst_pos D`. Establish `hd : (0 : ℝ) ≤ FrobeniusProjectedBounds.du D u` using `Nat.cast_nonneg _`. Rewrite `hw` using `[D.GamP_eq u]`. Establish `hz : (D.mem D.u₀).A.GamP ^ (-2 : ℤ) = ((D.mem D.u₀).A.GamP ^ 2)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zpow_neg]`. Use `norm_cast`. Rewrite `hw` using `[hz]`. Establish `key : FrobeniusProjectedBounds.Gam D * FrobeniusProjectedBounds.du D u ^ 2 / FrobeniusProjectedBounds.Dst D ≤ C0 / FrobeniusProjectedBounds.Gam D * FrobeniusProjectedBounds.du D u`. Establish `h1 : FrobeniusProjectedBounds.du D u / FrobeniusProjectedBounds.Dst D ≤ (FrobeniusProjectedBounds.Gam D ^ 2)⁻¹ * C0`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hD]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Unfold `FrobeniusProjectedBounds.eF`. Establish `e2 : (2 * C0 / FrobeniusProjectedBounds.Gam D + 2 * Real.exp (-(FrobeniusProjectedBounds.kR D * FrobeniusProjectedBounds.fR D * Real.log (FrobeniusProjectedBounds.kR D)))) * FrobeniusProjectedBounds.du D u = 2 * (C0 / FrobeniusProjectedBounds.Gam D * FrobeniusProjectedBounds.du D …` using `by ring`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem unprojected_bound_of_K2 (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ) :
     FrobeniusProjectedBounds.ConditionalUnprojectedFrobeniusBound D large₂ C' Cl Cg cb Cu cT CT C0 := by
@@ -569,7 +559,7 @@ section Fam
 variable {eps : ℝ} (Fm : FamP eps)
 
 /- English proof (translation)
-Introduce `h3 h2`. Take `⟨x1, h1⟩` from `h3`. Take `⟨x2, h2'⟩` from `h2`. Use `⟨max x1 x2, fun x hx i => ?_⟩` and prove the remaining obligations. Conclude with `unprojected_bound_of_K2 (Fm.D x i) (Fm.L x i) _ _ Cg cb Cu cT CT C0 (h1 x (le_of_max_le_left hx) i) (h2' x (le_of_max_le_right hx) i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unprojected_bound_family (Cg cb Cu cT CT C0 : ℝ) : FrobeniusProjectedBounds.ConditionalFamilyUnprojectedFrobenius Fm Cg cb Cu cT CT C0 := by
   intro h3 h2
@@ -588,7 +578,7 @@ open Formalism.MainNotions.S.Lat Module
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Unfold `FlagG.Xa`. Use `Submodule.span_mono (Set.image_mono fun x hx => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem r_Xa_mono {T : E} (F : FlagG S r T) {i j : ℕ} (h : i ≤ j) : F.Xa i ≤ F.Xa j := by
   unfold FlagG.Xa
@@ -597,21 +587,21 @@ theorem r_Xa_mono {T : E} (F : FlagG S r T) {i j : ℕ} (h : i ≤ j) : F.Xa i �
   omega
 
 /- English proof (translation)
-Unfold `FlagG.Xa`. Conclude with `Submodule.subset_span ⟨a, h, rfl⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem r_e_mem {T : E} (F : FlagG S r T) (a : Fin r) {j : ℕ} (h : a.1 < j) : F.e a ∈ F.Xa j := by
   unfold FlagG.Xa
   exact Submodule.subset_span ⟨a, h, rfl⟩
 
 /- English proof (translation)
-Unfold `FlagG.Xa FlagG.X`. Conclude with `Submodule.span_mono (Set.image_subset_range _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem r_Xa_le_X {T : E} (F : FlagG S r T) (j : ℕ) : F.Xa j ≤ F.X := by
   unfold FlagG.Xa FlagG.X
   exact Submodule.span_mono (Set.image_subset_range _ _)
 
 /- English proof (translation)
-Unfold `FlagG.Xa FlagG.X`. Establish `h : {i : Fin r | i.1 < r} = Set.univ` using `Set.eq_univ_of_forall fun i => i.2`. Rewrite using `[h, Set.image_univ]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem r_Xa_r {T : E} (F : FlagG S r T) : F.Xa r = F.X := by
   unfold FlagG.Xa FlagG.X
@@ -622,23 +612,21 @@ def InSF {T T' : E} (F : LFlag S r T) (F' : LFlag S r T') : Prop :=
   (∀ a : Fin r, F'.fl.e a - F.fl.e a ∈ Xflag F a.val) ∧ F'.fl.z - F.fl.z ∈ Xsp F
 
 /- English proof (translation)
-Establish `h1 : ∀ j, F'.fl.Xa j ≤ F.fl.Xa j`. Introduce `j`. Unfold `FlagG.Xa`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_setOf_eq] at ha`. Establish `hd : F'.fl.e a - F.fl.e a ∈ F.fl.Xa j` using `r_Xa_mono F.fl (le_of_lt ha) (h.1 a)`. Establish `he : F.fl.e a ∈ F.fl.Xa j` using `r_e_mem F.fl a ha`. Establish `hs : F'.fl.e a = (F'.fl.e a - F.fl.e a) + F.fl.e a` using `by abel`. Rewrite using `[hs]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hd he`. Establish `h2 : ∀ j, F.fl.Xa j ≤ F'.fl.Xa j`. Introduce `j`. Proceed by induction on `j using Nat.strong_induction_on with`. Consider the case `_ j ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions.
 
-Unfold `FlagG.Xa`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Simplify using `only [Set.mem_setOf_eq] at ha`. Establish `hd : F'.fl.e a - F.fl.e a ∈ F'.fl.Xa j` using `r_Xa_mono F'.fl (le_of_lt ha) (ih a.val ha (h.1 a))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : F'.fl.e a ∈ F'.fl.Xa j` using `r_e_mem F'.fl a ha`. Establish `hs : F.fl.e a = F'.fl.e a - (F'.fl.e a - F.fl.e a)` using `by abel`. Rewrite using `[hs]`. Conclude with `sub_mem he hd`. Establish `key : ∀ j, F'.fl.Xa j = F.fl.Xa j` using `fun j => le_antisymm (h1 j) (h2 j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hX : F'.fl.X = F.fl.X` using `by rw [← r_Xa_r F'.fl, ← r_Xa_r F.fl, key]`. Unfold `FrobeniusProjectedBounds.SameFlag`. Use `⟨fun j => key j, ?_⟩` and prove the remaining obligations. Use `show F'.fl.Xplus = F.fl.Xplus`. Unfold `FlagG.Xplus`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hX]`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le le_sup_left ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Establish `hs : F'.fl.z = (F'.fl.z - F.fl.z) + F.fl.z` using `by abel`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Conclude with `add_mem (Submodule.mem_sup_left h.2) (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))`. Use `sup_le le_sup_left ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Establish `hs : F.fl.z = F'.fl.z - (F'.fl.z - F.fl.z)` using `by abel`.
-
-Rewrite using `[hs]`. Conclude with `sub_mem (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)) (Submodule.mem_sup_left h.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_sameFlag_of_inS {T T' : E} {F : LFlag S r T} {F' : LFlag S r T'} (h : InSF F F') :
     FrobeniusProjectedBounds.SameFlag F F' := by
@@ -686,9 +674,7 @@ theorem r_sameFlag_of_inS {T T' : E} {F : LFlag S r T} {F' : LFlag S r T'} (h : 
     exact sub_mem (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)) (Submodule.mem_sup_left h.2)
 
 /- English proof (translation)
-Unfold `FlagG.Xplus`. Use `Fin.lastCases ?_ (fun a => ?_) b` and prove the remaining obligations. Simplify using `only [FlagG.fvec, Fin.snoc_last]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self F.z)`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`.
-
-Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨a, rfl⟩)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem r_fvec_mem {T : E} (F : FlagG S r T) (b : Fin (r + 1)) : F.fvec b ∈ F.Xplus := by
   unfold FlagG.Xplus
@@ -699,9 +685,9 @@ theorem r_fvec_mem {T : E} (F : FlagG S r T) (b : Fin (r + 1)) : F.fvec b ∈ F.
     exact Submodule.mem_sup_left (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Establish `hle : F.Xplus ≤ LinearMap.ker (S.hT (F.e a))`. Unfold `FlagG.Xplus FlagG.X`. Rewrite using `[sup_le_iff, Submodule.span_le, Submodule.span_le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `_ ⟨b, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `LinearMap.mem_ker.mpr (F.e_iso a b)`. Introduce and unpack `_ rfl`. Conclude with `LinearMap.mem_ker.mpr (F.z_orth a)`. Conclude with `LinearMap.mem_ker.mp (hle hy)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem r_e_perp {T : E} (F : FlagG S r T) (a : Fin r) {y : S.V} (hy : y ∈ F.Xplus) : S.hT (F.e a) y = 0 := by
   have hle : F.Xplus ≤ LinearMap.ker (S.hT (F.e a)) := by
@@ -715,11 +701,11 @@ theorem r_e_perp {T : E} (F : FlagG S r T) (a : Fin r) {y : S.V} (hy : y ∈ F.X
   exact LinearMap.mem_ker.mp (hle hy)
 
 /- English proof (translation)
-Unfold `Dl leadMinorE`. Use `split_ifs with hle`. Use `Matrix.det_eq_zero_of_row_eq_zero (⟨0, hl⟩ : Fin l) (fun b => ?_)` and prove the remaining obligations. Establish `e0 : Fin.castLE hle (⟨0, hl⟩ : Fin l) = Fin.castSucc (⟨0, hr⟩ : Fin r)` using `by ext; rfl`. Rewrite using `[Matrix.submatrix_apply, e0]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Zhat brS`. Establish `e1 : F.fvec (Fin.castSucc (⟨0, hr⟩ : Fin r)) = F.e ⟨0, hr⟩`. Unfold `FlagG.fvec`. Rewrite using `[Fin.snoc_castSucc]`. Rewrite using `[e1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `r_e_perp F _ (h ▸ r_fvec_mem F' _)`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem r_Dl_zero {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (h : F'.Xplus = F.Xplus) (hr : 0 < r) (l : ℕ)
     (hl : 0 < l) : Dl F F' l = 0 := by
@@ -736,9 +722,9 @@ theorem r_Dl_zero {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (h : F'.Xplus
   · rfl
 
 /- English proof (translation)
-Unfold `FrobeniusProjectedBounds.SameFlag at h`. Establish `hP : F'.fl.Xplus = F.fl.Xplus` using `h.2`. Use `show Gflag F.fl F'.fl = 0`. Unfold `Gflag`. Rewrite using `[r_Dl_zero F.fl F'.fl hP hr (r + 1) (by omega), r_Dl_zero F.fl F'.fl hP hr r hr]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem r_G_zero {T T' : E} (F : LFlag S r T) (F' : LFlag S r T') (h : FrobeniusProjectedBounds.SameFlag F F') (hr : 0 < r) :
     Gval F F' = 0 := by
@@ -750,11 +736,11 @@ theorem r_G_zero {T T' : E} (F : LFlag S r T) (F' : LFlag S r T') (h : Frobenius
   simp
 
 /- English proof (translation)
-Unfold `orth`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ Submodule.span E (Set.range F.fl.e) at hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `F.fl.z_orth a`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => simp [hx]`.
+A detailed English derivation is pending.
 -/
 theorem r_z_orth {T : E} (F : LFlag S r T) : F.fl.z ∈ orth S (Xsp F) := by
   unfold orth
@@ -770,9 +756,9 @@ theorem r_z_orth {T : E} (F : LFlag S r T) : F.fl.z ∈ orth S (Xsp F) := by
   | smul c x _ hx => simp [hx]
 
 /- English proof (translation)
-Unfold `FlagG.Xa`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Simplify using `only [Set.mem_setOf_eq] at hi`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hi with h | h` into its components or cases.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨i, h, rfl⟩)`. Establish `hia : i = a` using `Fin.ext h`. Substitute `hia` using the available equality. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem r_Xa_succ {T : E} (F : FlagG S r T) (a : Fin r) :
     F.Xa (a.val + 1) ≤ F.Xa a.val ⊔ Submodule.span E {F.e a} := by
@@ -790,19 +776,17 @@ def Shape {T T' : E} (F : LFlag S r T) (F' : LFlag S r T') (c : Fin r → E) (ζ
   (∀ a, c a ≠ 0) ∧ (∀ a : Fin r, F'.fl.e a - c a • F.fl.e a ∈ Xflag F a.val) ∧ F'.fl.z - ζ • F.fl.z ∈ Xsp F
 
 /- English proof (translation)
-Unfold `FrobeniusProjectedBounds.SameFlag at h`. Take `⟨hX, hP⟩` from `h`. Establish `hX' : ∀ j, F'.fl.Xa j = F.fl.Xa j` using `hX`. Establish `hP' : F'.fl.Xplus = F.fl.Xplus` using `hP`. Establish `hmem : ∀ a : Fin r, ∃ c : E, F'.fl.e a - c • F.fl.e a ∈ Xflag F a.val`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Establish `h1 : F'.fl.e a ∈ F.fl.Xa (a.val + 1)`. Rewrite using `[← hX' (a.val + 1)]`. Conclude with `r_e_mem F'.fl a (Nat.lt_succ_self a.val)`. Establish `h2` using `r_Xa_succ F.fl a h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, w, hw, hyw⟩` from `Submodule.mem_sup.mp h2`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hw`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hyw]`. Simplify using `using hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `choose c hc using hmem`. Establish `hz' : F'.fl.z ∈ F.fl.Xplus`. Rewrite using `[← hP']`. Unfold `FlagG.Xplus`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Unfold `FlagG.Xplus at hz'`. Take `⟨y, hy, w, hw, hyw⟩` from `Submodule.mem_sup.mp hz'`. Take `⟨ζ, rfl⟩` from `Submodule.mem_span_singleton.mp hw`. Use `⟨c, ζ, fun a hca => ?_, hc, ?_⟩` and prove the remaining obligations. Establish `h0 : F'.fl.e a ∈ F'.fl.Xa a.val`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hc a` as an intermediate fact. Rewrite `this` using `[hca, zero_smul, sub_zero]`. Rewrite using `[hX' a.val]`. Conclude with `this`. Unfold `FlagG.Xa at h0`.
-
-Conclude with `F'.fl.e_indep.notMem_span_image (s := {i : Fin r | i.1 < a.1}) (x := a) (by simp) h0`. Rewrite using `[← hyw]`. Simplify using `using hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem r_shape_of_sameFlag {T T' : E} {F : LFlag S r T} {F' : LFlag S r T'} (h : FrobeniusProjectedBounds.SameFlag F F') :
     ∃ c ζ, Shape F F' c ζ := by
@@ -841,7 +825,7 @@ theorem r_shape_of_sameFlag {T T' : E} {F : LFlag S r T} {F' : LFlag S r T'} (h 
     simpa using hy
 
 /- English proof (translation)
-Take `⟨_, he, hz⟩` from `h`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Simplify `he a` using `[hc a]`. Simplify `hz` using `[hζ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem r_inS_of_shape_one {T T' : E} {F : LFlag S r T} {F' : LFlag S r T'} {c : Fin r → E} {ζ : E}
     (h : Shape F F' c ζ) (hc : ∀ a, c a = 1) (hζ : ζ = 1) : InSF F F' := by
@@ -859,11 +843,11 @@ open Formalism.MainNotions.S.Lat Module
 variable {D : D7} {large₂ : SizeData₂ D} {X : TermTie D} {C' Cl Cg cb Cu cT CT C0 : ℝ}
 
 /- English proof (translation)
-Take `⟨_, _, _, _, h5, _⟩` from `hH.1`. Assume the negation of the conclusion as `h0`. Establish `h1 : D.R.rS = 0` using `by omega`. Rewrite `h5` using `[h1]`. Simplify using `only [Nat.cast_zero, Real.sqrt_zero] at h5`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hf : (2 : ℝ) ≤ D.R.f`. Establish `h : 2 ≤ D.R.f`. Simplify using `only [Ranks.f, Ranks.n]`. Use `D.R.ord_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `h` after adjusting the coercions. Use `Real.log_pos (show (1 : ℝ) < D.R.f by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem r_rS_pos (hH : FrobeniusProjectedBounds.Hyp D large₂ C' Cl Cg cb Cu cT CT C0) : 0 < D.R.rS := by
   obtain ⟨_, _, _, _, h5, _⟩ := hH.1
@@ -881,14 +865,14 @@ theorem r_rS_pos (hH : FrobeniusProjectedBounds.Hyp D large₂ C' Cl Cg cb Cu cT
   linarith
 
 /- English proof (translation)
-The claim follows from `X.inS_iff t`.
+A detailed English derivation is pending.
 -/
 theorem r_inS_iff {u : D.what₂.Word} (t : D.s.Term u u) : D.s.inS t ↔ InSF (X.fl t) (X.fl' t) := X.inS_iff t
 
 /- English proof (translation)
-Rewrite using `[X.inS_iff t]`. Take `⟨n, hn, he, hz⟩` from `(X.isId_iff t).1 h`. Take `⟨_, h1, h2⟩` from `hn`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← he a]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 a.val _ (r_e_mem (X.fl t).fl a (Nat.lt_succ_self _))`. Establish `e : (X.fl' t).fl.z - (X.fl t).fl.z = (n (X.fl t).fl.z - (X.fl t).fl.z) - (n (X.fl t).fl.z - (X.fl' t).fl.z)` using `by abel`. Rewrite using `[e]`. Conclude with `sub_mem (h2 _ (r_z_orth (X.fl t))) hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_inS_of_isId (X : TermTie D) {u : D.what₂.Word} (t : D.s.Term u u) (h : D.s.isId t) : D.s.inS t := by
   rw [X.inS_iff t]
@@ -903,7 +887,7 @@ theorem r_inS_of_isId (X : TermTie D) {u : D.what₂.Word} (t : D.s.Term u u) (h
     exact sub_mem (h2 _ (r_z_orth (X.fl t))) hz
 
 /- English proof (translation)
-Use `X.G_eq t` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `(map_eq_zero (algebraMap D.host.F D.host.E)).1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_Gterm_zero {u : D.what₂.Word} (t : D.s.Term u u) (h : Gval (X.fl t) (X.fl' t) = 0) : D.s.Gterm t = 0 := by
   have := X.G_eq t
@@ -911,16 +895,16 @@ theorem r_Gterm_zero {u : D.what₂.Word} (t : D.s.Term u u) (h : Gval (X.fl t) 
   exact (map_eq_zero (algebraMap D.host.F D.host.E)).1 this
 
 /- English proof (translation)
-Rewrite using `[← X.G_eq t]`. Conclude with `(map_ne_zero (algebraMap D.host.F D.host.E)).2 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_Gval_ne {u u' : D.what₂.Word} (t : D.s.Term u u') (h : D.s.Gterm t ≠ 0) : Gval (X.fl t) (X.fl' t) ≠ 0 := by
   rw [← X.G_eq t]
   exact (map_ne_zero (algebraMap D.host.F D.host.E)).2 h
 
 /- English proof (translation)
-Rewrite using `[X.s0_eq p]`. Unfold `Lat.s0`. Establish `hr` using `LatticeGluingRadicals.a_rankHp_k (X.abelian₂ (D.s.pfst p)) (X.fixed (D.s.pfst p)).1 (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p)) (X.fixed (D.s.pfst p)).2.2.1.2 (X.lift' (D.s.pfst p)).2 (r_Gval_ne _ h1) D.R.k (LatticeGluingRadicals.p_rankV D)`. Establish `hle : Th (X.abelian₂ (D.s.pfst p)) (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p)) (X.fl' (D.s.psnd p)) (X.beta p) ≤ Hp (X.abelian₂ (D.s.pfst p)) (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p))`. Introduce and unpack `x hx`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨pr, hpr, rfl⟩` from `Submodule.mem_map.1 hx`. Conclude with `hpr.1.1.1`. Establish `h2` using `Submodule.finrank_mono hle`. Establish `h3` using `D.R.m_add_three_le_k`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem one_le_s_zero_of_nonzero (X : TermTie D) {u u' : D.what₂.Word} (p : D.s.Pair u u') (h1 : D.s.Gterm (D.s.pfst p) ≠ 0) :
     1 ≤ D.s.s0 p := by
@@ -952,7 +936,7 @@ def UnipExt (D : D7) (X : TermTie D) : Prop :=
   ∀ (u : D.what₂.Word) (t : D.s.Term u u), InSF (X.fl t) (X.fl' t) → D.s.isId t
 
 /- English proof (translation)
-Introduce `u t hS hrel`. Take `⟨c, ζ, hsh⟩` from `r_shape_of_sameFlag hS`. Establish `hζ : ζ = 1` using `h2 u t c ζ hsh`. Establish `hc : ∀ a, c a = 1` using `fun a => by rw [h1 u t c ζ hsh hrel a, hζ]`. Conclude with `h3 u t (r_inS_of_shape_one hsh hc hζ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flagRigid_of (h1 : RelScal D X) (h2 : ZetaOne D X) (h3 : UnipExt D X) : FlagRigid D X := by
   intro u t hS hrel
@@ -962,19 +946,17 @@ theorem flagRigid_of (h1 : RelScal D X) (h2 : ZetaOne D X) (h3 : UnipExt D X) : 
   exact h3 u t (r_inS_of_shape_one hsh hc hζ)
 
 /- English proof (translation)
-Introduce and unpack `⟨h1, h8, h9⟩ hH u`. Establish `hr` using `r_rS_pos hH`. Establish `c2 : ∀ t : D.s.Term u u, D.s.isId t → D.s.inS t` using `fun t h => r_inS_of_isId X t h`. Establish `cS : ∀ t : D.s.Term u u, D.s.inS t → FrobeniusProjectedBounds.SameFlag (X.fl t) (X.fl' t)` using `fun t h => r_sameFlag_of_inS ((X.inS_iff t).1 h)`. Establish `c4` using `hR hH u`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c3 : ∀ t : D.s.Term u u, D.s.inS t → D.s.relevant t → D.s.isId t` using `fun t h => c4 t (cS t h)`. Establish `c5` using `h8 hH u u`. Use `set a : D.s.Term u u → (D.s.Cu u →L[ℂ] D.s.Cu u) := fun t => D.s.aTerm u u t with ha'`. Use `⟨?_, c2, c3, c4, c5, fun t h => r_Gterm_zero (X := X) t (r_G_zero _ _ (cS t h) hr), ?_, fun p g1 _ => one_le_s_zero_of_nonzero X p g1⟩` and prove the remaining obligations. Establish `i1 : ({t | D.s.inS t} : Set (D.s.Term u u)).indicator a = ({t | D.s.isId t} : Set (D.s.Term u u)).indicator a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Distinguish the cases in `hi : D.s.isId t`. Simplify using `[Set.indicator, hi, c2 t hi]`. Distinguish the cases in `hS : D.s.inS t`. Establish `hr : ¬ D.s.relevant t` using `fun hr => hi (c3 t hS hr)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator, hi, hS, ha', c5 t hr]`. Simplify using `[Set.indicator, hi, hS]`. Use `(hasSum_subtype_iff_indicator (s := {t | D.s.inS t}) (f := a)).2 ?_` and prove the remaining obligations. Rewrite using `[i1]`. Conclude with `(hasSum_subtype_iff_indicator (s := {t | D.s.isId t}) (f := a)).1 (h9 hH u)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `FrobeniusProjectedBounds.Kpp KOf`. Establish `e` using `tsum_subtype {t : D.s.Term u u | D.s.relevant t ∧ D.s.Gterm t = 0 ∧ ¬ FrobeniusProjectedBounds.SameFlag (X.fl t) (X.fl' t)} a`. Establish `e'` using `tsum_subtype {t : D.s.Term u u | D.s.Gterm t = 0 ∧ ¬ D.s.isId t} a`. Use `e.trans (Eq.trans ?_ e'.symm)` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `t`. Distinguish the cases in `hrel : D.s.relevant t`. Establish `hiff : FrobeniusProjectedBounds.SameFlag (X.fl t) (X.fl' t) ↔ D.s.isId t` using `⟨fun h => c4 t h hrel, fun h => cS t (c2 t h)⟩`. Simplify using `[Set.indicator, hrel, hiff]`. Establish `h0 : a t = 0` using `c5 t hrel`.
-
-Simplify using `[Set.indicator, hrel, h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pair_terms_of_flag_rigidity (hR : FrobeniusProjectedBounds.Hyp D large₂ C' Cl Cg cb Cu cT CT C0 → FlagRigid D X) :
     FrobeniusProjectedBounds.IntegralityFromMetric D large₂ X C' Cl Cg cb Cu cT CT C0 := by

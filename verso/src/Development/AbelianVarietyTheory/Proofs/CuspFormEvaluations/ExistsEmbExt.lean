@@ -15,9 +15,9 @@ set_option autoImplicit false in
 open AlgebraicGeometry CategoryTheory NumberField in
 
 /- English proof (translation)
-Use `letI : Algebra c.F c'.F := (_root_.Formalism.L2.Pj.incF c c' hle).toAlgebra`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Use `haveI : IsScalarTower ℚ c.F c'.F := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Use `haveI : Algebra.IsAlgebraic ℚ c'.F := Algebra.IsAlgebraic.of_finite ℚ c'.F`. Use `haveI : Algebra.IsAlgebraic c.F c'.F := Algebra.IsAlgebraic.tower_top (K := ℚ) c.F`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Set `τ : c'.F →ₐ[c.F] ℂ` to `IsAlgClosed.lift`. Use `⟨τ.toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `τ.commutes x`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FieldBC.exists_emb_ext {E : Type} [Field E] [NumberField E]
     [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
@@ -37,15 +37,15 @@ set_option autoImplicit false in
 open AlgebraicGeometry CategoryTheory NumberField in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c c' hle r U a n f hf`. Take `⟨hsec, hval⟩` from `(_root_.GlobalTheory.FieldBC.rulBC_sec_val_linear E H Dw l Xo c c' hle).1 a n f hf`. Establish `hread : ∀ σ' : c'.F →+* ℂ, _root_.Formalism.L2.Pj.rdU (_root_.Formalism.L2.Pj.unfBC hle U σ') (_root_.GlobalTheory.FieldBC.rulBC hle f) = _root_.Formalism.L2.Pj.rdU (U (σ'.comp (_root_.Formalism.L2.Pj.incF c c' hle))) f`. Introduce `σ'`. Establish `hbc : _root_.Formalism.L2.Pj.IsBC hle (_root_.GlobalTheory.FieldBC.rulBC hle f) ![1] ![f]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `_root_.Formalism.L2.Pj.IsBC`. Introduce `S _ _ _ h y`. Simplify using `[hval S h y]`. Rewrite using `[_root_.Formalism.L2.Pj.rdU_unfBC hle U σ' hbc, Fin.sum_univ_one]`. Simplify using `only [Matrix.cons_val_zero, map_one]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `one_smul ℂ _`. Use `⟨hread, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.Formalism.L2.Pj.mem_cusp, _root_.Formalism.L2.Pj.mem_cusp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hcusp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hf, fun σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨σ', rfl⟩` from `_root_.GlobalTheory.FieldBC.exists_emb_ext hle σ`. Establish `hmem` using `hcusp σ' (_root_.Formalism.L2.Pj.goodEmb_ext hle hσ rfl)`. Rewrite `hmem` using `[hread, _root_.Formalism.L2.Pj.laU_unfBC]`. Conclude with `hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨-, hcusp⟩`. Use `⟨hsec, fun σ' hσ' => ?_⟩` and prove the remaining obligations. Rewrite using `[hread, _root_.Formalism.L2.Pj.laU_unfBC]`. Conclude with `hcusp _ (by unfold _root_.Formalism.L2.Pj.GoodEmb at hσ' ⊢; exact hσ')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FieldBC.rulBC_cusp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c c' : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l)

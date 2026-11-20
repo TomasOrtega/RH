@@ -30,9 +30,9 @@ namespace GlobalTheory.HeightCounting.Up
 open RealOfReading
 
 /- English proof (translation)
-Introduce `hP hL`. Use `Model.AtMem.imp (Model.AtMem.and (GlobalTheory.T.exists_local_langlands_place_datum hP hL) (Model.AtMem.and (GlobalTheory.T.coefficient_field_eq_level hP hL) (Model.AtMem.and (GlobalTheory.T.xi_character_matches_type hP hL) (Model.AtMem.and (GlobalTheory.T.theta_eigenvalue_gap_bo …` and prove the remaining obligations. Introduce and unpack `K B f T w Z Wt p0 t nch n c ⟨⟨P, hPin⟩, hC, htup, ⟨hPar, hGap⟩, hTT, ⟨Xd, E, ⟨labPi⟩⟩, hAg, hE0⟩`. Establish `hg : GlobalTheory.LiftRows.Given t.r.z.R.toRealDat t.r.z.F.lv2` using `⟨(GlobalTheory.CoreOfWeak.core_of_weak t.r.z.R t.r.z.F t.r.z.pins.char t.exAt).1, hPar, t.r.intersectionNumber_baseChange.ok.ok2.irr, GlobalTheory.HeightCounting.goodTypes_of_typesTrue_real _ _ _ _ _ _ _ t.r.z.pins.char.base.lev hTT, t.r.z.pins.keep.guard, hGap⟩`. Take `⟨ag⟩` from `hAg hC Xd E labPi t.r.z.pins.char.base htup hg t.r.z.pins.char.fullP`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T0, hT0, hR⟩` from `exists_tied P (realOfRead t.r.z.R.toRealDat t.r.z.F.lv2 t.r.Y n.tp hC Xd E labPi t.r.z.pins.char.base htup hg t.r.z.pins.char.fullP) hPin.cf_eq hPin.C_eq hPin.tp_eq hPin.M_eq (hPin.rep_eq.trans c.row.rep_eq) ag (hE0 hC Xd E labPi t.r.z.pins.char.base htup hg t.r.z.pins.char.fullP …`. Conclude with `⟨T0, by rw [hT0]; exact hPin, hR⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tied_of_layer : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c =>
     ∃ X : GlobalTheory.NRows.Tied hL (w.D Z), PinAt c.a X.P ∧ HEq X.X.R t.r.z.R.toRealDat := by

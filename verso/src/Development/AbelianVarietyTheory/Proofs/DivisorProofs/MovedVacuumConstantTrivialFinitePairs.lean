@@ -25,7 +25,7 @@ noncomputable section
 namespace GlobalTheory.VacTriv
 
 /- English proof (translation)
-Introduce `q _ _ i j k`. Use `⟨1, one_pos, Nat.coprime_one_left q, 0, zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem one_suppSplit {D : D7} {N : ℕ} : Formalism.MainNotions.StandardLatticesGL3.SuppSplit D (1 : GL (Fin N) (Formalism.MainNotions.StandardLatticesGL3.AE D)) := by
   intro q _ _ i j k
@@ -33,7 +33,7 @@ theorem one_suppSplit {D : D7} {N : ℕ} : Formalism.MainNotions.StandardLattice
   simp
 
 /- English proof (translation)
-Introduce `q _ _ i j k`. Use `⟨1, one_pos, Nat.coprime_one_left q, 0, zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem one_suppInert {D : D7} {N : ℕ} : Formalism.MainNotions.StandardLatticesGL3.SuppInert D (1 : GL (Fin N) (Formalism.MainNotions.StandardLatticesGL3.AE D)) := by
   intro q _ _ i j k
@@ -41,7 +41,7 @@ theorem one_suppInert {D : D7} {N : ℕ} : Formalism.MainNotions.StandardLattice
   simp
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [inv_one, Units.val_one, Matrix.one_apply]`. Use `split_ifs`. Conclude with `⟨one_mem _, one_mem _⟩`. Conclude with `⟨zero_mem _, zero_mem _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem one_intG {D : D7} {N : ℕ} : Formalism.MainNotions.StandardLatticesGL3.IntG D (1 : GL (Fin N) (Formalism.MainNotions.StandardLatticesGL3.AE D)) := by
   intro i j
@@ -51,33 +51,27 @@ theorem one_intG {D : D7} {N : ℕ} : Formalism.MainNotions.StandardLatticesGL3.
   · exact ⟨zero_mem _, zero_mem _⟩
 
 /- English proof (translation)
-Introduce `D ψ θ S T a d hS hT cc δ r hset e0 W χS χT om hW hInp t0 ht0 hev hodd hχS hχT f₀ hf₀ hline hmul hsplit hinert`. Substitute `hS` using the available equality. Substitute `hT` using the available equality. Establish `hnz : ∀ x y, W.Om x y e0 ≠ 0` using `GlobalTheory.T.weilOperator_normalisingVector_ne_zero cc δ t0 e0 W hset.crv hodd`. Establish `huniq : ∀ (x : Formalism.MainNotions.StandardLatticesGL3.GA D S.rank) (y : Formalism.MainNotions.StandardLatticesGL3.GA D T.rank) (g : GA D S) (h : GA D T) (c c' : ℂ), Reads ψ θ rfl rfl cc δ r (c • W.Om x y e0) (om (g, h) f₀) → Reads ψ θ rfl rfl cc δ r (c' • W.Om x y e0) (om (g, …` using `fun x y g h c c' h1 h2 => GlobalTheory.T.readsGaussian_smul_const_unique ψ θ S T rfl rfl cc δ r hset _ _ c c' (hnz x y) h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : ∀ (x : Formalism.MainNotions.StandardLatticesGL3.GA D S.rank) (y : Formalism.MainNotions.StandardLatticesGL3.GA D T.rank) (g : GA D S) (h : GA D T), Reads ψ θ rfl rfl cc δ r (W.Om x y e0) (om (g, h) f₀) → Reads ψ θ rfl rfl cc δ r ((1 : ℂ) • W.Om x y e0) (om (g, h) f₀)` using `fun x y g h hr => by rwa [one_smul]`. Establish `p1S : IsFinPt S (1 : GA D S) (1 : Formalism.MainNotions.StandardLatticesGL3.GA D S.rank)` using `GlobalTheory.T.isFiniteAdelicPointOfUnitaryGroup_one S rfl`. Establish `p1T : IsFinPt T (1 : GA D T) (1 : Formalism.MainNotions.StandardLatticesGL3.GA D T.rank)` using `GlobalTheory.T.isFiniteAdelicPointOfUnitaryGroup_one T rfl`. Establish `exS : ∀ x : Formalism.MainNotions.StandardLatticesGL3.GA D S.rank, ∃ g, IsFinPt S g x` using `fun x => GlobalTheory.BotFormula.exists_isFinPt_of_gram_one S hset.gS x rfl`. Establish `exT : ∀ y : Formalism.MainNotions.StandardLatticesGL3.GA D T.rank, ∃ h, IsFinPt T h y` using `fun y => GlobalTheory.BotFormula.exists_isFinPt_of_gram_one T hset.gT y rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose gx hgx using exS`. Use `choose hy hhy using exT`. Establish `gx1 : gx 1 = 1` using `GlobalTheory.T.eq_of_isFiniteAdelicPoint_same S _ _ 1 (hgx 1) p1S`. Establish `hy1 : hy 1 = 1` using `GlobalTheory.T.eq_of_isFiniteAdelicPoint_same T _ _ 1 (hhy 1) p1T`. Establish `gxm : ∀ x₁ x₂, gx x₁ * gx x₂ = gx (x₁ * x₂)` using `fun x₁ x₂ => GlobalTheory.T.eq_of_isFiniteAdelicPoint_same S _ _ _ (GlobalTheory.T.isFiniteAdelicPointOfUnitaryGroup_mul S _ _ _ _ (hgx x₁) (hgx x₂)) (hgx (x₁ * x₂))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hym : ∀ y₁ y₂, hy y₁ * hy y₂ = hy (y₁ * y₂)` using `fun y₁ y₂ => GlobalTheory.T.eq_of_isFiniteAdelicPoint_same T _ _ _ (GlobalTheory.T.isFiniteAdelicPointOfUnitaryGroup_mul T _ _ _ _ (hhy y₁) (hhy y₂)) (hhy (y₁ * y₂))`. Use `choose cS hcS using fun x => hline x 1 (gx x) 1 (hgx x) p1T`. Use `choose cT hcT using fun y => hline 1 y 1 (hy y) p1S (hhy y)`. Establish `cS1 : cS 1 = 1`. Establish `h1` using `hcS 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[gx1]`. Conclude with `huniq _ _ _ _ _ _ h1 (hone _ _ _ _ (hsplit 1 1 1 1 p1S p1T (by simpa using one_suppSplit) (by simpa using one_suppSplit)))`. Establish `cSm : ∀ x₁ x₂, cS (x₁ * x₂) = cS x₁ * cS x₂`. Introduce `x₁ x₂`. Establish `h1` using `hmul x₁ 1 (gx x₁) 1 x₂ 1 (gx x₂) 1 (cS x₁) (cS x₂) (hgx _) p1T (hgx _) p1T (hcS x₁) (hcS x₂)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[mul_one, mul_one, gxm]`. Conclude with `huniq _ _ _ _ _ _ (hcS (x₁ * x₂)) h1`. Establish `cT1 : cT 1 = 1`. Establish `h1` using `hcT 1`. Rewrite `h1` using `[hy1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `huniq _ _ _ _ _ _ h1 (hone _ _ _ _ (hsplit 1 1 1 1 p1S p1T (by simpa using one_suppSplit) (by simpa using one_suppSplit)))`. Establish `cTm : ∀ y₁ y₂, cT (y₁ * y₂) = cT y₁ * cT y₂`. Introduce `y₁ y₂`. Establish `h1` using `hmul 1 y₁ 1 (hy y₁) 1 y₂ 1 (hy y₂) (cT y₁) (cT y₂) p1S (hhy _) p1S (hhy _) (hcT y₁) (hcT y₂)`. Rewrite `h1` using `[mul_one, mul_one, hym]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `huniq _ _ _ _ _ _ (hcT (y₁ * y₂)) h1`. Set `νS : Formalism.MainNotions.StandardLatticesGL3.GA D S.rank →* ℂ` to `{ toFun := cS, map_one' := cS1, map_mul' := cSm }`. Set `νT : Formalism.MainNotions.StandardLatticesGL3.GA D T.rank →* ℂ` to `{ toFun := cT, map_one' := cT1, map_mul' := cTm }`. Establish `tS : ∀ x, cS x = 1`. Introduce `x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `GlobalTheory.T.unitaryAdelicCharacter_eq_one_split_inert S hset.gS νS.toHomUnits (fun k hk => Units.ext (by` as an intermediate fact. Rewrite using `[MonoidHom.coe_toHomUnits, Units.val_one]`. Conclude with `huniq _ _ _ _ _ _ (hcS k) (hone _ _ _ _ (hsplit k 1 (gx k) 1 (hgx k) p1T hk (by simpa using one_suppSplit)))))`. Use the proof step `(fun k hk hki => Units.ext (by`. Rewrite using `[MonoidHom.coe_toHomUnits, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `huniq _ _ _ _ _ _ (hcS k) (hone _ _ _ _ (hinert k 1 (gx k) 1 (hgx k) p1T hk (by simpa using one_suppInert) hki (by simpa using one_intG))))) x`. Use `congrArg Units.val this` as an intermediate fact. Rewrite `this` using `[MonoidHom.coe_toHomUnits, Units.val_one]`. Then use the resulting hypothesis. Establish `tT : ∀ y, cT y = 1`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `GlobalTheory.T.unitaryAdelicCharacter_eq_one_split_inert T hset.gT νT.toHomUnits (fun k hk => Units.ext (by` as an intermediate fact. Rewrite using `[MonoidHom.coe_toHomUnits, Units.val_one]`. Conclude with `huniq _ _ _ _ _ _ (hcT k) (hone _ _ _ _ (hsplit 1 k 1 (hy k) p1S (hhy k) (by simpa using one_suppSplit) hk))))`. Use the proof step `(fun k hk hki => Units.ext (by`. Rewrite using `[MonoidHom.coe_toHomUnits, Units.val_one]`.
-
-Conclude with `huniq _ _ _ _ _ _ (hcT k) (hone _ _ _ _ (hinert 1 k 1 (hy k) p1S (hhy k) (by simpa using one_suppInert) hk (by simpa using one_intG) hki)))) y`. Use `congrArg Units.val this` as an intermediate fact. Rewrite `this` using `[MonoidHom.coe_toHomUnits, Units.val_one]`. Then use the resulting hypothesis. Introduce `x y g h hg hh`. Establish `eg : g = gx x` using `GlobalTheory.T.eq_of_isFiniteAdelicPoint_same S _ _ x hg (hgx x)`.
-
-Establish `eh : h = hy y` using `GlobalTheory.T.eq_of_isFiniteAdelicPoint_same T _ _ y hh (hhy y)`. Substitute `eg eh` using the available equality. Establish `h1` using `hmul x 1 (gx x) 1 1 y 1 (hy y) (cS x) (cT y) (hgx x) p1T p1S (hhy y) (hcS x) (hcT y)`. Rewrite `h1` using `[tS, tT]`. Simplify using `only [mul_one, one_mul, one_smul] at h1`.
-
-Conclude with `h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vacuum_const_trivial : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →

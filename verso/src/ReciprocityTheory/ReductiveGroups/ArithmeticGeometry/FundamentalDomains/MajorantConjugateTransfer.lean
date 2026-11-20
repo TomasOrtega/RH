@@ -12,21 +12,19 @@ namespace MajorantConjugateTransfer
 variable {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `pp : ∀ (x' : Frame X.Ψ r) (v : Fin r → ℂ), X.posPart x' τ v = (hermC τ.1 X.Gm (X.ppos x' τ v) v).re`. Introduce `x' v`. Rewrite using `[X.hermC_ppos_self]`. Both sides reduce to the same expression. Use `set u := Matrix.mulVec g' w with hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `set p := Matrix.mulVec g (X.ppos x τ u) with hp`. Use `set z := Matrix.mulVec g u with hz`. Establish `hA : ∀ d : Fin r → ℂ, (∀ c', hermC τ.1 X.Gm d (X.colP y τ c') = 0) → ∀ c, hermC τ.1 X.Gm d (Matrix.mulVec g (X.colP x τ c)) = 0`. Introduce `d hd c`. Take `⟨K, hK⟩` from `H1 c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hK, hermC_sum_right]`. Conclude with `Finset.sum_eq_zero fun a _ => by rw [hermC_smul_right, hd, mul_zero]`. Establish `hB : ∀ b, hermC τ.1 X.Gm z (X.colP y τ b) = hermC τ.1 X.Gm p (X.colP y τ b)`. Introduce `b`. Rewrite using `[← sub_eq_zero, ← hermC_sub_left]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨L, hL⟩` from `H2 b`. Rewrite using `[hL, hermC_sum_right]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_right, hz, hp, ← Matrix.mulVec_sub, hiso, hermC_sub_left, X.hermC_ppos_colP hx, sub_self, mul_zero]`. Establish `h1 : X.ppos y τ z = X.ppos y τ p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[X.ppos_eq, X.ppos_eq]`. Simplify using `only [hB]`. Establish `h2 : ∀ c', hermC τ.1 X.Gm (X.ppos y τ p - p) (X.colP y τ c') = 0`. Introduce `c'`. Rewrite using `[hermC_sub_left, X.hermC_ppos_colP hy, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : ∀ d, (∀ c', hermC τ.1 X.Gm d (X.colP y τ c') = 0) → hermC τ.1 X.Gm d p = 0`. Introduce `d hd`. Rewrite using `[hp, X.ppos_eq x τ u, Matrix.mulVec_sum, hermC_sum_right]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, hermC_smul_right, hA d hd a, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : hermC τ.1 X.Gm (X.ppos y τ z) z = hermC τ.1 X.Gm (X.ppos x τ u) u`. Establish `e` using `h3 _ h2`. Rewrite `e` using `[hermC_sub_left, sub_eq_zero]`. Rewrite using `[X.hermC_ppos_left hy τ z z, h1, ← X.hermC_ppos_left hy τ p p, e, hp, hiso, ← X.hermC_ppos_left hx τ u u]`. Establish `hwz : w = z` using `(hgg' w).symm`.
-
-Rewrite using `[hwz]`. Simplify using `only [Data.maj]`. Rewrite using `[pp, pp, key, hz, hiso]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maj_transfer {x y : Frame X.Ψ r} (hx : x ∈ X.dom) (hy : y ∈ X.dom) (τ : X.Ψ)
     (g g' : Matrix (Fin r) (Fin r) ℂ) (hgg' : ∀ w, Matrix.mulVec g (Matrix.mulVec g' w) = w)
@@ -78,13 +76,13 @@ theorem maj_transfer {x y : Frame X.Ψ r} (hx : x ∈ X.dom) (hy : y ∈ X.dom) 
   rw [pp, pp, key, hz, hiso]
 
 /- English proof (translation)
-Simplify using `[Data.maj, Data.posPart, hermC_zero_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem maj_zero (x : Frame X.Ψ r) (τ : X.Ψ) : X.maj x τ 0 = 0 := by
   simp [Data.maj, Data.posPart, hermC_zero_left]
 
 /- English proof (translation)
-Distinguish the cases in `hv : v = 0`. Rewrite using `[hv, maj_zero X x τ]`. Conclude with `(X.maj_pos hx τ hv).le`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maj_nonneg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (v : Fin r → ℂ) :
     0 ≤ X.maj x τ v := by
@@ -93,7 +91,7 @@ theorem maj_nonneg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (v : Fin r 
   · exact (X.maj_pos hx τ hv).le
 
 /- English proof (translation)
-Rewrite using `[X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, X.ppos_sub, hermC_sub_left, hermC_sub_left]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_sub_left (x : Frame X.Ψ r) (τ : X.Ψ) (u u' w : Fin r → ℂ) :
     X.Hf x τ (u - u') w = X.Hf x τ u w - X.Hf x τ u' w := by
@@ -102,7 +100,7 @@ theorem Hf_sub_left (x : Frame X.Ψ r) (τ : X.Ψ) (u u' w : Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, X.ppos_smul_eq, hermC_smul_left, hermC_smul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_smul_left (x : Frame X.Ψ r) (τ : X.Ψ) (k : ℂ) (u w : Fin r → ℂ) :
     X.Hf x τ (k • u) w = k * X.Hf x τ u w := by
@@ -110,7 +108,7 @@ theorem Hf_smul_left (x : Frame X.Ψ r) (τ : X.Ψ) (k : ℂ) (u w : Fin r → �
   ring
 
 /- English proof (translation)
-Rewrite using `[X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, hermC_sub_right, hermC_sub_right]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_sub_right (x : Frame X.Ψ r) (τ : X.Ψ) (u w w' : Fin r → ℂ) :
     X.Hf x τ u (w - w') = X.Hf x τ u w - X.Hf x τ u w' := by
@@ -118,7 +116,7 @@ theorem Hf_sub_right (x : Frame X.Ψ r) (τ : X.Ψ) (u w w' : Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, hermC_smul_right, hermC_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_smul_right (x : Frame X.Ψ r) (τ : X.Ψ) (k : ℂ) (u w : Fin r → ℂ) :
     X.Hf x τ u (k • w) = conj k * X.Hf x τ u w := by
@@ -126,7 +124,7 @@ theorem Hf_smul_right (x : Frame X.Ψ r) (τ : X.Ψ) (k : ℂ) (u w : Fin r → 
   ring
 
 /- English proof (translation)
-Rewrite using `[X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, map_sub, map_mul, map_ofNat, hermC_conj _ X.Gm_herm, hermC_conj _ X.Gm_herm, X.ppos_selfadj hx τ w u]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hf_conj {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u w : Fin r → ℂ) :
     conj (X.Hf x τ u w) = X.Hf x τ w u := by
@@ -134,17 +132,17 @@ theorem Hf_conj {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u w : Fin r �
     hermC_conj _ X.Gm_herm, X.ppos_selfadj hx τ w u]
 
 /- English proof (translation)
-Distinguish the cases in `hv : v = 0`. Establish `h0 : X.Hf x τ u 0 = 0`. Use `Hf_sub_right X x τ u 0 0` as an intermediate fact. Simplify using `using this`. Rewrite using `[hv, h0, maj_zero X x τ]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hm : 0 < X.maj x τ v` using `X.maj_pos hx τ hv`. Establish `hmu` using `maj_nonneg X hx τ u`. Use `set H := X.Hf x τ u v with hH`. Establish `hw` using `X.Hf_self hx τ ((X.maj x τ v : ℂ) • u - H • v)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn` using `maj_nonneg X hx τ ((X.maj x τ v : ℂ) • u - H • v)`. Simplify using `only [Hf_sub_left, Hf_sub_right, Hf_smul_left, Hf_smul_right] at hw`. Rewrite `hw` using `[X.Hf_self hx τ u, X.Hf_self hx τ v, ← Hf_conj X hx τ u v, ← hH, Complex.conj_ofReal]`. Establish `hHH : H * conj H = (Complex.normSq H : ℂ)` using `Complex.mul_conj H`. Establish `e : ((X.maj x τ ((X.maj x τ v : ℂ) • u - H • v) : ℝ) : ℂ) = ((X.maj x τ v * (X.maj x τ v * X.maj x τ u - Complex.normSq H) : ℝ) : ℂ)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw]`. Use `push_cast`. Take the linear combination `(-(X.maj x τ v : ℂ)) * hHH`. Establish `e'` using `Complex.ofReal_injective e`. Rewrite `hn` using `[e']`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : Complex.normSq H ≤ X.maj x τ v * X.maj x τ u`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: X.maj x τ v * (X.maj x τ v * X.maj x τ u - Complex.normSq H) < 0` using `mul_neg_of_pos_of_neg hm (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Complex.sq_norm]`. Combine the linear relations using `[mul_comm (X.maj x τ u) (X.maj x τ v)]`.
+A detailed English derivation is pending.
 -/
 theorem cs {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : Fin r → ℂ) :
     ‖X.Hf x τ u v‖ ^ 2 ≤ X.maj x τ u * X.maj x τ v := by

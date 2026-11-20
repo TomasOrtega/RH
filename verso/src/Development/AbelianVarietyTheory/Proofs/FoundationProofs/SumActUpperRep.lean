@@ -7,11 +7,11 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.ES
 namespace GlobalTheory.KZ.ES
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X N l _ q M hq hqM b hb`. Establish `hT : ∀ t : ℤ, X.act l !![1, t; 0, 1] b = b`. Introduce `t`. Set `T : SL(2, ℤ)` to `⟨!![1, t; 0, 1], by simp [Matrix.det_fin_two]⟩`. Establish `hmem : T ∈ Gam N l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> simp [T]`. Rewrite using `[CongruenceSubgroup.Gamma0_mem]`. Simplify using `[T]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hb T hmem`. Establish `he : IsCoprime (M : ℤ) (q : ℤ)`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one]`. Simplify `hqM.symm` using `[Int.gcd_natCast_natCast]`. Conclude with `(Tower.sum_act_upper_mul_unit X l b hT q (M : ℤ) hq he).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_act_upper_rep : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε),
     ∀ (N l : ℕ) [Fact l.Prime] (q M : ℕ), 0 < q → Nat.Coprime q M → ∀ b : X.Fn l,

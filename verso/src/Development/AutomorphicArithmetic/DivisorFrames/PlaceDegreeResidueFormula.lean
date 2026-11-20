@@ -6,15 +6,13 @@ open IsLocalRing NumberField IsDedekindDomain GlobalTheory.ValCount GlobalTheory
 open scoped Classical
 
 /- English proof (translation)
-Establish `hc : ∀ a, ((algebraMap (𝓞 F) A a : A) : F) = algebraMap (𝓞 F) F a` using `fun a => (IsScalarTower.algebraMap_apply (𝓞 F) A F a).symm`. Rewrite using `[IsLocalization.AtPrime, isLocalization_iff]`. Use `⟨fun y => IsLocalRing.notMem_maximalIdeal.1 fun hy => y.2 ((h _).2 hy), fun o => ?_, fun {a c} hac => ⟨1, ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `e0 : (o : F) = 0`. Conclude with `⟨⟨0, 1⟩, by rw [show o = 0 from Subtype.ext e0]; simp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Establish `hS` using `v.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : IsLocalization v.asIdeal.primeCompl (v.valuationSubringAtPrime F) := Localization.subalgebra.isLocalization_ofField F _ hS`. Break down `(v.valuationSubringAtPrime F).mem_or_inv_mem (o : F) with h' | h'` into its components or cases. Take `⟨⟨r, s⟩, hh⟩` from `IsLocalization.surj v.asIdeal.primeCompl (⟨o, h'⟩ : v.valuationSubringAtPrime F)`. Establish `h2 : (o : F) * algebraMap (𝓞 F) F s = algebraMap (𝓞 F) F r` using `congrArg Subtype.val hh`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨r, s⟩, Subtype.ext (by rw [MulMemClass.coe_mul, hc, hc]; exact h2)⟩`. Take `⟨⟨r, s⟩, hh⟩` from `IsLocalization.surj v.asIdeal.primeCompl (⟨(o : F)⁻¹, h'⟩ : v.valuationSubringAtPrime F)`. Establish `h2 : (o : F)⁻¹ * algebraMap (𝓞 F) F s = algebraMap (𝓞 F) F r` using `congrArg Subtype.val hh`. Establish `h3 : o * algebraMap (𝓞 F) A r = algebraMap (𝓞 F) A s` using `Subtype.ext (by`. Rewrite using `[MulMemClass.coe_mul, hc, hc, ← h2, ← mul_assoc, mul_inv_cancel₀ e0, one_mul])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨s, ⟨r, fun hr => s.2 ?_⟩⟩, h3⟩` and prove the remaining obligations. Use `(h _).2 ?_` and prove the remaining obligations. Rewrite using `[← h3]`. Conclude with `Ideal.mul_mem_left _ _ ((h _).1 hr)`. Establish `h2 : algebraMap (𝓞 F) F a = algebraMap (𝓞 F) F c` using `by rw [← hc, ← hc, hac]`.
-
-Rewrite using `[IsFractionRing.injective (𝓞 F) F h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isLoc_of_mem {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (A : ValuationSubring F) [Algebra (𝓞 F) A] [IsScalarTower (𝓞 F) A F]
@@ -45,11 +43,11 @@ private theorem isLoc_of_mem {F : Type} [Field F] [NumberField F] (v : HeightOne
     rw [IsFractionRing.injective (𝓞 F) F h2]
 
 /- English proof (translation)
-Establish `hP` using `v.isPrime`. Establish `h0 : Ideal.span {(p : ℤ)} ≠ ⊥` using `by simpa using hp.ne_zero`. Establish `hpr : (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).2 (Nat.prime_iff_prime_int.1 hp)`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `Ideal.IsPrime.isMaximal hpr h0`. Establish `hl : v.asIdeal.LiesOver (Ideal.span {(p : ℤ)})`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under_def, Ideal.mem_comap]`. Simplify using `using hv`. Establish `hm : (Ideal.span {(p : ℤ)}).map (algebraMap ℤ (𝓞 F)) = Ideal.span {(p : 𝓞 F)}`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm0 : Ideal.span {(p : 𝓞 F)} ≠ ⊥` using `by simpa using hp.ne_zero`. Establish `hp0 : (p : 𝓞 F) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Rewrite using `[Ideal.IsDedekindDomain.ramificationIdx_eq_multiplicity (Ideal.span {(p : ℤ)}) _ (hm ▸ hm0), hm, ← map_natCast (algebraMap (𝓞 F) F), HeightOneSpectrum.valuation_of_algebraMap, v.intValuation_eq_exp_neg_multiplicity hp0, WithZero.log_exp, neg_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ramIdx_eq {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (p : ℕ)
     (hp : p.Prime) (hv : (p : 𝓞 F) ∈ v.asIdeal) :
@@ -72,21 +70,17 @@ private theorem ramIdx_eq {F : Type} [Field F] [NumberField F] (v : HeightOneSpe
     v.intValuation_eq_exp_neg_multiplicity hp0, WithZero.log_exp, neg_neg]
 
 /- English proof (translation)
-Introduce `F _ _ v p hp hv F' _ _ ε O _ _ b hup`. Establish `hmem : ∀ a : 𝓞 F, algebraMap (𝓞 F) F a ∈ O.comap ε` using `fun a => by`. Rewrite using `[ValuationSubring.mem_comap]`. Use `(b a).2` as an intermediate fact. Rewrite `this` using `[hup.1 a]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `letI : Algebra (𝓞 F) (O.comap ε) := ((algebraMap (𝓞 F) F).codRestrict (O.comap ε) hmem).toAlgebra`. Use `haveI : IsScalarTower (𝓞 F) (O.comap ε) F := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hmax : ∀ x : 𝓞 F, x ∈ v.asIdeal ↔ algebraMap (𝓞 F) (O.comap ε) x ∈ maximalIdeal (O.comap ε)` using `fun x => by`. Rewrite using `[hup.2 x, ← ValuationSubring.coe_mem_nonunits_iff, ← ValuationSubring.coe_mem_nonunits_iff, mem_nonunits_comap, hup.1 x]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := v.isPrime`. Use `haveI := v.isMaximal`. Use `haveI hloc := isLoc_of_mem v (O.comap ε) hmax`. Use `haveI hdvr : IsDiscreteValuationRing (O.comap ε) := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 F) v.ne_bot _`. Use `⟨hdvr, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : vord (O.comap ε) (p : F) = (v.asIdeal.ramificationIdx ℤ : ℕ)`. Rewrite using `[vord_eq, GlobalTheory.ExtField.log_ordFrac_eq_neg_log_valuation v (O.comap ε), ramIdx_eq v p hp.out hv]`. Use `haveI : CharP (ResidueField (O.comap ε)) p := (ResidueField.map (vres ε O)).charP (ResidueField.map (vres ε O)).injective p`. Establish `hcard : Nat.card (ResidueField (O.comap ε)) = Ideal.absNorm v.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `(Nat.card_congr (IsLocalization.AtPrime.equivQuotMaximalIdeal v.asIdeal (O.comap ε)).toEquiv).symm`. Use `haveI : Finite (ResidueField (O.comap ε)) := Nat.finite_of_card_ne_zero (by`. Rewrite using `[hcard]`. Conclude with `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h))`. Use `letI := ZMod.algebra (ResidueField O) p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `letI := ZMod.algebra (ResidueField (O.comap ε)) p`. Use `letI := (ResidueField.map (vres ε O)).toAlgebra`. Use `haveI : IsScalarTower (ZMod p) (ResidueField (O.comap ε)) (ResidueField O) := IsScalarTower.of_algebraMap_eq' (RingHom.ext_zmod _ _)`. Establish `h2 : Module.finrank (ZMod p) (ResidueField (O.comap ε)) * vdeg ε O = resDeg O p` using `Module.finrank_mul_finrank (ZMod p) (ResidueField (O.comap ε)) (ResidueField O)`. Establish `h3 : Ideal.absNorm v.asIdeal = p ^ Module.finrank (ZMod p) (ResidueField (O.comap ε))`.
-
-Rewrite using `[← hcard, Module.natCard_eq_pow_finrank (K := ZMod p), Nat.card_zmod]`. Establish `h4 : Real.log (p : ℝ) ≠ 0` using `(Real.log_pos (by exact_mod_cast hp.out.one_lt)).ne'`. Rewrite using `[h1, ← h2, placeDeg, h3]`. Unfold `Formalism.BasicNotions.eWL`. Use `push_cast`.
-
-Rewrite using `[Real.log_pow]`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.place_degree_residue_formula :
     ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) [Fact p.Prime], (p : 𝓞 F) ∈ v.asIdeal → ∀ (F' : Type) [Field F'] [NumberField F'] (ε : F →+* F') (O : ValuationSubring F') [IsDiscreteValuationRing O] [CharP (ResidueField O) p] (b : 𝓞 F →+* O), IsUp v ε O b → IsDiscreteValuationRing (O.comap ε) ∧ placeDeg p v * (vdeg ε O : ℝ) = (vord (O.comap ε) (p : F) : ℝ) * (resDeg O p : ℝ) := by

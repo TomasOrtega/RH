@@ -31,14 +31,14 @@ def lastRows (n d : ℕ) : Matrix (Fin d) (Fin (n + d)) ℂ :=
   fun i j => if j = Fin.natAdd n i then 1 else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[lastRows, Matrix.mulVec, dotProduct, ite_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lastRows_mulVec (z : Fin (n + d) → ℂ) : lastRows n d *ᵥ z = fun i => z (Fin.natAdd n i) := by
   funext i
   simp [lastRows, Matrix.mulVec, dotProduct, ite_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[firstPart, graphPt, Fin.append_left]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem firstPart_graphPt (p : Fin d → MvPolynomial (Fin n) ℂ) (x : Fin n → ℂ) :
     firstPart (graphPt p x) = x := by
@@ -46,22 +46,22 @@ theorem firstPart_graphPt (p : Fin d → MvPolynomial (Fin n) ℂ) (x : Fin n �
   simp [firstPart, graphPt, Fin.append_left]
 
 /- English proof (translation)
-Simplify using `[graphPt, Fin.append_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem graphPt_natAdd (p : Fin d → MvPolynomial (Fin n) ℂ) (x : Fin n → ℂ) (i : Fin d) :
     graphPt p x (Fin.natAdd n i) = eval x (p i) := by
   simp [graphPt, Fin.append_right]
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun _ => continuous_apply _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_firstPart : Continuous (firstPart : (Fin (n + d) → ℂ) → Fin n → ℂ) :=
   continuous_pi fun _ => continuous_apply _
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simp [graphSubst]`. Consider the case `add q r hq hr => simp only [map_add, hq, hr]`. Consider the case `mul_X q i hq`. Simplify using `only [map_mul, graphSubst, aeval_X, eval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `[graphPt, Fin.append_left]`. Simplify using `[graphPt, Fin.append_right]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eval_graphSubst (p : Fin d → MvPolynomial (Fin n) ℂ) (x : Fin n → ℂ)
     (q : MvPolynomial (Fin (n + d)) ℂ) : eval x (graphSubst p q) = eval (graphPt p x) q := by
@@ -76,7 +76,7 @@ theorem eval_graphSubst (p : Fin d → MvPolynomial (Fin n) ℂ) (x : Fin n → 
     · simp [graphPt, Fin.append_right]
 
 /- English proof (translation)
-Rewrite using `[graphSubst, aeval_rename]`. Establish `h : (Fin.append X p ∘ Fin.castAdd d : Fin n → MvPolynomial (Fin n) ℂ) = X`. Use function extensionality and compare the values at `j`. Simplify using `[Fin.append_left]`. Rewrite using `[h, aeval_X_left_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem graphSubst_rename (p : Fin d → MvPolynomial (Fin n) ℂ) (q : MvPolynomial (Fin n) ℂ) :
     graphSubst p (rename (Fin.castAdd d) q) = q := by
@@ -87,14 +87,14 @@ theorem graphSubst_rename (p : Fin d → MvPolynomial (Fin n) ℂ) (q : MvPolyno
   rw [h, aeval_X_left_apply]
 
 /- English proof (translation)
-Introduce `q` and use `⟨rename (Fin.castAdd d) q, graphSubst_rename p q⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem graphSubst_surjective (p : Fin d → MvPolynomial (Fin n) ℂ) :
     Function.Surjective (graphSubst p) :=
   fun q => ⟨rename (Fin.castAdd d) q, graphSubst_rename p q⟩
 
 /- English proof (translation)
-Use `hP` as an intermediate fact. Unfold `graphIdeal`. Use `infer_instance`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isPrime_graphIdeal {P : Ideal (MvPolynomial (Fin n) ℂ)} (hP : P.IsPrime)
     (p : Fin d → MvPolynomial (Fin n) ℂ) : (graphIdeal P p).IsPrime := by
@@ -103,9 +103,7 @@ theorem isPrime_graphIdeal {P : Ideal (MvPolynomial (Fin n) ℂ)} (hP : P.IsPrim
   infer_instance
 
 /- English proof (translation)
-Use `set f : MvPolynomial (Fin (n + d)) ℂ →+* MvPolynomial (Fin n) ℂ ⧸ P := (Ideal.Quotient.mk P).comp (graphSubst p).toRingHom with hf`. Establish `hsurj : Function.Surjective f` using `Ideal.Quotient.mk_surjective.comp (graphSubst_surjective p)`. Establish `hker : graphIdeal P p = RingHom.ker f`. Rewrite using `[hf, ← RingHom.comap_ker, Ideal.mk_ker]`. Both sides reduce to the same expression.
-
-Conclude with `ringKrullDim_eq_of_ringEquiv ((Ideal.quotEquivOfEq hker).trans (RingHom.quotientKerEquivOfSurjective hsurj))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_graphIdeal (P : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin d → MvPolynomial (Fin n) ℂ) :
     ringKrullDim (MvPolynomial (Fin (n + d)) ℂ ⧸ graphIdeal P p) =
@@ -121,7 +119,7 @@ theorem ringKrullDim_graphIdeal (P : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin 
     ((Ideal.quotEquivOfEq hker).trans (RingHom.quotientKerEquivOfSurjective hsurj))
 
 /- English proof (translation)
-Introduce `q hq`. Rewrite using `[← eval_graphSubst]`. Conclude with `hx _ hq`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graphPt_mem {P : Ideal (MvPolynomial (Fin n) ℂ)} (p : Fin d → MvPolynomial (Fin n) ℂ)
     {x : Fin n → ℂ} (hx : x ∈ zeroSet P) : graphPt p x ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroLocus (graphIdeal P p) := by
@@ -130,9 +128,7 @@ theorem graphPt_mem {P : Ideal (MvPolynomial (Fin n) ℂ)} (p : Fin d → MvPoly
   exact hx _ hq
 
 /- English proof (translation)
-Introduce `q hq`. Establish `h` using `hz (rename (Fin.castAdd d) q) (by show graphSubst p (rename (Fin.castAdd d) q) ∈ P`. Rewrite using `[graphSubst_rename]`. Conclude with `hq)`. Rewrite `h` using `[eval_rename]`.
-
-Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem firstPart_mem {P : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin d → MvPolynomial (Fin n) ℂ}
     {z : Fin (n + d) → ℂ} (hz : z ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroLocus (graphIdeal P p)) :
@@ -146,7 +142,7 @@ theorem firstPart_mem {P : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin d → MvPo
   exact h
 
 /- English proof (translation)
-Establish `h` using `hz (X (Fin.natAdd n i) - rename (Fin.castAdd d) (p i)) (by show graphSubst p (X (Fin.natAdd n i) - rename (Fin.castAdd d) (p i)) ∈ P`. Rewrite using `[map_sub, graphSubst_rename, graphSubst, aeval_X, Fin.append_right, sub_self]`. Conclude with `P.zero_mem)`. Rewrite `h` using `[map_sub, eval_X, eval_rename, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natAdd_of_mem {P : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin d → MvPolynomial (Fin n) ℂ}
     {z : Fin (n + d) → ℂ} (hz : z ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroLocus (graphIdeal P p)) (i : Fin d) :
@@ -159,7 +155,7 @@ theorem natAdd_of_mem {P : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin d → MvPo
   exact h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `Fin.addCases (fun j => ?_) (fun i => ?_) k` and prove the remaining obligations. Simplify using `[graphPt, firstPart, Fin.append_left]`. Rewrite using `[natAdd_of_mem hz i, graphPt_natAdd]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_graphPt_of_mem {P : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin d → MvPolynomial (Fin n) ℂ}
     {z : Fin (n + d) → ℂ} (hz : z ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroLocus (graphIdeal P p)) :
@@ -170,17 +166,15 @@ theorem eq_graphPt_of_mem {P : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin d → 
   · rw [natAdd_of_mem hz i, graphPt_natAdd]
 
 /- English proof (translation)
-Introduce `n d P p x hP hdim hx ⟨W, hW, hiso⟩ W' hW'`. Establish `hV : IndefiniteRowSideFullHecke.ComplexSets.IsAffVariety (graphIdeal P p) d` using `⟨isPrime_graphIdeal hP p, by rw [ringKrullDim_graphIdeal]; exact hdim⟩`. Establish `hAx : lastRows n d *ᵥ graphPt p x = fun i => eval x (p i)`. Rewrite using `[lastRows_mulVec]`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `graphPt_natAdd p x i`. Establish `hN : ∀ U ∈ 𝓝 x, firstPart ⁻¹' U ∈ 𝓝 (graphPt p x)` using `fun U hU => continuous_firstPart.continuousAt.preimage_mem_nhds (by rw [firstPart_graphPt]; exact hU)`. Establish `hisoG : ∀ z ∈ firstPart ⁻¹' W, z ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroLocus (graphIdeal P p) → lastRows n d *ᵥ z = lastRows n d *ᵥ graphPt p x → z = graphPt p x`. Introduce `z hzW hz hAz`. Establish `hfz : firstPart z = x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hiso _ ⟨firstPart_mem hz, hzW⟩ fun i => ?_` and prove the remaining obligations. Establish `h` using `congrFun hAz i`. Rewrite `h` using `[lastRows_mulVec, lastRows_mulVec]`. Simplify using `only at h`. Rewrite `h` using `[natAdd_of_mem hz, graphPt_natAdd]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[eq_graphPt_of_mem hz, hfz]`. Establish `h` using `hOpen (n + d) d (graphIdeal P p) (lastRows n d) (graphPt p x) hV (graphPt_mem p hx) ⟨firstPart ⁻¹' W, hN W hW, hisoG⟩ (firstPart ⁻¹' W') (hN W' hW')`. Rewrite `h` using `[hAx]`. Use `Filter.mem_of_superset h ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨z, ⟨hz, hzW'⟩, rfl⟩`. Use `⟨firstPart z, ⟨firstPart_mem hz, hzW'⟩, ?_⟩` and prove the remaining obligations. Use `show (fun i => eval (firstPart z) (p i)) = lastRows n d *ᵥ z`. Rewrite using `[lastRows_mulVec]`. Use function extensionality and compare the values at `i`.
-
-Conclude with `(natAdd_of_mem hz i).symm`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem proof (hOpen : IndefiniteRowSideFullHecke.ComplexSets.IsolatedFibreOpen.Statement) : IsolatedFibreOpenPoly.Statement := by
   intro n d P p x hP hdim hx ⟨W, hW, hiso⟩ W' hW'

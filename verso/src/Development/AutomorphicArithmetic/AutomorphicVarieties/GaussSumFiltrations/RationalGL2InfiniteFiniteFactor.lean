@@ -7,7 +7,7 @@ open scoped Matrix
 namespace GlobalTheory.HilbertThetaSeries.RatPts
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Conclude with `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe (IsTotallyReal.isReal v) (WithAbs.toAbs _ x)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pInf_algebraMap (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (x : F) :
     TR.pInf F (algebraMap F (Ad F) x) = rhom x := by
@@ -15,7 +15,7 @@ theorem pInf_algebraMap (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (
   exact InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe (IsTotallyReal.isReal v) (WithAbs.toAbs _ x)
 
 /- English proof (translation)
-Use extensionality with `i j v`. Conclude with `congrFun (pInf_algebraMap F (γ i j)) v`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem pInf_ratGL (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (γ : GL (Fin 2) F) :
     Matrix.GeneralLinearGroup.map (TR.pInf F) (ratGL F 2 γ) = toInf γ := by
@@ -23,9 +23,9 @@ theorem pInf_ratGL (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (γ : 
   exact congrFun (pInf_algebraMap F (γ i j)) v
 
 /- English proof (translation)
-Introduce `F _ _ _ γ`. Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← pInf_ratGL]`. Conclude with `(TR.infGL_mul_finGL (ratGL F 2 γ)).symm`. Take `⟨τ, hτ⟩` from `GlobalTheory.WeakApproxGL.exists_rat_det_pos F 2 h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨τ, fun v => ?_⟩` and prove the remaining obligations. Establish `e` using `hτ v`. Rewrite `e` using `[MonoidHom.comp_apply, pInf_ratGL]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ratGL_real_fin : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (γ : GL (Fin 2) F),
     ratGL F 2 γ = TR.infGL F 2 (toInf γ) * finGL F 2 (toFin γ) ∧
@@ -45,7 +45,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.RatPts.ratGL_real_fin | exact GlobalTheory.HilbertThetaSeries.RatPts.ratGL_real_fin | (intros; apply GlobalTheory.HilbertThetaSeries.RatPts.ratGL_real_fin <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.rational_GL2_infinite_finite_factor : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (γ : GL (Fin 2) F), ratGL F 2 γ = TR.infGL F 2 (toInf γ) * finGL F 2 (toFin γ) ∧ ∀ h : GL (Fin 2) (InfinitePlace F → ℝ), ∃ τ : GL (Fin 2) F, Pos (toInf τ * h) := by
   first | exact @GlobalTheory.HilbertThetaSeries.RatPts.ratGL_real_fin | exact GlobalTheory.HilbertThetaSeries.RatPts.ratGL_real_fin | (intros; apply GlobalTheory.HilbertThetaSeries.RatPts.ratGL_real_fin <;> assumption)

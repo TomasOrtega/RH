@@ -16,18 +16,18 @@ def frameMatrixInverse {k : Type} [CommRing k] {r : ℕ} [NeZero r] (cc : Fin r 
     u * (cc b - if b = lastIdx r then 1 else 0) * (if a = lastIdx r then 1 else 0)
 
 /- English proof (translation)
-Simplify using `[embed_GL2_standard_swap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_matrix_last_column {k : Type} [CommRing k] {r : ℕ} [NeZero r] (cc : Fin r → k) (a : Fin r) :
     embed_GL2_standard_swap cc a (lastIdx r) = cc a := by
   simp [embed_GL2_standard_swap]
 
 /- English proof (translation)
-Use extensionality with `b a`. Simplify using `only [Matrix.mul_apply, embed_GL2_standard_swap, frameMatrixInverse, Matrix.one_apply, add_mul, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Simplify using `only [ite_mul, mul_ite, one_mul, zero_mul, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Distinguish the cases in `h1 : a = lastIdx r`. Substitute `h1` using the available equality.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h2 : b = lastIdx r`. Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Take the linear combination `(1 - cc (lastIdx r)) * hu`. Simplify using `[h2]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(cc b)) * hu`. Simplify using `[h1]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem frame_matrix_mul_inverse {k : Type} [CommRing k] {r : ℕ} [NeZero r] (cc : Fin r → k) (u : k)
     (hu : cc (lastIdx r) * u = 1) : embed_GL2_standard_swap cc * frameMatrixInverse cc u = 1 := by
@@ -58,15 +58,15 @@ def frameCoordinateEvaluation {R : Type} [CommRing R] {ι : Type} {r : ℕ} (LL 
     else ph (X v)
 
 /- English proof (translation)
-Establish `hh : ∀ b c, ∑ a, g0 b a * g0inv a c = if b = c then 1 else 0`. Introduce `b c`. Use `congrFun (congrFun h b) c` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Simplify using `[frameCoordinateEvaluation, eBeta]`. Introduce and unpack `⟨i, c⟩`. Distinguish the cases in `hS : i ∈ S`. Distinguish the cases in `hv : LL.vec i = true`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [RingHom.comp_apply, eBeta, frameCoordinateEvaluation, eval₂Hom_X', hS, hv, if_true, map_sum, map_mul, eval₂Hom_C, RingHom.id_apply]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ph (X (i, c)) := by simp [hh]`. Simplify using `only [RingHom.comp_apply, eBeta, frameCoordinateEvaluation, eval₂Hom_X', hS, hv, if_true, map_sum, map_mul, eval₂Hom_C, RingHom.id_apply, if_false, Bool.false_eq_true]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => by ring` and prove the remaining obligations. Use `_ = ph (X (i, c)) := by simp [hh]`. Simplify using `[frameCoordinateEvaluation, eBeta, hS]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_evaluation_comp_change {R : Type} [CommRing R] {ι : Type} {r : ℕ} (LL : Letters ι) (S : Set ι) {k1 : Type}
     [CommRing k1] (ph : MvPolynomial (ι × Fin r) R →+* k1) (g0 g0inv : Matrix (Fin r) (Fin r) k1)
@@ -105,7 +105,7 @@ open Classical in
 def letterDegreeWeight {ι : Type} {r : ℕ} (i : ι) : ι × Fin r → ℕ := fun v => if v.1 = i then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_prod_type, Finset.sum_comm]`. Simplify using `[letterDegreeWeight, multideg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem letter_weight_eq_multidegree {ι : Type} [Fintype ι] {r : ℕ} (i : ι) (m : ι × Fin r →₀ ℕ) :
     Finsupp.weight (letterDegreeWeight i) m = multideg m i := by
@@ -114,11 +114,9 @@ theorem letter_weight_eq_multidegree {ι : Type} [Fintype ι] {r : ℕ} (i : ι)
   simp [letterDegreeWeight, multideg]
 
 /- English proof (translation)
-Rewrite using `[G.as_sum, map_sum]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `m hm`. Rewrite using `[eBeta, eval₂Hom_monomial, RingHom.comp_apply]`. Apply `IsWeightedHomogeneous.C_mul` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hG m hm, ← letter_weight_eq_multidegree, Finsupp.weight_apply]`. Apply `IsWeightedHomogeneous.prod` to reduce the goal to its premises. Introduce `v _`. Apply `IsWeightedHomogeneous.pow` to reduce the goal to its premises. Use `split_ifs`.
-
-Conclude with `IsWeightedHomogeneous.sum _ _ _ fun a _ => (isWeightedHomogeneous_X k1 (letterDegreeWeight i) (v.1, a)).C_mul _`. Conclude with `IsWeightedHomogeneous.sum _ _ _ fun a _ => (isWeightedHomogeneous_X k1 (letterDegreeWeight i) (v.1, a)).C_mul _`. Conclude with `isWeightedHomogeneous_X k1 (letterDegreeWeight i) v`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem frame_change_weighted_homogeneous {R : Type} [CommRing R] {ι : Type} [Fintype ι] {r : ℕ} (LL : Letters ι) (S : Set ι)
     {k1 : Type} [CommRing k1] (j : R →+* k1) (g0 g0inv : Matrix (Fin r) (Fin r) k1) (i : ι) (n : ℕ)
@@ -140,9 +138,9 @@ theorem frame_change_weighted_homogeneous {R : Type} [CommRing R] {ι : Type} [F
   · exact isWeightedHomogeneous_X k1 (letterDegreeWeight i) v
 
 /- English proof (translation)
-Introduce `m hm i`. Establish `hG' : ∀ m ∈ G.support, multideg m i = d i`. Introduce `m hm`. Use `(MvPolynomial.mem_restrictSupport_iff R).1 hG` as an intermediate fact. Conclude with `this (by simpa using hm) i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `frame_change_weighted_homogeneous LL S j g0 g0inv i (d i) G hG' (mem_support_iff.1 hm)` as an intermediate fact. Rewrite `this` using `[letter_weight_eq_multidegree]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem frame_change_preserves_multidegree {R : Type} [CommRing R] {ι : Type} [Fintype ι] {r : ℕ} (LL : Letters ι) (S : Set ι)
     {k1 : Type} [CommRing k1] (j : R →+* k1) (g0 g0inv : Matrix (Fin r) (Fin r) k1) (d : ι → ℕ)
@@ -158,9 +156,9 @@ theorem frame_change_preserves_multidegree {R : Type} [CommRing R] {ι : Type} [
 
 open Classical in
 /- English proof (translation)
-Unfold `eWt`. Apply the tactic sequence `rw [Finsupp.sum_fintype _ _ (by intro v; split_ifs <;> simp), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (lastIdx r)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `c _ hc`. Simplify using `[hc]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem last_column_weight_eq {ι : Type} [Fintype ι] {r : ℕ} [NeZero r] (LL : Letters ι) (S : Set ι)
     (m : ι × Fin r →₀ ℕ) :
@@ -177,17 +175,15 @@ theorem last_column_weight_eq {ι : Type} [Fintype ι] {r : ℕ} [NeZero r] (LL 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `h1 : (m (A (lastIdx r), lastIdx r) : ℤ) = ∑ i : ι, (if i = A (lastIdx r) then (m (i, lastIdx r) : ℤ) else 0)` using `by simp`. Establish `hle : ∀ i, (m (i, lastIdx r) : ℤ) ≤ (d i : ℤ)`. Introduce `i`. Rewrite using `[← hm i]`. Unfold `multideg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.single_le_sum (f := fun c => m (i, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)` after adjusting the coercions. Rewrite using `[last_column_weight_eq, h1, degOther, Nat.cast_sum, ← Finset.sum_add_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Establish `hn : (0 : ℤ) ≤ (m (i, lastIdx r) : ℤ)` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (0 : ℤ) ≤ (d i : ℤ)` using `by positivity`. Distinguish the cases in `hS : i ∈ S`. Distinguish the cases in `hv : LL.vec i = true`. Distinguish the cases in `hr : i ∈ Set.range A`. Take `⟨l, rfl⟩` from `hr`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hl : l = lastIdx r`. Substitute `hl` using the available equality. Simplify using `[hS, hv]`. Use `h0 l hl` as an intermediate fact. Simplify using `only [hS, hv, if_true, this]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hne : i ≠ A (lastIdx r)` using `fun h => hr ⟨_, h.symm⟩`. Simplify using `only [hS, hv, hr, hne, if_true, if_false, not_false_eq_true, and_self, zero_add]`. Conclude with `hle i`. Apply the tactic sequence `simp only [hS, hv, if_true, if_false, Bool.false_eq_true, false_and, and_false, Nat.cast_zero, add_zero] split_ifs <;> omega`.
-
-Apply the tactic sequence `simp only [hS, if_false, false_and, Nat.cast_zero, add_zero] split_ifs <;> omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem last_column_weight_bound {ι : Type} [Fintype ι] {r : ℕ} [NeZero r] (LL : Letters ι) (S : Set ι) (A : Fin r → ι)
     (d : ι → ℕ) (m : ι × Fin r →₀ ℕ) (hm : ∀ i, multideg m i = d i)
@@ -225,7 +221,7 @@ theorem last_column_weight_bound {ι : Type} [Fintype ι] {r : ℕ} [NeZero r] (
     split_ifs <;> omega
 
 /- English proof (translation)
-Use `conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[monomial_eq, map_mul, Finsupp.prod_fintype _ _ (by simp), map_prod]`. Simplify using `[frameCoordinateEvaluation]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_evaluation_monomial_sum {R : Type} [CommRing R] {ι : Type} [Fintype ι] {r : ℕ} (LL : Letters ι) (S : Set ι)
     {k1 : Type} [CommRing k1] (ph : MvPolynomial (ι × Fin r) R →+* k1) (g0 g0inv : Matrix (Fin r) (Fin r) k1)
@@ -239,27 +235,25 @@ theorem frame_evaluation_monomial_sum {R : Type} [CommRing R] {ι : Type} [Finty
   simp [frameCoordinateEvaluation]
 
 /- English proof (translation)
-Introduce `R _ ι _ LL r _ S A hinj hA d G hG th hth hlt`. Take `⟨hne, hrel⟩` from `hC R ι r A hinj`. Set `k1` to `Localization.Away ((matA R A).adjugate (lastIdx r) (lastIdx r))`. Set `ph : MvPolynomial (ι × Fin r) R →+* k1` to `algebraMap _ k1`. Set `cc : Fin r → k1` to `fun a => ph ((matA R A).adjugate a (lastIdx r))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `u : k1` to `IsLocalization.Away.invSelf ((matA R A).adjugate (lastIdx r) (lastIdx r))`. Establish `hu : cc (lastIdx r) * u = 1` using `IsLocalization.Away.mul_invSelf _`. Establish `hg` using `frame_matrix_mul_inverse cc u hu`. Establish `himg : ph G = frameCoordinateEvaluation LL S ph (embed_GL2_standard_swap cc) (frameMatrixInverse cc u) (eBeta LL S (ph.comp C) (embed_GL2_standard_swap cc) (frameMatrixInverse cc u) G)` using `(RingHom.congr_fun (frame_evaluation_comp_change LL S ph _ _ hg) G).symm`. Establish `hX : ∀ l, frameCoordinateEvaluation LL S ph (embed_GL2_standard_swap cc) (frameMatrixInverse cc u) (X (A l, lastIdx r)) = if l = lastIdx r then ph (detA (R` using `R) A) else 0 := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l`. Establish `h1 : frameCoordinateEvaluation LL S ph (embed_GL2_standard_swap cc) (frameMatrixInverse cc u) (X (A l, lastIdx r)) = ∑ a, ph (X (A l, a)) * embed_GL2_standard_swap cc a (lastIdx r)`. Simplify using `[frameCoordinateEvaluation, (hA l).1, (hA l).2]`. Rewrite using `[h1]`. Simplify using `only [frame_matrix_last_column]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrFun (congrFun (Matrix.mul_adjugate (matA R A)) l) (lastIdx r)`. Rewrite `h2` using `[Matrix.mul_apply]`. Establish `h3` using `congrArg ph h2`. Rewrite `h3` using `[map_sum]`. Simplify using `only [map_mul] at h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `h3.trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Use `split_ifs`. Rewrite using `[mul_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero, map_zero]`. Establish `hdvd : ph (detA (R` using `R) A) ^ (th - degOther LL S A d).toNat ∣ ph G := by`. Rewrite using `[himg, frame_evaluation_monomial_sum]`. Apply `Finset.dvd_sum` to reduce the goal to its premises. Introduce `m hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Dvd.dvd.mul_left` to reduce the goal to its premises. Distinguish the cases in `h0 : ∀ l, l ≠ lastIdx r → m (A l, lastIdx r) = 0`. Establish `hb` using `last_column_weight_bound LL S A d m (frame_change_preserves_multidegree LL S _ _ _ d G hG m hm) h0`. Establish `hw` using `hS R ι LL r S k1 (ph.comp C) _ _ hg G th hth m hm`. Establish `hN : (th - degOther LL S A d).toNat ≤ m (A (lastIdx r), lastIdx r)` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(pow_dvd_pow _ hN).trans ?_` and prove the remaining obligations. Establish `h5` using `Finset.dvd_prod_of_mem (fun v => (frameCoordinateEvaluation LL S ph (embed_GL2_standard_swap cc) (frameMatrixInverse cc u) (X v)) ^ (m v)) (Finset.mem_univ (A (lastIdx r), lastIdx r))`. Simplify using `only [hX, if_true] at h5`. Conclude with `h5`. Use `push Not at h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl, hml⟩` from `h0`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ (A l, lastIdx r)) (by rw [hX, if_neg hl]; exact zero_pow hml)]`. Conclude with `dvd_zero _`. Take `⟨z, hz⟩` from `hdvd`. Take `⟨⟨w, s⟩, hws⟩` from `IsLocalization.surj (Submonoid.powers ((matA R A).adjugate (lastIdx r) (lastIdx r))) z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨M, hM⟩` from `s.2`. Establish `hinj' : Function.Injective ph` using `IsLocalization.injective k1 (powers_le_nonZeroDivisors_of_noZeroDivisors hne)`. Establish `heq : G * ((matA R A).adjugate (lastIdx r) (lastIdx r)) ^ M = detA (R` using `R) A ^ (th - degOther LL S A d).toNat * w := by`. Apply `hinj'` to reduce the goal to its premises. Simplify using `only at hws hM`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(hrel.pow).dvd_of_dvd_mul_right ⟨w, heq⟩`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem height_bound_of_weights (hS : HSupp) (hC : HCop) : E1 := by
   intro R _ ι _ LL r _ S A hinj hA d G hG th hth hlt

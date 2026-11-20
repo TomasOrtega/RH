@@ -5,45 +5,41 @@ open Matrix Formalism.UG Formalism.L2.DIV GlobalTheory.LevNorm
 namespace GlobalTheory.LevNorm
 
 /- English proof (translation)
-Establish `comp : ∀ (f : P → A) Q0, Z.p Q0 (∑ Q ∈ T, Z.e Q * f Q) = if Q0 ∈ T then Z.p Q0 (f Q0) else 0`. Introduce `f Q0`. Rewrite using `[map_sum]`. Distinguish the cases in `h : Q0 ∈ T`. Rewrite using `[if_pos h, Finset.sum_eq_single_of_mem Q0 h (fun Q _ hQ => by rw [map_mul, Z.e_ne Q Q0 (Ne.symm hQ), zero_mul]), map_mul, Z.e_self, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h]`. Conclude with `Finset.sum_eq_zero fun Q hQ => by`. Rewrite using `[map_mul, Z.e_ne Q Q0 (by rintro rfl; exact h hQ), zero_mul]`. Establish `smem : ∀ f : P → A, (∀ Q, f Q ∈ S) → (∑ Q ∈ T, Z.e Q * f Q) ∈ S` using `fun f hf => Subring.sum_mem _ fun Q _ => Subring.mul_mem _ (Z.e_mem Q) (hf Q)`. Use `choose s hs using fun Q => Z.r_surj Q (c Q : k Q)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ Q, (Z.O Q).valuation (Z.p Q (s Q)) = 1` using `fun Q => by`. Establish `hm : Z.p Q (s Q) ∈ Z.O Q` using `(Z.int _).1 (s Q).2 Q`. Use `le_antisymm (((Z.O Q).valuation_le_one_iff _).2 hm) (not_lt.1 fun hc => ?_)` and prove the remaining obligations. Use `(Z.r_ker Q (s Q)).2 hc` as an intermediate fact. Rewrite `this` using `[hs Q]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(c Q).ne_zero this`. Establish `hne : ∀ Q, Z.p Q (s Q) ≠ 0` using `fun Q e => by`. Use `hval Q` as an intermediate fact. Rewrite `this` using `[e, map_zero]`. Conclude with `zero_ne_one this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ∀ Q, (Z.p Q (s Q))⁻¹ ∈ Z.O Q` using `fun Q => by`. Rewrite using `[← ValuationSubring.valuation_le_one_iff, map_inv₀, hval Q, inv_one]`. Use `choose t ht using fun Q => Z.pO_surj Q ⟨_, hinv Q⟩`. Establish `hpt : ∀ Q, Z.p Q (t Q) = (Z.p Q (s Q))⁻¹` using `fun Q => by`. Rewrite using `[← Z.pO_coe, ht Q]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨E, hEd⟩ : ∃ E, E = ∑ Q ∈ T, Z.e Q * 1` from `⟨_, rfl⟩`. Take `⟨a, had⟩ : ∃ a, a = ∑ Q ∈ T, Z.e Q * (s Q : A)` from `⟨_, rfl⟩`. Take `⟨bb, hbd⟩ : ∃ bb, bb = ∑ Q ∈ T, Z.e Q * (t Q : A)` from `⟨_, rfl⟩`. Establish `pE : ∀ Q0, Z.p Q0 E = if Q0 ∈ T then 1 else 0` using `fun Q0 => by`. Rewrite using `[hEd, comp, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `pa : ∀ Q0, Z.p Q0 a = if Q0 ∈ T then Z.p Q0 (s Q0) else 0` using `fun Q0 => by rw [had, comp]`. Establish `pb : ∀ Q0, Z.p Q0 bb = if Q0 ∈ T then Z.p Q0 (t Q0) else 0` using `fun Q0 => by rw [hbd, comp]`. Establish `pF : ∀ Q0 ∈ T, Z.p Q0 (σ E) = 0` using `fun Q0 hQ0 => by`. Rewrite using `[hEd, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun Q hQ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Q3, h3⟩` from `Z.exists_bar hσ Q`. Rewrite using `[map_mul, map_one, mul_one, h3, Z.e_ne Q3 Q0 (fun h => hT Q hQ Q0 hQ0 (by rw [h3, h]))]`. Establish `Emem : E ∈ S` using `hEd ▸ smem _ fun _ => one_mem _`. Establish `amem : a ∈ S` using `had ▸ smem _ fun Q => (s Q).2`. Establish `bmem : bb ∈ S` using `hbd ▸ smem _ fun Q => (t Q).2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have hE : E * E = E := Z.ext' fun Q0 => by rw [map_mul, pE]; split_ifs <;> simp`. Establish `hEF : E * σ E = 0` using `Z.ext' fun Q0 => by`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `h : Q0 ∈ T`. Rewrite using `[pF Q0 h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pE, if_neg h, zero_mul]`. Apply the tactic sequence `have ha : E * a = a := Z.ext' fun Q0 => by rw [map_mul, pE, pa]; split_ifs <;> simp`. Apply the tactic sequence `have hb : E * bb = bb := Z.ext' fun Q0 => by rw [map_mul, pE, pb]; split_ifs <;> simp`. Establish `hab : a * bb = E` using `Z.ext' fun Q0 => by`. Rewrite using `[map_mul, pE, pa, pb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs`. Rewrite using `[hpt, mul_inv_cancel₀ (hne Q0)]`. Simplify using the standard rewrite rules. Use `set F := σ E with hFd`. Use `set x := σ a with hxd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y := σ bb with hyd`. Establish `hF : F * F = F` using `by rw [hFd, ← map_mul, hE]`. Establish `hFx : F * x = x` using `by rw [hFd, hxd, ← map_mul, ha]`. Establish `hFy : F * y = y` using `by rw [hFd, hyd, ← map_mul, hb]`. Establish `hxy : x * y = F` using `by rw [hFd, hxd, hyd, ← map_mul, hab]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hEx : E * x = 0` using `by rw [← hFx, ← mul_assoc, hEF, zero_mul]`. Establish `hEy : E * y = 0` using `by rw [← hFy, ← mul_assoc, hEF, zero_mul]`. Establish `hFa : F * a = 0` using `by rw [← ha, ← mul_assoc, mul_comm F E, hEF, zero_mul]`. Establish `hFb : F * bb = 0` using `by rw [← hb, ← mul_assoc, mul_comm F E, hEF, zero_mul]`. Establish `hax : a * x = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hby : bb * y = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `zmem : 1 - E - F + a + y ∈ S` using `add_mem (add_mem (sub_mem (sub_mem (one_mem _) Emem) (hS _ Emem)) amem) (hS _ bmem)`. Use `⟨⟨1 - E - F + a + y, zmem⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (1 - E - F + a + y) * σ (1 - E - F + a + y) = 1`. Establish `hσF : σ F = E` using `hσ E`. Establish `hσy : σ y = bb` using `hσ bb`. Rewrite using `[map_add, map_add, map_sub, map_sub, map_one, hσF, hσy]`. Take the linear combination `hE + hF + 2 * hEF - hEx - hb - hFx - hFb - ha - hFy - hFa - hEy + hax + hab + hxy + hby`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `Q hQ`. Rewrite using `[← hs Q]`. Use `Z.r_congr Q ?_` and prove the remaining obligations. Use `show Z.p Q (1 - E - F + a + y) = Z.p Q (s Q)`. Establish `hy0 : Z.p Q y = 0` using `by rw [← hFy, map_mul, pF Q hQ, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add, map_sub, map_sub, map_one, pE, if_pos hQ, pF Q hQ, pa, if_pos hQ, hy0]`. Expand and normalize the polynomial expressions, which then agree. Introduce `w hw show (1 - (1 - E - F + a + y)) * w ∈ S`. Establish `key : (1 - (1 - E - F + a + y)) * w = (E - a) * w + σ ((E - bb) * σ w)`. Rewrite using `[map_mul, map_sub, hσ w]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Use `add_mem ((Z.int _).2 fun Q0 => ?_) (hS _ ((Z.int _).2 fun Q0 => ?_))` and prove the remaining obligations. Rewrite using `[map_mul, map_sub, pE, pa]`. Distinguish the cases in `h : Q0 ∈ T`.
-
-Rewrite using `[if_pos h, if_pos h]`. Conclude with `Subring.mul_mem _ (sub_mem (one_mem _) ((Z.int _).1 (s Q0).2 Q0)) (hw Q0 h).1`. Rewrite using `[if_neg h, if_neg h, sub_zero, zero_mul]`. Conclude with `zero_mem _`. Rewrite using `[map_mul, map_sub, pE, pb]`.
-
-Distinguish the cases in `h : Q0 ∈ T`. Rewrite using `[if_pos h, if_pos h]`. Conclude with `Subring.mul_mem _ (sub_mem (one_mem _) ((Z.int _).1 (t Q0).2 Q0)) (hw Q0 h).2`. Rewrite using `[if_neg h, if_neg h, sub_zero, zero_mul]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem exists_normOne_residues {A : Type} [CommRing A] {S : Subring A} {P : Type} {k : P → Type} [∀ Q, Field (k Q)]
     {r : ∀ Q, S →+* k Q} (Z : PlaceSys A S P k r) (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a) (hS : ∀ a ∈ S, σ a ∈ S)

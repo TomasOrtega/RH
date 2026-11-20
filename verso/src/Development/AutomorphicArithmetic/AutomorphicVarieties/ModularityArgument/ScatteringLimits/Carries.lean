@@ -51,7 +51,7 @@ def sh (t : ℝ) : L V →L[ℂ] L V :=
   (Lp.compMeasurePreservingₗᵢ ℂ (fun x : ℝ => x + t) (measurePreserving_add_right volume t)).toContinuousLinearMap
 
 /- English proof (translation)
-The claim follows from `Lp.coeFn_compMeasurePreserving u (measurePreserving_add_right volume t)`.
+A detailed English derivation is pending.
 -/
 theorem sh_ae (t : ℝ) (u : L V) : ∀ᵐ x : ℝ, sh V t u x = u (x + t) :=
   Lp.coeFn_compMeasurePreserving u (measurePreserving_add_right volume t)

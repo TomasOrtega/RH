@@ -10,140 +10,140 @@ import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.SumComplexEmbedd
 namespace Formalism.HermitianLatticeCounting.Final.LatticeSumBounds
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.absolute_value_bound`.
+A detailed English derivation is pending.
 -/
 theorem absA : Formalism.HermitianLatticeCounting.LatticeSumBounds.AbsA := Formalism.HermitianLatticeCounting.P.absolute_value_bound
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.wedge_hadamard_inequality`.
+A detailed English derivation is pending.
 -/
 theorem wedgeHadamard : Formalism.HermitianLatticeCounting.LatticeSumBounds.WedgeHadamard := Formalism.HermitianLatticeCounting.P.wedge_hadamard_inequality
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.leadingMinorColumnReplace`.
+A detailed English derivation is pending.
 -/
 theorem cramerUpper : Formalism.HermitianLatticeCounting.LatticeSumBounds.CramerUpper := Formalism.HermitianLatticeCounting.P.leadingMinorColumnReplace
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.gram_hadamard_inequality`.
+A detailed English derivation is pending.
 -/
 theorem gramHadamard : Formalism.HermitianLatticeCounting.LatticeSumBounds.GramHadamard := Formalism.HermitianLatticeCounting.P.gram_hadamard_inequality
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.prodMaxInvLeSq`.
+A detailed English derivation is pending.
 -/
 theorem lemmaP : Formalism.HermitianLatticeCounting.LatticeSumBounds.LemmaP := Formalism.HermitianLatticeCounting.P.prodMaxInvLeSq
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.packing_bound`.
+A detailed English derivation is pending.
 -/
 theorem packing : Formalism.HermitianLatticeCounting.LatticeSumBounds.Packing := Formalism.HermitianLatticeCounting.P.packing_bound
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.traceLowerBound`.
+A detailed English derivation is pending.
 -/
 theorem traceLower : Formalism.HermitianLatticeCounting.LatticeSumBounds.TraceLower := Formalism.HermitianLatticeCounting.P.traceLowerBound
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.class_number_upper_bound`.
+A detailed English derivation is pending.
 -/
 theorem classNumberBound : Formalism.HermitianLatticeCounting.LatticeSumBounds.ClassNumberBound := Formalism.HermitianLatticeCounting.P.class_number_upper_bound
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.ideal_count_statement`.
+A detailed English derivation is pending.
 -/
 theorem c2a : Formalism.HermitianLatticeCounting.LatticeSumBounds.CardSubmodulesOfIndexLePow := Formalism.HermitianLatticeCounting.P.ideal_count_statement
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.submodule_automorphism_count`.
+A detailed English derivation is pending.
 -/
 theorem c2b : Formalism.HermitianLatticeCounting.LatticeSumBounds.CardSubmodulesAndLinearEquivBounds := Formalism.HermitianLatticeCounting.P.submodule_automorphism_count
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.unitriangularReduction`.
+A detailed English derivation is pending.
 -/
 theorem unipotentReduce : Formalism.HermitianLatticeCounting.LatticeSumBounds.UnipotentReduce := Formalism.HermitianLatticeCounting.P.unitriangularReduction
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.leadingMinorTriangularInvariant`.
+A detailed English derivation is pending.
 -/
 theorem leadingMinorInvariant : Formalism.HermitianLatticeCounting.LatticeSumBounds.LeadingMinorInvariant := Formalism.HermitianLatticeCounting.P.leadingMinorTriangularInvariant
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.normMinorMulLe`.
+A detailed English derivation is pending.
 -/
 theorem minorBound : Formalism.HermitianLatticeCounting.LatticeSumBounds.MinorBound := Formalism.HermitianLatticeCounting.P.normMinorMulLe
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.normMinorMonomialLe`.
+A detailed English derivation is pending.
 -/
 theorem monomialMinor : Formalism.HermitianLatticeCounting.LatticeSumBounds.MonomialMinor := Formalism.HermitianLatticeCounting.P.normMinorMonomialLe
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.complementNormIdentity`.
+A detailed English derivation is pending.
 -/
 theorem omegaNorm : Formalism.HermitianLatticeCounting.LatticeSumBounds.OmegaNorm := Formalism.HermitianLatticeCounting.P.complementNormIdentity
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.box_count_alt`.
+A detailed English derivation is pending.
 -/
 theorem boxCount : Formalism.HermitianLatticeCounting.LatticeSumBounds.BoxCount := Formalism.HermitianLatticeCounting.P.box_count_alt
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.cofactorVectorKernel`.
+A detailed English derivation is pending.
 -/
 theorem kernelRowSpace : Formalism.HermitianLatticeCounting.LatticeSumBounds.KernelRowSpace := Formalism.HermitianLatticeCounting.P.cofactorVectorKernel
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.adjugateLastColumnEqCofactor`.
+A detailed English derivation is pending.
 -/
 theorem cofVecAdjugate : Formalism.HermitianLatticeCounting.LatticeSumBounds.CofVecAdjugate := Formalism.HermitianLatticeCounting.P.adjugateLastColumnEqCofactor
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.projective_quotient_card`.
+A detailed English derivation is pending.
 -/
 theorem projQuotCard : Formalism.HermitianLatticeCounting.LatticeSumBounds.ProjQuotCard := Formalism.HermitianLatticeCounting.P.projective_quotient_card
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.prodHyperbolicRatioSqLe`.
+A detailed English derivation is pending.
 -/
 theorem degFactorBound : Formalism.HermitianLatticeCounting.LatticeSumBounds.DegFactorBound := Formalism.HermitianLatticeCounting.P.prodHyperbolicRatioSqLe
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.nondegenerateFactorBound`.
+A detailed English derivation is pending.
 -/
 theorem deNonDegBound : Formalism.HermitianLatticeCounting.LatticeSumBounds.DeNonDegBound := Formalism.HermitianLatticeCounting.P.nondegenerateFactorBound
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.degenerateFactorBound`.
+A detailed English derivation is pending.
 -/
 theorem deDegBound : Formalism.HermitianLatticeCounting.LatticeSumBounds.DeDegBound := Formalism.HermitianLatticeCounting.P.degenerateFactorBound
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.nondegenerateRowBound`.
+A detailed English derivation is pending.
 -/
 theorem nonDegRow : Formalism.HermitianLatticeCounting.LatticeSumBounds.NonDegRow := Formalism.HermitianLatticeCounting.P.nondegenerateRowBound
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.degenerateRowBound`.
+A detailed English derivation is pending.
 -/
 theorem degRow : Formalism.HermitianLatticeCounting.LatticeSumBounds.DegRow := Formalism.HermitianLatticeCounting.P.degenerateRowBound
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.sumNondegenerateRowsLe`.
+A detailed English derivation is pending.
 -/
 theorem nonDegSum : Formalism.HermitianLatticeCounting.LatticeSumBounds.NonDegSum := Formalism.HermitianLatticeCounting.P.sumNondegenerateRowsLe
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.sumDegenerateRowsLe`.
+A detailed English derivation is pending.
 -/
 theorem degSum : Formalism.HermitianLatticeCounting.LatticeSumBounds.DegSum := Formalism.HermitianLatticeCounting.P.sumDegenerateRowsLe
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.prodMinLeOfProdRatio`.
+A detailed English derivation is pending.
 -/
 theorem smallTerm : Formalism.HermitianLatticeCounting.LatticeSumBounds.SmallTerm := Formalism.HermitianLatticeCounting.P.prodMinLeOfProdRatio
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.singleRowBound`.
+A detailed English derivation is pending.
 -/
 theorem single_row_lattice_sum_bound : Formalism.HermitianLatticeCounting.LatticeSumBounds.SingleRowBound := Formalism.HermitianLatticeCounting.P.singleRowBound
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.expSumLe'`.
+A detailed English derivation is pending.
 -/
 theorem lattice_exp_sum_upper_bound : Formalism.HermitianLatticeCounting.LatticeSumBounds.ExpSumLe' := Formalism.HermitianLatticeCounting.P.expSumLe'
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.invSqrtPowLeExp`.
+A detailed English derivation is pending.
 -/
 theorem gainSqrt : Formalism.HermitianLatticeCounting.LatticeSumBounds.GainSqrt := Formalism.HermitianLatticeCounting.P.invSqrtPowLeExp
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.box_count_big_O`.
+A detailed English derivation is pending.
 -/
 theorem boxCountO : Formalism.HermitianLatticeCounting.LatticeSumBounds.BoxCountO := Formalism.HermitianLatticeCounting.P.box_count_big_O
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.lattice_sum_alt`.
+A detailed English derivation is pending.
 -/
 theorem latticeSum : Formalism.HermitianLatticeCounting.LatticeSumBounds.LatticeSum := Formalism.HermitianLatticeCounting.P.lattice_sum_alt
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.cardCokernelRestriction`.
+A detailed English derivation is pending.
 -/
 theorem homRestrictIndex : Formalism.HermitianLatticeCounting.LatticeSumBounds.HomRestrictIndex := Formalism.HermitianLatticeCounting.P.cardCokernelRestriction
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.coveringO_of_transference h`.
+A detailed English derivation is pending.
 -/
 theorem coveringO_of_transference (h : Formalism.HermitianLatticeCounting.LatticeSumBounds.Transference) :
     Formalism.HermitianLatticeCounting.LatticeSumBounds.CoveringO := Formalism.HermitianLatticeCounting.P.coveringO_of_transference h

@@ -20,11 +20,11 @@ noncomputable section
 namespace GlobalTheory.LevForms
 
 /- English proof (translation)
-Introduce `L _ _ _ n K _ W _ _ _ ρ J χ hJ`. Take `⟨N, hN, hNJ⟩` from `hJ`. Take `⟨T, hT⟩` from `GlobalTheory.T.finite_doubleCosets_definiteUnitary_maximalLevel L n`. Take `⟨Jc, hJc⟩` from `GlobalTheory.AlgFormsFin.exists_cover L n hN`. Set `Φ : ↥(NX.TypeSpF L n K ρ J χ) →ₗ[K] (↥(T ×ˢ Jc) → W)` to `{ toFun := fun f p => (f : GAf L n → W) (p.1.1 * p.1.2) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `Module.Finite.of_injective Φ ((injective_iff_map_eq_zero Φ).2 fun f hf => ?_)` and prove the remaining obligations. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Take `⟨γ, t, u, ht, hu, rfl⟩` from `hT g`. Take `⟨j, hj, κ, hκ, rfl⟩` from `hJc u hu`. Establish `h0 : (f : GAf L n → W) (t * j) = 0` using `congrFun hf ⟨(t, j), Finset.mem_product.2 ⟨ht, hj⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hκJ, hκ1⟩` from `hNJ κ hκ`. Establish `e : (γ : GAf L n) * t * (j * κ) = ((γ : GAf L n) * (t * j)) * κ` using `by simp only [mul_assoc]`. Use `show (f : GAf L n → W) _ = 0`. Rewrite using `[e, f.2.2 ⟨κ, hκJ⟩, hκ1, f.2.1 γ, h0, map_zero, Units.val_one, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeSpF_finiteDimensional : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (K : Type) [Field K] {W : Type} [AddCommGroup W] [Module K W]
     [FiniteDimensional K W] (ρ : Representation K (GQ L n) W) (J : Subgroup (GAf L n)) (χ : J →* Kˣ),
@@ -51,19 +51,15 @@ theorem typeSpF_finiteDimensional : ∀ (L : Type) [Field L] [NumberField L] [Is
   rw [e, f.2.2 ⟨κ, hκJ⟩, hκ1, f.2.1 γ, h0, map_zero, Units.val_one, one_smul]
 
 /- English proof (translation)
-Introduce `hA D cf jE A S In Pq b0 b1 Sx T Sp hPq hsplit wt hwt hE F i j b k Q ψ hj1 hj2 hQ hQ2 hopen hanti hl hunr`. Establish `hQs : ∀ P ∈ Q, IsSplitPl D.host P` using `fun P hP => (hQ P hP).1`. Establish `hQl : ∀ P ∈ Q, P ∉ placesOver D.host.E (T.l i)` using `fun P hP => (hQ P hP).2`. Establish `hDs : ∀ P ∈ T.pD i, IsSplitPl D.host P`. Introduce `P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `T.pD_eq i`. Establish `hP' : P ∈ placesOver D.host.E (if T.l i = D.host.pde then D.host.pde' else D.host.pde)`. Rewrite using `[← h]`. Conclude with `hP`. Use `split_ifs at hP' with hh`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `hsplit P (Or.inr hP')`. Conclude with `hsplit P (Or.inl hP')`. Take `⟨P₀, hP₀⟩` from `GlobalTheory.T.auxiliaryPrimePlaces_nonempty D T i`. Use `haveI : Nonempty (SplitPlace D.host.E) := ⟨(GlobalTheory.T.exists_splitPlace_of_isSplitPlace_cmField D P₀ (hDs P₀ hP₀)).choose⟩`. Set `sp : PlE D.host → SplitPlace D.host.E` to `fun P => if h : IsSplitPl D.host P then (GlobalTheory.T.exists_splitPlace_of_isSplitPlace_cmField D P h).choose else Classical.arbitrary _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hsp : ∀ P, IsSplitPl D.host P → (sp P).w = P` using `fun P h => by`. Simplify using `only [sp, dif_pos h]`. Conclude with `(GlobalTheory.T.exists_splitPlace_of_isSplitPlace_cmField D P h).choose_spec`. Establish `hspw : ∀ P, (P ∈ qpOf D Pq Q ∨ P ∈ qpOf D Pq (T.pD i) ∨ ∃ kv, P = NX.pG D kv) → (sp P).w = P`. Introduce and unpack `P (h | h | ⟨kv, rfl⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hsp P (hQs P (qpOf_sub D Pq Q h))`. Conclude with `hsp P (hDs P (qpOf_sub D Pq _ h))`. Conclude with `hsp _ (GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D kv.1 kv.2)`. Take `⟨hv, hdisj1, hdisj2, hpG⟩` from `GlobalTheory.T.split_places_avoid_auxiliary D T i Q Pq sp hPq hQs hQ2 hDs hspw`. Set `redG : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk), (sp (NX.pG D kv)).v.adicCompletionIntegers (maximalRealSubfield D.host.E) →+* ZMod (D.host.g kv.1)` to `fun kv => (GlobalTheory.T.exists_residueHom_zmod_at_typePlace D kv (sp (NX.pG D kv)) (hspw _ (Or.inr (Or.inr ⟨kv, rfl⟩)))).some`.
-
-Establish `hψt` using `fun P (hP : P ∈ qpOf D Pq Q) => GlobalTheory.T.tameValues_galoisChar_form_residue_unit_character ψ P 1 (T.l i) hopen (by simpa [placesOver] using hQl P (qpOf_sub D Pq Q hP)) (fun A _ σ _ => hl σ)`. Establish `hδt` using `fun P (hP : P ∈ qpOf D Pq (T.pD i)) => GlobalTheory.T.tameValues_galoisChar_form_residue_unit_character (T.delta i) P (if b then 1 else -1) 15 (T.delta_open i) (GlobalTheory.T.fifteen_not_mem_and_delta_inertia_order_divides_fifteen_pow D T i P (qpOf_sub D Pq _ hP)).1 (GlobalTheor …`. Take `⟨J, χ, hJo, hhyp, hJm, hchi⟩` from `GlobalTheory.T.exists_levelGroup_with_character_at_type_places D T In.θ i j b k Q ψ (qpOf D Pq Q) (qpOf D Pq (T.pD i)) sp redG hspw hv hdisj1 hdisj2 hpG (qpOf_sub D Pq Q) (qpOf_sub D Pq _) hψt hδt`. Take `⟨hQc, hQn⟩` from `GlobalTheory.T.chosenHalf_splitPlaces_meets_conjugatePair_once D Pq hPq Q hQs`. Take `⟨hDc, hDn⟩` from `GlobalTheory.T.chosenHalf_splitPlaces_meets_conjugatePair_once D Pq hPq (T.pD i) hDs`.
-
-Use `⟨⟨J, χ, qpOf D Pq Q, qpOf D Pq (T.pD i), sp, redG⟩, ⟨hJo, hhyp, rfl, rfl, qpOf_sub D Pq Q, hQc, hQn, qpOf_sub D Pq _, hDc, hDn, hspw, hJm, hchi⟩, ?_⟩` and prove the remaining obligations. Conclude with `typeSpF_finiteDimensional D.host.E D.R.nV _ (rhoKT D T wt i j b k) J χ hJo`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem levDatum_forms : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb)
     (A : SideA D cf jE) (S : RatDat D.ntw) (In : RatIn D S)

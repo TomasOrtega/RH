@@ -22,52 +22,52 @@ def IsRes (S : Submodule ℂ M) (T : Module.End ℂ M) (T' : Module.End ℂ S) :
   ∀ f : S, ((T' f : S) : M) = T f
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isRes_one : IsRes S 1 1 := fun _ => rfl
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isRes_zero : IsRes S 0 0 := fun _ => rfl
 
 /- English proof (translation)
-Introduce `f` and use `by simp only [LinearMap.add_apply, Submodule.coe_add, h f, k f]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRes.add {T U : Module.End ℂ M} {T' U' : Module.End ℂ S} (h : IsRes S T T') (k : IsRes S U U') :
     IsRes S (T + U) (T' + U') := fun f => by
   simp only [LinearMap.add_apply, Submodule.coe_add, h f, k f]
 
 /- English proof (translation)
-Introduce `f` and use `by simp only [LinearMap.sub_apply, Submodule.coe_sub, h f, k f]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRes.sub {T U : Module.End ℂ M} {T' U' : Module.End ℂ S} (h : IsRes S T T') (k : IsRes S U U') :
     IsRes S (T - U) (T' - U') := fun f => by
   simp only [LinearMap.sub_apply, Submodule.coe_sub, h f, k f]
 
 /- English proof (translation)
-Introduce `f` and use `by simp only [LinearMap.neg_apply, Submodule.coe_neg, h f]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRes.neg {T : Module.End ℂ M} {T' : Module.End ℂ S} (h : IsRes S T T') :
     IsRes S (-T) (-T') := fun f => by
   simp only [LinearMap.neg_apply, Submodule.coe_neg, h f]
 
 /- English proof (translation)
-Introduce `f` and use `by simp only [LinearMap.smul_apply, Submodule.coe_smul, h f]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRes.smul {T : Module.End ℂ M} {T' : Module.End ℂ S} (c : ℂ) (h : IsRes S T T') :
     IsRes S (c • T) (c • T') := fun f => by
   simp only [LinearMap.smul_apply, Submodule.coe_smul, h f]
 
 /- English proof (translation)
-Introduce `f` and use `by rw [Module.End.mul_apply, Module.End.mul_apply, h, k]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRes.mul {T U : Module.End ℂ M} {T' U' : Module.End ℂ S} (h : IsRes S T T') (k : IsRes S U U') :
     IsRes S (T * U) (T' * U') := fun f => by
   rw [Module.End.mul_apply, Module.End.mul_apply, h, k]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using isRes_one`. Consider the case `succ k ih => simpa [pow_succ] using ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem IsRes.pow {T : Module.End ℂ M} {T' : Module.End ℂ S} (h : IsRes S T T') (k : ℕ) :
     IsRes S (T ^ k) (T' ^ k) := by
@@ -76,14 +76,14 @@ theorem IsRes.pow {T : Module.End ℂ M} {T' : Module.End ℂ S} (h : IsRes S T 
   | succ k ih => simpa [pow_succ] using ih.mul h
 
 /- English proof (translation)
-Introduce `f` and use `by simp [Module.algebraMap_end_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRes_algebraMap (c : ℂ) :
     IsRes S (algebraMap ℂ (Module.End ℂ M) c) (algebraMap ℂ (Module.End ℂ S) c) := fun f => by
   simp [Module.algebraMap_end_apply]
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or e with rfl | rfl` into its components or cases. Simplify using `using isRes_one`. Simplify using `using isRes_one.neg`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isRes_sign (e : ℤˣ) :
     IsRes S (((e : ℤ) : Module.End ℂ M)) (((e : ℤ) : Module.End ℂ S)) := by
@@ -92,7 +92,7 @@ theorem isRes_sign (e : ℤˣ) :
   · simpa using isRes_one.neg
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isRes_zero`. Consider the case `insert a s ha ih => simpa [Finset.sum_insert ha] using (h a).add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem isRes_sum {ι : Type*} (s : Finset ι) (F : ι → Module.End ℂ M) (G : ι → Module.End ℂ S)
     (h : ∀ i, IsRes S (F i) (G i)) : IsRes S (∑ i ∈ s, F i) (∑ i ∈ s, G i) := by
@@ -102,9 +102,9 @@ theorem isRes_sum {ι : Type*} (s : Finset ι) (F : ι → Module.End ℂ M) (G 
   | insert a s ha ih => simpa [Finset.sum_insert ha] using (h a).add ih
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => intro F G _`. Simplify using `using isRes_one`. Consider the case `succ t ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `F G h`. Simplify `(h 0).mul (ih _ _ fun k => h k.succ)` using `[List.ofFn_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isRes_ofFn : ∀ (t : ℕ) (F : Fin t → Module.End ℂ M) (G : Fin t → Module.End ℂ S),
     (∀ k, IsRes S (F k) (G k)) → IsRes S (List.ofFn F).prod (List.ofFn G).prod := by
@@ -116,9 +116,7 @@ theorem isRes_ofFn : ∀ (t : ℕ) (F : Fin t → Module.End ℂ M) (G : Fin t �
     simpa [List.ofFn_succ] using (h 0).mul (ih _ _ fun k => h k.succ)
 
 /- English proof (translation)
-Unfold `qdet qminor`. Use `isRes_sum _ _ _ fun σ => (isRes_sign _).mul (isRes_ofFn _ _ _ fun k => ?_)` and prove the remaining obligations. Unfold `Tm`. Use `IsRes.add ?_ (h _ _)` and prove the remaining obligations. Use `split_ifs`.
-
-Conclude with `isRes_algebraMap _`. Conclude with `isRes_zero`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isRes_qdet {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (E' : Fin n → Fin n → Module.End ℂ S)
     (h : ∀ a b, IsRes S (E a b) (E' a b)) (x : ℂ) : IsRes S (qdet E x) (qdet E' x) := by
@@ -140,19 +138,19 @@ def IsPol (F : ℂ → Module.End ℂ M) : Prop :=
   ∃ p : (Module.End ℂ M)[X], ∀ x, F x = p.eval₂ (RingHom.id _) (algebraMap ℂ _ x)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨C T, fun x => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPol_const (T : Module.End ℂ M) : IsPol fun _ => T :=
   ⟨C T, fun x => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X, fun x => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPol_id : IsPol (M := M) fun x => algebraMap ℂ _ x :=
   ⟨X, fun x => by simp⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `h`. Take `⟨q, hq⟩` from `k`. Conclude with `⟨p + q, fun x => by show F x + G x = _`. Rewrite using `[hp, hq, eval₂_add]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsPol.add {F G : ℂ → Module.End ℂ M} (h : IsPol F) (k : IsPol G) : IsPol fun x => F x + G x := by
   obtain ⟨p, hp⟩ := h
@@ -162,7 +160,7 @@ theorem IsPol.add {F G : ℂ → Module.End ℂ M} (h : IsPol F) (k : IsPol G) :
     rw [hp, hq, eval₂_add]⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `h`. Take `⟨q, hq⟩` from `k`. Conclude with `⟨p * q, fun x => by show F x * G x = _`. Rewrite using `[hp, hq, eval₂_mul_noncomm _ _ fun k => (Algebra.commutes x _).symm]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsPol.mul {F G : ℂ → Module.End ℂ M} (h : IsPol F) (k : IsPol G) : IsPol fun x => F x * G x := by
   obtain ⟨p, hp⟩ := h
@@ -172,7 +170,7 @@ theorem IsPol.mul {F G : ℂ → Module.End ℂ M} (h : IsPol F) (k : IsPol G) :
     rw [hp, hq, eval₂_mul_noncomm _ _ fun k => (Algebra.commutes x _).symm]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isPol_const 0`. Consider the case `insert a s ha ih => simpa [Finset.sum_insert ha] using (h a).add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem isPol_sum {ι : Type*} (s : Finset ι) (F : ι → ℂ → Module.End ℂ M) (h : ∀ i, IsPol (F i)) :
     IsPol fun x => ∑ i ∈ s, F i x := by
@@ -182,9 +180,9 @@ theorem isPol_sum {ι : Type*} (s : Finset ι) (F : ι → ℂ → Module.End �
   | insert a s ha ih => simpa [Finset.sum_insert ha] using (h a).add ih
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => intro F _`. Simplify using `using isPol_const 1`. Consider the case `succ t ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `F h`. Simplify `(h 0).mul (ih _ fun k => h k.succ)` using `[List.ofFn_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isPol_ofFn : ∀ (t : ℕ) (F : Fin t → ℂ → Module.End ℂ M), (∀ k, IsPol (F k)) →
     IsPol fun x => (List.ofFn fun k => F k x).prod := by
@@ -196,9 +194,9 @@ theorem isPol_ofFn : ∀ (t : ℕ) (F : Fin t → ℂ → Module.End ℂ M), (�
     simpa [List.ofFn_succ] using (h 0).mul (ih _ fun k => h k.succ)
 
 /- English proof (translation)
-Unfold `qdet qminor`. Use `isPol_sum _ _ fun σ => (isPol_const _).mul (isPol_ofFn _ _ fun k => ?_)` and prove the remaining obligations. Unfold `Tm`. Use `IsPol.add ?_ (isPol_const _)` and prove the remaining obligations. Use `split_ifs`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `isPol_id.add (isPol_const (-(algebraMap ℂ (Module.End ℂ M) (k : ℂ))))` using `[map_sub, sub_eq_add_neg]`. Conclude with `isPol_const 0`.
+A detailed English derivation is pending.
 -/
 theorem isPol_qdet {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M) : IsPol (qdet E) := by
   unfold qdet qminor
@@ -210,9 +208,9 @@ theorem isPol_qdet {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M) : IsPol 
   · exact isPol_const 0
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `h`. Use `⟨∑ i ∈ range (p.natDegree + 1), C (φ (p.coeff i v)) * X ^ i, fun x => ?_⟩` and prove the remaining obligations. Establish `e : ∀ i, (p.coeff i * (algebraMap ℂ (Module.End ℂ M) x) ^ i) v = x ^ i • (p.coeff i v)`. Introduce `i`. Rewrite using `[← map_pow, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp, eval₂_eq_sum_range, LinearMap.sum_apply, map_sum, eval_finset_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [RingHom.id_apply, e, map_smul, smul_eq_mul, eval_mul, eval_C, eval_pow, eval_X, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem IsPol.scalar {F : ℂ → Module.End ℂ M} (h : IsPol F) (v : M) (φ : Module.Dual ℂ M) :
     ∃ q : ℂ[X], ∀ x, φ (F x v) = q.eval x := by
@@ -226,9 +224,9 @@ theorem IsPol.scalar {F : ℂ → Module.End ℂ M} (h : IsPol F) (v : M) (φ : 
   simp only [RingHom.id_apply, e, map_smul, smul_eq_mul, eval_mul, eval_C, eval_pow, eval_X, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun φ => ?_` and prove the remaining obligations. Take `⟨q, hq⟩` from `(isPol_qdet E).scalar v φ`. Establish `e : q = g * C (φ v)`. Use `Polynomial.eq_of_infinite_eval_eq _ _ (Set.Infinite.mono ?_ (Set.finite_singleton u₀).infinite_compl)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu`. Use `h u hu` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq, eval_mul, eval_C]`. Rewrite using `[← hq, this, map_smul, smul_eq_mul]`. Rewrite using `[map_sub, hq, map_smul, e, eval_mul, eval_C, smul_eq_mul, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem qdet_ext {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (g : ℂ[X]) (v : M) (u₀ : ℂ)
     (h : ∀ u, u ≠ u₀ → qdet E u v = g.eval u • v) : qdet E u₀ v = g.eval u₀ • v := by
@@ -251,9 +249,7 @@ section Kill
 variable {W : Type*} [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `hp.add_left hq`. Consider the case `monomial k c`. Rewrite using `[aeval_monomial]`.
-
-Conclude with `(Algebra.commute_algebraMap_left c L).mul_left (hc.pow_left k)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_aeval (T L : Module.End ℂ W) (hc : Commute T L) (p : ℂ[X]) : Commute (aeval T p) L := by
   induction p using Polynomial.induction_on' with
@@ -263,13 +259,13 @@ theorem commute_aeval (T L : Module.End ℂ W) (hc : Commute T L) (p : ℂ[X]) :
     exact (Algebra.commute_algebraMap_left c L).mul_left (hc.pow_left k)
 
 /- English proof (translation)
-Take `⟨Q, hQ, hnd⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd P hP a`. Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 hf`. Establish `hcop : IsCoprime ((X - C a) ^ k) Q` using `IsCoprime.pow_left (((Polynomial.irreducible_X_sub_C a).coprime_iff_not_dvd).2 hnd)`. Take `⟨A, B, hAB⟩` from `hcop`. Establish `e1 : aeval T (X - C a) = T - a • (1 : Module.End ℂ W)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[Algebra.algebraMap_eq_smul_one]`. Establish `hf2 : f = aeval T (B * Q) f`. Establish `h1` using `congrArg (fun p => aeval T p f) hAB`. Simplify using `only [map_add, map_mul, map_pow, e1, LinearMap.add_apply, Module.End.mul_apply, hk, map_zero, zero_add, map_one, Module.End.one_apply] at h1`. Simplify `h1.symm` using `[map_mul, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hy' : aeval T (B * Q) y ∈ T.maxGenEigenspace a`. Use `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨rootMultiplicity a P, ?_⟩` and prove the remaining obligations. Establish `h2 : aeval T ((X - C a) ^ rootMultiplicity a P * (B * Q)) = 0`. Establish `: (X - C a) ^ rootMultiplicity a P * (B * Q) = B * P` using `by conv_rhs => rw [hQ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, map_mul, hT, mul_zero]`. Establish `h3` using `LinearMap.congr_fun h2 y`. Simplify `h3` using `only [map_mul, map_pow, e1, Module.End.mul_apply, LinearMap.zero_apply]`. Establish `h4 : aeval T (B * Q) (L y) = L (aeval T (B * Q) y)` using `LinearMap.congr_fun (commute_aeval T L hc (B * Q)).eq y`. Rewrite using `[hf2, hy, h4, hL _ hy']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem kill (T L : Module.End ℂ W) (P : ℂ[X]) (hP : P ≠ 0) (hT : aeval T P = 0) (hc : Commute T L) (a : ℂ)
     (hL : ∀ f ∈ T.maxGenEigenspace a, L f = 0) (f : W) (hf : f ∈ T.maxGenEigenspace a) (y : W)
@@ -311,14 +307,14 @@ Both sides reduce to the same expression.
 theorem cn_def (n : ℕ) : cn n = ((n : ℂ) - 1) / 2 := rfl
 
 /- English proof (translation)
-The claim follows from `(Finset.mul_prod_erase univ (fun t => Y + χ t) (mem_univ s)).symm`.
+A detailed English derivation is pending.
 -/
 theorem capelliPoly_eq_mul_prod_erase (χ : Fin n → ℂ) (s : Fin n) (Y : ℂ) :
     capP χ Y = (Y + χ s) * ∏ t ∈ univ.erase s, (Y + χ t) :=
   (Finset.mul_prod_erase univ (fun t => Y + χ t) (mem_univ s)).symm
 
 /- English proof (translation)
-Rewrite using `[capelliPoly_eq_mul_prod_erase (χ + Pi.single s 1) s Y]`. Use `congr 1`. Simplify using `[add_assoc]`. Use `Finset.prod_congr rfl fun t ht => ?_` and prove the remaining obligations. Simplify using `[Finset.ne_of_mem_erase ht]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem capelliPoly_add_single (χ : Fin n → ℂ) (s : Fin n) (Y : ℂ) :
     capP (χ + Pi.single s 1) Y = (Y + χ s + 1) * ∏ t ∈ univ.erase s, (Y + χ t) := by
@@ -329,9 +325,9 @@ theorem capelliPoly_add_single (χ : Fin n → ℂ) (s : Fin n) (Y : ℂ) :
     simp [Finset.ne_of_mem_erase ht]
 
 /- English proof (translation)
-Establish `r` using `isRes_qdet (S := stepSub X (χ s)) (tensE X) (step X (χ s)).E (fun a b _ => rfl) (Y + cn n) ⟨f, hf⟩`. Establish `h` using `hS Y`. Rewrite `h` using `[← cn_def]`. Set `z : (step X (χ s)).V` to `⟨f, hf⟩`. Establish `h' : (qdet (step X (χ s)).E (Y + cn n)) z = capP (χ + Pi.single s 1) Y • z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[h]`. Both sides reduce to the same expression. Conclude with `r.symm.trans (congrArg (fun z : stepSub X (χ s) => (z : Fin n → X.V)) h')`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem qdet_on_step (hS : ScalChar (step X (χ s)) (χ + Pi.single s 1)) (Y : ℂ) (f : Fin n → X.V)
     (hf : f ∈ stepSub X (χ s)) :
@@ -347,9 +343,9 @@ theorem qdet_on_step (hS : ScalChar (step X (χ s)) (χ + Pi.single s 1)) (Y : �
   exact r.symm.trans (congrArg (fun z : stepSub X (χ s) => (z : Fin n → X.V)) h')
 
 /- English proof (translation)
-Establish `hom : om X f ∈ stepSub X (χ s)` using `Module.End.mapsTo_maxGenEigenspace_of_comm (Commute.refl (om X)) _ hf`. Establish `hmem : (Y + cn n) • f + om X f ∈ stepSub X (χ s)` using `Submodule.add_mem _ (Submodule.smul_mem _ _ hf) hom`. Establish `h` using `congrFun (LinearMap.congr_fun (hQ n X (Y + cn n)) f) i`. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply] at h`. Rewrite `h` using `[qdet_on_step hS Y _ hmem]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem star (hQ : QdetTens) (hS : ScalChar (step X (χ s)) (χ + Pi.single s 1)) (Y : ℂ) (f : Fin n → X.V)
     (hf : f ∈ stepSub X (χ s)) (i : Fin n) :
@@ -365,19 +361,17 @@ theorem star (hQ : QdetTens) (hS : ScalChar (step X (χ s)) (χ + Pi.single s 1)
   simpa using h
 
 /- English proof (translation)
-Use `set g : ℂ[X] := ∏ t : Fin n, (Polynomial.X + C (χ t - cn n)) with hg`. Establish `ge : ∀ Y, g.eval (Y + cn n) = capP χ Y`. Introduce `Y`. Simplify using `only [hg, eval_prod, eval_add, eval_X, eval_C, capP]`. Conclude with `Finset.prod_congr rfl fun t _ => by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ u, u ≠ -χ s - 1 + cn n → qdet X.E u (f i) = g.eval u • f i`. Introduce `u hu`. Take `⟨Y, rfl⟩ : ∃ Y, u = Y + cn n` from `⟨u - cn n, by ring⟩`. Establish `hw : Y + χ s + 1 ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `hu` to reduce the goal to its premises. Take the linear combination `h0`. Establish `st` using `star hQ hS Y f hf i`. Establish `ei : om X f i = (χ s - cn n) • f i` using `by rw [he]; rfl`. Rewrite `st` using `[ei, capelliPoly_add_single, ← add_smul, ← add_smul, map_smul, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Y + cn n + (χ s - cn n) = Y + χ s` using `by ring`. Establish `e2 : Y + cn n + 1 + (χ s - cn n) = Y + χ s + 1` using `by ring`. Rewrite `st` using `[e1, e2]`. Rewrite using `[ge, capelliPoly_eq_mul_prod_erase χ s Y]`. Establish `: (Y + χ s + 1) • ((((Y + χ s) * ∏ t ∈ univ.erase s, (Y + χ t))) • f i) = (Y + χ s + 1) • qdet X.E (Y + cn n) (f i)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← st, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `((smul_right_injective _ hw) this).symm`. Establish `h : qdet X.E (Y + cn n) (f i) = g.eval (Y + cn n) • f i`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hY : Y + cn n = -χ s - 1 + cn n`. Use `qdet_ext X.E g (f i) _ key` as an intermediate fact. Rewrite using `[hY]`. Conclude with `this`. Conclude with `key _ hY`.
-
-Rewrite using `[h, ge]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig (hQ : QdetTens) (hS : ScalChar (step X (χ s)) (χ + Pi.single s 1)) (f : Fin n → X.V)
     (hf : f ∈ stepSub X (χ s)) (he : om X f = (χ s - cn n) • f) (i : Fin n) (Y : ℂ) :
@@ -416,13 +410,13 @@ theorem eig (hQ : QdetTens) (hS : ScalChar (step X (χ s)) (χ + Pi.single s 1))
   rw [h, ge]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `st` using `star hQ hS (-χ s - 1) f hf i`. Establish `ei : om X f i = (χ s - cn n) • f i + h i` using `by rw [e2]; rfl`. Establish `z : capP (χ + Pi.single s 1) (-χ s - 1) = 0`. Rewrite using `[capelliPoly_add_single]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: -χ s - 1 + χ s + 1 = 0` using `by ring`. Rewrite using `[this, zero_mul]`. Establish `e3 : (-χ s - 1 + cn n + 1) • f i + om X f i = h i`. Rewrite using `[ei, ← add_assoc, ← add_smul]`. Establish `: -χ s - 1 + cn n + 1 + (χ s - cn n) = 0` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, zero_smul, zero_add]`. Rewrite `st` using `[e3, z, zero_smul, eig hQ hS h hh e1 i]`. Establish `nz : capP χ (-χ s - 1) ≠ 0`. Unfold `capP`. Use `Finset.prod_ne_zero_iff.2 fun t _ h0 => hfree t ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `h0`. Simplify `st.symm` using `[nz]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem no_block (hQ : QdetTens) (hS : ScalChar (step X (χ s)) (χ + Pi.single s 1))
     (hfree : ∀ r, χ r ≠ χ s + 1) (f h : Fin n → X.V) (hf : f ∈ stepSub X (χ s))
@@ -447,11 +441,11 @@ theorem no_block (hQ : QdetTens) (hS : ScalChar (step X (χ s)) (χ + Pi.single 
   simpa [nz] using st.symm
 
 /- English proof (translation)
-Use `set ν := om X - (χ s - cn n) • (1 : Module.End ℂ (Fin n → X.V)) with hν`. Establish `hstab : ∀ k, (ν ^ k) f ∈ stepSub X (χ s)` using `fun k => Module.End.mapsTo_maxGenEigenspace_of_comm (((Commute.refl (om X)).sub_right ((Commute.one_right _).smul_right _)).pow_right k) _ hf`. Establish `hom : ∀ v, om X v = (χ s - cn n) • v + ν v`. Introduce `v`. Simplify using `[hν]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero => simpa using hm`. Consider the case `succ m ih`. Establish `h0 : (ν ^ (m + 1)) f = 0`. Use `no_block hQ hS hfree ((ν ^ m) f) _ (hstab m) (hstab (m + 1)) ?_ ?_` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hom, ← Module.End.mul_apply, ← pow_succ', hm, add_zero]`. Rewrite using `[hom, ← Module.End.mul_apply, ← pow_succ']`. Conclude with `ih h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nu_zero (hQ : QdetTens) (hS : ScalChar (step X (χ s)) (χ + Pi.single s 1))
     (hfree : ∀ r, χ r ≠ χ s + 1) (m : ℕ) (f : Fin n → X.V) (hf : f ∈ stepSub X (χ s))
@@ -474,9 +468,9 @@ theorem nu_zero (hQ : QdetTens) (hS : ScalChar (step X (χ s)) (χ + Pi.single s
     exact ih h0
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 hf`. Establish `h1 : ((om X - (χ s - cn n) • (1 : Module.End ℂ (Fin n → X.V))) ^ (k + 1)) f = 0`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Establish `hk' : ((om X - (χ s - cn n) • (1 : Module.End ℂ (Fin n → X.V))) ^ k) f = 0` using `hk`. Rewrite using `[hk', map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `nu_zero hQ hS hfree k f hf h1`. Simplify `h2` using `[sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem om_scalar (hQ : QdetTens) (hS : ScalChar (step X (χ s)) (χ + Pi.single s 1))
     (hfree : ∀ r, χ r ≠ χ s + 1) (f : Fin n → X.V) (hf : f ∈ stepSub X (χ s)) :
@@ -490,7 +484,7 @@ theorem om_scalar (hQ : QdetTens) (hS : ScalChar (step X (χ s)) (χ + Pi.single
   simpa [sub_eq_zero] using h2
 
 /- English proof (translation)
-Establish `h : Commute (qdet X.E Y) (X.E a b)` using `Formalism.REAL.qDetCentral _ n X.E X.gl Y a b`. Rewrite using `[hN]`. Conclude with `h.sub_left ((Commute.one_left _).smul_left _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem central (X : GMod n) (N : Module.End ℂ X.V) (Y c : ℂ)
     (hN : N = qdet X.E Y - c • (1 : Module.End ℂ X.V)) (a b : Fin n) : Commute N (X.E a b) := by
@@ -499,7 +493,7 @@ theorem central (X : GMod n) (N : Module.End ℂ X.V) (Y c : ℂ)
   exact h.sub_left ((Commute.one_left _).smul_left _)
 
 /- English proof (translation)
-Use `LinearMap.ext fun u => funext fun b => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, om_apply, LinearMap.compLeft_apply, Function.comp_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Conclude with `(LinearMap.congr_fun (hc a b).eq (u a)).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem commute_om_compLeft (X : GMod n) (N : Module.End ℂ X.V) (hc : ∀ a b, Commute N (X.E a b)) :
     Commute (om X) (N.compLeft (Fin n)) := by
@@ -509,33 +503,29 @@ theorem commute_om_compLeft (X : GMod n) (N : Module.End ℂ X.V) (hc : ∀ a b,
   exact (LinearMap.congr_fun (hc a b).eq (u a)).symm
 
 /- English proof (translation)
-Introduce `Y`. Rewrite using `[sub_eq_zero.symm]`. Use `set N := qdet X.E (Y + ((n : ℂ) - 1) / 2) - capP χ Y • (1 : Module.End ℂ X.V) with hN`. Assume the negation of the conclusion as `hne`. Establish `hc` using `central X N _ _ hN`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `stab : ∀ a b, ∀ x ∈ LinearMap.range N, X.E a b x ∈ LinearMap.range N`. Introduce and unpack `a b _ ⟨y, rfl⟩`. Conclude with `⟨X.E a b y, LinearMap.congr_fun (hc a b).eq y⟩`. Use `set X' := X.sub (LinearMap.range N) stab with hX'`. Establish `res : ∀ a b, IsRes (LinearMap.range N) (X.E a b) (X'.E a b)` using `fun a b _ => rfl`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `char' : HasChar X' χ`. Take `⟨k, hk⟩` from `hX`. Use `⟨k, fun Y' => LinearMap.ext fun z => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `r` using `((isRes_qdet _ X'.E res (Y' + ((n : ℂ) - 1) / 2)).sub (isRes_one.smul (capP χ Y'))).pow k z`. Rewrite `r` using `[hk Y']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `r`. Establish `nt : Nontrivial X'.V`. Use `(Submodule.nontrivial_iff_ne_bot).2 fun h0 => hne ?_` and prove the remaining obligations. Conclude with `LinearMap.range_eq_bot.1 h0`. Establish `hv` using `hV n X' χ s char' nt hfree`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨f', hf', hf0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hv`. Set `c : X'.V →ₗ[ℂ] X.V` to `(LinearMap.range N).subtype`. Set `J : (Fin n → X'.V) →ₗ[ℂ] (Fin n → X.V)` to `c.compLeft (Fin n)`. Establish `hJinj : Function.Injective J` using `fun u v h => funext fun i => Subtype.ext (congrFun h i)`. Establish `hJom : ∀ g, J (om X' g) = om X (J g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Use function extensionality and compare the values at `b`. Conclude with `map_sum c (fun a => X'.E a b (g a)) univ`. Establish `hJpow : ∀ (k : ℕ) g, J (((om X' - (χ s - cn n) • (1 : Module.End ℂ (Fin n → X'.V))) ^ k) g) = ((om X - (χ s - cn n) • (1 : Module.End ℂ (Fin n → X.V))) ^ k) (J g)`. Introduce `k`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => intro g`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih]`. Use `congr 1`. Simplify using `[hJom]`. Establish `hfS : J f' ∈ stepSub X (χ s)`. Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 hf'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨k, ?_⟩` and prove the remaining obligations. Establish `hk' : ((om X' - (χ s - cn n) • (1 : Module.End ℂ (Fin n → X'.V))) ^ k) f' = 0` using `hk`. Use `hJpow k f'` as an intermediate fact. Rewrite `this` using `[hk', map_zero]`. Conclude with `this.symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ i, ∃ y, N y = c (f' i)` using `fun i => (show LinearMap.range N from f' i).2`. Use `choose y hy using hmem`. Establish `hfy : J f' = N.compLeft (Fin n) y`. Use function extensionality and compare the values at `i`. Conclude with `(hy i).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨K, hK⟩` from `hC n X χ hX`. Establish `hz` using `kill (om X) (N.compLeft (Fin n)) ((List.ofFn fun t : Fin n => (Polynomial.X - C (χ t - cn n) : ℂ[X])).prod ^ K) ?_ ?_ (commute_om_compLeft X N hc) (χ s - cn n) ?_ (J f') hfS y hfy`. Conclude with `hf0 (hJinj (by simpa using hz))`. Use `pow_ne_zero _ (List.prod_ne_zero ?_)` and prove the remaining obligations. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [List.mem_ofFn] at h0`. Take `⟨t, ht⟩` from `h0`. Conclude with `X_sub_C_ne_zero _ ht`. Rewrite using `[map_pow, map_list_prod, List.map_ofFn]`. Establish `e : ∀ t : Fin n, aeval (om X) (Polynomial.X - C (χ t - cn n)) = om X - (χ t - cn n) • (1 : Module.End ℂ (Fin n → X.V))`.
-
-Introduce `t`. Rewrite using `[map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one]`. Simplify using `only [Function.comp_def, e]`. Conclude with `hK`. Introduce `f hf`.
-
-Use function extensionality and compare the values at `i`. Use `eig hQ hS f hf (om_scalar hQ hS hfree f hf) i Y` as an intermediate fact. Rewrite `this` using `[cn_def]`. Simplify using `[hN, this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scal_before (hQ : QdetTens) (hC : CayleyHam) (hV : NonVan) (hX : HasChar X χ)
     (hfree : ∀ r, χ r ≠ χ s + 1) (hS : ScalChar (step X (χ s)) (χ + Pi.single s 1)) : ScalChar X χ := by
@@ -613,7 +603,7 @@ theorem scal_before (hQ : QdetTens) (hC : CayleyHam) (hV : NonVan) (hX : HasChar
     simp [hN, this]
 
 /- English proof (translation)
-Introduce `n X χ s hX hfree hS`. Conclude with `⟨scal_before GlobalTheory.T.QuantumDeterminantTensor GlobalTheory.T.CayleyHamiltonHk GlobalTheory.T.HeckeNonVanishing hX hfree hS, om_scalar GlobalTheory.T.QuantumDeterminantTensor hS hfree⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem back : Back := by
   intro n X χ s hX hfree hS

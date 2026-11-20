@@ -3,19 +3,17 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : ∀ x : X, ∃ f ∈ S, f x = 1`. Introduce `x`. Take `⟨d, hd⟩` from `Int.subgroup_cyclic (S.map (Pi.evalAddMonoidHom (fun _ : X => ℤ) x))`. Rewrite `hd` using `[← AddSubgroup.zmultiples_eq_closure]`. Establish `hd1 : d.natAbs = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.eq_one_iff_not_exists_prime_dvd]`. Introduce `p pp hpd`. Take `⟨f, hf, hnd⟩` from `hp x p pp`. Apply `hnd` to reduce the goal to its premises. Establish `hmem : f x ∈ AddSubgroup.zmultiples d`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← hd]`. Conclude with `⟨f, hf, rfl⟩`. Conclude with `(Int.natCast_dvd.mpr hpd).trans (Int.mem_zmultiples_iff.mp hmem)`. Establish `: (1 : ℤ) ∈ AddSubgroup.zmultiples d`. Rewrite using `[Int.mem_zmultiples_iff]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_iff_dvd_one.mp (Int.isUnit_iff_natAbs_eq.mpr hd1)`. Rewrite `this` using `[← hd]`. Take `⟨f, hf, hfx⟩` from `this`. Conclude with `⟨f, hf, hfx⟩`. Use `choose f hfS hf1 using h1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `key : ∀ s : Finset X, 1 - ∏ x ∈ s, (1 - f x) ∈ S`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert ha]`. Establish `e : 1 - (1 - f a) * ∏ x ∈ s, (1 - f x) = f a + (1 - ∏ x ∈ s, (1 - f x)) - f a * (1 - ∏ x ∈ s, (1 - f x))` using `by ring`. Rewrite using `[e]`. Conclude with `S.sub_mem (S.add_mem (hfS a) ih) (hmul _ (hfS a) _ ih)`. Use `haveI := Fintype.ofFinite X`.
-
-Establish `h0 : ∏ x : X, (1 - f x) = 0`. Use function extensionality and compare the values at `y`. Rewrite using `[Finset.prod_apply]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ y) (by simp [hf1])`. Simplify `key Finset.univ` using `[h0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem one_mem_of_mul_mem_of_forall_prime_not_dvd (X : Type) [Finite X]
     (S : AddSubgroup (X → ℤ)) (hmul : ∀ f ∈ S, ∀ g ∈ S, f * g ∈ S)

@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.gtCoord_end_ratio_descends` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FGtCoordEndRatioDescends.lean&line=20#L20)
 -/

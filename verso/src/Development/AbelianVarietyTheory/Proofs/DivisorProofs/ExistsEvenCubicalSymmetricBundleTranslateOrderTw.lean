@@ -18,9 +18,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.MumTwistCP
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ hG U a ha`. Take `⟨hL, -, -, -, -⟩` from `GlobalTheory.firstFiveLaws`. Set `M` to `GlobalTheory.ValueForm.modelCP U.toUnifPre hL.globalFns`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.exists_generator_lineBundle_pullback_spec_localRing R G.left M.L.L M.L.isLB a.left`. Take `⟨P, hPL, h2, h3⟩` from `GlobalTheory.T.exists_translate_cubicalSymmetricLineBundle_twoTorsion (Sp R) G M a ha ρ hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨P, ?_, GlobalTheory.T.translatedUniformisationBundle_even_closedFibreTorus R hR D A G hG U a ha P hPL h2 h3⟩` and prove the remaining obligations. Rewrite using `[hPL]`. Conclude with `GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB U.LG.isLB _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cp_transl : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ a : 𝟙_ (Over (Sp R)) ⟶ G, a ^ 2 = 1 → ∃ P : GlobalTheory.UU.CP G, LBIso P.L.L (U.LG.L.pull ((toUnit G ≫ a) * 𝟙 G).left) ∧ EvenOn P := by
   intro R _ _ _ hR D A G _ _ hG U a ha

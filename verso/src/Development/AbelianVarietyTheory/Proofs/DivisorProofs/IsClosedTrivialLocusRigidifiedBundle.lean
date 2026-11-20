@@ -14,7 +14,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.TrivLocus
 
 /- English proof (translation)
-Introduce `S _ A _ L₀ N hA hL₀ hamp hN hrig`. Take `⟨Z, i, hi, hZ⟩` from `GlobalTheory.T.closedSubscheme_glue_local_condition S (TrivCond A N) (trivCond_comp A N) (GlobalTheory.T.lineBundleTrivialOnPullbackSquares_of_local S A N hA hN hrig) (GlobalTheory.T.exists_closedSubscheme_rigidifiedBundle_trivialLocus S A L₀ N hA hL₀ hamp hN hrig)`. Use `⟨Z, i, hi, fun T t A' _ φ' hP => ?_⟩` and prove the remaining obligations. Rewrite using `[trivCond_iff A N T t A'.left φ' A'.hom hP.1]`. Conclude with `hZ T t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivLocus_closed : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A : Over S) [GrpObj A] (L₀ N : LB A.left), IsAbelianScheme A → L₀.IsLB → Out.RelAmple A L₀ → N.IsLB → Out.Rigidified A N → ∃ (Z : Scheme.{0}) (i : Z ⟶ S), IsClosedImmersion i ∧ ∀ (T : Scheme.{0}) (t : T ⟶ S) (A' : Over T) [GrpObj A'] (φ' : A'.left ⟶ A.left), IsGrpPullback A' A t φ' → ((∃ s : (N.pull φ').Gen, s.IsGen) ↔ ∃ z : T ⟶ Z, z ≫ i = t) := by
   intro S _ A _ L₀ N hA hL₀ hamp hN hrig

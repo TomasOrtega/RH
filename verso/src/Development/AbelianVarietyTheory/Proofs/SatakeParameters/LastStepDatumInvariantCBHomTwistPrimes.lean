@@ -13,7 +13,7 @@ namespace GlobalTheory.TopXiInvQ
 open Formalism.L2.Col.LocE Formalism.L2.Col.Loc GlobalTheory.GO
 
 /- English proof (translation)
-Unfold `PhiTopG`. Use `split_ifs`. Conclude with `GlobalTheory.TopInv.PhiGS_add (GlobalTheory.TopInv.qOf_mem P) (GlobalTheory.TopInv.qOf_ne P) _ _ _ _ _ _ _ _ _ _ hc x z hz`. Conclude with `GlobalTheory.TopInv.PhiG_add (GlobalTheory.TopInv.qOf_mem P) (GlobalTheory.TopInv.qOf_ne P) _ _ _ _ _ _ _ _ _ _ hc x z hz`. Conclude with `GlobalTheory.TopInv.PhiQ_add (GlobalTheory.TopInv.qOf_mem P) (GlobalTheory.TopInv.qOf_ne P) _ _ _ _ _ _ hc x z hz`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phiTopG_add {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
     (sharp : Bool) (i : ℕ) (hc : cOf R i = 0) (P : HeightOneSpectrum (𝓞 X.E))
@@ -27,17 +27,15 @@ theorem phiTopG_add {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.
   · exact GlobalTheory.TopInv.PhiQ_add (GlobalTheory.TopInv.qOf_mem P) (GlobalTheory.TopInv.qOf_ne P) _ _ _ _ _ _ hc x z hz
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S mu cst L G m2 _hX hPr _hsel _hg _hT hL u p Y p' x z hY hz`. Establish `hc` using `hL.cst_ok`. Establish `hm` using `hL.hm`. Establish `hc0 : cOf R (m2 + 1) = 0` using `by unfold cOf; omega`. Take `⟨h1, h2⟩` from `loc_of_mem_mulLat (cst := cst) hPr p p' x hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[XiTop_eq, XiTop_eq, h1]`. Use `congr 1`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Establish `hq0` using `GlobalTheory.TopInv.qOf_ne P.1`. Rewrite using `[GlobalTheory.TopInv.inFr_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ` using `h2 P`. Generalize the expression as in `inFr (frsF sel mu p P) (frsF sel mu p' P) z = Z at hZ ⊢`. Unfold `topDat`. Rewrite using `[LinearMap.add_comp, LinearMap.comp_add, LinearMap.comp_add]`. Use `congrArg₂ (· * ·) (phiTopG_add Ch mu _ (m2 + 1) hc0 P.1 _ _ fun s l => ?_) (GlobalTheory.TopInv.ftY_add sel mu cst hc P (hL.depthQ P) _ _ _ (fun s => ?_) fun l => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, rfl⟩ : ∃ t, s = Fin.castAdd _ t` from `⟨⟨s.1, by have := s.2; omega⟩, rfl⟩`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, GlobalTheory.TopStep.castAdd_single, ← pow_one (qOf P.1 : X.E)]`. Use `GlobalTheory.TopInv.intAt_div_pow_le hq0 hc.B_pos ?_` and prove the remaining obligations. Rewrite using `[div_eq_inv_mul]`. Conclude with `hZ s _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.TopInv.atNL_int _ _ _ fun l => ?_` and prove the remaining obligations. Rewrite using `[div_eq_inv_mul]`. Conclude with `hZ s l`. Establish `h3` using `GlobalTheory.TopInv.repY_mem sel mu cst _ _ hY P`. Rewrite `h3` using `[← (frsF sel mu p P).apply_symm_apply (_ • _)]`.
-
-Use `replace h3 := (GlobalTheory.TopStep.frsF_mem p P _).1 h3`. Rewrite `h3` using `[map_smul]`. Conclude with `(mem_localization_standardLattice _ _).1 h3 l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiTop_invQ : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ), X.Ok → Pr.Ok → IsSel X sel → (∀ i, Pr.g i ∈ S) → (∀ v, Pr.T v ∈ S) → L.Ok Ch sel mu cst G m2 → ∀ (u : Pr.Word) (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1)))) (p' : ChPt (R := R) sel mu u (m2 + 1 + 1)) x z, Y ∈ ybSet sel mu cst p.deco.1.N → z ∈ mulLat (cBof sel mu cst u) (homAt (Sall sel mu u) p.deco.1.N p'.deco.1.N) → XiTop Ch sel mu cst (m2 + 1) p Y p' (x + z) = XiTop Ch sel mu cst (m2 + 1) p Y p' x := by
   intro X Pr R Ch sel S mu cst L G m2 _hX hPr _hsel _hg _hT hL u p Y p' x z hY hz

@@ -10,13 +10,13 @@ section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Polynomial ValuativeRel GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL GlobalTheory.GalOfCusp GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 /- English proof (translation)
-Establish `key : ∀ (u : Multiset (Γ →* ℂ)) (g : Γ), Finsupp.linearCombination ℂ (fun f : Γ →* ℂ => (f : Γ → ℂ)) (u.map fun f => Finsupp.single f (1 : ℂ)).sum g = (u.map fun f => f g).sum` using `fun u g => by`. Proceed by induction on `u using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a u ih => simp [ih]`. Establish `cnt : ∀ (u : Multiset (Γ →* ℂ)) (f : Γ →* ℂ), (u.map fun f => Finsupp.single f (1 : ℂ)).sum f = (u.count f : ℂ)` using `fun u f => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `u using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a u ih`. Rewrite using `[Multiset.map_cons, Multiset.sum_cons, Finsupp.add_apply, ih, Multiset.count_cons, Finsupp.single_apply]`. Distinguish the cases in `e : a = f`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[e, add_comm]`. Simplify using `[e, Ne.symm e]`. Establish `h1` using `linearIndependent_monoidHom Γ ℂ (funext fun g => (key s g).trans ((h g).trans (key t g).symm))`. Use extensionality with `f`. Establish `h2` using `(cnt s f).symm.trans ((congrArg (fun u => u f) h1).trans (cnt t f))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `h2` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private theorem multiset_eq_of_sum {Γ : Type} [Monoid Γ] (s t : Multiset (Γ →* ℂ))
     (h : ∀ g, (s.map fun f => f g).sum = (t.map fun f => f g).sum) : s = t := by
@@ -45,9 +45,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {rc : IrrGL (w.adicCompletion E) → WD h}
 /- English proof (translation)
-Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨𝔪, hm⟩` from `GlobalTheory.langlandsExhaustionGL_holds (w.adicCompletion E) x`. Establish `hs' : HasSupport x.rep (msupp 𝔪)` using `GlobalTheory.LocGL.hasSupport_msupp_of_isL hZ _ 𝔪 x hm`. Establish `he : s = msupp 𝔪` using `GlobalTheory.LocGL.SupportUnique.hasSupport_unique GlobalTheory.RecT.geometricLemma_holds GlobalTheory.bernsteinZelevinskyFiniteness_holds hZ _ x _ _ hs hs'`. Rewrite using `[he, H.langlands 𝔪.toList x (by rw [Multiset.coe_toList]; exact hm), segSum, CuspExt.charPol_sumList, List.map_map, msupp, Multiset.map_bind, Multiset.prod_bind]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : ∀ (l : List (Segment (w.adicCompletion E))) (F : Segment (w.adicCompletion E) → ℂ[X]), (l.map F).prod = ((l : Multiset _).map F).prod` using `fun l F => by rw [Multiset.map_coe, Multiset.prod_coe]`. Rewrite using `[hl, Multiset.coe_toList]`. Conclude with `congrArg Multiset.prod (Multiset.map_congr rfl fun Δ _ => GlobalTheory.RoadU.CharSupport.charPol_seg H Δ g)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem charPol_supp (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) (H : UpperTheory.Zero.LLC.LawsT a ha rc)
     (x : IrrGL (w.adicCompletion E)) (s : Multiset (IrrGL (w.adicCompletion E))) (hs : HasSupport x.rep s) (g : Weil h) :
@@ -65,22 +65,22 @@ private theorem charPol_supp (hZ : GlobalTheory.Published.ZelevinskyPolynomialRi
   rw [hl, Multiset.coe_toList]
   exact congrArg Multiset.prod (Multiset.map_congr rfl fun Δ _ => GlobalTheory.RoadU.CharSupport.charPol_seg H Δ g)
 /- English proof (translation)
-Rewrite using `[H.one, WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem charPol_ofChar (H : UpperTheory.Zero.LLC.LawsT a ha rc) (χ : (w.adicCompletion E)ˣ →* ℂˣ) (hχ : IsSmoothChar χ)
     (g : Weil h) : (rc (IrrGL.ofChar χ hχ)).charPol g = X - C (χ (a g) : ℂ) := by
   rw [H.one, WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]
   simp
 /- English proof (translation)
-Set `S` to `{χ : (w.adicCompletion E)ˣ →* ℂˣ // IsSmoothChar χ}`. Set `F : S → IrrGL (w.adicCompletion E)` to `fun χ => IrrGL.ofChar χ.1 χ.2`. Take `⟨t, rfl⟩ : ∃ t : Multiset S, t.map F = s` from `haveI : CanLift (IrrGL (w.adicCompletion E)) S F fun y => ∃ χ, F χ = y := ⟨fun _ hy => hy⟩ (Multiset.canLift F (fun y => ∃ χ, F χ = y)).prf s fun y hy => by`. Take `⟨χ, hχ, e⟩` from `GlobalTheory.RoadU.PlainChars.exists_eq_ofChar y (h1 y hy)`. Conclude with `⟨⟨χ, hχ⟩, e.symm⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `c : S → (w.adicCompletion E)ˣ →* ℂ` to `fun χ => (Units.coeHom ℂ).comp χ.1`. Establish `hc : Function.Injective c` using `fun χ ψ e => Subtype.ext (MonoidHom.ext fun y => Units.ext (DFunLike.congr_fun e y))`. Set `t' : Multiset S` to `Finset.univ.val.map fun i => ⟨ω i, hω i⟩`. Establish `htt : t = t'`. Use `Multiset.map_injective hc (multiset_eq_of_sum _ _ fun y => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, rfl⟩` from `ha.surj y`. Establish `h1 : (((t.map c).map fun f => f (a g)).map fun r => X - C r).prod = (((t'.map c).map fun f => f (a g)).map fun r => X - C r).prod`. Establish `h2` using `(charPol_supp hZ H x _ hs g).symm.trans (hp g)`. Simplify using `only [Multiset.map_map, Function.comp_def, t'] at h2 ⊢`. Rewrite `h2` using `[Finset.prod_eq_multiset_prod]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans (congrArg Multiset.prod (Multiset.map_congr rfl fun χ _ => ?_)) h2` and prove the remaining obligations. Conclude with `(charPol_ofChar H χ.1 χ.2 g).symm`. Establish `h3` using `congrArg Polynomial.roots h1`. Rewrite `h3` using `[roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C]`. Rewrite using `[h3]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[htt, Multiset.map_map]`. Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 private theorem hasSupport_of_charPol (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) (H : UpperTheory.Zero.LLC.LawsT a ha rc)
     (x : IrrGL (w.adicCompletion E)) (s : Multiset (IrrGL (w.adicCompletion E))) (hs : HasSupport x.rep s)
@@ -115,11 +115,11 @@ private theorem hasSupport_of_charPol (hZ : GlobalTheory.Published.ZelevinskyPol
   exact hs
 end
 /- English proof (translation)
-Establish `hd : ∑ i, (IrrGL.ofChar (μ i) (hμ i)).1 = n` using `by simp [IrrGL.ofChar]`. Use `IsSubquotient.trans ?_ (GlobalTheory.SphSeg.isSubquotient_prodIrr_prinSeries _ hd μ hμ fun _ => rfl)` and prove the remaining obligations. Take `⟨Z, Ψ, -, hΨ, -⟩` from `hZ k`. Establish `h1` using `SupportRing.pos_pc_sub hΨ hs τ.smooth τ.irr`. Take `⟨hp, ep⟩` from `SupportRing.prodIrr_cls hΨ _ hd`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `SupportRing.isSubquotient_of_clsGL_ne hp τ.smooth τ.irr ?_` and prove the remaining obligations. Establish `h2` using `h1 (IrrGL.of τ.ρ τ.smooth τ.irr)`. Rewrite `h2` using `[SupportRing.pc_map, ← ep]`. Establish `e1 : ∀ (A : GrothGL k) (y : IrrGL k), Ψ.symm (Ψ A - SupportRing.bas Ψ y) y = A y - 1`. Introduce `A y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[SupportRing.bas, ← map_sub, Ψ.symm_apply_apply, Finsupp.sub_apply, Finsupp.single_eq_same]`. Rewrite `h2` using `[e1]`. Introduce `h3`. Rewrite `h2` using `[h3]`. Conclude with `absurd h2 (by norm_num)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isSubquotient_of_hasSupport (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) {k : Type} [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} (τ : IrrRep (GL (Fin n) k)) (μ : Fin n → kˣ →* ℂˣ)
@@ -141,15 +141,13 @@ private theorem isSubquotient_of_hasSupport (hZ : GlobalTheory.Published.Zelevin
   rw [h3] at h2
   exact absurd h2 (by norm_num)
 /- English proof (translation)
-Introduce `P L Ω _ _ _ _ _ n w A h a ha rc hrc σ hT ω hω hp`. Take `⟨a', ha', H⟩` from `hrc`. Choose the witnesses or unpack the hypotheses as in `rfl : a' = a := by`. Take `⟨art, hart⟩` from `P.aut.art L Ω`. Establish `hinj` using `GlobalTheory.ArtinLocalInj.artin_localIdele_injective P.loc.chev L Ω art hart w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `MonoidHom.ext fun σ => hinj ((ha'.glob art hart _).trans (ha.glob art hart _).symm)`. Use `haveI : CharZero (w.adicCompletion L) := algebraRat.charZero _`. Establish `hμ : ∀ i, IsSmoothChar (ω i * absPow (w.adicCompletion L) (((n : ℂ) - 1) / 2))` using `fun i => (hω i).mul (isSmoothChar_absPow _)`. Establish `e0 : ((n : ℂ) - 1) / 2 + (((1 - (n : ℝ)) / 2 : ℝ) : ℂ) = 0` using `by push_cast; ring`. Establish `e1 : ∀ i, (IrrGL.ofChar (ω i) (hω i)).nu (((n : ℂ) - 1) / 2) = IrrGL.ofChar _ (hμ i)` using `fun i => IrrGL.tw_ofChar _ _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `τ : IrrRep (GL (Fin n) (w.adicCompletion L))` to `⟨_, σ.ρ, σ.smooth, σ.irred⟩`. Take `⟨s, hs0, hs1, -⟩` from `hT`. Establish `hs` using `hasSupport_of_charPol P.loc.zel H (algNorm σ) _ (SupportRing.hasSupport_nu hs0 (((1 - (n : ℝ)) / 2 : ℝ) : ℂ)) (fun y hy => by`. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.1 hy`. Conclude with `hs1 z hz) ω hω hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `SupportRing.hasSupport_nu hs (((n : ℂ) - 1) / 2)`. Establish `e2 : (algNorm σ).nu (((n : ℂ) - 1) / 2) = IrrGL.of σ.ρ σ.smooth σ.irred`. Rewrite using `[algNorm, IrrGL.nu_nu, add_comm, e0, IrrGL.nu_zero]`. Establish `key : ∀ (x y : IrrGL (w.adicCompletion L)) s, x = y → HasSupport x.rep s → HasSupport y.rep s`. Introduce and unpack `_ _ _ rfl h`.
-
-Conclude with `h`. Establish `h3` using `(key _ _ _ e2 h2).of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred).symm`. Simplify using `only [Multiset.map_map, Function.comp_def, e1] at h3`. Conclude with `isSubquotient_of_hasSupport P.loc.zel τ _ hμ h3`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Desc.W.pseudo_local_langlands_descent :
     _root_.UpperTheory.V.Z.Desc.W.PseudoLocalDescent := by

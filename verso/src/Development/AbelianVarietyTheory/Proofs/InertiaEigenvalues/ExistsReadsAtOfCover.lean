@@ -13,9 +13,9 @@ namespace GlobalTheory.TwistChoice
 variable (D : D7)
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `h0 : (D.plEq w).valuation D.what₂.LL x ≠ 0` using `by simpa using hx`. Rewrite using `[D.val_eq w x hx, vAdd, ← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_le_exp, WithZero.log_exp]`. Use `norm_cast`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Conclude with `neg_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem val_nonneg_iff (w : D.what₂.places.Pl) (x : D.what₂.LL) :
     0 ≤ D.what₂.places.val w x ↔ (D.plEq w).valuation D.what₂.LL x ≤ 1 := by
@@ -27,9 +27,9 @@ theorem val_nonneg_iff (w : D.what₂.places.Pl) (x : D.what₂.LL) :
   exact neg_nonneg
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `h0 : (D.plEq w).valuation D.what₂.LL x ≠ 0` using `by simpa using hx`. Rewrite using `[D.val_eq w x hx, vAdd, ← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_lt_exp, WithZero.log_exp]`. Use `norm_cast`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Conclude with `neg_pos`.
+A detailed English derivation is pending.
 -/
 theorem val_pos_iff (w : D.what₂.places.Pl) (x : D.what₂.LL) :
     0 < D.what₂.places.val w x ↔ (D.plEq w).valuation D.what₂.LL x < 1 := by
@@ -41,7 +41,7 @@ theorem val_pos_iff (w : D.what₂.places.Pl) (x : D.what₂.LL) :
   exact neg_pos
 
 /- English proof (translation)
-Rewrite using `[val_pos_iff, ← (D.plEq w).valuation_lt_one_iff_mem (K := D.what₂.LL)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_pos_iff_mem (w : D.what₂.places.Pl) (x : 𝓞 ↥D.LL0) :
     0 < D.what₂.places.val w ((x : ↥D.LL0) : D.what₂.LL) ↔
@@ -50,7 +50,7 @@ theorem val_pos_iff_mem (w : D.what₂.places.Pl) (x : 𝓞 ↥D.LL0) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[D.what₂.places.val_resChar]`. Conclude with `D.what₂.places.ramIdx_pos w` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_resChar_pos (w : D.what₂.places.Pl) :
     0 < D.what₂.places.val w ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) := by
@@ -58,9 +58,9 @@ theorem val_resChar_pos (w : D.what₂.places.Pl) :
   exact_mod_cast D.what₂.places.ramIdx_pos w
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h1` using `(val_pos_iff_mem D w (p : 𝓞 ↥D.LL0)).1 (by simpa using h)`. Establish `h2` using `(val_pos_iff_mem D w (D.what₂.places.resChar w : 𝓞 ↥D.LL0)).1 (by simpa using val_resChar_pos D w)`. Rewrite `h1`, `h2` using `[map_natCast]`. Establish `h3 : IsCoprime ((p : ℕ) : 𝓞 D.what₂.LL) ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL)` using `Nat.Coprime.cast ((Nat.coprime_primes hp (D.what₂.places.resChar_prime w)).2 hne)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, b, hab⟩` from `h3`. Conclude with `(D.plEq w).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_resChar_of_pos (w : D.what₂.places.Pl) {p : ℕ} (hp : p.Prime)
     (h : 0 < D.what₂.places.val w ((p : ℕ) : D.what₂.LL)) : p = D.what₂.places.resChar w := by
@@ -75,7 +75,7 @@ theorem eq_resChar_of_pos (w : D.what₂.places.Pl) {p : ℕ} (hp : p.Prime)
     (hab ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))
 
 /- English proof (translation)
-Set `s : D.what₂.LL →ₐ[ℚ] D.what₂.LL` to `(starRingEnd D.what₂.LL).toRatAlgHom`. Establish `h1 : star ((x : ↥D.LL0) : D.what₂.LL) ∈ D.LL0` using `(IntermediateField.normal_iff_forall_map_le.1 hG.to_normal s) ⟨_, (x : ↥D.LL0).2, rfl⟩`. Establish `h2 : IsIntegral ℤ (star ((x : ↥D.LL0) : D.what₂.LL))` using `IsIntegral.map_of_comp_eq (RingHom.id ℤ) ((starRingEnd D.what₂.LL).comp (algebraMap ↥D.LL0 D.what₂.LL)) (RingHom.ext_int _ _) (RingOfIntegers.isIntegral_coe x)`. Conclude with `⟨⟨⟨_, h1⟩, (isIntegral_algebraMap_iff (algebraMap ↥D.LL0 D.what₂.LL).injective).1 h2⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_star_int (hG : IsGalois ℚ ↥D.LL0) (x : 𝓞 ↥D.LL0) :
     ∃ y : 𝓞 ↥D.LL0, ((y : ↥D.LL0) : D.what₂.LL) = star ((x : ↥D.LL0) : D.what₂.LL) := by
@@ -88,7 +88,7 @@ theorem exists_star_int (hG : IsGalois ℚ ↥D.LL0) (x : 𝓞 ↥D.LL0) :
   exact ⟨⟨⟨_, h1⟩, (isIntegral_algebraMap_iff (algebraMap ↥D.LL0 D.what₂.LL).injective).1 h2⟩, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨_, (IntermediateField.normal_iff_forall_map_le.1 hG.to_normal (starRingEnd D.what₂.LL).toRatAlgHom) ⟨_, x.2, rfl⟩⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_star (hG : IsGalois ℚ ↥D.LL0) (x : ↥D.LL0) : ∃ y : ↥D.LL0, (y : D.what₂.LL) = star (x : D.what₂.LL) :=
   ⟨⟨_, (IntermediateField.normal_iff_forall_map_le.1 hG.to_normal (starRingEnd D.what₂.LL).toRatAlgHom)
@@ -103,7 +103,7 @@ def OverOnePair (w w' : D.what₂.places.Pl) : Prop := OverOne D w w' ∨ OverOn
 variable {D}
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨y, hy⟩ := exists_star_int D hG x rw [D.conj_val, D.conj_val, ← hy] exact h y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem OverOne.conj (hG : IsGalois ℚ ↥D.LL0) {w w' : D.what₂.places.Pl} (h : OverOne D w w') :
     OverOne D (D.what₂.places.conj w) (D.what₂.places.conj w') := fun x => by
@@ -112,17 +112,17 @@ theorem OverOne.conj (hG : IsGalois ℚ ↥D.LL0) {w w' : D.what₂.places.Pl} (
   exact h y
 
 /- English proof (translation)
-The claim follows from `Or.inl fun _ => Iff.rfl`.
+Prove the first alternative.
 -/
 theorem overOnePair_refl (w : D.what₂.places.Pl) : OverOnePair D w w := Or.inl fun _ => Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Or.inr fun _ => Iff.rfl`.
+Prove the second alternative.
 -/
 theorem overOnePair_conj (w : D.what₂.places.Pl) : OverOnePair D w (D.what₂.places.conj w) := Or.inr fun _ => Iff.rfl
 
 /- English proof (translation)
-Break down `h with h | h` into its components or cases. Conclude with `Or.inl fun x => (h x).symm`. Establish `h1` using `h.conj hG`. Rewrite `h1` using `[D.what₂.places.conj_conj]`. Conclude with `Or.inr fun x => (h1 x).symm`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative.
 -/
 theorem OverOnePair.symm (hG : IsGalois ℚ ↥D.LL0) {w w' : D.what₂.places.Pl} (h : OverOnePair D w w') :
     OverOnePair D w' w := by
@@ -133,9 +133,9 @@ theorem OverOnePair.symm (hG : IsGalois ℚ ↥D.LL0) {w w' : D.what₂.places.P
     exact Or.inr fun x => (h1 x).symm
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h with h | h <;> rcases h' with h' | h'`. Conclude with `Or.inl fun x => (h x).trans (h' x)`. Conclude with `Or.inr fun x => (h.conj hG x).trans (h' x)`. Conclude with `Or.inr fun x => (h x).trans (h' x)`. Establish `h1` using `h.conj hG`.
+Apply the first step, then apply the next step to every resulting obligation. Prove the first alternative. Prove the second alternative. Prove the second alternative. Establish an intermediate fact.
 
-Rewrite `h1` using `[D.what₂.places.conj_conj]`. Conclude with `Or.inl fun x => (h1 x).trans (h' x)`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative.
 -/
 theorem OverOnePair.trans (hG : IsGalois ℚ ↥D.LL0) {w w' w'' : D.what₂.places.Pl} (h : OverOnePair D w w')
     (h' : OverOnePair D w' w'') : OverOnePair D w w'' := by
@@ -156,7 +156,7 @@ def ReadsAt (i : D.ntw.Tw) (b : Bool) (w : D.what₂.places.Pl) : Prop :=
     0 < D.what₂.places.val w ((x : ↥D.LL0) : D.what₂.LL)
 
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `(D.ntw.restX_coefficientEmbedding_conj i y x (by rw [h, star_star])).symm`. Conclude with `D.ntw.restX_coefficientEmbedding_conj i x y h`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem sideEmb_not (i : D.ntw.Tw) (b : Bool) {x y : ↥D.LL0} (h : (y : D.what₂.LL) = star (x : D.what₂.LL)) :
     sideEmb i (!b) x = sideEmb i b y := by
@@ -165,7 +165,7 @@ theorem sideEmb_not (i : D.ntw.Tw) (b : Bool) {x y : ↥D.LL0} (h : (y : D.what�
   · exact D.ntw.restX_coefficientEmbedding_conj i x y h
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨y, hy⟩ := exists_star_int D hG x rw [sideEmb_not i b hy, D.conj_val, ← hy] exact h y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ReadsAt.conj (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {b : Bool} {w : D.what₂.places.Pl} (h : ReadsAt i b w) :
     ReadsAt i (!b) (D.what₂.places.conj w) := fun x => by
@@ -174,13 +174,13 @@ theorem ReadsAt.conj (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {b : Bool} {w :
   exact h y
 
 /- English proof (translation)
-Introduce `x` and use `(h x).trans (h' x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ReadsAt.of_overOne {i : D.ntw.Tw} {b : Bool} {w w' : D.what₂.places.Pl} (h : ReadsAt i b w) (h' : OverOne D w w') :
     ReadsAt i b w' := fun x => (h x).trans (h' x)
 
 /- English proof (translation)
-Distinguish the cases in `hb : b' = b`. Substitute `hb` using the available equality. Conclude with `Or.inl fun x => (h x).symm.trans (h' x)`. Apply the tactic sequence `obtain rfl : b' = !b := by revert hb; cases b <;> cases b' <;> simp`. Conclude with `Or.inr fun x => (h.conj hG x).symm.trans (h' x)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Prove the first alternative. Apply the first step, then apply the next step to every resulting obligation. Prove the second alternative.
 -/
 theorem ReadsAt.overOnePair (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {b b' : Bool} {w w' : D.what₂.places.Pl}
     (h : ReadsAt i b w) (h' : ReadsAt i b' w') : OverOnePair D w w' := by
@@ -191,13 +191,13 @@ theorem ReadsAt.overOnePair (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {b b' : 
     exact Or.inr fun x => (h.conj hG x).symm.trans (h' x)
 
 /- English proof (translation)
-Introduce `hu` and use `D.ntw.O_l i (by simpa using hu.map (algebraMap (D.ntw.O0 i) (D.ntw.O i)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem l_mem_max (i : D.ntw.Tw) : ((D.ntw.l i : ℕ) : D.ntw.O0 i) ∈ IsLocalRing.maximalIdeal (D.ntw.O0 i) := fun hu =>
   D.ntw.O_l i (by simpa using hu.map (algebraMap (D.ntw.O0 i) (D.ntw.O i)))
 
 /- English proof (translation)
-The claim follows from `eq_resChar_of_pos D w (D.ntw.lPrime i).out (by simpa using (h (D.ntw.l i : 𝓞 ↥D.LL0)).1 ⟨_, l_mem_max i, by simp⟩)`.
+A detailed English derivation is pending.
 -/
 theorem ReadsAt.l_eq {i : D.ntw.Tw} {b : Bool} {w : D.what₂.places.Pl} (h : ReadsAt i b w) :
     D.ntw.l i = D.what₂.places.resChar w :=
@@ -205,7 +205,7 @@ theorem ReadsAt.l_eq {i : D.ntw.Tw} {b : Bool} {w : D.what₂.places.Pl} (h : Re
     (by simpa using (h (D.ntw.l i : 𝓞 ↥D.LL0)).1 ⟨_, l_mem_max i, by simp⟩)
 
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `⟨_, (twistedAt_conj D w).2 hw, h.conj hG⟩`. Conclude with `⟨w, hw, h⟩`.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem ReadsAt.inW1 (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {b : Bool} {w : D.what₂.places.Pl} (h : ReadsAt i b w)
     (hw : TwistedAt D w) : D.ntw.NonzeroIndexPlace i := by
@@ -216,19 +216,19 @@ theorem ReadsAt.inW1 (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {b : Bool} {w :
 def below (w : D.what₂.places.Pl) : HeightOneSpectrum (𝓞 ↥D.LL0) := (D.plEq w).under (𝓞 ↥D.LL0)
 
 /- English proof (translation)
-The claim follows from `(val_pos_iff_mem D w x).symm`.
+A detailed English derivation is pending.
 -/
 theorem mem_below (w : D.what₂.places.Pl) (x : 𝓞 ↥D.LL0) :
     x ∈ (below w).asIdeal ↔ 0 < D.what₂.places.val w ((x : ↥D.LL0) : D.what₂.LL) := (val_pos_iff_mem D w x).symm
 
 /- English proof (translation)
-The claim follows from `(mem_below w _).2 (by simpa using val_resChar_pos D w)`.
+A detailed English derivation is pending.
 -/
 theorem resChar_mem_below (w : D.what₂.places.Pl) : ((D.what₂.places.resChar w : ℕ) : 𝓞 ↥D.LL0) ∈ (below w).asIdeal :=
   (mem_below w _).2 (by simpa using val_resChar_pos D w)
 
 /- English proof (translation)
-Take `⟨i, -, h | h⟩` from `hc _ (D.what₂.places.resChar_prime w) (below w) (resChar_mem_below w) ⟨w, hw, mem_below w⟩`. Conclude with `⟨i, true, fun x => (h x).symm.trans (mem_below w x)⟩`. Conclude with `⟨i, false, fun x => (h x).symm.trans (mem_below w x)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_readsAt_of_pair (hc : TwCoverPair D) {w : D.what₂.places.Pl} (hw : TwistedAt D w) :
     ∃ i b, ReadsAt i b w := by
@@ -237,14 +237,14 @@ theorem exists_readsAt_of_pair (hc : TwCoverPair D) {w : D.what₂.places.Pl} (h
   · exact ⟨i, false, fun x => (h x).symm.trans (mem_below w x)⟩
 
 /- English proof (translation)
-Take `⟨i, -, h⟩` from `hc _ (D.what₂.places.resChar_prime w) (below w) (resChar_mem_below w)`. Conclude with `⟨i, true, fun x => (h x).symm.trans (mem_below w x)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_readsAt_of_cover (hc : D.ntw.TwCover) (w : D.what₂.places.Pl) : ∃ i b, ReadsAt i b w := by
   obtain ⟨i, -, h⟩ := hc _ (D.what₂.places.resChar_prime w) (below w) (resChar_mem_below w)
   exact ⟨i, true, fun x => (h x).symm.trans (mem_below w x)⟩
 
 /- English proof (translation)
-Use `⟨fun w => @Classical.epsilon _ ⟨w⟩ fun v => v = w ∨ v = D.what₂.places.conj w, fun w => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `Classical.epsilon_spec (p := fun v => v = w ∨ v = D.what₂.places.conj w) ⟨w, Or.inl rfl⟩`. Simplify using `only [D.what₂.places.conj_conj, or_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_orbitRep : ∃ o : D.what₂.places.Pl → D.what₂.places.Pl,
     ∀ w, (o w = w ∨ o w = D.what₂.places.conj w) ∧ o (D.what₂.places.conj w) = o w := by
@@ -253,17 +253,17 @@ theorem exists_orbitRep : ∃ o : D.what₂.places.Pl → D.what₂.places.Pl,
   · simp only [D.what₂.places.conj_conj, or_comm]
 
 /- English proof (translation)
-Use `haveI : Nonempty D.ntw.Tw := ⟨i₀⟩`. Set `twI : D.what₂.places.Pl → D.ntw.Tw` to `fun w => Classical.epsilon fun i => ∃ v b, OverOnePair D w v ∧ ReadsAt i b v`. Establish `h1 : ∀ w w', OverOnePair D w w' → twI w' = twI w` using `fun w w' h => by`. Use `congrArg Classical.epsilon (funext fun i => propext ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨v, b, hv, hb⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨v, b, h.trans hG hv, hb⟩`. Introduce and unpack `⟨v, b, hv, hb⟩`. Conclude with `⟨v, b, (h.symm hG).trans hG hv, hb⟩`. Establish `h2 : ∀ w, ∃ b, TwistedAt D w → ReadsAt (twI w) b w` using `fun w => by`. Distinguish the cases in `hw : TwistedAt D w`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨i, b, hi⟩` from `exists_readsAt_of_pair hc hw`. Take `⟨v, b', hv, hb⟩` from `Classical.epsilon_spec (p := fun i => ∃ v b, OverOnePair D w v ∧ ReadsAt i b v) ⟨i, w, b, overOnePair_refl w, hi⟩`. Break down `hv.symm hG with hv | hv` into its components or cases. Conclude with `⟨b', fun _ => hb.of_overOne hv⟩`. Conclude with `⟨!b', fun _ => (hb.conj hG).of_overOne hv⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨true, fun h => absurd h hw⟩`. Use `choose s hs using h2`. Take `⟨o, ho⟩` from `exists_orbitRep (D := D)`. Use `⟨twI, fun w => if o w = w then s w else !s (D.what₂.places.conj w), fun w hw => ⟨?_, fun hne => ?_⟩, h1⟩` and prove the remaining obligations. Distinguish the cases in `h : o w = w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hs w hw` using `only [h, if_true]`. Establish `h3` using `(hs _ ((twistedAt_conj D w).2 hw)).conj hG`. Rewrite `h3` using `[D.what₂.places.conj_conj, h1 w _ (overOnePair_conj w)]`. Simplify `h3` using `only [h, if_false]`. Simplify using `only [(ho w).2, D.what₂.places.conj_conj]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `(ho w).1 with h | h` into its components or cases. Rewrite using `[if_neg (by rw [h]; exact hne.symm), if_pos h]`. Rewrite using `[if_pos h, if_neg (by rw [h]; exact hne), Bool.not_not]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_settings (hG : IsGalois ℚ ↥D.LL0) (hc : TwCoverPair D) (i₀ : D.ntw.Tw) :
     ∃ (twI : D.what₂.places.Pl → D.ntw.Tw) (sd : D.what₂.places.Pl → Bool),
@@ -302,15 +302,11 @@ theorem exists_settings (hG : IsGalois ℚ ↥D.LL0) (hc : TwCoverPair D) (i₀ 
     · rw [if_pos h, if_neg (by rw [h]; exact hne), Bool.not_not]
 
 /- English proof (translation)
-Use `haveI := D.ntw.Ok_fin i k`. Use `haveI : FaithfulSMul (D.ntw.O i) (D.ntw.Ok i k) := (faithfulSMul_iff_algebraMap_injective _ _).2 (D.ntw.Ok_inj i k)`. Use `haveI : IsLocalHom (algebraMap (D.ntw.O0 i) (D.ntw.O i)) := by`. Use `⟨fun y hy => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : CharZero (FractionRing (D.ntw.O0 i)) := (RingHom.charZero_iff (D.ntw.emb0 i).injective).1 inferInstance`. Establish `hl : ((D.ntw.l i : ℕ) : D.ntw.O0 i) ≠ 0` using `fun h => by`. Use `congrArg (algebraMap _ (FractionRing (D.ntw.O0 i))) h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `(D.ntw.lPrime i).out.ne_zero (Nat.cast_eq_zero.1 this)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (D.ntw.O0 i)`. Take `⟨n, u, hu'⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl hϖ`. Establish `hy' : y ∈ IsLocalRing.maximalIdeal (D.ntw.O0 i)` using `hu`. Rewrite `hy'` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨a, rfl⟩` from `hy'`.
-
-Rewrite `hy` using `[map_mul]`. Use `D.ntw.O_l i ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap (D.ntw.O0 i) (D.ntw.O i)), hu', map_mul, map_pow]`. Conclude with `(u.isUnit.map _).mul ((isUnit_of_mul_isUnit_left hy).pow n)`. Unfold `BlochKatoReduction.Gen.phiK`.
-
-Use `infer_instance`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isLocalHom_phiK (i : D.ntw.Tw) (k : ℕ) : IsLocalHom (BlochKatoReduction.Gen.phiK D.ntw i k) := by
   haveI := D.ntw.Ok_fin i k
@@ -355,15 +351,13 @@ structure Reading (i : D.ntw.Tw) (k : ℕ) (b : Bool) (w : D.what₂.places.Pl) 
 attribute [instance] Reading.cr Reading.dom Reading.dvr Reading.alg
 
 /- English proof (translation)
-Use `haveI := D.ntw.Ok_fin i k`. Use `haveI := D.ntw.O_complete i`. Use `haveI := FormalIsogeny.isAdicComplete_maximalIdeal_of_finite (D.ntw.O i) (D.ntw.Ok i k)`. Use `haveI := isLocalHom_phiK i k`. Establish `hinj : Function.Injective (BlochKatoReduction.Gen.phiK D.ntw i k)` using `(D.ntw.Ok_inj i k).comp (D.ntw.O_inj i)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Set `m : FractionRing (D.ntw.O0 i) →+* FractionRing (D.ntw.Ok i k)` to `IsFractionRing.map hinj`. Establish `hm : ∀ y, m (algebraMap _ _ y) = algebraMap _ _ (BlochKatoReduction.Gen.phiK D.ntw i k y)` using `fun y => by`. Simplify using `[m, IsFractionRing.map]`. Take `⟨O, _, _, _, _, e, h1, h2, h3, h4, h5⟩` from `exists_coeff_ext D.what₂.LL D.LL0 (D.ntw.Ok i k) (m.comp (sideEmb i b)) (D.plEq w) fun x => by`. Rewrite using `[← val_pos_iff_mem, ← h x]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨φ, hφ⟩` from `exists_intMap (sideEmb i b)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hy'⟩`. Conclude with `⟨_, map_nonunit (BlochKatoReduction.Gen.phiK D.ntw i k) y hy, by rw [← hm, hy']; rfl⟩`. Introduce and unpack `⟨y, hy, hy'⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨φ x, fun hu => hy ?_, hφ x⟩` and prove the remaining obligations. Establish `: y = BlochKatoReduction.Gen.phiK D.ntw i k (φ x)` using `IsFractionRing.injective _ (FractionRing (D.ntw.Ok i k)) (by rw [hy', ← hm, hφ]; rfl)`. Conclude with `this ▸ hu.map _`. Use `⟨{ Oe := O, inj := h1, fin := h2, loc := h3, emb := e emb_w := fun x => (val_nonneg_iff D w x).trans (h4 x) emb_side := fun x y z hxy => h5 x _ _ ?_ }⟩` and prove the remaining obligations. Rewrite using `[← hm, ← hm, ← hxy, map_mul]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ReadsAt.nonempty_reading {i : D.ntw.Tw} {b : Bool} {w : D.what₂.places.Pl} (h : ReadsAt i b w) (k : ℕ) :
     Nonempty (Reading i k b w) := by
@@ -409,7 +403,7 @@ def Reading.conj (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {k : ℕ} {b : Bool
     exact h1
 
 /- English proof (translation)
-Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Establish `h1 : ‖D.what₂.embLL (x : D.what₂.LL)‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, ← Units.val_pow_eq_pow_val, h, Units.val_one, map_one]) hn.ne'`. Rewrite using `[D.starLL_cx, Units.val_inv_eq_inv_val, map_inv₀, Complex.inv_eq_conj h1]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_root {x : (D.what₂.LL)ˣ} {n : ℕ} (hn : 0 < n) (h : x ^ n = 1) :
     star (x : D.what₂.LL) = ((x⁻¹ : (D.what₂.LL)ˣ) : D.what₂.LL) := by

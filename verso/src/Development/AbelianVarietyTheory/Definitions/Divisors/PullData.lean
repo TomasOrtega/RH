@@ -23,14 +23,14 @@ def CanonOn (Q : Data R) (W : (Sp R).Opens) (G : Over (Sp R)) [GrpObj G] [IsComm
 variable {Q : Data R} {W W' : (Sp R).Opens} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {P : LB (G2 G).left}
 
 /- English proof (translation)
-Take `⟨h₀, D', F, A', G', a, b, U', oA, oG, inc, pr, -, h⟩` from `h`. Conclude with `⟨h₀, D', F, A', G', a, b, U', oA, oG, inc, pr, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CanonOn.canon (h : CanonOn Q W G P) : Canon Q G P := by
   obtain ⟨h₀, D', F, A', G', a, b, U', oA, oG, inc, pr, -, h⟩ := h
   exact ⟨h₀, D', F, A', G', a, b, U', oA, oG, inc, pr, h⟩
 
 /- English proof (translation)
-Take `⟨h₀, D', F, A', G', a, b, U', oA, oG, inc, pr, hψ, h⟩` from `h`. Conclude with `⟨h₀, D', F, A', G', a, b, U', oA, oG, inc, pr, fun y j V hV hU => hψ y j V hV (hU.trans hW), h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CanonOn.mono (h : CanonOn Q W G P) (hW : W' ≤ W) : CanonOn Q W' G P := by
   obtain ⟨h₀, D', F, A', G', a, b, U', oA, oG, inc, pr, hψ, h⟩ := h

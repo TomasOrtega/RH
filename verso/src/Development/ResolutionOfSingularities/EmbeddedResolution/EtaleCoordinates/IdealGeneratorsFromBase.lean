@@ -7,9 +7,9 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace EtaleCoordinates
 
 /- English proof (translation)
-Establish `hGu : IsUnit (algebraMap S T G)` using `IsLocalization.map_units T (⟨G, Submonoid.mem_powers G⟩ : Submonoid.powers G)`. Rewrite `hGu` using `[hG, map_mul]`. Take `⟨u, hu⟩` from `isUnit_of_mul_isUnit_left hGu`. Establish `hx : algebraMap S T x = (↑u⁻¹ : T) * algebraMap S T (g * x)`. Rewrite using `[map_mul, ← hu, ← mul_assoc, Units.inv_mul, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hgx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem algebraMap_mem_map_of_mul_mem {S : Type*} [CommRing S] (G : S) (T : Type*)
     [CommRing T] [Algebra S T] [IsLocalization (Submonoid.powers G) T] (J : Ideal S) (g r x : S)
@@ -25,25 +25,21 @@ private theorem algebraMap_mem_map_of_mul_mem {S : Type*} [CommRing S] (G : S) (
   exact Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hgx)
 
 /- English proof (translation)
-Take `⟨tI, htI⟩` from `hI`. Take `⟨tJ, htJ⟩` from `hJ`. Establish `keyI : ∀ u : S, ∃ g : S, g ∈ q.primeCompl ∧ (u ∈ I → g * u ∈ J)`. Introduce `u`. Distinguish the cases in `hu : u ∈ I`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hmem : algebraMap S A u ∈ Ideal.map (algebraMap S A) J`. Rewrite using `[← h]`. Conclude with `Ideal.mem_map_of_mem _ hu`. Rewrite `hmem` using `[IsLocalization.algebraMap_mem_map_algebraMap_iff q.primeCompl A]`. Take `⟨g, hg, hgu⟩` from `hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨g, hg, fun _ => hgu⟩`. Conclude with `⟨1, Submonoid.one_mem _, fun hh => absurd hh hu⟩`. Establish `keyJ : ∀ v : S, ∃ g : S, g ∈ q.primeCompl ∧ (v ∈ J → g * v ∈ I)`. Introduce `v`. Distinguish the cases in `hv : v ∈ J`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hmem : algebraMap S A v ∈ Ideal.map (algebraMap S A) I`. Rewrite using `[h]`. Conclude with `Ideal.mem_map_of_mem _ hv`. Rewrite `hmem` using `[IsLocalization.algebraMap_mem_map_algebraMap_iff q.primeCompl A]`. Take `⟨g, hg, hgv⟩` from `hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨g, hg, fun _ => hgv⟩`. Conclude with `⟨1, Submonoid.one_mem _, fun hh => absurd hh hv⟩`. Use `choose gI hgI hgIu using keyI`. Use `choose gJ hgJ hgJu using keyJ`. Set `G : S` to `(∏ u ∈ tI, gI u) * ∏ v ∈ tJ, gJ v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hGmem : G ∈ q.primeCompl` using `Submonoid.mul_mem _ (Submonoid.prod_mem _ fun u _ => hgI u) (Submonoid.prod_mem _ fun v _ => hgJ v)`. Use `⟨G, hGmem, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[← htI, Ideal.map_span, Ideal.span_le]`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Establish `hu' : u ∈ tI` using `Finset.mem_coe.mp hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `huI : u ∈ I`. Rewrite using `[← htI]`. Conclude with `Ideal.subset_span hu`. Establish `hGeq : G = gI u * ((∏ z ∈ tI.erase u, gI z) * ∏ v ∈ tJ, gJ v)` using `by show (∏ z ∈ tI, gI z) * (∏ v ∈ tJ, gJ v) = _`. Rewrite using `[← Finset.mul_prod_erase tI gI hu']`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `algebraMap_mem_map_of_mul_mem G (Localization.Away G) J (gI u) ((∏ z ∈ tI.erase u, gI z) * ∏ v ∈ tJ, gJ v) u hGeq (hgIu u huI)`. Rewrite using `[← htJ, Ideal.map_span, Ideal.span_le]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `hv' : v ∈ tJ` using `Finset.mem_coe.mp hv`.
-
-Establish `hvJ : v ∈ J`. Rewrite using `[← htJ]`. Conclude with `Ideal.subset_span hv`. Establish `hGeq : G = gJ v * ((∏ u ∈ tI, gI u) * ∏ z ∈ tJ.erase v, gJ z)` using `by show (∏ u ∈ tI, gI u) * (∏ z ∈ tJ, gJ z) = _`. Rewrite using `[← Finset.mul_prod_erase tJ gJ hv']`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `algebraMap_mem_map_of_mul_mem G (Localization.Away G) I (gJ v) ((∏ u ∈ tI, gI u) * ∏ z ∈ tJ.erase v, gJ z) v hGeq (hgJu v hvJ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_away_map_ideal_eq {S : Type*} [CommRing S] (q : Ideal S) [q.IsPrime]
     (A : Type*) [CommRing A] [Algebra S A] [IsLocalization q.primeCompl A]

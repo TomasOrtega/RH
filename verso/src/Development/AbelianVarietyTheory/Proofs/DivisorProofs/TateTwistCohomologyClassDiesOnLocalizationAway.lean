@@ -27,7 +27,7 @@ instance : IsDirected (Idx M) (· ≤ ·) where
 instance : Nonempty (Idx M) := ⟨⟨1, M.one_mem⟩⟩
 
 /- English proof (translation)
-Take `⟨t, -, ht⟩` from `h`. Establish `hb` using `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away b.val) b.val`. Rewrite `hb` using `[show algebraMap A (Localization.Away b.val) b.val = algebraMap A _ a.val * algebraMap A _ t by rw [← map_mul, ← ht]]`. Conclude with `isUnit_of_mul_isUnit_left hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_le {a b : Idx M} (h : a ≤ b) :
     IsUnit (algebraMap A (Localization.Away b.val) a.val) := by
@@ -41,14 +41,14 @@ def trans {a b : Idx M} (h : a ≤ b) : Localization.Away a.val →+* Localizati
   IsLocalization.Away.lift a.val (isUnit_of_le M h)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_comp _ _`.
+A detailed English derivation is pending.
 -/
 theorem trans_comp {a b : Idx M} (h : a ≤ b) :
     (trans M h).comp (algebraMap A _) = algebraMap A _ :=
   IsLocalization.Away.lift_comp _ _
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers a) hf`.
+A detailed English derivation is pending.
 -/
 theorem ext_away {a : A} {P : Type} [CommRing P] {f g : Localization.Away a →+* P}
     (hf : f.comp (algebraMap A _) = g.comp (algebraMap A _)) : f = g :=
@@ -70,7 +70,7 @@ def toLoc (a : Idx M) : Localization.Away a.val →+* Localization M :=
   IsLocalization.Away.lift a.val (IsLocalization.map_units (Localization M) (⟨a.val, a.mem⟩ : M))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_comp _ _`.
+A detailed English derivation is pending.
 -/
 theorem toLoc_comp (a : Idx M) : (toLoc M a).comp (algebraMap A _) = algebraMap A _ :=
   IsLocalization.Away.lift_comp _ _
@@ -95,28 +95,28 @@ namespace GlobalTheory.EtC.AwayCont
 variable {A : Type} [CommRing A] (M : Submonoid A)
 
 /- English proof (translation)
-The claim follows from `ext_away (by rw [RingHom.comp_assoc, trans_comp, toLoc_comp, toLoc_comp])`.
+A detailed English derivation is pending.
 -/
 theorem toLoc_trans {a b : Idx M} (h : a ≤ b) : (toLoc M b).comp (trans M h) = toLoc M a :=
   ext_away (by rw [RingHom.comp_assoc, trans_comp, toLoc_comp, toLoc_comp])
 
 /- English proof (translation)
-The claim follows from `ext_away (by rw [RingHom.comp_assoc, trans_comp, trans_comp, trans_comp])`.
+A detailed English derivation is pending.
 -/
 theorem trans_trans {a b c : Idx M} (h : a ≤ b) (h' : b ≤ c) :
     (trans M h').comp (trans M h) = trans M (h.trans h') :=
   ext_away (by rw [RingHom.comp_assoc, trans_comp, trans_comp, trans_comp])
 
 /- English proof (translation)
-Take `⟨⟨x, s⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers a.val) z`. Establish `h1 : algebraMap A (Localization M) x = 0`. Use `congrArg (toLoc M a) hs` as an intermediate fact. Rewrite `this` using `[map_mul, hz, zero_mul, ← RingHom.comp_apply, toLoc_comp]`. Conclude with `this.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(IsLocalization.map_eq_zero_iff M (Localization M) x).mp h1`. Set `b : Idx M` to `⟨a.val * c, M.mul_mem a.mem c.2⟩`. Establish `hab : a ≤ b` using `⟨c, c.2, rfl⟩`. Use `⟨b, hab, ?_⟩` and prove the remaining obligations. Establish `hu` using `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away b.val) b.val`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : b.val = a.val * c` using `rfl`. Rewrite `hu` using `[hb, map_mul]`. Establish `hua : IsUnit (algebraMap A (Localization.Away b.val) a.val)` using `isUnit_of_mul_isUnit_left hu`. Establish `huc : IsUnit (algebraMap A (Localization.Away b.val) c)` using `isUnit_of_mul_isUnit_right hu`. Establish `hx : algebraMap A (Localization.Away b.val) x = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: algebraMap A (Localization.Away b.val) c * algebraMap A (Localization.Away b.val) x = 0`. Rewrite using `[← map_mul, hc, map_zero]`. Conclude with `(huc.mul_right_eq_zero).mp this`. Establish `hs'` using `congrArg (trans M hab) hs`. Rewrite `hs'` using `[map_mul, ← RingHom.comp_apply, ← RingHom.comp_apply, trans_comp, hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `s.2`. Establish `hus : IsUnit (algebraMap A (Localization.Away b.val) (s : A))`. Rewrite using `[← hk, map_pow]`. Conclude with `hua.pow k`. Conclude with `(hus.mul_left_eq_zero).mp hs'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kill (a : Idx M) (z : Localization.Away a.val) (hz : toLoc M a z = 0) :
     ∃ (b : Idx M) (h : a ≤ b), trans M h z = 0 := by
@@ -183,13 +183,13 @@ end
 namespace GlobalTheory.EtC.AwayCont
 
 /- English proof (translation)
-Introduce `hB q A _ M n i hq m hm y φ hφ hy`. Set `a : Idx M` to `⟨m, hm⟩`. Establish `hq' : IsUnit ((q : ℕ) : (diag M).obj a)`. Establish `h0 : IsUnit ((q : ℕ) : Localization.Away m)`. Simplify using `using hq.map (algebraMap A (Localization.Away m))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h0`. Establish `hφ' : ((cocone M).ι.app a).hom = φ` using `by show toLoc M a = φ`. Conclude with `ext_away (by rw [hφ]; exact toLoc_comp M a)`. Establish `hy' : pull _ (spMap ((cocone M).ι.app a).hom) _ _ y = 0`. Rewrite using `[hφ']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hy`. Take `⟨⟨k1, hk1⟩, f, hk⟩` from `(hB q (diag M) (cocone M) (isColimit M) n i).2 a y hq' hy'`. Take `⟨t, ht, hkt⟩` from `f.le`. Express the relevant statement in the definitionally equal form `k1 = m * t at hkt`. Substitute `hkt` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t, ht, fun ψ hψ => ?_⟩` and prove the remaining obligations. Establish `hψ' : ((diag M).map f).hom = ψ` using `by show trans M f.le = ψ`. Conclude with `ext_away (by rw [hψ]; exact trans_comp M f.le)`. Rewrite using `[← hψ']`. Conclude with `hk`.
+A detailed English derivation is pending.
 -/
 theorem kill_of_loc : B1 → ∀ (q : ℕ) (A : Type) [CommRing A] (M : Submonoid A) (n i : ℤ), IsUnit (q : A) →
     ∀ m ∈ M, ∀ y : Ht q (sp (Localization.Away m)) n i, ∀ φ : Localization.Away m →+* Localization M,

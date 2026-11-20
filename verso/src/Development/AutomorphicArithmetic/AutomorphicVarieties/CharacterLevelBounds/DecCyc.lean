@@ -10,7 +10,7 @@ namespace UpperTheory.V.Chr.DecompositionCyclotomic
 variable (l : ℕ) [hl : Fact l.Prime]
 
 /- English proof (translation)
-Establish `h` using `Nat.prime_iff_prime_int.mp hl.out`. Establish `he : ((l : ℕ) : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm ((l : ℕ) : ℤ)` using `by simp`. Rewrite using `[he, MulEquiv.prime_iff]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prime_l : Prime ((l : ℕ) : 𝓞 ℚ) := by
   have h := Nat.prime_iff_prime_int.mp hl.out
@@ -24,9 +24,9 @@ private noncomputable def vQ : HeightOneSpectrum (𝓞 ℚ) where
   ne_bot := by rw [Ne, Ideal.span_singleton_eq_bot]; exact (prime_l l).ne_zero
 
 /- English proof (translation)
-Use `haveI : NeZero l := ⟨hl.out.ne_zero⟩`. Unfold `normV`. Establish `hJ : Ideal.span {((l : ℕ) : ℤ)} = Ideal.map (Rat.ringOfIntegersEquiv : 𝓞 ℚ →+* ℤ) (vQ l).asIdeal` using `by show _ = Ideal.map (Rat.ringOfIntegersEquiv : 𝓞 ℚ →+* ℤ) (Ideal.span {((l : ℕ) : 𝓞 ℚ)})`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Establish `e : (𝓞 ℚ ⧸ (vQ l).asIdeal) ≃+* ZMod l` using `(Ideal.quotientEquiv _ _ Rat.ringOfIntegersEquiv hJ).trans (Int.quotientSpanNatEquivZMod l)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_congr e.toEquiv, Nat.card_zmod]`.
+A detailed English derivation is pending.
 -/
 private theorem normV_vQ : normV (vQ l) = l := by
   haveI : NeZero l := ⟨hl.out.ne_zero⟩
@@ -41,7 +41,7 @@ private theorem normV_vQ : normV (vQ l) = l := by
 variable {l} {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Use `show _ ∈ Ideal.span {((l : ℕ) : 𝓞 ℚ)} ↔ _`. Rewrite using `[Ideal.mem_span_singleton, ← map_dvd_iff Rat.ringOfIntegersEquiv, map_natCast, map_intCast]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem intCast_mem_vQ (n : ℤ) : ((n : ℤ) : 𝓞 ℚ) ∈ (vQ l).asIdeal ↔ ((l : ℕ) : ℤ) ∣ n := by
   show _ ∈ Ideal.span {((l : ℕ) : 𝓞 ℚ)} ↔ _
@@ -49,20 +49,20 @@ private theorem intCast_mem_vQ (n : ℤ) : ((n : ℤ) : 𝓞 ℚ) ∈ (vQ l).asI
   simp
 
 /- English proof (translation)
-Establish `h` using `A.valuation_le_one (n : A)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem val_intCast_le_one (A : ValuationSubring Ω) (n : ℤ) : A.valuation (n : Ω) ≤ 1 := by
   have h := A.valuation_le_one (n : A)
   simpa using h
 
 /- English proof (translation)
-Establish `hlp : Prime ((l : ℕ) : ℤ)` using `Nat.prime_iff_prime_int.mp hl.out`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hnd`. Take `⟨a, b, hab⟩` from `(Irreducible.coprime_iff_not_dvd hlp.irreducible).mpr hnd`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `h1 : A.valuation (((a * ((l : ℕ) : ℤ) + b * n : ℤ)) : Ω) < 1`. Use `push_cast`. Apply `Valuation.map_add_lt` to reduce the goal to its premises. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (val_intCast_le_one A a)) hA`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (val_intCast_le_one A b)) h`. Rewrite `h1` using `[hab]`. Simplify using `at h1`. Introduce and unpack `⟨k, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (val_intCast_le_one A k)) hA`.
+A detailed English derivation is pending.
 -/
 private theorem val_intCast_lt_one_iff (A : ValuationSubring Ω) (hA : A.valuation ((l : ℕ) : Ω) < 1) (n : ℤ) :
     A.valuation (n : Ω) < 1 ↔ ((l : ℕ) : ℤ) ∣ n := by
@@ -86,7 +86,7 @@ private theorem val_intCast_lt_one_iff (A : ValuationSubring Ω) (hA : A.valuati
     exact lt_of_le_of_lt (mul_le_of_le_one_right' (val_intCast_le_one A k)) hA
 
 /- English proof (translation)
-Introduce `x`. Take `⟨m, rfl⟩ : ∃ m : ℤ, (m : 𝓞 ℚ) = x` from `⟨Rat.ringOfIntegersEquiv x, (eq_intCast (Rat.ringOfIntegersEquiv.symm : ℤ →+* 𝓞 ℚ) _).symm.trans (Rat.ringOfIntegersEquiv.symm_apply_apply x)⟩`. Rewrite using `[intCast_mem_vQ, ← val_intCast_lt_one_iff A hA m]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem isPlaceOver_vQ [Algebra ℚ Ω] (A : ValuationSubring Ω) (hA : A.valuation ((l : ℕ) : Ω) < 1) :
     IsPlaceOver (F := ℚ) A (vQ l) := by
@@ -101,7 +101,7 @@ private theorem isPlaceOver_vQ [Algebra ℚ Ω] (A : ValuationSubring Ω) (hA : 
 end UpperTheory.V.Chr.DecompositionCyclotomic
 
 /- English proof (translation)
-Introduce `hx`. Rewrite `hx`, the goal using `[ValuationSubring.valuation_le_one_iff]`. Use `open scoped Pointwise in (have h1 := MulAction.mem_stabilizer_iff.mp hτ`. Rewrite using `[← h1, ← SetLike.mem_coe, ValuationSubring.coe_pointwise_smul]`. Conclude with `Set.smul_mem_smul_set hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem decomposition_cyclotomic_of_mem_dec {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSubring Ω) (τ : G ℚ Ω)
     (hτ : τ ∈ Dec (F := ℚ) A) (x : Ω) : A.valuation x ≤ 1 → A.valuation (τ x) ≤ 1 := by
@@ -113,7 +113,7 @@ private theorem decomposition_cyclotomic_of_mem_dec {Ω : Type} [Field Ω] [Alge
      exact Set.smul_mem_smul_set hx)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `decomposition_cyclotomic_of_mem_dec A τ⁻¹ ((Dec (F := ℚ) A).inv_mem hτ) _ h`. Simplify `h'` using `[AlgEquiv.aut_inv]`. Conclude with `decomposition_cyclotomic_of_mem_dec A τ hτ x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem decomposition_cyclotomic_of_mem_dec_second {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSubring Ω) (τ : G ℚ Ω)
     (hτ : τ ∈ Dec (F := ℚ) A) (x : Ω) : A.valuation (τ x) ≤ 1 ↔ A.valuation x ≤ 1 := by
@@ -124,9 +124,9 @@ private theorem decomposition_cyclotomic_of_mem_dec_second {Ω : Type} [Field Ω
   · exact decomposition_cyclotomic_of_mem_dec A τ hτ x
 
 /- English proof (translation)
-Establish `key : ∀ z : Ω, A.valuation z < 1 ↔ z = 0 ∨ (A.valuation z ≤ 1 ∧ ¬ A.valuation z⁻¹ ≤ 1)`. Introduce `z`. Distinguish the cases in `hz : z = 0`. Simplify using `[hz]`. Establish `hv0 : A.valuation z ≠ 0` using `by simpa using hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_inv₀, inv_le_one₀ (zero_lt_iff.mpr hv0), ← lt_iff_le_not_ge]`. Simplify using `[hz]`. Rewrite using `[key, key, ← map_inv₀ τ x, decomposition_cyclotomic_of_mem_dec_second A τ hτ, decomposition_cyclotomic_of_mem_dec_second A τ hτ, EmbeddingLike.map_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem decomposition_cyclotomic_of_mem_dec_third {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSubring Ω) (τ : G ℚ Ω)
     (hτ : τ ∈ Dec (F := ℚ) A) (x : Ω) : A.valuation (τ x) < 1 ↔ A.valuation x < 1 := by
@@ -141,19 +141,17 @@ private theorem decomposition_cyclotomic_of_mem_dec_third {Ω : Type} [Field Ω]
 
 open UpperTheory.V.Chr.DecompositionCyclotomic in
 /- English proof (translation)
-Introduce `Ω _ _ _ p A hp hA`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hPO` using `isPlaceOver_vQ (l := p) A hA`. Take `⟨σ, hσ⟩` from `exists_isFrob hPO`. Establish `hσD : σ ∈ Dec (F` using `ℚ) A := hσ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, Ine_le_Dec A, σ, hσD, ?_, ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hiD⟩ hi ⟨τ, hτ⟩`. Rewrite `hi`, the goal using `[Subgroup.mem_subgroupOf]`. Establish `hi2 : ∀ x : Ω, A.valuation x ≤ 1 → A.valuation (i x - x) < 1` using `hi.2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `⟨(Dec (F := ℚ) A).mul_mem ((Dec (F := ℚ) A).mul_mem hτ hiD) ((Dec (F := ℚ) A).inv_mem hτ), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hτi : τ⁻¹ ∈ Dec (F` using `ℚ) A := (Dec (F := ℚ) A).inv_mem hτ`. Establish `hy : A.valuation (τ⁻¹ x) ≤ 1` using `decomposition_cyclotomic_of_mem_dec A τ⁻¹ hτi x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hi2 _ hy`. Establish `heq : (τ * i * τ⁻¹) x - x = τ (i (τ⁻¹ x) - τ⁻¹ x)`. Simplify using `[AlgEquiv.mul_apply, map_sub, AlgEquiv.aut_inv]`. Rewrite using `[heq, decomposition_cyclotomic_of_mem_dec_third A τ hτ]`. Conclude with `h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K := (Subgroup.zpowers σ ⊔ Ine (F := ℚ) A).topologicalClosure with hK`. Establish `hKc : IsClosed (K : Set (G ℚ Ω))` using `Subgroup.isClosed_topologicalClosure _`. Establish `hcs` using `ProfiniteGrp.closedSubgroup_eq_sInf_open (G := G ℚ Ω) ⟨K, hKc⟩`. Use `le_trans ?_ hcs.ge` and prove the remaining obligations. Use `le_sInf fun N hN => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hKN : K ≤ N` using `hN.2`. Conclude with `Kum.decGen ℚ Ω A (vQ p) σ N hPO hσ hN.1 (le_trans (le_sup_right.trans (Subgroup.le_topologicalClosure _)) hKN) (hKN (Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left (Subgroup.mem_zpowers σ))))`. Introduce `l _ hlp`. Establish `hnot : ((l : ℕ) : 𝓞 ℚ) ∉ (vQ p).asIdeal`. Introduce `h`.
-
-Establish `h'` using `(intCast_mem_vQ (l := p) (l : ℤ)).mp (by simpa using h)`. Rewrite `h'` using `[Int.natCast_dvd_natCast]`. Conclude with `hlp ((Nat.prime_dvd_prime_iff_eq hp (Fact.out : l.Prime)).mp h').symm`. Rewrite using `[cycZ_of_isFrob hnot hPO hσ, normV_vQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Chr.decCyc :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (p : ℕ) (A : ValuationSubring Ω), p.Prime → A.valuation (p : Ω) < 1 →

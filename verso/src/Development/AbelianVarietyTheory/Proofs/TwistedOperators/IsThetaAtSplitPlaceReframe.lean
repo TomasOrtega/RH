@@ -17,19 +17,19 @@ variable {D : D7} (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V)
 noncomputable def reFi : (WO (reS S b) T → ℂ) →ₗ[ℂ] (WO S T → ℂ) := LinearMap.funLeft ℂ ℂ (reWi S T b)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← reW_reWi S T b x, ← reW_reWi S T b y, ← reW_add, reWi_reW]`.
+A detailed English derivation is pending.
 -/
 theorem reWi_add (x y : WO S T) : reWi S T b (x + y) = reWi S T b x + reWi S T b y := by
   conv_lhs => rw [← reW_reWi S T b x, ← reW_reWi S T b y, ← reW_add, reWi_reW]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← reW_reWi S T b x, ← reW_nsmul, reWi_reW]`.
+A detailed English derivation is pending.
 -/
 theorem reWi_nsmul (k : ℕ) (x : WO S T) : reWi S T b (k • x) = k • reWi S T b x := by
   conv_lhs => rw [← reW_reWi S T b x, ← reW_nsmul, reWi_reW]
 
 /- English proof (translation)
-Establish `h` using `isHalf_reW_iff S T b e (reWi S T b x)`. Rewrite `h` using `[reW_reWi]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHalf_reWi_iff (e : AE D) (x : WO S T) : IsHalf e (reWi S T b x) ↔ IsHalf e x := by
   have h := isHalf_reW_iff S T b e (reWi S T b x)
@@ -37,21 +37,21 @@ theorem isHalf_reWi_iff (e : AE D) (x : WO S T) : IsHalf e (reWi S T b x) ↔ Is
   exact h.symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [reF, reFi, LinearMap.funLeft_apply, reWi_reW]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem reF_reFi (g : WO (reS S b) T → ℂ) : reF S T b (reFi S T b g) = g := by
   funext x
   simp only [reF, reFi, LinearMap.funLeft_apply, reWi_reW]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [reF, reFi, LinearMap.funLeft_apply, reW_reWi]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem reFi_reF (g : WO S T → ℂ) : reFi S T b (reF S T b g) = g := by
   funext x
   simp only [reF, reFi, LinearMap.funLeft_apply, reW_reWi]
 
 /- English proof (translation)
-Establish `h` using `heisO_reF S T b ψ hB u (reFi S T b g)`. Rewrite `h` using `[reF_reFi]`. Rewrite using `[h, reFi_reF]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_reFi (ψ : AddChar (AF D.host.F) ℂ)
     (hB : ∀ x y : WO (reS S b) T, symplO (reS S b) T x y = symplO S T (reW S T b x) (reW S T b y))
@@ -64,9 +64,9 @@ theorem heisO_reFi (ψ : AddChar (AF D.host.F) ℂ)
 variable (e : AE D) (Λ : AddSubgroup (WO S T)) (Λ' : AddSubgroup (WO (reS S b) T))
 
 /- English proof (translation)
-Take `⟨h1, k, hk, h2, h3⟩` from `h`. Use `⟨fun t ht => (isHalf_reW_iff S T b e t).1 (h1 _ ht), k, hk, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu hh t`. Simplify using `only [reW_add, reW_nsmul]`. Conclude with `h2 _ ((hΛ u).1 hu) ((isHalf_reW_iff S T b e u).2 hh) _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Rewrite using `[hΛ, reW_nsmul]`. Conclude with `h3 _ ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSBHalf_comp_reW (hΛ : ∀ u, u ∈ Λ' ↔ reW S T b u ∈ Λ) (Φ : WO S T → ℂ)
     (h : IsSBHalf e Λ Φ) : IsSBHalf e Λ' (fun x => Φ (reW S T b x)) := by
@@ -80,9 +80,9 @@ theorem isSBHalf_comp_reW (hΛ : ∀ u, u ∈ Λ' ↔ reW S T b u ∈ Λ) (Φ : 
     exact h3 _ ht
 
 /- English proof (translation)
-Take `⟨h1, k, hk, h2, h3⟩` from `h`. Use `⟨fun t ht => (isHalf_reWi_iff S T b e t).1 (h1 _ ht), k, hk, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu hh t`. Simplify using `only [reWi_add, reWi_nsmul]`. Conclude with `h2 _ ((hΛ _).2 (by rwa [reW_reWi])) ((isHalf_reWi_iff S T b e u).2 hh) _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Establish `h4` using `(hΛ _).1 (h3 _ ht)`. Rewrite `h4` using `[reW_nsmul, reW_reWi]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isSBHalf_comp_reWi (hΛ : ∀ u, u ∈ Λ' ↔ reW S T b u ∈ Λ) (Ψ : WO (reS S b) T → ℂ)
     (h : IsSBHalf e Λ' Ψ) : IsSBHalf e Λ (fun x => Ψ (reWi S T b x)) := by
@@ -96,7 +96,7 @@ theorem isSBHalf_comp_reWi (hΛ : ∀ u, u ∈ Λ' ↔ reW S T b u ∈ Λ) (Ψ :
     rwa [reW_nsmul, reW_reWi] at h4
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [reF, LinearMap.funLeft_apply, halfInd, ← hΛ, isHalf_reW_iff]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem reF_halfInd (hΛ : ∀ u, u ∈ Λ' ↔ reW S T b u ∈ Λ) :
     reF S T b (halfInd e Λ) = halfInd e Λ' := by
@@ -104,7 +104,7 @@ theorem reF_halfInd (hΛ : ∀ u, u ∈ Λ' ↔ reW S T b u ∈ Λ) :
   simp only [reF, LinearMap.funLeft_apply, halfInd, ← hΛ, isHalf_reW_iff]
 
 /- English proof (translation)
-Rewrite using `[← reF_halfInd S T b e Λ Λ' hΛ, reFi_reF]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reFi_halfInd (hΛ : ∀ u, u ∈ Λ' ↔ reW S T b u ∈ Λ) :
     reFi S T b (halfInd e Λ') = halfInd e Λ := by
@@ -113,23 +113,23 @@ theorem reFi_halfInd (hΛ : ∀ u, u ∈ Λ' ↔ reW S T b u ∈ Λ) :
 end
 
 /- English proof (translation)
-Introduce `D ψ S T b e Λ Λ' c f₀ Φ f hB hΛ hθ`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `hθ`. Use `⟨⟨(reF S T b) ∘ₗ Tm ∘ₗ reFi S T b, ?_⟩, ?_⟩` and prove the remaining obligations. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Ψ hΨ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.comp_apply]`. Establish `h1 : reFi S T b (fun t => Ψ (t + x)) = fun s => (fun s' => Ψ (reWi S T b s')) (s + reW S T b x)`. Use function extensionality and compare the values at `s`. Simplify using `only [reFi, LinearMap.funLeft_apply, reWi_add, reWi_reW]`. Rewrite using `[h1, hTm.trans _ (isSBHalf_comp_reWi S T b e Λ Λ' hΛ Ψ hΨ) _ ((isHalf_reW_iff S T b e x).2 hx), ← heisO_reF S T b ψ hB]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `Ψ hΨ y hy`. Simplify using `only [LinearMap.comp_apply]`. Establish `h1 : reFi S T b (fun t => ψ (symplO (reS S b) T t y) * Ψ t) = fun s => ψ (symplO S T s (reW S T b y)) * (fun s' => Ψ (reWi S T b s')) s`. Use function extensionality and compare the values at `s`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [reFi, LinearMap.funLeft_apply, hB, reW_reWi]`. Rewrite using `[h1, hTm.modul _ (isSBHalf_comp_reWi S T b e Λ Λ' hΛ Ψ hΨ) _ ((isHalf_reW_iff S T b _ y).2 hy), ← heisO_reF S T b ψ hB]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, map_smul (reFi S T b), reFi_halfInd S T b e Λ Λ' hΛ, hTm.vac]`. Introduce `Tm' hTm'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)` to `reFi S T b ∘ₗ Tm' ∘ₗ reF S T b`. Establish `hPM : IsPlaceModel ψ (symplO S T) (heisO ψ S T) e Λ c f₀ Tm`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Φ hΦ x hx`. Simplify using `only [Tm, LinearMap.comp_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h1 : reF S T b (fun t => Φ (t + x)) = fun s => (fun s' => Φ (reW S T b s')) (s + reWi S T b x)`. Use function extensionality and compare the values at `s`. Simplify using `only [reF, LinearMap.funLeft_apply, reW_add, reW_reWi]`. Rewrite using `[h1, hTm'.trans _ (isSBHalf_comp_reW S T b e Λ Λ' hΛ Φ hΦ) _ ((isHalf_reWi_iff S T b e x).2 hx), heisO_reFi S T b ψ hB, reW_reWi]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `Φ hΦ y hy`. Simplify using `only [Tm, LinearMap.comp_apply]`. Establish `h1 : reF S T b (fun t => ψ (symplO S T t y) * Φ t) = fun s => ψ (symplO (reS S b) T s (reWi S T b y)) * (fun s' => Φ (reW S T b s')) s`. Use function extensionality and compare the values at `s`. Simplify using `only [reF, LinearMap.funLeft_apply, hB, reW_reWi]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, hTm'.modul _ (isSBHalf_comp_reW S T b e Λ Λ' hΛ Φ hΦ) _ ((isHalf_reWi_iff S T b _ y).2 hy), heisO_reFi S T b ψ hB, reW_reWi]`. Both sides reduce to the same expression. Simplify using `only [Tm, LinearMap.comp_apply]`. Rewrite using `[map_smul (reF S T b), reF_halfInd S T b e Λ Λ' hΛ, hTm'.vac, reFi_reF]`. Rewrite using `[hall Tm hPM]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `reF_reFi S T b _`.
+A detailed English derivation is pending.
 -/
 theorem isThetaAt_reframe : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (e : AE D) (Λ : AddSubgroup (WO S T)) (Λ' : AddSubgroup (WO (reS S b) T)) (c : ℂ) (f₀ Φ f : WO S T → ℂ), (∀ x y : WO (reS S b) T, symplO (reS S b) T x y = symplO S T (reW S T b x) (reW S T b y)) → (∀ u, u ∈ Λ' ↔ reW S T b u ∈ Λ) → IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ c f₀ Φ f → IsThetaAt ψ (symplO (reS S b) T) (heisO ψ (reS S b) T) e Λ' c (reF S T b f₀) (fun x => Φ (reW S T b x)) (reF S T b f) := by
   intro D ψ S T b e Λ Λ' c f₀ Φ f hB hΛ hθ

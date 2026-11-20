@@ -15,13 +15,13 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 namespace GlobalTheory.NormalOpen
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := A) (M := integralClosure A K)`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors A) (s.image fun z : integralClosure A K => (z : K))`. Use `⟨b, nonZeroDivisors.ne_zero b.2, fun y hy => ?_⟩` and prove the remaining obligations. Establish `key : ∀ z ∈ Submodule.span A (s : Set (integralClosure A K)), ∃ a : A, algebraMap A K a = (b : A) • (z : K)`. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact hb _ (Finset.mem_image_of_mem _ hx)`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hy`. Conclude with `⟨a + c, by rw [map_add, ha, hc, Subalgebra.coe_add, smul_add]⟩`. Consider the case `smul r x _ hx`. Take `⟨a, ha⟩` from `hx`. Use `⟨r * a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, ha, Subalgebra.coe_smul, smul_comm, ← Algebra.smul_def]`. Conclude with `key ⟨y, hy⟩ (hs ▸ Submodule.mem_top)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_isInteger (A K : Type*) [CommRing A] [IsDomain A] [Field K] [Algebra A K]
     [IsFractionRing A K] [Module.Finite A (integralClosure A K)] :
@@ -48,13 +48,13 @@ theorem exists_mul_isInteger (A K : Type*) [CommRing A] [IsDomain A] [Field K] [
   exact key ⟨y, hy⟩ (hs ▸ Submodule.mem_top)
 
 /- English proof (translation)
-Set `K` to `FractionRing A`. Take `⟨f, hf, h⟩` from `exists_mul_isInteger A K`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Set `B` to `Localization.Away f`. Establish `hle` using `powers_le_nonZeroDivisors_of_noZeroDivisors hf`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : ∀ y : Submonoid.powers f, IsUnit (algebraMap A K y)` using `fun y => IsLocalization.map_units K (⟨y, hle y.2⟩ : nonZeroDivisors A)`. Establish `: IsDomain B` using `IsLocalization.isDomain_of_le_nonZeroDivisors (M := Submonoid.powers f) _ hle`. Use `letI : Algebra B K := (IsLocalization.lift (S := B) hg).toAlgebra`. Establish `: IsScalarTower A B K` using `.of_algebraMap_eq fun a => (IsLocalization.lift_eq hg a).symm`. Establish `: IsFractionRing B K` using `IsFractionRing.isFractionRing_of_isDomain_of_isLocalization (Submonoid.powers f) B K`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[isIntegrallyClosed_iff K]`. Introduce `x hx`. Take `⟨m, hm⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (Submonoid.powers f) (Rₘ := B) x hx`. Take `⟨a, ha⟩` from `h _ hm`. Set `t : Submonoid.powers f` to `⟨f, Submonoid.mem_powers f⟩ * m`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `⟨IsLocalization.mk' B a t, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (algebraMap B K) (IsLocalization.mk'_spec B a t)`. Rewrite `e` using `[map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, ha]`. Use `(hg t).mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[e, mul_comm, ← Algebra.smul_def, Submonoid.smul_def, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -87,13 +87,13 @@ theorem exists_isIntegrallyClosed_away (A : Type*) [CommRing A] [IsDomain A]
   rfl
 
 /- English proof (translation)
-Introduce `k _ X p D h`. Use `h.isIntegral` as an intermediate fact. Use `h.finite` as an intermediate fact. Take `⟨A, _, _, i, _, a, -, hi⟩` from `exists_affine_chart_over p (genericPoint X)`. Establish `: Nontrivial A` using `PrimeSpectrum.nonempty_iff_nontrivial.1 ⟨a⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, hft, -⟩` from `RegGenSmooth.chart_props h i hi`. Establish `: Algebra.FiniteType ℤ A` using `Algebra.FiniteType.trans (S := k) inferInstance hft`. Use `finite_integralClosure_of_essFiniteType_int A` as an intermediate fact. Take `⟨f, hf, hc⟩` from `exists_isIntegrallyClosed_away A`. Set `B` to `Localization.Away f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `: IsDomain B` using `IsLocalization.isDomain_of_le_nonZeroDivisors (M := Submonoid.powers f) _ (powers_le_nonZeroDivisors_of_noZeroDivisors hf)`. Establish `: IsOpenImmersion (spMap (algebraMap A B))` using `IsOpenImmersion.of_isLocalization f`. Set `j : Sp B ⟶ X` to `spMap (algebraMap A B) ≫ i`. Establish `hB : GlobalTheory.IsNormalScheme (Sp B)` using `GlobalTheory.IsNormalScheme.spec (.of B)`. Establish `: GlobalTheory.IsNormalScheme j.opensRange.toScheme` using `.of_isIso j.isoOpensRange.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨j.opensRange, ?_, GlobalTheory.IsNormalScheme.pred _⟩` and prove the remaining obligations. Conclude with `⟨j (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum B), _, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem exists_normal_opens : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∃ Ω : X.Opens, (Ω : Set X).Nonempty ∧

@@ -9,7 +9,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LinkKapMx
 
 /- English proof (translation)
-Introduce `D ρ B L' ζ' l S P w hw`. Conclude with `GlobalTheory.LastOpPf.mxAt_kap _ S hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_linkKappa : ∀ (D : D7) (ρ : ℕ) (B : BesLev D ρ) (L' : HSp D) (ζ' : Fin L'.rank → D.host.E) (l : Link B L' ζ') (S : HSp D) (P : Pl D → Prop) (w : WO S L'), MxAt P w → MxAt P (l.κ S w) := by
   intro D ρ B L' ζ' l S P w hw

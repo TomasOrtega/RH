@@ -21,7 +21,7 @@ variable {F : Type*} [Field F] {n : ℕ}
 def DiagGL (g : GL (Fin n) F) : Prop := ∀ i j : Fin n, i ≠ j → (g : Matrix (Fin n) (Fin n) F) i j = 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[h i j hij, Matrix.diagonal_apply_ne _ hij]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem matrix_eq_diagonal {M : Matrix (Fin n) (Fin n) F} (h : ∀ i j : Fin n, i ≠ j → M i j = 0) :
     M = Matrix.diagonal (fun i => M i i) := by
@@ -31,7 +31,7 @@ theorem matrix_eq_diagonal {M : Matrix (Fin n) (Fin n) F} (h : ∀ i j : Fin n, 
   · rw [h i j hij, Matrix.diagonal_apply_ne _ hij]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, matrix_eq_diagonal h, matrix_eq_diagonal h', Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `mul_comm _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem DiagGL.comm {g g' : GL (Fin n) F} (h : DiagGL g) (h' : DiagGL g') : g * g' = g' * g := by
   apply Units.ext
@@ -42,7 +42,7 @@ theorem DiagGL.comm {g g' : GL (Fin n) F} (h : DiagGL g) (h' : DiagGL g') : g * 
   exact mul_comm _ _
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[Units.val_mul, matrix_eq_diagonal h, matrix_eq_diagonal h', Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply_ne _ hij]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem DiagGL.mul {g g' : GL (Fin n) F} (h : DiagGL g) (h' : DiagGL g') : DiagGL (g * g') := by
   intro i j hij

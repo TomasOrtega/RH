@@ -12,7 +12,7 @@ section
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hle : (∞ : WithTop ℕ∞) + i ≤ ∞`. Conclude with `(le_top : (⊤ : ℕ∞) + i ≤ ⊤)` after adjusting the coercions. Conclude with `((hF.contDiffAt (hΩ.mem_nhds hy)).iteratedFDeriv_right hle).contDiffWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma iter_smooth {F : V → ℂ} {Ω : Set V} (hΩ : IsOpen Ω) (hF : ContDiffOn ℂ ∞ F Ω) (i : ℕ) :
     ContDiffOn ℂ ∞ (iteratedFDeriv ℂ i F) Ω := by
@@ -22,14 +22,14 @@ lemma iter_smooth {F : V → ℂ} {Ω : Set V} (hΩ : IsOpen Ω) (hF : ContDiffO
   exact ((hF.contDiffAt (hΩ.mem_nhds hy)).iteratedFDeriv_right hle).contDiffWithinAt
 
 /- English proof (translation)
-Conclude with `((iter_smooth hΩ hF i).differentiableOn (by simp)).differentiableAt (hΩ.mem_nhds hy)`.
+A detailed English derivation is pending.
 -/
 lemma iter_diffAt {F : V → ℂ} {Ω : Set V} (hΩ : IsOpen Ω) (hF : ContDiffOn ℂ ∞ F Ω) (i : ℕ) {y : V} (hy : y ∈ Ω) :
     DifferentiableAt ℂ (iteratedFDeriv ℂ i F) y := by
   exact ((iter_smooth hΩ hF i).differentiableOn (by simp)).differentiableAt (hΩ.mem_nhds hy)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma iter_cast {F : V → ℂ} {c : V} {m m' : ℕ} (h : m = m') (v : Fin m → V) :
     iteratedFDeriv ℂ m F c v = iteratedFDeriv ℂ m' F c (v ∘ Fin.cast h.symm) := by
@@ -38,11 +38,11 @@ lemma iter_cast {F : V → ℂ} {c : V} {m m' : ℕ} (h : m = m') (v : Fin m →
 end
 
 /- English proof (translation)
-Introduce `V W _ _ _ _ F Ω hΩ hF c hc L k`. Establish `hT : Continuous (fun y : V => c + y)` using `continuous_const.add continuous_id`. Establish `hΩ1 : IsOpen ((fun y : V => c + y) ⁻¹' Ω)` using `hΩ.preimage hT`. Establish `hΩ2 : IsOpen (L ⁻¹' ((fun y : V => c + y) ⁻¹' Ω))` using `hΩ1.preimage L.continuous`. Establish `hG : ContDiffOn ℂ ∞ (fun y : V => F (c + y)) ((fun y : V => c + y) ⁻¹' Ω)` using `hF.comp (contDiff_const.add contDiff_id).contDiffOn (fun y hy => hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm2 : (0 : W) ∈ L ⁻¹' ((fun y : V => c + y) ⁻¹' Ω)` using `by simpa using hc`. Establish `hm1 : L 0 ∈ (fun y : V => c + y) ⁻¹' Ω` using `by simpa using hc`. Establish `hk : (k : WithTop ℕ∞) ≤ ∞`. Conclude with `(le_top : (k : ℕ∞) ≤ ⊤)` after adjusting the coercions. Establish `h1` using `ContinuousLinearMap.iteratedFDerivWithin_comp_right L hG hΩ1.uniqueDiffOn hΩ2.uniqueDiffOn hm1 hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[iteratedFDerivWithin_of_isOpen k hΩ2 hm2, iteratedFDerivWithin_of_isOpen k hΩ1 hm1, iteratedFDeriv_comp_add_left]`. Simplify using `only [map_zero, add_zero] at h1`. Conclude with `h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iterAffine : IterAffine := by
   intro V W _ _ _ _ F Ω hΩ hF c hc L k
@@ -71,7 +71,7 @@ def predPerm {k : ℕ} (σ : Equiv.Perm (Fin (k + 1))) (h0 : σ 0 = 0) : Equiv.P
   right_inv i := by simp
 
 /- English proof (translation)
-Simplify using `[predPerm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma predPerm_succ {k : ℕ} (σ : Equiv.Perm (Fin (k + 1))) (h0 : σ 0 = 0) (i : Fin k) :
     (predPerm σ h0 i).succ = σ i.succ := by
@@ -81,11 +81,9 @@ section
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Establish `hd : DifferentiableAt ℂ (iteratedFDeriv ℂ k F) c` using `iter_diffAt hΩ hF k hc`. Establish `ht : Fin.tail (v ∘ σ) = Fin.tail v ∘ predPerm σ h0`. Use function extensionality and compare the values at `i`. Simplify using `only [Fin.tail, Function.comp_apply]`. Rewrite using `[predPerm_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0' : (v ∘ σ) 0 = v 0` using `by simp [h0]`. Rewrite using `[iteratedFDeriv_succ_apply_left, iteratedFDeriv_succ_apply_left, ht, h0', ← fderiv_continuousMultilinear_apply_const_apply hd, ← fderiv_continuousMultilinear_apply_const_apply hd]`. Use `congr 1`. Apply `Filter.EventuallyEq.fderiv_eq` to reduce the goal to its premises. Use `filter_upwards [hΩ.mem_nhds hc] with y hy`.
-
-Conclude with `ih y hy (Fin.tail v) (predPerm σ h0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma symm_fix {F : V → ℂ} {Ω : Set V} (hΩ : IsOpen Ω) (hF : ContDiffOn ℂ ∞ F Ω) {k : ℕ}
     (ih : ∀ c ∈ Ω, ∀ (v : Fin k → V) (σ : Equiv.Perm (Fin k)), iteratedFDeriv ℂ k F c (v ∘ σ) = iteratedFDeriv ℂ k F c v)
@@ -106,7 +104,7 @@ lemma symm_fix {F : V → ℂ} {Ω : Set V} (hΩ : IsOpen Ω) (hF : ContDiffOn �
   exact ih y hy (Fin.tail v) (predPerm σ h0)
 
 /- English proof (translation)
-Rewrite using `[iteratedFDeriv_succ_eq_comp_left, iteratedFDeriv_succ_eq_comp_left]`. Simplify using `[LinearIsometryEquiv.comp_fderiv, Fin.tail]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem iteratedFDeriv_add_two_apply {F : V → ℂ} (k : ℕ) (c : V) (v : Fin (k + 2) → V) :
     iteratedFDeriv ℂ (k + 2) F c v =
@@ -115,11 +113,11 @@ private theorem iteratedFDeriv_add_two_apply {F : V → ℂ} (k : ℕ) (c : V) (
   simp [LinearIsometryEquiv.comp_fderiv, Fin.tail]
 
 /- English proof (translation)
-Establish `hG : ContDiffAt ℂ ∞ (iteratedFDeriv ℂ k F) c` using `(iter_smooth hΩ hF k).contDiffAt (hΩ.mem_nhds hc)`. Establish `hmin : minSmoothness ℂ 2 ≤ (∞ : WithTop ℕ∞)`. Rewrite using `[minSmoothness_of_isRCLikeNormedField]`. Conclude with `WithTop.coe_le_coe.2 le_top`. Establish `hs` using `hG.isSymmSndFDerivAt hmin`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htt : Fin.tail (Fin.tail (v ∘ Equiv.swap 0 1)) = Fin.tail (Fin.tail v)`. Use function extensionality and compare the values at `i`. Simplify using `only [Fin.tail, Function.comp_apply]`. Apply the tactic sequence `rw [Equiv.swap_apply_of_ne_of_ne] <;> simp [Fin.ext_iff]`. Rewrite using `[iteratedFDeriv_add_two_apply, iteratedFDeriv_add_two_apply, htt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, Equiv.swap_apply_left, Equiv.swap_apply_right]`. Rewrite using `[hs (v 1) (v 0)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma symm_swap {F : V → ℂ} {Ω : Set V} (hΩ : IsOpen Ω) (hF : ContDiffOn ℂ ∞ F Ω) {k : ℕ}
     {c : V} (hc : c ∈ Ω) (v : Fin (k + 2) → V) :
@@ -141,21 +139,19 @@ lemma symm_swap {F : V → ℂ} {Ω : Set V} (hΩ : IsOpen Ω) (hF : ContDiffOn 
 end
 
 /- English proof (translation)
-Introduce `V _ _ F Ω hΩ hF`. It suffices to establish `h : ∀ k : ℕ, ∀ c ∈ Ω, ∀ (v : Fin k → V) (σ : Equiv.Perm (Fin k)), iteratedFDeriv ℂ k F c (v ∘ σ) = iteratedFDeriv ℂ k F c v from fun c hc k v σ => h k c hc v σ`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `c hc v σ`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `i.elim0`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc v σ`. Establish `key : ∀ (j : Fin (k + 1)) (u : Fin (k + 1) → V), iteratedFDeriv ℂ (k + 1) F c (u ∘ Equiv.swap 0 j) = iteratedFDeriv ℂ (k + 1) F c u`. Introduce `j u`. Distinguish the cases in `hj0 : j = 0`. Substitute `hj0` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the cases of `k with`. Consider the case `zero => exact absurd (Fin.fin_one_eq_zero j) hj0`. Consider the case `succ m`. Distinguish the cases in `hj1 : j = 1`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hj1` using the available equality. Conclude with `symm_swap hΩ hF hc u`. Establish `h01 : (0 : Fin (m + 2)) ≠ 1` using `by simp [Fin.ext_iff]`. Establish `hs : Equiv.swap (0 : Fin (m + 2)) j = Equiv.swap 1 j * Equiv.swap 0 1 * Equiv.swap 1 j`. Rewrite using `[Equiv.swap_mul_swap_mul_swap h01 (Ne.symm hj0), Equiv.swap_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ w : Fin (m + 2) → V, iteratedFDeriv ℂ (m + 2) F c (w ∘ Equiv.swap 1 j) = iteratedFDeriv ℂ (m + 2) F c w` using `fun w => symm_fix hΩ hF ih hc (Equiv.swap 1 j) (Equiv.swap_apply_of_ne_of_ne h01 (Ne.symm hj0)) w`. Establish `hcomp : u ∘ ⇑((Equiv.swap 1 j * Equiv.swap 0 1 * Equiv.swap 1 j : Equiv.Perm (Fin (m + 2)))) = ((u ∘ Equiv.swap 1 j) ∘ Equiv.swap 0 1) ∘ Equiv.swap 1 j`. Use function extensionality and compare the values at `i`. Simplify using `[Equiv.Perm.mul_apply]`. Rewrite using `[hs, hcomp, hfix, symm_swap hΩ hF hc, hfix]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : (Equiv.swap 0 (σ 0) * σ) 0 = 0`. Simplify using `[Equiv.Perm.mul_apply]`. Establish `hv : v ∘ σ = (v ∘ Equiv.swap 0 (σ 0)) ∘ ⇑(Equiv.swap 0 (σ 0) * σ)`. Use function extensionality and compare the values at `i`. Simplify using `[Equiv.Perm.mul_apply]`.
-
-Rewrite using `[hv, symm_fix hΩ hF ih hc _ h0, key]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iterSymm : IterSymm := by
   intro V _ _ F Ω hΩ hF
@@ -208,22 +204,22 @@ section
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-The claim follows from `(ContinuousMultilinearMap.apply ℂ (fun _ : Fin b => V) ℂ w).contDiff.comp_contDiffOn (iter_smooth hΩ hF b)`.
+A detailed English derivation is pending.
 -/
 lemma eval_smooth {F : V → ℂ} {Ω : Set V} (hΩ : IsOpen Ω) (hF : ContDiffOn ℂ ∞ F Ω) (b : ℕ) (w : Fin b → V) :
     ContDiffOn ℂ ∞ (fun x => iteratedFDeriv ℂ b F x w) Ω :=
   (ContinuousMultilinearMap.apply ℂ (fun _ : Fin b => V) ℂ w).contDiff.comp_contDiffOn (iter_smooth hΩ hF b)
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `c hc u`. Rewrite using `[iteratedFDeriv_zero_apply, iter_cast (zero_add b) (Fin.append u w), Fin.append_left_nil u w rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Consider the case `succ a ih`. Introduce `c hc u`. Establish `hg : ContDiffOn ℂ ∞ (fun x => iteratedFDeriv ℂ b F x w) Ω` using `eval_smooth hΩ hF b w`. Establish `hd1` using `iter_diffAt hΩ hg a hc`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd2` using `iter_diffAt hΩ hF (a + b) hc`. Rewrite using `[iteratedFDeriv_succ_apply_left, ← fderiv_continuousMultilinear_apply_const_apply hd1]`. Establish `he : (fun y => iteratedFDeriv ℂ a (fun x => iteratedFDeriv ℂ b F x w) y (Fin.tail u)) =ᶠ[𝓝 c] (fun y => iteratedFDeriv ℂ (a + b) F y (Fin.append (Fin.tail u) w))` using `by filter_upwards [hΩ.mem_nhds hc] with y hy`. Conclude with `ih hy (Fin.tail u)`. Rewrite using `[he.fderiv_eq, fderiv_continuousMultilinear_apply_const_apply hd2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs` using `iteratedFDeriv_succ_apply_left (𝕜 := ℂ) (f := F) (x := c) (n := a + b) (Fin.cons (u 0) (Fin.append (Fin.tail u) w))`. Rewrite `hs` using `[Fin.cons_zero, Fin.tail_cons]`. Rewrite using `[← hs, iter_cast (show a + 1 + b = a + b + 1 by omega) (Fin.append u w)]`. Use `congr 1`. Use `conv_rhs => rw [← Fin.cons_self_tail u, Fin.append_cons]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma iter_mixed {F : V → ℂ} {Ω : Set V} (hΩ : IsOpen Ω) (hF : ContDiffOn ℂ ∞ F Ω) (b : ℕ) (w : Fin b → V) :
     ∀ (a : ℕ) {c : V}, c ∈ Ω → ∀ (u : Fin a → V),
@@ -258,13 +254,13 @@ lemma iter_mixed {F : V → ℂ} {Ω : Set V} (hΩ : IsOpen Ω) (hF : ContDiffOn
 end
 
 /- English proof (translation)
-Introduce `V W1 W2 _ _ _ _ _ _ F Ω hΩ hF c hc L1 L2 a b u w`. Establish `hg : ContDiffOn ℂ ∞ (fun x => iteratedFDeriv ℂ b F x (fun i => L2 (w i))) Ω` using `eval_smooth hΩ hF b _`. Establish `hU : ∀ᶠ t1 in 𝓝 (0 : W1), c + L1 t1 ∈ Ω`. Establish `hcont : Continuous (fun t1 : W1 => c + L1 t1)` using `continuous_const.add L1.continuous`. Apply `hcont.continuousAt.preimage_mem_nhds` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using hΩ.mem_nhds hc`. Establish `he : (fun t1 => iteratedFDeriv ℂ b (fun t2 => F (c + L1 t1 + L2 t2)) 0 w) =ᶠ[𝓝 0] (fun t1 => iteratedFDeriv ℂ b F (c + L1 t1) (fun i => L2 (w i)))` using `by filter_upwards [hU] with t1 ht1`. Rewrite using `[iterAffine V W2 F Ω hΩ hF (c + L1 t1) ht1 L2 b]`. Both sides reduce to the same expression. Establish `he' : (fun t1 => iteratedFDeriv ℂ b (fun t2 => F (c + L1 t1 + L2 t2)) 0 w) =ᶠ[𝓝[univ] 0] (fun t1 => iteratedFDeriv ℂ b F (c + L1 t1) (fun i => L2 (w i)))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[nhdsWithin_univ]`. Conclude with `he`. Establish `hE` using `Filter.EventuallyEq.iteratedFDerivWithin_eq (𝕜 := ℂ) he' he.eq_of_nhds a`. Simplify using `only [iteratedFDerivWithin_univ] at hE`. Rewrite using `[hE, iterAffine V W1 _ Ω hΩ hg c hc L1 a]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousMultilinearMap.compContinuousLinearMap_apply]`. Conclude with `iter_mixed hΩ hF b _ a hc _`.
+A detailed English derivation is pending.
 -/
 theorem iterNested : IterNested := by
   intro V W1 W2 _ _ _ _ _ _ F Ω hΩ hF c hc L1 L2 a b u w

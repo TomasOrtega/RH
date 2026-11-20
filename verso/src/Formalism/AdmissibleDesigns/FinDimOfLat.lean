@@ -34,7 +34,7 @@ def tr (e : FractionRing O ≃+* LL) (v : V) : TrV e V := v
 def untr (e : FractionRing O ≃+* LL) (v : TrV e V) : V := v
 
 /- English proof (translation)
-Use `show (algebraMap Ow LL (eO a)) • tr e v = tr e (a • v)`. Rewrite using `[smulLL_def, heO, RingEquiv.symm_apply_apply]`. Conclude with `algebraMap_smul (FractionRing O) a v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eO (heO : ∀ a : O, algebraMap Ow LL (eO a) = e (algebraMap O (FractionRing O) a))
     (a : O) (v : V) : (eO a • tr e v : TrV e V) = tr e (a • v) := by
@@ -43,7 +43,7 @@ theorem smul_eO (heO : ∀ a : O, algebraMap Ow LL (eO a) = e (algebraMap O (Fra
   exact algebraMap_smul (FractionRing O) a v
 
 /- English proof (translation)
-Establish `h` using `smul_eO heO (eO.symm c) v`. Rewrite `h` using `[RingEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem smul_Ow (heO : ∀ a : O, algebraMap Ow LL (eO a) = e (algebraMap O (FractionRing O) a))
     (c : Ow) (v : V) : (c • tr e v : TrV e V) = tr e (eO.symm c • v) := by
@@ -68,7 +68,7 @@ def latT (heO : ∀ a : O, algebraMap Ow LL (eO a) = e (algebraMap O (FractionRi
     rw [smul_Ow heO, map_smul]
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latT (heO : ∀ a : O, algebraMap Ow LL (eO a) = e (algebraMap O (FractionRing O) a))
     (v : TrV e V) : v ∈ latT e eO j heO ↔ ∃ m, tr e (j m) = v := by
@@ -97,7 +97,7 @@ def latEquiv (heO : ∀ a : O, algebraMap Ow LL (eO a) = e (algebraMap O (Fracti
 def basMO [Module.Free O M] : Basis (Module.Free.ChooseBasisIndex O M) O (MO eO M) := Module.Free.chooseBasis O M
 
 /- English proof (translation)
-Conclude with `Module.Free.of_basis ((basMO (eO := eO) (M := M)).mapCoeffs eO (fun c x => by show eO.symm (eO c) • x = c • x`. Rewrite using `[RingEquiv.symm_apply_apply]))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem free_MO [Module.Free O M] : Module.Free Ow (MO eO M) := by
   exact Module.Free.of_basis ((basMO (eO := eO) (M := M)).mapCoeffs eO (fun c x => by
@@ -105,7 +105,7 @@ theorem free_MO [Module.Free O M] : Module.Free Ow (MO eO M) := by
     rw [RingEquiv.symm_apply_apply]))
 
 /- English proof (translation)
-Conclude with `Module.Finite.of_basis ((basMO (eO := eO) (M := M)).mapCoeffs eO (fun c x => by show eO.symm (eO c) • x = c • x`. Rewrite using `[RingEquiv.symm_apply_apply]))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_MO [Module.Finite O M] [Module.Free O M] : Module.Finite Ow (MO eO M) := by
   exact Module.Finite.of_basis ((basMO (eO := eO) (M := M)).mapCoeffs eO (fun c x => by
@@ -186,9 +186,9 @@ def latHom : LatHom (latOf e eO jP ι heO ρVP ρP hjP hjeqP hspP) (latOf e eO j
     exact ⟨ev m, (hcomm m).symm⟩
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨q, rfl⟩` from `(mem_latT jQ heO y).mp hy`. Take `⟨p, rfl⟩` from `hev q`. Use `⟨tr e (jP p), (mem_latT jP heO _).mpr ⟨p, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show trL e f0 (tr e (jP p)) = tr e (jQ (ev p))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[trL_apply]`. Conclude with `hcomm p`.
+A detailed English derivation is pending.
 -/
 theorem latHom_onto (hev : Function.Surjective ev) :
     (latHom ι heO hjP hjQ hjeqP hjeqQ hspP hspQ hf0 hcomm).Onto := by
@@ -205,9 +205,9 @@ end Lift
 section FromAt
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `L.fg`. Establish `h1 : (L.T : Set V) ⊆ Submodule.span LL (s : Set V)`. Rewrite using `[← hs]`. Conclude with `Submodule.span_subset_span Ow LL _`. Use `⟨⟨s, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff, ← L.span]`. Conclude with `Submodule.span_le.mpr h1`.
+A detailed English derivation is pending.
 -/
 theorem finDim_of_lat {LL Ow : Type} [Field LL] [CommRing Ow] [Algebra Ow LL] {G : Type} [Group G]
     {Qp : Type} [Field Qp] [Algebra Qp LL]
@@ -250,9 +250,9 @@ variable {O : Type} [CommRing O] [IsDomain O] {LL : Type} [Field LL] [Topologica
 include hspQ hcomm in
 
 /- English proof (translation)
-Introduce `w`. Take `⟨c, hc, q, hq⟩` from `hspQ (untr e w)`. Take `⟨p, rfl⟩` from `hev q`. Establish `hk : algebraMap O (FractionRing O) c ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hc)`. Use `⟨tr e ((algebraMap O (FractionRing O) c)⁻¹ • jP p), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[trL_apply]`. Use `show f0 ((algebraMap O (FractionRing O) c)⁻¹ • jP p) = untr e w`. Rewrite using `[smulK, hcomm, hq, ← algebraMap_smul (FractionRing O) c, smul_smul, inv_mul_cancel₀ hk, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trL_onto (hev : Function.Surjective ev) : Function.Surjective (trL e f0) := by
   intro w
@@ -272,9 +272,9 @@ section Loc
 variable {O : Type} [CommRing O] [IsDomain O] {M : Type} [AddCommGroup M] [Module O M]
 
 /- English proof (translation)
-Introduce `a b h`. Simplify using `only [LocalizedModule.mkLinearMap_apply] at h`. Rewrite `h` using `[LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `h`. Simplify using `only [one_smul, Submonoid.smul_def] at hu`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `smul_right_injective M (nonZeroDivisors.coe_ne_zero u) hu`.
+A detailed English derivation is pending.
 -/
 theorem mkK_inj [Module.Free O M] : Function.Injective (mkK (O := O) (M := M)) := by
   intro a b h
@@ -285,7 +285,7 @@ theorem mkK_inj [Module.Free O M] : Function.Injective (mkK (O := O) (M := M)) :
   exact smul_right_injective M (nonZeroDivisors.coe_ne_zero u) hu
 
 /- English proof (translation)
-Use `LocalizedModule.induction_on (fun m s => ?_) v` and prove the remaining obligations. Use `⟨s, nonZeroDivisors.coe_ne_zero s, m, ?_⟩` and prove the remaining obligations. Rewrite using `[LocalizedModule.mkLinearMap_apply, LocalizedModule.smul'_mk, LocalizedModule.mk_eq]`. Conclude with `⟨1, by simp [Submonoid.smul_def]⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mkK_span (v : MK (O := O) M) : ∃ c : O, c ≠ 0 ∧ ∃ m, mkK m = c • v := by
   refine LocalizedModule.induction_on (fun m s => ?_) v

@@ -12,13 +12,13 @@ open GlobalTheory.Member
 namespace GlobalTheory.UnRep.Space
 
 /- English proof (translation)
-The claim follows from `Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield D.host.E) D.host.E`.
+A detailed English derivation is pending.
 -/
 theorem finrank_two (D : D7) : Module.finrank D.host.F D.host.E = 2 :=
   Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield D.host.E) D.host.E
 
 /- English proof (translation)
-Introduce `x y`. Rewrite using `[GlobalTheory.UnitarySplit.hermA_eq, GlobalTheory.UnitarySplit.hermA_eq]`. Conclude with `(GlobalTheory.Member.RatElt.mem_UJ_iff _ _ _).1 (GlobalTheory.UnitarySplit.finHom_mem V g) y x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnA_finHom {D : D7} (V : HSp D) (g : GA D V) : GlobalTheory.UnRep.IsUnA (cF D) V.gramᵀ (finHom V g).1 := by
   intro x y
@@ -26,9 +26,9 @@ theorem isUnA_finHom {D : D7} (V : HSp D) (g : GA D V) : GlobalTheory.UnRep.IsUn
   exact (GlobalTheory.Member.RatElt.mem_UJ_iff _ _ _).1 (GlobalTheory.UnitarySplit.finHom_mem V g) y x
 
 /- English proof (translation)
-Unfold `herm GlobalTheory.UnRep.hermE`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `u a * (-V.gram b a) * cc (v b) = -(u a * V.gram b a * cc (v b))`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_neg_eq {D : D7} (V : HSp D) (u v : Fin V.rank → D.host.E) :
     herm (-V.gramᵀ) u v = -GlobalTheory.UnRep.hermE (cF D) V.gramᵀ u v := by
@@ -43,15 +43,13 @@ theorem herm_neg_eq {D : D7} (V : HSp D) (u v : Fin V.rank → D.host.E) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D V N hN g`. Take `⟨e1, -, hfg, hsp, c2, -, c1, gh, gd, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Take `⟨γ', h', k', u1, u2, u3, hg, hs, hk, -⟩` from `GlobalTheory.T.exists_unitary_adelic_decomposition_split_support D.host.F D.host.E (cF D) V.rank V.gramᵀ ⟨c2, c1, gh, gd⟩ (finrank_two D) (latC V) hfg hsp (finHom V g) N (isUnA_finHom V g) hN`. Take `⟨-, -, -, lift, -⟩` from `GlobalTheory.UnitarySplit.real_finite_split D V`. Take `⟨r1, -, r3, -⟩` from `GlobalTheory.Member.RatElt.rational_elements D V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, eh⟩` from `lift h' u2`. Take `⟨k, hk', ek⟩` from `lift k' u3`. Take `⟨γ, hγ⟩` from `r3 γ' fun u v => by rw [herm_neg_eq, herm_neg_eq, u1]`. Establish `eγ : (finHom V γ).1 = GlobalTheory.UnRep.fm D.host.F γ'.1` using `GlobalTheory.Member.RatElt.fin_eq hγ`. Establish `e : finHom V g = finHom V γ * finHom V h * finHom V k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hg, Units.val_mul, Units.val_mul, eγ, eh, ek]`. Use `⟨γ, (r1 γ).2 ⟨γ', hγ⟩, γ⁻¹ * g * k⁻¹ * h⁻¹, ?_, h, hh, k, hk', by group, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finHom V _ = 1`. Simplify using `only [map_mul, map_inv, e]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Use `group`. Unfold `FinCong`. Rewrite using `[e1, ek]`. Conclude with `hk`. Rewrite using `[eh]`.
-
-Conclude with `hs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep_suppSplit : ∀ (D : D7) (V : HSp D) (N : ℕ), 0 < N → ∀ g : GA D V, ∃ γ ∈ GQ V, ∃ a ∈ GinfC V, ∃ h ∈ GfC V, ∃ k ∈ GfC V, g = γ * a * h * k ∧ FinCong V N k ∧ GlobalTheory.UnRep.SuppSplit (cF D) N (finHom V h).1 := by
   intro D V N hN g

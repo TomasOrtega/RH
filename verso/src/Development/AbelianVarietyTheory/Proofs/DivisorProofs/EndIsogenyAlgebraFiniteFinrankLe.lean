@@ -10,9 +10,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ A`. Take `⟨hfin, hfree, hrk⟩` from `GlobalTheory.T.hom_finite_free_finrank_le_four_mul_dim K A A`. Use `haveI : Module.Finite ℤ (End A) := hfin`. Use `haveI : Module.Free ℤ (End A) := hfree`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Module.finrank_baseChange]`. Conclude with `hrk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem end_isogeny_algebra_finrank_le : ∀ (K : Type) [Field K] (A : AbVar K),
     Module.Finite ℚ (End0 A) ∧ Module.finrank ℚ (End0 A) ≤ 4 * A.dim * A.dim := by

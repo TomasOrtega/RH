@@ -23,14 +23,14 @@ namespace LevelTowerAlt.Comparison₂
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-The claim follows from `mem_mcPts_of_sameOrbit hP.2.1.2.1 ⟨c, hc, rfl⟩ hz`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem {P : Ideal (MRing J)} {n : ℕ} (hP : IsArithVar P n) {z : (Σ k, J k) → ℂ} (hz : z ∈ mcPts P) {c : K → ℂ}
     (hc : ∀ k, c k ≠ 0) : torusSmul c z ∈ mcPts P :=
   mem_mcPts_of_sameOrbit hP.2.1.2.1 ⟨c, hc, rfl⟩ hz
 
 /- English proof (translation)
-The claim follows from `M.fibre z' hz' z hz`.
+A detailed English derivation is pending.
 -/
 theorem proj_eq {P : Ideal (MRing J)} {n : ℕ} (M : CxModel P n) {z z' : (Σ k, J k) → ℂ} (hz : z ∈ mcPts P) (hz' : z' ∈ mcPts P) :
     M.proj z' = M.proj z ↔ SameOrbit z z' := M.fibre z' hz' z hz
@@ -39,18 +39,18 @@ variable {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] {Ω : Type} [Field �
   [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W)
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `D.bd_torus _ hz c hc`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bd_orbit {z z' : (Σ k, J k) → ℂ} (h : SameOrbit z z') (hz : z' ∈ D.Bd) : z ∈ D.Bd := by
   obtain ⟨c, hc, rfl⟩ := h
   exact D.bd_torus _ hz c hc
 
 /- English proof (translation)
-Take `⟨a, t₀, ht₀, c, hc, rfl⟩` from `D.chart_cover z₀ hz₀`. Establish `hb : t₀ ∈ Metric.ball (0 : Fin D.n → ℂ) 1` using `mem_ball_zero_iff.2 (ht₀.trans_lt (by norm_num))`. Take `⟨V, T, hV, hm, hT, h0, h⟩` from `GlobalTheory.T.chart_local_analytic_trivialization K J II Ψ Ω W D a t₀ hb`. Establish `hs : ∀ z, AnalyticAt ℂ (torusSmul (ι` using `J) fun k => (c k)⁻¹) z := fun z => analyticAt_pi_iff.2 fun p => analyticAt_const.mul ((ContinuousLinearMap.proj (R := ℂ) p).analyticAt z)`. Establish `e0 : torusSmul (fun k => (c k)⁻¹) (torusSmul c ((D.chart a).γ t₀)) = (D.chart a).γ t₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun p => inv_mul_cancel_left₀ (hc _) _`. Use `⟨a, T ∘ torusSmul fun k => (c k)⁻¹, AnalyticAt.comp (by rw [e0]; exact hT _ hm) (hs _), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_of_eq_of_mem ((congrArg T e0).trans h0) hb`. Use `filter_upwards [(hs _).continuousAt.eventually_mem (hV.mem_nhds (by rwa [e0]))] with z hz hzP`. Take `⟨h1, c', hc', h2⟩` from `h _ ⟨hz, smul_mem D.arith hzP fun k => inv_ne_zero (hc k)⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h1, fun k => c k * c' k, fun k => mul_ne_zero (hc k) (hc' k), funext fun p => ?_⟩` and prove the remaining obligations. Use `congrFun h2 p` as an intermediate fact. Simplify using `only [torusSmul] at this`. Conclude with `((mul_inv_cancel_left₀ (hc _) _).symm.trans (congrArg _ this)).trans (mul_assoc _ _ _).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_read {z₀ : (Σ k, J k) → ℂ} (hz₀ : z₀ ∈ mcPts (mCoordIdeal D.y)) :
     ∃ (a : Fin D.nCharts) (T : ((Σ k, J k) → ℂ) → Fin D.n → ℂ), AnalyticAt ℂ T z₀ ∧ T z₀ ∈ Metric.ball 0 1 ∧
@@ -72,11 +72,11 @@ theorem exists_read {z₀ : (Σ k, J k) → ℂ} (hz₀ : z₀ ∈ mcPts (mCoord
     exact ((mul_inv_cancel_left₀ (hc _) _).symm.trans (congrArg _ this)).trans (mul_assoc _ _ _).symm
 
 /- English proof (translation)
-Introduce `z₀ hz₀`. Take `⟨a, T, hT, hb, h⟩` from `exists_read D hz₀.1`. Establish `h0` using `h.self_of_nhds hz₀.1`. Establish `hoff : T z₀ ∈ offBd D a` using `⟨hb, fun hm => hz₀.2 (bd_orbit D h0.2 hm)⟩`. Establish `h1 : ContinuousAt (fun t => phMu Hd ((D.chart a).γ t)) (T z₀)` using `((GlobalTheory.T.hodge_potential_smooth_off_boundary K J II Ψ Ω W D Hd).1 a).continuousOn.continuousAt ((SncPiece.isOpen_offBd D a).mem_nhds hoff)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ` using `((D.chart a).analytic _ hb).continuousAt`. Establish `hm` using `(D.chart a).mem _ hb`. Establish `ho : IsOpen {z : (Σ k, J k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Simplify using `only [Set.setOf_forall, Set.setOf_exists]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ContinuousAt (fun t => Real.log (ref.h ((D.chart a).γ t))) (T z₀)` using `(ContinuousAt.comp (f := (D.chart a).γ) (hr.continuousOn.continuousAt (ho.mem_nhds hm.1)) hγ).log (ref.pos _ hm.1).ne'`. Establish `h3` using `(ContinuousAt.comp (f := T) (h1.sub h2) hT.continuousAt).continuousWithinAt (s := D.Xo)`. Establish `key : ∀ z, T z ∈ Metric.ball 0 1 ∧ SameOrbit z ((D.chart a).γ (T z)) → Real.log ((muLine Hd).h z) - Real.log (ref.h z) = ((fun t => phMu Hd ((D.chart a).γ t) - Real.log (ref.h ((D.chart a).γ t))) ∘ T) z` using `fun z hz => log_diff_orbit ha ((D.chart a).mem _ hz.1).1 hz.2`. Use `h3.congr_of_eventuallyEq ?_ (key _ h0)` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds h, self_mem_nhdsWithin] with z hz hz' using key z (hz hz'.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contOn_Xo (Hd : HodgeData D) (ref : HermLine J) (ha : (muLine Hd).a = ref.a) (hr : IsSmoothHerm ref) :
     ContinuousOn (fun z => Real.log ((muLine Hd).h z) - Real.log (ref.h z)) D.Xo := by
@@ -102,17 +102,17 @@ theorem contOn_Xo (Hd : HodgeData D) (ref : HermLine J) (ha : (muLine Hd).a = re
   filter_upwards [nhdsWithin_le_nhds h, self_mem_nhdsWithin] with z hz hz' using key z (hz hz'.1)
 
 /- English proof (translation)
-Use `choose r hr hr' using M.surj`. Establish `hg : ∀ z ∈ mcPts (mCoordIdeal D.y), Real.log ((muLine Hd).h (r (M.proj z))) - Real.log (S.ref.h (r (M.proj z))) = Real.log ((muLine Hd).h z) - Real.log (S.ref.h z)` using `fun z hz => log_diff_orbit S.ref_deg.symm hz.1 ((proj_eq M (hr _) hz).1 (hr' _).symm)`. Establish `hV : ∀ z ∈ mcPts (mCoordIdeal D.y), r (M.proj z) ∉ D.Bd ↔ z ∉ D.Bd` using `fun z hz => not_congr ⟨bd_orbit D ((proj_eq M hz (hr _)).1 (hr' _)), bd_orbit D ((proj_eq M (hr _) hz).1 (hr' _).symm)⟩`. Establish `key : ∀ x, r x ∉ D.Bd → ∃ s : M.Xc → (Σ k, J k) → ℂ, ContinuousAt s x ∧ ∀ᶠ y in 𝓝 x, s y ∈ D.Xo ∧ M.proj (s y) = y`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hxU, s, hs, hs'⟩` from `M.sections x`. Establish `hc : ContinuousAt s x` using `continuousAt_pi.2 fun p => holo_cont (hs' p) hxU`. Use `⟨s, hc, ?_⟩` and prove the remaining obligations. Take `⟨F, hF, hF'⟩` from `isClosed_induced_iff.1 D.bd_closed`. Establish `hm : ∀ z ∈ mcPts (mCoordIdeal D.y), z ∈ F ↔ z ∈ D.Bd` using `fun z hz => Set.ext_iff.1 hF' ⟨z, hz⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : s x ∈ Fᶜ` using `fun h => (hV _ (hs x hxU).1).1 (by rwa [(hs x hxU).2]) ((hm _ (hs x hxU).1).1 h)`. Use `filter_upwards [hU.mem_nhds hxU, hc.eventually_mem (hF.isOpen_compl.mem_nhds h1)] with y hy hy'`. Conclude with `⟨⟨(hs y hy).1, fun h => hy' ((hm _ (hs y hy).1).2 h)⟩, (hs y hy).2⟩`. Use `⟨{x | r x ∉ D.Bd}, fun x => Real.log ((muLine Hd).h (r x)) - Real.log (S.ref.h (r x)), ?_, ?_, ?_, fun z hz => ⟨(hV z hz).2, hg z hz⟩⟩` and prove the remaining obligations. Use `isOpen_iff_mem_nhds.2 fun x hx => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, -, hs⟩` from `key x hx`. Use `filter_upwards [hs] with y hy`. Use `(hV _ hy.1.1).2 hy.1.2` as an intermediate fact. Rewrite `this` using `[hy.2]`. Then use the resulting hypothesis. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hc, hs⟩` from `key x hx`. Establish `h1` using `(contOn_Xo D Hd S.ref S.ref_deg.symm S.ref_smooth _ hs.self_of_nhds.1).tendsto.comp (tendsto_nhdsWithin_iff.2 ⟨hc.tendsto, hs.mono fun y hy => hy.1⟩)`. Establish `h2 : ∀ y, s y ∈ D.Xo ∧ M.proj (s y) = y → Real.log ((muLine Hd).h (s y)) - Real.log (S.ref.h (s y)) = Real.log ((muLine Hd).h (r y)) - Real.log (S.ref.h (r y))` using `fun y hy => by`. Rewrite using `[← hg _ hy.1.1, hy.2]`. Rewrite `h1` using `[h2 x hs.self_of_nhds]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ContinuousAt.continuousWithinAt (h1.congr' (hs.mono fun y hy => h2 y hy))`. Introduce `x hx`. Use `S.ph_eq (r x) ⟨⟨hr x, hx.1⟩, hr x⟩ (by rw [hr']; exact hx.2)` as an intermediate fact. Rewrite `this` using `[hr']`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_ext (Hd : HodgeData D) (M : XModel D) (S : LogLogRegularisationSetting M D.Xo (muLine Hd)) :
     ∃ (V : Set M.Xc) (g : M.Xc → ℝ), IsOpen V ∧ ContinuousOn g V ∧ (∀ x ∈ V ∩ S.R.Yo, g x = S.R.ph x) ∧
@@ -157,13 +157,13 @@ theorem exists_ext (Hd : HodgeData D) (M : XModel D) (S : LogLogRegularisationSe
     exact this.symm
 
 /- English proof (translation)
-Establish `hc : ∀ x, ContinuousAt (lv x) x` using `fun x => continuousAt_pi.2 fun p => holo_cont (hl x p) (hU x).2`. Establish `hn : ∀ x, U x ∈ 𝓝 x` using `fun x => (hU x).1.mem_nhds (hU x).2`. Use `⟨continuous_iff_continuousAt.2 fun x => ?_, fun j k y hy => ?_⟩` and prove the remaining obligations. Establish `h1` using `(M.cont _ (hm x x (hU x).2)).tendsto.comp (tendsto_nhdsWithin_iff.2 ⟨(hc x).tendsto, Filter.mem_of_superset (hn x) (hm x)⟩)`. Conclude with `h1.congr' (Filter.mem_of_superset (hn x) fun y hy => (ho x y hy).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩ : ∃ x, x = (A.chart j).symm y` from `⟨_, rfl⟩`. Take `⟨a, T, hT, hb, h⟩` from `exists_read D (hm x x (hU x).2)`. Establish `h0` using `h.self_of_nhds (hm x x (hU x).2)`. Establish `hp : ∀ z ∈ mcPts (mCoordIdeal D.y), T z ∈ Metric.ball 0 1 ∧ SameOrbit z ((D.chart a).γ (T z)) → M.proj ((D.chart a).γ (T z)) = M.proj z` using `fun z hz h' => (proj_eq M hz ((D.chart a).mem _ h'.1)).2 h'.2`. Establish `h1` using `(GlobalTheory.T.projection_of_chart_analytic K J II Ψ Ω W D M a k _ hb (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp _ (hm x x (hU x).2) h0, hx]`. Conclude with `hy.2)).1`. Establish `h2 : AnalyticAt ℂ (fun y' => lv x ((A.chart j).symm y')) y` using `analyticAt_pi_iff.2 fun p => hl x p j y ⟨hy.1, by rw [Set.mem_preimage, ← hx]; exact (hU x).2⟩`. Establish `h3 : AnalyticAt ℂ (T ∘ fun y' => lv x ((A.chart j).symm y')) y` using `AnalyticAt.comp (by rwa [← hx]) h2`. Establish `h4` using `AnalyticAt.comp (f := T ∘ fun y' => lv x ((A.chart j).symm y')) (x := y) (by rw [Function.comp_apply, ← hx]; exact h1) h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h4.congr ?_` and prove the remaining obligations. Establish `hs : Tendsto (A.chart j).symm (𝓝 y) (𝓝 x)` using `hx ▸ (A.chart j).continuousAt_symm hy.1`. Use `filter_upwards [hs.eventually (hn x), hs.eventually ((hc x).eventually h)] with y' h5 h6`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hp _ (hm x _ h5) (h6 (hm x _ h5)), ho x _ h5]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holoMap_proj (M : XModel D) {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (U : X → Set X)
     (hU : ∀ x, IsOpen (U x) ∧ x ∈ U x) (lv : X → X → (Σ k, J k) → ℂ) (hl : ∀ x p, A.HoloOn (U x) fun y => lv x y p)
@@ -194,37 +194,33 @@ theorem holoMap_proj (M : XModel D) {e : ℕ} {X : Type} [TopologicalSpace X] (A
     rw [hp _ (hm x _ h5) (h6 (hm x _ h5)), ho x _ h5]
 
 /- English proof (translation)
-Introduce `K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M S B K' _ J' _ P' B' e R κ v Θ Mt hS hv hP hΘ hΘp hMt`. Establish `hpl` using `GlobalTheory.T.block_pullback_herm_line K J K' J' κ v hv`. Set `lv : R.X → R.X → (Σ k, J k) → ℂ` to `fun x y p => R.lift x y (v p)`. Establish `hm : ∀ x, ∀ y ∈ R.U x, lv x y ∈ mcPts (mCoordIdeal D.y)` using `fun x y hy => hP ▸ hpl.2.2.1 P' _ (R.mem x y hy)`. Establish `ho : ∀ x, ∀ y ∈ R.U x, M.proj (lv y y) = M.proj (lv x y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x y hy`. Take `⟨c, hc, h⟩` from `R.compat x y y ⟨hy, R.mem_U y⟩`. Use `(proj_eq M (hm x y hy) (hm y y (R.mem_U y))).2 ⟨fun k => c (κ k), fun k => hc _, funext fun p => ?_⟩` and prove the remaining obligations. Simplify using `only [lv, h, hv.2.2.1]`. Establish `hπ` using `holoMap_proj D M R.A R.U (fun x => ⟨R.isOpen_U x, R.mem_U x⟩) lv (fun x p => R.holo x _) hm ho`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set π : R.X → M.Xc := fun x => M.proj (lv x x) with hπd`. Establish `hSB : ∀ p : D.SB B, (p : ℕ) ∈ D.S` using `fun p => (Finset.mem_filter.1 p.2).1`. Use `choose Ap hAa hAs hAc hAh using fun p : D.SB B => (GlobalTheory.T.vertical_factor_smooth_hermitian_metric K J II Ψ Ω W D p (hSB p)).1`. Set `N₀ : HermLine J` to `Top.combLine (fun o : Option (D.SB B) => o.elim S.ref Ap) fun _ => 1`. Establish `hN : IsSmoothHerm N₀` using `(GlobalTheory.T.hermitian_combination_smooth_conj K J _ _ _).1 fun o => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Consider the cases of `o`. Use `exacts [S.ref_smooth, hAs _]`. Establish `hNa : N₀.a = muTwDeg Hd B`. Simplify using `only [N₀, Top.combLine, Fintype.sum_option, one_smul, Option.elim, hAa, S.ref_deg, muTwDeg]`. Rewrite using `[Finset.sum_coe_sort (D.SB B) D.vdeg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hNh : ∀ z ∈ mcPts (mCoordIdeal D.y), Real.log (N₀.h z) = Real.log (S.ref.h z) + ∑ p ∈ D.SB B, Real.log (D.vertFactor p z)`. Introduce `z hz`. Simplify using `only [N₀, Top.combLine, Fintype.prod_option, zpow_one, Option.elim]`. Rewrite using `[Real.log_mul (S.ref.pos z hz.1).ne' (Finset.prod_ne_zero_iff.2 fun p _ => ((Ap p).pos z hz.1).ne'), Real.log_prod fun p _ => ((Ap p).pos z hz.1).ne', ← Finset.sum_coe_sort (D.SB B)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hAh _ z hz]`. Take `⟨ref, href⟩` from `(hpl.1 N₀).exists`. Take `⟨V, g, hV, hg, hgS, hgz⟩` from `exists_ext D Hd M S`. Take `⟨⟨C₁, hC₁⟩, hun⟩` from `hU K J _ _ M D.Xo _ S V g hS hV hg hgS`. Take `⟨Θ', hΘ', hΘ'p, -⟩` from `GlobalTheory.T.exists_positive_potential_dominating K J II Ψ Ω W D M S.R.th S.R.th_pot`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, ⟨C₂, hC₂⟩, hw⟩` from `GlobalTheory.T.regularized_weight_psh_and_bounds K J _ _ M D.Xo _ S Θ' hS hΘ' hΘ'p`. Take `⟨C₃, hC₃⟩` from `exists_psh_pull hπ hΘ hΘp (pot_rsmul hΘ' 1)`. Establish `hreg` using `GlobalTheory.T.regularized_hodge_metric_smooth K J II Ψ Ω W D Hd M S B hS`. Establish `hloc : ∀ x, LocRe R.A (fun y => Real.log (N₀.h (lv x y)) - S.R.th.φ (π x) (π y)) x`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, hUo, hxU, -, s, hs, hs', G, hG, hG'⟩` from `S.th_ref (π x) (π x) (S.R.th.mem_U _)`. Establish `h1 : LocRe M.atlas (fun y => S.R.th.φ (π x) y - Real.log (S.ref.h (s y))) (π x)` using `⟨U, hUo, hxU, G, hG, hG'⟩`. Establish `h2 : LocRe M.atlas (fun y => ∑ p ∈ D.SB B, Real.log (D.vertFactor p (s y))) (π x)` using `LocRe.sum _ fun p hp => by`. Take `⟨V', a1, a2, -, a3⟩` from `GlobalTheory.T.local_section_vertical_factor II Ψ K J Ω W D p M U s (hSB ⟨p, hp⟩) hUo (fun y hy => (hs y hy).1) hs' _ hxU`. Conclude with `⟨V', a1, a2, a3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hO : IsOpen (R.U x ∩ π ⁻¹' U)` using `(R.isOpen_U x).inter (hUo.preimage hπ.1)`. Establish `h3` using `locRe_orbit (A := R.A) N₀ hO (s := lv x) (s' := fun y => s (π y)) (fun p => holo_mono (R.holo x _) Set.inter_subset_left) (fun p => holo_mono (holo_comp (hs' p) hπ) Set.inter_subset_right) (fun y hy => (hs _ hy.2).1.1) (fun y hy => (proj_eq M (hm x y hy.1) (hs _ hy.2).1).1 ((hs _ …`. Use `((h3.add (h2.comp hπ)).add ((h1.comp hπ).mul (-1))).congr ?_` and prove the remaining obligations. Use `filter_upwards [hO.mem_nhds ⟨R.mem_U x, hxU⟩] with y hy`. Rewrite using `[hNh _ (hs _ hy.2).1]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hval : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ x, ∀ y ∈ R.U x, Real.log ((Mt t).h (R.lift x y)) = Real.log (N₀.h (lv x y)) + S.regWeight t (π y)` using `by filter_upwards [hreg] with t ht x y hy`. Rewrite using `[(hMt t).2, ht.2.2 _ (hm x y hy), hNh _ (hm x y hy), ← ho x y hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmu : ∀ x, Real.log ((muVert Hd B).h (lv x x)) = Real.log (N₀.h (lv x x)) + g (π x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `x`. Establish `hx` using `hm x x (R.mem_U x)`. Rewrite using `[GlobalTheory.T.vertical_hodge_metric_log_formula K J II Ψ Ω W D Hd B _ hx, hNh _ hx, (hgz _ hx).2]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨ref, max C₁ C₃, hpl.2.1 _ _ href hN, ?_, fun K₀ hK₀ hKc => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [hreg, hC₁, hC₂, hw 1 one_pos, hval] with t h1 h2 h3 h4 h5`. Establish `hs` using `hpl.2.1 _ _ (hMt t) h1.1`. Establish `hp` using `isPotential_potOf R hs`. Use `⟨hs, by rw [(hMt t).1, href.1, h1.2.1, hNa], ?_, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h6` using `hC₃ _ _ hp (isPotentialAdd _ _ _ S.R.th_pot (isPotential_ofFun _ _ h3.1)) h4 fun x => (hloc x).congr (by filter_upwards [(R.isOpen_U x).mem_nhds (R.mem_U x)] with y hy show Real.log ((Mt t).h (R.lift x y)) - (S.R.th.φ (π x) (π y) + S.regWeight t (π y)) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h5 x y hy]`. Use the proof step `ring)`. Establish `h7` using `isPshAdd R.A _ _ (isPotentialAdd _ _ _ hp (pot_rsmul hΘ C₃)) (pot_rsmul hΘ (max C₁ C₃ - C₃)) h6 (isPshRsmul R.A _ _ (sub_nonneg.2 (le_max_right _ _)) hΘ (TailBoundAlt.isPsh_of_isPosPot _ _ hΘp))`. Use `TailBoundAlt.isPsh_congr R.A _ _ h7 (fun x y hy => ⟨hy, hy.2⟩) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show _ + _ * Θ.φ x y = _ + C₃ * Θ.φ x y + _ * Θ.φ x y`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5 x x (R.mem_U x), href.2, add_sub_cancel_left]`. Conclude with `(h2.1 _).trans (le_max_left _ _)`. Rewrite using `[h5 x x (R.mem_U x), hmu]`.
-
-Conclude with `add_le_add le_rfl (h2.2 _ ((hgz _ (hm x x (R.mem_U x))).1 hx))`. Establish `h1` using `hun (π '' K₀) (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(hgz _ (hm x x (R.mem_U x))).1 (hK₀ hx)) (hKc.image hπ.1)`. Rewrite `h1`, the goal using `[Metric.tendstoUniformlyOn_iff]`.
-
-Introduce `ε hε`. Use `filter_upwards [h1 ε hε, hval] with t h2 h3 x hx`. Use `h2 _ ⟨x, hx, rfl⟩` as an intermediate fact. Rewrite `*` using `[h3 x x (R.mem_U x), hmu, Real.dist_eq]`. Rewrite using `[show (0 : ℝ) - (Real.log (N₀.h (lv x x)) + S.regWeight t (π x) - (Real.log (N₀.h (lv x x)) + g (π x))) = g (π x) - S.regWeight t (π x) by ring]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem baseSide (hU : RegUnif) : BaseSide := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M S B K' _ J' _ P' B' e R κ v Θ Mt hS hv hP hΘ hΘp hMt

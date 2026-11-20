@@ -21,9 +21,9 @@ namespace GlobalTheory.Phase.WeilPV
 variable {κ ι : Type} [Fintype κ] [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Take `⟨hd, hs, -⟩` from `GlobalTheory.SiegelAction.symplectic_action ι σ hσ _ (I_mem_siegel (ι := ι))`. Use `GlobalTheory.SW.eq_of_thS_eq κ ι ψ ψ' h1 h2 _ hs fun ζ => ?_` and prove the remaining obligations. Establish `e1` using `t1 _ I_mem_siegel (fun k => ζ k ᵥ* spDen σ (I • 1))`. Establish `e2` using `t2 _ I_mem_siegel (fun k => ζ k ᵥ* spDen σ (I • 1))`. Establish `e` using `e1.trans e2.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hd), Matrix.vecMul_one] at e`. Conclude with `e`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trans_unique {σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ} (hσ : σ ∈ Matrix.symplecticGroup ι ℚ)
     {φ ψ ψ' : Matrix κ ι ℚ → ℂ} (h1 : IsSB ψ) (h2 : IsSB ψ') (t1 : TransS σ φ ψ)
@@ -40,7 +40,7 @@ theorem trans_unique {σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ} (hσ : σ ∈ Mat
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Unfold `thS`. Rewrite using `[← tsum_mul_left]`. Conclude with `tsum_congr fun x => by simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thS_smul (c : ℂ) (φ : Matrix κ ι ℚ → ℂ) (τ : Matrix ι ι ℂ) (ζ : κ → ι → ℂ) :
     thS (c • φ) τ ζ = c * thS φ τ ζ := by
@@ -49,7 +49,7 @@ theorem thS_smul (c : ℂ) (φ : Matrix κ ι ℚ → ℂ) (τ : Matrix ι ι �
   exact tsum_congr fun x => by simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `τ hτ ζ` and use `by rw [thS_smul, thS_smul, t τ hτ ζ]; ring`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trans_smul {σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ} {φ ψ : Matrix κ ι ℚ → ℂ} (c : ℂ)
     (t : TransS σ φ ψ) : TransS σ (c • φ) (c • ψ) := fun τ hτ ζ => by
@@ -58,7 +58,7 @@ theorem trans_smul {σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ} {φ ψ : Matrix κ 
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Take `⟨R, hR, h1, h2⟩` from `h`. Use `⟨R, hR, fun x hx => h1 x fun h0 => hx ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Simplify using `[h0]`. Simplify using `[h2 x y hy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sb_smul (c : ℂ) {φ : Matrix κ ι ℚ → ℂ} (h : IsSB φ) : IsSB (c • φ) := by
   obtain ⟨R, hR, h1, h2⟩ := h
@@ -67,17 +67,17 @@ theorem sb_smul (c : ℂ) {φ : Matrix κ ι ℚ → ℂ} (h : IsSB φ) : IsSB (
   · simp [h2 x y hy]
 
 /- English proof (translation)
-Take `⟨A, ε, h⟩` from `h`. Take `⟨T, hom, hT⟩` from `GlobalTheory.Phase.transS_intertwines κ ι σ hσ`. Establish `mem : ∀ y, y ∈ A.map T.toAddMonoidHom ↔ T.symm y ∈ A` using `fun y => ⟨by rintro ⟨z, hz, rfl⟩; simpa using hz, fun hy => ⟨_, hy, by simp⟩⟩`. Establish `hom' : ∀ y y', om (T.symm y) (T.symm y') = om y y'` using `fun y y' => by`. Rewrite using `[← hom]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨A.map T.toAddMonoidHom, fun y => ε (T.symm y), ?_, ?_, ?_, ?_, ?_, hψ, ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `h.fg classical`. Conclude with `⟨S.image T, by rw [← hS, AddMonoidHom.map_closure]; simp⟩`. Introduce `y`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem, h.dual]`. Prove the components needed by the constructor for the conclusion. Introduce `H y' hy'`. Rewrite using `[← hom']`. Conclude with `H _ ((mem _).1 hy')`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H y' hy'`. Use `H (T y') ((mem _).2 (by simpa using hy'))` as an intermediate fact. Rewrite `this` using `[← hom']`. Simplify using `using this`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h.norm _ ((mem _).1 hy)`. Introduce `y hy y' hy'`. Rewrite using `[map_add, h.semi _ ((mem _).1 hy) _ ((mem _).1 hy'), hom']`. Take `⟨m, hm, H⟩` from `h.ord`. Conclude with `⟨m, hm, fun y hy => by rw [map_nsmul]; exact H _ ((mem _).1 hy)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `t1` using `trans_smul (ε (T.symm y)) (hT φ ψ h.sb hψ t (T.symm y))`. Rewrite `t1` using `[h.fix _ ((mem _).1 hy), T.apply_symm_apply]`. Conclude with `trans_unique hσ (sb_smul _ (GlobalTheory.SW.heisS_laws _ _ _ _ ψ hψ).1) hψ t1 t`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vac_trans {σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ} (hσ : σ ∈ Matrix.symplecticGroup ι ℚ)
     {φ ψ : Matrix κ ι ℚ → ℂ} (hψ : IsSB ψ) (t : TransS σ φ ψ) (h : ∃ A ε, VacS A ε φ) :
@@ -114,14 +114,14 @@ theorem vac_trans {σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ} (hσ : σ ∈ Matrix
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Take `⟨⟨_, _, h⟩, -⟩` from `h`. Conclude with `h.sb`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pv_sb {φ : Matrix κ ι ℚ → ℂ} (h : PV φ) : IsSB φ := by
   obtain ⟨⟨_, _, h⟩, -⟩ := h
   exact h.sb
 
 /- English proof (translation)
-Use `⟨vac_trans hσ hψ t h.1, fun y => ?_⟩` and prove the remaining obligations. Take `⟨u, y', hu, e⟩` from `GlobalTheory.T.siegelParabolic_transform_values_rootOfUnity κ ι he σ hσ h0 φ ψ (pv_sb h) hψ t y`. Rewrite using `[e]`. Conclude with `hu.mul (h.2 _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pv_parabolic (he : Even (Fintype.card κ)) {σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ}
     (hσ : σ ∈ Matrix.symplecticGroup ι ℚ) (h0 : σ.toBlocks₂₁ = 0)
@@ -131,7 +131,7 @@ theorem pv_parabolic (he : Even (Fintype.card κ)) {σ : Matrix (ι ⊕ ι) (ι 
   rw [e]; exact hu.mul (h.2 _)
 
 /- English proof (translation)
-Use `⟨vac_trans (SymplecticGroup.J_mem ι ℚ) hψ t h.1, fun y => ?_⟩` and prove the remaining obligations. Take `⟨u, y', hu, e⟩` from `GlobalTheory.Phase.val_trans_J κ ι he φ ψ (pv_sb h) hψ t y`. Rewrite using `[e]`. Conclude with `hu.mul (GlobalTheory.T.schwartzBruhatIntegral_gaussianShape_rootOfUnityPhase κ ι _ ((GlobalTheory.Phase.shape_conj_chr_mul κ ι φ ((GlobalTheory.Phase.VacShape.vacuum_shape κ ι φ).2.1 h)).2.1 y'))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pv_J (he : Even (Fintype.card κ))
     {φ ψ : Matrix κ ι ℚ → ℂ} (hψ : IsSB ψ) (t : TransS (Matrix.J ι ℚ) φ ψ) (h : PV φ) : PV ψ := by
@@ -142,9 +142,9 @@ theorem pv_J (he : Even (Fintype.card κ))
     ((GlobalTheory.Phase.shape_conj_chr_mul κ ι φ ((GlobalTheory.Phase.VacShape.vacuum_shape κ ι φ).2.1 h)).2.1 y'))
 
 /- English proof (translation)
-Introduce `φ ψ hψ t h`. Take `⟨w, hw⟩` from `GlobalTheory.SW.exists_weil_of_symplectic κ ι σ he hσ`. Take `⟨w', hw'⟩` from `GlobalTheory.SW.exists_weil_of_symplectic κ ι σ' he hσ'`. Take `⟨s1, t1, -⟩` from `hw φ (pv_sb h)`. Take `⟨s2, t2, -⟩` from `hw' (w φ) s1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `t3` using `GlobalTheory.SW.transS_comp κ ι σ σ' hσ hσ' _ _ _ t1 t2`. Rewrite using `[trans_unique (mul_mem hσ' hσ) hψ s2 t t3]`. Conclude with `H' _ _ s2 t2 (H _ _ s1 t1 h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pv_mul (he : Even (Fintype.card κ)) {σ σ' : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ}
     (hσ : σ ∈ Matrix.symplecticGroup ι ℚ) (hσ' : σ' ∈ Matrix.symplecticGroup ι ℚ)
@@ -161,9 +161,9 @@ theorem pv_mul (he : Even (Fintype.card κ)) {σ σ' : Matrix (ι ⊕ ι) (ι �
   exact H' _ _ s2 t2 (H _ _ s1 t1 h)
 
 /- English proof (translation)
-Introduce `κ ι _ _ _ he σ hσ`. Take `⟨p₁, h1, p₂, h2, p₃, h3, z1, z2, z3, rfl⟩` from `GlobalTheory.SW.symplectic_eq_parabolic_J_parabolic_J_parabolic ι σ hσ`. Establish `hJ` using `SymplecticGroup.J_mem ι ℚ`. Establish `P : ∀ p ∈ Matrix.symplecticGroup ι ℚ, p.toBlocks₂₁ = 0 → ∀ φ ψ : Matrix κ ι ℚ → ℂ, IsSB ψ → TransS p φ ψ → PV φ → PV ψ` using `fun p hp z φ ψ hψ t h => pv_parabolic he hp z hψ t h`. Establish `Q : ∀ φ ψ : Matrix κ ι ℚ → ℂ, IsSB ψ → TransS (Matrix.J ι ℚ) φ ψ → PV φ → PV ψ` using `fun φ ψ hψ t h => pv_J he hψ t h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a` using `mul_mem h1 hJ`. Establish `b` using `mul_mem a h2`. Establish `c` using `mul_mem b hJ`. Conclude with `pv_mul he h3 c (P _ h3 z3) (pv_mul he hJ b Q (pv_mul he h2 a (P _ h2 z2) (pv_mul he hJ h1 Q (P _ h1 z1))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pv_of_transS : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι], Even (Fintype.card κ) → ∀ σ ∈ Matrix.symplecticGroup ι ℚ, ∀ φ ψ : Matrix κ ι ℚ → ℂ, IsSB ψ → TransS σ φ ψ → PV φ → PV ψ := by
   intro κ ι _ _ _ he σ hσ

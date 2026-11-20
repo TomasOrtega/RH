@@ -8,9 +8,9 @@ section Lib
 variable {p : ℕ} [Fact p.Prime] {N r : ℕ}
 
 /- English proof (translation)
-Rewrite `hx` using `[WtSpC, mem_restrictSupport_iff]`. Use extensionality with `m`. Rewrite using `[coeff_cartan, coeff_smul, smul_eq_mul]`. Distinguish the cases in `h : coeff m x = 0`. Simplify using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hm` using `hx (Finset.mem_coe.mpr (mem_support_iff.mpr h))`. Rewrite `hm` using `[Set.mem_setOf_eq]`. Rewrite using `[hm c hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cartan_eigC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (μ : Fin r → ℤ)
     (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) (hx : x ∈ WtSpC p LL j Cs μ) (c : Fin r) (hc : c ∈ Cs) :
@@ -25,9 +25,9 @@ theorem cartan_eigC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (μ : Fin r
     rw [hm c hc]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[WtSpC, mem_restrictSupport_iff]`. Introduce `m hm c hc`. Establish `h1 : glAct p LL j c c (Q x) = ((μ c : ℤ) : ℚ_[p]) • Q x`. Rewrite using `[← hQ c hc, cartan_eigC LL j Cs μ x hx c hc, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `eig_supp LL j c (μ c) (Q x) h1` as an intermediate fact. Rewrite `this` using `[mem_restrictSupport_iff]`. Conclude with `this hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_wtspC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r))
     (Q : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -43,7 +43,7 @@ theorem comm_wtspC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r))
   exact this hm
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [HWC, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker] at hx ⊢`. Take `⟨h1, h2⟩` from `hx`. Use `⟨comm_wtspC LL j Cs Q (fun c hc y => hQ c hc c hc y) la x h1, fun c d hcd => ?_⟩` and prove the remaining obligations. Rewrite using `[← hQ c hcd.1 d hcd.2.1, h2 c d hcd, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hwc_keepC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ)
     (Q : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -56,7 +56,7 @@ theorem hwc_keepC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r �
   rw [← hQ c hcd.1 d hcd.2.1, h2 c d hcd, map_zero]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[IsoC, Submodule.mem_sInf]`. Introduce `S hS`. Conclude with `hS.2 c hc d hd x (hx S hS)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isoC_glStableC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ) (c : Fin r) (hc : c ∈ Cs)
     (d : Fin r) (hd : d ∈ Cs) :
@@ -67,7 +67,7 @@ theorem isoC_glStableC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fi
   exact hS.2 c hc d hd x (hx S hS)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[IsoC, Submodule.mem_sInf]`. Introduce `S hS`. Conclude with `hS.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hwc_le_isoCC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ) :
     HWC p LL j Cs la ≤ IsoC p LL j Cs la := by
@@ -77,9 +77,9 @@ theorem hwc_le_isoCC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin 
   exact hS.1 hx
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hle : IsoC p LL j Cs la ≤ (IsoC p LL j Cs la).comap Q`. Apply `sInf_le` to reduce the goal to its premises. Use `⟨fun y hy => ?_, fun c hc d hd y hy => ?_⟩` and prove the remaining obligations. Conclude with `hwc_le_isoCC LL j Cs la (hwc_keepC LL j Cs la Q hQ y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Q (glAct p LL j c d y) ∈ IsoC p LL j Cs la`. Rewrite using `[hQ c hc d hd]`. Conclude with `isoC_glStableC LL j Cs la c hc d hd _ hy`. Conclude with `hle hx`.
+A detailed English derivation is pending.
 -/
 theorem isoC_keepC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ)
     (Q : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -96,11 +96,11 @@ theorem isoC_keepC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r 
   exact hle hx
 
 /- English proof (translation)
-Apply `comm_of_stable P Q hP.1` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx`, the goal using `[hP.2.1]`. Establish `hle : (⨆ la ∈ T, IsoC p LL j Cs la) ≤ (⨆ la ∈ T, IsoC p LL j Cs la).comap Q`. Use `iSup₂_le fun la hla => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Conclude with `(le_iSup₂ (f := fun la (_ : la ∈ T) => IsoC p LL j Cs la) la hla) (hQ la y hy)`. Conclude with `hle hx`. Introduce `x hx`. Rewrite `hx`, the goal using `[hP.2.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : (⨆ (la : Fin r → ℤ), ⨆ (_ : la ∉ T), IsoC p LL j Cs la) ≤ (⨆ (la : Fin r → ℤ), ⨆ (_ : la ∉ T), IsoC p LL j Cs la).comap Q`. Use `iSup₂_le fun la hla => ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `(le_iSup₂ (f := fun la (_ : la ∉ T) => IsoC p LL j Cs la) la hla) (hQ la y hy)`. Conclude with `hle hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem typeProj_comm_isoC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (T : Set (Fin r → ℤ))
     (P : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -125,7 +125,7 @@ theorem typeProj_comm_isoC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (T :
     exact hle hx
 
 /- English proof (translation)
-The claim follows from `typeProj_comm_isoC LL j Cs T P hP Q (fun la => isoC_keepC LL j Cs la Q hQ)`.
+A detailed English derivation is pending.
 -/
 theorem typeProj_commC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (T : Set (Fin r → ℤ))
     (P : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -135,7 +135,7 @@ theorem typeProj_commC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (T : Set
   typeProj_comm_isoC LL j Cs T P hP Q (fun la => isoC_keepC LL j Cs la Q hQ)
 
 /- English proof (translation)
-The claim follows from `typeProj_comm_isoC LL j Cs T P hP _ (fun la => isoC_glStableC LL j Cs la c hc d hd)`.
+A detailed English derivation is pending.
 -/
 theorem typeProj_glActC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (T : Set (Fin r → ℤ))
     (P : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -144,7 +144,7 @@ theorem typeProj_glActC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (T : Se
   typeProj_comm_isoC LL j Cs T P hP _ (fun la => isoC_glStableC LL j Cs la c hc d hd)
 
 /- English proof (translation)
-The claim follows from `typeProj_commC LL j Cs T P hP _ (fun c _ d _ x => eul_glAct LL j i0 c d x)`.
+A detailed English derivation is pending.
 -/
 theorem typeProj_eulC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (T : Set (Fin r → ℤ))
     (P : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -153,7 +153,7 @@ theorem typeProj_eulC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (T : Set 
   typeProj_commC LL j Cs T P hP _ (fun c _ d _ x => eul_glAct LL j i0 c d x)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[pol_iff_eul]`. Introduce `i`. Rewrite using `[← typeProj_eulC LL j Cs T P hP i, hx i, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem typeProj_polC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (T : Set (Fin r → ℤ))
     (P : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -164,11 +164,11 @@ theorem typeProj_polC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (T : Set 
   rw [← typeProj_eulC LL j Cs T P hP i, hx i, map_smul]
 
 /- English proof (translation)
-Introduce `x hx`. Use `glAct_keep LL j c d {m | ∀ e ∈ Cs, wt LL j e m = μ e} {m | ∀ e ∈ Cs, wt LL j e m = shiftW μ c d e} ?_ ?_ x hx` and prove the remaining obligations. Introduce `i hi hv m hm h1`. Rewrite `hm`, the goal using `[Set.mem_setOf_eq]`. Introduce `e he`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(wt_shift LL j c d e i hi m).1 hv h1, hm e he]`. Both sides reduce to the same expression. Introduce `i hi hv m hm h1`. Rewrite `hm`, the goal using `[Set.mem_setOf_eq]`. Introduce `e he`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(wt_shift LL j c d e i hi m).2 hv h1, hm e he]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem glAct_wtspC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (c d : Fin r) (μ : Fin r → ℤ) :
     ∀ x ∈ WtSpC p LL j Cs μ, glAct p LL j c d x ∈ WtSpC p LL j Cs (shiftW μ c d) := by
@@ -187,9 +187,9 @@ theorem glAct_wtspC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (c d : Fin 
     rfl
 
 /- English proof (translation)
-Introduce `F`. Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => exact ⟨x, hx, fun m => by simp⟩`. Consider the case `insert a F ha ih`. Take `⟨y, hy, hym⟩` from `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨glAct p LL j c c y - ((a : ℤ) : ℚ_[p]) • y, sub_mem (hS y hy) (Submodule.smul_mem _ _ hy), fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_sub, coeff_cartan, coeff_smul, smul_eq_mul, hym m, Finset.prod_insert ha]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem exists_mem_coeff_eq_prod_weight_sub_mul (LL : Letters N) (j : ℕ) (c : Fin r)
     (S : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]))
@@ -204,15 +204,13 @@ private theorem exists_mem_coeff_eq_prod_weight_sub_mul (LL : Letters N) (j : �
     rw [coeff_sub, coeff_cartan, coeff_smul, smul_eq_mul, hym m, Finset.prod_insert ha]
     ring
 /- English proof (translation)
-Introduce `x hx`. Use `set F := (x.support.image (wt LL j c)).erase k with hF`. Take `⟨y, hy, hym⟩` from `exists_mem_coeff_eq_prod_weight_sub_mul LL j c S hS x hx F`. Establish `hD : (∏ w ∈ F, ((k : ℚ_[p]) - (w : ℚ_[p]))) ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Rewrite using `[sub_ne_zero]`. Introduce `h`. Conclude with `(Finset.ne_of_mem_erase hw) (by exact_mod_cast h.symm)`. Establish `heq : compP (fun m => wt LL j c m = k) x = (∏ w ∈ F, ((k : ℚ_[p]) - (w : ℚ_[p])))⁻¹ • y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `m`. Rewrite using `[coeff_compP, coeff_smul, smul_eq_mul, hym m]`. Distinguish the cases in `hm : coeff m x = 0`. Simplify using `[hm]`. Use `split_ifs with hk`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, ← mul_assoc, inv_mul_cancel₀ hD, one_mul]`. Establish `hmem : wt LL j c m ∈ F`. Rewrite using `[hF, Finset.mem_erase]`. Conclude with `⟨hk, Finset.mem_image_of_mem _ (mem_support_iff.mpr hm)⟩`. Rewrite using `[Finset.prod_eq_zero (f := fun w : ℤ => ((wt LL j c m : ℤ) : ℚ_[p]) - (w : ℚ_[p])) hmem (sub_self _), zero_mul, mul_zero]`.
-
-Rewrite using `[heq]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem compP_weight_eq_mem_of_glAct_stable (LL : Letters N) (j : ℕ) (c : Fin r)
     (S : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]))
@@ -243,9 +241,9 @@ private theorem compP_weight_eq_mem_of_glAct_stable (LL : Letters N) (j : ℕ) (
   rw [heq]
   exact Submodule.smul_mem _ _ hy
 /- English proof (translation)
-Introduce `F`. Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty`. Introduce `_ x hx`. Rewrite using `[compP_congr _ (fun _ => True) (fun m => by simp), compP_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Consider the case `insert a F ha ih`. Introduce `hS x hx`. Rewrite using `[compP_congr _ (fun m => wt LL j a m = μ a ∧ ∀ c ∈ F, wt LL j c m = μ c) (fun m => Finset.forall_mem_insert _ _ _), compP_and]`. Conclude with `compP_weight_eq_mem_of_glAct_stable LL j a S (hS a (Finset.mem_insert_self _ _)) (μ a) _ (ih (fun c hc => hS c (Finset.mem_insert_of_mem hc)) x hx)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem compP_weights_eq_mem_of_glAct_stable (LL : Letters N) (j : ℕ)
     (S : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p])) (μ : Fin r → ℤ) :
@@ -266,7 +264,7 @@ private theorem compP_weights_eq_mem_of_glAct_stable (LL : Letters N) (j : ℕ)
       (ih (fun c hc => hS c (Finset.mem_insert_of_mem hc)) x hx)
 
 /- English proof (translation)
-The claim follows from `compP_weights_eq_mem_of_glAct_stable LL j S μ Cs hS`.
+A detailed English derivation is pending.
 -/
 theorem wcomp_memC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r))
     (S : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]))
@@ -274,33 +272,29 @@ theorem wcomp_memC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r))
     ∀ x ∈ S, compP (fun m => ∀ c ∈ Cs, wt LL j c m = μ c) x ∈ S := compP_weights_eq_mem_of_glAct_stable LL j S μ Cs hS
 
 /- English proof (translation)
-Establish `hSd : ∀ c ∈ Cs, ∀ z ∈ S, glAct p LL j c c z ∈ S` using `fun c hc z hz => hS c hc c hc z hz`. Establish `hsupp : ∀ z ∈ S, ∀ m ∈ z.support, MultiDeg LL m`. Introduce `z hz m hm`. Use `hSP hz` as an intermediate fact. Rewrite `this` using `[Pol, mem_restrictSupport_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this (Finset.mem_coe.mpr hm)`. Establish `hcong : ∀ (μ ν : Fin r → ℤ), (∀ c ∈ Cs, μ c = ν c) → ∀ z ∈ WtSpC p LL j Cs μ, z ∈ WtSpC p LL j Cs ν`. Introduce `μ ν hμν z hz`. Rewrite `hz`, the goal using `[WtSpC, mem_restrictSupport_iff]`. Introduce `m hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hz hm` as an intermediate fact. Rewrite `this`, the goal using `[Set.mem_setOf_eq]`. Introduce `c hc`. Rewrite using `[this c hc, hμν c hc]`. Use `set M0 := (multiDeg_finite (r := r) LL).toFinset with hM0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A := M0.filter (fun m => ∃ h ∈ S, h ≠ 0 ∧ h ∈ WtSpC p LL j Cs (fun c => wt LL j c m)) with hA`. Use `set φ : (Fin N × Fin r →₀ ℕ) → ℤ := fun m => ∑ c ∈ Cs, -((c : ℕ) : ℤ) * wt LL j c m with hφ`. Establish `hAne : A.Nonempty`. Establish `hne : x.support.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty, Ne, support_eq_empty]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx0`. Take `⟨m0, hm0⟩` from `hne`. Use `⟨m0, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, Finset.mem_filter, hM0, Set.Finite.mem_toFinset]`. Use `⟨hsupp x hx m0 hm0, compP (fun m => ∀ c ∈ Cs, wt LL j c m = wt LL j c m0) x, wcomp_memC LL j Cs S hSd _ x hx, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Use `congrArg (coeff m0) h0` as an intermediate fact. Rewrite `this` using `[coeff_compP, if_pos (fun c _ => rfl), coeff_zero]`. Conclude with `(mem_support_iff.mp hm0) this`. Rewrite using `[WtSpC, mem_restrictSupport_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `m hm`. Establish `hc : coeff m (compP (fun m => ∀ c ∈ Cs, wt LL j c m = wt LL j c m0) x) ≠ 0` using `mem_support_iff.mp (Finset.mem_coe.mp hm)`. Rewrite `hc` using `[coeff_compP]`. Use `split_ifs at hc with hP`. Conclude with `hP`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `absurd rfl hc`. Take `⟨ms, hms, hmax⟩` from `Finset.exists_max_image A φ hAne`. Rewrite `hms` using `[hA, Finset.mem_filter]`. Take `⟨_, h, hhS, hh0, hhW⟩` from `hms`. Use `⟨h, hhS, hh0, fun c => wt LL j c ms, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [HWC, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Use `⟨hhW, fun c d hcd => ?_⟩` and prove the remaining obligations. Take `⟨hc, hd, hlt⟩` from `hcd`. Assume the negation of the conclusion as `hy0`. Use `set y := glAct p LL j c d h with hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyS : y ∈ S` using `hS c hc d hd h hhS`. Establish `hyW` using `glAct_wtspC LL j Cs c d (fun c => wt LL j c ms) h hhW`. Establish `hne : y.support.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty, Ne, support_eq_empty]`. Conclude with `hy0`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Take `⟨m', hm'⟩` from `hne`. Establish `hw' : ∀ e ∈ Cs, wt LL j e m' = shiftW (fun c => wt LL j c ms) c d e`. Use `hyW` as an intermediate fact. Rewrite `this` using `[WtSpC, mem_restrictSupport_iff]`. Conclude with `this (Finset.mem_coe.mpr hm')`.
+Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hm'A : m' ∈ A`. Rewrite using `[hA, Finset.mem_filter, hM0, Set.Finite.mem_toFinset]`. Conclude with `⟨hsupp y hyS m' hm', y, hyS, hy0, hcong _ _ (fun e he => (hw' e he).symm) y hyW⟩`. Establish `hle` using `hmax m' hm'A`. Establish `hcalc : φ m' = φ ms + ((d : ℕ) : ℤ) - ((c : ℕ) : ℤ)`.
-
-Rewrite using `[hφ]`. Simplify using `only`. Apply the tactic sequence `rw [Finset.sum_congr rfl (fun e he => by rw [hw' e he]), show (∑ e ∈ Cs, -((e : ℕ) : ℤ) * shiftW (fun c => wt LL j c ms) c d e) = ∑ e ∈ Cs, ((-((e : ℕ) : ℤ) * wt LL j e ms + (if c = e then -((e : ℕ) : ℤ) else 0)) - (if d = e then -((e : ℕ) : ℤ) else 0)) from Finset.sum_congr rfl …`. Expand and normalize the polynomial expressions, which then agree. Establish `hlt' : (c : ℕ) < (d : ℕ)` using `hlt`.
-
-Establish `: ((c : ℕ) : ℤ) < ((d : ℕ) : ℤ)` using `by exact_mod_cast hlt'`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem exists_hwC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r))
     (S : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]))
@@ -384,13 +378,13 @@ theorem exists_hwC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r))
   linarith
 
 /- English proof (translation)
-Establish `hPid : ∀ y, P (P y) = P y` using `fun y => LinearMap.congr_fun hP.1 y`. Establish `hK0 : ∀ y ∈ S, P y = 0 → y = 0`. Introduce `y hy hPy`. Assume the negation of the conclusion as `hy0`. Take `⟨h, hhK, hh0, μ, hμ⟩` from `exists_hwC LL j Cs (S ⊓ LinearMap.ker P) (le_trans inf_le_left hSP) (fun c hc d hd z hz => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Rewrite `hz`, the goal using `[Submodule.mem_inf, LinearMap.mem_ker]`. Conclude with `⟨hS c hc d hd z hz.1, by rw [typeProj_glActC LL j Cs T P hP c hc d hd z, hz.2, map_zero]⟩)`. Use `y (Submodule.mem_inf.mpr ⟨hy, hPy⟩) hy0`. Rewrite `hhK` using `[Submodule.mem_inf, LinearMap.mem_ker]`. Establish `hT'` using `hT h hhK.1 hh0 μ hμ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrange : h ∈ LinearMap.range P`. Rewrite using `[hP.2.1]`. Conclude with `(le_iSup₂ (f := fun la (_ : la ∈ T) => IsoC p LL j Cs la) μ hT') (hwc_le_isoCC LL j Cs μ hμ)`. Take `⟨z, rfl⟩` from `hrange`. Apply `hh0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hPid z]`. Conclude with `hhK.2`. Introduce `x hx`. Use `hK0 (P x - x) (sub_mem (hPS x hx) hx) (by rw [map_sub, hPid, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem proj_fixC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (T : Set (Fin r → ℤ))
     (P : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -430,9 +424,9 @@ noncomputable def YCondC (p : ℕ) [Fact p.Prime] {N r : ℕ} [NeZero r] (LL : L
     GlStableC p LL j Cs S}
 
 /- English proof (translation)
-Introduce `c hc d hd x hx`. Establish `hle : YCondC p LL j Cs Mt ≤ (YCondC p LL j Cs Mt).comap (glAct p LL j c d)`. Unfold `YCondC`. Apply `sSup_le` to reduce the goal to its premises. Introduce and unpack `S ⟨h1, hS⟩ y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Conclude with `(le_sSup (show S ∈ {S : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]) | S ≤ restrictSupport ℚ_[p] {m | ((wt LL j 0 m : ℤ) : WithTop ℤ) ≤ Mt} ∧ GlStableC p LL j Cs S} from ⟨h1, hS⟩)) (hS c hc d hd y hy)`. Conclude with `hle hx`.
+A detailed English derivation is pending.
 -/
 theorem ycondC_glStable [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (Mt : WithTop ℤ) :
     GlStableC p LL j Cs (YCondC p LL j Cs Mt) := by
@@ -447,7 +441,7 @@ theorem ycondC_glStable [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin 
   exact hle hx
 
 /- English proof (translation)
-Unfold `YCondC`. Apply `sSup_le` to reduce the goal to its premises. Introduce and unpack `S ⟨h1, _⟩`. Conclude with `h1`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ycondC_le_supp [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (Mt : WithTop ℤ) :
     YCondC p LL j Cs Mt ≤
@@ -458,7 +452,7 @@ theorem ycondC_le_supp [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r
   exact h1
 
 /- English proof (translation)
-The claim follows from `le_sSup ⟨h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem le_ycondC [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (Mt : WithTop ℤ)
     (S : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]))
@@ -467,9 +461,9 @@ theorem le_ycondC [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (M
   le_sSup ⟨h1, h2⟩
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hle : (YCondC p LL j Cs Mt).map Q ≤ YCondC p LL j Cs Mt`. Apply `le_ycondC` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hw y (ycondC_le_supp LL j Cs Mt hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `c hc1 d hd1 _ ⟨y, hy, rfl⟩`. Conclude with `⟨glAct p LL j c d y, ycondC_glStable LL j Cs Mt c hc1 d hd1 y hy, hc c hc1 d hd1 y⟩`. Conclude with `hle ⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ycondC_keep [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (Mt : WithTop ℤ)
     (Q : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -487,14 +481,14 @@ theorem ycondC_keep [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) 
   exact hle ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-The claim follows from `le_ycondC LL j Cs Mt _ (ycond_le_supp LL j Mt) (fun c _ d _ x hx => ycond_glStable LL j Mt c d x hx)`.
+A detailed English derivation is pending.
 -/
 theorem ycond_le_ycondC [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (Mt : WithTop ℤ) :
     YCond p LL j Mt ≤ YCondC p LL j Cs Mt :=
   le_ycondC LL j Cs Mt _ (ycond_le_supp LL j Mt) (fun c _ d _ x hx => ycond_glStable LL j Mt c d x hx)
 
 /- English proof (translation)
-The claim follows from `le_sSup ⟨h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem le_ycond [NeZero r] (LL : Letters N) (j : ℕ) (Mt : WithTop ℤ)
     (S : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]))
@@ -503,11 +497,9 @@ theorem le_ycond [NeZero r] (LL : Letters N) (j : ℕ) (Mt : WithTop ℤ)
   le_sSup ⟨h1, h2⟩
 
 /- English proof (translation)
-Establish `hne : h.support.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty, Ne, support_eq_empty]`. Conclude with `hh0`. Take `⟨m, hm⟩` from `hne`. Rewrite `h1` using `[mem_restrictSupport_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[WtSpC, mem_restrictSupport_iff]`. Establish `a` using `h1 (Finset.mem_coe.mpr hm)`. Establish `b` using `h3 (Finset.mem_coe.mpr hm)`. Rewrite `a`, `b` using `[Set.mem_setOf_eq]`. Rewrite using `[← b 0 h0]`.
-
-Conclude with `a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem first_weight_le_of_support [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (h0 : (0 : Fin r) ∈ Cs)
     (Mt : WithTop ℤ) (μ : Fin r → ℤ) (h : MvPolynomial (Fin N × Fin r) ℚ_[p]) (hh0 : h ≠ 0)
@@ -526,11 +518,11 @@ theorem first_weight_le_of_support [NeZero r] (LL : Letters N) (j : ℕ) (Cs : F
   exact a
 
 /- English proof (translation)
-Introduce `x hx`. Use `proj_fixC LL j Cs T P hP (YCondC p LL j Cs Mt ⊓ Pol p r LL) inf_le_right ?_ ?_ ?_ x hx` and prove the remaining obligations. Introduce `c hc d hd y hy`. Rewrite `hy`, the goal using `[Submodule.mem_inf]`. Conclude with `⟨ycondC_glStable LL j Cs Mt c hc d hd y hy.1, glAct_pol LL j c d y hy.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `y hy`. Rewrite `hy`, the goal using `[Submodule.mem_inf]`. Conclude with `⟨ycondC_keep LL j Cs Mt P (fun c hc d hd z => typeProj_glActC LL j Cs T P hP c hc d hd z) (comm_preserves_weight_le LL j Mt P (fun z => typeProj_glActC LL j Cs T P hP 0 h0 0 h0 z)) y hy.1, typeProj_polC LL j Cs T P hP y hy.2⟩`. Introduce `h hh hh0 μ hμ`. Rewrite `hh` using `[Submodule.mem_inf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hT` to reduce the goal to its premises. Conclude with `first_weight_le_of_support LL j Cs h0 Mt μ h hh0 (ycondC_le_supp LL j Cs Mt hh.1) (Submodule.mem_inf.mp hμ).1`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem ycondC_fix [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (h0 : (0 : Fin r) ∈ Cs)
     (Mt : WithTop ℤ) (T : Set (Fin r → ℤ))
@@ -554,7 +546,7 @@ theorem ycondC_fix [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (
       (Submodule.mem_inf.mp hμ).1
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hfix` using `ycondC_fix LL j Cs h0 Mt _ P hP (fun la h => h) x hx`. Establish `h1 : x ∈ LinearMap.range P` using `⟨x, hfix⟩`. Rewrite `h1` using `[hP.2.1]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_typesLE_of_ycondC [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (h0 : (0 : Fin r) ∈ Cs)
     (Mt : WithTop ℤ)
@@ -568,7 +560,7 @@ theorem mem_typesLE_of_ycondC [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset
   exact h1
 
 /- English proof (translation)
-Introduce `x`. Establish `h1 : P x ∈ LinearMap.range P` using `⟨x, rfl⟩`. Rewrite `h1` using `[hP.2.1]`. Conclude with `(iSup₂_le fun la hla => isoC_le_ycond LL j la Mt (hT la hla)) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeProj_range_le_ycond [NeZero r] (LL : Letters N) (j : ℕ) (T : Set (Fin r → ℤ)) (Mt : WithTop ℤ)
     (P : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -580,7 +572,7 @@ theorem typeProj_range_le_ycond [NeZero r] (LL : Letters N) (j : ℕ) (T : Set (
   exact (iSup₂_le fun la hla => isoC_le_ycond LL j la Mt (hT la hla)) h1
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_inf]`. Conclude with `ycondC_fix LL j univ (Finset.mem_univ _) Mt T P hP hT x (Submodule.mem_inf.mpr ⟨ycond_le_ycondC LL j univ Mt hx.1, hx.2⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ycond_fix [NeZero r] (LL : Letters N) (j : ℕ) (T : Set (Fin r → ℤ)) (Mt : WithTop ℤ)
     (P : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -601,18 +593,18 @@ noncomputable def glRest (p : ℕ) [Fact p.Prime] {N r : ℕ} (LL : Letters N) (
   glAct p LL j' c d - glAct p LL j c d
 
 /- English proof (translation)
-Unfold `glRest`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws.
 -/
 theorem glAct_split (LL : Letters N) (j j' : ℕ) (c d : Fin r) :
     glAct p LL j' c d = glAct p LL j c d + glRest p LL j j' c d := by
   unfold glRest; abel
 
 /- English proof (translation)
-Use `show (glAct p LL j' c d - glAct p LL j c d : Module.End ℚ_[p] _) ∈ _`. Unfold `glAct`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Subalgebra.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : (i : ℕ) < j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2 : (i : ℕ) < j'` using `lt_of_lt_of_le h1 hjj`. Simplify using `only [if_pos h1, if_pos h2, sub_self]`. Conclude with `Subalgebra.zero_mem _`. Establish `hm : ∀ e : Fin r, (i, e) ∈ {v : Fin N × Fin r | j ≤ (v.1 : ℕ)}` using `fun e => not_lt.mp h1`. Distinguish the cases in `h2 : (i : ℕ) < j'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos h2, if_neg h1, sub_zero] split_ifs`. Conclude with `Subalgebra.mul_mem _ (FockB.mulLeftX_mem (hm c)) (FockB.pderiv_mem (hm d))`. Conclude with `Subalgebra.neg_mem _ (Subalgebra.mul_mem _ (FockB.mulLeftX_mem (hm d)) (FockB.pderiv_mem (hm c)))`. Simplify using `only [if_neg h2, if_neg h1, sub_zero]`. Conclude with `Subalgebra.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem glRest_mem (LL : Letters N) (j j' : ℕ) (hjj : j ≤ j') (c d : Fin r) :
     (glRest p LL j j' c d : Module.End ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p])) ∈
@@ -635,7 +627,7 @@ theorem glRest_mem (LL : Letters N) (j j' : ℕ) (hjj : j ≤ j') (c d : Fin r) 
       exact Subalgebra.zero_mem _
 
 /- English proof (translation)
-The claim follows from `FockB.ops_apply_comm (S := {v : Fin N × Fin r | j ≤ (v.1 : ℕ)}) (S' := {v : Fin N × Fin r | (v.1 : ℕ) < j}) (Set.disjoint_left.mpr fun v h1 h2 => by simp only [Set.mem_setOf_eq] at h1 h2 omega) (glRest_mem LL j j' hjj c d) (glAct_mem LL j a b) x`.
+A detailed English derivation is pending.
 -/
 theorem glRest_comm (LL : Letters N) (j j' : ℕ) (hjj : j ≤ j') (c d a b : Fin r)
     (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
@@ -646,7 +638,7 @@ theorem glRest_comm (LL : Letters N) (j j' : ℕ) (hjj : j ≤ j') (c d a b : Fi
   (glRest_mem LL j j' hjj c d) (glAct_mem LL j a b) x
 
 /- English proof (translation)
-Rewrite using `[glAct_split LL j j' c d, LinearMap.add_apply, LinearMap.add_apply, map_add, typeProj_glActC LL j univ T P hP c (Finset.mem_univ _) d (Finset.mem_univ _) x, typeProj_commC LL j univ T P hP (glRest p LL j j' c d) (fun a _ b _ y => glRest_comm LL j j' hjj c d a b y) x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem typeProj_comm_later (LL : Letters N) (j j' : ℕ) (hjj : j ≤ j') (T : Set (Fin r → ℤ))
     (P : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])

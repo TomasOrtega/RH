@@ -24,21 +24,17 @@ namespace GlobalTheory.ChainDesc
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ B Λ _ h o r r' Lie Om π γ C vL vO U S hS h0 hρ`. Take `⟨fL, pL⟩` from `GlobalTheory.T.vector_bundle_sections_finite_projective _ _ _ vL U.1 U.2.1`. Take `⟨fO, pO⟩` from `GlobalTheory.T.vector_bundle_sections_finite_projective _ _ _ vO U.1 U.2.1`. Use `haveI := vL.isQuasicoherent`. Use `haveI := vO.isQuasicoherent`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Algebra.IsIntegral Γ(B.X, U.1) U.Bp := inferInstance`. Take `⟨T, hT, H⟩` from `GlobalTheory.RingChain.RingDesc.main p Γ(B.X, U.1) U.Bp h o (resG B.X le_top π) (fun n => resG B.X le_top (γ n)) Γ(Lie.V, U.1) Γ(Om.V, U.1) (C U) S hS h0 hρ`. Use `⟨T, hT, fun B' f g k hTg => ?_⟩` and prove the remaining obligations. Establish `hW` using `k.isAffineOpen U`. Establish `hg` using `k.2.2.1 U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : IsDomain Γ(B'.X, f.f ⁻¹ᵁ U.1) := hg.isDomain (g U)`. Use `haveI : IsIntegrallyClosed Γ(B'.X, f.f ⁻¹ᵁ U.1) := by`. Use `k.1` as an intermediate fact. Conclude with `GlobalTheory.IsNormalScheme.isIntegrallyClosed_of_isAffineOpen hW`. Use `letI := appLEAlgebra f.f (le_refl (f.f ⁻¹ᵁ U.1))`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `letI := appLEModule f.f ((Scheme.Modules.pullback f.f).obj Lie.V) (le_refl (f.f ⁻¹ᵁ U.1))`. Use `haveI := appLE_isScalarTower f.f ((Scheme.Modules.pullback f.f).obj Lie.V) (le_refl (f.f ⁻¹ᵁ U.1))`. Use `letI := appLEModule f.f ((Scheme.Modules.pullback f.f).obj Om.V) (le_refl (f.f ⁻¹ᵁ U.1))`. Use `haveI := appLE_isScalarTower f.f ((Scheme.Modules.pullback f.f).obj Om.V) (le_refl (f.f ⁻¹ᵁ U.1))`. Establish `bL` using `isBaseChange_pullbackSections f.f Lie.V hW U.2.1 le_rfl`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `bO` using `isBaseChange_pullbackSections f.f Om.V hW U.2.1 le_rfl`. Establish `hc : ∀ a, g U (algebraMap Γ(B.X, U.1) Γ(B'.X, f.f ⁻¹ᵁ U.1) a) = algebraMap Γ(B.X, U.1) U.Bp a` using `fun a => by`. Rewrite using `[← k.2.2.2.1]`. Use `congr 1`. Conclude with `congr($(f.f.appLE_eq_app (U := U.1)) a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hi : ∀ a : Γ(B.X, ⊤), resG B'.X le_top (f.f.appTop a) = algebraMap Γ(B.X, U.1) Γ(B'.X, f.f ⁻¹ᵁ U.1) (resG B.X le_top a)` using `fun a => hg ((k.map_cst U a).trans (hc _).symm)`. Take `⟨D, l, m, hl, hm, h1, h2, h3, h4⟩` from `H Γ(B'.X, f.f ⁻¹ᵁ U.1) (g U) hg hc hTg _ _ (hi π) (fun n => hi (γ n)) _ _ bL.equiv bO.equiv`. Take `⟨q1, q2⟩` from `GlobalTheory.T.divisibility_base_change_projective Γ(B.X, U.1) Γ(B'.X, f.f ⁻¹ᵁ U.1) U.Bp (g U) hg hc`. Establish `eL : ∀ y, bL.equiv (1 ⊗ₜ y) = pullbackSections f.f Lie.V le_rfl y` using `fun y => by`. Rewrite using `[bL.equiv_tmul, one_smul]`.
-
-Establish `eO : ∀ y, bO.equiv (1 ⊗ₜ y) = pullbackSections f.f Om.V le_rfl y` using `fun y => by`. Rewrite using `[bO.equiv_tmul, one_smul]`. Use `⟨D, l, m, fun s => (congrArg l (eL s)).symm.trans (hl s), fun s => (congrArg m (eO s)).symm.trans (hm s), h3, h1, h2, fun s hs => ?_, fun x hx => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hx'⟩` from `h4 s hs`. Conclude with `⟨x, hx, (congrArg D.ρ (eO s.1)).symm.trans hx'⟩`.
-
-Conclude with `q1 _ _ (by rw [k.map_cst]; exact hx)`. Conclude with `q2 _ _ bL.equiv l hl p y (by rw [map_natCast]; exact hy)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isDown : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] (B : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o r r' : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (C : ChainsBp p h o Lie Om π γ), GlobalTheory.VB.IsVB Lie.V r → GlobalTheory.VB.IsVB Om.V r' → ∀ (U : AffOp B.X) (S : Set (Γ(Om.V, U.1) × (C U).L 0)), S.Finite → cstBp U π ≠ 0 → (∀ s ∈ S, (C U).ρ (1 ⊗ₜ s.1) = Submodule.Quotient.mk (Submodule.Quotient.mk s.2)) → ∃ T : Set U.Bp, T.Finite ∧ ∀ (B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B) (g : ∀ U : AffOp B.X, Γ(B'.X, f.f ⁻¹ᵁ U.1) →+* U.Bp), IsCov f g → T ⊆ Set.range (g U) → ∃ D : ChainUp p h o Lie Om π γ f (f.f ⁻¹ᵁ U.1), IsDown C f g U S D := by
   intro O _ _ _ p _ B Λ _ h o r r' Lie Om π γ C vL vO U S hS h0 hρ

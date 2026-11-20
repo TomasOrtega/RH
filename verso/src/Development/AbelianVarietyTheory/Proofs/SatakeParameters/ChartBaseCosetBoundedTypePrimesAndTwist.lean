@@ -15,7 +15,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (sel : HeightOneSpectrum (𝓞
 open Classical in
 
 /- English proof (translation)
-Unfold `frsF`. Use `split_ifs with h`. Establish `h1 : p.deco.1.HasLift ⟨P.1, h⟩` using `Deco.Ok.hasLift p.deco.2 ⟨P.1, h⟩`. Conclude with `(Deco.liftFr_spec h1).1 x`. Conclude with `Subtype.property p ⟨P.1, (Finset.mem_union.mp P.2).resolve_left h⟩ x`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cplCoset_frsF_mem {j : ℕ} (p : ChPt (R := R) sel mu w j) (P : rowSG Pr sel mu) (x : Sp X.E (R.N j)) :
     frsF sel mu p P x ∈ p.deco.1.at P.1 ↔ x ∈ stdAt X.E (R.N j) P.1 := by
@@ -26,7 +26,7 @@ theorem cplCoset_frsF_mem {j : ℕ} (p : ChPt (R := R) sel mu w j) (P : rowSG Pr
   · exact Subtype.property p ⟨P.1, (Finset.mem_union.mp P.2).resolve_left h⟩ x
 
 /- English proof (translation)
-Introduce `l` and use `by have h1 := (h l).add (ciIntAt_neg (h' l)) rwa [← mul_neg, ← Pi.neg_apply, ← mul_add, ← Pi.add_apply, neg_sub, sub_add_sub_cancel] at h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cplCoset_sameCoset_of_common {cst : LocCst X (rowSG Pr sel mu)} {n : ℕ} {P : rowSG Pr sel mu} {x y z : Sp X.E n}
     (h : SameCoset sel mu cst P x z) (h' : SameCoset sel mu cst P y z) : SameCoset sel mu cst P x y := fun l => by
@@ -40,21 +40,19 @@ end GlobalTheory.TwV
 namespace GlobalTheory.TwV
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a _hP H hi β P y hy`. Take `⟨⟨c, rfl⟩, -⟩` from `((St (t.m2 + 1) hi).K β).y_bij.2 (Quotient.mk'' 1)`. Take `⟨y1, hy1, hY⟩` from `H.chain.2.1 c`. Establish `hmem : y1 ∈ A.yb c` using `by rw [hY]; simp`. Establish `h0` using `H.coset c y1 hmem P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : SameCoset t.sel (t.tup μ) (t.cst μ) P y (A.y0 ((St _ (cpl_lt t μ).le).chOf c) P)`. Unfold `y0At at hy`. Rewrite `hy` using `[dif_pos rfl]`. Then use the resulting hypothesis. Establish `hyw` using `cplCoset_sameCoset_of_common t.sel (t.tup μ) hy' h0`. Use `set p := A.pt (t.m2 + 1) (cpl_lt t μ).le c with hp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w := (frsF t.sel (t.tup μ) p P).symm y1 with hw`. Establish `hq0 : (qOf P.1 : t.X.E) ≠ 0`. Rewrite using `[Nat.cast_ne_zero, qOf, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `P.1.ne_bot`. Establish `hloc` using `(mem_locLat _ _ _ _).1 hy1 P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw1 : ∀ l, IntAt P.1 ((((qOf P.1 : t.X.E) ^ (if P.1 ∈ t.Pr.vGs then (-1 : ℤ) else -((t.cst μ).M : ℤ)))⁻¹) * w l)`. Establish `h2 : frsF t.sel (t.tup μ) p P ((((qOf P.1 : t.X.E) ^ (if P.1 ∈ t.Pr.vGs then (-1 : ℤ) else -((t.cst μ).M : ℤ)))⁻¹) • w) ∈ p.deco.1.at P.1`. Rewrite using `[map_smul, hw, LinearEquiv.apply_symm_apply]`. Conclude with `hloc`. Establish `h3` using `(ciMem_stdAt _ _).1 ((cplCoset_frsF_mem t.sel (t.tup μ) p P _).1 h2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `l`. Simplify using `using h3 l`. Use `⟨fun hG l => ?_, fun hG l => ?_⟩` and prove the remaining obligations. Establish `h1` using `hw1 l`. Establish `h2` using `hyw l`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hG, if_true, pow_zero, inv_one, one_mul, _root_.zpow_neg, zpow_one, inv_inv, Pi.sub_apply] at h1 h2`. Establish `e : (qOf P.1 : t.X.E) * y l = (qOf P.1 : t.X.E) * (y l - w l) + (qOf P.1 : t.X.E) * w l` using `by ring`. Rewrite using `[e]`. Conclude with `(ciIntAt_q.mul h2).add h1`. Establish `h1` using `hw1 l`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `hyw l`. Simplify using `only [hG, if_false, _root_.zpow_neg, zpow_natCast, inv_inv, Pi.sub_apply] at h1 h2`. Establish `hqM : IntAt P.1 ((qOf P.1 : t.X.E) ^ (t.cst μ).M)`. Use `IntAt.coe P.1 (((qOf P.1 ^ (t.cst μ).M : ℕ)) : 𝓞 t.X.E)` as an intermediate fact. Rewrite `this` using `[map_natCast, Nat.cast_pow]`. Then use the resulting hypothesis.
-
-Establish `e : (qOf P.1 : t.X.E) ^ (t.cst μ).M * y l = (qOf P.1 : t.X.E) ^ (t.cst μ).M * (qOf P.1 : t.X.E) ^ (t.cst μ).M * (((qOf P.1 : t.X.E) ^ (t.cst μ).M)⁻¹ * (y l - w l)) + (qOf P.1 : t.X.E) ^ (t.cst μ).M * w l`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `((hqM.mul hqM).mul h2).add h1`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cplCoset_bound : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ (hi : t.m2 + 1 ≤ D.R.m) (β : (St (t.m2 + 1) hi).Ch) (P : SB t μ)
   (y : Sp t.X.E (D.R.N (t.m2 + 1))), SameCoset t.sel (t.tup μ) (t.cst μ) P y (y0At A (t.m2 + 1) hi β P) →

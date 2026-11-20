@@ -14,15 +14,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorusExtTorsion
 
 /- English proof (translation)
-Establish `hA : IsAbelianScheme ((Over.pullback t).obj B)` using `{ comm := by have := hB.comm; infer_instance smooth := by have := hB.smooth; show Smooth (pullback.snd _ _); infer_instance proper := by have := hB.proper; show IsProper (pullback.snd _ _); infer_instance geomConnected := by`. Use `hB.geomConnected` as an intermediate fact. Use `show GeometricallyConnected (pullback.snd _ _)`. Use `infer_instance }`. Establish `h` using `abelian_torsion_finite_and_mulN_surjective.1 Ω ((Over.pullback t).obj B) hA n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `isGrpPullback_pullback B t`. Establish `hbij : Function.Bijective (pushHom hp (𝟙_ (Over (Sp Ω))))`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `e : x.left ≫ pullback.fst B.hom t = y.left ≫ pullback.fst B.hom t` using `congrArg (fun z => z.left) hxy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Over.OverMorphism.ext (hp.1.hom_ext e ((Over.w x).trans (Over.w y).symm))`. Introduce `y`. Use `⟨Over.homMk (hp.1.lift y.left (𝟙_ (Over (Sp Ω))).hom (Over.w y)) (hp.1.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Conclude with `Over.OverMorphism.ext (hp.1.lift_fst _ _ _)`. Set `e` to `MulEquiv.ofBijective _ hbij`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Finite {x : Over.mk ((𝟙_ (Over (Sp Ω))).hom ≫ t) ⟶ B // x ^ n = 1}`. Use `Finite.of_equiv _ (e.toEquiv.subtypeEquiv (p := fun x => x ^ n = 1) fun x => ?_)` and prove the remaining obligations. Use `show x ^ n = 1 ↔ e x ^ n = 1`. Rewrite using `[← map_pow, MulEquiv.map_eq_one_iff]`. Establish `h3 : (𝟙_ (Over (Sp Ω))).hom ≫ t = t` using `Category.id_comp t`.
-
-Rewrite `h2` using `[h3]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_torsion_abelian_geomPoint {S : Scheme.{0}} (B : Over S) [GrpObj B]
     (hB : IsAbelianScheme B) (Ω : Type) [Field Ω] [IsAlgClosed Ω] (t : Sp Ω ⟶ S) (n : ℕ)
@@ -55,11 +53,9 @@ theorem finite_torsion_abelian_geomPoint {S : Scheme.{0}} (B : Over S) [GrpObj B
   exact h2
 
 /- English proof (translation)
-Introduce `S G B _ _ _ X _ _ _ q i hq hi hk hB Ω _ _ t n hn`. Use `SemiAbTorsion.finite_pow_eq_one_of_extension (IsMonHom.monoidHom i (Over.mk t)) (IsMonHom.monoidHom q (Over.mk t)) ?_ ?_ n ?_ (finite_torsion_abelian_geomPoint B hB Ω t n hn)` and prove the remaining obligations. Introduce `a b h`. Conclude with `hk.hom_ext h (toUnit_unique _ _)`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : x ≫ q = 1` using `hx`. Conclude with `⟨hk.lift x (toUnit _) (by rw [hx', Hom.one_def]), hk.lift_fst _ _ _⟩`. Use `haveI : IsDomain Γ((Over.mk t).left, ⊤) := inferInstanceAs (IsDomain Γ(Sp Ω, ⊤)) haveI := SemiAbTorsion.finite_chars_pow_eq_one X Γ((Over.mk t).left, ⊤) hn`. Set `e` to `splitTorusPointsEquiv S X (Over.mk t)`. Use `Finite.of_injective (fun s => (⟨e s.1, by rw [← map_pow, s.2, map_one]⟩ : {s : Multiplicative X →* Γ((Over.mk t).left, ⊤)ˣ // s ^ n = 1})) ?_` and prove the remaining obligations.
-
-Introduce `a b h`. Conclude with `Subtype.ext (e.injective (congrArg Subtype.val h))`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_torsion_geomPoint : ∀ (S : Scheme.{0}) (G B : Over S) [GrpObj G] [IsCommMonObj G] [GrpObj B] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (q : G ⟶ B) (i : splitTorus S X ⟶ G), IsMonHom q → IsMonHom i → IsPullback i (toUnit _) q η[B] → IsAbelianScheme B → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (t : Sp Ω ⟶ S) (N : ℕ), 1 ≤ N → Finite {x : Over.mk t ⟶ G // x ^ N = 1} := by
   intro S G B _ _ _ X _ _ _ q i hq hi hk hB Ω _ _ t n hn

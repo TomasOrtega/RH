@@ -16,13 +16,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 
 /- English proof (translation)
-Establish `hint : ∀ (N : Matrix n n k), (∀ r s, N r s ∈ 𝒪[k]) → ∀ w : n → k, (∀ r, w r ∈ 𝒪[k]) → ∀ r, (N *ᵥ w) r ∈ 𝒪[k]` using `fun N hN w hw r => Subring.sum_mem _ fun s _ => Subring.mul_mem _ (hN r s) (hw s)`. Use `⟨⟨fun h r => ?_, fun h => hint M' hM' z h⟩, fun h => ?_⟩` and prove the remaining obligations. Establish `e : M *ᵥ (M' *ᵥ z) = z` using `by rw [Matrix.mulVec_mulVec, hMM, Matrix.one_mulVec]`. Rewrite using `[← e]`. Conclude with `hint M hM _ h r`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (M' *ᵥ z) r₀ - z r₀ = ∑ s, (M' r₀ s - (1 : Matrix n n k) r₀ s) * z s`. Establish `: z r₀ = ∑ s, (1 : Matrix n n k) r₀ s * z s` using `by simp [Matrix.one_apply]`. Rewrite using `[this]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[sub_mul]`. Rewrite using `[e]`. Use `Valuation.map_sum_lt _ one_ne_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Establish `h1` using `hr s`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : valuation k (z s) ≤ 1` using `(Valuation.mem_integer_iff _ _).1 (h s)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AdForm.CompFix.intMat_keeps {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : Type} [Fintype n] [DecidableEq n] (M M' : Matrix n n k) (hMM : M * M' = 1) (hM : ∀ r s, M r s ∈ 𝒪[k])
@@ -52,41 +52,37 @@ theorem GlobalTheory.AdForm.CompFix.intMat_keeps {k : Type} [Field k] [Valuative
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z u a Ch A hA k _ _ _ _ ι p β Q L hS j hj b κ hκ i g hg`. Take `⟨e, he⟩` from `hS.1`. Take `⟨hpi, hT⟩` from `GlobalTheory.T.generator_mem_split_prime_level_prime_mem_place I hOk l Z u k (p i) (e i) (he i)`. Establish `key : ∀ κ₀ ∈ A.U j b, ∀ r s : Fin ((I.rec7 l Z).sp.X j).rank, ((mt _ κ₀).map (p i).pr) r s ∈ 𝒪[k] ∧ (r.1 + 1 = ((I.rec7 l Z).sp.X j).rank → valuation k (((mt _ κ₀).map (p i).pr) r s - (1 : Matrix (Fin ((I.rec7 l Z).sp.X j).rank) (Fin ((I.rec7 l Z).sp.X j).rank) k) r s) < 1)`. Introduce `κ₀ hκ₀ r s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn` using `rankN (I.rec7 l Z) j hj`. Establish `h3` using `GlobalTheory.T.chartLevel_column_sub_one_mem_baseLattice I hOk hPins l Z u a Ch A hA j hj b κ₀ hκ₀ (p i).v hT (Fin.cast hn s)`. Set `y : Fin ((I.rec7 l Z).R.N j) → AE (I.rec7 l Z)` to `fun r' => mt _ κ₀ (Fin.cast hn.symm r') s - (1 : Matrix (Fin ((I.rec7 l Z).sp.X j).rank) (Fin ((I.rec7 l Z).sp.X j).rank) (AE (I.rec7 l Z))) (Fin.cast hn.symm r') s`. Establish `hy : (fun r' => Formalism.UG.prV (E` using `(I.rec7 l Z).host.E) (p i).v (toEAf (I.rec7 l Z) (y r'))) = (fun r' => Formalism.UG.prV (E := (I.rec7 l Z).host.E) (p i).v (GlobalTheory.AdForm.finM _ hn κ₀ r' (Fin.cast hn s)) - (1 : Matrix (Fin ((I.rec7 l Z).R.N j)) (Fin ((I.rec7 l Z).R.N j)) ((I.rec7 l Z).host.E ⊗[(I.rec7 l Z) …`. Use function extensionality and compare the values at `r'`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [y]`. Rewrite using `[RingHom.map_sub, RingHom.map_sub]`. Use `congr 1`. Distinguish the cases in `h : r' = Fin.cast hn s`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `: Fin.cast hn.symm (Fin.cast hn s) = s` using `Fin.ext rfl`. Rewrite using `[this, Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one, RingHom.map_one]`. Establish `h' : Fin.cast hn.symm r' ≠ s` using `fun h2 => h (Fin.ext (by rw [← h2]; rfl))`. Rewrite using `[Matrix.one_apply_ne h', Matrix.one_apply_ne h, RingHom.map_zero, RingHom.map_zero]`. Establish `hLb : ∀ x, x ∈ (A.K j hj b).lev.Lb ↔ ∀ j' : Fin ((I.rec7 l Z).R.N j), ∃ r : 𝓞 (I.rec7 l Z).host.E, x j' = (r : (I.rec7 l Z).host.E) ∧ (j'.1 + 1 = (I.rec7 l Z).R.N j → X.piT u ∣ r)` using `fun x => (hA.reads j hj).lb b x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `GlobalTheory.T.splitPoint_baseLattice_coords_integral_last_in_prime (I.rec7 l Z) k (p i) (e i).1 (he i) _ (X.piT u) hpi _ hLb y (hy ▸ h3) (Fin.cast hn r)`. Establish `hyr : y (Fin.cast hn r) = mt _ κ₀ r s - (1 : Matrix (Fin ((I.rec7 l Z).sp.X j).rank) (Fin ((I.rec7 l Z).sp.X j).rank) (AE (I.rec7 l Z))) r s` using `rfl`. Rewrite `h4` using `[hyr]`. Establish `h1 : (p i).pr ((1 : Matrix (Fin ((I.rec7 l Z).sp.X j).rank) (Fin ((I.rec7 l Z).sp.X j).rank) (AE (I.rec7 l Z))) r s) = (1 : Matrix (Fin ((I.rec7 l Z).sp.X j).rank) (Fin ((I.rec7 l Z).sp.X j).rank) k) r s`. Apply the tactic sequence `simp only [Matrix.one_apply]; split_ifs <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h4` using `[map_sub, h1]`. Use `⟨?_, fun hr => ?_⟩` and prove the remaining obligations. Use `Subring.add_mem _ h4.1 (show (1 : Matrix (Fin ((I.rec7 l Z).sp.X j).rank) (Fin ((I.rec7 l Z).sp.X j).rank) k) r s ∈ 𝒪[k] by` as an intermediate fact. Simplify using `only [Matrix.one_apply]`. Use `split_ifs`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _)`. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `h4.2 (by rw [Fin.coe_cast, ← hn]; exact hr)`. Use `set M := (mt _ κ).map (p i).pr with hMdef`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set M' := (mt _ κ⁻¹).map (p i).pr with hM'def`. Establish `hmt : ∀ x y : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j), mt _ (x * y) = mt _ x * mt _ y` using `fun x y => by`. Simplify using `only [Formalism.L2.Theta.mt, map_mul, Units.val_mul]`. Establish `hMM : M * M' = 1`. Rewrite using `[hMdef, hM'def, ← Matrix.map_mul, ← hmt, mul_inv_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Formalism.L2.Theta.mt, map_one, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hM'M : M' * M = 1`. Rewrite using `[hMdef, hM'def, ← Matrix.map_mul, ← hmt, inv_mul_cancel]`. Simplify using `only [Formalism.L2.Theta.mt, map_one, Units.val_one]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hM` using `GlobalTheory.T.splitPlace_matrix_eq_of_agree_with_framedGL (I.rec7 l Z) k (p i) _ _ (β j i) κ g hg`. Rewrite `hM` using `[← hMdef]`. Break down `Nat.eq_zero_or_pos ((I.rec7 l Z).sp.X j).rank with h0 | hpos` into its components or cases. Establish `: g = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ext (Matrix.ext fun a _ => absurd a.2 (by omega))`. Rewrite using `[this, one_smul]`. Set `r₀ : Fin ((I.rec7 l Z).sp.X j).rank` to `⟨((I.rec7 l Z).sp.X j).rank - 1, by omega⟩`. Establish `hr₀ : r₀.1 + 1 = ((I.rec7 l Z).sp.X j).rank` using `by simp only [r₀]; omega`. Establish `hK` using `GlobalTheory.AdForm.CompFix.intMat_keeps M M' hMM (fun r s => (key κ hκ r s).1) (fun r s => (key κ⁻¹ (inv_mem hκ) r s).1) r₀ (fun s => (key κ⁻¹ (inv_mem hκ) r₀ s).2 hr₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hbg : ∀ x : Fin ((I.rec7 l Z).sp.X j).rank → k, (β j i).b *ᵥ (g⁻¹ • x) = M' *ᵥ ((β j i).b *ᵥ x)`. Introduce `x`. Establish `e1 : (β j i).b * g.val = M * (β j i).b`. Rewrite using `[hM, Matrix.mul_assoc, Matrix.mul_assoc, (β j i).b'b, Matrix.mul_one]`. Establish `e2 : (β j i).b *ᵥ x = M *ᵥ ((β j i).b *ᵥ (g⁻¹ • x))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e3 : x = g.val *ᵥ (g⁻¹ • x)`. Express the relevant statement in the definitionally equal form `x = g.val *ᵥ ((g⁻¹).val *ᵥ x)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Use `conv_lhs => rw [e3]`. Rewrite using `[Matrix.mulVec_mulVec, e1, ← Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[e2, Matrix.mulVec_mulVec, hM'M, Matrix.one_mulVec]`. Use `Pair.ext fun x a' => ?_` and prove the remaining obligations. Rewrite using `[Pair.smul_hasVal, GlobalTheory.T.standardPair_frameCoordinates_integral_and_functional I l Z u k ι p β Q L hS j hj i r₀ hr₀, GlobalTheory.T.standardPair_frameCoordinates_integral_and_functional I l Z u k ι p β Q L hS j hj i r₀ hr₀, hbg]`. Establish `hres : ∀ (s y₁ y₂ : 𝒪[k]), valuation k ((y₁ : k) - y₂) < 1 → residue 𝒪[k] (s * y₁) = residue 𝒪[k] (s * y₂)`. Introduce `s y₁ y₂ h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, ← mul_sub]`. Use `Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 ?_)` and prove the remaining obligations. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one.2 (by simpa using h)`. Take `⟨hiff, hlast⟩` from `hK ((β j i).b *ᵥ x)`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨y, hy, s, hs, ha⟩`. Establish `hz : ∀ r, ((β j i).b *ᵥ x) r ∈ 𝒪[k]` using `hiff.1 fun r => hy r ▸ (y r).2`. Use `⟨fun r => ⟨_, hz r⟩, fun r => rfl, s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`. Use `hres s _ _ ?_` and prove the remaining obligations.
-
-Rewrite using `[hy r₀]`. Conclude with `hlast hz`. Introduce and unpack `⟨y, hy, s, hs, ha⟩`. Establish `hz : ∀ r, ((β j i).b *ᵥ x) r ∈ 𝒪[k]` using `fun r => hy r ▸ (y r).2`. Use `⟨fun r => ⟨_, hiff.2 hz r⟩, fun r => rfl, s, hs, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[ha]`. Use `(hres s _ _ ?_).symm` and prove the remaining obligations. Rewrite using `[hy r₀]`. Conclude with `hlast hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AdForm.comp_fixes_stdPair : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : GlobalTheory.AdForm.TwDat I l Z u a Ch), A.Is → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))

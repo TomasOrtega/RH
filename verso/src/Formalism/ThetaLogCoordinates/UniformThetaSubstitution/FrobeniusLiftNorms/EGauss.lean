@@ -22,9 +22,9 @@ section Transfer
 variable {F K : Type} [NormedField F] [NormedField K] (φ : F →+* K) {ν r0 r1 : ℕ}
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_map]`. Express the relevant statement in the definitionally equal form `φ (∑ l ∈ range (n.degree + 1), _) = ∑ l ∈ range (n.degree + 1), _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma map_sPos (p : ℕ) (s : ZMod (2 * ν)) (ab : Fin r0 × Fin r1) :
     MvPowerSeries.map φ (sPos (K := F) p s ab) = sPos p s ab := by
@@ -36,7 +36,7 @@ lemma map_sPos (p : ℕ) (s : ZMod (2 * ν)) (ab : Fin r0 × Fin r1) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `hhS`. Simplify using `only [map_sum, map_mul, map_pow, MvPowerSeries.map_C, map_sPos]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma map_hhS [NeZero ν] (p : ℕ) (u : ZMod (2 * ν) → F) :
     MvPowerSeries.map φ (hhS (r0 := r0) (r1 := r1) p u) = hhS p (fun s => φ (u s)) := by
@@ -44,9 +44,9 @@ lemma map_hhS [NeZero ν] (p : ℕ) (u : ZMod (2 * ν) → F) :
   simp only [map_sum, map_mul, map_pow, MvPowerSeries.map_C, map_sPos]
 
 /- English proof (translation)
-Take `⟨U, hU, hc⟩` from `h`. Use `⟨fun i => MvPowerSeries.map φ (U i), fun i n => ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_map, hφ]`. Conclude with `hU i n`. Rewrite using `[MvPowerSeries.coeff_map, hc n, map_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, map_pow, ← MvPowerSeries.coeff_map, map_mul, map_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inClass_map {ι : Type} (hφ : ∀ z, ‖φ z‖ = ‖z‖) (pp : F) (hh G : MvPowerSeries ι F)
     (h : InClass pp hh G) :
@@ -66,7 +66,7 @@ section Comb
 variable {K : Type} [Field K] {ν r0 r1 : ℕ}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Unfold `minorAt`. Rewrite using `[Matrix.det_fin_one]`. Both sides reduce to the same expression.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma minorAt_one {σ : Type} (s : σ) {l : ℕ} (h : l = 1) (T : Fin l → Fin r0 → K)
     (I : Fin l → Fin r1) :
@@ -78,13 +78,11 @@ lemma minorAt_one {σ : Type} (s : σ) {l : ℕ} (h : l = 1) (T : Fin l → Fin 
   rfl
 
 /- English proof (translation)
-Set `q` to `(Fintype.equivFin Al).symm`. Use `⟨Fintype.card Al, fun y => (univ.filter (fun x => g x = y)).card, fun c => ht (q c), fun c => pos (q c), fun c => Tm (q c), fun c => Ic (q c), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `entryOp lowOp`. Use `congr 1`. Rewrite using `[← Finset.prod_fiberwise univ g]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl (fun x hx => by rw [(Finset.mem_filter.1 hx).2]), Finset.prod_const]`. Conclude with `(Equiv.prod_comp q (fun x => minorAt (pos x) (Tm x) (Ic x))).symm`. Introduce `f`. Rewrite using `[← Finset.sum_fiberwise univ g]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (fun x hx => by rw [(Finset.mem_filter.1 hx).2]), Finset.sum_const, smul_eq_mul, mul_comm]`. Introduce `f`. Conclude with `Equiv.sum_comp q (fun x => f (pos x) (ht x) (Ic x))`. Introduce `c i a`.
-
-Conclude with `⟨q c, i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma entry_exists [NeZero ν] {At Al : Type} [Fintype At] [Fintype Al]
     (ξ : ZMod (2 * ν) → Fin r0 → K) (g : At → TpV ν r1) (pos : Al → ZMod (2 * ν)) (ht : Al → ℕ)
@@ -117,7 +115,7 @@ lemma entry_exists [NeZero ν] {At Al : Type} [Fintype At] [Fintype Al]
     exact ⟨q c, i, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_subtype (univ.filter P) (by simp) (fun x => if x.1 = s then f x else 0), Finset.sum_filter, Fintype.sum_sigma, Finset.sum_eq_single s]`. Simplify using the standard rewrite rules. Introduce `s' _ h`. Simplify using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma sum_sub_sigma {S : Type} [Fintype S] [DecidableEq S] (colN : S → ℕ)
     (P : (Σ s, Fin (colN s)) → Prop) [DecidablePred P] (f : (Σ s, Fin (colN s)) → ℕ) (s : S) :
@@ -137,45 +135,45 @@ section Struct
 variable {K : Type} [Field K] {ν r0 r1 : ℕ} [NeZero ν]
 
 /- English proof (translation)
-Set `A` to `Σ s, Fin (colN s)`. Set `top : A → Prop` to `fun x => x.1 ∈ TT ∧ hts x.1 x.2 = 1`. Set `ξ : ZMod (2 * ν) → Fin r0 → K` to `fun s a => Y (s, ⟨0, a.pos⟩, a)`. Set `fac : A → MvPolynomial (ZV ν r0 r1) K` to `fun x => minorAt x.1 (fun i a => Y (x.1, ⟨i.val, lt_of_lt_of_le i.isLt (hp x.1 x.2)⟩, a)) (I x.1 x.2)`. Set `g : {x : A // top x} → TpV ν r1` to `fun x => (x.1.1, I x.1.1 x.1.2 ⟨0, by rw [x.2.2]; exact one_pos⟩)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨C, e, l, sf, T, I', hop, he, hl, hT⟩` from `entry_exists ξ g (fun x : {x : A // ¬ top x} => x.1.1) (fun x => hts x.1.1 x.1.2) (fun x i a => Y (x.1.1, ⟨i.val, lt_of_lt_of_le i.isLt (hp x.1.1 x.1.2)⟩, a)) (fun x => I x.1.1 x.1.2)`. Establish `hal : ∀ s, alN e s = ∑ c : Fin (colN s), if top ⟨s, c⟩ then 1 else 0`. Introduce `s`. Rewrite using `[← sum_sub_sigma colN top (fun _ => 1) s]`. Establish `h` using `he (fun y => if y.1 = s then 1 else 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Fintype.sum_prod_type, Finset.sum_eq_single s (by intro s' _ h; simp [h]) (by simp)]`. Simplify `h` using `[alN]`. Establish `hcap : ∀ s, capN sf s = ∑ c : Fin (colN s), if ¬ top ⟨s, c⟩ then 1 else 0`. Introduce `s`. Rewrite using `[← sum_sub_sigma colN (fun x => ¬ top x) (fun _ => 1) s, ← hl (fun s' _ _ => if s' = s then 1 else 0)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `capN`. Rewrite using `[Finset.card_filter]`. Establish `hls : ∀ s, lsN l sf s = ∑ c : Fin (colN s), if ¬ top ⟨s, c⟩ then hts s c else 0`. Introduce `s`. Rewrite using `[← sum_sub_sigma colN (fun x => ¬ top x) (fun x => hts x.1 x.2) s, ← hl (fun s' h _ => if s' = s then h else 0)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[lsN, Finset.sum_filter]`. Establish `halG : ∀ s, (∑ c : Fin (colN s), if top ⟨s, c⟩ then 1 else 0) = alG TT colN hts s`. Introduce `s`. Unfold `alG`. Distinguish the cases in `hs : s ∈ TT`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hs, Finset.card_filter]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [top, hs, true_and]`. Simplify using `[top, hs]`. Use `⟨C, ξ, e, l, sf, T, I', ?_, fun s a => ⟨_, rfl⟩, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hop]`. Establish `h1 : ∀ x : {x : A // top x}, topForm ξ (g x) = fac x.1`. Introduce `x`. Simplify using `only [fac]`. Rewrite using `[minorAt_one x.1.1 x.2.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Finset.prod_congr rfl (fun x _ => h1 x)]`. Establish `h2` using `Fintype.prod_subtype_mul_prod_subtype top fac`. Rewrite `h2` using `[Fintype.prod_sigma]`. Conclude with `h2.symm`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c i a`. Take `⟨x, i', h⟩` from `hT c i a`. Conclude with `⟨_, h⟩`. Use function extensionality and compare the values at `s`. Rewrite using `[hal, halG]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `s`. Establish `h : (∑ c : Fin (colN s), if top ⟨s, c⟩ then 1 else 0) + (∑ c : Fin (colN s), if ¬ top ⟨s, c⟩ then 1 else 0) = colN s`. Rewrite using `[← Finset.sum_add_distrib]`. Use `trans ∑ _c : Fin (colN s), 1`. Apply the tactic sequence `refine Finset.sum_congr rfl fun c _ => ?_ split_ifs <;> rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h` using `[halG]`. Rewrite using `[hcap]`. Unfold `capG`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s`. Establish `h : (∑ c : Fin (colN s), if top ⟨s, c⟩ then 1 else 0) + (∑ c : Fin (colN s), if ¬ top ⟨s, c⟩ then hts s c else 0) = ∑ c, hts s c`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : top ⟨s, c⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hc, hc.2]`. Simplify using `[hc]`. Rewrite `h` using `[halG]`. Rewrite using `[hls]`. Unfold `lsG`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `J i hi`. Establish `e1 : ∑ x : TpV ν r1, (if (x.1.val % 2 = 0 ∧ x.2 ∉ J) ∨ (x.1.val % 2 = 1 ∧ x.2 ∈ J) then e x else 0) = ∑ x : {x : A // top x}, if ((g x).1.val % 2 = 0 ∧ (g x).2 ∉ J) ∨ ((g x).1.val % 2 = 1 ∧ (g x).2 ∈ J) then 1 else 0`. Rewrite using `[← he (fun y => if (y.1.val % 2 = 0 ∧ y.2 ∉ J) ∨ (y.1.val % 2 = 1 ∧ y.2 ∈ J) then 1 else 0)]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e1, hl (fun s _ Ih => if s.val % 2 = 1 then ((univ.image Ih) ∩ J).card else 0)]`. Set `W : A → ℕ` to `fun x => if x.1.val % 2 = 0 then min (hts x.1 x.2) i - ((univ.image (I x.1 x.2)) ∩ J).card else ((univ.image (I x.1 x.2)) ∩ J).card`. Establish `e2` using `Fintype.sum_subtype_add_sum_subtype top W`. Rewrite `e2` using `[Fintype.sum_sigma]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (le_of_eq e2)` and prove the remaining obligations. Use `add_le_add (Finset.sum_le_sum fun x _ => ?_) (Finset.sum_le_sum fun x _ => ?_)` and prove the remaining obligations. Take `⟨⟨s, c⟩, hs, hc⟩` from `x`. Establish `hc' : hts s c = 1` using `hc`. Establish `him : univ.image (I s c) = {I s c ⟨0, by rw [hc']; exact one_pos⟩}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `b`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Use `congr 1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use `j.isLt` as an intermediate fact. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨_, rfl⟩`. Establish `hmin : min 1 i = 1` using `min_eq_left hi`. Simplify using `only [W, g, him, hc', hmin]`. Distinguish the cases in `hb : I s c ⟨0, by rw [hc']; exact one_pos⟩ ∈ J`. Rewrite using `[Finset.singleton_inter_of_mem hb]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases Nat.mod_two_eq_zero_or_one s.val with h | h <;> simp [h, hb]`. Rewrite using `[Finset.singleton_inter_of_notMem hb]`. Apply the tactic sequence `rcases Nat.mod_two_eq_zero_or_one s.val with h | h <;> simp [h, hb]`. Simplify using `only [W]`. Apply the tactic sequence `rcases Nat.mod_two_eq_zero_or_one x.1.1.val with h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem struct (TT : Finset (ZMod (2 * ν))) (colN : ZMod (2 * ν) → ℕ)
     (hts : ∀ s, Fin (colN s) → ℕ) (hp : ∀ s c, hts s c ≤ r0) (I : ∀ s c, Fin (hts s c) → Fin r1)
@@ -319,7 +317,7 @@ end Struct
 section Reduce
 
 /- English proof (translation)
-Establish `h` using `Formalism.DworkPowerSeriesWeights.norm_intCast_padicComplex p (p : ℤ)`. Rewrite `h` using `[Int.cast_natCast, Int.cast_natCast]`. Rewrite using `[h]`. Conclude with `Padic.norm_p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_p_complex (p : ℕ) [Fact p.Prime] : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
   have h := Formalism.DworkPowerSeriesWeights.norm_intCast_padicComplex p (p : ℤ)
@@ -328,21 +326,19 @@ lemma norm_p_complex (p : ℕ) [Fact p.Prime] : ‖(p : ℂ_[p])‖ = (p : ℝ)�
   exact Padic.norm_p
 
 /- English proof (translation)
-Establish `hpp : p.Prime` using `Fact.out`. Take `⟨K, instK, hult, hchar, φ, Y, hφ, hgauss, hgen⟩` from `Formalism.DworkPowerSeriesWeights.residuallyGenericExists p (ZMod (2 * ν) × Fin r0 × Fin r0)`. Establish `hnp : ‖(p : K)‖ = (p : ℝ)⁻¹` using `by rw [← map_natCast φ, hφ, norm_p_complex]`. Establish `hY : ∀ y, ‖Y y‖ ≤ 1`. Introduce `y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hgauss (MvPolynomial.X y)`. Rewrite `h` using `[MvPolynomial.eval₂_X]`. Rewrite using `[h]`. Use `ciSup_le fun m => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_X]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Take `⟨C, ξ, e, l, sf, T, I', hop, hξ, hT, hal, hcap, hls, hB⟩` from `struct TT colN hts hp I Y`. Use `⟨K, instK, hult, C, fun s => φ (u s), MvPowerSeries.map φ F, ξ, e, l, sf, T, I', ⟨hpp, hp2, hnp, fun s => by rw [hφ]; exact hu s, ?_, ?_, ?_, ?_⟩, ?_, hal, hcap, hls, hB⟩` and prove the remaining obligations. Establish `h` using `inClass_map φ hφ _ _ _ hF`. Rewrite `h` using `[map_natCast, map_hhS]`. Then use the resulting hypothesis.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `s a`. Take `⟨y, h⟩` from `hξ s a`. Rewrite using `[h]`. Conclude with `hY y`. Introduce `c i a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, h⟩` from `hT c i a`. Rewrite using `[h]`. Conclude with `hY y`. Introduce `x hx`. Establish `h : alN e x.1 = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hal]`. Unfold `alG`. Rewrite using `[if_neg hx]`. Unfold `alN at h`. Conclude with `(Finset.sum_eq_zero_iff.1 h) x.2 (Finset.mem_univ _)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Use `le_trans (le_ciSup (Formalism.DworkPowerSeriesWeights.bddAbove_norm_coeff _) n) ?_` and prove the remaining obligations. Rewrite using `[← hgauss, ← hop]`. Unfold `frameJet`. Rewrite using `[Formalism.DworkPowerSeriesWeights.eval₂_jetPairPoly, map_prod]`.
-
-Simplify using `only [Formalism.DworkPowerSeriesWeights.ringMap_minorProd, map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X]`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reduce (p : ℕ) [Fact p.Prime] (ν r0 r1 : ℕ) [NeZero ν] (u : ZMod (2 * ν) → ℂ_[p])
     (F : MvPowerSeries (ZV ν r0 r1) ℂ_[p]) (TT : Finset (ZMod (2 * ν))) (colN : ZMod (2 * ν) → ℕ)
@@ -414,7 +410,7 @@ end EGauss
 open EGauss
 
 /- English proof (translation)
-Introduce `p _ ν r0 r1 _ u F TT colN hts hp I hp2 hu hF n`. Take `⟨K, instK, hult, C, u', F', ξ, e, l, sf, T, I', hyp, hco, hal, hcap, hls, -⟩` from `reduce p ν r0 r1 u F TT colN hts hp I hp2 hu hF`. Establish `h` using `hE K p ν r0 r1 C u' F' TT ξ e l sf T I' hyp`. Rewrite `h` using `[hal, hcap, hls]`. Conclude with `(hco n).trans h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_a_one_of_entry (hE : EntryExcessBound) : FrameJetExcessBound := by
   intro p _ ν r0 r1 _ u F TT colN hts hp I hp2 hu hF n
@@ -425,7 +421,7 @@ theorem gauss_a_one_of_entry (hE : EntryExcessBound) : FrameJetExcessBound := by
   exact (hco n).trans h
 
 /- English proof (translation)
-Introduce `p _ ν r0 r1 _ u F TT colN hts hp I hp2 hu hF n`. Take `⟨K, instK, hult, C, u', F', ξ, e, l, sf, T, I', hyp, hco, hal, hcap, hls, -⟩` from `reduce p ν r0 r1 u F TT colN hts hp I hp2 hu hF`. Establish `h` using `hE K p ν r0 r1 C u' F' TT ξ e l sf T I' hyp`. Rewrite `h` using `[hal, hcap, hls]`. Conclude with `(hco n).trans h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_a_two_of_entry (hE : EntryCappedBound) : FrameJetCappedBound := by
   intro p _ ν r0 r1 _ u F TT colN hts hp I hp2 hu hF n
@@ -436,9 +432,9 @@ theorem gauss_a_two_of_entry (hE : EntryCappedBound) : FrameJetCappedBound := by
   exact (hco n).trans h
 
 /- English proof (translation)
-Introduce `p _ ν r0 r1 i _ u F TT colN hts hp I hp2 hi hu hF n`. Take `⟨K, instK, hult, C, u', F', ξ, e, l, sf, T, I', hyp, hco, hal, hcap, hls, hB⟩` from `reduce p ν r0 r1 u F TT colN hts hp I hp2 hu hF`. Establish `h` using `hE K p ν r0 r1 C u' F' TT ξ e l sf T I' (univ.filter (fun b : Fin r1 => b.val < i)) hyp`. Rewrite `h` using `[hal, hcap, hls]`. Use `le_trans ?_ h` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnp : ‖(p : K)‖ = (p : ℝ)⁻¹` using `hyp.2.2.1`. Establish `hp0 : (0 : ℝ) < (p : ℝ)⁻¹` using `inv_pos.2 (by exact_mod_cast (Fact.out : p.Prime).pos)`. Establish `hp1 : (p : ℝ)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt.le)`. Rewrite using `[norm_mul, norm_mul, norm_pow, norm_pow, hnp, norm_p_complex]`. Conclude with `mul_le_mul (pow_le_pow_of_le_one hp0.le hp1 (hB _ i hi)) (hco n) (norm_nonneg _) (pow_nonneg hp0.le _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GaussB_of (hE : EntryB) : GaussB := by
   intro p _ ν r0 r1 i _ u F TT colN hts hp I hp2 hi hu hF n
@@ -455,17 +451,17 @@ theorem GaussB_of (hE : EntryB) : GaussB := by
     (pow_nonneg hp0.le _)
 
 /- English proof (translation)
-The claim follows from `gauss_a_one_of_entry Top.entry_a_one`.
+A detailed English derivation is pending.
 -/
 theorem gauss_a_one_bound : FrameJetExcessBound := gauss_a_one_of_entry Top.entry_a_one
 
 /- English proof (translation)
-The claim follows from `gauss_a_two_of_entry Top.entry_a_two`.
+A detailed English derivation is pending.
 -/
 theorem gauss_a_two_bound : FrameJetCappedBound := gauss_a_two_of_entry Top.entry_a_two
 
 /- English proof (translation)
-The claim follows from `GaussB_of Top.entryB`.
+A detailed English derivation is pending.
 -/
 theorem gauss_b : GaussB := GaussB_of Top.entryB
 

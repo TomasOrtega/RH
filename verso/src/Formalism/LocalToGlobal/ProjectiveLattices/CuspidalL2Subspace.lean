@@ -60,17 +60,15 @@ abbrev PtM (j : ℕ) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) : Type :=
 def nrmM (j : ℕ) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : T.PtM j la) (f : T.R j) : ℝ := nrmOf la (y.1 f)
 
 /- English proof (translation)
-Unfold `nrmM nrmOf`. Establish `hy` using `y.2`. Unfold `valSet at hy`. Take `⟨x, hx⟩` from `hy`. Unfold `vAtV at hx`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take `⟨T1, io, e, -, y', -, eta, -, hxe⟩` from `x.2`. Rewrite `hx` using `[hxe]`. Unfold `profI at hx`. Establish `key : y.1 f = nval T1.V e (evI y' f)` using `by rw [← hx]`. Unfold `nval at key`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hN : (1 : ℝ) < (Ideal.absNorm la.asIdeal : ℝ)`. Establish `h0 : Ideal.absNorm la.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `la.ne_bot`. Establish `h1 : Ideal.absNorm la.asIdeal ≠ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `la.isPrime.ne_top`. Conclude with `(by omega : 1 < Ideal.absNorm la.asIdeal)` after adjusting the coercions. Rewrite using `[key]`. Distinguish the cases in `hz : evI y' f = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `[hz]`. Simplify using `only [hz, if_false, EReal.coe_ne_top, EReal.toReal_coe, EReal.coe_nonneg]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hneg`.
-
-Conclude with `absurd h (not_le.mpr (Real.one_lt_rpow hN (neg_pos.mpr (not_le.mp hneg))))`. Introduce `h`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos hN.le (neg_nonpos.mpr h)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nrmM_le_one_iff (j : ℕ) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : T.PtM j la) (f : T.R j) :
     T.nrmM j la y f ≤ 1 ↔ 0 ≤ y.1 f := by

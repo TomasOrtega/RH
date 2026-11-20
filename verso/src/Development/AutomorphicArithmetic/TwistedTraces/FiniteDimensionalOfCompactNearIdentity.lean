@@ -4,19 +4,17 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C Polynomial Topology
 
 /- English proof (translation)
-Introduce `H _ _ _ T S hT hS`. Establish `hcl : IsClosed {v : H | ‖T v - v‖ ≤ 1 / 2 * ‖v‖}` using `isClosed_le (by fun_prop) (by fun_prop)`. Establish `hS' : ∀ v ∈ S.topologicalClosure, ‖T v - v‖ ≤ 1 / 2 * ‖v‖`. Introduce `v hv`. Establish `: closure (S : Set H) ⊆ {v : H | ‖T v - v‖ ≤ 1 / 2 * ‖v‖}` using `closure_minimal (fun w hw => hS w hw) hcl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this hv`. Use `haveI : CompleteSpace S.topologicalClosure := S.isClosed_topologicalClosure.completeSpace_coe`. Set `f : S.topologicalClosure →L[ℂ] H` to `T.comp S.topologicalClosure.subtypeL`. Establish `hf : ∀ x : S.topologicalClosure, ‖x‖ ≤ ((2 : NNReal) : ℝ) * ‖f x‖`. Introduce `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hS' x.1 x.2`. Establish `h2 : ‖(x : H)‖ ≤ ‖T x‖ + ‖T x - x‖`. Establish `: (x : H) = T x - (T x - x)` using `by abel`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖x‖ = ‖(x : H)‖` using `rfl`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : f x = T x` using `rfl`. Rewrite using `[h3, h4]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hanti : AntilipschitzWith 2 f` using `f.antilipschitz_of_bound hf`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hemb : IsClosedEmbedding f` using `hanti.isClosedEmbedding f.uniformContinuous`. Take `⟨K, hK, hKsub⟩` from `IsCompactOperator.image_closedBall_subset_compact (f := (T : H →ₗ[ℂ] H)) hT 1`. Establish `hc : IsCompact (Metric.closedBall (0 : S.topologicalClosure) 1)`. Use `(hemb.isCompact_preimage hK).of_isClosed_subset Metric.isClosed_closedBall ?_` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hKsub` to reduce the goal to its premises. Use `⟨(x : H), ?_, rfl⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem_closedBall_zero_iff]`. Conclude with `hx`. Use `haveI : FiniteDimensional ℂ S.topologicalClosure := FiniteDimensional.of_isCompact_closedBall₀ ℂ one_pos hc`.
-
-Conclude with `Submodule.finiteDimensional_of_le S.le_topologicalClosure`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finiteDimensional_of_compact_near_identity :
     ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (T : H →L[ℂ] H) (S : Submodule ℂ H), IsCompactOperator T → (∀ v ∈ S, ‖T v - v‖ ≤ 1 / 2 * ‖v‖) → FiniteDimensional ℂ S := by

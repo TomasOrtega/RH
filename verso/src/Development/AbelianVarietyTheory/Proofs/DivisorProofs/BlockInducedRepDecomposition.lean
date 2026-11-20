@@ -23,7 +23,7 @@ section Group
 variable {β : Type} [DecidableEq β]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hj, Pi.mulSingle_eq_of_ne hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem update_mul_left {G : β → Type} [∀ j, Monoid (G j)] (y : ∀ j, G j) (j₀ : β) (p x : G j₀) :
     Function.update y j₀ (p * x) = Pi.mulSingle j₀ p * Function.update y j₀ x := by
@@ -33,7 +33,7 @@ theorem update_mul_left {G : β → Type} [∀ j, Monoid (G j)] (y : ∀ j, G j)
   · simp [Function.update_of_ne hj, Pi.mulSingle_eq_of_ne hj]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hj, Pi.mulSingle_eq_of_ne hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem update_mul_right {G : β → Type} [∀ j, Monoid (G j)] (y : ∀ j, G j) (j₀ : β) (x h : G j₀) :
     Function.update y j₀ (x * h) = Function.update y j₀ x * Pi.mulSingle j₀ h := by
@@ -50,9 +50,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
     {c : β → α → Type} [∀ j i, Fintype (c j i)] [∀ j i, DecidableEq (c j i)]
 
 /- English proof (translation)
-Introduce `j _`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Simplify using `using p.2`. Rewrite using `[Pi.mulSingle_eq_of_ne hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(parab k (g j)).one_mem`.
+A detailed English derivation is pending.
 -/
 theorem mulSingle_mem_relParab (g : ∀ j, (Σ i, c j i) ≃ m' j) (j₀ : β) (p : parab k (g j₀)) :
     (Pi.mulSingle j₀ (p : GL (m' j₀) k) : Levi k m') ∈ relParab k g := by
@@ -62,11 +62,11 @@ theorem mulSingle_mem_relParab (g : ∀ j, (Σ i, c j i) ≃ m' j) (j₀ : β) (
   · rw [Pi.mulSingle_eq_of_ne hj]; exact (parab k (g j)).one_mem
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [relProj, MonoidHom.coe_mk, OneHom.coe_mk]`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Rewrite using `[Pi.mulSingle_eq_same (M := fun j => Levi k (c j)) j (leviProj k (g j) p)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Subtype.ext (Pi.mulSingle_eq_same _ _)`. Rewrite using `[Pi.mulSingle_eq_of_ne (M := fun j => Levi k (c j)) hj (leviProj k (g j₀) p)]`. Use `map_one (leviProj k (g j))` and compare the differences between its conclusion and the goal. Use `first`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Pi.mulSingle_eq_of_ne (M := fun j => GL (m' j) k) hj (p : GL (m' j₀) k)`. Consider the case `simp [Pi.mulSingle, Function.update, hj]`.
+A detailed English derivation is pending.
 -/
 theorem relProj_mulSingle (g : ∀ j, (Σ i, c j i) ≃ m' j) (j₀ : β) (p : parab k (g j₀)) :
     relProj k g ⟨Pi.mulSingle j₀ (p : GL (m' j₀) k), mulSingle_mem_relParab g j₀ p⟩ =
@@ -85,9 +85,9 @@ theorem relProj_mulSingle (g : ∀ j, (Σ i, c j i) ≃ m' j) (j₀ : β) (p : p
       | simp [Pi.mulSingle, Function.update, hj]
 
 /- English proof (translation)
-Rewrite using `[relDeltaHalf_apply, Finset.prod_eq_single j₀]`. Rewrite using `[Pi.mulSingle_eq_same]`. Introduce `j _ hj`. Rewrite using `[Pi.mulSingle_eq_of_ne hj, map_one]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem relDeltaHalf_mulSingle (j₀ : β) (L : Levi k (c j₀)) :
     relDeltaHalf k c (Pi.mulSingle j₀ L) = deltaHalf k (c j₀) L := by
@@ -105,7 +105,7 @@ def evalFun (g : ∀ j, (Σ i, c j i) ≃ m' j) (τ : Representation ℂ (∀ j,
   fun x => l (F.1.1 (Function.update y j₀ x))
 
 /- English proof (translation)
-Introduce `p x`. Establish `h1 : F.1.1 (Pi.mulSingle j₀ (p : GL (m' j₀) k) * Function.update y j₀ x) = _` using `F.1.2 ⟨_, mulSingle_mem_relParab g j₀ p⟩ (Function.update y j₀ x)`. Simplify using `only [evalFun]`. Rewrite using `[update_mul_left, h1]`. Simplify using `only [MonoidHom.comp_apply, twist_apply, hτ, relProj_mulSingle, relDeltaHalf_mulSingle, ofChar_apply, map_smul, smul_eq_mul, MonoidHom.mulSingle_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evalFun_mem (g : ∀ j, (Σ i, c j i) ≃ m' j) (τ : Representation ℂ (∀ j, Levi k (c j)) W)
     (ψ : (∀ j, Levi k (c j)) →* ℂˣ) (hτ : ∀ z w, τ z w = (ψ z : ℂ) • w) (j₀ : β)
@@ -123,13 +123,13 @@ theorem evalFun_mem (g : ∀ j, (Σ i, c j i) ≃ m' j) (τ : Representation ℂ
     ofChar_apply, map_smul, smul_eq_mul, MonoidHom.mulSingle_apply]
 
 /- English proof (translation)
-Apply `mem_smoothPart_of_nhds` to reduce the goal to its premises. Establish `hF : IsOpen {G : Levi k m' | ind (relParab k g) ((twist τ (relDeltaHalf k c)).comp (relProj k g)) G F.1 = F.1}` using `F.2`. Establish `hc : Continuous (fun x : GL (m' j₀) k => (Pi.mulSingle j₀ x : Levi k m'))` using `by first`. Consider the case `fun_prop`. Consider the case `exact continuous_mulSingle (f := fun j => GL (m' j) k) j₀`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (continuous_pi fun j => by`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Simplify using `only [Pi.mulSingle_eq_same]`. Conclude with `continuous_id'`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `continuous_const)` using `[Pi.mulSingle_eq_of_ne hj]`. Use `Filter.mem_of_superset ((hF.preimage hc).mem_nhds (by simp)) ?_` and prove the remaining obligations. Introduce `h hh`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at hh ⊢`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Use `congrFun (congrArg Subtype.val hh) (Function.update y j₀ x)` as an intermediate fact. Use `show l (F.1.1 (Function.update y j₀ (x * h))) = l (F.1.1 (Function.update y j₀ x))`. Rewrite using `[update_mul_right]`. Conclude with `congrArg l this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalFun_smooth (g : ∀ j, (Σ i, c j i) ≃ m' j)
     (τ : Representation ℂ (∀ j, Levi k (c j)) W)
@@ -177,9 +177,9 @@ def evalMap (g : ∀ j, (Σ i, c j i) ≃ m' j) (τ : Representation ℂ (∀ j,
     exact map_smul l a _
 
 /- English proof (translation)
-Introduce `hτ j₀ ν y l`. Use `⟨{ toLinearMap := evalMap g τ ψ hτ j₀ y l, isIntertwining' := fun h => ?_ }, fun F x => rfl⟩` and prove the remaining obligations. Use `LinearMap.ext fun F => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `x`. Use `show l ((ν (Pi.mulSingle j₀ h) : ℂ) • F.1.1 (Function.update y j₀ x * Pi.mulSingle j₀ h)) = (ν (Pi.mulSingle j₀ h) : ℂ) * l (F.1.1 (Function.update y j₀ (x * h)))`. Rewrite using `[update_mul_right, map_smul, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_evalMap (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {α β : Type} [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β] [DecidableEq β]

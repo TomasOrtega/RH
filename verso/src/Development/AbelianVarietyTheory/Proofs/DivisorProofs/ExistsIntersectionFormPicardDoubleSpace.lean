@@ -7,9 +7,9 @@ open Classical
 namespace GlobalTheory.FlagPush
 
 /- English proof (translation)
-Introduce `F _ Y W hW`. Use `letI := algebraΓOfHom (W.p₁ ≫ Y.str)`. Establish `hv : DiffVanish (Y.dim + 1 + 1) (chiPic F (structureModule W.Z))` using `diffVanish_chiPic_of_isProjOver (algebraΓOfHom_algebraMap (W.p₁ ≫ Y.str)) (structureModule W.Z) W.proj (by rw [GlobalTheory.QCoh.suppDim_structureModule]; exact hW)`. Use `⟨hv.form, fun σ y => hv.form_comp_perm y σ, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hv.form_apply _ 0]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = interNum F (structureModule W.Z) fun i => toLB (y i)`. Rewrite using `[interNum_eq_multiDiff F _ fun i => isLB_toLB (y i)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_interForm_dbl : ∀ (F : Type) [Field F] (Y : Var F) (W : Dbl Y), W.Small → ∃ T : MultilinearMap ℤ (fun _ : Fin (Y.dim + 1) => Pic W.Z) ℤ, (∀ (σ : Equiv.Perm (Fin (Y.dim + 1))) (y : Fin (Y.dim + 1) → Pic W.Z), T (y ∘ σ) = T y) ∧ ∀ y : Fin (Y.dim + 1) → CartierDiv W.Z, T (fun i => toPic (y i)) = W.num y := by
   intro F _ Y W hW

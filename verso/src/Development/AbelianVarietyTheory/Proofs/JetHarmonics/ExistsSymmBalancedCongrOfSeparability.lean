@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G.TB (dAct bilinPart)
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `F : M →+ N →+ P` to `AddMonoidHom.mk' (fun m => AddMonoidHom.mk' (f m) (h2 m)) (fun m m' => by ext n; exact h1 m m' n)`. Use `⟨TensorProduct.liftAddHom F (fun r m n => ?_), fun m n => ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul]`. Both sides reduce to the same expression. Rewrite using `[TensorProduct.liftAddHom_tmul]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

@@ -21,16 +21,16 @@ def swapEs (Fr : LocNG.FrameD H r) (es₂ : Fin r → V) (h1 : ∀ i j, H.h (es�
   ⟨Fr.f, es₂, Fr.T, Fr.h_iso, Fr.h_zz, h1, h2, h3⟩
 
 /- English proof (translation)
-Simplify using `[LocNG.img, Submodule.mem_map]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_img (g : V ≃ₗ[E] V) (Λ : Submodule M.L.O V) (x : V) :
     x ∈ LocNG.img g Λ ↔ ∃ y ∈ Λ, g y = x := by
   simp [LocNG.img, Submodule.mem_map]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_img]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨k y, ⟨y, hy, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma img_mul (g k : V ≃ₗ[E] V) (Λ : Submodule M.L.O V) :
     LocNG.img (g * k) Λ = LocNG.img g (LocNG.img k Λ) := by
@@ -43,7 +43,7 @@ lemma img_mul (g k : V ≃ₗ[E] V) (Λ : Submodule M.L.O V) :
     exact ⟨y, hy, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [H.h_zero_left]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, H.h_smul_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma h_sum_left (H : HermSp M V) {ι : Type} (s : Finset ι) (c : ι → E) (v : ι → V) (y : V) :
     H.h (∑ i ∈ s, c i • v i) y = ∑ i ∈ s, c i * H.h (v i) y := by
@@ -52,11 +52,11 @@ lemma h_sum_left (H : HermSp M V) {ι : Type} (s : Finset ι) (c : ι → E) (v 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, H.h_smul_left, ih]
 
 /- English proof (translation)
-Take `⟨A, -, hA⟩` from `(GlobalTheory.LocOver.UnipOnto.unipotent_onto M hM H r Fr hT).2.1 n hn`. Establish `hb : ∀ c, H.h (Fr.f c) (es₂ a) = H.h (Fr.f c) (Fr.es a)`. Introduce `c`. Proceed by induction on `c using Fin.lastCases with`. Consider the case `last`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `e1 : H.h (Fr.f (Fin.last r)) (es₂ a) = M.L.cj (H.h (es₂ a) (Fr.f (Fin.last r)))` using `H.h_herm _ _`. Establish `e2 : H.h (Fr.f (Fin.last r)) (Fr.es a) = M.L.cj (H.h (Fr.es a) (Fr.f (Fin.last r)))` using `H.h_herm _ _`. Rewrite using `[e1, e2, h3, Fr.h_sz]`. Consider the case `cast i => rw [h2, Fr.h_es]`. Rewrite using `[show n (Fr.f b) = _ from hA b, h_sum_left, h_sum_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun c _ => by rw [hb c]`.
+A detailed English derivation is pending.
 -/
 lemma pair_eq (hM : M.OK) (Fr : LocNG.FrameD H r) (es₂ : Fin r → V) (h1 : ∀ i j, H.h (es₂ i) (es₂ j) = 0)
     (h2 : ∀ i j : Fin r, H.h (Fr.f i.castSucc) (es₂ j) = if i = j then 1 else 0)
@@ -75,11 +75,11 @@ lemma pair_eq (hM : M.OK) (Fr : LocNG.FrameD H r) (es₂ : Fin r → V) (h1 : �
   exact Finset.sum_congr rfl fun c _ => by rw [hb c]
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, fun i j => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← he, e.apply_symm_apply, e.apply_symm_apply]`. Conclude with `hiso i j`. Rewrite using `[← he, e.apply_symm_apply, ← hg]`. Express the relevant statement in the definitionally equal form `hf M.L S.Hm _ _ = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdual]`. Simplify using `[Fin.castSucc_inj]`. Rewrite using `[H.h_herm, ← he, e.apply_symm_apply, ← hg]`. Express the relevant statement in the definitionally equal form `M.L.cj (hf M.L S.Hm _ _) = _`. Rewrite using `[hdual]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Fin.last r ≠ i.castSucc` using `(Fin.castSucc_lt_last i).ne'`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma pulled (S : Frames M.L r k) (e : V ≃ₗ[E] S.V) (he : ∀ x y, S.h (e x) (e y) = H.h x y)
     (f : Fin (r + 1) → V) (g : Fin (r + 1) → S.V) (gs : Fin r → S.V) (hg : ∀ a, g a = e (f a))
@@ -122,13 +122,13 @@ def datEq (c : WCoord P S) : LocNG.Datum P ≃ LocNG.Datum (pair₂ c) where
   right_inv _ := rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.standardLattice_dualVectors_change_unipotent`.
+A detailed English derivation is pending.
 -/
 theorem std_swap : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r : ℕ) (Fr : LocNG.FrameD H r) (es₂ : Fin r → V) (h1 : ∀ i j, H.h (es₂ i) (es₂ j) = 0) (h2 : ∀ i j : Fin r, H.h (Fr.f i.castSucc) (es₂ j) = if i = j then 1 else 0) (h3 : ∀ i, H.h (es₂ i) (Fr.f (Fin.last r)) = 0), Fr.T ≠ 0 → ∀ L : Submodule M.L.O (H.Wb Fr.f), Fr.IsInner L → ∃ m ∈ Fr.N, (∀ b, m (Fr.f b) = Fr.f b) ∧ (⟨Fr.f, es₂, Fr.T, Fr.h_iso, Fr.h_zz, h1, h2, h3⟩ : LocNG.FrameD H r).LamStd L = LocNG.img m (Fr.LamStd L) :=
   GlobalTheory.T.standardLattice_dualVectors_change_unipotent
 
 /- English proof (translation)
-Use `conv_lhs => rw [← hx]`. Use `show (m⁻¹ * m) x = x`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma inv_fix {m : V ≃ₗ[E] V} {x : V} (hx : m x = x) : m⁻¹ x = x := by
   conv_lhs => rw [← hx]
@@ -136,13 +136,13 @@ lemma inv_fix {m : V ≃ₗ[E] V} {x : V} (hx : m x = x) : m⁻¹ x = x := by
   rw [inv_mul_cancel]; rfl
 
 /- English proof (translation)
-Take `⟨m, hm, hmf, hmΛ⟩` from `std_swap M hM H r Fr es₂ h1 h2 h3 hT L hL`. Establish `e : (swapEs Fr es₂ h1 h2 h3).LamStd L = LocNG.img m (Fr.LamStd L)` using `hmΛ`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, hf, hΛ⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨n * m⁻¹, Fr.N.mul_mem hn (Fr.N.inv_mem hm), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Use function extensionality and compare the values at `b`. Use `show n (Fr.f b) = n (m⁻¹ (Fr.f b))`. Rewrite using `[inv_fix (hmf b)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← img_mul, mul_assoc, inv_mul_cancel, mul_one]`. Conclude with `hΛ`. Introduce and unpack `⟨n, hn, hf, hΛ⟩`. Use `⟨n * m, Fr.N.mul_mem hn hm, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `b`. Use `show n (Fr.f b) = n (m (Fr.f b))`. Rewrite using `[hmf b]`. Rewrite using `[img_mul]`. Conclude with `hΛ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma side_iff (hM : M.OK) (Fr : LocNG.FrameD H r) (es₂ : Fin r → V) (h1 : ∀ i j, H.h (es₂ i) (es₂ j) = 0)
     (h2 : ∀ i j : Fin r, H.h (Fr.f i.castSucc) (es₂ j) = if i = j then 1 else 0)
@@ -167,19 +167,19 @@ lemma side_iff (hM : M.OK) (Fr : LocNG.FrameD H r) (es₂ : Fin r → V) (h1 : �
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r k P S c`. Establish `hTA : P.A.T ≠ 0` using `by rw [← c.T_eq]; exact S.T.ne_zero`. Establish `hTB : P.B.T ≠ 0` using `by rw [← c.T'_eq]; exact S.T'.ne_zero`. Establish `pA` using `pulled S c.e c.h_eq P.A.f S.f S.es c.f_eq S.dual S.iso`. Establish `pB` using `pulled S c.e c.h_eq P.B.f S.f' S.es' c.f'_eq S.dual' S.iso'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `kA : ∀ n ∈ P.A.N, ∀ b a, H.h (n ((pair₂ c).A.f b)) ((pair₂ c).A.es a) = H.h (n (P.A.f b)) (P.A.es a)` using `fun n hn b a => pair_eq hM P.A _ pA.1 pA.2.1 pA.2.2 hTA hn b a`. Establish `kB : ∀ n ∈ P.B.N, ∀ b a, H.h (n ((pair₂ c).B.f b)) ((pair₂ c).B.es a) = H.h (n (P.B.f b)) (P.B.es a)` using `fun n hn b a => pair_eq hM P.B _ pB.1 pB.2.1 pB.2.2 hTB hn b a`. Use `⟨pair₂ c, coord₂ c, datEq c, rfl, rfl, ?_, rfl, rfl, Iff.rfl, fun d => rfl, ?_, ?_, fun g d d' => Iff.rfl⟩` and prove the remaining obligations. Unfold `LocNG.FPair.K0`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hs, h⟩`. Establish `hs'` using `Subgroup.mem_inf.mp hs`. Use `⟨hs, fun a b => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← kA s hs'.1 b a, ← kB s hs'.2 b a]`. Conclude with `h a b`. Introduce and unpack `⟨hs, h⟩`. Establish `hs'` using `Subgroup.mem_inf.mp hs`. Use `⟨hs, fun a b => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kA s hs'.1 b a, kB s hs'.2 b a]`. Conclude with `h a b`. Introduce `d t`. Conclude with `and_congr Iff.rfl (and_congr Iff.rfl (and_congr (side_iff hM P.A _ pA.1 pA.2.1 pA.2.2 hTA d.L d.hL t.f t.abelian₂) (and_congr (side_iff hM P.B _ pB.1 pB.2.1 pB.2.2 hTB d.L' d.hL' t.f' t.abelian₂) Iff.rfl)))`. Introduce and unpack `d t ⟨-, -, ⟨n, hn, hf, -⟩, ⟨n', hn', hf', -⟩, -⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (pair₂ c).A.coefSum t.f = P.A.coefSum t.f`. Unfold `LocNG.FrameD.coefSum`. Rewrite using `[hf]`. Conclude with `Finset.sum_congr rfl fun a _ => kA n hn a.succ a`. Establish `e2 : (pair₂ c).B.coefSum t.f' = P.B.coefSum t.f'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `LocNG.FrameD.coefSum`. Rewrite using `[hf']`. Conclude with `Finset.sum_congr rfl fun a _ => kB n' hn' a.succ a`. Unfold `LocNG.om LocNG.FrameD.psiOf`. Rewrite using `[e1, e2]`.
+A detailed English derivation is pending.
 -/
 theorem changed_duals : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r k : ℕ) (P : LocNG.FPair H r), ∀ (S : Frames M.L r k) (c : WCoord P S), ∃ (P₂ : LocNG.FPair H r) (c₂ : Coord P₂ S) (φ : LocNG.Datum P ≃ LocNG.Datum P₂), c₂.e = c.e ∧ P₂.St = P.St ∧ P₂.K0 = P.K0 ∧ P₂.UW0 = P.UW0 ∧ P₂.Hp = P.Hp ∧ (P₂.PrimeTo ↔ P.PrimeTo) ∧ (∀ d, c₂.dat (φ d) = c.dat d) ∧ (∀ d t, LocNG.IsTermOver P d t ↔ LocNG.IsTermOver P₂ (φ d) t) ∧ (∀ d t, LocNG.IsTermOver P d t → LocNG.om P₂ t = LocNG.om P t) ∧ ∀ g d d', LocNG.Datum.Moves g d d' ↔ LocNG.Datum.Moves g (φ d) (φ d') := by
   intro F _ _ _ E _ _ _ _ M hM V _ _ H r k P S c

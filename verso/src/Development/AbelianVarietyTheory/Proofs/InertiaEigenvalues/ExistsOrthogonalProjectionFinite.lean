@@ -5,17 +5,17 @@ namespace GlobalTheory.OrthogonalProjection
 open Module
 
 /- English proof (translation)
-Set `b : Basis (Fin (finrank ℂ M)) ℂ M` to `Module.finBasis ℂ M`. Set `T : M →ₗ[ℂ] (Fin (finrank ℂ M) → ℂ)` to `LinearMap.pi (fun i => (B (b i : W)).comp M.subtype)`. Establish `key : ∀ w : W, (∀ i, B (b i : W) w = 0) → ∀ z ∈ M, B z w = 0`. Introduce `w hw z hz`. Establish `h0 : (B.flip w).comp M.subtype = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `b.ext` to reduce the goal to its premises. Introduce `i`. Simplify using `using hw i`. Use `LinearMap.congr_fun h0 ⟨z, hz⟩` as an intermediate fact. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hinj : Function.Injective T`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `m hm`. Establish `h1 : ∀ i, B (b i : W) (m : W) = 0`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr_fun hm i` as an intermediate fact. Simplify `this` using `[T]`. Establish `h2` using `key m h1 m m.2`. Conclude with `Subtype.ext (hB _ h2)`. Establish `hsurj : Function.Surjective T` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by rw [Module.finrank_fin_fun])).mp hinj`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hsurj (fun i => B (b i : W) v)`. Use `⟨m, m.2, ?_⟩` and prove the remaining obligations. Apply `key` to reduce the goal to its premises. Introduce `i`. Use `congr_fun hm i` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[T] at this`. Simplify using `[map_sub, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_orthogonal_projection_finite {W : Type} [AddCommGroup W] [Module ℂ W] (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ)
     (hB : ∀ v : W, B v v = 0 → v = 0) (M : Submodule ℂ W) [FiniteDimensional ℂ M] (v : W) :
@@ -53,7 +53,7 @@ theorem exists_orthogonal_projection_finite {W : Type} [AddCommGroup W] [Module 
   simp [map_sub, this]
 
 /- English proof (translation)
-Introduce `W _ _ B hB M _ v`. Conclude with `exists_orthogonal_projection_finite B hB M v`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_orth_proj : ∀ {W : Type} [inst : AddCommGroup W] [inst_1 : Module ℂ W] (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ), (∀ (v : W), ((B : W → W →ₗ[ℂ] ℂ) v : W → ℂ) v = (0 : ℂ) → v = (0 : W)) → ∀ (M : Submodule ℂ W) [FiniteDimensional ℂ ↥M] (v : W), ∃ m ∈ M, ∀ z ∈ M, ((B : W → W →ₗ[ℂ] ℂ) z : W → ℂ) (v - m) = (0 : ℂ) := by
   intro W _ _ B hB M _ v

@@ -42,9 +42,9 @@ def openRatModel {k : Type} [Field k] {X : Scheme.{0}} (s : X ⟶ Sp k) (U : X.O
       exact ⟨V, a, ⟨_, h⟩, GlobalTheory.FlagBundle.valF_fromSpecStalk h a⟩ }
 
 /- English proof (translation)
-Introduce `k _ _ X s A B hN hsep hlft hqc hA hB hM`. Use `haveI : GlobalTheory.IsNormalScheme X := GlobalTheory.IsNormalScheme.of_pred hN`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s`. Use `GlobalTheory.DisjointCoverLB.lbIso_of_disjoint_cover X (irreducibleComponents X) GlobalTheory.IsNormalScheme.component (fun a b y ha hb => Subtype.ext (GlobalTheory.IsNormalScheme.eq_of_mem_irreducibleComponents a.2 b.2 ha hb)) (fun y => ⟨⟨_, irreducibleComponent_mem_irreducibleC …` and prove the remaining obligations. Introduce `Z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Set `U` to `GlobalTheory.IsNormalScheme.component Z`. Use `letI : Algebra k U.toScheme.functionField := (Spec.preimage (U.toScheme.fromSpecStalk (genericPoint U.toScheme) ≫ U.ι ≫ s)).hom.toAlgebra`. Establish `hio : IsOpenImmersion U.ι` using `by infer_instance`. Conclude with `hM _ (openRatModel s U hsep hlft inferInstance) U.ι hio rfl`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lbIso_of_ratModels : ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) (s : X ⟶ Sp k) (A B : LB X), Geo.Tor.IsNormalScheme X → IsSeparated s → LocallyOfFiniteType s → QuasiCompact s → A.IsLB → B.IsLB → (∀ (Ω : Type) [Field Ω] [Algebra k Ω] (M : RatModel k Ω) (io : M.Z ⟶ X), IsOpenImmersion io → io ≫ s = M.s → LBIso (A.pull io) (B.pull io)) → LBIso A B := by
   intro k _ _ X s A B hN hsep hlft hqc hA hB hM

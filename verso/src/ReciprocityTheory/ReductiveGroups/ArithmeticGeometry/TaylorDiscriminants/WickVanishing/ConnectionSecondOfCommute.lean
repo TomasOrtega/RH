@@ -12,9 +12,9 @@ variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 variable (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k]
 
 /- English proof (translation)
-Unfold `Dof`. Simplify using `only [MvPowerSeries.pderiv_X]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[Pi.single_apply]`. Introduce `b _ hb`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Dof_X (F : Fin d → PS k 2 d) (u : Fin d → k) (j : Fin d) :
     Dof F u (X ((0 : Fin 1), j)) = ∑ i : Fin d, C (u i) * ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), i) (F j)) := by
@@ -27,7 +27,7 @@ theorem Dof_X (F : Fin d → PS k 2 d) (u : Fin d → k) (j : Fin d) :
   · simp
 
 /- English proof (translation)
-Simplify using `only [fm, vf_sum, vf_mul, vf_C, mul_zero, add_zero, vf_sub, vf_X, vf_cf_liftX, cf_inr, add_sub_cancel_left, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vf_fm (B : FB R d O) (h : PS k 2 d) (u φ u' : Fin d → k) :
     vf (cf k B h u φ) (fm k h u') = C (∑ i, φ i * u' i) := by
@@ -35,7 +35,7 @@ theorem vf_fm (B : FB R d O) (h : PS k 2 d) (u φ u' : Fin d → k) :
     map_sum, map_mul]
 
 /- English proof (translation)
-Consider the cases of `t with`. Consider the case `inl j`. Rewrite using `[cf_inl, cf_inl, ← Dof_X, ← Dof_X, vf_cf_liftX, vf_cf_liftX, hC R d O k B u u', sub_self]`. Consider the case `inr i`. Rewrite using `[cf_inr, cf_inr, vf_add, vf_add, vf_C, vf_C, add_zero, add_zero, vf_cf_liftX, vf_cf_liftX, hC R d O k B u u', sub_self]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem cf_bracket (hC : GE.DofCommSt) (B : FB R d O) (h : PS k 2 d) (u φ u' φ' : Fin d → k)
     (t : Fin d ⊕ Fin d) : vf (cf k B h u φ) (cf k B h u' φ' t) - vf (cf k B h u' φ') (cf k B h u φ t) = 0 := by
@@ -47,9 +47,9 @@ theorem cf_bracket (hC : GE.DofCommSt) (B : FB R d O) (h : PS k 2 d) (u φ u' φ
       hC R d O k B u u', sub_self]
 
 /- English proof (translation)
-Introduce `R _ d O _ _ k _ _ _ B h m ξ η G`. Take `⟨u, φ⟩` from `ξ`. Take `⟨u', φ'⟩` from `η`. Simplify using `only [nabla_eq]`. Rewrite using `[vfm_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : (fun t => vf (cf k B h u φ) (cf k B h u' φ' t) - vf (cf k B h u' φ') (cf k B h u φ t)) = fun _ => (0 : AA k d)` using `funext (cf_bracket k hC B h u φ u' φ')`. Rewrite using `[hb, vf_zeroc, vf_Cmul, vf_Cmul, vf_fm, vf_fm]`. Simplify using `only [betaH, map_mul, map_sum, map_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem connection_second_of_commute (hC : GE.DofCommSt) : ConnectionCommutator := by
   intro R _ d O _ _ k _ _ _ B h m ξ η G
@@ -64,7 +64,7 @@ theorem connection_second_of_commute (hC : GE.DofCommSt) : ConnectionCommutator 
   ring
 
 /- English proof (translation)
-The claim follows from `connection_second_of_commute invariantDerivations_commute_formal_connection`.
+A detailed English derivation is pending.
 -/
 theorem connection_second_identity : ConnectionCommutator :=
   connection_second_of_commute invariantDerivations_commute_formal_connection

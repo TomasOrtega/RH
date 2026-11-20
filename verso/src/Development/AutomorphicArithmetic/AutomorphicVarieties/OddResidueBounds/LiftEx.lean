@@ -3,17 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.OddResidueBounds.Z
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ N _`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := Algebra.IsAlgebraic.trans ℚ E Ω`. Use `haveI : IsAlgClosure ℚ Ω := ⟨inferInstance, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN : NeZero (N : Ω)` using `⟨by exact_mod_cast NeZero.ne N⟩`. Establish `hpos : 0 < N` using `NeZero.pos N`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic N Ω) (Polynomial.degree_cyclotomic_pos N Ω hpos).ne'`. Establish `hζp : IsPrimitiveRoot ζ N` using `Polynomial.isRoot_cyclotomic_iff.mp hζ`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b`. Establish `hx : IsPrimitiveRoot (ζ ^ (b : ZMod N).val) N` using `hζp.pow_of_coprime _ (ZMod.val_coe_unit_coprime b)`. Establish `hmin : minpoly ℚ ζ = Polynomial.cyclotomic N ℚ` using `(Polynomial.cyclotomic_eq_minpoly_rat hζp hpos).symm`. Establish `hev : Polynomial.aeval (ζ ^ (b : ZMod N).val) (minpoly ℚ ζ) = 0`. Rewrite using `[hmin, Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Polynomial.isRoot_cyclotomic_iff.mpr hx`. Take `⟨σ, hσ⟩` from `minpoly.exists_algEquiv_of_root' (Algebra.IsAlgebraic.isAlgebraic ζ) hev`. Use `⟨σ.toRingEquiv, fun x hxN => ?_⟩` and prove the remaining obligations. Take `⟨k, -, rfl⟩` from `hζp.eq_pow_of_pow_eq_one hxN`. Use `show σ (ζ ^ k) = (ζ ^ k) ^ (b : ZMod N).val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_pow, hσ, ← pow_mul, ← pow_mul, mul_comm]`. Introduce `σ`. Establish `h1 : IsPrimitiveRoot (σ ζ) N` using `hζp.map_of_injective σ.injective`. Take `⟨i, hi, hiζ⟩` from `hζp.eq_pow_of_pow_eq_one h1.pow_eq_one`. Establish `hcop : i.Coprime N` using `(hζp.pow_iff_coprime hpos i).mp (hiζ ▸ h1)`.
-
-Use `⟨ZMod.unitOfCoprime i hcop, fun x hxN => ?_⟩` and prove the remaining obligations. Take `⟨k, -, rfl⟩` from `hζp.eq_pow_of_pow_eq_one hxN`. Rewrite using `[map_pow, ← hiζ, ZMod.coe_unitOfCoprime, ZMod.val_natCast_of_lt hi, ← pow_mul, ← pow_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Odd.liftEx :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (N : ℕ) [NeZero N], (∀ b : (ZMod N)ˣ, ∃ σ : Ω ≃+* Ω, CycLift N b σ) ∧ ∀ σ : Ω ≃+* Ω, ∃ b : (ZMod N)ˣ, CycLift N b σ := by

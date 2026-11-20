@@ -25,17 +25,17 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.BigOn.Exp
 /- English proof (translation)
-Introduce `_ _ _ _`. Establish `hR` using `_root_.GlobalTheory.T.rational_estimate_statement'`. Establish `hC` using `_root_.GlobalTheory.T.twisted_character_rational_values'`. Establish `hN` using `_root_.GlobalTheory.T.exists_isLevelLift_at_twisted_points`. Unfold `_root_.GlobalTheory.BigOn.RationalityStatement' _root_.GlobalTheory.BigOn.AtPtsAlt at hR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `_root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt at hC hN ⊢`. Use `((hR.and hC).and hN).imp fun Fm CH _ H => ?_` and prove the remaining obligations. Take `⟨⟨h1, h2⟩, h3⟩` from `H`. Take `⟨x0, hE⟩` from `(h1.and h2).and h3`. Use `⟨x0, fun x hx hle i p hp hM w hw j h hh w' hw' => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨a1, a2⟩, a3⟩` from `hE x hx hle i p hp`. Take `⟨θ, hθ⟩` from `a1 hM _ hw j`. Take `⟨hCh, hOk, hU, -⟩` from `_root_.GlobalTheory.T.links2_of_single_index_twisted _ _ _ _ _ _ _ _ _ _ p hp hM.1`. Establish `hS : GlobalTheory.TraceIncl.HidaSetting (R2 p) j ((R2 p).mu ((Fm.D x i).plEq w))` using `⟨hCh.lev, hCh.grp.red_L, hCh.fam.tie, hCh.models, hCh.thP, hU, ⟨_, ((fw2 p).hv₀ j _).1⟩, (hOk.lifts _ _).act, fun g0 κ κ' k1 k2 => GlobalTheory.VecInv.omega_lifts_vP (R2 p) hCh.lev hCh.models.inf hCh.thP.ωP hCh.thP.vP j _ g0 κ κ' k1 k2⟩`. Take `⟨y, -, hy⟩` from `exists_adForm_levelTrace hS (a3 hM w hw j) (a2 hM w hw j) hθ hh hw'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨y, ?_, hy⟩` and prove the remaining obligations. Take `⟨n, b, hbK, -, -, -, hsp⟩` from `(fw2 p).ks j`. Establish `hy0` using `hsp.symm ▸ (Submodule.mem_top (x := y))`. Use `Submodule.span_le.2 ?_ hy0` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hk : (p.nexp.fi j).e ((p.nexp.fi j).e.symm (b k)) = b k` using `(p.nexp.fi j).e.apply_symm_apply (b k)`. Use `Submodule.subset_span ⟨(p.nexp.fi j).e.symm (b k), ((p.nexp.fi j).wk _).2 ?_, hk⟩` and prove the remaining obligations. Use `first`. Consider the case `exact hk.symm ▸ hbK k`. Consider the case `exact (congrArg (fun z => z ∈ (p.R.FW j).WK) hk).mpr (hbK k)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [hk]; exact hbK k)`.
+A detailed English derivation is pending.
 -/
 theorem adForm_eq_levelTrace_singleSeries' : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x hx i p w j => ∀ h ∈ GfC (Vc (Fm.D x i) j), ∀ w' : ((R2 p).cV j).W, InCoefLat (R2 p) j h w' →
   ∃ y ∈ Submodule.span (Fm.D x i).what₂.LL ((p.nexp.fi j).e '' ((p.Sx.A ((j : ℕ) + 1)).WK : Set _)), ∀ v : ∀ τ, lowT ((R2 p).MW j (sg0 (Fm.D x i) p.P.A3.A)) τ, adForm (R2 p) j y (fun τ => v τ) = levelTrace (R2 p) j (F2 p).P0 (F2 p).ψ0⁻¹ (singleSeries (R2 p) j ((R2 p).ωP j ((R2 p).mu ((Fm.D x i).plEq w))) ((R2 p).vP j ((R2 p).mu ((Fm.D x i).plEq w))) h w' v) := by

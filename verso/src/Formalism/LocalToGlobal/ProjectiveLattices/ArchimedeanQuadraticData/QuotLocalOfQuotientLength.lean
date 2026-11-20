@@ -16,9 +16,9 @@ noncomputable def coordK (b : Basis (Fin ρ) O Q) : Q →ₗ[O] (Fin ρ → Frac
   map_smul' r x := by ext k; simp [Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `x y h`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Establish `hk` using `congrFun h k`. Simplify using `only [coordK, LinearMap.coe_mk, AddHom.coe_mk] at hk`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `IsFractionRing.injective O (FractionRing O) hk`.
+A detailed English derivation is pending.
 -/
 theorem coordK_injective (b : Basis (Fin ρ) O Q) : Function.Injective (coordK b) := by
   intro x y h
@@ -33,7 +33,7 @@ noncomputable def matA (b : Basis (Fin ρ) O Q) (c : Fin ρ → (Q →ₗ[O] O))
   Matrix.of fun i k => c i (b k)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr q]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem c_eq_sum (b : Basis (Fin ρ) O Q) (c : Fin ρ → (Q →ₗ[O] O)) (i : Fin ρ) (q : Q) :
     c i q = ∑ k, matA b c i k * b.repr q k := by
@@ -48,7 +48,7 @@ noncomputable def cK (b : Basis (Fin ρ) O Q) (c : Fin ρ → (Q →ₗ[O] O)) :
   Matrix.toLin' ((matA b c).map (algebraMap O (FractionRing O)))
 
 /- English proof (translation)
-Rewrite using `[c_eq_sum b c i q, map_sum]`. Simplify using `only [cK, Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Matrix.map_apply, coordK, LinearMap.coe_mk, AddHom.coe_mk, map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cK_coordK (b : Basis (Fin ρ) O Q) (c : Fin ρ → (Q →ₗ[O] O)) (q : Q) (i : Fin ρ) :
     cK b c (coordK b q) i = algebraMap O (FractionRing O) (c i q) := by
@@ -57,7 +57,7 @@ theorem cK_coordK (b : Basis (Fin ρ) O Q) (c : Fin ρ → (Q →ₗ[O] O)) (q :
     LinearMap.coe_mk, AddHom.coe_mk, map_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, Matrix.mul_apply, c_eq_sum b c i (th j)]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_mul_eq (b : Basis (Fin ρ) O Q) (c : Fin ρ → (Q →ₗ[O] O)) (th : Fin ρ → Q) :
     (Matrix.of fun i j => c i (th j)) = matA b c * Matrix.of fun k j => b.repr (th j) k := by
@@ -66,15 +66,15 @@ theorem det_mul_eq (b : Basis (Fin ρ) O Q) (c : Fin ρ → (Q →ₗ[O] O)) (th
   rfl
 
 /- English proof (translation)
-Rewrite using `[Submodule.eq_bot_iff]`. Introduce `v hv`. Rewrite `hv` using `[Submodule.mem_inf, LinearMap.mem_range]`. Take `⟨⟨q, rfl⟩, hv⟩` from `hv`. Rewrite `hv` using `[Submodule.restrictScalars_mem, LinearMap.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA : (matA b c).det ≠ 0`. Introduce `h0`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[det_mul_eq b c th, Matrix.det_mul, h0, zero_mul]`. Establish `hc : ∀ i, c i q = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Establish `h1 : cK b c (coordK b q) i = 0` using `by rw [hv]; rfl`. Rewrite `h1` using `[cK_coordK]`. Conclude with `IsFractionRing.injective O (FractionRing O) (by rw [h1, map_zero])`. Establish `hvec : (matA b c).mulVec (fun k => b.repr q k) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.zero_apply, ← hc i, c_eq_sum b c i q]`. Both sides reduce to the same expression. Establish `hr` using `Matrix.eq_zero_of_mulVec_eq_zero hA hvec`. Establish `hq : q = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Simplify using `using congrFun hr k`. Rewrite using `[hq, map_zero]`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_ker_eq_bot (b : Basis (Fin ρ) O Q) (c : Fin ρ → (Q →ₗ[O] O)) (th : Fin ρ → Q)
     (hdet : (Matrix.of fun i j => c i (th j)).det ≠ 0) :
@@ -108,23 +108,21 @@ end TieQL
 
 open TieQL in
 /- English proof (translation)
-Introduce `O Q _ _ _ _ _ ρ hb c th hdet`. Take `⟨b⟩` from `hb`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hmat : (Matrix.of fun i j => cK b c (coordK b (th j)) i) = (Matrix.of fun i j => c i (th j)).map (algebraMap O (FractionRing O))`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.of_apply, Matrix.map_apply, cK_coordK]`. Establish `hdetK : algebraMap O (FractionRing O) (Matrix.of fun i j => c i (th j)).det = (Matrix.of fun i j => cK b c (coordK b (th j)) i).det * algebraMap O (FractionRing O) 1`. Rewrite using `[map_one, mul_one, hmat, RingHom.map_det]`. Both sides reduce to the same expression. Take `⟨m, hm, hle⟩` from `h O (FractionRing O) (Fin ρ → FractionRing O) ϖ hϖ ρ (cK b c) (LinearMap.ker (cK b c)) le_rfl (LinearMap.range (coordK b)) 0 0 (fun j => coordK b (th j)) (by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `x ⟨q, rfl⟩ i`. Conclude with `⟨c i q, by simp [cK_coordK]⟩)`. Use the proof step `(by intro j; simp)`. Use `_ 1 hdet one_ne_zero hdetK`. Set `eQ : Q ≃ₗ[O] LinearMap.range (coordK b)` to `LinearEquiv.ofInjective (coordK b) (coordK_injective b)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : ((LinearMap.range (coordK b) ⊓ (LinearMap.ker (cK b c)).restrictScalars O) ⊔ Submodule.span O (Set.range fun j => (algebraMap O (FractionRing O) ϖ) ^ (0 : ℕ) • coordK b (th j))).comap (LinearMap.range (coordK b)).subtype = (Submodule.span O (Set.range th)).map (eQ : Q →ₗ[O] …`. Rewrite using `[inf_ker_eq_bot b c th hdet, bot_sup_eq]`. Simplify using `only [pow_zero, one_smul]`. Use extensionality with `⟨v, hv⟩`. Take `⟨q, rfl⟩` from `LinearMap.mem_range.mp hv`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hq`. Establish `h1 : coordK b q ∈ (Submodule.span O (Set.range th)).map (coordK b)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hq`. Take `⟨y, hy, hyq⟩` from `h1`. Use `⟨y, hy, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, LinearEquiv.ofInjective_apply]`. Conclude with `hyq`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `⟨y, hy, hyq⟩`. Establish `h2 : coordK b y = coordK b q`. Establish `h3` using `congrArg Subtype.val hyq`. Rewrite `h3` using `[LinearEquiv.coe_coe, LinearEquiv.ofInjective_apply]`. Then use the resulting hypothesis. Rewrite using `[← h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `Submodule.mem_map_of_mem (f := coordK b) hy`. Rewrite `h4` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h4`. Establish `e` using `Submodule.Quotient.equiv (Submodule.span O (Set.range th)) _ eQ hT.symm`. Establish `hm' : m ≤ (IsDiscreteValuationRing.addVal O (Matrix.of fun i j => c i (th j)).det).toNat`.
-
-Simplify using `at hle`. Conclude with `hle` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem quotLocal_of_quotientLength (h : Formalism.LatticeBaseChangeAlt.QuotientLength) :
     ReciprocityTheory.ChartRestriction.G.FreeQuotientRank.QuotLocalStatement := by
@@ -181,7 +179,7 @@ theorem quotLocal_of_quotientLength (h : Formalism.LatticeBaseChangeAlt.Quotient
     _ ≤ _ := (Nat.cast_le.mpr hm').trans (ENat.coe_toNat_le_self _)
 
 /- English proof (translation)
-Conclude with `quotLocal_of_quotientLength Formalism.LatticeBaseChangeAlt.quotientLength`.
+A detailed English derivation is pending.
 -/
 theorem quotLocal_holds : ReciprocityTheory.ChartRestriction.G.FreeQuotientRank.QuotLocalStatement := by
   exact quotLocal_of_quotientLength Formalism.LatticeBaseChangeAlt.quotientLength

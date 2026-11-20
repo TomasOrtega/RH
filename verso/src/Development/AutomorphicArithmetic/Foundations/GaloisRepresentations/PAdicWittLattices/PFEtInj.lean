@@ -5,11 +5,11 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Introduce `hGC B R _ T hT Z W p r c hc d hd hfet`. Take `⟨V, e, G, _, _, a, σ, hgal, hspl⟩` from `hGC c d hfet`. Establish `h0 : σ ⟨0, hd⟩ ≫ c = e` using `hspl.1 _`. Substitute `h0` using the available equality. Establish `hinj` using `hT.inj p ((σ ⟨0, hd⟩ ≫ c) ≫ p) (σ ⟨0, hd⟩ ≫ c) rfl G a hgal`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hσr : σ ⟨0, hd⟩ ≫ r = (σ ⟨0, hd⟩ ≫ c) ≫ p`. Rewrite using `[← hc, Category.assoc]`. Establish `hcomp` using `T.pull_comp (σ ⟨0, hd⟩) c hσr hc rfl`. Introduce `x y hxy`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hcomp x, hcomp y, hxy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.G3.pFEtInj :
     GalClosD → FEtInj.{u} := by

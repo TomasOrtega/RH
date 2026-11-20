@@ -61,7 +61,7 @@ def whole : ArithVariety n where
 omit [Fintype ι] in
 
 /- English proof (translation)
-Use `⟨hz, fun f hf ↦ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f ∈ (⊥ : Ideal _) at hf`. Rewrite `hf` using `[Submodule.mem_bot]`. Rewrite using `[hf, evalCone, eval₂_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_points_whole {F : Type*} [CommRing F] {z : Cone n F} (hz : BlockNonzero z) :
     z ∈ (whole n).points F := by
@@ -87,21 +87,21 @@ structure HermLine where
 def l2Norm {m : ℕ} (w : Fin m → ℂ) : ℝ := Real.sqrt (∑ i, ‖w i‖ ^ 2)
 
 /- English proof (translation)
-The claim follows from `Real.le_sqrt_of_sq_le (Finset.single_le_sum (f := fun j ↦ ‖w j‖ ^ 2) (fun _ _ ↦ sq_nonneg _) (Finset.mem_univ i))`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_l2Norm {m : ℕ} (w : Fin m → ℂ) (i : Fin m) : ‖w i‖ ≤ l2Norm w :=
   Real.le_sqrt_of_sq_le (Finset.single_le_sum (f := fun j ↦ ‖w j‖ ^ 2)
     (fun _ _ ↦ sq_nonneg _) (Finset.mem_univ i))
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.mp hw`. Conclude with `lt_of_lt_of_le (norm_pos_iff.mpr hi) (norm_le_l2Norm w i)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vectorL2Norm_pos {m : ℕ} {w : Fin m → ℂ} (hw : w ≠ 0) : 0 < l2Norm w := by
   obtain ⟨i, hi⟩ := Function.ne_iff.mp hw
   exact lt_of_lt_of_le (norm_pos_iff.mpr hi) (norm_le_l2Norm w i)
 
 /- English proof (translation)
-Simplify using `only [l2Norm, norm_mul, mul_pow, ← Finset.mul_sum]`. Rewrite using `[Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem vectorL2Norm_const_mul {m : ℕ} (c : ℂ) (w : Fin m → ℂ) :
     l2Norm (fun i ↦ c * w i) = ‖c‖ * l2Norm w := by
@@ -109,7 +109,7 @@ theorem vectorL2Norm_const_mul {m : ℕ} (c : ℂ) (w : Fin m → ℂ) :
   rw [Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Simplify using `only [l2Norm, Complex.norm_conj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vectorL2Norm_conj {m : ℕ} (w : Fin m → ℂ) :
     l2Norm (fun i ↦ starRingEnd ℂ (w i)) = l2Norm w := by
@@ -117,9 +117,7 @@ theorem vectorL2Norm_conj {m : ℕ} (w : Fin m → ℂ) :
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Establish `hsum : ContDiff ℝ ∞ (fun z : Cone n ℂ ↦ ∑ i, ‖z k i‖ ^ 2)`. Use `ContDiff.sum fun i _ ↦ ?_` and prove the remaining obligations. Conclude with `(contDiff_norm_sq ℝ).comp (contDiff_pi.1 (contDiff_pi.1 contDiff_id k) i)`. Use `hsum.contDiffOn.sqrt fun z hz ↦ ?_` and prove the remaining obligations. Use `vectorL2Norm_pos (hz k)` as an intermediate fact.
-
-Conclude with `ne_of_gt (Real.sqrt_pos.mp this)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffOn_l2Norm_block (k : ι) :
     ContDiffOn ℝ ∞ (fun z : Cone n ℂ ↦ l2Norm (z k)) {z | BlockNonzero z} := by
@@ -157,7 +155,7 @@ def project {ι' : Type} {n' : ι' → ℕ} (j : ι → ι') {F : Type*} (z : Co
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Use `symm`. Use `Fintype.prod_of_injective j hj _ _ (fun k' hk' ↦ ?_) (fun k ↦ ?_)` and prove the remaining obligations. Rewrite using `[Function.extend_apply' _ _ _ (fun ⟨k, hk⟩ ↦ hk' ⟨k, hk⟩), Pi.zero_apply, zpow_zero]`. Rewrite using `[hj.extend_apply]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_extend_zpow {ι' : Type} [Fintype ι'] {j : ι → ι'} (hj : Function.Injective j)
     (a : ι → ℤ) (r : ι' → ℝ) :
@@ -188,7 +186,7 @@ def coordField (z : Cone n (AlgebraicClosure ℚ)) : IntermediateField ℚ (Alge
   IntermediateField.adjoin ℚ (Set.range fun v : Coord n ↦ z v.1 v.2)
 
 /- English proof (translation)
-Establish `: Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ)`. Apply the tactic sequence `convert AlgebraicClosure.isAlgebraic ℚ <;> rfl`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic x).isIntegral`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isIntegral_algebraicClosure_rat (x : AlgebraicClosure ℚ) : IsIntegral ℚ x := by
   have : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := by
@@ -242,9 +240,9 @@ structure IntegralSection (P : ArithVariety n) (a : ι → ℤ) where
     ∃ (d : ι → ℕ) (e : MvPolynomial (Coord n) ℤ), IsChartForm P a num den c d e
 
 /- English proof (translation)
-Establish `h` using `IsWeightedHomogeneous.prod Finset.univ (fun k ↦ (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ^ d k) (fun k ↦ d k • Pi.single k 1) (fun k _ ↦ (isWeightedHomogeneous_X (R := ℤ) (coordDeg n) ⟨k, c k⟩).pow (d k))`. Establish `e : (∑ k, d k • Pi.single k 1 : ι → ℕ) = d`. Use extensionality with `k'`. Rewrite using `[Finset.sum_apply]`. Simplify using `[Pi.single_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[e]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_chartMonomial (c : (k : ι) → Fin (n k + 1)) (d : ι → ℕ) :
     IsWeightedHomogeneous (coordDeg n) (chartMonomial c d) d := by

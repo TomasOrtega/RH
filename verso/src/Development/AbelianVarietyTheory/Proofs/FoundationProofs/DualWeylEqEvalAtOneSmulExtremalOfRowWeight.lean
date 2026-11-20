@@ -6,13 +6,13 @@ open GlobalTheory.DualWeyl MvPolynomial NumberField Formalism.GradedWeylDivisibi
 namespace GlobalTheory.DualWeyl
 
 /- English proof (translation)
-Unfold `nabla at hf`. Rewrite `hf` using `[standardMonomialSpanDomain K N N la]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, sz, hsz, I, hshape, rfl⟩` from `hx`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `m hm`. Establish `h` using `bidetDominance K N N k sz hsz I m hm`. Rewrite `h` using `[hshape]`. Conclude with `h`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Simplify using `at hm`. Consider the case `add x y _ _ hx hy`. Introduce `m hm`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Treat this case separately.
 
-Conclude with `hx m h`. Conclude with `hy m h`. Consider the case `smul c x _ hx`. Introduce `m hm`. Conclude with `hx m (support_smul hm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rowDeg_dominated_of_mem_nabla {K : Type} [Field K] {N : ℕ} (la : Fin N → ℕ) (f : Pol N K)
     (hf : f ∈ nabla la K) : ∀ m ∈ f.support,
@@ -41,15 +41,15 @@ theorem rowDeg_dominated_of_mem_nabla {K : Type} [Field K] {N : ℕ} (la : Fin N
     exact hx m (support_smul hm)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : K, f = c • extremal la K := by`. Apply `hwLine K N N le_rfl la hla f hf` to reduce the goal to its premises. Introduce `a b hab k hk`. Assume the negation of the conclusion as `hne`. Establish `hmem` using `rowDivStable K N N la a b k f hf`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hht : IsWeightedHomogeneous (lhwinHt N N) f (∑ a : Fin N, (a.val : ℤ) * (la a : ℤ))`. Introduce `d hd`. Rewrite using `[lhwin_weight_ht, hw' hd]`. Establish `hsh` using `lhwin_rowDiv_shift K _ a b k f hht`. Take `⟨d, hd⟩` from `ne_zero_iff.mp hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e` using `hsh hd`. Rewrite `e` using `[lhwin_weight_ht]`. Simplify using `only [ldrow_weight_rowW] at e`. Establish `dom` using `rowDeg_dominated_of_mem_nabla la _ hmem d (mem_support_iff.mpr hd)`. Establish `hle` using `Formalism.BranchingDeterminantCap.bs_height_le N (rowDeg d) la dom.1 dom.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab' : (a.val : ℤ) - b.val ≤ -1`. Establish `: a.val < b.val` using `hab`. Use linear arithmetic over natural numbers and integers. Establish `hk' : (1 : ℤ) ≤ k` using `by exact_mod_cast hk`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h1 : evalAt 1 f = c`. Rewrite using `[hc, map_smul, evalAt_one_extremal, smul_eq_mul, mul_one]`. Rewrite using `[h1]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_evalAt_one_smul_extremal_of_rowWeight (K : Type) [Field K] [Infinite K] (N : ℕ) (la : Fin N → ℕ)
     (hla : Antitone la) (f : Pol N K) (hf : f ∈ nabla la K)

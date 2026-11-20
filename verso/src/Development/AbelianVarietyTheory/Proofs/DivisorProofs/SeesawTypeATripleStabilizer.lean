@@ -25,13 +25,13 @@ def coef (J : Matrix (Fin n) (Fin n) E) (ι : Matrix (Fin n) (Fin b) E) (J₁ : 
   (J₁ᵀ)⁻¹ * ((ι.map σ)ᵀ * Jᵀ)
 
 /- English proof (translation)
-Rewrite using `[form, dotProduct_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem form_eq_dot (J : Matrix (Fin n) (Fin n) E) (u x : Fin n → E) : form σ J u x = cvec σ J x ⬝ᵥ u := by
   rw [form, dotProduct_comm]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `h (fun i => σ ((Pi.single j (1 : E) : Fin b → E) i))` as an intermediate fact. Simplify using `only [invol] at this`. Simplify using `using this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_dot (invol : ∀ e, σ (σ e) = e) {v : Fin b → E}
     (h : ∀ z : Fin b → E, v ⬝ᵥ (fun i => σ (z i)) = 0) : v = 0 := by
@@ -41,7 +41,7 @@ theorem eq_zero_of_dot (invol : ∀ e, σ (σ e) = e) {v : Fin b → E}
   simpa using this
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, mulVec, map_sum, map_mul, invol, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[herm]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_symm (invol : ∀ e, σ (σ e) = e) {J : Matrix (Fin n) (Fin n) E} (herm : ∀ i j, σ (J j i) = J i j)
     (u w : Fin n → E) : form σ J u w = σ (form σ J w u) := by
@@ -51,7 +51,7 @@ theorem form_symm (invol : ∀ e, σ (σ e) = e) {J : Matrix (Fin n) (Fin n) E} 
   rw [herm]; ring
 
 /- English proof (translation)
-Establish `: (fun i => σ ((ι *ᵥ z) i)) = ι.map σ *ᵥ (fun i => σ (z i))`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (σ : E →+* E) ι z i`. Rewrite using `[form, this, mulVec_mulVec, dotProduct_mulVec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_mulVec (J : Matrix (Fin n) (Fin n) E) (ι : Matrix (Fin n) (Fin b) E) (u : Fin n → E) (z : Fin b → E) :
     form σ J u (ι *ᵥ z) = (u ᵥ* (J * ι.map σ)) ⬝ᵥ (fun i => σ (z i)) := by
@@ -60,7 +60,7 @@ theorem form_mulVec (J : Matrix (Fin n) (Fin n) E) (ι : Matrix (Fin n) (Fin b) 
   rw [form, this, mulVec_mulVec, dotProduct_mulVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `h (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[form_eq_dot, dotProduct_mulVec, dotProduct_single, mul_one]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cvec_vecMul {J : Matrix (Fin n) (Fin n) E} {ι : Matrix (Fin n) (Fin b) E} {x : Fin n → E}
     (h : ∀ u, form σ J (ι *ᵥ u) x = 0) : cvec σ J x ᵥ* ι = 0 := by
@@ -70,7 +70,7 @@ theorem cvec_vecMul {J : Matrix (Fin n) (Fin n) E} {ι : Matrix (Fin n) (Fin b) 
   exact this
 
 /- English proof (translation)
-Apply `eq_zero_of_dot σ invol` to reduce the goal to its premises. Introduce `z`. Rewrite using `[← form_mulVec, form_symm σ invol herm, h z, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem vecMul_J_map (invol : ∀ e, σ (σ e) = e) {J : Matrix (Fin n) (Fin n) E} (herm : ∀ i j, σ (J j i) = J i j)
     {ι : Matrix (Fin n) (Fin b) E} {x : Fin n → E} (h : ∀ u, form σ J (ι *ᵥ u) x = 0) :
@@ -80,7 +80,7 @@ theorem vecMul_J_map (invol : ∀ e, σ (σ e) = e) {J : Matrix (Fin n) (Fin n) 
   rw [← form_mulVec, form_symm σ invol herm, h z, map_zero]
 
 /- English proof (translation)
-Establish `e : (ι.map σ)ᵀ * Jᵀ * ι = J₁ᵀ`. Rewrite using `[← gram, transpose_mul, transpose_mul, transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[coef, Matrix.mul_assoc, e]`. Conclude with `Matrix.nonsing_inv_mul _ (by rwa [det_transpose])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_mul {J : Matrix (Fin n) (Fin n) E} {ι : Matrix (Fin n) (Fin b) E} {J₁ : Matrix (Fin b) (Fin b) E}
     (gram : ιᵀ * J * ι.map σ = J₁) (hJ₁ : IsUnit J₁.det) : coef σ J ι J₁ * ι = 1 := by
@@ -90,24 +90,24 @@ theorem coef_mul {J : Matrix (Fin n) (Fin n) E} {ι : Matrix (Fin n) (Fin b) E} 
   exact Matrix.nonsing_inv_mul _ (by rwa [det_transpose])
 
 /- English proof (translation)
-Rewrite using `[coef, ← mulVec_mulVec, ← transpose_mul, mulVec_transpose, h, mulVec_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_mulVec {J : Matrix (Fin n) (Fin n) E} {ι : Matrix (Fin n) (Fin b) E} {J₁ : Matrix (Fin b) (Fin b) E}
     {x : Fin n → E} (h : x ᵥ* (J * ι.map σ) = 0) : coef σ J ι J₁ *ᵥ x = 0 := by
   rw [coef, ← mulVec_mulVec, ← transpose_mul, mulVec_transpose, h, mulVec_zero]
 
 /- English proof (translation)
-Establish `hyx : form σ J y x = 1` using `by rw [form_symm σ invol herm, hxy, map_one]`. Establish `hSx` using `coef_mulVec σ (J₁ := J₁) (vecMul_J_map σ invol herm fun u => (horth u).1)`. Establish `hSy` using `coef_mulVec σ (J₁ := J₁) (vecMul_J_map σ invol herm fun u => (horth u).2)`. Establish `hcx` using `cvec_vecMul σ fun u => (horth u).1`. Establish `hcy` using `cvec_vecMul σ fun u => (horth u).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ u w : Fin n → E, (∑ k, cvec σ J w k * u k) = form σ J u w` using `fun u w => by`. Rewrite using `[form_eq_dot]`. Both sides reduce to the same expression. Set `A₂ : Matrix (Fin n) (Fin 2) E` to `Matrix.of fun i c => ![x i, y i] c`. Set `B₂ : Matrix (Fin 2) (Fin n) E` to `Matrix.of ![cvec σ J y, cvec σ J x]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h1 : fromRows (coef σ J ι J₁) B₂ * fromCols ι A₂ = 1`. Rewrite using `[fromRows_mul_fromCols, ← fromBlocks_one]`. Use `fromBlocks_inj.2 ⟨coef_mul σ gram hJ₁, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i c fin_cases c`. Simplify `congrFun hSx i` using `[A₂, Matrix.mul_apply, mulVec, dotProduct]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `congrFun hSy i` using `[A₂, Matrix.mul_apply, mulVec, dotProduct]`. Use extensionality with `c j fin_cases c`. Simplify `congrFun hcy j` using `[B₂, Matrix.mul_apply, vecMul, dotProduct]`. Simplify `congrFun hcx j` using `[B₂, Matrix.mul_apply, vecMul, dotProduct]`. Apply the tactic sequence `ext c d fin_cases c <;> fin_cases d <;> simp [A₂, B₂, Matrix.mul_apply, hd, hxx, hyy, hxy, hyx]`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e : Fin b ⊕ Fin 2 ≃ Fin n` using `finSumFinEquiv.trans (finCongr hn.symm)`. Establish `h2` using `(Matrix.mul_eq_one_comm_of_equiv e).1 h1`. Rewrite `h2` using `[fromCols_mul_fromRows]`. Establish `h3 : A₂ * B₂ = vecMulVec x (cvec σ J y) + vecMulVec y (cvec σ J x)`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[A₂, B₂, Matrix.mul_apply, Fin.sum_univ_two, vecMulVec]`. Rewrite `h2` using `[h3, ← add_assoc]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj (invol : ∀ e, σ (σ e) = e) {J : Matrix (Fin n) (Fin n) E} (herm : ∀ i j, σ (J j i) = J i j)
     {ι : Matrix (Fin n) (Fin b) E} {J₁ : Matrix (Fin b) (Fin b) E} {x y : Fin n → E} (hn : n = b + 2)
@@ -152,7 +152,7 @@ section Adelic
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
 
 /- English proof (translation)
-Simplify using `[cA, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR (e : E) : cA σ (inclR (AF F) e) = inclR (AF F) (σ e) := by
   simp [cA, inclR]
@@ -160,70 +160,70 @@ theorem cA_inclR (e : E) : cA σ (inclR (AF F) e) = inclR (AF F) (σ e) := by
 variable {n b : ℕ}
 
 /- English proof (translation)
-Simplify using `only [incM]`. Conclude with `Matrix.map_mul`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem incM_mul {m p q : Type} [Fintype p] (A : Matrix m p E) (B : Matrix p q E) :
     incM F (A * B) = incM F A * incM F B := by
   simp only [incM]; exact Matrix.map_mul
 
 /- English proof (translation)
-Simplify using `only [incM]`. Conclude with `Matrix.map_add _ (map_add _) A B`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem incM_add {m p : Type} (A B : Matrix m p E) : incM F (A + B) = incM F A + incM F B := by
   simp only [incM]; exact Matrix.map_add _ (map_add _) A B
 
 /- English proof (translation)
-Simplify using `only [incM]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem incM_one : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := by
   simp only [incM]; exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, incV, vecMulVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_vecMulVec {p : ℕ} (u : Fin n → E) (w : Fin p → E) :
     incM F (vecMulVec u w) = vecMulVec (incV F u) (incV F w) := by
   ext i j; simp [incM, incV, vecMulVec]
 
 /- English proof (translation)
-The claim follows from `funext fun i => (RingHom.map_mulVec (inclR (AF F)) A x i).symm`.
+A detailed English derivation is pending.
 -/
 theorem incM_mulVec {p : ℕ} (A : Matrix (Fin n) (Fin p) E) (x : Fin p → E) :
     incM F A *ᵥ incV F x = incV F (A *ᵥ x) :=
   funext fun i => (RingHom.map_mulVec (inclR (AF F)) A x i).symm
 
 /- English proof (translation)
-The claim follows from `funext fun i => (RingHom.map_vecMul (inclR (AF F)) A x i).symm`.
+A detailed English derivation is pending.
 -/
 theorem incV_vecMul {p : ℕ} (x : Fin n → E) (A : Matrix (Fin n) (Fin p) E) :
     incV F x ᵥ* incM F A = incV F (x ᵥ* A) :=
   funext fun i => (RingHom.map_vecMul (inclR (AF F)) A x i).symm
 
 /- English proof (translation)
-The claim follows from `(RingHom.map_dotProduct (inclR (AF F)) x y).symm`.
+A detailed English derivation is pending.
 -/
 theorem incV_dot (x y : Fin n → E) : incV F x ⬝ᵥ incV F y = inclR (AF F) (x ⬝ᵥ y) :=
   (RingHom.map_dotProduct (inclR (AF F)) x y).symm
 
 /- English proof (translation)
-The claim follows from `funext fun _ => by simp [incV]`.
+A detailed English derivation is pending.
 -/
 theorem incV_zero : incV F (0 : Fin n → E) = 0 := funext fun _ => by simp [incV]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, cA_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_map {m p : Type} (A : Matrix m p E) : (incM F A).map (cA σ) = incM F (A.map σ) := by
   ext i j; simp [incM, cA_inclR]
 
 /- English proof (translation)
-The claim follows from `funext fun i => cA_inclR σ (x i)`.
+A detailed English derivation is pending.
 -/
 theorem incV_map (x : Fin n → E) : (fun i => cA σ (incV F x i)) = incV F (fun i => σ (x i)) :=
   funext fun i => cA_inclR σ (x i)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[vecMulVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecMulVec_zero' {R : Type} [MulZeroClass R] {m p : Type} (w : m → R) : vecMulVec w (0 : p → R) = 0 := by
   ext i j; simp [vecMulVec]
@@ -232,9 +232,9 @@ variable {J : Matrix (Fin n) (Fin n) E} {ι : Matrix (Fin n) (Fin b) E} {J₁ : 
   {x y : Fin n → E} {K : Matrix (Fin n) (Fin n) (AE F E)} {l : (AE F E)ˣ}
 
 /- English proof (translation)
-Establish `h1 : K.map (cA σ) *ᵥ incV F (fun i => σ (x i)) = cA σ (l : AE F E) • incV F (fun i => σ (x i))`. Rewrite using `[← incV_map]`. Use function extensionality and compare the values at `i`. Establish `h` using `RingHom.map_mulVec (cA σ : AE F E →+* AE F E) K (incV F x) i`. Rewrite `h` using `[hK]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul] at h ⊢`. Conclude with `h.symm`. Rewrite using `[cvec, ← incM_mulVec, ← mulVec_smul, ← mulVec_smul, ← h1, mulVec_mulVec, mulVec_mulVec, hU]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transpose_cvec (hU : Kᵀ * incM F J * K.map (cA σ) = incM F J) (hK : K *ᵥ incV F x = (l : AE F E) • incV F x) :
     cA σ (l : AE F E) • (Kᵀ *ᵥ incV F (cvec σ J x)) = incV F (cvec σ J x) := by
@@ -248,9 +248,9 @@ theorem transpose_cvec (hU : Kᵀ * incM F J * K.map (cA σ) = incM F J) (hK : K
   rw [cvec, ← incM_mulVec, ← mulVec_smul, ← mulVec_smul, ← h1, mulVec_mulVec, mulVec_mulVec, hU]
 
 /- English proof (translation)
-Establish `hu : IsUnit (cA σ (l : AE F E))` using `l.isUnit.map (cA σ)`. Establish `h2 : Kᵀ *ᵥ incV F (cvec σ J x) = (↑hu.unit⁻¹ : AE F E) • incV F (cvec σ J x)`. Establish `h` using `transpose_cvec σ hU hK`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[IsUnit.val_inv_mul, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (↑hu.unit⁻¹ : AE F E) • incV F (cvec σ J x) := by rw [← smul_smul, h]`. Rewrite using `[← vecMul_vecMul, ← Matrix.mulVec_transpose K, h2, smul_vecMul, incV_vecMul, hcx, incV_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cvec_K (hcx : cvec σ J x ᵥ* ι = 0) (hU : Kᵀ * incM F J * K.map (cA σ) = incM F J)
     (hK : K *ᵥ incV F x = (l : AE F E) • incV F x) : incV F (cvec σ J x) ᵥ* (K * incM F ι) = 0 := by
@@ -263,7 +263,7 @@ theorem cvec_K (hcx : cvec σ J x ᵥ* ι = 0) (hU : Kᵀ * incM F J * K.map (cA
   rw [← vecMul_vecMul, ← Matrix.mulVec_transpose K, h2, smul_vecMul, incV_vecMul, hcx, incV_zero, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[← incM_mul, ← incM_vecMulVec, ← incM_vecMulVec, ← incM_add, ← incM_add, hP, incM_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem projA (S : Matrix (Fin b) (Fin n) E)
     (hP : ι * S + vecMulVec x (cvec σ J y) + vecMulVec y (cvec σ J x) = 1) :
@@ -272,9 +272,9 @@ theorem projA (S : Matrix (Fin b) (Fin n) E)
   rw [← incM_mul, ← incM_vecMulVec, ← incM_vecMulVec, ← incM_add, ← incM_add, hP, incM_one]
 
 /- English proof (translation)
-Establish `hPA` using `projA σ S hP`. Establish `h0 : incV F (cvec σ J x) ⬝ᵥ (K *ᵥ (incM F ι *ᵥ z)) = 0`. Rewrite using `[mulVec_mulVec, dotProduct_mulVec, cvec_K σ hcx hU hK, zero_dotProduct]`. Use `conv_lhs => rw [← one_mulVec (K *ᵥ (incM F ι *ᵥ z)), ← hPA]`. Rewrite using `[add_mulVec, add_mulVec, vecMulVec_mulVec, vecMulVec_mulVec, h0, op_smul_eq_smul, op_smul_eq_smul, zero_smul, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← mulVec_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem decomp (S : Matrix (Fin b) (Fin n) E)
     (hP : ι * S + vecMulVec x (cvec σ J y) + vecMulVec y (cvec σ J x) = 1)
@@ -291,21 +291,21 @@ theorem decomp (S : Matrix (Fin b) (Fin n) E)
   simp only [← mulVec_mulVec]
 
 /- English proof (translation)
-Establish `hPA` using `projA σ S hP`. Establish `hK0` using `cvec_K σ hcx hU hK`. Establish `hT : incM F ι * (incM F S * K * incM F ι) = K * incM F ι - vecMulVec (incV F x) (incV F (cvec σ J y) ᵥ* (K * incM F ι))`. Establish `h : incM F ι * incM F S * (K * incM F ι) + vecMulVec (incV F x) (incV F (cvec σ J y) ᵥ* (K * incM F ι)) = K * incM F ι`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.add_mul, Matrix.add_mul, vecMulVec_mul, vecMulVec_mul, hK0, vecMulVec_zero', add_zero]`. Use `_ = K * incM F ι := by rw [hPA, Matrix.one_mul]`. Rewrite using `[eq_sub_iff_add_eq]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hJ₁A : incM F J₁ = (incM F ι)ᵀ * incM F J * (incM F ι).map (cA σ)`. Rewrite using `[incM_map, ← gram, incM_mul, incM_mul]`. Both sides reduce to the same expression. Establish `hx2 : incV F x ᵥ* (incM F J * (K.map (cA σ) * (incM F ι).map (cA σ))) = 0`. Establish `h3 : (l : AE F E) • (incV F x ᵥ* (incM F J * K.map (cA σ))) = incV F x ᵥ* incM F J`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (incV F x ᵥ* ·) hU` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, ← vecMul_vecMul, vecMul_transpose, hK, smul_vecMul]`. Conclude with `this`. Establish `h4 : incV F x ᵥ* (incM F J * K.map (cA σ)) = (↑l⁻¹ : AE F E) • (incV F x ᵥ* incM F J)`. Rewrite using `[← h3, smul_smul, Units.inv_mul, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← vecMul_vecMul, h4, smul_vecMul, incM_map, incV_vecMul, incV_vecMul, vecMul_vecMul, hxJ, incV_zero, smul_zero]`. Establish `hmapT : (K * incM F ι - vecMulVec (incV F x) (incV F (cvec σ J y) ᵥ* (K * incM F ι))).map (cA σ) = K.map (cA σ) * (incM F ι).map (cA σ) - vecMulVec (fun i => cA σ (incV F x i)) (fun j => cA σ ((incV F (cvec σ J y) ᵥ* (K * incM F ι)) j))`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, vecMulVec, map_sum, map_mul]`. Establish `hcX : incM F J *ᵥ (fun i => cA σ (incV F x i)) = incV F (cvec σ J x)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[incV_map, incM_mulVec]`. Both sides reduce to the same expression. Establish `e2 : (K * incM F ι - vecMulVec (incV F x) (incV F (cvec σ J y) ᵥ* (K * incM F ι)))ᵀ *ᵥ incV F (cvec σ J x) = 0`. Rewrite using `[mulVec_transpose, vecMul_sub, hK0, vecMul_vecMulVec, dotProduct_comm, incV_dot, hxcx, map_zero, zero_smul, sub_zero]`. Establish `e3 : (K * incM F ι - vecMulVec (incV F x) (incV F (cvec σ J y) ᵥ* (K * incM F ι)))ᵀ * (incM F J * (K.map (cA σ) * (incM F ι).map (cA σ))) = incM F J₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e4 : (incM F ι)ᵀ * Kᵀ * (incM F J * (K.map (cA σ) * (incM F ι).map (cA σ))) = (incM F ι)ᵀ * (Kᵀ * incM F J * K.map (cA σ)) * (incM F ι).map (cA σ)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[transpose_sub, transpose_vecMulVec, Matrix.sub_mul, vecMulVec_mul, hx2, vecMulVec_zero', sub_zero, transpose_mul, e4, hU, ← hJ₁A]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hJ₁A]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = incM F J₁ := by`. Rewrite using `[hT, hmapT, Matrix.mul_sub, Matrix.mul_vecMulVec, hcX, Matrix.mul_sub, Matrix.mul_vecMulVec, e2, zero_vecMulVec, sub_zero, e3]`.
+A detailed English derivation is pending.
 -/
 theorem unitary (S : Matrix (Fin b) (Fin n) E)
     (hP : ι * S + vecMulVec x (cvec σ J y) + vecMulVec y (cvec σ J x) = 1)
@@ -363,9 +363,9 @@ theorem unitary (S : Matrix (Fin b) (Fin n) E)
           zero_vecMulVec, sub_zero, e3]
 
 /- English proof (translation)
-Take `⟨hrs, A, hA⟩` from `h`. Establish `hD : (fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ) * fromBlocks 1 0 0 (-1) = 1`. Rewrite using `[fromBlocks_multiply]`. Simplify using the standard rewrite rules. Establish `h1 : ((fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ) * Aᵀ * M) * A.map star = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Aᵀ, hA, hD]`. Establish `e : Fin r ⊕ Fin s ≃ Fin m` using `finSumFinEquiv.trans (finCongr hrs)`. Establish `h2` using `(Matrix.mul_eq_one_comm_of_equiv e).1 h1`. Conclude with `Matrix.isUnit_det_of_left_inverse (B := A.map star * ((fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ) * Aᵀ)) (by rw [← h2]; simp only [Matrix.mul_assoc])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_hasSig {m : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} {r s : ℕ} (h : HasSig M r s) : IsUnit M.det := by
   obtain ⟨hrs, A, hA⟩ := h
@@ -382,19 +382,19 @@ theorem isUnit_det_of_hasSig {m : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} {r s : �
 end Adelic
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' om₁ om₁' hA hT hT₁ v k hk l hl`. Establish `hH` using `hA.hH`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `invol : ∀ e, σ (σ e) = e`. Introduce `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(B.emb w).1.injective` to reduce the goal to its premises. Rewrite using `[hT.base.cm.2.2.2, hT.base.cm.2.2.2, star_star]`. Establish `herm` using `hT.geo.hV.herm`. Establish `hJ₁ : IsUnit G₁.V.J.det`. Establish `h` using `isUnit_det_of_hasSig (hT₁.geo.hV.sig w)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : (B.emb w).1 G₁.V.J.det ≠ 0`. Rewrite using `[RingHom.map_det]`. Conclude with `h.ne_zero`. Conclude with `Ne.isUnit (fun h0 => h' (by rw [h0, map_zero]))`. Establish `hcx` using `cvec_vecMul σ (fun u => (hH.orth u).1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxJ` using `vecMul_J_map σ invol herm (fun u => (hH.orth u).1)`. Establish `hP` using `proj σ invol herm hH.rank hH.xx hH.yy hH.xy hH.orth hH.gram hJ₁`. Establish `hU : (mat k)ᵀ * incM F G.V.J * (mat k).map (cA σ) = incM F G.V.J` using `k.2`. Establish `hSι` using `coef_mul σ hH.gram hJ₁`. Establish `hun` using `unitary σ _ hP hcx hxJ hH.xx hH.gram hU hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : IsUnit (incM F (coef σ G.V.J H.ι G₁.V.J) * mat k * incM F H.ι).det`. Establish `h` using `congrArg Matrix.det hun`. Rewrite `h` using `[det_mul, det_mul, det_transpose]`. Establish `hJA : IsUnit (incM F G₁.V.J).det`. Use `hJ₁.map (inclR (AF F) : E →+* AE F E)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Use `isUnit_iff_exists_inv.2 ⟨((incM F (coef σ G.V.J H.ι G₁.V.J) * mat k * incM F H.ι).map (cA σ)).det, hJA.mul_left_cancel ?_⟩` and prove the remaining obligations. Take the linear combination `h`. Use `⟨⟨⟨incM F (coef σ G.V.J H.ι G₁.V.J) * mat k * incM F H.ι, (incM F (coef σ G.V.J H.ι G₁.V.J) * mat k * incM F H.ι)⁻¹, Matrix.mul_nonsing_inv _ hdet, Matrix.nonsing_inv_mul _ hdet⟩, hun⟩, ?_, fun z => ⟨_, decomp σ _ hP hcx hU hl z⟩⟩` and prove the remaining obligations. Use `show At (evFin F v) (incM F (coef σ G.V.J H.ι G₁.V.J) * mat k * incM F H.ι - 1)`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hk' : u • (mat k - 1) = 0` using `hk u hu`. Establish `e : incM F (coef σ G.V.J H.ι G₁.V.J) * mat k * incM F H.ι - 1 = incM F (coef σ G.V.J H.ι G₁.V.J) * (mat k - 1) * incM F H.ι`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, ← incM_mul, hSι, incM_one]`. Rewrite using `[e, ← Matrix.smul_mul, ← Matrix.mul_smul, hk', Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_quot : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))

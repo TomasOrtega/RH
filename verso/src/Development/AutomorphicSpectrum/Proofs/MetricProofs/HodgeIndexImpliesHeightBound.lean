@@ -12,7 +12,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Small
 
 /- English proof (translation)
-Introduce `hM` and use `GroundTheory.Heights₂.Heights.ForSecondHalf.NefBundleMoriwaki.of_moriwaki hM GlobalTheory.T.packing'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smallCountUpper_of_moriwaki : MoriwakiHSStatement → ArithmeticHilbertSamuelUpperBound := fun hM =>
   GroundTheory.Heights₂.Heights.ForSecondHalf.NefBundleMoriwaki.of_moriwaki hM GlobalTheory.T.packing'

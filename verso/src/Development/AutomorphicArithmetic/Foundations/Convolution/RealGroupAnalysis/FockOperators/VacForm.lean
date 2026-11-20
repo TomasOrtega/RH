@@ -6,11 +6,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, g, hg, rfl⟩` from `hx`. Establish `e : (fun y : Fin 4 → FiniteAdeleRing (𝓞 F) F => schwartzBruhatTensorPi p g fun i => ((0, y i) : A F)) = p (infPartPi fun _ : Fin 4 => (0 : A F)) • g`. Use function extensionality and compare the values at `y`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hg`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => exact Submodule.smul_mem _ c hx`.
+A detailed English derivation is pending.
 -/
 private theorem slice_mem {F : Type} [Field F] [NumberField F] {f : V4 F → ℂ}
     (hf : f ∈ schwartzBruhatPi F (Fin 4)) :
@@ -31,7 +31,7 @@ private theorem slice_mem {F : Type} [Field F] [NumberField F] {f : V4 F → ℂ
   | smul c x _ hx => exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Establish `key : ∀ a : V4 F, (∀ i, TR.pInf F (a i) = 0) → gauss δ a = 1` using `fun a h => by`. Simplify using `only [gauss, map_add, map_sub, map_mul, map_pow, h]`. Simplify using the standard rewrite rules. Conclude with `key _ fun i => map_zero (TR.infEq F).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem gauss_fin {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (δ : F)
     (y : Fin 4 → FiniteAdeleRing (𝓞 F) F) : gauss δ (fun i => ((0, y i) : A F)) = 1 := by
@@ -41,7 +41,7 @@ private theorem gauss_fin {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
   exact key _ fun i => map_zero (TR.infEq F).symm
 
 /- English proof (translation)
-Introduce `F _ _ _ δ φ hφ`. Use `⟨_, slice_mem φ.2, funext fun v => ?_⟩` and prove the remaining obligations. Establish `h` using `hφ v (fun i => ((0, (v i).2) : A F)) rfl`. Rewrite `h` using `[gauss_fin, mul_one]`. Rewrite using `[h, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

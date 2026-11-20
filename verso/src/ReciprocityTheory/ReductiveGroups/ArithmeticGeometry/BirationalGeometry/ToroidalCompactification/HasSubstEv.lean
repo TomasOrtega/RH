@@ -11,7 +11,7 @@ namespace ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 variable {R : Type} [CommRing R] {d : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => h p.1 p.2)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun p => h p.1 p.2)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun p => by rw [h p.1 p.2]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma hasSubst_ev {m n : ℕ} (a : Fin m → Pt R n d) (h : ∀ j i, constantCoeff (a j i) = 0) :
     HasSubst (fun p : Fin m × Fin d => a p.1 p.2) := by
@@ -21,7 +21,7 @@ lemma hasSubst_ev {m n : ℕ} (a : Fin m → Pt R n d) (h : ∀ j i, constantCoe
   | exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun p => by rw [h p.1 p.2]; exact IsNilpotent.zero)
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[MvPowerSeries.subst_X (hasSubst_ev a h)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma ev_X {m n : ℕ} (a : Fin m → Pt R n d) (h : ∀ j i, constantCoeff (a j i) = 0)
     (j : Fin m) (i : Fin d) : ev a (X (j, i) : PS R m d) = a j i := by
@@ -29,7 +29,7 @@ lemma ev_X {m n : ℕ} (a : Fin m → Pt R n d) (h : ∀ j i, constantCoeff (a j
   rw [MvPowerSeries.subst_X (hasSubst_ev a h)]
 
 /- English proof (translation)
-Unfold `ev`. Conclude with `MvPowerSeries.subst_add (hasSubst_ev a h) f g`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma ev_add {m n : ℕ} (a : Fin m → Pt R n d) (h : ∀ j i, constantCoeff (a j i) = 0)
     (f g : PS R m d) : ev a (f + g) = ev a f + ev a g := by
@@ -37,7 +37,7 @@ lemma ev_add {m n : ℕ} (a : Fin m → Pt R n d) (h : ∀ j i, constantCoeff (a
   exact MvPowerSeries.subst_add (hasSubst_ev a h) f g
 
 /- English proof (translation)
-Unfold `ev`. Conclude with `MvPowerSeries.subst_mul (hasSubst_ev a h) f g`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma ev_mul {m n : ℕ} (a : Fin m → Pt R n d) (h : ∀ j i, constantCoeff (a j i) = 0)
     (f g : PS R m d) : ev a (f * g) = ev a f * ev a g := by
@@ -45,9 +45,9 @@ lemma ev_mul {m n : ℕ} (a : Fin m → Pt R n d) (h : ∀ j i, constantCoeff (a
   exact MvPowerSeries.subst_mul (hasSubst_ev a h) f g
 
 /- English proof (translation)
-Unfold `ev MvPowerSeries.subst`. Use `letI : UniformSpace R := ⊥`. Use `first`. Consider the case `(open MvPowerSeries.WithPiTopology in rw [MvPowerSeries.eval₂_C])`. Consider the case `erw [MvPowerSeries.eval₂_C]`.
+Replace the relevant objects with their definitions. Equip the data with the indicated structure. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `simp [MvPowerSeries.algebraMap_apply]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma ev_C {m n : ℕ} (a : Fin m → Pt R n d) (r : R) : ev a (C r : PS R m d) = C r := by
   unfold ev MvPowerSeries.subst

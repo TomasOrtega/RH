@@ -6,14 +6,14 @@ open scoped TensorProduct
 namespace GlobalTheory.RatUnit
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Function.comp, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_eq_dot {R : Type} [CommRing R] {r : ℕ} (σ : R → R) (G : Matrix (Fin r) (Fin r) R)
     (x y : Fin r → R) : ∑ a, ∑ b, x a * G a b * σ (y b) = x ⬝ᵥ (G *ᵥ (σ ∘ y)) := by
   simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, Function.comp, mul_assoc]
 
 /- English proof (translation)
-Establish `h : σ ∘ (γ *ᵥ y) = γ.map σ *ᵥ (σ ∘ y)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec σ γ y i`. Rewrite using `[h, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec x γᵀ, Matrix.vecMul_transpose]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dot_mulVec {R : Type} [CommRing R] {r : ℕ} (σ : R →+* R) (G γ : Matrix (Fin r) (Fin r) R)
     (x y : Fin r → R) :
@@ -27,21 +27,19 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 
 /- English proof (translation)
-Introduce `E _ _ _ r G γ hdet hinv`. Establish `hmat : ∀ i j, ∑ a, ∑ b, γ a i * G a b * IsCMField.complexConj E (γ b j) = G i j`. Introduce `i j`. Establish `h` using `hinv (Pi.single i 1) (Pi.single j 1)`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.herm _root_.ReciprocityTheory.ChartRestriction.G.FD.cc at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify `h` using `[mulVec, dotProduct, Pi.single_apply, apply_ite]`. Set `A` to `FiniteAdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E)`. Set `φ : E →+* _root_.GlobalTheory.AdLat.RA (maximalRealSubfield E) E` to `(Algebra.TensorProduct.includeRight : E →ₐ[maximalRealSubfield E] A ⊗[maximalRealSubfield E] E).toRingHom`. Establish `hφ : ∀ e : E, φ e = (1 : A) ⊗ₜ[maximalRealSubfield E] e` using `fun _ => rfl`. Establish `hg : _root_.GlobalTheory.UCls.ratM (maximalRealSubfield E) γ = γ.map φ` using `rfl`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `τ` to `_root_.GlobalTheory.AdLat.sg A (IsCMField.complexConj E)`. Establish `hτ : ∀ e : E, τ (φ e) = φ (IsCMField.complexConj E e)`. Introduce `e`. Simplify using `[τ, hφ, _root_.GlobalTheory.AdLat.sg]`. Unfold `_root_.GlobalTheory.UCls.IsUA`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hg]`. Use `⟨?_, fun x y => ?_⟩` and prove the remaining obligations. Establish `h` using `RingHom.map_det φ γ`. Rewrite `h` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isUnit_iff_ne_zero.mpr hdet).map φ`. Unfold `_root_.GlobalTheory.AdLat.hermA`. Express the relevant statement in the definitionally equal form `∑ a, ∑ b, (γ.map φ *ᵥ x) a * φ (G a b) * τ ((γ.map φ *ᵥ y) b) = ∑ a, ∑ b, x a * φ (G a b) * τ (y b)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mulVec, dotProduct, map_apply, map_sum, map_mul, hτ, Finset.sum_mul, Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ a, ∑ i, ∑ b, ∑ j, x i * (φ (γ a i) * φ (G a b) * φ (IsCMField.complexConj E (γ b j))) * τ (y j) := Finset.sum_congr rfl fun a _ => Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ i, ∑ a, ∑ b, ∑ j, x i * (φ (γ a i) * φ (G a b) * φ (IsCMField.complexConj E (γ b j))) * τ (y j) := Finset.sum_comm`. Use `_ = ∑ i, ∑ a, ∑ j, ∑ b, x i * (φ (γ a i) * φ (G a b) * φ (IsCMField.complexConj E (γ b j))) * τ (y j) := Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun a _ => Finset.sum_comm`. Use `_ = ∑ i, ∑ j, ∑ a, ∑ b, x i * (φ (γ a i) * φ (G a b) * φ (IsCMField.complexConj E (γ b j))) * τ (y j) := Finset.sum_congr rfl fun i _ => Finset.sum_comm`. Use `_ = ∑ i, ∑ j, x i * φ (G i j) * τ (y j) := by`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hmat i j, map_sum, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RatUnit.isUA_ratM : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (γ : Matrix (Fin r) (Fin r) E), γ.det ≠ 0 → (∀ x y, _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G (γ *ᵥ x) (γ *ᵥ y) = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x y) → _root_.GlobalTheory.UCls.IsUA (IsCMField.complexConj E) G (_root_.GlobalTheory.UCls.ratM (maximalRealSubfield E) γ) := by
   intro E _ _ _ r G γ hdet hinv

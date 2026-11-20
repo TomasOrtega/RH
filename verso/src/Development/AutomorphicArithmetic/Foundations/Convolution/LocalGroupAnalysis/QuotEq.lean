@@ -12,13 +12,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
     [SecondCountableTopology T] [MeasurableSpace T] [BorelSpace T] {μ : Measure G} {j : T →* G} {ν : Measure T}
 
 /- English proof (translation)
-Take `⟨⟨hμ, -⟩, hj, hν, hν'⟩` from `hp`. Establish `hjm : Measurable j` using `hj.continuous.measurable`. Establish `hm` using `h.1`. Establish `hm'` using `h'.1`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul _ (by fun_prop), h'.2, mul_one]`. Use `_ = ∫⁻ t, ∫⁻ x, Φ x * ρ x * ρ' (j t * x) ∂μ ∂ν := lintegral_lintegral_swap (Measurable.aemeasurable (by unfold Function.uncurry; fun_prop))`. Use `_ = ∫⁻ t, ∫⁻ x, Φ x * ρ' x * ρ (j t⁻¹ * x) ∂μ ∂ν := by`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← lintegral_mul_left_eq_self (μ := μ) (fun x => Φ x * ρ x * ρ' (j t * x)) (j t⁻¹)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[hi, ← mul_assoc (j t), ← map_mul, mul_inv_cancel, map_one, one_mul, mul_right_comm]`. Use `_ = ∫⁻ x, ∫⁻ t, Φ x * ρ' x * ρ (j t⁻¹ * x) ∂ν ∂μ := (lintegral_lintegral_swap (Measurable.aemeasurable (by unfold Function.uncurry; fun_prop))).symm`. Use `_ = ∫⁻ x, Φ x * ρ' x ∂μ := by`.
-
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul _ (by fun_prop), lintegral_inv_eq_self (μ := ν) (fun t => ρ (j t * x)), h.2, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lint_eq (hp : Pair μ j ν) {Φ : G → ℝ≥0∞} (hΦ : Measurable Φ) (hi : ∀ t g, Φ (j t * g) = Φ g)
     {ρ ρ' : G → ℝ≥0∞} (h : IsNrm j ν ρ) (h' : IsNrm j ν ρ') :
@@ -45,9 +43,9 @@ private theorem lint_eq (hp : Pair μ j ν) {Φ : G → ℝ≥0∞} (hΦ : Measu
           mul_one]
 
 /- English proof (translation)
-Take `⟨⟨hμ, -⟩, hj, hν, hν'⟩` from `hp`. Establish `hjm : Measurable j` using `hj.continuous.measurable`. Establish `hm` using `h.1`. Establish `h1 : ∀ᵐ x ∂μ, ∀ᵐ t ∂ν, ρ (j t * x) < ⊤` using `Filter.Eventually.of_forall fun x => ae_lt_top (by fun_prop) (by rw [h.2]; exact ENNReal.one_ne_top)`. Establish `hs : MeasurableSet {p : G × T | ρ (j p.2 * p.1) < ⊤}` using `measurableSet_lt (by fun_prop) measurable_const`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ᵐ t ∂ν, ∀ᵐ x ∂μ, ρ (j t * x) < ⊤` using `(Measure.ae_ae_comm hs).1 h1`. Take `⟨t, ht⟩` from `h2.exists`. Use `(measurePreserving_mul_left μ (j t)⁻¹).quasiMeasurePreserving.ae ht` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem ae_lt_top_nrm (hp : Pair μ j ν) {ρ : G → ℝ≥0∞} (h : IsNrm j ν ρ) : ∀ᵐ x ∂μ, ρ x < ⊤ := by
   obtain ⟨⟨hμ, -⟩, hj, hν, hν'⟩ := hp
@@ -63,9 +61,9 @@ private theorem ae_lt_top_nrm (hp : Pair μ j ν) {ρ : G → ℝ≥0∞} (h : I
   simpa using this
 
 /- English proof (translation)
-Use extensionality with `s hs`. Establish `key` using `lint_eq hp (Φ := fun x => s.indicator 1 (F x)) ((measurable_one.indicator hs).comp hF) (fun t g => by rw [hi]) h h'`. Establish `e : ∀ r : G → ℝ≥0∞, (μ.withDensity r).map F s = ∫⁻ x, s.indicator 1 (F x) * r x ∂μ` using `fun r => by`. Rewrite using `[Measure.map_apply hF hs, withDensity_apply _ (hF hs), ← lintegral_indicator (hF hs)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases hx : F x ∈ s <;> simp [Set.indicator, hx]`. Rewrite using `[e, e, key]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_eq (hp : Pair μ j ν) {F : G → ℂ} (hF : Measurable F) (hi : ∀ t g, F (j t * g) = F g)
     {ρ ρ' : G → ℝ≥0∞} (h : IsNrm j ν ρ) (h' : IsNrm j ν ρ') :
@@ -80,7 +78,7 @@ private theorem map_eq (hp : Pair μ j ν) {F : G → ℂ} (hF : Measurable F) (
   rw [e, e, key]
 
 /- English proof (translation)
-Rewrite using `[integral_map hF.aemeasurable (by fun_prop), integral_withDensity_eq_integral_toReal_smul h.1 (ae_lt_top_nrm hp h)]`. Simplify using `only [Complex.real_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem int_eq (hp : Pair μ j ν) {F : G → ℂ} (hF : Measurable F)
     {ρ : G → ℝ≥0∞} (h : IsNrm j ν ρ) :
@@ -90,9 +88,9 @@ private theorem int_eq (hp : Pair μ j ν) {F : G → ℂ} (hF : Measurable F)
   simp only [Complex.real_smul, mul_comm]
 
 /- English proof (translation)
-Establish `hm` using `h.1`. Establish `e : ∫⁻ x, ‖F x * ((ρ x).toReal : ℂ)‖ₑ ∂μ = ∫⁻ x, ‖F x‖ₑ * ρ x ∂μ`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_lt_top_nrm hp h] with x hx`. Rewrite using `[enorm_mul, ← ofReal_norm_eq_enorm ((ρ x).toReal : ℂ), Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hx.ne]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, ← lt_top_iff_ne_top]`. Conclude with `⟨fun h => h.2, fun h => ⟨Measurable.aestronglyMeasurable (by fun_prop), h⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem integrable_iff (hp : Pair μ j ν) {F : G → ℂ} (hF : Measurable F)
     {ρ : G → ℝ≥0∞} (h : IsNrm j ν ρ) :
@@ -111,9 +109,9 @@ end
 end UpperTheory.ConvolutionTheory.G
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ T _ _ _ _ _ _ _ _ μ j ν hp F hF hi ρ h`. Establish `h2 : QInt μ j ν F ↔ ∫⁻ x, ‖F x‖ₑ * ρ x ∂μ ≠ ⊤`. Use `⟨fun hq => (integrable_iff hp hF h).1 (hq.2.2 ρ h), fun hq => ⟨hF, hi, fun ρ' h' => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[integrable_iff hp hF h', lint_eq hp (Φ := fun x => ‖F x‖ₑ) hF.enorm (fun t g => by rw [hi]) h' h]`. Conclude with `hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h2.trans (integrable_iff hp hF h).symm, h2, ?_⟩` and prove the remaining obligations. Establish `hex : ∃ ρ, IsNrm j ν ρ` using `⟨ρ, h⟩`. Rewrite using `[qI, dif_pos hex, int_eq hp hF hex.choose_spec, int_eq hp hF h, map_eq hp hF hi hex.choose_spec h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G.quotEq :
     UpperTheory.ConvolutionTheory.G.QuotEq := by

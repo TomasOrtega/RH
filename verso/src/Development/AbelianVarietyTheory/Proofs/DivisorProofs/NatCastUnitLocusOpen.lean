@@ -12,17 +12,17 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.UnitLocus
 
 /- English proof (translation)
-The claim follows from `Y.toRingedSpace.isUnit_of_isUnit_germ _ _ fun x hx => (Y.mem_basicOpen _ x hx).1 (h.ge hx)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_basicOpen_eq_top' {Y : Scheme.{0}} (s : Γ(Y, ⊤)) (h : Y.basicOpen s = ⊤) : IsUnit s :=
   Y.toRingedSpace.isUnit_of_isUnit_germ _ _ fun x hx => (Y.mem_basicOpen _ x hx).1 (h.ge hx)
 
 /- English proof (translation)
-Use `⟨S'.basicOpen ((d : ℕ) : Γ(S', ⊤)), ?_, ?_⟩` and prove the remaining obligations. Introduce `V hV`. Apply `isUnit_of_basicOpen_eq_top'` to reduce the goal to its premises. Establish `e` using `Scheme.preimage_basicOpen_top V.ι ((d : ℕ) : Γ(S', ⊤))`. Rewrite `e` using `[map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e, eq_top_iff]`. Introduce `x _`. Use `show V.ι.base x ∈ S'.basicOpen _`. Conclude with `hV (show V.ι x ∈ (V : Set S') by rw [← Scheme.Opens.range_ι V]; exact ⟨x, rfl⟩)`. Introduce `T g hd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Establish `e` using `Scheme.preimage_basicOpen_top g ((d : ℕ) : Γ(S', ⊤))`. Rewrite `e` using `[map_natCast, T.basicOpen_of_isUnit hd]`. Establish `hx : x ∈ g ⁻¹ᵁ S'.basicOpen ((d : ℕ) : Γ(S', ⊤))` using `by rw [e]; trivial`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natCast_unit_locus (S' : Scheme.{0}) (d : ℕ) : ∃ U : S'.Opens,
     (∀ V : S'.Opens, V ≤ U → IsUnit ((d : ℕ) : Γ(V.toScheme, ⊤))) ∧

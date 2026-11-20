@@ -18,9 +18,9 @@ open GlobalTheory.Unf
 namespace GlobalTheory.TensorSrc
 
 /- English proof (translation)
-Establish `h1 : ∀ u', M (fun v' => f u' * g v') v = M g v * f u'`. Introduce `u'`. Establish `: (fun v' => f u' * g v') = f u' • g` using `by funext v'; simp`. Rewrite using `[this, map_smul]`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : (fun u' => M (fun v' => f u' * g v') v) = M g v • f`. Use function extensionality and compare the values at `u'`. Simplify using `[h1]`. Rewrite using `[h2, map_smul]`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem op_prod {X Y : Type} (L : Module.End ℂ (X → ℂ)) (M : Module.End ℂ (Y → ℂ)) (f : X → ℂ) (g : Y → ℂ) (u : X)
     (v : Y) : L (fun u' => M (fun v' => f u' * g v') v) u = L f u * M g v := by
@@ -33,13 +33,13 @@ theorem op_prod {X Y : Type} (L : Module.End ℂ (X → ℂ)) (M : Module.End �
   rw [h2, map_smul]; simp [mul_comm]
 
 /- English proof (translation)
-Introduce `D ψ hψ S A B d T`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.thetaFunction_products_slices_orthogonalDecomposition D ψ hψ S A B T d`. Establish `hb : ∀ fA fB u v, d.boxS T fA fB ((d.resS T).symm (u, v)) = fA u * fB v`. Introduce `fA fB u v`. Simplify using `[OrthDec.boxS]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨h1, h2, h3, h4, GlobalTheory.T.thetaFunctions_sum_uniform_limit_product_span D ψ hψ S A B T d, ?_, ?_⟩` and prove the remaining obligations. Introduce `χA χB χT omS omA omB hS hA hB a b h fA fB hfA hfB`. Use function extensionality and compare the values at `x`. Take `⟨⟨u, v⟩, rfl⟩` from `(d.resS T).symm.surjective x`. Rewrite using `[GlobalTheory.T.weilTensorRule_scalar_eq_one D ψ S A B T d χA χB χT omS omA omB hS hA hB a b h _ (h1 fA fB hfA hfB) u v, hb]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hb]`. Conclude with `op_prod _ _ fA fB u v`. Introduce `χA χB χT omS omA omB hS hA hB a b h f hf v`. Use `⟨?_, fun u => GlobalTheory.T.weilTensorRule_scalar_eq_one D ψ S A B T d χA χB χT omS omA omB hS hA hB a b h f hf u v⟩` and prove the remaining obligations. Use `(h4 _ ((GlobalTheory.T.weilOperator_oneVariable_keeps_thetaFunctions D ψ S A B T d f hf).2 χB χT omB hB (b, h))).1 v` as an intermediate fact.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem tensorSource : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S A B : HSp D) (d : OrthDec S A B) (T : HSp D), GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.TensorSource ψ d T := by

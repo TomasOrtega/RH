@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.ThKContSmallAd
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hK hT c hc _ Φ hΦ`. Conclude with `(GlobalTheory.ThKContSmall.contSmall hK F E σ B a a' G X om om' hT Φ hΦ).1.comp (Continuous.subtype_mk continuous_subtype_val _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cont : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

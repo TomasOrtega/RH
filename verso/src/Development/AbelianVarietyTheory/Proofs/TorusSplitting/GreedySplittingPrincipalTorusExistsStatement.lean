@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.GaussianTailBound
 open NumberField Complex ReciprocityTheory.ChartRestriction.G.I2
 /- English proof (citation)
-Apply `GlobalTheory.greedy_splitting_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTorusSplitting%2FGreedySplittingPrincipalTorusExists.lean&line=15#L15)
 -/

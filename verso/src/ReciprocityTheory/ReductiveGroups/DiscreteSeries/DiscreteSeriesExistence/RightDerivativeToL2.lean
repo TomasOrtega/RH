@@ -9,14 +9,14 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Conclude with `(mem_smD_iff ε (rreg ε) (toL2 ε F)).2 (slm_smooth hF)`.
+A detailed English derivation is pending.
 -/
 theorem toL2_mem_smD_of_isSmoothL2 {ε : Fin n → Bool} {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F) :
     toL2 ε F ∈ smD ε (rreg ε) := by
   exact (mem_smD_iff ε (rreg ε) (toL2 ε F)).2 (slm_smooth hF)
 
 /- English proof (translation)
-Unfold `Formalism.REAL.inG`. Use extensionality with `i j`. Simplify using `[S7.cpart1, Formalism.REAL.Jm, Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Complex.star_def]`. Apply the tactic sequence `split_ifs <;> (try simp) <;> ring`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cpart1_mem_inG (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.inG ε (S7.cpart1 ε Z) := by
@@ -27,7 +27,7 @@ private theorem cpart1_mem_inG (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n)
   split_ifs <;> (try simp) <;> ring
 
 /- English proof (translation)
-Unfold `Formalism.REAL.inG`. Use extensionality with `i j`. Simplify using `[S7.cpart2, Formalism.REAL.Jm, Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Complex.star_def]`. Apply the tactic sequence `split_ifs <;> (try simp) <;> (try field_simp) <;> ring`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cpart2_mem_inG (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.inG ε (S7.cpart2 ε Z) := by
@@ -38,7 +38,7 @@ private theorem cpart2_mem_inG (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n)
   split_ifs <;> (try simp) <;> (try field_simp) <;> ring
 
 /- English proof (translation)
-Establish `hI : Complex.I ≠ 0` using `Complex.I_ne_zero`. Simplify using `only [S7.cpart1, S7.cpart2, Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem cpart1_add_I_mul_cpart2 (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) (c d : Fin n) :
     S7.cpart1 ε Z c d + Complex.I * S7.cpart2 ε Z c d = Z c d := by
@@ -49,13 +49,11 @@ private theorem cpart1_add_I_mul_cpart2 (ε : Fin n → Bool) (Z : Matrix (Fin n
   ring
 
 /- English proof (translation)
-Rewrite using `[smE_apply (rreg_isURepOn ε), slm_dS hF (cpart1_mem_inG ε _), slm_dS hF (cpart2_mem_inG ε _)]`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[← Finset.sum_add_distrib]`. Repeatedly rewrite using `[← Finset.sum_add_distrib, ← add_smul, cpart1_add_I_mul_cpart2]`. Rewrite using `[Finset.sum_eq_single a, Finset.sum_eq_single b]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.single_apply]`. Introduce `d _ hd`. Simplify using `[Matrix.single_apply, Ne.symm hd]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c _ hc`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `d _`. Simplify using `[Matrix.single_apply, Ne.symm hc]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ a) h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rightDerivative_toL2 {ε : Fin n → Bool} {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F) (a b : Fin n) :
     ((smE ε (rreg ε) a b ⟨toL2 ε F, toL2_mem_smD_of_isSmoothL2 hF⟩ : smD ε (rreg ε)) : L2 ε) =

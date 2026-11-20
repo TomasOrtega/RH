@@ -10,7 +10,7 @@ namespace Formalism.RepresentationBoundsCohomology.ringDataObjects
 open Formalism.NG Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingIdentities
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [relMap, LinearMap.coe_mk, AddHom.coe_mk, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Conclude with `Finset.sum_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relMap_mul {O M : Type*} [CommRing O] [AddCommGroup M] [Module O M] {l m n : Type*} [Fintype l]
     [Fintype m] [Fintype n] (C : Matrix l m O) (B : Matrix m n O) (v : n → M) :
@@ -21,9 +21,9 @@ theorem relMap_mul {O M : Type*} [CommRing O] [AddCommGroup M] [Module O M] {l m
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Rewrite using `[h2, relMap_mul, hv, map_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hv`. Rewrite using `[h1, relMap_mul, hv, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_eq_of_factor {O M : Type*} [CommRing O] [AddCommGroup M] [Module O M] {m n : Type*}
     [Fintype m] [Fintype n] (A : Matrix m n O) (B : Matrix n n O) (C : Matrix m n O)
@@ -38,9 +38,9 @@ theorem ker_eq_of_factor {O M : Type*} [CommRing O] [AddCommGroup M] [Module O M
     rw [h1, relMap_mul, hv, map_zero]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.map f)), Finset.sum_map]`. Simplify using `only [Function.Embedding.coeFn_mk, f.injective.extend_apply]`. Introduce `l _ hl`. Rewrite using `[Function.extend_apply']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨j, rfl⟩`. Conclude with `hl (Finset.mem_map_of_mem _ (Finset.mem_univ j))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem sum_extend_embedding_zero_eq_sum {α β M : Type*} [Fintype α] [Fintype β] [AddCommMonoid M]
     (f : α ↪ β) (φ : α → M) : ∑ l, Function.extend f φ 0 l = ∑ j, φ j := by
@@ -54,17 +54,17 @@ private theorem sum_extend_embedding_zero_eq_sum {α β M : Type*} [Fintype α] 
       exact hl (Finset.mem_map_of_mem _ (Finset.mem_univ j))
 
 /- English proof (translation)
-Take `⟨k, b⟩` from `Submodule.basisOfPid (Pi.basisFun O n) (Submodule.span O (Set.range A))`. Establish `hk : Fintype.card (Fin k) ≤ Fintype.card n`. Establish `h` using `Submodule.finrank_le (Submodule.span O (Set.range A))`. Rewrite `h` using `[Module.finrank_eq_card_basis b, Module.finrank_fintype_fun_eq_card]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨f⟩` from `Function.Embedding.nonempty_of_card_le hk`. Establish `hA : ∀ i, A i ∈ Submodule.span O (Set.range A)` using `fun i => Submodule.subset_span ⟨i, rfl⟩`. Establish `hb : ∀ j, ∃ w : m → O, ∑ i, w i • A i = (b j : n → O)` using `fun j => (Submodule.mem_span_range_iff_exists_fun O).1 (b j).2`. Use `choose w hw using hb`. Use `⟨Function.extend f (fun j => (b j : n → O)) 0, fun i => Function.extend f (fun j => b.repr ⟨A i, hA i⟩ j) 0, Function.extend f w 0, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i c erw [Matrix.mul_apply]`. Establish `hterm : ∀ l, Function.extend f (fun j => b.repr ⟨A i, hA i⟩ j) 0 l * Function.extend f (fun j => (b j : n → O)) 0 l c = Function.extend f (fun j => b.repr ⟨A i, hA i⟩ j * (b j : n → O) c) 0 l`. Introduce `l`. Distinguish the cases in `hl : ∃ j, f j = l`. Take `⟨j, rfl⟩` from `hl`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [f.injective.extend_apply]`. Simplify using `only [Function.extend_apply' _ _ _ hl, Pi.zero_apply, zero_mul]`. Repeatedly rewrite using `[hterm]`. Rewrite using `[sum_extend_embedding_zero_eq_sum]`. Establish `h` using `congrArg (fun x : Submodule.span O (Set.range A) => (x : n → O) c) (b.sum_repr ⟨A i, hA i⟩)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h`. Conclude with `h.symm`. Use extensionality with `l c erw [Matrix.mul_apply]`. Distinguish the cases in `hl : ∃ j, f j = l`. Take `⟨j, rfl⟩` from `hl`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [f.injective.extend_apply]`. Establish `h` using `congrFun (hw j) c`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h`. Conclude with `h.symm`. Simplify using `[Function.extend_apply' _ _ _ hl]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_square {O : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] {m n : Type}
     [Fintype m] [Fintype n] [DecidableEq n] (A : Matrix m n O) :
@@ -111,11 +111,11 @@ theorem exists_square {O : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing
     · simp [Function.extend_apply' _ _ _ hl]
 
 /- English proof (translation)
-Introduce `O O' _ _ _ _ _ _ _ e he m n _ _ _ A`. Take `⟨B, C, C', h1, h2⟩` from `exists_square A`. Set `j : O →+* O'` to `algebraMap O O'`. Establish `h1' : A.map j = C.map j * B.map j` using `by rw [← Matrix.map_mul, ← h1]`. Establish `h2' : B.map j = C'.map j * A.map j` using `by rw [← Matrix.map_mul, ← h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ker_eq_of_factor A B C C' h1 h2, ker_eq_of_factor (A.map j) (B.map j) (C.map j) (C'.map j) h1' h2']`. Establish `e1` using `lenKer O n B`. Establish `e2` using `lenKer O' n (B.map j)`. Unfold `matQ at e1 e2`. Rewrite using `[e1, e2, ← he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `(RingHom.map_det j B).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem kerBc : StatKerBc := by
   intro O O' _ _ _ _ _ _ _ e he m n _ _ _ A

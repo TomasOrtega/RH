@@ -39,11 +39,11 @@ Both sides reduce to the same expression.
 theorem ipTh_eq (f f' : WO S T → ℂ) : ipTh μ 𝓕 f f' = GlobalTheory.Ker.ipO μ 𝓕 f f' := rfl
 
 /- English proof (translation)
-Take `⟨K, hK, hKγ⟩` from `(GlobalTheory.AdelicMatrixLattice.lattice D T S).2.2.2.2.2`. Establish `hcont : Continuous fun q : (GA D S × GA D T) × WO S T => ω q.1 f q.2` using `GlobalTheory.ThetaJointCont.continuous_om_oriented hω hf`. Establish `hc0 : ContinuousOn (fun w : WO S T => ω p₀ f w) K` using `(hcont.comp (by fun_prop : Continuous fun w : WO S T => (p₀, w))).continuousOn`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn hc0`. Use `⟨M + 1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hev : ∀ᶠ p in 𝓝 p₀, ∀ y ∈ K, ‖ω p f y‖ < M + 1`. Use `hK.eventually_forall_of_forall_eventually fun y hy => ?_` and prove the remaining obligations. Establish `hlt : ‖ω p₀ f y‖ < M + 1` using `lt_of_le_of_lt (hM y hy) (lt_add_one M)`. Conclude with `hcont.norm.continuousAt.eventually_lt continuousAt_const hlt`. Use `filter_upwards [hev] with p hp w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, hγ, hγK⟩` from `hKγ w`. Rewrite using `[← theta_norm_periodic hω.std (hω.om_pres p f hf) γ hγ w]`. Conclude with `(hp _ hγK).le`.
+A detailed English derivation is pending.
 -/
 theorem bound_near (hω : IsWeilDatumO ψ S T χS χT ω) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (p₀ : GA D S × GA D T) : ∃ C : ℝ, ∀ᶠ p in 𝓝 p₀, ∀ w, ‖ω p f w‖ ≤ C := by
@@ -64,11 +64,11 @@ theorem bound_near (hω : IsWeilDatumO ψ S T χS χT ω) {f : WO S T → ℂ} (
   exact (hp _ hγK).le
 
 /- English proof (translation)
-Introduce `x₀ hx₀`. Take `⟨C, hC⟩` from `bound_near hω hF (γ x₀)`. Take `⟨CE, hCE⟩` from `theta_bounded hω.std hE`. Establish `hfin : μ 𝓕 ≠ ⊤` using `(measure_dom hμ h𝓕).2`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ]; exact hfin.lt_top⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `ipTh`. Use `continuousWithinAt_of_dominated (bound := fun _ => C * CE) ?_ ?_ (integrable_const _) ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Conclude with `(integrableOn_mul_conj hω.std hμ h𝓕 (hω.om_pres (γ x) F hF) hE).aestronglyMeasurable`. Establish `ht : Tendsto γ (𝓝[U] x₀) (𝓝 (γ x₀))` using `hγ x₀ hx₀ filter_upwards [ht.eventually hC] with x hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Filter.Eventually.of_forall fun w => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_star]`. Conclude with `mul_le_mul (hx w) (hCE w) (norm_nonneg _) ((norm_nonneg _).trans (hx w))`. Use `Filter.Eventually.of_forall fun w => ?_` and prove the remaining obligations. Conclude with `((hω.om_cont F hF w).continuousAt.comp_continuousWithinAt (hγ x₀ hx₀)).mul continuousWithinAt_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousOn_ip (hω : IsWeilDatumO ψ S T χS χT ω) (hμ : μ.IsAddHaarMeasure)
     (h𝓕 : IsAddFundamentalDomain (ratL T S) 𝓕 μ) {X : Type} [TopologicalSpace X] [FirstCountableTopology X]
@@ -94,7 +94,7 @@ theorem continuousOn_ip (hω : IsWeilDatumO ψ S T χS χT ω) (hμ : μ.IsAddHa
     exact ((hω.om_cont F hF w).continuousAt.comp_continuousWithinAt (hγ x₀ hx₀)).mul continuousWithinAt_const
 
 /- English proof (translation)
-The claim follows from `hpt pt_lin := fun z P Q => by rw [map_add, map_smul] ip_lin := fun z F hF F' hF' E hE => by rw [ipTh_eq, ipTh_eq, ipTh_eq, ipO_add_left hω.std hμ h𝓕 (theta_smul z hF) hF' hE, ipO_smul_left] ip_symm := fun F _ E _ => by rw [ipTh_eq, ipTh_eq, ipO_conj] ip_pos := fun F hF hne => by …`.
+A detailed English derivation is pending.
 -/
 theorem weaklyContinuous_unitaryAction_of_realUnitaryHom (hω : IsWeilDatumO ψ S T χS χT ω) (hμ : μ.IsAddHaarMeasure)
     (h𝓕 : IsAddFundamentalDomain (ratL T S) 𝓕 μ) {n : ℕ} {ι : Type} (G : Mn n) (γ : Mn n → GA D S × GA D T)
@@ -147,9 +147,9 @@ theorem weaklyContinuous_unitaryAction_of_realUnitaryHom (hω : IsWeilDatumO ψ 
     exact hder
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT ω τ hθ hω frS εS frT εT aS aT pt hpt hL μ 𝓕 hμ h𝓕`. Use `⟨thetaSpace ψ S T, ?_, ?_⟩` and prove the remaining obligations. Establish `hcS` using `GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ S τ`. Conclude with `weaklyContinuous_unitaryAction_of_realUnitaryHom hω hμ h𝓕 (gramAt D S τ) (fun g => (atTau θ S τ g, (1 : GA D T))) (by rw [GlobalTheory.PointAtPlaceHom.atTau_one hθ S τ]; rfl) (fun g hg g' hg' => by`. Rewrite using `[GlobalTheory.PointAtPlaceHom.atTau_mul hθ S τ hg hg', Prod.mk_mul_mk, one_mul])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(by fun_prop) pt hpt (fun X hX P => ⟨_, hL.1 X hX P⟩)`. Establish `hcT` using `GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ T τ`. Conclude with `weaklyContinuous_unitaryAction_of_realUnitaryHom hω hμ h𝓕 (gramAt D T τ) (fun h => ((1 : GA D S), atTau θ T τ h)) (by rw [GlobalTheory.PointAtPlaceHom.atTau_one hθ T τ]; rfl) (fun h hh h' hh' => by`. Rewrite using `[GlobalTheory.PointAtPlaceHom.atTau_mul hθ T τ hh hh', Prod.mk_mul_mk, one_mul])`. Use the proof step `(by fun_prop) pt hpt (fun Y hY P => ⟨_, hL.2 Y hY P⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_l2_unitary_theta_of_fundamentalDomain : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (τ : D.what₂.Tau), IsInfFam θ → IsWeilDatumO ψ S T χS χT ω → ∀ (frS : Mn S.rank) (εS : Fin S.rank → Bool) (frT : Mn T.rank) (εT : Fin T.rank → Bool) (aS aT : ℚ) (pt : LPol T.rank S.rank →ₗ[ℂ] (WO S T → ℂ)), (∀ P, IsThetaFunO ψ S T (pt P)) → LieAt ψ θ τ ω εS frS εT frT aS aT pt → ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∃ Θ, L2UnitaryRepresentationData (gramAt D S τ) (actSrc θ ω τ) pt (ipTh μ 𝓕) Θ ∧ L2UnitaryRepresentationData (gramAt D T τ) (actTgt θ ω τ) pt (ipTh μ 𝓕) Θ := by
   intro D ψ θ S T χS χT ω τ hθ hω frS εS frT εT aS aT pt hpt hL μ 𝓕 hμ h𝓕

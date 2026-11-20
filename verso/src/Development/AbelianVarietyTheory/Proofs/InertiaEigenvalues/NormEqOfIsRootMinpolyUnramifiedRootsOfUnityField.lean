@@ -10,9 +10,9 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ a _ z z' h`. Establish `hint : IsIntegral (↥(Kunr l a)) z` using `Algebra.IsIntegral.isIntegral z`. Establish `hm : minpoly (↥(Kunr l a)) z' = minpoly (↥(Kunr l a)) z` using `(minpoly.eq_of_irreducible_of_monic (minpoly.irreducible hint) h (minpoly.monic hint)).symm`. Take `⟨τ, hτ⟩` from `((Normal.minpoly_eq_iff_mem_orbit (Om l)).1 hm)`. Establish `hτ' : τ • z = z'` using `hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hτ']`. Conclude with `(spectralNorm_eq_of_equiv (τ.restrictScalars ℚ_[l]) z).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_norm_eq_of_minpoly_root :
     ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (z z' : Om l),

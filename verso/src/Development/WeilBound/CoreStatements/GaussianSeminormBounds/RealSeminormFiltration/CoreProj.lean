@@ -8,11 +8,9 @@ open scoped InnerProductSpace
 namespace PositivityTheory.KReal
 
 /- English proof (translation)
-Establish `key : ∀ d, ∀ u ∈ homog σ d, ∃ y ∈ L, ∀ z ∈ L, fockInner z (u - y) = 0`. Introduce `d u hu`. Take `⟨y, hy, h⟩` from `PI.FHS.exists_orth (L ⊓ homog σ d) d inf_le_right u`. Use `⟨y, hy.1, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← PI.FHS.fockInner_hc_left z (u - y) (Submodule.sub_mem _ hu hy.2)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _ ⟨hL d z hz, homogeneousComponent_mem d z⟩`. Use `choose! f hf using fun d => key d (homogeneousComponent d u) (homogeneousComponent_mem d u)`. Use `⟨∑ i ∈ Finset.range (u.totalDegree + 1), f i, Submodule.sum_mem _ fun i _ => (hf i).1, fun z hz => ?_⟩` and prove the remaining obligations. Establish `e : u - ∑ i ∈ Finset.range (u.totalDegree + 1), f i = ∑ i ∈ Finset.range (u.totalDegree + 1), (homogeneousComponent i u - f i)`. Rewrite using `[Finset.sum_sub_distrib, sum_homogeneousComponent]`.
-
-Rewrite using `[e, PI.FHS.fockInner_sum_right]`. Conclude with `Finset.sum_eq_zero fun i _ => (hf i).2 z hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graded_orth {σ : Type} [Fintype σ] (L : Submodule ℂ (MvPolynomial σ ℂ))
     (hL : ∀ d, ∀ z ∈ L, homogeneousComponent d z ∈ L) (u : MvPolynomial σ ℂ) :
@@ -32,13 +30,11 @@ theorem graded_orth {σ : Type} [Fintype σ] (L : Submodule ℂ (MvPolynomial σ
   exact Finset.sum_eq_zero fun i _ => (hf i).2 z hz
 
 /- English proof (translation)
-Distinguish the cases in `hab : sameBlock a b`. Conclude with `⟨i, (gradedOscillatorProperty p q r 0).1 _ (PI.FockOneDegW.isKC_Eab hab) i P hP⟩`. Establish `hP' : P.IsHomogeneous i` using `hP`. Rewrite using `[PI.FockOneDegW.fockAct1_Eab_apply]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd trivial hab`. Use `⟨1 + (1 + i), Submodule.sum_mem _ fun c _ => ?_⟩` and prove the remaining obligations. Break down `c with c | c` into its components or cases. Rewrite using `[PI.FHS.omE_apply_of_ne (by simp)]`. Simplify using `only [raiB, lowB, linePos, if_true, Bool.false_eq_true, if_false, LinearMap.mulLeft_apply]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isHomogeneous_X ℂ _).mul ((isHomogeneous_X ℂ _).mul hP')`. Conclude with `c.elim0`. Use `⟨i - 1 - 1, Submodule.sum_mem _ fun c _ => ?_⟩` and prove the remaining obligations. Break down `c with c | c` into its components or cases. Rewrite using `[PI.FHS.omE_apply_of_ne (by simp)]`.
-
-Simplify using `only [raiB, lowB, linePos, if_true, Bool.false_eq_true, if_false, LinearMap.neg_apply]`. Conclude with `Submodule.neg_mem _ (hP'.pderiv.pderiv)`. Conclude with `c.elim0`. Conclude with `absurd trivial hab`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unit_homog {p q r : ℕ} (a b : Ix p q) (i : ℕ) (P : Pol p q r 0) (hP : P ∈ homog (Ix p q × Ix r 0) i) :
     ∃ e, fockAct1 p q r 0 (Eab a b) P ∈ homog (Ix p q × Ix r 0) e := by
@@ -63,19 +59,17 @@ theorem unit_homog {p q r : ℕ} (a b : Ix p q) (i : ℕ) (P : Pol p q r 0) (hP 
   · exact absurd trivial hab
 
 /- English proof (translation)
-Use `set L := genG (fockAct1 p q r 0) (Submodule.span ℂ {x}) with hLdef`. Establish `hxL : x ∈ L`. Rewrite using `[hLdef, genG, Submodule.mem_sInf]`. Conclude with `fun N hN => hN.1 (Submodule.mem_span_singleton_self x)`. Establish `hst : ∀ W, ∀ z ∈ L, fockAct1 p q r 0 W z ∈ L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W z hz`. Rewrite `hz`, the goal using `[hLdef, genG, Submodule.mem_sInf]`. Conclude with `fun N hN => hN.2 W z (hz N hN)`. Establish `hhom : ∀ e d, ∀ w ∈ homog (Ix p q × Ix r 0) e, w ∈ L → homogeneousComponent d w ∈ L`. Introduce `e d w hw hwL`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[homogeneousComponent_of_mem hw]`. Use `split_ifs`. Conclude with `hwL`. Conclude with `L.zero_mem`. Set `L' : Submodule ℂ (Pol p q r 0)` to `⨅ d, L.comap (homogeneousComponent d)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `mem' : ∀ z, z ∈ L' ↔ ∀ d, homogeneousComponent d z ∈ L` using `fun z => by`. Simplify using `only [L', Submodule.mem_iInf, Submodule.mem_comap]`. Establish `hle : L ≤ L'`. Rewrite using `[hLdef, genG]`. Use `sInf_le ⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_singleton_le_iff_mem, mem']`. Conclude with `fun d => hhom dx d x hx hxL`. Introduce `W z hz`. Rewrite using `[act_eq_sum]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[← sum_homogeneousComponent z, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨e, he⟩` from `unit_homog a b i _ (homogeneousComponent_mem i z)`. Rewrite using `[mem']`.
-
-Conclude with `fun d => hhom e d _ he (hst _ _ ((mem' z).1 hz i))`. Conclude with `fun d z hz => (mem' z).1 (hle hz) d`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem gen_graded {p q r : ℕ} (x : Pol p q r 0) (dx : ℕ) (hx : x ∈ homog (Ix p q × Ix r 0) dx) :
     ∀ d, ∀ z ∈ genG (fockAct1 p q r 0) (Submodule.span ℂ {x}),
@@ -114,11 +108,11 @@ theorem gen_graded {p q r : ℕ} (x : Pol p q r 0) (dx : ℕ) (hx : x ∈ homog 
   exact fun d z hz => (mem' z).1 (hle hz) d
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `u _`. Take `⟨y, hy, h⟩` from `graded_orth (σ := Ix p q × Ix r 0) _ (gen_graded (p := p) (q := q) (r := r) x dx hx) u`. Set `y' : FV p q r 0` to `y`. Establish `h1 : y' ∈ genG (fvAct1 p q r 0) (Submodule.span ℂ {x})` using `hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : u - y' ∈ (genG (fvAct1 p q r 0) (Submodule.span ℂ {x}))ᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `z hz`. Conclude with `h z hz`. Use `Submodule.add_mem_sup h1 h2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem proj_gen {p q r : ℕ} (x : FV p q r 0) (dx : ℕ) (hx : (x : Pol p q r 0) ∈ homog (Ix p q × Ix r 0) dx) :
     genG (fvAct1 p q r 0) (Submodule.span ℂ {x}) ⊔ (genG (fvAct1 p q r 0) (Submodule.span ℂ {x}))ᗮ = ⊤ := by

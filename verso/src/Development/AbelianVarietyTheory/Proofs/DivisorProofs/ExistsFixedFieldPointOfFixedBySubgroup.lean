@@ -10,11 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Published.AbVarRed
 
 /- English proof (translation)
-Take `⟨E, hE1, hE2, -⟩` from `GlobalTheory.SS.exists_fieldOfValues A.left Ω x.left`. Establish `hid : spMap (RingHom.id Ω) = 𝟙 (Sp Ω)`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Establish `hfix : ∀ c ∈ E, ∀ σ ∈ H, σ c = c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `c hc σ hσ`. Establish `h1 : spMap (σ : Ω →+* Ω) ≫ x.left = spMap (RingHom.id Ω) ≫ x.left`. Rewrite using `[hid, Category.id_comp]`. Conclude with `congrArg CommaMorphism.left (hx σ hσ)`. Conclude with `(hE1 _ _).1 h1 c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hE2 (IntermediateField.fixedField H) (algebraMap (IntermediateField.fixedField H) Ω)).1 ?_` and prove the remaining obligations. Introduce `c hc`. Conclude with `⟨⟨c, fun σ => hfix c hc σ σ.2⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fixedField_point (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] (H : Subgroup (Ω ≃ₐ[K] Ω))
     (A : Over (Sp K)) (_ : LocallyOfFiniteType A.hom) (x : ptOver K Ω ⟶ A)

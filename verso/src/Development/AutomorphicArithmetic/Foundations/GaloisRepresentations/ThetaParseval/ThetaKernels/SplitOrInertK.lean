@@ -9,9 +9,9 @@ noncomputable section
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 namespace GlobalTheory.KFinLoc
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB v`. Establish `hUn` using `hB.unram`. Establish `hU : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `E) v := by`. Use `GlobalTheory.LFun.isUnram_iff.2 fun w _ => ?_` and prove the remaining obligations. Conclude with `Ideal.ramificationIdx_eq_one w.asIdeal (𝓞 F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `GlobalTheory.LFun.InertChart.isSplit_or_isInertAt hU with hs | hi` into its components or cases. Use `left`. Take `⟨w, w', hne, h1, h2⟩` from `GlobalTheory.LFun.isSplit_iff.1 hs`. Conclude with `⟨(GlobalTheory.AdelicU.existsUnique_splitPrime_eq hB.cm hne h1 h2).exists.choose⟩`. Conclude with `Or.inr hi`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem split_or_inert_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ v : Pl F, Nonempty (E →ₐ[F] Fv F v) ∨ ∃ w : HeightOneSpectrum (𝓞 E), Formalism.UG.IsInertAt F E v w := by

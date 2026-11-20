@@ -17,9 +17,9 @@ def cF (D : D7) : Af D.host.F ⊗[D.host.F] D.host.E →ₐ[D.host.F] Af D.host.
   Algebra.TensorProduct.map (AlgHom.id D.host.F (Af D.host.F)) D.sp.cm.sig
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a w => show (Algebra.TensorProduct.map (AlgHom.id D.host.F (AF D.host.F)) D.sp.cm.sig) ((Algebra.TensorProduct.map (AlgHom.id D.host.F (AF D.host.F)) D.sp.cm.sig) (a ⊗ₜ[D.host.F] w)) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul]`. Use `show a ⊗ₜ[D.host.F] star (star w) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_star]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cA_cA (z : AE D) : cA D (cA D z) = z := by
   induction z using TensorProduct.induction_on with
@@ -33,7 +33,7 @@ theorem cA_cA (z : AE D) : cA D (cA D z) = z := by
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Consider the case `tmul a w => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem finPart_cA (z : AE D) : finPart D (cA D z) = cF D (finPart D z) := by
   induction z using TensorProduct.induction_on with
@@ -42,9 +42,9 @@ theorem finPart_cA (z : AE D) : finPart D (cA D z) = cF D (finPart D z) := by
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, y, rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, starO y, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cF_int {z : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D) : cF D z ∈ intAE D := by
   induction hz using AddSubgroup.closure_induction with
@@ -56,7 +56,7 @@ theorem cF_int {z : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D) : c
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a w => show a ⊗ₜ[D.host.F] star (star w) = _`. Rewrite using `[star_star]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem cF_cF (z : Af D.host.F ⊗[D.host.F] D.host.E) : cF D (cF D z) = z := by
   induction z using TensorProduct.induction_on with
@@ -67,19 +67,17 @@ theorem cF_cF (z : Af D.host.F ⊗[D.host.F] D.host.E) : cF D (cF D z) = z := by
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Introduce `w` and use `by rw [map_mul]; exact mul_mem (ha w) (ha' w)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intAf_mul {a a' : Af D.host.F} (ha : a ∈ intAf D.host.F) (ha' : a' ∈ intAf D.host.F) :
     a * a' ∈ intAf D.host.F := fun w => by rw [map_mul]; exact mul_mem (ha w) (ha' w)
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, y, rfl⟩` from `hx`. Proceed by induction on `hz' using AddSubgroup.closure_induction with`. Consider the case `mem x' hx'`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨a', ha', y', rfl⟩` from `hx'`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Conclude with `AddSubgroup.subset_closure ⟨a * a', intAf_mul ha ha', y * y', by push_cast; rfl⟩`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`. Conclude with `neg_mem hx`. Consider the case `zero => rw [zero_mul]`.
-
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [neg_mul]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem intAE_mul {z z' : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D) (hz' : z' ∈ intAE D) :
     z * z' ∈ intAE D := by
@@ -101,15 +99,15 @@ theorem intAE_mul {z z' : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hκφ : compV (belowPl P) ι (finPart D (phiE (belowPl P) 1)) = 1` using `compV_phiE (belowPl P) ι 1`. Establish `hsum : compV (belowPl P) ι (finPart D e) + compV (belowPl P) ι (finPart D (cA D e)) = 1`. Rewrite using `[← map_add, ← map_add, h3, hκφ]`. Establish `hidem : compV (belowPl P) ι (finPart D e) * compV (belowPl P) ι (finPart D e) = compV (belowPl P) ι (finPart D e)` using `by rw [← map_mul, ← map_mul, h1]`. Establish `heps : e * phiE (belowPl P) 1 = e` using `by rw [← h3, mul_add, h1, h2, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heps₀ : e₀ * phiE (belowPl P) 1 = e₀` using `by rw [← hs₀, mul_add, he₀, hc₀, add_zero]`. Establish `hceps₀ : cA D e₀ * phiE (belowPl P) 1 = cA D e₀`. Use `congrArg (cA D) heps₀` as an intermediate fact. Rewrite `this` using `[map_mul, cA_phiE]`. Then use the resulting hypothesis. Establish `hA` using `hz e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hB : e * cA D e₀ = cA D e₀ * phiE (belowPl P) (compV (belowPl P) ι (finPart D (cA D e)))`. Use `congrArg (cA D) (hz (cA D e))` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, cA_cA, cA_phiE]`. Then use the resulting hypothesis. Establish `hdec : e = e₀ * phiE (belowPl P) (compV (belowPl P) ι (finPart D e)) + cA D e₀ * phiE (belowPl P) (compV (belowPl P) ι (finPart D (cA D e)))`. Take the linear combination `hA + hB - e * hs₀ - heps`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hq : compV (belowPl P) ι (finPart D e) * (compV (belowPl P) ι (finPart D e) - 1) = 0`. Take the linear combination `hidem`. Break down `mul_eq_zero.1 hq with h0 | h1''` into its components or cases. Use `right`. Establish `hc1 : compV (belowPl P) ι (finPart D (cA D e)) = 1` using `by rw [h0, zero_add] at hsum; exact hsum`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdec, h0, hc1, phiE_zero, mul_zero, zero_add, hceps₀]`. Use `left`. Establish `h1' : compV (belowPl P) ι (finPart D e) = 1` using `by linear_combination h1''`. Establish `hc0 : compV (belowPl P) ι (finPart D (cA D e)) = 0` using `by rw [h1'] at hsum; linear_combination hsum`. Rewrite using `[hdec, h1', hc0, phiE_zero, mul_zero, add_zero, heps₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_class (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : ¬ Lev.IsConjPl (D := D) P P)
     (e₀ : AE D) (ι : D.host.E →ₐ[D.host.F] (belowPl P).adicCompletion D.host.F)
@@ -146,9 +144,9 @@ theorem idem_class (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : ¬ Lev.IsConjPl
     rw [hdec, h1', hc0, phiE_zero, mul_zero, add_zero, heps₀]
 
 /- English proof (translation)
-Apply `af_ext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[sglV_ne w _ h, mul_zero]`. Rewrite using `[sglV_ne v _ hu, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sglV_orth {F : Type} [Field F] [NumberField F] {v w : HeightOneSpectrum (𝓞 F)} (h : v ≠ w) :
     sglV v (1 : v.adicCompletion F) * sglV w 1 = 0 := by
@@ -159,7 +157,7 @@ theorem sglV_orth {F : Type} [Field F] [NumberField F] {v w : HeightOneSpectrum 
   · rw [sglV_ne v _ hu, zero_mul]
 
 /- English proof (translation)
-Unfold `phiE`. Rewrite using `[← map_mul]`. Establish `: sA v 1 * sA w 1 = 0` using `Prod.ext (by show (0 : Ainf D.host.F) * 0 = 0; rw [mul_zero]) (sglV_orth h)`. Rewrite using `[this, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiE_orth {v w : HeightOneSpectrum (𝓞 D.host.F)} (h : v ≠ w) : phiE (D := D) v 1 * phiE w 1 = 0 := by
   unfold phiE
@@ -168,9 +166,9 @@ theorem phiE_orth {v w : HeightOneSpectrum (𝓞 D.host.F)} (h : v ≠ w) : phiE
   rw [this, map_zero]
 
 /- English proof (translation)
-Take `⟨α, rfl, h1, h0⟩` from `h`. Establish `: α = sglV w 1`. Apply `af_ext` to reduce the goal to its premises. Introduce `u`. Distinguish the cases in `hu : u = w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hu` using the available equality. Rewrite using `[h1, sglV_same]`. Rewrite using `[h0 u hu, sglV_ne w _ hu]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem placeIdem_eq {w : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h : IsPlaceIdem D w ε) : ε = sA w 1 := by
   obtain ⟨α, rfl, h1, h0⟩ := h
@@ -182,19 +180,17 @@ theorem placeIdem_eq {w : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} 
   rw [this]; rfl
 
 /- English proof (translation)
-Take `⟨⟨h1, h2, w, ε, hpl, hs⟩, hcl⟩` from `he`. Rewrite `hs` using `[placeIdem_eq hpl]`. Express the relevant statement in the definitionally equal form `e + cA D e = phiE w 1 at hs`. Distinguish the cases in `hw : w = belowPl P`. Rewrite using `[← hw]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`. It suffices to derive a contradiction. Establish `heps : e * phiE w 1 = e` using `by rw [← hs, mul_add, h1, h2, add_zero]`. Establish `hint : finPart D e ∈ intAE D`. Establish `h` using `hcl 1 one_ne_zero`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1P : (1 : 𝓞 D.host.E) ∉ P.asIdeal` using `fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Use `not_not.1 (mt h.2 h1P)` as an intermediate fact. Rewrite `this` using `[show ((1 : 𝓞 D.host.E) : D.host.E)⁻¹ = 1 by simp, map_one, mul_one]`. Then use the resulting hypothesis. Establish `hne : ¬ (belowPl P).asIdeal ≤ w.asIdeal`. Introduce `hle`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hw` to reduce the goal to its premises. Conclude with `(HeightOneSpectrum.ext ((belowPl P).isMaximal.eq_of_le w.isPrime.ne_top hle)).symm`. Take `⟨x, hxv, hxw⟩` from `Set.not_subset.1 hne`. Establish `hx0 : x ≠ 0` using `fun h => hxw (h ▸ zero_mem _)`. Establish `hy : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x ∈ P.asIdeal` using `hxv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy0 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `hx0`. Establish `hnot` using `(hcl _ hy0).1 hy`. Apply `hnot` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hxF : ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x : 𝓞 D.host.E) : D.host.E)⁻¹ = algebraMap D.host.F D.host.E ((x : D.host.F)⁻¹)` using `by rw [algebraMap_O, map_inv₀]`. Establish `hv1 : Valued.v (((x : D.host.F) : w.adicCompletion D.host.F)) = 1` using `le_antisymm (val_coe_le_one w x) (not_lt.1 fun h => hxw ((val_coe_lt_one_iff w x).1 h))`. Take `⟨c, hc⟩ : ∃ c : w.adicCompletion D.host.F, c = algebraMap D.host.F (w.adicCompletion D.host.F) ((x : D.host.F)⁻¹) * 1` from `⟨_, rfl⟩`. Establish `hc1 : Valued.v c ≤ 1`. Rewrite using `[hc, mul_one, map_inv₀, algebraMap_adic_eq, map_inv₀, hv1, inv_one]`.
-
-Rewrite using `[hxF, incA_alg, ← heps, mul_assoc, mul_comm (phiE w 1), phiE_smul, ← hc, map_mul, finPart_phiE]`. Conclude with `intAE_mul hint (AddSubgroup.subset_closure ⟨sglV w c, sglV_int w ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ w).2 hc1), 1, by simp⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem below_of_idemAt {P : HeightOneSpectrum (𝓞 D.host.E)} {e : AE D} (he : Formalism.L2.NTheta.IsIdemAt e P) :
     e + cA D e = phiE (belowPl P) 1 := by
@@ -233,21 +229,21 @@ theorem below_of_idemAt {P : HeightOneSpectrum (𝓞 D.host.E)} {e : AE D} (he :
   exact intAE_mul hint (AddSubgroup.subset_closure ⟨sglV w c, sglV_int w ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ w).2 hc1), 1, by simp⟩)
 
 /- English proof (translation)
-Rewrite using `[map_mul, cA_incA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_mul_incA (z : AE D) (x : D.host.E) : cA D (z * incA D x) = cA D z * incA D (star x) := by
   rw [map_mul, cA_incA]
 
 /- English proof (translation)
-Introduce `x hx`. Use `⟨starO x, ?_, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality. Establish `: starO (0 : 𝓞 D.host.E) = 0` using `FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E (by show star ((0 : 𝓞 D.host.E) : D.host.E) = _; simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Establish `hs0 : starO x ≠ 0`. Introduce `h`. Apply `hx0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Establish `: star ((x : 𝓞 D.host.E) : D.host.E) = 0` using `congrArg (fun y : 𝓞 D.host.E => (y : D.host.E)) h`. Simplify using `using this`. Rewrite using `[he'.2 _ hs0, hc]`. Introduce `hmem`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(he.2 x hx0).1 hx` to reduce the goal to its premises. Establish `: finPart D (cA D e * incA D ((starO x : D.host.E)⁻¹)) = cF D (finPart D (e * incA D ((x : D.host.E)⁻¹)))`. Rewrite using `[← finPart_cA, cA_mul_incA, coe_starO, star_inv₀]`. Rewrite `hmem` using `[this]`. Use `cF_int hmem` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[cF_cF]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem conj_of_cA {P Q : HeightOneSpectrum (𝓞 D.host.E)} {e e' : AE D} (he : Formalism.L2.NTheta.IsIdemAt e P)
     (he' : Formalism.L2.NTheta.IsIdemAt e' Q) (hc : e' = cA D e) : Lev.IsConjPl (D := D) P Q := by

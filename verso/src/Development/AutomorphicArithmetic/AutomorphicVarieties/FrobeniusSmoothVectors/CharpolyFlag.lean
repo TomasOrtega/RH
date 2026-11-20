@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Establish `h1 : a ≠ 1` using `fun h => ha (by rw [h, one_pow])`. Establish `h2 : a ≠ a⁻¹` using `fun h => ha (by rw [sq]; nth_rewrite 2 [h]; exact mul_inv_cancel a)`. Establish `h3 : (1 : kˣ) ≠ a⁻¹` using `fun h => h1 (by rw [← inv_inv a, ← h, inv_one])`. Break down `hn with rfl | rfl` into its components or cases. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [UpperTheory.V.Fr.w] <;> simp_all [eq_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [UpperTheory.V.Fr.w] <;> simp_all [eq_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem zpow_w_ne' {k : Type} [Field k] {n : ℕ} (hn : n = 2 ∨ n = 3) (a : kˣ) (ha : a ^ 2 ≠ 1)
     (i j : Fin n) (hij : i ≠ j) : a ^ w n i ≠ a ^ w n j := by
@@ -18,16 +18,16 @@ private theorem zpow_w_ne' {k : Type} [Field k] {n : ℕ} (hn : n = 2 ∨ n = 3)
   · fin_cases i <;> fin_cases j <;> simp_all [UpperTheory.V.Fr.w] <;> simp_all [eq_comm]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff, ← res_eq_zero_iff O R, map_sub, h, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem residue_eq {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
     {x y : R} (h : res O R x = res O R y) : residue R x = residue R y := by
   rw [← sub_eq_zero, ← map_sub, residue_eq_zero_iff, ← res_eq_zero_iff O R, map_sub, h, sub_self]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Establish `e : ((g * r.toHomUnits s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = (g : Matrix (Fin n) (Fin n) k) * r s * (g : Matrix (Fin n) (Fin n) k)⁻¹`. Simplify using `[Matrix.coe_units_inv]`. Establish `hc` using `Matrix.charpoly_units_conj g (r s)`. Rewrite using `[← hc, ← e, Matrix.charpoly_of_isUpperTriangular]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(hg s).2 i]`. Introduce `i j hij`. Conclude with `(hg s).1 i j hij`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem charpoly_flag' {H k : Type} [Group H] [CommRing k] {n : ℕ} (r : H →* Matrix (Fin n) (Fin n) k)
     (κ : Fin n → H →* kˣ) (h : UpperTheory.V.W.HasFlag r.toHomUnits κ) (s : H) :
@@ -44,17 +44,15 @@ private theorem charpoly_flag' {H k : Type} [Group H] [CommRing k] {n : ℕ} (r 
     exact (hg s).1 i j hij
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ n hF hn S v g`. Take `⟨g₀, hg⟩` from `hF.f3 v`. Establish `h4 : ∀ i, res O S.R (S.ρ.ψ v i g₀) = ((F.Ψ (F.loc v g₀) ^ w n i : (ResidueField O)ˣ) : ResidueField O)` using `fun i => S.lift.2.1.2 v i g₀`. Establish `hfl : UpperTheory.V.W.HasFlag (S.ρ.r.comp (F.loc0 v)).toHomUnits (S.ρ.ψ v)`. Use `flag_loc _ _ g₀ (fun i j hij => ?_) ?_ (fun s => S.ρ.ord v s)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hu`. Establish `h2 : (S.ρ.ψ v i g₀ : S.R) - S.ρ.ψ v j g₀ ∈ maximalIdeal S.R` using `hu`. Establish `h3` using `(res_eq_zero_iff O S.R _).2 h2`. Rewrite `h3` using `[map_sub, h4, h4, sub_eq_zero]`. Conclude with `zpow_w_ne' hn _ hg i j hij (Units.ext h3)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ((S.ρ.r.comp (F.loc0 v)) g₀).map (residue S.R) = Matrix.diagonal fun i => residue S.R (S.ρ.ψ v i g₀)`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `residue_eq (O := O) ?_` and prove the remaining obligations. Rewrite using `[h4]`. Conclude with `S.lift.2.1.1 (F.loc0 v g₀) i`. Rewrite using `[Matrix.diagonal_apply_ne _ hij, ← map_zero (residue S.R)]`. Use `residue_eq (O := O) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `S.lift.2.2 (F.loc0 v g₀) i j hij`. Rewrite using `[hd, Matrix.charpoly_diagonal]`. Establish `h` using `charpoly_flag' _ _ hfl g`. Use `Polynomial.map_injective (S.A.val : S.A →+* S.R) Subtype.val_injective ?_` and prove the remaining obligations.
-
-Rewrite using `[← Matrix.charpoly_map, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.o1 :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ v g, (S.u.r (F.loc0 v g)).charpoly = ∏ i, (Polynomial.X - Polynomial.C (S.u.ψ v i g : S.A)) := by

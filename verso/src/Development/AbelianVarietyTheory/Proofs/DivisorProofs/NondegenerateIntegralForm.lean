@@ -9,11 +9,11 @@ open scoped TensorProduct
 namespace GlobalTheory.LKGeo
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr h0`. Apply `hc0` to reduce the goal to its premises. Establish `hx : B (∑ i, c i • b i) = 0`. Apply `b.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j`. Use `congrFun hc j` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, map_sum, map_smul, mul_comm]`. Establish `h1 : ∑ i, c i • b i = 0` using `hB (hx.trans (map_zero B).symm)`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Fintype.linearIndependent_iff.mp b.linearIndependent c h1 i`.
+A detailed English derivation is pending.
 -/
 theorem det_gram_ne_zero {L : Type} [AddCommGroup L] {κ : Type} [Fintype κ] [DecidableEq κ]
     (b : Module.Basis κ ℤ L) (B : LinearMap.BilinForm ℤ L) (hB : Function.Injective B) :
@@ -31,17 +31,17 @@ theorem det_gram_ne_zero {L : Type} [AddCommGroup L] {κ : Type} [Fintype κ] [D
   exact Fintype.linearIndependent_iff.mp b.linearIndependent c h1 i
 
 /- English proof (translation)
-Introduce `p _ D z hz`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Set `b` to `Module.Free.chooseBasis ℤ D.La`. Set `bQ` to `Algebra.TensorProduct.basis ℚ b`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `bA` to `Algebra.TensorProduct.basis (AfP p) bQ`. Establish `hg : ∀ i j, (D.EF.baseChange ℚ).baseChange (AfP p) (bA i) (bA j) = ((D.EF (b i) (b j) : ℤ) : AfP p)`. Introduce `i j`. Simplify using `[bA, bQ, LinearMap.BilinForm.baseChange_tmul, Algebra.smul_def]`. Use `set c := bA.repr z`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `M : Matrix _ _ (AfP p)` to `(Matrix.of fun i j => D.EF (b i) (b j)).map (Int.castRingHom (AfP p))`. Establish `hzs : z = ∑ j, c j • bA j` using `(bA.sum_repr z).symm`. Establish `hM : M.mulVec c = 0`. Use function extensionality and compare the values at `i`. Use `hz (bA i)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[hzs, map_sum]`. Simplify `this` using `[Matrix.mulVec, dotProduct, M, hg, mul_comm]`. Establish `hdet : IsUnit M.det`. Rewrite using `[show M.det = Int.castRingHom (AfP p) (Matrix.of fun i j => D.EF (b i) (b j)).det from (RingHom.map_det _ _).symm]`. Establish `h0` using `det_gram_ne_zero b D.EF D.nondeg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hq : IsUnit (((Matrix.of fun i j => D.EF (b i) (b j)).det : ℤ) : ℚ)` using `isUnit_iff_ne_zero.mpr (by exact_mod_cast h0)`. Use `hq.map (algebraMap ℚ (AfP p))` as an intermediate fact. Simplify using `using this`. Establish `hc : (⇑c : _ → AfP p) = 0`. Use `congrArg (M⁻¹).mulVec hM` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec, Matrix.mulVec_zero]`. Then use the resulting hypothesis. Establish `hc' : ∀ j, c j = 0` using `fun j => congrFun hc j`. Rewrite using `[hzs]`. Simplify using `[hc']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nondeg_afP : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (z : AfP p ⊗[ℚ] VQ D),
     (∀ v, (D.EF.baseChange ℚ).baseChange (AfP p) v z = 0) → z = 0 := by

@@ -9,27 +9,27 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ d v π b g h hhg g11 g12 g21 g22 h11 h12 h21 h22`. Use `set Bi : Matrix (Fin d) (Fin d) (Fv F v) := ((b⁻¹ : GL (Fin d) (Fv F v)) : Matrix (Fin d) (Fin d) (Fv F v)) with hBi`. Use `set Bm : Matrix (Fin d) (Fin d) (Fv F v) := (b : Matrix (Fin d) (Fin d) (Fv F v)) with hBm`. Establish `hbb : Bm * Bi = 1`. Simplify using `only [hBi, hBm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hbb' : Bi * Bm = 1`. Simplify using `only [hBi, hBm]`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `key : ∀ x : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E), Matrix.fromBlocks (Bi * x.toBlocks₁₁.map π * Bm) (Bi * x.toBlocks₁₂.map π * Bm) (Bi * x.toBlocks₂₁.map π * Bm) (Bi * x.toBlocks₂₂.map π * Bm) = Matrix.fromBlocks Bi 0 0 Bi * x.map π * Matrix.fromBlocks Bm 0 0 Bm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `hx : x.map π = Matrix.fromBlocks (x.toBlocks₁₁.map π) (x.toBlocks₁₂.map π) (x.toBlocks₂₁.map π) (x.toBlocks₂₂.map π)`. Rewrite using `[← Matrix.fromBlocks_map, Matrix.fromBlocks_toBlocks]`. Rewrite using `[hx, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : (Matrix.fromBlocks Bi 0 0 Bi * h.map π * Matrix.fromBlocks Bm 0 0 Bm) * (Matrix.fromBlocks Bi 0 0 Bi * g.map π * Matrix.fromBlocks Bm 0 0 Bm) = 1`. Establish `hBB : Matrix.fromBlocks Bm 0 0 Bm * Matrix.fromBlocks Bi 0 0 Bi = (1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (Fv F v))`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using `[hbb]`. Establish `hBB' : Matrix.fromBlocks Bi 0 0 Bi * Matrix.fromBlocks Bm 0 0 Bm = (1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (Fv F v))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using `[hbb']`. Establish `hhg' : h.map π * g.map π = 1`. Rewrite using `[← Matrix.map_mul, hhg, Matrix.map_one _ (map_zero π) (map_one π)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hBB, Matrix.mul_one, Matrix.mul_assoc (Matrix.fromBlocks Bi 0 0 Bi), hhg', Matrix.mul_one, hBB']`. Set `G : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (v.adicCompletionIntegers F)` to `fun i j => match i, j with`. Consider the case `Sum.inl i, Sum.inl j => ⟨_, g11 i j⟩`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `Sum.inl i, Sum.inr j => ⟨_, g12 i j⟩`. Consider the case `Sum.inr i, Sum.inl j => ⟨_, g21 i j⟩`. Consider the case `Sum.inr i, Sum.inr j => ⟨_, g22 i j⟩`. Set `H : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (v.adicCompletionIntegers F)` to `fun i j => match i, j with`. Consider the case `Sum.inl i, Sum.inl j => ⟨_, h11 i j⟩`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `Sum.inl i, Sum.inr j => ⟨_, h12 i j⟩`. Consider the case `Sum.inr i, Sum.inl j => ⟨_, h21 i j⟩`. Consider the case `Sum.inr i, Sum.inr j => ⟨_, h22 i j⟩`. Establish `hG : G.map (fun x => (x : Fv F v)) = Matrix.fromBlocks (Bi * g.toBlocks₁₁.map π * Bm) (Bi * g.toBlocks₁₂.map π * Bm) (Bi * g.toBlocks₂₁.map π * Bm) (Bi * g.toBlocks₂₂.map π * Bm)`. Apply the tactic sequence `ext i j; rcases i with i | i <;> rcases j with j | j <;> rfl`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hH : H.map (fun x => (x : Fv F v)) = Matrix.fromBlocks (Bi * h.toBlocks₁₁.map π * Bm) (Bi * h.toBlocks₁₂.map π * Bm) (Bi * h.toBlocks₂₁.map π * Bm) (Bi * h.toBlocks₂₂.map π * Bm)`. Apply the tactic sequence `ext i j; rcases i with i | i <;> rcases j with j | j <;> rfl`. Use `⟨G, hG, ?_⟩` and prove the remaining obligations. Apply `Matrix.isUnit_det_of_left_inverse (B := H)` to reduce the goal to its premises. Establish `hmap : (H * G).map (v.adicCompletionIntegers F).subtype = 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul]`. Express the relevant statement in the definitionally equal form `H.map (fun x => (x : Fv F v)) * G.map (fun x => (x : Fv F v)) = 1`. Rewrite using `[hG, hH, key, key, hprod]`. Use `Matrix.ext fun i j => Subtype.coe_injective ?_` and prove the remaining obligations. Use `congrFun (congrFun hmap i) j` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Matrix.map_apply]`. Express the relevant statement in the definitionally equal form `(v.adicCompletionIntegers F).subtype ((H * G) i j) = (v.adicCompletionIntegers F).subtype ((1 : Matrix _ _ _) i j)`. Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem integralBlocks_leftInverse_isUnit_det : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {d : ℕ} (v : Pl F) (π : AE F E →+* Fv F v) (b : GL (Fin d) (Fv F v))
   (g h : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)), h * g = 1 →

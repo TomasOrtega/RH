@@ -15,7 +15,7 @@ import ReciprocityTheory.DualLattices.EmbeddingSeparatingGroup
 namespace ReciprocityTheory.PGsh.Up
 
 /- English proof (translation)
-The claim follows from `unramifiedCokernelLength_of_length_eigenLengthProduct hLen hEx hTot (core_of (lifts_of hG hE hR) hB hF)`.
+A detailed English derivation is pending.
 -/
 theorem frobenius_of_length_lifts (hLen : LenIdStatement) (hEx : LenExStatement) (hTot : EigenLengthProductStatement)
     (hG : EmbeddingSeparatingGroupStatement) (hE : EigenElementaryDivisorStatement) (hR : EigenRankStatement)
@@ -23,40 +23,40 @@ theorem frobenius_of_length_lifts (hLen : LenIdStatement) (hEx : LenExStatement)
   unramifiedCokernelLength_of_length_eigenLengthProduct hLen hEx hTot (core_of (lifts_of hG hE hR) hB hF)
 
 /- English proof (translation)
-The claim follows from `frobenius_of_length_lifts lenId lenEx eigenLengthProductStatement_holds hG hE hR hB hF`.
+A detailed English derivation is pending.
 -/
 theorem unramifiedCokernelLength_of_eigen_elementaryDivisor_rank_lifts (hG : EmbeddingSeparatingGroupStatement) (hE : EigenElementaryDivisorStatement)
     (hR : EigenRankStatement) (hB : EigenLiftsBasisStatement) (hF : EigenLiftsFrobeniusStatement) : UnramifiedCokernelLengthStatement :=
   frobenius_of_length_lifts lenId lenEx eigenLengthProductStatement_holds hG hE hR hB hF
 
 /- English proof (translation)
-The claim follows from `unramifiedCokernelLength_of_eigen_elementaryDivisor_rank_lifts hG hE hR monomials_span_of_prod_eq (frob_of hF1 hF2 hF3)`.
+A detailed English derivation is pending.
 -/
 theorem frobenius_of_group_divisors_rank (hG : EmbeddingSeparatingGroupStatement) (hE : EigenElementaryDivisorStatement) (hR : EigenRankStatement)
     (hF1 : LiftMonomialDeterminantStatement) (hF2 : FrobeniusBlockStatement) (hF3 : FrobeniusLengthBoundStatement) : UnramifiedCokernelLengthStatement :=
   unramifiedCokernelLength_of_eigen_elementaryDivisor_rank_lifts hG hE hR monomials_span_of_prod_eq (frob_of hF1 hF2 hF3)
 
 /- English proof (translation)
-The claim follows from `frobenius_of_group_divisors_rank hG elementary_divisor_statement rank_eq_rank_of_perm_and_zero hF1 hF2 hF3`.
+A detailed English derivation is pending.
 -/
 theorem unramifiedCokernelLength_of_monomialDeterminant_frobeniusBlock_lengthBound (hG : EmbeddingSeparatingGroupStatement) (hF1 : LiftMonomialDeterminantStatement) (hF2 : FrobeniusBlockStatement)
     (hF3 : FrobeniusLengthBoundStatement) : UnramifiedCokernelLengthStatement :=
   frobenius_of_group_divisors_rank hG elementary_divisor_statement rank_eq_rank_of_perm_and_zero hF1 hF2 hF3
 
 /- English proof (translation)
-The claim follows from `unramifiedCokernelLength_of_monomialDeterminant_frobeniusBlock_lengthBound hG liftMonomialDeterminantStatement_holds frobeniusBlock hF3`.
+A detailed English derivation is pending.
 -/
 theorem unramifiedCokernelLength_of_frobeniusLengthBound (hG : EmbeddingSeparatingGroupStatement) (hF3 : FrobeniusLengthBoundStatement) : UnramifiedCokernelLengthStatement :=
   unramifiedCokernelLength_of_monomialDeterminant_frobeniusBlock_lengthBound hG liftMonomialDeterminantStatement_holds frobeniusBlock hF3
 
 /- English proof (translation)
-The claim follows from `unramifiedCokernelLength_of_frobeniusLengthBound hG u7F3`.
+A detailed English derivation is pending.
 -/
 theorem frobenius_of_group (hG : EmbeddingSeparatingGroupStatement) : UnramifiedCokernelLengthStatement :=
   unramifiedCokernelLength_of_frobeniusLengthBound hG u7F3
 
 /- English proof (translation)
-The claim follows from `frobenius_of_group embeddingSeparatingGroup`.
+A detailed English derivation is pending.
 -/
 theorem u7 : UnramifiedCokernelLengthStatement :=
   frobenius_of_group embeddingSeparatingGroup

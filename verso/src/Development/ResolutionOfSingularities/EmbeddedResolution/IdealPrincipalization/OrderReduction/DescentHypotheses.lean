@@ -46,7 +46,7 @@ structure OrderReductionHypotheses (P : ℕ → Prop) (T : MarkedIdealWithBounda
   valid : T.IsAdmissible
 
 /- English proof (translation)
-The claim follows from `h.coSupport_nonempty.ne_empty`.
+A detailed English derivation is pending.
 -/
 theorem OrderReductionHypotheses.orderAtLeastLocus_ne_empty {P : ℕ → Prop} {T : MarkedIdealWithBoundary.{u}} (h : OrderReductionHypotheses P T) :
     orderAtLeastLocus T.ideal T.mult ≠ ∅ :=

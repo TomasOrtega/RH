@@ -9,23 +9,23 @@ open IsDedekindDomain NumberField
 namespace PI.ProdFormulaE
 
 /- English proof (translation)
-Introduce `_F _ _ p _K _ _ _ _ ι hd hv z` and use `modF_iota_finitePlace p ι hI hC hd hv z`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem normLoc_of (hI : IndexFormula) (hC : CardStep) : St.NormLoc :=
   fun _F _ _ p _K _ _ _ _ ι hd hv z => modF_iota_finitePlace p ι hI hC hd hv z
 
 /- English proof (translation)
-The claim follows from `normLoc_of modulus_mul_card_quotient hC`.
+A detailed English derivation is pending.
 -/
 theorem normLoc_of_card (hC : CardStep) : St.NormLoc := normLoc_of modulus_mul_card_quotient hC
 
 /- English proof (translation)
-The claim follows from `normLoc_of_card card_quotient_eq_absNorm`.
+A detailed English derivation is pending.
 -/
 theorem modulus_eq_finitePlace : St.NormLoc := normLoc_of_card card_quotient_eq_absNorm
 
 /- English proof (translation)
-The claim follows from `modF_locAt modulus_mul_card_quotient card_quotient_eq_absNorm L z`.
+A detailed English derivation is pending.
 -/
 theorem modF_localization_eq_adicAbv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)}

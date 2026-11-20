@@ -21,14 +21,14 @@ def ChartKernel.Statement : Prop :=
 section Inhabitants
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LineChowForm.isProjPrime_line, linForm_tLine_not_mem_bot⟩`.
+Supply the required witnesses or components.
 -/
 theorem ChartIncDomain.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧ linForm tLine ∉ (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) :=
   ⟨LineChowForm.isProjPrime_line, linForm_tLine_not_mem_bot⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LineChowForm.isProjPrime_line, linForm_tLine_not_mem_bot⟩`.
+Supply the required witnesses or components.
 -/
 theorem ChartKernel.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧ linForm tLine ∉ (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) :=

@@ -34,9 +34,9 @@ def FibreNormMax.Statement : Prop :=
 open ProjLine in
 
 /- English proof (translation)
-Use `⟨fun _ => le_rfl, fun j m hm k => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Apply the tactic sequence `fin_cases j <;> simp [Finsupp.single_apply]`. Take `⟨i, hi⟩` from `hz.1 ()`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i, by simpa using hi⟩`.
+Supply the required witnesses or components.
 -/
 theorem FibreNormMax.coords_inhabited :
     (∀ k : Unit, 1 ≤ (fun _ : Unit => 1) k) ∧
@@ -54,7 +54,7 @@ theorem FibreNormMax.coords_inhabited :
 open ProjLine in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isArithVar_y', birational_y⟩`.
+Supply the required witnesses or components.
 -/
 theorem FibreNormMax.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ Birational (ι := GlobalTheory (Fin 2)) y :=

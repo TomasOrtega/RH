@@ -71,7 +71,7 @@ private def prLift {a b : Act} (φ : Act.Hom a b) (r : ∀ A : CommRingCat.{0}, 
   eq A u x := Prod.ext (φ.eq A u x) (hs A u x)
 
 /- English proof (translation)
-Establish `a1 : f t * f (Ring.inverse t) = 1` using `by rw [← map_mul, Ring.mul_inverse_cancel t h, map_one]`. Establish `a2 : Ring.inverse (f t) * f t = 1` using `Ring.inverse_mul_cancel _ (h.map f)`. Conclude with `left_inv_eq_right_inv a2 a1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem inv_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {t : A} (h : IsUnit t) :
     Ring.inverse (f t) = f (Ring.inverse t) := by
@@ -93,14 +93,14 @@ private def sOf (x : (aC N Q).D.obj A) : A := x.1.1.2.1 0
 private def tOf (x : (aC N Q).D.obj A) : A := x.1.1.2.1 1
 
 /- English proof (translation)
-Establish `h : IsUnit ((Um.join x.1.1).1 (Fin.last N))` using `x.1.2`. Simplify `h` using `[Um.join, tOf]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem t_unit (x : (aC N Q).D.obj A) : IsUnit (tOf x) := by
   have h : IsUnit ((Um.join x.1.1).1 (Fin.last N)) := x.1.2
   simpa [Um.join, tOf] using h
 
 /- English proof (translation)
-The claim follows from `hQ A _ x.2`.
+A detailed English derivation is pending.
 -/
 private theorem v_unit {i : Fin N} (hQ : Q.Le (unitAt i)) (x : (aC N Q).D.obj A) : IsUnit ((vOf x).1 i) :=
   hQ A _ x.2
@@ -108,7 +108,7 @@ private theorem v_unit {i : Fin N} (hQ : Q.Le (unitAt i)) (x : (aC N Q).D.obj A)
 private def rOf (i : Fin N) (x : (aC N Q).D.obj A) : A := sOf x * (vOf x).1 i * Ring.inverse (tOf x)
 
 /- English proof (translation)
-Establish `hs : sOf ((aC N Q).D.map f x) = f.hom (sOf x)` using `rfl`. Establish `hv : (vOf ((aC N Q).D.map f x)).1 i = f.hom ((vOf x).1 i)` using `rfl`. Establish `ht : tOf ((aC N Q).D.map f x) = f.hom (tOf x)` using `rfl`. Simplify using `only [rOf, hs, hv, ht, map_mul, inv_map f.hom (t_unit x)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem r_nat (i : Fin N) {A B : CommRingCat.{0}} (f : A ⟶ B) (x : (aC N Q).D.obj A) :
     rOf i ((aC N Q).D.map f x) = f.hom (rOf i x) := by
@@ -118,9 +118,9 @@ private theorem r_nat (i : Fin N) {A B : CommRingCat.{0}} (f : A ⟶ B) (x : (aC
   simp only [rOf, hs, hv, ht, map_mul, inv_map f.hom (t_unit x)]
 
 /- English proof (translation)
-Set `l : Aˣ` to `(show Aˣ × Aˣ from u).1`. Set `m : Aˣ` to `(show Aˣ × Aˣ from u).2`. Establish `hs : sOf ((aC N Q).smul A u x) = ((m : A) * ((l⁻¹ : Aˣ) : A)) * sOf x` using `rfl`. Establish `hv : (vOf ((aC N Q).smul A u x)).1 i = (l : A) * (vOf x).1 i` using `rfl`. Establish `ht : tOf ((aC N Q).smul A u x) = (m : A) * tOf x` using `rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : Ring.inverse ((m : A) * tOf x) * ((m : A) * tOf x) = 1` using `Ring.inverse_mul_cancel _ (m.isUnit.mul (t_unit x))`. Establish `ht1 : tOf x * Ring.inverse (tOf x) = 1` using `Ring.mul_inverse_cancel _ (t_unit x)`. Establish `hl : (l : A) * ((l⁻¹ : Aˣ) : A) = 1` using `by simp`. Simplify using `only [rOf, hs, hv, ht]`. Take the linear combination `((m : A) * sOf x * (vOf x).1 i * Ring.inverse ((m : A) * tOf x)) * hl + (sOf x * (vOf x).1 i * Ring.inverse (tOf x)) * hw - (sOf x * (vOf x).1 i * (m : A) * Ring.inverse ((m : A) * tOf x)) * ht1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem r_smul (i : Fin N) (u : (aC N Q).G.obj A) (x : (aC N Q).D.obj A) :
     rOf i ((aC N Q).smul A u x) = rOf i x := by
@@ -139,7 +139,7 @@ private theorem r_smul (i : Fin N) (u : (aC N Q).G.obj A) (x : (aC N Q).D.obj A)
     (sOf x * (vOf x).1 i * (m : A) * Ring.inverse ((m : A) * tOf x)) * ht1
 
 /- English proof (translation)
-Establish `ht1 : tOf x * Ring.inverse (tOf x) = 1` using `Ring.mul_inverse_cancel _ (t_unit x)`. Establish `hv1 : (vOf x).1 i * Ring.inverse ((vOf x).1 i) = 1` using `Ring.mul_inverse_cancel _ (v_unit hQ x)`. Simplify using `only [rOf]`. Take the linear combination `(-(sOf x * tOf x * Ring.inverse (tOf x))) * hv1 - sOf x * ht1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem s_of_r {i : Fin N} (hQ : Q.Le (unitAt i)) (x : (aC N Q).D.obj A) :
     sOf x = rOf i x * tOf x * Ring.inverse ((vOf x).1 i) := by
@@ -154,7 +154,7 @@ private def tVec (x : (aC N Q).D.obj A) : Um 1 A :=
 end
 
 /- English proof (translation)
-Establish `h` using `w.2`. Rewrite `h` using `[Set.range_unique]`. Conclude with `Ideal.span_singleton_eq_top.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unimodularRow_one_isUnit {A : Type} [CommRing A] (w : Um 1 A) : IsUnit (w.1 0) := by
   have h := w.2
@@ -162,7 +162,7 @@ private theorem unimodularRow_one_isUnit {A : Type} [CommRing A] (w : Um 1 A) : 
   exact Ideal.span_singleton_eq_top.1 h
 
 /- English proof (translation)
-Simplify using `[Um.join]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem join_last {N : ℕ} {A : Type} [CommRing A] (x : Um N A × Um 2 A) :
     (Um.join x).1 (Fin.last N) = x.2.1 1 := by
@@ -191,15 +191,15 @@ private def mkA {N : ℕ} {Q : Pred (XC N)} (i : Fin N) {A : CommRingCat.{0}} (v
       exact unimodularRow_one_isUnit w)) hv
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Establish `h1 : vOf x = vOf y` using `congrArg (fun p : (prC ((XC N).sub Q)).D.obj A × (XC 1).D.obj A => (show Um N A from (show ((XC N).sub Q).D.obj A × A from p.1).1.1)) h`. Establish `h2 : rOf i x = rOf i y` using `congrArg (fun p : (prC ((XC N).sub Q)).D.obj A × (XC 1).D.obj A => (show ((XC N).sub Q).D.obj A × A from p.1).2) h`. Establish `h3 : tOf x = tOf y` using `congrArg (fun p : (prC ((XC N).sub Q)).D.obj A × (XC 1).D.obj A => (show Um 1 A from p.2).1 0) h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : sOf x = sOf y`. Rewrite using `[s_of_r hQ x, s_of_r hQ y, h1, h2, h3]`. Use `Subtype.ext (Subtype.ext (Prod.ext h1 (Subtype.ext (funext fun j => ?_))))` and prove the remaining obligations. Use `fin_cases j`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `h3`. Introduce `y`. Set `v : Um N A` to `(show ((XC N).sub Q).D.obj A × A from y.1).1.1`. Establish `hv : Q.P A v` using `(show ((XC N).sub Q).D.obj A × A from y.1).1.2`. Set `r : A` to `(show ((XC N).sub Q).D.obj A × A from y.1).2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `w : Um 1 A` to `y.2`. Establish `hvu : IsUnit (v.1 i)` using `hQ A v hv`. Establish `hv1 : v.1 i * Ring.inverse (v.1 i) = 1` using `Ring.mul_inverse_cancel _ hvu`. Establish `ht1 : w.1 0 * Ring.inverse (w.1 0) = 1` using `Ring.mul_inverse_cancel _ (unimodularRow_one_isUnit w)`. Use `⟨mkA i v hv r w, Prod.ext (Prod.ext (Subtype.ext rfl) ?_) (Subtype.ext (funext fun j => ?_))⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `r * w.1 0 * Ring.inverse (v.1 i) * v.1 i * Ring.inverse (w.1 0) = r`. Take the linear combination `(r * w.1 0 * Ring.inverse (w.1 0)) * hv1 + r * ht1`. Rewrite using `[Subsingleton.elim j 0]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem d_bij {N : ℕ} {Q : Pred (XC N)} {i : Fin N} (hQ : Q.Le (unitAt i)) (A : CommRingCat.{0}) :
     Function.Bijective (fun x : (aC N Q).D.obj A =>
@@ -230,7 +230,7 @@ private theorem d_bij {N : ℕ} {Q : Pred (XC N)} {i : Fin N} (hQ : Q.Le (unitAt
       rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `g h e`. Conclude with `Prod.ext (congrArg Prod.fst e) (congrArg Prod.snd e)`. Introduce `y`. Conclude with `⟨(show Aˣ × Aˣ from y), rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem g_bij {N : ℕ} (Q : Pred (XC N)) (i : Fin N) (A : CommRingCat.{0}) :
     Function.Bijective (fun g : (aC N Q).G.obj A =>
@@ -242,21 +242,21 @@ private theorem g_bij {N : ℕ} (Q : Pred (XC N)) (i : Fin N) (A : CommRingCat.{
     exact ⟨(show Aˣ × Aˣ from y), rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ h => h, fun y => ⟨y, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem pr_d_bij (b : Act) (A : CommRingCat.{0}) :
     Function.Bijective (fun x : (prC b).D.obj A => (((prFst b).d.app A x, (prSnd b).d.app A x) : b.D.obj A × affC.D.obj A)) :=
   ⟨fun _ _ h => h, fun y => ⟨y, rfl⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ h => congrArg Prod.fst h, fun y => ⟨y.1, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem pr_g_bij (b : Act) (A : CommRingCat.{0}) :
     Function.Bijective (fun g : (prC b).G.obj A => (((prFst b).g.app A g, (prSnd b).g.app A g) : b.G.obj A × affC.G.obj A)) :=
   ⟨fun _ _ h => congrArg Prod.fst h, fun y => ⟨y.1, rfl⟩⟩
 
 /- English proof (translation)
-Consider the cases of `φ`. Consider the cases of `ψ`. Consider the cases of `h1`. Consider the cases of `h2`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 private theorem hom_ext' {a b : Act} {φ ψ : Act.Hom a b} (h1 : φ.d = ψ.d) (h2 : φ.g = ψ.g) : φ = ψ := by
   cases φ
@@ -266,13 +266,13 @@ private theorem hom_ext' {a b : Act} {φ ψ : Act.Hom a b} (h1 : φ.d = ψ.d) (h
   rfl
 
 /- English proof (translation)
-The claim follows from `NatTrans.ext (funext fun _ => Cat.Hom.ext (CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ _ => HEq.rfl)))`.
+A detailed English derivation is pending.
 -/
 private theorem comp_cat {a b c : Act} (φ : Act.Hom a b) (ψ : Act.Hom b c) : (φ.comp ψ).cat = φ.cat ≫ ψ.cat :=
   NatTrans.ext (funext fun _ => Cat.Hom.ext (CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ _ => HEq.rfl)))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ofCatMap (φ.comp ψ).cat = ofCatMap φ.cat ≫ ofCatMap ψ.cat`. Rewrite using `[comp_cat]`. Simplify using `only [ofCatMap, Functor.whiskerRight_comp, Functor.whiskerLeft_comp]`. Conclude with `Functor.map_comp _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem spc_comp {a b c : Act} (φ : Act.Hom a b) (ψ : Act.Hom b c) :
     spcMap (φ.comp ψ) = spcMap φ ≫ spcMap ψ := by
@@ -282,7 +282,7 @@ private theorem spc_comp {a b c : Act} (φ : Act.Hom a b) (ψ : Act.Hom b c) :
   exact Functor.map_comp _ _ _
 
 /- English proof (translation)
-Rewrite using `[Sp.map, spc_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem sp_comp (E : Spc) {a b c : Act} (φ : Act.Hom a b) (ψ : Act.Hom b c) :
     Sp.map E (φ.comp ψ) = Sp.map E φ ≫ Sp.map E ψ := by
@@ -290,14 +290,14 @@ private theorem sp_comp (E : Spc) {a b c : Act} (φ : Act.Hom a b) (ψ : Act.Hom
   rfl
 
 /- English proof (translation)
-The claim follows from `hom_ext' rfl (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 private theorem rHom_fst {N : ℕ} (Q : Pred (XC N)) (i : Fin N) :
     (rHom Q i).comp (prFst ((XC N).sub Q)) = (piC N).sub Q :=
   hom_ext' rfl (Category.comp_id _)
 
 /- English proof (translation)
-Introduce `n` and use `by have h : ⇑(pull R (f ≫ g) F n) = ⇑(pull R f F n) ∘ ⇑(pull R g F n) := funext fun x => pull_comp R f g F n x rw [h] exact (hf n).comp (hg n)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem eqv_comp {R : Type} [CommRing R] {X Y Z : Spc} (f : X ⟶ Y) (g : Y ⟶ Z) (F : Shv R) (hf : Eqv R f F)
     (hg : Eqv R g F) : Eqv R (f ≫ g) F := fun n => by
@@ -306,7 +306,7 @@ private theorem eqv_comp {R : Type} [CommRing R] {X Y Z : Spc} (f : X ⟶ Y) (g 
   exact (hf n).comp (hg n)
 
 /- English proof (translation)
-Introduce `n` and use `Function.bijective_iff_has_inverse.2 ⟨pull R (inv f) F n, fun x => by rw [← pull_comp, IsIso.inv_hom_id, pull_id], fun x => by rw [← pull_comp, IsIso.hom_inv_id, pull_id]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem eqv_iso {R : Type} [CommRing R] {X Y : Spc} (f : X ⟶ Y) [IsIso f] (F : Shv R) : Eqv R f F := fun n =>
   Function.bijective_iff_has_inverse.2 ⟨pull R (inv f) F n,
@@ -314,7 +314,7 @@ private theorem eqv_iso {R : Type} [CommRing R] {X Y : Spc} (f : X ⟶ Y) [IsIso
     fun x => by rw [← pull_comp, IsIso.hom_inv_id, pull_id]⟩
 
 /- English proof (translation)
-Take `rfl : d = fun _ => 0` from `funext fun j => (hd j).symm`. Take `rfl : e = fun _ => 0` from `funext fun j => (he j).symm`. Take `rfl : c = fun _ => one q X` from `funext fun j => hc j`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem lh_one {q : ℕ} {X E : Spc} (π : X ⟶ E) (d e : Fin 1 → ℤ) (c : ∀ j, Ht q X (d j) (e j))
     (hd : ∀ j, 0 = d j) (he : ∀ j, 0 = e j) (hc : ∀ j, c j = (one q X).cast (hd j) (he j)) (h : LH q π d e c) :
@@ -325,9 +325,9 @@ private theorem lh_one {q : ℕ} {X E : Spc} (π : X ⟶ E) (d e : Fin 1 → ℤ
   exact h
 
 /- English proof (translation)
-Establish `h : Pbf q S 1` using `(UpperTheory.projBundleFormula_iff_pglForm q S 1 hS).1 (UpperTheory.projectiveBundleFormula_rank_one_of_homotopyInvariant q S hS)`. Establish `hX : Inv q (Sp S (XC 1))` using `fun U ⟨x⟩ => hS U ⟨x.1⟩`. Use `(UpperTheory.lerayHirsch_one_iff_twist_equiv q _ hX).1 (lh_one _ _ _ _ (fun j => ?_) (fun j => ?_) (fun j => ?_) h) i` and prove the remaining obligations. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `rfl : j = 0` from `Subsingleton.elim _ _`. Simplify using the standard rewrite rules. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem eqv_fst (q : ℕ) [NeZero q] (S : Spc) (hS : Inv q S) (i : ℤ) : Eqv _ (Sp.fst S (XC 1)) (tw q i) := by
   have h : Pbf q S 1 := (UpperTheory.projBundleFormula_iff_pglForm q S 1 hS).1 (UpperTheory.projectiveBundleFormula_rank_one_of_homotopyInvariant q S hS)
@@ -341,9 +341,9 @@ private theorem eqv_fst (q : ℕ) [NeZero q] (S : Spc) (hS : Inv q S) (i : ℤ) 
     rfl
 
 /- English proof (translation)
-Establish `hS : Inv q (Sp E ((XC N).sub Q))` using `fun U ⟨x⟩ => hE U ⟨x.1⟩`. Establish `hS1 : Inv q (Sp E (prC ((XC N).sub Q)))` using `fun U ⟨x⟩ => hE U ⟨x.1⟩`. Use `haveI i1 : IsIso (Sp.pair E (rHom Q i) (tHom N Q)) := UpperTheory.isIso_stackProductPair_of_bijective E _ _ (d_bij hQ) (g_bij Q i)`. Use `haveI i2 : IsIso (Sp.pair E (prFst ((XC N).sub Q)) (prSnd ((XC N).sub Q))) := UpperTheory.isIso_stackProductPair_of_bijective E _ _ (pr_d_bij _) (pr_g_bij _)`. Establish `e1 : Sp.map E (rHom Q i) = Sp.pair E (rHom Q i) (tHom N Q) ≫ Sp.fst (Sp E (prC ((XC N).sub Q))) (XC 1)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : Sp.map E (prFst ((XC N).sub Q)) = Sp.pair E (prFst ((XC N).sub Q)) (prSnd ((XC N).sub Q)) ≫ Sp.fst (Sp E ((XC N).sub Q)) affC` using `rfl`. Rewrite using `[← rHom_fst Q i, sp_comp, e1, e2]`. Conclude with `eqv_comp _ _ _ (eqv_comp _ _ _ (eqv_iso _ _) (eqv_fst q _ hS1 j)) (eqv_comp _ _ _ (eqv_iso _ _) (UpperTheory.affineLineAction_fst_twistEquiv q _ j hS))`.
+A detailed English derivation is pending.
 -/
 private theorem eqv_main (q : ℕ) [NeZero q] (N : ℕ) (E : Spc) (i : Fin N) (Q : Pred (XC N)) (hQ : Q.Le (unitAt i))
     (hE : Inv q E) (j : ℤ) : Eqv _ (Sp.map E ((piC N).sub Q)) (tw q j) := by
@@ -365,9 +365,9 @@ end
 
 open UpperTheory.ProjectiveLineCharts in
 /- English proof (translation)
-Introduce `q _ N E i Q hQ hE`. Establish `hc : Inv q (Sp E ((BC N).sub ((Q1 N).comap (βC N))))` using `fun U ⟨x⟩ => hE U ⟨x.1⟩`. Establish `ha : Inv q (Sp E (((BC N).sub ((Q1 N).comap (βC N))).sub (Q.comap ((incl ((Q1 N).comap (βC N))).comp (pC N)))))` using `fun U ⟨x⟩ => hE U ⟨x.1⟩`. Establish `h` using `(UpperTheory.lerayHirsch_one_iff_twist_equiv q (Sp.map E (((incl ((Q1 N).comap (βC N))).comp (pC N)).sub Q)) ha).2 (fun j => eqv_main q N E i Q hQ hE j)`. Establish `key : pull _ (Sp.map E (incl (Q.comap ((incl ((Q1 N).comap (βC N))).comp (pC N))))) _ _ (one q _) = one q _` using `(GlobalTheory.T.tateTwistUnitClass_rootClass_spec q).2.2.1 _ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `LHQ`. Simplify using `only [key]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.leraHirsch_unit_on_blowupChart :
     ∀ (q : ℕ) [NeZero q] (N : ℕ) (E : Spc) (i : Fin N) (Q : Pred (XC N)), Q.Le (unitAt i) → Inv q E →

@@ -7,9 +7,9 @@ open scoped TensorProduct
 namespace UpperTheory.Gal.TranscendenceTraces.FiniteSectionsSeparable
 
 /- English proof (translation)
-Use `IsSepClosed.of_exists_root _ fun p hm hirr hsep => ?_` and prove the remaining obligations. Establish `hdeg : p.degree ≠ 0` using `fun h => hirr.not_isUnit (Polynomial.isUnit_iff_degree_eq_zero.2 h)`. Take `⟨r, hr⟩` from `IsAlgClosed.exists_aeval_eq_zero (AlgebraicClosure L) p hdeg`. Use `haveI : Algebra.IsAlgebraic K (AlgebraicClosure L) := Algebra.IsAlgebraic.trans K L _`. Use `haveI : IsPurelyInseparable L (AlgebraicClosure L) := IsPurelyInseparable.tower_top K L (AlgebraicClosure L)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : IsSeparable L r` using `Polynomial.Separable.of_dvd hsep (minpoly.dvd L r hr)`. Take `⟨x, rfl⟩` from `IsPurelyInseparable.inseparable' r hs`. Use `⟨x, (algebraMap L (AlgebraicClosure L)).injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, ← hr, Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sepClosed_of_isAlgebraic (K L : Type) [Field K] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L] [IsSepClosed K] : IsSepClosed L := by
@@ -25,13 +25,11 @@ private theorem sepClosed_of_isAlgebraic (K L : Type) [Field K] [Field L] [Algeb
   rw [map_zero, ← hr, Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval]
 
 /- English proof (translation)
-Take `⟨hH, hS⟩` from `hO`. Use `haveI := hH`. Use `haveI := hT`. Use `⟨hT, ?_⟩` and prove the remaining obligations. Use `haveI : IsLocalHom (algebraMap O T) := ⟨fun a ha => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Establish `h1 : a ∈ IsLocalRing.maximalIdeal O` using `h`. Rewrite `h1` using `[← GlobalTheory.comap_eq_maximalIdeal_of_finite (IsLocalRing.maximalIdeal T)]`. Conclude with `(Ideal.mem_comap.1 h1) ha⟩`. Use `letI : Algebra (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField T) := (IsLocalRing.ResidueField.map (algebraMap O T)).toAlgebra`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Algebra.IsAlgebraic (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField T) := by`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `IsLocalRing.residue_surjective x`. Take `⟨p, hp, h0⟩` from `Algebra.IsIntegral.isIntegral (R := O) t`. Use `IsIntegral.isAlgebraic ⟨p.map (IsLocalRing.residue O), hp.map _, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Polynomial.eval₂_map]`. Establish `h2 : (algebraMap (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField T)).comp (IsLocalRing.residue O) = (IsLocalRing.residue T).comp (algebraMap O T)` using `rfl`. Rewrite using `[h2, ← Polynomial.hom_eval₂, h0, map_zero]`. Conclude with `sepClosed_of_isAlgebraic (IsLocalRing.ResidueField O) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sh_of_finite (O T : Type) [CommRing O] [CommRing T] [Algebra O T]
     [Module.Finite O T] (hO : SH O) (hT : HenselianLocalRing T) : SH T := by
@@ -58,9 +56,9 @@ private theorem sh_of_finite (O T : Type) [CommRing O] [CommRing T] [Algebra O T
   exact sepClosed_of_isAlgebraic (IsLocalRing.ResidueField O) _
 
 /- English proof (translation)
-Take `⟨s⟩` from `hS T (T ⊗[B] C) hT`. Use `⟨s.toRingHom.comp (Algebra.TensorProduct.includeRight : C →ₐ[B] T ⊗[B] C).toRingHom, fun b => ?_⟩` and prove the remaining obligations. Establish `h1 : (Algebra.TensorProduct.includeRight : C →ₐ[B] T ⊗[B] C) (algebraMap B C b) = algebraMap T (T ⊗[B] C) (algebraMap B T b)`. Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply B T (T ⊗[B] C)]`. Express the relevant statement in the definitionally equal form `s ((Algebra.TensorProduct.includeRight : C →ₐ[B] T ⊗[B] C) (algebraMap B C b)) = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1]`. Conclude with `s.commutes _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_ringHom (hS : SHSec) (B C T : Type) [CommRing B] [CommRing C] [CommRing T]
     [Algebra B C] [Algebra.Etale B C] [Module.FaithfullyFlat B C] [Algebra B T] (hT : SH T) :
@@ -78,13 +76,11 @@ end UpperTheory.Gal.TranscendenceTraces.FiniteSectionsSeparable
 
 open UpperTheory.Gal.TranscendenceTraces.FiniteSectionsSeparable in
 /- English proof (translation)
-Introduce `hS O B C _ _ _ _ _ _ _ _ hO`. Take `⟨hH, -⟩` from `id hO`. Use `haveI := hH`. Take `⟨ι, _, T, _, _, e, hT⟩` from `GlobalTheory.exists_algEquiv_pi_henselianLocalRing O B`. Establish `key : ∀ i, ∃ f : C →+* T i, ∀ b, f (algebraMap B C b) = e b i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `haveI := (hT i).2`. Establish `hs` using `sh_of_finite O (T i) hO (hT i).1`. Use `letI : Algebra B (T i) := ((Pi.evalRingHom T i).comp (e : B →+* Π i, T i)).toAlgebra`. Conclude with `exists_ringHom hS B C (T i) hs`.
+Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `choose f hf using key`. Use `⟨{ toRingHom := (e.symm : (Π i, T i) →+* B).comp (Pi.ringHom f), commutes' := fun b => ?_ }⟩` and prove the remaining obligations. Establish `h : Pi.ringHom f (algebraMap B C b) = e b` using `funext fun i => hf i b`. Express the relevant statement in the definitionally equal form `e.symm (Pi.ringHom f (algebraMap B C b)) = b`. Rewrite using `[h]`.
-
-Conclude with `e.symm_apply_apply b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.finSec_of :
     SHSec → FinSec := by

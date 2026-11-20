@@ -16,15 +16,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 namespace GlobalTheory.IrrRowConcrete
 
 /- English proof (translation)
-Introduce `hSW hRF`. Take `⟨c30, cIc, hc30, hcI, hcle, hP⟩` from `GlobalTheory.CountConstants.count_constants_of_siegelWeil hSW`. Use `⟨cIc, hcI, fun 𝒞 hT hX => ?_⟩` and prove the remaining obligations. Establish `hcb : ∀ {eps : ℝ} (Fm : FamP eps), 0 < (c30 Fm.cOut).cb` using `fun Fm => (hP (fun _ _ _ _ => True) Fm).2.1`. Establish `hEv` using `GlobalTheory.IrrCountEv.countClauses_closed 𝒞 c30 hc30 hcb hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGap` using `Formalism.L2.SG.GapClosed.gapEv_closed_of 𝒞 hT`. Take `⟨a1, ha1, H1⟩` from `(hX.and hEv).and hGap`. Use `⟨a1, ha1, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `H1 e he hle`. Use `⟨K, fun Fm CH hc hL => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨hx, hev⟩, hg⟩` from `hK Fm CH hc hL`. Take `⟨x1, hx1⟩` from `hx hc`. Take `⟨x2, hx2⟩` from `hev`. Take `⟨y, hy⟩` from `hg hc`. Use `⟨max (max x1 x2) (max y (Fm.x1 + 1)), fun x hxge i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb : max (max x1 x2) (max y (Fm.x1 + 1)) ≤ x` using `hxge`. Simplify using `only [max_le_iff] at hb`. Take `⟨⟨b1, b2⟩, b3, b4⟩` from `hb`. Take `⟨X, G, ι, hA, hR, hLab⟩` from `hx1 x (by linarith) b1 i`. Take `⟨hpar, h4⟩` from `hx2 x b2 i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.AllRowsAtRecord.allRows_at_record hRF (Fm.D x i) (Fm.L x i) X G ι (c30 Fm.cOut).n0 (c30 Fm.cOut).A (c30 Fm.cOut).C (c30 Fm.cOut).c (c30 Fm.cOut).cb cIc hcI (hcle Fm) (hy x b3 i) hA hR hLab (fun P => (hP P Fm).2.2 x i) hpar h4`.
+A detailed English derivation is pending.
 -/
 theorem irr_row_closed : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → Formalism.L2.SG.RowsDef.RowsFinDim → ∃ cIc : ℝ, 0 < cIc ∧ ∀ 𝒞 : FamClass, (∀ {eps : ℝ} (Fm : FamP eps), 𝒞 Fm → TuSize Fm) → (Closed 𝒞 fun Fm _ => 𝒞 Fm → ∃ x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, ∃ (X : HidaSetting (Fm.D x i)) (G : GoodOp X) (ι : (Fm.D x i).s.HH ≃ₗᵢ[ℂ] HHX X), AutTie (Fm.D x i) X.B X.pl ∧ RowDictTie X G ι ∧ GlobalTheory.LabPin.LabTie X ι) → Closed 𝒞 fun Fm _ => ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ∃ A : AllRows (Fm.D x i), LabelCountGoodInjective A ∧ AllJoinA A ∧ CountAllRows A (epsC cIc (Fm.D x i).R.r (Fm.D x i).R.f) := by
   intro hSW hRF

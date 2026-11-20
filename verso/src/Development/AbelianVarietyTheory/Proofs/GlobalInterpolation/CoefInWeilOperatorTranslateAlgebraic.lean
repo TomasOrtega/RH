@@ -6,21 +6,21 @@ open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalis
 namespace GlobalTheory.CoefWop
 
 /- English proof (translation)
-Simplify using `only [Hf, Pi.add_apply, add_mul, Finset.sum_add_distrib, add_div]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Hf_add_left (D : D7) (T : Tor D) {N N' : ℕ} (a b w : VC D N N') :
     Hf D T (a + b) w = Hf D T a w + Hf D T b w := by
   simp only [Hf, Pi.add_apply, add_mul, Finset.sum_add_distrib, add_div]
 
 /- English proof (translation)
-Simplify using `only [Hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib, add_div]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Hf_add_right (D : D7) (T : Tor D) {N N' : ℕ} (a b w : VC D N N') :
     Hf D T w (a + b) = Hf D T w a + Hf D T w b := by
   simp only [Hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib, add_div]
 
 /- English proof (translation)
-Simplify using `only [Hf, Pi.smul_apply, nsmul_eq_mul, map_mul, map_natCast, mul_div_assoc', Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma Hf_nsmul (D : D7) (T : Tor D) {N N' : ℕ} (a b : ℕ) (y t : VC D N N') :
     Hf D T (a • y) (b • t) = (a * b : ℂ) * Hf D T y t := by
@@ -30,7 +30,7 @@ lemma Hf_nsmul (D : D7) (T : Tor D) {N N' : ℕ} (a b : ℕ) (y t : VC D N N') :
   ring
 
 /- English proof (translation)
-Simplify using `only [U]`. Rewrite using `[show z + y + t = z + (y + t) by abel]`. Rewrite using `[mul_comm (Complex.exp _) (F _ * _), mul_assoc, mul_assoc, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 2`. Simplify using `only [Hf_add_left, Hf_add_right]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -45,7 +45,7 @@ lemma U_U (D : D7) (T : Tor D) {N N' : ℕ} (y t : VC D N N') (F : VC D N N' →
   ring
 
 /- English proof (translation)
-Simplify using `only [taylor]`. Establish `h` using `iteratedFDeriv_const_smul_apply (𝕜 := ℂ) (i := (Finsupp.toMultiset α).card) (a := c) (x := (0 : VC D N N')) (hG.contDiffAt.of_le (by exact_mod_cast le_top))`. Rewrite using `[show (fun z => c * G z) = c • G from rfl, h]`. Rewrite using `[ContinuousMultilinearMap.smul_apply, smul_eq_mul, mul_div_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma taylor_const_mul (D : D7) {N N' : ℕ} (c : ℂ) (G : VC D N N' → ℂ) (hG : ContDiff ℂ ⊤ G)
     (α : Mono D N N') : taylor D (fun z => c * G z) α = c * taylor D G α := by
@@ -56,9 +56,9 @@ lemma taylor_const_mul (D : D7) {N N' : ℕ} (c : ℂ) (G : VC D N N' → ℂ) (
   rw [ContinuousMultilinearMap.smul_apply, smul_eq_mul, mul_div_assoc]
 
 /- English proof (translation)
-Unfold `U Hf`. Apply `ContDiff.mul` to reduce the goal to its premises. Conclude with `hF.comp (contDiff_id.add contDiff_const)`. Apply `ContDiff.cexp` to reduce the goal to its premises. Apply `ContDiff.sub _ contDiff_const` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ContDiff.mul contDiff_const` to reduce the goal to its premises. Apply `ContDiff.div_const` to reduce the goal to its premises. Apply `ContDiff.sum fun τ _ => ContDiff.sum fun i _ => ContDiff.sum fun j _ => ?_` to reduce the goal to its premises. Apply `ContDiff.mul _ contDiff_const` to reduce the goal to its premises. Conclude with `(contDiff_apply ℂ _ j).comp ((contDiff_apply ℂ _ i).comp (contDiff_apply ℂ _ τ))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma contDiff_U (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') (F : VC D N N' → ℂ)
     (hF : ContDiff ℂ ⊤ F) : ContDiff ℂ ⊤ (U D T x F) := by
@@ -74,7 +74,7 @@ lemma contDiff_U (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') (F : VC D N N
     exact (contDiff_apply ℂ _ j).comp ((contDiff_apply ℂ _ i).comp (contDiff_apply ℂ _ τ))
 
 /- English proof (translation)
-Rewrite using `[mem_algebraicClosure_iff]`. Apply `IsIntegral.isAlgebraic` to reduce the goal to its premises. Conclude with `IsIntegral.of_pow hn (by rw [h]; exact isIntegral_one)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma sq_one_alg {c : ℂ} {n : ℕ} (hn : 0 < n) (h : c ^ n = 1) : c ∈ Qbar := by
   rw [mem_algebraicClosure_iff]
@@ -82,7 +82,7 @@ lemma sq_one_alg {c : ℂ} {n : ℕ} (hn : 0 < n) (h : c ^ n = 1) : c ∈ Qbar :
   exact IsIntegral.of_pow hn (by rw [h]; exact isIntegral_one)
 
 /- English proof (translation)
-Simplify using `only [Hf, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal]`. Use `congr 1`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma Hf_swap (D : D7) (T : Tor D) {N N' : ℕ} (y t : VC D N N') :
     Hf D T t y = (starRingEnd ℂ) (Hf D T y t) := by
@@ -92,9 +92,9 @@ lemma Hf_swap (D : D7) (T : Tor D) {N N' : ℕ} (y t : VC D N N') :
   ring
 
 /- English proof (translation)
-Unfold `wPh`. Use `split_ifs with hp`. Rewrite using `[← Complex.exp_nat_mul, hm]`. Establish `: ((2 : ℕ) : ℂ) * ((Real.pi : ℂ) * Complex.I * ((m : ℝ) : ℂ)) = (m : ℂ) * (2 * Real.pi * Complex.I)` using `by push_cast; ring`. Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hex : ∃ s : ℂ, ∃ k : ℕ, ∃ m' : ℤ, (p : ℝ) ^ k * qH D T y = m' ∧ s = (-1) ^ m'` using `⟨(-1) ^ m, 0, m, by simp [hm], rfl⟩`. Take `⟨k, m', -, hs⟩` from `Classical.epsilon_spec hex`. Rewrite using `[hs, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul]`. Evaluate the numerical expressions.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 lemma wPh_sq (D : D7) (T : Tor D) {N N' : ℕ} (p : ℕ) (y : VC D N N') (m : ℤ) (hm : qH D T y = m) :
     wPh D T p y ^ 2 = 1 := by
@@ -111,11 +111,11 @@ lemma wPh_sq (D : D7) (T : Tor D) {N N' : ℕ} (p : ℕ) (y : VC D N N') (m : �
     norm_num
 
 /- English proof (translation)
-Rewrite `hk` using `[Hf_nsmul]`. Establish `hk' : ((a * b : ℕ) : ℝ) * (Hf D T y t).im = k`. Rewrite using `[← hk]`. Use `push_cast`. Rewrite using `[show ((a : ℂ) * b) = (((a * b : ℝ)) : ℂ) by push_cast; ring, Complex.im_ofReal_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hdiff : Hf D T y t - Hf D T t y = 2 * Complex.I * ((Hf D T y t).im : ℂ)`. Rewrite using `[Hf_swap]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Apply `sq_one_alg (n := 2 * (a * b)) (by positivity)` to reduce the goal to its premises. Rewrite using `[hdiff, ← Complex.exp_nat_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((2 * (a * b) : ℕ) : ℂ) * (-(Real.pi : ℂ) * (2 * Complex.I * ((Hf D T y t).im : ℂ) / 2)) = ((-k : ℤ) : ℂ) * (2 * Real.pi * Complex.I)`. Establish `hk'' : ((a * b : ℕ) : ℂ) * ((Hf D T y t).im : ℂ) = (k : ℂ)` using `by exact_mod_cast hk'`. Move the coercions through the operations in `at hk'' ⊢`. Take the linear combination `(-(Real.pi : ℂ) * 2 * Complex.I) * hk''`. Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 lemma root_alg (D : D7) (T : Tor D) {N N' : ℕ} (y t : VC D N N') (a b : ℕ) (ha : 0 < a) (hb : 0 < b) (k : ℤ)
     (hk : (Hf D T (a • y) (b • t)).im = k) :
@@ -143,11 +143,11 @@ namespace GlobalTheory
 open GlobalTheory.CoefWop in
 
 /- English proof (translation)
-Introduce `D T N N' F Λ p _ y t hF hΛ ⟨b, hb, hbt⟩ ⟨a, ha, hay⟩ hHf ⟨m, hm⟩`. Establish `hfun : Wop D T p y (U D T t F) = fun z => (wPh D T p y * Complex.exp (-(Real.pi : ℂ) * ((Hf D T y t - Hf D T t y) / 2))) * U D T (y + t) F z`. Use function extensionality and compare the values at `z`. Simplify using `only [Wop, U_U]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hyt : CoefIn D (U D T (y + t) F) Qbar`. Use `hΛ _ ⟨a * b, by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_comm a b, mul_smul, mul_comm b a, mul_smul]`. Conclude with `Λ.add_mem (Λ.nsmul_mem hay b) (Λ.nsmul_mem hbt a)`. Take `⟨k, hk⟩` from `hHf _ hay _ hbt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw : wPh D T p y ∈ Qbar` using `sq_one_alg (n := 2) (by norm_num) (wPh_sq D T p y m hm)`. Unfold `CoefIn`. Introduce `α`. Rewrite using `[hfun, taylor_const_mul D _ _ (contDiff_U D T _ F hF)]`. Conclude with `Qbar.mul_mem (Qbar.mul_mem hw (root_alg D T y t a b ha hb k hk)) (hyt α)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefIn_Wop_U_translate : ∀ (D : D7) (T : Tor D) (N N' : ℕ) (F : VC D N N' → ℂ) (Λ : AddSubgroup (VC D N N')) (p : ℕ) [Fact p.Prime] (y t : VC D N N'), ContDiff ℂ ⊤ F → (∀ s : VC D N N', (∃ a : ℕ, 0 < a ∧ a • s ∈ Λ) → CoefIn D (U D T s F) Qbar) → (∃ a : ℕ, 0 < a ∧ a • t ∈ Λ) → (∃ a : ℕ, 0 < a ∧ a • y ∈ Λ) → (∀ x ∈ Λ, ∀ x' ∈ Λ, ∃ k : ℤ, (Hf D T x x').im = k) → (∃ m : ℤ, qH D T y = m) → CoefIn D (Wop D T p y (U D T t F)) Qbar := by
   intro D T N N' F Λ p _ y t hF hΛ ⟨b, hb, hbt⟩ ⟨a, ha, hay⟩ hHf ⟨m, hm⟩

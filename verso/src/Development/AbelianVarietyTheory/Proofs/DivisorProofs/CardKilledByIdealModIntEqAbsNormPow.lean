@@ -7,9 +7,9 @@ namespace GlobalTheory.TorsQuotCount
 variable {K : Type} [Field K] [NumberField K] {M : Type} [AddCommGroup M] [Module (𝓞 K) M]
 
 /- English proof (translation)
-Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]`. Introduce and unpack `x ⟨⟨a, ha⟩, hx⟩`. Establish `hx' : a • x = 0` using `hx`. Establish `ha0 : a ≠ 0` using `nonZeroDivisors.ne_zero ha`. Establish `hI : Ideal.span {a} ≠ ⊥` using `by simpa [Ideal.span_singleton_eq_bot] using ha0`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {a}))`. Establish `hN : Ideal.absNorm (Ideal.span {a}) ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.2 hI`. Establish `h2 : ((Ideal.absNorm (Ideal.span {a}) : ℕ) : ℤ) • x = 0`. Rewrite using `[natCast_zsmul, ← Nat.cast_smul_eq_nsmul (𝓞 K), ← ht, mul_smul, hx', smul_zero]`. Conclude with `(Submodule.mem_bot _).2 ((smul_eq_zero.1 h2).resolve_left (by exact_mod_cast hN))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_of_free [Module.Free ℤ M] : Module.Flat (𝓞 K) M := by
   rw [IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]
@@ -24,17 +24,15 @@ theorem flat_of_free [Module.Free ℤ M] : Module.Flat (𝓞 K) M := by
   exact (Submodule.mem_bot _).2 ((smul_eq_zero.1 h2).resolve_left (by exact_mod_cast hN))
 
 /- English proof (translation)
-Use `haveI : Module.Finite (𝓞 K) M := Module.Finite.of_restrictScalars_finite ℤ (𝓞 K) M`. Use `haveI : Module.Flat (𝓞 K) M := flat_of_free`. Establish `h20 : (2 : 𝓞 K) ≠ 0` using `two_ne_zero`. Establish `hI : Ideal.span {(2 : 𝓞 K)} ≠ ⊥` using `by simpa [Ideal.span_singleton_eq_bot] using h20`. Use `haveI : Finite (𝓞 K ⧸ Ideal.span {(2 : 𝓞 K)}) := Ideal.finiteQuotientOfFreeOfNeBot _ hI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `GlobalTheory.DVRQuotCount.card_quot_smul_top_of_flat' (R := 𝓞 K) (N := M) (Ideal.span {(2 : 𝓞 K)})`. Use `haveI : Finite (ℤ ⧸ Ideal.span {((2 : ℕ) : ℤ)}) := Nat.finite_of_card_ne_zero (by rw [Int.card_ideal_quot]; norm_num)`. Establish `e2` using `GlobalTheory.DVRQuotCount.card_quot_smul_top_of_flat' (R := ℤ) (N := M) (Ideal.span {((2 : ℕ) : ℤ)})`. Rewrite `e2` using `[Int.card_ideal_quot]`. Establish `hq : Nat.card (𝓞 K ⧸ Ideal.span {(2 : 𝓞 K)}) = 2 ^ Module.finrank ℚ K`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ideal.absNorm_span_singleton]`. Establish `h2 : (2 : 𝓞 K) = algebraMap ℤ (𝓞 K) 2` using `by simp`. Rewrite using `[h2, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank, Int.natAbs_pow]`. Both sides reduce to the same expression. Establish `hPQ : (Ideal.span {(2 : 𝓞 K)} • ⊤ : Submodule (𝓞 K) M).restrictScalars ℤ = (Ideal.span {((2 : ℕ) : ℤ)} • ⊤ : Submodule ℤ M)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Submodule.restrictScalars_mem, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists, Submodule.mem_top, true_and]`. Apply the tactic sequence `constructor <;> rintro ⟨y, rfl⟩ <;> exact ⟨y, by simp [two_smul]⟩`. Establish `hsame : Nat.card (M ⧸ (Ideal.span {(2 : 𝓞 K)} • ⊤ : Submodule (𝓞 K) M)) = Nat.card (M ⧸ (Ideal.span {((2 : ℕ) : ℤ)} • ⊤ : Submodule ℤ M))`. Rewrite using `[← Nat.card_congr (Submodule.Quotient.restrictScalarsEquiv ℤ (Ideal.span {(2 : 𝓞 K)} • ⊤ : Submodule (𝓞 K) M)).toEquiv, hPQ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[hsame, e2, hq, hr, ← pow_mul]`. Establish `hn : 0 < Module.finrank ℚ K` using `Module.finrank_pos`. Establish `h3` using `Nat.pow_right_injective (le_refl 2) e1`. Establish `h4 : Module.finrank ℚ K * r = Module.finrank ℚ K * Module.finrank (𝓞 K) M`. Rewrite `h3` using `[mul_comm]`.
-
-Conclude with `h3`. Conclude with `(Nat.eq_of_mul_eq_mul_left hn h4).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eq [Module.Free ℤ M] [Module.Finite ℤ M] (r : ℕ)
     (hr : Module.finrank ℤ M = r * Module.finrank ℚ K) : Module.finrank (𝓞 K) M = r := by
@@ -71,31 +69,27 @@ theorem finrank_eq [Module.Free ℤ M] [Module.Finite ℤ M] (r : ℕ)
   exact (Nat.eq_of_mul_eq_mul_left hn h4).symm
 
 /- English proof (translation)
-Introduce `K _ _ M _ _ hfree hfin r hr 𝔟 c hc hcb`. Use `haveI : Module.Finite (𝓞 K) M := Module.Finite.of_restrictScalars_finite ℤ (𝓞 K) M`. Use `haveI : Module.Flat (𝓞 K) M := flat_of_free`. Establish `hd` using `finrank_eq (K := K) (M := M) r hr`. Establish `hc0 : (c : 𝓞 K) ≠ 0` using `by exact_mod_cast hc.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : Ideal.span {(c : 𝓞 K)} ≠ ⊥` using `by simpa [Ideal.span_singleton_eq_bot] using hc0`. Establish `hb : 𝔟 ≠ ⊥` using `fun h => hc0 (by rw [h] at hcb; exact (Submodule.mem_bot _).1 hcb)`. Use `haveI : Finite (𝓞 K ⧸ Ideal.span {(c : 𝓞 K)}) := Ideal.finiteQuotientOfFreeOfNeBot _ hspan`. Use `haveI : Finite (𝓞 K ⧸ 𝔟) := Ideal.finiteQuotientOfFreeOfNeBot _ hb`. Establish `hX` using `GlobalTheory.DVRQuotCount.card_quot_smul_top_of_flat' (R := 𝓞 K) (N := M) (Ideal.span {(c : 𝓞 K)})`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hNc : Nat.card (𝓞 K ⧸ Ideal.span {(c : 𝓞 K)}) ≠ 0` using `Nat.card_pos.ne'`. Use `set P : Submodule (𝓞 K) M := Ideal.span {(c : 𝓞 K)} • ⊤ with hP`. Use `haveI : Finite (M ⧸ P) := Nat.finite_of_card_ne_zero (by rw [hX]; exact pow_ne_zero _ hNc)`. Take `⟨b, hbsup⟩` from `IsDedekindDomain.exists_sup_span_eq ((Ideal.span_singleton_le_iff_mem 𝔟).2 hcb) hspan`. Establish `hcX : ∀ x : M ⧸ P, (c : 𝓞 K) • x = 0`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H m`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) trivial`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `f : (M ⧸ P) →ₗ[𝓞 K] (M ⧸ P)` to `b • LinearMap.id`. Establish `hf : ∀ x, f x = b • x` using `fun x => rfl`. Establish `hmem : ∀ a ∈ 𝔟, ∃ u v : 𝓞 K, a = u * c + v * b`. Introduce `a ha`. Rewrite `ha` using `[← hbsup, Submodule.mem_sup]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, z, hz, rfl⟩` from `ha`. Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Take `⟨v, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Conclude with `⟨u, v, rfl⟩`. Establish `hbmem : b ∈ 𝔟` using `hbsup ▸ Ideal.mem_sup_right (Ideal.mem_span_singleton_self b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : {x : M ⧸ P // ∀ a ∈ 𝔟, a • x = 0} ≃ LinearMap.ker f` using `{ toFun := fun x => ⟨x.1, by rw [LinearMap.mem_ker, hf]; exact x.2 b hbmem⟩ invFun := fun x => ⟨x.1, fun a ha => by`. Take `⟨u, v, rfl⟩` from `hmem a ha`. Establish `hx : b • (x.1 : M ⧸ P) = 0` using `by rw [← hf]; exact x.2`. Rewrite using `[add_smul, mul_smul, mul_smul, hcX, hx, smul_zero, smul_zero, add_zero]⟩`. Use `left_inv := fun x => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `right_inv := fun x => rfl }`. Establish `h1` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker f)`. Establish `h2` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.range f)`. Establish `h3 : Nat.card ((M ⧸ P) ⧸ LinearMap.ker f) = Nat.card (LinearMap.range f)` using `Nat.card_congr f.quotKerEquivRange.toEquiv`. Establish `hpos : 0 < Nat.card (LinearMap.range f)` using `Nat.card_pos`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Establish `hker : Nat.card (LinearMap.ker f) = Nat.card ((M ⧸ P) ⧸ LinearMap.range f)`. Rewrite `h1` using `[h3]`. Establish `h4` using `h1.symm.trans h2`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos (by rw [mul_comm]; exact h4)`. Establish `hPle : P ≤ 𝔟 • ⊤` using `Submodule.smul_mono_left ((Ideal.span_singleton_le_iff_mem 𝔟).2 hcb)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrange : LinearMap.range f = Submodule.map P.mkQ (𝔟 • ⊤)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H m => exact ⟨b • m, Submodule.smul_mem_smul hbmem trivial, by simp [hf]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨m, hm, rfl⟩`. Use `Submodule.smul_induction_on (p := fun m => P.mkQ m ∈ LinearMap.range f) hm ?_ ?_` and prove the remaining obligations. Introduce `a ha n _`. Take `⟨u, v, rfl⟩` from `hmem a ha`. Use `⟨v • P.mkQ n, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hf, map_smul, add_smul, mul_smul, mul_smul, hcX, smul_zero, zero_add]`. Conclude with `smul_comm _ _ _`. Introduce `x y hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
-
-Establish `hQ : Nat.card ((M ⧸ P) ⧸ LinearMap.range f) = Nat.card (M ⧸ (𝔟 • ⊤ : Submodule (𝓞 K) M))`. Rewrite using `[hrange]`. Conclude with `Nat.card_congr (Submodule.quotientQuotientEquivQuotient P (𝔟 • ⊤) hPle).toEquiv`. Establish `hM` using `GlobalTheory.DVRQuotCount.card_quot_smul_top_of_flat' (R := 𝓞 K) (N := M) 𝔟`. Rewrite using `[Nat.card_congr e1, hker, hQ, hM, hd, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_killed_eq : ∀ (K : Type) [Field K] [NumberField K] (M : Type) [AddCommGroup M] [Module (𝓞 K) M],
     Module.Free ℤ M → Module.Finite ℤ M → ∀ (r : ℕ), Module.finrank ℤ M = r * Module.finrank ℚ K →

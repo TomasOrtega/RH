@@ -12,7 +12,7 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V]
   (v : InfinitePlace K)
 
 /- English proof (translation)
-Unfold `fcoord vecAt`. Rewrite using `[← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fcoord_smul' (c : K) (x : V) : fcoord b X v (c • x) = v.embedding c • fcoord b X v x := by
   unfold fcoord vecAt
@@ -22,7 +22,7 @@ theorem fcoord_smul' (c : K) (x : V) : fcoord b X v (c • x) = v.embedding c �
   simp
 
 /- English proof (translation)
-Unfold `fcoord vecAt`. Rewrite using `[← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem fcoord_add_projection_lattices (x y : V) : fcoord b X v (x + y) = fcoord b X v x + fcoord b X v y := by
   unfold fcoord vecAt
@@ -32,7 +32,7 @@ private theorem fcoord_add_projection_lattices (x y : V) : fcoord b X v (x + y) 
   simp
 
 /- English proof (translation)
-Unfold `majAt`. Rewrite using `[fcoord_add_projection_lattices]`. Simplify using `[add_mul, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem majAt_add_left' (x x' y : V) : majAt b X v (x + x') y = majAt b X v x y + majAt b X v x' y := by
   unfold majAt
@@ -40,7 +40,7 @@ theorem majAt_add_left' (x x' y : V) : majAt b X v (x + x') y = majAt b X v x y 
   simp [add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `majAt`. Rewrite using `[fcoord_add_projection_lattices]`. Simplify using `[mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem majAt_add_right' (x y y' : V) : majAt b X v x (y + y') = majAt b X v x y + majAt b X v x y' := by
   unfold majAt
@@ -48,7 +48,7 @@ theorem majAt_add_right' (x y y' : V) : majAt b X v x (y + y') = majAt b X v x y
   simp [mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `majAt`. Rewrite using `[fcoord_smul', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem majAt_smul_left' (c : K) (x y : V) :
     majAt b X v (c • x) y = star (v.embedding c) * majAt b X v x y := by
@@ -59,7 +59,7 @@ theorem majAt_smul_left' (c : K) (x y : V) :
   ring
 
 /- English proof (translation)
-Unfold `majAt`. Rewrite using `[fcoord_smul', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem majAt_smul_right' (c : K) (x y : V) :
     majAt b X v x (c • y) = v.embedding c * majAt b X v x y := by
@@ -70,7 +70,7 @@ theorem majAt_smul_right' (c : K) (x y : V) :
   ring
 
 /- English proof (translation)
-Unfold `majAt`. Rewrite using `[star_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul', star_star, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem majAt_swap' (x y : V) : majAt b X v y x = star (majAt b X v x y) := by
   unfold majAt
@@ -79,7 +79,7 @@ theorem majAt_swap' (x y : V) : majAt b X v y x = star (majAt b X v x y) := by
   rw [star_mul', star_star, mul_comm]
 
 /- English proof (translation)
-Unfold `majAt normAt cnorm`. Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg fun i _ => by positivity)]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem majAt_self' (x : V) : majAt b X v x x = ((normAt b X v x ^ 2 : ℝ) : ℂ) := by
   unfold majAt normAt cnorm
@@ -89,21 +89,21 @@ theorem majAt_self' (x : V) : majAt b X v x x = ((normAt b X v x ^ 2 : ℝ) : �
   rw [Complex.star_def, Complex.conj_mul']
 
 /- English proof (translation)
-Conclude with `map_sum (AddMonoidHom.mk' (fun x => majAt b X v x y) fun x x' => majAt_add_left' b X v x x' y) f s`.
+A detailed English derivation is pending.
 -/
 theorem majAt_sum_left' {α : Type} (s : Finset α) (f : α → V) (y : V) :
     majAt b X v (∑ i ∈ s, f i) y = ∑ i ∈ s, majAt b X v (f i) y := by
   exact map_sum (AddMonoidHom.mk' (fun x => majAt b X v x y) fun x x' => majAt_add_left' b X v x x' y) f s
 
 /- English proof (translation)
-Conclude with `map_sum (AddMonoidHom.mk' (fun y => majAt b X v x y) fun y y' => majAt_add_right' b X v x y y') f s`.
+A detailed English derivation is pending.
 -/
 theorem majAt_sum_right' {α : Type} (s : Finset α) (f : α → V) (x : V) :
     majAt b X v x (∑ i ∈ s, f i) = ∑ i ∈ s, majAt b X v x (f i) := by
   exact map_sum (AddMonoidHom.mk' (fun y => majAt b X v x y) fun y y' => majAt_add_right' b X v x y y') f s
 
 /- English proof (translation)
-Simplify using `only [majAt_add_left', majAt_add_right', majAt_smul_left', majAt_smul_right']`. Rewrite using `[majAt_swap' b X v u w]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem majAt_expand' (c : K) (u w : V) :
     majAt b X v (u + c • w) (u + c • w) = majAt b X v u u + v.embedding c * majAt b X v u w +
@@ -114,9 +114,9 @@ theorem majAt_expand' (c : K) (u w : V) :
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `(InfinitePlace.not_isReal_iff_isComplex.mpr (NumberField.IsTotallyComplex.isComplex v)) ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Use extensionality with `c`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `Complex.conj_eq_iff_im.mpr (h c)`.
+A detailed English derivation is pending.
 -/
 theorem exists_nonreal [NumberField.IsTotallyComplex K] : ∃ c : K, (v.embedding c).im ≠ 0 := by
   by_contra h
@@ -128,17 +128,17 @@ theorem exists_nonreal [NumberField.IsTotallyComplex K] : ∃ c : K, (v.embeddin
   exact Complex.conj_eq_iff_im.mpr (h c)
 
 /- English proof (translation)
-Establish `hs : ∀ z, majAt b X v (g z) (g z) = majAt b X v z z` using `fun z => by`. Rewrite using `[majAt_self', majAt_self', hg]`. Establish `key : ∀ c : K, v.embedding c * majAt b X v (g x) (g y) + star (v.embedding c) * star (majAt b X v (g x) (g y)) = v.embedding c * majAt b X v x y + star (v.embedding c) * star (majAt b X v x y)`. Introduce `c`. Establish `h1` using `majAt_expand' b X v c (g x) (g y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `majAt_expand' b X v c x y`. Establish `e1 : g x + c • g y = g (x + c • y)` using `by simp`. Rewrite `h1` using `[e1, hs (x + c • y), h2, hs x, hs y]`. Take the linear combination `-h1`. Take `⟨c0, hc0⟩` from `exists_nonreal (v := v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `k1` using `key 1`. Establish `k2` using `key c0`. Simplify using `only [map_one, star_one, one_mul] at k1`. Generalize the expression as in `majAt b X v (g x) (g y) = a at k1 k2 ⊢`. Generalize the expression as in `majAt b X v x y = a0 at k1 k2 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `v.embedding c0 = z at k2 hc0`. Establish `r1` using `congrArg Complex.re k1`. Simplify using `only [Complex.add_re, Complex.star_def, Complex.conj_re] at r1`. Establish `h1 : a.re = a0.re` using `by linarith`. Establish `r2` using `congrArg Complex.re k2`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Complex.add_re, Complex.mul_re, Complex.star_def, Complex.conj_re, Complex.conj_im] at r2`. Establish `e2 : z.re * a.re = z.re * a0.re` using `by rw [h1]`. Establish `h3 : z.im * (a.im - a0.im) = 0` using `by linarith`. Use `Complex.ext h1 ?_` and prove the remaining obligations. Break down `mul_eq_zero.mp h3 with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h hc0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem majAt_inv' [NumberField.IsTotallyComplex K] (g : V →ₗ[K] V)
     (hg : ∀ x, normAt b X v (g x) = normAt b X v x) (x y : V) :
@@ -174,9 +174,9 @@ theorem majAt_inv' [NumberField.IsTotallyComplex K] (g : V →ₗ[K] V)
   · linarith
 
 /- English proof (translation)
-Establish `hρ' : ∀ g, majAt b X v (ρ g x) y = majAt b X v x (ρ g⁻¹ y)` using `fun g => by`. Establish `e : ρ g (ρ g⁻¹ y) = y` using `by show (ρ g * ρ g⁻¹) y = y`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Establish `h` using `majAt_inv' b X v (ρ g) (hρ g) x (ρ g⁻¹ y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Then use the resulting hypothesis. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[majAt_sum_left', majAt_sum_right']`. Simplify using `only [majAt_smul_left', majAt_smul_right', ha, hρ']`. Conclude with `Fintype.sum_equiv (Equiv.inv G) _ _ (fun _ => rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem majAt_selfadj' [NumberField.IsTotallyComplex K] {G : Type} [Group G] [Fintype G]
     (ρ : Representation K G V) (hρ : ∀ g x, normAt b X v (ρ g x) = normAt b X v x)

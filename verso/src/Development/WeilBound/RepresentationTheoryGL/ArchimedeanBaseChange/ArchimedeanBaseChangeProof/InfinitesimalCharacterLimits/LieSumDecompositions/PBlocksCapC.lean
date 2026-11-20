@@ -12,11 +12,11 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.BlockCapelli
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ}
 
 /- English proof (translation)
-Take `⟨f, h1, hspan, heq⟩` from `QdetCoeff.qdet_shift_coeff (Module.End ℂ (Sm E a)) a (Eop (a := a) τ) (d + ((a : ℂ) - 1) / 2)`. Establish `hc : ∀ u : ℂ, cap τ (u + d) = Formalism.REAL.qdet (Eop (a` using `a) τ) (u + (d + ((a : ℂ) - 1) / 2)) := fun u => by`. Rewrite using `[← add_assoc]`. Both sides reduce to the same expression. Use `⟨f, h1, fun k => ?_, fun u => (hc u).trans (heq u)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : Submodule.span ℂ (Set.range fun u : ℂ => Formalism.REAL.qdet (Eop (a` using `a) τ) (u + (d + ((a : ℂ) - 1) / 2))) ≤ Subalgebra.toSubmodule (Zalg E a) := by`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Express the relevant statement in the definitionally equal form `Formalism.REAL.qdet (Eop (a := a) τ) (u + (d + ((a : ℂ) - 1) / 2)) ∈ Zalg E a`. Rewrite using `[← hc u]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cap_mem_Zalg τ _`. Conclude with `hle (hspan k)`.
+A detailed English derivation is pending.
 -/
 theorem cap_coeff (a : ℕ) (τ : E →+* ℂ) (d : ℂ) : ∃ f : ℕ → Module.End ℂ (Sm E a), f a = 1 ∧ (∀ k, f k ∈ Zalg E a) ∧
     ∀ u : ℂ, cap τ (u + d) = ∑ k ∈ Finset.range (a + 1), u ^ k • f k := by
@@ -37,7 +37,7 @@ def zspan {a : ℕ} {k : ℕ} (b : Fin k → Sm E a) : Submodule ℂ (Sm E a) :=
   Submodule.span ℂ (⋃ i, (fun z : Module.End ℂ (Sm E a) => z (b i)) '' (Zalg E a : Set (Module.End ℂ (Sm E a))))
 
 /- English proof (translation)
-Establish `: ∀ i, FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z (b i)) '' (Zalg E a : Set (Module.End ℂ (Sm E a)))))` using `fun i => (hb i).zfin`. Rewrite using `[zspan, Submodule.span_iUnion]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zspan_fd {a : ℕ} {k : ℕ} (b : Fin k → Sm E a) (hb : ∀ i, IsAutForm (b i)) : FiniteDimensional ℂ (zspan b) := by
   have : ∀ i, FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z (b i)) ''
@@ -46,7 +46,7 @@ theorem zspan_fd {a : ℕ} {k : ℕ} (b : Fin k → Sm E a) (hb : ∀ i, IsAutFo
   infer_instance
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, z, hz, rfl⟩`. Conclude with `hL z hz _ (hb i)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem zspan_le {a : ℕ} {k : ℕ} (b : Fin k → Sm E a) {L : Submodule ℂ (Sm E a)} (hb : ∀ i, b i ∈ L)
     (hL : ∀ z ∈ Zalg E a, ∀ φ ∈ L, z φ ∈ L) : zspan b ≤ L := by
@@ -55,17 +55,15 @@ theorem zspan_le {a : ℕ} {k : ℕ} (b : Fin k → Sm E a) {L : Submodule ℂ (
   exact hL z hz _ (hb i)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span (Set.mem_iUnion.2 ⟨i, 1, Subalgebra.one_mem _, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mem_zspan {a : ℕ} {k : ℕ} (b : Fin k → Sm E a) (i : Fin k) : b i ∈ zspan b :=
   Submodule.subset_span (Set.mem_iUnion.2 ⟨i, 1, Subalgebra.one_mem _, rfl⟩)
 
 /- English proof (translation)
-Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨_, ⟨i, rfl⟩, z', hz', rfl⟩` from `hx`. Conclude with `Submodule.subset_span (Set.mem_iUnion.2 ⟨i, z * z', Subalgebra.mul_mem _ hz hz', rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem zspan_stable {a : ℕ} {k : ℕ} (b : Fin k → Sm E a) {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
     ∀ φ ∈ zspan b, z φ ∈ zspan b := by
@@ -79,7 +77,7 @@ theorem zspan_stable {a : ℕ} {k : ℕ} (b : Fin k → Sm E a) {z : Module.End 
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Take `⟨n, ψ₁, ψ₂, h₁, -, rfl⟩` from `tensor_pair_finite_sum hF`. Use `⟨∑ i, (ψ₂ i).1 m₂ • ψ₁ i, Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h₁ i), fun y => ?_⟩` and prove the remaining obligations. Simplify using `[Finset.sum_apply, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tensor_span_left_slice {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {F : GA E r × GA E s → ℂ}
     (hF : F ∈ tens2 U₁ U₂) (m₂ : GA E s) : ∃ θ ∈ U₁, ∀ y, F (y, m₂) = θ.1 y := by
@@ -88,7 +86,7 @@ theorem tensor_span_left_slice {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule
   simp [Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Take `⟨n, ψ₁, ψ₂, -, h₂, rfl⟩` from `tensor_pair_finite_sum hF`. Use `⟨∑ i, (ψ₁ i).1 m₁ • ψ₂ i, Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h₂ i), fun y => ?_⟩` and prove the remaining obligations. Simplify using `[Finset.sum_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tensor_span_right_slice {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {F : GA E r × GA E s → ℂ}
     (hF : F ∈ tens2 U₁ U₂) (m₁ : GA E r) : ∃ θ ∈ U₂, ∀ y, F (m₁, y) = θ.1 y := by

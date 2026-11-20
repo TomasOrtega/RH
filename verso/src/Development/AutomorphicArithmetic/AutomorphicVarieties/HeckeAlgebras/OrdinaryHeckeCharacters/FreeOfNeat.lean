@@ -23,17 +23,17 @@ Both sides reduce to the same expression.
 theorem c1 (i) : (rUp h).chib i = (r.chib i).comp (fh h).π₀ := rfl
 
 /- English proof (translation)
-The claim follows from `MonoidHom.comp_apply (r.chib i) (p0 h) g`.
+A detailed English derivation is pending.
 -/
 theorem rUp_chib (i) (g : V.frame.G₀) : (rUp h).chib i g = r.chib i (p0 h g) := MonoidHom.comp_apply (r.chib i) (p0 h) g
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem c2 (v i) : (rUp h).psib v i = (r.psib ((fh h).vl v) i).comp ((fh h).gv v) := MonoidHom.ext fun _ => rfl
 
 /- English proof (translation)
-Establish `e : ∀ g : W.muG l (Dec (F` using `L) (s.A v.1)), (rUp h).th v i g = @id (W.muG l (Dec (F := L) (s.A v.1)) →* Oˣ) (r.th v i) g := fun _ => rfl`. Establish `e2 : ∀ (g : Dec (F` using `L) (s.A v.1)) (hg : g ∈ W.muG l (Dec (F := L) (s.A v.1))), @id (W.muG l (Dec (F := L) (s.A v.1)) →* Oˣ) (r.th v i) ⟨g, hg⟩ = r.th v i ⟨g, hg⟩ := fun _ _ => rfl`. Conclude with `(e g).trans (e2 g.1 (@id (g.1 ∈ W.muG l (Dec (F := L) (s.A v.1))) g.2))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem c3 (v i) (g : V.frame.mu v) (hg : (fh h).gv v g ∈ V0.frame.mu ((fh h).vl v)) : (rUp h).th v i g = r.th ((fh h).vl v) i ⟨_, hg⟩ := by
   have e : ∀ g : W.muG l (Dec (F := L) (s.A v.1)), (rUp h).th v i g = @id (W.muG l (Dec (F := L) (s.A v.1)) →* Oˣ) (r.th v i) g := fun _ => rfl
@@ -41,7 +41,7 @@ theorem c3 (v i) (g : V.frame.mu v) (hg : (fh h).gv v g ∈ V0.frame.mu ((fh h).
   exact (e g).trans (e2 g.1 (@id (g.1 ∈ W.muG l (Dec (F := L) (s.A v.1))) g.2))
 
 /- English proof (translation)
-Take `⟨⟨x, hx, rfl⟩, h2⟩` from `hg`. Use `⟨⟨x, hx, (levelChangeBaseGroupHom_apply_projection h hp x).symm⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_iInf.2 fun i => MonoidHom.mem_ker.2 ((rUp_chib h i _).symm.trans (MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 h2 i)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem c4 (hp : ∀ g, h.p (toGS Ω V.S' g) = toGS Ω V0.S' g) (u : s.St) (g : V.η.ker) (hg : g ∈ (rUp h).Ip u) : p0 h g ∈ r.Ip u := by
     obtain ⟨⟨x, hx, rfl⟩, h2⟩ := hg
@@ -49,13 +49,13 @@ theorem c4 (hp : ∀ g, h.p (toGS Ω V.S' g) = toGS Ω V0.S' g) (u : s.St) (g : 
     exact Subgroup.mem_iInf.2 fun i => MonoidHom.mem_ker.2 ((rUp_chib h i _).symm.trans (MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 h2 i)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨c1 h, c2 h, c3 h, fun u g hg => Or.inr ⟨u, c4 h hp u g hg⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem rUp_compat (hp : ∀ g, h.p (toGS Ω V.S' g) = toGS Ω V0.S' g) : (fh h).Compat (rUp h) r :=
   ⟨c1 h, c2 h, c3 h, fun u g hg => Or.inr ⟨u, c4 h hp u g hg⟩⟩
 
 /- English proof (translation)
-Take `⟨p', h1, h2⟩` from `W.exists_determinantPair_pullback l _ _ (fh h) O n (rUp h) r (rUp_compat h hp) (fun e => by omega) R p`. Conclude with `⟨p', h1, fun v i => Eq.trans (h2 v i) rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pairUp (hn : 1 ≤ n) (hp : ∀ g, h.p (toGS Ω V.S' g) = toGS Ω V0.S' g) {R : Type} [CommRing R] [Algebra O R] [Alg.IsCO O R] (p : Pair r R) :
     ∃ p' : Pair (rUp h) R, p'.D = p.D.comap (p0 h) ∧ ∀ (v : Vl l L) i, @Eq (Dec (F := L) (s.A v.1) →* Rˣ) (p'.ψ v i) (p.ψ v i) := by
@@ -86,7 +86,7 @@ def kMax {m : ℕ} (τ₀ : KT n (wt s) →* GL (Fin m) c.O) : (hset Q τ₀).Le
   ⟨fun _ => KO _ (Fin n), fun _ => ⟨GlobalTheory.SplitFlip.isOpen_KO, GlobalTheory.SplitFlip.isCompact_KO⟩⟩
 
 /- English proof (translation)
-Introduce `g γ u hu b hb e`. Take `⟨rfl, rfl⟩` from `hU g γ u hu b hb e`. Use `⟨one_mem _, one_mem _, ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ hh, (⟨1, hh⟩ : X.I.T) = 1` using `fun _ => rfl`. Rewrite using `[e1, map_one, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -100,13 +100,13 @@ theorem free_of_neat {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Fra
   simp
 
 /- English proof (translation)
-Use `set N := Nat.card (ResidueField O) - 1 with hN`. Establish `hx' : (x : O) ^ N = 1` using `by rw [← Units.val_pow_eq_pow_val, hx, Units.val_one]`. Establish `hy' : (y : O) ^ N = 1` using `by rw [← Units.val_pow_eq_pow_val, hy, Units.val_one]`. Establish `e` using `(Commute.all (x : O) y).geom_sum₂_mul N`. Rewrite `e` using `[hx', hy', sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit (∑ i ∈ Finset.range N, (x : O) ^ i * (y : O) ^ (N - 1 - i))`. Rewrite using `[← residue_ne_zero_iff_isUnit, map_sum]`. Establish `: ∀ i ∈ Finset.range N, residue O ((x : O) ^ i * (y : O) ^ (N - 1 - i)) = residue O y ^ (N - 1)` using `fun i hi => by`. Rewrite using `[map_mul, map_pow, map_pow, h, ← pow_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `Finset.mem_range.1 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Use `mul_ne_zero ?_ (pow_ne_zero _ ((residue_ne_zero_iff_isUnit _).2 y.isUnit))` and prove the remaining obligations. Use `haveI := Fintype.ofFinite (ResidueField O)`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hN, Nat.cast_sub Nat.card_pos, Nat.card_eq_fintype_card, FiniteField.cast_card_eq_zero]`. Simplify using the standard rewrite rules. Conclude with `Units.ext (sub_eq_zero.1 (hu.mul_right_eq_zero.1 e))`.
+A detailed English derivation is pending.
 -/
 theorem teich_ext {O : Type} [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] (x y : Oˣ) (h : residue O x = residue O y)
     (hx : x ^ (Nat.card (ResidueField O) - 1) = 1) (hy : y ^ (Nat.card (ResidueField O) - 1) = 1) : x = y := by
@@ -130,11 +130,11 @@ theorem teich_ext {O : Type} [CommRing O] [IsLocalRing O] [Finite (ResidueField 
   exact Units.ext (sub_eq_zero.1 (hu.mul_right_eq_zero.1 e))
 
 /- English proof (translation)
-Introduce `t' ht'`. Use `haveI : Finite (ResidueField c.O) := Module.finite_of_finite (ResidueField ℤ_[l])`. Establish `hk : ∀ i, (p0 h).ker ≤ (t' i).ker` using `fun i g hg => by`. Use `teich_ext _ _ ?_ (ht' i g).2 (one_pow _)` and prove the remaining obligations. Rewrite using `[(ht' i g).1, rUp_chib, MonoidHom.mem_ker.1 hg, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Set `t : Fin n → V0.frame.G₀ →* c.Oˣ` to `fun i => (p0 h).liftOfSurjective (surjective_levelChangeBaseGroupHom h) ⟨t' i, hk i⟩`. Establish `e : ∀ i g, t i (p0 h g) = t' i g` using `fun i g => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ g`. Use `ht t fun i g => by` as an intermediate fact. Take `⟨x, rfl⟩` from `surjective_levelChangeBaseGroupHom h g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← rUp_chib]`. Conclude with `ht' i x`. Establish `e2 : ∀ (u : s.St) i, (t' i).comp (V.pr.comp (Ine (F` using `L) (s.A u)).subtype) = (t i).comp (V0.pr.comp (Ine (F := L) (s.A u)).subtype) := fun u i => MonoidHom.ext fun x => (e i (V.pr x)).symm.trans (congrArg (t i) (levelChangeBaseGroupHom_apply_projection h hp x))`. Simplify using `only [e2]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem typeFor_up (hp : ∀ g, h.p (toGS Ω V.S' g) = toGS Ω V0.S' g) (ι : Qbar l ≃+* ℂ) {m : ℕ}
     (τ₀ : KT n (wt s) →* GL (Fin m) c.O) (ht : TypeFor r ι τ₀) : TypeFor (rUp h) ι τ₀ := by
@@ -157,15 +157,13 @@ theorem typeFor_up (hp : ∀ g, h.p (toGS Ω V.S' g) = toGS Ω V0.S' g) (ι : Qb
   exact this
 
 /- English proof (translation)
-The claim follows from `hθ`.
+A detailed English derivation is pending.
 -/
 theorem cont_up {m : ℕ} (τ₀ : KT n (wt s) →* GL (Fin m) c.O) {A : Type} [CommRing A] [IsLocalRing A]
     (θ : (hset Q0 τ₀).X.I.T →* Aˣ) (hθ : (hset Q0 τ₀).X.I.ContChar θ) : (hset Q τ₀).X.I.ContChar θ := hθ
 
 /- English proof (translation)
-Use `⟨fun w B σ hB hσ => ?_, ?_⟩` and prove the remaining obligations. Use `(congrArg (fun D : W.GDet n (ResidueField c.O) V.frame.G₀ => D.chi (MonoidAlgebra.single (V.pr σ⁻¹) 1)) (rUp_Dbar h)).trans ((chi_comap r.Dbar (p0 h) (V.pr σ⁻¹)).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg (fun g : V0.frame.G₀ => r.Dbar.chi (MonoidAlgebra.single g 1)) (levelChangeBaseGroupHom_apply_projection h hp σ⁻¹)).trans (ha.frob ⟨w.1, fun h => w.2.1 (hS h), w.2.2⟩ B σ hB hσ)`. Use `ha.unif` as an intermediate fact. Consider the cases of `r`.
-
-Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem res_up (hp : ∀ g, h.p (toGS Ω V.S' g) = toGS Ω V0.S' g) {m : ℕ} (τ₀ : KT n (wt s) →* GL (Fin m) c.O)
     (a : (hset Q0 τ₀).Op → c.O) (ha : IsRes Q0 r τ₀ a) : IsRes Q (rUp h) τ₀ fun i => a (opUp Q0 Q hS τ₀ i) := by

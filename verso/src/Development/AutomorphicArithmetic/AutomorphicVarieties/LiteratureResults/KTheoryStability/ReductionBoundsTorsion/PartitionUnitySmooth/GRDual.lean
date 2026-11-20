@@ -10,20 +10,20 @@ namespace PositivityTheory.KB.SmoothPartitionUnityBasic
 variable {L : Type} [Field L] [NumberField L] {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `(Complex.le_def.1 ((hh w).posSemidef.dotProduct_mulVec_nonneg x)).1`.
+A detailed English derivation is pending.
 -/
 private theorem re_nonneg {h : HS L N} (hh : h ∈ Pos L N) (w : InfinitePlace L) (x : Fin N → ℂ) :
     0 ≤ (star x ⬝ᵥ (mat h w *ᵥ x)).re :=
   (Complex.le_def.1 ((hh w).posSemidef.dotProduct_mulVec_nonneg x)).1
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun w _ => re_nonneg hh w _`.
+A detailed English derivation is pending.
 -/
 private theorem qR_nonneg {h : HS L N} (hh : h ∈ Pos L N) (z : VR L N) : 0 ≤ qR h z :=
   Finset.sum_nonneg fun w _ => re_nonneg hh w _
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := fun w => (star (z w) ⬝ᵥ (mat h w *ᵥ z w)).re) (fun w _ => re_nonneg hh w _) (Finset.mem_univ w)`.
+A detailed English derivation is pending.
 -/
 private theorem le_qR {h : HS L N} (hh : h ∈ Pos L N) (z : VR L N) (w : InfinitePlace L) :
     (star (z w) ⬝ᵥ (mat h w *ᵥ z w)).re ≤ qR h z :=
@@ -31,7 +31,7 @@ private theorem le_qR {h : HS L N} (hh : h ∈ Pos L N) (z : VR L N) (w : Infini
     (Finset.mem_univ w)
 
 /- English proof (translation)
-Simplify using `only [qR, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.add_apply, star_sub, star_add, mulVec_sub, mulVec_add, sub_dotProduct, add_dotProduct, dotProduct_sub, dotProduct_add, Complex.sub_re, Complex.add_re]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem qR_para (h : HS L N) (a b : VR L N) : qR h (a - b) + qR h (a + b) = 2 * qR h a + 2 * qR h b := by
   simp only [qR, Finset.mul_sum, ← Finset.sum_add_distrib]
@@ -42,7 +42,7 @@ private theorem qR_para (h : HS L N) (a b : VR L N) : qR h (a - b) + qR h (a + b
 
 open Classical in
 /- English proof (translation)
-Unfold `qR`. Rewrite using `[Finset.sum_eq_single w]`. Simplify using the standard rewrite rules. Introduce `w' _ hw`. Simplify using `[Pi.single_eq_of_ne hw]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -56,7 +56,7 @@ private theorem qR_single (h : HS L N) (w : InfinitePlace L) (y : Fin N → ℂ)
   · simp
 
 /- English proof (translation)
-Conclude with `⟨_, Pi.single_eq_same _ _, fun k => qR_single k w y⟩`.
+Supply the required witnesses or components.
 -/
 private theorem ex_single (w : InfinitePlace L) (y : Fin N → ℂ) :
     ∃ z : VR L N, z w = y ∧ ∀ k : HS L N, qR k z = (star y ⬝ᵥ (mat k w *ᵥ y)).re := by
@@ -64,7 +64,7 @@ private theorem ex_single (w : InfinitePlace L) (y : Fin N → ℂ) :
   exact ⟨_, Pi.single_eq_same _ _, fun k => qR_single k w y⟩
 
 /- English proof (translation)
-Establish `hc : Cl 1 h (h + h)` using `fun z => by`. Establish `: qR (h + h) z = qR h z + qR h z` using `map_add (evR z) h h`. Rewrite using `[this, add_sub_cancel_right, abs_of_nonneg (qR_nonneg hh z), one_mul]`. Use `(hB L N hN).2.2.2.2.1 1 zero_le_one h hh _ hc w u v` as an intermediate fact. Simplify `this` using `only [mat_add, add_mulVec, dotProduct_add, add_sub_cancel_right, one_pow, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem cs (hB : Basic) (hN : 1 ≤ N) {h : HS L N} (hh : h ∈ Pos L N) (w : InfinitePlace L) (u v : Fin N → ℂ) :
     ‖star u ⬝ᵥ (mat h w *ᵥ v)‖ ^ 2 ≤ 4 * (star u ⬝ᵥ (mat h w *ᵥ u)).re * (star v ⬝ᵥ (mat h w *ᵥ v)).re := by
@@ -75,7 +75,7 @@ private theorem cs (hB : Basic) (hN : 1 ≤ N) {h : HS L N} (hh : h ∈ Pos L N)
   simpa only [mat_add, add_mulVec, dotProduct_add, add_sub_cancel_right, one_pow, mul_one] using this
 
 /- English proof (translation)
-Establish `hd : IsUnit A.det` using `(Matrix.isUnit_iff_isUnit_det A).1 hA.isUnit`. Rewrite using `[star_mulVec, star_star, hA.isHermitian.inv.eq, ← dotProduct_mulVec, mulVec_mulVec, nonsing_inv_mul _ hd, one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pair {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.PosDef) (g v : Fin N → ℂ) :
     star (A⁻¹ *ᵥ star g) ⬝ᵥ (A *ᵥ v) = g ⬝ᵥ v := by
@@ -83,18 +83,18 @@ private theorem pair {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.PosDef) (g v : Fin
   rw [star_mulVec, star_star, hA.isHermitian.inv.eq, ← dotProduct_mulVec, mulVec_mulVec, nonsing_inv_mul _ hd, one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[mulVec_transpose, dotProduct_comm, ← dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem dual_eq (A : Matrix (Fin N) (Fin N) ℂ) (g : Fin N → ℂ) :
     star g ⬝ᵥ ((A⁻¹)ᵀ *ᵥ g) = g ⬝ᵥ (A⁻¹ *ᵥ star g) := by
   rw [mulVec_transpose, dotProduct_comm, ← dotProduct_mulVec]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `h1 : ∀ w : InfinitePlace L, w (a : L) < 1` using `fun w => by`. Use `hn w` as an intermediate fact. Rewrite using `[← w.norm_embedding_eq]` and apply the resulting hypothesis.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2` using `InfinitePlace.prod_eq_abs_norm (a : L)`. Establish `h3 : ∏ w : InfinitePlace L, w (a : L) ^ w.mult < ∏ _w : InfinitePlace L, (1 : ℝ)` using `Finset.prod_lt_prod_of_nonempty (fun w _ => pow_pos (InfinitePlace.pos_iff.2 (RingOfIntegers.coe_ne_zero_iff.2 ha)) _) (fun w _ => pow_lt_one₀ (apply_nonneg w _) (h1 w) InfinitePlace.mult_ne_zero) Finset.univ_nonempty`. Rewrite `h3` using `[h2, Finset.prod_const_one, ← Algebra.coe_norm_int]`. Establish `h4 : Algebra.norm ℤ a ≠ 0` using `Algebra.norm_ne_zero_iff.2 ha`. Establish `h5 : (1 : ℤ) ≤ |Algebra.norm ℤ a|` using `Int.one_le_abs h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : ((1 : ℤ) : ℝ) ≤ ((|Algebra.norm ℤ a| : ℤ) : ℝ)` using `Int.cast_le.2 h5`. Move the coercions through the operations in `at h3 h6`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem place (a : 𝓞 L) (ha : a ≠ 0) : ∃ w : InfinitePlace L, 1 ≤ ‖embO w a‖ := by
   by_contra hn
@@ -115,13 +115,13 @@ private theorem place (a : 𝓞 L) (ha : a ≠ 0) : ∃ w : InfinitePlace L, 1 �
   linarith
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Establish `e : ∑ k ∈ T.filter (k0 ≤ ·), ((4 : ℝ) ^ k)⁻¹ = ∑ j ∈ (T.filter (k0 ≤ ·)).image (fun k => (k - k0).toNat), ((4 : ℝ) ^ k0)⁻¹ * (1 / 4) ^ j`. Rewrite using `[Finset.sum_image]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `h1` using `(Finset.mem_filter.1 hk).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨j, rfl⟩ : ∃ j : ℕ, k = k0 + j` from `⟨(k - k0).toNat, by omega⟩`. Rewrite using `[show (k0 + j - k0).toNat = j by omega, zpow_add₀ (by norm_num), zpow_natCast, mul_inv, one_div, inv_pow]`. Introduce `a ha b hb hab`. Establish `h1` using `(Finset.mem_filter.1 (Finset.mem_coe.1 ha)).2`. Establish `h2` using `(Finset.mem_filter.1 (Finset.mem_coe.1 hb)).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at hab`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, ← Finset.mul_sum, mul_comm]`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Establish `hs` using `hasSum_geometric_of_lt_one (r := (1 / 4 : ℝ)) (by norm_num) (by norm_num)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(sum_le_hasSum _ (fun i _ => by positivity) hs).trans (by norm_num)`.
+A detailed English derivation is pending.
 -/
 private theorem geo (T : Finset ℤ) (k0 : ℤ) :
     ∑ k ∈ T, (if k0 ≤ k then ((4 : ℝ) ^ k)⁻¹ else 0) ≤ 2 * ((4 : ℝ) ^ k0)⁻¹ := by
@@ -144,9 +144,9 @@ private theorem geo (T : Finset ℤ) (k0 : ℤ) :
   exact (sum_le_hasSum _ (fun i _ => by positivity) hs).trans (by norm_num)
 
 /- English proof (translation)
-Establish `k3 : s ^ 2 ≤ 4 * Q * (A * s / m)`. Combine the equalities or inequalities in the displayed calculation. Establish `k4 : s * m ≤ 4 * Q * A`. Establish `: s * (s * m) ≤ s * (4 * Q * A)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `le_of_mul_le_mul_left this hsp`. Rewrite using `[div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem fin_num {A s m G P X Q : ℝ} (hA0 : 0 < A) (hsp : 0 < s) (hmp : 0 < m) (h1 : 1 ≤ 4 * s * m) (hgy : s ≤ G)
     (k1 : G ^ 2 ≤ 4 * P * X) (k2 : P ≤ Q) (k0 : 0 ≤ Q) (hX : 0 ≤ X) (hR : X ≤ A * s / m) : 1 / (16 * A) ≤ Q := by
@@ -168,61 +168,55 @@ attribute [local irreducible] lam ret term
 
 set_option maxHeartbeats 600000 in
 /- English proof (translation)
-Introduce `hB hTr hE hTL L _ _ hC N hN μ hμ`. Take `⟨C1, hC1, htr⟩` from `hTr L hC N hN`. Take `⟨_, hT⟩` from `hTL L N hN`. Take `⟨c, C2, hc, hcmp⟩` from `hμ.cmp`. Use `⟨1 / (16 * (12 * C1 * |C2| + 32)), by positivity, fun h hh => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hRP` using `(hE L N hN μ hμ h hh).2.1`. Take `⟨f, hf, e⟩` from `((hB L N hN).1 _ ((hB L N hN).1 _ hRP).2.2.2.1).2.2.1`. Establish `hD : 0 < lamD h` using `((hB L N hN).1 _ ((hB L N hN).1 _ hh).2.2.2.1).1`. Express the relevant statement in the definitionally equal form `_ ≤ lam _`. Rewrite using `[← e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `Function.ne_iff.1 hf`. Establish `hne : f ⬝ᵥ (Pi.single a 1 : Lat L N) ≠ 0` using `by simpa using ha`. Take `⟨v0, hv0, hmin⟩` from `Set.exists_min_image {v : Lat L N | q h v ≤ q h (Pi.single a 1) ∧ f ⬝ᵥ v ≠ 0} (q h) ((((hB L N hN).1 _ hh).2.2.2.2 _).subset fun v hv => hv.1) ⟨_, le_rfl, hne⟩`. Establish `hmin' : ∀ v : Lat L N, f ⬝ᵥ v ≠ 0 → q h v0 ≤ q h v` using `fun v hv => by`. Distinguish the cases in `h1 : q h v ≤ q h (Pi.single a 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `hmin v ⟨h1, hv⟩`. Conclude with `hv0.1.trans (not_le.1 h1).le`. Take `⟨w, hw⟩` from `place _ hv0.2`. Establish `hdot : ∀ v : Lat L N, toR f w ⬝ᵥ toR v w = embO w (f ⬝ᵥ v)` using `fun v => by`. Simplify using `[toR, dotProduct]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g := toR f w with hg`. Use `set y := (mat h w)⁻¹ *ᵥ star g with hy`. Establish `hp : ∀ v, star y ⬝ᵥ (mat h w *ᵥ v) = g ⬝ᵥ v` using `pair (hh w) g`. Use `set s := (star y ⬝ᵥ (mat h w *ᵥ y)).re with hs`. Use `set m := q h v0 with hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs0 : 0 ≤ s` using `re_nonneg hh w y`. Establish `hm0 : 0 ≤ m` using `qR_nonneg hh _`. Establish `h1 : 1 ≤ 4 * s * m`. Use `cs hB hN hh w y (toR v0 w)` as an intermediate fact. Rewrite `this` using `[hp, hdot]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Establish `h2` using `le_qR hh (toR v0) w`. Combine the equalities or inequalities in the displayed calculation. Establish `hsp : 0 < s`. Break down `hs0.eq_or_lt with h0 | h0` into its components or cases. Rewrite `h1` using `[← h0]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at h1`. Conclude with `h0`. Establish `hmp : 0 < m`. Break down `hm0.eq_or_lt with h0 | h0` into its components or cases. Rewrite `h1` using `[← h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Evaluate the numerical expressions using `at h1`. Conclude with `h0`. Establish `hgy : s ≤ ‖g ⬝ᵥ y‖` using `by rw [← hp]; exact Complex.re_le_norm _`. Use `clear_value m s y g`. Establish `hmC : m ≤ 12 * (C1 / lamD h)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htr'` using `htr h hh`. Establish `hρ0 : 0 < C1 / lamD h` using `div_pos hC1 hD`. Generalize the expression as in `C1 / lamD h = ρ at htr' hρ0 ⊢`. Take `⟨t, ht0, ht2⟩ : ∃ t : ℝ, 0 ≤ t ∧ t ^ 2 * s = 5 * ρ` from `⟨√(5 * ρ / s), Real.sqrt_nonneg _, by`. Rewrite using `[Real.sq_sqrt (div_pos (mul_pos (by norm_num) hρ0) hsp).le, div_mul_cancel₀ _ hsp.ne']⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Z, hZw, hZ⟩` from `ex_single w ((t : ℂ) • y)`. Take `⟨v, hv⟩` from `htr' Z`. Establish `hz : qR h Z = 5 * ρ`. Rewrite using `[hZ, star_smul, mulVec_smul, smul_dotProduct, dotProduct_smul, smul_smul, ← ht2]`. Simplify using `[hs, sq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfv : f ⬝ᵥ v ≠ 0`. Introduce `h0`. Establish `k1` using `cs hB hN hh w y ((Z - toR v : VR L N) w)`. Establish `k2` using `(le_qR hh (Z - toR v) w).trans hv`. Rewrite `k1` using `[hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k3 : g ⬝ᵥ (Z - toR v : VR L N) w = (t : ℂ) * (g ⬝ᵥ y)`. Rewrite using `[Pi.sub_apply, hZw, dotProduct_sub, hdot, h0, map_zero, sub_zero, dotProduct_smul, smul_eq_mul]`. Rewrite `k1` using `[k3, norm_mul, Complex.norm_real, Real.norm_of_nonneg ht0]`. Establish `k4 : (t * s) ^ 2 ≤ (t * ‖g ⬝ᵥ y‖) ^ 2` using `pow_le_pow_left₀ (mul_nonneg ht0 hs0) (mul_le_mul_of_nonneg_left hgy ht0) 2`. Establish `k5 : (t * s) ^ 2 ≤ 4 * s * ρ` using `k4.trans (k1.trans (by`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hs]; exact mul_le_mul_of_nonneg_left k2 (mul_nonneg (by norm_num) hs0)))`. Establish `k6 : (t * s) ^ 2 = 5 * ρ * s` using `by rw [← ht2]; ring`. Establish `k10` using `mul_pos hρ0 hsp`. Rewrite `k5` using `[k6]`. Use `clear * - k5 k10`.
+Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `k7` using `qR_para h Z (Z - toR v)`. Rewrite `k7` using `[sub_sub_cancel, hz]`. Establish `k8` using `qR_nonneg hh (Z + (Z - toR v))`. Establish `k9` using `hmin' v hfv`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `m ≤ qR h (toR v) at k9`. Use `clear * - k7 k8 k9 hv`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨z, -, hzz⟩` from `ex_single w y`. Establish `hzs : qR h z = s` using `(hzz h).trans hs.symm`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k0, hk0, hk1⟩` from `exists_mem_Ico_zpow hmp (show (1 : ℝ) < 4 by norm_num)`. Establish `hrho : ∀ x, 0 ≤ rho x ∧ rho x ≤ 1` using `fun x => ⟨Real.smoothTransition.nonneg _, Real.smoothTransition.le_one _⟩`. Establish `hterm : ∀ k : ℤ, evR z (rho ((4 : ℝ) ^ k * μ h) • term ((4 : ℝ) ^ k) h) ≤ 4 * s * if k0 ≤ k then ((4 : ℝ) ^ k)⁻¹ else 0`. Introduce `k`. Establish `hk : (0 : ℝ) < 4 ^ k` using `zpow_pos (by norm_num) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_smul, smul_eq_mul, evR_apply]`. Use `split_ifs with hkk`. Take `⟨⟨b1, b2⟩, -⟩` from `hT _ hk h hh z`. Rewrite `b2` using `[hzs]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : 4 * (4 : ℝ) ^ k ≤ m`. Use `le_trans ?_ hk0` and prove the remaining obligations. Rewrite using `[mul_comm, ← zpow_add_one₀ (by norm_num)]`. Conclude with `zpow_le_zpow_right₀ (by norm_num) (by omega)`. Establish `h0 : evR z (∑ᶠ v : Lat L N, rho (q h v / 4 ^ k) • rk h v) = 0`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_induction (fun x => evR z x = 0) (map_zero _) (fun x y hx hy => by rw [map_add, hx, hy, add_zero]) fun v => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Distinguish the cases in `hv : f ⬝ᵥ v = 0`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Establish `e1 : mat (rk h v) w = vecMulVec (mat h w *ᵥ toR v w) (star (mat h w *ᵥ toR v w))` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : star y ⬝ᵥ (mat h w *ᵥ toR v w) = 0` using `by rw [hp, hdot, hv, map_zero]`. Rewrite using `[evR_apply, hzz, e1, dotProduct_mulVec, vecMul_vecMulVec, e2, zero_smul, zero_dotProduct, Complex.zero_re]`. Use `mul_eq_zero_of_left (Real.smoothTransition.zero_of_nonpos ?_) _` and prove the remaining obligations. Establish `: 4 ≤ q h v / 4 ^ k` using `by rw [le_div_iff₀ hk]; exact h4.trans (hmin' v hv)`. Use `clear * - this`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `: qR (term ((4 : ℝ) ^ k) h) z = 0`. Rewrite using `[← evR_apply, term, map_smul, h0, smul_zero]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hinv : ((4 : ℝ) ^ k0)⁻¹ ≤ 4 / m`. Rewrite `hk1` using `[zpow_add_one₀ (by norm_num)]`. Rewrite using `[le_div_iff₀ hmp, inv_mul_le_iff₀ (zpow_pos (by norm_num) _)]`. Conclude with `hk1.le`. Establish `hsum : evR z (∑ᶠ k : ℤ, rho ((4 : ℝ) ^ k * μ h) • term ((4 : ℝ) ^ k) h) ≤ 32 * s / m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Distinguish the cases in `hfin : (Function.support fun k : ℤ => rho ((4 : ℝ) ^ k * μ h) • term ((4 : ℝ) ^ k) h).Finite`. Rewrite using `[finsum_eq_sum _ hfin, map_sum]`. Use `(Finset.sum_le_sum fun k _ => hterm k).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[finsum_of_infinite_support hfin, map_zero]; exact div_nonneg (mul_nonneg (by norm_num) hs0) hm0`. Establish `hμm : μ h * m ≤ 12 * C1 * |C2|`. Establish `b1 : μ h ≤ |C2| * lamD h` using `(hcmp h hh).2.trans (mul_le_mul_of_nonneg_right (le_abs_self _) hD.le)`. Combine the equalities or inequalities in the displayed calculation. Establish `hR : (star y ⬝ᵥ (mat (ret μ h) w *ᵥ y)).re ≤ (12 * C1 * |C2| + 32) * s / m`.
-
-Rewrite using `[← hzz, ← evR_apply, ret, map_add, map_smul, smul_eq_mul, evR_apply z h, hzs]`. Establish `: μ h * s ≤ 12 * C1 * |C2| * s / m`. Rewrite using `[le_div_iff₀ hmp]`. Conclude with `(mul_right_comm _ _ _).trans_le (mul_le_mul_of_nonneg_right hμm hs0)`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `k1` using `cs hB hN hRP w ((mat (ret μ h) w)⁻¹ *ᵥ star g) y`. Rewrite `k1` using `[pair (hRP w), pair (hRP w), ← dual_eq]`. Establish `k2 : (star g ⬝ᵥ (((mat (ret μ h) w)⁻¹)ᵀ *ᵥ g)).re ≤ q (dualH (ret μ h)) f`. Rewrite using `[hg]`. Conclude with `le_qR ((hB L N hN).1 _ hRP).2.2.2.1 (toR f) w`.
-
-Establish `k0' : 0 ≤ q (dualH (ret μ h)) f` using `qR_nonneg ((hB L N hN).1 _ hRP).2.2.2.1 _`. Establish `hA0 : 0 < 12 * C1 * |C2| + 32` using `by clear * - hC1; positivity`. Conclude with `fin_num hA0 hsp hmp h1 hgy k1 k2 k0' (re_nonneg hRP w y) hR`.
+A detailed English derivation is pending.
 -/
 theorem pf_GRDual : GRDual := by
   classical

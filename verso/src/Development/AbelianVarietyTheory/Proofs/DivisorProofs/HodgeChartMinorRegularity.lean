@@ -16,23 +16,21 @@ noncomputable section
 namespace GlobalTheory.WholeFlag.GlueProof
 
 /- English proof (translation)
-Introduce `F _ _ Y C g A p V W ι U H J d T L m r hH v hv e y hyW z yt hz hyt q hq k hk`. Take `⟨hp, hg, hJ, hgen, hm, hcov, hcovL, hT, hGd, hrl, hnorm, hreg, htest⟩` from `hH`. Take `⟨ν, hν, hlg, hU⟩` from `htest v hv e y hyW z yt hz hyt`. Establish `hq1 : ⊤ ≤ yt ⁻¹ᵁ U q.1` using `fun x hx => (hq hx).1`. Take `⟨hle, hex, -, -⟩` from `hU q.1 hq1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc : yt (IsLocalRing.closedPoint e.O) ∈ chartOpen V U H L m r q` using `hq (x := IsLocalRing.closedPoint e.O) trivial`. Establish `hbπ : V.π (below z) = below y.1` using `by rw [← hz]; rfl`. Establish `hjz : V.j (below z) ∈ chartOpen V U H L m r q`. Establish `e1 : V.j (below z) = below (spMap e.O.subtype ≫ yt)` using `by rw [hyt]; rfl`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq (x := below (spMap e.O.subtype)) trivial`. Establish `hν0 : ν 0 = 1`. Take `⟨σ, hσ⟩` from `hex 0 (Nat.zero_le g)`. Rewrite using `[← hσ, minorAt_zero, map_one]`. Establish `hHz : ∀ a b, RegAt (below z) ((H q.1 * ((T (below y.1)).map V.φ)⁻¹) a b)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hreg q.1 (below z) hjz.1` as an intermediate fact. Rewrite `this` using `[hbπ]`. Conclude with `this`. Establish `hGd' : ∀ i, UnitAt (V.π (below z)) (genAt (A i).D (below y.1) * d (below y.1) i)`. Rewrite using `[hbπ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `fun i => hGd i (below y.1)`. Establish `hrl' : ∀ i, UnitAt (below z) (V.φ (genAt (A i).D (below y.1) ^ m) * (frames r q.2.2 i : V.G.functionField))`. Introduce `i`. Use `hrl i (fun _ => q.2.2 i) (below z) ((LB.pull_U V.j (fun _ => q.2.2 i)).ge (hjz.2.1 i))` as an intermediate fact. Rewrite `this` using `[hbπ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hnorm' : ∀ i, (m : ℝ) * (A i).lg v e y = Real.log (e.w (valAt z (V.φ (genAt (A i).D (below y.1) ^ m) * (frames r q.2.2 i : V.G.functionField))))` using `fun i => hnorm i v hv e y z yt (fun _ => q.2.2 i) hz hyt (fun x hx => (hq hx).2.1 i)`. Establish `hlg' : ∀ i : Fin g, (A i).lg v e y = Real.log (e.w (valAt (z ≫ V.π) (genAt (A i).D (below y.1) * d (below y.1) i))) + Real.log (ν ((i : ℕ) + 1)) - Real.log (ν (i : ℕ))`. Rewrite using `[hz]`. Conclude with `hlg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw` using `w_nmin V e z (H q.1) (frames r q.2.2) m k hk (q.2.1 k) (T (below y.1)) (d (below y.1)) (fun i => genAt (A i).D (below y.1)) (hT _).1 (hT _).2 hHz hGd' hrl' ν hν hν0 (fun i => (A i).lg v e y) hnorm' hlg'`. Establish `h1` using `GlobalTheory.NormExt.w_valAt_eq_one e yt (hc.2.2 k hk)`. Rewrite `h1` using `[hyt, valAt_symm]`. Rewrite `hw` using `[h1]`. Establish `hνk` using `hν k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : e.w (minorAt (valMat V (H q.1) (T (below y.1)) z) k hk (q.2.1 k)) = ν k`. Establish `h2 : e.w (minorAt (valMat V (H q.1) (T (below y.1)) z) k hk (q.2.1 k)) ^ m = ν k ^ m`. Establish `hpos : 0 < ν k ^ m` using `pow_pos hνk m`. Use `hw.symm` as an intermediate fact. Rewrite `this` using `[div_eq_one_iff_eq hpos.ne']`.
-
-Conclude with `this`. Conclude with `(pow_left_inj₀ (e.w.nonneg _) hνk.le hm.ne').1 h2`. Rewrite using `[hX]`. Conclude with `⟨hνk, fun σ => hle k hk σ⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chosen_minor_max : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ} (A : Fin g → Adl C Y) (p : ℕ) (V : Cover Y) (W : Y.X.Opens) {ι : Type} (U : ι → V.X.Opens) (H : ι → Matrix (Fin (g + g)) (Fin g) V.G.functionField) (J : Matrix (Fin (g + g)) (Fin (g + g)) ℤ) (d : Y.X → Fin g → Y.Fnˣ) (T : Y.X → Matrix (Fin g) (Fin g) Y.Fn) (L : Fin g → LB V.X) (m : ℕ) (r : ∀ i, ((L i).pull V.j).ι → V.G.functionFieldˣ), Hyp A p V W U H J d T L m r → ∀ (v : HeightOneSpectrum (𝓞 F)), resP v = p → ∀ (e : Ext v) (y : AlgPt Y), below y.1 ∈ W → ∀ (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp e.O ⟶ V.X), z ≫ V.π = y.1 → spMap e.O.subtype ≫ yt = z ≫ V.j → ∀ q : Idx ι L, ⊤ ≤ yt ⁻¹ᵁ chartOpen V U H L m r q → ∀ (k : ℕ) (hk : k ≤ g), 0 < e.w (minorAt (valMat V (H q.1) (T (below y.1)) z) k hk (q.2.1 k)) ∧ ∀ σ : Fin k → Fin (g + g), e.w (minorAt (valMat V (H q.1) (T (below y.1)) z) k hk σ) ≤ e.w (minorAt (valMat V (H q.1) (T (below y.1)) z) k hk (q.2.1 k)) := by
   intro F _ _ Y C g A p V W ι U H J d T L m r hH v hv e y hyW z yt hz hyt q hq k hk

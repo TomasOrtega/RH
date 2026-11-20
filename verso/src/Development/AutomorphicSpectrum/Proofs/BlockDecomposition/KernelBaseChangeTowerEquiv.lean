@@ -4,17 +4,17 @@ open TensorProduct
 namespace GlobalTheory.CompanionTheory.PerfectFirstCohomology
 
 /- English proof (translation)
-Set `e₁` to `AlgebraTensorModule.cancelBaseChange R A K K Q`. Set `e₂` to `AlgebraTensorModule.cancelBaseChange R A K K P`. Establish `comm : ∀ x, e₂ (((d.baseChange A).baseChange K) x) = (d.baseChange K) (e₁ x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul k y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [tmul_add, map_add, hx, hy]`. Consider the case `tmul a q`. Simplify using `[e₁, e₂, LinearMap.baseChange_tmul, TensorProduct.smul_tmul']`. Use `⟨LinearEquiv.ofSubmodules e₁ _ _ ?_⟩` and prove the remaining obligations. Use extensionality with `y`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Submodule.mem_map, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Use `comm x` as an intermediate fact. Rewrite `this` using `[hx, map_zero]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Introduce `hy`. Use `⟨e₁.symm y, ?_, by simp⟩` and prove the remaining obligations. Apply `e₂.injective` to reduce the goal to its premises. Rewrite using `[comm, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hy`.
+A detailed English derivation is pending.
 -/
 theorem ker_baseChange_tower (R A K Q P : Type) [CommRing R] [CommRing A] [CommRing K] [Algebra R A]
     [Algebra A K] [Algebra R K] [IsScalarTower R A K] [AddCommGroup Q] [Module R Q]

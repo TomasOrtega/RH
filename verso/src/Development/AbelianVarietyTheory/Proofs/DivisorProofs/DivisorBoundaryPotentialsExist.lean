@@ -28,11 +28,11 @@ def compPot (i : Fin m) : LocPot (Pts Y σ) where
 def compSec (i : Fin m) (y z : Pts Y σ) : ℂ := ev Y.str σ (eqV hn i y).1 (eqT hn i y) z
 
 /- English proof (translation)
-Establish `e` using `(eq_spec hn i y).2.2.2 z (mem_eqV hn hz i)`. Establish `h0` using `((hn i).1 z).1`. Establish `hx : Real.exp (-eqF hn i y z) = Real.exp (-eqF hn i y z / 2) ^ 2`. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e` using `[hx, ← mul_pow]`. Establish `h1` using `(pow_left_inj₀ h0 (by positivity) two_ne_zero).1 e`. Simplify using `only [compSec, compPot]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, neg_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_compSec_mul {i : Fin m} {y z : Pts Y σ} (hz : z ∈ (divPot hn).U y) :
     ‖compSec hn i y z‖ * Real.exp (-(compPot hn i).φ y z) = n i z := by
@@ -46,7 +46,7 @@ theorem norm_compSec_mul {i : Fin m} {y z : Pts Y σ} (hz : z ∈ (divPot hn).U 
   rw [h1, neg_div]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun y => (hB.holoOn_iff (Y.an σ) ((divPot hn).isOpen_U y)).2 fun j => ((Y.an σ).holoOn_ev _ (eqT hn i y) j).mono fun v hv => ⟨hv.1, mem_eqV hn hv.2 i⟩, fun _ _ _ hz => by rw [norm_compSec_mul hn hz.1, norm_compSec_mul hn hz.2]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSection_compSec {B : FinHolAtlas Y.dim (Pts Y σ)} (hB : IsAlgAtlas B) (i : Fin m) :
     IsSection B (compPot hn i) (compSec hn i) :=
@@ -55,9 +55,9 @@ theorem isSection_compSec {B : FinHolAtlas Y.dim (Pts Y σ)} (hB : IsAlgAtlas B)
     fun _ _ _ hz => by rw [norm_compSec_mul hn hz.1, norm_compSec_mul hn hz.2]⟩
 
 /- English proof (translation)
-Establish `hgen` using `generic_not_mem hsnc`. Use `⟨fun x => (hB.smoothOn_iff (Y.an σ) ((divPot hn).isOpen_U x)).2 ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations. Establish `h : (Y.an σ).SmoothOn ((divPot hn).U x) (fun z => eqF hn i x z / 2)` using `fun j => (((eq_spec hn i x).2.2.1.mono fun z hz => mem_eqV hn hz i) j).div_const 2`. Conclude with `h`. Take `⟨W, hW, hyW, G, hG, he⟩` from `GlobalTheory.T.smooth_ratio_of_local_generators F Y σ (C i) (n i) _ _ _ _ _ _ ⟨_, hgen i⟩ (eq_spec hn i x).2.1 (eq_spec hn i x').2.1 (eq_spec hn i x).2.2.1 (eq_spec hn i x').2.2.1 (eq_spec hn i x).2.2.2 (eq_spec hn i x').2.2.2 y ⟨mem_eqV hn hy.1 i, mem_eqV hn hy.2 i⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨W, hW, hyW, fun z => G z / 2, (hB.holoOn_iff (Y.an σ) hW).2 fun j => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `((hG j).mul_const (2⁻¹ : ℂ)).congr fun v _ => by simp [div_eq_mul_inv]`. Establish `h` using `he z ⟨⟨hz.1.1, mem_eqV hn hz.1.2 i⟩, mem_eqV hn hz.2 i⟩`. Simplify using `only [compPot]`. Rewrite using `[← sub_div, h, Complex.div_ofNat_re]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPotential_compPot (B : FinHolAtlas Y.dim (Pts Y σ)) (hB : IsAlgAtlas B)
     (hsnc : ∀ y : Y.X, LSncAt Y.X C y) (i : Fin m) : IsPotential B (compPot hn i) := by
@@ -76,49 +76,45 @@ theorem isPotential_compPot (B : FinHolAtlas Y.dim (Pts Y σ)) (hB : IsAlgAtlas 
       rw [← sub_div, h, Complex.div_ofNat_re]
 
 /- English proof (translation)
-Introduce `x`. Set `S : Finset (Fin m)` to `Finset.univ.filter fun i => LiesIn x (C i)`. Establish `hS : ∀ i, i ∈ S ↔ LiesIn x (C i)` using `fun i => by simp [S]`. Take `⟨c, hc⟩` from `AlgChart.exists_mem_source (D := Y.dim) (p := Y.str) (σ := σ) x`. Set `W : Y.X.Opens` to `Finset.univ.inf fun i => (eqV hn i x).1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hWle : ∀ i, W ≤ (eqV hn i x).1` using `fun i => Finset.inf_le (Finset.mem_univ i)`. Establish `hmemI : ∀ (z : Pts Y σ) (s : Finset (Fin m)), z ∈ ptsIn Y.str σ (s.inf fun i => (eqV hn i x).1) ↔ ∀ i ∈ s, z ∈ ptsIn Y.str σ (eqV hn i x).1`. Introduce `z s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s ha ih => rw [Finset.inf_insert, mem_ptsIn_inf, ih, Finset.forall_mem_insert]`. Establish `hWU : ptsIn Y.str σ W = (divPot hn).U x`. Use extensionality with `z`. Rewrite using `[hmemI z Finset.univ]`. Simplify using `only [divPot, Set.mem_iInter, Finset.mem_univ, true_implies]`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hxW : x ∈ ptsIn Y.str σ W` using `hWU ▸ (divPot hn).mem_U x`. Set `ix : Fin S.card → Fin m` to `fun j => (S.equivFin.symm j).1`. Establish `hix : Function.Injective ix` using `fun i j h => S.equivFin.symm.injective (Subtype.ext h)`. Establish `hixS : ∀ j, LiesIn x (C (ix j))` using `fun j => (hS _).1 (S.equivFin.symm j).2`. Set `g : Fin S.card → Γ(Y.X, W)` to `fun j => resG Y.X (hWle (ix j)) (eqT hn (ix j) x)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hgev : ∀ i z, z ∈ ptsIn Y.str σ W → ev Y.str σ W (resG Y.X (hWle i) (eqT hn i x)) z = ev Y.str σ _ (eqT hn i x) z` using `fun i z hz => ev_res _ hz _`. Establish `hzero : ∀ i z, z ∈ ptsIn Y.str σ W → (ev Y.str σ _ (eqT hn i x) z = 0 ↔ LiesIn z (C i))` using `fun i z hz => ev_eq_zero_iff (eq_spec hn i x).2.1 (ptsIn_mono (hWle i) hz)`. Establish `h0 : ∀ j, ev Y.str σ W (g j) x = 0` using `fun j => by`. Simplify using `only [g]`. Rewrite using `[hgev _ _ hxW]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hzero _ _ hxW).2 (hixS j)`. Establish `hliA` using `linearIndependent_fderiv_eqns F Y.X Y.str Y.dim σ inferInstance c x hc m C (hsnc _) (fun i => eqV hn i x) (fun i => eqT hn i x) (fun i => (eq_spec hn i x).1) (fun i => (eq_spec hn i x).2.1)`. Establish `hli : LinearIndependent ℂ (fun j => fderiv ℂ (ev Y.str σ W (g j) ∘ c.e.symm) (c.e x))`. Establish `h2` using `hliA.comp (fun j => (⟨ix j, hixS j⟩ : {i : Fin m // x.1 (IsLocalRing.closedPoint ℂ) ∈ C i})) (by intro a b h; exact hix (by simpa using congrArg Subtype.val h))`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Establish `e : ev Y.str σ W (g j) ∘ c.e.symm =ᶠ[nhds (c.e x)] ev Y.str σ _ (eqT hn (ix j) x) ∘ c.e.symm` using `Filter.eventually_of_mem ((GlobalTheory.ChartGlue.isOpen_over c.e (isOpen_ptsIn W)).mem_nhds (GlobalTheory.ChartGlue.mem_over c.e hc hxW)) fun v hv => hgev _ _ hv.2`. Simplify using `only [Function.comp_apply]`. Conclude with `e.fderiv_eq`. Establish `hcard : S.card ≤ Y.dim`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hli.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[← (LinearMap.toContinuousLinearMap (𝕜 := ℂ) (E := ReciprocityTheory.L2DbarEstimates.V Y.dim) (F' := ℂ)).finrank_eq, Module.finrank_linearMap, Module.finrank_self, _root_.mul_one]`. Simplify `this` using `[ReciprocityTheory.L2DbarEstimates.V]`. Take `⟨e, hx0, hsub, -, hhol, hsymm, hev⟩` from `SncChart.exists_chart_of_fderiv F Y.X Y.str Y.dim σ c x hc W hxW S.card g h0 hli`. Set `O : Set (Pts Y σ)` to `(divPot hn).U x ∩ ⋂ k, {z | LiesIn x (C k) ∨ ¬ LiesIn z (C k)}`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hO : IsOpen O`. Use `((divPot hn).isOpen_U x).inter (isOpen_iInter_of_finite fun k => ?_)` and prove the remaining obligations. Distinguish the cases in `h : LiesIn x (C k)`. Simplify using `[h]`. Simplify `isOpen_not_liesIn (p := Y.str) (σ := σ) (C k)` using `[h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ` to `e.restrOpen O hO`. Establish `hψs : ψ.source = e.source ∩ O` using `e.restrOpen_source O hO`. Establish `hψa : ∀ z, ψ z = e z` using `fun z => rfl`. Establish `hψW : ∀ z ∈ ψ.source, z ∈ ptsIn Y.str σ W` using `fun z hz => hsub (hψs ▸ hz).1`. Establish `hψO : ∀ z ∈ ψ.source, z ∈ O` using `fun z hz => (hψs ▸ hz).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcompat : IsCompatChart B ψ`. Use `isCompatChart_of_holAlong F Y.X Y.str σ Y.dim B hB ψ (fun j => ?_) ?_` and prove the remaining obligations. Introduce `V _ _ _ B' y hB' hy hm`. Conclude with `hhol j V B' y hB' hy (fun b hb => (hψs ▸ hm hb).1)`. Conclude with `GlobalTheory.LocLift.isHolTo_mono hsymm ψ.open_target fun z hz => hz.1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `pos : ∀ k, LiesIn x (C k) → Fin Y.dim` to `fun k hk => ⟨S.equivFin ⟨k, (hS k).2 hk⟩, lt_of_lt_of_le (Fin.isLt _) hcard⟩`. Set `τ : Fin m → Option (Fin Y.dim)` to `fun k => if hk : LiesIn x (C k) then some (pos k hk) else none`. Establish `hτ : ∀ k (hk : LiesIn x (C k)) z, z ∈ ψ.source → ψ z (pos k hk) = ev Y.str σ _ (eqT hn k x) z`. Introduce `k hk z hz`. Rewrite using `[hψa, hev z (hψs ▸ hz).1 (pos k hk) (S.equivFin ⟨k, (hS k).2 hk⟩).isLt]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hj : (⟨(pos k hk : ℕ), (S.equivFin ⟨k, (hS k).2 hk⟩).isLt⟩ : Fin S.card) = S.equivFin ⟨k, (hS k).2 hk⟩` using `rfl`. Establish `hk' : ix (S.equivFin ⟨k, (hS k).2 hk⟩) = k` using `by simp [ix]`. Rewrite using `[hj]`. Simplify using `only [g]`. Rewrite using `[hgev _ _ (hψW z hz)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Rewrite using `[hk']`. Use `⟨ψ, hcompat, hψs ▸ ⟨hx0, (divPot hn).mem_U x, Set.mem_iInter.2 fun k => ?_⟩, fun z hz => (hψO z hz).1, τ, ?_, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : LiesIn x (C k)`. Conclude with `Or.inl h`. Conclude with `Or.inr h`.
+Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k k' i h1 h2`. Simplify using `only [τ] at h1 h2`. Use `split_ifs at h1 h2 with hk hk'`. Use `(Option.some.inj h1).trans (Option.some.inj h2).symm` as an intermediate fact. Establish `h3 : S.equivFin ⟨k, (hS k).2 hk⟩ = S.equivFin ⟨k', (hS k').2 hk'⟩` using `Fin.ext (by simpa [pos] using congrArg Fin.val this)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `congrArg Subtype.val (S.equivFin.injective h3)`. Introduce `k`. Use extensionality with `z`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, τ]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hzk, hz⟩`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : LiesIn x (C k)`. Use `⟨pos k hk, by simp [hk], ?_⟩` and prove the remaining obligations. Rewrite using `[hτ k hk z hz]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hzero k z (hψW z hz)).2 hzk`. Conclude with `absurd hzk ((Set.mem_iInter.1 (hψO z hz).2 k).resolve_left hk)`. Introduce and unpack `⟨hz, i, hi, h0⟩`. Use `⟨?_, hz⟩` and prove the remaining obligations. Distinguish the cases in `hk : LiesIn x (C k)`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [hk, dite_true, Option.some.injEq] at hi`. Substitute `hi` using the available equality. Rewrite `h0` using `[hτ k hk z hz]`. Conclude with `(hzero k z (hψW z hz)).1 h0`. Simplify using `[hk] at hi`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : LiesIn x (C i)`. Use `⟨fun _ => 1, fun j => by exact analyticOnNhd_const, fun _ _ => one_ne_zero, fun z hz => ?_⟩ show compSec hn i x z = 1 * _` and prove the remaining obligations. Apply the tactic sequence `rw [one_mul, Finset.prod_eq_single i (fun k _ hk => by simp only [τ]; split_ifs <;> simp [Pi.single_apply, hk]) (by simp)]`. Simplify using `only [τ, hi, dite_true, Pi.single_eq_same, pow_one]`. Conclude with `(hτ i hi z hz).symm`.
-
-Use `⟨fun z => ev Y.str σ _ (eqT hn i x) z, ?_, fun z hz h => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `(hB.holoOn_iff (Y.an σ) ψ.open_source).2 fun j => ?_` and prove the remaining obligations. Conclude with `((Y.an σ).holoOn_ev _ (eqT hn i x) j).mono fun v hv => ⟨hv.1, ptsIn_mono (hWle i) (hψW _ hv.2)⟩`. Conclude with `(Set.mem_iInter.1 (hψO z hz).2 i).resolve_left hi ((hzero i z (hψW z hz)).1 h)`. Rewrite using `[Finset.prod_eq_one fun k _ => ?_, mul_one]`.
-
-Both sides reduce to the same expression. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `only [τ, hi, dite_false]`. Apply the tactic sequence `simp only [τ]; split_ifs <;> simp [Pi.single_apply, hk]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isSNC_compSec (B : FinHolAtlas Y.dim (Pts Y σ)) (hB : IsAlgAtlas B) (hsnc : ∀ y : Y.X, LSncAt Y.X C y)
     (i : Fin m) : IsSNC B (compPot hn i) (compSec hn i) (Pi.single i 1) (fun k => {z | LiesIn z (C k)}) := by
@@ -252,9 +248,9 @@ end GlobalTheory.DivSec
 namespace GlobalTheory.DivSec
 
 /- English proof (translation)
-Introduce `F _ _ Y e M I a m C n hdim hsnc hn`. Substitute `hdim` using the available equality. Establish `hA : ChartsAlg (M.A a) (I.pt a)` using `I.alg a`. Use `⟨fun i => (compPot hn i).pullback (I.pt a) (I.pt a).continuous, fun i x w => compSec hn i (I.pt a x) (I.pt a w), fun i => ⟨isPotential_pullback hA (isPotential_compPot hn _ (isAlgAtlas_algAtlas hA) hsnc i), isSection_pullback hA (isSection_compSec hn (isAlgAtlas_algAtlas hA) i), …` and prove the remaining obligations. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.normSec, LocPot.pullback]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[norm_compSec_mul hn ((divPot hn).mem_U _)]`. Conclude with `((hn i).1 _).2`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.normSec, LocPot.pullback]`. Conclude with `norm_compSec_mul hn ((divPot hn).mem_U _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isBoundary_of_divNorm : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ) (M : Man e) (I : ManIs M Y) (a : Fin (M.n + 1)) (m : ℕ) (C : Fin m → Closeds Y.X) (n : Fin m → Pts Y (I.ε a) → ℝ), Y.dim = e → (∀ y : Y.X, LSncAt Y.X C y) → (∀ i, IsDivNorm (Y.an (I.ε a)) (C i) (n i)) → ∃ (L : Fin m → LocPot (M.X a)) (t : Fin m → M.X a → M.X a → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.IsBoundary (M.A a) L t (fun i => {z | under (I.pt a z) ∈ C i}) ∧ ∀ i z, GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.normSec (L i) (t i) z = n i (I.pt a z) := by
   intro F _ _ Y e M I a m C n hdim hsnc hn

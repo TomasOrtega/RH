@@ -7,9 +7,9 @@ open Polynomial
 namespace GlobalTheory.FixedRoots
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ShiftVariables.exists_ringEquiv_add_one`. Consider the case `exact _root_.GlobalTheory.ShiftVariables.exists_ringEquiv_add_one`. Consider the case `(apply _root_.GlobalTheory.ShiftVariables.exists_ringEquiv_add_one <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ShiftVariables.exists_ringEquiv_add_one <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ShiftVariables.exists_ringEquiv_add_one <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ShiftVariables.exists_ringEquiv_add_one ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_ringEquiv_add_one {Ω : Type} [Field Ω] [IsAlgClosed Ω] (k : Subfield Ω) (c : Ω)
     (hc : Transcendental k c) :
@@ -23,13 +23,13 @@ theorem exists_ringEquiv_add_one {Ω : Type} [Field Ω] [IsAlgClosed Ω] (k : Su
   | (intros; exact _root_.GlobalTheory.ShiftVariables.exists_ringEquiv_add_one ..)
 
 /- English proof (translation)
-Distinguish the cases in `hc : Transcendental k c`. It suffices to derive a contradiction. Take `⟨σ, hσk, hσc⟩` from `exists_ringEquiv_add_one k c hc`. Use `hfix σ hσk` as an intermediate fact. Rewrite `this` using `[hσc]`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`. Establish `hcA : IsAlgebraic k c` using `by simpa [Transcendental] using hc`. Establish `hzA : c ∈ algebraicClosure k Ω` using `(mem_algebraicClosure_iff).2 hcA`. Establish `: IsGalois k (algebraicClosure k Ω)` using `inferInstance`. Take `⟨r, hr⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed (k := k) (K := algebraicClosure k Ω) ⟨c, hzA⟩).2 (by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `σ₀`. Take `⟨σ, hσ⟩` from `Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.exists_algEquiv_extending σ₀`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hσ]`. Conclude with `hfix σ.toRingEquiv (fun a ha => σ.commutes ⟨a, ha⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((r : k) : Ω) = c` using `congrArg Subtype.val hr`. Rewrite using `[← this]`. Conclude with `r.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_ringEquiv_fixed {Ω : Type} [Field Ω] [IsAlgClosed Ω] [CharZero Ω]
     (k : Subfield Ω) (c : Ω) (hfix : ∀ σ : Ω ≃+* Ω, (∀ a ∈ k, σ a = a) → σ c = c) : c ∈ k := by
@@ -54,11 +54,11 @@ theorem mem_of_forall_ringEquiv_fixed {Ω : Type} [Field Ω] [IsAlgClosed Ω] [C
     exact r.2
 
 /- English proof (translation)
-Apply `mem_of_forall_ringEquiv_fixed k` to reduce the goal to its premises. Introduce `σ hσ`. Establish `hmap : S.map σ.toEquiv.toEmbedding = S`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `y hy`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx, rfl⟩` from `Finset.mem_map.1 hy`. Conclude with `hS σ hσ x hx`. Simplify using the standard rewrite rules. Establish `hP : (∏ x ∈ S, (X - C x)).map (σ : Ω →+* Ω) = ∏ x ∈ S, (X - C x)`. Rewrite using `[Polynomial.map_prod]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hmap]`. Rewrite using `[Finset.prod_map]`. Simplify using the standard rewrite rules. Use `congrArg (fun P => Polynomial.coeff P n) hP` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coeff_prod_mem {Ω : Type} [Field Ω] [IsAlgClosed Ω] [CharZero Ω] (k : Subfield Ω)
     (S : Finset Ω) (hS : ∀ σ : Ω ≃+* Ω, (∀ a ∈ k, σ a = a) → ∀ x ∈ S, σ x ∈ S) (n : ℕ) :
@@ -80,7 +80,7 @@ theorem coeff_prod_mem {Ω : Type} [Field Ω] [IsAlgClosed Ω] [CharZero Ω] (k 
   simpa [Polynomial.coeff_map] using this
 
 /- English proof (translation)
-Introduce `_ _ _ _ k S hS n` and use `coeff_prod_mem k S hS n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [CharZero Ω] (k : Subfield Ω) (S : Finset Ω),
     (∀ σ : Ω ≃+* Ω, (∀ a ∈ k, σ a = a) → ∀ x ∈ S, σ x ∈ S) → ∀ n,

@@ -14,7 +14,7 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[toMK_inv]`. Use `hx.conjTranspose_mul_mul_same ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `h` using `congrArg (fun y => (toMK k)ᴴ.mulVec y) hab`. Simplify `h` using `only [Matrix.mulVec_mulVec, (toMK_facts k).1, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem posDef_conj_toMK {ε : Fin n → Bool} (k : KG ε) {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) :
     (toMK k⁻¹ * x * toMK k).PosDef := by
@@ -25,7 +25,7 @@ theorem posDef_conj_toMK {ε : Fin n → Bool} (k : KG ε) {x : Matrix (Fin n) (
   simpa only [Matrix.mulVec_mulVec, (toMK_facts k).1, Matrix.one_mulVec] using h
 
 /- English proof (translation)
-Unfold `muNext`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem muNext_add_smul (μ D : Fin n → ℤ) (t : ℤ) (i : Fin n) :
     muNext (μ + t • D) i = muNext μ i + t * muNext D i := by
@@ -33,9 +33,9 @@ theorem muNext_add_smul (μ D : Fin n → ℤ) (t : ℤ) (i : Fin n) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `PhiM`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h0 : lead ((i : ℕ) + 1) y ≠ 0` using `hy i`. Rewrite using `[muNext_add_smul, ← zpow_natCast, ← _root_.zpow_mul, ← zpow_add₀ h0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem phiM_add_smul (μ D : Fin n → ℤ) (t : ℕ) {y : Matrix (Fin n) (Fin n) ℂ} (hy : y ∈ OmegaSet n) :
     PhiM (μ + (t : ℤ) • D) y = PhiM μ y * PhiM D y ^ t := by
@@ -49,11 +49,11 @@ theorem phiM_add_smul (μ D : Fin n → ℤ) (t : ℕ) {y : Matrix (Fin n) (Fin 
   ring
 
 /- English proof (translation)
-Introduce `n ε μ t x hx k`. Establish `hy` using `posDef_conj_toMK k hx`. Establish `h1` using `phiM_posDef μ hy`. Establish `h2` using `phiM_posDef (Dz n) hy`. Use `⟨h1.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `phiK`. Rewrite using `[phiM_add_smul μ (Dz n) t (posSet_subset_omega hy)]`. Establish `e1 : PhiM μ (toMK k⁻¹ * x * toMK k) = ((PhiM μ (toMK k⁻¹ * x * toMK k)).re : ℂ)` using `Complex.ext (by simp) (by simp [h1.2])`. Establish `e2 : PhiM (Dz n) (toMK k⁻¹ * x * toMK k) = ((PhiM (Dz n) (toMK k⁻¹ * x * toMK k)).re : ℂ)` using `Complex.ext (by simp) (by simp [h2.2])`. Rewrite using `[e1, e2, ← Complex.ofReal_pow, ← Complex.ofReal_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Complex.ofReal_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phiMul : PhiMul := by
   intro n ε μ t x hx k

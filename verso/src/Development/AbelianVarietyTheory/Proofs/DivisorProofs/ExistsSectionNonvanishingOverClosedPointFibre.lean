@@ -13,23 +13,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `Y Y' Z' k hk p' hpc hps V hV y hy _ M hM hloc`. Take `⟨hfin, hdisc⟩` from `GlobalTheory.T.finite_fibre_and_eq_of_specializes_of_isFinite' Y Y' k hk y`. Establish `hU : IsAffineOpen (k ⁻¹ᵁ V)` using `hV.preimage k`. Set `F : Finset Y'` to `hfin.toFinset`. Establish `hF : ∀ a, a ∈ F ↔ k a = y` using `fun a => by simp [F]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hW : ∀ a : Y', ∃ W : Y'.Opens, (k a = y → a ∈ W ∧ ∃ t : LB.Gen (M.pull (p' ⁻¹ᵁ W).ι), t.IsGen)`. Introduce `a`. Distinguish the cases in `h : k a = y`. Take `⟨W, hW, t, ht⟩` from `hloc a h`. Conclude with `⟨W, fun _ => ⟨hW, t, ht⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⊤, fun h' => absurd h' h⟩`. Use `choose W hW using hW`. Take `⟨f, hf⟩` from `GlobalTheory.T.exists_separating_basicOpen_functions' Y' (k ⁻¹ᵁ V) hU F (fun a ha => by show k a ∈ V`. Rewrite using `[(hF a).1 ha]`. Conclude with `hy) (fun a ha b hb hab => hdisc a b ((hF a).1 ha) ((hF b).1 hb) hab)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `W (fun a ha => ((hW a) ((hF a).1 ha)).1)`. Set `q : (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).toScheme ⟶ Y'` to `(p' ⁻¹ᵁ (k ⁻¹ᵁ V)).ι ≫ p'`. Establish `hq : (⊤ : (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).toScheme.Opens) ≤ q ⁻¹ᵁ (k ⁻¹ᵁ V)`. Introduce `z _`. Use `show p' ((p' ⁻¹ᵁ (k ⁻¹ᵁ V)).ι z) ∈ k ⁻¹ᵁ V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).ι z ∈ p' ⁻¹ᵁ (k ⁻¹ᵁ V)` using `(Scheme.Opens.range_ι (p' ⁻¹ᵁ (k ⁻¹ᵁ V))).subset ⟨z, rfl⟩`. Conclude with `h`. Set `r : Y' → Γ((p' ⁻¹ᵁ (k ⁻¹ᵁ V)).toScheme, ⊤)` to `fun a => (q.appLE (k ⁻¹ᵁ V) ⊤ hq).hom (f a)`. Establish `hr : ∀ a (z : (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).toScheme), z ∈ (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).toScheme.basicOpen (r a) ↔ q z ∈ Y'.basicOpen (f a)`. Introduce `a z`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Scheme.basicOpen_appLE]`. Conclude with `⟨fun h => h.2, fun h => ⟨trivial, h⟩⟩`. Use `haveI : CompactSpace (k ⁻¹ᵁ V).toScheme := isCompact_iff_compactSpace.1 hU.isCompact`. Use `haveI : CompactSpace (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).toScheme := by`. Use `hpc.isCompact_preimage _ (k ⁻¹ᵁ V).isOpen hU.isCompact` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isCompact_iff_compactSpace.1 this`. Use `haveI : IsAffine (k ⁻¹ᵁ V).toScheme := hU`. Use `haveI : QuasiSeparatedSpace (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).toScheme := quasiSeparatedSpace_of_quasiSeparated (p' ∣_ (k ⁻¹ᵁ V))`. Establish `hσ : ∀ a : F, ∃ σ : LB.Sec (M.pull (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).ι), (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).toScheme.basicOpen (r a) ≤ nonzeroLocus σ`. Introduce and unpack `⟨a, ha⟩`.
-
-Take `⟨-, t, ht⟩` from `hW a ((hF a).1 ha)`. Conclude with `GlobalTheory.T.exists_section_nonvanishing_basicOpen_of_nearGenerator Z' _ (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).ι inferInstance ‹_› ‹_› M hM (r a) (p' ⁻¹ᵁ W a) (fun x hx => (hf a ha).2.1 ((hr a x).1 hx)) t ht`. Use `choose σ hσ using hσ`. Take `⟨s, hs⟩` from `GlobalTheory.T.exists_section_nonvanishing_where_single_coefficient _ (M.pull (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).ι) F (fun a => r a) σ`. Use `⟨s, fun z hz => ?_⟩` and prove the remaining obligations.
-
-Establish `ha : q z ∈ F` using `(hF _).2 hz`. Establish `h1 : z ∈ (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).toScheme.basicOpen (r (q z))` using `(hr _ z).2 (hf _ ha).1`. Use `hs z ⟨q z, ha⟩ h1 (hσ _ h1) (fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[hr]`. Conclude with `(hf j.1 j.2).2.2 (q z) ha (fun h => hj (Subtype.ext h.symm))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_nonzero_on_fibre : ∀ (Y Y' Z' : Scheme.{0}) (k : Y' ⟶ Y), IsFinite k → ∀ (p' : Z' ⟶ Y'), QuasiCompact p' → QuasiSeparated p' → ∀ (V : Y.Opens), IsAffineOpen V → ∀ y ∈ V, (∀ y₁ ∈ V, y ⤳ y₁ → y₁ = y) → ∀ (M : LB Z'), M.IsLB → (∀ x' : Y', k x' = y → ∃ W : Y'.Opens, x' ∈ W ∧ ∃ t : LB.Gen (M.pull (p' ⁻¹ᵁ W).ι), t.IsGen) → ∃ s : LB.Sec (M.pull (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).ι), ∀ z : (p' ⁻¹ᵁ (k ⁻¹ᵁ V)).toScheme, k (p' ((p' ⁻¹ᵁ (k ⁻¹ᵁ V)).ι z)) = y → z ∈ nonzeroLocus s := by
   intro Y Y' Z' k hk p' hpc hps V hV y hy _ M hM hloc

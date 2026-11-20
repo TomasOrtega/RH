@@ -16,13 +16,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open GlobalTheory.EX
 
 /- English proof (translation)
-Establish `hx : 1 < L.sc.x` using `L.sc.one_lt_alt`. Establish `he` using `L.sc.eps_pos`. Establish `hL : 1 ≤ L.sc.L`. Unfold `Scale.L`. Conclude with `Real.one_le_rpow hx.le he.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h1 : L.sc.x ≤ L.sc.x ^ (2 + 8 * L.sc.eps)`. Combine the equalities or inequalities in the displayed calculation. Establish `hf : (D.R.n : ℝ) ≤ D.R.f`. Unfold `Ranks.f; exact_mod_cast (by omega : D.R.n ≤ 2 * D.R.n)`. Establish `hr : (1 : ℝ) ≤ D.R.r`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Conclude with `(by unfold Ranks.r; omega : 1 ≤ D.R.r)` after adjusting the coercions. Establish `hxf : L.sc.x ≤ (D.R.f : ℝ)` using `h1.trans (hn.trans hf)`. Establish `hf0 : (0 : ℝ) ≤ D.R.f` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Unfold `zBase`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem x_le_zBase_of_pow_le_n {D : D7} (L : SizeData₂ D) (hn : L.sc.x ^ (2 + 8 * L.sc.eps) ≤ (D.R.n : ℝ)) :
     L.sc.x ≤ zBase L := by

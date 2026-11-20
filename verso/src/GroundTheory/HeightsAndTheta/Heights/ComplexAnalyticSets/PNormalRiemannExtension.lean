@@ -9,15 +9,13 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open MvPolynomial Topology
 
 /- English proof (translation)
-Introduce `σ _ I h U f hI hIc hh hU hf hb`. Establish `hex : ∀ w ∈ zeroSetIn I ∩ U, ∃ V : Set (σ → ℂ), IsOpen V ∧ w ∈ V ∧ V ⊆ U ∧ ∃ F : (σ → ℂ) → ℂ, DifferentiableOn ℂ F V ∧ Set.EqOn F f ((zeroSetIn I ∩ V) \ {z | eval z h = 0})` using `fun w hw => hloc σ I h w U f hI hIc hh hw.1 (hU.mem_nhds hw.2) hf hb`. Use `choose! V hVo hwV hVU F hF hFf using hex`. Establish `hagree : ∀ w ∈ zeroSetIn I ∩ U, ∀ y ∈ zeroSetIn I ∩ U, y ∈ V w → F y y = F w y`. Introduce `w hw y hy hyw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hWo : IsOpen (V y ∩ V w)` using `(hVo y hy).inter (hVo w hw)`. Take `⟨B, -, hyB, hBW, -, hdense⟩` from `hirr σ I h y hI hIc hh hy.1 (V y ∩ V w) (hWo.mem_nhds ⟨hwV y hy, hyw⟩)`. Use `set S := (zeroSetIn I ∩ B) \ {z | eval z h = 0}`. Establish `hSW : insert y S ⊆ V y ∩ V w` using `Set.insert_subset_iff.2 ⟨⟨hwV y hy, hyw⟩, fun z hz => hBW hz.1.2⟩`. Establish `heq : Set.EqOn (F y) (F w) S` using `fun z hz => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzW` using `hBW hz.1.2`. Rewrite using `[hFf y hy ⟨⟨hz.1.1, hzW.1⟩, hz.2⟩, hFf w hw ⟨⟨hz.1.1, hzW.2⟩, hz.2⟩]`. Conclude with `heq.of_subset_closure ((hF y hy).continuousOn.mono fun z hz => (hSW hz).1) ((hF w hw).continuousOn.mono fun z hz => (hSW hz).2) (Set.subset_insert y S) (Set.insert_subset_iff.2 ⟨hdense ⟨hy.1, hyB⟩, subset_closure⟩) (Set.mem_insert y S)`. Use `⟨fun z => if z ∈ zeroSetIn I ∩ U then F z z else f z, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨V w, hVo w hw, hwV w hw, F w, hF w hw, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [if_pos hy.1]`. Conclude with `hagree w hw y hy.1 hy.2`. Introduce `z hz`. Simplify using `only [if_pos hz.1]`.
-
-Conclude with `hFf z hz.1 ⟨⟨hz.1.1, hwV z hz.1⟩, hz.2⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem NormalRiemannExtension.proof (hloc : NormalRiemannExtensionLocal.Statement)
     (hirr : NormalLocallyIrreducible.Statement) : NormalRiemannExtension.Statement := by

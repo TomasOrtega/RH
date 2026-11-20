@@ -36,7 +36,7 @@ def pol (τ : D.what₂.Tau) (a b : Fin m) : Derivation ℂ (PolF D m n) (PolF D
   ∑ j : Fin n, (X (τ, a, j) : PolF D m n) • pderiv (τ, b, j)
 
 /- English proof (translation)
-Establish `e` using `map_sum (Derivation.coeFnAddMonoidHom : Derivation ℂ (PolF D m n) (PolF D m n) →+ _) (fun j : Fin n => (X (τ, a, j) : PolF D m n) • pderiv (τ, b, j)) Finset.univ`. Simplify using `only [Derivation.coeFnAddMonoidHom_apply] at e`. Rewrite using `[pol, e, Finset.sum_apply]`. Simplify using `[Derivation.smul_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pol_apply (τ : D.what₂.Tau) (a b : Fin m) (Q : PolF D m n) :
     pol τ a b Q = ∑ j, X (τ, a, j) * pderiv (τ, b, j) Q := by
@@ -47,9 +47,9 @@ theorem pol_apply (τ : D.what₂.Tau) (a b : Fin m) (Q : PolF D m n) :
   simp [Derivation.smul_apply]
 
 /- English proof (translation)
-Rewrite using `[pol_apply]`. Simplify using `only [pderiv_X, Pi.single_apply, Prod.mk.injEq, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `h : t = τ ∧ i = b`. Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun k _ => if_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨rfl, rfl, rfl⟩`. Conclude with `h ⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem pol_X (τ : D.what₂.Tau) (a b : Fin m) (t : D.what₂.Tau) (i : Fin m) (j : Fin n) :
     (pol τ a b (X (t, i, j)) : PolF D m n) = if t = τ ∧ i = b then X (τ, a, j) else 0 := by
@@ -63,17 +63,17 @@ theorem pol_X (τ : D.what₂.Tau) (a b : Fin m) (t : D.what₂.Tau) (i : Fin m)
     rintro ⟨rfl, rfl, rfl⟩; exact h ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce and unpack `⟨t, i, j⟩`. Rewrite using `[Derivation.commutator_apply, Derivation.smul_apply, pol_X, pol_X]`. Apply the tactic sequence `by_cases h1 : t = τ ∧ i = b <;> by_cases h2 : t = τ' ∧ i = c`. Take `⟨rfl, rfl⟩` from `h1`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, rfl⟩` from `h2`. Simplify using `only [pol_X, and_self, if_true, true_and]`. Distinguish the cases in `hai : a = i`. Substitute `hai` using the available equality. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hai, Ne.symm hai]`. Rewrite using `[if_pos h1, if_neg h2, map_zero, sub_zero, pol_X]`. Take `⟨rfl, rfl⟩` from `h1`. Distinguish the cases in `h3 : t = τ' ∧ a = c`. Take `⟨rfl, rfl⟩` from `h3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Simplify using `only [and_self, if_true]`. Establish `: i ≠ a` using `fun e => h2 ⟨rfl, e⟩`. Simplify using `[Ne.symm this]`. Rewrite using `[if_neg h3]`. Distinguish the cases in `h4 : t = τ'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h4` using the available equality. Establish `: c ≠ a` using `fun e => h3 ⟨rfl, e.symm⟩`. Establish `: c ≠ i` using `fun e => h2 ⟨rfl, e.symm⟩`. Simplify using `[*]`. Simplify using `[Ne.symm h4]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h1, if_pos h2, map_zero, zero_sub, pol_X]`. Take `⟨rfl, rfl⟩` from `h2`. Rewrite using `[if_neg h1, neg_zero, smul_zero]`. Rewrite using `[if_neg h1, if_neg h2, map_zero, map_zero, sub_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pol_comm (τ' τ : D.what₂.Tau) (c a b : Fin m) :
     ⁅(pol τ' c c : Derivation ℂ (PolF D m n) (PolF D m n)), (pol τ a b : Derivation ℂ (PolF D m n) (PolF D m n))⁆ =
@@ -118,7 +118,7 @@ open MvPolynomial GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperato
 variable {D : D7} {n m : ℕ}
 
 /- English proof (translation)
-Use `LinearMap.ext fun Q => ?_` and prove the remaining obligations. Rewrite using `[kop, GlobalTheory.CompactHarm.up_eq τ _ a b (by simpa using ha) (by simpa using hb)]`. Simplify using `only [LinearMap.add_apply, Derivation.coeFn_coe, pol_apply, LinearMap.smul_apply, Module.End.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kop_pos (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a b : Fin m) (ha : (a : ℕ) < w.p τ)
     (hb : (b : ℕ) < w.p τ) :
@@ -130,9 +130,9 @@ theorem kop_pos (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `LinearMap.ext fun Q => ?_` and prove the remaining obligations. Rewrite using `[kop, GlobalTheory.CompactHarm.dn_eq τ _ a b (by simpa using ha) (by simpa using hb)]`. Simplify using `only [GlobalTheory.CompactHarm.pd_X_mul, Finset.sum_add_distrib, Prod.mk.injEq, true_and, and_true, LinearMap.sub_apply, LinearMap.neg_apply, Derivation.coeFn_coe, pol_apply, LinearMap.smul_apply, Module.End.one_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [if_true, Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ]`. Use `module`. Simplify using `[hab, Ne.symm hab]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kop_neg (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a b : Fin m) (ha : ¬ (a : ℕ) < w.p τ)
     (hb : ¬ (b : ℕ) < w.p τ) :
@@ -163,7 +163,7 @@ abbrev polE (τ : D.what₂.Tau) (a b : Fin m) : Module.End ℂ (PolF D m n) :=
   ((pol τ a b : Derivation ℂ (PolF D m n) (PolF D m n)) : Module.End ℂ (PolF D m n))
 
 /- English proof (translation)
-Rewrite using `[← Ring.lie_def, polE, polE, ← Derivation.commutator_coe_linear_map, pol_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem polE_comm (τ' τ : D.what₂.Tau) (c a b : Fin m) :
     (polE τ' c c : Module.End ℂ (PolF D m n)) * polE τ a b - polE τ a b * polE τ' c c =
@@ -172,7 +172,7 @@ theorem polE_comm (τ' τ : D.what₂.Tau) (c a b : Fin m) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `polE_comm (n := n) τ' τ c c' c'`. Rewrite `h` using `[sub_self, ite_self, zero_smul, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polE_commute (τ' τ : D.what₂.Tau) (c c' : Fin m) :
     Commute (polE τ' c c : Module.End ℂ (PolF D m n)) (polE τ c' c') := by
@@ -181,7 +181,7 @@ theorem polE_commute (τ' τ : D.what₂.Tau) (c c' : Fin m) :
   exact h
 
 /- English proof (translation)
-Apply `Commute.add_left` to reduce the goal to its premises. Apply `Commute.add_right` to reduce the goal to its premises. Conclude with `(h.smul_left u).smul_right v`. Conclude with `((Commute.one_right _).smul_right e).smul_left u`. Conclude with `(((Commute.one_left B).smul_left d).smul_right v).add_right (((Commute.one_left (1 : Module.End ℂ (PolF D m n))).smul_left d).smul_right e)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem comm_aff {A B : Module.End ℂ (PolF D m n)} (h : Commute A B) (u v d e : ℂ) :
     Commute (u • A + d • 1) (v • B + e • 1) := by
@@ -193,7 +193,7 @@ theorem comm_aff {A B : Module.End ℂ (PolF D m n)} (h : Commute A B) (u v d e 
       (((Commute.one_left (1 : Module.End ℂ (PolF D m n))).smul_left d).smul_right e)
 
 /- English proof (translation)
-Distinguish the cases in `hc : (c : ℕ) < w.p τ`. Rewrite using `[kop_pos w τ c c hc hc]`. Simplify using `[hc]`. Rewrite using `[kop_neg w τ c c hc hc]`. Simplify using `only [hc, if_false, if_true, neg_smul, one_smul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -205,7 +205,7 @@ theorem kop_diag (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau)
   · rw [kop_neg w τ c c hc hc]; simp only [hc, if_false, if_true, neg_smul, one_smul]; abel
 
 /- English proof (translation)
-Rewrite using `[kop_diag, kop_diag]`. Conclude with `(comm_aff (polE_commute τ τ' c c') _ _ _ _).eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kop_diag_commute (w : GlobalTheory.ExportSeries.Weight D n) (τ τ' : D.what₂.Tau) (c c' : Fin m) :
     kop w τ c c * kop w τ' c' c' = kop w τ' c' c' * kop w τ c c := by
@@ -213,19 +213,19 @@ theorem kop_diag_commute (w : GlobalTheory.ExportSeries.Weight D n) (τ τ' : D.
   exact (comm_aff (polE_commute τ τ' c c') _ _ _ _).eq
 
 /- English proof (translation)
-Establish `hC' : ((a : ℕ) < w.p τ ↔ (b : ℕ) < w.p τ)` using `hC`. Establish `k1 : ∀ (A B : Module.End ℂ (PolF D m n)) (u d : ℂ), (u • A + d • 1) * B - B * (u • A + d • 1) = u • (A * B - B * A)`. Introduce `A B u d`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[kop_diag, k1]`. Distinguish the cases in `ha : (a : ℕ) < w.p τ`. Establish `hb` using `hC'.1 ha`. Rewrite using `[kop_pos w τ a b ha hb, if_neg hab, zero_smul, add_zero, polE_comm]`. Distinguish the cases in `hc : (c : ℕ) < w.p τ'`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hc, one_smul]`. Rewrite using `[if_neg hc]`. Distinguish the cases in `ht : τ' = τ`. Substitute `ht` using the available equality. Establish `h1 : c ≠ a` using `fun e => hc (e ▸ ha)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h2 : c ≠ b` using `fun e => hc (e ▸ hb)`. Simplify using `[h1, h2]`. Simplify using `[ht]`. Establish `hb : ¬ (b : ℕ) < w.p τ` using `fun h => ha (hC'.2 h)`. Rewrite using `[kop_neg w τ a b ha hb, if_neg hab, zero_smul, sub_zero, mul_neg, neg_mul, sub_neg_eq_add, neg_add_eq_sub, ← neg_sub, polE_comm, smul_neg, smul_neg, smul_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc : (c : ℕ) < w.p τ'`. Rewrite using `[if_pos hc]`. Distinguish the cases in `ht : τ' = τ`. Substitute `ht` using the available equality. Establish `h1 : c ≠ a` using `fun e => ha (e ▸ hc)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h2 : c ≠ b` using `fun e => hb (e ▸ hc)`. Simplify using `[h1, h2]`. Simplify using `[ht]`. Rewrite using `[if_neg hc]`. Use `congr 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `split_ifs <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kop_comm (w : GlobalTheory.ExportSeries.Weight D n) (τ' τ : D.what₂.Tau) (c a b : Fin m) (hC : Cpt w τ a b)
     (hab : a ≠ b) :
@@ -270,9 +270,9 @@ end GlobalTheory.KHwExist
 namespace GlobalTheory.KHwExist
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CommonEigenvector.common_eigenvector`. Consider the case `exact _root_.GlobalTheory.CommonEigenvector.common_eigenvector`. Consider the case `(apply _root_.GlobalTheory.CommonEigenvector.common_eigenvector <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CommonEigenvector.common_eigenvector <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CommonEigenvector.common_eigenvector <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CommonEigenvector.common_eigenvector ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_common_eigenvector {V ι : Type*} [AddCommGroup V] [Module ℂ V] [Fintype ι]
     (H : ι → Module.End ℂ V) (hH : ∀ i j, H i * H j = H j * H i) (E : Submodule ℂ V) [FiniteDimensional ℂ E]
@@ -287,23 +287,23 @@ theorem exists_common_eigenvector {V ι : Type*} [AddCommGroup V] [Module ℂ V]
   | (intros; exact _root_.GlobalTheory.CommonEigenvector.common_eigenvector ..)
 
 /- English proof (translation)
-Use `haveI : Nontrivial T := Submodule.nontrivial_iff_ne_bot.2 hT0`. Set `hT : Module.End ℂ T` to `h.restrict hTh`. Establish `hfin : {μ | Module.End.HasEigenvalue hT μ}.Finite` using `Module.End.finite_hasEigenvalue hT`. Take `⟨μ0, hμ0⟩` from `Module.End.exists_eigenvalue hT`. Take `⟨z, hz, hzmax⟩` from `Set.exists_max_image _ (fun μ : ℂ => μ.re) hfin ⟨μ0, hμ0⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `E : Submodule ℂ V` to `T ⊓ LinearMap.ker (h - z • 1)`. Establish `memE : ∀ x, x ∈ E ↔ x ∈ T ∧ h x = z • x`. Introduce `x`. Simplify using `[E, sub_eq_zero]`. Use `haveI : FiniteDimensional ℂ E := Submodule.finiteDimensional_of_le inf_le_left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hE0 : E ≠ ⊥`. Take `⟨x, hx⟩` from `(hz : Module.End.HasEigenvalue hT z).exists_hasEigenvector`. Rewrite `hx` using `[Module.End.hasEigenvector_iff, Module.End.mem_eigenspace_iff]`. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨x, (memE _).2 ⟨x.2, ?_⟩, fun h0 => hx.2 (Subtype.ext h0)⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `congrArg Subtype.val hx.1` as an intermediate fact. Rewrite `this` using `[LinearMap.coe_restrict_apply]`. Then use the resulting hypothesis. Establish `hkill : ∀ r, ∀ x ∈ E, R r x = 0`. Introduce `r x hx`. Take `⟨hxT, hxz⟩` from `(memE x).1 hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `e1 : h (R r x) = (z + β r) • R r x`. Use `LinearMap.congr_fun (hR r) x` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.smul_apply, hxz, map_smul] at this`. Rewrite using `[add_smul, ← this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hev : Module.End.HasEigenvalue hT (z + β r)`. Use `Module.End.hasEigenvalue_of_hasEigenvector (x := ⟨R r x, hTR r x hxT⟩) ?_` and prove the remaining obligations. Rewrite using `[Module.End.hasEigenvector_iff, Module.End.mem_eigenspace_iff]`. Use `⟨Subtype.ext ?_, fun h0 => hne (congrArg Subtype.val h0)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.coe_restrict_apply]`. Conclude with `e1`. Use `hzmax _ hev` as an intermediate fact. Simplify using `only [Complex.add_re, Complex.ofReal_re] at this`. Combine the linear relations using `[hβ r]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hEH : ∀ i, ∀ x ∈ E, H i x ∈ E`. Introduce `i x hx`. Take `⟨hxT, hxz⟩` from `(memE x).1 hx`. Use `(memE _).2 ⟨hTH i x hxT, ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (hh i) x` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[this, hxz, map_smul]`. Take `⟨v, hvE, hv0, hv⟩` from `exists_common_eigenvector H hH E hEH hE0`. Conclude with `⟨v, ((memE v).1 hvE).1, hv0, fun r => hkill r v hvE, hv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hw_of_height {V ι ρ : Type*} [AddCommGroup V] [Module ℂ V] [Fintype ι]
     (H : ι → Module.End ℂ V) (hH : ∀ i j, H i * H j = H j * H i)
@@ -365,19 +365,19 @@ open scoped Classical
 open GlobalTheory.LowestKType
 
 /- English proof (translation)
-Introduce `D n m w W _ _ T hfd hT0 hst`. Set `post : Module.End ℂ (PolF D m n) → Module.End ℂ (W →ₗ[ℂ] PolF D m n)` to `fun f => LinearMap.llcomp ℂ W (PolF D m n) (PolF D m n) f`. Establish `post_mul : ∀ f g, post (f * g) = post f * post g` using `fun f g => LinearMap.ext fun ψ => rfl`. Establish `post_sub : ∀ f g, post (f - g) = post f - post g` using `fun f g => map_sub _ f g`. Establish `post_smul : ∀ (c : ℂ) f, post (c • f) = c • post f` using `fun c f => map_smul _ c f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `H : D.what₂.Tau × Fin m → Module.End ℂ (W →ₗ[ℂ] PolF D m n)` to `fun x => post (kop w x.1 x.2 x.2)`. Set `ρ` to `{x : D.what₂.Tau × Fin m × Fin m // Cpt w x.1 x.2.1 x.2.2 ∧ x.2.1 < x.2.2}`. Set `R : ρ → Module.End ℂ (W →ₗ[ℂ] PolF D m n)` to `fun r => post (kop w r.1.1 r.1.2.1 r.1.2.2)`. Set `h : Module.End ℂ (W →ₗ[ℂ] PolF D m n)` to `∑ x : D.what₂.Tau × Fin m, (-((x.2 : ℕ) : ℂ)) • H x`. Establish `hHc : ∀ i j, H i * H j = H j * H i` using `fun i j => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [H, ← post_mul, kop_diag_commute]`. Establish `hcomm : ∀ (r : ρ) (x : D.what₂.Tau × Fin m), H x * R r - R r * H x = (if x.1 = r.1.1 then ((if x.2 = r.1.2.1 then 1 else 0) - (if x.2 = r.1.2.2 then 1 else 0) : ℂ) else 0) • R r`. Introduce `r x`. Simplify using `only [H, R, ← post_mul, ← post_sub, ← post_smul]`. Rewrite using `[kop_comm w x.1 r.1.1 x.2 r.1.2.1 r.1.2.2 r.2.1 (ne_of_lt r.2.2)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hh : ∀ i, h * H i = H i * h`. Introduce `i`. Simplify using `only [h, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, mul_smul_comm, hHc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : ∀ r : ρ, h * R r - R r * h = ((((r.1.2.2 : ℕ) : ℝ) - ((r.1.2.1 : ℕ) : ℝ) : ℝ) : ℂ) • R r`. Introduce `r`. Simplify using `only [h, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, ← Finset.sum_sub_distrib, ← smul_sub, hcomm, smul_smul, ← Finset.sum_smul]`. Use `congr 1`. Rewrite using `[Fintype.sum_prod_type]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_sub, Finset.sum_sub_distrib]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨v, hvT, hv0, hvR, hvH⟩` from `exists_hw_of_height H hHc h hh R (fun r => ((r.1.2.2 : ℕ) : ℝ) - ((r.1.2.1 : ℕ) : ℝ)) (fun r => by have := r.2.2; simp only [sub_pos, Nat.cast_lt]; exact this) hR T hT0 (fun i x hx => hst x hx i.1 i.2 i.2 Iff.rfl) (fun x hx => by`. Simplify using `only [h, LinearMap.sum_apply, LinearMap.smul_apply]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `T.sum_mem fun i _ => T.smul_mem _ (hst x hx i.1 i.2 i.2 Iff.rfl))`. Use the proof step `(fun r x hx => hst x hx r.1.1 r.1.2.1 r.1.2.2 r.2.1)`. Use `⟨v, hvT, hv0, fun τ a b hC hab => hvR ⟨(τ, a, b), hC, hab⟩, fun τ a => hvH (τ, a)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_kHwMap : ∀ (D : D7) (n m : ℕ) (w : GlobalTheory.ExportSeries.Weight D n) (W : Type) [AddCommGroup W] [Module ℂ W] (T : Submodule ℂ (W →ₗ[ℂ] PolF D m n)), FiniteDimensional ℂ T → T ≠ ⊥ → (∀ ψ ∈ T, ∀ (τ : D.what₂.Tau) (a b : Fin m), GlobalTheory.LowestKType.Cpt w τ a b → GlobalTheory.LowestKType.kop w τ a b ∘ₗ ψ ∈ T) → ∃ ψ ∈ T, ψ ≠ 0 ∧ GlobalTheory.LowestKType.IsKHwMap w ψ := by
   intro D n m w W _ _ T hfd hT0 hst

@@ -9,15 +9,15 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `h'.bounded_above_of_compact_support hs'`. Set `K : Set G` to `(fun p : ℝ × G => x * c p.1 * p.2⁻¹) '' (Set.Icc (-1 : ℝ) 1 ×ˢ tsupport ψ')`. Establish `hK : IsCompact K` using `(isCompact_Icc.prod hs').image (by fun_prop)`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `hb : Integrable (K.indicator fun y => ‖f y‖ * M) μ` using `(integrable_indicator_iff hKm).2 ((hf.integrableOn_isCompact hK).norm.mul_const M)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdt : ∀ g t, HasDerivAt (fun s => ψ (g * c s)) (ψ' (g * c t)) t` using `fun g t => by`. Establish `h1 : HasDerivAt (fun s => ψ (g * c t * c s)) (ψ' (g * c t)) (t - t)`. Rewrite using `[sub_self]`. Conclude with `hd _`. Establish `h2` using `h1.comp_sub_const t t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc, ← cadd, add_sub_cancel]`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (𝕜 := ℝ) (F := fun t y => f y * ψ (y⁻¹ * (x * c t))) (F' := fun t y => f y * ψ' (y⁻¹ * (x * c t))) (x₀ := (0 : ℝ)) (s := Set.Icc (-1 : ℝ) 1) (bound := K.indicator fun y => ‖f y‖ * M) (Icc_mem_nhds (by norm_num) (by norm_nu …`. Distinguish the cases in `hy : y ∈ K`. Rewrite using `[Set.indicator_of_mem hy, norm_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hM _) (norm_nonneg _)`. Rewrite using `[Set.indicator_of_notMem hy]`. Establish `: ψ' (y⁻¹ * (x * c t)) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hy ⟨(t, y⁻¹ * (x * c t)), ⟨ht, subset_tsupport _ hne⟩, by simp [mul_assoc]⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[this]) hb`. Use the proof step `(Eventually.of_forall fun y t _ => by`. Simplify `(hdt (y⁻¹ * x) t).const_mul (f y))` using `only [mul_assoc]`. Simplify `key.2` using `only [c0, mul_one]`.
+A detailed English derivation is pending.
 -/
 private theorem hasDerivAt_conv {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) (f ψ ψ' : G → ℂ) (hf : LocallyIntegrable f μ)
@@ -57,9 +57,9 @@ private theorem hasDerivAt_conv {G : Type} [Group G] [TopologicalSpace G] [IsTop
   simpa only [c0, mul_one] using key.2
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ _ ψ φ hψ F hφ X`. Take `⟨c, c0, cadd, ccont, cder, -⟩` from `UpperTheory.V.Lit.Bor.oneParam E a X`. Establish `t1` using `UpperTheory.V.Cj.H.testOps E a ψ`. Establish `hψ' : IsTest (lie E a X ψ)` using `(t1.2 hψ).1 X`. Establish `k1 : Continuous ψ.1` using `(t1.1 hψ.2).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2 : Continuous (lie E a X ψ).1` using `((UpperTheory.V.Cj.H.testOps E a _).1 hψ'.2).1`. Use function extensionality and compare the values at `x`. Establish `d` using `hasDerivAt_conv μ (GlobalTheory.AutomorphicL2Unitary.lift (latticeGL E a) F) ψ.1 (lie E a X ψ).1 ((UpperTheory.V.Cj.H.locInt (GA E a) (latticeGL E a) μ).1 F) k2 hψ'.1 ((UpperTheory.V.Cj.H.cvAlg (GA E a) (latticeGL E a) μ ψ.1 k1 hψ.1).1 F) ((UpperTheory.V.Cj.H.cvAlg (GA E a) (latt …`. Establish `d'` using `hasDerivAt_curve φ x c X c0 cder`. Conclude with `d'.unique (d.congr_of_eventuallyEq (Eventually.of_forall fun t => congrFun hφ _))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.cvLie :
     UpperTheory.V.Cj.H.CvLie := by

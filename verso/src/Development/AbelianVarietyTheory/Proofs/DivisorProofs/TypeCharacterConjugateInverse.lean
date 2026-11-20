@@ -6,9 +6,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke
 namespace GlobalTheory.TypeCharacterConjugateInverse
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.toSquareBlock_def, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[← Finset.sum_subtype (Finset.univ.filter fun l => b l = c) (p := fun l => b l = c) (by simp) (fun l => A i.1 l * B l j.1)]`. Use `Finset.sum_subset (Finset.filter_subset _ _) fun l _ hl => ?_` and prove the remaining obligations. Establish `hl' : b l ≠ c` using `by simpa using hl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Break down `lt_or_gt_of_ne hl' with h | h` into its components or cases. Rewrite using `[hA (show b l < b i.1 by rw [i.2]; exact h), zero_mul]`. Rewrite using `[hB (show b j.1 < b l by rw [j.2]; exact h), mul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem toSquareBlock_mul_of_blockTriangular {r : ℕ} {k : Type} [Field k] {A B : Matrix (Fin r) (Fin r) k}
     {b : Fin r → Fin r} (hA : A.BlockTriangular b) (hB : B.BlockTriangular b) (c : Fin r)
@@ -26,7 +26,7 @@ theorem toSquareBlock_mul_of_blockTriangular {r : ℕ} {k : Type} [Field k] {A B
   · rw [hB (show b j.1 < b l by rw [j.2]; exact h), mul_zero]
 
 /- English proof (translation)
-Use `letI := z.invertible`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hz`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockTriangular_inv {r : ℕ} {k : Type} [Field k] {b : Fin r → Fin r} (z : GL (Fin r) k)
     (hz : (z : Matrix (Fin r) (Fin r) k).BlockTriangular b) :
@@ -36,7 +36,7 @@ theorem blockTriangular_inv {r : ℕ} {k : Type} [Field k] {b : Fin r → Fin r}
   exact Matrix.blockTriangular_inv_of_blockTriangular hz
 
 /- English proof (translation)
-Rewrite using `[toSquareBlock_mul_of_blockTriangular hz (blockTriangular_inv z hz), ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Use extensionality with `i j`. Simplify using `[Matrix.toSquareBlock_def, Matrix.one_apply, Subtype.ext_iff]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toSquareBlock_mul_inv {r : ℕ} {k : Type} [Field k] {b : Fin r → Fin r} (z : GL (Fin r) k)
     (hz : (z : Matrix (Fin r) (Fin r) k).BlockTriangular b) (c : Fin r)
@@ -49,15 +49,15 @@ theorem toSquareBlock_mul_inv {r : ℕ} {k : Type} [Field k] {b : Fin r → Fin 
   simp [Matrix.toSquareBlock_def, Matrix.one_apply, Subtype.ext_iff]
 
 /- English proof (translation)
-Introduce `p _ K _ r s`. Use `⟨fun x y hxy => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `isConj_iff.1 hxy`. Unfold `LevelCuspCharacters.typeChar`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `letI := Fintype.ofFinite (GL (Fin r) (ZMod p))`. Use `Fintype.sum_equiv (Equiv.mulLeft c) _ _ fun y => ?_` and prove the remaining obligations. Establish `h : (Equiv.mulLeft c y)⁻¹ * (c * x * c⁻¹) * (Equiv.mulLeft c y) = y⁻¹ * x * y`. Simplify using `only [Equiv.coe_mulLeft]`. Use `group`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Unfold `LevelCuspCharacters.typeChar`. Use `congr 1`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `h : y⁻¹ * x⁻¹ * y = (y⁻¹ * x * y)⁻¹` using `by group`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Generalize the expression as in `y⁻¹ * x * y = z`. Distinguish the cases in `hz : (z : Matrix (Fin r) (Fin r) (ZMod p)).BlockTriangular s.1`. Rewrite using `[if_pos hz, if_pos (blockTriangular_inv z hz)]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.greenCuspidalCharacterCoxeterTorus_inv_eq_at_inverse p K _ (s.2 c) _ _ (toSquareBlock_mul_inv z hz c.1)`. Rewrite using `[if_neg hz, if_neg fun h' => hz (by simpa using blockTriangular_inv z⁻¹ h')]`.
+A detailed English derivation is pending.
 -/
 theorem typeChar_conj_inv : ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (r : ℕ) (s : LevelCuspCharacters.SSParam p K r),
     (∀ x y : GL (Fin r) (ZMod p), IsConj x y → LevelCuspCharacters.typeChar s x = LevelCuspCharacters.typeChar s y) ∧

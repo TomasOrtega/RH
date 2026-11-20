@@ -14,43 +14,43 @@ open GlobalTheory.ZM
 namespace GlobalTheory.UnifTransport
 
 /- English proof (translation)
-Simplify using `only [hermForm, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_smul_left {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ) (c : ℂ) (z w : Fin g → ℂ) :
     hermForm H (c • z) w = c * hermForm H z w := by
   simp only [hermForm, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [hermForm, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_add_left {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ) (z z' w : Fin g → ℂ) :
     hermForm H (z + z') w = hermForm H z w + hermForm H z' w := by
   simp only [hermForm, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [hermForm, star_add, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_add_right {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ) (z w w' : Fin g → ℂ) :
     hermForm H z (w + w') = hermForm H z w + hermForm H z w' := by
   simp only [hermForm, star_add, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `only [hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_smul_right {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ) (c : ℂ) (z w : Fin g → ℂ) :
     hermForm H z (c • w) = star c * hermForm H z w := by
   simp only [hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `first : ∀ y ∈ S, ∀ x, (hermForm H' (h x) (h y)).im = (hermForm H x y).im`. Introduce `y hy`. Set `f₁ : (Fin g → ℂ) →ₗ[ℝ] ℝ` to `{ toFun := fun x => (hermForm H' (h x) (h y)).im map_add' := fun a c => by simp only [map_add, hermForm_add_left, Complex.add_im] map_smul' := fun r a => by`. Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Rewrite using `[← Complex.coe_smul, map_smul, hermForm_smul_left, Complex.im_ofReal_mul] }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `f₂ : (Fin g → ℂ) →ₗ[ℝ] ℝ` to `{ toFun := fun x => (hermForm H x y).im map_add' := fun a c => by simp only [hermForm_add_left, Complex.add_im] map_smul' := fun r a => by`. Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Rewrite using `[← Complex.coe_smul, hermForm_smul_left, Complex.im_ofReal_mul] }`. Establish `hf : f₁ = f₂` using `LinearMap.ext_on hS (fun x hx => him x hx y hy)`. Conclude with `fun x => LinearMap.congr_fun hf x`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `both : ∀ x y, (hermForm H' (h x) (h y)).im = (hermForm H x y).im`. Introduce `x`. Set `f₁ : (Fin g → ℂ) →ₗ[ℝ] ℝ` to `{ toFun := fun y => (hermForm H' (h x) (h y)).im map_add' := fun a c => by simp only [map_add, hermForm_add_right, Complex.add_im] map_smul' := fun r a => by`. Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Rewrite using `[← Complex.coe_smul, map_smul, hermForm_smul_right, Complex.star_def, Complex.conj_ofReal, Complex.im_ofReal_mul] }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `f₂ : (Fin g → ℂ) →ₗ[ℝ] ℝ` to `{ toFun := fun y => (hermForm H x y).im map_add' := fun a c => by simp only [hermForm_add_right, Complex.add_im] map_smul' := fun r a => by`. Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Rewrite using `[← Complex.coe_smul, hermForm_smul_right, Complex.star_def, Complex.conj_ofReal, Complex.im_ofReal_mul] }`. Establish `hf : f₁ = f₂` using `LinearMap.ext_on hS (fun y hy => first y hy x)`. Conclude with `fun y => LinearMap.congr_fun hf y`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Apply `Complex.ext` to reduce the goal to its premises. Establish `hI` using `both (Complex.I • z) w`. Rewrite `hI` using `[map_smul, hermForm_smul_left, hermForm_smul_left, Complex.I_mul_im, Complex.I_mul_im]`. Conclude with `hI`. Conclude with `both z w`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermForm_eq_of_im {g : ℕ} (H H' : Matrix (Fin g) (Fin g) ℂ)
     (h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (S : Set (Fin g → ℂ)) (hS : Submodule.span ℝ S = ⊤)
@@ -98,31 +98,29 @@ theorem hermForm_eq_of_im {g : ℕ} (H H' : Matrix (Fin g) (Fin g) ℂ)
   · exact both z w
 
 /- English proof (translation)
-Introduce `o _ g k J b em w w' t La _ EF lam ac Q Hm La' _ EF' lam' ac' Q' Hm' e h hA hA' hQ hE hac hlam hU`. Take `⟨u, χ', hAH, hΛ, hχ, hpt, hact⟩` from `hU`. Establish `hsym : ∀ x, h.symm (Q' x) = Q (e.symm x)`. Introduce `x`. Establish `hx` using `hQ (e.symm x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hx` using `[e.apply_symm_apply]`. Rewrite using `[hx, LinearEquiv.symm_apply_apply]`. Establish `him : ∀ x ∈ Set.range Q, ∀ y ∈ Set.range Q, (hermForm Hm' ((h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) x) ((h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) y)).im = (hermForm Hm x y).im`. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨c, rfl⟩`. Simplify using `only [LinearEquiv.coe_coe]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hQ, ← hQ, hA'.2.2.2.2.2, hA.2.2.2.2.2, hE]`. Establish `hH : ∀ a c, a ⬝ᵥ Hm'.mulVec (star c) = (h.symm a) ⬝ᵥ Hm.mulVec (star (h.symm c))`. Introduce `a c`. Establish `hac'` using `hermForm_eq_of_im Hm Hm' (h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (Set.range Q) hA.2.2.1 him (h.symm a) (h.symm c)`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at hac'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hac'`. Establish `hper : ∀ a v, v ∈ u.Λ → u.ex (a - v) = u.ex a`. Introduce `a v hv`. Establish `hsplit` using `u.ex_add (a - v) v`. Rewrite `hsplit` using `[sub_add_cancel, (u.ker v).2 hv, _root_.mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hsplit.symm`. Use `⟨holUnifReparam u h.symm (fun _ => 1) (differentiable_const 1) (fun _ => one_ne_zero), fun l => χ' ⟨h.symm l, l.2⟩, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `HolUnif.IsAH`. Use `⟨hA'.2.2.2.1, hA'.2.2.2.2.1, fun l => hAH.2.2.1 _, ?_⟩` and prove the remaining obligations. Introduce `l i z hz`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [holUnifReparam, div_one, map_add]`. Rewrite using `[hH z l, hH l l]`. Conclude with `hAH.2.2.2 ⟨h.symm l, l.2⟩ i (h.symm z) hz`. Introduce `z show h.symm z ∈ u.Λ ↔ z ∈ Q'.range`. Rewrite using `[hΛ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Use `⟨e a, ?_⟩` and prove the remaining obligations. Rewrite using `[hQ, ha, LinearEquiv.apply_symm_apply]`. Introduce and unpack `⟨c, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨e.symm c, (hsym c).symm⟩`. Introduce `x l hl`. Establish `hpos : h.symm (l : Fin g → ℂ) = Q (e.symm x)` using `by rw [hl, hsym]`. Establish `hform` using `hE (e.symm x) (ac w (e.symm x))`. Rewrite `hform` using `[hac, e.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hform]`. Conclude with `hχ (e.symm x) ⟨h.symm l, l.2⟩ hpos`. Introduce `i`. Take `⟨y, hy⟩` from `hlam i`. Establish `hl : lam' i = e (lam i) - k • y` using `eq_sub_of_add_eq hy.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : (((k : ℕ) : ℂ)⁻¹ * (k : ℂ)) • Q (e.symm y) ∈ u.Λ`. Distinguish the cases in `hk : ((k : ℕ) : ℂ) = 0`. Rewrite using `[hk, mul_zero, zero_smul]`. Conclude with `zero_mem _`. Rewrite using `[inv_mul_cancel₀ hk, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(hΛ _).2 ⟨e.symm y, rfl⟩`. Establish `hpt' : h.symm (((k : ℕ) : ℂ)⁻¹ • Q' (lam' i)) = ((k : ℕ) : ℂ)⁻¹ • Q (lam i) - (((k : ℕ) : ℂ)⁻¹ * (k : ℂ)) • Q (e.symm y)`. Rewrite using `[hl, map_sub, map_nsmul, map_smul, map_sub, map_nsmul, hsym, hsym, e.symm_apply_apply, smul_sub, mul_smul, Nat.cast_smul_eq_nsmul]`. Use `show (t.pt i).left = (u.ex (h.symm (((k : ℕ) : ℂ)⁻¹ • Q' (lam' i)))).left`. Rewrite using `[hpt', hper _ _ hmem, hpt]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Take `⟨F, hF1, hF2⟩` from `hact j`. Use `⟨(h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) ∘ₗ F ∘ₗ (h.symm : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`.
-
-Rewrite using `[hsym, hF1, ← hQ, hac, e.apply_symm_apply]`. Introduce `z show u.ex (h.symm (h (F (h.symm z)))) = u.ex (h.symm z) ≫ t.act j`. Rewrite using `[LinearEquiv.symm_apply_apply, hF2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport_uniformisation :
     ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (em : o →+* ℂ) (w w' : J) (t : TObj g k J b (spMap em)) (La : Type) [AddCommGroup La] (EF : LinearMap.BilinForm ℤ La) (lam : Fin (2 * g) → La) (ac : J → La → La) (Q : La →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ) (La' : Type) [AddCommGroup La'] (EF' : LinearMap.BilinForm ℤ La') (lam' : Fin (2 * g) → La') (ac' : J → La' → La') (Q' : La' →+ (Fin g → ℂ)) (Hm' : Matrix (Fin g) (Fin g) ℂ) (e : La ≃+ La') (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)), (Function.Injective Q ∧ DiscreteTopology (Q).range ∧ Submodule.span ℝ (Set.range Q) = ⊤ ∧ (Hm).IsHermitian ∧ (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) ∧ ∀ x y, (hermForm Hm (Q x) (Q y)).im = EF x y) → (Function.Injective Q' ∧ DiscreteTopology (Q').range ∧ Submodule.span ℝ (Set.range Q') = ⊤ ∧ (Hm').IsHermitian ∧ (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm' z z).re) ∧ ∀ x y, (hermForm Hm' (Q' x) (Q' y)).im = EF' x y) → (∀ x, Q' (e x) = h (Q x)) → (∀ x y, EF' (e x) (e y) = EF x y) → (∀ j x, e (ac j x) = ac' j (e x)) → (∀ i, ∃ y, e (lam i) = lam' i + k • y) → (∃ (u : HolUnif t.A t.L g) (χ' : u.Λ → ℂ), u.IsAH Hm χ' ∧ (∀ z, z ∈ u.Λ ↔ z ∈ (Q).range) ∧ (∀ x (l : u.Λ), (l : Fin g → ℂ) = Q x → χ' l = (-1) ^ EF x (ac w x)) ∧ (∀ i₀, (t.pt i₀).left = (u.ex (((k : ℕ) : ℂ)⁻¹ • Q (lam i₀))).left) ∧ ∀ j₀, ∃ F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ x, F (Q x) = Q (ac j₀ x)) ∧ ∀ z, u.ex (F z) = u.ex z ≫ t.act j₀) → (∃ (u : HolUnif t.A t.L g) (χ' : u.Λ → ℂ), u.IsAH Hm' χ' ∧ (∀ z, z ∈ u.Λ ↔ z ∈ (Q').range) ∧ (∀ x (l : u.Λ), (l : Fin g → ℂ) = Q' x → χ' l = (-1) ^ EF' x (ac' w x)) ∧ (∀ i₀, (t.pt i₀).left = (u.ex (((k : ℕ) : ℂ)⁻¹ • Q' (lam' i₀))).left) ∧ ∀ j₀, ∃ F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ x, F (Q' x) = Q' (ac' j₀ x)) ∧ ∀ z, u.ex (F z) = u.ex z ≫ t.act j₀) := by

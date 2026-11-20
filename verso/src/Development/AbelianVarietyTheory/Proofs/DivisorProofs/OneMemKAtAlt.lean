@@ -15,7 +15,7 @@ def KAt (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) : Set (UA σ W
   {k | k ∈ UAt σ W (evFin F v) ∧ ∀ z ∈ latHat W, mat k *ᵥ z ∈ latHat W ∧ mat k⁻¹ *ᵥ z ∈ latHat W}
 
 /- English proof (translation)
-Use `⟨fun u _ => by simp [mat], fun z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [inv_one]`. Simplify `hz` using `[mat]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_mem_KAt (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) : (1 : UA σ W.J) ∈ KAt σ W v := by
   refine ⟨fun u _ => by simp [mat], fun z hz => ?_⟩

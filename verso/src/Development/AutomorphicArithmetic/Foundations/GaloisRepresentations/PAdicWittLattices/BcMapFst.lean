@@ -47,13 +47,13 @@ def bcMap {B B' X Y : Scheme.{0}} (g : B ⟶ B') {p : X ⟶ B'} {q : Y ⟶ B'} (
   pullback.lift (pullback.fst q g ≫ f) (pullback.snd q g) (by rw [Category.assoc, h, pullback.condition])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem bcMap_fst {B B' X Y : Scheme.{0}} (g : B ⟶ B') {p : X ⟶ B'} {q : Y ⟶ B'} (f : Y ⟶ X) (h : f ≫ p = q) :
     bcMap g f h ≫ pullback.fst p g = pullback.fst q g ≫ f := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem bcMap_snd {B B' X Y : Scheme.{0}} (g : B ⟶ B') {p : X ⟶ B'} {q : Y ⟶ B'} (f : Y ⟶ X) (h : f ≫ p = q) :
     bcMap g f h ≫ pullback.snd p g = pullback.snd q g := pullback.lift_snd _ _ _

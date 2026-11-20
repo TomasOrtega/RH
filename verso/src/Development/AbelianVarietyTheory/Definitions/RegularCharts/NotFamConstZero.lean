@@ -14,9 +14,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Establish `h : P.B ≤ (P.R e).toSubring`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y (⟨a, rfl⟩ | hy)`. Conclude with `(P.R e).algebraMap_mem _`. Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ hy)`.
-
-Conclude with `h hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_R_of_mem_B (P : PChart Xo c β) (e : P.Ω) {x : P.Ω} (hx : x ∈ P.B) : x ∈ P.R e := by
   have h : P.B ≤ (P.R e).toSubring := by
@@ -27,7 +25,7 @@ theorem mem_R_of_mem_B (P : PChart Xo c β) (e : P.Ω) {x : P.Ω} (hx : x ∈ P.
   exact h hx
 
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one ⟨e⁻¹, Algebra.subset_adjoin (Set.mem_insert _ _)⟩ (Subtype.ext (mul_inv_cancel₀ (P.es_mem e he).1))`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_e (P : PChart Xo c β) {e : P.Ω} (he : e ∈ P.es) :
     IsUnit (⟨e, mem_R_of_mem_B P e (P.es_mem e he).2⟩ : P.R e) :=
@@ -35,11 +33,9 @@ theorem isUnit_e (P : PChart Xo c β) {e : P.Ω} (he : e ∈ P.es) :
     (Subtype.ext (mul_inv_cancel₀ (P.es_mem e he).1))
 
 /- English proof (translation)
-Use `IsFractionRing.of_field _ _ fun z => ?_` and prove the remaining obligations. Establish `hz : z ∈ Subfield.closure (Set.range (algebraMap c.F P.Ω) ∪ (P.gens : Set P.Ω))`. Rewrite using `[P.frac]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨a, ha, b, hb, rfl⟩` from `Subfield.mem_closure_iff.1 hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Establish `h : Subring.closure (Set.range (algebraMap c.F P.Ω) ∪ (P.gens : Set P.Ω)) ≤ (P.R e).toSubring`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y (⟨a, rfl⟩ | hy)`. Conclude with `(P.R e).algebraMap_mem _`. Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ hy)`.
-
-Conclude with `⟨⟨a, h ha⟩, ⟨b, h hb⟩, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFractionRing_R (P : PChart Xo c β) (e : P.Ω) : IsFractionRing (P.R e) P.Ω := by
   refine IsFractionRing.of_field _ _ fun z => ?_
@@ -54,13 +50,13 @@ theorem isFractionRing_R (P : PChart Xo c β) (e : P.Ω) : IsFractionRing (P.R e
   exact ⟨⟨a, h ha⟩, ⟨b, h hb⟩, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem y hy`. Break down `hy with ⟨a, rfl⟩ | hy` into its components or cases. Use `ψ.commutes (β a)` as an intermediate fact. Conclude with `(this ▸ hO a : ψ (algebraMap c.F (P.R e) (β a)) ∈ W)`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `hg _ hy`. Consider the case `zero => exact (map_zero ψ ▸ W.zero_mem : ψ 0 ∈ W)`. Consider the case `one => exact (map_one ψ ▸ W.one_mem : ψ 1 ∈ W)`. Consider the case `add x y hx hy ihx ihy`. Use `W.add_mem _ _ ihx ihy` as an intermediate fact.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Rewrite `this` using `[← map_add]`. Then use the resulting hypothesis. Consider the case `neg x hx ih`. Use `W.neg_mem _ ih` as an intermediate fact. Rewrite `this` using `[← map_neg]`. Then use the resulting hypothesis. Consider the case `mul x y hx hy ihx ihy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `W.mul_mem _ _ ihx ihy` as an intermediate fact. Rewrite `this` using `[← map_mul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem map_B_mem (P : PChart Xo c β) {L : Type} [Field L] [Algebra c.F L] (W : ValuationSubring L)
     (hO : ∀ a : O, algebraMap c.F L (β a) ∈ W) (e : P.Ω) (ψ : P.R e →ₐ[c.F] L)
@@ -85,19 +81,19 @@ theorem map_B_mem (P : PChart Xo c β) {L : Type} [Field L] [Algebra c.F L] (W :
     rwa [← map_mul] at this
 
 /- English proof (translation)
-Introduce and unpack `⟨k, -⟩`. Conclude with `k.elim0`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem not_fam_zero (P : PChart Xo c β) (ws : Fin 0 → Rul Xo c) : ¬ P.Fam ws := by
   rintro ⟨k, -⟩; exact k.elim0
 
 /- English proof (translation)
-Introduce and unpack `⟨k, h, -⟩`. Conclude with `h (evalAt_zero _ _ _)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem not_fam_const_zero (P : PChart Xo c β) (m : ℕ) : ¬ P.Fam (fun _ : Fin m => (0 : Rul Xo c)) := by
   rintro ⟨k, h, -⟩; exact h (evalAt_zero _ _ _)
 
 /- English proof (translation)
-Introduce `h`. Take `⟨j, -⟩` from `h P.Ω ⊤ (fun _ => trivial) P.yg`. Conclude with `isEmptyElim j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_covers_empty (P : PChart Xo c β) {J : Type} [IsEmpty J] (Q : J → PChart Xo c β) : ¬ Covers Q := by
   intro h
@@ -105,15 +101,11 @@ theorem not_covers_empty (P : PChart Xo c β) {J : Type} [IsEmpty J] (Q : J → 
   exact isEmptyElim j
 
 /- English proof (translation)
-Set `R : Subalgebra c.F c.F` to `Algebra.adjoin c.F (insert (1 : c.F)⁻¹ (((∅ : Finset c.F)) : Set c.F))`. Take `⟨y₁, h₁⟩` from `hbc c.F R (Algebra.ofId c.F R) y₀`. Take `⟨y₂, h₂⟩` from `hbc R c.F R.val y₁`. Establish `hbij : Function.Bijective (Algebra.ofId c.F R)` using `⟨(Algebra.ofId c.F R).toRingHom.injective, fun x => ⟨x.1, Subtype.ext rfl⟩⟩`. Use `⟨{ Ω := c.F gens := ∅ frac := top_le_iff.1 fun x _ => Subfield.subset_closure (Or.inl ⟨x, rfl⟩) es := {1} es_ne := Finset.singleton_nonempty _ es_mem := fun e he => by` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mem_singleton.1 he]`. Conclude with `⟨one_ne_zero, Subring.one_mem _⟩`. Use `sm := fun e he => by`. Take `rfl` from `Finset.mem_singleton.1 he`. Conclude with `Algebra.Smooth.of_equiv (AlgEquiv.ofBijective _ hbij)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `yg := y₂`. Use `y := fun e he => (Finset.mem_singleton.1 he).symm ▸ y₁`. Use `gen := fun e he => by`. Take `rfl` from `Finset.mem_singleton.1 he`. Conclude with `h₂`.
-
-Use `int := fun e he T io => by`. Take `rfl` from `Finset.mem_singleton.1 he`. Use `letI := io.toAlgebra`. Introduce `ψ hO _ z hz`. Establish `: FrMap (ψ.comp (Algebra.ofId c.F R)) y₀ z` using `frMap_trans _ _ _ _ ψ _ _ _ h₁ hz`.
-
-Rewrite `this` using `[Subsingleton.elim (ψ.comp (Algebra.ofId c.F R)) (Algebra.ofId c.F T.Fr)]`. Conclude with `hy T io hO z this }⟩`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_of_point (hbc : FrBC Xo c) (y₀ : FrPt Xo c c.F)
     (hy : ∀ (T : CDVR) (io : c.F →+* T.Fr), letI := io.toAlgebra
@@ -150,9 +142,9 @@ theorem nonempty_of_point (hbc : FrBC Xo c) (y₀ : FrPt Xo c c.F)
       exact hy T io hO z this }⟩
 
 /- English proof (translation)
-Establish `hy` using `h.test S y`. Establish `h1` using `hy.choose_spec.choose_spec.choose_spec`. Establish `h2` using `frMap_trans _ _ _ _ φ _ _ _ h1 hyz`. Establish `hz : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) z := ⟨_, _, _, h2⟩`. Unfold `evR evalAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hy, dif_pos hz]`. Conclude with `h.wd f hf T _ _ _ (φ.comp _) _ _ z hz.choose_spec.choose_spec.choose_spec h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_map (h : EvLaws Xo c) {f : Rul Xo c}
     (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f)
@@ -167,7 +159,7 @@ theorem evR_map (h : EvLaws Xo c) {f : Rul Xo c}
   exact h.wd f hf T _ _ _ (φ.comp _) _ _ z hz.choose_spec.choose_spec.choose_spec h2
 
 /- English proof (translation)
-Rewrite using `[evR_map h hf.1 (P.R e).val (P.gen e he)]`. Conclude with `Subtype.property _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_mem_R (h : EvLaws Xo c) (P : PChart Xo c β) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c}
     (hf : f ∈ sec Xo c a n) {e : P.Ω} (he : e ∈ P.es) : evR Xo c f P.yg ∈ P.R e := by

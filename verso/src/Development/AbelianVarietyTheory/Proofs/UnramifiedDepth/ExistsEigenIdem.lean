@@ -24,11 +24,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Set `Ψ : O ⊗[ℤ] OE →ₐ[O] Matrix κ κ O` to `Algebra.TensorProduct.lift (Algebra.ofId O _) ρ.toIntAlgHom (fun x y => (Algebra.commutes x _ : Commute (Algebra.ofId O (Matrix κ κ O) x) (ρ.toIntAlgHom y)))`. Use `⟨fun i => Ψ (ε i), fun i j => ?_, ?_, fun a i => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul] split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[(hε.idem i).eq]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hε.ortho h, map_zero]`. Rewrite using `[← map_sum, hε.complete, map_one]`. Establish `h1 : Ψ (1 ⊗ₜ[ℤ] a) = ρ a`. Use `(Algebra.TensorProduct.lift_tmul _ _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← h1, ← map_mul, he, map_smul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_eigen_idem {O OE κ : Type} [CommRing O] [CommRing OE] [Fintype κ] [DecidableEq κ]
     {m : ℕ} (t : Fin m → (OE →+* O)) (ε : Fin m → O ⊗[ℤ] OE) (hε : CompleteOrthogonalIdempotents ε)
@@ -51,9 +51,9 @@ private theorem exists_eigen_idem {O OE κ : Type} [CommRing O] [CommRing OE] [F
     rw [← h1, ← map_mul, he, map_smul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, add_mul, add_smul, hx, hy]`. Consider the case `tmul c a`. Establish `h1 : (c ⊗ₜ[ℤ] a : ℤ_[p] ⊗[ℤ] OE) = (c ⊗ₜ[ℤ] 1) * (1 ⊗ₜ[ℤ] a)` using `by simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2 : tauExt t (c ⊗ₜ[ℤ] a : ℤ_[p] ⊗[ℤ] OE) = algebraMap ℤ_[p] O c * t a`. Simplify using `[tauExt, Algebra.ofId_apply]`. Rewrite using `[h2, h1, map_mul, _root_.mul_assoc, h, hρ, smul_mul_assoc, _root_.one_mul, smul_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eigen_ext {p : ℕ} [Fact p.Prime] {O OE κ : Type} [CommRing O] [Algebra ℤ_[p] O] [CommRing OE]
     [Fintype κ] [DecidableEq κ] (ρ : (ℤ_[p] ⊗[ℤ] OE) →+* Matrix κ κ O)
@@ -70,15 +70,15 @@ private theorem eigen_ext {p : ℕ} [Fact p.Prime] {O OE κ : Type} [CommRing O]
     rw [h2, h1, map_mul, _root_.mul_assoc, h, hρ, smul_mul_assoc, _root_.one_mul, smul_smul]
 
 /- English proof (translation)
-Establish `hp0 : (p : IsLocalRing.ResidueField O) = 0`. Establish `: IsLocalRing.residue O (p : O) = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 hp`. Simplify using `using this`. Use `haveI : CharP (IsLocalRing.ResidueField O) p := (CharP.charP_iff_prime_eq_zero Fact.out).2 hp0`. Establish `key : ∀ y z : O, y - z ^ p ∈ IsLocalRing.maximalIdeal O ↔ IsLocalRing.residue O y = frobenius _ p (IsLocalRing.residue O z)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y z`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_pow, sub_eq_zero, frobenius_def]`. Rewrite using `[key]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul c a`. Establish `h2 : ∀ u : OE →+* O, tauExt u (c ⊗ₜ[ℤ] a : ℤ_[p] ⊗[ℤ] OE) = algebraMap ℤ_[p] O c * u a`. Introduce `u`. Simplify using `[tauExt, Algebra.ofId_apply]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3` using `PadicInt.sub_zmodRepr_mem c`. Rewrite `h3` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨d, hd⟩` from `h3`. Establish `h4 : IsLocalRing.residue O (algebraMap ℤ_[p] O c) = (c.zmodRepr : IsLocalRing.ResidueField O)`. Establish `: c = d * p + c.zmodRepr` using `by rw [hd]; ring`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [this]`. Simplify using `[hp0]`. Rewrite using `[h2, h2, map_mul, map_mul, map_mul, (key _ _).1 (h a), h4, map_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frob_ext {p : ℕ} [Fact p.Prime] {O OE : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[p] O]
     [CommRing OE] (hp : ¬IsUnit (p : O)) (s t : OE →+* O)
@@ -110,23 +110,19 @@ private theorem frob_ext {p : ℕ} [Fact p.Prime] {O OE : Type} [CommRing O] [Is
     rw [h2, h2, map_mul, map_mul, map_mul, (key _ _).1 (h a), h4, map_natCast]
 
 /- English proof (translation)
-Use `set N := LinearMap.range (Matrix.mulVecLin (e i)) with hN`. Establish `hid : ∀ w ∈ N, e i *ᵥ w = w`. Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, h1, if_pos rfl]`. Use `haveI : Module.Projective O N := Module.Projective.of_split N.subtype (Matrix.mulVecLin (e i)).rangeRestrict (by ext1 w; exact Subtype.ext (hid w w.2))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Module.Free O N := Module.free_of_flat_of_isLocalRing`. Set `b` to `Module.finBasis O N`. Establish `hcomm : ∀ a j, e j * ρ a = t j a • e j`. Introduce `a j`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [h3, mul_smul_comm]`. Use `_ = t j a • e j := by`. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[h1, if_pos rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `k _ hk`. Rewrite using `[h1, if_neg (Ne.symm hk), smul_zero]`. Simplify using the standard rewrite rules. Use `⟨_, fun k => (b k : Fin g → O), ⟨fun k a => ?_, fun w hw => ?_⟩, ⟨b.equivFun⟩⟩` and prove the remaining obligations. Use `hid _ (b k).2` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hz : ∀ j, j ≠ i → e j *ᵥ w = 0`. Introduce `j hj`. Take `⟨a, ha⟩` from `hd j i hj`. Establish `h5 : (t j a - t i a) • (e j *ᵥ w) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[sub_smul, ← Matrix.smul_mulVec, ← hcomm, ← Matrix.mulVec_mulVec, hw, Matrix.mulVec_smul, sub_self]`. Conclude with `(ha.smul_eq_zero).1 h5`. Establish `hwN : w ∈ N`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => hz j hj) (by simp)]`. Use `_ = w := by rw [← Matrix.sum_mulVec, h2, Matrix.one_mulVec]`. Use `⟨b.equivFun ⟨w, hwN⟩, ?_, fun c hc => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (b.sum_equivFun ⟨w, hwN⟩)` as an intermediate fact.
-
-Simplify `this` using `only [Submodule.coe_sum, Submodule.coe_smul, AddSubmonoidClass.coe_finsetSum]`. Establish `: b.equivFun.symm c = ⟨w, hwN⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Simplify using `using hc`.
-
-Rewrite using `[← this, LinearEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_eigB {O OE : Type} [CommRing O] [IsLocalRing O] [CommRing OE] {g m : ℕ}
     (t : Fin m → (OE →+* O)) (hd : ∀ i j, i ≠ j → ∃ a, IsUnit (t i a - t j a))
@@ -182,25 +178,23 @@ private theorem exists_eigB {O OE : Type} [CommRing O] [IsLocalRing O] [CommRing
       rw [← this, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ hv hp _ _ OE _ _ _ _ _ _ cp _ g H _ hP hPL hdisc`. Take `⟨m, t, ε, φ, hε, he, hd, hφ⟩` from `GlobalTheory.SplittingIdempotents.exists_splitting_idempotents_frobenius p C v O hv OE hdisc`. Set `inc : OE →+* ℤ_[p] ⊗[ℤ] OE` to `(Algebra.TensorProduct.includeRight (R := ℤ) (A := ℤ_[p]) (B := OE)).toRingHom`. Set `ρT : (ℤ_[p] ⊗[ℤ] OE) →+* Matrix (Ix g) (Ix g) O` to `(algebraMap ℤ_[p] O).mapMatrix.comp H.ρ.toRingHom`. Take `⟨eT, hT1, hT2, hT3⟩` from `exists_eigen_idem (fun i => t i) ε hε he (ρT.comp inc)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨eL, hL1, hL2, hL3⟩` from `exists_eigen_idem (fun i => t i) ε hε he (H.ρL.comp inc)`. Establish `hρT : ∀ c : ℤ_[p], ρT (c ⊗ₜ[ℤ] 1) = algebraMap ℤ_[p] O c • (1 : Matrix (Ix g) (Ix g) O)`. Introduce `c`. Establish `: H.ρ (c ⊗ₜ[ℤ] 1) = algebraMap ℤ_[p] _ c` using `H.ρ.commutes c`. Express the relevant statement in the definitionally equal form `(H.ρ (c ⊗ₜ[ℤ] 1)).map (algebraMap ℤ_[p] O) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.algebraMap_matrix_apply, hij]`. Establish `hρL : ∀ c : ℤ_[p], H.ρL (c ⊗ₜ[ℤ] 1) = algebraMap ℤ_[p] O c • (1 : Matrix (Fin g) (Fin g) O)` using `fun c => (padicInt_algebra_of_isAdicComplete_and_matrix_unique p O).2 g (H.ρL.comp (algebraMap ℤ_[p] (ℤ_[p] ⊗[ℤ] OE))) c`. Set `st : OE →+* OE` to `((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `cj : Fin m → Fin m` to `fun i => t.symm ((t i).comp st)`. Establish `hcj : Function.Involutive cj`. Introduce `i`. Apply `t.injective` to reduce the goal to its premises. Use extensionality with `a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `[cj, st]`. Establish `hlt : ∀ x : O, x ∈ IsLocalRing.maximalIdeal O → v (algebraMap O C x) < 1`. Introduce `x hx`. Use `lt_of_le_of_ne (hv.map_le_one x) fun h => hx ?_` and prove the remaining obligations. Conclude with `hv.isUnit_of_one' h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hone : ∀ (s : OE →+* O) (a : OE), tauExt (p` using `p) s (1 ⊗ₜ[ℤ] a) = s a := by`. Introduce `s a`. Simplify using `[tauExt]`. Use `⟨{ m := m sg := fun i => (tauExt (t i)).toRingHom εT := eT εL := eL cj := hcj.toPerm φ := φ r := fun i => eigDim C (fun a : OE => H.ρL (1 ⊗ₜ[ℤ] a)) ((algebraMap O C).comp (t i)) noPad := ⟨hP, hPL⟩ εT_orth := hT1 εT_sum := hT2 εL_orth := hL1 εL_sum := hL2 εT_eig := fun a i => eige …` and prove the remaining obligations. Establish `h1 : t (hcj.toPerm cj i) = (t i).comp st` using `t.apply_symm_apply _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `tauExt (t (hcj.toPerm cj i)) a = tauExt (t i) (sigE p OE a)`. Rewrite using `[h1]`. Conclude with `((embeddings_idempotents_conjugation p C v O hv OE).2.2 (t i) a).1`. Take `⟨a, ha⟩` from `hd i j hij`. Use `⟨1 ⊗ₜ[ℤ] a, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `v (algebraMap O C (tauExt (t i) (1 ⊗ₜ[ℤ] a) - tauExt (t j) (1 ⊗ₜ[ℤ] a))) = 1`. Rewrite using `[hone, hone]`. Conclude with `hv.one_of_isUnit ha`. Take `⟨n, W, hW, hn⟩` from `exists_eigB (fun i => t i) hd (fun a : OE => H.ρL (1 ⊗ₜ[ℤ] a)) eL hL1 hL2 hL3 i`. Use `(eigB_res_surjective C v O hv OE g n _ (t i) W hW).2.2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Rewrite `hn` using `[← this]`. Conclude with `hn`. Conclude with `t.apply_symm_apply _`. Assume the negation of the conclusion as `hne`. Take `⟨a, ha⟩` from `hd (φ i) j hne`.
-
-Use `Ideal.sub_mem _ (hφ i a) (h a)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Conclude with `this ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unramData : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (OE : Type) [CommRing OE] [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] [StarRing OE] (cp : O), HodgeTateSetting p v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp → ∀ (g : ℕ) (H : HodgeTateDatum p g v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp) [IsLocalRing O], H.P = 0 → H.PL = 0 → ¬ ((p : ℤ) ∣ Algebra.discr ℤ (Module.Free.chooseBasis ℤ OE)) → ∃ (U : UnramData p g v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp H) (τ : Fin U.m ≃ (OE →+* O)) (ε : Fin U.m → O ⊗[ℤ] OE), (∀ i x, U.sg i x = tauExt (τ i) x) ∧ (∀ i, U.r i = eigDim C (fun a : OE => H.ρL (1 ⊗ₜ[ℤ] a)) ((algebraMap O C).comp (τ i))) ∧ CompleteOrthogonalIdempotents ε ∧ (∀ i a, (1 ⊗ₜ[ℤ] a) * ε i = τ i a • ε i) ∧ (∀ i, τ (U.cj i) = (τ i).comp ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom) ∧ ∀ i j, (∀ a, τ j a - τ i a ^ p ∈ IsLocalRing.maximalIdeal O) → U.φ i = j := by
   intro p _ C _ _ _ v O _ _ hv hp _ _ OE _ _ _ _ _ _ cp _ g H _ hP hPL hdisc

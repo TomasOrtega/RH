@@ -13,9 +13,9 @@ open scoped ContDiff Matrix ComplexOrder
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Introduce `F _ σ X m E O H hH e he y hyO hye A hA`. Use `⟨fun a b => ?_, ?_⟩` and prove the remaining obligations. Take `⟨hre, him⟩` from `hH.smooth y hyO A hA () a b`. Establish `h1 : ContDiffAt ℝ ∞ (fun v => (H A (e.symm v) () a b).re) (e y)` using `contDiffAt_holoChart he hye hre`. Establish `h2 : ContDiffAt ℝ ∞ (fun v => (H A (e.symm v) () a b).im) (e y)` using `contDiffAt_holoChart he hye him`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ContDiffAt ℝ ∞ (fun v => ((H A (e.symm v) () a b).re : ℂ) + ((H A (e.symm v) () a b).im : ℂ) * Complex.I) (e y)` using `(Complex.ofRealCLM.contDiff.contDiffAt.comp (e y) h1).add ((Complex.ofRealCLM.contDiff.contDiffAt.comp (e y) h2).mul contDiffAt_const)`. Conclude with `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun v => (Complex.re_add_im _).symm)`. Rewrite using `[e.left_inv hye]`. Conclude with `isUnit_iff_ne_zero.mpr (hH.posDef y hyO A hA ()).det_pos.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_smooth_isUnit_holoChart : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {m : ℕ} (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens) (H : Mat (fun _ : Unit => m) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => m) ℂ), IsMetricOn E O H → ∀ {e : OpenPartialHomeomorph (CxPts X.str σ) (V X.dim)}, IsHoloChart e → ∀ {y : CxPts X.str σ}, y ∈ ptsIn X.str σ O → y ∈ e.source → ∀ {A : Mat (fun _ : Unit => m) X.Fn}, A ∈ E.S (under y) → MContDiffAt ∞ (fun v => H A (e.symm v) ()) (e y) ∧ IsUnit (H A (e.symm (e y)) ()).det := by
   intro F _ σ X m E O H hH e he y hyO hye A hA

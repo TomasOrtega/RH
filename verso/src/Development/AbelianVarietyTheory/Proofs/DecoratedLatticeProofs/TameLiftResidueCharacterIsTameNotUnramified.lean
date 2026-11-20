@@ -28,7 +28,7 @@ open ValuativeRel
 variable {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)}
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Rewrite using `[← Valuation.Compatible.vle_iff_le (v := valuation (Fv D.host.F v)), Valuation.Compatible.vle_iff_le (v := (Valued.v : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ))))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_le_iff (x y : Fv D.host.F v) :
     valuation (Fv D.host.F v) x ≤ valuation (Fv D.host.F v) y ↔ Valued.v x ≤ Valued.v y := by
@@ -38,7 +38,7 @@ theorem val_le_iff (x y : Fv D.host.F v) :
     Valuation.Compatible.vle_iff_le (v := (Valued.v : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ))))]
 
 /- English proof (translation)
-Establish `h` using `val_le_iff (D := D) (v := v) 1 x`. Rewrite `h` using `[map_one, map_one]`. Rewrite using `[← not_le, ← not_le, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_lt_one_iff (x : Fv D.host.F v) :
     valuation (Fv D.host.F v) x < 1 ↔ Valued.v x < 1 := by
@@ -47,7 +47,7 @@ theorem val_lt_one_iff (x : Fv D.host.F v) :
   rw [← not_le, ← not_le, h]
 
 /- English proof (translation)
-Establish `h1` using `val_le_iff (D := D) (v := v) 1 x`. Establish `h2` using `val_le_iff (D := D) (v := v) x 1`. Rewrite `h1`, `h2` using `[map_one, map_one]`. Rewrite using `[le_antisymm_iff, le_antisymm_iff, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_eq_one_iff (x : Fv D.host.F v) :
     valuation (Fv D.host.F v) x = 1 ↔ Valued.v x = 1 := by
@@ -57,7 +57,7 @@ theorem val_eq_one_iff (x : Fv D.host.F v) :
   rw [le_antisymm_iff, le_antisymm_iff, h1, h2]
 
 /- English proof (translation)
-Use `show φ (1 ⊗ₜ 1) = 1`. Rewrite using `[← Algebra.TensorProduct.one_def, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdQ_one (φ : SplitProj D v) : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ (1 : D.host.E) = 1 := by
   show φ (1 ⊗ₜ 1) = 1
@@ -72,9 +72,9 @@ Both sides reduce to the same expression.
 theorem rdQHom_apply (φ : SplitProj D v) (x : D.host.E) : rdQHom φ x = GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ x := rfl
 
 /- English proof (translation)
-Set `w : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ))` to `Valued.v`. Establish `hx : IsIntegral ℤ (x : D.host.E)` using `x.2`. Take `⟨p, hm, hp⟩` from `hx`. Establish `hO : IsIntegral w.integer (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ (x : D.host.E))`. Use `⟨p.map (Int.castRingHom w.integer), hm.map _, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.eval₂_map, ← rdQHom_apply]`. Establish `: (algebraMap w.integer (Fv D.host.F v)).comp (Int.castRingHom _) = (rdQHom φ).comp (algebraMap ℤ D.host.E)` using `RingHom.ext_int _ _`. Rewrite using `[this, ← Polynomial.hom_eval₂, hp, map_zero]`. Conclude with `(Valuation.integer.integers w).mem_of_integral hO`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_rdQ_le_one (φ : SplitProj D v) (x : 𝓞 D.host.E) : Valued.v (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ (x : D.host.E)) ≤ 1 := by
   let w : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ)) := Valued.v
@@ -92,17 +92,15 @@ end GlobalTheory.TameLiftChar
 
 open GlobalTheory.TameLiftChar in
 /- English proof (translation)
-Introduce `D v φ PP ξ hP hξ ξl hl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hr : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.RedRel φ PP (x : Fv D.host.F v) ((1 : (kP PP)ˣ) : kP PP)`. Use `⟨1, by simp, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `(val_lt_one_iff _).1 hx` using `[rdQ_one]`. Rewrite using `[hl x 1 hr, map_one]`. Introduce `hun`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, ξ k ≠ 1 := by`. Assume the negation of the conclusion as `h`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Conclude with `hξ (MonoidHom.ext h)`. Take `⟨x0, hx0⟩` from `Ideal.Quotient.mk_surjective (k : kP PP)`. Establish `hnot : x0 ∉ PP.asIdeal`. Introduce `hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((k : kP PP)) = 0` using `by rw [← hx0]; exact Ideal.Quotient.eq_zero_iff_mem.2 hm`. Conclude with `k.ne_zero this`. Establish `hle` using `val_rdQ_le_one φ x0`. Establish `hge : ¬ Valued.v (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ (x0 : D.host.E)) < 1` using `fun h => hnot ((hP x0).2 h)`. Establish `h1 : Valued.v (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ (x0 : D.host.E)) = 1` using `le_antisymm hle (not_lt.1 hge)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdQ φ (x0 : D.host.E) ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, map_zero]`. Conclude with `zero_ne_one h1`. Set `u : (Fv D.host.F v)ˣ` to `Units.mk0 _ hne`.
-
-Establish `hr : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.RedRel φ PP (u : Fv D.host.F v) (k : kP PP)` using `⟨x0, hx0, by simp [u]⟩`. Conclude with `hk ((hl u k hr).symm.trans (hun u ((val_eq_one_iff _).2 h1)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.tameLift_isTame_not_isUnram : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v) (PP : Pl D.host.E) (ξ : (kP PP)ˣ →* ℂˣ), IsProjAt φ PP → ξ ≠ 1 → ∀ ξl : (Fv D.host.F v)ˣ →* ℂˣ, LiftsChar φ PP ξl ξ → GlobalTheory.SplitWeil.IsTame ξl ∧ ¬ GlobalTheory.SplitWeil.IsUnram ξl := by
   intro D v φ PP ξ hP hξ ξl hl

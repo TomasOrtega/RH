@@ -25,7 +25,7 @@ def pull (a : GL (Fin n) (AE D)) (b : hermA D n) : hermA D n :=
     rw [adj_mul, adj_mul, adj_adj, hb, Matrix.mul_assoc]⟩
 
 /- English proof (translation)
-Use `show ((1 : Mx D n n).map (cA D))ᵀ = 1`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_one' : adj (1 : Mx D n n) = 1 := by
   show ((1 : Mx D n n).map (cA D))ᵀ = 1

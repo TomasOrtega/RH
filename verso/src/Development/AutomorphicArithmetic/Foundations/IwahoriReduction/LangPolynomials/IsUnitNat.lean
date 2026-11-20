@@ -10,19 +10,19 @@ section
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[map_add, map_one, sb, PowerSeries.substAlgHom_X]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sb_one_add (b : ℕ) : sb (R := R) b (1 + PowerSeries.X) = (1 + PowerSeries.X) ^ b := by
   rw [map_add, map_one, sb, PowerSeries.substAlgHom_X]; ring
 
 /- English proof (translation)
-The claim follows from `(sb (R := R) b).commutes a`.
+A detailed English derivation is pending.
 -/
 private theorem sb_C (b : ℕ) (a : R) : sb b (PowerSeries.C a : PowerSeries R) = PowerSeries.C a :=
   (sb (R := R) b).commutes a
 
 /- English proof (translation)
-Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add f g hf hg => simp only [Polynomial.eval₂_add, map_add, hf, hg]`. Consider the case `monomial n a`. Rewrite using `[Polynomial.expand_monomial, Polynomial.eval₂_monomial, Polynomial.eval₂_monomial, map_mul, map_pow, sb_one_add, sb_C, ← pow_mul, mul_comm b n]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sb_eval₂ (b : ℕ) (P : Polynomial R) :
     sb b (P.eval₂ PowerSeries.C (1 + PowerSeries.X)) =
@@ -34,7 +34,7 @@ private theorem sb_eval₂ (b : ℕ) (P : Polynomial R) :
       sb_one_add, sb_C, ← pow_mul, mul_comm b n]
 
 /- English proof (translation)
-Unfold `sb`. Rewrite using `[PowerSeries.coe_substAlgHom, PowerSeries.coe_substAlgHom]`. Use `Eq.trans (PowerSeries.map_subst (hasSubst_pow (R := R) b) (h := τ) h) ?_` and prove the remaining obligations. Use `congr 1`. Express the relevant statement in the definitionally equal form `PowerSeries.map τ _ = _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
 Simplify using the standard rewrite rules.
 -/
@@ -48,9 +48,9 @@ private theorem map_sb' {S : Type} [CommRing S] (τ : R →+* S) (b : ℕ) (h : 
   simp
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hb`. Unfold `dd`. Rewrite using `[map_mul, sb_one_add]`. Unfold `sb`. Rewrite using `[PowerSeries.coe_substAlgHom, PowerSeries.derivative_subst (hasSubst_pow (R := R) _)]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, Derivation.leibniz_pow, map_add, Derivation.map_one_eq_zero, PowerSeries.derivative_X, smul_eq_mul, nsmul_eq_mul, Nat.succ_sub_one, Nat.succ_eq_add_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem dd_sb (b : ℕ) (hb : b ≠ 0) (f : PowerSeries R) :
     dd (sb b f) = (b : PowerSeries R) * sb b (dd f) := by
@@ -64,9 +64,9 @@ private theorem dd_sb (b : ℕ) (hb : b ≠ 0) (f : PowerSeries R) :
   ring
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hf`. Unfold `dl`. Establish `h1 : Ring.inverse (sb b (u : PowerSeries R)) = sb b ((u⁻¹ : (PowerSeries R)ˣ) : PowerSeries R)`. Use `Ring.inverse_unit (Units.map (sb (R := R) b : PowerSeries R →* PowerSeries R) u)` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[dd_sb b hb, h1, Ring.inverse_unit, map_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem dl_sb (b : ℕ) (hb : b ≠ 0) (f : PowerSeries R) (hf : IsUnit f) :
     dl (sb b f) = (b : PowerSeries R) * sb b (dl f) := by
@@ -78,7 +78,7 @@ private theorem dl_sb (b : ℕ) (hb : b ≠ 0) (f : PowerSeries R) (hf : IsUnit 
   rw [dd_sb b hb, h1, Ring.inverse_unit, map_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[PadicInt.isUnit_iff]`. Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun h => hb ?_)` and prove the remaining obligations. Establish `: ‖((b : ℤ) : ℤ_[l])‖ < 1` using `by simpa using h`. Conclude with `(PadicInt.norm_int_lt_one_iff_dvd (b : ℤ)).1 this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isUnit_nat {l : ℕ} [Fact l.Prime] (b : ℕ) (hb : ¬ l ∣ b) : IsUnit (b : ℤ_[l]) := by
   rw [PadicInt.isUnit_iff]
@@ -87,9 +87,9 @@ private theorem isUnit_nat {l : ℕ} [Fact l.Prime] (b : ℕ) (hb : ¬ l ∣ b) 
   exact_mod_cast (PadicInt.norm_int_lt_one_iff_dvd (b : ℤ)).1 this
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `isUnit_nat b hb`. Unfold `LC at h ⊢`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 h`. Establish `h2` using `congrArg (levAct (R := R) l m u) hy`. Rewrite `h2` using `[map_sub, levAct_ev, levAct_ev, hu, sbp_nat, map_mul, map_pow, map_natCast]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, ← mul_sub, ← h2]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ (Ideal.subset_span rfl))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lc_sb {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] R] (b : ℕ) (hb : ¬ l ∣ b) (m n : ℕ) (f g : PowerSeries R)
     (h : LC l m n f g) : LC l m n ((b : PowerSeries R) * sb b f) ((b : PowerSeries R) * sb b g) := by
@@ -106,23 +106,23 @@ end
 end UpperTheory.Kd.C7
 
 /- English proof (translation)
-Introduce `l _ hl Ω _ _ _ A hA j Φ c β ζ hζ Z hZ b hb D hD`. Establish `hb0 : b ≠ 0` using `by rintro rfl; exact hb (dvd_zero l)`. Establish `h1 : Rep Φ β ζ (fun r s x => (b : Qbar l) * tr b hb Z r s x) (fun i => (b : PowerSeries Φ.R) * sb b (D i))`. Take `⟨c₁, m₁, H⟩` from `hD`. Use `⟨c₁, max m₁ 1, fun m hm => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P, hP, hL⟩` from `H m (le_of_max_le_left hm)`. Use `⟨_, pPresTr l hl Ω A hA c β ζ hζ Z hZ b hb m _ P hP, fun i => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (Φ.ser (P i))` using `(pWD l hl Ω A hA j Φ ζ hζ m (le_of_max_le_right hm) (P i)).2 (hP.2.2.1 i)`. Establish `e1 : Φ.ser (Polynomial.expand (R0 A) b (P i)) = sb b (Φ.ser (P i))`. Unfold `Fr.ser`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[sb_eval₂, Polynomial.map_expand]`. Establish `e2 : Φ.tw m ((b : PowerSeries Φ.R) * sb b (D i)) = (b : PowerSeries Φ.R) * sb b (Φ.tw m (D i))`. Unfold `Fr.tw`. Rewrite using `[map_mul, map_natCast, map_sb']`. Rewrite using `[e1, e2, dl_sb b hb0 _ hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lc_sb b hb _ _ _ _ (hL i)`. Take `⟨u, hu⟩` from `isUnit_nat (l := l) b hb`. Establish `hw : ((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) * (b : ℤ_[l]) = 1` using `by rw [← hu, Units.inv_mul]`. Generalize the expression as in `((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) = w at hw`. Establish `h2` using `pRepSmul l hl Ω A hA j Φ c β ζ hζ _ _ (algebraMap ℤ_[l] c.O w) h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r s x`. Establish `: ((algebraMap ℤ_[l] c.O w : c.O) : PadicAlgCl l) * (b : Qbar l) = 1`. Use `congrArg (algebraMap ℤ_[l] (PadicAlgCl l)) hw` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[← mul_assoc, this, one_mul]`. Use function extensionality and compare the values at `i`. Establish `hm : β.mat (algebraMap ℤ_[l] c.O w) = Matrix.diagonal fun _ => w`. Unfold `Bas.mat`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[AlgHom.commutes, Matrix.algebraMap_eq_diagonal]`. Both sides reduce to the same expression. Establish `h3 : PowerSeries.C (algebraMap ℤ_[l] Φ.R w) * (b : PowerSeries Φ.R) = 1`. Use `congrArg (fun z => PowerSeries.C (algebraMap ℤ_[l] Φ.R z)) hw` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Fr.act`. Rewrite using `[hm, Finset.sum_eq_single i]`. Rewrite using `[Matrix.diagonal_apply_eq, ← mul_assoc, h3, one_mul]`. Introduce `k _ hk`. Rewrite using `[Matrix.diagonal_apply_ne _ hk.symm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.C7.pRepTr :
     UpperTheory.Kd.C7.SRepTr := by

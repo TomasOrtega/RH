@@ -23,9 +23,9 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel.DetUnit
 
 /- English proof (translation)
-Establish `e : (Matrix.of fun k k' : Fin m => ∑ b, h k' b * U k b) = M * Matrix.of (fun j k' => ∑ b, C j b * h k' b)`. Use extensionality with `k k'`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, hU, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun b _ => by ring`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hP` using `[pairDet, e, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left hP`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_factor {R : Type} [CommRing R] {m g : ℕ} (h U : Fin m → Fin g → R)
     (M : Matrix (Fin m) (Fin m) R) (C : Fin m → Fin g → R) (hU : ∀ k b, U k b = ∑ j, M k j * C j b)
@@ -40,25 +40,21 @@ theorem isUnit_det_of_factor {R : Type} [CommRing R] {m g : ℕ} (h U : Fin m �
   exact isUnit_of_mul_isUnit_left hP
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle hOI σ A _ ξ β hξ g e U h he hU hP T α io y₀ yy hyy hpt w gm hw hgmC`. Use `letI := io.toAlgebra`. Establish `hyV : yy ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ (spMap α ≫ ξ)` using `by rw [hyy, sp_sp]`. Take `⟨v, hvt, hvb, hvg⟩` from `GlobalTheory.T.integral_point_model_over_dvr E H Dw l l' Xo Xo' c c' W Y r ν σ T io y₀ (spMap α ≫ ξ) yy hyV hpt`. Establish `he'` using `isTanBasis_bc he α`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hchar` using `GlobalTheory.T.overInclusion_base_change_model E H Dw l l' Xo Xo' c c' W Y r hle hOI σ A ξ β hξ T.Fr ((algebraMap T.V T.Fr).comp α) io y₀.1 yy hyy hpt`. Establish `hinj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective T.V T.Fr`. Use `choose u hut hu using fun k : Fin (Dw.mult σ) => GlobalTheory.ShFam.Pad.Guard.exists_comb he'.1 (fun b => α (U k b))`. Establish `hue : ∀ k (a : 𝓞 E) (z : T.V), algebraMap T.V T.Fr z = io (embK c σ a) → u k ≫ (Y.t.act.act a).left = spMap (epsMul z) ≫ u k`. Introduce `k a z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz' : z = α (β (embV c' W σ a))` using `hinj (by rw [hz, ← hchar a]; rfl)`. Substitute `hz'` using the available equality. Conclude with `(hU T.V α) k (u k) (hu k) a`. Use `choose M hM using fun k => hvb (u k) (hut k) (hue k)`. Use `choose C hC using fun j => (he.2 T.V α (v j) (hvt j)).exists`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrel : ∀ k b, α (U k b) = ∑ j, M k j * C j b`. Introduce `k b`. Establish `h1 : IsCombAtG Y.t (spMap α ≫ ξ) (bcV Y.t α e) ((Matrix.of fun b j => C j b).mulVec (M k)) (u k)` using `tanLinG (bcV Y.t α e) he'.1 v (Matrix.of fun b j => C j b) (M k) (u k) (fun j => hC j) (hM k)`. Establish `h2` using `congrFun ((he.2 T.V α (u k) (hut k)).unique (hu k) h1) b`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`. Establish `hwu : ∀ k, w k ≫ Y.m.φ = spMap (dualMap (algebraMap T.V T.Fr)) ≫ u k`. Introduce `k`. Establish `h2` using `GlobalTheory.LocM.Cht.FlagBase.isCombAtG_bc Y.t (algebraMap T.V T.Fr) (hu k)`. Establish `h3` using `hw k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[hyV]`. Establish `e1 : (fun j => spMap (dualMap (algebraMap T.V T.Fr)) ≫ bcV Y.t α e j) = bcV Y.t ((algebraMap T.V T.Fr).comp α) e` using `bcV_bcV (t := Y.t) α (algebraMap T.V T.Fr) e`. Rewrite `h2` using `[e1]`. Conclude with `GlobalTheory.FlatModel.LiftBC.isCombAtG_unique Y.t h3 h2`. Establish `hgm : ∀ k, gm k = fun j => algebraMap T.V T.Fr (M k j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Establish `hte` using `GlobalTheory.T.integral_model_embedding_first E H Dw l l' Xo Xo' c c' W Y r ν hle hOI σ A ξ β hξ g (Dw.mult σ) e U he hU T.Fr ((algebraMap T.V T.Fr).comp α) io y₀.1 yy hyy hpt k (w k) (hw k)`. Conclude with `(y₀.1.basis σ (w k ≫ ν.φ) hte.1 hte.2).unique (hgmC k) (hvg (M k) (u k) (w k) (hM k) (hwu k))`. Establish `hP' : IsUnit (pairDet (fun k b => α (h k b)) (fun k b => α (U k b)))`. Establish `e2 : α (pairDet h U) = pairDet (fun k b => α (h k b)) (fun k b => α (U k b))`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pairDet, pairDet, RingHom.map_det]`. Use `congr 1`. Use extensionality with `k k'`. Simplify using `[map_sum]`. Conclude with `e2 ▸ hP.map α`.
-
-Establish `hMu : IsUnit (Matrix.of M).det` using `isUnit_det_of_factor _ _ (Matrix.of M) C (fun k b => hrel k b) hP'`. Use `⟨hMu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, RingHom.map_det]`. Use `congr 1`. Use extensionality with `k j`.
-
-Simplify using `[hgm k]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_isUnit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype) (r : Xo'.XF c' ⟶ Xo.XF c) (ν : SABMap Y.oF.t Xo.univ.t (r ≫ pullback.fst _ _)) (hle : c.F ≤ c'.F), OverIncl r hle → ∀ (σ : E →+* ℂ) (A : Type) [CommRing A] (ξ : Sp A ⟶ Y.X) (β : c'.V W →+* A), ξ ≫ Y.s = spMap β → ∀ (g : ℕ) (e : Fin g → (Sp (DualNumber A) ⟶ Y.t.G.left)) (U h : Fin (Dw.mult σ) → Fin g → A), IsTanBasis Y.t ξ e → (∀ (S : Type) [CommRing S] (φ : A →+* S), EigRowsAt Y.t (spMap φ ≫ ξ) (φ.comp (β.comp (embV c' W σ))) (bcV Y.t φ e) (fun k b => φ (U k b))) → IsUnit (pairDet h U) → ∀ (T : CDVR) (α : A →+* T.V) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io) (yy : Sp T.Fr ⟶ Xo'.XF c'), yy ≫ Y.j = spMap ((algebraMap T.V T.Fr).comp α) ≫ ξ → (letI := io.toAlgebra; GlobalTheory.AllWt.ptF y₀.1 = yy ≫ r) → ∀ (w : Fin (Dw.mult σ) → (Sp (DualNumber T.Fr) ⟶ Y.oF.t.G.left)) (gm : Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) T.Fr), (∀ i, IsCombAtG Y.t (yy ≫ Y.j) (bcV Y.t ((algebraMap T.V T.Fr).comp α) e) (fun b => (algebraMap T.V T.Fr).comp α (U i b)) (w i ≫ Y.m.φ)) → (letI := io.toAlgebra; ∀ i, IsCombAt y₀.1.x (y₀.1.u σ) (gm i) (w i ≫ ν.φ)) → ∃ u : T.Vˣ, algebraMap T.V T.Fr u = gm.det := by
   intro E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle hOI σ A _ ξ β hξ g e U h he hU hP T α io y₀ yy hyy hpt w gm hw hgmC

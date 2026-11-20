@@ -4,9 +4,9 @@ namespace UpperTheory.Reformulated.B.P6.r12b
 open FourierTransform MeasureTheory Complex Real Module
 
 /- English proof (translation)
-Use `haveI : (μ.map e).IsAddHaarMeasure := e.isAddHaarMeasure_map μ`. Take `⟨c, hc⟩ : ∃ c : NNReal, μ.map e = c • (volume : Measure E)` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ _⟩`. Use `⟨c, fun F => ?_⟩` and prove the remaining obligations. Establish `h1 : ∫ v, F (e v) ∂μ = ∫ w, F w ∂(μ.map e)`. Use `integral_map_equiv (μ := μ) e.toHomeomorph.toMeasurableEquiv F` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this.symm`. Rewrite using `[h1, hc, integral_smul_nnreal_measure]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_comp_linearEquiv_eq_smul {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure]
@@ -23,19 +23,17 @@ theorem integral_comp_linearEquiv_eq_smul {V : Type*} [NormedAddCommGroup V] [No
   rw [h1, hc, integral_smul_nnreal_measure]
 
 /- English proof (translation)
-Set `L : V →ₗ[ℝ] E →ₗ[ℝ] ℝ` to `B.compl₂ (e.symm : E →ₗ[ℝ] V)`. Set `Φ : E →ₗ[ℝ] E →ₗ[ℝ] ℝ` to `innerₗ E`. Establish `hΦ : ∀ x y, Φ x y = inner ℝ x y` using `fun x y => by simp [Φ]`. Establish `hΦi : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `h0 : inner ℝ x x = (0 : ℝ)` using `by rw [← hΦ, hx]; rfl`. Conclude with `inner_self_eq_zero.mp h0`. Establish `hdim : finrank ℝ E = finrank ℝ (E →ₗ[ℝ] ℝ)` using `(Subspace.dual_finrank_eq).symm`. Establish `hΦs : Function.Surjective Φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp hΦi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Φe : E ≃ₗ[ℝ] (E →ₗ[ℝ] ℝ)` to `LinearEquiv.ofBijective Φ ⟨hΦi, hΦs⟩`. Establish `hΦe : ∀ x, Φe x = Φ x` using `fun x => rfl`. Set `a : V →ₗ[ℝ] E` to `Φe.symm.toLinearMap ∘ₗ L`. Establish `ha : ∀ u w, inner ℝ (a u) w = B u (e.symm w)`. Introduce `u w`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hΦ, ← hΦe]`. Simplify using `[a, L]`. Establish `hai : Function.Injective a`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `u hu`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hB u` to reduce the goal to its premises. Introduce `v`. Use `ha u (e v)` as an intermediate fact. Rewrite `this` using `[hu, inner_zero_left, e.symm_apply_apply]`. Conclude with `this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdim2 : finrank ℝ V = finrank ℝ E` using `e.toLinearEquiv.finrank_eq`. Establish `has : Function.Surjective a` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim2).mp hai`. Set `A : V ≃L[ℝ] E` to `(LinearEquiv.ofBijective a ⟨hai, has⟩).toContinuousLinearEquiv`. Use `⟨A, fun u v => ?_⟩` and prove the remaining obligations. Establish `hA : A u = a u` using `rfl`.
-
-Rewrite using `[hA, ha, e.symm_apply_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equiv_inner_of_nondegenerate {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
@@ -76,21 +74,21 @@ theorem exists_equiv_inner_of_nondegenerate {V : Type*} [NormedAddCommGroup V] [
   rw [hA, ha, e.symm_apply_apply]
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ _ B hB φ`. Set `E` to `EuclideanSpace ℝ (Fin (finrank ℝ V))`. Set `e : V ≃L[ℝ] E` to `ContinuousLinearEquiv.ofFinrankEq (by simp [E])`. Take `⟨A, hA⟩` from `exists_equiv_inner_of_nondegenerate B hB e`. Take `⟨c, hc⟩` from `integral_comp_linearEquiv_eq_smul μ e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `g : SchwartzMap E ℂ` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ e.symm φ`. Establish `hg : ∀ w, g w = φ (e.symm w)` using `fun w => rfl`. Set `N : V ≃L[ℝ] E` to `A.trans (ContinuousLinearEquiv.neg ℝ)`. Set `h : SchwartzMap V ℂ` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ N (𝓕 g)`. Establish `hh : ∀ u, h u = (𝓕 g) (-(A u))` using `fun u => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨((c : ℝ) : ℂ) • h, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Establish `hF : ∀ w : E, (𝓕 g) w = ∫ x, Complex.exp (-(2 * π * I * (inner ℝ x w : ℝ))) * g x`. Introduce `w`. Rewrite using `[SchwartzMap.fourier_coe, Real.fourier_eq]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Rewrite using `[Circle.smul_def, Real.fourierChar_apply, smul_eq_mul]`. Use `congr 1`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Put the polynomial expressions in normal form. Set `F : E → ℂ` to `fun w => Complex.exp (2 * π * I * (inner ℝ (A u) w : ℝ)) * φ (e.symm w)`. Establish `hint : (fun v => Complex.exp (2 * π * I * ((B u v : ℝ) : ℂ)) * φ v) = fun v => F (e v)`. Use function extensionality and compare the values at `v`. Simplify using `only [F, hA, e.symm_apply_apply]`.
+Put the polynomial expressions in normal form. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hL : (((c : ℝ) : ℂ) • h) u = ((c : ℝ) : ℂ) * ∫ w, F w`. Rewrite using `[SchwartzMap.smul_apply, hh, hF, smul_eq_mul]`. Use `congr 1`. Use `congr 1`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[hg, inner_neg_right, real_inner_comm]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = ∫ v, Complex.exp (2 * π * I * ((B u v : ℝ) : ℂ)) * φ v ∂μ`. Rewrite using `[hint, hc F, NNReal.smul_def, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.FourierMatrix.exists_schwartz_bilinear_transform.{u_1} :
     ∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V] [FiniteDimensional ℝ V] [inst_3 : MeasurableSpace V] [BorelSpace V] (μ : MeasureTheory.Measure V) [μ.IsAddHaarMeasure] (B : V →ₗ[ℝ] V →ₗ[ℝ] ℝ), (∀ (u : V), (∀ (v : V), DFunLike.coe (DFunLike.coe B u) v = OfNat.ofNat (nat_lit 0)) → u = OfNat.ofNat (nat_lit 0)) → ∀ (φ : SchwartzMap V ℂ), ∃ (ψ : SchwartzMap V ℂ), DFunLike.coe ψ = fun (u : V) ↦ ∫ (v : V), Complex.exp (OfNat.ofNat (nat_lit 2) * Complex.ofReal Real.pi * Complex.I * Complex.ofReal (DFunLike.coe (DFunLike.coe B u) v)) * DFunLike.coe φ v ∂μ := by

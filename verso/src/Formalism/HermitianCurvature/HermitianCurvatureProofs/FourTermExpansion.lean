@@ -15,21 +15,21 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Unfold `Loc`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem loc_zero (m : ℕ∞) (g : Mat k r) : Loc m (fun _ : Mat k r => (0 : E)) g := by
   unfold Loc
   exact ⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `h'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem loc_of_eq {m : ℕ∞} {Ψ Ψ' : Mat k r → E} {g : Mat k r} (h : Ψ = Ψ') (h' : Loc m Ψ' g) : Loc m Ψ g := by
   subst h
   exact h'
 
 /- English proof (translation)
-Use `show RdV _ Φ₁ g + Complex.I • RdV _ Φ₁ g = RdV _ Φ₂ g + Complex.I • RdV _ Φ₂ g`. Rewrite using `[rdV_congr hU hg hgG (hermitian_part_mem_lie Z) he, rdV_congr hU hg hgG (antihermitian_part_mem_lie Z) he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EZ_congr {Φ₁ Φ₂ : Mat k r → E} {U : Set (Mat k r)} (hU : IsOpen U) {g : Mat k r} (hg : g ∈ U)
     (hgG : g ∈ GV k r) (he : ∀ x ∈ U, x ∈ GV k r → Φ₁ x = Φ₂ x) (Z : Mat k r) : EZ Z Φ₁ g = EZ Z Φ₂ g := by
@@ -37,7 +37,7 @@ theorem EZ_congr {Φ₁ Φ₂ : Mat k r → E} {U : Set (Mat k r)} (hU : IsOpen 
   rw [rdV_congr hU hg hgG (hermitian_part_mem_lie Z) he, rdV_congr hU hg hgG (antihermitian_part_mem_lie Z) he]
 
 /- English proof (translation)
-Use `show RdV _ (fun x => Φ₁ x + c • Φ₂ x) g + Complex.I • RdV _ (fun x => Φ₁ x + c • Φ₂ x) g = (RdV _ Φ₁ g + Complex.I • RdV _ Φ₁ g) + c • (RdV _ Φ₂ g + Complex.I • RdV _ Φ₂ g)`. Rewrite using `[rdV_fun_add h₁ h₂ hgG (hermitian_part_mem_lie Z), rdV_fun_add h₁ h₂ hgG (antihermitian_part_mem_lie Z)]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EZ_lin {Φ₁ Φ₂ : Mat k r → E} {g : Mat k r} (h₁ : Loc 1 Φ₁ g) (h₂ : Loc 1 Φ₂ g) (hgG : g ∈ GV k r)
     (c : ℂ) (Z : Mat k r) : EZ Z (fun x => Φ₁ x + c • Φ₂ x) g = EZ Z Φ₁ g + c • EZ Z Φ₂ g := by
@@ -47,7 +47,7 @@ theorem EZ_lin {Φ₁ Φ₂ : Mat k r → E} {g : Mat k r} (h₁ : Loc 1 Φ₁ g
   module
 
 /- English proof (translation)
-Simplify using `[EZ, RdV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem EZ_zero (Z g : Mat k r) : EZ Z (fun _ : Mat k r => (0 : E)) g = 0 := by
   simp [EZ, RdV]
@@ -74,7 +74,7 @@ theorem fold_cons (t : ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) (ts) (
     fold M (t :: ts) Φ = Top (LT M) t.1 t.2.1 t.2.2 (fold M ts Φ) := rfl
 
 /- English proof (translation)
-Simplify using `only [fold, List.map_append, List.foldr_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fold_append (ts ts' : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) (Φ : Mat k r → E) :
     fold M (ts ++ ts') Φ = fold M ts (fold M ts' Φ) := by
@@ -87,7 +87,7 @@ theorem top_apply'' (v : ℂ) (a b : Fin (2 * r + k + 1)) (Φ : Mat k r → E) (
     Top (LT M) v a b Φ g = (if a = b then v • Φ g else 0) + EZ (M a b) Φ g := rfl
 
 /- English proof (translation)
-Introduce `x hx hxG`. Rewrite using `[top_apply'' M, top_apply'' M, he x hx hxG, EZ_congr hU hx hxG he]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem top_congr {Φ₁ Φ₂ : Mat k r → E} {U : Set (Mat k r)} (hU : IsOpen U)
     (he : ∀ x ∈ U, x ∈ GV k r → Φ₁ x = Φ₂ x) (v : ℂ) (a b : Fin (2 * r + k + 1)) :
@@ -96,7 +96,7 @@ theorem top_congr {Φ₁ Φ₂ : Mat k r → E} {U : Set (Mat k r)} (hU : IsOpen
   rw [top_apply'' M, top_apply'' M, he x hx hxG, EZ_congr hU hx hxG he]
 
 /- English proof (translation)
-Rewrite using `[top_apply'' M, top_apply'' M, top_apply'' M, EZ_lin h₁ h₂ hgG]`. Apply the tactic sequence `split_ifs <;> module`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem top_lin {Φ₁ Φ₂ : Mat k r → E} {g : Mat k r} (h₁ : Loc 1 Φ₁ g) (h₂ : Loc 1 Φ₂ g) (hgG : g ∈ GV k r)
     (c : ℂ) (v : ℂ) (a b : Fin (2 * r + k + 1)) :
@@ -105,9 +105,7 @@ theorem top_lin {Φ₁ Φ₂ : Mat k r → E} {g : Mat k r} (h₁ : Loc 1 Φ₁ 
   split_ifs <;> module
 
 /- English proof (translation)
-Establish `hΦ : Loc m Φ g` using `loc_mono le_self_add h`. Establish `h1 : Loc m (fun x => if a = b then v • Φ x else 0) g`. Distinguish the cases in `hab : a = b`. Conclude with `loc_of_eq (by funext x; simp [hab]) (loc_add (loc_zero m g) hΦ v)`. Conclude with `loc_of_eq (by funext x; simp [hab]) (loc_zero m g)`.
-
-Conclude with `loc_of_eq (by funext x; simp [top_apply'']) (loc_add h1 (loc_EZ (M a b) h) 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem top_loc {m : ℕ∞} {Φ : Mat k r → E} {g : Mat k r} (h : Loc (m + 1) Φ g) (v : ℂ)
     (a b : Fin (2 * r + k + 1)) : Loc m (Top (LT M) v a b Φ) g := by
@@ -119,9 +117,9 @@ theorem top_loc {m : ℕ∞} {Φ : Mat k r → E} {g : Mat k r} (h : Loc (m + 1)
   exact loc_of_eq (by funext x; simp [top_apply'']) (loc_add h1 (loc_EZ (M a b) h) 1)
 
 /- English proof (translation)
-Proceed by induction on `ts with`. Consider the case `nil => exact he`. Consider the case `cons t ts ih`. Introduce `x hx hxG`. Rewrite using `[fold_cons, fold_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `top_congr M hU ih t.1 t.2.1 t.2.2 x hx hxG`.
+A detailed English derivation is pending.
 -/
 theorem fold_congr (ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) {Φ₁ Φ₂ : Mat k r → E}
     {U : Set (Mat k r)} (hU : IsOpen U) (he : ∀ x ∈ U, x ∈ GV k r → Φ₁ x = Φ₂ x) :
@@ -134,11 +132,11 @@ theorem fold_congr (ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1)
     exact top_congr M hU ih t.1 t.2.1 t.2.2 x hx hxG
 
 /- English proof (translation)
-Proceed by induction on `ts with`. Consider the case `nil`. Introduce `m Φ g h`. Rewrite using `[fold_nil]`. Simplify using `using h`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `cons t ts ih`. Introduce `m Φ g h`. Rewrite using `[fold_cons]`. Establish `e : m + 1 + ts.length = m + (t :: ts).length` using `by simp only [List.length_cons]; omega`. Establish `h' : Loc ((m + 1 + ts.length : ℕ) : ℕ∞) Φ g` using `by rw [e]; exact h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ih (m + 1) Φ g h'` as an intermediate fact. Conclude with `top_loc M (by exact_mod_cast this) t.1 t.2.1 t.2.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fold_loc (ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) :
     ∀ (m : ℕ) (Φ : Mat k r → E) (g : Mat k r), Loc ((m + ts.length : ℕ) : ℕ∞) Φ g →
@@ -157,9 +155,9 @@ theorem fold_loc (ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1)))
     exact top_loc M (by exact_mod_cast this) t.1 t.2.1 t.2.2
 
 /- English proof (translation)
-Proceed by induction on `ts with`. Consider the case `nil => intro x _`. Both sides reduce to the same expression. Consider the case `cons t ts ih`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[fold_cons, top_apply'' M, ih x hx, EZ_congr (Φ₂ := fun _ => (0 : E)) isOpen_univ (Set.mem_univ x) hx (fun y _ hy => ih y hy) (M t.2.1 t.2.2), EZ_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fold_zero (ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) :
     ∀ x ∈ GV k r, fold M ts (fun _ : Mat k r => (0 : E)) x = 0 := by
@@ -173,13 +171,13 @@ theorem fold_zero (ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))
     simp
 
 /- English proof (translation)
-Proceed by induction on `ts with`. Consider the case `nil => intro Φ₁ Φ₂ g _ _ _ c`. Both sides reduce to the same expression. Consider the case `cons t ts ih`. Introduce `Φ₁ Φ₂ g hg h₁ h₂ c`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U₁, hU₁, hgU₁, hU₁'⟩` from `loc_spread h₁`. Take `⟨U₂, hU₂, hgU₂, hU₂'⟩` from `loc_spread h₂`. Establish `hle : (ts.length : ℕ∞) ≤ ((t :: ts).length : ℕ∞)` using `by exact_mod_cast Nat.le_succ ts.length`. Establish `heq : ∀ x ∈ U₁ ∩ U₂, x ∈ GV k r → fold M ts (fun y => Φ₁ y + c • Φ₂ y) x = (fun y => fold M ts Φ₁ y + c • fold M ts Φ₂ y) x` using `fun x hx hxG => ih Φ₁ Φ₂ x hxG (loc_mono hle (hU₁' x hx.1)) (loc_mono hle (hU₂' x hx.2)) c`. Establish `e1 : 1 + ts.length = (t :: ts).length` using `by simp only [List.length_cons]; omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf₁ : Loc 1 (fold M ts Φ₁) g`. Use `fold_loc M ts 1 Φ₁ g (by rw [e1]; exact h₁)` as an intermediate fact. Simplify using `using this`. Establish `hf₂ : Loc 1 (fold M ts Φ₂) g`. Use `fold_loc M ts 1 Φ₂ g (by rw [e1]; exact h₂)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Rewrite using `[fold_cons, fold_cons, fold_cons, top_congr M (hU₁.inter hU₂) heq t.1 t.2.1 t.2.2 g ⟨hgU₁, hgU₂⟩ hg]`. Conclude with `top_lin M hf₁ hf₂ hg c t.1 t.2.1 t.2.2`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fold_lin (ts : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) :
     ∀ (Φ₁ Φ₂ : Mat k r → E) (g : Mat k r), g ∈ GV k r → Loc (ts.length : ℕ∞) Φ₁ g →
@@ -218,7 +216,7 @@ variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 def Msg (k r : ℕ) (a b : Fin (2 * r + k + 1)) : Mat k r := Matrix.single a b 1
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Msg, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.mul_apply, Matrix.single_apply, smul_eq_mul]`. Simplify using `[Finset.sum_ite_eq, Finset.sum_ite_eq', ite_and]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single_comm (a b c d : Fin (2 * r + k + 1)) :
     Msg k r a b * Msg k r c d - Msg k r c d * Msg k r a b =
@@ -230,7 +228,7 @@ theorem single_comm (a b c d : Fin (2 * r + k + 1)) :
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Rewrite using `[EZ_comm _ _ hloc hgG, single_comm, EZ_add (loc_mono (by norm_num) hloc) hgG, EZ_smul (loc_mono (by norm_num) hloc) hgG, EZ_smul (loc_mono (by norm_num) hloc) hgG, neg_smul, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gl_single {Φ : Mat k r → E} {g : Mat k r} (hloc : Loc 2 Φ g) (hgG : g ∈ GV k r)
     (a b c d : Fin (2 * r + k + 1)) :
@@ -242,7 +240,7 @@ theorem gl_single {Φ : Mat k r → E} {g : Mat k r} (hloc : Loc 2 Φ g) (hgG : 
     ← sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `e1 : RdV (hpart1 (Hpk k r) Z) (fun x => c • Φ x) g = c • RdV (hpart1 (Hpk k r) Z) Φ g` using `((loc_hasDerivAt le_rfl h hgG (hermitian_part_mem_lie Z)).const_smul c).deriv`. Establish `e2 : RdV (hpart2 (Hpk k r) Z) (fun x => c • Φ x) g = c • RdV (hpart2 (Hpk k r) Z) Φ g` using `((loc_hasDerivAt le_rfl h hgG (antihermitian_part_mem_lie Z)).const_smul c).deriv`. Use `show RdV _ (fun x => c • Φ x) g + Complex.I • RdV _ (fun x => c • Φ x) g = c • (RdV _ Φ g + Complex.I • RdV _ Φ g)`. Rewrite using `[e1, e2]`. Use `module`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EZ_smul_fun {Φ : Mat k r → E} {g : Mat k r} (h : Loc 1 Φ g) (hgG : g ∈ GV k r) (c : ℂ)
     (Z : Mat k r) : EZ Z (fun x => c • Φ x) g = c • EZ Z Φ g := by
@@ -256,11 +254,11 @@ theorem EZ_smul_fun {Φ : Mat k r → E} {g : Mat k r} (h : Loc 1 Φ g) (hgG : g
   module
 
 /- English proof (translation)
-Establish `hΦ1 : Loc 1 Φ g` using `loc_mono (by norm_num) hloc`. Establish `h11 : Loc (1 + 1) Φ g` using `by rw [one_add_one_eq_two]; exact hloc`. Distinguish the cases in `hqd : q = d`. Establish `e : Top (LT (Msg k r)) y q d Φ = fun x => y • Φ x + (1 : ℂ) • EZ (Msg k r q d) Φ x`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[top_apply'', hqd]`. Establish `hy1 : Loc 1 (fun x => y • Φ x) g` using `loc_of_eq (by funext x; simp) (loc_add (loc_zero 1 g) hΦ1 y)`. Rewrite using `[e, EZ_lin hy1 (loc_EZ _ h11) hgG, EZ_smul_fun hΦ1 hgG]`. Simplify using `[hqd]`. Establish `e : Top (LT (Msg k r)) y q d Φ = EZ (Msg k r q d) Φ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `[top_apply'', hqd]`. Rewrite using `[e]`. Simplify using `[hqd]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem EZ_top {Φ : Mat k r → E} {g : Mat k r} (hloc : Loc 2 Φ g) (hgG : g ∈ GV k r) (Z : Mat k r)
     (y : ℂ) (q d : Fin (2 * r + k + 1)) :
@@ -280,7 +278,7 @@ theorem EZ_top {Φ : Mat k r → E} {g : Mat k r} (hloc : Loc 2 Φ g) (hgG : g �
     simp [hqd]
 
 /- English proof (translation)
-Rewrite using `[top_apply'' (Msg k r), EZ_top hloc hgG, top_apply'' (Msg k r)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem top_top_lemma_10 {Φ : Mat k r → E} {g : Mat k r} (hloc : Loc 2 Φ g) (hgG : g ∈ GV k r) (x y : ℂ)
     (a b c d : Fin (2 * r + k + 1)) :
@@ -290,9 +288,9 @@ private theorem top_top_lemma_10 {Φ : Mat k r → E} {g : Mat k r} (hloc : Loc 
   rw [top_apply'' (Msg k r), EZ_top hloc hgG, top_apply'' (Msg k r)]
 
 /- English proof (translation)
-Rewrite using `[top_top_lemma_10 hloc hgG, top_top_lemma_10 hloc hgG, top_top_lemma_10 hloc hgG, top_top_lemma_10 hloc hgG]`. Establish `g1` using `gl_single hloc hgG p c q d`. Establish `g2` using `gl_single hloc hgG p d q c`. Rewrite `g1`, `g2` using `[sub_eq_iff_eq_add]`. Rewrite using `[g1, g2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : x = y + 1` from `by linear_combination hxy`. Simplify using `only [@eq_comm _ c q, @eq_comm _ d p, @eq_comm _ d q, @eq_comm _ c p]`. Apply the tactic sequence `split_ifs <;> module`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem two {Φ : Mat k r → E} {g : Mat k r} (hloc : Loc 2 Φ g) (hgG : g ∈ GV k r) (x y : ℂ) (hxy : x - y = 1)
     (p q c d : Fin (2 * r + k + 1)) :
@@ -320,14 +318,14 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Establish `h2 : (2 : ℂ) • X = 0` using `by rw [two_smul]; exact h`. Conclude with `(smul_eq_zero.mp h2).resolve_left two_ne_zero`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem half (X : E) (h : X + X = 0) : X = 0 := by
   have h2 : (2 : ℂ) • X = 0 := by rw [two_smul]; exact h
   exact (smul_eq_zero.mp h2).resolve_left two_ne_zero
 
 /- English proof (translation)
-Use `conv_lhs =>`. Rewrite using `[← List.take_append_drop i (List.ofFn f), List.drop_eq_getElem_cons (l := List.ofFn f) (i := i) (by simp; omega), List.drop_eq_getElem_cons (l := List.ofFn f) (i := i + 1) (by simp; omega)]`. Rewrite using `[fold_append, fold_cons, fold_cons, List.getElem_ofFn, List.getElem_ofFn]`. Apply the tactic sequence `all_goals rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split (M : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Mat k r) {t : ℕ}
     (f : Fin t → ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) (i : ℕ) (hi : i + 1 < t) (Φ : Mat k r → E) :
@@ -343,21 +341,19 @@ theorem split (M : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Mat k r) {t :
   all_goals rfl
 
 /- English proof (translation)
-Rewrite using `[split _ f₁ i hi, split _ f₂ i hi, split _ f₃ i hi, split _ f₄ i hi, Formalism.REAL.take_ofFn_congr f₂ f₁ i (fun j hj => h₂ j (by omega) (by omega)), Formalism.REAL.take_ofFn_congr f₃ f₁ i (fun j hj => h₃ j (by omega) (by omega)), Formalism.REAL.take_ofFn_congr f₄ f₁ i (fun j hj …`. Use `set L := (List.ofFn f₁).take i with hL`. Use `set Ψ := fold (Msg k r) ((List.ofFn f₁).drop (i + 2)) Φ with hΨ`. Establish `hLlen : L.length = i` using `by simp [hL]; omega`. Establish `hdlen : ((List.ofFn f₁).drop (i + 2)).length + (i + 2) = t` using `by simp; omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set P : (Fin t → ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) → Mat k r → E := fun f => Top (LT (Msg k r)) (f ⟨i, by omega⟩).1 (f ⟨i, by omega⟩).2.1 (f ⟨i, by omega⟩).2.2 (Top (LT (Msg k r)) (f ⟨i + 1, hi⟩).1 (f ⟨i + 1, hi⟩).2.1 (f ⟨i + 1, hi⟩).2.2 Ψ) with hP`. Use `show fold (Msg k r) L (P f₁) g - fold (Msg k r) L (P f₂) g + fold (Msg k r) L (P f₃) g - fold (Msg k r) L (P f₄) g = 0`. Take `⟨U, hU, hgU, hUl⟩` from `loc_spread hloc`. Establish `hΨloc : ∀ x ∈ U, Loc ((i + 2 : ℕ) : ℕ∞) Ψ x`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `fold_loc (Msg k r) _ (i + 2) Φ x` to reduce the goal to its premises. Rewrite using `[add_comm, hdlen]`. Conclude with `hUl x hx`. Establish `hPloc : ∀ f, Loc ((L.length : ℕ) : ℕ∞) (P f) g`. Introduce `f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hLlen]`. Establish `h` using `hΨloc g hgU`. Establish `: Loc ((i + 1 : ℕ) : ℕ∞ ) (Top (LT (Msg k r)) (f ⟨i + 1, hi⟩).1 (f ⟨i + 1, hi⟩).2.1 (f ⟨i + 1, hi⟩).2.2 Ψ) g` using `top_loc _ (by exact_mod_cast h) _ _ _`. Conclude with `top_loc _ (by exact_mod_cast this) _ _ _`. Use `set Q12 : Mat k r → E := fun w => P f₁ w + (-1 : ℂ) • P f₂ w with hQ12`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `set Q123 : Mat k r → E := fun w => Q12 w + (1 : ℂ) • P f₃ w with hQ123`. Use `set F : Mat k r → E := fun w => Q123 w + (-1 : ℂ) • P f₄ w with hF`. Establish `lQ12 : Loc ((L.length : ℕ) : ℕ∞) Q12 g` using `loc_add (hPloc f₁) (hPloc f₂) (-1 : ℂ)`. Establish `lQ123 : Loc ((L.length : ℕ) : ℕ∞) Q123 g` using `loc_add lQ12 (hPloc f₃) 1`. Establish `hvan : ∀ x ∈ U, x ∈ GV k r → F x = (fun _ => (0 : E)) x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx hxG`. Use `hmid Ψ x hxG (loc_mono (by norm_num) (hΨloc x hx))` as an intermediate fact. Simplify using `only at this`. Simplify using `only [hF, hQ123, hQ12, neg_one_smul, one_smul]`. Rewrite using `[← sub_eq_add_neg, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Conclude with `this`. Establish `e1 : fold (Msg k r) L F g = fold (Msg k r) L Q123 g + (-1 : ℂ) • fold (Msg k r) L (P f₄) g` using `fold_lin (Msg k r) L Q123 (P f₄) g hg lQ123 (hPloc f₄) (-1)`. Establish `e2 : fold (Msg k r) L Q123 g = fold (Msg k r) L Q12 g + (1 : ℂ) • fold (Msg k r) L (P f₃) g` using `fold_lin (Msg k r) L Q12 (P f₃) g hg lQ12 (hPloc f₃) 1`. Establish `e3 : fold (Msg k r) L Q12 g = fold (Msg k r) L (P f₁) g + (-1 : ℂ) • fold (Msg k r) L (P f₂) g` using `fold_lin (Msg k r) L (P f₁) (P f₂) g hg (hPloc f₁) (hPloc f₂) (-1)`. Establish `hzero : fold (Msg k r) L F g = 0`.
-
-Rewrite using `[fold_congr (Msg k r) L hU hvan g hgU hg, fold_zero (Msg k r) L g hg]`. Rewrite `hzero` using `[e1, e2, e3]`. Simplify using `only [neg_one_smul, one_smul] at hzero`. Rewrite using `[← hzero]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem four {t : ℕ} (f₁ f₂ f₃ f₄ : Fin t → ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) (i : ℕ)
     (hi : i + 1 < t)
@@ -440,7 +436,7 @@ def PP {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) (σ : Equiv.Per
   fold (Msg k r) (List.ofFn fun j : Fin t => (u - ((j : ℕ) : ℂ), a (σ j), b j)) Φ
 
 /- English proof (translation)
-Unfold `qminorOp`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply]`. Simplify using `only [PP, fold, List.map_ofFn]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -454,11 +450,11 @@ theorem qm_eq {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) (Φ : Ma
   rfl
 
 /- English proof (translation)
-Establish `hi : (i : ℕ) + 1 < m + 1` using `by omega`. Establish `hsw : ∀ j : Fin (m + 1), (j : ℕ) ≠ i → (j : ℕ) ≠ i + 1 → Equiv.swap i.castSucc i.succ j = j` using `fun j h1 h2 => Equiv.swap_apply_of_ne_of_ne (fun h => h1 (by rw [h, Fin.coe_castSucc])) (fun h => h2 (by rw [h, Fin.val_succ]))`. Establish `hc : (⟨(i : ℕ), by omega⟩ : Fin (m + 1)) = i.castSucc` using `Fin.ext rfl`. Establish `hs : (⟨(i : ℕ) + 1, hi⟩ : Fin (m + 1)) = i.succ` using `Fin.ext rfl`. Use `four (f₁ := fun j => (u - ((j : ℕ) : ℂ), a (σ j), b j)) (f₂ := fun j => (u - ((j : ℕ) : ℂ), a ((σ * Equiv.swap i.castSucc i.succ) j), b j)) (f₃ := fun j => (u - ((j : ℕ) : ℂ), a (σ j), (b ∘ Equiv.swap i.castSucc i.succ) j)) (f₄ := fun j => (u - ((j : ℕ) : ℂ), a ((σ * Equiv.swap i …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j h1 h2`. Simplify using `only [Equiv.Perm.mul_apply, hsw j h1 h2]`. Introduce `j h1 h2`. Simplify using `only [Function.comp_apply, hsw j h1 h2]`. Introduce `j h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Equiv.Perm.mul_apply, Function.comp_apply, hsw j h1 h2]`. Introduce `Ψ x hx hΨ`. Simplify using `only [hc, hs, Equiv.Perm.mul_apply, Function.comp_apply, Equiv.swap_apply_left, Equiv.swap_apply_right, Fin.coe_castSucc, Fin.val_succ]`. Conclude with `two hΨ hx _ _ (by push_cast; ring) _ _ _ _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem key {m : ℕ} (a b : Fin (m + 1) → Fin (2 * r + k + 1)) (i : Fin m) (u : ℂ) (σ : Equiv.Perm (Fin (m + 1)))
     (Φ : Mat k r → E) (g : Mat k r) (hg : g ∈ GV k r) (hloc : Loc ((m + 1 : ℕ) : ℕ∞) Φ g) :
@@ -485,11 +481,11 @@ theorem key {m : ℕ} (a b : Fin (m + 1) → Fin (2 * r + k + 1)) (i : Fin m) (u
     exact two hΨ hx _ _ (by push_cast; ring) _ _ _ _
 
 /- English proof (translation)
-Establish `hne : i.castSucc ≠ i.succ` using `(show i.castSucc < i.succ from Fin.castSucc_lt_succ).ne`. Establish `hsg : ∀ σ : Equiv.Perm (Fin (m + 1)), ((Equiv.Perm.sign (σ * Equiv.swap i.castSucc i.succ) : ℤ) : ℂ) = -((Equiv.Perm.sign σ : ℤ) : ℂ)`. Introduce `σ`. Rewrite using `[Equiv.Perm.sign_mul, Equiv.Perm.sign_swap hne]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hre : ∀ c : Fin (m + 1) → Fin (2 * r + k + 1), ∑ σ : Equiv.Perm (Fin (m + 1)), ((Equiv.Perm.sign σ : ℤ) : ℂ) • PP a c u (σ * Equiv.swap i.castSucc i.succ) Φ g = -∑ σ : Equiv.Perm (Fin (m + 1)), ((Equiv.Perm.sign σ : ℤ) : ℂ) • PP a c u σ Φ g`. Introduce `c`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Fintype.sum_equiv (Equiv.mulRight (Equiv.swap i.castSucc i.succ)) _ _ (fun σ => by simp only [Equiv.coe_mulRight, hsg, neg_smul, neg_neg])`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∑ σ : Equiv.Perm (Fin (m + 1)), ((Equiv.Perm.sign σ : ℤ) : ℂ) • (PP a b u σ Φ g - PP a b u (σ * Equiv.swap i.castSucc i.succ) Φ g + PP a (b ∘ Equiv.swap i.castSucc i.succ) u σ Φ g - PP a (b ∘ Equiv.swap i.castSucc i.succ) u (σ * Equiv.swap i.castSucc i.succ) Φ g) = 0` using `Finset.sum_eq_zero fun σ _ => by rw [key a b i u σ Φ g hg hloc, smul_zero]`. Simplify using `only [smul_sub, smul_add, Finset.sum_sub_distrib, Finset.sum_add_distrib, hre] at hsum`. Rewrite using `[qm_eq, qm_eq]`. Establish `h2` using `half _ (show ((∑ σ : Equiv.Perm (Fin (m + 1)), ((Equiv.Perm.sign σ : ℤ) : ℂ) • PP a b u σ Φ g) + ∑ σ : Equiv.Perm (Fin (m + 1)), ((Equiv.Perm.sign σ : ℤ) : ℂ) • PP a (b ∘ Equiv.swap i.castSucc i.succ) u σ Φ g) + ((∑ σ : Equiv.Perm (Fin (m + 1)), ((Equiv.Perm.sign σ : ℤ) : ℂ) • PP …`. Conclude with `eq_neg_of_add_eq_zero_right h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adj {m : ℕ} (a b : Fin (m + 1) → Fin (2 * r + k + 1)) (i : Fin m) (u : ℂ)
     (Φ : Mat k r → E) (g : Mat k r) (hg : g ∈ GV k r) (hloc : Loc ((m + 1 : ℕ) : ℕ∞) Φ g) :
@@ -523,15 +519,15 @@ theorem adj {m : ℕ} (a b : Fin (m + 1) → Fin (2 * r + k + 1)) (i : Fin m) (u
   exact eq_neg_of_add_eq_zero_right h2
 
 /- English proof (translation)
-Introduce `b τ`. Consider the cases of `t with`. Consider the case `zero`. Establish `: τ = 1` using `Subsingleton.elim _ _`. Substitute `this` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Consider the case `succ m`. Establish `hτ : τ ∈ Submonoid.closure (Set.range fun i : Fin m => Equiv.swap i.castSucc i.succ)`. Rewrite using `[Equiv.Perm.mclosure_swap_castSucc_succ m]`. Conclude with `Submonoid.mem_top τ`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `hτ using Submonoid.closure_induction generalizing b with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Rewrite using `[adj a b i u Φ g hg hloc, Equiv.Perm.sign_swap (show i.castSucc < i.succ from Fin.castSucc_lt_succ).ne]`. Simplify using the standard rewrite rules.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `one => simp`. Consider the case `mul x y _ _ ihx ihy`. Rewrite using `[show b ∘ ⇑(x * y) = (b ∘ ⇑x) ∘ ⇑y from rfl, ihy (b ∘ ⇑x), ihx b, smul_smul, Equiv.Perm.sign_mul]`. Use `congr 1`. Use `push_cast`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem skewCol {t : ℕ} (a : Fin t → Fin (2 * r + k + 1)) (u : ℂ) (Φ : Mat k r → E) (g : Mat k r)
     (hg : g ∈ GV k r) (hloc : Loc (t : ℕ∞) Φ g) :

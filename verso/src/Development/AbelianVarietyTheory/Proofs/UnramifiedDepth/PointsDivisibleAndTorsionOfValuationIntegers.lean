@@ -14,9 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `@ValuationRing.mk _ _ _ ⟨fun a b => ?_⟩` and prove the remaining obligations. Break down `le_total (v (algebraMap O C a)) (v (algebraMap O C b)) with h | h` into its components or cases. Take `⟨c, hc⟩` from `Valuation.Integers.dvd_of_le hv h`. Conclude with `⟨c, Or.inr hc.symm⟩`. Take `⟨c, hc⟩` from `Valuation.Integers.dvd_of_le hv h`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, Or.inl hc.symm⟩`.
+Supply the required witnesses or components.
 -/
 private theorem torsVal_valuationRing {O C : Type} [CommRing O] [IsDomain O] [Field C] [Algebra O C]
     {v : Valuation C NNReal} (hv : v.Integers O) : ValuationRing O := by
@@ -28,9 +28,9 @@ private theorem torsVal_valuationRing {O C : Type} [CommRing O] [IsDomain O] [Fi
     exact ⟨c, Or.inl hc.symm⟩
 
 /- English proof (translation)
-Establish `hJ : JacobsonSpace ↥(Limits.pullback ψ x)` using `LocallyOfFiniteType.jacobsonSpace (Limits.pullback.snd ψ x)`. Take `⟨w⟩ : Nonempty ↥(Spec (CommRingCat.of Ω))` from `inferInstance`. Take `⟨z₀, -⟩` from `(Limits.pullback.snd ψ x).surjective w`. Take `⟨z, -, hz⟩` from `nonempty_inter_closedPoints (Z := (Set.univ : Set ↥(Limits.pullback ψ x))) ⟨z₀, trivial⟩ isClosed_univ.isLocallyClosed`. Use `replace hz : IsClosed {z} := hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨pointOfClosedPoint (Limits.pullback.snd ψ x) z hz ≫ Limits.pullback.fst _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Limits.pullback.condition, pointOfClosedPoint_comp_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem torsVal_exists_point {Ω : Type} [Field Ω] [IsAlgClosed Ω] {P A : Scheme.{0}}
     (ψ : P ⟶ A) [LocallyOfFiniteType ψ] [Surjective ψ] (x : Spec (CommRingCat.of Ω) ⟶ A) :
@@ -46,13 +46,11 @@ private theorem torsVal_exists_point {Ω : Type} [Field Ω] [IsAlgClosed Ω] {P 
   rw [Category.assoc, Limits.pullback.condition, pointOfClosedPoint_comp_assoc]
 
 /- English proof (translation)
-Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Use `haveI : ValuationRing O := torsVal_valuationRing hv`. Use `haveI : IsFractionRing O C := hv.isFractionRing`. Establish `hE : ValuativeCriterion.Existence m.left`. Establish `h : UniversallyClosed m.left` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `h` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h.1`. Establish `hU : ValuativeCriterion.Uniqueness m.left` using `IsSeparated.valuativeCriterion m.left`. Set `S : ValuativeCommSq m.left` to `{ R := O, K := C, i₁ := z.left, i₂ := x.left, commSq := ⟨congrArg Over.Hom.left h⟩ }`. Take `⟨⟨l, h1, h2⟩⟩` from `hE S`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hw : l ≫ X.hom = (sp (R₀` using `R₀) O).hom := by`. Rewrite using `[← Over.w m, ← Category.assoc, h2]`. Conclude with `Over.w x`. Use `⟨Over.homMk l hw, ⟨Over.OverMorphism.ext h2, Over.OverMorphism.ext h1⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy1, hy2⟩`.
-
-Use `(hU S).elim ⟨y.left, congrArg Over.Hom.left hy2, congrArg Over.Hom.left hy1⟩ ⟨l, h1, h2⟩` as an intermediate fact. Conclude with `Over.OverMorphism.ext (congrArg CommSq.LiftStruct.l this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem torsVal_lift {R₀ : Type} [CommRing R₀] {X Y : Over (Spec (CommRingCat.of R₀))}
     (m : X ⟶ Y) [IsFinite m.left] {O C : Type} [CommRing O] [Field C] [Algebra R₀ O] [Algebra O C]
@@ -80,16 +78,16 @@ private theorem torsVal_lift {R₀ : Type} [CommRing R₀] {X Y : Over (Spec (Co
   exact Over.OverMorphism.ext (congrArg CommSq.LiftStruct.l this)
 
 /- English proof (translation)
-Rewrite using `[MonObj.comp_pow, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem torsVal_comp_pow {R₀ : Type} [CommRing R₀] {G T : Over (Spec (CommRingCat.of R₀))}
     [GrpObj G] (y : T ⟶ G) (p : ℕ) : y ≫ ((𝟙 G) ^ p : G ⟶ G) = y ^ p := by
   rw [MonObj.comp_pow, Category.comp_id]
 
 /- English proof (translation)
-Introduce `R₀ _ G _ _ O C _ _ _ v _ _ _ p hv hfin hsurj`. Use `⟨fun x => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `torsVal_exists_point ((𝟙 G) ^ p : G ⟶ G).left (spMap (IsScalarTower.toAlgHom R₀ (O : Type) C) ≫ x).left`. Establish `hw' : w ≫ G.hom = (sp (R₀` using `R₀) C).hom := by`. Rewrite using `[← Over.w ((𝟙 G) ^ p : G ⟶ G), ← Category.assoc, hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Over.w _`. Take `⟨y, ⟨hy, -⟩, -⟩` from `torsVal_lift ((𝟙 G) ^ p : G ⟶ G) hv x (Over.homMk w hw') (Over.OverMorphism.ext hw)`. Conclude with `⟨y, by rw [← torsVal_comp_pow, hy]⟩`. Use `torsVal_lift ((𝟙 G) ^ p : G ⟶ G) hv 1 z (by rw [torsVal_comp_pow, hz, MonObj.comp_one])` as an intermediate fact. Simplify `this` using `only [torsVal_comp_pow]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem points_divisible_and_torsion_of_valuation_integers :
   (∀ {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingCat.of R₀))) [GrpObj G] [IsCommMonObj G] (O : LAlg R₀) (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) [Algebra (O : Type) C] [Algebra R₀ C] [IsScalarTower R₀ (O : Type) C] (p : ℕ), v.Integers (O : Type) → IsFinite ((𝟙 G) ^ p : G ⟶ G).left → Surjective ((𝟙 G) ^ p : G ⟶ G).left →

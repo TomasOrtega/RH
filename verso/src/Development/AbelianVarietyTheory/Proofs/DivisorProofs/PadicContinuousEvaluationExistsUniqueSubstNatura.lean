@@ -13,7 +13,7 @@ section Adic
 variable {A : Type} [CommRing A] (p : ℕ)
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Conclude with `Ideal.mem_span_singleton.2 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smodEq_of_dvd (m : ℕ) {y z : A} (h : (p : A) ^ m ∣ y - z) :
     y ≡ z [SMOD ((Ideal.span {(p : A)}) ^ m • ⊤ : Submodule A A)] := by
@@ -21,7 +21,7 @@ theorem smodEq_of_dvd (m : ℕ) {y z : A} (h : (p : A) ^ m ∣ y - z) :
   exact Ideal.mem_span_singleton.2 h
 
 /- English proof (translation)
-Rewrite `h` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Conclude with `Ideal.mem_span_singleton.1 h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_smodEq (m : ℕ) {y z : A}
     (h : y ≡ z [SMOD ((Ideal.span {(p : A)}) ^ m • ⊤ : Submodule A A)]) :
@@ -30,7 +30,7 @@ theorem dvd_of_smodEq (m : ℕ) {y z : A}
   exact Ideal.mem_span_singleton.1 h
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.1 (IsHausdorff.haus ‹_› _ fun m => smodEq_of_dvd p m (by rw [sub_zero]; exact h m))`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_forall_dvd [IsHausdorff (Ideal.span {(p : A)}) A] {y z : A}
     (h : ∀ m : ℕ, (p : A) ^ m ∣ y - z) : y = z :=
@@ -44,7 +44,7 @@ section Ext
 variable {σ R A : Type} [Fintype σ] [CommRing R] [CommRing A]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => rw [MvPolynomial.coe_C, hC]`. Consider the case `add P Q hP hQ => rw [MvPolynomial.coe_add, map_add, map_add, hP, hQ]`. Consider the case `mul_X P i hP => rw [MvPolynomial.coe_mul, map_mul, map_mul, hP, MvPolynomial.coe_X, hX]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eq_on_poly (φ ψ : MvPowerSeries σ R →+* A) (hC : ∀ c, φ (C c) = ψ (C c))
     (hX : ∀ i, φ (X i) = ψ (X i)) (P : MvPolynomial σ R) : φ P = ψ P := by
@@ -54,13 +54,11 @@ theorem eq_on_poly (φ ψ : MvPowerSeries σ R →+* A) (hC : ∀ c, φ (C c) = 
   | mul_X P i hP => rw [MvPolynomial.coe_mul, map_mul, map_mul, hP, MvPolynomial.coe_X, hX]
 
 /- English proof (translation)
-Use `eq_of_forall_dvd p fun m => ?_` and prove the remaining obligations. Take `⟨N₁, h₁⟩` from `hφ m`. Take `⟨N₂, h₂⟩` from `hψ m`. Establish `hP` using `eq_on_poly φ ψ hC hX (trunc' R (Finsupp.equivFunOnFinite.symm fun _ : σ => N₁ + N₂) f)`. Use `set P : MvPowerSeries σ R := ↑(trunc' R (Finsupp.equivFunOnFinite.symm fun _ : σ => N₁ + N₂) f) with hPdef`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ∀ α : σ →₀ ℕ, α.degree < N₁ + N₂ → coeff α (f - P) = 0`. Introduce `α hα`. Establish `hle : α ≤ Finsupp.equivFunOnFinite.symm fun _ : σ => N₁ + N₂` using `Finsupp.le_def.2 fun i => by`. Use `Finsupp.le_degree i α` as an intermediate fact. Use `show α i ≤ N₁ + N₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[map_sub, hPdef, MvPolynomial.coeff_coe, coeff_trunc', if_pos hle, sub_self]`. Establish `e : φ f - ψ f = φ (f - P) - ψ (f - P)`. Rewrite using `[map_sub, map_sub, hP]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `dvd_sub (h₁ _ fun α hα => hg α (by omega)) (h₂ _ fun α hα => hg α (by omega))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_of_cont (p : ℕ) [IsHausdorff (Ideal.span {(p : A)}) A] (φ ψ : MvPowerSeries σ R →+* A)
     (hC : ∀ c, φ (C c) = ψ (C c)) (hX : ∀ i, φ (X i) = ψ (X i))
@@ -92,11 +90,9 @@ section Exist
 variable {σ R A : Type} [Fintype σ] [CommRing R] [CommRing A] [Algebra R A]
 
 /- English proof (translation)
-Use `conv_rhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.dvd_sum fun α hα => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, m * S < α i := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `(MvPolynomial.mem_support_iff.1 hα) (hP α h)`. Use `Dvd.dvd.mul_left ?_ _` and prove the remaining obligations. Establish `hmem : i ∈ α.support` using `Finsupp.mem_support_iff.2 (by omega)`.
-
-Use `Dvd.dvd.trans ?_ (Finset.dvd_prod_of_mem (fun j => x j ^ α j) hmem)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dvd_aeval_of_coeff (p : ℕ) (x : σ → A) (S : ℕ) (hS : ∀ i, (p : A) ∣ x i ^ S) (m : ℕ)
     (P : MvPolynomial σ R) (hP : ∀ α : σ →₀ ℕ, (∀ i, α i ≤ m * S) → P.coeff α = 0) :
@@ -118,33 +114,29 @@ theorem dvd_aeval_of_coeff (p : ℕ) (x : σ → A) (S : ℕ) (hS : ∀ i, (p : 
     _ ∣ x i ^ α i := pow_dvd_pow _ hi.le
 
 /- English proof (translation)
-Use `choose N hN using hx`. Use `set S := ∑ i, N i`. Establish `hS : ∀ i, (p : A) ∣ x i ^ S` using `fun i => (hN i).trans (pow_dvd_pow _ (Finset.single_le_sum (fun j _ => Nat.zero_le (N j)) (Finset.mem_univ i)))`. Set `bx : ℕ → σ →₀ ℕ` to `fun K => Finsupp.equivFunOnFinite.symm fun _ => K`. Establish `hbx : ∀ K (α : σ →₀ ℕ), α ≤ bx K ↔ ∀ i, α i ≤ K` using `fun K α => Finsupp.le_def`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `s : ℕ → MvPowerSeries σ R → A` to `fun m f => MvPolynomial.aeval x (trunc' R (bx (m * S)) f)`. Establish `key` using `dvd_aeval_of_coeff (R := R) p x S hS`. Establish `hcau : ∀ f m n, m ≤ n → (p : A) ^ m ∣ s m f - s n f`. Introduce `f m n hmn`. Simplify using `only [s, ← map_sub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `key m _ fun α hα => ?_` and prove the remaining obligations. Establish `h1 : α ≤ bx (m * S)` using `(hbx _ _).2 hα`. Establish `h2 : α ≤ bx (n * S)` using `(hbx _ _).2 fun i => (hα i).trans (Nat.mul_le_mul_right _ hmn)`. Rewrite using `[MvPolynomial.coeff_sub, coeff_trunc', coeff_trunc', if_pos h1, if_pos h2, sub_self]`. Establish `hL : ∀ f, ∃ L : A, ∀ m, (p : A) ^ m ∣ s m f - L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `f`. Take `⟨L, hL⟩` from `IsPrecomplete.prec (inferInstance : IsPrecomplete (Ideal.span {(p : A)}) A) (f := fun m => s m f) (fun {m n} hmn => smodEq_of_dvd p m (hcau f m n hmn))`. Conclude with `⟨L, fun m => dvd_of_smodEq p m (hL m)⟩`. Use `choose L hL using hL`. Establish `huniq : ∀ f y, (∀ m, (p : A) ^ m ∣ s m f - y) → L f = y` using `fun f y h => eq_of_forall_dvd p fun m => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `dvd_sub (h m) (hL f m)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis. Establish `hpoly : ∀ P : MvPolynomial σ R, L P = MvPolynomial.aeval x P`. Introduce `P`. Use `huniq _ _ fun m => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [s, ← map_sub]`. Use `key m _ fun α hα => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_sub, coeff_trunc', if_pos ((hbx _ _).2 hα), MvPolynomial.coeff_coe, sub_self]`. Establish `hadd : ∀ f g, L (f + g) = L f + L g`. Introduce `f g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `huniq _ _ fun m => ?_` and prove the remaining obligations. Establish `e : s m (f + g) - (L f + L g) = (s m f - L f) + (s m g - L g)`. Simplify using `only [s, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `dvd_add (hL f m) (hL g m)`. Establish `hmul : ∀ f g, L (f * g) = L f * L g`. Introduce `f g`. Use `huniq _ _ fun m => ?_` and prove the remaining obligations. Establish `e : s m (f * g) - L f * L g = (s m (f * g) - s m f * s m g) + (s m f - L f) * s m g + L f * (s m g - L g)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (p : A) ^ m ∣ s m (f * g) - s m f * s m g`. Simplify using `only [s, ← map_mul, ← map_sub]`. Use `key m _ fun α hα => ?_` and prove the remaining obligations. Establish `h1 : α ≤ bx (m * S)` using `(hbx _ _).2 hα`. Rewrite using `[MvPolynomial.coeff_sub, coeff_trunc', if_pos h1, coeff_trunc'_mul_trunc'_eq_coeff_mul _ _ _ h1, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `dvd_add (dvd_add h1 (Dvd.dvd.mul_right (hL f m) _)) (Dvd.dvd.mul_left (hL g m) _)`. Set `E : MvPowerSeries σ R →ₐ[R] A` to `{ toFun := L map_one' := by rw [← MvPolynomial.coe_one, hpoly, map_one] map_mul' := hmul map_zero' := by rw [← MvPolynomial.coe_zero, hpoly, map_zero] map_add' := hadd commutes' := fun c => by`. Rewrite using `[← c_eq_algebraMap, ← MvPolynomial.coe_C, hpoly, MvPolynomial.aeval_C] }`. Use `⟨E, fun i => ?_, fun m => ⟨Fintype.card σ * (m * S) + 1, fun f hf => ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show L (X i) = x i`. Rewrite using `[← MvPolynomial.coe_X, hpoly, MvPolynomial.aeval_X]`. Use `show (p : A) ^ m ∣ L f`. Establish `h0 : trunc' R (bx (m * S)) f = 0`. Use extensionality with `α`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
 
-Rewrite using `[coeff_trunc', MvPolynomial.coeff_zero]`. Use `split_ifs with h`. Use `hf α ?_` and prove the remaining obligations. Rewrite using `[Finsupp.degree_eq_sum]`. Use `Finset.sum_le_sum (s := Finset.univ) fun i _ => (hbx _ _).1 h i` as an intermediate fact.
-
-Simplify using `only [Finset.sum_const, Finset.card_univ, smul_eq_mul] at this`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Use `hL f m` as an intermediate fact. Simplify using `only [s, h0, map_zero, zero_sub, dvd_neg] at this`.
-
-Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isEval (p : ℕ) [IsAdicComplete (Ideal.span {(p : A)}) A] (x : σ → A)
     (hx : ∀ i, ∃ N : ℕ, (p : A) ∣ x i ^ N) :
@@ -231,9 +223,7 @@ theorem exists_isEval (p : ℕ) [IsAdicComplete (Ideal.span {(p : A)}) A] (x : �
 end Exist
 
 /- English proof (translation)
-Use extensionality with `f`. Conclude with `ext_of_cont p E₁.toRingHom E₂.toRingHom (fun c => by show E₁ (C c) = E₂ (C c)`. Rewrite using `[c_eq_algebraMap, AlgHom.commutes, AlgHom.commutes])`. Use the proof step `(fun i => by show E₁ (X i) = E₂ (X i)`. Rewrite using `[h₁.1, h₂.1])`.
-
-Use the proof step `h₁.2 h₂.2 f`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_unique {σ R A : Type} [Fintype σ] [CommRing R] [CommRing A] [Algebra R A] (p : ℕ)
     [IsHausdorff (Ideal.span {(p : A)}) A] (x : σ → A) (E₁ E₂ : MvPowerSeries σ R →ₐ[R] A)
@@ -249,23 +239,19 @@ theorem eval_unique {σ R A : Type} [Fintype σ] [CommRing R] [CommRing A] [Alge
     h₁.2 h₂.2 f
 
 /- English proof (translation)
-Introduce `p R A σ _ _ _ _ _ x hx`. Use `⟨?_, fun E hE => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨E, hE⟩` from `exists_isEval (R := R) p x hx`. Conclude with `⟨E, hE, fun E' hE' => eval_unique p x E' E hE' hE⟩`. Introduce `τ _ u E' hu hE' f`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : HasSubst u` using `hasSubst_of_constantCoeff_zero hu`. Rewrite using `[← coe_substAlgHom hs]`. Conclude with `ext_of_cont p ((E.comp (substAlgHom hs)).toRingHom) E'.toRingHom (fun c => by show E (substAlgHom hs (C c)) = E' (C c)`. Rewrite using `[c_eq_algebraMap, AlgHom.commutes, AlgHom.commutes, AlgHom.commutes])`. Use the proof step `(fun j => by show E (substAlgHom hs (X j)) = E' (X j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[substAlgHom_X, hE'.1])`. Use the proof step `(fun m => by`. Take `⟨N, hN⟩` from `hE.2 m`. Use `⟨N, fun f hf => ?_⟩` and prove the remaining obligations. Use `show (p : A) ^ m ∣ E (substAlgHom hs f)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[coe_substAlgHom]`. Use `hN _ fun α hα => coeff_of_lt_order ?_` and prove the remaining obligations. Establish `h1 : (1 : ℕ∞) ≤ ⨅ j, (u j).order` using `le_iInf fun j => one_le_order_iff_constCoeff_eq_zero.2 (hu j)`. Establish `h2 : (N : ℕ∞) ≤ f.order` using `nat_le_order hf`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `hE'.2 f`. Introduce `f hf`. Take `⟨N, hN⟩` from `hE.2 1`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hN (f ^ N) fun α hα => coeff_of_lt_order ((by exact_mod_cast hα : (α.degree : ℕ∞) < N).trans_le (le_order_pow_of_constantCoeff_eq_zero N hf))` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Introduce `R' A' _ _ _ _ r g E' hg hE' f`. Conclude with `ext_of_cont p (g.comp E.toRingHom) (E'.toRingHom.comp (map r)) (fun c => by show g (E (C c)) = E' (map r (C c))`. Rewrite using `[map_C, c_eq_algebraMap, c_eq_algebraMap, AlgHom.commutes, AlgHom.commutes, hg])`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun i => by show g (E (X i)) = E' (map r (X i))`. Rewrite using `[map_X, hE.1, hE'.1])`. Use the proof step `(fun m => by`. Take `⟨N, hN⟩` from `hE.2 m`. Conclude with `⟨N, fun f hf => by show (p : A') ^ m ∣ g (E f)`.
-
-Use `map_dvd g (hN f hf)` as an intermediate fact. Rewrite using `[map_pow, map_natCast] at this⟩)` and apply the resulting hypothesis. Use the proof step `(fun m => by`. Take `⟨N, hN⟩` from `hE'.2 m`. Conclude with `⟨N, fun f hf => hN _ fun α hα => by rw [coeff_map, hf α hα, map_zero]⟩)`.
-
-Use `f`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem continuous_eval : ∀ (p : ℕ) (R A σ : Type) [CommRing R] [CommRing A] [Algebra R A] [Fintype σ] [IsAdicComplete (Ideal.span {(p : A)}) A] (x : σ → A), (∀ i, ∃ N : ℕ, (p : A) ∣ x i ^ N) → (∃! E : MvPowerSeries σ R →ₐ[R] A, IsEval p x E) ∧ ∀ E : MvPowerSeries σ R →ₐ[R] A, IsEval p x E → (∀ (τ : Type) [Fintype τ] (u : τ → MvPowerSeries σ R) (E' : MvPowerSeries τ R →ₐ[R] A), (∀ j, constantCoeff (u j) = 0) → IsEval p (fun j => E (u j)) E' → ∀ f, E (subst u f) = E' f) ∧ (∀ f, constantCoeff f = 0 → ∃ N : ℕ, (p : A) ∣ E f ^ N) ∧ ∀ (R' A' : Type) [CommRing R'] [CommRing A'] [Algebra R' A'] [IsHausdorff (Ideal.span {(p : A')}) A'] (r : R →+* R') (g : A →+* A') (E' : MvPowerSeries σ R' →ₐ[R'] A'), (∀ c, g (algebraMap R A c) = algebraMap R' A' (r c)) → IsEval p (fun i => g (x i)) E' → ∀ f, g (E f) = E' (map r f) := by
   intro p R A σ _ _ _ _ _ x hx

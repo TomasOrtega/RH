@@ -40,55 +40,55 @@ open GroundTheory.Heights₂.Heights.NumbersDVR
 universe u
 
 /- English proof (translation)
-The claim follows from `GradedFinite.proof`.
+A detailed English derivation is pending.
 -/
 theorem GradedFinite.full : GradedFinite.Statement.{u} := GradedFinite.proof
 
 /- English proof (translation)
-The claim follows from `HilbExactDivide.proof GradedFinite.full`.
+A detailed English derivation is pending.
 -/
 theorem HilbExactDivide.full : HilbExactDivide.Statement.{u} :=
   HilbExactDivide.proof GradedFinite.full
 
 /- English proof (translation)
-The claim follows from `PolyOfDiffs.proof`.
+A detailed English derivation is pending.
 -/
 theorem PolyOfDiffs.full : PolyOfDiffs.Statement := PolyOfDiffs.proof
 
 /- English proof (translation)
-The claim follows from `HilbEventuallyPoly.of_exactDivide_polyOfDiffs HilbExactDivide.full PolyOfDiffs.full`.
+A detailed English derivation is pending.
 -/
 theorem HilbEventuallyPoly.full : HilbEventuallyPoly.Statement.{u} :=
   HilbEventuallyPoly.of_exactDivide_polyOfDiffs HilbExactDivide.full PolyOfDiffs.full
 
 /- English proof (translation)
-The claim follows from `PrimeFiltration.proof HilbExactDivide.full`.
+A detailed English derivation is pending.
 -/
 theorem PrimeFiltration.full : PrimeFiltration.Statement.{u} :=
   PrimeFiltration.proof HilbExactDivide.full
 
 /- English proof (translation)
-The claim follows from `EventuallyPolyUnique.proof`.
+A detailed English derivation is pending.
 -/
 theorem EventuallyPolyUnique.full : EventuallyPolyUnique.Statement := EventuallyPolyUnique.proof
 
 /- English proof (translation)
-The claim follows from `EventuallyPolyShift.proof`.
+A detailed English derivation is pending.
 -/
 theorem EventuallyPolyShift.full : EventuallyPolyShift.Statement := EventuallyPolyShift.proof
 
 /- English proof (translation)
-The claim follows from `HilbIrrelevantZero.proof`.
+A detailed English derivation is pending.
 -/
 theorem HilbIrrelevantZero.full : HilbIrrelevantZero.Statement.{u} := HilbIrrelevantZero.proof
 
 /- English proof (translation)
-The claim follows from `RelevantPrimeDimGe.proof`.
+A detailed English derivation is pending.
 -/
 theorem RelevantPrimeDimGe.full : RelevantPrimeDimGe.Statement.{u} := RelevantPrimeDimGe.proof
 
 /- English proof (translation)
-The claim follows from `HilbDegreeBound.proof HilbEventuallyPoly.full HilbExactDivide.full PolyOfDiffs.full PrimeFiltration.full EventuallyPolyUnique.full EventuallyPolyShift.full HilbIrrelevantZero.full RelevantPrimeDimGe.full`.
+A detailed English derivation is pending.
 -/
 theorem HilbDegreeBound.full : HilbDegreeBound.Statement.{u} :=
   HilbDegreeBound.proof HilbEventuallyPoly.full HilbExactDivide.full PolyOfDiffs.full
@@ -96,124 +96,124 @@ theorem HilbDegreeBound.full : HilbDegreeBound.Statement.{u} :=
     HilbIrrelevantZero.full RelevantPrimeDimGe.full
 
 /- English proof (translation)
-The claim follows from `MixedDiffConst.proof HilbDegreeBound.full HilbEventuallyPoly.full`.
+A detailed English derivation is pending.
 -/
 theorem MixedDiffConst.full : MixedDiffConst.Statement.{u} :=
   MixedDiffConst.proof HilbDegreeBound.full HilbEventuallyPoly.full
 
 /- English proof (translation)
-The claim follows from `IntNumSymm.proof`.
+A detailed English derivation is pending.
 -/
 theorem IntNumSymm.full : IntNumSymm.Statement := IntNumSymm.proof
 
 /- English proof (translation)
-The claim follows from `IntNumAdd.proof MixedDiffConst.full`.
+A detailed English derivation is pending.
 -/
 theorem IntNumAdd.full : IntNumAdd.Statement.{u} := IntNumAdd.proof MixedDiffConst.full
 
 /- English proof (translation)
-The claim follows from `IntNumZeroSlot.proof MixedDiffConst.full HilbEventuallyPoly.full HilbDegreeBound.full`.
+A detailed English derivation is pending.
 -/
 theorem IntNumZeroSlot.full : IntNumZeroSlot.Statement.{u} :=
   IntNumZeroSlot.proof MixedDiffConst.full HilbEventuallyPoly.full HilbDegreeBound.full
 
 /- English proof (translation)
-The claim follows from `IntNumBase.proof MixedDiffConst.full`.
+A detailed English derivation is pending.
 -/
 theorem IntNumBase.full : IntNumBase.Statement.{u} := IntNumBase.proof MixedDiffConst.full
 
 /- English proof (translation)
-The claim follows from `MultEqualsCoeff.proof PrimeFiltration.full MixedDiffConst.full RelevantPrimeDimGe.full`.
+A detailed English derivation is pending.
 -/
 theorem MultEqualsCoeff.full : MultEqualsCoeff.Statement.{u} :=
   MultEqualsCoeff.proof PrimeFiltration.full MixedDiffConst.full RelevantPrimeDimGe.full
 
 /- English proof (translation)
-The claim follows from `CutRegular.proof HilbExactDivide.full MultEqualsCoeff.full IntNumSymm.full`.
+A detailed English derivation is pending.
 -/
 theorem CutRegular.full : CutRegular.Statement.{u} :=
   CutRegular.proof HilbExactDivide.full MultEqualsCoeff.full IntNumSymm.full
 
 /- English proof (translation)
-The claim follows from `CutRational.proof CutRegular.full IntNumAdd.full`.
+A detailed English derivation is pending.
 -/
 theorem CutRational.full : CutRational.Statement.{u} :=
   CutRational.proof CutRegular.full IntNumAdd.full
 
 /- English proof (translation)
-The claim follows from `DivPrincipalDegree.proof CutRational.full IntNumBase.full IntNumZeroSlot.full`.
+A detailed English derivation is pending.
 -/
 theorem DivPrincipalDegree.full : DivPrincipalDegree.Statement.{u} :=
   DivPrincipalDegree.proof CutRational.full IntNumBase.full IntNumZeroSlot.full
 
 /- English proof (translation)
-The claim follows from `ExistsForm.proof`.
+A detailed English derivation is pending.
 -/
 theorem ExistsForm.full : ExistsForm.Statement.{u} := ExistsForm.proof
 
 /- English proof (translation)
-The claim follows from `DivCycleSupport.proof`.
+A detailed English derivation is pending.
 -/
 theorem DivCycleSupport.full : DivCycleSupport.Statement.{u} := DivCycleSupport.proof
 
 /- English proof (translation)
-The claim follows from `IntNumUnique.proof CutRational.full IntNumBase.full ExistsForm.full DivCycleSupport.full`.
+A detailed English derivation is pending.
 -/
 theorem IntNumUnique.full : IntNumUnique.Statement.{u} :=
   IntNumUnique.proof CutRational.full IntNumBase.full ExistsForm.full DivCycleSupport.full
 
 /- English proof (translation)
-The claim follows from `IntNumBaseChange.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem IntNumBaseChange.full : IntNumBaseChange.Statement := IntNumBaseChange.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `PFContracted.proof MixedDiffConst.full CutRational.full`.
+A detailed English derivation is pending.
 -/
 theorem ProjectionFormulaContracted.full : ProjectionFormulaContracted.Statement.{u} :=
   PFContracted.proof MixedDiffConst.full CutRational.full
 
 /- English proof (translation)
-The claim follows from `HilbAddBlock.proof`.
+A detailed English derivation is pending.
 -/
 theorem HilbAddBlock.full : HilbAddBlock.Statement.{u} := HilbAddBlock.proof
 
 /- English proof (translation)
-The claim follows from `ProductWithProjectiveSpace.proof MixedDiffConst.full HilbAddBlock.full`.
+A detailed English derivation is pending.
 -/
 theorem ProductWithProjectiveSpace.full : ProductWithProjectiveSpace.Statement.{u} :=
   ProductWithProjectiveSpace.proof MixedDiffConst.full HilbAddBlock.full
 
 /- English proof (translation)
-The claim follows from `ProjectionFormulaDegree.proof CutRational.full IntNumBase.full ProjectionFormulaContracted.full h`.
+A detailed English derivation is pending.
 -/
 theorem ProjectionFormulaDegree.of_divPushForward (h : DivPushForward.Statement.{u}) :
     ProjectionFormulaDegree.Statement.{u} :=
   ProjectionFormulaDegree.proof CutRational.full IntNumBase.full ProjectionFormulaContracted.full h
 
 /- English proof (translation)
-The claim follows from `RenameMultiHomog.proof`.
+A detailed English derivation is pending.
 -/
 theorem RenameMultiHomog.full : RenameMultiHomog.Statement.{u} := RenameMultiHomog.proof
 
 /- English proof (translation)
-The claim follows from `RenameHilbFn.proof`.
+A detailed English derivation is pending.
 -/
 theorem RenameHilbFn.full : RenameHilbFn.Statement.{u} := RenameHilbFn.proof
 
 /- English proof (translation)
-The claim follows from `RenameIntNum.proof RenameHilbFn.full`.
+A detailed English derivation is pending.
 -/
 theorem RenameIntNum.full : RenameIntNum.Statement.{u} := RenameIntNum.proof RenameHilbFn.full
 
 /- English proof (translation)
-The claim follows from `RenameMultiProjPrime.proof`.
+A detailed English derivation is pending.
 -/
 theorem RenameMultiProjPrime.full : RenameMultiProjPrime.Statement.{u} :=
   RenameMultiProjPrime.proof
 
 /- English proof (translation)
-The claim follows from `SplitRelDeg.proof`.
+A detailed English derivation is pending.
 -/
 theorem SplitRelDeg.full : SplitRelDeg.Statement.{u} := SplitRelDeg.proof
 

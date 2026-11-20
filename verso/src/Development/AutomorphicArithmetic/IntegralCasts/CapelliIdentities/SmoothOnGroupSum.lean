@@ -78,9 +78,9 @@ noncomputable def UpperTheory.Reformulated.B.Qh27.SmoothOnG :
                       @UpperTheory.Reformulated.B.Qh27.inUJ n ε g → @Eq Complex (f g) (F g))))
 
 /- English proof (translation)
-Introduce `n ε ι s f h g₀ hg₀`. Use `letI := @Matrix.normedAddCommGroup (Fin n) (Fin n) Complex _ _ _`. Use `letI := @Matrix.normedSpace Real (Fin n) (Fin n) Complex _ _ _ _ _`. Use `choose! U F hU hmem hF heq using fun i hi ↦ h i hi g₀ hg₀`. Use `⟨⋂ i ∈ s, U i, fun x ↦ ∑ i ∈ s, F i x, isOpen_biInter_finset hU, Set.mem_iInter₂.2 hmem, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ContDiffOn.sum fun i hi ↦ (hF i hi).mono (Set.biInter_subset_of_mem (Finset.mem_coe.2 hi))`. Introduce `g hg hgu`. Conclude with `Finset.sum_congr rfl fun i hi ↦ heq i hi g (Set.mem_iInter₂.1 hg i hi) hgu`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum.{u_1} :
     ∀ {n : Nat} {ε : Fin n → Bool} {ι : Type u_1} (s : Finset ι) (f : ι → Matrix (Fin n) (Fin n) Complex → Complex),

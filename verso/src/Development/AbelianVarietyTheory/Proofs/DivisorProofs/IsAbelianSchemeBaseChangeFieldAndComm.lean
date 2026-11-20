@@ -9,7 +9,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Published.AbVarRed
 
 /- English proof (translation)
-Introduce `K L _ _ _ A _ _ hA`. Establish `hB` using `GlobalTheory.isAbelianScheme_pullback_obj (spMap (algebraMap K L)) A hA`. Conclude with `⟨hB, hB.comm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isAbelianScheme_baseChange_field_and_comm : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → IsAbelianScheme ((Over.pullback (spMap (algebraMap K L))).obj A) ∧ IsCommMonObj ((Over.pullback (spMap (algebraMap K L))).obj A) := by
   intro K L _ _ _ A _ _ hA

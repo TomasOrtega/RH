@@ -10,13 +10,13 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ThK.LemF.ConePass
 
 /- English proof (translation)
-Establish `key : ∀ s : Fin N → ℂ, ∫ k, ∫ t, ∑ i, c i k t * s i ∂μ ∂μK = ∑ i, (∫ k, ∫ t, c i k t ∂μ ∂μK) * s i` using `fun s => by`. Establish `e : ∀ k, ∫ t, ∑ i, c i k t * s i ∂μ = ∑ i, (∫ t, c i k t ∂μ) * s i` using `fun k => by`. Rewrite using `[integral_finsetSum _ fun i _ => (h1 i k).mul_const (s i)]`. Conclude with `Finset.sum_congr rfl fun i _ => integral_mul_const _ _`. Simplify using `only [e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_finsetSum _ fun i _ => (h2 i).mul_const (s i)]`. Conclude with `Finset.sum_congr rfl fun i _ => integral_mul_const _ _`. Establish `e1 : (fun y => ∫ k, ∫ t, g k t y ∂μ ∂μK) = ∑ i, (∫ k, ∫ t, c i k t ∂μ ∂μK) • f i`. Use function extensionality and compare the values at `y`. Simplify using `only [hg, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key fun i => f i y`. Establish `e2 : ∀ k t, l (g k t) = ∑ i, c i k t * l (f i)` using `fun k t => by`. Establish `: g k t = ∑ i, c i k t • f i`. Use function extensionality and compare the values at `y`. Simplify using `only [hg, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Simplify using `only [e2]`. Rewrite using `[e1, key, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linear_iterated_integral {α β Y : Type} [MeasurableSpace α] [MeasurableSpace β] (μK : Measure α) (μ : Measure β)
     {N : ℕ} (f : Fin N → Y → ℂ) (c : Fin N → α → β → ℂ) (h1 : ∀ i k, Integrable (c i k) μ)
@@ -45,11 +45,11 @@ theorem linear_iterated_integral {α β Y : Type} [MeasurableSpace α] [Measurab
   simp only [map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he ei' ev' hl K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ l φ hφ`. Take `⟨N, f, c, -, h1, h2, h3⟩` from `GlobalTheory.T.config_b_local_part_stabilizer hP F E σ B a b G G₁ H H' hC e' he ei' ev' hl K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ ((a - (b + 2)) / 2 + 1) (Nat.le_add_left 1 _) φ hφ`. Use `(linear_iterated_integral μK μ f c h1 h2 (fun k t => coneFinInt B G.M' om' v (ev' v) (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) φ k.1 t.1) h3 l).trans ?_` and prove the remaining obligations. Use `congrArg (integral μK) (funext fun k => congrArg (integral μ) (funext fun t => ?_))` and prove the remaining obligations. Establish `e : coneFinInt B G.M' om' v (ev' v) (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) φ k.1 t.1 = ((X.ν t.1 : ℂ) * ((absE F E t.1 : ℝ) : ℂ) ^ ((a - (b + 2)) / 2 + 1)) • ev' v (locOp v (G.M'.co.rho B.ψ (partFin v (shiftB σ H H' t.1))) (locOp v (om' (k.1, 1)) φ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [coneFinInt, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `beta_reduce`. Rewrite using `[e, map_smul, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem linear_coneFin_eq : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

@@ -13,19 +13,17 @@ noncomputable section
 namespace GlobalTheory.SchrSuppFin
 
 /- English proof (translation)
-Establish `hW : ∀ x : V, ∃ W : OpenAddSubgroup V, ∀ w ∈ (W : Set V), f (x + w) = f x`. Introduce `x`. Establish `h1 : {w : V | f (x + w) = f x} ∈ nhds (0 : V)`. Establish `h2` using `(hf.comp_continuous (continuous_add_left x)).eventually_eq 0`. Simplify using `only [Function.comp, add_zero] at h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h2`. Take `⟨W, hW⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ h1`. Conclude with `⟨W, fun w hw => hW hw⟩`. Use `choose W hW using hW`. Take `⟨t, -, ht⟩` from `hc.isCompact.elim_nhds_subcover (fun x => {z : V | z - x ∈ (W x : Set V)}) (fun x _ => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(continuous_sub_right x).continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Simplify using `using (W x).isOpen.mem_nhds (W x).zero_mem)`. Use `⟨⋂ x ∈ t, (W x : Set V), (Filter.biInter_finset_mem t).2 fun x _ => (W x).isOpen.mem_nhds (W x).zero_mem, fun u hu z => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iInter] at hu`. Distinguish the cases in `hz : ∃ x ∈ t, z - x ∈ (W x : Set V)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx, hzx⟩` from `hz`. Establish `e1` using `hW x (z - x) hzx`. Establish `e2` using `hW x (z + u - x) (by`. Rewrite using `[show z + u - x = (z - x) + u by abel]; exact (W x).add_mem hzx (hu x hx))`. Rewrite `e1` using `[show x + (z - x) = z by abel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e2` using `[show x + (z + u - x) = z + u by abel]`. Rewrite using `[e1, e2]`. Use `push_neg at hz`. Establish `h1 : z ∉ tsupport f` using `fun h => by`. Take `⟨x, hx, hzx⟩` from `Set.mem_iUnion₂.mp (ht h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hz x hx hzx`. Establish `h2 : z + u ∉ tsupport f` using `fun h => by`. Take `⟨x, hx, hzx⟩` from `Set.mem_iUnion₂.mp (ht h)`. Use `hz x hx ?_` and prove the remaining obligations. Use `(W x).sub_mem hzx (hu x hx)` as an intermediate fact.
-
-Rewrite `this` using `[show z + u - x - u = z - x by abel]`. Then use the resulting hypothesis. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, image_eq_zero_of_notMem_tsupport h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nhds_translate_eq {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [NonarchimedeanAddGroup V] {f : V → ℂ} (hf : IsLocallyConstant f) (hc : HasCompactSupport f) :
@@ -65,9 +63,7 @@ theorem exists_nhds_translate_eq {V : Type} [AddCommGroup V] [TopologicalSpace V
     rw [image_eq_zero_of_notMem_tsupport h1, image_eq_zero_of_notMem_tsupport h2]
 
 /- English proof (translation)
-Use `⟨fun h => ?_⟩` and prove the remaining obligations. Establish `hopen : IsOpen ({0} : Set (Fv F v))` using `(isOpen_singleton_iff_punctured_nhds _).2 h`. Use `haveI := discreteTopology_of_isOpen_singleton_zero hopen`. Use `haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v`. Establish `hO : IsCompact ((v.adicCompletionIntegers F : Set (Fv F v)))` using `isCompact_iff_compactSpace.2 inferInstance`.
-
-Use `haveI : CharZero (Fv F v) := charZero_of_injective_algebraMap (algebraMap F (Fv F v)).injective`. Establish `hinf : ((v.adicCompletionIntegers F : Set (Fv F v))).Infinite` using `Set.infinite_of_injective_forall_mem (Nat.cast_injective (R := Fv F v)) fun n => natCast_mem _ n`. Conclude with `hinf (hO.finite_of_discrete)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nhdsNE_neBot {F : Type} [Field F] [NumberField F] (v : Pl F) : (nhdsWithin (0 : Fv F v) {0}ᶜ).NeBot := by
   refine ⟨fun h => ?_⟩
@@ -85,25 +81,23 @@ end GlobalTheory.SchrSuppFin
 namespace GlobalTheory.SchrSuppFin
 
 /- English proof (translation)
-Introduce `F _ _ v ψ₀ κ _ _ _ μ _ hψ hcond φ hφ g hg`. Take `⟨hφl, hφc⟩` from `hφ`. Take `⟨hgl, hgc⟩` from `hg`. Take `⟨Uφ, hUφ, hφU⟩` from `exists_nhds_translate_eq hφl hφc`. Take `⟨Ug, hUg, hgU⟩` from `exists_nhds_translate_eq hgl hgc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v`. Establish `hO : IsCompact ((v.adicCompletionIntegers F : Set (Fv F v)))` using `isCompact_iff_compactSpace.2 inferInstance`. Establish `hP : ∀ᶠ s in nhds (0 : Fv F v), ∀ y ∈ (v.adicCompletionIntegers F : Set (Fv F v)), ∀ i : κ, (Pi.single i (s * y) : κ → Fv F v) ∈ Uφ ∩ Ug`. Use `hO.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Use `Filter.eventually_all.2 fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : Continuous fun p : Fv F v × Fv F v => (Pi.single i (p.1 * p.2) : κ → Fv F v)` using `(continuous_single i).comp continuous_mul`. Establish `hmem : Uφ ∩ Ug ∈ nhds ((fun p : Fv F v × Fv F v => (Pi.single i (p.1 * p.2) : κ → Fv F v)) (0, y))`. Simplify using `using Filter.inter_mem hUφ hUg`. Conclude with `hc.continuousAt.preimage_mem_nhds hmem`. Use `haveI := nhdsNE_neBot v`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht, ht0⟩` from `((hP.filter_mono (nhdsWithin_le_nhds (s := {0}ᶜ))).and (self_mem_nhdsWithin (s := ({0}ᶜ : Set (Fv F v))))).exists`. Establish `ht0' : t ≠ 0` using `ht0`. Use `⟨((fun p : (κ → Fv F v) × (κ → Fv F v) => p.1 - p.2) '' (tsupport φ ×ˢ tsupport g)) ×ˢ Set.pi Set.univ (fun _ => (fun y => t⁻¹ * y) '' (v.adicCompletionIntegers F : Set (Fv F v))), ?_, ?_⟩` and prove the remaining obligations. Conclude with `((hφc.isCompact.prod hgc.isCompact).image continuous_sub).prod (isCompact_univ_pi fun _ => hO.image (continuous_const_mul _))`. Introduce and unpack `⟨a, b⟩ hne`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ u ∈ Uφ ∩ Ug, ψ₀ (u ⬝ᵥ b) = 1`. Introduce `u hu`. Establish `hG : ∀ y, schr ψ₀ (a, b) φ (y + u) * (starRingEnd ℂ) (g (y + u)) = ψ₀ (u ⬝ᵥ b) * (schr ψ₀ (a, b) φ y * (starRingEnd ℂ) (g y))`. Introduce `y`. Simplify using `only [schr]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[show y + u + a = (y + a) + u by abel, hφU u hu.1, hgU u hu.2, add_dotProduct, show y ⬝ᵥ b + u ⬝ᵥ b + ⅟(2 : Fv F v) * (a ⬝ᵥ b) = u ⬝ᵥ b + (y ⬝ᵥ b + ⅟(2 : Fv F v) * (a ⬝ᵥ b)) by ring, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e` using `integral_add_right_eq_self (μ := μ) (fun y => schr ψ₀ (a, b) φ y * (starRingEnd ℂ) (g y)) u`. Simplify using `only [hG] at e`. Rewrite `e` using `[integral_const_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : (ψ₀ (u ⬝ᵥ b) - 1) * ∫ y, schr ψ₀ (a, b) φ y * (starRingEnd ℂ) (g y) ∂μ = 0`. Rewrite using `[sub_mul, e]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h0).resolve_right hne)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∃ y, schr ψ₀ (a, b) φ y * (starRingEnd ℂ) (g y) ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (by simp [h])`. Take `⟨y, hy⟩` from `hex`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1 : φ (y + a) ≠ 0` using `fun h => hy (by simp [schr, h])`. Establish `h2 : g y ≠ 0` using `fun h => hy (by simp [h])`. Conclude with `⟨(y + a, y), ⟨subset_tsupport _ h1, subset_tsupport _ h2⟩, by simp⟩`. Introduce `i _`. Establish `hb : t * b i ∈ v.adicCompletionIntegers F` using `hcond _ fun y hy => by`.
-
-Use `key _ (ht y hy i)` as an intermediate fact. Rewrite `this` using `[single_dotProduct, show t * y * b i = t * b i * y by ring]`. Then use the resulting hypothesis. Conclude with `⟨t * b i, hb, by field_simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem support_compact : ∀ {F : Type} [Field F] [NumberField F] (v : Pl F) (ψ₀ : AddChar (Fv F v) ℂ) (κ : Type) [Fintype κ]
     [MeasurableSpace (κ → Fv F v)] [BorelSpace (κ → Fv F v)] (μ : MeasureTheory.Measure (κ → Fv F v))

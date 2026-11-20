@@ -24,7 +24,7 @@ section Unit
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[inhomogeneousCochains.d_hom_apply, oneCochain]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem d_oneCochain :
     (inhomogeneousCochains.d (𝟙_ (Rep.{u} k G)) 0).hom (oneCochain (k := k) (G := G)) = 0 := by
@@ -40,7 +40,7 @@ def unitCocycle : cocycles (𝟙_ (Rep.{u} k G)) 0 :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `congrArg (cochainOf _) ((cochainsComplex (𝟙_ (Rep.{u} k G))).i_cyclesMk _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem cochainOf_cocycleι_unitCocycle :
     cochainOf _ (cocycleι _ 0 (unitCocycle (k := k) (G := G))) = oneCochain :=
@@ -52,9 +52,9 @@ def unitClass : cohomology (𝟙_ (Rep.{u} k G)) 0 :=
 variable {A : Rep.{u} k G} [IsDiscreteRep A]
 
 /- English proof (translation)
-Use `cohomology_induction_on x fun x => ?_` and prove the remaining obligations. Rewrite using `[unitClass, cup_cohomologyπ, cohomologyMap_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[cochainOf_cocycleι_cyclesMap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_cocycleι_unitCocycle]`. Use function extensionality and compare the values at `g`. Conclude with `leftUnitor_oneCochain_cupCochain _ g`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem cohomologyMap_leftUnitor_unitClass_cup {q : ℕ} (x : cohomology A q) :
     cohomologyMap (λ_ A).hom q (cup (zero_add q) unitClass x) = x := by
@@ -68,9 +68,9 @@ theorem cohomologyMap_leftUnitor_unitClass_cup {q : ℕ} (x : cohomology A q) :
   exact leftUnitor_oneCochain_cupCochain _ g
 
 /- English proof (translation)
-Use `cohomology_induction_on x fun x => ?_` and prove the remaining obligations. Rewrite using `[unitClass, cup_cohomologyπ, cohomologyMap_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[cochainOf_cocycleι_cyclesMap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_cocycleι_unitCocycle]`. Use function extensionality and compare the values at `g`. Conclude with `rightUnitor_cupCochain_oneCochain _ g`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem cohomologyMap_rightUnitor_cup_unitClass {p : ℕ} (x : cohomology A p) :
     cohomologyMap (ρ_ A).hom p (cup (add_zero p) x unitClass) = x := by

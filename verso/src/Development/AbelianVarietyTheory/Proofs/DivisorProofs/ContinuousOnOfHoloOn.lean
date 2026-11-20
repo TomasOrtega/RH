@@ -27,7 +27,7 @@ def ptsOf (p : X ⟶ Sp k) (σ : k →+* ℂ) (T : Set (pullback p (spMap σ) : 
   {y | pt p σ y (IsLocalRing.closedPoint ℂ) ∈ T}
 
 /- English proof (translation)
-Introduce `_ hy` and use `h hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ptsOf_mono {p : X ⟶ Sp k} {σ : k →+* ℂ} {T T' : Set (pullback p (spMap σ) : Scheme.{0})}
     (h : T ⊆ T') : ptsOf p σ T ⊆ ptsOf p σ T' := fun _ hy => h hy
@@ -38,9 +38,9 @@ def LocIdent {d : ℕ} {Y : Type} [TopologicalSpace Y] (A : FinHolAtlas d Y) (S 
       ∀ y ∈ S ∩ N, g y = 0
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨j, hj⟩` from `A.cover y`. Establish `h1 : (A.chart j) y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' W` using `⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hy⟩`. Establish `h2 : ContinuousAt (g ∘ (A.chart j).symm) ((A.chart j) y)` using `(hg j _ h1).continuousAt`. Establish `h3 : ContinuousAt (fun z => (g ∘ (A.chart j).symm) ((A.chart j) z)) y` using `h2.comp ((A.chart j).continuousAt hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(h3.congr ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with z hz`. Simplify using `[(A.chart j).left_inv hz]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousOn_of_holoOn {d : ℕ} {Y : Type} [TopologicalSpace Y] (A : FinHolAtlas d Y)
     {W : Set Y} (hW : IsOpen W) {g : Y → ℂ} (hg : A.HoloOn W g) : ContinuousOn g W := by
@@ -56,13 +56,13 @@ theorem continuousOn_of_holoOn {d : ℕ} {Y : Type} [TopologicalSpace Y] (A : Fi
   simp [(A.chart j).left_inv hz]
 
 /- English proof (translation)
-Use `isClosed_of_closure_subset fun x hx => ?_` and prove the remaining obligations. Take `⟨W, hW, hxW, r, f, hf, hZW⟩` from `hZ x`. Establish `hc : IsClosed {y : W | ∀ i, f i y = 0}`. Simplify using `only [Set.setOf_forall]`. Use `isClosed_iInter fun i => isClosed_eq (f := fun y : W => f i y) ?_ continuous_const` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(continuousOn_iff_continuous_restrict.1 (continuousOn_of_holoOn A hW (hf i)))`. Establish `hx' : (⟨x, hxW⟩ : W) ∈ closure {y : W | ∀ i, f i y = 0}`. Rewrite using `[closure_subtype]`. Use `mem_closure_iff.2 fun O hO hxO => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `mem_closure_iff.1 hx (O ∩ W) (hO.inter hW) ⟨hxO, hxW⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: z ∈ Z ∩ W` using `⟨hz.2, hz.1.2⟩`. Rewrite `this` using `[hZW]`. Conclude with `⟨z, hz.1.1, ⟨z, this.1⟩, this.2, rfl⟩`. Use `hc.closure_subset hx'` as an intermediate fact. Establish `hm : x ∈ {y ∈ W | ∀ i, f i y = 0}` using `⟨hxW, this⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[← hZW]`. Conclude with `hm.1`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_of_isAnalyticSubset {d : ℕ} {Y : Type} [TopologicalSpace Y] (A : FinHolAtlas d Y)
     {Z : Set Y} (hZ : A.IsAnalyticSubset Z) : IsClosed Z := by

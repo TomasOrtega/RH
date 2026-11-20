@@ -18,14 +18,14 @@ set_option synthInstance.maxHeartbeats 200000
 namespace GlobalTheory.CompanionTheory.ReadLevel
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h k hk => by simpa using h ⟨k, hk⟩, fun h k => by simpa using h k k.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_fixed_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
     {K : Subgroup G} {v : V} : v ∈ fixed ρ K ↔ ∀ g ∈ K, ρ g v = v :=
   ⟨fun h k hk => by simpa using h ⟨k, hk⟩, fun h k => by simpa using h k k.2⟩
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v u`. Rewrite using `[GlobalTheory.SmGL.extTensor_tmul, GlobalTheory.SmGL.extTensor_tmul, twRep_apply, twRep_apply, TensorProduct.smul_tmul_smul, Units.val_mul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem extTensor_twRep {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] (ρ : Representation ℂ G V) (σ : Representation ℂ H W) (χ : G →* ℂˣ) (ψ : H →* ℂˣ)
@@ -40,9 +40,9 @@ theorem extTensor_twRep {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [M
   | add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Use `(Submodule.ne_bot_iff _).2 ⟨φ.toLinearEquiv.symm v, ?_, fun e => hv0 (by` and prove the remaining obligations. Establish `h2` using `congrArg φ.toLinearEquiv e`. Rewrite using `[LinearEquiv.apply_symm_apply, map_zero] at h2)⟩` and apply the resulting hypothesis. Use `mem_fixed_iff.2 fun g hg => φ.toLinearEquiv.injective ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : φ.toLinearEquiv (ρ g (φ.toLinearEquiv.symm v)) = σ g (φ.toLinearEquiv (φ.toLinearEquiv.symm v))` using `LinearMap.congr_fun (φ.isIntertwining' g) _`. Rewrite using `[h1, LinearEquiv.apply_symm_apply]`. Conclude with `mem_fixed_iff.1 hv g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSpherical_of_equiv {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (φ : ρ.Equiv σ) {K : Subgroup G}
@@ -58,7 +58,7 @@ theorem isSpherical_of_equiv {G V W : Type} [Group G] [AddCommGroup V] [Module �
   exact mem_fixed_iff.1 hv g hg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.induced_fixed_nonzero _ _ _ _ K hK x hx hfix`.
+A detailed English derivation is pending.
 -/
 theorem fixed_ind₂_ne_bot (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a b n : ℕ} (e : Fin a ⊕ Fin b ≃ Fin n) {W : Type} [AddCommGroup W] [Module ℂ W]
@@ -71,9 +71,9 @@ theorem fixed_ind₂_ne_bot (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
   GlobalTheory.T.induced_fixed_nonzero _ _ _ _ K hK x hx hfix
 
 /- English proof (translation)
-Take `⟨-, J, Lj, hLj, hsep⟩` from `hs`. Establish `hsm : SmVec ρ v` using `⟨L, hL, hfix⟩`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, Lj j v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Conclude with `hv0 (hsep v hv hsm fun j => by_contra fun hj => hc ⟨j, hj⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Lj j v, hj, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[← hLj j m v hv hsm, mem_fixed_iff.1 hfix m hm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed_of_sep {G V X : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup X] [Module ℂ X] {ρ : Representation ℂ G V} {S : Submodule ℂ V} {τ : Representation ℂ G X}
@@ -88,7 +88,7 @@ theorem exists_fixed_of_sep {G V X : Type} [Group G] [TopologicalSpace G] [AddCo
   rw [← hLj j m v hv hsm, mem_fixed_iff.1 hfix m hm]
 
 /- English proof (translation)
-Use `fixed_ind₂_ne_bot k e _ K hKo x hx fun p hp => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hfix p hp`. Rewrite using `[GlobalTheory.T.modulus_trivial_on_compact_parabolic k a b n e K hKc p hp, Units.val_one, one_smul, extTensor_twRep, h1, h2, Units.val_one, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem fixed_ind₂_twist (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a b n : ℕ} (e : Fin a ⊕ Fin b ≃ Fin n) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
@@ -106,7 +106,7 @@ theorem fixed_ind₂_twist (k : Type) [Field k] [ValuativeRel k] [TopologicalSpa
   rw [GlobalTheory.T.modulus_trivial_on_compact_parabolic k a b n e K hKc p hp, Units.val_one, one_smul, extTensor_twRep, h1, h2, Units.val_one, one_smul]
 
 /- English proof (translation)
-The claim follows from `isSpherical_of_equiv φ (fixed_ind₂_twist k e ρ σ χ ψ K hKo hKc x hx hfix)`.
+A detailed English derivation is pending.
 -/
 theorem isSpherical_of_join (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a b n : ℕ} (e : Fin a ⊕ Fin b ≃ Fin n) {U V W : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V]
@@ -124,7 +124,7 @@ theorem isSpherical_of_join (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
   isSpherical_of_equiv φ (fixed_ind₂_twist k e ρ σ χ ψ K hKo hKc x hx hfix)
 
 /- English proof (translation)
-Rewrite using `[map_pow]`. Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Both sides reduce to the same expression. Consider the case `succ k ih => rw [pow_succ, pow_succ, ← ih]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
 Both sides reduce to the same expression.
 -/
@@ -136,7 +136,7 @@ theorem loc_pow {E : Type} [Field E] [NumberField E] [IsCMField E] (μ : HChar E
   | succ k ih => rw [pow_succ, pow_succ, ← ih]; rfl
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, loc_pow, loc_pow, ← map_mul, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} (μ : HChar E) (w : Pl E)
     (m : GLw a w × GLw b w)
@@ -145,7 +145,7 @@ theorem twist_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : �
   rw [MonoidHom.comp_apply, MonoidHom.comp_apply, loc_pow, loc_pow, ← map_mul, h]
 
 /- English proof (translation)
-Take `⟨X, hX⟩` from `GlobalTheory.T.parabolic_element_block_form E n a b h w p`. Conclude with `hKQ _ X (hX ▸ hp)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem levi_of_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {n a b : ℕ} (h : a + b = n) (w : Pl E)
     (K : Subgroup (GLw n w)) (Q : GLw a w × GLw b w → Prop) (hKQ : ∀ m X, blk h w m X ∈ K → Q m)
@@ -157,9 +157,7 @@ theorem levi_of_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {n a b : 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hR hJ E _ _ _ n a b h μ s₁ s₂ Pa Pb D c w K L G hKo hKc hLo hKL hG hG0 hGL`. Take `⟨x, hx0, hx⟩` from `exists_fixed_of_sep (hR E a b s₁ s₂ Pa Pb w c.g₁ c.g₂ c.u₁ c.u₂ c.t₁ c.t₂) hLo hG hG0 hGL`. Take `⟨φ⟩` from `hJ E n a b h (μ ^ b) (μ ^ a) Pa Pb D w c.join`. Conclude with `isSpherical_of_join (w.adicCompletion E) (GlobalTheory.SmGL.stdSum h) (lp D w) (lp Pa w) (lp Pb w) (((μ ^ b).loc w).comp GeneralLinearGroup.det) (((μ ^ a).loc w).comp GeneralLinearGroup.det) φ K hKo hKc x hx0 fun p hp =>`. Establish `hq` using `levi_of_mem h w K _ hKL p hp`.
-
-Use the proof step `⟨hx _ hq.1, twist_eq_one μ w _ hq.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rReadLev : RReadLev := by
   intro hR hJ E _ _ _ n a b h μ s₁ s₂ Pa Pb D c w K L G hKo hKc hLo hKL hG hG0 hGL

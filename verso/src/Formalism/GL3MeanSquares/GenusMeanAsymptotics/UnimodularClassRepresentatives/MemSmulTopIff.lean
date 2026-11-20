@@ -22,7 +22,7 @@ Both sides reduce to the same expression.
 theorem one_app (x : V) : (1 : V ≃ₗ[K] V) x = x := rfl
 
 /- English proof (translation)
-Establish `h1 : g z ∈ (I • A : Submodule (𝓞 K) V).map ((g : V →ₗ[K] V).restrictScalars (𝓞 K))` using `Submodule.mem_map_of_mem hz`. Rewrite `h1` using `[Submodule.map_smul'']`. Establish `h2 : A.map ((g : V →ₗ[K] V).restrictScalars (𝓞 K)) = A` using `hg`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem apply_mem_smul {g : V ≃ₗ[K] V} {A : Submodule (𝓞 K) V} (hg : Formalism.HermitianLatticesTheory.gmap g A = A)
     (I : Ideal (𝓞 K)) {z : V} (hz : z ∈ (I • A : Submodule (𝓞 K) V)) :
@@ -34,7 +34,7 @@ theorem apply_mem_smul {g : V ≃ₗ[K] V} {A : Submodule (𝓞 K) V} (hg : Form
   rwa [h2] at h1
 
 /- English proof (translation)
-Establish `h1 : g z ∈ A.map ((g : V →ₗ[K] V).restrictScalars (𝓞 K))` using `Submodule.mem_map_of_mem hz`. Establish `h2 : A.map ((g : V →ₗ[K] V).restrictScalars (𝓞 K)) = A` using `hg`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem apply_mem {g : V ≃ₗ[K] V} {A : Submodule (𝓞 K) V} (hg : Formalism.HermitianLatticesTheory.gmap g A = A)
     {z : V} (hz : z ∈ A) : g z ∈ A := by
@@ -43,9 +43,9 @@ theorem apply_mem {g : V ≃ₗ[K] V} {A : Submodule (𝓞 K) V} (hg : Formalism
   rwa [h2] at h1
 
 /- English proof (translation)
-Establish `e : (I • ⊤ : Submodule (𝓞 K) ↥A).map A.subtype = I • A`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_subtype]`. Rewrite using `[← e]`. Prove the components needed by the constructor for the conclusion. Introduce `hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.mem_map_of_mem hw`. Introduce and unpack `⟨w', hw', e'⟩`. Rewrite using `[← Subtype.ext (a1 := w') (a2 := w) e']` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_smul_top_iff (A : Submodule (𝓞 K) V) (I : Ideal (𝓞 K)) (w : ↥A) :
     w ∈ (I • ⊤ : Submodule (𝓞 K) ↥A) ↔ (w : V) ∈ (I • A : Submodule (𝓞 K) V) := by
@@ -82,16 +82,16 @@ def stabB (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K) V) (𝔭 : 
     exact neg_mem (DA.apply_mem_smul (inv_mem ha).2 _ ha')
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_stabB {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {J : ℕ} {x : V}
     {g : V ≃ₗ[K] V} : g ∈ stabB h A 𝔭 J x ↔
       g ∈ autSub h A ∧ g x - x ∈ ((extP K 𝔭) ^ J • A : Submodule (𝓞 K) V) := Iff.rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hy⟩`. Rewrite `hg` using `[Subgroup.mem_bot]`. Rewrite `hy` using `[hg, DA.one_app]`. Then use the resulting hypothesis. Introduce `hy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨1, one_mem _, by rwa [DA.one_app]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_tube_bot {A : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {J : ℕ} {x y : V} :
     y ∈ tube ⊥ A 𝔭 J x ↔ y - x ∈ ((extP K 𝔭) ^ J • A : Submodule (𝓞 K) V) := by
@@ -103,11 +103,11 @@ theorem mem_tube_bot {A : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {J : ℕ
     exact ⟨1, one_mem _, by rwa [DA.one_app]⟩
 
 /- English proof (translation)
-Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf, mem_stabB]`. Establish `ha` using `hD a.2`. Establish `hb` using `hD b.2`. Establish `e1 : ((a⁻¹ * b : ↥D) : V ≃ₗ[K] V) x - x = (a : V ≃ₗ[K] V)⁻¹ ((b : V ≃ₗ[K] V) x - (a : V ≃ₗ[K] V) x)`. Rewrite using `[map_sub, ← LinearEquiv.mul_apply, ← LinearEquiv.mul_apply, inv_mul_cancel, DA.one_app]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2⟩`. Rewrite `h2` using `[e1]`. Use `DA.apply_mem_smul ha.2 _ h2` as an intermediate fact.
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[← LinearEquiv.mul_apply, mul_inv_cancel, DA.one_app]`. Then use the resulting hypothesis. Introduce `h2`. Use `⟨hD (a⁻¹ * b).2, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `DA.apply_mem_smul (inv_mem ha).2 _ h2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_eq_iff {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {J : ℕ} {x : V}
     {D : Subgroup (V ≃ₗ[K] V)} (hD : D ≤ autSub h A) (a b : ↥D) :
@@ -132,31 +132,31 @@ theorem quot_eq_iff {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V
     exact DA.apply_mem_smul (inv_mem ha).2 _ h2
 
 /- English proof (translation)
-Use `set A := locF 𝔭 A₀ with hA`. Establish `hfinJ : Finite (↥A ⧸ ((extP K 𝔭) ^ J • ⊤ : Submodule (𝓞 K) ↥A))` using `finite_quot hA₀ h𝔭 J`. Establish `hfink : Finite (↥A ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A))` using `finite_quot hA₀ h𝔭 k`. Set `φ : ↥D → ↥A ⧸ ((extP K 𝔭) ^ J • ⊤ : Submodule (𝓞 K) ↥A)` to `fun g => Submodule.Quotient.mk ⟨(g : V ≃ₗ[K] V) x, DA.apply_mem (hD g.2).2 hxA⟩`. Establish `hφ : ∀ a b : ↥D, φ a = φ b ↔ (QuotientGroup.mk a : ↥D ⧸ (stabB h A 𝔭 J x).subgroupOf D) = QuotientGroup.mk b`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Rewrite using `[quot_eq_iff hD, eq_comm, Submodule.Quotient.eq, DA.mem_smul_top_iff]`. Both sides reduce to the same expression. Establish `hfinQ : Finite (↥D ⧸ (stabB h A 𝔭 J x).subgroupOf D)`. Use `Finite.of_injective (Quotient.lift φ ?_) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Conclude with `(hφ a b).mpr (Quotient.sound hab)`. Introduce `a b`. Proceed by induction on `a using Quotient.inductionOn with | _ a => ?_`. Proceed by induction on `b using Quotient.inductionOn with | _ b => ?_`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `e`. Conclude with `(hφ a b).mp e`. Use `Fintype.ofFinite (↥D ⧸ (stabB h A 𝔭 J x).subgroupOf D)` as an intermediate fact. Set `Ω : (↥D ⧸ (stabB h A 𝔭 J x).subgroupOf D) → Set V` to `fun c => tube ⊥ A 𝔭 J (((Quotient.out c : ↥D) : V ≃ₗ[K] V) x)`. Establish `hU : tube D A 𝔭 J x = ⋃ c ∈ (Finset.univ : Finset (↥D ⧸ (stabB h A 𝔭 J x).subgroupOf D)), Ω c`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_iUnion, Finset.mem_univ, exists_prop, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hy⟩`. Use `⟨QuotientGroup.mk (⟨g, hg⟩ : ↥D), ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_tube_bot]`. Establish `h1` using `(quot_eq_iff (𝔭 := 𝔭) (J := J) (x := x) hD (Quotient.out (QuotientGroup.mk (⟨g, hg⟩ : ↥D) : ↥D ⧸ (stabB h A 𝔭 J x).subgroupOf D)) ⟨g, hg⟩).mp (Quotient.out_eq _)`. Use `add_mem hy h1` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Introduce and unpack `⟨c, hc⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨_, (Quotient.out c : ↥D).2, mem_tube_bot.mp hc⟩`. Rewrite using `[hU, cnt_biUnion h A 𝔭 k n hfink]`. Establish `hterm : ∀ c, cnt h A 𝔭 k n (Ω c) = cnt h A 𝔭 k n (tube ⊥ A 𝔭 J x)`. Introduce `c`. Establish `hg` using `hD (Quotient.out c : ↥D).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `cnt_gmap hg.1 A 𝔭 k n (tube ⊥ A 𝔭 J x)`. Rewrite `h1` using `[hg.2]`. Rewrite using `[← h1]`. Use `congr 1`. Use extensionality with `y`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_tube_bot]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨((Quotient.out c : ↥D) : V ≃ₗ[K] V)⁻¹ y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_tube_bot]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `DA.apply_mem_smul (inv_mem hg).2 _ hy` as an intermediate fact. Rewrite `this` using `[map_sub, ← LinearEquiv.mul_apply, inv_mul_cancel, DA.one_app]`. Then use the resulting hypothesis. Rewrite using `[← LinearEquiv.mul_apply, mul_inv_cancel, DA.one_app]`. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[← map_sub]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `DA.apply_mem_smul hg.2 _ (mem_tube_bot.mp hz)`. Rewrite using `[Finset.sum_congr rfl fun c _ => hterm c, Finset.sum_const, Finset.card_univ, smul_eq_mul, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression. Introduce `c _ y hy z hz`. Rewrite `hy`, the goal using `[mem_tube_bot]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[add_sub_right_comm]`. Conclude with `add_mem hy (pow_smul_anti 𝔭 A hJk hz)`. Introduce `c _ c' _ hne`. Rewrite using `[Set.disjoint_left]`. Introduce `y hy hy'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← Quotient.out_eq c, ← Quotient.out_eq c']`. Use `(quot_eq_iff (𝔭 := 𝔭) (J := J) (x := x) hD _ _).mpr ?_` and prove the remaining obligations. Use `sub_mem (mem_tube_bot.mp hy) (mem_tube_bot.mp hy')` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem cnt_tube_eq {h : V →ₗ⋆[K] V →ₗ[K] K} {A₀ : Submodule (𝓞 K) V}
     (hA₀ : Submodule.IsLattice K A₀) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (n : 𝓞 F) {x : V} (hxA : x ∈ locF 𝔭 A₀)
@@ -238,13 +238,13 @@ theorem cnt_tube_eq {h : V →ₗ⋆[K] V →ₗ[K] K} {A₀ : Submodule (𝓞 K
     rwa [sub_sub_sub_cancel_left] at this
 
 /- English proof (translation)
-Use `set A := locF 𝔭 A₀ with hA`. Establish `hidx` using `index_tube (autSub h A) (stabB h A 𝔭 J x) C (autSub h A ⊓ fixS x) (fun g hg => hg.1) hC (by`. Introduce and unpack `g ⟨hg, hgx⟩`. Use `⟨hg, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_fixS.mp hgx, sub_self]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `zero_mem _)`. Use the proof step `(by`. Introduce and unpack `s ⟨hs1, hs2⟩`. Establish `hsi` using `inv_mem hs1`. Establish `hx' : h (s⁻¹ x) (s⁻¹ x) = algebraMap F K (n : F)` using `by rw [hsi.1, hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hd' : x - s⁻¹ x ∈ ((extP K 𝔭) ^ J • A : Submodule (𝓞 K) V)`. Use `DA.apply_mem_smul hsi.2 _ hs2` as an intermediate fact. Rewrite `this` using `[map_sub, ← LinearEquiv.mul_apply, inv_mul_cancel, DA.one_app]`. Then use the resulting hypothesis. Take `⟨γ, hγ1, hγ2, hγ3⟩` from `exists_isom_congr hK hF hs hd hA₀ hA₀i h𝔭 hn (DA.apply_mem hsi.2 hxA) hxA hx' hx hJ hd'`. Use `⟨γ * s⁻¹, ⟨mul_mem hγ1 hsi, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(γ * s⁻¹) x = x`. Rewrite using `[LinearEquiv.mul_apply, hγ3]`. Rewrite using `[inv_mul_cancel_right]`. Conclude with `hΓ γ hγ1 hγ2)`. Rewrite using `[cnt_tube_eq hA₀ h𝔭 n hxA hJk le_rfl, cnt_tube_eq hA₀ h𝔭 n hxA hJk hC, mul_right_comm, hidx, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cnt_tube_mul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ : Submodule (𝓞 K) V}
@@ -284,13 +284,13 @@ theorem cnt_tube_mul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
     mul_assoc]
 
 /- English proof (translation)
-Use `set A := locF 𝔭 A₀ with hA`. Take `⟨c₀, hc₀⟩` from `exists_exact_near hK hF hs hd hA₀ hA₀i h𝔭 hn ⟨x, hx⟩`. Use `filter_upwards [eventually_ge_atTop (c₀ + (J₂ + r))] with k hk`. Use `cnt_congr h A 𝔭 k n fun y hy hyn => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, hc, hyc⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x', hx'A, hx', hx'y⟩` from `hc₀ k (by omega) y hy hyn`. Establish `hcA` using `hC hc`. Establish `h1 : x' - c x ∈ ((extP K 𝔭) ^ J • A : Submodule (𝓞 K) V)`. Use `add_mem (pow_smul_anti 𝔭 A (show J ≤ k - c₀ by omega) hx'y) hyc` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ1, hγ2, hγ3⟩` from `exists_isom_congr hK hF hs hd hA₀ hA₀i h𝔭 hn (DA.apply_mem hcA.2 hxA) hx'A (by rw [hcA.1, hx]) hx' hJ h1`. Use `⟨γ * c, mul_mem (hΓ γ hγ1 hγ2) hc, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.mul_apply, hγ3, ← neg_sub]`. Apply `neg_mem` to reduce the goal to its premises. Establish `h2` using `pow_smul_anti 𝔭 A (show J₂ + r ≤ k - c₀ by omega) hx'y`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `h2` using `[pow_add, mul_smul]`. Conclude with `Submodule.smul_mono le_rfl hr h2`. Introduce and unpack `⟨c, hc, hyc⟩`. Conclude with `⟨c, hc, pow_smul_anti 𝔭 A hJ₂ (Submodule.smul_mono le_rfl hBA hyc)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cnt_tube_refine (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ : Submodule (𝓞 K) V}
@@ -327,39 +327,35 @@ theorem cnt_tube_refine (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF
     exact ⟨c, hc, pow_smul_anti 𝔭 A hJ₂ (Submodule.smul_mono le_rfl hBA hyc)⟩
 
 /- English proof (translation)
-Use `set A₁ := locF 𝔭 M₁ with hA₁`. Use `set A₂ := locF 𝔭 M₂ with hA₂`. Use `set C := autSub h A₁ ⊓ autSub h A₂ with hC`. Use `set B := A₁ ⊓ A₂ with hB`. Take `⟨j₁, hj₁⟩` from `exists_congr_mem_autSub h hM₁ hM₂ h𝔭`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j₂, hj₂⟩` from `exists_congr_mem_autSub h hM₂ hM₁ h𝔭`. Take `⟨r₁, hr₁⟩` from `exists_pow_smul_le hM₁ hM₂ h𝔭`. Take `⟨r₂, hr₂⟩` from `exists_pow_smul_le hM₂ hM₁ h𝔭`. Establish `hr₁' : ((extP K 𝔭) ^ r₁ • A₁ : Submodule (𝓞 K) V) ≤ B` using `le_inf Submodule.smul_le_right hr₁`. Establish `hr₂' : ((extP K 𝔭) ^ r₂ • A₂ : Submodule (𝓞 K) V) ≤ B` using `le_inf hr₂ Submodule.smul_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlA₁ : locF 𝔭 A₁ = A₁` using `LocalizedFibreSets.locF_idem 𝔭 M₁`. Establish `hlA₂ : locF 𝔭 A₂ = A₂` using `LocalizedFibreSets.locF_idem 𝔭 M₂`. Establish `hlB : locF 𝔭 B = B` using `locF_inf h𝔭 hlA₁ hlA₂`. Establish `hCB : ∀ g ∈ C, Formalism.HermitianLatticesTheory.gmap g B = B`. Introduce and unpack `g ⟨hg1, hg2⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Formalism.HermitianLatticesTheory.gmap g B = Formalism.HermitianLatticesTheory.gmap g A₁ ⊓ Formalism.HermitianLatticesTheory.gmap g A₂` using `Submodule.map_inf _ g.injective`. Rewrite using `[e, hg1.2, hg2.2]`. Use `filter_upwards [eventually_ge_atTop (4 * vF 𝔭 n + eA h A₁ 𝔭 + 1 + (4 * vF 𝔭 n + eA h A₂ 𝔭 + 1) + (j₁ + j₂ + 2 * vF 𝔭 n))] with J hJ`. Establish `hJ₁ : 4 * vF 𝔭 n + eA h A₁ 𝔭 + 1 ≤ J` using `by omega`. Establish `hJ₂ : 4 * vF 𝔭 n + eA h A₂ 𝔭 + 1 ≤ J` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hΓ₁ : ∀ g ∈ autSub h A₁, (∀ z ∈ A₁, g z - z ∈ ((extP K 𝔭) ^ (J - 2 * vF 𝔭 n) • A₁ : Submodule (𝓞 K) V)) → g ∈ C` using `fun g hg hz => ⟨hg, hj₁ _ (by omega) g hg hz⟩`. Establish `hΓ₂ : ∀ g ∈ autSub h A₂, (∀ z ∈ A₂, g z - z ∈ ((extP K 𝔭) ^ (J - 2 * vF 𝔭 n) • A₂ : Submodule (𝓞 K) V)) → g ∈ C` using `fun g hg hz => ⟨hj₂ _ (by omega) g hg hz, hg⟩`. Use `filter_upwards [cnt_tube_refine hK hF hs hd hM₁ hM₁i h𝔭 hn hx₁ hx (J := J) hJ₁ (C := C) inf_le_left hΓ₁ (B := B) inf_le_left hr₁' (le_refl J), cnt_tube_refine hK hF hs hd hM₂ hM₂i h𝔭 hn hx₂ hx (J := J) hJ₂ (C := C) inf_le_right hΓ₂ (B := B) inf_le_right hr₂' (le_refl J), eventual …`. Establish `m₁` using `cnt_tube_mul hK hF hs hd hM₁ hM₁i h𝔭 hn hx₁ hx (J := J) (k := k) hJ₁ (by omega) (C := C) inf_le_left hΓ₁`. Establish `m₂` using `cnt_tube_mul hK hF hs hd hM₂ hM₂i h𝔭 hn hx₂ hx (J := J) (k := k) hJ₂ (by omega) (C := C) inf_le_right hΓ₂`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `m₁`, `hk₁` using `[← hA₁]`. Rewrite `m₂`, `hk₂` using `[← hA₂]`. Rewrite `m₁` using `[hk₁]`. Rewrite `m₂` using `[hk₂]`. Establish `hΩB : tube C B 𝔭 J x ⊆ B`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y ⟨g, hg, hy⟩`. Establish `h1 : g x ∈ B` using `DA.apply_mem (hCB g hg) ⟨hx₁, hx₂⟩`. Use `add_mem (Submodule.smul_le_right hy) h1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hst : ∀ (A : Submodule (𝓞 K) V) (r : ℕ), ((extP K 𝔭) ^ r • A : Submodule (𝓞 K) V) ≤ B → J + r ≤ k → ∀ y ∈ tube C B 𝔭 J x, ∀ z ∈ ((extP K 𝔭) ^ k • A : Submodule (𝓞 K) V), y + z ∈ tube C B 𝔭 J x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `A r hr hrk y ⟨g, hg, hy⟩ z hz`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[add_sub_right_comm]`. Use `add_mem hy ?_` and prove the remaining obligations. Establish `h2` using `pow_smul_anti 𝔭 A hrk hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[pow_add, mul_smul]`. Conclude with `Submodule.smul_mono le_rfl hr h2`. Establish `hle : ∀ (A : Submodule (𝓞 K) V) (r : ℕ), ((extP K 𝔭) ^ r • A : Submodule (𝓞 K) V) ≤ B → r ≤ k → ((extP K 𝔭) ^ k • A : Submodule (𝓞 K) V) ≤ B` using `fun A r hr hrk => (pow_smul_anti 𝔭 A hrk).trans hr`. Establish `hfinB` using `finite_quot_inf hM₁ hM₂ h𝔭 k`. Establish `s₁` using `cnt_sub hF (h := h) h𝔭 hlA₁ hlB (GoodPrimeTerms.isIntegralAt_locF h𝔭.isPrime hF hM₁i) inf_le_left (hle A₁ r₁ hr₁' (by omega)) hfinB n hΩB (hst A₁ r₁ hr₁' (by omega))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `s₂` using `cnt_sub hF (h := h) h𝔭 hlA₂ hlB (GoodPrimeTerms.isIntegralAt_locF h𝔭.isPrime hF hM₂i) inf_le_right (hle A₂ r₂ hr₂' (by omega)) hfinB n hΩB (hst A₂ r₂ hr₂' (by omega))`. Establish `i0` using `card_quot_inf_ne_zero hM₁ hM₂ h𝔭`. Establish `im` using `card_quot_inf_mul hK hF hs hd hM₁ hM₁i hM₂ hM₂i h𝔭`. Rewrite `i0`, `im` using `[← hA₁, ← hA₂, ← hB]`. Establish `hq : Ideal.absNorm 𝔭 ≠ 0` using `(reductionMapsOfForms.absNorm_pos h𝔭).ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e1 : C.relIndex (autSub h A₁) = (autSub h A₂).relIndex (autSub h A₁)`. Rewrite using `[hC, Subgroup.inf_relIndex_left]`. Establish `e2 : C.relIndex (autSub h A₂) = (autSub h A₁).relIndex (autSub h A₂)`. Rewrite using `[hC, Subgroup.inf_relIndex_right]`. Establish `e3 : C.relIndex (autSub h A₁ ⊓ fixS x) = (autSub h A₂ ⊓ fixS x).relIndex (autSub h A₁ ⊓ fixS x)`.
+Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Subgroup.inf_relIndex_right C, ← Subgroup.inf_relIndex_right (autSub h A₂ ⊓ fixS x)]`. Use `congr 1`. Rewrite using `[hC]`. The two sides agree by associativity and commutativity. Establish `e4 : C.relIndex (autSub h A₂ ⊓ fixS x) = (autSub h A₁ ⊓ fixS x).relIndex (autSub h A₂ ⊓ fixS x)`.
+Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Subgroup.inf_relIndex_right C, ← Subgroup.inf_relIndex_right (autSub h A₁ ⊓ fixS x)]`. Use `congr 1`. Rewrite using `[hC]`. The two sides agree by associativity and commutativity. Rewrite `m₁` using `[e1, e3]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Rewrite `m₂` using `[e2, e4]`. Apply `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero (mul_ne_zero i0 (pow_ne_zero (vd h A₁ 𝔭) hq)))` to reduce the goal to its premises. Generalize the expression as in `cnt h A₁ 𝔭 k n (tube (autSub h A₁) A₁ 𝔭 J x) = E₁ at *`. Generalize the expression as in `cnt h A₂ 𝔭 k n (tube (autSub h A₂) A₂ 𝔭 J x) = E₂ at *`. Generalize the expression as in `cnt h A₁ 𝔭 k n (tube C B 𝔭 J x) = D₁ at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `cnt h A₂ 𝔭 k n (tube C B 𝔭 J x) = D₂ at *`. Generalize the expression as in `cnt h B 𝔭 k n (tube C B 𝔭 J x) = W at *`. Generalize the expression as in `Nat.card (↥A₁ ⧸ B.submoduleOf A₁) = i₁ at *`. Generalize the expression as in `Nat.card (↥A₂ ⧸ B.submoduleOf A₂) = i₂ at *`. Generalize the expression as in `Ideal.absNorm 𝔭 ^ vd h A₁ 𝔭 = Q₁ at *`.
-
-Generalize the expression as in `Ideal.absNorm 𝔭 ^ vd h A₂ 𝔭 = Q₂ at *`. Generalize the expression as in `(autSub h A₂).relIndex (autSub h A₁) = a at *`. Generalize the expression as in `(autSub h A₁).relIndex (autSub h A₂) = b at *`. Generalize the expression as in `(autSub h A₂ ⊓ fixS x).relIndex (autSub h A₁ ⊓ fixS x) = a' at *`. Generalize the expression as in `(autSub h A₁ ⊓ fixS x).relIndex (autSub h A₂ ⊓ fixS x) = b' at *`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pair (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h)

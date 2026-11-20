@@ -14,7 +14,7 @@ variable (D : D7) (hinj : Function.Injective D.what₂.OtoLL)
 def oEOsFun (x : 𝓞 D.host.E) : D.what₂.O := Classical.choose (D.O_contains x)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (D.O_contains x)`.
+A detailed English derivation is pending.
 -/
 theorem oEOsFun_spec (x : 𝓞 D.host.E) :
     D.what₂.OtoLL (oEOsFun D x) = (D.embE.comp (algebraMap (𝓞 D.host.E) D.host.E)) x :=
@@ -28,9 +28,9 @@ def oEOs : 𝓞 D.host.E →+* D.what₂.O where
   map_add' x y := hinj (by rw [map_add, oEOsFun_spec, oEOsFun_spec, oEOsFun_spec, map_add])
 
 /- English proof (translation)
-Introduce `x y hxy`. Establish `h : D.what₂.OtoLL (oEOsFun D x) = D.what₂.OtoLL (oEOsFun D y)`. Express the relevant statement in the definitionally equal form `D.what₂.OtoLL (oEOs D hinj x) = D.what₂.OtoLL (oEOs D hinj y)`. Rewrite using `[hxy]`. Rewrite `h` using `[oEOsFun_spec, oEOsFun_spec, RingHom.comp_apply, RingHom.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E (D.embE.injective h)`.
+A detailed English derivation is pending.
 -/
 theorem oEOs_injective : Function.Injective (oEOs D hinj) := by
   intro x y hxy
@@ -43,7 +43,7 @@ theorem oEOs_injective : Function.Injective (oEOs D hinj) := by
 def iE (B : WeightFamilies.Prov D) : 𝓞 D.host.E →+* 𝓞 B.KO := B.eO.symm.toRingHom.comp (oEOs D hinj)
 
 /- English proof (translation)
-The claim follows from `B.eO.symm.injective.comp (oEOs_injective D hinj)`.
+A detailed English derivation is pending.
 -/
 theorem iE_injective (B : WeightFamilies.Prov D) : Function.Injective (iE D hinj B) :=
   B.eO.symm.injective.comp (oEOs_injective D hinj)

@@ -10,7 +10,7 @@ open Formalism.L2.SG.Pf.Level
 open Formalism.BasicNotions Formalism.L2.SG.HidaSetting
 
 /- English proof (translation)
-The claim follows from `GU.gamUnipKu_of_projModG X u hK (GU.projModG_holds X) (GU.coreOfProj X) (GU.globStep_holds X u hK) (latOfLattice_holds X u)`.
+A detailed English derivation is pending.
 -/
 theorem gamUnipKu_holds {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter) : GamUnipKu X u hK :=
   GU.gamUnipKu_of_projModG X u hK (GU.projModG_holds X) (GU.coreOfProj X) (GU.globStep_holds X u hK)

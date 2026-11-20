@@ -10,15 +10,13 @@ open Pointwise
 namespace GlobalTheory.LocEmbDec
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ A v ι ι₂ hι hι₂`. Use `haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic`. Use `haveI : Normal K Ω := IsAlgClosure.normal K Ω`. Use `set e : Ω ≃ₐ[K] ι.fieldRange := AlgEquiv.ofInjectiveField ι with he`. Use `haveI : Normal K ι.fieldRange := Normal.of_algEquiv e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hr : (ι₂.comp (e.symm : ι.fieldRange →ₐ[K] Ω)).fieldRange = ι.fieldRange` using `AlgHom.fieldRange_of_normal _`. Establish `hmem : ∀ z, ι₂ z ∈ ι.fieldRange` using `fun z => by`. Rewrite using `[← hr]; exact ⟨e z, by simp⟩`. Set `f : Ω →ₐ[K] ι.fieldRange` to `ι₂.codRestrict ι.fieldRange.toSubalgebra hmem`. Set `σ0 : Ω →ₐ[K] Ω` to `(e.symm : ι.fieldRange →ₐ[K] Ω).comp f`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `σ : Ω ≃ₐ[K] Ω` to `AlgEquiv.ofBijective σ0 (Algebra.IsAlgebraic.algHom_bijective σ0)`. Establish `key : ∀ z, ι (σ z) = ι₂ z` using `fun z => by`. Establish `h1 : ((e (σ z) : ι.fieldRange) : Kbar v) = ι (σ z)` using `rfl`. Rewrite using `[← h1]`. Use `show ((e (e.symm (f z)) : ι.fieldRange) : Kbar v) = ι₂ z`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[AlgEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Use `⟨σ, ?_, fun z => (key z).symm⟩` and prove the remaining obligations. Use `show σ • A = A`. Establish `hA : ∀ x, σ x ∈ A ↔ x ∈ A` using `fun x => by rw [hι, key, ← hι₂]`.
-
-Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, ← hA]`. Use `show σ (σ⁻¹ y) ∈ A ↔ y ∈ A`. Rewrite using `[← AlgEquiv.mul_apply, mul_inv_cancel]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_dec_of_isLocEmb : ∀ (K Ω : Type) [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (ι ι₂ : Ω →ₐ[K] Kbar v), IsLocEmb A v ι → IsLocEmb A v ι₂ → ∃ σ ∈ Dec (F := K) A, ∀ z, ι₂ z = ι (σ z) := by
   intro K Ω _ _ _ _ _ A v ι ι₂ hι hι₂

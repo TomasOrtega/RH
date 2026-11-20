@@ -15,11 +15,11 @@ open scoped TensorProduct Pointwise
 namespace GlobalTheory.Mem.VolFin
 
 /- English proof (translation)
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableConstSMul_subgroup Γ` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup Γ μ` as an intermediate fact. Establish `h1 : (μ.map e).IsHaarMeasure` using `e.isHaarMeasure_map μ`. Establish `h2` using `Measure.isMulLeftInvariant_eq_smul (μ.map e) ((Measure.haar : Measure A).prod (Measure.haar : Measure B))`. Establish `hle : μ 𝓕 ≤ μ (⋃ s ∈ S, e ⁻¹' (Ω s ×ˢ (s • K)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.measure_le_of_isFundamentalDomain_of_ae_covers h𝓕 (.of_forall fun g => ?_)` and prove the remaining obligations. Take `⟨γ, s, hs, h⟩` from `hcov g`. Conclude with `⟨γ, Set.mem_biUnion hs h⟩`. Use `hle.trans_lt ((measure_biUnion_finset_le _ _).trans_lt (ENNReal.sum_lt_top.2 fun s _ => ?_))` and prove the remaining obligations. Use `(Measure.le_map_apply (map_continuous e).measurable.aemeasurable _).trans_lt ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2, Measure.smul_apply, Measure.prod_prod]`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top (ENNReal.mul_lt_top (hΩ s) (hK.smul s).measure_lt_top)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_lt_top_of_cover {G A B : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G]
@@ -51,7 +51,7 @@ section Rat
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (x : E) :
     sigR R σ (inclR (F := F) R x) = inclR (F := F) R (σ x) := by
@@ -71,7 +71,7 @@ noncomputable def ratPt (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] 
   map_mul' a b := Subtype.ext (map_mul (Formalism.UG.bc (inclR (F := F) R)) _ _)
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (R ⊗[F] E) := IsModuleTopology.isTopologicalRing R _`. Conclude with `inferInstanceAs (IsTopologicalGroup (HR R σ J))`.
+A detailed English derivation is pending.
 -/
 theorem topGroup_HA [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
     [IsTopologicalRing R] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
@@ -81,7 +81,7 @@ theorem topGroup_HA [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R
   exact inferInstanceAs (IsTopologicalGroup (HR R σ J))
 
 /- English proof (translation)
-Use `haveI : Countable (Matrix (Fin M) (Fin M) E) := inferInstanceAs (Countable (Fin M → Fin M → E))`. Use `haveI : Countable (GL (Fin M) E) := Units.val_injective.countable`. Use `Function.Surjective.countable (f := fun γ : Formalism.UG.UJ (σ : E →+* E) J => (⟨ratPt R σ J γ, γ.1, γ.2, rfl⟩ : HFinIn R σ J)) ?_` and prove the remaining obligations. Introduce and unpack `⟨g, γ, hγ, h⟩`. Conclude with `⟨⟨γ, hγ⟩, Subtype.ext (Subtype.ext h)⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem countable_HFinIn [Countable E] (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) : Countable (HFinIn R σ J) := by
@@ -95,7 +95,7 @@ theorem countable_HFinIn [Countable E] (R : Type) [CommRing R] [Algebra F R] (σ
 variable [NumberField F]
 
 /- English proof (translation)
-Use extensionality with `i`. Conclude with `(RingHom.map_mulVec (inclR (F := F) (Af F)) m x i).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mulVec_fv {M : ℕ} (m : Matrix (Fin M) (Fin M) E) (x : Fin M → E) :
     (m.map (inclR (F := F) (Af F))).mulVec (GlobalTheory.AdLat.fv F x) = GlobalTheory.AdLat.fv F (m.mulVec x) := by
@@ -103,7 +103,7 @@ theorem mulVec_fv {M : ℕ} (m : Matrix (Fin M) (Fin M) E) (x : Fin M → E) :
   exact (RingHom.map_mulVec (inclR (F := F) (Af F)) m x i).symm
 
 /- English proof (translation)
-Use `GlobalTheory.AdLat.Translate.mulVec_mem_hat (fun x hx => ?_) hz` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, GlobalTheory.AdLat.Translate.mem_pre, mulVec_fv]`. Conclude with `GlobalTheory.AdLat.Translate.fv_mem_hat (h x hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_hat_of_rat {M : ℕ} (m : Matrix (Fin M) (Fin M) E) (Λ : Submodule (𝓞 E) (Fin M → E))
     (h : ∀ x ∈ Λ, m.mulVec x ∈ Λ) {z : Fin M → Af F ⊗[F] E} (hz : z ∈ GlobalTheory.AdLat.hat F (Λ : Set (Fin M → E))) :
@@ -113,13 +113,13 @@ theorem mulVec_mem_hat_of_rat {M : ℕ} (m : Matrix (Fin M) (Fin M) E) (Λ : Sub
   exact GlobalTheory.AdLat.Translate.fv_mem_hat (h x hx)
 
 /- English proof (translation)
-Establish `him : ∀ y, y ∈ latHat F E (L : Set (Fin M → E)) ↔ (s : Matrix (Fin M) (Fin M) (Af F ⊗[F] E)).mulVec y ∈ GlobalTheory.AdLat.hat F (Λ : Set (Fin M → E))`. Introduce `y`. Rewrite using `[← SetLike.mem_coe (p := GlobalTheory.AdLat.hat F (Λ : Set (Fin M → E))), hΛ]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun hy => ⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨u, hu, huy⟩`. Use `congrArg ((s⁻¹ : GL (Fin M) (Af F ⊗[F] E)) : Matrix (Fin M) (Fin M) (Af F ⊗[F] E)).mulVec huy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Matrix.one_mulVec]`. Conclude with `this ▸ hu`. Introduce `y`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[him, him, Matrix.mulVec_mulVec y, ← Units.val_mul, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul, Units.val_mul, ← Matrix.mulVec_mulVec]`. Use `⟨mulVec_mem_hat_of_rat _ Λ fun x hx => (h x).1 hx, fun hz => ?_⟩` and prove the remaining obligations. Use `mulVec_mem_hat_of_rat ((δ⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) Λ (fun x hx => by` as an intermediate fact. Rewrite using `[h, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `hx) hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Express the relevant statement in the definitionally equal form `((Formalism.UG.bc (inclR (F := F) (Af F)) δ⁻¹ : GL (Fin M) (Af F ⊗[F] E)) : Matrix (Fin M) (Fin M) (Af F ⊗[F] E)).mulVec _ ∈ _ at this`. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem stabHat_conj {M : ℕ} (δ : GL (Fin M) E) (L Λ : Submodule (𝓞 E) (Fin M → E))
     (s : GL (Fin M) (Af F ⊗[F] E))
@@ -153,29 +153,21 @@ theorem stabHat_conj {M : ℕ} (δ : GL (Fin M) E) (L Λ : Submodule (𝓞 E) (F
 end Rat
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ μ hμ 𝓕 h𝓕`. Use `haveI := topGroup_HA (AF F) σ J`. Use `haveI := topGroup_HA (Ainf F) σ J`. Use `haveI := topGroup_HA (Af F) σ J`. Use `haveI : BorelSpace (HA (AF F) σ J) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (HA (Ainf F) σ J) := ⟨rfl⟩`. Use `haveI : BorelSpace (HA (Af F) σ J) := ⟨rfl⟩`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_infiniteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_infiniteAdeleRing_of_numberField_field F`. Take `⟨_, _, -⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_HA (Ainf F) σ M J`. Take `⟨_, _, -⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_HA (Af F) σ M J`. Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `Γ : Subgroup (HA (AF F) σ J)` to `HFinIn (AF F) σ J`. Use `haveI : Countable Γ := countable_HFinIn (AF F) σ J`. Take `⟨e, he⟩` from `GlobalTheory.Mem.VolSplit.exists_adelic_split F E σ M J`. Establish `herat : ∀ γ, e (ratPt (AF F) σ J γ) = (ratPt (Ainf F) σ J γ, ratPt (Af F) σ J γ)`. Introduce `γ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Prod.ext (Subtype.ext (Units.ext ((he _).2.trans ?_))) (Subtype.ext (Units.ext ((he _).1.trans ?_)))` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (inclR (F := F) (AF F) _) = inclR (F := F) (Ainf F) _`. Simplify using `[inclR]`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (inclR (F := F) (AF F) _) = inclR (F := F) (Af F) _`. Simplify using `[inclR]`. Set `b` to `Pi.basisFun E (Fin M)`. Set `L : Submodule (𝓞 E) (Fin M → E)` to `Submodule.span (𝓞 E) (Set.range b)`. Establish `hL : L.FG` using `Submodule.fg_span (Set.finite_range b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hLs : Submodule.span E (L : Set (Fin M → E)) = ⊤`. Rewrite using `[eq_top_iff, ← b.span_eq]`. Conclude with `Submodule.span_mono Submodule.subset_span`. Take `⟨K, hK, hKo, hKc⟩` from `GlobalTheory.T.completedLattice_stabilizer_compact_open F E σ M J L hL hLs`. Take `⟨S, hS⟩` from `GlobalTheory.T.finite_classSet_hermitianUnitary_openLevel F E σ hCM M J hJ K hKo`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Use `choose Λ _ hΛ1 hΛ2 hΛ3 using fun s : HA (Af F) σ J => GlobalTheory.AdLat.exists_lattice_latOf F E M L (HA.mat (Af F) σ J s) hL hLs`. Use `choose Ω _ hΩ1 hΩ2 using fun s : HA (Af F) σ J => GlobalTheory.T.finite_covolume_latticeStabiliser_unitaryRealPoints F E σ hCM M J hJ (Λ s) (hΛ1 s) (hΛ2 s) Measure.haar inferInstance`. Use `measure_lt_top_of_cover e Γ μ S K hKc Ω hΩ1 (fun g => ?_) 𝓕 h𝓕` and prove the remaining obligations. Take `⟨⟨γ', γ, hγ, hγγ⟩, s, hs, k, hk, hg⟩` from `hS (e g).2`. Establish `hg2 : (e g).2 = ratPt (Af F) σ J ⟨γ, hγ⟩ * (s * k)`.
-
-Rewrite using `[hg]`. Conclude with `congrArg (· * (s * k)) (Subtype.ext hγγ.symm : (γ' : HA (Af F) σ J) = ratPt (Af F) σ J ⟨γ, hγ⟩)`. Take `⟨δ, hδ, hδΛ, w, hw, hwe⟩` from `hΩ2 s ((ratPt (Ainf F) σ J ⟨γ, hγ⟩)⁻¹ * (e g).1)`. Establish `hw1 : (ratPt (Ainf F) σ J ⟨γ, hγ⟩)⁻¹ * (e g).1 = ratPt (Ainf F) σ J ⟨δ, hδ⟩ * w` using `Subtype.ext hwe`. Establish `hkδ : s⁻¹ * ratPt (Af F) σ J ⟨δ, hδ⟩ * s ∈ K` using `(hK _).2 (stabHat_conj δ L (Λ s) (HA.mat (Af F) σ J s) (hΛ3 s) hδΛ)`.
-
-Set `η : Formalism.UG.UJ (σ : E →+* E) J` to `(⟨δ, hδ⟩ : Formalism.UG.UJ (σ : E →+* E) J)⁻¹ * (⟨γ, hγ⟩ : Formalism.UG.UJ (σ : E →+* E) J)⁻¹`. Use `⟨⟨ratPt (AF F) σ J η, η.1, η.2, rfl⟩, s, hs, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(e (ratPt (AF F) σ J η * g)).1 ∈ _`. Rewrite using `[map_mul, herat, Prod.fst_mul, map_mul, map_inv, map_inv, mul_assoc, hw1, inv_mul_cancel_left]`. Conclude with `hw`.
-
-Express the relevant statement in the definitionally equal form `(e (ratPt (AF F) σ J η * g)).2 ∈ _`. Rewrite using `[map_mul, herat, Prod.snd_mul]`. Simplify using `only`. Rewrite using `[map_mul, map_inv, map_inv, mul_assoc, hg2, inv_mul_cancel_left]`. Use `⟨_, K.mul_mem (K.inv_mem hkδ) hk, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [smul_eq_mul]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finVol : FiniteVolume₂ := by
   intro F E _ _ _ _ _ σ hCM M J hJ μ hμ 𝓕 h𝓕

@@ -4,13 +4,13 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.LinAlg
 
 /- English proof (translation)
-Introduce `K _ n a ha`. Use `set e : Fin (n + 1) → K := Pi.single (Fin.last n) 1 with he_def`. Establish `he : e ≠ 0` using `by simp [e]`. Set `f : (K ∙ e) ≃ₗ[K] (K ∙ a)` to `(LinearEquiv.toSpanNonzeroSingleton K _ e he).symm ≪≫ₗ LinearEquiv.toSpanNonzeroSingleton K _ a ha`. Take `⟨g, hg⟩` from `Submodule.exists_linearEquiv_restrict_eq f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (LinearEquiv.toSpanNonzeroSingleton K _ e he).symm ⟨e, Submodule.mem_span_singleton_self e⟩ = 1`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearEquiv.toSpanNonzeroSingleton_one]`. Establish `hga : g e = a`. Establish `hx` using `hg ⟨e, Submodule.mem_span_singleton_self e⟩`. Rewrite using `[← hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, LinearEquiv.trans_apply, h1, LinearEquiv.toSpanNonzeroSingleton_one]`. Establish `hdet : IsUnit (LinearMap.toMatrix' (g : (Fin (n + 1) → K) →ₗ[K] Fin (n + 1) → K))ᵀ`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_transpose, LinearMap.det_toMatrix']`. Conclude with `LinearEquiv.isUnit_det' g`. Use `⟨hdet.unit, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[IsUnit.unit_spec, Matrix.vecMul_transpose, LinearMap.toMatrix'_mulVec]`. Simplify using `using hga`.
+A detailed English derivation is pending.
 -/
 theorem exists_GL_lastRow_eq : ∀ (K : Type) [Field K] (n : ℕ) (a : Fin (n + 1) → K), a ≠ 0 →
     ∃ m : GL (Fin (n + 1)) K, vecMul (Pi.single (Fin.last n) 1) (m : Matrix (Fin (n + 1)) (Fin (n + 1)) K) = a := by

@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DiscSpec PositivityTheory.Rg.Rs PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.F UpperTheory.V.Z.Tf.GOne UpperTheory.V.Z.Tf.SR Formalism.L2.Host
 
 /- English proof (translation)
-Proceed by induction on `π using Quotient.inductionOn with`. Consider the case `h π`. Conclude with `(GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep UpperTheory.V.Af.formsFiniteGL E m π).mono fun w ⟨B, hB⟩ => ⟨B, hB⟩`.
+Proceed by induction. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem cg_sat_ev {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {m : ℕ} (π : CG E m) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∃ B, π.HasSat w B := by
@@ -18,7 +18,7 @@ private theorem cg_sat_ev {E : Type} [Field E] [NumberField E] [IsTotallyComplex
       fun w ⟨B, hB⟩ => ⟨B, hB⟩
 
 /- English proof (translation)
-Proceed by induction on `B using Quot.inductionOn with`. Consider the case `h l`. Establish `hl : l.length = d` using `by simpa using hB`. Substitute `hl` using the available equality. Conclude with `⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem list_of_multiset {d : ℕ} (B : Multiset ℂˣ) (hB : Multiset.card B = d) :
     ∃ f : Fin d → ℂˣ, Finset.univ.val.map f = B := by
@@ -29,7 +29,7 @@ private theorem list_of_multiset {d : ℕ} (B : Multiset ℂˣ) (hB : Multiset.c
     exact ⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Multiset.map_map, Finset.sum_eq_multiset_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem power_sum_map {d : ℕ} (f : Fin d → ℂˣ) (k : ℕ) :
     ((Finset.univ.val.map f).map fun z : ℂˣ => (z : ℂ) ^ k).sum = ∑ a, (f a : ℂ) ^ k := by
@@ -38,9 +38,9 @@ private theorem power_sum_map {d : ℕ} (f : Fin d → ℂˣ) (k : ℕ) :
 
 open PositivityTheory.RgJS in
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simpa [CG.twist_one] using hB`. Consider the case `succ i ih`. Establish `h` using `satake_twist_holds E m _ χ w _ hχ ih`. Rewrite `h` using `[← CG.twist_mul, Multiset.map_map]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pow_succ]`. Simplify `h` using `[Function.comp_def, pow_succ, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem sat_pow {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {m : ℕ} (π : CG E m) (χ : HChar E)
     (w : HeightOneSpectrum (𝓞 E)) (B : Multiset ℂˣ) (hχ : χ.UnrAt w) (hB : π.HasSat w B) (i : ℕ) :
@@ -55,47 +55,43 @@ private theorem sat_pow {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
 
 open PositivityTheory.RgJS in
 /- English proof (translation)
-Introduce `E _ _ _ hE n hn π hπu J _ a P ha1 hPu hev`. Take `⟨χ, hπt, hχ⟩` from `hTw E hE`. Take `⟨hχu, hχi⟩` from `hχ n π hn hπu`. Take `⟨M, hM⟩ : ∃ M : ℕ, M = 16 * (Fintype.card J + 1) ^ 2` from `⟨_, rfl⟩`. Establish `hM1 : 1 ≤ M` using `by rw [hM]; exact Nat.succ_le_of_lt (by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e00 : π.twist (χ ^ 0) = π` using `by rw [pow_zero, CG.twist_one]`. Establish `hRSU : RSU` using `rankin_selberg_unitary_of_pole norm_exponent_equality satake_twist_holds PositivityTheory.AdelicQuotientData.rsPole`. Establish `hBd : GlobalTheory.Published.JacquetShalikaBound` using `PositivityTheory.JacquetShalikaLocal.jacquetShalikaBound`. Set `u : Fin M ⊕ J → Σ m, CG E m` to `Sum.elim (fun i => ⟨n, π.twist (χ ^ i.val)⟩) fun j => ⟨a j, P j⟩`. Set `X : Type` to `↥(Set.range u)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: Fintype X` using `Fintype.ofFinite X`. Establish `hX : ∀ x : X, 1 ≤ x.1.1 ∧ x.1.2.IsUnitary`. Introduce and unpack `⟨p, ⟨o, rfl⟩⟩`. Consider the cases of `o with`. Consider the case `inl i => exact ⟨hn, hχu i.val⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr j => exact ⟨ha1 j, hPu j⟩`. Set `z : Fin M → X` to `fun i => ⟨u (.inl i), .inl i, rfl⟩`. Set `x₀ : X` to `z ⟨0, hM1⟩`. Set `y : J → X` to `fun j => ⟨u (.inr j), .inr j, rfl⟩`. Use `choose S0 hS0 using fun x y : X => hRSU E x.1.1 y.1.1 x.1.2 y.1.2 (hX x).1 (hX y).1 (hX x).2 (hX y).2`.
+Treat this case separately. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `S1 : Finset (HeightOneSpectrum (𝓞 E))` to `(Filter.eventually_cofinite.1 hev).toFinset`. Set `S2 : Finset (HeightOneSpectrum (𝓞 E))` to `(Filter.eventually_cofinite.1 hπt).toFinset`. Set `S3 : Finset (HeightOneSpectrum (𝓞 E))` to `Finset.univ.biUnion fun x : X => (Filter.eventually_cofinite.1 (cg_sat_ev x.1.2)).toFinset`. Set `S : Finset (HeightOneSpectrum (𝓞 E))` to `S1 ∪ S2 ∪ S3 ∪ Finset.univ.biUnion (fun p : X × X => S0 p.1 p.2)`. Establish `hS1 : ∀ w : Off E S, IsSplitAt w.1 → ∃ b : J → Multiset ℂˣ, (∀ j, (P j).HasSat w.1 (b j)) ∧ π.HasSat w.1 (∑ j, b j)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Assume the negation of the conclusion as `h`. Use `w.2 (Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_union_left _ ?_)))` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `h`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS2 : ∀ w : Off E S, χ.UnrAt w.1 ∧ ‖((χ.val w.1 : ℂˣ) : ℂ)‖ = 1 ∧ (¬ IsSplitAt w.1 → χ.val w.1 = 1)`. Introduce `w`. Assume the negation of the conclusion as `h`. Use `w.2 (Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_union_right _ ?_)))` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h`. Establish `hex : ∀ (x : X) (w : Off E S), ∃ f : Fin x.1.1 → ℂˣ, x.1.2.HasSat w.1 (Finset.univ.val.map f)`. Introduce `x w`. Establish `hw : ∃ B, x.1.2.HasSat w.1 B`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `w.2 (Finset.mem_union_left _ (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨x, Finset.mem_univ _, ?_⟩)))` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `h`. Take `⟨B, hB⟩` from `hw`. Take `⟨f, hf⟩` from `list_of_multiset B hB.card`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨f, hf ▸ hB⟩`. Use `choose α hα using hex`. Set `d : X → ℕ` to `fun x => x.1.1`. Set `A : ∀ x : X, Off E S → Fin (d x) → ℂ` to `fun x w i => (α x w i : ℂ)`. Establish `hsub : ∀ x y : X, S0 x y ⊆ S` using `fun x y z hz => Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨(x, y), Finset.mem_univ _, hz⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hSys : Sys nq X d A`. Use `⟨prime_sum_converges_and_diverges E S, fun x => (hX x).1, fun x w i => ?_, fun x w => ?_, fun x y => ?_⟩` and prove the remaining obligations. Establish `h` using `(hBd E x.1.1 x.1.2 (hX x).2 w.1 _ (hα x w) (α x w i) (Multiset.mem_map_of_mem _ (Finset.mem_univ_val _))).2 show ‖((α x w i : ℂˣ) : ℂ)‖ ≤ Real.sqrt ((Ideal.absNorm w.1.asIdeal : ℕ) : ℝ)`. Rewrite using `[Real.sqrt_eq_rpow]`. Conclude with `h.le`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h` using `determinant_one_condition_holds E x.1.1 x.1.2 w.1 _ (hX x).2 (hα x w)`. Rewrite `h` using `[← Finset.prod_eq_multiset_prod, Units.coe_prod]`. Conclude with `h`. Take `⟨F, σ₀, hF, hFe⟩` from `hS0 x y S (hsub x y) (α x) (α y) (hα x) (hα y)`. Use `⟨F, σ₀, hF, fun σ hσ => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hFe σ hσ]`. Distinguish the cases in `hxy : x = y`. Substitute `hxy` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[if_neg (fun h => hxy (Subtype.ext (by simpa using h))), if_neg hxy]`. Both sides reduce to the same expression. Set `I : Set (Off E S)` to `{w | ¬ IsSplitAt w.1}`. Establish `hx₀ : ∀ w : Off E S, π.HasSat w.1 (Finset.univ.val.map (α x₀ w))` using `fun w => by`. Establish `h : (π.twist (χ ^ 0)).HasSat w.1 (Finset.univ.val.map (α x₀ w))` using `hα x₀ w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e00]`. Then use the resulting hypothesis. Establish `hz : Function.Injective z` using `fun i i' h => by`. Establish `h1 : (⟨n, π.twist (χ ^ i.val)⟩ : Σ m, CG E m) = ⟨n, π.twist (χ ^ i'.val)⟩` using `congrArg Subtype.val h`. Conclude with `Fin.ext (hχi (eq_of_heq (Sigma.mk.inj h1).2))`. Establish `hzp : ∀ (i : Fin M) (w : Off E S) (k : ℕ), ∑ b, A (z i) w b ^ k = ((χ.val w.1 : ℂˣ) : ℂ) ^ (i.val * k) * ∑ a, A x₀ w a ^ k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i w k`. Establish `h1 : (π.twist (χ ^ i.val)).HasSat w.1 (Finset.univ.val.map (α (z i) w))` using `hα (z i) w`. Establish `h2` using `h1.unique (sat_pow π χ w.1 _ (hS2 w).1 (hx₀ w) i.val)`. Establish `h3` using `congrArg (fun M : Multiset ℂˣ => (M.map fun t : ℂˣ => (t : ℂ) ^ k).sum) h2`. Simplify using `only [Multiset.map_map] at h3`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Use `h3.trans ?_` and prove the remaining obligations. Use `congrArg Multiset.sum (Multiset.map_congr rfl fun t _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, Units.val_pow_eq_pow_val, mul_pow, ← pow_mul]`. Conclude with `mul_comm _ _`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨C, hC⟩` from `hSh (Off E S) nq X d A hSys x₀ I M z (fun w => ((χ.val w.1 : ℂˣ) : ℂ)) hM1 hz (fun w => (hS2 w).2.1) (fun w hw => by rw [(hS2 w).2.2 hw, Units.val_one]) hzp`. Establish `hpow : ∀ w, w ∉ I → ∀ k : ℕ, ∑ i, A x₀ w i ^ k = ∑ j, ∑ i, A (y j) w i ^ k`. Introduce `w hwI k`. Establish `hsp : IsSplitAt w.1`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hwI h`. Take `⟨b, hb, hπb⟩` from `hS1 w hsp`. Establish `e1 : ∀ j, b j = Finset.univ.val.map (α (y j) w)` using `fun j => (hb j).unique (hα (y j) w)`. Establish `e0 : ∑ j, b j = Finset.univ.val.map (α x₀ w)` using `hπb.unique (hx₀ w)`. Set `φ : Multiset ℂˣ →+ ℂ` to `Multiset.sumAddMonoidHom.comp (Multiset.mapAddMonoidHom fun z : ℂˣ => (z : ℂ) ^ k)`.
-
-Establish `hφ : ∀ M : Multiset ℂˣ, φ M = (M.map fun z : ℂˣ => (z : ℂ) ^ k).sum` using `fun M => rfl`. Establish `h` using `congrArg φ e0`. Rewrite `h` using `[map_sum]`. Simplify using `only [hφ, e1, power_sum_map] at h`. Conclude with `h.symm`.
-
-Take `⟨j, hj⟩` from `hAS (Off E S) nq X d A hSys x₀ I J y M C hM.ge hC hpow`. Establish `h1 : (⟨a j, P j⟩ : Σ m, CG E m) = ⟨n, π.twist (χ ^ 0)⟩` using `congrArg Subtype.val hj`. Conclude with `⟨j, by rw [h1, e00]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.SR.splitRigid_of (hSh : ShareBd) (hAS : AbsShare) (hTw : AntiTw) : SplitRigid := by
   intro E _ _ _ hE n hn π hπu J _ a P ha1 hPu hev

@@ -15,7 +15,7 @@ noncomputable section
 variable (K : Type*) [Field K] [NumberField K]
 
 /- English proof (translation)
-The claim follows from `(Module.finBasis ℚ K).equivFun.toEquiv.countable_iff.2 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem countable_numberField : Countable K :=
   (Module.finBasis ℚ K).equivFun.toEquiv.countable_iff.2 inferInstance
@@ -53,7 +53,7 @@ def finiteAdeleMeasure : Measure (FiniteAdeleRing (𝓞 K) K) :=
   (NNReal.sqrt ‖discr K‖₊)⁻¹ • addHaarMeasure (integralFiniteAdelesPositiveCompacts K)
 
 /- English proof (translation)
-Rewrite using `[Ne, NNReal.sqrt_eq_zero, nnnorm_eq_zero]`. Conclude with `discr_ne_zero K`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqrt_discr_ne_zero : NNReal.sqrt ‖discr K‖₊ ≠ 0 := by
   rw [Ne, NNReal.sqrt_eq_zero, nnnorm_eq_zero]
@@ -68,7 +68,7 @@ instance : (finiteAdeleMeasure K).Regular := by
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[finiteAdeleMeasure, Measure.smul_apply, ← coe_integralFiniteAdelesPositiveCompacts, addHaarMeasure_self, ENNReal.smul_def, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finiteAdeleMeasure_integralFiniteAdeles :
     finiteAdeleMeasure K (integralFiniteAdeles (𝓞 K) K) = ((NNReal.sqrt ‖discr K‖₊)⁻¹ : ℝ≥0) := by
@@ -99,7 +99,7 @@ instance : (infiniteAdeleMeasure K).IsAddHaarMeasure :=
     (homeomorphMixedSpace K).symm.continuous (homeomorphMixedSpace K).continuous
 
 /- English proof (translation)
-The claim follows from `MeasurePreserving.symm _ (⟨(measurableEquivMixedSpace K).symm.measurable, rfl⟩ : MeasurePreserving (measurableEquivMixedSpace K).symm (selfDualMeasure K) (infiniteAdeleMeasure K))`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_measurableEquivMixedSpace :
     MeasurePreserving (measurableEquivMixedSpace K) (infiniteAdeleMeasure K) (selfDualMeasure K) :=
@@ -113,21 +113,21 @@ instance : (adeleMeasure K).IsAddHaarMeasure :=
   inferInstanceAs ((infiniteAdeleMeasure K).prod (finiteAdeleMeasure K)).IsAddHaarMeasure
 
 /- English proof (translation)
-The claim follows from `Measure.prod_prod A B`.
+A detailed English derivation is pending.
 -/
 theorem adeleMeasure_prod (A : Set (InfiniteAdeleRing K)) (B : Set (FiniteAdeleRing (𝓞 K) K)) :
     adeleMeasure K (A ×ˢ B) = infiniteAdeleMeasure K A * finiteAdeleMeasure K B :=
   Measure.prod_prod A B
 
 /- English proof (translation)
-The claim follows from `((homeomorphMixedSpace K).measurable (ZSpan.fundamentalDomain_measurableSet _)).prod isOpen_integralFiniteAdeles.measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_fundamentalSet : MeasurableSet (fundamentalSet K) :=
   ((homeomorphMixedSpace K).measurable (ZSpan.fundamentalDomain_measurableSet _)).prod
     isOpen_integralFiniteAdeles.measurableSet
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `infiniteAdeleMeasure K ((measurableEquivMixedSpace K) ⁻¹' ZSpan.fundamentalDomain (latticeBasis K)) = _`. Rewrite using `[(measurePreserving_measurableEquivMixedSpace K).measure_preimage_equiv, selfDualMeasure, Measure.smul_apply, volume_fundamentalDomain_latticeBasis, smul_eq_mul, ← mul_assoc, ← mul_pow, ENNReal.mul_inv_cancel two_ne_zero ENNReal.ofNat_ne_top, one_pow, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem infiniteAdeleMeasure_fundamentalSetInfinite :
     infiniteAdeleMeasure K (fundamentalSetInfinite K) = (NNReal.sqrt ‖discr K‖₊ : ℝ≥0∞) := by
@@ -138,7 +138,7 @@ theorem infiniteAdeleMeasure_fundamentalSetInfinite :
     ENNReal.mul_inv_cancel two_ne_zero ENNReal.ofNat_ne_top, one_pow, one_mul]
 
 /- English proof (translation)
-Rewrite using `[fundamentalSet, adeleMeasure_prod, infiniteAdeleMeasure_fundamentalSetInfinite, finiteAdeleMeasure_integralFiniteAdeles, ← ENNReal.coe_mul, mul_inv_cancel₀ (sqrt_discr_ne_zero K), ENNReal.coe_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adeleMeasure_fundamentalSet : adeleMeasure K (fundamentalSet K) = 1 := by
   rw [fundamentalSet, adeleMeasure_prod, infiniteAdeleMeasure_fundamentalSetInfinite,
@@ -146,11 +146,11 @@ theorem adeleMeasure_fundamentalSet : adeleMeasure K (fundamentalSet K) = 1 := b
     mul_inv_cancel₀ (sqrt_discr_ne_zero K), ENNReal.coe_one]
 
 /- English proof (translation)
-Use `IsAddFundamentalDomain.mk' (measurableSet_fundamentalSet K).nullMeasurableSet fun x ↦ ?_` and prove the remaining obligations. Take `⟨k, hk, huniq⟩` from `existsUnique_sub_mem_fundamentalSet K x`. Use `⟨⟨algebraMap K 𝔸[K] (-k), -k, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap K 𝔸[K] (-k) + x ∈ fundamentalSet K`. Rewrite using `[map_neg, neg_add_eq_sub]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `⟨_, k', rfl⟩ h`. Express the relevant statement in the definitionally equal form `algebraMap K 𝔸[K] k' + x ∈ fundamentalSet K at h`. Establish `hk' : -k' = k` using `huniq (-k') (by`. Express the relevant statement in the definitionally equal form `x - algebraMap K 𝔸[K] (-k') ∈ fundamentalSet K`. Rewrite using `[map_neg, sub_neg_eq_add, add_comm])` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap K 𝔸[K] k' = algebraMap K 𝔸[K] (-k)`. Rewrite using `[← hk', neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isAddFundamentalDomain_fundamentalSet :
     IsAddFundamentalDomain (AdeleRing.principalSubgroup (𝓞 K) K) (fundamentalSet K)

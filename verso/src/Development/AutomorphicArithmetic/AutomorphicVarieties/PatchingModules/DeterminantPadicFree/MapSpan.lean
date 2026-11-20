@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j hij`. Conclude with `(Submodule.mem_bot A).1 ((h i j).2 hij)`. Introduce `h i j`. Conclude with `⟨fun _ => Submodule.mem_top, fun hij => by rw [h i j hij]; exact Submodule.zero_mem _⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem mem_ev_iff_apply_eq_zero_off_diagonal_blocks {A R : Type} [CommRing A] [CommRing R] [Algebra A R] (n a : ℕ)
     (Z : Matrix (Fin n) (Fin n) R) :
@@ -15,51 +15,45 @@ private theorem mem_ev_iff_apply_eq_zero_off_diagonal_blocks {A R : Type} [CommR
     exact ⟨fun _ => Submodule.mem_top, fun hij => by rw [h i j hij]; exact Submodule.zero_mem _⟩
 
 /- English proof (translation)
-Introduce `l _ F n x hl hg`. Take `⟨g₀, hg₀⟩` from `hg`. Establish `hev : ∀ g : F.G₀, (mat x.ρ g).map (algebraMap x.A (FractionRing x.A)) ∈ Ev (FractionRing x.A) (FractionRing x.A) n x.a`. Introduce `g`. Rewrite using `[mem_ev_iff_apply_eq_zero_off_diagonal_blocks]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j hij`. Establish `h0` using `(mem_ev_iff_apply_eq_zero_off_diagonal_blocks _ _ _).1 (x.blk g) i j hij`. Rewrite using `[Matrix.map_apply, h0, map_zero]`. Establish `hmap : ∀ M ∈ Submodule.span x.A ((mat x.ρ) '' (F.G' : Set F.G₀)), M.map (algebraMap x.A (FractionRing x.A)) ∈ Submodule.span (FractionRing x.A) ((fun g : F.G₀ => (mat x.ρ g).map (algebraMap x.A (FractionRing x.A))) '' (F.G' : Set F.G₀))`. Introduce `M hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem M hM`. Take `⟨g, hg, rfl⟩` from `hM`. Conclude with `Submodule.subset_span ⟨g, hg, rfl⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact.
 
-Establish `h0 : (0 : Matrix (Fin n) (Fin n) x.A).map (algebraMap x.A (FractionRing x.A)) = 0`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add M N _ _ hM hN`. Establish `h0 : (M + N).map (algebraMap x.A (FractionRing x.A)) = M.map (algebraMap x.A (FractionRing x.A)) + N.map (algebraMap x.A (FractionRing x.A))`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[h0]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem _ hM hN`. Consider the case `smul c M _ hM`. Establish `h0 : (c • M).map (algebraMap x.A (FractionRing x.A)) = algebraMap x.A (FractionRing x.A) c • M.map (algebraMap x.A (FractionRing x.A))`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0]`. Conclude with `Submodule.smul_mem _ _ hM`. Establish `hsingle : ∀ i j : Fin n, ((i : ℕ) < x.a ↔ (j : ℕ) < x.a) → Matrix.single i j (1 : FractionRing x.A) ∈ Submodule.span (FractionRing x.A) ((fun g : F.G₀ => (mat x.ρ g).map (algebraMap x.A (FractionRing x.A))) '' (F.G' : Set F.G₀))`. Introduce `i j hij`. Establish `hZ : Matrix.single i j (1 : x.A) ∈ Ev x.A x.A n x.a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[mem_ev_iff_apply_eq_zero_off_diagonal_blocks]`. Introduce `k m hkm`. Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hkm hij`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨s, hs⟩` from `x.span _ hZ`. Establish `key` using `hmap _ hs`. Establish `h1 : ((PowerSeries.X : x.A) ^ s • Matrix.single i j (1 : x.A)).map (algebraMap x.A (FractionRing x.A)) = algebraMap x.A (FractionRing x.A) ((PowerSeries.X : x.A) ^ s) • Matrix.single i j (1 : FractionRing x.A)`. Use extensionality with `k m`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite `key` using `[h1]`. Establish `hne : algebraMap x.A (FractionRing x.A) ((PowerSeries.X : x.A) ^ s) ≠ 0`. Introduce `h`. Apply `pow_ne_zero s (PowerSeries.X_ne_zero (R := x.K))` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Apply `IsFractionRing.injective x.A (FractionRing x.A)` to reduce the goal to its premises. Rewrite using `[h, map_zero]`. Establish `h2` using `Submodule.smul_mem _ (algebraMap x.A (FractionRing x.A) ((PowerSeries.X : x.A) ^ s))⁻¹ key`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hne, one_smul]`. Then use the resulting hypothesis. Establish `hspan : Submodule.span (FractionRing x.A) ((fun g : F.G₀ => (mat x.ρ g).map (algebraMap x.A (FractionRing x.A))) '' (F.G' : Set F.G₀)) = Ev (FractionRing x.A) (FractionRing x.A) n x.a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, -, rfl⟩`. Conclude with `hev g`. Introduce `Z hZ`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.matrix_eq_sum_single Z]`. Use `Submodule.sum_mem _ (fun i _ => Submodule.sum_mem _ (fun j _ => ?_))` and prove the remaining obligations. Distinguish the cases in `hij : ((i : ℕ) < x.a ↔ (j : ℕ) < x.a)`. Establish `h3 : Matrix.single i j (Z i j) = Z i j • Matrix.single i j (1 : FractionRing x.A)`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `Submodule.smul_mem _ _ (hsingle i j hij)`. Rewrite using `[(mem_ev_iff_apply_eq_zero_off_diagonal_blocks _ _ _).1 hZ i j hij, Matrix.single_zero]`. Conclude with `Submodule.zero_mem _`. Establish `h2 : IsUnit (2 : ℤ_[l])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Establish `hm : (2 : ℤ_[l]) ∈ IsLocalRing.maximalIdeal ℤ_[l]` using `(IsLocalRing.mem_maximalIdeal _).2 h`. Rewrite `hm` using `[← PadicInt.ker_toZMod, RingHom.mem_ker]`. Establish `h4 : ((2 : ℕ) : ZMod l) = 0`. Rewrite using `[Nat.cast_ofNat, ← hm, map_ofNat]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h5 : l ∣ 2` using `(ZMod.natCast_eq_zero_iff 2 l).1 h4`. Conclude with `hl ((Nat.prime_dvd_prime_iff_eq (Fact.out) Nat.prime_two).1 h5)`. Establish `hc : ∀ g : F.G₀, F.ε ((F.conj g : F.G₀) : F.Γ) = F.ε (g : F.Γ)`. Introduce `g`. Use `show F.ε (F.c * (g : F.Γ) * F.c⁻¹) = F.ε (g : F.Γ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, map_mul, map_inv, mul_comm (F.ε F.c), mul_inv_cancel_right]`. Use `⟨DetFr.mk ?_ x.a x.a_pos x.a_le F.G' ?_ (F.eps x.A (FractionRing x.A)) ?_ g₀ ?_ ((algebraMap x.A (FractionRing x.A)).mapMatrix.toMonoidHom.comp (mat x.ρ)) hspan hev F.conj ?_ ?_ (fun g => Units.map (algebraMap x.A (FractionRing x.A)).toMonoidHom ((F.eps ℤ_[l] x.A g) ^ (1 - (n : ℤ …` and prove the remaining obligations. Establish `h6` using `(h2.map ((algebraMap x.A (FractionRing x.A)).comp (algebraMap ℤ_[l] x.A))).ne_zero`. Rewrite `h6` using `[RingHom.comp_apply, map_ofNat, map_ofNat]`. Conclude with `h6`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `g h`. Rewrite using `[GFrame.G', MonoidHom.mem_ker, map_mul, map_mul, map_mul, map_inv, map_inv, mul_inv_eq_one, mul_inv_eq_iff_eq_mul, mul_comm]`. Introduce `g hg`. Rewrite `hg` using `[GFrame.G', MonoidHom.mem_ker]`. Use `show Units.map _ ((F.ε.comp F.η.ker.subtype) g) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hg, map_one]`. Introduce `h`. Apply `hg₀` to reduce the goal to its premises. Establish `h7` using `congrArg Units.val h`. Express the relevant statement in the definitionally equal form `algebraMap x.A (FractionRing x.A) (algebraMap ℤ_[l] x.A ((F.ε g₀ : ℤ_[l]ˣ) : ℤ_[l])) = 1 at h7`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h8 : ((F.ε g₀ : ℤ_[l]ˣ) : ℤ_[l]) - 1 ∈ RingHom.ker ((algebraMap x.A (FractionRing x.A)).comp (algebraMap ℤ_[l] x.A))`. Rewrite using `[RingHom.mem_ker, map_sub, RingHom.comp_apply, h7, map_one, sub_self]`. Establish `h9` using `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top _) h8`. Rewrite `h9` using `[← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Conclude with `h9`.
-
-Introduce `g`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show F.c * (F.c * (g : F.Γ) * F.c⁻¹) * F.c⁻¹ = (g : F.Γ)`. Combine the equalities or inequalities in the displayed calculation. Introduce `g show Units.map _ ((F.ε.comp F.η.ker.subtype) (F.conj g)) = Units.map _ ((F.ε.comp F.η.ker.subtype) g)`.
-
-Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply]`. Conclude with `congrArg _ (hc g)`. Introduce `g show ((mat x.ρ g).map (algebraMap x.A (FractionRing x.A)))ᵀ * (mat x.ρ (F.conj g)).map (algebraMap x.A (FractionRing x.A)) = (algebraMap x.A (FractionRing x.A) ((F.eps ℤ_[l] x.A g ^ (1 - (n : ℤ)) : x.Aˣ) : x.A)) • 1`. Establish `h0` using `x.form g`. Rewrite `h0` using `[Units.val_one, Matrix.mul_one]`.
-
-Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, h0]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.detFr :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n), l ≠ 2 → (∃ g : F.G₀, PadicInt.toZMod ((F.ε g : ℤ_[l]ˣ) : ℤ_[l]) ≠ 1) → ∃ D : DetFr (FractionRing x.A) F.G₀ n, D.a = x.a ∧ D.G' = F.G' ∧ (∀ g, D.r g = x.ρX (FractionRing x.A) g) ∧ D.σ = F.conj ∧ ∀ g : F.G₀, D.χF g = algebraMap x.A (FractionRing x.A) (algebraMap ℤ_[l] x.A (F.ε g : ℤ_[l])) := by

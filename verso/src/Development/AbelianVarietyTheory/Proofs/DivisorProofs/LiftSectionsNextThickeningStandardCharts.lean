@@ -18,7 +18,7 @@ namespace GlobalTheory.FormalAlg.LiftCech
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h'` using `Ideal.mem_map_of_mem (rs X h) hx`. Rewrite `h'` using `[Ideal.map_map]`. Establish `e : (rs X h).comp (cst f U) = cst f V` using `RingHom.ext fun r => rs_cst f h r`. Rewrite `h'` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem map_cst_rs {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of R)) (J : Ideal R) {U V : X.Opens}
     (h : V ≤ U) {x : Γ(X, U)} (hx : x ∈ J.map (cst f U)) : rs X h x ∈ J.map (cst f V) := by
@@ -28,14 +28,14 @@ theorem map_cst_rs {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of R)) (J : Ide
   rwa [e] at h'
 
 /- English proof (translation)
-Simplify using `only [gs_eq f y U h, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_sub' {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a b : Γ(X, U)) :
     gs f y U (a - b) = gs f y U a - gs f y U b := by
   simp only [gs_eq f y U h, map_sub]
 
 /- English proof (translation)
-Unfold `gs`. Apply the tactic sequence `split <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gs_zero' {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y U 0 = 0 := by
   unfold gs
@@ -46,29 +46,27 @@ end GlobalTheory.FormalAlg.LiftCech
 open GlobalTheory.FormalAlg.LiftCech in
 
 /- English proof (translation)
-Introduce `R _ I Y β hβ n C e k hH g hg hgρ σ hσ`. Establish `hbp` using `(GlobalTheory.T.isPullback_thick_tower_squares R I Y β hβ).1 e`. Establish `hk` using `GlobalTheory.T.baseChange_quotient_closedImmersion_idealSheaf R (I ^ (e + 1)) _ _ _ (β e) (Y e).hom hbp`. Establish `hbas` using `(GlobalTheory.T.thickeningTower_liftedRatios_projective_relations R I Y β hβ n C).1 (e + 1)`. Establish `hz` using `(GlobalTheory.T.thickeningTower_liftedRatios_generate_surjective R I Y β hβ n C).1 (e + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ i j, IsAffineOpen (C.D (e + 1) i ⊓ C.D (e + 1) j)` using `fun i j => hbas i j ▸ (C.aff (e + 1) i).basicOpen _`. Establish `hker : ∀ (V : (Y (e + 1)).left.Opens), IsAffineOpen V → ∀ x, ((β e).app V).hom x = 0 ↔ x ∈ towerIdeal Y (e + 1) (I ^ (e + 1)) V` using `fun V hV x => by`. Rewrite using `[← RingHom.mem_ker, (hk.2.2 V hV).2]`. Both sides reduce to the same expression. Establish `hmem : ∀ (J : Ideal R) {U V : (Y (e + 1)).left.Opens} (h : V ≤ U) {x : Γ((Y (e + 1)).left, U)}, x ∈ towerIdeal Y (e + 1) J U → rs (Y (e + 1)).left h x ∈ towerIdeal Y (e + 1) J V` using `fun J _ _ h _ hx => map_cst_rs _ J h hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hmul : ∀ (V : (Y (e + 1)).left.Opens) (x y : Γ((Y (e + 1)).left, V)), x ∈ towerIdeal Y (e + 1) I V → y ∈ towerIdeal Y (e + 1) (I ^ (e + 1)) V → x * y = 0`. Introduce `V x y hx hy`. Establish `h` using `Ideal.mul_mem_mul hx hy`. Unfold `towerIdeal at h`. Rewrite `h` using `[← Ideal.map_mul, ← pow_succ']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `hz V`. Unfold `towerIdeal at h0`. Rewrite `h` using `[h0]`. Conclude with `(Submodule.mem_bot _).1 h`. Use `choose τ hτ using fun i => (hk.2.2 _ (C.aff (e + 1) i)).1 (σ i)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ (x : (Y e).left) i, β e x ∈ C.D (e + 1) i → gs (β e) x (C.D (e + 1) i) (τ i) = gs (𝟙 _) x _ (σ i)` using `fun x i hxi => by`. Rewrite using `[← hτ i, gs_pull (𝟙 _) (β e) x _ hxi, Category.id_comp]`. Set `c : ∀ i j, Γ((Y (e + 1)).left, C.D (e + 1) i ⊓ C.D (e + 1) j)` to `fun i j => rs _ (inf_le_left : C.D (e + 1) i ⊓ C.D (e + 1) j ≤ C.D (e + 1) i) (τ i) - (g i j).val * rs _ (inf_le_right : C.D (e + 1) i ⊓ C.D (e + 1) j ≤ C.D (e + 1) j) (τ j)`. Establish `hcdef : ∀ i j, c i j = rs _ (inf_le_left : C.D (e + 1) i ⊓ C.D (e + 1) j ≤ C.D (e + 1) i) (τ i) - (g i j).val * rs _ (inf_le_right : C.D (e + 1) i ⊓ C.D (e + 1) j ≤ C.D (e + 1) j) (τ j)` using `fun _ _ => rfl`. Establish `hc : ∀ i j, c i j ∈ towerIdeal Y (e + 1) (I ^ (e + 1)) _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[← hker _ (hA i j)]`. Apply `fn_ext` to reduce the goal to its premises. Introduce `x hx`. Establish `hxi : β e x ∈ C.D (e + 1) i` using `hx.1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxj : β e x ∈ C.D (e + 1) j` using `hx.2`. Rewrite using `[gs_pull (𝟙 _) (β e) x _ hx, Category.id_comp, gs_zero', hcdef, gs_sub' _ _ _ hx, gs_mul _ _ _ hx, gs_res _ _ _ hx, gs_res _ _ _ hx, key x i hxi, key x j hxj, hσ x i j hxi hxj, sub_self]`. Establish `hcoc : ∀ i j l, rs (Y (e + 1)).left (inf_le_left : C.D (e + 1) i ⊓ C.D (e + 1) j ⊓ C.D (e + 1) l ≤ C.D (e + 1) i ⊓ C.D (e + 1) j) (c i j) + rs (Y (e + 1)).left (inf_le_left.trans inf_le_left : C.D (e + 1) i ⊓ C.D (e + 1) j ⊓ C.D (e + 1) l ≤ C.D (e + 1) i) (C.ρ (e + 1) i j) ^ k * …`. Introduce `i j l`. Establish `h1 : rs (Y (e + 1)).left (inf_le_left : C.D (e + 1) i ⊓ C.D (e + 1) j ⊓ C.D (e + 1) l ≤ C.D (e + 1) i ⊓ C.D (e + 1) j) (g i j).val * rs (Y (e + 1)).left (le_inf (inf_le_left.trans inf_le_right) inf_le_right : C.D (e + 1) i ⊓ C.D (e + 1) j ⊓ C.D (e + 1) l ≤ C.D (e + 1) j ⊓ C.D (e …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_eq_zero, ← sub_mul]`. Use `hmul _ _ _ ?_ (hmem _ _ (hc j l))` and prove the remaining obligations. Establish `h` using `hmem I (inf_le_left : C.D (e + 1) i ⊓ C.D (e + 1) j ⊓ C.D (e + 1) l ≤ C.D (e + 1) i ⊓ C.D (e + 1) j) (hgρ i j)`. Rewrite `h` using `[map_sub, map_pow, rs_rs]`. Then use the resulting hypothesis. Establish `hco` using `congrArg Units.val (hg.cocycle i j l)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [res, Units.val_mul, Units.coe_map, MonoidHom.coe_coe] at hco`. Rewrite using `[← h1, hcdef, hcdef, hcdef]`. Simplify using `only [map_sub, map_mul, rs_rs]`. Take the linear combination `(-(rs (Y (e + 1)).left (inf_le_right : C.D (e + 1) i ⊓ C.D (e + 1) j ⊓ C.D (e + 1) l ≤ C.D (e + 1) l) (τ l))) * hco`. Take `⟨a, ha, hca⟩` from `hH c hc hcoc`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨fun i => τ i - a i, fun i j => ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Establish `h2 : (g i j).val * rs (Y (e + 1)).left (inf_le_right : C.D (e + 1) i ⊓ C.D (e + 1) j ≤ C.D (e + 1) j) (a j) = rs (Y (e + 1)).left (inf_le_left : C.D (e + 1) i ⊓ C.D (e + 1) j ≤ C.D (e + 1) i) (C.ρ (e + 1) i j) ^ k * rs (Y (e + 1)).left (inf_le_right : C.D (e + 1) i ⊓ C.D (e + 1) …`. Rewrite using `[← sub_eq_zero, ← sub_mul]`. Conclude with `hmul _ _ _ (hgρ i j) (hmem _ _ (ha j))`. Establish `h3` using `hca i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[hcdef]`. Express the relevant statement in the definitionally equal form `rs (Y (e + 1)).left (inf_le_left : C.D (e + 1) i ⊓ C.D (e + 1) j ≤ C.D (e + 1) i) (τ i - a i) = (g i j).val * rs (Y (e + 1)).left (inf_le_right : C.D (e + 1) i ⊓ C.D (e + 1) j ≤ C.D (e + 1) j) (τ j - a j)`. Rewrite using `[map_sub, map_sub]`. Take the linear combination `h3 + h2`. Express the relevant statement in the definitionally equal form `((β e).app (C.D (e + 1) i)).hom (τ i - a i) = σ i`.
-
-Rewrite using `[map_sub, hτ i, (hker _ (C.aff (e + 1) i) (a i)).2 (ha i), sub_zero]`.
+Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FormalAlg.lift_cech : ∀ (R : Type) [CommRing R] (I : Ideal R), ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → ∀ (n : ℕ) (C : Charts I Y β n), ∀ (e k : ℕ), (∀ c : ∀ i j, Γ((Y (e + 1)).left, C.D (e + 1) i ⊓ C.D (e + 1) j), (∀ i j, c i j ∈ towerIdeal Y (e + 1) (I ^ (e + 1)) _) → (∀ i j l, rs (Y (e + 1)).left (inf_le_left : C.D (e + 1) i ⊓ C.D (e + 1) j ⊓ C.D (e + 1) l ≤ C.D (e + 1) i ⊓ C.D (e + 1) j) (c i j) + rs (Y (e + 1)).left (inf_le_left.trans inf_le_left : C.D (e + 1) i ⊓ C.D (e + 1) j ⊓ C.D (e + 1) l ≤ C.D (e + 1) i) (C.ρ (e + 1) i j) ^ k * rs (Y (e + 1)).left (le_inf (inf_le_left.trans inf_le_right) inf_le_right : C.D (e + 1) i ⊓ C.D (e + 1) j ⊓ C.D (e + 1) l ≤ C.D (e + 1) j ⊓ C.D (e + 1) l) (c j l) = rs (Y (e + 1)).left (le_inf (inf_le_left.trans inf_le_left) inf_le_right : C.D (e + 1) i ⊓ C.D (e + 1) j ⊓ C.D (e + 1) l ≤ C.D (e + 1) i ⊓ C.D (e + 1) l) (c i l)) → ∃ a : ∀ i, Γ((Y (e + 1)).left, C.D (e + 1) i), (∀ i, a i ∈ towerIdeal Y (e + 1) (I ^ (e + 1)) _) ∧ ∀ i j, c i j = rs (Y (e + 1)).left (inf_le_left : C.D (e + 1) i ⊓ C.D (e + 1) j ≤ C.D (e + 1) i) (a i) - rs (Y (e + 1)).left (inf_le_left : C.D (e + 1) i ⊓ C.D (e + 1) j ≤ C.D (e + 1) i) (C.ρ (e + 1) i j) ^ k * rs (Y (e + 1)).left (inf_le_right : C.D (e + 1) i ⊓ C.D (e + 1) j ≤ C.D (e + 1) j) (a j)) → ∀ g : ∀ i j, Γ((Y (e + 1)).left, C.D (e + 1) i ⊓ C.D (e + 1) j)ˣ, (⟨Fin (n + 1), C.D (e + 1), g⟩ : LB (Y (e + 1)).left).IsLB → (∀ i j, (g i j).val - rs (Y (e + 1)).left (inf_le_left : C.D (e + 1) i ⊓ C.D (e + 1) j ≤ C.D (e + 1) i) (C.ρ (e + 1) i j) ^ k ∈ towerIdeal Y (e + 1) I _) → ∀ σ : ∀ i, Γ((Y e).left, β e ⁻¹ᵁ C.D (e + 1) i), (∀ z i j, β e z ∈ C.D (e + 1) i → β e z ∈ C.D (e + 1) j → gs (𝟙 _) z _ (σ i) = gs (β e) z _ (g i j).val * gs (𝟙 _) z _ (σ j)) → ∃ σ' : LB.Sec (⟨Fin (n + 1), C.D (e + 1), g⟩ : LB (Y (e + 1)).left), ∀ i, ((β e).app (C.D (e + 1) i)).hom (σ'.f i) = σ i := by
   intro R _ I Y β hβ n C e k hH g hg hgρ σ hσ

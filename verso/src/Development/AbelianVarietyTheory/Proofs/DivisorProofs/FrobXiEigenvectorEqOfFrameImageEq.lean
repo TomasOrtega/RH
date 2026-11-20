@@ -11,17 +11,17 @@ noncomputable section
 namespace GlobalTheory.WinLift
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F x y hx hy hxy`. Establish `hsub : WittVector.frobenius (x - y) = WittVector.frobenius (xi ε) * (x - y)`. Rewrite using `[map_sub, hx, hy, mul_sub]`. Take `⟨c, hc, -⟩` from `GlobalTheory.PDivLat.existsUnique_padic_of_eigen p C v O hv ε hε (x - y) hsub`. Establish `h0 : F.a (x - y) = 0` using `by rw [map_sub, hxy, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h0` using `[← hc, map_mul, ← F.p_τ]`. Establish `h1 : F.τ * F.a (ofPadic p O c) = 0`. Apply `tf F` to reduce the goal to its premises. Rewrite using `[← h0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : Sandwich.mu ε ∣ ofPadic p O c` using `(F.τ_mul _).1 h1`. Establish `h3 : WittVector.fontaineTheta O p (ofPadic p O c) = 0`. Take `⟨w, hw⟩` from `h2`. Rewrite using `[hw, map_mul, theta_mu hv hε, zero_mul]`. Establish `hc0 : c = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hs` using `PadicInt.unitCoeff_spec hne`. Rewrite `h3` using `[hs, map_mul, map_pow, map_natCast, map_mul, map_pow, map_natCast]`. Establish `hp : (p : O) ≠ 0`. Introduce `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (algebraMap O C) h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) this`. Establish `hu : IsUnit (WittVector.fontaineTheta O p (ofPadic p O (PadicInt.unitCoeff hne : ℤ_[p])))` using `((PadicInt.unitCoeff hne).isUnit.map (ofPadic p O)).map _`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu.ne_zero h`. Conclude with `hp (pow_eq_zero_iff'.1 h).1`. Rewrite using `[← sub_eq_zero, ← hc, hc0, map_zero, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem eigen_eq_of_frame_eq : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ x y : Ainf p O, WittVector.frobenius x = WittVector.frobenius (xi ε) * x → WittVector.frobenius y = WittVector.frobenius (xi ε) * y → F.a x = F.a y → x = y := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F x y hx hy hxy

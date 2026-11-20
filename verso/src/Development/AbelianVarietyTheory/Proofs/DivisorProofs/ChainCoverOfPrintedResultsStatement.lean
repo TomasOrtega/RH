@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChainCoverOfHyp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTransport
 open GlobalTheory.ChainPts
 /- English proof (citation)
-Apply `GlobalTheory.ChainPts.Cover.chainCoverSt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChainCoverOfHyp.lean&line=240#L240)
 -/

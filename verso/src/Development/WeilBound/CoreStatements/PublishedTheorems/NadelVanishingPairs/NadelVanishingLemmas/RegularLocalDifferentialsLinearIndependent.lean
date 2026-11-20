@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularLocalDifferentialsBasis
 open scoped TensorProduct Polynomial
 /- English proof (citation)
-Apply `GlobalTheory.linearIndependent_tmul_D_of_regular_system` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRegularLocalDifferentialsBasis.lean&line=10#L10)
 -/

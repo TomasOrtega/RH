@@ -38,7 +38,7 @@ theorem tmax_eq {ι : Type} [Fintype ι] {a : ℕ} (b : ℕ) (ν : ι → DomWei
     PaddedWittNormSquare.tmax b ν Om S = PaddedLastEntry.tmax b ν S Om := rfl
 
 /- English proof (translation)
-Unfold `PaddedWittNormSquare.OpNormSqLe PaddedLastEntry.OpNormSqLe`. Simplify using `only [normSq_eq]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem opNormSqLe_iff {ι : Type} [Fintype ι] {a b : ℕ} (lam : ι → DomWeight a) (lam' : ι → DomWeight b)
     (T : VV ℂ lam →ₗ[ℂ] VV ℂ lam') (t : ℝ) :
@@ -47,9 +47,9 @@ theorem opNormSqLe_iff {ι : Type} [Fintype ι] {a b : ℕ} (lam : ι → DomWei
   simp only [normSq_eq]
 
 /- English proof (translation)
-Unfold `PaddedWittNormSquare.IsStepWeight PaddedLastEntry.StepWeights`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s', s, hν, hpos, hpad⟩`. Conclude with `⟨hpos, ⟨s', hν⟩, ⟨s, fun j => (hpad j).trans (padZero_eq b ν j)⟩⟩`. Introduce and unpack `⟨hpos, ⟨s', hν⟩, ⟨s, hpad⟩⟩`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨s', s, hν, hpos, fun j => (hpad j).trans (padZero_eq b ν j).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem stepWeights_iff {a b : ℕ} (lam ν : DomWeight a) (lam' : DomWeight b) :
     (∃ s' s : ℤ, PaddedWittNormSquare.IsStepWeight lam ν lam' s' s) ↔ PaddedLastEntry.StepWeights lam ν lam' := by
@@ -61,7 +61,7 @@ theorem stepWeights_iff {a b : ℕ} (lam ν : DomWeight a) (lam' : DomWeight b) 
     exact ⟨s', s, hν, hpos, fun j => (hpad j).trans (padZero_eq b ν j).symm⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s', s, h⟩ τ`. Conclude with `(stepWeights_iff (lam τ) (ν τ) (lam' τ)).1 ⟨s' τ, s τ, h τ⟩`. Introduce `h choose s' s hs using fun τ => (stepWeights_iff (lam τ) (ν τ) (lam' τ)).2 (h τ)`. Conclude with `⟨s', s, hs⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepWeights_family_iff {ι : Type} {a b : ℕ} (lam ν : ι → DomWeight a) (lam' : ι → DomWeight b) :
     (∃ s' s : ι → ℤ, ∀ τ, PaddedWittNormSquare.IsStepWeight (lam τ) (ν τ) (lam' τ) (s' τ) (s τ)) ↔
@@ -74,9 +74,9 @@ theorem stepWeights_family_iff {ι : Type} {a b : ℕ} (lam ν : ι → DomWeigh
     exact ⟨s', s, hs⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h heq τ`. Break down `h τ with hlt | h0` into its components or cases. Conclude with `absurd heq (ne_of_lt hlt)`. Conclude with `(lastEntry_eq (ν τ)).symm.trans h0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `h τ`. Break down `lt_or_eq_of_le hab with hlt | heq` into its components or cases. Conclude with `Or.inl hlt`. Conclude with `Or.inr ((lastEntry_eq (ν τ)).trans (h heq τ))`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem guard_iff {ι : Type} {a b : ℕ} (hab : a ≤ b) (ν : ι → DomWeight a) :
     (∀ τ, a < b ∨ PaddedWittNormSquare.lastEntry (ν τ) = 0) ↔ (a = b → ∀ τ, PaddedLastEntry.lastEntry (ν τ) = 0) := by
@@ -91,7 +91,7 @@ theorem guard_iff {ι : Type} {a b : ℕ} (hab : a ≤ b) (ν : ι → DomWeight
     · exact Or.inr ((lastEntry_eq (ν τ)).trans (h heq τ))
 
 /- English proof (translation)
-Simplify using `only [unitSq_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem growth_iff {ι : Type} [Fintype ι] {a b : ℕ} (G : VCx ι a b → ℂ) (S : ℝ) (r : ι → ℝ) :
     (∀ z, ‖G z‖ ≤ S * Real.exp (PaddedWittNormSquare.unitNormSq r z / 2)) ↔
@@ -99,7 +99,7 @@ theorem growth_iff {ι : Type} [Fintype ι] {a b : ℕ} (G : VCx ι a b → ℂ)
   simp only [unitSq_eq]
 
 /- English proof (translation)
-Simplify using `only [opNormSqLe_iff, tmax_eq, lastEntry_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conclusion_iff {ι : Type} [Fintype ι] {a b : ℕ} (lam ν : ι → DomWeight a) (lam' : ι → DomWeight b)
     (G : VCx ι a b → ℂ) (S : ℝ) (Om : ι → ℝ) (cD : ι → ℂ) :
@@ -108,9 +108,9 @@ theorem conclusion_iff {ι : Type} [Fintype ι] {a b : ℕ} (lam ν : ι → Dom
   simp only [opNormSqLe_iff, tmax_eq, lastEntry_eq]
 
 /- English proof (translation)
-Unfold `PaddedWittNormSquare.BlockBound PaddedLastEntry.BlockBound`. Prove the components needed by the constructor for the conclusion. Introduce `h ι _ a b hab lam ν lam' hstep hguard r Om cD hr hOm hc G S hG hgrowth`. Take `⟨s', s, hs⟩` from `(stepWeights_family_iff lam ν lam').2 hstep`. Conclude with `(conclusion_iff lam ν lam' G S Om cD).1 (h ι a b hab lam ν lam' s' s hs ((guard_iff hab ν).2 hguard) G S r Om cD hG hr ((growth_iff G S r).2 hgrowth) hOm hc)`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h ι _ a b hab lam ν lam' s' s hs hguard G S r Om cD hG hr hgrowth hOm hc`. Conclude with `(conclusion_iff lam ν lam' G S Om cD).2 (h ι a b hab lam ν lam' ((stepWeights_family_iff lam ν lam').1 ⟨s', s, hs⟩) ((guard_iff hab ν).1 hguard) r Om cD hr hOm hc G S hG ((growth_iff G S r).1 hgrowth))`.
+A detailed English derivation is pending.
 -/
 theorem blockBound_iff : PaddedWittNormSquare.BlockBound ↔ PaddedLastEntry.BlockBound := by
   unfold PaddedWittNormSquare.BlockBound PaddedLastEntry.BlockBound

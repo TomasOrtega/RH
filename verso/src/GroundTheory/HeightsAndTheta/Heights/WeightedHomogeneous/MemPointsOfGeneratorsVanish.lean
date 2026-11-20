@@ -14,7 +14,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simpa only [evalCone, eval₂_C] using contDiff_const`. Consider the case `add p q hp hq => simpa only [evalCone, eval₂_add] using hp.add hq`. Consider the case `mul_X p v hp`. Simplify `hp.mul (contDiff_pi.1 (contDiff_pi.1 contDiff_id v.1) v.2)` using `only [evalCone, eval₂_mul, eval₂_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem contDiff_evalCone (f : MvPolynomial (Coord n) ℤ) :
     ContDiff ℝ ∞ (fun z : Cone n ℂ ↦ evalCone z f) := by
@@ -26,7 +26,7 @@ theorem contDiff_evalCone (f : MvPolynomial (Coord n) ℤ) :
       hp.mul (contDiff_pi.1 (contDiff_pi.1 contDiff_id v.1) v.2)
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `ofNat k => simpa only [Int.ofNat_eq_natCast, zpow_natCast] using hf.pow k`. Consider the case `negSucc k`. Simplify using `only [zpow_negSucc]`. Conclude with `(hf.pow (k + 1)).inv fun x hx ↦ pow_ne_zero _ (h0 x hx)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ContDiffOn.zpow_of_ne_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {f : E → ℝ} {s : Set E} (hf : ContDiffOn ℝ ∞ f s) (h0 : ∀ x ∈ s, f x ≠ 0) (m : ℤ) :
@@ -40,9 +40,9 @@ theorem ContDiffOn.zpow_of_ne_zero {E : Type*} [NormedAddCommGroup E] [NormedSpa
 omit [Fintype ι] in
 
 /- English proof (translation)
-Use `⟨hz, fun f hf ↦ ?_⟩` and prove the remaining obligations. Rewrite `hf` using `[← hG.span_eq]`. Establish `hle : Ideal.span (Set.range G) ≤ RingHom.ker (eval₂Hom (Int.castRingHom ℂ) fun v : Coord n ↦ z v.1 v.2)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `h0 i`. Conclude with `hle hf`.
+A detailed English derivation is pending.
 -/
 theorem ArithVariety.mem_points_of_generators_vanish (P : ArithVariety n) {r : ℕ}
     {G : Fin r → MvPolynomial (Coord n) ℤ} {δ : Fin r → ι → ℕ} (hG : P.IsHomogGenerators G δ)
@@ -57,19 +57,15 @@ theorem ArithVariety.mem_points_of_generators_vanish (P : ArithVariety n) {r : �
   exact hle hf
 
 /- English proof (translation)
-Introduce `ι _ _ n P D d g hg r G δ hG`. Use `⟨fun z hz ↦ ?_, ?_⟩` and prove the remaining obligations. Establish `hB : 0 ≤ ∑ i, ‖evalCone z (G i)‖ ^ 2 * ∏ k, l2Norm (z k) ^ (2 * ((d k : ℤ) + D.deg k - δ i k))` using `Finset.sum_nonneg fun i _ ↦ mul_nonneg (sq_nonneg _) (Finset.prod_nonneg fun k _ ↦ zpow_nonneg (Real.sqrt_nonneg _) _)`. Establish `hA : 0 ≤ ∑ c, ∑ j, ‖evalCone z (g c j)‖ ^ 2` using `Finset.sum_nonneg fun c _ ↦ Finset.sum_nonneg fun j _ ↦ sq_nonneg _`. Unfold `AddBlockData.den`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hGz : ∃ i, evalCone z (G i) ≠ 0`. Take `⟨i, hi⟩` from `hGz`. Use `add_pos_of_nonneg_of_pos hA (Finset.sum_pos' (fun i _ ↦ ?_) ⟨i, Finset.mem_univ i, ?_⟩)` and prove the remaining obligations. Conclude with `mul_nonneg (sq_nonneg _) (Finset.prod_nonneg fun k _ ↦ zpow_nonneg (Real.sqrt_nonneg _) _)`. Conclude with `mul_pos (pow_pos (norm_pos_iff.mpr hi) 2) (Finset.prod_pos fun k _ ↦ zpow_pos (vectorL2Norm_pos (hz k)) _)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push Not at hGz`. Establish `hzP` using `P.mem_points_of_generators_vanish hG hz hGz`. Establish `hc : ∀ k, ∃ i, z k i ≠ 0` using `fun k ↦ Function.ne_iff.mp (hz k)`. Use `choose c hc using hc`. Establish `hm : evalCone z (chartMonomial c d) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Rewrite using `[evalCone_chartMonomial]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hc k)`. Establish `hj : ∃ j, evalCone z (g c j) ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hm ((hV ι n P D d g hg z hzP c).mp hne)`. Take `⟨j, hj⟩` from `hj`. Use `add_pos_of_pos_of_nonneg (Finset.sum_pos' (fun c _ ↦ ?_) ⟨c, Finset.mem_univ c, ?_⟩) hB` and prove the remaining obligations. Conclude with `Finset.sum_nonneg fun j _ ↦ sq_nonneg _`. Conclude with `Finset.sum_pos' (fun j _ ↦ sq_nonneg _) ⟨j, Finset.mem_univ j, pow_pos (norm_pos_iff.mpr hj) 2⟩`.
-
-Establish `hsq : ∀ f : MvPolynomial (Coord n) ℤ, ContDiff ℝ ∞ (fun z : Cone n ℂ ↦ ‖evalCone z f‖ ^ 2)` using `fun f ↦ (contDiff_norm_sq ℝ).comp (contDiff_evalCone f)`. Unfold `AddBlockData.den`. Use `ContDiffOn.add ?_ ?_` and prove the remaining obligations. Conclude with `(ContDiff.sum fun c _ ↦ ContDiff.sum fun j _ ↦ hsq (g c j)).contDiffOn`. Use `ContDiffOn.sum fun i _ ↦ (hsq (G i)).contDiffOn.mul ?_` and prove the remaining obligations.
-
-Use `contDiffOn_prod fun k _ ↦ ?_` and prove the remaining obligations. Conclude with `ContDiffOn.zpow_of_ne_zero (contDiffOn_l2Norm_block k) (fun z hz ↦ (vectorL2Norm_pos (hz k)).ne') _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ChartDenominatorAlt.proof (hV : ChartVanishing.Statement) : ChartDenominatorAlt.Statement := by
   intro ι _ _ n P D d g hg r G δ hG

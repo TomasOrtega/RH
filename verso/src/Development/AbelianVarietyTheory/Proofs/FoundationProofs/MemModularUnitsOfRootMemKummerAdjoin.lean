@@ -10,17 +10,15 @@ open Polynomial
 namespace GlobalTheory.KZ.UnRoot
 
 /- English proof (translation)
-Take `⟨W, hW, hloc⟩` from `IsLocalRing.exists_factor_valuationRing (f.comp U.subtype)`. Establish `key : ∀ x ∈ U.nonunits, f x ∈ W.nonunits`. Introduce `x hx`. Take `⟨hxU, hm⟩` from `ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal.1 hx`. Use `ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal.2 ⟨hW ⟨x, hxU⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hm`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu => hm (hloc.map_nonunit ⟨x, hxU⟩ hu)`. Use `⟨W, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce `x hx`. Assume the negation of the conclusion as `hxU`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0 : x ≠ 0` using `by rintro rfl; exact hxU U.zero_mem`. Establish `h1 : x⁻¹ ∈ U.nonunits`. Rewrite using `[ValuationSubring.mem_nonunits_iff, map_inv₀]`. Establish `: 1 < U.valuation x`. Rewrite using `[← not_le, ValuationSubring.valuation_le_one_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxU`. Conclude with `inv_lt_one_of_one_lt₀ this`. Establish `h2` using `key _ h1`. Rewrite `h2` using `[ValuationSubring.mem_nonunits_iff, map_inv₀, map_inv₀]`. Establish `h3 : W.valuation (f x) ≤ 1` using `(W.valuation_le_one_iff _).2 hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : 0 < W.valuation (f x)`. Rewrite using `[zero_lt_iff, Valuation.ne_zero_iff]`. Conclude with `(map_ne_zero f).2 h0`. Conclude with `absurd ((inv_lt_one₀ h4).1 h2) (not_lt.2 h3)`. Introduce `x hx`.
-
-Conclude with `hW ⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_comap_eq {K L : Type} [Field K] [Field L] (f : K →+* L) (U : ValuationSubring K) :
     ∃ W : ValuationSubring L, W.comap f = U := by
@@ -50,9 +48,9 @@ theorem exists_comap_eq {K L : Type} [Field K] [Field L] (f : K →+* L) (U : Va
     exact hW ⟨x, hx⟩
 
 /- English proof (translation)
-Rewrite using `[← T.valuation_le_one_iff, ← T.valuation_le_one_iff, map_inv₀]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun h0 => ?_, h.le, by rw [h, inv_one]⟩` and prove the remaining obligations. Rewrite `h` using `[h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h`. Introduce and unpack `⟨h0, h₁, h₂⟩`. Establish `: 0 < T.valuation y` using `zero_lt_iff.2 ((_root_.map_ne_zero _).2 h0)`. Conclude with `le_antisymm h₁ ((inv_le_one₀ this).1 h₂)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_eq_one_iff {F : Type} [Field F] (T : ValuationSubring F) (y : F) :
     T.valuation y = 1 ↔ y ≠ 0 ∧ y ∈ T ∧ y⁻¹ ∈ T := by
@@ -67,7 +65,7 @@ theorem val_eq_one_iff {F : Type} [Field F] (T : ValuationSubring F) (y : F) :
     exact le_antisymm h₁ ((inv_le_one₀ this).1 h₂)
 
 /- English proof (translation)
-Rewrite using `[val_eq_one_iff, val_eq_one_iff, ValuationSubring.mem_comap, ValuationSubring.mem_comap, map_inv₀, _root_.map_ne_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_comap_eq_one {K K' : Type} [Field K] [Field K'] (f : K →+* K') (S : ValuationSubring K') (x : K) :
     (S.comap f).valuation x = 1 ↔ S.valuation (f x) = 1 := by
@@ -75,7 +73,7 @@ theorem val_comap_eq_one {K K' : Type} [Field K] [Field K'] (f : K →+* K') (S 
     _root_.map_ne_zero]
 
 /- English proof (translation)
-Rewrite `h` using `[map_pow]`. Break down `lt_trichotomy (A.valuation x) 1 with h1 | h1 | h1` into its components or cases. Conclude with `absurd h (ne_of_lt (pow_lt_one₀ zero_le' h1 hn))`. Conclude with `h1`. Conclude with `absurd h (ne_of_gt (one_lt_pow₀ h1 hn))`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem val_eq_one_of_pow {L : Type} [Field L] (A : ValuationSubring L) {x : L} {n : ℕ} (hn : n ≠ 0)
     (h : A.valuation (x ^ n) = 1) : A.valuation x = 1 := by
@@ -86,9 +84,9 @@ theorem val_eq_one_of_pow {L : Type} [Field L] (A : ValuationSubring L) {x : L} 
   · exact absurd h (ne_of_gt (one_lt_pow₀ h1 hn))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.RootOfUnityEqOne.main`. Consider the case `exact _root_.GlobalTheory.RootOfUnityEqOne.main`. Consider the case `(apply _root_.GlobalTheory.RootOfUnityEqOne.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RootOfUnityEqOne.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.RootOfUnityEqOne.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RootOfUnityEqOne.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem root_eq_one {F : Type} [Field F] (V : ValuationSubring F) {m : ℕ} (hm : V.valuation (m : F) = 1) {ζ : F}
     (hζ : ζ ^ m = 1) (hV : V.valuation (ζ - 1) < 1) : ζ = 1 := by
@@ -101,11 +99,11 @@ theorem root_eq_one {F : Type} [Field F] (V : ValuationSubring F) {m : ℕ} (hm 
   | (intros; exact _root_.GlobalTheory.RootOfUnityEqOne.main ..)
 
 /- English proof (translation)
-Establish `hz : B.valuation (y / g) = 1` using `val_eq_one_of_pow B hm0 (by rw [div_pow, hy]; exact hu)`. Establish `hz0 : y / g ≠ 0` using `((val_eq_one_iff B _).1 hz).1`. Establish `hy0 : y ≠ 0` using `fun h => hz0 (by rw [h, zero_div])`. Establish `h1 : (φ y / y) ^ m = 1`. Rewrite using `[div_pow, ← map_pow, hy, hU, div_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Conclude with `pow_ne_zero _ hy0`. Establish `h2` using `hφ _ hz.le`. Establish `e : φ (y / g) - y / g = (φ y / y - 1) * (y / g)`. Rewrite using `[map_div₀, hφg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `h2` using `[e, map_mul, hz, mul_one]`. Use `root_eq_one B hm h1 h2` as an intermediate fact. Conclude with `(div_eq_one_iff_eq hy0).1 this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fix_root {L : Type} [Field L] (B : ValuationSubring L) {m : ℕ} (hm0 : m ≠ 0) (hm : B.valuation (m : L) = 1)
     {y U g : L} (hy : y ^ m = U) (hg : g ≠ 0) (hu : B.valuation (U / g ^ m) = 1) (φ : L →+* L) (hU : φ U = U)
@@ -124,13 +122,13 @@ theorem fix_root {L : Type} [Field L] (B : ValuationSubring L) {m : ℕ} (hm0 : 
   exact (div_eq_one_iff_eq hy0).1 this
 
 /- English proof (translation)
-Proceed by induction on `hθ using IntermediateField.adjoin_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `algebraMap x => exact ⟨{x}, fun φ _ h => h x (Finset.mem_singleton_self x)⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨T, hT⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨T', hT'⟩` from `hy`. Conclude with `⟨T ∪ T', fun φ hq h => by`. Rewrite using `[map_add, hT φ hq fun t ht => h t (Finset.mem_union_left _ ht), hT' φ hq fun t ht => h t (Finset.mem_union_right _ ht)]⟩`. Consider the case `inv x _ hx`. Take `⟨T, hT⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨T, fun φ hq h => by rw [map_inv₀, hT φ hq h]⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨T, hT⟩` from `hx`. Take `⟨T', hT'⟩` from `hy`. Conclude with `⟨T ∪ T', fun φ hq h => by`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[map_mul, hT φ hq fun t ht => h t (Finset.mem_union_left _ ht), hT' φ hq fun t ht => h t (Finset.mem_union_right _ ht)]⟩`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fix_adjoin {K L : Type} [Field K] [Field L] [Algebra K L] (Q : (L →+* L) → Prop) (S : Set L)
     (hS : ∀ y ∈ S, ∃ T : Finset K, ∀ φ, Q φ → (∀ t ∈ T, φ (algebraMap K L t) = algebraMap K L t) → φ y = y)
@@ -157,21 +155,15 @@ theorem fix_adjoin {K L : Type} [Field K] [Field L] [Algebra K L] (Q : (L →+* 
         hT' φ hq fun t ht => h t (Finset.mem_union_right _ ht)]⟩
 
 /- English proof (translation)
-Set `E : IntermediateField (RatFunc k) K` to `IntermediateField.adjoin (RatFunc k) ((insert f T : Finset K) : Set K)`. Establish `hE : ∀ t ∈ insert f T, t ∈ E` using `fun t ht => IntermediateField.subset_adjoin _ _ (Finset.mem_coe.2 ht)`. Use `haveI : FiniteDimensional (RatFunc k) E := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Use `haveI : IsAlgClosed L := IsAlgClosure.isAlgClosed K`. Use `haveI : Algebra.IsAlgebraic K L := IsAlgClosure.isAlgebraic`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `haveI : Algebra.IsAlgebraic E K := inferInstance`. Use `haveI : Module.IsTorsionFree E L := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : IsAlgClosure E L := ⟨inferInstance, Algebra.IsAlgebraic.trans E K L⟩`. Use `haveI : CharZero K := charZero_of_injective_ringHom (algebraMap (RatFunc k) K).injective`. Use `haveI : CharZero L := charZero_of_injective_ringHom (algebraMap K L).injective`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : NeZero (l : L) := ⟨Nat.cast_ne_zero.2 hl.ne'⟩`. Use `haveI : NeZero l := ⟨hl.ne'⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot L l`. Establish `hθ0 : θ ≠ 0`. Introduce and unpack `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hθ` using `[zero_pow hl.ne']`. Conclude with `hf ((map_eq_zero _).1 hθ.symm)`. Take `⟨c, hc, hv⟩` from `GlobalTheory.KumVal.exists_unit_of_kum_eq_zero k E L l ζ hl hζ ⟨f, hE f (Finset.mem_insert_self _ _)⟩ θ (fun h => hf (congrArg Subtype.val h)) hθ B (by`. Introduce `x hx`. Establish `hx' : IsIntegral k[X] x` using `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨p, hp, hpx⟩` from `hx'`. Set `ρ : k[X] →+* B` to `((algebraMap K L).comp (algebraMap k[X] K)).codRestrict B hB`. Establish `hi : IsIntegral B (algebraMap E L x)`. Use `⟨p.map ρ, hp.map ρ, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_map]`.
-
-Use `congrArg (algebraMap E L) hpx` as an intermediate fact. Rewrite `this` using `[hom_eval₂, map_zero]`. Conclude with `this`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hi`. Rewrite using `[← hy]`.
-
-Conclude with `y.2)`. Use the proof step `(fun g hg => GlobalTheory.NeedB.kum_eq_of hζ hθ0 0 (by`. Use `hT (g : L →+* L) hg fun t ht => g.commutes ⟨t, hE t (Finset.mem_insert_of_mem ht)⟩` as an intermediate fact. Simplify using `using this))`. Use `⟨c, fun h => hc (Subtype.ext h), ?_⟩` and prove the remaining obligations.
-
-Conclude with `hv`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem core {k K L : Type} [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k[X] K] [Algebra (RatFunc k) K]
     [IsScalarTower k[X] (RatFunc k) K] [Algebra.IsAlgebraic (RatFunc k) K] [Field L] [Algebra K L] [IsAlgClosure K L]
@@ -226,23 +218,21 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.ES
 namespace GlobalTheory.KZ.UnRoot
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X m l hm hl θ f hθ hf W hW`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_ringHom (algebraMap ℚ Ω).injective`. Take `⟨B, rfl⟩` from `exists_comap_eq (algebraMap X.K (AlgebraicClosure X.K)) W`. Set `e` to `RatFunc.algEquivOfTranscendental X.jK (GlobalTheory.K4.jK_transcendental X)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Set `ψ : RatFunc Ω →ₐ[Ω] X.K` to `(IntermediateField.val _).comp e.toAlgHom`. Use `letI : Algebra (RatFunc Ω) X.K := ψ.toRingHom.toAlgebra`. Use `letI : Algebra (Polynomial Ω) X.K := (ψ.toRingHom.comp (algebraMap (Polynomial Ω) (RatFunc Ω))).toAlgebra`. Use `haveI : IsScalarTower (Polynomial Ω) (RatFunc Ω) X.K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Algebra.IsAlgebraic (RatFunc Ω) X.K := ⟨fun x => by`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(X.alg_j x).ringHom_of_comp_eq (e.symm : _ →+* RatFunc Ω) (RingHom.id _) e.symm.injective ?_` and prove the remaining obligations. Use extensionality with `a`. Use `show ((e (e.symm a) : _) : X.K) = a`. Rewrite using `[e.apply_symm_apply]⟩`. Establish `hp : ∀ p : (Polynomial Ω), algebraMap (Polynomial Ω) X.K p ∈ B.comap (algebraMap X.K (AlgebraicClosure X.K))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `p`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a`. Establish `: algebraMap (Polynomial Ω) X.K (C a) = algebraMap Ω X.K a`. Rewrite using `[← ψ.commutes a]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hW.1 a`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `monomial n a h`. Establish `: algebraMap (Polynomial Ω) X.K Polynomial.X = X.jK` using `by show ((e (algebraMap (Polynomial Ω) (RatFunc Ω) Polynomial.X) : _) : X.K) = _`. Rewrite using `[RatFunc.algebraMap_X, RatFunc.algEquivOfTranscendental_X]`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, this]`. Conclude with `mul_mem h hW.2`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Establish `hmB : B.valuation (m : AlgebraicClosure X.K) = 1`. Establish `h1 : (B.comap (algebraMap X.K (AlgebraicClosure X.K))).valuation (algebraMap Ω X.K (m : Ω)) = 1`. Rewrite using `[val_eq_one_iff, ← map_inv₀]`. Conclude with `⟨(_root_.map_ne_zero _).2 (Nat.cast_ne_zero.2 hm.ne'), hW.1 _, hW.1 _⟩`. Rewrite `h1` using `[val_comap_eq_one]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `using h1`. Take `⟨T, hT⟩` from `fix_adjoin (fun φ => ∀ x, B.valuation x ≤ 1 → B.valuation (φ x - x) < 1) _ (by`. Introduce and unpack `y ⟨U, hU, hy⟩`. Take `⟨g, hg⟩` from `hU _ hW`. Rewrite `hg` using `[val_comap_eq_one, map_div₀, map_pow]`.
-
-Conclude with `⟨{(U : X.K), (g : X.K)}, fun φ hq h => fix_root B hm.ne' hmB hy ((_root_.map_ne_zero _).2 g.ne_zero) hg φ (h _ (by simp)) (h _ (by simp)) hq⟩) hθ`. Take `⟨c, hc, hv⟩` from `core (k := Ω) B hp hl (f : X.K) f.ne_zero θ hf T hT`. Conclude with `⟨Units.mk0 c hc, (val_comap_eq_one _ _ _).2 hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_Un_of_root_mem_adjoin : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), ∀ (m l : ℕ), 0 < m → 0 < l → ∀ (θ : AlgebraicClosure X.K) (f : X.Kˣ), θ ∈ IntermediateField.adjoin X.K {y : AlgebraicClosure X.K | ∃ U ∈ X.Un m, y ^ m = algebraMap X.K (AlgebraicClosure X.K) (U : X.K)} → θ ^ l = algebraMap X.K (AlgebraicClosure X.K) (f : X.K) → f ∈ X.Un l := by
   intro Ω _ _ _ ε X m l hm hl θ f hθ hf W hW

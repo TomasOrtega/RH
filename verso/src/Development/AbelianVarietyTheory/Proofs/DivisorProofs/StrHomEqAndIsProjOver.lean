@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVarProj
 
 /- English proof (translation)
-Introduce `K _ A`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `letI := A.algΓ`. Conclude with `GlobalTheory.strHom_eq fun _ => rfl`. Conclude with `(GlobalTheory.ProjSpace.isProjBy_iff_isProjOver A.X.hom).1 (GlobalTheory.ProjField.isProjBy_of_isAbelianScheme K A.X A.ab)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem strHom_eq_and_isProjOver : ∀ (K : Type) [Field K] (A : AbVar K),
     (letI := A.algΓ; GlobalTheory.strHom K A.X.left = A.X.hom) ∧ IsProjOver A.X.hom := by

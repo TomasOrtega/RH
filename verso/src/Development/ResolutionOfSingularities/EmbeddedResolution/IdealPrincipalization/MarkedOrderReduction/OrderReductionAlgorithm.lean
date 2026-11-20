@@ -36,7 +36,7 @@ def nonMonomialPart (E : List X.IdealSheafData) (I : X.IdealSheafData) : X.Ideal
   (monomialSplitting E I).2
 
 /- English proof (translation)
-Unfold `monomialPart nonMonomialPart monomialSplitting`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonomialSplitting_monomialPart_nonMonomialPart (E : List X.IdealSheafData) (I : X.IdealSheafData)
     (h : ∃ q : X.IdealSheafData × X.IdealSheafData, IsMonomialSplitting E I q.1 q.2) :

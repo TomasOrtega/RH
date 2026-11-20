@@ -12,7 +12,7 @@ open NumberField Formalism.FourierDecayAlt.P.CutMP
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Take `⟨c, hc1, hc2⟩` from `hF`. Use `⟨c, hc1, fun u w hu hw hl g hg => ?_⟩` and prove the remaining obligations. Establish `h1` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_ge_one hg`. Conclude with `(mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le h1 h) (norm_nonneg _)).trans (hc2 u w hu hw hl g hg)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inCC_antiA {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] {A A' : ℝ} {m : ℕ}
@@ -30,14 +30,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
 /- English proof (translation)
-Introduce `m` and use `inCC_antiA (by linarith) (hF m)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cCg_antiA {S : C.HidaSetting E Wp Wq} {v : Fin S.f} {A A' Bg : ℝ} {F : GFn S v} (h : A' ≤ A)
     (hF : CCg S v A Bg F) : CCg S v A' Bg F :=
   fun m => inCC_antiA (by linarith) (hF m)
 
 /- English proof (translation)
-Use `⟨hJ.1, fun δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨F, h1, h2, h3⟩` from `hJ.2 δ hδ`. Conclude with `⟨F, h1, cCg_antiA h h2, h3⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locCC_antiA {S : C.HidaSetting E Wp Wq} {T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v))}
     {v : Fin S.f} {A A' Bg : ℝ} {J : GFn S v} (h : A' ≤ A) (hJ : LocCC S T v A Bg J) : LocCC S T v A' Bg J := by
@@ -46,7 +46,7 @@ theorem locCC_antiA {S : C.HidaSetting E Wp Wq} {T : ∀ v : Fin S.f, D.LevTower
   exact ⟨F, h1, cCg_antiA h h2, h3⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hFF, fun _ _ => ⟨F, hF, fun m => inCC_antiA (sub_le_self _ (mul_nonneg hBg (Nat.cast_nonneg m))) (hA m), fun _ _ _ => rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem locCC_JF {S : C.HidaSetting E Wp Wq} {T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v))}
     {v : Fin S.f} {A Bg : ℝ} {F : GFn S v} (hF : B.CkOn ⊤ (B.GV S.G.k S.G.r) F) (hA : ∀ m : ℕ, B.InCC A m F)
@@ -55,9 +55,9 @@ theorem locCC_JF {S : C.HidaSetting E Wp Wq} {T : ∀ v : Fin S.f, D.LevTower S.
     fun _ _ _ => rfl⟩⟩
 
 /- English proof (translation)
-Use `⟨Formalism.FourierDecayAlt.P.Qx8.FFl_smul hJ.1 c, fun δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨F, h1, h2, h3⟩` from `hJ.2 δ hδ`. Use `⟨c • F, Formalism.FourierDecayAlt.P.JCx2.ckOn_smul' c h1, fun m => ?_, fun x hx hG => ?_⟩` and prove the remaining obligations. Take `⟨c0, hc0⟩` from `h2 m`. Conclude with `⟨‖c‖ * c0, Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_smul c hc0⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.CutMP.En.JF_smul', Pi.smul_apply, h3 x hx hG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locCC_smul {S : C.HidaSetting E Wp Wq} {T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v))}
     {v : Fin S.f} {A Bg : ℝ} (c : ℂ) {J : GFn S v} (hJ : LocCC S T v A Bg J) : LocCC S T v A Bg (c • J) := by

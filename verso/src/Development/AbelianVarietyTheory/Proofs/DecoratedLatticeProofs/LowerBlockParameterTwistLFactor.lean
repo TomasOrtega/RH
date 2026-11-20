@@ -27,9 +27,9 @@ noncomputable section
 namespace GlobalTheory.QParL
 
 /- English proof (translation)
-Introduce `D v φ PP hφ x ϖ hx z t`. Take `⟨-, hq⟩` from `GlobalTheory.PlaceProjAt.under_resCard D v φ PP hφ`. Take `⟨e, -, -, -, hϖ⟩` from `hx`. Establish `hn` using `GlobalTheory.GLDoubling.nabs_unif hϖ`. Unfold `GlobalTheory.LFun.seg GlobalTheory.ParHecke.segL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `Multiset.map_congr rfl fun n _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `ext`. Rewrite using `[GlobalTheory.SmGL.val_absPow, hn, hq, GlobalTheory.LFun.coe_npowU, GlobalTheory.LFun.npow, Complex.ofReal_inv, Complex.ofReal_natCast, Complex.inv_cpow _ _ (by rw [Complex.natCast_arg]; exact Real.pi_ne_zero.symm), ← Complex.cpow_neg]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -56,7 +56,7 @@ theorem qPar_succ {D : D7} (c : Com D) (PP : Pl D.host.E) (x : (AE D)ˣ) (k : �
       GlobalTheory.LFun.seg PP (Circle.toUnits (c.chS (k + 1) x)) D.R.t := rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [qPar]`. Consider the case `succ k ih => rw [qPar_succ, Multiset.card_add, Multiset.card_map, ih, GlobalTheory.LFun.card_seg]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_qPar {D : D7} (c : Com D) (PP : Pl D.host.E) (x : (AE D)ˣ) (k : ℕ) : (qPar c PP x k).card = k * D.R.t := by
   induction k with
@@ -64,7 +64,7 @@ theorem card_qPar {D : D7} (c : Com D) (PP : Pl D.host.E) (x : (AE D)ˣ) (k : �
   | succ k ih => rw [qPar_succ, Multiset.card_add, Multiset.card_map, ih, GlobalTheory.LFun.card_seg]; ring
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.LFun.seg, Multiset.map_map, Function.comp_def]`. Conclude with `Multiset.map_congr rfl fun i _ => mul_right_comm _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem seg_map_mul {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (z u : ℂˣ) (t : ℕ) :
     (GlobalTheory.LFun.seg w z t).map (· * u) = GlobalTheory.LFun.seg w (z * u) t := by
@@ -72,18 +72,18 @@ theorem seg_map_mul {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum 
   exact Multiset.map_congr rfl fun i _ => mul_right_comm _ _ _
 
 /- English proof (translation)
-The claim follows from `map_sum (Multiset.mapAddMonoidHom (· * u)) f s`.
+A detailed English derivation is pending.
 -/
 theorem sum_map_mul {ι : Type} (s : Finset ι) (f : ι → Multiset ℂˣ) (u : ℂˣ) :
     (∑ i ∈ s, f i).map (· * u) = ∑ i ∈ s, (f i).map (· * u) :=
   map_sum (Multiset.mapAddMonoidHom (· * u)) f s
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[qPar_succ, ih, sum_map_mul, Finset.sum_Icc_succ_top (by omega)]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[seg_map_mul, ← GlobalTheory.ChainOnto.ParClosed.eps_succ]`. Use `congr 1`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, map_mul, map_inv]`. Use `ext`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GlobalTheory.ChainOnto.ParClosed.chS_succ]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem qPar_closed {D : D7} (c : Com D) (PP : Pl D.host.E) (x : (AE D)ˣ) (k : ℕ) :
     qPar c PP x k = ∑ i ∈ Finset.Icc 1 k, GlobalTheory.LFun.seg PP (Circle.toUnits ((c.μ i * c.eps k) x)) D.R.t := by
@@ -102,9 +102,9 @@ theorem qPar_closed {D : D7} (c : Com D) (PP : Pl D.host.E) (x : (AE D)ˣ) (k : 
     · rw [GlobalTheory.ChainOnto.ParClosed.chS_succ]
 
 /- English proof (translation)
-Rewrite using `[qPar_closed, sum_map_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[seg_map_mul, GlobalTheory.ChainOnto.ParClosed.chT_succ]`. Use `congr 1`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[_root_.mul_inv_rev]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qPar_twist {D : D7} (c : Com D) (PP : Pl D.host.E) (x : (AE D)ˣ) (k : ℕ) :
     (qPar c PP x k).map (· * (Circle.toUnits (c.chT (k + 1) x))⁻¹) =
@@ -118,13 +118,13 @@ theorem qPar_twist {D : D7} (c : Com D) (PP : Pl D.host.E) (x : (AE D)ˣ) (k : �
   group
 
 /- English proof (translation)
-Unfold `GlobalTheory.GLDoubling.invNormFactor`. Use `push_cast`. Rewrite using `[show (k + 1) * t = t + k * t by ring]`. Generalize the expression as in `k * t = m`. Establish `h1 : Finset.Ioc t (t + m) = (Finset.Icc 1 m).map (addLeftEmbedding t)`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Use extensionality with `n`. Simplify using `only [Finset.mem_Ioc, Finset.mem_map, Finset.mem_Icc, addLeftEmbedding_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩; exact ⟨n - t, ⟨by omega, by omega⟩, by omega⟩`. Apply the tactic sequence `rintro ⟨i, ⟨h1, h2⟩, rfl⟩; constructor <;> omega`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h1, Finset.prod_map]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: (2 * ((t : ℂ) / 2) + (i : ℂ)) = ((addLeftEmbedding t i : ℕ) : ℂ)`. Simplify using `only [addLeftEmbedding_apply]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.cpow_neg, Complex.cpow_natCast]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem invNormFactor_eq (q t k : ℕ) :
     GlobalTheory.GLDoubling.invNormFactor q (k * t) ((t : ℂ) / 2) =
@@ -149,9 +149,9 @@ end GlobalTheory.QParL
 
 open GlobalTheory.QParL in
 /- English proof (translation)
-Introduce `D c w hw k hk PP hPP v φ hφ x ϖ hx`. Use `⟨seg_eq_segL D v φ PP hφ x ϖ hx, card_qPar c PP x k, fun α hα => ?_⟩` and prove the remaining obligations. Rewrite `hα` using `[qPar_twist]`. Establish `hz : ∀ i ∈ Finset.Icc 1 k, Circle.toUnits ((c.μ i * (c.μ (k + 1))⁻¹) x) = GlobalTheory.LFun.val (F` using `D.host.F) (c.μ i * (c.μ (k + 1))⁻¹) PP := fun i hi => GlobalTheory.T.unramifiedHeckeChar_at_uniformizerIdele_eq_value D v φ PP hφ x ϖ hx _ (GlobalTheory.T.hecke_char_quotient_unramified_at_twist_place D c w hw PP hPP i (k + 1) (Finset.mem_Icc.1 hi).1 (by have := (Finset.mem_Icc.1 …`. Establish `hα' : Finset.univ.val.map α = ∑ i ∈ Finset.Icc 1 k, GlobalTheory.LFun.seg PP (GlobalTheory.LFun.val (F` using `D.host.F) (c.μ i * (c.μ (k + 1))⁻¹) PP) D.R.t := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hα]; exact Finset.sum_congr rfl fun i hi => by rw [hz i hi]`. Take `⟨hb, hL⟩` from `GlobalTheory.T.segments_bounds_and_doubling_lFactor PP k D.R.t (k * D.R.t) (fun i => GlobalTheory.LFun.val (F := D.host.F) (c.μ i * (c.μ (k + 1))⁻¹) PP) (fun i => GlobalTheory.LFun.norm_val _ _) α hα'`. Use `⟨hb, ?_⟩` and prove the remaining obligations. Rewrite using `[hL, invNormFactor_eq, blockL, zinv]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.ChainTw.qPar_twist_lFactor : ∀ (D : D7) (c : Com D) (w : Twist D), w.Is c → ∀ k < D.R.m, ∀ PP ∈ w.Q, ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v), IsProjAt φ PP → ∀ x ϖ, IsLocUnif φ x ϖ → (∀ z t, GlobalTheory.LFun.seg PP z t = GlobalTheory.ParHecke.segL ϖ z t) ∧ (qPar c PP x k).card = k * D.R.t ∧ ∀ α : Fin (k * D.R.t) → ℂˣ, Finset.univ.val.map α = (qPar c PP x k).map (· * (Circle.toUnits (c.chT (k + 1) x))⁻¹) → (∀ i, ‖(α i : ℂ)‖ ≤ (Ideal.absNorm PP.asIdeal : ℝ) ^ (((D.R.t : ℝ) - 1) / 2) ∧ ‖(α i : ℂ)‖⁻¹ ≤ (Ideal.absNorm PP.asIdeal : ℝ) ^ (((D.R.t : ℝ) - 1) / 2)) ∧ GlobalTheory.GLDoubling.lFactor (Ideal.absNorm PP.asIdeal) α ((D.R.t : ℂ) / 2 + 1 / 2) * GlobalTheory.GLDoubling.lFactor (Ideal.absNorm PP.asIdeal) α⁻¹ ((D.R.t : ℂ) / 2 + 1 / 2) * GlobalTheory.GLDoubling.invNormFactor (Ideal.absNorm PP.asIdeal) (k * D.R.t) ((D.R.t : ℂ) / 2) = blockL c k PP * (zinv PP D.R.t ((k + 1) * D.R.t) : ℂ) := by
   intro D c w hw k hk PP hPP v φ hφ x ϖ hx

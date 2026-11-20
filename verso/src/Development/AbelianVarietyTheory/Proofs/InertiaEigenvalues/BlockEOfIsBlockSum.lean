@@ -11,9 +11,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.BlockJumps GlobalTheory.IndefiniteRowSideFullHecke.BlockJumpCount GlobalTheory.HTW.SumJumps GlobalTheory.Cmp.SmallJumps
 
 /- English proof (translation)
-Set `χ : Fin 1 → G →* LLˣ` to `fun _ => ((cycLL PD LL)⁻¹) ^ e`. Establish `hχ : ∀ c g, ((χ c g : LLˣ) : LL) = ((algebraMap Qp LL (PD.χ g : Qp))⁻¹) ^ e` using `fun c g => by`. Simplify using `[χ, cycLL]`. Establish `hσ : σ = diagRep χ`. Use `MonoidHom.ext fun g => LinearMap.ext fun u => funext fun c => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he, diagRep_apply, hχ c]`. Rewrite using `[hσ, multV_diagRep PD hF, Fin.sum_univ_one]`. Conclude with `multV_twist PD hs (Formalism.WeaklyAdmissibleFiltrations.charRep (χ 0)) e (fun g x => by rw [← hχ 0]; rfl) τ a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multV_oneByOne {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
@@ -36,7 +36,7 @@ theorem multV_oneByOne {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field
   exact multV_twist PD hs (Formalism.WeaklyAdmissibleFiltrations.charRep (χ 0)) e (fun g x => by rw [← hχ 0]; rfl) τ a
 
 /- English proof (translation)
-Simplify using `[twistM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twistM_one_apply {O Γ : Type} [CommRing O] [Group Γ] (χ : Γ →* Oˣ) (g : Γ) :
     twistM (1 : Γ →* Matrix (Fin 1) (Fin 1) O) χ g 0 0 = ((χ g : Oˣ) : O) := by
@@ -45,27 +45,25 @@ theorem twistM_one_apply {O Γ : Type} [CommRing O] [Group Γ] (χ : Γ →* Oˣ
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hB`. Introduce `w hw L' hL τ`. Use `haveI : IsAlgClosed D.nd.Om := IsAlgClosure.isAlgClosed D.host.E`. Use `haveI : FiniteDimensional ℚ_[D.nd.l i] ↥L'.1 := L'.2`. Set `s : Br.G D.nbr i w hw → Formalism.MainNotions.N.GE D.nd` to `fun g => decS D.nd w (Br.iota D.nbr i w hw g)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `j` to `inc D i w hw L' hL`. Set `f` to `j.comp (Br.toLLK (D.nbr i w hw))`. Establish `hf : ∀ c, f (toK D.nd i c) = j ((D.nbr i w hw).toLL c)` using `fun c => congrArg j (Br.toLLK_alg (D.nbr i w hw) c)`. Establish `hχ0 : ∀ (c : ℕ), c + 1 ≤ D.R.t → ∀ g, (chiU D.nd i 1)⁻¹ g * chiU D.nd i (c + 1) g = (epsU D.nd i g)⁻¹ ^ c` using `fun c hc g => by`. Establish `h` using `D.nd.chi_def i (c + 1) (by omega) hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(D.nd.chi i 1)⁻¹ g * D.nd.chi i (c + 1) g = _`. Rewrite using `[h, MonoidHom.mul_apply, MonoidHom.inv_apply, inv_mul_cancel_left, Nat.cast_add, Nat.cast_one, add_sub_cancel_right, MonoidHom.zpow_apply, zpow_neg, zpow_natCast, inv_pow]`. Both sides reduce to the same expression. Establish `hχ : ∀ (c : Fin D.R.t) g, (chiU D.nd i 1)⁻¹ g * chiU D.nd i ((c : ℕ) + 1) g = (epsU D.nd i g)⁻¹ ^ (c : ℕ)` using `fun c g => hχ0 c c.2 g`. Establish `hε : ∀ g, j ((D.nbr i w hw).toLL ((epsU D.nd i (s g) : (D.nd.O i)ˣ) : D.nd.O i)) = algebraMap ℚ_[D.nd.l i] ↥L'.1 ((Br.PD D.loc D.nbr i w hw).χ g : ℚ_[D.nd.l i])`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g`. Establish `h1 : (D.nbr i w hw).toLL ((epsU D.nd i (s g) : (D.nd.O i)ˣ) : D.nd.O i) = algebraMap ℚ_[D.nd.l i] (Br.LL D.nbr i w hw) ((Br.PD D.loc D.nbr i w hw).χ g : ℚ_[D.nd.l i])`. Rewrite using `[Br.PD, (D.loc _).PD_χ, ← cycZ_eq_chi (D.nbr i w hw) (D.loc _) g]`. Conclude with `congrArg Subtype.val ((D.nbr i w hw).eO_alg _)`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(IntermediateField.inclusion hL).commutes _`. Establish `hM : ∀ {k : ℕ} (M : Formalism.MainNotions.N.GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) g v, matRep (locE D i w hw L' hL M) g v = ((mapM (toK D.nd i) M (s g)).map f).mulVec v` using `fun M g v => by`. Rewrite using `[show (mapM (toK D.nd i) M (s g)).map f = locE D i w hw L' hL M g from Matrix.ext fun a b => hf _]`. Both sides reduce to the same expression. Establish `hs : ∃ x ∈ (Br.PD D.loc D.nbr i w hw).Fil (-1), (Br.PD D.loc D.nbr i w hw).ι (Br.PD D.loc D.nbr i w hw).t * x = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, hx1⟩` from `GlobalTheory.ThetaTie.exists_inverse_fontaineElement_mem_fil_neg_one (D.locT (D.nd.l i))`. Use `⟨x, ?_, by rw [Br.PD, (D.loc _).PD_ι, (D.loc _).period_datum_t_eq, hx1]⟩` and prove the remaining obligations. Conclude with `((D.locT _).fil _ _ _).2 (((D.locT _).fil _ _ _).1 hx)`. Establish `hpow : ∀ g (n : ℕ), f (toK D.nd i (((epsU D.nd i (s g))⁻¹ ^ n : (D.nd.O i)ˣ) : D.nd.O i)) = (algebraMap ℚ_[D.nd.l i] ↥L'.1 ((Br.PD D.loc D.nbr i w hw).χ g : ℚ_[D.nd.l i]))⁻¹ ^ n` using `fun g n => by`. Rewrite using `[hf, Units.val_pow_eq_pow_val, map_pow, map_pow, map_units_inv, map_inv₀, hε]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨fun a => ?_, fun c hc a => ?_⟩` and prove the remaining obligations. Take `⟨e', he'⟩` from `split_map f (fun g => mapM (toK D.nd i) (rTwO D.nd i r π) (s g)) (fun g => mapM (toK D.nd i) (WpO D.nd i ρ π) (s g)) (fun g c => toK D.nd i (((epsU D.nd i (s g))⁻¹ ^ (c : ℕ) : (D.nd.O i)ˣ) : D.nd.O i)) e (fun g u => by`. Establish `h1 : ∀ {k : ℕ} (M : Formalism.MainNotions.N.GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) v, (mapM (toK D.nd i) (twistM M (chiU D.nd i 1)⁻¹) (s g)).mulVec v = toK D.nd i (((chiU D.nd i 1)⁻¹ (s g) : (D.nd.O i)ˣ) : D.nd.O i) • (mapM (toK D.nd i) M (s g)).mulVec v` using `fun M v => by`. Rewrite using `[← Matrix.smul_mulVec]`. Use `congr 1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use extensionality with `a b`. Conclude with `map_mul (toK D.nd i) _ _`. Rewrite using `[rTwO, WpO, h1, h1, map_smul, he]`. Use `Prod.ext rfl (funext fun c => ?_)` and prove the remaining obligations. Simplify using `only [← hχ, Units.val_mul, map_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use the proof step `rfl)`. Take `⟨J, h1, h2⟩` from `jumps_of_split (Br.PD D.loc D.nbr i w hw) (GlobalTheory.SmallJumpExample.isField_bdR D _) hs (matRep (locE D i w hw L' hL (rTwO D.nd i r π))) (matRep (locE D i w hw L' hL (WpO D.nd i ρ π))) e' (fun g u => by`. Rewrite using `[hM, hM, he']`. Conclude with `Prod.ext rfl (funext fun c => congrArg (· * (e' u).2 c) (hpow g c))) τ`. Rewrite using `[h1.2, h2.2, Multiset.count_add, count_blockJumps]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Both sides reduce to the same expression. Take `⟨hc1, hc2⟩` from `Finset.mem_Icc.1 hc`. Take `⟨n, rfl⟩ : ∃ n, c = n + 1` from `⟨c - 1, by omega⟩`. Rewrite using `[multV_oneByOne (Br.PD D.loc D.nbr i w hw) (GlobalTheory.SmallJumpExample.isField_bdR D _) hs _ n (fun g u b => ?_) τ a, Nat.cast_add, Nat.cast_one, add_sub_cancel_right]`.
-
-Rewrite using `[hM, ← hpow, ← hχ0 n hc2, Subsingleton.elim b 0]`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_one, Fin.isValue]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `f (toK D.nd i (chiRatO D.nd i (n + 1) (s g) 0 0)) = _`. Rewrite using `[chiRatO, twistM_one_apply, MonoidHom.mul_apply, mul_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockE_of_isBlockSum (D : D7) (i : D.nd.Loc)
     (r : D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))

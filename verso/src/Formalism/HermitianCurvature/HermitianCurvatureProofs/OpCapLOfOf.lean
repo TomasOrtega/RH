@@ -31,11 +31,11 @@ def CkLevOn : Prop :=
     Q.CkLev k r 0 m Dm f → B.CkOn (m : ℕ∞) (B.GV k r ∩ Dm) f
 
 /- English proof (translation)
-Introduce `t ht`. Rewrite `ht` using `[wfam, List.mem_append]`. Break down `ht with ht | ht` into its components or cases. Take `⟨t0, ht0, rfl⟩` from `List.mem_map.1 ht`. Use `⟨by simpa using hL t0 ht0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `V hV`. Take `⟨X, -, rfl⟩` from `List.mem_map.1 hV`. Conclude with `hF X`. Simplify using `only [List.mem_singleton] at ht`. Substitute `ht` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem wfam_ok {d : ℕ} {α : Type} {O : Set (Fin d → ℝ)} (L : List (ℂ × List α))
     (F : α → (Fin d → ℝ) → (Fin d → ℝ)) (c : ℂ) (j : ℕ) (hL : ∀ t ∈ L, t.2.length ≤ j)
@@ -53,15 +53,13 @@ theorem wfam_ok {d : ℕ} {α : Type} {O : Set (Fin d → ℝ)} (L : List (ℂ �
     exact ⟨by simp, by simp⟩
 
 /- English proof (translation)
-Introduce `hRw hCW k r z z' d O U κ Φ u hC hOm hCk hev j hj1 hjn`. Take `⟨_, hfld, hw⟩` from `hRw k r z z' d O U κ Φ u hC hOm hCk`. Take `⟨Ys, lam, L, cj, hcj, hL, hid, hsym⟩` from `hCW k r j hj1 hjn`. Use `choose c hc using hev`. Use `⟨wfam L (VR κ Φ) (-(∑ i, lam i * c (Ys i))), cj, hcj, wfam_ok L _ _ j (fun t ht => (hL t ht).1) (fun X => (hfld X).1), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[hA]`. Establish `hgG : κ x ∈ B.GV k r` using `(hC.2.2.2.2.1 x hx).1`. Establish `hgO : κ x ∈ JF.Om k r z z'` using `⟨hgG, hOm x hx⟩`. Establish `e1` using `hid ℂ (B.GV k r ∩ Q.OmPlus k r z z') u (hK k r _ _ ℂ u hCk) (κ x) ⟨hgG, hOm x hx⟩ hgG`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (L.map fun t => t.1 * vfW (t.2.map (VR κ Φ)) (fun y => u (κ y)) x) = (L.map fun t => t.1 • B.Rw t.2 u (κ x))`. Use `List.map_congr_left (fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[(hw t.2 (hL t ht).2 ((hL t ht).1.trans hjn) x hx).1, smul_eq_mul]`. Rewrite using `[e2, ← e1]`. Simplify using `only [hc _ _ hgO, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[neg_mul, Finset.sum_mul]`. Simplify using `only [mul_assoc, add_neg_cancel]`. Introduce `x hx ξ Ξ₀ hΞ₀ hcov`. Rewrite using `[hS d _ L (VR κ Φ) _ j x ξ (fun X => Matrix.trace (Ξ₀ * X)) hj1 (fun t ht X hX => by`. Rewrite using `[hcov X ((hL t ht).2 X hX), hT k r Ξ₀ X hΞ₀ ((hL t ht).2 X hX)])]`.
-
-Conclude with `hsym Ξ₀ hΞ₀`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opCVOf_of (hA : WFamApp) (hS : WFamSymb) (hT : TrRealLie) (hK : CkLevOn) : OpCVOf := by
   intro hRw hCW k r z z' d O U κ Φ u hC hOm hCk hev j hj1 hjn
@@ -89,15 +87,15 @@ theorem opCVOf_of (hA : WFamApp) (hS : WFamSymb) (hT : TrRealLie) (hK : CkLevOn)
     exact hsym Ξ₀ hΞ₀
 
 /- English proof (translation)
-Introduce `hRw hCW k r z z' d O U κ Φ u Bs hC hOm hCk hBs hev j hj1 hjk`. Take `⟨_, hfld, hw⟩` from `hRw k r z z' d O U κ Φ u hC hOm hCk`. Take `⟨ws, lam, L, cj, hcj, hL, hid, hsym⟩` from `hCW k r z' Bs hBs j hj1 hjk`. Use `choose c hc using hev`. Establish `hjn : j ≤ 2 * r + k + 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨wfam L (VR κ Φ) (-(∑ i, lam i * c (ws i))), cj, hcj, wfam_ok L _ _ j (fun t ht => (hL t ht).1) (fun X => (hfld X).1), ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[hA]`. Establish `hgG : κ x ∈ B.GV k r` using `(hC.2.2.2.2.1 x hx).1`. Establish `hgO : κ x ∈ JF.Om k r z z'` using `⟨hgG, hOm x hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hid ℂ (B.GV k r ∩ Q.OmPlus k r z z') u (hK k r _ _ ℂ u hCk) (κ x) ⟨hgG, hOm x hx⟩ hgG`. Establish `e2 : (L.map fun t => t.1 * vfW (t.2.map (VR κ Φ)) (fun y => u (κ y)) x) = (L.map fun t => t.1 • B.Rw t.2 u (κ x))`. Use `List.map_congr_left (fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[(hw t.2 (hL t ht).2 ((hL t ht).1.trans hjn) x hx).1, smul_eq_mul]`. Rewrite using `[e2, ← e1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc _ _ hgO, smul_eq_mul]`. Rewrite using `[neg_mul, Finset.sum_mul]`. Simplify using `only [mul_assoc, add_neg_cancel]`. Introduce `x hx ξ Ξ₀ hΞ₀ hcov`. Rewrite using `[hS d _ L (VR κ Φ) _ j x ξ (fun X => Matrix.trace (Ξ₀ * X)) hj1 (fun t ht X hX => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcov X ((hL t ht).2 X hX), hT k r Ξ₀ X hΞ₀ ((hL t ht).2 X hX)])]`. Conclude with `hsym Ξ₀ hΞ₀`.
+A detailed English derivation is pending.
 -/
 theorem opCapROf_of (hA : WFamApp) (hS : WFamSymb) (hT : TrRealLie) (hK : CkLevOn) : OpCapROf := by
   intro hRw hCW k r z z' d O U κ Φ u Bs hC hOm hCk hBs hev j hj1 hjk
@@ -126,15 +124,15 @@ theorem opCapROf_of (hA : WFamApp) (hS : WFamSymb) (hT : TrRealLie) (hK : CkLevO
     exact hsym Ξ₀ hΞ₀
 
 /- English proof (translation)
-Introduce `hRw hCW k r z z' d O U κ Φ u Bs hC hOm hCk hBs hev j hj1 hjk`. Take `⟨_, hfld, hw⟩` from `hRw k r z z' d O U κ Φ u hC hOm hCk`. Take `⟨ws, lam, L, cj, hcj, hL, hid, hsym⟩` from `hCW k r z Bs hBs j hj1 hjk`. Use `choose c hc using hev`. Establish `hjn : j ≤ 2 * r + k + 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨wfam L (VL κ Φ) (-(∑ i, lam i * c (ws i))), cj, hcj, wfam_ok L _ _ j (fun t ht => (hL t ht).1) (fun X => (hfld X).2), ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[hA]`. Establish `hgG : κ x ∈ B.GV k r` using `(hC.2.2.2.2.1 x hx).1`. Establish `hgO : κ x ∈ JF.Om k r z z'` using `⟨hgG, hOm x hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hid ℂ (B.GV k r ∩ Q.OmPlus k r z z') u (hK k r _ _ ℂ u hCk) (κ x) ⟨hgG, hOm x hx⟩ hgG`. Establish `e2 : (L.map fun t => t.1 * vfW (t.2.map (VL κ Φ)) (fun y => u (κ y)) x) = (L.map fun t => t.1 • t.2.foldr Q.LdV u (κ x))`. Use `List.map_congr_left (fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[(hw t.2 (hL t ht).2 ((hL t ht).1.trans hjn) x hx).2, smul_eq_mul]`. Rewrite using `[e2, ← e1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc _ _ hgO, smul_eq_mul]`. Rewrite using `[neg_mul, Finset.sum_mul]`. Simplify using `only [mul_assoc, add_neg_cancel]`. Introduce `x hx ξ Ξ hΞ hcov`. Rewrite using `[hS d _ L (VL κ Φ) _ j x ξ (fun X => Matrix.trace (Ξ * X)) hj1 (fun t ht X hX => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcov X ((hL t ht).2 X hX), hT k r Ξ X hΞ ((hL t ht).2 X hX)])]`. Conclude with `hsym Ξ hΞ`.
+A detailed English derivation is pending.
 -/
 theorem opCapLOf_of (hA : WFamApp) (hS : WFamSymb) (hT : TrRealLie) (hK : CkLevOn) : OpCapLOf := by
   intro hRw hCW k r z z' d O U κ Φ u Bs hC hOm hCk hBs hev j hj1 hjk

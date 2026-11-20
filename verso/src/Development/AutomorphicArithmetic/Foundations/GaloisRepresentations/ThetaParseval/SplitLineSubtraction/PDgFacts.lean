@@ -20,11 +20,9 @@ private theorem dg_val {t : ℕ} (a : Fin t → Γ →* kˣ) (g : Γ) :
     ((dg a g : GL (Fin t) k) : Matrix (Fin t) (Fin t) k) = Matrix.diagonal fun i => (a i g : k) := rfl
 
 /- English proof (translation)
-Establish `key : ∀ (W : Submodule k (Fin 1 → k)), IsInv (dg b) W`. Introduce `W g v hv`. Establish `: ((dg b g : GL (Fin 1) k) : Matrix (Fin 1) (Fin 1) k).mulVec v = ((b 0 g : kˣ) : k) • v`. Use extensionality with `i`. Use `fin_cases i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[dg_val, Matrix.mulVec_diagonal]`. Rewrite using `[this]`. Conclude with `W.smul_mem _ hv`. Introduce `W _`. Take `⟨W', hW'⟩` from `exists_isCompl W`.
-
-Conclude with `⟨W', key W', hW'⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem ss_dg_one (b : Fin 1 → Γ →* kˣ) : IsSSRep (dg b) := by
   have key : ∀ (W : Submodule k (Fin 1 → k)), IsInv (dg b) W := by
@@ -40,13 +38,13 @@ private theorem ss_dg_one (b : Fin 1 → Γ →* kˣ) : IsSSRep (dg b) := by
   exact ⟨W', key W', hW'⟩
 
 /- English proof (translation)
-Use extensionality with `g : 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.BCGal.sumRep_val, dg_val, dg_val, dg_val]`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[Matrix.diagonal_apply, Matrix.reindex_apply, Matrix.submatrix_apply]`. Both sides reduce to the same expression. Introduce `h`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h'` using `congrArg Fin.val h`. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at h'`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `h'` using `congrArg Fin.val h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at h'`. Use linear arithmetic over natural numbers and integers. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem dg_succ {t : ℕ} (a : Fin (t + 1) → Γ →* kˣ) :
     dg a = sumRep (dg fun i : Fin t => a i.castSucc) (dg fun _ : Fin 1 => a (Fin.last t)) := by
@@ -72,7 +70,7 @@ private theorem dg_succ {t : ℕ} (a : Fin (t + 1) → Γ →* kˣ) :
     rfl
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => exact GlobalTheory.BCGal.ss_zero _`. Consider the case `succ t ih`. Rewrite using `[dg_succ]`. Conclude with `GlobalTheory.BCGal.ss_sumRep _ _ (ih _) (ss_dg_one _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ss_dg {t : ℕ} (a : Fin t → Γ →* kˣ) : IsSSRep (dg a) := by
   induction t with
@@ -84,7 +82,7 @@ private theorem ss_dg {t : ℕ} (a : Fin t → Γ →* kˣ) : IsSSRep (dg a) := 
 end
 
 /- English proof (translation)
-Introduce `Γ k _ _ t a`. Use `⟨ss_dg a, fun g => ?_⟩` and prove the remaining obligations. Use `show ((dg a g : GL (Fin t) k) : Matrix (Fin t) (Fin t) k).charpoly = _`. Rewrite using `[dg_val, Matrix.charpoly_diagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dgFacts_holds : DgFacts := by
   intro Γ k _ _ t a

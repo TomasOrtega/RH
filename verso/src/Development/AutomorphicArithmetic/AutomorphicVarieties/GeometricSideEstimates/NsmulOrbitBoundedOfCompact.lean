@@ -8,11 +8,9 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open GroundTheory.Automorphic GroundTheory.Automorphic.CuspidalSpectrum Filter Topology
 
 /- English proof (translation)
-Establish `hc : Continuous fun p : Af E × (Fin a → Af E) => p.1 • p.2` using `continuous_fst.smul continuous_snd`. Establish `hev : ∀ᶠ r in 𝓝 (0 : Af E), ∀ x ∈ T, r • x ∈ L`. Use `hT.eventually_forall_of_forall_eventually fun x _ => ?_` and prove the remaining obligations. Use `hc.continuousAt.preimage_mem_nhds (hL.mem_nhds ?_)` and prove the remaining obligations. Use `show (0 : Af E) • x ∈ L`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_smul]`. Conclude with `L.zero_mem`. Take `⟨n, hn⟩` from `((GlobalTheory.AdelicFactorial.tendsto_factorial_finiteAdele E).eventually hev).exists`. Use `⟨n.factorial, n.factorial_pos, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `hn x hx`.
-
-Rewrite `h` using `[Nat.cast_smul_eq_nsmul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem nsmul_mem_of_compact {E : Type} [Field E] [NumberField E] {a : ℕ} (L : AddSubgroup (Fin a → Af E))
     (hL : IsOpen (L : Set (Fin a → Af E))) {T : Set (Fin a → Af E)} (hT : IsCompact T) :
@@ -30,13 +28,11 @@ private theorem nsmul_mem_of_compact {E : Type} [Field E] [NumberField E] {a : �
   rwa [Nat.cast_smul_eq_nsmul] at h
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha L hL`. Take `⟨T, C, N, hT, hrow⟩` from `UpperTheory.infinite_place_norm_continuity E a ha`. Take `⟨M, hM, hML⟩` from `nsmul_mem_of_compact L hL.isOpen hT`. Use `⟨((M : ℝ) ^ 2) ^ N * C, N, fun g => ?_⟩` and prove the remaining obligations. Take `⟨-, hq, hF⟩` from `(UpperTheory.rationalPoint_retraction_exists_cmDatum E a ha).2.1 g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, hvT, hvC⟩` from `hrow (retractOne g)`. Express the relevant statement in the definitionally equal form `ptF (rt g) v ∈ T at hvT`. Express the relevant statement in the definitionally equal form `qht (rt g) * qf (pt (rt g) v) ^ N ≤ C at hvC`. Rewrite `hvT` using `[hF]`. Rewrite `hvC` using `[hq]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨M • v, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ptF g (M • v) ∈ L`. Rewrite using `[map_nsmul]`. Conclude with `hML _ hvT`. Rewrite using `[← Nat.cast_smul_eq_nsmul E]`.
-
-Conclude with `smul_ne_zero (Nat.cast_ne_zero.2 hM.ne') hv`. Rewrite using `[map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ, (UpperTheory.geometric_side_quadraticForm_identity E a).2.2.2.1, mul_pow, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left hvC (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.nsmul_orbit_bounded_of_compact :
     ShortRow := by

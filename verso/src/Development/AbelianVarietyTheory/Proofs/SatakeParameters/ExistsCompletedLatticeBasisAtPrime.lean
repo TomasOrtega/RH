@@ -17,13 +17,13 @@ noncomputable abbrev locRing {E : Type} [Field E] [NumberField E] (P : HeightOne
   Localization.subalgebra.ofField E P.asIdeal.primeCompl P.asIdeal.primeCompl_le_nonZeroDivisors
 
 /- English proof (translation)
-Establish `: IsLocalization.AtPrime (locRing P) P.asIdeal` using `Localization.subalgebra.isLocalization_ofField E _ _`. Establish `: IsDiscreteValuationRing (locRing P)` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 E) P.ne_bot _`. Establish `: IsFractionRing (locRing P) E` using `Localization.subalgebra.isFractionRing_ofField E _ _`. Set `M` to `Submodule.span (locRing P) (L : Set (Fin n → E))`. Establish `hM : Submodule.IsLattice E M`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `hfg`. Conclude with `⟨s, (Submodule.span_span_of_tower (𝓞 E) (locRing P) _).symm⟩`. Rewrite using `[Submodule.span_span_of_tower, hsp]`. Establish `: Module.Free (locRing P) M` using `Submodule.IsLattice.free E M`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr : Module.finrank (locRing P) M = n`. Simplify using `using Submodule.IsLattice.finrank_of_pi E M`. Set `b` to `Module.finBasisOfFinrankEq (locRing P) M hr`. Use `⟨fun i => b i, fun i => (b i).2, fun x hx => ?_⟩` and prove the remaining obligations. Use `⟨b.repr ⟨x, Submodule.subset_span hx⟩, fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrArg (fun v : M => (v : Fin n → E) a) (b.sum_repr ⟨x, Submodule.subset_span hx⟩)`. Simplify using `only [Submodule.coe_sum, Finset.sum_apply] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gens {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG) (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤) :
@@ -51,15 +51,13 @@ theorem exists_gens {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum 
   exact h.symm
 
 /- English proof (translation)
-Use `AddSubgroup.closure_induction₂ (p := fun x y _ _ => x * y ∈ intAE D) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, ha, u, rfl⟩ ⟨b, hb, v, rfl⟩`. Use `AddSubgroup.subset_closure ⟨a * b, fun w => ?_, u * v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha w) (hb w)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression. Introduce `x _`. Rewrite using `[zero_mul]`. Conclude with `zero_mem _`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[add_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem h1 h2`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[mul_add]`. Conclude with `add_mem h1 h2`. Introduce `x y _ _ h`.
-
-Rewrite using `[neg_mul]`. Conclude with `neg_mem h`. Introduce `x y _ _ h`. Rewrite using `[mul_neg]`. Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_int (D : D7) {x y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
     x * y ∈ intAE D := by
@@ -76,11 +74,9 @@ theorem mul_mem_int (D : D7) {x y : Formalism.MainNotions.GlobalTheoryTheory.Gen
   · intro x y _ _ h; rw [mul_neg]; exact neg_mem h
 
 /- English proof (translation)
-Take `⟨a, s, hs, hc⟩` from `c.2`. Establish `hs0 : s ≠ 0` using `fun h0 => hs (h0 ▸ P.asIdeal.zero_mem)`. Establish `h1 : finPart D (e * incA D ((s : D.host.E)⁻¹)) ∈ intAE D`. Assume the negation of the conclusion as `hn`. Conclude with `hs ((h.2 s hs0).2 hn)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : (t ⊗ₜ[D.host.F] (a : D.host.E)) ∈ intAE D` using `AddSubgroup.subset_closure ⟨t, ht, a, rfl⟩`. Establish `h3` using `mul_mem_int D h1 h2`. Establish `h4 : finPart D (incA D ((s : D.host.E)⁻¹)) = (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] ((s : D.host.E)⁻¹)` using `rfl`. Rewrite `h3` using `[RingHom.map_mul, h4, mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_comm _ (a : D.host.E)]`. Rewrite using `[hc]`.
-
-Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mul_loc_mem {D : D7} {P : HeightOneSpectrum (𝓞 D.host.E)} {e : Formalism.L2.Theta.AE D}
     (h : IsIdemAt e P) {t : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F} (ht : t ∈ intAf D.host.F) (c : locRing P) :
@@ -98,19 +94,19 @@ theorem idem_mul_loc_mem {D : D7} {P : HeightOneSpectrum (𝓞 D.host.E)} {e : F
   exact h3
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_one]; exact one_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem_intAf (F : Type) [Field F] [NumberField F] : (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) ∈ intAf F :=
   fun v => by rw [map_one]; exact one_mem _
 
 /- English proof (translation)
-Establish `hee : finPart D e * finPart D e = finPart D e` using `by rw [← RingHom.map_mul, h.1.1]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Establish `h1 : finPart D e ∈ intAE D`. Use `idem_mul_loc_mem h (one_mem_intAf _) 1` as an intermediate fact.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[OneMemClass.coe_one, ← Algebra.TensorProduct.one_def, mul_one]`. Then use the resulting hypothesis. Use `GlobalTheory.LatDual.smul_mem_lamHat V _ h1 _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LatDual.lamHat_eq_hat]`. Conclude with `AddSubgroup.subset_closure ⟨1, fun v => one_mem _, x, hx, rfl⟩`. Consider the case `zero`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.zero_apply, TensorProduct.tmul_zero, mul_zero]`. Conclude with `zero_mem _`. Consider the case `add u w _ _ hu hw`. Simplify using `only [Pi.add_apply, TensorProduct.tmul_add, mul_add]`. Conclude with `add_mem hu hw`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Consider the case `smul c u _ hu`. Use `GlobalTheory.LatDual.smul_mem_lamHat V _ (idem_mul_loc_mem h (one_mem_intAf _) c) _ hu` as an intermediate fact. Use `this using 2 with a` and compare the differences between its conclusion and the goal. Rewrite using `[mul_mul_mul_comm, hee, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem idem_mul_span_mem {D : D7} (V : HSp D) {P : HeightOneSpectrum (𝓞 D.host.E)} {e : Formalism.L2.Theta.AE D}
     (h : IsIdemAt e P) {x : Fin V.rank → D.host.E}
@@ -140,19 +136,19 @@ theorem idem_mul_span_mem {D : D7} (V : HSp D) {P : HeightOneSpectrum (𝓞 D.ho
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D V P e h`. Establish `hee : finPart D e * finPart D e = finPart D e` using `by rw [← RingHom.map_mul, h.1.1]`. Take `⟨-, -, hfg, hspan, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Take `⟨b, hb, hc⟩` from `exists_gens P (GlobalTheory.Member.latC V) hfg hspan`. Establish `h1 : finPart D e ∈ intAE D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `idem_mul_loc_mem h (one_mem_intAf _) 1` as an intermediate fact. Rewrite `this` using `[OneMemClass.coe_one, ← Algebra.TensorProduct.one_def, mul_one]`. Then use the resulting hypothesis. Use `⟨Matrix.of fun a i => (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] b i a, fun z hz => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `sum_mem (S := LamHat V) (t := Finset.univ) fun i _ => GlobalTheory.LatDual.smul_mem_lamHat V _ (hz i) _ (idem_mul_span_mem V h (hb i))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.sum_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite `hy` using `[GlobalTheory.LatDual.lamHat_eq_hat]`. Proceed by induction on `hy using AddSubgroup.closure_induction with`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy`. Take `⟨t, ht, x, hx, rfl⟩` from `hy`. Take `⟨c, hc⟩` from `hc x hx`. Use `⟨fun i => finPart D e * (t ⊗ₜ[D.host.F] (c i : D.host.E)), fun i => idem_mul_loc_mem h ht _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.mul_sum]`. Rewrite using `[hc a, TensorProduct.tmul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm _ (finPart D e), ← mul_assoc, hee, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_comm (b i a)]`. Consider the case `zero => exact ⟨0, fun _ => zero_mem _, by rw [Matrix.mulVec_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add u w _ _ hu hw`. Take `⟨z, hz, hu⟩` from `hu`. Take `⟨z', hz', hw⟩` from `hw`. Use `⟨z + z', fun i => add_mem (hz i) (hz' i), funext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add, Pi.add_apply, Pi.add_apply, mul_add, mul_add, congrFun hu a, congrFun hw a]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `neg u _ hu`. Take `⟨z, hz, hu⟩` from `hu`. Use `⟨-z, fun i => neg_mem (hz i), funext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_neg, Pi.neg_apply, Pi.neg_apply, mul_neg, mul_neg, congrFun hu a]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_loc_basis : ∀ {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)) (e : Formalism.L2.Theta.AE D), IsIdemAt e P → ∃ B : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E), (∀ z, IntVec z → (fun a => finPart D e * B.mulVec z a) ∈ LamHat V) ∧ ∀ y ∈ LamHat V, ∃ z, IntVec z ∧ (fun a => finPart D e * y a) = fun a => finPart D e * B.mulVec z a := by
   intro D V P e h

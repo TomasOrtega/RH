@@ -28,7 +28,7 @@ namespace Formalism.MainNotions.DIV
 open Formalism.BasicNotions MeasureTheory Matrix ComplexConjugate
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1, h2, h3, h4, h5⟩`.
+Supply the required witnesses or components.
 -/
 theorem arithmetic_real_place_admissible_of (A : TH.ProvA)
     (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst A) (h2 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisSecond A) (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine A)
@@ -36,14 +36,14 @@ theorem arithmetic_real_place_admissible_of (A : TH.ProvA)
   ⟨h1, h2, h3, h4, h5⟩
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem archimedean_hypothesis_of_items (D : D7) (Y : Formalism.MainNotions.SchurIrreducible.Prov D)
     (h : Formalism.MainNotions.SchurIrreducible.Conclusion1 D Y ∧ Formalism.MainNotions.SchurIrreducible.Conclusion2 D Y ∧ Formalism.MainNotions.SchurIrreducible.PointsLemma D Y ∧ Formalism.MainNotions.SchurIrreducible.Conclusion4 D Y ∧
       Formalism.MainNotions.SchurIrreducible.Conclusion5 D Y) : Formalism.MainNotions.ZetaProductPairs.adm8 Y.toProvA := h
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem second_lemma_hypothesis_same (D : D7) (Z : DivX D) (h : Formalism.MainNotions.ZetaProductPairs.L2 Z) : Formalism.MainNotions.InnerProductFormulaField.adm6 D Z := h
 
@@ -74,7 +74,7 @@ def LemmaUInst (qn : ℝ) (a t idx : ℕ) (Zv : ℂ) : Prop :=
           (Formalism.DoubleCosetMeasures.phiU O ϖ J' ρ) (Formalism.DoubleCosetMeasures.phiU O ϖ J' ρ) c
 
 /- English proof (translation)
-Take `⟨F, _, _, _, _, _, _, _, O, hO, ϖ, hϖ, h0, hl, hf, J', hJ1, hJ2, hJc, ρ, hρ, χ, nrm, lam, hc, c, hcl, hc1, μ, _, hμ, ν₁, _, _, hν₁, ν₂, _, _, hν₂, J, hJ, rfl, rfl, rfl⟩` from `H`. Conclude with `h F O hO ϖ hϖ h0 hl hf a t J' hJ1 hJ2 hJc ρ hρ χ nrm lam hc c hcl hc1 μ hμ ν₁ hν₁ ν₂ hν₂ J hJ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem L1index_inst (h : Formalism.MainNotions.ZetaProductPairs.L1index) {qn : ℝ} {a t idx : ℕ} {Zv : ℂ}
     (H : LemmaUInst qn a t idx Zv) :
@@ -91,9 +91,9 @@ structure TieG (D : D7) (X : Formalism.MainNotions.InnerProductFormulaField.Loc 
     LemmaUInst (Formalism.MainNotions.InnerProductFormulaField.normPl v) D.R.r D.R.t (X.idxgSb μ j v) (X.ZgSb μ j σ v)
 
 /- English proof (translation)
-Introduce `μ j hj hj' σ v hv`. Use `⟨?_, L1index_inst h (T.sb μ j hj hj' σ v hv)⟩` and prove the remaining obligations. Use `L1index_inst h (T.ch μ j hj hj' σ v hv)` as an intermediate fact. Establish `e : D.R.r + (j - 1) * D.R.t + D.R.t = D.R.r + j * D.R.t`. Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parahoric_index_hypothesis (D : D7) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D) (T : TieG D X) (h : Formalism.MainNotions.ZetaProductPairs.L1index) :
     Formalism.MainNotions.InnerProductFormulaField.adm5 D X := by
@@ -108,32 +108,32 @@ theorem parahoric_index_hypothesis (D : D7) (X : Formalism.MainNotions.InnerProd
   exact this
 
 /- English proof (translation)
-The claim follows from `parahoric_index_hypothesis D X T parahoric_index_int`.
+A detailed English derivation is pending.
 -/
 theorem parahoric_index_hypothesis_proved (D : D7) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D) (T : TieG D X) : Formalism.MainNotions.InnerProductFormulaField.adm5 D X :=
   parahoric_index_hypothesis D X T parahoric_index_int
 
 /- English proof (translation)
-Introduce `μ x` and use `h μ D.R.m le_rfl x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem real_type_of_uniform_type {D : D7} (T : ThetaX D) (h : Formalism.MainNotions.InnerProductFormulaField.TieRowTyp T) : Formalism.MainNotions.ZetaProductPairs.TieRowTyp T :=
   fun μ x => h μ D.R.m le_rfl x
 
 /- English proof (translation)
-Introduce `u` and use `let ⟨hF, hU, s, hs, h0, _⟩ := h u; ⟨hF, hU, s, hs, h0⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem multiplicity_bundle_first_part {D : D7} {T : ThetaX D} (X : Formalism.MainNotions.ZetaProductPairs.Loc D T) (h : Formalism.MainNotions.ZetaProductPairs.MultiplicityOneConditional X) :
     Formalism.MainNotions.ZetaProductPairs.UnfoldingScalarUnitary X :=
   fun u => let ⟨hF, hU, s, hs, h0, _⟩ := h u; ⟨hF, hU, s, hs, h0⟩
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem real_constant_hypothesis_of_lift {D : D7} {T : ThetaX D} (X : Formalism.MainNotions.ZetaProductPairs.Loc D T) (h : Formalism.MainNotions.InnerProductFormulaField.ArchimedeanFactorNonvanishing D T X) :
     Formalism.MainNotions.ZetaProductPairs.RealConstantNonvanishing X := h
 
 /- English proof (translation)
-Introduce `u`. Take `⟨hF, hU, s, hs, -, hMI⟩` from `h u`. Take `⟨c, hc, hA, hne⟩` from `h6 u`. Conclude with `⟨hF, hU, s, c, hs, hc, hA, hMI c hc hA hne⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem multiplicity_closed_of_constant {D : D7} {T : ThetaX D} (X : Formalism.MainNotions.ZetaProductPairs.Loc D T) (h : Formalism.MainNotions.ZetaProductPairs.MultiplicityOneConditional X)
     (h6 : Formalism.MainNotions.InnerProductFormulaField.ArchimedeanFactorNonvanishing D T X) : Formalism.MainNotions.ZetaProductPairs.MultiplicityOneExplicit X := by
@@ -143,17 +143,15 @@ theorem multiplicity_closed_of_constant {D : D7} {T : ThetaX D} (X : Formalism.M
   exact ⟨hF, hU, s, c, hs, hc, hA, hMI c hc hA hne⟩
 
 /- English proof (translation)
-Establish `sb : ∀ {p q : ℕ} (a b : TH.Ix p q), ¬ TH.sameBlock a b → a.isLeft ≠ b.isLeft`. Introduce `p q a b`. Apply the tactic sequence `cases a <;> cases b <;> simp [TH.sameBlock]`. Establish `hM : (((al.length + be.length + ga.length + de.length + D.R.t : ℕ) : ℝ)) ^ 3 ≤ ((D.R.rankY D.R.m : ℝ)) ^ 3`. Establish `: al.length + be.length + ga.length + de.length + D.R.t ≤ D.R.rankY D.R.m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hn]`. Unfold `Ranks.rankY`. Use `Nat.mul_le_mul_right D.R.t hj` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a b hab => ?_, fun a b hab => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `k` using `(hW.2.2 j (by omega) τ _ (h1 a) _ (h1 b) (sb a b hab)).1`. Establish `e : TH.lamA al be ga de a + c - (TH.lamA al be ga de b + c) = TH.lamA al be ga de a - TH.lamA al be ga de b` using `by ring`. Simplify using `only [e] at k`. Conclude with `lt_of_le_of_lt hM k`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k` using `(hW.2.2 (j + 1) hj τ _ (h2 a) _ (h2 b) (sb a b hab)).1`. Establish `e : TH.lamA' D.R.t al be ga de a + c' - (TH.lamA' D.R.t al be ga de b + c') = TH.lamA' D.R.t al be ga de a - TH.lamA' D.R.t al be ga de b` using `by ring`. Simplify using `only [e] at k`. Conclude with `lt_of_le_of_lt hM k`. Establish `k` using `(hW.2.2 j (by omega) τ _ (h1 a) _ (h1 b) (sb a b hab)).2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : TH.lamA al be ga de a + c - (TH.lamA al be ga de b + c) = TH.lamA al be ga de a - TH.lamA al be ga de b` using `by ring`. Simplify using `only [e] at k`. Establish `e1 : ((al.length + be.length + ga.length + de.length : ℕ) : ℝ) = (D.R.rankY j : ℝ)`. Rewrite using `[hn]`. Establish `e2 : ((min (al.length + be.length) (ga.length + de.length) : ℕ) : ℝ) = ((min (sigYD D.R j).1 (sigYD D.R j).2 : ℕ) : ℝ)` using `by rw [hp, hq]`.
-
-Rewrite using `[e1, e2]`. Conclude with `k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HypG_of_WtHyp {D : D7} (T : ThetaX D) (hW : Formalism.MainNotions.ZetaProductPairs.WtHyp T) (j : ℕ) (hj : j + 1 ≤ D.R.m)
     (τ : D.what₂.Tau) (al be ga de : List ℚ) (c c' : ℚ)
@@ -196,17 +194,15 @@ theorem HypG_of_WtHyp {D : D7} (T : ThetaX D) (hW : Formalism.MainNotions.ZetaPr
     exact k
 
 /- English proof (translation)
-Introduce `a`. Take `⟨hv, hb, hbl⟩` from `(hW.2.1 τ ⟨j, hj⟩).2`. Establish `h` using `h1 a`. Unfold `TH.TPar.Dpar at h`. Rewrite `h` using `[Finset.mem_image]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx, e⟩` from `h`. Establish `e1 : lam a = x.1 + (Formalism.MainNotions.ZetaProductPairs.parD T).e τ ⟨j, hj⟩`. Use `congrArg Prod.fst e` as an intermediate fact. Simplify using `only at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[e1]`. Rewrite `hx` using `[Finset.mem_union, Finset.mem_union]`. Break down `hx with (hx | hx) | hx` into its components or cases. Take `⟨i, -, rfl⟩` from `Finset.mem_image.mp hx`. Conclude with `hv i`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, -, rfl⟩` from `Finset.mem_image.mp hx`. Use `hb i` as an intermediate fact. Rewrite `this` using `[show (Formalism.MainNotions.ZetaProductPairs.parD T).e τ ⟨j, hj⟩ - (Formalism.MainNotions.ZetaProductPairs.parD T).b τ i = -(Formalism.MainNotions.ZetaProductPairs.parD T).b τ i + (Formalism.MainNotions.ZetaProductPairs.parD T).e τ ⟨j, hj⟩ by ring]`. Then use the resulting hypothesis. Take `⟨i, hi, hx⟩` from `Finset.mem_biUnion.mp hx`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hij : i ≠ ⟨j, hj⟩`. Introduce `h`. Use `(Finset.mem_filter.mp hi).2` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `lt_irrefl _ this`.
-
-Conclude with `hbl i hij y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HypA_mod_of_WtHyp {D : D7} (T : ThetaX D) (hW : Formalism.MainNotions.ZetaProductPairs.WtHyp T) (j : ℕ) (hj : j < D.R.m)
     (τ : D.what₂.Tau) {p q : ℕ} (lam : TH.Ix p q → ℚ)
@@ -254,13 +250,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH MeasureTheory
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem archimedean_statement_iff_local (D : D7) (X : Formalism.MainNotions.SchurIrreducible.Prov D) :
     Formalism.MainNotions.SchurIrreducible.Stmt D X ↔ Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisLocal D X := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h0, h1, h2, h3, h4, h5⟩`.
+Supply the required witnesses or components.
 -/
 theorem arakelov_clauses_admissible_of (D : D7) {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D} {Am : AmbForm D V.S} (X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LocV D V Am) (h0 : Formalism.MainNotions.SchurIrreducible.DiscreteSeriesBlattner X.ar)
     (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst X.ar) (h2 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisSecond X.ar) (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X.ar)
@@ -268,7 +264,7 @@ theorem arakelov_clauses_admissible_of (D : D7) {V : Formalism.MainNotions.Absol
   ⟨h0, h1, h2, h3, h4, h5⟩
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.AbsolutelyIrreducibleSpan.adm13`. Rewrite using `[← hY]`. Conclude with `⟨h0, h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem decomposition_hypothesis_of_items (D : D7) {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D} {Am : AmbForm D V.S} (X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LocV D V Am) (Y : Formalism.MainNotions.SchurIrreducible.Prov D)
     (hY : Y.toProvA = X.ar) (h0 : Formalism.MainNotions.SchurIrreducible.adm3 D Y)
@@ -279,7 +275,7 @@ theorem decomposition_hypothesis_of_items (D : D7) {V : Formalism.MainNotions.Ab
   exact ⟨h0, h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2⟩
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.AbsolutelyIrreducibleSpan.adm8 Formalism.MainNotions.SchurIrreducible.ArchimedeanSignatureMatching`. Rewrite using `[hY]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem decomposition_iff_archimedean (D : D7) {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D} {Am : AmbForm D V.S} (X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LocV D V Am) (Y : Formalism.MainNotions.SchurIrreducible.Prov D)
     (hY : Y.toProvA = X.ar) : Formalism.MainNotions.AbsolutelyIrreducibleSpan.adm8 D X ↔ Formalism.MainNotions.SchurIrreducible.ArchimedeanSignatureMatching D Y := by
@@ -296,13 +292,13 @@ def ArchimedeanChainApplication (D : D7) (T : ThetaX D) (A : ProvA) (X : Formali
         Formalism.MainNotions.InnerProductFormulaField.thS T μ i _ Φ G = 0)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem archimedean_hypothesis_of_parts (D : D7) (T : ThetaX D) (A : ProvA) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D) (h : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst A)
     (hc : ArchimedeanChainApplication D T A X) : Formalism.MainNotions.InnerProductFormulaField.adm3 D T A X := ⟨h, hc⟩
 
 /- English proof (translation)
-Break down `H with ⟨t, al, be, ga, de, hd, Φ, v, hΦ, hv, rfl⟩ | ⟨t, al, be, ga, de, hd, Φ, v, hΦ, hv, rfl⟩` into its components or cases. Take `⟨-, h2, h3, -⟩` from `(h.1 t al be ga de hd).2 Φ v hΦ hv`. Conclude with `⟨_, div_pos (pow_pos h3 2) (A.ds _ _ _).fdeg_pos, h2⟩`. Take `⟨-, h2, h3, -⟩` from `(h.2 t al be ga de hd).2 Φ v hΦ hv`. Conclude with `⟨_, div_pos (pow_pos h3 2) (A.ds _ _ _).fdeg_pos, h2⟩`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsARZ_pos (A : ProvA) (h : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst A) {z : ℂ} (H : Formalism.MainNotions.InnerProductFormulaField.IsARZ A z) :
     ∃ x : ℝ, 0 < x ∧ z = (x : ℂ) := by
@@ -313,9 +309,9 @@ theorem IsARZ_pos (A : ProvA) (h : Formalism.MainNotions.SchurIrreducible.Archim
     exact ⟨_, div_pos (pow_pos h3 2) (A.ds _ _ _).fdeg_pos, h2⟩
 
 /- English proof (translation)
-Introduce `j h1 h2`. Take `⟨z, hz, e⟩` from `(h.2 hW).1 j h1 h2`. Use `choose x hx hxe using fun τ => IsARZ_pos A h.1 (hz τ)`. Establish `: ((X.ZChR j : ℝ) : ℂ) = ((∏ τ, x τ : ℝ) : ℂ)`. Rewrite using `[e, Complex.ofReal_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun τ _ => hxe τ`. Rewrite using `[Complex.ofReal_inj.mp this]`. Conclude with `Finset.prod_pos fun τ _ => hx τ`.
+A detailed English derivation is pending.
 -/
 theorem real_integral_positive_of_chain (D : D7) (T : ThetaX D) (A : ProvA) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D) (h : Formalism.MainNotions.InnerProductFormulaField.adm3 D T A X)
     (hW : Formalism.MainNotions.ZetaProductPairs.WtHyp T) : ∀ j, 1 ≤ j → j ≤ D.R.m → 0 < X.ZChR j := by
@@ -329,18 +325,18 @@ theorem real_integral_positive_of_chain (D : D7) (T : ThetaX D) (A : ProvA) (X :
   exact Finset.prod_pos fun τ _ => hx τ
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem up_lift_lands_in_kernel (D : D7) (h : Formalism.MainNotions.PrimeDegreeVariant.ThetaUpInV0 D) : Formalism.MainNotions.InnerProductFormulaField.adm10 D := h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hI, hR, h3⟩`.
+Supply the required witnesses or components.
 -/
 theorem transfer_hypothesis_of_isotypic (D : D7) (hI : Rows.IsotInternal D.what₂) (hR : Rows.IsotRank D.what₂)
     (h3 : Formalism.MainNotions.PrimeDegreeVariant.ExactRowOccurrence D) : Formalism.MainNotions.InnerProductFormulaField.adm11 D := ⟨hI, hR, h3⟩
 
 /- English proof (translation)
-Introduce `j h1 h2 π hb`. Use `hr j h1 h2 π` as an intermediate fact. Rewrite `this` using `[hb, finrank_bot]`. Conclude with `(h3 π).ne this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isot_ne_bot (D : D7) (h3 : Formalism.MainNotions.PrimeDegreeVariant.ExactRowOccurrence D) (hr : Rows.IsotRank D.what₂) :
     Formalism.MainNotions.InnerProductFormulaField.IsotypicPartsNonzero D := by
@@ -350,20 +346,20 @@ theorem isot_ne_bot (D : D7) (h3 : Formalism.MainNotions.PrimeDegreeVariant.Exac
   exact (h3 π).ne this
 
 /- English proof (translation)
-Introduce `μ j hj σ` and use `⟨(h μ j hj.1 hj.2 σ).1, fun hne => ((h μ j hj.1 hj.2 σ).2 hne).1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fock_hypothesis_of_lift_theorem (D : D7) (Z : DivX D) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D) (h : Formalism.MainNotions.InnerProductFormulaField.ConjugationNormInvariance D Z X) :
     Formalism.MainNotions.CanonicalTranslateJets.ArchimedeanSignatureMatching D :=
   fun μ j hj σ => ⟨(h μ j hj.1 hj.2 σ).1, fun hne => ((h μ j hj.1 hj.2 σ).2 hne).1⟩
 
 /- English proof (translation)
-Introduce `μ j h1 h2 σ` and use `(h μ j h1 h2 σ).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LamPDef_of (D : D7) (Z : DivX D) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D) (h : Formalism.MainNotions.InnerProductFormulaField.ConjugationNormInvariance D Z X) :
     Rows.LamPDef D.what₂ := fun μ j h1 h2 σ => (h μ j h1 h2 σ).1
 
 /- English proof (translation)
-Introduce `μ j h1 h2 π c hne hc`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Conclude with `smul_left_injective ℂ hx0 ((h μ j h1 h2 π x hx).symm.trans (hc x hx))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem LamEig_of_LamPDef (D : D7) (h : Rows.LamPDef D.what₂) : Formalism.MainNotions.InnerProductFormulaField.LamEig D := by
   intro μ j h1 h2 π c hne hc
@@ -371,7 +367,7 @@ theorem LamEig_of_LamPDef (D : D7) (h : Rows.LamPDef D.what₂) : Formalism.Main
   exact smul_left_injective ℂ hx0 ((h μ j h1 h2 π x hx).symm.trans (hc x hx))
 
 /- English proof (translation)
-Introduce `μ j hj σ` and use `⟨fun x hx => h μ j hj.1 hj.2 σ x hx, hp μ j hj σ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lambda_positivity_admissible_of_def (D : D7) (h : Rows.LamPDef D.what₂)
     (hp : ∀ μ j, Formalism.MainNotions.CanonicalTranslateJets.InR D j → ∀ σ, D.what₂.isot j σ ≠ ⊥ → 0 < D.what₂.lamP μ j σ) :
@@ -379,17 +375,15 @@ theorem lambda_positivity_admissible_of_def (D : D7) (h : Rows.LamPDef D.what₂
   fun μ j hj σ => ⟨fun x hx => h μ j hj.1 hj.2 σ x hx, hp μ j hj σ⟩
 
 /- English proof (translation)
-Use `lambda_positivity_admissible_of_def D h fun μ j hj σ hne => ?_` and prove the remaining obligations. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `e` using `h μ j hj.1 hj.2 σ x hx`. Establish `hT : D.what₂.thetaT μ j x ≠ 0`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz⟩` from `hs μ j hj x`. Establish `: inner ℂ x x = (0 : ℂ)` using `by conv_lhs => rw [← hz]`. Use `LinearMap.adjoint_inner_left (D.what₂.thetaP μ j) z x` as an intermediate fact. Unfold `Rows.Data.thetaT at h0`. Rewrite `this` using `[h0, inner_zero_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this`, the goal using `[hz]`. Conclude with `this.symm`. Conclude with `hx0 (inner_self_eq_zero.mp this)`. Establish `k : ((D.what₂.lamP μ j σ : ℝ) : ℂ) * inner ℂ x x = inner ℂ (D.what₂.thetaT μ j x) (D.what₂.thetaT μ j x)`. Rewrite using `[← inner_smul_right, ← e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Rows.Data.thetaT`. Rewrite using `[LinearMap.adjoint_inner_left]`. Establish `k' : D.what₂.lamP μ j σ * ‖x‖ ^ 2 = ‖D.what₂.thetaT μ j x‖ ^ 2`. Establish `h1` using `congrArg Complex.re k`. Rewrite `h1` using `[Complex.re_ofReal_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : (inner ℂ x x).re = ‖x‖ ^ 2` using `by simpa using inner_self_eq_norm_sq (𝕜 := ℂ) x`. Establish `a2 : (inner ℂ (D.what₂.thetaT μ j x) (D.what₂.thetaT μ j x)).re = ‖D.what₂.thetaT μ j x‖ ^ 2`. Simplify using `using inner_self_eq_norm_sq (𝕜 := ℂ) (D.what₂.thetaT μ j x)`. Rewrite `h1` using `[a1, a2]`. Conclude with `h1`.
-
-Establish `p1 : 0 < ‖x‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hx0) 2`. Establish `p2 : 0 < ‖D.what₂.thetaT μ j x‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hT) 2`. Conclude with `(mul_pos_iff_of_pos_right p1).mp (k' ▸ p2)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eigenvalues_positive_of_surjective (D : D7) (h : Rows.LamPDef D.what₂)
     (hs : ∀ μ j, Formalism.MainNotions.CanonicalTranslateJets.InR D j → Function.Surjective (D.what₂.thetaP μ j)) :
@@ -435,7 +429,7 @@ def AdjOn (D : D7) (μ : D.what₂.Tup) (ι : D.what₂.Amb μ →ₗ[ℂ] D.wha
   (ι.domRestrict (Qof D μ ι) ∘ₗ LinearMap.adjoint (ι.domRestrict (Qof D μ ι))) y = z
 
 /- English proof (translation)
-Establish `h : BijOn D μ ((RowSide.sharp D).iota μ) ↔ BijOn D μ (D.what₂.iota μ)`. Rewrite using `[Formalism.MainNotions.AbsolutelyIrreducibleSpan.sharp_iota]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharp_bij_iff (D : D7) (μ : D.what₂.Tup) :
     Function.Bijective ((RowSide.sharp D).iotaQ μ) ↔ Function.Bijective (Formalism.MainNotions.InnerProductFormulaField.iotaQ D μ) := by
@@ -444,7 +438,7 @@ theorem sharp_bij_iff (D : D7) (μ : D.what₂.Tup) :
   exact h
 
 /- English proof (translation)
-Establish `h : AdjOn D μ ((RowSide.sharp D).iota μ) y z ↔ AdjOn D μ (D.what₂.iota μ) y z`. Rewrite using `[Formalism.MainNotions.AbsolutelyIrreducibleSpan.sharp_iota]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharp_adj_iff (D : D7) (μ : D.what₂.Tup) (y z : D.what₂.EE) :
     ((RowSide.sharp D).iotaQ μ ∘ₗ LinearMap.adjoint ((RowSide.sharp D).iotaQ μ)) y = z ↔
@@ -454,14 +448,14 @@ theorem sharp_adj_iff (D : D7) (μ : D.what₂.Tup) (y z : D.what₂.EE) :
   exact h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(sharp_bij_iff D μ).2 (h μ).1, fun σ => (sharp_adj_iff D μ _ _).2 ((h μ).2 σ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem tuple_data_of_lift_rows (D : D7) (Z : DivX D) (h : Formalism.MainNotions.InnerProductFormulaField.PointsLemma D Z) (μ : D.what₂.Tup) :
     Formalism.MainNotions.AbsolutelyIrreducibleSpan.DataTup D (Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev.sharp D) μ (Z.kapR D.what₂.embLL) :=
   ⟨(sharp_bij_iff D μ).2 (h μ).1, fun σ => (sharp_adj_iff D μ _ _).2 ((h μ).2 σ)⟩
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [Finset.prod_Icc_succ_top (by omega), ih, Nat.factorial_succ, mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_Icc_one_eq_factorial (N : ℕ) : ∏ x ∈ Finset.Icc 1 N, x = N.factorial := by
   induction N with
@@ -469,13 +463,13 @@ theorem prod_Icc_one_eq_factorial (N : ℕ) : ∏ x ∈ Finset.Icc 1 N, x = N.fa
   | succ k ih => rw [Finset.prod_Icc_succ_top (by omega), ih, Nat.factorial_succ, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← prod_Icc_one_eq_factorial]`. Establish `hinj : ∀ l ∈ Finset.Ioo i n, ∀ l' ∈ Finset.Ioo i n, z i - z l + l - i = z i - z l' + l' - i → l = l'`. Introduce `l hl l' hl' h`. Take `⟨h1, h2⟩` from `Finset.mem_Ioo.mp hl`. Take `⟨h1', h2'⟩` from `Finset.mem_Ioo.mp hl'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `a1` using `hmono i l h1 h2`. Establish `a2` using `hmono i l' h1' h2'`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Use `hmono l l' hlt h2'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `hmono l' l hlt h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod_of_subset_of_one_le' ?_ (fun x hx _ => (Finset.mem_Icc.mp hx).1)` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Take `⟨l, hl, rfl⟩` from `Finset.mem_image.mp hx`. Take `⟨h1, h2⟩` from `Finset.mem_Ioo.mp hl`. Establish `a1` using `hmono i l h1 h2`. Rewrite using `[Finset.mem_Icc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -508,19 +502,17 @@ theorem hook_row (n i : ℕ) (z : ℕ → ℕ) (hmono : ∀ i l, i < l → l < n
         omega
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.InnerProductFormulaField.logHk`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_nonneg fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.mp hi`. Establish `hG : Real.Gamma (a i + n - i) = ((z i + n - 1 - i).factorial : ℝ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, rfl⟩ : ∃ k, n = i + k + 1` from `⟨n - i - 1, by omega⟩`. Establish `e : z i + (i + k + 1) - 1 - i = z i + k` using `by omega`. Rewrite using `[e, ← Real.Gamma_nat_eq_factorial, ha i hi']`. Use `congr 1`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hS : ∑ l ∈ Finset.Ioo i n, Real.log (a i - a l + l - i) = Real.log ((∏ l ∈ Finset.Ioo i n, (z i - z l + l - i) : ℕ) : ℝ)`. Rewrite using `[Nat.cast_prod, Real.log_prod]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Finset.mem_Ioo.mp hl`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `a1` using `hmono i l h1 h2`. Establish `e : z i - z l + l - i = (z i - z l) + (l - i)` using `by omega`. Rewrite using `[e, ha i hi', ha l h2, Nat.cast_add, Nat.cast_sub a1, Nat.cast_sub h1.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `l hl`. Take `⟨h1, h2⟩` from `Finset.mem_Ioo.mp hl`. Establish `: 0 < z i - z l + l - i` using `by omega`. Conclude with `this.ne'` after adjusting the coercions. Rewrite using `[hG, hS, sub_nonneg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Real.log_le_log ?_ (by exact_mod_cast hook_row n i z hmono)` and prove the remaining obligations. Establish `: 0 < ∏ l ∈ Finset.Ioo i n, (z i - z l + l - i)`. Use `Finset.prod_pos fun l hl => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Finset.mem_Ioo.mp hl`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem logHk_nonneg (n : ℕ) (a : ℕ → ℝ) (z : ℕ → ℕ) (ha : ∀ i < n, a i = z i)
     (hmono : ∀ i l, i < l → l < n → z l ≤ z i) : 0 ≤ Formalism.MainNotions.InnerProductFormulaField.logHk n a := by
@@ -562,23 +554,21 @@ def APlusPart (D : D7) (j : ℕ) : Prop :=
     ∀ i l, i < l → l < (D.R.sigW j).1 → z l ≤ z i
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun τ _ => let ⟨z, h1, h2⟩ := h τ; logHk_nonneg _ _ z h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem sumHkP_nonneg (D : D7) (j : ℕ) (h : APlusPart D j) : 0 ≤ Formalism.MainNotions.InnerProductFormulaField.sumHkP D j :=
   Finset.sum_nonneg fun τ _ => let ⟨z, h1, h2⟩ := h τ; logHk_nonneg _ _ z h1 h2
 
 /- English proof (translation)
-Introduce `τ`. Use `choose zz hz using fun i => DV.aPlusQ_int D j τ i`. Establish `hR : ∀ i, DV.aPlus D j τ i = ((zz i : ℤ) : ℝ)` using `fun i => by`. Unfold `DV.aPlus`. Rewrite using `[hz i]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Use `norm_cast`. Establish `hp : (D.R.sigW j).1 = D.R.k + j - 1` using `rfl`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hlast : (1 : ℝ) ≤ DV.aPlus D j τ (D.R.k + j - 1 - 1)`. Use `DV.aPlusQ_last D j h1 h2 τ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `DV.aPlus`. Conclude with `this` after adjusting the coercions. Establish `hpos : ∀ i < (D.R.sigW j).1, 0 ≤ zz i`. Introduce `i hi`. Establish `h` using `hdec τ i (D.R.k + j - 1 - 1) (by rw [hp] at hi; omega) (by rw [hp]; omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : (1 : ℝ) ≤ ((zz i : ℤ) : ℝ)` using `by rw [← hR]; linarith`. Establish `h'' : (1 : ℤ) ≤ zz i` using `by exact_mod_cast h'`. Use linear arithmetic over natural numbers and integers. Use `⟨fun i => (zz i).toNat, fun i hi => ?_, fun i l hil hl => ?_⟩` and prove the remaining obligations. Rewrite using `[hR]`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Int.toNat_of_nonneg (hpos i hi)` as an intermediate fact. Conclude with `this.symm` after adjusting the coercions. Establish `h` using `hdec τ i l hil.le hl`. Rewrite `h` using `[hR, hR]`. Establish `h' : zz l ≤ zz i` using `by exact_mod_cast h`.
-
-Conclude with `Int.toNat_le_toNat h'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem APlusPart_of (D : D7) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (hdec : ∀ τ i i', i ≤ i' → i' < (D.R.sigW j).1 → DV.aPlus D j τ i' ≤ DV.aPlus D j τ i) : APlusPart D j := by
@@ -610,7 +600,7 @@ theorem APlusPart_of (D : D7) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     exact Int.toNat_le_toNat h'
 
 /- English proof (translation)
-Introduce `j hj` and use `sumHkP_nonneg D j (APlusPart_of D j (Finset.mem_Icc.mp hj).1 (Finset.mem_Icc.mp hj).2 (hdec j hj))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sumHkP_nonneg_of (D : D7)
     (hdec : ∀ j ∈ SizeData₂.lifts D, ∀ τ i i', i ≤ i' → i' < (D.R.sigW j).1 → DV.aPlus D j τ i' ≤ DV.aPlus D j τ i) :
@@ -618,21 +608,19 @@ theorem sumHkP_nonneg_of (D : D7)
   sumHkP_nonneg D j (APlusPart_of D j (Finset.mem_Icc.mp hj).1 (Finset.mem_Icc.mp hj).2 (hdec j hj))
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Unfold `DV.sigPar`. Distinguish the cases in `h1 : i + 1 < D.R.k - 1`. Establish `h0 : i < D.R.k - 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[dif_pos h1, dif_pos h0]`. Establish `a` using `(D.hc τ).u_gt_v ⟨i + 1, h1⟩`. Establish `b` using `(D.hc τ).v_gt_u ⟨i, h0⟩`. Conclude with `a.trans b`. Distinguish the cases in `h0 : i < D.R.k - 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hb : i + 1 - (D.R.k - 1) < D.R.m` using `by omega`. Rewrite using `[dif_neg h1, dif_pos hb, dif_pos h0]`. Establish `a` using `(D.hc τ).u_last_gt (by omega) (by omega)`. Establish `b` using `(D.hc τ).v_gt_u ⟨i, h0⟩`. Establish `e1 : (⟨i + 1 - (D.R.k - 1), hb⟩ : Fin D.R.m) = ⟨0, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.mk.injEq]`. Use linear arithmetic over natural numbers and integers. Establish `e2 : (⟨i + 1, by omega⟩ : Fin D.R.k) = ⟨D.R.k - 1, by omega⟩`. Rewrite using `[Fin.mk.injEq]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Establish `b' : (D.hc τ).u ⟨D.R.k - 1, by omega⟩ < (D.hc τ).v ⟨i, h0⟩`. Rewrite using `[← e2]`. Conclude with `b`. Conclude with `a.trans b'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : i - (D.R.k - 1) < D.R.m` using `by omega`. Establish `hb1 : i + 1 - (D.R.k - 1) < D.R.m` using `by omega`. Establish `hb2 : i - (D.R.k - 1) + 1 < D.R.m` using `by omega`. Rewrite using `[dif_neg h1, dif_pos hb1, dif_neg h0, dif_pos hb0]`. Establish `a` using `(D.hc τ).gap_be ⟨i - (D.R.k - 1), hb0⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `b` using `(D.hc τ).gap_eb ⟨i - (D.R.k - 1), hb0⟩ hb2`. Establish `e1 : (⟨i + 1 - (D.R.k - 1), hb1⟩ : Fin D.R.m) = ⟨i - (D.R.k - 1) + 1, hb2⟩`. Rewrite using `[Fin.mk.injEq]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1]`.
-
-Establish `ht : (0 : ℚ) ≤ D.R.t` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hkSigPar_lt (D : D7) (τ : D.what₂.Tau) (i : ℕ) (hi : i + 1 < D.R.k - 1 + D.R.m) :
     DV.sigPar D τ (i + 1) < DV.sigPar D τ i := by
@@ -675,9 +663,9 @@ theorem hkSigPar_lt (D : D7) (τ : D.what₂.Tau) (i : ℕ) (hi : i + 1 < D.R.k 
       linarith
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `DV.sigPar_int D τ i`. Take `⟨b, hb⟩` from `DV.sigPar_int D τ (i + 1)`. Establish `h` using `hkSigPar_lt D τ i hi`. Rewrite `h` using `[ha, hb]`. Establish `h' : b < a` using `by exact_mod_cast h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h'' : (b : ℚ) + 1 ≤ a` using `by exact_mod_cast h'`. Rewrite using `[DV.aPlusQ_eq, DV.aPlusQ_eq, ha, hb]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem aPlusQ_step (D : D7) (j : ℕ) (τ : D.what₂.Tau) (i : ℕ) (hi : i + 1 < D.R.k - 1 + D.R.m) :
     DV.aPlusQ D j τ (i + 1) ≤ DV.aPlusQ D j τ i := by
@@ -692,9 +680,9 @@ theorem aPlusQ_step (D : D7) (j : ℕ) (τ : D.what₂.Tau) (i : ℕ) (hi : i + 
   linarith
 
 /- English proof (translation)
-Establish `hp : (D.R.sigW j).1 = D.R.k + j - 1` using `rfl`. Establish `hk` using `D.R.m_add_three_le_k`. Rewrite `hi'` using `[hp]`. Establish `hQ : DV.aPlusQ D j τ i' ≤ DV.aPlusQ D j τ i`. Proceed by induction on `i', h using Nat.le_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `base => exact le_rfl`. Consider the case `succ n hn ih => exact (aPlusQ_step D j τ n (by omega)).trans (ih (by omega))`. Unfold `DV.aPlus`. Conclude with `hQ` after adjusting the coercions.
+Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem aPlus_dec (D : D7) (j : ℕ) (h2 : j ≤ D.R.m) (τ : D.what₂.Tau) (i i' : ℕ) (h : i ≤ i')
     (hi' : i' < (D.R.sigW j).1) : DV.aPlus D j τ i' ≤ DV.aPlus D j τ i := by
@@ -709,13 +697,13 @@ theorem aPlus_dec (D : D7) (j : ℕ) (h2 : j ≤ D.R.m) (τ : D.what₂.Tau) (i 
   exact_mod_cast hQ
 
 /- English proof (translation)
-The claim follows from `sumHkP_nonneg_of D fun j hj τ i i' h hi' => aPlus_dec D j (Finset.mem_Icc.mp hj).2 τ i i' h hi'`.
+A detailed English derivation is pending.
 -/
 theorem sumHkP_nonneg_rec (D : D7) : ∀ j ∈ SizeData₂.lifts D, 0 ≤ Formalism.MainNotions.InnerProductFormulaField.sumHkP D j :=
   sumHkP_nonneg_of D fun j hj τ i i' h hi' => aPlus_dec D j (Finset.mem_Icc.mp hj).2 τ i i' h hi'
 
 /- English proof (translation)
-The claim follows from `logHk_nonneg n a (fun i => (zz i).toNat) (fun i hi => by rw [ha]; exact_mod_cast (Int.toNat_of_nonneg (hpos i hi)).symm) (fun i l h1 h2 => Int.toNat_le_toNat (hdec i l h1 h2))`.
+A detailed English derivation is pending.
 -/
 theorem logHk_nonneg_of_int (n : ℕ) (a : ℕ → ℝ) (zz : ℕ → ℤ) (ha : ∀ i, a i = zz i)
     (hdec : ∀ i l, i < l → l < n → zz l ≤ zz i) (hpos : ∀ i < n, 0 ≤ zz i) : 0 ≤ Formalism.MainNotions.InnerProductFormulaField.logHk n a :=
@@ -724,11 +712,11 @@ theorem logHk_nonneg_of_int (n : ℕ) (a : ℕ → ℝ) (zz : ℕ → ℤ) (ha :
     (fun i l h1 h2 => Int.toNat_le_toNat (hdec i l h1 h2))
 
 /- English proof (translation)
-Establish `h0 : j + c < D.R.m` using `by omega`. Establish `h1 : j + (c + 1) < D.R.m` using `by omega`. Unfold `DV.aMinusQ`. Rewrite using `[dif_pos h0, dif_pos h1]`. Establish `a` using `(D.hc τ).gap_be ⟨j + c, h0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `b` using `(D.hc τ).gap_eb ⟨j + c, h0⟩ hc`. Establish `e1 : (⟨j + (c + 1), h1⟩ : Fin D.R.m) = ⟨j + c + 1, hc⟩`. Rewrite using `[Fin.mk.injEq]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : (0 : ℚ) ≤ D.R.t` using `Nat.cast_nonneg _`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem aMinusQ_step (D : D7) (j : ℕ) (τ : D.what₂.Tau) (c : ℕ) (hc : j + c + 1 < D.R.m) :
     DV.aMinusQ D j τ c ≤ DV.aMinusQ D j τ (c + 1) := by
@@ -747,7 +735,7 @@ theorem aMinusQ_step (D : D7) (j : ℕ) (τ : D.what₂.Tau) (c : ℕ) (hc : j +
   linarith
 
 /- English proof (translation)
-Proceed by induction on `c', h using Nat.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ n hn ih => exact (ih (by omega)).trans (aMinusQ_step D j τ n (by omega))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem aMinusQ_mono (D : D7) (j : ℕ) (τ : D.what₂.Tau) (c c' : ℕ) (h : c ≤ c') (hc' : j + c' < D.R.m) :
     DV.aMinusQ D j τ c ≤ DV.aMinusQ D j τ c' := by
@@ -756,9 +744,9 @@ theorem aMinusQ_mono (D : D7) (j : ℕ) (τ : D.what₂.Tau) (c c' : ℕ) (h : c
   | succ n hn ih => exact (ih (by omega)).trans (aMinusQ_step D j τ n (by omega))
 
 /- English proof (translation)
-Establish `h0 : j + 0 < D.R.m` using `by omega`. Establish `h2 : j - 1 + 1 < D.R.m` using `by omega`. Unfold `DV.aMinusQ DV.eQ`. Rewrite using `[dif_pos h0, dif_pos ⟨h1, hj.le⟩]`. Establish `b` using `(D.hc τ).gap_eb ⟨j - 1, by omega⟩ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (⟨j + 0, h0⟩ : Fin D.R.m) = ⟨j - 1 + 1, h2⟩`. Rewrite using `[Fin.mk.injEq]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -777,13 +765,13 @@ theorem aMinusQ_first (D : D7) (j : ℕ) (h1 : 1 ≤ j) (hj : j < D.R.m) (τ : D
   linarith
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.InnerProductFormulaField.sumHkM`. Use `Finset.sum_nonneg fun τ _ => ?_` and prove the remaining obligations. Establish `hq : (D.R.sigW j).2 = D.R.m - j` using `rfl`. Rewrite using `[hq]`. Use `choose zz hz using fun c => DV.aMinusQ_int D j τ c`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `logHk_nonneg_of_int _ _ (fun i => zz (D.R.m - j - 1 - i)) (fun i => ?_) (fun i l hil hl => ?_) (fun i hi => ?_)` and prove the remaining obligations. Unfold `DV.aMinus`. Rewrite using `[hz]`. Use `norm_cast`. Establish `h` using `aMinusQ_mono D j τ (D.R.m - j - 1 - l) (D.R.m - j - 1 - i) (by omega) (by omega)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hz, hz]`. Conclude with `h` after adjusting the coercions. Establish `a` using `aMinusQ_first D j h1 (by omega) τ`. Establish `b` using `aMinusQ_mono D j τ 0 (D.R.m - j - 1 - i) (by omega) (by omega)`. Establish `c` using `a.trans b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `c` using `[hz]`. Establish `c' : (1 : ℤ) ≤ zz (D.R.m - j - 1 - i)` using `by exact_mod_cast c`. Use `show 0 ≤ zz (D.R.m - j - 1 - i)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sumHkM_nonneg_rec (D : D7) (j : ℕ) (h1 : 1 ≤ j) : 0 ≤ Formalism.MainNotions.InnerProductFormulaField.sumHkM D j := by
   unfold Formalism.MainNotions.InnerProductFormulaField.sumHkM
@@ -808,7 +796,7 @@ theorem sumHkM_nonneg_rec (D : D7) (j : ℕ) (h1 : 1 ≤ j) : 0 ≤ Formalism.Ma
     omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1, h2, h3, fun j hj _ => sumHkM_nonneg_rec D j hj⟩`.
+Supply the required witnesses or components.
 -/
 theorem real_size_hypotheses_of_bounds (D : D7) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D) (L : SizeData₂ D) (C : ℝ)
     (h1 : ∀ (μ : D.what₂.Tup) (j : ℕ), 1 ≤ j → j ≤ D.R.m → ∀ π,
@@ -821,9 +809,9 @@ theorem real_size_hypotheses_of_bounds (D : D7) (X : Formalism.MainNotions.Inner
   ⟨h1, h2, h3, fun j hj _ => sumHkM_nonneg_rec D j hj⟩
 
 /- English proof (translation)
-Introduce `j hj σ`. Establish `hj'` using `Finset.mem_Icc.mp hj`. Establish `hne` using `hN j hj'.1 hj'.2 σ`. Establish `hpos` using `((hA D.what₂.mu0 j hj'.1 hj'.2 σ).2 hne).1`. Establish `h` using `h6 j hj σ hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `hH j hj`. Rewrite using `[← Real.le_log_iff_exp_le hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lambda_lower_bound_of_lift (D : D7) (Z : DivX D) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D) (L : SizeData₂ D) (C b : ℝ)
     (hA : Formalism.MainNotions.InnerProductFormulaField.ConjugationNormInvariance D Z X) (hN : Formalism.MainNotions.InnerProductFormulaField.IsotypicPartsNonzero D) (h6 : Formalism.MainNotions.InnerProductFormulaField.LogEigenvalueLowerBound D L C)
@@ -839,14 +827,14 @@ theorem lambda_lower_bound_of_lift (D : D7) (Z : DivX D) (X : Formalism.MainNoti
   linarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun _ => 1, rfl, fun _ => one_pos, fun μ _ => by rw [mul_one]; exact tuple_data_of_lift_rows D Z h μ⟩, hb⟩`.
+Supply the required witnesses or components.
 -/
 theorem data_at_sharp_level_of_lattice (D : D7) (Z : DivX D) (h : Formalism.MainNotions.InnerProductFormulaField.PointsLemma D Z) (b : ℝ) (hb : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LamLow D b) :
     Formalism.MainNotions.AbsolutelyIrreducibleSpan.DataAt D (Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev.sharp D) b (Z.kapR D.what₂.embLL) :=
   ⟨⟨fun _ => 1, rfl, fun _ => one_pos, fun μ _ => by rw [mul_one]; exact tuple_data_of_lift_rows D Z h μ⟩, hb⟩
 
 /- English proof (translation)
-The claim follows from `data_at_sharp_level_of_lattice D Z h3 _ (lambda_lower_bound_of_lift D Z X L C _ hA hN h6 hH hsz)`.
+A detailed English derivation is pending.
 -/
 theorem embedding_data_of_lift (D : D7) (Z : DivX D) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D) (L : SizeData₂ D) (C : ℝ)
     (h3 : Formalism.MainNotions.InnerProductFormulaField.PointsLemma D Z) (hA : Formalism.MainNotions.InnerProductFormulaField.ConjugationNormInvariance D Z X) (hN : Formalism.MainNotions.InnerProductFormulaField.IsotypicPartsNonzero D)
@@ -856,13 +844,13 @@ theorem embedding_data_of_lift (D : D7) (Z : DivX D) (X : Formalism.MainNotions.
   data_at_sharp_level_of_lattice D Z h3 _ (lambda_lower_bound_of_lift D Z X L C _ hA hN h6 hH hsz)
 
 /- English proof (translation)
-The claim follows from `hk.symm`.
+A detailed English derivation is pending.
 -/
 theorem sharp_kap_eq (D : D7) (Z : DivX D) (hk : DV.KapRBase Z) :
     (Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev.sharp D).kap = Z.kapR D.what₂.embLL := hk.symm
 
 /- English proof (translation)
-Rewrite using `[sharp_kap_eq D Z hk]`. Conclude with `data_at_sharp_level_of_lattice D Z h b hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_level_data_of_lift (D : D7) (Z : DivX D) (hk : DV.KapRBase Z) (h : Formalism.MainNotions.InnerProductFormulaField.PointsLemma D Z) (b : ℝ)
     (hb : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LamLow D b) :
@@ -874,7 +862,7 @@ def LambdaLowerBoundAllEmbeddings (D : D7) (Z : DivX D) (b : ℝ) : Prop :=
   ∀ (s : D.what₂.LL →+* ℂ), ∀ j ∈ SizeData₂.lifts D, ∀ σ, -b ≤ Z.logLam j σ s
 
 /- English proof (translation)
-Introduce `j hj σ`. Establish `h` using `hb j hj σ`. Rewrite using `[Z.logLam_base, Real.le_log_iff_exp_le (lt_of_lt_of_le (Real.exp_pos _) h)]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lambda_lower_bound_fixed_embedding (D : D7) (Z : DivX D) (b : ℝ) (hb : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LamLow D b) :
     ∀ j ∈ SizeData₂.lifts D, ∀ σ, -b ≤ Z.logLam j σ D.what₂.embLL := by
@@ -884,7 +872,7 @@ theorem lambda_lower_bound_fixed_embedding (D : D7) (Z : DivX D) (b : ℝ) (hb :
   exact h
 
 /- English proof (translation)
-Introduce `s j hj σ`. Distinguish the cases in `hs : s = D.what₂.embLL`. Rewrite using `[hs]`. Conclude with `lambda_lower_bound_fixed_embedding D Z b hb j hj σ`. Conclude with `hc s hs j hj σ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lambda_lower_bound_other_embeddings (D : D7) (Z : DivX D) (b : ℝ) (hb : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LamLow D b)
     (hc : ∀ s : D.what₂.LL →+* ℂ, s ≠ D.what₂.embLL → ∀ j ∈ SizeData₂.lifts D, ∀ σ, -b ≤ Z.logLam j σ s) :
@@ -896,9 +884,9 @@ theorem lambda_lower_bound_other_embeddings (D : D7) (Z : DivX D) (b : ℝ) (hb 
   · exact hc s hs j hj σ
 
 /- English proof (translation)
-Introduce `j hj`. Establish `e : Formalism.MainNotions.InnerProductFormulaField.sumHk D j = Formalism.MainNotions.InnerProductFormulaField.sumHkP D j + Formalism.MainNotions.InnerProductFormulaField.sumHkM D j`. Unfold `Formalism.MainNotions.InnerProductFormulaField.sumHk Formalism.MainNotions.InnerProductFormulaField.sumHkP Formalism.MainNotions.InnerProductFormulaField.sumHkM`. Rewrite using `[Finset.sum_add_distrib]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_nonneg (sumHkP_nonneg_rec D j hj) (sumHkM_nonneg_rec D j (Finset.mem_Icc.mp hj).1)`.
+A detailed English derivation is pending.
 -/
 theorem sumHk_nonneg_rec (D : D7) : ∀ j ∈ SizeData₂.lifts D, 0 ≤ Formalism.MainNotions.InnerProductFormulaField.sumHk D j := by
   intro j hj
@@ -909,9 +897,9 @@ theorem sumHk_nonneg_rec (D : D7) : ∀ j ∈ SizeData₂.lifts D, 0 ≤ Formali
   exact add_nonneg (sumHkP_nonneg_rec D j hj) (sumHkM_nonneg_rec D j (Finset.mem_Icc.mp hj).1)
 
 /- English proof (translation)
-Introduce `s j hj σ`. Establish `hj'` using `Finset.mem_Icc.mp hj`. Establish `h1` using `((h hl hG j hj'.1 hj'.2 σ (hN j hj'.1 hj'.2 σ)).2 s)`. Establish `h2` using `sumHk_nonneg_rec D j hj`. Establish `e : Formalism.MainNotions.placeRankTwoOne.sumHk D j = Formalism.MainNotions.InnerProductFormulaField.sumHk D j` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[e]`. Establish `h3` using `(abs_le.mp h1).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lambda_lower_bound_of_positivity (D : D7) (L : SizeData₂ D) (Z : DivX D) (C : ℝ) (h : Formalism.MainNotions.placeRankTwoOne.adm5 D L Z C)
     (hl : Rows.LamPDef D.what₂) (hG : Formalism.MainNotions.placeRankTwoOne.GapsA D L) (hN : Formalism.MainNotions.InnerProductFormulaField.IsotypicPartsNonzero D)
@@ -928,7 +916,7 @@ theorem lambda_lower_bound_of_positivity (D : D7) (L : SizeData₂ D) (Z : DivX 
   linarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun μ => (h μ).1, Z.kapR_pos _, fun _ => 1, rfl, fun _ => one_pos, fun μ σ => by rw [mul_one]; exact (h μ).2 σ⟩`.
+Supply the required witnesses or components.
 -/
 theorem iota_adjoint_scaling_of_sides (D : D7) (Z : DivX D) (h : Formalism.MainNotions.InnerProductFormulaField.PointsLemma D Z) :
     (∀ μ, Function.Bijective (Formalism.MainNotions.LocalQuadraticParts.iotaQ D μ)) ∧
@@ -941,7 +929,7 @@ theorem iota_adjoint_scaling_of_sides (D : D7) (Z : DivX D) (h : Formalism.MainN
     rw [mul_one]; exact (h μ).2 σ⟩
 
 /- English proof (translation)
-The claim follows from `|Z.logLam j σ D.what₂.embLL - Formalism.MainNotions.placeRankTwoOne.sumHk D j| ≤ C * D.R.f * (D.R.nV : ℝ) ^ 2 * Real.log (L.sc.b * D.host.rdE * ((D.host.g 0 : ℝ) * D.host.g 1) * D.R.nV) := fun j h1 h2 σ hne => ⟨((hA D.what₂.mu0 j h1 h2 σ).2 hne).1, by rw [Z.logLam_base]; exact hS …`.
+A detailed English derivation is pending.
 -/
 theorem log_lambda_near_heat_sum (D : D7) (Z : DivX D) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D) (L : SizeData₂ D) (C : ℝ)
     (hA : Formalism.MainNotions.InnerProductFormulaField.ConjugationNormInvariance D Z X) (hS : Formalism.MainNotions.InnerProductFormulaField.RallisSizeBound D L C) :
@@ -953,9 +941,7 @@ theorem log_lambda_near_heat_sum (D : D7) (Z : DivX D) (X : Formalism.MainNotion
     rw [Z.logLam_base]; exact hS D.what₂.mu0 j h1 h2 σ hne⟩
 
 /- English proof (translation)
-Introduce `_ _ j h1 h2 σ hne`. Use `⟨(log_lambda_near_heat_sum D Z X L C hA hS j h1 h2 σ hne).1, fun s => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hs : s = D.what₂.embLL`. Rewrite using `[hs]`. Conclude with `(log_lambda_near_heat_sum D Z X L C hA hS j h1 h2 σ hne).2`.
-
-Conclude with `hc j h1 h2 σ hne s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_lambda_bound_admissible (D : D7) (Z : DivX D) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D) (L : SizeData₂ D) (C : ℝ)
     (hA : Formalism.MainNotions.InnerProductFormulaField.ConjugationNormInvariance D Z X) (hS : Formalism.MainNotions.InnerProductFormulaField.RallisSizeBound D L C)
@@ -970,7 +956,7 @@ theorem log_lambda_bound_admissible (D : D7) (Z : DivX D) (X : Formalism.MainNot
   · exact hc j h1 h2 σ hne s hs
 
 /- English proof (translation)
-Introduce `_ _ j h1 h2 σ hne`. Conclude with `⟨((hA D.what₂.mu0 j h1 h2 σ).2 hne).1, fun s => h hd j h1 h2 σ hne s⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem positivity_hypothesis_of_galois (D : D7) (Z : DivX D) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D) (L : SizeData₂ D) (Y : Formalism.MainNotions.PGAL.Loc D Z) (C : ℝ)
     (hA : Formalism.MainNotions.InnerProductFormulaField.ConjugationNormInvariance D Z X) (hd : Formalism.MainNotions.PGAL.LogLamDef D Z Y) (h : Formalism.MainNotions.PGAL.LogEigenvalueDeviation D L Z Y C) :
@@ -979,7 +965,7 @@ theorem positivity_hypothesis_of_galois (D : D7) (Z : DivX D) (X : Formalism.Mai
   exact ⟨((hA D.what₂.mu0 j h1 h2 σ).2 hne).1, fun s => h hd j h1 h2 σ hne s⟩
 
 /- English proof (translation)
-Introduce `s j hj σ`. Establish `hj'` using `Finset.mem_Icc.mp hj`. Establish `h1` using `h hd j hj σ (hN j hj'.1 hj'.2 σ) s`. Establish `h2` using `sumHkP_nonneg_rec D j hj`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lambda_lower_bound_of_galois (D : D7) (L : SizeData₂ D) (Z : DivX D) (Y : Formalism.MainNotions.PGAL.Loc D Z) (C : ℝ)
     (hd : Formalism.MainNotions.PGAL.LogLamDef D Z Y) (h : Formalism.MainNotions.PGAL.LogEigenvalueLowerBound D L Z Y C) (hN : Formalism.MainNotions.InnerProductFormulaField.IsotypicPartsNonzero D)
@@ -991,7 +977,7 @@ theorem lambda_lower_bound_of_galois (D : D7) (L : SizeData₂ D) (Z : DivX D) (
   linarith
 
 /- English proof (translation)
-Break down `NumberField.InfinitePlace.embedding_mk_eq s with e | e` into its components or cases. Rewrite using `[e]`. Rewrite using `[e]`. Conclude with `h s`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapR_mk_of_KapConj (D : D7) (Z : DivX D) (h : Formalism.MainNotions.PGAL.KapConj D Z) (s : D.what₂.LL →+* ℂ) :
     Z.kapR (NumberField.InfinitePlace.mk s).embedding = Z.kapR s := by
@@ -1001,7 +987,7 @@ theorem kapR_mk_of_KapConj (D : D7) (Z : DivX D) (h : Formalism.MainNotions.PGAL
     exact h s
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, hb, ⟨-, ρ, h0, hp, -, hρ⟩, -⟩` from `h`. Conclude with `⟨ρ, h0, hp, fun μ _ => ⟨(sharp_bij_iff D μ).2 (hb μ), fun σ => (sharp_adj_iff D μ _ _).2 (hρ μ σ)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem embedding_data_first_of_sides (D : D7) (Z : DivX D) (P : BaseLevelRowSide D) (h : Formalism.MainNotions.LocalQuadraticParts.adm1 D Z P) :
     ∃ ρ : D.what₂.Tup → ℝ, ρ D.what₂.mu0 = 1 ∧ (∀ μ, 0 < ρ μ) ∧
@@ -1011,7 +997,7 @@ theorem embedding_data_first_of_sides (D : D7) (Z : DivX D) (P : BaseLevelRowSid
   exact ⟨ρ, h0, hp, fun μ _ => ⟨(sharp_bij_iff D μ).2 (hb μ), fun σ => (sharp_adj_iff D μ _ _).2 (hρ μ σ)⟩⟩
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, hθ, hL, -⟩` from `h`. Use `eigenvalues_positive_of_surjective D hL fun μ j hj y => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `(hθ μ j (Finset.mem_Icc.mpr hj)).2 y`. Conclude with `⟨z, hz⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lambda_positivity_of_lattice_clause (D : D7) (Z : DivX D) (P : BaseLevelRowSide D) (h : Formalism.MainNotions.LocalQuadraticParts.adm1 D Z P) :
     Formalism.MainNotions.CanonicalTranslateJets.ArchimedeanSignatureMatching D := by
@@ -1021,13 +1007,13 @@ theorem lambda_positivity_of_lattice_clause (D : D7) (Z : DivX D) (P : BaseLevel
   exact ⟨z, hz⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem group_order_hypothesis_both_levels (D : D7) (P : BaseLevelRowSide D) (C : ℝ) (h : Formalism.MainNotions.LocalQuadraticParts.adm9 D P C) :
     Formalism.MainNotions.AbsolutelyIrreducibleSpan.adm17 D (Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev.sharp D) ∧ Formalism.MainNotions.AbsolutelyIrreducibleSpan.adm17 D (Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev.p0 P) := ⟨h.1, h.2.1⟩
 
 /- English proof (translation)
-Take `⟨hbij, -, ρ, h0, hp, -, h⟩` from `h`. Conclude with `⟨⟨ρ, h0, hp, fun μ _ => ⟨hbij μ, fun σ => h μ σ⟩⟩, hb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem embedding_data_of_eigen_clause (D : D7) (V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D) (κ b : ℝ) (h : V.S.RowLatticeBoundForBasis V.onb V.ft κ)
     (hb : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LamLow D b) : Formalism.MainNotions.AbsolutelyIrreducibleSpan.DataAt D V b κ := by
@@ -1035,34 +1021,34 @@ theorem embedding_data_of_eigen_clause (D : D7) (V : Formalism.MainNotions.Absol
   exact ⟨⟨ρ, h0, hp, fun μ _ => ⟨hbij μ, fun σ => h μ σ⟩⟩, hb⟩
 
 /- English proof (translation)
-The claim follows from `embedding_data_of_eigen_clause D V _ b (Formalism.MainNotions.InnerProductFormulaField.lattice_clause_of_level_bijection V.S V.onb V.ft h) hb`.
+A detailed English derivation is pending.
 -/
 theorem level_data_of_lift_division (D : D7) (V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D) (b : ℝ) (h : Formalism.MainNotions.InnerProductFormulaField.LevelIotaBijective V.S V.onb V.ft)
     (hb : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LamLow D b) : Formalism.MainNotions.AbsolutelyIrreducibleSpan.DataAt D V b V.kap :=
   embedding_data_of_eigen_clause D V _ b (Formalism.MainNotions.InnerProductFormulaField.lattice_clause_of_level_bijection V.S V.onb V.ft h) hb
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.InnerProductFormulaField.lattice_clause_of_level_bijection P.s D.what₂.onb0 D.what₂.ft0 h`.
+A detailed English derivation is pending.
 -/
 theorem L1c0Def_of (D : D7) (P : BaseLevelRowSide D) (h : Formalism.MainNotions.InnerProductFormulaField.LevelIotaBijective P.s D.what₂.onb0 D.what₂.ft0) : P.BaseLevelSideLevelOneCondition :=
   Formalism.MainNotions.InnerProductFormulaField.lattice_clause_of_level_bijection P.s D.what₂.onb0 D.what₂.ft0 h
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem uplift_in_V0_at_small_level (D : D7) (P : BaseLevelRowSide D) (h : Formalism.MainNotions.PrimeDegreeVariant.ThetaUpInV0Small P) : Formalism.MainNotions.InnerProductFormulaField.UpliftInV0AtLevel P.s := h
 
 /- English proof (translation)
-The claim follows from `embedding_data_of_eigen_clause D (Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev.p0 P) _ b h hb`.
+A detailed English derivation is pending.
 -/
 theorem data_at_small_level_of_lattice (D : D7) (P : BaseLevelRowSide D) (b : ℝ) (h : P.BaseLevelSideLevelOneCondition) (hb : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LamLow D b) :
     Formalism.MainNotions.AbsolutelyIrreducibleSpan.DataAt D (Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev.p0 P) b (Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev.p0 P).kap :=
   embedding_data_of_eigen_clause D (Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev.p0 P) _ b h hb
 
 /- English proof (translation)
-Establish `e1 : inner ℂ x (D.what₂.thetaP μ j (D.what₂.thetaT μ j x)) = inner ℂ (D.what₂.thetaT μ j x) (D.what₂.thetaT μ j x)`. Unfold `Rows.Data.thetaT`. Rewrite using `[LinearMap.adjoint_inner_left]`. Rewrite `e1` using `[hc, inner_smul_right, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `hn : ((‖x‖ : ℂ)) ^ 2 ≠ 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < ‖x‖ ^ 2` using `by positivity`. Conclude with `this.ne'` after adjusting the coercions. Use `push_cast`. Rewrite using `[eq_div_iff hn]`. Conclude with `e1`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_real (D : D7) (μ : D.what₂.Tup) (j : ℕ) (x : D.what₂.Mj j) (hx0 : x ≠ 0) (c : ℂ)
     (hc : D.what₂.thetaP μ j (D.what₂.thetaT μ j x) = c • x) :
@@ -1080,9 +1066,9 @@ theorem eig_real (D : D7) (μ : D.what₂.Tup) (j : ℕ) (x : D.what₂.Mj j) (h
   exact e1
 
 /- English proof (translation)
-Introduce `μ j h1 h2 π c hne hc`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hr` using `eig_real D μ j x hx0 c (hc x hx)`. Establish `hc' : ∀ y ∈ D.what₂.isot j π, D.what₂.thetaP μ j (D.what₂.thetaT μ j y) = ((‖D.what₂.thetaT μ j x‖ ^ 2 / ‖x‖ ^ 2 : ℝ) : ℂ) • y`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hr]`. Conclude with `hc y hy`. Rewrite using `[h μ j h1 h2 π hne, DV.lamTr_of_scalar D μ j π _ hne hc', ← hr]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LamEig_of_LamDef (D : D7) (h : DV.LamDef D) : Formalism.MainNotions.InnerProductFormulaField.LamEig D := by
   intro μ j h1 h2 π c hne hc
@@ -1120,7 +1106,7 @@ def SquareLeaves (D : D7) {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.L
   Formalism.MainNotions.AbsolutelyIrreducibleSpan.FontaineFormalProperties D X ∧ Formalism.MainNotions.AbsolutelyIrreducibleSpan.AmbientMetricLowerBound D XD X
 
 /- English proof (translation)
-Take `⟨hs, a1, a3, a4, a8, a10, ds1, a2r, a9, rest⟩` from `hL`. Conclude with `⟨hs, ⟨a1, a3, a4, a8, a10, (⟨ds1, hAR⟩ : Formalism.MainNotions.AbsolutelyIrreducibleSpan.adm13 D X)⟩, (⟨hD, a2r⟩ : Formalism.MainNotions.AbsolutelyIrreducibleSpan.adm2 D L XD X K.Cgr), a9, Formalism.HN.slopeIneqMean, rest⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem square_hypotheses_of_leaves (D : D7) {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D} (L : SizeData₂ D) (XD : DivX D) {Am : AmbForm D V.S} (X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LocV D V Am)
     (K : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Consts) (hAR : ArchimedeanTheoremFiveParts X.ar)
@@ -1131,7 +1117,7 @@ theorem square_hypotheses_of_leaves (D : D7) {V : Formalism.MainNotions.Absolute
     (⟨hD, a2r⟩ : Formalism.MainNotions.AbsolutelyIrreducibleSpan.adm2 D L XD X K.Cgr), a9, Formalism.HN.slopeIneqMean, rest⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a1, a2, a3, a5, a6, a7, ⟨h1, h2, h3, h4, h5⟩, a8g⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissible_of_clauses {D : D7} (T : ThetaX D) (A : ProvA) (G : Formalism.MainNotions.product_first_zeroth_parts.Th22 D)
     (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst A) (h2 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisSecond A) (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine A)
@@ -1141,7 +1127,7 @@ theorem admissible_of_clauses {D : D7} (T : ThetaX D) (A : ProvA) (G : Formalism
   ⟨a1, a2, a3, a5, a6, a7, ⟨h1, h2, h3, h4, h5⟩, a8g⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a1, a2, archimedean_hypothesis_of_parts D T A X h1 a3, a4, parahoric_index_hypothesis D X tg hL1.2.1, second_lemma_hypothesis_same D Z hL2, a7, a8, a9, hV, transfer_hypothesis_of_isotypic D hI hR h3⟩`.
+Supply the required witnesses or components.
 -/
 theorem lift_hypotheses_of_parts (D : D7) (Z : DivX D) (T : ThetaX D) (A : ProvA) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D)
     (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst A) (hL1 : Formalism.MainNotions.ZetaProductPairs.L1) (hL2 : Formalism.MainNotions.ZetaProductPairs.L2 Z) (hV : Formalism.MainNotions.PrimeDegreeVariant.ThetaUpInV0 D)
@@ -1154,14 +1140,14 @@ theorem lift_hypotheses_of_parts (D : D7) (Z : DivX D) (T : ThetaX D) (A : ProvA
     transfer_hypothesis_of_isotypic D hI hR h3⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hW, hR, LamEig_of_LamDef D hl, hk, hg⟩`.
+Supply the required witnesses or components.
 -/
 theorem lift_hypotheses_of_definitions (D : D7) (Z : DivX D) (T : ThetaX D) (hW : Formalism.MainNotions.ZetaProductPairs.WtHyp T) (hR : Formalism.MainNotions.InnerProductFormulaField.TieRowTyp T)
     (hl : DV.LamDef D) (hk : DV.KapRBase Z) (hg : Formalism.MainNotions.InnerProductFormulaField.GapHyp T) : Formalism.MainNotions.InnerProductFormulaField.Hyp D Z T :=
   ⟨hW, hR, LamEig_of_LamDef D hl, hk, hg⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨a1, a3, a4, a8, a10, (⟨ds1, h1, h2, h3, h4, h5⟩ : Formalism.MainNotions.AbsolutelyIrreducibleSpan.adm13 D X)⟩, (⟨hD, a2r⟩ : Formalism.MainNotions.AbsolutelyIrreducibleSpan.adm2 D L XD X K.Cgr), a9, Formalism.HN.slopeIneqMean, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a2 …`.
+Supply the required witnesses or components.
 -/
 theorem square_hypotheses_of_parts (D : D7) {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D} (L : SizeData₂ D) (XD : DivX D) {Am : AmbForm D V.S} (X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LocV D V Am)
     (K : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Consts)
@@ -1196,7 +1182,7 @@ def ConstantFreeMultiplicityItems {D : D7} {T : ThetaX D} (Z : DivX D) (X : Form
     Formalism.MainNotions.ZetaProductPairs.ExchangeOfPositions X ∧ Formalism.MainNotions.ZetaProductPairs.PeriodIntegrality Z
 
 /- English proof (translation)
-Take `⟨b1, b2, b3, b5, b6, b7, b8g⟩` from `link_brest_alt₂`. Conclude with `⟨SFF b5, SL1, SL2, SL4 b2 b8g, S0 hT b1 b2 b3 b5 hk b8g, SRE hT b5, SINT b6 b7⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem constant_free_items_of_parts {D : D7} {T : ThetaX D} (Z : DivX D) (G : Formalism.MainNotions.product_first_zeroth_parts.Th22 D) (X : Formalism.MainNotions.ZetaProductPairs.Loc D T)
     (SFF : Formalism.MainNotions.ZetaProductPairs.HeckeScalarStatement D) (SL1 : Formalism.MainNotions.ZetaProductPairs.LocalComputationOne) (SL2 : Formalism.MainNotions.ZetaProductPairs.DoublingComputation Z) (SL4 : Formalism.MainNotions.ZetaProductPairs.ThetaChainStatement T)
@@ -1216,7 +1202,7 @@ def RowsMultiplicityClosed {D : D7} {T : ThetaX D} (X : Formalism.MainNotions.Ze
         D.what₂.perCol u μ φ F = D.what₂.zeC u μ * D.what₂.Bu u φ (D.what₂.iota μ F)
 
 /- English proof (translation)
-Introduce `hB hZ hS u`. Take `⟨hF, hU, hz, s, hs, hc⟩` from `h hB hZ hS u`. Take `⟨c, c0, hA, hne⟩` from `h6 u`. Conclude with `⟨hF, hU, hz, s, c, hs, c0, hA, hc c c0 hA hne⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rows_form_without_side_condition {D : D7} {T : ThetaX D} (X : Formalism.MainNotions.ZetaProductPairs.Loc D T) (h : Formalism.MainNotions.ZetaProductPairs.MultiplicityOneWithZeta X)
     (h6 : Formalism.MainNotions.InnerProductFormulaField.ArchimedeanFactorNonvanishing D T X) : RowsMultiplicityClosed X := by
@@ -1226,7 +1212,7 @@ theorem rows_form_without_side_condition {D : D7} {T : ThetaX D} (X : Formalism.
   exact ⟨hF, hU, hz, s, c, hs, c0, hA, hc c c0 hA hne⟩
 
 /- English proof (translation)
-Establish `p6 : Formalism.MainNotions.InnerProductFormulaField.ArchimedeanFactorNonvanishing D T X` using `S6 a6`. Conclude with `⟨p6, SMI p0 (real_constant_hypothesis_of_lift X p6), rows_form_without_side_condition X (Sr (Sc p0)) p6⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem chainD_MI_rec {D : D7} {T : ThetaX D} (X : Formalism.MainNotions.ZetaProductPairs.Loc D T)
     (W : Formalism.MainNotions.InnerProductFormulaField.LocC X)
@@ -1237,7 +1223,7 @@ theorem chainD_MI_rec {D : D7} {T : ThetaX D} (X : Formalism.MainNotions.ZetaPro
   exact ⟨p6, SMI p0 (real_constant_hypothesis_of_lift X p6), rows_form_without_side_condition X (Sr (Sc p0)) p6⟩
 
 /- English proof (translation)
-Take `⟨c1, c2, c3, c4, tg, c7, c8, c9, hI, hRk⟩` from `lintegral_lt_top_of_thetaIP_ne`. Establish `LocalHeightDeterminant` using `lift_hypotheses_of_definitions D Z T hW hR hl hk hg`. Establish `A20` using `lift_hypotheses_of_parts D Z T A X20 h1 hL1 hL2 hV h3 c1 c2 c3 c4 tg c7 c8 c9 hI hRk`. Take `⟨pz, -, p6⟩` from `S20z LocalHeightDeterminant A20 hC hS`. Conclude with `⟨twenty_words_le_b LocalHeightDeterminant A20, pz, p6 hLp0 hLp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem division_chain_lift_recursive (D : D7) (L : SizeData₂ D) (Z : DivX D) (T : ThetaX D) (A : ProvA) (X20 : Formalism.MainNotions.InnerProductFormulaField.Loc D)
     (Csz Ksz : ℝ) (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst A) (hL1 : Formalism.MainNotions.ZetaProductPairs.L1) (hL2 : Formalism.MainNotions.ZetaProductPairs.L2 Z)
@@ -1254,7 +1240,7 @@ theorem division_chain_lift_recursive (D : D7) (L : SizeData₂ D) (Z : DivX D) 
   exact ⟨twenty_words_le_b LocalHeightDeterminant A20, pz, p6 hLp0 hLp⟩
 
 /- English proof (translation)
-Establish `hD` using `row_level_data_of_lift D Z hk p3 _ (lambda_lower_bound_of_lift D Z X20 L _ _ pA pN p6 (sumHkP_nonneg_rec D) hsz)`. Establish `A36` using `square_hypotheses_of_leaves D L Z X36 K hAR hD locJunk_chart`. Conclude with `S36 ⟨hG, A36.1⟩ A36.2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chain_divisor_recursion_levels (D : D7) (L : SizeData₂ D) (Z : DivX D) (X20 : Formalism.MainNotions.InnerProductFormulaField.Loc D) {Am : AmbForm D (RowSide.sharp D)}
     (X36 : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Loc D Am)
@@ -1268,9 +1254,9 @@ theorem chain_divisor_recursion_levels (D : D7) (L : SizeData₂ D) (Z : DivX D)
   exact S36 ⟨hG, A36.1⟩ A36.2
 
 /- English proof (translation)
-Establish `hAR : ArchimedeanTheoremFiveParts A` using `S46 locP_compan_le`. Take `⟨sFF, sL1, IsSettingL2, sL4, s0, sRE, sINT, sc, sr⟩` from `S19`. Establish `pF` using `constant_free_items_of_parts Z G X19 sFF sL1 IsSettingL2 sL4 s0 sRE sINT hT link_brest_alt₂ h5k`. Take `⟨pS6, pMI, pRows⟩` from `chainD_MI_rec X19 W19 pF.2.2.2.2.1 S20s a6 S19m sc sr`. Take `⟨p20, pz, p6⟩` from `division_chain_lift_recursive D L Z T A X20 Csz Ksz hAR.1 pF.2.1 pF.2.2.1 twenty_words_le_b S20z hV h3 hW hR hl hk hg lintegral_lt_top_of_thetaIP_ne hC hS hLp0 hLp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨pF, pS6, pMI, pRows, p20, pz, p6, chain_divisor_recursion_levels D L Z X20 X36 K _ C Ch Ch' S36 (by rw [hA36]; exact hAR) p20.2.1 p20.2.2.1 p20.2.2.2.2.2.2 p6 hk hsz hG locJunk_chart⟩`.
+Supply the required witnesses or components.
 -/
 theorem chainD_rec (D : D7) (L : SizeData₂ D) (Z : DivX D) (T : ThetaX D) (A : ProvA) (G : Formalism.MainNotions.product_first_zeroth_parts.Th22 D)
     (X19 : Formalism.MainNotions.ZetaProductPairs.Loc D T) (X20 : Formalism.MainNotions.InnerProductFormulaField.Loc D) {Am : AmbForm D (RowSide.sharp D)}
@@ -1311,7 +1297,7 @@ def MultiplicityLeavesFamily (GF : ∀ x (i : Fm.Ix x), Formalism.MainNotions.pr
     Formalism.MainNotions.ZetaProductPairs.adm6 (GF x i) ∧ Formalism.MainNotions.ZetaProductPairs.adm7 ∧ Formalism.MainNotions.ZetaProductPairs.ThetaCuspidalChain (Fm.ex x hx i).th
 
 /- English proof (translation)
-Introduce `x hx i`. Take `⟨a1, a2, a3, a5, a6, a7, a8g⟩` from `hL x hx i`. Conclude with `⟨a1, a2, a3, a5, a6, a7, hAR, a8g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem multiplicity_hypotheses_family (A : ProvA) (GF : ∀ x (i : Fm.Ix x), Formalism.MainNotions.product_first_zeroth_parts.Th22 (Fm.D x i)) (hAR : ArchimedeanTheoremFiveParts A)
     (hL : MultiplicityLeavesFamily Fm GF) : Formalism.MainNotions.ZetaProductPairs.AdmF Fm A GF := by
@@ -1320,7 +1306,7 @@ theorem multiplicity_hypotheses_family (A : ProvA) (GF : ∀ x (i : Fm.Ix x), Fo
   exact ⟨a1, a2, a3, a5, a6, a7, hAR, a8g⟩
 
 /- English proof (translation)
-Introduce `x hx i` and use `⟨hW x hx i, hR x hx i, LamEig_of_LamDef _ (Fm.ex x hx i).lam_def, (Fm.ex x hx i).kapR_def, Formalism.MainNotions.InnerProductFormulaField.GapHypF Fm x hx i⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lift_hypotheses_family_of_parts (hW : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Formalism.MainNotions.ZetaProductPairs.WtHyp (Fm.ex x hx i).th)
     (hR : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Formalism.MainNotions.InnerProductFormulaField.TieRowTyp (Fm.ex x hx i).th) : Formalism.MainNotions.InnerProductFormulaField.HypF Fm :=
@@ -1339,7 +1325,7 @@ def LeafHypothesesFamily (A : ProvA) (XF : Formalism.MainNotions.InnerProductFor
     Rows.IsotInternal (Fm.D x i).what₂ ∧ Rows.IsotRank (Fm.D x i).what₂
 
 /- English proof (translation)
-Introduce `x hx i`. Take `⟨a1, a2, a3, a4, tg, a7, a8, a9, hI, hR⟩` from `hL x hx i`. Conclude with `⟨a1, a2, archimedean_hypothesis_of_parts _ _ _ _ h1 a3, a4, parahoric_index_hypothesis _ _ tg (h19 x hx i).1.2.1, second_lemma_hypothesis_same _ _ (h19 x hx i).2, a7, a8, a9, hV x hx i, transfer_hypothesis_of_isotypic _ hI hR (h3 x hx i)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lift_hypotheses_family_leaves (A : ProvA)
     (XF : Formalism.MainNotions.InnerProductFormulaField.LocF Fm) (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst A)
@@ -1352,7 +1338,7 @@ theorem lift_hypotheses_family_leaves (A : ProvA)
     second_lemma_hypothesis_same _ _ (h19 x hx i).2, a7, a8, a9, hV x hx i, transfer_hypothesis_of_isotypic _ hI hR (h3 x hx i)⟩
 
 /- English proof (translation)
-Introduce `x hx i` and use `((S x hx i) (hH x hx i) (hA x hx i) hC (hS x hx i)).2.2 (hLp x hx i).1 (hLp x hx i).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lattice_length_bound_family_of (A : ProvA) (XF : Formalism.MainNotions.InnerProductFormulaField.LocF Fm) (C K CH : ℝ)
     (S : Formalism.MainNotions.InnerProductFormulaField.SizesFamily C K Fm A XF) (hH : Formalism.MainNotions.InnerProductFormulaField.HypF Fm) (hA : Formalism.MainNotions.InnerProductFormulaField.AdmF Fm A XF) (hC : 0 ≤ C)
@@ -1363,7 +1349,7 @@ theorem lattice_length_bound_family_of (A : ProvA) (XF : Formalism.MainNotions.I
   fun x hx i => ((S x hx i) (hH x hx i) (hA x hx i) hC (hS x hx i)).2.2 (hLp x hx i).1 (hLp x hx i).2
 
 /- English proof (translation)
-Introduce `x hx i` and use `lambda_lower_bound_of_lift _ (Fm.X x i) (XF x hx i) _ C _ (h20 x hx i).2.1 (h20 x hx i).2.2.1 (h6 x hx i) (hH x hx i) (hsz x hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lambda_lower_bound_family (XF : Formalism.MainNotions.InnerProductFormulaField.LocF Fm) (C : ℝ)
     (h20 : Formalism.MainNotions.InnerProductFormulaField.OrbitValuationBound Fm XF)
@@ -1376,7 +1362,7 @@ theorem lambda_lower_bound_family (XF : Formalism.MainNotions.InnerProductFormul
     (hH x hx i) (hsz x hx i)
 
 /- English proof (translation)
-Introduce `x hx i` and use `row_level_data_of_lift _ (Fm.X x i) (Fm.ex x hx i).kapR_def (h20 x hx i).2.2.2.2.2.2 _ (hb x hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem row_level_data_family (XF : Formalism.MainNotions.InnerProductFormulaField.LocF Fm) (h20 : Formalism.MainNotions.InnerProductFormulaField.OrbitValuationBound Fm XF)
     (hb : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, Formalism.MainNotions.AbsolutelyIrreducibleSpan.LamLow (Fm.D x i) (Fm.L x i).sc.b) :
@@ -1385,7 +1371,7 @@ theorem row_level_data_family (XF : Formalism.MainNotions.InnerProductFormulaFie
   fun x hx i => row_level_data_of_lift _ (Fm.X x i) (Fm.ex x hx i).kapR_def (h20 x hx i).2.2.2.2.2.2 _ (hb x hx i)
 
 /- English proof (translation)
-Introduce `x hx i` and use `data_at_small_level_of_lattice _ _ _ (hL0 x hx i) (hb x hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem p0_level_data_family (P0F : ∀ x (i : Fm.Ix x), BaseLevelRowSide (Fm.D x i))
     (hL0 : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, (P0F x i).BaseLevelSideLevelOneCondition)
@@ -1395,7 +1381,7 @@ theorem p0_level_data_family (P0F : ∀ x (i : Fm.Ix x), BaseLevelRowSide (Fm.D 
   fun x hx i => data_at_small_level_of_lattice _ _ _ (hL0 x hx i) (hb x hx i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Fm.x1, fun x hx _ i => square_hypotheses_of_leaves _ _ _ _ K (by rw [hA x hx i]; exact hAR) (hD x hx i) (hL x hx i)⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissible_family_of_local_data {VF : ∀ x (_ : Fm.x1 < x) (i : Fm.Ix x), Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev (Fm.D x i)}
     {AF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), AmbForm (Fm.D x i) (VF x hx i).S}
@@ -1408,7 +1394,7 @@ theorem admissible_family_of_local_data {VF : ∀ x (_ : Fm.x1 < x) (i : Fm.Ix x
   ⟨Fm.x1, fun x hx _ i => square_hypotheses_of_leaves _ _ _ _ K (by rw [hA x hx i]; exact hAR) (hD x hx i) (hL x hx i)⟩
 
 /- English proof (translation)
-Take `⟨xa, ha⟩` from `Formalism.MainNotions.J.family_auxiliary_prime_size Fm`. Take `⟨xb, hb⟩` from `hL`. Conclude with `⟨max xa xb, fun x hx h0 i => square_hypotheses_of_leaves _ _ _ _ K (by rw [hA x hx i]; exact hAR) (hD x hx i) (hb x hx (le_trans (le_max_right _ _) h0) i (ha x (le_trans (le_max_left _ _) h0) hx i))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissible_family_of_small_level {VF : ∀ x (_ : Fm.x1 < x) (i : Fm.Ix x), Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev (Fm.D x i)}
     {AF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), AmbForm (Fm.D x i) (VF x hx i).S}
@@ -1425,7 +1411,7 @@ theorem admissible_family_of_small_level {VF : ∀ x (_ : Fm.x1 < x) (i : Fm.Ix 
     (hb x hx (le_trans (le_max_right _ _) h0) i (ha x (le_trans (le_max_left _ _) h0) hx i))⟩
 
 /- English proof (translation)
-Introduce `x hx i`. Take `⟨sFF, sL1, IsSettingL2, sL4, s0, sRE, sINT, -, -⟩` from `S x hx i`. Conclude with `constant_free_items_of_parts _ (GF x i) _ sFF sL1 IsSettingL2 sL4 s0 sRE sINT (hT x hx i) (link_brest_alt₂ x hx i) (h5k x hx i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem free_family_of_leaves_and_admissible (GF : ∀ x (i : Fm.Ix x), Formalism.MainNotions.product_first_zeroth_parts.Th22 (Fm.D x i))
     (XF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Formalism.MainNotions.ZetaProductPairs.Loc (Fm.D x i) (Fm.ex x hx i).th)
@@ -1438,7 +1424,7 @@ theorem free_family_of_leaves_and_admissible (GF : ∀ x (i : Fm.Ix x), Formalis
   exact constant_free_items_of_parts _ (GF x i) _ sFF sL1 IsSettingL2 sL4 s0 sRE sINT (hT x hx i) (link_brest_alt₂ x hx i) (h5k x hx i)
 
 /- English proof (translation)
-Introduce `x hx i` and use `chainD_MI_rec _ (WF x hx i) (p0 x hx i) (S6 x hx i) (a6 x hx i) (SMI x hx i) (Sc x hx i) (Sr x hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chainD_MI (XF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Formalism.MainNotions.ZetaProductPairs.Loc (Fm.D x i) (Fm.ex x hx i).th) (CH : ℝ)
     (p0 : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Formalism.MainNotions.ZetaProductPairs.UnfoldingScalarUnitary (XF x hx i))
@@ -1451,7 +1437,7 @@ theorem chainD_MI (XF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Formalism.MainNoti
   fun x hx i => chainD_MI_rec _ (WF x hx i) (p0 x hx i) (S6 x hx i) (a6 x hx i) (SMI x hx i) (Sc x hx i) (Sr x hx i)
 
 /- English proof (translation)
-Establish `LocalHeightDeterminant` using `lift_hypotheses_family_of_parts Fm hW hR`. Establish `A20` using `lift_hypotheses_family_leaves Fm A XF20 h1 h19 hV h3 lintegral_lt_top_of_thetaIP_ne`. Conclude with `⟨twenty_words_le_b LocalHeightDeterminant A20, lattice_length_bound_family_of Fm A XF20 Csz Ksz CH S20z LocalHeightDeterminant A20 hC hS hLp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem division_chain_lift_statement (A : ProvA) (XF20 : Formalism.MainNotions.InnerProductFormulaField.LocF Fm) (Csz Ksz CH : ℝ)
     (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst A)
@@ -1471,7 +1457,7 @@ theorem division_chain_lift_statement (A : ProvA) (XF20 : Formalism.MainNotions.
   exact ⟨twenty_words_le_b LocalHeightDeterminant A20, lattice_length_bound_family_of Fm A XF20 Csz Ksz CH S20z LocalHeightDeterminant A20 hC hS hLp⟩
 
 /- English proof (translation)
-Establish `hb` using `lambda_lower_bound_family Fm XF20 Cl p20 p6 (fun x _ i => sumHkP_nonneg_rec (Fm.D x i)) hsz`. Conclude with `S36 (admissible_family_of_local_data Fm XF36 K A hA36 hAR (row_level_data_family Fm XF20 p20 hb) locJunk_chart)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem division_chain_square_statement (A : ProvA) (XF20 : Formalism.MainNotions.InnerProductFormulaField.LocF Fm)
     {AF : ∀ x (_ : Fm.x1 < x) (i : Fm.Ix x), AmbForm (Fm.D x i) (RowSide.sharp (Fm.D x i))}
@@ -1488,9 +1474,9 @@ theorem division_chain_square_statement (A : ProvA) (XF20 : Formalism.MainNotion
   exact S36 (admissible_family_of_local_data Fm XF36 K A hA36 hAR (row_level_data_family Fm XF20 p20 hb) locJunk_chart)
 
 /- English proof (translation)
-Establish `hAR : ArchimedeanTheoremFiveParts A` using `S46 locP_compan_le`. Take `⟨-, -, -, hV, -, h3, -⟩` from `S01 YF L01`. Establish `pF` using `free_family_of_leaves_and_admissible Fm GF XF19 S19 hT link_brest_alt₂ h5k`. Establish `pMI` using `chainD_MI Fm XF19 CH (fun x hx i => (pF x hx i).2.2.2.2.1) WF19 S20s a6 S19m (fun x hx i => (S19 x hx i).2.2.2.2.2.2.2.1) (fun x hx i => (S19 x hx i).2.2.2.2.2.2.2.2)`. Take `⟨p20, p6⟩` from `division_chain_lift_statement Fm A XF20 Csz Ksz CH hAR.1 (fun x hx i => ⟨(pF x hx i).2.1, (pF x hx i).2.2.1⟩) twenty_words_le_b S20z hV h3 hW hR lintegral_lt_top_of_thetaIP_ne hC hS hLp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨pF, pMI, p20, p6, division_chain_square_statement Fm A XF20 XF36 K _ C Ch Ch' S36 hAR p20 p6 hsz hA36 locJunk_chart⟩`.
+Supply the required witnesses or components.
 -/
 theorem chainD (A : ProvA) (GF : ∀ x (i : Fm.Ix x), Formalism.MainNotions.product_first_zeroth_parts.Th22 (Fm.D x i))
     (XF19 : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Formalism.MainNotions.ZetaProductPairs.Loc (Fm.D x i) (Fm.ex x hx i).th)
@@ -1546,9 +1532,9 @@ structure SqSett {D : D7} {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.L
   csq_def : ∀ c, S.Prop2 0 0 c → X.csq μ i j = c
 
 /- English proof (translation)
-Establish `hd : Q.S.d = 2 * (D.R.r + j * D.R.t + i * X.s) + D.R.t + X.s`. Establish `h1` using `Q.S.sum`. Establish `h2` using `Q.rk_a`. Establish `h3` using `Q.rk_a'`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hd, abs_mul, Q.inf τ hj, abs_two]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem SqSett.kap_iff {D : D7} {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D} {Am : AmbForm D V.S} {T : ThetaX D} {Lc : Formalism.MainNotions.KudlaSiegelWeil.Loc D T}
     {X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LocV D V Am} {μ : D.what₂.Tup} {i j : ℕ} (Q : SqSett T Lc X μ i j) (τ : D.what₂.Tau)
@@ -1570,7 +1556,7 @@ theorem sq_ranges (m t s n j e : ℕ) (h1 : 4 * m + 2 < t + s) (h2 : 2 * m + 1 <
   omega
 
 /- English proof (translation)
-Establish `h1` using `X.s_eq`. Establish `h2` using `D.R.three_m_lt_t`. Establish `h3` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Conclude with `⟨by omega, fun i j => by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem commutation_rank_inequalities {D : D7} {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D} {Am : AmbForm D V.S} (X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LocV D V Am) :
     4 * D.R.m + 2 < D.R.t + X.s ∧ ∀ i j : ℕ, 2 * D.R.m + 1 < D.R.r + j * D.R.t + i * X.s := by
@@ -1581,11 +1567,11 @@ theorem commutation_rank_inequalities {D : D7} {V : Formalism.MainNotions.Absolu
   exact ⟨by omega, fun i j => by omega⟩
 
 /- English proof (translation)
-Establish `h` using `X.chi_above (D.R.m - i) (by omega) (by omega) ⟨j, hj⟩ τ`. Use `lt_of_le_of_lt ?_ h` and prove the remaining obligations. Establish `a : j * D.R.t + D.R.t ≤ D.R.m * D.R.t`. Combine the equalities or inequalities in the displayed calculation. Establish `b : i * X.s + X.s ≤ D.R.m * X.s`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `e : D.R.m * (D.R.t + X.s + 1) = D.R.m * D.R.t + D.R.m * X.s + D.R.m` using `by ring`. Establish `h2 : D.R.k + D.R.m * (D.R.t + X.s + 1) ≤ (D.R.k + D.R.m * (D.R.t + X.s + 1)) ^ 3` using `Nat.le_self_pow (by norm_num) _`. Establish `h3 : 2 * (D.R.r + j * D.R.t + i * X.s) + D.R.t + X.s ≤ 2 * (D.R.k + D.R.m * (D.R.t + X.s + 1)) ^ 3`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans ?_ (Nat.mul_le_mul_left 2 h2)` and prove the remaining obligations. Rewrite using `[e]`. Use linear arithmetic over natural numbers and integers. Conclude with `h3` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem commutation_third_inequality {D : D7} {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D} {Am : AmbForm D V.S} (X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LocV D V Am) (i j : ℕ)
     (hi : i < D.R.m) (hj : j < D.R.m) (τ : D.what₂.Tau) :
@@ -1614,7 +1600,7 @@ def TieCsq {D : D7} {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D} 
   ∀ μ, Formalism.MainNotions.AbsolutelyIrreducibleSpan.Used D μ → ∀ i j, i < D.R.m → j < D.R.m → Nonempty (SqSett T Lc X μ i j)
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, hS⟩` from `hK`. Take `⟨-, c, hc, -⟩` from `hS Q.S`. Establish `h0` using `hc 0 (Nat.zero_le _) 0 (Nat.zero_le _)`. Rewrite using `[Q.csq_def _ h0]`. Conclude with `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SqSett.prop2 {D : D7} {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D} {Am : AmbForm D V.S} {T : ThetaX D} {Lc : Formalism.MainNotions.KudlaSiegelWeil.Loc D T}
     {X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LocV D V Am} {μ : D.what₂.Tup} {i j : ℕ} (Q : SqSett T Lc X μ i j)
@@ -1626,7 +1612,7 @@ theorem SqSett.prop2 {D : D7} {V : Formalism.MainNotions.AbsolutelyIrreducibleSp
   exact h0
 
 /- English proof (translation)
-Introduce `μ hμ i j hi hj`. Take `⟨Q⟩` from `tie μ hμ i j hi hj`. Conclude with `h Q.S 0 (Nat.zero_le _) 0 (Nat.zero_le _) _ (Q.prop2 hK)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem square_constant_nonzero {D : D7} {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D} {Am : AmbForm D V.S} (T : ThetaX D) (Lc : Formalism.MainNotions.KudlaSiegelWeil.Loc D T)
     (X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LocV D V Am) (tie : TieCsq T Lc X) (hK : Formalism.MainNotions.KudlaSiegelWeil.aux₃ D T Lc)
@@ -1656,9 +1642,9 @@ def CommutationSquares {D : D7} {V : Formalism.MainNotions.AbsolutelyIrreducible
     ∃ Q : SqSett T Lc X μ i (h i), Q.SeeSaw h
 
 /- English proof (translation)
-Introduce `μ hμ h i hp hf h1 h2 h3 P P' hm F hF`. Take `⟨Q, hQ⟩` from `sq μ hμ h i hp hf h1 h2 h3`. Take `⟨ι, _, ΦA, ΦB, Λ, hA, hB, hpp, eA, eB⟩` from `hQ P P' hm F hF`. Establish `hc` using `Q.prop2 hK`. Rewrite using `[eA, eB, Finset.smul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hc (ΦA k) (hA k) (ΦB k) (hB k) (hpp k), map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kernel_square_step_hypothesis {D : D7} {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D} {Am : AmbForm D V.S} (T : ThetaX D) (Lc : Formalism.MainNotions.KudlaSiegelWeil.Loc D T)
     (X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LocV D V Am) (sq : CommutationSquares T Lc X) (hK : Formalism.MainNotions.KudlaSiegelWeil.aux₃ D T Lc) : Formalism.MainNotions.AbsolutelyIrreducibleSpan.adm14 D X := by
@@ -1684,7 +1670,7 @@ def SquareLeavesWithoutCommutation (D : D7) {V : Formalism.MainNotions.Absolutel
   Formalism.MainNotions.AbsolutelyIrreducibleSpan.FontaineFormalProperties D X ∧ Formalism.MainNotions.AbsolutelyIrreducibleSpan.AmbientMetricLowerBound D XD X
 
 /- English proof (translation)
-Take `⟨hK, hNZ, _⟩` from `S35 P35p locJunk_be_pd`. Take `⟨hs, a1, a3, a4, a8, a10, ds1, a2r, a9, a15, a16, a17, rest⟩` from `L0`. Conclude with `⟨hs, a1, a3, a4, a8, a10, ds1, a2r, a9, kernel_square_step_hypothesis T Lc X sq hK, a15, a16, a17, square_constant_nonzero T Lc X tie hK hNZ, rest⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem square_leaves_of_kernel_theorem {D : D7} {V : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev D} {Am : AmbForm D V.S} (L : SizeData₂ D) (XD : DivX D)
     (T : ThetaX D) (Lc : Formalism.MainNotions.KudlaSiegelWeil.Loc D T) (X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.LocV D V Am) (K : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Consts)
@@ -1697,7 +1683,7 @@ theorem square_leaves_of_kernel_theorem {D : D7} {V : Formalism.MainNotions.Abso
     square_constant_nonzero T Lc X tie hK hNZ, rest⟩
 
 /- English proof (translation)
-Introduce `x hx i` and use `square_leaves_of_kernel_theorem _ _ _ (LF x hx i) _ K (fun _ _ => S35 P35p locJunk_be_pd x hx i) (P35p x hx i) (locJunk_be_pd x hx i) (tie x hx i) (sq x hx i) (L0 x hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem square_leaves_family_of_kernel {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
     {VF : ∀ x (_ : Fm.x1 < x) (i : Fm.Ix x), Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev (Fm.D x i)}
@@ -1714,9 +1700,9 @@ theorem square_leaves_family_of_kernel {eps : ℝ} (Fm : Formalism.MainNotions.F
     (L0 x hx i)
 
 /- English proof (translation)
-Introduce `s x q hq hx`. Rewrite using `[hk s]`. Establish `hq' : Am.jAmb D.what₂.mu0 q ∈ D.what₂.V0 D.what₂.mu0` using `hq`. Establish `hx' : D.jEE x = D.what₂.iota D.what₂.mu0 (Am.jAmb D.what₂.mu0 q)`. Rewrite using `[← Formalism.MainNotions.AbsolutelyIrreducibleSpan.sharp_iota]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Establish `e : Formalism.MainNotions.AbsolutelyIrreducibleSpan.qnAt D (V` using `Formalism.MainNotions.AbsolutelyIrreducibleSpan.Lev.sharp D) Am (NumberField.InfinitePlace.mk s) q = Formalism.MainNotions.LocalQuadraticParts.qn Am (NumberField.InfinitePlace.mk s) q := by`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h s x q hq' hx'`.
+Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kappa_hypothesis_of_sides (D : D7) (Z : DivX D) {Am : AmbForm D (RowSide.sharp D)} (X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Loc D Am)
     (hk : ∀ s : D.what₂.LL →+* ℂ, X.kapV (NumberField.InfinitePlace.mk s) = Z.kapR s)
@@ -1734,7 +1720,7 @@ theorem kappa_hypothesis_of_sides (D : D7) (Z : DivX D) {Am : AmbForm D (RowSide
   exact h s x q hq' hx'
 
 /- English proof (translation)
-The claim follows from `kappa_hypothesis_of_sides D Z X (fun s => (hL _).trans (kapR_mk_of_KapConj D Z hc s)) h`.
+A detailed English derivation is pending.
 -/
 theorem kappa_hypothesis_of_levels (D : D7) (Z : DivX D) {Am : AmbForm D (RowSide.sharp D)} (X : Formalism.MainNotions.AbsolutelyIrreducibleSpan.Loc D Am)
     (hL : Formalism.MainNotions.AbsolutelyIrreducibleSpan.KapLevels Z X) (hc : Formalism.MainNotions.PGAL.KapConj D Z)
@@ -1742,7 +1728,7 @@ theorem kappa_hypothesis_of_levels (D : D7) (Z : DivX D) {Am : AmbForm D (RowSid
   kappa_hypothesis_of_sides D Z X (fun s => (hL _).trans (kapR_mk_of_KapConj D Z hc s)) h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hC, hd, h5, hk⟩`.
+Supply the required witnesses or components.
 -/
 theorem chain_bound_admissible_of_data (D : D7) (P : BaseLevelRowSide D) (C : ℝ) (hC : 0 < C)
     (hd : C * ((D.R.f : ℝ) * D.R.r / (min (D.host.g 0) (D.host.g 1) : ℕ)) ≤ 1 / 3)
@@ -1756,9 +1742,9 @@ def TieDatG (D : D7) (Z : DivX D) (G : Formalism.MainNotions.CanonicalTranslateJ
     D.what₂.embLL (G.datG μ j h i x) = Formalism.DoubleCosetMeasures.phiU O ϖ J' ρ y
 
 /- English proof (translation)
-Introduce `μ j _ h i x`. Take `⟨F, _, O, ϖ, a, t, J', ρ, hρ, y, e⟩` from `T μ j h i x`. Unfold `Formalism.DoubleCosetMeasures.phiU at e`. Use `split_ifs at e with hc`. Use `right`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn, hk⟩` from `hρ (Classical.choose hc.1)`. Use `⟨n, hn, D.what₂.embLL.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, e, map_one, ← Units.val_pow_eq_pow_val, hk, Units.val_one]`. Use `left`. Conclude with `D.what₂.embLL.injective (by rw [e, map_zero])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_datum_hypothesis (D : D7) (Z : DivX D) (G : Formalism.MainNotions.CanonicalTranslateJets.Loc D Z) (T : TieDatG D Z G) :
     Formalism.MainNotions.CanonicalTranslateJets.adm1 D Z G := by
@@ -1784,19 +1770,17 @@ namespace Formalism.MainNotions.DIV
 open Formalism.BasicNotions Formalism.BasicNotions.DV
 
 /- English proof (translation)
-Take `⟨fl, r, h1, h2, h3, h4, -⟩` from `h`. Establish `hl : ∀ w : D.what₂.places.Pl, 0 ≤ SizeData₂.lwP w`. Introduce `w`. Unfold `SizeData₂.lwP lw`. Conclude with `div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `herr : ∀ j w, 0 ≤ Formalism.MainNotions.PDVN.onRj D fl r j w`. Introduce `j w`. Unfold `Formalism.MainNotions.PDVN.onRj`. Conclude with `add_nonneg (h1 _ _) (div_nonneg (add_nonneg (h2 _ _) (h2 _ _)) (Nat.cast_nonneg _))`. Use `⟨fun j w => Formalism.MainNotions.PDVN.onRj D fl r j w, fl, r, h1, h2, hJ0, fun j w => rfl, fun w hw => ?_, fun j hj => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : (0 : ℝ) < (D.what₂.places.ramIdx w : ℝ)` using `by exact_mod_cast D.what₂.places.ramIdx_pos w`. Establish `k` using `mul_le_mul_of_nonneg_left (h3 w hw) he.le`. Establish `e : (D.what₂.places.ramIdx w : ℝ) * Formalism.MainNotions.PDVN.onL D L (D.what₂.muAt w) w = ∑ j ∈ SizeData₂.lifts D, (((D.what₂.Ij (D.what₂.muAt w) j w : ℝ) + (D.what₂.Ij (D.what₂.muAt w) j (D.what₂.places.conj w) : ℝ)) / (D.what₂.D0 : ℝ) - 2 * ur D w (L.F j w))`. Unfold `Formalism.MainNotions.PDVN.onL Formalism.MainNotions.PDVN.inL ur`. Rewrite using `[Finset.mul_sum, Formalism.MainNotions.PDVN.ramIdx_conj]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Rewrite `k` using `[e]`. Conclude with `k`. Establish `hnn : ∀ w, 0 ≤ SizeData₂.lwP w * ur D w (Formalism.MainNotions.PDVN.onRj D fl r j w + X.Jx j w)` using `fun w => mul_nonneg (hl w) (mul_nonneg (Nat.cast_nonneg _) (add_nonneg (herr j w) (hJ0 j w)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb : ∀ T : Finset D.what₂.places.Pl, ∑ w ∈ T, SizeData₂.lwP w * ur D w (Formalism.MainNotions.PDVN.onRj D fl r j w + X.Jx j w) ≤ C * L.sc.x ^ (Cabs * L.sc.eps) * (L.B0 + L.Nc)`. Introduce `T`. Establish `: ∑ w ∈ T, SizeData₂.lwP w * ur D w (Formalism.MainNotions.PDVN.onRj D fl r j w + X.Jx j w) = ∑ w ∈ T, SizeData₂.lwP w * ur D w (Formalism.MainNotions.PDVN.onRj D fl r j w) + ∑ w ∈ T, SizeData₂.lwP w * ur D w (X.Jx j w)`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Unfold `ur`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `le_trans (add_le_add (h4 j hj T) (hJ j hj T)) hsz`. Establish `hs` using `summable_of_sum_le hnn hb`.
-
-Conclude with `⟨hs, hs.tsum_le_of_sum_le hb⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lift_sum_bound_admissible_of_data (D : D7) (L : SizeData₂ D) (X : Formalism.MainNotions.LocalQuadraticParts.Loc D) (C' BJ C Cabs : ℝ)
     (h : Formalism.MainNotions.PDVN.ONTwJ D L C') (hJ0 : ∀ j w, 0 ≤ X.Jx j w)
@@ -1851,23 +1835,23 @@ section Proved
 open Formalism.BasicNotions.TH
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.DoubleCosetMeasures.P.lemmaUSplit, parahoric_index_int, datum_block_eigenvalues, datum_conjugation_invariant⟩`.
+Supply the required witnesses or components.
 -/
 theorem first_lemma_all_clauses : Formalism.MainNotions.ZetaProductPairs.L1 :=
   ⟨Formalism.DoubleCosetMeasures.P.lemmaUSplit, parahoric_index_int, datum_block_eigenvalues, datum_conjugation_invariant⟩
 
 /- English proof (translation)
-The claim follows from `first_lemma_all_clauses`.
+A detailed English derivation is pending.
 -/
 theorem first_lemma_statement_proved : Formalism.MainNotions.ZetaProductPairs.LocalComputationOne := first_lemma_all_clauses
 
 /- English proof (translation)
-The claim follows from `uMultOne_closed`.
+A detailed English derivation is pending.
 -/
 theorem unitary_multiplicity_one : Formalism.MainNotions.ZetaProductPairs.adm3 := uMultOne_closed
 
 /- English proof (translation)
-The claim follows from `lift_hypotheses_of_parts D Z T A X h1 first_lemma_all_clauses hL2 hV h3 a1 a2 a3 a4 tg a7 a8 a9 hI hR`.
+A detailed English derivation is pending.
 -/
 theorem lift_hypotheses_with_second_lemma (D : D7) (Z : DivX D) (T : ThetaX D) (A : ProvA) (X : Formalism.MainNotions.InnerProductFormulaField.Loc D)
     (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst A) (hL2 : Formalism.MainNotions.ZetaProductPairs.L2 Z) (hV : Formalism.MainNotions.PrimeDegreeVariant.ThetaUpInV0 D)
@@ -1879,7 +1863,7 @@ theorem lift_hypotheses_with_second_lemma (D : D7) (Z : DivX D) (T : ThetaX D) (
   lift_hypotheses_of_parts D Z T A X h1 first_lemma_all_clauses hL2 hV h3 a1 a2 a3 a4 tg a7 a8 a9 hI hR
 
 /- English proof (translation)
-The claim follows from `lift_hypotheses_family_leaves Fm A XF h1 (fun x hx i => ⟨first_lemma_all_clauses, h19 x hx i⟩) hV h3 hL`.
+A detailed English derivation is pending.
 -/
 theorem admissible_family_of_L2 {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (A : ProvA)
     (XF : Formalism.MainNotions.InnerProductFormulaField.LocF Fm) (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst A)
@@ -1907,7 +1891,7 @@ def LiftLeavesFamilyByKind (A : ProvA) (XF : Formalism.MainNotions.InnerProductF
     Rows.IsotInternal (Fm.D x i).what₂ ∧ Rows.IsotRank (Fm.D x i).what₂
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h x hx i => let ⟨a1, a2, a3, a4, tg, a7, a8, a9, hI, hR⟩ := h x hx i ⟨⟨a1, a2, a4, a7⟩, a3, tg, ⟨a8, a9⟩, hI, hR⟩, fun h x hx i => let ⟨⟨a1, a2, a4, a7⟩, a3, tg, ⟨a8, a9⟩, hI, hR⟩ := h x hx i ⟨a1, a2, a3, a4, tg, a7, a8, a9, hI, hR⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem leaf_family_iff_grouped (A : ProvA) (XF : Formalism.MainNotions.InnerProductFormulaField.LocF Fm) : LeafHypothesesFamily Fm A XF ↔ LiftLeavesFamilyByKind Fm A XF :=
   ⟨fun h x hx i => let ⟨a1, a2, a3, a4, tg, a7, a8, a9, hI, hR⟩ := h x hx i

@@ -14,7 +14,7 @@ section Ent
 variable {k ρ : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Introduce `y₀ hy₀`. Take `⟨U, F, hU, hxU, hF, hfF⟩` from `h ((0 : Fin ρ → ℂ), Matrix.of y₀) (Set.mem_univ _) hy₀`. Establish `hm : Continuous fun y : Mt k ρ => (((0 : Fin ρ → ℂ), (Matrix.of y : Mx k ρ)) : Formalism.FourierDecayAlt.P.Qx3.XX k ρ)` using `continuous_const.prodMk continuous_id`. Establish `hmd : ContDiff ℝ ∞ fun y : Mt k ρ => (((0 : Fin ρ → ℂ), (Matrix.of y : Mx k ρ)) : Formalism.FourierDecayAlt.P.Qx3.XX k ρ)` using `contDiff_const.prodMk contDiff_id`. Use `⟨(fun y : Mt k ρ => (((0 : Fin ρ → ℂ), (Matrix.of y : Mx k ρ)) : Formalism.FourierDecayAlt.P.Qx3.XX k ρ)) ⁻¹' U, fun y => F ((0 : Fin ρ → ℂ), Matrix.of y), hU.preimage hm, hxU, hF.comp hmd.contDiffOn (fun y hy => hy), fun y hy hG => hfF _ hy hG⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem smoothG_of_sf {a : Mx k ρ → ℂ}
     (h : SmoothFam k ρ (Fin.last ρ) (Set.univ : Set (Formalism.FourierDecayAlt.P.Qx3.XX k ρ)) (fun _ g => a g)) : SmoothG k ρ a := by
@@ -29,21 +29,21 @@ theorem smoothG_of_sf {a : Mx k ρ → ℂ}
     fun y hy hG => hfF _ hy hG⟩
 
 /- English proof (translation)
-The claim follows from `smoothG_of_sf (Formalism.FourierDecayAlt.P.Qx3.sf_yv z j)`.
+A detailed English derivation is pending.
 -/
 theorem smoothG_yv (z : Fin (2 * ρ + k + 1) → ℂ) (j : Fin (mdim k ρ (Fin.last ρ))) :
     SmoothG k ρ (fun g => yv k ρ z (Fin.last ρ) g j) :=
   smoothG_of_sf (Formalism.FourierDecayAlt.P.Qx3.sf_yv z j)
 
 /- English proof (translation)
-The claim follows from `smoothG_of_sf (Formalism.FourierDecayAlt.P.Qx3.sf_ybv z j)`.
+A detailed English derivation is pending.
 -/
 theorem smoothG_ybv (z : Fin (2 * ρ + k + 1) → ℂ) (j : Fin (mdim k ρ (Fin.last ρ))) :
     SmoothG k ρ (fun g => ybv k ρ z (Fin.last ρ) g j) :=
   smoothG_of_sf (Formalism.FourierDecayAlt.P.Qx3.sf_ybv z j)
 
 /- English proof (translation)
-The claim follows from `parOK_congr (parOK_add (parOK_rdV (Formalism.FourierDecayAlt.P.Qx3.lieLev_of (Formalism.FourierDecayAlt.P.Qx3.hpart_lie (Fin.last ρ) a b).1)) (parOK_csmul Complex.I (parOK_rdV (Formalism.FourierDecayAlt.P.Qx3.lieLev_of (Formalism.FourierDecayAlt.P.Qx3.hpart_lie (Fin.last ρ) a b). …`.
+A detailed English derivation is pending.
 -/
 theorem parOK_EH (a b : Fin (mdim k ρ (Fin.last ρ))) :
     ParOK k ρ (E := E) (EH k ρ (posL k ρ (Fin.last ρ) a) (posL k ρ (Fin.last ρ) b)) :=
@@ -52,7 +52,7 @@ theorem parOK_EH (a b : Fin (mdim k ρ (Fin.last ρ))) :
       (parOK_rdV (Formalism.FourierDecayAlt.P.Qx3.lieLev_of (Formalism.FourierDecayAlt.P.Qx3.hpart_lie (Fin.last ρ) a b).2)))) (fun f g => rfl)
 
 /- English proof (translation)
-Distinguish the cases in `hab : posL k ρ (Fin.last ρ) a = posL k ρ (Fin.last ρ) b`. Conclude with `parOK_congr (parOK_add (parOK_csmul u parOK_id) (parOK_EH a b)) (fun f g => by simp [Formalism.QuantumDeterminants.Top, hab])`. Conclude with `parOK_congr (parOK_add parOK_zero (parOK_EH a b)) (fun f g => by simp [Formalism.QuantumDeterminants.Top, hab])`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem parOK_Top (u : ℂ) (a b : Fin (mdim k ρ (Fin.last ρ))) :
     ParOK k ρ (E := E) (Top (EH k ρ) u (posL k ρ (Fin.last ρ) a) (posL k ρ (Fin.last ρ) b)) := by
@@ -61,9 +61,9 @@ theorem parOK_Top (u : ℂ) (a b : Fin (mdim k ρ (Fin.last ρ))) :
   · exact parOK_congr (parOK_add parOK_zero (parOK_EH a b)) (fun f g => by simp [Formalism.QuantumDeterminants.Top, hab])
 
 /- English proof (translation)
-Establish `key : ∀ σ : Equiv.Perm (Fin t), ParOK k ρ (E` using `E) (fun f g => (((Equiv.Perm.sign σ : ℤ) : ℂ) • (List.ofFn fun j : Fin t => Top (E := E) (EH k ρ) (u - ((j : ℕ) : ℂ)) ((posL k ρ (Fin.last ρ) ∘ a) (σ j)) ((posL k ρ (Fin.last ρ) ∘ b) j)).foldr (fun T h => T h) f g)) := by`. Introduce `σ`. Use `parOK_csmul _ (parOK_foldr _ ?_)` and prove the remaining obligations. Introduce `T hT`. Take `⟨j, rfl⟩` from `(List.mem_ofFn' _ _).1 hT`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `parOK_Top _ _ _`. Use `parOK_congr (parOK_sum Finset.univ (fun σ _ => key σ)) (fun f g => ?_)` and prove the remaining obligations. Simplify using `[qminorOp, Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem parOK_qminor {t : ℕ} (a b : Fin t → Fin (mdim k ρ (Fin.last ρ))) (u : ℂ) :
     ParOK k ρ (E := E) (qminorOp (EH k ρ) (posL k ρ (Fin.last ρ) ∘ a) (posL k ρ (Fin.last ρ) ∘ b) u) := by
@@ -80,7 +80,7 @@ theorem parOK_qminor {t : ℕ} (a b : Fin t → Fin (mdim k ρ (Fin.last ρ))) (
   simp [qminorOp, Finset.sum_apply]
 
 /- English proof (translation)
-Use `parOK_congr (parOK_sum Finset.univ fun i' _ => parOK_sum Finset.univ fun j' _ => parOK_smulG (smoothG_mul (smoothG_mul (smoothG_const _) (hβ i')) (ha j')) (parOK_qminor _ _ _)) (fun f g => rfl)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem parOK_chatL (u : ℂ) (a β : Mx k ρ → Fin (mdim k ρ (Fin.last ρ)) → ℂ)
     (ha : ∀ j, SmoothG k ρ (fun g => a g j)) (hβ : ∀ j, SmoothG k ρ (fun g => β g j)) :
@@ -90,7 +90,7 @@ theorem parOK_chatL (u : ℂ) (a β : Mx k ρ → Fin (mdim k ρ (Fin.last ρ)) 
     (fun f g => rfl)
 
 /- English proof (translation)
-Use `parOK_congr (parOK_sum Finset.univ fun i₁ _ => parOK_sum Finset.univ fun i₂ _ => parOK_sum Finset.univ fun j₁ _ => parOK_sum Finset.univ fun j₂ _ => ?_) (fun f g => rfl)` and prove the remaining obligations. Distinguish the cases in `hc : i₁ < i₂ ∧ j₁ < j₂`. Use `parOK_congr (parOK_smulG (smoothG_mul (smoothG_mul (smoothG_const ((-1 : ℂ) ^ ((i₁ : ℕ) + (i₂ : ℕ) + (j₁ : ℕ) + (j₂ : ℕ)))) (smoothG_sub (smoothG_mul (hβ i₁) (hβ' i₂)) (smoothG_mul (hβ i₂) (hβ' i₁)))) (smoothG_sub (smoothG_mul (ha j₁) (ha' j₂)) (smoothG_mul (ha j₂) (ha' j₁)))) (p …` and prove the remaining obligations. Conclude with `parOK_congr parOK_zero (fun f g => by simp only [if_neg hc])`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem parOK_chat2L (u : ℂ) (a a' β β' : Mx k ρ → Fin (mdim k ρ (Fin.last ρ)) → ℂ)
     (ha : ∀ j, SmoothG k ρ (fun g => a g j)) (ha' : ∀ j, SmoothG k ρ (fun g => a' g j))
@@ -107,9 +107,7 @@ theorem parOK_chat2L (u : ℂ) (a a' β β' : Mx k ρ → Fin (mdim k ρ (Fin.la
   · exact parOK_congr parOK_zero (fun f g => by simp only [if_neg hc])
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases p <;> fin_cases q`. Use `show ParOK k ρ (capL k ρ (Fin.last ρ) (uC k ρ (Fin.last ρ) Y))`. Conclude with `parOK_qminor id id _`. Use `show ParOK k ρ (fun f g => -(chatL (EH k ρ) (posL k ρ (Fin.last ρ)) (uC k ρ (Fin.last ρ) Y - 1) (fun _ => xv k ρ z' (Fin.last ρ)) (ybv k ρ z (Fin.last ρ)) f g))`. Conclude with `parOK_neg (parOK_chatL _ _ _ (fun j => smoothG_const _) (fun j => smoothG_ybv z j))`.
-
-Use `show ParOK k ρ (fun f g => -(chatL (EH k ρ) (posL k ρ (Fin.last ρ)) (uC k ρ (Fin.last ρ) Y) (yv k ρ z (Fin.last ρ)) (fun _ => xbv k ρ z' (Fin.last ρ)) f g))`. Conclude with `parOK_neg (parOK_chatL _ _ _ (fun j => smoothG_yv z j) (fun j => smoothG_const _))`. Use `show ParOK k ρ (fun f g => -(chat2L (EH k ρ) (posL k ρ (Fin.last ρ)) (uC k ρ (Fin.last ρ) Y - 1) (yv k ρ z (Fin.last ρ)) (fun _ => xv k ρ z' (Fin.last ρ)) (ybv k ρ z (Fin.last ρ)) (fun _ => xbv k ρ z' (Fin.last ρ)) f g))`. Conclude with `parOK_neg (parOK_chat2L _ _ _ _ _ (fun j => smoothG_yv z j) (fun j => smoothG_const _) (fun j => smoothG_ybv z j) (fun j => smoothG_const _))`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem parOK_tL (z z' : Fin (2 * ρ + k + 1) → ℂ) (Y : ℂ) (p q : Fin 2) :
     ParOK k ρ (E := E) (tL k ρ z z' (Fin.last ρ) Y p q) := by

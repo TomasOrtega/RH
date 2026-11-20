@@ -3,13 +3,13 @@ import Development.EtaleCohomology.TateTwists.EtaleKInjectiveHomLiftAlongQuasiIs
 open CategoryTheory Limits GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R _ K L I _ f _`. Establish `hI` using `CochainComplex.IsKInjective.rightOrthogonal I`. Rewrite `hI` using `[← ObjectProperty.isLocal_trW]`. Establish `hf : (HomotopyCategory.subcategoryAcyclic (Shv R)).trW ((HomotopyCategory.quotient _ (ComplexShape.up ℤ)).map f)`. Rewrite using `[← HomotopyCategory.quasiIso_eq_trW_subcategoryAcyclic, HomotopyCategory.quotient_map_mem_quasiIso_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(HomologicalComplex.mem_quasiIso_iff _).mpr inferInstance`. Establish `hb` using `hI _ hf`. Use `⟨fun a => ?_, fun m m' h => ?_⟩` and prove the remaining obligations. Take `⟨m', hm'⟩` from `hb.2 ((HomotopyCategory.quotient _ _).map a)`. Take `⟨m, rfl⟩` from `(HomotopyCategory.quotient _ _).map_surjective m'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, ⟨HomotopyCategory.homotopyOfEq _ _ ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Functor.map_comp]`. Conclude with `hm'`. Take `⟨h⟩` from `h`. Establish `e` using `HomotopyCategory.eq_of_homotopy _ _ h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `e` using `[Functor.map_comp, Functor.map_comp]`. Conclude with `⟨HomotopyCategory.homotopyOfEq _ _ (hb.1 e)⟩`.
+A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_kInjective_hom_lift_along_quasiIso_holds : LateralTheory.EtaleFoundations.EtaleKInjectiveHomLiftAlongQuasiIsoUpToHomotopy := by
   intro R _ K L I _ f _

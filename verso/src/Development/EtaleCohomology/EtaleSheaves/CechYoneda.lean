@@ -13,7 +13,7 @@ def eW {A B : Scheme.{0}} (p : A ⟶ B) (n : ℕ) :
     HasLimit.isoOfNatIso (WidePullbackShape.diagramIsoWideCospan _)
 
 /- English proof (translation)
-Simplify using `only [eW, Iso.trans_hom, WidePullback.π]`. Use `erw [Category.assoc, HasLimit.isoOfNatIso_hom_π, ← Category.assoc, preservesLimitIso_hom_π]`. Simplify using `only [WidePullbackShape.diagramIsoWideCospan, NatIso.ofComponents_hom_app]`. Conclude with `Category.comp_id _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eW_π {A B : Scheme.{0}} (p : A ⟶ B) (n : ℕ) (i : Fin (n + 1)) :
     (eW p n).hom ≫ WidePullback.π _ i = yoneda.map (WidePullback.π _ i) := by
@@ -23,7 +23,7 @@ theorem eW_π {A B : Scheme.{0}} (p : A ⟶ B) (n : ℕ) (i : Fin (n + 1)) :
   exact Category.comp_id _
 
 /- English proof (translation)
-Simplify using `only [eW, Iso.trans_hom, WidePullback.base]`. Use `erw [Category.assoc, HasLimit.isoOfNatIso_hom_π, ← Category.assoc, preservesLimitIso_hom_π]`. Simplify using `only [WidePullbackShape.diagramIsoWideCospan, NatIso.ofComponents_hom_app]`. Conclude with `Category.comp_id _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eW_base {A B : Scheme.{0}} (p : A ⟶ B) (n : ℕ) :
     (eW p n).hom ≫ WidePullback.base _ = yoneda.map (WidePullback.base _) := by
@@ -33,11 +33,11 @@ theorem eW_base {A B : Scheme.{0}} (p : A ⟶ B) (n : ℕ) :
   exact Category.comp_id _
 
 /- English proof (translation)
-Introduce `A B C D p q s n`. Use `⟨(Arrow.isoMk (eW p n) (eW q n) ?_).symm⟩` and prove the remaining obligations. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [Arrow.mk_hom, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `erw [Arrow.mapCechNerve_app, WidePullback.lift_π]`. Use `erw [← Category.assoc, eW_π, Category.assoc, eW_π]`. Express the relevant statement in the definitionally equal form `yoneda.map _ ≫ yoneda.map s.left = yoneda.map _ ≫ yoneda.map _`. Simplify using `only [wpMap]`. Use `erw [← Functor.map_comp, ← Functor.map_comp, WidePullback.lift_π]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [Arrow.mk_hom, Category.assoc] erw [Arrow.mapCechNerve_app, WidePullback.lift_base] erw [← Category.assoc, eW_base, Category.assoc, eW_base]`. Express the relevant statement in the definitionally equal form `yoneda.map _ ≫ yoneda.map s.right = yoneda.map _ ≫ yoneda.map _`. Simplify using `only [wpMap]`. Use `erw [← Functor.map_comp, ← Functor.map_comp, WidePullback.lift_base]`.
+A detailed English derivation is pending.
 -/
 theorem cechYoneda : CechYoneda := by
   intro A B C D p q s n
@@ -58,7 +58,7 @@ theorem cechYoneda : CechYoneda := by
     erw [← Functor.map_comp, ← Functor.map_comp, WidePullback.lift_base]
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.CechSigma_xy1Pf_Lev.CechSigma_of cechYoneda hS`.
+A detailed English derivation is pending.
 -/
 theorem CechSigma_of (hS : SchemeLevel) : ZariskiLocalCech.CechSigma :=
   LateralTheory.E.CechSigma_xy1Pf_Lev.CechSigma_of cechYoneda hS

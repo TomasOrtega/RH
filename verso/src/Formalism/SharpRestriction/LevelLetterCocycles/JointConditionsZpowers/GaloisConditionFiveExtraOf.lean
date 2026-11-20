@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.ConjugateSelfDu
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `g k`. Take `⟨f, hf⟩` from `((h32 i).2.2 r hr).1 g k`. Establish `e : (fun x : D.nd.X i => ((Formalism.MainNotions.N.rO D.nd i r x g).charpolyRev).coeff k) = (f : D.nd.X i → D.nd.O i)` using `funext fun x => (hf x).symm`. Rewrite using `[e]`. Conclude with `f.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galois_condition_one_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (h32 : Formalism.MainNotions.SumRepresentations.Conclusion41 D) (hr : Formalism.MainNotions.N.GoodR D.nd i r) : Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG1 (D := D) i r := by
@@ -24,7 +24,7 @@ theorem galois_condition_one_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (Forma
   exact f.2
 
 /- English proof (translation)
-Introduce `x v hl hS hQ g hg`. Conclude with `((h32 i).2.2 r hr).2.2.2 x v hl hS hQ (D.nd.plOm.1 v) (D.nd.plOm.2 v) g hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem galois_condition_four_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (h32 : Formalism.MainNotions.SumRepresentations.Conclusion41 D) (hr : Formalism.MainNotions.N.GoodR D.nd i r) : Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG4 (D := D) i r := by
@@ -32,7 +32,7 @@ theorem galois_condition_four_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (Form
   exact ((h32 i).2.2 r hr).2.2.2 x v hl hS hQ (D.nd.plOm.1 v) (D.nd.plOm.2 v) g hg
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `(D.Z_tie i x).2 (h32 i hg r hr x hx).1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem galois_condition_six_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (h32 : Formalism.MainNotions.SumRepresentations.ConclusionG6 D) (hg : Formalism.MainNotions.N.HG D.nd D.naut i) (hr : Formalism.MainNotions.N.GoodR D.nd i r) :
@@ -41,7 +41,7 @@ theorem galois_condition_six_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (Forma
   exact (D.Z_tie i x).2 (h32 i hg r hr x hx).1
 
 /- English proof (translation)
-Introduce `w hw`. Take `⟨ha, hb, -⟩` from `h32 i hg r hr w hw (D.nd.SQ_l i w hw)`. Conclude with `⟨ha, fun hk hS _ => hb hk hS⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem galois_condition_five_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (h32 : Formalism.MainNotions.SumRepresentations.ConclusionG5 D) (hg : Formalism.MainNotions.N.HG D.nd D.naut i) (hr : Formalism.MainNotions.N.GoodR D.nd i r) :
@@ -54,7 +54,7 @@ def LitGoodO : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l), GoodO (Qp := ℚ_[l]) ↥LL.1 ↥(OL LL)
 
 /- English proof (translation)
-Introduce `w hw C`. Conclude with `⟨Formalism.MainNotions.TruncatedSeriesCountingIdentities.tate_duality_h2_of_all_coefficients _ _ _ (hT _ _) (hO _ _), hDim _ _ _, fun _ => Formalism.MainNotions.TruncatedSeriesCountingIdentities.bkBAt_of_core _ _ _ (h55 _ _).2.2.2.1 (hO _ _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem bloch_kato_annihilators_of (D : D7) (i : D.nd.Loc) (h55 : Formalism.MainNotions.LocalSituation.Conclusion5 D) (hT : Formalism.MainNotions.LocalSituation.adm3 D)
     (hDim : Formalism.MainNotions.TruncatedSeriesCountingBounds.adm8 D) (hO : LitGoodO) : Formalism.MainNotions.TruncatedSeriesCountingIdentities.admBK (D := D) i := by
@@ -63,11 +63,11 @@ theorem bloch_kato_annihilators_of (D : D7) (i : D.nd.Loc) (h55 : Formalism.Main
     fun _ => Formalism.MainNotions.TruncatedSeriesCountingIdentities.bkBAt_of_core _ _ _ (h55 _ _).2.2.2.1 (hO _ _)⟩
 
 /- English proof (translation)
-Apply `IsTopologicalAddGroup.t2Space_of_zero_sep` to reduce the goal to its premises. Introduce `x hx`. Establish `hH : IsHausdorff (IsLocalRing.maximalIdeal (D.nd.O i)) (D.nd.O i)` using `(D.nd.O_complete i).toIsHausdorff`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Apply `hH.haus' x` to reduce the goal to its premises. Introduce `n`. Establish `hU : ((IsLocalRing.maximalIdeal (D.nd.O i) ^ n : Ideal _) : Set (D.nd.O i)) ∈ nhds 0` using `((isAdic_iff.mp (D.nd.O_adic i)).1 n).mem_nhds (Ideal.zero_mem _)`. Use `hcon _ hU` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SModEq.zero]`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem integers_t2Space (D : D7) (i : D.nd.Loc) : T2Space (D.nd.O i) := by
   apply IsTopologicalAddGroup.t2Space_of_zero_sep
@@ -86,7 +86,7 @@ theorem integers_t2Space (D : D7) (i : D.nd.Loc) : T2Space (D.nd.O i) := by
   simpa using this
 
 /- English proof (translation)
-Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => ?_)` and prove the remaining obligations. Rewrite using `[cycZ_toZModPow_eq (v := v) hv (D.nd.plOm.2 v) (q := 1) (fun x hx => by simpa using hg.2 x hx) n]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cycZ_one_of_Ine (D : D7) (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.host.E))
     (hv : v ∉ placesOver D.host.E (D.nd.l i)) (g : GE D.nd)
@@ -97,15 +97,13 @@ theorem cycZ_one_of_Ine (D : D7) (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.h
   simp
 
 /- English proof (translation)
-Use `integers_t2Space D i` as an intermediate fact. Use `set ζ := D.nd.chi i 1 (D.nd.gam0 i v) with hζ`. Establish `hS : ((Subgroup.zpowers ζ : Subgroup (D.nd.O i)ˣ) : Set (D.nd.O i)ˣ).Finite` using `finite_zpowers.mpr hfin`. Establish `hcl : IsClosed (((Subgroup.zpowers ζ).comap (D.nd.chi i 1) : Subgroup (GE D.nd)) : Set (GE D.nd))`. Establish `e : (((Subgroup.zpowers ζ).comap (D.nd.chi i 1) : Subgroup (GE D.nd)) : Set (GE D.nd)) = ⋃ u ∈ ((Subgroup.zpowers ζ : Subgroup (D.nd.O i)ˣ) : Set (D.nd.O i)ˣ), {g | ((D.nd.chi i 1 g : (D.nd.O i)ˣ) : D.nd.O i) = (u : D.nd.O i)}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Simplify using `only [Subgroup.coe_comap, Set.mem_preimage, SetLike.mem_coe, Set.mem_iUnion, Set.mem_ofPred_eq, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, hu, h⟩`. Rewrite using `[Units.ext h]` and apply the resulting hypothesis. Rewrite using `[e]`. Conclude with `hS.isClosed_biUnion fun u _ => isClosed_eq (D.nd.chi_cont i 1) continuous_const`. Establish `hle : Subgroup.closure (insert (D.nd.gam0 i v) (wildSet D.nd (D.nd.plOm.1 v))) ≤ (Subgroup.zpowers ζ).comap (D.nd.chi i 1)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subgroup.closure_le]`. Introduce `σ hσ`. Break down `hσ with rfl | hσ` into its components or cases. Conclude with `Subgroup.mem_zpowers ζ`. Use `show D.nd.chi i 1 σ ∈ Subgroup.zpowers ζ`.
-
-Rewrite using `[htame σ hσ]`. Conclude with `Subgroup.one_mem _`. Conclude with `closure_minimal hle hcl (hgen hg)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertia_character_mem_zpowers (D : D7) (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.host.E))
     (hgen : TameGen D.nd (D.nd.plOm.1 v) (D.nd.gam0 i v))
@@ -150,25 +148,23 @@ def TameCharacterConditions (D : D7) (i : D.nd.Loc) : Prop :=
   Formalism.MainNotions.SumRepresentations.At.Del D.nd i
 
 /- English proof (translation)
-Introduce `v hv`. Establish `hgen : TameGen D.nd (D.nd.plOm.1 v) (D.nd.gam0 i v)` using `(D.nd.restN_tameGenerator_generates i v hv).2`. Establish `hl` using `D.nd.SQ_l i v hv`. Use `⟨hgen, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc' g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc'` using `[Finset.mem_Icc]`. Rewrite using `[D.nd.chi_def i c hc'.1 hc'.2]`. Simplify using `[cycZ_one_of_Ine D i v hl g hg]`. Introduce `hQ hz`. Take `⟨g, hg, hne⟩` from `D.nd.chi_ram_Q i v hQ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : D.nd.chi i 1 (D.nd.gam0 i v) = 1` using `Units.ext hz`. Use `inertia_character_mem_zpowers D i v hgen (hc.1 v (Or.inl hQ)) (by rw [h1]; exact IsOfFinOrder.one) g hg` as an intermediate fact. Rewrite `this` using `[h1, Subgroup.zpowers_one_eq_bot, Subgroup.mem_bot]`. Conclude with `hne this`. Introduce `hS hp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hov : v ∈ placesOver D.host.E (if D.nd.l i = D.host.pde then D.host.pde' else D.host.pde)`. Break down `hp with hp | ⟨h1, hp⟩` into its components or cases. Establish `: D.nd.l i ≠ D.host.pde` using `fun h => hl (h ▸ hp)`. Rewrite using `[if_neg this]` and apply the resulting hypothesis. Rewrite using `[if_pos h1]` and apply the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hcard` using `hc.2 v hS hov`. Use `set ζ := D.nd.chi i 1 (D.nd.gam0 i v) with hζ`. Establish `hmem : ζ ∈ (Ine (F` using `D.host.E) (D.nd.plOm.1 v)).map (D.nd.chi i 1) := ⟨_, D.nd.locNd_chebotarevPlace_mem i v, rfl⟩`. Establish `: Finite ↥((Ine (F` using `D.host.E) (D.nd.plOm.1 v)).map (D.nd.chi i 1)) := Nat.finite_of_card_ne_zero (by rw [hcard]; norm_num)`. Establish `hfin : IsOfFinOrder ζ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isOfFinOrder_of_finite (⟨ζ, hmem⟩ : ↥((Ine (F := D.host.E) (D.nd.plOm.1 v)).map (D.nd.chi i 1)))` as an intermediate fact. Conclude with `(Subgroup.subtype _).isOfFinOrder this`. Establish `heq : (Ine (F` using `D.host.E) (D.nd.plOm.1 v)).map (D.nd.chi i 1) = Subgroup.zpowers ζ := by`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inertia_character_mem_zpowers D i v hgen (hc.1 v (Or.inr ⟨hS, hp⟩)) hfin g hg`. Rewrite using `[Subgroup.zpowers_le]`. Conclude with `hmem`. Establish `hord : orderOf ζ = 15`. Rewrite using `[← Nat.card_zpowers, ← heq, hcard]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hprim : IsPrimitiveRoot ((ζ : (D.nd.O i)ˣ) : D.nd.O i) 15`. Rewrite using `[IsPrimitiveRoot.coe_units_iff, ← hord]`. Conclude with `IsPrimitiveRoot.orderOf ζ`. Establish `hroot : (Polynomial.cyclotomic 15 (D.nd.O i)).eval ((ζ : (D.nd.O i)ˣ) : D.nd.O i) = 0` using `hprim.isRoot_cyclotomic (by norm_num)`. Establish `h1 : (Polynomial.cyclotomic 15 (D.nd.O i)).eval 1 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Polynomial.eval_one_cyclotomic_not_prime_pow` to reduce the goal to its premises. Introduce `p hp k hk`. Establish `h3 : 3 ∣ p ^ k` using `by rw [hk]; norm_num`. Establish `h5 : 5 ∣ p ^ k` using `by rw [hk]; norm_num`. Establish `e3` using `(Nat.prime_dvd_prime_iff_eq Nat.prime_three hp).mp (Nat.prime_three.dvd_of_dvd_pow h3)`.
-
-Establish `e5` using `(Nat.prime_dvd_prime_iff_eq Nat.prime_five hp).mp (Nat.prime_five.dvd_of_dvd_pow h5)`. Use linear arithmetic over natural numbers and integers. Establish `hd` using `Polynomial.sub_dvd_eval_sub ((ζ : (D.nd.O i)ˣ) : D.nd.O i) 1 (Polynomial.cyclotomic 15 (D.nd.O i))`. Rewrite `hd` using `[hroot, h1, zero_sub]`. Conclude with `isUnit_of_dvd_unit hd (isUnit_one.neg)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galois_condition_five_extra_of (D : D7) (i : D.nd.Loc) (hc : TameCharacterConditions D i) :
     Formalism.MainNotions.TruncatedSeriesCountingIdentities.TameGeneratorConditions (D := D) i := by

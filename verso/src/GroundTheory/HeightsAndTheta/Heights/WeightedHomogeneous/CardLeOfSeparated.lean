@@ -10,19 +10,17 @@ open scoped ENNReal
 noncomputable section
 
 /- English proof (translation)
-Use `borelize E`. Set `μ : Measure E` to `Measure.addHaar`. Establish `hδ2 : 0 < δ / 2` using `half_pos hδ`. Establish `hR : 0 < ρ + δ / 2` using `by linarith`. Establish `D : Set.Pairwise (s : Set E) (Disjoint on fun c => ball (c : E) (δ / 2))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `c hc d hd hcd`. Apply `ball_disjoint_ball` to reduce the goal to its premises. Rewrite using `[dist_eq_norm]`. Use `h c hc d hd hcd` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `A_subset : (⋃ c ∈ s, ball (c : E) (δ / 2)) ⊆ ball (0 : E) (ρ + δ / 2)`. Use `Set.iUnion₂_subset fun x hx => ?_` and prove the remaining obligations. Apply `ball_subset_ball'` to reduce the goal to its premises. Rewrite using `[dist_zero_right]`. Combine the linear relations using `[hs x hx]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `I : (s.card : ℝ≥0∞) * ENNReal.ofReal ((δ / 2) ^ finrank ℝ E) * μ (ball 0 1) ≤ ENNReal.ofReal ((ρ + δ / 2) ^ finrank ℝ E) * μ (ball 0 1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[measure_biUnion_finset D fun c _ => measurableSet_ball]`. Simplify using `only [μ.addHaar_ball_of_pos _ hδ2]`. Simplify using `only [Finset.sum_const, nsmul_eq_mul, mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `_ ≤ μ (ball (0 : E) (ρ + δ / 2)) := measure_mono A_subset`. Use `_ = ENNReal.ofReal ((ρ + δ / 2) ^ finrank ℝ E) * μ (ball 0 1) := by`. Simplify using `only [μ.addHaar_ball_of_pos _ hR]`. Establish `J : (s.card : ℝ≥0∞) * ENNReal.ofReal ((δ / 2) ^ finrank ℝ E) ≤ ENNReal.ofReal ((ρ + δ / 2) ^ finrank ℝ E)` using `(ENNReal.mul_le_mul_iff_left (measure_ball_pos _ _ zero_lt_one).ne' measure_ball_lt_top.ne).1 I`. Establish `K : (s.card : ℝ) * (δ / 2) ^ finrank ℝ E ≤ (ρ + δ / 2) ^ finrank ℝ E`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `ENNReal.toReal_le_of_le_ofReal (pow_nonneg hR.le _) J` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (pow_nonneg hδ2.le _), ENNReal.toReal_natCast]`. Then use the resulting hypothesis. Establish `e : (2 * ρ + δ) / δ = (ρ + δ / 2) / (δ / 2)`. Rewrite using `[div_eq_div_iff hδ.ne' hδ2.ne']`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e, div_pow, le_div_iff₀ (pow_pos hδ2 _)]`. Conclude with `K`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LatticePacking.card_le_of_separated {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] (s : Finset E) {ρ δ : ℝ} (hδ : 0 < δ) (hρ : 0 ≤ ρ)
@@ -67,29 +65,25 @@ theorem LatticePacking.card_le_of_separated {E : Type*} [NormedAddCommGroup E] [
   exact K
 
 /- English proof (translation)
-Introduce `V _ _ L hL B hB hmin`. Establish `: Module.Finite ℤ L` using `Module.Finite.iff_fg.mpr hL`. Set `_ : Module ℚ V` to `Module.compHom V (algebraMap ℚ ℝ)`. Establish `: IsAddTorsionFree V` using `.of_module_rat _`. Establish `: Module.IsTorsionFree ℤ L` using `Injective.moduleIsTorsionFree (R := ℤ) (fun y : L => (y : V)) Subtype.val_injective (fun _ _ => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set δ : ℝ := Real.exp (-B) with hδdef`. Establish `hδ : 0 < δ` using `Real.exp_pos _`. Establish `hδ1 : δ ≤ 1` using `by rw [hδdef, Real.exp_le_one_iff]; linarith`. Set `b` to `Module.Free.chooseBasis ℤ L`. Set `f : Module.Free.ChooseBasisIndex ℤ L → V` to `fun i => ((b i : L) : V)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `W : Submodule ℝ V` to `Submodule.span ℝ (Set.range f)`. Establish `: FiniteDimensional ℝ W` using `FiniteDimensional.span_of_finite ℝ (Set.finite_range f)`. Establish `hdim : finrank ℝ W ≤ finrank ℤ L`. Conclude with `(finrank_range_le_card (R := ℝ) f).trans (Module.finrank_eq_card_chooseBasisIndex (R := ℤ) (M := L)).ge`. Establish `hW : ∀ x ∈ L, x ∈ W`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `h1 : x = ∑ i, b.repr ⟨x, hx⟩ i • f i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Conclude with `Submodule.sum_mem _ fun i _ => zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set S : Set V := {x : V | x ∈ L ∧ ‖x‖ ≤ 1} with hS`. Use `set C : ℝ := ((2 * 1 + δ) / δ) ^ finrank ℝ W with hC`. Establish `key : ∀ t : Finset V, (t : Set V) ⊆ S → (t.card : ℝ) ≤ C`. Introduce `t ht`. Establish `hcard : (t.subtype (· ∈ W)).card = t.card`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.card_subtype, Finset.filter_true_of_mem]`. Introduce `x hx`. Conclude with `hW x (ht hx).1`. Rewrite using `[← hcard]`. Use `LatticePacking.card_le_of_separated (t.subtype (· ∈ W)) hδ zero_le_one ?_ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `c hc`. Rewrite `hc` using `[Finset.mem_subtype]`. Simplify using `using (ht hc).2`. Introduce `c hc d hd hcd`. Rewrite `hc`, `hd` using `[Finset.mem_subtype]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hne : (c : V) - d ≠ 0` using `sub_ne_zero.mpr fun h' => hcd (Subtype.ext h')`. Use `hmin ((c : V) - d) (L.sub_mem (ht hc).1 (ht hd).1) hne` as an intermediate fact. Simplify using `using this`. Establish `hfin : S.Finite`. Assume the negation of the conclusion as `hinf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨t, ht, htc⟩` from `Set.Infinite.exists_subset_card_eq hinf (⌊C⌋₊ + 1)`. Establish `h1` using `key t ht`. Rewrite `h1` using `[htc]`. Move the coercions through the operations in `at h1`. Establish `hC0 : 0 ≤ C` using `pow_nonneg (div_nonneg (by linarith) hδ.le) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the linear relations using `[Nat.lt_floor_add_one C]`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `h1 : (S.ncard : ℝ) ≤ C`. Rewrite using `[Set.ncard_eq_toFinset_card S hfin]`. Conclude with `key _ (by simp)`.
-
-Use `h1.trans ?_` and prove the remaining obligations. Establish `hq : (2 * 1 + δ) / δ ≤ 5 / δ` using `div_le_div_of_nonneg_right (by linarith) hδ.le`. Establish `h5 : 1 ≤ 5 / δ` using `by rw [le_div_iff₀ hδ]; linarith`. Establish `he : 5 / δ = Real.exp (B + Real.log 5)`. Rewrite using `[Real.exp_add, Real.exp_log (by norm_num), hδdef, Real.exp_neg, div_inv_eq_mul, mul_comm]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem LatticePacking.proof : LatticePacking.Statement := by
   intro V _ _ L hL B hB hmin

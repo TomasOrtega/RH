@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.SepRows
 open Matrix
 /- English proof (translation)
-Introduce `hP D _ _ T L μ0 _ sc hsc G W M _ i hi`. Establish `hDS` using `hP.discreteSeriesUpqExists`. Break down `Nat.eq_zero_or_pos i with rfl | hi1` into its components or cases. Rewrite using `[parRow_zero]`. Establish `hV : (G.V (.grid 0 0)).SigOK` using `D.sp.Y_sig (min 0 D.R.m)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `exists_model_of_enum hDS hV (W.onb (.grid 0 0)) (W.cart (.grid 0 0)) (fun τ => ?_) (W.onb_is (.grid 0 0) ⟨Nat.zero_le _, Nat.zero_le _⟩)` and prove the remaining obligations. Take `⟨lam, ε, hE, hH, -, hq⟩` from `GlobalTheory.ChainModels.goodPar_parB D (min 0 D.R.m) (min_le_right _ _) τ`. Establish `e : parB (Ptw D) (min 0 D.R.m) τ = parB (Ptw D) 0 τ` using `by rw [Nat.zero_min]`. Rewrite `hE` using `[e]`. Conclude with `⟨lam, ε, hE, hH, hq⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hsc]`. Establish `hX : (Node.grid i 0).InRange D.R.m` using `⟨hi, Nat.zero_le _⟩`. Establish `hv` using `G.isV hX (fun j e => by cases e; omega)`. Use `exists_model_of_enum hDS hv.sigOK (W.onb (.grid i 0)) (W.cart (.grid i 0)) (fun τ => ?_) (W.onb_is _ hX)` and prove the remaining obligations. Take `⟨hr, hc, hm⟩` from `GlobalTheory.GridJoin.dualPar_shift_counts (if Odd (i + 0) then -(1 / 2) else 0) (GlobalTheory.GridParDCount.isRegular_parD D 1 τ hi (Nat.zero_le D.R.m))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hc' : (parRow D 1 i τ).card = (G.V (.grid i 0)).rank` using `hc.trans ((GlobalTheory.GridParDCount.card_parD D 1 τ hi (Nat.zero_le _)).trans hv.rank.symm)`. Take `⟨lam, ε, hE, hcount⟩` from `GlobalTheory.GridJoin.exists_isEnum_of_regular hr hc'`. Use `⟨lam, ε, hE, isHCParam_dual_parV D i 0 τ lam ε hv.rank hE, ?_⟩` and prove the remaining obligations. Rewrite using `[hcount, hv.sig]`. Conclude with `hm.trans (GlobalTheory.SignedHC.Model.nMinus_parD _ i 0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem separating_models_of_separating_data : _root_.GlobalTheory.FunPr.ThetaLocalInputs → RowModels := by
   intro hP D _ _ T L μ0 _ sc hsc G W M _ i hi
@@ -59,7 +59,7 @@ open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SepRows.separating_models_of_separating_data | exact _root_.GlobalTheory.SepRows.separating_models_of_separating_data | (intros; apply _root_.GlobalTheory.SepRows.separating_models_of_separating_data <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_models_of_separating_data : _root_.GlobalTheory.FunPr.ThetaLocalInputs → RowModels := by
   first | exact @_root_.GlobalTheory.SepRows.separating_models_of_separating_data | exact _root_.GlobalTheory.SepRows.separating_models_of_separating_data | (intros; apply _root_.GlobalTheory.SepRows.separating_models_of_separating_data <;> assumption)

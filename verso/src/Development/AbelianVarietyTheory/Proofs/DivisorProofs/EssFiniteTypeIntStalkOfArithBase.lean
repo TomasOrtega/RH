@@ -14,11 +14,9 @@ noncomputable section
 namespace GlobalTheory.ZH.RatModel
 
 /- English proof (translation)
-Use `haveI : LocallyOfFiniteType M.s := M.lft`. Set `y : PrimeSpectrum o'` to `M.s x`. Use `letI A : Algebra o' ((Sp o').presheaf.stalk (M.s x)) := StructureSheaf.stalkAlgebra _ y`. Use `haveI : @IsLocalization.AtPrime o' _ ((Sp o').presheaf.stalk (M.s x)) _ A y.asIdeal _ := StructureSheaf.IsLocalization.to_stalk _ y`. Set `φ` to `@algebraMap o' ((Sp o').presheaf.stalk (M.s x)) _ _ A`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : (M.s.stalkMap x).hom.EssFiniteType` using `LocallyOfFiniteType.stalkMap M.s x`. Establish `h₂ : φ.EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 (Algebra.EssFiniteType.of_isLocalization _ y.asIdeal.primeCompl)`. Use `haveI : Algebra.FiniteType ℤ o' := hA.ft`. Establish `h₀ : (algebraMap ℤ o').EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 inferInstance`. Establish `h` using `((h₀.comp h₂).comp h₁)`.
-
-Rewrite using `[← RingHom.essFiniteType_algebraMap]`. Use `h` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext_int _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem essFiniteType_int_stalk_of_arithBase {o' Ω : Type} [CommRing o'] [Field Ω] [Algebra o' Ω]
     [hA : ArithBase o' Ω] (M : RatModel o' Ω) (x : M.Z) :

@@ -54,9 +54,9 @@ def LocIn : Prop :=
 variable {u u' F0 what₂}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.map_coe, Set.mem_image, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨z, hz, rfl⟩, rfl⟩`. Simplify using `using hz`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hx`. Conclude with `⟨n.symm x, ⟨x, hx, rfl⟩, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem fwdCut_image_gmap_symm (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Submodule (𝓞 D.host.E) (VS D).V) :
     (n : (VS D).V → (VS D).V) '' (Formalism.HermitianLatticesTheory.gmap n.symm Λ : Set (VS D).V) = (Λ : Set (VS D).V) := by
@@ -70,7 +70,7 @@ theorem fwdCut_image_gmap_symm (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Su
     exact ⟨n.symm x, ⟨x, hx, rfl⟩, by simp⟩
 
 /- English proof (translation)
-Simplify using `only [Gval, Formalism.MainNotions.S.Gflag, Formalism.MainNotions.S.Dl] at h ⊢`. Rewrite using `[show Formalism.MainNotions.S.Zhat F.fl F₁.fl = Formalism.MainNotions.S.Zhat F.fl F₂.fl from h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fwdCut_gval_congr {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F₁ F₂ : LFlag (VS D) D.R.rS T')
     (h : ZhatL F F₁ = ZhatL F F₂) : Gval F F₁ = Gval F F₂ := by
@@ -78,9 +78,9 @@ theorem fwdCut_gval_congr {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F₁ F�
   rw [show Formalism.MainNotions.S.Zhat F.fl F₁.fl = Formalism.MainNotions.S.Zhat F.fl F₂.fl from h]
 
 /- English proof (translation)
-Introduce `γ Z hC F'₂ φ φ' hS F' hP`. Establish `hEZ` using `hP.1`. Establish `hZ' : ZhatL (lf D F0) F' = Z` using `hEZ.2.2.2.2`. Establish `hG : Gval (lf D F0) F' ≠ 0` using `hEZ.1.2.2`. Take `⟨n, hn, hm⟩` from `h1 F0 F'₂ F' (hS.1.trans hZ'.symm) hG (h2 hrows γ Z hC F'₂ φ φ' hS F' hP)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Formalism.HermitianLatticesTheory.gmap n.symm γ.lam, ⟨?_, h3 hrows γ Z hC F'₂ φ φ' hS F' hP n hn hm⟩, n, hn, hm, fwdCut_image_gmap_symm n γ.lam⟩` and prove the remaining obligations. Conclude with `Formalism.HermitianLatticesTheory.isomAct_lattice n.symm γ.lam (hrows.1 γ.lam γ.mem).1.1`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fwdC_of (hrows : IsRowReps D F0 what₂) (h1 : NMove D) (h2 : OmPart Zd u u' F0 what₂)
     (h3 : LocIn Zd u u' F0 what₂) : FwdC Zd u u' F0 what₂ := by

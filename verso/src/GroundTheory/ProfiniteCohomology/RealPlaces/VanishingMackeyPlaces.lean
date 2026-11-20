@@ -20,7 +20,7 @@ section Place
 variable {K : FiniteSubfield} {v : InfinitePlace K.1} (L : FiniteSubfield) [Fact (K ≤ L)]
 
 /- English proof (translation)
-The claim follows from `eq_infPlaceOfEmbedding ι' L (infCompletionEmbedding ι L) fun l => (infCompletionEmbedding_algebraMap ι L l).trans (h l)`.
+A detailed English derivation is pending.
 -/
 theorem infPlaceOfEmbedding_eq_of_forall (ι ι' : ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion)
     (h : ∀ l : L.1, ι l = ι' l) : infPlaceOfEmbedding ι L = infPlaceOfEmbedding ι' L :=
@@ -28,7 +28,7 @@ theorem infPlaceOfEmbedding_eq_of_forall (ι ι' : ℚ̄ →ₐ[K.1] AlgebraicCl
     (infCompletionEmbedding_algebraMap ι L l).trans (h l)
 
 /- English proof (translation)
-The claim follows from `(eq_infPlaceOfEmbedding _ L ((h : AlgebraicClosure v.Completion ≃ₐ[v.Completion] AlgebraicClosure v.Completion).toAlgHom.comp (infCompletionEmbedding ι L)) fun l => by rw [AlgHom.comp_apply, infCompletionEmbedding_algebraMap] rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem infPlaceOfEmbedding_gal_comp (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion)
     (h : Gal(AlgebraicClosure v.Completion / v.Completion)) :
@@ -40,15 +40,15 @@ theorem infPlaceOfEmbedding_gal_comp (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure v.
     rfl).symm
 
 /- English proof (translation)
-Establish `: (infPlaceOfEmbedding ι L : InfinitePlace L.1).LiesOver v` using `(infPlaceOfEmbedding ι L).2`. Prove the components needed by the constructor for the conclusion. Introduce `hw σ l`. Establish `hf : Module.finrank v.Completion (infPlaceOfEmbedding ι L : InfinitePlace L.1).Completion = 1` using `(InfinitePlace.finrank_completion_eq_one_iff _).2 fun h => (InfinitePlace.not_isReal_iff_isComplex.2 h.2) hw`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : v.Completion, algebraMap v.Completion (infPlaceOfEmbedding ι L : InfinitePlace L.1).Completion a = algebraMap L.1 (infPlaceOfEmbedding ι L : InfinitePlace L.1).Completion l := by`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : algebraMap L.1 (infPlaceOfEmbedding ι L : InfinitePlace L.1).Completion l ∈ (⊥ : Subalgebra v.Completion (infPlaceOfEmbedding ι L : InfinitePlace L.1).Completion)`. Rewrite using `[Subalgebra.bot_eq_top_of_finrank_eq_one hf]`. Conclude with `Algebra.mem_top`. Conclude with `Algebra.mem_bot.1 hmem`. Rewrite using `[← infCompletionEmbedding_algebraMap ι L l, ← ha, AlgHom.commutes]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `σ.commutes a`. Introduce `hfix`. Establish `hc : ∀ σ : Gal(AlgebraicClosure v.Completion / v.Completion), (σ : AlgebraicClosure v.Completion ≃ₐ[v.Completion] AlgebraicClosure v.Completion).toAlgHom.comp (infCompletionEmbedding ι L) = infCompletionEmbedding ι L` using `fun σ => algHom_ext_infCompletion L fun l => by`. Rewrite using `[AlgHom.comp_apply, infCompletionEmbedding_algebraMap]`. Conclude with `hfix σ l`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hw`. Establish `hcx` using `InfinitePlace.not_isReal_iff_isComplex.1 hw`. Establish `h2` using `(InfinitePlace.finrank_completion_eq_two_iff (infPlaceOfEmbedding ι L : InfinitePlace L.1)).2 ⟨hv, hcx⟩`. Establish `hrange : LinearMap.range (infCompletionEmbedding ι L).toLinearMap ≤ Subalgebra.toSubmodule (⊥ : Subalgebra v.Completion (AlgebraicClosure v.Completion))`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed ((infCompletionEmbedding ι L) y)).2 fun σ => DFunLike.congr_fun (hc σ) y`. Conclude with `⟨a, ha⟩`. Establish `hmono` using `Submodule.finrank_mono hrange`. Rewrite `hmono` using `[LinearMap.finrank_range_of_inj (infCompletionEmbedding ι L).toRingHom.injective, Subalgebra.finrank_toSubmodule, Subalgebra.finrank_bot, h2]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isReal_infPlaceOfEmbedding_iff (hv : v.IsReal) (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion) :
     (infPlaceOfEmbedding ι L : InfinitePlace L.1).IsReal ↔
@@ -92,7 +92,7 @@ theorem isReal_infPlaceOfEmbedding_iff (hv : v.IsReal) (ι : ℚ̄ →ₐ[K.1] A
     omega
 
 /- English proof (translation)
-Substitute `hι` using the available equality. Rewrite using `[← infCompletionEmbedding_algebraMap ι L l, ← ha, AlgHom.commutes]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_eq_algebraMap_of_infPlaceOfEmbedding_eq (w : v.placesOver L.1) (a : v.Completion) (l : L.1)
     (ha : algebraMap v.Completion (w : InfinitePlace L.1).Completion a =
@@ -103,9 +103,9 @@ theorem apply_eq_algebraMap_of_infPlaceOfEmbedding_eq (w : v.placesOver L.1) (a 
   rw [← infCompletionEmbedding_algebraMap ι L l, ← ha, AlgHom.commutes]
 
 /- English proof (translation)
-Establish `: (infPlaceOfEmbedding ι L : InfinitePlace L.1).LiesOver v` using `(infPlaceOfEmbedding ι L).2`. Establish `hf : Module.finrank v.Completion (infPlaceOfEmbedding ι L : InfinitePlace L.1).Completion = 1` using `(InfinitePlace.finrank_completion_eq_one_iff _).2 fun h => (InfinitePlace.not_isReal_iff_isComplex.2 h.2) hw`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : v.Completion, algebraMap v.Completion (infPlaceOfEmbedding ι L : InfinitePlace L.1).Completion a = algebraMap L.1 (infPlaceOfEmbedding ι L : InfinitePlace L.1).Completion l := by`. Establish `hmem : algebraMap L.1 (infPlaceOfEmbedding ι L : InfinitePlace L.1).Completion l ∈ (⊥ : Subalgebra v.Completion (infPlaceOfEmbedding ι L : InfinitePlace L.1).Completion)`. Rewrite using `[Subalgebra.bot_eq_top_of_finrank_eq_one hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.mem_top`. Conclude with `Algebra.mem_bot.1 hmem`. Rewrite using `[apply_eq_algebraMap_of_infPlaceOfEmbedding_eq L _ a l ha ι rfl, apply_eq_algebraMap_of_infPlaceOfEmbedding_eq L _ a l ha ι' h.symm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_eq_of_infPlaceOfEmbedding_eq (ι ι' : ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion)
     (h : infPlaceOfEmbedding ι L = infPlaceOfEmbedding ι' L)
@@ -137,7 +137,7 @@ def gsRealEmbedding (v : {v : InfinitePlace K.1 // v.IsReal}) (x : galUnramified
   (ιr v).comp ((gsAutLift S x)⁻¹ : Gal(ℚ̄/K.1)).toAlgHom
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ιr v ((gsAutLift S x)⁻¹ (z : ℚ̄)) = _`. Rewrite using `[gsAutLift_inv_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem gsRealEmbedding_apply (v : {v : InfinitePlace K.1 // v.IsReal}) (x : galUnramifiedOutside K.1 ℚ̄ S)
     (z : maxUnramifiedOutside K.1 ℚ̄ S) :
@@ -147,7 +147,7 @@ theorem gsRealEmbedding_apply (v : {v : InfinitePlace K.1 // v.IsReal}) (x : gal
   rw [gsAutLift_inv_apply]
 
 /- English proof (translation)
-Rewrite using `[gsRealEmbedding_apply, gsRealEmbedding_apply, ← AlgEquiv.mul_apply, show x⁻¹ * (x * gsRealFamily S ιr v g * x⁻¹) = gsRealFamily S ιr v g * x⁻¹ by group, AlgEquiv.mul_apply]`. Conclude with `gsRealFamily_apply S ιr v g _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gsRealEmbedding_conj (v : {v : InfinitePlace K.1 // v.IsReal}) (x : galUnramifiedOutside K.1 ℚ̄ S)
     (g : Gal(AlgebraicClosure v.1.Completion / v.1.Completion)) (z : maxUnramifiedOutside K.1 ℚ̄ S) :
@@ -162,11 +162,11 @@ variable {L : FiniteSubfield} [Fact (K ≤ L)]
   (hL : ∀ x : L.1, algebraMap L.1 ℚ̄ x ∈ maxUnramifiedOutside K.1 ℚ̄ S)
 
 /- English proof (translation)
-Rewrite using `[mem_mackeySubgroup]`. Express the relevant statement in the definitionally equal form `_ ∈ gsOpenSubgroup S hL ↔ _`. Rewrite using `[mem_gsOpenSubgroup_iff]`. Use `forall_congr' fun l => ?_` and prove the remaining obligations. Establish `key` using `gsRealFamily_apply S ιr v σ ((x⁻¹ : galUnramifiedOutside K.1 ℚ̄ S) (gsEmbedding hL l))`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[show ((l : L.1) : ℚ̄) = ((gsEmbedding hL l : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) from rfl, gsRealEmbedding_apply, ← key]`. Express the relevant statement in the definitionally equal form `x (gsRealFamily S ιr v σ (x⁻¹ (gsEmbedding hL l))) = gsEmbedding hL l ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `congrArg (⇑(x⁻¹ : galUnramifiedOutside K.1 ℚ̄ S)) h`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`. Rewrite using `[h']`. Introduce `h`. Establish `h'` using `Subtype.ext ((ιr v).injective h)`. Rewrite using `[h', ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_mackeySubgroup_real_iff (v : {v : InfinitePlace K.1 // v.IsReal})
     (x : galUnramifiedOutside K.1 ℚ̄ S) (σ : Gal(AlgebraicClosure v.1.Completion / v.1.Completion)) :
@@ -191,9 +191,9 @@ theorem mem_mackeySubgroup_real_iff (v : {v : InfinitePlace K.1 // v.IsReal})
     rw [h', ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Establish `hul` using `(mem_gsOpenSubgroup_iff S hL u).1 hu l`. Establish `hu' : u⁻¹ (gsEmbedding hL l) = gsEmbedding hL l`. Rewrite using `[AlgEquiv.aut_inv]`. Conclude with `u.symm_apply_eq.2 hul.symm`. Establish `hinv : (u * x * gsRealFamily S ιr v h)⁻¹ = gsRealFamily S ιr v h⁻¹ * x⁻¹ * u⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv]`. Use `group`. Establish `e1 : (u * x * gsRealFamily S ιr v h)⁻¹ (gsEmbedding hL l) = gsRealFamily S ιr v h⁻¹ ((x⁻¹ : galUnramifiedOutside K.1 ℚ̄ S) (gsEmbedding hL l))`. Rewrite using `[hinv, AlgEquiv.mul_apply, AlgEquiv.mul_apply, hu']`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gsRealEmbedding_mul (v : {v : InfinitePlace K.1 // v.IsReal}) (x : galUnramifiedOutside K.1 ℚ̄ S)
     {u : galUnramifiedOutside K.1 ℚ̄ S} (hu : u ∈ gsOpenSubgroup S hL)
@@ -228,15 +228,15 @@ def realMemberPlace (p : MackeyTopIndex (gsRealFamily S ιr) (gsOpenSubgroup S h
       (mem_mackeySubgroup_real_iff S ιr hL p.1.1 p.1.2.out σ).1 ((Subgroup.eq_top_iff' _).1 p.2 σ) l⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨v, d⟩, hd⟩ ⟨⟨v', d'⟩, hd'⟩ h`. Establish `h1 : (infPlaceOfEmbedding (gsRealEmbedding S ιr v d.out) L : InfinitePlace L.1) = (infPlaceOfEmbedding (gsRealEmbedding S ιr v' d'.out) L : InfinitePlace L.1)` using `congrArg Subtype.val h`. Establish `ha : (infPlaceOfEmbedding (gsRealEmbedding S ιr v d.out) L : InfinitePlace L.1).comap (algebraMap K.1 L.1) = v.1`. Use `(infPlaceOfEmbedding (gsRealEmbedding S ιr v d.out) L).2` as an intermediate fact. Conclude with `NumberField.InfinitePlace.LiesOver.comap_eq _ _`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (infPlaceOfEmbedding (gsRealEmbedding S ιr v' d'.out) L : InfinitePlace L.1).comap (algebraMap K.1 L.1) = v'.1`. Use `(infPlaceOfEmbedding (gsRealEmbedding S ιr v' d'.out) L).2` as an intermediate fact. Conclude with `NumberField.InfinitePlace.LiesOver.comap_eq _ _`. Establish `hv : v = v'` using `Subtype.ext (by rw [← ha, ← hb, h1])`. Substitute `hv` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : infPlaceOfEmbedding (gsRealEmbedding S ιr v d.out) L = infPlaceOfEmbedding (gsRealEmbedding S ιr v d'.out) L` using `Subtype.ext h1`. Establish `heq : ∀ l : L.1, gsRealEmbedding S ιr v d.out l = gsRealEmbedding S ιr v d'.out l` using `apply_eq_of_infPlaceOfEmbedding_eq L _ _ h2 (realMemberPlace S ιr hL ⟨⟨v, d⟩, hd⟩).2`. Establish `hmem : d'.out * d.out⁻¹ ∈ gsOpenSubgroup S hL`. Rewrite using `[mem_gsOpenSubgroup_iff]`. Introduce `l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `heq l`. Rewrite `e` using `[show ((l : L.1) : ℚ̄) = ((gsEmbedding hL l : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) from rfl, gsRealEmbedding_apply, gsRealEmbedding_apply]`. Establish `hinj : d.out⁻¹ (gsEmbedding hL l) = d'.out⁻¹ (gsEmbedding hL l)` using `Subtype.ext ((ιr v).injective e)`. Rewrite using `[AlgEquiv.mul_apply, hinj, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Establish `hdd : d = d'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← DoubleCoset.out_eq' _ _ d, ← DoubleCoset.out_eq' _ _ d', DoubleCoset.eq]`. Conclude with `⟨_, hmem, 1, one_mem _, by group⟩`. Substitute `hdd` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem realMemberPlace_injective : Function.Injective (realMemberPlace S ιr hL) := by
   rintro ⟨⟨v, d⟩, hd⟩ ⟨⟨v', d'⟩, hd'⟩ h
@@ -273,13 +273,13 @@ theorem realMemberPlace_injective : Function.Injective (realMemberPlace S ιr hL
   rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨w, hw⟩`. Set `v : {v : InfinitePlace K.1 // v.IsReal}` to `⟨w.comap (algebraMap K.1 L.1), hw.comap _⟩`. Set `w' : v.1.placesOver L.1` to `⟨w, ⟨rfl⟩⟩`. Take `⟨ι'', hι''⟩` from `exists_infPlaceOfEmbedding_eq (E := L) w'`. Take `⟨g, hg⟩` from `exists_eq_comp_of_normal (ιr v) ι''`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `x : galUnramifiedOutside K.1 ℚ̄ S` to `(AlgEquiv.restrictNormalHom (maxUnramifiedOutside K.1 ℚ̄ S) g)⁻¹`. Establish `hx : ∀ l : L.1, gsRealEmbedding S ιr v x l = ι'' l`. Introduce `l`. Rewrite using `[show ((l : L.1) : ℚ̄) = ((gsEmbedding hL l : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) from rfl, gsRealEmbedding_apply, inv_inv, hg, AlgHom.comp_apply]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `AlgEquiv.restrictNormal_commutes g (maxUnramifiedOutside K.1 ℚ̄ S) _`. Set `d : MackeyDoubleCoset (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom` to `DoubleCoset.mk _ _ x`. Take `⟨a, b, ha, hb, hab⟩` from `DoubleCoset.mk_out_eq_mul (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom.range x`. Take `⟨h, rfl⟩` from `MonoidHom.mem_range.1 hb`. Establish `hout : d.out = a * x * gsRealFamily S ιr v h` using `hab`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hplace : infPlaceOfEmbedding (gsRealEmbedding S ιr v d.out) L = w'` using `(congrArg (fun y => infPlaceOfEmbedding (gsRealEmbedding S ιr v y) L) hout).trans <| (infPlaceOfEmbedding_eq_of_forall L (gsRealEmbedding S ιr v (a * x * gsRealFamily S ιr v h)) ((((h⁻¹ : Gal(AlgebraicClosure v.1.Completion / v.1.Completion)) : AlgebraicClosure v.1.Completion ≃ₐ[ …`. Establish `hreal : (infPlaceOfEmbedding (gsRealEmbedding S ιr v d.out) L : InfinitePlace L.1).IsReal` using `(congrArg (fun y : v.1.placesOver L.1 => (y : InfinitePlace L.1).IsReal) hplace).mpr hw`. Establish `htop : mackeySubgroup (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom d.out = ⊤` using `(Subgroup.eq_top_iff' _).2 fun σ => (mem_mackeySubgroup_real_iff S ιr hL v d.out σ).2 ((isReal_infPlaceOfEmbedding_iff L v.2 _).1 hreal σ)`. Establish `hval : ((infPlaceOfEmbedding (gsRealEmbedding S ιr v d.out) L : v.1.placesOver L.1) : InfinitePlace L.1) = w` using `congrArg Subtype.val hplace`. Conclude with `⟨⟨⟨v, d⟩, htop⟩, Subtype.ext hval⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem realMemberPlace_surjective : Function.Surjective (realMemberPlace S ιr hL) := by
   rintro ⟨w, hw⟩

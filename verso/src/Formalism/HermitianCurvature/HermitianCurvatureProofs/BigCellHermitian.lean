@@ -15,13 +15,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← emb_mulVec_jV (r := r) μ u]`. Use extensionality with `i`. Simplify using `only [mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hj1 : ¬ j.val < r` using `by omega`. Establish `e : bigCell k r c μ i j = Formalism.FourierDecayAlt.B2.embWb k r μ i j`. Simplify using `only [bigCell, Formalism.FourierDecayAlt.B2.embWb, dif_neg hj1, dif_pos hj.2]`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Rewrite using `[dif_pos hi, dif_pos ⟨hi, hj⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hi, dif_neg (fun h => hi h.1)]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨rfl, h2⟩`. Conclude with `h2 hj`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : jV k r u j = 0` using `by simp only [jV, dif_neg hj]`. Rewrite using `[h0, mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma bigCell_mulVec_jV (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (u : Fin (k + 1) → ℂ) :
     bigCell k r c μ *ᵥ jV k r u = jV k r (μ *ᵥ u) := by
@@ -44,7 +44,7 @@ lemma bigCell_mulVec_jV (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k +
     rw [h0, mul_zero, mul_zero]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← jV_wbPart hz', ← jV_wbPart hz]`. Rewrite using `[bigCell_mulVec_jV, herm_jV]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma herm_bigCell (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) {z z' : Fin (2 * r + k + 1) → ℂ}
     (hz : inWb k r z) (hz' : inWb k r z') :
@@ -56,17 +56,15 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Take `⟨hc, hζ⟩` from `hq`. Establish `hsec` using `D.sec.2 q.2 hζ`. Establish `hmin` using `big_cell_minors_holds k r D.z D.z' q.1 (D.μsec q.2) D.z_mem D.z'_mem`. Use `⟨big_cell_mem_holds k r q.1 _ hc hsec.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hmin.1 ⟨l.val, by omega⟩`. Establish `hl' : (⟨(⟨l.val, by omega⟩ : Fin (r + 1)).val, by omega⟩ : Fin (r + 2)) = l` using `Fin.ext rfl`. Use `show Dmin k r D.z D.z' (bigCell k r q.1 (D.μsec q.2)) l ≠ 0`. Rewrite using `[← hl', h]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => hc a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz` using `hmin.2.2 hc`. Rewrite `hz` using `[herm_bigCell _ _ D.z_mem D.z'_mem, hsec.2]`. Establish `hr` using `hmin.1 (Fin.last r)`. Use `set P := Dmin k r D.z D.z' (bigCell k r q.1 (D.μsec q.2)) ⟨r, by omega⟩ with hP`. Establish `hP0 : P ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: P = ∏ a : Fin r with a.val < (Fin.last r).val, q.1 a` using `hr`. Rewrite using `[this]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => hc a`. Establish `hlast : Dmin k r D.z D.z' (bigCell k r q.1 (D.μsec q.2)) (Fin.last (r + 1)) = q.2 * P`. Unfold `zeta at hz`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `hz` using `[← hP]`. Establish `h2` using `div_mul_cancel₀ (Dmin k r D.z D.z' (bigCell k r q.1 (D.μsec q.2)) (Fin.last (r + 1))) hP0`. Rewrite `h2` using `[hz]`. Conclude with `h2.symm`. Use `show 0 < Gf k r D.z D.z' (gq D q)`.
-
-Unfold `Gf gq`. Rewrite using `[hlast, ← hP, Complex.normSq_mul]`. Establish `h1 : 0 < Complex.normSq P` using `Complex.normSq_pos.2 hP0`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem gqDom (D : RealPlaceData k r Wp Wq) {q : (Fin r → ℂ) × ℂ} (hq : q ∈ QDom k r D.z D.z') :
     gq D q ∈ Om k r D.z D.z' := by
@@ -100,7 +98,7 @@ theorem gqDom (D : RealPlaceData k r Wp Wq) {q : (Fin r → ℂ) × ℂ} (hq : q
     nlinarith
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ D _ hq` and use `gqDom D hq`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.P.big_cell_domain : GqDom := fun _ _ _ _ _ _ _ _ D _ hq => gqDom D hq
 

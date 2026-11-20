@@ -16,17 +16,15 @@ open GlobalTheory.BoxLattice GlobalTheory.EvAdm
 namespace GlobalTheory.BoxLattice
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Substitute `ha haveI : Subsingleton (boxLat F κ 0) := by` using the available equality. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, bx, rfl⟩ ⟨y, by', rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Simplify using `[ratInf]`. Use `infer_instance`. Establish `hmem : ∀ x : boxLat F κ a, ∀ i : κ, mixedEmbedding F a⁻¹ * (x : κ → mixedEmbedding.mixedSpace F) i ∈ mixedEmbedding.integerLattice F`. Introduce and unpack `⟨x, b, rfl⟩ i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: mixedEmbedding F a⁻¹ * ratInf F κ (fun i => a * (b i : F)) i = mixedEmbedding F ((b i : 𝓞 F) : F)`. Simplify using `only [ratInf, ← map_mul, ← mul_assoc, inv_mul_cancel₀ ha, one_mul]`. Rewrite using `[this]`. Conclude with `⟨b i, rfl⟩`. Use `DiscreteTopology.of_continuous_injective (f := fun x : boxLat F κ a => fun i : κ => (⟨mixedEmbedding F a⁻¹ * (x : κ → mixedEmbedding.mixedSpace F) i, hmem x i⟩ : mixedEmbedding.integerLattice F)) ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `continuous_const.mul ((continuous_apply i).comp continuous_subtype_val)`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `h1` using `congrArg Subtype.val (congrFun hxy i)`. Simplify using `only at h1`. Establish `h2` using `congrArg (fun z => mixedEmbedding F a * z) h1`. Simplify using `only [← mul_assoc, ← map_mul, mul_inv_cancel₀ ha, map_one, one_mul] at h2`.
-
-Conclude with `h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem boxLat_discrete (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F) :
     DiscreteTopology (boxLat F κ a) := by

@@ -7,43 +7,37 @@ open GlobalTheory.SupMeas
 namespace GlobalTheory.FdTransfer
 
 /- English proof (translation)
-Use `set ι := Subgroup.inclusion (le_sup_right : N ≤ Q ⊔ N) with hι`. Establish `hιinj : Function.Injective ι` using `Subgroup.inclusion_injective _`. Use `haveI : Countable ↥(R.subgroupOf (Q ⊔ N)) := by`. Use `Function.Injective.countable (f := fun g : ↥(R.subgroupOf (Q ⊔ N)) => (⟨((g : ↥(Q ⊔ N)) : G), Subgroup.mem_subgroupOf.mp g.2⟩ : R)) ?_` and prove the remaining obligations. Introduce `a b hab`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `congrArg Subtype.val hab`. Conclude with `h`. Establish `himg : ∀ T : Set N, MeasurableSet T → MeasurableSet (ι '' T)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T hT`. Establish `h1 : MeasurableSet (((↑) : N → G) '' T)` using `(MeasurableEmbedding.subtype_coe hN.measurableSet).measurableSet_image' hT`. Establish `h2 : ι '' T = ((↑) : ↥(Q ⊔ N) → G) ⁻¹' (((↑) : N → G) '' T)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨n, hn, rfl⟩`. Conclude with `⟨n, hn, rfl⟩`. Introduce and unpack `⟨n, hn, hnx⟩`. Conclude with `⟨n, hn, Subtype.ext hnx⟩`. Rewrite using `[h2]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `measurable_subtype_coe h1`. Establish `hqmp : ∀ g : ↥(R.subgroupOf (Q ⊔ N)), Measure.QuasiMeasurePreserving ((g • ·) : ↥(Q ⊔ N) → ↥(Q ⊔ N)) ν ν` using `fun g => (hinv (g : ↥(Q ⊔ N))).quasiMeasurePreserving`. Use `IsFundamentalDomain.mk'' ?_ ?_ ?_ hqmp` and prove the remaining obligations. Take `⟨T, hTE, hT, hTae⟩` from `hE.nullMeasurableSet.exists_measurable_subset_ae_eq`. Establish `hdiff : νN (E \ T) = 0` using `(ae_eq_set.mp hTae).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `(himg T hT).nullMeasurableSet.congr ?_` and prove the remaining obligations. Rewrite using `[ae_eq_set]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Set.diff_eq_empty.mpr (Set.image_mono hTE)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Set.image_diff hιinj, hmass]`. Conclude with `hdiff`. Use `set B : Set N := {n | ¬ ∃ l : ↥(R.subgroupOf N), l • n ∈ E} with hB`. Establish `hB0 : νN B = 0`. Use `hE.ae_covers` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[ae_iff]`. Conclude with `this`. Establish `hιB : ∀ᵐ y ∂ν, y ∉ ι '' B`. Rewrite using `[ae_iff]`. Simplify using `only [not_not, Set.setOf_mem_eq]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hmass]`. Conclude with `hB0`. Establish `hall : ∀ᵐ x ∂ν, ∀ r : ↥(R.subgroupOf (Q ⊔ N)), (r • x) ∉ ι '' B`. Rewrite using `[ae_all_iff]`. Introduce `r`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hqmp r).ae hιB`. Use `filter_upwards [hall] with x hx`. Take `⟨r, hrR, hrN⟩` from `hcov x x.2`. Establish `hrQN : r ∈ Q ⊔ N`. Establish `: r = (r * x) * (x : G)⁻¹` using `by group`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[this]`. Conclude with `(Q ⊔ N).mul_mem (le_sup_right (a := Q) hrN) ((Q ⊔ N).inv_mem x.2)`. Set `rr : ↥(R.subgroupOf (Q ⊔ N))` to `⟨⟨r, hrQN⟩, Subgroup.mem_subgroupOf.mpr hrR⟩`. Set `n : N` to `⟨r * x, hrN⟩`. Establish `hrx : rr • x = ι n` using `Subtype.ext rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hn : n ∉ B` using `fun hnB => hx rr ⟨n, hnB, hrx.symm⟩`. Simplify using `only [hB, Set.mem_setOf_eq, not_not] at hn`. Take `⟨l, hl⟩` from `hn`. Set `l' : ↥(R.subgroupOf (Q ⊔ N))` to `⟨ι (l : N), Subgroup.mem_subgroupOf.mpr (Subgroup.mem_subgroupOf.mp l.2)⟩`. Use `⟨l' * rr, l • n, hl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((l : N) : G) * (r * x) = ((l : N) : G) * r * x`. Rewrite using `[mul_assoc]`. Introduce `g hg`. Use `show ν (g • (ι '' E) ∩ ι '' E) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hgN : ((g : ↥(Q ⊔ N)) : G) ∈ N`. Set `l : ↥(R.subgroupOf N)` to `⟨⟨_, hgN⟩, Subgroup.mem_subgroupOf.mpr (Subgroup.mem_subgroupOf.mp g.2)⟩`. Establish `hl : l ≠ 1`. Introduce `h`. Apply `hg` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun z : ↥(R.subgroupOf N) => ((z : N) : G)) h` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `this`. Establish `hlE : νN (l • E ∩ E) = 0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `hE.aedisjoint hl` as an intermediate fact. Simplify `this` using `[Function.onFun, AEDisjoint]`. Use `measure_mono_null ?_ (by rw [hmass]; exact hlE)` and prove the remaining obligations. Introduce `y hy`. Take `⟨hy1, n', hn'E, hy2⟩` from `hy`.
-
-Rewrite `hy1` using `[Set.mem_smul_set]`. Take `⟨x, ⟨n, hnE, rfl⟩, hxy⟩` from `hy1`. Establish `key : ι (l • n) = g • ι n` using `Subtype.ext rfl`. Establish `hln : l • n = n'` using `hιinj (key.trans (hxy.trans hy2.symm))`. Use `⟨l • n, ⟨Set.smul_mem_smul_set hnE, hln ▸ hn'E⟩, key.trans hxy⟩` and prove the remaining obligations.
-
-Use `measure_mono_null (t := ∅) ?_ measure_empty` and prove the remaining obligations. Introduce and unpack `y ⟨hy1, n', hn'E, hy2⟩`. Rewrite `hy1` using `[Set.mem_smul_set]`. Take `⟨x, ⟨n, hnE, rfl⟩, hxy⟩` from `hy1`. Apply `hgN` to reduce the goal to its premises.
-
-Establish `h1 : ((g : ↥(Q ⊔ N)) : G) * n = n'` using `(congrArg (fun z : ↥(Q ⊔ N) => (z : G)) (hxy.trans hy2.symm))`. Establish `h2 : ((g : ↥(Q ⊔ N)) : G) = n' * (n : G)⁻¹` using `by rw [← h1]; group`. Rewrite using `[h2]`. Conclude with `N.mul_mem n'.2 (N.inv_mem n.2)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_inclusion_image
     {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]

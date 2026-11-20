@@ -22,7 +22,7 @@ def levelRep (ρ : Representation ℂ G V) {P J : Subgroup G} (hP : P ≤ Subgro
     LinearMap.ext fun v => Subtype.ext (mem_fixed.1 v.2 _ (hk p hp))
 
 /- English proof (translation)
-Rewrite using `[levelRep, descend_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem levelRep_apply (ρ : Representation ℂ G V) {P J : Subgroup G} (hP : P ≤ Subgroup.normalizer (J : Set G))
     (q : P →* M) (hq : Function.Surjective q) (hk : ∀ p, q p = 1 → (p : G) ∈ J) (p : P) (v : fixed ρ J) :
@@ -49,7 +49,7 @@ def redK : KO k n →* GL n 𝓀[k] :=
 variable {k}
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `(toKO k n).surjective g`. Simplify using `only [redK, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem redK_apply (g : KO k n) (i j : n) : (redK k n g : Matrix n n 𝓀[k]) i j =
     IsLocalRing.residue 𝒪[k] ⟨((g : GL n k) : Matrix n n k) i j, StepData.intM_of_mem_KO g.2 i j⟩ := by
@@ -58,7 +58,7 @@ theorem redK_apply (g : KO k n) (i j : n) : (redK k n g : Matrix n n 𝓀[k]) i 
   rfl
 
 /- English proof (translation)
-Rewrite using `[redK_apply, StepData.residue_eq_iff_lt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem redK_eq_iff (g : KO k n) (i j : n) (x : 𝒪[k]) :
     (redK k n g : Matrix n n 𝓀[k]) i j = IsLocalRing.residue 𝒪[k] x ↔
@@ -66,18 +66,16 @@ theorem redK_eq_iff (g : KO k n) (i j : n) (x : 𝒪[k]) :
   rw [redK_apply, StepData.residue_eq_iff_lt]
 
 /- English proof (translation)
-Rewrite using `[redK_apply, StepData.residue_eq_zero_iff_lt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem redK_eq_zero_iff (g : KO k n) (i j : n) :
     (redK k n g : Matrix n n 𝓀[k]) i j = 0 ↔ valuation k (((g : GL n k) : Matrix n n k) i j) < 1 := by
   rw [redK_apply, StepData.residue_eq_zero_iff_lt]
 
 /- English proof (translation)
-Introduce `x`. Use `choose A hA using fun i j => IsLocalRing.residue_surjective (R := 𝒪[k]) ((x : Matrix n n 𝓀[k]) i j)`. Establish `h1 : (IsLocalRing.residue 𝒪[k]).mapMatrix (Matrix.of A) = x` using `Matrix.ext hA`. Establish `hd : IsUnit (Matrix.of A).det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(GeneralLinearGroup.det x).ne_zero`. Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hd`. Use `⟨toKO k n u, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `only [redK, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply]`. Rewrite using `[← h1, ← hu]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem redK_surjective : Function.Surjective (redK k n) := by
   intro x
@@ -92,9 +90,9 @@ theorem redK_surjective : Function.Surjective (redK k n) := by
   rw [← h1, ← hu]; rfl
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `(toKO k n).surjective g`. Simplify using `only [redK, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply]`. Use `⟨fun h => ⟨u, h, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨u', h, e⟩`. Take `rfl : u' = u` from `(toKO k n).injective (Subtype.ext e)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem redK_eq_one_iff (g : KO k n) : redK k n g = 1 ↔ (g : GL n k) ∈ KOne k n := by
   obtain ⟨u, rfl⟩ := (toKO k n).surjective g
@@ -107,63 +105,63 @@ theorem redK_eq_one_iff (g : KO k n) : redK k n g = 1 ↔ (g : GL n k) ∈ KOne 
 def levelPre (H : Subgroup (GL n 𝓀[k])) : Subgroup (GL n k) := (H.comap (redK k n)).map (KO k n).subtype
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rintro ⟨x, hx, rfl⟩; exact ⟨x.2, hx⟩, fun ⟨h, hg⟩ => ⟨⟨g, h⟩, hg, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_levelPre {H : Subgroup (GL n 𝓀[k])} {g : GL n k} :
     g ∈ levelPre H ↔ ∃ h : g ∈ KO k n, redK k n ⟨g, h⟩ ∈ H :=
   ⟨by rintro ⟨x, hx, rfl⟩; exact ⟨x.2, hx⟩, fun ⟨h, hg⟩ => ⟨⟨g, h⟩, hg, rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `mem_levelPre.trans ⟨fun ⟨_, h⟩ => h, fun h => ⟨g.2, h⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem coe_mem_levelPre {H : Subgroup (GL n 𝓀[k])} (g : KO k n) : (g : GL n k) ∈ levelPre H ↔ redK k n g ∈ H :=
   mem_levelPre.trans ⟨fun ⟨_, h⟩ => h, fun h => ⟨g.2, h⟩⟩
 
 /- English proof (translation)
-Introduce `_ h` and use `(mem_levelPre.1 h).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levelPre_le_KO (H : Subgroup (GL n 𝓀[k])) : levelPre H ≤ KO k n := fun _ h => (mem_levelPre.1 h).1
 
 /- English proof (translation)
-Introduce `g h` and use `mem_levelPre.2 ⟨StepData.KOne_le_KO h, by rw [(redK_eq_one_iff ⟨g, _⟩).2 h]; exact one_mem H⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem KOne_le_levelPre (H : Subgroup (GL n 𝓀[k])) : KOne k n ≤ levelPre H := fun g h =>
   mem_levelPre.2 ⟨StepData.KOne_le_KO h, by rw [(redK_eq_one_iff ⟨g, _⟩).2 h]; exact one_mem H⟩
 
 /- English proof (translation)
-The claim follows from `le_antisymm (fun _ h => let ⟨_, h⟩ := mem_levelPre.1 h; (redK_eq_one_iff _).1 h) (KOne_le_levelPre _)`.
+A detailed English derivation is pending.
 -/
 theorem levelPre_bot : levelPre (⊥ : Subgroup (GL n 𝓀[k])) = KOne k n :=
   le_antisymm (fun _ h => let ⟨_, h⟩ := mem_levelPre.1 h; (redK_eq_one_iff _).1 h) (KOne_le_levelPre _)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (levelPre_le_KO _) fun _ h => mem_levelPre.2 ⟨h, trivial⟩`.
+A detailed English derivation is pending.
 -/
 theorem levelPre_top : levelPre (⊤ : Subgroup (GL n 𝓀[k])) = KO k n :=
   le_antisymm (levelPre_le_KO _) fun _ h => mem_levelPre.2 ⟨h, trivial⟩
 
 /- English proof (translation)
-The claim follows from `Subgroup.map_mono (Subgroup.comap_mono h)`.
+A detailed English derivation is pending.
 -/
 theorem levelPre_mono {H H' : Subgroup (GL n 𝓀[k])} (h : H ≤ H') : levelPre H ≤ levelPre H' :=
   Subgroup.map_mono (Subgroup.comap_mono h)
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_mono (KOne_le_levelPre H) StepData.isOpen_KOne`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_levelPre (H : Subgroup (GL n 𝓀[k])) : IsOpen (levelPre H : Set (GL n k)) :=
   Subgroup.isOpen_mono (KOne_le_levelPre H) StepData.isOpen_KOne
 
 /- English proof (translation)
-The claim follows from `SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ (isOpen_levelPre H)) (levelPre_le_KO H)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_levelPre (H : Subgroup (GL n 𝓀[k])) : IsCompact (levelPre H : Set (GL n k)) :=
   SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ (isOpen_levelPre H)) (levelPre_le_KO H)
 
 /- English proof (translation)
-Establish `key : ∀ p ∈ levelPre H, ∀ u ∈ levelPre U, p * u * p⁻¹ ∈ levelPre U`. Introduce and unpack `_ ⟨p, hp, rfl⟩ _ ⟨u, hu, rfl⟩`. Use `⟨p * u * p⁻¹, ?_, rfl⟩` and prove the remaining obligations. Use `show redK k n (p * u * p⁻¹) ∈ U`. Rewrite using `[map_mul, map_mul, map_inv]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Subgroup.mem_normalizer_iff.1 (h hp) _).1 hu`. Introduce `p hp`. Use `Subgroup.mem_normalizer_iff.2 fun u => ⟨key p hp u, fun h => ?_⟩` and prove the remaining obligations. Simplify `key _ (inv_mem hp) _ h` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem levelPre_le_normalizer {H U : Subgroup (GL n 𝓀[k])} (h : H ≤ Subgroup.normalizer (U : Set (GL n 𝓀[k]))) :
     levelPre H ≤ Subgroup.normalizer (levelPre U : Set (GL n k)) := by
@@ -178,7 +176,7 @@ theorem levelPre_le_normalizer {H U : Subgroup (GL n 𝓀[k])} (h : H ≤ Subgro
   simpa [mul_assoc] using key _ (inv_mem hp) _ h
 
 /- English proof (translation)
-Rewrite using `[← levelPre_top, ← levelPre_bot]`. Conclude with `levelPre_le_normalizer (by rw [Subgroup.normalizer_eq_top])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KO_le_normalizer : KO k n ≤ Subgroup.normalizer (KOne k n : Set (GL n k)) := by
   rw [← levelPre_top, ← levelPre_bot]
@@ -188,7 +186,7 @@ def levelZero (π : Representation ℂ (GL n k) V) : Representation ℂ (GL n �
   levelRep π KO_le_normalizer (redK k n) redK_surjective fun g => (redK_eq_one_iff g).1
 
 /- English proof (translation)
-The claim follows from `levelRep_apply _ _ _ _ _ g v`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem levelZero_apply (π : Representation ℂ (GL n k) V) (g : KO k n) (v : fixed π (KOne k n)) :
     (levelZero π (redK k n g) v : V) = π g v := levelRep_apply _ _ _ _ _ g v
@@ -240,16 +238,16 @@ variable {k}
 omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] in
 
 /- English proof (translation)
-Simplify using `only [parahoric, mem_levelPre, mem_parab_iff, redK_eq_zero_iff, exists_prop]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_parahoric {e : (Σ a, m a) ≃ n} {g : GL n k} : g ∈ parahoric k e ↔ g ∈ KO k n ∧
     ∀ a b (i : m a) (j : m b), b < a → valuation k ((g : Matrix n n k) (e ⟨a, i⟩) (e ⟨b, j⟩)) < 1 := by
   simp only [parahoric, mem_levelPre, mem_parab_iff, redK_eq_zero_iff, exists_prop]
 
 /- English proof (translation)
-Establish `key : ∀ (h : g ∈ KO k n) a (i j : m a), (redK k n ⟨g, h⟩ : Matrix n n 𝓀[k]) (e ⟨a, i⟩) (e ⟨a, j⟩) = (1 : Matrix (m a) (m a) 𝓀[k]) i j ↔ valuation k ((g : Matrix n n k) (e ⟨a, i⟩) (e ⟨a, j⟩) - (1 : Matrix (m a) (m a) k) i j) < 1`. Introduce `h a i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `using redK_eq_iff ⟨g, h⟩ (e ⟨a, i⟩) (e ⟨a, i⟩) 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `redK_eq_zero_iff ⟨g, h⟩ (e ⟨a, i⟩) (e ⟨a, j⟩)` using `[hij]`. Simplify using `only [proRad, parahoric, mem_levelPre, mem_unipRad, key]`. Conclude with `⟨fun ⟨h, h1, h2⟩ => ⟨⟨h, h1⟩, h2⟩, fun ⟨⟨h, h1⟩, h2⟩ => ⟨h, h1, h2⟩⟩`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_proRad {e : (Σ a, m a) ≃ n} {g : GL n k} : g ∈ proRad k e ↔ g ∈ parahoric k e ∧
     ∀ a (i j : m a), valuation k ((g : Matrix n n k) (e ⟨a, i⟩) (e ⟨a, j⟩) - (1 : Matrix (m a) (m a) k) i j) < 1 := by
@@ -265,27 +263,27 @@ theorem mem_proRad {e : (Σ a, m a) ≃ n} {g : GL n k} : g ∈ proRad k e ↔ g
   exact ⟨fun ⟨h, h1, h2⟩ => ⟨⟨h, h1⟩, h2⟩, fun ⟨⟨h, h1⟩, h2⟩ => ⟨h, h1, h2⟩⟩
 
 /- English proof (translation)
-The claim follows from `levelPre_mono (unipRad_le_parab _ e)`.
+A detailed English derivation is pending.
 -/
 theorem proRad_le_parahoric (e : (Σ a, m a) ≃ n) : proRad k e ≤ parahoric k e :=
   levelPre_mono (unipRad_le_parab _ e)
 
 /- English proof (translation)
-The claim follows from `levelPre_le_normalizer (parab_le_normalizer _ e)`.
+A detailed English derivation is pending.
 -/
 theorem parahoric_le_normalizer (e : (Σ a, m a) ≃ n) :
     parahoric k e ≤ Subgroup.normalizer (proRad k e : Set (GL n k)) :=
   levelPre_le_normalizer (parab_le_normalizer _ e)
 
 /- English proof (translation)
-The claim follows from `(coe_mem_unipRad _ _).symm.trans (coe_mem_levelPre (H := unipRad 𝓀[k] e) ⟨(p : GL n k), levelPre_le_KO _ p.2⟩).symm`.
+A detailed English derivation is pending.
 -/
 theorem parahoricProj_eq_one_iff (e : (Σ a, m a) ≃ n) (p : parahoric k e) :
     parahoricProj k e p = 1 ↔ (p : GL n k) ∈ proRad k e :=
   (coe_mem_unipRad _ _).symm.trans (coe_mem_levelPre (H := unipRad 𝓀[k] e) ⟨(p : GL n k), levelPre_le_KO _ p.2⟩).symm
 
 /- English proof (translation)
-Introduce `x`. Take `⟨g, hg⟩` from `redK_surjective (leviEmb 𝓀[k] e x)`. Use `⟨⟨g, (coe_mem_levelPre g).2 (hg ▸ leviEmb_mem_parab _ e x)⟩, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (leviProj 𝓀[k] e) (Subtype.ext hg)).trans (leviProj_leviEmb 𝓀[k] e x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem parahoricProj_surjective (e : (Σ a, m a) ≃ n) : Function.Surjective (parahoricProj k e) := by
   intro x
@@ -303,7 +301,7 @@ theorem redLevi_apply (g : leviK k m) (a : α) : redLevi k m g a = redK k (m a) 
 omit [Fintype α] [LinearOrder α] in
 
 /- English proof (translation)
-Introduce `x` and use `by choose g hg using fun a => redK_surjective (x a) exact ⟨⟨fun a => g a, fun a _ => (g a).2⟩, funext hg⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem redLevi_surjective : Function.Surjective (redLevi k m) := fun x => by
   choose g hg using fun a => redK_surjective (x a)
@@ -312,7 +310,7 @@ theorem redLevi_surjective : Function.Surjective (redLevi k m) := fun x => by
 omit [Fintype α] [LinearOrder α] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h a _ => (redK_eq_one_iff ⟨g.1 a, g.2 a trivial⟩).1 (congrFun h a), fun h => funext fun a => (redK_eq_one_iff ⟨g.1 a, g.2 a trivial⟩).2 (h a trivial)⟩`.
+Supply the required witnesses or components.
 -/
 theorem redLevi_eq_one_iff (g : leviK k m) : redLevi k m g = 1 ↔ (g : Levi k m) ∈ leviKOne k m :=
   ⟨fun h a _ => (redK_eq_one_iff ⟨g.1 a, g.2 a trivial⟩).1 (congrFun h a),
@@ -321,7 +319,7 @@ theorem redLevi_eq_one_iff (g : leviK k m) : redLevi k m g = 1 ↔ (g : Levi k m
 omit [Fintype α] [LinearOrder α] in
 
 /- English proof (translation)
-Introduce `g hg` and use `Subgroup.mem_normalizer_iff.2 fun u => forall₂_congr fun a _ => Subgroup.mem_normalizer_iff.1 (KO_le_normalizer (hg a trivial)) (u a)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leviK_le_normalizer : leviK k m ≤ Subgroup.normalizer (leviKOne k m : Set (Levi k m)) := fun g hg =>
   Subgroup.mem_normalizer_iff.2 fun u => forall₂_congr fun a _ =>
@@ -330,11 +328,9 @@ theorem leviK_le_normalizer : leviK k m ≤ Subgroup.normalizer (leviKOne k m : 
 omit [LinearOrder α] in
 
 /- English proof (translation)
-Establish `key : ∀ {g : Levi k m}, g ∈ leviK k m → StepData.IntM (leviEmb k e g).val`. Introduce `g hg i j`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective j`. Distinguish the cases in `h : a = b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[leviEmb_apply_same]`. Conclude with `StepData.intM_of_mem_KO (hg a trivial) i j`. Rewrite using `[leviEmb_apply_ne k e g h]`. Conclude with `zero_mem _`.
-
-Conclude with `StepData.mem_KO.2 ⟨key hg, by rw [← map_inv]; exact key (inv_mem hg)⟩`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviEmb_mem_KO (e : (Σ a, m a) ≃ n) {g : Levi k m} (hg : g ∈ leviK k m) : leviEmb k e g ∈ KO k n := by
   have key : ∀ {g : Levi k m}, g ∈ leviK k m → StepData.IntM (leviEmb k e g).val := by
@@ -351,9 +347,9 @@ theorem leviEmb_mem_KO (e : (Σ a, m a) ≃ n) {g : Levi k m} (hg : g ∈ leviK 
 omit [LinearOrder α] in
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective j`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[leviEmb_apply_same, redLevi_apply, redK_apply, redK_apply]`. Simplify using `only [leviEmb_apply_same]`. Rewrite using `[leviEmb_apply_ne _ e _ h, redK_eq_zero_iff, leviEmb_apply_ne _ e _ h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem redK_leviEmb (e : (Σ a, m a) ≃ n) (g : leviK k m) :
     redK k n ⟨leviEmb k e g, leviEmb_mem_KO e g.2⟩ = leviEmb 𝓀[k] e (redLevi k m g) := by
@@ -368,13 +364,13 @@ theorem redK_leviEmb (e : (Σ a, m a) ≃ n) (g : leviK k m) :
     simp
 
 /- English proof (translation)
-The claim follows from `mem_levelPre.2 ⟨leviEmb_mem_KO e g.2, redK_leviEmb e g ▸ leviEmb_mem_parab _ e _⟩`.
+A detailed English derivation is pending.
 -/
 theorem leviEmb_mem_parahoric (e : (Σ a, m a) ≃ n) (g : leviK k m) : leviEmb k e g ∈ parahoric k e :=
   mem_levelPre.2 ⟨leviEmb_mem_KO e g.2, redK_leviEmb e g ▸ leviEmb_mem_parab _ e _⟩
 
 /- English proof (translation)
-Rewrite using `[← leviProj_leviEmb 𝓀[k] e (redLevi k m g)]`. Conclude with `congrArg (leviProj 𝓀[k] e) (Subtype.ext (redK_leviEmb e g))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parahoricProj_leviEmb (e : (Σ a, m a) ≃ n) (g : leviK k m) :
     parahoricProj k e ⟨leviEmb k e g, leviEmb_mem_parahoric e g⟩ = redLevi k m g := by
@@ -382,14 +378,14 @@ theorem parahoricProj_leviEmb (e : (Σ a, m a) ≃ n) (g : leviK k m) :
   exact congrArg (leviProj 𝓀[k] e) (Subtype.ext (redK_leviEmb e g))
 
 /- English proof (translation)
-The claim follows from `KOne_le_levelPre _`.
+A detailed English derivation is pending.
 -/
 theorem KOne_le_proRad (e : (Σ a, m a) ≃ n) : KOne k n ≤ proRad k e := KOne_le_levelPre _
 
 omit [LinearOrder α] in
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `h : g ∈ leviK k m` using `fun a _ => StepData.KOne_le_KO (hg a trivial)`. Use `(redK_eq_one_iff ⟨_, leviEmb_mem_KO e h⟩).1 ?_` and prove the remaining obligations. Rewrite using `[redK_leviEmb e ⟨g, h⟩, (redLevi_eq_one_iff _).2 hg, map_one]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem jLevi_le_KOne (e : (Σ a, m a) ≃ n) : jLevi k e ≤ KOne k n := by
   rintro _ ⟨g, hg, rfl⟩
@@ -398,17 +394,17 @@ theorem jLevi_le_KOne (e : (Σ a, m a) ≃ n) : jLevi k e ≤ KOne k n := by
   rw [redK_leviEmb e ⟨g, h⟩, (redLevi_eq_one_iff _).2 hg, map_one]
 
 /- English proof (translation)
-The claim follows from `inf_le_right.trans (KOne_le_proRad e)`.
+A detailed English derivation is pending.
 -/
 theorem jMinus_le_proRad (e : (Σ a, m a) ≃ n) : jMinus k e ≤ proRad k e := inf_le_right.trans (KOne_le_proRad e)
 
 /- English proof (translation)
-The claim follows from `(jLevi_le_KOne e).trans (KOne_le_proRad e)`.
+A detailed English derivation is pending.
 -/
 theorem jLevi_le_proRad (e : (Σ a, m a) ≃ n) : jLevi k e ≤ proRad k e := (jLevi_le_KOne e).trans (KOne_le_proRad e)
 
 /- English proof (translation)
-Introduce `g hg` and use `mem_proRad.2 ⟨mem_parahoric.2 ⟨hg.2, fun a b i j h => by rw [mem_parab_iff.1 (mem_unipRad.1 hg.1).1 a b i j h]; simp⟩, fun a i j => by rw [(mem_unipRad.1 hg.1).2]; simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jPlus_le_proRad (e : (Σ a, m a) ≃ n) : jPlus k e ≤ proRad k e := fun g hg =>
   mem_proRad.2 ⟨mem_parahoric.2 ⟨hg.2, fun a b i j h => by
@@ -421,14 +417,14 @@ def parahoricInv (e : (Σ a, m a) ≃ n) (π : Representation ℂ (GL n k) V) :
     fun p => (parahoricProj_eq_one_iff e p).1
 
 /- English proof (translation)
-The claim follows from `levelRep_apply _ _ _ _ _ p v`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem parahoricInv_apply (e : (Σ a, m a) ≃ n) (π : Representation ℂ (GL n k) V) (p : parahoric k e)
     (v : fixed π (proRad k e)) : (parahoricInv e π (parahoricProj k e p) v : V) = π p v :=
   levelRep_apply _ _ _ _ _ p v
 
 /- English proof (translation)
-Rewrite using `[← parahoricProj_leviEmb e, parahoricInv_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem parahoricInv_redLevi (e : (Σ a, m a) ≃ n) (π : Representation ℂ (GL n k) V) (g : leviK k m)
     (v : fixed π (proRad k e)) : (parahoricInv e π (redLevi k m g) v : V) = π (leviEmb k e g) v := by
@@ -441,7 +437,7 @@ def leviLevelZero {α : Type} {m : α → Type} [∀ a, Fintype (m a)] [∀ a, D
 omit [Fintype α] [LinearOrder α] in
 
 /- English proof (translation)
-The claim follows from `levelRep_apply _ _ _ _ _ g v`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem leviLevelZero_apply (τ : Representation ℂ (Levi k m) W) (g : leviK k m) (v : fixed τ (leviKOne k m)) :
     (leviLevelZero τ (redLevi k m g) v : W) = τ g v := levelRep_apply _ _ _ _ _ g v
@@ -463,13 +459,13 @@ Both sides reduce to the same expression.
     (toJacquet e π v : Jacquet π (unipRad k e)) = Submodule.Quotient.mk (v : V) := rfl
 
 /- English proof (translation)
-The claim follows from `hν _ (StepData.valuation_det_of_mem_KO hg)`.
+A detailed English derivation is pending.
 -/
 theorem detChar_of_mem_KO {ν : kˣ →* ℂˣ} (hν : IsUnram ν) {g : GL n k} (hg : g ∈ KO k n) : detChar n ν g = 1 :=
   hν _ (StepData.valuation_det_of_mem_KO hg)
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply]`. Conclude with `Finset.prod_eq_one fun a _ => detChar_of_mem_KO (isUnram_absPow k _) (hg a trivial)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deltaHalf_of_mem_leviK {g : Levi k m} (hg : g ∈ leviK k m) : deltaHalf k m g = 1 := by
   rw [deltaHalf_apply]
@@ -489,7 +485,7 @@ def redProd : (KO k a).prod (KO k b) →* GL a 𝓀[k] × GL b 𝓀[k] :=
   ((redK k a).prodMap (redK k b)).comp ((KO k a).prodEquiv (KO k b)).toMonoidHom
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨g, hg⟩ := redK_surjective x.1 obtain ⟨h, hh⟩ := redK_surjective x.2 exact ⟨⟨(g, h), g.2, h.2⟩, Prod.ext hg hh⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem redProd_surjective : Function.Surjective (redProd k a b) := fun x => by
   obtain ⟨g, hg⟩ := redK_surjective x.1
@@ -506,16 +502,16 @@ def prodLevelZero (τ : Representation ℂ (GL a k × GL b k) W) :
       ⟨(redK_eq_one_iff ⟨g.1.1, g.2.1⟩).1 (congrArg Prod.fst hg), (redK_eq_one_iff ⟨g.1.2, g.2.2⟩).1 (congrArg Prod.snd hg)⟩
 
 /- English proof (translation)
-The claim follows from `levelRep_apply _ _ _ _ _ g v`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem prodLevelZero_apply (τ : Representation ℂ (GL a k × GL b k) W) (g : (KO k a).prod (KO k b))
     (v : fixed τ ((KOne k a).prod (KOne k b))) : (prodLevelZero τ (redProd k a b g) v : W) = τ g v :=
   levelRep_apply _ _ _ _ _ g v
 
 /- English proof (translation)
-Establish `hg : leviTwo k a b g ∈ leviK k (Two a b)`. Introduce and unpack `(_ | _) -`. Use `exacts [g.2.1, g.2.2]`. Establish `h : leviTwo 𝓀[k] a b (redProd k a b g) = redLevi k _ ⟨_, hg⟩`. Apply the tactic sequence `funext x; cases x <;> rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `show (parahoricInv (two e) π (leviTwo 𝓀[k] a b (redProd k a b g)) v : V) = _`. Rewrite using `[h, parahoricInv_redLevi]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 @[simp] theorem parahoricInv₂_apply (e : a ⊕ b ≃ n) (π : Representation ℂ (GL n k) V) (g : (KO k a).prod (KO k b))
     (v : fixed π (proRad k (two e))) : (parahoricInv₂ e π (redProd k a b g) v : V) = π (emb₂ k e g) v := by
@@ -552,13 +548,13 @@ section Finite
 variable {R : Type} [Field R] {N h : ℕ} {d : Fin h → ℕ}
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_unipRad, FiniteGL.mem_unipRadical, mem_parab_iff]`. Simplify using `only [hc, Matrix.sub_apply, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j hij`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective j`. Simplify using `only [blk_apply] at hij`. Break down `hij.eq_or_lt with rfl | h` into its components or cases. Rewrite using `[h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.one_apply]`. Rewrite using `[h1 a b i j h, Matrix.one_apply_ne fun e' => h.ne' (congrArg Sigma.fst (e.injective e'))]`. Introduce `hg`. Use `⟨fun a b i j h => ?_, fun a i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hg _ _ (by simpa using h.le), Matrix.one_apply_ne fun e' => h.ne' (congrArg Sigma.fst (e.injective e'))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg _ _ (by simp)]; simp [Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unipRad_eq_of_le (e : (Σ a, m a) ≃ Fin N) {c : Fin N → ℕ} (hc : ∀ i j, c j ≤ c i ↔ blk e j ≤ blk e i) :
     unipRad R e = FiniteGL.unipRadical R c := by
@@ -579,13 +575,13 @@ theorem unipRad_eq_of_le (e : (Σ a, m a) ≃ Fin N) {c : Fin N → ℕ} (hc : �
     · rw [hg _ _ (by simp)]; simp [Matrix.one_apply]
 
 /- English proof (translation)
-The claim follows from `unipRad_eq_of_le e fun _ _ => Iff.rfl`.
+A detailed English derivation is pending.
 -/
 theorem unipRad_eq_unipRadical (e : (Σ a, Fin (d a)) ≃ Fin N) :
     unipRad R e = FiniteGL.unipRadical R (Parabolic.blockOf e) := unipRad_eq_of_le e fun _ _ => Iff.rfl
 
 /- English proof (translation)
-Use `unipRad_eq_of_le _ fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨⟨_ | _, i⟩, rfl⟩ := (two (stdSum hN)).surjective i <;>`. Apply the tactic sequence `obtain ⟨⟨_ | _, j⟩, rfl⟩ := (two (stdSum hN)).surjective j <;>`. Apply the tactic sequence `simp only [blk_apply] <;> simp [FiniteGL.twoBlocks]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unipRad_two_eq {r t : ℕ} (hN : r + t = N) :
     unipRad R (two (stdSum hN)) = FiniteGL.unipRadical R (FiniteGL.twoBlocks N r) := by
@@ -595,11 +591,11 @@ theorem unipRad_two_eq {r t : ℕ} (hN : r + t = N) :
     simp only [blk_apply] <;> simp [FiniteGL.twoBlocks]
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `(Parabolic.leviEquiv e).surjective x`. Rewrite using `[MulEquiv.symm_apply_apply]`. Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective j`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[leviEmb_apply_same]`. Both sides reduce to the same expression. Rewrite using `[leviEmb_apply_ne R e _ h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `g.2 _ _ (by simpa [Fin.val_inj] using h)`.
+A detailed English derivation is pending.
 -/
 theorem coe_leviEquiv_symm (e : (Σ a, Fin (d a)) ≃ Fin N) (x : Levi R fun a => Fin (d a)) :
     ((Parabolic.leviEquiv e).symm x : GL (Fin N) R) = leviEmb R e x := by
@@ -614,7 +610,7 @@ theorem coe_leviEquiv_symm (e : (Σ a, Fin (d a)) ≃ Fin N) (x : Levi R fun a =
     exact g.2 _ _ (by simpa [Fin.val_inj] using h)
 
 /- English proof (translation)
-The claim follows from `Units.ext (val_emb₂ R (stdSum hN) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem coe_leviTwo_symm {r t : ℕ} (hN : r + t = N) {c : Fin N → ℕ} (hc : Parabolic.IsTwoBlock r c)
     (x : GL (Fin r) R × GL (Fin t) R) :
@@ -672,9 +668,9 @@ variable (k) in
 abbrev unitRes : 𝒪[k]ˣ →* 𝓀[k]ˣ := Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨u, hu⟩` from `(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one (x := ⟨x, h.le⟩) |>.2 h`. Conclude with `⟨u, Units.ext (congrArg Subtype.val hu)⟩`. Introduce and unpack `⟨u, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit u.isUnit`.
+A detailed English derivation is pending.
 -/
 theorem valuation_eq_one_iff {x : kˣ} : valuation k (x : k) = 1 ↔ ∃ u, unitIncl k u = x := by
   constructor
@@ -688,13 +684,13 @@ theorem valuation_eq_one_iff {x : kˣ} : valuation k (x : k) = 1 ↔ ∃ u, unit
 def IsTameLift (χ' : kˣ →* ℂˣ) (χ : 𝓀[k]ˣ →* ℂˣ) : Prop := ∀ u : 𝒪[k]ˣ, χ' (unitIncl k u) = χ (unitRes k u)
 
 /- English proof (translation)
-Introduce `u` and use `by rw [MonoidHom.mul_apply, MonoidHom.mul_apply, h, h']`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsTameLift.mul {χ' ψ' : kˣ →* ℂˣ} {χ ψ : 𝓀[k]ˣ →* ℂˣ} (h : IsTameLift χ' χ) (h' : IsTameLift ψ' ψ) :
     IsTameLift (χ' * ψ') (χ * ψ) := fun u => by rw [MonoidHom.mul_apply, MonoidHom.mul_apply, h, h']
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `(toKO k n).surjective g`. Simplify using `only [redK, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply, detChar_apply]`. Use `h (GeneralLinearGroup.det u) using 2` and compare the differences between its conclusion and the goal. Conclude with `Units.ext ((algebraMap 𝒪[k] k).map_det u.val).symm`. Conclude with `Units.ext ((IsLocalRing.residue 𝒪[k]).map_det u.val).symm`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem IsTameLift.detChar_eq {χ' : kˣ →* ℂˣ} {χ : 𝓀[k]ˣ →* ℂˣ} (h : IsTameLift χ' χ) (g : KO k n) :
     detChar n χ' g = detChar n χ (redK k n g) := by
@@ -705,7 +701,7 @@ theorem IsTameLift.detChar_eq {χ' : kˣ →* ℂˣ} {χ : 𝓀[k]ˣ →* ℂˣ}
   · exact Units.ext ((IsLocalRing.residue 𝒪[k]).map_det u.val).symm
 
 /- English proof (translation)
-Introduce `x hx` and use `by have h1 : valuation k (x : k) = 1 := by simpa using (valuation k).map_one_add_of_lt hx obtain ⟨u, rfl⟩ := valuation_eq_one_iff.1 h1 have : unitRes k u = 1 := Units.ext (((StepData.residue_eq_iff_lt (u : 𝒪[k]) 1).2 hx).trans (map_one _)) rw [h, this, map_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsTameLift.isTame {χ' : kˣ →* ℂˣ} {χ : 𝓀[k]ˣ →* ℂˣ} (h : IsTameLift χ' χ) : IsTame χ' := fun x hx => by
   have h1 : valuation k (x : k) = 1 := by
@@ -715,7 +711,7 @@ theorem IsTameLift.isTame {χ' : kˣ →* ℂˣ} {χ : 𝓀[k]ˣ →* ℂˣ} (h 
   rw [h, this, map_one]
 
 /- English proof (translation)
-Establish `ho : IsOpen {x : kˣ | valuation k ((x : k) - 1) < 1}`. Use `IsOpen.preimage (f := fun x : kˣ => (x : k) - 1) (t := {y | valuation k y < 1}) (by fun_prop) ?_` and prove the remaining obligations. Simplify using `using (valuation k).isOpen_ball 1`. Conclude with `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (ho.mem_nhds (by simp)) h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isSmoothChar_of_isTame {χ' : kˣ →* ℂˣ} (h : IsTame χ') : IsSmoothChar χ' := by
   have ho : IsOpen {x : kˣ | valuation k ((x : k) - 1) < 1} := by
@@ -726,20 +722,20 @@ theorem isSmoothChar_of_isTame {χ' : kˣ →* ℂˣ} (h : IsTame χ') : IsSmoot
 variable (k) in
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `valuation_surjective (K := k) (uniformizer k)`. Conclude with `⟨Units.mk0 x fun h => uniformizer_ne_zero (by rw [← hx, h, map_zero]), hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_uniformizer : ∃ ϖ : kˣ, valuation k (ϖ : k) = uniformizer k := by
   obtain ⟨x, hx⟩ := valuation_surjective (K := k) (uniformizer k)
   exact ⟨Units.mk0 x fun h => uniformizer_ne_zero (by rw [← hx, h, map_zero]), hx⟩
 
 /- English proof (translation)
-Set `o : kˣ →* Multiplicative ℤ` to `MonoidHom.mk' (fun x => .ofAdd (ord k x)) fun x y => by`. Rewrite using `[ord_mul, ofAdd_add]`. Set `p : kˣ →* kˣ` to `MonoidHom.id _ / (zpowersHom kˣ ϖ).comp o`. Establish `hp : ∀ x, p x = x / ϖ ^ ord k x` using `fun _ => rfl`. Establish `hinj : Function.Injective (unitIncl k)` using `Units.map_injective Subtype.val_injective`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ∀ x, p x ∈ (unitIncl k).range` using `fun x => by`. Establish `h1 : o (x / ϖ ^ ord k x) = 1`. Rewrite using `[map_div, map_zpow, show o ϖ = .ofAdd 1 from congrArg Multiplicative.ofAdd (ord_eq_one hϖ), ← ofAdd_zsmul, smul_eq_mul, mul_one]`. Conclude with `div_self' _`. Conclude with `valuation_eq_one_iff.1 (ord_eq_zero_iff.1 (ofAdd_eq_one.1 h1))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `r : kˣ →* 𝒪[k]ˣ` to `(MonoidHom.ofInjective hinj).symm.toMonoidHom.comp (p.codRestrict _ hm)`. Establish `hr : ∀ x, unitIncl k (r x) = p x` using `fun x => congrArg Subtype.val ((MonoidHom.ofInjective hinj).apply_symm_apply ⟨p x, hm x⟩)`. Use `⟨χ.comp ((unitRes k).comp r) * unrChar k c, fun u => ?_, ?_⟩` and prove the remaining obligations. Establish `hu` using `valuation_eq_one_iff.2 ⟨u, rfl⟩`. Establish `: r (unitIncl k u) = u` using `hinj (by rw [hr, hp, ord_eq_zero hu, zpow_zero, div_one])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.mul_apply, isUnram_unrChar k c _ hu, mul_one, MonoidHom.comp_apply, MonoidHom.comp_apply, this]`. Establish `: r ϖ = 1` using `hinj (by rw [hr, hp, ord_eq_one hϖ, zpow_one, div_self', map_one])`. Rewrite using `[MonoidHom.mul_apply, unrChar_uniformizer k c hϖ, MonoidHom.comp_apply, MonoidHom.comp_apply, this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isTameLift (χ : 𝓀[k]ˣ →* ℂˣ) {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (c : ℂˣ) :
     ∃ χ' : kˣ →* ℂˣ, IsTameLift χ' χ ∧ χ' ϖ = c := by
@@ -775,18 +771,18 @@ variable (k n) in
 def ZK : Subgroup (GL n k) := (zkHom k n).range
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨y, h⟩ => ⟨y.1, y.2, y.2.2, h⟩, fun ⟨z, x, hx, h⟩ => ⟨(z, ⟨x, hx⟩), h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_ZK {g : GL n k} : g ∈ ZK k n ↔ ∃ z : kˣ, ∃ x ∈ KO k n, GeneralLinearGroup.scalar n z * x = g :=
   ⟨fun ⟨y, h⟩ => ⟨y.1, y.2, y.2.2, h⟩, fun ⟨z, x, hx, h⟩ => ⟨(z, ⟨x, hx⟩), h⟩⟩
 
 /- English proof (translation)
-Introduce `g hg` and use `mem_ZK.2 ⟨1, g, hg, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem KO_le_ZK : KO k n ≤ ZK k n := fun g hg => mem_ZK.2 ⟨1, g, hg, by simp⟩
 
 /- English proof (translation)
-The claim follows from `mem_ZK.2 ⟨z, 1, one_mem _, mul_one _⟩`.
+A detailed English derivation is pending.
 -/
 theorem scalar_mem_ZK (z : kˣ) : GeneralLinearGroup.scalar n z ∈ ZK k n := mem_ZK.2 ⟨z, 1, one_mem _, mul_one _⟩
 
@@ -794,7 +790,7 @@ def ExtendsCentral (ω : kˣ →* ℂˣ) (ρ : Representation ℂ (GL n 𝓀[k])
   ∀ (z : kˣ) (h : GeneralLinearGroup.scalar n z ∈ KO k n) (w : W), ρ (redK k n ⟨_, h⟩) w = (ω z : ℂ) • w
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GeneralLinearGroup.scalar n u, by ext i j show algebraMap 𝒪[k] k (Matrix.scalar n (u : 𝒪[k]) i j) = Matrix.scalar n ((u : 𝒪[k]) : k) i j by_cases h : i = j · simp only [h, Matrix.scalar_apply, diagonal_apply_eq]; rfl · simp [h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem scalar_mem_KO (u : 𝒪[k]ˣ) : GeneralLinearGroup.scalar n (unitIncl k u) ∈ KO k n :=
   ⟨GeneralLinearGroup.scalar n u, by
@@ -805,9 +801,9 @@ theorem scalar_mem_KO (u : 𝒪[k]ˣ) : GeneralLinearGroup.scalar n (unitIncl k 
     · simp [h]⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Use `((redK_eq_iff _ i i u).2 ?_).trans (by simp)` and prove the remaining obligations. Use `show valuation k (Matrix.scalar n ((u : 𝒪[k]) : k) i i - _) < 1`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `((redK_eq_zero_iff _ i j).2 ?_).trans (by simp [h])` and prove the remaining obligations. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem redK_scalar (u : 𝒪[k]ˣ) :
     redK k n ⟨_, scalar_mem_KO u⟩ = GeneralLinearGroup.scalar n (unitRes k u) := by
@@ -821,11 +817,11 @@ theorem redK_scalar (u : 𝒪[k]ˣ) :
     simp [h]
 
 /- English proof (translation)
-Use `⟨fun h u w => by rw [← redK_scalar]; exact h _ _ w, fun h z hz w => ?_⟩` and prove the remaining obligations. Take `⟨i⟩` from `‹Nonempty n›`. Establish `h1 : valuation k (z : k) ≤ 1`. Establish `h0 : (z : k) ∈ 𝒪[k]` using `by simpa using (StepData.mem_KO.1 hz).1 i i`. Conclude with `h0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : valuation k ((z⁻¹ : kˣ) : k) ≤ 1`. Use `(StepData.mem_KO.1 hz).2 i i` as an intermediate fact. Rewrite `this` using `[← map_inv, GeneralLinearGroup.coe_scalar, Matrix.scalar_apply, diagonal_apply_eq]`. Conclude with `this`. Rewrite `h2` using `[Units.val_inv_eq_inv_val, map_inv₀]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, rfl⟩` from `valuation_eq_one_iff.1 (le_antisymm h1 ((inv_le_one₀ (zero_lt_iff.2 (by simp))).1 h2))`. Rewrite using `[redK_scalar, h]`.
+A detailed English derivation is pending.
 -/
 theorem extendsCentral_iff [Nonempty n] {ω : kˣ →* ℂˣ} {ρ : Representation ℂ (GL n 𝓀[k]) W} :
     ExtendsCentral ω ρ ↔ ∀ (u : 𝒪[k]ˣ) (w : W),
@@ -844,16 +840,16 @@ theorem extendsCentral_iff [Nonempty n] {ω : kˣ →* ℂˣ} {ρ : Representati
   rw [redK_scalar, h]
 
 /- English proof (translation)
-The claim follows from `extendsCentral_iff.2 fun u w => by rw [hρ, h]`.
+A detailed English derivation is pending.
 -/
 theorem IsTameLift.extendsCentral [Nonempty n] {ω : kˣ →* ℂˣ} {ω₀ : 𝓀[k]ˣ →* ℂˣ} (h : IsTameLift ω ω₀)
     {ρ : Representation ℂ (GL n 𝓀[k]) W} (hρ : HasCentralChar ρ ω₀) : ExtendsCentral ω ρ :=
   extendsCentral_iff.2 fun u w => by rw [hρ, h]
 
 /- English proof (translation)
-Use `Model.nontrivial_of_isIrreducible h` as an intermediate fact. Take `⟨w₀, hw₀⟩` from `exists_ne (0 : W)`. Establish `key : ∀ z : Rˣ, ∃ c : ℂ, ∀ w, ρ (GeneralLinearGroup.scalar n z) w = c • w` using `fun z => by`. Take `⟨c, hc⟩` from `(Representation.IsIrreducible.algebraMap_intertwiningMap_bijective_of_isAlgClosed (ρ := ρ)).2 ⟨ρ (GeneralLinearGroup.scalar n z), fun g => by`. Rewrite using `[← Module.End.mul_eq_comp, ← Module.End.mul_eq_comp, ← map_mul, ← map_mul, GeneralLinearGroup.scalar_commute]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨c, fun w => (congrArg (fun f : ρ.IntertwiningMap ρ => f w) hc).symm⟩`. Use `choose c hc using key`. Use `⟨MonoidHom.toHomUnits ⟨⟨c, smul_left_injective ℂ hw₀ ?_⟩, fun x y => smul_left_injective ℂ hw₀ ?_⟩, hc⟩` and prove the remaining obligations. Simplify using `[← hc]`. Simplify using `only [← hc, mul_smul, map_mul, Module.End.mul_apply]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_hasCentralChar {R : Type} [CommRing R] [FiniteDimensional ℂ W] {ρ : Representation ℂ (GL n R) W}
     (h : ρ.IsIrreducible) : ∃ ω, HasCentralChar ρ ω := by
@@ -882,7 +878,7 @@ def extZK (ρ : Representation ℂ (GL n 𝓀[k]) W) (ω : kˣ →* ℂˣ) (h : 
       rw [h, smul_smul]; simp
 
 /- English proof (translation)
-Take `rfl : (zkHom k n).rangeRestrict (z, g) = x` from `Subtype.ext hx`. Conclude with `LinearMap.congr_fun (descend_apply _ (zkHom k n).rangeRestrict _ _ (z, g)) w`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem extZK_apply (ρ : Representation ℂ (GL n 𝓀[k]) W) (ω : kˣ →* ℂˣ) (h : ExtendsCentral ω ρ) (z : kˣ) (g : KO k n)
     (x : ZK k n) (hx : GeneralLinearGroup.scalar n z * g = x) (w : W) :
@@ -891,14 +887,14 @@ theorem extZK_apply (ρ : Representation ℂ (GL n 𝓀[k]) W) (ω : kˣ →* �
   exact LinearMap.congr_fun (descend_apply _ (zkHom k n).rangeRestrict _ _ (z, g)) w
 
 /- English proof (translation)
-Rewrite using `[extZK_apply ρ ω h 1 g _ (by simp)]; simp`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem extZK_KO (ρ : Representation ℂ (GL n 𝓀[k]) W) (ω : kˣ →* ℂˣ) (h : ExtendsCentral ω ρ) (g : KO k n)
     (w : W) : extZK ρ ω h ⟨g, KO_le_ZK g.2⟩ w = ρ (redK k n g) w := by
   rw [extZK_apply ρ ω h 1 g _ (by simp)]; simp
 
 /- English proof (translation)
-Rewrite using `[extZK_apply ρ ω h z 1 _ (by simp)]; simp`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem extZK_scalar (ρ : Representation ℂ (GL n 𝓀[k]) W) (ω : kˣ →* ℂˣ) (h : ExtendsCentral ω ρ) (z : kˣ)
     (w : W) : extZK ρ ω h ⟨_, scalar_mem_ZK z⟩ w = (ω z : ℂ) • w := by
@@ -924,7 +920,7 @@ Both sides reduce to the same expression.
     (g x : GL n k) (f : DepthZeroSp ρ ω h) : (depthZero ρ ω h g f).1.1.1 x = f.1.1.1 (x * g) := rfl
 
 /- English proof (translation)
-Introduce `f` and use `by have : {g | depthZero ρ ω h g f = f} = {g | smInd (ZK k n) (extZK ρ ω h) g f.1 = f.1} := by ext g; exact Subtype.ext_iff rw [this]; exact isSmooth_smoothRep _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_depthZero (ρ : Representation ℂ (GL n 𝓀[k]) W) (ω : kˣ →* ℂˣ) (h : ExtendsCentral ω ρ) :
     IsSmooth (depthZero ρ ω h) := fun f => by
@@ -933,7 +929,7 @@ theorem isSmooth_depthZero (ρ : Representation ℂ (GL n 𝓀[k]) W) (ω : kˣ 
   rw [this]; exact isSmooth_smoothRep _ _
 
 /- English proof (translation)
-Introduce `z f` and use `by refine Subtype.ext (Subtype.ext (Subtype.ext (funext fun x => ?_))) rw [depthZero_apply, ← GeneralLinearGroup.scalar_commute] exact (f.1.1.2 ⟨_, scalar_mem_ZK z⟩ x).trans (extZK_scalar ρ ω h z _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasCentralChar_depthZero (ρ : Representation ℂ (GL n 𝓀[k]) W) (ω : kˣ →* ℂˣ) (h : ExtendsCentral ω ρ) :
     HasCentralChar (depthZero ρ ω h) ω := fun z f => by
@@ -947,7 +943,7 @@ def canonFun (ρ : Representation ℂ (GL n 𝓀[k]) W) (ω : kˣ →* ℂˣ) (h
   if hg : g ∈ ZK k n then extZK ρ ω h ⟨g, hg⟩ w else 0
 
 /- English proof (translation)
-Unfold `canonFun`. Distinguish the cases in `hg : g ∈ ZK k n`. Rewrite using `[dif_pos hg, dif_pos (mul_mem hg x.2), ← Module.End.mul_apply, ← map_mul]`. Both sides reduce to the same expression. Rewrite using `[dif_neg hg, dif_neg fun h' => hg ((Subgroup.mul_mem_cancel_right _ x.2).1 h')]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem canonFun_mul (ρ : Representation ℂ (GL n 𝓀[k]) W) (ω : kˣ →* ℂˣ) (h : ExtendsCentral ω ρ) (w : W)
     (g : GL n k) (x : ZK k n) : canonFun ρ ω h w (g * x) = canonFun ρ ω h (extZK ρ ω h x w) g := by
@@ -979,7 +975,7 @@ def canon (ρ : Representation ℂ (GL n 𝓀[k]) W) (ω : kˣ →* ℂˣ) (h : 
     (canonFun_mul ρ ω h w g x).symm)))
 
 /- English proof (translation)
-Introduce `v w e` and use `by have h1 : canonFun ρ ω h v 1 = canonFun ρ ω h w 1 := congrArg (fun f => f.1.1.1 1) e have h2 : ∀ v, canonFun ρ ω h v 1 = v := fun v => (dif_pos (one_mem _)).trans (LinearMap.congr_fun (map_one _) v) rwa [h2, h2] at h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem canon_injective (ρ : Representation ℂ (GL n 𝓀[k]) W) (ω : kˣ →* ℂˣ) (h : ExtendsCentral ω ρ) :
     Function.Injective (canon ρ ω h) := fun v w e => by
@@ -999,26 +995,26 @@ def InertEquiv (π : Representation ℂ (GL n k) V) (σ : Representation ℂ (GL
   ∃ ν : kˣ →* ℂˣ, IsUnram ν ∧ Nonempty (σ.Equiv (twist π (detChar n ν)))
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [MonoidHom.mul_apply, h x hx, h' x hx, one_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnram_mul {ν μ : kˣ →* ℂˣ} (h : IsUnram ν) (h' : IsUnram μ) : IsUnram (ν * μ) := fun x hx => by
   rw [MonoidHom.mul_apply, h x hx, h' x hx, one_mul]
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [MonoidHom.inv_apply, h x hx, inv_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnram_inv {ν : kˣ →* ℂˣ} (h : IsUnram ν) : IsUnram ν⁻¹ := fun x hx => by
   rw [MonoidHom.inv_apply, h x hx, inv_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun _ _ => rfl, ⟨by rw [show detChar n (1 : kˣ →* ℂˣ) = 1 from rfl, twist_one]; exact e.symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem InertEquiv.of_equiv {π : Representation ℂ (GL n k) V} {σ : Representation ℂ (GL n k) W} (e : π.Equiv σ) :
     InertEquiv π σ :=
   ⟨1, fun _ _ => rfl, ⟨by rw [show detChar n (1 : kˣ →* ℂˣ) = 1 from rfl, twist_one]; exact e.symm⟩⟩
 
 /- English proof (translation)
-Take `⟨ν, hν, ⟨e⟩⟩` from `h`. Use `⟨ν⁻¹, isUnram_inv hν, ⟨?_⟩⟩` and prove the remaining obligations. Establish `e'` using `twistEquiv e (detChar n ν⁻¹)`. Rewrite `e'` using `[twist_twist, show detChar n ν⁻¹ * detChar n ν = 1 from MonoidHom.ext fun g => by simp, twist_one]`. Conclude with `e'.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InertEquiv.symm {π : Representation ℂ (GL n k) V} {σ : Representation ℂ (GL n k) W} (h : InertEquiv π σ) :
     InertEquiv σ π := by
@@ -1029,7 +1025,7 @@ theorem InertEquiv.symm {π : Representation ℂ (GL n k) V} {σ : Representatio
   exact e'.symm
 
 /- English proof (translation)
-Take `⟨ν, hν, ⟨e⟩⟩` from `h`. Take `⟨μ, hμ, ⟨f⟩⟩` from `h'`. Establish `e'` using `twistEquiv e (detChar n μ)`. Rewrite `e'` using `[twist_twist]`. Conclude with `⟨μ * ν, isUnram_mul hμ hν, ⟨f.trans e'⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem InertEquiv.trans {X : Type} [AddCommGroup X] [Module ℂ X] {π : Representation ℂ (GL n k) V}
     {σ : Representation ℂ (GL n k) W} {τ : Representation ℂ (GL n k) X} (h : InertEquiv π σ) (h' : InertEquiv σ τ) :
@@ -1051,7 +1047,7 @@ def levelZeroTwist (π : Representation ℂ (GL n k) V) {ν : kˣ →* ℂˣ} (h
       rw [twist_apply, detChar_of_mem_KO hν g.2]; simp
 
 /- English proof (translation)
-Take `⟨ν, hν, ⟨e⟩⟩` from `h`. Use `⟨(equivOfBijective (levelZeroMap e.toIntertwiningMap) ⟨fun v w h => Subtype.ext (e.toLinearEquiv.injective (congrArg Subtype.val h)), fun w => ⟨levelZeroMap e.symm.toIntertwiningMap w, Subtype.ext (e.apply_symm_apply _)⟩⟩).trans (levelZeroTwist π hν)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem InertEquiv.levelZero {π : Representation ℂ (GL n k) V} {σ : Representation ℂ (GL n k) W} (h : InertEquiv π σ) :
     Nonempty ((levelZero σ).Equiv (levelZero π)) := by
@@ -1061,7 +1057,7 @@ theorem InertEquiv.levelZero {π : Representation ℂ (GL n k) V} {σ : Represen
     ⟨levelZeroMap e.symm.toIntertwiningMap w, Subtype.ext (e.apply_symm_apply _)⟩⟩).trans (levelZeroTwist π hν)⟩
 
 /- English proof (translation)
-Introduce `z hz w` and use `by show ofChar _ _ _ = _ have : GeneralLinearGroup.det (GeneralLinearGroup.scalar n z) = z ^ Fintype.card n := by ext; simp [GeneralLinearGroup.scalar] rw [ofChar_apply, ← h.detChar_eq, detChar_apply, this] simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {χ' : kˣ →* ℂˣ} {χ : 𝓀[k]ˣ →* ℂˣ} (h : IsTameLift χ' χ) :
     ExtendsCentral (χ' ^ Fintype.card n) (detRep n χ) := fun z hz w => by

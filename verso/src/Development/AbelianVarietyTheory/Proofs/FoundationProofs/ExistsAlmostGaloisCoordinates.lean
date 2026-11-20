@@ -18,32 +18,30 @@ def Rep (C : Subalgebra (O0 p) Ω) (H : Subgroup (Gal p Ω)) (F : Gal p Ω → �
 variable {C : Subalgebra (O0 p) Ω} {H : Subgroup (Gal p Ω)}
 
 /- English proof (translation)
-Take `⟨ι, hι, u, v, hu, hv, hF⟩` from `hF`. Conclude with `⟨ι, hι, u, v, hu, hv, fun h hh => (e h hh).trans (hF h hh)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rep_congr {F G : Gal p Ω → Ω} (hF : Rep C H F) (e : ∀ h ∈ H, G h = F h) : Rep C H G := by
   obtain ⟨ι, hι, u, v, hu, hv, hF⟩ := hF
   exact ⟨ι, hι, u, v, hu, hv, fun h hh => (e h hh).trans (hF h hh)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Unit, inferInstance, fun _ => c, fun _ => 1, fun _ => hc, fun _ => C.one_mem, fun h _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem rep_const {c : Ω} (hc : c ∈ C) : Rep C H (fun _ => c) :=
   ⟨Unit, inferInstance, fun _ => c, fun _ => 1, fun _ => hc, fun _ => C.one_mem,
     fun h _ => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Unit, inferInstance, fun _ => 1, fun _ => x, fun _ => C.one_mem, fun _ => hx, fun h _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem rep_eval {x : Ω} (hx : x ∈ C) : Rep C H (fun h => h x) :=
   ⟨Unit, inferInstance, fun _ => 1, fun _ => x, fun _ => C.one_mem, fun _ => hx,
     fun h _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨ι, _, u, v, hu, hv, hF⟩` from `hF`. Take `⟨ι', _, u', v', hu', hv', hG⟩` from `hG`. Use `⟨ι ⊕ ι', inferInstance, Sum.elim u u', Sum.elim v v', ?_, ?_, fun h hh => ?_⟩` and prove the remaining obligations. Introduce and unpack `(k | k)`. Conclude with `hu k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `hu' k`. Introduce and unpack `(k | k)`. Conclude with `hv k`. Conclude with `hv' k`. Use `show F h + G h = _`.
-
-Rewrite using `[Fintype.sum_sum_type, hF h hh, hG h hh]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rep_add {F G : Gal p Ω → Ω} (hF : Rep C H F) (hG : Rep C H G) :
     Rep C H (fun h => F h + G h) := by
@@ -61,9 +59,9 @@ theorem rep_add {F G : Gal p Ω → Ω} (hF : Rep C H F) (hG : Rep C H G) :
     simp
 
 /- English proof (translation)
-Take `⟨ι, _, u, v, hu, hv, hF⟩` from `hF`. Take `⟨ι', _, u', v', hu', hv', hG⟩` from `hG`. Use `⟨ι × ι', inferInstance, fun k => u k.1 * u' k.2, fun k => v k.1 * v' k.2, fun k => C.mul_mem (hu _) (hu' _), fun k => C.mul_mem (hv _) (hv' _), fun h hh => ?_⟩` and prove the remaining obligations. Use `show F h * G h = ∑ k : ι × ι', u k.1 * u' k.2 * h (v k.1 * v' k.2)`. Rewrite using `[hF h hh, hG h hh, Finset.sum_mul_sum, ← Finset.univ_product_univ, Finset.sum_product]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rep_mul {F G : Gal p Ω → Ω} (hF : Rep C H F) (hG : Rep C H G) :
     Rep C H (fun h => F h * G h) := by
@@ -77,7 +75,7 @@ theorem rep_mul {F G : Gal p Ω → Ω} (hF : Rep C H F) (hG : Rep C H G) :
   rw [map_mul]; ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (rep_const (H := H) C.one_mem)`. Consider the case `insert a s ha ih`. Use `rep_congr (rep_mul (hF a (by simp)) (ih fun b hb => hF b (by simp [hb]))) fun h _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_insert ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_prod {α : Type*} (s : Finset α) (F : α → Gal p Ω → Ω)
     (hF : ∀ a ∈ s, Rep C H (F a)) : Rep C H (fun h => ∏ a ∈ s, F a h) := by
@@ -90,11 +88,11 @@ theorem rep_prod {α : Type*} (s : Finset α) (F : α → Gal p Ω → Ω)
     rw [Finset.prod_insert ha]
 
 /- English proof (translation)
-Use `⟨int_gal g hx.1, fun h hh => ?_⟩` and prove the remaining obligations. Take `⟨hhinf, hhr⟩` from `mem_Hfix.1 hh`. Establish `hgr : h (g r) = g r`. Take `⟨i, hi⟩` from `hH g hg`. Rewrite using `[hi, map_mul, map_pow, (mem_Hinf.1 hhinf n).1, hhr]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : g⁻¹ * h * g ∈ Hfix T r`. Use `mem_Hfix.2 ⟨(Hinf T).mul_mem ((Hinf T).mul_mem ((Hinf T).inv_mem hg) hhinf) hg, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, hgr, AlgEquiv.aut_inv, AlgEquiv.symm_apply_apply]`. Establish `e` using `hx.2 _ hk`. Rewrite `e` using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem gal_mem_C {T : Tower p Ω} {n : ℕ} {r : Ω}
     (hH : ∀ h ∈ Hinf T, ∃ i : ℕ, h r = T.ζ n ^ i * r) {g : Gal p Ω} (hg : g ∈ Hinf T)
@@ -112,9 +110,9 @@ theorem gal_mem_C {T : Tower p Ω} {n : ℕ} {r : Ω}
   exact e
 
 /- English proof (translation)
-Establish `hk : g⁻¹ * h ∈ Hfix T r`. Use `mem_Hfix.2 ⟨(Hinf T).mul_mem ((Hinf T).inv_mem hg) hh, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, hr, AlgEquiv.aut_inv, AlgEquiv.symm_apply_apply]`. Establish `e` using `hx.2 _ hk`. Rewrite `e` using `[AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem eq_on_C {T : Tower p Ω} {r : Ω} {g h : Gal p Ω} (hg : g ∈ Hinf T) (hh : h ∈ Hinf T)
     (hr : h r = g r) {x : Ω} (hx : x ∈ FixI (Hfix T r)) : h x = g x := by
@@ -126,13 +124,13 @@ theorem eq_on_C {T : Tower p Ω} {r : Ω} {g h : Gal p Ω} (hg : g ∈ Hinf T) (
   exact e
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Use `⟨fun h => g x + (-1) * h x, rep_add (rep_const (gal_mem_C hH hg hx)) (rep_mul (rep_const (neg_mem (Subalgebra.one_mem _))) (rep_eval hx)), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [AlgEquiv.one_apply]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `h hh hr`. Simplify using `only [eq_on_C hg hh hr hx]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨fun _ => 0, rep_const (Subalgebra.zero_mem _), rfl, fun _ _ _ => rfl⟩`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `add y z _ _ ihy ihz`. Take `⟨F, hF, hF1, hF0⟩` from `ihy`. Take `⟨G, hG, hG1, hG0⟩` from `ihz`. Conclude with `⟨fun h => F h + G h, rep_add hF hG, by simp [hF1, hG1], fun h hh hr => by simp [hF0 h hh hr, hG0 h hh hr]⟩`. Consider the case `smul a y _ ih`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨F, hF, hF1, hF0⟩` from `ih`. Conclude with `⟨fun h => (a : Ω) * F h, rep_mul (rep_const a.2) hF, by simp [hF1, Subalgebra.smul_def], fun h hh hr => by simp [hF0 h hh hr]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rep_of_span {T : Tower p Ω} {n : ℕ} {r : Ω}
     (hH : ∀ h ∈ Hinf T, ∃ i : ℕ, h r = T.ζ n ^ i * r) {g : Gal p Ω} (hg : g ∈ Hinf T) {y : Ω}
@@ -163,19 +161,17 @@ end GlobalTheory.KumDlog.AlmostGal
 open GlobalTheory.KumDlog.AlmostGal in
 
 /- English proof (translation)
-Introduce `p _ hp2 Ω _ _ hclo T n r hr hH`. Establish `hp : p.Prime` using `Fact.out`. Use `set τ : Ω := T.ζ (n + 1) - 1 with hτ`. Establish `hτ0 : τ ≠ 0` using `sub_ne_zero.2 ((T.prim (n + 1)).ne_one (Nat.one_lt_pow (by omega) hp.one_lt))`. Use `set W : Finset Ω := ((Finset.range (p ^ n)).image (fun i => T.ζ n ^ i * r)).filter (fun w => w ≠ r ∧ ∃ g ∈ Hinf T, g r = w) with hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hF : ∀ w ∈ W, ∃ F : Gal p Ω → Ω, Rep (FixI (Hfix T r)) (Hinf T) F ∧ F 1 = τ ∧ ∀ h ∈ Hinf T, h r = w → F h = 0`. Introduce `w hw`. Take `⟨hwr, g, hg, hgw⟩` from `(Finset.mem_filter.1 hw).2`. Take `⟨F, hF, hF1, hF0⟩` from `rep_of_span hH hg (GlobalTheory.T.zeta_sub_one_mem_span_galois_differences p hp2 Ω hclo T n r hr hH (n + 1) (by omega) g hg (hgw ▸ hwr))`. Conclude with `⟨F, hF, hF1, fun h hh e => hF0 h hh (e.trans hgw.symm)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose! F hFr hF1 hF0 using hF`. Use `set s := W.card with hs`. Establish `hsle : s ≤ Nat.totient (p ^ (n + 1))`. Rewrite using `[Nat.totient_prime_pow hp (by omega), Nat.add_sub_cancel]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set c : Ω := (p : Ω) / τ ^ s with hc`. Establish `hcC : c ∈ FixI (Hfix T r)`. Use `⟨GlobalTheory.T.isInt_prime_div_rootOfUnity_sub_one_pow p Ω T (n + 1) s (by omega) hsle, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hz : g (T.ζ (n + 1)) = T.ζ (n + 1)` using `(mem_Hinf.1 (mem_Hfix.1 hg).1 (n + 1)).1`. Rewrite using `[hc, map_div₀, map_pow, hτ, map_sub, map_one, hz, map_natCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrep : Rep (FixI (Hfix T r)) (Hinf T) (fun h => c * ∏ w ∈ W, F w h)` using `rep_mul (rep_const hcC) (rep_prod W F hFr)`. Take `⟨ι, hι, u, v, hu, hv, he⟩` from `hrep`. Use `⟨ι, hι, u, v, hu, hv, ?_, fun h hh hhr => ?_⟩` and prove the remaining obligations. Establish `e` using `he 1 (Hinf T).one_mem`. Simplify using `only [AlgEquiv.one_apply] at e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, Finset.prod_congr rfl hF1, Finset.prod_const, ← hs, hc, div_mul_cancel₀ _ (pow_ne_zero _ hτ0)]`. Rewrite using `[← he h hh]`. Take `⟨i, hi⟩` from `hH h hh`. Establish `hmod : h r = T.ζ n ^ (i % p ^ n) * r`. Rewrite using `[hi]`.
-
-Use `conv_lhs => rw [← Nat.div_add_mod i (p ^ n), pow_add, pow_mul, (T.prim n).pow_eq_one, one_pow, one_mul]`. Establish `hmem : h r ∈ W`. Use `Finset.mem_filter.2 ⟨Finset.mem_image.2 ⟨i % p ^ n, Finset.mem_range.2 (Nat.mod_lt _ (ppow_pos n)), hmod.symm⟩, hhr, h, hh, rfl⟩` and prove the remaining obligations. Use `show c * ∏ w ∈ W, F w h = 0`. Rewrite using `[Finset.prod_eq_zero hmem (hF0 _ hmem h hh rfl), mul_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KumDlog.almostGal_coord : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (Ω : Type) [Field Ω]
     [Algebra (O0 p) Ω], IsClo p Ω → ∀ (T : Tower p Ω) (n : ℕ) (r : Ω), IsInt p r →

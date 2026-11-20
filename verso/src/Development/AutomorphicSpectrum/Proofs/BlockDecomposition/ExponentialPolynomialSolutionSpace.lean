@@ -7,7 +7,7 @@ namespace GlobalTheory.CompanionTheory.ConstCoeffODE
 noncomputable def op (c : ℂ) (y : ℝ → ℂ) : ℝ → ℂ := deriv y - c • y
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `h : deriv (a + b) t = deriv a t + deriv b t` using `((ha t).hasDerivAt.add (hb t).hasDerivAt).deriv`. Simplify using `only [op, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, h]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem op_add (c : ℂ) {a b : ℝ → ℂ} (ha : Differentiable ℝ a) (hb : Differentiable ℝ b) :
     op c (a + b) = op c a + op c b := by
@@ -18,7 +18,7 @@ theorem op_add (c : ℂ) {a b : ℝ → ℂ} (ha : Differentiable ℝ a) (hb : D
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `h : deriv (k • a) t = k • deriv a t` using `((ha t).hasDerivAt.const_smul k).deriv`. Simplify using `only [op, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, h]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem op_smul (c k : ℂ) {a : ℝ → ℂ} (ha : Differentiable ℝ a) :
     op c (k • a) = k • op c a := by
@@ -56,15 +56,15 @@ noncomputable def stepMap (c : ℂ) (S : Submodule ℂ (ℝ → ℂ)) : step c S
     · rfl
 
 /- English proof (translation)
-Establish `hd : ∀ t, deriv y t = c * y t`. Introduce `t`. Use `congrFun h t` as an intermediate fact. Simplify using `only [op, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `he : ∀ t : ℝ, HasDerivAt (fun s : ℝ => Complex.exp (-c * (s : ℂ))) (Complex.exp (-c * (t : ℂ)) * (-c)) t`. Introduce `t`. Establish `h1 : HasDerivAt (fun s : ℝ => -c * (s : ℂ)) (-c) t`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := t)).const_mul (-c)`. Conclude with `h1.cexp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : ∀ t : ℝ, HasDerivAt (fun s : ℝ => y s * Complex.exp (-c * (s : ℂ))) 0 t`. Introduce `t`. Establish `h2` using `(hy t).hasDerivAt.mul (he t)`. Establish `h3 : deriv y t * Complex.exp (-c * (t : ℂ)) + y t * (Complex.exp (-c * (t : ℂ)) * (-c)) = 0`. Rewrite using `[hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3]`. Conclude with `h2`. Establish `hc` using `is_const_of_deriv_eq_zero (𝕜 := ℝ) (fun t => (hg t).differentiableAt) (fun t => (hg t).deriv)`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hc t 0` as an intermediate fact. Simplify using `only [h0, zero_mul] at this`. Simplify `this` using `[Complex.exp_ne_zero]`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_op_eq_zero (c : ℂ) {y : ℝ → ℂ} (hy : Differentiable ℝ y)
     (h : op c y = 0) (h0 : y 0 = 0) : y = 0 := by
@@ -94,7 +94,7 @@ theorem eq_zero_of_op_eq_zero (c : ℂ) {y : ℝ → ℂ} (hy : Differentiable �
   simpa [Complex.exp_ne_zero] using this
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Establish `h1 : op c y.1 = 0` using `congrArg (fun p : S × ℂ => (p.1 : ℝ → ℂ)) hy`. Establish `h2 : y.1 0 = 0` using `congrArg Prod.snd hy`. Conclude with `Subtype.ext (eq_zero_of_op_eq_zero c y.2.1 h1 h2)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stepMap_injective (c : ℂ) (S : Submodule ℂ (ℝ → ℂ)) :
     Function.Injective (stepMap c S) := by
@@ -105,14 +105,14 @@ theorem stepMap_injective (c : ℂ) (S : Submodule ℂ (ℝ → ℂ)) :
   exact Subtype.ext (eq_zero_of_op_eq_zero c y.2.1 h1 h2)
 
 /- English proof (translation)
-The claim follows from `FiniteDimensional.of_injective (stepMap c S) (stepMap_injective c S)`.
+A detailed English derivation is pending.
 -/
 theorem step_finite (c : ℂ) (S : Submodule ℂ (ℝ → ℂ)) [FiniteDimensional ℂ S] :
     FiniteDimensional ℂ (step c S) :=
   FiniteDimensional.of_injective (stepMap c S) (stepMap_injective c S)
 
 /- English proof (translation)
-Establish `h` using `LinearMap.finrank_le_finrank_of_injective (stepMap_injective c S)`. Rewrite `h` using `[Module.finrank_prod, Module.finrank_self]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_finrank_le (c : ℂ) (S : Submodule ℂ (ℝ → ℂ)) [FiniteDimensional ℂ S] :
     Module.finrank ℂ (step c S) ≤ Module.finrank ℂ S + 1 := by
@@ -121,19 +121,19 @@ theorem step_finrank_le (c : ℂ) (S : Submodule ℂ (ℝ → ℂ)) [FiniteDimen
   exact h
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Use `⟨⊥, inferInstance, by simp, ?_⟩` and prove the remaining obligations. Introduce `X _ _ D ev _ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hx`. Consider the case `cons c l ih`. Take `⟨S, hfin, hrank, hS⟩` from `ih`. Use `⟨step c S, step_finite c S, ?_, ?_⟩` and prove the remaining obligations. Use `step_finrank_le c S` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers. Introduce `X _ _ D ev hD x hx set Q : Module.End ℂ X := D - c • (1 : Module.End ℂ X) with hQ set P : Module.End ℂ X := (l.map fun c => D - c • (1 : Module.End ℂ X)).prod with hP`. Establish `hcomm : Commute Q P`. Use `Commute.list_prod_right _ _ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz`. Take `⟨b, -, rfl⟩` from `List.mem_map.mp hz`. Establish `hD1 : Commute D (1 : Module.End ℂ X)` using `Commute.one_right D`. Conclude with `((Commute.refl D).sub_right (hD1.smul_right b)).sub_left ((hD1.symm.sub_right ((Commute.one_left _).smul_right b)).smul_left c)`. Establish `h1 : ev (P (Q x)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (Q * P) x = (P * Q) x` using `by rw [hcomm.eq]`. Establish `h3 : ((l.map fun c => D - c • (1 : Module.End ℂ X)).prod) = P` using `rfl`. Simplify using `only [List.map_cons, List.prod_cons] at hx`. Rewrite `hx` using `[h3]`. Establish `h4 : (P * Q) x = P (Q x)` using `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h4, ← h2]`. Conclude with `hx`. Establish `h5 : ev (Q x) ∈ S` using `hS X D ev hD (Q x) h1`. Establish `hdiff : Differentiable ℝ (ev x)` using `fun t => (hD x t).differentiableAt`. Use `⟨hdiff, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h6 : op c (ev x) = ev (Q x)`. Use function extensionality and compare the values at `t`. Simplify using `[op, hQ, (hD x t).deriv]`. Rewrite using `[h6]`. Conclude with `h5`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem solutions_mem_finite :
     ∀ l : List ℂ, ∃ S : Submodule ℂ (ℝ → ℂ), FiniteDimensional ℂ S ∧ Module.finrank ℂ S ≤ l.length ∧

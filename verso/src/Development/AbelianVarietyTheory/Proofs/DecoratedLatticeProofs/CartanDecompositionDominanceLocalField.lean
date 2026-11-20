@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.CartanDom
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply', Matrix.mul_apply, Finset.prod_univ_sum, Finset.mul_sum, Fintype.piFinset_univ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun f _ => Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.prod_mul_distrib, Matrix.submatrix_apply, id]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_mul_eq_sum_fun {R : Type*} [CommRing R] {ι m : Type*} [Fintype ι] [DecidableEq ι] [Fintype m]
     [DecidableEq m] (A : Matrix ι m R) (B : Matrix m ι R) :
@@ -20,7 +20,7 @@ theorem det_mul_eq_sum_fun {R : Type*} [CommRing R] {ι m : Type*} [Fintype ι] 
   ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i t hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, zpow_add₀ hx, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_eq {G : Type*} [CommGroupWithZero G] {ι : Type*} (s : Finset ι) {x : G} (hx : x ≠ 0)
     (e : ι → ℤ) : ∏ i ∈ s, x ^ e i = x ^ ∑ i ∈ s, e i := by
@@ -30,9 +30,9 @@ theorem prod_zpow_eq {G : Type*} [CommGroupWithZero G] {ι : Type*} (s : Finset 
   | insert i t hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, zpow_add₀ hx, ih]
 
 /- English proof (translation)
-Establish `h1 : ∑ i ∈ U ∩ T, (c - e i) ≤ ∑ i ∈ U, (c - e i)` using `Finset.sum_le_sum_of_subset_of_nonneg Finset.inter_subset_left (fun i hi _ => by linarith [hU i hi])`. Establish `h2 : ∑ i ∈ U ∩ T, (e i - c) ≤ ∑ i ∈ T, (e i - c)` using `Finset.sum_le_sum_of_subset_of_nonneg Finset.inter_subset_right (fun i hi hni => by`. Establish `: i ∉ U` using `fun h => hni (Finset.mem_inter.2 ⟨h, hi⟩)`. Combine the linear relations using `[hU' i hi this])`. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_const, smul_eq_mul] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sum_le_sum_of_threshold {α : Type*} [DecidableEq α] (e : α → ℤ) (U T : Finset α) (hc : T.card = U.card)
     (c : ℤ) (hU : ∀ i ∈ U, e i ≤ c) (hU' : ∀ i ∈ T, i ∉ U → c ≤ e i) : ∑ i ∈ U, e i ≤ ∑ i ∈ T, e i := by
@@ -47,9 +47,9 @@ theorem sum_le_sum_of_threshold {α : Type*} [DecidableEq α] (e : α → ℤ) (
   linarith
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_image (s := Finset.univ) (fun a _ b _ h => hf h)]`. Use `sum_le_sum_of_threshold e _ _ ?_ (e ⟨j, hj⟩) ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.card_image_of_injective _ hf, Finset.card_univ, Fintype.card_subtype]`. Introduce `i hi`. Conclude with `he (Fin.le_iff_val_le_val.2 (by simp at hi; simpa using hi))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _ hi`. Conclude with `he (Fin.le_iff_val_le_val.2 (by simp at hi; simp; omega))`.
+A detailed English derivation is pending.
 -/
 theorem sum_tail_le {N : ℕ} (e : Fin N → ℤ) (he : Antitone e) (j : ℕ) (hj : j < N)
     (f : {i : Fin N // ¬ (i : ℕ) < j} → Fin N) (hf : Function.Injective f) :
@@ -66,9 +66,9 @@ theorem sum_tail_le {N : ℕ} (e : Fin N → ℤ) (he : Antitone e) (j : ℕ) (h
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `Valuation.map_sum_le _ fun σ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> rw [h]`. Rewrite using `[one_smul, map_prod]`. Conclude with `Finset.prod_le_one' fun i _ => hM _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.neg_smul, one_smul, Valuation.map_neg, map_prod]`. Conclude with `Finset.prod_le_one' fun i _ => hM _ _`.
+A detailed English derivation is pending.
 -/
 theorem val_det_le_one {ι : Type*} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι k)
     (hM : ∀ i j, valuation k (M i j) ≤ 1) : valuation k M.det ≤ 1 := by
@@ -79,9 +79,9 @@ theorem val_det_le_one {ι : Type*} [Fintype ι] [DecidableEq ι] (M : Matrix ι
   · rw [Units.neg_smul, one_smul, Valuation.map_neg, map_prod]; exact Finset.prod_le_one' fun i _ => hM _ _
 
 /- English proof (translation)
-Establish `e : (X * A).submatrix f h = X.submatrix f id * A.submatrix id h`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[e, det_mul_eq_sum_fun]`. Use `Valuation.map_sum_le _ fun σ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_prod]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem minor_mul_int {m ι : Type*} [Fintype m] [DecidableEq m] [Fintype ι] [DecidableEq ι] (X A : Matrix m m k)
     (γ : ValueGroupWithZero k) (hA : ∀ i j, valuation k (A i j) ≤ 1)
@@ -97,7 +97,7 @@ theorem minor_mul_int {m ι : Type*} [Fintype m] [DecidableEq m] [Fintype ι] [D
     _ = γ := one_mul γ
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_transpose, Matrix.transpose_submatrix, Matrix.transpose_mul]`. Conclude with `minor_mul_int Xᵀ Aᵀ γ (fun i j => hA j i) (fun f h => by rw [← Matrix.transpose_submatrix, Matrix.det_transpose]; exact hX h f) h f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_int_mul {m ι : Type*} [Fintype m] [DecidableEq m] [Fintype ι] [DecidableEq ι] (A X : Matrix m m k)
     (γ : ValueGroupWithZero k) (hA : ∀ i j, valuation k (A i j) ≤ 1)
@@ -108,7 +108,7 @@ theorem minor_int_mul {m ι : Type*} [Fintype m] [DecidableEq m] [Fintype ι] [D
     (fun f h => by rw [← Matrix.transpose_submatrix, Matrix.det_transpose]; exact hX h f) h f
 
 /- English proof (translation)
-Establish `e : (diagonal d * M).submatrix f h = diagonal (fun x => d (f x)) * M.submatrix f h`. Use extensionality with `a b`. Simplify using `[diagonal_mul]`. Rewrite using `[e, det_mul, det_diagonal]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_diag_mul_submatrix {m ι : Type*} [Fintype m] [DecidableEq m] [Fintype ι] [DecidableEq ι]
     (d : m → k) (M : Matrix m m k) (f h : ι → m) :
@@ -118,7 +118,7 @@ theorem det_diag_mul_submatrix {m ι : Type*} [Fintype m] [DecidableEq m] [Finty
   rw [e, det_mul, det_diagonal]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab, hne⟩ : ∃ a b, f a = f b ∧ a ≠ b := by`. Simplify using `only [Function.Injective, not_forall] at hf`. Take `⟨a, b, h1, h2⟩` from `hf`. Conclude with `⟨a, b, h1, h2⟩`. Conclude with `Matrix.det_zero_of_row_eq hne (by ext c; simp [hab])`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem det_submatrix_eq_zero {m ι : Type*} [Fintype ι] [DecidableEq ι] (M : Matrix m m k) (f h : ι → m)
     (hf : ¬ Function.Injective f) : (M.submatrix f h).det = 0 := by
@@ -129,7 +129,7 @@ theorem det_submatrix_eq_zero {m ι : Type*} [Fintype ι] [DecidableEq ι] (M : 
   exact Matrix.det_zero_of_row_eq hne (by ext c; simp [hab])
 
 /- English proof (translation)
-Take `⟨κ₀, rfl⟩` from `hκ`. Conclude with `(κ₀.1 i j).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem KO_int {m : Type} [Fintype m] [DecidableEq m] {κ : GL m k} (hκ : κ ∈ KO k m) (i j : m) :
     valuation k (κ.1 i j) ≤ 1 := by
@@ -137,9 +137,9 @@ theorem KO_int {m : Type} [Fintype m] [DecidableEq m] {κ : GL m k} (hκ : κ �
   exact (κ₀.1 i j).2
 
 /- English proof (translation)
-Establish `h1` using `val_det_le_one _ (KO_int hκ)`. Establish `h2` using `val_det_le_one _ (KO_int (inv_mem hκ))`. Establish `h3 : valuation k κ.1.det * valuation k (κ⁻¹).1.det = 1`. Rewrite using `[← map_mul, ← det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, det_one, map_one]`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hlt : valuation k κ.1.det < 1` using `lt_of_le_of_ne h1 hne`. Establish `: valuation k κ.1.det * valuation k (κ⁻¹).1.det < 1` using `lt_of_le_of_lt (mul_le_of_le_one_right' h2) hlt`. Rewrite `this` using `[h3]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KO_det {m : Type} [Fintype m] [DecidableEq m] {κ : GL m k} (hκ : κ ∈ KO k m) :
     valuation k κ.1.det = 1 := by
@@ -154,9 +154,9 @@ theorem KO_det {m : Type} [Fintype m] [DecidableEq m] {κ : GL m k} (hκ : κ �
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CardValuationLt.card_val_lt`. Consider the case `exact _root_.GlobalTheory.CardValuationLt.card_val_lt`. Consider the case `(apply _root_.GlobalTheory.CardValuationLt.card_val_lt <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CardValuationLt.card_val_lt <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CardValuationLt.card_val_lt <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CardValuationLt.card_val_lt ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem card_filter_lt (N n : ℕ) (hn : n ≤ N) : (Finset.univ.filter fun i : Fin N => (i : ℕ) < n).card = n := by
   first
@@ -168,7 +168,7 @@ theorem card_filter_lt (N n : ℕ) (hn : n ≤ N) : (Finset.univ.filter fun i : 
   | (intros; exact _root_.GlobalTheory.CardValuationLt.card_val_lt ..)
 
 /- English proof (translation)
-Introduce `a b hab`. Simplify using `only [indic, Finset.mem_filter, Finset.mem_univ, true_and]`. Establish `: (a : ℕ) ≤ b` using `hab`. Apply the tactic sequence `split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem indic_antitone (N n : ℕ) : Antitone (indic (Finset.univ.filter fun i : Fin N => (i : ℕ) < n)) := by
   intro a b hab
@@ -177,7 +177,7 @@ theorem indic_antitone (N n : ℕ) : Antitone (indic (Finset.univ.filter fun i :
   split_ifs <;> omega
 
 /- English proof (translation)
-Simplify using `only [indic, Finset.sum_boole, Finset.filter_mem_eq_inter, Finset.univ_inter]`. Conclude with `card_filter_lt N n hn` after adjusting the coercions.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_indic (N n : ℕ) (hn : n ≤ N) :
     ∑ i : Fin N, indic (Finset.univ.filter fun i : Fin N => (i : ℕ) < n) i = n := by
@@ -185,7 +185,7 @@ theorem sum_indic (N n : ℕ) (hn : n ≤ N) :
   exact_mod_cast card_filter_lt N n hn
 
 /- English proof (translation)
-Rewrite using `[map_prod]`. Repeatedly rewrite using `[map_zpow₀]`. Conclude with `prod_zpow_eq _ ((Valuation.ne_zero_iff _).2 ϖ.ne_zero) e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_torus_prod (ϖ : kˣ) {ι : Type*} [Fintype ι] (e : ι → ℤ) :
     valuation k (∏ x, (ϖ : k) ^ e x) = valuation k (ϖ : k) ^ ∑ x, e x := by
@@ -194,9 +194,9 @@ theorem val_torus_prod (ϖ : kˣ) {ι : Type*} [Fintype ι] (e : ι → ℤ) :
   exact prod_zpow_eq _ ((Valuation.ne_zero_iff _).2 ϖ.ne_zero) e
 
 /- English proof (translation)
-Rewrite using `[det_diag_mul_submatrix]`. Distinguish the cases in `hf : Function.Injective f`. Rewrite using `[map_mul, val_torus_prod]`. Establish `hw1 : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Establish `hw0 : 0 < valuation k (ϖ : k)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ϖ.ne_zero)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul' ((zpow_le_zpow_iff_right_of_lt_one₀ hw0 hw1).2 (sum_tail_le e he j hj f hf)) (hM f h)`. Rewrite using `[det_submatrix_eq_zero _ _ _ hf, mul_zero, map_zero]`. Conclude with `zero_le'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tail_diag {N : ℕ} (ϖ : kˣ) (hϖ : valuation k (ϖ : k) = uniformizer k) (e : Fin N → ℤ) (he : Antitone e)
     (j : ℕ) (hj : j < N) (M : Matrix (Fin N) (Fin N) k) (γ : ValueGroupWithZero k)
@@ -214,21 +214,19 @@ theorem tail_diag {N : ℕ} (ϖ : kˣ) (hϖ : valuation k (ϖ : k) = uniformizer
     exact zero_le'
 
 /- English proof (translation)
-Distinguish the cases in `hj : j < N`. Use `swap`. Establish `: Finset.univ.filter (fun i : Fin N => ¬ (i : ℕ) < j) = ∅`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`. Simplify using the standard rewrite rules. Take `⟨κ, hκ, κ', hκ', rfl⟩` from `hg`. Take `⟨κ₁, hκ₁, κ₁', hκ₁', h1⟩` from `hmain`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw1 : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Establish `hw0 : 0 < valuation k (ϖ : k)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ϖ.ne_zero)`. Establish `hA : ∀ f h : {i : Fin N // ¬ (i : ℕ) < j} → Fin N, valuation k (((torusElt k (Fin N) ϖ ε).1 * κ'.1).submatrix f h).det ≤ valuation k (ϖ : k) ^ (∑ i ∈ Finset.univ.filter (fun i : Fin N => ¬ (i : ℕ) < j), ε i) * 1`. Introduce `f h`. Rewrite using `[val_torusElt]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `tail_diag ϖ hϖ ε hε j hj κ'.1 1 (fun f h => val_det_le_one _ (fun a b => KO_int hκ' _ _)) f h`. Establish `hB : ∀ f h : {i : Fin N // ¬ (i : ℕ) < j} → Fin N, valuation k ((κ * torusElt k (Fin N) ϖ ε * κ').1.submatrix f h).det ≤ valuation k (ϖ : k) ^ (∑ i ∈ Finset.univ.filter (fun i : Fin N => ¬ (i : ℕ) < j), ε i) * 1`. Introduce `f h`. Rewrite using `[Units.val_mul, Units.val_mul, mul_assoc]`. Conclude with `minor_int_mul _ _ _ (KO_int hκ) hA f h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hC : ∀ f h : {i : Fin N // ¬ (i : ℕ) < j} → Fin N, valuation k ((torusElt k (Fin N) ϖ μ * (κ * torusElt k (Fin N) ϖ ε * κ')).1.submatrix f h).det ≤ valuation k (ϖ : k) ^ (∑ i ∈ Finset.univ.filter (fun i : Fin N => ¬ (i : ℕ) < j), μ i) * (valuation k (ϖ : k) ^ (∑ i ∈ Finset.univ.f …`. Introduce `f h`. Rewrite using `[Units.val_mul (torusElt k (Fin N) ϖ μ), val_torusElt]`. Conclude with `tail_diag ϖ hϖ μ hμ j hj _ _ hB f h`. Establish `e : torusElt k (Fin N) ϖ ν = κ₁⁻¹ * (torusElt k (Fin N) ϖ μ * (κ * torusElt k (Fin N) ϖ ε * κ')) * κ₁'⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `group`. Establish `hD : ∀ f h : {i : Fin N // ¬ (i : ℕ) < j} → Fin N, valuation k ((torusElt k (Fin N) ϖ ν).1.submatrix f h).det ≤ valuation k (ϖ : k) ^ (∑ i ∈ Finset.univ.filter (fun i : Fin N => ¬ (i : ℕ) < j), μ i) * (valuation k (ϖ : k) ^ (∑ i ∈ Finset.univ.filter (fun i : Fin N => ¬ (i : ℕ) < …`. Introduce `f h`. Rewrite using `[e, Units.val_mul, Units.val_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `minor_mul_int _ _ _ (KO_int (inv_mem hκ₁')) (minor_int_mul _ _ _ (KO_int (inv_mem hκ₁)) hC) f h`. Establish `hE` using `hD Subtype.val Subtype.val`. Rewrite `hE` using `[val_torusElt, submatrix_diagonal _ _ Subtype.val_injective, det_diagonal]`. Simplify using `only [Function.comp_apply] at hE`. Rewrite `hE` using `[val_torus_prod, mul_one, ← zpow_add₀ hw0.ne']`.
-
-Establish `hle` using `(zpow_le_zpow_iff_right_of_lt_one₀ hw0 hw1).1 hE`. Rewrite `hle` using `[← Finset.sum_subtype (Finset.univ.filter (fun i : Fin N => ¬ (i : ℕ) < j)) (fun i => by simp) ν]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem tail_bound {N : ℕ} (ϖ : kˣ) (hϖ : valuation k (ϖ : k) = uniformizer k) (μ ν ε : Fin N → ℤ)
     (hμ : Antitone μ) (hε : Antitone ε) (g : GL (Fin N) k)
@@ -285,11 +283,11 @@ theorem tail_bound {N : ℕ} (ϖ : kˣ) (hϖ : valuation k (ϖ : k) = uniformize
   rwa [← Finset.sum_subtype (Finset.univ.filter (fun i : Fin N => ¬ (i : ℕ) < j)) (fun i => by simp) ν] at hle
 
 /- English proof (translation)
-Take `⟨κ, hκ, κ', hκ', rfl⟩` from `hg`. Take `⟨κ₁, hκ₁, κ₁', hκ₁', h1⟩` from `hmain`. Establish `hw1 : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Establish `hw0 : 0 < valuation k (ϖ : k)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ϖ.ne_zero)`. Establish `hd : ∀ e : Fin N → ℤ, valuation k (torusElt k (Fin N) ϖ e).1.det = valuation k (ϖ : k) ^ ∑ i, e i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `e`. Rewrite using `[val_torusElt, det_diagonal, val_torus_prod]`. Establish `h2` using `congrArg (fun x : GL (Fin N) k => valuation k x.1.det) h1`. Simplify using `only [Units.val_mul, det_mul, map_mul] at h2`. Rewrite `h2` using `[hd, hd, hd, KO_det hκ, KO_det hκ', KO_det hκ₁, KO_det hκ₁']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [mul_one, one_mul] at h2`. Rewrite `h2` using `[← zpow_add₀ hw0.ne']`. Establish `a` using `(zpow_le_zpow_iff_right_of_lt_one₀ hw0 hw1).1 h2.le`. Establish `b` using `(zpow_le_zpow_iff_right_of_lt_one₀ hw0 hw1).1 h2.ge`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem total_eq {N : ℕ} (ϖ : kˣ) (hϖ : valuation k (ϖ : k) = uniformizer k) (μ ν ε : Fin N → ℤ) (g : GL (Fin N) k)
     (hg : ∃ κ ∈ KO k (Fin N), ∃ κ' ∈ KO k (Fin N), g = κ * torusElt k (Fin N) ϖ ε * κ')
@@ -312,9 +310,9 @@ theorem total_eq {N : ℕ} (ϖ : kˣ) (hϖ : valuation k (ϖ : k) = uniformizer 
   omega
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N ϖ hϖ μ ν hμ hν n hn g hg hmain`. Establish `htot` using `total_eq ϖ hϖ μ ν _ g hg hmain`. Rewrite `htot` using `[sum_indic N n hn]`. Use `⟨htot, fun j => ?_⟩` and prove the remaining obligations. Establish `ht` using `tail_bound ϖ hϖ μ ν _ hμ (indic_antitone N n) g hg hmain j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `s1` using `Finset.sum_filter_add_sum_filter_not Finset.univ (fun i : Fin N => (i : ℕ) < j) ν`. Establish `s2` using `Finset.sum_filter_add_sum_filter_not Finset.univ (fun i : Fin N => (i : ℕ) < j) μ`. Establish `s3` using `Finset.sum_filter_add_sum_filter_not Finset.univ (fun i : Fin N => (i : ℕ) < j) (indic (Finset.univ.filter fun i : Fin N => (i : ℕ) < n))`. Establish `s4` using `sum_indic N n hn`. Rewrite using `[Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

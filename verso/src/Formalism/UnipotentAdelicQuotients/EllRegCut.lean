@@ -54,13 +54,13 @@ def LocalSobolev : Prop :=
       tsupport χ ⊆ ball x0 r → ∀ s : ℕ, Hs (s : ℝ) (cut χ u)
 
 /- English proof (translation)
-Introduce `d ι _ P U u hH x0 hx0`. Take `⟨r, hr, hrU, hstep⟩` from `hS d ι P U u hH x0 hx0`. Use `⟨r, hr, hrU, ?_⟩` and prove the remaining obligations. Establish `key : ∀ n : ℕ, ∀ χ : E d → ℝ, ContDiff ℝ ∞ χ → HasCompactSupport χ → tsupport χ ⊆ ball x0 r → Hs ((-(d : ℝ) - 1) + n) (cut χ u)`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `χ hχ hχc hχs`. Establish `h` using `(hC d U u χ hH.1 hH.2.2.2.1 hχ hχc (hχs.trans hrU))`. Simplify using `using hB d (cut χ u) h.1 h.2`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih`. Introduce `χ hχ hχc hχs`. Use `hstep ((-(d : ℝ) - 1) + n) ih χ hχ hχc hχs` as an intermediate fact. Simplify `this` using `[Nat.cast_succ, add_assoc]`. Introduce `χ hχ hχc hχs s`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `key (s + d + 1) χ hχ hχc hχs`. Establish `e : (-(d : ℝ) - 1) + ((s + d + 1 : ℕ) : ℝ) = (s : ℝ)` using `by push_cast; ring`. Rewrite `h` using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localSobolev_of (hB : BaseLevel) (hC : CutCont) (hS : Step) : LocalSobolev := by
   intro d ι _ P U u hH x0 hx0
@@ -85,9 +85,9 @@ theorem localSobolev_of (hB : BaseLevel) (hC : CutCont) (hS : Step) : LocalSobol
   exact h
 
 /- English proof (translation)
-Introduce `d ι _ P U u hH`. Apply `hL d U u hH.1` to reduce the goal to its premises. Introduce `x0 hx0`. Take `⟨r, hr, hrU, hsob⟩` from `localSobolev_of hB hC hS d ι P U u hH x0 hx0`. Take `⟨χ, hχ, hχc, hχs, hχ1⟩` from `hBu d x0 r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨χ, hχ1, ?_⟩` and prove the remaining obligations. Establish `hcc` using `hC d U u χ hH.1 hH.2.2.2.1 hχ hχc (hχs.trans hrU)`. Conclude with `hM d (cut χ u) hcc.1 hcc.2 (hsob χ hχ hχc hχs)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem internal_of_leaves (hM : MomentsSmooth) (hBu : Bump) (hC : CutCont) (hL : LocalGlobal)
     (hB : BaseLevel) (hS : Step) : Internal := by
@@ -159,7 +159,7 @@ def StepOfParts : Prop :=
     WeakFourier → Bump → CutCont → Step
 
 /- English proof (translation)
-The claim follows from `internal_of_leaves hM hBu hC hL hB (hSP hSL hW hCB hK hPF hDE hFP hPL hWF hBu hC)`.
+A detailed English derivation is pending.
 -/
 theorem internal_of_all (hM : MomentsSmooth) (hBu : Bump) (hC : CutCont) (hL : LocalGlobal)
     (hB : BaseLevel) (hSL : SymbLower) (hW : WeightDiff) (hCB : ConvBound) (hK : KernelSmall)

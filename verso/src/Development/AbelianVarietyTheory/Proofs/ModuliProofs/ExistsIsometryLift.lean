@@ -14,11 +14,11 @@ open GlobalTheory.SimLift GlobalTheory.IndefiniteRowSideFullHecke.LevelActionTra
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
 
 /- English proof (translation)
-Take `⟨x, y, hxy⟩` from `hnr`. Take `⟨hc, hB⟩` from `hf`. Use `⟨(y * r) • f + (x * n) • LinearMap.id, ⟨isCoprime_one_left, fun a b => ?_⟩, fun a => ⟨x • (a - f a), ?_⟩⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hB a b`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.id_apply, map_add, map_zsmul, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨y * B + x * y * (D.EF (f a) b + D.EF a (f b) - D.EF (f a) (f b) - D.EF a b), ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(y * r) * hB + (y * r * D.EF (f a) (f b) + x * n * D.EF a b + D.EF a b) * hxy`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Establish `h : y * (r : ℤ) = 1 - n * x` using `by linear_combination hxy`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h, ← natCast_zsmul, ← mul_smul, _root_.mul_comm x, sub_smul, smul_sub, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem step_coprime_one {n r : ℕ} (hnr : IsCoprime (n : ℤ) (r : ℤ)) {f : D.La →ₗ[𝓞 E] D.La}
     (hf : IsSimMod D n f 1) :
@@ -38,13 +38,13 @@ theorem step_coprime_one {n r : ℕ} (hnr : IsCoprime (n : ℤ) (r : ℤ)) {f : 
     rw [h, ← natCast_zsmul, ← mul_smul, _root_.mul_comm x, sub_smul, smul_sub, one_smul]; abel
 
 /- English proof (translation)
-Proceed by induction on `m using induction_on_primes with`. Consider the case `zero => intro h`. Conclude with `absurd h (lt_irrefl 0)`. Consider the case `one`. Introduce `_ n _ f hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨f, by simpa using hf, fun a => ⟨0, by simp⟩⟩`. Consider the case `prime_mul p a hp ih`. Introduce `hpa n hn f hf`. Establish `ha : 0 < a` using `Nat.pos_of_mul_pos_left hpa`. Establish `h1 : ∃ f', IsSimMod D (n * p) f' 1 ∧ (∀ a, D.ModN n (f' a - f a))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hpn : p ∣ n`. Take `⟨f', h1, h2⟩` from `step_sq D hn hf`. Conclude with `⟨f', h1.of_dvd D (Nat.mul_dvd_mul_left n hpn), h2⟩`. Conclude with `step_coprime_one D (Nat.isCoprime_iff_coprime.mpr ((Nat.Prime.coprime_iff_not_dvd hp).mpr hpn).symm) hf`. Take `⟨f₁, h1, h2⟩` from `h1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨f₂, h4, h5⟩` from `ih ha (n * p) (Nat.mul_pos hn hp.pos) f₁ h1`. Conclude with `⟨f₂, by rwa [← Nat.mul_assoc], fun x => modN_trans D (modN_of_dvd_modulus D (dvd_mul_right n p) (h5 x)) (h2 x)⟩`.
+A detailed English derivation is pending.
 -/
 theorem step_one (m : ℕ) : 0 < m → ∀ (n : ℕ), 0 < n → ∀ (f : D.La →ₗ[𝓞 E] D.La), IsSimMod D n f 1 →
     ∃ f', IsSimMod D (n * m) f' 1 ∧ (∀ a, D.ModN n (f' a - f a)) := by
@@ -68,13 +68,11 @@ theorem step_one (m : ℕ) : 0 < m → ∀ (n : ℕ), 0 < n → ∀ (f : D.La �
       modN_trans D (modN_of_dvd_modulus D (dvd_mul_right n p) (h5 x)) (h2 x)⟩
 
 /- English proof (translation)
-Set `T : ℕ → Type` to `fun k => {x : (D.La →ₗ[𝓞 E] D.La) // IsSimMod D (N * k.factorial) x 1}`. Establish `hstep : ∀ k (x : T k), ∃ y : T (k + 1), (∀ a, D.ModN (N * k.factorial) (y.1 a - x.1 a))`. Introduce `k x`. Take `⟨f', h1, h2⟩` from `step_one D (k + 1) k.succ_pos _ (Nat.mul_pos hN k.factorial_pos) _ x.2`. Use `⟨⟨f', ?_⟩, h2⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.factorial_succ, Nat.mul_comm (k + 1), ← Nat.mul_assoc]` and apply the resulting hypothesis. Use `choose nx hnx using hstep`. Set `s : ∀ k, T k` to `fun k => Nat.rec (⟨f, by`. Rewrite using `[Nat.factorial_zero, Nat.mul_one]`. Conclude with `hf⟩ : T 0) nx k`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `⟨fun k => (s k).1, rfl, fun k => (s k).2, fun k j hkj => ?_⟩` and prove the remaining obligations. Proceed by induction on `j, hkj using Nat.le_induction with`. Consider the case `base => exact fun a => ⟨0, by simp⟩`. Consider the case `succ j hkj ih`. Establish `hd : N * k.factorial ∣ N * j.factorial` using `Nat.mul_dvd_mul_left N (Nat.factorial_dvd_factorial hkj)`.
-
-Conclude with `fun a => modN_trans D (modN_of_dvd_modulus D hd (hnx j (s j) a)) (ih a)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_tower {N : ℕ} (hN : 0 < N) {f : D.La →ₗ[𝓞 E] D.La} (hf : IsSimMod D N f 1) :
     ∃ s : ℕ → (D.La →ₗ[𝓞 E] D.La), s 0 = f ∧ (∀ k, IsSimMod D (N * k.factorial) (s k) 1) ∧
@@ -99,18 +97,16 @@ theorem exists_tower {N : ℕ} (hN : 0 < N) {f : D.La →ₗ[𝓞 E] D.La} (hf :
     exact fun a => modN_trans D (modN_of_dvd_modulus D hd (hnx j (s j) a)) (ih a)
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.eq, mem_nLa]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cls_eq_iff_modN {n : ℕ+} {a b : D.La} : cls D n a = cls D n b ↔ D.ModN n (a - b) := by
   rw [Submodule.Quotient.eq, mem_nLa]
   rfl
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_inv D n.pos hf`. Establish `hle : ∀ u : D.La →ₗ[𝓞 E] D.La, nLa D n ≤ (nLa D n).comap u`. Introduce `u x hx`. Take `⟨y, rfl⟩` from `(mem_nLa D).mp hx`. Conclude with `(mem_nLa D).mpr ⟨u y, map_nsmul u _ y⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨LinearEquiv.ofLinear ((nLa D n).mapQ _ f (hle f)) ((nLa D n).mapQ _ g (hle g)) ?_ ?_, fun a => rfl⟩` and prove the remaining obligations. Use `LinearMap.ext fun q => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `(cls_eq_iff_modN D).mpr (hg a).2`. Use `LinearMap.ext fun q => ?_` and prove the remaining obligations.
-
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `(cls_eq_iff_modN D).mpr (hg a).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_equiv (n : ℕ+) {f : D.La →ₗ[𝓞 E] D.La} {ν : ℤ} (hf : IsSimMod D n f ν) :
     ∃ e : LaMod D n ≃ₗ[𝓞 E] LaMod D n, ∀ a, e (cls D n a) = cls D n (f a) := by

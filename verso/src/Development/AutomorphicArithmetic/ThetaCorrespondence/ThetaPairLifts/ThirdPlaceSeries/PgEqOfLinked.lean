@@ -29,11 +29,11 @@ namespace GlobalTheory.Div.PgTie
 open Classical in
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `hL p`. Use `GlobalTheory.Fc.EvP.of_all ?_` and prove the remaining obligations. Introduce `_ K _ q c b w _`. Establish `hk` using `w.recPin.k.std`. Rewrite using `[image_congr hk.X_eq hk.seam hk.Pr]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl` using `q.x.what₂.r.z.lev.Pg`. Take `⟨x, a, ax, y, _⟩` from `w`. Consider the cases of `ax`. Take `⟨Dc, Sp, Zsc, lam, err, lam_eq, x, pack, _⟩` from `a`. Take `⟨G, grp, fin, Pl0, I0, T0, A3, core, alg, R, F, cG, _⟩` from `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only at pack ⊢`. Consider the cases of `pack`. Conclude with `hl.trans (image_refl _ rfl _).symm`.
+Simplify by unfolding definitions. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem pgEq_of_linked_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL), GlobalTheory.Fc.EvP fun _ K => ∀ (q : WPt p.s K) (c : ℝ) (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c) (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b), q.O.L.sc = K.s → (open Classical in w.x.R.Pg = b.R.T.ker.Pr.vGs.image (Formalism.L2.Host.CT.plMap b.R.T.ker.seam.iE)) := by
   intro hL p

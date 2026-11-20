@@ -6,7 +6,7 @@ open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMi
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.StabFinOver.liesOver_comp_complexConj_of_not_liesOver) | (exact GlobalTheory.StabFinOver.liesOver_comp_complexConj_of_not_liesOver) | (intros; apply GlobalTheory.StabFinOver.liesOver_comp_complexConj_of_not_liesOver <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.conjugate_place_lies_over : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (ψ : G.F →+* PadicAlgCl p), ¬ LiesOver G.Kq G.u ψ → LiesOver G.Kq G.u (ψ.comp (IsCMField.complexConj G.F : G.F →+* G.F)) := by
   first | (exact @GlobalTheory.StabFinOver.liesOver_comp_complexConj_of_not_liesOver) | (exact GlobalTheory.StabFinOver.liesOver_comp_complexConj_of_not_liesOver) | (intros; apply GlobalTheory.StabFinOver.liesOver_comp_complexConj_of_not_liesOver  <;> assumption)

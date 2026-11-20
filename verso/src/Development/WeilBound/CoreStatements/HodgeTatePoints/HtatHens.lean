@@ -10,17 +10,17 @@ section PiLocalization₂
 variable {R : Type} [CommRing R] [IsDomain R] {S : Type} [CommRing S] [Algebra R S] [Algebra.Etale R S]
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeLeft_injective (S := R) (IsFractionRing.injective R (FractionRing R))`.
+A detailed English derivation is pending.
 -/
 theorem stage_inj : Function.Injective (algebraMap S (S ⊗[R] FractionRing R)) :=
   Algebra.TensorProduct.includeLeft_injective (S := R) (IsFractionRing.injective R (FractionRing R))
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `(TensorProduct.toIntegralClosure_bijective_of_smooth (R := R) (S := S) (B := FractionRing R)).2 ⟨z, hz⟩`. Establish `ht' : Algebra.TensorProduct.map (AlgHom.id S S) (integralClosure R (FractionRing R)).val t = z` using `congrArg Subtype.val ht`. Rewrite using `[← ht']`. Use `clear ht ht'`. Proceed by induction on `t with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [map_add, map_add, ha, hb]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `tmul x y`. Take `⟨r, hr⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral (R := R) y.2`. Use `⟨r • x, ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Subalgebra.coe_val, ← hr, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, smul_tmul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stage_int [IsIntegrallyClosed R] {z : S ⊗[R] FractionRing R} (hz : IsIntegral S z) :
     ∃ s, algebraMap S _ s = z := by
@@ -45,11 +45,11 @@ theorem stage_int [IsIntegrallyClosed R] {z : S ⊗[R] FractionRing R} (hz : IsI
 
 omit [Algebra.Etale R S] in
 /- English proof (translation)
-Proceed by induction on `z with`. Consider the case `zero => exact ⟨1, 0, one_ne_zero, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨r, a, hr, ha⟩` from `hx`. Take `⟨s, b, hs, hb⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨r * s, algebraMap R S s * a + algebraMap R S r * b, mul_ne_zero hr hs, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul x y`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R) y`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hb'` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (K := FractionRing R) hb`. Use `⟨b, a • x, nonZeroDivisors.ne_zero hb, ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[← Algebra.smul_def, smul_tmul, smul_tmul, Algebra.smul_def, Algebra.smul_def, mul_one, mul_div_cancel₀ _ hb']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem stage_den (z : S ⊗[R] FractionRing R) :
     ∃ (r : R) (y : S), r ≠ 0 ∧ algebraMap S _ y = algebraMap S _ (algebraMap R S r) * z := by
@@ -71,11 +71,11 @@ theorem stage_den (z : S ⊗[R] FractionRing R) :
       mul_div_cancel₀ _ hb']
 
 /- English proof (translation)
-Set `F` to `FractionRing R`. Establish `: Module.Finite F (F ⊗[R] S)` using `Algebra.FormallyUnramified.finite_of_free F _`. Establish `: IsReduced (F ⊗[R] S)` using `Algebra.FormallyUnramified.isReduced_of_field F _`. Establish `: IsArtinianRing (F ⊗[R] S)` using `IsArtinianRing.of_finite F _`. Set `e` to `(Algebra.TensorProduct.comm R S F).toRingEquiv.trans (IsArtinianRing.equivPi (F ⊗[R] S)).toRingEquiv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `key : ∀ y : (∀ m : MaximalSpectrum (F ⊗[R] S), (F ⊗[R] S) ⧸ m.asIdeal), ∃ w, y * y * w = y` using `fun y => by`. Establish `: ∀ m, ∃ w, y m * y m * w = y m` using `fun m => by`. Set `_` to `Ideal.Quotient.field m.asIdeal`. Distinguish the cases in `h : y m = 0`. Conclude with `⟨0, by simp [h]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨(y m)⁻¹, by rw [mul_assoc, mul_inv_cancel₀ h, mul_one]⟩`. Use `choose w hw using this`. Conclude with `⟨w, funext hw⟩`. Take `⟨w, hw⟩` from `key (e x)`. Conclude with `⟨e.symm w, e.injective (by rw [map_mul, map_mul, e.apply_symm_apply, hw])⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stage_reg (x : S ⊗[R] FractionRing R) : ∃ z, x * x * z = x := by
   let F := FractionRing R
@@ -95,11 +95,11 @@ theorem stage_reg (x : S ⊗[R] FractionRing R) : ∃ z, x * x * z = x := by
   exact ⟨e.symm w, e.injective (by rw [map_mul, map_mul, e.apply_symm_apply, hw])⟩
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `stage_reg (R := R) (algebraMap S (S ⊗[R] FractionRing R) x)`. Establish `hi : IsIntegral S (algebraMap S (S ⊗[R] FractionRing R) x * z)` using `⟨X ^ 2 - X, monic_X_pow_sub (degree_X_le.trans_lt (by norm_num)), by`. Simplify using `only [eval₂_sub, eval₂_X_pow, eval₂_X]`. Take the linear combination `z * hz⟩`. Take `⟨e, he⟩` from `stage_int hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨r, y, hr, hy⟩` from `stage_den z`. Use `⟨e, y, r, stage_inj (R := R) ?_, stage_inj (R := R) ?_, hr, stage_inj (R := R) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, he]`. Take the linear combination `z * hz`. Rewrite using `[map_mul, he]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hz`. Rewrite using `[map_mul, map_mul, he, hy]`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem stage_idem [IsIntegrallyClosed R] (x : S) :
     ∃ (e y : S) (r : R), e * e = e ∧ e * x = x ∧ r ≠ 0 ∧ x * y = algebraMap R S r * e := by
@@ -124,11 +124,11 @@ open PointedEtale
 variable {R : Type} [CommRing R] {K : Type} [Field K] [Algebra R K]
 
 /- English proof (translation)
-Use `Module.Flat.of_forall_isTrivialRelation fun {l f x} h => ?_` and prove the remaining obligations. Take `⟨X, hX⟩` from `exists_of_finset (Finset.univ.image x)`. Use `choose x' hx' using fun i => hX (x i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Establish `h0 : of X (∑ i, f i • x' i) = of X 0`. Rewrite using `[map_zero, ← h, ← ofAlgHom_apply, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, ofAlgHom_apply, hx']`. Take `⟨Y, g, hg⟩` from `exists_hom_eq_of_of_eq h0`. Rewrite `hg` using `[map_zero, map_sum]`. Simplify using `only [map_smul] at hg`. Take `⟨k, a, y, h1, h2⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (R := R) (M := Y) (f := f) (x := fun i => g.alg (x' i)) hg`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, a, fun j => of Y (y j), fun i => ?_, h2⟩` and prove the remaining obligations. Rewrite using `[← hx', ← of_map g, show g.alg (x' i) = _ from h1 i, ← ofAlgHom_apply, map_sum]`. Simplify using `only [map_smul, ofAlgHom_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flat : Module.Flat R (etaleColimit R K) := by
   classical
@@ -150,7 +150,7 @@ theorem flat : Module.Flat R (etaleColimit R K) := by
 variable [IsDomain R]
 
 /- English proof (translation)
-Use `flat (R := R) (K := K)` as an intermediate fact. Establish `hreg : IsSMulRegular (etaleColimit R K) r` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hr)`. Conclude with `hreg (show r • a = r • 0 by rw [smul_zero, Algebra.smul_def, h])`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem reg {r : R} (hr : r ≠ 0) {a : etaleColimit R K} (h : algebraMap R _ r * a = 0) : a = 0 := by
   have := flat (R := R) (K := K)
@@ -161,9 +161,9 @@ theorem reg {r : R} (hr : r ≠ 0) {a : etaleColimit R K} (h : algebraMap R _ r 
 variable [IsIntegrallyClosed R]
 
 /- English proof (translation)
-Take `⟨X, x, rfl⟩` from `exists_of a`. Take `⟨e, y, r, h1, h2, hr, h3⟩` from `stage_idem (R := R) x`. Establish `he : of X e * (1 - of X e) = 0` using `by rw [mul_sub, ← map_mul, h1, mul_one, sub_self]`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (of X e) with hu | hu` into its components or cases. Establish `: of X e = 1` using `(sub_eq_zero.1 (hu.mul_right_eq_zero.1 he)).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `⟨of X y, r, hr, by rw [← map_mul, h3, map_mul, this, mul_one, of_algebraMap]⟩`. Conclude with `absurd (by rw [← h2, map_mul, hu.mul_left_eq_zero.1 he, zero_mul]) ha`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dvd {a : etaleColimit R K} (ha : a ≠ 0) : ∃ (b : etaleColimit R K) (r : R), r ≠ 0 ∧
     a * b = algebraMap R _ r := by
@@ -176,9 +176,9 @@ theorem exists_dvd {a : etaleColimit R K} (ha : a ≠ 0) : ∃ (b : etaleColimit
   · exact absurd (by rw [← h2, map_mul, hu.mul_left_eq_zero.1 he, zero_mul]) ha
 
 /- English proof (translation)
-Establish `: NoZeroDivisors (etaleColimit R K)` using `⟨fun {a b} h => by`. Distinguish the cases in `ha : a = 0`. Conclude with `Or.inl ha`. Take `⟨c, r, hr, hc⟩` from `exists_dvd ha`. Conclude with `Or.inr (reg hr (by rw [← hc]; linear_combination c * h))⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Prove the second alternative.
 
-Conclude with `NoZeroDivisors.to_isDomain _`.
+A detailed English derivation is pending.
 -/
 theorem isDomain : IsDomain (etaleColimit R K) := by
   have : NoZeroDivisors (etaleColimit R K) := ⟨fun {a b} h => by
@@ -189,23 +189,21 @@ theorem isDomain : IsDomain (etaleColimit R K) := by
   exact NoZeroDivisors.to_isDomain _
 
 /- English proof (translation)
-Take `⟨X₁, q₁, hq₁, rfl⟩` from `exists_monic_lift p hp`. Take `⟨X₂, x₂, rfl⟩` from `exists_of h`. Set `X` to `tensor X₁ X₂`. Set `q : X.carrier[X]` to `q₁.map (inl X₁ X₂).alg.toRingHom`. Establish `hq : q.Monic` using `hq₁.map _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `x : X` to `(inr X₁ X₂).alg x₂`. Establish `e1 : q.map (of X) = q₁.map (of X₁)`. Rewrite using `[Polynomial.map_map]`. Use `congr 1`. Conclude with `RingHom.ext fun a => of_map (inl X₁ X₂) a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e2 : of X x = of X₂ x₂` using `of_map _ _`. Establish `sc : ∀ {A B : Type} [CommRing A] [CommRing B] [Nontrivial B] (φ : A →+* B) (q : A[X]) (_ : q.Monic) (s a : A), φ ((q.scaleRoots s).eval a) = ((q.map φ).scaleRoots (φ s)).eval (φ a)` using `fun φ q hq s a => by`. Rewrite using `[← map_scaleRoots _ _ _ (by rw [hq.leadingCoeff, map_one]; exact one_ne_zero), Polynomial.eval_map, eval₂_at_apply]`. Establish `h0 : of X ((q.scaleRoots (algebraMap R X r)).eval x) = of X 0`. Rewrite using `[sc _ _ hq, e1, e2, of_algebraMap, hz, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, g, hg⟩` from `exists_hom_eq_of_of_eq h0`. Establish `: Nontrivial Y` using `(of Y).domain_nontrivial`. Establish `: Nontrivial (Y ⊗[R] FractionRing R)` using `(stage_inj (R := R) (S := Y)).nontrivial`. Rewrite `hg` using `[map_zero]`. Set `ι` to `algebraMap Y (Y ⊗[R] FractionRing R)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `t : Y ⊗[R] FractionRing R` to `1 ⊗ₜ (algebraMap R (FractionRing R) r)⁻¹`. Establish `hrt : ι (algebraMap R Y r) * t = 1`. Establish `hr' : algebraMap R (FractionRing R) r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R _)).2 hr`. Simplify using `only [ι, t, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, smul_tmul, Algebra.smul_def, mul_inv_cancel₀ hr']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Set `q' : Y.carrier[X]` to `q.map g.alg.toRingHom`. Establish `hq' : q'.Monic` using `hq.map _`. Establish `h1 : (q'.scaleRoots (algebraMap R Y r)).eval (g.alg x) = 0`. Use `sc g.alg.toRingHom q hq (algebraMap R X r) x` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[show g.alg.toRingHom (algebraMap R X r) = algebraMap R Y r from g.alg.commutes r]`. Conclude with `this.symm.trans hg`. Establish `hi : IsIntegral Y (ι (g.alg x) * t)`. Use `⟨q', hq', ?_⟩` and prove the remaining obligations. Establish `h2` using `scaleRoots_eval₂_mul (p := q') ι (ι (g.alg x) * t) (algebraMap R Y r)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[show ι (algebraMap R Y r) * (ι (g.alg x) * t) = ι (g.alg x) by linear_combination ι (g.alg x) * hrt, eval₂_at_apply, h1, map_zero]`. Conclude with `((IsUnit.of_mul_eq_one _ hrt).pow _).mul_right_eq_zero.1 h2.symm`. Take `⟨y, hy⟩` from `stage_int hi`. Establish `h3 : g.alg x = algebraMap R Y r * y` using `stage_inj (R := R) (by`. Rewrite using `[map_mul, hy]`.
-
-Use `show ι _ = ι _ * _`. Take the linear combination `(-ι (g.alg x)) * hrt)`. Conclude with `⟨of Y y, by rw [← e2, ← of_map g, h3, map_mul, of_algebraMap]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dvd_of_root {r : R} (hr : r ≠ 0) {h : etaleColimit R K} {p : (etaleColimit R K)[X]} (hp : p.Monic)
     (hz : (p.scaleRoots (algebraMap R _ r)).eval h = 0) : ∃ y, h = algebraMap R _ r * y := by
@@ -257,13 +255,13 @@ theorem dvd_of_root {r : R} (hr : r ≠ 0) {h : etaleColimit R K} {p : (etaleCol
   exact ⟨of Y y, by rw [← e2, ← of_map g, h3, map_mul, of_algebraMap]⟩
 
 /- English proof (translation)
-Use `isDomain (R := R) (K := K)` as an intermediate fact. Set `H` to `etaleColimit R K`. Use `(isIntegrallyClosed_iff (FractionRing H)).2 fun {z} hz => ?_` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := H) z`. Take `⟨c, r, hr, hc⟩` from `exists_dvd (nonZeroDivisors.ne_zero hb)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hz⟩` from `hz`. Establish `hinj` using `IsFractionRing.injective H (FractionRing H)`. Establish `hb'` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (K := FractionRing H) hb`. Establish `e : algebraMap H (FractionRing H) (algebraMap R H r) * (algebraMap H (FractionRing H) a / algebraMap H (FractionRing H) b) = algebraMap H _ (a * c)`. Rewrite using `[← hc, map_mul, map_mul, mul_right_comm, mul_div_cancel₀ _ hb']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `scaleRoots_eval₂_eq_zero (algebraMap H (FractionRing H)) (s := algebraMap R H r) hz`. Rewrite `h2` using `[e, eval₂_at_apply, map_eq_zero_iff _ hinj]`. Take `⟨y, hy⟩` from `dvd_of_root hr hp h2`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `hr0 : algebraMap H (FractionRing H) (algebraMap R H r) ≠ 0` using `(map_ne_zero_iff _ hinj).2 fun h => one_ne_zero (reg hr (a := (1 : H)) (by rw [h, zero_mul]))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ hr0 (by rw [e, hy, map_mul])`.
+A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosed : IsIntegrallyClosed (etaleColimit R K) := by
   have := isDomain (R := R) (K := K)
@@ -293,13 +291,13 @@ namespace PositivityTheory.HtPt.Htat
 
 open Hens in
 /- English proof (translation)
-Introduce `R _ _ _ P _`. Establish `hs : Function.Surjective (etaleColimit.toK : etaleColimit R P.ResidueField →+* P.ResidueField)`. Introduce `z`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R ⧸ P) z`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Establish `hb'` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (K := P.ResidueField) hb`. Establish `hk : ∀ c : R, algebraMap (R ⧸ P) P.ResidueField (Ideal.Quotient.mk P c) = etaleColimit.toK (algebraMap R (etaleColimit R P.ResidueField) c)` using `fun c => by`. Rewrite using `[etaleColimit.toK_algebraMap]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hb'` using `[hk]`. Take `⟨t, ht⟩` from `(etaleColimit.isUnit_of_toK_ne_zero hb').exists_right_inv`. Use `⟨algebraMap R _ a * t, ?_⟩` and prove the remaining obligations. Use `congrArg etaleColimit.toK ht` as an intermediate fact. Rewrite `this` using `[map_mul, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hk, hk, map_mul, div_eq_mul_inv, eq_inv_of_mul_eq_one_right this]`. Use `⟨etaleColimit R P.ResidueField, inferInstance, etaleColimit.isDomain, etaleColimit.henselianLocalRing hs, inferInstance, etaleColimit.isIntegrallyClosed, etaleColimit.flat, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Use `Iff.trans ?_ (Ideal.algebraMap_residueField_eq_zero (I := P) (x := r))` and prove the remaining obligations. Rewrite using `[← etaleColimit.toK_algebraMap, Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, etaleColimit.isUnit_iff_toK_ne_zero, not_not]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hens_normal : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (P : Ideal R) [P.IsPrime], ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : HenselianLocalRing R') (_ : Algebra R R'), IsIntegrallyClosed R' ∧ Module.Flat R R' ∧ (IsLocalRing.maximalIdeal R').comap (algebraMap R R') = P := by
   intro R _ _ _ P _

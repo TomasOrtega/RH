@@ -5,7 +5,7 @@ import Formalism.LocalRingCardinality.Params
 import Formalism.LocalRingCardinality.DataHost
 
 /- English proof (translation)
-Introduce `D n L hL x`. Establish `hx : x ∈ Submodule.span D.host.E (↑L : Set (Fin n → D.host.E))` using `hL ▸ Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (NumberField.RingOfIntegers D.host.E)) D.host.E _ x hx`. Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨t.1, nonZeroDivisors.ne_zero t.2, ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.LatticeVariant.lsd_spanDen :
     ∀ {D : Formalism.BasicNotions.D7} {n : ℕ}

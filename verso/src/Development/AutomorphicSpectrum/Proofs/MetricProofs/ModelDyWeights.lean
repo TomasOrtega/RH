@@ -13,14 +13,14 @@ section Steps
 variable {Ψ : Type} {p q : ℕ}
 
 /- English proof (translation)
-Use `delta blkF`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem blkF_ne_inl (K₀ : Type) (r : Ψ × Fin (p + q)) (k : K₀) : blkF Ψ p q K₀ r ≠ some (.inl k) := by
   delta blkF
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `delta blkF`. Apply the tactic sequence `split_ifs with hp <;> simp [hp]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem blkF_eq_inr (K₀ : Type) (r : Ψ × Fin (p + q)) (t : StepIx Ψ p q) :
     blkF Ψ p q K₀ r = some (.inr t) ↔ IsProperStep (p + q) p r.2 ∧ stepOf Ψ p q r = t := by
@@ -28,13 +28,11 @@ theorem blkF_eq_inr (K₀ : Type) (r : Ψ × Fin (p + q)) (t : StepIx Ψ p q) :
   split_ifs with hp <;> simp [hp]
 
 /- English proof (translation)
-Use `delta stepOf`. Simplify using `only`. Use `split_ifs with hi`. Prove the components needed by the constructor for the conclusion. Introduce `e`.
+Simplify by unfolding definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Split into cases according to the possible forms of the given data.
 
-Break down `Sigma.mk.inj_iff.mp e with ⟨h1, h2⟩` into its components or cases. Consider the cases of `h1`. Conclude with `⟨rfl, congrArg Fin.val (eq_of_heq h2)⟩`. Introduce and unpack `⟨rfl, h2⟩`. Conclude with `Sigma.ext rfl (heq_of_eq (Fin.ext h2))`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Conclude with `absurd (Sigma.mk.inj_iff.mp e).1 Sum.inr_ne_inl`. Introduce and unpack `⟨-, h2⟩`. Establish `ha : (a : ℕ) < p` using `a.2`.
-
-It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem stepOf_eq_left (τ τ' : Ψ) (i : Fin (p + q)) (a : Fin (rk Ψ p q (.inl τ'))) :
     stepOf Ψ p q (τ, i) = ⟨.inl τ', a⟩ ↔ τ = τ' ∧ (i : ℕ) = a := by
@@ -57,13 +55,11 @@ theorem stepOf_eq_left (τ τ' : Ψ) (i : Fin (p + q)) (a : Fin (rk Ψ p q (.inl
       omega
 
 /- English proof (translation)
-Use `delta stepOf`. Simplify using `only`. Use `split_ifs with hi`. Prove the components needed by the constructor for the conclusion. Introduce `e`.
+Simplify by unfolding definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. It suffices to derive a contradiction.
 
-Conclude with `absurd (Sigma.mk.inj_iff.mp e).1 Sum.inl_ne_inr`. Introduce and unpack `⟨-, h2⟩`. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion.
+Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Split into cases according to the possible forms of the given data.
 
-Introduce `e`. Break down `Sigma.mk.inj_iff.mp e with ⟨h1, h2⟩` into its components or cases. Consider the cases of `h1`. Establish `h3 : (i : ℕ) - p = a` using `congrArg Fin.val (eq_of_heq h2)`. Conclude with `⟨rfl, by omega⟩`.
-
-Introduce and unpack `⟨rfl, h2⟩`. Conclude with `Sigma.ext rfl (heq_of_eq (Fin.ext (show (i : ℕ) - p = a by omega)))`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem stepOf_eq_right (τ τ' : Ψ) (i : Fin (p + q)) (a : Fin (rk Ψ p q (.inr τ'))) :
     stepOf Ψ p q (τ, i) = ⟨.inr τ', a⟩ ↔ τ = τ' ∧ (i : ℕ) = p + a := by
@@ -96,9 +92,9 @@ variable {Ψ : Type} [Fintype Ψ] {p q : ℕ} {Ω : Type} [Field Ω] [CharZero �
 open Classical in
 
 /- English proof (translation)
-Use `delta FlagModel.dy`. Distinguish the cases in `hc : ∀ p', (model A x₀ m h).blk p' ≠ some k`. Rewrite using `[dif_pos hc, if_pos (show ∀ r' : Ψ × Fin (p + q), blkF Ψ p q K₀ r' ≠ some k from hc)]`. Both sides reduce to the same expression. Rewrite using `[dif_neg hc, if_neg (show ¬ ∀ r' : Ψ × Fin (p + q), blkF Ψ p q K₀ r' ≠ some k from hc)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : (model A x₀ m h).blk r = some k`. Rewrite using `[if_pos hb, if_pos (show blkF Ψ p q K₀ r = some k from hb)]`. Rewrite using `[if_neg hb, if_neg (show ¬ blkF Ψ p q K₀ r = some k from hb)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dy_apply (h : ModelOK A x₀ m) (r : Ψ × Fin (p + q)) (k : K₀ ⊕ StepIx Ψ p q) :
     (model A x₀ m h).dy r k =
@@ -115,9 +111,9 @@ theorem dy_apply (h : ModelOK A x₀ m) (r : Ψ × Fin (p + q)) (k : K₀ ⊕ St
 open Classical in
 
 /- English proof (translation)
-Use `delta twist`. Simplify using `only`. Rewrite using `[if_neg (show ¬ ((Sum.inl τ' : Ψ ⊕ Ψ) = Sum.inr τ ∧ (a : ℕ) + 1 = q ∧ (i : ℕ) + 1 = p + q) from fun hh => Sum.inl_ne_inr hh.1), add_zero]`. Distinguish the cases in `hc : τ' = τ ∧ p ≤ (i : ℕ) + 1`. Rewrite using `[if_pos (show (Sum.inl τ' : Ψ ⊕ Ψ) = Sum.inl τ ∧ (a : ℕ) + 1 = p ∧ p ≤ (i : ℕ) + 1 from ⟨congrArg Sum.inl hc.1, ha, hc.2⟩), if_pos hc]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (show ¬ ((Sum.inl τ' : Ψ ⊕ Ψ) = Sum.inl τ ∧ (a : ℕ) + 1 = p ∧ p ≤ (i : ℕ) + 1) from fun hh => hc ⟨Sum.inl_injective hh.1, hh.2.2⟩), if_neg hc]`.
+A detailed English derivation is pending.
 -/
 theorem twist_left (τ τ' : Ψ) (i : Fin (p + q)) (a : Fin (rk Ψ p q (.inl τ'))) (ha : (a : ℕ) + 1 = p) :
     twist (K₀ := K₀) m (τ, i) (.inr ⟨.inl τ', a⟩) = -(if τ' = τ ∧ p ≤ (i : ℕ) + 1 then 1 else 0) := by
@@ -131,9 +127,9 @@ theorem twist_left (τ τ' : Ψ) (i : Fin (p + q)) (a : Fin (rk Ψ p q (.inl τ'
 open Classical in
 
 /- English proof (translation)
-Use `delta twist`. Simplify using `only`. Rewrite using `[if_neg (show ¬ ((Sum.inr τ' : Ψ ⊕ Ψ) = Sum.inl τ ∧ (a : ℕ) + 1 = p ∧ p ≤ (i : ℕ) + 1) from fun hh => Sum.inr_ne_inl hh.1), zero_add]`. Distinguish the cases in `hc : τ' = τ ∧ (i : ℕ) + 1 = p + q`. Rewrite using `[if_pos (show (Sum.inr τ' : Ψ ⊕ Ψ) = Sum.inr τ ∧ (a : ℕ) + 1 = q ∧ (i : ℕ) + 1 = p + q from ⟨congrArg Sum.inr hc.1, ha, hc.2⟩), if_pos hc]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (show ¬ ((Sum.inr τ' : Ψ ⊕ Ψ) = Sum.inr τ ∧ (a : ℕ) + 1 = q ∧ (i : ℕ) + 1 = p + q) from fun hh => hc ⟨Sum.inr_injective hh.1, hh.2.2⟩), if_neg hc]`.
+A detailed English derivation is pending.
 -/
 theorem twist_right (τ τ' : Ψ) (i : Fin (p + q)) (a : Fin (rk Ψ p q (.inr τ'))) (ha : (a : ℕ) + 1 = q) :
     twist (K₀ := K₀) m (τ, i) (.inr ⟨.inr τ', a⟩) = -(if τ' = τ ∧ (i : ℕ) + 1 = p + q then 1 else 0) := by
@@ -147,15 +143,15 @@ theorem twist_right (τ τ' : Ψ) (i : Fin (p + q)) (a : Fin (rk Ψ p q (.inr τ
 open Classical in
 
 /- English proof (translation)
-Establish `ha : (a : ℕ) < p` using `a.2`. Establish `key : ∀ r' : Ψ × Fin (p + q), blkF Ψ p q K₀ r' = some (.inr ⟨.inl τ', a⟩) ↔ r'.1 = τ' ∧ (r'.2 : ℕ) = a ∧ (a : ℕ) + 1 ≠ p`. Introduce and unpack `⟨σ', j⟩`. Rewrite using `[blkF_eq_inr, stepOf_eq_left]`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Use `delta IsProperStep`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3, h4⟩`. Conclude with `⟨h3, h4, by omega⟩`. Introduce and unpack `⟨h3, h4, h5⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨by omega, by omega⟩, h3, h4⟩`. Distinguish the cases in `hp : (a : ℕ) + 1 = p`. Rewrite using `[dy_apply h, if_pos (fun r' e => ((key r').1 e).2.2 hp), twist_left τ τ' i a hp, neg_neg]`. Break down `eq_or_ne τ' τ with rfl | hne` into its components or cases. Apply the tactic sequence `simp only [eq_self_iff_true, true_and] split_ifs <;> omega`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[hne, hne.symm]`. Rewrite using `[dy_apply h, if_neg (fun H => H (τ', ⟨(a : ℕ), by omega⟩) ((key _).2 ⟨rfl, rfl, hp⟩))]`. Simplify using `only [key]`. Break down `eq_or_ne τ τ' with rfl | hne` into its components or cases. Apply the tactic sequence `simp only [eq_self_iff_true, true_and] split_ifs <;> omega`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[hne]`.
+A detailed English derivation is pending.
 -/
 theorem dy_left (h : ModelOK A x₀ m) (τ τ' : Ψ) (i : Fin (p + q)) (a : Fin (rk Ψ p q (.inl τ'))) :
     (model A x₀ m h).dy (τ, i) (.inr ⟨.inl τ', a⟩) =
@@ -188,15 +184,15 @@ theorem dy_left (h : ModelOK A x₀ m) (τ τ' : Ψ) (i : Fin (p + q)) (a : Fin 
 open Classical in
 
 /- English proof (translation)
-Establish `ha : (a : ℕ) < q` using `a.2`. Establish `key : ∀ r' : Ψ × Fin (p + q), blkF Ψ p q K₀ r' = some (.inr ⟨.inr τ', a⟩) ↔ r'.1 = τ' ∧ (r'.2 : ℕ) = p + a ∧ (a : ℕ) + 1 ≠ q`. Introduce and unpack `⟨σ', j⟩`. Rewrite using `[blkF_eq_inr, stepOf_eq_right]`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Use `delta IsProperStep`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3, h4⟩`. Conclude with `⟨h3, h4, by omega⟩`. Introduce and unpack `⟨h3, h4, h5⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨by omega, by omega⟩, h3, h4⟩`. Distinguish the cases in `hq : (a : ℕ) + 1 = q`. Rewrite using `[dy_apply h, if_pos (fun r' e => ((key r').1 e).2.2 hq), twist_right τ τ' i a hq, neg_neg]`. Break down `eq_or_ne τ' τ with rfl | hne` into its components or cases. Apply the tactic sequence `simp only [eq_self_iff_true, true_and] split_ifs <;> omega`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[hne, hne.symm]`. Rewrite using `[dy_apply h, if_neg (fun H => H (τ', ⟨p + (a : ℕ), by omega⟩) ((key _).2 ⟨rfl, rfl, hq⟩))]`. Simplify using `only [key]`. Break down `eq_or_ne τ τ' with rfl | hne` into its components or cases. Apply the tactic sequence `simp only [eq_self_iff_true, true_and] split_ifs <;> omega`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[hne]`.
+A detailed English derivation is pending.
 -/
 theorem dy_right (h : ModelOK A x₀ m) (τ τ' : Ψ) (i : Fin (p + q)) (a : Fin (rk Ψ p q (.inr τ'))) :
     (model A x₀ m h).dy (τ, i) (.inr ⟨.inr τ', a⟩) = if τ = τ' ∧ (i : ℕ) = p + a then 1 else 0 := by
@@ -230,19 +226,19 @@ end Main
 open Classical in
 
 /- English proof (translation)
-Introduce `Ψ _ p q Ω _ _ n A K₀ _ J₀ _ x₀ m h τ i`. Use `⟨fun k => ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[dy_apply h, if_pos (fun r' => blkF_ne_inl K₀ r' k)]`. Both sides reduce to the same expression. Take `⟨s, a⟩` from `t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Consider the cases of `s with`. Consider the case `inl τ'`. Establish `e` using `(eq_comm.trans (stepOf_eq_left τ τ' i a) : (⟨.inl τ', a⟩ : StepIx Ψ p q) = stepOf Ψ p q (τ, i) ↔ _)`. Establish `hc : ((⟨.inl τ', a⟩ : StepIx Ψ p q) = stepOf Ψ p q (τ, i) ∨ ((Sum.inl τ' : Ψ ⊕ Ψ) = .inl τ ∧ (a : ℕ) + 1 = p ∧ p ≤ (i : ℕ))) ↔ (τ = τ' ∧ ((i : ℕ) = a ∨ ((a : ℕ) + 1 = p ∧ p ≤ (i : ℕ))))`. Rewrite using `[e, Sum.inl.injEq]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨h1, h2⟩ | ⟨h1, h2, h3⟩)`. Conclude with `⟨h1, Or.inl h2⟩`. Conclude with `⟨h1.symm, Or.inr ⟨h2, h3⟩⟩`. Introduce and unpack `⟨h1, h2 | ⟨h2, h3⟩⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inl ⟨h1, h2⟩`. Conclude with `Or.inr ⟨h1.symm, h2, h3⟩`. Use `⟨fun hc' => ?_, fun hn => ?_⟩` and prove the remaining obligations. Rewrite using `[dy_left h, if_pos (hc.1 hc')]`. Rewrite using `[dy_left h, if_neg (fun h' => hn (hc.2 h'))]`.
+Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `inr τ'`. Establish `e` using `(eq_comm.trans (stepOf_eq_right τ τ' i a) : (⟨.inr τ', a⟩ : StepIx Ψ p q) = stepOf Ψ p q (τ, i) ↔ _)`. Establish `hc : ((⟨.inr τ', a⟩ : StepIx Ψ p q) = stepOf Ψ p q (τ, i) ∨ ((Sum.inr τ' : Ψ ⊕ Ψ) = .inl τ ∧ (a : ℕ) + 1 = p ∧ p ≤ (i : ℕ))) ↔ (τ = τ' ∧ (i : ℕ) = p + a)`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `(h1 | ⟨h1, -⟩)`. Conclude with `h1`. Conclude with `absurd h1 Sum.inr_ne_inl`. Introduce `h1`. Conclude with `Or.inl h1`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun hc' => ?_, fun hn => ?_⟩` and prove the remaining obligations. Rewrite using `[dy_right h, if_pos (hc.1 hc')]`. Rewrite using `[dy_right h, if_neg (fun h' => hn (hc.2 h'))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dy_flag : ∀ (Ψ : Type) [Fintype Ψ] (p q : ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (n : Ψ ⊕ Ψ → ℕ) (A : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω) (K₀ : Type) [Fintype K₀] (J₀ : K₀ → Type) [∀ k, Fintype (J₀ k)] (x₀ : (Σ k, J₀ k) → Ω) (m : Ψ ⊕ Ψ → ℕ) (h : ModelOK A x₀ m) (τ : Ψ) (i : Fin (p + q)), (∀ k, (model A x₀ m h).dy (τ, i) (.inl k) = -((rkW i * m (.inl τ) + rkO i * m (.inr τ) : ℕ) : ℤ)) ∧ ∀ t : StepIx Ψ p q, ((t = stepOf Ψ p q (τ, i) ∨ (t.1 = .inl τ ∧ (t.2 : ℕ) + 1 = p ∧ p ≤ (i : ℕ))) → (model A x₀ m h).dy (τ, i) (.inr t) = 1) ∧ (¬ (t = stepOf Ψ p q (τ, i) ∨ (t.1 = .inl τ ∧ (t.2 : ℕ) + 1 = p ∧ p ≤ (i : ℕ))) → (model A x₀ m h).dy (τ, i) (.inr t) = 0) := by
   intro Ψ _ p q Ω _ _ n A K₀ _ J₀ _ x₀ m h τ i

@@ -34,7 +34,7 @@ section Int
 variable [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Unfold `piHaar`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isAddHaar_piHaar (m : ℕ) : (piHaar ν m).IsAddHaarMeasure := by
   haveI := GlobalTheory.SplitWeil.secondCountable k

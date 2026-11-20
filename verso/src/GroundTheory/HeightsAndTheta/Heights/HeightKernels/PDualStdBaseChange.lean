@@ -19,9 +19,9 @@ namespace StandardDualBaseChange
 variable {K : Type} [Field K] [NumberField K] {i : ℕ} {T : Type} [Fintype T] [DecidableEq T]
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨t, -, ht⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hm)`. Rewrite `ht` using `[C_mul_X_eq_monomial]`. Establish `hmt` using `Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset ht)`. Substitute `hmt` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Consider the cases of `k`. Simplify using `[Finsupp.single_apply]`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_linForm (A : ∀ _ : Unit, Fin i → T → ℤ) (q : Σ _ : Unit, Fin i) :
     IsMultiHomog (linForm (ι := dualBlocks T) (ι₂ := PBlk i) A q) fun _ => 1 := by
@@ -37,9 +37,9 @@ theorem isMultiHomog_linForm (A : ∀ _ : Unit, Fin i → T → ℤ) (q : Σ _ :
 omit [DecidableEq T] in
 
 /- English proof (translation)
-Introduce `k₂`. Assume the negation of the conclusion as `hall`. Simplify using `only [not_exists, not_not] at hall`. Take `⟨-, ⟨hprime, -, hrel⟩, -, -⟩` from `hP`. Take `⟨t, ht⟩` from `hrel ()`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `hBP k₂ fun _ => t`. Establish `hle : Ideal.span (Set.range fun j : Fin i => linForm (ι₂` using `PBlk i) (dualStdCoordMat b) ⟨k₂, j⟩) ≤ dualIdeal b := Ideal.span_le.mpr (Set.range_subset_iff.mpr hall)`. Rewrite `hN` using `[sup_eq_left.mpr hle, Fintype.prod_unique]`. Conclude with `ht (hprime.mem_of_pow_mem N hN)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linForm_not_mem (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i)))
     (hP : IsArithVar (dualIdeal b) i)
@@ -62,11 +62,11 @@ end StandardDualBaseChange
 open StandardDualBaseChange in
 
 /- English proof (translation)
-Introduce `K _ _ i T _ _ b hb II hi hII`. Establish `hP : IsArithVar (dualIdeal b) i` using `DualArithVar.proof (CoordConeArithVar.proof IntDomainDim.proof) K i _ T b hi`. Establish `hBPb` using `hBP K i T b`. Establish `hGraph` using `(hGr Unit (dualBlocks T) Unit (PBlk i) (dualIdeal b) i (linForm (ι₂ := PBlk i) (dualStdCoordMat b)) (fun _ _ => 1) hP (isMultiHomog_linForm _) (exists_linForm_not_mem b hP hBPb)).1`. Take `⟨G⟩` from `hGF Unit (PBlk i) (Unit ⊕ Unit) (Sum.elim (dualBlocks T) (PBlk i)) Sum.inr inrV _ i isBlockMap_inr hGraph`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ, -⟩` from `hEU G.Φ _ (fibreIdx (Sum.elim (dualBlocks T) (PBlk i)) (Sum.inr : Unit → Unit ⊕ Unit))`. Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by omega⟩`. Establish `hbot : IsArithVar (imageZ (inrV (ι` using `dualBlocks T) (ι₂ := PBlk (n + 1))) (graphIdeal (dualIdeal b) (linForm (ι₂ := PBlk (n + 1)) (dualStdCoordMat b)))) (n + 1) := by`. Rewrite using `[hIm K (n + 1) T b]`. Conclude with `IndefiniteRowSideFullHecke.Inter.isArithVar_bot n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `hCM II hII Unit (dualBlocks T) (PBlk (n + 1)) (dualIdeal b) (n + 1) (dualStdCoordMat b) G J (fun _ => fsMulti (PBlk (n + 1))) (fun _ => dualLine (HermLattice.standard K (n + 1)) b hb) hP hBPb hbot hJ (fun _ => FsLineSmooth.proof Unit (PBlk (n + 1))) (fun _ => (DualLineSemipositiv …`. Rewrite using `[key, hDeg K (n + 1) T b G J hi hJ, hIm K (n + 1) T b]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem DualStdBaseChange.proof (hCM : ChangeOfModelStatement) (hGr : GraphStatement)
     (hGF : GenFibreExistsStatement)

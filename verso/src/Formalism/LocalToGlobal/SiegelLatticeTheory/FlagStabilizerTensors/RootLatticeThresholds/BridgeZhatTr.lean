@@ -18,9 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word)
 
 /- English proof (translation)
-Establish `hpi : (2 * (Real.pi : ℂ)) ≠ 0`. Use `Real.pi_pos; exact mul_ne_zero two_ne_zero (by exact_mod_cast this.ne')` as an intermediate fact. Use `set a : ℝ := g / (2 * Real.pi) with ha`. Establish `hk : -(Complex.I * (g : ℂ)) / (2 * (Real.pi : ℂ)) = -Complex.I * (a : ℂ)`. Rewrite using `[ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hk, star_mul', star_neg, Complex.star_def, Complex.conj_I, Complex.conj_ofReal, Complex.ofReal_pow]`. Take the linear combination `(-(a : ℂ) ^ 2) * Complex.I_sq`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem normSq_cTorBase (g : ℝ) :
     star (-(Complex.I * (g : ℂ)) / (2 * (Real.pi : ℂ))) * (-(Complex.I * (g : ℂ)) / (2 * (Real.pi : ℂ))) =
@@ -34,23 +34,21 @@ theorem normSq_cTorBase (g : ℝ) :
   linear_combination (-(a : ℂ) ^ 2) * Complex.I_sq
 
 /- English proof (translation)
-Introduce `hFX hg v g cv hcv hZ`. Take `⟨hQ, hz, hz', -⟩` from `hFX v`. Use `set gg : ℕ := D.host.g 0 * D.host.g 1 with hgg`. Use `set κ : ℂ := -(Complex.I * ((gg : ℝ) : ℂ)) / (2 * (Real.pi : ℂ)) with hκ`. Establish `hTr : Bridge.TrHyp (PtRepPf.frU X u v) (Formalism.L2.SG.LocWSOf.Qcs C (X.pl v)) (Formalism.L2.SG.LocWSOf.Qics C (X.pl v)) (fun a => cTor (gg : ℝ) D.R.rS a)` using `⟨hQ.1, hQ.2.1, hQ.2.2.1, fun a => (hQ.2.2.2 a a rfl).1, fun a => (hQ.2.2.2 a a rfl).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hTr' : Bridge.TrHyp (PtRepPf.frU X u' v) (Formalism.L2.SG.LocWSOf.Qcs C (X.pl v)) (Formalism.L2.SG.LocWSOf.Qics C (X.pl v)) (fun a => cTor (gg : ℝ) D.R.rS a)` using `⟨hQ.1, hQ.2.1, hQ.2.2.1, fun a => (hQ.2.2.2 a a rfl).1, fun a => (hQ.2.2.2 a a rfl).2⟩`. Use `⟨Bridge.delta_GV hTr (uMat_unitary g), ?_, ?_⟩` and prove the remaining obligations. Establish `hz2 : (T ((tauE X e).symm v)).base.z = Formalism.L2.SG.LocWSOf.Qics C (X.pl v) *ᵥ rv X.B.I v (X.zR u)` using `hz`. Establish `hz2' : (T ((tauE X e).symm v)).base.z' = Formalism.L2.SG.LocWSOf.Qics C (X.pl v) *ᵥ rv X.B.I v (X.zR u')` using `hz'`. Rewrite using `[hz2, hz2']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Bridge.zhat_cs hTr hTr' (sc := 1) one_ne_zero (Formalism.MainNotions.S.uMat g)`. Establish `h1' : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (Formalism.L2.SG.LocWSOf.Qics C (X.pl v) *ᵥ rv X.B.I v (X.zR u)) (Formalism.L2.SG.LocWSOf.Qics C (X.pl v) *ᵥ rv X.B.I v (X.zR u')) (trG (Formalism.L2.SG.LocWSOf.Qcs C (X.pl v)) (Formalism.L2.SG.LocWSOf.Qics C (X.pl v)) g) = Ma …` using `h1`. Rewrite using `[h1', hZ, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `show _ = Matrix.diagonal (Fin.snoc (α := fun _ : Fin (D.R.rS + 1) => ℂ) (fun a : Fin D.R.rS => ((((gg : ℝ) / (2 * Real.pi)) ^ (2 * (D.R.rS - a.val)) : ℝ) : ℂ) * cv ⟨a.val, by omega⟩) (cv ⟨D.R.rS, by omega⟩))`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Rewrite using `[Fin.snoc_last, Bridge.lam_last, star_one, one_mul, mul_one]`. Both sides reduce to the same expression. Rewrite using `[Fin.snoc_castSucc]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : Bridge.lam (fun a => cTor (gg : ℝ) D.R.rS a) 1 (Fin.castSucc i) = κ ^ (D.R.rS - i.val)`. Unfold `Bridge.lam`. Rewrite using `[dif_pos (show ((Fin.castSucc i : Fin (D.R.rS + 1)) : ℕ) < D.R.rS from i.2)]`. Simplify using `[cTor, hκ]`. Rewrite using `[hl, star_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcv' : cv (Fin.castSucc i) = cv ⟨i.val, by omega⟩` using `rfl`. Rewrite using `[hcv', show (star κ) ^ (D.R.rS - i.val) * cv ⟨i.val, by omega⟩ * κ ^ (D.R.rS - i.val) = (star κ * κ) ^ (D.R.rS - i.val) * cv ⟨i.val, by omega⟩ by ring, hκ, normSq_cTorBase, ← Complex.ofReal_pow, ← pow_mul]`. Establish `hg0 : (0 : ℝ) < gg` using `by exact_mod_cast hg`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Use `show ((((gg : ℝ) / (2 * Real.pi)) ^ (2 * (D.R.rS - a.val)) : ℝ) : ℂ) * cv ⟨a.val, by omega⟩ ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_ne_zero ?_ (hcv.1 _)` and prove the remaining obligations. Establish `: (0 : ℝ) < (gg : ℝ) / (2 * Real.pi)` using `div_pos hg0 (by positivity)`. Conclude with `(pow_pos this _).ne'` after adjusting the coercions. Rewrite using `[(hT _).1, (hT _).2] show ((D.mem u).A.T : ℝ) * ((D.mem u').A.T : ℝ) < Complex.normSq (cv ⟨D.R.rS, by omega⟩)`. Establish `hG` using `hcv.2`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `Gv at hG`. Rewrite `hG` using `[Dl_diagonal cv _ le_rfl, Dl_diagonal cv _ (Nat.le_succ _), Formalism.L2.SG.Pf.CarrierTop.prod_castLE_succ cv, norm_mul]`. Establish `hP : 0 < ‖∏ i : Fin D.R.rS, cv (Fin.castLE (Nat.le_succ D.R.rS) i)‖` using `norm_pos_iff.mpr (Finset.prod_ne_zero_iff.mpr fun i _ => hcv.1 _)`. Establish `hlast : cv (Fin.last D.R.rS) = cv ⟨D.R.rS, by omega⟩` using `rfl`. Rewrite `hG` using `[hlast]`.
-
-Rewrite using `[Complex.normSq_eq_norm_sq]`. Unfold `Tw at hG`. Use polynomial arithmetic with `[sq_nonneg ‖∏ i : Fin D.R.rS, cv (Fin.castLE (Nat.le_succ D.R.rS) i)‖]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem zhatTr_carrierOf (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) {θ : ℝ} (C : Formalism.L2.SG.LocWSOf.Choice X θ)

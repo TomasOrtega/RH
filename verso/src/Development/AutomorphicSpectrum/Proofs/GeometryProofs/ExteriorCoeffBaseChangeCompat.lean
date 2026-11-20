@@ -12,15 +12,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.LinePull
 
 /- English proof (translation)
-Take `⟨_, hreg, -⟩` from `pull_reg_and_gen X₀ Ω₀ ξ₀ X Ω ξ f i hD x`. Establish `hF'` using `FlagPull.pull_isFrameAt hD hE x h hF`. Establish `hFr : L.IsFrameAt (fun k => j (u k)) x` using `⟨hF'.1, hL.trans hF'.2⟩`. Take `⟨hw, -⟩` from `WedgeFrame.wedge_eq_span_ιMulti _ _ _ _ L n _ x hFr`. Take `⟨hw₀, hne⟩` from `WedgeFrame.wedge_eq_span_ιMulti _ _ _ _ L₀ n u _ hF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, e⟩` from `ZUnit.exists_of_span_eq hne (hw₀.symm.trans hW)`. Establish `hεα : ε * α ≠ 0` using `mul_ne_zero hε.1 hα`. Establish `ha₀ : a₀ = (ε * α)⁻¹ • exteriorPower.ιMulti Ω₀ n u`. Rewrite using `[e, smul_smul, smul_smul, mul_assoc, inv_mul_cancel₀ hεα, one_smul]`. Establish `ha` using `hP u _ ha₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne' : i ε ≠ 0` using `(map_ne_zero i).2 hε.1`. Establish `hiα : i α ≠ 0` using `(map_ne_zero i).2 hα`. Establish `e2 : exteriorPower.ιMulti Ω n (fun k => j (u k)) = i ε • i α • a`. Rewrite using `[ha, smul_smul, smul_smul, ← map_mul, ← map_mul, mul_inv_cancel₀ hεα, map_one, one_smul]`. Rewrite using `[hw, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : i ε ∈ regAt ξ x` using `hreg _ hε.2.1`. Establish `hv : (i ε)⁻¹ ∈ regAt ξ x`. Rewrite using `[← map_inv₀]`. Conclude with `hreg _ hε.2.2`. Apply the tactic sequence `refine le_antisymm ?_ ?_ <;> rw [Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 
-Conclude with `⟨⟨i ε, hu⟩, rfl⟩`. Use `⟨⟨(i ε)⁻¹, hv⟩, ?_⟩ show (i ε)⁻¹ • i ε • i α • a = i α • a` and prove the remaining obligations. Rewrite using `[inv_smul_smul₀ hne']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wedge_eq_span_pull {X₀ X : Scheme.{0}} {Ω₀ Ω : Type} [Field Ω₀] [Field Ω]
     {ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ X₀} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {f : X ⟶ X₀} {i : Ω₀ →+* Ω}
@@ -57,9 +57,9 @@ theorem wedge_eq_span_pull {X₀ X : Scheme.{0}} {Ω₀ Ω : Type} [Field Ω₀]
     rw [inv_smul_smul₀ hne']
 
 /- English proof (translation)
-Introduce `X₀ X Ω₀ Ω _ _ ξ₀ ξ f i V₀ V _ _ _ _ j A₀ B₀ A B p q a₀ b₀ a b x x₀ u₁ u₂ _ _ hD hE hx hF₁ hF₂ hA hB hC hPa hPb`. Take `⟨α, β, hα, -, hAw, hBw, hαβ⟩` from `hC`. Rewrite `hαβ` using `[one_mul]`. Substitute `hαβ` using the available equality. Take `⟨y, hy⟩` from `x₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `rfl : y = f x.1` from `hx`. Conclude with `⟨i α, i α, (map_ne_zero i).2 hα, (map_ne_zero i).2 hα, wedge_eq_span_pull hD hE x hy hα hF₁ hA hAw hPa, wedge_eq_span_pull hD hE x hy hα hF₂ hB hBw hPb, one_mul _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isCoeffAt_pull : ∀ (X₀ X : Scheme.{0}) (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] (ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ X₀) (ξ : Spec (CommRingCat.of Ω) ⟶ X) (f : X ⟶ X₀) (i : Ω₀ →+* Ω) (V₀ V : Type) [AddCommGroup V₀] [Module Ω₀ V₀] [AddCommGroup V] [Module Ω V] (j : V₀ →+ V) (A₀ B₀ : Lat ξ₀ V₀) (A B : Lat ξ V) (p q : ℕ) (a₀ : ⋀[Ω₀]^p V₀) (b₀ : ⋀[Ω₀]^q V₀) (a : ⋀[Ω]^p V) (b : ⋀[Ω]^q V) (x : Cpt ξ) (x₀ : Cpt ξ₀) (u₁ : Fin p → V₀) (u₂ : Fin q → V₀), IsCptGen ξ₀ → IsCptGen ξ → Dominates ξ ξ₀ f i → IsExtOver i j → x₀.1 = f x.1 → A₀.IsFrameAt u₁ x₀ → B₀.IsFrameAt u₂ x₀ → A x = A₀.pull ξ f j x → B x = B₀.pull ξ f j x → IsCoeffAt A₀ B₀ p q a₀ b₀ x₀ 1 → CptIn.IsPullWedge i j a₀ a → CptIn.IsPullWedge i j b₀ b → IsCoeffAt A B p q a b x 1 := by
   intro X₀ X Ω₀ Ω _ _ ξ₀ ξ f i V₀ V _ _ _ _ j A₀ B₀ A B p q a₀ b₀ a b x x₀ u₁ u₂ _ _ hD hE hx hF₁ hF₂ hA hB hC hPa hPb

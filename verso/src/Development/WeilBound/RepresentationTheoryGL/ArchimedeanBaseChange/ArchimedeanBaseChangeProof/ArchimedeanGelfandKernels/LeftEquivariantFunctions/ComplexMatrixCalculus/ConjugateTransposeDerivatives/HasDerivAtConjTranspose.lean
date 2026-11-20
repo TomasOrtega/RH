@@ -15,15 +15,15 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `matL`. Conclude with `(LinearMap.toMatrix_mul (fb n) f g).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem matL_mul (f g : abelian₂ n →ₗ[ℂ] abelian₂ n) : matL n f * matL n g = matL n (f * g) := by
   unfold matL; exact (LinearMap.toMatrix_mul (fb n) f g).symm
 
 /- English proof (translation)
-Establish `h` using `CliffordAlgebra.ι_mul_ι_add_swap (Q := (0 : QuadraticForm ℂ (Md n → ℂ))) v w`. Simplify using `only [QuadraticMap.polar, _root_.zero_apply, sub_zero, map_zero] at h`. Establish `h' : ExteriorAlgebra.ι ℂ v * ExteriorAlgebra.ι ℂ w = -(ExteriorAlgebra.ι ℂ w * ExteriorAlgebra.ι ℂ v)` using `eq_neg_of_add_eq_zero_left h`. Simplify using `only [creL, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[matL_mul, matL_mul, ← map_neg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ExteriorAlgebra.ι ℂ v * (ExteriorAlgebra.ι ℂ w * x) = -(ExteriorAlgebra.ι ℂ w * (ExteriorAlgebra.ι ℂ v * x))`. Rewrite using `[← mul_assoc, h', ← mul_assoc, neg_mul]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem creL_anticomm (v w : Md n → ℂ) : creL n v * creL n w = -(creL n w * creL n v) := by
   have h := CliffordAlgebra.ι_mul_ι_add_swap (Q := (0 : QuadraticForm ℂ (Md n → ℂ))) v w
@@ -38,11 +38,9 @@ theorem creL_anticomm (v w : Md n → ℂ) : creL n v * creL n w = -(creL n w * 
   rw [← mul_assoc, h', ← mul_assoc, neg_mul]
 
 /- English proof (translation)
-Establish `h : ∑ i, ∑ j, T i j • (A i * A j) = -(∑ i, ∑ j, T i j • (A i * A j))` using `by conv_lhs => rw [Finset.sum_comm]`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hT j i, hA j i, smul_neg]`. Establish `h2 : (2 : ℂ) • ∑ i, ∑ j, T i j • (A i * A j) = 0`. Rewrite using `[two_smul]`. Use `nth_rewrite 2 [h]`. Conclude with `add_neg_cancel _`.
-
-Conclude with `(smul_eq_zero.1 h2).resolve_left two_ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_symm_anticomm {ι R : Type} [Fintype ι] [Ring R] [Module ℂ R] [IsScalarTower ℂ R R]
     (T : ι → ι → ℂ) (hT : ∀ i j, T i j = T j i) (A : ι → R) (hA : ∀ i j, A i * A j = -(A j * A i)) :
@@ -59,9 +57,7 @@ theorem sum_symm_anticomm {ι R : Type} [Fintype ι] [Ring R] [Module ℂ R] [Is
   exact (smul_eq_zero.1 h2).resolve_left two_ne_zero
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `hi` using `(hasDerivAt_pi.1 h) i`. Conclude with `(hasDerivAt_pi.1 hi) j`. Introduce `h`.
-
-Conclude with `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => h i j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_entry {f : ℝ → Mat n} {f' : Mat n} {t : ℝ} :
     HasDerivAt f f' t ↔ ∀ i j, HasDerivAt (fun s => f s i j) (f' i j) t := by
@@ -73,9 +69,9 @@ theorem hasDerivAt_entry {f : ℝ → Mat n} {f' : Mat n} {t : ℝ} :
     exact hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => h i j
 
 /- English proof (translation)
-Rewrite `*` using `[hasDerivAt_entry]`. Introduce `i j`. Simplify using `only [Matrix.mul_apply, Matrix.add_apply]`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `HasDerivAt.fun_sum fun k _ => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(hf i k).mul (hg k j)` as an intermediate fact. Apply the tactic sequence `convert this using 1 <;> first | rfl | ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_matmul {f g : ℝ → Mat n} {f' g' : Mat n} {t : ℝ} (hf : HasDerivAt f f' t) (hg : HasDerivAt g g' t) :
     HasDerivAt (fun s => f s * g s) (f' * g t + f t * g') t := by
@@ -88,7 +84,7 @@ theorem hasDerivAt_matmul {f g : ℝ → Mat n} {f' g' : Mat n} {t : ℝ} (hf : 
     convert this using 1 <;> first | rfl | ring
 
 /- English proof (translation)
-Rewrite `*` using `[hasDerivAt_entry]`. Introduce `i j`. Simplify `(hf j i).star` using `[Matrix.conjTranspose_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasDerivAt_conjTranspose {f : ℝ → Mat n} {f' : Mat n} {t : ℝ} (hf : HasDerivAt f f' t) :
     HasDerivAt (fun s => (f s)ᴴ) f'ᴴ t := by
@@ -97,7 +93,7 @@ theorem hasDerivAt_conjTranspose {f : ℝ → Mat n} {f' : Mat n} {t : ℝ} (hf 
   simpa [Matrix.conjTranspose_apply] using (hf j i).star
 
 /- English proof (translation)
-Rewrite `hf` using `[hasDerivAt_entry]`. Simplify using `only [Matrix.trace, Matrix.diag]`. Conclude with `HasDerivAt.fun_sum fun i _ => hf i i`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_trace {f : ℝ → Mat n} {f' : Mat n} {t : ℝ} (hf : HasDerivAt f f' t) :
     HasDerivAt (fun s => (f s).trace) f'.trace t := by
@@ -106,7 +102,7 @@ theorem hasDerivAt_trace {f : ℝ → Mat n} {f' : Mat n} {t : ℝ} (hf : HasDer
   exact HasDerivAt.fun_sum fun i _ => hf i i
 
 /- English proof (translation)
-Establish `h` using `((Complex.ofRealCLM.comp Complex.reCLM).hasFDerivAt (x := z t)).comp_hasDerivAt t hz`. Apply the tactic sequence `convert h using 1 <;> first | rfl | (funext s; rfl) | simp`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hasDerivAt_re_ofReal {z : ℝ → ℂ} {z' : ℂ} {t : ℝ} (hz : HasDerivAt z z' t) :
     HasDerivAt (fun s => (((z s).re : ℝ) : ℂ)) ((z'.re : ℝ) : ℂ) t := by
@@ -114,13 +110,13 @@ theorem hasDerivAt_re_ofReal {z : ℝ → ℂ} {z' : ℂ} {t : ℝ} (hz : HasDer
   convert h using 1 <;> first | rfl | (funext s; rfl) | simp
 
 /- English proof (translation)
-The claim follows from `isOpen_ne_fun (continuous_id.matrix_det) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_GLs : IsOpen (GLs n) :=
   isOpen_ne_fun (continuous_id.matrix_det) continuous_const
 
 /- English proof (translation)
-Establish `h` using `((hasDerivAt_id (0 : ℝ)).smul_const X).const_add (1 : Mat n)`. Rewrite `h` using `[one_smul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_line (X : Mat n) : HasDerivAt (fun t : ℝ => (1 : Mat n) + t • X) X 0 := by
   have h := ((hasDerivAt_id (0 : ℝ)).smul_const X).const_add (1 : Mat n)
@@ -128,13 +124,11 @@ theorem hasDerivAt_line (X : Mat n) : HasDerivAt (fun t : ℝ => (1 : Mat n) + t
   exact h
 
 /- English proof (translation)
-Establish `h1 : (1 : Mat n) ∈ GLs n` using `by simp [GLs]`. Establish `hdiff : DifferentiableAt ℝ (fun y : Mat n => y⁻¹) 1` using `((GlobalTheory.CompanionTheory.WaveCp.Rep.Mol.HfSmooth.contDiffOn_inv (n := n)).differentiableOn (by simp)).differentiableAt (isOpen_GLs.mem_nhds h1)`. Establish `hm` using `hasDerivAt_line X`. Establish `hc : HasDerivAt (fun t : ℝ => ((1 : Mat n) + t • X)⁻¹) (fderiv ℝ (fun y : Mat n => y⁻¹) 1 X) 0`. Use `hdiff.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hm (by simp)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Use `set c' := fderiv ℝ (fun y : Mat n => y⁻¹) 1 X`. Establish `hprod` using `hasDerivAt_matmul hm hc`. Simplify using `only [zero_smul, add_zero, inv_one, Matrix.mul_one, Matrix.one_mul] at hprod`. Establish `hev : (fun t : ℝ => ((1 : Mat n) + t • X) * ((1 : Mat n) + t • X)⁻¹) =ᶠ[nhds 0] fun _ => (1 : Mat n)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun t : ℝ => ((1 : Mat n) + t • X).det` using `(continuous_const.add (continuous_id.smul continuous_const)).matrix_det`. Establish `h0 : ((1 : Mat n) + (0 : ℝ) • X).det ≠ 0` using `by simp`. Use `filter_upwards [hcont.continuousAt.eventually_ne h0] with t ht`. Conclude with `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 ht)`. Establish `hconst : HasDerivAt (fun t : ℝ => ((1 : Mat n) + t • X) * ((1 : Mat n) + t • X)⁻¹) 0 0` using `(hasDerivAt_const (0 : ℝ) (1 : Mat n)).congr_of_eventuallyEq hev`.
-
-Establish `e` using `hprod.unique hconst`. Establish `: c' = -X` using `by rw [← sub_eq_zero, sub_neg_eq_add, add_comm]; exact e`. Rewrite `hc` using `[this]`. Conclude with `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_inv_line (X : Mat n) : HasDerivAt (fun t : ℝ => ((1 : Mat n) + t • X)⁻¹) (-X) 0 := by
   have h1 : (1 : Mat n) ∈ GLs n := by simp [GLs]
@@ -162,9 +156,7 @@ theorem hasDerivAt_inv_line (X : Mat n) : HasDerivAt (fun t : ℝ => ((1 : Mat n
   exact hc
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `hi` using `(hasDerivAt_pi.1 h) i`. Conclude with `(hasDerivAt_pi.1 hi) j`. Introduce `h`.
-
-Conclude with `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => h i j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_entry' {ι : Type} [Fintype ι] {f : ℝ → Matrix ι ι ℂ} {f' : Matrix ι ι ℂ} {t : ℝ} :
     HasDerivAt f f' t ↔ ∀ i j, HasDerivAt (fun s => f s i j) (f' i j) t := by
@@ -176,11 +168,11 @@ theorem hasDerivAt_entry' {ι : Type} [Fintype ι] {f : ℝ → Matrix ι ι ℂ
     exact hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => h i j
 
 /- English proof (translation)
-Rewrite using `[hasDerivAt_entry']`. Introduce `r s`. Simplify using `only [Matrix.transpose_apply, Mt, cf_apply, Matrix.of_apply]`. Establish `hc` using `hasDerivAt_inv_line X`. Establish `hA` using `hasDerivAt_matmul hc (hasDerivAt_const (0 : ℝ) (hbM r))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `hasDerivAt_matmul hA (hasDerivAt_conjTranspose hc)`. Establish `hP` using `hasDerivAt_matmul hB (hasDerivAt_const (0 : ℝ) (hbM s))`. Establish `hR` using `hasDerivAt_re_ofReal (hasDerivAt_trace hP)`. Use `hR using 1` and compare the differences between its conclusion and the goal. Simplify using `only [zero_smul, add_zero, inv_one, Matrix.mul_zero, Matrix.conjTranspose_one, Matrix.mul_one, Matrix.one_mul, Matrix.conjTranspose_neg, hX.eq, Matrix.add_mul, Matrix.neg_mul, Matrix.mul_neg, Matrix.trace_add, Matrix.trace_neg, Complex.add_re, Complex.neg_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hasDerivAt_Mt_curve (X : Mat n) (hX : X.IsHermitian) :
     HasDerivAt (fun t : ℝ => (Mt (((1 : Mat n) + t • X)⁻¹))ᵀ)
@@ -201,9 +193,9 @@ theorem hasDerivAt_Mt_curve (X : Mat n) (hX : X.IsHermitian) :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m'`. Rewrite using `[cf_apply, (hbOrtho n).1, Pi.single_apply]`. Distinguish the cases in `h : m = m'`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, if_neg (Ne.symm h)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cf_hbM (m : Md n) : cf n (hbM m) = Pi.single m 1 := by
   funext m'
@@ -222,21 +214,21 @@ open Cxa
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `n`. Take `⟨hC, hD⟩` from `hG n`. Distinguish the cases in `hd : DifferentiableAt ℝ (fun x : Mat n => gamM (Mt x⁻¹)ᵀ) 1`. Establish `key : ∀ X : Mat n, X.IsHermitian → fderiv ℝ (fun x : Mat n => gamM (Mt x⁻¹)ᵀ) 1 X = ∑ r, ∑ s, (-((((X * hbM r * hbM s + hbM r * X * hbM s).trace).re : ℝ) : ℂ)) • (creL n (Pi.single r 1) * annL n (Pi.single s 1))`. Introduce `X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : HasDerivAt (fun t : ℝ => gamM (Mt (((1 : Mat n) + t • X)⁻¹))ᵀ) (fderiv ℝ (fun x : Mat n => gamM (Mt x⁻¹)ᵀ) 1 X) 0` using `hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) (hasDerivAt_line X) (by simp)`. Establish `hg1 : (Mt ((1 : Mat n))⁻¹)ᵀ = 1` using `by rw [inv_one, (mtLaws n).1, Matrix.transpose_one]`. Establish `hgam : HasFDerivAt (gamM (n` using `n)) (fderiv ℂ (gamM (n := n)) 1) 1 := (hC.differentiable (by simp) 1).hasFDerivAt`. Establish `h2` using `(hgam.restrictScalars ℝ).comp_hasDerivAt_of_eq (0 : ℝ) (hasDerivAt_Mt_curve X hX) (by simp only [zero_smul, add_zero]; exact hg1.symm)`. Rewrite using `[h1.unique h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (fderiv ℂ gamM 1) _ = _`. Rewrite using `[hD]`. Simplify using `only [Matrix.of_apply]`. Establish `hre : ∀ p : Fin n × Fin n, hb p = hbM (finProdFinEquiv p)` using `fun p => by simp [hbM]`. Establish `hsum : ∑ p : Fin n × Fin n, creL n (cf n (hb p)) * fderiv ℝ (fun x : Mat n => gamM (Mt x⁻¹)ᵀ) 1 (hb p) = ∑ m : Md n, creL n (Pi.single m 1) * fderiv ℝ (fun x : Mat n => gamM (Mt x⁻¹)ᵀ) 1 (hbM m)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← finProdFinEquiv.sum_comp]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hre p, cf_hbM]`. Rewrite using `[hsum]`. Establish `hterm : ∀ m : Md n, creL n (Pi.single m 1) * fderiv ℝ (fun x : Mat n => gamM (Mt x⁻¹)ᵀ) 1 (hbM m) = ∑ r, ∑ s, (-((((hbM m * hbM r * hbM s + hbM r * hbM m * hbM s).trace).re : ℝ) : ℂ)) • (creL n (Pi.single m 1) * creL n (Pi.single r 1) * annL n (Pi.single s 1))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Rewrite using `[key _ ((hbOrtho n).2 m), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul_comm]`. Use `congr 1`. Rewrite using `[mul_assoc]`. Simplify using `only [hterm]`. Use `conv_lhs => arg 2`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `m`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Establish `hz` using `sum_symm_anticomm (fun m r' => -((((hbM m * hbM r' * hbM s + hbM r' * hbM m * hbM s).trace).re : ℝ) : ℂ)) (fun i j => by rw [add_comm]) (fun m => creL n (Pi.single m 1)) (fun i j => creL_anticomm _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [← smul_mul_assoc] at hz`. Simplify using `only [← smul_mul_assoc, ← Finset.sum_mul]`. Rewrite using `[hz, zero_mul]`. Simplify using `[fderiv_zero_of_not_differentiableAt hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wedgeDer_of (hG : GamDer) : WedgeDer := by
   intro n

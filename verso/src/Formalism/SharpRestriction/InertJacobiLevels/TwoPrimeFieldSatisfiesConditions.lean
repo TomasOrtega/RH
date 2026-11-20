@@ -30,9 +30,9 @@ structure HostOk (x eps Cp : ℝ) {R : Ranks} (H : Host R) : Prop where
   QS_tie : (H.QS : ℝ) ≤ 4 * R.n * x ^ (eps / 1000)
 
 /- English proof (translation)
-Take `⟨hge, hle, -⟩` from `factRd R H`. Use `⟨le_trans ?_ hge, hle⟩` and prove the remaining obligations. Establish `hd : (1 : ℝ) ≤ Real.sqrt (H.d : ℝ)`. Rewrite using `[Real.one_le_sqrt]`. Conclude with `H.hyp.2.1.one_lt.le` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : (0 : ℝ) ≤ R.e` using `Nat.cast_nonneg _`. Establish `h2 : (2 : ℝ) ^ (-(R.e : ℝ)) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos (by norm_num) (by linarith)`. Establish `h1 : (1 : ℝ) ≤ (2 : ℝ) ^ ((R.e : ℝ) + 1 - (2 : ℝ) ^ (-(R.e : ℝ)))` using `Real.one_le_rpow (by norm_num) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem rdE_bounds {R : Ranks} (H : Host R) :
     1 ≤ H.rdE ∧ H.rdE ≤ (H.QS : ℝ) / 2 * Real.sqrt ((H.q : ℝ) * H.d) := by
@@ -47,19 +47,19 @@ theorem rdE_bounds {R : Ranks} (H : Host R) :
   nlinarith
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `Ideal.mem_span_singleton.1 h3`. Establish `hπ : (π : H.E) = 1 + (M : H.E) * (ρ : H.E)`. Establish `: ((π - 1 : 𝓞 H.E) : H.E) = (((M : ℕ) : 𝓞 H.E) * ρ : 𝓞 H.E)` using `by rw [hρ]`. Move the coercions through the operations in `at this`. Take the linear combination `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hint : IsIntegral ℤ (H.conj (ρ : H.E))` using `map_isIntegral_int H.conj ρ.2`. Use `set ρ' : 𝓞 H.E := ⟨H.conj (ρ : H.E), hint⟩ with hρ'`. Establish `hρc : ((ρ' : 𝓞 H.E) : H.E) = H.conj (ρ : H.E)` using `rfl`. Use `set w : 𝓞 H.E := ρ + ρ' + (M : 𝓞 H.E) * ρ * ρ' with hw`. Establish `hwc : (w : H.E) = (ρ : H.E) + H.conj (ρ : H.E) + (M : H.E) * ρ * H.conj (ρ : H.E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hw, ← hρc]`. Use `push_cast`. Both sides reduce to the same expression. Establish `key : (T : H.E) - 1 = (M : H.E) * (w : H.E)`. Rewrite using `[← h2, hπ, hwc]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_add, map_mul, map_one, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hM0 : (M : H.E) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `hr : algebraMap ℚ H.E (((T : ℚ) - 1) / M) = (w : H.E)`. Rewrite using `[map_div₀, map_sub, map_one, map_natCast, map_natCast, key, mul_div_cancel_left₀ _ hM0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : IsIntegral ℤ (((T : ℚ) - 1) / M)`. Rewrite using `[← isIntegral_algebraMap_iff (algebraMap ℚ H.E).injective, hr]`. Conclude with `w.2`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Establish `hMq : (M : ℚ) ≠ 0` using `by exact_mod_cast hM.ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : (T : ℤ) - 1 = M * z`. Establish `: (T : ℚ) - 1 = M * z`. Establish `h5 : (z : ℚ) = ((T : ℚ) - 1) / M` using `by simpa using hz`. Rewrite using `[h5]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Rewrite using `[← Int.natCast_modEq_iff]`. Apply `Int.ModEq.symm` to reduce the goal to its premises. Rewrite using `[Int.modEq_iff_dvd]`. Conclude with `⟨z, by push_cast; exact hz'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem norm_mod {R : Ranks} (H : Host R) {M T : ℕ} (hM : 0 < M) (π : 𝓞 H.E)
     (h2 : (π : H.E) * H.conj (π : H.E) = (T : H.E)) (h3 : (π - 1) ∈ Ideal.span {((M : ℕ) : 𝓞 H.E)}) :
@@ -98,7 +98,7 @@ theorem norm_mod {R : Ranks} (H : Host R) {M T : ℕ} (hM : 0 < M) (π : 𝓞 H.
   exact ⟨z, by push_cast; exact hz'⟩
 
 /- English proof (translation)
-Establish `h1 : 1 < H.condN` using `lt_of_lt_of_le (by norm_num) (Nat.le_of_dvd (Nat.pos_of_ne_zero H.condN_ne_zero) H.two_dvd_condN)`. Establish `h2 : p % H.condN = 1 % H.condN` using `hm`. Rewrite `h2` using `[Nat.mod_eq_of_lt h1]`. Conclude with `placesOver_ncard_of_split H p h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem placesOver_ncard_of_mod {R : Ranks} (H : Host R) (p : ℕ) [Fact p.Prime] (hm : p ≡ 1 [MOD H.condN]) :
     (placesOver H.E p).ncard = Module.finrank ℚ H.E := by
@@ -109,13 +109,13 @@ private theorem placesOver_ncard_of_mod {R : Ranks} (H : Host R) (p : ℕ) [Fact
   exact placesOver_ncard_of_split H p h2
 
 /- English proof (translation)
-Take `⟨π, -, h2, h3⟩` from `h`. Establish `hn` using `H.QS_pos`. Establish `hM : 0 < H.QS * H.q * H.d * (H.g 0 * H.g 1) ^ 2`. Use `H.hyp.1.pos` as an intermediate fact. Use `H.hyp.2.1.pos` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(H.g_prime 0).pos` as an intermediate fact. Use `(H.g_prime 1).pos` as an intermediate fact. Check the signs of the components of the expression. Establish `hmod` using `norm_mod H hM π h2 h3`. Take `⟨-, a0, a1, a2, a3, -, a5⟩` from `one_mod_facts H.toHostRaw hp.one_lt (hmod.of_mul_right _)`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Fact T.Prime` using `⟨hp⟩`. Establish `hne : ∀ p : ℕ, p ∣ H.QS * H.q * H.d * (H.g 0 * H.g 1) ^ 2 → T ≠ p`. Introduce and unpack `p hd rfl`. Establish `h5 : T % T = 1 % T` using `hmod.of_dvd hd`. Rewrite `h5` using `[Nat.mod_self, Nat.mod_eq_of_lt hp.one_lt]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨hmod, cls_split_of H a0 a2 a3 a5, a1, a2, a3, fun i => ?_, placesOver_ncard_of_mod H T (hmod.of_mul_right _)⟩` and prove the remaining obligations. Use `fin_cases i`. Conclude with `hne _ ⟨H.QS * H.q * H.d * (H.g 0 * H.g 1 ^ 2), by simp only [Fin.zero_eta]; ring⟩`. Conclude with `hne _ ⟨H.QS * H.q * H.d * (H.g 0 ^ 2 * H.g 1), by simp only [Fin.mk_one]; ring⟩`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tnorm_facts {R : Ranks} (H : Host R) {T : ℕ} (hp : T.Prime) (h : TNorm H T) :
     T ≡ 1 [MOD H.QS * H.q * H.d * (H.g 0 * H.g 1) ^ 2] ∧ H.cls T = .splitK ∧
@@ -145,22 +145,22 @@ variable {R : Ranks} {x eps Cp CT : ℝ} (B : Base R x eps Cp CT)
 namespace Base
 
 /- English proof (translation)
-The claim follows from `Nat.odd_iff.2 (by have := B.good.hyp.2.2.1; omega)`.
+A detailed English derivation is pending.
 -/
 theorem q_odd : Odd B.q := Nat.odd_iff.2 (by have := B.good.hyp.2.2.1; omega)
 /- English proof (translation)
-The claim follows from `Nat.odd_iff.2 (by have := B.good.hyp.2.2.2.1; omega)`.
+A detailed English derivation is pending.
 -/
 theorem d_odd : Odd B.d := Nat.odd_iff.2 (by have := B.good.hyp.2.2.2.1; omega)
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le (by norm_num) (Nat.le_of_dvd (Nat.pos_of_ne_zero B.condN_ne_zero) B.two_dvd_condN)`.
+A detailed English derivation is pending.
 -/
 theorem one_lt_cond : 1 < B.condN :=
   lt_of_lt_of_le (by norm_num) (Nat.le_of_dvd (Nat.pos_of_ne_zero B.condN_ne_zero) B.two_dvd_condN)
 
 /- English proof (translation)
-The claim follows from `one_mod_facts B.toHostRaw hp.one_lt hg`.
+A detailed English derivation is pending.
 -/
 theorem facts_of_mod {g : ℕ} (hp : g.Prime) (hg : g ≡ 1 [MOD B.condN]) :
     ¬ g ∣ B.condN ∧ g ∉ B.small ∧ g ≠ 2 ∧ g ≠ B.q ∧ g ≠ B.d ∧ jacobiSym (-(B.q : ℤ)) g = 1 ∧
@@ -168,18 +168,18 @@ theorem facts_of_mod {g : ℕ} (hp : g.Prime) (hg : g ≡ 1 [MOD B.condN]) :
   one_mod_facts B.toHostRaw hp.one_lt hg
 
 /- English proof (translation)
-Take `⟨u, v, h⟩` from `B.first_prime_norm_form`. Conclude with `form_mod h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem first_prime_modEq_one : B.g0 ≡ 1 [MOD B.condN] := by
   obtain ⟨u, v, h⟩ := B.first_prime_norm_form; exact form_mod h
 /- English proof (translation)
-Take `⟨u, v, h⟩` from `B.second_prime_norm_form`. Conclude with `form_mod h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem second_prime_modEq_one : B.g1 ≡ 1 [MOD B.condN] := by
   obtain ⟨u, v, h⟩ := B.second_prime_norm_form; exact form_mod h
 
 /- English proof (translation)
-Establish `h1 : g % B.condN = 1 % B.condN` using `hg`. Rewrite `h1` using `[Nat.mod_eq_of_lt B.one_lt_cond]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mod_eq_one {g : ℕ} (hg : g ≡ 1 [MOD B.condN]) : g % (B.QS * B.q * B.d) = 1 := by
   have h1 : g % B.condN = 1 % B.condN := hg
@@ -189,7 +189,7 @@ theorem mod_eq_one {g : ℕ} (hg : g ≡ 1 [MOD B.condN]) : g % (B.QS * B.q * B.
 end Base
 
 /- English proof (translation)
-Take `⟨-, h1, -, h2, h3, -, h5⟩` from `B.facts_of_mod hp hm`. Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hs` using `placesOver_ncard_of_mod (host2 B u0 ex) p hm`. Conclude with `⟨cls_split_of (host2 B u0 ex) h1 h2 h3 h5, hs, (primesOver_ncard _ p hp).trans hs⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem twoPrimeField_split_of_modEq (u0 : R.A) (ex : Finset ℕ) {p : ℕ} (hp : p.Prime)
     (hm : p ≡ 1 [MOD B.condN]) :
@@ -203,7 +203,7 @@ theorem twoPrimeField_split_of_modEq (u0 : R.A) (ex : Finset ℕ) {p : ℕ} (hp 
   exact ⟨cls_split_of (host2 B u0 ex) h1 h2 h3 h5, hs, (primesOver_ncard _ p hp).trans hs⟩
 
 /- English proof (translation)
-The claim follows from `B.good split_tie := le_refl _ g_win := by intro i; fin_cases i; exacts [B.first_prime_in_window, B.second_prime_in_window] g_norm := by intro i; fin_cases i · obtain ⟨u, v, h⟩ := B.first_prime_norm_form obtain ⟨π, h1, h2, -⟩ := norm_form (host2 B u0 ex) u v B.g0 _ h exact ⟨π, h1, …`.
+A detailed English derivation is pending.
 -/
 theorem twoPrimeField_satisfies_conditions (u0 : R.A) (ex : Finset ℕ) : HostOk x eps Cp (host2 B u0 ex) where
   good := B.good
@@ -265,9 +265,9 @@ theorem twoPrimeField_satisfies_conditions (u0 : R.A) (ex : Finset ℕ) : HostOk
     exact h4
 
 /- English proof (translation)
-Introduce `p hp`. Establish `ok` using `twoPrimeField_satisfies_conditions B u0 ex`. Establish `hp' : p ∈ ({B.g0, B.g1, B.pde, B.pde'} ∪ ex : Finset ℕ)` using `twoPrimeField_level_subset B u0 ex hp`. Simplify using `only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton] at hp'`. Break down `hp' with (rfl | rfl | rfl | rfl) | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `ok.g_cls 0`. Conclude with `ok.g_cls 1`. Conclude with `ok.pde_cls.1`. Conclude with `ok.pde_cls.2`. Conclude with `hex p h`.
+A detailed English derivation is pending.
 -/
 theorem twoPrimeField_levelPrimes_split (u0 : R.A) (ex : Finset ℕ) (hex : ∀ p ∈ ex, (host2 B u0 ex).cls p = .splitK) :
     ∀ p ∈ (host2 B u0 ex).levelPrimes, (host2 B u0 ex).cls p = .splitK := by
@@ -285,7 +285,7 @@ theorem twoPrimeField_levelPrimes_split (u0 : R.A) (ex : Finset ℕ) (hex : ∀ 
 def Base.MT : ℕ := B.condN * (B.g0 * B.g1) ^ 2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨tnorm_of (host2 B u0 ex) u v T B.MT hT rfl, (twoPrimeField_split_of_modEq B u0 ex hp ((form_mod hT).of_mul_right _)).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem host2_TNorm_and_cls_splitK_of_prime_eq (u0 : R.A) (ex : Finset ℕ) {T : ℕ} (hp : T.Prime) {u v : ℤ}
     (hT : (T : ℤ) = (1 + (B.MT : ℕ) * u) ^ 2 + B.d * ((B.MT : ℕ) * v) ^ 2) :
@@ -302,7 +302,7 @@ Both sides reduce to the same expression.
 -/
 theorem twoPrimeField_base_unit : (host2 B u0 ex).u0 = u0 := rfl
 /- English proof (translation)
-The claim follows from `twoPrimeField_mem_level_of_coprime B u0 ex h hc`.
+A detailed English derivation is pending.
 -/
 theorem twoPrimeField_mem_level {T : ℕ} (h : T ∈ ex) (hc : Nat.Coprime T B.QS) : T ∈ (host2 B u0 ex).levelPrimes :=
   twoPrimeField_mem_level_of_coprime B u0 ex h hc
@@ -363,7 +363,7 @@ Both sides reduce to the same expression.
 -/
 theorem twoPrimeField_rootDiscriminant : (host2 B u0 ex).rdE = B.rd := rfl
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem twoPrimeField_twistedNorm_iff (T : ℕ) : TNorm (host2 B u0 ex) T ↔ TNorm (host2 B u0' ex') T := Iff.rfl
 /- English proof (translation)

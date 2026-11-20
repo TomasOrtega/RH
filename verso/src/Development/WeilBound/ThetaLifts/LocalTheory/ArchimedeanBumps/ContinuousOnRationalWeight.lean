@@ -13,9 +13,9 @@ variable {ι : Type} [Fintype ι] {X : Type} [NormedAddCommGroup X] [InnerProduc
 def Dec (a : K × (ι → ℂ) → ℂ) : Prop := ∀ N : ℕ, ∃ C : ℝ, ∀ k c, ‖a (k, c)‖ * (1 + ‖c‖) ^ N ≤ C
 
 /- English proof (translation)
-Rewrite using `[r0, norm_prod, pow_mul, ← Finset.card_univ, ← Finset.prod_const]`. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, norm_pow, norm_div, Complex.norm_real, norm_norm]`. Establish `h1 : (‖x w‖ / ‖x w‖) ^ κ w ≤ 1` using `pow_le_one₀ (by positivity) (div_self_le_one _)`. Establish `h2 : ‖x w‖ ^ (2 * e) ≤ (1 + ‖x‖) ^ (2 * e)` using `pow_le_pow_left₀ (norm_nonneg _) (by linarith [norm_le_pi_norm x w]) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_rationalWeight_le (κ : ι → ℕ) (e : ℕ) (x : ι → ℂ) : ‖r0 κ e x‖ ≤ (1 + ‖x‖) ^ (2 * e * Fintype.card ι) := by
   rw [r0, norm_prod, pow_mul, ← Finset.card_univ, ← Finset.prod_const]
@@ -29,7 +29,7 @@ theorem norm_rationalWeight_le (κ : ι → ℕ) (e : ℕ) (x : ι → ℂ) : �
 def mj (x : ι → ℂ) : ℝ := ((1 + ‖x‖) ^ (Module.finrank ℝ (ι → ℂ) + 1))⁻¹
 
 /- English proof (translation)
-Establish `h : Integrable fun z : ι → ℂ => (1 + ‖z‖) ^ (-((Module.finrank ℝ (ι → ℂ) + 1 : ℕ) : ℝ))` using `integrable_one_add_norm (by push_cast; linarith)`. Use `h.congr (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [mj]`. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem integrable_mj : Integrable (mj : (ι → ℂ) → ℝ) := by
   have h : Integrable fun z : ι → ℂ => (1 + ‖z‖) ^ (-((Module.finrank ℝ (ι → ℂ) + 1 : ℕ) : ℝ)) :=
@@ -40,9 +40,9 @@ theorem integrable_mj : Integrable (mj : (ι → ℂ) → ℝ) := by
 
 omit [TopologicalSpace K] [T2Space K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K] in
 /- English proof (translation)
-Take `⟨C, hC⟩` from `ha (M + (Module.finrank ℝ (ι → ℂ) + 1))`. Use `⟨max C 0, M + (Module.finrank ℝ (ι → ℂ) + 1), le_max_right _ _, fun k x b => ?_⟩` and prove the remaining obligations. Rewrite using `[mj, ← div_eq_mul_inv, le_div_iff₀ (by positivity), mul_assoc, ← pow_add]`. Establish `h1 : 1 + ‖x‖ ≤ (1 + ‖x + b‖) * (1 + ‖b‖)`. Establish `: ‖x‖ ≤ ‖x + b‖ + ‖b‖` using `by simpa using norm_sub_le (x + b) b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_nonneg (x + b), norm_nonneg b]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_assoc]`. Use `_ ≤ _ := by gcongr; exact (hC k _).trans (le_max_left _ _)`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dec.bound {a : K × (ι → ℂ) → ℂ} (ha : Dec a) (M : ℕ) : ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ k x b : _,
     ‖a (k, x + b)‖ * (1 + ‖x‖) ^ M ≤ C * (1 + ‖b‖) ^ N * mj x := by
@@ -58,7 +58,7 @@ theorem Dec.bound {a : K × (ι → ℂ) → ℂ} (ha : Dec a) (M : ℕ) : ∃ (
     _ ≤ _ := by gcongr; exact (hC k _).trans (le_max_left _ _)
 
 /- English proof (translation)
-Use `continuousOn_finsetProd _ fun w _ => ?_` and prove the remaining obligations. Use `ContinuousOn.mul (ContinuousOn.pow (ContinuousOn.div (by fun_prop) (by fun_prop) fun x hx => ?_) _) (by fun_prop)` and prove the remaining obligations. Simplify using `using hx w`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuousOn_rationalWeight (κ : ι → ℕ) (e : ℕ) : ContinuousOn (r0 κ e) {x | ∀ w, x w ≠ 0} := by
   refine continuousOn_finsetProd _ fun w _ => ?_
@@ -66,7 +66,7 @@ theorem continuousOn_rationalWeight (κ : ι → ℕ) (e : ℕ) : ContinuousOn (
   simpa using hx w
 
 /- English proof (translation)
-Simplify using `only [setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun w => isOpen_ne_fun (by fun_prop) continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem open_U : IsOpen {p : K × (ι → ℂ) | ∀ w, p.2 w ≠ 0} := by
   simp only [setOf_forall]
@@ -78,11 +78,11 @@ structure Prp (π : K × (ι → ℂ) → X) (x₀ : X) : Prop where
   cpt : ∃ (ε : ℝ) (S : Set (K × (ι → ℂ))), 0 < ε ∧ IsCompact S ∧ (∀ p ∈ S, ∀ w, p.2 w ≠ 0) ∧ ∀ p, dist (π p) x₀ ≤ ε → p ∈ S
 
 /- English proof (translation)
-Take `⟨ε, S, hε, hS, hSU, hb⟩` from `hπ.cpt`. Take `⟨p₀, h₀⟩` from `hπ.pt`. Take `⟨φ, -, -, hφ⟩` from `core_bump (μ.prod volume) π hπ.cont x₀ (fun p => a p * r0 κ e p.2 * c) _ S open_U ((ha.continuousOn.mul ((continuousOn_rationalWeight κ e).comp continuous_snd.continuousOn fun p hp => hp)).mul continuousOn_const) hS hSU ε hε hb hpos p₀ h₀`. Take `⟨C, N, -, hC⟩` from `hd.bound (2 * e * Fintype.card ι)`. Establish `hi : Integrable (fun p : K × (ι → ℂ) => a p * r0 κ e p.2) (μ.prod volume)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `((integrable_const C).mul_prod integrable_mj).mono' (ha.measurable.mul ((measurable_reduced_size κ e).comp measurable_snd)).aestronglyMeasurable (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Use `hC p.1 p.2 0` as an intermediate fact. Simplify using `only [add_zero, norm_zero, one_pow, mul_one] at this`. Rewrite using `[norm_mul]`. Conclude with `le_trans (by gcongr; exact norm_rationalWeight_le κ e p.2) this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hφ (fourier_vanish _ π hπ.cont.measurable _ (hi.mul_const c) (fun η => ?_) φ)` and prove the remaining obligations. Simplify using `only [← mul_assoc]`. Rewrite using `[integral_mul_const, integral_prod, h, zero_mul]`. Simplify using `only [mul_assoc]`. Conclude with `hi.bdd_mul (c := 1) (continuous_ch.comp (continuous_const.inner hπ.cont)).aestronglyMeasurable (Eventually.of_forall fun q => (norm_ch _).le)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coreA (μ : Measure K) [IsFiniteMeasure μ] [μ.IsOpenPosMeasure] {π : K × (ι → ℂ) → X} {x₀ : X} (hπ : Prp π x₀)
     (κ : ι → ℕ) (e : ℕ) {a : K × (ι → ℂ) → ℂ} (ha : Continuous a) (hd : Dec a) (c : ℂ)
@@ -109,13 +109,13 @@ theorem coreA (μ : Measure K) [IsFiniteMeasure μ] [μ.IsOpenPosMeasure] {π : 
     (Eventually.of_forall fun q => (norm_ch _).le)
 
 /- English proof (translation)
-Simplify using `[pr, add_mul, Finset.sum_add_distrib, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pr_add (x y t : ι → ℂ) : pr (x + y) t = pr x t + pr y t := by
   simp [pr, add_mul, Finset.sum_add_distrib, mul_add]
 
 /- English proof (translation)
-Rewrite using `[FT, ← integral_const_mul, ← integral_add_right_eq_self (fun x => ch (pr b t) * (ch (-pr x t) * g x)) b]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← mul_assoc, ← ch_add, pr_add]`. Use `congr 2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -125,39 +125,35 @@ theorem FT_shift (g : (ι → ℂ) → ℂ) (b t : ι → ℂ) : ∫ x, ch (-pr 
   rw [← mul_assoc, ← ch_add, pr_add]; congr 2; ring
 
 /- English proof (translation)
-Take `⟨ε, S, hε, hS, hSU, hb⟩` from `hπ.cpt`. Take `⟨p₀, h₀⟩` from `hπ.pt`. Take `⟨C, N, hC0, hC⟩` from `hd.bound (2 * e * Fintype.card ι)`. Establish `hle : ∀ k x b, ‖a (k, x + b)‖ ≤ C * (1 + ‖b‖) ^ N * mj x` using `fun k x b => le_trans (le_mul_of_one_le_right (norm_nonneg _) (one_le_pow₀ (by linarith [norm_nonneg x]))) (hC k x b)`. Establish `hler : ∀ k x b, ‖a (k, x + b) * r0 κ e x‖ ≤ C * (1 + ‖b‖) ^ N * mj x` using `fun k x b => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]; exact le_trans (by gcongr; exact norm_rationalWeight_le κ e x) (hC k x b)`. Establish `hF : Continuous fun p : K × (ι → ℂ) => FT (fun x => a (p.1, x)) p.2`. Establish `: Continuous fun p : K × (ι → ℂ) => ∫ x, ch (-pr x p.2) * a (p.1, x)`. Establish `hu : Continuous (Function.uncurry fun (p : K × (ι → ℂ)) (x : ι → ℂ) => ch (-pr x p.2) * a (p.1, x))` using `(continuous_ch.comp (continuous_pr.comp (f := fun q : (K × (ι → ℂ)) × (ι → ℂ) => (q.2, q.1.2)) (by fun_prop)).neg).mul (ha.comp (f := fun q : (K × (ι → ℂ)) × (ι → ℂ) => (q.1.1, q.2)) (by fun_prop))`. Use `continuous_of_dominated (bound := fun x => C * mj x) (fun p => (hu.uncurry_left p).aestronglyMeasurable) (fun p => Eventually.of_forall fun x => ?_) (integrable_mj.const_mul C) (Eventually.of_forall fun x => hu.uncurry_right x)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul, norm_ch, one_mul]`. Simplify using `using hle p.1 x 0`. Conclude with `this`. Take `⟨φ, -, hint, hφ⟩` from `core_bump (μ.prod volume) π hπ.cont x₀ (fun p => FT (fun x => a (p.1, x)) p.2 * ((r0 κ e p.2)⁻¹ * ((nm p.2 : ℝ) : ℂ)⁻¹) * c) _ S open_U ((hF.continuousOn.mul ((((continuousOn_rationalWeight κ e).comp continuous_snd.continuousOn fun p hp => hp).inv₀ fun p hp => rationalWeight_ne_z …`. Simplify using `using (nm_pos hp).ne'))).mul continuousOn_const) hS hSU ε hε hb hpos p₀ h₀`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb'⟩` from `exists_density φ`. Take `⟨Z, hZ⟩` from `tate κ e hκ`. Establish `hD0 : ∀ η : X, ∀ k, (1 + ‖β (k, η)‖) ^ N ≤ (1 + |D|) ^ N * (1 + ‖η‖) ^ N` using `fun η k => by`. Rewrite using `[← mul_pow]`. Use `pow_le_pow_left₀ (by positivity) ?_ N` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hD k η, le_abs_self D, abs_nonneg D, norm_nonneg η]`. Establish `hbi : Integrable fun η : X => C * ((1 + |D|) ^ N * (1 + ‖η‖) ^ N) * ‖b η‖`. Establish `: Integrable fun η : X => (1 + ‖η‖) ^ N * ‖b η‖`. Simplify using `only [add_comm (1 : ℝ), add_pow, one_pow, mul_one, Finset.sum_mul]`. Conclude with `integrable_finsetSum _ fun i _ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(b.integrable_pow_mul volume i).mul_const (N.choose i : ℝ)` using `[mul_right_comm]`. Simplify `this.const_mul (C * (1 + |D|) ^ N)` using `[mul_assoc]`. Establish `hcont : Continuous fun q : (K × (ι → ℂ)) × X => b q.2 * a (q.1.1, q.1.2 + β (q.1.1, q.2))`. Use `b.continuous` as an intermediate fact. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `bd : ∀ (k : K) (x : ι → ℂ) (η : X) (t : ℂ), ‖t‖ ≤ C * (1 + ‖β (k, η)‖) ^ N * mj x → ‖b η * t‖ ≤ mj x * (C * ((1 + |D|) ^ N * (1 + ‖η‖) ^ N) * ‖b η‖)` using `fun k x η t ht => by`. Establish `hm : 0 ≤ mj x` using `by unfold mj; positivity`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `I3 : Integrable (fun q : (K × (ι → ℂ)) × X => b q.2 * (a (q.1.1, q.1.2 + β (q.1.1, q.2)) * r0 κ e q.1.2)) ((μ.prod volume).prod volume)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(((integrable_const (1 : ℝ)).mul_prod integrable_mj).mul_prod hbi).mono' ?_ (Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only [← mul_assoc]`. Conclude with `(hcont.measurable.mul ((measurable_reduced_size κ e).comp (measurable_snd.comp measurable_fst))).aestronglyMeasurable`. Rewrite using `[one_mul]`. Conclude with `bd _ _ _ _ (hler _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `I2 : ∀ k, Integrable (fun q : (ι → ℂ) × X => b q.2 * a (k, q.1 + β (k, q.2))) (volume.prod volume)` using `fun k => (integrable_mj.mul_prod hbi).mono' (hcont.comp (f := fun q : (ι → ℂ) × X => ((k, q.1), q.2)) (by fun_prop)).aestronglyMeasurable (Eventually.of_forall fun q => bd _ _ _ _ (hle _ _ _))`. Establish `I2r : ∀ k, Integrable (fun q : (ι → ℂ) × X => b q.2 * (a (k, q.1 + β (k, q.2)) * r0 κ e q.1)) (volume.prod volume)` using `fun k => by`. Use `(integrable_mj.mul_prod hbi).mono' ?_ (Eventually.of_forall fun q => bd _ _ _ _ (hler _ _ _))` and prove the remaining obligations. Simplify using `only [← mul_assoc]`. Conclude with `(I2 k).1.mul ((measurable_reduced_size κ e).comp measurable_fst).aestronglyMeasurable`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `H : K → (ι → ℂ) → ℂ` to `fun k x => ∫ η, b η * a (k, x + β (k, η))`. Establish `hHr : ∀ k x, H k x * r0 κ e x = ∫ η, b η * (a (k, x + β (k, η)) * r0 κ e x)` using `fun k x => by`. Simplify using `only [H, ← mul_assoc]`. Rewrite using `[integral_mul_const]`. Establish `hFH : ∀ k t, FT (H k) t = φ (π (k, t)) * FT (fun x => a (k, x)) t` using `fun k t => by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : Integrable (fun q : (ι → ℂ) × X => ch (-pr q.1 t) * (b q.2 * a (k, q.1 + β (k, q.2)))) (volume.prod volume)` using `(I2 k).bdd_mul (c := 1) (continuous_ch.comp (continuous_pr.comp (continuous_fst.prodMk continuous_const)).neg).aestronglyMeasurable (Eventually.of_forall fun q => (norm_ch _).le)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[FT]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_const_mul]`. Use `_ = ∫ η, ∫ x, ch (-pr x t) * (b η * a (k, x + β (k, η))) := integral_integral_swap hi`. Use `_ = _ := by`. Rewrite using `[hb', ← integral_mul_const]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `η`. Simplify using `only [mul_left_comm _ (b η)]`. Rewrite using `[integral_const_mul, FT_shift (fun x => a (k, x)), hp]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : ∫ k, ∫ x, H k x * r0 κ e x ∂volume ∂μ = 0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [hHr]`. Rewrite using `[← integral_prod _ I3.integral_prod_left, integral_integral_swap I3]`. Use `(integral_congr_ae ?_).trans (integral_zero _ _)` and prove the remaining obligations. Use `filter_upwards [I3.swap.prod_right_ae] with η hη`. Use `(integral_prod _ hη).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp, Prod.swap, integral_const_mul, h, mul_zero]`. Apply `hφ` to reduce the goal to its premises. Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. Rewrite using `[integral_prod _ hint]`.
-
-Establish `: ∀ᵐ k ∂μ, ∫ t, φ (π (k, t)) * (FT (fun x => a (k, x)) t * ((r0 κ e t)⁻¹ * ((nm t : ℝ) : ℂ)⁻¹) * c) = (Z * c) * ∫ x, H k x * r0 κ e x` using `by filter_upwards [hint.prod_right_ae] with k hk`. Establish `e1 : ∀ t, φ (π (k, t)) * (FT (fun x => a (k, x)) t * ((r0 κ e t)⁻¹ * ((nm t : ℝ) : ℂ)⁻¹) * c) = FT (H k) t * ((r0 κ e t)⁻¹ * ((nm t : ℝ) : ℂ)⁻¹) * c` using `fun t => by rw [hFH]; ring`. Simplify using `only [e1] at hk ⊢`. Rewrite using `[integral_mul_const, hZ (H k) (I2 k).integral_prod_left (by simpa only [hHr] using (I2r k).integral_prod_left) (by simpa [mul_assoc, hc] using hk.mul_const c⁻¹)]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[integral_congr_ae this, integral_const_mul, h0, mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coreB [FirstCountableTopology K] (μ : Measure K) [IsFiniteMeasure μ] [μ.IsOpenPosMeasure] {π : K × (ι → ℂ) → X} {x₀ : X} (hπ : Prp π x₀)
     (κ : ι → ℕ) (e : ℕ) (hκ : ∀ w, 2 * e < κ w) {a : K × (ι → ℂ) → ℂ} (ha : Continuous a) (hd : Dec a) (c : ℂ)

@@ -27,7 +27,7 @@ instance completeSpace_finExt : CompleteSpace ↥LL.1 :=
   FiniteDimensional.complete ℚ_[l] ↥LL.1
 
 /- English proof (translation)
-The claim follows from `toHatS ↥(OL LL) ↥LL.1 l 8`.
+A detailed English derivation is pending.
 -/
 example : invL l (S ↥(OL LL) ↥LL.1 8) →+* Ahat ↥(OL LL) ↥LL.1 l 8 := toHatS ↥(OL LL) ↥LL.1 l 8
 

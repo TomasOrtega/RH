@@ -14,7 +14,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.Amp.RadConj
 
 /- English proof (translation)
-Establish `h` using `(hK.neg).charpoly_eq_X_pow_finrank`. Establish `h2` using `LinearMap.eval_charpoly (-(L - 1)) 1`. Rewrite `h2` using `[h]`. Simplify using `using h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_eq_one_of_isNilpotent {W : Type} [AddCommGroup W] [Module ℝ W] [Module.Finite ℝ W]
     {L : W →ₗ[ℝ] W} (hK : IsNilpotent (L - 1)) : LinearMap.det L = 1 := by
@@ -24,11 +24,11 @@ theorem det_eq_one_of_isNilpotent {W : Type} [AddCommGroup W] [Module ℝ W] [Mo
   simpa using h2.symm
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hA`. Establish `key : ∀ (m : ℕ) (v : V), ι (((L - 1) ^ m) v) = ((A - 1) ^ m) (ι v)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ m ih => intro v`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih]`. Simplify using `[h]`. Use `⟨n, LinearMap.ext fun v => hι ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key, hn]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isNilpotent_of_intertwine {V W : Type} [AddCommGroup V] [Module ℝ V] [AddCommGroup W] [Module ℝ W]
     (ι : V →ₗ[ℝ] W) (hι : Function.Injective ι) (L : V →ₗ[ℝ] V) (A : W →ₗ[ℝ] W) (h : ∀ v, ι (L v) = A (ι v))
@@ -43,9 +43,9 @@ theorem isNilpotent_of_intertwine {V W : Type} [AddCommGroup V] [Module ℝ V] [
   rw [key, hn]; simp
 
 /- English proof (translation)
-Establish `ht : (upper x - 1).BlockTriangular id`. Introduce `i j h`. Establish `h' : j < i` using `h`. Simplify using `[upper, not_lt.2 h'.le, h'.ne', Matrix.one_apply]`. Establish `h` using `Matrix.aeval_self_charpoly (upper x - 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.charpoly_of_isUpperTriangular _ ht]`. Use `⟨r, ?_⟩` and prove the remaining obligations. Simplify `h` using `[upper]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isNilpotent_upper_sub_one {r : ℕ} (x : UT r → ℂ) : IsNilpotent (upper x - 1) := by
   have ht : (upper x - 1).BlockTriangular id := by
@@ -70,7 +70,7 @@ def skewR (r : ℕ) : Matrix (Fin r) (Fin r) ℂ →ₗ[ℝ] ((UT r → ℂ) × 
   map_smul' c p := by ext <;> simp
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[skewR, skewL, skewM, a.2]`. Simplify using `[skewR, skewL, skewM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem skewR_skewL {r : ℕ} (p : (UT r → ℂ) × (Fin r → ℝ)) : skewR r (skewL r p) = p := by
   ext a
@@ -78,7 +78,7 @@ theorem skewR_skewL {r : ℕ} (p : (UT r → ℂ) × (Fin r → ℝ)) : skewR r 
   · simp [skewR, skewL, skewM]
 
 /- English proof (translation)
-Take `⟨p, hp, -⟩` from `(GlobalTheory.Amp.Rad.radical 0 r).2.2.1 S h`. Establish `: S = skewL r p` using `hp`. Rewrite using `[this, skewR_skewL]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem skewL_skewR {r : ℕ} (S : Matrix (Fin r) (Fin r) ℂ) (h : Sᴴ = -S) : skewL r (skewR r S) = S := by
   obtain ⟨p, hp, -⟩ := (GlobalTheory.Amp.Rad.radical 0 r).2.2.1 S h
@@ -89,17 +89,17 @@ def conjA {r : ℕ} (u : Matrix (Fin r) (Fin r) ℂ) : Matrix (Fin r) (Fin r) �
   LinearMap.mulLeft ℝ u * LinearMap.mulRight ℝ uᴴ
 
 /- English proof (translation)
-Simplify using `[conjA, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjA_apply {r : ℕ} (u S : Matrix (Fin r) (Fin r) ℂ) : conjA u S = u * S * uᴴ := by
   simp [conjA, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h' : IsNilpotent (u - 1)ᴴ`. Take `⟨n, hn⟩` from `h`. Conclude with `⟨n, by rw [← Matrix.conjTranspose_pow, hn, Matrix.conjTranspose_zero]⟩`. Establish `ha : IsNilpotent (LinearMap.mulLeft ℝ (u - 1))` using `(LinearMap.isNilpotent_mulLeft_iff ℝ _).2 h`. Establish `hb : IsNilpotent (LinearMap.mulRight ℝ (u - 1)ᴴ)` using `(LinearMap.isNilpotent_mulRight_iff ℝ _).2 h'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Commute (LinearMap.mulLeft ℝ (u - 1)) (LinearMap.mulRight ℝ (u - 1)ᴴ)` using `LinearMap.commute_mulLeft_right _ _`. Establish `e : conjA u - 1 = LinearMap.mulLeft ℝ (u - 1) * (1 + LinearMap.mulRight ℝ (u - 1)ᴴ) + LinearMap.mulRight ℝ (u - 1)ᴴ` using `by ext1 S`. Simplify using `[conjA_apply, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_add, Matrix.mul_assoc]`. Rewrite using `[e]`. Establish `hc2 : Commute (LinearMap.mulLeft ℝ (u - 1)) (1 + LinearMap.mulRight ℝ (u - 1)ᴴ)` using `(Commute.one_right _).add_right hc`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Commute.isNilpotent_add ?_ (hc2.isNilpotent_mul_right ha) hb` and prove the remaining obligations. Conclude with `hc.mul_left ((Commute.one_left _).add_left (Commute.refl _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isNilpotent_conjA {r : ℕ} (u : Matrix (Fin r) (Fin r) ℂ) (h : IsNilpotent (u - 1)) :
     IsNilpotent (conjA u - 1) := by
@@ -132,7 +132,7 @@ theorem rowL_apply {r m : ℕ} (u : Matrix (Fin r) (Fin r) ℂ) (B : Fin r → F
     rowL u B a = ∑ c, star (u a c) • B c := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun B => funext fun a => funext fun j => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, rowL_apply, Matrix.mul_apply, star_sum, star_mul', Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowL_mul {r m : ℕ} (u v : Matrix (Fin r) (Fin r) ℂ) : (rowL (u * v) : (Fin r → Fin m → ℂ) →ₗ[ℝ] _) = rowL u * rowL v := by
   refine LinearMap.ext fun B => funext fun a => funext fun j => ?_
@@ -141,18 +141,18 @@ theorem rowL_mul {r m : ℕ} (u v : Matrix (Fin r) (Fin r) ℂ) : (rowL (u * v) 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use `LinearMap.ext fun B => funext fun a => funext fun j => ?_` and prove the remaining obligations. Simplify using `[rowL_apply, Matrix.one_apply, ite_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem rowL_one {r m : ℕ} : (rowL (1 : Matrix (Fin r) (Fin r) ℂ) : (Fin r → Fin m → ℂ) →ₗ[ℝ] _) = 1 := by
   refine LinearMap.ext fun B => funext fun a => funext fun j => ?_
   simp [rowL_apply, Matrix.one_apply, ite_apply]
 
 /- English proof (translation)
-Establish `e : (rowL u : (Fin r → Fin m → ℂ) →ₗ[ℝ] _) - 1 = rowL (u - 1)`. Rewrite using `[← rowL_one]`. Use `LinearMap.ext fun B => funext fun a => funext fun j => ?_` and prove the remaining obligations. Simplify using `[rowL_apply, sub_mul, Finset.sum_sub_distrib]`. Establish `key : ∀ n : ℕ, (rowL (u - 1) : (Fin r → Fin m → ℂ) →ₗ[ℝ] _) ^ n = rowL ((u - 1) ^ n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [rowL_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, rowL_mul, ih]`. Take `⟨n, hn⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[e, key, hn]`. Use `LinearMap.ext fun B => funext fun a => funext fun j => ?_` and prove the remaining obligations. Simplify using `[rowL_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isNilpotent_rowL {r m : ℕ} (u : Matrix (Fin r) (Fin r) ℂ) (h : IsNilpotent (u - 1)) :
     IsNilpotent ((rowL u : (Fin r → Fin m → ℂ) →ₗ[ℝ] _) - 1) := by
@@ -173,7 +173,7 @@ def conjL (k : ℕ) {r : ℕ} (u : Matrix (Fin r) (Fin r) ℂ) : PPar k r →ₗ
   LinearMap.prodMap (rowL u) (skewR r ∘ₗ conjA u ∘ₗ skewL r)
 
 /- English proof (translation)
-Apply `skewL_skewR` to reduce the goal to its premises. Establish `: (skewL r p)ᴴ = -skewL r p` using `(GlobalTheory.Amp.Rad.radical 0 r).2.1 p.1 p.2`. Simplify using `[conjA_apply, this, Matrix.mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem skewL_conj {r : ℕ} (u : Matrix (Fin r) (Fin r) ℂ) (p : (UT r → ℂ) × (Fin r → ℝ)) :
     skewL r ((skewR r ∘ₗ conjA u ∘ₗ skewL r) p) = conjA u (skewL r p) := by
@@ -182,7 +182,7 @@ theorem skewL_conj {r : ℕ} (u : Matrix (Fin r) (Fin r) ℂ) (p : (UT r → ℂ
   simp [conjA_apply, this, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `isNilpotent_upper_sub_one x`. Rewrite using `[conjL, LinearMap.det_prodMap, det_eq_one_of_isNilpotent (isNilpotent_rowL _ h), det_eq_one_of_isNilpotent (isNilpotent_of_intertwine (skewL r) (Function.LeftInverse.injective skewR_skewL) _ _ (skewL_conj _) (isNilpotent_conjA _ h)), one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_conjL (k : ℕ) {r : ℕ} (x : UT r → ℂ) : LinearMap.det (conjL k (upper x)) = 1 := by
   have h := isNilpotent_upper_sub_one x
@@ -191,9 +191,7 @@ theorem det_conjL (k : ℕ) {r : ℕ} (x : UT r → ℂ) : LinearMap.det (conjL 
       (skewL_conj _) (isNilpotent_conjA _ h)), one_mul]
 
 /- English proof (translation)
-Use `haveI h1 : (volume : Measure ((UT r → ℂ) × (Fin r → ℝ))).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Use `haveI h0 : (volume : Measure (Fin (k + 1) → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI h0' : (volume : Measure (Fin r → Fin (k + 1) → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI s1 : SFinite (volume : Measure ((UT r → ℂ) × (Fin r → ℝ))) := Measure.prod.instSFinite`. Use `haveI h2 : (volume : Measure (PPar k r)).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`.
-
-Rewrite using `[Measure.map_linearMap_addHaar_eq_smul_addHaar _ (by rw [det_conjL]; exact one_ne_zero), det_conjL]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_conjL (k : ℕ) {r : ℕ} (x : UT r → ℂ) : (volume : Measure (PPar k r)).map (conjL k (upper x)) = volume := by
   haveI h1 : (volume : Measure ((UT r → ℂ) × (Fin r → ℝ))).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _
@@ -205,11 +203,11 @@ theorem map_conjL (k : ℕ) {r : ℕ} (x : UT r → ℂ) : (volume : Measure (PP
   simp
 
 /- English proof (translation)
-Establish `h : ∀ j, M *ᵥ bvec j = M' *ᵥ bvec j`. Introduce `j`. Distinguish the cases in `a : j.val < r`. Conclude with `h1 ⟨j.val, a⟩`. Distinguish the cases in `b : j.val ≤ r + k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `: j = wI k r ⟨j.val - r, by omega⟩` using `Fin.ext (by simp only [wI]; omega)`. Rewrite using `[this]`. Conclude with `h2 _`. Establish `: j = esI k r ⟨2 * r + k - j.val, by omega⟩` using `Fin.ext (by simp only [esI]; omega)`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h3 _`. Use extensionality with `i j`. Simplify `congrFun (h j) i` using `[bvec]`.
+A detailed English derivation is pending.
 -/
 theorem ext_cols {k r : ℕ} {M M' : Mat k r} (h1 : ∀ a, M *ᵥ bvec (eI k r a) = M' *ᵥ bvec (eI k r a))
     (h2 : ∀ a, M *ᵥ bvec (wI k r a) = M' *ᵥ bvec (wI k r a))
@@ -227,37 +225,37 @@ theorem ext_cols {k r : ℕ} {M M' : Mat k r} (h1 : ∀ a, M *ᵥ bvec (eI k r a
   simpa [bvec] using congrFun (h j) i
 
 /- English proof (translation)
-Simplify using `[herm, rowL_apply, star_sum, sum_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_rowL_right {r m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (u : Matrix (Fin r) (Fin r) ℂ) (B : Fin r → Fin m → ℂ)
     (v : Fin m → ℂ) (a : Fin r) : herm H v (rowL u B a) = ∑ c, u a c * herm H v (B c) := by
   simp [herm, rowL_apply, star_sum, sum_dotProduct]
 
 /- English proof (translation)
-Simplify using `[herm, rowL_apply, Matrix.mulVec_sum, dotProduct_sum, Matrix.mulVec_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_rowL_left {r m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (u : Matrix (Fin r) (Fin r) ℂ) (B : Fin r → Fin m → ℂ)
     (v : Fin m → ℂ) (a : Fin r) : herm H (rowL u B a) v = ∑ c, star (u a c) * herm H (B c) v := by
   simp [herm, rowL_apply, Matrix.mulVec_sum, dotProduct_sum, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Take `⟨-, -, he, hes, hw⟩` from `(GlobalTheory.Amp.UEmb.uEmb_hom k r).2.2.1 u hu`. Establish `hw' : ∀ j, uEmb k r u *ᵥ bvec (wI k r j) = bvec (wI k r j)` using `fun j => hw _ (by`. Introduce `i hi`. Establish `: i ≠ wI k r j` using `fun h => by`. Use `congrArg Fin.val h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [wI] at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[bvec, this])`. Take `⟨pe, pw, pes, -⟩` from `(GlobalTheory.Amp.Rad.radical k r).1 B S`. Take `⟨pe', pw', pes', -⟩` from `(GlobalTheory.Amp.Rad.radical k r).1 (rowL u B) (u * S * uᴴ)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply `ext_cols` to reduce the goal to its premises. Introduce `a`. Simplify using `only [← Matrix.mulVec_mulVec, pe, he, Matrix.mulVec_sum, Matrix.mulVec_smul, pe']`. Introduce `j`. Simplify using `only [← Matrix.mulVec_mulVec, pw, he, hw', Matrix.mulVec_sub, Matrix.mulVec_sum, Matrix.mulVec_smul, pw', herm_rowL_right, Finset.sum_smul, Finset.smul_sum, smul_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`. Introduce `b set C : Matrix (Fin r) (Fin r) ℂ := Matrix.of fun a b => S a b - herm (Hb k) (B b) (B a) / 2 with hC`. Establish `hC' : ∀ a b, (u * S * uᴴ) a b - herm (Hb k) (rowL u B b) (rowL u B a) / 2 = (u * C * uᴴ) a b`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [herm_rowL_right, herm_rowL_left, Matrix.mul_apply, hC, Matrix.of_apply, Matrix.conjTranspose_apply, Finset.sum_mul, Finset.mul_sum, Finset.sum_div]`. Rewrite using `[Finset.sum_comm (f := fun c i => u a c * (star (u b i) * herm (Hb k) (B i) (B c)) / 2)]`. Simplify using `only [← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations. Establish `hC0 : ∀ a b, S a b - herm (Hb k) (B b) (B a) / 2 = C a b` using `fun _ _ => rfl`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : ∀ j, ∑ a, star (u⁻¹ b a) * rowL u B a j = B b j`. Introduce `j`. Establish `: rowL u⁻¹ (rowL u B) = B`. Rewrite using `[← Module.End.mul_apply, ← rowL_mul, Matrix.nonsing_inv_mul _ hu, rowL_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `congrFun (congrFun this b) j` as an intermediate fact. Simplify `this` using `[rowL_apply u⁻¹]`. Establish `e2 : ∀ d, ∑ a, star (u⁻¹ b a) * (u * C * uᴴ) d a = ∑ a, C a b * u d a`. Introduce `d`. Establish `: u * C * uᴴ * (u⁻¹)ᴴ = u * C`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.nonsing_inv_mul _ hu]`. Simplify using the standard rewrite rules. Use `congrFun (congrFun this d) b` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.mul_apply (M := u)]`. Simplify `this` using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [← Matrix.mulVec_mulVec, pes, he, hes, hw', Matrix.mulVec_add, Matrix.mulVec_sum, Matrix.mulVec_smul, pes', hC', hC0, smul_add, Finset.sum_add_distrib, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm (f := fun a j => (star (u⁻¹ b a) * rowL u B a j) • bvec (wI k r j)), Finset.sum_comm (f := fun a d => (star (u⁻¹ b a) * (u * C * uᴴ) d a) • bvec (eI k r d)), Finset.sum_comm (f := fun a d => (C a b * u d a) • bvec (eI k r d))]`. Simplify using `only [← Finset.sum_smul, e1, e2]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uEmb_mul_pEl (k r : ℕ) (u : Matrix (Fin r) (Fin r) ℂ) (hu : IsUnit u.det) (B : Fin r → Fin (k + 1) → ℂ)
     (S : Matrix (Fin r) (Fin r) ℂ) : uEmb k r u * pEl k r B S = pEl k r (rowL u B) (u * S * uᴴ) * uEmb k r u := by
@@ -309,7 +307,7 @@ theorem uEmb_mul_pEl (k r : ℕ) (u : Matrix (Fin r) (Fin r) ℂ) (hu : IsUnit u
     simp only [← Finset.sum_smul, e1, e2]
 
 /- English proof (translation)
-Rewrite using `[pOf, uEmb_mul_pEl k r u hu, ← conjA_apply]`. Use `skewL_conj u q.2` as an intermediate fact. Conclude with `congrArg (fun S => pEl k r (rowL u q.1) S * uEmb k r u) this.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uEmb_mul_pOf (k r : ℕ) (u : Matrix (Fin r) (Fin r) ℂ) (hu : IsUnit u.det) (q : PPar k r) :
     uEmb k r u * pOf k r q = pOf k r (conjL k u q) * uEmb k r u := by
@@ -318,7 +316,7 @@ theorem uEmb_mul_pOf (k r : ℕ) (u : Matrix (Fin r) (Fin r) ℂ) (hu : IsUnit u
   exact congrArg (fun S => pEl k r (rowL u q.1) S * uEmb k r u) this.symm
 
 /- English proof (translation)
-Establish `hc : Continuous fun q : PPar k r => (Matrix.of.symm (pOf k r q * uEmb k r (upper x)) : Mt k r)` using `(Model.cont_pOf k r).matrix_mul continuous_const`. Establish `hm : Measurable fun q : PPar k r => f (pOf k r q * uEmb k r (upper x))` using `hf.comp hc.measurable`. Use `conv_rhs => rw [← map_conjL k x]`. Rewrite using `[lintegral_map hm (conjL k (upper x)).continuous_of_finiteDimensional.measurable]`. Simplify using `only [uEmb_mul_pOf k r (upper x) (by rw [Model.det_upper]; exact isUnit_one)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_swap (k r : ℕ) (x : UT r → ℂ) (f : Mat k r → ℝ≥0∞) (hf : Measurable fun y : Mt k r => f (Matrix.of y)) :
     ∫⁻ q : PPar k r, f (uEmb k r (upper x) * pOf k r q) = ∫⁻ q : PPar k r, f (pOf k r q * uEmb k r (upper x)) := by
@@ -330,9 +328,9 @@ theorem lintegral_swap (k r : ℕ) (x : UT r → ℂ) (f : Mat k r → ℝ≥0�
   simp only [uEmb_mul_pOf k r (upper x) (by rw [Model.det_upper]; exact isUnit_one)]
 
 /- English proof (translation)
-Establish `hd : Continuous fun M : Fin r → Fin r → ℂ => (Matrix.of M).det` using `Continuous.matrix_det continuous_id`. Establish `ha : Continuous fun M : Fin r → Fin r → ℂ => (Matrix.of M).adjugate` using `Continuous.matrix_adjugate continuous_id`. Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_symm_apply, uEmb]`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(measurable_pi_apply _).comp (measurable_pi_apply _)`. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`. Conclude with `continuous_star.measurable.comp (hd.measurable.inv.mul (ha.matrix_elem _ _).measurable)`. Apply the tactic sequence `all_goals exact measurable_const`.
+A detailed English derivation is pending.
 -/
 theorem measurable_uEmb (k r : ℕ) :
     Measurable fun M : Fin r → Fin r → ℂ => (Matrix.of.symm (uEmb k r (Matrix.of M)) : Mt k r) := by
@@ -347,7 +345,7 @@ theorem measurable_uEmb (k r : ℕ) :
   all_goals exact measurable_const
 
 /- English proof (translation)
-Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_symm_apply, Matrix.mul_apply]`. Conclude with `Finset.measurable_sum _ fun l _ => ((measurable_pi_apply l).comp ((measurable_pi_apply i).comp ha)).mul ((measurable_pi_apply j).comp ((measurable_pi_apply l).comp hb))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_mul {X : Type} [MeasurableSpace X] {k r : ℕ} {a b : X → Mat k r}
     (ha : Measurable fun x => (Matrix.of.symm (a x) : Mt k r)) (hb : Measurable fun x => (Matrix.of.symm (b x) : Mt k r)) :
@@ -359,21 +357,21 @@ theorem measurable_mul {X : Type} [MeasurableSpace X] {k r : ℕ} {a b : X → M
       ((measurable_pi_apply j).comp ((measurable_pi_apply l).comp hb))
 
 /- English proof (translation)
-Use `(Model.cont_uEmb k r).comp (continuous_pi fun p => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cont_in (k r : ℕ) (β : Fin r → ℕ) : Continuous fun x : UTin β → ℂ => uEmb k r (upperIn β x) := by
   refine (Model.cont_uEmb k r).comp (continuous_pi fun p => ?_)
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-Use `(Model.cont_uEmb k r).comp (continuous_pi fun p => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cont_off (k r : ℕ) (β : Fin r → ℕ) : Continuous fun x : UToff β → ℂ => uEmb k r (upperOff β x) := by
   refine (Model.cont_uEmb k r).comp (continuous_pi fun p => ?_)
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-Apply the tactic sequence `refine (Model.cont_pOf k r).comp (Continuous.prodMk (continuous_pi fun p => ?_) (Continuous.prodMk (continuous_pi fun p => ?_) (continuous_pi fun p => ?_))) <;>`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cont_pTop (k r j : ℕ) : Continuous (pTop k r j) := by
   refine (Model.cont_pOf k r).comp (Continuous.prodMk (continuous_pi fun p => ?_)
@@ -381,7 +379,7 @@ theorem cont_pTop (k r j : ℕ) : Continuous (pTop k r j) := by
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-Apply the tactic sequence `refine (Model.cont_pOf k r).comp (Continuous.prodMk (continuous_pi fun p => ?_) (Continuous.prodMk (continuous_pi fun p => ?_) (continuous_pi fun p => ?_))) <;>`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cont_pSec (k r j : ℕ) : Continuous (pSec k r j) := by
   refine (Model.cont_pOf k r).comp (Continuous.prodMk (continuous_pi fun p => ?_)
@@ -389,39 +387,39 @@ theorem cont_pSec (k r j : ℕ) : Continuous (pSec k r j) := by
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-The claim follows from `(show Continuous (fun x : UTin β → ℂ => (Matrix.of.symm (uEmb k r (upperIn β x)) : Mt k r)) from cont_in k r β).measurable`.
+A detailed English derivation is pending.
 -/
 theorem meas_in (k r : ℕ) (β : Fin r → ℕ) :
     Measurable fun x : UTin β → ℂ => (Matrix.of.symm (uEmb k r (upperIn β x)) : Mt k r) :=
   (show Continuous (fun x : UTin β → ℂ => (Matrix.of.symm (uEmb k r (upperIn β x)) : Mt k r)) from cont_in k r β).measurable
 
 /- English proof (translation)
-The claim follows from `(show Continuous (fun x : UToff β → ℂ => (Matrix.of.symm (uEmb k r (upperOff β x)) : Mt k r)) from cont_off k r β).measurable`.
+A detailed English derivation is pending.
 -/
 theorem meas_off (k r : ℕ) (β : Fin r → ℕ) :
     Measurable fun x : UToff β → ℂ => (Matrix.of.symm (uEmb k r (upperOff β x)) : Mt k r) :=
   (show Continuous (fun x : UToff β → ℂ => (Matrix.of.symm (uEmb k r (upperOff β x)) : Mt k r)) from cont_off k r β).measurable
 
 /- English proof (translation)
-The claim follows from `(show Continuous (fun x : PTop k r j => (Matrix.of.symm (pTop k r j x) : Mt k r)) from cont_pTop k r j).measurable`.
+A detailed English derivation is pending.
 -/
 theorem meas_pTop (k r j : ℕ) : Measurable fun x : PTop k r j => (Matrix.of.symm (pTop k r j x) : Mt k r) :=
   (show Continuous (fun x : PTop k r j => (Matrix.of.symm (pTop k r j x) : Mt k r)) from cont_pTop k r j).measurable
 
 /- English proof (translation)
-The claim follows from `(show Continuous (fun x : PSec k r j => (Matrix.of.symm (pSec k r j x) : Mt k r)) from cont_pSec k r j).measurable`.
+A detailed English derivation is pending.
 -/
 theorem meas_pSec (k r j : ℕ) : Measurable fun x : PSec k r j => (Matrix.of.symm (pSec k r j x) : Mt k r) :=
   (show Continuous (fun x : PSec k r j => (Matrix.of.symm (pSec k r j x) : Mt k r)) from cont_pSec k r j).measurable
 
 /- English proof (translation)
-The claim follows from `(show Continuous (fun x : PPar k r => (Matrix.of.symm (pOf k r x) : Mt k r)) from Model.cont_pOf k r).measurable`.
+A detailed English derivation is pending.
 -/
 theorem meas_pOf (k r : ℕ) : Measurable fun x : PPar k r => (Matrix.of.symm (pOf k r x) : Mt k r) :=
   (show Continuous (fun x : PPar k r => (Matrix.of.symm (pOf k r x) : Mt k r)) from Model.cont_pOf k r).measurable
 
 /- English proof (translation)
-Establish `hG2 : Measurable fun t : (Y × X) × Q => ∫⁻ p, G t.1.1 t.1.2 t.2 p ∂μP` using `Measurable.lintegral_prod_right' (f := fun t : ((Y × X) × Q) × P => G t.1.1.1 t.1.1.2 t.1.2 t.2) (hG.comp (measurable_fst.fst.prodMk (measurable_fst.snd.prodMk measurable_snd)))`. Establish `hG3 : Measurable fun t : Q × Y => ∫⁻ x, ∫⁻ p, G t.2 x t.1 p ∂μP ∂μX` using `Measurable.lintegral_prod_right' (f := fun t : (Q × Y) × X => ∫⁻ p, G t.1.2 t.2 t.1.1 p ∂μP) (hG2.comp ((measurable_fst.snd.prodMk measurable_snd).prodMk measurable_fst.fst))`. Rewrite using `[lintegral_prod_symm _ hG3.aemeasurable]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Conclude with `lintegral_lintegral_swap (f := fun x q => ∫⁻ p, G y x q p ∂μP) (hG2.comp ((measurable_const.prodMk measurable_fst).prodMk measurable_snd)).aemeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tonelli4 {Y X Q P : Type} [MeasurableSpace Y] [MeasurableSpace X] [MeasurableSpace Q] [MeasurableSpace P]
     (μY : Measure Y) (μX : Measure X) (μQ : Measure Q) (μP : Measure P) [SFinite μY] [SFinite μX] [SFinite μQ] [SFinite μP]
@@ -439,14 +437,14 @@ theorem tonelli4 {Y X Q P : Type} [MeasurableSpace Y] [MeasurableSpace X] [Measu
     (hG2.comp ((measurable_const.prodMk measurable_fst).prodMk measurable_snd)).aemeasurable
 
 /- English proof (translation)
-The claim follows from `haveI : SFinite (volume : Measure ((UT r → ℂ) × (Fin r → ℝ))) := Measure.prod.instSFinite Measure.prod.instSFinite`.
+A detailed English derivation is pending.
 -/
 theorem sfinite_PPar (k r : ℕ) : SFinite (volume : Measure (PPar k r)) :=
   haveI : SFinite (volume : Measure ((UT r → ℂ) × (Fin r → ℝ))) := Measure.prod.instSFinite
   Measure.prod.instSFinite
 
 /- English proof (translation)
-The claim follows from `haveI : SFinite (volume : Measure (({p : UT r // j ≤ p.1.1.val} → ℂ) × ({a : Fin r // j ≤ a.val} → ℝ))) := Measure.prod.instSFinite Measure.prod.instSFinite`.
+A detailed English derivation is pending.
 -/
 theorem sfinite_PTop (k r j : ℕ) : SFinite (volume : Measure (PTop k r j)) :=
   haveI : SFinite (volume : Measure (({p : UT r // j ≤ p.1.1.val} → ℂ) × ({a : Fin r // j ≤ a.val} → ℝ))) :=
@@ -454,7 +452,7 @@ theorem sfinite_PTop (k r j : ℕ) : SFinite (volume : Measure (PTop k r j)) :=
   Measure.prod.instSFinite
 
 /- English proof (translation)
-The claim follows from `haveI : SFinite (volume : Measure (({p : UT r // p.1.1.val < j} → ℂ) × ({a : Fin r // a.val < j} → ℝ))) := Measure.prod.instSFinite Measure.prod.instSFinite`.
+A detailed English derivation is pending.
 -/
 theorem sfinite_PSec (k r j : ℕ) : SFinite (volume : Measure (PSec k r j)) :=
   haveI : SFinite (volume : Measure (({p : UT r // p.1.1.val < j} → ℂ) × ({a : Fin r // a.val < j} → ℝ))) :=
@@ -462,13 +460,13 @@ theorem sfinite_PSec (k r j : ℕ) : SFinite (volume : Measure (PSec k r j)) :=
   Measure.prod.instSFinite
 
 /- English proof (translation)
-Use `sfinite_PPar k r` as an intermediate fact. Establish `hright : ∀ a b : Mat k r, Measurable fun y : Mt k r => f (Matrix.of.symm (a * Matrix.of y * b))` using `fun a b => hf.comp (measurable_mul (measurable_mul measurable_const measurable_id) measurable_const)`. Establish `h0 : Measurable fun q : (UT r → ℂ) × PPar k r => f (Matrix.of.symm (uEmb k r (upper q.1) * pOf k r q.2))` using `hf.comp (Model.cont_lebN_map k r).measurable`. Rewrite using `[lebN, lintegral_map hf (Model.cont_lebN_map k r).measurable, Measure.volume_eq_prod, lintegral_prod _ h0.aemeasurable]`. Establish `e1 : ∀ u : UT r → ℂ, ∫⁻ p : PPar k r, f (Matrix.of.symm (uEmb k r (upper u) * pOf k r p)) = ∫⁻ p : PPar k r, f (Matrix.of.symm (pOf k r p * uEmb k r (upper u)))` using `fun u => lintegral_swap k r u (fun M => f (Matrix.of.symm M)) hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e1]`. Establish `hF : Measurable fun M : Fin r → Fin r → ℂ => ∫⁻ p : PPar k r, f (Matrix.of.symm (pOf k r p * uEmb k r (Matrix.of M)))` using `Measurable.lintegral_prod_right' (f := fun t : (Fin r → Fin r → ℂ) × PPar k r => f (Matrix.of.symm (pOf k r t.2 * uEmb k r (Matrix.of t.1)))) (hf.comp (measurable_mul ((meas_pOf k r).comp measurable_snd) ((measurable_uEmb k r).comp measurable_fst)))`. Use `((GlobalTheory.Amp.USplit.lebesgue_split r β hβ).2 _ hF).trans ?_` and prove the remaining obligations. Use `lintegral_congr fun y => lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `d1 : IsUnit (upperIn β x).det` using `by rw [upperIn, Model.det_upper]; exact isUnit_one`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `d2 : IsUnit (upperOff β y).det` using `by rw [upperOff, Model.det_upper]; exact isUnit_one`. Establish `e2` using `lintegral_swap k r (fun p => if h : β p.1.1 = β p.1.2 then x ⟨p, h⟩ else 0) (fun M => f (Matrix.of.symm (1 * M * uEmb k r (upperOff β y)))) (hright _ _)`. Simplify using `only [Matrix.one_mul] at e2`. Use `Eq.trans ?_ (e2.symm.trans (GlobalTheory.T.lintegral_radical_eq_top_section_split k r j (fun M => f (Matrix.of.symm (uEmb k r (upperIn β x) * M * uEmb k r (upperOff β y)))) (hright _ _)))` and prove the remaining obligations. Use `lintegral_congr fun p => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Equiv.apply_symm_apply, (GlobalTheory.Amp.UEmb.uEmb_hom k r).1 _ _ d1 d2, ← Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lintegral_lebN (k r j : ℕ) (β : Fin r → ℕ) (hβ : Monotone β) (f : Mt k r → ℝ≥0∞) (hf : Measurable f) :
     ∫⁻ n, f n ∂(lebN k r) = ∫⁻ y : UToff β → ℂ, ∫⁻ x : UTin β → ℂ, ∫⁻ q' : PSec k r j, ∫⁻ q : PTop k r j,
@@ -503,9 +501,9 @@ theorem lintegral_lebN (k r j : ℕ) (β : Fin r → ℕ) (hβ : Monotone β) (f
   rfl
 
 /- English proof (translation)
-Use `sfinite_PTop k r j` as an intermediate fact. Establish `hc : Measurable fun t : (UTin β → ℂ) × PTop k r j => (Matrix.of.symm (rEl k r j β t) : Mt k r)` using `measurable_mul ((meas_in k r β).comp measurable_fst) ((meas_pTop k r j).comp measurable_snd)`. Establish `hm : Measurable fun ρ => f (rmulM (sEl k r j β q) ρ)` using `hf.comp (measurable_mul (a := fun ρ => Matrix.of ρ) measurable_id measurable_const)`. Establish `hmc : Measurable fun t : (UTin β → ℂ) × PTop k r j => f (rmulM (sEl k r j β q) (Matrix.of.symm (rEl k r j β t)))` using `hm.comp hc`. Rewrite using `[lebR0, lintegral_map hm hc, Measure.volume_eq_prod, lintegral_prod _ hmc.aemeasurable]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun x => lintegral_congr fun p => ?_` and prove the remaining obligations. Simplify using `only [rmulM, rEl, sEl, Equiv.apply_symm_apply, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem lintegral_commonStabilizerNormalForm_rightMul_section (k r j : ℕ) (β : Fin r → ℕ) (f : Mt k r → ℝ≥0∞) (hf : Measurable f)
     (q : PSec k r j × (UToff β → ℂ)) : ∫⁻ ρ, f (rmulM (sEl k r j β q) ρ) ∂(lebR0 k r j β) =
@@ -524,9 +522,9 @@ theorem lintegral_commonStabilizerNormalForm_rightMul_section (k r j : ℕ) (β 
   rfl
 
 /- English proof (translation)
-Introduce `k r j β hβ _ f hf`. Use `sfinite_PTop k r j` as an intermediate fact. Use `sfinite_PSec k r j` as an intermediate fact. Rewrite using `[lintegral_lebN k r j β hβ f hf]`. Simplify using `only [lintegral_commonStabilizerNormalForm_rightMul_section k r j β f hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `tonelli4 volume volume volume volume (fun (y : UToff β → ℂ) (x : UTin β → ℂ) (q' : PSec k r j) (q : PTop k r j) => f (Matrix.of.symm (uEmb k r (upperIn β x) * (pTop k r j q * pSec k r j q') * uEmb k r (upperOff β y)))) (hf.comp (measurable_mul (measurable_mul ((meas_in k r β).com …`.
+A detailed English derivation is pending.
 -/
 theorem lebN_split : ∀ (k r j : ℕ) (β : Fin r → ℕ), Monotone β → (∀ a b : Fin r, j ≤ b.val → (β a = β b ↔ j ≤ a.val)) →
     ∀ f : Mt k r → ℝ≥0∞, Measurable f → ∫⁻ n, f n ∂(lebN k r) =

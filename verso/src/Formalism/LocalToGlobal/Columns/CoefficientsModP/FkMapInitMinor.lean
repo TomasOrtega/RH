@@ -10,7 +10,7 @@ namespace Formalism.L2.DIV
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.initMinor`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fk_map_initMinor {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n s : ℕ} (I : Fin s → Fin r)
     (hs : s ≤ n) : map φ (Formalism.GradedWeylDivisibility.initMinor R I hs) = Formalism.GradedWeylDivisibility.initMinor S I hs := by
@@ -21,7 +21,7 @@ theorem fk_map_initMinor {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S)
   simp
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.bideterminant`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => fk_map_initMinor φ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fk_map_bidet {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n k : ℕ} (sz : Fin k → ℕ)
     (hsz : ∀ i, sz i ≤ n) (I : ∀ i, Fin (sz i) → Fin r) :
@@ -31,7 +31,7 @@ theorem fk_map_bidet {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r 
   exact Finset.prod_congr rfl fun i _ => fk_map_initMinor φ _ _
 
 /- English proof (translation)
-Take `⟨k, sz, hsz, I, -, -, h⟩` from `((Formalism.GradedWeylDivisibility.sSBasis K n n ν).choose_spec.2 m).2.2`. Conclude with `⟨Formalism.GradedWeylDivisibility.bideterminant ℤ sz hsz I, by rw [fk_map_bidet]; exact h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ssB_int (K : Type) [Field K] {n : ℕ} (ν : Fin n → ℕ) (m : Formalism.GradedWeylDivisibility.ssIdx n n ν) :
     ∃ P : MvPolynomial (Fin n × Fin n) ℤ, ssB K ν m = map (Int.castRingHom K) P := by
@@ -39,7 +39,7 @@ theorem ssB_int (K : Type) [Field K] {n : ℕ} (ν : Fin n → ℕ) (m : Formali
   exact ⟨Formalism.GradedWeylDivisibility.bideterminant ℤ sz hsz I, by rw [fk_map_bidet]; exact h⟩
 
 /- English proof (translation)
-Simplify using `only [Formalism.GradedWeylDivisibility.blockEmb]`. Conclude with `map_rename φ _ f`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fk_map_blockEmb {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {ι : Type} {k n : ℕ} (τ : ι)
     (f : MvPolynomial (Fin k × Fin n) R) :
@@ -48,9 +48,9 @@ theorem fk_map_blockEmb {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) 
   exact map_rename φ _ f
 
 /- English proof (translation)
-Use `choose Q hQ using fun τ => ssB_int K (lam τ).natW (i τ)`. Use `⟨∏ τ, Formalism.GradedWeylDivisibility.blockEmb ℤ τ (Q τ), ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Unfold `bVVfun ten`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fk_map_blockEmb]`. Conclude with `congrArg _ (hQ τ)`.
+A detailed English derivation is pending.
 -/
 theorem bVVfun_int (K : Type) [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (i : VVIdx lam) :
     ∃ P : MvPolynomial (ι × Fin n × Fin n) ℤ, bVVfun K lam i = MvPolynomial.map (Int.castRingHom K) P := by

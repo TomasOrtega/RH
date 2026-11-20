@@ -15,7 +15,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `PBG.Kr`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [PBG.ae_inR Bs] with ξ hξ`. Establish `hg : y * Matrix.of ξ.2 * Matrix.of ξ.1 ∈ B.GV k r` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hy hξ.2.1) hξ.1.1`. Rewrite using `[hH _ hg (by rw [PBG.dmin_pR Bs hξ y l, hya])]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kr_agree {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) (l : Fin (r + 2)) (a : ℂ) (H₁ H₂ : B.Mat k r → (Wq →L[ℂ] Wp))
     (hH : ∀ g ∈ B.GV k r, Dmin k r Bs.z Bs.z' g l = a → H₁ g = H₂ g) (y : B.Mat k r) (hy : y ∈ B.GV k r)
@@ -28,13 +28,13 @@ theorem kr_agree {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) (l : Fin (r + 2)) 
   rw [hH _ hg (by rw [PBG.dmin_pR Bs hξ y l, hya])]
 
 /- English proof (translation)
-Unfold `pbT`. Establish `e : j + (P.r - j) = P.r` using `by omega`. Rewrite using `[PartialBesselProperness.pbF_eq_TI, PartialBesselProperness.pbF_eq_TI]`. Unfold `PartialBesselProperness.TI`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [PartialBesselProperness.gI]`. Use `split_ifs with hx`. Establish `hs : PartialBesselProperness.sE (p.T.bs j) e x ∈ Sset P.k P.r p.T.base.z`. Use `PartialBesselProperness.sE_mem_S (p.T.bs j) e x` as an intermediate fact. Rewrite `this` using `[p.T.z_lev j (by omega)]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hyG : PartialBesselProperness.sE (p.T.bs j) e x * g ∈ B.GV P.k P.r` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (PartialBesselProperness.sE_GV _ e x) hg`. Establish `hyD : Dmin P.k P.r p.T.base.z p.T.base.z' (PartialBesselProperness.sE (p.T.bs j) e x * g) ⟨j + 1, by omega⟩ = a`. Use `Formalism.QuantumDeterminants.diagonal_inverse_holds P.k P.r p.T.base.z p.T.base.z' p.T.base.z_mem p.T.base.z'_mem _ hs 1 (Formalism.FourierDecayAlt.P.PBG.one_mem_Sset P.k P.r _) g ⟨j + 1, by omega⟩` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Rewrite using `[this, hga]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kr_agree p.T.base ⟨j + 1, by omega⟩ a H₁ H₂ hH _ hyG hyD]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pbT_agree (P : M.Par) (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j + 1 ≤ P.r) (a : ℂ)
     (H₁ H₂ : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
@@ -88,9 +88,9 @@ def CutOffExists : Prop :=
         Fc g = D.uwG P.k P.r p.T.base.z p.T.base.z' F (j + 1) hj w e g
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `[U.lowW]`. Introduce `a b hab`. Simplify using `only [U.lowW, Matrix.add_apply, Matrix.one_apply, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hab' : a < b` using `hab`. Rewrite using `[if_neg (ne_of_lt hab'), dif_neg (fun h => absurd h.1 (not_lt.mpr hab'.le)), add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_lowW {p : ℕ} (σ : Equiv.Perm (Fin p)) (v : U.LW σ → ℂ) : (U.lowW σ v).det = 1 := by
   rw [Matrix.det_of_lowerTriangular]
@@ -102,9 +102,9 @@ theorem det_lowW {p : ℕ} (σ : Equiv.Perm (Fin p)) (v : U.LW σ → ℂ) : (U.
     rw [if_neg (ne_of_lt hab'), dif_neg (fun h => absurd h.1 (not_lt.mpr hab'.le)), add_zero]
 
 /- English proof (translation)
-Establish `hH : (U.hMat (D.ptPerm h) (D.ptDiag h)).det ≠ 0` using `Formalism.FourierDecayAlt.P.PBM.hMat_det_ne _ _ (CutHB.ptDiag_ne hh)`. Establish `hw : IsUnit (U.wP (D.ptPerm h))`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Introduce `h0`. Apply `hH` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[U.hMat, Matrix.det_mul, h0, zero_mul]`. Unfold `zxH LeftFubiniLemmas.lhOf`. Rewrite using `[Matrix.det_reindex_self, Matrix.det_mul, Matrix.det_conj hw, det_lowW, one_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem zxH_det (h : C.LPt) (j : ℕ) (hh : D.IsLocPt h j) (v : XH h) :
     (zxH h j hh.2 v).det = (U.hMat (D.ptPerm h) (D.ptDiag h)).det := by

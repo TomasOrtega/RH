@@ -22,9 +22,9 @@ section Coord
 variable {S : Type} [CommRing S] {G : Over (Spec (CommRingCat.of S))} [GrpObj G]
 
 /- English proof (translation)
-Establish `one : ∀ T : Over (Spec (CommRingCat.of S)), (1 : T ⟶ G') ≫ e.hom = 1` using `fun T => map_one (IsMonHom.monoidHom e.hom T)`. Establish `one' : ∀ T : Over (Spec (CommRingCat.of S)), (1 : T ⟶ G) ≫ e.inv = 1` using `fun T => by`. Rewrite using `[← one, Category.assoc, e.hom_inv_id, Category.comp_id]`. Use `⟨fun m => ?_, fun m => ?_, fun A _ _ aug m hm y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hx.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hx.2.1, one']`. Use `hx.2.2 A aug m hm (y ≫ e.hom) (by rw [← Category.assoc, hy, one])` as an intermediate fact. Simplify `this` using `only [← Category.assoc, Iso.eq_comp_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnivChart_iso {G' : Over (Spec (CommRingCat.of S))} [GrpObj G'] (e : G' ≅ G) [IsMonHom e.hom] {n : ℕ}
     {x : ∀ m : ℕ, sp (R₀ := S) (JetR S (Fin n) m) ⟶ G} (hx : IsUnivChart G n x) :
@@ -40,7 +40,7 @@ theorem isUnivChart_iso {G' : Over (Spec (CommRingCat.of S))} [GrpObj G'] (e : G
     simpa only [← Category.assoc, Iso.eq_comp_inv] using this
 
 /- English proof (translation)
-Set `_` to `f.toAlgebra`. Take `⟨n, x, hx⟩` from `univChartLoc G₀`. Take `⟨x', hx', -⟩` from `tanBC_alg (R' := S) G₀ n x hx`. Take `⟨e, he, -⟩` from `grpPullback_iso h (isGrpPullback_pullback G₀ (fB R S))`. Conclude with `⟨n, _, isUnivChart_iso e hx'⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart_of_pullback {R : Type} [CommRing R] [IsLocalRing R] {G₀ : Over (Spec (CommRingCat.of R))} [GrpObj G₀]
     [Smooth G₀.hom] (f : R →+* S) {φ : G.left ⟶ G₀.left} (h : IsGrpPullback G G₀ (Geo.Tor.spMap f) φ) :
@@ -56,7 +56,7 @@ variable {n : ℕ} {y : ∀ m : ℕ, sp (R₀ := S) (JetR S (Fin n) m) ⟶ G} (h
 include hy
 
 /- English proof (translation)
-Take `⟨k, -⟩` from `prodPts_tan hy z v fun i => (isTan_iff _).2 (hv i)`. Rewrite using `[(isLieComb_iff _ _ _).1 hw]`. Conclude with `(isTan_iff _).1 k`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTangent_of_comb (hv : ∀ i, IsTangent (v i)) {z : Fin g → S} {w : epsR S ⟶ G} (hw : IsLieComb z v w) :
     IsTangent w := by
@@ -65,7 +65,7 @@ theorem isTangent_of_comb (hv : ∀ i, IsTangent (v i)) {z : Fin g → S} {w : e
   exact (isTan_iff _).1 k
 
 /- English proof (translation)
-Take `⟨k, e⟩` from `prodPts_tan hy c v tv`. Conclude with `(hv.2 _ ((isTan_iff _).1 k)).unique ((comb_iff_coord hy c tv k).2 e) ((comb_iff_coord hy c' tv k).2 (e.trans h))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coord_inj (hv : IsLieBasis v) (tv : ∀ i, IsTan (v i)) {c c' : Fin g → S}
     (h : ∑ i, c i • tcoord hy (v i) (tv i) = ∑ i, c' i • tcoord hy (v i) (tv i)) : c = c' := by
@@ -74,9 +74,9 @@ theorem coord_inj (hv : IsLieBasis v) (tv : ∀ i, IsTan (v i)) {c c' : Fin g �
     ((comb_iff_coord hy c' tv k).2 (e.trans h))
 
 /- English proof (translation)
-Establish `tv` using `fun i => (isTan_iff _).2 (hv.1 i)`. Establish `tu` using `fun k => (isTan_iff _).2 (isTangent_of_comb hy hv.1 (hU k))`. Establish `tw` using `(isTan_iff _).2 (isTangent_of_comb hy hv.1 hw)`. Establish `e : ∑ i, cf i • tcoord hy (u i) (tu i) = ∑ j, (∑ k, cf k • U k) j • tcoord hy (v j) (tv j)`. Simplify using `only [(comb_iff_coord hy _ tv (tu _)).1 (hU _), Finset.smul_sum, Finset.sum_smul, smul_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`. Rewrite using `[comb_iff_coord hy cf tu tw, e, (comb_iff_coord hy z tv tw).1 hw]`. Conclude with `⟨fun q => coord_inj hy hv tv q, fun q => by rw [q]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem comb_iff (hv : IsLieBasis v) {m : ℕ} {u : Fin m → (epsR S ⟶ G)} {U : Fin m → Fin g → S}
     (hU : ∀ k, IsLieComb (U k) v (u k)) {z : Fin g → S} {w : epsR S ⟶ G} (hw : IsLieComb z v w) (cf : Fin m → S) :
@@ -92,20 +92,18 @@ theorem comb_iff (hv : IsLieBasis v) {m : ℕ} {u : Fin m → (epsR S ⟶ G)} {U
   exact ⟨fun q => coord_inj hy hv tv q, fun q => by rw [q]⟩
 
 /- English proof (translation)
-The claim follows from `tcoord_congr hy (congrArg (· ≫ f) (tcoord_spec hy w tw)) _ (isTan_comp (isTan_tvec hy _) f)`.
+A detailed English derivation is pending.
 -/
 theorem tcoord_comp (f : G ⟶ G) [IsMonHom f] {w : epsR S ⟶ G} (tw : IsTan w) :
     tcoord hy (w ≫ f) (isTan_comp tw f) = tmap hy f (tcoord hy w tw) :=
   tcoord_congr hy (congrArg (· ≫ f) (tcoord_spec hy w tw)) _ (isTan_comp (isTan_tvec hy _) f)
 
 /- English proof (translation)
-Establish `tv` using `fun i => (isTan_iff _).2 (hv.1 i)`. Establish `tw` using `(isTan_iff _).2 (isTangent_of_comb hy hv.1 hw)`. Establish `ew` using `(comb_iff_coord hy z tv tw).1 hw`. Establish `e1 : tcoord hy (w ≫ f) (isTan_comp tw f) = ∑ j, (z ᵥ* M) j • tcoord hy (v j) (tv j)`. Rewrite using `[tcoord_comp hy f tw, ew, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, ← tcoord_comp hy f, (comb_iff_coord hy _ tv (isTan_comp (tv _) f)).1 (hM _), Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `e2 : tcoord hy (spMap (scaleD r) ≫ w) (isTan_scale r tw) = ∑ j, (r • z) j • tcoord hy (v j) (tv j)`. Rewrite using `[tcoord_scale hy r tw, ew, Finset.smul_sum]`. Simplify using `only [smul_smul, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `q`. Establish `q' : w ≫ f = spMap (scaleD r) ≫ w` using `Over.OverMorphism.ext q`. Conclude with `coord_inj hy hv tv (e1.symm.trans ((tcoord_congr hy q' _ _).trans e2))`. Introduce `q`.
-
-Establish `q' : w ≫ f = spMap (scaleD r) ≫ w` using `tan_ext hy (isTan_comp tw f) (isTan_scale r tw) (by rw [e1, e2, q])`. Conclude with `congrArg (fun t => t.left) q'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eig_iff (hv : IsLieBasis v) (f : G ⟶ G) [IsMonHom f] {M : Matrix (Fin g) (Fin g) S}
     (hM : ∀ i, IsLieComb (M i) v (v i ≫ f)) {z : Fin g → S} {w : epsR S ⟶ G} (hw : IsLieComb z v w) (r : S) :
@@ -133,7 +131,7 @@ theorem eig_iff (hv : IsLieBasis v) (f : G ⟶ G) [IsMonHom f] {M : Matrix (Fin 
 omit hy in
 
 /- English proof (translation)
-Establish `c : (Geo.Tor.spMap (dualMapR f) ≫ w.left) ≫ G₀.hom = (epsR S).hom ≫ Geo.Tor.spMap f`. Rewrite using `[Category.assoc, Over.w w]`. Conclude with `(Geo.Tor.spMap_comp _ _).symm.trans ((congrArg Geo.Tor.spMap (RingHom.ext fun r => by`. Apply the tactic sequence `ext <;> simp [dualMapR, TrivSqZeroExt.algebraMap_eq_inl])).trans (Geo.Tor.spMap_comp _ _))`. Conclude with `⟨Over.homMk (h.1.lift _ _ c) (h.1.lift_snd _ _ c), h.1.lift_fst _ _ c⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift {R : Type} [CommRing R] {G₀ : Over (Spec (CommRingCat.of R))} [GrpObj G₀]
     (f : R →+* S) {φ : G.left ⟶ G₀.left} (h : IsGrpPullback G G₀ (Geo.Tor.spMap f) φ) (w : epsR R ⟶ G₀) :
@@ -147,13 +145,13 @@ theorem exists_lift {R : Type} [CommRing R] {G₀ : Over (Spec (CommRingCat.of R
 end Coord
 
 /- English proof (translation)
-Set `_` to `f.toAlgebra`. Establish `: Module.Flat A S` using `hf`. Use `(GlobalTheory.commonEigenvectors_flat_baseChange A I g m M ρ).1 A U hU (fun z hz => ?_) S w hw` and prove the remaining obligations. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply, RingHom.coe_id, Matrix.map_id] at hz ⊢`. Take `⟨cf, hcf, huniq⟩` from `h (fun j => PowerSeries.C (R := A) (z j)) (fun i => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `j`. Use `congrArg (PowerSeries.C (R := A)) (congrFun (hz i) j)` as an intermediate fact. Simplify `this)` using `[Matrix.vecMul, dotProduct]`. Establish `key : ∀ c : Fin m → A, (z = ∑ k, c k • fun j => U k j) → (fun k => PowerSeries.C (R` using `A) (c k)) = cf := fun c hc => huniq _ (by`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrArg (PowerSeries.C (R := A)) (congrFun hc j)` as an intermediate fact. Simplify `this)` using `[Finset.sum_apply]`. Use `⟨fun k => PowerSeries.constantCoeff (R := A) (cf k), ?_, fun c hc => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `congrArg (PowerSeries.constantCoeff (R := A)) (congrFun hcf j)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify `this` using `[Finset.sum_apply]`. Rewrite using `[← key c hc]`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem eig_powerSeries {A : Type} [CommRing A] [IsNoetherianRing A] {I : Type} {g m : ℕ}
     (M : I → Matrix (Fin g) (Fin g) A) (ρ : I → A) (U : Fin m → Fin g → A)
@@ -191,21 +189,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Matrix GlobalTheory.BasisUniv in
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W ρ e hB S _ ι hflat t' m2`. Take `⟨v₀, hv₀, hB⟩` from `hB`. Take `⟨g, e₁, v, M, hev, hv, hcomb, hM⟩` from `GlobalTheory.T.exists_constantLieBasis_arcGroup hG E H Dw l Xo c O β Y A b a χ W`. Establish `hsm : Smooth W.t.G.hom` using `W.t.semi.smooth`. Establish `hmon : ∀ x, IsMonHom (W.t.act.act x)` using `W.t.act.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmon' : ∀ x, IsMonHom (t'.act.act x)` using `t'.act.hom`. Take `⟨n, y, hy⟩` from `Chart.univChartLoc W.t.G`. Take `⟨n', y', hy'⟩` from `exists_chart_of_pullback ι m2.cart`. Establish `hU : ∀ τ k, ∃ U : Fin g → A, IsLieComb (fun j => PowerSeries.C (R` using `A) (U j)) v (v₀ τ k) := fun τ k => by`. Establish `ht : GtTanR (e τ k)` using `((GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W (e τ k)).2 _ (hv₀ τ k)).2 ((hB τ).1 k).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, hU, -⟩` from `hcomb _ ht`. Conclude with `⟨U, (GlobalTheory.T.lieImg_iff_isLieComb_of_gtComb hG E H Dw l Xo c O β Y A b a χ W g U e₁ (e τ k) v _ (fun i => (hev i).2) hU).1 (hv₀ τ k)⟩`. Use `choose U hU using hU`. Use `choose u hu using fun τ k => exists_lift ι m2.cart (v₀ τ k)`. Use `choose v' hv' using fun j => exists_lift ι m2.cart (v j)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : IsLieBasis v'` using `Chart.isLieBasis_baseChange ι m2.cart hv hv'`. Establish `hU' : ∀ τ k, IsLieComb (fun j => (ι.comp (PowerSeries.C (R` using `A))) (U τ k j)) v' (u τ k) := fun τ k => Chart.comb_baseChange ι m2.cart (hU τ k) hv' (hu τ k)`. Establish `hM' : ∀ x i, IsLieComb ((M x).map (ι.comp (PowerSeries.C (R` using `A))) i) v' (v' i ≫ t'.act.act x) := fun x i => Chart.comb_baseChange ι m2.cart (hM x i) hv' (by`. Rewrite using `[Over.comp_left, Category.assoc, m2.act, ← Category.assoc, hv', Category.assoc, Over.comp_left])`. Establish `hMR : ∀ x i, IsLieComb ((M x).map (PowerSeries.C (R` using `A)) i) v (v i ≫ W.t.act.act x) := hM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hUe : ∀ τ k x, U τ k ᵥ* M x = ρ τ x • U τ k` using `fun τ k x => by`. Use `(eig_iff hy hv _ (hMR x) (hU τ k) _).1 (((hB τ).1 k).2 x)` as an intermediate fact. Use function extensionality and compare the values at `j`. Use `congrArg (PowerSeries.constantCoeff (R := A)) (congrFun this j)` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨u, fun τ k => ⟨v₀ τ k, hv₀ τ k, hu τ k⟩, fun τ => ⟨fun k => ⟨isTangent_of_comb hy' hb'.1 (hU' τ k), fun x => ?_⟩, fun w hw hwe => ?_⟩⟩` and prove the remaining obligations. Use `(eig_iff hy' hb' _ (hM' x) (hU' τ k) _).2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `congrArg (ι.comp (PowerSeries.C (R := A))) (congrFun (hUe τ k x) j)` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz, -⟩` from `hb'.2 w hw`. Simplify using `only [comb_iff hy' hb' (hU' τ) hz]`. Use `eig_powerSeries M (fun x => ρ τ x) (U τ) (hUe τ) (fun s hs => ?_) _ hflat z (fun x => (eig_iff hy' hb' _ (hM' x) hz _).1 (hwe x))` and prove the remaining obligations. Establish `hc : IsLieComb s v (Chart.prodPts s v)` using `(Chart.isLieComb_iff _ _ _).2 rfl`. Use `(hB τ).2 _ (isTangent_of_comb hy hv.1 hc) (fun x => (eig_iff hy hv _ (hMR x) hc _).2 (hs x))` as an intermediate fact.
-
-Simplify `this` using `only [comb_iff hy hv (hU τ) hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ArcQ.arcBasis_baseChange : Out.GlobalFnsSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] (b : O →+* A) (a : ArcIn Dw l β A b) (χ : Sp (PowerSeries A) ⟶ Y.X) (W : Wit Y a χ) (ρ : (E →+* ℂ) → (𝓞 E →+* A)) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR A)), ArcBasis W ρ e → ∀ (S : Type) [CommRing S] (ι : PowerSeries A →+* S), (ι.comp (PowerSeries.C (R := A))).Flat → ∀ (t' : SAB H (Sp S)) (m2 : SABMap t' W.t (spMap ι)), ∃ u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (epsR S ⟶ t'.G), (∀ τ k, ∃ v, LieImg W (e τ k) v ∧ (u τ k).left ≫ m2.φ = spMap (dualMap ι) ≫ v.left) ∧ ∀ τ, (∀ k, IsTangent (u τ k) ∧ ∀ x : 𝓞 E, (u τ k ≫ t'.act.act x).left = spMap (epsScaleR (ι (PowerSeries.C (R := A) (ρ τ x)))) ≫ (u τ k).left) ∧ ∀ w : epsR S ⟶ t'.G, IsTangent w → (∀ x : 𝓞 E, (w ≫ t'.act.act x).left = spMap (epsScaleR (ι (PowerSeries.C (R := A) (ρ τ x)))) ≫ w.left) → ∃! cf : Fin (Dw.mult τ) → S, IsLieComb cf (u τ) w := by
   intro hG E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W ρ e hB S _ ι hflat t' m2

@@ -19,7 +19,7 @@ variable {Γ : Type u} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
   {A B : Rep.{u} k Γ} [IsDiscreteRep A] [IsDiscreteRep B]
 
 /- English proof (translation)
-Use extensionality with `n c : 3`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 private theorem cochainsMap_add_alt (f g : A ⟶ B) :
     cochainsMap (f + g) = cochainsMap f + cochainsMap g := by
@@ -37,7 +37,7 @@ private noncomputable def cohomologyMapAddHom (n : ℕ) :
     exact HomologicalComplex.homologyMap_add _ _ _
 
 /- English proof (translation)
-The claim follows from `map_sum (cohomologyMapAddHom n) f s`.
+A detailed English derivation is pending.
 -/
 private theorem cohomologyMap_sum_alt {J : Type*} (s : Finset J) (f : J → (A ⟶ B)) (n : ℕ) :
     cohomologyMap (∑ j ∈ s, f j) n = ∑ j ∈ s, cohomologyMap (f j) n :=
@@ -98,7 +98,7 @@ noncomputable def mackeyCohomologyMap (x : G) (n : ℕ) :
 
 omit [CompactSpace G] in
 /- English proof (translation)
-The claim follows from `@isIso_shapiroMap' k H _ _ _ _ _ (mackeyOpenSubgroup V (continuous_toMonoidHom ι) x) (mackeyRep (V : Subgroup G) ι.toMonoidHom N x) (isDiscreteRep_mackeyRep_continuousMonoidHom V ι N x) n`.
+A detailed English derivation is pending.
 -/
 theorem isIso_shapiroMap_mackey (x : G) (n : ℕ) :
     IsIso (@shapiroMap k H _ _ _ _ _ (mackeyOpenSubgroup V (continuous_toMonoidHom ι) x)
@@ -109,21 +109,19 @@ theorem isIso_shapiroMap_mackey (x : G) (n : ℕ) :
       (isDiscreteRep_mackeyRep_continuousMonoidHom V ι N x) n
 
 /- English proof (translation)
-Use `set P := fun d : MackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom => cohomologyMap (mackeyProj (V : Subgroup G) ι.toMonoidHom N d.out) n`. Use `set I := fun d : MackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom => cohomologyMap (mackeyIncl (V : Subgroup G) ι.toMonoidHom N d) n`. Establish `hIP : ∀ d, I d ≫ P d = 𝟙 _` using `fun d => by`. Simplify using `only [I, P]`. Rewrite using `[← cohomologyMap_comp, mackeyIncl_comp_mackeyProj, cohomologyMap_id]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hIP' : ∀ d d', d ≠ d' → I d ≫ P d' = 0` using `fun d d' h => by`. Simplify using `only [I, P]`. Rewrite using `[← cohomologyMap_comp, mackeyIncl_comp_mackeyProj_of_ne _ _ _ h, cohomologyMap_zero]`. Establish `hsum : ∑ d, P d ≫ I d = 𝟙 _`. Simplify using `only [I, P]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[← cohomologyMap_comp]`. Rewrite using `[← cohomologyMap_sum_alt, sum_mackeyProj_comp_mackeyIncl, cohomologyMap_id]`. Use `set S := fun d : MackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom => @shapiroMap k H _ _ _ _ _ (mackeyOpenSubgroup V (continuous_toMonoidHom ι) d.out) (mackeyRep (V : Subgroup G) ι.toMonoidHom N d.out) (isDiscreteRep_mackeyRep_continuousMonoidHom V ι N d.out) n`. Establish `key : ∀ d c, (mackeyCohomologyMap V ι N d.out n).hom c = (S d).hom ((P d).hom c)` using `fun _ _ => rfl`. Establish `hS : ∀ d, Function.Bijective (S d).hom` using `fun d => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `isIso_shapiroMap_mackey V ι N d.out n` as an intermediate fact. Conclude with `ConcreteCategory.bijective_of_isIso _`. Prove the components needed by the constructor for the conclusion. Introduce `c c' hcc`. Establish `hP : ∀ d, (P d).hom c = (P d).hom c'` using `fun d => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrFun hcc d`. Simplify using `only [key] at h1`. Conclude with `(hS d).1 h1`. Establish `e : ∀ c₀, c₀ = ∑ d, (I d).hom ((P d).hom c₀)` using `fun c₀ => by`. Use `congrArg (fun φ => φ.hom c₀) hsum` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[ModuleCat.hom_sum, LinearMap.sum_apply]`. Conclude with `this.symm`. Rewrite using `[e c, e c']`. Simplify using `only [hP]`. Introduce `y choose z hz using fun d => (hS d).2 (y d)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ d, (I d).hom (z d), funext fun d' => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(mackeyCohomologyMap V ι N d'.out n).hom (∑ d, (I d).hom (z d)) = y d'`. Rewrite using `[key, map_sum, Finset.sum_eq_single d']`. Rewrite using `[hom_apply_hom_apply_of_comp_eq (hIP d') (z d')]`. Conclude with `hz d'`.
-
-Introduce `d _ hd`. Rewrite using `[hom_apply_hom_apply_of_comp_eq (hIP' d d' hd) (z d)]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ d') h`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mackeyCohomology_bijective (n : ℕ) :
     Function.Bijective fun (c : cohomology (Rep.res ι.toMonoidHom
@@ -195,9 +193,9 @@ theorem mackeyCohomologyPi_apply (n : ℕ)
   rfl
 
 /- English proof (translation)
-Establish `h` using `mackeyCohomology_bijective V ι N n`. Use `⟨fun c c' hc => h.1 (funext fun d => ?_), fun y => ?_⟩` and prove the remaining obligations. Use `congrFun hc d` as an intermediate fact. Rewrite `this` using `[mackeyCohomologyPi_apply, mackeyCohomologyPi_apply]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `h.2 y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, funext fun d => (mackeyCohomologyPi_apply V ι N n c d).trans (congrFun hc d)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mackeyCohomologyPi_bijective (n : ℕ) : Function.Bijective (mackeyCohomologyPi V ι N n) := by
   have h := mackeyCohomology_bijective V ι N n
@@ -223,9 +221,9 @@ theorem mackeyCohomologyEquiv_apply (n : ℕ)
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Category.id_comp (cohomologyMapAlong ι.toMonoidHom _ _ n), ← cohomologyInnerConj_eq_id n (Rep.coind (V : Subgroup G).subtype N) x⁻¹, mackeyCohomologyMap, ← cohomologyMapAlong_id_eq_cohomologyMap, shapiroMap_eq, cohomologyInnerConj, Category.assoc]`. Rewrite using `[← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Use `Eq.trans ?_ (cohomologyMapAlong_comp _ _ _ _ _ _ n)` and prove the remaining obligations. Use `cohomologyMapAlong_congr _ _ _ _ ?_ (fun f => ?_) n` and prove the remaining obligations. Use extensionality with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `x⁻¹⁻¹ * ι.toMonoidHom (h : H) * x⁻¹ = x * ι.toMonoidHom (h : H) * x⁻¹`. Rewrite using `[inv_inv]`. Express the relevant statement in the definitionally equal form `f.1 (x * ι.toMonoidHom 1 * x⁻¹) = f.1 1`. Rewrite using `[map_one, mul_one, mul_inv_cancel]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyMapAlong_comp_mackeyCohomologyMap (x : G) (n : ℕ) :
     cohomologyMapAlong ι.toMonoidHom (continuous_toMonoidHom ι)
@@ -247,7 +245,7 @@ theorem cohomologyMapAlong_comp_mackeyCohomologyMap (x : G) (n : ℕ) :
     rw [map_one, mul_one, mul_inv_cancel]
 
 /- English proof (translation)
-Rewrite using `[mackeyCohomologyEquiv_apply]`. Conclude with `hom_apply_hom_apply_eq_of_comp_eq (cohomologyMapAlong_comp_mackeyCohomologyMap V ι N d.out n) c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mackeyCohomologyEquiv_cohomologyMapAlong (n : ℕ)
     (c : cohomology (Rep.coind (V : Subgroup G).subtype N) n)

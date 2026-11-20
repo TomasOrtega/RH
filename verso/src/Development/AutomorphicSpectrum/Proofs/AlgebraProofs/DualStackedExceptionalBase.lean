@@ -21,23 +21,21 @@ def blockEval {R : Type} [CommRing R] (P Q : T → R) : MRing (stackedBlocks T) 
   eval₂Hom (Int.castRingHom R) (blockVal P Q)
 
 /- English proof (translation)
-Simplify using `[blockEval, graphFirst, blockVal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockEval_first {R : Type} [CommRing R] (P Q : T → R) (t : T) :
     blockEval P Q (graphFirst t) = P t := by
   simp [blockEval, graphFirst, blockVal]
 
 /- English proof (translation)
-Simplify using `[blockEval, graphSecond, blockVal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockEval_second {R : Type} [CommRing R] (P Q : T → R) (t : T) :
     blockEval P Q (graphSecond t) = Q t := by
   simp [blockEval, graphSecond, blockVal]
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `n`. Simplify using the standard rewrite rules. Apply the tactic sequence `rintro ⟨(u | u), t⟩ <;> obtain ⟨⟩ := u`. Conclude with `h1 t`.
-
-Conclude with `h2 t`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ringHom_block_ext {R : Type} [CommRing R] {f g : MRing (stackedBlocks T) →+* R}
     (h1 : ∀ t, f (graphFirst t) = g (graphFirst t)) (h2 : ∀ t, f (graphSecond t) = g (graphSecond t)) :
@@ -50,11 +48,11 @@ theorem ringHom_block_ext {R : Type} [CommRing R] {f g : MRing (stackedBlocks T)
     · exact h2 t
 
 /- English proof (translation)
-Simplify using `only [blockEval, coe_eval₂Hom]`. Rewrite using `[eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `h1 : ∑ t : T, m ⟨Sum.inl (), t⟩ = d` using `hf m hm (Sum.inl ())`. Establish `h2 : ∑ t : T, m ⟨Sum.inr (), t⟩ = e` using `hf m hm (Sum.inr ())`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∏ s, blockVal (fun t => l * P t) (fun t => μ * Q t) s ^ m s = l ^ d * μ ^ e * ∏ s, blockVal P Q s ^ m s`. Rewrite using `[Fintype.prod_sigma, Fintype.prod_sigma, Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Fintype.prod_unique]`. Express the relevant statement in the definitionally equal form `(∏ t : T, (l * P t) ^ m ⟨Sum.inl (), t⟩) * (∏ t : T, (μ * Q t) ^ m ⟨Sum.inr (), t⟩) = l ^ d * μ ^ e * ((∏ t : T, P t ^ m ⟨Sum.inl (), t⟩) * ∏ t : T, Q t ^ m ⟨Sum.inr (), t⟩)`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem blockEval_scale {R : Type} [CommRing R] (P Q : T → R) (l μ : R) {d e : ℕ}
     {f : MRing (stackedBlocks T)} (hf : IsMultiHomog f (bidegree d e)) :
@@ -83,9 +81,9 @@ section ThetaShiftProofs
 variable {K : Type} [Field K] {i m : ℕ}
 
 /- English proof (translation)
-Establish `hj : ∀ j, eval₂Hom (C : K →+* MvPolynomial (Fin (m + 1)) K) (fun j => C p * (C (y₀ j) * X 0 + ∑ l, C (g l j) * X l.succ)) (C (φ j) * X j) = C p * (C (φ j * y₀ j) * X 0 + ∑ l, C (φ j * g l j) * X l.succ)`. Introduce `j`. Rewrite using `[map_mul, eval₂Hom_C, eval₂Hom_X']`. Simplify using `only [C_mul, mul_assoc, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_sum, Finset.sum_congr rfl fun j _ => hj j, ← Finset.mul_sum, Finset.sum_add_distrib, ← Finset.sum_mul, Finset.sum_comm]`. Simplify using `only [dotProduct, map_sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem arc_form (p : K) (y₀ : Fin i → K) (g : Fin m → Fin i → K) (φ : Fin i → K) :
     eval₂Hom (C : K →+* MvPolynomial (Fin (m + 1)) K)
@@ -109,35 +107,31 @@ section Lead
 variable {K : Type} [Field K] [NumberField K] {i : ℕ} {F F' : HermLattice K i} {T : Type} [Fintype T]
 
 /- English proof (translation)
-Take `⟨-, hπ, -, hg, hα, hM0, hMj, ⟨t₀, ht₀⟩, -, -, -, -⟩` from `hco`. Use `choose cα hcα hcαρ using hα`. Use `choose c0 hc0 hc0ρ using hM0`. Use `choose c1 hc1 hc1ρ using hMj`. Establish `hh : ∀ t l, ∃ c : 𝓞 K, algebraMap (𝓞 K) K c = (b' t : Fin i → K) ⬝ᵥ g l` using `fun t l => (b' t).2 _ (hg l)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose h hh using hh`. Establish `hinj : Function.Injective (algebraMap (𝓞 K) K)` using `IsFractionRing.injective (𝓞 K) K`. Establish `hπ0 : algebraMap (𝓞 K) K π ≠ 0`. Introduce `hp`. Apply `ht₀` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hc : cα t₀ = 0` using `hinj (by rw [hcα, hp, map_zero, zero_smul, dotProduct_zero])`. Rewrite using `[← hcαρ t₀, hc, map_zero]`. Set `A : T → MvPolynomial (Fin (m + 1)) (𝓞 K)` to `fun t => C (cα t) * X 0 + ∑ l, C (π * h t l) * X l.succ`. Set `L : T → MvPolynomial (Fin (m + 1)) (𝓞 K)` to `fun t => C (c0 t) * X 0 + ∑ l, C (c1 t l) * X l.succ`. Set `ι : MvPolynomial (Fin (m + 1)) (𝓞 K) →+* MvPolynomial (Fin (m + 1)) K` to `map (algebraMap (𝓞 K) K)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hι : Function.Injective ι` using `map_injective _ hinj`. Set `p : K` to `algebraMap (𝓞 K) K π`. Set `Φ : MvPolynomial (Fin i) K →+* MvPolynomial (Fin (m + 1)) K` to `eval₂Hom C (fun j => C p * (C (y₀ j) * X 0 + ∑ l, C (g l j) * X l.succ))`. Establish `hΦ : Φ.comp (stackedFormEval b b') = blockEval (fun t => 1 * ι (A t)) (fun t => C p * ι (L t))`. Apply `ringHom_block_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `t`. Rewrite using `[RingHom.comp_apply, DualStackedExcLeadExample.stackedFormEval_first, blockEval_first]`. Use `(arc_form p y₀ g _).trans ?_` and prove the remaining obligations. Simplify using `only [A, ι, map_add, map_mul, map_C, map_X, map_sum, one_mul]`. Rewrite using `[hcα, dotProduct_smul, smul_eq_mul, C_mul, mul_add, Finset.mul_sum, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hh]`. Conclude with `(mul_assoc _ _ _).symm`. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[RingHom.comp_apply, DualStackedExcLeadExample.stackedFormEval_second, blockEval_second]`. Use `(arc_form p y₀ g _).trans ?_` and prove the remaining obligations. Simplify using `only [L, ι, map_add, map_mul, map_C, map_X, map_sum, hc0, hc1]`. Establish `hι2 : blockEval (fun t => ι (A t)) (fun t => ι (L t)) = ι.comp (blockEval A L)`. Apply `ringHom_block_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `t`. Simplify using `only [RingHom.comp_apply, blockEval_first]`. Introduce `t`. Simplify using `only [RingHom.comp_apply, blockEval_second]`. Establish `e1 : (C p) ^ e * ι (blockEval A L f) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun r => r f) hΦ`. Simplify using `only [RingHom.comp_apply, h0, map_zero] at h1`. Rewrite `h1` using `[blockEval_scale _ _ _ _ hf, hι2, one_pow, one_mul, RingHom.comp_apply]`. Conclude with `h1.symm`. Establish `e2 : blockEval A L f = 0`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hCp : (C p : MvPolynomial (Fin (m + 1)) K) ≠ 0`. Rewrite using `[Ne, C_eq_zero]`. Conclude with `hπ0`. Conclude with `hι (by rw [map_zero]; exact (mul_eq_zero.mp e1).resolve_left (pow_ne_zero _ hCp))`. Set `ψ : MvPolynomial (Fin (m + 1)) (𝓞 K) →+* MvPolynomial (Option (Fin (m + 1))) k` to `eval₂Hom (C.comp ρ) (fun j => X (some j))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ℓ : T → MvPolynomial (Option (Fin (m + 1))) k` to `fun t => ∑ j, C (M t j) * X (some j)`. Establish `hψ : ψ.comp (blockEval A L) = blockEval (fun t => X (some 0) * C (α t)) (fun t => 1 * ℓ t)`. Apply `ringHom_block_ext` to reduce the goal to its premises. Introduce `t`. Rewrite using `[RingHom.comp_apply, blockEval_first, blockEval_first]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [A, ψ, map_add, map_mul, eval₂Hom_C, eval₂Hom_X', map_sum, RingHom.comp_apply, hcαρ, hπ, map_zero, zero_mul, Finset.sum_const_zero, add_zero]`. Expand and normalize the polynomial expressions, which then agree. Introduce `t`. Rewrite using `[RingHom.comp_apply, blockEval_second, blockEval_second]`. Simplify using `only [L, ψ, ℓ, map_add, map_mul, eval₂Hom_C, eval₂Hom_X', map_sum, RingHom.comp_apply, hc0ρ, hc1ρ, one_mul, Fin.sum_univ_succ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlin : (linPointMap α M : MRing (stackedBlocks T) →+* _) = blockEval (fun t => X none * C (α t)) (fun t => 1 * ℓ t)`. Apply `ringHom_block_ext` to reduce the goal to its premises. Introduce `t`. Rewrite using `[LinPrimeExample.linPointMap_first, blockEval_first, mul_comm]`. Introduce `t`.
-
-Rewrite using `[LinPrimeExample.linPointMap_second, blockEval_second, one_mul]`. Establish `e3 : blockEval (fun t => C (α t)) ℓ f = 0`. Establish `h1` using `congrArg (fun r => r f) hψ`. Simplify using `only [RingHom.comp_apply, e2, map_zero] at h1`. Rewrite `h1` using `[blockEval_scale _ _ _ _ hf, one_pow, mul_one]`.
-
-Conclude with `(mul_eq_zero.mp h1.symm).resolve_left (pow_ne_zero _ (X_ne_zero _))`. Rewrite using `[hlin, blockEval_scale _ _ _ _ hf, e3, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lead_of_coords {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.Basis T ℤ (dualLattice F')}
     {k : Type} [Field k] {ρ : 𝓞 K →+* k} {π : 𝓞 K} {y₀ : Fin i → K} {m : ℕ} {g : Fin m → Fin i → K}
@@ -231,11 +225,11 @@ theorem lead_of_coords {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.Bas
   rw [hlin, blockEval_scale _ _ _ _ hf, e3, mul_zero]
 
 /- English proof (translation)
-Take `⟨-, hπ, -, -, hα, hM0, -⟩` from `hco`. Take `⟨c, hc, hcρ⟩` from `hα t`. Take `⟨c', hc', -⟩` from `hM0 t`. Establish `hinj : Function.Injective (algebraMap (𝓞 K) K)` using `IsFractionRing.injective (𝓞 K) K`. Establish `h : ((a t : ℤ) : 𝓞 K) * c = π * c'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_intCast, hc, hc', hab t, dotProduct_smul, smul_dotProduct, smul_eq_mul, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : ((a t : ℤ) : k) * α t = 0`. Rewrite using `[← hcρ, ← map_intCast ρ, ← map_mul, h, map_mul, hπ, zero_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : linPointMap α M (C (a t)) = C ((a t : k))` using `by simp [linPointMap]`. Rewrite using `[linPrime, RingHom.mem_ker, map_mul, h1, LinPrimeExample.linPointMap_first, ← mul_assoc, ← C_mul, h0, C_0, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem centre_mem_of_coords {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.Basis T ℤ (dualLattice F')}
     {a : T → ℤ} (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) {k : Type} [Field k]
@@ -260,9 +254,9 @@ theorem centre_mem_of_coords {b : Module.Basis T ℤ (dualLattice F)} {b' : Modu
 end Lead
 
 /- English proof (translation)
-Introduce `K _ _ i F F' T _ _ b b' a hi hlt hcov hab k _ ρ π y₀ m g α M hco`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `f hf`. Take `⟨s, G, rfl, hG⟩` from `graph_bihomog K i F F' T b b' a hab f hf`. Rewrite using `[linPrime, RingHom.mem_ker, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun p hp => lead_of_coords hco (hG p hp).1 (hG p hp).2`. Rewrite using `[Ideal.span_le, Set.range_subset_iff]`. Conclude with `centre_mem_of_coords hab hco`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exc_base : DualStackedExcBase.Statement := by
   intro K _ _ i F F' T _ _ b b' a hi hlt hcov hab k _ ρ π y₀ m g α M hco

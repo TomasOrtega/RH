@@ -28,22 +28,22 @@ def satM (p : ℕ) (P N : Submodule (LetA O n) M) : Submodule (LetA O n) M where
     · rw [smul_comm]; exact P.smul_mem a hk2
 
 /- English proof (translation)
-Introduce `_ hx` and use `hx.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem satM_le (p : ℕ) (P N : Submodule (LetA O n) M) : satM p P N ≤ N := fun _ hx => hx.1
 
 /- English proof (translation)
-Introduce `x hx` and use `⟨h hx, 0, by simpa using hx, by simpa using hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_satM (p : ℕ) {P N : Submodule (LetA O n) M} (h : P ≤ N) : P ≤ satM p P N :=
   fun x hx => ⟨h hx, 0, by simpa using hx, by simpa using hx⟩
 
 /- English proof (translation)
-Take `⟨-, k, hk1, -⟩` from `h1`. Take `⟨-, j, -, hj2⟩` from `h2`. Use `⟨hx, k + j + 1, ?_, ?_⟩` and prove the remaining obligations. Establish `: ((p : LetA O n)) ^ (k + j + 1) • x = ((p : LetA O n)) ^ j • (((p : LetA O n)) ^ k • ((p : LetA O n)) • x)`. Rewrite using `[smul_smul, smul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `P.smul_mem _ hk1`. Establish `: (letπ : LetA O n) ^ (k + j + 1) • x = (letπ : LetA O n) ^ k • ((letπ : LetA O n) ^ j • (letπ : LetA O n) • x)`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `P.smul_mem _ hj2`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_satM_of_smul {p : ℕ} {P N : Submodule (LetA O n) M} {x : M} (hx : x ∈ N)
     (h1 : ((p : LetA O n)) • x ∈ satM p P N) (h2 : (letπ : LetA O n) • x ∈ satM p P N) :
@@ -59,13 +59,13 @@ theorem mem_satM_of_smul {p : ℕ} {P N : Submodule (LetA O n) M} {x : M} (hx : 
     rw [this]; exact P.smul_mem _ hj2
 
 /- English proof (translation)
-Take `⟨G, rfl⟩` from `hN`. Establish `hk : ∀ x ∈ G, ∃ k : ℕ, ((p : LetA O n)) ^ k • x ∈ P ∧ (letπ : LetA O n) ^ k • x ∈ P` using `fun x hx => (h (Submodule.subset_span hx)).2`. Use `choose! k hk using hk`. Use `⟨G.sup k, fun z hz => ?_⟩` and prove the remaining obligations. Proceed by induction on `hz using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Establish `hle : k x ≤ G.sup k` using `Finset.le_sup hx`. Take `⟨h1, h2⟩` from `hk x hx`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.smul_mem _ h1`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_smul]`. Conclude with `P.smul_mem _ h2`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components.
 
-Conclude with `⟨by rw [smul_add]; exact P.add_mem hx.1 hy.1, by rw [smul_add]; exact P.add_mem hx.2 hy.2⟩`. Consider the case `smul a x _ hx`. Conclude with `⟨by rw [smul_comm]; exact P.smul_mem a hx.1, by rw [smul_comm]; exact P.smul_mem a hx.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem uniform {p : ℕ} {P N : Submodule (LetA O n) M} (hN : N.FG) (h : N ≤ satM p P N) :
     ∃ c : ℕ, ∀ z ∈ N, ((p : LetA O n)) ^ c • z ∈ P ∧ (letπ : LetA O n) ^ c • z ∈ P := by

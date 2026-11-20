@@ -18,17 +18,17 @@ noncomputable section
 namespace GlobalTheory.RankMap
 
 /- English proof (translation)
-Introduce `R _ Z f H n s hH hs X f' N m w hN hw hr he`. Take `⟨H', s', hH', hs', hv⟩` from `GlobalTheory.RankBundle.exists_rank_one_bundle X N n m w hN hw hr`. Take `⟨φ, u, hφ, -, cu⟩` from `GlobalTheory.exists_hom_of_veryAmpleBy R Z f H n s hH hs X f' H' s' hH' hs' fun t F hF h0 c => by`. Use `fn_ext fun x hx => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `hv x c hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_chart hN x`. Take `⟨v, hvi⟩` from `hj k hk`. Establish `e` using `congrArg (gs (𝟙 X) x _) (he t F hF h0 j k)`. Rewrite `e` using `[MorAlg.gs_eval f' (𝟙 X) x _ hk, gs_eq (𝟙 X) x _ hk 0, map_zero, map_zero]`. Simplify using `only [hvi] at e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[MorAlg.eval₂_scale _ _ _ hF]`. Rewrite using `[MorAlg.gs_eval f' (𝟙 X) x _ hx, gs_eq (𝟙 X) x _ hx 0, map_zero, map_zero]`. Conclude with `((Units.isUnit _).pow t).mul_right_eq_zero.1 e`. Use `⟨φ, hφ, fun T r ψ hψ hp => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ProjUniq.hom_eq_of_proportional R Z f H n s hH hs T _ _ (by rw [Category.assoc, hφ, hψ]) fun z k k' i i' hk hk' => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_chart hH' (r z)`. Take `⟨d, hd⟩` from `exists_chart hN (r z)`. Take `⟨j, hj⟩` from `hv (r z) c hc`. Take `⟨v, hvi⟩` from `hj d hd`. Establish `hu : IsUnit ((r.stalkMap z).hom v.val)` using `v.isUnit.map _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ l, gs r z (N.U d) ((w l j).f d) = (r.stalkMap z).hom v.val * gs r z (H'.U c) ((s' l).f c)` using `fun l => by`. Establish `e` using `congrArg (r.stalkMap z).hom (hvi l)`. Rewrite `e` using `[map_mul, MorAlg.gs_stalk r (𝟙 X) z _ hd, MorAlg.gs_stalk r (𝟙 X) z _ hc, Category.comp_id]`. Then use the resulting hypothesis. Establish `q` using `hp z k' d i i' j hk' hd`. Rewrite `q` using `[e, e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MorAlg.Carries.at (w := u) cu r i z k c hk hc, MorAlg.Carries.at (w := u) cu r i' z k c hk hc]`. Use `hu.mul_left_cancel ?_` and prove the remaining obligations. Take the linear combination `(-(Geo.Tor.gw u r z k c).val) * q`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_rank_one : ∀ (R : Type) [CommRing R] (Z : Scheme.{0}) (f : Z ⟶ Spec (CommRingCat.of R)) (H : LB Z) (n : ℕ) (s : Fin (n + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → ∀ (X : Scheme.{0}) (f' : X ⟶ Spec (CommRingCat.of R)) (N : LB X) (m : ℕ) (w : Fin (n + 1) → Fin (m + 1) → LB.Sec N), N.IsLB → (⨆ i, ⨆ j, nonzeroLocus (w i j) = ⊤) → (∀ i i' j j' k, (w i j).f k * (w i' j').f k = (w i j').f k * (w i' j).f k) → (∀ (t : ℕ) (F : MvPolynomial (Fin (n + 1)) R), F.IsHomogeneous t → (∀ k, MvPolynomial.eval₂Hom (cst f (H.U k)) (fun i => (s i).f k) F = 0) → ∀ j k, MvPolynomial.eval₂Hom (cst f' (N.U k)) (fun i => (w i j).f k) F = 0) → ∃ φ : X ⟶ Z, φ ≫ f = f' ∧ ∀ (T : Scheme.{0}) (r : T ⟶ X) (ψ : T ⟶ Z), ψ ≫ f = r ≫ f' → (∀ z k k' i i' j, ψ z ∈ H.U k → r z ∈ N.U k' → gs ψ z (H.U k) ((s i).f k) * gs r z (N.U k') ((w i' j).f k') = gs ψ z (H.U k) ((s i').f k) * gs r z (N.U k') ((w i j).f k')) → r ≫ φ = ψ := by
   intro R _ Z f H n s hH hs X f' N m w hN hw hr he

@@ -66,11 +66,11 @@ def Gen : Prop :=
     (∀ (τ : ι) (a b : Fin n) (k : ℕ), ∀ P ∈ M, bigDiv τ a b k P ∈ M) → tenHW lam ∈ M → CSpanV lam ≤ M
 
 /- English proof (translation)
-Unfold `ValCIrr`. Introduce `ι _ n G hGd lam W hW hne hst`. Take `⟨M, hMle, hMne, hMst, hMW⟩` from `hT ι n G hGd lam W hW hne hst`. Establish `hdiv` using `hD ι n G hGd M hMst`. Take `⟨Q, hQM, hQ0, hQk⟩` from `hH ι n M hdiv hMne`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hU ι n lam Q (hMle hQM) hQk`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hQ0 (by simpa using hc)`. Establish `htM : tenHW lam ∈ M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcQ : c⁻¹ • Q ∈ M` using `M.smul_mem _ hQM`. Rewrite `hcQ` using `[hc, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Then use the resulting hypothesis. Conclude with `hMW (hG ι n lam M hdiv htM)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem valCIrr_of (hT : Transfer) (hD : DivClosed) (hH : HiEx) (hU : Uniq) (hG : Gen) : ValCIrr := by
   unfold ValCIrr

@@ -19,9 +19,9 @@ open GlobalTheory.HTMap GlobalTheory.HtChar GlobalTheory.HtGen CategoryTheory.Li
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Use `haveI : CharZero R := ⟨fun m n h => Nat.cast_injective (R := K) (by simpa using congrArg (algebraMap R K) h)⟩`. Take `⟨P, hP⟩` from `ex_full hq (splitTors_of_splitK x q hs) (IsLocalRing.maximalIdeal R) inferInstance`. Establish `hA : IsUnit P.f` using `by by_contra hn; exact hP.1 hn`. Take `⟨β, hβ⟩` from `hP.at (φ := ψ) (fun 𝔪 h𝔪 => by`. Rewrite using `[IsLocalRing.eq_maximalIdeal h𝔪, IsLocalRing.maximalIdeal_comap ψ]) hz w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨β₀, hβ₀, rfl⟩` from `sect_of hA _ hβ`. Establish `hσA : P.At (RingHom.id R) (spMap β₀ ≫ P.u.left) β₀` using `⟨hβ₀, rfl⟩`. Set `σ : Over.mk x ⟶ t.G` to `mkPt (spMap β₀ ≫ P.u.left) (hσA.over.trans (by rw [spMap_id', Category.id_comp]))`. Conclude with `⟨σ, FP.At.tors (w := σ) hσA, by rw [← hβ.2, ← spc_assoc]; rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem sect {X : Scheme.{0}} [IsLocallyNoetherian X] (t : SAB H X) {K : Type} [Field K] [CharZero K] {q : ℕ}
     (hq : q ≠ 0) {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsLocalRing R] [Algebra R K]
@@ -46,7 +46,7 @@ variable {O : Type} [CommRing O] {β : O →+* c.F} {Z : ReciprocityTheory.Chart
   {y : Sp K ⟶ Xo.XF c} {q : ℕ} {lb : Dw.La → (Over.mk y ⟶ Z.oF.t.G)} {ζ : Kˣ}
 
 /- English proof (translation)
-Establish `h1` using `h.2.2.2.2 a b`. Rewrite `h1` using `[e]`. Conclude with `GlobalTheory.Ex.Specialise.unitOn_bijective.1 ((GlobalTheory.LevelCompare.weil_existsUnique (GlobalTheory.Obj.toPolAV Z.oF) q (lb a) (lb b') ((h.2.2.2.1 _).2 ⟨a, rfl⟩) ((h.2.2.2.1 _).2 ⟨b', rfl⟩)).unique h1 (h.2.2.2.2 a b'))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lab_pow (h : IsLabel Z y q lb ζ) {b b' : Dw.La} (e : lb b = lb b') (a : Dw.La) :
     ζ ^ Dw.EF a b = ζ ^ Dw.EF a b' := by
@@ -60,15 +60,15 @@ private noncomputable def labHom (h : IsLabel Z y q lb ζ) : Multiplicative Dw.L
   MonoidHom.mk' (fun a => lb a.toAdd) fun a b => h.2.1 _ _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Establish `h0 : ∀ b, (q : ℤ) ∣ Dw.EF (a - a') b` using `fun b => by`. Establish `h1` using `h.2.2.2.2 a b`. Rewrite `h1` using `[e]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `GlobalTheory.Ex.Specialise.unitOn_bijective.1 ((GlobalTheory.LevelCompare.weil_existsUnique (GlobalTheory.Obj.toPolAV Z.oF) q (lb a') (lb b) ((h.2.2.2.1 _).2 ⟨a', rfl⟩) ((h.2.2.2.1 _).2 ⟨b, rfl⟩)).unique h1 (h.2.2.2.2 a' b))`. Rewrite using `[← h.1.zpow_eq_one_iff_dvd, map_sub, LinearMap.sub_apply, zpow_sub, h2, mul_inv_cancel]`. Use `choose f hf using h0`. Distinguish the cases in `hq : q = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_zero, add_zero, ← sub_eq_zero]`. Conclude with `Dw.unimod.1 (LinearMap.ext fun b => by rw [hf, hq]; simp)`. Establish `hq' : (q : ℤ) ≠ 0` using `by exact_mod_cast hq`. Set `F : Dw.La →ₗ[ℤ] ℤ` to `(AddMonoidHom.mk' f fun b b' => mul_left_cancel₀ hq' (by`. Rewrite using `[mul_add, ← hf, ← hf, ← hf, map_add])).toIntLinearMap`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, hd⟩` from `Dw.unimod.2 F`. Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_iff_eq_add']`. Use `Dw.unimod.1 (LinearMap.ext fun b => ?_)` and prove the remaining obligations. Rewrite using `[hf, map_nsmul, hd, LinearMap.smul_apply, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨d, rfl⟩`. Establish `h1 : lb (q • d) = lb d ^ q` using `map_pow (labHom h) (Multiplicative.ofAdd d) q`. Rewrite using `[h.2.1, h1, (h.2.2.2.1 _).2 ⟨d, rfl⟩, _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lab_eq_iff (h : IsLabel Z y q lb ζ) (a a' : Dw.La) : lb a = lb a' ↔ ∃ d, a = a' + q • d := by
   constructor
@@ -99,11 +99,9 @@ private theorem lab_eq_iff (h : IsLabel Z y q lb ζ) (a a' : Dw.La) : lb a = lb 
     rw [h.2.1, h1, (h.2.2.2.1 _).2 ⟨d, rfl⟩, _root_.mul_one]
 
 /- English proof (translation)
-Use `haveI := Dw.fin`. Use `haveI : Module.Finite ℤ Dw.La := Module.Finite.trans (𝓞 E) Dw.La`. Set `N : Submodule ℤ Dw.La` to `LinearMap.range (LinearMap.lsmul ℤ Dw.La q)`. Use `haveI : Finite (Dw.La ⧸ N) := Module.finite_of_fg_torsion _ fun x => by`. Take `⟨x, rfl⟩` from `N.mkQ_surjective x`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨(q : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hq)⟩, ?_⟩` and prove the remaining obligations. Conclude with `(map_smul N.mkQ (q : ℤ) x).symm.trans ((Submodule.Quotient.mk_eq_zero N).2 ⟨x, rfl⟩)`. Use `choose a ha using fun σ : {σ : Over.mk y ⟶ Z.oF.t.G // σ ^ q = 1} => (h.2.2.2.1 σ.1).1 σ.2`. Use `Finite.of_injective (fun σ => N.mkQ (a σ)) fun σ σ' e => Subtype.ext ?_` and prove the remaining obligations. Take `⟨d, hd⟩` from `(Submodule.Quotient.eq N).1 e`.
-
-Rewrite using `[← ha, ← ha, lab_eq_iff h]`. Conclude with `⟨d, by rw [← sub_eq_iff_eq_add', ← hd, LinearMap.lsmul_apply, natCast_zsmul]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem lab_finite (h : IsLabel Z y q lb ζ) (hq : q ≠ 0) : Finite {σ : Over.mk y ⟶ Z.oF.t.G // σ ^ q = 1} := by
   haveI := Dw.fin
@@ -126,7 +124,7 @@ section Ext
 variable {O : Type} [CommRing O] {β : O →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β)
 
 /- English proof (translation)
-Use `haveI : IsProper Z.oF.t.G.hom := (GlobalTheory.Obj.toPolAV Z.oF).isAb.proper`. Use `haveI : IsDominant (spMap io) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical io).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot io).1 hio]`. Conclude with `bot_le)⟩`. Conclude with `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated (X := Sp R) Z.oF.t.G.hom ((Over.w σ).trans (Over.w σ').symm) (spMap io) h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gen_inj {R K : Type} [CommRing R] [IsDomain R] [CommRing K] (io : R →+* K) (hio : Function.Injective io)
     {y : Sp R ⟶ Xo.XF c} {σ σ' : Over.mk y ⟶ Z.oF.t.G} (h : spMap io ≫ σ.left = spMap io ≫ σ'.left) : σ = σ' := by
@@ -137,14 +135,14 @@ private theorem gen_inj {R K : Type} [CommRing R] [IsDomain R] [CommRing K] (io 
     ((Over.w σ).trans (Over.w σ').symm) (spMap io) h)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (Z.m.cart.1.hom_ext h ((Over.w σ).trans (Over.w σ').symm))`.
+A detailed English derivation is pending.
 -/
 private theorem cart_inj {T : Scheme.{0}} {y : T ⟶ Xo.XF c} {σ σ' : Over.mk y ⟶ Z.oF.t.G}
     (h : σ.left ≫ Z.m.φ = σ'.left ≫ Z.m.φ) : σ = σ' :=
   Over.OverMorphism.ext (Z.m.cart.1.hom_ext h ((Over.w σ).trans (Over.w σ').symm))
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Take `⟨σ, h1, h2⟩` from `GlobalTheory.T.exists_torsion_section_pullback _ _ Z.oF.t.G Z.t.G _ Z.m.cm.F Z.m.cart (Over.mk y) w`. Conclude with `⟨σ, h2 q hw, h1⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cart_lift {T : Scheme.{0}} (y : T ⟶ Xo.XF c) {x : T ⟶ Z.X} (hx : x = y ≫ Z.j) {q : ℕ}
     (w : Over.mk x ⟶ Z.t.G) (hw : w ^ q = 1) : ∃ σ : Over.mk y ⟶ Z.oF.t.G, σ ^ q = 1 ∧ σ.left ≫ Z.m.φ = w.left := by
@@ -153,7 +151,7 @@ private theorem cart_lift {T : Scheme.{0}} (y : T ⟶ Xo.XF c) {x : T ⟶ Z.X} (
   exact ⟨σ, h2 q hw, h1⟩
 
 /- English proof (translation)
-Take `⟨β₀, hβ₀⟩ : ∃ β₀ : KA l →+* C, y ≫ (pullback.fst _ _ ≫ Xo.s) = spMap β₀` from `⟨(Spec.preimage (y ≫ (pullback.fst _ _ ≫ Xo.s))).hom, by simp [spMap]⟩`. Take `⟨-, I, -⟩` from `Z.oF.geom C y β₀ hβ₀`. Establish `h` using `Nat.pos_of_ne_zero hq`. Conclude with `⟨I.ev q, I.ζ q, I.ζ_prim q h, I.add q, I.lin q, I.onto q h, I.isom q h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem ex_label {C : Type} [Field C] [IsAlgClosed C] (y : Sp C ⟶ Xo.XF c) {q : ℕ} (hq : q ≠ 0) :
     ∃ lb ζ, IsLabel Z y q lb ζ := by
@@ -164,15 +162,13 @@ private theorem ex_label {C : Type} [Field C] [IsAlgClosed C] (y : Sp C ⟶ Xo.X
   exact ⟨I.ev q, I.ζ q, I.ζ_prim q h, I.add q, I.lin q, I.onto q h, I.isom q h⟩
 
 /- English proof (translation)
-Take `⟨ev, ξ, he⟩` from `ex_label Z y hq`. Establish `hsec : ∀ w : {w : Over.mk y ⟶ Z.oF.t.G // w ^ q = 1}, ∃ σ : Over.mk yq ⟶ Z.oF.t.G, σ ^ q = 1 ∧ pull _ hy σ = w.1` using `fun w => by`. Take `⟨σ, h1, h2⟩` from `sect (K := K) Z.t hq (yq ≫ Z.j) (by rw [← Category.assoc, h₀]; exact hs) φ (z := y ≫ Z.j) (by rw [← Category.assoc, hy]) (pushHom Z.m.cart (Over.mk y) w.1) ((map_pow (pushHom Z.m.cart (Over.mk y)) w.1 q).symm.trans (by rw [w.2, map_one]; rfl))`. Take `⟨σ', h3, h4⟩` from `cart_lift Z yq rfl σ h1`. Use `⟨σ', h3, cart_inj Z ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pull_left, Category.assoc, h4, ← h2]`. Both sides reduce to the same expression. Use `choose sg hsg hsg' using hsec`. Establish `hinj : Function.Injective (pull (G` using `Z.oF.t.G) _ h₀) := fun σ σ' e => gen_inj Z _ (IsFractionRing.injective R K) (congrArg (fun v => v.left) e)`. Set `g : {w : Over.mk y ⟶ Z.oF.t.G // w ^ q = 1} → {w : Over.mk y₀ ⟶ Z.oF.t.G // w ^ q = 1}` to `fun w => ⟨pull _ h₀ (sg w), by rw [← map_pow, hsg, map_one]⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : Function.Injective g` using `fun w w' e => Subtype.ext (by`. Rewrite using `[← hsg', ← hsg', hinj (congrArg Subtype.val e)])`. Use `choose n hn using fun σ : {σ : Over.mk y₀ ⟶ Z.oF.t.G // σ ^ q = 1} => (hl.2.2.2.1 σ.1).1 σ.2`. Set `k : {w : Over.mk y₀ ⟶ Z.oF.t.G // w ^ q = 1} → {w : Over.mk y ⟶ Z.oF.t.G // w ^ q = 1}` to `fun w => ⟨ev (n w), (he.2.2.2.1 _).2 ⟨_, rfl⟩⟩`. Establish `hk : Function.Injective k` using `fun w w' e => Subtype.ext (by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hn, ← hn, lab_eq_iff hl, ← lab_eq_iff he]`. Conclude with `congrArg Subtype.val e)`. Use `haveI := lab_finite hl hq`. Establish `hsurj : Function.Surjective g` using `(Finite.injective_iff_surjective.1 (hg.comp hk)).of_comp`. Use `choose r hr using hsurj`.
-
-Use `⟨fun a => sg (r ⟨lb a, (hl.2.2.2.1 _).2 ⟨a, rfl⟩⟩), fun a => ⟨hsg _, congrArg Subtype.val (hr _)⟩, fun w hw => ⟨n (g ⟨w, hw⟩), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hsg']`. Use `congrArg Subtype.val (hg (a₂ := ⟨w, hw⟩) ?_)` and prove the remaining obligations. Rewrite using `[hr]`. Conclude with `Subtype.ext (hn _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem extend [IsLocallyNoetherian Z.X] {K : Type} [Field K] [CharZero K] {q : ℕ} (hq : q ≠ 0) {R : Type}
     [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsLocalRing R] [Algebra R K] [IsFractionRing R K]
@@ -215,17 +211,13 @@ private theorem extend [IsLocallyNoetherian Z.X] {K : Type} [Field K] [CharZero 
   exact Subtype.ext (hn _)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (pull (G` using `Z.oF.t.G) _ h₀) := fun σ σ' e => gen_inj Z _ hio (congrArg (fun v => v.left) e)`. Use `⟨?_, fun a b => ?_, fun o a => ?_, fun σ => ⟨hon σ, ?_⟩, fun a b => ?_⟩` and prove the remaining obligations. Establish `h1 : IsPrimitiveRoot (io ζ) q` using `IsPrimitiveRoot.coe_units_iff.2 hl.1`. Conclude with `IsPrimitiveRoot.coe_units_iff.1 (prim_map φ hq (h1.of_map_of_injective hio))`. Use `beta_reduce`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, show s (a + b) = s a * s b from hinj (by rw [map_mul, (hs _).2, (hs _).2, (hs _).2, hl.2.1])]`. Establish `h1 : s (o • a) = s a ≫ Z.oF.t.act.act o` using `hinj (by`. Rewrite using `[(hs _).2, hl.2.2.1, ← (hs a).2]`. Conclude with `Category.assoc _ _ _)`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[h1]`. Conclude with `Over.OverMorphism.ext (by rw [pull_left, Over.comp_left, Over.comp_left, pull_left, Category.assoc])`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[← map_pow, (hs a).1, map_one]`. Set `P` to `GlobalTheory.Obj.toPolAV Z.oF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨cq, hcq, -⟩` from `GlobalTheory.LevelCompare.weil_existsUnique P q (s a) (s b) (hs a).1 (hs b).1`. Take `⟨u, rfl⟩` from `GlobalTheory.Ex.Specialise.unitOn_bijective.2 cq`. Establish `hN` using `(GlobalTheory.LevelCompare.weil_skew_natural P q (Over.mk yq)).2 (Over.mk y₀) (Over.homMk (spMap io) h₀) _ _ _ hcq`. Establish `hC` using `(GlobalTheory.LevelCompare.weil_skew_natural P q (Over.mk yq)).2 (Over.mk y) (Over.homMk (spMap φ) hy) _ _ _ hcq`. Establish `hN' : Out.WeilIs P.A P.L q (lb a) (lb b) (unitOn (Units.map io.toMonoidHom u))`.
-
-Rewrite using `[← (hs a).2, ← (hs b).2, ← GlobalTheory.Ex.Specialise.map_unitOn]`. Conclude with `hN`. Establish `h1` using `GlobalTheory.Ex.Specialise.unitOn_bijective.1 ((GlobalTheory.LevelCompare.weil_existsUnique P q (lb a) (lb b) ((hl.2.2.2.1 _).2 ⟨a, rfl⟩) ((hl.2.2.2.1 _).2 ⟨b, rfl⟩)).unique hN' (hl.2.2.2.2 a b))`. Rewrite `h1` using `[← map_zpow]`. Rewrite using `[← map_zpow, ← Units.map_injective (f := io.toMonoidHom) hio h1, ← GlobalTheory.Ex.Specialise.map_unitOn]`.
-
-Conclude with `hC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem label_at {K : Type} [Field K] {q : ℕ} (hq : q ≠ 0) {R : Type} [CommRing R] [IsDomain R] (io : R →+* K)
     (hio : Function.Injective io) (yq : Sp R ⟶ Xo.XF c) {y₀ : Sp K ⟶ Xo.XF c} (h₀ : spMap io ≫ yq = y₀)
@@ -265,17 +257,15 @@ private theorem label_at {K : Type} [Field K] {q : ℕ} (hq : q ≠ 0) {R : Type
 end Ext
 
 /- English proof (translation)
-Take `⟨α, hα⟩ : ∃ α : 𝓞 c.F →+* R, x ≫ Z.s = spMap α` from `⟨(Spec.preimage (x ≫ Z.s)).hom, (Spec.map_preimage _).symm⟩`. Take `⟨ga, hga⟩ : ∃ ga : c.F →+* C, y ≫ Z.jQ ≫ pullback.snd _ _ = spMap ga` from `⟨(Spec.preimage (y ≫ Z.jQ ≫ pullback.snd _ _)).hom, (Spec.map_preimage _).symm⟩`. Establish `hj : Z.j = Z.jQ ≫ pullback.fst _ _` using `rfl`. Establish `e : φ.comp α = ga.comp (algebraMap (𝓞 c.F) c.F)`. Establish `h1 : spMap (φ.comp α) = spMap (ga.comp (algebraMap (𝓞 c.F) c.F))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← spc, ← spc, ← hα, ← hga, reassoc_of% h, hj]`. Simplify using `only [Category.assoc, pullback.condition]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective (a₁ := CommRingCat.ofHom _) (a₂ := CommRingCat.ofHom _) h1)`. Establish `hu : ∀ s : nonZeroDivisors (𝓞 c.F), IsUnit (α s)` using `fun s => by`. Use `IsUnit.of_map φ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.comp_apply, e]`. Conclude with `(IsLocalization.map_units c.F s).map ga`. Set `α' : c.F →+* R` to `IsLocalization.lift hu`. Establish `hα' : α'.comp (algebraMap (𝓞 c.F) c.F) = α` using `IsLocalization.lift_comp _`. Set `xg : Sp R ⟶ pullback Z.s (spMap (algebraMap (𝓞 c.F) c.F))` to `pullback.lift x (spMap α') (by rw [hα, spc, hα'])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : spMap φ ≫ xg = y ≫ Z.jQ`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.lift_fst, h, hj, Category.assoc]`. Rewrite using `[Category.assoc, pullback.lift_snd, Category.assoc, hga, spc]`. Conclude with `congrArg spMap (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F)) (by rw [RingHom.comp_assoc, hα', e]))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := Z.jQ_open`. Establish `hmem : xg (IsLocalRing.closedPoint R) ∈ Set.range Z.jQ`. Use `⟨y (IsLocalRing.closedPoint C), ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ pt : Sp C, Z.jQ (y pt) = xg (spMap φ pt)` using `fun pt => by`. Rewrite using `[← Scheme.Hom.comp_apply, ← hg, Scheme.Hom.comp_apply]`.
-
-Conclude with `(h1 _).trans (congrArg xg (IsLocalRing.comap_closedPoint φ))`. Establish `hr : Set.range xg ⊆ Set.range Z.jQ`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `((IsLocalRing.specializes_closedPoint p).map xg.continuous).mem_open Z.jQ.isOpenEmbedding.isOpen_range hmem`. Conclude with `⟨IsOpenImmersion.lift Z.jQ xg hr, by rw [hj, IsOpenImmersion.lift_fac_assoc, pullback.lift_fst]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem factor (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) {R C : Type} [CommRing R]
     [IsLocalRing R] [Field C] (φ : R →+* C) [IsLocalHom φ] (x : Sp R ⟶ Z.X) (y : Sp C ⟶ Xo.XF c)
@@ -313,7 +303,7 @@ private theorem factor (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model X
   exact ⟨IsOpenImmersion.lift Z.jQ xg hr, by rw [hj, IsOpenImmersion.lift_fac_assoc, pullback.lift_fst]⟩
 
 /- English proof (translation)
-Use `haveI := Z.jQ_open`. Use `haveI : IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F)) := IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 c.F))`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mono_j (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) : Mono Z.j := by
   haveI := Z.jQ_open
@@ -325,27 +315,23 @@ end UpperTheory.SpecLab
 
 open UpperTheory.SpecLab GlobalTheory.HTMap GlobalTheory.HtChar GlobalTheory.HtGen in
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Z _ _ K _ _ y₀ q hq hs lb ζ hl χ hχ R _ _ _ _ _ _ x hx p _ ψ z y hψ hz hy ch hch`. Use `haveI := GlobalTheory.LatDRFree.intO_isLocalRing ℂ_[p]`. Use `haveI := mono_j Z`. Establish `hinj` using `IsFractionRing.injective R K`. Set `φ₀ : R →+* ℂ_[p]` to `(intO ℂ_[p]).subtype.comp ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `𝔮 : Ideal R` to `RingHom.ker φ₀`. Use `haveI : 𝔮.IsPrime := RingHom.ker_isPrime φ₀`. Set `R'` to `Localization.AtPrime 𝔮`. Establish `hφu : ∀ s : 𝔮.primeCompl, IsUnit (φ₀ s)` using `fun s => IsUnit.mk0 _ fun h0 => s.2 (RingHom.mem_ker.2 h0)`. Set `φ : R' →+* ℂ_[p]` to `IsLocalization.lift (M := 𝔮.primeCompl) hφu`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ : φ.comp (algebraMap R R') = φ₀` using `IsLocalization.lift_comp _`. Use `haveI : IsLocalHom φ := ⟨fun a ha => by`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective 𝔮.primeCompl a`. Use `(IsLocalization.AtPrime.isUnit_mk'_iff R' 𝔮 r s).2 fun hr => ha.ne_zero ?_` and prove the remaining obligations. Conclude with `(IsLocalization.lift_mk'_spec hφu _ _ _).2 (by rw [mul_zero]; exact hr)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hKu : ∀ s : 𝔮.primeCompl, IsUnit (algebraMap R K s)` using `fun s => IsUnit.mk0 _ fun h0 => s.2 (by`. Rewrite using `[hinj (h0.trans (map_zero _).symm)]`. Conclude with `𝔮.zero_mem)`. Set `io : R' →+* K` to `IsLocalization.lift (M := 𝔮.primeCompl) hKu`. Establish `hio : io.comp (algebraMap R R') = algebraMap R K` using `IsLocalization.lift_comp _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `letI : Algebra R' K := io.toAlgebra`. Use `haveI : IsScalarTower R R' K := IsScalarTower.of_algebraMap_eq' hio.symm`. Use `haveI : IsFractionRing R' K := IsFractionRing.isFractionRing_of_isDomain_of_isLocalization 𝔮.primeCompl R' K`. Use `haveI : IsIntegrallyClosed R' := isIntegrallyClosed_of_isLocalization _ _ 𝔮.primeCompl_le_nonZeroDivisors`. Establish `hyC : spMap φ ≫ spMap (algebraMap R R') ≫ x = y ≫ Z.j` using `by rw [spc_assoc, hφ, ← hy, ← hz, spc_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨yq, hyq⟩` from `factor Z φ _ y hyC`. Establish `h₀ : spMap (algebraMap R' K) ≫ yq = y₀`. Rewrite using `[← cancel_mono Z.j, Category.assoc, ← hyq, spc_assoc, ← hx]`. Conclude with `congrArg (fun f => spMap f ≫ x) hio`. Establish `hC : spMap φ ≫ yq = y` using `by rw [← cancel_mono Z.j, Category.assoc, ← hyq, hyC]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs1, hs2⟩` from `extend Z hq yq h₀ hs hl φ hC`. Take `⟨ζR, hζR⟩` from `root_mem (R := R) hq (u := (ζ : K)) (by rw [← Units.val_pow_eq_pow_val, hl.1.pow_eq_one, Units.val_one])`. Establish `hζu : IsUnit ζR` using `IsUnit.of_pow_eq_one (n := q) (hinj (by`. Rewrite using `[map_pow, hζR, map_one, ← Units.val_pow_eq_pow_val, hl.1.pow_eq_one, Units.val_one])) hq`. Take `⟨u, rfl⟩` from `hζu`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : ζ = Units.map (algebraMap R' K).toMonoidHom (Units.map (algebraMap R R').toMonoidHom u)` from `Units.ext (hζR.symm.trans (RingHom.congr_fun hio _).symm)`. Establish `hL` using `label_at Z hq (algebraMap R' K) (IsFractionRing.injective R' K) yq h₀ _ hl φ hC s hs1 hs2`. Use `⟨_, _, hL, fun a b w hw hb => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ, hwσ⟩` from `sect (K := K) Z.t hq x (by rw [hx]; exact hs) ψ (by rw [← hz, spc_assoc, Algebra.algebraMap_self, RingHom.id_comp]) w hw`. Take `⟨τ, hτ, hτσ⟩` from `cart_lift Z yq hyq (pull _ rfl σ) (by rw [← map_pow, hσ, map_one])`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hτσ` using `[pull_left]`. Take `⟨b', hb'⟩` from `(hl.2.2.2.1 (pull _ h₀ τ)).1 (by rw [← map_pow, hτ, map_one])`. Take `rfl : τ = s b'` from `gen_inj Z _ (IsFractionRing.injective R' K) (congrArg (fun v => v.left) (hb'.symm.trans (hs1 b').2.symm))`. Establish `hbb : pull _ hC (s b) = pull _ hC (s b')` using `cart_inj Z (by`. Rewrite using `[hb, pull_left, Category.assoc, hτσ, hwσ, spc_assoc, spc_assoc, hφ])`.
-
-Rewrite using `[lab_pow hL hbb]`. Set `k : TorsK Z.t (y₀ ≫ Z.j) q` to `⟨pull _ hx σ, MonoidHom.mem_ker.2 (by rw [powMonoidHom_apply, ← map_pow, hσ, map_one])⟩`. Establish `hk` using `hχ a b' k (by`. Rewrite using `[hb', pull_left _ h₀, Category.assoc, hτσ, spc_assoc]`. Conclude with `congrArg (fun f => spMap f ≫ σ.left) hio.symm)`.
-
-Rewrite using `[hch a σ k ((u ^ Dw.EF a b' : Rˣ) : R) w hσ rfl hwσ (by`. Rewrite using `[hk, ← map_zpow, ← map_zpow]`. Conclude with `(RingHom.congr_fun hio _).symm), ← map_zpow, ← map_zpow]`. Conclude with `(RingHom.congr_fun hφ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.torsion_labels_on_separated_model :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) [IsLocallyNoetherian Z.X], Z.X.IsSeparated → ∀ (K : Type) [Field K] [CharZero K] (y₀ : Sp K ⟶ Xo.XF c) (q : ℕ), q ≠ 0 → GlobalTheory.HtGen.SplitK Z.t (y₀ ≫ Z.j) q → ∀ (lb : Dw.La → (Over.mk y₀ ⟶ Z.oF.t.G)) (ζ : Kˣ), IsLabel Z y₀ q lb ζ → ∀ χ : Dw.La → (GlobalTheory.HtGen.TorsK Z.t (y₀ ≫ Z.j) q →* Kˣ), (∀ a b (k : GlobalTheory.HtGen.TorsK Z.t (y₀ ≫ Z.j) q), k.1.left = (lb b).left ≫ Z.m.φ → χ a k = ζ ^ Dw.EF a b) → ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsLocalRing R] [Algebra R K] [IsFractionRing R K] (x : Sp R ⟶ Z.X), spMap (algebraMap R K) ≫ x = y₀ ≫ Z.j → ∀ (p : ℕ) [Fact p.Prime] (ψ : R →+* ↥(intO ℂ_[p])) (z : Sp ↥(intO ℂ_[p]) ⟶ Z.X) (y : Sp ℂ_[p] ⟶ Xo.XF c), IsLocalHom ψ → spMap ψ ≫ x = z → spMap (intO ℂ_[p]).subtype ≫ z = y ≫ Z.j → ∀ ch : Dw.La → TorsChar Z.t z q, (∀ a, GlobalTheory.HtGen.InducedBy (χ a) x (algebraMap R K) ψ (ch a)) → WeilLab Z (intO ℂ_[p]).subtype z y q ch := by

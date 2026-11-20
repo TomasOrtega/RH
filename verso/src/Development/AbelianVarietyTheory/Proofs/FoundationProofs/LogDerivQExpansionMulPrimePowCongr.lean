@@ -12,11 +12,11 @@ namespace GlobalTheory.Glue.DlPow
 open scoped MatrixGroups in
 
 /- English proof (translation)
-Use `⟨fun c => ?_⟩` and prove the remaining obligations. Take `⟨D, hD, hint⟩` from `X.bdd (algebraMap Ω X.K c)`. Take `⟨k, hk⟩` from `hint 0`. Establish `hc : (algebraMap Ω (HahnSeries ℚ Ω) c).coeff 0 = c`. Rewrite using `[HahnSeries.algebraMap_apply']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `hk` using `[AlgHom.commutes, hc]`. Establish `h1 : IsAlgebraic ℚ ((D : Ω) ^ k * c)` using `(hk.tower_top (A := ℚ)).isAlgebraic`. Establish `hD' : ((D : ℚ) ^ k) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hD.ne')`. Establish `hc' : c = algebraMap ℚ Ω (((D : ℚ) ^ k)⁻¹) * ((D : Ω) ^ k * c)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, ← map_natCast (algebraMap ℚ Ω), ← map_pow, ← map_mul, inv_mul_cancel₀ hD', map_one, one_mul]`. Rewrite using `[hc']`. Conclude with `(isAlgebraic_algebraMap _).mul h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Glue.DlPow.isAlgebraic_of_tower {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     {ε : Ω →+* ℂ} (X : _root_.GlobalTheory.KZ.Tower Ω ε) :
@@ -38,7 +38,7 @@ theorem _root_.GlobalTheory.Glue.DlPow.isAlgebraic_of_tower {Ω : Type} [Field �
 
 open scoped MatrixGroups in
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rwa [zero_add, pow_one]`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Conclude with `_root_.GlobalTheory.Glue.Prim.mul A _ _ ih hP`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma prim_pow_succ {Ω : Type} [Field Ω] {A : ValuationSubring Ω}
     {P : HahnSeries ℚ Ω} (hP : _root_.GlobalTheory.Glue.Prim A P) (k : ℕ) :
@@ -51,9 +51,9 @@ private lemma prim_pow_succ {Ω : Type} [Field Ω] {A : ValuationSubring Ω}
 
 open scoped MatrixGroups in
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, (_root_.GlobalTheory.Glue.theta_leibniz_add_const s _ _).1, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [map_add, map_natCast, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma theta_pow_succ {Ω : Type} [Field Ω] [Algebra ℚ Ω] (s : ℚ)
     (P : HahnSeries ℚ Ω) (k : ℕ) :
@@ -69,9 +69,7 @@ private lemma theta_pow_succ {Ω : Type} [Field Ω] [Algebra ℚ Ω] (s : ℚ)
 
 open scoped MatrixGroups in
 /- English proof (translation)
-Use `show algebraMap ℚ Ω (1 * r) * P.coeff r ∈ A`. Distinguish the cases in `h : P.coeff r = 0`. Rewrite using `[h, mul_zero]`. Conclude with `zero_mem A`. Use `mul_mem ?_ (hP r)` and prove the remaining obligations.
-
-Rewrite using `[one_mul, ← Rat.coe_int_num_of_den_eq_one (hden r h), map_intCast]`. Conclude with `intCast_mem A _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma theta_one_coeff_mem_of_integral_den_one {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     (A : ValuationSubring Ω) {P : HahnSeries ℚ Ω} (hP : ∀ r, P.coeff r ∈ A)
@@ -87,7 +85,7 @@ private lemma theta_one_coeff_mem_of_integral_den_one {Ω : Type} [Field Ω] [Al
 
 open scoped MatrixGroups in
 /- English proof (translation)
-Rewrite using `[HahnSeries.coeff_mul]`. Conclude with `sum_mem fun ij _ => mul_mem (hx _) (hy _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma hahnSeries_coeff_mul_mem_valuationSubring {Ω : Type} [Field Ω] (A : ValuationSubring Ω)
     {x y : HahnSeries ℚ Ω} (hx : ∀ r, x.coeff r ∈ A) (hy : ∀ r, y.coeff r ∈ A) (r : ℚ) :
@@ -97,9 +95,9 @@ private lemma hahnSeries_coeff_mul_mem_valuationSubring {Ω : Type} [Field Ω] (
 
 open scoped MatrixGroups in
 /- English proof (translation)
-Proceed by induction on `k generalizing r with`. Consider the case `zero`. Rewrite using `[pow_zero, HahnSeries.coeff_one]`. Use `split_ifs`. Conclude with `one_mem A`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem A`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Conclude with `hahnSeries_coeff_mul_mem_valuationSubring A ih hx r`.
+A detailed English derivation is pending.
 -/
 private lemma hahnSeries_coeff_pow_mem_valuationSubring {Ω : Type} [Field Ω] (A : ValuationSubring Ω)
     {x : HahnSeries ℚ Ω} (hx : ∀ r, x.coeff r ∈ A) (k : ℕ) (r : ℚ) : (x ^ k).coeff r ∈ A := by
@@ -116,23 +114,21 @@ private lemma hahnSeries_coeff_pow_mem_valuationSubring {Ω : Type} [Field Ω] (
 open scoped MatrixGroups in
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X A l _ hl n f u hf hu hT φ φ' hφ hφ' r`. Establish `hj : ∃ g : ℂ → ℂ, DifferentiableOn ℂ g _root_.GlobalTheory.KZ.Hs ∧ X.an X.jK = ↑g`. Take `⟨g, h1, h2⟩` from `X.j_hol`. Conclude with `⟨g, h2, h1⟩`. Establish `hden : ∀ x : X.K, X.sl (_root_.GlobalTheory.KZ.ofSL ModularGroup.T) x = x → ∀ s, (X.exp x).coeff s ≠ 0 → s.den = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `x hx s hs`. Establish `hmem : x ∈ _root_.GlobalTheory.Glue.KT X 1`. Rewrite using `[_root_.GlobalTheory.Glue.KT.mem_def, pow_one]`. Conclude with `hx`. Simplify using `using (_root_.GlobalTheory.Glue.KTExp.mem_KT_iff ε X 1 one_pos x).1 hmem s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hu0 : _root_.GlobalTheory.Glue.IsDl X A l n 1 (u ^ (l ^ n)) 0`. Take `⟨a, b, κ, S, hκ, hab, hPa, hPb, hb, -⟩` from `_root_.GlobalTheory.exists_prim_frac_level_one ε X hj l A hl u hu`. Establish `hbT` using `hb ModularGroup.T`. Establish `haT : X.sl (_root_.GlobalTheory.KZ.ofSL ModularGroup.T) a = a`. Establish `h1` using `congrArg (X.sl (_root_.GlobalTheory.KZ.ofSL ModularGroup.T)) hab`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_mul, map_mul, hT, hbT, AlgEquiv.commutes, hab]`. Conclude with `(mul_left_cancel₀ ((map_ne_zero _).2 hκ) h1).symm`. Take `⟨k, hk⟩ : ∃ k, l ^ n = k + 1` from `⟨l ^ n - 1, (Nat.succ_pred_eq_of_pos (pow_pos (Fact.out : l.Prime).pos n)).symm⟩`. Establish `hl' : (l : Ω) ^ n = ((k + 1 : ℕ) : Ω)` using `by rw [← Nat.cast_pow, hk]`. Establish `hPaA` using `hPa.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hPbA` using `hPb.1`. Unfold `_root_.GlobalTheory.Glue.IsDl`. Use `⟨fun s => by simpa using zero_mem A, a ^ (l ^ n), b ^ (l ^ n), κ ^ (l ^ n), pow_ne_zero _ hκ, by rw [map_pow, ← mul_pow, ← mul_pow, hab], ?_, ?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hk]`. Conclude with `prim_pow_succ hPa k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_pow, hk]`. Conclude with `prim_pow_succ hPb k`. Rewrite using `[map_pow, map_pow, hk, theta_pow_succ, theta_pow_succ] set P := X.exp a set Q := X.exp b set W := P ^ k * Q ^ k * (_root_.GlobalTheory.Glue.theta 1 P * Q - P * _root_.GlobalTheory.Glue.theta 1 Q)`. Establish `hW : W.coeff s ∈ A`. Establish `hθP` using `theta_one_coeff_mem_of_integral_den_one A hPaA (hden a haT)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hθQ` using `theta_one_coeff_mem_of_integral_den_one A hPbA (hden b hbT)`. Use `hahnSeries_coeff_mul_mem_valuationSubring A (hahnSeries_coeff_mul_mem_valuationSubring A (hahnSeries_coeff_pow_mem_valuationSubring A hPaA k) (hahnSeries_coeff_pow_mem_valuationSubring A hPbA k)) (fun t => ?_) s` and prove the remaining obligations. Rewrite using `[HahnSeries.coeff_sub]`. Conclude with `sub_mem (hahnSeries_coeff_mul_mem_valuationSubring A hθP hPbA t) (hahnSeries_coeff_mul_mem_valuationSubring A hPaA hθQ t)`. Establish `hexp : HahnSeries.C ((k + 1 : ℕ) : Ω) * P ^ k * _root_.GlobalTheory.Glue.theta 1 P * Q ^ (k + 1) - P ^ (k + 1) * (HahnSeries.C ((k + 1 : ℕ) : Ω) * Q ^ k * _root_.GlobalTheory.Glue.theta 1 Q) = HahnSeries.C ((k + 1 : ℕ) : Ω) * W`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [W]`. Expand and normalize the polynomial expressions, which then agree. Unfold `_root_.GlobalTheory.Glue.CgA`. Use `⟨-W.coeff s, neg_mem hW, ?_⟩` and prove the remaining obligations. Rewrite using `[hexp, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, zero_mul, zero_mul, HahnSeries.coeff_zero, hl', smul_eq_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `h` using `(_root_.GlobalTheory.Glue.isDl_calc ε X hj l A hl n 1 f (u ^ (l ^ n)) φ 0).1 hφ hu0`. Simplify using `using _root_.GlobalTheory.Glue.isDl_unique ε X hj l A hl n 1 _ _ _ h hφ' r`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Glue.DlPow.isDl_mul_lpow_cong : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : _root_.GlobalTheory.KZ.Tower Ω ε)

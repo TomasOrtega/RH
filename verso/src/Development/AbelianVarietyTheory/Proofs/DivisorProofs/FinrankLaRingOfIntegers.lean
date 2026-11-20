@@ -9,25 +9,21 @@ open scoped TensorProduct
 namespace GlobalTheory.UPel.HT
 
 /- English proof (translation)
-Introduce `p _ D`. Use `letI iL : Module (𝓞 D.F) D.La := Module.compHom D.La (algebraMap (𝓞 D.F) D.O)`. Use `letI iV : Module (𝓞 D.F) D.VF := Module.compHom D.VF (algebraMap (𝓞 D.F) D.F)`. Use `haveI : IsScalarTower (𝓞 D.F) D.F D.VF := ⟨fun c x v => by show (algebraMap (𝓞 D.F) D.F c * x) • v = algebraMap (𝓞 D.F) D.F c • (x • v)`. Rewrite using `[mul_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `f : D.La →ₗ[𝓞 D.F] D.VF` to `{ toFun := fun z => (((1 : ℚ) ⊗ₜ z : D.VQ) : D.VF) map_add' := fun z w => TensorProduct.tmul_add _ _ _ map_smul' := fun c z => by`. Rewrite using `[RingHom.id_apply]`. Use `show (((1 : ℚ) ⊗ₜ (algebraMap (𝓞 D.F) D.O c • z) : D.VQ) : D.VF) = algebraMap (𝓞 D.F) D.F c • (show D.VF from (1 : ℚ) ⊗ₜ z)`. Rewrite using `[D.smul_VF, show algebraMap (𝓞 D.F) D.F c = (c : D.F) from rfl, D.actF_coe, D.coe_actInt]`. Use `rfl }`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∀ z, f z = (((1 : ℚ) ⊗ₜ z : D.VQ) : D.VF)` using `fun _ => rfl`. Establish `hnat : ∀ (n : ℕ) (v : D.VF), ((n : 𝓞 D.F)) • v = n • v`. Introduce `n v`. Use `show algebraMap (𝓞 D.F) D.F (n : 𝓞 D.F) • v = n • v`. Rewrite using `[map_natCast, Nat.cast_smul_eq_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hloc : IsLocalizedModule (nonZeroDivisors (𝓞 D.F)) f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Establish `hc0 : (c : D.F) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mem_nonZeroDivisors_iff_ne_zero.1 hc) (by exact_mod_cast h)`. Rewrite using `[Module.End.isUnit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `v w h`. Establish `h' : (c : D.F) • v = (c : D.F) • w` using `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `smul_right_injective D.VF hc0 h'`. Introduce `v`. Use `⟨(c : D.F)⁻¹ • v, ?_⟩` and prove the remaining obligations. Use `show (c : D.F) • ((c : D.F)⁻¹ • v) = v`. Rewrite using `[smul_smul, mul_inv_cancel₀ hc0, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Take `⟨q, z, -, hy⟩` from `D.exists_tmul y`. Establish `hd : ((q.den : ℕ) : 𝓞 D.F) ∈ nonZeroDivisors (𝓞 D.F)` using `mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast q.den_ne_zero)`. Use `⟨(q.num • z, ⟨_, hd⟩), ?_⟩` and prove the remaining obligations. Use `show ((q.den : ℕ) : 𝓞 D.F) • y = f (q.num • z)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hnat, hf, hy]`. Use `show q.den • (q ⊗ₜ z : D.VQ) = ((1 : ℚ) ⊗ₜ (q.num • z) : D.VQ)`. Rewrite using `[TensorProduct.smul_tmul', nsmul_eq_mul, Rat.den_mul_eq_num, ← TensorProduct.smul_tmul, zsmul_eq_mul, mul_one]`. Introduce `z w h`. Rewrite `h` using `[hf, hf]`.
-
-Take `⟨⟨c, hc⟩, hcz⟩` from `(IsLocalizedModule.eq_iff_exists (nonZeroDivisors ℤ) (TensorProduct.mk ℤ ℚ D.La 1)).1 h`. Establish `hc0 : ((c : ℤ) : 𝓞 D.F) ≠ 0`. Conclude with `mem_nonZeroDivisors_iff_ne_zero.1 hc` after adjusting the coercions. Use `⟨⟨_, mem_nonZeroDivisors_of_ne_zero hc0⟩, ?_⟩` and prove the remaining obligations. Use `show algebraMap (𝓞 D.F) D.O (c : 𝓞 D.F) • z = algebraMap (𝓞 D.F) D.O (c : 𝓞 D.F) • w`.
-
-Rewrite using `[map_intCast, Int.cast_smul_eq_zsmul, Int.cast_smul_eq_zsmul]`. Conclude with `hcz`. Establish `h1` using `IsLocalizedModule.finrank_eq (nonZeroDivisors (𝓞 D.F)) f le_rfl`. Establish `h2` using `IsFractionRing.finrank_right_eq (𝓞 D.F) D.F D.VF`. Rewrite using `[← h1, ← h2, D.finrank_VF]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Datum.finrank_La_ringOfIntegers :
     ∀ {p : ℕ} [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p),

@@ -11,11 +11,11 @@ namespace GlobalTheory.Mem.ColsModel
 open Formalism.BasicNotions NumberField IsDedekindDomain
 
 /- English proof (translation)
-Set `s : Setoid X` to `⟨fun x y => ∃ g, r g x y, fun x => ⟨1, h1 x⟩, fun ⟨g, h⟩ => ⟨_, hi _ _ _ h⟩, fun ⟨g, h⟩ ⟨g', h'⟩ => ⟨_, hm _ _ _ _ _ h h'⟩⟩`. Establish `hb : ∀ x, ∃ g, r g (Quotient.mk s x).out x` using `fun x => Quotient.mk_out (s := s) x`. Use `choose c hc using hb`. Use `⟨fun x => χ (c x), fun g x y h => ?_⟩` and prove the remaining obligations. Establish `e : Quotient.mk s x = Quotient.mk s y` using `Quotient.sound ⟨g, h⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hm _ _ _ _ _ (hm _ _ _ _ _ (hc x) h) (hi _ _ _ (hc y))`. Rewrite `h2` using `[← e]`. Establish `h3` using `hs _ _ h2`. Simplify using `only [map_mul, map_inv] at h3`. Rewrite `h3` using `[inv_mul_eq_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (χ (c x))⁻¹ * χ (c y) = χ g`. Rewrite using `[h3, mul_comm (χ g), inv_mul_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem exists_potential {G A X : Type} [Group G] [CommGroup A] (χ : G →* A) (r : G → X → X → Prop)
     (h1 : ∀ x, r 1 x x) (hi : ∀ g x y, r g x y → r g⁻¹ y x)
@@ -36,7 +36,7 @@ theorem exists_potential {G A X : Type} [Group G] [CommGroup A] (χ : G →* A) 
   rw [h3, mul_comm (χ g), inv_mul_cancel_left]
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.IsIntegralDetLattice.isIntegral_det_of_preserves_lattice L hfg hsp γ hγ`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_det {E : Type} [Field E] [NumberField E] {N : ℕ} (L : Submodule (𝓞 E) (Fin N → E))
     (hfg : L.FG) (hsp : Submodule.span E (L : Set (Fin N → E)) = ⊤) (γ : Matrix (Fin N) (Fin N) E)
@@ -53,7 +53,7 @@ def chi : letI := H.cmStar; unitary H.E →* ℂˣ :=
     Unitary.toUnits)⁻¹
 
 /- English proof (translation)
-Introduce `z`. Simplify using `[chi]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem chi_apply : letI := H.cmStar; ∀ z : unitary H.E, ((chi H z : ℂˣ) : ℂ) =
     ∏ τ : Tau R, (H.emb ((τ : R.Psi) : R.GG) (z : H.E))⁻¹ := by
@@ -61,13 +61,13 @@ theorem chi_apply : letI := H.cmStar; ∀ z : unitary H.E, ((chi H z : ℂˣ) : 
   simp [chi]
 
 /- English proof (translation)
-Use `H.galois` as an intermediate fact. Rewrite using `[Algebra.norm_eq_prod_automorphisms]`. Use `symm`. Establish `hm : ∀ σ : H.E ≃ₐ[H.K] H.E, H.gal (σ.restrictScalars ℚ) ∈ R.Psi` using `fun σ => (H.galE_mem_Psi_iff _).2 (σ.commutes ⟨H.sqd, IntermediateField.mem_adjoin_simple_self ℚ _⟩)`. Use `Fintype.prod_bijective (fun σ => ⟨_, hm σ⟩) ⟨fun a b h => ?_, fun τ => ?_⟩ _ _ (fun σ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `AlgEquiv.restrictScalars_injective ℚ (H.gal.injective (congrArg Subtype.val h))`. Establish `h1 : H.sigmaOf τ H.sqd = H.sqd` using `(H.galE_mem_Psi_iff _).1 (by simpa [Host.sigmaOf] using τ.2)`. Establish `h2 : H.sigmaOf τ ∈ H.K.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hy using IntermediateField.adjoin_induction with`. Consider the case `mem y hy => rw [Set.mem_singleton_iff.1 hy]`. Conclude with `h1`. Consider the case `algebraMap y => exact AlgEquiv.commutes _ y`. Consider the case `add y z _ _ hy hz => rw [map_add, hy, hz]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `inv y _ hy => rw [map_inv₀, hy]`. Consider the case `mul y z _ _ hy hz => rw [map_mul, hy, hz]`. Use `⟨IntermediateField.fixingSubgroupEquiv H.K ⟨_, h2⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `H.gal.apply_symm_apply _`. Simplify using `[Host.sigmaOf]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem prod_sigmaOf (x : H.E) :
     ∏ τ : Tau R, H.sigmaOf ((τ : R.Psi) : R.GG) x = algebraMap H.K H.E (Algebra.norm H.K x) := by
@@ -93,13 +93,11 @@ private theorem prod_sigmaOf (x : H.E) :
   · simp [Host.sigmaOf]
 
 /- English proof (translation)
-Use `letI := H.cmStar`. Introduce `z hz`. Use `H.isCMField_hostE` as an intermediate fact. Take `⟨n, hn, hp⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one H.E ℂ hz (fun φ => by`. Establish `h1 : star (z : H.E) * z = 1` using `z.2.1`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : φ (star (z : H.E)) = starRingEnd ℂ (φ z)` using `IsCMField.complexEmbedding_complexConj H.E φ z`. Establish `h3` using `congrArg φ h1`. Rewrite `h3` using `[map_mul, h2, map_one, Complex.conj_mul']`. Establish `h4 : ‖φ z‖ ^ 2 = 1` using `by exact_mod_cast h3`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[chi_apply]`. Establish `h` using `congrArg H.φ₀ (prod_sigmaOf H (z : H.E))`. Rewrite `h` using `[H.der.norm_mu z ⟨n, hn, hp⟩, map_one, map_one, map_prod]`. Rewrite using `[Finset.prod_inv_distrib, Units.val_one, inv_eq_one]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_of_integral : letI := H.cmStar; ∀ z : unitary H.E, IsIntegral ℤ (z : H.E) → chi H z = 1 := by
   letI := H.cmStar
@@ -120,13 +118,13 @@ theorem chi_of_integral : letI := H.cmStar; ∀ z : unitary H.E, IsIntegral ℤ 
   exact h
 
 /- English proof (translation)
-Use `letI := H.cmStar`. Set `dt : Matrix.unitaryGroup (Fin N) H.E →* unitary H.E` to `{ toFun := fun γ => ⟨(γ : Matrix (Fin N) (Fin N) H.E).det, Matrix.det_of_mem_unitary γ.2⟩ map_one' := Subtype.ext (by simp) map_mul' := fun a b => Subtype.ext (by simp) }`. Establish `hone : ∀ L : Submodule (𝓞 H.E) (Fin N → H.E), SDLat.smulLat (1 : Matrix (Fin N) (Fin N) H.E) L = L`. Introduce `L`. Use extensionality with `v`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[SDLat.smulLat]`. Establish `hmul : ∀ (a b : Matrix (Fin N) (Fin N) H.E) (L : Submodule (𝓞 H.E) (Fin N → H.E)), SDLat.smulLat (a * b) L = SDLat.smulLat a (SDLat.smulLat b L)`. Introduce `a b L`. Unfold `SDLat.smulLat`. Rewrite using `[← Submodule.map_comp, Matrix.toLin'_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `exists_potential ((chi H).comp dt) (fun γ (L L' : SDLat H.E N) => L'.1 = SDLat.smulLat (γ : Matrix (Fin N) (Fin N) H.E) L.1) (fun L => (hone _).symm) (fun γ L L' h => ?_) (fun γ γ' L L' L'' h h' => ?_) (fun γ L h => ?_)` and prove the remaining obligations. Rewrite using `[h, ← hmul, ← Submonoid.coe_mul, inv_mul_cancel]`. Conclude with `(hone _).symm`. Rewrite using `[h', h, ← hmul]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `chi_of_integral H _ (isIntegral_det L.1 L.2.1 L.2.2.1 _ fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `⟨v, hv, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pot (N : ℕ) : letI := H.cmStar; ∃ φ : SDLat H.E N → ℂˣ,
     ∀ (γ : Matrix.unitaryGroup (Fin N) H.E) (L L' : SDLat H.E N),
@@ -168,7 +166,7 @@ variable (B : Pre)
 def uI : ℂˣ := Units.mk0 Complex.I Complex.I_ne_zero
 
 /- English proof (translation)
-Simplify using `[uI]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_uI_zpow (a b : ℤ) : ‖((uI ^ a * uI ^ b : ℂˣ) : ℂ)‖ = 1 := by
   simp [uI]
@@ -234,7 +232,7 @@ def cols (B : Base) : Cols B where
     { forms B.R (Tau B.R) (B.hcW u) (B.T u) (card_Tau B.host) B.LL B.embLL B.places with }
 
 /- English proof (translation)
-Establish `h` using `B.level_mod_four _ (B.T_level u)`. Establish `h2` using `(B.T_prime u).two_le`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_lt_alt (u : B.Word) : 2 < B.T u := by
   have h := B.level_mod_four _ (B.T_level u)
@@ -244,9 +242,7 @@ theorem two_lt_alt (u : B.Word) : 2 < B.T u := by
 open Classical in
 
 /- English proof (translation)
-Use `⟨cols B, fun u i => ⟨(1 : Tau B.R → (ZMod (B.T u))ˣ)⟩, fun u => ?_, fun u i => ?_, (by decide : (0 : Fin 3) ≠ 1), (by decide : (0 : Fin 3) ≠ 2), (by decide : (1 : Fin 3) ≠ 2), fun _ _ h => h, fun u i c h => ?_⟩` and prove the remaining obligations. Use `haveI : Fact (B.T u).Prime := ⟨B.T_prime u⟩`. Conclude with `mram_ne_bot B.R (Tau B.R) (B.hcW u) (B.T u) (card_Tau B.host) (two_lt_alt B.toPre u)`. Conclude with `(top_ne_bot : (⊤ : Submodule ℂ ((Tau B.R → (ZMod (B.T u))ˣ) → Unit → ℂ)) ≠ ⊥)`. Establish `h' : uI = 1` using `h`.
-
-Use `congrArg (fun x : ℂˣ => (x : ℂ).re) h'` as an intermediate fact. Simplify using `[uI] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cols (B : Base) : ∃ C : Cols B, (∀ u i, Nonempty ((C.mem u).C.cls i)) ∧
     (∀ u, (C.mem u).A.Mram ≠ ⊥) ∧ (∀ u i, (C.fm u).Fi i ≠ ⊥) ∧ C.mu0 ≠ C.muStar ∧ C.mu0 ≠ C.muStar' ∧
@@ -262,12 +258,12 @@ theorem exists_cols (B : Base) : ∃ C : Cols B, (∀ u i, Nonempty ((C.mem u).C
     simp [uI] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cols0 B⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_cols0 (B : Pre) : Nonempty (Cols0 B) := ⟨cols0 B⟩
 
 /- English proof (translation)
-Unfold `ColumnsAtT.Tstar ColumnsAtT.Xu`. Rewrite using `[C.A_T, C.A_duStar, C.A_Dstar, C.A_GamP]`. Conclude with `B.T_win u`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_win (C : Cols0 B) (u : B.Word) : (C.mem u).A.Tstar ≤ ((C.mem u).A.T : ℝ) ∧
     ((C.mem u).A.T : ℝ) ≤ (1 + 1 / ((B.R.f : ℝ) * B.R.k)) * (C.mem u).A.Tstar := by

@@ -16,21 +16,17 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 namespace GlobalTheory.AtG
 
 /- English proof (translation)
-Introduce `B X I h l Z l0 u`. Establish `hX` using `(GlobalTheory.Mem.Col2.base_fields_primes_ok B X).1`. Take `⟨κ, hκ⟩` from `GlobalTheory.Core.ColZero.exists_colEquiv I h hX l u I.mu0`. Establish `hκc : ∀ φ, κ φ = GlobalTheory.Mem.Col2.KerRat.colForm I l h u I.mu0 φ` using `fun φ => Subtype.ext (funext (hκ φ))`. Establish `hram : ∀ φ, κ φ ∈ (I.fm l u I.mu0).ramSub ↔ φ ∈ Formalism.L2.Col.MramV (Pr` using `B.primes X) B.wts I.Ch u := fun φ => GlobalTheory.Core.ColRam.isCol_mem_ramSub_iff I h hX l u I.mu0 (κ φ) φ (hκ φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrange : ∀ x, (I.rec7 l Z).nuIn u x ∈ (I.fm l u I.mu0).ramSub` using `fun x => (I.rec7 l Z).nuIn_range u ▸ ⟨x, rfl⟩`. Establish `hinj` using `(I.rec7 l Z).nuIn_inj u`. Establish `hsurj : ∀ φ : Formalism.L2.Col.MramV (Pr` using `B.primes X) B.wts I.Ch u, ∃ x, (I.rec7 l Z).nuIn u x = κ φ.1 := by`. Introduce `φ`. Establish `hm : κ φ.1 ∈ LinearMap.range ((I.rec7 l Z).nuIn u)` using `(I.rec7 l Z).nuIn_range u ▸ (hram φ.1).2 φ.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hm`. Set `f : ((I.rec7 l Z).div.Nu u).V → Formalism.L2.Col.MramV (Pr` to `B.primes X) B.wts I.Ch u := fun x => ⟨κ.symm ((I.rec7 l Z).nuIn u x), (hram _).1 (Eq.subst (motive := fun y => y ∈ (I.fm l u I.mu0).ramSub) (κ.apply_symm_apply ((I.rec7 l Z).nuIn u x)).symm (hrange x))⟩`. Establish `hf : ∀ x, κ (f x).1 = (I.rec7 l Z).nuIn u x` using `fun x => κ.apply_symm_apply _`. Establish `fbij : Function.Bijective f`. Use `⟨fun x y e => hinj ?_, fun φ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hf x, ← hf y, e]`. Take `⟨x, hx⟩` from `hsurj φ`. Conclude with `⟨x, Subtype.ext (by rw [← κ.injective.eq_iff, hf, hx])⟩`. Establish `fadd : ∀ x y, f (x + y) = f x + f y` using `fun x y => Subtype.ext (by`. Conclude with `(congrArg κ.symm (map_add ((I.rec7 l Z).nuIn u) x y)).trans (map_add κ.symm _ _))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨AddEquiv.ofBijective (AddMonoidHom.mk' f fadd) fbij, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r x`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show κ.symm _ = _`. Conclude with `(congrArg κ.symm (map_smul ((I.rec7 l Z).nuIn u) r x)).trans (map_smul κ.symm _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Establish `e` using `GlobalTheory.Core.Ht2.colStep0_mem_lat I h hX l u I.mu0 (κ (f x).1) (f x).1 (hκ _)`. Use `show (I.rec7 l Z).nuIn u x ∈ ((I.fm l u I.mu0).lat 0).L ↔ (f x).1 ∈ Formalism.L2.Col.MfL (Pr := B.primes X) B.wts I.Ch u`. Conclude with `(Eq.subst (motive := fun y => (y ∈ ((I.fm l u I.mu0).lat 0).L ↔ (f x).1 ∈ Formalism.L2.Col.MfL (Pr := B.primes X) B.wts I.Ch u)) (hf x) e)`. Introduce `x show _ = GlobalTheory.Mem.Col2.KerRat.colForm I l h u I.mu0 (f x).1`.
-
-Rewrite using `[← hκc, hf]`. Introduce `a φ`. Use function extensionality and compare the values at `c'`. Establish `e` using `GlobalTheory.LvT.TrueStep0.rep_eCls0_symm h l u a c'`. Use `show Formalism.L2.Col.evV _ _ _ _ (φ.1 ((I.stp u a 0).rep c').1.1.deco) = Formalism.L2.Col.evV _ _ _ _ (φ.1 ((I.stp u I.mu0 0).rep ((I.eCls0 l u a).symm c')).1.1.deco)`.
-
-Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramCols_true : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} (I : GlobalTheory.Mem.Col2.TC B X) (h : I.Ok) (l : I.Laws) (Z : GlobalTheory.Mem.Col2.TC.Later B (I.cols l)) (l0 : I.Law0 l) (u : B.Word), ∃ eM : ((I.rec7 l Z).div.Nu u).V ≃+ Formalism.L2.Col.MramV (Pr := B.primes X) B.wts I.Ch u, (∀ (r : (I.rec7 l Z).what₂.LL) x, eM (r • x) = (show B.fields.K from r) • eM x) ∧ (∀ x, x ∈ DV.MramL (I.rec7 l Z) u ↔ eM x ∈ Formalism.L2.Col.MramL (Pr := B.primes X) B.wts I.Ch u) ∧ (∀ x, (I.rec7 l Z).nuIn u x = GlobalTheory.Mem.Col2.KerRat.colForm I l h u I.mu0 (eM x).1) ∧ ∀ a φ, (I.fm l u a).emb 0 (GlobalTheory.Mem.Col2.KerRat.colForm I l h u a φ) = (I.cols l).e0Tw u a ((I.fm l u I.mu0).emb 0 (GlobalTheory.Mem.Col2.KerRat.colForm I l h u I.mu0 φ)) := by
   intro B X I h l Z l0 u

@@ -12,9 +12,9 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare.FirstRows
 
 /- English proof (translation)
-Establish `hp : ∀ n : ℕ, S (u ^ n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih => rw [pow_succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hm _ _ ih hu`. Establish `: u⁻¹ = u ^ (orderOf u - 1)`. Rewrite using `[inv_eq_iff_mul_eq_one, ← pow_succ', Nat.sub_add_cancel (orderOf_pos u), pow_orderOf_eq_one]`. Rewrite using `[this]`. Conclude with `hp _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_of_mul_mem {G : Type} [Group G] [Finite G] (S : G → Prop) (h1 : S 1)
     (hm : ∀ u v, S u → S v → S (u * v)) (u : G) (hu : S u) : S u⁻¹ := by
@@ -33,14 +33,14 @@ def InBlock (k : ℕ) (h : GG g N) : Prop :=
   ∀ a b : Fin N, (k ≤ (a : ℕ) ∨ k ≤ (b : ℕ)) → h.val a b = if a = b then 1 else 0
 
 /- English proof (translation)
-Introduce `a b _`. Simplify using `[Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem inBlock_one (k : ℕ) : InBlock k (1 : GG g N) := by
   intro a b _
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_congr rfl fun c _ => by rw [hh c b (Or.inr hb)]]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem InBlock.mul_right {k : ℕ} {h : GG g N} (hh : InBlock k h) (A : Matrix (Fin N) (Fin N) (ZMod g))
     (a b : Fin N) (hb : k ≤ (b : ℕ)) : (A * h.val) a b = A a b := by
@@ -48,7 +48,7 @@ theorem InBlock.mul_right {k : ℕ} {h : GG g N} (hh : InBlock k h) (A : Matrix 
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_congr rfl fun c _ => by rw [hh a c (Or.inl ha)]]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem InBlock.mul_left {k : ℕ} {h : GG g N} (hh : InBlock k h) (A : Matrix (Fin N) (Fin N) (ZMod g))
     (a b : Fin N) (ha : k ≤ (a : ℕ)) : (h.val * A) a b = A a b := by
@@ -56,9 +56,9 @@ theorem InBlock.mul_left {k : ℕ} {h : GG g N} (hh : InBlock k h) (A : Matrix (
   simp
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite using `[Units.val_mul]`. Break down `hab with ha | hb` into its components or cases. Rewrite using `[hh.mul_left _ _ _ ha]`. Conclude with `hh' a b (Or.inl ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh'.mul_right _ _ _ hb]`. Conclude with `hh a b (Or.inr hb)`.
+A detailed English derivation is pending.
 -/
 theorem InBlock.mul {k : ℕ} (h h' : GG g N) (hh : InBlock k h) (hh' : InBlock k h') : InBlock k (h * h') := by
   intro a b hab
@@ -68,17 +68,17 @@ theorem InBlock.mul {k : ℕ} (h h' : GG g N) (hh : InBlock k h) (hh' : InBlock 
   · rw [hh'.mul_right _ _ _ hb]; exact hh a b (Or.inr hb)
 
 /- English proof (translation)
-The claim follows from `inv_mem_of_mul_mem _ (inBlock_one k) InBlock.mul h hh`.
+A detailed English derivation is pending.
 -/
 theorem InBlock.inv {k : ℕ} {h : GG g N} (hh : InBlock k h) : InBlock k h⁻¹ :=
   inv_mem_of_mul_mem _ (inBlock_one k) InBlock.mul h hh
 
 /- English proof (translation)
-Distinguish the cases in `hb : (b : ℕ) ≤ k`. Establish `h1 : ∀ a, (n.val * h.val) a b = h.val a b`. Introduce `a`. Establish `: ∀ c, n.val a c * h.val c b = (if a = c then 1 else 0) * h.val c b`. Introduce `c`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hc : (c : ℕ) ≤ k`. Rewrite using `[hn a c hc]`. Establish `: c ≠ b` using `by rintro rfl; exact hc hb`. Rewrite using `[hh c b (Or.inl (by omega)), if_neg this, mul_zero, mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_congr rfl fun c _ => this c]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.mul_apply, Finset.sum_congr rfl fun c _ => by rw [h1 c], ← Matrix.mul_apply, ← Units.val_mul, inv_mul_cancel, hn a b hb]`. Simplify using `[Matrix.one_apply]`. Establish `ha : k ≤ (a : ℕ)` using `by omega`. Rewrite using `[Units.val_mul, Units.val_mul, hh.inv.mul_left _ _ _ ha, hh.mul_right _ _ _ (by omega)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_entry {k : ℕ} {h n : GG g N} (hh : InBlock k h)
     (hn : ∀ a b : Fin N, (b : ℕ) ≤ k → n.val a b = if a = b then 1 else 0)
@@ -101,19 +101,17 @@ theorem conj_entry {k : ℕ} {h n : GG g N} (hh : InBlock k h)
     rw [Units.val_mul, Units.val_mul, hh.inv.mul_left _ _ _ ha, hh.mul_right _ _ _ (by omega)]
 
 /- English proof (translation)
-Set `A : Matrix (Fin N) (Fin N) (ZMod g)` to `fun a b => if (a : ℕ) < k ∧ (b : ℕ) < k then j.val a b else if a = b then 1 else 0`. Establish `hd : ∀ a, A a a = 1`. Introduce `a`. Simplify using `[A, hj.1]`. Establish `hl : ∀ a b, b < a → A a b = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a b hab`. Simplify using `[A, hj.2 a b hab, hab.ne']`. Establish `hdet : A.det ≠ 0`. Rewrite using `[Matrix.det_of_upperTriangular (fun a b hab => hl a b hab)]`. Simplify using `[hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `u : GG g N` to `Matrix.GeneralLinearGroup.mkOfDetNeZero A hdet`. Establish `hu : u.val = A` using `rfl`. Use `⟨u, ⟨hd, hl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Rewrite using `[hu]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `if_neg (by omega)`. Introduce `a b hb`. Establish `h1 : ∀ c, j.val c b = u.val c b`. Introduce `c`. Rewrite using `[hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [A]`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression. Substitute `h2` using the available equality. Conclude with `hj.1 _`.
+Both sides reduce to the same expression. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_gt_of_ne h2 with h | h` into its components or cases. Establish `: (c : ℕ) < b` using `h`. Conclude with `hk c b (by omega) (by omega)`. Conclude with `hj.2 _ _ h`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_congr rfl fun c _ => by rw [h1 c], ← Matrix.mul_apply, ← Units.val_mul, inv_mul_cancel]`.
-
-Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_block {k : ℕ} {j : GG g N} (hj : IsUp g N j)
     (hk : ∀ a b : Fin N, (a : ℕ) < k → (b : ℕ) = k → j.val a b = 0) :
@@ -151,15 +149,15 @@ theorem exists_block {k : ℕ} {j : GG g N} (hj : IsUp g N j)
     simp [Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `[Lev.Mem, hL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_iff_isUp {L : Lev g N} (hL : L.sharp = false) (u : GG g N) : L.Mem u ↔ IsUp g N u := by
   simp [Lev.Mem, hL]
 
 /- English proof (translation)
-Unfold `Lev.chi`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with he`. Rewrite using `[h a b (by simpa [Lev.Edge, hL] using he)]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem chi_congr {L : Lev g N} (hL : L.sharp = false) {u v : GG g N}
     (h : ∀ a b : Fin N, (b : ℕ) = a + 1 → u.val a b = v.val a b) : L.chi u = L.chi v := by
@@ -171,7 +169,7 @@ theorem chi_congr {L : Lev g N} (hL : L.sharp = false) {u v : GG g N}
   · rfl
 
 /- English proof (translation)
-Introduce `h`. Unfold `Lev.chi at h`. Use `AddChar.map_add_eq_mul L.ψ (∑ a, ∑ b, if L.Edge a b then (L.co a : ZMod g) * u.val a b else 0) (-(∑ a, ∑ b, if L.Edge a b then (L.co a : ZMod g) * u.val a b else 0))` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chi_ne_zero (L : Lev g N) (u : GG g N) : L.chi u ≠ 0 := by
   intro h
@@ -185,7 +183,7 @@ def blockUp (g : ℕ) [Fact g.Prime] (N k : ℕ) : Finset (GG g N) :=
   Finset.univ.filter fun u => IsUp g N u ∧ InBlock k u
 
 /- English proof (translation)
-Simplify using `[blockUp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_blockUp {k : ℕ} {u : GG g N} : u ∈ blockUp g N k ↔ IsUp g N u ∧ InBlock k u := by
   simp [blockUp]
@@ -196,19 +194,19 @@ def avg (L : Lev g N) (k : ℕ) (x : M) (w : GG g N) : M :=
   ∑ u ∈ blockUp g N k, (L.chi u)⁻¹ • ρ (u * w) x
 
 /- English proof (translation)
-Take `⟨h1, hm, -, hc, -⟩` from `GlobalTheory.T.levelDatum_submonoid_chi_mul_unipotent g N L`. Simplify using `only [mem_iff_isUp hL] at h1 hm hc`. Establish `hi` using `inv_mem_of_mul_mem _ h1 hm`. Take `⟨u, hu, hub, hn⟩` from `exists_block hj hk`. Establish `hnu : IsUp g N (u⁻¹ * j)` using `hm _ _ (hi _ hu) hj`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, rfl⟩ : ∃ n, j = u * n` from `⟨u⁻¹ * j, by simp⟩`. Rewrite `hn`, `hnu` using `[inv_mul_cancel_left]`. Establish `e1 : ρ n (avg ρ L k x w) = L.chi n • avg ρ L k x w`. Unfold `avg`. Rewrite using `[map_sum, Finset.smul_sum]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hh : InBlock k (v * w)` using `InBlock.mul _ _ (mem_blockUp.1 hv).2 hw`. Generalize the expression as in `v * w = h at hh`. Apply the tactic sequence `have hc' := conj_entry hh hn`. Establish `hup : IsUp g N (h⁻¹ * (n * h))` using `⟨fun a => by rw [hc' a a (by omega)]; exact hnu.1 a, fun a b hab => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (b : ℕ) < a` using `hab`. Rewrite using `[hc' a b (by omega)]; exact hnu.2 a b hab⟩`. Establish `hchi : L.chi (h⁻¹ * (n * h)) = L.chi n` using `chi_congr hL fun a b hab => hc' a b (by omega)`. Establish `: ρ n (ρ h x) = ρ h (ρ (h⁻¹ * (n * h)) x)`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_inv_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, this, hx _ hup, hchi, map_smul, smul_comm]`. Establish `e2 : ρ u (avg ρ L k x w) = L.chi u • avg ρ L k x w`. Unfold `avg`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_bijective (fun v => u * v) (Group.mulLeft_bijective u) ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v`. Simplify using `only [mem_blockUp]`. Use `⟨fun h => ⟨hm _ _ hu h.1, InBlock.mul _ _ hub h.2⟩, fun h => ?_⟩` and prove the remaining obligations. Use `And.intro (hm _ _ (hi _ hu) h.1) (InBlock.mul _ _ hub.inv h.2)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `v hv`. Rewrite using `[map_smul, ← Module.End.mul_apply, ← map_mul, mul_assoc, hc _ _ hu (mem_blockUp.1 hv).1, smul_smul, mul_inv, mul_inv_cancel_left₀ (chi_ne_zero L u)]`. Rewrite using `[map_mul, Module.End.mul_apply, e1, map_smul, e2, smul_smul, hc _ _ hu hnu, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_eigen {L : Lev g N} (hL : L.sharp = false) {x : M} (hx : ∀ u, IsUp g N u → ρ u x = L.chi u • x)
     {k : ℕ} {w : GG g N} (hw : InBlock k w) {j : GG g N} (hj : IsUp g N j)
@@ -252,23 +250,23 @@ theorem avg_eigen {L : Lev g N} (hL : L.sharp = false) {x : M} (hx : ∀ u, IsUp
   rw [map_mul, Module.End.mul_apply, e1, map_smul, e2, smul_smul, hc _ _ hu hnu, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc w₀`. Set `φ : GG g N → ℂ` to `fun h => ∑ w : R, ∑ u ∈ blockUp g N k, if h = u * w then c w * (L.chi u)⁻¹ else 0`. Establish `hφ : ∀ h, φ h ≠ 0 → InBlock k h`. Introduce `h hh`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, -, hw⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hh`. Take `⟨u, hu, hw⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hw`. Establish `: h = u * w` using `by by_contra hne; exact hw (if_neg hne)`. Rewrite using `[this]`. Conclude with `InBlock.mul _ _ (mem_blockUp.1 hu).2 (hR w w.2).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∑ h, φ h • ρ h x = 0`. Rewrite using `[← hc]`. Simplify using `only [φ, avg, Finset.sum_smul, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Simplify using `[ite_smul, mul_smul]`. Establish `key : ∑ u' ∈ blockUp g N k, φ (w₀ * u') * L.chi u' = 0`. Use `Eq.trans (Finset.sum_congr ?_ fun _ _ => rfl) (GlobalTheory.T.whittaker_translates_corner_linearIndependent g N M ρ L hL x hx0 hx k hk φ hφ hsum w₀)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `u`. Simplify using `only [mem_blockUp, Finset.mem_filter, Finset.mem_univ, true_and, InBlock]`. Establish `h2 : ∀ u' ∈ blockUp g N k, φ (w₀ * u') * L.chi u' = c w₀ * ((((blockUp g N k).filter fun u => w₀ * u' = u * w₀).card : ℕ) : ℂ)`. Introduce `u' hu'`. Establish `hu'` using `mem_blockUp.1 hu'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [φ]`. Rewrite using `[Finset.sum_eq_single w₀, Finset.card_filter, Nat.cast_sum, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations. Establish `hu` using `mem_blockUp.1 hu`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hχ w₀ w₀.2 u u' hu.1 hu'.1 hu.2 hu'.2 h.symm, mul_assoc, inv_mul_cancel₀ (chi_ne_zero L u')]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `w _ hw`. Use `Finset.sum_eq_zero fun u hu => if_neg fun h => hw (Subtype.ext ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `GlobalTheory.T.monomial_eq_of_upperUnipotent_double_coset g N w w₀ u u' (hR w w.2).2 (hR w₀ w₀.2).2 (mem_blockUp.1 hu).1 hu'.1 h.symm`. Simplify using the standard rewrite rules. Rewrite `key` using `[Finset.sum_congr rfl h2, ← Finset.mul_sum, ← Nat.cast_sum, mul_eq_zero]`. Use `key.resolve_right ?_` and prove the remaining obligations. Establish `h1 : (1 : GG g N) ∈ blockUp g N k` using `mem_blockUp.2 ⟨(mem_iff_isUp hL 1).1 (GlobalTheory.T.levelDatum_submonoid_chi_mul_unipotent g N L).1, inBlock_one k⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_eq_zero, Finset.sum_eq_zero_iff]`. Introduce `h`. Use `h 1 h1` as an intermediate fact. Rewrite `this` using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Conclude with `this h1 (by simp)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_independent [FiniteDimensional ℂ M] {L : Lev g N} (hL : L.sharp = false) {x : M} (hx0 : x ≠ 0)
     (hx : ∀ u, IsUp g N u → ρ u x = L.chi u • x) {k : ℕ} (hk : k < N) (R : Finset (GG g N))
@@ -327,7 +325,7 @@ theorem avg_independent [FiniteDimensional ℂ M] {L : Lev g N} (hL : L.sharp = 
   exact this h1 (by simp)
 
 /- English proof (translation)
-Take `⟨h1, hm, hc1, hc, -⟩` from `GlobalTheory.T.levelDatum_submonoid_chi_mul_unipotent g N L`. Conclude with `(GlobalTheory.T.subgroupCharacterIdempotent_properties (GG g N) M ρ L.Mem L.chi h1 hm hc1 hc).2.2.2 _ (x ∘ (Fintype.equivFin ι).symm) (hx.comp _ (Fintype.equivFin ι).symm.injective) fun i => he _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_le_rk [FiniteDimensional ℂ M] (L : Lev g N) {ι : Type} [Fintype ι] (x : ι → M)
     (hx : LinearIndependent ℂ x) (he : ∀ i u, L.Mem u → ρ u (x i) = L.chi u • x i) :
@@ -337,9 +335,9 @@ theorem card_le_rk [FiniteDimensional ℂ M] (L : Lev g N) {ι : Type} [Fintype 
     (hx.comp _ (Fintype.equivFin ι).symm.injective) fun i => he _
 
 /- English proof (translation)
-Take `⟨L, hL, x, hx0, hx⟩` from `hρ`. Set `L₁ : Lev g N` to `{ L with co := fun _ => 1 }`. Establish `hL₁ : L₁.sharp = false` using `hL`. Use `⟨L₁, hL₁, fun _ => rfl, ?_⟩` and prove the remaining obligations. Establish `h1` using `card_le_rk ρ L (fun _ : Unit => x) (linearIndependent_unique_iff.2 hx0) fun _ u hu => hx u hu.1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[GlobalTheory.T.rank_levelDatum_idempotent_eq_of_same_shape g N M ρ L L₁ rfl rfl rfl, Fintype.card_unit]`. Take `⟨⟨y, hy⟩, hy0⟩` from `Module.finrank_pos_iff_exists_ne_zero.1 h1`. Take `⟨h1, hm, hc1, hc, -⟩` from `GlobalTheory.T.levelDatum_submonoid_chi_mul_unipotent g N L₁`. Use `⟨y, fun h => hy0 (Subtype.ext h), fun u hu => ?_⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.T.subgroupCharacterIdempotent_properties (GG g N) M ρ L₁.Mem L₁.chi h1 hm hc1 hc).2.2.1 y).1 hy u ((mem_iff_isUp hL₁ u).2 hu)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_unit_coeff [FiniteDimensional ℂ M] (hρ : IsGeneric ρ) :
     ∃ L : Lev g N, L.sharp = false ∧ (∀ a, L.co a = 1) ∧
@@ -362,23 +360,23 @@ namespace GlobalTheory.BadShare
 open FirstRows
 
 /- English proof (translation)
-Introduce `g hg N M _ _ _ ρ hρ L hL hs`. Take `⟨L₁, hL₁, hco, x, hx0, hx⟩` from `exists_unit_coeff ρ hρ`. Set `L' : Lev g N` to `{ L with ψ := L₁.ψ, hψ := L₁.hψ, co := L₁.co }`. Establish `hkN : L.k < N` using `by have := L.hk; omega`. Establish `hmem : ∀ u, L'.Mem u → ∀ a b : Fin N, (a : ℕ) < L.k → (b : ℕ) = L.k → u.val a b = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu a b ha hb`. Conclude with `hu.2 hL a b (by simp [L', hs]) (by simpa [L', hs] using ha) (by simpa [L', hs] using hb)`. Establish `hchi : ∀ u, L'.Mem u → L'.chi u = L₁.chi u`. Introduce `u hu`. Unfold `Lev.chi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `e1 : L'.Edge a b ↔ ((b : ℕ) = a + 1 ∧ (a : ℕ) + 1 ≠ L.k)`. Simplify using `only [Lev.Edge, L', hL, hs, if_true]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `e2 : L₁.Edge a b ↔ (b : ℕ) = a + 1` using `by simp [Lev.Edge, hL₁]`. Distinguish the cases in `h1 : (b : ℕ) = a + 1`. Rewrite using `[if_pos (e2.2 h1)]`. Distinguish the cases in `h2 : (a : ℕ) + 1 = L.k`. Rewrite using `[if_neg (fun h => (e1.1 h).2 h2), hmem u hu a b (by omega) (by omega), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (e1.2 ⟨h1, h2⟩)]`. Rewrite using `[if_neg (fun h => h1 (e1.1 h).1), if_neg (fun h => h1 (e2.1 h))]`. Rewrite using `[GlobalTheory.T.rank_levelDatum_idempotent_eq_of_same_shape g N M ρ L L' rfl rfl rfl]`. Establish `hg0 : (0 : ℝ) < g` using `Nat.cast_pos.2 hg.out.pos`. Break down `Nat.eq_zero_or_pos L.k with hk | hk` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h1` using `card_le_rk ρ L' (fun _ : Unit => x) (linearIndependent_unique_iff.2 hx0) fun _ u hu => by rw [hchi u hu]; exact hx u hu.1`. Rewrite `h1` using `[Fintype.card_unit]`. Establish `h1 : (1 : ℝ) ≤ rk ρ L'.e` using `by exact_mod_cast h1`. Establish `: 0 < 1 / (g : ℝ)` using `by positivity`. Rewrite using `[hk, pow_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨R, hcard, hR, hχ⟩` from `GlobalTheory.T.exists_relevant_bruhat_cells_levelDatum g N L₁ hL₁ hco L.k hk hkN`. Establish `h1` using `card_le_rk ρ L' _ (avg_independent ρ hL₁ hx0 hx hkN R hR hχ) fun w u hu => by`. Rewrite using `[hchi u hu]`. Conclude with `avg_eigen ρ hL₁ hx (hR w w.2).1 hu.1 (hmem u hu)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Fintype.card_coe]`. Establish `h2 : (((g - 1) * g ^ (L.k - 1) : ℕ) : ℝ) ≤ rk ρ L'.e` using `by exact_mod_cast hcard.trans h1`. Rewrite `h2` using `[Nat.cast_mul, Nat.cast_sub hg.out.pos, Nat.cast_pow, Nat.cast_one]`. Use `le_of_eq_of_le ?_ h2` and prove the remaining obligations. Take `⟨m, hm⟩ : ∃ m, L.k = m + 1` from `⟨L.k - 1, by omega⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hm, Nat.add_sub_cancel, pow_succ]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem rk_ge_of_isGeneric_of_s_eq_zero : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), ∀ (M : Type) [AddCommGroup M] [Module ℂ M]
     [FiniteDimensional ℂ M] (ρ : Representation ℂ (GG g N) M), IsGeneric ρ → ∀ L : Lev g N, L.sharp = true → L.s = 0 →

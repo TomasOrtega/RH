@@ -14,7 +14,7 @@ namespace CompanionTheory.D.Upq.Sm
 open PI.UpqRep
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | X :: W, v => by change dsig σ X (dsigW σ W v) = ds σ X (dsW σ W v) rw [dsigW_eq' σ W v]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem dsigW_eq' {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mat (2 * r + k + 1) → (H →L[ℂ] H)) :
@@ -25,13 +25,11 @@ theorem dsigW_eq' {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpa
     rw [dsigW_eq' σ W v]; rfl
 
 /- English proof (translation)
-Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det _).mp hP`. Establish `e1 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ hdet`. Establish `e2 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `e3 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, e2, conjTranspose_one]`. Use `⟨fun a ha => ⟨P * a * P⁻¹, ?_, ?_⟩, fun b hb => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((P⁻¹)ᴴ * Pᴴ) * J * (P * P⁻¹) := by`. Rewrite using `[hPJ, ha, ← hPJ]`. Simplify using `only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `_ = J := by rw [e3, e2, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[show P⁻¹ * (P * a * P⁻¹) * P = (P⁻¹ * P) * a * (P⁻¹ * P) by simp only [Matrix.mul_assoc], e1, Matrix.one_mul, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hPJ]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = Hm := by rw [e3, e2, Matrix.one_mul, Matrix.mul_one, hb, hPJ]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_facts {n : ℕ} {J Hm P : Mat n} (hP : IsUnit P) (hPJ : Pᴴ * J * P = Hm) :
     (∀ a : Mat n, aᴴ * Hm * a = Hm → ∃ b : Mat n, bᴴ * J * b = J ∧ P⁻¹ * b * P = a) ∧
@@ -54,19 +52,17 @@ theorem conj_facts {n : ℕ} {J Hm P : Mat n} (hP : IsUnit P) (hPJ : Pᴴ * J * 
       _ = Hm := by rw [e3, e2, Matrix.one_mul, Matrix.mul_one, hb, hPJ]
 
 /- English proof (translation)
-Introduce `x hx Ws hWs δ hδ`. Take `⟨P, ⟨⟨hP, hPJ⟩, -⟩, -, -, ⟨⟨h1, hm⟩, hiso, -⟩, hirr, -⟩` from `hσ`. Take `⟨hc1, hc2⟩` from `conj_facts hP hPJ`. Establish `hG : PI.IsMatGroup (UH (Hpk k r))` using `PI.QuotSetU.UnitaryGroupMassFormula.unitary_hermitian_group k r`. Establish `h : RepOn (UH (Hpk k r)) σ` using `repOn_of_conj hP hPJ h1 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso' : ∀ g ∈ UH (Hpk k r), ∀ v, ‖σ g v‖ = ‖v‖` using `fun g hg v => by`. Take `⟨b, hb, rfl⟩` from `hc1 g hg`. Conclude with `hiso b hb v`. Establish `hwm : w ∈ orbSpan (UH (Hpk k r)) σ w` using `Submodule.subset_span ⟨1, h.one_mem, by simp [h.map_one]⟩`. Establish `hd : Dense (orbSpan (UH (Hpk k r)) σ w : Set H)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.dense_iff_topologicalClosure_eq_top]`. Use `(hirr _ (Submodule.isClosed_topologicalClosure _) fun b hb v hv => ?_).resolve_left fun h0 => hw0 ?_` and prove the remaining obligations. Conclude with `map_mem_closure (σ (P⁻¹ * b * P)).continuous hv fun y hy => apply_mem_orbSpan h (hc2 b hb) hy`. Use `Submodule.le_topologicalClosure _ hwm` as an intermediate fact. Rewrite `this` using `[h0, Submodule.mem_bot]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hL : (0 : ℝ) < Ws.length + 1` using `by positivity`. Take `⟨y, hy, hxy⟩` from `exists_approx hG h hiso' hw hd hx (ι := Fin Ws.length) (W := Ws.get) (fun i X hX t => ex_mem_of_lie (hWs _ (List.get_mem _ _) X hX) t) (div_pos hδ hL)`. Take `⟨N, c, g, hcg⟩` from `Submodule.mem_span_set'.1 hy`. Use `choose a ha hag using fun i => (g i).2`. Use `⟨N, c, a, ha, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∑ i, c i • σ (a i) w = y`. Rewrite using `[← hcg]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [← hag i]`. Rewrite using `[e]`. Establish `hle` using `List.sum_le_card_nsmul (Ws.map fun w' => ‖dsigW (k := k) (r := r) σ w' (x - y)‖) (δ / (Ws.length + 1)) (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `t ht`. Take `⟨W, hW, rfl⟩` from `List.mem_map.1 ht`. Take `⟨i, rfl⟩` from `List.get_of_mem hW`. Rewrite using `[dsigW_eq']`. Conclude with `(hxy i).le)`.
-
-Use `hle.trans_lt ?_` and prove the remaining obligations. Rewrite using `[List.length_map, nsmul_eq_mul, ← mul_div_assoc, div_lt_iff₀ hL]`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem cyc_of_smooth (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ)
     (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -117,7 +113,7 @@ theorem cyc_of_smooth (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin
   nlinarith
 
 /- English proof (translation)
-Introduce `k r ε lam H _ _ _ σ w hlam hσ hw` and use `cyc_of_smooth k r ε lam H σ w hσ (by obtain ⟨P, -, h1, -⟩ := hw intro h0 rw [h0, norm_zero] at h1 exact zero_ne_one h1) (hL k r ε lam H σ w hlam hσ hw)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smoothCyc_of_lowSmooth (hL : PI.LowSmooth) : PI.SmoothCyc :=
   fun k r ε lam H _ _ _ σ w hlam hσ hw =>
@@ -130,7 +126,7 @@ theorem smoothCyc_of_lowSmooth (hL : PI.LowSmooth) : PI.SmoothCyc :=
       (hL k r ε lam H σ w hlam hσ hw)
 
 /- English proof (translation)
-The claim follows from `smoothCyc_of_lowSmooth (PI.UnitaryGroupMassFormula.LowSmooth.lowSmooth_of_kFinSmooth hK)`.
+A detailed English derivation is pending.
 -/
 theorem smoothCyc_of_kFinSmooth (hK : PI.KFinSmooth) : PI.SmoothCyc :=
   smoothCyc_of_lowSmooth (PI.UnitaryGroupMassFormula.LowSmooth.lowSmooth_of_kFinSmooth hK)

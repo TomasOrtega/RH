@@ -6,12 +6,12 @@ namespace UpperTheory.N.Num
 variable {l N h : ℕ} {y : ℝ}
 
 /- English proof (translation)
-The claim follows from `le_max_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem one_le_sN (l N : ℕ) : 1 ≤ sN l N := le_max_left _ _
 
 /- English proof (translation)
-Establish `h1` using `natLog_le_lam hl (one_le_sN l N) hy (n := 2 * h) (by push_cast; linarith)`. Establish `h2` using `natLog_le_lam hl (one_le_sN l N) hy hN`. Establish `h3` using `s_le_lam (s := sN l N) hl hy`. Unfold `lamN`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -25,9 +25,9 @@ theorem lamN_le (hl : 2 ≤ l) (hy : 1 ≤ y) (hh : (h : ℝ) ≤ 4 * y) (hN : (
   linarith
 
 /- English proof (translation)
-Establish `h1` using `lamN_le hl hy hh hN`. Establish `h2` using `lam_le hl (one_le_sN l N) hy`. Establish `hs : (1 : ℝ) ≤ sN l N` using `by exact_mod_cast one_le_sN l N`. Establish `h3 : (h : ℝ) * sN l N ≤ 4 * y * sN l N` using `mul_le_mul_of_nonneg_right hh (by linarith)`. Establish `h4 : 1 ≤ y * sN l N` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `eL`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem eL_le (hl : 2 ≤ l) (hy : 1 ≤ y) (hh : (h : ℝ) ≤ 4 * y) (hN : (N : ℝ) ≤ 8 * y) :
     (eL l N h : ℝ) ≤ 1000 * y * sN l N := by
@@ -41,9 +41,9 @@ theorem eL_le (hl : 2 ≤ l) (hy : 1 ≤ y) (hh : (h : ℝ) ≤ 4 * y) (hN : (N 
   nlinarith
 
 /- English proof (translation)
-Establish `hs` using `one_le_sN l N`. Establish `h2` using `lamN_le hl hy hh hN`. Establish `hl1` using `one_le_lam (s := sN l N) hl hy`. Unfold `c0L`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Establish `hn1 : (n : ℝ) + 1 ≤ 9 * a` using `by linarith`. Establish `hL0 : (0 : ℝ) ≤ lamN l N h` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (by linarith) h2 hL0 (by linarith)` to reduce the goal to its premises. Use `_ ≤ 1000 * a * lam l (sN l N) y := by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem cyclotomicWeightExponent_le (hl : 2 ≤ l) (hy : 1 ≤ y) (hh : (h : ℝ) ≤ 4 * y) (hN : (N : ℝ) ≤ 8 * y) {n : ℕ} {a : ℝ}
     (ha : 1 ≤ a) (hn : (n : ℝ) ≤ 8 * a) : (c0L l N h n : ℝ) ≤ 1000 * a * lam l (sN l N) y := by
@@ -60,9 +60,9 @@ theorem cyclotomicWeightExponent_le (hl : 2 ≤ l) (hy : 1 ≤ y) (hh : (h : ℝ
     _ ≤ 1000 * a * lam l (sN l N) y := by nlinarith
 
 /- English proof (translation)
-Establish `h1` using `lamN_le hl hy hh hN`. Establish `hΛ` using `one_le_lam (s := sN l N) hl hy`. Establish `ht' : (1 : ℝ) ≤ t` using `by exact_mod_cast ht`. Unfold `cBL`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cBL_le (hl : 2 ≤ l) (hy : 1 ≤ y) (hh : (h : ℝ) ≤ 4 * y) (hN : (N : ℝ) ≤ 8 * y) {n t : ℕ} {a : ℝ}
     (ha : 1 ≤ a) (hn : (n : ℝ) ≤ 2 * a) (ht : 1 ≤ t) :

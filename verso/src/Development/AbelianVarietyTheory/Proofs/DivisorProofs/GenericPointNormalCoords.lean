@@ -15,27 +15,23 @@ namespace GlobalTheory.KeyOriginBCEt
 open GlobalTheory.LocAcyc GlobalTheory.KeyOriginNoeth GlobalTheory.KeyOriginBC
 
 /- English proof (translation)
-Introduce `A R A₁ R₁ _ _ _ _ _ _ _ _ _ _ f hf hA₁ κ hκ β hβ DA _ _ _ P₁ _ hP`. Use `letI := closureAlg A R DA`. Use `letI : Algebra R (Localization.AtPrime P₁) := ((algebraMap R₁ (Localization.AtPrime P₁)).comp κ).toAlgebra`. Use `letI : Algebra R₁ (BC β DA) := (baseHom A₁ R₁ (BC β DA)).toAlgebra`. Use `haveI hE : Algebra.Etale (Localization.AtPrime P₁) (Localization.AtPrime P₁ ⊗[R] closure A R DA) := GlobalTheory.T.etale_atPrime_baseChange_of_integralClosureEtale A R R₁ DA κ P₁ hP`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsDomain (Localization.AtPrime P₁) := IsLocalization.isDomain_localization P₁.primeCompl_le_nonZeroDivisors`. Use `haveI : IsIntegrallyClosed (Localization.AtPrime P₁) := isIntegrallyClosed_of_isLocalization _ P₁.primeCompl P₁.primeCompl_le_nonZeroDivisors`. Establish `hinjS : Function.Injective (algebraMap R₁ (Localization.AtPrime P₁))` using `IsLocalization.injective _ P₁.primeCompl_le_nonZeroDivisors`. Establish `hM : (nonZeroDivisors A₁).map ((algebraMap R₁ (Localization.AtPrime P₁)).comp (algebraMap A₁ R₁)) ≤ nonZeroDivisors (Localization.AtPrime P₁)`. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Introduce `h`. Establish `h1 : algebraMap A₁ R₁ a = 0` using `hinjS (by simpa using h)`. Conclude with `nonZeroDivisors.ne_zero ha (hA₁ (by simpa using h1))`. Take `⟨hinj, hint⟩` from `GlobalTheory.T.etale_integrallyClosed_in_localization (Localization.AtPrime P₁) (Localization.AtPrime P₁ ⊗[R] closure A R DA) _ hM`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨φ, ψ, hψφ, hunit, hsurj⟩` from `GlobalTheory.T.exists_closureBaseChange_maps_and_retraction A R A₁ R₁ f hf κ hκ β hβ DA (Localization.AtPrime P₁)`. Establish `hψφ' : ∀ e, ψ (φ e) = algebraMap _ _ e` using `fun e => by`. Rewrite using `[← AlgHom.comp_apply, hψφ]`. Both sides reduce to the same expression. Establish `hφinj : Function.Injective φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y hxy`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hψφ', ← hψφ', hxy]`. Establish `hφint : ∀ x : Localization.AtPrime P₁ ⊗[R₁] BC β DA, IsIntegral (Localization.AtPrime P₁) x → x ∈ φ.range`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `hint (ψ x) (hx.map ψ)`. Take `⟨m, hm, e', he'⟩` from `hsurj x`. Establish `he'' : φ e' = x * algebraMap _ _ m` using `he'`. Establish `h2 : e * algebraMap _ _ m = e'`. Apply `hinj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_mul, he, ← hψφ' e', he'', map_mul, AlgHom.commutes, ← IsScalarTower.algebraMap_apply]`. Use `⟨e, ?_⟩` and prove the remaining obligations. Use `show φ e = x`. Apply `(hunit m hm).mul_right_cancel` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsIntegral R (closure A R DA) := by`. Use `letI := (baseHom A R DA).toAlgebra`. Set `ι : closure A R DA →ₐ[R] DA` to `{ (closure A R DA).subtype with commutes' := fun _ => rfl }`. Conclude with `⟨fun x => (isIntegral_algHom_iff ι Subtype.val_injective).1 x.2⟩`. Use `haveI : Algebra.IsIntegral (Localization.AtPrime P₁) (Localization.AtPrime P₁ ⊗[R] closure A R DA) := inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Set `φ' : Localization.AtPrime P₁ ⊗[R] closure A R DA →ₐ[Localization.AtPrime P₁] integralClosure (Localization.AtPrime P₁) (Localization.AtPrime P₁ ⊗[R₁] BC β DA)` to `φ.codRestrict _ (fun e => (Algebra.IsIntegral.isIntegral e).map φ)`. Establish `hφ' : Function.Bijective φ'`. Use `⟨fun x y h => hφinj (congrArg Subtype.val h), fun ⟨x, hx⟩ => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `hφint x hx`. Conclude with `⟨e, Subtype.ext he⟩`.
-
-Use `haveI : Algebra.Etale (Localization.AtPrime P₁) (integralClosure (Localization.AtPrime P₁) (Localization.AtPrime P₁ ⊗[R₁] BC β DA)) := Algebra.Etale.of_equiv (AlgEquiv.ofBijective φ' hφ')`. Establish `hloc` using `TensorProduct.toIntegralClosure_bijective_of_isLocalization (R := R₁) (S := Localization.AtPrime P₁) (B := BC β DA) P₁.primeCompl`. Use `haveI : Algebra.Etale (Localization.AtPrime P₁) (Localization.AtPrime P₁ ⊗[R₁] integralClosure R₁ (BC β DA)) := Algebra.Etale.of_equiv (AlgEquiv.ofBijective _ hloc).symm`. Unfold `GlobalTheory.KeyOriginEnlarge.ClosureEtaleAt`. Use `letI := closureAlg A₁ R₁ (BC β DA)`.
-
-Set `eC : closure A₁ R₁ (BC β DA) ≃ₐ[R₁] integralClosure R₁ (BC β DA)` to `{ toFun := fun x => ⟨x.1, x.2⟩, invFun := fun x => ⟨x.1, x.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl, map_mul' := fun _ _ => rfl, map_add' := fun _ _ => rfl, commutes' := fun _ => rfl }`. Conclude with `Algebra.Etale.of_equiv (Algebra.TensorProduct.congr AlgEquiv.refl eC).symm`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem closureEtaleAt_bc : ∀ (A R A₁ R₁ : Type) [CommRing A] [IsDomain A] [CommRing R] [Algebra A R]
     [CommRing A₁] [IsDomain A₁] [CommRing R₁] [IsDomain R₁] [IsIntegrallyClosed R₁] [Algebra A₁ R₁]
@@ -120,13 +116,11 @@ theorem closureEtaleAt_bc : ∀ (A R A₁ R₁ : Type) [CommRing A] [IsDomain A]
   exact Algebra.Etale.of_equiv (Algebra.TensorProduct.congr AlgEquiv.refl eC).symm
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ A A₁ _ _ _ _ _ _ _ _ _ _ _ _ f i i₁ hf EA _ _ _ _ _ QA _ jA hcomp hj DA _ _ q actA _ _ htors a _ hyp P₁ _ haP₁`. Take `⟨hd, hn⟩` from `GlobalTheory.isDomain_and_isIntegrallyClosed_atPrime_of_etale (Polynomial A₁) (ideal₁ f i i₁ EA QA jA hcomp hj) (Loc₁ f i i₁ EA QA jA hcomp hj)`. Use `haveI := hd`. Use `haveI := hn`. Use `haveI : Module.Flat (Polynomial A₁) (Loc₁ f i i₁ EA QA jA hcomp hj) := Module.Flat.trans (Polynomial A₁) (Ext f EA) (Loc₁ f i i₁ EA QA jA hcomp hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA₁ : Function.Injective (algebraMap A₁ (Loc₁ f i i₁ EA QA jA hcomp hj))`. Establish `h1 : Function.Injective (algebraMap (Polynomial A₁) (Loc₁ f i i₁ EA QA jA hcomp hj))` using `by set_option synthInstance.maxHeartbeats 400000 in`. Conclude with `FaithfulSMul.algebraMap_injective (Polynomial A₁) (Loc₁ f i i₁ EA QA jA hcomp hj)`. Rewrite using `[IsScalarTower.algebraMap_eq A₁ (Polynomial A₁) (Loc₁ f i i₁ EA QA jA hcomp hj)]`. Conclude with `h1.comp Polynomial.C_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Module.Finite (GenFib A (Localization.AtPrime QA)) DA := htors.1`. Use `haveI : Algebra.IsIntegral (GenFib A (Localization.AtPrime QA)) DA := inferInstance`. Establish `hκ : (locBC f i i₁ EA QA jA hcomp hj).comp (algebraMap A (Localization.AtPrime QA)) = (algebraMap A₁ (Loc₁ f i i₁ EA QA jA hcomp hj)).comp f` using `RingHom.ext (locBC_algebraMap_base f i i₁ EA QA jA hcomp hj)`. Establish `hβ : (fibBC f i i₁ EA QA jA hcomp hj hf).comp (algebraMap (Localization.AtPrime QA) (GenFib A (Localization.AtPrime QA))) = (algebraMap (Loc₁ f i i₁ EA QA jA hcomp hj) (GenFib A₁ (Loc₁ f i i₁ EA QA jA hcomp hj))).comp (locBC f i i₁ EA QA jA hcomp hj)` using `RingHom.ext (fibBC_algebraMap f i i₁ EA QA jA hcomp hj hf)`. Use `closureEtaleAt_bc A (Localization.AtPrime QA) A₁ (Loc₁ f i i₁ EA QA jA hcomp hj) f hf hA₁ (locBC f i i₁ EA QA jA hcomp hj) hκ (fibBC f i i₁ EA QA jA hcomp hj hf) hβ DA P₁ ?_` and prove the remaining obligations.
-
-Apply `hyp` to reduce the goal to its premises. Rewrite using `[Ideal.mem_comap, ← RingHom.comp_apply, hκ, RingHom.comp_apply]`. Conclude with `haP₁`.
+A detailed English derivation is pending.
 -/
 theorem closureEtaleAt_baseChange : ∀ (T O : Type) [CommRing T] [CommRing O] [IsLocalRing O] [Algebra T O] [Algebra T[X] O]
     [IsScalarTower T T[X] O]

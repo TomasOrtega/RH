@@ -6,7 +6,7 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.T
 namespace GlobalTheory.PtClosed
 
 /- English proof (translation)
-Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec (𝟙 (Sp R')) (isAffineOpen_top (Sp R')) hW le_top`. Rewrite `h` using `[Category.comp_id, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Rewrite using `[← h]`. Simplify using `[spMap, Scheme.Hom.appLE]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fromSpec_Sp_eq (R' : Type) [CommRing R'] {W : (Sp R').Opens} (hW : IsAffineOpen W) :
     hW.fromSpec = spMap ((Scheme.ΓSpecIso (CommRingCat.of R')).inv ≫
@@ -17,13 +17,13 @@ theorem fromSpec_Sp_eq (R' : Type) [CommRing R'] {W : (Sp R').Opens} (hW : IsAff
   simp [spMap, Scheme.Hom.appLE]
 
 /- English proof (translation)
-Introduce `S P hP R' _ x hx V hV a ha`. Rewrite using `[RingHom.mem_ker]`. Apply `(Sp R').IsSheaf.section_ext` to reduce the goal to its premises. Introduce `p hp`. Take `⟨W, hWa, hpW, hWle⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp (Sp R').isBasis_affineOpens) hp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨W, hWle, hpW, ?_⟩` and prove the remaining obligations. Establish `hW : IsAffineOpen W` using `hWa`. Establish `e : hW.fromSpec ≫ x = spMap (x.appLE V W hWle).hom ≫ hV.fromSpec`. Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec x hV hW hWle]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hy : ptQ P V hV _ (x.appLE V W hWle).hom` using `by show P _ (spMap (x.appLE V W hWle).hom ≫ hV.fromSpec)`. Rewrite using `[← e, fromSpec_Sp_eq]`. Conclude with `hP _ _ _ x hx`. Establish `h0` using `ha _ _ hy`. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h0` using `[Scheme.Hom.appLE]`.
+A detailed English derivation is pending.
 -/
 theorem killIdeal_le_ker_app : ∀ (S : Scheme.{0}) (P : ∀ (R' : Type) [CommRing R'], (Sp R' ⟶ S) → Prop),
   (∀ (R' : Type) [CommRing R'] (R'' : Type) [CommRing R''] (g : R' →+* R'') (x : Sp R' ⟶ S),

@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.Mum.TensPer
 
 /- English proof (translation)
-Use `(Fintype.prod_equiv Equiv.ulift _ (fun I => H (psum G (x2 G) I).left ^ ((-1 : ℤ) ^ (2 - I.card))) fun _ => rfl).trans ?_` and prove the remaining obligations. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Establish `q₀ : (-1 : ℤ) ^ (2 - (∅ : Finset (Fin 2)).card) = 1` using `by decide`. Establish `q₁ : (-1 : ℤ) ^ (2 - ({0} : Finset (Fin 2)).card) = -1` using `by decide`. Establish `q₂ : (-1 : ℤ) ^ (2 - ({1} : Finset (Fin 2)).card) = -1` using `by decide`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q₃ : (-1 : ℤ) ^ (2 - ({0, 1} : Finset (Fin 2)).card) = 1` using `by decide`. Rewrite using `[q₀, q₁, q₂, q₃]`. Simplify using `only [zpow_neg, zpow_one]`. The two sides agree by associativity and commutativity.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity.
 -/
 theorem prod_psum_two {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {U : Type} [CommGroup U]
     (H : ((G ⊗ G).left ⟶ G.left) → U) :
@@ -39,17 +39,17 @@ theorem prod_psum_two {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] 
   ac_rfl
 
 /- English proof (translation)
-Establish `base : ∀ x x' y y' : X, t (x + x') (y + y') * (t x y)⁻¹ * (t x' y')⁻¹ = (θ (c x) (c x') (c y * c y') * θ (c y) (c y') (c x) * θ (c y) (c y') (c x'))⁻¹ * (t x y' * t y x')`. Introduce `x x' y y'`. Establish `e₁` using `add x x' (y + y')`. Establish `e₂` using `add y y' x`. Establish `e₃` using `add y y' x'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₁` using `[c_add]`. Establish `s₁` using `symm x (y + y')`. Establish `s₂` using `symm x' (y + y')`. Establish `s₃` using `symm y x`. Establish `s₄` using `symm y' x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s₅` using `symm y' x'`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `E` using `fun {p q : U} (e : p = q) => congrArg Additive.ofMul e`. Establish `a₁` using `E e₁`. Establish `a₂` using `E e₂`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₃` using `E e₃`. Establish `b₁` using `E s₁`. Establish `b₂` using `E s₂`. Establish `b₃` using `E s₃`. Establish `b₄` using `E s₄`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₅` using `E s₅`. Simplify using `only [ofMul_mul, ofMul_inv] at a₁ a₂ a₃ b₁ b₂ b₃ b₄ b₅ ⊢`. Take the linear combination `(norm := abel) a₁ + a₂ + a₃ + b₁ + b₂ + b₃ + b₄ + b₅`. Establish `hij : ∀ i j, t (a i + b i) (a j + b j) ^ W i j * (t (a i) (a j) ^ W i j)⁻¹ * (t (b i) (b j) ^ W i j)⁻¹ = (θ (c (a i)) (c (b i)) (c (a j) * c (b j)) * θ (c (a j)) (c (b j)) (c (a i)) * θ (c (a j)) (c (b j)) (c (b i))) ^ (-W i j) * (t (a i) (b j) ^ W i j * t (a j) (b i) ^ W i j)`. Introduce `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← inv_zpow, ← inv_zpow, ← mul_zpow, ← mul_zpow, base, zpow_neg, ← inv_zpow, ← mul_zpow, mul_zpow]`. Establish `hc : ∏ i, ∏ j, t (a j) (b i) ^ W i j = ∏ i, ∏ j, t (a i) (b j) ^ W j i` using `Finset.prod_comm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.prod_mul_distrib, Matrix.add_apply, Matrix.transpose_apply, zpow_add]`. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem periods_alg {U : Type} [CommGroup U] {X : Type} [AddCommGroup X] {P : Type} [Mul P] (c : X → P)
     (c_add : ∀ x y, c (x + y) = c x * c y) (t : X → X → U) (θ : P → P → P → U) (symm : ∀ x y, t x y = t y x)
@@ -96,7 +96,7 @@ namespace GlobalTheory.Mum.TensPer
 variable {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Unfold `psum`. Rewrite using `[show (List.finRange 2).filter (· ∈ (∅ : Finset (Fin 2))) = [] by decide]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem groupSchemePartialSum_twoPoints_empty : psum G (x2 G) ∅ = 1 := by
   unfold psum
@@ -104,7 +104,7 @@ theorem groupSchemePartialSum_twoPoints_empty : psum G (x2 G) ∅ = 1 := by
   rfl
 
 /- English proof (translation)
-Unfold `psum`. Rewrite using `[show (List.finRange 2).filter (· ∈ ({0} : Finset (Fin 2))) = [0] by decide]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem groupSchemePartialSum_twoPoints_first : psum G (x2 G) {0} = fst G G * 1 := by
   unfold psum
@@ -112,7 +112,7 @@ theorem groupSchemePartialSum_twoPoints_first : psum G (x2 G) {0} = fst G G * 1 
   rfl
 
 /- English proof (translation)
-Unfold `psum`. Rewrite using `[show (List.finRange 2).filter (· ∈ ({1} : Finset (Fin 2))) = [1] by decide]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem groupSchemePartialSum_twoPoints_second : psum G (x2 G) {1} = snd G G * 1 := by
   unfold psum
@@ -120,7 +120,7 @@ theorem groupSchemePartialSum_twoPoints_second : psum G (x2 G) {1} = snd G G * 1
   rfl
 
 /- English proof (translation)
-Unfold `psum`. Rewrite using `[show (List.finRange 2).filter (· ∈ ({0, 1} : Finset (Fin 2))) = [0, 1] by decide]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem groupSchemePartialSum_twoPoints_both : psum G (x2 G) {0, 1} = fst G G * (snd G G * 1) := by
   unfold psum
@@ -132,37 +132,33 @@ end GlobalTheory.Mum.TensPer
 open GlobalTheory.Mum.TensPer in
 
 /- English proof (translation)
-Introduce `R _ _ I D D' r W T a b z J J' hJ hJ'`. Establish `twist_vector_at_zero : ∀ (E : DegData R I) (K : ((TK R).left ⟶ E.toPre.P.A.left) → E.toPre.P.L.ι), Good E.toPre.P.L z K → val (E.toPre.tau 0 0) (𝟙 _) z K = 1`. Introduce `E K hK`. Establish `e` using `GlobalTheory.TauTwist.val_tau_add (𝟙 (TK R)) hK E.tau_bimult 0 0 0`. Establish `f : th E.toPre z K (cP E.toPre (TK R) 0) (cP E.toPre (TK R) 0) (cP E.toPre (TK R) 0) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[cPoint_zero]`. Conclude with `(isCub_cubV E.toPre.cub hK).face 1 1`. Rewrite `e` using `[f, _root_.mul_one]`. Establish `h0 : val (E.toPre.tau (0 + 0) 0) (𝟙 _) z K = val (E.toPre.tau 0 0) (𝟙 _) z K` using `congrArg (fun x => val (E.toPre.tau x 0) (𝟙 _) z K) (add_zero 0)`. Conclude with `mul_eq_left.1 (e.symm.trans h0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd : ∀ x x' y : D.toPre.X, val (D.toPre.tau (x + x') y) (𝟙 _) z J * cubV D.toPre.cub z J (cP D.toPre (TK R) x) (cP D.toPre (TK R) x') (cP D.toPre (TK R) y) = val (D.toPre.tau x y) (𝟙 _) z J * val (D.toPre.tau x' y) (𝟙 _) z J` using `fun x x' y => GlobalTheory.TauTwist.val_tau_add (𝟙 (TK R)) hJ D.tau_bimult x x' y`. Establish `hsym : ∀ x y : D.toPre.X, val (D.toPre.tau x y) (𝟙 _) z J = val (D.toPre.tau y x) (𝟙 _) z J` using `fun x y => GlobalTheory.TauTwist.val_tau_symm (𝟙 (TK R)) hJ x y`. Use `set ρ : TK R ⟶ D'.toPre.P.A ⊗ D'.toPre.P.A := lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b) with hρ`. Establish `wv : ∀ (q : (D'.toPre.P.A ⊗ D'.toPre.P.A).left ⟶ D'.toPre.P.A.left) (y : D'.toPre.X), ρ.left ≫ q = D'.toPre.xK y → gm (ρ.left ≫ q) z _ (T.w.s (fun k => J (ρ.left ≫ q ≫ tensφ T.pr k), J' (ρ.left ≫ q))) = gm (D'.toPre.xK y) z _ (T.w.s (fun k => J (D'.toPre.xK y ≫ tensφ T.pr k), J' …`. Introduce `q y h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Establish `gen : ∀ m m' j j', m = m' → j = j' → gm m z _ (T.w.s j) = gm m' z _ (T.w.s j')`. Introduce and unpack `_ _ _ _ rfl rfl`. Both sides reduce to the same expression. Use `gen _ _ _ _ h ?_` and prove the remaining obligations. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Use function extensionality and compare the values at `k`. Rewrite using `[← Category.assoc, h]`. Simplify using `only`. Rewrite using `[h]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : ρ.left ≫ (psum D'.toPre.P.A (x2 D'.toPre.P.A) ∅).left = D'.toPre.xK 0`. Rewrite using `[← Over.comp_left]`. Use `show _ = (cP D'.toPre (TK R) 0).left`. Rewrite using `[groupSchemePartialSum_twoPoints_empty, cPoint_zero, MonObj.comp_one]`. Establish `h₀ : ρ.left ≫ (psum D'.toPre.P.A (x2 D'.toPre.P.A) {0}).left = D'.toPre.xK a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left]`. Use `show _ = (cP D'.toPre (TK R) a).left`. Rewrite using `[groupSchemePartialSum_twoPoints_first, MonObj.comp_mul, MonObj.comp_one, _root_.mul_one, hρ, lift_fst]`. Both sides reduce to the same expression. Establish `h₁ : ρ.left ≫ (psum D'.toPre.P.A (x2 D'.toPre.P.A) {1}).left = D'.toPre.xK b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left]`. Use `show _ = (cP D'.toPre (TK R) b).left`. Rewrite using `[groupSchemePartialSum_twoPoints_second, MonObj.comp_mul, MonObj.comp_one, _root_.mul_one, hρ, lift_snd]`. Both sides reduce to the same expression. Establish `h₂ : ρ.left ≫ (psum D'.toPre.P.A (x2 D'.toPre.P.A) {0, 1}).left = D'.toPre.xK (a + b)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Over.comp_left]`. Use `show _ = (cP D'.toPre (TK R) (a + b)).left`. Rewrite using `[groupSchemePartialSum_twoPoints_both, MonObj.comp_mul, MonObj.comp_mul, MonObj.comp_one, _root_.mul_one, hρ, lift_fst, lift_snd, cPoint_add]`. Both sides reduce to the same expression. Establish `hA : ∀ i, ρ ≫ fst D'.toPre.P.A D'.toPre.P.A ≫ T.pr i = cP D.toPre (TK R) (T.xe a i)` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hρ, lift_fst_assoc, Category.assoc, T.c_pr]`. Both sides reduce to the same expression. Establish `hB : ∀ i, ρ ≫ snd D'.toPre.P.A D'.toPre.P.A ≫ T.pr i = cP D.toPre (TK R) (T.xe b i)` using `fun i => by`. Rewrite using `[hρ, lift_snd_assoc, Category.assoc, T.c_pr]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P` using `prod_psum_two (G := D'.toPre.P.A) (fun q => gm (ρ.left ≫ q) z _ (T.w.s (fun k => J (ρ.left ≫ q ≫ tensφ T.pr k), J' (ρ.left ≫ q))))`. Use `beta_reduce at P`. Rewrite using `[P]`. Rewrite using `[wv _ _ h₂, wv _ _ h₀, wv _ _ h₁, wv _ _ hE]`. Simplify using `only [hA, hB]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.TauBalBox.tau_val D'.toPre hJ' a b (𝟙 _)]`. Establish `hrig : (val D'.toPre.rigK (𝟙 _) z J')⁻¹ = val (D'.toPre.psi 0) (𝟙 _) z J'`. Establish `e` using `GlobalTheory.TauBalBox.tau_val D'.toPre hJ' 0 0 (𝟙 _)`. Rewrite `e` using `[twist_vector_at_zero D' J' hJ']`. Establish `h0 : val (D'.toPre.psi (0 + 0)) (𝟙 _) z J' = val (D'.toPre.psi 0) (𝟙 _) z J'` using `congrArg (fun x => val (D'.toPre.psi x) (𝟙 _) z J') (add_zero 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[h0, mul_inv_cancel, _root_.one_mul]`. Conclude with `(inv_mul_eq_one.1 e.symm).symm`. Rewrite using `[hrig, T.psi (a + b) z J J' hJ hJ', T.psi a z J J' hJ hJ', T.psi b z J J' hJ hJ', T.psi 0 z J J' hJ hJ']`. Establish `hQ0 : ∏ i, ∏ j, val (D.toPre.tau (T.xe 0 i) (T.xe 0 j)) (𝟙 _) z J ^ W i j = 1` using `Finset.prod_eq_one fun i _ => Finset.prod_eq_one fun j _ => by`. Rewrite using `[show T.xe 0 = 0 from map_zero _]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `(congrArg (· ^ W i j) (twist_vector_at_zero D J hJ)).trans (one_zpow _)`. Establish `hQab : ∏ i, ∏ j, val (D.toPre.tau (T.xe (a + b) i) (T.xe (a + b) j)) (𝟙 _) z J ^ W i j = ∏ i, ∏ j, val (D.toPre.tau (T.xe a i + T.xe b i) (T.xe a j + T.xe b j)) (𝟙 _) z J ^ W i j`. Rewrite using `[map_add]`. Both sides reduce to the same expression. Rewrite using `[hQ0, hQab]`.
-
-Establish `key` using `periods_alg (cP D.toPre (TK R)) (cPoint_add D.toPre (TK R)) (fun x y => val (D.toPre.tau x y) (𝟙 _) z J) (cubV D.toPre.cub z J) hsym hadd W (T.xe a) (T.xe b)`. Use `beta_reduce at key`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `k` using `congrArg Additive.ofMul key`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one] at k ⊢`.
-
-Take the linear combination `(norm := abel) k`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.Tens.tau_periods : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D D' : DegData R I) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (a b : D'.toPre.X) (z : (TK R).left) (J : ((TK R).left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι) (J' : ((TK R).left ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι), Good D.toPre.P.L z J → Good D'.toPre.P.L z J' → val (D'.toPre.tau a b) (𝟙 _) z J' = (∏ K : ULift.{0} (Finset (Fin 2)), gm ((lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b)).left ≫ (psum D'.toPre.P.A (x2 D'.toPre.P.A) K.down).left) z _ (T.w.s (fun k => J ((lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b)).left ≫ (psum D'.toPre.P.A (x2 D'.toPre.P.A) K.down).left ≫ tensφ T.pr k), J' ((lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b)).left ≫ (psum D'.toPre.P.A (x2 D'.toPre.P.A) K.down).left))) ^ ((-1 : ℤ) ^ (2 - K.down.card))) * (∏ i, ∏ j, (cubV D.toPre.cub z J (lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b) ≫ fst D'.toPre.P.A D'.toPre.P.A ≫ T.pr i) (lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b) ≫ snd D'.toPre.P.A D'.toPre.P.A ≫ T.pr i) ((lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b) ≫ fst D'.toPre.P.A D'.toPre.P.A ≫ T.pr j) * (lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b) ≫ snd D'.toPre.P.A D'.toPre.P.A ≫ T.pr j)) * cubV D.toPre.cub z J (lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b) ≫ fst D'.toPre.P.A D'.toPre.P.A ≫ T.pr j) (lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b) ≫ snd D'.toPre.P.A D'.toPre.P.A ≫ T.pr j) (lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b) ≫ fst D'.toPre.P.A D'.toPre.P.A ≫ T.pr i) * cubV D.toPre.cub z J (lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b) ≫ fst D'.toPre.P.A D'.toPre.P.A ≫ T.pr j) (lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b) ≫ snd D'.toPre.P.A D'.toPre.P.A ≫ T.pr j) (lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b) ≫ snd D'.toPre.P.A D'.toPre.P.A ≫ T.pr i)) ^ (-W i j)) * ∏ i, ∏ j, val (D.toPre.tau (T.xe a i) (T.xe b j)) (𝟙 _) z J ^ ((W + W.transpose) i j) := by
   intro R _ _ I D D' r W T a b z J J' hJ hJ'

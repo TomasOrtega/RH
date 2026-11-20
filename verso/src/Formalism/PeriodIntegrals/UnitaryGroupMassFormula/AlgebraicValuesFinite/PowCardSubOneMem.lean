@@ -9,15 +9,15 @@ namespace PI.AlgValsFin.W
 variable {L : Type} [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L))
 
 /- English proof (translation)
-Conclude with `valuedAdicCompletion_eq_valuation' v y`.
+A detailed English derivation is pending.
 -/
 theorem val_alg (y : L) : Valued.v (algebraMap L (v.adicCompletion L) y) = v.valuation L y := by
   exact valuedAdicCompletion_eq_valuation' v y
 
 /- English proof (translation)
-Establish `key : x ^ k - b ^ k = (∑ i ∈ Finset.range k, x ^ i * b ^ (k - 1 - i)) * (x - b)` using `(geom_sum₂_mul x b k).symm`. Rewrite using `[key, map_mul]`. Establish `hs : Valued.v (∑ i ∈ Finset.range k, x ^ i * b ^ (k - 1 - i)) ≤ 1`. Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `i _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, map_pow, map_pow]`. Conclude with `mul_le_one' (pow_le_one₀ zero_le' hx) (pow_le_one₀ zero_le' hb)`. Conclude with `mul_le_of_le_one_left' hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_pow_sub_le {x b : v.adicCompletion L} (hx : Valued.v x ≤ 1) (hb : Valued.v b ≤ 1) (k : ℕ) :
     Valued.v (x ^ k - b ^ k) ≤ Valued.v (x - b) := by
@@ -32,11 +32,11 @@ theorem val_pow_sub_le {x b : v.adicCompletion L} (hx : Valued.v x ≤ 1) (hb : 
   exact mul_le_of_le_one_left' hs
 
 /- English proof (translation)
-Take `⟨y, i, hi, hyi⟩` from `v.isMaximal.exists_inv hb`. Establish `h1 : (y * ∑ k ∈ Finset.range n, i ^ k) * b = 1 - i ^ n`. Establish `hyb : y * b = 1 - i` using `by linear_combination hyi`. Combine the equalities or inequalities in the displayed calculation. Establish `hcb : Ideal.Quotient.mk (v.asIdeal ^ n) (y * ∑ k ∈ Finset.range n, i ^ k) * Ideal.Quotient.mk (v.asIdeal ^ n) b = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, h1, map_sub, map_one, (Ideal.Quotient.eq_zero_iff_mem).mpr (Ideal.pow_mem_pow hi n), sub_zero]`. Set `u : (𝓞 L ⧸ v.asIdeal ^ n)ˣ` to `⟨Ideal.Quotient.mk _ b, Ideal.Quotient.mk _ (y * ∑ k ∈ Finset.range n, i ^ k), by rw [mul_comm]; exact hcb, hcb⟩`. Establish `hu : u ^ Nat.card ((𝓞 L ⧸ v.asIdeal ^ n)ˣ) = 1` using `pow_card_eq_one'`. Establish `h2` using `congrArg Units.val hu`. Rewrite `h2` using `[Units.val_pow_eq_pow_val, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, map_one]`. Conclude with `sub_eq_zero.mpr h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_card_sub_one_mem (n : ℕ) (b : 𝓞 L) (hb : b ∉ v.asIdeal) :
     b ^ Nat.card ((𝓞 L ⧸ v.asIdeal ^ n)ˣ) - 1 ∈ v.asIdeal ^ n := by
@@ -59,46 +59,40 @@ theorem pow_card_sub_one_mem (n : ℕ) (b : 𝓞 L) (hb : b ∉ v.asIdeal) :
   exact sub_eq_zero.mpr h2
 
 /- English proof (translation)
-Use `haveI : Finite (𝓞 L ⧸ v.asIdeal ^ n) := Ideal.finiteQuotientOfFreeOfNeBot _ (pow_ne_zero n v.ne_bot)`. Conclude with `Nat.card_pos`.
+A detailed English derivation is pending.
 -/
 theorem card_units_pos (n : ℕ) : 0 < Nat.card ((𝓞 L ⧸ v.asIdeal ^ n)ˣ) := by
   haveI : Finite (𝓞 L ⧸ v.asIdeal ^ n) := Ideal.finiteQuotientOfFreeOfNeBot _ (pow_ne_zero n v.ne_bot)
   exact Nat.card_pos
 
 /- English proof (translation)
-Use `⟨Nat.card ((𝓞 L ⧸ v.asIdeal ^ n)ˣ), card_units_pos v n, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `set N := Nat.card ((𝓞 L ⧸ v.asIdeal ^ n)ˣ) with hN`. Establish `hlt1 : (exp (-((n : ℤ) + 1)) : ℤᵐ⁰) < exp (-(n : ℤ))`. Rewrite using `[exp_lt_exp]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hle1 : (exp (-(n : ℤ)) : ℤᵐ⁰) ≤ 1`. Rewrite using `[← exp_zero, exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : L, algebraMap L (v.adicCompletion L) y ∈ {z : v.adicCompletion L | Valued.v (z - x) < exp (-((n : ℤ) + 1))} := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ⟩` from `v.intValuation_exists_uniformizer`. Use `set w : v.adicCompletion L := algebraMap L (v.adicCompletion L) (algebraMap (𝓞 L) L π) ^ (n + 1) with hw_def`. Establish `hw : Valued.v w = exp (-((n : ℤ) + 1))`. Rewrite using `[hw_def, map_pow, val_alg, valuation_of_algebraMap, hπ, ← WithZero.exp_nsmul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hw0 : w ≠ 0`. Introduce `h0`. Rewrite `hw` using `[h0, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `exp_ne_zero hw.symm`. Establish `hnhds : {z : v.adicCompletion L | Valued.v (z - x) < exp (-((n : ℤ) + 1))} ∈ nhds x`. Use `Valued.mem_nhds.2 ⟨Units.mk0 (Valued.v.restrict w) ((Valuation.ne_zero_iff _).2 hw0), fun z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Units.val_mk0] at hz ⊢`. Rewrite using `[← hw]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Valuation.restrict_lt_iff _).1 hz`. Conclude with `(denseRange_algebraMap L v).mem_nhds hnhds`. Simplify using `only [Set.mem_setOf_eq] at hy`. Establish `hy1 : v.valuation L y ≤ 1`. Rewrite using `[← val_alg]`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨a, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 L) (K := L) y`. Establish `hs0 : algebraMap (𝓞 L) L s ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 L) L)).2 (nonZeroDivisors.ne_zero hs)`. Establish `hsv : v.intValuation s ≠ 0`. Rewrite using `[← valuation_of_algebraMap (K := L)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(Valuation.ne_zero_iff _).2 hs0`. Establish `has : v.intValuation a ≤ v.intValuation s`. Rewrite `hy1` using `[map_div₀, valuation_of_algebraMap, valuation_of_algebraMap, div_le_one₀ (zero_lt_iff.2 hsv)]`. Conclude with `hy1`. Take `⟨g, hg⟩` from `WithZero.ne_zero_iff_exists.1 hsv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Take `⟨t, ht⟩` from `v.exists_intValuation_mul_sub_lt has (Multiplicative.ofAdd (-((n : ℤ) + 1)) * g)`. Establish `hyt : Valued.v (algebraMap L (v.adicCompletion L) (algebraMap (𝓞 L) L a / algebraMap (𝓞 L) L s) - algebraMap L (v.adicCompletion L) (algebraMap (𝓞 L) L t)) < exp (-((n : ℤ) + 1))`. Rewrite using `[← map_sub, val_alg]`. Establish `e : algebraMap (𝓞 L) L a / algebraMap (𝓞 L) L s - algebraMap (𝓞 L) L t = algebraMap (𝓞 L) L (a - t * s) / algebraMap (𝓞 L) L s`. Rewrite using `[map_sub, map_mul, sub_div, mul_div_assoc, div_self hs0, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_div₀, valuation_of_algebraMap, valuation_of_algebraMap, div_lt_iff₀ (zero_lt_iff.2 hsv), ← hg]`. Combine the equalities or inequalities in the displayed calculation. Use `set B := algebraMap L (v.adicCompletion L) (algebraMap (𝓞 L) L t) with hB`. Use `set Y := algebraMap L (v.adicCompletion L) (algebraMap (𝓞 L) L a / algebraMap (𝓞 L) L s) with hY`. Establish `hxb : Valued.v (x - B) < exp (-((n : ℤ) + 1))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : x - B = -(Y - x) + (Y - B)` using `by ring`. Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt (by rwa [Valuation.map_neg]) hyt)`. Establish `hb1 : Valued.v B ≤ 1`. Rewrite using `[hB, val_alg, valuation_of_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `v.intValuation_le_one t`. Establish `hbP : t ∉ v.asIdeal`. Introduce `hmem`. Establish `h1 : v.intValuation t ≤ exp (-((1 : ℕ) : ℤ))`. Rewrite using `[intValuation_le_pow_iff_mem, pow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmem`. Establish `h1' : Valued.v B < 1`. Rewrite using `[hB, val_alg, valuation_of_algebraMap]`. Use `lt_of_le_of_lt h1 ?_` and prove the remaining obligations. Rewrite using `[← exp_zero, exp_lt_exp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : Valued.v (x - B) < 1` using `lt_of_lt_of_le hxb (le_trans hlt1.le hle1)`. Establish `h3 : Valued.v x < 1`. Establish `e : x = (x - B) + B` using `by ring`. Rewrite using `[e]`.
-
-Conclude with `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt h2 h1')`. Rewrite `h3` using `[hx]`. Conclude with `lt_irrefl _ h3`. Establish `hpow` using `pow_card_sub_one_mem v n t hbP`. Establish `h2 : Valued.v (B ^ N - 1) ≤ exp (-(n : ℤ))`.
-
-Rewrite using `[hB, ← map_pow, ← map_pow, ← map_one (algebraMap L (v.adicCompletion L)), ← map_sub, val_alg, ← map_one (algebraMap (𝓞 L) L), ← map_sub, valuation_of_algebraMap, intValuation_le_pow_iff_mem]`. Conclude with `hpow`. Establish `h1 : Valued.v (x ^ N - B ^ N) ≤ exp (-(n : ℤ))` using `le_trans (val_pow_sub_le v hx.le hb1 N) (le_trans hxb.le hlt1.le)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_add_sub_cancel]`.
-
-Use `_ ≤ max (Valued.v (x ^ N - B ^ N)) (Valued.v (B ^ N - 1)) := Valuation.map_add _ _ _`. Use `_ ≤ exp (-(n : ℤ)) := max_le h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_close (n : ℕ) : ∃ N : ℕ, 0 < N ∧ ∀ x : v.adicCompletion L, Valued.v x = 1 →
     Valued.v (x ^ N - 1) ≤ exp (-(n : ℤ)) := by

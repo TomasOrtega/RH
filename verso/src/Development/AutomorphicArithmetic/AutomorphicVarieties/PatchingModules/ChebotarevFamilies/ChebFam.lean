@@ -4,17 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Ch
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ _ U q g A hU hA`. Use `revert g`. Proceed by induction on `q with`. Consider the case `zero`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨Fin.elim0, Fin.elim0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun j => j.elim0⟩`. Consider the case `succ q ih`. Introduce `g`. Take `⟨v, w, B, σ, hinj, hj⟩` from `ih (fun i => g i.castSucc)`. Take `⟨v0, w0, B0, σ0, h1, h2, h3, h4, h5, h6⟩` from `chebOne L Ω U (g (Fin.last q)) (A ∪ Set.range v) hU (hA.union (Set.finite_range v))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => Fin.lastCases v0 v i, fun i => Fin.lastCases w0 w i, fun i => Fin.lastCases B0 B i, fun i => Fin.lastCases σ0 σ i, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Apply the tactic sequence `induction i using Fin.lastCases <;> induction j using Fin.lastCases <;>`. Simplify using `only [Fin.lastCases_last, Fin.lastCases_castSucc] at hij`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h1 (Or.inr ⟨_, hij.symm⟩)).elim`. Conclude with `(h1 (Or.inr ⟨_, hij⟩)).elim`. Rewrite using `[hinj hij]`. Introduce `j`. Proceed by induction on `j using Fin.lastCases with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Consider the case `last`. Simplify using `only [Fin.lastCases_last]`. Conclude with `⟨fun h => h1 (Or.inl h), h2, h3, h4, h5, h6⟩`. Consider the case `cast i`. Simplify using `only [Fin.lastCases_castSucc]`.
-
-Conclude with `hj i`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.chebFam :
     ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (U : Subgroup (G L Ω)) (q : ℕ) (g : Fin q → G L Ω) (A : Set (Plc (Lp L))), IsOpen (U : Set (G L Ω)) → A.Finite → ∃ (v : Fin q → Plc (Lp L)) (w : Fin q → Plc L) (B : Fin q → ValuationSubring Ω) (σ : Fin q → G L Ω), Function.Injective v ∧ ∀ j, v j ∉ A ∧ IsPlaceOver (B j) (w j) ∧ IsPlaceOver (B j) (v j) ∧ Dec (F := Lp L) (B j) ≤ (resP L Ω).range ∧ IsFrob (F := L) (B j) (normV (w j)) (σ j) ∧ σ j * (g j)⁻¹ ∈ U := by

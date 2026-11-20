@@ -21,11 +21,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AHPos
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `GlobalTheory.AbelianDim.exists_relDim ℂ A hA`. Take `⟨c, hc⟩` from `GlobalTheory.AlgChart.exists_mem_source (p := A.hom) (σ := RingHom.id ℂ) (D := D) (GlobalTheory.HolUnifSec.pt u 0)`. Establish `h1 : D ≤ g` using `GlobalTheory.HolUnifSec.dim_le u c hc`. Establish `h2 : g ≤ D`. Establish `hi : Function.Injective (fderiv ℂ (c.e ∘ GlobalTheory.HolUnifSec.pt u) 0).toLinearMap`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ContinuousLinearMap.coe_coe]`. Conclude with `GlobalTheory.HolUnifSec.injective_fderiv u c hc`. Use `LinearMap.finrank_le_finrank_of_injective hi` as an intermediate fact. Simplify using `using this`. Take `rfl : D = g` from `le_antisymm h1 h2`.
-
-Conclude with `hD`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_holUnif {g : ℕ} {A : Over (Sp ℂ)} [GrpObj A] (hA : IsAbelianScheme A)
     {L : LB A.left} (u : HolUnif A L g) : SmoothOfRelativeDimension g A.hom := by
@@ -45,11 +43,11 @@ theorem smoothOfRelativeDimension_of_holUnif {g : ℕ} {A : Over (Sp ℂ)} [GrpO
 end GlobalTheory.AHPos
 
 /- English proof (translation)
-Introduce `g A _ hA L₀ u₀ H₀ χ₀ hL₀ hAH Hm hHm hpos hint`. Take `⟨A', _, hA', hsm, L', u', χ', hL', hΛ, hAH'⟩` from `GlobalTheory.T.riemann_theorem_nonprincipal_polarised_torus g u₀.Λ Hm u₀.discrete u₀.full hHm hpos hint`. Take `⟨f, -, hf⟩` from `GlobalTheory.HolUnifHom.exists_isMonHom_of_map_lattice A A' g hA hA' (GlobalTheory.AHPos.smoothOfRelativeDimension_of_holUnif hA u₀) hsm L₀ L' u₀ u' LinearMap.id (fun x hx => (hΛ x).2 hx)`. Take `⟨u₁, hex, hΛ₁, hfr⟩` from `GlobalTheory.exists_holUnif_linComb A A' L₀ L' g g u₀ u' PUnit (fun _ => f) (fun _ => LinearMap.id) (fun _ => 1) (fun _ z => hf z)`. Establish `hmem : ∀ l : u₁.Λ, (l : Fin g → ℂ) ∈ u'.Λ` using `fun l => (hΛ _).2 (hΛ₁ ▸ l.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨_, u₁, fun l => χ' ⟨l.1, hmem l⟩, LB.isLB_linComb hL' _ _, hex, hHm, hpos, fun l => hAH'.2.2.1 _, ?_⟩` and prove the remaining obligations. Introduce `l j z hz`. Rewrite `hz` using `[hex]`. Establish `hz' : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L'.U (j PUnit.unit)`. Rewrite using `[← LinearMap.id_apply (R := ℂ) z, hf z]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(CubeValues.le_preimage_wchart (u₀.ex z).left L' (fun _ => f.left) j).1 hz PUnit.unit`. Establish `e1 : u₁.fr j z = u'.fr (j PUnit.unit) z` using `by simpa using hfr j z`. Establish `e2 : u₁.fr j (z + l) = u'.fr (j PUnit.unit) (z + l)` using `by simpa using hfr j (z + l)`. Rewrite using `[e1, e2]`. Conclude with `hAH'.2.2.2 ⟨l.1, hmem l⟩ (j PUnit.unit) z hz'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AHPos.exists_lb_of_posDef : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (L₀ : LB A.left) (u₀ : HolUnif A L₀ g) (H₀ : Matrix (Fin g) (Fin g) ℂ) (χ₀ : u₀.Λ → ℂ), L₀.IsLB → u₀.IsAH H₀ χ₀ →

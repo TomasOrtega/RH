@@ -9,25 +9,25 @@ noncomputable section
 namespace GlobalTheory.SchRing
 
 /- English proof (translation)
-Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Use `Spec.map_injective h` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spMap_inj {R S : Type} [CommRing R] [CommRing S] {a b : R →+* S} (h : spMap a = spMap b) : a = b := by
   have := Spec.map_injective h
   exact congrArg CommRingCat.Hom.hom this
 
 /- English proof (translation)
-Establish `key : ∀ (P : PrimeSpectrum (TrivSqZeroExt k M)) (a : TrivSqZeroExt k M), a ∈ P.asIdeal ↔ a.fst = 0`. Introduce `P a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hu : IsUnit a` using `TrivSqZeroExt.isUnit_iff_isUnit_fst.mpr (isUnit_iff_ne_zero.mpr h)`. Conclude with `P.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ ha hu)`. Introduce `h`. Establish `ha : a = TrivSqZeroExt.inr a.snd` using `TrivSqZeroExt.ext (by simp [h]) (by simp)`. Apply `P.isPrime.mem_of_pow_mem 2` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, pow_two, TrivSqZeroExt.inr_mul_inr]`. Conclude with `P.asIdeal.zero_mem`. Conclude with `⟨fun P Q => PrimeSpectrum.ext (Ideal.ext fun a => (key P a).trans (key Q a).symm)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subsingleton_primeSpectrum_trivSqZeroExt (k : Type) [Field k] (M : Type) [AddCommGroup M] [Module k M] [Module kᵐᵒᵖ M] [IsCentralScalar k M] :
     Subsingleton (PrimeSpectrum (TrivSqZeroExt k M)) := by
@@ -46,9 +46,9 @@ theorem subsingleton_primeSpectrum_trivSqZeroExt (k : Type) [Field k] (M : Type)
   exact ⟨fun P Q => PrimeSpectrum.ext (Ideal.ext fun a => (key P a).trans (key Q a).symm)⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Use `haveI := subsingleton_primeSpectrum_trivSqZeroExt k M`. Set `z : PrimeSpectrum k` to `⟨⊥, Ideal.bot_prime⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `hy : (spMap (TrivSqZeroExt.fstHom k k M).toRingHom).base z = y` using `Subsingleton.elim (α := PrimeSpectrum (TrivSqZeroExt k M)) _ _`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, ← hy]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem range_subset_of_fst {X : Scheme.{0}} (k : Type) [Field k] (M : Type) [AddCommGroup M] [Module k M] [Module kᵐᵒᵖ M] [IsCentralScalar k M]
     (x : Sp k ⟶ X) (u : Sp (TrivSqZeroExt k M) ⟶ X)
@@ -62,7 +62,7 @@ theorem range_subset_of_fst {X : Scheme.{0}} (k : Type) [Field k] (M : Type) [Ad
   rfl
 
 /- English proof (translation)
-Establish `h' : Set.range g ⊆ Set.range hV.fromSpec` using `by rw [hV.range_fromSpec]; exact hg`. Use `⟨(Spec.preimage (IsOpenImmersion.lift hV.fromSpec g h')).hom, ?_⟩` and prove the remaining obligations. Establish `e1 : spMap (Spec.preimage (IsOpenImmersion.lift hV.fromSpec g h')).hom = IsOpenImmersion.lift hV.fromSpec g h'`. Simplify using `only [spMap, CommRingCat.ofHom_hom, Spec.map_preimage]`. Rewrite using `[e1, IsOpenImmersion.lift_fac]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ringHom_of_range {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) (D : Type) [CommRing D]
     (g : Sp D ⟶ X) (hg : Set.range g.base ⊆ (V : Set X)) : ∃ r : Γ(X, V) →+* D, g = spMap r ≫ hV.fromSpec := by
@@ -73,7 +73,7 @@ theorem exists_ringHom_of_range {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpe
   rw [e1, IsOpenImmersion.lift_fac]
 
 /- English proof (translation)
-The claim follows from `spMap_inj (cancel_mono G |>.mp h)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_cancel {R D : Type} [CommRing R] [CommRing D] {Y : Scheme.{0}} (G : Sp R ⟶ Y) [Mono G]
     {a b : R →+* D} (h : spMap a ≫ G = spMap b ≫ G) : a = b :=
@@ -84,23 +84,21 @@ end GlobalTheory.SchRing
 namespace GlobalTheory.SchRing
 
 /- English proof (translation)
-Introduce `B _ X s U V hU hV e d k _ x hx hyp`. Take `⟨u, hux, hus, huniq⟩` from `hyp`. Take `⟨φ, hφ⟩` from `exists_ringHom_of_range hV k x hx`. Take `⟨ψ, hψ⟩` from `exists_ringHom_of_range hV _ u ((range_subset_of_fst k _ x u hux).trans hx)`. Establish `key` using `IsAffineOpen.SpecMap_appLE_fromSpec s hU hV e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : ∀ (D : Type) [CommRing D] (r : Γ(X, V) →+* D), spMap r ≫ hV.fromSpec ≫ s = spMap (r.comp (s.appLE U V e).hom) ≫ hU.fromSpec`. Introduce `D _ r`. Rewrite using `[← key, spMap_comp']`. Both sides reduce to the same expression. Establish `hbase : ∀ (D : Type) [CommRing D] (alg : k →+* D) (r : Γ(X, V) →+* D), (spMap r ≫ hV.fromSpec) ≫ s = spMap alg ≫ x ≫ s ↔ r.comp (s.appLE U V e).hom = alg.comp (φ.comp (s.appLE U V e).hom)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `D _ alg r`. Rewrite using `[hφ]`. Simplify using `only [Category.assoc]`. Rewrite using `[hs, ← Category.assoc (spMap alg) (spMap φ), ← spMap_comp', hs]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `spMap_inj ((cancel_mono hU.fromSpec).mp h)`. Introduce `h`. Rewrite using `[h]`. Establish `hfst : ∀ (D : Type) [CommRing D] (f : D →+* k) (r : Γ(X, V) →+* D), spMap f ≫ spMap r ≫ hV.fromSpec = x ↔ f.comp r = φ`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `D _ f r`. Rewrite using `[hφ, ← Category.assoc, ← spMap_comp']`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `spMap_cancel hV.fromSpec h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite using `[h]`. Use `⟨φ, ψ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hux` using `[hψ]`. Conclude with `(hfst _ _ _).mp hux`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hus` using `[hψ]`. Conclude with `(hbase _ _ _).mp hus`. Introduce `v hv1 hv2`. Establish `h1 : spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ (spMap v ≫ hV.fromSpec) = x` using `(hfst _ _ _).mpr hv1`. Establish `h2` using `(hbase _ _ _).mpr hv2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc, hcu⟩` from `huniq _ h1 h2`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[hψ, ← Category.assoc, ← spMap_comp']`. Conclude with `spMap_cancel hV.fromSpec hc`. Introduce `c' hc'`.
-
-Apply `hcu` to reduce the goal to its premises. Rewrite using `[hψ, ← Category.assoc, ← spMap_comp', ← hc']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deformation_on_sections : ∀ (B : Type) [CommRing B] (X : Scheme.{0}) (s : X ⟶ Sp B) (U : (Sp B).Opens) (V : X.Opens),
     IsAffineOpen U → IsAffineOpen V → ∀ (e : V ≤ s ⁻¹ᵁ U) (d : ℕ) (k : Type) [Field k] (x : Sp k ⟶ X),
